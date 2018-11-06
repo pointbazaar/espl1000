@@ -31,3 +31,7 @@ results easily, so 5 to the power of 100 doesn't have to be computed anew all th
 
 the language should allow for easy json style notation of things
 and should 
+
+
+fortisquid should compile to C,java bytecode(to run on the jvm),java,javascript(to run in the browser),
+and arm assembly language to demonstrate runtime guarantees on raspberry pi
