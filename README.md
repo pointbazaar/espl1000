@@ -35,3 +35,13 @@ and should
 
 fortisquid should compile to C,java bytecode(to run on the jvm),java,javascript(to run in the browser),
 and arm assembly language to demonstrate runtime guarantees on raspberry pi
+
+fortisquid should also have tooling to be able to compile java,javascript to fortisquid
+to easy any migration you might want to do.
+
+fortisquid will be developed and tested against a variety of programming tasks,
+from online coding katas(expressiveness,speed of execution) to hackathons(speed of development,tooling,versatility)
+and business(typical business web applications, file processing) but also research programming(machine learning, artificial intelligence, rare language features,extensibility,forkability).
+
+this should make it a practical language. goal is the ability to transfer thought into code with less code,
+and enable programmer to solve tasks in new ways and think outside the box
