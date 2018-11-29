@@ -1,4 +1,6 @@
 # Amanda
+
+http://www.thinkbabynames.com/meaning/0/Amanda
  programming language (just an idea now) that aims to integrate multiple programming concepts
 
 such as object oriented programming, functional programming, imperative programming,
