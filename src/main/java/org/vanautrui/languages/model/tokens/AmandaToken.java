@@ -1,5 +1,5 @@
 
-package org.vanautrui.languages.model;
+package org.vanautrui.languages.model.tokens;
 
 public class AmandaToken {
     private String contents;

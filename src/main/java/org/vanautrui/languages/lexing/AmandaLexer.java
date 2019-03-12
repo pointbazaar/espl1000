@@ -1,7 +1,7 @@
 
 package org.vanautrui.languages.lexing;
 
-import org.vanautrui.languages.model.AmandaToken;
+import org.vanautrui.languages.model.tokens.AmandaToken;
 import org.vanautrui.languages.model.tokens.AccessModifierToken;
 
 import java.util.ArrayList;

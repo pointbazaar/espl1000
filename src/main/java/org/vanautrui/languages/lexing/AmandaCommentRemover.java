@@ -12,6 +12,7 @@ public class AmandaCommentRemover {
 
         System.out.println("source code after removing comments:");
         System.out.println(result.toString());
+
         return result.toString();
     }
 
