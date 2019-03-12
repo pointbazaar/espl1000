@@ -4,7 +4,7 @@
   <groupId>org.vanautrui.languages</groupId>
   <artifactId>amanda</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.1</version>
   <name>amanda</name>
   <url>http://maven.apache.org</url>
 
@@ -23,7 +23,19 @@
     </properties>
     <build>
         <plugins>
-
+            <!-- Make this jar executable -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!-- Jar file entry point -->
+                            <mainClass>org.vanautrui.languages.App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

@@ -1,15 +1,35 @@
 package org.vanautrui.languages;
 
-
-/**
- * Hello world!
- *
- */
 public class App 
 {
     public static void main( String[] args )
     {
-        String[] myargs=new String[]{"amanda-files/test.amanda"};
-        (new amandai()).main(myargs);
+        //this is the program that is actually intended to be used on the terminal
+
+        // -c file1 file2 ... : compile the source files given as arguments to java bytecode (for now)
+        // -i file1 file2 ... : interpret the given files and execute
+        // -i                 : just start an interpreter
+
+        if(args.length<1){
+            System.out.println("use -i or -c argument");
+            System.exit(1);
+        }else{
+            String flag = args[0];
+
+            switch (flag){
+                case "-c":
+                    System.out.println("Amanda Compiler started");
+                    //TODO
+                    break;
+                case "-i":
+                    System.out.println("Amanda Interpreter started");
+                    //TODO
+                    break;
+                default:
+                    System.out.println("first flag has to be -i or -c, not "+args[0]);
+                    System.exit(1);
+                    break;
+            }
+        }
     }
 }

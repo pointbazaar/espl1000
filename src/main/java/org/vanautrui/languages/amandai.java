@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 //it receives filenames and interprets them one by one
 
 public class amandai{
-    public static void main(String[] args){
+    public static void interpret_main(String[] args){
         //this can accept filename to interpret but also can accept no filename and just
         //function like a REPL
 
