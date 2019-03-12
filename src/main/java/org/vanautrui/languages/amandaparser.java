@@ -12,7 +12,7 @@ import java.util.List;
  * @author alex
  */
 public class amandaparser {
-    public amandaast parse(List<amandatoken> tokens){
+    public String parse(List<amandatoken> tokens){
         //TODO
         return null;
     }
