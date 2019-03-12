@@ -1,10 +1,10 @@
 package org.vanautrui.languages;
+import org.vanautrui.languages.lexing.amandalexer;
+import org.vanautrui.languages.parsing.amandaparser;
+
 import java.io.IOException;
-import java.nio.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 //this is a frontend to the interpreter
 //it receives filenames and interprets them one by one

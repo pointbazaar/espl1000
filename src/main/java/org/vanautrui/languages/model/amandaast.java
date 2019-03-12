@@ -3,17 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.vanautrui.languages;
-
-import java.util.List;
+package org.vanautrui.languages.model;
 
 /**
  *
  * @author alex
  */
-public class amandaparser {
-    public String parse(List<amandatoken> tokens){
-        //TODO
-        return null;
-    }
+public class amandaast {
+    
 }
