@@ -2,6 +2,7 @@
 package org.vanautrui.languages.lexing;
 
 import org.vanautrui.languages.model.AmandaToken;
+import org.vanautrui.languages.model.tokens.AccessModifierToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,12 @@ public class AmandaLexer {
     public AmandaToken decide_which_token(String word) throws Exception{
 
         //TODO
+        switch (word){
+            case "public":
+                return new AccessModifierToken(word);
+            case "private":
+                return new AccessModifierToken(word);
+        }
 
         return new AmandaToken(word);
     }
