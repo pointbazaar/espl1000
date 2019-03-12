@@ -1,0 +1,6 @@
+//hello amanda
+
+public class main
+
+    public void main ([String] args)
+        println ("Hello World")
