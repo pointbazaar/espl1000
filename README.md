@@ -53,6 +53,8 @@ and enable programmer to solve tasks in new ways and think outside the box
 
 map (\x->x+1) [1,2,3,3]
 
+ideas for future features:
+
 - support for functional style
 - support for object oriented style
 - pattern matching
@@ -61,4 +63,4 @@ map (\x->x+1) [1,2,3,3]
 - strong type system
 - compile down to c and then let gcc take care of the rest
 - write interpreter first, probably in java
-
+- compile to java bytecode and be able to call java code and be called from java code.
