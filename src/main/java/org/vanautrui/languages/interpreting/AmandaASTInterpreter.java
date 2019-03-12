@@ -10,6 +10,6 @@ public class AmandaASTInterpreter {
 
     public void execute(AmandaAST amandaast, InputStream in, OutputStream out) throws IOException {
         //TODO
-        out.write("Hello World".getBytes());
+        out.write("Hello World\n".getBytes());
     }
 }
