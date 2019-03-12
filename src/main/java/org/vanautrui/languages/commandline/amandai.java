@@ -1,7 +1,5 @@
 package org.vanautrui.languages.commandline;
-import org.vanautrui.languages.interpreting.amandainterpreter;
-import org.vanautrui.languages.lexing.amandalexer;
-import org.vanautrui.languages.parsing.amandaparser;
+import org.vanautrui.languages.interpreting.AmandaInterpreter;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,7 +11,7 @@ import static java.lang.System.out;
 //it receives filenames and interprets them one by one
 
 public class amandai{
-    public static void interpret_main(String[] args){
+    public static void interpret_main(String[] args) throws IOException {
         //this can accept filename to interpret but also can accept no filename and just
         //function like a REPL
 
@@ -23,12 +21,11 @@ public class amandai{
                     String filename=args[i];
                     out.println("intpreting "+filename);
                     String sourcecode=new String(Files.readAllBytes(Paths.get(filename)));
-                    //System.out.println(sourcecode);
-                    amandainterpreter interpreter = new amandainterpreter();
 
-                    amandalexer lexer=new amandalexer();
-                    amandaparser parser=new amandaparser();
-                    interpreter.execute(parser.parse(lexer.lex(sourcecode)));
+                    System.out.println("Amanda Source Code: ");
+                    System.out.println(sourcecode);
+
+                    (new AmandaInterpreter()).execute(sourcecode, System.in, System.out);
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -46,7 +43,9 @@ public class amandai{
             while(!currentline.equals("exit")) {
                 currentline = System.console().readLine();
                 if(currentline.equals("exec")){
-                    //TODO execute currentSourceFragment
+
+                    (new AmandaInterpreter()).execute(currentSourceFragment.toString(), System.in, System.out);
+
                 }else{
                     currentSourceFragment.append(currentline);
                 }

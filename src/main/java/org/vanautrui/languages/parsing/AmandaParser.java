@@ -3,18 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.vanautrui.languages.lexing;
+package org.vanautrui.languages.parsing;
 
-import org.vanautrui.languages.model.amandatoken;
+import org.vanautrui.languages.model.AmandaAST;
+import org.vanautrui.languages.model.AmandaToken;
 
 import java.util.List;
 
-/**
- *
- * @author alex
- */
-public class amandalexer {
-    public List<amandatoken> lex(String sourcecode){
+public class AmandaParser {
+    public AmandaAST parse(List<AmandaToken> tokens){
         //TODO
         return null;
     }

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.vanautrui.languages.parsing;
+package org.vanautrui.languages.lexing;
 
-import org.vanautrui.languages.model.amandatoken;
+import org.vanautrui.languages.model.AmandaToken;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import java.util.List;
  *
  * @author alex
  */
-public class amandaparser {
-    public String parse(List<amandatoken> tokens){
+public class AmandaLexer {
+    public List<AmandaToken> lex(String sourcecode){
         //TODO
         return null;
     }

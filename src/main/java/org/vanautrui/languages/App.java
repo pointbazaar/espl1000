@@ -3,6 +3,7 @@ package org.vanautrui.languages;
 import org.vanautrui.languages.commandline.amandac;
 import org.vanautrui.languages.commandline.amandai;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class App
@@ -28,7 +29,11 @@ public class App
                     break;
                 case "-i":
                     System.out.println("Amanda Interpreter started");
-                    amandai.interpret_main(Arrays.copyOfRange(args, 1, args.length));
+                    try {
+                        amandai.interpret_main(Arrays.copyOfRange(args, 1, args.length));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 default:
                     System.out.println("first flag has to be -i or -c, not "+args[0]);

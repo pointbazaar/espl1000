@@ -9,6 +9,6 @@ package org.vanautrui.languages.model;
  *
  * @author alex
  */
-public class amandatoken {
+public class AmandaToken {
     
 }
