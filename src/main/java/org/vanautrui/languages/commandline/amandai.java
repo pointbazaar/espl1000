@@ -1,4 +1,4 @@
-package org.vanautrui.languages;
+package org.vanautrui.languages.commandline;
 import org.vanautrui.languages.interpreting.amandainterpreter;
 import org.vanautrui.languages.lexing.amandalexer;
 import org.vanautrui.languages.parsing.amandaparser;
@@ -37,13 +37,19 @@ public class amandai{
             out.println("give file as argument, to intpret it. Example: helloworld.am");
             out.println("Interpreter started without file arguments. REPL mode active");
             out.println("Type 'exit' to exit REPL mode");
+            out.println("Type 'exec' to execute what you have just written");
             out.println("--------------");
-            //TODO implement interpreter mode
+
+            StringBuilder currentSourceFragment= new StringBuilder();
             String currentline = "";
 
             while(!currentline.equals("exit")) {
                 currentline = System.console().readLine();
-
+                if(currentline.equals("exec")){
+                    //TODO execute currentSourceFragment
+                }else{
+                    currentSourceFragment.append(currentline);
+                }
             }
 
             System.exit(1);

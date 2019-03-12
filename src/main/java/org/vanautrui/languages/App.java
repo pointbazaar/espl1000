@@ -1,5 +1,8 @@
 package org.vanautrui.languages;
 
+import org.vanautrui.languages.commandline.amandac;
+import org.vanautrui.languages.commandline.amandai;
+
 import java.util.Arrays;
 
 public class App

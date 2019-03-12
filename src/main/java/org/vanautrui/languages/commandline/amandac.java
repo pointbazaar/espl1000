@@ -1,4 +1,4 @@
-package org.vanautrui.languages;
+package org.vanautrui.languages.commandline;
 public class amandac{
     //this should be the compiler
 
