@@ -1,4 +1,5 @@
 package org.vanautrui.languages;
+import org.vanautrui.languages.interpreting.amandainterpreter;
 import org.vanautrui.languages.lexing.amandalexer;
 import org.vanautrui.languages.parsing.amandaparser;
 
@@ -22,6 +23,7 @@ public class amandai{
                     String sourcecode=new String(Files.readAllBytes(Paths.get(filename)));
                     //System.out.println(sourcecode);
                     amandainterpreter interpreter = new amandainterpreter();
+
                     amandalexer lexer=new amandalexer();
                     amandaparser parser=new amandaparser();
                     interpreter.execute(parser.parse(lexer.lex(sourcecode)));
