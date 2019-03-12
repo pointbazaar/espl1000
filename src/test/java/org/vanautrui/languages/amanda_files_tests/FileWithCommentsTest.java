@@ -1,6 +1,7 @@
-package org.vanautrui.languages;
+package org.vanautrui.languages.amanda_files_tests;
 
 import org.junit.Test;
+import org.vanautrui.languages.base.BaseTest;
 import org.vanautrui.languages.interpreting.AmandaInterpreter;
 
 import java.io.IOException;
@@ -11,16 +12,11 @@ import java.nio.file.Paths;
 
 import static org.junit.Assert.assertEquals;
 
-public class MainMethodBasicOutputTest {
+public class FileWithCommentsTest extends BaseTest {
 
     @Test
-    public void can_do_basic_output_in_main_method() throws IOException {
-        InputStream in = new InputStream() {
-            @Override
-            public int read() throws IOException {
-                return 0;
-            }
-        };
+    public void test() throws Exception{
+        InputStream in = BaseTest.getEmptyInputStream();
         final String[] target = {""};
 
         OutputStream outputStream = new OutputStream() {
@@ -29,8 +25,8 @@ public class MainMethodBasicOutputTest {
                 target[0] +=((char)i)+"";
             }
         };
-        (new AmandaInterpreter()).execute(String.valueOf(Files.readAllBytes(Paths.get("amanda-files/main_method.amanda"))), in, outputStream);
+        (new AmandaInterpreter()).execute(String.valueOf(Files.readAllBytes(Paths.get("amanda-files/filewithcomments.am"))), in, outputStream);
 
-        assertEquals("Hello World\n", target[0]);
+        assertEquals("", target[0]);
     }
 }

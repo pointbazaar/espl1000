@@ -31,7 +31,7 @@ public class App
                     System.out.println("Amanda Interpreter started");
                     try {
                         amandai.interpret_main(Arrays.copyOfRange(args, 1, args.length));
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;

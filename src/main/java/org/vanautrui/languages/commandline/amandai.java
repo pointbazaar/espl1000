@@ -11,7 +11,7 @@ import static java.lang.System.out;
 //it receives filenames and interprets them one by one
 
 public class amandai{
-    public static void interpret_main(String[] args) throws IOException {
+    public static void interpret_main(String[] args) throws Exception {
         //this can accept filename to interpret but also can accept no filename and just
         //function like a REPL
 

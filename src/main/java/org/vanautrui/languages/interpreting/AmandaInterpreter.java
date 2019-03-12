@@ -13,7 +13,7 @@ import java.util.List;
 
 public class AmandaInterpreter {
 
-    public void execute(String sourcecode, InputStream in, OutputStream out) throws IOException {
+    public void execute(String sourcecode, InputStream in, OutputStream out) throws Exception {
         List<AmandaToken> tokens = (new AmandaLexer()).lex(sourcecode);
         AmandaAST ast = (new AmandaParser()).parse(tokens);
         (new AmandaASTInterpreter()).execute(ast, in, out);
