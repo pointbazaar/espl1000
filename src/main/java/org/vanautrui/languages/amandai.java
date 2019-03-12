@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import static java.lang.System.out;
+
 //this is a frontend to the interpreter
 //it receives filenames and interprets them one by one
 
@@ -19,7 +21,7 @@ public class amandai{
             try {
                 for(int i=0;i<args.length;i++){
                     String filename=args[i];
-                    System.out.println("intpreting "+filename);
+                    out.println("intpreting "+filename);
                     String sourcecode=new String(Files.readAllBytes(Paths.get(filename)));
                     //System.out.println(sourcecode);
                     amandainterpreter interpreter = new amandainterpreter();
@@ -32,9 +34,17 @@ public class amandai{
                 ex.printStackTrace();
             }
         }else {
-            System.out.println("give file as argument, to intpret it. Example: helloworld.am");
-            System.out.println("Interpreter started without file arguments. REPL mode active");
+            out.println("give file as argument, to intpret it. Example: helloworld.am");
+            out.println("Interpreter started without file arguments. REPL mode active");
+            out.println("Type 'exit' to exit REPL mode");
+            out.println("--------------");
             //TODO implement interpreter mode
+            String currentline = "";
+
+            while(!currentline.equals("exit")) {
+                currentline = System.console().readLine();
+
+            }
 
             System.exit(1);
         }
