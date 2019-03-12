@@ -32,8 +32,10 @@ public class amandai{
                 ex.printStackTrace();
             }
         }else {
-            //TODO implement interpreter mode
             System.out.println("give file as argument, to intpret it. Example: helloworld.am");
+            System.out.println("Interpreter started without file arguments. REPL mode active");
+            //TODO implement interpreter mode
+
             System.exit(1);
         }
     }
