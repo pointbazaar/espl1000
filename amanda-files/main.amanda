@@ -1,6 +1,8 @@
 //hello amanda
+//we make extra space between each token to make it easier to develop a first version
+//of the lexer
 
 public class main
 
-    public void main ([String] args)
-        println ("Hello World")
+    public void main ( [ String ] args )
+        println ( " Hello World " )

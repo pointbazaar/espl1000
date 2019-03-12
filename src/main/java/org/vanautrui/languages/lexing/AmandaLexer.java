@@ -15,12 +15,17 @@ public class AmandaLexer {
         for(String s : lines){
             String[] words = s.split(" ");
             for(String word : words){
-                result.add(new AmandaToken(word));
+                result.add(decide_which_token(word));
             }
             result.add(new AmandaToken("\n"));
         }
         return result;
     }
 
+    public AmandaToken decide_which_token(String word) throws Exception{
 
+        //TODO
+
+        return new AmandaToken(word);
+    }
 }
