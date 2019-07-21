@@ -2,7 +2,7 @@
 
 !!Work in Progress!!
 
-The Dragon Programming Language. Formerly named amanda.
+The Dragon Programming Language.
 
 It is named Dragon because it is supposed to be powerful. And rare. 
 I do not think many people would use it or know about it.
@@ -43,13 +43,13 @@ the language should allow for easy json style notation of things
 and should 
 
 
-fortisquid should compile to C,java bytecode(to run on the jvm),java,javascript(to run in the browser),
+Dragon should compile to C,java bytecode(to run on the jvm),java,javascript(to run in the browser),
 and arm assembly language to demonstrate runtime guarantees on raspberry pi
 
-fortisquid should also have tooling to be able to compile java,javascript to fortisquid
+Dragon should also have tooling to be able to compile java,javascript to Dragon
 to easy any migration you might want to do.
 
-fortisquid will be developed and tested against a variety of programming tasks,
+Dragon will be developed and tested against a variety of programming tasks,
 from online coding katas(expressiveness,speed of execution) to hackathons(speed of development,tooling,versatility)
 and business(typical business web applications, file processing) but also research programming(machine learning, artificial intelligence, rare language features,extensibility,forkability).
 
