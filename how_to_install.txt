@@ -1,0 +1,6 @@
+// OPTIONAL: 
+// read https://medium.com/devnetwork/how-to-create-your-own-custom-terminal-commands-c5008782a78e
+
+// STEP 1: append "source ~/dragon/.dragon.sh" to your ~/.bashrc
+
+// DONE
