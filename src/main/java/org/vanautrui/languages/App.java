@@ -13,7 +13,7 @@ public class App
     public static void main( String[] args )
     {
         //this is the program that is actually intended to be used on the terminal:
-        //for the compile part, 
+        //for the compile part,
 
         //compile the source files given as arguments to java bytecode (for now)
         // dragon -c file1 file2 ...
