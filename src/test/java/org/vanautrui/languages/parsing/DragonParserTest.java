@@ -3,7 +3,7 @@ package org.vanautrui.languages.parsing;
 import org.junit.Assert;
 import org.junit.Test;
 import org.vanautrui.languages.model.DragonAST;
-import org.vanautrui.languages.model.tokens.AmandaToken;
+import org.vanautrui.languages.model.tokens.DragonToken;
 import org.vanautrui.languages.model.tokens.ClassToken;
 import org.vanautrui.languages.model.tokens.IdentifierToken;
 
@@ -15,13 +15,13 @@ public class DragonParserTest {
 
     @Test
     public void test_can_create_correct_classnode() throws Exception{
-        ArrayList<AmandaToken> tokens=new ArrayList<>();
+        ArrayList<DragonToken> tokens=new ArrayList<>();
         tokens.add(new ClassToken("class"));
 
         String classname = "exampleclass";
 
         tokens.add(new IdentifierToken(classname));
-        tokens.add(new AmandaToken("\n"));
+        tokens.add(new DragonToken("\n"));
 
         DragonAST ast = parser.parse(tokens);
 

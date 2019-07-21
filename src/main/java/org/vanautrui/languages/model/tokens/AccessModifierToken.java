@@ -1,6 +1,6 @@
 package org.vanautrui.languages.model.tokens;
 
-public class AccessModifierToken extends AmandaToken {
+public class AccessModifierToken extends DragonToken {
 
     public boolean is_public;
 

@@ -7,13 +7,27 @@ import java.util.Arrays;
 
 public class App
 {
+
+    public static final String lang_name=" Dragon ";
+
     public static void main( String[] args )
     {
-        //this is the program that is actually intended to be used on the terminal
+        //this is the program that is actually intended to be used on the terminal:
+        //for the compile part, 
 
-        // -c file1 file2 ... : compile the source files given as arguments to java bytecode (for now)
-        // -i file1 file2 ... : interpret the given files and execute
-        // -i                 : just start an interpreter
+        //compile the source files given as arguments to java bytecode (for now)
+        // dragon -c file1 file2 ...
+
+        //compile all source files in that directory recursively
+        // dragon -c directory1
+
+
+        // dragon -i file1 file2 ... : interpret the given files and execute
+
+
+        // dragon -i                 : just start an interpreter
+
+
 
         if(args.length<1){
             System.out.println("use -i or -c argument");
@@ -23,11 +37,11 @@ public class App
 
             switch (flag){
                 case "-c":
-                    System.out.println("Amanda Compiler started");
+                    System.out.println(lang_name+"Compiler started");
                     dragonc.compile_main(Arrays.copyOfRange(args, 1, args.length));
                     break;
                 case "-i":
-                    System.out.println("Amanda Interpreter started");
+                    System.out.println(lang_name+"Interpreter started");
                     try {
                         dragoni.interpret_main(Arrays.copyOfRange(args, 1, args.length));
                     } catch (Exception e) {

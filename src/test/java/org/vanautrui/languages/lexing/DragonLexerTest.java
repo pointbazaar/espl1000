@@ -1,7 +1,7 @@
 package org.vanautrui.languages.lexing;
 
 import org.junit.Test;
-import org.vanautrui.languages.model.tokens.AmandaToken;
+import org.vanautrui.languages.model.tokens.DragonToken;
 import org.vanautrui.languages.model.tokens.AccessModifierToken;
 
 import static org.junit.Assert.*;
@@ -22,8 +22,8 @@ public class DragonLexerTest {
 
     @Test
     public void test_can_see_access_modifiers() throws Exception{
-        AmandaToken token = lexer.decide_which_token("public");
-        AmandaToken token2 = lexer.decide_which_token("private");
+        DragonToken token = lexer.decide_which_token("public");
+        DragonToken token2 = lexer.decide_which_token("private");
 
         assertTrue(token instanceof AccessModifierToken);
         assertTrue(token2 instanceof AccessModifierToken);
