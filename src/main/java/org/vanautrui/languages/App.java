@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class App
 {
 
-    public static final String lang_name=" Dragon ";
+    public static final String lang_name="Dragon ";
 
     public static void main( String[] args )
     {
@@ -41,9 +41,11 @@ public class App
                     dragonc.compile_main(Arrays.copyOfRange(args, 1, args.length));
                     break;
                 case "-i":
-                    System.out.println(lang_name+"Interpreter started");
+
                     try {
-                        dragoni.interpret_main(Arrays.copyOfRange(args, 1, args.length));
+
+                        dragoni dragon_interpreter=new dragoni();
+                        dragon_interpreter.interpret_main(Arrays.copyOfRange(args, 1, args.length));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
