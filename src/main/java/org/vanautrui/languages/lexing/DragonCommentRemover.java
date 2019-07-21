@@ -1,6 +1,6 @@
 package org.vanautrui.languages.lexing;
 
-public class AmandaCommentRemover {
+public class DragonCommentRemover {
     public String strip_comments(String sourcecode) throws Exception {
         StringBuilder result=new StringBuilder();
 

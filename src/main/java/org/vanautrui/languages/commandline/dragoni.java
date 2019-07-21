@@ -1,5 +1,5 @@
 package org.vanautrui.languages.commandline;
-import org.vanautrui.languages.interpreting.AmandaInterpreter;
+import org.vanautrui.languages.interpreting.DragonInterpreter;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,7 +10,7 @@ import static java.lang.System.out;
 //this is a frontend to the interpreter
 //it receives filenames and interprets them one by one
 
-public class amandai{
+public class dragoni {
     public static void interpret_main(String[] args) throws Exception {
         //this can accept filename to interpret but also can accept no filename and just
         //function like a REPL
@@ -25,7 +25,7 @@ public class amandai{
                     System.out.println("Amanda Source Code: ");
                     System.out.println(sourcecode);
 
-                    (new AmandaInterpreter()).execute(sourcecode, System.in, System.out);
+                    (new DragonInterpreter()).execute(sourcecode, System.in, System.out);
                 }
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -44,7 +44,7 @@ public class amandai{
                 currentline = System.console().readLine();
                 if(currentline.equals("exec")){
 
-                    (new AmandaInterpreter()).execute(currentSourceFragment.toString(), System.in, System.out);
+                    (new DragonInterpreter()).execute(currentSourceFragment.toString(), System.in, System.out);
 
                 }else{
                     currentSourceFragment.append(currentline);

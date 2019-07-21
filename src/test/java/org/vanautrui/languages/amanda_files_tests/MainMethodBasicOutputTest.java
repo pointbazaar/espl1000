@@ -2,7 +2,7 @@ package org.vanautrui.languages.amanda_files_tests;
 
 import org.junit.Test;
 import org.vanautrui.languages.base.BaseTest;
-import org.vanautrui.languages.interpreting.AmandaInterpreter;
+import org.vanautrui.languages.interpreting.DragonInterpreter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +26,7 @@ public class MainMethodBasicOutputTest extends BaseTest {
                 target[0] +=((char)i)+"";
             }
         };
-        (new AmandaInterpreter()).execute(String.valueOf(Files.readAllBytes(Paths.get("amanda-files/main.amanda"))), in, outputStream);
+        (new DragonInterpreter()).execute(String.valueOf(Files.readAllBytes(Paths.get("amanda-files/main.amanda"))), in, outputStream);
 
         assertEquals("Hello World\n", target[0]);
     }

@@ -1,9 +1,8 @@
 package org.vanautrui.languages;
 
-import org.vanautrui.languages.commandline.amandac;
-import org.vanautrui.languages.commandline.amandai;
+import org.vanautrui.languages.commandline.dragonc;
+import org.vanautrui.languages.commandline.dragoni;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 public class App
@@ -25,12 +24,12 @@ public class App
             switch (flag){
                 case "-c":
                     System.out.println("Amanda Compiler started");
-                    amandac.compile_main(Arrays.copyOfRange(args, 1, args.length));
+                    dragonc.compile_main(Arrays.copyOfRange(args, 1, args.length));
                     break;
                 case "-i":
                     System.out.println("Amanda Interpreter started");
                     try {
-                        amandai.interpret_main(Arrays.copyOfRange(args, 1, args.length));
+                        dragoni.interpret_main(Arrays.copyOfRange(args, 1, args.length));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

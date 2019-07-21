@@ -2,16 +2,16 @@ package org.vanautrui.languages.parsing;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.vanautrui.languages.model.AmandaAST;
+import org.vanautrui.languages.model.DragonAST;
 import org.vanautrui.languages.model.tokens.AmandaToken;
 import org.vanautrui.languages.model.tokens.ClassToken;
 import org.vanautrui.languages.model.tokens.IdentifierToken;
 
 import java.util.ArrayList;
 
-public class AmandaParserTest {
+public class DragonParserTest {
 
-    AmandaParser parser=new AmandaParser();
+    DragonParser parser=new DragonParser();
 
     @Test
     public void test_can_create_correct_classnode() throws Exception{
@@ -23,7 +23,7 @@ public class AmandaParserTest {
         tokens.add(new IdentifierToken(classname));
         tokens.add(new AmandaToken("\n"));
 
-        AmandaAST ast = parser.parse(tokens);
+        DragonAST ast = parser.parse(tokens);
 
         Assert.assertEquals(classname, ast.classNodeList.get(0).getName());
     }

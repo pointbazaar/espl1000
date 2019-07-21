@@ -6,9 +6,9 @@ import org.vanautrui.languages.model.tokens.AccessModifierToken;
 
 import static org.junit.Assert.*;
 
-public class AmandaLexerTest {
+public class DragonLexerTest {
 
-    AmandaLexer lexer=new AmandaLexer();
+    DragonLexer lexer=new DragonLexer();
 
     @Test
     public void test_throws_exception_on_empty_token(){

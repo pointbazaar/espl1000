@@ -1,13 +1,12 @@
 package org.vanautrui.languages.lexing;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class AmandaCommentRemoverTest {
+public class DragonCommentRemoverTest {
 
-    AmandaCommentRemover remover = new AmandaCommentRemover();
+    DragonCommentRemover remover = new DragonCommentRemover();
 
     @Test
     public void test_remove_single_line_comments(){

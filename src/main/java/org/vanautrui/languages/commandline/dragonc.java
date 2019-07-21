@@ -1,5 +1,5 @@
 package org.vanautrui.languages.commandline;
-public class amandac{
+public class dragonc {
     //this should be the compiler
 
     public static void compile_main(String[] args){

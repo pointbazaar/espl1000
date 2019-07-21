@@ -1,6 +1,6 @@
 package org.vanautrui.languages.model.datatypes;
 
-public enum AmandaPrimitiveDataType {
+public enum DragonPrimitiveDataType {
     Long,
     Double,
     String;

@@ -7,9 +7,9 @@ import org.vanautrui.languages.model.tokens.AccessModifierToken;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AmandaLexer {
+public class DragonLexer {
     public List<AmandaToken> lex(String sourcecode) throws Exception {
-        String source_without_comments = (new AmandaCommentRemover()).strip_comments(sourcecode);
+        String source_without_comments = (new DragonCommentRemover()).strip_comments(sourcecode);
         //TODO
         List<AmandaToken> result = new ArrayList<AmandaToken>();
         String[] lines = source_without_comments.split("\n");
