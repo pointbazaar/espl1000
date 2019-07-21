@@ -1,7 +1,10 @@
 package org.vanautrui.languages.commandline;
+import com.diogonunes.jcdp.color.ColoredPrinter;
+import com.diogonunes.jcdp.color.api.Ansi;
 import org.vanautrui.languages.App;
 import org.vanautrui.languages.interpreting.DragonInterpreter;
 
+import java.io.Console;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -13,6 +16,7 @@ import static org.vanautrui.languages.App.lang_name;
 //it receives filenames and interprets them one by one
 
 public class dragoni {
+
 
 
     public void interpret_main(String[] args) throws Exception {
@@ -41,8 +45,18 @@ public class dragoni {
             }
         }else {
 
+
+            ColoredPrinter cp =
+                    new ColoredPrinter.Builder(1,false)
+                    .foreground(Ansi.FColor.WHITE)
+                    .background(Ansi.BColor.BLACK)
+                    .build();
+
+
+
             //Interpreter started without file arguments. REPL mode active
-            out.println(lang_name+"Interpreter started in REPL mode");
+
+            cp.println(lang_name+"Interpreter started in REPL mode", Ansi.Attribute.NONE, Ansi.FColor.BLUE, Ansi.BColor.YELLOW);
 
             out.println("Type 'help' to receive some help");
             out.println();

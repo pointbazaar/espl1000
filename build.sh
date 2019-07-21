@@ -1,7 +1,5 @@
 #!/bin/bash
 
+mvn install -DskipTests
 
-mvn install
-
-#mvn exec:java -Dexec.mainClass="org.vanautrui.languages.App" 
 
