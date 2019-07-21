@@ -26,7 +26,7 @@ public class MainMethodBasicOutputTest extends BaseTest {
                 target[0] +=((char)i)+"";
             }
         };
-        (new DragonInterpreter()).execute(String.valueOf(Files.readAllBytes(Paths.get("amanda-files/main.amanda"))), in, outputStream);
+        (new DragonInterpreter()).execute(String.valueOf(Files.readAllBytes(Paths.get("amanda-files/main.dragon"))), in, outputStream);
 
         assertEquals("Hello World\n", target[0]);
     }

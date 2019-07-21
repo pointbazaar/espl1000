@@ -25,7 +25,7 @@ public class FileWithCommentsTest extends BaseTest {
                 target[0] +=((char)i)+"";
             }
         };
-        (new DragonInterpreter()).execute(String.valueOf(Files.readAllBytes(Paths.get("amanda-files/filewithcomments.am"))), in, outputStream);
+        (new DragonInterpreter()).execute(String.valueOf(Files.readAllBytes(Paths.get("amanda-files/filewithcomments.dragon"))), in, outputStream);
 
         assertEquals("", target[0]);
     }
