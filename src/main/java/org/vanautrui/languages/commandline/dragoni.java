@@ -31,7 +31,7 @@ public class dragoni {
                 ex.printStackTrace();
             }
         }else {
-            out.println("give file as argument, to intpret it. Example: helloworld.am");
+            out.println("give file as argument, to intpret it. Example: helloworld.dragon");
             out.println("Interpreter started without file arguments. REPL mode active");
             out.println("Type 'exit' to exit REPL mode");
             out.println("Type 'exec' to execute what you have just written");

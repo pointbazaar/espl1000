@@ -3,7 +3,7 @@
 #executes the dragon compiler or interpreter
 
 function dragon(){
-	echo "dragon launched. "
+	#echo "dragon launched. "
 	#echo $1
 
 
