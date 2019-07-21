@@ -5,7 +5,7 @@
     <artifactId>dragon</artifactId>
     <packaging>jar</packaging>
     <version>0.1</version>
-    <name>amanda</name>
+    <name>dragon</name>
     <url>http://maven.apache.org</url>
 
 
@@ -19,13 +19,13 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/com.diogonunes/JCDP -->
+        <!-- https://mvnrepository.com/artifact/org.fusesource.jansi/jansi -->
         <dependency>
-            <groupId>com.diogonunes</groupId>
-            <artifactId>JCDP</artifactId>
-            <version>2.0.2</version>
-            <!--<scope>compile</scope>-->
+            <groupId>org.fusesource.jansi</groupId>
+            <artifactId>jansi</artifactId>
+            <version>1.18</version>
         </dependency>
+
 
 
     </dependencies>
@@ -50,7 +50,42 @@
                 </configuration>
                 <version>3.1.1</version>
             </plugin>
+
+
+            <!-- Maven Assembly Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <!-- get all project dependencies -->
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <!-- MainClass in mainfest make a executable jar -->
+                    <archive>
+                        <manifest>
+                            <mainClass>org.vanautrui.languages.App</mainClass>
+                        </manifest>
+                    </archive>
+
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <!-- bind to the packaging phase -->
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
         </plugins>
+
+
     </build>
 
 </project>

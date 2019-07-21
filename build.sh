@@ -1,5 +1,6 @@
 #!/bin/bash
 
-mvn install -DskipTests
+#package because there we create the fatJar
+mvn package -DskipTests
 
 

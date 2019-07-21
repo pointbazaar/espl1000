@@ -1,15 +1,14 @@
 package org.vanautrui.languages.commandline;
-import com.diogonunes.jcdp.color.ColoredPrinter;
-import com.diogonunes.jcdp.color.api.Ansi;
-import org.vanautrui.languages.App;
+
+import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.interpreting.DragonInterpreter;
 
-import java.io.Console;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static java.lang.System.out;
+import static org.fusesource.jansi.Ansi.ansi;
 import static org.vanautrui.languages.App.lang_name;
 
 //this is a frontend to the interpreter
@@ -46,17 +45,15 @@ public class dragoni {
         }else {
 
 
-            ColoredPrinter cp =
-                    new ColoredPrinter.Builder(1,false)
-                    .foreground(Ansi.FColor.WHITE)
-                    .background(Ansi.BColor.BLACK)
-                    .build();
+
 
 
 
             //Interpreter started without file arguments. REPL mode active
 
-            cp.println(lang_name+"Interpreter started in REPL mode", Ansi.Attribute.NONE, Ansi.FColor.BLUE, Ansi.BColor.YELLOW);
+            out.println(
+                    ansi().eraseScreen().fg(Ansi.Color.RED).a(lang_name+"Interpreter started in REPL mode").reset()
+            );
 
             out.println("Type 'help' to receive some help");
             out.println();
