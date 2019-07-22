@@ -6,43 +6,23 @@ import org.vanautrui.languages.model.tokens.DragonToken;
 import org.vanautrui.languages.model.tokens.AccessModifierToken;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DragonLexer {
     public List<DragonToken> lex(String sourcecodeWithoutComments) throws Exception {
 
-        //TODO
+        String just_code_with_braces = CurlyBracesWeaver.weave_scoping_curly_braces_and_remove_newlines(sourcecodeWithoutComments);
+
+        System.out.println("Code after weaving in curly braces, if they werent there before:");
+
+        System.out.println(just_code_with_braces);
+
         List<DragonToken> result = new ArrayList<DragonToken>();
-        String[] lines = sourcecodeWithoutComments.split("\n");
-        for(String s : lines){
-            String[] words = s.split(" ");
-            for(String word : words){
-                result.add(new ClassToken(word));
-            }
-        }
+        //TODO
+
         return result;
     }
 
-    private List<DragonToken> weave_scoping_curly_braces(String sourceCodeWithoutComments) throws Exception{
-
-        //because the language should work with indentation, not requiring the use of curly braces,
-
-        /*
-
-        public void main([String] args)
-            println("hi")
-
-        //should become:
-
-        public void main([String] args){
-            println("hi");
-        }
-
-         */
-
-        //all this is so that the lexer / tokenizer can later ignore newlines.
-        // which would make it maybe easier to implement
-
-        //TODO
-    }
 }

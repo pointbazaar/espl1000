@@ -1,6 +1,9 @@
-public class main
+public class main{
 
-    public void main ( [ String ] args )
+    public void main ( [ String ] args ){
 
-        loop 3
+        loop 3{
             print("x")
+        }
+    }
+}
