@@ -1,14 +1,18 @@
 package org.vanautrui.languages;
 
+import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.commandline.dragonc;
 import org.vanautrui.languages.commandline.dragoni;
 
 import java.util.Arrays;
 
+import static org.fusesource.jansi.Ansi.ansi;
+
 public class App
 {
 
-    public static final String lang_name="Dragon ";
+    //public static final String lang_name="Dragon ";
+    public static final String lang_name = "DRAGON ";
 
     public static void main( String[] args )
     {
@@ -37,7 +41,8 @@ public class App
 
             switch (flag){
                 case "-c":
-                    System.out.println(lang_name+"Compiler started");
+                    DragonTerminalUtil.printlnRed(lang_name+"Compiler started",System.out);
+
                     dragonc.compile_main(Arrays.copyOfRange(args, 1, args.length));
                     break;
                 case "-i":
@@ -51,7 +56,7 @@ public class App
                     }
                     break;
                 default:
-                    System.out.println("first flag has to be -i or -c, not "+args[0]);
+                    DragonTerminalUtil.printlnRed("first flag has to be -i or -c, not "+args[0],System.out);
                     System.exit(1);
                     break;
             }

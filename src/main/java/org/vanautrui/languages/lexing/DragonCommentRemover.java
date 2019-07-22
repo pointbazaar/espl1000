@@ -1,5 +1,9 @@
 package org.vanautrui.languages.lexing;
 
+import org.fusesource.jansi.Ansi;
+
+import static org.fusesource.jansi.Ansi.ansi;
+
 public class DragonCommentRemover {
     public String strip_comments(String sourcecode) throws Exception {
         StringBuilder result=new StringBuilder();
@@ -10,8 +14,16 @@ public class DragonCommentRemover {
                 )
         );
 
-        System.out.println("source code after removing comments:");
-        System.out.println(result.toString());
+        /*
+        System.out.println("Source Code after removing comments:");
+        System.out.println(
+                ansi()
+                        .fg(Ansi.Color.MAGENTA)
+                        .a(result.toString())
+                        .reset()
+        );
+
+         */
 
         return result.toString();
     }

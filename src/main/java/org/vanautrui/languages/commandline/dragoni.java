@@ -1,6 +1,7 @@
 package org.vanautrui.languages.commandline;
 
 import org.fusesource.jansi.Ansi;
+import org.vanautrui.languages.DragonTerminalUtil;
 import org.vanautrui.languages.interpreting.DragonInterpreter;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class dragoni {
                     out.println("intpreting "+filename);
                     String sourcecode=new String(Files.readAllBytes(Paths.get(filename)));
 
-                    System.out.println(lang_name+" Source Code: ");
+                    DragonTerminalUtil.printlnRed(lang_name+" Source Code: ", out);
                     System.out.println(sourcecode);
 
                     (new DragonInterpreter()).execute(sourcecode, System.in, System.out);
@@ -47,15 +48,11 @@ public class dragoni {
 
 
 
-
-
-            //Interpreter started without file arguments. REPL mode active
-
-            out.println(
-                    ansi().fg(Ansi.Color.RED).a(lang_name+"Interpreter started in REPL mode").reset()
+            DragonTerminalUtil.printlnRed(
+                    lang_name+"Interpreter started in REPL mode"
             );
 
-            out.println("Type 'help' to receive some help");
+            DragonTerminalUtil.printlnRed("Type 'help' to receive some help");
             out.println();
 
             StringBuilder currentSourceFragment= new StringBuilder();
@@ -66,11 +63,14 @@ public class dragoni {
             while(!currentline.equals("exit")) {
                 //out.print("<>"); //having something repetitive on each line should not be beside your beautiful code
 
+                out.print(ansi().fg(Ansi.Color.CYAN));
                 currentline = System.console().readLine();
+                out.print(ansi().reset());
 
                 interpret_line(currentline,currentSourceFragment);
             }
 
+            out.println(ansi().reset());
             System.exit(1);
         }
     }
@@ -79,12 +79,13 @@ public class dragoni {
         if(currentline.equals("exec")){
 
             (new DragonInterpreter()).execute(currentSourceFragment.toString(), System.in, System.out);
+            currentSourceFragment.delete(0,currentSourceFragment.length());
 
         }else if(currentline.equals("help")){
-            out.println("give file as argument, to intpret it. Example: helloworld.dragon");
+            DragonTerminalUtil.printlnRed("give file as argument, to intpret it. Example: helloworld.dragon");
 
-            out.println("Type 'exit' to exit REPL mode");
-            out.println("Type 'exec' to execute what you have just written");
+            DragonTerminalUtil.printlnRed("Type 'exit' to exit REPL mode");
+            DragonTerminalUtil.printlnRed("Type 'exec' to execute what you have just written");
         }else{
             currentSourceFragment.append(currentline);
         }
