@@ -52,7 +52,7 @@ public class dragoni {
             //Interpreter started without file arguments. REPL mode active
 
             out.println(
-                    ansi().eraseScreen().fg(Ansi.Color.RED).a(lang_name+"Interpreter started in REPL mode").reset()
+                    ansi().fg(Ansi.Color.RED).a(lang_name+"Interpreter started in REPL mode").reset()
             );
 
             out.println("Type 'help' to receive some help");
