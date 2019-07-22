@@ -3,3 +3,30 @@
 //TODO
 
 int ::= ... | -1 | 0 | 1 | 2 | ...
+
+char ::= 'a' | ... | 'z' | 'A' | ... | 'Z'
+
+alphanumeric ::= int | char
+
+identifier ::= char alphanumeric*
+
+string ::= '"' alphanumeric* '"'
+
+accessmodifier ::= public | private
+
+class ::= accessmodifier class identifier '{' classField* method* '}'
+
+classField ::= Type identifier ';'
+
+Type ::= identifier
+
+methodName ::= identifier
+
+method ::= accessmodifier returnType methodName '(' argument* ')' '{' statement* '}'
+
+returnType ::= 'void' | Type
+
+argument ::= Type identifier
+
+//TODO
+statement ::=
