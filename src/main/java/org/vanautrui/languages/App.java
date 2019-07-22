@@ -34,7 +34,17 @@ public class App
 
 
         if(args.length<1){
-            System.out.println("use -i or -c argument");
+            DragonTerminalUtil.printlnRed("Dragon Programming Language: https://github.com/pointbazaar/dragon");
+            DragonTerminalUtil.printlnRed("use -i or -c argument");
+            DragonTerminalUtil.printlnRed("-i starts the Interpreter");
+            DragonTerminalUtil.printlnRed("-c starts the Compiler");
+            DragonTerminalUtil.printlnRed("");
+            DragonTerminalUtil.printlnRed("Usage: ");
+
+            //TODO, it does not actually do that right now
+            DragonTerminalUtil.printlnRed("dragon -c file1.dragon \tcompiles file1.dragon to file1.class");
+            DragonTerminalUtil.printlnRed("dragon -i file1.dragon \tinterprets file1.dragon and prints the output to the console");
+            
             System.exit(1);
         }else{
             String flag = args[0];
