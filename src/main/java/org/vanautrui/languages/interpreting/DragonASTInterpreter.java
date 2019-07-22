@@ -17,7 +17,7 @@ public class DragonASTInterpreter {
         //TODO
         TerminalUtil.printlnRed("OUTPUT:");
 
-        out.println("Hello World");
+        out.println("");
 
     }
 }

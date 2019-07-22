@@ -7,6 +7,7 @@ import org.vanautrui.languages.interpreting.DragonInterpreter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -25,7 +26,9 @@ public class FileWithCommentsTest extends BaseTest {
                 target[0] +=((char)i)+"";
             }
         };
-        (new DragonInterpreter()).execute(String.valueOf(Files.readAllBytes(Paths.get("amanda-files/filewithcomments.dragon"))), in, outputStream);
+
+        PrintStream outStream = new PrintStream(outputStream);
+        (new DragonInterpreter()).execute(String.valueOf(Files.readAllBytes(Paths.get("dragon-files/filewithcomments.dragon"))), in, outStream);
 
         assertEquals("", target[0]);
     }
