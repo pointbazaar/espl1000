@@ -1,9 +1,23 @@
 package org.vanautrui.languages.model.tokens;
 
+import org.vanautrui.languages.lexing.CharacterList;
+
 public class AccessModifierToken implements DragonToken {
 
     public boolean is_public;
 
+    public AccessModifierToken(CharacterList list) throws Exception{
+
+        if(list.startsWith("public")){
+            this.is_public=true;
+            list.consumeTokens("public".length());
+        }else if(list.startsWith("private")){
+            this.is_public=false;
+            list.consumeTokens("private".length());
+        }
+
+        throw new Exception("could not recognize access modifier token");
+    }
 
     public AccessModifierToken(String newcontents) throws Exception {
         switch (newcontents){

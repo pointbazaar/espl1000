@@ -16,7 +16,7 @@ public class DragonParserTest {
     @Test
     public void test_can_create_correct_classnode() throws Exception{
         ArrayList<DragonToken> tokens=new ArrayList<>();
-        tokens.add(new ClassToken("class"));
+        tokens.add(new ClassToken());
 
         String classname = "exampleclass";
 
