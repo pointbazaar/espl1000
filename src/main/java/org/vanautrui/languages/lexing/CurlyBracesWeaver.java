@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 public class CurlyBracesWeaver {
 
+    private static final String brace_open=" { ";
+    private static final String brace_close=" } ";
 
     public static String weave_scoping_curly_braces_and_remove_newlines(String sourceCodeWithoutComments) throws Exception{
 
@@ -57,6 +59,8 @@ public class CurlyBracesWeaver {
 
         //TODO: what if there are already braces? handle this case!
 
+
+
         StringBuilder sb=new StringBuilder("");
 
         int last_indentation=0;
@@ -72,21 +76,21 @@ public class CurlyBracesWeaver {
 
             if (line.indentation > last_indentation) {
                 //add "{"
-                sb.append("{");
+                sb.append(brace_open);
             } else if (line.indentation < last_indentation) {
                 //add "}"
-                sb.append("}");
+                sb.append(brace_close);
             }
 
-            sb.append(" ");
+            //sb.append(" ");
             sb.append(line.content);
-            sb.append(" ");
+            //sb.append(" ");
 
             last_indentation = line.indentation;
         }
 
         while (last_indentation>0){
-            sb.append("}");
+            sb.append(brace_close);
             last_indentation--;
         }
 
