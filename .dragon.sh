@@ -12,3 +12,7 @@ function dragon(){
 
 	java -jar ~/dragon/target/dragon-0.1-jar-with-dependencies.jar "$@"
 }
+
+function dg(){
+	dragon "$@"
+}
