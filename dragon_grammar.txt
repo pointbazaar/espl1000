@@ -1,5 +1,9 @@
 
 //this file defines the grammar for the dragon language.
+//the language can be written with indentation, or with curly braces,
+//depending on your preferences. before lexing, if there is indentation, it is replaced with curly braces
+//so everything after that brace-weaving recognizes only the curly braces variation
+
 //TODO
 
 int ::= ... | -1 | 0 | 1 | 2 | ...
@@ -23,6 +27,11 @@ Type ::= identifier
 methodName ::= identifier
 
 method ::= accessmodifier returnType methodName '(' argument* ')' '{' statement* '}'
+
+//alternative, haskell-like version
+method ::= accessmodifier methodName '::' (Type smallarrow)* Type '{' statement* '}'
+
+smallarrow ::= '->'
 
 returnType ::= 'void' | Type
 
