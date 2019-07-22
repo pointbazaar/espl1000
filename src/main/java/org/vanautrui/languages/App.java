@@ -1,6 +1,5 @@
 package org.vanautrui.languages;
 
-import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.commandline.dragonc;
 import org.vanautrui.languages.commandline.dragoni;
 
@@ -34,24 +33,24 @@ public class App
 
 
         if(args.length<1){
-            DragonTerminalUtil.printlnRed("Dragon Programming Language: https://github.com/pointbazaar/dragon");
-            DragonTerminalUtil.printlnRed("use -i or -c argument");
-            DragonTerminalUtil.printlnRed("-i starts the Interpreter");
-            DragonTerminalUtil.printlnRed("-c starts the Compiler");
-            DragonTerminalUtil.printlnRed("");
-            DragonTerminalUtil.printlnRed("Usage: ");
+            TerminalUtil.printlnRed("Dragon Programming Language: https://github.com/pointbazaar/dragon");
+            TerminalUtil.printlnRed("use -i or -c argument");
+            TerminalUtil.printlnRed("-i starts the Interpreter");
+            TerminalUtil.printlnRed("-c starts the Compiler");
+            TerminalUtil.printlnRed("");
+            TerminalUtil.printlnRed("Usage: ");
 
             //TODO, it does not actually do that right now
-            DragonTerminalUtil.printlnRed("dragon -c file1.dragon \tcompiles file1.dragon to file1.class");
-            DragonTerminalUtil.printlnRed("dragon -i file1.dragon \tinterprets file1.dragon and prints the output to the console");
-            
+            TerminalUtil.printlnRed("dragon -c file1.dragon \tcompiles file1.dragon to file1.class");
+            TerminalUtil.printlnRed("dragon -i file1.dragon \tinterprets file1.dragon and prints the output to the console");
+
             System.exit(1);
         }else{
             String flag = args[0];
 
             switch (flag){
                 case "-c":
-                    DragonTerminalUtil.printlnRed(lang_name+"Compiler started",System.out);
+                    TerminalUtil.printlnRed(lang_name+"Compiler started",System.out);
 
                     dragonc.compile_main(Arrays.copyOfRange(args, 1, args.length));
                     break;
@@ -66,7 +65,7 @@ public class App
                     }
                     break;
                 default:
-                    DragonTerminalUtil.printlnRed("first flag has to be -i or -c, not "+args[0],System.out);
+                    TerminalUtil.printlnRed("first flag has to be -i or -c, not "+args[0],System.out);
                     System.exit(1);
                     break;
             }

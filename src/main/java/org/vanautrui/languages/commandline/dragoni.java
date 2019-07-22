@@ -1,7 +1,7 @@
 package org.vanautrui.languages.commandline;
 
 import org.fusesource.jansi.Ansi;
-import org.vanautrui.languages.DragonTerminalUtil;
+import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.interpreting.DragonInterpreter;
 
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class dragoni {
                     out.println("intpreting "+filename);
                     String sourcecode=new String(Files.readAllBytes(Paths.get(filename)));
 
-                    DragonTerminalUtil.printlnRed(lang_name+" Source Code: ", out);
+                    TerminalUtil.printlnRed(lang_name+" Source Code: ", out);
                     System.out.println(sourcecode);
 
                     (new DragonInterpreter()).execute(sourcecode, System.in, System.out);
@@ -48,11 +48,11 @@ public class dragoni {
 
 
 
-            DragonTerminalUtil.printlnRed(
+            TerminalUtil.printlnRed(
                     lang_name+"Interpreter started in REPL mode"
             );
 
-            DragonTerminalUtil.printlnRed("Type 'help' to receive some help");
+            TerminalUtil.printlnRed("Type 'help' to receive some help");
             out.println();
 
             StringBuilder currentSourceFragment= new StringBuilder();
@@ -82,10 +82,10 @@ public class dragoni {
             currentSourceFragment.delete(0,currentSourceFragment.length());
 
         }else if(currentline.equals("help")){
-            DragonTerminalUtil.printlnRed("give file as argument, to intpret it. Example: helloworld.dragon");
+            TerminalUtil.printlnRed("give file as argument, to intpret it. Example: helloworld.dragon");
 
-            DragonTerminalUtil.printlnRed("Type 'exit' to exit REPL mode");
-            DragonTerminalUtil.printlnRed("Type 'exec' to execute what you have just written");
+            TerminalUtil.printlnRed("Type 'exit' to exit REPL mode");
+            TerminalUtil.printlnRed("Type 'exec' to execute what you have just written");
         }else{
             currentSourceFragment.append(currentline);
         }

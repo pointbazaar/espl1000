@@ -6,7 +6,7 @@ import java.io.PrintStream;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
-public class DragonTerminalUtil {
+public class TerminalUtil {
 
     public static void printlnRed(String s, PrintStream out){
         out.println(ansi().fg(Ansi.Color.RED).a(s).reset());
