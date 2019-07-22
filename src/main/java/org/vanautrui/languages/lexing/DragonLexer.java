@@ -13,6 +13,8 @@ import java.util.stream.Collectors;
 public class DragonLexer {
     public List<DragonToken> lex(String sourcecodeWithoutComments) throws Exception {
 
+        System.out.println("PHASE: LEXING");
+
         String just_code_with_braces = CurlyBracesWeaver.weave_scoping_curly_braces_and_remove_newlines(sourcecodeWithoutComments);
 
         System.out.println("Code after weaving in curly braces, if they werent there before:");

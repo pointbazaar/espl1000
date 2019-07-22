@@ -41,4 +41,9 @@ public class IndentedString {
         this.content=content;
     }
 
+    @Override
+    public String toString(){
+        return " IndentedString: "+this.indentation+" : "+this.content;
+    }
+
 }

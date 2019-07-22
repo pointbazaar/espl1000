@@ -2,10 +2,15 @@ package org.vanautrui.languages.commandline;
 
 import org.vanautrui.languages.App;
 import org.vanautrui.languages.lexing.DragonCommentRemover;
+import org.vanautrui.languages.lexing.DragonLexer;
+import org.vanautrui.languages.model.DragonAST;
+import org.vanautrui.languages.model.tokens.DragonToken;
+import org.vanautrui.languages.parsing.DragonParser;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class dragonc {
     //this should be the compiler
@@ -34,6 +39,12 @@ public class dragonc {
                 System.out.println(codeWithoutComments);
 
                 System.out.println(seperator);
+
+                List<DragonToken> tokens = (new DragonLexer()).lex(codeWithoutComments);
+
+                DragonAST ast = (new DragonParser()).parse(tokens);
+
+                //TODO: generate code from here
 
             }catch (Exception e){
                 System.err.println(e.getMessage());

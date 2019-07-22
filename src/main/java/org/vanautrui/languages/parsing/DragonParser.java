@@ -16,7 +16,9 @@ import java.util.List;
 
 public class DragonParser {
     public DragonAST parse(List<DragonToken> tokens){
-        //System.out.println("Parser started");
+
+        System.out.println("PHASE: PARSING");
+
         //TODO
         DragonAST result=new DragonAST();
 

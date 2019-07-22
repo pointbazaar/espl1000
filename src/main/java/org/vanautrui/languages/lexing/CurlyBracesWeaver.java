@@ -61,7 +61,14 @@ public class CurlyBracesWeaver {
 
         int last_indentation=0;
 
-        for (IndentedString line : lines) {
+        for (int i=0;i<lines.size();i++) {
+
+            IndentedString line = lines.get(i);
+
+            //System.out.println("last indentation: "+last_indentation);
+            //System.out.println(line);
+
+
 
             if (line.indentation > last_indentation) {
                 //add "{"
@@ -71,11 +78,16 @@ public class CurlyBracesWeaver {
                 sb.append("}");
             }
 
+            sb.append(" ");
+            sb.append(line.content);
+            sb.append(" ");
+
             last_indentation = line.indentation;
         }
 
-        if(last_indentation>0){
+        while (last_indentation>0){
             sb.append("}");
+            last_indentation--;
         }
 
         return sb.toString();
