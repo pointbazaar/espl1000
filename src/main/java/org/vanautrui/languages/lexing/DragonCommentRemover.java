@@ -2,6 +2,9 @@ package org.vanautrui.languages.lexing;
 
 import org.fusesource.jansi.Ansi;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import static org.fusesource.jansi.Ansi.ansi;
 
 public class DragonCommentRemover {
@@ -25,7 +28,11 @@ public class DragonCommentRemover {
 
          */
 
-        return result.toString();
+        String res =result.toString();
+
+        res = Arrays.stream(res.split("\n")).filter(x-> !x.trim().isEmpty()) .collect(Collectors.joining("\n"));
+
+        return res;
     }
 
     public String strip_single_line_comments(String sourcecode){
