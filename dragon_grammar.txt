@@ -1,5 +1,5 @@
 
-//this file defines the grammar for amanda.
+//this file defines the grammar for the dragon language.
 //TODO
 
-int ::= 
+int ::= ... | -1 | 0 | 1 | 2 | ...

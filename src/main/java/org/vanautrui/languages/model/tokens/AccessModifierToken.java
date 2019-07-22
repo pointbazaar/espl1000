@@ -1,12 +1,11 @@
 package org.vanautrui.languages.model.tokens;
 
-public class AccessModifierToken extends DragonToken {
+public class AccessModifierToken implements DragonToken {
 
     public boolean is_public;
 
 
     public AccessModifierToken(String newcontents) throws Exception {
-        super(newcontents);
         switch (newcontents){
             case "public":
                 is_public=true;
@@ -17,5 +16,10 @@ public class AccessModifierToken extends DragonToken {
             default:
                 throw new Exception("invalid acces modifier token: \""+newcontents+"\"");
         }
+    }
+
+    @Override
+    public String getContents() {
+        return (this.is_public)?"public":"private";
     }
 }

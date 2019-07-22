@@ -16,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 public class MainMethodBasicOutputTest extends BaseTest {
 
+    /*
     @Test
     public void can_do_basic_output_in_main_method() throws Exception {
         InputStream in = BaseTest.getEmptyInputStream();
@@ -31,4 +32,6 @@ public class MainMethodBasicOutputTest extends BaseTest {
 
         assertEquals("Hello World\n", target[0]);
     }
+
+     */
 }

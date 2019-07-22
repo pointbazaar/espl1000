@@ -21,7 +21,6 @@ public class DragonParserTest {
         String classname = "exampleclass";
 
         tokens.add(new IdentifierToken(classname));
-        tokens.add(new DragonToken("\n"));
 
         DragonAST ast = parser.parse(tokens);
 

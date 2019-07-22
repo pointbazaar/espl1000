@@ -1,8 +1,15 @@
 package org.vanautrui.languages.model.tokens;
 
-public class IdentifierToken extends DragonToken {
+public class IdentifierToken implements DragonToken {
+
+    private String content;
 
     public IdentifierToken(String newcontents) throws Exception {
-        super(newcontents);
+        this.content=newcontents;
+    }
+
+    @Override
+    public String getContents() {
+        return this.content;
     }
 }
