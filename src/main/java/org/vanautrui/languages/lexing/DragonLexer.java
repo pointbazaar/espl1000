@@ -68,7 +68,12 @@ public class DragonLexer {
                 //pass
             }
 
-            //TODO: string constant token
+            try{
+                result.add(new StringConstantToken(myCode));
+                continue;
+            }catch (Exception e){
+                //pass
+            }
 
             try{
                 result.add(new SymbolToken(myCode));
@@ -76,6 +81,9 @@ public class DragonLexer {
             }catch (Exception e){
                 //pass
             }
+
+            //TODO: operator tokens
+            //TODO: make more kinds of tokens to enrich the token stream
 
             if(myCode.startsWith(" ") || myCode.startsWith("\t")){
                 //white space is always allowed between tokens

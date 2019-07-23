@@ -5,19 +5,19 @@ import org.vanautrui.languages.lexing.CharacterList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class IdentifierToken implements DragonToken {
+public class StringConstantToken implements DragonToken {
 
-    private static final String regex_alphanumeric_identifier = "^[a-zA-Z][a-zA-Z0-9]+";
+    private static final String regex_string_constant = "^\".*\"";
 
-    public static final int MAX_IDENTIFIER_LENGTH=100;
+    public static final int MAX_STRING_CONSTANT_LENGTH =100;
 
     private String content;
 
-    public IdentifierToken(CharacterList list)throws Exception{
+    public StringConstantToken(CharacterList list)throws Exception{
 
-        Pattern p = Pattern.compile(regex_alphanumeric_identifier);
+        Pattern p = Pattern.compile(regex_string_constant);
 
-        Matcher m = p.matcher(list.getLimitedStringMaybeShorter(MAX_IDENTIFIER_LENGTH));
+        Matcher m = p.matcher(list.getLimitedStringMaybeShorter(MAX_STRING_CONSTANT_LENGTH));
 
         if(m.find()){
             this.content = m.group(0);
@@ -27,7 +27,7 @@ public class IdentifierToken implements DragonToken {
         }
     }
 
-    public IdentifierToken(String newcontents) throws Exception {
+    public StringConstantToken(String newcontents) throws Exception {
         this.content=newcontents;
     }
 
