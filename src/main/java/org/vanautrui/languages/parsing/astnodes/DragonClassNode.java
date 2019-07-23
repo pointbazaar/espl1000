@@ -1,4 +1,4 @@
-package org.vanautrui.languages.model.astnodes;
+package org.vanautrui.languages.parsing.astnodes;
 
 import java.util.List;
 

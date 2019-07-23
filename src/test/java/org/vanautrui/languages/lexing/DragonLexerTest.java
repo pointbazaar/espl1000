@@ -1,8 +1,8 @@
 package org.vanautrui.languages.lexing;
 
 import org.junit.Test;
-import org.vanautrui.languages.model.tokens.DragonToken;
-import org.vanautrui.languages.model.tokens.AccessModifierToken;
+import org.vanautrui.languages.lexing.tokens.DragonToken;
+import org.vanautrui.languages.lexing.tokens.AccessModifierToken;
 
 import java.util.List;
 

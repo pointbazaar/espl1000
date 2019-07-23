@@ -1,10 +1,8 @@
-package org.vanautrui.languages.model.tokens;
+package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.CharacterList;
 
 import java.io.InputStream;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ClassToken implements DragonToken {
 

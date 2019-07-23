@@ -2,10 +2,10 @@ package org.vanautrui.languages.parsing;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.vanautrui.languages.model.DragonAST;
-import org.vanautrui.languages.model.tokens.DragonToken;
-import org.vanautrui.languages.model.tokens.ClassToken;
-import org.vanautrui.languages.model.tokens.IdentifierToken;
+import org.vanautrui.languages.parsing.astnodes.DragonAST;
+import org.vanautrui.languages.lexing.tokens.DragonToken;
+import org.vanautrui.languages.lexing.tokens.ClassToken;
+import org.vanautrui.languages.lexing.tokens.IdentifierToken;
 
 import java.util.ArrayList;
 
@@ -25,5 +25,10 @@ public class DragonParserTest {
         DragonAST ast = parser.parse(tokens);
 
         Assert.assertEquals(classname, ast.classNodeList.get(0).getName());
+    }
+
+    public static class DragonASTTest {
+
+        //TODO
     }
 }

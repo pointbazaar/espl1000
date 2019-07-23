@@ -2,8 +2,8 @@ package org.vanautrui.languages.commandline;
 
 import org.vanautrui.languages.lexing.DragonCommentRemover;
 import org.vanautrui.languages.lexing.DragonLexer;
-import org.vanautrui.languages.model.DragonAST;
-import org.vanautrui.languages.model.tokens.DragonToken;
+import org.vanautrui.languages.parsing.astnodes.DragonAST;
+import org.vanautrui.languages.lexing.tokens.DragonToken;
 import org.vanautrui.languages.parsing.DragonParser;
 
 import java.nio.file.Files;

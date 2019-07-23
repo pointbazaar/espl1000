@@ -1,8 +1,6 @@
 
-package org.vanautrui.languages.model;
+package org.vanautrui.languages.parsing.astnodes;
 
-
-import org.vanautrui.languages.model.astnodes.DragonClassNode;
 
 import java.util.ArrayList;
 import java.util.List;

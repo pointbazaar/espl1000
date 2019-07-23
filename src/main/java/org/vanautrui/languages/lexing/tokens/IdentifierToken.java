@@ -1,4 +1,4 @@
-package org.vanautrui.languages.model.tokens;
+package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.CharacterList;
 

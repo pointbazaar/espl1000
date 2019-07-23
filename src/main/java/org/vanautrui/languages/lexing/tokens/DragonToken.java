@@ -1,5 +1,5 @@
 
-package org.vanautrui.languages.model.tokens;
+package org.vanautrui.languages.lexing.tokens;
 
 public interface DragonToken {
 

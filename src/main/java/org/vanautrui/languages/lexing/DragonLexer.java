@@ -1,12 +1,10 @@
 
 package org.vanautrui.languages.lexing;
 
-import org.vanautrui.languages.model.tokens.*;
+import org.vanautrui.languages.lexing.tokens.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DragonLexer {
     public List<DragonToken> lexCodeWithoutComments(String sourcecodeWithoutComments) throws Exception {
