@@ -14,6 +14,14 @@ import java.util.List;
 public class dragonc {
     //this should be the compiler
 
+    //one thing to note would be that
+    //we can include multiple stages of tokenization
+    //and parsing.
+    //parsing can include multiple passes and also
+    //the AST and related data could undergo multiple representations
+    //before reaching the final representation
+    //from which code can be generated
+
     private static final String seperator = "-----------------";
 
     public static void compile_main(String[] args){
