@@ -28,7 +28,7 @@ public class FileWithCommentsTest extends BaseTest {
         };
 
         PrintStream outStream = new PrintStream(outputStream);
-        (new DragonInterpreter()).execute(String.valueOf(Files.readAllBytes(Paths.get("dragon-files/filewithcomments.dragon"))), in, outStream);
+        (new DragonInterpreter()).execute(new String(Files.readAllBytes(Paths.get("dragon-files/filewithcomments.dragon"))), in, outStream);
 
         assertEquals("", target[0]);
     }

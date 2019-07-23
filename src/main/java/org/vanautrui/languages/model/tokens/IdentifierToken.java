@@ -9,13 +9,15 @@ public class IdentifierToken implements DragonToken {
 
     private static final String regex_alphanumeric_identifier = "^[a-zA-Z][a-zA-Z0-9]+";
 
+    public static final int MAX_IDENTIFIER_LENGTH=100;
+
     private String content;
 
     public IdentifierToken(CharacterList list)throws Exception{
 
         Pattern p = Pattern.compile(regex_alphanumeric_identifier);
 
-        Matcher m = p.matcher(list.toString());
+        Matcher m = p.matcher(list.getLimitedString(MAX_IDENTIFIER_LENGTH));
 
         if(m.matches()){
             this.content = m.group();

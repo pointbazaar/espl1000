@@ -8,6 +8,9 @@ public class CharacterList {
 
     private List<Character> list;
 
+    private boolean stringValid=false;
+    private String stringValue="";
+
     public CharacterList(String s){
         this(s.toCharArray());
     }
@@ -17,6 +20,7 @@ public class CharacterList {
     }
 
     public CharacterList(char[] chars){
+        this.list=new ArrayList<>();
         for (char c : chars){
             this.list.add(c);
         }
@@ -24,10 +28,13 @@ public class CharacterList {
 
     public CharacterList(CharacterList other){
         this.list=new ArrayList<>(other.list);
+        this.stringValid=other.stringValid;
+        this.stringValue=other.stringValue;
     }
 
     public void consumeTokens(int amount){
-        this.list=this.list.subList(amount,this.list.size()-1);
+        this.list=this.list.subList(amount,this.list.size());
+        this.stringValid=false;
     }
 
     public int size(){
@@ -40,20 +47,50 @@ public class CharacterList {
 
     public boolean startsWith(String s){
         if(list.size()>=s.length()){
-            return new CharacterList(
-                    list.subList(0,s.length()-1)
-            )
-                    .toString()
-                    .equals(s);
+            try {
+                return this.getLimitedString(s.length()).equals(s);
+            }catch (Exception e){
+                return false;
+            }
         }
         return false;
     }
 
+    public String getLimitedString(int amount) throws Exception{
+
+        if(amount>this.list.size()){
+            throw new Exception("amount is too big. list not that long");
+        }
+
+        if(this.stringValid && this.stringValue.length()>=amount){
+            return this.stringValue.substring(0,amount);
+        }
+
+        StringBuilder sb =new StringBuilder("");
+
+        for(Character ch : this.list.subList(0,amount)){
+            sb.append(ch);
+        }
+
+        String result = sb.toString();
+
+        this.stringValue=result;
+        this.stringValid=true;
+
+        return result;
+    }
+
+
     @Override
     public String toString(){
-        return this.list
-                .stream()
-                .map(ch->ch+"")
-                .collect(Collectors.joining(""));
+        try{
+            return getLimitedString(this.list.size());
+        }catch (Exception e){
+            throw new RuntimeException("terrible stuff");
+        }
+    }
+
+    public String getLimitedStringMaybeShorter(int length) throws Exception{
+        return this.getLimitedString(Math.min(length,this.list.size()));
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class DragonLexer {
-    public List<DragonToken> lex(String sourcecodeWithoutComments) throws Exception {
+    public List<DragonToken> lexCodeWithoutComments(String sourcecodeWithoutComments) throws Exception {
 
         System.out.println("PHASE: LEXING");
 
@@ -48,6 +48,8 @@ public class DragonLexer {
             //while not every last char is tokenized,
             //try to tokenize something
 
+            //System.out.println(myCode.size());
+
             try{
                 result.add(new AccessModifierToken(myCode));
                 continue;
@@ -69,7 +71,7 @@ public class DragonLexer {
                 //pass
             }
 
-            if(myCode.startsWith(" ")){
+            if(myCode.startsWith(" ") || myCode.startsWith("\t")){
                 //white space is always allowed between tokens
                 myCode.consumeTokens(1);
                 continue;
@@ -78,11 +80,8 @@ public class DragonLexer {
 
             throw
                     new Exception(
-                            "tried to tokenize all manner of tokens, but could not make progress. string : "
-                            +sourceCodeWithBracesWithoutCommentsWithoutNewlines.getList()
-                                    .stream()
-                                    .map(character -> character+"")
-                                    .collect(Collectors.joining(""))
+                            "tried to tokenize all manner of tokens, but could not make progress. string : '"
+                            +myCode.getLimitedStringMaybeShorter(10)+"'"
                     );
         }
 

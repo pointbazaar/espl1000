@@ -1,6 +1,5 @@
 package org.vanautrui.languages.commandline;
 
-import org.vanautrui.languages.App;
 import org.vanautrui.languages.lexing.DragonCommentRemover;
 import org.vanautrui.languages.lexing.DragonLexer;
 import org.vanautrui.languages.model.DragonAST;
@@ -40,7 +39,7 @@ public class dragonc {
 
                 System.out.println(seperator);
 
-                List<DragonToken> tokens = (new DragonLexer()).lex(codeWithoutComments);
+                List<DragonToken> tokens = (new DragonLexer()).lexCodeWithoutComments(codeWithoutComments);
 
                 DragonAST ast = (new DragonParser()).parse(tokens);
 

@@ -16,8 +16,8 @@ public class DragonLexerTest {
 
     @Test
     public void test_can_see_access_modifiers() throws Exception{
-        List<DragonToken> token = lexer.lex("public");
-        List<DragonToken> token2 = lexer.lex("private");
+        List<DragonToken> token = lexer.lexCodeWithoutComments("public");
+        List<DragonToken> token2 = lexer.lexCodeWithoutComments("private");
 
         assertTrue(token.get(0) instanceof AccessModifierToken);
         assertTrue(token2.get(0) instanceof AccessModifierToken);

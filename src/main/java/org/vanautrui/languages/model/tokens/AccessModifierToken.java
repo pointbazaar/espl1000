@@ -14,9 +14,9 @@ public class AccessModifierToken implements DragonToken {
         }else if(list.startsWith("private")){
             this.is_public=false;
             list.consumeTokens("private".length());
+        }else {
+            throw new Exception("could not recognize access modifier token");
         }
-
-        throw new Exception("could not recognize access modifier token");
     }
 
     public AccessModifierToken(String newcontents) throws Exception {
