@@ -35,4 +35,13 @@ public class IdentifierToken implements DragonToken {
     public String getContents() {
         return this.content;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof IdentifierToken)) return false;
+        IdentifierToken that = (IdentifierToken) o;
+        return content.equals(that.content);
+    }
+
 }

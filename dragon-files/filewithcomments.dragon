@@ -5,3 +5,7 @@
 /*
 this is the second type of comment
 */
+
+class test {
+
+}

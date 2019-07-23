@@ -2,6 +2,7 @@ package org.vanautrui.languages.parsing.astnodes;
 
 import org.vanautrui.languages.lexing.tokens.DragonToken;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
+import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class DragonIdentifierNode implements IDragonASTNode {
 
     public String name;
 
-    public DragonIdentifierNode(List<DragonToken> tokens)throws Exception{
+    public DragonIdentifierNode(DragonTokenList tokens)throws Exception{
 
         //List<DragonToken> copy = new ArrayList<>(tokens);
 
@@ -22,7 +23,7 @@ public class DragonIdentifierNode implements IDragonASTNode {
 
         if(token instanceof IdentifierToken){
             this.name=((IdentifierToken)token).getContents();
-            tokens.remove(0);
+            tokens.consume(1);
 
         }else{
             throw new Exception("could not read identifier");

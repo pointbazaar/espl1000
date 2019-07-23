@@ -8,26 +8,15 @@ import org.vanautrui.languages.parsing.astnodes.DragonClassNode;
 import java.util.List;
 
 public class DragonParser {
-    public DragonAST parse(List<DragonToken> tokens) throws Exception{
+    public DragonAST parse(DragonTokenList tokens) throws Exception{
 
         System.out.println("PHASE: PARSING");
 
-        DragonAST result=new DragonAST();
+        DragonAST result=new DragonAST(tokens);
 
         //TODO
 
 
-        while (tokens.size()>0){
-
-            try{
-                result.classNodeList.add(new DragonClassNode(tokens));
-                continue;
-            }catch (Exception e){
-                //pass
-            }
-
-            throw new Exception("tried to parse, but could not .");
-        }
 
         return result;
     }

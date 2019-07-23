@@ -2,6 +2,7 @@ package org.vanautrui.languages.commandline;
 
 import org.vanautrui.languages.lexing.DragonCommentRemover;
 import org.vanautrui.languages.lexing.DragonLexer;
+import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.astnodes.DragonAST;
 import org.vanautrui.languages.lexing.tokens.DragonToken;
 import org.vanautrui.languages.parsing.DragonParser;
@@ -47,7 +48,7 @@ public class dragonc {
 
                 System.out.println(seperator);
 
-                List<DragonToken> tokens = (new DragonLexer()).lexCodeWithoutComments(codeWithoutComments);
+                DragonTokenList tokens = (new DragonLexer()).lexCodeWithoutComments(codeWithoutComments);
 
                 DragonAST ast = (new DragonParser()).parse(tokens);
 

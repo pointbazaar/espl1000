@@ -2,6 +2,7 @@ package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.CharacterList;
 
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,4 +36,13 @@ public class StringConstantToken implements DragonToken {
     public String getContents() {
         return this.content;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof StringConstantToken)) return false;
+        StringConstantToken that = (StringConstantToken) o;
+        return content.equals(that.content);
+    }
+
 }

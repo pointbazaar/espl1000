@@ -12,15 +12,10 @@ public class ClassToken implements DragonToken {
 
         String cl_ass = "class";
 
-        InputStream stream;
-
-
-
-        if(tokenStream.size()>=cl_ass.length()){
-            if(tokenStream.startsWith("class")){
-                //cool
-                tokenStream.consumeTokens("class".length());
-            }
+        if(tokenStream.startsWith("class")){
+            //cool
+            tokenStream.consumeTokens("class".length());
+            return;
         }
 
         throw new Exception("could not recognize class token");
@@ -30,4 +25,10 @@ public class ClassToken implements DragonToken {
     public String getContents() {
         return "class";
     }
+
+    @Override
+    public boolean equals(Object other){
+        return (other instanceof ClassToken);
+    }
+
 }

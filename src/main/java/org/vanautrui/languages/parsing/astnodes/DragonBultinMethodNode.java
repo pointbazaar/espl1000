@@ -2,6 +2,7 @@ package org.vanautrui.languages.parsing.astnodes;
 
 import org.vanautrui.languages.lexing.tokens.DragonToken;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
+import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 
 import java.util.Arrays;
@@ -15,7 +16,7 @@ public class DragonBultinMethodNode implements IDragonASTNode {
 
     public DragonIdentifierNode methodname;
 
-    public DragonBultinMethodNode(List<DragonToken> tokens)throws Exception{
+    public DragonBultinMethodNode(DragonTokenList tokens)throws Exception{
 
         DragonToken token = tokens.get(0);
 

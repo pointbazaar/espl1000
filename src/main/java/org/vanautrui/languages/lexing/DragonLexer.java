@@ -2,12 +2,13 @@
 package org.vanautrui.languages.lexing;
 
 import org.vanautrui.languages.lexing.tokens.*;
+import org.vanautrui.languages.parsing.DragonTokenList;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DragonLexer {
-    public List<DragonToken> lexCodeWithoutComments(String sourcecodeWithoutComments) throws Exception {
+    public DragonTokenList lexCodeWithoutComments(String sourcecodeWithoutComments) throws Exception {
 
         System.out.println("PHASE: LEXING");
 
@@ -18,24 +19,18 @@ public class DragonLexer {
         System.out.println(just_code_with_braces_without_comments_without_newlines);
 
 
-        List<DragonToken> tokens = tokenize(new CharacterList(just_code_with_braces_without_comments_without_newlines));
+        DragonTokenList tokens = tokenize(new CharacterList(just_code_with_braces_without_comments_without_newlines));
 
         System.out.println("TOKENS:");
-        for(DragonToken token : tokens){
-            System.out.println(
-                    "<"
-                    //+token.getClass().getName()
-                    +token.getClass().getSimpleName()
-                    +": "
-                    +token.getContents()
-                    +">"
-            );
-        }
+
+
+
+        System.out.println(tokens.toString());
 
         return tokens;
     }
 
-    private List<DragonToken> tokenize(CharacterList sourceCodeWithBracesWithoutCommentsWithoutNewlines) throws Exception{
+    private DragonTokenList tokenize(CharacterList sourceCodeWithBracesWithoutCommentsWithoutNewlines) throws Exception{
         CharacterList myCode = new CharacterList(sourceCodeWithBracesWithoutCommentsWithoutNewlines);
 
         List<DragonToken> result = new ArrayList<>();
@@ -68,6 +63,13 @@ public class DragonLexer {
 
             try{
                 result.add(new ClassToken(myCode));
+                continue;
+            }catch (Exception e){
+                //pass
+            }
+
+            try{
+                result.add(new KeywordToken(myCode));
                 continue;
             }catch (Exception e){
                 //pass
@@ -111,7 +113,7 @@ public class DragonLexer {
                     );
         }
 
-        return result;
+        return new DragonTokenList(result);
     }
 
 }

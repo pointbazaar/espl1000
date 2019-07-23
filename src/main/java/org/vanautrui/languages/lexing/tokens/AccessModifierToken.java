@@ -2,6 +2,8 @@ package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.CharacterList;
 
+import java.util.Objects;
+
 public class AccessModifierToken implements DragonToken {
 
     public boolean is_public;
@@ -35,5 +37,13 @@ public class AccessModifierToken implements DragonToken {
     @Override
     public String getContents() {
         return (this.is_public)?"public":"private";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AccessModifierToken)) return false;
+        AccessModifierToken that = (AccessModifierToken) o;
+        return is_public == that.is_public;
     }
 }

@@ -3,6 +3,7 @@ package org.vanautrui.languages.parsing.astnodes;
 import org.vanautrui.languages.lexing.tokens.AccessModifierToken;
 import org.vanautrui.languages.lexing.tokens.DragonToken;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
+import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 
 import java.util.ArrayList;
@@ -17,9 +18,10 @@ public class DragonClassFieldNode implements IDragonASTNode {
 
     public DragonIdentifierNode name;
 
-    public DragonClassFieldNode(List<DragonToken> tokens)throws Exception{
+    public DragonClassFieldNode(DragonTokenList tokens)throws Exception{
+        System.out.println("try parse DragonClassFieldNode");
 
-        List<DragonToken> copy = new ArrayList<>(tokens);
+        DragonTokenList copy = tokens.copy();
 
         try{
             this.access=new DragonAccessModifierNode(copy);
@@ -31,8 +33,7 @@ public class DragonClassFieldNode implements IDragonASTNode {
 
         this.name=new DragonIdentifierNode(copy);
 
-        tokens.clear();
-        tokens.addAll(copy);
+        tokens.set(copy);
     }
 
     @Override

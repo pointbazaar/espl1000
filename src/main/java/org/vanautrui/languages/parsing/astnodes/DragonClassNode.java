@@ -1,6 +1,10 @@
 package org.vanautrui.languages.parsing.astnodes;
 
+import org.vanautrui.languages.lexing.tokens.AccessModifierToken;
+import org.vanautrui.languages.lexing.tokens.ClassToken;
 import org.vanautrui.languages.lexing.tokens.DragonToken;
+import org.vanautrui.languages.lexing.tokens.SymbolToken;
+import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 
 import java.util.ArrayList;
@@ -9,15 +13,28 @@ import java.util.stream.Collectors;
 
 public class DragonClassNode implements IDragonASTNode {
 
+    public DragonAccessModifierNode access;
+
+    public DragonIdentifierNode name;
+
     public List<DragonClassFieldNode> fieldNodeList=new ArrayList<>();
 
     public List<DragonMethodNode> methodNodeList=new ArrayList<>();
 
-    public DragonIdentifierNode name;
 
-    public DragonClassNode(List<DragonToken> tokens) throws Exception{
-        
-        List<DragonToken> copy = new ArrayList<>(tokens);
+
+    public DragonClassNode(DragonTokenList tokens) throws Exception{
+        System.out.println("try parse DragonClassNode");
+
+        DragonTokenList copy = tokens.copy();
+
+        this.access=new DragonAccessModifierNode(copy);
+
+        copy.expectAndConsumeOtherWiseThrowException(new ClassToken());
+
+        this.name=new DragonIdentifierNode(copy);
+
+        copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("{"));
 
         boolean success_field=true;
         while(success_field) {
@@ -39,10 +56,9 @@ public class DragonClassNode implements IDragonASTNode {
             }
         }
 
-        this.name=new DragonIdentifierNode(copy);
+        copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("}"));
 
-        tokens.clear();
-        tokens.addAll(copy);
+        tokens.set(copy);
     }
 
 
