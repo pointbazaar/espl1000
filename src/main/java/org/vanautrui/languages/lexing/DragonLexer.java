@@ -20,7 +20,21 @@ public class DragonLexer {
         System.out.println(just_code_with_braces_without_comments_without_newlines);
 
 
-        return tokenize(new CharacterList(just_code_with_braces_without_comments_without_newlines));
+        List<DragonToken> tokens = tokenize(new CharacterList(just_code_with_braces_without_comments_without_newlines));
+
+        System.out.println("TOKENS:");
+        for(DragonToken token : tokens){
+            System.out.println(
+                    "<"
+                    //+token.getClass().getName()
+                    +token.getClass().getSimpleName()
+                    +": "
+                    +token.getContents()
+                    +">"
+            );
+        }
+
+        return tokens;
     }
 
     private List<DragonToken> tokenize(CharacterList sourceCodeWithBracesWithoutCommentsWithoutNewlines) throws Exception{
