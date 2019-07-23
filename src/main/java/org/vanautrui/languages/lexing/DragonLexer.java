@@ -1,10 +1,7 @@
 
 package org.vanautrui.languages.lexing;
 
-import org.vanautrui.languages.model.tokens.ClassToken;
-import org.vanautrui.languages.model.tokens.DragonToken;
-import org.vanautrui.languages.model.tokens.AccessModifierToken;
-import org.vanautrui.languages.model.tokens.IdentifierToken;
+import org.vanautrui.languages.model.tokens.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,6 +63,15 @@ public class DragonLexer {
 
             try{
                 result.add(new IdentifierToken(myCode));
+                continue;
+            }catch (Exception e){
+                //pass
+            }
+
+            //TODO: string constant token
+
+            try{
+                result.add(new SymbolToken(myCode));
                 continue;
             }catch (Exception e){
                 //pass
