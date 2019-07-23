@@ -17,10 +17,11 @@ public class IdentifierToken implements DragonToken {
 
         Pattern p = Pattern.compile(regex_alphanumeric_identifier);
 
-        Matcher m = p.matcher(list.getLimitedString(MAX_IDENTIFIER_LENGTH));
+        Matcher m = p.matcher(list.getLimitedStringMaybeShorter(MAX_IDENTIFIER_LENGTH));
 
-        if(m.matches()){
-            this.content = m.group();
+        //m.find()
+        if(m.find()){
+            this.content = m.group(0);
             list.consumeTokens(this.content.length());
         }else{
             throw new Exception("could not recognize identifier");
