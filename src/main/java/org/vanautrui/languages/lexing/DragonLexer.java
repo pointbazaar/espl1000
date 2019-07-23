@@ -51,7 +51,7 @@ public class DragonLexer {
         //access modifier token should be tried before identifier token
         //also the choice of which tokens we implement is important
 
-        boolean did_something=true;
+
 
         while (myCode.size()>0){
             //while not every last char is tokenized,

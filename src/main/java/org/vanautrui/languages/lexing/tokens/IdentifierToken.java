@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class IdentifierToken implements DragonToken {
 
-    private static final String regex_alphanumeric_identifier = "^[a-zA-Z][a-zA-Z0-9]+";
+    public static final String regex_alphanumeric_identifier = "^[a-zA-Z][a-zA-Z0-9]+";
 
     public static final int MAX_IDENTIFIER_LENGTH=100;
 

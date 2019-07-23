@@ -4,6 +4,8 @@
 //depending on your preferences. before lexing, if there is indentation, it is replaced with curly braces
 //so everything after that brace-weaving recognizes only the curly braces variation
 
+//using regex notation , so '?' at the end means optional
+
 //TODO
 
 int ::= ... | -1 | 0 | 1 | 2 | ...
@@ -20,7 +22,7 @@ accessmodifier ::= public | private
 
 class ::= accessmodifier class identifier '{' classField* method* '}'
 
-classField ::= Type identifier ';'
+classField ::= accessmodifier? Type identifier ';'
 
 Type ::= identifier
 
