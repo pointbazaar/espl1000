@@ -1,10 +1,8 @@
-package org.vanautrui.languages.parsing.astnodes;
+package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
-import org.vanautrui.languages.lexing.tokens.DragonToken;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
-
-import java.util.List;
+import org.vanautrui.languages.parsing.astnodes.terminal.DragonIdentifierNode;
 
 public class DragonMethodNameNode implements IDragonASTNode {
 

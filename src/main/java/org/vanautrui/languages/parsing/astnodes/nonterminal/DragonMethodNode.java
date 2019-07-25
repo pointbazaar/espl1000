@@ -1,9 +1,10 @@
-package org.vanautrui.languages.parsing.astnodes;
+package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
-import org.vanautrui.languages.lexing.tokens.DragonToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.DragonAccessModifierNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.DragonTypeNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ public class DragonMethodNode implements IDragonASTNode {
 
     public DragonMethodNameNode methodName;
 
-    public List<DragonArgumentNode> arguments=new ArrayList<>();
+    public List<DragonDeclaredArgumentNode> arguments=new ArrayList<>();
 
     public List<DragonStatementNode> statements= new ArrayList<>();
 
@@ -34,7 +35,9 @@ public class DragonMethodNode implements IDragonASTNode {
 
         this.methodName = new DragonMethodNameNode(copy);
 
-        DragonToken token = copy.get(0);
+        System.out.println("AFTER access,type,methodname: current state of copy:");
+        System.out.println(copy.toSourceCodeFragment());
+        System.out.println();
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
 
@@ -44,7 +47,20 @@ public class DragonMethodNode implements IDragonASTNode {
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("{"));
 
+        System.out.println("AFTER '(){': current state of copy:");
+        System.out.println(copy.toSourceCodeFragment());
+        System.out.println();
+
         //TODO: parse statements
+
+        boolean success_statements=true;
+        while (success_statements){
+            try{
+                this.statements.add(new DragonStatementNode(copy));
+            }catch (Exception e){
+                success_statements=false;
+            }
+        }
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("}"));
 

@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class StringConstantToken implements DragonToken {
 
-    private static final String regex_string_constant = "^\".*\"";
+    private static final String regex_string_constant = "^\"[^\"]*\"";
 
     public static final int MAX_STRING_CONSTANT_LENGTH =100;
 

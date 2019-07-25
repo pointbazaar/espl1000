@@ -1,14 +1,10 @@
-package org.vanautrui.languages.parsing.astnodes;
+package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
-import org.vanautrui.languages.lexing.tokens.AccessModifierToken;
-import org.vanautrui.languages.lexing.tokens.DragonToken;
-import org.vanautrui.languages.lexing.tokens.IdentifierToken;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import org.vanautrui.languages.parsing.astnodes.terminal.DragonAccessModifierNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.DragonIdentifierNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.DragonTypeNode;
 
 public class DragonClassFieldNode implements IDragonASTNode {
 
@@ -23,11 +19,7 @@ public class DragonClassFieldNode implements IDragonASTNode {
 
         DragonTokenList copy = tokens.copy();
 
-        try{
-            this.access=new DragonAccessModifierNode(copy);
-        }catch (Exception e){
-            //pass
-        }
+        this.access=new DragonAccessModifierNode(copy);
 
         this.type=new DragonTypeNode(copy);
 

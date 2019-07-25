@@ -4,7 +4,10 @@
 //depending on your preferences. before lexing, if there is indentation, it is replaced with curly braces
 //so everything after that brace-weaving recognizes only the curly braces variation
 
-//using regex notation , so '?' at the end means optional
+//TODO: think about how to parse statements in method,
+//if the semicolons should perhaps be weaved in also or if we can do it otherwise
+
+//using regex notation , so '?' at the end means optional, and '+' means once or more
 
 //TODO
 
@@ -28,7 +31,7 @@ Type ::= identifier
 
 methodName ::= identifier
 
-method ::= accessmodifier returnType methodName '(' argument* ')' '{' statement* '}'
+method ::= accessmodifier returnType methodName '(' declaredArgument* ')' '{' statement* '}'
 
 //alternative, haskell-like version
 method ::= accessmodifier methodName '::' (Type smallarrow)* Type '{' statement* '}'
@@ -37,7 +40,12 @@ smallarrow ::= '->'
 
 returnType ::= 'void' | Type
 
-argument ::= Type identifier
+declaredArgument ::= Type identifier
 
 //TODO
-statement ::=
+statement ::= methodCall
+
+//TODO: work on this, this is not done
+methodCall ::= identifier '(' ( (string (, string)*) | string ) ')'
+
+

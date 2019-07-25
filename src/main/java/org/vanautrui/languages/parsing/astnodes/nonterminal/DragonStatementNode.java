@@ -1,4 +1,4 @@
-package org.vanautrui.languages.parsing.astnodes;
+package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
 import org.vanautrui.languages.lexing.tokens.DragonToken;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
@@ -9,16 +9,22 @@ import java.util.List;
 
 public class DragonStatementNode implements IDragonASTNode {
 
-    //TODO
+    //TODO: add more statement types
+
+    public DragonMethodCallNode methodCallNode;
 
     public DragonStatementNode(DragonTokenList tokens)throws Exception{
+        System.out.println("try parse DragonStatementNode");
 
-        //TODO
+        DragonTokenList copy = tokens.copy();
+
+        this.methodCallNode=new DragonMethodCallNode(copy);
+
+        tokens.set(copy);
     }
 
     @Override
     public String toSourceCode() {
-        //TODO
-        return "";
+        return this.methodCallNode.toSourceCode();
     }
 }

@@ -7,7 +7,8 @@ public class SymbolToken implements DragonToken {
     public static final String[] symbols = new String[]{
             "{","}",
             "[","]",
-            "(",")"
+            "(",")",
+            ","
     };
 
     public String symbol;

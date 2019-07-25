@@ -1,8 +1,7 @@
 
-package org.vanautrui.languages.parsing.astnodes;
+package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
 
-import org.vanautrui.languages.lexing.tokens.DragonToken;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 
@@ -26,12 +25,13 @@ public class DragonAST implements IDragonASTNode {
             try {
                 this.classNodeList.add(new DragonClassNode(tokens));
             } catch (Exception e) {
+
+                if(this.classNodeList.size()==0){
+                    e.printStackTrace();
+                    throw new Exception("could not read a single class");
+                }
                 success_class = false;
             }
-        }
-
-        if(this.classNodeList.size()==0){
-            throw new Exception("could not read any classes");
         }
     }
 

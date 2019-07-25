@@ -3,12 +3,9 @@ package org.vanautrui.languages.parsing;
 import org.junit.Assert;
 import org.junit.Test;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
-import org.vanautrui.languages.parsing.astnodes.DragonAST;
-import org.vanautrui.languages.lexing.tokens.DragonToken;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
 import org.vanautrui.languages.lexing.tokens.ClassToken;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
-
-import java.util.ArrayList;
 
 public class DragonParserTest {
 

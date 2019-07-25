@@ -3,14 +3,12 @@ package org.vanautrui.languages.commandline;
 import org.vanautrui.languages.lexing.DragonCommentRemover;
 import org.vanautrui.languages.lexing.DragonLexer;
 import org.vanautrui.languages.parsing.DragonTokenList;
-import org.vanautrui.languages.parsing.astnodes.DragonAST;
-import org.vanautrui.languages.lexing.tokens.DragonToken;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
 import org.vanautrui.languages.parsing.DragonParser;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 
 public class dragonc {
     //this should be the compiler
@@ -49,6 +47,21 @@ public class dragonc {
                 System.out.println(seperator);
 
                 DragonTokenList tokens = (new DragonLexer()).lexCodeWithoutComments(codeWithoutComments);
+
+                //TODO: put the semicolons in?
+                //the tokens should know which line number they are at.
+                //at the end of each line which is not opening '{' or closing '}' a scope
+                //  with that being defined as '{' being the last token on the line
+                //  and '}' being the first token on the line respectively
+                //, there should be a ';' , a semicolon.
+
+                //so we can identify the different statements.
+                //but we cannot exactly do it like this because it would
+                //prevent people from making a multi-line statement
+                //let us abandon this approach for now.
+
+                //i have an idea how we can avoid an issue related to this
+
 
                 DragonAST ast = (new DragonParser()).parse(tokens);
 

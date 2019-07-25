@@ -1,7 +1,7 @@
 package org.vanautrui.languages.interpreting;
 
 import org.vanautrui.languages.TerminalUtil;
-import org.vanautrui.languages.parsing.astnodes.DragonAST;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
 
 import java.io.IOException;
 import java.io.InputStream;

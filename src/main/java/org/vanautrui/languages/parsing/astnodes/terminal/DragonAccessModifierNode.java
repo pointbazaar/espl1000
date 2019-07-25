@@ -1,4 +1,4 @@
-package org.vanautrui.languages.parsing.astnodes;
+package org.vanautrui.languages.parsing.astnodes.terminal;
 
 import org.vanautrui.languages.lexing.tokens.AccessModifierToken;
 import org.vanautrui.languages.lexing.tokens.DragonToken;

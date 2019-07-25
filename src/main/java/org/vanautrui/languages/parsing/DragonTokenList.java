@@ -5,6 +5,7 @@ import org.vanautrui.languages.lexing.tokens.DragonToken;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DragonTokenList {
 
@@ -34,6 +35,12 @@ public class DragonTokenList {
     }
 
     public void consume(int amount){
+
+        //DEBUG
+        System.out.print("consuming: ");
+        System.out.println(head().getContents());
+        System.out.println();
+
         this.tokens=this.tokens.subList(amount,this.tokens.size());
     }
 
@@ -55,7 +62,16 @@ public class DragonTokenList {
         if(this.startsWith(token)){
             this.consume(1);
         }else{
-            throw new Exception(" expected a specific token, "+token.toString()+", but it was otherwise");
+            String expectedTokenMessage = "'"+token.getContents()+"' ("+token.getClass().getSimpleName()+")";
+            String actualTokenMessage = "'"+this.head().getContents()+"' ("+this.head().getClass().getSimpleName()+")";
+
+            String sourceCodeFragment = (this.toSourceCodeFragment().substring(0,Math.min(this.toSourceCodeFragment().length(),100)));
+
+            throw new Exception(
+                    " expected a specific token:  \n"+expectedTokenMessage
+                    +",\n but it was otherwise: \n"+actualTokenMessage+"\n"
+                    +" in '"+sourceCodeFragment+"'\n"
+            );
         }
     }
 
@@ -90,5 +106,13 @@ public class DragonTokenList {
 
     public DragonToken get(int i) {
         return this.tokens.get(0);
+    }
+
+    public DragonToken head(){
+        return this.get(0);
+    }
+
+    public String toSourceCodeFragment(){
+        return this.tokens.stream().map(token->token.getContents()).collect(Collectors.joining(" "));
     }
 }
