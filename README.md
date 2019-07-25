@@ -4,11 +4,6 @@
 
 The Dragon Programming Language.
 
-It is named Dragon because it is supposed to be powerful. And rare. 
-I do not think many people would use it or know about it.
-So thats where the name comes from.
-
-
 programming language (just an idea now) that aims to integrate multiple programming concepts
 
 such as object oriented programming, functional programming, imperative programming,
