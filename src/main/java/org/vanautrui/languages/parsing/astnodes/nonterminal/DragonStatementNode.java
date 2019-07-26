@@ -10,7 +10,7 @@ public class DragonStatementNode implements IDragonASTNode {
     public DragonMethodCallNode methodCallNode;
 
     public DragonStatementNode(DragonTokenList tokens) throws Exception {
-        System.out.println("try parse DragonStatementNode");
+        //System.out.println("try parse DragonStatementNode");
 
         DragonTokenList copy = tokens.copy();
 

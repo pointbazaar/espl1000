@@ -15,7 +15,7 @@ public class DragonClassFieldNode implements IDragonASTNode {
     public DragonIdentifierNode name;
 
     public DragonClassFieldNode(DragonTokenList tokens) throws Exception {
-        System.out.println("try parse DragonClassFieldNode");
+        //System.out.println("try parse DragonClassFieldNode");
 
         DragonTokenList copy = tokens.copy();
 

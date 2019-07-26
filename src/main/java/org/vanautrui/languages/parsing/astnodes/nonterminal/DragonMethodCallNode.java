@@ -17,7 +17,7 @@ public class DragonMethodCallNode implements IDragonASTNode {
 
     public DragonMethodCallNode(DragonTokenList tokens) throws Exception {
 
-        System.out.println("try parse DragonMethodCallNode");
+        //System.out.println("try parse DragonMethodCallNode");
 
         DragonTokenList copy = tokens.copy();
 
@@ -44,7 +44,7 @@ public class DragonMethodCallNode implements IDragonASTNode {
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(")"));
 
-        System.out.println("success");
+        //System.out.println("success");
         tokens.set(copy);
     }
 

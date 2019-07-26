@@ -13,7 +13,7 @@ public class DragonAST implements IDragonASTNode {
     public List<DragonClassNode> classNodeList = new ArrayList<>();
 
     public DragonAST(DragonTokenList tokens) throws Exception {
-        System.out.println("try parse DragonAST");
+        //System.out.println("try parse DragonAST");
 
         //List<DragonToken> copy = new ArrayList<>(tokens);
 

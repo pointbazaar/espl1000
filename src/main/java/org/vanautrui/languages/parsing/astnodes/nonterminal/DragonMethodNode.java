@@ -23,7 +23,7 @@ public class DragonMethodNode implements IDragonASTNode {
 
     public DragonMethodNode(DragonTokenList tokens) throws Exception {
 
-        System.out.println("try parse DragonMethodNode");
+        //System.out.println("try parse DragonMethodNode");
 
         //TODO: consider the 2 alternative ways a method can be declored
 
@@ -35,10 +35,6 @@ public class DragonMethodNode implements IDragonASTNode {
 
         this.methodName = new DragonMethodNameNode(copy);
 
-        System.out.println("AFTER access,type,methodname: current state of copy:");
-        System.out.println(copy.toSourceCodeFragment());
-        System.out.println();
-
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
 
         //TODO: parse arguments
@@ -46,10 +42,6 @@ public class DragonMethodNode implements IDragonASTNode {
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(")"));
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("{"));
-
-        System.out.println("AFTER '(){': current state of copy:");
-        System.out.println(copy.toSourceCodeFragment());
-        System.out.println();
 
         //TODO: parse statements
 

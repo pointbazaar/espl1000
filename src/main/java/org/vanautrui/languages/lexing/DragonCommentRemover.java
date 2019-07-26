@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class DragonCommentRemover {
     public String strip_comments(String sourcecode) throws Exception {
-        System.out.println("PHASE: REMOVING COMMENTS AND EMTPY LINES");
+
         StringBuilder result = new StringBuilder();
 
         result.append(

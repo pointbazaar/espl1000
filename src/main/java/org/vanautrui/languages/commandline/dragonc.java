@@ -1,5 +1,7 @@
 package org.vanautrui.languages.commandline;
 
+import org.vanautrui.languages.TerminalUtil;
+import org.vanautrui.languages.lexing.CurlyBracesWeaver;
 import org.vanautrui.languages.lexing.DragonCommentRemover;
 import org.vanautrui.languages.lexing.DragonLexer;
 import org.vanautrui.languages.parsing.DragonParser;
@@ -24,7 +26,7 @@ public class dragonc {
     private static final String seperator = "-----------------";
 
     public static void compile_main(String[] args) {
-        System.out.println("todo: compiler");
+
 
         if (args.length > 0) {
 
@@ -32,21 +34,34 @@ public class dragonc {
 
             try {
 
+                //TODO: make a command line option to set the debug log level
+                //so it gives the right amount of information
+
                 Path path = Paths.get(args[0]);
 
                 String sourceCode = new String(Files.readAllBytes(path));
 
                 System.out.println(sourceCode);
 
-                System.out.println(seperator);
+
+                TerminalUtil.printlnRed("PHASE: REMOVE COMMENTS AND EMPTY LINES");
 
                 String codeWithoutComments = (new DragonCommentRemover()).strip_comments(sourceCode);
 
                 System.out.println(codeWithoutComments);
 
-                System.out.println(seperator);
+                TerminalUtil.printlnRed("PHASE: WEAVE IN CURLY BRACES");
 
-                DragonTokenList tokens = (new DragonLexer()).lexCodeWithoutComments(codeWithoutComments);
+                String just_code_with_braces_without_comments_without_newlines =
+                        CurlyBracesWeaver.weave_scoping_curly_braces_and_remove_newlines(codeWithoutComments);
+
+                System.out.println(just_code_with_braces_without_comments_without_newlines);
+
+                TerminalUtil.printlnRed("PHASE: LEXING");
+
+                DragonTokenList tokens = (new DragonLexer()).lexCodeWithoutComments(just_code_with_braces_without_comments_without_newlines);
+
+                System.out.println(tokens.toString());
 
                 //TODO: put the semicolons in?
                 //the tokens should know which line number they are at.
@@ -62,8 +77,11 @@ public class dragonc {
 
                 //i have an idea how we can avoid an issue related to this
 
-
+                TerminalUtil.printlnRed("PHASE: PARSING");
                 DragonAST ast = (new DragonParser()).parse(tokens);
+
+                TerminalUtil.printlnRed("PHASE: CODE GENERATION");
+
 
                 //TODO: generate code from here
 

@@ -1,5 +1,6 @@
 package org.vanautrui.languages.lexing;
 
+import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.lexing.tokens.*;
 import org.vanautrui.languages.parsing.DragonTokenList;
 
@@ -9,21 +10,10 @@ import java.util.List;
 public class DragonLexer {
     public DragonTokenList lexCodeWithoutComments(String sourcecodeWithoutComments) throws Exception {
 
-        System.out.println("PHASE: LEXING");
+        DragonTokenList tokens = tokenize(new CharacterList(sourcecodeWithoutComments));
 
-        String just_code_with_braces_without_comments_without_newlines = CurlyBracesWeaver.weave_scoping_curly_braces_and_remove_newlines(sourcecodeWithoutComments);
-
-        System.out.println("Code after weaving in curly braces, if they werent there before:");
-
-        System.out.println(just_code_with_braces_without_comments_without_newlines);
-
-
-        DragonTokenList tokens = tokenize(new CharacterList(just_code_with_braces_without_comments_without_newlines));
-
-        System.out.println("TOKENS:");
-
-
-        System.out.println(tokens.toString());
+        //System.out.println("TOKENS:");
+        //System.out.println(tokens.toString());
 
         return tokens;
     }

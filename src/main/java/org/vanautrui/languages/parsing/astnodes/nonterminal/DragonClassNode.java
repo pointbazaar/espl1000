@@ -23,7 +23,7 @@ public class DragonClassNode implements IDragonASTNode {
 
 
     public DragonClassNode(DragonTokenList tokens) throws Exception {
-        System.out.println("try parse DragonClassNode");
+        //System.out.println("try parse DragonClassNode");
 
         DragonTokenList copy = tokens.copy();
 
@@ -62,8 +62,6 @@ public class DragonClassNode implements IDragonASTNode {
         }
          */
 
-        System.out.println("Copy :" + copy.toSourceCodeFragment());
-
         //i hope, that with this piece of code, the method should always be tried out first
         //because classField is a prefix of Method.
         //similar errors could maybe be fixed by just looking at the Dragon Grammar
@@ -88,8 +86,6 @@ public class DragonClassNode implements IDragonASTNode {
             }
         }
 
-
-        System.out.println("Copy :" + copy.toSourceCodeFragment());
 
         //System.out.println(copy.toString());
 

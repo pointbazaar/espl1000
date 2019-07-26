@@ -36,9 +36,9 @@ public class DragonTokenList {
     public void consume(int amount) {
 
         //DEBUG
-        System.out.print("consuming: ");
-        System.out.println(head().getContents());
-        System.out.println();
+        //System.out.print("consuming: ");
+        //System.out.println(head().getContents());
+        //System.out.println();
 
         this.tokens = this.tokens.subList(amount, this.tokens.size());
     }
@@ -76,10 +76,21 @@ public class DragonTokenList {
 
     @Override
     public String toString() {
+        //pretty display
+        int indentation=0;
 
         StringBuilder sb = new StringBuilder("");
 
         for (DragonToken token : tokens) {
+
+            //decide new indentation
+            switch (token.getContents()){
+                case "}":
+                    indentation--;
+                    sb.append("\n");
+                    break;
+            }
+
             String tokenString = (
                     "<"
                             //+token.getClass().getName()
@@ -88,10 +99,22 @@ public class DragonTokenList {
                             + token.getContents()
                             + ">"
             );
-            sb.append(tokenString);
+            sb.append(indent(indentation)+tokenString+"\n");
+
+            //decide new indentation
+            switch (token.getContents()){
+                case "{":
+                    indentation++;
+                    sb.append("\n");
+                    break;
+            }
         }
 
         return sb.toString();
+    }
+
+    private String indent(int n){
+        return new String(new char[n]).replace("\0","\t");
     }
 
     public DragonTokenList copy() {
