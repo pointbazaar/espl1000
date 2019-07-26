@@ -117,6 +117,8 @@ public class App {
 
          */
 
+        //IMPORTANT: there are intellij plugins for viewing bytecode and such.
+
         //copied from https://stackoverflow.com/questions/5346908/generating-a-hello-world-class-with-the-java-asm-library
 
         ClassWriter cw = new ClassWriter(0);
