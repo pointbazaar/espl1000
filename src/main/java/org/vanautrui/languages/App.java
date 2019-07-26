@@ -15,6 +15,10 @@ public class App {
         //https://www.javassist.org/
         //we could use this dependency to make our classes
 
+        //https://www.javassist.org/tutorial/tutorial.html
+
+        //https://www.beyondjava.net/blog/quick-guide-writing-byte-code-asm
+
         //this is the program that is actually intended to be used on the terminal:
         //for the compile part,
 
