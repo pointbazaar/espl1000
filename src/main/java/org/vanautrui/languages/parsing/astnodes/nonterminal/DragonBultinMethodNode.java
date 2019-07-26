@@ -12,19 +12,19 @@ import java.util.List;
 public class DragonBultinMethodNode implements IDragonASTNode {
 
     public final static List<String> builtin_methods = Arrays.asList(
-            "print","println"
+            "print", "println"
     );
 
     public DragonIdentifierNode methodname;
 
-    public DragonBultinMethodNode(DragonTokenList tokens)throws Exception{
+    public DragonBultinMethodNode(DragonTokenList tokens) throws Exception {
 
         DragonToken token = tokens.get(0);
 
-        if(token instanceof IdentifierToken){
-            IdentifierToken identifierToken = (IdentifierToken)token;
-            if(builtin_methods.contains(identifierToken.getContents())){
-                this.methodname=new DragonIdentifierNode(tokens);
+        if (token instanceof IdentifierToken) {
+            IdentifierToken identifierToken = (IdentifierToken) token;
+            if (builtin_methods.contains(identifierToken.getContents())) {
+                this.methodname = new DragonIdentifierNode(tokens);
             }
         }
     }

@@ -5,21 +5,21 @@ import org.vanautrui.languages.lexing.CharacterList;
 public class SymbolToken implements DragonToken {
 
     public static final String[] symbols = new String[]{
-            "{","}",
-            "[","]",
-            "(",")",
+            "{", "}",
+            "[", "]",
+            "(", ")",
             ","
     };
 
     public String symbol;
 
-    public SymbolToken(CharacterList list) throws Exception{
+    public SymbolToken(CharacterList list) throws Exception {
 
         //should be for keywords such as {,},[,],+,-,.,','
 
-        for(String sym : symbols){
-            if(list.startsWith(sym)){
-                this.symbol=sym;
+        for (String sym : symbols) {
+            if (list.startsWith(sym)) {
+                this.symbol = sym;
                 list.consumeTokens(sym.length());
                 return;
             }
@@ -38,15 +38,15 @@ public class SymbolToken implements DragonToken {
     }
 
     @Override
-    public boolean equals(Object other){
-        if (other==null){
+    public boolean equals(Object other) {
+        if (other == null) {
             return false;
         }
 
-        if(other instanceof SymbolToken){
+        if (other instanceof SymbolToken) {
 
             return this.symbol.equals(
-                    ((SymbolToken)other).symbol
+                    ((SymbolToken) other).symbol
             );
         }
 

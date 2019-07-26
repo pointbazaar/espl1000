@@ -1,22 +1,19 @@
 package org.vanautrui.languages.lexing;
 
 import org.junit.Test;
-import org.vanautrui.languages.lexing.tokens.DragonToken;
 import org.vanautrui.languages.lexing.tokens.AccessModifierToken;
 import org.vanautrui.languages.parsing.DragonTokenList;
 
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class DragonLexerTest {
 
-    DragonLexer lexer=new DragonLexer();
-
+    DragonLexer lexer = new DragonLexer();
 
 
     @Test
-    public void test_can_see_access_modifiers() throws Exception{
+    public void test_can_see_access_modifiers() throws Exception {
         DragonTokenList token = lexer.lexCodeWithoutComments("public");
         DragonTokenList token2 = lexer.lexCodeWithoutComments("private");
 
@@ -24,6 +21,6 @@ public class DragonLexerTest {
         assertTrue(token2.get(0) instanceof AccessModifierToken);
 
         assertTrue(((AccessModifierToken) token.get(0)).is_public);
-        assertFalse(((AccessModifierToken)token2.get(0)).is_public);
+        assertFalse(((AccessModifierToken) token2.get(0)).is_public);
     }
 }

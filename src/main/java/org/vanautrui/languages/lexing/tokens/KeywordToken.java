@@ -5,16 +5,16 @@ import org.vanautrui.languages.lexing.CharacterList;
 public class KeywordToken implements DragonToken {
 
     public static final String[] keywords = new String[]{
-            "class","method","function"
+            "class", "method", "function"
     };
 
     public String keyword;
 
-    public KeywordToken(CharacterList list) throws Exception{
+    public KeywordToken(CharacterList list) throws Exception {
 
-        for(String sym : keywords){
-            if(list.startsWith(sym)){
-                this.keyword =sym;
+        for (String sym : keywords) {
+            if (list.startsWith(sym)) {
+                this.keyword = sym;
                 list.consumeTokens(sym.length());
                 return;
             }
@@ -29,15 +29,15 @@ public class KeywordToken implements DragonToken {
     }
 
     @Override
-    public boolean equals(Object other){
-        if (other==null){
+    public boolean equals(Object other) {
+        if (other == null) {
             return false;
         }
 
-        if(other instanceof KeywordToken){
+        if (other instanceof KeywordToken) {
 
             return this.keyword.equals(
-                    ((KeywordToken)other).keyword
+                    ((KeywordToken) other).keyword
             );
         }
 

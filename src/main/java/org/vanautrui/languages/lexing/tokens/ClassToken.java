@@ -2,17 +2,16 @@ package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.CharacterList;
 
-import java.io.InputStream;
-
 public class ClassToken implements DragonToken {
 
-    public ClassToken(){}
+    public ClassToken() {
+    }
 
     public ClassToken(CharacterList tokenStream) throws Exception {
 
         String cl_ass = "class";
 
-        if(tokenStream.startsWith("class")){
+        if (tokenStream.startsWith("class")) {
             //cool
             tokenStream.consumeTokens("class".length());
             return;
@@ -27,7 +26,7 @@ public class ClassToken implements DragonToken {
     }
 
     @Override
-    public boolean equals(Object other){
+    public boolean equals(Object other) {
         return (other instanceof ClassToken);
     }
 

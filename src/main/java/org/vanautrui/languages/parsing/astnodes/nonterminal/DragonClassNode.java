@@ -17,24 +17,23 @@ public class DragonClassNode implements IDragonASTNode {
 
     public DragonIdentifierNode name;
 
-    public List<DragonClassFieldNode> fieldNodeList=new ArrayList<>();
+    public List<DragonClassFieldNode> fieldNodeList = new ArrayList<>();
 
-    public List<DragonMethodNode> methodNodeList=new ArrayList<>();
+    public List<DragonMethodNode> methodNodeList = new ArrayList<>();
 
 
-
-    public DragonClassNode(DragonTokenList tokens) throws Exception{
+    public DragonClassNode(DragonTokenList tokens) throws Exception {
         System.out.println("try parse DragonClassNode");
 
         DragonTokenList copy = tokens.copy();
 
         //System.out.println(copy.toString());
 
-        this.access=new DragonAccessModifierNode(copy);
+        this.access = new DragonAccessModifierNode(copy);
 
         copy.expectAndConsumeOtherWiseThrowException(new ClassToken());
 
-        this.name=new DragonIdentifierNode(copy);
+        this.name = new DragonIdentifierNode(copy);
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("{"));
 
@@ -63,34 +62,34 @@ public class DragonClassNode implements IDragonASTNode {
         }
          */
 
-        System.out.println("Copy :"+copy.toSourceCodeFragment());
+        System.out.println("Copy :" + copy.toSourceCodeFragment());
 
         //i hope, that with this piece of code, the method should always be tried out first
         //because classField is a prefix of Method.
         //similar errors could maybe be fixed by just looking at the Dragon Grammar
         //and structuring the parser accordingly
-        boolean success_method=true;
-        boolean success_field=true;
-        boolean success=true;
-        while(success_field || success_method) {
+        boolean success_method = true;
+        boolean success_field = true;
+        boolean success = true;
+        while (success_field || success_method) {
             try {
                 this.methodNodeList.add(new DragonMethodNode(copy));
-                success_method=true;
+                success_method = true;
                 continue;
             } catch (Exception e) {
                 success_method = false;
             }
             try {
                 this.fieldNodeList.add(new DragonClassFieldNode(copy));
-                success_field=true;
+                success_field = true;
                 continue;
             } catch (Exception e) {
-                success_field=false;
+                success_field = false;
             }
         }
 
 
-        System.out.println("Copy :"+copy.toSourceCodeFragment());
+        System.out.println("Copy :" + copy.toSourceCodeFragment());
 
         //System.out.println(copy.toString());
 
@@ -102,11 +101,11 @@ public class DragonClassNode implements IDragonASTNode {
 
     @Override
     public String toSourceCode() {
-        String result="";
+        String result = "";
 
-        result+=fieldNodeList.stream().map(node->node.toSourceCode()).collect(Collectors.joining(" "));
+        result += fieldNodeList.stream().map(node -> node.toSourceCode()).collect(Collectors.joining(" "));
 
-        result+=methodNodeList.stream().map(node->node.toSourceCode()).collect(Collectors.joining(" "));
+        result += methodNodeList.stream().map(node -> node.toSourceCode()).collect(Collectors.joining(" "));
 
         return result;
     }

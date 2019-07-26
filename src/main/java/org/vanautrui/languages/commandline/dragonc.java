@@ -2,9 +2,9 @@ package org.vanautrui.languages.commandline;
 
 import org.vanautrui.languages.lexing.DragonCommentRemover;
 import org.vanautrui.languages.lexing.DragonLexer;
+import org.vanautrui.languages.parsing.DragonParser;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
-import org.vanautrui.languages.parsing.DragonParser;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,10 +23,10 @@ public class dragonc {
 
     private static final String seperator = "-----------------";
 
-    public static void compile_main(String[] args){
+    public static void compile_main(String[] args) {
         System.out.println("todo: compiler");
 
-        if(args.length>0){
+        if (args.length > 0) {
 
             //TODO: expand functionality to directories and multiple files
 
@@ -67,12 +67,12 @@ public class dragonc {
 
                 //TODO: generate code from here
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.err.println(e.getMessage());
                 e.printStackTrace();
             }
 
-        }else{
+        } else {
             System.err.println("Please specify some files, like 'dragon -c main.dragon' ");
         }
     }

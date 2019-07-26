@@ -11,13 +11,13 @@ public class DragonDeclaredArgumentNode implements IDragonASTNode {
 
     public DragonIdentifierNode name;
 
-    public DragonDeclaredArgumentNode(DragonTokenList tokens)throws Exception{
+    public DragonDeclaredArgumentNode(DragonTokenList tokens) throws Exception {
 
-        DragonTokenList copy=tokens.copy();
+        DragonTokenList copy = tokens.copy();
 
-        this.type=new DragonTypeNode(copy);
+        this.type = new DragonTypeNode(copy);
 
-        this.name=new DragonIdentifierNode(copy);
+        this.name = new DragonIdentifierNode(copy);
 
         tokens.set(copy);
     }

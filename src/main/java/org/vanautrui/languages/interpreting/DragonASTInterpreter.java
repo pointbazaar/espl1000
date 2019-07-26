@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-import static org.fusesource.jansi.Ansi.ansi;
-
 public class DragonASTInterpreter {
 
     private static final String seperator = "_________________\n";

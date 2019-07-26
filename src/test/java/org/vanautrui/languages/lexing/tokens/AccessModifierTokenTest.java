@@ -7,7 +7,7 @@ import org.vanautrui.languages.lexing.CharacterList;
 public class AccessModifierTokenTest {
 
     @Test
-    public void test_constructor()throws Exception{
+    public void test_constructor() throws Exception {
 
         CharacterList list = new CharacterList("public lala");
 
@@ -15,11 +15,11 @@ public class AccessModifierTokenTest {
 
         Assert.assertTrue(amt.is_public);
 
-        Assert.assertEquals(5,list.size());
+        Assert.assertEquals(5, list.size());
     }
 
     @Test
-    public void test_constructor_3()throws Exception{
+    public void test_constructor_3() throws Exception {
 
         CharacterList list = new CharacterList("private lala");
 
@@ -27,18 +27,18 @@ public class AccessModifierTokenTest {
 
         Assert.assertTrue(!amt.is_public);
 
-        Assert.assertEquals(5,list.size());
+        Assert.assertEquals(5, list.size());
     }
 
     @Test
-    public void test_constructor_2()throws Exception{
+    public void test_constructor_2() throws Exception {
 
         CharacterList list = new CharacterList("pulic");
 
         try {
             AccessModifierToken amt = new AccessModifierToken(list);
             Assert.fail();
-        }catch (Exception e){
+        } catch (Exception e) {
             //pass
         }
 

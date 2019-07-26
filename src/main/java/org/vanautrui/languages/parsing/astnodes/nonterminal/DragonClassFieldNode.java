@@ -14,16 +14,16 @@ public class DragonClassFieldNode implements IDragonASTNode {
 
     public DragonIdentifierNode name;
 
-    public DragonClassFieldNode(DragonTokenList tokens)throws Exception{
+    public DragonClassFieldNode(DragonTokenList tokens) throws Exception {
         System.out.println("try parse DragonClassFieldNode");
 
         DragonTokenList copy = tokens.copy();
 
-        this.access=new DragonAccessModifierNode(copy);
+        this.access = new DragonAccessModifierNode(copy);
 
-        this.type=new DragonTypeNode(copy);
+        this.type = new DragonTypeNode(copy);
 
-        this.name=new DragonIdentifierNode(copy);
+        this.name = new DragonIdentifierNode(copy);
 
         tokens.set(copy);
     }

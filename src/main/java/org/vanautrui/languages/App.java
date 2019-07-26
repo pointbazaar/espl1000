@@ -5,16 +5,12 @@ import org.vanautrui.languages.commandline.dragoni;
 
 import java.util.Arrays;
 
-import static org.fusesource.jansi.Ansi.ansi;
-
-public class App
-{
+public class App {
 
     //public static final String lang_name="Dragon ";
     public static final String lang_name = "DRAGON ";
 
-    public static void main( String[] args )
-    {
+    public static void main(String[] args) {
         //this is the program that is actually intended to be used on the terminal:
         //for the compile part,
 
@@ -31,8 +27,7 @@ public class App
         // dragon -i                 : just start an interpreter
 
 
-
-        if(args.length<1){
+        if (args.length < 1) {
             TerminalUtil.printlnRed("Dragon Programming Language: https://github.com/pointbazaar/dragon");
             TerminalUtil.printlnRed("use -i or -c argument");
             TerminalUtil.printlnRed("-i starts the Interpreter");
@@ -45,12 +40,12 @@ public class App
             TerminalUtil.printlnRed("dragon -i file1.dragon \tinterprets file1.dragon and prints the output to the console");
 
             System.exit(1);
-        }else{
+        } else {
             String flag = args[0];
 
-            switch (flag){
+            switch (flag) {
                 case "-c":
-                    TerminalUtil.printlnRed(lang_name+"Compiler started",System.out);
+                    TerminalUtil.printlnRed(lang_name + "Compiler started", System.out);
 
                     dragonc.compile_main(Arrays.copyOfRange(args, 1, args.length));
                     break;
@@ -58,14 +53,14 @@ public class App
 
                     try {
 
-                        dragoni dragon_interpreter=new dragoni();
+                        dragoni dragon_interpreter = new dragoni();
                         dragon_interpreter.interpret_main(Arrays.copyOfRange(args, 1, args.length));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 default:
-                    TerminalUtil.printlnRed("first flag has to be -i or -c, not "+args[0],System.out);
+                    TerminalUtil.printlnRed("first flag has to be -i or -c, not " + args[0], System.out);
                     System.exit(1);
                     break;
             }

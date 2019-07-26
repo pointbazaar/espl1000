@@ -16,14 +16,14 @@ import static org.junit.Assert.assertEquals;
 public class FileWithCommentsTest extends BaseTest {
 
     @Test
-    public void test() throws Exception{
+    public void test() throws Exception {
         InputStream in = BaseTest.getEmptyInputStream();
         final String[] target = {""};
 
         OutputStream outputStream = new OutputStream() {
             @Override
             public void write(int i) throws IOException {
-                target[0] +=((char)i)+"";
+                target[0] += ((char) i) + "";
             }
         };
 

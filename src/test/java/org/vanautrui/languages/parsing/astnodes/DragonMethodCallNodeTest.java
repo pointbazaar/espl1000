@@ -9,7 +9,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonMethodCallNode
 public class DragonMethodCallNodeTest {
 
     @Test
-    public void test1()throws Exception{
+    public void test1() throws Exception {
         DragonTokenList list = new DragonTokenList();
         list.add(new IdentifierToken("main"));
         list.add(new SymbolToken("("));

@@ -1,4 +1,3 @@
-
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
 
@@ -11,9 +10,9 @@ import java.util.stream.Collectors;
 
 public class DragonAST implements IDragonASTNode {
 
-    public List<DragonClassNode> classNodeList=new ArrayList<>();
+    public List<DragonClassNode> classNodeList = new ArrayList<>();
 
-    public DragonAST(DragonTokenList tokens)throws Exception {
+    public DragonAST(DragonTokenList tokens) throws Exception {
         System.out.println("try parse DragonAST");
 
         //List<DragonToken> copy = new ArrayList<>(tokens);
@@ -26,7 +25,7 @@ public class DragonAST implements IDragonASTNode {
                 this.classNodeList.add(new DragonClassNode(tokens));
             } catch (Exception e) {
 
-                if(this.classNodeList.size()==0){
+                if (this.classNodeList.size() == 0) {
                     e.printStackTrace();
                     throw new Exception("could not read a single class");
                 }
@@ -39,7 +38,7 @@ public class DragonAST implements IDragonASTNode {
     public String toSourceCode() {
         return this.classNodeList
                 .stream()
-                .map(node->node.toSourceCode())
+                .map(node -> node.toSourceCode())
                 .collect(Collectors.joining(" "));
     }
 }

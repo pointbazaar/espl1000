@@ -2,14 +2,14 @@ package org.vanautrui.languages.lexing;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class DragonCommentRemoverTest {
 
     DragonCommentRemover remover = new DragonCommentRemover();
 
     @Test
-    public void test_remove_single_line_comments(){
+    public void test_remove_single_line_comments() {
         String result = remover.strip_single_line_comments("command1\n//hello comment\ncommand2\n");
         assertEquals("command1\n\ncommand2\n", result);
     }
@@ -22,7 +22,7 @@ public class DragonCommentRemoverTest {
 
     @Test
     public void test_do_remove_nested_multiline_comments() throws Exception {
-        String pseudo_source="" +
+        String pseudo_source = "" +
                 "command1\n" +
                 "/*/**/*/\n" +
                 "command4\n";

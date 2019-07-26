@@ -9,26 +9,26 @@ public class IdentifierToken implements DragonToken {
 
     public static final String regex_alphanumeric_identifier = "^[a-zA-Z][a-zA-Z0-9]+";
 
-    public static final int MAX_IDENTIFIER_LENGTH=100;
+    public static final int MAX_IDENTIFIER_LENGTH = 100;
 
     private String content;
 
-    public IdentifierToken(CharacterList list)throws Exception{
+    public IdentifierToken(CharacterList list) throws Exception {
 
         Pattern p = Pattern.compile(regex_alphanumeric_identifier);
 
         Matcher m = p.matcher(list.getLimitedStringMaybeShorter(MAX_IDENTIFIER_LENGTH));
 
-        if(m.find()){
+        if (m.find()) {
             this.content = m.group(0);
             list.consumeTokens(this.content.length());
-        }else{
+        } else {
             throw new Exception("could not recognize identifier");
         }
     }
 
     public IdentifierToken(String newcontents) throws Exception {
-        this.content=newcontents;
+        this.content = newcontents;
     }
 
     @Override

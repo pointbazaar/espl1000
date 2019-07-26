@@ -1,4 +1,3 @@
-
 package org.vanautrui.languages.lexing;
 
 import org.vanautrui.languages.lexing.tokens.*;
@@ -24,13 +23,12 @@ public class DragonLexer {
         System.out.println("TOKENS:");
 
 
-
         System.out.println(tokens.toString());
 
         return tokens;
     }
 
-    private DragonTokenList tokenize(CharacterList sourceCodeWithBracesWithoutCommentsWithoutNewlines) throws Exception{
+    private DragonTokenList tokenize(CharacterList sourceCodeWithBracesWithoutCommentsWithoutNewlines) throws Exception {
         CharacterList myCode = new CharacterList(sourceCodeWithBracesWithoutCommentsWithoutNewlines);
 
         List<DragonToken> result = new ArrayList<>();
@@ -47,59 +45,58 @@ public class DragonLexer {
         //also the choice of which tokens we implement is important
 
 
-
-        while (myCode.size()>0){
+        while (myCode.size() > 0) {
             //while not every last char is tokenized,
             //try to tokenize something
 
             //System.out.println(myCode.size());
 
-            try{
+            try {
                 result.add(new AccessModifierToken(myCode));
                 continue;
-            }catch (Exception e){
+            } catch (Exception e) {
                 //pass
             }
 
-            try{
+            try {
                 result.add(new ClassToken(myCode));
                 continue;
-            }catch (Exception e){
+            } catch (Exception e) {
                 //pass
             }
 
-            try{
+            try {
                 result.add(new KeywordToken(myCode));
                 continue;
-            }catch (Exception e){
+            } catch (Exception e) {
                 //pass
             }
 
-            try{
+            try {
                 result.add(new IdentifierToken(myCode));
                 continue;
-            }catch (Exception e){
+            } catch (Exception e) {
                 //pass
             }
 
-            try{
+            try {
                 result.add(new StringConstantToken(myCode));
                 continue;
-            }catch (Exception e){
+            } catch (Exception e) {
                 //pass
             }
 
-            try{
+            try {
                 result.add(new SymbolToken(myCode));
                 continue;
-            }catch (Exception e){
+            } catch (Exception e) {
                 //pass
             }
 
             //TODO: operator tokens
             //TODO: make more kinds of tokens to enrich the token stream
 
-            if(myCode.startsWith(" ") || myCode.startsWith("\t")){
+            if (myCode.startsWith(" ") || myCode.startsWith("\t")) {
                 //white space is always allowed between tokens
                 myCode.consumeTokens(1);
                 continue;
@@ -109,7 +106,7 @@ public class DragonLexer {
             throw
                     new Exception(
                             "tried to tokenize all manner of tokens, but could not make progress. string : '"
-                            +myCode.getLimitedStringMaybeShorter(10)+"'"
+                                    + myCode.getLimitedStringMaybeShorter(10) + "'"
                     );
         }
 

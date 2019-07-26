@@ -7,9 +7,9 @@ public class DragonTypeNode implements IDragonASTNode {
 
     public DragonIdentifierNode typeName;
 
-    public DragonTypeNode(DragonTokenList tokens) throws Exception{
+    public DragonTypeNode(DragonTokenList tokens) throws Exception {
 
-        this.typeName=new DragonIdentifierNode(tokens);
+        this.typeName = new DragonIdentifierNode(tokens);
 
     }
 

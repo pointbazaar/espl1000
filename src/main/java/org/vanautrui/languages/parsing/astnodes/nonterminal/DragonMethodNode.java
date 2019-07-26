@@ -17,11 +17,11 @@ public class DragonMethodNode implements IDragonASTNode {
 
     public DragonMethodNameNode methodName;
 
-    public List<DragonDeclaredArgumentNode> arguments=new ArrayList<>();
+    public List<DragonDeclaredArgumentNode> arguments = new ArrayList<>();
 
-    public List<DragonStatementNode> statements= new ArrayList<>();
+    public List<DragonStatementNode> statements = new ArrayList<>();
 
-    public DragonMethodNode(DragonTokenList tokens)throws Exception{
+    public DragonMethodNode(DragonTokenList tokens) throws Exception {
 
         System.out.println("try parse DragonMethodNode");
 
@@ -29,7 +29,7 @@ public class DragonMethodNode implements IDragonASTNode {
 
         DragonTokenList copy = tokens.copy();
 
-        this.access=new DragonAccessModifierNode(copy);
+        this.access = new DragonAccessModifierNode(copy);
 
         this.type = new DragonTypeNode(copy);
 
@@ -53,12 +53,12 @@ public class DragonMethodNode implements IDragonASTNode {
 
         //TODO: parse statements
 
-        boolean success_statements=true;
-        while (success_statements){
-            try{
+        boolean success_statements = true;
+        while (success_statements) {
+            try {
                 this.statements.add(new DragonStatementNode(copy));
-            }catch (Exception e){
-                success_statements=false;
+            } catch (Exception e) {
+                success_statements = false;
             }
         }
 
