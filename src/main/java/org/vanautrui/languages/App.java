@@ -11,6 +11,10 @@ public class App {
     public static final String lang_name = "DRAGON ";
 
     public static void main(String[] args) {
+
+        //https://www.javassist.org/
+        //we could use this dependency to make our classes
+
         //this is the program that is actually intended to be used on the terminal:
         //for the compile part,
 
