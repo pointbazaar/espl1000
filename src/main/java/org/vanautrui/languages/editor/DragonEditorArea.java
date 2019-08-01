@@ -56,7 +56,7 @@ public class DragonEditorArea {
                     String lastWord=  "publi";
                     try {
                         Runtime rt = Runtime.getRuntime();
-                        Process pr = rt.exec("dri --complete " + lastWord);
+                        Process pr = rt.exec("./Interpreter/dri --complete " + lastWord);
 
                         //wait for the completion to exit
                         pr.waitFor();
