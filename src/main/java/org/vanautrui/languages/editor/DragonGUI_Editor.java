@@ -21,40 +21,11 @@ public class DragonGUI_Editor {
 
     private JFrame frame;
 
+    private DragonEditorArea editorArea;
+
     public DragonGUI_Editor(){
 
-        UIManager.put( "control", new Color( 128, 128, 128) );
-        UIManager.put( "info", new Color(128,128,128) );
-        UIManager.put( "nimbusBase", new Color( 18, 30, 49) );
-        UIManager.put( "nimbusAlertYellow", new Color( 248, 187, 0) );
-        UIManager.put( "nimbusDisabledText", new Color( 128, 128, 128) );
-        UIManager.put( "nimbusFocus", new Color(115,164,209) );
-        UIManager.put( "nimbusGreen", new Color(176,179,50) );
-        UIManager.put( "nimbusInfoBlue", new Color( 66, 139, 221) );
-        UIManager.put( "nimbusLightBackground", new Color( 18, 30, 49) );
-        UIManager.put( "nimbusOrange", new Color(191,98,4) );
-        UIManager.put( "nimbusRed", new Color(169,46,34) );
-        UIManager.put( "nimbusSelectedText", new Color( 255, 255, 255) );
-        UIManager.put( "nimbusSelectionBackground", new Color( 104, 93, 156) );
-        UIManager.put( "text", new Color( 230, 230, 230) );
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (javax.swing.UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        set_dark_ui();
 
         this.frame = new JFrame("Dragon Editor");
 
@@ -78,11 +49,11 @@ public class DragonGUI_Editor {
         frame.getContentPane().add(BorderLayout.NORTH, menuBar());
         frame.getContentPane().add(BorderLayout.WEST,projectArea());
         frame.getContentPane().add(BorderLayout.SOUTH,statusBar());
-        frame.getContentPane().add(BorderLayout.CENTER,editorArea());
+        this.editorArea=new DragonEditorArea();
+        frame.getContentPane().add(BorderLayout.CENTER,this.editorArea.editorArea());
         frame.getContentPane().add(BorderLayout.EAST,new JButton("context information, file navigation"));
 
         frame.setVisible(true);
-
 
     }
 
@@ -131,18 +102,52 @@ public class DragonGUI_Editor {
                 "node 1 . 1"
         );
 
+
+
         treeNode.add(child1);
         child1.add(child1_1);
 
         JTree tree = new JTree(treeNode);
+
+        tree.setMaximumSize(new Dimension(200,200));
         return tree;
     }
 
-    private Component editorArea(){
-        TextArea textArea = new TextArea();
-        textArea.setPreferredSize(new Dimension(400,500));
-        textArea.setMinimumSize(new Dimension(500,500));
-        return textArea;
+
+
+    private void set_dark_ui(){
+        UIManager.put( "control", new Color( 128, 128, 128) );
+        UIManager.put( "info", new Color(128,128,128) );
+        UIManager.put( "nimbusBase", new Color( 18, 30, 49) );
+        UIManager.put( "nimbusAlertYellow", new Color( 248, 187, 0) );
+        UIManager.put( "nimbusDisabledText", new Color( 128, 128, 128) );
+        UIManager.put( "nimbusFocus", new Color(115,164,209) );
+        UIManager.put( "nimbusGreen", new Color(176,179,50) );
+        UIManager.put( "nimbusInfoBlue", new Color( 66, 139, 221) );
+        UIManager.put( "nimbusLightBackground", new Color( 18, 30, 49) );
+        UIManager.put( "nimbusOrange", new Color(191,98,4) );
+        UIManager.put( "nimbusRed", new Color(169,46,34) );
+        UIManager.put( "nimbusSelectedText", new Color( 255, 255, 255) );
+        UIManager.put( "nimbusSelectionBackground", new Color( 104, 93, 156) );
+        UIManager.put( "text", new Color( 230, 230, 230) );
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (javax.swing.UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
