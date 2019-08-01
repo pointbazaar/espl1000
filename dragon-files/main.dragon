@@ -9,4 +9,4 @@ public class main
     }
 
     public void main ()
-        println ( " Hello World " )
+        println    (    " Hello World " )
