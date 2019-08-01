@@ -16,3 +16,7 @@ function dragon(){
 function dg(){
 	dragon "$@"
 }
+
+function dri(){
+	~/dragon/Interpreter/dri "$@"
+}

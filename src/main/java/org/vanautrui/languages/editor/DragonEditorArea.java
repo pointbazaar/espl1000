@@ -2,18 +2,23 @@ package org.vanautrui.languages.editor;
 
 import javafx.scene.input.KeyCode;
 import sun.awt.ExtendedKeyCodes;
+import sun.misc.IOUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.OutputStream;
 
 public class DragonEditorArea {
 
     private TextArea textArea;
+    private DragonGUI_Editor master;
 
     private static final Dimension dim = new Dimension(400,400);
 
-    public DragonEditorArea(){}
+    public DragonEditorArea(DragonGUI_Editor master1){
+        this.master=master1;
+    }
 
     public Component editorArea(){
         this.textArea = new TextArea();
@@ -43,8 +48,33 @@ public class DragonEditorArea {
                     System.exit(0);
                 }
 
+                if(e.getKeyCode()==KeyEvent.VK_TAB){
+                    //invoke the autocomplete if
+                    //the last word seems to be a keyword
+
+                    String lastWord=  "publi";
+                    try {
+                        Runtime rt = Runtime.getRuntime();
+                        Process pr = rt.exec("./Interpreter/dri -complete " + lastWord);
+                        OutputStream out = pr.getOutputStream();
+
+                    }catch (Exception ee){
+                        ee.printStackTrace();
+                    }
+                }
+
                 //System.out.println(e.toString());
                 //System.out.println("pressed "+e.getKeyChar());
+
+                //TODO : consume
+
+                //inform the status bar
+                if(master.statusBar.isPresent()){
+                    master.statusBar.get().setCursorPos(
+                            getCaretPosition()
+                    );
+                }
+
             }
 
             @Override

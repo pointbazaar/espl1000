@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Optional;
 
 public class DragonGUI_Editor {
 
@@ -21,7 +22,8 @@ public class DragonGUI_Editor {
 
     private JFrame frame;
 
-    private DragonEditorArea editorArea;
+    public Optional<DragonEditorArea> editorArea;
+    public Optional<DragonStatusLine> statusBar;
 
     public DragonGUI_Editor(){
 
@@ -48,21 +50,19 @@ public class DragonGUI_Editor {
 
         frame.getContentPane().add(BorderLayout.NORTH, menuBar());
         frame.getContentPane().add(BorderLayout.WEST,projectArea());
-        frame.getContentPane().add(BorderLayout.SOUTH,statusBar());
-        this.editorArea=new DragonEditorArea();
-        frame.getContentPane().add(BorderLayout.CENTER,this.editorArea.editorArea());
+        this.editorArea=Optional.of(new DragonEditorArea(this));
+        frame.getContentPane().add(BorderLayout.CENTER,this.editorArea.get().editorArea());
+
+        this.statusBar=Optional.of(new DragonStatusLine(this));
+        frame.getContentPane().add(BorderLayout.SOUTH,statusBar.get().statusBar());
+
         frame.getContentPane().add(BorderLayout.EAST,new JButton("context information, file navigation"));
 
         frame.setVisible(true);
 
     }
 
-    private Component statusBar(){
-        JPanel panel = new JPanel();
-        panel.add(new JLabel("TODO: status bar"));
-        panel.add(new JLabel("TODO: line number"));
-        return panel;
-    }
+
 
     private JLabel splashScreen(){
         System.out.println("making splash screen");
