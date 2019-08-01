@@ -1,12 +1,13 @@
 package org.vanautrui.languages.editor;
 
 import javafx.scene.input.KeyCode;
+import org.apache.commons.io.IOUtils;
 import sun.awt.ExtendedKeyCodes;
-import sun.misc.IOUtils;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 public class DragonEditorArea {
@@ -55,8 +56,15 @@ public class DragonEditorArea {
                     String lastWord=  "publi";
                     try {
                         Runtime rt = Runtime.getRuntime();
-                        Process pr = rt.exec("./Interpreter/dri -complete " + lastWord);
-                        OutputStream out = pr.getOutputStream();
+                        Process pr = rt.exec("dri --complete " + lastWord);
+
+                        //wait for the completion to exit
+                        pr.waitFor();
+
+                        InputStream out = pr.getInputStream();
+                        String completed = IOUtils.toString(out);
+
+                        System.out.println("Copmleted: "+completed);
 
                     }catch (Exception ee){
                         ee.printStackTrace();
