@@ -58,12 +58,15 @@ public class dragonc {
 
                 System.out.println(codeWithoutCommentsWithoutUnneccesaryWhitespace);
 
+
                 TerminalUtil.printlnRed("PHASE: WEAVE IN CURLY BRACES");
 
                 String just_code_with_braces_without_comments_without_newlines =
                         CurlyBracesWeaver.weave_scoping_curly_braces_and_remove_newlines(codeWithoutCommentsWithoutUnneccesaryWhitespace);
 
                 System.out.println(just_code_with_braces_without_comments_without_newlines);
+
+
 
                 TerminalUtil.printlnRed("PHASE: LEXING");
 
@@ -87,6 +90,10 @@ public class dragonc {
 
                 TerminalUtil.printlnRed("PHASE: PARSING");
                 DragonAST ast = (new DragonParser()).parse(tokens);
+
+                TerminalUtil.printlnRed("PHASE: TODO: pretty print source from AST in curly braces");
+                //TODO:
+                System.out.println(ast.toSourceCode());
 
                 TerminalUtil.printlnRed("PHASE: CODE GENERATION");
 
