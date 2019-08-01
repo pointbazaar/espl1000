@@ -8,6 +8,7 @@ import org.vanautrui.languages.parsing.astnodes.terminal.DragonTypeNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DragonMethodNode implements IDragonASTNode {
 
@@ -61,7 +62,25 @@ public class DragonMethodNode implements IDragonASTNode {
 
     @Override
     public String toSourceCode() {
-        //TODO
-        return "";
+
+        return
+                this.access.toSourceCode()
+                +" "
+                +this.type.toSourceCode()
+                +" "
+                +this.methodName.toSourceCode()
+                +"("
+                +this.arguments.stream()
+                .map(argument->argument.toSourceCode())
+                .collect(Collectors.joining(","))
+                +")"
+                +"{"
+                +"\n"
+                +this.statements.stream()
+                .map(statement->statement.toSourceCode())
+                .collect(Collectors.joining(";\n"))
+                +"\n"
+                +"}"
+        ;
     }
 }

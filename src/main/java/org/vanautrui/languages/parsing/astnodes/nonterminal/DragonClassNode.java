@@ -99,10 +99,21 @@ public class DragonClassNode implements IDragonASTNode {
     public String toSourceCode() {
         String result = "";
 
-        result += fieldNodeList.stream().map(node -> node.toSourceCode()).collect(Collectors.joining(" "));
+        result+=this.access.toSourceCode()+" class "+this.name.toSourceCode()+" {";
 
-        result += methodNodeList.stream().map(node -> node.toSourceCode()).collect(Collectors.joining(" "));
+        result += fieldNodeList
+                .stream()
+                .map(node -> node.toSourceCode())
+                .collect(Collectors.joining("\n"));
+        result+="\n";
 
+        result += methodNodeList
+                .stream()
+                .map(node -> node.toSourceCode())
+                .collect(Collectors.joining("\n"));
+
+        result+="\n";
+        result+="}";
         return result;
     }
 }

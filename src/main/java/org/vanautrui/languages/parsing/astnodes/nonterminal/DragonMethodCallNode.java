@@ -8,6 +8,7 @@ import org.vanautrui.languages.parsing.astnodes.terminal.DragonStringConstantNod
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DragonMethodCallNode implements IDragonASTNode {
 
@@ -50,7 +51,12 @@ public class DragonMethodCallNode implements IDragonASTNode {
 
     @Override
     public String toSourceCode() {
-        //TODO
-        return "";
+        return this.identifierMethodName.toSourceCode()
+                +"("+this.argumentList.stream().map(
+                        dragonStringConstantNode -> dragonStringConstantNode.toSourceCode()
+                ).collect(Collectors.joining(","))
+                +")"
+                +";"
+        ;
     }
 }

@@ -30,6 +30,9 @@ public class DragonClassFieldNode implements IDragonASTNode {
 
     @Override
     public String toSourceCode() {
-        return null;
+        return this.access.toSourceCode()
+                +" "+this.type.toSourceCode()
+                +" "+this.name.toSourceCode()
+                +";";
     }
 }

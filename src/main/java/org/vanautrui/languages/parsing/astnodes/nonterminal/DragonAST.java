@@ -39,6 +39,6 @@ public class DragonAST implements IDragonASTNode {
         return this.classNodeList
                 .stream()
                 .map(node -> node.toSourceCode())
-                .collect(Collectors.joining(" "));
+                .collect(Collectors.joining("\n"));
     }
 }

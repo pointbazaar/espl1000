@@ -24,6 +24,6 @@ public class DragonDeclaredArgumentNode implements IDragonASTNode {
 
     @Override
     public String toSourceCode() {
-        return null;
+        return this.type.toSourceCode()+" "+this.name.toSourceCode();
     }
 }
