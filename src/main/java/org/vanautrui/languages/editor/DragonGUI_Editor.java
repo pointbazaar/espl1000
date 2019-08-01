@@ -3,10 +3,12 @@ package org.vanautrui.languages.editor;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class DragonGUI_Editor {
 
-    //TODO: make the editor
+    //https://www.guru99.com/java-swing-gui.html
 
     public static final int default_width=600;
     public static final int default_height=300;
@@ -26,7 +28,7 @@ public class DragonGUI_Editor {
 
         //frame.getContentPane().add(button);
 
-        frame.getContentPane().add(BorderLayout.NORTH,new JButton("tools panel"));
+        frame.getContentPane().add(BorderLayout.NORTH, menuBar());
 
         frame.getContentPane().add(BorderLayout.WEST,projectArea());
 
@@ -39,6 +41,20 @@ public class DragonGUI_Editor {
         frame.setVisible(true);
 
 
+    }
+
+    private JMenuBar menuBar(){
+        JMenuBar mb = new JMenuBar();
+        JButton interpret = new JButton("Interpret Program");
+        interpret.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("clicked on interpret. TODO: excute davids program");
+            }
+        });
+        mb.add(interpret);
+
+        return mb;
     }
 
     private JTree projectArea(){
