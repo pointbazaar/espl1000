@@ -1,6 +1,7 @@
 package org.vanautrui.languages.editor;
 
 import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 
 public class DragonGUI_Editor {
@@ -17,8 +18,8 @@ public class DragonGUI_Editor {
         this.frame = new JFrame("Dragon Editor");
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(default_width,default_height);
-
+        //frame.setSize(default_width,default_height);
+        frame.setMinimumSize(new Dimension(default_width,default_height));
         frame.setResizable(false);
 
         JButton button = new JButton("Button");
@@ -27,7 +28,7 @@ public class DragonGUI_Editor {
 
         frame.getContentPane().add(BorderLayout.NORTH,new JButton("tools panel"));
 
-        frame.getContentPane().add(BorderLayout.WEST,new JButton("project tree"));
+        frame.getContentPane().add(BorderLayout.WEST,projectArea());
 
         frame.getContentPane().add(BorderLayout.SOUTH,new JButton("status bar"));
 
@@ -40,9 +41,28 @@ public class DragonGUI_Editor {
 
     }
 
+    private JTree projectArea(){
+        DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode();
+
+        DefaultMutableTreeNode child1 = new DefaultMutableTreeNode(
+                "node 1"
+        );
+
+        DefaultMutableTreeNode child1_1 = new DefaultMutableTreeNode(
+                "node 1 . 1"
+        );
+
+        treeNode.add(child1);
+        child1.add(child1_1);
+
+        JTree tree = new JTree(treeNode);
+        return tree;
+    }
+
     private Component editorArea(){
         TextArea textArea = new TextArea();
         textArea.setPreferredSize(new Dimension(400,500));
+        textArea.setMinimumSize(new Dimension(500,500));
         return textArea;
     }
 
