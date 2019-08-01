@@ -10,9 +10,12 @@ public class DragonGUI_Editor {
     public static final int default_width=600;
     public static final int default_height=300;
 
+    private JFrame frame;
+
     public DragonGUI_Editor(){
 
-        JFrame frame = new JFrame("Dragon Editor");
+        this.frame = new JFrame("Dragon Editor");
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(default_width,default_height);
 
@@ -28,12 +31,19 @@ public class DragonGUI_Editor {
 
         frame.getContentPane().add(BorderLayout.SOUTH,new JButton("status bar"));
 
-        frame.getContentPane().add(BorderLayout.CENTER,new JButton("Editor"));
+        frame.getContentPane().add(BorderLayout.CENTER,editorArea());
 
         frame.getContentPane().add(BorderLayout.EAST,new JButton("context information, file navigation"));
 
-
-
         frame.setVisible(true);
+
+
     }
+
+    private Component editorArea(){
+        TextArea textArea = new TextArea();
+        textArea.setPreferredSize(new Dimension(400,500));
+        return textArea;
+    }
+
 }
