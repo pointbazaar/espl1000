@@ -4,8 +4,8 @@ import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.tree.*;
 import org.vanautrui.languages.commandline.dragonc;
+import org.vanautrui.languages.editor.DragonGUI_Editor;
 import org.vanautrui.languages.commandline.dragoni;
 
 import java.nio.file.Files;
@@ -55,6 +55,7 @@ public class App {
             TerminalUtil.printlnRed("use -i or -c argument");
             TerminalUtil.printlnRed("-i starts the Interpreter");
             TerminalUtil.printlnRed("-c starts the Compiler");
+            TerminalUtil.printlnRed("-e starts the IDE"); //TODO
             TerminalUtil.printlnRed("");
             TerminalUtil.printlnRed("Usage: ");
 
@@ -82,8 +83,11 @@ public class App {
                         e.printStackTrace();
                     }
                     break;
+                case "-e":
+                    DragonGUI_Editor editor = new DragonGUI_Editor();
+                    break;
                 default:
-                    TerminalUtil.printlnRed("first flag has to be -i or -c, not " + args[0], System.out);
+                    TerminalUtil.printlnRed("first flag has to be -i, -e or -c, not " + args[0], System.out);
                     System.exit(1);
                     break;
             }
