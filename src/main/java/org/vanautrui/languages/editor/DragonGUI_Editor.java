@@ -15,6 +15,7 @@ import java.util.Optional;
 
 public class DragonGUI_Editor {
 
+    //https://www.java-tutorial.org/flowlayout.html
     //https://www.guru99.com/java-swing-gui.html
 
     public static final int default_width=800;
@@ -25,6 +26,18 @@ public class DragonGUI_Editor {
     public Optional<DragonEditorArea> editorArea;
     public Optional<DragonStatusLine> statusBar;
     public Optional<DragonEditorContextArea> contextArea;
+
+    private void make_splash(){
+        JLabel splash = splashScreen();
+        frame.getContentPane().add(splash);
+        frame.setVisible(true);
+        try{
+            Thread.sleep(800);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        frame.getContentPane().remove(splash);
+    }
 
     public DragonGUI_Editor(){
 
@@ -39,35 +52,28 @@ public class DragonGUI_Editor {
         Point p = new Point(300,300);
         frame.setLocation(p);
 
-        JLabel splash = splashScreen();
-        frame.getContentPane().add(splash);
-        frame.setVisible(true);
-        try{
-            Thread.sleep(800);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        frame.getContentPane().remove(splash);
+        make_splash();
+        FlowLayout flowLayoutVertical = new FlowLayout();
 
-        frame.getContentPane().add(BorderLayout.NORTH, menuBar());
 
-        FlowLayout flowLayout = new FlowLayout();
+        frame.setLayout(flowLayoutVertical);
+
+        frame.getContentPane().add(menuBar());
+
+        FlowLayout flowLayoutHorizontal = new FlowLayout();
         JPanel panel = new JPanel();
-        panel.setLayout(flowLayout);
-        frame.getContentPane().add(BorderLayout.CENTER,panel);
+        panel.setLayout(flowLayoutHorizontal);
+        frame.getContentPane().add(panel);
 
         panel.add(projectArea());
-        //frame.getContentPane().add(BorderLayout.WEST,projectArea());
 
         this.editorArea=Optional.of(new DragonEditorArea(this));
-        //frame.getContentPane().add(BorderLayout.CENTER,this.editorArea.get().editorArea());
         panel.add(this.editorArea.get().editorArea());
 
         this.statusBar=Optional.of(new DragonStatusLine(this));
-        frame.getContentPane().add(BorderLayout.SOUTH,statusBar.get().statusBar());
+        frame.getContentPane().add(statusBar.get().statusBar());
 
         this.contextArea=Optional.of(new DragonEditorContextArea(this));
-        //frame.getContentPane().add(BorderLayout.EAST,contextArea.get().make());
         panel.add(this.contextArea.get().make());
 
         frame.setVisible(true);
