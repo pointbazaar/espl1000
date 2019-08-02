@@ -5,7 +5,8 @@
 
 #include "gtree.hpp"
 
-#define GPATH "/home/milo/Schreibtisch/Code/Projects/Interpreter/dragon/Interpreter/grammar"
+//#define GPATH "/home/milo/Schreibtisch/Code/Projects/Interpreter/dragon/Interpreter/grammar"
+#define GPATH "./Interpreter/grammar"
 
 void printex(string message);
 void syntax_error(string e, int line);

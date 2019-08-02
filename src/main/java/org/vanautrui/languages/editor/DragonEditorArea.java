@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Paths;
 import java.util.Optional;
 
 public class DragonEditorArea {
@@ -97,6 +98,8 @@ public class DragonEditorArea {
 
         try {
             Runtime rt = Runtime.getRuntime();
+            //String grammar_path = Paths.get("./Interpreter/grammar").toAbsolutePath().toString();
+
             Process pr = rt.exec("./Interpreter/dri --complete " + lastWord);
 
             //wait for the completion to exit
@@ -107,11 +110,21 @@ public class DragonEditorArea {
 
             System.out.println("Completed: "+completed);
 
+
             if(completed.trim().toLowerCase().equals("no such keyword")){
                 return;
             }
+            int current_pos = getCaretPosition();
+            String current_text = this.textArea.getText();
 
-            this.textArea.append(completed);
+            String text_up_to_caret = current_text.substring(0,current_pos);
+
+            String replaced = text_up_to_caret.substring(0,current_pos-lastWord.length())+completed;
+
+            String text_after_caret = current_text.substring(current_pos);
+
+            this.textArea.setText(replaced+text_after_caret);
+            //this.textArea.append(completed);
 
         }catch (Exception ee){
             ee.printStackTrace();
@@ -120,7 +133,7 @@ public class DragonEditorArea {
 
     public Optional<String> getLastWord(){
         //TODO: make this method more optimized
-        String[] words = this.textArea.getText().split(" ");
+        String[] words = this.textArea.getText().split("[ \n]");
 
         if (words.length>0){
             String last = words[words.length-1];
