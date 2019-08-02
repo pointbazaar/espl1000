@@ -1,3 +1,5 @@
+/* Implementation of GTree Class */
+
 #include <fstream>
 #include <queue>
 #include "gtree.hpp"
