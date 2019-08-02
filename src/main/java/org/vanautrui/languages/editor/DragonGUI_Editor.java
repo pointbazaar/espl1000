@@ -52,7 +52,7 @@ public class DragonGUI_Editor {
         Point p = new Point(300,300);
         frame.setLocation(p);
 
-        make_splash();
+        //make_splash();
         FlowLayout flowLayoutVertical = new FlowLayout();
 
 

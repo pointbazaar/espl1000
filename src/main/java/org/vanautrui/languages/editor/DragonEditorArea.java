@@ -166,7 +166,7 @@ public class DragonEditorArea {
 
             String text_after_caret = current_text.substring(current_pos);
 
-            this.textArea.setText(replaced+text_after_caret);
+            this.textArea.setText(replaced+" "+text_after_caret);
             //this.textArea.append(completed);
 
         }catch (Exception ee){
