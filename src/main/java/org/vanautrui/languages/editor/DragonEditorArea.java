@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Optional;
 
 public class DragonEditorArea {
 
@@ -53,22 +54,8 @@ public class DragonEditorArea {
                     //invoke the autocomplete if
                     //the last word seems to be a keyword
 
-                    String lastWord=  "publi";
-                    try {
-                        Runtime rt = Runtime.getRuntime();
-                        Process pr = rt.exec("./Interpreter/dri --complete " + lastWord);
-
-                        //wait for the completion to exit
-                        pr.waitFor();
-
-                        InputStream out = pr.getInputStream();
-                        String completed = IOUtils.toString(out);
-
-                        System.out.println("Copmleted: "+completed);
-
-                    }catch (Exception ee){
-                        ee.printStackTrace();
-                    }
+                    tryCompletion();
+                    e.consume();
                 }
 
                 //System.out.println(e.toString());
@@ -93,6 +80,50 @@ public class DragonEditorArea {
 
 
         return textArea;
+    }
+
+    public void tryCompletion(){
+        System.out.println("try to autocomplete keywords...");
+
+        Optional<String> maybeLastWord = this.getLastWord();
+
+        if(!maybeLastWord.isPresent()){
+            System.out.println("no last word present");
+            return;
+        }
+
+        String lastWord=  "publi";
+        lastWord=maybeLastWord.get();
+
+        try {
+            Runtime rt = Runtime.getRuntime();
+            Process pr = rt.exec("./Interpreter/dri --complete " + lastWord);
+
+            //wait for the completion to exit
+            pr.waitFor();
+
+            InputStream out = pr.getInputStream();
+            String completed = IOUtils.toString(out);
+
+            System.out.println("Copmleted: "+completed);
+
+        }catch (Exception ee){
+            ee.printStackTrace();
+        }
+    }
+
+    public Optional<String> getLastWord(){
+        //TODO: make this method more optimized
+        String[] words = this.textArea.getText().split(" ");
+
+        if (words.length>0){
+            String last = words[words.length-1];
+            if(last.matches("[a-zA-Z]+")){
+                System.out.println("last word: '"+last+"'");
+                return Optional.of(last);
+            }
+        }
+        return Optional.empty();
     }
 
     public void selectAll(){
