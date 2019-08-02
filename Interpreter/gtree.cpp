@@ -87,6 +87,9 @@ string GTree::complete(string token) {
 	if(parent == NULL)
 		return res_ex;
 
+	if(parent->valid == true)
+		return "No completion needed";
+
 	for(int i = 0; i < IN_SIZE; i++) {
 
 		if(parent->link[i] != NULL)

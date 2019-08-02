@@ -2,11 +2,11 @@
 #include <iterator>
 #include <vector>
 #include <fstream>
+#include <unistd.h>
 
 #include "gtree.hpp"
 
-//#define GPATH "/home/milo/Schreibtisch/Code/Projects/Interpreter/dragon/Interpreter/grammar"
-#define GPATH "./Interpreter/grammar"
+#define GPATH "/home/milo/Schreibtisch/Code/Projects/Interpreter/dragon/Interpreter/grammar"
 
 void printex(string message);
 void syntax_error(string e, int line);
@@ -85,8 +85,16 @@ void complete(string word) {
 	if(gtree.init(GPATH) == INIT_FAILURE)
 		printex("Grammar Tree Setup Failure");
 
+	string comp = gtree.complete(word);
+
+	if(comp == "No completion needed") {
+
+		cout << comp << endl;
+		return; 
+	}
+	
 	vector <string> out;
-	stringstream str_stream(gtree.complete(word));
+	stringstream str_stream(comp);
 
 	string sub;
 
