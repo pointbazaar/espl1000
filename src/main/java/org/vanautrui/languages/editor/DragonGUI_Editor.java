@@ -6,12 +6,18 @@ import javafx.stage.Screen;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DragonGUI_Editor {
 
@@ -19,7 +25,7 @@ public class DragonGUI_Editor {
     //https://www.guru99.com/java-swing-gui.html
 
     public static final int default_width=800;
-    public static final int default_height=300;
+    public static final int default_height=600;
 
     private JFrame frame;
 
@@ -115,6 +121,8 @@ public class DragonGUI_Editor {
     private JTree projectArea(){
         DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode();
 
+
+
         DefaultMutableTreeNode child1 = new DefaultMutableTreeNode(
                 "node 1"
         );
@@ -128,10 +136,42 @@ public class DragonGUI_Editor {
         treeNode.add(child1);
         child1.add(child1_1);
 
-        JTree tree = new JTree(treeNode);
 
-        tree.setMaximumSize(new Dimension(200,200));
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(Paths.get(".").toString());
+        JTree tree = new JTree(root);
+
+        try {
+            populateFileTree(root, Paths.get("."));
+        }catch (Exception e){
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        tree.setMinimumSize(new Dimension(200,200));
+        tree.setSize(20,20);
         return tree;
+    }
+
+    private void populateFileTree(DefaultMutableTreeNode node,Path path)throws Exception{
+
+        if(Files.isDirectory(path)){
+
+            //put all the files/directories as children
+
+            Stream<Path> list = Files.list(path);
+            for(Path p : list.collect(Collectors.toList())){
+                DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(p.getFileName().toString());
+                node.add(node1);
+
+                if(Files.isDirectory(p)){
+                    populateFileTree(node1,p);
+                }
+            }
+        }else{
+            //put the file as a child
+            DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(path.getFileName().toString());
+            node.add(node1);
+        }
     }
 
 
