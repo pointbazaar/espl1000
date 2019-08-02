@@ -2,6 +2,7 @@ package org.vanautrui.languages.editor;
 
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
+import org.apache.commons.io.FilenameUtils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,6 +16,9 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -118,6 +122,8 @@ public class DragonGUI_Editor {
         return mb;
     }
 
+    //https://docs.oracle.com/javase/tutorial/uiswing/components/textarea.html
+
     private JTree projectArea(){
         DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode();
 
@@ -136,45 +142,57 @@ public class DragonGUI_Editor {
         treeNode.add(child1);
         child1.add(child1_1);
 
-
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(Paths.get(".").toString());
-        JTree tree = new JTree(root);
+        DefaultMutableTreeNode root;
 
         try {
-            populateFileTree(root, Paths.get("."));
+            root = populateFileTree(Paths.get("."),12);
+            JTree tree = new JTree(root);
+            tree.setMinimumSize(new Dimension(200,200));
+            tree.setSize(20,20);
+            return tree;
         }catch (Exception e){
             e.printStackTrace();
             System.exit(1);
         }
-
-        tree.setMinimumSize(new Dimension(200,200));
-        tree.setSize(20,20);
-        return tree;
+        return new JTree();
     }
 
-    private void populateFileTree(DefaultMutableTreeNode node,Path path)throws Exception{
+    private DefaultMutableTreeNode populateFileTree(Path path, int recursion_depth)throws Exception{
+
+        //if (recursion_depth<=0){return;}
 
         if(Files.isDirectory(path)){
 
             //put all the files/directories as children
+            DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(path.getFileName().toString());
+
 
             Stream<Path> list = Files.list(path);
             for(Path p : list.collect(Collectors.toList())){
-                DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(p.getFileName().toString());
-                node.add(node1);
-
-                if(Files.isDirectory(p)){
-                    populateFileTree(node1,p);
+                if(recursion_depth>0) {
+                    try {
+                        node1.add(populateFileTree(p, recursion_depth - 1));
+                    }catch (Exception e){
+                        //pass
+                    }
                 }
             }
+            return node1;
         }else{
             //put the file as a child
-            DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(path.getFileName().toString());
-            node.add(node1);
+            List<String> left_out_file_extensions= Arrays.asList(
+                    "class","jar","out","log"
+            );
+
+            if(!left_out_file_extensions.contains(FilenameUtils.getExtension(path.getFileName().toString()))){
+                DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(path.getFileName().toString());
+                return node1;
+            }else{
+                throw new Exception("do not want to have this file in the tree");
+            }
+
         }
     }
-
-
 
     private void set_dark_ui(){
         UIManager.put( "control", new Color( 128, 128, 128) );
