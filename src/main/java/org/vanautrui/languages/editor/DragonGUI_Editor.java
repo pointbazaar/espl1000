@@ -24,6 +24,7 @@ public class DragonGUI_Editor {
 
     public Optional<DragonEditorArea> editorArea;
     public Optional<DragonStatusLine> statusBar;
+    public Optional<DragonEditorContextArea> contextArea;
 
     public DragonGUI_Editor(){
 
@@ -49,14 +50,25 @@ public class DragonGUI_Editor {
         frame.getContentPane().remove(splash);
 
         frame.getContentPane().add(BorderLayout.NORTH, menuBar());
-        frame.getContentPane().add(BorderLayout.WEST,projectArea());
+
+        FlowLayout flowLayout = new FlowLayout();
+        JPanel panel = new JPanel();
+        panel.setLayout(flowLayout);
+        frame.getContentPane().add(BorderLayout.CENTER,panel);
+
+        panel.add(projectArea());
+        //frame.getContentPane().add(BorderLayout.WEST,projectArea());
+
         this.editorArea=Optional.of(new DragonEditorArea(this));
-        frame.getContentPane().add(BorderLayout.CENTER,this.editorArea.get().editorArea());
+        //frame.getContentPane().add(BorderLayout.CENTER,this.editorArea.get().editorArea());
+        panel.add(this.editorArea.get().editorArea());
 
         this.statusBar=Optional.of(new DragonStatusLine(this));
         frame.getContentPane().add(BorderLayout.SOUTH,statusBar.get().statusBar());
 
-        frame.getContentPane().add(BorderLayout.EAST,new JButton("context information, file navigation"));
+        this.contextArea=Optional.of(new DragonEditorContextArea(this));
+        //frame.getContentPane().add(BorderLayout.EAST,contextArea.get().make());
+        panel.add(this.contextArea.get().make());
 
         frame.setVisible(true);
 

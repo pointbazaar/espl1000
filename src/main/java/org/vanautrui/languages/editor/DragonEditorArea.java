@@ -10,7 +10,11 @@ import java.awt.event.KeyListener;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class DragonEditorArea {
 
@@ -39,6 +43,8 @@ public class DragonEditorArea {
             @Override
             public void keyPressed(KeyEvent e) {
 
+
+
                 if(e.isControlDown() && e.getKeyCode()==KeyEvent.VK_A){
                     //CTRL + A
                     //select all text
@@ -58,6 +64,8 @@ public class DragonEditorArea {
                     tryCompletion();
                     e.consume();
                 }
+
+                updateAvailableCompletions();
 
                 //System.out.println(e.toString());
                 //System.out.println("pressed "+e.getKeyChar());
@@ -83,6 +91,49 @@ public class DragonEditorArea {
         return textArea;
     }
 
+    public void updateAvailableCompletions(){
+        Optional<String> maybeLastWord = this.getLastWord();
+
+        if(this.master.contextArea.isPresent() && maybeLastWord.isPresent()){
+            this
+                .master
+                .contextArea
+                .get()
+                .setAvailableCompletions(getAvailableCompletions(maybeLastWord.get()));
+        }
+    }
+
+    private List<String> getAvailableCompletions(String lastWord){
+
+        try {
+            Runtime rt = Runtime.getRuntime();
+            //String grammar_path = Paths.get("./Interpreter/grammar").toAbsolutePath().toString();
+
+            Process pr = rt.exec("./Interpreter/dri --complete " + lastWord);
+
+            //wait for the completion to exit
+            pr.waitFor();
+
+            InputStream out = pr.getInputStream();
+            String completed = IOUtils.toString(out);
+
+            if(
+                    completed.trim().toLowerCase().equals("no such keyword")
+                    || completed.trim().toLowerCase().equals("no completion needed")
+            ){
+                return new ArrayList<>();
+            }
+
+            System.out.println("found completions ");
+            return Arrays
+                    .stream(completed.split("\n"))
+                    .collect(Collectors.toList());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
+    }
+
     public void tryCompletion(){
         System.out.println("try to autocomplete keywords...");
 
@@ -97,23 +148,15 @@ public class DragonEditorArea {
         lastWord=maybeLastWord.get();
 
         try {
-            Runtime rt = Runtime.getRuntime();
-            //String grammar_path = Paths.get("./Interpreter/grammar").toAbsolutePath().toString();
-
-            Process pr = rt.exec("./Interpreter/dri --complete " + lastWord);
-
-            //wait for the completion to exit
-            pr.waitFor();
-
-            InputStream out = pr.getInputStream();
-            String completed = IOUtils.toString(out);
-
+            java.util.List<String> completedList=getAvailableCompletions(lastWord);
+            if(completedList.isEmpty()){
+                System.out.println("no completions available.");
+                return;
+            }
+            String completed=completedList.get(0);
             System.out.println("Completed: "+completed);
 
 
-            if(completed.trim().toLowerCase().equals("no such keyword")){
-                return;
-            }
             int current_pos = getCaretPosition();
             String current_text = this.textArea.getText();
 
