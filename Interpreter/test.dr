@@ -1,2 +1,8 @@
-public
-i
+public class Main {
+public void main(){
+println("x");
+}
+public void main(){
+println(" Hello World ");
+}
+}
