@@ -1,3 +1,5 @@
+/* Interpreter's GTree Class Header */
+
 #ifndef GTREE_HPP
 #define GTREE_HPP
 
