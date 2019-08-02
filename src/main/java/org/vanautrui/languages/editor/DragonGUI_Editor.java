@@ -48,33 +48,36 @@ public class DragonGUI_Editor {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //frame.setSize(default_width,default_height);
         frame.setMinimumSize(new Dimension(default_width,default_height));
-        frame.setResizable(false);
+        //frame.setResizable(false);
         Point p = new Point(300,300);
         frame.setLocation(p);
 
-        //make_splash();
-        FlowLayout flowLayoutVertical = new FlowLayout();
 
+        JPanel vertical_panel = new JPanel();
 
-        frame.setLayout(flowLayoutVertical);
+        //https://stackoverflow.com/questions/13510641/add-controls-vertically-instead-of-horizontally-using-flow-layout
+        //https://stackoverflow.com/questions/761341/boxlayout-cant-be-shared-error
+        vertical_panel.setLayout(new BoxLayout(vertical_panel,BoxLayout.Y_AXIS));
 
-        frame.getContentPane().add(menuBar());
+        frame.add(vertical_panel);
+
+        vertical_panel.add(menuBar());
 
         FlowLayout flowLayoutHorizontal = new FlowLayout();
-        JPanel panel = new JPanel();
-        panel.setLayout(flowLayoutHorizontal);
-        frame.getContentPane().add(panel);
+        JPanel horizontal_panel = new JPanel();
+        horizontal_panel.setLayout(flowLayoutHorizontal);
+        vertical_panel.add(horizontal_panel);
 
-        panel.add(projectArea());
+        horizontal_panel.add(projectArea());
 
         this.editorArea=Optional.of(new DragonEditorArea(this));
-        panel.add(this.editorArea.get().editorArea());
+        horizontal_panel.add(this.editorArea.get().editorArea());
 
         this.statusBar=Optional.of(new DragonStatusLine(this));
-        frame.getContentPane().add(statusBar.get().statusBar());
+        vertical_panel.add(statusBar.get().statusBar());
 
         this.contextArea=Optional.of(new DragonEditorContextArea(this));
-        panel.add(this.contextArea.get().make());
+        horizontal_panel.add(this.contextArea.get().make());
 
         frame.setVisible(true);
 
