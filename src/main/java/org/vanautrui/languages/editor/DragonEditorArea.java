@@ -105,7 +105,13 @@ public class DragonEditorArea {
             InputStream out = pr.getInputStream();
             String completed = IOUtils.toString(out);
 
-            System.out.println("Copmleted: "+completed);
+            System.out.println("Completed: "+completed);
+
+            if(completed.trim().toLowerCase().equals("no such keyword")){
+                return;
+            }
+
+            this.textArea.append(completed);
 
         }catch (Exception ee){
             ee.printStackTrace();
