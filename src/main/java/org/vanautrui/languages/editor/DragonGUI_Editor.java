@@ -28,8 +28,8 @@ public class DragonGUI_Editor {
     //https://www.java-tutorial.org/flowlayout.html
     //https://www.guru99.com/java-swing-gui.html
 
-    public static final int default_width=800;
-    public static final int default_height=600;
+    public static final int default_width=1000;
+    public static final int default_height=1200;
 
     private JFrame frame;
 
@@ -142,13 +142,14 @@ public class DragonGUI_Editor {
         treeNode.add(child1);
         child1.add(child1_1);
 
-        DefaultMutableTreeNode root;
+        MyFileTreeNode root;
 
         try {
             root = populateFileTree(Paths.get("."),12);
             JTree tree = new JTree(root);
             tree.setMinimumSize(new Dimension(200,200));
             tree.setSize(20,20);
+
             return tree;
         }catch (Exception e){
             e.printStackTrace();
@@ -157,14 +158,53 @@ public class DragonGUI_Editor {
         return new JTree();
     }
 
-    private DefaultMutableTreeNode populateFileTree(Path path, int recursion_depth)throws Exception{
+    private boolean deepContainsNoFiles(File file)throws Exception{
+
+        if(file.isFile()){return false;}
+
+        if(file.isDirectory()){
+
+            List<File> files = Files.list(file.toPath()).map(
+                    Path::toFile
+            ).collect(Collectors.toList());
+
+            if(files.size()==0 ){
+                return true;
+            }else{
+                boolean contains_no_files=true;
+
+                for(File f : files){
+                    contains_no_files &= deepContainsNoFiles(f);
+                }
+                return contains_no_files;
+            }
+        }
+
+        return false;
+    }
+
+    private MyFileTreeNode populateFileTree(Path path, int recursion_depth)throws Exception{
 
         //if (recursion_depth<=0){return;}
 
         if(Files.isDirectory(path)){
 
+            List<String> left_out_directories= Arrays.asList(
+                    "out","target",".git","build",".gradle",".idea"
+            );
+
+            if(left_out_directories.contains(FilenameUtils.getName(path.toString()))){
+                throw new Exception("do not want to have that directory in the tree");
+            }
+
+            //if directory is empty, do not add it
+            if(deepContainsNoFiles(path.toFile())){
+
+                throw new Exception("path "+path.toString()+" is empty");
+            }
+
             //put all the files/directories as children
-            DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(path.getFileName().toString());
+            MyFileTreeNode node1 = new MyFileTreeNode(true,new DefaultMutableTreeNode(path.getFileName().toString()));
 
 
             Stream<Path> list = Files.list(path);
@@ -181,11 +221,11 @@ public class DragonGUI_Editor {
         }else{
             //put the file as a child
             List<String> left_out_file_extensions= Arrays.asList(
-                    "class","jar","out","log"
+                    "class","jar","out","log","iml"
             );
 
             if(!left_out_file_extensions.contains(FilenameUtils.getExtension(path.getFileName().toString()))){
-                DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(path.getFileName().toString());
+                MyFileTreeNode node1 = new MyFileTreeNode(false,new DefaultMutableTreeNode(path.getFileName().toString()));
                 return node1;
             }else{
                 throw new Exception("do not want to have this file in the tree");
