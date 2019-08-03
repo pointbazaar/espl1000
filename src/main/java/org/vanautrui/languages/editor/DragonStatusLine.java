@@ -10,6 +10,7 @@ public class DragonStatusLine {
 
 
     private JLabel line_number_label;
+    private JLabel line_count_label;
 
     public DragonStatusLine(DragonGUI_Editor master1){
         //we use it in constructor,
@@ -19,8 +20,11 @@ public class DragonStatusLine {
 
         this.panel = new JPanel();
         this.line_number_label=new JLabel("TODO: linu number");
+        this.line_count_label=new JLabel("TODO: line count label");
+
         panel.add(new JLabel("TODO: status bar"));
         panel.add(this.line_number_label);
+        panel.add(this.line_count_label);
     }
 
     public void setCursorPos(int pos){
@@ -28,9 +32,10 @@ public class DragonStatusLine {
     }
 
     public Component statusBar(){
-
         return panel;
     }
 
-
+    public void updateLineCount(int lines){
+        this.line_count_label.setText(lines+" Lines");
+    }
 }

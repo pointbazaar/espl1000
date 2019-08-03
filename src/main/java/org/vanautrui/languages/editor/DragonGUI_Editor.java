@@ -29,6 +29,8 @@ public class DragonGUI_Editor {
 
     private JFrame frame;
 
+    //https://docs.oracle.com/javase/tutorial/uiswing/components/tree.html
+
     public Optional<DragonEditorArea> editorArea;
     public Optional<DragonStatusLine> statusBar;
     public Optional<DragonEditorContextArea> contextArea;

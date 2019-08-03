@@ -5,6 +5,8 @@ import org.apache.commons.io.IOUtils;
 import sun.awt.ExtendedKeyCodes;
 
 import java.awt.*;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.InputStream;
@@ -34,10 +36,22 @@ public class DragonEditorArea {
         this.textArea.setMinimumSize(dim);
         this.textArea.setMaximumSize(dim);
 
+        textArea.addInputMethodListener(new InputMethodListener() {
+            @Override
+            public void inputMethodTextChanged(InputMethodEvent event) {
+                updateStatusBar();
+            }
+
+            @Override
+            public void caretPositionChanged(InputMethodEvent event) {
+                updateStatusBar();
+            }
+        });
+
         textArea.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-
+                updateStatusBar();
             }
 
             @Override
@@ -72,23 +86,28 @@ public class DragonEditorArea {
 
                 //TODO : consume
 
-                //inform the status bar
-                if(master.statusBar.isPresent()){
-                    master.statusBar.get().setCursorPos(
-                            getCaretPosition()
-                    );
-                }
-
+                updateStatusBar();
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-
+                updateStatusBar();
             }
+
         });
 
 
         return textArea;
+    }
+
+    private void updateStatusBar(){
+        //inform the status bar
+        if(master.statusBar.isPresent()){
+            master.statusBar.get().setCursorPos(
+                    getCaretPosition()
+            );
+            master.statusBar.get().updateLineCount(textArea.getText().split("\n").length);
+        }
     }
 
     public void updateAvailableCompletions(){
