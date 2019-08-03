@@ -16,6 +16,7 @@ public class DragonEditorContextArea {
 
         this.master=master1;
         this.available_completions=new JTextArea();
+        this.available_completions.setBackground(DragonGUI_Editor.backgroundColor);
         //this.available_completions.setMinimumSize(new Dimension(200,200));
         this.available_completions.add(new JLabel("completions will appear here"));
 
@@ -29,6 +30,7 @@ public class DragonEditorContextArea {
     }
 
     public Component make(){
+
         return this.available_completions;
     }
 

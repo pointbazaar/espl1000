@@ -23,7 +23,7 @@ public class DragonStatusLine {
         this.master=master1;
 
         this.panel = new JPanel();
-        this.panel.setBackground(Color.BLACK);
+        this.panel.setBackground(DragonGUI_Editor.backgroundColor);
         BoxLayout layout=new BoxLayout(this.panel,BoxLayout.X_AXIS);
 
         this.panel.setLayout(layout);

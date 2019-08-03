@@ -23,8 +23,12 @@ public class DragonGUI_Editor {
     //https://www.java-tutorial.org/flowlayout.html
     //https://www.guru99.com/java-swing-gui.html
 
-    public static final int min_width =1200;
+    public static final int min_width =1400;
     public static final int min_height =700;
+
+    public static final int middle_row_height=600;
+
+    public static final Color backgroundColor = new Color(10,10,10,255);
 
     private JFrame frame;
 
@@ -34,6 +38,7 @@ public class DragonGUI_Editor {
     public Optional<DragonStatusLine> statusBar;
     public Optional<DragonEditorContextArea> contextArea;
     public Optional<DragonEditorWithImage> editorWithImage;
+    public Optional<DragonProjectArea> projectArea;
 
     private void make_splash(){
         JLabel splash = splashScreen();
@@ -52,7 +57,8 @@ public class DragonGUI_Editor {
         set_dark_ui();
 
         this.frame = new JFrame("Dragon Editor");
-        this.frame.setBackground(Color.BLACK);
+
+        this.frame.setBackground(backgroundColor);
 
         /*
         KeyEventDispatcher keyEventDispatcher = new KeyEventDispatcher() {
@@ -77,7 +83,7 @@ public class DragonGUI_Editor {
 
 
         JPanel vertical_panel = new JPanel();
-        vertical_panel.setBackground(Color.BLACK);
+        vertical_panel.setBackground(backgroundColor);
 
         //https://stackoverflow.com/questions/13510641/add-controls-vertically-instead-of-horizontally-using-flow-layout
         //https://stackoverflow.com/questions/761341/boxlayout-cant-be-shared-error
@@ -89,11 +95,12 @@ public class DragonGUI_Editor {
 
         FlowLayout flowLayoutHorizontal = new FlowLayout();
         JPanel horizontal_panel = new JPanel();
-        horizontal_panel.setBackground(Color.BLACK);
+        horizontal_panel.setBackground(backgroundColor);
         horizontal_panel.setLayout(flowLayoutHorizontal);
         vertical_panel.add(horizontal_panel);
 
-        horizontal_panel.add(projectArea());
+        this.projectArea=Optional.of(new DragonProjectArea(this));
+        horizontal_panel.add(this.projectArea.get().projectArea());
 
         //this.editorArea=Optional.of(new DragonEditorArea(this));
         //horizontal_panel.add(this.editorArea.get().editorArea());
@@ -146,118 +153,7 @@ public class DragonGUI_Editor {
 
     //https://docs.oracle.com/javase/tutorial/uiswing/components/textarea.html
 
-    private JScrollPane projectArea(){
-        DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode();
 
-
-
-        DefaultMutableTreeNode child1 = new DefaultMutableTreeNode(
-                "node 1"
-        );
-
-        DefaultMutableTreeNode child1_1 = new DefaultMutableTreeNode(
-                "node 1 . 1"
-        );
-
-
-
-        treeNode.add(child1);
-        child1.add(child1_1);
-
-        MyFileTreeNode root;
-
-        try {
-
-            System.out.println(Paths.get(".").getFileName().toString());
-
-            root = populateFileTree(Paths.get("."),12);
-            //root.setUserObject(Paths.get(".").getFileName().toString());
-            JTree tree = new JTree(root);
-            tree.setMinimumSize(new Dimension(200,200));
-            tree.setSize(20,20);
-
-            JScrollPane scrollPane = new JScrollPane(tree);
-            return scrollPane;
-        }catch (Exception e){
-            e.printStackTrace();
-            System.exit(1);
-        }
-
-        return new JScrollPane();
-    }
-
-    private boolean deepContainsNoFiles(File file)throws Exception{
-
-        if(file.isFile()){return false;}
-
-        if(file.isDirectory()){
-
-            List<File> files = Files.list(file.toPath()).map(
-                    Path::toFile
-            ).collect(Collectors.toList());
-
-            if(files.size()==0 ){
-                return true;
-            }else{
-                boolean contains_no_files=true;
-
-                for(File f : files){
-                    contains_no_files &= deepContainsNoFiles(f);
-                }
-                return contains_no_files;
-            }
-        }
-
-        return false;
-    }
-
-    private MyFileTreeNode populateFileTree(Path path, int recursion_depth)throws Exception{
-
-        if(Files.isDirectory(path)){
-
-            List<String> left_out_directories= Arrays.asList(
-                    "out","target",".git","build",".gradle",".idea"
-            );
-
-            if(left_out_directories.contains(FilenameUtils.getName(path.toString()))){
-                throw new Exception("do not want to have that directory in the tree");
-            }
-
-            //if directory is empty, do not add it
-            if(deepContainsNoFiles(path.toFile())){
-                throw new Exception("path "+path.toString()+" is empty");
-            }
-
-            //put all the files/directories as children
-            MyFileTreeNode node1 = new MyFileTreeNode(true,new DefaultMutableTreeNode(path.getFileName()));
-
-
-            Stream<Path> list = Files.list(path);
-            for(Path p : list.collect(Collectors.toList())){
-                if(recursion_depth>0) {
-                    try {
-                        node1.add(populateFileTree(p, recursion_depth - 1));
-                    }catch (Exception e){
-                        //pass
-                    }
-                }
-            }
-            return node1;
-        }else{
-            //put the file as a child
-            List<String> left_out_file_extensions= Arrays.asList(
-                    "class","jar","out","log","iml"
-            );
-
-            if(!left_out_file_extensions.contains(FilenameUtils.getExtension(path.getFileName().toString()))){
-                MyFileTreeNode node1 = new MyFileTreeNode(false,new DefaultMutableTreeNode(path.getFileName().toString()));
-                return node1;
-            }else{
-                throw new Exception("do not want to have this file in the tree");
-            }
-
-        }
-    }
 
     private void set_dark_ui(){
         UIManager.put( "control", new Color( 128, 128, 128) );

@@ -36,8 +36,9 @@ public class DragonEditorWithImage {
             //setting layout manager and preferred size correctly makes it
             //appear in the correct size.
             this.panel.setLayout(new FlowLayout());
-            this.panel.setMinimumSize(new Dimension(600, 500));
-            this.panel.setPreferredSize(new Dimension(600, 500));
+            this.panel.setBackground(DragonGUI_Editor.backgroundColor);
+            this.panel.setMinimumSize(new Dimension(600, DragonGUI_Editor.middle_row_height));
+            this.panel.setPreferredSize(new Dimension(600, DragonGUI_Editor.middle_row_height));
         }
 
         this.panel.add(this.picLabel);
