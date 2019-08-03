@@ -49,22 +49,23 @@ public class DragonEditorWithImage {
         this.panel.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                System.out.println("Key typed:"+e.getKeyChar());
+                System.out.println("Key :"+e.getKeyChar());
             }
 
             @Override
             public void keyPressed(KeyEvent e) {
-
+                System.out.println("Key :"+e.getKeyChar());
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-
+                System.out.println("Key :"+e.getKeyChar());
             }
         });
     }
 
     public JPanel getImage(){
+
         return this.panel;
     }
 }

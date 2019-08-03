@@ -40,17 +40,6 @@ public class DragonGUI_Editor {
     public Optional<DragonEditorWithImage> editorWithImage;
     public Optional<DragonProjectArea> projectArea;
 
-    private void make_splash(){
-        JLabel splash = splashScreen();
-        frame.getContentPane().add(splash);
-        frame.setVisible(true);
-        try{
-            Thread.sleep(800);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        frame.getContentPane().remove(splash);
-    }
 
     public DragonGUI_Editor(){
 
@@ -60,18 +49,37 @@ public class DragonGUI_Editor {
 
         this.frame.setBackground(backgroundColor);
 
-        /*
+
         KeyEventDispatcher keyEventDispatcher = new KeyEventDispatcher() {
             @Override
             public boolean dispatchKeyEvent(KeyEvent e) {
                 //prevent event from being processed
+                //so we can do our own global event processing
+                //that does not depend on the individual key listeners
+                //on all the individual components
+
+                //System.out.println(e.toString());
+                //System.out.println(e.paramString());
+                String key_event_type = e.paramString().split(",")[0];
+
+                switch (key_event_type){
+                    case "KEY_PRESSED":
+                        break;
+                    case "KEY_RELEASED":
+                        break;
+                    case "KEY_TYPED":
+                        break;
+                }
+                System.out.println(key_event_type);
+
+                //System.out.println(e.getKeyCode());
+                System.out.println("key dispatch: "+e.getKeyChar());
+
                 return true;
             }
         };
 
-         */
-
-        //KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyEventDispatcher);
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyEventDispatcher);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //frame.setSize(default_width,default_height);
@@ -121,33 +129,15 @@ public class DragonGUI_Editor {
 
     }
 
-    private JLabel splashScreen(){
-        System.out.println("making splash screen");
-        try {
-            BufferedImage splash = ImageIO.read(new File("splashscreens/programming.jpeg"));
-            JLabel picLabel = new JLabel(new ImageIcon(splash));
-            return picLabel;
-        }catch (Exception e){
-            e.printStackTrace();
-            return new JLabel("could not read image "+e.getMessage());
-        }
-
-    }
 
     private JMenuBar menuBar(){
         JMenuBar mb = new JMenuBar();
         mb.setBackground(DragonGUI_Editor.backgroundColor);
 
-        JButton interpret = new JButton("TODO: Ctrl + R : Interpret Program");
+        JLabel interpret = new JLabel("TODO: Ctrl + R : Interpret Program");
 
-        interpret.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("clicked on interpret. TODO: excute davids program");
-            }
-        });
         mb.add(interpret);
-        mb.add(new JButton("TODO: Ctrl + B : Build Project"));
+        mb.add(new JLabel("TODO: Ctrl + B : Build Project"));
         return mb;
     }
 
