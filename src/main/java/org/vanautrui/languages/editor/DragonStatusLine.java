@@ -14,7 +14,7 @@ public class DragonStatusLine {
 
     private JLabel line_number_label;
     private JLabel line_count_label;
-    private TextField my_ip_address;
+    private JLabel my_ip_address;
 
     public DragonStatusLine(DragonGUI_Editor master1){
         //we use it in constructor,
@@ -24,6 +24,9 @@ public class DragonStatusLine {
 
         this.panel = new JPanel();
         this.panel.setBackground(Color.BLACK);
+        BoxLayout layout=new BoxLayout(this.panel,BoxLayout.X_AXIS);
+
+        this.panel.setLayout(layout);
         this.panel.setMaximumSize(new Dimension(2000,30));
 
         this.line_number_label=new JLabel("TODO: linu number");
@@ -58,14 +61,12 @@ public class DragonStatusLine {
             e.printStackTrace();
         }
 
-        this.my_ip_address=new TextField(my_ip_string);
-        this.my_ip_address.setEditable(false);
+        this.my_ip_address=new JLabel("    "+my_ip_string+"    ");
 
         panel.add(new JLabel("TODO: status bar"));
         panel.add(this.line_number_label);
         panel.add(this.line_count_label);
-        this.my_ip_address.setForeground(Color.WHITE);
-        this.my_ip_address.setBackground(Color.BLACK);
+
         panel.add(this.my_ip_address);
     }
 
