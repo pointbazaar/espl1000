@@ -52,7 +52,7 @@ public class DragonGUI_Editor {
         set_dark_ui();
 
         this.frame = new JFrame("Dragon Editor");
-
+        this.frame.setBackground(Color.BLACK);
 
         /*
         KeyEventDispatcher keyEventDispatcher = new KeyEventDispatcher() {
@@ -77,6 +77,7 @@ public class DragonGUI_Editor {
 
 
         JPanel vertical_panel = new JPanel();
+        vertical_panel.setBackground(Color.BLACK);
 
         //https://stackoverflow.com/questions/13510641/add-controls-vertically-instead-of-horizontally-using-flow-layout
         //https://stackoverflow.com/questions/761341/boxlayout-cant-be-shared-error
@@ -88,6 +89,7 @@ public class DragonGUI_Editor {
 
         FlowLayout flowLayoutHorizontal = new FlowLayout();
         JPanel horizontal_panel = new JPanel();
+        horizontal_panel.setBackground(Color.BLACK);
         horizontal_panel.setLayout(flowLayoutHorizontal);
         vertical_panel.add(horizontal_panel);
 
