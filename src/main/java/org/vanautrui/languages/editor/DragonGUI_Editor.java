@@ -1,13 +1,10 @@
 package org.vanautrui.languages.editor;
 
-import javafx.geometry.Rectangle2D;
-import javafx.stage.Screen;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +13,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -28,8 +24,8 @@ public class DragonGUI_Editor {
     //https://www.java-tutorial.org/flowlayout.html
     //https://www.guru99.com/java-swing-gui.html
 
-    public static final int default_width=1000;
-    public static final int default_height=1200;
+    public static final int min_width =1200;
+    public static final int min_height =700;
 
     private JFrame frame;
 
@@ -57,7 +53,7 @@ public class DragonGUI_Editor {
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //frame.setSize(default_width,default_height);
-        frame.setMinimumSize(new Dimension(default_width,default_height));
+        frame.setMinimumSize(new Dimension(min_width, min_height));
         //frame.setResizable(false);
         Point p = new Point(300,300);
         frame.setLocation(p);
@@ -124,7 +120,7 @@ public class DragonGUI_Editor {
 
     //https://docs.oracle.com/javase/tutorial/uiswing/components/textarea.html
 
-    private JTree projectArea(){
+    private JScrollPane projectArea(){
         DefaultMutableTreeNode treeNode = new DefaultMutableTreeNode();
 
 
@@ -145,17 +141,23 @@ public class DragonGUI_Editor {
         MyFileTreeNode root;
 
         try {
+
+            System.out.println(Paths.get(".").getFileName().toString());
+
             root = populateFileTree(Paths.get("."),12);
+            //root.setUserObject(Paths.get(".").getFileName().toString());
             JTree tree = new JTree(root);
             tree.setMinimumSize(new Dimension(200,200));
             tree.setSize(20,20);
 
-            return tree;
+            JScrollPane scrollPane = new JScrollPane(tree);
+            return scrollPane;
         }catch (Exception e){
             e.printStackTrace();
             System.exit(1);
         }
-        return new JTree();
+
+        return new JScrollPane();
     }
 
     private boolean deepContainsNoFiles(File file)throws Exception{
@@ -185,8 +187,6 @@ public class DragonGUI_Editor {
 
     private MyFileTreeNode populateFileTree(Path path, int recursion_depth)throws Exception{
 
-        //if (recursion_depth<=0){return;}
-
         if(Files.isDirectory(path)){
 
             List<String> left_out_directories= Arrays.asList(
@@ -199,12 +199,11 @@ public class DragonGUI_Editor {
 
             //if directory is empty, do not add it
             if(deepContainsNoFiles(path.toFile())){
-
                 throw new Exception("path "+path.toString()+" is empty");
             }
 
             //put all the files/directories as children
-            MyFileTreeNode node1 = new MyFileTreeNode(true,new DefaultMutableTreeNode(path.getFileName().toString()));
+            MyFileTreeNode node1 = new MyFileTreeNode(true,new DefaultMutableTreeNode(path.getFileName()));
 
 
             Stream<Path> list = Files.list(path);
