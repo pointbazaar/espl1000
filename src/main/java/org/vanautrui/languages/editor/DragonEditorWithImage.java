@@ -5,11 +5,14 @@ import com.sun.javafx.iio.ImageStorage;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 import java.nio.file.Paths;
 
 public class DragonEditorWithImage {
 
+    private JPanel panel;
     private JLabel picLabel;
     private DragonGUI_Editor master;
 
@@ -21,12 +24,23 @@ public class DragonEditorWithImage {
 
     }
 
-    public JLabel getImage()throws Exception{
+    public JPanel getImage()throws Exception{
 
         BufferedImage image=new BufferedImage(500,20, BufferedImage.TYPE_INT_ARGB);
         BufferedImage read = ImageIO.read(Paths.get("test.ppm").toFile());
         this.picLabel=new JLabel(new ImageIcon(read));
 
-        return this.picLabel;
+
+        {
+            this.panel = new JPanel();
+            //setting layout manager and preferred size correctly makes it
+            //appear in the correct size.
+            this.panel.setLayout(new FlowLayout());
+            this.panel.setMinimumSize(new Dimension(600, 500));
+            this.panel.setPreferredSize(new Dimension(600, 500));
+        }
+
+        this.panel.add(this.picLabel);
+        return this.panel;
     }
 }

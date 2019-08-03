@@ -30,7 +30,7 @@ public class DragonGUI_Editor {
 
     //https://docs.oracle.com/javase/tutorial/uiswing/components/tree.html
 
-    public Optional<DragonEditorArea> editorArea;
+    //public Optional<DragonEditorArea> editorArea;
     public Optional<DragonStatusLine> statusBar;
     public Optional<DragonEditorContextArea> contextArea;
     public Optional<DragonEditorWithImage> editorWithImage;
@@ -95,17 +95,15 @@ public class DragonGUI_Editor {
 
         horizontal_panel.add(projectArea());
 
-        this.editorArea=Optional.of(new DragonEditorArea(this));
-        horizontal_panel.add(this.editorArea.get().editorArea());
-        /*
+        //this.editorArea=Optional.of(new DragonEditorArea(this));
+        //horizontal_panel.add(this.editorArea.get().editorArea());
+
         this.editorWithImage=Optional.of(new DragonEditorWithImage(this));
         try {
             horizontal_panel.add(this.editorWithImage.get().getImage());
         }catch (Exception e){
             e.printStackTrace();
         }
-
-         */
 
         this.statusBar=Optional.of(new DragonStatusLine(this));
         vertical_panel.add(statusBar.get().statusBar());
