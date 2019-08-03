@@ -40,6 +40,7 @@ public class DragonGUI_Editor {
     public Optional<DragonEditorWithImage> editorWithImage;
     public Optional<DragonProjectArea> projectArea;
 
+    public Optional<DragonKeyEventHandler> keyEventHandler;
 
     public DragonGUI_Editor(){
 
@@ -49,37 +50,9 @@ public class DragonGUI_Editor {
 
         this.frame.setBackground(backgroundColor);
 
+        this.keyEventHandler=Optional.of(new DragonKeyEventHandler(this));
 
-        KeyEventDispatcher keyEventDispatcher = new KeyEventDispatcher() {
-            @Override
-            public boolean dispatchKeyEvent(KeyEvent e) {
-                //prevent event from being processed
-                //so we can do our own global event processing
-                //that does not depend on the individual key listeners
-                //on all the individual components
-
-                //System.out.println(e.toString());
-                //System.out.println(e.paramString());
-                String key_event_type = e.paramString().split(",")[0];
-
-                switch (key_event_type){
-                    case "KEY_PRESSED":
-                        break;
-                    case "KEY_RELEASED":
-                        break;
-                    case "KEY_TYPED":
-                        break;
-                }
-                System.out.println(key_event_type);
-
-                //System.out.println(e.getKeyCode());
-                System.out.println("key dispatch: "+e.getKeyChar());
-
-                return true;
-            }
-        };
-
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyEventDispatcher);
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this.keyEventHandler.get().getKeyEventDispatcher());
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //frame.setSize(default_width,default_height);
