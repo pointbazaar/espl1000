@@ -6,8 +6,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.file.Files;
@@ -31,9 +30,10 @@ public class DragonGUI_Editor {
 
     //https://docs.oracle.com/javase/tutorial/uiswing/components/tree.html
 
-    public Optional<DragonEditorArea> editorArea;
+    //public Optional<DragonEditorArea> editorArea;
     public Optional<DragonStatusLine> statusBar;
     public Optional<DragonEditorContextArea> contextArea;
+    public Optional<DragonEditorWithImage> editorWithImage;
 
     private void make_splash(){
         JLabel splash = splashScreen();
@@ -52,6 +52,21 @@ public class DragonGUI_Editor {
         set_dark_ui();
 
         this.frame = new JFrame("Dragon Editor");
+
+
+        /*
+        KeyEventDispatcher keyEventDispatcher = new KeyEventDispatcher() {
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent e) {
+                //prevent event from being processed
+                return true;
+            }
+        };
+
+         */
+
+        //KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyEventDispatcher);
+
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //frame.setSize(default_width,default_height);
@@ -78,8 +93,14 @@ public class DragonGUI_Editor {
 
         horizontal_panel.add(projectArea());
 
-        this.editorArea=Optional.of(new DragonEditorArea(this));
-        horizontal_panel.add(this.editorArea.get().editorArea());
+        //this.editorArea=Optional.of(new DragonEditorArea(this));
+        //horizontal_panel.add(this.editorArea.get().editorArea());
+        this.editorWithImage=Optional.of(new DragonEditorWithImage(this));
+        try {
+            horizontal_panel.add(this.editorWithImage.get().getImage());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         this.statusBar=Optional.of(new DragonStatusLine(this));
         vertical_panel.add(statusBar.get().statusBar());

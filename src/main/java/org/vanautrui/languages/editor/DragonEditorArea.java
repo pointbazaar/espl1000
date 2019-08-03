@@ -18,19 +18,30 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.fusesource.jansi.Ansi;
+
+import static org.fusesource.jansi.Ansi.ansi;
+
 public class DragonEditorArea {
+
+    // ein component (container)
+    //  jede zeile hat mehrere TextField Components
+    //  eine textfieldcomponent
 
     private TextArea textArea;
     private DragonGUI_Editor master;
+
 
     private static final Dimension dim = new Dimension(400,400);
 
     public DragonEditorArea(DragonGUI_Editor master1){
         this.master=master1;
+
     }
 
     public Component editorArea(){
         this.textArea = new TextArea();
+
 
         this.textArea.setPreferredSize(dim);
         this.textArea.setMinimumSize(dim);
@@ -56,8 +67,6 @@ public class DragonEditorArea {
 
             @Override
             public void keyPressed(KeyEvent e) {
-
-
 
                 if(e.isControlDown() && e.getKeyCode()==KeyEvent.VK_A){
                     //CTRL + A
@@ -129,7 +138,7 @@ public class DragonEditorArea {
             //String grammar_path = Paths.get("./Interpreter/grammar").toAbsolutePath().toString();
 
             Process pr = rt.exec("./Interpreter/dri --complete " + lastWord);
-
+            // ./dri --color "+lastWord
             //wait for the completion to exit
             pr.waitFor();
 

@@ -1,5 +1,6 @@
 class
 public
+private
 main
 print
 println
@@ -9,3 +10,6 @@ else
 for
 while
 void
+int
+char
+boolean
