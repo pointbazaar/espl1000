@@ -73,7 +73,6 @@ public class DragonGUI_Editor {
 
         //KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyEventDispatcher);
 
-
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //frame.setSize(default_width,default_height);
         frame.setMinimumSize(new Dimension(min_width, min_height));
@@ -122,8 +121,6 @@ public class DragonGUI_Editor {
 
     }
 
-
-
     private JLabel splashScreen(){
         System.out.println("making splash screen");
         try {
@@ -139,7 +136,10 @@ public class DragonGUI_Editor {
 
     private JMenuBar menuBar(){
         JMenuBar mb = new JMenuBar();
-        JButton interpret = new JButton("Interpret Program");
+        mb.setBackground(DragonGUI_Editor.backgroundColor);
+
+        JButton interpret = new JButton("TODO: Ctrl + R : Interpret Program");
+
         interpret.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -147,13 +147,11 @@ public class DragonGUI_Editor {
             }
         });
         mb.add(interpret);
-
+        mb.add(new JButton("TODO: Ctrl + B : Build Project"));
         return mb;
     }
 
     //https://docs.oracle.com/javase/tutorial/uiswing/components/textarea.html
-
-
 
     private void set_dark_ui(){
         UIManager.put( "control", new Color( 128, 128, 128) );
