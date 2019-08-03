@@ -53,7 +53,7 @@ public class DragonStatusLine {
                 }
             }
 
-            my_ip_string="ipv4: "+ip;
+            my_ip_string=ip;
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -64,6 +64,8 @@ public class DragonStatusLine {
         panel.add(new JLabel("TODO: status bar"));
         panel.add(this.line_number_label);
         panel.add(this.line_count_label);
+        this.my_ip_address.setForeground(Color.WHITE);
+        this.my_ip_address.setBackground(Color.BLACK);
         panel.add(this.my_ip_address);
     }
 
