@@ -11,9 +11,9 @@
 
 Pixmap::Pixmap() {
 
-	for(int i = 0; i < PIXMAP_HEIGHT; i++) {
+	for(int i = 0; i < BP_HEIGHT; i++) {
 
-		for(int j = 0; j < PIXMAP_WIDTH; j++) {
+		for(int j = 0; j < BP_WIDTH * 3; j++) {
 
 			int col = j % 3;
 
@@ -31,10 +31,10 @@ Pixmap::Pixmap() {
 
 int Pixmap::set_rgb(int value, int x, int y, char rgb_mode) {
 
-	if(!(x >= 0 && x < PIXMAP_HEIGHT))
+	if(!(x >= 0 && x < BP_HEIGHT))
 		return PIXEL_SET_FAILURE;
 
-	if(!(y >= 0 && y < PIXMAP_WIDTH))
+	if(!(y >= 0 && y < BP_WIDTH * 3))
 		return PIXEL_SET_FAILURE;
 
 	switch(rgb_mode) {
@@ -57,11 +57,11 @@ int Pixmap::save(string path) {
 	if(write_file.good() == false)
 		return -1;
 
-	write_file << "P3" << "\n" << PIXMAP_WIDTH << " " << PIXMAP_HEIGHT << "\n" << 255 << "\n";
+	write_file << "P3" << "\n" << BP_WIDTH << " " << BP_HEIGHT << "\n" << 255 << "\n";
 
-	for(int i = 0; i < PIXMAP_HEIGHT; i++) {
+	for(int i = 0; i < BP_HEIGHT; i++) {
 		
-		for(int j = 0; j < PIXMAP_WIDTH; j++) {
+		for(int j = 0; j < BP_WIDTH * 3; j++) {
 		
 			write_file << setfill(' ') << setw(3) << this->field[i][j] << " ";
 
@@ -77,11 +77,11 @@ int Pixmap::save(string path) {
 
 void Pixmap::show() {
 
-	cout << "P3" << "\n" << PIXMAP_WIDTH << " " << PIXMAP_HEIGHT << "\n" << 255 << "\n";
+	cout << "P3" << "\n" << BP_WIDTH << " " << BP_HEIGHT << "\n" << 255 << "\n";
 
-	for(int i = 0; i < PIXMAP_HEIGHT; i++) {
+	for(int i = 0; i < BP_HEIGHT; i++) {
 
-		for(int j = 0; j < PIXMAP_WIDTH; j++) {
+		for(int j = 0; j < BP_WIDTH * 3; j++) {
 		
 			cout << setfill(' ') << setw(3) << this->field[i][j] << " ";
 
@@ -92,3 +92,4 @@ void Pixmap::show() {
 		cout << "\n";
 	}
 }
+

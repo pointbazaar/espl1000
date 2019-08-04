@@ -18,8 +18,12 @@ Renderer::Renderer(int H, int W) {
 Pixmap Renderer::to_ppm(string text, int row) {
 
 	Pixmap pixmap;	
-
+	
 	ifstream bit_file;
+
+	string line = ""; int line_index = 0;
+
+	int r = 255; int g = 255; int b = 255;
 
 	for(int i = 0; i < text.length(); i++) {
 
@@ -37,29 +41,24 @@ Pixmap Renderer::to_ppm(string text, int row) {
 			pixmap.set_rgb(-1, 0, 0, 'r');
 			return pixmap;
 		}		
-	}
 
-	// saving color of letter...right now without syntax highlighting
-	int r = 255; int g = 255; int b = 255;
+		while(getline(bit_file, line)) {
 
-	string line = ""; int line_index = 0;
+			for(int j = 0; j < line.length(); j++) {
 
-	while(getline(bit_file, line)) {
+				if(line[j] == '0')
+					continue;
 
-		for(int i = 0; i < line.length(); i++) {
+				pixmap.set_rgb(r, line_index, (i*21) + j, 'r');
+				pixmap.set_rgb(g, line_index, (i*21) + j, 'g');
+				pixmap.set_rgb(b, line_index, (i*21) + j, 'b');
+			}
 
-			if(line[i] == '0')
-				continue;
-
-			pixmap.set_rgb(r, line_index, i, 'r');
-			pixmap.set_rgb(g, line_index, i, 'g');
-			pixmap.set_rgb(b, line_index, i, 'b');																			
+			line_index += 1;
 		}
 
-		line_index += 1;
-	}
-
-	bit_file.close();		
+		bit_file.close();
+	}		
 	
 	return pixmap;
 }

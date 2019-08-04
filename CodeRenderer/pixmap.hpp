@@ -11,8 +11,8 @@
 #define PIXEL_SET_FAILURE -1
 #define PIXEL_SET_SUCCESS 0
 
-#define PIXMAP_HEIGHT 7
-#define PIXMAP_WIDTH 21
+#define BP_HEIGHT 7
+#define BP_WIDTH 140
 #define DEFAULT_R 18
 #define DEFAULT_G 30
 #define DEFAULT_B 49
@@ -29,7 +29,7 @@ public:
 	void show();
 
 private:
-	int field[PIXMAP_HEIGHT][PIXMAP_WIDTH];
+	int field[BP_HEIGHT][BP_WIDTH * 3];
 	
 };
 
