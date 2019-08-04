@@ -11,7 +11,10 @@ public class MyImagePanel extends JPanel {
 
     public MyImagePanel(Image img){
         this.img=img;
-        this.setMinimumSize(new Dimension(200,20));
+        Dimension dim = new Dimension(DragonEditorWithImage.columns_per_line*DragonEditorWithImage.charSize,DragonEditorWithImage.charSize);
+        this.setMinimumSize(dim);
+        this.setPreferredSize(dim);
+        this.setBackground(DragonGUI_Editor.backgroundColor);
         this.setMaximumSize(new Dimension(1000,30));
     }
 

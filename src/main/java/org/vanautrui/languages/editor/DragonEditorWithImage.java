@@ -1,27 +1,19 @@
 package org.vanautrui.languages.editor;
 
-import com.sun.javafx.iio.ImageStorage;
-import org.apache.commons.io.IOUtils;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DragonEditorWithImage {
 
     private JPanel panel;
-    private JLabel picLabel;
+
     private DragonGUI_Editor master;
 
     private List<String> lines_in_editor=new ArrayList<>();
@@ -41,7 +33,8 @@ public class DragonEditorWithImage {
         this.panel.setBackground(DragonGUI_Editor.backgroundColor);
         this.panel.setMinimumSize(new Dimension(600, DragonGUI_Editor.middle_row_height));
         this.panel.setPreferredSize(new Dimension(600, DragonGUI_Editor.middle_row_height));
-
+        /*
+        JLabel picLabel;
 
         try {
             BufferedImage image = new BufferedImage(500, 20, BufferedImage.TYPE_INT_ARGB);
@@ -50,12 +43,14 @@ public class DragonEditorWithImage {
             Image read2 = read.getScaledInstance(20,20,Image.SCALE_DEFAULT);
 
 
-            this.picLabel = new JLabel(new ImageIcon(read2));
+            picLabel = new JLabel(new ImageIcon(read2));
         }catch (Exception e){
             e.printStackTrace();
         }
 
         this.panel.add(this.picLabel);
+
+         */
 
         this.panel.addKeyListener(new KeyListener() {
             @Override
@@ -97,7 +92,8 @@ public class DragonEditorWithImage {
         this.panel.add(makeImageForLine(this.lines_in_editor.get(this.current_line)), line);
         this.panel.updateUI();
     }
-
+    public static final int charSize=15;
+    public static final int columns_per_line = 20;
     private MyImagePanel makeImageForLine(String line) throws Exception{
 
         Runtime rt = Runtime.getRuntime();
@@ -111,9 +107,8 @@ public class DragonEditorWithImage {
 
         BufferedImage read = ImageIO.read(out);
         //BufferedImage read = ImageIO.
-        int charSize=20;
-        int columns = 50;
-        Image read2 = read.getScaledInstance(charSize*columns,charSize,Image.SCALE_DEFAULT);
+
+        Image read2 = read.getScaledInstance(charSize* columns_per_line,charSize,Image.SCALE_DEFAULT);
 
         return new MyImagePanel(read2);
     }
