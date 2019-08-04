@@ -26,7 +26,7 @@ Pixmap Renderer::to_ppm(string text, int row) {
 		// if text[i] belongs to keyword -> get color
 		// else get standard color		
 
-		string font_path = "/home/milo/Schreibtisch/Code/Projects/Interpreter/dragon/font/";
+		string font_path = "/home/alex/dragon/font/";
 		font_path += text[i];
 		font_path += ".dragonchar";
 
@@ -36,7 +36,8 @@ Pixmap Renderer::to_ppm(string text, int row) {
 
 			pixmap.set_rgb(-1, 0, 0, 'r');
 			return pixmap;
-		}		
+		}
+		bit_file.close();
 	}
 
 	// saving color of letter...right now without syntax highlighting
