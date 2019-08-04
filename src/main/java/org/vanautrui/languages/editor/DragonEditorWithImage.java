@@ -99,16 +99,11 @@ public class DragonEditorWithImage {
             this.panel.add(line_img);
             this.panel.add(new MyImagePanel(read2));
 
-
-            this.panel.updateUI(); //useless maybe
-            this.panel.setVisible(true); //useless maybe
+            //this.panel.setVisible(true);
+            this.panel.updateUI();
 
             System.out.println("try to append line");
 
-            JFrame frame2=  new JFrame("test");
-
-            frame2.add(line_img);
-            frame2.setVisible(true);
         }catch (Exception e){
             e.printStackTrace();
         }
