@@ -19,7 +19,7 @@ class Renderer {
 
 public:
 	Renderer(int H, int W);
-	Pixmap to_ppm(string text, int row);
+	Pixmap to_ppm(string text, int row, int cursor_position);
 
 private:
 	int height;

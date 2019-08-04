@@ -110,7 +110,7 @@ public class DragonEditorWithImage {
     private MyImagePanel makeImageForLine(String line) throws Exception{
 
         Runtime rt = Runtime.getRuntime();
-        Process pr = rt.exec("./CodeRenderer/crend -l 1 ");
+        Process pr = rt.exec("./CodeRenderer/crend -l 1 --cursor-position "+this.cursor_col);
         OutputStream in = pr.getOutputStream();
         in.write((line+"\n").getBytes());
         in.flush();

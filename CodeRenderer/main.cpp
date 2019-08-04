@@ -35,6 +35,9 @@ int main(int argc, char** argv) {
 
     //crend -l 4
     int line = atoi(argv[2]);
+    
+    //crend -l 4 --cursor-pos 12
+    int cursor_position = atoi(argv[4]);
 
     string input;
     //read the input
@@ -46,7 +49,8 @@ int main(int argc, char** argv) {
 
 	Renderer rend(7, 7);	
 
-	Pixmap pixmap = rend.to_ppm(input, line);	// toDo: Convert argv[4] to Integer and pass to Render::rend
+	Pixmap pixmap = rend.to_ppm(input, line,cursor_position);	
+	// toDo: Convert argv[4] to Integer and pass to Render::rend
 
 	pixmap.save("/home/alex/a.ppm");
 
