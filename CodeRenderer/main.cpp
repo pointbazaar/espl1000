@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
 
 	Pixmap pixmap = rend.to_ppm(argv[2], 1);	// toDo: Convert argv[4] to Integer and pass to Render::rend
 
-	pixmap.save("/home/milo/Schreibtisch/Code/Projects/CodeRender/a.ppm");
+	pixmap.save("/home/alex/a.ppm");
 
 	pixmap.show();
 	

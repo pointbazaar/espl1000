@@ -111,7 +111,9 @@ public class DragonEditorWithImage {
 
         BufferedImage read = ImageIO.read(out);
         //BufferedImage read = ImageIO.
-        Image read2 = read.getScaledInstance(20,20,Image.SCALE_DEFAULT);
+        int charSize=20;
+        int columns = 50;
+        Image read2 = read.getScaledInstance(charSize*columns,charSize,Image.SCALE_DEFAULT);
 
         return new MyImagePanel(read2);
     }
