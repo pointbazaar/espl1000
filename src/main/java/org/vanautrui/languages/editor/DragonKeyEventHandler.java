@@ -80,6 +80,11 @@ public class DragonKeyEventHandler {
                         }
                         break;
                     case "KEY_TYPED":
+                        try {
+                            master.editorWithImage.get().writeCharcter(e.getKeyChar());
+                        }catch (Exception ee){
+                            ee.printStackTrace();
+                        }
                         break;
                 }
                 System.out.println(key_event_type);
@@ -93,7 +98,7 @@ public class DragonKeyEventHandler {
                 System.out.println("keycode for ctrl : "+KeyEvent.VK_CONTROL);
 
                 //debug
-                master.editorWithImage.get().appendLineTest();
+                //master.editorWithImage.get().appendLineTest();
 
                 return true;
 

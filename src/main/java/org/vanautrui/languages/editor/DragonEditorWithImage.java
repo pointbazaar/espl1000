@@ -24,13 +24,13 @@ public class DragonEditorWithImage {
     private JLabel picLabel;
     private DragonGUI_Editor master;
 
-    private static final Dimension dim = new Dimension(400,400);
-
     private List<String> lines_in_editor=new ArrayList<>();
+    private int current_line=0;
 
     public DragonEditorWithImage(DragonGUI_Editor master1) {
         this.master = master1;
         this.panel = new JPanel();
+        this.lines_in_editor.add("");
 
         this.panel.setBorder(BorderFactory.createLineBorder(Color.white));
 
@@ -75,12 +75,45 @@ public class DragonEditorWithImage {
         });
     }
 
-    private void updateContents(){
-        this.panel.removeAll();
-
-        for(String s : this.lines_in_editor){
-
+    public void arrowUpChangeLine(){
+        //TODO
+    }
+    public void arrowDownChangeLine(){
+        //TODO
+    }
+    public void writeCharcter(char c) throws Exception{
+        this.lines_in_editor.set(
+                this.current_line,
+                this.lines_in_editor.get(current_line)+c
+        );
+        updateJLabelOnLine(this.current_line);
+    }
+    private void updateJLabelOnLine(int line) throws Exception{
+        try {
+            this.panel.remove(line);
+        }catch (Exception e){
+            //
         }
+        this.panel.add(makeImageForLine(this.lines_in_editor.get(this.current_line)), line);
+        this.panel.updateUI();
+    }
+
+    private MyImagePanel makeImageForLine(String line) throws Exception{
+
+        Runtime rt = Runtime.getRuntime();
+        Process pr = rt.exec("./CodeRenderer/crend -r "+line+" -l 1 ");
+        pr.waitFor();
+
+        //pr.exitValue()
+
+        InputStream out = pr.getInputStream();
+        //String s = IOUtils.toString(out);
+
+        BufferedImage read = ImageIO.read(out);
+        //BufferedImage read = ImageIO.
+        Image read2 = read.getScaledInstance(20,20,Image.SCALE_DEFAULT);
+
+        return new MyImagePanel(read2);
     }
 
     public void appendLineTest(){
@@ -89,13 +122,11 @@ public class DragonEditorWithImage {
             String line="A";
 
             Process pr = rt.exec("./CodeRenderer/crend -r "+line+" -l 1");
-            //wait for the renderer to terminate
             pr.waitFor();
 
             InputStream out = pr.getInputStream();
             //String image_in_ppm_format = IOUtils.toString(out);
 
-            //System.out.println("crend gave us : ");
             //System.out.println(image_in_ppm_format);
 
             BufferedImage read = ImageIO.read(out);
