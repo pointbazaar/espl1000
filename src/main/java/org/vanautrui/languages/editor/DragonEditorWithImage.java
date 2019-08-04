@@ -20,7 +20,10 @@ public class DragonEditorWithImage {
     private DragonGUI_Editor master;
 
     private List<String> lines_in_editor=new ArrayList<>();
-    private int current_line=0;
+
+    private int cursor_line =0;
+    private int cursor_col=0;
+
 
     public static final int charSize=15;
     public static final int max_columns_per_line = 40;
@@ -83,15 +86,16 @@ public class DragonEditorWithImage {
         //TODO
     }
     public void writeCharcter(char c) throws Exception{
-        if(this.lines_in_editor.get(this.current_line).length()==max_columns_per_line){
+        if(this.lines_in_editor.get(this.cursor_line).length()==max_columns_per_line){
             throw new Exception("line too long already");
         }
 
+        this.cursor_col++;
         this.lines_in_editor.set(
-                this.current_line,
-                this.lines_in_editor.get(current_line)+c
+                this.cursor_line,
+                this.lines_in_editor.get(cursor_line)+c
         );
-        updateJLabelOnLine(this.current_line);
+        updateJLabelOnLine(this.cursor_line);
     }
     private void updateJLabelOnLine(int line) throws Exception{
         try {
@@ -99,11 +103,9 @@ public class DragonEditorWithImage {
         }catch (Exception e){
             //
         }
-        this.panel.add(makeImageForLine(this.lines_in_editor.get(this.current_line)), line);
+        this.panel.add(makeImageForLine(this.lines_in_editor.get(line)), line);
         this.panel.updateUI();
     }
-
-
 
     private MyImagePanel makeImageForLine(String line) throws Exception{
 
@@ -169,5 +171,42 @@ public class DragonEditorWithImage {
     public JPanel getImage(){
 
         return this.panel;
+    }
+
+    public void pressEnter() {
+
+        if(this.cursor_col==0){
+            //if at beginning of line, insert new line, increment cursor
+            this.lines_in_editor.add(this.cursor_line,"");
+            this.cursor_line++;
+
+
+        }else if(this.cursor_col==this.lines_in_editor.get(this.cursor_line).length()){
+            //cursor at end of line
+            this.lines_in_editor.add(this.cursor_line+1,"");
+            this.cursor_line++;
+            this.cursor_col=0;
+
+
+        }else{
+            //cursor is in the middle of a line
+            //if in the middle of a line, split that line, increment cursor
+
+            String beforeCursor = this.lines_in_editor.get(this.cursor_line).substring(this.cursor_col);
+            String afterCursor = this.lines_in_editor.get(this.cursor_line).substring(this.cursor_col);
+            this.lines_in_editor.set(this.cursor_line,beforeCursor);
+            this.lines_in_editor.add(this.cursor_line+1,afterCursor);
+
+            this.cursor_col=0;
+            this.cursor_line++;
+        }
+
+        //update the Images of the respective lines to reflect the changes
+        try {
+            updateJLabelOnLine(this.cursor_line - 1);
+            updateJLabelOnLine(this.cursor_line);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

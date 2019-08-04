@@ -75,7 +75,8 @@ public class DragonKeyEventHandler {
                             System.out.println("TODO : switch project view");
                         }
 
-                        if(e.getKeyCode()==KeyCode.ENTER.ordinal()){
+                        if(e.getKeyCode()==10){
+                            master.editorWithImage.get().pressEnter();
                             System.out.println("ENTER");
                         }
                         break;
@@ -99,7 +100,7 @@ public class DragonKeyEventHandler {
                 System.out.println("keycode: "+e.getKeyCode());
                 System.out.println("key dispatch: "+e.getKeyChar());
 
-                System.out.println("keycode for ctrl : "+KeyEvent.VK_CONTROL);
+                //System.out.println("keycode for ctrl : "+KeyEvent.VK_CONTROL);
 
                 //debug
                 //master.editorWithImage.get().appendLineTest();
