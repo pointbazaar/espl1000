@@ -21,12 +21,11 @@ Pixmap Renderer::to_ppm(string text, int row) {
 	
 	ifstream bit_file;
 
-	string line = ""; int line_index = 0;
+	string line = ""; 
 
 	int r = 255; int g = 255; int b = 255;
 
 	for(int i = 0; i < text.length(); i++) {
-
 		// if text[i] belongs to keyword -> get color
 		// else get standard color		
 
@@ -39,8 +38,12 @@ Pixmap Renderer::to_ppm(string text, int row) {
 		if(bit_file.good() == false) {
 
 			pixmap.set_rgb(-1, 0, 0, 'r');
-			return pixmap;
+			cout << "bit file was not good " << endl;
+			exit(1);
+			//return pixmap;
 		}		
+		
+		int line_index = 0;
 
 		while(getline(bit_file, line)) {
 
@@ -48,10 +51,10 @@ Pixmap Renderer::to_ppm(string text, int row) {
 
 				if(line[j] == '0')
 					continue;
-
-				pixmap.set_rgb(r, line_index, (i*21) + j, 'r');
-				pixmap.set_rgb(g, line_index, (i*21) + j, 'g');
-				pixmap.set_rgb(b, line_index, (i*21) + j, 'b');
+                                    // x        // y
+				pixmap.set_rgb(r, line_index, (i*7) + j, 'r');
+				pixmap.set_rgb(g, line_index, (i*7) + j, 'g');
+				pixmap.set_rgb(b, line_index, (i*7) + j, 'b');
 			}
 
 			line_index += 1;

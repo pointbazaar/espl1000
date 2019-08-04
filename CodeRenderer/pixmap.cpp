@@ -31,18 +31,27 @@ Pixmap::Pixmap() {
 
 int Pixmap::set_rgb(int value, int x, int y, char rgb_mode) {
 
-	if(!(x >= 0 && x < BP_HEIGHT))
-		return PIXEL_SET_FAILURE;
+	if(x < 0 || x >= BP_HEIGHT){
+		cout << "x not in bounds in set_rgb" << endl;
+		exit(1);
+	}
+		//return PIXEL_SET_FAILURE;
 
-	if(!(y >= 0 && y < BP_WIDTH * 3))
-		return PIXEL_SET_FAILURE;
+	if(y < 0 || y >= BP_WIDTH * 3){
+		cout << "y not in bounds in set_rgb" << endl;
+		exit(1);
+	}
+		//return PIXEL_SET_FAILURE;
 
 	switch(rgb_mode) {
 
 		case 'r': this->field[x][ (y*3) + 0 ] = value; break;
 		case 'g': this->field[x][ (y*3) + 1 ] = value; break;
 		case 'b': this->field[x][ (y*3) + 2 ] = value; break;
-		default: return PIXEL_SET_FAILURE;
+		default: 
+			cout << "rgb mode not right in set_rgb" << endl;
+			exit(1);
+			//return PIXEL_SET_FAILURE;
 	}
 
 	return PIXEL_SET_SUCCESS;

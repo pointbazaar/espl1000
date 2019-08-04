@@ -13,6 +13,7 @@
 
 #define BP_HEIGHT 7
 #define BP_WIDTH 140
+
 #define DEFAULT_R 18
 #define DEFAULT_G 30
 #define DEFAULT_B 49
