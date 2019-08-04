@@ -57,7 +57,7 @@ int Pixmap::save(string path) {
 	if(write_file.good() == false)
 		return -1;
 
-	write_file << "P3" << "\n" << PIXMAP_WIDTH << " " << PIXMAP_HEIGHT << "\n" << 255 << "\n";
+	write_file << "P3" << "\n" << PIXMAP_WIDTH / 3 << " " << PIXMAP_HEIGHT << "\n" << 255 << "\n";
 
 	for(int i = 0; i < PIXMAP_HEIGHT; i++) {
 		
@@ -77,7 +77,7 @@ int Pixmap::save(string path) {
 
 void Pixmap::show() {
 
-	cout << "P3" << "\n" << PIXMAP_WIDTH << " " << PIXMAP_HEIGHT << "\n" << 255 << "\n";
+	cout << "P3" << "\n" << PIXMAP_WIDTH / 3 << " " << PIXMAP_HEIGHT << "\n" << 255 << "\n";
 
 	for(int i = 0; i < PIXMAP_HEIGHT; i++) {
 
