@@ -6,9 +6,11 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,15 +68,20 @@ public class DragonProjectArea {
         return result;
     }
 
-    private boolean deepContainsNoFiles(File file)throws Exception{
+    private boolean deepContainsNoFiles(File file){
 
         if(file.isFile()){return false;}
 
         if(file.isDirectory()){
 
-            java.util.List<File> files = Files.list(file.toPath()).map(
-                    Path::toFile
-            ).collect(Collectors.toList());
+            List<File> files = new ArrayList<>();
+            try {
+                files = Files.list(file.toPath()).map(
+                        Path::toFile
+                ).collect(Collectors.toList());
+            } catch (IOException e) {
+                //maybe access is not allowed
+            }
 
             if(files.size()==0 ){
                 return true;
