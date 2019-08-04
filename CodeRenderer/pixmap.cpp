@@ -73,6 +73,8 @@ int Pixmap::save(string path) {
 	}
 
 	write_file.close();
+	
+	return 0;
 }
 
 void Pixmap::show() {
