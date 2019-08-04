@@ -1,6 +1,7 @@
 package org.vanautrui.languages.editor;
 
 import com.sun.javafx.iio.ImageStorage;
+import org.apache.commons.io.IOUtils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -10,7 +11,11 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class DragonEditorWithImage {
 
@@ -38,7 +43,11 @@ public class DragonEditorWithImage {
 
         try {
             BufferedImage image = new BufferedImage(500, 20, BufferedImage.TYPE_INT_ARGB);
+
+
             BufferedImage read = ImageIO.read(Paths.get("test.ppm").toFile());
+
+
             this.picLabel = new JLabel(new ImageIcon(read));
         }catch (Exception e){
             e.printStackTrace();
@@ -62,6 +71,25 @@ public class DragonEditorWithImage {
                 System.out.println("Key :"+e.getKeyChar());
             }
         });
+    }
+
+    public void appendLineTest(){
+        try {
+            Runtime rt = Runtime.getRuntime();
+            String line="A";
+
+            Process pr = rt.exec("./Interpreter/crend -r "+line+" -l 1");
+            //wait for the renderer to terminate
+            pr.waitFor();
+
+            InputStream out = pr.getInputStream();
+            String image_in_ppm_format = IOUtils.toString(out);
+
+            System.out.println("crend gave us : ");
+            System.out.println(image_in_ppm_format);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public JPanel getImage(){
