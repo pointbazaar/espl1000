@@ -50,7 +50,7 @@ int Pixmap::set_rgb(int value, int x, int y, char rgb_mode) {
 
 int Pixmap::save(string path) {
 	
-	ofstream write_file(path, ios::out | ios::trunc);
+	ofstream write_file(path, ios::out);
 
 	string line = "";
 
