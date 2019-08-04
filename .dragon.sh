@@ -13,9 +13,17 @@ function dragon(){
 	java -jar ~/dragon/target/dragon-0.1-jar-with-dependencies.jar "$@"
 }
 
-function dge(){
-    #dragon editor
+function dge-debug(){
+    #dragon editor, with terminal output,
+    #to debug it
+    echo "starting dragon editor in debug mode"
     dragon -e "$@"
+}
+
+function dge(){
+    #dragon editor without terminal output
+    echo "starting dragon editor"
+    dragon -e "$@" </dev/null &>/dev/null &
 }
 
 function dgc(){

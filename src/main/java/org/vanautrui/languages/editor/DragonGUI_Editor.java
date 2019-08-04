@@ -32,6 +32,7 @@ public class DragonGUI_Editor {
 
     private JFrame frame;
 
+
     //https://docs.oracle.com/javase/tutorial/uiswing/components/tree.html
 
     //public Optional<DragonEditorArea> editorArea;
@@ -42,10 +43,11 @@ public class DragonGUI_Editor {
 
     public Optional<DragonKeyEventHandler> keyEventHandler;
 
+
+
     public DragonGUI_Editor(){
 
         set_dark_ui();
-
         this.frame = new JFrame("Dragon Editor");
 
         this.frame.setBackground(backgroundColor);
@@ -99,7 +101,6 @@ public class DragonGUI_Editor {
         horizontal_panel.add(this.contextArea.get().make());
 
         frame.setVisible(true);
-
     }
 
 

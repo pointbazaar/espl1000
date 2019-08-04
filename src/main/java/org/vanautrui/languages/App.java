@@ -23,6 +23,8 @@ public class App {
 
     public static void main(String[] args) {
 
+        System.out.println("starting dragon");
+
         try_generate_some_bytecode();
         //https://www.javassist.org/
         //we could use this dependency to make our classes
