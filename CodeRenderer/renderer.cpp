@@ -30,7 +30,7 @@ Pixmap Renderer::to_ppm(string text, int row) {
 		// if text[i] belongs to keyword -> get color
 		// else get standard color		
 
-		string font_path = "/home/milo/Schreibtisch/Code/Projects/Interpreter/dragon/font/";
+		string font_path = "/home/alex/dragon/font/";
 		font_path += text[i];
 		font_path += ".dragonchar";
 
