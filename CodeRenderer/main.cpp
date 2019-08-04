@@ -16,26 +16,37 @@ bool is_digit(string input);
 
 int main(int argc, char** argv) {
 
-	if(argc < 5)
-		printex("Usage: -r <text to render> -l <line> [optional: --save]");	
+	//if(argc < 5)
+	//	printex("Usage: -r <text to render> -l <line> [optional: --save]");
 
 	vector <string> arg_ls;
 
-	for(int i = 1; i < 5; i++)
-		arg_ls.push_back(argv[i]);
+	//for(int i = 1; i < 5; i++)
+	//	arg_ls.push_back(argv[i]);
 
-	if(arg_ls[0] != "-r")
-		printex("Unknown Option...Try -r instead.");
+	//if(arg_ls[0] != "-r")
+	//	printex("Unknown Option...Try -r instead.");
 
-	if(arg_ls[2] != "-l")
-		printex("Unknown Option...Try -l instead.");
+	//if(arg_ls[2] != "-l")
+	//	printex("Unknown Option...Try -l instead.");
 
-	if(is_digit(arg_ls[3]) == false)
-		printex("Invalid argument for Option -l ...Needed: Integer");
-		
+	//if(is_digit(arg_ls[3]) == false)
+	//	printex("Invalid argument for Option -l ...Needed: Integer");
+
+    //crend -l 4
+    int line = atoi(argv[2]);
+
+    string input;
+    //read the input
+    //cin >> input;
+    getline(cin,input);
+
+    //cout << input << endl;
+    //exit(1);
+
 	Renderer rend(7, 7);	
 
-	Pixmap pixmap = rend.to_ppm(argv[2], 1);	// toDo: Convert argv[4] to Integer and pass to Render::rend
+	Pixmap pixmap = rend.to_ppm(input, line);	// toDo: Convert argv[4] to Integer and pass to Render::rend
 
 	pixmap.save("/home/alex/a.ppm");
 

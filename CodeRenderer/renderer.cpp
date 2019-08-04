@@ -31,8 +31,12 @@ Pixmap Renderer::to_ppm(string text, int row) {
 
 		switch(text[i]) {   // managing invalid paths
 
-		    case ' ': font_path += "space"; break;
-		    default: font_path += text[i]; break;
+		    case ' ':
+		        font_path += "space";
+		        break;
+		    default:
+		        font_path += text[i];
+		        break;
 		}
 
 		font_path += ".dragonchar";

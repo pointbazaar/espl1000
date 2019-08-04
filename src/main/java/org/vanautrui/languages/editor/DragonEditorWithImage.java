@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,7 +100,10 @@ public class DragonEditorWithImage {
     private MyImagePanel makeImageForLine(String line) throws Exception{
 
         Runtime rt = Runtime.getRuntime();
-        Process pr = rt.exec("./CodeRenderer/crend -r "+line+" -l 1 ");
+        Process pr = rt.exec("./CodeRenderer/crend -l 1 ");
+        OutputStream in = pr.getOutputStream();
+        in.write((line+"\n").getBytes());
+        in.flush();
         pr.waitFor();
 
         int exit_value = pr.exitValue();
