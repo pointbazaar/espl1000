@@ -13,8 +13,25 @@ function dragon(){
 	java -jar ~/dragon/target/dragon-0.1-jar-with-dependencies.jar "$@"
 }
 
+function dge(){
+    #dragon editor
+    dragon -e "$@"
+}
+
+function dgc(){
+    #run dragon compiler
+    dragon -c "$@"
+}
+
 function dg(){
-	dragon "$@"
+    echo "to open project: "
+	echo "dge (file* | directory) "
+	echo ""
+	echo "to open editor with empty buffer: "
+	echo "dge"
+	echo ""
+	echo "to compile:"
+	echo "dgc (file* | directory) "
 }
 
 function dri(){
