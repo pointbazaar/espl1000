@@ -1,5 +1,7 @@
 package org.vanautrui.languages.editor;
 
+import org.apache.commons.io.IOUtils;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -100,7 +102,12 @@ public class DragonEditorWithImage {
         Process pr = rt.exec("./CodeRenderer/crend -r "+line+" -l 1 ");
         pr.waitFor();
 
-        //pr.exitValue()
+        int exit_value = pr.exitValue();
+        if(exit_value!=0){
+            System.out.println("error in makeImageForLine, crend exited with nonzero exit value");
+            System.out.println(IOUtils.toString(pr.getInputStream()));
+            System.exit(1);
+        }
 
         InputStream out = pr.getInputStream();
         //String s = IOUtils.toString(out);
