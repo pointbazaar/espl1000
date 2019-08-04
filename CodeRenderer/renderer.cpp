@@ -9,9 +9,6 @@
 #include "renderer.hpp"
 #include "pixmap.hpp"
 
-//#define PATH "/home/milo/Schreibtisch/Code/Projects/CodeRender/test"
-#define PATH "/home/alex/dragon/CodeRenderer/test"
-
 Renderer::Renderer(int H, int W) {
 
 	this->height = H;
@@ -22,22 +19,24 @@ Pixmap Renderer::to_ppm(string text, int row) {
 
 	Pixmap pixmap;	
 
-	ifstream bit_file(PATH);
-
-	if(bit_file.good() == false) {
-	
-		pixmap.set_rgb(-1, 0, 0, 'r');
-		return pixmap;
-	}
+	ifstream bit_file;
 
 	for(int i = 0; i < text.length(); i++) {
 
 		// if text[i] belongs to keyword -> get color
-		// else get standard color
+		// else get standard color		
 
-		// mapping color to RGB
+		string font_path = "/home/milo/Schreibtisch/Code/Projects/Interpreter/dragon/font/";
+		font_path += text[i];
+		font_path += ".dragonchar";
 
-		// select correct Bitmap File and open (based on text[i])
+		bit_file.open(font_path);
+
+		if(bit_file.good() == false) {
+
+			pixmap.set_rgb(-1, 0, 0, 'r');
+			return pixmap;
+		}		
 	}
 
 	// saving color of letter...right now without syntax highlighting

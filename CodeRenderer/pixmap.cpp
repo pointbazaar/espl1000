@@ -50,14 +50,14 @@ int Pixmap::set_rgb(int value, int x, int y, char rgb_mode) {
 
 int Pixmap::save(string path) {
 	
-	ofstream write_file(path, ios::out);
+	ofstream write_file(path, ios::out | ios::trunc);
 
 	string line = "";
 
 	if(write_file.good() == false)
 		return -1;
 
-	write_file << "P3" << "\n" << PIXMAP_WIDTH / 3 << " " << PIXMAP_HEIGHT << "\n" << 255 << "\n";
+	write_file << "P3" << "\n" << PIXMAP_WIDTH << " " << PIXMAP_HEIGHT << "\n" << 255 << "\n";
 
 	for(int i = 0; i < PIXMAP_HEIGHT; i++) {
 		
@@ -73,13 +73,11 @@ int Pixmap::save(string path) {
 	}
 
 	write_file.close();
-	
-	return 0;
 }
 
 void Pixmap::show() {
 
-	cout << "P3" << "\n" << PIXMAP_WIDTH / 3 << " " << PIXMAP_HEIGHT << "\n" << 255 << "\n";
+	cout << "P3" << "\n" << PIXMAP_WIDTH << " " << PIXMAP_HEIGHT << "\n" << 255 << "\n";
 
 	for(int i = 0; i < PIXMAP_HEIGHT; i++) {
 
