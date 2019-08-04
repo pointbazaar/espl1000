@@ -32,10 +32,18 @@ int GTree::init(string path) {
 	while(getline(File, line)) {
 
 		struct Node* parent = this->root;
-	
-		for(int i = 0; i < line.length(); i++) {
 
-			int link_id = get_id(line[i]);  
+		int pos = line.find(",");
+
+		if(pos == string::npos)
+		    return INIT_FAILURE;
+
+		string key_sub = line.substr(0, pos);
+		string color_sub = line.substr(pos + 1, line.length());
+	
+		for(int i = 0; i < key_sub.length(); i++) {
+
+			int link_id = get_id(key_sub[i]);
 
 			if(link_id == NONE)
 				return INIT_FAILURE;
@@ -47,7 +55,8 @@ int GTree::init(string path) {
 		}
 
 		parent->valid = true;
-		parent->keyword = line;
+		parent->keyword = key_sub;
+	    parent->color = color_sub;
 	}
 
 	return INIT_SUCCESS;
@@ -118,6 +127,16 @@ string GTree::complete(string token) {
 		level.pop();
 	}
 	
+}
+
+string GTree::get_color(string token) {
+
+    struct Node* parent = jump_to(this->root, token);
+
+    if(parent == NULL)
+        return "white";
+
+    return parent->color;
 }
 
 struct Node* jump_to(struct Node* entry, string token) {

@@ -26,11 +26,15 @@ Pixmap Renderer::to_ppm(string text, int row) {
 	int r = 255; int g = 255; int b = 255;
 
 	for(int i = 0; i < text.length(); i++) {
-		// if text[i] belongs to keyword -> get color
-		// else get standard color		
 
 		string font_path = "/home/alex/dragon/font/";
-		font_path += text[i];
+
+		switch(text[i]) {   // managing invalid paths
+
+		    case ' ': font_path += "space"; break;
+		    default: font_path += text[i]; break;
+		}
+
 		font_path += ".dragonchar";
 
 		bit_file.open(font_path);
@@ -51,7 +55,7 @@ Pixmap Renderer::to_ppm(string text, int row) {
 
 				if(line[j] == '0')
 					continue;
-                                    // x        // y
+
 				pixmap.set_rgb(r, line_index, (i*7) + j, 'r');
 				pixmap.set_rgb(g, line_index, (i*7) + j, 'g');
 				pixmap.set_rgb(b, line_index, (i*7) + j, 'b');

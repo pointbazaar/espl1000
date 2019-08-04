@@ -18,6 +18,8 @@ struct Node {
 
 	bool valid;
 	string keyword;
+	string color;
+
 	struct Node* link[IN_SIZE];
 
 	struct Node* add() {
@@ -39,6 +41,7 @@ public:
 	int init(string path);
 	bool validate(string token);
 	string complete(string token);
+	string get_color(string token);
 	
 private:
 	struct Node* root;	
