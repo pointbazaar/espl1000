@@ -22,6 +22,9 @@ public class DragonEditorWithImage {
     private List<String> lines_in_editor=new ArrayList<>();
     private int current_line=0;
 
+    public static final int charSize=15;
+    public static final int max_columns_per_line = 40;
+
     public DragonEditorWithImage(DragonGUI_Editor master1) {
         this.master = master1;
         this.panel = new JPanel();
@@ -80,6 +83,10 @@ public class DragonEditorWithImage {
         //TODO
     }
     public void writeCharcter(char c) throws Exception{
+        if(this.lines_in_editor.get(this.current_line).length()==max_columns_per_line){
+            throw new Exception("line too long already");
+        }
+
         this.lines_in_editor.set(
                 this.current_line,
                 this.lines_in_editor.get(current_line)+c
@@ -95,8 +102,9 @@ public class DragonEditorWithImage {
         this.panel.add(makeImageForLine(this.lines_in_editor.get(this.current_line)), line);
         this.panel.updateUI();
     }
-    public static final int charSize=15;
-    public static final int columns_per_line = 20;
+
+
+
     private MyImagePanel makeImageForLine(String line) throws Exception{
 
         Runtime rt = Runtime.getRuntime();
@@ -119,7 +127,7 @@ public class DragonEditorWithImage {
         BufferedImage read = ImageIO.read(out);
         //BufferedImage read = ImageIO.
 
-        Image read2 = read.getScaledInstance(charSize* columns_per_line,charSize,Image.SCALE_DEFAULT);
+        Image read2 = read.getScaledInstance(charSize* max_columns_per_line,charSize,Image.SCALE_DEFAULT);
 
         return new MyImagePanel(read2);
     }

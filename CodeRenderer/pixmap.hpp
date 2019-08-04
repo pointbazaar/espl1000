@@ -11,8 +11,9 @@
 #define PIXEL_SET_FAILURE -1
 #define PIXEL_SET_SUCCESS 0
 
+//means 40 characters maximum, per line
 #define BP_HEIGHT 7
-#define BP_WIDTH 140
+#define BP_WIDTH 280
 
 #define DEFAULT_R 18
 #define DEFAULT_G 30

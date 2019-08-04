@@ -80,8 +80,12 @@ public class DragonKeyEventHandler {
                         }
                         break;
                     case "KEY_TYPED":
+                        boolean is_allowed_char = e.getKeyChar() >= 'a' && e.getKeyChar() <= 'z';
+                        is_allowed_char |= e.getKeyChar()==' ';
                         try {
-                            master.editorWithImage.get().writeCharcter(e.getKeyChar());
+                            if(is_allowed_char) {
+                                master.editorWithImage.get().writeCharcter(e.getKeyChar());
+                            }
                         }catch (Exception ee){
                             ee.printStackTrace();
                         }
