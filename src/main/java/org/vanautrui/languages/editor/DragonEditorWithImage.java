@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class DragonEditorWithImage {
@@ -23,8 +24,9 @@ public class DragonEditorWithImage {
     private JLabel picLabel;
     private DragonGUI_Editor master;
 
-
     private static final Dimension dim = new Dimension(400,400);
+
+    private List<String> lines_in_editor=new ArrayList<>();
 
     public DragonEditorWithImage(DragonGUI_Editor master1) {
         this.master = master1;
@@ -34,7 +36,7 @@ public class DragonEditorWithImage {
 
         //setting layout manager and preferred size correctly makes it
         //appear in the correct size.
-        this.panel.setLayout(new FlowLayout());
+        this.panel.setLayout(new BoxLayout(this.panel,BoxLayout.Y_AXIS));
 
         this.panel.setBackground(DragonGUI_Editor.backgroundColor);
         this.panel.setMinimumSize(new Dimension(600, DragonGUI_Editor.middle_row_height));
@@ -73,6 +75,14 @@ public class DragonEditorWithImage {
         });
     }
 
+    private void updateContents(){
+        this.panel.removeAll();
+
+        for(String s : this.lines_in_editor){
+
+        }
+    }
+
     public void appendLineTest(){
         try {
             Runtime rt = Runtime.getRuntime();
@@ -96,7 +106,7 @@ public class DragonEditorWithImage {
             JLabel line_img = new JLabel(new ImageIcon(read2));
             line_img.setMinimumSize(new Dimension(20,20));
 
-            this.panel.add(line_img);
+            //this.panel.add(line_img);
             this.panel.add(new MyImagePanel(read2));
 
             //this.panel.setVisible(true);

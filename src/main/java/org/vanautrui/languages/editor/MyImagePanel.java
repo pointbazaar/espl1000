@@ -11,6 +11,8 @@ public class MyImagePanel extends JPanel {
 
     public MyImagePanel(Image img){
         this.img=img;
+        this.setMinimumSize(new Dimension(200,20));
+        this.setMaximumSize(new Dimension(1000,30));
     }
 
     @Override
