@@ -43,6 +43,8 @@ public class DragonKeyEventHandler {
                 //System.out.println(e.toString());
                 //System.out.println(e.paramString());
 
+
+
                 //TODO: this refers to the physical key. if you are using another layout, it doesnt work. fix it.
                 KeyEvent myKeyEvent = new KeyEvent(master.contextArea.get().make(),0,0,e.getModifiers(),e.getExtendedKeyCode());
 
@@ -88,8 +90,10 @@ public class DragonKeyEventHandler {
                 System.out.println("keycode: "+e.getKeyCode());
                 System.out.println("key dispatch: "+e.getKeyChar());
 
+                System.out.println("keycode for ctrl : "+KeyEvent.VK_CONTROL);
+
                 //debug
-                //master.editorWithImage.get().appendLineTest();
+                master.editorWithImage.get().appendLineTest();
 
                 return true;
 

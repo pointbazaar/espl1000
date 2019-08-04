@@ -44,11 +44,11 @@ public class DragonEditorWithImage {
         try {
             BufferedImage image = new BufferedImage(500, 20, BufferedImage.TYPE_INT_ARGB);
 
-
             BufferedImage read = ImageIO.read(Paths.get("test.ppm").toFile());
+            Image read2 = read.getScaledInstance(20,20,Image.SCALE_DEFAULT);
 
 
-            this.picLabel = new JLabel(new ImageIcon(read));
+            this.picLabel = new JLabel(new ImageIcon(read2));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -78,15 +78,37 @@ public class DragonEditorWithImage {
             Runtime rt = Runtime.getRuntime();
             String line="A";
 
-            Process pr = rt.exec("./Interpreter/crend -r "+line+" -l 1");
+            Process pr = rt.exec("./CodeRenderer/crend -r "+line+" -l 1");
             //wait for the renderer to terminate
             pr.waitFor();
 
             InputStream out = pr.getInputStream();
-            String image_in_ppm_format = IOUtils.toString(out);
+            //String image_in_ppm_format = IOUtils.toString(out);
 
-            System.out.println("crend gave us : ");
-            System.out.println(image_in_ppm_format);
+            //System.out.println("crend gave us : ");
+            //System.out.println(image_in_ppm_format);
+
+            BufferedImage read = ImageIO.read(out);
+            //BufferedImage read = new BufferedImage(30,30, ImageStorage.ImageType.RGB);
+            Image read2 = read.getScaledInstance(20,20,Image.SCALE_DEFAULT);
+
+            //TODO: figure out why this is not visible
+            JLabel line_img = new JLabel(new ImageIcon(read2));
+            line_img.setMinimumSize(new Dimension(20,20));
+
+            this.panel.add(line_img);
+            this.panel.add(new MyImagePanel(read2));
+
+
+            this.panel.updateUI(); //useless maybe
+            this.panel.setVisible(true); //useless maybe
+
+            System.out.println("try to append line");
+
+            JFrame frame2=  new JFrame("test");
+
+            frame2.add(line_img);
+            frame2.setVisible(true);
         }catch (Exception e){
             e.printStackTrace();
         }

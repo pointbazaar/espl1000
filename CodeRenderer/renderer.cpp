@@ -9,7 +9,8 @@
 #include "renderer.hpp"
 #include "pixmap.hpp"
 
-#define PATH "/home/milo/Schreibtisch/Code/Projects/CodeRender/test"
+//#define PATH "/home/milo/Schreibtisch/Code/Projects/CodeRender/test"
+#define PATH "/home/alex/dragon/CodeRenderer/test"
 
 Renderer::Renderer(int H, int W) {
 
