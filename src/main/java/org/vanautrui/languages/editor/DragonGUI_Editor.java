@@ -28,7 +28,7 @@ public class DragonGUI_Editor {
 
     public static final int middle_row_height=600;
 
-    public static final Color backgroundColor = new Color(10,10,10,255);
+    public static final Color backgroundColor = new Color(18,30,49,255);
 
     private JFrame frame;
 
