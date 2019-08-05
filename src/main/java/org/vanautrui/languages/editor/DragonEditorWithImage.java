@@ -103,7 +103,9 @@ public class DragonEditorWithImage {
         }catch (Exception e){
             //
         }
-        this.panel.add(makeImageForLine(this.lines_in_editor.get(line),line), line);
+        if(this.lines_in_editor.size()>line) {
+            this.panel.add(makeImageForLine(this.lines_in_editor.get(line), line), line);
+        }
         this.panel.updateUI();
     }
 
@@ -227,6 +229,13 @@ public class DragonEditorWithImage {
 
                 this.cursor_line--;
                 this.cursor_col=this.lines_in_editor.get(this.cursor_line).length();
+
+                try{
+                    updateJLabelOnLine(this.cursor_line);
+                    updateJLabelOnLine(this.cursor_line+1);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }else{
             //cursor_col !=0    should mean   cursor_col > 0

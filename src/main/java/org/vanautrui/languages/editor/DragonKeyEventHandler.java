@@ -89,6 +89,7 @@ public class DragonKeyEventHandler {
                     case "KEY_TYPED":
                         boolean is_allowed_char = e.getKeyChar() >= 'a' && e.getKeyChar() <= 'z';
                         is_allowed_char |= e.getKeyChar()==' ';
+                        is_allowed_char |= e.getKeyChar() >= 'A' && e.getKeyChar() <= 'Z';
                         try {
                             if(is_allowed_char) {
                                 master.editorWithImage.get().writeCharcter(e.getKeyChar());
