@@ -103,14 +103,15 @@ public class DragonEditorWithImage {
         }catch (Exception e){
             //
         }
-        this.panel.add(makeImageForLine(this.lines_in_editor.get(line)), line);
+        this.panel.add(makeImageForLine(this.lines_in_editor.get(line),line), line);
         this.panel.updateUI();
     }
 
-    private MyImagePanel makeImageForLine(String line) throws Exception{
+    private MyImagePanel makeImageForLine(String line, int line_index) throws Exception{
 
         Runtime rt = Runtime.getRuntime();
-        Process pr = rt.exec("./CodeRenderer/crend -l 1 --cursor-position "+this.cursor_col);
+        int cursor_position_argument = (this.cursor_line==line_index)?this.cursor_col:-1;
+        Process pr = rt.exec("./CodeRenderer/crend -l 1 --cursor-position "+cursor_position_argument);
         OutputStream in = pr.getOutputStream();
         in.write((line+"\n").getBytes());
         in.flush();

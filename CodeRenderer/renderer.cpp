@@ -71,14 +71,16 @@ Pixmap Renderer::to_ppm(string text, int row, int cursor_position) {
 		bit_file.close();
 	}
 	
-	//TODO: draw the cursor
-	int cursor_width=3;
-	for(int line_index=0;line_index<7;line_index++){
-		
-		for(int x=0;x<cursor_width;x++){
-			pixmap.set_rgb(100, line_index, (cursor_position*7)+x,'r');
-			pixmap.set_rgb(100, line_index, (cursor_position*7)+x,'g');
-			pixmap.set_rgb(100, line_index, (cursor_position*7)+x,'b');
+	if(cursor_position != -1){
+		//draw the cursor
+		int cursor_width=3;
+		for(int line_index=0;line_index<7;line_index++){
+			
+			for(int x=0;x<cursor_width;x++){
+				pixmap.set_rgb(100, line_index, (cursor_position*7)+x,'r');
+				pixmap.set_rgb(100, line_index, (cursor_position*7)+x,'g');
+				pixmap.set_rgb(100, line_index, (cursor_position*7)+x,'b');
+			}
 		}
 	}
 	
