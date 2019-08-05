@@ -14,7 +14,7 @@ public class EditorImageService {
     //this should draw an image for the whole editor
 
     public static synchronized Image getEditorImage(List<String> lines_in_editor,int cursor_line,int cursor_col,Component imageObserver){
-        BufferedImage img = new BufferedImage(400,400, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage img = new BufferedImage(600,600, BufferedImage.TYPE_INT_ARGB);
 
         Graphics g = img.getGraphics();
 

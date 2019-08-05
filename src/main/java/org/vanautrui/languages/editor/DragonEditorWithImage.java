@@ -32,7 +32,12 @@ public class DragonEditorWithImage {
         this.panel = new JPanel();
 
 
-        this.addLine(0,"");
+        addLine(0,"");
+        try {
+            this.updateJLabelOnLine(0);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         this.panel.setBorder(BorderFactory.createLineBorder(Color.white));
 
@@ -50,15 +55,9 @@ public class DragonEditorWithImage {
     //to manage the components and lines in editor at the same time
     private void addLine(int beforeIndex,String text){
         this.lines_in_editor.add(beforeIndex,text);
-        try{
-            this.panel.add(LineImageService.makeImageForLine(text,beforeIndex,this.cursor_line,this.cursor_col),0);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
     private void removeLine(int index){
         this.lines_in_editor.remove(index);
-        this.panel.remove(index);
     }
     //--------------
 
