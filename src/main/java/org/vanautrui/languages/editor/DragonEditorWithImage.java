@@ -210,4 +210,45 @@ public class DragonEditorWithImage {
             e.printStackTrace();
         }
     }
+
+    public void pressBackSpace() {
+
+        if(this.cursor_col==0 ){
+            if(this.cursor_line==0) {
+                return;
+            }else{
+                //cursor_line !=0 , cursor_col==0
+                //cursor_line >0 ~> previous line exists
+                String previous_line = this.lines_in_editor.get(this.cursor_line-1);
+                String current_line = this.lines_in_editor.get(this.cursor_line);
+
+                this.lines_in_editor.set(this.cursor_line-1,previous_line+current_line);
+                this.lines_in_editor.remove(this.cursor_line);
+
+                this.cursor_line--;
+                this.cursor_col=this.lines_in_editor.get(this.cursor_line).length();
+            }
+        }else{
+            //cursor_col !=0    should mean   cursor_col > 0
+            String current_line = this.lines_in_editor.get(this.cursor_line);
+
+            String before_cursor_init = "";
+            if(this.cursor_col>=2){
+                before_cursor_init = current_line.substring(0,this.cursor_col-1);
+            }
+
+            String after_cursor = current_line.substring(this.cursor_col);
+
+            String edited_line = before_cursor_init+after_cursor;
+            this.lines_in_editor.set(this.cursor_line,edited_line);
+
+            this.cursor_col--;
+
+            try{
+                updateJLabelOnLine(this.cursor_line);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
 }

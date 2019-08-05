@@ -75,10 +75,16 @@ public class DragonKeyEventHandler {
                             System.out.println("TODO : switch project view");
                         }
 
-                        if(e.getKeyCode()==10){
-                            master.editorWithImage.get().pressEnter();
-                            System.out.println("ENTER");
+                        switch(e.getKeyCode()){
+                            case 10:
+                                master.editorWithImage.get().pressEnter();
+                                System.out.println("ENTER");
+                                break;
+                            case 8:
+                                master.editorWithImage.get().pressBackSpace();
+                                System.out.println("BACKSPACE");
                         }
+
                         break;
                     case "KEY_TYPED":
                         boolean is_allowed_char = e.getKeyChar() >= 'a' && e.getKeyChar() <= 'z';
