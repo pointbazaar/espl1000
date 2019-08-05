@@ -58,6 +58,15 @@ public class DragonEditorWithImage {
         this.lines_in_editor.remove(index);
     }
 
+    public int getLineCount(){return this.lines_in_editor.size();}
+
+    public int getCursorLineDisplay(){
+        return this.cursor_line+1;
+    }
+
+    public int getCursorColDisplay(){
+        return this.cursor_col+1;
+    }
 
     private void adjustCursorColumnToBeContainedInLine(){
         if(this.cursor_col>this.lines_in_editor.get(this.cursor_line).length()){

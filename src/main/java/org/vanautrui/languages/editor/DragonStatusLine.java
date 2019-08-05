@@ -29,12 +29,12 @@ public class DragonStatusLine {
         this.panel.setLayout(layout);
         this.panel.setMaximumSize(new Dimension(2000,30));
 
-        this.line_number_label=new JLabel("TODO: linu number");
-        this.line_count_label=new JLabel("TODO: line count label");
+        this.line_number_label=new JLabel("  -  ");
+        this.line_count_label=new JLabel("  -  ");
 
         //https://stackoverflow.com/questions/8083479/java-getting-my-ip-address
 
-        String my_ip_string="TODO: display my ip address";
+        String my_ip_string="?.?.?.?";
         String ip="";
         try {
             Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
@@ -63,15 +63,15 @@ public class DragonStatusLine {
 
         this.my_ip_address=new JLabel("    "+my_ip_string+"    ");
 
-        panel.add(new JLabel("TODO: status bar"));
+
         panel.add(this.line_number_label);
         panel.add(this.line_count_label);
 
         panel.add(this.my_ip_address);
     }
 
-    public void setCursorPos(int pos){
-        this.line_number_label.setText("position: "+pos);
+    public void setCursorPos(int display_line,int display_col){
+        this.line_number_label.setText(" Cursor: "+display_line+":"+display_col+" ");
     }
 
     public Component statusBar(){
@@ -79,6 +79,6 @@ public class DragonStatusLine {
     }
 
     public void updateLineCount(int lines){
-        this.line_count_label.setText(lines+" Lines");
+        this.line_count_label.setText("  Lines: "+lines+"  ");
     }
 }

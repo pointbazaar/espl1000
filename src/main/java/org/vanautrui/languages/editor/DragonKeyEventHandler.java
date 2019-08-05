@@ -124,10 +124,12 @@ public class DragonKeyEventHandler {
                 System.out.println("keycode: "+e.getKeyCode());
                 System.out.println("key dispatch: "+e.getKeyChar());
 
-                //System.out.println("keycode for ctrl : "+KeyEvent.VK_CONTROL);
-
                 //debug
                 //master.editorWithImage.get().appendLineTest();
+                DragonEditorWithImage editor = master.editorWithImage.get();
+
+                master.statusBar.get().updateLineCount(editor.getLineCount());
+                master.statusBar.get().setCursorPos(editor.getCursorLineDisplay(),editor.getCursorColDisplay());
 
                 return true;
 

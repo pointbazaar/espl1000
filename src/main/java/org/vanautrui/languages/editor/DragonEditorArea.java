@@ -112,9 +112,7 @@ public class DragonEditorArea {
     private void updateStatusBar(){
         //inform the status bar
         if(master.statusBar.isPresent()){
-            master.statusBar.get().setCursorPos(
-                    getCaretPosition()
-            );
+            //master.statusBar.get().setCursorPos(getCaretPosition());
             master.statusBar.get().updateLineCount(textArea.getText().split("\n").length);
         }
     }
