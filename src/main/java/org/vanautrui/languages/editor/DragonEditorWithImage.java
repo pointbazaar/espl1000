@@ -31,7 +31,8 @@ public class DragonEditorWithImage {
     public DragonEditorWithImage(DragonGUI_Editor master1) {
         this.master = master1;
         this.panel = new JPanel();
-        this.lines_in_editor.add("");
+
+        this.addLine(0,"");
 
         this.panel.setBorder(BorderFactory.createLineBorder(Color.white));
 
@@ -45,6 +46,23 @@ public class DragonEditorWithImage {
 
     }
 
+    //-----------
+    //to manage the components and lines in editor at the same time
+    private void addLine(int beforeIndex,String text){
+        this.lines_in_editor.add(beforeIndex,text);
+        try{
+            this.panel.add(LineImageService.makeImageForLine(text,beforeIndex,this.cursor_line,this.cursor_col),0);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void removeLine(int index){
+        this.lines_in_editor.remove(index);
+        this.panel.remove(index);
+    }
+    //--------------
+
+
     private void adjustCursorColumnToBeContainedInLine(){
         if(this.cursor_col>this.lines_in_editor.get(this.cursor_line).length()){
             this.cursor_col=this.lines_in_editor.get(this.cursor_line).length();
@@ -57,8 +75,8 @@ public class DragonEditorWithImage {
             this.cursor_col--;
         }
         try{
-            //this.updateJLabelOnLine(this.cursor_line);
-            this.updateCompletely();
+            this.updateJLabelOnLine(this.cursor_line);
+            //this.updateCompletely();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -70,8 +88,8 @@ public class DragonEditorWithImage {
         this.adjustCursorColumnToBeContainedInLine();
 
         try{
-            //this.updateJLabelOnLine(this.cursor_line);
-            this.updateCompletely();
+            this.updateJLabelOnLine(this.cursor_line);
+            //this.updateCompletely();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -83,9 +101,9 @@ public class DragonEditorWithImage {
             this.adjustCursorColumnToBeContainedInLine();
 
             try {
-                //this.updateJLabelOnLine(this.cursor_line);
-                //this.updateJLabelOnLine(this.cursor_line + 1);
-                this.updateCompletely();
+                this.updateJLabelOnLine(this.cursor_line);
+                this.updateJLabelOnLine(this.cursor_line + 1);
+                //this.updateCompletely();
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -97,9 +115,9 @@ public class DragonEditorWithImage {
             this.adjustCursorColumnToBeContainedInLine();
 
             try {
-                //this.updateJLabelOnLine(this.cursor_line-1);
-                //this.updateJLabelOnLine(this.cursor_line);
-                this.updateCompletely();
+                this.updateJLabelOnLine(this.cursor_line-1);
+                this.updateJLabelOnLine(this.cursor_line);
+                //this.updateCompletely();
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -131,8 +149,8 @@ public class DragonEditorWithImage {
         );
         this.cursor_col++;
 
-        //updateJLabelOnLine(this.cursor_line);
-        this.updateCompletely();
+        updateJLabelOnLine(this.cursor_line);
+        //this.updateCompletely();
     }
 
     private void updateCompletely()throws Exception{
@@ -151,15 +169,28 @@ public class DragonEditorWithImage {
     }
 
     private void updateJLabelOnLine(int line) throws Exception{
-        try {
-            this.panel.remove(line);
-        }catch (Exception e){
-            //
-        }
+
+        MyImagePanel panel = (MyImagePanel)this.panel.getComponent(line);
+        panel.setImg(
+                LineImageService.makeImageForLineInner(this.lines_in_editor.get(line),line,cursor_line,cursor_col)
+        );
+
+        /*
         if(this.lines_in_editor.size()>line) {
             this.panel.add(LineImageService.makeImageForLine(this.lines_in_editor.get(line), line,cursor_line,cursor_col));
+            try {
+                this.panel.remove(line+1);
+            }catch (Exception e){
+                //
+            }
         }
+
+         */
+
         this.panel.updateUI();
+
+        this.panel.invalidate();
+        this.panel.repaint();
     }
 
     public void appendLineTest(){
@@ -204,13 +235,15 @@ public class DragonEditorWithImage {
 
         if(this.cursor_col==0){
             //if at beginning of line, insert new line, increment cursor
-            this.lines_in_editor.add(this.cursor_line,"");
+            //this.lines_in_editor.add(this.cursor_line,"");
+            this.addLine(this.cursor_line,"");
             this.cursor_line++;
 
 
         }else if(this.cursor_col==this.lines_in_editor.get(this.cursor_line).length()){
             //cursor at end of line
-            this.lines_in_editor.add(this.cursor_line+1,"");
+            this.addLine(this.cursor_line+1,"");
+            //this.lines_in_editor.add(this.cursor_line+1,"");
             this.cursor_line++;
             this.cursor_col=0;
 
@@ -230,8 +263,12 @@ public class DragonEditorWithImage {
 
             String beforeCursor = this.stringBeforeCursor();
             String afterCursor = this.stringAfterCursor();
+
+            //maybe this call should also be for both the component and the string
             this.lines_in_editor.set(this.cursor_line,beforeCursor);
-            this.lines_in_editor.add(this.cursor_line+1,afterCursor);
+
+            //this.lines_in_editor.add(this.cursor_line+1,afterCursor);
+            this.addLine(this.cursor_line+1,afterCursor);
 
             this.cursor_col=0;
             this.cursor_line++;
@@ -239,9 +276,9 @@ public class DragonEditorWithImage {
 
         //update the Images of the respective lines to reflect the changes
         try {
-            //updateJLabelOnLine(this.cursor_line - 1);
-            //updateJLabelOnLine(this.cursor_line);
-            this.updateCompletely();
+            updateJLabelOnLine(this.cursor_line - 1);
+            updateJLabelOnLine(this.cursor_line);
+            //this.updateCompletely();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -259,13 +296,15 @@ public class DragonEditorWithImage {
                 String current_line = this.lines_in_editor.get(this.cursor_line);
 
                 this.lines_in_editor.set(this.cursor_line-1,previous_line+current_line);
-                this.lines_in_editor.remove(this.cursor_line);
+
+                this.removeLine(this.cursor_line);
+                //this.lines_in_editor.remove(this.cursor_line);
 
                 this.cursor_line--;
                 this.cursor_col=this.lines_in_editor.get(this.cursor_line).length();
 
                 try{
-                    //updateJLabelOnLine(this.cursor_line);
+                    updateJLabelOnLine(this.cursor_line);
                     //updateJLabelOnLine(this.cursor_line+1);
                 }catch (Exception e){
                     e.printStackTrace();
@@ -288,14 +327,13 @@ public class DragonEditorWithImage {
             this.cursor_col--;
 
             try{
-                //updateJLabelOnLine(this.cursor_line);
-                this.updateCompletely();
+                updateJLabelOnLine(this.cursor_line);
             }catch (Exception e){
                 e.printStackTrace();
             }
         }
         try{
-            this.updateCompletely();
+            //this.updateCompletely();
         }catch (Exception e){
             e.printStackTrace();
         }

@@ -21,6 +21,10 @@ public class MyImagePanel extends JPanel {
         this.setMaximumSize(new Dimension(1000,30));
     }
 
+    public void setImg(Image img1){
+        this.img=img1;
+    }
+
     @Override
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
