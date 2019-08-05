@@ -1,13 +1,12 @@
 package org.vanautrui.languages.editor;
 
-import org.vanautrui.languages.editor.lineImageServices.LineImageService;
-import org.vanautrui.languages.editor.lineImageServices.MyImagePanel;
+import org.vanautrui.languages.editor.editorRenderServices.EditorImageService;
+import org.vanautrui.languages.editor.editorRenderServices.LineImageService;
+import org.vanautrui.languages.editor.editorRenderServices.MyImagePanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -31,6 +30,7 @@ public class DragonEditorWithImage {
     public DragonEditorWithImage(DragonGUI_Editor master1) {
         this.master = master1;
         this.panel = new JPanel();
+
 
         this.addLine(0,"");
 
@@ -170,6 +170,15 @@ public class DragonEditorWithImage {
 
     private void updateJLabelOnLine(int line) throws Exception{
 
+        long start = System.currentTimeMillis();
+        this.panel.removeAll();
+        this.panel.add(
+                new JLabel(new ImageIcon(EditorImageService.getEditorImage(lines_in_editor,cursor_line,cursor_col,this.panel)))
+        );
+        long end = System.currentTimeMillis();
+        System.out.println("complete editor draw took: "+(end-start)+" ms");
+
+        /*
         MyImagePanel panel = (MyImagePanel)this.panel.getComponent(line);
         panel.setImg(
                 LineImageService.makeImageForLineInner(this.lines_in_editor.get(line),line,cursor_line,cursor_col)

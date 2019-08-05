@@ -1,4 +1,4 @@
-package org.vanautrui.languages.editor.lineImageServices;
+package org.vanautrui.languages.editor.editorRenderServices;
 
 import org.vanautrui.languages.editor.DragonEditorWithImage;
 import org.vanautrui.languages.editor.DragonGUI_Editor;
