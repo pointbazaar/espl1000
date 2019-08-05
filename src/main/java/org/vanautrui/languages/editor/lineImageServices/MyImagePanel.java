@@ -1,4 +1,7 @@
-package org.vanautrui.languages.editor;
+package org.vanautrui.languages.editor.lineImageServices;
+
+import org.vanautrui.languages.editor.DragonEditorWithImage;
+import org.vanautrui.languages.editor.DragonGUI_Editor;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,6 +1,7 @@
 package org.vanautrui.languages.editor;
 
-import org.apache.commons.io.IOUtils;
+import org.vanautrui.languages.editor.lineImageServices.LineImageService;
+import org.vanautrui.languages.editor.lineImageServices.MyImagePanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -9,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,61 +42,114 @@ public class DragonEditorWithImage {
         this.panel.setBackground(DragonGUI_Editor.backgroundColor);
         this.panel.setMinimumSize(new Dimension(600, DragonGUI_Editor.middle_row_height));
         this.panel.setPreferredSize(new Dimension(600, DragonGUI_Editor.middle_row_height));
-        /*
-        JLabel picLabel;
 
-        try {
-            BufferedImage image = new BufferedImage(500, 20, BufferedImage.TYPE_INT_ARGB);
+    }
 
-            BufferedImage read = ImageIO.read(Paths.get("test.ppm").toFile());
-            Image read2 = read.getScaledInstance(20,20,Image.SCALE_DEFAULT);
+    private void adjustCursorColumnToBeContainedInLine(){
+        if(this.cursor_col>this.lines_in_editor.get(this.cursor_line).length()){
+            this.cursor_col=this.lines_in_editor.get(this.cursor_line).length();
+        }
+    }
 
-
-            picLabel = new JLabel(new ImageIcon(read2));
+    public void arrowLeftMoveCursor(){
+        //this feature behaves differently than in other text editors
+        if(this.cursor_col>0){
+            this.cursor_col--;
+        }
+        try{
+            //this.updateJLabelOnLine(this.cursor_line);
+            this.updateCompletely();
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
 
-        this.panel.add(this.picLabel);
+    public void arrowRightMoveCursor(){
+        //this feature behaves differently than in other text editors
+        this.cursor_col++;
+        this.adjustCursorColumnToBeContainedInLine();
 
-         */
-
-        this.panel.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                System.out.println("Key :"+e.getKeyChar());
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                System.out.println("Key :"+e.getKeyChar());
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                System.out.println("Key :"+e.getKeyChar());
-            }
-        });
+        try{
+            //this.updateJLabelOnLine(this.cursor_line);
+            this.updateCompletely();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void arrowUpChangeLine(){
-        //TODO
+        if(this.cursor_line>0){
+            this.cursor_line--;
+            this.adjustCursorColumnToBeContainedInLine();
+
+            try {
+                //this.updateJLabelOnLine(this.cursor_line);
+                //this.updateJLabelOnLine(this.cursor_line + 1);
+                this.updateCompletely();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
     public void arrowDownChangeLine(){
-        //TODO
+        if(this.cursor_line < this.lines_in_editor.size()-1){
+            this.cursor_line++;
+            this.adjustCursorColumnToBeContainedInLine();
+
+            try {
+                //this.updateJLabelOnLine(this.cursor_line-1);
+                //this.updateJLabelOnLine(this.cursor_line);
+                this.updateCompletely();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
+
+    private String stringBeforeCursor(){
+        //returns the string on the currently selected line, before ther cursor
+        String result="";
+        if(this.cursor_col>=1) {
+            return this.lines_in_editor.get(this.cursor_line).substring(0, this.cursor_col);
+        }
+        return result;
+    }
+
+    private String stringAfterCursor(){
+        //returns the string on the currently selected line, after the cursor
+        return this.lines_in_editor.get(this.cursor_line).substring(this.cursor_col);
+    }
+
     public void writeCharcter(char c) throws Exception{
         if(this.lines_in_editor.get(this.cursor_line).length()==max_columns_per_line){
             throw new Exception("line too long already");
         }
 
-        this.cursor_col++;
         this.lines_in_editor.set(
                 this.cursor_line,
-                this.lines_in_editor.get(cursor_line)+c
+                this.stringBeforeCursor()+c+this.stringAfterCursor()
         );
-        updateJLabelOnLine(this.cursor_line);
+        this.cursor_col++;
+
+        //updateJLabelOnLine(this.cursor_line);
+        this.updateCompletely();
     }
+
+    private void updateCompletely()throws Exception{
+        long start = System.currentTimeMillis();
+
+        this.panel.removeAll();
+        for(int i=0;i<this.lines_in_editor.size();i++){
+            String s = this.lines_in_editor.get(i);
+            this.panel.add(LineImageService.makeImageForLine(s,i,this.cursor_line,this.cursor_col));
+        }
+        this.panel.updateUI();
+
+        long end=System.currentTimeMillis();
+
+        System.out.println("update took: "+(end-start)+" ms");
+    }
+
     private void updateJLabelOnLine(int line) throws Exception{
         try {
             this.panel.remove(line);
@@ -104,37 +157,9 @@ public class DragonEditorWithImage {
             //
         }
         if(this.lines_in_editor.size()>line) {
-            this.panel.add(makeImageForLine(this.lines_in_editor.get(line), line), line);
+            this.panel.add(LineImageService.makeImageForLine(this.lines_in_editor.get(line), line,cursor_line,cursor_col));
         }
         this.panel.updateUI();
-    }
-
-    private MyImagePanel makeImageForLine(String line, int line_index) throws Exception{
-
-        Runtime rt = Runtime.getRuntime();
-        int cursor_position_argument = (this.cursor_line==line_index)?this.cursor_col:-1;
-        Process pr = rt.exec("./CodeRenderer/crend -l 1 --cursor-position "+cursor_position_argument);
-        OutputStream in = pr.getOutputStream();
-        in.write((line+"\n").getBytes());
-        in.flush();
-        pr.waitFor();
-
-        int exit_value = pr.exitValue();
-        if(exit_value!=0){
-            System.out.println("error in makeImageForLine, crend exited with nonzero exit value");
-            System.out.println(IOUtils.toString(pr.getInputStream()));
-            System.exit(1);
-        }
-
-        InputStream out = pr.getInputStream();
-        //String s = IOUtils.toString(out);
-
-        BufferedImage read = ImageIO.read(out);
-        //BufferedImage read = ImageIO.
-
-        Image read2 = read.getScaledInstance(charSize* max_columns_per_line,charSize,Image.SCALE_DEFAULT);
-
-        return new MyImagePanel(read2);
     }
 
     public void appendLineTest(){
@@ -172,7 +197,6 @@ public class DragonEditorWithImage {
     }
 
     public JPanel getImage(){
-
         return this.panel;
     }
 
@@ -190,13 +214,22 @@ public class DragonEditorWithImage {
             this.cursor_line++;
             this.cursor_col=0;
 
+            //TODO: fix the bug where making a newline doesnt draw anew the lines thereafter
 
+            //when a new line is inserted, a naive approach would be to then
+            //update the drawings of all the subsequent lines
+
+            //another approach would be to cache the stuff from the cpp program and
+            //re-render the whole thing, but as most of it is cached it would not be a problem...
+
+            //another approach would be to manually manage the images of the lines
+            //when new lines get inserted. that would probably be most performant
         }else{
             //cursor is in the middle of a line
             //if in the middle of a line, split that line, increment cursor
 
-            String beforeCursor = this.lines_in_editor.get(this.cursor_line).substring(this.cursor_col);
-            String afterCursor = this.lines_in_editor.get(this.cursor_line).substring(this.cursor_col);
+            String beforeCursor = this.stringBeforeCursor();
+            String afterCursor = this.stringAfterCursor();
             this.lines_in_editor.set(this.cursor_line,beforeCursor);
             this.lines_in_editor.add(this.cursor_line+1,afterCursor);
 
@@ -206,8 +239,9 @@ public class DragonEditorWithImage {
 
         //update the Images of the respective lines to reflect the changes
         try {
-            updateJLabelOnLine(this.cursor_line - 1);
-            updateJLabelOnLine(this.cursor_line);
+            //updateJLabelOnLine(this.cursor_line - 1);
+            //updateJLabelOnLine(this.cursor_line);
+            this.updateCompletely();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -231,8 +265,8 @@ public class DragonEditorWithImage {
                 this.cursor_col=this.lines_in_editor.get(this.cursor_line).length();
 
                 try{
-                    updateJLabelOnLine(this.cursor_line);
-                    updateJLabelOnLine(this.cursor_line+1);
+                    //updateJLabelOnLine(this.cursor_line);
+                    //updateJLabelOnLine(this.cursor_line+1);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -254,10 +288,16 @@ public class DragonEditorWithImage {
             this.cursor_col--;
 
             try{
-                updateJLabelOnLine(this.cursor_line);
+                //updateJLabelOnLine(this.cursor_line);
+                this.updateCompletely();
             }catch (Exception e){
                 e.printStackTrace();
             }
+        }
+        try{
+            this.updateCompletely();
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }
