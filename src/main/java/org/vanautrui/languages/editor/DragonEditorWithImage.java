@@ -26,7 +26,7 @@ public class DragonEditorWithImage {
 
 
     public static final int charSize=15;
-    public static final int max_columns_per_line = 40;
+    public static final int max_columns_per_line = 80;
 
     public DragonEditorWithImage(DragonGUI_Editor master1) {
         this.master = master1;
