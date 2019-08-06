@@ -104,6 +104,12 @@ public class DragonEditorCore {
             throw new Exception("line too long already");
         }
 
+        if(
+                !(c>=' ' && c<='~')
+        ){
+            throw new Exception("character not allowed");
+        }
+
         this.lines_in_editor.set(
                 this.cursor_line,
                 this.stringBeforeCursor()+c+this.stringAfterCursor()
