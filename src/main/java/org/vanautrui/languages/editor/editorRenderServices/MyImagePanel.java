@@ -1,6 +1,6 @@
 package org.vanautrui.languages.editor.editorRenderServices;
 
-import org.vanautrui.languages.editor.DragonEditorWithImage;
+import org.vanautrui.languages.editor.editorcore.DragonEditorWithImage;
 import org.vanautrui.languages.editor.DragonGUI_Editor;
 
 import javax.swing.*;

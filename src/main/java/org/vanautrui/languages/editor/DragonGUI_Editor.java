@@ -1,22 +1,11 @@
 package org.vanautrui.languages.editor;
 
-import org.apache.commons.io.FilenameUtils;
+import org.vanautrui.languages.editor.editorcore.DragonEditorCore;
+import org.vanautrui.languages.editor.editorcore.DragonEditorWithImage;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class DragonGUI_Editor {
 
@@ -86,6 +75,7 @@ public class DragonGUI_Editor {
 
         //this.editorArea=Optional.of(new DragonEditorArea(this));
         //horizontal_panel.add(this.editorArea.get().editorArea());
+
 
         this.editorWithImage=Optional.of(new DragonEditorWithImage(this));
         try {

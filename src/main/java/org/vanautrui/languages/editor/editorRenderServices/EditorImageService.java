@@ -1,13 +1,11 @@
 package org.vanautrui.languages.editor.editorRenderServices;
 
-import com.sun.javafx.iio.ImageStorage;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-import static org.vanautrui.languages.editor.DragonEditorWithImage.charSize;
-import static org.vanautrui.languages.editor.DragonEditorWithImage.max_columns_per_line;
+import static org.vanautrui.languages.editor.editorcore.DragonEditorWithImage.charSize;
+import static org.vanautrui.languages.editor.editorcore.DragonEditorWithImage.max_columns_per_line;
 
 public class EditorImageService {
 

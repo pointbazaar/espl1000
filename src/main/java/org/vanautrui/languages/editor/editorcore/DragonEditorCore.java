@@ -1,8 +1,7 @@
-package org.vanautrui.languages.editor;
+package org.vanautrui.languages.editor.editorcore;
 
+import org.vanautrui.languages.editor.DragonGUI_Editor;
 import org.vanautrui.languages.editor.editorRenderServices.EditorImageService;
-import org.vanautrui.languages.editor.editorRenderServices.LineImageService;
-import org.vanautrui.languages.editor.editorRenderServices.MyImagePanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,43 +11,20 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DragonEditorWithImage {
-
-    //TODO: add some unit tests, for the text editing code
-    //so that new text editing functionality
-    //can be added in confidence of not breaking anything
-
-    private JPanel panel;
-
-    private DragonGUI_Editor master;
-
+public class DragonEditorCore {
     private List<String> lines_in_editor=new ArrayList<>();
 
     private int cursor_line =0;
     private int cursor_col=0;
 
+    private static final int max_columns_per_line = 80;
 
-    public static final int charSize=15;
-    public static final int max_columns_per_line = 80;
+    public DragonEditorCore() {
+        this.addLine(0,"");
+    }
 
-    public DragonEditorWithImage(DragonGUI_Editor master1) {
-        this.master = master1;
-        this.panel = new JPanel();
-
-
-        addLine(0,"");
-        this.updateEditorImage();
-
-        this.panel.setBorder(BorderFactory.createLineBorder(Color.white));
-
-        //setting layout manager and preferred size correctly makes it
-        //appear in the correct size.
-        this.panel.setLayout(new BoxLayout(this.panel,BoxLayout.Y_AXIS));
-
-        this.panel.setBackground(DragonGUI_Editor.backgroundColor);
-        this.panel.setMinimumSize(new Dimension(600, DragonGUI_Editor.middle_row_height));
-        this.panel.setPreferredSize(new Dimension(600, DragonGUI_Editor.middle_row_height));
-
+    public List<String> getLinesInEditor(){
+        return new ArrayList<>(this.lines_in_editor);
     }
 
     private void addLine(int beforeIndex,String text){
@@ -59,6 +35,14 @@ public class DragonEditorWithImage {
     }
 
     public int getLineCount(){return this.lines_in_editor.size();}
+
+    public int getCursorLine(){
+        return this.cursor_line;
+    }
+
+    public int getCursorCol(){
+        return this.cursor_col;
+    }
 
     public int getCursorLineDisplay(){
         return this.cursor_line+1;
@@ -79,8 +63,6 @@ public class DragonEditorWithImage {
         if(this.cursor_col>0){
             this.cursor_col--;
         }
-
-        this.updateEditorImage();
     }
 
     public void arrowRightMoveCursor(){
@@ -88,21 +70,18 @@ public class DragonEditorWithImage {
         this.cursor_col++;
         this.adjustCursorColumnToBeContainedInLine();
 
-        this.updateEditorImage();
     }
 
     public void arrowUpChangeLine(){
         if(this.cursor_line>0){
             this.cursor_line--;
             this.adjustCursorColumnToBeContainedInLine();
-            this.updateEditorImage();
         }
     }
     public void arrowDownChangeLine(){
         if(this.cursor_line < this.lines_in_editor.size()-1){
             this.cursor_line++;
             this.adjustCursorColumnToBeContainedInLine();
-            this.updateEditorImage();
         }
     }
 
@@ -130,49 +109,6 @@ public class DragonEditorWithImage {
                 this.stringBeforeCursor()+c+this.stringAfterCursor()
         );
         this.cursor_col++;
-        updateEditorImage();
-    }
-
-    private void updateEditorImage(){
-
-        long start = System.currentTimeMillis();
-        this.panel.removeAll();
-        this.panel.add(
-                new JLabel(new ImageIcon(EditorImageService.getEditorImage(lines_in_editor,cursor_line,cursor_col,this.panel)))
-        );
-        long end = System.currentTimeMillis();
-        System.out.println("complete editor draw took: "+(end-start)+" ms");
-
-        this.panel.updateUI();
-        this.panel.invalidate();
-        this.panel.repaint();
-    }
-
-    public void ppm_format_experiment(){
-        try {
-            Runtime rt = Runtime.getRuntime();
-            String line="A";
-
-            Process pr = rt.exec("./CodeRenderer/crend -r "+line+" -l 1");
-            pr.waitFor();
-
-            InputStream out = pr.getInputStream();
-            //String image_in_ppm_format = IOUtils.toString(out);
-            //System.out.println(image_in_ppm_format);
-
-            BufferedImage read = ImageIO.read(out);
-            Image read2 = read.getScaledInstance(20,20,Image.SCALE_DEFAULT);
-
-            JLabel line_img = new JLabel(new ImageIcon(read2));
-            line_img.setMinimumSize(new Dimension(20,20));
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    public JPanel getImage(){
-        return this.panel;
     }
 
     public void pressEnter() {
@@ -207,8 +143,6 @@ public class DragonEditorWithImage {
             this.cursor_col=0;
             this.cursor_line++;
         }
-
-        updateEditorImage();
     }
 
     public void pressBackSpace() {
@@ -246,6 +180,5 @@ public class DragonEditorWithImage {
 
             this.cursor_col--;
         }
-        this.updateEditorImage();
     }
 }

@@ -10,8 +10,8 @@ import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.vanautrui.languages.editor.DragonEditorWithImage.charSize;
-import static org.vanautrui.languages.editor.DragonEditorWithImage.max_columns_per_line;
+import static org.vanautrui.languages.editor.editorcore.DragonEditorWithImage.charSize;
+import static org.vanautrui.languages.editor.editorcore.DragonEditorWithImage.max_columns_per_line;
 
 public class LineImageService {
 

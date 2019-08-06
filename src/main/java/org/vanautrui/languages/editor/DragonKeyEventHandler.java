@@ -1,6 +1,6 @@
 package org.vanautrui.languages.editor;
 
-import javafx.scene.input.KeyCode;
+import org.vanautrui.languages.editor.editorcore.DragonEditorWithImage;
 
 import javax.swing.*;
 import java.awt.*;
