@@ -186,6 +186,8 @@ public class DragonEditorCore {
 
     public void pressBackSpace() {
 
+        //TODO: if there are 4 spaces before the cursor, and  (cursorCol%4)==0  then delete the 4 spaces which are considered a tab
+
         if(this.cursor_col==0 ){
             if(this.cursor_line==0) {
                 return;
@@ -222,6 +224,10 @@ public class DragonEditorCore {
     }
 
     public void pressTab() {
+        //TODO: do the tabs in 4-spaces increments
+        //so a tab should bring the cursor up to the next increment, or
+        //if it is already at an  increment, to the next increment
+
         //this editor is a spaces only editor
         //because it makes for easier display
         //and easier coding, since you do not have to consider so many different cases
