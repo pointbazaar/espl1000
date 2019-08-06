@@ -111,4 +111,12 @@ public class DragonEditorWithImage {
         this.core.pressBackSpace();
         this.updateEditorImage();
     }
+
+    public void pressTab() {
+        //if the cursor is just after a character,
+        //it should insert a completion if there is just 1 available
+        //otherwise, it should insert a tab
+        this.core.pressTab();
+        this.updateEditorImage();
+    }
 }

@@ -1,6 +1,7 @@
 package org.vanautrui.languages.editor.editorRenderServices;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -35,9 +36,19 @@ public class LineImageService {
         return new MyImagePanel(image);
     }
 
+    private synchronized static String displayTabsAs4Spaces(String line){
+        return line.replaceAll("\t","  "+"  ");
+    }
+
     public synchronized static Image makeImageForLineInner(String line, int line_index, int cursor_line,int cursor_col){
         long start = System.currentTimeMillis();
-        Image img = makeImageForLineInnerJavaAlternative(line,line_index,cursor_line,cursor_col);
+        String display_line = displayTabsAs4Spaces(line);
+
+        //figure out the cursor_col after replacing these escaped tabs
+        String beforeCursor = line.substring(0,cursor_col);
+        int increment = StringUtils.countMatches(beforeCursor,'\t')*3;
+
+        Image img = makeImageForLineInnerJavaAlternative(display_line,line_index,cursor_line,cursor_col+increment);
         long end = System.currentTimeMillis();
         //System.out.println("drawing line took : "+(end-start)+" ms");
         return img;
@@ -74,10 +85,9 @@ public class LineImageService {
     private synchronized static Image makeImageForLineInnerJavaAlternative(String line, int line_index, int cursor_line, int cursor_col){
 
         //TODO: highhlight the current line
-        int height= charSize;
         int width = charSize*max_columns_per_line;
 
-        BufferedImage img = new BufferedImage(width,height,BufferedImage.TYPE_INT_ARGB);
+        BufferedImage img = new BufferedImage(width, charSize,BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g = img.createGraphics();
 
@@ -132,8 +142,8 @@ public class LineImageService {
                 i+=word.length();
             }else {
                 g.setColor(Color.ORANGE);
-                g.drawString(current.charAt(0)+"",x_offset,10);
-                x_offset+= g.getFontMetrics(sourceCodeFont).stringWidth(current.charAt(0)+"");
+                g.drawString(current.charAt(0) + "", x_offset, 10);
+                x_offset += g.getFontMetrics(sourceCodeFont).stringWidth(current.charAt(0) + "");
                 i++;
             }
         }

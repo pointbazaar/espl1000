@@ -80,6 +80,10 @@ public class DragonKeyEventHandler {
                                 master.editorWithImage.get().pressEnter();
                                 System.out.println("ENTER");
                                 break;
+                            case 9:
+                                master.editorWithImage.get().pressTab();
+                                System.out.println("TAB");
+                                break;
                             case 8:
                                 master.editorWithImage.get().pressBackSpace();
                                 System.out.println("BACKSPACE");

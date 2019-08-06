@@ -85,7 +85,7 @@ public class DragonEditorCore {
         }
     }
 
-    private String stringBeforeCursor(){
+    public String stringBeforeCursor(){
         //returns the string on the currently selected line, before ther cursor
         String result="";
         if(this.cursor_col>=1) {
@@ -94,7 +94,7 @@ public class DragonEditorCore {
         return result;
     }
 
-    private String stringAfterCursor(){
+    public String stringAfterCursor(){
         //returns the string on the currently selected line, after the cursor
         return this.lines_in_editor.get(this.cursor_line).substring(this.cursor_col);
     }
@@ -179,6 +179,19 @@ public class DragonEditorCore {
             this.lines_in_editor.set(this.cursor_line,edited_line);
 
             this.cursor_col--;
+        }
+    }
+
+    public void pressTab() {
+        if(this.stringBeforeCursor().endsWith(" ") || this.stringBeforeCursor().equals("")){
+            try {
+                this.writeCharcter('\t');
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else{
+            //TODO: use some kind of completion service
+            //to find out a completion if there is just 1 available option
         }
     }
 }
