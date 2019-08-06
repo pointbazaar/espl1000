@@ -225,7 +225,7 @@ public class DragonEditorCore {
         //this editor is a spaces only editor
         //because it makes for easier display
         //and easier coding, since you do not have to consider so many different cases
-        
+
         if(this.stringBeforeCursor().endsWith(" ") || this.stringBeforeCursor().equals("")){
             try {
                 String tabIs4Spaces = "    ";

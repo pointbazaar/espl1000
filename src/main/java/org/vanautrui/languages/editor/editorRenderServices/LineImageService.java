@@ -36,19 +36,10 @@ public class LineImageService {
         return new MyImagePanel(image);
     }
 
-    private synchronized static String displayTabsAs4Spaces(String line){
-        return line.replaceAll("\t","  "+"  ");
-    }
-
     public synchronized static Image makeImageForLineInner(String line, int line_index, int cursor_line,int cursor_col){
         long start = System.currentTimeMillis();
-        String display_line = displayTabsAs4Spaces(line);
 
-        //figure out the cursor_col after replacing these escaped tabs
-        String beforeCursor = line.substring(0,cursor_col);
-        int increment = StringUtils.countMatches(beforeCursor,'\t')*3;
-
-        Image img = makeImageForLineInnerJavaAlternative(display_line,line_index,cursor_line,cursor_col+increment);
+        Image img = makeImageForLineInnerJavaAlternative(line,line_index,cursor_line,cursor_col);
         long end = System.currentTimeMillis();
         //System.out.println("drawing line took : "+(end-start)+" ms");
         return img;
