@@ -7,6 +7,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.vanautrui.languages.editor.DragonEditorWithImage.charSize;
 import static org.vanautrui.languages.editor.DragonEditorWithImage.max_columns_per_line;
@@ -14,6 +16,9 @@ import static org.vanautrui.languages.editor.DragonEditorWithImage.max_columns_p
 public class LineImageService {
 
     //https://examples.javacodegeeks.com/desktop-java/imageio/create-image-file-from-graphics-object/
+
+    private static List<String> access_modifiers = Arrays.asList("public","private");
+    private static List<String> primitive_types = Arrays.asList("int","char","boolean","path","byte");
 
     public static final int fontSize= 15;
     public static final int text_x_offset=35;
@@ -68,7 +73,6 @@ public class LineImageService {
 
     private synchronized static Image makeImageForLineInnerJavaAlternative(String line, int line_index, int cursor_line, int cursor_col){
 
-        //TODO: do syntax highlighting
         //TODO: highhlight the current line
         int height= charSize;
         int width = charSize*max_columns_per_line;
@@ -84,9 +88,7 @@ public class LineImageService {
         g.drawString(String.format("%3s",lineNumberStr),2,10);
 
         //draw text
-        g.setFont(sourceCodeFont);
-        g.setColor(Color.ORANGE);
-        g.drawString(line,text_x_offset,10);
+        drawTextAsSourceCode(g,line,text_x_offset);
 
         if(line_index==cursor_line) {
             //draw cursor
@@ -104,5 +106,40 @@ public class LineImageService {
 
         g.dispose();
         return img;
+    }
+
+    private synchronized static void drawTextAsSourceCode(Graphics g, String line,int text_x_offset_initial){
+        //TODO: do syntax highlighting
+
+        //Color[] colors = new Color[line.length()];
+        g.setFont(sourceCodeFont);
+        g.setColor(Color.ORANGE);
+
+        int x_offset = text_x_offset_initial;
+
+        int i=0;
+        while(i<line.length()){
+            String current = line.substring(i);
+
+            if(current.startsWith("public") || current.startsWith("private")){
+                String word="";
+                if(current.startsWith("public")) word="public";
+                if(current.startsWith("private")) word="private";
+
+                g.setColor(Color.CYAN);
+                g.drawString(word,x_offset,10);
+                x_offset+= g.getFontMetrics(sourceCodeFont).stringWidth(word);
+                i+=word.length();
+            }else {
+                g.setColor(Color.ORANGE);
+                g.drawString(current.charAt(0)+"",x_offset,10);
+                x_offset+= g.getFontMetrics(sourceCodeFont).stringWidth(current.charAt(0)+"");
+                i++;
+            }
+        }
+    }
+
+    private synchronized static void drawLineFragment(Graphics g,String fragment, int offset){
+
     }
 }
