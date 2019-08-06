@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DragonEditorCore {
+
+    //TODO: make this editor support atomic operations
+    //so that multiple threads may call subroutines on it
+
     private List<String> lines_in_editor=new ArrayList<>();
 
     private int cursor_line =0;
@@ -99,14 +103,43 @@ public class DragonEditorCore {
         return this.lines_in_editor.get(this.cursor_line).substring(this.cursor_col);
     }
 
-    public void writeCharcter(char c) throws Exception{
+    private synchronized void writeString(String s) throws Exception{
+        String currentLine = this.lines_in_editor.get(this.cursor_line);
+
+        if(currentLine.length()+s.length()>max_columns_per_line){
+            throw new Exception("line too long already");
+        }
+
+        if(!isStringAllowed(s)){
+            throw new Exception("this string is not allowd");
+        }
+
+        this.lines_in_editor.set(
+                this.cursor_line,
+                this.stringBeforeCursor()+s+this.stringAfterCursor()
+        );
+        this.cursor_col+=s.length();
+    }
+
+    private synchronized boolean isStringAllowed(String s){
+        for(char c : s.toCharArray()){
+            if(!isCharAllowed(c)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private synchronized boolean isCharAllowed(char c){
+        return (c>=' ' && c<='~');
+    }
+
+    public synchronized void writeCharcter(char c) throws Exception{
         if(this.lines_in_editor.get(this.cursor_line).length()==max_columns_per_line){
             throw new Exception("line too long already");
         }
 
-        if(
-                !(c>=' ' && c<='~')
-        ){
+        if(!isCharAllowed(c)){
             throw new Exception("character not allowed");
         }
 
@@ -189,9 +222,14 @@ public class DragonEditorCore {
     }
 
     public void pressTab() {
+        //this editor is a spaces only editor
+        //because it makes for easier display
+        //and easier coding, since you do not have to consider so many different cases
+        
         if(this.stringBeforeCursor().endsWith(" ") || this.stringBeforeCursor().equals("")){
             try {
-                this.writeCharcter('\t');
+                String tabIs4Spaces = "    ";
+                this.writeString(tabIs4Spaces);
             }catch (Exception e){
                 e.printStackTrace();
             }

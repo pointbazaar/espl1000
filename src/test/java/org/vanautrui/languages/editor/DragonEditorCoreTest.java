@@ -83,6 +83,15 @@ public class DragonEditorCoreTest {
             //pass
         }
 
+        try{
+            //this is a spaces only editor
+            //because thats easier to implement for drawing purposes
+            core.writeCharcter('\t');
+            Assert.fail();
+        }catch (Exception e){
+            //pass
+        }
+
         //TODO: other test cases
     }
 }
