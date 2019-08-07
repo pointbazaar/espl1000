@@ -12,7 +12,7 @@ logic programming.
 
 GOALS:
 
-it should have an easy and simple syntax, similar to javascript, java, haskell.
+it should have an easy and simple syntax, similar to java and haskell.
 
 it supports program verification
 and programmed runtime constraints,
