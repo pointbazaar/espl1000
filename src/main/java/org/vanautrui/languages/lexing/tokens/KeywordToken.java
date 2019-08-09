@@ -7,7 +7,8 @@ import java.awt.*;
 public class KeywordToken implements DragonToken {
 
     public static final String[] keywords = new String[]{
-            "class", "method", "function","interface","wrapper","entity","model","adapter"
+            "class", "method", "function","interface","wrapper","entity","model","adapter",
+            "while","for","loop","do"
     };
 
     public String keyword;
