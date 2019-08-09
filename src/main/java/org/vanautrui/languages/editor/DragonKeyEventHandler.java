@@ -104,6 +104,13 @@ public class DragonKeyEventHandler {
                                 //arrow right
                                 master.editorWithImage.get().arrowRightMoveCursor();
                                 break;
+
+                            case 36:
+                                master.editorWithImage.get().pressHome();
+                                break;
+                            case 35:
+                                master.editorWithImage.get().pressEnd();
+                                break;
                         }
 
                         break;

@@ -119,4 +119,14 @@ public class DragonEditorWithImage {
         this.core.pressTab();
         this.updateEditorImage();
     }
+
+    public void pressHome() {
+        this.core.pressHome();
+        this.updateEditorImage();
+    }
+
+    public void pressEnd() {
+        this.core.pressEnd();
+        this.updateEditorImage();
+    }
 }

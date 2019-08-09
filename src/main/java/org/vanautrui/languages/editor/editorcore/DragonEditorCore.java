@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class DragonEditorCore {
 
@@ -87,14 +88,14 @@ public class DragonEditorCore {
         //returns the string on the currently selected line, before ther cursor
         String result="";
         if(this.cursor_col>=1) {
-            return this.lines_in_editor.get(this.cursor_line).substring(0, this.cursor_col);
+            return this.getCurrentLine().substring(0, this.cursor_col);
         }
         return result;
     }
 
     public String stringAfterCursor(){
         //returns the string on the currently selected line, after the cursor
-        return this.lines_in_editor.get(this.cursor_line).substring(this.cursor_col);
+        return this.getCurrentLine().substring(this.cursor_col);
     }
 
     private synchronized void writeString(String s) throws Exception{
@@ -259,5 +260,55 @@ public class DragonEditorCore {
             //TODO: use some kind of completion service
             //to find out a completion if there is just 1 available option
         }
+    }
+
+    private Optional<Integer> getTextStartIndexOnCurrentLine(){
+        //gets the index of the first non-whitespace character
+        if(this.getCurrentLine().trim().isEmpty()){
+            return Optional.empty();
+        }
+
+        String strip_start = StringUtils.stripStart(this.getCurrentLine()," ");
+        return Optional.of(this.getCurrentLine().length()-strip_start.length());
+    }
+
+    private String getCurrentLine(){
+        //returns the line the cursor is on
+        return this.lines_in_editor.get(this.cursor_line);
+    }
+
+    public void pressHome(){
+        //first time pressed, it should take you to the start of the code on the line,
+        //if it is not already there. if it is there,
+        //then it should take the cursor to the start of the line
+
+        //if it is at the start of the line already, it should take the cursor to the start
+        //of the code on that line
+        //System.out.println("press HOME");
+        Optional<Integer> text_start = getTextStartIndexOnCurrentLine();
+
+        if(this.cursor_col==0){
+            //find out of there is a text start, then go there
+
+            if(text_start.isPresent()){
+                this.cursor_col=text_start.get();
+            }
+        }else{
+            //go to text start, if not already there
+            if(text_start.isPresent() && this.cursor_col!=text_start.get()){
+                this.cursor_col=text_start.get();
+            }else{
+                this.cursor_col=0;
+            }
+        }
+    }
+
+    public void pressEnd(){
+        //TODO: it should take the cursor to the end of the code on the line
+        //if pressed a second time, or if the cursor is already at
+        //the end of the code on that line,
+        //it should take the cursor to the end of that line
+
+        System.out.println("press END");
     }
 }
