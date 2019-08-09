@@ -33,27 +33,10 @@ public class DragonGUI_Editor {
     public Optional<DragonKeyEventHandler> keyEventHandler;
 
 
-
     public DragonGUI_Editor(){
-
-        //https://stackoverflow.com/questions/17014175/how-to-detect-if-a-users-keyboard-is-in-azerty-in-java
-
-        /*
-        try{
-            GlobalScreen.registerNativeHook();
-
-            GlobalScreen.addNativeKeyListener(new ExperimentalGlobalKeyListener());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-         */
 
         set_dark_ui();
         this.frame = new JFrame("Dragon Editor");
-
-        //Locale locale = new Locale.Builder().setLanguage()
-        //this.frame.getInputContext().selectInputMethod(new Locale("en","US"));
 
         this.frame.setBackground(backgroundColor);
 
