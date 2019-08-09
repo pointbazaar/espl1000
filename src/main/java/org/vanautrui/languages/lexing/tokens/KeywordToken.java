@@ -8,7 +8,7 @@ public class KeywordToken implements DragonToken {
 
     public static final String[] keywords = new String[]{
             "class", "method", "function","interface","wrapper","entity","model","adapter",
-            "while","for","loop","do"
+            "while","for","loop","do","return"
     };
 
     public String keyword;
@@ -33,7 +33,7 @@ public class KeywordToken implements DragonToken {
 
     @Override
     public Color getDisplayColor() {
-        return Color.BLUE;
+        return Color.CYAN;
     }
 
     @Override

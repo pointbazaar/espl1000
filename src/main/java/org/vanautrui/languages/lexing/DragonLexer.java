@@ -83,7 +83,12 @@ public class DragonLexer {
                 //pass
             }
 
-            //TODO: operator tokens
+            try {
+                result.add(new OperatorToken(myCode));
+                continue;
+            } catch (Exception e) {
+                //pass
+            }
             //TODO: make more kinds of tokens to enrich the token stream
 
             if (myCode.startsWith(" ") || myCode.startsWith("\t")) {

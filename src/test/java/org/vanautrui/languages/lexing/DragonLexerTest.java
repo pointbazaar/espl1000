@@ -3,6 +3,7 @@ package org.vanautrui.languages.lexing;
 import org.junit.Test;
 import org.vanautrui.languages.lexing.tokens.AccessModifierToken;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
+import org.vanautrui.languages.lexing.tokens.OperatorToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.DragonTokenList;
 
@@ -37,5 +38,19 @@ public class DragonLexerTest {
         assertTrue(tokens.get(2) instanceof IdentifierToken);
 
         assertTrue(tokens.get(3) instanceof SymbolToken);
+    }
+
+    @Test
+    public void test_can_see_line_with_operators()throws Exception{
+        DragonTokenList tokens = lexer.lexCodeWithoutComments("x+=x;");
+
+        //System.out.println(tokens.toSourceCodeFragment());
+        //System.out.println(tokens.toString());
+
+        assertTrue(tokens.get(0) instanceof IdentifierToken);
+
+        assertTrue(tokens.get(1) instanceof OperatorToken);
+
+        assertTrue(tokens.get(2) instanceof IdentifierToken);
     }
 }
