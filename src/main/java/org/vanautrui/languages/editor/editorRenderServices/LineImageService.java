@@ -106,6 +106,10 @@ public class LineImageService {
                 line_up_to_cursor = line.substring(0, cursor_col);
             }
             int line_up_to_cursor_width = g.getFontMetrics(sourceCodeFont).stringWidth(line_up_to_cursor);
+            if(cursor_col%4==0){
+                g.setColor(Color.GRAY);
+            }
+
             g.drawString("|", text_x_offset+line_up_to_cursor_width-4, 10);
         }
 
