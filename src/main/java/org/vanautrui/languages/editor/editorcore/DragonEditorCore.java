@@ -226,7 +226,8 @@ public class DragonEditorCore {
 
     public void pressTab() {
         final String tabIs4Spaces = "    ";
-        //TODO: do the tabs in 4-spaces increments
+        //do the tabs in 4-spaces increments
+        
         //so a tab should bring the cursor up to the next increment, or
         //if it is already at an  increment, to the next increment
 
