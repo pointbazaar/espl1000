@@ -272,9 +272,23 @@ public class DragonEditorCore {
         return Optional.of(this.getCurrentLine().length()-strip_start.length());
     }
 
+    private Optional<Integer> getIndexAfterTextEndOnCurrentLine(){
+        //gets the index after the last non-whitespace character
+        if(this.getCurrentLine().trim().isEmpty()){
+            return Optional.empty();
+        }
+
+        String strip_end = StringUtils.stripEnd(this.getCurrentLine()," ");
+        return Optional.of(strip_end.length());
+    }
+
     private String getCurrentLine(){
         //returns the line the cursor is on
         return this.lines_in_editor.get(this.cursor_line);
+    }
+
+    private boolean cursorIsAtEndOfLine(){
+        return this.cursor_col==this.getCurrentLine().length();
     }
 
     public void pressHome(){
@@ -303,12 +317,31 @@ public class DragonEditorCore {
         }
     }
 
+    private void moveCursorToEndOfCurrentLine(){
+        this.cursor_col=this.getCurrentLine().length();
+    }
+
     public void pressEnd(){
         //TODO: it should take the cursor to the end of the code on the line
         //if pressed a second time, or if the cursor is already at
         //the end of the code on that line,
         //it should take the cursor to the end of that line
 
-        System.out.println("press END");
+        Optional<Integer> end_of_text = this.getIndexAfterTextEndOnCurrentLine();
+        if(this.cursorIsAtEndOfLine()){
+
+            if(end_of_text.isPresent()){
+                this.cursor_col=end_of_text.get();
+            }
+        }else if(end_of_text.isPresent() && end_of_text.get()==this.cursor_col){
+            this.moveCursorToEndOfCurrentLine();
+        }else{
+            //cursor is not at end of text and not at end of line, so move it to end of text
+            if(end_of_text.isPresent()){
+                this.cursor_col=end_of_text.get();
+            }
+        }
+
+        //System.out.println("press END");
     }
 }
