@@ -111,4 +111,16 @@ public class DragonEditorCoreTest {
 
         Assert.assertEquals(4,core.getCursorCol());
     }
+
+    @Test
+    public void test_remove_indentation_with_backspace()throws Exception{
+
+        DragonEditorCore core = new DragonEditorCore();
+
+        core.pressEnter();
+        core.pressTab();
+        Assert.assertEquals(4,core.getCursorCol());
+        core.pressBackSpace();
+        Assert.assertEquals(0,core.getCursorCol());
+    }
 }
