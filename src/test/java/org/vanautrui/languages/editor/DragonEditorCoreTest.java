@@ -123,4 +123,23 @@ public class DragonEditorCoreTest {
         core.pressBackSpace();
         Assert.assertEquals(0,core.getCursorCol());
     }
+
+    @Test
+    public void test_behavior_of_pressHome()throws Exception{
+        DragonEditorCore core = new DragonEditorCore();
+
+        core.pressEnter();
+        core.pressTab();
+
+        core.writeCharcter('h');
+
+        core.pressHome();
+        Assert.assertEquals(4,core.getCursorCol());
+
+        core.pressHome();
+        Assert.assertEquals(0,core.getCursorCol());
+
+        core.pressHome();
+        Assert.assertEquals(4,core.getCursorCol());
+    }
 }
