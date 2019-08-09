@@ -1,54 +1,109 @@
-package org.vanautrui.languages.editor;
+package org.vanautrui.languages.editor.keyEventHandling;
 
+import org.vanautrui.languages.editor.DragonGUI_Editor;
 import org.vanautrui.languages.editor.editorcore.DragonEditorWithImage;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class DragonKeyEventHandler {
+
+    //https://stackoverflow.com/questions/30291437/java-keyevent-key-code-vs-extended-key-code
 
     //https://stackoverflow.com/questions/100123/application-wide-keyboard-shortcut-java-swing
 
     private DragonGUI_Editor master;
 
-    private Map<KeyStroke,Action> actionMap = new HashMap<>();
+    //private Map<KeyStroke,Action> actionMap = new HashMap<>();
+
+    public boolean ctrl_down=false;
+    public boolean shift_down=false;
+    public boolean alt_down=false;
 
     public DragonKeyEventHandler(DragonGUI_Editor master){
         this.master=master;
 
-        KeyStroke copy = KeyStroke.getKeyStroke(KeyEvent.VK_C,KeyEvent.CTRL_DOWN_MASK);
+        //KeyStroke copy = KeyStroke.getKeyStroke(KeyEvent.VK_C,KeyEvent.CTRL_DOWN_MASK);
 
+        /*
         actionMap.put(copy, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("CTRL+C (COPY) Pressed");
             }
         });
+         */
+    }
+
+    public KeyEventDispatcher getKeyEventDispatcherForKeyboardShortcuts(){
+        KeyEventDispatcher dispatcher = new KeyEventDispatcher() {
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent e) {
+                String key_event_type = e.paramString().split(",")[0];
+
+                System.out.println("---------------");
+                System.out.println(e.paramString());
+                System.out.println();
+
+                char realChar = (char)e.getExtendedKeyCode();
+                System.out.println(realChar+"");
+
+                switch (key_event_type){
+                    case "KEY_PRESSED":
+                        if(realChar=='C' && ctrl_down){
+                            System.out.println("CTRL + C ");
+                            return true;
+                        }
+                        if(realChar=='S' && ctrl_down){
+                            System.out.println("CTRL + S ");
+                            return true;
+                        }
+                        break;
+                    case "KEY_RELEASED":
+                        break;
+                    case "KEY_TYPED":
+                        break;
+                }
+
+                ctrl_down=e.isControlDown();
+                shift_down=e.isShiftDown();
+                alt_down=e.isAltDown();
+                return false;
+            }
+        };
+        return dispatcher;
     }
 
     public KeyEventDispatcher getKeyEventDispatcher(){
         KeyEventDispatcher keyEventDispatcher = new KeyEventDispatcher() {
             @Override
             public boolean dispatchKeyEvent(KeyEvent e) {
+                //https://imagingexperts.typepad.com/imaging_experts/2005/10/adding_configur.html
+
                 //prevent event from being processed
                 //so we can do our own global event processing
                 //that does not depend on the individual key listeners
                 //on all the individual components
 
-                System.out.println("-----------------");
+                //System.out.println("-----------------");
                 //System.out.println(e.toString());
                 //System.out.println(e.paramString());
+                //System.out.println();
 
 
 
                 //TODO: this refers to the physical key. if you are using another layout, it doesnt work. fix it.
-                KeyEvent myKeyEvent = new KeyEvent(master.contextArea.get().make(),0,0,e.getModifiers(),e.getExtendedKeyCode());
+                //KeyEvent myKeyEvent = new KeyEvent(master.contextArea.get().make(),0,0,e.getModifiers(),e.getExtendedKeyCode());
 
-                KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(myKeyEvent);
+                KeyStroke keyStroke = KeyStroke.getKeyStrokeForEvent(e);
+
+                /*
 
                 if ( actionMap.containsKey(keyStroke) ) {
                     final Action a = actionMap.get(keyStroke);
@@ -61,6 +116,13 @@ public class DragonKeyEventHandler {
                     } );
                 }
 
+                 */
+
+                KeyStroke keyStrokeSave = KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK);
+
+                if(keyStroke.equals(keyStrokeSave)){
+                    System.out.println("SAVE FILE");
+                }
 
 
                 String key_event_type = e.paramString().split(",")[0];
@@ -141,8 +203,7 @@ public class DragonKeyEventHandler {
                 System.out.println("keycode: "+e.getKeyCode());
                 System.out.println("key dispatch: "+e.getKeyChar());
 
-                //debug
-                //master.editorWithImage.get().appendLineTest();
+
                 DragonEditorWithImage editor = master.editorWithImage.get();
 
                 master.statusBar.get().updateLineCount(editor.getLineCount());

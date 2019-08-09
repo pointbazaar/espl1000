@@ -1,7 +1,7 @@
 package org.vanautrui.languages.editor;
 
-import org.vanautrui.languages.editor.editorcore.DragonEditorCore;
 import org.vanautrui.languages.editor.editorcore.DragonEditorWithImage;
+import org.vanautrui.languages.editor.keyEventHandling.DragonKeyEventHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,13 +36,31 @@ public class DragonGUI_Editor {
 
     public DragonGUI_Editor(){
 
+        //https://stackoverflow.com/questions/17014175/how-to-detect-if-a-users-keyboard-is-in-azerty-in-java
+
+        /*
+        try{
+            GlobalScreen.registerNativeHook();
+
+            GlobalScreen.addNativeKeyListener(new ExperimentalGlobalKeyListener());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+         */
+
         set_dark_ui();
         this.frame = new JFrame("Dragon Editor");
+
+        //Locale locale = new Locale.Builder().setLanguage()
+        //this.frame.getInputContext().selectInputMethod(new Locale("en","US"));
 
         this.frame.setBackground(backgroundColor);
 
         this.keyEventHandler=Optional.of(new DragonKeyEventHandler(this));
 
+
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this.keyEventHandler.get().getKeyEventDispatcherForKeyboardShortcuts());
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(this.keyEventHandler.get().getKeyEventDispatcher());
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
