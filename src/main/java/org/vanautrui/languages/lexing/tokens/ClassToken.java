@@ -2,6 +2,8 @@ package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.CharacterList;
 
+import java.awt.*;
+
 public class ClassToken implements DragonToken {
 
     public ClassToken() {
@@ -23,6 +25,11 @@ public class ClassToken implements DragonToken {
     @Override
     public String getContents() {
         return "class";
+    }
+
+    @Override
+    public Color getDisplayColor() {
+        return Color.GREEN;
     }
 
     @Override

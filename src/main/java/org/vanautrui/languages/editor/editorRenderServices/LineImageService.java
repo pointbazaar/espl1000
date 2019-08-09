@@ -2,6 +2,9 @@ package org.vanautrui.languages.editor.editorRenderServices;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.vanautrui.languages.lexing.DragonLexer;
+import org.vanautrui.languages.lexing.tokens.DragonToken;
+import org.vanautrui.languages.parsing.DragonTokenList;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -10,6 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.vanautrui.languages.editor.editorcore.DragonEditorWithImage.charSize;
 import static org.vanautrui.languages.editor.editorcore.DragonEditorWithImage.max_columns_per_line;
@@ -110,34 +114,63 @@ public class LineImageService {
     }
 
     private synchronized static void drawTextAsSourceCode(Graphics g, String line,int text_x_offset_initial){
-        //TODO: do syntax highlighting
-
-        //Color[] colors = new Color[line.length()];
+        //TODO: do syntax highlighting, using the tokenizer.
         g.setFont(sourceCodeFont);
         g.setColor(Color.ORANGE);
-
         int x_offset = text_x_offset_initial;
+        DragonLexer lexer = new DragonLexer();
+        try {
+            DragonTokenList dragonTokenList = lexer.lexCodeWithoutComments(line);
+            System.out.println(dragonTokenList.toSourceCodeFragment());
+            //TODO: print the source according to the highlighting
+            int i=0;
+            while(i<line.length()){
+                String current = line.substring(i);
+                if(dragonTokenList.size()>0 && current.startsWith(dragonTokenList.head().getContents())) {
+                    //print that token and consume it
+                    DragonToken token = dragonTokenList.head();
+                    g.setColor(token.getDisplayColor());
 
-        int i=0;
-        while(i<line.length()){
-            String current = line.substring(i);
+                    g.drawString(token.getContents(),x_offset,10);
+                    x_offset+= g.getFontMetrics(sourceCodeFont).stringWidth(token.getContents());
 
-            if(current.startsWith("public") || current.startsWith("private")){
-                String word="";
-                if(current.startsWith("public")) word="public";
-                if(current.startsWith("private")) word="private";
+                    dragonTokenList.consume(1);
+                    i+=token.getContents().length();
+                }else{
+                    //print whatever character there is
+                    g.setColor(Color.ORANGE);
+                    g.drawString(current.charAt(0) + "", x_offset, 10);
+                    x_offset += g.getFontMetrics(sourceCodeFont).stringWidth(current.charAt(0) + "");
+                    i++;
+                }
 
-                g.setColor(Color.CYAN);
-                g.drawString(word,x_offset,10);
-                x_offset+= g.getFontMetrics(sourceCodeFont).stringWidth(word);
-                i+=word.length();
-            }else {
-                g.setColor(Color.ORANGE);
-                g.drawString(current.charAt(0) + "", x_offset, 10);
-                x_offset += g.getFontMetrics(sourceCodeFont).stringWidth(current.charAt(0) + "");
-                i++;
+            }
+
+        }catch (Exception e){
+            //just print the source without highlighting
+            int i=0;
+            while(i<line.length()){
+                String current = line.substring(i);
+
+                if(current.startsWith("public ") || current.startsWith("private ")){
+                    String word="";
+                    if(current.startsWith("public ")) word="public";
+                    if(current.startsWith("private ")) word="private";
+
+                    g.setColor(Color.CYAN);
+                    g.drawString(word,x_offset,10);
+                    x_offset+= g.getFontMetrics(sourceCodeFont).stringWidth(word);
+                    i+=word.length();
+                }else {
+                    g.setColor(Color.ORANGE);
+                    g.drawString(current.charAt(0) + "", x_offset, 10);
+                    x_offset += g.getFontMetrics(sourceCodeFont).stringWidth(current.charAt(0) + "");
+                    i++;
+                }
             }
         }
+
+
     }
 
     private synchronized static void drawLineFragment(Graphics g,String fragment, int offset){

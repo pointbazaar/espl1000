@@ -2,13 +2,15 @@ package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.CharacterList;
 
+import java.awt.*;
+
 public class SymbolToken implements DragonToken {
 
     public static final String[] symbols = new String[]{
             "{", "}",
             "[", "]",
             "(", ")",
-            ","
+            ",",";"
     };
 
     public String symbol;
@@ -35,6 +37,11 @@ public class SymbolToken implements DragonToken {
     @Override
     public String getContents() {
         return this.symbol;
+    }
+
+    @Override
+    public Color getDisplayColor() {
+        return Color.WHITE;
     }
 
     @Override

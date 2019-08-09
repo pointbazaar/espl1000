@@ -2,6 +2,7 @@ package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.CharacterList;
 
+import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,6 +35,11 @@ public class StringConstantToken implements DragonToken {
     @Override
     public String getContents() {
         return this.content;
+    }
+
+    @Override
+    public Color getDisplayColor() {
+        return Color.WHITE;
     }
 
     @Override

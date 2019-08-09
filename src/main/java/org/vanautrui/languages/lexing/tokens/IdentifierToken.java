@@ -2,12 +2,13 @@ package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.CharacterList;
 
+import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class IdentifierToken implements DragonToken {
 
-    public static final String regex_alphanumeric_identifier = "^[a-zA-Z][a-zA-Z0-9]+";
+    public static final String regex_alphanumeric_identifier = "^[a-zA-Z][a-zA-Z0-9]*";
 
     public static final int MAX_IDENTIFIER_LENGTH = 100;
 
@@ -34,6 +35,11 @@ public class IdentifierToken implements DragonToken {
     @Override
     public String getContents() {
         return this.content;
+    }
+
+    @Override
+    public Color getDisplayColor() {
+        return Color.ORANGE;
     }
 
     @Override

@@ -127,7 +127,7 @@ public class DragonTokenList {
     }
 
     public DragonToken get(int i) {
-        return this.tokens.get(0);
+        return this.tokens.get(i);
     }
 
     public DragonToken head() {

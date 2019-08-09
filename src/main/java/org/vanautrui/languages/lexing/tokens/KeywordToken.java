@@ -2,10 +2,12 @@ package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.CharacterList;
 
+import java.awt.*;
+
 public class KeywordToken implements DragonToken {
 
     public static final String[] keywords = new String[]{
-            "class", "method", "function"
+            "class", "method", "function","interface","wrapper","entity","model","adapter"
     };
 
     public String keyword;
@@ -26,6 +28,11 @@ public class KeywordToken implements DragonToken {
     @Override
     public String getContents() {
         return this.keyword;
+    }
+
+    @Override
+    public Color getDisplayColor() {
+        return Color.BLUE;
     }
 
     @Override
