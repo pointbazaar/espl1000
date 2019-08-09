@@ -1,14 +1,7 @@
 package org.vanautrui.languages.editor.editorcore;
 
 import org.apache.commons.lang3.StringUtils;
-import org.vanautrui.languages.editor.DragonGUI_Editor;
-import org.vanautrui.languages.editor.editorRenderServices.EditorImageService;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -215,19 +208,35 @@ public class DragonEditorCore {
                 before_cursor_init = current_line.substring(0,this.cursor_col-1);
             }
 
-            String after_cursor = current_line.substring(this.cursor_col);
+            //delete until the next tab
+            int dist_to_tab_increment = cursor_col%4;
+            if(dist_to_tab_increment==0){
+                dist_to_tab_increment=4;
+            }
+            String after_cursor = this.stringAfterCursor();
+
+            if(this.stringBeforeCursor().endsWith(StringUtils.repeat(' ',dist_to_tab_increment))){
+                before_cursor_init=this.stringBeforeCursor().substring(0,this.stringBeforeCursor().length()-dist_to_tab_increment);
+                this.cursor_col-=dist_to_tab_increment;
+            }else{
+                this.cursor_col--;
+            }
+
 
             String edited_line = before_cursor_init+after_cursor;
             this.lines_in_editor.set(this.cursor_line,edited_line);
 
-            this.cursor_col--;
+            //System.out.println("line after backspace :");
+            //System.out.println("'"+this.lines_in_editor.get(this.cursor_line)+"'");
         }
     }
 
+    private final String aTabIs4Spaces = "    ";
+
     public void pressTab() {
-        final String tabIs4Spaces = "    ";
+
         //do the tabs in 4-spaces increments
-        
+
         //so a tab should bring the cursor up to the next increment, or
         //if it is already at an  increment, to the next increment
 
@@ -239,7 +248,7 @@ public class DragonEditorCore {
             try {
                 int above_icrement = this.cursor_col%4;
                 if(above_icrement==0) {
-                    this.writeString(tabIs4Spaces);
+                    this.writeString(aTabIs4Spaces);
                 }else {
                     this.writeString(StringUtils.repeat(' ',4-above_icrement));
                 }
