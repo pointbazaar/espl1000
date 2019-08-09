@@ -114,15 +114,16 @@ public class LineImageService {
     }
 
     private synchronized static void drawTextAsSourceCode(Graphics g, String line,int text_x_offset_initial){
-        //TODO: do syntax highlighting, using the tokenizer.
+        //do syntax highlighting, using the tokenizer.
         g.setFont(sourceCodeFont);
         g.setColor(Color.ORANGE);
         int x_offset = text_x_offset_initial;
         DragonLexer lexer = new DragonLexer();
         try {
             DragonTokenList dragonTokenList = lexer.lexCodeWithoutComments(line);
-            System.out.println(dragonTokenList.toSourceCodeFragment());
-            //TODO: print the source according to the highlighting
+            //System.out.println(dragonTokenList.toSourceCodeFragment());
+
+            //print the source according to the highlighting
             int i=0;
             while(i<line.length()){
                 String current = line.substring(i);

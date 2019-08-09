@@ -29,8 +29,8 @@ public class DragonLexerTest {
     public void test_can_see_line_with_semicolon() throws Exception{
         DragonTokenList tokens = lexer.lexCodeWithoutComments("private char x;");
 
-        System.out.println(tokens.toSourceCodeFragment());
-        System.out.println(tokens.toString());
+        //System.out.println(tokens.toSourceCodeFragment());
+        //System.out.println(tokens.toString());
 
         assertTrue(tokens.get(0) instanceof AccessModifierToken);
 

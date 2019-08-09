@@ -1,5 +1,6 @@
 package org.vanautrui.languages.editor.editorcore;
 
+import org.apache.commons.lang3.StringUtils;
 import org.vanautrui.languages.editor.DragonGUI_Editor;
 import org.vanautrui.languages.editor.editorRenderServices.EditorImageService;
 
@@ -224,6 +225,7 @@ public class DragonEditorCore {
     }
 
     public void pressTab() {
+        final String tabIs4Spaces = "    ";
         //TODO: do the tabs in 4-spaces increments
         //so a tab should bring the cursor up to the next increment, or
         //if it is already at an  increment, to the next increment
@@ -234,8 +236,12 @@ public class DragonEditorCore {
 
         if(this.stringBeforeCursor().endsWith(" ") || this.stringBeforeCursor().equals("")){
             try {
-                String tabIs4Spaces = "    ";
-                this.writeString(tabIs4Spaces);
+                int above_icrement = this.cursor_col%4;
+                if(above_icrement==0) {
+                    this.writeString(tabIs4Spaces);
+                }else {
+                    this.writeString(StringUtils.repeat(' ',4-above_icrement));
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }

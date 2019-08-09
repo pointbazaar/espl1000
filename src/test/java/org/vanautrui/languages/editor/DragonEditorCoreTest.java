@@ -94,4 +94,21 @@ public class DragonEditorCoreTest {
 
         //TODO: other test cases
     }
+
+    @Test
+    public void test_pressTab_incremental_tab()throws Exception{
+        DragonEditorCore core = new DragonEditorCore();
+
+        core.pressTab();
+
+        Assert.assertEquals(4,core.getCursorCol());
+
+        core.pressEnter();
+
+        core.writeCharcter(' ');
+
+        core.pressTab();
+
+        Assert.assertEquals(4,core.getCursorCol());
+    }
 }
