@@ -322,7 +322,7 @@ public class DragonEditorCore {
     }
 
     public void pressEnd(){
-        //TODO: it should take the cursor to the end of the code on the line
+        //it should take the cursor to the end of the code on the line
         //if pressed a second time, or if the cursor is already at
         //the end of the code on that line,
         //it should take the cursor to the end of that line

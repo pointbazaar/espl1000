@@ -67,6 +67,12 @@ public class DragonKeyEventHandler {
 
                 switch (key_event_type){
                     case "KEY_PRESSED":
+                        switch (e.getKeyCode()){
+                            case 8:
+                                master.editorWithImage.get().pressBackSpace();
+                                System.out.println("BACKSPACE");
+                                break;
+                        }
                         break;
                     case "KEY_RELEASED":
                         if(e.getKeyCode()==(int)'p' && e.isControlDown()){
@@ -84,10 +90,12 @@ public class DragonKeyEventHandler {
                                 master.editorWithImage.get().pressTab();
                                 System.out.println("TAB");
                                 break;
+                                /*
                             case 8:
                                 master.editorWithImage.get().pressBackSpace();
                                 System.out.println("BACKSPACE");
                                 break;
+                                 */
                             case 38:
                                 //Arrow UP
                                 master.editorWithImage.get().arrowUpChangeLine();
