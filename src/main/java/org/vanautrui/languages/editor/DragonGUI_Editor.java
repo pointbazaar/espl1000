@@ -143,4 +143,13 @@ public class DragonGUI_Editor {
         }
     }
 
+    public void tryOpenFile(){
+        //TODO: make sure that it is actually a
+        //file for a good programming language we are opening, not some PHP or Python or Javascript.
+
+        final JFileChooser  fileChooser = new JFileChooser();
+
+        int returnValue = fileChooser.showOpenDialog(this.frame);
+    }
+
 }

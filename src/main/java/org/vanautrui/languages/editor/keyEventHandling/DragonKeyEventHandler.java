@@ -47,6 +47,11 @@ public class DragonKeyEventHandler {
                             System.out.println("CTRL + C ");
                             return true;
                         }
+                        if(realChar=='O' && ctrl_down){
+                            System.out.println("CTRL + O ");
+                            master.tryOpenFile();
+                            return true;
+                        }
                         if(realChar=='S' && ctrl_down){
                             System.out.println("CTRL + S ");
                             return true;
