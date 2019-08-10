@@ -18,6 +18,14 @@ public class DragonEditorCore {
 
     private static final int max_columns_per_line = 80;
 
+    public DragonEditorCore(List<String> lines){
+        if(lines.size()>0){
+            this.lines_in_editor=new ArrayList<>(lines);
+        }else{
+            this.lines_in_editor.add("");
+        }
+    }
+
     public DragonEditorCore() {
         this.addLine(0,"");
     }

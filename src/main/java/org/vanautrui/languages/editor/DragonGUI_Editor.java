@@ -182,6 +182,14 @@ public class DragonGUI_Editor {
                 File selectedFile = fileChooser.getSelectedFile();
                 System.out.println("file selected:");
                 System.out.println(selectedFile.getAbsolutePath());
+
+                if(editorWithImage.isPresent()){
+                    try {
+                        editorWithImage.get().loadFile(selectedFile);
+                    }catch (Exception ee){
+                        ee.printStackTrace();
+                    }
+                }
             }
         });
 

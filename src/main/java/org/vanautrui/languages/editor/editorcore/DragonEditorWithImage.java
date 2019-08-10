@@ -9,7 +9,9 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class DragonEditorWithImage {
     private JPanel panel;
 
     private DragonGUI_Editor master;
-    private final DragonEditorCore core;
+    private DragonEditorCore core;
 
     public static final int charSize=15;
     public static final int max_columns_per_line = 80;
@@ -127,6 +129,14 @@ public class DragonEditorWithImage {
 
     public void pressEnd() {
         this.core.pressEnd();
+        this.updateEditorImage();
+    }
+
+    public void loadFile(File selectedFile)throws Exception{
+        //TODO: load a file into the editor
+        List<String> lines = Files.readAllLines(selectedFile.toPath());
+
+        this.core=new DragonEditorCore(lines);
         this.updateEditorImage();
     }
 }
