@@ -68,19 +68,16 @@ public class DragonClassNode implements IDragonASTNode {
         //and structuring the parser accordingly
         boolean success_method = true;
         boolean success_field = true;
-        boolean success = true;
         while (success_field || success_method) {
             try {
                 this.methodNodeList.add(new DragonMethodNode(copy));
                 success_method = true;
-                continue;
             } catch (Exception e) {
                 success_method = false;
             }
             try {
                 this.fieldNodeList.add(new DragonClassFieldNode(copy));
                 success_field = true;
-                continue;
             } catch (Exception e) {
                 success_field = false;
             }

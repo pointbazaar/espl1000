@@ -44,7 +44,7 @@ returnType ::= 'void' | Type
 declaredArgument ::= Type identifier
 
 //TODO
-statement ::= methodCall
+statement ::= methodCall ';'
 
 //TODO: work on this, this is not done
 methodCall ::= identifier '(' ( (string (, string)*) | string ) ')'

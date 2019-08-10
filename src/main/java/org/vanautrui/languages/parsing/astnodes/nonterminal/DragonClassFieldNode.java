@@ -1,5 +1,6 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
+import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonAccessModifierNode;
@@ -24,6 +25,8 @@ public class DragonClassFieldNode implements IDragonASTNode {
         this.type = new DragonTypeNode(copy);
 
         this.name = new DragonIdentifierNode(copy);
+
+        copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(";"));
 
         tokens.set(copy);
     }
