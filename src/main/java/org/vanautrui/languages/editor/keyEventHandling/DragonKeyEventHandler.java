@@ -65,6 +65,27 @@ public class DragonKeyEventHandler {
                         }
                         if(ctrl_down && realChar == 'N'){
                             System.out.println("CTRL + N ");
+                            return true;
+                        }
+                        if(ctrl_down && realChar == 'R'){
+                            System.out.println("CTRL + R ");
+                            return true;
+                        }
+                        if(e.getExtendedKeyCode()==112){
+                            //pressed F1
+                            System.out.println("   F1   ");
+                            //show JFrame with help information,
+                            //and return focus back to main window
+                            if(master.helpWindow.isPresent()){
+                                master.helpWindow.get().destroy();
+                                master.helpWindow=Optional.empty();
+                            }else {
+                                master.helpWindow = Optional.of(new CustomHelpWindow(master));
+                            }
+                            return true;
+                        }
+                        if(e.getExtendedKeyCode()==113){
+                            //pressed F2
                             System.out.println("sharing the current buffer");
                             //TODO: make server socket and such, until
                             //a client has accepted, then close it again
@@ -79,8 +100,7 @@ public class DragonKeyEventHandler {
                             }
                             return true;
                         }
-                        if(ctrl_down && realChar == 'R'){
-                            System.out.println("CTRL + R ");
+                        if(e.getExtendedKeyCode()==114){
                             System.out.println("trying to recieve a file into current buffer");
                             //TODO: make client socket and such
                             //the client socket can be created right here
@@ -92,19 +112,6 @@ public class DragonKeyEventHandler {
                                 master.editorWithImage.get().loadString(line);
                             }catch (Exception ee){
                                 ee.printStackTrace();
-                            }
-                            return true;
-                        }
-                        if(e.getExtendedKeyCode()==112){
-                            //pressed F1
-                            System.out.println("   F1   ");
-                            //show JFrame with help information,
-                            //and return focus back to main window
-                            if(master.helpWindow.isPresent()){
-                                master.helpWindow.get().destroy();
-                                master.helpWindow=Optional.empty();
-                            }else {
-                                master.helpWindow = Optional.of(new CustomHelpWindow(master));
                             }
                             return true;
                         }

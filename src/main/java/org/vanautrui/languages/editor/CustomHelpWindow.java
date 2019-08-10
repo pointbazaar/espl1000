@@ -33,8 +33,8 @@ public class CustomHelpWindow {
                 "Ctrl + O : Open File",
                 "Ctrl + C : Quit",
 
-                "Ctrl + R : Receive File into current Buffer",
-                "Ctrl + N : Share ('NetSlide') the current Buffer",
+                "F2 : Share ('NetSlide') the current Buffer",
+                "F3 : Receive File into current Buffer",
 
                 "TODO: Ctrl + B : Build  Project",
                 "F1 : Toggle Help Window"
