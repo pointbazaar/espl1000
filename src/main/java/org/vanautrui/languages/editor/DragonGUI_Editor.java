@@ -9,6 +9,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -40,8 +42,9 @@ public class DragonGUI_Editor {
     //is the help window open?
     public Optional<CustomHelpWindow> helpWindow=Optional.empty();
 
+    public Optional<Path> currentFilePath=Optional.empty();
 
-    public DragonGUI_Editor(){
+    public DragonGUI_Editor(Optional<Path> filePath){
 
         set_dark_ui();
         this.frame = new JFrame("Dragon Editor");
@@ -98,6 +101,18 @@ public class DragonGUI_Editor {
 
         this.contextArea=Optional.of(new DragonEditorContextArea(this));
         horizontal_panel.add(this.contextArea.get().make());
+
+        //maybe set the content to the file
+        if(filePath.isPresent() && this.editorWithImage.isPresent()){
+            try {
+                this.currentFilePath = filePath;
+                this.editorWithImage.get().loadFile(filePath.get().toFile());
+            }catch (Exception e){
+                e.printStackTrace();
+                System.err.println("something went wrong reading the file");
+                System.exit(1);
+            }
+        }
 
         frame.setVisible(true);
     }
@@ -186,6 +201,8 @@ public class DragonGUI_Editor {
                 if(editorWithImage.isPresent()){
                     try {
                         editorWithImage.get().loadFile(selectedFile);
+
+                        currentFilePath=Optional.of(selectedFile.toPath());
                     }catch (Exception ee){
                         ee.printStackTrace();
                     }
@@ -194,6 +211,20 @@ public class DragonGUI_Editor {
         });
 
         int returnValue = fileChooser.showOpenDialog(this.frame);
+    }
+
+    public void trySaveFile(){
+        //try to save file in the location specified when opening
+        //the file
+        if(currentFilePath.isPresent()){
+            try {
+                Files.write(currentFilePath.get(), editorWithImage.get().getCurrentBufferAsString().getBytes());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else{
+            System.err.println("no file currently opened. cannot save.");
+        }
     }
 
 }

@@ -9,8 +9,10 @@ import org.vanautrui.languages.editor.DragonGUI_Editor;
 import org.vanautrui.languages.commandline.dragoni;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -86,7 +88,15 @@ public class App {
                     }
                     break;
                 case "-e":
-                    DragonGUI_Editor editor = new DragonGUI_Editor();
+                    Optional<Path> filePath = Optional.empty();
+
+                    try {
+                        filePath = Optional.of(Paths.get(args[1]));
+                    }catch (Exception e){
+                        //pass
+                    }
+
+                    DragonGUI_Editor editor = new DragonGUI_Editor(filePath);
                     break;
                 default:
                     TerminalUtil.printlnRed("first flag has to be -i, -e or -c, not " + args[0], System.out);

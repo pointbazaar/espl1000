@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DragonEditorWithImage {
 
@@ -150,5 +151,9 @@ public class DragonEditorWithImage {
 
     public String getCurrentLine() {
         return this.core.getLinesInEditor().get(this.core.getCursorLine());
+    }
+
+    public String getCurrentBufferAsString() {
+        return this.core.getLinesInEditor().stream().collect(Collectors.joining("\n"));
     }
 }

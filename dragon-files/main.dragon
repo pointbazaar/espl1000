@@ -5,7 +5,7 @@
 public class main
 
     public void main (){
-        println ( "x" )
+        println ( "x" );
     }
 
     public void main ()

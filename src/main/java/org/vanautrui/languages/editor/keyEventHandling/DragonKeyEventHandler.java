@@ -48,21 +48,22 @@ public class DragonKeyEventHandler {
 
                 switch (key_event_type){
                     case "KEY_PRESSED":
-                        if(realChar=='O' && ctrl_down){
+                        if(ctrl_down && realChar == 'O'){
                             System.out.println("CTRL + O ");
                             master.tryOpenFile();
                             return true;
                         }
-                        if(realChar=='S' && ctrl_down){
+                        if(ctrl_down && realChar == 'S'){
                             System.out.println("CTRL + S ");
+                            master.trySaveFile();
                             return true;
                         }
-                        if(realChar=='C' && ctrl_down){
+                        if(ctrl_down && realChar == 'C'){
                             System.out.println("CTRL + C ");
                             System.exit(0);
                             return true;
                         }
-                        if(realChar=='N' && ctrl_down){
+                        if(ctrl_down && realChar == 'N'){
                             System.out.println("CTRL + N ");
                             System.out.println("sharing the current buffer");
                             //TODO: make server socket and such, until
@@ -78,7 +79,7 @@ public class DragonKeyEventHandler {
                             }
                             return true;
                         }
-                        if(realChar=='R' && ctrl_down){
+                        if(ctrl_down && realChar == 'R'){
                             System.out.println("CTRL + R ");
                             System.out.println("trying to recieve a file into current buffer");
                             //TODO: make client socket and such

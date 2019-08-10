@@ -9,38 +9,47 @@ public class CustomHelpWindow {
 
     private JFrame helpFrame;
 
-    public CustomHelpWindow(DragonGUI_Editor master1){
+    public CustomHelpWindow(DragonGUI_Editor master1) {
         //we use it in constructor,
         //because it depends on the editor area
         //and needs to know about it, but not the other way around
-        this.master=master1;
+        this.master = master1;
 
 
         this.helpFrame = new JFrame();
-        helpFrame.setMinimumSize(new Dimension(300,500));
+        helpFrame.setMinimumSize(new Dimension(300, 500));
         helpFrame.setResizable(false);
 
         JPanel panel = new JPanel();
         panel.setBackground(DragonGUI_Editor.backgroundColor);
 
-        BoxLayout layout=new BoxLayout(panel,BoxLayout.Y_AXIS);
+        BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
 
         panel.setLayout(layout);
-        panel.setMaximumSize(new Dimension(2000,30));
+        panel.setMaximumSize(new Dimension(2000, 30));
 
-        JLabel interpret = new JLabel("TODO: Ctrl + R : Interpret Program");
+        String[] help_lines = new String[]{
+                "TODO: Ctrl + S : Save File",
+                "Ctrl + O : Open File",
+                "Ctrl + C : Quit",
 
-        panel.add(interpret);
-        panel.add(new JLabel("TODO: Ctrl + B : Build Project"));
-        panel.add(new JLabel("TODO: Ctrl + O : Open File"));
-        panel.add(new JLabel("F1 : Toggle Help Window"));
+                "Ctrl + R : Receive File into current Buffer",
+                "Ctrl + N : Share ('NetSlide') the current Buffer",
 
+                "TODO: Ctrl + B : Build  Project",
+                "F1 : Toggle Help Window"
+        };
+
+        for(String s : help_lines){
+            panel.add(new JLabel(s));
+        }
+
+        helpFrame.setTitle("Dragon Editor Help");
         helpFrame.add(panel);
-
         helpFrame.setVisible(true);
     }
 
-    public void destroy(){
+    public void destroy() {
         this.helpFrame.setVisible(false);
         this.helpFrame.dispose();
     }
