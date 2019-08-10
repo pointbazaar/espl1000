@@ -5,7 +5,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.commandline.dragonc;
-import org.vanautrui.languages.editor.DragonGUI_Editor;
+import org.vanautrui.languages.editor.gui.DragonGUI_Editor;
 import org.vanautrui.languages.commandline.dragoni;
 
 import java.nio.file.Files;
@@ -27,7 +27,7 @@ public class App {
 
         System.out.println("starting dragon");
 
-        try_generate_some_bytecode();
+        //try_generate_some_bytecode();
         //https://www.javassist.org/
         //we could use this dependency to make our classes
 

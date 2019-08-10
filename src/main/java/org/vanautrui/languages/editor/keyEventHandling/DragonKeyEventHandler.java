@@ -1,19 +1,16 @@
 package org.vanautrui.languages.editor.keyEventHandling;
 
-import org.vanautrui.languages.editor.CustomHelpWindow;
-import org.vanautrui.languages.editor.DragonGUI_Editor;
+import org.vanautrui.languages.editor.gui.CustomHelpWindow;
+import org.vanautrui.languages.editor.gui.DragonGUI_Editor;
 import org.vanautrui.languages.editor.editorcore.DragonEditorWithImage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 

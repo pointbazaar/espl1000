@@ -1,4 +1,4 @@
-package org.vanautrui.languages.editor;
+package org.vanautrui.languages.editor.gui;
 
 import javax.swing.*;
 import java.awt.*;

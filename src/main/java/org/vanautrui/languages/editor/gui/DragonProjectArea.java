@@ -1,6 +1,7 @@
-package org.vanautrui.languages.editor;
+package org.vanautrui.languages.editor.gui;
 
 import org.apache.commons.io.FilenameUtils;
+import org.vanautrui.languages.editor.MyFileTreeNode;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;

@@ -1,4 +1,4 @@
-package org.vanautrui.languages.editor;
+package org.vanautrui.languages.editor.gui;
 
 import org.vanautrui.languages.editor.editorcore.DragonEditorWithImage;
 import org.vanautrui.languages.editor.keyEventHandling.DragonKeyEventHandler;

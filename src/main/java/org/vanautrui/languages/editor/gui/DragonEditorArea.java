@@ -1,8 +1,6 @@
-package org.vanautrui.languages.editor;
+package org.vanautrui.languages.editor.gui;
 
-import javafx.scene.input.KeyCode;
 import org.apache.commons.io.IOUtils;
-import sun.awt.ExtendedKeyCodes;
 
 import java.awt.*;
 import java.awt.event.InputMethodEvent;
@@ -10,15 +8,11 @@ import java.awt.event.InputMethodListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import org.fusesource.jansi.Ansi;
 
 import static org.fusesource.jansi.Ansi.ansi;
 

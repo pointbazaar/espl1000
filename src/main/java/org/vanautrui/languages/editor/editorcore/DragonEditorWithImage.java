@@ -1,18 +1,12 @@
 package org.vanautrui.languages.editor.editorcore;
 
-import org.vanautrui.languages.editor.DragonGUI_Editor;
+import org.vanautrui.languages.editor.gui.DragonGUI_Editor;
 import org.vanautrui.languages.editor.editorRenderServices.EditorImageService;
-import org.vanautrui.languages.editor.editorRenderServices.LineImageService;
-import org.vanautrui.languages.editor.editorRenderServices.MyImagePanel;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

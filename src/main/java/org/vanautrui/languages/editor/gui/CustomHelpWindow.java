@@ -1,4 +1,6 @@
-package org.vanautrui.languages.editor;
+package org.vanautrui.languages.editor.gui;
+
+import org.vanautrui.languages.editor.gui.DragonGUI_Editor;
 
 import javax.swing.*;
 import java.awt.*;
