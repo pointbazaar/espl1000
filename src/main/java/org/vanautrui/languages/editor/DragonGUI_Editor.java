@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class DragonGUI_Editor {
@@ -151,6 +152,10 @@ public class DragonGUI_Editor {
         //TODO: make sure that it is actually a
         //file for a good programming language we are opening, not some PHP or Python or Javascript.
 
+        String[] supported_extensions = new String[]{
+                ".java",".cpp","hpp",".c",".h",".dragon",".dg"
+        };
+
         final JFileChooser  fileChooser = new JFileChooser();
 
         //https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
@@ -165,9 +170,7 @@ public class DragonGUI_Editor {
                 }
 
                 if(
-                f.getName().endsWith(".c")
-                || f.getName().endsWith(".java")
-                || f.getName().endsWith(".cpp")
+                        Arrays.asList(supported_extensions).stream().filter(str->f.getName().endsWith(str)).findAny().isPresent()
                 ){
                     if(f.isFile()) {
                         return true;
