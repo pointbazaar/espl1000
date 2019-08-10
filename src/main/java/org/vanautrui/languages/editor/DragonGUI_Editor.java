@@ -4,7 +4,11 @@ import org.vanautrui.languages.editor.editorcore.DragonEditorWithImage;
 import org.vanautrui.languages.editor.keyEventHandling.DragonKeyEventHandler;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.Optional;
 
 public class DragonGUI_Editor {
@@ -148,6 +152,44 @@ public class DragonGUI_Editor {
         //file for a good programming language we are opening, not some PHP or Python or Javascript.
 
         final JFileChooser  fileChooser = new JFileChooser();
+
+        //https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
+        //disable just selecting any file
+        fileChooser.setAcceptAllFileFilterUsed(false);
+
+        fileChooser.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                if(f.isDirectory()){
+                    return true;
+                }
+
+                if(
+                f.getName().endsWith(".c")
+                || f.getName().endsWith(".java")
+                || f.getName().endsWith(".cpp")
+                ){
+                    if(f.isFile()) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public String getDescription() {
+                return null;
+            }
+        });
+
+        fileChooser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                File selectedFile = fileChooser.getSelectedFile();
+                System.out.println("file selected:");
+                System.out.println(selectedFile.getAbsolutePath());
+            }
+        });
 
         int returnValue = fileChooser.showOpenDialog(this.frame);
     }
