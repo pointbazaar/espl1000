@@ -48,6 +48,10 @@ public class DragonTypeIdentifierNode implements IDragonASTNode {
             }
         }
 
+        if(this.typeName.getContents().equals("Void")){
+            return;
+        }
+
         throw new Exception("could not find class for type: '"+this.typeName.getContents()+"'");
     }
 }
