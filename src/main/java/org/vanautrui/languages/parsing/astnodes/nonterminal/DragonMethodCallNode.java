@@ -26,15 +26,13 @@ public class DragonMethodCallNode implements IDragonASTNode {
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
 
+        boolean success_argument = true;
         try {
             this.argumentList.add(new DragonStringConstantNode(copy));
         } catch (Exception e) {
-            //pass
+            success_argument=false;
         }
-
-        boolean success_argument = true;
         while (success_argument) {
-
             try {
                 copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(","));
                 this.argumentList.add(new DragonStringConstantNode(copy));
@@ -44,6 +42,8 @@ public class DragonMethodCallNode implements IDragonASTNode {
         }
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(")"));
+
+        copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(";"));
 
         //System.out.println("success");
         tokens.set(copy);

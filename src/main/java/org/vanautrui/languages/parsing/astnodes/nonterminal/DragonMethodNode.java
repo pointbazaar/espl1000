@@ -4,6 +4,7 @@ import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonAccessModifierNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.DragonStringConstantNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonTypeNode;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class DragonMethodNode implements IDragonASTNode {
 
         //System.out.println("try parse DragonMethodNode");
 
-        //TODO: consider the 2 alternative ways a method can be declored
+        //TODO: consider the 2 alternative ways a method can be declared
 
         DragonTokenList copy = tokens.copy();
 
@@ -38,7 +39,22 @@ public class DragonMethodNode implements IDragonASTNode {
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
 
-        //TODO: parse arguments
+        // parse arguments
+
+        boolean success_argument = true;
+        try {
+            this.arguments.add(new DragonDeclaredArgumentNode(copy));
+        } catch (Exception e) {
+            success_argument=false;
+        }
+        while (success_argument) {
+            try {
+                copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(","));
+                this.arguments.add(new DragonDeclaredArgumentNode(copy));
+            } catch (Exception e) {
+                success_argument = false;
+            }
+        }
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(")"));
 
