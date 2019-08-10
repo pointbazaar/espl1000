@@ -70,6 +70,13 @@ public class DragonLexer {
             }
 
             try {
+                result.add(new IntegerConstantToken(myCode));
+                continue;
+            } catch (Exception e) {
+                //pass
+            }
+
+            try {
                 result.add(new StringConstantToken(myCode));
                 continue;
             } catch (Exception e) {
