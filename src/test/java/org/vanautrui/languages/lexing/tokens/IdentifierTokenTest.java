@@ -30,4 +30,17 @@ public class IdentifierTokenTest {
 
         Assert.assertEquals("arg_ls",dragonTokenList.get(4).getContents());
     }
+
+    @Test
+    public void test_not_accept_uppercase()throws Exception{
+        CharacterList list = new CharacterList("Int x;");
+
+        try {
+            IdentifierToken identifierToken = new IdentifierToken(list);
+            Assert.fail();
+        }catch (Exception e){
+            //pass
+        }
+
+    }
 }

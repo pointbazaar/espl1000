@@ -8,6 +8,8 @@ import org.vanautrui.languages.parsing.astnodes.terminal.DragonIdentifierNode;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public class DragonBultinMethodNode implements IDragonASTNode {
 
@@ -29,9 +31,13 @@ public class DragonBultinMethodNode implements IDragonASTNode {
         }
     }
 
-    //TODO
     @Override
     public String toSourceCode() {
         return this.methodname.toSourceCode();
+    }
+
+    @Override
+    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
+        //TODO: figure out what to do here
     }
 }

@@ -8,6 +8,8 @@ import org.vanautrui.languages.parsing.astnodes.terminal.DragonStringConstantNod
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DragonMethodCallNode implements IDragonASTNode {
@@ -58,5 +60,14 @@ public class DragonMethodCallNode implements IDragonASTNode {
                 +")"
                 +";"
         ;
+    }
+
+    @Override
+    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
+        //TODO: check that the method is called on an object
+        //which is actually declared and initialized
+        //and is in scope
+
+        //for static method calls, check that the class exists
     }
 }

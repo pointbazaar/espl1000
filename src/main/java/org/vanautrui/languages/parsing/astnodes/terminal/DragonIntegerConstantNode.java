@@ -1,6 +1,7 @@
 package org.vanautrui.languages.parsing.astnodes.terminal;
 
 import org.vanautrui.languages.lexing.tokens.DragonToken;
+import org.vanautrui.languages.lexing.tokens.IntegerConstantToken;
 import org.vanautrui.languages.lexing.tokens.StringConstantToken;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
@@ -11,16 +12,16 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonMethodNode;
 import java.util.Optional;
 import java.util.Set;
 
-public class DragonStringConstantNode implements IDragonASTNode {
+public class DragonIntegerConstantNode implements IDragonASTNode {
 
-    public String str;
+    public long value;
 
-    public DragonStringConstantNode(DragonTokenList tokens) throws Exception {
+    public DragonIntegerConstantNode(DragonTokenList tokens) throws Exception {
 
         DragonToken token = tokens.get(0);
 
-        if (token instanceof StringConstantToken) {
-            this.str = ((StringConstantToken) token).getContents();
+        if (token instanceof IntegerConstantToken) {
+            this.value = ((IntegerConstantToken) token).value;
             tokens.consume(1);
         } else {
             throw new Exception("could not read stringConstant node");
@@ -30,12 +31,12 @@ public class DragonStringConstantNode implements IDragonASTNode {
 
     @Override
     public String toSourceCode() {
-        return this.str;
+        return this.value+"";
     }
 
     @Override
     public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        //a string is always typesafe, nothing to do here
+        //an integer is always typesafe, nothing to do here
         return;
     }
 }

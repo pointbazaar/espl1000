@@ -5,13 +5,16 @@ import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonAccessModifierNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonIdentifierNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonTypeNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.DragonTypeIdentifierNode;
+
+import java.util.Optional;
+import java.util.Set;
 
 public class DragonClassFieldNode implements IDragonASTNode {
 
     public DragonAccessModifierNode access;
 
-    public DragonTypeNode type;
+    public DragonTypeIdentifierNode type;
 
     public DragonIdentifierNode name;
 
@@ -22,7 +25,7 @@ public class DragonClassFieldNode implements IDragonASTNode {
 
         this.access = new DragonAccessModifierNode(copy);
 
-        this.type = new DragonTypeNode(copy);
+        this.type = new DragonTypeIdentifierNode(copy);
 
         this.name = new DragonIdentifierNode(copy);
 
@@ -37,5 +40,11 @@ public class DragonClassFieldNode implements IDragonASTNode {
                 +" "+this.type.toSourceCode()
                 +" "+this.name.toSourceCode()
                 +";";
+    }
+
+    @Override
+    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
+        //check that the type exists
+        this.type.doTypeCheck(asts,currentClass,currentMethod);
     }
 }

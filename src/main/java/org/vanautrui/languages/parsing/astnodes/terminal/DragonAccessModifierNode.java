@@ -4,6 +4,12 @@ import org.vanautrui.languages.lexing.tokens.AccessModifierToken;
 import org.vanautrui.languages.lexing.tokens.DragonToken;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonMethodNode;
+
+import java.util.Optional;
+import java.util.Set;
 
 public class DragonAccessModifierNode implements IDragonASTNode {
 
@@ -25,5 +31,10 @@ public class DragonAccessModifierNode implements IDragonASTNode {
     @Override
     public String toSourceCode() {
         return (is_public) ? "public" : "private";
+    }
+
+    @Override
+    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
+        return;
     }
 }

@@ -12,6 +12,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class dragonc {
@@ -94,6 +97,15 @@ public class dragonc {
                 TerminalUtil.printlnRed("PHASE: TODO: pretty print source from AST in curly braces");
                 //TODO:
                 System.out.println(ast.toSourceCode());
+
+                TerminalUtil.printlnRed("PHASE: TYPECHECKING");
+
+                Set<DragonAST> asts = new HashSet<>();
+                asts.add(ast);
+
+                //this should throw an exception, if it does not
+                //typecheck
+                ast.doTypeCheck(asts, Optional.empty(),Optional.empty());
 
                 TerminalUtil.printlnRed("PHASE: CODE GENERATION");
 

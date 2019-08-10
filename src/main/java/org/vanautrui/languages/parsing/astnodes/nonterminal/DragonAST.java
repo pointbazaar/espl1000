@@ -1,16 +1,13 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
-
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DragonAST implements IDragonASTNode {
 
-    public List<DragonClassNode> classNodeList = new ArrayList<>();
+    public Set<DragonClassNode> classNodeList = new HashSet<>();
 
     public DragonAST(DragonTokenList tokens) throws Exception {
         //System.out.println("try parse DragonAST");
@@ -40,5 +37,13 @@ public class DragonAST implements IDragonASTNode {
                 .stream()
                 .map(node -> node.toSourceCode())
                 .collect(Collectors.joining("\n"));
+    }
+
+    @Override
+    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
+
+        for(DragonClassNode classNode : this.classNodeList){
+            classNode.doTypeCheck(asts,Optional.of(classNode),Optional.empty());
+        }
     }
 }

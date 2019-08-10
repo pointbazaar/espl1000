@@ -6,16 +6,19 @@ import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonAccessModifierNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonIdentifierNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.DragonTypeIdentifierNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DragonClassNode implements IDragonASTNode {
 
     public DragonAccessModifierNode access;
 
-    public DragonIdentifierNode name;
+    public DragonTypeIdentifierNode name;
 
     public List<DragonClassFieldNode> fieldNodeList = new ArrayList<>();
 
@@ -33,7 +36,7 @@ public class DragonClassNode implements IDragonASTNode {
 
         copy.expectAndConsumeOtherWiseThrowException(new ClassToken());
 
-        this.name = new DragonIdentifierNode(copy);
+        this.name = new DragonTypeIdentifierNode(copy);
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("{"));
 
@@ -112,5 +115,32 @@ public class DragonClassNode implements IDragonASTNode {
         result+="\n";
         result+="}";
         return result;
+    }
+
+    @Override
+    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
+
+        int count=0;
+        for(DragonAST ast : asts){
+            for(DragonClassNode classNode : ast.classNodeList){
+                if(classNode.name.typeName.getContents().equals(this.name.typeName.getContents())){
+                    count++;
+                }
+            }
+        }
+
+        //check that fields and methods are typesafe
+
+        for(DragonClassFieldNode fieldNode : this.fieldNodeList){
+            fieldNode.doTypeCheck(asts,Optional.of(this),Optional.empty());
+        }
+
+        for(DragonMethodNode methodNode : this.methodNodeList){
+            methodNode.doTypeCheck(asts,Optional.of(this),Optional.empty());
+        }
+
+        if(count!=1){
+            throw new Exception("multiple definitions of class '"+this.name+"'");
+        }
     }
 }

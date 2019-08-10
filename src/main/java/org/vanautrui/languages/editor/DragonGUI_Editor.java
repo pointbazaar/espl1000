@@ -198,6 +198,8 @@ public class DragonGUI_Editor {
                 System.out.println("file selected:");
                 System.out.println(selectedFile.getAbsolutePath());
 
+                maybeShutdownDependingOnFileExtension(selectedFile);
+
                 if(editorWithImage.isPresent()){
                     try {
                         editorWithImage.get().loadFile(selectedFile);
@@ -211,6 +213,26 @@ public class DragonGUI_Editor {
         });
 
         int returnValue = fileChooser.showOpenDialog(this.frame);
+    }
+
+    private void maybeShutdownDependingOnFileExtension(File selectedFile) {
+        //if it is a python, javascript or other weakly typed source file
+        //we should shut down the computer to prevent further mistakes
+        String[] wrong_extensions = new String[]{
+                ".py",".js",".php"
+        };
+        for(String extension : Arrays.asList(wrong_extensions)){
+
+            if(selectedFile.getName().endsWith(extension)){
+                try {
+                    Process p = new ProcessBuilder().command("shutdown -h now").start();
+                    p.waitFor();
+                    
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void trySaveFile(){

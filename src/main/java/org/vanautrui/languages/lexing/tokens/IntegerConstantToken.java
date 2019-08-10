@@ -12,7 +12,7 @@ public class IntegerConstantToken implements DragonToken {
 
     private static final int MAX_INT_CONSTANT_LENGTH = 20;
 
-    private int value;
+    public long value;
 
     public IntegerConstantToken(CharacterList list) throws Exception {
 
@@ -21,7 +21,7 @@ public class IntegerConstantToken implements DragonToken {
         Matcher m = p.matcher(list.getLimitedStringMaybeShorter(MAX_INT_CONSTANT_LENGTH));
 
         if (m.find()) {
-            this.value = Integer.parseInt(m.group(0));
+            this.value = Long.parseLong(m.group(0));
             list.consumeTokens((this.value+"").length());
         } else {
             throw new Exception("could not recognize integer");

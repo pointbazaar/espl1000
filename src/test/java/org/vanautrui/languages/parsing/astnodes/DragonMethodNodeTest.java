@@ -15,11 +15,11 @@ public class DragonMethodNodeTest {
 
 
         list.add(new AccessModifierToken("public"));
-        list.add(new IdentifierToken("void"));
+        list.add(new TypeIdentifierToken("Void"));
         list.add(new IdentifierToken("main"));
         list.add(new SymbolToken("("));
         //arguments
-        list.add(new IdentifierToken("String"));
+        list.add(new TypeIdentifierToken("String"));
         list.add(new IdentifierToken("hello "));
         list.add(new SymbolToken(")"));
 
@@ -42,7 +42,7 @@ public class DragonMethodNodeTest {
 
 
         list.add(new AccessModifierToken("public"));
-        list.add(new IdentifierToken("void"));
+        list.add(new TypeIdentifierToken("Void"));
         list.add(new IdentifierToken("main"));
         list.add(new SymbolToken("("));
         list.add(new SymbolToken(")"));
