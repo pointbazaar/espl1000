@@ -68,7 +68,7 @@ public class DragonStatusLine {
         panel.add(this.line_count_label);
 
         panel.add(this.my_ip_address);
-        String helpString = "   F1:Help   (TODO)Ctrl+N: share a file     (TODO)Ctrl+R: receive a file into current buffer";
+        String helpString = "   F1:Help  Ctrl+C:Quit   (TODO)Ctrl+N: share a file     (TODO)Ctrl+R: receive a file into current buffer";
         panel.add(new JLabel(helpString));
     }
 

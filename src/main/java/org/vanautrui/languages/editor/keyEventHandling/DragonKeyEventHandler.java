@@ -48,10 +48,6 @@ public class DragonKeyEventHandler {
 
                 switch (key_event_type){
                     case "KEY_PRESSED":
-                        if(realChar=='C' && ctrl_down){
-                            System.out.println("CTRL + C ");
-                            return true;
-                        }
                         if(realChar=='O' && ctrl_down){
                             System.out.println("CTRL + O ");
                             master.tryOpenFile();
@@ -59,6 +55,11 @@ public class DragonKeyEventHandler {
                         }
                         if(realChar=='S' && ctrl_down){
                             System.out.println("CTRL + S ");
+                            return true;
+                        }
+                        if(realChar=='C' && ctrl_down){
+                            System.out.println("CTRL + C ");
+                            System.exit(0);
                             return true;
                         }
                         if(realChar=='N' && ctrl_down){
