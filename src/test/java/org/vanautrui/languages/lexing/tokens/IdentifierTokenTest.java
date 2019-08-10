@@ -3,6 +3,8 @@ package org.vanautrui.languages.lexing.tokens;
 import org.junit.Assert;
 import org.junit.Test;
 import org.vanautrui.languages.lexing.CharacterList;
+import org.vanautrui.languages.lexing.DragonLexer;
+import org.vanautrui.languages.parsing.DragonTokenList;
 
 public class IdentifierTokenTest {
 
@@ -14,5 +16,18 @@ public class IdentifierTokenTest {
         IdentifierToken identifierToken = new IdentifierToken(list);
 
         Assert.assertEquals("main", identifierToken.getContents());
+    }
+
+    @Test
+    public void test_accept_underscore_identifier() throws Exception {
+
+        String source = "vector <string> arg_ls;";
+
+        DragonLexer lexer = new DragonLexer();
+        DragonTokenList dragonTokenList = lexer.lexCodeWithoutComments(source);
+
+        Assert.assertTrue(dragonTokenList.get(4) instanceof IdentifierToken);
+
+        Assert.assertEquals("arg_ls",dragonTokenList.get(4).getContents());
     }
 }

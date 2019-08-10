@@ -10,18 +10,18 @@ public class OperatorToken implements DragonToken {
 
     //the 2 char operators should be considered first
 
-    public static final String[] operator_symbols_2_chars = new String[]{
-            ">>","<<","++","--","-=","+=","*=","/="
+    public static final String[] operator_symbols_2_chars_or_more = new String[]{
+            ">>","<<","++","--","-=","+=","*=","/=","==","::","->","~>","<-","<~","-->","<--"
     };
 
     public static final String[] operator_symbols = new String[]{
-            "<",">","+","-","*","/","%"
+            "<",">","+","-","*","/","%",":","="
     };
 
     public String operator;
 
     public OperatorToken(CharacterList list) throws Exception {
-        for (String sym : operator_symbols_2_chars) {
+        for (String sym : operator_symbols_2_chars_or_more) {
             if (list.startsWith(sym)) {
                 this.operator = sym;
                 list.consumeTokens(sym.length());

@@ -13,7 +13,8 @@
 
 int ::= ... | -1 | 0 | 1 | 2 | ...
 
-char ::= 'a' | ... | 'z' | 'A' | ... | 'Z'
+//underscore should also be here
+char ::= 'a' | ... | 'z' | 'A' | ... | 'Z' | '_'
 
 alphanumeric ::= int | char
 
