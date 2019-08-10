@@ -1,5 +1,7 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
+import org.objectweb.asm.ClassWriter;
+import org.vanautrui.languages.codegeneration.IClassWriterByteCodeGeneratorVisitor;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
@@ -13,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DragonMethodNode implements IDragonASTNode {
+public class DragonMethodNode implements IDragonASTNode, IClassWriterByteCodeGeneratorVisitor {
 
     public DragonAccessModifierNode access;
 
@@ -113,5 +115,15 @@ public class DragonMethodNode implements IDragonASTNode {
         for(DragonDeclaredArgumentNode arg : this.arguments){
             arg.doTypeCheck(asts,currentClass,Optional.of(this));
         }
+    }
+
+    @Override
+    public void visit(ClassWriter cw, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) {
+
+        String owner = currentClass.get().name.typeName.getContents();
+        String descriptor = "i do not know";
+        //TODO: we are probably doing this call wrong .
+        //figure it out
+        cw.newMethod(owner,this.methodName.methodName.name.getContents(),descriptor,false);
     }
 }

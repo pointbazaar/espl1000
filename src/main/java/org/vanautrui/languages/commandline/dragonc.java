@@ -11,6 +11,7 @@ import org.vanautrui.languages.lexing.DragonLexer;
 import org.vanautrui.languages.parsing.DragonParser;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonClassNode;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -118,7 +119,16 @@ public class dragonc {
 
 
                 //TODO: generate code from here
-                try_generate_some_bytecode();
+                //try_generate_some_bytecode();
+
+                for(DragonClassNode classNode : ast.classNodeList){
+                    //generate bytecode for that class
+                    ClassWriter cw = new ClassWriter(0);
+                    classNode.visit(cw,Optional.of(classNode),Optional.empty());
+
+                    byte[] classResult = cw.toByteArray();
+                    Files.write(Paths.get(classNode.name.typeName.getContents()+".class"),classResult);
+                }
 
             } catch (Exception e) {
                 System.err.println(e.getMessage());
