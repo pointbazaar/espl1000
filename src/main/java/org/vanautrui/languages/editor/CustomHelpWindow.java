@@ -32,12 +32,12 @@ public class CustomHelpWindow {
                 "Ctrl + S : Save File",
                 "Ctrl + O : Open File",
                 "Ctrl + C : Quit",
+                "TODO: Ctrl + B : Build  Project",
+                "TODO: Ctrl + Enter : Jump to : (Method|Constructor) Declaration | variable initialization",
 
                 "F1 : Toggle Help Window",
                 "F2 : Share ('NetSlide') the current Buffer",
-                "F3 : Receive File into current Buffer",
-
-                "TODO: Ctrl + B : Build  Project"
+                "F3 : Receive File into current Buffer"
         };
 
         for(String s : help_lines){
