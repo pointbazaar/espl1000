@@ -33,6 +33,7 @@ public class CustomHelpWindow {
         panel.add(interpret);
         panel.add(new JLabel("TODO: Ctrl + B : Build Project"));
         panel.add(new JLabel("TODO: Ctrl + O : Open File"));
+        panel.add(new JLabel("F1 : Toggle Help Window"));
 
         helpFrame.add(panel);
 
