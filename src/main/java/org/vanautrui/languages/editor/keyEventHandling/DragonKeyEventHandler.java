@@ -33,6 +33,36 @@ public class DragonKeyEventHandler {
         this.master=master;
     }
 
+    private void tryShareFile(){
+        System.out.println("sharing the current buffer");
+        //TODO: make server socket and such, until
+        //a client has accepted, then close it again
+        try(ServerSocket serverSocket = new ServerSocket(8888)){
+            System.out.println("server running");
+            try(Socket client = serverSocket.accept()){
+                PrintWriter out = new PrintWriter(client.getOutputStream(),true);
+                out.println(master.editorWithImage.get().getCurrentLine());
+            }
+        }catch (Exception ee){
+            ee.printStackTrace();
+        }
+    }
+
+    private void tryReceiveFile(){
+        System.out.println("trying to recieve a file into current buffer");
+        //TODO: make client socket and such
+        //the client socket can be created right here
+        try {
+            Socket clientSocket = new Socket("127.0.0.1", 8888);
+            Scanner in = new Scanner(clientSocket.getInputStream());
+            String line=in.nextLine();
+            System.out.println(line);
+            master.editorWithImage.get().loadString(line);
+        }catch (Exception ee){
+            ee.printStackTrace();
+        }
+    }
+
     public KeyEventDispatcher getKeyEventDispatcherForKeyboardShortcuts(){
         KeyEventDispatcher dispatcher = new KeyEventDispatcher() {
             @Override
@@ -86,33 +116,12 @@ public class DragonKeyEventHandler {
                         }
                         if(e.getExtendedKeyCode()==113){
                             //pressed F2
-                            System.out.println("sharing the current buffer");
-                            //TODO: make server socket and such, until
-                            //a client has accepted, then close it again
-                            try(ServerSocket serverSocket = new ServerSocket(8888)){
-                                System.out.println("server running");
-                                try(Socket client = serverSocket.accept()){
-                                    PrintWriter out = new PrintWriter(client.getOutputStream(),true);
-                                    out.println(master.editorWithImage.get().getCurrentLine());
-                                }
-                            }catch (Exception ee){
-                                ee.printStackTrace();
-                            }
+                            tryShareFile();
                             return true;
                         }
                         if(e.getExtendedKeyCode()==114){
-                            System.out.println("trying to recieve a file into current buffer");
-                            //TODO: make client socket and such
-                            //the client socket can be created right here
-                            try {
-                                Socket clientSocket = new Socket("127.0.0.1", 8888);
-                                Scanner in = new Scanner(clientSocket.getInputStream());
-                                String line=in.nextLine();
-                                System.out.println(line);
-                                master.editorWithImage.get().loadString(line);
-                            }catch (Exception ee){
-                                ee.printStackTrace();
-                            }
+                            //pressed F3
+                            tryReceiveFile();
                             return true;
                         }
                         break;
