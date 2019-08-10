@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DragonEditorWithImage {
@@ -136,10 +137,18 @@ public class DragonEditorWithImage {
     }
 
     public void loadFile(File selectedFile)throws Exception{
-        //TODO: load a file into the editor
         List<String> lines = Files.readAllLines(selectedFile.toPath());
 
         this.core=new DragonEditorCore(lines);
         this.updateEditorImage();
+    }
+
+    public void loadString(String line) {
+        this.core=new DragonEditorCore(Arrays.asList(line.split("\n")));
+        this.updateEditorImage();
+    }
+
+    public String getCurrentLine() {
+        return this.core.getLinesInEditor().get(this.core.getCursorLine());
     }
 }

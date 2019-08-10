@@ -9,9 +9,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Scanner;
 
 public class DragonKeyEventHandler {
 
@@ -55,6 +59,38 @@ public class DragonKeyEventHandler {
                         }
                         if(realChar=='S' && ctrl_down){
                             System.out.println("CTRL + S ");
+                            return true;
+                        }
+                        if(realChar=='N' && ctrl_down){
+                            System.out.println("CTRL + N ");
+                            System.out.println("sharing the current buffer");
+                            //TODO: make server socket and such, until
+                            //a client has accepted, then close it again
+                            try(ServerSocket serverSocket = new ServerSocket(8888)){
+                                System.out.println("server running");
+                                try(Socket client = serverSocket.accept()){
+                                    PrintWriter out = new PrintWriter(client.getOutputStream(),true);
+                                    out.println(master.editorWithImage.get().getCurrentLine());
+                                }
+                            }catch (Exception ee){
+                                ee.printStackTrace();
+                            }
+                            return true;
+                        }
+                        if(realChar=='R' && ctrl_down){
+                            System.out.println("CTRL + R ");
+                            System.out.println("trying to recieve a file into current buffer");
+                            //TODO: make client socket and such
+                            //the client socket can be created right here
+                            try {
+                                Socket clientSocket = new Socket("127.0.0.1", 8888);
+                                Scanner in = new Scanner(clientSocket.getInputStream());
+                                String line=in.nextLine();
+                                System.out.println(line);
+                                master.editorWithImage.get().loadString(line);
+                            }catch (Exception ee){
+                                ee.printStackTrace();
+                            }
                             return true;
                         }
                         if(e.getExtendedKeyCode()==112){
