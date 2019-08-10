@@ -61,6 +61,9 @@ public class DragonEditorWithImage {
 
     private void updateEditorImage(){
 
+        //TODO: add an alternative, that only
+        //updates one line. so that not everything has to be drawn
+
         long start = System.currentTimeMillis();
         this.panel.removeAll();
         this.panel.add(

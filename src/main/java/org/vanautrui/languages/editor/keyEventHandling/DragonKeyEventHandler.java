@@ -121,6 +121,22 @@ public class DragonKeyEventHandler {
                                 master.editorWithImage.get().pressBackSpace();
                                 System.out.println("BACKSPACE");
                                 break;
+                            case 38:
+                                //Arrow UP
+                                master.editorWithImage.get().arrowUpChangeLine();
+                                break;
+                            case 40:
+                                //Arrow Down
+                                master.editorWithImage.get().arrowDownChangeLine();
+                                break;
+                            case 37:
+                                //arrow left
+                                master.editorWithImage.get().arrowLeftMoveCursor();
+                                break;
+                            case 39:
+                                //arrow right
+                                master.editorWithImage.get().arrowRightMoveCursor();
+                                break;
                         }
                         break;
                     case "KEY_RELEASED":
@@ -145,6 +161,7 @@ public class DragonKeyEventHandler {
                                 System.out.println("BACKSPACE");
                                 break;
                                  */
+                                /*
                             case 38:
                                 //Arrow UP
                                 master.editorWithImage.get().arrowUpChangeLine();
@@ -161,7 +178,7 @@ public class DragonKeyEventHandler {
                                 //arrow right
                                 master.editorWithImage.get().arrowRightMoveCursor();
                                 break;
-
+                            */
                             case 36:
                                 master.editorWithImage.get().pressHome();
                                 break;

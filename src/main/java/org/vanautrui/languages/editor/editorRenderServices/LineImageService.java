@@ -124,6 +124,12 @@ public class LineImageService {
         int x_offset = text_x_offset_initial;
         DragonLexer lexer = new DragonLexer();
         try {
+            if(line.trim().startsWith("//")){
+                throw new Exception("comment should be without highlighting");
+                //TODO: figure out how now to not try to syntax highlight
+                //code within multiline comments
+            }
+
             DragonTokenList dragonTokenList = lexer.lexCodeWithoutComments(line);
             //System.out.println(dragonTokenList.toSourceCodeFragment());
 
