@@ -14,9 +14,8 @@ public class DragonMethodCallNodeTest {
         list.add(new IdentifierToken("main"));
         list.add(new SymbolToken("("));
         list.add(new SymbolToken(")"));
+        list.add(new SymbolToken(";"));
 
         DragonMethodCallNode call = new DragonMethodCallNode(list);
-
-
     }
 }

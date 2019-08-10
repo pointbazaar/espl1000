@@ -29,15 +29,15 @@ public class CustomHelpWindow {
         panel.setMaximumSize(new Dimension(2000, 30));
 
         String[] help_lines = new String[]{
-                "TODO: Ctrl + S : Save File",
+                "Ctrl + S : Save File",
                 "Ctrl + O : Open File",
                 "Ctrl + C : Quit",
 
+                "F1 : Toggle Help Window",
                 "F2 : Share ('NetSlide') the current Buffer",
                 "F3 : Receive File into current Buffer",
 
-                "TODO: Ctrl + B : Build  Project",
-                "F1 : Toggle Help Window"
+                "TODO: Ctrl + B : Build  Project"
         };
 
         for(String s : help_lines){
