@@ -37,6 +37,9 @@ public class DragonGUI_Editor {
 
     public Optional<DragonKeyEventHandler> keyEventHandler;
 
+    //is the help window open?
+    public Optional<CustomHelpWindow> helpWindow=Optional.empty();
+
 
     public DragonGUI_Editor(){
 
@@ -68,7 +71,7 @@ public class DragonGUI_Editor {
 
         frame.add(vertical_panel);
 
-        vertical_panel.add(menuBar());
+        //we could add a menu bar or something, but then the UI would be less minimalistic
 
         FlowLayout flowLayoutHorizontal = new FlowLayout();
         JPanel horizontal_panel = new JPanel();
@@ -97,18 +100,6 @@ public class DragonGUI_Editor {
         horizontal_panel.add(this.contextArea.get().make());
 
         frame.setVisible(true);
-    }
-
-
-    private JMenuBar menuBar(){
-        JMenuBar mb = new JMenuBar();
-        mb.setBackground(DragonGUI_Editor.backgroundColor);
-
-        JLabel interpret = new JLabel("TODO: Ctrl + R : Interpret Program");
-
-        mb.add(interpret);
-        mb.add(new JLabel("TODO: Ctrl + B : Build Project"));
-        return mb;
     }
 
     //https://docs.oracle.com/javase/tutorial/uiswing/components/textarea.html

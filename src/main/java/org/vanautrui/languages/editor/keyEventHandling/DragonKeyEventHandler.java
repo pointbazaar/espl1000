@@ -1,5 +1,6 @@
 package org.vanautrui.languages.editor.keyEventHandling;
 
+import org.vanautrui.languages.editor.CustomHelpWindow;
 import org.vanautrui.languages.editor.DragonGUI_Editor;
 import org.vanautrui.languages.editor.editorcore.DragonEditorWithImage;
 
@@ -54,6 +55,19 @@ public class DragonKeyEventHandler {
                         }
                         if(realChar=='S' && ctrl_down){
                             System.out.println("CTRL + S ");
+                            return true;
+                        }
+                        if(e.getExtendedKeyCode()==112){
+                            //pressed F1
+                            System.out.println("   F1   ");
+                            //show JFrame with help information,
+                            //and return focus back to main window
+                            if(master.helpWindow.isPresent()){
+                                master.helpWindow.get().destroy();
+                                master.helpWindow=Optional.empty();
+                            }else {
+                                master.helpWindow = Optional.of(new CustomHelpWindow(master));
+                            }
                             return true;
                         }
                         break;
