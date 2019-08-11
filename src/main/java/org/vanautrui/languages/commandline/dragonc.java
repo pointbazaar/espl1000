@@ -30,10 +30,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.objectweb.asm.Opcodes.*;
@@ -51,16 +48,16 @@ public class dragonc {
     //before reaching the final representation
     //from which code can be generated
 
-    public static void compile_main(String[] args) {
+    public static void compile_main(List<String> args) {
         //Apache  CLI tools is just AWESOME!!
         Options options = createOptions();
         try {
             CommandLineParser parser = new DefaultParser();
-            CommandLine commandLine = parser.parse(options, args);
+            CommandLine commandLine = parser.parse(options, args.toArray(new String[]{}));
 
             //TODO: provide support for compiling multiple files
             //and also for compiling a directory (recursively finds all .dragon files therein)
-            Path sourceFilePath = Paths.get(args[0]);
+            Path sourceFilePath = Paths.get(args.get(0));
 
             //TODO: the source file must not be the first argument
             //the tool would be more flexible if the

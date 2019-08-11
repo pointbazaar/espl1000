@@ -15,6 +15,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -34,34 +35,48 @@ public class App {
         //https://asm.ow2.io/
         //https://asm.ow2.io/asm4-guide.pdf
 
+        for(String s : args){
+            System.out.println(" ~> "+s);
+        }
+
         Options options = createOptions();
         CommandLineParser parser = new DefaultParser();
 
         HelpFormatter helpFormatter = new HelpFormatter();
+        String[] relevant_options_for_this_phase = Arrays.copyOfRange(args,0,1);
+        //String[] relevant_options_for_later_stages = Arrays.copyOfRange(args,1,args.length);
         try {
-
-            String[] relevant_options_for_this_phase = Arrays.copyOfRange(args,0,1);
-
             CommandLine cmd = parser.parse(options, relevant_options_for_this_phase);
+            List<String> possible_options = Arrays.stream(cmd.getOptions()).map(opt->opt.getOpt()).collect(Collectors.toList());
 
-            String[] relevant_options_for_later_stages = Arrays.copyOfRange(args,1,args.length);
-
+            List<String> relevant_options_for_later = cmd.getArgList().stream().filter(str->!possible_options.contains(str)).collect(Collectors.toList());
             if(cmd.hasOption("c")){
-                dragonc.compile_main(relevant_options_for_later_stages);
+                dragonc.compile_main(relevant_options_for_later);
             }else if(cmd.hasOption("i")){
                 dragoni dragon_interpreter = new dragoni();
-                dragon_interpreter.interpret_main(Arrays.asList(relevant_options_for_later_stages));
+
+                dragon_interpreter.interpret_main(relevant_options_for_later);
             }else if(cmd.hasOption("e")){
-                Optional<Path> filePath = Optional.empty();
-                try {
-                    filePath = Optional.of(Paths.get(cmd.getArgList().get(1)));
-                }catch (Exception e){
-                    //pass
-                }
+
+                //require a file to open the editor
+                //this is to encourage using 'touch'
+                //to create new files or other command line utils
+                //and to better integrate with other command line utils
+
+
+                String fileName = args[1];
+
+                Optional<Path> filePath =
+                        Optional.of(
+                                Paths.get(fileName)
+                        );
+
                 DragonGUI_Editor editor = new DragonGUI_Editor(filePath);
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
+            //debug
+            e.printStackTrace();
             helpFormatter.printHelp("dragon ",options);
 
             //e.printStackTrace();

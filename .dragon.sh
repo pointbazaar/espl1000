@@ -30,10 +30,10 @@ function dgc(){
     dragon -c "$@"
 }
 
-function dg(){
-	dragon "$@"
-}
+#function dg(){
+#	dragon "$@"
+#}
 
-function dri(){
-	~/dragon/Interpreter/dri "$@"
-}
+#function dri(){
+#	~/dragon/Interpreter/dri "$@"
+#}
