@@ -1,4 +1,4 @@
-package org.vanautrui.languages.lexing;
+package org.vanautrui.languages.lexing.utils;
 
 public class IndentedString {
 

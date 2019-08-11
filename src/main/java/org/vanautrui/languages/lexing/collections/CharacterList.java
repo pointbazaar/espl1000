@@ -1,4 +1,4 @@
-package org.vanautrui.languages.lexing;
+package org.vanautrui.languages.lexing.collections;
 
 import java.util.ArrayList;
 import java.util.List;

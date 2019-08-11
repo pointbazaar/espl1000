@@ -2,6 +2,7 @@ package org.vanautrui.languages.lexing;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.vanautrui.languages.lexing.utils.CurlyBracesWeaver;
 
 public class CurlyBracesWeaverTest {
 

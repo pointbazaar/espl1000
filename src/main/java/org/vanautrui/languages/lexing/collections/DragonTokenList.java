@@ -1,16 +1,26 @@
-package org.vanautrui.languages.parsing;
+package org.vanautrui.languages.lexing.collections;
 
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 import org.vanautrui.languages.lexing.tokens.DragonToken;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.vanautrui.languages.commandline.dragonc.getPreferredXMLSerializationStrategyHumanReadable;
 
 public class DragonTokenList {
 
     //this is to facilitate special features
     //which would be convenient in a token list for our compiler
 
+    @ElementList(name="tokens",entry="token")
     private List<DragonToken> tokens;
 
     public DragonTokenList() {
@@ -77,40 +87,27 @@ public class DragonTokenList {
     @Override
     public String toString() {
         //pretty display
-        int indentation=0;
 
-        StringBuilder sb = new StringBuilder("");
+        Serializer serializer = new Persister(getPreferredXMLSerializationStrategyHumanReadable());
 
-        for (DragonToken token : tokens) {
+        StringBuilder sb = new StringBuilder();
 
-            //decide new indentation
-            switch (token.getContents()){
-                case "}":
-                    indentation--;
-                    sb.append("\n");
-                    break;
+        OutputStream out = new BufferedOutputStream(new OutputStream() {
+            @Override
+            public void write(int b) throws IOException {
+                sb.append((char)b);
             }
+        });
 
-            String tokenString = (
-                    "<"
-                            //+token.getClass().getName()
-                            + token.getClass().getSimpleName()
-                            + ": "
-                            + token.getContents()
-                            + ">"
-            );
-            sb.append(indent(indentation)+tokenString+"\n");
-
-            //decide new indentation
-            switch (token.getContents()){
-                case "{":
-                    indentation++;
-                    sb.append("\n");
-                    break;
-            }
+        try {
+            serializer.write(this, out);
+        }catch (Exception e){
+            e.printStackTrace();
+            return "error";
         }
 
         return sb.toString();
+
     }
 
     private String indent(int n){

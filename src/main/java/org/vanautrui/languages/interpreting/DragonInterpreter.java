@@ -1,9 +1,9 @@
 package org.vanautrui.languages.interpreting;
 
-import org.vanautrui.languages.lexing.DragonCommentRemover;
+import org.vanautrui.languages.lexing.utils.DragonCommentRemover;
 import org.vanautrui.languages.lexing.DragonLexer;
 import org.vanautrui.languages.parsing.DragonParser;
-import org.vanautrui.languages.parsing.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
 
 import java.io.InputStream;

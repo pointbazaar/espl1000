@@ -4,16 +4,28 @@ import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.strategy.Strategy;
+import org.simpleframework.xml.strategy.Type;
+import org.simpleframework.xml.strategy.Visitor;
+import org.simpleframework.xml.strategy.VisitorStrategy;
+import org.simpleframework.xml.stream.InputNode;
+import org.simpleframework.xml.stream.NodeMap;
+import org.simpleframework.xml.stream.OutputNode;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.codegeneration.JavaByteCodeGenerator;
-import org.vanautrui.languages.lexing.CurlyBracesWeaver;
-import org.vanautrui.languages.lexing.DragonCommentRemover;
+import org.vanautrui.languages.lexing.utils.CurlyBracesWeaver;
+import org.vanautrui.languages.lexing.utils.DragonCommentRemover;
 import org.vanautrui.languages.lexing.DragonLexer;
 import org.vanautrui.languages.parsing.DragonParser;
-import org.vanautrui.languages.parsing.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonClassNode;
 
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -107,6 +119,16 @@ public class dragonc {
                 //TODO:
                 System.out.println(ast.toSourceCode());
 
+
+
+                TerminalUtil.printlnRed("PHASE: PRINT AST XML ");
+
+                Serializer serializer = new Persister(getPreferredXMLSerializationStrategyHumanReadable());
+                serializer.write(ast, System.out);
+                System.out.println();
+
+
+
                 TerminalUtil.printlnRed("PHASE: TYPECHECKING");
 
                 Set<DragonAST> asts = new HashSet<>();
@@ -145,6 +167,21 @@ public class dragonc {
             System.err.println("Please specify some files, like 'dragon -c main.dragon' ");
         }
     }
+
+    public static final Strategy getPreferredXMLSerializationStrategyHumanReadable(){
+        Strategy strategy = new VisitorStrategy(new Visitor() {
+            @Override
+            public void read(Type type, NodeMap<InputNode> nodeMap) throws Exception {
+
+            }
+
+            @Override
+            public void write(Type type, NodeMap<OutputNode> nodeMap) throws Exception {
+                nodeMap.remove("class");
+            }
+        });
+        return strategy;
+    };
 
     private static void try_generate_some_bytecode(){
         ClassWriter cw = new ClassWriter(0);

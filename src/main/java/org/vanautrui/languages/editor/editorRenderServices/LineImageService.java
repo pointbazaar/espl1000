@@ -1,10 +1,9 @@
 package org.vanautrui.languages.editor.editorRenderServices;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.vanautrui.languages.lexing.DragonLexer;
 import org.vanautrui.languages.lexing.tokens.DragonToken;
-import org.vanautrui.languages.parsing.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.DragonTokenList;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -13,7 +12,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.vanautrui.languages.editor.editorcore.DragonEditorWithImage.charSize;
 import static org.vanautrui.languages.editor.editorcore.DragonEditorWithImage.max_columns_per_line;

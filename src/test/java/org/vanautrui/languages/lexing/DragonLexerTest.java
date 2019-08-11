@@ -1,11 +1,11 @@
 package org.vanautrui.languages.lexing;
 
 import org.junit.Test;
+import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.tokens.AccessModifierToken;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
 import org.vanautrui.languages.lexing.tokens.OperatorToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
-import org.vanautrui.languages.parsing.DragonTokenList;
 
 import static org.junit.Assert.*;
 

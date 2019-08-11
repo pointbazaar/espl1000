@@ -1,8 +1,8 @@
 package org.vanautrui.languages.lexing;
 
-import org.vanautrui.languages.TerminalUtil;
+import org.vanautrui.languages.lexing.collections.CharacterList;
+import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.tokens.*;
-import org.vanautrui.languages.parsing.DragonTokenList;
 
 import java.util.ArrayList;
 import java.util.List;

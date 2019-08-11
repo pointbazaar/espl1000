@@ -2,9 +2,7 @@ package org.vanautrui.languages.lexing.tokens;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.vanautrui.languages.lexing.CharacterList;
-import org.vanautrui.languages.lexing.DragonLexer;
-import org.vanautrui.languages.parsing.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.CharacterList;
 
 public class DragonIdentifierNodeTokenTest {
 

@@ -1,11 +1,13 @@
 package org.vanautrui.languages.lexing.tokens;
 
-import org.vanautrui.languages.lexing.CharacterList;
+import org.simpleframework.xml.Attribute;
+import org.vanautrui.languages.lexing.collections.CharacterList;
 
 import java.awt.*;
 
 public class AccessModifierToken implements DragonToken {
 
+    @Attribute
     public boolean is_public;
 
     public AccessModifierToken(CharacterList list) throws Exception {

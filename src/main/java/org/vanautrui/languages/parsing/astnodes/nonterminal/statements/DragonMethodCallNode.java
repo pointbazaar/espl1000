@@ -1,12 +1,13 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal.statements;
 
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.ElementList;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
-import org.vanautrui.languages.parsing.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonMethodNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.IDragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonIdentifierNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonStringConstantNode;
 
@@ -18,8 +19,14 @@ import java.util.stream.Collectors;
 
 public class DragonMethodCallNode implements IDragonASTNode, IDragonStatementNode {
 
+    @Attribute
+    public String getMethodName(){
+        return this.identifierMethodName.name.getContents();
+    }
+
     public DragonIdentifierNode identifierMethodName;
 
+    @ElementList
     public List<DragonStringConstantNode> argumentList = new ArrayList<>();
 
     public DragonMethodCallNode(DragonTokenList tokens) throws Exception {

@@ -1,6 +1,6 @@
 package org.vanautrui.languages.lexing.tokens;
 
-import org.vanautrui.languages.lexing.CharacterList;
+import org.vanautrui.languages.lexing.collections.CharacterList;
 
 import java.awt.*;
 

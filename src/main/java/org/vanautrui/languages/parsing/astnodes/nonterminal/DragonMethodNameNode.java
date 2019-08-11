@@ -1,6 +1,7 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
-import org.vanautrui.languages.parsing.DragonTokenList;
+import org.simpleframework.xml.Attribute;
+import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonIdentifierNode;
 
@@ -8,6 +9,11 @@ import java.util.Optional;
 import java.util.Set;
 
 public class DragonMethodNameNode implements IDragonASTNode {
+
+    @Attribute
+    public String getName(){
+        return this.methodName.name.getContents();
+    }
 
     public DragonIdentifierNode methodName;
 

@@ -2,8 +2,7 @@ package org.vanautrui.languages.parsing.astnodes.nonterminals;
 
 import org.junit.Test;
 import org.vanautrui.languages.lexing.tokens.*;
-import org.vanautrui.languages.parsing.DragonTokenList;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonClassNode;
+import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonMethodNode;
 
 public class DragonMethodNodeTest {

@@ -2,7 +2,7 @@ package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
 import org.vanautrui.languages.lexing.tokens.DragonToken;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
-import org.vanautrui.languages.parsing.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonIdentifierNode;
 

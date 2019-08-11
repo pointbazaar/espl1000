@@ -1,8 +1,11 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.tokens.ClassToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
-import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonAccessModifierNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonTypeIdentifierNode;
@@ -15,14 +18,27 @@ import java.util.stream.Collectors;
 
 public class DragonClassNode implements IDragonASTNode {
 
+    //test simplexml
+    @Attribute
+    public String getAccess(){
+        return this.access.toSourceCode();
+    }
+
     public DragonAccessModifierNode access;
+
+    //for xml
+    @Attribute
+    public String getType(){
+        return this.name.typeName.getContents();
+    }
 
     public DragonTypeIdentifierNode name;
 
+    @ElementList
     public List<DragonClassFieldNode> fieldNodeList = new ArrayList<>();
 
+    @ElementList
     public List<DragonMethodNode> methodNodeList = new ArrayList<>();
-
 
     public DragonClassNode(DragonTokenList tokens) throws Exception {
         //System.out.println("try parse DragonClassNode");
