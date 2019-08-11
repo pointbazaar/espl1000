@@ -1,6 +1,7 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.codegeneration.IClassWriterByteCodeGeneratorVisitor;
 import org.vanautrui.languages.lexing.tokens.ClassToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
@@ -156,23 +157,40 @@ public class DragonClassNode implements IDragonASTNode, IClassWriterByteCodeGene
         //TODO: handle access modifiers
         //TODO: handle other modifiers
 
-        int access = ACC_SUPER;
-        if(this.access.is_public){
-            access+=ACC_PUBLIC;
-        }else{
-            access+=ACC_PRIVATE;
+        {
+            int access = ACC_SUPER;
+            if (this.access.is_public) {
+                access += ACC_PUBLIC;
+            } else {
+                access += ACC_PRIVATE;
+            }
+
+            int classFileVersion = 49;
+
+            String superClassName = "java/lang/Object";
+
+            cw.visit(classFileVersion,
+                    access,
+                    this.name.typeName.getContents(),
+                    null,
+                    superClassName,
+                    null);
         }
 
-        int classFileVersion = 49;
+        MethodVisitor mv;
 
-        String superClassName = "java/lang/Object";
-
-        cw.visit(classFileVersion,
-                access,
-                this.name.typeName.getContents(),
-                null,
-                superClassName,
-                null);
+        {
+            //write the default constructor
+            mv=cw.visitMethod(ACC_PUBLIC,"<init>","()V",null,null);
+            mv.visitVarInsn(ALOAD,0);
+            mv.visitMethodInsn(INVOKESPECIAL,
+                    "java/lang/Object",
+                    "<init>",
+                    "()V");
+            mv.visitInsn(RETURN);
+            mv.visitMaxs(1,1);
+            mv.visitEnd();
+        }
 
         for(DragonClassFieldNode fieldNode : this.fieldNodeList){
 

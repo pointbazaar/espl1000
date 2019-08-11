@@ -1,5 +1,8 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
+import static org.objectweb.asm.Opcodes.*;
+import org.objectweb.asm.MethodVisitor;
+import org.vanautrui.languages.codegeneration.IMethodWriterByteCodeGeneratorVisitor;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
@@ -12,7 +15,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DragonMethodCallNode implements IDragonASTNode {
+public class DragonMethodCallNode implements IDragonASTNode, IMethodWriterByteCodeGeneratorVisitor {
 
     public DragonIdentifierNode identifierMethodName;
 
@@ -69,5 +72,23 @@ public class DragonMethodCallNode implements IDragonASTNode {
         //and is in scope
 
         //for static method calls, check that the class exists
+    }
+
+    @Override
+    public void visit(MethodVisitor mv, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) {
+        //TODO: actually compile the stuff, not just fake
+
+        mv.visitFieldInsn(GETSTATIC,
+                "java/lang/System",
+                "out",
+                "Ljava/io/PrintStream;");
+
+        if(this.argumentList.size()>0) {
+            mv.visitLdcInsn(this.argumentList.get(0).str);
+        }
+        mv.visitMethodInsn(INVOKEVIRTUAL,
+                "java/io/PrintStream",
+                "println",
+                "(Ljava/lang/String;)V");
     }
 }
