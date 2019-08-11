@@ -77,11 +77,24 @@ public class JavaByteCodeGenerator {
 
         if(methodCallNode.argumentList.size()>0) {
             mv.visitLdcInsn(methodCallNode.argumentList.get(0).str);
+        }else{
+            mv.visitLdcInsn("");
         }
-        mv.visitMethodInsn(INVOKEVIRTUAL,
-                "java/io/PrintStream",
-                "println",
-                "(Ljava/lang/String;)V");
+
+        switch (methodCallNode.identifierMethodName.name.getContents()) {
+            case "println":
+                mv.visitMethodInsn(INVOKEVIRTUAL,
+                    "java/io/PrintStream",
+                    "println",
+                    "(Ljava/lang/String;)V");
+                break;
+            case "print":
+                mv.visitMethodInsn(INVOKEVIRTUAL,
+                        "java/io/PrintStream",
+                        "print",
+                        "(Ljava/lang/String;)V");
+                break;
+        }
     }
 
     private static void visitStatement(ClassWriter cw,MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonStatementNode statementNode){
