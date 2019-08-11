@@ -139,6 +139,8 @@ public class dragonc {
         //TODO: expand functionality to directories and multiple files
         try {
 
+            long start_time_ms = System.currentTimeMillis();
+
             String sourceCode = new String(Files.readAllBytes(sourceFilePath));
 
             if(cmd.hasOption("debug")) {
@@ -169,6 +171,10 @@ public class dragonc {
             phase_typecheck(asts,ast,cmd.hasOption("debug"));
 
             phase_codegeneration(ast,cmd.hasOption("debug"));
+
+            long end_time_ms = System.currentTimeMillis();
+            long duration = end_time_ms-start_time_ms;
+            TerminalUtil.printlnGreen("☕ "+duration+" ms");
 
         } catch (Exception e) {
 

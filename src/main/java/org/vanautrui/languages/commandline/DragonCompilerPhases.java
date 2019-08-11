@@ -59,7 +59,7 @@ public class DragonCompilerPhases {
     }
 
     public static void phase_typecheck(Set<DragonAST> asts, DragonAST ast, boolean debug)throws Exception{
-        TerminalUtil.printGreen("PHASE: TYPECHECKING ");
+        TerminalUtil.printGreen("TYPECHECKING ");
 
         //this should throw an exception, if it does not typecheck
         try {
@@ -72,7 +72,7 @@ public class DragonCompilerPhases {
     }
 
     public static void phase_codegeneration(DragonAST ast, boolean debug)throws Exception{
-        TerminalUtil.printGreen("PHASE: CODE GENERATION ");
+        TerminalUtil.printGreen("CODE GENERATION ");
 
         try {
             for (DragonClassNode classNode : ast.classNodeList) {
@@ -89,7 +89,7 @@ public class DragonCompilerPhases {
     }
 
     public static String phase_clean(String source, boolean debug)throws Exception{
-        TerminalUtil.printGreen("PHASE: CLEAN ");
+        TerminalUtil.printGreen("CLEAN ");
         //(remove comments, empty lines, excess whitespace)
 
         //TerminalUtil.printlnRed("PHASE: REMOVE COMMENTS AND EMPTY LINES");
@@ -112,7 +112,7 @@ public class DragonCompilerPhases {
     }
 
     public static DragonAST phase_parsing(DragonTokenList tokens, boolean debug)throws Exception{
-        TerminalUtil.printGreen("PHASE: PARSING ");
+        TerminalUtil.printGreen("PARSING ");
         try {
             DragonAST ast = (new DragonParser()).parse(tokens);
             TerminalUtil.printlnGreen("✓");
@@ -135,7 +135,7 @@ public class DragonCompilerPhases {
     }
 
     public static DragonTokenList phase_lexing(String just_code_with_braces_without_comments, boolean debug)throws Exception{
-        TerminalUtil.printGreen("PHASE: LEXING ");
+        TerminalUtil.printGreen("LEXING ");
 
         String just_code_with_braces_without_comments_without_newlines = just_code_with_braces_without_comments.replaceAll("\n","");
 

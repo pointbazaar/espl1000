@@ -32,6 +32,12 @@ public class DragonKeyEventHandler {
 
     private void tryShareFile(){
         System.out.println("sharing the current buffer");
+        try {
+            tryShareFileWithNetSlide();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        /*
         //TODO: make server socket and such, until
         //a client has accepted, then close it again
         try(ServerSocket serverSocket = new ServerSocket(8888)){
@@ -42,7 +48,16 @@ public class DragonKeyEventHandler {
             }
         }catch (Exception ee){
             ee.printStackTrace();
-        }
+        }*/
+    }
+
+    private void tryShareFileWithNetSlide()throws Exception{
+        //TODO
+        String command="source TODO; nsl TODO";
+        Process p = new ProcessBuilder().command(command).start();
+
+        p.waitFor();
+
     }
 
     private void tryReceiveFile(){
