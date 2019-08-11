@@ -1,5 +1,6 @@
 package org.vanautrui.languages;
 
+import org.apache.commons.cli.*;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
@@ -24,86 +25,58 @@ public class App {
     public static final String lang_name = "DRAGON ";
 
     public static void main(String[] args) {
-
-        System.out.println("starting dragon");
-
-        //try_generate_some_bytecode();
         //https://www.javassist.org/
         //we could use this dependency to make our classes
 
         //https://www.javassist.org/tutorial/tutorial.html
-
         //https://www.beyondjava.net/blog/quick-guide-writing-byte-code-asm
-
         //https://asm.ow2.io/
         //https://asm.ow2.io/asm4-guide.pdf
 
-        //this is the program that is actually intended to be used on the terminal:
-        //for the compile part,
+        Options options = createOptions();
+        CommandLineParser parser = new DefaultParser();
 
-        //compile the source files given as arguments to java bytecode (for now)
-        // dragon -c file1 file2 ...
+        HelpFormatter helpFormatter = new HelpFormatter();
+        try {
+            CommandLine cmd = parser.parse(options, args);
 
-        //compile all source files in that directory recursively
-        // dragon -c directory1
-
-
-        // dragon -i file1 file2 ... : interpret the given files and execute
-
-
-        // dragon -i                 : just start an interpreter
-
-
-        if (args.length < 1) {
-            TerminalUtil.printlnRed("Dragon Programming Language: https://github.com/pointbazaar/dragon");
-            TerminalUtil.printlnRed("use -i or -c argument");
-            TerminalUtil.printlnRed("-i starts the Interpreter");
-            TerminalUtil.printlnRed("-c starts the Compiler");
-            TerminalUtil.printlnRed("-e starts the IDE"); //TODO
-            TerminalUtil.printlnRed("");
-            TerminalUtil.printlnRed("Usage: ");
-
-            //TODO, it does not actually do that right now
-            TerminalUtil.printlnRed("dragon -c file1.dragon \tcompiles file1.dragon to file1.class");
-            TerminalUtil.printlnRed("dragon -i file1.dragon \tinterprets file1.dragon and prints the output to the console");
-
-            System.exit(1);
-        } else {
-            String flag = args[0];
-
-            switch (flag) {
-                case "-c":
-                    TerminalUtil.printlnRed(lang_name + "Compiler started", System.out);
-
-                    dragonc.compile_main(Arrays.copyOfRange(args, 1, args.length));
-                    break;
-                case "-i":
-
-                    try {
-
-                        dragoni dragon_interpreter = new dragoni();
-                        dragon_interpreter.interpret_main(Arrays.copyOfRange(args, 1, args.length));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case "-e":
-                    Optional<Path> filePath = Optional.empty();
-
-                    try {
-                        filePath = Optional.of(Paths.get(args[1]));
-                    }catch (Exception e){
-                        //pass
-                    }
-
-                    DragonGUI_Editor editor = new DragonGUI_Editor(filePath);
-                    break;
-                default:
-                    TerminalUtil.printlnRed("first flag has to be -i, -e or -c, not " + args[0], System.out);
-                    System.exit(1);
-                    break;
+            if(cmd.hasOption("c")){
+                dragonc.compile_main(Arrays.copyOfRange(args, 1, args.length));
+            }else if(cmd.hasOption("i")){
+                dragoni dragon_interpreter = new dragoni();
+                dragon_interpreter.interpret_main(cmd.getArgList().subList(1,cmd.getArgList().size()));
+            }else if(cmd.hasOption("e")){
+                Optional<Path> filePath = Optional.empty();
+                try {
+                    filePath = Optional.of(Paths.get(cmd.getArgList().get(1)));
+                }catch (Exception e){
+                    //pass
+                }
+                DragonGUI_Editor editor = new DragonGUI_Editor(filePath);
             }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            helpFormatter.printHelp("dragon ",options);
+
+            //e.printStackTrace();
         }
+    }
+
+    private static Options createOptions(){
+        Option compile_flag = OptionBuilder.withDescription("use the compiler").isRequired(false).create("c");
+        Option interpreter_flag = OptionBuilder.withDescription("use the interpreter").isRequired(false).create("i");
+        Option editor_flag = OptionBuilder.withDescription("start the ide").isRequired(false).create("e");
+
+        OptionGroup flag_group = new OptionGroup();
+        flag_group.addOption(compile_flag);
+        flag_group.addOption(interpreter_flag);
+        flag_group.addOption(editor_flag);
+
+        flag_group.setRequired(true);
+
+        Options options = new Options();
+        options.addOptionGroup(flag_group);
+        return options;
     }
 
     private static void try_generate_some_bytecode(){

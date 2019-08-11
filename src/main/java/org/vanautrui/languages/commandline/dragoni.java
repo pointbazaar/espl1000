@@ -7,6 +7,7 @@ import org.vanautrui.languages.interpreting.DragonInterpreter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static java.lang.System.out;
 import static org.fusesource.jansi.Ansi.ansi;
@@ -18,18 +19,18 @@ import static org.vanautrui.languages.App.lang_name;
 public class dragoni {
 
 
-    public void interpret_main(String[] args) throws Exception {
+    public void interpret_main(List<String> args) throws Exception {
         //this can accept filename to interpret but also can accept no filename and just
         //function like a REPL
 
 
-        if (args.length > 0) {
+        if (args.size() > 0) {
 
             out.println(lang_name + "Interpreter started");
 
             try {
-                for (int i = 0; i < args.length; i++) {
-                    String filename = args[i];
+                for (int i = 0; i < args.size(); i++) {
+                    String filename = args.get(i);
                     out.println("intpreting " + filename);
                     String sourcecode = new String(Files.readAllBytes(Paths.get(filename)));
 

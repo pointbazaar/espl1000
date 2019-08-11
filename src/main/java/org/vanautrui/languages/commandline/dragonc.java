@@ -1,5 +1,6 @@
 package org.vanautrui.languages.commandline;
 
+import org.apache.commons.cli.*;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
@@ -52,120 +53,217 @@ public class dragonc {
     private static final String seperator = "-----------------";
 
     public static void compile_main(String[] args) {
+        //Apache  CLI tools is just AWESOME!!
+        Options options = createOptions();
+
+        //printHelp();
+
+        try {
+            CommandLineParser parser = new DefaultParser();
+            CommandLine commandLine = parser.parse(options, args);
+
+            Path sourceFilePath = Paths.get(args[0]);
+
+            //TODO: the source file must not be the first argument
+            //the tool would be more flexible if the
+            //source files or directory could be specified anywhere
+
+            compile_main_inner(sourceFilePath,commandLine);
+        }catch (Exception e){
+            //e.printStackTrace();
+            System.err.println(e.getMessage());
+            System.out.println("dgc -help     for information about command line arguments");
+        }
+    }
+
+    public static void printHelp(){
+        Options options = createOptions();
+        HelpFormatter help = new HelpFormatter();
+        StringBuilder sbh = new StringBuilder("");
+        StringBuilder sbf = new StringBuilder("");
+
+        sbh.append("\ndgc - dragon compiler\n\n");
+
+        sbf.append("GITHUB\n");
+        sbf.append("    https://github.com/pointbazaar/dragon/\n\n");
+
+        sbf.append("AUTHOR\n");
+        sbf.append(
+                "    @pointbazar (alex23667@gmail.com),\n" +
+                        "    @Milo-D (David.Milosevic@web.de) \n\n"
+        );
+
+        sbf.append("REPORTING BUGS\n");
+        sbf.append("    https://github.com/pointbazaar/dragon/issues\n\n");
+
+        String header=sbh.toString();
+        String footer=sbf.toString();
+        help.printHelp("dgc [OPTION]... FILE...",header,options,footer,true);
+    }
+
+    private static Options createOptions(){
+        //https://commons.apache.org/proper/commons-cli/usage.html
+
+        Options options = new Options();
+        Option option_debug = new Option("d","debug",false,"provides debug output for development of the compiler");
+        options.addOption(option_debug);
+
+        options.addOption(new Option("help",false,"display an overview of the command line options"));
+
+        options.addOption(new Option("f","force",false,"force compilation. it will compile. (TODO)"));
+
+        options.addOption(new Option("strict",false,"do not compile if the code is likely to have bugs (TODO)"));
+
+        options.addOption(
+                OptionBuilder
+                .hasArg()
+                .withArgName("LEVEL")
+                .withDescription("try to optimize the code. optimization effort goes from 0 (no optimization) to 10 (maximum optimization")
+                .create("optimize")
+        );
 
 
-        if (args.length > 0) {
+        OptionGroup optionGroup = new OptionGroup();
 
-            //TODO: expand functionality to directories and multiple files
+        optionGroup.addOption(new Option("nocurly",false,"accept only indentation for scopes (TODO)"));
+        optionGroup.addOption(new Option("curly",false,"accept only curly braces  for scopes (TODO)"));
 
-            try {
 
-                //TODO: make a command line option to set the debug log level
-                //so it gives the right amount of information
 
-                Path path = Paths.get(args[0]);
+        options.addOptionGroup(optionGroup);
+        return options;
+    }
 
-                String sourceCode = new String(Files.readAllBytes(path));
+    private static void compile_main_inner(Path sourceFilePath,CommandLine cmd){
 
+        if(cmd.hasOption("help")){
+            printHelp();
+            return;
+        }
+
+        //TODO: expand functionality to directories and multiple files
+        try {
+            //TODO: make a command line option to set the debug log level
+            //so it gives the right amount of information
+
+            String sourceCode = new String(Files.readAllBytes(sourceFilePath));
+
+            if(cmd.hasOption("debug")) {
                 System.out.println(sourceCode);
-
-
-                TerminalUtil.printlnRed("PHASE: REMOVE COMMENTS AND EMPTY LINES");
-
-                String codeWithoutCommentsAndWithoutEmptyLines = (new DragonCommentRemover()).strip_comments(sourceCode);
-
-                System.out.println(codeWithoutCommentsAndWithoutEmptyLines);
-
-                //maybe phase to remove unneccessary whitespace?
-                TerminalUtil.printlnRed("TODO: PHASE: REMOVE UNNECCESSARY WHITESPACE");
-                String codeWithoutCommentsWithoutUnneccesaryWhitespace = remove_unneccessary_whitespace(codeWithoutCommentsAndWithoutEmptyLines);
-
-                System.out.println(codeWithoutCommentsWithoutUnneccesaryWhitespace);
-
-
-                TerminalUtil.printlnRed("PHASE: WEAVE IN CURLY BRACES");
-
-                String just_code_with_braces_without_comments_without_newlines =
-                        CurlyBracesWeaver.weave_scoping_curly_braces_and_remove_newlines(codeWithoutCommentsWithoutUnneccesaryWhitespace);
-
-                System.out.println(just_code_with_braces_without_comments_without_newlines);
-
-
-
-                TerminalUtil.printlnRed("PHASE: LEXING");
-
-                DragonTokenList tokens = (new DragonLexer()).lexCodeWithoutComments(just_code_with_braces_without_comments_without_newlines);
-
-                System.out.println(tokens.toString());
-
-                //TODO: put the semicolons in?
-                //the tokens should know which line number they are at.
-                //at the end of each line which is not opening '{' or closing '}' a scope
-                //  with that being defined as '{' being the last token on the line
-                //  and '}' being the first token on the line respectively
-                //, there should be a ';' , a semicolon.
-
-                //so we can identify the different statements.
-                //but we cannot exactly do it like this because it would
-                //prevent people from making a multi-line statement
-                //let us abandon this approach for now.
-
-                //i have an idea how we can avoid an issue related to this
-
-                TerminalUtil.printlnRed("PHASE: PARSING");
-                DragonAST ast = (new DragonParser()).parse(tokens);
-
-                TerminalUtil.printlnRed("PHASE: TODO: pretty print source from AST in curly braces");
-                //TODO:
-                System.out.println(ast.toSourceCode());
-
-
-
-                TerminalUtil.printlnRed("PHASE: PRINT AST XML ");
-
-                Serializer serializer = new Persister(getPreferredXMLSerializationStrategyHumanReadable());
-                serializer.write(ast, System.out);
-                System.out.println();
-
-
-
-                TerminalUtil.printlnRed("PHASE: TYPECHECKING");
-
-                Set<DragonAST> asts = new HashSet<>();
-                asts.add(ast);
-
-                //this should throw an exception, if it does not
-                //typecheck
-                ast.doTypeCheck(asts, Optional.empty(),Optional.empty());
-
-                TerminalUtil.printlnRed("PHASE: CODE GENERATION");
-
-
-                //TODO: generate code from here
-                //try_generate_some_bytecode();
-
-                for(DragonClassNode classNode : ast.classNodeList){
-                    //generate bytecode for that class
-                    byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode);
-                    /*
-
-                    ClassWriter cw = new ClassWriter(0);
-                    classNode.visit(cw,Optional.of(classNode),Optional.empty());
-
-                    byte[] classResult = cw.toByteArray();
-
-                     */
-                    Files.write(Paths.get(classNode.name.typeName.getContents()+".class"),classResult);
-                }
-
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-                e.printStackTrace();
             }
 
-        } else {
-            System.err.println("Please specify some files, like 'dragon -c main.dragon' ");
+            String codeWithoutCommentsWithoutUnneccesaryWhitespace =phase_clean(sourceCode,cmd.hasOption("debug"));
+
+            TerminalUtil.printlnGreen("PHASE: WEAVE IN CURLY BRACES");
+
+            String just_code_with_braces_without_comments_without_newlines =
+                    CurlyBracesWeaver
+                            .weave_scoping_curly_braces_and_remove_newlines(codeWithoutCommentsWithoutUnneccesaryWhitespace);
+
+            if(cmd.hasOption("debug")) {
+                System.out.println(just_code_with_braces_without_comments_without_newlines);
+            }
+
+            DragonTokenList tokens = phase_lexing(just_code_with_braces_without_comments_without_newlines,cmd.hasOption("debug"));
+
+            //TODO: put the semicolons in?
+            //the tokens should know which line number they are at.
+            //at the end of each line which is not opening '{' or closing '}' a scope
+            //  with that being defined as '{' being the last token on the line
+            //  and '}' being the first token on the line respectively
+            //, there should be a ';' , a semicolon.
+
+            //so we can identify the different statements.
+            //but we cannot exactly do it like this because it would
+            //prevent people from making a multi-line statement
+            //let us abandon this approach for now.
+
+            //i have an idea how we can avoid an issue related to this
+
+            DragonAST ast = phase_parsing(tokens,cmd.hasOption("debug"));
+
+            Set<DragonAST> asts = new HashSet<>();
+            asts.add(ast);
+
+            phase_typecheck(asts,ast,cmd.hasOption("debug"));
+
+            phase_codegeneration(ast,cmd.hasOption("debug"));
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
+    }
+
+    private static void phase_typecheck(Set<DragonAST> asts,DragonAST ast,boolean debug)throws Exception{
+        TerminalUtil.printGreen("PHASE: TYPECHECKING");
+
+        //this should throw an exception, if it does not typecheck
+        ast.doTypeCheck(asts, Optional.empty(),Optional.empty());
+        TerminalUtil.printlnGreen("✓");
+    }
+
+    private static void phase_codegeneration(DragonAST ast,boolean debug)throws Exception{
+        TerminalUtil.printGreen("PHASE: CODE GENERATION");
+
+        //TODO: generate code from here
+        //try_generate_some_bytecode();
+
+        for(DragonClassNode classNode : ast.classNodeList){
+            //generate bytecode for that class
+            byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode);
+            Files.write(Paths.get(classNode.name.typeName.getContents()+".class"),classResult);
+        }
+        TerminalUtil.printlnGreen("✓");
+    }
+
+    private static String phase_clean(String source,boolean debug)throws Exception{
+        TerminalUtil.printGreen("PHASE: CLEAN (remove comments, empty lines, excess whitespace)");
+        //TerminalUtil.printlnRed("PHASE: REMOVE COMMENTS AND EMPTY LINES");
+
+        String codeWithoutCommentsAndWithoutEmptyLines = (new DragonCommentRemover()).strip_comments(source);
+
+
+        //maybe phase to remove unneccessary whitespace?
+        //TerminalUtil.printlnRed("TODO: PHASE: REMOVE UNNECCESSARY WHITESPACE");
+
+        String codeWithoutCommentsWithoutUnneccesaryWhitespace = remove_unneccessary_whitespace(codeWithoutCommentsAndWithoutEmptyLines);
+        TerminalUtil.printlnGreen("✓");
+
+        if(debug) {
+            System.out.println(codeWithoutCommentsAndWithoutEmptyLines);
+            System.out.println(codeWithoutCommentsWithoutUnneccesaryWhitespace);
+        }
+
+        return codeWithoutCommentsWithoutUnneccesaryWhitespace;
+    }
+
+    private static DragonAST phase_parsing(DragonTokenList tokens,boolean debug)throws Exception{
+        TerminalUtil.printGreen("PHASE: PARSING ");
+        DragonAST ast = (new DragonParser()).parse(tokens);
+        TerminalUtil.printlnGreen("✓");
+        if(debug){
+            TerminalUtil.printlnRed("DEBUG: TODO: pretty print source from AST in curly braces");
+            System.out.println(ast.toSourceCode());
+
+            TerminalUtil.printlnRed("DEBUG: PRINT AST XML ");
+
+            Serializer serializer = new Persister(getPreferredXMLSerializationStrategyHumanReadable());
+            serializer.write(ast, System.out);
+            System.out.println();
+        }
+        return ast;
+    }
+
+    private static DragonTokenList phase_lexing(String just_code_with_braces_without_comments_without_newlines,boolean debug)throws Exception{
+        TerminalUtil.printGreen("PHASE: LEXING ");
+        DragonTokenList tokens = (new DragonLexer()).lexCodeWithoutComments(just_code_with_braces_without_comments_without_newlines);
+        TerminalUtil.printlnGreen("✓");
+
+        if(debug) {
+            System.out.println(tokens.toString());
+        }
+        return tokens;
     }
 
     public static final Strategy getPreferredXMLSerializationStrategyHumanReadable(){

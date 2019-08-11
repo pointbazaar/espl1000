@@ -4,7 +4,6 @@
 
 
 function dragon(){
-	#echo "dragon launched. "
 	#echo $1
 
 	#https://www.devdungeon.com/content/taking-command-line-arguments-bash
@@ -32,14 +31,7 @@ function dgc(){
 }
 
 function dg(){
-    echo "to open project: "
-	echo "dge (file* | directory) "
-	echo ""
-	echo "to open editor with empty buffer: "
-	echo "dge"
-	echo ""
-	echo "to compile:"
-	echo "dgc (file* | directory) "
+	dragon "$@"
 }
 
 function dri(){
