@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.objectweb.asm.Opcodes.*;
@@ -38,13 +39,18 @@ public class App {
 
         HelpFormatter helpFormatter = new HelpFormatter();
         try {
-            CommandLine cmd = parser.parse(options, args);
+
+            String[] relevant_options_for_this_phase = Arrays.copyOfRange(args,0,1);
+
+            CommandLine cmd = parser.parse(options, relevant_options_for_this_phase);
+
+            String[] relevant_options_for_later_stages = Arrays.copyOfRange(args,1,args.length);
 
             if(cmd.hasOption("c")){
-                dragonc.compile_main(Arrays.copyOfRange(args, 1, args.length));
+                dragonc.compile_main(relevant_options_for_later_stages);
             }else if(cmd.hasOption("i")){
                 dragoni dragon_interpreter = new dragoni();
-                dragon_interpreter.interpret_main(cmd.getArgList().subList(1,cmd.getArgList().size()));
+                dragon_interpreter.interpret_main(Arrays.asList(relevant_options_for_later_stages));
             }else if(cmd.hasOption("e")){
                 Optional<Path> filePath = Optional.empty();
                 try {
