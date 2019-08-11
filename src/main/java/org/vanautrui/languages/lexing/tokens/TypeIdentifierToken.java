@@ -49,7 +49,7 @@ public class TypeIdentifierToken implements DragonToken {
 
     @Override
     public Color getDisplayColor() {
-        return Color.BLUE;
+        return Color.YELLOW;
     }
 
     @Override
