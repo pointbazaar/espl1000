@@ -50,18 +50,15 @@ public class dragonc {
     //before reaching the final representation
     //from which code can be generated
 
-    private static final String seperator = "-----------------";
-
     public static void compile_main(String[] args) {
         //Apache  CLI tools is just AWESOME!!
         Options options = createOptions();
-
-        //printHelp();
-
         try {
             CommandLineParser parser = new DefaultParser();
             CommandLine commandLine = parser.parse(options, args);
 
+            //TODO: provide support for compiling multiple files
+            //and also for compiling a directory (recursively finds all .dragon files therein)
             Path sourceFilePath = Paths.get(args[0]);
 
             //TODO: the source file must not be the first argument
@@ -143,8 +140,6 @@ public class dragonc {
 
         //TODO: expand functionality to directories and multiple files
         try {
-            //TODO: make a command line option to set the debug log level
-            //so it gives the right amount of information
 
             String sourceCode = new String(Files.readAllBytes(sourceFilePath));
 
@@ -152,33 +147,21 @@ public class dragonc {
                 System.out.println(sourceCode);
             }
 
-            String codeWithoutCommentsWithoutUnneccesaryWhitespace =phase_clean(sourceCode,cmd.hasOption("debug"));
+            String codeWithoutCommentsWithoutUnneccesaryWhitespace
+                    = phase_clean(sourceCode,cmd.hasOption("debug"));
 
-            TerminalUtil.printlnGreen("PHASE: WEAVE IN CURLY BRACES");
+            String just_code_with_braces_without_comments_without_newlines;
 
-            String just_code_with_braces_without_comments_without_newlines =
-                    CurlyBracesWeaver
-                            .weave_scoping_curly_braces_and_remove_newlines(codeWithoutCommentsWithoutUnneccesaryWhitespace);
-
-            if(cmd.hasOption("debug")) {
-                System.out.println(just_code_with_braces_without_comments_without_newlines);
+            if(cmd.hasOption("nocurly")){
+                just_code_with_braces_without_comments_without_newlines
+                        =phase_conditional_weave_curly_braces(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd.hasOption("debug"));
+            }else{
+                //the editor is curly by default
+                just_code_with_braces_without_comments_without_newlines
+                        =codeWithoutCommentsWithoutUnneccesaryWhitespace;
             }
 
             DragonTokenList tokens = phase_lexing(just_code_with_braces_without_comments_without_newlines,cmd.hasOption("debug"));
-
-            //TODO: put the semicolons in?
-            //the tokens should know which line number they are at.
-            //at the end of each line which is not opening '{' or closing '}' a scope
-            //  with that being defined as '{' being the last token on the line
-            //  and '}' being the first token on the line respectively
-            //, there should be a ';' , a semicolon.
-
-            //so we can identify the different statements.
-            //but we cannot exactly do it like this because it would
-            //prevent people from making a multi-line statement
-            //let us abandon this approach for now.
-
-            //i have an idea how we can avoid an issue related to this
 
             DragonAST ast = phase_parsing(tokens,cmd.hasOption("debug"));
 
@@ -195,8 +178,44 @@ public class dragonc {
         }
     }
 
+    private static String phase_conditional_weave_curly_braces(String codeWithoutCommentsWithoutUnneccesaryWhitespace,boolean debug) throws Exception {
+        TerminalUtil.printlnGreen("PHASE: WEAVE IN CURLY BRACES");
+
+        //TODO: put the semicolons in?
+        //the tokens should know which line number they are at.
+        //at the end of each line which is not opening '{' or closing '}' a scope
+        //  with that being defined as '{' being the last token on the line
+        //  and '}' being the first token on the line respectively
+        //, there should be a ';' , a semicolon.
+
+        //so we can identify the different statements.
+        //but we cannot exactly do it like this because it would
+        //prevent people from making a multi-line statement
+        //let us abandon this approach for now.
+
+        //i have an idea how we can avoid an issue related to this
+
+
+        try {
+            String just_code_with_braces_without_comments_without_newlines =
+                    CurlyBracesWeaver
+                            .weave_scoping_curly_braces_and_remove_newlines(codeWithoutCommentsWithoutUnneccesaryWhitespace);
+
+            TerminalUtil.printlnGreen("✓");
+
+            if(debug) {
+                System.out.println(just_code_with_braces_without_comments_without_newlines);
+            }
+
+            return just_code_with_braces_without_comments_without_newlines;
+        }catch (Exception e){
+            TerminalUtil.printlnRed("⚠");
+            throw e;
+        }
+    }
+
     private static void phase_typecheck(Set<DragonAST> asts,DragonAST ast,boolean debug)throws Exception{
-        TerminalUtil.printGreen("PHASE: TYPECHECKING");
+        TerminalUtil.printGreen("PHASE: TYPECHECKING ");
 
         //this should throw an exception, if it does not typecheck
         ast.doTypeCheck(asts, Optional.empty(),Optional.empty());
@@ -204,7 +223,7 @@ public class dragonc {
     }
 
     private static void phase_codegeneration(DragonAST ast,boolean debug)throws Exception{
-        TerminalUtil.printGreen("PHASE: CODE GENERATION");
+        TerminalUtil.printGreen("PHASE: CODE GENERATION ");
 
         //TODO: generate code from here
         //try_generate_some_bytecode();
@@ -218,7 +237,7 @@ public class dragonc {
     }
 
     private static String phase_clean(String source,boolean debug)throws Exception{
-        TerminalUtil.printGreen("PHASE: CLEAN (remove comments, empty lines, excess whitespace)");
+        TerminalUtil.printGreen("PHASE: CLEAN (remove comments, empty lines, excess whitespace) ");
         //TerminalUtil.printlnRed("PHASE: REMOVE COMMENTS AND EMPTY LINES");
 
         String codeWithoutCommentsAndWithoutEmptyLines = (new DragonCommentRemover()).strip_comments(source);
@@ -257,13 +276,17 @@ public class dragonc {
 
     private static DragonTokenList phase_lexing(String just_code_with_braces_without_comments_without_newlines,boolean debug)throws Exception{
         TerminalUtil.printGreen("PHASE: LEXING ");
-        DragonTokenList tokens = (new DragonLexer()).lexCodeWithoutComments(just_code_with_braces_without_comments_without_newlines);
-        TerminalUtil.printlnGreen("✓");
-
-        if(debug) {
-            System.out.println(tokens.toString());
+        try {
+            DragonTokenList tokens = (new DragonLexer()).lexCodeWithoutComments(just_code_with_braces_without_comments_without_newlines);
+            TerminalUtil.printlnGreen("✓");
+            if(debug) {
+                System.out.println(tokens.toString());
+            }
+            return tokens;
+        }catch (Exception e){
+            TerminalUtil.printlnRed("⚠");
+            throw e;
         }
-        return tokens;
     }
 
     public static final Strategy getPreferredXMLSerializationStrategyHumanReadable(){
