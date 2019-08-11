@@ -3,11 +3,13 @@ package org.vanautrui.languages.codegeneration;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.*;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonLoopStatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
 
 import static org.objectweb.asm.Opcodes.*;
 
 public class JavaByteCodeGenerator {
-    public static byte[] generateByteCodeForClass(DragonClassNode classNode) {
+    public static byte[] generateByteCodeForClass(DragonClassNode classNode) throws Exception {
 
         ClassWriter cw = new ClassWriter(0);
 
@@ -97,13 +99,22 @@ public class JavaByteCodeGenerator {
         }
     }
 
-    private static void visitStatement(ClassWriter cw,MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonStatementNode statementNode){
+    private static void visitStatement(ClassWriter cw,MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonStatementNode statementNode) throws Exception {
         //TODO: consider other statement types and such
         //statementNode.methodCallNode.visit(mv,classNode,methodNode);
-        visitMethodCallNode(cw,mv,classNode,methodNode,statementNode.methodCallNode);
+        if(statementNode.statementNode instanceof DragonMethodCallNode){
+            DragonMethodCallNode call = (DragonMethodCallNode)statementNode.statementNode;
+            visitMethodCallNode(cw,mv,classNode,methodNode,call);
+        }else if(statementNode.statementNode instanceof DragonLoopStatementNode){
+            DragonLoopStatementNode loop = (DragonLoopStatementNode)statementNode.statementNode;
+
+            //TODO: generate appropriate code
+        }else{
+            throw new Exception("unconsidered statement type");
+        }
     }
 
-    private static void visitMethodNode(ClassWriter cw, DragonClassNode classNode,DragonMethodNode methodNode){
+    private static void visitMethodNode(ClassWriter cw, DragonClassNode classNode,DragonMethodNode methodNode) throws Exception {
         String owner = classNode.name.typeName.getContents();
         String descriptor = "i do not know";
         String methodName = methodNode.methodName.methodName.name.getContents();
@@ -125,10 +136,10 @@ public class JavaByteCodeGenerator {
             //TODO: compile the local variable declarations
             //TODO: compile the statements in the method
 
-            methodNode.statements.forEach(
-                    //stmt->stmt.visit(mv,Optional.of(classNode),Optional.of(methodNode))
-                    stmt->visitStatement(cw,mv,classNode,methodNode,stmt)
-            );
+            //stmt->stmt.visit(mv,Optional.of(classNode),Optional.of(methodNode))
+            for (DragonStatementNode stmt : methodNode.statements) {
+                visitStatement(cw, mv, classNode, methodNode, stmt);
+            }
 
             mv.visitInsn(RETURN);
 

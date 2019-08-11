@@ -1,8 +1,12 @@
-package org.vanautrui.languages.parsing.astnodes.nonterminal;
+package org.vanautrui.languages.parsing.astnodes.nonterminal.statements;
 
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonMethodNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.IDragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonIdentifierNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonStringConstantNode;
 
@@ -12,7 +16,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DragonMethodCallNode implements IDragonASTNode {
+public class DragonMethodCallNode implements IDragonASTNode, IDragonStatementNode {
 
     public DragonIdentifierNode identifierMethodName;
 

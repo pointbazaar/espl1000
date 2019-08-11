@@ -1,0 +1,7 @@
+public class MainWithLoop{
+    public Void main(){
+	loop 5 {
+		println("1");
+	}
+    }
+}

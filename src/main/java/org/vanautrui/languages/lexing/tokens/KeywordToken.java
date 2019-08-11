@@ -7,8 +7,15 @@ import java.awt.*;
 public class KeywordToken implements DragonToken {
 
     public static final String[] keywords = new String[]{
-            "class", "method", "function","interface","wrapper","entity","model","adapter",
-            "while","for","loop","do","return"
+            "class",
+
+            "method", "function",
+
+            "interface","wrapper","entity","model","adapter",
+
+            "while","for","loop","do",
+
+            "return"
     };
 
     public String keyword;
@@ -24,6 +31,10 @@ public class KeywordToken implements DragonToken {
         }
 
         throw new Exception("could not recognize a keyword");
+    }
+
+    public KeywordToken(String s)throws Exception{
+        this(new CharacterList(s));
     }
 
     @Override
