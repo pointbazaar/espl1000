@@ -51,7 +51,7 @@ public class App {
 
             List<String> relevant_options_for_later = cmd.getArgList().stream().filter(str->!possible_options.contains(str)).collect(Collectors.toList());
             if(cmd.hasOption("c")){
-                dragonc.compile_main(relevant_options_for_later);
+                dragonc.compile_main(Arrays.asList(Arrays.copyOfRange(args,1,args.length)));
             }else if(cmd.hasOption("i")){
                 dragoni dragon_interpreter = new dragoni();
 

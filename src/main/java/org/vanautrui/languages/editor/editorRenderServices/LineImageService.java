@@ -29,6 +29,7 @@ public class LineImageService {
     //monospace is important so we accurately know cursor position
     public static final Font sourceCodeFont = new Font(Font.MONOSPACED,Font.PLAIN,fontSize);
     public static final Font cursorFont = new Font(Font.MONOSPACED,Font.BOLD,fontSize);
+    public static final Font errorIconFont = new Font(Font.MONOSPACED,Font.BOLD,fontSize*2);
 
     public synchronized static MyImagePanel makeImageForLine(String line, int line_index, int cursor_line, int cursor_col) throws Exception{
 
@@ -161,22 +162,20 @@ public class LineImageService {
             while(i<line.length()){
                 String current = line.substring(i);
 
-                if(current.startsWith("public ") || current.startsWith("private ")){
-                    String word="";
-                    if(current.startsWith("public ")) word="public";
-                    if(current.startsWith("private ")) word="private";
-
-                    g.setColor(Color.CYAN);
-                    g.drawString(word,x_offset,10);
-                    x_offset+= g.getFontMetrics(sourceCodeFont).stringWidth(word);
-                    i+=word.length();
-                }else {
-                    g.setColor(Color.ORANGE);
-                    g.drawString(current.charAt(0) + "", x_offset, 10);
-                    x_offset += g.getFontMetrics(sourceCodeFont).stringWidth(current.charAt(0) + "");
-                    i++;
-                }
+                g.setColor(Color.ORANGE);
+                g.drawString(current.charAt(0) + "", x_offset, 10);
+                x_offset += g.getFontMetrics(sourceCodeFont).stringWidth(current.charAt(0) + "");
+                i++;
             }
+
+            //draw unicode char to visualize lexing errror
+            g.setColor(Color.RED);
+            g.setFont(errorIconFont);
+            g.drawString("x",2,15);
+            //g.drawString("☠",2,2);
+
+            //g.drawRect(2,5,6,6);
+            System.out.println("DRAW LEXING ERROR");
         }
 
 
