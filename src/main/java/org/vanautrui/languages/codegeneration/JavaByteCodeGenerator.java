@@ -1,6 +1,8 @@
 package org.vanautrui.languages.codegeneration;
 
+import com.sun.org.apache.bcel.internal.generic.LDC2_W;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonLoopStatementNode;
@@ -99,6 +101,46 @@ public class JavaByteCodeGenerator {
         }
     }
 
+    private static void visitLoopStatmentNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonLoopStatementNode loop) throws Exception {
+        //https://asm.ow2.io/asm4-guide.pdf
+        //https://en.wikipedia.org/wiki/Java_bytecode_instruction_listings
+
+        //TODO: actually compile the stuff, not just fake
+
+        //loop.count;
+
+        //loop.statements
+        Label start = new Label();
+        Label end=new Label();
+
+        //push our loop counter
+        mv.visitIntInsn(BIPUSH,(int)loop.count.value);
+
+        mv.visitLabel(start);
+
+        //duplicate the condition (top of stack)
+        //so that the if doesnt remove it for the next iteration
+        mv.visitInsn(DUP);
+
+        //if count <= 0 , goto end
+        mv.visitJumpInsn(IFLE,end);
+
+        //write the code for the statements
+        for(DragonStatementNode stmt : loop.statements){
+            visitStatement(cw,mv,classNode,methodNode,stmt);
+        }
+
+        //decrement the loop counter : count--;
+        mv.visitIntInsn(BIPUSH,1);
+        mv.visitInsn(ISUB);
+
+        mv.visitJumpInsn(GOTO,start);
+        mv.visitLabel(end);
+
+        //remove the loop counter
+        mv.visitInsn(POP);
+    }
+
     private static void visitStatement(ClassWriter cw,MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonStatementNode statementNode) throws Exception {
         //TODO: consider other statement types and such
         //statementNode.methodCallNode.visit(mv,classNode,methodNode);
@@ -107,8 +149,7 @@ public class JavaByteCodeGenerator {
             visitMethodCallNode(cw,mv,classNode,methodNode,call);
         }else if(statementNode.statementNode instanceof DragonLoopStatementNode){
             DragonLoopStatementNode loop = (DragonLoopStatementNode)statementNode.statementNode;
-
-            //TODO: generate appropriate code
+            visitLoopStatmentNode(cw,mv,classNode,methodNode,loop);
         }else{
             throw new Exception("unconsidered statement type");
         }
