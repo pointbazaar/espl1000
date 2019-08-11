@@ -5,6 +5,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.TerminalUtil;
+import org.vanautrui.languages.codegeneration.JavaByteCodeGenerator;
 import org.vanautrui.languages.lexing.CurlyBracesWeaver;
 import org.vanautrui.languages.lexing.DragonCommentRemover;
 import org.vanautrui.languages.lexing.DragonLexer;
@@ -123,10 +124,15 @@ public class dragonc {
 
                 for(DragonClassNode classNode : ast.classNodeList){
                     //generate bytecode for that class
+                    byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode);
+                    /*
+
                     ClassWriter cw = new ClassWriter(0);
                     classNode.visit(cw,Optional.of(classNode),Optional.empty());
 
                     byte[] classResult = cw.toByteArray();
+
+                     */
                     Files.write(Paths.get(classNode.name.typeName.getContents()+".class"),classResult);
                 }
 

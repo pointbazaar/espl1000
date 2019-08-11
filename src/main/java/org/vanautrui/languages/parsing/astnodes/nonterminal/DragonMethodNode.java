@@ -1,24 +1,18 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.IClassWriterByteCodeGeneratorVisitor;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonAccessModifierNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonTypeIdentifierNode;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.objectweb.asm.Opcodes.*;
-
-public class DragonMethodNode implements IDragonASTNode, IClassWriterByteCodeGeneratorVisitor {
+public class DragonMethodNode implements IDragonASTNode {
 
     public DragonAccessModifierNode access;
 
@@ -120,51 +114,4 @@ public class DragonMethodNode implements IDragonASTNode, IClassWriterByteCodeGen
         }
     }
 
-    @Override
-    public void visit(ClassWriter cw, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) {
-
-        String owner = currentClass.get().name.typeName.getContents();
-        String descriptor = "i do not know";
-        String methodName = this.methodName.methodName.name.getContents();
-
-        //figure it out
-        //cw.newMethod(owner,this.methodName.methodName.name.getContents(),descriptor,false);
-
-        //TODO: do not make this static
-        //TODO: actually care about it
-        //TODO: while typechecking, it should be seen
-        //that there is an entry point in the program somewhere
-        {
-            MethodVisitor mv=cw.visitMethod(ACC_PUBLIC+ACC_STATIC,
-                    methodName,
-                    "([Ljava/lang/String;)V",
-                    null,
-                    null);
-
-            //TODO: compile the local variable declarations
-            //TODO: compile the statements in the method
-
-            this.statements.forEach(
-                    stmt->stmt.visit(mv,currentClass,Optional.of(this))
-            );
-
-            mv.visitInsn(RETURN);
-
-            //TODO: find out how to compute maxStack
-            //and maxLocals
-
-            int maxStack;
-            int maxLocals;
-
-            //mv.visitMaxs(maxStack,maxLocals);
-            //this apparently tells asm that we want this
-            //to be calculated automatically
-            //mv.visitMaxs(-1,-1);
-
-            //TODO: this seems to work but it should
-            //really be calculated correctly
-            mv.visitMaxs(10,10);
-            mv.visitEnd();
-        }
-    }
 }

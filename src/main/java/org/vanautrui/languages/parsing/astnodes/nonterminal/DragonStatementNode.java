@@ -1,14 +1,12 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
-import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.IMethodWriterByteCodeGeneratorVisitor;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 
 import java.util.Optional;
 import java.util.Set;
 
-public class DragonStatementNode implements IDragonASTNode, IMethodWriterByteCodeGeneratorVisitor {
+public class DragonStatementNode implements IDragonASTNode {
 
     //TODO: add more statement types
 
@@ -34,9 +32,5 @@ public class DragonStatementNode implements IDragonASTNode, IMethodWriterByteCod
         methodCallNode.doTypeCheck(asts,currentClass,currentMethod);
     }
 
-    @Override
-    public void visit(MethodVisitor mv, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) {
-        //TODO: consider other statement types and such
-        this.methodCallNode.visit(mv,currentClass,currentMethod);
-    }
+
 }

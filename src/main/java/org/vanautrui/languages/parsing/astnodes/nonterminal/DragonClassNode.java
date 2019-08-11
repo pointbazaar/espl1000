@@ -1,26 +1,19 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.IClassWriterByteCodeGeneratorVisitor;
 import org.vanautrui.languages.lexing.tokens.ClassToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonAccessModifierNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonIdentifierNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonTypeIdentifierNode;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.objectweb.asm.Opcodes.*;
-
-public class DragonClassNode implements IDragonASTNode, IClassWriterByteCodeGeneratorVisitor {
+public class DragonClassNode implements IDragonASTNode {
 
     public DragonAccessModifierNode access;
 
@@ -148,59 +141,5 @@ public class DragonClassNode implements IDragonASTNode, IClassWriterByteCodeGene
         if(count!=1){
             throw new Exception("multiple definitions of class '"+this.name+"'");
         }
-    }
-
-    @Override
-    public void visit(ClassWriter cw, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) {
-        //cw.newClass(this.name.typeName.getContents());
-
-        //TODO: handle access modifiers
-        //TODO: handle other modifiers
-
-        {
-            int access = ACC_SUPER;
-            if (this.access.is_public) {
-                access += ACC_PUBLIC;
-            } else {
-                access += ACC_PRIVATE;
-            }
-
-            int classFileVersion = 49;
-
-            String superClassName = "java/lang/Object";
-
-            cw.visit(classFileVersion,
-                    access,
-                    this.name.typeName.getContents(),
-                    null,
-                    superClassName,
-                    null);
-        }
-
-        MethodVisitor mv;
-
-        {
-            //write the default constructor
-            mv=cw.visitMethod(ACC_PUBLIC,"<init>","()V",null,null);
-            mv.visitVarInsn(ALOAD,0);
-            mv.visitMethodInsn(INVOKESPECIAL,
-                    "java/lang/Object",
-                    "<init>",
-                    "()V");
-            mv.visitInsn(RETURN);
-            mv.visitMaxs(1,1);
-            mv.visitEnd();
-        }
-
-        for(DragonClassFieldNode fieldNode : this.fieldNodeList){
-
-            fieldNode.visit(cw, Optional.of(this),Optional.empty());
-        }
-
-        for(DragonMethodNode methodNode : this.methodNodeList){
-            methodNode.visit(cw,Optional.of(this),Optional.empty());
-        }
-
-        cw.visitEnd();
     }
 }
