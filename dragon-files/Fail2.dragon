@@ -1,0 +1,6 @@
+public class Fail2{
+    public Void main(){
+	//should fail at phase parsing
+        println("hello",,,);
+    }
+}

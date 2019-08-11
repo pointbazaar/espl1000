@@ -71,7 +71,7 @@ public class JavaByteCodeGenerator {
         return cw.toByteArray();
     }
 
-    private static void visitMethodCallNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonMethodCallNode methodCallNode){
+    private static void visitMethodCallNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonMethodCallNode methodCallNode) throws Exception {
         //TODO: actually compile the stuff, not just fake
 
         mv.visitFieldInsn(GETSTATIC,
@@ -98,6 +98,8 @@ public class JavaByteCodeGenerator {
                         "print",
                         "(Ljava/lang/String;)V");
                 break;
+            default:
+                throw new Exception("unrecognized method "+methodCallNode.identifierMethodName.name.getContents());
         }
     }
 

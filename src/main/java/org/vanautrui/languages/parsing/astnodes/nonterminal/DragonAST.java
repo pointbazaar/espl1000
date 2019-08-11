@@ -23,8 +23,7 @@ public class DragonAST implements IDragonASTNode {
             } catch (Exception e) {
 
                 if (this.classNodeList.size() == 0) {
-                    e.printStackTrace();
-                    throw new Exception("could not read a single class");
+                    throw e;
                 }
                 success_class = false;
             }
