@@ -159,7 +159,11 @@ public class DragonMethodNode implements IDragonASTNode, IClassWriterByteCodeGen
             //mv.visitMaxs(maxStack,maxLocals);
             //this apparently tells asm that we want this
             //to be calculated automatically
-            mv.visitMaxs(-1,-1);
+            //mv.visitMaxs(-1,-1);
+
+            //TODO: this seems to work but it should
+            //really be calculated correctly
+            mv.visitMaxs(10,10);
             mv.visitEnd();
         }
     }
