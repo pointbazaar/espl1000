@@ -1,5 +1,6 @@
 package org.vanautrui.languages.commandline;
 
+import org.fusesource.jansi.Ansi;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 import org.vanautrui.languages.TerminalUtil;
@@ -17,13 +18,15 @@ import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.fusesource.jansi.Ansi.Color.GREEN;
+import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.vanautrui.languages.commandline.dragonc.getPreferredXMLSerializationStrategyHumanReadable;
 import static org.vanautrui.languages.commandline.dragonc.remove_unneccessary_whitespace;
 
 public class DragonCompilerPhases {
 
     public static String phase_conditional_weave_curly_braces(String codeWithoutCommentsWithoutUnneccesaryWhitespace, boolean debug) throws Exception {
-        TerminalUtil.printlnGreen("PHASE: WEAVE IN CURLY BRACES");
+        TerminalUtil.println("PHASE: WEAVE IN CURLY BRACES", Ansi.Color.GREEN);
 
         //TODO: put the semicolons in?
         //the tokens should know which line number they are at.
@@ -45,7 +48,7 @@ public class DragonCompilerPhases {
                     CurlyBracesWeaver
                             .weave_scoping_curly_braces_and_remove_newlines(codeWithoutCommentsWithoutUnneccesaryWhitespace);
 
-            TerminalUtil.printlnGreen("✓");
+            TerminalUtil.println("✓", Ansi.Color.GREEN);
 
             if(debug) {
                 System.out.println(just_code_with_braces_without_comments_without_newlines);
@@ -53,26 +56,26 @@ public class DragonCompilerPhases {
 
             return just_code_with_braces_without_comments_without_newlines;
         }catch (Exception e){
-            TerminalUtil.printlnRed("⚠");
+            TerminalUtil.println("⚠", RED);
             throw e;
         }
     }
 
     public static void phase_typecheck(Set<DragonAST> asts, DragonAST ast, boolean debug)throws Exception{
-        TerminalUtil.printGreen("TYPECHECKING ");
+        TerminalUtil.print("TYPECHECKING ", Ansi.Color.GREEN);
 
         //this should throw an exception, if it does not typecheck
         try {
             ast.doTypeCheck(asts, Optional.empty(), Optional.empty());
-            TerminalUtil.printlnGreen("✓");
+            TerminalUtil.println("✓", Ansi.Color.GREEN);
         }catch (Exception e){
-            TerminalUtil.printlnRed("⚠");
+            TerminalUtil.println("⚠", RED);
             throw e;
         }
     }
 
     public static void phase_codegeneration(DragonAST ast, boolean debug)throws Exception{
-        TerminalUtil.printGreen("CODE GENERATION ");
+        TerminalUtil.print("CODE GENERATION ", Ansi.Color.GREEN);
 
         try {
             for (DragonClassNode classNode : ast.classNodeList) {
@@ -81,15 +84,15 @@ public class DragonCompilerPhases {
                 byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode);
                 Files.write(Paths.get(classNode.name.typeName.getContents() + ".class"), classResult);
             }
-            TerminalUtil.printlnGreen("✓");
+            TerminalUtil.println("✓", Ansi.Color.GREEN);
         }catch (Exception e){
-            TerminalUtil.printlnRed("⚠");
+            TerminalUtil.println("⚠", RED);
             throw e;
         }
     }
 
     public static String phase_clean(String source, boolean debug)throws Exception{
-        TerminalUtil.printGreen("CLEAN ");
+        TerminalUtil.print("CLEAN ", Ansi.Color.GREEN);
         //(remove comments, empty lines, excess whitespace)
 
         //TerminalUtil.printlnRed("PHASE: REMOVE COMMENTS AND EMPTY LINES");
@@ -101,7 +104,7 @@ public class DragonCompilerPhases {
         //TerminalUtil.printlnRed("TODO: PHASE: REMOVE UNNECCESSARY WHITESPACE");
 
         String codeWithoutCommentsWithoutUnneccesaryWhitespace = remove_unneccessary_whitespace(codeWithoutCommentsAndWithoutEmptyLines);
-        TerminalUtil.printlnGreen("✓");
+        TerminalUtil.println("✓", Ansi.Color.GREEN);
 
         if(debug) {
             System.out.println(codeWithoutCommentsAndWithoutEmptyLines);
@@ -112,16 +115,16 @@ public class DragonCompilerPhases {
     }
 
     public static DragonAST phase_parsing(DragonTokenList tokens, boolean debug)throws Exception{
-        TerminalUtil.printGreen("PARSING ");
+        TerminalUtil.print("PARSING ", Ansi.Color.GREEN);
         try {
             DragonAST ast = (new DragonParser()).parse(tokens);
-            TerminalUtil.printlnGreen("✓");
+            TerminalUtil.println("✓", Ansi.Color.GREEN);
 
             if(debug){
-                TerminalUtil.printlnRed("DEBUG: TODO: pretty print source from AST in curly braces");
+                TerminalUtil.println("DEBUG: TODO: pretty print source from AST in curly braces", RED);
                 System.out.println(ast.toSourceCode());
 
-                TerminalUtil.printlnRed("DEBUG: PRINT AST XML ");
+                TerminalUtil.println("DEBUG: PRINT AST XML ", RED);
 
                 Serializer serializer = new Persister(getPreferredXMLSerializationStrategyHumanReadable());
                 serializer.write(ast, System.out);
@@ -129,25 +132,25 @@ public class DragonCompilerPhases {
             }
             return ast;
         }catch (Exception e){
-            TerminalUtil.printlnRed("⚠");
+            TerminalUtil.println("⚠",RED);
             throw e;
         }
     }
 
     public static DragonTokenList phase_lexing(String just_code_with_braces_without_comments, boolean debug)throws Exception{
-        TerminalUtil.printGreen("LEXING ");
+        TerminalUtil.print("LEXING ",GREEN);
 
         String just_code_with_braces_without_comments_without_newlines = just_code_with_braces_without_comments.replaceAll("\n","");
 
         try {
             DragonTokenList tokens = (new DragonLexer()).lexCodeWithoutComments(just_code_with_braces_without_comments_without_newlines);
-            TerminalUtil.printlnGreen("✓");
+            TerminalUtil.println("✓",GREEN);
             if(debug) {
                 System.out.println(tokens.toString());
             }
             return tokens;
         }catch (Exception e){
-            TerminalUtil.printlnRed("⚠");
+            TerminalUtil.println("⚠",RED);
             throw e;
         }
     }

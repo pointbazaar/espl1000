@@ -1,5 +1,6 @@
 package org.vanautrui.languages.interpreting;
 
+import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
 
@@ -15,7 +16,7 @@ public class DragonASTInterpreter {
 
 
         //TODO
-        TerminalUtil.printlnRed("OUTPUT:");
+        TerminalUtil.println("OUTPUT:", Ansi.Color.WHITE);
 
         //out.println("");
 

@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import static java.lang.System.out;
+import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.fusesource.jansi.Ansi.ansi;
 import static org.vanautrui.languages.App.lang_name;
 
@@ -34,7 +35,7 @@ public class dragoni {
                     out.println("intpreting " + filename);
                     String sourcecode = new String(Files.readAllBytes(Paths.get(filename)));
 
-                    TerminalUtil.printlnRed(lang_name + " Source Code: ", out);
+                    TerminalUtil.println(lang_name + " Source Code: ", RED, out);
                     System.out.println(sourcecode);
 
                     (new DragonInterpreter()).execute(sourcecode, System.in, System.out);
@@ -45,11 +46,12 @@ public class dragoni {
         } else {
 
 
-            TerminalUtil.printlnRed(
-                    lang_name + "Interpreter started in REPL mode"
+            TerminalUtil.println(
+                    lang_name + "Interpreter started in REPL mode",
+                    RED
             );
 
-            TerminalUtil.printlnRed("Type 'help' to receive some help");
+            TerminalUtil.println("Type 'help' to receive some help", RED);
             out.println();
 
             StringBuilder currentSourceFragment = new StringBuilder();
@@ -78,10 +80,10 @@ public class dragoni {
             currentSourceFragment.delete(0, currentSourceFragment.length());
 
         } else if (currentline.equals("help")) {
-            TerminalUtil.printlnRed("give file as argument, to intpret it. Example: helloworld.dragon");
+            TerminalUtil.println("give file as argument, to intpret it. Example: helloworld.dragon", RED);
 
-            TerminalUtil.printlnRed("Type 'exit' to exit REPL mode");
-            TerminalUtil.printlnRed("Type 'exec' to execute what you have just written");
+            TerminalUtil.println("Type 'exit' to exit REPL mode", RED);
+            TerminalUtil.println("Type 'exec' to execute what you have just written", RED);
         } else {
             currentSourceFragment.append(currentline);
         }

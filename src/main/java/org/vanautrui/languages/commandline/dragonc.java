@@ -1,6 +1,7 @@
 package org.vanautrui.languages.commandline;
 
 import org.apache.commons.cli.*;
+import org.fusesource.jansi.Ansi;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
@@ -174,7 +175,17 @@ public class dragonc {
 
             long end_time_ms = System.currentTimeMillis();
             long duration = end_time_ms-start_time_ms;
-            TerminalUtil.printlnGreen("☕ "+duration+" ms");
+
+            //https://www.utf8icons.com/
+
+            String str = duration + " ms";
+            if(duration>50) {
+                TerminalUtil.println("☠ "+str, Ansi.Color.RED);
+            }else if(duration>40){
+                TerminalUtil.println("✝ "+str, Ansi.Color.YELLOW);
+            }else {
+                TerminalUtil.println("☕ " + str, Ansi.Color.GREEN);
+            }
 
         } catch (Exception e) {
 
