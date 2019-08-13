@@ -1,7 +1,12 @@
 
 //this file defines the grammar for the dragon language.
+
+//it is sometimes inconsistent with the AST Node classes in src/ , but 
+//the goal is for both to be consistent with each other
+
 //the language can be written with indentation, or with curly braces,
-//depending on your preferences. before lexing, if there is indentation, it is replaced with curly braces
+//depending on your preferences. before lexing, 
+//if there is indentation, it is replaced with curly braces
 //so everything after that brace-weaving recognizes only the curly braces variation
 
 //TODO: think about how to parse statements in method,
@@ -44,9 +49,14 @@ returnType ::= 'void' | Type
 declaredArgument ::= Type identifier
 
 //TODO
-statement ::= methodCall ';'
+statement ::= ( methodCall | whileStatement | ifStatement | assginmentStatement ) ';'
 
 //TODO: work on this, this is not done
 methodCall ::= identifier '(' ( (string (, string)*) | string ) ')'
 
+whileStatement ::= 'while' '(' condition ')' '{' statement* '}'
+
+ifStatement ::= 'if' '(' condition ')' '{' statement* '}' ( 'else' '{' statement* '}' )?
+
+assignmentStatement ::= identifier ('<-' | '=') identifier ';'
 
