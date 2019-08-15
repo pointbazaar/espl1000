@@ -28,7 +28,11 @@ public class DragonStatementNode implements IDragonASTNode {
             this.statementNode = new DragonMethodCallNode(copy);
         }catch (Exception e1){
             //maybe there is a loop statement
-            this.statementNode=new DragonLoopStatementNode(copy);
+            try {
+                this.statementNode = new DragonLoopStatementNode(copy);
+            }catch (Exception e2){
+                this.statementNode = new DragonAssignmentStatementNode(copy);
+            }
         }
 
         tokens.set(copy);

@@ -48,7 +48,7 @@ returnType ::= 'void' | Type
 
 declaredArgument ::= Type identifier
 
-statement ::= ( methodCall | whileStatement | ifStatement | assignmentStatement | returnStatement ) ';'
+statement ::= ( methodCall | whileStatement | ifStatement | assignmentStatement | returnStatement | assignmentStatement ) ';'
 
 methodCall ::= identifier '(' ( (string (, string)*) | string ) ')'
 

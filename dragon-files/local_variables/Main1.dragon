@@ -1,7 +1,6 @@
 public class Main1{
 
 	public Void main () {
-		Int x;
 		x=3;
 
 		println("Hi");
