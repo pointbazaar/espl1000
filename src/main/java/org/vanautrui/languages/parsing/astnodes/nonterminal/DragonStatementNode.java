@@ -2,7 +2,7 @@ package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonLoopStatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonLoopStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.IDragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;

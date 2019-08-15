@@ -1,13 +1,15 @@
-package org.vanautrui.languages.parsing.astnodes.nonterminal.statements;
+package org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow;
 
+import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.tokens.KeywordToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonStatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.IDragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonIntegerConstantNode;
 
 import java.util.ArrayList;
@@ -15,35 +17,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class DragonLoopStatementNode implements IDragonASTNode,IDragonStatementNode {
+public class DragonWhileStatementNode implements IDragonASTNode, IDragonStatementNode {
 
-    /*
-    loop 3 {
-        println("helol");
-    }
-    x=4
-    loop x {
-        println("x");
-    }
-     */
-
-    //this statement serves to repeat some statements
-    //a number of times which is known ahead of the loop statement
-
-    //at first we focus just on the case of a fixed
-    //repetition count known ahead of compile time
-
-    public DragonIntegerConstantNode count;
+    public DragonExpressionNode condition;
 
     public List<DragonStatementNode> statements=new ArrayList<>();
 
-    public DragonLoopStatementNode(DragonTokenList tokens)throws Exception{
+    public DragonWhileStatementNode(DragonTokenList tokens)throws Exception{
 
         DragonTokenList copy = new DragonTokenList(tokens);
 
-        copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("loop"));
+        copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("while"));
 
-        this.count=new DragonIntegerConstantNode(copy);
+        this.condition =new DragonExpressionNode(copy);
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("{"));
 
@@ -62,8 +48,13 @@ public class DragonLoopStatementNode implements IDragonASTNode,IDragonStatementN
         tokens.set(copy);
     }
 
+
     @Override
     public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
+        //the condition expression should be of type boolean
+        if(!this.condition.getType().equals("Bool") && !this.condition.getType().equals("Boolean")){
+            throw new Exception(" condition should be of type boolean");
+        }
         for(DragonStatementNode stmt : this.statements){
             stmt.doTypeCheck(asts,currentClass,currentMethod);
         }
@@ -71,6 +62,6 @@ public class DragonLoopStatementNode implements IDragonASTNode,IDragonStatementN
 
     @Override
     public String toSourceCode() {
-        return " loop "+this.count.toSourceCode()+" { "+this.statements.stream().map(stmt->stmt.toSourceCode())+" } ";
+        return null;
     }
 }

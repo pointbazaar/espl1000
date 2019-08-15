@@ -5,6 +5,7 @@ import org.simpleframework.xml.ElementList;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
+import org.vanautrui.languages.parsing.astnodes.IExpressionComputable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
@@ -17,7 +18,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DragonMethodCallNode implements IDragonASTNode, IDragonStatementNode {
+public class DragonMethodCallNode implements IDragonASTNode, IDragonStatementNode, IExpressionComputable {
 
     @Attribute
     public String getMethodName(){
@@ -83,4 +84,11 @@ public class DragonMethodCallNode implements IDragonASTNode, IDragonStatementNod
     }
 
 
+    @Override
+    public String getType() {
+        //TODO: return the real type. for now it returns only 'Void'
+        //because for now we are compiling only void fuctions
+
+        return "Void";
+    }
 }

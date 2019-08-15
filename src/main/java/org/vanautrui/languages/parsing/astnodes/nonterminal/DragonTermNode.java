@@ -2,6 +2,7 @@ package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.tokens.IntegerConstantToken;
+import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
@@ -44,7 +45,9 @@ public class DragonTermNode implements IDragonASTNode {
             try {
                 this.stringConstantNode=Optional.of(new DragonStringConstantNode(copy));
             }catch (Exception e2){
+                copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
                 this.expressionNode=Optional.of(new DragonExpressionNode(copy));
+                copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(")"));
             }
         }
 

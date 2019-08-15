@@ -4,11 +4,12 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.*;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonLoopStatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonLoopStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassFieldNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.DragonIntegerConstantNode;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -118,7 +119,13 @@ public class JavaByteCodeGenerator {
         Label end=new Label();
 
         //push our loop counter
-        mv.visitIntInsn(BIPUSH,(int)loop.count.value);
+        if(loop.count.term.integerConstantNode.isPresent() ) {
+            DragonIntegerConstantNode integerConstantNode = (DragonIntegerConstantNode)loop.count.term.integerConstantNode.get();
+            mv.visitIntInsn(BIPUSH, (int)integerConstantNode.value);
+        }else{
+            //TODO: deal with the other cases
+            throw new Exception(" not implemented yet");
+        }
 
         mv.visitLabel(start);
 

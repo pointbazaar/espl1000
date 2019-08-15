@@ -50,9 +50,9 @@ statement ::= ( methodCall | whileStatement | ifStatement | assignmentStatement 
 
 methodCall ::= identifier '(' ( (string (, string)*) | string ) ')'
 
-whileStatement ::= 'while' '(' condition ')' '{' statement* '}'
+whileStatement ::= 'while' '(' expression ')' '{' statement* '}'
 
-ifStatement ::= 'if' '(' condition ')' '{' statement* '}' ( 'else' '{' statement* '}' )?
+ifStatement ::= 'if' '(' expression ')' '{' statement* '}' ( 'else' '{' statement* '}' )?
 
 returnStatement ::= 'return' expression ';'
 
