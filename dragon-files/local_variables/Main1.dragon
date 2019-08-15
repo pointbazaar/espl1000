@@ -1,7 +1,7 @@
 public class Main1{
 
 	public Void main () {
-		int x;
+		Int x;
 		x=3;
 
 		println("Hi");

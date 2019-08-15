@@ -9,8 +9,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.IDragonSt
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonStatementNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonIntegerConstantNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
 
 import java.util.ArrayList;
 import java.util.List;

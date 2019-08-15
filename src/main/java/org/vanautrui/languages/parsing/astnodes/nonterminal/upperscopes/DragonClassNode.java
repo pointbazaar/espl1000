@@ -63,7 +63,7 @@ public class DragonClassNode implements IDragonASTNode {
 
         boolean success_method = true;
         boolean success_field = true;
-        
+
         while (success_field || success_method) {
             try {
                 this.methodNodeList.add(new DragonMethodNode(copy));

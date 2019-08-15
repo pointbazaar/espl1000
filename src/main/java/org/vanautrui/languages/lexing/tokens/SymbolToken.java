@@ -12,7 +12,7 @@ public class SymbolToken extends BasicToken implements DragonToken {
             "{", "}",
             "[", "]",
             "(", ")",
-            ",",";"
+            ",",";","="
     };
 
     public String symbol;
