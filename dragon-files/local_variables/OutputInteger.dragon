@@ -1,0 +1,8 @@
+public class OutputInteger{
+
+	public Void main () {
+		x=55;
+
+		println(x);
+	}
+}
