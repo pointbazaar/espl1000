@@ -54,55 +54,39 @@ public class DragonClassNode implements IDragonASTNode {
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("{"));
 
-        //System.out.println(copy.toString());
-
-        /*
-        boolean success_field=true;
-        while(success_field) {
-
-            try {
-                this.fieldNodeList.add(new DragonClassFieldNode(copy));
-            } catch (Exception e) {
-                success_field = false;
-            }
-        }
-        //Thread.sleep(100);
-        //System.out.println(copy.toString());
-        boolean success_method=true;
-        while(success_method) {
-
-            try {
-                this.methodNodeList.add(new DragonMethodNode(copy));
-            } catch (Exception e) {
-                success_method = false;
-            }
-        }
-         */
-
         //i hope, that with this piece of code, the method should always be tried out first
         //because classField is a prefix of Method.
         //similar errors could maybe be fixed by just looking at the Dragon Grammar
         //and structuring the parser accordingly
+
+
+
         boolean success_method = true;
         boolean success_field = true;
+        Optional<Exception> e1=Optional.empty();
+        Optional<Exception> e2=Optional.empty();
         while (success_field || success_method) {
             try {
                 this.methodNodeList.add(new DragonMethodNode(copy));
+                e1=Optional.empty();
                 success_method = true;
-            } catch (Exception e) {
+            } catch (Exception e11) {
                 success_method = false;
+                e1=Optional.of(e11);
             }
+
             try {
                 this.fieldNodeList.add(new DragonClassFieldNode(copy));
+                e2=Optional.empty();
                 success_field = true;
-            } catch (Exception e) {
+            } catch (Exception e22) {
                 success_field = false;
+                e2=Optional.of(e22);
             }
+
         }
 
-
         //System.out.println(copy.toString());
-
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("}"));
 
         tokens.set(copy);

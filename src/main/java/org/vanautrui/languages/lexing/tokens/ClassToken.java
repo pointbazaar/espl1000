@@ -1,19 +1,22 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
+import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
+import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
 
 import java.awt.*;
 
-public class ClassToken implements DragonToken {
+public class ClassToken extends BasicToken implements DragonToken {
 
     //just for xml generation
     public String representation="class";
 
     public ClassToken() {
+        super(-1);
     }
 
     public ClassToken(CharacterList tokenStream) throws Exception {
-
+        super(tokenStream.getCurrentLine());
         String cl_ass = "class";
 
         if (tokenStream.startsWith("class")) {

@@ -1,12 +1,14 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
+import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
+import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
 
 import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TypeIdentifierToken implements DragonToken {
+public class TypeIdentifierToken extends BasicToken implements DragonToken {
 
     //it should start with a lowercase letter,
     //to differentiate between variables, subroutines, and types
@@ -17,7 +19,7 @@ public class TypeIdentifierToken implements DragonToken {
     private String content;
 
     public TypeIdentifierToken(CharacterList list) throws Exception {
-
+        super(list.getCurrentLine());
         CharacterList copy = new CharacterList(list);
         try{
             new KeywordToken(copy);

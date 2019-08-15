@@ -1,10 +1,12 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
+import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
+import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
 
 import java.awt.*;
 
-public class SymbolToken implements DragonToken {
+public class SymbolToken extends BasicToken implements DragonToken {
 
     public static final String[] symbols = new String[]{
             "{", "}",
@@ -16,7 +18,7 @@ public class SymbolToken implements DragonToken {
     public String symbol;
 
     public SymbolToken(CharacterList list) throws Exception {
-
+        super(list.getCurrentLine());
         //should be for keywords such as {,},[,],+,-,.,','
 
         for (String sym : symbols) {

@@ -1,10 +1,12 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
+import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
+import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
 
 import java.awt.*;
 
-public class OperatorToken implements DragonToken {
+public class OperatorToken extends BasicToken implements DragonToken {
 
     //TODO: add all the operator tokens that should be supported
 
@@ -21,6 +23,7 @@ public class OperatorToken implements DragonToken {
     public String operator;
 
     public OperatorToken(CharacterList list) throws Exception {
+        super(list.getCurrentLine());
         for (String sym : operator_symbols_2_chars_or_more) {
             if (list.startsWith(sym)) {
                 this.operator = sym;

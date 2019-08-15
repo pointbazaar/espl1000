@@ -2,7 +2,7 @@ package org.vanautrui.languages.editor.editorRenderServices;
 
 import org.apache.commons.io.IOUtils;
 import org.vanautrui.languages.lexing.DragonLexer;
-import org.vanautrui.languages.lexing.tokens.DragonToken;
+import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 
 import javax.imageio.ImageIO;

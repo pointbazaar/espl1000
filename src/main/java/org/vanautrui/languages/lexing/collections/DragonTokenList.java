@@ -1,11 +1,11 @@
 package org.vanautrui.languages.lexing.collections;
 
+import org.fusesource.jansi.Ansi;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
-import org.vanautrui.languages.lexing.tokens.DragonToken;
+import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
 
-import javax.xml.bind.annotation.XmlRootElement;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.fusesource.jansi.Ansi.ansi;
 import static org.vanautrui.languages.commandline.dragonc.getPreferredXMLSerializationStrategyHumanReadable;
 
 public class DragonTokenList {
@@ -71,15 +72,21 @@ public class DragonTokenList {
         if (this.startsWith(token)) {
             this.consume(1);
         } else {
-            String expectedTokenMessage = "'" + token.getContents() + "' (" + token.getClass().getSimpleName() + ")";
-            String actualTokenMessage = "'" + this.head().getContents() + "' (" + this.head().getClass().getSimpleName() + ")";
+            //String expectedTokenMessage = "'" + token.getContents() + "' (" + token.getClass().getSimpleName() + ")";
+            String expectedTokenMessage = "'" + token.getContents() + "'";
+            //String actualTokenMessage = "'" + this.head().getContents() + "' (" + this.head().getClass().getSimpleName() + ")";
+            String actualTokenMessage = "'" + this.head().getContents() + "'";
 
             String sourceCodeFragment = (this.toSourceCodeFragment().substring(0, Math.min(this.toSourceCodeFragment().length(), 100)));
 
             throw new Exception(
-                    " expected a specific token:  \n" + expectedTokenMessage
-                            + ",\n but it was otherwise: \n" + actualTokenMessage + "\n"
-                            + " in '" + sourceCodeFragment + "'\n"
+                    ansi().fg(Ansi.Color.WHITE).a("in line "+token.getOriginalLineNumber()+":\n").reset()
+                    .fg(Ansi.Color.RED).a("Parsing Error: \n").reset()+
+                    "expected token:  \n\n"
+                            + "\t"+expectedTokenMessage+"\n\n"
+                            + "actual token: \n\n"
+                            +"\t"+ actualTokenMessage + "\n\n"
+                            + "in '" + sourceCodeFragment + "'\n"
             );
         }
     }

@@ -1,0 +1,9 @@
+public class Main1{
+
+	public Void main () {
+		int x;
+		x=3;
+
+		println("Hi");
+	}
+}

@@ -1,7 +1,7 @@
 package org.vanautrui.languages.parsing.astnodes.terminal;
 
 import org.simpleframework.xml.Attribute;
-import org.vanautrui.languages.lexing.tokens.DragonToken;
+import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
 import org.vanautrui.languages.lexing.tokens.StringConstantToken;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;

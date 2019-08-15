@@ -2,16 +2,18 @@ package org.vanautrui.languages.lexing.tokens;
 
 import org.simpleframework.xml.Attribute;
 import org.vanautrui.languages.lexing.collections.CharacterList;
+import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
+import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
 
 import java.awt.*;
 
-public class AccessModifierToken implements DragonToken {
+public class AccessModifierToken extends BasicToken implements DragonToken {
 
     @Attribute
     public boolean is_public;
 
     public AccessModifierToken(CharacterList list) throws Exception {
-
+        super(list.getCurrentLine());
         if (list.startsWith("public")) {
             this.is_public = true;
             list.consumeTokens("public".length());
@@ -24,6 +26,7 @@ public class AccessModifierToken implements DragonToken {
     }
 
     public AccessModifierToken(String newcontents) throws Exception {
+        super(-1);
         switch (newcontents) {
             case "public":
                 is_public = true;

@@ -2,8 +2,13 @@ package org.vanautrui.languages.lexing.collections;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CharacterList {
+
+    //the line numbers corresponding to the characters.
+    //so that we are able to show meaningful error messages
+    private List<Long> lineNumbers=new ArrayList<>();
 
     private List<Character> list;
 
@@ -15,24 +20,40 @@ public class CharacterList {
     }
 
     public CharacterList(List<Character> list) {
-        this.list = list;
+        this(list.stream().map(ch->ch+"").collect(Collectors.joining("")).toString());
     }
 
     public CharacterList(char[] chars) {
+        long currentLine=1;
         this.list = new ArrayList<>();
         for (char c : chars) {
+
             this.list.add(c);
+            this.lineNumbers.add(currentLine);
+
+            if(c=='\n'){
+                currentLine++;
+            }
         }
     }
 
     public CharacterList(CharacterList other) {
-        this.list = new ArrayList<>(other.list);
-        this.stringValid = other.stringValid;
-        this.stringValue = other.stringValue;
+        this.lineNumbers    = new ArrayList<>(other.lineNumbers);
+        this.list           = new ArrayList<>(other.list);
+
+        this.stringValid    = other.stringValid;
+        this.stringValue    = other.stringValue;
+    }
+
+    public long getCurrentLine(){
+        //get the line the next char is on
+        return this.lineNumbers.get(0);
     }
 
     public void consumeTokens(int amount) {
-        this.list = this.list.subList(amount, this.list.size());
+        this.list           = this.list.subList(amount, this.list.size());
+        this.lineNumbers    = this.lineNumbers.subList(amount, this.lineNumbers.size());
+
         this.stringValid = false;
     }
 

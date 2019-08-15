@@ -1,10 +1,12 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
+import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
+import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
 
 import java.awt.*;
 
-public class KeywordToken implements DragonToken {
+public class KeywordToken extends BasicToken implements DragonToken {
 
     public static final String[] keywords = new String[]{
             "class",
@@ -21,7 +23,7 @@ public class KeywordToken implements DragonToken {
     public String keyword;
 
     public KeywordToken(CharacterList list) throws Exception {
-
+        super(list.getCurrentLine());
         for (String sym : keywords) {
             if (list.startsWith(sym)) {
                 this.keyword = sym;

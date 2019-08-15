@@ -1,12 +1,14 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
+import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
+import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
 
 import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StringConstantToken implements DragonToken {
+public class StringConstantToken extends BasicToken implements DragonToken {
 
     private static final String regex_string_constant = "^\"[^\"]*\"";
 
@@ -15,7 +17,7 @@ public class StringConstantToken implements DragonToken {
     private String content;
 
     public StringConstantToken(CharacterList list) throws Exception {
-
+        super(list.getCurrentLine());
         Pattern p = Pattern.compile(regex_string_constant);
 
         Matcher m = p.matcher(list.getLimitedStringMaybeShorter(MAX_STRING_CONSTANT_LENGTH));
@@ -29,6 +31,7 @@ public class StringConstantToken implements DragonToken {
     }
 
     public StringConstantToken(String newcontents) throws Exception {
+        super(-1);
         this.content = newcontents;
     }
 
