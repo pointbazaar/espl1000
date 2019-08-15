@@ -23,8 +23,9 @@ public class StringConstantToken extends BasicToken implements DragonToken {
         Matcher m = p.matcher(list.getLimitedStringMaybeShorter(MAX_STRING_CONSTANT_LENGTH));
 
         if (m.find()) {
-            this.content = m.group(0);
-            list.consumeTokens(this.content.length());
+            String finding = m.group(0);
+            this.content = finding.substring(1,finding.length()-1);
+            list.consumeTokens(finding.length());
         } else {
             throw new Exception("could not recognize identifier");
         }

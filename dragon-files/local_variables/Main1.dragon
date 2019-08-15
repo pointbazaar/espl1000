@@ -1,8 +1,8 @@
 public class Main1{
 
 	public Void main () {
-		x=3;
+		x=55;
 
-		println("Hi");
+		println("Hii");
 	}
 }
