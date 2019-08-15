@@ -1,10 +1,13 @@
-package org.vanautrui.languages.parsing.astnodes.nonterminal;
+package org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonDeclaredArgumentNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonMethodNameNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonAccessModifierNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonTypeIdentifierNode;
 

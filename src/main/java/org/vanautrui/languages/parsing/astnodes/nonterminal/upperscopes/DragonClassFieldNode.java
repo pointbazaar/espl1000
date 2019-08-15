@@ -1,4 +1,4 @@
-package org.vanautrui.languages.parsing.astnodes.nonterminal;
+package org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes;
 
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;

@@ -13,20 +13,19 @@
 //if the semicolons should perhaps be weaved in also or if we can do it otherwise
 
 //using regex notation , so '?' at the end means optional, and '+' means once or more
-
 //TODO
+//-----------------------------------------------------------------------------
 
 int ::= ... | -1 | 0 | 1 | 2 | ...
-
-//underscore should also be here
 char ::= 'a' | ... | 'z' | 'A' | ... | 'Z' | '_'
-
 alphanumeric ::= int | char
-
 identifier ::= char alphanumeric*
-
 string ::= '"' alphanumeric* '"'
 
+op ::= '+' | '-' | '*' | '/' | ...
+unaryOp ::= '-' | '!'
+booleanConstant ::= 'true' | 'false'
+keywordConstant ::= 'null' | 'this' | booleanConstant
 accessmodifier ::= public | private
 
 class ::= accessmodifier class identifier '{' classField* method* '}'
@@ -39,7 +38,6 @@ methodName ::= identifier
 
 method ::= accessmodifier returnType methodName '(' declaredArgument* ')' '{' statement* '}'
 
-//alternative, haskell-like version
 method ::= accessmodifier methodName '::' (Type smallarrow)* Type '{' statement* '}'
 
 smallarrow ::= '->'
@@ -48,15 +46,18 @@ returnType ::= 'void' | Type
 
 declaredArgument ::= Type identifier
 
-//TODO
-statement ::= ( methodCall | whileStatement | ifStatement | assginmentStatement ) ';'
+statement ::= ( methodCall | whileStatement | ifStatement | assignmentStatement | returnStatement ) ';'
 
-//TODO: work on this, this is not done
 methodCall ::= identifier '(' ( (string (, string)*) | string ) ')'
 
 whileStatement ::= 'while' '(' condition ')' '{' statement* '}'
 
 ifStatement ::= 'if' '(' condition ')' '{' statement* '}' ( 'else' '{' statement* '}' )?
 
+returnStatement ::= 'return' expression ';'
+
 assignmentStatement ::= identifier ('<-' | '=') identifier ';'
 
+term ::= integerConstant | string | keywordConstant | methodCall | '(' expression ')' | unaryOp term
+
+expression ::= term (op term)*

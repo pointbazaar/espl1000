@@ -5,6 +5,10 @@ import org.vanautrui.languages.lexing.tokens.IdentifierToken;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.*;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassFieldNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 
 import java.util.Optional;
 import java.util.Set;

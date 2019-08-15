@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.tokens.*;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 
 import java.util.stream.Collectors;
 

@@ -4,9 +4,9 @@ import org.vanautrui.languages.lexing.tokens.DragonToken;
 import org.vanautrui.languages.lexing.tokens.IntegerConstantToken;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonClassNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonMethodNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 
 import java.util.Optional;
 import java.util.Set;

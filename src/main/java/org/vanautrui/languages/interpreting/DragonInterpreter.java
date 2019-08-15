@@ -4,7 +4,7 @@ import org.vanautrui.languages.lexing.utils.DragonCommentRemover;
 import org.vanautrui.languages.lexing.DragonLexer;
 import org.vanautrui.languages.parsing.DragonParser;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 
 import java.io.InputStream;
 import java.io.PrintStream;

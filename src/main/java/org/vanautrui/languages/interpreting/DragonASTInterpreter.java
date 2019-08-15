@@ -2,7 +2,7 @@ package org.vanautrui.languages.interpreting;
 
 import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.TerminalUtil;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -10,8 +10,8 @@ import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.utils.CurlyBracesWeaver;
 import org.vanautrui.languages.lexing.utils.DragonCommentRemover;
 import org.vanautrui.languages.parsing.DragonParser;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonAST;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;

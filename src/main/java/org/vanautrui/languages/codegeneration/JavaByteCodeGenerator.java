@@ -1,12 +1,14 @@
 package org.vanautrui.languages.codegeneration;
 
-import com.sun.org.apache.bcel.internal.generic.LDC2_W;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonLoopStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassFieldNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 
 import static org.objectweb.asm.Opcodes.*;
 
