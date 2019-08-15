@@ -63,25 +63,20 @@ public class DragonClassNode implements IDragonASTNode {
 
         boolean success_method = true;
         boolean success_field = true;
-        Optional<Exception> e1=Optional.empty();
-        Optional<Exception> e2=Optional.empty();
+        
         while (success_field || success_method) {
             try {
                 this.methodNodeList.add(new DragonMethodNode(copy));
-                e1=Optional.empty();
                 success_method = true;
             } catch (Exception e11) {
                 success_method = false;
-                e1=Optional.of(e11);
             }
 
             try {
                 this.fieldNodeList.add(new DragonClassFieldNode(copy));
-                e2=Optional.empty();
                 success_field = true;
             } catch (Exception e22) {
                 success_field = false;
-                e2=Optional.of(e22);
             }
 
         }
