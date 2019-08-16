@@ -1,19 +1,24 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
+import org.simpleframework.xml.Element;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.tokens.IntegerConstantToken;
+import org.vanautrui.languages.lexing.tokens.StringConstantToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IDragonASTNode;
+import org.vanautrui.languages.parsing.astnodes.IDragonTermNode;
+import org.vanautrui.languages.parsing.astnodes.IExpressionComputable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonIntegerConstantNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonStringConstantNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.DragonVariableNode;
 
 import java.util.Optional;
 import java.util.Set;
 
-public class DragonTermNode implements IDragonASTNode {
+public class DragonTermNode implements IDragonASTNode, IExpressionComputable {
 
     //can be one of these:
 
@@ -28,10 +33,7 @@ public class DragonTermNode implements IDragonASTNode {
     unaryOp term
 
      */
-
-    public Optional<DragonIntegerConstantNode> integerConstantNode=Optional.empty();
-    public Optional<DragonStringConstantNode> stringConstantNode=Optional.empty();
-    public Optional<DragonExpressionNode> expressionNode=Optional.empty();
+    public IDragonTermNode termNode;
 
     //TODO: insert the oher alternatives
 
@@ -40,14 +42,18 @@ public class DragonTermNode implements IDragonASTNode {
         DragonTokenList copy = new DragonTokenList(tokens);
 
         try{
-            this.integerConstantNode=Optional.of(new DragonIntegerConstantNode(copy));
+            this.termNode=new DragonIntegerConstantNode(copy);
         }catch (Exception e1){
             try {
-                this.stringConstantNode=Optional.of(new DragonStringConstantNode(copy));
+                this.termNode=new DragonStringConstantNode(copy);
             }catch (Exception e2){
-                copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
-                this.expressionNode=Optional.of(new DragonExpressionNode(copy));
-                copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(")"));
+                try {
+                    copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
+                    this.termNode=new DragonExpressionNode(copy);
+                    copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(")"));
+                }catch (Exception e3){
+                    this.termNode=new DragonVariableNode(copy);
+                }
             }
         }
 
@@ -56,23 +62,50 @@ public class DragonTermNode implements IDragonASTNode {
 
     @Override
     public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        if(this.integerConstantNode.isPresent()){
-            this.integerConstantNode.get().doTypeCheck(asts,currentClass,currentMethod);
+        if(this.termNode instanceof DragonIntegerConstantNode){
+            DragonIntegerConstantNode integerConstantNode=(DragonIntegerConstantNode)termNode;
+            integerConstantNode.doTypeCheck(asts,currentClass,currentMethod);
         }
-        if(this.stringConstantNode.isPresent()){
-            this.stringConstantNode.get().doTypeCheck(asts,currentClass,currentMethod);
+        if(this.termNode instanceof DragonStringConstantNode){
+            DragonStringConstantNode stringConstantNode = (DragonStringConstantNode)this.termNode;
+            stringConstantNode.doTypeCheck(asts,currentClass,currentMethod);
         }
-        this.expressionNode.get().doTypeCheck(asts, currentClass, currentMethod);
+        if(this.termNode instanceof DragonExpressionNode) {
+            DragonExpressionNode expressionNode = (DragonExpressionNode) this.termNode;
+            expressionNode.doTypeCheck(asts, currentClass, currentMethod);
+        }else if(this.termNode instanceof DragonVariableNode){
+            DragonVariableNode variableNode = (DragonVariableNode) this.termNode;
+            variableNode.doTypeCheck(asts,currentClass,currentMethod);
+        }else{
+            throw new Exception("unhandled case");
+        }
     }
 
     @Override
     public String toSourceCode() {
-        if(this.integerConstantNode.isPresent()){
-            return this.integerConstantNode.get().toSourceCode();
+
+        if(this.termNode instanceof DragonIntegerConstantNode){
+            DragonIntegerConstantNode integerConstantNode=(DragonIntegerConstantNode)termNode;
+            return integerConstantNode.toSourceCode();
         }
-        if(this.stringConstantNode.isPresent()){
-            return this.stringConstantNode.get().toSourceCode();
+        if(this.termNode instanceof DragonStringConstantNode){
+            DragonStringConstantNode stringConstantNode = (DragonStringConstantNode)this.termNode;
+            return stringConstantNode.toSourceCode();
         }
-        return this.expressionNode.get().toSourceCode();
+        if(this.termNode instanceof DragonExpressionNode) {
+            DragonExpressionNode expressionNode = (DragonExpressionNode) this.termNode;
+            return expressionNode.toSourceCode();
+        }else if(this.termNode instanceof DragonVariableNode){
+            DragonVariableNode variableNode = (DragonVariableNode) this.termNode;
+            return variableNode.toSourceCode();
+        }else{
+            //return "ERROR";
+            throw new RuntimeException("error in toSourceCode() in DragonTermNode");
+        }
+    }
+
+    @Override
+    public String getType() {
+        return this.termNode.getType();
     }
 }

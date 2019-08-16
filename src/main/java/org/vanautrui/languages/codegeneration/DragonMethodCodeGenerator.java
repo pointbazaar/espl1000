@@ -20,7 +20,7 @@ public class DragonMethodCodeGenerator {
         //figure it out
         //cw.newMethod(owner,this.methodName.methodName.name.getContents(),descriptor,false);
 
-        //TODO: make the method scope symbol table
+        //make the method scope symbol table
         DragonMethodScopeSymbolTable methodScopeSymbolTable=new DragonMethodScopeSymbolTable();
         for(DragonStatementNode stmt : methodNode.statements) {
 
@@ -32,7 +32,17 @@ public class DragonMethodCodeGenerator {
                 DragonAssignmentStatementNode assignmentStatementNode = (DragonAssignmentStatementNode)stmt.statementNode;
                 methodScopeSymbolTable.add(assignmentStatementNode.variableNode.name.getContents(),assignmentStatementNode.expressionNode.getType());
             }
+
+            //DEBUG
+            System.out.println(stmt.toSourceCode());
+            System.out.println(stmt.statementNode.getClass().getName());
+            System.out.println(stmt.statementNode instanceof DragonAssignmentStatementNode);
         }
+
+
+
+        //DEBUG
+        System.out.println(methodScopeSymbolTable.toString());
 
         //TODO: do not make this static
         //TODO: actually care about it

@@ -4,6 +4,7 @@ import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
 import org.vanautrui.languages.lexing.tokens.IntegerConstantToken;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
+import org.vanautrui.languages.parsing.astnodes.IDragonTermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
@@ -11,9 +12,9 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMe
 import java.util.Optional;
 import java.util.Set;
 
-public class DragonIntegerConstantNode implements IDragonASTNode {
+public class DragonIntegerConstantNode implements IDragonASTNode, IDragonTermNode {
 
-    public long value;
+    public int value;
 
     public DragonIntegerConstantNode(DragonTokenList tokens) throws Exception {
 
@@ -37,5 +38,10 @@ public class DragonIntegerConstantNode implements IDragonASTNode {
     public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
         //an integer is always typesafe, nothing to do here
         return;
+    }
+
+    @Override
+    public String getType() {
+        return "Int";
     }
 }

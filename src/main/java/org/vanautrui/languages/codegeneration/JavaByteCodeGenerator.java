@@ -108,9 +108,9 @@ public class JavaByteCodeGenerator {
         Label end=new Label();
 
         //push our loop counter
-        if(loop.count.term.integerConstantNode.isPresent() ) {
-            DragonIntegerConstantNode integerConstantNode = (DragonIntegerConstantNode)loop.count.term.integerConstantNode.get();
-            mv.visitIntInsn(BIPUSH, (int)integerConstantNode.value);
+        if(loop.count.term.termNode instanceof DragonIntegerConstantNode ) {
+            DragonIntegerConstantNode integerConstantNode = (DragonIntegerConstantNode)loop.count.term.termNode;
+            mv.visitIntInsn(BIPUSH, integerConstantNode.value);
         }else{
             //TODO: deal with the other cases
             throw new Exception(" not implemented yet");

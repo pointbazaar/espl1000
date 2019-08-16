@@ -21,9 +21,18 @@ public class DragonMethodCallCodeGenerator {
                 "out",
                 "Ljava/io/PrintStream;");
 
+        //get the jvm internal type for the descriptor of the method
+        String methodDescriptor ="(Ljava/lang/String;)V";
+
         if(methodCallNode.argumentList.size()>0) {
             //mv.visitLdcInsn(methodCallNode.argumentList.get(0).str);
             for(DragonExpressionNode expressionNode : methodCallNode.argumentList){
+
+                //TODO: make getTypeJVMInternal() to make this easier? or just make a translator class for it
+                if(expressionNode.getType().equals("Int") || expressionNode.getType().equals("ERROR")){
+                    //set the  descriptor to the signature which accepts int
+                    methodDescriptor="(I)V";
+                }
                 DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,expressionNode,methodScopeSymbolTable);
             }
             //DragonStringConstantCodeGenerator.visitStringConstant(cw,mv,classNode,methodNode,methodCallNode.argumentList.get(0),methodScopeSymbolTable);
@@ -36,13 +45,13 @@ public class DragonMethodCallCodeGenerator {
                 mv.visitMethodInsn(INVOKEVIRTUAL,
                         "java/io/PrintStream",
                         "println",
-                        "(Ljava/lang/String;)V");
+                        methodDescriptor);
                 break;
             case "print":
                 mv.visitMethodInsn(INVOKEVIRTUAL,
                         "java/io/PrintStream",
                         "print",
-                        "(Ljava/lang/String;)V");
+                        methodDescriptor);
                 break;
             default:
                 throw new Exception("unrecognized method "+methodCallNode.identifierMethodName.name.getContents());

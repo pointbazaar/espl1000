@@ -4,6 +4,7 @@ import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
 import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
 import org.vanautrui.languages.parsing.IDragonASTNode;
+import org.vanautrui.languages.parsing.astnodes.IDragonTermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonDeclaredArgumentNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassFieldNode;
@@ -13,7 +14,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMe
 import java.util.Optional;
 import java.util.Set;
 
-public class DragonVariableNode implements IDragonASTNode {
+public class DragonVariableNode implements IDragonASTNode , IDragonTermNode {
 
     //this identifies a variable
 
@@ -76,5 +77,11 @@ public class DragonVariableNode implements IDragonASTNode {
         //perhaps in MethodNode.doTypeCheck();
 
         throw new Exception("could not find declaration for usage of variable '"+this.name.getContents()+"'");
+    }
+
+    @Override
+    public String getType() {
+        //TODO: implement by looking at the definitions in the AST and such
+        return "ERROR";
     }
 }

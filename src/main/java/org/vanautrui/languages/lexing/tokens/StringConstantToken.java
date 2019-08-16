@@ -1,5 +1,6 @@
 package org.vanautrui.languages.lexing.tokens;
 
+import org.simpleframework.xml.Attribute;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
 import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
@@ -14,6 +15,7 @@ public class StringConstantToken extends BasicToken implements DragonToken {
 
     public static final int MAX_STRING_CONSTANT_LENGTH = 100;
 
+    @Attribute
     private String content;
 
     public StringConstantToken(CharacterList list) throws Exception {

@@ -14,6 +14,8 @@ public class DragonMethodScopeSymbolTable {
     public DragonMethodScopeSymbolTable(){}
 
     public void add(String varName,String typeName){
+        //DEBUG
+        System.out.println("symbol table add");
         if(!this.containsVariable(varName)) {
             this.symbolTable.add(new DragonMethodScopeSymbolTableRow(index_count, varName, typeName));
             index_count++;
@@ -28,4 +30,13 @@ public class DragonMethodScopeSymbolTable {
         return symbolTable.stream().filter(e->e.varName.equals(varName)).collect(Collectors.toList()).get(0).index;
     }
 
+    @Override
+    public String toString(){
+        StringBuilder result = new StringBuilder("SYMBOL TABLE: \n");
+        for(DragonMethodScopeSymbolTableRow row : this.symbolTable){
+            result.append(row.toString());
+            result.append("\n");
+        }
+        return result.toString();
+    }
 }

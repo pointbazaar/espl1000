@@ -5,6 +5,7 @@ import org.simpleframework.xml.ElementList;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
+import org.vanautrui.languages.parsing.astnodes.IDragonTermNode;
 import org.vanautrui.languages.parsing.astnodes.IExpressionComputable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
@@ -19,7 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DragonMethodCallNode implements IDragonASTNode, IDragonStatementNode, IExpressionComputable {
+public class DragonMethodCallNode implements IDragonASTNode, IDragonStatementNode, IExpressionComputable , IDragonTermNode {
 
     @Attribute
     public String getMethodName(){
@@ -68,7 +69,7 @@ public class DragonMethodCallNode implements IDragonASTNode, IDragonStatementNod
     public String toSourceCode() {
         return this.identifierMethodName.toSourceCode()
                 +"("+this.argumentList.stream().map(
-                        dragonStringConstantNode -> dragonStringConstantNode.toSourceCode()
+                DragonExpressionNode::toSourceCode
                 ).collect(Collectors.joining(","))
                 +")"
                 +";"

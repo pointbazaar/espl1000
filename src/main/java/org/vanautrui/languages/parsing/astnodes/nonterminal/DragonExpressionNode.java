@@ -2,11 +2,13 @@ package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
+import org.vanautrui.languages.parsing.astnodes.IDragonTermNode;
 import org.vanautrui.languages.parsing.astnodes.IExpressionComputable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassFieldNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.DragonIntegerConstantNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DragonExpressionNode implements IDragonASTNode, IExpressionComputable {
+public class DragonExpressionNode implements IDragonASTNode, IExpressionComputable, IDragonTermNode {
 
     //DragonExpressionNode should be similar to jack expression
     //an expression should be anything that returns a value or computes to a value
@@ -78,7 +80,7 @@ public class DragonExpressionNode implements IDragonASTNode, IExpressionComputab
         }
 
         for (DragonTermNode t : this.termNodes){
-            if(!t.integerConstantNode.isPresent()){
+            if(!(t.termNode instanceof DragonIntegerConstantNode)){
                 throw new Exception("only integers are supported for now. the other stuff shall follow later");
             }
         }
@@ -102,6 +104,7 @@ public class DragonExpressionNode implements IDragonASTNode, IExpressionComputab
     @Override
     public String getType() {
         //TODO: for now it just returs 'Int' but it should work in the other cases too
-        return "Int";
+        //return "Int";
+        return this.term.getType();
     }
 }

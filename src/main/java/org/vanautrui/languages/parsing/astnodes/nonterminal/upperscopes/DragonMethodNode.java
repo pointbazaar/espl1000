@@ -86,8 +86,6 @@ public class DragonMethodNode implements IDragonASTNode {
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("{"));
 
-        //TODO: parse statements
-
         boolean success_statements = true;
         while (success_statements) {
             try {

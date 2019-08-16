@@ -11,4 +11,10 @@ public class DragonMethodScopeSymbolTableRow {
         this.typeName=typeName;
         this.varName=varName;
     }
+
+    @Override
+    public String toString(){
+
+        return String.format("%8s %8s %8s",varName,typeName,index);
+    }
 }
