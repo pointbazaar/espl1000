@@ -6,6 +6,7 @@ import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.IExpressionComputable;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
@@ -28,7 +29,7 @@ public class DragonMethodCallNode implements IDragonASTNode, IDragonStatementNod
     public DragonIdentifierNode identifierMethodName;
 
     @ElementList
-    public List<DragonStringConstantNode> argumentList = new ArrayList<>();
+    public List<DragonExpressionNode> argumentList = new ArrayList<>();
 
     public DragonMethodCallNode(DragonTokenList tokens) throws Exception {
 
@@ -42,14 +43,14 @@ public class DragonMethodCallNode implements IDragonASTNode, IDragonStatementNod
 
         boolean success_argument = true;
         try {
-            this.argumentList.add(new DragonStringConstantNode(copy));
+            this.argumentList.add(new DragonExpressionNode(copy));
         } catch (Exception e) {
             success_argument=false;
         }
         while (success_argument) {
             try {
                 copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(","));
-                this.argumentList.add(new DragonStringConstantNode(copy));
+                this.argumentList.add(new DragonExpressionNode(copy));
             } catch (Exception e) {
                 success_argument = false;
             }

@@ -50,7 +50,7 @@ declaredArgument ::= Type identifier
 
 statement ::= ( methodCall | whileStatement | ifStatement | assignmentStatement | returnStatement | assignmentStatement ) ';'
 
-methodCall ::= identifier '(' ( (string (, string)*) | string ) ')'
+methodCall ::= methodName '(' (expression (, expression)*)?  ')'
 
 whileStatement ::= 'while' '(' expression ')' '{' statement* '}'
 
@@ -60,6 +60,6 @@ returnStatement ::= 'return' expression ';'
 
 assignmentStatement ::= variable ('<-' | '=') expression ';'
 
-term ::= integerConstant | string | keywordConstant | methodCall | '(' expression ')' | unaryOp term
+term ::= integerConstant | string | keywordConstant | methodCall | '(' expression ')' | unaryOp term | variable
 
 expression ::= term (op term)*

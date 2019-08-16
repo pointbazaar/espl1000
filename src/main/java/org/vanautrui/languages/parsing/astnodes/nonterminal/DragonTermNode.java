@@ -29,9 +29,9 @@ public class DragonTermNode implements IDragonASTNode {
 
      */
 
-    public Optional<DragonIntegerConstantNode> integerConstantNode;
-    public Optional<DragonStringConstantNode> stringConstantNode;
-    public Optional<DragonExpressionNode> expressionNode;
+    public Optional<DragonIntegerConstantNode> integerConstantNode=Optional.empty();
+    public Optional<DragonStringConstantNode> stringConstantNode=Optional.empty();
+    public Optional<DragonExpressionNode> expressionNode=Optional.empty();
 
     //TODO: insert the oher alternatives
 
