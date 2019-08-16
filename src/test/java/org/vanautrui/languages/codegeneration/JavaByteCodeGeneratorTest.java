@@ -74,8 +74,12 @@ public class JavaByteCodeGeneratorTest {
     @Test
     public void test_can_compile_assignment_statements()throws Exception{
         //if we put x=3; it does not work because it generates the wrong bytecodes
+
+        //HYPOTHESIS: asm could maybe OR or AND the different arguments for IntInstr(BIPUSH,3)
+        //and receive lconst_0 as a result
+        //maybe it assumes we use iconst_0 or similar to push a low valued integer constant
         //TODO: investigate
-        
+
         String source="public class MainTest3 { public Void main(){ x=55; println(x); } }";
         Process pr = compile_and_run_one_class_for_testing(source,"MainTest3");
 
