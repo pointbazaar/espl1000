@@ -7,7 +7,6 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.commandline.dragonc;
 import org.vanautrui.languages.editor.gui.DragonGUI_Editor;
-import org.vanautrui.languages.commandline.dragoni;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,10 +51,7 @@ public class App {
             List<String> relevant_options_for_later = cmd.getArgList().stream().filter(str->!possible_options.contains(str)).collect(Collectors.toList());
             if(cmd.hasOption("c")){
                 dragonc.compile_main(Arrays.asList(Arrays.copyOfRange(args,1,args.length)));
-            }else if(cmd.hasOption("i")){
-                dragoni dragon_interpreter = new dragoni();
 
-                dragon_interpreter.interpret_main(relevant_options_for_later);
             }else if(cmd.hasOption("e")){
 
                 //require a file to open the editor
@@ -85,12 +81,11 @@ public class App {
 
     private static Options createOptions(){
         Option compile_flag = OptionBuilder.withDescription("use the compiler").isRequired(false).create("c");
-        Option interpreter_flag = OptionBuilder.withDescription("use the interpreter").isRequired(false).create("i");
+
         Option editor_flag = OptionBuilder.withDescription("start the ide").isRequired(false).create("e");
 
         OptionGroup flag_group = new OptionGroup();
         flag_group.addOption(compile_flag);
-        flag_group.addOption(interpreter_flag);
         flag_group.addOption(editor_flag);
 
         flag_group.setRequired(true);

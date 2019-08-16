@@ -34,6 +34,3 @@ function dgc(){
 #	dragon "$@"
 #}
 
-#function dri(){
-#	~/dragon/Interpreter/dri "$@"
-#}
