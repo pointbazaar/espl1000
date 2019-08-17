@@ -35,12 +35,6 @@ public class DragonIntegerConstantNode implements IDragonASTNode, IDragonTermNod
     }
 
     @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        //an integer is always typesafe, nothing to do here
-        return;
-    }
-
-    @Override
     public String getType(DragonMethodNode methodNode) throws Exception {
         return "Int";
     }

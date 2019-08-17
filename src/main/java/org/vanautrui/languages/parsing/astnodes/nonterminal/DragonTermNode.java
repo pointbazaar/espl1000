@@ -57,26 +57,6 @@ public class DragonTermNode implements IDragonASTNode, IExpressionComputable {
         tokens.set(copy);
     }
 
-    @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        if(this.termNode instanceof DragonIntegerConstantNode){
-            DragonIntegerConstantNode integerConstantNode=(DragonIntegerConstantNode)termNode;
-            integerConstantNode.doTypeCheck(asts,currentClass,currentMethod);
-        }
-        if(this.termNode instanceof DragonStringConstantNode){
-            DragonStringConstantNode stringConstantNode = (DragonStringConstantNode)this.termNode;
-            stringConstantNode.doTypeCheck(asts,currentClass,currentMethod);
-        }
-        if(this.termNode instanceof DragonExpressionNode) {
-            DragonExpressionNode expressionNode = (DragonExpressionNode) this.termNode;
-            expressionNode.doTypeCheck(asts, currentClass, currentMethod);
-        }else if(this.termNode instanceof DragonVariableNode){
-            DragonVariableNode variableNode = (DragonVariableNode) this.termNode;
-            variableNode.doTypeCheck(asts,currentClass,currentMethod);
-        }else{
-            throw new Exception("unhandled case");
-        }
-    }
 
     @Override
     public String toSourceCode() {

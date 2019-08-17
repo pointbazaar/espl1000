@@ -12,6 +12,7 @@ import org.vanautrui.languages.lexing.utils.DragonCommentRemover;
 import org.vanautrui.languages.parsing.DragonParser;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
+import org.vanautrui.languages.typechecking.DragonTypeChecker;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -66,7 +67,9 @@ public class DragonCompilerPhases {
 
         //this should throw an exception, if it does not typecheck
         try {
-            ast.doTypeCheck(asts, Optional.empty(), Optional.empty());
+            DragonTypeChecker typeChecker=new DragonTypeChecker();
+            typeChecker.doTypeCheck(asts);
+            
             TerminalUtil.println("✓", Ansi.Color.GREEN);
         }catch (Exception e){
             TerminalUtil.println("⚠", RED);

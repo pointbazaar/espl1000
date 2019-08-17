@@ -34,13 +34,6 @@ public class DragonAssignmentStatementNode implements IDragonASTNode, IDragonSta
     }
 
     @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        if(!variableNode.getType(currentMethod.get()).equals(expressionNode.getType(currentMethod.get()))){
-            throw new Exception("with an assignment, both sides have to have the same type. here, a value of type "+expressionNode.getType(currentMethod.get())+" was assigned to a value of type "+variableNode.getType(currentMethod.get()));
-        }
-    }
-
-    @Override
     public String toSourceCode() {
         return " "+variableNode.toSourceCode()+" = "+this.expressionNode.toSourceCode()+" ";
     }

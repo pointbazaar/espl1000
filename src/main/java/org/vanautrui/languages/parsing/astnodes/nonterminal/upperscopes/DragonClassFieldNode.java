@@ -42,10 +42,4 @@ public class DragonClassFieldNode implements IDragonASTNode {
                 +";";
     }
 
-    @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        //check that the type exists
-        this.type.doTypeCheck(asts,currentClass,currentMethod);
-    }
-
 }

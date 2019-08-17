@@ -32,12 +32,6 @@ public class DragonOperatorNode implements IDragonASTNode {
     }
 
     @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        //probably nothing to do here.
-        //checking that applying the operator is typesafe should be done higher up in the AST
-    }
-
-    @Override
     public String toSourceCode() {
         return " "+operator+" ";
     }

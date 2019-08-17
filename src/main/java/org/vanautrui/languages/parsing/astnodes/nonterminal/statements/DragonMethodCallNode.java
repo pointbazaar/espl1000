@@ -75,15 +75,6 @@ public class DragonMethodCallNode implements IDragonASTNode, IDragonStatementNod
         ;
     }
 
-    @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        //TODO: check that the method is called on an object
-        //which is actually declared and initialized
-        //and is in scope
-
-        //for static method calls, check that the class exists
-    }
-
 
     @Override
     public String getType(DragonMethodNode methodNode) throws Exception {

@@ -33,10 +33,4 @@ public class DragonDeclaredArgumentNode implements IDragonASTNode {
         return this.type.toSourceCode()+" "+this.name.toSourceCode();
     }
 
-    @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-
-        type.doTypeCheck(asts,currentClass,currentMethod);
-
-    }
 }

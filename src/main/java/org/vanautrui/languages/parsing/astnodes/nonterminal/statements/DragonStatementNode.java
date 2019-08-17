@@ -42,11 +42,4 @@ public class DragonStatementNode implements IDragonASTNode {
     public String toSourceCode() {
         return this.statementNode.toSourceCode();
     }
-
-    @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        statementNode.doTypeCheck(asts,currentClass,currentMethod);
-    }
-
-
 }

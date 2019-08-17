@@ -37,12 +37,4 @@ public class DragonAST implements IDragonASTNode {
                 .map(node -> node.toSourceCode())
                 .collect(Collectors.joining("\n"));
     }
-
-    @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-
-        for(DragonClassNode classNode : this.classNodeList){
-            classNode.doTypeCheck(asts,Optional.of(classNode),Optional.empty());
-        }
-    }
 }

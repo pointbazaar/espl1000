@@ -40,8 +40,4 @@ public class DragonAccessModifierNode implements IDragonASTNode {
         return (is_public) ? "public" : "private";
     }
 
-    @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        return;
-    }
 }

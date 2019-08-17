@@ -1,4 +1,4 @@
-package org.vanautrui.languages.parsing.astnodes.nonterminal;
+package org.vanautrui.languages.parsing.astnodes.terminal;
 
 import org.simpleframework.xml.Attribute;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
@@ -32,21 +32,4 @@ public class DragonMethodNameNode implements IDragonASTNode {
         return this.methodName.toSourceCode();
     }
 
-    @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        //method names should not be duplicate in a class
-        //this may change in another version of dragon
-
-        if(!currentClass.isPresent()){
-            throw new Exception("method name can only exist in a class context");
-        }
-
-        DragonClassNode classNode = currentClass.get();
-
-        long count = classNode.methodNodeList.stream().filter(mNode -> mNode.methodName.methodName.name.getContents().equals(this.methodName.name.getContents())).count();
-
-        if(count>1){
-            throw new Exception("duplicate declaration of method '"+this.methodName.name.getContents()+"' ");
-        }
-    }
 }

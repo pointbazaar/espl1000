@@ -6,15 +6,13 @@ import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonDeclaredArgumentNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonMethodNameNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.DragonMethodNameNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonAccessModifierNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonTypeIdentifierNode;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DragonMethodNode implements IDragonASTNode {
@@ -122,19 +120,6 @@ public class DragonMethodNode implements IDragonASTNode {
                 +"\n"
                 +"}"
         ;
-    }
-
-    @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-
-        this.methodName.doTypeCheck(asts,currentClass,Optional.of(this));
-        this.type.doTypeCheck(asts,currentClass,Optional.of(this));
-        for(DragonStatementNode stmt : this.statements){
-            stmt.doTypeCheck(asts,currentClass, Optional.of(this));
-        }
-        for(DragonDeclaredArgumentNode arg : this.arguments){
-            arg.doTypeCheck(asts,currentClass,Optional.of(this));
-        }
     }
 
 }

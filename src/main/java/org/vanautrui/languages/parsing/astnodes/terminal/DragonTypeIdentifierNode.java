@@ -34,23 +34,4 @@ public class DragonTypeIdentifierNode implements IDragonASTNode {
         return this.typeName.getContents();
     }
 
-    @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        //check that the type is defined somewhere
-        //so there should exist a class with that type
-
-        for(DragonAST ast : asts){
-            for(DragonClassNode classNode : ast.classNodeList){
-                if(classNode.name.typeName.getContents().equals(this.typeName.getContents())){
-                    return;
-                }
-            }
-        }
-
-        if(this.typeName.getContents().equals("Void")){
-            return;
-        }
-
-        throw new Exception("could not find class for type: '"+this.typeName.getContents()+"'");
-    }
 }

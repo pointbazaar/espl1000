@@ -37,12 +37,6 @@ public class DragonStringConstantNode implements IDragonASTNode, IDragonTermNode
     }
 
     @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        //a string is always typesafe, nothing to do here
-        return;
-    }
-
-    @Override
     public String getType(DragonMethodNode methodNode) throws Exception {
         return "String";
     }

@@ -64,17 +64,6 @@ public class DragonLoopStatementNode implements IDragonASTNode, IDragonStatement
     }
 
     @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        //the condition expression should be of type boolean
-        if(!this.count.getType(currentMethod.get()).equals("Int")){
-            throw new Exception(" condition should be of type Int . this is a loop statement after all.");
-        }
-        for(DragonStatementNode stmt : this.statements){
-            stmt.doTypeCheck(asts,currentClass,currentMethod);
-        }
-    }
-
-    @Override
     public String toSourceCode() {
         return " loop "+this.count.toSourceCode()+" { "+this.statements.stream().map(stmt->stmt.toSourceCode())+" } ";
     }

@@ -49,42 +49,6 @@ public class DragonExpressionNode implements IDragonASTNode, IExpressionComputab
         tokens.set(copy);
     }
 
-    @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        //check that the terms have a type such that the operator will work
-
-        //for later:
-        //int * string      //repeat the string x times
-
-        //string + string   //concatenate
-        //int + int
-        //int - int
-        //int * int
-        //int / int
-
-        //expression is compiled to evaluate in order. meaning
-        //that if there are 3 terms,
-        //the first gets evaluated, then the second, then the operator gets applied
-        //such for convienience we check for now that the terms have all the same type
-
-        //as of now i think we should first focus on integer addition
-        //and let the other cases throw an exception
-        //they should be implemented later
-
-        for(DragonOperatorNode op : this.operatorNodes){
-            if(!op.operator.equals("+")){
-                throw new Exception("only '+' is supported for now");
-            }
-        }
-
-        for (DragonTermNode t : this.termNodes){
-            if(!(t.termNode instanceof DragonIntegerConstantNode)){
-                throw new Exception("only integers are supported for now. the other stuff shall follow later");
-            }
-        }
-
-        //TODO: look for the other cases
-    }
 
     @Override
     public String toSourceCode() {

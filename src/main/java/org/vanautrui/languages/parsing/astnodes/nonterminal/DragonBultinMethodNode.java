@@ -38,9 +38,4 @@ public class DragonBultinMethodNode implements IDragonASTNode {
     public String toSourceCode() {
         return this.methodname.toSourceCode();
     }
-
-    @Override
-    public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        //TODO: figure out what to do here
-    }
 }
