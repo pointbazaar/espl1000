@@ -12,7 +12,6 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAS
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonIdentifierNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonStringConstantNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +86,7 @@ public class DragonMethodCallNode implements IDragonASTNode, IDragonStatementNod
 
 
     @Override
-    public String getType() {
+    public String getType(DragonMethodNode methodNode) throws Exception {
         //TODO: return the real type. for now it returns only 'Void'
         //because for now we are compiling only void fuctions
 

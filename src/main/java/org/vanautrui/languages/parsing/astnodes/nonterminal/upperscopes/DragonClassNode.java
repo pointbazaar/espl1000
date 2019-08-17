@@ -129,7 +129,7 @@ public class DragonClassNode implements IDragonASTNode {
         }
 
         for(DragonMethodNode methodNode : this.methodNodeList){
-            methodNode.doTypeCheck(asts,Optional.of(this),Optional.empty());
+            methodNode.doTypeCheck(asts,Optional.of(this),Optional.of(methodNode));
         }
 
         if(count!=1){

@@ -5,7 +5,6 @@ import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.IDragonTermNode;
 import org.vanautrui.languages.parsing.astnodes.IExpressionComputable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassFieldNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonIntegerConstantNode;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class DragonExpressionNode implements IDragonASTNode, IExpressionComputable, IDragonTermNode {
 
@@ -102,9 +100,31 @@ public class DragonExpressionNode implements IDragonASTNode, IExpressionComputab
     }
 
     @Override
-    public String getType() {
+    public String getType(DragonMethodNode methodNode) throws Exception {
         //TODO: for now it just returs 'Int' but it should work in the other cases too
         //return "Int";
-        return this.term.getType();
+
+        //it should only return anything, when all the types are the same
+        //because for now lets keep it simple.
+        //otherwise it should throw an exception
+
+        String type = this.term.getType(methodNode);
+
+        /*
+        for(DragonOperatorNode op : this.operatorNodes){
+            if(!op.operator.equals("+")){
+                throw new Exception("only '+' is supported for now");
+            }
+        }
+
+         */
+
+        for (DragonTermNode t : this.termNodes){
+            if(!(t.termNode.getType(methodNode).equals(type))){
+                throw new Exception("the types are not the same, "+type+" collides with "+t.termNode.getType(methodNode));
+            }
+        }
+
+        return this.term.getType(methodNode);
     }
 }

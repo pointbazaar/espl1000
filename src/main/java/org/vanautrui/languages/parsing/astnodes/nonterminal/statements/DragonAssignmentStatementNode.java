@@ -1,24 +1,16 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal.statements;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.ElementList;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IDragonASTNode;
-import org.vanautrui.languages.parsing.astnodes.IExpressionComputable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonIdentifierNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonStringConstantNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonVariableNode;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class DragonAssignmentStatementNode implements IDragonASTNode, IDragonStatementNode {
 
@@ -43,7 +35,9 @@ public class DragonAssignmentStatementNode implements IDragonASTNode, IDragonSta
 
     @Override
     public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
-        //TODO: check that the expression has the same type as the variable
+        if(!variableNode.getType(currentMethod.get()).equals(expressionNode.getType(currentMethod.get()))){
+            throw new Exception("with an assignment, both sides have to have the same type. here, a value of type "+expressionNode.getType(currentMethod.get())+" was assigned to a value of type "+variableNode.getType(currentMethod.get()));
+        }
     }
 
     @Override

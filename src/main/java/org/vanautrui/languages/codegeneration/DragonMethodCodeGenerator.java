@@ -30,7 +30,7 @@ public class DragonMethodCodeGenerator {
 
             if(stmt.statementNode instanceof DragonAssignmentStatementNode) {
                 DragonAssignmentStatementNode assignmentStatementNode = (DragonAssignmentStatementNode)stmt.statementNode;
-                methodScopeSymbolTable.add(assignmentStatementNode.variableNode.name.getContents(),assignmentStatementNode.expressionNode.getType());
+                methodScopeSymbolTable.add(assignmentStatementNode.variableNode.name.getContents(),assignmentStatementNode.expressionNode.getType(methodNode));
             }
 
             //DEBUG

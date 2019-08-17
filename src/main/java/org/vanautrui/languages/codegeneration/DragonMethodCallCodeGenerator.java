@@ -29,7 +29,7 @@ public class DragonMethodCallCodeGenerator {
             for(DragonExpressionNode expressionNode : methodCallNode.argumentList){
 
                 //TODO: make getTypeJVMInternal() to make this easier? or just make a translator class for it
-                if(expressionNode.getType().equals("Int") || expressionNode.getType().equals("ERROR")){
+                if(expressionNode.getType(methodNode).equals("Int") || expressionNode.getType(methodNode).equals("ERROR")){
                     //set the  descriptor to the signature which accepts int
                     methodDescriptor="(I)V";
                 }

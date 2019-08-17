@@ -43,7 +43,7 @@ public class DragonStringConstantNode implements IDragonASTNode, IDragonTermNode
     }
 
     @Override
-    public String getType() {
+    public String getType(DragonMethodNode methodNode) throws Exception {
         return "String";
     }
 }

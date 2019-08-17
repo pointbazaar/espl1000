@@ -51,7 +51,7 @@ public class DragonWhileStatementNode implements IDragonASTNode, IDragonStatemen
     @Override
     public void doTypeCheck(Set<DragonAST> asts, Optional<DragonClassNode> currentClass, Optional<DragonMethodNode> currentMethod) throws Exception {
         //the condition expression should be of type boolean
-        if(!this.condition.getType().equals("Bool") && !this.condition.getType().equals("Boolean")){
+        if(!this.condition.getType(currentMethod.get()).equals("Bool") && !this.condition.getType(currentMethod.get()).equals("Boolean")){
             throw new Exception(" condition should be of type boolean");
         }
         for(DragonStatementNode stmt : this.statements){

@@ -1,9 +1,6 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
-import org.simpleframework.xml.Element;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
-import org.vanautrui.languages.lexing.tokens.IntegerConstantToken;
-import org.vanautrui.languages.lexing.tokens.StringConstantToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.IDragonTermNode;
@@ -105,7 +102,7 @@ public class DragonTermNode implements IDragonASTNode, IExpressionComputable {
     }
 
     @Override
-    public String getType() {
-        return this.termNode.getType();
+    public String getType(DragonMethodNode methodNode) throws Exception {
+        return this.termNode.getType(methodNode);
     }
 }
