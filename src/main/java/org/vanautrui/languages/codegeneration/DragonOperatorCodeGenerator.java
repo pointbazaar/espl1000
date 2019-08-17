@@ -33,23 +33,23 @@ public class DragonOperatorCodeGenerator {
                 //if less than, push 1
                 //else push 0
 
-                Label lessThanLabel = new Label();
+                Label truthCaseLabel = new Label();
                 Label endLabel = new Label();
-                //mv.visitJumpInsn(IF_ICMPLT,lessThanLabel);
+
                 if(operatorNode.operator.equals("<")) {
-                    mv.visitJumpInsn(IF_ICMPGT, lessThanLabel);
+                    mv.visitJumpInsn(IF_ICMPLT, truthCaseLabel);
                 }else if(operatorNode.operator.equals(">")){
-                    mv.visitJumpInsn(IF_ICMPLT, lessThanLabel);
+                    mv.visitJumpInsn(IF_ICMPGT, truthCaseLabel);
                 }else if(operatorNode.operator.equals("==")){
-                    mv.visitJumpInsn(IF_ICMPEQ,lessThanLabel);
+                    mv.visitJumpInsn(IF_ICMPEQ,truthCaseLabel);
                 }
 
-                mv.visitInsn(ICONST_1);
+                mv.visitInsn(ICONST_0);
                 mv.visitJumpInsn(GOTO,endLabel);
 
 
-                mv.visitLabel(lessThanLabel);
-                mv.visitInsn(ICONST_0);
+                mv.visitLabel(truthCaseLabel);
+                mv.visitInsn(ICONST_1);
                 mv.visitJumpInsn(GOTO,endLabel);
 
                 mv.visitLabel(endLabel);

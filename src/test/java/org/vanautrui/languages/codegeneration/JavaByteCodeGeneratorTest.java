@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 
 public class JavaByteCodeGeneratorTest {
 
-    private Process compile_and_run_one_class_for_testing(String source,String classNameWithoutExtension) throws Exception{
+    public static Process compile_and_run_one_class_for_testing(String source,String classNameWithoutExtension) throws Exception{
 
         DragonTokenList tokens = (new DragonLexer()).lexCodeWithoutComments(source);
         DragonParser parser = new DragonParser();
