@@ -168,14 +168,16 @@ public class LineImageService {
                 i++;
             }
 
-            //draw unicode char to visualize lexing errror
-            g.setColor(Color.RED);
-            g.setFont(errorIconFont);
-            g.drawString("x",2,15);
-            //g.drawString("☠",2,2);
+            if(!e.getMessage().startsWith("comment should be without highlighting")) {
+                //draw unicode char to visualize lexing errror
+                g.setColor(Color.RED);
+                g.setFont(errorIconFont);
+                g.drawString("x", 2, 15);
+                //g.drawString("☠",2,2);
 
-            //g.drawRect(2,5,6,6);
-            System.out.println("DRAW LEXING ERROR");
+                //g.drawRect(2,5,6,6);
+                System.out.println("DRAW LEXING ERROR");
+            }
         }
 
 
