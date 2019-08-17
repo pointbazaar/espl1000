@@ -33,7 +33,6 @@ public class DragonGUI_Editor {
 
     //public Optional<DragonEditorArea> editorArea;
     public Optional<DragonStatusLine> statusBar;
-    public Optional<DragonEditorContextArea> contextArea;
     public Optional<DragonEditorWithImage> editorWithImage;
 
     public Optional<DragonKeyEventHandler> keyEventHandler;
@@ -94,9 +93,6 @@ public class DragonGUI_Editor {
 
         this.statusBar=Optional.of(new DragonStatusLine(this));
         vertical_panel.add(statusBar.get().statusBar());
-
-        this.contextArea=Optional.of(new DragonEditorContextArea(this));
-        horizontal_panel.add(this.contextArea.get().make());
 
         //maybe set the content to the file
         if(filePath.isPresent() && this.editorWithImage.isPresent()){

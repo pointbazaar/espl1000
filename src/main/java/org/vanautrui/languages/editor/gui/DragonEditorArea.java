@@ -113,14 +113,6 @@ public class DragonEditorArea {
 
     public void updateAvailableCompletions(){
         Optional<String> maybeLastWord = this.getLastWord();
-
-        if(this.master.contextArea.isPresent() && maybeLastWord.isPresent()){
-            this
-                .master
-                .contextArea
-                .get()
-                .setAvailableCompletions(getAvailableCompletions(maybeLastWord.get()));
-        }
     }
 
     private List<String> getAvailableCompletions(String lastWord){
