@@ -48,7 +48,8 @@ returnType ::= 'void' | Type
 
 declaredArgument ::= Type identifier
 
-statement ::= ( methodCall | whileStatement | ifStatement | assignmentStatement | returnStatement | assignmentStatement ) ';'
+//some of these have the semicolon themselves,
+statement ::= ( methodCall ';' | whileStatement | ifStatement | returnStatement ';' | assignmentStatement )
 
 methodCall ::= methodName '(' (expression (, expression)*)?  ')'
 

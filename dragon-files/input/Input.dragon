@@ -1,0 +1,12 @@
+public class Input{
+	public Void main(){
+		
+		//println("please enter a string");
+
+		//readln() reads a string		
+
+		x=readln();
+
+		//println(x);
+	}
+}

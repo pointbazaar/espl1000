@@ -5,6 +5,7 @@ import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.IDragonTermNode;
 import org.vanautrui.languages.parsing.astnodes.IExpressionComputable;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
@@ -45,11 +46,20 @@ public class DragonTermNode implements IDragonASTNode, IExpressionComputable {
                 this.termNode=new DragonStringConstantNode(copy);
             }catch (Exception e2){
                 try {
-                    copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
-                    this.termNode=new DragonExpressionNode(copy);
-                    copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(")"));
+                    DragonTokenList copy2=new DragonTokenList(copy);
+
+                    copy2.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
+                    this.termNode=new DragonExpressionNode(copy2);
+                    copy2.expectAndConsumeOtherWiseThrowException(new SymbolToken(")"));
+
+                    copy.set(copy2);
                 }catch (Exception e3){
-                    this.termNode=new DragonVariableNode(copy);
+                    try {
+                        this.termNode=new DragonMethodCallNode(copy);
+                    }catch (Exception e4){
+
+                        this.termNode = new DragonVariableNode(copy);
+                    }
                 }
             }
         }
@@ -72,9 +82,12 @@ public class DragonTermNode implements IDragonASTNode, IExpressionComputable {
         if(this.termNode instanceof DragonExpressionNode) {
             DragonExpressionNode expressionNode = (DragonExpressionNode) this.termNode;
             return expressionNode.toSourceCode();
-        }else if(this.termNode instanceof DragonVariableNode){
+        }else if(this.termNode instanceof DragonVariableNode) {
             DragonVariableNode variableNode = (DragonVariableNode) this.termNode;
             return variableNode.toSourceCode();
+        }else if(this.termNode instanceof DragonMethodCallNode){
+            DragonMethodCallNode methodCallNode = (DragonMethodCallNode) this.termNode;
+            return methodCallNode.toSourceCode();
         }else{
             //return "ERROR";
             throw new RuntimeException("error in toSourceCode() in DragonTermNode");

@@ -53,6 +53,9 @@ public class DragonMethodCallCodeGenerator {
                         "print",
                         methodDescriptor);
                 break;
+            case "readln":
+                throw new Exception("readln() not implemented (DragonMethodCallGenerator)");
+                //break;
             default:
                 throw new Exception("unrecognized method "+methodCallNode.identifierMethodName.name.getContents());
         }

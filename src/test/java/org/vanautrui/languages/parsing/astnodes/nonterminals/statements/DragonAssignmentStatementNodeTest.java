@@ -23,4 +23,43 @@ public class DragonAssignmentStatementNodeTest {
 
         DragonAssignmentStatementNode assignmentStatementNode = new DragonAssignmentStatementNode(tokens);
     }
+
+    @Test
+    public void test_assign_method_call_result()throws Exception{
+
+        DragonTokenList tokens = new DragonTokenList();
+
+        tokens.add(new IdentifierToken("x"));
+        tokens.add(new SymbolToken("="));
+
+        //nop refers to the no operation method. it does nothing with its argument
+        tokens.add(new IdentifierToken("nop"));
+
+        tokens.add(new SymbolToken("("));
+        tokens.add(new IntegerConstantToken(4));
+        tokens.add(new SymbolToken(")"));
+
+        tokens.add(new SymbolToken(";"));
+
+        DragonAssignmentStatementNode assignmentStatementNode = new DragonAssignmentStatementNode(tokens);
+    }
+
+    @Test
+    public void test_assign_method_call_result_2()throws Exception{
+
+        DragonTokenList tokens = new DragonTokenList();
+
+        tokens.add(new IdentifierToken("x"));
+        tokens.add(new SymbolToken("="));
+
+        //nop refers to the no operation method. it does nothing with its argument
+        tokens.add(new IdentifierToken("nop"));
+
+        tokens.add(new SymbolToken("("));
+        tokens.add(new SymbolToken(")"));
+
+        tokens.add(new SymbolToken(";"));
+
+        DragonAssignmentStatementNode assignmentStatementNode = new DragonAssignmentStatementNode(tokens);
+    }
 }

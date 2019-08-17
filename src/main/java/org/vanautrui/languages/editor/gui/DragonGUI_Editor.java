@@ -19,7 +19,7 @@ public class DragonGUI_Editor {
     //https://www.java-tutorial.org/flowlayout.html
     //https://www.guru99.com/java-swing-gui.html
 
-    public static final int min_width =1400;
+    public static final int min_width =700;
     public static final int min_height =700;
 
     public static final int middle_row_height=600;
@@ -35,7 +35,6 @@ public class DragonGUI_Editor {
     public Optional<DragonStatusLine> statusBar;
     public Optional<DragonEditorContextArea> contextArea;
     public Optional<DragonEditorWithImage> editorWithImage;
-    public Optional<DragonProjectArea> projectArea;
 
     public Optional<DragonKeyEventHandler> keyEventHandler;
 
@@ -81,9 +80,6 @@ public class DragonGUI_Editor {
         horizontal_panel.setBackground(backgroundColor);
         horizontal_panel.setLayout(flowLayoutHorizontal);
         vertical_panel.add(horizontal_panel);
-
-        this.projectArea=Optional.of(new DragonProjectArea(this));
-        horizontal_panel.add(this.projectArea.get().projectArea());
 
         //this.editorArea=Optional.of(new DragonEditorArea(this));
         //horizontal_panel.add(this.editorArea.get().editorArea());

@@ -49,16 +49,18 @@ public class DragonMethodCallNode implements IDragonASTNode, IDragonStatementNod
         }
         while (success_argument) {
             try {
-                copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(","));
-                this.argumentList.add(new DragonExpressionNode(copy));
+                DragonTokenList copy2=new DragonTokenList(copy);
+
+                copy2.expectAndConsumeOtherWiseThrowException(new SymbolToken(","));
+                this.argumentList.add(new DragonExpressionNode(copy2));
+
+                copy.set(copy2);
             } catch (Exception e) {
                 success_argument = false;
             }
         }
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(")"));
-
-        copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(";"));
 
         //System.out.println("success");
         tokens.set(copy);

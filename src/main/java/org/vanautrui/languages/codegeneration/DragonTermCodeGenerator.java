@@ -5,6 +5,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.codegeneration.symboltables.DragonMethodScopeSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonTermNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonIntegerConstantNode;
@@ -38,16 +39,20 @@ public class DragonTermCodeGenerator {
         }else if(termNode.termNode instanceof DragonExpressionNode) {
             DragonExpressionNode dragonExpressionNode = (DragonExpressionNode)termNode.termNode;
             DragonExpressionCodeGenerator.visitExpression(cw, mv, classNode, methodNode, dragonExpressionNode, methodScopeSymbolTable);
-        }else if(termNode.termNode instanceof DragonVariableNode){
+        }else if(termNode.termNode instanceof DragonVariableNode) {
 
             //TODO: find the local variable index and push it onto the stack
 
-            DragonVariableNode variableNode = (DragonVariableNode)termNode.termNode;
-            if(methodScopeSymbolTable.containsVariable(variableNode.name.getContents())){
-                mv.visitIntInsn(ILOAD,methodScopeSymbolTable.getIndexOfVariable(variableNode.name.getContents()));
-            }else{
-                throw new Exception("variable "+variableNode.name.getContents()+" not defined?");
+            DragonVariableNode variableNode = (DragonVariableNode) termNode.termNode;
+            if (methodScopeSymbolTable.containsVariable(variableNode.name.getContents())) {
+                mv.visitIntInsn(ILOAD, methodScopeSymbolTable.getIndexOfVariable(variableNode.name.getContents()));
+            } else {
+                throw new Exception("variable " + variableNode.name.getContents() + " not defined?");
             }
+        }else if(termNode.termNode instanceof DragonMethodCallNode){
+            DragonMethodCallNode methodCallNode = (DragonMethodCallNode)termNode.termNode;
+
+            DragonMethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable);
         }else{
             throw new Exception("unhandled case in DragonTermCodeGenerator.java");
         }

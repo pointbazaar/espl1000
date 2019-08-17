@@ -32,8 +32,10 @@ public class DragonExpressionNode implements IDragonASTNode, IExpressionComputab
         this.term=new DragonTermNode(copy);
 
         try{
-            DragonTokenList copy2=new DragonTokenList(copy);
+
             while(true){
+                DragonTokenList copy2=new DragonTokenList(copy);
+
                 DragonOperatorNode myop=new DragonOperatorNode(copy2);
                 DragonTermNode myterm=new DragonTermNode(copy2);
 
