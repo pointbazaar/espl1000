@@ -12,15 +12,7 @@ import static org.objectweb.asm.Opcodes.*;
 
 public class DragonMethodCodeGenerator {
 
-    public static void visitMethodNode(ClassWriter cw, DragonClassNode classNode, DragonMethodNode methodNode) throws Exception {
-        String owner = classNode.name.typeName.getContents();
-        String descriptor = "i do not know";
-        String methodName = methodNode.methodName.methodName.name.getContents();
-
-        //figure it out
-        //cw.newMethod(owner,this.methodName.methodName.name.getContents(),descriptor,false);
-
-        //make the method scope symbol table
+    private static DragonMethodScopeSymbolTable createMethodScopeSymbolTable(DragonMethodNode methodNode)throws Exception{
         DragonMethodScopeSymbolTable methodScopeSymbolTable=new DragonMethodScopeSymbolTable();
         for(DragonStatementNode stmt : methodNode.statements) {
 
@@ -38,6 +30,19 @@ public class DragonMethodCodeGenerator {
             System.out.println(stmt.statementNode.getClass().getName());
             System.out.println(stmt.statementNode instanceof DragonAssignmentStatementNode);
         }
+        return methodScopeSymbolTable;
+    }
+
+    public static void visitMethodNode(ClassWriter cw, DragonClassNode classNode, DragonMethodNode methodNode) throws Exception {
+        String owner = classNode.name.typeName.getContents();
+        String descriptor = "i do not know";
+        String methodName = methodNode.methodName.methodName.name.getContents();
+
+        //figure it out
+        //cw.newMethod(owner,this.methodName.methodName.name.getContents(),descriptor,false);
+
+        //make the method scope symbol table
+        DragonMethodScopeSymbolTable methodScopeSymbolTable = createMethodScopeSymbolTable(methodNode);
 
 
 

@@ -1,11 +1,17 @@
 public class WhileLoop{
 	public Void main (){
 
-		//i=0;
+		i=0;
+		j=0;
 
-	        while (2 < 3){
-			println("x");
-			//i=i+1;
+	        while (i < 3){
+
+			while(j<2){
+				println("inner");
+				j=j+1;
+			}
+			println("outer");
+			i=i+1;
 		}
 	}
 }
