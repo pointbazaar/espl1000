@@ -47,6 +47,10 @@ public class DragonGUI_Editor {
         set_dark_ui();
         this.frame = new JFrame("Dragon Editor");
 
+        if(filePath.isPresent()){
+            this.frame.setTitle(filePath.get().toString());
+        }
+
         this.frame.setBackground(backgroundColor);
 
         this.keyEventHandler=Optional.of(new DragonKeyEventHandler(this));
