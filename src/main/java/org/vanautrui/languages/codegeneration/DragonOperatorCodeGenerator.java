@@ -1,6 +1,7 @@
 package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonOperatorNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
@@ -25,6 +26,25 @@ public class DragonOperatorCodeGenerator {
                 break;
             case "*":
                 mv.visitInsn(IMUL);
+                break;
+            case "<":
+                //if less than, push 1
+                //else push 0
+
+                Label lessThanLabel = new Label();
+                Label endLabel = new Label();
+                //mv.visitJumpInsn(IF_ICMPLT,lessThanLabel);
+                mv.visitJumpInsn(IF_ICMPGT,lessThanLabel);
+
+                mv.visitInsn(ICONST_1);
+                mv.visitJumpInsn(GOTO,endLabel);
+
+
+                mv.visitLabel(lessThanLabel);
+                mv.visitInsn(ICONST_0);
+                mv.visitJumpInsn(GOTO,endLabel);
+
+                mv.visitLabel(endLabel);
                 break;
             default:
                 throw new Exception("unhandled case in DragonOperatorCodeGenerator : operator is "+operatorNode.operator);

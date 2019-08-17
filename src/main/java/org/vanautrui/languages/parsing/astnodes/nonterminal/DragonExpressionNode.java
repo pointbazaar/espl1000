@@ -65,12 +65,17 @@ public class DragonExpressionNode implements IDragonASTNode, IExpressionComputab
 
     @Override
     public String getType(DragonMethodNode methodNode) throws Exception {
-        //TODO: for now it just returs 'Int' but it should work in the other cases too
-        //return "Int";
 
-        //it should only return anything, when all the types are the same
-        //because for now lets keep it simple.
-        //otherwise it should throw an exception
+        if(
+                this.term.getType(methodNode).equals("Int") &&
+                this.termNodes.size()==1 &&
+                this.termNodes.get(0).getType(methodNode).equals("Int") &&
+                this.operatorNodes.size()==1 &&
+                        (this.operatorNodes.get(0).operator.equals("<") || this.operatorNodes.get(0).operator.equals(">"))
+        ){
+            return "Bool";
+        }
+
 
         String type = this.term.getType(methodNode);
 

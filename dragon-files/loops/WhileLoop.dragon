@@ -4,7 +4,7 @@ public class WhileLoop{
 		//i=0;
 
 	        while (2 < 3){
-			//println("x");
+			println("x");
 			//i=i+1;
 		}
 	}

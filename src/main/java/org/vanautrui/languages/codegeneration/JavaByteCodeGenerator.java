@@ -113,63 +113,7 @@ public class JavaByteCodeGenerator {
     }
 
 
-    public static void visitLoopStatmentNode(
-            ClassWriter cw,
-            MethodVisitor mv,
-            DragonClassNode classNode,
-            DragonMethodNode methodNode,
-            DragonLoopStatementNode loop,
-            DragonMethodScopeSymbolTable methodScopeSymbolTable
-    ) throws Exception {
-        //https://asm.ow2.io/asm4-guide.pdf
-        //https://en.wikipedia.org/wiki/Java_bytecode_instruction_listings
 
-        //TODO: actually compile the stuff, not just fake
-
-        //loop.count;
-
-        //loop.statements
-        Label start = new Label();
-        Label end=new Label();
-
-        //push our loop counter
-        if(loop.count.term.termNode instanceof DragonIntegerConstantNode ) {
-            DragonIntegerConstantNode integerConstantNode = (DragonIntegerConstantNode)loop.count.term.termNode;
-
-            //mv.visitIntInsn(BIPUSH, integerConstantNode.value);
-            pushIntegerConstant(integerConstantNode.value,mv);
-        }else{
-            //TODO: deal with the other cases
-            throw new Exception(" not implemented yet");
-        }
-
-        mv.visitLabel(start);
-
-        //duplicate the condition (top of stack)
-        //so that the if doesnt remove it for the next iteration
-        mv.visitInsn(DUP);
-
-        //if count <= 0 , goto end
-        mv.visitJumpInsn(IFLE,end);
-
-        //write the code for the statements
-        for(DragonStatementNode stmt : loop.statements){
-            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt,methodScopeSymbolTable);
-        }
-
-        //decrement the loop counter : count--;
-
-        //mv.visitIntInsn(BIPUSH,1);
-        pushIntegerConstant(1,mv);
-
-        mv.visitInsn(ISUB);
-
-        mv.visitJumpInsn(GOTO,start);
-        mv.visitLabel(end);
-
-        //remove the loop counter
-        mv.visitInsn(POP);
-    }
 
 
 
