@@ -86,6 +86,31 @@ public class JavaByteCodeGenerator {
         return cw.toByteArray();
     }
 
+    public static void pushIntegerConstant(int n, MethodVisitor mv){
+        switch (n){
+            case 0:
+                mv.visitInsn(ICONST_0);
+                break;
+            case 1:
+                mv.visitInsn(ICONST_1);
+                break;
+            case 2:
+                mv.visitInsn(ICONST_2);
+                break;
+            case 3:
+                mv.visitInsn(ICONST_3);
+                break;
+            case 4:
+                mv.visitInsn(ICONST_4);
+                break;
+            case 5:
+                mv.visitInsn(ICONST_5);
+                break;
+            default:
+                mv.visitIntInsn(BIPUSH,n);
+                break;
+        }
+    }
 
 
     public static void visitLoopStatmentNode(
@@ -110,7 +135,9 @@ public class JavaByteCodeGenerator {
         //push our loop counter
         if(loop.count.term.termNode instanceof DragonIntegerConstantNode ) {
             DragonIntegerConstantNode integerConstantNode = (DragonIntegerConstantNode)loop.count.term.termNode;
-            mv.visitIntInsn(BIPUSH, integerConstantNode.value);
+
+            //mv.visitIntInsn(BIPUSH, integerConstantNode.value);
+            pushIntegerConstant(integerConstantNode.value,mv);
         }else{
             //TODO: deal with the other cases
             throw new Exception(" not implemented yet");
@@ -131,7 +158,10 @@ public class JavaByteCodeGenerator {
         }
 
         //decrement the loop counter : count--;
-        mv.visitIntInsn(BIPUSH,1);
+
+        //mv.visitIntInsn(BIPUSH,1);
+        pushIntegerConstant(1,mv);
+
         mv.visitInsn(ISUB);
 
         mv.visitJumpInsn(GOTO,start);

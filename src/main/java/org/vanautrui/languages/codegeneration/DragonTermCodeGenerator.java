@@ -12,6 +12,7 @@ import org.vanautrui.languages.parsing.astnodes.terminal.DragonStringConstantNod
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonVariableNode;
 
 import static org.objectweb.asm.Opcodes.*;
+import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.pushIntegerConstant;
 
 public class DragonTermCodeGenerator {
 
@@ -26,7 +27,9 @@ public class DragonTermCodeGenerator {
 
         if(termNode.termNode instanceof DragonIntegerConstantNode){
             DragonIntegerConstantNode integerConstantNode = (DragonIntegerConstantNode)termNode.termNode;
-            mv.visitVarInsn(BIPUSH,integerConstantNode.value);
+
+            pushIntegerConstant(integerConstantNode.value,mv);
+            //mv.visitVarInsn(BIPUSH,integerConstantNode.value);
 
         }else if(termNode.termNode instanceof DragonStringConstantNode){
             DragonStringConstantNode stringConstantNode = (DragonStringConstantNode)termNode.termNode;
