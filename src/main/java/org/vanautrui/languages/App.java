@@ -6,7 +6,6 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.commandline.dragonc;
-import org.vanautrui.languages.editor.gui.DragonGUI_Editor;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
