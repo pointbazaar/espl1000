@@ -150,4 +150,9 @@ public class DragonEditorWithImage {
     public String getCurrentBufferAsString() {
         return this.core.getLinesInEditor().stream().collect(Collectors.joining("\n"));
     }
+
+    public void pressUnTab() {
+        this.core.pressUnTab();
+        this.updateEditorImage();
+    }
 }

@@ -352,4 +352,17 @@ public class DragonEditorCore {
 
         //System.out.println("press END");
     }
+
+    public void pressUnTab() {
+        //TODO: it should shift the entire line left to the next tab increment
+        //TODO: it should happen without moving the cursor around
+        if(this.getTextStartIndexOnCurrentLine().isPresent()){
+            int text_start=this.getTextStartIndexOnCurrentLine().get();
+
+            this.cursor_col=text_start;
+            this.pressBackSpace();
+        }else{
+            //no text, so probably nothing to do here?
+        }
+    }
 }

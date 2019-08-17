@@ -218,8 +218,13 @@ public class DragonKeyEventHandler {
                                 System.out.println("ENTER");
                                 break;
                             case 9:
-                                master.editorWithImage.get().pressTab();
-                                System.out.println("TAB");
+                                if(e.isShiftDown()){
+                                    master.editorWithImage.get().pressUnTab();
+                                    System.out.println("UNTAB");
+                                }else {
+                                    master.editorWithImage.get().pressTab();
+                                    System.out.println("TAB");
+                                }
                                 break;
                                 /*
                             case 8:

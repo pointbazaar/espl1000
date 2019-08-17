@@ -1,5 +1,3 @@
 #!/bin/bash
 
 mvn install
-
-
