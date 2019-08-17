@@ -28,13 +28,21 @@ public class DragonOperatorCodeGenerator {
                 mv.visitInsn(IMUL);
                 break;
             case "<":
+            case ">":
+            case "==":
                 //if less than, push 1
                 //else push 0
 
                 Label lessThanLabel = new Label();
                 Label endLabel = new Label();
                 //mv.visitJumpInsn(IF_ICMPLT,lessThanLabel);
-                mv.visitJumpInsn(IF_ICMPGT,lessThanLabel);
+                if(operatorNode.operator.equals("<")) {
+                    mv.visitJumpInsn(IF_ICMPGT, lessThanLabel);
+                }else if(operatorNode.operator.equals(">")){
+                    mv.visitJumpInsn(IF_ICMPLT, lessThanLabel);
+                }else if(operatorNode.operator.equals("==")){
+                    mv.visitJumpInsn(IF_ICMPEQ,lessThanLabel);
+                }
 
                 mv.visitInsn(ICONST_1);
                 mv.visitJumpInsn(GOTO,endLabel);
