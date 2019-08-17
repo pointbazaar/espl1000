@@ -16,4 +16,12 @@ public class IntegerConstantTokenTest {
         Assert.assertEquals("2038", token.getContents());
     }
 
+    @Test
+    public void test_zero() throws Exception {
+
+        CharacterList list = new CharacterList("0");
+        IntegerConstantToken token = new IntegerConstantToken(list);
+        Assert.assertEquals("0", token.getContents());
+    }
+
 }

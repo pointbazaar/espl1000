@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class IntegerConstantToken extends BasicToken implements DragonToken {
 
-    private static final String regex_integer_constant = "^[1-9][0-9]*";
+    private static final String regex_integer_constant = "^(0|[1-9][0-9]*)";
 
     private static final int MAX_INT_CONSTANT_LENGTH = 20;
 

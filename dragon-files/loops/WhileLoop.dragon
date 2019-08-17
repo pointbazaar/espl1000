@@ -1,0 +1,11 @@
+public class WhileLoop{
+	public Void main (){
+
+		//i=0;
+
+	        while (2 < 3){
+			//println("x");
+			//i=i+1;
+		}
+	}
+}

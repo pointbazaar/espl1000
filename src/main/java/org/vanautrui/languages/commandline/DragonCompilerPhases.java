@@ -69,7 +69,7 @@ public class DragonCompilerPhases {
         try {
             DragonTypeChecker typeChecker=new DragonTypeChecker();
             typeChecker.doTypeCheck(asts);
-            
+
             TerminalUtil.println("✓", Ansi.Color.GREEN);
         }catch (Exception e){
             TerminalUtil.println("⚠", RED);

@@ -1,7 +1,0 @@
-public class main
-
-    public void main ( [ String ] args )
-        int i=0
-        while i < 3
-            println("y")
-            i++

@@ -28,7 +28,11 @@ public class DragonWhileStatementNode implements IDragonASTNode, IDragonStatemen
 
         copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("while"));
 
+        copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
+
         this.condition =new DragonExpressionNode(copy);
+
+        copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(")"));
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("{"));
 
