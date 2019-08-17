@@ -64,6 +64,12 @@ public class DragonTokenList {
         }
         return false;
     }
+    public boolean endsWith(DragonToken token) {
+        if (this.tokens.size() > 0) {
+            return this.tokens.get(this.tokens.size()-1).equals(token);
+        }
+        return false;
+    }
 
     public void expectAndConsumeOtherWiseThrowException(DragonToken token) throws Exception {
 

@@ -54,6 +54,11 @@ public class DragonClassNode implements IDragonASTNode {
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("{"));
 
+        if(!copy.endsWith(new SymbolToken("}"))){
+            //we assume the class only received a token stream with only the relavant info for it
+            throw new Exception(" a class should end with '}' but it did not ");
+        }
+
         //i hope, that with this piece of code, the method should always be tried out first
         //because classField is a prefix of Method.
         //similar errors could maybe be fixed by just looking at the Dragon Grammar

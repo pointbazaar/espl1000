@@ -5,6 +5,7 @@ import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonLoopStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.IDragonStatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonWhileStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
@@ -31,7 +32,11 @@ public class DragonStatementNode implements IDragonASTNode {
             try {
                 this.statementNode = new DragonLoopStatementNode(copy);
             }catch (Exception e2){
-                this.statementNode = new DragonAssignmentStatementNode(copy);
+                try {
+                    this.statementNode = new DragonAssignmentStatementNode(copy);
+                }catch (Exception e3){
+                    this.statementNode=new DragonWhileStatementNode(copy);
+                }
             }
         }
 

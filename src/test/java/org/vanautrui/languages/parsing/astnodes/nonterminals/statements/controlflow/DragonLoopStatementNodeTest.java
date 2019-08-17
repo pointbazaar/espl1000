@@ -1,4 +1,4 @@
-package org.vanautrui.languages.parsing.astnodes.nonterminals.statements;
+package org.vanautrui.languages.parsing.astnodes.nonterminals.statements.controlflow;
 
 import org.junit.Test;
 import org.vanautrui.languages.lexing.tokens.IntegerConstantToken;
