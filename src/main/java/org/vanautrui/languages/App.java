@@ -52,22 +52,6 @@ public class App {
             if(cmd.hasOption("c")){
                 dragonc.compile_main(Arrays.asList(Arrays.copyOfRange(args,1,args.length)));
 
-            }else if(cmd.hasOption("e")){
-
-                //require a file to open the editor
-                //this is to encourage using 'touch'
-                //to create new files or other command line utils
-                //and to better integrate with other command line utils
-
-
-                String fileName = args[1];
-
-                Optional<Path> filePath =
-                        Optional.of(
-                                Paths.get(fileName)
-                        );
-
-                DragonGUI_Editor editor = new DragonGUI_Editor(filePath);
             }
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -82,11 +66,8 @@ public class App {
     private static Options createOptions(){
         Option compile_flag = OptionBuilder.withDescription("use the compiler").isRequired(false).create("c");
 
-        Option editor_flag = OptionBuilder.withDescription("start the ide").isRequired(false).create("e");
-
         OptionGroup flag_group = new OptionGroup();
         flag_group.addOption(compile_flag);
-        flag_group.addOption(editor_flag);
 
         flag_group.setRequired(true);
 
