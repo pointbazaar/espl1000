@@ -91,4 +91,24 @@ public class JavaByteCodeGeneratorTest {
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals(x+"\n",IOUtils.toString(pr.getInputStream()));
     }
+
+    @Test
+    public void test_can_compile_multiple_assignment_to_same_variable_add()throws Exception{
+
+        String source="public class MainTest3 { public Void main(){ x=1; x=x+1; println(x); } }";
+        Process pr = compile_and_run_one_class_for_testing(source,"MainTest3");
+
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("2\n",IOUtils.toString(pr.getInputStream()));
+    }
+
+    @Test
+    public void test_can_compile_multiple_assignment_to_same_variable_multiply()throws Exception{
+
+        String source="public class MainTest3 { public Void main(){ x=2; x=x*2; println(x); } }";
+        Process pr = compile_and_run_one_class_for_testing(source,"MainTest3");
+
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("4\n",IOUtils.toString(pr.getInputStream()));
+    }
 }
