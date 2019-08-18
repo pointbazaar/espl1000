@@ -46,7 +46,16 @@ public class DragonStatementCodeGenerator {
             DragonExpressionCodeGenerator
                     .visitExpression(cw, mv, classNode, methodNode, assignmentStatementNode.expressionNode, methodScopeSymbolTable);
 
-            mv.visitVarInsn(ISTORE, local_var_index);
+            switch(assignmentStatementNode.expressionNode.getType(methodNode)){
+                case "Int":
+                    mv.visitVarInsn(ISTORE, local_var_index);
+                    break;
+                case "String":
+                    mv.visitVarInsn(ASTORE,local_var_index);
+                    break;
+                default:
+                    throw new Exception("unconsidered case in DragonStatementCodeGenerator. type was :"+assignmentStatementNode.expressionNode.getType(methodNode));
+            }
         }else if(statementNode.statementNode instanceof DragonWhileStatementNode){
             DragonWhileStatementNode whileStatementNode =(DragonWhileStatementNode)statementNode.statementNode;
             DragonWhileStatementCodeGenerator.visitWhileStatmentNode(cw,mv,classNode,methodNode,whileStatementNode,methodScopeSymbolTable);

@@ -67,7 +67,16 @@ public class DragonMethodCallCodeGenerator {
 
             case "readln":
                 //create an instance of Scanner
-                mv.visitInsn(NEW);
+                //mv.visitInsn(NEW);
+
+                //the new instruction must get an index into
+                //the runtime constant pool of the current class
+                //int myconst = cw.newConst("java/util/Scanner");
+
+                //mv.visitVarInsn(NEW,myconst);
+                mv.visitTypeInsn(NEW,"java/util/Scanner");
+                //mv.visitInsn(NEW,"java/util/Scanner");
+
                 mv.visitInsn(DUP);
 
                 //DEBUG: try to comment out stuff individually and see
