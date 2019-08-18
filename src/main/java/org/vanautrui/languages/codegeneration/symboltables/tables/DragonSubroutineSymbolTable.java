@@ -37,7 +37,7 @@ public class DragonSubroutineSymbolTable implements ISymbolTable {
 
     @Override
     public String toString(){
-        StringBuilder result = new StringBuilder("SUBROUTINE SYMBOL TABLE: \n");
+        StringBuilder result = new StringBuilder("\nSUBROUTINE SYMBOL TABLE: \n");
         result.append("| name | type |\n");
         for(ISymbolTableRow row : this.symbolTable.getRows()){
             result.append(row.toString());

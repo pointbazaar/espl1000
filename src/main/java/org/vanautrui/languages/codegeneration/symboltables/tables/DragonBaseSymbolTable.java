@@ -21,7 +21,7 @@ class DragonBaseSymbolTable {
     public void add(ISymbolTableRow row){
         //DEBUG
         //System.out.println("symbol table add");
-        
+
         if(!this.containsVariable(row.getName())) {
             this.symbolTable.add(row);
             index_count++;
