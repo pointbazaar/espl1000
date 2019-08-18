@@ -7,6 +7,7 @@ import org.vanautrui.languages.codegeneration.symboltables.DragonMethodScopeSymb
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonAssignmentStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonIfStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonLoopStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonWhileStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
@@ -57,7 +58,9 @@ public class DragonStatementCodeGenerator {
         }else if(statementNode.statementNode instanceof DragonWhileStatementNode){
             DragonWhileStatementNode whileStatementNode =(DragonWhileStatementNode)statementNode.statementNode;
             DragonWhileStatementCodeGenerator.visitWhileStatmentNode(cw,mv,classNode,methodNode,whileStatementNode,methodScopeSymbolTable);
-
+        }else if(statementNode.statementNode instanceof DragonIfStatementNode){
+            DragonIfStatementNode ifStatementNode =(DragonIfStatementNode) statementNode.statementNode;
+            DragonIfStatementCodeGenerator.visitIfStatmentNode(cw,mv,classNode,methodNode,ifStatementNode,methodScopeSymbolTable);
         }else{
             throw new Exception("unconsidered statement type");
         }

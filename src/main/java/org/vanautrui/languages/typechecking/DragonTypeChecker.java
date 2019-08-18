@@ -6,6 +6,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonOperatorNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonTermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonAssignmentStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonIfStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonLoopStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonWhileStatementNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.*;
@@ -92,11 +93,27 @@ public class DragonTypeChecker {
         }else if(statementNode.statementNode instanceof DragonWhileStatementNode){
             DragonWhileStatementNode whileStatementNode = (DragonWhileStatementNode) statementNode.statementNode;
             typeCheckWhileStatementNode(asts, classNode, methodNode, whileStatementNode);
-        }else if(statementNode.statementNode instanceof DragonMethodCallNode){
+        }else if(statementNode.statementNode instanceof DragonMethodCallNode) {
             DragonMethodCallNode methodCallNode = (DragonMethodCallNode) statementNode.statementNode;
             typeCheckMethodCallNode(asts, classNode, methodNode, methodCallNode);
+        }else if(statementNode.statementNode instanceof DragonIfStatementNode){
+            DragonIfStatementNode ifStatementNode = (DragonIfStatementNode)statementNode.statementNode;
+            typeCheckIfStatementNode(asts,classNode,methodNode,ifStatementNode);
         }else{
             throw new Exception("unconsidered case in typechecking ");
+        }
+    }
+
+    private void typeCheckIfStatementNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonIfStatementNode ifStatementNode) throws Exception{
+        //the condition expression should be of type boolean
+        if(!ifStatementNode.condition.getType(methodNode).equals("Bool") && !ifStatementNode.condition.getType(methodNode).equals("Boolean")){
+            throw new Exception(" condition should be of type boolean");
+        }
+        for(DragonStatementNode stmt : ifStatementNode.statements){
+            typeCheckStatementNode(asts,classNode,methodNode,stmt);
+        }
+        for(DragonStatementNode stmt : ifStatementNode.elseStatements){
+            typeCheckStatementNode(asts,classNode,methodNode,stmt);
         }
     }
 
