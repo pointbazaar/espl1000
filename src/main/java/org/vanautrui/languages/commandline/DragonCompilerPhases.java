@@ -5,6 +5,7 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.codegeneration.JavaByteCodeGenerator;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
 import org.vanautrui.languages.lexing.DragonLexer;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.utils.CurlyBracesWeaver;
@@ -21,6 +22,7 @@ import java.util.Set;
 
 import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.Color.RED;
+import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.createSubroutineSymbolTable;
 import static org.vanautrui.languages.commandline.dragonc.getPreferredXMLSerializationStrategyHumanReadable;
 import static org.vanautrui.languages.commandline.dragonc.remove_unneccessary_whitespace;
 
@@ -83,8 +85,11 @@ public class DragonCompilerPhases {
         try {
             for (DragonClassNode classNode : ast.classNodeList) {
 
+                //TODO: create the symbol table with all classes in mind, not just this one
+                DragonSubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
+
                 //generate bytecode for that class
-                byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode);
+                byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode,subroutineSymbolTable);
                 Files.write(Paths.get(classNode.name.typeName.getContents() + ".class"), classResult);
             }
             TerminalUtil.println("✓", Ansi.Color.GREEN);

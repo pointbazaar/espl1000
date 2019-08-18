@@ -35,9 +35,4 @@ public class DragonStringConstantNode implements IDragonASTNode, IDragonTermNode
     public String toSourceCode() {
         return this.str;
     }
-
-    @Override
-    public String getType(DragonMethodNode methodNode) throws Exception {
-        return "String";
-    }
 }

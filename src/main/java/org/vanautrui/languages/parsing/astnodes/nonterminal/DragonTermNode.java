@@ -93,9 +93,4 @@ public class DragonTermNode implements IDragonASTNode, IExpressionComputable {
             throw new RuntimeException("error in toSourceCode() in DragonTermNode");
         }
     }
-
-    @Override
-    public String getType(DragonMethodNode methodNode) throws Exception {
-        return this.termNode.getType(methodNode);
-    }
 }

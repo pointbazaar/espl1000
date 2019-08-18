@@ -12,6 +12,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlfl
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonWhileStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
+import org.vanautrui.languages.typeresolution.DragonTypeResolver;
 
 import static org.objectweb.asm.Opcodes.ASTORE;
 import static org.objectweb.asm.Opcodes.ISTORE;
@@ -46,7 +47,8 @@ public class DragonStatementCodeGenerator {
             DragonExpressionCodeGenerator
                     .visitExpression(cw, mv, classNode, methodNode, assignmentStatementNode.expressionNode, methodScopeSymbolTable,subroutineSymbolTable);
 
-            switch(assignmentStatementNode.expressionNode.getType(methodNode)){
+            String expressionType= DragonTypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subroutineSymbolTable);
+            switch(expressionType){
                 case "Int":
                     mv.visitVarInsn(ISTORE, local_var_index);
                     break;
@@ -54,7 +56,7 @@ public class DragonStatementCodeGenerator {
                     mv.visitVarInsn(ASTORE,local_var_index);
                     break;
                 default:
-                    throw new Exception("unconsidered case in DragonStatementCodeGenerator. type was :"+assignmentStatementNode.expressionNode.getType(methodNode));
+                    throw new Exception("unconsidered case in DragonStatementCodeGenerator. type was :"+expressionType);
             }
         }else if(statementNode.statementNode instanceof DragonWhileStatementNode){
             DragonWhileStatementNode whileStatementNode =(DragonWhileStatementNode)statementNode.statementNode;

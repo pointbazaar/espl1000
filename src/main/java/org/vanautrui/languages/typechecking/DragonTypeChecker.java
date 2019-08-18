@@ -1,5 +1,7 @@
 package org.vanautrui.languages.typechecking;
 
+import org.vanautrui.languages.codegeneration.JavaByteCodeGenerator;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonDeclaredArgumentNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonOperatorNode;
@@ -16,6 +18,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAS
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassFieldNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
+import org.vanautrui.languages.typeresolution.DragonTypeResolver;
 
 import java.util.Arrays;
 import java.util.List;
@@ -35,12 +38,16 @@ public class DragonTypeChecker {
         for(DragonAST ast : asts){
             for(DragonClassNode classNode : ast.classNodeList){
 
-                typeCheckClassNode(asts,classNode);
+                //TODO: create a the  symbol table with all classes being compiled
+                //otherwise we cannot call methods from other classes
+                DragonSubroutineSymbolTable subroutineSymbolTable = JavaByteCodeGenerator.createSubroutineSymbolTable(classNode);
+
+                typeCheckClassNode(asts,classNode,subroutineSymbolTable);
             }
         }
     }
 
-    private void typeCheckClassNode(Set<DragonAST> asts, DragonClassNode classNode) throws Exception{
+    private void typeCheckClassNode(Set<DragonAST> asts, DragonClassNode classNode,DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
         int count=0;
         for(DragonAST ast : asts){
             for(DragonClassNode dragonClassNode : ast.classNodeList){
@@ -57,7 +64,7 @@ public class DragonTypeChecker {
         }
 
         for(DragonMethodNode methodNode : classNode.methodNodeList){
-            typeCheckMethodNode(asts,classNode,methodNode);
+            typeCheckMethodNode(asts,classNode,methodNode,subroutineSymbolTable);
         }
 
         if(count!=1){
@@ -65,14 +72,14 @@ public class DragonTypeChecker {
         }
     }
 
-    private void typeCheckMethodNode(Set<DragonAST> asts, DragonClassNode classNode,DragonMethodNode methodNode) throws Exception{
+    private void typeCheckMethodNode(Set<DragonAST> asts, DragonClassNode classNode,DragonMethodNode methodNode,DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
 
         typeCheckMethodNameNode(asts,classNode,methodNode.methodName);
 
         typeCheckTypeIdentifierNode(asts,classNode,methodNode.type);
         for(DragonStatementNode stmt : methodNode.statements){
             //stmt.doTypeCheck(asts,classNode, Optional.of(methodNode));
-            typeCheckStatementNode(asts,classNode,methodNode,stmt);
+            typeCheckStatementNode(asts,classNode,methodNode,stmt,subroutineSymbolTable);
         }
         for(DragonDeclaredArgumentNode arg : methodNode.arguments){
             typeCheckDeclaredArgumentNode(asts,classNode,arg);
@@ -85,32 +92,32 @@ public class DragonTypeChecker {
         typeCheckTypeIdentifierNode(asts,classNode,classFieldNode.type);
     }
 
-    private void typeCheckStatementNode(Set<DragonAST> asts, DragonClassNode classNode,DragonMethodNode methodNode,DragonStatementNode statementNode)throws Exception{
+    private void typeCheckStatementNode(Set<DragonAST> asts, DragonClassNode classNode,DragonMethodNode methodNode,DragonStatementNode statementNode,DragonSubroutineSymbolTable subroutineSymbolTable)throws Exception{
         //TODO: it depends on the instance
         if(statementNode.statementNode instanceof DragonAssignmentStatementNode) {
             DragonAssignmentStatementNode assignmentStatementNode = (DragonAssignmentStatementNode) statementNode.statementNode;
-            typeCheckAssignmentStatementNode(asts, classNode, methodNode, assignmentStatementNode);
+            typeCheckAssignmentStatementNode(asts, classNode, methodNode, assignmentStatementNode,subroutineSymbolTable);
         }else if(statementNode.statementNode instanceof DragonLoopStatementNode){
             DragonLoopStatementNode loopStatementNode = (DragonLoopStatementNode) statementNode.statementNode;
-            typeCheckLoopStatementNode(asts, classNode, methodNode, loopStatementNode);
+            typeCheckLoopStatementNode(asts, classNode, methodNode, loopStatementNode,subroutineSymbolTable);
         }else if(statementNode.statementNode instanceof DragonWhileStatementNode){
             DragonWhileStatementNode whileStatementNode = (DragonWhileStatementNode) statementNode.statementNode;
-            typeCheckWhileStatementNode(asts, classNode, methodNode, whileStatementNode);
+            typeCheckWhileStatementNode(asts, classNode, methodNode, whileStatementNode,subroutineSymbolTable);
         }else if(statementNode.statementNode instanceof DragonMethodCallNode) {
             DragonMethodCallNode methodCallNode = (DragonMethodCallNode) statementNode.statementNode;
             typeCheckMethodCallNode(asts, classNode, methodNode, methodCallNode);
         }else if(statementNode.statementNode instanceof DragonIfStatementNode) {
             DragonIfStatementNode ifStatementNode = (DragonIfStatementNode) statementNode.statementNode;
-            typeCheckIfStatementNode(asts, classNode, methodNode, ifStatementNode);
+            typeCheckIfStatementNode(asts, classNode, methodNode, ifStatementNode,subroutineSymbolTable);
         }else if(statementNode.statementNode instanceof DragonReturnStatementNode){
             DragonReturnStatementNode returnStatementNode = (DragonReturnStatementNode)statementNode.statementNode;
-            typeCheckReturnStatementNode(asts,classNode,methodNode,returnStatementNode);
+            typeCheckReturnStatementNode(asts,classNode,methodNode,returnStatementNode,subroutineSymbolTable);
         }else{
             throw new Exception("unconsidered case in typechecking ");
         }
     }
 
-    private void typeCheckReturnStatementNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonReturnStatementNode returnStatementNode) throws Exception{
+    private void typeCheckReturnStatementNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonReturnStatementNode returnStatementNode, DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
         //well the type of the value returned should be the same as the method return type
         //in case of void there should be no value returned
         if(methodNode.type.typeName.getContents().equals("Void")){
@@ -118,24 +125,26 @@ public class DragonTypeChecker {
                 throw new Exception(" Type Checking Failed. do not return a value from a Void method. "+returnStatementNode.returnValue.get().toSourceCode());
             }
         }else{
+            String returnValueType= DragonTypeResolver.getTypeExpressionNode(returnStatementNode.returnValue.get(),methodNode,subroutineSymbolTable);
             if(
-                !(returnStatementNode.returnValue.get().getType(methodNode).equals(methodNode.type.typeName.getContents()))
+                !(returnValueType.equals(methodNode.type.typeName.getContents()))
             ){
                 throw new Exception(" return type has to equal the method type");
             }
         }
     }
 
-    private void typeCheckIfStatementNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonIfStatementNode ifStatementNode) throws Exception{
+    private void typeCheckIfStatementNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonIfStatementNode ifStatementNode,DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
         //the condition expression should be of type boolean
-        if(!ifStatementNode.condition.getType(methodNode).equals("Bool") && !ifStatementNode.condition.getType(methodNode).equals("Boolean")){
+        String conditionType = DragonTypeResolver.getTypeExpressionNode(ifStatementNode.condition,methodNode,subroutineSymbolTable);
+        if(!conditionType.equals("Bool") && !conditionType.equals("Boolean")){
             throw new Exception(" condition should be of type boolean");
         }
         for(DragonStatementNode stmt : ifStatementNode.statements){
-            typeCheckStatementNode(asts,classNode,methodNode,stmt);
+            typeCheckStatementNode(asts,classNode,methodNode,stmt,subroutineSymbolTable);
         }
         for(DragonStatementNode stmt : ifStatementNode.elseStatements){
-            typeCheckStatementNode(asts,classNode,methodNode,stmt);
+            typeCheckStatementNode(asts,classNode,methodNode,stmt,subroutineSymbolTable);
         }
     }
 
@@ -243,33 +252,38 @@ public class DragonTypeChecker {
         throw new Exception("could not find declaration for usage of variable '"+variableNode.name.getContents()+"'");
     }
 
-    private void typeCheckWhileStatementNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonWhileStatementNode whileStatementNode) throws Exception{
+    private void typeCheckWhileStatementNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonWhileStatementNode whileStatementNode,DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
         //the condition expression should be of type boolean
-        if(!whileStatementNode.condition.getType(methodNode).equals("Bool") && !whileStatementNode.condition.getType(methodNode).equals("Boolean")){
+        String conditionType=DragonTypeResolver.getTypeExpressionNode(whileStatementNode.condition,methodNode,subroutineSymbolTable);
+        if(!conditionType.equals("Bool") && !conditionType.equals("Boolean")){
             throw new Exception(" condition should be of type boolean");
         }
         for(DragonStatementNode stmt : whileStatementNode.statements){
-            typeCheckStatementNode(asts,classNode,methodNode,stmt);
+            typeCheckStatementNode(asts,classNode,methodNode,stmt,subroutineSymbolTable);
         }
     }
 
     private void typeCheckLoopStatementNode(
-            Set<DragonAST> asts, DragonClassNode classNode,DragonMethodNode methodNode,DragonLoopStatementNode loopStatementNode
+            Set<DragonAST> asts, DragonClassNode classNode,DragonMethodNode methodNode,DragonLoopStatementNode loopStatementNode,DragonSubroutineSymbolTable subroutineSymbolTable
     ) throws Exception{
         //the condition expression should be of type boolean
-        if(!loopStatementNode.count.getType(methodNode).equals("Int")){
+
+        String countType= DragonTypeResolver.getTypeExpressionNode(loopStatementNode.count,methodNode,subroutineSymbolTable);
+        if(!countType.equals("Int")){
             throw new Exception(" condition should be of type Int . this is a loop statement after all.");
         }
         for(DragonStatementNode stmt : loopStatementNode.statements){
-            typeCheckStatementNode(asts,classNode,methodNode,stmt);
+            typeCheckStatementNode(asts,classNode,methodNode,stmt,subroutineSymbolTable);
         }
     }
 
     private void typeCheckAssignmentStatementNode(
-            Set<DragonAST> asts, DragonClassNode classNode,DragonMethodNode methodNode,DragonAssignmentStatementNode assignmentStatementNode
+            Set<DragonAST> asts, DragonClassNode classNode,DragonMethodNode methodNode,DragonAssignmentStatementNode assignmentStatementNode,DragonSubroutineSymbolTable subroutineSymbolTable
     ) throws Exception{
-        if(!assignmentStatementNode.variableNode.getType(methodNode).equals(assignmentStatementNode.expressionNode.getType(methodNode))){
-            throw new Exception("with an assignment, both sides have to have the same type. here, a value of type "+assignmentStatementNode.expressionNode.getType(methodNode)+" was assigned to a value of type "+assignmentStatementNode.variableNode.getType(methodNode));
+        String leftSideType = DragonTypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,methodNode,subroutineSymbolTable);
+        String rightSideType = DragonTypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subroutineSymbolTable);
+        if(!leftSideType.equals(rightSideType)){
+            throw new Exception("with an assignment, both sides have to have the same type. here, a value of type "+rightSideType+" was assigned to a value of type "+leftSideType);
         }
     }
 

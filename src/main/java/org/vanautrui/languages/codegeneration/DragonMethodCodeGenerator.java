@@ -9,12 +9,13 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonAss
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
+import org.vanautrui.languages.typeresolution.DragonTypeResolver;
 
 import static org.objectweb.asm.Opcodes.*;
 
 public class DragonMethodCodeGenerator {
 
-    private static DragonMethodScopeVariableSymbolTable createMethodScopeSymbolTable(DragonMethodNode methodNode)throws Exception{
+    private static DragonMethodScopeVariableSymbolTable createMethodScopeSymbolTable(DragonMethodNode methodNode,DragonSubroutineSymbolTable subroutineSymbolTable)throws Exception{
         DragonMethodScopeVariableSymbolTable methodScopeSymbolTable=new DragonMethodScopeVariableSymbolTable();
         for(DragonStatementNode stmt : methodNode.statements) {
 
@@ -24,10 +25,13 @@ public class DragonMethodCodeGenerator {
 
             if(stmt.statementNode instanceof DragonAssignmentStatementNode) {
                 DragonAssignmentStatementNode assignmentStatementNode = (DragonAssignmentStatementNode)stmt.statementNode;
+
+                String expressionType = DragonTypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subroutineSymbolTable);
+
                 methodScopeSymbolTable.add(
                         new DragonMethodScopeVariableSymbolTableRow(
                                 assignmentStatementNode.variableNode.name.getContents(),
-                                assignmentStatementNode.expressionNode.getType(methodNode)
+                                expressionType
                         )
                 );
             }
@@ -44,7 +48,7 @@ public class DragonMethodCodeGenerator {
         //cw.newMethod(owner,this.methodName.methodName.name.getContents(),descriptor,false);
 
         //make the method scope symbol table
-        DragonMethodScopeVariableSymbolTable methodScopeSymbolTable = createMethodScopeSymbolTable(methodNode);
+        DragonMethodScopeVariableSymbolTable methodScopeSymbolTable = createMethodScopeSymbolTable(methodNode,subroutineSymbolTable);
 
         //DEBUG
         System.out.println(methodScopeSymbolTable.toString());

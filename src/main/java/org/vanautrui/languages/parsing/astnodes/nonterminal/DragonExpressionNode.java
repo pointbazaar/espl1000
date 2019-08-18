@@ -64,38 +64,4 @@ public class DragonExpressionNode implements IDragonASTNode, IExpressionComputab
 
         return res.toString();
     }
-
-    @Override
-    public String getType(DragonMethodNode methodNode) throws Exception {
-
-        if(
-                this.term.getType(methodNode).equals("Int") &&
-                this.termNodes.size()==1 &&
-                this.termNodes.get(0).getType(methodNode).equals("Int") &&
-                this.operatorNodes.size()==1 &&
-                        (this.operatorNodes.get(0).operator.equals("<") || this.operatorNodes.get(0).operator.equals(">"))
-        ){
-            return "Bool";
-        }
-
-
-        String type = this.term.getType(methodNode);
-
-        /*
-        for(DragonOperatorNode op : this.operatorNodes){
-            if(!op.operator.equals("+")){
-                throw new Exception("only '+' is supported for now");
-            }
-        }
-
-         */
-
-        for (DragonTermNode t : this.termNodes){
-            if(!(t.termNode.getType(methodNode).equals(type))){
-                throw new Exception("the types are not the same, "+type+" collides with "+t.termNode.getType(methodNode));
-            }
-        }
-
-        return this.term.getType(methodNode);
-    }
 }

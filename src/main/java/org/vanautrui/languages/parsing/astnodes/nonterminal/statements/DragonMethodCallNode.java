@@ -77,16 +77,4 @@ public class DragonMethodCallNode implements IDragonASTNode, IDragonStatementNod
         ;
     }
 
-
-    @Override
-    public String getType(DragonMethodNode methodNode) throws Exception {
-        //TODO: return the real type. for now it returns only 'Void'
-        //because for now we are compiling only void fuctions
-
-        if(this.identifierMethodName.name.getContents().equals("readln")){
-            return "String";
-        }
-
-        return "Void";
-    }
 }

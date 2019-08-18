@@ -21,7 +21,12 @@ public class JavaByteCodeGenerator {
 
     //https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.1
 
-    public static byte[] generateByteCodeForClass(DragonClassNode classNode) throws Exception {
+    public static byte[] generateByteCodeForOneClass(DragonClassNode classNode)throws Exception{
+        DragonSubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
+        return generateByteCodeForClass(classNode,subroutineSymbolTable);
+    }
+
+    public static byte[] generateByteCodeForClass(DragonClassNode classNode,DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception {
 
         ClassWriter cw = new ClassWriter(0);
 
@@ -76,7 +81,7 @@ public class JavaByteCodeGenerator {
         //TODO: do this previous to compilation for all
         //classes since a method can call methods from another class
 
-        DragonSubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
+
 
         for(DragonMethodNode methodNode : classNode.methodNodeList){
             //methodNode.visit(cw,Optional.of(classNode),Optional.empty());
@@ -88,7 +93,7 @@ public class JavaByteCodeGenerator {
         return cw.toByteArray();
     }
 
-    private static DragonSubroutineSymbolTable createSubroutineSymbolTable(DragonClassNode classNode){
+    public static DragonSubroutineSymbolTable createSubroutineSymbolTable(DragonClassNode classNode){
         DragonSubroutineSymbolTable subroutineSymbolTable = new DragonSubroutineSymbolTable();
 
         for(DragonMethodNode methodNode : classNode.methodNodeList){

@@ -8,6 +8,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
+import org.vanautrui.languages.typeresolution.DragonTypeResolver;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -32,7 +33,8 @@ public class DragonMethodCallCodeGenerator {
             for(DragonExpressionNode expressionNode : methodCallNode.argumentList){
 
                 //TODO: make getTypeJVMInternal() to make this easier? or just make a translator class for it
-                if(expressionNode.getType(methodNode).equals("Int") || expressionNode.getType(methodNode).equals("ERROR")){
+                String expressionType=DragonTypeResolver.getTypeExpressionNode(expressionNode,methodNode,subroutineSymbolTable);
+                if(expressionType.equals("Int") || expressionType.equals("ERROR")){
                     //set the  descriptor to the signature which accepts int
                     methodDescriptor="(I)V";
                 }

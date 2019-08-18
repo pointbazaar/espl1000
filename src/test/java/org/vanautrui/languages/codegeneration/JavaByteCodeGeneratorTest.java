@@ -22,7 +22,7 @@ public class JavaByteCodeGeneratorTest {
         DragonParser parser = new DragonParser();
         DragonAST ast= parser.parse(tokens);
 
-        byte[] result = JavaByteCodeGenerator.generateByteCodeForClass(ast.classNodeList.toArray(new DragonClassNode[]{})[0]);
+        byte[] result = JavaByteCodeGenerator.generateByteCodeForOneClass(ast.classNodeList.toArray(new DragonClassNode[]{})[0]);
         Path path = Paths.get(classNameWithoutExtension+".class");
 
         Files.write(path,result);

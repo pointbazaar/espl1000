@@ -41,29 +41,4 @@ public class DragonVariableNode implements IDragonASTNode , IDragonTermNode {
         return this.name.getContents();
     }
 
-
-    @Override
-    public String getType(DragonMethodNode methodNode) throws Exception {
-        //TODO: implement by looking at the definitions in the AST and such
-
-        //go through previous statements and look for the assignment which was first made to a primitive value
-        //
-        String type="";
-        for(DragonStatementNode stmt : methodNode.statements){
-            if(stmt.statementNode instanceof DragonAssignmentStatementNode){
-                DragonAssignmentStatementNode assignmentStatementNode = (DragonAssignmentStatementNode)stmt.statementNode;
-
-                //TODO: what if we assign something to itself?
-                //that would probably cause an endless loop
-                //TODO: FIX IT
-                type = assignmentStatementNode.expressionNode.getType(methodNode);
-                break;
-            }
-        }
-        if(type.equals("")){
-            throw new Exception("could not determine type of "+this.name.getContents());
-        }
-
-        return type;
-    }
 }
