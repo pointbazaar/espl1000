@@ -89,7 +89,7 @@ public class DragonCompilerPhases {
                 DragonSubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
 
                 //generate bytecode for that class
-                byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode,subroutineSymbolTable);
+                byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode,subroutineSymbolTable,debug);
                 Files.write(Paths.get(classNode.name.typeName.getContents() + ".class"), classResult);
             }
             TerminalUtil.println("✓", Ansi.Color.GREEN);

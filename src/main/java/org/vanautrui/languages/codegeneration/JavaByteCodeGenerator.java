@@ -21,12 +21,17 @@ public class JavaByteCodeGenerator {
 
     //https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.1
 
-    public static byte[] generateByteCodeForOneClass(DragonClassNode classNode)throws Exception{
+    public static byte[] generateByteCodeForOneClass(DragonClassNode classNode,boolean debug)throws Exception{
         DragonSubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
-        return generateByteCodeForClass(classNode,subroutineSymbolTable);
+
+        return generateByteCodeForClass(classNode,subroutineSymbolTable,debug);
     }
 
-    public static byte[] generateByteCodeForClass(DragonClassNode classNode,DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception {
+    public static byte[] generateByteCodeForClass(DragonClassNode classNode,DragonSubroutineSymbolTable subroutineSymbolTable,boolean debug) throws Exception {
+
+        if(debug){
+            System.out.println(subroutineSymbolTable.toString());
+        }
 
         ClassWriter cw = new ClassWriter(0);
 
@@ -85,7 +90,7 @@ public class JavaByteCodeGenerator {
 
         for(DragonMethodNode methodNode : classNode.methodNodeList){
             //methodNode.visit(cw,Optional.of(classNode),Optional.empty());
-            DragonMethodCodeGenerator.visitMethodNode(cw,classNode,methodNode,subroutineSymbolTable);
+            DragonMethodCodeGenerator.visitMethodNode(cw,classNode,methodNode,subroutineSymbolTable,debug);
         }
 
         cw.visitEnd();

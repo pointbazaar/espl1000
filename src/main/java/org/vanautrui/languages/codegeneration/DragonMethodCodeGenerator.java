@@ -39,7 +39,7 @@ public class DragonMethodCodeGenerator {
         return methodScopeSymbolTable;
     }
 
-    public static void visitMethodNode(ClassWriter cw, DragonClassNode classNode, DragonMethodNode methodNode, DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception {
+    public static void visitMethodNode(ClassWriter cw, DragonClassNode classNode, DragonMethodNode methodNode, DragonSubroutineSymbolTable subroutineSymbolTable,boolean debug) throws Exception {
         String owner = classNode.name.typeName.getContents();
         String descriptor = "i do not know";
         String methodName = methodNode.methodName.methodName.name.getContents();
@@ -50,8 +50,9 @@ public class DragonMethodCodeGenerator {
         //make the method scope symbol table
         DragonMethodScopeVariableSymbolTable methodScopeSymbolTable = createMethodScopeSymbolTable(methodNode,subroutineSymbolTable);
 
-        //DEBUG
-        System.out.println(methodScopeSymbolTable.toString());
+        if(debug) {
+            System.out.println(methodScopeSymbolTable.toString());
+        }
 
         //TODO: do not make this static
         //TODO: actually care about it
