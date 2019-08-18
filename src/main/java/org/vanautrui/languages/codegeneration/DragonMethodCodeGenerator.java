@@ -2,6 +2,7 @@ package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
+import org.vanautrui.languages.codegeneration.symboltables.nameconversions.TypeNameToJVMInternalTypeNameConverter;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
 import org.vanautrui.languages.codegeneration.symboltables.rows.DragonMethodScopeVariableSymbolTableRow;
@@ -10,6 +11,8 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonSta
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 import org.vanautrui.languages.typeresolution.DragonTypeResolver;
+
+import java.util.stream.Collectors;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -40,8 +43,11 @@ public class DragonMethodCodeGenerator {
     }
 
     public static void visitMethodNode(ClassWriter cw, DragonClassNode classNode, DragonMethodNode methodNode, DragonSubroutineSymbolTable subroutineSymbolTable,boolean debug) throws Exception {
+        String returnTypeName=methodNode.type.typeName.getContents();
+
+
         String owner = classNode.name.typeName.getContents();
-        String descriptor = "i do not know";
+        String descriptor = TypeNameToJVMInternalTypeNameConverter.convertSubroutineName(returnTypeName,methodNode.arguments.stream().map(arg->arg.name.name.getContents()).collect(Collectors.toList()));
         String methodName = methodNode.methodName.methodName.name.getContents();
 
         //figure it out
@@ -59,9 +65,14 @@ public class DragonMethodCodeGenerator {
         //TODO: while typechecking, it should be seen
         //that there is an entry point in the program somewhere
         {
+            //the main method
+            if(methodName.equals("main")){
+                descriptor="([Ljava/lang/String;)V";
+            }
+
             MethodVisitor mv=cw.visitMethod(ACC_PUBLIC+ACC_STATIC,
                     methodName,
-                    "([Ljava/lang/String;)V",
+                    descriptor,
                     null,
                     null);
 

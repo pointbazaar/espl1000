@@ -2,6 +2,7 @@ package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
+import org.vanautrui.languages.codegeneration.symboltables.nameconversions.TypeNameToJVMInternalTypeNameConverter;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
@@ -9,6 +10,8 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMet
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 import org.vanautrui.languages.typeresolution.DragonTypeResolver;
+
+import java.util.stream.Collectors;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -59,24 +62,38 @@ public class DragonMethodCallCodeGenerator {
                         methodDescriptor);
                 break;
             default:
+                throw new Exception("unrecognized method: '" + methodCallNode.identifierMethodName.name.getContents() + "'");
 
-                if(subroutineSymbolTable.containsVariable(methodCallNode.identifierMethodName.name.getContents())){
-                    String methodName = methodCallNode.identifierMethodName.name.getContents();
-                    String owner="";//TODO
-                    String descriptor="";//TODO
-                    mv.visitMethodInsn(INVOKESTATIC,owner,methodName,descriptor);
-
-                    //DEBUG
-                    System.out.println("found method in symbol table");
-                    throw new Exception("not implemented yet");
-                }else {
-                    throw new Exception("unrecognized method: '" + methodCallNode.identifierMethodName.name.getContents() + "'");
-                }
         }
     }
 
     public static void visitMethodCallNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonMethodCallNode methodCallNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception {
         //TODO: actually compile the stuff, not just fake
+
+        if(subroutineSymbolTable.containsVariable(methodCallNode.identifierMethodName.name.getContents())){
+            String subrType = DragonTypeResolver.getTypeMethodCallNode(methodCallNode,subroutineSymbolTable);
+
+            String methodName = methodCallNode.identifierMethodName.name.getContents();
+            String owner=classNode.name.typeName.getContents();//TODO: figure out if this is ok
+            String descriptor= TypeNameToJVMInternalTypeNameConverter.convertSubroutineName(
+                    subrType,methodCallNode.argumentList.stream().map(expressionNode -> {
+                        try {
+                            return DragonTypeResolver.getTypeExpressionNode(expressionNode,methodNode,subroutineSymbolTable);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            throw new RuntimeException(" FATAL error in DragonMethodCallCodeGenerator");
+                        }
+                    }).collect(Collectors.toList())
+            );
+            //TODO: check if it is correct
+
+            mv.visitMethodInsn(INVOKESTATIC,owner,methodName,descriptor);
+
+            //DEBUG
+            System.out.println("found method in symbol table");
+            //throw new Exception("not implemented yet");
+            return;
+        }
 
         switch (methodCallNode.identifierMethodName.name.getContents()) {
 

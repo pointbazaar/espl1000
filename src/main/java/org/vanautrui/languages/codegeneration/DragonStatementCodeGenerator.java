@@ -9,6 +9,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMet
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonIfStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonLoopStatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonReturnStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonWhileStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
@@ -61,11 +62,14 @@ public class DragonStatementCodeGenerator {
         }else if(statementNode.statementNode instanceof DragonWhileStatementNode){
             DragonWhileStatementNode whileStatementNode =(DragonWhileStatementNode)statementNode.statementNode;
             DragonWhileStatementCodeGenerator.visitWhileStatmentNode(cw,mv,classNode,methodNode,whileStatementNode,methodScopeSymbolTable,subroutineSymbolTable);
-        }else if(statementNode.statementNode instanceof DragonIfStatementNode){
-            DragonIfStatementNode ifStatementNode =(DragonIfStatementNode) statementNode.statementNode;
-            DragonIfStatementCodeGenerator.visitIfStatmentNode(cw,mv,classNode,methodNode,ifStatementNode,methodScopeSymbolTable,subroutineSymbolTable);
+        }else if(statementNode.statementNode instanceof DragonIfStatementNode) {
+            DragonIfStatementNode ifStatementNode = (DragonIfStatementNode) statementNode.statementNode;
+            DragonIfStatementCodeGenerator.visitIfStatmentNode(cw, mv, classNode, methodNode, ifStatementNode, methodScopeSymbolTable, subroutineSymbolTable);
+        }else if(statementNode.statementNode instanceof DragonReturnStatementNode){
+            DragonReturnStatementNode returnStatementNode = (DragonReturnStatementNode)statementNode.statementNode;
+            DragonReturnStatementCodeGenerator.visitReturnStatement(cw,mv,classNode,methodNode,returnStatementNode,methodScopeSymbolTable,subroutineSymbolTable);
         }else{
-            throw new Exception("unconsidered statement type");
+            throw new Exception("unconsidered statement type: "+statementNode.statementNode.getClass().getName());
         }
     }
 }

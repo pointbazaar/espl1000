@@ -45,7 +45,7 @@ public class DragonSubroutineSymbolTable implements ISymbolTable {
 
     @Override
     public String toString(){
-        
+
         // define a formatter for each column
         String[] names = this.symbolTable.getRows().stream().map(row->row.getName()).collect(Collectors.toList()).toArray(new String[]{});
         String[] types = this.symbolTable.getRows().stream().map(row->row.getType()).collect(Collectors.toList()).toArray(new String[]{});
