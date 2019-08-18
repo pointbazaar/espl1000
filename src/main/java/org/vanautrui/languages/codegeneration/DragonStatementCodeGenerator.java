@@ -15,8 +15,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonCl
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 import org.vanautrui.languages.typeresolution.DragonTypeResolver;
 
-import static org.objectweb.asm.Opcodes.ASTORE;
-import static org.objectweb.asm.Opcodes.ISTORE;
+import static org.objectweb.asm.Opcodes.*;
 import static org.vanautrui.languages.codegeneration.DragonLoopStatementCodeGenerator.visitLoopStatmentNode;
 
 public class DragonStatementCodeGenerator {
@@ -35,6 +34,13 @@ public class DragonStatementCodeGenerator {
         if(statementNode.statementNode instanceof DragonMethodCallNode){
             DragonMethodCallNode call = (DragonMethodCallNode)statementNode.statementNode;
             DragonMethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,call,methodScopeSymbolTable,subroutineSymbolTable);
+
+            //TODO: if the method was not Void, we should pop something off the stack
+            String returnType = DragonTypeResolver.getTypeMethodCallNode(call,subroutineSymbolTable);
+
+            if(!returnType.equals("Void")){
+                mv.visitInsn(POP);
+            }
         }else if(statementNode.statementNode instanceof DragonLoopStatementNode) {
             DragonLoopStatementNode loop = (DragonLoopStatementNode) statementNode.statementNode;
             visitLoopStatmentNode(cw, mv, classNode, methodNode, loop,methodScopeSymbolTable,subroutineSymbolTable);

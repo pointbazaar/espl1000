@@ -1,6 +1,7 @@
 package org.vanautrui.languages.typeresolution;
 
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonDeclaredArgumentNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonTermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonAssignmentStatementNode;
@@ -10,6 +11,9 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMe
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonIntegerConstantNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonStringConstantNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonVariableNode;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class DragonTypeResolver {
 
@@ -27,6 +31,13 @@ public class DragonTypeResolver {
 
     public static String getTypeVariableNode(DragonVariableNode variableNode, DragonMethodNode methodNode,DragonSubroutineSymbolTable subroutineSymbolTable)throws Exception{
         //TODO: implement by looking at the definitions in the AST and such
+
+        //go through the arguments of the method, maybe it is defined there
+        for(DragonDeclaredArgumentNode arg : methodNode.arguments){
+            if(arg.name.name.getContents().equals(variableNode.name.getContents())){
+                return arg.type.typeName.getContents();
+            }
+        }
 
         //go through previous statements and look for the assignment which was first made to a primitive value
         //
@@ -67,12 +78,14 @@ public class DragonTypeResolver {
     }
 
     public static String getTypeExpressionNode(DragonExpressionNode expressionNode,DragonMethodNode methodNode,DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
+        List<String> boolean_operators= Arrays.asList("<",">","<=",">=","==");
+
         if(
                 getTypeTermNode(expressionNode.term,methodNode,subroutineSymbolTable).equals("Int") &&
                         expressionNode.termNodes.size()==1 &&
                         getTypeTermNode(expressionNode.termNodes.get(0),methodNode,subroutineSymbolTable).equals("Int") &&
                         expressionNode.operatorNodes.size()==1 &&
-                        (expressionNode.operatorNodes.get(0).operator.equals("<") || expressionNode.operatorNodes.get(0).operator.equals(">"))
+                        (boolean_operators.contains(expressionNode.operatorNodes.get(0).operator))
         ){
             return "Bool";
         }

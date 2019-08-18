@@ -1,6 +1,7 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal.statements;
 
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.tokens.OperatorToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
@@ -24,7 +25,7 @@ public class DragonAssignmentStatementNode implements IDragonASTNode, IDragonSta
 
         this.variableNode=new DragonVariableNode(copy);
 
-        copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("="));
+        copy.expectAndConsumeOtherWiseThrowException(new OperatorToken("="));
 
         this.expressionNode=new DragonExpressionNode(copy);
 

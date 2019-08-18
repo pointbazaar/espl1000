@@ -1,0 +1,16 @@
+public class Faculty{
+	public Void main(){
+		
+		//6
+		x=faculty(3);
+		println(x);
+	}
+	
+	public Int faculty(Int n){
+		if(n==1){
+			return 1;
+		}else{
+			return (n*faculty(n-1));
+		}
+	}
+}

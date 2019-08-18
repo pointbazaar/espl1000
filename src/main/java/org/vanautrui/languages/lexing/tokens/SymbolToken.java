@@ -8,11 +8,13 @@ import java.awt.*;
 
 public class SymbolToken extends BasicToken implements DragonToken {
 
+    //symbol tokens are syntactic
+
     public static final String[] symbols = new String[]{
             "{", "}",
             "[", "]",
             "(", ")",
-            ",",";","="
+            ",",";"
     };
 
     public String symbol;

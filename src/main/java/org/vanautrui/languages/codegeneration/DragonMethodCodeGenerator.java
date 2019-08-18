@@ -6,6 +6,7 @@ import org.vanautrui.languages.codegeneration.symboltables.nameconversions.TypeN
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
 import org.vanautrui.languages.codegeneration.symboltables.rows.DragonMethodScopeVariableSymbolTableRow;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonDeclaredArgumentNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonAssignmentStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
@@ -20,6 +21,13 @@ public class DragonMethodCodeGenerator {
 
     private static DragonMethodScopeVariableSymbolTable createMethodScopeSymbolTable(DragonMethodNode methodNode,DragonSubroutineSymbolTable subroutineSymbolTable)throws Exception{
         DragonMethodScopeVariableSymbolTable methodScopeSymbolTable=new DragonMethodScopeVariableSymbolTable();
+
+        //first, make the local variables for the arguments
+        //TODO: figure out if this is correct
+        for(DragonDeclaredArgumentNode arg: methodNode.arguments){
+            methodScopeSymbolTable.add(new DragonMethodScopeVariableSymbolTableRow(arg.name.name.getContents(),arg.type.typeName.getContents()));
+        }
+
         for(DragonStatementNode stmt : methodNode.statements) {
 
             //TODO: also get the assignment statements recursively

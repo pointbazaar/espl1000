@@ -5,6 +5,7 @@ import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
 import org.vanautrui.languages.lexing.tokens.IntegerConstantToken;
+import org.vanautrui.languages.lexing.tokens.OperatorToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonAssignmentStatementNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonVariableNode;
@@ -17,7 +18,7 @@ public class DragonAssignmentStatementNodeTest {
         DragonTokenList tokens = new DragonTokenList();
 
         tokens.add(new IdentifierToken("x"));
-        tokens.add(new SymbolToken("="));
+        tokens.add(new OperatorToken("="));
         tokens.add(new IntegerConstantToken(4));
         tokens.add(new SymbolToken(";"));
 
@@ -30,7 +31,7 @@ public class DragonAssignmentStatementNodeTest {
         DragonTokenList tokens = new DragonTokenList();
 
         tokens.add(new IdentifierToken("x"));
-        tokens.add(new SymbolToken("="));
+        tokens.add(new OperatorToken("="));
 
         //nop refers to the no operation method. it does nothing with its argument
         tokens.add(new IdentifierToken("nop"));
@@ -50,7 +51,7 @@ public class DragonAssignmentStatementNodeTest {
         DragonTokenList tokens = new DragonTokenList();
 
         tokens.add(new IdentifierToken("x"));
-        tokens.add(new SymbolToken("="));
+        tokens.add(new OperatorToken("="));
 
         //nop refers to the no operation method. it does nothing with its argument
         tokens.add(new IdentifierToken("nop"));
