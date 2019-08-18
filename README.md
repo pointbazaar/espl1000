@@ -2,15 +2,35 @@
 
 !!Work in Progress!!
 
-This repo contains a simple, work-in-progress programming language
+This repo contains a simple, work-in-progress statically programming language
 
-- [x] done
+## Goals
+
+- [ ] type inference (type annotations should be optional)
+  - [x] simple local variable type inference by looking what value the type has that it is being assigned
+  - [x] type inference for functions and methods
+- [ ] compiles to java bytecode
+  - [x] some basic constructs compile to java bytecode
+- [ ] compiles to javascript
+- [ ] compiles to C / C++ to produce native executables to improve speed and have more control
+- [ ] functional programming
+  - [ ] functions are first-class citizens and can be passed as parameters
+  - [ ] lambda expressions
+  - [ ] common functions (haskell inspired) [map,reduce,filter,sum,zip,unzip,head,tail,init]
+- [ ] objects
+  - [ ] support for creating objects
+  - [ ] generics (Type parameters)
+  - [ ] type aliases
+- [ ] optional laziness, declare a method or function or block of statements to be lazy...
+- [ ] multithreading
+- [ ] standard library (will probably use part of java's standard library under the hood
+  - [ ] networking 
+  - [ ] math
+  - [ ] string manipulations
 
 object oriented programming, functional programming, imperative programming,
 concurrency, laziness, declarative programming, constraint based programming,
 logic programming.
-
-GOALS:
 
 it should have an easy and simple syntax, similar to java and haskell.
 
