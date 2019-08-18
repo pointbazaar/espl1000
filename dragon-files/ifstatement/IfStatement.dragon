@@ -1,0 +1,10 @@
+public class IfStatement{
+	public Void main(){
+
+		x=3;
+
+		if(x<5){
+			println("x<5");
+		}
+	}
+}

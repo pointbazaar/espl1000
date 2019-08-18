@@ -6,14 +6,15 @@ import org.vanautrui.languages.lexing.tokens.IntegerConstantToken;
 import org.vanautrui.languages.lexing.tokens.KeywordToken;
 import org.vanautrui.languages.lexing.tokens.OperatorToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonIfStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonWhileStatementNode;
 
-public class DragonWhileStatementNodeTest {
+public class DragonIfStatementNodeTest {
 
     @Test
     public void test1() throws Exception {
         DragonTokenList list = new DragonTokenList();
-        list.add(new KeywordToken("while"));
+        list.add(new KeywordToken("if"));
 
         list.add(new SymbolToken("("));
 
@@ -27,6 +28,6 @@ public class DragonWhileStatementNodeTest {
 
         list.add(new SymbolToken("}"));
 
-        DragonWhileStatementNode whileStatement = new DragonWhileStatementNode(list);
+        DragonIfStatementNode ifStatement = new DragonIfStatementNode(list);
     }
 }

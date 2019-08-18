@@ -7,27 +7,25 @@ import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.IDragonStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-public class DragonWhileStatementNode implements IDragonASTNode, IDragonStatementNode {
+public class DragonIfStatementNode implements IDragonASTNode, IDragonStatementNode {
 
     public DragonExpressionNode condition;
 
     public List<DragonStatementNode> statements=new ArrayList<>();
 
-    public DragonWhileStatementNode(DragonTokenList tokens)throws Exception{
+    public List<DragonStatementNode> elseStatements = new ArrayList<>();
+
+    public DragonIfStatementNode(DragonTokenList tokens)throws Exception{
 
         DragonTokenList copy = new DragonTokenList(tokens);
 
-        copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("while"));
+        copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("if"));
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
 
@@ -49,11 +47,32 @@ public class DragonWhileStatementNode implements IDragonASTNode, IDragonStatemen
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("}"));
 
+        //maybe there is an else
+
+        if(copy.startsWith(new KeywordToken("else"))){
+
+            copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("else"));
+
+            copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("{"));
+
+            //maybe there be some statements
+            boolean success_statements2 = true;
+            while (success_statements2) {
+                try {
+                    this.elseStatements.add(new DragonStatementNode(copy));
+                } catch (Exception e) {
+                    success_statements2 = false;
+                }
+            }
+
+            copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("}"));
+        }
+
         tokens.set(copy);
     }
 
     @Override
     public String toSourceCode() {
-        return " while ( "+this.condition.toSourceCode()+" ) { "+this.statements.stream().map(stmt->stmt.toSourceCode()).collect(Collectors.joining(" "))+" } ";
+        return " if ( "+this.condition.toSourceCode()+" ) { "+this.statements.stream().map(stmt->stmt.toSourceCode()).collect(Collectors.joining(" "))+" } ";
     }
 }

@@ -33,22 +33,12 @@ public class App {
         //https://asm.ow2.io/
         //https://asm.ow2.io/asm4-guide.pdf
 
-        for(String s : args){
-            System.out.println(" ~> "+s);
-        }
-
-        Options options = new Options();
-        CommandLineParser parser = new DefaultParser();
-
-        HelpFormatter helpFormatter = new HelpFormatter();
-
         try {
-            CommandLine cmd = parser.parse(options, args);
             dragonc.compile_main(Arrays.asList(Arrays.copyOfRange(args,0,args.length)));
         }catch (Exception e){
             System.out.println(e.getMessage());
             e.printStackTrace();
-            helpFormatter.printHelp("dragon ",options);
+
         }
     }
 

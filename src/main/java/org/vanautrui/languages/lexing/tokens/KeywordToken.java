@@ -15,7 +15,7 @@ public class KeywordToken extends BasicToken implements DragonToken {
 
             "interface","wrapper","entity","model","adapter",
 
-            "while","for","loop","do",
+            "while","for","loop","do","if","else",
 
             "return"
     };

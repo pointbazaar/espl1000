@@ -3,16 +3,9 @@ package org.vanautrui.languages.parsing.astnodes.nonterminal.statements;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IDragonASTNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonIfStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonLoopStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.IDragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonWhileStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
-
-import java.util.Optional;
-import java.util.Set;
 
 public class DragonStatementNode implements IDragonASTNode {
 
@@ -37,7 +30,11 @@ public class DragonStatementNode implements IDragonASTNode {
                 try {
                     this.statementNode = new DragonAssignmentStatementNode(copy);
                 }catch (Exception e3){
-                    this.statementNode=new DragonWhileStatementNode(copy);
+                    try {
+                        this.statementNode = new DragonWhileStatementNode(copy);
+                    }catch (Exception e){
+                        this.statementNode = new DragonIfStatementNode(copy);
+                    }
                 }
             }
         }
