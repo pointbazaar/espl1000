@@ -45,7 +45,17 @@ public class DragonTermCodeGenerator {
 
             DragonVariableNode variableNode = (DragonVariableNode) termNode.termNode;
             if (methodScopeSymbolTable.containsVariable(variableNode.name.getContents())) {
-                mv.visitIntInsn(ILOAD, methodScopeSymbolTable.getIndexOfVariable(variableNode.name.getContents()));
+                String type = methodScopeSymbolTable.getTypeOfVariable(variableNode.name.getContents());
+                switch (type) {
+                    case "Int":
+                        mv.visitIntInsn(ILOAD, methodScopeSymbolTable.getIndexOfVariable(variableNode.name.getContents()));
+                        break;
+                    case "String":
+                        mv.visitIntInsn(ALOAD,methodScopeSymbolTable.getIndexOfVariable(variableNode.name.getContents()));
+                        break;
+                    default:
+                        throw new Exception("unconsidered case in DragonTermCodeGenerator: type:"+type);
+                }
             } else {
                 throw new Exception("variable " + variableNode.name.getContents() + " not defined?");
             }
