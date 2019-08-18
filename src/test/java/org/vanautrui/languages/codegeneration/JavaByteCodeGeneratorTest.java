@@ -9,14 +9,15 @@ import org.vanautrui.languages.parsing.DragonParser;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 
+import java.io.BufferedOutputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class JavaByteCodeGeneratorTest {
 
-    public static Process compile_and_run_one_class_for_testing(String source,String classNameWithoutExtension) throws Exception{
-
+    public static Process compile_and_run_but_not_waitFor(String source,String classNameWithoutExtension) throws Exception{
         DragonTokenList tokens = (new DragonLexer()).lexCodeWithoutComments(source);
         DragonParser parser = new DragonParser();
         DragonAST ast= parser.parse(tokens);
@@ -26,6 +27,16 @@ public class JavaByteCodeGeneratorTest {
 
         Files.write(path,result);
         Process pr = Runtime.getRuntime().exec("java "+classNameWithoutExtension);
+
+        return pr;
+    }
+
+    public static Process compile_and_run_one_class_for_testing(String source,String classNameWithoutExtension) throws Exception{
+
+
+        Path path = Paths.get(classNameWithoutExtension+".class");
+
+        Process pr = compile_and_run_but_not_waitFor(source,classNameWithoutExtension);
 
         pr.waitFor();
 
@@ -120,5 +131,27 @@ public class JavaByteCodeGeneratorTest {
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("3\n",IOUtils.toString(pr.getInputStream()));
+    }
+
+    @Test
+    public void test_can_compile_input_and_output_very_basic()throws Exception{
+
+        String source="public class MainTest7 { public Void main(){ x=readln();  println(x); } }";
+        Process pr = compile_and_run_but_not_waitFor(source,"MainTest7");
+
+        //give input to process
+        OutputStream out = pr.getOutputStream();
+
+        BufferedOutputStream out2 = new BufferedOutputStream(out);
+
+        out2.write("2\n".getBytes());
+        out2.flush();
+
+        pr.waitFor();
+
+        Files.delete(Paths.get("MainTest7.class"));
+
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("2\n",IOUtils.toString(pr.getInputStream()));
     }
 }
