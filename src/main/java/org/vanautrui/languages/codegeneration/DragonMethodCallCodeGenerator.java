@@ -8,12 +8,14 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMet
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 
-import static org.objectweb.asm.Opcodes.GETSTATIC;
-import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
+import static org.objectweb.asm.Opcodes.*;
 
 public class DragonMethodCallCodeGenerator {
 
-    public static void visitMethodCallNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonMethodCallNode methodCallNode, DragonMethodScopeSymbolTable methodScopeSymbolTable) throws Exception {
+    //https://tomassetti.me/generating-bytecode/
+
+    private static void compile_printing_statement(ClassWriter cw,MethodVisitor mv,DragonClassNode classNode,DragonMethodNode methodNode,DragonMethodCallNode methodCallNode,DragonMethodScopeSymbolTable methodScopeSymbolTable)throws Exception{
+
         //TODO: actually compile the stuff, not just fake
 
         mv.visitFieldInsn(GETSTATIC,
@@ -53,11 +55,34 @@ public class DragonMethodCallCodeGenerator {
                         "print",
                         methodDescriptor);
                 break;
-            case "readln":
-                throw new Exception("readln() not implemented (DragonMethodCallGenerator)");
-                //break;
             default:
                 throw new Exception("unrecognized method "+methodCallNode.identifierMethodName.name.getContents());
+        }
+    }
+
+    public static void visitMethodCallNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonMethodCallNode methodCallNode, DragonMethodScopeSymbolTable methodScopeSymbolTable) throws Exception {
+        //TODO: actually compile the stuff, not just fake
+
+        switch (methodCallNode.identifierMethodName.name.getContents()) {
+
+            case "readln":
+                //create an instance of Scanner
+                mv.visitInsn(NEW);
+                mv.visitInsn(DUP);
+
+                //DEBUG: try to comment out stuff individually and see
+                //what happens
+
+                mv.visitFieldInsn(GETSTATIC,"java/lang/System","in","Ljava/io/InputStream;");
+                mv.visitMethodInsn(INVOKESPECIAL,"java/util/Scanner","<init>","(Ljava/io/InputStream;)V");
+
+                //call the Scanner.nextLine();
+                mv.visitMethodInsn(INVOKEVIRTUAL,"java/util/Scanner","nextLine","()Ljava/lang/String;",false);
+
+                //throw new Exception("readln() not implemented (DragonMethodCallGenerator)");
+                break;
+            default:
+                compile_printing_statement(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable);
         }
     }
 }
