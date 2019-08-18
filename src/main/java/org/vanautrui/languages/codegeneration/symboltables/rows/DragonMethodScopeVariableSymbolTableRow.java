@@ -15,7 +15,7 @@ public class DragonMethodScopeVariableSymbolTableRow implements ISymbolTableRow 
     @Override
     public String toString(){
 
-        return String.format("%8s %8s",varName,typeName);
+        return String.format("| %8s | %8s |",varName,typeName);
     }
 
 

@@ -14,7 +14,7 @@ public class DragonSubroutineSymbolTableRow implements ISymbolTableRow {
     @Override
     public String toString(){
 
-        return String.format(" %8s %8s", subRoutineName,typeName);
+        return String.format("| %8s | %8s |", subRoutineName,typeName);
     }
 
 

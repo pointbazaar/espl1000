@@ -57,7 +57,19 @@ public class DragonMethodCallCodeGenerator {
                         methodDescriptor);
                 break;
             default:
-                throw new Exception("unrecognized method "+methodCallNode.identifierMethodName.name.getContents());
+
+                if(subroutineSymbolTable.containsVariable(methodCallNode.identifierMethodName.name.getContents())){
+                    String methodName = methodCallNode.identifierMethodName.name.getContents();
+                    String owner="";//TODO
+                    String descriptor="";//TODO
+                    mv.visitMethodInsn(INVOKESTATIC,owner,methodName,descriptor);
+
+                    //DEBUG
+                    System.out.println("found method in symbol table");
+                    throw new Exception("not implemented yet");
+                }else {
+                    throw new Exception("unrecognized method: '" + methodCallNode.identifierMethodName.name.getContents() + "'");
+                }
         }
     }
 

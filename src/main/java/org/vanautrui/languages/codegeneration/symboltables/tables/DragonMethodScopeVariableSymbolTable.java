@@ -37,6 +37,12 @@ public class DragonMethodScopeVariableSymbolTable implements ISymbolTable {
 
     @Override
     public String toString(){
-        return this.symbolTable.toString();
+        StringBuilder result = new StringBuilder("METHOD SCOPE VARIABLE SYMBOL TABLE: \n");
+        result.append(String.format("| %8s | %8s |\n","name","type"));
+        for(ISymbolTableRow row : this.symbolTable.getRows()){
+            result.append(row.toString());
+            result.append("\n");
+        }
+        return result.toString();
     }
 }

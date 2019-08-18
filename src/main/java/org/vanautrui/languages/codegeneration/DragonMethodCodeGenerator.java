@@ -31,11 +31,6 @@ public class DragonMethodCodeGenerator {
                         )
                 );
             }
-
-            //DEBUG
-            System.out.println(stmt.toSourceCode());
-            System.out.println(stmt.statementNode.getClass().getName());
-            System.out.println(stmt.statementNode instanceof DragonAssignmentStatementNode);
         }
         return methodScopeSymbolTable;
     }

@@ -2,7 +2,7 @@ package org.vanautrui.languages.codegeneration.symboltables.tables;
 
 import org.vanautrui.languages.codegeneration.symboltables.rows.ISymbolTableRow;
 
-public class DragonSubroutineSymbolTable  implements ISymbolTable {
+public class DragonSubroutineSymbolTable implements ISymbolTable {
 
     private DragonBaseSymbolTable symbolTable;
 
@@ -37,6 +37,12 @@ public class DragonSubroutineSymbolTable  implements ISymbolTable {
 
     @Override
     public String toString(){
-        return this.symbolTable.toString();
+        StringBuilder result = new StringBuilder("SUBROUTINE SYMBOL TABLE: \n");
+        result.append("| name | type |\n");
+        for(ISymbolTableRow row : this.symbolTable.getRows()){
+            result.append(row.toString());
+            result.append("\n");
+        }
+        return result.toString();
     }
 }
