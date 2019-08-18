@@ -2,11 +2,11 @@
 
 !!Work in Progress!!
 
-The Dragon Programming Language.
+This repo contains a simple, work-in-progress programming language
 
-programming language (just an idea now) that aims to integrate multiple programming concepts
+- [x] done
 
-such as object oriented programming, functional programming, imperative programming,
+object oriented programming, functional programming, imperative programming,
 concurrency, laziness, declarative programming, constraint based programming,
 logic programming.
 
