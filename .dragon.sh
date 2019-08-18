@@ -2,7 +2,7 @@
 
 #executes the dragon compiler 
 
-function dragon(){
+function dragoncompiler(){
 	#echo $1
 
 	#https://www.devdungeon.com/content/taking-command-line-arguments-bash
@@ -13,7 +13,7 @@ function dragon(){
 
 function dgc(){
     #run dragon compiler
-    dragon -c "$@"
+    dragoncompiler "$@"
 }
 
 

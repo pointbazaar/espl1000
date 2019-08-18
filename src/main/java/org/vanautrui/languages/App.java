@@ -37,42 +37,19 @@ public class App {
             System.out.println(" ~> "+s);
         }
 
-        Options options = createOptions();
+        Options options = new Options();
         CommandLineParser parser = new DefaultParser();
 
         HelpFormatter helpFormatter = new HelpFormatter();
-        String[] relevant_options_for_this_phase = Arrays.copyOfRange(args,0,1);
-        //String[] relevant_options_for_later_stages = Arrays.copyOfRange(args,1,args.length);
+
         try {
-            CommandLine cmd = parser.parse(options, relevant_options_for_this_phase);
-            List<String> possible_options = Arrays.stream(cmd.getOptions()).map(opt->opt.getOpt()).collect(Collectors.toList());
-
-            List<String> relevant_options_for_later = cmd.getArgList().stream().filter(str->!possible_options.contains(str)).collect(Collectors.toList());
-            if(cmd.hasOption("c")){
-                dragonc.compile_main(Arrays.asList(Arrays.copyOfRange(args,1,args.length)));
-
-            }
+            CommandLine cmd = parser.parse(options, args);
+            dragonc.compile_main(Arrays.asList(Arrays.copyOfRange(args,0,args.length)));
         }catch (Exception e){
             System.out.println(e.getMessage());
-            //debug
             e.printStackTrace();
             helpFormatter.printHelp("dragon ",options);
-
-            //e.printStackTrace();
         }
-    }
-
-    private static Options createOptions(){
-        Option compile_flag = OptionBuilder.withDescription("use the compiler").isRequired(false).create("c");
-
-        OptionGroup flag_group = new OptionGroup();
-        flag_group.addOption(compile_flag);
-
-        flag_group.setRequired(true);
-
-        Options options = new Options();
-        options.addOptionGroup(flag_group);
-        return options;
     }
 
     private static void try_generate_some_bytecode(){
