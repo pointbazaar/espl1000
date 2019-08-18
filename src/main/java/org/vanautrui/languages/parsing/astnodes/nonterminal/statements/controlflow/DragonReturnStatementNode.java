@@ -31,7 +31,11 @@ public class DragonReturnStatementNode implements IDragonASTNode, IDragonStateme
 
         copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("return"));
 
-        this.returnValue =Optional.of(new DragonExpressionNode(copy));
+        try {
+            this.returnValue = Optional.of(new DragonExpressionNode(copy));
+        }catch (Exception e){
+            //pass
+        }
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(";"));
 
