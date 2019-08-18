@@ -70,20 +70,19 @@ public class DragonMethodCodeGenerator {
 
             mv.visitInsn(RETURN);
 
-            //TODO: find out how to compute maxStack
-            //and maxLocals
+            //TODO: find out how to compute maxStack,
+            //TODO: and maxLocals correctly
 
             int maxStack;
-            int maxLocals;
 
-            //mv.visitMaxs(maxStack,maxLocals);
-            //this apparently tells asm that we want this
-            //to be calculated automatically
-            //mv.visitMaxs(-1,-1);
+            final int maxLocals = methodScopeSymbolTable.size()+10;
 
-            //TODO: this seems to work but it should
-            //really be calculated correctly
-            mv.visitMaxs(10,10);
+            //maxLocals needs to be a bit bigger than
+            //how many local variables we have, since it apparently
+            //also has to be big enough to hold any arguments to methods
+            //we might put on the stack
+
+            mv.visitMaxs(10,maxLocals);
             mv.visitEnd();
         }
     }

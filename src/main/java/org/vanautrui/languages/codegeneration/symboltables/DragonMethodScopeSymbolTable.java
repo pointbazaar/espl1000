@@ -43,4 +43,8 @@ public class DragonMethodScopeSymbolTable {
     public String getTypeOfVariable(String varName) {
         return symbolTable.stream().filter(e->e.varName.equals(varName)).collect(Collectors.toList()).get(0).typeName;
     }
+
+    public int size() {
+        return this.symbolTable.size();
+    }
 }

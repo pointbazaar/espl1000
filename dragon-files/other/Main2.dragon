@@ -1,0 +1,7 @@
+public class Main2{
+
+	public Void main(){
+		
+		println("Hello World!");
+	}
+}

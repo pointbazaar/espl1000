@@ -33,7 +33,6 @@ public class JavaByteCodeGeneratorTest {
 
     public static Process compile_and_run_one_class_for_testing(String source,String classNameWithoutExtension) throws Exception{
 
-
         Path path = Paths.get(classNameWithoutExtension+".class");
 
         Process pr = compile_and_run_but_not_waitFor(source,classNameWithoutExtension);
@@ -48,35 +47,21 @@ public class JavaByteCodeGeneratorTest {
 
     @Test
     public void test_can_compile_simple_helloworld()throws Exception{
-        String source="public class MainTest1 { public Void main(){ println(\"Hello World!\"); }}";
-        DragonTokenList tokens = (new DragonLexer()).lexCodeWithoutComments(source);
+        String source="public class MainTest100 { public Void main(){ println(\"Hello World!\"); }}";
 
-        DragonParser parser = new DragonParser();
-        DragonAST ast= parser.parse(tokens);
-
-        byte[] result = JavaByteCodeGenerator.generateByteCodeForClass(ast.classNodeList.toArray(new DragonClassNode[]{})[0]);
-        Path path = Paths.get("MainTest1.class");
-
-        Files.write(path,result);
-
-        //TODO: execute that bytecode and assert the result
-        Process pr = Runtime.getRuntime().exec("java MainTest1");
-
-        pr.waitFor();
+        Process pr = compile_and_run_one_class_for_testing(source,"MainTest100");
 
         Assert.assertEquals(0,pr.exitValue());
 
         String output = IOUtils.toString(pr.getInputStream());
-
-        Files.delete(path);
 
         Assert.assertEquals("Hello World!\n",output);
     }
 
     @Test
     public void test_can_compile_loop_statements()throws Exception{
-        String source="public class MainTest2 { public Void main(){ loop 4 { print(\"1\"); } } }";
-        Process pr = compile_and_run_one_class_for_testing(source,"MainTest2");
+        String source="public class MainTest22 { public Void main(){ loop 4 { print(\"1\"); } } }";
+        Process pr = compile_and_run_one_class_for_testing(source,"MainTest22");
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("1111",IOUtils.toString(pr.getInputStream()));
