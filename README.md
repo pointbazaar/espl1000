@@ -27,6 +27,14 @@ This repo contains a simple, work-in-progress statically programming language
   - [ ] networking 
   - [ ] math
   - [ ] string manipulations
+  
+  - support for functional style
+- support for object oriented style
+- pattern matching
+- guards 
+- program verification
+- strong type system
+- compile to java bytecode and be able to call java code and be called from java code.
 
 object oriented programming, functional programming, imperative programming,
 concurrency, laziness, declarative programming, constraint based programming,
@@ -71,19 +79,7 @@ and business(typical business web applications, file processing) but also resear
 this should make it a practical language. goal is the ability to transfer thought into code with less code,
 and enable programmer to solve tasks in new ways and think outside the box
 
-
 [1,2,3,3].map(\x->x+1)
 
 map (\x->x+1) [1,2,3,3]
 
-ideas for future features:
-
-- support for functional style
-- support for object oriented style
-- pattern matching
-- guards 
-- program verification
-- strong type system
-- compile down to c and then let gcc take care of the rest
-- write interpreter first, probably in java
-- compile to java bytecode and be able to call java code and be called from java code.
