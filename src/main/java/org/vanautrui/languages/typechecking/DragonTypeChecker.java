@@ -8,6 +8,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonAss
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonIfStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonLoopStatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonReturnStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonWhileStatementNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
@@ -16,6 +17,8 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonCl
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 public class DragonTypeChecker {
@@ -96,11 +99,30 @@ public class DragonTypeChecker {
         }else if(statementNode.statementNode instanceof DragonMethodCallNode) {
             DragonMethodCallNode methodCallNode = (DragonMethodCallNode) statementNode.statementNode;
             typeCheckMethodCallNode(asts, classNode, methodNode, methodCallNode);
-        }else if(statementNode.statementNode instanceof DragonIfStatementNode){
-            DragonIfStatementNode ifStatementNode = (DragonIfStatementNode)statementNode.statementNode;
-            typeCheckIfStatementNode(asts,classNode,methodNode,ifStatementNode);
+        }else if(statementNode.statementNode instanceof DragonIfStatementNode) {
+            DragonIfStatementNode ifStatementNode = (DragonIfStatementNode) statementNode.statementNode;
+            typeCheckIfStatementNode(asts, classNode, methodNode, ifStatementNode);
+        }else if(statementNode.statementNode instanceof DragonReturnStatementNode){
+            DragonReturnStatementNode returnStatementNode = (DragonReturnStatementNode)statementNode.statementNode;
+            typeCheckReturnStatementNode(asts,classNode,methodNode,returnStatementNode);
         }else{
             throw new Exception("unconsidered case in typechecking ");
+        }
+    }
+
+    private void typeCheckReturnStatementNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonReturnStatementNode returnStatementNode) throws Exception{
+        //well the type of the value returned should be the same as the method return type
+        //in case of void there should be no value returned
+        if(methodNode.type.typeName.getContents().equals("Void")){
+            if(returnStatementNode.returnValue.isPresent()){
+                throw new Exception(" Type Checking Failed. do not return a value from a Void method. "+returnStatementNode.returnValue.get().toSourceCode());
+            }
+        }else{
+            if(
+                !(returnStatementNode.returnValue.get().getType(methodNode).equals(methodNode.type.typeName.getContents()))
+            ){
+                throw new Exception(" return type has to equal the method type");
+            }
         }
     }
 
@@ -266,7 +288,9 @@ public class DragonTypeChecker {
             }
         }
 
-        if(typeIdentifierNode.typeName.getContents().equals("Void")){
+        List<String> acceptable_types = Arrays.asList("Void","Int","Bool","String");
+
+        if(acceptable_types.contains(typeIdentifierNode.typeName.getContents())){
             return;
         }
 

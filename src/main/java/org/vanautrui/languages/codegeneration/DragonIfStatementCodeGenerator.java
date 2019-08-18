@@ -3,7 +3,8 @@ package org.vanautrui.languages.codegeneration;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.symboltables.DragonMethodScopeSymbolTable;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonIfStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
@@ -14,7 +15,7 @@ import static org.objectweb.asm.Opcodes.IFEQ;
 
 public class DragonIfStatementCodeGenerator {
 
-    public static void visitIfStatmentNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonIfStatementNode ifStatementNode, DragonMethodScopeSymbolTable methodScopeSymbolTable) throws Exception{
+    public static void visitIfStatmentNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonIfStatementNode ifStatementNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable, DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
         //https://asm.ow2.io/asm4-guide.pdf
         //https://en.wikipedia.org/wiki/Java_bytecode_instruction_listings
 
@@ -42,11 +43,11 @@ public class DragonIfStatementCodeGenerator {
 
         mv.visitLabel(startLabel);
 
-        DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,ifStatementNode.condition,methodScopeSymbolTable);
+        DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,ifStatementNode.condition,methodScopeSymbolTable,subroutineSymbolTable);
         mv.visitJumpInsn(IFEQ,labelElse);
 
         for(DragonStatementNode stmt : ifStatementNode.statements) {
-            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt,methodScopeSymbolTable);
+            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable, methodScopeSymbolTable);
         }
 
         mv.visitJumpInsn(GOTO,endLabel);
@@ -56,7 +57,7 @@ public class DragonIfStatementCodeGenerator {
         mv.visitLabel(labelElse);
 
         for(DragonStatementNode stmt : ifStatementNode.elseStatements) {
-            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt,methodScopeSymbolTable);
+            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable, methodScopeSymbolTable);
         }
 
         mv.visitJumpInsn(GOTO,endLabel);

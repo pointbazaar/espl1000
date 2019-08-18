@@ -1,0 +1,11 @@
+public class MethodCall{
+	public Void main(){
+
+		x=subroutine();
+		println(x);
+	}
+
+	public String subroutine(){
+		return "hello subroutine";
+	}
+}

@@ -2,7 +2,8 @@ package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.symboltables.DragonMethodScopeSymbolTable;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonTermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
@@ -12,7 +13,8 @@ import org.vanautrui.languages.parsing.astnodes.terminal.DragonIntegerConstantNo
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonStringConstantNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonVariableNode;
 
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ALOAD;
+import static org.objectweb.asm.Opcodes.ILOAD;
 import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.pushIntegerConstant;
 
 public class DragonTermCodeGenerator {
@@ -23,7 +25,8 @@ public class DragonTermCodeGenerator {
             DragonClassNode classNode,
             DragonMethodNode methodNode,
             DragonTermNode termNode,
-            DragonMethodScopeSymbolTable methodScopeSymbolTable
+            DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
+            DragonSubroutineSymbolTable subroutineSymbolTable
     ) throws Exception {
 
         if(termNode.termNode instanceof DragonIntegerConstantNode){
@@ -35,10 +38,10 @@ public class DragonTermCodeGenerator {
         }else if(termNode.termNode instanceof DragonStringConstantNode){
             DragonStringConstantNode stringConstantNode = (DragonStringConstantNode)termNode.termNode;
             //push the string on the stack
-            DragonStringConstantCodeGenerator.visitStringConstant(cw,mv,classNode,methodNode,stringConstantNode,methodScopeSymbolTable);
+            DragonStringConstantCodeGenerator.visitStringConstant(mv,stringConstantNode);
         }else if(termNode.termNode instanceof DragonExpressionNode) {
             DragonExpressionNode dragonExpressionNode = (DragonExpressionNode)termNode.termNode;
-            DragonExpressionCodeGenerator.visitExpression(cw, mv, classNode, methodNode, dragonExpressionNode, methodScopeSymbolTable);
+            DragonExpressionCodeGenerator.visitExpression(cw, mv, classNode, methodNode, dragonExpressionNode, methodScopeSymbolTable,subroutineSymbolTable);
         }else if(termNode.termNode instanceof DragonVariableNode) {
 
             //TODO: find the local variable index and push it onto the stack
@@ -62,7 +65,7 @@ public class DragonTermCodeGenerator {
         }else if(termNode.termNode instanceof DragonMethodCallNode){
             DragonMethodCallNode methodCallNode = (DragonMethodCallNode)termNode.termNode;
 
-            DragonMethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable);
+            DragonMethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable,subroutineSymbolTable);
         }else{
             throw new Exception("unhandled case in DragonTermCodeGenerator.java");
         }

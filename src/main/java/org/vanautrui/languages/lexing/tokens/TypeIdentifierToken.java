@@ -10,8 +10,7 @@ import java.util.regex.Pattern;
 
 public class TypeIdentifierToken extends BasicToken implements DragonToken {
 
-    //it should start with a lowercase letter,
-    //to differentiate between variables, subroutines, and types
+    //a Type name should start with a Uppercase letter,
     public static final String regex_alphanumeric_type_identifier = "^[A-Z][a-zA-Z0-9_]*";
 
     public static final int MAX_IDENTIFIER_LENGTH = 100;

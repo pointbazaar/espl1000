@@ -2,7 +2,8 @@ package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.symboltables.DragonMethodScopeSymbolTable;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
@@ -14,7 +15,7 @@ public class DragonMethodCallCodeGenerator {
 
     //https://tomassetti.me/generating-bytecode/
 
-    private static void compile_printing_statement(ClassWriter cw,MethodVisitor mv,DragonClassNode classNode,DragonMethodNode methodNode,DragonMethodCallNode methodCallNode,DragonMethodScopeSymbolTable methodScopeSymbolTable)throws Exception{
+    private static void compile_printing_statement(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonMethodCallNode methodCallNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable, DragonSubroutineSymbolTable subroutineSymbolTable)throws Exception{
 
         //TODO: actually compile the stuff, not just fake
 
@@ -35,7 +36,7 @@ public class DragonMethodCallCodeGenerator {
                     //set the  descriptor to the signature which accepts int
                     methodDescriptor="(I)V";
                 }
-                DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,expressionNode,methodScopeSymbolTable);
+                DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,expressionNode,methodScopeSymbolTable,subroutineSymbolTable);
             }
             //DragonStringConstantCodeGenerator.visitStringConstant(cw,mv,classNode,methodNode,methodCallNode.argumentList.get(0),methodScopeSymbolTable);
         }else{
@@ -60,7 +61,7 @@ public class DragonMethodCallCodeGenerator {
         }
     }
 
-    public static void visitMethodCallNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonMethodCallNode methodCallNode, DragonMethodScopeSymbolTable methodScopeSymbolTable) throws Exception {
+    public static void visitMethodCallNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonMethodCallNode methodCallNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception {
         //TODO: actually compile the stuff, not just fake
 
         switch (methodCallNode.identifierMethodName.name.getContents()) {
@@ -91,7 +92,7 @@ public class DragonMethodCallCodeGenerator {
                 //throw new Exception("readln() not implemented (DragonMethodCallGenerator)");
                 break;
             default:
-                compile_printing_statement(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable);
+                compile_printing_statement(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable,subroutineSymbolTable);
         }
     }
 }

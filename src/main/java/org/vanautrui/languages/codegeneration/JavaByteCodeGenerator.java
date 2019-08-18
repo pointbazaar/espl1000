@@ -1,17 +1,12 @@
 package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.symboltables.DragonMethodScopeSymbolTable;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonAssignmentStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonLoopStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
+import org.vanautrui.languages.codegeneration.symboltables.rows.DragonSubroutineSymbolTableRow;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassFieldNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonIntegerConstantNode;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -76,14 +71,31 @@ public class JavaByteCodeGenerator {
             visitClassFieldNode(cw,classNode,fieldNode);
         }
 
+        //first create the subroutine symbol table,
+        //so each method knows which methods it can call
+        //TODO: do this previous to compilation for all
+        //classes since a method can call methods from another class
+
+        DragonSubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
+
         for(DragonMethodNode methodNode : classNode.methodNodeList){
             //methodNode.visit(cw,Optional.of(classNode),Optional.empty());
-            DragonMethodCodeGenerator.visitMethodNode(cw,classNode,methodNode);
+            DragonMethodCodeGenerator.visitMethodNode(cw,classNode,methodNode,subroutineSymbolTable);
         }
 
         cw.visitEnd();
 
         return cw.toByteArray();
+    }
+
+    private static DragonSubroutineSymbolTable createSubroutineSymbolTable(DragonClassNode classNode){
+        DragonSubroutineSymbolTable subroutineSymbolTable = new DragonSubroutineSymbolTable();
+
+        for(DragonMethodNode methodNode : classNode.methodNodeList){
+            DragonSubroutineSymbolTableRow subrRow = new DragonSubroutineSymbolTableRow(methodNode.methodName.methodName.name.getContents(),methodNode.type.typeName.getContents());
+            subroutineSymbolTable.add(subrRow);
+        }
+        return subroutineSymbolTable;
     }
 
     public static void pushIntegerConstant(int n, MethodVisitor mv){

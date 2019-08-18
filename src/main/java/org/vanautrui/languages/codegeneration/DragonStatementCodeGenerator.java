@@ -2,8 +2,8 @@ package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-
-import org.vanautrui.languages.codegeneration.symboltables.DragonMethodScopeSymbolTable;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonAssignmentStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
@@ -13,7 +13,8 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlfl
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ASTORE;
+import static org.objectweb.asm.Opcodes.ISTORE;
 import static org.vanautrui.languages.codegeneration.DragonLoopStatementCodeGenerator.visitLoopStatmentNode;
 
 public class DragonStatementCodeGenerator {
@@ -24,17 +25,17 @@ public class DragonStatementCodeGenerator {
             DragonClassNode classNode,
             DragonMethodNode methodNode,
             DragonStatementNode statementNode,
-            DragonMethodScopeSymbolTable methodScopeSymbolTable
+            DragonSubroutineSymbolTable subroutineSymbolTable, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable
     ) throws Exception {
 
         //TODO: consider other statement types and such
         //statementNode.methodCallNode.visit(mv,classNode,methodNode);
         if(statementNode.statementNode instanceof DragonMethodCallNode){
             DragonMethodCallNode call = (DragonMethodCallNode)statementNode.statementNode;
-            DragonMethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,call,methodScopeSymbolTable);
+            DragonMethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,call,methodScopeSymbolTable,subroutineSymbolTable);
         }else if(statementNode.statementNode instanceof DragonLoopStatementNode) {
             DragonLoopStatementNode loop = (DragonLoopStatementNode) statementNode.statementNode;
-            visitLoopStatmentNode(cw, mv, classNode, methodNode, loop,methodScopeSymbolTable);
+            visitLoopStatmentNode(cw, mv, classNode, methodNode, loop,methodScopeSymbolTable,subroutineSymbolTable);
         }else if(statementNode.statementNode instanceof DragonAssignmentStatementNode) {
 
             DragonAssignmentStatementNode assignmentStatementNode = (DragonAssignmentStatementNode) statementNode.statementNode;
@@ -43,7 +44,7 @@ public class DragonStatementCodeGenerator {
 
             //evaluate the expression and store the result in the local variable
             DragonExpressionCodeGenerator
-                    .visitExpression(cw, mv, classNode, methodNode, assignmentStatementNode.expressionNode, methodScopeSymbolTable);
+                    .visitExpression(cw, mv, classNode, methodNode, assignmentStatementNode.expressionNode, methodScopeSymbolTable,subroutineSymbolTable);
 
             switch(assignmentStatementNode.expressionNode.getType(methodNode)){
                 case "Int":
@@ -57,10 +58,10 @@ public class DragonStatementCodeGenerator {
             }
         }else if(statementNode.statementNode instanceof DragonWhileStatementNode){
             DragonWhileStatementNode whileStatementNode =(DragonWhileStatementNode)statementNode.statementNode;
-            DragonWhileStatementCodeGenerator.visitWhileStatmentNode(cw,mv,classNode,methodNode,whileStatementNode,methodScopeSymbolTable);
+            DragonWhileStatementCodeGenerator.visitWhileStatmentNode(cw,mv,classNode,methodNode,whileStatementNode,methodScopeSymbolTable,subroutineSymbolTable);
         }else if(statementNode.statementNode instanceof DragonIfStatementNode){
             DragonIfStatementNode ifStatementNode =(DragonIfStatementNode) statementNode.statementNode;
-            DragonIfStatementCodeGenerator.visitIfStatmentNode(cw,mv,classNode,methodNode,ifStatementNode,methodScopeSymbolTable);
+            DragonIfStatementCodeGenerator.visitIfStatmentNode(cw,mv,classNode,methodNode,ifStatementNode,methodScopeSymbolTable,subroutineSymbolTable);
         }else{
             throw new Exception("unconsidered statement type");
         }

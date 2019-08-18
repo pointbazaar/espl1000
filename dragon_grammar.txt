@@ -44,12 +44,12 @@ method ::= accessmodifier methodName '::' (Type smallarrow)* Type '{' statement*
 
 smallarrow ::= '->'
 
-returnType ::= 'void' | Type
+returnType ::= 'Void' | Type
 
 declaredArgument ::= Type identifier
 
 //some of these have the semicolon themselves,
-statement ::= ( methodCall ';' | whileStatement | ifStatement | returnStatement ';' | assignmentStatement )
+statement ::= ( methodCall ';' | whileStatement | ifStatement | returnStatement | assignmentStatement )
 
 methodCall ::= methodName '(' (expression (, expression)*)?  ')'
 
@@ -57,7 +57,7 @@ whileStatement ::= 'while' '(' expression ')' '{' statement* '}'
 
 ifStatement ::= 'if' '(' expression ')' '{' statement* '}' ( 'else' '{' statement* '}' )?
 
-returnStatement ::= 'return' expression ';'
+returnStatement ::= 'return' expression? ';'
 
 assignmentStatement ::= variable ('<-' | '=') expression ';'
 

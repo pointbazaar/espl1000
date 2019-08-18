@@ -3,7 +3,8 @@ package org.vanautrui.languages.codegeneration;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.symboltables.DragonMethodScopeSymbolTable;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonLoopStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
@@ -21,7 +22,8 @@ public class DragonLoopStatementCodeGenerator {
             DragonClassNode classNode,
             DragonMethodNode methodNode,
             DragonLoopStatementNode loop,
-            DragonMethodScopeSymbolTable methodScopeSymbolTable
+            DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
+            DragonSubroutineSymbolTable subroutineSymbolTable
     ) throws Exception {
         //https://asm.ow2.io/asm4-guide.pdf
         //https://en.wikipedia.org/wiki/Java_bytecode_instruction_listings
@@ -56,7 +58,7 @@ public class DragonLoopStatementCodeGenerator {
 
         //write the code for the statements
         for(DragonStatementNode stmt : loop.statements){
-            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt,methodScopeSymbolTable);
+            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable,methodScopeSymbolTable);
         }
 
         //decrement the loop counter : count--;

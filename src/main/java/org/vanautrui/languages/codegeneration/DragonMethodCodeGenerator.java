@@ -2,7 +2,9 @@ package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.symboltables.DragonMethodScopeSymbolTable;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
+import org.vanautrui.languages.codegeneration.symboltables.rows.DragonMethodScopeVariableSymbolTableRow;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonAssignmentStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
@@ -12,8 +14,8 @@ import static org.objectweb.asm.Opcodes.*;
 
 public class DragonMethodCodeGenerator {
 
-    private static DragonMethodScopeSymbolTable createMethodScopeSymbolTable(DragonMethodNode methodNode)throws Exception{
-        DragonMethodScopeSymbolTable methodScopeSymbolTable=new DragonMethodScopeSymbolTable();
+    private static DragonMethodScopeVariableSymbolTable createMethodScopeSymbolTable(DragonMethodNode methodNode)throws Exception{
+        DragonMethodScopeVariableSymbolTable methodScopeSymbolTable=new DragonMethodScopeVariableSymbolTable();
         for(DragonStatementNode stmt : methodNode.statements) {
 
             //TODO: also get the assignment statements recursively
@@ -22,7 +24,12 @@ public class DragonMethodCodeGenerator {
 
             if(stmt.statementNode instanceof DragonAssignmentStatementNode) {
                 DragonAssignmentStatementNode assignmentStatementNode = (DragonAssignmentStatementNode)stmt.statementNode;
-                methodScopeSymbolTable.add(assignmentStatementNode.variableNode.name.getContents(),assignmentStatementNode.expressionNode.getType(methodNode));
+                methodScopeSymbolTable.add(
+                        new DragonMethodScopeVariableSymbolTableRow(
+                                assignmentStatementNode.variableNode.name.getContents(),
+                                assignmentStatementNode.expressionNode.getType(methodNode)
+                        )
+                );
             }
 
             //DEBUG
@@ -33,7 +40,7 @@ public class DragonMethodCodeGenerator {
         return methodScopeSymbolTable;
     }
 
-    public static void visitMethodNode(ClassWriter cw, DragonClassNode classNode, DragonMethodNode methodNode) throws Exception {
+    public static void visitMethodNode(ClassWriter cw, DragonClassNode classNode, DragonMethodNode methodNode, DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception {
         String owner = classNode.name.typeName.getContents();
         String descriptor = "i do not know";
         String methodName = methodNode.methodName.methodName.name.getContents();
@@ -42,9 +49,7 @@ public class DragonMethodCodeGenerator {
         //cw.newMethod(owner,this.methodName.methodName.name.getContents(),descriptor,false);
 
         //make the method scope symbol table
-        DragonMethodScopeSymbolTable methodScopeSymbolTable = createMethodScopeSymbolTable(methodNode);
-
-
+        DragonMethodScopeVariableSymbolTable methodScopeSymbolTable = createMethodScopeSymbolTable(methodNode);
 
         //DEBUG
         System.out.println(methodScopeSymbolTable.toString());
@@ -65,7 +70,7 @@ public class DragonMethodCodeGenerator {
 
             //stmt->stmt.visit(mv,Optional.of(classNode),Optional.of(methodNode))
             for (DragonStatementNode stmt : methodNode.statements) {
-                DragonStatementCodeGenerator.visitStatement(cw, mv, classNode, methodNode, stmt,methodScopeSymbolTable);
+                DragonStatementCodeGenerator.visitStatement(cw, mv, classNode, methodNode, stmt,subroutineSymbolTable,methodScopeSymbolTable);
             }
 
             mv.visitInsn(RETURN);

@@ -5,6 +5,7 @@ import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonIfStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonLoopStatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonReturnStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonWhileStatementNode;
 
 public class DragonStatementNode implements IDragonASTNode {
@@ -32,8 +33,12 @@ public class DragonStatementNode implements IDragonASTNode {
                 }catch (Exception e3){
                     try {
                         this.statementNode = new DragonWhileStatementNode(copy);
-                    }catch (Exception e){
-                        this.statementNode = new DragonIfStatementNode(copy);
+                    }catch (Exception e4){
+                        try {
+                            this.statementNode = new DragonIfStatementNode(copy);
+                        }catch (Exception e5){
+                            this.statementNode = new DragonReturnStatementNode(copy);
+                        }
                     }
                 }
             }

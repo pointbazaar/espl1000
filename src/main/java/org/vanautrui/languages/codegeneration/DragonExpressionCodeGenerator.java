@@ -2,18 +2,13 @@ package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.symboltables.DragonMethodScopeSymbolTable;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
+import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonOperatorNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonTermNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonAssignmentStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonLoopStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
-
-import static org.objectweb.asm.Opcodes.ISTORE;
 
 public class DragonExpressionCodeGenerator {
 
@@ -23,17 +18,18 @@ public class DragonExpressionCodeGenerator {
             DragonClassNode classNode,
             DragonMethodNode methodNode,
             DragonExpressionNode expressionNode,
-            DragonMethodScopeSymbolTable methodScopeSymbolTable
+            DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
+            DragonSubroutineSymbolTable subroutineSymbolTable
     ) throws Exception {
 
         //evaluate the expression
-        DragonTermCodeGenerator.visitTerm(cw,mv,classNode,methodNode,expressionNode.term,methodScopeSymbolTable);
+        DragonTermCodeGenerator.visitTerm(cw,mv,classNode,methodNode,expressionNode.term,methodScopeSymbolTable,subroutineSymbolTable);
 
         for(int i=0;i<expressionNode.termNodes.size();i++){
 
             DragonTermNode myterm=expressionNode.termNodes.get(i);
 
-            DragonTermCodeGenerator.visitTerm(cw,mv,classNode,methodNode,myterm,methodScopeSymbolTable);
+            DragonTermCodeGenerator.visitTerm(cw,mv,classNode,methodNode,myterm,methodScopeSymbolTable,subroutineSymbolTable);
 
             DragonOperatorNode myop=expressionNode.operatorNodes.get(i);
 
