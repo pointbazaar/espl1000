@@ -14,7 +14,13 @@ public class OperatorToken extends BasicToken implements DragonToken {
     //the 2 char operators should be considered first
 
     public static final String[] operator_symbols_2_chars_or_more = new String[]{
-            ">>","<<","++","--","-=","+=","*=","/=","==","!=","::","->","~>","<-","<~","-->","<--"
+            ">>","<<",
+            "++","--",
+            "-=","+=","*=","/=",
+            "==","!=",
+            "::",
+            "->","~>","<-","<~","-->","<--",
+            "<=",">="
     };
 
     public static final String[] operator_symbols = new String[]{

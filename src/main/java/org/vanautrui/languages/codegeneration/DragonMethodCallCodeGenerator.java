@@ -98,7 +98,9 @@ public class DragonMethodCallCodeGenerator {
             mv.visitMethodInsn(INVOKESTATIC,owner,methodName,descriptor);
 
             //DEBUG
-            System.out.println("found method in symbol table");
+            if(debug) {
+                System.out.println("found method in symbol table");
+            }
         }else {
 
             switch (methodCallNode.identifierMethodName.name.getContents()) {

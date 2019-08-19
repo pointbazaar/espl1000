@@ -1,0 +1,16 @@
+public class Fibonacci{
+
+	public Void main(){
+		x=100;
+		println(fibonacci(x));
+	}
+
+	public Int fibonacci(Int n){
+		
+		if(n<2){
+			return 1;
+		}else{
+			return (fibonacci(n-1)+fibonacci(n-2));
+		}
+	}
+}
