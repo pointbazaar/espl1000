@@ -16,6 +16,7 @@ import org.vanautrui.languages.phase_clean_the_input.DragonCommentRemover;
 import org.vanautrui.languages.typechecking.DragonTypeChecker;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
@@ -104,24 +105,53 @@ public class DragonCompilerPhases {
         }
     }
 
+    private static Path makeCleanPhaseCacheFilePathFromHash(int hash){
+        final String extension = ".dragon.cleaned";
+        //hidden file. important, so that it does not be visible and bother people
+        return Paths.get(phase_clean_cache_dir+"."+hash+extension);
+    }
+
+    private static final String phase_clean_cache_dir=System.getProperty("user.home")+"/dragoncache/clean/";
+
     public static String phase_clean(String source, boolean debug)throws Exception{
         printBeginPhase("CLEAN");
         //(remove comments, empty lines, excess whitespace)
 
-        //TerminalUtil.printlnRed("PHASE: REMOVE COMMENTS AND EMPTY LINES");
+        if(!Files.exists(Paths.get(phase_clean_cache_dir))){
+            Files.createDirectories(Paths.get(phase_clean_cache_dir));
+        }
 
-        String codeWithoutCommentsAndWithoutEmptyLines = (new DragonCommentRemover()).strip_all_comments_and_empty_lines(source);
 
-        //maybe phase to remove unneccessary whitespace?
-        //TerminalUtil.printlnRed("PHASE: REMOVE UNNECCESSARY WHITESPACE");
+        int hash = source.hashCode();
+        System.out.println("phase clean: Hashcode of source string: "+hash);
+        boolean foundCachedCleanedFile = false;
 
-        String codeWithoutCommentsWithoutUnneccesaryWhitespace =
-                remove_unneccessary_whitespace(codeWithoutCommentsAndWithoutEmptyLines);
+        if(Files.exists(makeCleanPhaseCacheFilePathFromHash(hash))){
+            foundCachedCleanedFile=true;
+        }
+
+        String codeWithoutCommentsWithoutUnneccesaryWhitespace;
+
+        if(foundCachedCleanedFile){
+            System.out.println("found a cached version that is already cleaned");
+            codeWithoutCommentsWithoutUnneccesaryWhitespace = new String(Files.readAllBytes(makeCleanPhaseCacheFilePathFromHash(hash)));
+        }else {
+
+            String codeWithoutCommentsAndWithoutEmptyLines = (new DragonCommentRemover()).strip_all_comments_and_empty_lines(source);
+
+            codeWithoutCommentsWithoutUnneccesaryWhitespace =
+                    remove_unneccessary_whitespace(codeWithoutCommentsAndWithoutEmptyLines);
+
+            //write file for caching
+            Files.write(makeCleanPhaseCacheFilePathFromHash(hash),codeWithoutCommentsWithoutUnneccesaryWhitespace.getBytes());
+        }
+
+
 
         TerminalUtil.println("✓", Ansi.Color.GREEN);
 
         if(debug) {
-            System.out.println(codeWithoutCommentsAndWithoutEmptyLines);
+            //System.out.println(codeWithoutCommentsAndWithoutEmptyLines);
             System.out.println(codeWithoutCommentsWithoutUnneccesaryWhitespace);
         }
 

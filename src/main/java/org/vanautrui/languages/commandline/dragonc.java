@@ -23,6 +23,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.lang.System.currentTimeMillis;
 import static org.objectweb.asm.Opcodes.*;
 import static org.objectweb.asm.Opcodes.RETURN;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printDuration;
@@ -132,12 +133,13 @@ public class dragonc {
             return;
         }
 
+        boolean debug=cmd.hasOption("debug");
+        boolean timed=cmd.hasOption("timed");
+
+        long start_time_ms = currentTimeMillis();
+
         //TODO: expand functionality to directories and multiple files
         try {
-            boolean debug=cmd.hasOption("debug");
-            boolean timed=cmd.hasOption("timed");
-
-            long start_time_ms = System.currentTimeMillis();
 
             String sourceCode = new String(Files.readAllBytes(sourceFilePath));
 
@@ -147,11 +149,11 @@ public class dragonc {
 
             long start,end;
 
-            start = System.currentTimeMillis();
+            start = currentTimeMillis();
             //PHASE CLEAN
             String codeWithoutCommentsWithoutUnneccesaryWhitespace
                     = phase_clean(sourceCode,debug);
-            end=System.currentTimeMillis();
+            end= currentTimeMillis();
             if(timed) {
                 printDuration(start, end);
             }
@@ -167,39 +169,39 @@ public class dragonc {
                         =codeWithoutCommentsWithoutUnneccesaryWhitespace;
             }
 
-            start=System.currentTimeMillis();
+            start= currentTimeMillis();
             //PHASE LEXING
             DragonTokenList tokens = phase_lexing(just_code_with_braces_without_comments_without_newlines,debug);
-            end=System.currentTimeMillis();
+            end= currentTimeMillis();
             if(timed){
                 printDuration(start,end);
             }
 
-            start=System.currentTimeMillis();
+            start= currentTimeMillis();
             //PHASE PARSING
             Set<DragonAST> asts = phase_parsing(tokens,debug);
-            end=System.currentTimeMillis();
+            end= currentTimeMillis();
             if(timed){
                 printDuration(start,end);
             }
 
-            start=System.currentTimeMillis();
+            start= currentTimeMillis();
             //PHASE TYPE CHECKING
             phase_typecheck(asts,debug);
-            end = System.currentTimeMillis();
+            end = currentTimeMillis();
             if(timed){
                 printDuration(start,end);
             }
 
-            start = System.currentTimeMillis();
+            start = currentTimeMillis();
             //PHASE CODE GENERATION
             phase_codegeneration(asts,debug);
-            end=System.currentTimeMillis();
+            end= currentTimeMillis();
             if(timed){
                 printDuration(start,end);
             }
 
-            long end_time_ms = System.currentTimeMillis();
+            long end_time_ms = currentTimeMillis();
             long duration = end_time_ms-start_time_ms;
 
             //https://www.utf8icons.com/
