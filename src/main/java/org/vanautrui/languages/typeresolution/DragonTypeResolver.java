@@ -78,7 +78,7 @@ public class DragonTypeResolver {
     }
 
     public static String getTypeExpressionNode(DragonExpressionNode expressionNode,DragonMethodNode methodNode,DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
-        List<String> boolean_operators= Arrays.asList("<",">","<=",">=","==");
+        List<String> boolean_operators= Arrays.asList("<",">","<=",">=","==","!=");
 
         if(
                 getTypeTermNode(expressionNode.term,methodNode,subroutineSymbolTable).equals("Int") &&

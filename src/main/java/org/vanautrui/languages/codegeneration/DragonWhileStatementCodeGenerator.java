@@ -58,7 +58,7 @@ public class DragonWhileStatementCodeGenerator {
 
         mv.visitJumpInsn(GOTO,startLabel);
 
-        
+
         //because the JVM gives a VerifyError if there is a label but no instructions after it.
         //thats why there is a NoOPeration instruction here
         mv.visitLabel(endLabel);
