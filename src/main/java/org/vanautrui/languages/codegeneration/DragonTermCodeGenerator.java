@@ -26,7 +26,8 @@ public class DragonTermCodeGenerator {
             DragonMethodNode methodNode,
             DragonTermNode termNode,
             DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
-            DragonSubroutineSymbolTable subroutineSymbolTable
+            DragonSubroutineSymbolTable subroutineSymbolTable,
+            boolean debug
     ) throws Exception {
 
         if(termNode.termNode instanceof DragonIntegerConstantNode){
@@ -41,7 +42,7 @@ public class DragonTermCodeGenerator {
             DragonStringConstantCodeGenerator.visitStringConstant(mv,stringConstantNode);
         }else if(termNode.termNode instanceof DragonExpressionNode) {
             DragonExpressionNode dragonExpressionNode = (DragonExpressionNode)termNode.termNode;
-            DragonExpressionCodeGenerator.visitExpression(cw, mv, classNode, methodNode, dragonExpressionNode, methodScopeSymbolTable,subroutineSymbolTable);
+            DragonExpressionCodeGenerator.visitExpression(cw, mv, classNode, methodNode, dragonExpressionNode, methodScopeSymbolTable,subroutineSymbolTable,debug);
         }else if(termNode.termNode instanceof DragonVariableNode) {
 
             //TODO: find the local variable index and push it onto the stack
@@ -65,7 +66,7 @@ public class DragonTermCodeGenerator {
         }else if(termNode.termNode instanceof DragonMethodCallNode){
             DragonMethodCallNode methodCallNode = (DragonMethodCallNode)termNode.termNode;
 
-            DragonMethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable,subroutineSymbolTable);
+            DragonMethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
         }else{
             throw new Exception("unhandled case in DragonTermCodeGenerator.java");
         }

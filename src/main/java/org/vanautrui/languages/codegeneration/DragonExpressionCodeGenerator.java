@@ -19,17 +19,18 @@ public class DragonExpressionCodeGenerator {
             DragonMethodNode methodNode,
             DragonExpressionNode expressionNode,
             DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
-            DragonSubroutineSymbolTable subroutineSymbolTable
+            DragonSubroutineSymbolTable subroutineSymbolTable,
+            boolean debug
     ) throws Exception {
 
         //evaluate the expression
-        DragonTermCodeGenerator.visitTerm(cw,mv,classNode,methodNode,expressionNode.term,methodScopeSymbolTable,subroutineSymbolTable);
+        DragonTermCodeGenerator.visitTerm(cw,mv,classNode,methodNode,expressionNode.term,methodScopeSymbolTable,subroutineSymbolTable,debug);
 
         for(int i=0;i<expressionNode.termNodes.size();i++){
 
             DragonTermNode myterm=expressionNode.termNodes.get(i);
 
-            DragonTermCodeGenerator.visitTerm(cw,mv,classNode,methodNode,myterm,methodScopeSymbolTable,subroutineSymbolTable);
+            DragonTermCodeGenerator.visitTerm(cw,mv,classNode,methodNode,myterm,methodScopeSymbolTable,subroutineSymbolTable,debug);
 
             DragonOperatorNode myop=expressionNode.operatorNodes.get(i);
 

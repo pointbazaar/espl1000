@@ -26,14 +26,16 @@ public class DragonStatementCodeGenerator {
             DragonClassNode classNode,
             DragonMethodNode methodNode,
             DragonStatementNode statementNode,
-            DragonSubroutineSymbolTable subroutineSymbolTable, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable
+            DragonSubroutineSymbolTable subroutineSymbolTable,
+            DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
+            boolean debug
     ) throws Exception {
 
         //TODO: consider other statement types and such
         //statementNode.methodCallNode.visit(mv,classNode,methodNode);
         if(statementNode.statementNode instanceof DragonMethodCallNode){
             DragonMethodCallNode call = (DragonMethodCallNode)statementNode.statementNode;
-            DragonMethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,call,methodScopeSymbolTable,subroutineSymbolTable);
+            DragonMethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,call,methodScopeSymbolTable,subroutineSymbolTable,debug);
 
             //TODO: if the method was not Void, we should pop something off the stack
             String returnType = DragonTypeResolver.getTypeMethodCallNode(call,subroutineSymbolTable);
@@ -43,7 +45,7 @@ public class DragonStatementCodeGenerator {
             }
         }else if(statementNode.statementNode instanceof DragonLoopStatementNode) {
             DragonLoopStatementNode loop = (DragonLoopStatementNode) statementNode.statementNode;
-            visitLoopStatmentNode(cw, mv, classNode, methodNode, loop,methodScopeSymbolTable,subroutineSymbolTable);
+            visitLoopStatmentNode(cw, mv, classNode, methodNode, loop,methodScopeSymbolTable,subroutineSymbolTable,debug);
         }else if(statementNode.statementNode instanceof DragonAssignmentStatementNode) {
 
             DragonAssignmentStatementNode assignmentStatementNode = (DragonAssignmentStatementNode) statementNode.statementNode;
@@ -52,7 +54,7 @@ public class DragonStatementCodeGenerator {
 
             //evaluate the expression and store the result in the local variable
             DragonExpressionCodeGenerator
-                    .visitExpression(cw, mv, classNode, methodNode, assignmentStatementNode.expressionNode, methodScopeSymbolTable,subroutineSymbolTable);
+                    .visitExpression(cw, mv, classNode, methodNode, assignmentStatementNode.expressionNode, methodScopeSymbolTable,subroutineSymbolTable,debug);
 
             String expressionType= DragonTypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subroutineSymbolTable);
             switch(expressionType){
@@ -67,13 +69,13 @@ public class DragonStatementCodeGenerator {
             }
         }else if(statementNode.statementNode instanceof DragonWhileStatementNode){
             DragonWhileStatementNode whileStatementNode =(DragonWhileStatementNode)statementNode.statementNode;
-            DragonWhileStatementCodeGenerator.visitWhileStatmentNode(cw,mv,classNode,methodNode,whileStatementNode,methodScopeSymbolTable,subroutineSymbolTable);
+            DragonWhileStatementCodeGenerator.visitWhileStatmentNode(cw,mv,classNode,methodNode,whileStatementNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
         }else if(statementNode.statementNode instanceof DragonIfStatementNode) {
             DragonIfStatementNode ifStatementNode = (DragonIfStatementNode) statementNode.statementNode;
-            DragonIfStatementCodeGenerator.visitIfStatmentNode(cw, mv, classNode, methodNode, ifStatementNode, methodScopeSymbolTable, subroutineSymbolTable);
+            DragonIfStatementCodeGenerator.visitIfStatmentNode(cw, mv, classNode, methodNode, ifStatementNode, methodScopeSymbolTable, subroutineSymbolTable,debug);
         }else if(statementNode.statementNode instanceof DragonReturnStatementNode){
             DragonReturnStatementNode returnStatementNode = (DragonReturnStatementNode)statementNode.statementNode;
-            DragonReturnStatementCodeGenerator.visitReturnStatement(cw,mv,classNode,methodNode,returnStatementNode,methodScopeSymbolTable,subroutineSymbolTable);
+            DragonReturnStatementCodeGenerator.visitReturnStatement(cw,mv,classNode,methodNode,returnStatementNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
         }else{
             throw new Exception("unconsidered statement type: "+statementNode.statementNode.getClass().getName());
         }

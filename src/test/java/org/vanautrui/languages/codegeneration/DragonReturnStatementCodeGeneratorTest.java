@@ -11,8 +11,8 @@ public class DragonReturnStatementCodeGeneratorTest {
 
     @Test
     public void test_can_return_statement()throws Exception{
-        String source="public class MainTest26 { public Void main(){ print(subroutine()); } public String subroutine(){return \"subroutine\";} }";
-        Process pr = compile_and_run_one_class_for_testing(source,"MainTest26");
+        String source="public class MainTest266 { public Void main(){ print(subroutine()); } public String subroutine(){return \"subroutine\";} }";
+        Process pr = compile_and_run_one_class_for_testing(source,"MainTest266");
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("subroutine",IOUtils.toString(pr.getInputStream()));

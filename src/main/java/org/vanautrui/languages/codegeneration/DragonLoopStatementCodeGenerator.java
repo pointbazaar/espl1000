@@ -23,7 +23,8 @@ public class DragonLoopStatementCodeGenerator {
             DragonMethodNode methodNode,
             DragonLoopStatementNode loop,
             DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
-            DragonSubroutineSymbolTable subroutineSymbolTable
+            DragonSubroutineSymbolTable subroutineSymbolTable,
+            boolean debug
     ) throws Exception {
         //https://asm.ow2.io/asm4-guide.pdf
         //https://en.wikipedia.org/wiki/Java_bytecode_instruction_listings
@@ -58,7 +59,7 @@ public class DragonLoopStatementCodeGenerator {
 
         //write the code for the statements
         for(DragonStatementNode stmt : loop.statements){
-            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable,methodScopeSymbolTable);
+            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable,methodScopeSymbolTable,debug);
         }
 
         //decrement the loop counter : count--;

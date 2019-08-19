@@ -12,11 +12,15 @@ import org.vanautrui.languages.typeresolution.DragonTypeResolver;
 import static org.objectweb.asm.Opcodes.*;
 
 public class DragonReturnStatementCodeGenerator {
-    public static void visitReturnStatement(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonReturnStatementNode returnStatementNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable, DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
+    public static void visitReturnStatement(ClassWriter cw, MethodVisitor mv,
+                                            DragonClassNode classNode, DragonMethodNode methodNode,
+                                            DragonReturnStatementNode returnStatementNode,
+                                            DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
+                                            DragonSubroutineSymbolTable subroutineSymbolTable,boolean debug) throws Exception{
 
         if(returnStatementNode.returnValue.isPresent()){
             //put the expression on the stack
-            DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,returnStatementNode.returnValue.get(),methodScopeSymbolTable,subroutineSymbolTable);
+            DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,returnStatementNode.returnValue.get(),methodScopeSymbolTable,subroutineSymbolTable,debug);
 
             //determine the return type
             //TODO: consider the other return types

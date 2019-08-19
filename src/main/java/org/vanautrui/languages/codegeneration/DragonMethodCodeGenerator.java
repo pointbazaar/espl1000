@@ -55,7 +55,7 @@ public class DragonMethodCodeGenerator {
 
 
         String owner = classNode.name.typeName.getContents();
-        String descriptor = TypeNameToJVMInternalTypeNameConverter.convertSubroutineName(returnTypeName,methodNode.arguments.stream().map(arg->arg.name.name.getContents()).collect(Collectors.toList()));
+        String descriptor = TypeNameToJVMInternalTypeNameConverter.convertSubroutineName(returnTypeName,methodNode.arguments.stream().map(arg->arg.type.typeName.getContents()).collect(Collectors.toList()),debug);
         String methodName = methodNode.methodName.methodName.name.getContents();
 
         //figure it out
@@ -89,10 +89,13 @@ public class DragonMethodCodeGenerator {
 
             //stmt->stmt.visit(mv,Optional.of(classNode),Optional.of(methodNode))
             for (DragonStatementNode stmt : methodNode.statements) {
-                DragonStatementCodeGenerator.visitStatement(cw, mv, classNode, methodNode, stmt,subroutineSymbolTable,methodScopeSymbolTable);
+                DragonStatementCodeGenerator.visitStatement(cw, mv, classNode, methodNode, stmt,subroutineSymbolTable,methodScopeSymbolTable,debug);
             }
 
-            mv.visitInsn(RETURN);
+
+            if(returnTypeName.equals("Void")) {
+                mv.visitInsn(RETURN);
+            }
 
             //TODO: find out how to compute maxStack,
             //TODO: and maxLocals correctly

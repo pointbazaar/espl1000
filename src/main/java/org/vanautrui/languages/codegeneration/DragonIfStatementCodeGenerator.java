@@ -10,12 +10,17 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlfl
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 
-import static org.objectweb.asm.Opcodes.GOTO;
-import static org.objectweb.asm.Opcodes.IFEQ;
+import static org.objectweb.asm.Opcodes.*;
 
 public class DragonIfStatementCodeGenerator {
 
-    public static void visitIfStatmentNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonIfStatementNode ifStatementNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable, DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
+    public static void visitIfStatmentNode(
+            ClassWriter cw, MethodVisitor mv,
+            DragonClassNode classNode, DragonMethodNode methodNode,
+            DragonIfStatementNode ifStatementNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
+            DragonSubroutineSymbolTable subroutineSymbolTable,
+            boolean debug
+    ) throws Exception{
         //https://asm.ow2.io/asm4-guide.pdf
         //https://en.wikipedia.org/wiki/Java_bytecode_instruction_listings
 
@@ -43,11 +48,11 @@ public class DragonIfStatementCodeGenerator {
 
         mv.visitLabel(startLabel);
 
-        DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,ifStatementNode.condition,methodScopeSymbolTable,subroutineSymbolTable);
+        DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,ifStatementNode.condition,methodScopeSymbolTable,subroutineSymbolTable,debug);
         mv.visitJumpInsn(IFEQ,labelElse);
 
         for(DragonStatementNode stmt : ifStatementNode.statements) {
-            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable, methodScopeSymbolTable);
+            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable, methodScopeSymbolTable,debug);
         }
 
         mv.visitJumpInsn(GOTO,endLabel);
@@ -57,11 +62,14 @@ public class DragonIfStatementCodeGenerator {
         mv.visitLabel(labelElse);
 
         for(DragonStatementNode stmt : ifStatementNode.elseStatements) {
-            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable, methodScopeSymbolTable);
+            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable, methodScopeSymbolTable,debug);
         }
 
         mv.visitJumpInsn(GOTO,endLabel);
 
+        //because the JVM gives a VerifyError if there is a label but no instructions after it.
+        //thats why there is a NoOPeration instruction here
         mv.visitLabel(endLabel);
+        mv.visitInsn(NOP);
     }
 }

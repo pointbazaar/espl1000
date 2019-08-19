@@ -19,7 +19,10 @@ public class DragonMethodCallCodeGenerator {
 
     //https://tomassetti.me/generating-bytecode/
 
-    private static void compile_printing_statement(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonMethodCallNode methodCallNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable, DragonSubroutineSymbolTable subroutineSymbolTable)throws Exception{
+    private static void compile_printing_statement(
+            ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode,
+            DragonMethodCallNode methodCallNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
+            DragonSubroutineSymbolTable subroutineSymbolTable,boolean debug)throws Exception{
 
         //TODO: actually compile the stuff, not just fake
 
@@ -41,7 +44,7 @@ public class DragonMethodCallCodeGenerator {
                     //set the  descriptor to the signature which accepts int
                     methodDescriptor="(I)V";
                 }
-                DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,expressionNode,methodScopeSymbolTable,subroutineSymbolTable);
+                DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,expressionNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
             }
             //DragonStringConstantCodeGenerator.visitStringConstant(cw,mv,classNode,methodNode,methodCallNode.argumentList.get(0),methodScopeSymbolTable);
         }else{
@@ -67,7 +70,7 @@ public class DragonMethodCallCodeGenerator {
         }
     }
 
-    public static void visitMethodCallNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonMethodCallNode methodCallNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception {
+    public static void visitMethodCallNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonMethodCallNode methodCallNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,DragonSubroutineSymbolTable subroutineSymbolTable,boolean debug) throws Exception {
         //TODO: actually compile the stuff, not just fake
 
         if(subroutineSymbolTable.containsVariable(methodCallNode.identifierMethodName.name.getContents())){
@@ -83,47 +86,51 @@ public class DragonMethodCallCodeGenerator {
                             e.printStackTrace();
                             throw new RuntimeException(" FATAL error in DragonMethodCallCodeGenerator");
                         }
-                    }).collect(Collectors.toList())
+                    }).collect(Collectors.toList()),
+                    debug
             );
-            //TODO: check if it is correct
+
+            //push the arguments on the stack
+            for(DragonExpressionNode expr : methodCallNode.argumentList){
+                DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,expr,methodScopeSymbolTable,subroutineSymbolTable,debug);
+            }
 
             mv.visitMethodInsn(INVOKESTATIC,owner,methodName,descriptor);
 
             //DEBUG
             System.out.println("found method in symbol table");
-            //throw new Exception("not implemented yet");
-            return;
-        }
+        }else {
 
-        switch (methodCallNode.identifierMethodName.name.getContents()) {
+            switch (methodCallNode.identifierMethodName.name.getContents()) {
 
-            case "readln":
-                //create an instance of Scanner
-                //mv.visitInsn(NEW);
+                case "readln":
+                    //create an instance of Scanner
+                    //mv.visitInsn(NEW);
 
-                //the new instruction must get an index into
-                //the runtime constant pool of the current class
-                //int myconst = cw.newConst("java/util/Scanner");
+                    //the new instruction must get an index into
+                    //the runtime constant pool of the current class
+                    //int myconst = cw.newConst("java/util/Scanner");
 
-                //mv.visitVarInsn(NEW,myconst);
-                mv.visitTypeInsn(NEW,"java/util/Scanner");
-                //mv.visitInsn(NEW,"java/util/Scanner");
+                    //mv.visitVarInsn(NEW,myconst);
+                    mv.visitTypeInsn(NEW, "java/util/Scanner");
+                    //mv.visitInsn(NEW,"java/util/Scanner");
 
-                mv.visitInsn(DUP);
+                    mv.visitInsn(DUP);
 
-                //DEBUG: try to comment out stuff individually and see
-                //what happens
+                    //DEBUG: try to comment out stuff individually and see
+                    //what happens
 
-                mv.visitFieldInsn(GETSTATIC,"java/lang/System","in","Ljava/io/InputStream;");
-                mv.visitMethodInsn(INVOKESPECIAL,"java/util/Scanner","<init>","(Ljava/io/InputStream;)V");
+                    mv.visitFieldInsn(GETSTATIC, "java/lang/System", "in", "Ljava/io/InputStream;");
+                    mv.visitMethodInsn(INVOKESPECIAL, "java/util/Scanner", "<init>", "(Ljava/io/InputStream;)V");
 
-                //call the Scanner.nextLine();
-                mv.visitMethodInsn(INVOKEVIRTUAL,"java/util/Scanner","nextLine","()Ljava/lang/String;",false);
+                    //call the Scanner.nextLine();
+                    mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/Scanner", "nextLine", "()Ljava/lang/String;", false);
 
-                //throw new Exception("readln() not implemented (DragonMethodCallGenerator)");
-                break;
-            default:
-                compile_printing_statement(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable,subroutineSymbolTable);
+                    //throw new Exception("readln() not implemented (DragonMethodCallGenerator)");
+                    break;
+                default:
+                    compile_printing_statement(cw, mv, classNode, methodNode, methodCallNode, methodScopeSymbolTable, subroutineSymbolTable,debug);
+            }
         }
     }
 }
