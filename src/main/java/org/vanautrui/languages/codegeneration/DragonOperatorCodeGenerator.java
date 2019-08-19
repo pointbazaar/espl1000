@@ -30,6 +30,9 @@ public class DragonOperatorCodeGenerator {
             case "<":
             case ">":
             case "==":
+            case "<=":
+            case ">=":
+            case "!=":
                 //if less than, push 1
                 //else push 0
 
@@ -42,6 +45,12 @@ public class DragonOperatorCodeGenerator {
                     mv.visitJumpInsn(IF_ICMPGT, truthCaseLabel);
                 }else if(operatorNode.operator.equals("==")){
                     mv.visitJumpInsn(IF_ICMPEQ,truthCaseLabel);
+                }else if(operatorNode.operator.equals(">=")) {
+                    mv.visitJumpInsn(IF_ICMPGE,truthCaseLabel);
+                }else if(operatorNode.operator.equals("<=")){
+                    mv.visitJumpInsn(IF_ICMPLE,truthCaseLabel);
+                }else if(operatorNode.operator.equals("!=")) {
+                    mv.visitJumpInsn(IF_ICMPNE, truthCaseLabel);
                 }
 
                 mv.visitInsn(ICONST_0);
