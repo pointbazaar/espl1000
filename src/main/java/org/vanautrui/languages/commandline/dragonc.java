@@ -90,8 +90,12 @@ public class dragonc {
         //https://commons.apache.org/proper/commons-cli/usage.html
 
         Options options = new Options();
-        Option option_debug = new Option("d","debug",false,"provides debug output for development of the compiler");
+        Option option_debug = new Option("debug",false,"provides debug output for development of the compiler");
         options.addOption(option_debug);
+
+        options.addOption(
+                new Option("timed",false,"provides a breakdown of how long each compiler phase took")
+        );
 
         options.addOption(new Option("help",false,"display an overview of the command line options"));
 
@@ -119,6 +123,11 @@ public class dragonc {
         return options;
     }
 
+    private static void printDuration(long start,long end){
+        long duration=end-start;
+        System.out.println("Duration: "+duration+" ms");
+    }
+
     private static void compile_main_inner(Path sourceFilePath,CommandLine cmd){
 
         if(cmd.hasOption("help")){
@@ -128,53 +137,77 @@ public class dragonc {
 
         //TODO: expand functionality to directories and multiple files
         try {
+            boolean debug=cmd.hasOption("debug");
+            boolean timed=cmd.hasOption("timed");
 
             long start_time_ms = System.currentTimeMillis();
 
             String sourceCode = new String(Files.readAllBytes(sourceFilePath));
 
-            if(cmd.hasOption("debug")) {
+            if(debug) {
                 System.out.println(sourceCode);
             }
 
+            long start,end;
+
+            start = System.currentTimeMillis();
+            //PHASE CLEAN
             String codeWithoutCommentsWithoutUnneccesaryWhitespace
-                    = phase_clean(sourceCode,cmd.hasOption("debug"));
+                    = phase_clean(sourceCode,debug);
+            end=System.currentTimeMillis();
+            if(timed) {
+                printDuration(start, end);
+            }
 
             String just_code_with_braces_without_comments_without_newlines;
 
             if(cmd.hasOption("nocurly")){
                 just_code_with_braces_without_comments_without_newlines
-                        =phase_conditional_weave_curly_braces(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd.hasOption("debug"));
+                        =phase_conditional_weave_curly_braces(codeWithoutCommentsWithoutUnneccesaryWhitespace,debug);
             }else{
                 //the editor is curly by default
                 just_code_with_braces_without_comments_without_newlines
                         =codeWithoutCommentsWithoutUnneccesaryWhitespace;
             }
 
-            DragonTokenList tokens = phase_lexing(just_code_with_braces_without_comments_without_newlines,cmd.hasOption("debug"));
+            start=System.currentTimeMillis();
+            //PHASE LEXING
+            DragonTokenList tokens = phase_lexing(just_code_with_braces_without_comments_without_newlines,debug);
+            end=System.currentTimeMillis();
+            if(timed){
+                printDuration(start,end);
+            }
 
-            DragonAST ast = phase_parsing(tokens,cmd.hasOption("debug"));
+            start=System.currentTimeMillis();
+            //PHASE PARSING
+            Set<DragonAST> asts = phase_parsing(tokens,debug);
+            end=System.currentTimeMillis();
+            if(timed){
+                printDuration(start,end);
+            }
 
-            Set<DragonAST> asts = new HashSet<>();
-            asts.add(ast);
+            start=System.currentTimeMillis();
+            //PHASE TYPE CHECKING
+            phase_typecheck(asts,debug);
+            end = System.currentTimeMillis();
+            if(timed){
+                printDuration(start,end);
+            }
 
-            phase_typecheck(asts,ast,cmd.hasOption("debug"));
-
-            phase_codegeneration(ast,cmd.hasOption("debug"));
+            start = System.currentTimeMillis();
+            //PHASE CODE GENERATION
+            phase_codegeneration(asts,debug);
+            end=System.currentTimeMillis();
+            if(timed){
+                printDuration(start,end);
+            }
 
             long end_time_ms = System.currentTimeMillis();
             long duration = end_time_ms-start_time_ms;
 
             //https://www.utf8icons.com/
 
-            String str = duration + " ms";
-            if(duration>50) {
-                TerminalUtil.println("☠ "+str, Ansi.Color.RED);
-            }else if(duration>40){
-                TerminalUtil.println("✝ "+str, Ansi.Color.YELLOW);
-            }else {
-                TerminalUtil.println("☕ " + str, Ansi.Color.GREEN);
-            }
+            printDurationFeedback(duration);
 
         } catch (Exception e) {
 
@@ -184,6 +217,19 @@ public class dragonc {
                 //compiler developers
                 e.printStackTrace();
             }
+        }
+    }
+
+    private static void printDurationFeedback(long duration /*milliseconds*/){
+        String str = duration + " ms";
+        if(duration>500) {
+            TerminalUtil.println("☠ "+str+" Compilation took too long. This needs to be fixed. Please file an Issue on GitHub.", Ansi.Color.RED);
+        }else if(duration>200) {
+            TerminalUtil.println("☠ "+str+" we are truly sorry for the delay :(", Ansi.Color.RED);
+        }else if(duration>100){
+            TerminalUtil.println("✝ "+str+" sorry it took so long!", Ansi.Color.YELLOW);
+        }else {
+            TerminalUtil.println("☕ " + str, Ansi.Color.GREEN);
         }
     }
 

@@ -17,7 +17,7 @@ import org.vanautrui.languages.typechecking.DragonTypeChecker;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Optional;
+import java.util.HashSet;
 import java.util.Set;
 
 import static org.fusesource.jansi.Ansi.Color.GREEN;
@@ -64,7 +64,7 @@ public class DragonCompilerPhases {
         }
     }
 
-    public static void phase_typecheck(Set<DragonAST> asts, DragonAST ast, boolean debug)throws Exception{
+    public static void phase_typecheck(Set<DragonAST> asts, boolean debug)throws Exception{
         TerminalUtil.print("TYPECHECKING ", Ansi.Color.GREEN);
 
         //this should throw an exception, if it does not typecheck
@@ -79,18 +79,21 @@ public class DragonCompilerPhases {
         }
     }
 
-    public static void phase_codegeneration(DragonAST ast, boolean debug)throws Exception{
+    public static void phase_codegeneration(Set<DragonAST> asts, boolean debug)throws Exception{
         TerminalUtil.print("CODE GENERATION ", Ansi.Color.GREEN);
 
+
         try {
-            for (DragonClassNode classNode : ast.classNodeList) {
+            for(DragonAST ast : asts) {
+                for (DragonClassNode classNode : ast.classNodeList) {
 
-                //TODO: create the symbol table with all classes in mind, not just this one
-                DragonSubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
+                    //TODO: create the symbol table with all classes in mind, not just this one
+                    DragonSubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
 
-                //generate bytecode for that class
-                byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode,subroutineSymbolTable,debug);
-                Files.write(Paths.get(classNode.name.typeName.getContents() + ".class"), classResult);
+                    //generate bytecode for that class
+                    byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode, subroutineSymbolTable, debug);
+                    Files.write(Paths.get(classNode.name.typeName.getContents() + ".class"), classResult);
+                }
             }
             TerminalUtil.println("✓", Ansi.Color.GREEN);
         }catch (Exception e){
@@ -122,7 +125,7 @@ public class DragonCompilerPhases {
         return codeWithoutCommentsWithoutUnneccesaryWhitespace;
     }
 
-    public static DragonAST phase_parsing(DragonTokenList tokens, boolean debug)throws Exception{
+    public static Set<DragonAST> phase_parsing(DragonTokenList tokens, boolean debug)throws Exception{
         TerminalUtil.print("PARSING ", Ansi.Color.GREEN);
         try {
             DragonAST ast = (new DragonParser()).parse(tokens);
@@ -138,7 +141,9 @@ public class DragonCompilerPhases {
                 serializer.write(ast, System.out);
                 System.out.println();
             }
-            return ast;
+            HashSet<DragonAST> asts=new HashSet<>();
+            asts.add(ast);
+            return asts;
         }catch (Exception e){
             TerminalUtil.println("⚠",RED);
             throw e;
