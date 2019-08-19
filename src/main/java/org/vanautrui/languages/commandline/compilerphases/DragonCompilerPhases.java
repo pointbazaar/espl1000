@@ -9,10 +9,10 @@ import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubrouti
 import org.vanautrui.languages.lexing.DragonLexer;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.utils.CurlyBracesWeaver;
-import org.vanautrui.languages.lexing.utils.DragonCommentRemover;
 import org.vanautrui.languages.parsing.DragonParser;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
+import org.vanautrui.languages.phase_clean_the_input.DragonCommentRemover;
 import org.vanautrui.languages.typechecking.DragonTypeChecker;
 
 import java.nio.file.Files;
@@ -23,9 +23,9 @@ import java.util.Set;
 import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.createSubroutineSymbolTable;
+import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.getPreferredXMLSerializationStrategyHumanReadable;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printBeginPhase;
-import static org.vanautrui.languages.commandline.dragonc.getPreferredXMLSerializationStrategyHumanReadable;
-import static org.vanautrui.languages.commandline.dragonc.remove_unneccessary_whitespace;
+import static org.vanautrui.languages.phase_clean_the_input.DragonUnneccessaryWhiteSpaceRemover.remove_unneccessary_whitespace;
 
 public class DragonCompilerPhases {
 
@@ -110,13 +110,14 @@ public class DragonCompilerPhases {
 
         //TerminalUtil.printlnRed("PHASE: REMOVE COMMENTS AND EMPTY LINES");
 
-        String codeWithoutCommentsAndWithoutEmptyLines = (new DragonCommentRemover()).strip_comments(source);
-
+        String codeWithoutCommentsAndWithoutEmptyLines = (new DragonCommentRemover()).strip_all_comments_and_empty_lines(source);
 
         //maybe phase to remove unneccessary whitespace?
-        //TerminalUtil.printlnRed("TODO: PHASE: REMOVE UNNECCESSARY WHITESPACE");
+        //TerminalUtil.printlnRed("PHASE: REMOVE UNNECCESSARY WHITESPACE");
 
-        String codeWithoutCommentsWithoutUnneccesaryWhitespace = remove_unneccessary_whitespace(codeWithoutCommentsAndWithoutEmptyLines);
+        String codeWithoutCommentsWithoutUnneccesaryWhitespace =
+                remove_unneccessary_whitespace(codeWithoutCommentsAndWithoutEmptyLines);
+
         TerminalUtil.println("✓", Ansi.Color.GREEN);
 
         if(debug) {
@@ -169,4 +170,5 @@ public class DragonCompilerPhases {
             throw e;
         }
     }
+
 }

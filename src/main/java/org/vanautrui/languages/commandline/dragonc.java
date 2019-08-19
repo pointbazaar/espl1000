@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
 
 import static org.objectweb.asm.Opcodes.*;
 import static org.objectweb.asm.Opcodes.RETURN;
+import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printDuration;
+import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printDurationFeedback;
 import static org.vanautrui.languages.commandline.compilerphases.DragonCompilerPhases.*;
 
 public class dragonc {
@@ -123,11 +125,6 @@ public class dragonc {
         return options;
     }
 
-    private static void printDuration(long start,long end){
-        long duration=end-start;
-        System.out.println("Duration: "+duration+" ms");
-    }
-
     private static void compile_main_inner(Path sourceFilePath,CommandLine cmd){
 
         if(cmd.hasOption("help")){
@@ -220,36 +217,6 @@ public class dragonc {
         }
     }
 
-    private static void printDurationFeedback(long duration /*milliseconds*/){
-        String str = duration + " ms";
-        if(duration>500) {
-            TerminalUtil.println("☠ "+str+" Compilation took too long. This needs to be fixed. Please file an Issue on GitHub.", Ansi.Color.RED);
-        }else if(duration>200) {
-            TerminalUtil.println("☠ "+str+" we are truly sorry for the delay :(", Ansi.Color.RED);
-        }else if(duration>100){
-            TerminalUtil.println("✝ "+str+" sorry it took so long!", Ansi.Color.YELLOW);
-        }else {
-            TerminalUtil.println("☕ " + str, Ansi.Color.GREEN);
-        }
-    }
-
-
-
-    public static final Strategy getPreferredXMLSerializationStrategyHumanReadable(){
-        Strategy strategy = new VisitorStrategy(new Visitor() {
-            @Override
-            public void read(Type type, NodeMap<InputNode> nodeMap) throws Exception {
-
-            }
-
-            @Override
-            public void write(Type type, NodeMap<OutputNode> nodeMap) throws Exception {
-                nodeMap.remove("class");
-            }
-        });
-        return strategy;
-    };
-
     private static void try_generate_some_bytecode(){
         ClassWriter cw = new ClassWriter(0);
         FieldVisitor fv;
@@ -306,69 +273,5 @@ public class dragonc {
         }
     }
 
-    public static String remove_unneccessary_whitespace(String codeWithoutCommentsAndWithoutEmptyLines) {
 
-        String result = Arrays.stream(codeWithoutCommentsAndWithoutEmptyLines.split("\n"))
-                .map(
-                        str->remove_unneccessary_whitespace_line(str)
-                )
-                .collect(Collectors.joining("\n"));
-
-        return result;
-    }
-
-    private static String remove_unneccessary_whitespace_line(String str) {
-        //the initial whitespace, and whitespace within strings should remain
-        //1 whitespace between words should remain
-
-        StringBuilder sb=new StringBuilder("");
-
-        //TODO: save the indentation from being removed
-
-        boolean last_was_whitespace=true;
-        boolean inside_string=false;
-        boolean start_of_line=false;
-
-        int i=0;
-
-        while(i<str.length() && !start_of_line){
-            char c = str.charAt(i);
-            switch (c) {
-                case '\t':
-                case ' ':
-                    sb.append(c);
-                    i++;
-                    break;
-                default:
-                    start_of_line = true;
-            }
-        }
-
-        while(i<str.length()){
-            char c=str.charAt(i);
-
-            switch (c){
-                case '\"':
-                    inside_string=!inside_string;
-                    last_was_whitespace=false;
-                    sb.append(c);
-                    break;
-                case ' ':
-                    if(last_was_whitespace && !inside_string){
-                        //we skip it
-                    }else{
-                        sb.append(c);
-                    }
-                    last_was_whitespace=true;
-                    break;
-                default:
-                    last_was_whitespace=false;
-                    sb.append(c);
-                    break;
-            }
-            i++;
-        }
-
-        return sb.toString();
-    }
 }

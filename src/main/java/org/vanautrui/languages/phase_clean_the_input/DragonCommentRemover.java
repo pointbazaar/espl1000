@@ -1,10 +1,10 @@
-package org.vanautrui.languages.lexing.utils;
+package org.vanautrui.languages.phase_clean_the_input;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class DragonCommentRemover {
-    public String strip_comments(String sourcecode) throws Exception {
+    public String strip_all_comments_and_empty_lines(String sourcecode) throws Exception {
 
         StringBuilder result = new StringBuilder();
 
@@ -14,19 +14,9 @@ public class DragonCommentRemover {
                 )
         );
 
-        /*
-        System.out.println("Source Code after removing comments:");
-        System.out.println(
-                ansi()
-                        .fg(Ansi.Color.MAGENTA)
-                        .a(result.toString())
-                        .reset()
-        );
-
-         */
-
         String res = result.toString();
 
+        //remove empty lines
         res = Arrays.stream(res.split("\n")).filter(x -> !x.trim().isEmpty()).collect(Collectors.joining("\n"));
 
         return res;
@@ -36,6 +26,8 @@ public class DragonCommentRemover {
         StringBuilder result = new StringBuilder();
 
         for (String line : sourcecode.split("\n")) {
+
+
             if (line.contains("//")) {
                 result.append(line.substring(0, line.indexOf("//")));
             } else {

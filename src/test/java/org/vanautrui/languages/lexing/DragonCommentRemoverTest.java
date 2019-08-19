@@ -1,7 +1,7 @@
 package org.vanautrui.languages.lexing;
 
 import org.junit.Test;
-import org.vanautrui.languages.lexing.utils.DragonCommentRemover;
+import org.vanautrui.languages.phase_clean_the_input.DragonCommentRemover;
 
 import static org.junit.Assert.assertEquals;
 
