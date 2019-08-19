@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 import static org.objectweb.asm.Opcodes.*;
 import static org.objectweb.asm.Opcodes.RETURN;
-import static org.vanautrui.languages.commandline.DragonCompilerPhases.*;
+import static org.vanautrui.languages.commandline.compilerphases.DragonCompilerPhases.*;
 
 public class dragonc {
     //this should be the compiler

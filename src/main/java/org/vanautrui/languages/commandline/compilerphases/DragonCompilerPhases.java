@@ -1,4 +1,4 @@
-package org.vanautrui.languages.commandline;
+package org.vanautrui.languages.commandline.compilerphases;
 
 import org.fusesource.jansi.Ansi;
 import org.simpleframework.xml.Serializer;
@@ -23,13 +23,14 @@ import java.util.Set;
 import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.createSubroutineSymbolTable;
+import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printBeginPhase;
 import static org.vanautrui.languages.commandline.dragonc.getPreferredXMLSerializationStrategyHumanReadable;
 import static org.vanautrui.languages.commandline.dragonc.remove_unneccessary_whitespace;
 
 public class DragonCompilerPhases {
 
     public static String phase_conditional_weave_curly_braces(String codeWithoutCommentsWithoutUnneccesaryWhitespace, boolean debug) throws Exception {
-        TerminalUtil.println("PHASE: WEAVE IN CURLY BRACES", Ansi.Color.GREEN);
+        printBeginPhase("PHASE: WEAVE IN CURLY BRACES");
 
         //TODO: put the semicolons in?
         //the tokens should know which line number they are at.
@@ -65,7 +66,8 @@ public class DragonCompilerPhases {
     }
 
     public static void phase_typecheck(Set<DragonAST> asts, boolean debug)throws Exception{
-        TerminalUtil.print("TYPECHECKING ", Ansi.Color.GREEN);
+
+        printBeginPhase("TYPE CHECKING");
 
         //this should throw an exception, if it does not typecheck
         try {
@@ -80,7 +82,7 @@ public class DragonCompilerPhases {
     }
 
     public static void phase_codegeneration(Set<DragonAST> asts, boolean debug)throws Exception{
-        TerminalUtil.print("CODE GENERATION ", Ansi.Color.GREEN);
+        printBeginPhase("CODE GENERATION");
 
 
         try {
@@ -103,7 +105,7 @@ public class DragonCompilerPhases {
     }
 
     public static String phase_clean(String source, boolean debug)throws Exception{
-        TerminalUtil.print("CLEAN ", Ansi.Color.GREEN);
+        printBeginPhase("CLEAN");
         //(remove comments, empty lines, excess whitespace)
 
         //TerminalUtil.printlnRed("PHASE: REMOVE COMMENTS AND EMPTY LINES");
@@ -126,7 +128,7 @@ public class DragonCompilerPhases {
     }
 
     public static Set<DragonAST> phase_parsing(DragonTokenList tokens, boolean debug)throws Exception{
-        TerminalUtil.print("PARSING ", Ansi.Color.GREEN);
+        printBeginPhase("PARSING");
         try {
             DragonAST ast = (new DragonParser()).parse(tokens);
             TerminalUtil.println("✓", Ansi.Color.GREEN);
@@ -151,7 +153,7 @@ public class DragonCompilerPhases {
     }
 
     public static DragonTokenList phase_lexing(String just_code_with_braces_without_comments, boolean debug)throws Exception{
-        TerminalUtil.print("LEXING ",GREEN);
+        printBeginPhase("LEXING");
 
         String just_code_with_braces_without_comments_without_newlines = just_code_with_braces_without_comments.replaceAll("\n","");
 
