@@ -1,5 +1,8 @@
 public class Main{
 	public Void main(){
-		println(5.5565);
+		println(subr(3.14159,2.0));
+	}
+	public Float subr(Float a,Float b){
+		return a/b;
 	}
 }

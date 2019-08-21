@@ -12,6 +12,8 @@ public class TypeNameToJVMInternalTypeNameConverter {
         switch (type){
             case "Int":
                 return "I";
+	    case "Float":
+		return "F";
             case "String":
                 return "Ljava/lang/String;";
             case "Char":

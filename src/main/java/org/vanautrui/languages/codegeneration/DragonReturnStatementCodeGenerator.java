@@ -32,6 +32,9 @@ public class DragonReturnStatementCodeGenerator {
                 case "String":
                     mv.visitInsn(ARETURN);
                     break;
+		case "Float":
+		    mv.visitInsn(FRETURN);
+		    break;
                 default:
                     throw new Exception("could not determine which return to use (DragonReturnStatementCodeGenerator)");
             }

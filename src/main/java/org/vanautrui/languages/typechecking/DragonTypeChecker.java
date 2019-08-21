@@ -201,13 +201,13 @@ public class DragonTypeChecker {
     }
 
     private void typecheckTermNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonTermNode termNode) throws Exception{
-        if(termNode.termNode instanceof DragonIntegerConstantNode){
+	if(termNode.termNode instanceof DragonFloatConstantNode){
+		    //nothing to do
+	}else if(termNode.termNode instanceof DragonIntegerConstantNode){
             //nothing to do
-        }
-        if(termNode.termNode instanceof DragonStringConstantNode){
+        }else if(termNode.termNode instanceof DragonStringConstantNode){
             //nothing to do
-        }
-        if(termNode.termNode instanceof DragonExpressionNode) {
+        }else if(termNode.termNode instanceof DragonExpressionNode) {
             DragonExpressionNode expressionNode = (DragonExpressionNode) termNode.termNode;
             typeCheckExpressionNode(asts,classNode,methodNode,expressionNode);
         }else if(termNode.termNode instanceof DragonVariableNode){
@@ -302,7 +302,7 @@ public class DragonTypeChecker {
             }
         }
 
-        List<String> acceptable_types = Arrays.asList("Void","Int","Bool","String");
+        List<String> acceptable_types = Arrays.asList("Void","Int","Float","Bool","String");
 
         if(acceptable_types.contains(typeIdentifierNode.typeName.getContents())){
             return;

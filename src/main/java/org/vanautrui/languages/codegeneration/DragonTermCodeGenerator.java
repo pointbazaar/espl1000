@@ -11,8 +11,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonCl
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.*;
 
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.ILOAD;
+import static org.objectweb.asm.Opcodes.*;
 import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.*;
 
 public class DragonTermCodeGenerator {
@@ -52,6 +51,9 @@ public class DragonTermCodeGenerator {
                     case "Int":
                         mv.visitIntInsn(ILOAD, methodScopeSymbolTable.getIndexOfVariable(variableNode.name.getContents()));
                         break;
+			case "Float":
+				mv.visitIntInsn(FLOAD,methodScopeSymbolTable.getIndexOfVariable(variableNode.name.getContents()));
+				break;
                     case "String":
                         mv.visitIntInsn(ALOAD,methodScopeSymbolTable.getIndexOfVariable(variableNode.name.getContents()));
                         break;

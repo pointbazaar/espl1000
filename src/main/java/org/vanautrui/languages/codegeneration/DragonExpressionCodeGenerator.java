@@ -9,7 +9,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonOperatorNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonTermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
-
+import static org.vanautrui.languages.typeresolution.DragonTypeResolver.*;
 public class DragonExpressionCodeGenerator {
 
     public static void visitExpression(
@@ -32,9 +32,10 @@ public class DragonExpressionCodeGenerator {
 
             DragonTermCodeGenerator.visitTerm(cw,mv,classNode,methodNode,myterm,methodScopeSymbolTable,subroutineSymbolTable,debug);
 
+		String operandType=getTypeTermNode(myterm,methodNode,subroutineSymbolTable);
             DragonOperatorNode myop=expressionNode.operatorNodes.get(i);
 
-            DragonOperatorCodeGenerator.visitOperatorNode(cw,mv,classNode,methodNode,myop);
+            DragonOperatorCodeGenerator.visitOperatorNode(cw,mv,classNode,methodNode,myop,operandType);
         }
     }
 }
