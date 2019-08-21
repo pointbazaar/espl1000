@@ -9,9 +9,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMet
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonIntegerConstantNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonStringConstantNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonVariableNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.*;
 
 import java.util.Optional;
 import java.util.Set;
@@ -38,31 +36,34 @@ public class DragonTermNode implements IDragonASTNode, IExpressionComputable {
     public DragonTermNode (DragonTokenList tokens)throws Exception{
 
         DragonTokenList copy = new DragonTokenList(tokens);
+		try{
+			this.termNode=new DragonFloatConstantNode(copy);
+		}catch(Exception e0){
+		    try{
+		        this.termNode=new DragonIntegerConstantNode(copy);
+		    }catch (Exception e1){
+		        try {
+		            this.termNode=new DragonStringConstantNode(copy);
+		        }catch (Exception e2){
+		            try {
+		                DragonTokenList copy2=new DragonTokenList(copy);
 
-        try{
-            this.termNode=new DragonIntegerConstantNode(copy);
-        }catch (Exception e1){
-            try {
-                this.termNode=new DragonStringConstantNode(copy);
-            }catch (Exception e2){
-                try {
-                    DragonTokenList copy2=new DragonTokenList(copy);
+		                copy2.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
+		                this.termNode=new DragonExpressionNode(copy2);
+		                copy2.expectAndConsumeOtherWiseThrowException(new SymbolToken(")"));
 
-                    copy2.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
-                    this.termNode=new DragonExpressionNode(copy2);
-                    copy2.expectAndConsumeOtherWiseThrowException(new SymbolToken(")"));
+		                copy.set(copy2);
+		            }catch (Exception e3){
+		                try {
+		                    this.termNode=new DragonMethodCallNode(copy);
+		                }catch (Exception e4){
 
-                    copy.set(copy2);
-                }catch (Exception e3){
-                    try {
-                        this.termNode=new DragonMethodCallNode(copy);
-                    }catch (Exception e4){
-
-                        this.termNode = new DragonVariableNode(copy);
-                    }
-                }
-            }
-        }
+		                    this.termNode = new DragonVariableNode(copy);
+		                }
+		            }
+		        }
+		    }
+		}
 
         tokens.set(copy);
     }
