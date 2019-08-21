@@ -8,9 +8,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonAss
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonIntegerConstantNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonStringConstantNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonVariableNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +21,9 @@ public class DragonTypeResolver {
 
     public static String getTypeIntegerConstantNode(DragonIntegerConstantNode integerConstantNode){
         return "Int";
+    }
+    public static String getTypeFloatConstantNode(DragonFloatConstantNode node){
+    	return "Float";
     }
 
     public static String getTypeStringConstantNode(DragonStringConstantNode stringConstantNode){
@@ -65,6 +66,8 @@ public class DragonTypeResolver {
             return getTypeExpressionNode((DragonExpressionNode)termNode.termNode,methodNode,subroutineSymbolTable);
         }else if (termNode.termNode instanceof DragonMethodCallNode){
             return getTypeMethodCallNode((DragonMethodCallNode)termNode.termNode,subroutineSymbolTable);
+	}else if(termNode.termNode instanceof DragonFloatConstantNode){
+		return getTypeFloatConstantNode((DragonFloatConstantNode)termNode.termNode);
         }else if(termNode.termNode instanceof DragonIntegerConstantNode){
             return getTypeIntegerConstantNode((DragonIntegerConstantNode)termNode.termNode);
         }else if(termNode.termNode instanceof DragonStringConstantNode){
