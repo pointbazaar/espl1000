@@ -9,13 +9,11 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonTermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonIntegerConstantNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonStringConstantNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonVariableNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.*;
 
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.ILOAD;
-import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.pushIntegerConstant;
+import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.*;
 
 public class DragonTermCodeGenerator {
 
@@ -29,13 +27,13 @@ public class DragonTermCodeGenerator {
             DragonSubroutineSymbolTable subroutineSymbolTable,
             boolean debug
     ) throws Exception {
-
-        if(termNode.termNode instanceof DragonIntegerConstantNode){
+	if(termNode.termNode instanceof DragonFloatConstantNode){
+		DragonFloatConstantNode node=(DragonFloatConstantNode)termNode.termNode;
+		pushFloatConstant(node.value,mv);
+	}else if(termNode.termNode instanceof DragonIntegerConstantNode){
             DragonIntegerConstantNode integerConstantNode = (DragonIntegerConstantNode)termNode.termNode;
 
             pushIntegerConstant(integerConstantNode.value,mv);
-            //mv.visitVarInsn(BIPUSH,integerConstantNode.value);
-
         }else if(termNode.termNode instanceof DragonStringConstantNode){
             DragonStringConstantNode stringConstantNode = (DragonStringConstantNode)termNode.termNode;
             //push the string on the stack

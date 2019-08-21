@@ -40,10 +40,18 @@ public class DragonMethodCallCodeGenerator {
 
                 //TODO: make getTypeJVMInternal() to make this easier? or just make a translator class for it
                 String expressionType=DragonTypeResolver.getTypeExpressionNode(expressionNode,methodNode,subroutineSymbolTable);
-                if(expressionType.equals("Int") || expressionType.equals("ERROR")){
-                    //set the  descriptor to the signature which accepts int
-                    methodDescriptor="(I)V";
-                }
+
+		//set the method signature to the type
+		//which accepts our arguments
+		switch(expressionType){
+			case "Int":
+			case "ERROR":
+				methodDescriptor="(I)V";
+				break;
+			case "Float":
+				methodDescriptor="(F)V";
+				break;
+		}
                 DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,expressionNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
             }
             //DragonStringConstantCodeGenerator.visitStringConstant(cw,mv,classNode,methodNode,methodCallNode.argumentList.get(0),methodScopeSymbolTable);

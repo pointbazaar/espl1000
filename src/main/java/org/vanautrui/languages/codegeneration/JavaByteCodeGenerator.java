@@ -107,7 +107,9 @@ public class JavaByteCodeGenerator {
         }
         return subroutineSymbolTable;
     }
-
+	public static void pushFloatConstant(float f, MethodVisitor mv){
+		mv.visitLdcInsn(f);
+	}
     public static void pushIntegerConstant(int n, MethodVisitor mv){
         switch (n){
             case 0:
