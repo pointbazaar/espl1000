@@ -98,4 +98,13 @@ public class DragonLexerTest {
 
         assertTrue(tokens.get(11) instanceof SymbolToken); //;
     }
+
+	@Test
+	public void test_lexes_float_constant()throws Exception{
+		DragonTokenList ts = lexer.lexCodeWithoutComments("return 1.44;");
+
+	assertTrue(ts.get(0) instanceof KeywordToken);
+
+	assertTrue(ts.get(1) instanceof FloatNonNegativeConstantToken);
+	}
 }

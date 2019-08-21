@@ -77,12 +77,19 @@ public class DragonLexer {
                 //pass
             }
 
-            try {
-                result.add(new IntegerNonNegativeConstantToken(myCode));
+	    try {
+                result.add(new FloatNonNegativeConstantToken(myCode));
                 continue;
             } catch (Exception e) {
-                //pass
+                    try {
+		        result.add(new IntegerNonNegativeConstantToken(myCode));
+		        continue;
+		    } catch (Exception e2) {
+		        //pass
+		    }
             }
+
+            
 
             try {
                 result.add(new StringConstantToken(myCode));
