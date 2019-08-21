@@ -3,7 +3,13 @@ public class Math{
 	public Void main(){
 		println("hi");	
 		println(abs(1));
-		println(abs(2));
+		println(abs(-2));
+
+		println("sign(4):");
+		println(sign(4));
+
+		println("sign(-3)");
+		println(sign(-3));
 	}
 
 
@@ -13,5 +19,15 @@ public class Math{
 			//return n;
 		}
 		return n;
+	}
+	
+	public Int sign(Int n){
+		if(n>0){
+			return 1;
+		}
+		if(n==0){
+			return 0;
+		}
+		return -1;
 	}
 }
