@@ -14,7 +14,8 @@ public class DragonReturnStatementNodeTest {
 
         list.add(new SymbolToken("("));
 
-        list.add(new IntegerNonNegativeConstantToken(-5));
+	list.add(new OperatorToken("-"));
+        list.add(new IntegerNonNegativeConstantToken(5));
 
         list.add(new SymbolToken(")"));
 
@@ -30,7 +31,8 @@ public class DragonReturnStatementNodeTest {
 
         list.add(new SymbolToken("("));
 
-        list.add(new IntegerNonNegativeConstantToken(-5));
+	list.add(new OperatorToken("-"));
+        list.add(new IntegerNonNegativeConstantToken(5));
 
         list.add(new SymbolToken(")"));
 
