@@ -55,6 +55,9 @@ public class dragonc {
             //TODO: the source file must not be the first argument
             //the tool would be more flexible if the
             //source files or directory could be specified anywhere
+	    if(!sourceFilePath.toString().endsWith(".dg")){
+	    	throw new Exception("dragon language files should end in '.dg' for brevity and convenienc");
+	    }
 
             compile_main_inner(sourceFilePath,commandLine);
         }catch (Exception e){
