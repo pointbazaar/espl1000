@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.tokens.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 
 public class DragonExpressionNodeTest {
 
@@ -12,7 +11,7 @@ public class DragonExpressionNodeTest {
     public void test_simple_expression() throws Exception {
 
         DragonTokenList list = new DragonTokenList();
-        list.add(new IntegerConstantToken(4));
+        list.add(new IntegerNonNegativeConstantToken(4));
         DragonExpressionNode expr = new DragonExpressionNode(list);
     }
 

@@ -81,7 +81,7 @@ public class DragonTermNode implements IDragonASTNode, IExpressionComputable {
         }
         if(this.termNode instanceof DragonExpressionNode) {
             DragonExpressionNode expressionNode = (DragonExpressionNode) this.termNode;
-            return expressionNode.toSourceCode();
+            return "("+expressionNode.toSourceCode()+")";
         }else if(this.termNode instanceof DragonVariableNode) {
             DragonVariableNode variableNode = (DragonVariableNode) this.termNode;
             return variableNode.toSourceCode();

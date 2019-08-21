@@ -8,15 +8,18 @@ import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class IntegerConstantToken extends BasicToken implements DragonToken {
+public class IntegerNonNegativeConstantToken extends BasicToken implements DragonToken {
 
     private static final String regex_integer_constant = "^(0|[1-9][0-9]*)";
+
+    //this class should represent a nonnegative token.
+    //the AST node later can be negative, depending on circumstance
 
     private static final int MAX_INT_CONSTANT_LENGTH = 20;
 
     public int value;
 
-    public IntegerConstantToken(CharacterList list) throws Exception {
+    public IntegerNonNegativeConstantToken(CharacterList list) throws Exception {
         super(list.getCurrentLine());
         Pattern p = Pattern.compile(regex_integer_constant);
 
@@ -30,7 +33,7 @@ public class IntegerConstantToken extends BasicToken implements DragonToken {
         }
     }
 
-    public IntegerConstantToken(int newcontents) throws Exception {
+    public IntegerNonNegativeConstantToken(int newcontents) throws Exception {
         super(-1);
         this.value = newcontents;
     }
@@ -48,8 +51,8 @@ public class IntegerConstantToken extends BasicToken implements DragonToken {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof IntegerConstantToken)) return false;
-        IntegerConstantToken that = (IntegerConstantToken) o;
+        if (!(o instanceof IntegerNonNegativeConstantToken)) return false;
+        IntegerNonNegativeConstantToken that = (IntegerNonNegativeConstantToken) o;
         return value==that.value;
     }
 

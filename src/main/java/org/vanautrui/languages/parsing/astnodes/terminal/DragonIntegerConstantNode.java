@@ -1,32 +1,38 @@
 package org.vanautrui.languages.parsing.astnodes.terminal;
 
+import org.vanautrui.languages.lexing.tokens.OperatorToken;
 import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
-import org.vanautrui.languages.lexing.tokens.IntegerConstantToken;
+import org.vanautrui.languages.lexing.tokens.IntegerNonNegativeConstantToken;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IDragonASTNode;
 import org.vanautrui.languages.parsing.astnodes.IDragonTermNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
-
-import java.util.Optional;
-import java.util.Set;
 
 public class DragonIntegerConstantNode implements IDragonASTNode, IDragonTermNode {
+
+    //this can also have a negative value if it is preceded by a '-' operator token
 
     public int value;
 
     public DragonIntegerConstantNode(DragonTokenList tokens) throws Exception {
 
-        DragonToken token = tokens.get(0);
+        DragonTokenList copy = new DragonTokenList(tokens);
 
-        if (token instanceof IntegerConstantToken) {
-            this.value = ((IntegerConstantToken) token).value;
-            tokens.consume(1);
+        if(copy.get(0) instanceof OperatorToken){
+            OperatorToken tk = (OperatorToken)copy.get(0);
+            if(tk.operator.equals("-") && (copy.get(1) instanceof IntegerNonNegativeConstantToken) ){
+                this.value=-(((IntegerNonNegativeConstantToken) copy.get(1)).value);
+                copy.consume(2);
+            }else{
+                throw new Exception("cannot parse integer constant node with such operator:"+tk.operator);
+            }
+        }else if (copy.get(0) instanceof IntegerNonNegativeConstantToken) {
+            this.value = ((IntegerNonNegativeConstantToken) copy.get(0)).value;
+            copy.consume(1);
         } else {
             throw new Exception("could not read stringConstant node");
         }
 
+        tokens.set(copy);
     }
 
     @Override

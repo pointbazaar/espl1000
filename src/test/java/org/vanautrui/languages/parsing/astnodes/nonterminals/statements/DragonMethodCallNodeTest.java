@@ -2,7 +2,7 @@ package org.vanautrui.languages.parsing.astnodes.nonterminals.statements;
 
 import org.junit.Test;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
-import org.vanautrui.languages.lexing.tokens.IntegerConstantToken;
+import org.vanautrui.languages.lexing.tokens.IntegerNonNegativeConstantToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
@@ -25,7 +25,7 @@ public class DragonMethodCallNodeTest {
         DragonTokenList list = new DragonTokenList();
         list.add(new IdentifierToken("main"));
         list.add(new SymbolToken("("));
-        list.add(new IntegerConstantToken(4));
+        list.add(new IntegerNonNegativeConstantToken(4));
         list.add(new SymbolToken(")"));
         list.add(new SymbolToken(";"));
 

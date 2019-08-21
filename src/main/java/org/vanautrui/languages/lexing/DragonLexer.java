@@ -78,7 +78,7 @@ public class DragonLexer {
             }
 
             try {
-                result.add(new IntegerConstantToken(myCode));
+                result.add(new IntegerNonNegativeConstantToken(myCode));
                 continue;
             } catch (Exception e) {
                 //pass

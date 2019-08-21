@@ -17,7 +17,7 @@ public class DragonOperatorNode implements IDragonASTNode {
 
     public String operator;
 
-    public DragonOperatorNode(DragonTokenList tokens){
+    public DragonOperatorNode(DragonTokenList tokens)throws Exception{
 
         DragonTokenList copy = new DragonTokenList(tokens);
 
@@ -26,6 +26,8 @@ public class DragonOperatorNode implements IDragonASTNode {
         if(token instanceof OperatorToken){
             this.operator=((OperatorToken)token).operator;
             copy.consume(1);
+        }else{
+            throw new Exception("could not recognize operator token: got "+token.getContents());
         }
 
         tokens.set(copy);

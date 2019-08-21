@@ -2,12 +2,11 @@ package org.vanautrui.languages.parsing.astnodes.nonterminals.statements.control
 
 import org.junit.Test;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
-import org.vanautrui.languages.lexing.tokens.IntegerConstantToken;
+import org.vanautrui.languages.lexing.tokens.IntegerNonNegativeConstantToken;
 import org.vanautrui.languages.lexing.tokens.KeywordToken;
 import org.vanautrui.languages.lexing.tokens.OperatorToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonIfStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonWhileStatementNode;
 
 public class DragonIfStatementNodeTest {
 
@@ -18,9 +17,9 @@ public class DragonIfStatementNodeTest {
 
         list.add(new SymbolToken("("));
 
-        list.add(new IntegerConstantToken(5));
+        list.add(new IntegerNonNegativeConstantToken(5));
         list.add(new OperatorToken("<"));
-        list.add(new IntegerConstantToken(3));
+        list.add(new IntegerNonNegativeConstantToken(3));
 
         list.add(new SymbolToken(")"));
 

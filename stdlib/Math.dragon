@@ -1,0 +1,17 @@
+public class Math{
+	
+	public Void main(){
+		println("hi");	
+		println(abs(1));
+		println(abs(2));
+	}
+
+
+	public Int abs(Int n){
+		if(n<0){
+			return (-1)*n;
+			//return n;
+		}
+		return n;
+	}
+}

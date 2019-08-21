@@ -123,7 +123,9 @@ public class DragonCompilerPhases {
 
 
         int hash = source.hashCode();
-        System.out.println("phase clean: Hashcode of source string: "+hash);
+        if(debug) {
+            System.out.println("phase clean: Hashcode of source string: " + hash);
+        }
         boolean foundCachedCleanedFile = false;
 
         if(Files.exists(makeCleanPhaseCacheFilePathFromHash(hash))){
@@ -133,7 +135,9 @@ public class DragonCompilerPhases {
         String codeWithoutCommentsWithoutUnneccesaryWhitespace;
 
         if(foundCachedCleanedFile){
-            System.out.println("found a cached version that is already cleaned");
+            if(debug) {
+                System.out.println("found a cached version that is already cleaned");
+            }
             codeWithoutCommentsWithoutUnneccesaryWhitespace = new String(Files.readAllBytes(makeCleanPhaseCacheFilePathFromHash(hash)));
         }else {
 
