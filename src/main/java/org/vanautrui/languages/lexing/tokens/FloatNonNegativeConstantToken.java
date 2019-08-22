@@ -2,14 +2,14 @@ package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
-import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
+import org.vanautrui.languages.lexing.tokens.utils.Token;
 
 import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import com.fasterxml.jackson.annotation.*;
 
-public class FloatNonNegativeConstantToken extends BasicToken implements DragonToken {
+public class FloatNonNegativeConstantToken extends BasicToken implements Token {
 
     private static final String regex_float_constant = "^(0|[1-9][0-9]*)\\.([0-9]+)";
 

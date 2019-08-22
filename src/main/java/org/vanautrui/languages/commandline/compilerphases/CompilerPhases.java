@@ -3,16 +3,16 @@ package org.vanautrui.languages.commandline.compilerphases;
 import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.codegeneration.JavaByteCodeGenerator;
-import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
-import org.vanautrui.languages.lexing.DragonLexer;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
+import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
+import org.vanautrui.languages.lexing.Lexer;
 import org.vanautrui.languages.lexing.utils.CurlyBracesWeaver;
 import org.vanautrui.languages.parsing.Parser;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
-import org.vanautrui.languages.phase_clean_the_input.DragonCommentRemover;
-import org.vanautrui.languages.typechecking.DragonTypeChecker;
-import static org.vanautrui.languages.symboltablegenerator.DragonSymbolTableGenerator.*;
+import org.vanautrui.languages.phase_clean_the_input.CommentRemover;
+import org.vanautrui.languages.typechecking.TypeChecker;
+import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.*;
 
 import com.fasterxml.jackson.databind.*;
 
@@ -25,9 +25,9 @@ import java.util.Set;
 import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printBeginPhase;
-import static org.vanautrui.languages.phase_clean_the_input.DragonUnneccessaryWhiteSpaceRemover.remove_unneccessary_whitespace;
+import static org.vanautrui.languages.phase_clean_the_input.UnneccessaryWhiteSpaceRemover.remove_unneccessary_whitespace;
 
-public class DragonCompilerPhases {
+public class CompilerPhases {
 
     public static String phase_conditional_weave_curly_braces(String codeWithoutCommentsWithoutUnneccesaryWhitespace, boolean debug) throws Exception {
         printBeginPhase("PHASE: WEAVE IN CURLY BRACES");
@@ -71,7 +71,7 @@ public class DragonCompilerPhases {
 
         //this should throw an exception, if it does not typecheck
         try {
-            DragonTypeChecker typeChecker=new DragonTypeChecker();
+            TypeChecker typeChecker=new TypeChecker();
             typeChecker.doTypeCheck(asts);
 
             TerminalUtil.println("✓", Ansi.Color.GREEN);
@@ -90,7 +90,7 @@ public class DragonCompilerPhases {
                 for (ClassNode classNode : ast.classNodeList) {
 
                     //TODO: create the symbol table with all classes in mind, not just this one
-                    DragonSubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
+                    SubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
 
                     //generate bytecode for that class
                     byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode, subroutineSymbolTable, debug);
@@ -140,7 +140,7 @@ public class DragonCompilerPhases {
             codeWithoutCommentsWithoutUnneccesaryWhitespace = new String(Files.readAllBytes(makeCleanPhaseCacheFilePathFromHash(hash)));
         }else {
 
-            String codeWithoutCommentsAndWithoutEmptyLines = (new DragonCommentRemover()).strip_all_comments_and_empty_lines(source);
+            String codeWithoutCommentsAndWithoutEmptyLines = (new CommentRemover()).strip_all_comments_and_empty_lines(source);
 
             codeWithoutCommentsWithoutUnneccesaryWhitespace =
                     remove_unneccessary_whitespace(codeWithoutCommentsAndWithoutEmptyLines);
@@ -161,7 +161,7 @@ public class DragonCompilerPhases {
         return codeWithoutCommentsWithoutUnneccesaryWhitespace;
     }
 
-    public static Set<AST> phase_parsing(DragonTokenList tokens, boolean debug)throws Exception{
+    public static Set<AST> phase_parsing(TokenList tokens, boolean debug)throws Exception{
         printBeginPhase("PARSING");
         try {
             AST ast = (new Parser()).parse(tokens);
@@ -189,13 +189,13 @@ public class DragonCompilerPhases {
         }
     }
 
-    public static DragonTokenList phase_lexing(String just_code_with_braces_without_comments, boolean debug)throws Exception{
+    public static TokenList phase_lexing(String just_code_with_braces_without_comments, boolean debug)throws Exception{
         printBeginPhase("LEXING");
 
         String just_code_with_braces_without_comments_without_newlines = just_code_with_braces_without_comments.replaceAll("\n","");
 
         try {
-            DragonTokenList tokens = (new DragonLexer()).lexCodeWithoutComments(just_code_with_braces_without_comments_without_newlines);
+            TokenList tokens = (new Lexer()).lexCodeWithoutComments(just_code_with_braces_without_comments_without_newlines);
             TerminalUtil.println("✓",GREEN);
             if(debug) {
                 System.out.println(tokens.toString());

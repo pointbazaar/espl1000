@@ -1,9 +1,6 @@
-package org.vanautrui.languages.codegeneration.symboltables.tables;
+package org.vanautrui.languages.symboltables.tables;
 
-import org.vanautrui.languages.codegeneration.symboltables.rows.ISymbolTableRow;
-
-import java.util.List;
-import java.util.stream.Collectors;
+import org.vanautrui.languages.symboltables.rows.ISymbolTableRow;
 
 //intentionally only package visibility to discourage implementation
 //in other locations

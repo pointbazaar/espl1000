@@ -1,12 +1,12 @@
-package org.vanautrui.languages.codegeneration.symboltables.rows;
+package org.vanautrui.languages.symboltables.rows;
 
-public class DragonMethodScopeVariableSymbolTableRow implements ISymbolTableRow {
+public class LocalVarSymbolTableRow implements ISymbolTableRow {
 
     public final String varName;
     public final String typeName;
 
 
-    public DragonMethodScopeVariableSymbolTableRow(String varName, String typeName){
+    public LocalVarSymbolTableRow(String varName, String typeName){
 
         this.typeName=typeName;
         this.varName=varName;

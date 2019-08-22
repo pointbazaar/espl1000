@@ -1,7 +1,6 @@
-package org.vanautrui.languages.codegeneration.symboltables.tables;
+package org.vanautrui.languages.symboltables.tables;
 
-import org.vanautrui.languages.codegeneration.symboltables.rows.DragonMethodScopeVariableSymbolTableRow;
-import org.vanautrui.languages.codegeneration.symboltables.rows.ISymbolTableRow;
+import org.vanautrui.languages.symboltables.rows.ISymbolTableRow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +9,13 @@ import java.util.stream.Collectors;
 //this class intentionally only has
 //package level visibility so it is only used
 //for composing symbol tables in this package
-class DragonBaseSymbolTable {
+class BaseSymbolTable {
 
     private List<ISymbolTableRow> symbolTable= new ArrayList<>();
 
     private int index_count=0;
 
-    public DragonBaseSymbolTable(){}
+    public BaseSymbolTable(){}
 
     public void add(ISymbolTableRow row){
         //DEBUG

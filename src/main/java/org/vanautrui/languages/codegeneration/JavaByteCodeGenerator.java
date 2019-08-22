@@ -2,11 +2,11 @@ package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
+import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassFieldNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import static org.vanautrui.languages.symboltablegenerator.DragonSymbolTableGenerator.*;
+import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.*;
 import static org.objectweb.asm.Opcodes.*;
 
 public class JavaByteCodeGenerator {
@@ -21,12 +21,12 @@ public class JavaByteCodeGenerator {
     //https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.1
 
     public static byte[] generateByteCodeForOneClass(ClassNode classNode, boolean debug)throws Exception{
-        DragonSubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
+        SubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
 
         return generateByteCodeForClass(classNode,subroutineSymbolTable,debug);
     }
 
-    public static byte[] generateByteCodeForClass(ClassNode classNode, DragonSubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception {
+    public static byte[] generateByteCodeForClass(ClassNode classNode, SubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception {
 
         if(debug){
             System.out.println(subroutineSymbolTable.toString());

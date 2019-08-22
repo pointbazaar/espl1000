@@ -2,7 +2,7 @@ package org.vanautrui.languages.lexing.tokens.utils;
 
 import java.awt.*;
 
-public interface DragonToken {
+public interface Token {
 
     public String getContents();
 

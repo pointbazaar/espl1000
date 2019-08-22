@@ -2,7 +2,7 @@ package org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.ClassToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IASTNode;
@@ -37,10 +37,10 @@ public class ClassNode implements IASTNode {
     @ElementList
     public List<MethodNode> methodNodeList = new ArrayList<>();
 
-    public ClassNode(DragonTokenList tokens) throws Exception {
+    public ClassNode(TokenList tokens) throws Exception {
         //System.out.println("try parse DragonClassNode");
 
-        DragonTokenList copy = tokens.copy();
+        TokenList copy = tokens.copy();
 
         //System.out.println(copy.toString());
 

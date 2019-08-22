@@ -5,7 +5,7 @@ import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 
 import java.nio.file.Files;
@@ -18,7 +18,7 @@ import static org.objectweb.asm.Opcodes.*;
 import static org.objectweb.asm.Opcodes.RETURN;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printDuration;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printDurationFeedback;
-import static org.vanautrui.languages.commandline.compilerphases.DragonCompilerPhases.*;
+import static org.vanautrui.languages.commandline.compilerphases.CompilerPhases.*;
 
 public class dragonc {
     //this should be the compiler
@@ -164,7 +164,7 @@ public class dragonc {
 
             start= currentTimeMillis();
             //PHASE LEXING
-            DragonTokenList tokens = phase_lexing(just_code_with_braces_without_comments_without_newlines,debug);
+            TokenList tokens = phase_lexing(just_code_with_braces_without_comments_without_newlines,debug);
             end= currentTimeMillis();
             if(timed){
                 printDuration(start,end);

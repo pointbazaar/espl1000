@@ -1,21 +1,21 @@
-package org.vanautrui.languages.codegeneration.symboltables.tables;
+package org.vanautrui.languages.symboltables.tables;
 
 import io.bretty.console.table.Alignment;
 import io.bretty.console.table.ColumnFormatter;
 import io.bretty.console.table.Precision;
 import io.bretty.console.table.Table;
-import org.vanautrui.languages.codegeneration.symboltables.rows.ISymbolTableRow;
+import org.vanautrui.languages.symboltables.rows.ISymbolTableRow;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class DragonSubroutineSymbolTable implements ISymbolTable {
+public class SubroutineSymbolTable implements ISymbolTable {
 
-    private DragonBaseSymbolTable symbolTable;
+    private BaseSymbolTable symbolTable;
 
-    public DragonSubroutineSymbolTable(){
-        this.symbolTable=new DragonBaseSymbolTable();
+    public SubroutineSymbolTable(){
+        this.symbolTable=new BaseSymbolTable();
     }
 
     @Override

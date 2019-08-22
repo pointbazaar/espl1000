@@ -1,20 +1,20 @@
 package org.vanautrui.languages.lexing;
 
 import org.junit.Test;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.*;
 
 import static org.junit.Assert.*;
 
-public class DragonLexerTest {
+public class LexerTest {
 
-    DragonLexer lexer = new DragonLexer();
+    Lexer lexer = new Lexer();
 
 
     @Test
     public void test_can_see_access_modifiers() throws Exception {
-        DragonTokenList token = lexer.lexCodeWithoutComments("public");
-        DragonTokenList token2 = lexer.lexCodeWithoutComments("private");
+        TokenList token = lexer.lexCodeWithoutComments("public");
+        TokenList token2 = lexer.lexCodeWithoutComments("private");
 
         assertTrue(token.get(0) instanceof AccessModifierToken);
         assertTrue(token2.get(0) instanceof AccessModifierToken);
@@ -25,7 +25,7 @@ public class DragonLexerTest {
 
     @Test
     public void test_can_see_line_with_semicolon() throws Exception{
-        DragonTokenList tokens = lexer.lexCodeWithoutComments("private char x;");
+        TokenList tokens = lexer.lexCodeWithoutComments("private char x;");
 
         //System.out.println(tokens.toSourceCodeFragment());
         //System.out.println(tokens.toString());
@@ -39,7 +39,7 @@ public class DragonLexerTest {
 
     @Test
     public void test_can_see_line_with_operators()throws Exception{
-        DragonTokenList tokens = lexer.lexCodeWithoutComments("x+=x;");
+        TokenList tokens = lexer.lexCodeWithoutComments("x+=x;");
 
         //System.out.println(tokens.toSourceCodeFragment());
         //System.out.println(tokens.toString());
@@ -53,7 +53,7 @@ public class DragonLexerTest {
 
     @Test
     public void test_lexes_returnstatement_favorably()throws Exception{
-        DragonTokenList tokens = lexer.lexCodeWithoutComments("return (-5)*n;");
+        TokenList tokens = lexer.lexCodeWithoutComments("return (-5)*n;");
 
         //System.out.println(tokens.toSourceCodeFragment());
         //System.out.println(tokens.toString());
@@ -74,7 +74,7 @@ public class DragonLexerTest {
 
     @Test
     public void test_lexes_other_returnstatement()throws Exception{
-        DragonTokenList tokens=lexer.lexCodeWithoutComments("return (n*faculty(n-1));");
+        TokenList tokens=lexer.lexCodeWithoutComments("return (n*faculty(n-1));");
 
         assertTrue(tokens.get(0) instanceof KeywordToken); //return
 
@@ -101,7 +101,7 @@ public class DragonLexerTest {
 
 	@Test
 	public void test_lexes_float_constant()throws Exception{
-		DragonTokenList ts = lexer.lexCodeWithoutComments("return 1.44;");
+		TokenList ts = lexer.lexCodeWithoutComments("return 1.44;");
 
 	assertTrue(ts.get(0) instanceof KeywordToken);
 

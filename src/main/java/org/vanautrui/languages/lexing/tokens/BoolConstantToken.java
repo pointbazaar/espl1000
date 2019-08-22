@@ -5,7 +5,7 @@ import org.vanautrui.languages.lexing.tokens.utils.*;
 import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
 
-public class BoolConstantToken extends BasicToken implements DragonToken {
+public class BoolConstantToken extends BasicToken implements Token {
 
 	//this class represents 'true' || 'false'
 

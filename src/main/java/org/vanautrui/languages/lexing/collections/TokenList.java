@@ -4,7 +4,7 @@ import org.fusesource.jansi.Ansi;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
-import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
+import org.vanautrui.languages.lexing.tokens.utils.Token;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -16,31 +16,31 @@ import java.util.stream.Collectors;
 import static org.fusesource.jansi.Ansi.ansi;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.getPreferredXMLSerializationStrategyHumanReadable;
 
-public class DragonTokenList {
+public class TokenList {
 
     //this is to facilitate special features
     //which would be convenient in a token list for our compiler
 
     @ElementList(name="tokens",entry="token")
-    private List<DragonToken> tokens;
+    private List<Token> tokens;
 
-    public DragonTokenList() {
+    public TokenList() {
         this.tokens = new ArrayList<>();
     }
 
-    public List<DragonToken> getTokens() {
+    public List<Token> getTokens() {
         return this.tokens;
     }
 
-    public DragonTokenList(List<DragonToken> list) {
+    public TokenList(List<Token> list) {
         this.tokens = new ArrayList<>(list);
     }
 
-    public DragonTokenList(DragonTokenList other) {
+    public TokenList(TokenList other) {
         this.tokens = new ArrayList<>(other.tokens);
     }
 
-    public void add(DragonToken token) {
+    public void add(Token token) {
         this.tokens.add(token);
     }
 
@@ -58,20 +58,20 @@ public class DragonTokenList {
         return this.tokens.size();
     }
 
-    public boolean startsWith(DragonToken token) {
+    public boolean startsWith(Token token) {
         if (this.tokens.size() > 0) {
             return this.tokens.get(0).equals(token);
         }
         return false;
     }
-    public boolean endsWith(DragonToken token) {
+    public boolean endsWith(Token token) {
         if (this.tokens.size() > 0) {
             return this.tokens.get(this.tokens.size()-1).equals(token);
         }
         return false;
     }
 
-    public void expectAndConsumeOtherWiseThrowException(DragonToken token) throws Exception {
+    public void expectAndConsumeOtherWiseThrowException(Token token) throws Exception {
 
         //equals() should be implemented correctly in all the tokens
 
@@ -127,20 +127,20 @@ public class DragonTokenList {
         return new String(new char[n]).replace("\0","\t");
     }
 
-    public DragonTokenList copy() {
-        return new DragonTokenList(this);
+    public TokenList copy() {
+        return new TokenList(this);
     }
 
-    public void set(DragonTokenList copy) {
+    public void set(TokenList copy) {
         this.tokens.clear();
         this.tokens.addAll(copy.tokens);
     }
 
-    public DragonToken get(int i) {
+    public Token get(int i) {
         return this.tokens.get(i);
     }
 
-    public DragonToken head() {
+    public Token head() {
         return this.get(0);
     }
 

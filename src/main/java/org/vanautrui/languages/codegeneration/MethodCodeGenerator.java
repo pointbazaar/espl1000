@@ -2,14 +2,14 @@ package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.symboltables.nameconversions.TypeNameToJVMInternalTypeNameConverter;
-import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
-import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
+import org.vanautrui.languages.symboltables.nameconversions.TypeNameToJVMInternalTypeNameConverter;
+import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
+import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.StatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 
-import static org.vanautrui.languages.symboltablegenerator.DragonSymbolTableGenerator.*;
+import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.*;
 
 import java.util.stream.Collectors;
 
@@ -17,7 +17,7 @@ import static org.objectweb.asm.Opcodes.*;
 
 public class MethodCodeGenerator {
 
-    public static void visitMethodNode(ClassWriter cw, ClassNode classNode, MethodNode methodNode, DragonSubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception {
+    public static void visitMethodNode(ClassWriter cw, ClassNode classNode, MethodNode methodNode, SubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception {
         String returnTypeName=methodNode.type.typeName;
 
 
@@ -37,7 +37,7 @@ public class MethodCodeGenerator {
         //cw.newMethod(owner,this.methodName.methodName.name.getContents(),descriptor,false);
 
         //make the method scope symbol table
-        DragonMethodScopeVariableSymbolTable methodScopeSymbolTable = createMethodScopeSymbolTable(methodNode,subroutineSymbolTable);
+        LocalVarSymbolTable methodScopeSymbolTable = createMethodScopeSymbolTable(methodNode,subroutineSymbolTable);
 
         if(debug) {
             System.out.println(methodScopeSymbolTable.toString());

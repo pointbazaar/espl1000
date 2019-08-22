@@ -2,14 +2,14 @@ package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.symboltables.nameconversions.TypeNameToJVMInternalTypeNameConverter;
-import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
-import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
+import org.vanautrui.languages.symboltables.nameconversions.TypeNameToJVMInternalTypeNameConverter;
+import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
+import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.MethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.typeresolution.DragonTypeResolver;
+import org.vanautrui.languages.typeresolution.TypeResolver;
 
 import java.util.stream.Collectors;
 
@@ -21,8 +21,8 @@ public class MethodCallCodeGenerator {
 
     private static void compile_printing_statement(
             ClassWriter cw, MethodVisitor mv, ClassNode classNode, MethodNode methodNode,
-            MethodCallNode methodCallNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
-            DragonSubroutineSymbolTable subroutineSymbolTable, boolean debug)throws Exception{
+            MethodCallNode methodCallNode, LocalVarSymbolTable methodScopeSymbolTable,
+            SubroutineSymbolTable subroutineSymbolTable, boolean debug)throws Exception{
 
         //TODO: actually compile the stuff, not just fake
 
@@ -39,7 +39,7 @@ public class MethodCallCodeGenerator {
             for(ExpressionNode expressionNode : methodCallNode.argumentList){
 
                 //TODO: make getTypeJVMInternal() to make this easier? or just make a translator class for it
-                String expressionType=DragonTypeResolver.getTypeExpressionNode(expressionNode,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
+                String expressionType= TypeResolver.getTypeExpressionNode(expressionNode,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
 
 		//set the method signature to the type
 		//which accepts our arguments
@@ -78,18 +78,18 @@ public class MethodCallCodeGenerator {
         }
     }
 
-    public static void visitMethodCallNode(ClassWriter cw, MethodVisitor mv, ClassNode classNode, MethodNode methodNode, MethodCallNode methodCallNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable, DragonSubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception {
+    public static void visitMethodCallNode(ClassWriter cw, MethodVisitor mv, ClassNode classNode, MethodNode methodNode, MethodCallNode methodCallNode, LocalVarSymbolTable methodScopeSymbolTable, SubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception {
         //TODO: actually compile the stuff, not just fake
 
         if(subroutineSymbolTable.containsVariable(methodCallNode.identifierMethodName.name)){
-            String subrType = DragonTypeResolver.getTypeMethodCallNode(methodCallNode,subroutineSymbolTable);
+            String subrType = TypeResolver.getTypeMethodCallNode(methodCallNode,subroutineSymbolTable);
 
             String methodName = methodCallNode.identifierMethodName.name;
             String owner=classNode.name.typeName;//TODO: figure out if this is ok
             String descriptor= TypeNameToJVMInternalTypeNameConverter.convertSubroutineName(
                     subrType,methodCallNode.argumentList.stream().map(expressionNode -> {
                         try {
-                            return DragonTypeResolver.getTypeExpressionNode(expressionNode,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
+                            return TypeResolver.getTypeExpressionNode(expressionNode,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
                         } catch (Exception e) {
                             e.printStackTrace();
                             throw new RuntimeException(" FATAL error in DragonMethodCallCodeGenerator");

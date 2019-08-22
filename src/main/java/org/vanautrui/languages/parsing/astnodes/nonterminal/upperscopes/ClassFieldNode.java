@@ -1,7 +1,7 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes;
 
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.AccessModifierNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.IdentifierNode;
@@ -15,10 +15,10 @@ public class ClassFieldNode implements IASTNode {
 
     public IdentifierNode name;
 
-    public ClassFieldNode(DragonTokenList tokens) throws Exception {
+    public ClassFieldNode(TokenList tokens) throws Exception {
         //System.out.println("try parse DragonClassFieldNode");
 
-        DragonTokenList copy = tokens.copy();
+        TokenList copy = tokens.copy();
 
         this.access = new AccessModifierNode(copy);
 

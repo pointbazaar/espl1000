@@ -1,13 +1,13 @@
 package org.vanautrui.languages.lexing;
 
 import org.junit.Test;
-import org.vanautrui.languages.phase_clean_the_input.DragonCommentRemover;
+import org.vanautrui.languages.phase_clean_the_input.CommentRemover;
 
 import static org.junit.Assert.assertEquals;
 
-public class DragonCommentRemoverTest {
+public class CommentRemoverTest {
 
-    DragonCommentRemover remover = new DragonCommentRemover();
+    CommentRemover remover = new CommentRemover();
 
     @Test
     public void test_remove_single_line_comments() {

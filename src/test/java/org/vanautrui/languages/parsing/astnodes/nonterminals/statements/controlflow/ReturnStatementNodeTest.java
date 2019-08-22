@@ -1,7 +1,7 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminals.statements.controlflow;
 
 import org.junit.Test;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.ReturnStatementNode;
 
@@ -9,7 +9,7 @@ public class ReturnStatementNodeTest {
 
     @Test
     public void test1() throws Exception {
-        DragonTokenList list = new DragonTokenList();
+        TokenList list = new TokenList();
         list.add(new KeywordToken("return"));
 
         list.add(new SymbolToken("("));
@@ -26,7 +26,7 @@ public class ReturnStatementNodeTest {
 
     @Test
     public void test2() throws Exception {
-        DragonTokenList list = new DragonTokenList();
+        TokenList list = new TokenList();
         list.add(new KeywordToken("return"));
 
         list.add(new SymbolToken("("));

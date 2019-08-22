@@ -1,8 +1,8 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminals;
 
 import org.junit.Test;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.*;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 
 public class MethodNodeTest {
@@ -10,7 +10,7 @@ public class MethodNodeTest {
     @Test
     public void test_can_parse_method_with_arguments() throws Exception {
 
-        DragonTokenList list = new DragonTokenList();
+        TokenList list = new TokenList();
 
 
         list.add(new AccessModifierToken("public"));
@@ -37,7 +37,7 @@ public class MethodNodeTest {
     @Test
     public void test_can_parse_method_without_arguments() throws Exception {
 
-        DragonTokenList list = new DragonTokenList();
+        TokenList list = new TokenList();
 
 
         list.add(new AccessModifierToken("public"));

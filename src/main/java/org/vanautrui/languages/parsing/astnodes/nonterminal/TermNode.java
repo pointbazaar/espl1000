@@ -1,6 +1,6 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.ITermNode;
@@ -27,9 +27,9 @@ public class TermNode implements IASTNode, IExpressionComputable {
 
     //TODO: insert the oher alternatives
 
-    public TermNode(DragonTokenList tokens)throws Exception{
+    public TermNode(TokenList tokens)throws Exception{
 
-        DragonTokenList copy = new DragonTokenList(tokens);
+        TokenList copy = new TokenList(tokens);
 		try{
 			this.termNode=new FloatConstantNode(copy);
 		}catch(Exception e0){
@@ -40,7 +40,7 @@ public class TermNode implements IASTNode, IExpressionComputable {
 		            this.termNode=new StringConstantNode(copy);
 		        }catch (Exception e2){
 		            try {
-		                DragonTokenList copy2=new DragonTokenList(copy);
+		                TokenList copy2=new TokenList(copy);
 
 		                copy2.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
 		                this.termNode=new ExpressionNode(copy2);

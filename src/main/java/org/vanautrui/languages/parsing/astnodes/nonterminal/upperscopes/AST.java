@@ -1,6 +1,6 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes;
 
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.IASTNode;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -9,7 +9,7 @@ public class AST implements IASTNode {
 
     public Set<ClassNode> classNodeList = new HashSet<>();
 
-    public AST(DragonTokenList tokens) throws Exception {
+    public AST(TokenList tokens) throws Exception {
         //System.out.println("try parse DragonAST");
 
         //List<DragonToken> copy = new ArrayList<>(tokens);

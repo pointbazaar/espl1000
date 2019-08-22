@@ -1,7 +1,7 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
-import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
+import org.vanautrui.languages.lexing.collections.TokenList;
+import org.vanautrui.languages.lexing.tokens.utils.Token;
 import org.vanautrui.languages.lexing.tokens.OperatorToken;
 import org.vanautrui.languages.parsing.IASTNode;
 
@@ -11,11 +11,11 @@ public class OperatorNode implements IASTNode {
 
     public String operator;
 
-    public OperatorNode(DragonTokenList tokens)throws Exception{
+    public OperatorNode(TokenList tokens)throws Exception{
 
-        DragonTokenList copy = new DragonTokenList(tokens);
+        TokenList copy = new TokenList(tokens);
 
-        DragonToken token = copy.get(0);
+        Token token = copy.get(0);
 
         if(token instanceof OperatorToken){
             this.operator=((OperatorToken)token).operator;

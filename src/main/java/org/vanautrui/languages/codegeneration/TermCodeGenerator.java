@@ -2,8 +2,8 @@ package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
-import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
+import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
+import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.MethodCallNode;
@@ -22,8 +22,8 @@ public class TermCodeGenerator {
             ClassNode classNode,
             MethodNode methodNode,
             TermNode termNode,
-            DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
-            DragonSubroutineSymbolTable subroutineSymbolTable,
+            LocalVarSymbolTable methodScopeSymbolTable,
+            SubroutineSymbolTable subroutineSymbolTable,
             boolean debug
     ) throws Exception {
 	if(termNode.termNode instanceof FloatConstantNode){

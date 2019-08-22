@@ -3,8 +3,8 @@ package org.vanautrui.languages.lexing.tokens;
 import org.junit.Assert;
 import org.junit.Test;
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.DragonLexer;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.Lexer;
+import org.vanautrui.languages.lexing.collections.TokenList;
 
 public class IdentifierTokenTest {
 
@@ -23,12 +23,12 @@ public class IdentifierTokenTest {
 
         String source = "vector <string> arg_ls;";
 
-        DragonLexer lexer = new DragonLexer();
-        DragonTokenList dragonTokenList = lexer.lexCodeWithoutComments(source);
+        Lexer lexer = new Lexer();
+        TokenList tokenList = lexer.lexCodeWithoutComments(source);
 
-        Assert.assertTrue(dragonTokenList.get(4) instanceof IdentifierToken);
+        Assert.assertTrue(tokenList.get(4) instanceof IdentifierToken);
 
-        Assert.assertEquals("arg_ls",dragonTokenList.get(4).getContents());
+        Assert.assertEquals("arg_ls", tokenList.get(4).getContents());
     }
 
     @Test

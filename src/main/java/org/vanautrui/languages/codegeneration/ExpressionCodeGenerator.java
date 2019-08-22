@@ -2,14 +2,14 @@ package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
-import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
+import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
+import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.OperatorNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import static org.vanautrui.languages.typeresolution.DragonTypeResolver.*;
+import static org.vanautrui.languages.typeresolution.TypeResolver.*;
 public class ExpressionCodeGenerator {
 
     public static void visitExpression(
@@ -18,8 +18,8 @@ public class ExpressionCodeGenerator {
             ClassNode classNode,
             MethodNode methodNode,
             ExpressionNode expressionNode,
-            DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
-            DragonSubroutineSymbolTable subroutineSymbolTable,
+            LocalVarSymbolTable methodScopeSymbolTable,
+            SubroutineSymbolTable subroutineSymbolTable,
             boolean debug
     ) throws Exception {
 

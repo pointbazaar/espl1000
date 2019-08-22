@@ -1,6 +1,6 @@
 package org.vanautrui.languages.typeresolution;
 
-import org.vanautrui.languages.codegeneration.symboltables.tables.*;
+import org.vanautrui.languages.symboltables.tables.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.MethodCallNode;
@@ -10,7 +10,7 @@ import org.vanautrui.languages.parsing.astnodes.terminal.*;
 import java.util.Arrays;
 import java.util.List;
 
-public class DragonTypeResolver {
+public class TypeResolver {
 
     //todo: make some class or global subroutine
     //that can then convert the type description directly
@@ -27,7 +27,7 @@ public class DragonTypeResolver {
         return "String";
     }
 
-    public static String getTypeVariableNode(VariableNode variableNode, MethodNode methodNode, DragonSubroutineSymbolTable subroutineSymbolTable, DragonMethodScopeVariableSymbolTable varTable)throws Exception{
+    public static String getTypeVariableNode(VariableNode variableNode, MethodNode methodNode, SubroutineSymbolTable subroutineSymbolTable, LocalVarSymbolTable varTable)throws Exception{
         //TODO: implement by looking at the definitions in the AST and such
 
         if( varTable.containsVariable(variableNode.name) ){
@@ -38,8 +38,8 @@ public class DragonTypeResolver {
     }
 
     public static String getTypeTermNode(TermNode termNode, MethodNode methodNode,
-                                         DragonSubroutineSymbolTable subroutineSymbolTable,
-                                         DragonMethodScopeVariableSymbolTable varTable
+                                         SubroutineSymbolTable subroutineSymbolTable,
+                                         LocalVarSymbolTable varTable
     )throws Exception{
         if(termNode.termNode instanceof ExpressionNode){
             return getTypeExpressionNode((ExpressionNode)termNode.termNode,methodNode,subroutineSymbolTable,varTable);
@@ -61,7 +61,7 @@ public class DragonTypeResolver {
 
     }
 
-    public static String getTypeExpressionNode(ExpressionNode expressionNode, MethodNode methodNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable) throws Exception{
+    public static String getTypeExpressionNode(ExpressionNode expressionNode, MethodNode methodNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
         List<String> boolean_operators= Arrays.asList("<",">","<=",">=","==","!=");
 
         if(
@@ -110,7 +110,7 @@ public class DragonTypeResolver {
         return getTypeTermNode(expressionNode.term,methodNode,subTable,varTable);
     }
 
-    public static String getTypeMethodCallNode(MethodCallNode methodCallNode, DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
+    public static String getTypeMethodCallNode(MethodCallNode methodCallNode, SubroutineSymbolTable subroutineSymbolTable) throws Exception{
 
         String subrName = methodCallNode.getMethodName();
 

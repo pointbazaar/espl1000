@@ -1,7 +1,7 @@
 package org.vanautrui.languages.parsing.astnodes.terminal;
 
 import org.vanautrui.languages.lexing.tokens.*;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.ITermNode;
 
@@ -11,9 +11,9 @@ public class FloatConstantNode implements IASTNode, ITermNode {
 
     public float value;
 
-    public FloatConstantNode(DragonTokenList tokens) throws Exception {
+    public FloatConstantNode(TokenList tokens) throws Exception {
 
-        DragonTokenList copy = new DragonTokenList(tokens);
+        TokenList copy = new TokenList(tokens);
 
         if(copy.get(0) instanceof OperatorToken){
             OperatorToken tk = (OperatorToken)copy.get(0);

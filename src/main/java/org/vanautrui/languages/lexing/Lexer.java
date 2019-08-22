@@ -1,17 +1,17 @@
 package org.vanautrui.languages.lexing;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.*;
-import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
+import org.vanautrui.languages.lexing.tokens.utils.Token;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DragonLexer {
-    public DragonTokenList lexCodeWithoutComments(String sourcecodeWithoutComments) throws Exception {
+public class Lexer {
+    public TokenList lexCodeWithoutComments(String sourcecodeWithoutComments) throws Exception {
 
-        DragonTokenList tokens = tokenize(new CharacterList(sourcecodeWithoutComments));
+        TokenList tokens = tokenize(new CharacterList(sourcecodeWithoutComments));
 
         //System.out.println("TOKENS:");
         //System.out.println(tokens.toString());
@@ -19,10 +19,10 @@ public class DragonLexer {
         return tokens;
     }
 
-    private DragonTokenList tokenize(CharacterList sourceCodeWithBracesWithoutCommentsWithoutNewlines) throws Exception {
+    private TokenList tokenize(CharacterList sourceCodeWithBracesWithoutCommentsWithoutNewlines) throws Exception {
         CharacterList myCode = new CharacterList(sourceCodeWithBracesWithoutCommentsWithoutNewlines);
 
-        List<DragonToken> result = new ArrayList<>();
+        List<Token> result = new ArrayList<>();
 
         //TODO
 
@@ -134,7 +134,7 @@ public class DragonLexer {
                     );
         }
 
-        return new DragonTokenList(result);
+        return new TokenList(result);
     }
 
 }

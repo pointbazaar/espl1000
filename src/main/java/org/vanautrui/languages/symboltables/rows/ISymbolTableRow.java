@@ -1,4 +1,4 @@
-package org.vanautrui.languages.codegeneration.symboltables.rows;
+package org.vanautrui.languages.symboltables.rows;
 
 /*
 if there was only a way to constrain visibility of

@@ -3,8 +3,8 @@ package org.vanautrui.languages.codegeneration;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.vanautrui.languages.lexing.DragonLexer;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.Lexer;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.Parser;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 public class JavaByteCodeGeneratorTest {
 
     public static Process compile_and_run_but_not_waitFor(String source,String classNameWithoutExtension) throws Exception{
-        DragonTokenList tokens = (new DragonLexer()).lexCodeWithoutComments(source);
+        TokenList tokens = (new Lexer()).lexCodeWithoutComments(source);
         Parser parser = new Parser();
         AST ast= parser.parse(tokens);
 

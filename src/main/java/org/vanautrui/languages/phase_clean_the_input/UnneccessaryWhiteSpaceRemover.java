@@ -3,7 +3,7 @@ package org.vanautrui.languages.phase_clean_the_input;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class DragonUnneccessaryWhiteSpaceRemover {
+public class UnneccessaryWhiteSpaceRemover {
 
     public static String remove_unneccessary_whitespace(String codeWithoutCommentsAndWithoutEmptyLines) {
 

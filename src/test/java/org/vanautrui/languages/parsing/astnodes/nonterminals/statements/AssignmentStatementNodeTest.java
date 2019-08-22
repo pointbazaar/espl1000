@@ -1,7 +1,7 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminals.statements;
 
 import org.junit.Test;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
 import org.vanautrui.languages.lexing.tokens.IntegerNonNegativeConstantToken;
 import org.vanautrui.languages.lexing.tokens.OperatorToken;
@@ -13,7 +13,7 @@ public class AssignmentStatementNodeTest {
     @Test
     public void test1()throws Exception{
 
-        DragonTokenList tokens = new DragonTokenList();
+        TokenList tokens = new TokenList();
 
         tokens.add(new IdentifierToken("x"));
         tokens.add(new OperatorToken("="));
@@ -26,7 +26,7 @@ public class AssignmentStatementNodeTest {
     @Test
     public void test_assign_method_call_result()throws Exception{
 
-        DragonTokenList tokens = new DragonTokenList();
+        TokenList tokens = new TokenList();
 
         tokens.add(new IdentifierToken("x"));
         tokens.add(new OperatorToken("="));
@@ -46,7 +46,7 @@ public class AssignmentStatementNodeTest {
     @Test
     public void test_assign_method_call_result_2()throws Exception{
 
-        DragonTokenList tokens = new DragonTokenList();
+        TokenList tokens = new TokenList();
 
         tokens.add(new IdentifierToken("x"));
         tokens.add(new OperatorToken("="));

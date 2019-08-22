@@ -3,11 +3,11 @@ package org.vanautrui.languages.lexing.tokens;
 import org.simpleframework.xml.Attribute;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
-import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
+import org.vanautrui.languages.lexing.tokens.utils.Token;
 import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
 
-public class OperatorToken extends BasicToken implements DragonToken {
+public class OperatorToken extends BasicToken implements Token {
 
     //TODO: add all the operator tokens that should be supported
 

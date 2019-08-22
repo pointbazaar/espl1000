@@ -2,8 +2,8 @@ package org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.DeclaredArgumentNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.MethodNameNode;
@@ -47,13 +47,13 @@ public class MethodNode implements IASTNode {
     @ElementList
     public List<StatementNode> statements = new ArrayList<>();
 
-    public MethodNode(DragonTokenList tokens) throws Exception {
+    public MethodNode(TokenList tokens) throws Exception {
 
         //System.out.println("try parse DragonMethodNode");
 
         //TODO: consider the 2 alternative ways a method can be declared
 
-        DragonTokenList copy = tokens.copy();
+        TokenList copy = tokens.copy();
 
         this.access = new AccessModifierNode(copy);
 

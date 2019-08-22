@@ -2,8 +2,8 @@ package org.vanautrui.languages.parsing.astnodes.nonterminal.statements;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.ElementList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.ITermNode;
 import org.vanautrui.languages.parsing.astnodes.IExpressionComputable;
@@ -26,11 +26,11 @@ public class MethodCallNode implements IASTNode, IStatementNode, IExpressionComp
     @ElementList
     public List<ExpressionNode> argumentList = new ArrayList<>();
 
-    public MethodCallNode(DragonTokenList tokens) throws Exception {
+    public MethodCallNode(TokenList tokens) throws Exception {
 
         //System.out.println("try parse DragonMethodCallNode");
 
-        DragonTokenList copy = tokens.copy();
+        TokenList copy = tokens.copy();
 
         this.identifierMethodName = new IdentifierNode(copy);
 
@@ -44,7 +44,7 @@ public class MethodCallNode implements IASTNode, IStatementNode, IExpressionComp
         }
         while (success_argument) {
             try {
-                DragonTokenList copy2=new DragonTokenList(copy);
+                TokenList copy2=new TokenList(copy);
 
                 copy2.expectAndConsumeOtherWiseThrowException(new SymbolToken(","));
                 this.argumentList.add(new ExpressionNode(copy2));

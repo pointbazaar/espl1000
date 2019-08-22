@@ -1,7 +1,7 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow;
 
 import org.simpleframework.xml.Attribute;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.KeywordToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IASTNode;
@@ -23,9 +23,9 @@ public class ReturnStatementNode implements IASTNode, IStatementNode {
 
     public Optional<ExpressionNode> returnValue=Optional.empty();
 
-    public ReturnStatementNode(DragonTokenList tokens)throws Exception{
+    public ReturnStatementNode(TokenList tokens)throws Exception{
 
-        DragonTokenList copy = new DragonTokenList(tokens);
+        TokenList copy = new TokenList(tokens);
 
         copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("return"));
 

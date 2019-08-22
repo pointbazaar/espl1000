@@ -1,7 +1,7 @@
 package org.vanautrui.languages.parsing.astnodes.terminal;
 
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.*;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.ITermNode;
 
@@ -11,9 +11,9 @@ public class BoolConstantNode implements IASTNode, ITermNode {
 
     public boolean value;
 
-    public BoolConstantNode(DragonTokenList tokens) throws Exception {
+    public BoolConstantNode(TokenList tokens) throws Exception {
 
-        DragonTokenList copy = new DragonTokenList(tokens);
+        TokenList copy = new TokenList(tokens);
 
         if(copy.get(0) instanceof BoolConstantToken){
             BoolConstantToken tk = (BoolConstantToken)copy.get(0);

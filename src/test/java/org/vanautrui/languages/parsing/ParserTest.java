@@ -2,7 +2,7 @@ package org.vanautrui.languages.parsing;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 
@@ -14,7 +14,7 @@ public class ParserTest {
 
     @Test
     public void test_can_create_correct_classnode() throws Exception {
-        DragonTokenList tokens = new DragonTokenList();
+        TokenList tokens = new TokenList();
         tokens.add(new AccessModifierToken("public"));
         tokens.add(new ClassToken());
 

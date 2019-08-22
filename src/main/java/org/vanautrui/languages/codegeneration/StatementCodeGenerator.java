@@ -2,8 +2,8 @@ package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
-import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
+import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
+import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.MethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.StatementNode;
@@ -13,7 +13,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlfl
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.WhileStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.typeresolution.DragonTypeResolver;
+import org.vanautrui.languages.typeresolution.TypeResolver;
 
 import static org.objectweb.asm.Opcodes.*;
 import static org.vanautrui.languages.codegeneration.LoopStatementCodeGenerator.visitLoopStatmentNode;
@@ -26,8 +26,8 @@ public class StatementCodeGenerator {
             ClassNode classNode,
             MethodNode methodNode,
             StatementNode statementNode,
-            DragonSubroutineSymbolTable subroutineSymbolTable,
-            DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
+            SubroutineSymbolTable subroutineSymbolTable,
+            LocalVarSymbolTable methodScopeSymbolTable,
             boolean debug
     ) throws Exception {
 
@@ -38,7 +38,7 @@ public class StatementCodeGenerator {
             MethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,call,methodScopeSymbolTable,subroutineSymbolTable,debug);
 
             //TODO: if the method was not Void, we should pop something off the stack
-            String returnType = DragonTypeResolver.getTypeMethodCallNode(call,subroutineSymbolTable);
+            String returnType = TypeResolver.getTypeMethodCallNode(call,subroutineSymbolTable);
 
             if(!returnType.equals("Void")){
                 mv.visitInsn(POP);
@@ -56,7 +56,7 @@ public class StatementCodeGenerator {
             ExpressionCodeGenerator
                     .visitExpression(cw, mv, classNode, methodNode, assignmentStatementNode.expressionNode, methodScopeSymbolTable,subroutineSymbolTable,debug);
 
-            String expressionType= DragonTypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
+            String expressionType= TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
             switch(expressionType){
                 case "Int":
 				case "Bool":

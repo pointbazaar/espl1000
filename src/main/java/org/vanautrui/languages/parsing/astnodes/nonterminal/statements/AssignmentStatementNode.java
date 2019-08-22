@@ -1,6 +1,6 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal.statements;
 
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.OperatorToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IASTNode;
@@ -13,9 +13,9 @@ public class AssignmentStatementNode implements IASTNode, IStatementNode {
 
     public ExpressionNode expressionNode;
 
-    public AssignmentStatementNode(DragonTokenList tokens) throws Exception {
+    public AssignmentStatementNode(TokenList tokens) throws Exception {
 
-        DragonTokenList copy = tokens.copy();
+        TokenList copy = tokens.copy();
 
         this.variableNode=new VariableNode(copy);
 

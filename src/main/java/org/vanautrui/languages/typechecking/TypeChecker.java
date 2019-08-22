@@ -1,19 +1,19 @@
 package org.vanautrui.languages.typechecking;
 
 import org.vanautrui.languages.symboltablegenerator.*;
-import org.vanautrui.languages.codegeneration.symboltables.tables.*;
+import org.vanautrui.languages.symboltables.tables.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.*;
 import org.vanautrui.languages.parsing.astnodes.terminal.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.*;
-import org.vanautrui.languages.typeresolution.DragonTypeResolver;
+import org.vanautrui.languages.typeresolution.TypeResolver;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-public class DragonTypeChecker {
+public class TypeChecker {
 
     //this class is supposed to typecheck the program.
     //it receives the 'environment' of a node as arguments
@@ -29,14 +29,14 @@ public class DragonTypeChecker {
 
                 //TODO: create a the  symbol table with all classes being compiled
                 //otherwise we cannot call methods from other classes
-                DragonSubroutineSymbolTable subroutineSymbolTable = DragonSymbolTableGenerator.createSubroutineSymbolTable(classNode);
+                SubroutineSymbolTable subroutineSymbolTable = SymbolTableGenerator.createSubroutineSymbolTable(classNode);
 
                 typeCheckClassNode(asts,classNode,subroutineSymbolTable);
             }
         }
     }
 
-    private void typeCheckClassNode(Set<AST> asts, ClassNode classNode, DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
+    private void typeCheckClassNode(Set<AST> asts, ClassNode classNode, SubroutineSymbolTable subroutineSymbolTable) throws Exception{
         int count=0;
         for(AST ast : asts){
             for(ClassNode dragonClassNode : ast.classNodeList){
@@ -61,10 +61,10 @@ public class DragonTypeChecker {
         }
     }
 
-    private void typeCheckMethodNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, DragonSubroutineSymbolTable subTable) throws Exception{
+    private void typeCheckMethodNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, SubroutineSymbolTable subTable) throws Exception{
 
 	//create the variable Symbol table, to typecheck the statements
-	DragonMethodScopeVariableSymbolTable varTable = DragonSymbolTableGenerator.createMethodScopeSymbolTable(methodNode,subTable);
+	LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(methodNode,subTable);
 
         typeCheckMethodNameNode(asts,classNode,methodNode.methodName);
 
@@ -84,7 +84,7 @@ public class DragonTypeChecker {
         typeCheckTypeIdentifierNode(asts,classNode,classFieldNode.type);
     }
 
-    private void typeCheckStatementNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, StatementNode statementNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable)throws Exception{
+    private void typeCheckStatementNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, StatementNode statementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable)throws Exception{
         //it depends on the instance
         if(statementNode.statementNode instanceof AssignmentStatementNode) {
             AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode) statementNode.statementNode;
@@ -109,7 +109,7 @@ public class DragonTypeChecker {
         }
     }
 
-    private void typeCheckReturnStatementNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, ReturnStatementNode returnStatementNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable) throws Exception{
+    private void typeCheckReturnStatementNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, ReturnStatementNode returnStatementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
         //well the type of the value returned should be the same as the method return type
         //in case of void there should be no value returned
         if(methodNode.type.typeName.equals("Void")){
@@ -117,7 +117,7 @@ public class DragonTypeChecker {
                 throw new Exception(" Type Checking Failed. do not return a value from a Void method. "+returnStatementNode.returnValue.get().toSourceCode());
             }
         }else{
-            String returnValueType= DragonTypeResolver.getTypeExpressionNode(returnStatementNode.returnValue.get(),methodNode,subTable,varTable);
+            String returnValueType= TypeResolver.getTypeExpressionNode(returnStatementNode.returnValue.get(),methodNode,subTable,varTable);
             if(
                 !(returnValueType.equals(methodNode.type.typeName))
             ){
@@ -131,10 +131,10 @@ public class DragonTypeChecker {
     private void typeCheckIfStatementNode(Set<AST> asts, ClassNode classNode,
                                           MethodNode methodNode,
                                           IfStatementNode ifStatementNode,
-                                          DragonSubroutineSymbolTable subTable,
-                                          DragonMethodScopeVariableSymbolTable varTable) throws Exception{
+                                          SubroutineSymbolTable subTable,
+                                          LocalVarSymbolTable varTable) throws Exception{
         //the condition expression should be of type boolean
-        String conditionType = DragonTypeResolver.getTypeExpressionNode(ifStatementNode.condition,methodNode,subTable,varTable);
+        String conditionType = TypeResolver.getTypeExpressionNode(ifStatementNode.condition,methodNode,subTable,varTable);
         if(!conditionType.equals("Bool") && !conditionType.equals("Boolean")){
             throw new Exception(" condition should be of type boolean");
         }
@@ -146,7 +146,7 @@ public class DragonTypeChecker {
         }
     }
 
-    private void typeCheckMethodCallNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, MethodCallNode methodCallNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable) throws Exception{
+    private void typeCheckMethodCallNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, MethodCallNode methodCallNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
         //TODO: check that the method is called on an object
         //which is actually declared and initialized
         //and is in scope
@@ -159,7 +159,7 @@ public class DragonTypeChecker {
         }
     }
 
-    private void typeCheckExpressionNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, ExpressionNode expr, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable) throws Exception{
+    private void typeCheckExpressionNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, ExpressionNode expr, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
         //check that the terms have a type such that the operator will work
 
         //for later:
@@ -182,7 +182,7 @@ public class DragonTypeChecker {
 
 	//the types should be all the same for now
 	typecheckTermNode(asts,classNode,methodNode,expr.term,subTable,varTable);
-	String type=DragonTypeResolver.getTypeTermNode(expr.term,methodNode,subTable,varTable);
+	String type= TypeResolver.getTypeTermNode(expr.term,methodNode,subTable,varTable);
 	List<String> currentAllowedTypes=Arrays.asList("Int","Float");
 	if(!currentAllowedTypes.contains(type)){
 		if(expr.termNodes.size()==0 && type.equals("String")){
@@ -194,7 +194,7 @@ public class DragonTypeChecker {
 		}
 	}
         for (TermNode t : expr.termNodes){
-            if( !( DragonTypeResolver.getTypeTermNode(t,methodNode,subTable,varTable).equals(type) ) ){
+            if( !( TypeResolver.getTypeTermNode(t,methodNode,subTable,varTable).equals(type) ) ){
                 throw new Exception("for now, all types in an expression must be the same");
             }
             //typecheck the term node, maybe it contains identifiers that are not declared?
@@ -210,7 +210,7 @@ public class DragonTypeChecker {
         //TODO: look for the other cases
     }
 
-    private void typecheckTermNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, TermNode termNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable) throws Exception{
+    private void typecheckTermNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, TermNode termNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
 	if(termNode.termNode instanceof FloatConstantNode){
 		    //nothing to do
 	}else if(termNode.termNode instanceof IntegerConstantNode){
@@ -230,7 +230,7 @@ public class DragonTypeChecker {
         }
     }
 
-    private void typeCheckVariableNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, VariableNode variableNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable) throws Exception{
+    private void typeCheckVariableNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, VariableNode variableNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
         //TODO: it should check that the variable is
         //declared in method scope or class scope.
         //so there should be some declaration of it
@@ -268,11 +268,11 @@ public class DragonTypeChecker {
             ClassNode classNode,
             MethodNode methodNode,
          WhileStatementNode whileStatementNode,
-         DragonSubroutineSymbolTable subTable,
-         DragonMethodScopeVariableSymbolTable varTable
+         SubroutineSymbolTable subTable,
+         LocalVarSymbolTable varTable
     ) throws Exception{
         //the condition expression should be of type boolean
-        String conditionType=DragonTypeResolver.getTypeExpressionNode(whileStatementNode.condition,methodNode,subTable,varTable);
+        String conditionType= TypeResolver.getTypeExpressionNode(whileStatementNode.condition,methodNode,subTable,varTable);
         if(!conditionType.equals("Bool") && !conditionType.equals("Boolean")){
             throw new Exception(" condition should be of type boolean : '"+whileStatementNode.condition.toSourceCode()+"' but was of type: "+conditionType);
         }
@@ -282,11 +282,11 @@ public class DragonTypeChecker {
     }
 
     private void typeCheckLoopStatementNode(
-            Set<AST> asts, ClassNode classNode, MethodNode methodNode, LoopStatementNode loopStatementNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable
+            Set<AST> asts, ClassNode classNode, MethodNode methodNode, LoopStatementNode loopStatementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable
     ) throws Exception{
         //the condition expression should be of type boolean
 
-        String countType= DragonTypeResolver.getTypeExpressionNode(loopStatementNode.count,methodNode,subTable,varTable);
+        String countType= TypeResolver.getTypeExpressionNode(loopStatementNode.count,methodNode,subTable,varTable);
         if(!countType.equals("Int")){
             throw new Exception(" condition should be of type Int . this is a loop statement after all.");
         }
@@ -296,10 +296,10 @@ public class DragonTypeChecker {
     }
 
     private void typeCheckAssignmentStatementNode(
-            Set<AST> asts, ClassNode classNode, MethodNode methodNode, AssignmentStatementNode assignmentStatementNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable
+            Set<AST> asts, ClassNode classNode, MethodNode methodNode, AssignmentStatementNode assignmentStatementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable
     ) throws Exception{
-        String leftSideType = DragonTypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,methodNode,subTable,varTable);
-        String rightSideType = DragonTypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,varTable);
+        String leftSideType = TypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,methodNode,subTable,varTable);
+        String rightSideType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,varTable);
         if(!leftSideType.equals(rightSideType)){
             throw new Exception("with an assignment, both sides have to have the same type. here, a value of type "+rightSideType+" was assigned to a value of type "+leftSideType);
         }

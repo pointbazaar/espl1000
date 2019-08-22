@@ -1,6 +1,6 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal.statements;
 
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.IfStatementNode;
@@ -15,10 +15,10 @@ public class StatementNode implements IASTNode {
     //can be method call ,loop statement, while statement, ...
     public IStatementNode statementNode;
 
-    public StatementNode(DragonTokenList tokens) throws Exception {
+    public StatementNode(TokenList tokens) throws Exception {
         //System.out.println("try parse DragonStatementNode");
 
-        DragonTokenList copy = tokens.copy();
+        TokenList copy = tokens.copy();
 
         try {
             this.statementNode = new MethodCallNode(copy);

@@ -3,12 +3,12 @@ package org.vanautrui.languages.lexing.tokens;
 import org.simpleframework.xml.Attribute;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
-import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
+import org.vanautrui.languages.lexing.tokens.utils.Token;
 
 import java.awt.*;
 import com.fasterxml.jackson.annotation.*;
 
-public class AccessModifierToken extends BasicToken implements DragonToken {
+public class AccessModifierToken extends BasicToken implements Token {
 
     @Attribute
     public boolean is_public;

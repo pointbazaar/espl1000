@@ -3,7 +3,7 @@ package org.vanautrui.languages.phase_clean_the_input;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class DragonCommentRemover {
+public class CommentRemover {
     public String strip_all_comments_and_empty_lines(String sourcecode) throws Exception {
 
         StringBuilder result = new StringBuilder();

@@ -1,11 +1,11 @@
-package org.vanautrui.languages.codegeneration.symboltables.rows;
+package org.vanautrui.languages.symboltables.rows;
 
-public class DragonSubroutineSymbolTableRow implements ISymbolTableRow {
+public class SubroutineSymbolTableRow implements ISymbolTableRow {
 
     public final String subRoutineName;
     public final String typeName;
 
-    public DragonSubroutineSymbolTableRow( String subRoutineName, String typeName){
+    public SubroutineSymbolTableRow(String subRoutineName, String typeName){
 
         this.typeName=typeName;
         this.subRoutineName = subRoutineName;

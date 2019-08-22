@@ -1,6 +1,6 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow;
 
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.KeywordToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IASTNode;
@@ -18,9 +18,9 @@ public class WhileStatementNode implements IASTNode, IStatementNode {
 
     public List<StatementNode> statements=new ArrayList<>();
 
-    public WhileStatementNode(DragonTokenList tokens)throws Exception{
+    public WhileStatementNode(TokenList tokens)throws Exception{
 
-        DragonTokenList copy = new DragonTokenList(tokens);
+        TokenList copy = new TokenList(tokens);
 
         copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("while"));
 

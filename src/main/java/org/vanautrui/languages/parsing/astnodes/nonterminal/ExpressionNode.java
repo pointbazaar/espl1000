@@ -1,6 +1,6 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.ITermNode;
 import org.vanautrui.languages.parsing.astnodes.IExpressionComputable;
@@ -19,16 +19,16 @@ public class ExpressionNode implements IASTNode, IExpressionComputable, ITermNod
 
     public List<TermNode> termNodes=new ArrayList<>();
 
-    public ExpressionNode(DragonTokenList tokens) throws Exception {
+    public ExpressionNode(TokenList tokens) throws Exception {
 
-        DragonTokenList copy = tokens.copy();
+        TokenList copy = tokens.copy();
 
         this.term=new TermNode(copy);
 
         try{
 
             while(true){
-                DragonTokenList copy2=new DragonTokenList(copy);
+                TokenList copy2=new TokenList(copy);
 
                 OperatorNode myop=new OperatorNode(copy2);
                 TermNode myterm=new TermNode(copy2);

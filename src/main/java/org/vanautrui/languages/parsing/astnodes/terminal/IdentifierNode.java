@@ -1,8 +1,8 @@
 package org.vanautrui.languages.parsing.astnodes.terminal;
 
-import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
+import org.vanautrui.languages.lexing.collections.TokenList;
+import org.vanautrui.languages.lexing.tokens.utils.Token;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.parsing.IASTNode;
 
 public class IdentifierNode implements IASTNode {
@@ -11,13 +11,13 @@ public class IdentifierNode implements IASTNode {
 
     public String name;
 
-    public IdentifierNode(DragonTokenList tokens) throws Exception {
+    public IdentifierNode(TokenList tokens) throws Exception {
 
         //List<DragonToken> copy = new ArrayList<>(tokens);
 
         //Pattern p = Pattern.compile(IdentifierToken.regex_alphanumeric_identifier);
 
-        DragonToken token = tokens.get(0);
+        Token token = tokens.get(0);
 
         if (token instanceof IdentifierToken) {
             this.name = ((IdentifierToken) token).getContents();

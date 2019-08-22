@@ -1,8 +1,6 @@
 package org.vanautrui.languages.lexing.tokens.utils;
 
-import org.simpleframework.xml.Attribute;
-
-public abstract class BasicToken implements DragonToken {
+public abstract class BasicToken implements Token {
 
     private long lineNumber;
 

@@ -1,17 +1,17 @@
 package org.vanautrui.languages.parsing.astnodes.terminal;
 
-import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
+import org.vanautrui.languages.lexing.tokens.utils.Token;
 import org.vanautrui.languages.lexing.tokens.TypeIdentifierToken;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
+import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.IASTNode;
 
 public class TypeIdentifierNode implements IASTNode {
 
     public String typeName;
 
-    public TypeIdentifierNode(DragonTokenList tokens) throws Exception {
+    public TypeIdentifierNode(TokenList tokens) throws Exception {
 
-        DragonToken token = tokens.get(0);
+        Token token = tokens.get(0);
 
         if (token instanceof TypeIdentifierToken) {
             this.typeName = ((TypeIdentifierToken) token).getContents();

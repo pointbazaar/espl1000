@@ -3,8 +3,8 @@ package org.vanautrui.languages.codegeneration;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
-import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
+import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
+import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.StatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.WhileStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
@@ -20,8 +20,8 @@ public class WhileStatementCodeGenerator {
             ClassNode classNode,
             MethodNode methodNode,
             WhileStatementNode whileStatementNode,
-            DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
-            DragonSubroutineSymbolTable subroutineSymbolTable,
+            LocalVarSymbolTable methodScopeSymbolTable,
+            SubroutineSymbolTable subroutineSymbolTable,
             boolean debug
     ) throws Exception {
         //https://asm.ow2.io/asm4-guide.pdf
