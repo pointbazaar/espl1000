@@ -49,11 +49,20 @@ public class DragonTermCodeGenerator {
                 String type = methodScopeSymbolTable.getTypeOfVariable(variableNode.name.getContents());
                 switch (type) {
                     case "Int":
-                        mv.visitIntInsn(ILOAD, methodScopeSymbolTable.getIndexOfVariable(variableNode.name.getContents()));
+					case "Bool":
+                        mv.visitIntInsn(
+							ILOAD, 
+							methodScopeSymbolTable.getIndexOfVariable(
+								variableNode.name.getContents()
+							)
+						);
                         break;
-			case "Float":
-				mv.visitIntInsn(FLOAD,methodScopeSymbolTable.getIndexOfVariable(variableNode.name.getContents()));
-				break;
+					case "Float":
+						mv.visitIntInsn(
+							FLOAD,
+							methodScopeSymbolTable.getIndexOfVariable(variableNode.name.getContents())
+						);
+						break;
                     case "String":
                         mv.visitIntInsn(ALOAD,methodScopeSymbolTable.getIndexOfVariable(variableNode.name.getContents()));
                         break;
@@ -67,6 +76,9 @@ public class DragonTermCodeGenerator {
             DragonMethodCallNode methodCallNode = (DragonMethodCallNode)termNode.termNode;
 
             DragonMethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
+		}else if(termNode.termNode instanceof DragonBoolConstantNode){
+			DragonBoolConstantNode b = (DragonBoolConstantNode)termNode.termNode;
+			pushIntegerConstant((b.value)?1:0,mv);
         }else{
             throw new Exception("unhandled case in DragonTermCodeGenerator.java");
         }

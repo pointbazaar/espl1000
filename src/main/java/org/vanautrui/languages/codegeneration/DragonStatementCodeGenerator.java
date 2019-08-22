@@ -59,6 +59,7 @@ public class DragonStatementCodeGenerator {
             String expressionType= DragonTypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
             switch(expressionType){
                 case "Int":
+				case "Bool":
                     mv.visitVarInsn(ISTORE, local_var_index);
                     break;
 				case "Float":

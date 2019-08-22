@@ -49,6 +49,13 @@ public class DragonLexer {
                 //pass
             }
 
+			try{
+				result.add(new BoolConstantToken(myCode));
+				continue;
+			}catch(Exception e){
+				//pass
+			}
+
             try {
                 result.add(new ClassToken(myCode));
                 continue;

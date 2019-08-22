@@ -24,7 +24,7 @@ string ::= '"' alphanumeric* '"'
 
 op ::= '+' | '-' | '*' | '/' | ...
 unaryOp ::= '-' | '!'
-booleanConstant ::= 'true' | 'false'
+boolConstant ::= 'true' | 'false'
 keywordConstant ::= 'null' | 'this' | booleanConstant
 accessmodifier ::= public | private
 
@@ -61,6 +61,6 @@ returnStatement ::= 'return' expression? ';'
 
 assignmentStatement ::= variable ('<-' | '=') expression ';'
 
-term ::= integerConstant | string | keywordConstant | methodCall | '(' expression ')' | unaryOp term | variable
+term ::= boolConstant | integerConstant | string | keywordConstant | methodCall | '(' expression ')' | unaryOp term | variable
 
 expression ::= term (op term)*

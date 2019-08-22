@@ -33,32 +33,11 @@ public class DragonTypeResolver {
     public static String getTypeVariableNode(DragonVariableNode variableNode, DragonMethodNode methodNode,DragonSubroutineSymbolTable subroutineSymbolTable,DragonMethodScopeVariableSymbolTable varTable)throws Exception{
         //TODO: implement by looking at the definitions in the AST and such
 
-        //go through the arguments of the method, maybe it is defined there
-        for(DragonDeclaredArgumentNode arg : methodNode.arguments){
-            if(arg.name.name.getContents().equals(variableNode.name.getContents())){
-                return arg.type.typeName.getContents();
-            }
-        }
-
-        //go through previous statements and look for the assignment which was first made to a primitive value
-        //
-        String type="";
-        for(DragonStatementNode stmt : methodNode.statements){
-            if(stmt.statementNode instanceof DragonAssignmentStatementNode){
-                DragonAssignmentStatementNode assignmentStatementNode = (DragonAssignmentStatementNode)stmt.statementNode;
-
-                //TODO: what if we assign something to itself?
-                //that would probably cause an endless loop
-                //TODO: FIX IT
-                type = getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subroutineSymbolTable,varTable);
-                break;
-            }
-        }
-        if(type.equals("")){
+        if( varTable.containsVariable(variableNode.name.getContents()) ){
+			return varTable.getTypeOfVariable(variableNode.name.getContents());
+        }else{
             throw new Exception("could not determine type of "+variableNode.name.getContents());
         }
-
-        return type;
     }
 
     public static String getTypeTermNode(DragonTermNode termNode,DragonMethodNode methodNode,DragonSubroutineSymbolTable subroutineSymbolTable,DragonMethodScopeVariableSymbolTable varTable)throws Exception{
@@ -74,6 +53,8 @@ public class DragonTypeResolver {
             return getTypeStringConstantNode((DragonStringConstantNode)termNode.termNode);
         }else if(termNode.termNode instanceof DragonVariableNode){
             return getTypeVariableNode((DragonVariableNode) termNode.termNode,methodNode,subroutineSymbolTable,varTable);
+		}else if(termNode.termNode instanceof DragonBoolConstantNode){
+			return "Bool";
         }else{
             throw new Exception("unforeseen case in getTypeTermNode(...) in DragonTypeResolver");
         }

@@ -57,8 +57,12 @@ public class DragonTermNode implements IDragonASTNode, IExpressionComputable {
 		                try {
 		                    this.termNode=new DragonMethodCallNode(copy);
 		                }catch (Exception e4){
-
-		                    this.termNode = new DragonVariableNode(copy);
+							try{
+								this.termNode=new DragonBoolConstantNode(copy);
+							}catch (Exception e5){
+		                    	this.termNode = new DragonVariableNode(copy);
+							}
+							
 		                }
 		            }
 		        }
@@ -71,8 +75,9 @@ public class DragonTermNode implements IDragonASTNode, IExpressionComputable {
 
     @Override
     public String toSourceCode() {
-
-        if(this.termNode instanceof DragonFloatConstantNode){
+		if(this.termNode instanceof DragonBoolConstantNode){
+			return ((DragonBoolConstantNode)termNode).toSourceCode();
+		}else if(this.termNode instanceof DragonFloatConstantNode){
             DragonFloatConstantNode node=(DragonFloatConstantNode)termNode;
             return node.toSourceCode();
         }
