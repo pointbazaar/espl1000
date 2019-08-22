@@ -3,16 +3,15 @@ package org.vanautrui.languages.codegeneration;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonOperatorNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.OperatorNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 
 import static org.objectweb.asm.Opcodes.*;
 
 public class OperatorCodeGenerator {
 
-    public static void visitOperatorNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonOperatorNode operatorNode,String operandType) throws Exception {
+    public static void visitOperatorNode(ClassWriter cw, MethodVisitor mv, ClassNode classNode, MethodNode methodNode, OperatorNode operatorNode, String operandType) throws Exception {
 
 	    //TODO: this method needs a string of the type of the 
 	    //values (for now, they should have the same type)
@@ -31,7 +30,7 @@ public class OperatorCodeGenerator {
     }
 
 
-	private static void visitOperandNodeForFloat(MethodVisitor mv,DragonOperatorNode opNode) throws Exception{
+	private static void visitOperandNodeForFloat(MethodVisitor mv, OperatorNode opNode) throws Exception{
 		switch (opNode.operator){
 		    case "+":
 			mv.visitInsn(FADD);
@@ -114,7 +113,7 @@ public class OperatorCodeGenerator {
 		}
 	}
 
-	private static void visitOperandNodeForInt(MethodVisitor mv,DragonOperatorNode opNode) throws Exception{
+	private static void visitOperandNodeForInt(MethodVisitor mv, OperatorNode opNode) throws Exception{
 		switch (opNode.operator){
 		    case "+":
 			mv.visitInsn(IADD);

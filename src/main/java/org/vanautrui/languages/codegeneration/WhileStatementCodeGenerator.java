@@ -5,10 +5,10 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonWhileStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.StatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.WhileStatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -17,9 +17,9 @@ public class WhileStatementCodeGenerator {
     public static void visitWhileStatmentNode(
             ClassWriter cw,
             MethodVisitor mv,
-            DragonClassNode classNode,
-            DragonMethodNode methodNode,
-            DragonWhileStatementNode whileStatementNode,
+            ClassNode classNode,
+            MethodNode methodNode,
+            WhileStatementNode whileStatementNode,
             DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
             DragonSubroutineSymbolTable subroutineSymbolTable,
             boolean debug
@@ -52,7 +52,7 @@ public class WhileStatementCodeGenerator {
 
         mv.visitJumpInsn(IFEQ,endLabel);
 
-        for(DragonStatementNode stmt : whileStatementNode.statements) {
+        for(StatementNode stmt : whileStatementNode.statements) {
             StatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable, methodScopeSymbolTable,debug);
         }
 

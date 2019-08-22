@@ -1,23 +1,20 @@
 package org.vanautrui.languages.commandline.compilerphases;
 
 import org.fusesource.jansi.Ansi;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.codegeneration.JavaByteCodeGenerator;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
 import org.vanautrui.languages.lexing.DragonLexer;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
 import org.vanautrui.languages.lexing.utils.CurlyBracesWeaver;
-import org.vanautrui.languages.parsing.DragonParser;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
+import org.vanautrui.languages.parsing.Parser;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.phase_clean_the_input.DragonCommentRemover;
 import org.vanautrui.languages.typechecking.DragonTypeChecker;
 import static org.vanautrui.languages.symboltablegenerator.DragonSymbolTableGenerator.*;
 
 import com.fasterxml.jackson.databind.*;
-import com.fasterxml.jackson.databind.node.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,7 +24,6 @@ import java.util.Set;
 
 import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.Color.RED;
-import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.getPreferredXMLSerializationStrategyHumanReadable;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printBeginPhase;
 import static org.vanautrui.languages.phase_clean_the_input.DragonUnneccessaryWhiteSpaceRemover.remove_unneccessary_whitespace;
 
@@ -69,7 +65,7 @@ public class DragonCompilerPhases {
         }
     }
 
-    public static void phase_typecheck(Set<DragonAST> asts, boolean debug)throws Exception{
+    public static void phase_typecheck(Set<AST> asts, boolean debug)throws Exception{
 
         printBeginPhase("TYPE CHECKING");
 
@@ -85,13 +81,13 @@ public class DragonCompilerPhases {
         }
     }
 
-    public static void phase_codegeneration(Set<DragonAST> asts, boolean debug)throws Exception{
+    public static void phase_codegeneration(Set<AST> asts, boolean debug)throws Exception{
         printBeginPhase("CODE GENERATION");
 
 
         try {
-            for(DragonAST ast : asts) {
-                for (DragonClassNode classNode : ast.classNodeList) {
+            for(AST ast : asts) {
+                for (ClassNode classNode : ast.classNodeList) {
 
                     //TODO: create the symbol table with all classes in mind, not just this one
                     DragonSubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
@@ -165,10 +161,10 @@ public class DragonCompilerPhases {
         return codeWithoutCommentsWithoutUnneccesaryWhitespace;
     }
 
-    public static Set<DragonAST> phase_parsing(DragonTokenList tokens, boolean debug)throws Exception{
+    public static Set<AST> phase_parsing(DragonTokenList tokens, boolean debug)throws Exception{
         printBeginPhase("PARSING");
         try {
-            DragonAST ast = (new DragonParser()).parse(tokens);
+            AST ast = (new Parser()).parse(tokens);
             TerminalUtil.println("✓", Ansi.Color.GREEN);
 
             if(debug){
@@ -184,7 +180,7 @@ public class DragonCompilerPhases {
 				System.out.println(mapper.writeValueAsString(ast));
                 System.out.println();
             }
-            HashSet<DragonAST> asts=new HashSet<>();
+            HashSet<AST> asts=new HashSet<>();
             asts.add(ast);
             return asts;
         }catch (Exception e){

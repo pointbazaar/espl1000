@@ -4,19 +4,19 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonReturnStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.ReturnStatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.typeresolution.DragonTypeResolver;
 
 import static org.objectweb.asm.Opcodes.*;
 
 public class ReturnStatementCodeGenerator {
     public static void visitReturnStatement(ClassWriter cw, MethodVisitor mv,
-                                            DragonClassNode classNode, DragonMethodNode methodNode,
-                                            DragonReturnStatementNode returnStatementNode,
+                                            ClassNode classNode, MethodNode methodNode,
+                                            ReturnStatementNode returnStatementNode,
                                             DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
-                                            DragonSubroutineSymbolTable subroutineSymbolTable,boolean debug) throws Exception{
+                                            DragonSubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception{
 
         if(returnStatementNode.returnValue.isPresent()){
             //put the expression on the stack

@@ -1,7 +1,6 @@
 package org.vanautrui.languages.typechecking;
 
 import org.vanautrui.languages.symboltablegenerator.*;
-import org.vanautrui.languages.codegeneration.*;
 import org.vanautrui.languages.codegeneration.symboltables.tables.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.*;
@@ -23,10 +22,10 @@ public class DragonTypeChecker {
     //and that itself contains only
     //AST Nodes that conform to the expected types.
 
-    public void doTypeCheck(Set<DragonAST> asts) throws Exception{
+    public void doTypeCheck(Set<AST> asts) throws Exception{
 
-        for(DragonAST ast : asts){
-            for(DragonClassNode classNode : ast.classNodeList){
+        for(AST ast : asts){
+            for(ClassNode classNode : ast.classNodeList){
 
                 //TODO: create a the  symbol table with all classes being compiled
                 //otherwise we cannot call methods from other classes
@@ -37,10 +36,10 @@ public class DragonTypeChecker {
         }
     }
 
-    private void typeCheckClassNode(Set<DragonAST> asts, DragonClassNode classNode,DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
+    private void typeCheckClassNode(Set<AST> asts, ClassNode classNode, DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
         int count=0;
-        for(DragonAST ast : asts){
-            for(DragonClassNode dragonClassNode : ast.classNodeList){
+        for(AST ast : asts){
+            for(ClassNode dragonClassNode : ast.classNodeList){
                 if(dragonClassNode.name.typeName.equals(classNode.name.typeName)){
                     count++;
                 }
@@ -49,11 +48,11 @@ public class DragonTypeChecker {
 
         //check that fields and methods are typesafe
 
-        for(DragonClassFieldNode fieldNode : classNode.fieldNodeList){
+        for(ClassFieldNode fieldNode : classNode.fieldNodeList){
             typeCheckClassFieldNode(asts,classNode,fieldNode);
         }
 
-        for(DragonMethodNode methodNode : classNode.methodNodeList){
+        for(MethodNode methodNode : classNode.methodNodeList){
             typeCheckMethodNode(asts,classNode,methodNode,subroutineSymbolTable);
         }
 
@@ -62,7 +61,7 @@ public class DragonTypeChecker {
         }
     }
 
-    private void typeCheckMethodNode(Set<DragonAST> asts, DragonClassNode classNode,DragonMethodNode methodNode,DragonSubroutineSymbolTable subTable) throws Exception{
+    private void typeCheckMethodNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, DragonSubroutineSymbolTable subTable) throws Exception{
 
 	//create the variable Symbol table, to typecheck the statements
 	DragonMethodScopeVariableSymbolTable varTable = DragonSymbolTableGenerator.createMethodScopeSymbolTable(methodNode,subTable);
@@ -70,47 +69,47 @@ public class DragonTypeChecker {
         typeCheckMethodNameNode(asts,classNode,methodNode.methodName);
 
         typeCheckTypeIdentifierNode(asts,classNode,methodNode.type);
-        for(DragonStatementNode stmt : methodNode.statements){
+        for(StatementNode stmt : methodNode.statements){
             //stmt.doTypeCheck(asts,classNode, Optional.of(methodNode));
             typeCheckStatementNode(asts,classNode,methodNode,stmt,subTable,varTable);
         }
-        for(DragonDeclaredArgumentNode arg : methodNode.arguments){
+        for(DeclaredArgumentNode arg : methodNode.arguments){
             typeCheckDeclaredArgumentNode(asts,classNode,arg);
         }
     }
 
     private void typeCheckClassFieldNode(
-            Set<DragonAST> asts, DragonClassNode classNode,DragonClassFieldNode classFieldNode
+            Set<AST> asts, ClassNode classNode, ClassFieldNode classFieldNode
     ) throws Exception{
         typeCheckTypeIdentifierNode(asts,classNode,classFieldNode.type);
     }
 
-    private void typeCheckStatementNode(Set<DragonAST> asts, DragonClassNode classNode,DragonMethodNode methodNode,DragonStatementNode statementNode,DragonSubroutineSymbolTable subTable,DragonMethodScopeVariableSymbolTable varTable)throws Exception{
+    private void typeCheckStatementNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, StatementNode statementNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable)throws Exception{
         //it depends on the instance
-        if(statementNode.statementNode instanceof DragonAssignmentStatementNode) {
-            DragonAssignmentStatementNode assignmentStatementNode = (DragonAssignmentStatementNode) statementNode.statementNode;
+        if(statementNode.statementNode instanceof AssignmentStatementNode) {
+            AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode) statementNode.statementNode;
             typeCheckAssignmentStatementNode(asts, classNode, methodNode, assignmentStatementNode,subTable,varTable);
-        }else if(statementNode.statementNode instanceof DragonLoopStatementNode){
-            DragonLoopStatementNode loopStatementNode = (DragonLoopStatementNode) statementNode.statementNode;
+        }else if(statementNode.statementNode instanceof LoopStatementNode){
+            LoopStatementNode loopStatementNode = (LoopStatementNode) statementNode.statementNode;
             typeCheckLoopStatementNode(asts, classNode, methodNode, loopStatementNode,subTable,varTable);
-        }else if(statementNode.statementNode instanceof DragonWhileStatementNode){
-            DragonWhileStatementNode whileStatementNode = (DragonWhileStatementNode) statementNode.statementNode;
+        }else if(statementNode.statementNode instanceof WhileStatementNode){
+            WhileStatementNode whileStatementNode = (WhileStatementNode) statementNode.statementNode;
             typeCheckWhileStatementNode(asts, classNode, methodNode, whileStatementNode,subTable,varTable);
-        }else if(statementNode.statementNode instanceof DragonMethodCallNode) {
-            DragonMethodCallNode methodCallNode = (DragonMethodCallNode) statementNode.statementNode;
+        }else if(statementNode.statementNode instanceof MethodCallNode) {
+            MethodCallNode methodCallNode = (MethodCallNode) statementNode.statementNode;
             typeCheckMethodCallNode(asts, classNode, methodNode, methodCallNode,subTable,varTable);
-        }else if(statementNode.statementNode instanceof DragonIfStatementNode) {
-            DragonIfStatementNode ifStatementNode = (DragonIfStatementNode) statementNode.statementNode;
+        }else if(statementNode.statementNode instanceof IfStatementNode) {
+            IfStatementNode ifStatementNode = (IfStatementNode) statementNode.statementNode;
             typeCheckIfStatementNode(asts, classNode, methodNode, ifStatementNode,subTable,varTable);
-        }else if(statementNode.statementNode instanceof DragonReturnStatementNode){
-            DragonReturnStatementNode returnStatementNode = (DragonReturnStatementNode)statementNode.statementNode;
+        }else if(statementNode.statementNode instanceof ReturnStatementNode){
+            ReturnStatementNode returnStatementNode = (ReturnStatementNode)statementNode.statementNode;
             typeCheckReturnStatementNode(asts,classNode,methodNode,returnStatementNode,subTable,varTable);
         }else{
             throw new Exception("unconsidered case in typechecking ");
         }
     }
 
-    private void typeCheckReturnStatementNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonReturnStatementNode returnStatementNode, DragonSubroutineSymbolTable subTable,DragonMethodScopeVariableSymbolTable varTable) throws Exception{
+    private void typeCheckReturnStatementNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, ReturnStatementNode returnStatementNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable) throws Exception{
         //well the type of the value returned should be the same as the method return type
         //in case of void there should be no value returned
         if(methodNode.type.typeName.equals("Void")){
@@ -129,9 +128,9 @@ public class DragonTypeChecker {
         }
     }
 
-    private void typeCheckIfStatementNode(Set<DragonAST> asts, DragonClassNode classNode,
-                                          DragonMethodNode methodNode,
-                                          DragonIfStatementNode ifStatementNode,
+    private void typeCheckIfStatementNode(Set<AST> asts, ClassNode classNode,
+                                          MethodNode methodNode,
+                                          IfStatementNode ifStatementNode,
                                           DragonSubroutineSymbolTable subTable,
                                           DragonMethodScopeVariableSymbolTable varTable) throws Exception{
         //the condition expression should be of type boolean
@@ -139,15 +138,15 @@ public class DragonTypeChecker {
         if(!conditionType.equals("Bool") && !conditionType.equals("Boolean")){
             throw new Exception(" condition should be of type boolean");
         }
-        for(DragonStatementNode stmt : ifStatementNode.statements){
+        for(StatementNode stmt : ifStatementNode.statements){
             typeCheckStatementNode(asts,classNode,methodNode,stmt,subTable,varTable);
         }
-        for(DragonStatementNode stmt : ifStatementNode.elseStatements){
+        for(StatementNode stmt : ifStatementNode.elseStatements){
             typeCheckStatementNode(asts,classNode,methodNode,stmt,subTable,varTable);
         }
     }
 
-    private void typeCheckMethodCallNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonMethodCallNode methodCallNode,DragonSubroutineSymbolTable subTable,DragonMethodScopeVariableSymbolTable varTable) throws Exception{
+    private void typeCheckMethodCallNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, MethodCallNode methodCallNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable) throws Exception{
         //TODO: check that the method is called on an object
         //which is actually declared and initialized
         //and is in scope
@@ -155,12 +154,12 @@ public class DragonTypeChecker {
         //for static method calls, check that the class exists
 
         //all arguments should typecheck
-        for(DragonExpressionNode expr : methodCallNode.argumentList){
+        for(ExpressionNode expr : methodCallNode.argumentList){
             typeCheckExpressionNode(asts,classNode,methodNode,expr,subTable,varTable);
         }
     }
 
-    private void typeCheckExpressionNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonExpressionNode expr,DragonSubroutineSymbolTable subTable,DragonMethodScopeVariableSymbolTable varTable) throws Exception{
+    private void typeCheckExpressionNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, ExpressionNode expr, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable) throws Exception{
         //check that the terms have a type such that the operator will work
 
         //for later:
@@ -194,7 +193,7 @@ public class DragonTypeChecker {
 			throw new Exception(type+" is not in the currently allowed types");
 		}
 	}
-        for (DragonTermNode t : expr.termNodes){
+        for (TermNode t : expr.termNodes){
             if( !( DragonTypeResolver.getTypeTermNode(t,methodNode,subTable,varTable).equals(type) ) ){
                 throw new Exception("for now, all types in an expression must be the same");
             }
@@ -203,7 +202,7 @@ public class DragonTypeChecker {
         }
 
 	List<String> currentAllowedOPs=Arrays.asList("+","-","*","/");
-        for(DragonOperatorNode op : expr.operatorNodes){
+        for(OperatorNode op : expr.operatorNodes){
             if(!currentAllowedOPs.contains(op.operator)){
                 throw new Exception("currently not supported operator: "+op.operator);
             }
@@ -211,27 +210,27 @@ public class DragonTypeChecker {
         //TODO: look for the other cases
     }
 
-    private void typecheckTermNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonTermNode termNode,DragonSubroutineSymbolTable subTable,DragonMethodScopeVariableSymbolTable varTable) throws Exception{
-	if(termNode.termNode instanceof DragonFloatConstantNode){
+    private void typecheckTermNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, TermNode termNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable) throws Exception{
+	if(termNode.termNode instanceof FloatConstantNode){
 		    //nothing to do
-	}else if(termNode.termNode instanceof DragonIntegerConstantNode){
+	}else if(termNode.termNode instanceof IntegerConstantNode){
             //nothing to do
-        }else if(termNode.termNode instanceof DragonStringConstantNode){
+        }else if(termNode.termNode instanceof StringConstantNode){
             //nothing to do
-        }else if(termNode.termNode instanceof DragonExpressionNode) {
-            DragonExpressionNode expressionNode = (DragonExpressionNode) termNode.termNode;
+        }else if(termNode.termNode instanceof ExpressionNode) {
+            ExpressionNode expressionNode = (ExpressionNode) termNode.termNode;
             typeCheckExpressionNode(asts,classNode,methodNode,expressionNode,subTable,varTable);
-        }else if(termNode.termNode instanceof DragonVariableNode){
-            DragonVariableNode variableNode = (DragonVariableNode) termNode.termNode;
+        }else if(termNode.termNode instanceof VariableNode){
+            VariableNode variableNode = (VariableNode) termNode.termNode;
             typeCheckVariableNode(asts,classNode,methodNode,variableNode,subTable,varTable);
-	}else if(termNode.termNode instanceof DragonMethodCallNode){
-		typeCheckMethodCallNode(asts,classNode,methodNode,(DragonMethodCallNode)termNode.termNode,subTable,varTable);
+	}else if(termNode.termNode instanceof MethodCallNode){
+		typeCheckMethodCallNode(asts,classNode,methodNode,(MethodCallNode)termNode.termNode,subTable,varTable);
         }else{
             throw new Exception("unhandled case");
         }
     }
 
-    private void typeCheckVariableNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonVariableNode variableNode,DragonSubroutineSymbolTable subTable,DragonMethodScopeVariableSymbolTable varTable) throws Exception{
+    private void typeCheckVariableNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, VariableNode variableNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable) throws Exception{
         //TODO: it should check that the variable is
         //declared in method scope or class scope.
         //so there should be some declaration of it
@@ -240,7 +239,7 @@ public class DragonTypeChecker {
         //identifiers can only be used within a class or method so
         //there should be a context
 
-        for(DragonClassFieldNode fieldNode : classNode.fieldNodeList){
+        for(ClassFieldNode fieldNode : classNode.fieldNodeList){
             if(fieldNode.name.name.equals(variableNode.name)){
                 //found the identifier declared here
                 return;
@@ -250,7 +249,7 @@ public class DragonTypeChecker {
         //it is not declared in class scope, it should be declared in
         //method scope
 
-        for(DragonDeclaredArgumentNode arg : methodNode.arguments){
+        for(DeclaredArgumentNode arg : methodNode.arguments){
             if(arg.name.name.equals(variableNode.name)){
                 return;
             }
@@ -265,10 +264,10 @@ public class DragonTypeChecker {
     }
 
     private void typeCheckWhileStatementNode(
-            Set<DragonAST> asts,
-            DragonClassNode classNode,
-            DragonMethodNode methodNode,
-         DragonWhileStatementNode whileStatementNode,
+            Set<AST> asts,
+            ClassNode classNode,
+            MethodNode methodNode,
+         WhileStatementNode whileStatementNode,
          DragonSubroutineSymbolTable subTable,
          DragonMethodScopeVariableSymbolTable varTable
     ) throws Exception{
@@ -277,13 +276,13 @@ public class DragonTypeChecker {
         if(!conditionType.equals("Bool") && !conditionType.equals("Boolean")){
             throw new Exception(" condition should be of type boolean : '"+whileStatementNode.condition.toSourceCode()+"' but was of type: "+conditionType);
         }
-        for(DragonStatementNode stmt : whileStatementNode.statements){
+        for(StatementNode stmt : whileStatementNode.statements){
             typeCheckStatementNode(asts,classNode,methodNode,stmt,subTable,varTable);
         }
     }
 
     private void typeCheckLoopStatementNode(
-            Set<DragonAST> asts, DragonClassNode classNode,DragonMethodNode methodNode,DragonLoopStatementNode loopStatementNode,DragonSubroutineSymbolTable subTable,DragonMethodScopeVariableSymbolTable varTable
+            Set<AST> asts, ClassNode classNode, MethodNode methodNode, LoopStatementNode loopStatementNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable
     ) throws Exception{
         //the condition expression should be of type boolean
 
@@ -291,13 +290,13 @@ public class DragonTypeChecker {
         if(!countType.equals("Int")){
             throw new Exception(" condition should be of type Int . this is a loop statement after all.");
         }
-        for(DragonStatementNode stmt : loopStatementNode.statements){
+        for(StatementNode stmt : loopStatementNode.statements){
             typeCheckStatementNode(asts,classNode,methodNode,stmt,subTable,varTable);
         }
     }
 
     private void typeCheckAssignmentStatementNode(
-            Set<DragonAST> asts, DragonClassNode classNode,DragonMethodNode methodNode,DragonAssignmentStatementNode assignmentStatementNode,DragonSubroutineSymbolTable subTable,DragonMethodScopeVariableSymbolTable varTable
+            Set<AST> asts, ClassNode classNode, MethodNode methodNode, AssignmentStatementNode assignmentStatementNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable
     ) throws Exception{
         String leftSideType = DragonTypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,methodNode,subTable,varTable);
         String rightSideType = DragonTypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,varTable);
@@ -307,14 +306,14 @@ public class DragonTypeChecker {
     }
 
     private void typeCheckTypeIdentifierNode(
-            Set<DragonAST> asts, DragonClassNode classNode, DragonTypeIdentifierNode typeIdentifierNode
+            Set<AST> asts, ClassNode classNode, TypeIdentifierNode typeIdentifierNode
             ) throws Exception{
 
         //check that the type is defined somewhere
         //so there should exist a class with that type
 
-        for(DragonAST ast : asts){
-            for(DragonClassNode myclassNode : ast.classNodeList){
+        for(AST ast : asts){
+            for(ClassNode myclassNode : ast.classNodeList){
                 if(myclassNode.name.typeName.equals(typeIdentifierNode.typeName)){
                     return;
                 }
@@ -330,7 +329,7 @@ public class DragonTypeChecker {
         throw new Exception("could not find class for type: '"+typeIdentifierNode.typeName+"'");
     }
 
-    private void typeCheckMethodNameNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNameNode methodNameNode)throws Exception{
+    private void typeCheckMethodNameNode(Set<AST> asts, ClassNode classNode, MethodNameNode methodNameNode)throws Exception{
         //method names should not be duplicate in a class
         //this may change in another version of dragon
 
@@ -341,11 +340,11 @@ public class DragonTypeChecker {
         }
     }
 
-    private void typeCheckDeclaredArgumentNode(Set<DragonAST> asts, DragonClassNode classNode,DragonDeclaredArgumentNode declaredArgumentNode)throws Exception{
+    private void typeCheckDeclaredArgumentNode(Set<AST> asts, ClassNode classNode, DeclaredArgumentNode declaredArgumentNode)throws Exception{
         typeCheckTypeIdentifierNode(asts,classNode,declaredArgumentNode.type);
     }
 
-    private void typeCheckIdentifierNode(Set<DragonAST> asts, DragonClassNode classNode,DragonMethodNode methodNode,DragonIdentifierNode identifierNode)throws Exception{
+    private void typeCheckIdentifierNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, IdentifierNode identifierNode)throws Exception{
         //TODO: it should check that the identifier is
         //declared in method scope or class scope.
         //so there should be some declaration of it
@@ -355,7 +354,7 @@ public class DragonTypeChecker {
         //there should be a context
 
 
-        for(DragonClassFieldNode fieldNode : classNode.fieldNodeList){
+        for(ClassFieldNode fieldNode : classNode.fieldNodeList){
             if(fieldNode.name.name.equals(identifierNode.name)){
                 //found the identifier declared here
                 return;
@@ -365,7 +364,7 @@ public class DragonTypeChecker {
         //it is not declared in class scope, it should be declared in
         //method scope
 
-        for(DragonDeclaredArgumentNode arg : methodNode.arguments){
+        for(DeclaredArgumentNode arg : methodNode.arguments){
             if(arg.name.name.equals(identifierNode.name)){
                 return;
             }

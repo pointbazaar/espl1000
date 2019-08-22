@@ -5,9 +5,9 @@ import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.codegeneration.symboltables.nameconversions.TypeNameToJVMInternalTypeNameConverter;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.StatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 
 import static org.vanautrui.languages.symboltablegenerator.DragonSymbolTableGenerator.*;
 
@@ -17,7 +17,7 @@ import static org.objectweb.asm.Opcodes.*;
 
 public class MethodCodeGenerator {
 
-    public static void visitMethodNode(ClassWriter cw, DragonClassNode classNode, DragonMethodNode methodNode, DragonSubroutineSymbolTable subroutineSymbolTable,boolean debug) throws Exception {
+    public static void visitMethodNode(ClassWriter cw, ClassNode classNode, MethodNode methodNode, DragonSubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception {
         String returnTypeName=methodNode.type.typeName;
 
 
@@ -63,7 +63,7 @@ public class MethodCodeGenerator {
             //TODO: compile the statements in the method
 
             //stmt->stmt.visit(mv,Optional.of(classNode),Optional.of(methodNode))
-            for (DragonStatementNode stmt : methodNode.statements) {
+            for (StatementNode stmt : methodNode.statements) {
                 StatementCodeGenerator.visitStatement(cw, mv, classNode, methodNode, stmt,subroutineSymbolTable,methodScopeSymbolTable,debug);
             }
 

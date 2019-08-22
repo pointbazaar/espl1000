@@ -5,11 +5,11 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonLoopStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.DragonIntegerConstantNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.StatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.LoopStatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.IntegerConstantNode;
 
 import static org.objectweb.asm.Opcodes.*;
 import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.pushIntegerConstant;
@@ -19,9 +19,9 @@ public class LoopStatementCodeGenerator {
     public static void visitLoopStatmentNode(
             ClassWriter cw,
             MethodVisitor mv,
-            DragonClassNode classNode,
-            DragonMethodNode methodNode,
-            DragonLoopStatementNode loop,
+            ClassNode classNode,
+            MethodNode methodNode,
+            LoopStatementNode loop,
             DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
             DragonSubroutineSymbolTable subroutineSymbolTable,
             boolean debug
@@ -38,8 +38,8 @@ public class LoopStatementCodeGenerator {
         Label end=new Label();
 
         //push our loop counter
-        if(loop.count.term.termNode instanceof DragonIntegerConstantNode) {
-            DragonIntegerConstantNode integerConstantNode = (DragonIntegerConstantNode)loop.count.term.termNode;
+        if(loop.count.term.termNode instanceof IntegerConstantNode) {
+            IntegerConstantNode integerConstantNode = (IntegerConstantNode)loop.count.term.termNode;
 
             //mv.visitIntInsn(BIPUSH, integerConstantNode.value);
             pushIntegerConstant(integerConstantNode.value,mv);
@@ -58,7 +58,7 @@ public class LoopStatementCodeGenerator {
         mv.visitJumpInsn(IFLE,end);
 
         //write the code for the statements
-        for(DragonStatementNode stmt : loop.statements){
+        for(StatementNode stmt : loop.statements){
             StatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable,methodScopeSymbolTable,debug);
         }
 

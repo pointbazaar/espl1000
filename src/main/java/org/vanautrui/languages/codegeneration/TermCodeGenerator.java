@@ -4,11 +4,11 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonTermNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.TermNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.MethodCallNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.*;
 
 import static org.objectweb.asm.Opcodes.*;
@@ -19,32 +19,32 @@ public class TermCodeGenerator {
     public static void visitTerm(
             ClassWriter cw,
             MethodVisitor mv,
-            DragonClassNode classNode,
-            DragonMethodNode methodNode,
-            DragonTermNode termNode,
+            ClassNode classNode,
+            MethodNode methodNode,
+            TermNode termNode,
             DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
             DragonSubroutineSymbolTable subroutineSymbolTable,
             boolean debug
     ) throws Exception {
-	if(termNode.termNode instanceof DragonFloatConstantNode){
-		DragonFloatConstantNode node=(DragonFloatConstantNode)termNode.termNode;
+	if(termNode.termNode instanceof FloatConstantNode){
+		FloatConstantNode node=(FloatConstantNode)termNode.termNode;
 		pushFloatConstant(node.value,mv);
-	}else if(termNode.termNode instanceof DragonIntegerConstantNode){
-            DragonIntegerConstantNode integerConstantNode = (DragonIntegerConstantNode)termNode.termNode;
+	}else if(termNode.termNode instanceof IntegerConstantNode){
+            IntegerConstantNode integerConstantNode = (IntegerConstantNode)termNode.termNode;
 
             pushIntegerConstant(integerConstantNode.value,mv);
-        }else if(termNode.termNode instanceof DragonStringConstantNode){
-            DragonStringConstantNode stringConstantNode = (DragonStringConstantNode)termNode.termNode;
+        }else if(termNode.termNode instanceof StringConstantNode){
+            StringConstantNode stringConstantNode = (StringConstantNode)termNode.termNode;
             //push the string on the stack
             StringConstantCodeGenerator.visitStringConstant(mv,stringConstantNode);
-        }else if(termNode.termNode instanceof DragonExpressionNode) {
-            DragonExpressionNode dragonExpressionNode = (DragonExpressionNode)termNode.termNode;
-            ExpressionCodeGenerator.visitExpression(cw, mv, classNode, methodNode, dragonExpressionNode, methodScopeSymbolTable,subroutineSymbolTable,debug);
-        }else if(termNode.termNode instanceof DragonVariableNode) {
+        }else if(termNode.termNode instanceof ExpressionNode) {
+            ExpressionNode expressionNode = (ExpressionNode)termNode.termNode;
+            ExpressionCodeGenerator.visitExpression(cw, mv, classNode, methodNode, expressionNode, methodScopeSymbolTable,subroutineSymbolTable,debug);
+        }else if(termNode.termNode instanceof VariableNode) {
 
             //TODO: find the local variable index and push it onto the stack
 
-            DragonVariableNode variableNode = (DragonVariableNode) termNode.termNode;
+            VariableNode variableNode = (VariableNode) termNode.termNode;
             if (methodScopeSymbolTable.containsVariable(variableNode.name)) {
                 String type = methodScopeSymbolTable.getTypeOfVariable(variableNode.name);
                 switch (type) {
@@ -72,12 +72,12 @@ public class TermCodeGenerator {
             } else {
                 throw new Exception("variable " + variableNode.name + " not defined?");
             }
-        }else if(termNode.termNode instanceof DragonMethodCallNode){
-            DragonMethodCallNode methodCallNode = (DragonMethodCallNode)termNode.termNode;
+        }else if(termNode.termNode instanceof MethodCallNode){
+            MethodCallNode methodCallNode = (MethodCallNode)termNode.termNode;
 
             MethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
-		}else if(termNode.termNode instanceof DragonBoolConstantNode){
-			DragonBoolConstantNode b = (DragonBoolConstantNode)termNode.termNode;
+		}else if(termNode.termNode instanceof BoolConstantNode){
+			BoolConstantNode b = (BoolConstantNode)termNode.termNode;
 			pushIntegerConstant((b.value)?1:0,mv);
         }else{
             throw new Exception("unhandled case in DragonTermCodeGenerator.java");

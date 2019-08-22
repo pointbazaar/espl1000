@@ -3,15 +3,6 @@ package org.vanautrui.languages.codegeneration;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.vanautrui.languages.lexing.DragonLexer;
-import org.vanautrui.languages.lexing.collections.DragonTokenList;
-import org.vanautrui.languages.parsing.DragonParser;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import static org.vanautrui.languages.codegeneration.JavaByteCodeGeneratorTest.compile_and_run_one_class_for_testing;
 

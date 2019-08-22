@@ -1,13 +1,10 @@
 package org.vanautrui.languages.typeresolution;
 
 import org.vanautrui.languages.codegeneration.symboltables.tables.*;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonDeclaredArgumentNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonTermNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonAssignmentStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.TermNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.MethodCallNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.*;
 
 import java.util.Arrays;
@@ -19,18 +16,18 @@ public class DragonTypeResolver {
     //that can then convert the type description directly
     //to a jvm internal representation
 
-    public static String getTypeIntegerConstantNode(DragonIntegerConstantNode integerConstantNode){
+    public static String getTypeIntegerConstantNode(IntegerConstantNode integerConstantNode){
         return "Int";
     }
-    public static String getTypeFloatConstantNode(DragonFloatConstantNode node){
+    public static String getTypeFloatConstantNode(FloatConstantNode node){
     	return "Float";
     }
 
-    public static String getTypeStringConstantNode(DragonStringConstantNode stringConstantNode){
+    public static String getTypeStringConstantNode(StringConstantNode stringConstantNode){
         return "String";
     }
 
-    public static String getTypeVariableNode(DragonVariableNode variableNode, DragonMethodNode methodNode,DragonSubroutineSymbolTable subroutineSymbolTable,DragonMethodScopeVariableSymbolTable varTable)throws Exception{
+    public static String getTypeVariableNode(VariableNode variableNode, MethodNode methodNode, DragonSubroutineSymbolTable subroutineSymbolTable, DragonMethodScopeVariableSymbolTable varTable)throws Exception{
         //TODO: implement by looking at the definitions in the AST and such
 
         if( varTable.containsVariable(variableNode.name) ){
@@ -40,23 +37,23 @@ public class DragonTypeResolver {
         }
     }
 
-    public static String getTypeTermNode(DragonTermNode termNode,DragonMethodNode methodNode,
+    public static String getTypeTermNode(TermNode termNode, MethodNode methodNode,
                                          DragonSubroutineSymbolTable subroutineSymbolTable,
                                          DragonMethodScopeVariableSymbolTable varTable
     )throws Exception{
-        if(termNode.termNode instanceof DragonExpressionNode){
-            return getTypeExpressionNode((DragonExpressionNode)termNode.termNode,methodNode,subroutineSymbolTable,varTable);
-        }else if (termNode.termNode instanceof DragonMethodCallNode){
-            return getTypeMethodCallNode((DragonMethodCallNode)termNode.termNode,subroutineSymbolTable);
-	}else if(termNode.termNode instanceof DragonFloatConstantNode){
-		return getTypeFloatConstantNode((DragonFloatConstantNode)termNode.termNode);
-        }else if(termNode.termNode instanceof DragonIntegerConstantNode){
-            return getTypeIntegerConstantNode((DragonIntegerConstantNode)termNode.termNode);
-        }else if(termNode.termNode instanceof DragonStringConstantNode){
-            return getTypeStringConstantNode((DragonStringConstantNode)termNode.termNode);
-        }else if(termNode.termNode instanceof DragonVariableNode){
-            return getTypeVariableNode((DragonVariableNode) termNode.termNode,methodNode,subroutineSymbolTable,varTable);
-		}else if(termNode.termNode instanceof DragonBoolConstantNode){
+        if(termNode.termNode instanceof ExpressionNode){
+            return getTypeExpressionNode((ExpressionNode)termNode.termNode,methodNode,subroutineSymbolTable,varTable);
+        }else if (termNode.termNode instanceof MethodCallNode){
+            return getTypeMethodCallNode((MethodCallNode)termNode.termNode,subroutineSymbolTable);
+	}else if(termNode.termNode instanceof FloatConstantNode){
+		return getTypeFloatConstantNode((FloatConstantNode)termNode.termNode);
+        }else if(termNode.termNode instanceof IntegerConstantNode){
+            return getTypeIntegerConstantNode((IntegerConstantNode)termNode.termNode);
+        }else if(termNode.termNode instanceof StringConstantNode){
+            return getTypeStringConstantNode((StringConstantNode)termNode.termNode);
+        }else if(termNode.termNode instanceof VariableNode){
+            return getTypeVariableNode((VariableNode) termNode.termNode,methodNode,subroutineSymbolTable,varTable);
+		}else if(termNode.termNode instanceof BoolConstantNode){
 			return "Bool";
         }else{
             throw new Exception("unforeseen case in getTypeTermNode(...) in DragonTypeResolver");
@@ -64,7 +61,7 @@ public class DragonTypeResolver {
 
     }
 
-    public static String getTypeExpressionNode(DragonExpressionNode expressionNode,DragonMethodNode methodNode,DragonSubroutineSymbolTable subTable,DragonMethodScopeVariableSymbolTable varTable) throws Exception{
+    public static String getTypeExpressionNode(ExpressionNode expressionNode, MethodNode methodNode, DragonSubroutineSymbolTable subTable, DragonMethodScopeVariableSymbolTable varTable) throws Exception{
         List<String> boolean_operators= Arrays.asList("<",">","<=",">=","==","!=");
 
         if(
@@ -99,7 +96,7 @@ public class DragonTypeResolver {
 
          */
 
-        for (DragonTermNode t : expressionNode.termNodes){
+        for (TermNode t : expressionNode.termNodes){
             String termType = getTypeTermNode(t,methodNode,subTable,varTable);
 
             if(!(termType.equals(type))){
@@ -113,7 +110,7 @@ public class DragonTypeResolver {
         return getTypeTermNode(expressionNode.term,methodNode,subTable,varTable);
     }
 
-    public static String getTypeMethodCallNode(DragonMethodCallNode methodCallNode, DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
+    public static String getTypeMethodCallNode(MethodCallNode methodCallNode, DragonSubroutineSymbolTable subroutineSymbolTable) throws Exception{
 
         String subrName = methodCallNode.getMethodName();
 

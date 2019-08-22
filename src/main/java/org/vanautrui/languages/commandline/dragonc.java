@@ -1,27 +1,17 @@
 package org.vanautrui.languages.commandline;
 
 import org.apache.commons.cli.*;
-import org.fusesource.jansi.Ansi;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.simpleframework.xml.strategy.Strategy;
-import org.simpleframework.xml.strategy.Type;
-import org.simpleframework.xml.strategy.Visitor;
-import org.simpleframework.xml.strategy.VisitorStrategy;
-import org.simpleframework.xml.stream.InputNode;
-import org.simpleframework.xml.stream.NodeMap;
-import org.simpleframework.xml.stream.OutputNode;
-import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.lang.System.currentTimeMillis;
 import static org.objectweb.asm.Opcodes.*;
@@ -182,7 +172,7 @@ public class dragonc {
 
             start= currentTimeMillis();
             //PHASE PARSING
-            Set<DragonAST> asts = phase_parsing(tokens,debug);
+            Set<AST> asts = phase_parsing(tokens,debug);
             end= currentTimeMillis();
             if(timed){
                 printDuration(start,end);

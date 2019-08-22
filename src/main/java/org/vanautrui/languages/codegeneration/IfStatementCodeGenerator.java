@@ -5,10 +5,10 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.DragonIfStatementNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.StatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.IfStatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -16,8 +16,8 @@ public class IfStatementCodeGenerator {
 
     public static void visitIfStatmentNode(
             ClassWriter cw, MethodVisitor mv,
-            DragonClassNode classNode, DragonMethodNode methodNode,
-            DragonIfStatementNode ifStatementNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
+            ClassNode classNode, MethodNode methodNode,
+            IfStatementNode ifStatementNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
             DragonSubroutineSymbolTable subroutineSymbolTable,
             boolean debug
     ) throws Exception{
@@ -51,7 +51,7 @@ public class IfStatementCodeGenerator {
         ExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,ifStatementNode.condition,methodScopeSymbolTable,subroutineSymbolTable,debug);
         mv.visitJumpInsn(IFEQ,labelElse);
 
-        for(DragonStatementNode stmt : ifStatementNode.statements) {
+        for(StatementNode stmt : ifStatementNode.statements) {
             StatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable, methodScopeSymbolTable,debug);
         }
 
@@ -61,7 +61,7 @@ public class IfStatementCodeGenerator {
 
         mv.visitLabel(labelElse);
 
-        for(DragonStatementNode stmt : ifStatementNode.elseStatements) {
+        for(StatementNode stmt : ifStatementNode.elseStatements) {
             StatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable, methodScopeSymbolTable,debug);
         }
 

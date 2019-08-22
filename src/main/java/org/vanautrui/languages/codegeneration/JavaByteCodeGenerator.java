@@ -3,9 +3,9 @@ package org.vanautrui.languages.codegeneration;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassFieldNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassFieldNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import static org.vanautrui.languages.symboltablegenerator.DragonSymbolTableGenerator.*;
 import static org.objectweb.asm.Opcodes.*;
 
@@ -20,13 +20,13 @@ public class JavaByteCodeGenerator {
 
     //https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.1
 
-    public static byte[] generateByteCodeForOneClass(DragonClassNode classNode,boolean debug)throws Exception{
+    public static byte[] generateByteCodeForOneClass(ClassNode classNode, boolean debug)throws Exception{
         DragonSubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
 
         return generateByteCodeForClass(classNode,subroutineSymbolTable,debug);
     }
 
-    public static byte[] generateByteCodeForClass(DragonClassNode classNode,DragonSubroutineSymbolTable subroutineSymbolTable,boolean debug) throws Exception {
+    public static byte[] generateByteCodeForClass(ClassNode classNode, DragonSubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception {
 
         if(debug){
             System.out.println(subroutineSymbolTable.toString());
@@ -74,7 +74,7 @@ public class JavaByteCodeGenerator {
             mv.visitEnd();
         }
 
-        for(DragonClassFieldNode fieldNode : classNode.fieldNodeList){
+        for(ClassFieldNode fieldNode : classNode.fieldNodeList){
 
             //fieldNode.visit(cw, Optional.of(classNode),Optional.empty());
             visitClassFieldNode(cw,classNode,fieldNode);
@@ -87,7 +87,7 @@ public class JavaByteCodeGenerator {
 
 
 
-        for(DragonMethodNode methodNode : classNode.methodNodeList){
+        for(MethodNode methodNode : classNode.methodNodeList){
             //methodNode.visit(cw,Optional.of(classNode),Optional.empty());
             MethodCodeGenerator.visitMethodNode(cw,classNode,methodNode,subroutineSymbolTable,debug);
         }
@@ -134,7 +134,7 @@ public class JavaByteCodeGenerator {
 
 
 
-    public static void visitClassFieldNode(ClassWriter cw, DragonClassNode classNode,DragonClassFieldNode classFieldNode){
+    public static void visitClassFieldNode(ClassWriter cw, ClassNode classNode, ClassFieldNode classFieldNode){
         String owner = classNode.name.typeName;
         //TODO: figure out if we are doing this correctly, i doubt it
         String descriptor="i dont know";

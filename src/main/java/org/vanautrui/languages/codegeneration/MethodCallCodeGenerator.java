@@ -5,10 +5,10 @@ import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.codegeneration.symboltables.nameconversions.TypeNameToJVMInternalTypeNameConverter;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonExpressionNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonMethodCallNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.MethodCallNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.typeresolution.DragonTypeResolver;
 
 import java.util.stream.Collectors;
@@ -20,9 +20,9 @@ public class MethodCallCodeGenerator {
     //https://tomassetti.me/generating-bytecode/
 
     private static void compile_printing_statement(
-            ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode,
-            DragonMethodCallNode methodCallNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
-            DragonSubroutineSymbolTable subroutineSymbolTable,boolean debug)throws Exception{
+            ClassWriter cw, MethodVisitor mv, ClassNode classNode, MethodNode methodNode,
+            MethodCallNode methodCallNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,
+            DragonSubroutineSymbolTable subroutineSymbolTable, boolean debug)throws Exception{
 
         //TODO: actually compile the stuff, not just fake
 
@@ -36,7 +36,7 @@ public class MethodCallCodeGenerator {
 
         if(methodCallNode.argumentList.size()>0) {
             //mv.visitLdcInsn(methodCallNode.argumentList.get(0).str);
-            for(DragonExpressionNode expressionNode : methodCallNode.argumentList){
+            for(ExpressionNode expressionNode : methodCallNode.argumentList){
 
                 //TODO: make getTypeJVMInternal() to make this easier? or just make a translator class for it
                 String expressionType=DragonTypeResolver.getTypeExpressionNode(expressionNode,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
@@ -78,7 +78,7 @@ public class MethodCallCodeGenerator {
         }
     }
 
-    public static void visitMethodCallNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonMethodCallNode methodCallNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,DragonSubroutineSymbolTable subroutineSymbolTable,boolean debug) throws Exception {
+    public static void visitMethodCallNode(ClassWriter cw, MethodVisitor mv, ClassNode classNode, MethodNode methodNode, MethodCallNode methodCallNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable, DragonSubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception {
         //TODO: actually compile the stuff, not just fake
 
         if(subroutineSymbolTable.containsVariable(methodCallNode.identifierMethodName.name)){
@@ -99,7 +99,7 @@ public class MethodCallCodeGenerator {
             );
 
             //push the arguments on the stack
-            for(DragonExpressionNode expr : methodCallNode.argumentList){
+            for(ExpressionNode expr : methodCallNode.argumentList){
                 ExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,expr,methodScopeSymbolTable,subroutineSymbolTable,debug);
             }
 

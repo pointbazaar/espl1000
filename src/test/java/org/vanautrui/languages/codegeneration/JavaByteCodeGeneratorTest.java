@@ -5,9 +5,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.vanautrui.languages.lexing.DragonLexer;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;
-import org.vanautrui.languages.parsing.DragonParser;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAST;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
+import org.vanautrui.languages.parsing.Parser;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 
 import java.io.BufferedOutputStream;
 import java.io.OutputStream;
@@ -19,11 +19,11 @@ public class JavaByteCodeGeneratorTest {
 
     public static Process compile_and_run_but_not_waitFor(String source,String classNameWithoutExtension) throws Exception{
         DragonTokenList tokens = (new DragonLexer()).lexCodeWithoutComments(source);
-        DragonParser parser = new DragonParser();
-        DragonAST ast= parser.parse(tokens);
+        Parser parser = new Parser();
+        AST ast= parser.parse(tokens);
 
         //we are in debug mode since we are running tests
-        byte[] result = JavaByteCodeGenerator.generateByteCodeForOneClass(ast.classNodeList.toArray(new DragonClassNode[]{})[0],true);
+        byte[] result = JavaByteCodeGenerator.generateByteCodeForOneClass(ast.classNodeList.toArray(new ClassNode[]{})[0],true);
         Path path = Paths.get(classNameWithoutExtension+".class");
 
         Files.write(path,result);
