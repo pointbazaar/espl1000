@@ -14,6 +14,7 @@ import org.vanautrui.languages.phase_clean_the_input.CommentRemover;
 import org.vanautrui.languages.typechecking.TypeChecker;
 
 import static org.fusesource.jansi.Ansi.ansi;
+import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printEndPhase;
 import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.*;
 
 import com.fasterxml.jackson.databind.*;
@@ -54,15 +55,16 @@ public class CompilerPhases {
                     CurlyBracesWeaver
                             .weave_scoping_curly_braces_and_remove_newlines(codeWithoutCommentsWithoutUnneccesaryWhitespace);
 
-            TerminalUtil.println("✓", Ansi.Color.GREEN);
-
+            //TerminalUtil.println("✓", Ansi.Color.GREEN);
+            printEndPhase(true);
             if(debug) {
                 System.out.println(just_code_with_braces_without_comments_without_newlines);
             }
 
             return just_code_with_braces_without_comments_without_newlines;
         }catch (Exception e){
-            TerminalUtil.println("⚠", RED);
+            //TerminalUtil.println("⚠", RED);
+            printEndPhase(false);
             throw e;
         }
     }
@@ -76,15 +78,20 @@ public class CompilerPhases {
             TypeChecker typeChecker=new TypeChecker();
             typeChecker.doTypeCheck(asts);
 
-            TerminalUtil.println("✓", Ansi.Color.GREEN);
+            //TerminalUtil.println("✓", Ansi.Color.GREEN);
+            printEndPhase(true);
         }catch (Exception e){
-            TerminalUtil.println("⚠", RED);
+            //TerminalUtil.println("⚠", RED);
+            printEndPhase(true);
             throw e;
         }
     }
 
     public static void phase_codegeneration(Set<AST> asts, boolean debug)throws Exception{
+
         printBeginPhase("CODE GENERATION");
+
+        //printBeginPhase("CODE GENERATION");
 
 
         try {
@@ -99,10 +106,12 @@ public class CompilerPhases {
                     Files.write(Paths.get(classNode.name.typeName + ".class"), classResult);
                 }
             }
-            TerminalUtil.println("✓", Ansi.Color.GREEN);
+            printEndPhase(true);
+            //TerminalUtil.println("✓", Ansi.Color.GREEN);
 
         }catch (Exception e){
-            TerminalUtil.println("⚠", RED);
+            printEndPhase(false);
+            //TerminalUtil.println("⚠", RED);
             throw e;
         }
     }
@@ -154,8 +163,8 @@ public class CompilerPhases {
 
 
 
-        TerminalUtil.println("✓", Ansi.Color.GREEN);
-
+        //TerminalUtil.println("✓", Ansi.Color.GREEN);
+        printEndPhase(true);
         if(debug) {
             //System.out.println(codeWithoutCommentsAndWithoutEmptyLines);
             System.out.println(codeWithoutCommentsWithoutUnneccesaryWhitespace);
@@ -168,7 +177,8 @@ public class CompilerPhases {
         printBeginPhase("PARSING");
         try {
             AST ast = (new Parser()).parse(tokens);
-            TerminalUtil.println("✓", Ansi.Color.GREEN);
+            printEndPhase(true);
+            //TerminalUtil.println("✓", Ansi.Color.GREEN);
 
             if(debug){
                 TerminalUtil.println("DEBUG: TODO: pretty print source from AST in curly braces", RED);
@@ -187,7 +197,8 @@ public class CompilerPhases {
             asts.add(ast);
             return asts;
         }catch (Exception e){
-            TerminalUtil.println("⚠",RED);
+            //TerminalUtil.println("⚠",RED);
+            printEndPhase(false);
             throw e;
         }
     }
@@ -199,13 +210,15 @@ public class CompilerPhases {
 
         try {
             TokenList tokens = (new Lexer()).lexCodeWithoutComments(just_code_with_braces_without_comments_without_newlines);
-            TerminalUtil.println("✓",GREEN);
+            //TerminalUtil.println("✓",GREEN);
+            printEndPhase(false);
             if(debug) {
                 System.out.println(tokens.toString());
             }
             return tokens;
         }catch (Exception e){
-            TerminalUtil.println("⚠",RED);
+            printEndPhase(false);
+            //TerminalUtil.println("⚠",RED);
             throw e;
         }
     }

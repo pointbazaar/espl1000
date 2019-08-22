@@ -12,11 +12,41 @@ import org.vanautrui.languages.TerminalUtil;
 
 import java.awt.*;
 
+import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.ansi;
 
 public class CompilerPhaseUtils {
-    public static void printBeginPhase(String phaseName) {
-        TerminalUtil.print(String.format("%-18s ",phaseName),Ansi.Color.GREEN);
+    public static void printBeginPhase(String phaseName) throws InterruptedException {
+        //TerminalUtil.print(String.format("%-18s ",phaseName),Ansi.Color.GREEN);
+        Ansi ansi = Ansi.ansi();
+        ansi.eraseLine(Ansi.Erase.BACKWARD);
+        ansi.fg(GREEN);
+        ansi.a(phaseName);
+
+        ansi.reset();
+        System.out.print(ansi);
+        System.out.flush();
+
+        //rip this out, this is slowing down the compiler
+        //Thread.sleep(100);
+    }
+
+    public static void printEndPhase(boolean success) throws Exception{
+        Ansi ansi1=Ansi.ansi();
+        ansi1.cursorToColumn(0);
+        ansi1.fg(GREEN);
+        if(success) {
+            ansi1.a("✓");
+        }else{
+            ansi1.a("⚠");
+        }
+        ansi1.eraseLine(Ansi.Erase.FORWARD);
+        ansi1.reset();
+        System.out.print(ansi1);
+        System.out.flush();
+
+        //rip this out, this is slowing down the compiler
+        //Thread.sleep(100);
     }
 
     public static void printDuration(long start,long end){

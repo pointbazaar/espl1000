@@ -1,6 +1,7 @@
 package org.vanautrui.languages.commandline;
 
 import org.apache.commons.cli.*;
+import org.fusesource.jansi.Ansi;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
@@ -14,6 +15,8 @@ import java.nio.file.Paths;
 import java.util.*;
 
 import static java.lang.System.currentTimeMillis;
+import static org.fusesource.jansi.Ansi.Color.GREEN;
+import static org.fusesource.jansi.Ansi.ansi;
 import static org.objectweb.asm.Opcodes.*;
 import static org.objectweb.asm.Opcodes.RETURN;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printDuration;
@@ -198,8 +201,18 @@ public class dragonc {
             long duration = end_time_ms-start_time_ms;
 
             //https://www.utf8icons.com/
-
-            printDurationFeedback(duration);
+            if(timed) {
+                printDurationFeedback(duration);
+            }else{
+                //System.out.println();
+                Ansi ansi1= ansi();
+                ansi1.cursorToColumn(0);
+                ansi1.eraseLine(Ansi.Erase.FORWARD);
+                ansi1.reset();
+                System.out.print(ansi1);
+                System.out.flush();
+                System.out.println(ansi().fg(GREEN).bold().a("BUILD SUCCESS").reset());
+            }
 
         } catch (Exception e) {
 
