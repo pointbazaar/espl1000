@@ -16,6 +16,9 @@ import org.vanautrui.languages.phase_clean_the_input.DragonCommentRemover;
 import org.vanautrui.languages.typechecking.DragonTypeChecker;
 import static org.vanautrui.languages.symboltablegenerator.DragonSymbolTableGenerator.*;
 
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.node.*;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -172,10 +175,13 @@ public class DragonCompilerPhases {
                 TerminalUtil.println("DEBUG: TODO: pretty print source from AST in curly braces", RED);
                 System.out.println(ast.toSourceCode());
 
-                TerminalUtil.println("DEBUG: PRINT AST XML ", RED);
+                TerminalUtil.println("DEBUG: PRINT AST JSON ", RED);
 
-                Serializer serializer = new Persister(getPreferredXMLSerializationStrategyHumanReadable());
-                serializer.write(ast, System.out);
+                //Serializer serializer = new Persister(getPreferredXMLSerializationStrategyHumanReadable());
+                //serializer.write(ast, System.out);
+				ObjectMapper mapper = new ObjectMapper();
+				mapper.enable(SerializationFeature.INDENT_OUTPUT);
+				System.out.println(mapper.writeValueAsString(ast));
                 System.out.println();
             }
             HashSet<DragonAST> asts=new HashSet<>();

@@ -1,0 +1,9 @@
+public class Main{
+	
+	public Void main(){
+		a=true;
+		if(a){
+			println("true");
+		}
+	}
+}

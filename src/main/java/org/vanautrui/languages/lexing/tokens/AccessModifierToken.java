@@ -6,6 +6,7 @@ import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
 import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
 
 import java.awt.*;
+import com.fasterxml.jackson.annotation.*;
 
 public class AccessModifierToken extends BasicToken implements DragonToken {
 
@@ -45,6 +46,7 @@ public class AccessModifierToken extends BasicToken implements DragonToken {
     }
 
     @Override
+	@JsonIgnore
     public Color getDisplayColor() {
         return Color.RED;
     }

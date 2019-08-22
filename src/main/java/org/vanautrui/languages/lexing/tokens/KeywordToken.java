@@ -3,7 +3,7 @@ package org.vanautrui.languages.lexing.tokens;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
 import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
-
+import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
 
 public class KeywordToken extends BasicToken implements DragonToken {
@@ -45,6 +45,7 @@ public class KeywordToken extends BasicToken implements DragonToken {
     }
 
     @Override
+	@JsonIgnore
     public Color getDisplayColor() {
         return Color.CYAN;
     }

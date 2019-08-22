@@ -3,7 +3,7 @@ package org.vanautrui.languages.lexing.tokens;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
 import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
-
+import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,6 +49,7 @@ public class TypeIdentifierToken extends BasicToken implements DragonToken {
     }
 
     @Override
+	@JsonIgnore
     public Color getDisplayColor() {
         return Color.YELLOW;
     }

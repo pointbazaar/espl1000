@@ -7,6 +7,7 @@ import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
 import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.fasterxml.jackson.annotation.*;
 
 public class FloatNonNegativeConstantToken extends BasicToken implements DragonToken {
 
@@ -39,6 +40,7 @@ public class FloatNonNegativeConstantToken extends BasicToken implements DragonT
     }
 
     @Override
+	@JsonIgnore
     public Color getDisplayColor() {
         return Color.GREEN;
     }

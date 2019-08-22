@@ -4,7 +4,7 @@ import org.simpleframework.xml.Attribute;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
 import org.vanautrui.languages.lexing.tokens.utils.DragonToken;
-
+import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
 
 public class OperatorToken extends BasicToken implements DragonToken {
@@ -60,6 +60,7 @@ public class OperatorToken extends BasicToken implements DragonToken {
     }
 
     @Override
+	@JsonIgnore
     public Color getDisplayColor() {
         return Color.GREEN;
     }
