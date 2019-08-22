@@ -13,6 +13,25 @@ public class Math{
 		
 		println("sqrt(4.0)");
 		println(sqrt(4.0));
+
+		println("pow(2,3)");
+		println(pow(2,3));
+
+		println("3!");
+		println(faculty(3));
+		println();
+
+		println("max(2,6)");
+		println(max(2,6));
+		println();
+
+		println("pi()");
+		println(pi());
+		println();
+
+		println("e()");
+		println(e());
+		println();
 	}
 
 	public Float sqrt(Float number){
@@ -45,5 +64,32 @@ public class Math{
 			return 0;
 		}
 		return -1;
+	}
+	public Int pow(Int base,Int power){
+		result=1;
+		i=0;
+		while(i<power){
+			result=result*base;
+			i=i+1;
+		}
+		return result;
+	}
+	public Int faculty(Int n){
+		if(n<=1){ return 1; }
+		return (n*faculty(n-1));
+	}
+	public Int max(Int a,Int b){
+		if(a>b){return a;}
+		return b;
+	}
+	public Int min(Int a,Int b){
+		if(a<b){return a;}
+		return b;
+	}
+	public Float e(){
+		return 2.71828;
+	}
+	public Float pi(){
+		return 3.14159;
 	}
 }
