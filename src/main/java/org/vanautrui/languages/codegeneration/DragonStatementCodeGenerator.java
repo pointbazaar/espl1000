@@ -61,6 +61,9 @@ public class DragonStatementCodeGenerator {
                 case "Int":
                     mv.visitVarInsn(ISTORE, local_var_index);
                     break;
+				case "Float":
+					mv.visitVarInsn(FSTORE, local_var_index);
+					break;
                 case "String":
                     mv.visitVarInsn(ASTORE,local_var_index);
                     break;

@@ -10,6 +10,9 @@ public class Math{
 
 		println("sign(-3)");
 		println(sign(-3));
+		
+		println("sqrt(4.0)");
+		println(sqrt(4.0));
 	}
 
 	public Float sqrt(Float number){

@@ -264,7 +264,7 @@ public class DragonTypeChecker {
         //the condition expression should be of type boolean
         String conditionType=DragonTypeResolver.getTypeExpressionNode(whileStatementNode.condition,methodNode,subTable,varTable);
         if(!conditionType.equals("Bool") && !conditionType.equals("Boolean")){
-            throw new Exception(" condition should be of type boolean");
+            throw new Exception(" condition should be of type boolean : '"+whileStatementNode.condition.toSourceCode()+"' but was of type: "+conditionType);
         }
         for(DragonStatementNode stmt : whileStatementNode.statements){
             typeCheckStatementNode(asts,classNode,methodNode,stmt,subTable,varTable);

@@ -72,6 +72,10 @@ public class DragonTermNode implements IDragonASTNode, IExpressionComputable {
     @Override
     public String toSourceCode() {
 
+        if(this.termNode instanceof DragonFloatConstantNode){
+            DragonFloatConstantNode node=(DragonFloatConstantNode)termNode;
+            return node.toSourceCode();
+        }
         if(this.termNode instanceof DragonIntegerConstantNode){
             DragonIntegerConstantNode integerConstantNode=(DragonIntegerConstantNode)termNode;
             return integerConstantNode.toSourceCode();

@@ -93,6 +93,16 @@ public class DragonTypeResolver {
             return "Bool";
         }
 
+		if(
+                getTypeTermNode(expressionNode.term,methodNode,subTable,varTable).equals("Float") &&
+                        expressionNode.termNodes.size()==1 &&
+                        getTypeTermNode(expressionNode.termNodes.get(0),methodNode,subTable,varTable).equals("Float") &&
+                        expressionNode.operatorNodes.size()==1 &&
+                        (boolean_operators.contains(expressionNode.operatorNodes.get(0).operator))
+        ){
+            return "Bool";
+        }
+
 
         String type = getTypeTermNode(expressionNode.term,methodNode,subTable,varTable);
 
