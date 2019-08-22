@@ -6,7 +6,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonCl
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.DragonStringConstantNode;
 
-public class DragonStringConstantCodeGenerator {
+public class StringConstantCodeGenerator {
 
     public static void visitStringConstant(
             MethodVisitor mv,

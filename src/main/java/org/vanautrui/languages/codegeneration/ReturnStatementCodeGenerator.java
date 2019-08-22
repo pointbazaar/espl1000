@@ -11,7 +11,7 @@ import org.vanautrui.languages.typeresolution.DragonTypeResolver;
 
 import static org.objectweb.asm.Opcodes.*;
 
-public class DragonReturnStatementCodeGenerator {
+public class ReturnStatementCodeGenerator {
     public static void visitReturnStatement(ClassWriter cw, MethodVisitor mv,
                                             DragonClassNode classNode, DragonMethodNode methodNode,
                                             DragonReturnStatementNode returnStatementNode,
@@ -20,7 +20,7 @@ public class DragonReturnStatementCodeGenerator {
 
         if(returnStatementNode.returnValue.isPresent()){
             //put the expression on the stack
-            DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,returnStatementNode.returnValue.get(),methodScopeSymbolTable,subroutineSymbolTable,debug);
+            ExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,returnStatementNode.returnValue.get(),methodScopeSymbolTable,subroutineSymbolTable,debug);
 
             //determine the return type
             //TODO: consider the other return types

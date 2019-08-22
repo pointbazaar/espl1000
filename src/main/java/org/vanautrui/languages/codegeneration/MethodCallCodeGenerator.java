@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 import static org.objectweb.asm.Opcodes.*;
 
-public class DragonMethodCallCodeGenerator {
+public class MethodCallCodeGenerator {
 
     //https://tomassetti.me/generating-bytecode/
 
@@ -52,7 +52,7 @@ public class DragonMethodCallCodeGenerator {
 				methodDescriptor="(F)V";
 				break;
 		}
-                DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,expressionNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
+                ExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,expressionNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
             }
             //DragonStringConstantCodeGenerator.visitStringConstant(cw,mv,classNode,methodNode,methodCallNode.argumentList.get(0),methodScopeSymbolTable);
         }else{
@@ -100,7 +100,7 @@ public class DragonMethodCallCodeGenerator {
 
             //push the arguments on the stack
             for(DragonExpressionNode expr : methodCallNode.argumentList){
-                DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,expr,methodScopeSymbolTable,subroutineSymbolTable,debug);
+                ExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,expr,methodScopeSymbolTable,subroutineSymbolTable,debug);
             }
 
             mv.visitMethodInsn(INVOKESTATIC,owner,methodName,descriptor);

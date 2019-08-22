@@ -10,7 +10,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMe
 
 import static org.objectweb.asm.Opcodes.*;
 
-public class DragonOperatorCodeGenerator {
+public class OperatorCodeGenerator {
 
     public static void visitOperatorNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonOperatorNode operatorNode,String operandType) throws Exception {
 

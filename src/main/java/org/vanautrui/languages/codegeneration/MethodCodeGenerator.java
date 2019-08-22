@@ -5,20 +5,17 @@ import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.codegeneration.symboltables.nameconversions.TypeNameToJVMInternalTypeNameConverter;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonMethodScopeVariableSymbolTable;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
-import org.vanautrui.languages.codegeneration.symboltables.rows.DragonMethodScopeVariableSymbolTableRow;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonDeclaredArgumentNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonAssignmentStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
-import org.vanautrui.languages.typeresolution.DragonTypeResolver;
+
 import static org.vanautrui.languages.symboltablegenerator.DragonSymbolTableGenerator.*;
 
 import java.util.stream.Collectors;
 
 import static org.objectweb.asm.Opcodes.*;
 
-public class DragonMethodCodeGenerator {
+public class MethodCodeGenerator {
 
     public static void visitMethodNode(ClassWriter cw, DragonClassNode classNode, DragonMethodNode methodNode, DragonSubroutineSymbolTable subroutineSymbolTable,boolean debug) throws Exception {
         String returnTypeName=methodNode.type.typeName;
@@ -67,7 +64,7 @@ public class DragonMethodCodeGenerator {
 
             //stmt->stmt.visit(mv,Optional.of(classNode),Optional.of(methodNode))
             for (DragonStatementNode stmt : methodNode.statements) {
-                DragonStatementCodeGenerator.visitStatement(cw, mv, classNode, methodNode, stmt,subroutineSymbolTable,methodScopeSymbolTable,debug);
+                StatementCodeGenerator.visitStatement(cw, mv, classNode, methodNode, stmt,subroutineSymbolTable,methodScopeSymbolTable,debug);
             }
 
 

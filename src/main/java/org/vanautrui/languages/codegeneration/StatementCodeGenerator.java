@@ -16,9 +16,9 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMe
 import org.vanautrui.languages.typeresolution.DragonTypeResolver;
 
 import static org.objectweb.asm.Opcodes.*;
-import static org.vanautrui.languages.codegeneration.DragonLoopStatementCodeGenerator.visitLoopStatmentNode;
+import static org.vanautrui.languages.codegeneration.LoopStatementCodeGenerator.visitLoopStatmentNode;
 
-public class DragonStatementCodeGenerator {
+public class StatementCodeGenerator {
 
     public static void visitStatement(
             ClassWriter cw,
@@ -35,7 +35,7 @@ public class DragonStatementCodeGenerator {
         //statementNode.methodCallNode.visit(mv,classNode,methodNode);
         if(statementNode.statementNode instanceof DragonMethodCallNode){
             DragonMethodCallNode call = (DragonMethodCallNode)statementNode.statementNode;
-            DragonMethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,call,methodScopeSymbolTable,subroutineSymbolTable,debug);
+            MethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,call,methodScopeSymbolTable,subroutineSymbolTable,debug);
 
             //TODO: if the method was not Void, we should pop something off the stack
             String returnType = DragonTypeResolver.getTypeMethodCallNode(call,subroutineSymbolTable);
@@ -53,7 +53,7 @@ public class DragonStatementCodeGenerator {
             int local_var_index = methodScopeSymbolTable.getIndexOfVariable(assignmentStatementNode.variableNode.name);
 
             //evaluate the expression and store the result in the local variable
-            DragonExpressionCodeGenerator
+            ExpressionCodeGenerator
                     .visitExpression(cw, mv, classNode, methodNode, assignmentStatementNode.expressionNode, methodScopeSymbolTable,subroutineSymbolTable,debug);
 
             String expressionType= DragonTypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
@@ -73,13 +73,13 @@ public class DragonStatementCodeGenerator {
             }
         }else if(statementNode.statementNode instanceof DragonWhileStatementNode){
             DragonWhileStatementNode whileStatementNode =(DragonWhileStatementNode)statementNode.statementNode;
-            DragonWhileStatementCodeGenerator.visitWhileStatmentNode(cw,mv,classNode,methodNode,whileStatementNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
+            WhileStatementCodeGenerator.visitWhileStatmentNode(cw,mv,classNode,methodNode,whileStatementNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
         }else if(statementNode.statementNode instanceof DragonIfStatementNode) {
             DragonIfStatementNode ifStatementNode = (DragonIfStatementNode) statementNode.statementNode;
-            DragonIfStatementCodeGenerator.visitIfStatmentNode(cw, mv, classNode, methodNode, ifStatementNode, methodScopeSymbolTable, subroutineSymbolTable,debug);
+            IfStatementCodeGenerator.visitIfStatmentNode(cw, mv, classNode, methodNode, ifStatementNode, methodScopeSymbolTable, subroutineSymbolTable,debug);
         }else if(statementNode.statementNode instanceof DragonReturnStatementNode){
             DragonReturnStatementNode returnStatementNode = (DragonReturnStatementNode)statementNode.statementNode;
-            DragonReturnStatementCodeGenerator.visitReturnStatement(cw,mv,classNode,methodNode,returnStatementNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
+            ReturnStatementCodeGenerator.visitReturnStatement(cw,mv,classNode,methodNode,returnStatementNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
         }else{
             throw new Exception("unconsidered statement type: "+statementNode.statementNode.getClass().getName());
         }

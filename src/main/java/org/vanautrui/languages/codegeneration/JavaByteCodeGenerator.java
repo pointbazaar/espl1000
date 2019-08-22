@@ -2,7 +2,6 @@ package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.codegeneration.symboltables.rows.DragonSubroutineSymbolTableRow;
 import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassFieldNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
@@ -90,7 +89,7 @@ public class JavaByteCodeGenerator {
 
         for(DragonMethodNode methodNode : classNode.methodNodeList){
             //methodNode.visit(cw,Optional.of(classNode),Optional.empty());
-            DragonMethodCodeGenerator.visitMethodNode(cw,classNode,methodNode,subroutineSymbolTable,debug);
+            MethodCodeGenerator.visitMethodNode(cw,classNode,methodNode,subroutineSymbolTable,debug);
         }
 
         cw.visitEnd();

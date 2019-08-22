@@ -14,7 +14,7 @@ import org.vanautrui.languages.parsing.astnodes.terminal.*;
 import static org.objectweb.asm.Opcodes.*;
 import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.*;
 
-public class DragonTermCodeGenerator {
+public class TermCodeGenerator {
 
     public static void visitTerm(
             ClassWriter cw,
@@ -36,10 +36,10 @@ public class DragonTermCodeGenerator {
         }else if(termNode.termNode instanceof DragonStringConstantNode){
             DragonStringConstantNode stringConstantNode = (DragonStringConstantNode)termNode.termNode;
             //push the string on the stack
-            DragonStringConstantCodeGenerator.visitStringConstant(mv,stringConstantNode);
+            StringConstantCodeGenerator.visitStringConstant(mv,stringConstantNode);
         }else if(termNode.termNode instanceof DragonExpressionNode) {
             DragonExpressionNode dragonExpressionNode = (DragonExpressionNode)termNode.termNode;
-            DragonExpressionCodeGenerator.visitExpression(cw, mv, classNode, methodNode, dragonExpressionNode, methodScopeSymbolTable,subroutineSymbolTable,debug);
+            ExpressionCodeGenerator.visitExpression(cw, mv, classNode, methodNode, dragonExpressionNode, methodScopeSymbolTable,subroutineSymbolTable,debug);
         }else if(termNode.termNode instanceof DragonVariableNode) {
 
             //TODO: find the local variable index and push it onto the stack
@@ -75,7 +75,7 @@ public class DragonTermCodeGenerator {
         }else if(termNode.termNode instanceof DragonMethodCallNode){
             DragonMethodCallNode methodCallNode = (DragonMethodCallNode)termNode.termNode;
 
-            DragonMethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
+            MethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
 		}else if(termNode.termNode instanceof DragonBoolConstantNode){
 			DragonBoolConstantNode b = (DragonBoolConstantNode)termNode.termNode;
 			pushIntegerConstant((b.value)?1:0,mv);

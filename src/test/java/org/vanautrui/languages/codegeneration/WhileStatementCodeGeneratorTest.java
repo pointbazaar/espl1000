@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 
 import static org.vanautrui.languages.codegeneration.JavaByteCodeGeneratorTest.compile_and_run_one_class_for_testing;
 
-public class DragonWhileStatementCodeGeneratorTest {
+public class WhileStatementCodeGeneratorTest {
 
 
     @Test

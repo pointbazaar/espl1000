@@ -10,7 +10,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.DragonTermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 import static org.vanautrui.languages.typeresolution.DragonTypeResolver.*;
-public class DragonExpressionCodeGenerator {
+public class ExpressionCodeGenerator {
 
     public static void visitExpression(
             ClassWriter cw,
@@ -24,18 +24,18 @@ public class DragonExpressionCodeGenerator {
     ) throws Exception {
 
         //evaluate the expression
-        DragonTermCodeGenerator.visitTerm(cw,mv,classNode,methodNode,expressionNode.term,methodScopeSymbolTable,subroutineSymbolTable,debug);
+        TermCodeGenerator.visitTerm(cw,mv,classNode,methodNode,expressionNode.term,methodScopeSymbolTable,subroutineSymbolTable,debug);
 
         for(int i=0;i<expressionNode.termNodes.size();i++){
 
             DragonTermNode myterm=expressionNode.termNodes.get(i);
 
-            DragonTermCodeGenerator.visitTerm(cw,mv,classNode,methodNode,myterm,methodScopeSymbolTable,subroutineSymbolTable,debug);
+            TermCodeGenerator.visitTerm(cw,mv,classNode,methodNode,myterm,methodScopeSymbolTable,subroutineSymbolTable,debug);
 
 		String operandType=getTypeTermNode(myterm,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
             DragonOperatorNode myop=expressionNode.operatorNodes.get(i);
 
-            DragonOperatorCodeGenerator.visitOperatorNode(cw,mv,classNode,methodNode,myop,operandType);
+            OperatorCodeGenerator.visitOperatorNode(cw,mv,classNode,methodNode,myop,operandType);
         }
     }
 }

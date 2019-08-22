@@ -12,7 +12,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMe
 
 import static org.objectweb.asm.Opcodes.*;
 
-public class DragonIfStatementCodeGenerator {
+public class IfStatementCodeGenerator {
 
     public static void visitIfStatmentNode(
             ClassWriter cw, MethodVisitor mv,
@@ -48,11 +48,11 @@ public class DragonIfStatementCodeGenerator {
 
         mv.visitLabel(startLabel);
 
-        DragonExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,ifStatementNode.condition,methodScopeSymbolTable,subroutineSymbolTable,debug);
+        ExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,ifStatementNode.condition,methodScopeSymbolTable,subroutineSymbolTable,debug);
         mv.visitJumpInsn(IFEQ,labelElse);
 
         for(DragonStatementNode stmt : ifStatementNode.statements) {
-            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable, methodScopeSymbolTable,debug);
+            StatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable, methodScopeSymbolTable,debug);
         }
 
         mv.visitJumpInsn(GOTO,endLabel);
@@ -62,7 +62,7 @@ public class DragonIfStatementCodeGenerator {
         mv.visitLabel(labelElse);
 
         for(DragonStatementNode stmt : ifStatementNode.elseStatements) {
-            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable, methodScopeSymbolTable,debug);
+            StatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable, methodScopeSymbolTable,debug);
         }
 
         mv.visitJumpInsn(GOTO,endLabel);

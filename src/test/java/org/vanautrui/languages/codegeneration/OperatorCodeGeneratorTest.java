@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static org.vanautrui.languages.codegeneration.JavaByteCodeGeneratorTest.compile_and_run_one_class_for_testing;
 
-public class DragonOperatorCodeGeneratorTest {
+public class OperatorCodeGeneratorTest {
 	//this class tests that the 
 	//Dragon Operator Code Generator generates correct operator byte codes
 

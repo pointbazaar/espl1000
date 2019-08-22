@@ -14,7 +14,7 @@ import org.vanautrui.languages.parsing.astnodes.terminal.DragonIntegerConstantNo
 import static org.objectweb.asm.Opcodes.*;
 import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.pushIntegerConstant;
 
-public class DragonLoopStatementCodeGenerator {
+public class LoopStatementCodeGenerator {
 
     public static void visitLoopStatmentNode(
             ClassWriter cw,
@@ -59,7 +59,7 @@ public class DragonLoopStatementCodeGenerator {
 
         //write the code for the statements
         for(DragonStatementNode stmt : loop.statements){
-            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable,methodScopeSymbolTable,debug);
+            StatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable,methodScopeSymbolTable,debug);
         }
 
         //decrement the loop counter : count--;

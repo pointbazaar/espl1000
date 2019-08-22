@@ -12,7 +12,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMe
 
 import static org.objectweb.asm.Opcodes.*;
 
-public class DragonWhileStatementCodeGenerator {
+public class WhileStatementCodeGenerator {
 
     public static void visitWhileStatmentNode(
             ClassWriter cw,
@@ -45,7 +45,7 @@ public class DragonWhileStatementCodeGenerator {
 
         mv.visitLabel(startLabel);
 
-        DragonExpressionCodeGenerator.visitExpression(cw,mv,
+        ExpressionCodeGenerator.visitExpression(cw,mv,
                 classNode,methodNode,
                 whileStatementNode.condition,methodScopeSymbolTable,
                 subroutineSymbolTable,debug);
@@ -53,7 +53,7 @@ public class DragonWhileStatementCodeGenerator {
         mv.visitJumpInsn(IFEQ,endLabel);
 
         for(DragonStatementNode stmt : whileStatementNode.statements) {
-            DragonStatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable, methodScopeSymbolTable,debug);
+            StatementCodeGenerator.visitStatement(cw,mv,classNode,methodNode,stmt, subroutineSymbolTable, methodScopeSymbolTable,debug);
         }
 
         mv.visitJumpInsn(GOTO,startLabel);
