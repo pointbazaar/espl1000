@@ -41,4 +41,36 @@ public class DragonOperatorCodeGeneratorTest {
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("1.5",IOUtils.toString(pr.getInputStream()));
     }
+
+	@Test
+    public void test_can_add_Int()throws Exception{
+        String source="public class MainTest6777 { public Void main(){ print(1/2); } }";
+        Process pr = compile_and_run_one_class_for_testing(source,"MainTest6777");
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("0",IOUtils.toString(pr.getInputStream()));
+    }
+
+	@Test
+    public void test_can_sub_Int()throws Exception{
+        String source="public class MainTest6775 { public Void main(){ print(1-2); } }";
+        Process pr = compile_and_run_one_class_for_testing(source,"MainTest6775");
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("-1",IOUtils.toString(pr.getInputStream()));
+    }
+
+	@Test
+    public void test_can_multiply_Int()throws Exception{
+        String source="public class MainTest6774 { public Void main(){ print(5*2); } }";
+        Process pr = compile_and_run_one_class_for_testing(source,"MainTest6774");
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("10",IOUtils.toString(pr.getInputStream()));
+    }
+
+	@Test
+    public void test_can_div_Int()throws Exception{
+        String source="public class MainTest6773 { public Void main(){ print(3/2); } }";
+        Process pr = compile_and_run_one_class_for_testing(source,"MainTest6773");
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
+    }
 }
