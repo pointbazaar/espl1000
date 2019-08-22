@@ -28,7 +28,7 @@ public class DragonMethodNode implements IDragonASTNode {
     //for xml
     @Attribute
     public String getType(){
-        return this.type.typeName.getContents();
+        return this.type.typeName;
     }
 
     public DragonTypeIdentifierNode type;
@@ -36,7 +36,7 @@ public class DragonMethodNode implements IDragonASTNode {
     //for xml
     @Attribute
     public String getName(){
-        return this.methodName.methodName.name.getContents();
+        return this.methodName.methodName.name;
     }
 
     public DragonMethodNameNode methodName;

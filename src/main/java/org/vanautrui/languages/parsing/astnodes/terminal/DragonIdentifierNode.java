@@ -17,7 +17,7 @@ public class DragonIdentifierNode implements IDragonASTNode {
 
     //this identifies a variable
 
-    public IdentifierToken name;
+    public String name;
 
     public DragonIdentifierNode(DragonTokenList tokens) throws Exception {
 
@@ -28,7 +28,7 @@ public class DragonIdentifierNode implements IDragonASTNode {
         DragonToken token = tokens.get(0);
 
         if (token instanceof IdentifierToken) {
-            this.name = ((IdentifierToken) token);
+            this.name = ((IdentifierToken) token).getContents();
             tokens.consume(1);
 
         } else {
@@ -39,7 +39,7 @@ public class DragonIdentifierNode implements IDragonASTNode {
 
     @Override
     public String toSourceCode() {
-        return this.name.getContents();
+        return this.name;
     }
 
 }

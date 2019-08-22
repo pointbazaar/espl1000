@@ -50,7 +50,7 @@ public class DragonStatementCodeGenerator {
 
             DragonAssignmentStatementNode assignmentStatementNode = (DragonAssignmentStatementNode) statementNode.statementNode;
 
-            int local_var_index = methodScopeSymbolTable.getIndexOfVariable(assignmentStatementNode.variableNode.name.getContents());
+            int local_var_index = methodScopeSymbolTable.getIndexOfVariable(assignmentStatementNode.variableNode.name);
 
             //evaluate the expression and store the result in the local variable
             DragonExpressionCodeGenerator

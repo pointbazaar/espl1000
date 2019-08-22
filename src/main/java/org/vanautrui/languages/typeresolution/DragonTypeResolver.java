@@ -33,14 +33,17 @@ public class DragonTypeResolver {
     public static String getTypeVariableNode(DragonVariableNode variableNode, DragonMethodNode methodNode,DragonSubroutineSymbolTable subroutineSymbolTable,DragonMethodScopeVariableSymbolTable varTable)throws Exception{
         //TODO: implement by looking at the definitions in the AST and such
 
-        if( varTable.containsVariable(variableNode.name.getContents()) ){
-			return varTable.getTypeOfVariable(variableNode.name.getContents());
+        if( varTable.containsVariable(variableNode.name) ){
+			return varTable.getTypeOfVariable(variableNode.name);
         }else{
-            throw new Exception("could not determine type of "+variableNode.name.getContents());
+            throw new Exception("could not determine type of "+variableNode.name);
         }
     }
 
-    public static String getTypeTermNode(DragonTermNode termNode,DragonMethodNode methodNode,DragonSubroutineSymbolTable subroutineSymbolTable,DragonMethodScopeVariableSymbolTable varTable)throws Exception{
+    public static String getTypeTermNode(DragonTermNode termNode,DragonMethodNode methodNode,
+                                         DragonSubroutineSymbolTable subroutineSymbolTable,
+                                         DragonMethodScopeVariableSymbolTable varTable
+    )throws Exception{
         if(termNode.termNode instanceof DragonExpressionNode){
             return getTypeExpressionNode((DragonExpressionNode)termNode.termNode,methodNode,subroutineSymbolTable,varTable);
         }else if (termNode.termNode instanceof DragonMethodCallNode){

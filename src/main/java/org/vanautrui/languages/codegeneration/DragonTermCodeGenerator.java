@@ -45,32 +45,32 @@ public class DragonTermCodeGenerator {
             //TODO: find the local variable index and push it onto the stack
 
             DragonVariableNode variableNode = (DragonVariableNode) termNode.termNode;
-            if (methodScopeSymbolTable.containsVariable(variableNode.name.getContents())) {
-                String type = methodScopeSymbolTable.getTypeOfVariable(variableNode.name.getContents());
+            if (methodScopeSymbolTable.containsVariable(variableNode.name)) {
+                String type = methodScopeSymbolTable.getTypeOfVariable(variableNode.name);
                 switch (type) {
                     case "Int":
 					case "Bool":
                         mv.visitIntInsn(
 							ILOAD, 
 							methodScopeSymbolTable.getIndexOfVariable(
-								variableNode.name.getContents()
+								variableNode.name
 							)
 						);
                         break;
 					case "Float":
 						mv.visitIntInsn(
 							FLOAD,
-							methodScopeSymbolTable.getIndexOfVariable(variableNode.name.getContents())
+							methodScopeSymbolTable.getIndexOfVariable(variableNode.name)
 						);
 						break;
                     case "String":
-                        mv.visitIntInsn(ALOAD,methodScopeSymbolTable.getIndexOfVariable(variableNode.name.getContents()));
+                        mv.visitIntInsn(ALOAD,methodScopeSymbolTable.getIndexOfVariable(variableNode.name));
                         break;
                     default:
                         throw new Exception("unconsidered case in DragonTermCodeGenerator: type:"+type);
                 }
             } else {
-                throw new Exception("variable " + variableNode.name.getContents() + " not defined?");
+                throw new Exception("variable " + variableNode.name + " not defined?");
             }
         }else if(termNode.termNode instanceof DragonMethodCallNode){
             DragonMethodCallNode methodCallNode = (DragonMethodCallNode)termNode.termNode;

@@ -27,7 +27,7 @@ public class DragonParserTest {
 
         DragonAST ast = parser.parse(tokens);
 
-        Assert.assertEquals(classname, ast.classNodeList.stream().collect(Collectors.toList()).get(0).name.typeName.getContents());
+        Assert.assertEquals(classname, ast.classNodeList.stream().collect(Collectors.toList()).get(0).name.typeName);
     }
 
     public static class DragonASTTest {

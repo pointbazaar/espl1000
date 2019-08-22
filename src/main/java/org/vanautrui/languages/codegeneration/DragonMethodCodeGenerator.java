@@ -21,12 +21,20 @@ import static org.objectweb.asm.Opcodes.*;
 public class DragonMethodCodeGenerator {
 
     public static void visitMethodNode(ClassWriter cw, DragonClassNode classNode, DragonMethodNode methodNode, DragonSubroutineSymbolTable subroutineSymbolTable,boolean debug) throws Exception {
-        String returnTypeName=methodNode.type.typeName.getContents();
+        String returnTypeName=methodNode.type.typeName;
 
 
-        String owner = classNode.name.typeName.getContents();
-        String descriptor = TypeNameToJVMInternalTypeNameConverter.convertSubroutineName(returnTypeName,methodNode.arguments.stream().map(arg->arg.type.typeName.getContents()).collect(Collectors.toList()),debug);
-        String methodName = methodNode.methodName.methodName.name.getContents();
+        String owner = classNode.name.typeName;
+        String descriptor = TypeNameToJVMInternalTypeNameConverter
+                .convertSubroutineName(
+                        returnTypeName,
+                        methodNode.arguments
+                                .stream()
+                                .map(arg->arg.type.typeName)
+                                .collect(Collectors.toList()),
+                        debug
+                );
+        String methodName = methodNode.methodName.methodName.name;
 
         //figure it out
         //cw.newMethod(owner,this.methodName.methodName.name.getContents(),descriptor,false);

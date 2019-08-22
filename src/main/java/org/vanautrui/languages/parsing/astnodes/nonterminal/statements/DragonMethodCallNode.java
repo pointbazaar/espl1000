@@ -23,7 +23,7 @@ public class DragonMethodCallNode implements IDragonASTNode, IDragonStatementNod
 
     @Attribute
     public String getMethodName(){
-        return this.identifierMethodName.name.getContents();
+        return this.identifierMethodName.name;
     }
 
     public DragonIdentifierNode identifierMethodName;

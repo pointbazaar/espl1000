@@ -59,7 +59,7 @@ public class DragonMethodCallCodeGenerator {
             mv.visitLdcInsn("");
         }
 
-        switch (methodCallNode.identifierMethodName.name.getContents()) {
+        switch (methodCallNode.identifierMethodName.name) {
             case "println":
                 mv.visitMethodInsn(INVOKEVIRTUAL,
                         "java/io/PrintStream",
@@ -73,7 +73,7 @@ public class DragonMethodCallCodeGenerator {
                         methodDescriptor);
                 break;
             default:
-                throw new Exception("unrecognized method: '" + methodCallNode.identifierMethodName.name.getContents() + "'");
+                throw new Exception("unrecognized method: '" + methodCallNode.identifierMethodName.name+ "'");
 
         }
     }
@@ -81,11 +81,11 @@ public class DragonMethodCallCodeGenerator {
     public static void visitMethodCallNode(ClassWriter cw, MethodVisitor mv, DragonClassNode classNode, DragonMethodNode methodNode, DragonMethodCallNode methodCallNode, DragonMethodScopeVariableSymbolTable methodScopeSymbolTable,DragonSubroutineSymbolTable subroutineSymbolTable,boolean debug) throws Exception {
         //TODO: actually compile the stuff, not just fake
 
-        if(subroutineSymbolTable.containsVariable(methodCallNode.identifierMethodName.name.getContents())){
+        if(subroutineSymbolTable.containsVariable(methodCallNode.identifierMethodName.name)){
             String subrType = DragonTypeResolver.getTypeMethodCallNode(methodCallNode,subroutineSymbolTable);
 
-            String methodName = methodCallNode.identifierMethodName.name.getContents();
-            String owner=classNode.name.typeName.getContents();//TODO: figure out if this is ok
+            String methodName = methodCallNode.identifierMethodName.name;
+            String owner=classNode.name.typeName;//TODO: figure out if this is ok
             String descriptor= TypeNameToJVMInternalTypeNameConverter.convertSubroutineName(
                     subrType,methodCallNode.argumentList.stream().map(expressionNode -> {
                         try {
@@ -111,7 +111,7 @@ public class DragonMethodCallCodeGenerator {
             }
         }else {
 
-            switch (methodCallNode.identifierMethodName.name.getContents()) {
+            switch (methodCallNode.identifierMethodName.name) {
 
                 case "readln":
                     //create an instance of Scanner

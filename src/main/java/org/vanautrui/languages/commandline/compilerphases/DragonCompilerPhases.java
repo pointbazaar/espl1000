@@ -98,7 +98,7 @@ public class DragonCompilerPhases {
 
                     //generate bytecode for that class
                     byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode, subroutineSymbolTable, debug);
-                    Files.write(Paths.get(classNode.name.typeName.getContents() + ".class"), classResult);
+                    Files.write(Paths.get(classNode.name.typeName + ".class"), classResult);
                 }
             }
             TerminalUtil.println("✓", Ansi.Color.GREEN);

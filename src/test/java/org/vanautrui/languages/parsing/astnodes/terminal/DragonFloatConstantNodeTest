@@ -1,4 +1,4 @@
-package org.vanautrui.languages.parsing.astnodes.nonterminals.statements.controlflow;
+package org.vanautrui.languages.parsing.astnodes.terminal;
 
 import org.junit.Test;
 import org.vanautrui.languages.lexing.collections.DragonTokenList;

@@ -14,12 +14,6 @@ import java.util.Set;
 
 public class DragonAccessModifierNode implements IDragonASTNode {
 
-    //for xml
-    @Attribute
-    public String getAccess(){
-        return this.toSourceCode();
-    }
-
     public boolean is_public;
 
     public DragonAccessModifierNode(DragonTokenList tokens) throws Exception {

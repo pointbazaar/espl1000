@@ -13,11 +13,6 @@ import java.util.Set;
 
 public class DragonMethodNameNode implements IDragonASTNode {
 
-    @Attribute
-    public String getName(){
-        return this.methodName.name.getContents();
-    }
-
     public DragonIdentifierNode methodName;
 
     public DragonMethodNameNode(DragonTokenList tokens) throws Exception {

@@ -54,7 +54,7 @@ public class JavaByteCodeGenerator {
 
             cw.visit(classFileVersion,
                     access,
-                    classNode.name.typeName.getContents(),
+                    classNode.name.typeName,
                     null,
                     superClassName,
                     null);
@@ -136,10 +136,10 @@ public class JavaByteCodeGenerator {
 
 
     public static void visitClassFieldNode(ClassWriter cw, DragonClassNode classNode,DragonClassFieldNode classFieldNode){
-        String owner = classNode.name.typeName.getContents();
+        String owner = classNode.name.typeName;
         //TODO: figure out if we are doing this correctly, i doubt it
         String descriptor="i dont know";
-        cw.newField(owner,classFieldNode.name.name.getContents(),descriptor);
+        cw.newField(owner,classFieldNode.name.name,descriptor);
     }
 
     //it would be better not to have all the code generation

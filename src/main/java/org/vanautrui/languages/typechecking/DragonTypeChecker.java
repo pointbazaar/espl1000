@@ -41,7 +41,7 @@ public class DragonTypeChecker {
         int count=0;
         for(DragonAST ast : asts){
             for(DragonClassNode dragonClassNode : ast.classNodeList){
-                if(dragonClassNode.name.typeName.getContents().equals(classNode.name.typeName.getContents())){
+                if(dragonClassNode.name.typeName.equals(classNode.name.typeName)){
                     count++;
                 }
             }
@@ -113,14 +113,14 @@ public class DragonTypeChecker {
     private void typeCheckReturnStatementNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonReturnStatementNode returnStatementNode, DragonSubroutineSymbolTable subTable,DragonMethodScopeVariableSymbolTable varTable) throws Exception{
         //well the type of the value returned should be the same as the method return type
         //in case of void there should be no value returned
-        if(methodNode.type.typeName.getContents().equals("Void")){
+        if(methodNode.type.typeName.equals("Void")){
             if(returnStatementNode.returnValue.isPresent()){
                 throw new Exception(" Type Checking Failed. do not return a value from a Void method. "+returnStatementNode.returnValue.get().toSourceCode());
             }
         }else{
             String returnValueType= DragonTypeResolver.getTypeExpressionNode(returnStatementNode.returnValue.get(),methodNode,subTable,varTable);
             if(
-                !(returnValueType.equals(methodNode.type.typeName.getContents()))
+                !(returnValueType.equals(methodNode.type.typeName))
             ){
                 throw new Exception(" return type has to equal the method type");
             }
@@ -129,7 +129,11 @@ public class DragonTypeChecker {
         }
     }
 
-    private void typeCheckIfStatementNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonIfStatementNode ifStatementNode,DragonSubroutineSymbolTable subTable,DragonMethodScopeVariableSymbolTable varTable) throws Exception{
+    private void typeCheckIfStatementNode(Set<DragonAST> asts, DragonClassNode classNode,
+                                          DragonMethodNode methodNode,
+                                          DragonIfStatementNode ifStatementNode,
+                                          DragonSubroutineSymbolTable subTable,
+                                          DragonMethodScopeVariableSymbolTable varTable) throws Exception{
         //the condition expression should be of type boolean
         String conditionType = DragonTypeResolver.getTypeExpressionNode(ifStatementNode.condition,methodNode,subTable,varTable);
         if(!conditionType.equals("Bool") && !conditionType.equals("Boolean")){
@@ -237,7 +241,7 @@ public class DragonTypeChecker {
         //there should be a context
 
         for(DragonClassFieldNode fieldNode : classNode.fieldNodeList){
-            if(fieldNode.name.name.equals(variableNode.name.getContents())){
+            if(fieldNode.name.name.equals(variableNode.name)){
                 //found the identifier declared here
                 return;
             }
@@ -247,20 +251,27 @@ public class DragonTypeChecker {
         //method scope
 
         for(DragonDeclaredArgumentNode arg : methodNode.arguments){
-            if(arg.name.name.equals(variableNode.name.getContents())){
+            if(arg.name.name.equals(variableNode.name)){
                 return;
             }
         }
 
         //search if identifier is declared as a variable
-	if(varTable.containsVariable(variableNode.name.getContents())){
+	if(varTable.containsVariable(variableNode.name)){
 		return;
 	}
 
-        throw new Exception("could not find declaration for usage of variable '"+variableNode.name.getContents()+"' \n"+subTable.toString());
+        throw new Exception("could not find declaration for usage of variable '"+variableNode.name+"' \n"+subTable.toString());
     }
 
-    private void typeCheckWhileStatementNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNode methodNode, DragonWhileStatementNode whileStatementNode,DragonSubroutineSymbolTable subTable,DragonMethodScopeVariableSymbolTable varTable) throws Exception{
+    private void typeCheckWhileStatementNode(
+            Set<DragonAST> asts,
+            DragonClassNode classNode,
+            DragonMethodNode methodNode,
+         DragonWhileStatementNode whileStatementNode,
+         DragonSubroutineSymbolTable subTable,
+         DragonMethodScopeVariableSymbolTable varTable
+    ) throws Exception{
         //the condition expression should be of type boolean
         String conditionType=DragonTypeResolver.getTypeExpressionNode(whileStatementNode.condition,methodNode,subTable,varTable);
         if(!conditionType.equals("Bool") && !conditionType.equals("Boolean")){
@@ -304,7 +315,7 @@ public class DragonTypeChecker {
 
         for(DragonAST ast : asts){
             for(DragonClassNode myclassNode : ast.classNodeList){
-                if(myclassNode.name.typeName.getContents().equals(typeIdentifierNode.typeName.getContents())){
+                if(myclassNode.name.typeName.equals(typeIdentifierNode.typeName)){
                     return;
                 }
             }
@@ -312,21 +323,21 @@ public class DragonTypeChecker {
 
         List<String> acceptable_types = Arrays.asList("Void","Int","Float","Bool","String");
 
-        if(acceptable_types.contains(typeIdentifierNode.typeName.getContents())){
+        if(acceptable_types.contains(typeIdentifierNode.typeName)){
             return;
         }
 
-        throw new Exception("could not find class for type: '"+typeIdentifierNode.typeName.getContents()+"'");
+        throw new Exception("could not find class for type: '"+typeIdentifierNode.typeName+"'");
     }
 
     private void typeCheckMethodNameNode(Set<DragonAST> asts, DragonClassNode classNode, DragonMethodNameNode methodNameNode)throws Exception{
         //method names should not be duplicate in a class
         //this may change in another version of dragon
 
-        long count = classNode.methodNodeList.stream().filter(mNode -> mNode.methodName.methodName.name.getContents().equals(methodNameNode.methodName.name.getContents())).count();
+        long count = classNode.methodNodeList.stream().filter(mNode -> mNode.methodName.methodName.name.equals(methodNameNode.methodName.name)).count();
 
         if(count>1){
-            throw new Exception("duplicate declaration of method '"+methodNameNode.methodName.name.getContents()+"' ");
+            throw new Exception("duplicate declaration of method '"+methodNameNode.methodName.name+"' ");
         }
     }
 
@@ -345,7 +356,7 @@ public class DragonTypeChecker {
 
 
         for(DragonClassFieldNode fieldNode : classNode.fieldNodeList){
-            if(fieldNode.name.name.equals(identifierNode.name.getContents())){
+            if(fieldNode.name.name.equals(identifierNode.name)){
                 //found the identifier declared here
                 return;
             }
@@ -355,7 +366,7 @@ public class DragonTypeChecker {
         //method scope
 
         for(DragonDeclaredArgumentNode arg : methodNode.arguments){
-            if(arg.name.name.equals(identifierNode.name.getContents())){
+            if(arg.name.name.equals(identifierNode.name)){
                 return;
             }
         }
@@ -366,6 +377,6 @@ public class DragonTypeChecker {
         //of this method in another node class,
         //perhaps in MethodNode.doTypeCheck();
 
-        throw new Exception("could not find declaration for usage of Identifier '"+identifierNode.name.getContents()+"'");
+        throw new Exception("could not find declaration for usage of Identifier '"+identifierNode.name+"'");
     }
 }

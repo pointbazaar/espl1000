@@ -28,7 +28,7 @@ public class DragonClassNode implements IDragonASTNode {
     //for xml
     @Attribute
     public String getType(){
-        return this.name.typeName.getContents();
+        return this.name.typeName;
     }
 
     public DragonTypeIdentifierNode name;

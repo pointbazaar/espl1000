@@ -13,14 +13,14 @@ import java.util.Set;
 
 public class DragonTypeIdentifierNode implements IDragonASTNode {
 
-    public TypeIdentifierToken typeName;
+    public String typeName;
 
     public DragonTypeIdentifierNode(DragonTokenList tokens) throws Exception {
 
         DragonToken token = tokens.get(0);
 
         if (token instanceof TypeIdentifierToken) {
-            this.typeName = ((TypeIdentifierToken) token);
+            this.typeName = ((TypeIdentifierToken) token).getContents();
             tokens.consume(1);
 
         } else {
@@ -31,7 +31,7 @@ public class DragonTypeIdentifierNode implements IDragonASTNode {
 
     @Override
     public String toSourceCode() {
-        return this.typeName.getContents();
+        return this.typeName;
     }
 
 }

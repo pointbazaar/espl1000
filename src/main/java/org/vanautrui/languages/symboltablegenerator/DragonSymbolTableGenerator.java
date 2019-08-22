@@ -16,7 +16,7 @@ public class DragonSymbolTableGenerator{
 		DragonSubroutineSymbolTable subroutineSymbolTable = new DragonSubroutineSymbolTable();
 
 		for(DragonMethodNode methodNode : classNode.methodNodeList){
-		    DragonSubroutineSymbolTableRow subrRow = new DragonSubroutineSymbolTableRow(methodNode.methodName.methodName.name.getContents(),methodNode.type.typeName.getContents());
+		    DragonSubroutineSymbolTableRow subrRow = new DragonSubroutineSymbolTableRow(methodNode.methodName.methodName.name,methodNode.type.typeName);
 		    subroutineSymbolTable.add(subrRow);
 		}
 		return subroutineSymbolTable;
@@ -28,7 +28,7 @@ public class DragonSymbolTableGenerator{
 		//first, make the local variables for the arguments
 		//TODO: figure out if this is correct
 		for(DragonDeclaredArgumentNode arg: methodNode.arguments){
-		    methodScopeSymbolTable.add(new DragonMethodScopeVariableSymbolTableRow(arg.name.name.getContents(),arg.type.typeName.getContents()));
+		    methodScopeSymbolTable.add(new DragonMethodScopeVariableSymbolTableRow(arg.name.name,arg.type.typeName));
 		}
 
 		for(DragonStatementNode stmt : methodNode.statements) {
@@ -44,7 +44,7 @@ public class DragonSymbolTableGenerator{
 
 		        methodScopeSymbolTable.add(
 		                new DragonMethodScopeVariableSymbolTableRow(
-		                        assignmentStatementNode.variableNode.name.getContents(),
+		                        assignmentStatementNode.variableNode.name,
 		                        expressionType
 		                )
 		        );
