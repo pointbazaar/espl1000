@@ -109,7 +109,10 @@ public class DragonTypeResolver {
             String termType = getTypeTermNode(t,methodNode,subTable,varTable);
 
             if(!(termType.equals(type))){
-                throw new Exception("the types are not the same, "+type+" collides with "+termType);
+                throw new Exception(
+					"the types are not the same, "+type+" collides with "+termType
+					+" in '"+expressionNode.toSourceCode()+"'"
+				);
             }
         }
 

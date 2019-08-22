@@ -12,7 +12,20 @@ public class Math{
 		println(sign(-3));
 	}
 
+	public Float sqrt(Float number){
+		t=0.0;
+		squareRoot=number/2.0;
+		
+		t=squareRoot;
+		squareRoot=(t+(number/t))/2.0;
 
+		while((t-squareRoot)!=0.0){
+			t=squareRoot;
+			squareRoot=(t+(number/t))/2.0;
+		}
+
+		return squareRoot;
+	}
 	public Int abs(Int n){
 		if(n<0){
 			return (-1)*n;
