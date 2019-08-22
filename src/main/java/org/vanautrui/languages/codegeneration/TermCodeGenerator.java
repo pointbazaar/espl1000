@@ -12,6 +12,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNo
 import org.vanautrui.languages.parsing.astnodes.terminal.*;
 
 import static org.objectweb.asm.Opcodes.*;
+import static org.vanautrui.languages.codegeneration.IntegerConstantCodeGenerator.pushIntegerConstant;
 import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.*;
 
 public class TermCodeGenerator {
@@ -78,7 +79,7 @@ public class TermCodeGenerator {
             MethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
 		}else if(termNode.termNode instanceof BoolConstantNode){
 			BoolConstantNode b = (BoolConstantNode)termNode.termNode;
-			pushIntegerConstant((b.value)?1:0,mv);
+			BoolConstantCodeGenerator.visitBoolConstant(mv,b);
         }else{
             throw new Exception("unhandled case in DragonTermCodeGenerator.java");
         }

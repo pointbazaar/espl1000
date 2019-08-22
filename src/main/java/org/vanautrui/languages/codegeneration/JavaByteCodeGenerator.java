@@ -101,31 +101,7 @@ public class JavaByteCodeGenerator {
 	public static void pushFloatConstant(float f, MethodVisitor mv){
 		mv.visitLdcInsn(f);
 	}
-    public static void pushIntegerConstant(int n, MethodVisitor mv){
-        switch (n){
-            case 0:
-                mv.visitInsn(ICONST_0);
-                break;
-            case 1:
-                mv.visitInsn(ICONST_1);
-                break;
-            case 2:
-                mv.visitInsn(ICONST_2);
-                break;
-            case 3:
-                mv.visitInsn(ICONST_3);
-                break;
-            case 4:
-                mv.visitInsn(ICONST_4);
-                break;
-            case 5:
-                mv.visitInsn(ICONST_5);
-                break;
-            default:
-                mv.visitIntInsn(BIPUSH,n);
-                break;
-        }
-    }
+
 
 
 
