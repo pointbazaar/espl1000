@@ -1,0 +1,44 @@
+package org.vanautrui.languages.codegeneration;
+
+import org.apache.commons.io.IOUtils;
+import org.junit.Assert;
+import org.junit.Test;
+
+import static org.vanautrui.languages.codegeneration.JavaByteCodeGeneratorTest.compile_and_run_one_class_for_testing;
+
+public class DragonOperatorCodeGeneratorTest {
+	//this class tests that the 
+	//Dragon Operator Code Generator generates correct operator byte codes
+
+    @Test
+    public void test_can_add_Float()throws Exception{
+        String source="public class MainTest2777 { public Void main(){ print(1.0+2.0); } }";
+        Process pr = compile_and_run_one_class_for_testing(source,"MainTest2777");
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("3.0",IOUtils.toString(pr.getInputStream()));
+    }
+
+	@Test
+    public void test_can_sub_Float()throws Exception{
+        String source="public class MainTest2775 { public Void main(){ print(1.0-2.0); } }";
+        Process pr = compile_and_run_one_class_for_testing(source,"MainTest2775");
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("-1.0",IOUtils.toString(pr.getInputStream()));
+    }
+
+	@Test
+    public void test_can_multiply_Float()throws Exception{
+        String source="public class MainTest2774 { public Void main(){ print(5.0*2.0); } }";
+        Process pr = compile_and_run_one_class_for_testing(source,"MainTest2774");
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("10.0",IOUtils.toString(pr.getInputStream()));
+    }
+
+	@Test
+    public void test_can_div_Float()throws Exception{
+        String source="public class MainTest2773 { public Void main(){ print(3.0/2.0); } }";
+        Process pr = compile_and_run_one_class_for_testing(source,"MainTest2773");
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("1.5",IOUtils.toString(pr.getInputStream()));
+    }
+}

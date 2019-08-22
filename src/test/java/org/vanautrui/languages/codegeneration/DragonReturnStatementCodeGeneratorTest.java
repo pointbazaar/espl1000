@@ -27,4 +27,12 @@ public class DragonReturnStatementCodeGeneratorTest {
         Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
     }
 
+	@Test
+	public void test_can_return_Float()throws Exception{
+        String source="public class MainTest273 { public Void main(){ print(subroutine()); } public Float subroutine(){return 1.0;} }";
+        Process pr = compile_and_run_one_class_for_testing(source,"MainTest273");
+
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("1.0",IOUtils.toString(pr.getInputStream()));
+	}
 }
