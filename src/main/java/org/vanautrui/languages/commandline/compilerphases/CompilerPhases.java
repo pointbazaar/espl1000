@@ -1,5 +1,6 @@
 package org.vanautrui.languages.commandline.compilerphases;
 
+import org.apache.commons.cli.CommandLine;
 import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.codegeneration.JavaByteCodeGenerator;
@@ -32,8 +33,9 @@ import static org.vanautrui.languages.phase_clean_the_input.UnneccessaryWhiteSpa
 
 public class CompilerPhases {
 
-    public static String phase_conditional_weave_curly_braces(String codeWithoutCommentsWithoutUnneccesaryWhitespace, boolean debug) throws Exception {
-        printBeginPhase("PHASE: WEAVE IN CURLY BRACES");
+    public static String phase_conditional_weave_curly_braces(String codeWithoutCommentsWithoutUnneccesaryWhitespace, CommandLine cmd) throws Exception {
+        final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
+        printBeginPhase("PHASE: WEAVE IN CURLY BRACES",printLong);
 
         //TODO: put the semicolons in?
         //the tokens should know which line number they are at.
@@ -49,14 +51,14 @@ public class CompilerPhases {
 
         //i have an idea how we can avoid an issue related to this
 
-
+        final boolean debug=cmd.hasOption("debug");
         try {
             String just_code_with_braces_without_comments_without_newlines =
                     CurlyBracesWeaver
                             .weave_scoping_curly_braces_and_remove_newlines(codeWithoutCommentsWithoutUnneccesaryWhitespace);
 
             //TerminalUtil.println("✓", Ansi.Color.GREEN);
-            printEndPhase(true);
+            printEndPhase(true,printLong);
             if(debug) {
                 System.out.println(just_code_with_braces_without_comments_without_newlines);
             }
@@ -64,14 +66,14 @@ public class CompilerPhases {
             return just_code_with_braces_without_comments_without_newlines;
         }catch (Exception e){
             //TerminalUtil.println("⚠", RED);
-            printEndPhase(false);
+            printEndPhase(false,printLong);
             throw e;
         }
     }
 
-    public static void phase_typecheck(Set<AST> asts, boolean debug)throws Exception{
-
-        printBeginPhase("TYPE CHECKING");
+    public static void phase_typecheck(Set<AST> asts, CommandLine cmd)throws Exception{
+        final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
+        printBeginPhase("TYPE CHECKING",printLong);
 
         //this should throw an exception, if it does not typecheck
         try {
@@ -79,20 +81,20 @@ public class CompilerPhases {
             typeChecker.doTypeCheck(asts);
 
             //TerminalUtil.println("✓", Ansi.Color.GREEN);
-            printEndPhase(true);
+            printEndPhase(true,printLong);
         }catch (Exception e){
             //TerminalUtil.println("⚠", RED);
-            printEndPhase(true);
+            printEndPhase(true,printLong);
             throw e;
         }
     }
 
-    public static void phase_codegeneration(Set<AST> asts, boolean debug)throws Exception{
-
-        printBeginPhase("CODE GENERATION");
+    public static void phase_codegeneration(Set<AST> asts, CommandLine cmd)throws Exception{
+        final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
+        printBeginPhase("CODE GENERATION",printLong);
 
         //printBeginPhase("CODE GENERATION");
-
+        final boolean debug=cmd.hasOption("debug");
 
         try {
             for(AST ast : asts) {
@@ -106,11 +108,11 @@ public class CompilerPhases {
                     Files.write(Paths.get(classNode.name.typeName + ".class"), classResult);
                 }
             }
-            printEndPhase(true);
+            printEndPhase(true,printLong);
             //TerminalUtil.println("✓", Ansi.Color.GREEN);
 
         }catch (Exception e){
-            printEndPhase(false);
+            printEndPhase(false,printLong);
             //TerminalUtil.println("⚠", RED);
             throw e;
         }
@@ -124,14 +126,15 @@ public class CompilerPhases {
 
     private static final String phase_clean_cache_dir=System.getProperty("user.home")+"/dragoncache/clean/";
 
-    public static String phase_clean(String source, boolean debug)throws Exception{
-        printBeginPhase("CLEAN");
+    public static String phase_clean(String source, CommandLine cmd)throws Exception{
+        final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
+        printBeginPhase("CLEAN",printLong);
         //(remove comments, empty lines, excess whitespace)
 
         if(!Files.exists(Paths.get(phase_clean_cache_dir))){
             Files.createDirectories(Paths.get(phase_clean_cache_dir));
         }
-
+        final boolean debug=cmd.hasOption("debug");
 
         int hash = source.hashCode();
         if(debug) {
@@ -164,7 +167,7 @@ public class CompilerPhases {
 
 
         //TerminalUtil.println("✓", Ansi.Color.GREEN);
-        printEndPhase(true);
+        printEndPhase(true,printLong);
         if(debug) {
             //System.out.println(codeWithoutCommentsAndWithoutEmptyLines);
             System.out.println(codeWithoutCommentsWithoutUnneccesaryWhitespace);
@@ -173,11 +176,13 @@ public class CompilerPhases {
         return codeWithoutCommentsWithoutUnneccesaryWhitespace;
     }
 
-    public static Set<AST> phase_parsing(TokenList tokens, boolean debug)throws Exception{
-        printBeginPhase("PARSING");
+    public static Set<AST> phase_parsing(TokenList tokens, CommandLine cmd)throws Exception{
+        final boolean debug=cmd.hasOption("debug");
+        final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
+        printBeginPhase("PARSING",printLong);
         try {
             AST ast = (new Parser()).parse(tokens);
-            printEndPhase(true);
+            printEndPhase(true,printLong);
             //TerminalUtil.println("✓", Ansi.Color.GREEN);
 
             if(debug){
@@ -198,26 +203,28 @@ public class CompilerPhases {
             return asts;
         }catch (Exception e){
             //TerminalUtil.println("⚠",RED);
-            printEndPhase(false);
+            printEndPhase(false,printLong);
             throw e;
         }
     }
 
-    public static TokenList phase_lexing(String just_code_with_braces_without_comments, boolean debug)throws Exception{
-        printBeginPhase("LEXING");
+    public static TokenList phase_lexing(String just_code_with_braces_without_comments, CommandLine cmd)throws Exception{
+        final boolean debug=cmd.hasOption("debug");
+        final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
+        printBeginPhase("LEXING",printLong);
 
         String just_code_with_braces_without_comments_without_newlines = just_code_with_braces_without_comments.replaceAll("\n","");
 
         try {
             TokenList tokens = (new Lexer()).lexCodeWithoutComments(just_code_with_braces_without_comments_without_newlines);
             //TerminalUtil.println("✓",GREEN);
-            printEndPhase(false);
+            printEndPhase(true,printLong);
             if(debug) {
                 System.out.println(tokens.toString());
             }
             return tokens;
         }catch (Exception e){
-            printEndPhase(false);
+            printEndPhase(false,printLong);
             //TerminalUtil.println("⚠",RED);
             throw e;
         }

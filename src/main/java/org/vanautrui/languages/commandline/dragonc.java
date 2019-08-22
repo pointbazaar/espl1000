@@ -148,7 +148,7 @@ public class dragonc {
             start = currentTimeMillis();
             //PHASE CLEAN
             String codeWithoutCommentsWithoutUnneccesaryWhitespace
-                    = phase_clean(sourceCode,debug);
+                    = phase_clean(sourceCode,cmd);
             end= currentTimeMillis();
             if(timed) {
                 printDuration(start, end);
@@ -158,7 +158,7 @@ public class dragonc {
 
             if(cmd.hasOption("nocurly")){
                 just_code_with_braces_without_comments_without_newlines
-                        =phase_conditional_weave_curly_braces(codeWithoutCommentsWithoutUnneccesaryWhitespace,debug);
+                        =phase_conditional_weave_curly_braces(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd);
             }else{
                 //the editor is curly by default
                 just_code_with_braces_without_comments_without_newlines
@@ -167,7 +167,7 @@ public class dragonc {
 
             start= currentTimeMillis();
             //PHASE LEXING
-            TokenList tokens = phase_lexing(just_code_with_braces_without_comments_without_newlines,debug);
+            TokenList tokens = phase_lexing(just_code_with_braces_without_comments_without_newlines,cmd);
             end= currentTimeMillis();
             if(timed){
                 printDuration(start,end);
@@ -175,7 +175,7 @@ public class dragonc {
 
             start= currentTimeMillis();
             //PHASE PARSING
-            Set<AST> asts = phase_parsing(tokens,debug);
+            Set<AST> asts = phase_parsing(tokens,cmd);
             end= currentTimeMillis();
             if(timed){
                 printDuration(start,end);
@@ -183,7 +183,7 @@ public class dragonc {
 
             start= currentTimeMillis();
             //PHASE TYPE CHECKING
-            phase_typecheck(asts,debug);
+            phase_typecheck(asts,cmd);
             end = currentTimeMillis();
             if(timed){
                 printDuration(start,end);
@@ -191,7 +191,7 @@ public class dragonc {
 
             start = currentTimeMillis();
             //PHASE CODE GENERATION
-            phase_codegeneration(asts,debug);
+            phase_codegeneration(asts,cmd);
             end= currentTimeMillis();
             if(timed){
                 printDuration(start,end);

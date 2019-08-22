@@ -16,10 +16,13 @@ import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.ansi;
 
 public class CompilerPhaseUtils {
-    public static void printBeginPhase(String phaseName) throws InterruptedException {
+    public static void printBeginPhase(String phaseName,boolean printLongForm) throws InterruptedException {
         //TerminalUtil.print(String.format("%-18s ",phaseName),Ansi.Color.GREEN);
         Ansi ansi = Ansi.ansi();
-        ansi.eraseLine(Ansi.Erase.BACKWARD);
+        if(!printLongForm) {
+            ansi.eraseLine(Ansi.Erase.BACKWARD);
+        }
+
         ansi.fg(GREEN);
         ansi.a(phaseName);
 
@@ -31,16 +34,23 @@ public class CompilerPhaseUtils {
         //Thread.sleep(100);
     }
 
-    public static void printEndPhase(boolean success) throws Exception{
+    public static void printEndPhase(boolean success, boolean printLongForm) throws Exception{
         Ansi ansi1=Ansi.ansi();
-        ansi1.cursorToColumn(0);
+        if(!printLongForm) {
+            ansi1.cursorToColumn(0);
+        }
         ansi1.fg(GREEN);
         if(success) {
             ansi1.a("✓");
         }else{
             ansi1.a("⚠");
         }
-        ansi1.eraseLine(Ansi.Erase.FORWARD);
+        if(printLongForm){
+            ansi1.newline();
+        }
+        if(!printLongForm) {
+            ansi1.eraseLine(Ansi.Erase.FORWARD);
+        }
         ansi1.reset();
         System.out.print(ansi1);
         System.out.flush();
