@@ -24,7 +24,7 @@ public class DragonReturnStatementCodeGenerator {
 
             //determine the return type
             //TODO: consider the other return types
-            String returnValueType= DragonTypeResolver.getTypeExpressionNode(returnStatementNode.returnValue.get(),methodNode,subroutineSymbolTable);
+            String returnValueType= DragonTypeResolver.getTypeExpressionNode(returnStatementNode.returnValue.get(),methodNode,subroutineSymbolTable,methodScopeSymbolTable);
             switch (returnValueType){
                 case "Int":
                     mv.visitInsn(IRETURN);

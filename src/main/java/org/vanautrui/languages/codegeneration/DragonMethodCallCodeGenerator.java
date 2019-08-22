@@ -39,7 +39,7 @@ public class DragonMethodCallCodeGenerator {
             for(DragonExpressionNode expressionNode : methodCallNode.argumentList){
 
                 //TODO: make getTypeJVMInternal() to make this easier? or just make a translator class for it
-                String expressionType=DragonTypeResolver.getTypeExpressionNode(expressionNode,methodNode,subroutineSymbolTable);
+                String expressionType=DragonTypeResolver.getTypeExpressionNode(expressionNode,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
 
 		//set the method signature to the type
 		//which accepts our arguments
@@ -89,7 +89,7 @@ public class DragonMethodCallCodeGenerator {
             String descriptor= TypeNameToJVMInternalTypeNameConverter.convertSubroutineName(
                     subrType,methodCallNode.argumentList.stream().map(expressionNode -> {
                         try {
-                            return DragonTypeResolver.getTypeExpressionNode(expressionNode,methodNode,subroutineSymbolTable);
+                            return DragonTypeResolver.getTypeExpressionNode(expressionNode,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
                         } catch (Exception e) {
                             e.printStackTrace();
                             throw new RuntimeException(" FATAL error in DragonMethodCallCodeGenerator");

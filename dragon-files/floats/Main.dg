@@ -1,6 +1,10 @@
 public class Main{
 	public Void main(){
+		println("PI/2");
 		println(subr(3.14159,2.0));
+
+		println("3.5*2");
+		println(3.5*2.0);
 	}
 	public Float subr(Float a,Float b){
 		return a/b;

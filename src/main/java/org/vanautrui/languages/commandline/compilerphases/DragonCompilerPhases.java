@@ -14,6 +14,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonAS
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.phase_clean_the_input.DragonCommentRemover;
 import org.vanautrui.languages.typechecking.DragonTypeChecker;
+import static org.vanautrui.languages.symboltablegenerator.DragonSymbolTableGenerator.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,7 +24,6 @@ import java.util.Set;
 
 import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.Color.RED;
-import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.createSubroutineSymbolTable;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.getPreferredXMLSerializationStrategyHumanReadable;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printBeginPhase;
 import static org.vanautrui.languages.phase_clean_the_input.DragonUnneccessaryWhiteSpaceRemover.remove_unneccessary_whitespace;

@@ -12,43 +12,13 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.DragonSta
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
 import org.vanautrui.languages.typeresolution.DragonTypeResolver;
+import static org.vanautrui.languages.symboltablegenerator.DragonSymbolTableGenerator.*;
 
 import java.util.stream.Collectors;
 
 import static org.objectweb.asm.Opcodes.*;
 
 public class DragonMethodCodeGenerator {
-
-    private static DragonMethodScopeVariableSymbolTable createMethodScopeSymbolTable(DragonMethodNode methodNode,DragonSubroutineSymbolTable subroutineSymbolTable)throws Exception{
-        DragonMethodScopeVariableSymbolTable methodScopeSymbolTable=new DragonMethodScopeVariableSymbolTable();
-
-        //first, make the local variables for the arguments
-        //TODO: figure out if this is correct
-        for(DragonDeclaredArgumentNode arg: methodNode.arguments){
-            methodScopeSymbolTable.add(new DragonMethodScopeVariableSymbolTableRow(arg.name.name.getContents(),arg.type.typeName.getContents()));
-        }
-
-        for(DragonStatementNode stmt : methodNode.statements) {
-
-            //TODO: also get the assignment statements recursively
-            //that are inside the control flow statements.
-            //but that is for later
-
-            if(stmt.statementNode instanceof DragonAssignmentStatementNode) {
-                DragonAssignmentStatementNode assignmentStatementNode = (DragonAssignmentStatementNode)stmt.statementNode;
-
-                String expressionType = DragonTypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subroutineSymbolTable);
-
-                methodScopeSymbolTable.add(
-                        new DragonMethodScopeVariableSymbolTableRow(
-                                assignmentStatementNode.variableNode.name.getContents(),
-                                expressionType
-                        )
-                );
-            }
-        }
-        return methodScopeSymbolTable;
-    }
 
     public static void visitMethodNode(ClassWriter cw, DragonClassNode classNode, DragonMethodNode methodNode, DragonSubroutineSymbolTable subroutineSymbolTable,boolean debug) throws Exception {
         String returnTypeName=methodNode.type.typeName.getContents();

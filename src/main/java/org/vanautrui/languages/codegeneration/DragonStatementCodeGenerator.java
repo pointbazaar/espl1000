@@ -56,7 +56,7 @@ public class DragonStatementCodeGenerator {
             DragonExpressionCodeGenerator
                     .visitExpression(cw, mv, classNode, methodNode, assignmentStatementNode.expressionNode, methodScopeSymbolTable,subroutineSymbolTable,debug);
 
-            String expressionType= DragonTypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subroutineSymbolTable);
+            String expressionType= DragonTypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
             switch(expressionType){
                 case "Int":
                     mv.visitVarInsn(ISTORE, local_var_index);

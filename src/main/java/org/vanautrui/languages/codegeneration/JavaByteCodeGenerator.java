@@ -7,7 +7,7 @@ import org.vanautrui.languages.codegeneration.symboltables.tables.DragonSubrouti
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassFieldNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.DragonMethodNode;
-
+import static org.vanautrui.languages.symboltablegenerator.DragonSymbolTableGenerator.*;
 import static org.objectweb.asm.Opcodes.*;
 
 public class JavaByteCodeGenerator {
@@ -98,15 +98,7 @@ public class JavaByteCodeGenerator {
         return cw.toByteArray();
     }
 
-    public static DragonSubroutineSymbolTable createSubroutineSymbolTable(DragonClassNode classNode){
-        DragonSubroutineSymbolTable subroutineSymbolTable = new DragonSubroutineSymbolTable();
-
-        for(DragonMethodNode methodNode : classNode.methodNodeList){
-            DragonSubroutineSymbolTableRow subrRow = new DragonSubroutineSymbolTableRow(methodNode.methodName.methodName.name.getContents(),methodNode.type.typeName.getContents());
-            subroutineSymbolTable.add(subrRow);
-        }
-        return subroutineSymbolTable;
-    }
+    
 	public static void pushFloatConstant(float f, MethodVisitor mv){
 		mv.visitLdcInsn(f);
 	}

@@ -32,7 +32,7 @@ public class DragonExpressionCodeGenerator {
 
             DragonTermCodeGenerator.visitTerm(cw,mv,classNode,methodNode,myterm,methodScopeSymbolTable,subroutineSymbolTable,debug);
 
-		String operandType=getTypeTermNode(myterm,methodNode,subroutineSymbolTable);
+		String operandType=getTypeTermNode(myterm,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
             DragonOperatorNode myop=expressionNode.operatorNodes.get(i);
 
             DragonOperatorCodeGenerator.visitOperatorNode(cw,mv,classNode,methodNode,myop,operandType);
