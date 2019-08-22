@@ -10,12 +10,14 @@ import org.simpleframework.xml.stream.NodeMap;
 import org.simpleframework.xml.stream.OutputNode;
 import org.vanautrui.languages.TerminalUtil;
 
+import java.awt.*;
+
+import static org.fusesource.jansi.Ansi.ansi;
+
 public class CompilerPhaseUtils {
     public static void printBeginPhase(String phaseName) {
-
-        TerminalUtil.print(String.format("%-18s",phaseName),Ansi.Color.GREEN);
+        TerminalUtil.print(String.format("%-18s ",phaseName),Ansi.Color.GREEN);
     }
-
 
     public static void printDuration(long start,long end){
         long duration=end-start;

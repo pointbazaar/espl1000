@@ -12,6 +12,8 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.phase_clean_the_input.CommentRemover;
 import org.vanautrui.languages.typechecking.TypeChecker;
+
+import static org.fusesource.jansi.Ansi.ansi;
 import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.*;
 
 import com.fasterxml.jackson.databind.*;
@@ -98,6 +100,7 @@ public class CompilerPhases {
                 }
             }
             TerminalUtil.println("✓", Ansi.Color.GREEN);
+
         }catch (Exception e){
             TerminalUtil.println("⚠", RED);
             throw e;
