@@ -55,7 +55,7 @@ public class TermCodeGenerator {
 	        ArrayConstantNode arrayConstantNode = (ArrayConstantNode)termNode.termNode;
             ArrayConstantCodeGenerator.visitArrayConstant(cw,mv,classNode,methodNode,arrayConstantNode,varTable,subTable,debug);
         }else{
-            throw new Exception("unhandled case in DragonTermCodeGenerator.java");
+            throw new Exception("unhandled case in TermCodeGenerator.java");
         }
     }
 }

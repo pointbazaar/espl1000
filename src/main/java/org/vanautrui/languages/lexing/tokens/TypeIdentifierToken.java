@@ -13,6 +13,8 @@ public class TypeIdentifierToken extends BasicToken implements Token {
     //a Type name should start with a Uppercase letter,
     public static final String regex_alphanumeric_type_identifier = "^[A-Z][a-zA-Z0-9_]*";
 
+    public static final String regex_alphanumeric_array_type_identifier = "^\\[[A-Z][a-zA-Z0-9_]*\\]";
+
     public static final int MAX_IDENTIFIER_LENGTH = 100;
 
     private String content;
@@ -27,13 +29,19 @@ public class TypeIdentifierToken extends BasicToken implements Token {
             //pass
         }
 
-        Pattern p = Pattern.compile(regex_alphanumeric_type_identifier);
+        Pattern pNormal = Pattern.compile(regex_alphanumeric_type_identifier);
+        Pattern pArrayType = Pattern.compile(regex_alphanumeric_array_type_identifier);
 
-        Matcher m = p.matcher(list.getLimitedStringMaybeShorter(MAX_IDENTIFIER_LENGTH));
+        Matcher m = pNormal.matcher(list.getLimitedStringMaybeShorter(MAX_IDENTIFIER_LENGTH));
+        Matcher m2 = pArrayType.matcher(list.getLimitedStringMaybeShorter(MAX_IDENTIFIER_LENGTH));
 
         if (m.find()) {
             this.content = m.group(0);
             list.consumeTokens(this.content.length());
+        }else if(m2.find()){
+            String tmp = m2.group();
+            this.content=tmp;
+            list.consumeTokens(tmp.length());
         } else {
             throw new Exception("could not recognize type identifier");
         }

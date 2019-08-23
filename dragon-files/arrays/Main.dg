@@ -1,0 +1,21 @@
+public class Main{
+	public Void main(){
+
+		arr=[1,2,3,4];
+
+		//x=arr[0];
+		printarr(arr,4);
+		
+
+	}
+
+	public Void printarr([Int] arr,Int size){
+		
+		i=0;
+		while(i<size){
+
+			println(arr[i]);
+			i=i+1;
+		}
+	}
+}

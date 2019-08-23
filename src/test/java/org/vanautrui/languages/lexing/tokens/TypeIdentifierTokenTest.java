@@ -4,7 +4,25 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 
-public class IdentifierNodeTokenTest {
+public class TypeIdentifierTokenTest {
+
+    @Test
+    public void test_simple_type() throws Exception {
+        CharacterList list = new CharacterList("Int");
+
+        TypeIdentifierToken tk = new TypeIdentifierToken(list);
+
+        Assert.assertEquals("Int",tk.getContents());
+    }
+
+    @Test
+    public void test_array_type() throws Exception {
+        CharacterList list = new CharacterList("[Int]");
+
+        TypeIdentifierToken tk = new TypeIdentifierToken(list);
+
+        Assert.assertEquals("[Int]",tk.getContents());
+    }
 
     @Test
     public void test_parse_type_identifier_token() throws Exception {

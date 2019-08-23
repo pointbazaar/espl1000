@@ -327,7 +327,7 @@ public class TypeChecker {
             }
         }
 
-        List<String> acceptable_types = Arrays.asList("Void","Int","Float","Bool","String");
+        List<String> acceptable_types = Arrays.asList("Void","Int","Float","Bool","String","[Int]","[Float]","[Bool]");
 
         if(acceptable_types.contains(typeIdentifierNode.typeName)){
             return;

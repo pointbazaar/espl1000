@@ -1,4 +1,4 @@
-package org.vanautrui.languages.symboltables.nameconversions;
+package org.vanautrui.languages.nameconversions;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,17 +9,25 @@ public class TypeNameToJVMInternalTypeNameConverter {
 
         //all non primitive types go like 'L' + actualType + ';'
 
+        //TODO: write tests
+
         switch (type){
             case "Int":
                 return "I";
 	    case "Float":
-		return "F";
-            case "String":
-                return "Ljava/lang/String;";
-            case "Char":
-                return "C";
-            default:
-                return "L"+type+";";
+		    return "F";
+        case "String":
+            return "Ljava/lang/String;";
+        case "Char":
+            return "C";
+        default:
+            if(type.startsWith("[")){
+                //array type
+                return "["+convertTypeNameToJVMInternalTypeName(type.substring(1,type.length()-1));
+            }else {
+                //object type
+                return "L" + type + ";";
+            }
         }
     }
 

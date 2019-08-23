@@ -63,12 +63,18 @@ public class VariableCodeGenerator {
                                 varTable.getIndexOfVariable(varNode.name)
                         );
                         break;
+                    case "[Int]":
+                    case "[Float]":
+                    case "[Bool]":
                     case "String":
                         mv.visitIntInsn(ALOAD, varTable.getIndexOfVariable(varNode.name));
                         break;
 
                     default:
-                        throw new Exception("unconsidered case in DragonTermCodeGenerator: type:" + type);
+                        throw new Exception(
+                                "unconsidered case in VariableCodeGenerator: type:" + type+" in code: "
+                                +"'"+varNode.toSourceCode()+"'"
+                        );
                 }
             }
         } else {
