@@ -1,6 +1,7 @@
 package org.vanautrui.languages.commandline;
 
 import org.apache.commons.cli.*;
+import org.apache.commons.io.*;
 import org.fusesource.jansi.Ansi;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -38,7 +39,7 @@ public class dragonc {
         Options options = createOptions();
         try {
             CommandLineParser parser = new DefaultParser();
-            CommandLine commandLine = parser.parse(options, args.toArray(new String[]{}));
+            CommandLine cmd = parser.parse(options, args.toArray(new String[]{}));
 
             //TODO: provide support for compiling multiple files
             //and also for compiling a directory (recursively finds all .dragon files therein)
@@ -47,11 +48,19 @@ public class dragonc {
             //TODO: the source file must not be the first argument
             //the tool would be more flexible if the
             //source files or directory could be specified anywhere
-	    if(!sourceFilePath.toString().endsWith(".dg")){
-	    	throw new Exception("dragon language files should end in '.dg' for brevity and convenienc");
-	    }
+    	    if(!sourceFilePath.toString().endsWith(".dg")){
+    	    	throw new Exception("dragon language files should end in '.dg' for brevity and convenienc");
+    	    }
 
-            compile_main_inner(sourceFilePath,commandLine);
+            if(cmd.hasOption("clean")){
+                if(cmd.hasOption("debug")){
+                    System.out.println("clearing the cache");
+                }
+                final String cache_dir=System.getProperty("user.home")+"/dragoncache";
+                FileUtils.deleteDirectory(Paths.get(cache_dir).toFile());
+            }
+
+            compile_main_inner(sourceFilePath,cmd);
         }catch (Exception e){
             //e.printStackTrace();
             System.err.println(e.getMessage());
@@ -100,6 +109,8 @@ public class dragonc {
         options.addOption(new Option("f","force",false,"force compilation. it will compile. (TODO)"));
 
         options.addOption(new Option("strict",false,"do not compile if the code is likely to have bugs (TODO)"));
+
+        options.addOption(new Option("clean",false,"clears the cache"));
 
         options.addOption(
                 OptionBuilder
