@@ -31,11 +31,13 @@ arrayConstant ::= '[' expression (',' expression)* ']'
 keywordConstant ::= 'null' | 'this' | booleanConstant
 accessmodifier ::= public | private
 
-class ::= accessmodifier class identifier '{' classField* method* '}'
+class ::= accessmodifier class identifier '{' compilerDirective*  classField* method* '}'
+
+compilerDirective ::= 'includestatic' PATH ';' //any valid path to a .dg file. PATH is a string token
 
 classField ::= accessmodifier? Type identifier ';'
 
-Type ::= identifier
+Type ::= identifier 
 
 variable ::= identifier ('[' expression ']')?
 

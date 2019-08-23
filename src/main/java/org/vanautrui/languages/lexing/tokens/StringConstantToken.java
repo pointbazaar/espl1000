@@ -15,8 +15,7 @@ public class StringConstantToken extends BasicToken implements Token {
 
     public static final int MAX_STRING_CONSTANT_LENGTH = 1000;
 
-    @Attribute
-    private String content;
+    public String content;
 
     public StringConstantToken(CharacterList list) throws Exception {
         super();

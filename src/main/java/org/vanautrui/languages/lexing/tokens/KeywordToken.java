@@ -17,7 +17,10 @@ public class KeywordToken extends BasicToken implements Token {
 
             "while","for","loop","do","if","else",
 
-            "return"
+            "return",
+
+			"includestatic" //includes (copies) the static functions from another class 
+			//to this class
     };
 
     public String keyword;

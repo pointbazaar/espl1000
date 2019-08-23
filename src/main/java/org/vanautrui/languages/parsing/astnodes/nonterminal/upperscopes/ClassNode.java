@@ -1,13 +1,9 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.ElementList;
-import org.vanautrui.languages.lexing.collections.TokenList;
-import org.vanautrui.languages.lexing.tokens.ClassToken;
-import org.vanautrui.languages.lexing.tokens.SymbolToken;
-import org.vanautrui.languages.parsing.IASTNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.AccessModifierNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.TypeIdentifierNode;
+import org.vanautrui.languages.lexing.collections.*;
+import org.vanautrui.languages.lexing.tokens.*;
+import org.vanautrui.languages.parsing.*;
+import org.vanautrui.languages.parsing.astnodes.terminal.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +11,6 @@ import java.util.stream.Collectors;
 
 public class ClassNode implements IASTNode {
 
-    //test simplexml
-    @Attribute
     public String getAccess(){
         return this.access.toSourceCode();
     }
@@ -24,17 +18,13 @@ public class ClassNode implements IASTNode {
     public AccessModifierNode access;
 
     //for xml
-    @Attribute
     public String getType(){
         return this.name.typeName;
     }
 
     public TypeIdentifierNode name;
-
-    @ElementList
+	public List<CompilerDirectiveNode> directiveNodeList = new ArrayList<>();
     public List<ClassFieldNode> fieldNodeList = new ArrayList<>();
-
-    @ElementList
     public List<MethodNode> methodNodeList = new ArrayList<>();
 
     public ClassNode(TokenList tokens) throws Exception {
@@ -62,6 +52,14 @@ public class ClassNode implements IASTNode {
         //similar errors could maybe be fixed by just looking at the Dragon Grammar
         //and structuring the parser accordingly
 
+		boolean directiveSuccess=true;
+		while(directiveSuccess){
+			try{
+				directiveNodeList.add(new CompilerDirectiveNode(copy));
+			}catch (Exception e){
+				directiveSuccess=false;
+			}
+		}
 
 
         boolean success_method = true;
