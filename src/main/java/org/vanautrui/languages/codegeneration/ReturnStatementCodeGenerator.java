@@ -30,13 +30,16 @@ public class ReturnStatementCodeGenerator {
                     mv.visitInsn(IRETURN);
                     break;
                 case "String":
+                case "[Int]":
+                case "[Float]":
+                case "[Bool]":
                     mv.visitInsn(ARETURN);
                     break;
-		case "Float":
-		    mv.visitInsn(FRETURN);
-		    break;
+                case "Float":
+                    mv.visitInsn(FRETURN);
+                    break;
                 default:
-                    throw new Exception("could not determine which return to use (DragonReturnStatementCodeGenerator)");
+                    throw new Exception("could not determine which return to use (ReturnStatementCodeGenerator)");
             }
         }else {
             //return control to the caller

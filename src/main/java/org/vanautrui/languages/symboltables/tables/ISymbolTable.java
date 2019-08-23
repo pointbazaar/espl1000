@@ -10,7 +10,7 @@ interface ISymbolTable {
 
     public boolean containsVariable(String varName);
 
-    public int getIndexOfVariable(String varName);
+    public int getIndexOfVariable(String varName) throws Exception;
 
     public String toString();
 

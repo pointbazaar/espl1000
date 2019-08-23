@@ -47,9 +47,7 @@ public class StatementCodeGenerator {
             LoopStatementNode loop = (LoopStatementNode) statementNode.statementNode;
             visitLoopStatmentNode(cw, mv, classNode, methodNode, loop,varTable,subTable,debug);
         }else if(statementNode.statementNode instanceof AssignmentStatementNode) {
-
             AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode) statementNode.statementNode;
-
             AssignmentStatementCodeGenerator.visitAssignmentStatementNode(cw,classNode,assignmentStatementNode,mv,methodNode,varTable,subTable,debug);
         }else if(statementNode.statementNode instanceof WhileStatementNode){
             WhileStatementNode whileStatementNode =(WhileStatementNode)statementNode.statementNode;

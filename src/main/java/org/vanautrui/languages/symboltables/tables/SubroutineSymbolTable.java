@@ -29,7 +29,7 @@ public class SubroutineSymbolTable implements ISymbolTable {
     }
 
     @Override
-    public int getIndexOfVariable(String varName) {
+    public int getIndexOfVariable(String varName)throws Exception {
         return this.symbolTable.getIndexOfVariable(varName);
     }
 

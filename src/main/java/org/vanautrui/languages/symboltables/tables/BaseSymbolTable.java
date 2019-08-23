@@ -31,7 +31,11 @@ class BaseSymbolTable {
         return symbolTable.stream().filter(e->e.getName().equals(varName)).collect(Collectors.toList()).size()>0;
     }
 
-    public int getIndexOfVariable(String varName){
+    public int getIndexOfVariable(String varName)throws Exception{
+
+        if(!this.containsVariable(varName)){
+            throw new Exception("could not get index of variable "+varName+" in symbol table. ");
+        }
 
         for(int i=0;i<this.symbolTable.size();i++){
             ISymbolTableRow row = this.symbolTable.get(i);

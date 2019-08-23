@@ -1,6 +1,7 @@
 package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ArrayConstantNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
@@ -43,7 +44,8 @@ public class ArrayConstantCodeGenerator {
 
         //for later, for the assignment statement
         // //astore //to
-
+        mv.visitLabel(new Label());
+        
         int size=arr.elements.size();
         pushIntegerConstant(size,mv);
 

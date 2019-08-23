@@ -63,6 +63,8 @@ public class AssignmentStatementCodeGenerator {
 
         String expressionInstanceType= TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,varTable);
 
+        mv.visitLabel(new Label());
+
         switch(expressionInstanceType){
             case "Int":
             case "Bool":
@@ -72,11 +74,9 @@ public class AssignmentStatementCodeGenerator {
                 mv.visitVarInsn(FSTORE, local_var_index);
                 break;
             case "String":
-                mv.visitVarInsn(ASTORE,local_var_index);
-                break;
             case "[Int]":
             case "[Float]":
-                mv.visitVarInsn(ASTORE,local_var_index);
+                mv.visitIntInsn(ASTORE,local_var_index);
                 break;
             default:
                 throw new Exception("unconsidered case in AssignmentStatementCodeGenerator (visitAssignVarIntoVar). type was :"+expressionInstanceType);
@@ -108,6 +108,7 @@ public class AssignmentStatementCodeGenerator {
                         varTable,subTable,debug
                 );
 
+
         //evaluate the expression and store the result in the local variable
         ExpressionCodeGenerator
                 .visitExpression(cw, mv, classNode, methodNode, assignmentStatementNode.expressionNode, varTable,subTable,debug);
@@ -117,15 +118,15 @@ public class AssignmentStatementCodeGenerator {
         switch(expressionInstanceType){
             case "Int":
             case "Bool":
-                mv.visitIntInsn(IASTORE,local_var_index);
+                mv.visitInsn(IASTORE);
                 break;
             case "Float":
-                mv.visitIntInsn(FASTORE,local_var_index);
+                mv.visitInsn(FASTORE);
                 break;
             case "String":
             case "[Int]":
             case "[Float]":
-                mv.visitVarInsn(ASTORE,local_var_index);
+                mv.visitInsn(ASTORE);
                 break;
             default:
                 throw new Exception("unconsidered case in AssignmentStatementCodeGenerator. type was :"+expressionInstanceType);
