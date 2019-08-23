@@ -15,6 +15,7 @@ public class CompilerDirectiveNode implements IASTNode {
     public CompilerDirectiveNode(TokenList tokens) throws Exception {
         TokenList copy = new TokenList(tokens);
 		copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("includestatic"));
+		directive="includestatic";
 		if(copy.get(0) instanceof StringConstantToken){
 			//parse the path
 			StringConstantToken str = (StringConstantToken)copy.get(0);
