@@ -26,8 +26,8 @@ public class StatementCodeGenerator {
             ClassNode classNode,
             MethodNode methodNode,
             StatementNode statementNode,
-            SubroutineSymbolTable subroutineSymbolTable,
-            LocalVarSymbolTable methodScopeSymbolTable,
+            SubroutineSymbolTable subTable,
+            LocalVarSymbolTable varTable,
             boolean debug
     ) throws Exception {
 
@@ -35,55 +35,31 @@ public class StatementCodeGenerator {
         //statementNode.methodCallNode.visit(mv,classNode,methodNode);
         if(statementNode.statementNode instanceof MethodCallNode){
             MethodCallNode call = (MethodCallNode)statementNode.statementNode;
-            MethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,call,methodScopeSymbolTable,subroutineSymbolTable,debug);
+            MethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,call,varTable,subTable,debug);
 
             //TODO: if the method was not Void, we should pop something off the stack
-            String returnType = TypeResolver.getTypeMethodCallNode(call,subroutineSymbolTable);
+            String returnType = TypeResolver.getTypeMethodCallNode(call,subTable);
 
             if(!returnType.equals("Void")){
                 mv.visitInsn(POP);
             }
         }else if(statementNode.statementNode instanceof LoopStatementNode) {
             LoopStatementNode loop = (LoopStatementNode) statementNode.statementNode;
-            visitLoopStatmentNode(cw, mv, classNode, methodNode, loop,methodScopeSymbolTable,subroutineSymbolTable,debug);
+            visitLoopStatmentNode(cw, mv, classNode, methodNode, loop,varTable,subTable,debug);
         }else if(statementNode.statementNode instanceof AssignmentStatementNode) {
 
             AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode) statementNode.statementNode;
 
-            int local_var_index = methodScopeSymbolTable.getIndexOfVariable(assignmentStatementNode.variableNode.name);
-
-            //evaluate the expression and store the result in the local variable
-            ExpressionCodeGenerator
-                    .visitExpression(cw, mv, classNode, methodNode, assignmentStatementNode.expressionNode, methodScopeSymbolTable,subroutineSymbolTable,debug);
-
-            String expressionType= TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
-            switch(expressionType){
-                case "Int":
-				case "Bool":
-                    mv.visitVarInsn(ISTORE, local_var_index);
-                    break;
-				case "Float":
-					mv.visitVarInsn(FSTORE, local_var_index);
-					break;
-                case "String":
-                    mv.visitVarInsn(ASTORE,local_var_index);
-                    break;
-                case "[Int]":
-                case "[Float]":
-                    mv.visitVarInsn(ASTORE,local_var_index);
-                    break;
-                default:
-                    throw new Exception("unconsidered case in DragonStatementCodeGenerator. type was :"+expressionType);
-            }
+            AssignmentStatementCodeGenerator.visitAssignmentStatementNode(cw,classNode,assignmentStatementNode,mv,methodNode,varTable,subTable,debug);
         }else if(statementNode.statementNode instanceof WhileStatementNode){
             WhileStatementNode whileStatementNode =(WhileStatementNode)statementNode.statementNode;
-            WhileStatementCodeGenerator.visitWhileStatmentNode(cw,mv,classNode,methodNode,whileStatementNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
+            WhileStatementCodeGenerator.visitWhileStatmentNode(cw,mv,classNode,methodNode,whileStatementNode,varTable,subTable,debug);
         }else if(statementNode.statementNode instanceof IfStatementNode) {
             IfStatementNode ifStatementNode = (IfStatementNode) statementNode.statementNode;
-            IfStatementCodeGenerator.visitIfStatmentNode(cw, mv, classNode, methodNode, ifStatementNode, methodScopeSymbolTable, subroutineSymbolTable,debug);
+            IfStatementCodeGenerator.visitIfStatmentNode(cw, mv, classNode, methodNode, ifStatementNode, varTable, subTable,debug);
         }else if(statementNode.statementNode instanceof ReturnStatementNode){
             ReturnStatementNode returnStatementNode = (ReturnStatementNode)statementNode.statementNode;
-            ReturnStatementCodeGenerator.visitReturnStatement(cw,mv,classNode,methodNode,returnStatementNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
+            ReturnStatementCodeGenerator.visitReturnStatement(cw,mv,classNode,methodNode,returnStatementNode,varTable,subTable,debug);
         }else{
             throw new Exception("unconsidered statement type: "+statementNode.statementNode.getClass().getName());
         }

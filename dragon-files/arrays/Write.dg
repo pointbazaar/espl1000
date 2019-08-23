@@ -1,0 +1,11 @@
+public class Write{
+	public Void main(){
+
+		arr=[1,2];
+
+		arr[0]=2;
+		println(arr[0]); 
+		//2
+
+	}
+}
