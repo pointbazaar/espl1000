@@ -8,7 +8,8 @@ public class Main{
 		arr=[1,2,3,4];
 
 		//x=arr[0];
+		x[0]=3;
 
-		//println(x);
+		println(x[0]);
 	}
 }

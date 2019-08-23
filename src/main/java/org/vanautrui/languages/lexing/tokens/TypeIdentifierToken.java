@@ -18,7 +18,7 @@ public class TypeIdentifierToken extends BasicToken implements Token {
     private String content;
 
     public TypeIdentifierToken(CharacterList list) throws Exception {
-        super(list.getCurrentLine());
+        super();
         CharacterList copy = new CharacterList(list);
         try{
             new KeywordToken(copy);

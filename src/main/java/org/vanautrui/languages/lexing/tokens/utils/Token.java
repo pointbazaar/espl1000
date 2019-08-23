@@ -11,5 +11,5 @@ public interface Token {
 
     //for error reporting,
     //get the line in the source code where the token originates
-    public long getOriginalLineNumber();
+    //public long getOriginalLineNumber();
 }

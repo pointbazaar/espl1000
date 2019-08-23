@@ -19,7 +19,7 @@ public class IdentifierToken extends BasicToken implements Token {
     private String content;
 
     public IdentifierToken(CharacterList list) throws Exception {
-        super(list.getCurrentLine());
+        super();
         CharacterList copy = new CharacterList(list);
         try{
             new KeywordToken(copy);

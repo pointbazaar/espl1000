@@ -37,7 +37,7 @@ classField ::= accessmodifier? Type identifier ';'
 
 Type ::= identifier
 
-variable ::= identifier
+variable ::= identifier ('[' expression ']')?
 
 methodName ::= identifier
 
@@ -62,7 +62,7 @@ ifStatement ::= 'if' '(' expression ')' '{' statement* '}' ( 'else' '{' statemen
 
 returnStatement ::= 'return' expression? ';'
 
-//assignmentStatement ::= variable ('[' expression ']')? ('<-' | '=') expression ';'
+//assignmentStatement ::= variable ('[' expression ']')? ('<-' | '=') expression ';' //not good. the index should be able to go on any variable
 assignmentStatement ::= variable ('<-' | '=') expression ';'
 
 term ::= arrayConstant | boolConstant | integerConstant | string | keywordConstant | methodCall | '(' expression ')' | unaryOp term | variable

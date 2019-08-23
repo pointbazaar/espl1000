@@ -23,7 +23,7 @@ public class KeywordToken extends BasicToken implements Token {
     public String keyword;
 
     public KeywordToken(CharacterList list) throws Exception {
-        super(list.getCurrentLine());
+        super();
         for (String sym : keywords) {
             if (list.startsWith(sym)) {
                 this.keyword = sym;

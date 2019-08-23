@@ -12,7 +12,7 @@ public class BoolConstantToken extends BasicToken implements Token {
     public boolean value;
 
     public BoolConstantToken(CharacterList list) throws Exception {
-        super(list.getCurrentLine());
+        super();
 
         if (list.startsWith("true")) {
             this.value = true;

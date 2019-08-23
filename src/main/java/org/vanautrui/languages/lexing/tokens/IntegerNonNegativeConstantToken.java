@@ -20,7 +20,7 @@ public class IntegerNonNegativeConstantToken extends BasicToken implements Token
     public int value;
 
     public IntegerNonNegativeConstantToken(CharacterList list) throws Exception {
-        super(list.getCurrentLine());
+        super();
         Pattern p = Pattern.compile(regex_integer_constant);
 
         Matcher m = p.matcher(list.getLimitedStringMaybeShorter(MAX_INT_CONSTANT_LENGTH));
@@ -34,7 +34,7 @@ public class IntegerNonNegativeConstantToken extends BasicToken implements Token
     }
 
     public IntegerNonNegativeConstantToken(int newcontents) throws Exception {
-        super(-1);
+        super();
         this.value = newcontents;
     }
 

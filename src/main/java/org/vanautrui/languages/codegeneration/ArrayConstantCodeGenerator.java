@@ -53,7 +53,7 @@ public class ArrayConstantCodeGenerator {
         //TODO: figure out what the operand means (means array of int) and figure out
         //for other types
 
-        
+
 
         for(int i=0;i<arr.elements.size();i++){
             mv.visitInsn(DUP);

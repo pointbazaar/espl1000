@@ -31,7 +31,7 @@ public class OperatorToken extends BasicToken implements Token {
     public String operator;
 
     public OperatorToken(CharacterList list) throws Exception {
-        super(list.getCurrentLine());
+        super();
         for (String sym : operator_symbols_2_chars_or_more) {
             if (list.startsWith(sym)) {
                 this.operator = sym;

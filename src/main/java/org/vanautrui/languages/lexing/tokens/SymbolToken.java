@@ -20,7 +20,7 @@ public class SymbolToken extends BasicToken implements Token {
     public String symbol;
 
     public SymbolToken(CharacterList list) throws Exception {
-        super(list.getCurrentLine());
+        super();
         //should be for keywords such as {,},[,],+,-,.,','
 
         for (String sym : symbols) {

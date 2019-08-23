@@ -21,7 +21,7 @@ public class FloatNonNegativeConstantToken extends BasicToken implements Token {
     public float value;
 
     public FloatNonNegativeConstantToken(CharacterList list) throws Exception {
-        super(list.getCurrentLine());
+        super();
         Pattern p = Pattern.compile(regex_float_constant);
 
         Matcher m = p.matcher(list.getLimitedStringMaybeShorter(MAX_FLOAT_CONSTANT_LENGTH));

@@ -19,7 +19,7 @@ public class StringConstantToken extends BasicToken implements Token {
     private String content;
 
     public StringConstantToken(CharacterList list) throws Exception {
-        super(list.getCurrentLine());
+        super();
         Pattern p = Pattern.compile(regex_string_constant);
 
         Matcher m = p.matcher(list.getLimitedStringMaybeShorter(MAX_STRING_CONSTANT_LENGTH));
@@ -34,7 +34,7 @@ public class StringConstantToken extends BasicToken implements Token {
     }
 
     public StringConstantToken(String newcontents) throws Exception {
-        super(-1);
+        super();
         this.content = newcontents;
     }
 

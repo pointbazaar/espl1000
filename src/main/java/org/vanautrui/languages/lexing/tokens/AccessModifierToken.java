@@ -14,7 +14,7 @@ public class AccessModifierToken extends BasicToken implements Token {
     public boolean is_public;
 
     public AccessModifierToken(CharacterList list) throws Exception {
-        super(list.getCurrentLine());
+        super();
         if (list.startsWith("public")) {
             this.is_public = true;
             list.consumeTokens("public".length());
@@ -27,7 +27,7 @@ public class AccessModifierToken extends BasicToken implements Token {
     }
 
     public AccessModifierToken(String newcontents) throws Exception {
-        super(-1);
+        super();
         switch (newcontents) {
             case "public":
                 is_public = true;

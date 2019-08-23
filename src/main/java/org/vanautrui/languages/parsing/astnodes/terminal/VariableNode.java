@@ -2,9 +2,13 @@ package org.vanautrui.languages.parsing.astnodes.terminal;
 
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
+import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.lexing.tokens.utils.Token;
 import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.ITermNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
+
+import java.util.Optional;
 
 public class VariableNode implements IASTNode, ITermNode {
 
@@ -12,17 +16,34 @@ public class VariableNode implements IASTNode, ITermNode {
 
     public String name;
 
+    public Optional<ExpressionNode> indexOptional=Optional.empty();
+
     public VariableNode(TokenList tokens) throws Exception {
 
-        Token token = tokens.get(0);
+        TokenList copy=new TokenList(tokens);
+
+        Token token = copy.get(0);
 
         if (token instanceof IdentifierToken) {
             this.name = ((IdentifierToken) token).getContents();
-            tokens.consume(1);
+            copy.consume(1);
+
+            try{
+                TokenList copy2 = new TokenList(copy);
+
+                copy2.expectAndConsumeOtherWiseThrowException(new SymbolToken("["));
+                this.indexOptional= Optional.of(new ExpressionNode(copy2));
+                copy2.expectAndConsumeOtherWiseThrowException(new SymbolToken("]"));
+
+                copy.set(copy2);
+            }catch (Exception e){
+                //pass, this assignment has no index to it
+            }
 
         } else {
             throw new Exception("could not read variable name");
         }
+        tokens.set(copy);
 
     }
 

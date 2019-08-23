@@ -61,4 +61,24 @@ public class AssignmentStatementNodeTest {
 
         AssignmentStatementNode assignmentStatementNode = new AssignmentStatementNode(tokens);
     }
+
+    @Test
+    public void test_assign_variable_with_array_index()throws Exception{
+
+        TokenList tokens = new TokenList();
+
+        tokens.add(new IdentifierToken("x"));
+        tokens.add(new OperatorToken("="));
+
+        //nop refers to the no operation method. it does nothing with its argument
+        tokens.add(new IdentifierToken("arr"));
+
+        tokens.add(new SymbolToken("["));
+        tokens.add(new IntegerNonNegativeConstantToken(4));
+        tokens.add(new SymbolToken("]"));
+
+        tokens.add(new SymbolToken(";"));
+
+        AssignmentStatementNode assignmentStatementNode = new AssignmentStatementNode(tokens);
+    }
 }

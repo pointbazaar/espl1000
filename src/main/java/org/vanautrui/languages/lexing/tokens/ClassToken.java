@@ -12,11 +12,11 @@ public class ClassToken extends BasicToken implements Token {
     public String representation="class";
 
     public ClassToken() {
-        super(-1);
+        super();
     }
 
     public ClassToken(CharacterList tokenStream) throws Exception {
-        super(tokenStream.getCurrentLine());
+        super();
         String cl_ass = "class";
 
         if (tokenStream.startsWith("class")) {

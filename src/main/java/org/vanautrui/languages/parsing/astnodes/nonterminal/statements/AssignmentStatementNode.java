@@ -7,6 +7,8 @@ import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.VariableNode;
 
+import java.util.Optional;
+
 public class AssignmentStatementNode implements IASTNode, IStatementNode {
 
     public VariableNode variableNode;

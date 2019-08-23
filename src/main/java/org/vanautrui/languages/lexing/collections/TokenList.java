@@ -86,7 +86,7 @@ public class TokenList {
             String sourceCodeFragment = (this.toSourceCodeFragment().substring(0, Math.min(this.toSourceCodeFragment().length(), 100)));
 
             throw new Exception(
-                    ansi().fg(Ansi.Color.WHITE).a("in line "+token.getOriginalLineNumber()+":\n").reset()
+                    ansi().fg(Ansi.Color.WHITE).a("in line "+"TODO"+":\n").reset()
                     .fg(Ansi.Color.RED).a("Parsing Error: \n").reset()+
                     "expected token:  \n\n"
                             + "\t"+expectedTokenMessage+"\n\n"
