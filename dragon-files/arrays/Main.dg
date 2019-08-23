@@ -4,5 +4,11 @@ public class Main{
 		println("how should arrays look like in this language?");
 
 		println("arr=[1,2,3,4]; //looks good to me as an array constant");	
+		
+		arr=[1,2,3,4];
+
+		//x=arr[0];
+
+		//println(x);
 	}
 }

@@ -54,7 +54,11 @@ public class TermNode implements IASTNode, IExpressionComputable {
 							try{
 								this.termNode=new BoolConstantNode(copy);
 							}catch (Exception e5){
-		                    	this.termNode = new VariableNode(copy);
+							    try {
+                                    this.termNode = new VariableNode(copy);
+                                }catch (Exception e6){
+							        this.termNode=new ArrayConstantNode(copy);
+                                }
 							}
 							
 		                }
