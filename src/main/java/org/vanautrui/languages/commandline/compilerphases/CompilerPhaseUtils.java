@@ -13,6 +13,7 @@ import org.vanautrui.languages.TerminalUtil;
 import java.awt.*;
 
 import static org.fusesource.jansi.Ansi.Color.GREEN;
+import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.fusesource.jansi.Ansi.ansi;
 
 public class CompilerPhaseUtils {
@@ -39,11 +40,13 @@ public class CompilerPhaseUtils {
         if(!printLongForm) {
             ansi1.cursorToColumn(0);
         }
-        ansi1.fg(GREEN);
+
         ansi1.cursorToColumn(18);
         if(success) {
+            ansi1.fg(GREEN);
             ansi1.a("✓");
         }else{
+            ansi1.fg(RED);
             ansi1.a("⚠");
         }
         ansi1.cursorToColumn(0);
@@ -59,6 +62,13 @@ public class CompilerPhaseUtils {
 
         //rip this out, this is slowing down the compiler
         //Thread.sleep(100);
+    }
+    public static void printBuildConclusion(boolean success){
+        if(success) {
+            System.out.println(ansi().fg(GREEN).bold().a("BUILD SUCCESS").reset());
+        }else {
+            System.out.println(ansi().fg(RED).bold().a("BUILD FAILURE").reset());
+        }
     }
 
     public static void printDuration(long start,long end){

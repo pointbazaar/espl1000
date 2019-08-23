@@ -19,8 +19,7 @@ import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.ansi;
 import static org.objectweb.asm.Opcodes.*;
 import static org.objectweb.asm.Opcodes.RETURN;
-import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printDuration;
-import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printDurationFeedback;
+import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.*;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhases.*;
 
 public class dragonc {
@@ -212,7 +211,8 @@ public class dragonc {
                 ansi1.reset();
                 System.out.print(ansi1);
                 System.out.flush();
-                System.out.println(ansi().fg(GREEN).bold().a("BUILD SUCCESS").reset());
+                printBuildConclusion(true);
+
             }
 
         } catch (Exception e) {
@@ -223,6 +223,7 @@ public class dragonc {
                 //compiler developers
                 e.printStackTrace();
             }
+            printBuildConclusion(false);
         }
     }
 
