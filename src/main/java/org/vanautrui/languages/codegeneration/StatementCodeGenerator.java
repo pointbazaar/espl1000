@@ -68,6 +68,10 @@ public class StatementCodeGenerator {
                 case "String":
                     mv.visitVarInsn(ASTORE,local_var_index);
                     break;
+                case "[Int]":
+                case "[Float]":
+                    mv.visitVarInsn(ASTORE,local_var_index);
+                    break;
                 default:
                     throw new Exception("unconsidered case in DragonStatementCodeGenerator. type was :"+expressionType);
             }

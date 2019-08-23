@@ -2,6 +2,7 @@ package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.ArrayConstantNode;
 import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
 import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
@@ -77,9 +78,12 @@ public class TermCodeGenerator {
             MethodCallNode methodCallNode = (MethodCallNode)termNode.termNode;
 
             MethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
-		}else if(termNode.termNode instanceof BoolConstantNode){
-			BoolConstantNode b = (BoolConstantNode)termNode.termNode;
-			BoolConstantCodeGenerator.visitBoolConstant(mv,b);
+		}else if(termNode.termNode instanceof BoolConstantNode) {
+            BoolConstantNode b = (BoolConstantNode) termNode.termNode;
+            BoolConstantCodeGenerator.visitBoolConstant(mv, b);
+        }else if(termNode.termNode instanceof ArrayConstantNode){
+	        ArrayConstantNode arrayConstantNode = (ArrayConstantNode)termNode.termNode;
+            ArrayConstantCodeGenerator.visitArrayConstant(cw,mv,classNode,methodNode,arrayConstantNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
         }else{
             throw new Exception("unhandled case in DragonTermCodeGenerator.java");
         }

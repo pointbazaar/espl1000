@@ -1,5 +1,6 @@
 package org.vanautrui.languages.typeresolution;
 
+import org.vanautrui.languages.parsing.astnodes.nonterminal.ArrayConstantNode;
 import org.vanautrui.languages.symboltables.tables.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.TermNode;
@@ -53,12 +54,28 @@ public class TypeResolver {
             return getTypeStringConstantNode((StringConstantNode)termNode.termNode);
         }else if(termNode.termNode instanceof VariableNode){
             return getTypeVariableNode((VariableNode) termNode.termNode,methodNode,subroutineSymbolTable,varTable);
-		}else if(termNode.termNode instanceof BoolConstantNode){
-			return "Bool";
+		}else if(termNode.termNode instanceof BoolConstantNode) {
+            return "Bool";
+        }else if(termNode.termNode instanceof ArrayConstantNode){
+            return getTypeArrayConstNode((ArrayConstantNode) termNode.termNode,methodNode,subroutineSymbolTable,varTable);
         }else{
             throw new Exception("unforeseen case in getTypeTermNode(...) in DragonTypeResolver");
         }
 
+    }
+
+    private static String getTypeArrayConstNode(ArrayConstantNode arrayConstantNode,MethodNode methodNode, SubroutineSymbolTable subroutineSymbolTable, LocalVarSymbolTable varTable) throws Exception {
+        //since the array types should be all the same,
+        //that should be checked in the package responsible for typechecking
+        //here we assume it will be checked there
+
+        if(arrayConstantNode.elements.size()==0){
+            throw new Exception("array size should be atleast 1, for the type to be inferred without type annotations");
+        }
+
+        //for the array to have a type, it has to either be annotated,
+        // or contain atleast 1 element of which the type can be known
+        return "["+getTypeExpressionNode(arrayConstantNode.elements.get(0),methodNode,subroutineSymbolTable,varTable)+"]";
     }
 
     public static String getTypeExpressionNode(ExpressionNode expressionNode, MethodNode methodNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
