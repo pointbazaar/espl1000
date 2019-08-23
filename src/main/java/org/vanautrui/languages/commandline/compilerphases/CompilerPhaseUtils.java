@@ -40,11 +40,13 @@ public class CompilerPhaseUtils {
             ansi1.cursorToColumn(0);
         }
         ansi1.fg(GREEN);
+        ansi1.cursorToColumn(18);
         if(success) {
             ansi1.a("✓");
         }else{
             ansi1.a("⚠");
         }
+        ansi1.cursorToColumn(0);
         if(printLongForm){
             ansi1.newline();
         }
@@ -61,7 +63,7 @@ public class CompilerPhaseUtils {
 
     public static void printDuration(long start,long end){
         long duration=end-start;
-        System.out.println("Duration: "+duration+" ms");
+        System.out.println(String.format("Duration: %6sms",duration));
     }
 
     public static final Strategy getPreferredXMLSerializationStrategyHumanReadable(){
@@ -84,7 +86,7 @@ public class CompilerPhaseUtils {
         if(duration>500) {
             TerminalUtil.println("☠ "+str+" Compilation took too long. This needs to be fixed. Please file an Issue on GitHub.", Ansi.Color.RED);
         }else if(duration>200) {
-            TerminalUtil.println("☠ "+str+" we are truly sorry for the delay :(", Ansi.Color.RED);
+            TerminalUtil.println("☠ "+str+" we are truly sorry for the delay :(", Ansi.Color.YELLOW);
         }else if(duration>100){
             TerminalUtil.println("✝ "+str+" sorry it took so long!", Ansi.Color.YELLOW);
         }else {

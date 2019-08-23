@@ -203,7 +203,8 @@ public class dragonc {
             //https://www.utf8icons.com/
             if(timed) {
                 printDurationFeedback(duration);
-            }else{
+            }
+            {
                 //System.out.println();
                 Ansi ansi1= ansi();
                 ansi1.cursorToColumn(0);
