@@ -27,12 +27,28 @@ public class CommentRemover {
 
         for (String line : sourcecode.split("\n")) {
 
-
+            boolean in_string=false;
+            for(int i=0;i<line.length();i++){
+                char c=line.charAt(i);
+                if(c=='"'){
+                    in_string=!in_string;
+                    result.append(c);
+                }else if(c=='/' && i< (line.length()-1) && line.charAt(i+1)=='/' && !in_string){
+                    break;
+                }else{
+                    result.append(c);
+                }
+            }
+            /*
             if (line.contains("//")) {
+                //TODO: consider if the comment is in a string
+                int i = line.indexOf("//");
+
                 result.append(line.substring(0, line.indexOf("//")));
             } else {
                 result.append(line);
             }
+             */
             result.append("\n");
         }
         return result.toString();

@@ -13,7 +13,7 @@ public class StringConstantToken extends BasicToken implements Token {
 
     private static final String regex_string_constant = "^\"[^\"]*\"";
 
-    public static final int MAX_STRING_CONSTANT_LENGTH = 100;
+    public static final int MAX_STRING_CONSTANT_LENGTH = 1000;
 
     @Attribute
     private String content;

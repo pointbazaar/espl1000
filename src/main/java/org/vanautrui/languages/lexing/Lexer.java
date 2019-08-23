@@ -130,7 +130,7 @@ public class Lexer {
             throw
                     new Exception(
                             "tried to tokenize all manner of tokens, but could not make progress. string : '"
-                                    + myCode.getLimitedStringMaybeShorter(10) + "'"
+                                    + myCode.getLimitedStringMaybeShorter(20) + "'"
                     );
         }
 

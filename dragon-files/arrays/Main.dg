@@ -1,0 +1,8 @@
+public class Main{
+	public Void main(){
+
+		println("how should arrays look like in this language?");
+
+		println("arr=[1,2,3,4]; //looks good to me as an array constant");	
+	}
+}
