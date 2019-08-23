@@ -49,6 +49,9 @@ public class VariableNode implements IASTNode, ITermNode {
 
     @Override
     public String toSourceCode() {
+        if(this.indexOptional.isPresent()){
+            return this.name+"["+this.indexOptional.get().toSourceCode()+"]";
+        }
         return this.name;
     }
 

@@ -24,8 +24,8 @@ public class TermCodeGenerator {
             ClassNode classNode,
             MethodNode methodNode,
             TermNode termNode,
-            LocalVarSymbolTable methodScopeSymbolTable,
-            SubroutineSymbolTable subroutineSymbolTable,
+            LocalVarSymbolTable varTable,
+            SubroutineSymbolTable subTable,
             boolean debug
     ) throws Exception {
 	if(termNode.termNode instanceof FloatConstantNode){
@@ -33,7 +33,6 @@ public class TermCodeGenerator {
 		pushFloatConstant(node.value,mv);
 	}else if(termNode.termNode instanceof IntegerConstantNode){
             IntegerConstantNode integerConstantNode = (IntegerConstantNode)termNode.termNode;
-
             pushIntegerConstant(integerConstantNode.value,mv);
         }else if(termNode.termNode instanceof StringConstantNode){
             StringConstantNode stringConstantNode = (StringConstantNode)termNode.termNode;
@@ -41,49 +40,20 @@ public class TermCodeGenerator {
             StringConstantCodeGenerator.visitStringConstant(mv,stringConstantNode);
         }else if(termNode.termNode instanceof ExpressionNode) {
             ExpressionNode expressionNode = (ExpressionNode)termNode.termNode;
-            ExpressionCodeGenerator.visitExpression(cw, mv, classNode, methodNode, expressionNode, methodScopeSymbolTable,subroutineSymbolTable,debug);
+            ExpressionCodeGenerator.visitExpression(cw, mv, classNode, methodNode, expressionNode, varTable,subTable,debug);
         }else if(termNode.termNode instanceof VariableNode) {
-
-            //TODO: find the local variable index and push it onto the stack
-
+            //find the local variable index and push the variable onto the stack
             VariableNode variableNode = (VariableNode) termNode.termNode;
-            if (methodScopeSymbolTable.containsVariable(variableNode.name)) {
-                String type = methodScopeSymbolTable.getTypeOfVariable(variableNode.name);
-                switch (type) {
-                    case "Int":
-					case "Bool":
-                        mv.visitIntInsn(
-							ILOAD, 
-							methodScopeSymbolTable.getIndexOfVariable(
-								variableNode.name
-							)
-						);
-                        break;
-					case "Float":
-						mv.visitIntInsn(
-							FLOAD,
-							methodScopeSymbolTable.getIndexOfVariable(variableNode.name)
-						);
-						break;
-                    case "String":
-                        mv.visitIntInsn(ALOAD,methodScopeSymbolTable.getIndexOfVariable(variableNode.name));
-                        break;
-                    default:
-                        throw new Exception("unconsidered case in DragonTermCodeGenerator: type:"+type);
-                }
-            } else {
-                throw new Exception("variable " + variableNode.name + " not defined?");
-            }
+            VariableCodeGenerator.visitVariableNode(cw,classNode,variableNode,mv,methodNode,varTable,subTable,debug);
         }else if(termNode.termNode instanceof MethodCallNode){
             MethodCallNode methodCallNode = (MethodCallNode)termNode.termNode;
-
-            MethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,methodCallNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
+            MethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,methodCallNode,varTable,subTable,debug);
 		}else if(termNode.termNode instanceof BoolConstantNode) {
             BoolConstantNode b = (BoolConstantNode) termNode.termNode;
             BoolConstantCodeGenerator.visitBoolConstant(mv, b);
         }else if(termNode.termNode instanceof ArrayConstantNode){
 	        ArrayConstantNode arrayConstantNode = (ArrayConstantNode)termNode.termNode;
-            ArrayConstantCodeGenerator.visitArrayConstant(cw,mv,classNode,methodNode,arrayConstantNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
+            ArrayConstantCodeGenerator.visitArrayConstant(cw,mv,classNode,methodNode,arrayConstantNode,varTable,subTable,debug);
         }else{
             throw new Exception("unhandled case in DragonTermCodeGenerator.java");
         }

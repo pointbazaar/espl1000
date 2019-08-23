@@ -1,15 +1,15 @@
 public class Main{
 	public Void main(){
 
-		println("how should arrays look like in this language?");
-
-		println("arr=[1,2,3,4]; //looks good to me as an array constant");	
-		
 		arr=[1,2,3,4];
 
-		//x=arr[0];
-		x[0]=3;
+		x=arr[0];
+		println(x); //read
+		//1
 
-		println(x[0]);
+		//arr[0]=0;
+		//println(arr[0]);
+		//write
+		//0
 	}
 }

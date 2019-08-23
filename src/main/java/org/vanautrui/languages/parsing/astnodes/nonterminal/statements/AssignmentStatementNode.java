@@ -32,6 +32,6 @@ public class AssignmentStatementNode implements IASTNode, IStatementNode {
 
     @Override
     public String toSourceCode() {
-        return " "+variableNode.toSourceCode()+" = "+this.expressionNode.toSourceCode()+" ";
+        return " "+variableNode.toSourceCode()+" = "+this.expressionNode.toSourceCode()+"; ";
     }
 }

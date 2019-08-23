@@ -189,7 +189,11 @@ public class TypeChecker {
 			//string may be there as a single expression 
 			//to return a string from an subroutine or print one
 			//currently we do not support concatenation and such
-		}else{
+		}else if(expr.termNodes.size()==0 && type.equals("[Int]")){
+		    //TODO: make it generic for all array types
+
+            //a single array
+        }else{
 			throw new Exception(type+" is not in the currently allowed types");
 		}
 	}
@@ -301,7 +305,10 @@ public class TypeChecker {
         String leftSideType = TypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,methodNode,subTable,varTable);
         String rightSideType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,varTable);
         if(!leftSideType.equals(rightSideType)){
-            throw new Exception("with an assignment, both sides have to have the same type. here, a value of type "+rightSideType+" was assigned to a value of type "+leftSideType);
+            throw new Exception(
+                    "with an assignment, both sides have to have the same type. here, a value of type "+rightSideType+" was assigned to a value of type "+leftSideType
+                    +" in source: '"+assignmentStatementNode.toSourceCode()+"'"
+            );
         }
     }
 

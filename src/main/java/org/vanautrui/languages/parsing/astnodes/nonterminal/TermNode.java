@@ -73,32 +73,6 @@ public class TermNode implements IASTNode, IExpressionComputable {
 
     @Override
     public String toSourceCode() {
-		if(this.termNode instanceof BoolConstantNode){
-			return ((BoolConstantNode)termNode).toSourceCode();
-		}else if(this.termNode instanceof FloatConstantNode){
-            FloatConstantNode node=(FloatConstantNode)termNode;
-            return node.toSourceCode();
-        }
-        if(this.termNode instanceof IntegerConstantNode){
-            IntegerConstantNode integerConstantNode=(IntegerConstantNode)termNode;
-            return integerConstantNode.toSourceCode();
-        }
-        if(this.termNode instanceof StringConstantNode){
-            StringConstantNode stringConstantNode = (StringConstantNode)this.termNode;
-            return stringConstantNode.toSourceCode();
-        }
-        if(this.termNode instanceof ExpressionNode) {
-            ExpressionNode expressionNode = (ExpressionNode) this.termNode;
-            return "("+expressionNode.toSourceCode()+")";
-        }else if(this.termNode instanceof VariableNode) {
-            VariableNode variableNode = (VariableNode) this.termNode;
-            return variableNode.toSourceCode();
-        }else if(this.termNode instanceof MethodCallNode){
-            MethodCallNode methodCallNode = (MethodCallNode) this.termNode;
-            return methodCallNode.toSourceCode();
-        }else{
-            //return "ERROR";
-            throw new RuntimeException("error in toSourceCode() in DragonTermNode");
-        }
+        return termNode.toSourceCode();
     }
 }

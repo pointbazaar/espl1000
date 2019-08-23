@@ -1,6 +1,8 @@
 package org.vanautrui.languages.parsing.astnodes;
 
-public interface ITermNode extends IExpressionComputable{
+import org.vanautrui.languages.ISourceCode;
+
+public interface ITermNode extends IExpressionComputable, ISourceCode {
 
     //pseudo interface,
     //only (AST Nodes classes) which are on the right side of a 'term' production should implement it

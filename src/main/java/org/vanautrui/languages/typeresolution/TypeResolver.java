@@ -32,6 +32,13 @@ public class TypeResolver {
         //TODO: implement by looking at the definitions in the AST and such
 
         if( varTable.containsVariable(variableNode.name) ){
+            //the symbol table should contain the array type, if it is an array
+            //but this method should return the type also if it has an index
+            if(variableNode.indexOptional.isPresent()){
+                String type = varTable.getTypeOfVariable(variableNode.name);
+                return type.substring(1,type.length()-1); //'[Int]' -> 'Int'
+            }
+
 			return varTable.getTypeOfVariable(variableNode.name);
         }else{
             throw new Exception("could not determine type of "+variableNode.name);
