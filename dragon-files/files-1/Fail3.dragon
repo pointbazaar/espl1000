@@ -1,7 +1,0 @@
-public class Fail3{
-    public MyType main(){
-	//should fail at type checking
-	//since type MyType is not defined anywhere
-        println("hello");
-    }
-}

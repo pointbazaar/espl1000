@@ -1,9 +1,0 @@
-public class Fail4{
-    public Void main(){
-	//should fail at code generation
-	//since failhere is not a builtin function
-	//technically it should fail earlier,
-	//but it is just to test the command line interface for now
-        failhere("hello");
-    }
-}
