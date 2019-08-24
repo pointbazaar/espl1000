@@ -19,7 +19,7 @@ import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUt
 import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.*;
 
 import com.fasterxml.jackson.databind.*;
-
+import java.util.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,7 +33,7 @@ import static org.vanautrui.languages.phase_clean_the_input.UnneccessaryWhiteSpa
 
 public class CompilerPhases {
 
-    public static String phase_conditional_weave_curly_braces(String codeWithoutCommentsWithoutUnneccesaryWhitespace, CommandLine cmd) throws Exception {
+    public static List<String> phase_conditional_weave_curly_braces(List<String> codesWithoutCommentsWithoutUnneccesaryWhitespace, CommandLine cmd) throws Exception {
         final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
         printBeginPhase("PHASE: WEAVE IN CURLY BRACES",printLong);
 
@@ -50,20 +50,21 @@ public class CompilerPhases {
         //let us abandon this approach for now.
 
         //i have an idea how we can avoid an issue related to this
-
         final boolean debug=cmd.hasOption("debug");
+        List<String> results=new ArrayList();
         try {
-            String just_code_with_braces_without_comments_without_newlines =
-                    CurlyBracesWeaver
-                            .weave_scoping_curly_braces_and_remove_newlines(codeWithoutCommentsWithoutUnneccesaryWhitespace);
+            for(String codeWithoutCommentsWithoutUnneccesaryWhitespace: codesWithoutCommentsWithoutUnneccesaryWhitespace){
+                String just_code_with_braces_without_comments_without_newlines =
+                        CurlyBracesWeaver
+                                .weave_scoping_curly_braces_and_remove_newlines(codeWithoutCommentsWithoutUnneccesaryWhitespace);
 
-            //TerminalUtil.println("✓", Ansi.Color.GREEN);
-            printEndPhase(true,printLong);
-            if(debug) {
-                System.out.println(just_code_with_braces_without_comments_without_newlines);
+                if(debug) {
+                    System.out.println(just_code_with_braces_without_comments_without_newlines);
+                }
+                results.add(just_code_with_braces_without_comments_without_newlines);
             }
-
-            return just_code_with_braces_without_comments_without_newlines;
+            printEndPhase(true,printLong);
+            return results;
         }catch (Exception e){
             //TerminalUtil.println("⚠", RED);
             printEndPhase(false,printLong);
@@ -126,80 +127,86 @@ public class CompilerPhases {
 
     private static final String phase_clean_cache_dir=System.getProperty("user.home")+"/dragoncache/clean/";
 
-    public static String phase_clean(String source, CommandLine cmd)throws Exception{
+    public static List<String> phase_clean(List<String> sources, CommandLine cmd)throws Exception{
         final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
         printBeginPhase("CLEAN",printLong);
         //(remove comments, empty lines, excess whitespace)
+        List<String> results=new ArrayList();
 
-        if(!Files.exists(Paths.get(phase_clean_cache_dir))){
-            Files.createDirectories(Paths.get(phase_clean_cache_dir));
-        }
-        final boolean debug=cmd.hasOption("debug");
-
-        int hash = source.hashCode();
-        if(debug) {
-            System.out.println("phase clean: Hashcode of source string: " + hash);
-        }
-        boolean foundCachedCleanedFile = false;
-
-        if(Files.exists(makeCleanPhaseCacheFilePathFromHash(hash))){
-            foundCachedCleanedFile=true;
-        }
-
-        String codeWithoutCommentsWithoutUnneccesaryWhitespace;
-
-        if(foundCachedCleanedFile){
-            if(debug) {
-                System.out.println("found a cached version that is already cleaned");
+        for(String source:sources){
+            if(!Files.exists(Paths.get(phase_clean_cache_dir))){
+                Files.createDirectories(Paths.get(phase_clean_cache_dir));
             }
-            codeWithoutCommentsWithoutUnneccesaryWhitespace = new String(Files.readAllBytes(makeCleanPhaseCacheFilePathFromHash(hash)));
-        }else {
+            final boolean debug=cmd.hasOption("debug");
 
-            String codeWithoutCommentsAndWithoutEmptyLines = (new CommentRemover()).strip_all_comments_and_empty_lines(source);
+            int hash = source.hashCode();
+            if(debug) {
+                System.out.println("phase clean: Hashcode of source string: " + hash);
+            }
+            boolean foundCachedCleanedFile = false;
 
-            codeWithoutCommentsWithoutUnneccesaryWhitespace =
-                    remove_unneccessary_whitespace(codeWithoutCommentsAndWithoutEmptyLines);
+            if(Files.exists(makeCleanPhaseCacheFilePathFromHash(hash))){
+                foundCachedCleanedFile=true;
+            }
 
-            //write file for caching
-            Files.write(makeCleanPhaseCacheFilePathFromHash(hash),codeWithoutCommentsWithoutUnneccesaryWhitespace.getBytes());
+            String codeWithoutCommentsWithoutUnneccesaryWhitespace;
+
+            if(foundCachedCleanedFile){
+                if(debug) {
+                    System.out.println("found a cached version that is already cleaned");
+                }
+                codeWithoutCommentsWithoutUnneccesaryWhitespace = new String(Files.readAllBytes(makeCleanPhaseCacheFilePathFromHash(hash)));
+            }else {
+
+                String codeWithoutCommentsAndWithoutEmptyLines = (new CommentRemover()).strip_all_comments_and_empty_lines(source);
+
+                codeWithoutCommentsWithoutUnneccesaryWhitespace =
+                        remove_unneccessary_whitespace(codeWithoutCommentsAndWithoutEmptyLines);
+
+                //write file for caching
+                Files.write(makeCleanPhaseCacheFilePathFromHash(hash),codeWithoutCommentsWithoutUnneccesaryWhitespace.getBytes());
+            }
+            if(debug) {
+                //System.out.println(codeWithoutCommentsAndWithoutEmptyLines);
+                System.out.println(codeWithoutCommentsWithoutUnneccesaryWhitespace);
+            }
+            results.add(codeWithoutCommentsWithoutUnneccesaryWhitespace);
         }
-
-
 
         //TerminalUtil.println("✓", Ansi.Color.GREEN);
         printEndPhase(true,printLong);
-        if(debug) {
-            //System.out.println(codeWithoutCommentsAndWithoutEmptyLines);
-            System.out.println(codeWithoutCommentsWithoutUnneccesaryWhitespace);
-        }
+        
 
-        return codeWithoutCommentsWithoutUnneccesaryWhitespace;
+        return results;
     }
 
-    public static Set<AST> phase_parsing(TokenList tokens, CommandLine cmd)throws Exception{
+    public static Set<AST> phase_parsing(List<TokenList> list, CommandLine cmd)throws Exception{
         final boolean debug=cmd.hasOption("debug");
         final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
         printBeginPhase("PARSING",printLong);
+        HashSet<AST> asts=new HashSet<>();
+
         try {
-            AST ast = (new Parser()).parse(tokens);
-            printEndPhase(true,printLong);
-            //TerminalUtil.println("✓", Ansi.Color.GREEN);
+            for(TokenList tokens : list){
+                AST ast = (new Parser()).parse(tokens);
 
-            if(debug){
-                TerminalUtil.println("DEBUG: TODO: pretty print source from AST in curly braces", RED);
-                System.out.println(ast.toSourceCode());
+                if(debug){
+                    TerminalUtil.println("DEBUG: TODO: pretty print source from AST in curly braces", RED);
+                    System.out.println(ast.toSourceCode());
 
-                TerminalUtil.println("DEBUG: PRINT AST JSON ", RED);
+                    TerminalUtil.println("DEBUG: PRINT AST JSON ", RED);
 
-                //Serializer serializer = new Persister(getPreferredXMLSerializationStrategyHumanReadable());
-                //serializer.write(ast, System.out);
-				ObjectMapper mapper = new ObjectMapper();
-				mapper.enable(SerializationFeature.INDENT_OUTPUT);
-				System.out.println(mapper.writeValueAsString(ast));
-                System.out.println();
+                    //Serializer serializer = new Persister(getPreferredXMLSerializationStrategyHumanReadable());
+                    //serializer.write(ast, System.out);
+    				ObjectMapper mapper = new ObjectMapper();
+    				mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    				System.out.println(mapper.writeValueAsString(ast));
+                    System.out.println();
+                }
+                
+                asts.add(ast);
             }
-            HashSet<AST> asts=new HashSet<>();
-            asts.add(ast);
+            printEndPhase(true,printLong);
             return asts;
         }catch (Exception e){
             //TerminalUtil.println("⚠",RED);
@@ -208,24 +215,26 @@ public class CompilerPhases {
         }
     }
 
-    public static TokenList phase_lexing(String just_code_with_braces_without_comments, CommandLine cmd)throws Exception{
+    public static List<TokenList> phase_lexing(List<String> just_codes_with_braces_without_comments, CommandLine cmd)throws Exception{
         final boolean debug=cmd.hasOption("debug");
         final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
         printBeginPhase("LEXING",printLong);
+        List<TokenList> list=new ArrayList();
+        try{
+            for(String just_code_with_braces_without_comments: just_codes_with_braces_without_comments){
+                String just_code_with_braces_without_comments_without_newlines = just_code_with_braces_without_comments.replaceAll("\n","");
 
-        String just_code_with_braces_without_comments_without_newlines = just_code_with_braces_without_comments.replaceAll("\n","");
-
-        try {
-            TokenList tokens = (new Lexer()).lexCodeWithoutComments(just_code_with_braces_without_comments_without_newlines);
-            //TerminalUtil.println("✓",GREEN);
-            printEndPhase(true,printLong);
-            if(debug) {
-                System.out.println(tokens.toString());
+                TokenList tokens = (new Lexer()).lexCodeWithoutComments(just_code_with_braces_without_comments_without_newlines);
+                
+                if(debug) {
+                    System.out.println(tokens.toString());
+                }
+                list.add(tokens);
             }
-            return tokens;
+            printEndPhase(true,printLong);
+            return list;
         }catch (Exception e){
             printEndPhase(false,printLong);
-            //TerminalUtil.println("⚠",RED);
             throw e;
         }
     }

@@ -43,11 +43,13 @@ public class dragonc {
 
             //TODO: provide support for compiling multiple files
             //and also for compiling a directory (recursively finds all .dragon files therein)
+
+            //as no option currently has an argument,
+            //this simplifies the usage of the compiler
+            //also, everything that doesnt start with '-' is either a source file or directory
             Path sourceFilePath = Paths.get(args.get(0));
 
-            //TODO: the source file must not be the first argument
-            //the tool would be more flexible if the
-            //source files or directory could be specified anywhere
+            
     	    if(!sourceFilePath.toString().endsWith(".dg")){
     	    	throw new Exception("dragon language files should end in '.dg' for brevity and convenienc");
     	    }
@@ -66,6 +68,12 @@ public class dragonc {
             System.err.println(e.getMessage());
             System.out.println("dgc -help     for information about command line arguments");
         }
+    }
+
+    private static List<File> getAllFiles(List<String> fileArgs){
+        //from dgc options, this can either be files or directories
+        //which must be compiled together.
+
     }
 
     public static void printHelp(){
@@ -106,18 +114,18 @@ public class dragonc {
 
         options.addOption(new Option("help",false,"display an overview of the command line options"));
 
-        options.addOption(new Option("f","force",false,"force compilation. it will compile. (TODO)"));
+        options.addOption(new Option("force",false,"force compilation. it will compile. (TODO)"));
 
         options.addOption(new Option("strict",false,"do not compile if the code is likely to have bugs (TODO)"));
 
         options.addOption(new Option("clean",false,"clears the cache"));
 
         options.addOption(
-                OptionBuilder
-                .hasArg()
-                .withArgName("LEVEL")
-                .withDescription("try to optimize the code. optimization effort goes from 0 (no optimization) to 10 (maximum optimization")
-                .create("optimize")
+                new Option(
+                    "optimize",
+                    false,
+                    "try to optimize the code. optimization effort goes from 0 (no optimization) to 10 (maximum optimization"
+                    )
         );
 
 
@@ -132,7 +140,7 @@ public class dragonc {
         return options;
     }
 
-    private static void compile_main_inner(Path sourceFilePath,CommandLine cmd){
+    private static void compile_main_inner(List<Path> sources,CommandLine cmd){
 
         if(cmd.hasOption("help")){
             printHelp();
@@ -146,25 +154,28 @@ public class dragonc {
 
         //TODO: expand functionality to directories and multiple files
         try {
-
-            String sourceCode = new String(Files.readAllBytes(sourceFilePath));
-
-            if(debug) {
-                System.out.println(sourceCode);
+            List<String> codes=new ArrayList();
+            for(Path path : sources){
+                String sourceCode = new String(Files.readAllBytes(path));
+                codes.add(sourceCode);
+                if(debug) {
+                    System.out.println(sourceCode);
+                }
             }
 
             long start,end;
 
             start = currentTimeMillis();
             //PHASE CLEAN
-            String codeWithoutCommentsWithoutUnneccesaryWhitespace
-                    = phase_clean(sourceCode,cmd);
+            List<String> codeWithoutCommentsWithoutUnneccesaryWhitespace
+                    = phase_clean(codes,cmd);
+
             end= currentTimeMillis();
             if(timed) {
                 printDuration(start, end);
             }
 
-            String just_code_with_braces_without_comments_without_newlines;
+            List<String> just_code_with_braces_without_comments_without_newlines;
 
             if(cmd.hasOption("nocurly")){
                 just_code_with_braces_without_comments_without_newlines
@@ -177,7 +188,7 @@ public class dragonc {
 
             start= currentTimeMillis();
             //PHASE LEXING
-            TokenList tokens = phase_lexing(just_code_with_braces_without_comments_without_newlines,cmd);
+            List<TokenList> tokens = phase_lexing(just_code_with_braces_without_comments_without_newlines,cmd);
             end= currentTimeMillis();
             if(timed){
                 printDuration(start,end);
