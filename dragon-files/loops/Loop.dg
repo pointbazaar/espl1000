@@ -1,0 +1,9 @@
+public class Loop{
+
+    public Void main (){
+
+        loop 3{
+            print("x");
+        }
+    }
+}

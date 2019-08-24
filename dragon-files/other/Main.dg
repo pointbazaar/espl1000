@@ -24,6 +24,5 @@ public class Main{
 
 		println("16");
 		println(x16);
-		println(z);
 	}
 }
