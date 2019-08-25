@@ -1,39 +1,36 @@
 package org.vanautrui.languages.commandline.compilerphases;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.cli.CommandLine;
-import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.codegeneration.JavaByteCodeGenerator;
+import org.vanautrui.languages.lexing.Lexer;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.collections.TokenList;
-import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
-import org.vanautrui.languages.lexing.Lexer;
 import org.vanautrui.languages.lexing.utils.CurlyBracesWeaver;
 import org.vanautrui.languages.parsing.Parser;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.phase_clean_the_input.CommentRemover;
+import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.typechecking.TypeChecker;
 
-import static org.fusesource.jansi.Ansi.ansi;
-import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printEndPhase;
-import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.*;
-
-import com.fasterxml.jackson.databind.*;
-
 import java.io.File;
-import java.util.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printBeginPhase;
+import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printEndPhase;
 import static org.vanautrui.languages.phase_clean_the_input.UnneccessaryWhiteSpaceRemover.remove_unneccessary_whitespace;
+import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
 
 public class CompilerPhases {
 
@@ -190,34 +187,40 @@ public class CompilerPhases {
         final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
         printBeginPhase("PARSING",printLong);
         HashSet<AST> asts=new HashSet<>();
+        boolean didThrow=false;
+        List<Exception> exceptions=new ArrayList<>();
 
-        try {
-            for(TokenList tokens : list){
+        for(TokenList tokens : list){
+            try {
                 AST ast = (new Parser()).parse(tokens);
 
-                if(debug){
-                    TerminalUtil.println("DEBUG: TODO: pretty print source from AST in curly braces", RED);
+                if (debug) {
+                    TerminalUtil.println("DEBUG: pretty print source from AST in curly braces", RED);
                     System.out.println(ast.toSourceCode());
 
                     TerminalUtil.println("DEBUG: PRINT AST JSON ", RED);
-
-                    //Serializer serializer = new Persister(getPreferredXMLSerializationStrategyHumanReadable());
-                    //serializer.write(ast, System.out);
-    				ObjectMapper mapper = new ObjectMapper();
-    				mapper.enable(SerializationFeature.INDENT_OUTPUT);
-    				System.out.println(mapper.writeValueAsString(ast));
+                    
+                    ObjectMapper mapper = new ObjectMapper();
+                    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+                    System.out.println(mapper.writeValueAsString(ast));
                     System.out.println();
                 }
-                
+
                 asts.add(ast);
+            }catch (Exception e) {
+                didThrow=true;
+                exceptions.add(e);
             }
+        }
+
+        if(didThrow){
+            printEndPhase(false,printLong);
+            throw new Exception(exceptions.stream().map(e->e.getMessage()).collect(Collectors.joining("\n")));
+        }else{
             printEndPhase(true,printLong);
             return asts;
-        }catch (Exception e){
-            //TerminalUtil.println("⚠",RED);
-            printEndPhase(false,printLong);
-            throw e;
         }
+
     }
 
     public static List<TokenList> phase_lexing(List<CharacterList> just_codes_with_braces_without_comments, CommandLine cmd)throws Exception{
