@@ -1,22 +1,22 @@
 public class Main{
 	public Void main(){
 
-		arr=[1];
+		arr=[1,2,3,4];
 
 		//x=arr[0];
-		printarr(arr,1);
-		arr2=reversearr(arr,1);
-		printarr(arr2,1);
+		printarr(arr,4);
+		arr2=reversearr(arr,4);
+		printarr(arr2,4);
 		
 
 	}
 	public [Int] reversearr([Int] arr,Int size){
 		//modified
-		arr2=[0];
+		arr2=[0,0,0,0];
 		i=0;
 		while(i<size){
 
-			arr2[i]=i;
+			arr2[i]=arr[size-i-1];
 			i=i+1;
 		}
 		return arr2;
@@ -26,8 +26,10 @@ public class Main{
 		i=0;
 		while(i<size){
 
-			println(arr[i]);
+			print(arr[i]);
+			print(",");
 			i=i+1;
 		}
+		println();
 	}
 }

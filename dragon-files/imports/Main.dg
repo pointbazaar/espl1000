@@ -1,0 +1,8 @@
+public class Main{
+
+	public Void main(){
+		//tests that we can use the standard library
+		x=sqrt(9.0);
+		println(x);
+	}
+}
