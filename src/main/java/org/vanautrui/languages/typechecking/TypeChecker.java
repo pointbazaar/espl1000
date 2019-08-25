@@ -112,11 +112,7 @@ public class TypeChecker {
     private void typeCheckReturnStatementNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, ReturnStatementNode returnStatementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
         //well the type of the value returned should be the same as the method return type
         //in case of void there should be no value returned
-        if(methodNode.type.typeName.equals("Void")){
-            if(returnStatementNode.returnValue.isPresent()){
-                throw new Exception(" Type Checking Failed. do not return a value from a Void method. "+returnStatementNode.returnValue.get().toSourceCode());
-            }
-        }else{
+        {
             String returnValueType= TypeResolver.getTypeExpressionNode(returnStatementNode.returnValue.get(),methodNode,subTable,varTable);
             if(
                 !(returnValueType.equals(methodNode.type.typeName))
@@ -285,8 +281,8 @@ public class TypeChecker {
     ) throws Exception{
         //the condition expression should be of type boolean
         String conditionType= TypeResolver.getTypeExpressionNode(whileStatementNode.condition,methodNode,subTable,varTable);
-        if(!conditionType.equals("Bool") && !conditionType.equals("Boolean")){
-            throw new Exception(" condition should be of type boolean : '"+whileStatementNode.condition.toSourceCode()+"' but was of type: "+conditionType);
+        if(!conditionType.equals("Bool")){
+            throw new Exception(" condition should be of type Bool : '"+whileStatementNode.condition.toSourceCode()+"' but was of type: "+conditionType);
         }
         for(StatementNode stmt : whileStatementNode.statements){
             typeCheckStatementNode(asts,classNode,methodNode,stmt,subTable,varTable);
@@ -335,7 +331,7 @@ public class TypeChecker {
             }
         }
 
-        List<String> acceptable_types = Arrays.asList("Void","Int","Float","Bool","String","[Int]","[Float]","[Bool]");
+        List<String> acceptable_types = Arrays.asList("Int","Float","Bool","String","[Int]","[Float]","[Bool]");
 
         if(acceptable_types.contains(typeIdentifierNode.typeName)){
             return;

@@ -48,7 +48,7 @@ public class JavaByteCodeGeneratorTest {
 
     @Test
     public void test_can_compile_simple_helloworld()throws Exception{
-        String source="public class MainTest100 { public Void main(){ println(\"Hello World!\"); }}";
+        String source="public class MainTest100 { public Int main(){ println(\"Hello World!\"); return 0; }}";
 
         Process pr = compile_and_run_one_class_for_testing(source,"MainTest100");
 
@@ -61,7 +61,7 @@ public class JavaByteCodeGeneratorTest {
 
     @Test
     public void test_can_compile_loop_statements()throws Exception{
-        String source="public class MainTest22 { public Void main(){ loop 4 { print(\"1\"); } } }";
+        String source="public class MainTest22 { public Int main(){ loop 4 { print(\"1\"); } return 0; } }";
         Process pr = compile_and_run_one_class_for_testing(source,"MainTest22");
 
         Assert.assertEquals(0,pr.exitValue());
@@ -82,7 +82,7 @@ public class JavaByteCodeGeneratorTest {
         //on the stack. we cannot use the more general BIPUSH
         //maybe this has optimization reasons
 
-        String source="public class MainTest3 { public Void main(){ x="+x+"; println(x); } }";
+        String source="public class MainTest3 { public Int main(){ x="+x+"; println(x); return 0; } }";
         Process pr = compile_and_run_one_class_for_testing(source,"MainTest3");
 
         Assert.assertEquals(0,pr.exitValue());
@@ -92,7 +92,7 @@ public class JavaByteCodeGeneratorTest {
     @Test
     public void test_can_compile_multiple_assignment_to_same_variable_add()throws Exception{
 
-        String source="public class MainTest4 { public Void main(){ x=1; x=x+1; println(x); } }";
+        String source="public class MainTest4 { public Int main(){ x=1; x=x+1; println(x); return 0;} }";
         Process pr = compile_and_run_one_class_for_testing(source,"MainTest4");
 
         Assert.assertEquals(0,pr.exitValue());
@@ -102,7 +102,7 @@ public class JavaByteCodeGeneratorTest {
     @Test
     public void test_can_compile_multiple_assignment_to_same_variable_multiply()throws Exception{
 
-        String source="public class MainTest5 { public Void main(){ x=2; x=x*2; println(x); } }";
+        String source="public class MainTest5 { public Int main(){ x=2; x=x*2; println(x); return 0; } }";
         Process pr = compile_and_run_one_class_for_testing(source,"MainTest5");
 
         Assert.assertEquals(0,pr.exitValue());
@@ -112,7 +112,7 @@ public class JavaByteCodeGeneratorTest {
     @Test
     public void test_can_compile_assignment_to_multiple_local_variables()throws Exception{
 
-        String source="public class MainTest6 { public Void main(){ x=2; y=1; x=x+y; println(x); } }";
+        String source="public class MainTest6 { public Int main(){ x=2; y=1; x=x+y; println(x); return 0; } }";
         Process pr = compile_and_run_one_class_for_testing(source,"MainTest6");
 
         Assert.assertEquals(0,pr.exitValue());
@@ -122,7 +122,7 @@ public class JavaByteCodeGeneratorTest {
     @Test
     public void test_can_compile_input_and_output_very_basic()throws Exception{
 
-        String source="public class MainTest7 { public Void main(){ x=readln();  println(x); } }";
+        String source="public class MainTest7 { public Int main(){ x=readln();  println(x); return 0;} }";
         Process pr = compile_and_run_but_not_waitFor(source,"MainTest7");
 
         //give input to process

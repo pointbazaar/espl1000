@@ -49,7 +49,7 @@ methodName ::= identifier
 //and a programmer could simply make the method as Int and return 0;
 //maybe that could be integrated into the Void method/function
 
-method ::= accessmodifier returnType methodName '(' declaredArgument* ')' '{' statement* '}'
+method ::= accessmodifier Type methodName '(' declaredArgument* ')' '{' statement* '}'
 
 // // functions are always public
 //functionTypeDecl ::= functionName '::' (Type '->')* Type
@@ -59,8 +59,6 @@ method ::= accessmodifier returnType methodName '(' declaredArgument* ')' '{' st
 //value ::= arrayConstant | boolConstant | integerConstant | string | keywordConstant | functionCall | value
 //functionName ::= identifier
 //functionCall ::= functionName expression*
-
-returnType ::= 'Void' | Type
 
 declaredArgument ::= Type identifier
 

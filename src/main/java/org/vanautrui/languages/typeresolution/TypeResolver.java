@@ -142,6 +142,13 @@ public class TypeResolver {
             return "String";
         }
 
+        //these calls are Void
+        //but since there is no void in this language, they are int
+        //we have to think about that during code generation later on
+        List<String> builtin_stuff=Arrays.asList("print","println");
+        if(builtin_stuff.contains(subrName)){
+            return "Int";
+        }
         //TODO: handle the other builtin methods
 
         if(subroutineSymbolTable.containsVariable(subrName)){
@@ -149,6 +156,6 @@ public class TypeResolver {
         }
 
         //TODO: throw exception if not found in symbol table
-        return "Void";
+        throw new Exception("colud not get type of "+subrName+" ( in TypeResolver.java)");
     }
 }

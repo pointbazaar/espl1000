@@ -3,6 +3,7 @@ package org.vanautrui.languages.codegeneration;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.nameconversions.TypeNameToJVMInternalTypeNameConverter;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.ReturnStatementNode;
 import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
 import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.StatementNode;
@@ -11,6 +12,8 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNo
 
 import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.*;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.objectweb.asm.Opcodes.*;
@@ -63,13 +66,20 @@ public class MethodCodeGenerator {
             //TODO: compile the statements in the method
 
             //stmt->stmt.visit(mv,Optional.of(classNode),Optional.of(methodNode))
-            for (StatementNode stmt : methodNode.statements) {
-                StatementCodeGenerator.visitStatement(cw, mv, classNode, methodNode, stmt,subroutineSymbolTable,methodScopeSymbolTable,debug);
+
+            if(methodNode.methodName.methodName.name.equals("main")){
+                //make every return Statement just 'return' as if it were void
+                for(StatementNode stmt : methodNode.statements){
+                    if(stmt.statementNode instanceof ReturnStatementNode){
+                        ReturnStatementNode rstmt = (ReturnStatementNode)stmt.statementNode;
+                        rstmt.returnValue= Optional.empty();
+                    }
+                }
             }
 
+            for (StatementNode stmt : methodNode.statements) {
 
-            if(returnTypeName.equals("Void")) {
-                mv.visitInsn(RETURN);
+                StatementCodeGenerator.visitStatement(cw, mv, classNode, methodNode, stmt,subroutineSymbolTable,methodScopeSymbolTable,debug);
             }
 
             //TODO: find out how to compute maxStack,

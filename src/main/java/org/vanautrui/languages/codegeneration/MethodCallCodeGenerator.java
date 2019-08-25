@@ -35,9 +35,8 @@ public class MethodCallCodeGenerator {
         String methodDescriptor ="(Ljava/lang/String;)V";
 
         if(methodCallNode.argumentList.size()>0) {
-            //mv.visitLdcInsn(methodCallNode.argumentList.get(0).str);
-            for(ExpressionNode expressionNode : methodCallNode.argumentList){
 
+            for(ExpressionNode expressionNode : methodCallNode.argumentList){
                 //TODO: make getTypeJVMInternal() to make this easier? or just make a translator class for it
                 String expressionType= TypeResolver.getTypeExpressionNode(expressionNode,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
 
@@ -45,7 +44,6 @@ public class MethodCallCodeGenerator {
 		//which accepts our arguments
 		switch(expressionType){
 			case "Int":
-			case "ERROR":
 				methodDescriptor="(I)V";
 				break;
 			case "Float":
@@ -54,7 +52,7 @@ public class MethodCallCodeGenerator {
 		}
                 ExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,expressionNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
             }
-            //DragonStringConstantCodeGenerator.visitStringConstant(cw,mv,classNode,methodNode,methodCallNode.argumentList.get(0),methodScopeSymbolTable);
+
         }else{
             mv.visitLdcInsn("");
         }
@@ -78,14 +76,18 @@ public class MethodCallCodeGenerator {
         }
     }
 
-    public static void visitMethodCallNode(ClassWriter cw, MethodVisitor mv, ClassNode classNode, MethodNode methodNode, MethodCallNode methodCallNode, LocalVarSymbolTable methodScopeSymbolTable, SubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception {
-        //TODO: actually compile the stuff, not just fake
+    public static void visitMethodCallNode(
+            ClassWriter cw, MethodVisitor mv, ClassNode classNode,
+            MethodNode methodNode, MethodCallNode methodCallNode,
+            LocalVarSymbolTable methodScopeSymbolTable,
+            SubroutineSymbolTable subroutineSymbolTable, boolean debug
+    ) throws Exception {
 
         if(subroutineSymbolTable.containsVariable(methodCallNode.identifierMethodName.name)){
             String subrType = TypeResolver.getTypeMethodCallNode(methodCallNode,subroutineSymbolTable);
 
             String methodName = methodCallNode.identifierMethodName.name;
-            String owner=classNode.name.typeName;//TODO: figure out if this is ok
+            String owner=classNode.name.typeName;
             String descriptor= TypeNameToJVMInternalTypeNameConverter.convertSubroutineName(
                     subrType,methodCallNode.argumentList.stream().map(expressionNode -> {
                         try {
@@ -98,49 +100,45 @@ public class MethodCallCodeGenerator {
                     debug
             );
 
-            //push the arguments on the stack
             for(ExpressionNode expr : methodCallNode.argumentList){
                 ExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,expr,methodScopeSymbolTable,subroutineSymbolTable,debug);
             }
 
             mv.visitMethodInsn(INVOKESTATIC,owner,methodName,descriptor);
 
-            //DEBUG
             if(debug) {
                 System.out.println("found method in symbol table");
             }
         }else {
-
             switch (methodCallNode.identifierMethodName.name) {
-
                 case "readln":
-                    //create an instance of Scanner
-                    //mv.visitInsn(NEW);
-
-                    //the new instruction must get an index into
-                    //the runtime constant pool of the current class
-                    //int myconst = cw.newConst("java/util/Scanner");
-
-                    //mv.visitVarInsn(NEW,myconst);
-                    mv.visitTypeInsn(NEW, "java/util/Scanner");
-                    //mv.visitInsn(NEW,"java/util/Scanner");
-
-                    mv.visitInsn(DUP);
-
-                    //DEBUG: try to comment out stuff individually and see
-                    //what happens
-
-                    mv.visitFieldInsn(GETSTATIC, "java/lang/System", "in", "Ljava/io/InputStream;");
-                    mv.visitMethodInsn(INVOKESPECIAL, "java/util/Scanner", "<init>", "(Ljava/io/InputStream;)V");
-
-                    //call the Scanner.nextLine();
-                    mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/Scanner", "nextLine", "()Ljava/lang/String;", false);
-
-                    //throw new Exception("readln() not implemented (DragonMethodCallGenerator)");
+                    compile_readln(cw,mv,classNode,methodNode,methodCallNode,
+                            methodScopeSymbolTable,subroutineSymbolTable,debug);
                     break;
-                default:
-                    compile_printing_statement(cw, mv, classNode, methodNode, methodCallNode, methodScopeSymbolTable, subroutineSymbolTable,debug);
+                case "print":
+                case "println":
+                    compile_printing_statement(cw, mv, classNode, methodNode, methodCallNode,
+                            methodScopeSymbolTable, subroutineSymbolTable,debug);
             }
         }
+    }
+
+    private static void compile_readln(
+            ClassWriter cw, MethodVisitor mv, ClassNode classNode, MethodNode methodNode,
+            MethodCallNode methodCallNode, LocalVarSymbolTable methodScopeSymbolTable,
+            SubroutineSymbolTable subroutineSymbolTable, boolean debug
+    )throws Exception{
+        //the new instruction must get an index into
+        //the runtime constant pool of the current class
+        //int myconst = cw.newConst("java/util/Scanner");
+
+        mv.visitTypeInsn(NEW, "java/util/Scanner");
+
+        mv.visitInsn(DUP);
+
+        mv.visitFieldInsn(GETSTATIC, "java/lang/System", "in", "Ljava/io/InputStream;");
+        mv.visitMethodInsn(INVOKESPECIAL, "java/util/Scanner", "<init>", "(Ljava/io/InputStream;)V");
+
+        mv.visitMethodInsn(INVOKEVIRTUAL, "java/util/Scanner", "nextLine", "()Ljava/lang/String;", false);
     }
 }

@@ -17,45 +17,29 @@ import java.util.stream.Collectors;
 
 public class MethodNode implements IASTNode {
 
-    //for xml
-    @Attribute
-    public String getAccess(){
-        return this.access.toSourceCode();
-    }
-
-    public AccessModifierNode access;
-
-    //for xml
-    @Attribute
-    public String getType(){
-        return this.type.typeName;
-    }
+    public boolean isPublic;
 
     public TypeIdentifierNode type;
 
-    //for xml
-    @Attribute
-    public String getName(){
-        return this.methodName.methodName.name;
-    }
-
     public MethodNameNode methodName;
 
-    @ElementList
     public List<DeclaredArgumentNode> arguments = new ArrayList<>();
 
-    @ElementList
     public List<StatementNode> statements = new ArrayList<>();
 
     public MethodNode(TokenList tokens) throws Exception {
-
-        //System.out.println("try parse DragonMethodNode");
 
         //TODO: consider the 2 alternative ways a method can be declared
 
         TokenList copy = tokens.copy();
 
-        this.access = new AccessModifierNode(copy);
+        try {
+            AccessModifierNode access = new AccessModifierNode(copy);
+            this.isPublic=access.is_public;
+        }catch (Exception e){
+            //access doesnt have to be declared, the default is public
+            this.isPublic=true;
+        }
 
         this.type = new TypeIdentifierNode(copy);
 
@@ -102,7 +86,7 @@ public class MethodNode implements IASTNode {
     public String toSourceCode() {
 
         return
-                this.access.toSourceCode()
+                ((this.isPublic)?" public":" private")
                 +" "
                 +this.type.toSourceCode()
                 +" "

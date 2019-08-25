@@ -12,11 +12,11 @@ public class AssignmentStatementCodeGeneratorTest {
     @Test
     public void test_can_read_from_array()throws Exception{
         String source="public class MainTest333{" +
-                "\tpublic Void main(){" +
+                "\tpublic Int main(){" +
                 "\t\tarr=[1,2];" +
                 "\t\tx=arr[0];" +
                 "\t\tprint(x);" +
-                "\t}" +
+                "\t return 0;}" +
                 "}";
         Process pr = compile_and_run_one_class_for_testing(source,"MainTest333");
 
@@ -28,11 +28,11 @@ public class AssignmentStatementCodeGeneratorTest {
     @Test
     public void test_can_write_into_array()throws Exception{
         String source="public class MainTest454{" +
-                "\tpublic Void main(){" +
+                "\tpublic Int main(){" +
                 "\t\tarr=[1,2];" +
                 "\t\tarr[0]=2;" +
                 "\t\tprint(arr[0]);" +
-                "\t}" +
+                "\treturn 0;}" +
                 "}";
         Process pr = compile_and_run_one_class_for_testing(source,"MainTest454");
 

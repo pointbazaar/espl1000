@@ -15,6 +15,9 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNod
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.typeresolution.TypeResolver;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.objectweb.asm.Opcodes.*;
 import static org.vanautrui.languages.codegeneration.LoopStatementCodeGenerator.visitLoopStatmentNode;
 
@@ -40,7 +43,8 @@ public class StatementCodeGenerator {
             //TODO: if the method was not Void, we should pop something off the stack
             String returnType = TypeResolver.getTypeMethodCallNode(call,subTable);
 
-            if(!returnType.equals("Void")){
+            List<String> java_void_methods = Arrays.asList("print","println");
+            if(!java_void_methods.contains(call.identifierMethodName.name)){
                 mv.visitInsn(POP);
             }
         }else if(statementNode.statementNode instanceof LoopStatementNode) {
