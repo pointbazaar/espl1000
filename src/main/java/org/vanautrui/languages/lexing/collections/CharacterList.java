@@ -1,15 +1,14 @@
 package org.vanautrui.languages.lexing.collections;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class CharacterList{
 
-    public File sourceFile;
+    public Path relSrcPath;
 
     //the line numbers corresponding to the characters.
     //so that we are able to show meaningful error messages
@@ -20,8 +19,13 @@ public class CharacterList{
     private boolean stringValid = false;
     private String stringValue = "";
 
-    public CharacterList(String s,File sourceFile) {
-        this.sourceFile=sourceFile;
+    public CharacterList(String s,Path sourceFile) {
+        //both paths need a root component for relativizing
+        Path workingDir = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
+        Path codePath = sourceFile.toAbsolutePath();
+        Path relativePath = workingDir.relativize(codePath);
+        this.relSrcPath=relativePath;
+
         char[] chars=s.toCharArray();
         long currentLine=1;
         this.list = new ArrayList<>();
@@ -36,11 +40,11 @@ public class CharacterList{
     }
 
     public CharacterList(String s){
-        this(s, Paths.get("/dev/null").toFile());
+        this(s, Paths.get("/dev/null"));
     }
 
     public CharacterList(CharacterList other) {
-        this.sourceFile     = other.sourceFile;
+        this.relSrcPath = other.relSrcPath;
 
         this.lineNumbers    = new ArrayList<>(other.lineNumbers);
         this.list           = new ArrayList<>(other.list);

@@ -28,6 +28,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.Color.RED;
@@ -174,7 +175,7 @@ public class CompilerPhases {
                 //System.out.println(codeWithoutCommentsAndWithoutEmptyLines);
                 System.out.println(codeWithoutCommentsWithoutUnneccesaryWhitespace);
             }
-            results.add(new CharacterList(codeWithoutCommentsWithoutUnneccesaryWhitespace,sourceFiles.get(i)));
+            results.add(new CharacterList(codeWithoutCommentsWithoutUnneccesaryWhitespace,sourceFiles.get(i).toPath()));
         }
 
         //TerminalUtil.println("✓", Ansi.Color.GREEN);
@@ -224,21 +225,31 @@ public class CompilerPhases {
         final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
         printBeginPhase("LEXING",printLong);
         List<TokenList> list=new ArrayList();
-        try{
-            for(CharacterList just_code_with_braces_without_comments: just_codes_with_braces_without_comments){
+        boolean didThrow = false;
+        List<Exception> exceptions=new ArrayList<>();
 
+        for(CharacterList just_code_with_braces_without_comments: just_codes_with_braces_without_comments){
+            try {
                 TokenList tokens = (new Lexer()).lexCodeWithoutComments(just_code_with_braces_without_comments);
 
-                if(debug) {
+                if (debug) {
                     System.out.println(tokens.toString());
                 }
                 list.add(tokens);
+            }catch (Exception e){
+                exceptions.add(e);
+                didThrow=true;
             }
+        }
+
+        if(didThrow){
+            printEndPhase(false,printLong);
+            //collect all the exceptions throw during lexing,
+            //and combine their messages to throw a bigger exception
+            throw new Exception(exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining("\n")));
+        }else {
             printEndPhase(true,printLong);
             return list;
-        }catch (Exception e){
-            printEndPhase(false,printLong);
-            throw e;
         }
     }
 

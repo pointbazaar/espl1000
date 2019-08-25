@@ -51,14 +51,17 @@ methodName ::= identifier
 
 method ::= accessmodifier Type methodName '(' declaredArgument* ')' '{' statement* '}'
 
+//TODO: implement the below
 // // functions are always public
 //functionTypeDecl ::= functionName '::' (Type '->')* Type
 // // like in haskell, there should be pattern matching available, so multiple definitions depending
 // // on the value of the pattern
-//function ::= functionName identifier* = value
-//value ::= arrayConstant | boolConstant | integerConstant | string | keywordConstant | functionCall | value
+//function ::= namedFunction | anonFunction
+//namedFunction ::= functionName identifier* = value
+//value ::= arrayConstant | boolConstant | integerConstant | string | keywordConstant | functionCall | value op value | ...
 //functionName ::= identifier
 //functionCall ::= functionName expression*
+//anonFunction ::= '\' declaredArgument* '->' value
 
 declaredArgument ::= Type identifier
 
@@ -72,13 +75,16 @@ whileStatement ::= 'while' '(' expression ')' '{' statement* '}'
 ifStatement ::= 'if' '(' expression ')' '{' statement* '}' ( 'else' '{' statement* '}' )?
 returnStatement ::= 'return' expression? ';'
 
-assignmentStatement ::= objectOrVariable '=' expression ';'
+assignmentStatement ::= variable '=' expression ';'
 
 term ::= arrayConstant | boolConstant | integerConstant | string | keywordConstant | methodCall | '(' expression ')' | unaryOp term | variable
 
 expression ::= term (op term)*
 
-
+//this is a kind of expression inspired by haskell.
+//it is similar to the ternary operator
+//TODO: implement it
+ifThenElse ::= 'if' expression 'then' expression 'else' expression
 
 //TODO: these rules below are speculation. they are not yet in the language
 object ::= identifier

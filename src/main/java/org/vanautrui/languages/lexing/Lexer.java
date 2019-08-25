@@ -1,12 +1,12 @@
 package org.vanautrui.languages.lexing;
 
 import org.fusesource.jansi.Ansi;
+import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.*;
 import org.vanautrui.languages.lexing.tokens.utils.Token;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -17,19 +17,17 @@ import static org.fusesource.jansi.Ansi.ansi;
 public class Lexer {
 
     public TokenList lexCodeTestMode(String s)throws Exception{
-        return tokenize(new CharacterList(s, Paths.get("/dev/null").toFile()));
+        return tokenize(new CharacterList(s, Paths.get("/dev/null")));
     }
 
     public TokenList lexCodeWithoutComments(CharacterList list) throws Exception {
         return tokenize(list);
     }
 
-    private TokenList tokenize(CharacterList sourceCodeWithBracesWithoutCommentsWithoutNewlines) throws Exception {
-        CharacterList myCode = new CharacterList(sourceCodeWithBracesWithoutCommentsWithoutNewlines);
+    private TokenList tokenize(CharacterList myCode) throws Exception {
 
         List<Token> result = new ArrayList<>();
-
-        //TODO
+        List<Integer> lineNumbers = new ArrayList<>();
 
         //every class implementing DragonToken
         //should have a constructor which consumes Characters of a list,
@@ -47,6 +45,11 @@ public class Lexer {
 
             //System.out.println(myCode.size());
 
+            //since we will parse a token or throw an exception,
+            //just add the line number
+            //the case where we just consume a whitespace or tab will be handled below
+            lineNumbers.add(myCode.getCurrentLineNumber());
+
             try {
                 result.add(new AccessModifierToken(myCode));
                 continue;
@@ -63,6 +66,7 @@ public class Lexer {
 
             try {
                 result.add(new ClassToken(myCode));
+
                 continue;
             } catch (Exception e) {
                 //pass
@@ -128,24 +132,23 @@ public class Lexer {
             if (myCode.startsWith(" ") || myCode.startsWith("\t")) {
                 //white space is always allowed between tokens
                 myCode.consumeTokens(1);
+                lineNumbers.remove(lineNumbers.size()-1);
                 continue;
             }
 
-            //both paths need a root component for relativizing
-            Path workingDir = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
-            Path codePath = myCode.sourceFile.toPath().toAbsolutePath();
-            Path relativePath = workingDir.relativize(codePath);
 
-            String msg=ansi().fg(Ansi.Color.RED).bold().a("TOKENIZER ERROR: ").reset().a(
+
+            String msg=ansi().fg(Ansi.Color.RED).a("TOKENIZER ERROR: ").reset().a(
                     "'"+myCode.getLimitedStringMaybeShorter(20) + "' \t "
-            ).fg(Ansi.Color.CYAN).a(relativePath.toString()+":"+myCode.getCurrentLineNumber()).reset()
+            + TerminalUtil.generateFileNameWithLine(myCode.relSrcPath,lineNumbers.get(0))).reset()
                     .toString();
 
-            throw
-                    new Exception(msg);
+            lineNumbers.remove(lineNumbers.size()-1);
+
+            throw new Exception(msg);
         }
 
-        return new TokenList(result);
+        return new TokenList(result,lineNumbers,myCode.relSrcPath);
     }
 
 }

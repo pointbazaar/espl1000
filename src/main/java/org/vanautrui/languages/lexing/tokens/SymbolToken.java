@@ -35,7 +35,7 @@ public class SymbolToken implements Token {
     }
 
     public SymbolToken(String newcontents) throws Exception {
-        this(new CharacterList(newcontents, Paths.get("/dev/null").toFile()));
+        this(new CharacterList(newcontents, Paths.get("/dev/null")));
     }
 
     @Override

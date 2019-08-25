@@ -39,7 +39,7 @@ public class KeywordToken implements Token {
     }
 
     public KeywordToken(String s)throws Exception{
-        this(new CharacterList(s, Paths.get("/dev/null").toFile()));
+        this(new CharacterList(s, Paths.get("/dev/null")));
     }
 
     @Override

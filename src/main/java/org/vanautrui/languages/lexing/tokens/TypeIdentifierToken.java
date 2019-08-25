@@ -48,7 +48,7 @@ public class TypeIdentifierToken implements Token {
     }
 
     public TypeIdentifierToken(String str) throws Exception{
-        this(new CharacterList(str, Paths.get("/dev/null").toFile()));
+        this(new CharacterList(str, Paths.get("/dev/null")));
     }
 
     @Override

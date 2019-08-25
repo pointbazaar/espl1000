@@ -6,13 +6,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 public class Parser {
     public AST parse(TokenList tokens) throws Exception {
 
-
-
         AST result = new AST(tokens);
-
-        //TODO
-
-
         return result;
     }
 }

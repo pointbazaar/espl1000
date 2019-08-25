@@ -41,7 +41,7 @@ public class IdentifierToken implements Token {
     }
 
     public IdentifierToken(String newcontents) throws Exception {
-        this(new CharacterList(newcontents, Paths.get("/dev/null").toFile()));
+        this(new CharacterList(newcontents, Paths.get("/dev/null")));
     }
 
     @Override

@@ -23,6 +23,7 @@ import static java.lang.System.currentTimeMillis;
 import static org.fusesource.jansi.Ansi.ansi;
 import static org.objectweb.asm.Opcodes.*;
 import static org.objectweb.asm.Opcodes.RETURN;
+import static org.vanautrui.languages.TerminalUtil.b;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.*;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhases.*;
 
@@ -37,35 +38,36 @@ public class dragonc {
     //before reaching the final representation
     //from which code can be generated
 
-    public static void compile_main(List<String> args) {
+    public static void compile_main(List<String> args) throws Exception {
         //Apache  CLI tools is just AWESOME!!
         Options options = createOptions();
-        try {
-            CommandLineParser parser = new DefaultParser();
-            CommandLine cmd = parser.parse(options, args.toArray(new String[]{}));
 
-            //TODO: provide support for compiling multiple files
-            //and also for compiling a directory (recursively finds all .dragon files therein)
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = parser.parse(options, args.toArray(new String[]{}));
 
-            //as no option currently has an argument,
-            //this simplifies the usage of the compiler
-            //also, everything that doesnt start with '-' is either a source file or directory
+        //TODO: provide support for compiling multiple files
+        //and also for compiling a directory (recursively finds all .dragon files therein)
 
-            if(cmd.hasOption("clean")){
-                if(cmd.hasOption("debug")){
-                    System.out.println("clearing the cache");
-                }
-                final String cache_dir=System.getProperty("user.home")+"/dragoncache";
-                FileUtils.deleteDirectory(Paths.get(cache_dir).toFile());
+        //as no option currently has an argument,
+        //this simplifies the usage of the compiler
+        //also, everything that doesnt start with '-' is either a source file or directory
+
+        if(cmd.hasOption("clean")){
+            if(cmd.hasOption("debug")){
+                System.out.println("clearing the cache");
             }
-            List<String> fileArgs = args.stream().filter(str->!str.startsWith("-")).collect(Collectors.toList());
-
-            compile_main_inner(getAllDragonFilesRecursively(fileArgs),cmd);
-        }catch (Exception e){
-            //e.printStackTrace();
-            System.err.println(e.getMessage());
-            System.out.println("dgc -help     for information about command line arguments");
+            final String cache_dir=System.getProperty("user.home")+"/dragoncache";
+            FileUtils.deleteDirectory(Paths.get(cache_dir).toFile());
         }
+
+        if(cmd.hasOption("help")){
+            printHelp();
+            return;
+        }
+
+        List<String> fileArgs = args.stream().filter(str->!str.startsWith("-")).collect(Collectors.toList());
+
+        compile_main_inner(getAllDragonFilesRecursively(fileArgs),cmd);
     }
 
     private static List<File> getAllDragonFilesRecursively(List<String> fileArgs)throws Exception{
@@ -100,24 +102,26 @@ public class dragonc {
         StringBuilder sbh = new StringBuilder("");
         StringBuilder sbf = new StringBuilder("");
 
-        sbh.append("\ndgc - dragon compiler\n\n");
+        sbh.append(ansi().bold().a("\ndgc - dragon compiler\n\n").reset().toString());
 
-        sbf.append("GITHUB\n");
+        sbf.append("\n\n");
+        sbf.append(ansi().bold().a("GITHUB\n").reset().toString());
         sbf.append("    https://github.com/pointbazaar/dragon/\n\n");
 
-        sbf.append("AUTHOR\n");
+        sbf.append(ansi().bold().a("AUTHOR\n").reset().toString());
         sbf.append(
-                "    @pointbazar (alex23667@gmail.com),\n" +
-                        "    @Milo-D (David.Milosevic@web.de) \n\n"
+                "    @pointbazaar (alex23667@gmail.com),\n" +
+                "    @Milo-D (David.Milosevic@web.de) \n\n"
         );
 
-        sbf.append("REPORTING BUGS\n");
+        sbf.append(ansi().bold().a("REPORTING BUGS\n").reset().toString());
         sbf.append("    https://github.com/pointbazaar/dragon/issues\n\n");
 
         String header=sbh.toString();
         String footer=sbf.toString();
-        help.printHelp("dgc [OPTION]... FILE...",header,options,footer,true);
+        help.printHelp("dgc FILE...",header,options,footer,true);
     }
+
 
     private static Options createOptions(){
         //https://commons.apache.org/proper/commons-cli/usage.html
@@ -142,7 +146,7 @@ public class dragonc {
                 new Option(
                     "optimize",
                     false,
-                    "try to optimize the code. optimization effort goes from 0 (no optimization) to 10 (maximum optimization"
+                    "try to optimize the code. optimization effort goes from 0 (no optimization) to 10 (maximum optimization) (TODO)"
                     )
         );
 
@@ -160,10 +164,7 @@ public class dragonc {
 
     private static void compile_main_inner(List<File> sources,CommandLine cmd){
 
-        if(cmd.hasOption("help")){
-            printHelp();
-            return;
-        }
+
 
         boolean debug=cmd.hasOption("debug");
         boolean timed=cmd.hasOption("timed");

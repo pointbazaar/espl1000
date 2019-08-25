@@ -51,7 +51,7 @@ public class OperatorToken implements Token {
     }
 
     public OperatorToken(String newcontents) throws Exception {
-        this(new CharacterList(newcontents, Paths.get("/dev/null").toFile()));
+        this(new CharacterList(newcontents, Paths.get("/dev/null")));
     }
 
     @Override

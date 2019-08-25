@@ -2,13 +2,20 @@ package org.vanautrui.languages;
 
 import org.fusesource.jansi.Ansi;
 
-import java.io.OutputStream;
 import java.io.PrintStream;
+import java.nio.file.Path;
 
-import static java.lang.System.out;
 import static org.fusesource.jansi.Ansi.ansi;
 
 public class TerminalUtil {
+
+    public static String b(String s){
+        return ansi().fg(Ansi.Color.BLUE).a(s).reset().toString();
+    }
+
+    public static String generateFileNameWithLine(Path path, int line){
+        return ansi().fg(Ansi.Color.CYAN).a(path+":"+line).toString();
+    }
 
     public static void println(String s,Ansi.Color color, PrintStream out){
         print(s,color,out);

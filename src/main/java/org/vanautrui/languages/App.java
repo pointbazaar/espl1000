@@ -34,11 +34,13 @@ public class App {
         //https://asm.ow2.io/asm4-guide.pdf
 
         try {
-            dragonc.compile_main(Arrays.asList(Arrays.copyOfRange(args,0,args.length)));
+            dragonc.compile_main(Arrays.asList(args));
+            System.exit(0);
         }catch (Exception e){
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-
+            //e.printStackTrace();
+            System.err.println(e.getMessage());
+            System.out.println("dgc -help     for information about command line arguments");
+            System.exit(1);
         }
     }
 

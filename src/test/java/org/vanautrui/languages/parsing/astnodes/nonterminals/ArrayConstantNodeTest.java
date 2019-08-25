@@ -3,11 +3,9 @@ package org.vanautrui.languages.parsing.astnodes.nonterminals;
 import org.junit.Assert;
 import org.junit.Test;
 import org.vanautrui.languages.lexing.collections.TokenList;
-import org.vanautrui.languages.lexing.tokens.IdentifierToken;
 import org.vanautrui.languages.lexing.tokens.IntegerNonNegativeConstantToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ArrayConstantNode;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.TermNode;
 
 public class ArrayConstantNodeTest {
 
