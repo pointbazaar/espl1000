@@ -11,9 +11,16 @@ function dragoncompiler(){
 	java -jar ~/dragon/target/dragon-0.1-jar-with-dependencies.jar "$@"
 }
 
-function dgc(){
+#command dgc is apparently used by digital gate compiler (a package)
+
+function draco(){
+    #DraCo - Dragon Compiler
     #run dragon compiler
     dragoncompiler "$@"
 }
+
+#function dragonc(){
+#    dragoncompiler "$@"
+#}
 
 
