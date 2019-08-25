@@ -6,6 +6,14 @@ class MultiLineStrings{
 		this is a multiline string!
 		";
 		println(x);
+
+		help="
+
+		-option1 ....
+		-option2 ....
+		";
+		println(help);
+
 		return 0;
 	}
 }
