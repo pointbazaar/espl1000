@@ -43,9 +43,22 @@ variable ::= identifier ('[' expression ']')?
 
 methodName ::= identifier
 
+//i want to split it into Void method and Value Method
+//and ... wait ... what if we eliminate Void from the language? that would
+//make so many things easier since every method and every function would return a value
+//and a programmer could simply make the method as Int and return 0;
+//maybe that could be integrated into the Void method/function
+
 method ::= accessmodifier returnType methodName '(' declaredArgument* ')' '{' statement* '}'
 
-method ::= accessmodifier methodName '::' (Type smallarrow)* Type '{' statement* '}'
+// // functions are always public
+//functionTypeDecl ::= functionName '::' (Type '->')* Type
+// // like in haskell, there should be pattern matching available, so multiple definitions depending
+// // on the value of the pattern
+//function ::= functionName identifier* = value
+//value ::= arrayConstant | boolConstant | integerConstant | string | keywordConstant | functionCall | value
+//functionName ::= identifier
+//functionCall ::= functionName expression*
 
 returnType ::= 'Void' | Type
 
