@@ -1,9 +1,11 @@
 public class Loop{
 
-    public Void main (){
+    public Int main (){
 
         loop 3{
+
             print("x");
-        }
+       }
+	return 0;
     }
 }

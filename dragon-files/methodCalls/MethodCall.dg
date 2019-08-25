@@ -1,5 +1,5 @@
 public class MethodCall{
-	public Void main(){
+	public Int main(){
 
 		x=subroutine();
 		println(x);

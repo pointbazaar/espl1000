@@ -1,6 +1,6 @@
 public class Main{
 
-	public Void main(){
+	public Int main(){
 		//tests that we can use the standard library
 		x=sqrt(9.0);
 		println(x);

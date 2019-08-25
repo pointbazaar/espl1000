@@ -1,6 +1,6 @@
 public class OutputInteger{
 
-	public Void main () {
+	public Int main () {
 		x=55;
 		println(x);
 	}

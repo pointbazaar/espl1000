@@ -2,7 +2,7 @@
 public class IncludeStatic{
 	includestatic "Math.dg";
 
-	public Void main(){
+	public Int main(){
 		println(sqrt(9.0));		
 	}
 }

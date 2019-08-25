@@ -1,6 +1,6 @@
 public class Fibonacci{
 
-	public Void main(){
+	public Int main(){
 		x=100;
 		println(fibonacci(x));
 	}

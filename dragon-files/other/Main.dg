@@ -1,6 +1,6 @@
 public class Main{
 
-	public Void main(){
+	public Int main(){
 		
 		x1=1;
 		x2=2;

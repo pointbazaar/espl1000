@@ -1,5 +1,5 @@
 public class Experiment{
-	public Void main(){
+	public Int main(){
 		arr=[0];
 		i=0;
 		while(i<1){

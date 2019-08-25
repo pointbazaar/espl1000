@@ -1,6 +1,6 @@
 class Main{
 
-	Void main(){
+	Int main(){
 		a = new A;
 		a.x=3;
 		println(a.x);
@@ -11,7 +11,7 @@ class A{
 
 	Int x;
 
-	Void inc(){
+	Int inc(){
 		this.x=this.x+1;
 	}
 }

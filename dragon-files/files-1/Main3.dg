@@ -1,6 +1,0 @@
-public class Main3{
-    public Void main(){
-	print("1");
-	println();
-    }
-}

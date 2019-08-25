@@ -1,5 +1,7 @@
 package org.vanautrui.languages.typechecking;
 
+import org.apache.commons.lang3.StringUtils;
+import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.symboltablegenerator.*;
 import org.vanautrui.languages.symboltables.tables.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.*;
@@ -337,7 +339,11 @@ public class TypeChecker {
             return;
         }
 
-        throw new Exception("could not find class for type: '"+typeIdentifierNode.typeName+"'");
+        String msg = TerminalUtil.gererateErrorString("TYPECHECKING: ")
+                + "could not find class for type:"
+                + StringUtils.wrap(typeIdentifierNode.typeName,"'")
+                +" in file : (TODO: display file and line number)";
+        throw new Exception(msg);
     }
 
     private void typeCheckMethodNameNode(Set<AST> asts, ClassNode classNode, MethodNameNode methodNameNode)throws Exception{

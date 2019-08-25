@@ -1,5 +1,5 @@
 public class Read{
-	public Void main(){
+	public Int main(){
 
 		arr=[1,2,3,4];
 

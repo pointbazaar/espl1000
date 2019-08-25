@@ -1,6 +1,6 @@
 public class FibonacciCached{
 
-	public Void main(){
+	public Int main(){
 		x=100;
 		println(fibonacci(x));
 	}

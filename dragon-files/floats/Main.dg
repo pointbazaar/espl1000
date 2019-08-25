@@ -1,5 +1,5 @@
 public class Main{
-	public Void main(){
+	public Int main(){
 		println("PI/2");
 		println(subr(3.14159,2.0));
 

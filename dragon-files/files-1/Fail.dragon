@@ -1,5 +1,0 @@
-public class Fail{
-    public Void main(){
-        println("hello <;
-    }
-}

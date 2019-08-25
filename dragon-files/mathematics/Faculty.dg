@@ -1,5 +1,5 @@
 public class Faculty{
-	public Void main(){
+	public Int main(){
 		
 		println(faculty(3));
 	}

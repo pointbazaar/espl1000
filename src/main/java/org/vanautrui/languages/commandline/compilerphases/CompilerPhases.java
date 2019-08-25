@@ -199,7 +199,7 @@ public class CompilerPhases {
                     System.out.println(ast.toSourceCode());
 
                     TerminalUtil.println("DEBUG: PRINT AST JSON ", RED);
-                    
+
                     ObjectMapper mapper = new ObjectMapper();
                     mapper.enable(SerializationFeature.INDENT_OUTPUT);
                     System.out.println(mapper.writeValueAsString(ast));

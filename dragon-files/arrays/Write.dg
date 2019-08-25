@@ -1,5 +1,5 @@
 public class Write{
-	public Void main(){
+	public Int main(){
 
 		arr=[1,2];
 
