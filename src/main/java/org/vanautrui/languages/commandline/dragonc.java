@@ -101,16 +101,18 @@ public class dragonc {
         sbh.append(ansi().bold().a("\ndraco - dragon compiler\n\n").reset().toString());
 
         sbf.append("\n\n");
-        sbf.append(ansi().bold().a("GITHUB\n").reset().toString());
-        sbf.append("    https://github.com/pointbazaar/dragon/\n\n");
+        sbf.append(ansi().bold().a("GITHUB\n\n").reset().toString());
+        sbf.append("    https://github.com/pointbazaar/dragon/\n");
+        sbf.append("\n");
 
-        sbf.append(ansi().bold().a("AUTHOR\n").reset().toString());
+        sbf.append(ansi().bold().a("AUTHOR\n\n").reset().toString());
         sbf.append(
-                "    @pointbazaar (alex23667@gmail.com),\n" +
-                "    @Milo-D (David.Milosevic@web.de) \n\n"
+                String.format("    %-15s %-20s\n","@pointbazaar","alex23667@gmail.com")+
+                String.format("    %-15s %-20s\n","@Milo-D","David.Milosevic@web.de")
         );
+        sbf.append("\n");
 
-        sbf.append(ansi().bold().a("REPORTING BUGS\n").reset().toString());
+        sbf.append(ansi().bold().a("REPORTING BUGS\n\n").reset().toString());
         sbf.append("    https://github.com/pointbazaar/dragon/issues\n\n");
 
         String header=sbh.toString();
