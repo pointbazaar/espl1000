@@ -1,6 +1,5 @@
 package org.vanautrui.languages.lexing;
 
-import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.collections.TokenList;
@@ -130,7 +129,7 @@ public class Lexer {
 
 
 
-            String msg=ansi().fg(Ansi.Color.RED).a("TOKENIZER ERROR: ").reset().a(
+            String msg=TerminalUtil.gererateErrorString("Tokenize Error: ")+ansi().a(
                     "'"+myCode.getLimitedStringMaybeShorter(20) + "' \t "
             + TerminalUtil.generateFileNameWithLine(myCode.relSrcPath,lineNumbers.get(0))).reset()
                     .toString();

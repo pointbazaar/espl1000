@@ -61,6 +61,6 @@ public class TypeIdentifierToken implements IToken {
 	@JsonIgnore
     public Color getDisplayColor() {
         return Color.YELLOW;
-    }   
+    }
 
 }

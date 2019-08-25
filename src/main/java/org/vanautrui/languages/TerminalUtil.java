@@ -9,12 +9,18 @@ import static org.fusesource.jansi.Ansi.ansi;
 
 public class TerminalUtil {
 
+
+
     public static String b(String s){
         return ansi().fg(Ansi.Color.BLUE).a(s).reset().toString();
     }
 
+    public static String gererateErrorString(String s){
+        return ansi().fg(Ansi.Color.RED).a(s).reset().toString();
+    }
+
     public static String generateFileNameWithLine(Path path, int line){
-        return path+":"+line;
+        return ansi().fg(Ansi.Color.CYAN).a(path+":"+line).reset().toString();
     }
 
     public static void println(String s,Ansi.Color color, PrintStream out){

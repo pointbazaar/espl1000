@@ -3,8 +3,7 @@ package org.vanautrui.languages.lexing.collections;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.fusesource.jansi.Ansi;
-import org.vanautrui.languages.TerminalUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.vanautrui.languages.lexing.tokens.utils.IToken;
 
 import java.nio.file.Path;
@@ -13,7 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.fusesource.jansi.Ansi.ansi;
+import static org.vanautrui.languages.TerminalUtil.generateFileNameWithLine;
+import static org.vanautrui.languages.TerminalUtil.gererateErrorString;
 
 public class TokenList {
 
@@ -83,22 +83,23 @@ public class TokenList {
         if (this.startsWith(token)) {
             this.consume(1);
         } else {
+            String expectedStart =String.format("\t%-20s","expected:");
+            String expectedEnd = String.format("%-20s", StringUtils.wrap(token.getContents(),"'"));
+            String expectedTokenMessage = expectedStart+expectedEnd+" ("+token.getClass().getSimpleName()+")";
 
-            String expectedTokenMessage = "'" + token.getContents() + "'" + " ("+token.getClass().getName()+")";
-
-            String actualTokenMessage = "'" + this.head().getContents() + "'" + " ("+this.head().getClass().getName()+")";;
+            String actualStart = String.format("\t%-20s","actual:");
+            String actualEnd = String.format("%-20s",StringUtils.wrap(this.head().getContents(),"'"));
+            String actualTokenMessage = actualStart+actualEnd+" ("+this.head().getClass().getSimpleName()+")";;
 
             String sourceCodeFragment = (this.toSourceCodeFragment().substring(0, Math.min(this.toSourceCodeFragment().length(), 100)));
 
-            throw new Exception(
-                    ansi().fg(Ansi.Color.RED).a("Parsing Error: \n").reset()+
-                    "expected token:  \n\n"
-                            + "\t"+expectedTokenMessage+"\n\n"
-                            + "actual token: \n\n"
-                            +"\t"+ actualTokenMessage + "\n\n"
-                            + "in '" + sourceCodeFragment + "'\n"
-                            +" in "+ TerminalUtil.generateFileNameWithLine(relPath,lineNumbers.get(0))
-            );
+            String message= gererateErrorString("Parsing Error: \n")
+                    + "\t"+expectedTokenMessage+"\n"
+                    + "\t"+ actualTokenMessage +"\n"
+                    + "in '" + sourceCodeFragment + "'\n"
+                    + "in "+ generateFileNameWithLine(relPath,lineNumbers.get(0));
+
+            throw new Exception(message);
             //TODO: make sure the source file path is relative (for pretty output)
         }
     }
