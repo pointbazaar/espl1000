@@ -1,14 +1,14 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
 import org.vanautrui.languages.lexing.tokens.utils.Token;
 import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
+import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class IdentifierToken extends BasicToken implements Token {
+public class IdentifierToken implements Token {
 
     //it should start with a lowercase letter,
     //to differentiate between variables, subroutines, and types
@@ -41,8 +41,7 @@ public class IdentifierToken extends BasicToken implements Token {
     }
 
     public IdentifierToken(String newcontents) throws Exception {
-        //super(-1);
-        this(new CharacterList(newcontents));
+        this(new CharacterList(newcontents, Paths.get("/dev/null").toFile()));
     }
 
     @Override

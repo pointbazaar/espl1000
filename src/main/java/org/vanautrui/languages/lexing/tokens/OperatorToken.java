@@ -2,12 +2,12 @@ package org.vanautrui.languages.lexing.tokens;
 
 import org.simpleframework.xml.Attribute;
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
 import org.vanautrui.languages.lexing.tokens.utils.Token;
 import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
+import java.nio.file.Paths;
 
-public class OperatorToken extends BasicToken implements Token {
+public class OperatorToken implements Token {
 
     //TODO: add all the operator tokens that should be supported
 
@@ -51,7 +51,7 @@ public class OperatorToken extends BasicToken implements Token {
     }
 
     public OperatorToken(String newcontents) throws Exception {
-        this(new CharacterList(newcontents));
+        this(new CharacterList(newcontents, Paths.get("/dev/null").toFile()));
     }
 
     @Override

@@ -1,12 +1,12 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
 import org.vanautrui.languages.lexing.tokens.utils.Token;
 import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
+import java.nio.file.Paths;
 
-public class SymbolToken extends BasicToken implements Token {
+public class SymbolToken implements Token {
 
     //symbol tokens are syntactic
 
@@ -35,7 +35,7 @@ public class SymbolToken extends BasicToken implements Token {
     }
 
     public SymbolToken(String newcontents) throws Exception {
-        this(new CharacterList(newcontents));
+        this(new CharacterList(newcontents, Paths.get("/dev/null").toFile()));
     }
 
     @Override

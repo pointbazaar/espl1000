@@ -1,12 +1,12 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
 import org.vanautrui.languages.lexing.tokens.utils.Token;
 import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
+import java.nio.file.Paths;
 
-public class KeywordToken extends BasicToken implements Token {
+public class KeywordToken implements Token {
 
     public static final String[] keywords = new String[]{
             "class",
@@ -39,7 +39,7 @@ public class KeywordToken extends BasicToken implements Token {
     }
 
     public KeywordToken(String s)throws Exception{
-        this(new CharacterList(s));
+        this(new CharacterList(s, Paths.get("/dev/null").toFile()));
     }
 
     @Override

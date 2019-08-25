@@ -8,6 +8,7 @@ import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 
@@ -184,14 +185,16 @@ public class dragonc {
 
             start = currentTimeMillis();
             //PHASE CLEAN
-            List<String> codeWithoutCommentsWithoutUnneccesaryWhitespace
-                    = phase_clean(codes,cmd);
+            List<CharacterList> codeWithoutCommentsWithoutUnneccesaryWhitespace
+                    = phase_clean(codes,sources,cmd);
 
             end= currentTimeMillis();
             if(timed) {
                 printDuration(start, end);
             }
 
+            //below code is on hold until i have some time for it
+            /*
             List<String> just_code_with_braces_without_comments_without_newlines;
 
             if(cmd.hasOption("nocurly")){
@@ -203,9 +206,11 @@ public class dragonc {
                         =codeWithoutCommentsWithoutUnneccesaryWhitespace;
             }
 
+             */
+
             start= currentTimeMillis();
             //PHASE LEXING
-            List<TokenList> tokens = phase_lexing(just_code_with_braces_without_comments_without_newlines,cmd);
+            List<TokenList> tokens = phase_lexing(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd);
             end= currentTimeMillis();
             if(timed){
                 printDuration(start,end);

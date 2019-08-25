@@ -4,6 +4,7 @@ import org.apache.commons.cli.CommandLine;
 import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.codegeneration.JavaByteCodeGenerator;
+import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.lexing.Lexer;
@@ -19,6 +20,8 @@ import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUt
 import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.*;
 
 import com.fasterxml.jackson.databind.*;
+
+import java.io.File;
 import java.util.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -127,13 +130,14 @@ public class CompilerPhases {
 
     private static final String phase_clean_cache_dir=System.getProperty("user.home")+"/dragoncache/clean/";
 
-    public static List<String> phase_clean(List<String> sources, CommandLine cmd)throws Exception{
+    public static List<CharacterList> phase_clean(List<String> sources, List<File> sourceFiles, CommandLine cmd)throws Exception{
         final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
         printBeginPhase("CLEAN",printLong);
         //(remove comments, empty lines, excess whitespace)
-        List<String> results=new ArrayList();
+        List<CharacterList> results=new ArrayList();
 
-        for(String source:sources){
+        for(int i=0;i<sources.size();i++){
+            String source=sources.get(i);
             if(!Files.exists(Paths.get(phase_clean_cache_dir))){
                 Files.createDirectories(Paths.get(phase_clean_cache_dir));
             }
@@ -170,7 +174,7 @@ public class CompilerPhases {
                 //System.out.println(codeWithoutCommentsAndWithoutEmptyLines);
                 System.out.println(codeWithoutCommentsWithoutUnneccesaryWhitespace);
             }
-            results.add(codeWithoutCommentsWithoutUnneccesaryWhitespace);
+            results.add(new CharacterList(codeWithoutCommentsWithoutUnneccesaryWhitespace,sourceFiles.get(i)));
         }
 
         //TerminalUtil.println("✓", Ansi.Color.GREEN);
@@ -215,17 +219,16 @@ public class CompilerPhases {
         }
     }
 
-    public static List<TokenList> phase_lexing(List<String> just_codes_with_braces_without_comments, CommandLine cmd)throws Exception{
+    public static List<TokenList> phase_lexing(List<CharacterList> just_codes_with_braces_without_comments, CommandLine cmd)throws Exception{
         final boolean debug=cmd.hasOption("debug");
         final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
         printBeginPhase("LEXING",printLong);
         List<TokenList> list=new ArrayList();
         try{
-            for(String just_code_with_braces_without_comments: just_codes_with_braces_without_comments){
-                String just_code_with_braces_without_comments_without_newlines = just_code_with_braces_without_comments.replaceAll("\n","");
+            for(CharacterList just_code_with_braces_without_comments: just_codes_with_braces_without_comments){
 
-                TokenList tokens = (new Lexer()).lexCodeWithoutComments(just_code_with_braces_without_comments_without_newlines);
-                
+                TokenList tokens = (new Lexer()).lexCodeWithoutComments(just_code_with_braces_without_comments);
+
                 if(debug) {
                     System.out.println(tokens.toString());
                 }

@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 public class JavaByteCodeGeneratorTest {
 
     public static Process compile_and_run_but_not_waitFor(String source,String classNameWithoutExtension) throws Exception{
-        TokenList tokens = (new Lexer()).lexCodeWithoutComments(source);
+        TokenList tokens = (new Lexer()).lexCodeTestMode(source);
         Parser parser = new Parser();
         AST ast= parser.parse(tokens);
 

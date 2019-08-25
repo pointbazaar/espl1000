@@ -24,7 +24,7 @@ public class IdentifierTokenTest {
         String source = "vector <string> arg_ls;";
 
         Lexer lexer = new Lexer();
-        TokenList tokenList = lexer.lexCodeWithoutComments(source);
+        TokenList tokenList = lexer.lexCodeTestMode(source);
 
         Assert.assertTrue(tokenList.get(4) instanceof IdentifierToken);
 

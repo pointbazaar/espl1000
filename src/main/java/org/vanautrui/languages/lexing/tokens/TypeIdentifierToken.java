@@ -1,14 +1,14 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
 import org.vanautrui.languages.lexing.tokens.utils.Token;
 import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
+import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TypeIdentifierToken extends BasicToken implements Token {
+public class TypeIdentifierToken implements Token {
 
     //a Type name should start with a Uppercase letter,
     public static final String regex_alphanumeric_type_identifier = "^[A-Z][a-zA-Z0-9_]*";
@@ -48,7 +48,7 @@ public class TypeIdentifierToken extends BasicToken implements Token {
     }
 
     public TypeIdentifierToken(String str) throws Exception{
-        this(new CharacterList(str));
+        this(new CharacterList(str, Paths.get("/dev/null").toFile()));
     }
 
     @Override

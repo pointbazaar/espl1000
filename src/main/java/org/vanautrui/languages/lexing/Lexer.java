@@ -1,22 +1,26 @@
 package org.vanautrui.languages.lexing;
 
+import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.*;
 import org.vanautrui.languages.lexing.tokens.utils.Token;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.fusesource.jansi.Ansi.ansi;
+
 public class Lexer {
-    public TokenList lexCodeWithoutComments(String sourcecodeWithoutComments) throws Exception {
 
-        TokenList tokens = tokenize(new CharacterList(sourcecodeWithoutComments));
+    public TokenList lexCodeTestMode(String s)throws Exception{
+        return tokenize(new CharacterList(s, Paths.get("/dev/null").toFile()));
+    }
 
-        //System.out.println("TOKENS:");
-        //System.out.println(tokens.toString());
-
-        return tokens;
+    public TokenList lexCodeWithoutComments(CharacterList list) throws Exception {
+        return tokenize(list);
     }
 
     private TokenList tokenize(CharacterList sourceCodeWithBracesWithoutCommentsWithoutNewlines) throws Exception {
@@ -127,11 +131,13 @@ public class Lexer {
             }
 
 
+            String msg=ansi().fg(Ansi.Color.RED).bold().a("TOKENIZER ERROR: ").reset().a(
+                    "'"+myCode.getLimitedStringMaybeShorter(20) + "' \t "
+            ).fg(Ansi.Color.CYAN).a(myCode.sourceFile.getName()+":"+myCode.getCurrentLineNumber()).reset()
+                    .toString();
+
             throw
-                    new Exception(
-                            "tried to tokenize all manner of tokens, but could not make progress. string : '"
-                                    + myCode.getLimitedStringMaybeShorter(20) + "'"
-                    );
+                    new Exception(msg);
         }
 
         return new TokenList(result);

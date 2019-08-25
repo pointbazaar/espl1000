@@ -1,12 +1,11 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
 import org.vanautrui.languages.lexing.tokens.utils.Token;
 import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
 
-public class ClassToken extends BasicToken implements Token {
+public class ClassToken implements Token {
 
     //just for xml generation
     public String representation="class";

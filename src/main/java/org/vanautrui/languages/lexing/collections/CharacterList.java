@@ -1,10 +1,15 @@
 package org.vanautrui.languages.lexing.collections;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class CharacterList {
+public class CharacterList{
+
+    public File sourceFile;
 
     //the line numbers corresponding to the characters.
     //so that we are able to show meaningful error messages
@@ -15,29 +20,28 @@ public class CharacterList {
     private boolean stringValid = false;
     private String stringValue = "";
 
-    public CharacterList(String s) {
-        this(s.toCharArray());
-    }
-
-    public CharacterList(List<Character> list) {
-        this(list.stream().map(ch->ch+"").collect(Collectors.joining("")).toString());
-    }
-
-    public CharacterList(char[] chars) {
+    public CharacterList(String s,File sourceFile) {
+        this.sourceFile=sourceFile;
+        char[] chars=s.toCharArray();
         long currentLine=1;
         this.list = new ArrayList<>();
         for (char c : chars) {
-
-            this.list.add(c);
-            this.lineNumbers.add(currentLine);
-
             if(c=='\n'){
                 currentLine++;
+            }else{
+                this.list.add(c);
+                this.lineNumbers.add(currentLine);
             }
         }
     }
 
+    public CharacterList(String s){
+        this(s, Paths.get("/dev/null").toFile());
+    }
+
     public CharacterList(CharacterList other) {
+        this.sourceFile     = other.sourceFile;
+
         this.lineNumbers    = new ArrayList<>(other.lineNumbers);
         this.list           = new ArrayList<>(other.list);
 
@@ -45,9 +49,9 @@ public class CharacterList {
         this.stringValue    = other.stringValue;
     }
 
-    public long getCurrentLine(){
-        //get the line the next char is on
-        return this.lineNumbers.get(0);
+    public int getCurrentLineNumber(){
+        //+1 because line number is different from line index
+        return lineNumbers.get(0).intValue()+1;
     }
 
     public void consumeTokens(int amount) {

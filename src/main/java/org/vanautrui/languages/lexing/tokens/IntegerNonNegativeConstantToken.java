@@ -1,14 +1,13 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.BasicToken;
 import org.vanautrui.languages.lexing.tokens.utils.Token;
 import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class IntegerNonNegativeConstantToken extends BasicToken implements Token {
+public class IntegerNonNegativeConstantToken implements Token {
 
     private static final String regex_integer_constant = "^(0|[1-9][0-9]*)";
 
