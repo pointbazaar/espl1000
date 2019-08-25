@@ -7,6 +7,7 @@ import org.vanautrui.languages.lexing.tokens.*;
 import org.vanautrui.languages.lexing.tokens.utils.Token;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,10 +131,14 @@ public class Lexer {
                 continue;
             }
 
+            //both paths need a root component for relativizing
+            Path workingDir = Paths.get(System.getProperty("user.dir")).toAbsolutePath();
+            Path codePath = myCode.sourceFile.toPath().toAbsolutePath();
+            Path relativePath = workingDir.relativize(codePath);
 
             String msg=ansi().fg(Ansi.Color.RED).bold().a("TOKENIZER ERROR: ").reset().a(
                     "'"+myCode.getLimitedStringMaybeShorter(20) + "' \t "
-            ).fg(Ansi.Color.CYAN).a(myCode.sourceFile.getName()+":"+myCode.getCurrentLineNumber()).reset()
+            ).fg(Ansi.Color.CYAN).a(relativePath.toString()+":"+myCode.getCurrentLineNumber()).reset()
                     .toString();
 
             throw
