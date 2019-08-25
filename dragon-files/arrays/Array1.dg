@@ -1,4 +1,4 @@
-public class Main{
+public class Array1{
 	public Int main(){
 
 		arr=[1,2,3,4];

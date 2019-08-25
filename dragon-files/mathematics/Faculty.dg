@@ -2,6 +2,7 @@ public class Faculty{
 	public Int main(){
 		
 		println(faculty(3));
+		return 0;
 	}
 	
 	Int faculty(Int n){

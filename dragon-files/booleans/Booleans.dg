@@ -1,9 +1,10 @@
-public class Main{
+public class Booleans{
 	
 	public Int main(){
 		a=true;
 		if(a){
 			println("true");
 		}
+		return 0;
 	}
 }

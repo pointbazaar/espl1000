@@ -21,13 +21,23 @@ public class CharacterList{
         Path codePath = sourceFile.toAbsolutePath();
         Path relativePath = workingDir.relativize(codePath);
         this.relSrcPath=relativePath;
+        boolean insideString=false;
 
         char[] chars=s.toCharArray();
         long currentLine=1;
         this.list = new ArrayList<>();
         for (char c : chars) {
+            if(c=='\"'){
+                insideString=!insideString;
+            }
+
+
             if(c=='\n'){
                 currentLine++;
+                if(insideString){
+                    this.list.add(c);
+                    this.lineNumbers.add(currentLine);
+                }
             }else{
                 this.list.add(c);
                 this.lineNumbers.add(currentLine);

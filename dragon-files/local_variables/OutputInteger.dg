@@ -1,7 +1,0 @@
-public class OutputInteger{
-
-	public Int main () {
-		x=55;
-		println(x);
-	}
-}

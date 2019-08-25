@@ -21,7 +21,7 @@ public class TokenList {
     //which would be convenient in a token list for our compiler
 
     //relative path of the source file
-    private Path relPath = Paths.get("/dev/null");
+    public Path relPath = Paths.get("/dev/null");
 
     private List<IToken> tokens=new ArrayList<>();
     private List<Integer> lineNumbers=new ArrayList<>();

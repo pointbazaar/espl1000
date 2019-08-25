@@ -4,5 +4,6 @@ public class IncludeStatic{
 
 	public Int main(){
 		println(sqrt(9.0));		
+		return 0;
 	}
 }

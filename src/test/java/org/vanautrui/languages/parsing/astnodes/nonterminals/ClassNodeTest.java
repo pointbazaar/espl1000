@@ -5,6 +5,8 @@ import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 
+import java.nio.file.Paths;
+
 public class ClassNodeTest {
 
     @Test
@@ -28,7 +30,7 @@ public class ClassNodeTest {
 
         list.add(new SymbolToken("}"));
 
-        ClassNode classNode = new ClassNode(list);
+        ClassNode classNode = new ClassNode(list, Paths.get("/dev/null"));
     }
 
     @Test
@@ -57,6 +59,6 @@ public class ClassNodeTest {
 
         list.add(new SymbolToken("}"));
 
-        ClassNode classNode = new ClassNode(list);
+        ClassNode classNode = new ClassNode(list,Paths.get("/dev/null"));
     }
 }

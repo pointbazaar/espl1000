@@ -1,8 +1,7 @@
 package org.vanautrui.languages.commandline;
 
 import org.apache.commons.cli.*;
-import org.apache.commons.io.*;
-import org.apache.commons.io.filefilter.RegexFileFilter;
+import org.apache.commons.io.FileUtils;
 import org.fusesource.jansi.Ansi;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -16,14 +15,14 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.lang.System.currentTimeMillis;
 import static org.fusesource.jansi.Ansi.ansi;
 import static org.objectweb.asm.Opcodes.*;
-import static org.objectweb.asm.Opcodes.RETURN;
-import static org.vanautrui.languages.TerminalUtil.b;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.*;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhases.*;
 
@@ -44,9 +43,6 @@ public class dragonc {
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options, args.toArray(new String[]{}));
-
-        //TODO: provide support for compiling multiple files
-        //and also for compiling a directory (recursively finds all .dragon files therein)
 
         //as no option currently has an argument,
         //this simplifies the usage of the compiler
@@ -219,7 +215,7 @@ public class dragonc {
 
             start= currentTimeMillis();
             //PHASE PARSING
-            Set<AST> asts = phase_parsing(tokens,cmd);
+            List<AST> asts = phase_parsing(tokens,cmd);
             end= currentTimeMillis();
             if(timed){
                 printDuration(start,end);

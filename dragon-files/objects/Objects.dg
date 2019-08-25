@@ -1,4 +1,4 @@
-class Main{
+class Objects{
 
 	Int main(){
 		a = new A;

@@ -8,5 +8,6 @@ public class Input{
         		x=readln();
 
         		println(x);
+		return 0;
     	}
 }

@@ -1,4 +1,4 @@
-public class Main1{
+public class Locals{
 
 	public Int main () {
 		x=55;

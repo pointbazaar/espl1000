@@ -1,7 +1,8 @@
-public class Main2{
+public class Other2{
 
 	public Int main(){
 		
 		println("Hello World!");
+		return 0;
 	}
 }

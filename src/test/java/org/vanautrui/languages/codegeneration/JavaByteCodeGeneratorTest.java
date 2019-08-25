@@ -20,7 +20,7 @@ public class JavaByteCodeGeneratorTest {
     public static Process compile_and_run_but_not_waitFor(String source,String classNameWithoutExtension) throws Exception{
         TokenList tokens = (new Lexer()).lexCodeTestMode(source);
         Parser parser = new Parser();
-        AST ast= parser.parse(tokens);
+        AST ast= parser.parseTestMode(tokens);
 
         //we are in debug mode since we are running tests
         byte[] result = JavaByteCodeGenerator.generateByteCodeForOneClass(ast.classNodeList.toArray(new ClassNode[]{})[0],true);

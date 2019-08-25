@@ -2,24 +2,29 @@ package org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes;
 
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.IASTNode;
-import java.util.*;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class AST implements IASTNode {
 
     public Set<ClassNode> classNodeList = new HashSet<>();
 
-    public AST(TokenList tokens) throws Exception {
-        //System.out.println("try parse DragonAST");
+    public Path srcPath= Paths.get("/dev/null");
+
+    public AST(TokenList tokens, Path path) throws Exception {
+        this.srcPath=path;
 
         TokenList copy = new TokenList(tokens);
-
 
         boolean success_class = true;
         while (success_class) {
 
             try {
-                this.classNodeList.add(new ClassNode(copy));
+                this.classNodeList.add(new ClassNode(copy,this.srcPath));
             } catch (Exception e) {
 
                 if (this.classNodeList.size() == 0) {

@@ -1,4 +1,4 @@
-public class Main2{
+public class Locals2{
 
 	public Int main () {
 		x=55;
@@ -6,5 +6,6 @@ public class Main2{
 		x=x*2;
 
 		println(x);
+		return 0;
 	}
 }

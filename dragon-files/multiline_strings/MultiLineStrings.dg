@@ -1,0 +1,11 @@
+class MultiLineStrings{
+	Int main(){
+		x="
+
+		hello,
+		this is a multiline string!
+		";
+		println(x);
+		return 0;
+	}
+}

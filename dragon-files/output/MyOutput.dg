@@ -1,4 +1,4 @@
-class Main{
+class MyOutput{
 	Int main(){
 		println("hello");
 		return 0;

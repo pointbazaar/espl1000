@@ -6,5 +6,6 @@ public class IfStatement{
 		if(x<5){
 			println("x<5");
 		}
+		return 0;
 	}
 }

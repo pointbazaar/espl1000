@@ -13,5 +13,6 @@ public class WhileLoop{
 			println("outer");
 			i=i+1;
 		}
+		return 0;
 	}
 }

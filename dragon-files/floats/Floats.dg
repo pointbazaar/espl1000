@@ -1,4 +1,4 @@
-public class Main{
+public class Floats{
 	public Int main(){
 		println("PI/2");
 		println(subr(3.14159,2.0));
@@ -11,6 +11,7 @@ public class Main{
 
 		println("2.0-4.0");
 		println(2.0-4.0);
+		return 0;
 	}
 	public Float subr(Float a,Float b){
 		return a/b;

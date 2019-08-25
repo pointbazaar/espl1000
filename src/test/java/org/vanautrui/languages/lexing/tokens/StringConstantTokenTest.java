@@ -16,4 +16,14 @@ public class StringConstantTokenTest {
         Assert.assertEquals("hi", token.getContents());
     }
 
+    @Test
+    public void test_can_represent_multiline_string() throws Exception {
+
+        CharacterList list = new CharacterList("\"hi\n\nhi\"");
+
+        StringConstantToken token = new StringConstantToken(list);
+
+        Assert.assertEquals("hi\n\nhi", token.getContents());
+    }
+
 }

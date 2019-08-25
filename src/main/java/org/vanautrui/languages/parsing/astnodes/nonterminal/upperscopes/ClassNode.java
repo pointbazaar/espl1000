@@ -1,10 +1,15 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes;
 
-import org.vanautrui.languages.lexing.collections.*;
-import org.vanautrui.languages.lexing.tokens.*;
-import org.vanautrui.languages.parsing.*;
-import org.vanautrui.languages.parsing.astnodes.terminal.*;
+import org.vanautrui.languages.lexing.collections.TokenList;
+import org.vanautrui.languages.lexing.tokens.KeywordToken;
+import org.vanautrui.languages.lexing.tokens.SymbolToken;
+import org.vanautrui.languages.parsing.IASTNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.AccessModifierNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.CompilerDirectiveNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.TypeIdentifierNode;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,20 +17,16 @@ import java.util.stream.Collectors;
 public class ClassNode implements IASTNode {
 
     public boolean isPublic;
-
-    //for xml
-    public String getType(){
-        return this.name.typeName;
-    }
+    public Path srcPath= Paths.get("/dev/null");
 
     public TypeIdentifierNode name;
 	public List<CompilerDirectiveNode> directiveNodeList = new ArrayList<>();
     public List<ClassFieldNode> fieldNodeList = new ArrayList<>();
     public List<MethodNode> methodNodeList = new ArrayList<>();
 
-    public ClassNode(TokenList tokens) throws Exception {
+    public ClassNode(TokenList tokens,Path path) throws Exception {
         //System.out.println("try parse DragonClassNode");
-
+        this.srcPath=path;
         TokenList copy = tokens.copy();
 
         //System.out.println(copy.toString());

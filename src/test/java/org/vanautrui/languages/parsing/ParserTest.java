@@ -25,7 +25,7 @@ public class ParserTest {
         tokens.add(new SymbolToken("{"));
         tokens.add(new SymbolToken("}"));
 
-        AST ast = parser.parse(tokens);
+        AST ast = parser.parseTestMode(tokens);
 
         Assert.assertEquals(classname, ast.classNodeList.stream().collect(Collectors.toList()).get(0).name.typeName);
     }

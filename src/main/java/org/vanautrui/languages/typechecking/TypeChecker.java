@@ -24,7 +24,7 @@ public class TypeChecker {
     //and that itself contains only
     //AST Nodes that conform to the expected types.
 
-    public void doTypeCheck(Set<AST> asts) throws Exception{
+    public void doTypeCheck(List<AST> asts) throws Exception{
 
         for(AST ast : asts){
             for(ClassNode classNode : ast.classNodeList){
@@ -38,7 +38,7 @@ public class TypeChecker {
         }
     }
 
-    private void typeCheckClassNode(Set<AST> asts, ClassNode classNode, SubroutineSymbolTable subroutineSymbolTable) throws Exception{
+    private void typeCheckClassNode(List<AST> asts, ClassNode classNode, SubroutineSymbolTable subroutineSymbolTable) throws Exception{
         int count=0;
         for(AST ast : asts){
             for(ClassNode dragonClassNode : ast.classNodeList){
@@ -59,14 +59,14 @@ public class TypeChecker {
         }
 
         if(count!=1){
-            throw new Exception("multiple definitions of class '"+classNode.name+"'");
+            throw new Exception("multiple definitions of class '"+classNode.name.typeName+"'");
         }
     }
 
-    private void typeCheckMethodNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, SubroutineSymbolTable subTable) throws Exception{
+    private void typeCheckMethodNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, SubroutineSymbolTable subTable) throws Exception{
 
-	//create the variable Symbol table, to typecheck the statements
-	LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(methodNode,subTable);
+        //create the variable Symbol table, to typecheck the statements
+        LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(methodNode,subTable);
 
         typeCheckMethodNameNode(asts,classNode,methodNode.methodName);
 
@@ -78,15 +78,24 @@ public class TypeChecker {
         for(DeclaredArgumentNode arg : methodNode.arguments){
             typeCheckDeclaredArgumentNode(asts,classNode,arg);
         }
+
+        //at the end of every method/function, there has to be some return statement
+        //atleast for now
+
+        StatementNode statementNode = methodNode.statements.get(methodNode.statements.size() - 1);
+        if(! (statementNode.statementNode instanceof ReturnStatementNode)){
+
+            throw new Exception("error in typechecking : "+methodNode.methodName.methodName.name+" does not have a return statement as the last statement ");
+        }
     }
 
     private void typeCheckClassFieldNode(
-            Set<AST> asts, ClassNode classNode, ClassFieldNode classFieldNode
+            List<AST> asts, ClassNode classNode, ClassFieldNode classFieldNode
     ) throws Exception{
         typeCheckTypeIdentifierNode(asts,classNode,classFieldNode.type);
     }
 
-    private void typeCheckStatementNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, StatementNode statementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable)throws Exception{
+    private void typeCheckStatementNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, StatementNode statementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable)throws Exception{
         //it depends on the instance
         if(statementNode.statementNode instanceof AssignmentStatementNode) {
             AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode) statementNode.statementNode;
@@ -111,7 +120,7 @@ public class TypeChecker {
         }
     }
 
-    private void typeCheckReturnStatementNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, ReturnStatementNode returnStatementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
+    private void typeCheckReturnStatementNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, ReturnStatementNode returnStatementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
         //well the type of the value returned should be the same as the method return type
         //in case of void there should be no value returned
         {
@@ -126,7 +135,7 @@ public class TypeChecker {
         }
     }
 
-    private void typeCheckIfStatementNode(Set<AST> asts, ClassNode classNode,
+    private void typeCheckIfStatementNode(List<AST> asts, ClassNode classNode,
                                           MethodNode methodNode,
                                           IfStatementNode ifStatementNode,
                                           SubroutineSymbolTable subTable,
@@ -144,7 +153,7 @@ public class TypeChecker {
         }
     }
 
-    private void typeCheckMethodCallNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, MethodCallNode methodCallNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
+    private void typeCheckMethodCallNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, MethodCallNode methodCallNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
         //TODO: check that the method is called on an object
         //which is actually declared and initialized
         //and is in scope
@@ -165,7 +174,10 @@ public class TypeChecker {
         }
     }
 
-    private void typeCheckExpressionNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, ExpressionNode expr, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
+    private void typeCheckExpressionNode(
+            List<AST> asts, ClassNode classNode, MethodNode methodNode,
+            ExpressionNode expr, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable
+    ) throws Exception{
         //check that the terms have a type such that the operator will work
 
         //for later:
@@ -220,7 +232,7 @@ public class TypeChecker {
         //TODO: look for the other cases
     }
 
-    private void typecheckTermNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, TermNode termNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
+    private void typecheckTermNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, TermNode termNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
 	if(termNode.termNode instanceof FloatConstantNode){
 		    //nothing to do
 	}else if(termNode.termNode instanceof IntegerConstantNode){
@@ -240,7 +252,7 @@ public class TypeChecker {
         }
     }
 
-    private void typeCheckVariableNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, VariableNode variableNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
+    private void typeCheckVariableNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, VariableNode variableNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
         //TODO: it should check that the variable is
         //declared in method scope or class scope.
         //so there should be some declaration of it
@@ -274,7 +286,7 @@ public class TypeChecker {
     }
 
     private void typeCheckWhileStatementNode(
-            Set<AST> asts,
+            List<AST> asts,
             ClassNode classNode,
             MethodNode methodNode,
          WhileStatementNode whileStatementNode,
@@ -292,7 +304,9 @@ public class TypeChecker {
     }
 
     private void typeCheckLoopStatementNode(
-            Set<AST> asts, ClassNode classNode, MethodNode methodNode, LoopStatementNode loopStatementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable
+            List<AST> asts, ClassNode classNode, MethodNode methodNode,
+            LoopStatementNode loopStatementNode, SubroutineSymbolTable subTable,
+            LocalVarSymbolTable varTable
     ) throws Exception{
         //the condition expression should be of type boolean
 
@@ -306,7 +320,8 @@ public class TypeChecker {
     }
 
     private void typeCheckAssignmentStatementNode(
-            Set<AST> asts, ClassNode classNode, MethodNode methodNode, AssignmentStatementNode assignmentStatementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable
+            List<AST> asts, ClassNode classNode, MethodNode methodNode,
+            AssignmentStatementNode assignmentStatementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable
     ) throws Exception{
         String leftSideType = TypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,methodNode,subTable,varTable);
         String rightSideType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,varTable);
@@ -319,7 +334,8 @@ public class TypeChecker {
     }
 
     private void typeCheckTypeIdentifierNode(
-            Set<AST> asts, ClassNode classNode, TypeIdentifierNode typeIdentifierNode
+            List<AST> asts, ClassNode classNode,
+            TypeIdentifierNode typeIdentifierNode
             ) throws Exception{
 
         //check that the type is defined somewhere
@@ -346,7 +362,7 @@ public class TypeChecker {
         throw new Exception(msg);
     }
 
-    private void typeCheckMethodNameNode(Set<AST> asts, ClassNode classNode, MethodNameNode methodNameNode)throws Exception{
+    private void typeCheckMethodNameNode(List<AST> asts, ClassNode classNode, MethodNameNode methodNameNode)throws Exception{
         //method names should not be duplicate in a class
         //this may change in another version of dragon
 
@@ -357,7 +373,7 @@ public class TypeChecker {
         }
     }
 
-    private void typeCheckDeclaredArgumentNode(Set<AST> asts, ClassNode classNode, DeclaredArgumentNode declaredArgumentNode)throws Exception{
+    private void typeCheckDeclaredArgumentNode(List<AST> asts, ClassNode classNode, DeclaredArgumentNode declaredArgumentNode)throws Exception{
         typeCheckTypeIdentifierNode(asts,classNode,declaredArgumentNode.type);
     }
 

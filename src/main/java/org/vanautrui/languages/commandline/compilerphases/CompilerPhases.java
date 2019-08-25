@@ -21,9 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.fusesource.jansi.Ansi.Color.RED;
@@ -73,7 +71,7 @@ public class CompilerPhases {
         }
     }
 
-    public static void phase_typecheck(Set<AST> asts, CommandLine cmd)throws Exception{
+    public static void phase_typecheck(List<AST> asts, CommandLine cmd)throws Exception{
         final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
         printBeginPhase("TYPE CHECKING",printLong);
 
@@ -91,7 +89,7 @@ public class CompilerPhases {
         }
     }
 
-    public static void phase_codegeneration(Set<AST> asts, CommandLine cmd)throws Exception{
+    public static void phase_codegeneration(List<AST> asts, CommandLine cmd)throws Exception{
         final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
         printBeginPhase("CODE GENERATION",printLong);
 
@@ -107,15 +105,17 @@ public class CompilerPhases {
 
                     //generate bytecode for that class
                     byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode, subroutineSymbolTable, debug);
-                    Files.write(Paths.get(classNode.name.typeName + ".class"), classResult);
+
+                    //System.out.println(ast.srcPath.toAbsolutePath().getParent());
+                    String dir=ast.srcPath.toAbsolutePath().getParent().toString();
+
+                    Files.write(Paths.get(dir+"/"+classNode.name.typeName + ".class"), classResult);
                 }
             }
             printEndPhase(true,printLong);
-            //TerminalUtil.println("✓", Ansi.Color.GREEN);
 
         }catch (Exception e){
             printEndPhase(false,printLong);
-            //TerminalUtil.println("⚠", RED);
             throw e;
         }
     }
@@ -182,17 +182,17 @@ public class CompilerPhases {
         return results;
     }
 
-    public static Set<AST> phase_parsing(List<TokenList> list, CommandLine cmd)throws Exception{
+    public static List<AST> phase_parsing(List<TokenList> list, CommandLine cmd)throws Exception{
         final boolean debug=cmd.hasOption("debug");
         final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
         printBeginPhase("PARSING",printLong);
-        HashSet<AST> asts=new HashSet<>();
+        List<AST> asts=new ArrayList<>();
         boolean didThrow=false;
         List<Exception> exceptions=new ArrayList<>();
 
         for(TokenList tokens : list){
             try {
-                AST ast = (new Parser()).parse(tokens);
+                AST ast = (new Parser()).parse(tokens,tokens.relPath);
 
                 if (debug) {
                     TerminalUtil.println("DEBUG: pretty print source from AST in curly braces", RED);
