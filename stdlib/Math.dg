@@ -105,7 +105,7 @@ public class Math{
 		Float f;
 		Float sum=0.0;
 		while(i<6){
-			up=pow((-1),n);
+			up=pow((-1),i);
 			down=faculty(2n+1);
 			f=pow(x,2n+1);
 
