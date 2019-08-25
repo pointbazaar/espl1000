@@ -31,7 +31,7 @@ arrayConstant ::= '[' expression (',' expression)* ']'
 keywordConstant ::= 'null' | 'this' | booleanConstant
 accessmodifier ::= public | private
 
-class ::= accessmodifier class identifier '{' compilerDirective*  classField* method* '}'
+class ::= accessmodifier? class identifier '{' compilerDirective*  classField* method* '}'
 
 compilerDirective ::= 'includestatic' PATH ';' //any valid path to a .dg file. PATH is a string token
 
@@ -47,8 +47,6 @@ method ::= accessmodifier returnType methodName '(' declaredArgument* ')' '{' st
 
 method ::= accessmodifier methodName '::' (Type smallarrow)* Type '{' statement* '}'
 
-smallarrow ::= '->'
-
 returnType ::= 'Void' | Type
 
 declaredArgument ::= Type identifier
@@ -58,15 +56,20 @@ statement ::= ( methodCall ';' | whileStatement | ifStatement | returnStatement 
 
 methodCall ::= methodName '(' (expression (, expression)*)?  ')'
 
+loopStatement ::= 'loop' expression '{' statement* '}'
 whileStatement ::= 'while' '(' expression ')' '{' statement* '}'
-
 ifStatement ::= 'if' '(' expression ')' '{' statement* '}' ( 'else' '{' statement* '}' )?
-
 returnStatement ::= 'return' expression? ';'
 
-//assignmentStatement ::= variable ('[' expression ']')? ('<-' | '=') expression ';' //not good. the index should be able to go on any variable
-assignmentStatement ::= variable ('<-' | '=') expression ';'
+assignmentStatement ::= objectOrVariable '=' expression ';'
 
 term ::= arrayConstant | boolConstant | integerConstant | string | keywordConstant | methodCall | '(' expression ')' | unaryOp term | variable
 
 expression ::= term (op term)*
+
+
+
+//TODO: these rules below are speculation. they are not yet in the language
+object ::= identifier
+objectOrVariable ::= variable | fieldAccess | object
+fieldAccess ::= object '.' object | object '.' methodCall | methodCall '.' object
