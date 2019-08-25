@@ -1,6 +1,5 @@
 package org.vanautrui.languages;
 
-import org.apache.commons.cli.*;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.FieldVisitor;
@@ -8,12 +7,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.commandline.dragonc;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.objectweb.asm.Opcodes.*;
 
@@ -39,7 +34,7 @@ public class App {
         }catch (Exception e){
             //e.printStackTrace();
             System.err.println(e.getMessage());
-            System.out.println("dgc -help     for information about command line arguments");
+            System.out.println("-help     for information about command line arguments");
             System.exit(1);
         }
     }

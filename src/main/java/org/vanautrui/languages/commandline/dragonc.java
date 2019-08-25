@@ -132,8 +132,6 @@ public class dragonc {
 
         options.addOption(new Option("help",false,"display an overview of the command line options"));
 
-        options.addOption(new Option("force",false,"force compilation. it will compile. (TODO)"));
-
         options.addOption(new Option("strict",false,"do not compile if the code is likely to have bugs (TODO)"));
 
         options.addOption(new Option("clean",false,"clears the cache"));
