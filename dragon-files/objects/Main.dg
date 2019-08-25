@@ -1,0 +1,17 @@
+public class Main{
+
+	public Void main(){
+		a = new A;
+		a.x=3;
+		println(a.x);
+	}
+}
+
+public class A{
+
+	Int x;
+
+	public Void inc(){
+		this.x=this.x+1;
+	}
+}
