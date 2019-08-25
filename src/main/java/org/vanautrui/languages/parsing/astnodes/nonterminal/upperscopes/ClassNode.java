@@ -11,11 +11,7 @@ import java.util.stream.Collectors;
 
 public class ClassNode implements IASTNode {
 
-    public String getAccess(){
-        return this.access.toSourceCode();
-    }
-
-    public AccessModifierNode access;
+    public boolean isPublic;
 
     //for xml
     public String getType(){
@@ -34,7 +30,13 @@ public class ClassNode implements IASTNode {
 
         //System.out.println(copy.toString());
 
-        this.access = new AccessModifierNode(copy);
+        try {
+            AccessModifierNode access = new AccessModifierNode(copy);
+            this.isPublic=access.is_public;
+        }catch (Exception e){
+            //no access modifier node. then it is public by default
+            this.isPublic=true;
+        }
 
         copy.expectAndConsumeOtherWiseThrowException(new ClassToken());
 
@@ -93,7 +95,7 @@ public class ClassNode implements IASTNode {
     public String toSourceCode() {
         String result = "";
 
-        result+=this.access.toSourceCode()+" class "+this.name.toSourceCode()+" {";
+        result+=((this.isPublic)?" public":" private")+" class "+this.name.toSourceCode()+" {";
 
         result += fieldNodeList
                 .stream()

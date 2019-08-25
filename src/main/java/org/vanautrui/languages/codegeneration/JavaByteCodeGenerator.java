@@ -41,7 +41,7 @@ public class JavaByteCodeGenerator {
 
         {
             int access = ACC_SUPER;
-            if (classNode.access.is_public) {
+            if (classNode.isPublic) {
                 access += ACC_PUBLIC;
             } else {
                 access += ACC_PRIVATE;

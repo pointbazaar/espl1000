@@ -2,6 +2,7 @@ package org.vanautrui.languages.commandline;
 
 import org.apache.commons.cli.*;
 import org.apache.commons.io.*;
+import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.fusesource.jansi.Ansi;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -10,13 +11,14 @@ import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.lang.System.currentTimeMillis;
-import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.ansi;
 import static org.objectweb.asm.Opcodes.*;
 import static org.objectweb.asm.Opcodes.RETURN;
@@ -47,12 +49,6 @@ public class dragonc {
             //as no option currently has an argument,
             //this simplifies the usage of the compiler
             //also, everything that doesnt start with '-' is either a source file or directory
-            Path sourceFilePath = Paths.get(args.get(0));
-
-            
-    	    if(!sourceFilePath.toString().endsWith(".dg")){
-    	    	throw new Exception("dragon language files should end in '.dg' for brevity and convenienc");
-    	    }
 
             if(cmd.hasOption("clean")){
                 if(cmd.hasOption("debug")){
@@ -61,8 +57,9 @@ public class dragonc {
                 final String cache_dir=System.getProperty("user.home")+"/dragoncache";
                 FileUtils.deleteDirectory(Paths.get(cache_dir).toFile());
             }
+            List<String> fileArgs = args.stream().filter(str->!str.startsWith("-")).collect(Collectors.toList());
 
-            compile_main_inner(sourceFilePath,cmd);
+            compile_main_inner(getAllDragonFilesRecursively(fileArgs),cmd);
         }catch (Exception e){
             //e.printStackTrace();
             System.err.println(e.getMessage());
@@ -70,10 +67,30 @@ public class dragonc {
         }
     }
 
-    private static List<File> getAllFiles(List<String> fileArgs){
+    private static List<File> getAllDragonFilesRecursively(List<String> fileArgs)throws Exception{
         //from dgc options, this can either be files or directories
         //which must be compiled together.
-
+        List<File> results=new ArrayList<>();
+        for(String s : fileArgs) {
+            Path path = Paths.get(s);
+            if(path.toFile().isDirectory()) {
+                //add all the files recursively
+                Collection<File> files = FileUtils.listFiles(
+                        path.toFile(),
+                        new String[]{"dg"},
+                        true
+                );
+                results.addAll(files);
+            }else {
+                if (s.endsWith(".dg")) {
+                    results.add(path.toFile());
+                }
+            }
+        }
+        if(results.size()==0){
+            throw new Exception("could not find any files with '.dg' extension.");
+        }
+        return results;
     }
 
     public static void printHelp(){
@@ -140,7 +157,7 @@ public class dragonc {
         return options;
     }
 
-    private static void compile_main_inner(List<Path> sources,CommandLine cmd){
+    private static void compile_main_inner(List<File> sources,CommandLine cmd){
 
         if(cmd.hasOption("help")){
             printHelp();
@@ -155,8 +172,8 @@ public class dragonc {
         //TODO: expand functionality to directories and multiple files
         try {
             List<String> codes=new ArrayList();
-            for(Path path : sources){
-                String sourceCode = new String(Files.readAllBytes(path));
+            for(File file : sources){
+                String sourceCode = new String(Files.readAllBytes(file.toPath()));
                 codes.add(sourceCode);
                 if(debug) {
                     System.out.println(sourceCode);
