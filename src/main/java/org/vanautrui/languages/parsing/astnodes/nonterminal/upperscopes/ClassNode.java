@@ -38,7 +38,7 @@ public class ClassNode implements IASTNode {
             this.isPublic=true;
         }
 
-        copy.expectAndConsumeOtherWiseThrowException(new ClassToken());
+        copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("class"));
 
         this.name = new TypeIdentifierNode(copy);
 

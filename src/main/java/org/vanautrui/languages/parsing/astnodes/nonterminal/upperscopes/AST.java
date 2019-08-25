@@ -1,7 +1,6 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes;
 
 import org.vanautrui.languages.lexing.collections.TokenList;
-import org.vanautrui.languages.lexing.tokens.utils.Token;
 import org.vanautrui.languages.parsing.IASTNode;
 import java.util.*;
 import java.util.stream.Collectors;

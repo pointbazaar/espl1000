@@ -46,4 +46,21 @@ public class ReturnStatementNodeTest {
 
         System.out.println(returnStatementNode.toSourceCode());
     }
+
+    @Test
+    public void test3() throws Exception {
+        TokenList list = new TokenList();
+        list.add(new KeywordToken("return"));
+
+        list.add(new IdentifierToken("arr"));
+
+        list.add(new SymbolToken("["));
+        list.add(new IntegerNonNegativeConstantToken(0));
+
+        list.add(new SymbolToken("]"));
+
+        list.add(new SymbolToken(";"));
+
+        ReturnStatementNode returnStatementNode = new ReturnStatementNode(list);
+    }
 }

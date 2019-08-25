@@ -67,6 +67,7 @@ public class LexerTest {
     public void test_lexes_other_returnstatement()throws Exception{
         TokenList tokens=lexer.lexCodeTestMode("return (n*faculty(n-1));");
 
+        //System.out.println(tokens.get(0));
         assertTrue(tokens.get(0) instanceof KeywordToken); //return
 
         assertTrue(tokens.get(1) instanceof SymbolToken); //(
@@ -88,6 +89,8 @@ public class LexerTest {
         assertTrue(tokens.get(10) instanceof SymbolToken); //)
 
         assertTrue(tokens.get(11) instanceof SymbolToken); //;
+
+        assertEquals(12,tokens.size());
     }
 
 	@Test

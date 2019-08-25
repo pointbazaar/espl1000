@@ -1,6 +1,6 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
-import org.vanautrui.languages.lexing.tokens.utils.Token;
+import org.vanautrui.languages.lexing.tokens.utils.IToken;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.IASTNode;
@@ -19,7 +19,7 @@ public class BultinMethodNode implements IASTNode {
 
     public BultinMethodNode(TokenList tokens) throws Exception {
 
-        Token token = tokens.get(0);
+        IToken token = tokens.get(0);
 
         if (token instanceof IdentifierToken) {
             IdentifierToken identifierToken = (IdentifierToken) token;

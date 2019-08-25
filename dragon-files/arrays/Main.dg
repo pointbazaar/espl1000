@@ -1,5 +1,5 @@
 public class Main{
-	public Void main(){
+	public Int main(){
 
 		arr=[1,2,3,4];
 
@@ -7,7 +7,7 @@ public class Main{
 		printarr(arr,4);
 		arr2=reversearr(arr,4);
 		printarr(arr2,4);
-		
+		return 0;	
 
 	}
 	public [Int] reversearr([Int] arr,Int size){
@@ -21,7 +21,7 @@ public class Main{
 		}
 		return arr2;
 	}
-	public Void printarr([Int] arr,Int size){
+	public Int printarr([Int] arr,Int size){
 		
 		i=0;
 		while(i<size){
@@ -31,5 +31,6 @@ public class Main{
 			i=i+1;
 		}
 		println();
+		return 0;
 	}
 }

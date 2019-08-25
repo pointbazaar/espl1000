@@ -1,16 +1,20 @@
 package org.vanautrui.languages.lexing.tokens;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.Token;
-import com.fasterxml.jackson.annotation.*;
+import org.vanautrui.languages.lexing.tokens.utils.IToken;
+
 import java.awt.*;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class KeywordToken implements Token {
+public class KeywordToken implements IToken {
 
-    public static final String[] keywords = new String[]{
+    public static final List<String> keywords = Arrays.asList(
             "class",
-
             "method", "function",
 
             "interface","wrapper","entity","model","adapter",
@@ -21,16 +25,20 @@ public class KeywordToken implements Token {
 
 			"includestatic" //includes (copies) the static functions from another class 
 			//to this class
-    };
+    );
 
     public String keyword;
 
     public KeywordToken(CharacterList list) throws Exception {
         super();
         for (String sym : keywords) {
-            if (list.startsWith(sym)) {
+            Pattern p = Pattern.compile(sym+"([^a-z]|$)");
+            Matcher m =p.matcher(list.getLimitedStringMaybeShorter(keywords.stream().map(s->s.length()).reduce(Integer::max).get()));
+
+            if (m.find() && m.start()==0) {
+
                 this.keyword = sym;
-                list.consumeTokens(sym.length());
+                list.consumeTokens(this.keyword.length());
                 return;
             }
         }
@@ -43,6 +51,7 @@ public class KeywordToken implements Token {
     }
 
     @Override
+    @JsonIgnore
     public String getContents() {
         return this.keyword;
     }
@@ -51,21 +60,5 @@ public class KeywordToken implements Token {
 	@JsonIgnore
     public Color getDisplayColor() {
         return Color.CYAN;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == null) {
-            return false;
-        }
-
-        if (other instanceof KeywordToken) {
-
-            return this.keyword.equals(
-                    ((KeywordToken) other).keyword
-            );
-        }
-
-        return false;
     }
 }

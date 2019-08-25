@@ -1,12 +1,12 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.Token;
+import org.vanautrui.languages.lexing.tokens.utils.IToken;
 import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
 import java.nio.file.Paths;
 
-public class SymbolToken implements Token {
+public class SymbolToken implements IToken {
 
     //symbol tokens are syntactic
 
@@ -39,6 +39,7 @@ public class SymbolToken implements Token {
     }
 
     @Override
+    @JsonIgnore
     public String getContents() {
         return this.symbol;
     }
@@ -47,21 +48,5 @@ public class SymbolToken implements Token {
 	@JsonIgnore
     public Color getDisplayColor() {
         return Color.WHITE;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (other == null) {
-            return false;
-        }
-
-        if (other instanceof SymbolToken) {
-
-            return this.symbol.equals(
-                    ((SymbolToken) other).symbol
-            );
-        }
-
-        return false;
     }
 }

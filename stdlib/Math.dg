@@ -32,6 +32,10 @@ public class Math{
 		println("e()");
 		println(e());
 		println();
+
+
+		println("sin(pi()/2.0)");
+		println(sin(pi()/2.0));
 		return 0;
 	}
 
@@ -92,5 +96,22 @@ public class Math{
 	}
 	public Float pi(){
 		return 3.14159;
+	}
+
+	public Float sin(Float x){
+		Int i=0;
+		Int up;
+		Int down;
+		Float f;
+		Float sum=0.0;
+		while(i<6){
+			up=pow((-1),n);
+			down=faculty(2n+1);
+			f=pow(x,2n+1);
+
+			sum=sum+((up/down)*f);
+			i=i+1;
+		}
+		return sum;
 	}
 }

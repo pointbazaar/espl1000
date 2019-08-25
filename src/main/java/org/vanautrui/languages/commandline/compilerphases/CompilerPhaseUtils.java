@@ -1,16 +1,7 @@
 package org.vanautrui.languages.commandline.compilerphases;
 
 import org.fusesource.jansi.Ansi;
-import org.simpleframework.xml.strategy.Strategy;
-import org.simpleframework.xml.strategy.Type;
-import org.simpleframework.xml.strategy.Visitor;
-import org.simpleframework.xml.strategy.VisitorStrategy;
-import org.simpleframework.xml.stream.InputNode;
-import org.simpleframework.xml.stream.NodeMap;
-import org.simpleframework.xml.stream.OutputNode;
 import org.vanautrui.languages.TerminalUtil;
-
-import java.awt.*;
 
 import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.Color.RED;
@@ -75,21 +66,6 @@ public class CompilerPhaseUtils {
         long duration=end-start;
         System.out.println(String.format("Duration: %6sms",duration));
     }
-
-    public static final Strategy getPreferredXMLSerializationStrategyHumanReadable(){
-        Strategy strategy = new VisitorStrategy(new Visitor() {
-            @Override
-            public void read(Type type, NodeMap<InputNode> nodeMap) throws Exception {
-
-            }
-
-            @Override
-            public void write(Type type, NodeMap<OutputNode> nodeMap) throws Exception {
-                nodeMap.remove("class");
-            }
-        });
-        return strategy;
-    };
 
     public static void printDurationFeedback(long duration /*milliseconds*/){
         String str = duration + " ms";

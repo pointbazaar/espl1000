@@ -1,15 +1,13 @@
 package org.vanautrui.languages.lexing.tokens;
 
-import org.simpleframework.xml.Attribute;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.Token;
+import org.vanautrui.languages.lexing.tokens.utils.IToken;
 
 import java.awt.*;
-import com.fasterxml.jackson.annotation.*;
 
-public class AccessModifierToken implements Token {
+public class AccessModifierToken implements IToken {
 
-    @Attribute
     public boolean is_public;
 
     public AccessModifierToken(CharacterList list) throws Exception {
@@ -40,6 +38,7 @@ public class AccessModifierToken implements Token {
     }
 
     @Override
+    @JsonIgnore
     public String getContents() {
         return (this.is_public) ? "public" : "private";
     }
@@ -48,13 +47,5 @@ public class AccessModifierToken implements Token {
 	@JsonIgnore
     public Color getDisplayColor() {
         return Color.RED;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AccessModifierToken)) return false;
-        AccessModifierToken that = (AccessModifierToken) o;
-        return is_public == that.is_public;
     }
 }

@@ -5,9 +5,8 @@ import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.*;
-import org.vanautrui.languages.lexing.tokens.utils.Token;
+import org.vanautrui.languages.lexing.tokens.utils.IToken;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class Lexer {
 
     private TokenList tokenize(CharacterList myCode) throws Exception {
 
-        List<Token> result = new ArrayList<>();
+        List<IToken> result = new ArrayList<>();
         List<Integer> lineNumbers = new ArrayList<>();
 
         //every class implementing DragonToken
@@ -65,26 +64,19 @@ public class Lexer {
 			}
 
             try {
-                result.add(new ClassToken(myCode));
-
-                continue;
-            } catch (Exception e) {
-                //pass
-            }
-
-            try {
                 result.add(new KeywordToken(myCode));
                 continue;
             } catch (Exception e) {
                 //pass
             }
-
             try {
                 result.add(new IdentifierToken(myCode));
                 continue;
             } catch (Exception e) {
                 //pass
             }
+
+
 
             try {
                 result.add(new TypeIdentifierToken(myCode));

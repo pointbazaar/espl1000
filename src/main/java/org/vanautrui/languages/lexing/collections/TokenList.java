@@ -1,15 +1,12 @@
 package org.vanautrui.languages.lexing.collections;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.fusesource.jansi.Ansi;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 import org.vanautrui.languages.TerminalUtil;
-import org.vanautrui.languages.lexing.tokens.utils.Token;
+import org.vanautrui.languages.lexing.tokens.utils.IToken;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -17,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.fusesource.jansi.Ansi.ansi;
-import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.getPreferredXMLSerializationStrategyHumanReadable;
 
 public class TokenList {
 
@@ -27,12 +23,12 @@ public class TokenList {
     //relative path of the source file
     private Path relPath = Paths.get("/dev/null");
 
-    private List<Token> tokens=new ArrayList<>();
+    private List<IToken> tokens=new ArrayList<>();
     private List<Integer> lineNumbers=new ArrayList<>();
 
     public TokenList(){}
 
-    public TokenList(List<Token> result, List<Integer> lineNumbers,Path sourceFile) {
+    public TokenList(List<IToken> result, List<Integer> lineNumbers, Path sourceFile) {
         this.tokens = result;
         this.lineNumbers=lineNumbers;
         this.relPath =sourceFile;
@@ -44,21 +40,16 @@ public class TokenList {
         this.relPath =other.relPath;
     }
 
-    public List<Token> getTokens() {
+    public List<IToken> getTokens() {
         return this.tokens;
     }
 
-    public void add(Token token) {
+    public void add(IToken token) {
         this.tokens.add(token);
         this.lineNumbers.add(-1);
     }
 
     public void consume(int amount) {
-
-        //DEBUG
-        //System.out.print("consuming: ");
-        //System.out.println(head().getContents());
-        //System.out.println();
 
         this.tokens = this.tokens.subList(amount, this.tokens.size());
         this.lineNumbers = this.lineNumbers.subList(amount, this.lineNumbers.size());
@@ -68,38 +59,41 @@ public class TokenList {
         return this.tokens.size();
     }
 
-    public boolean startsWith(Token token) {
+    public boolean startsWith(IToken token) {
+        //we cannot rely on .equals()
+        //we should use interfaces we can rely on classes to implement
+        //the class and the content of the token should be the same for them to be the same
+
         if (this.tokens.size() > 0) {
-            return this.tokens.get(0).equals(token);
+            return this.tokens.get(0).tokenEquals(token);
         }
         return false;
     }
-    public boolean endsWith(Token token) {
+    public boolean endsWith(IToken token) {
         if (this.tokens.size() > 0) {
-            return this.tokens.get(this.tokens.size()-1).equals(token);
+            return this.tokens.get(this.tokens.size()-1).tokenEquals(token);
         }
         return false;
     }
 
-    public void expectAndConsumeOtherWiseThrowException(Token token) throws Exception {
+    public void expectAndConsumeOtherWiseThrowException(IToken token) throws Exception {
 
         //equals() should be implemented correctly in all the tokens
 
         if (this.startsWith(token)) {
             this.consume(1);
         } else {
-            //String expectedTokenMessage = "'" + token.getContents() + "' (" + token.getClass().getSimpleName() + ")";
-            String expectedTokenMessage = "'" + token.getContents() + "'";
-            //String actualTokenMessage = "'" + this.head().getContents() + "' (" + this.head().getClass().getSimpleName() + ")";
-            String actualTokenMessage = "'" + this.head().getContents() + "'";
+
+            String expectedTokenMessage = "'" + token.getContents() + "'" + " ("+token.getClass().getName()+")";
+
+            String actualTokenMessage = "'" + this.head().getContents() + "'" + " ("+this.head().getClass().getName()+")";;
 
             String sourceCodeFragment = (this.toSourceCodeFragment().substring(0, Math.min(this.toSourceCodeFragment().length(), 100)));
 
             throw new Exception(
-                    ansi().fg(Ansi.Color.WHITE).a("in line "+"TODO"+":\n").reset()
-                    .fg(Ansi.Color.RED).a("Parsing Error: \n").reset()+
+                    ansi().fg(Ansi.Color.RED).a("Parsing Error: \n").reset()+
                     "expected token:  \n\n"
-                            + "\t"+ansi().fg(Ansi.Color.BLUE).a(expectedTokenMessage).reset().toString()+"\n\n"
+                            + "\t"+expectedTokenMessage+"\n\n"
                             + "actual token: \n\n"
                             +"\t"+ actualTokenMessage + "\n\n"
                             + "in '" + sourceCodeFragment + "'\n"
@@ -113,25 +107,15 @@ public class TokenList {
     public String toString() {
         //pretty display
 
-        Serializer serializer = new Persister(getPreferredXMLSerializationStrategyHumanReadable());
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-        StringBuilder sb = new StringBuilder();
-
-        OutputStream out = new BufferedOutputStream(new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-                sb.append((char)b);
-            }
-        });
 
         try {
-            serializer.write(this, out);
-        }catch (Exception e){
-            e.printStackTrace();
-            return "error";
+            return mapper.writeValueAsString(this.tokens);
+        } catch (JsonProcessingException e) {
+            return "ERROR SERIALIZING IN TokenList.java";
         }
-
-        return sb.toString();
 
     }
 
@@ -148,11 +132,11 @@ public class TokenList {
         this.tokens.addAll(copy.tokens);
     }
 
-    public Token get(int i) {
+    public IToken get(int i) {
         return this.tokens.get(i);
     }
 
-    public Token head() {
+    public IToken head() {
         return this.get(0);
     }
 

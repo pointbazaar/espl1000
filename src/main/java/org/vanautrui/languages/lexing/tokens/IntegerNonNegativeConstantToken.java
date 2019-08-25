@@ -1,13 +1,13 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.Token;
+import org.vanautrui.languages.lexing.tokens.utils.IToken;
 import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class IntegerNonNegativeConstantToken implements Token {
+public class IntegerNonNegativeConstantToken implements IToken {
 
     private static final String regex_integer_constant = "^(0|[1-9][0-9]*)";
 
@@ -38,6 +38,7 @@ public class IntegerNonNegativeConstantToken implements Token {
     }
 
     @Override
+    @JsonIgnore
     public String getContents() {
         return this.value+"";
     }
@@ -46,14 +47,6 @@ public class IntegerNonNegativeConstantToken implements Token {
 	@JsonIgnore
     public Color getDisplayColor() {
         return Color.GREEN;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof IntegerNonNegativeConstantToken)) return false;
-        IntegerNonNegativeConstantToken that = (IntegerNonNegativeConstantToken) o;
-        return value==that.value;
     }
 
 }

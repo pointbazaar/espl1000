@@ -1,14 +1,14 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.Token;
+import org.vanautrui.languages.lexing.tokens.utils.IToken;
 import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
 import java.nio.file.Paths;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TypeIdentifierToken implements Token {
+public class TypeIdentifierToken implements IToken {
 
     //a Type name should start with a Uppercase letter,
     public static final String regex_alphanumeric_type_identifier = "^[A-Z][a-zA-Z0-9_]*";
@@ -17,7 +17,7 @@ public class TypeIdentifierToken implements Token {
 
     public static final int MAX_IDENTIFIER_LENGTH = 100;
 
-    private String content;
+    public String content;
 
     public TypeIdentifierToken(CharacterList list) throws Exception {
         super();
@@ -52,6 +52,7 @@ public class TypeIdentifierToken implements Token {
     }
 
     @Override
+    @JsonIgnore
     public String getContents() {
         return this.content;
     }
@@ -60,14 +61,6 @@ public class TypeIdentifierToken implements Token {
 	@JsonIgnore
     public Color getDisplayColor() {
         return Color.YELLOW;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TypeIdentifierToken)) return false;
-        TypeIdentifierToken that = (TypeIdentifierToken) o;
-        return content.equals(that.content);
-    }
+    }   
 
 }

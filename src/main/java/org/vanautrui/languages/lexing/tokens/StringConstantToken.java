@@ -1,13 +1,13 @@
 package org.vanautrui.languages.lexing.tokens;
 
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.Token;
+import org.vanautrui.languages.lexing.tokens.utils.IToken;
 import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class StringConstantToken implements Token {
+public class StringConstantToken implements IToken {
 
     private static final String regex_string_constant = "^\"[^\"]*\"";
 
@@ -36,6 +36,7 @@ public class StringConstantToken implements Token {
     }
 
     @Override
+    @JsonIgnore
     public String getContents() {
         return this.content;
     }
@@ -46,12 +47,5 @@ public class StringConstantToken implements Token {
         return Color.WHITE;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof StringConstantToken)) return false;
-        StringConstantToken that = (StringConstantToken) o;
-        return content.equals(that.content);
-    }
 
 }

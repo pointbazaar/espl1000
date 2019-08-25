@@ -75,13 +75,6 @@
             <version>2.9.9.3</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.simpleframework/simple-xml -->
-        <dependency>
-            <groupId>org.simpleframework</groupId>
-            <artifactId>simple-xml</artifactId>
-            <version>2.7.1</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/commons-cli/commons-cli -->
         <dependency>
             <groupId>commons-cli</groupId>

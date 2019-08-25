@@ -2,7 +2,7 @@ package org.vanautrui.languages.parsing.astnodes.terminal;
 
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.AccessModifierToken;
-import org.vanautrui.languages.lexing.tokens.utils.Token;
+import org.vanautrui.languages.lexing.tokens.utils.IToken;
 import org.vanautrui.languages.parsing.IASTNode;
 
 public class AccessModifierNode implements IASTNode {
@@ -11,7 +11,7 @@ public class AccessModifierNode implements IASTNode {
 
     public AccessModifierNode(TokenList tokens) throws Exception {
 
-        Token token1 = tokens.get(0);
+        IToken token1 = tokens.get(0);
 
         if (token1 instanceof AccessModifierToken) {
             this.is_public = ((AccessModifierToken) token1).is_public;

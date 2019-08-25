@@ -1,12 +1,10 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal.statements;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.ElementList;
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IASTNode;
-import org.vanautrui.languages.parsing.astnodes.ITermNode;
 import org.vanautrui.languages.parsing.astnodes.IExpressionComputable;
+import org.vanautrui.languages.parsing.astnodes.ITermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.IdentifierNode;
 
@@ -16,14 +14,12 @@ import java.util.stream.Collectors;
 
 public class MethodCallNode implements IASTNode, IStatementNode, IExpressionComputable , ITermNode {
 
-    @Attribute
     public String getMethodName(){
         return this.identifierMethodName.name;
     }
 
     public IdentifierNode identifierMethodName;
 
-    @ElementList
     public List<ExpressionNode> argumentList = new ArrayList<>();
 
     public MethodCallNode(TokenList tokens) throws Exception {

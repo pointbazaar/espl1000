@@ -113,13 +113,13 @@ public class TypeChecker {
         //well the type of the value returned should be the same as the method return type
         //in case of void there should be no value returned
         {
-            String returnValueType= TypeResolver.getTypeExpressionNode(returnStatementNode.returnValue.get(),methodNode,subTable,varTable);
+            String returnValueType= TypeResolver.getTypeExpressionNode(returnStatementNode.returnValue,methodNode,subTable,varTable);
             if(
                 !(returnValueType.equals(methodNode.type.typeName))
             ){
                 throw new Exception(" return type has to equal the method type");
             }
-		typeCheckExpressionNode(asts,classNode,methodNode,returnStatementNode.returnValue.get(),subTable,varTable);
+		typeCheckExpressionNode(asts,classNode,methodNode,returnStatementNode.returnValue,subTable,varTable);
 
         }
     }

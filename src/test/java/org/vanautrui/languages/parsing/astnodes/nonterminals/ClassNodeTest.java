@@ -12,7 +12,7 @@ public class ClassNodeTest {
 
         TokenList list = new TokenList();
         list.add(new AccessModifierToken("public"));
-        list.add(new ClassToken());
+        list.add(new KeywordToken("class"));
         list.add(new TypeIdentifierToken("Main"));
         list.add(new SymbolToken("{"));
 
@@ -36,7 +36,7 @@ public class ClassNodeTest {
 
         TokenList list = new TokenList();
         list.add(new AccessModifierToken("public"));
-        list.add(new ClassToken());
+        list.add(new KeywordToken("class"));
         list.add(new TypeIdentifierToken("Main"));
         list.add(new SymbolToken("{"));
 

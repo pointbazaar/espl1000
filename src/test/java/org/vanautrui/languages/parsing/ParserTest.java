@@ -16,7 +16,7 @@ public class ParserTest {
     public void test_can_create_correct_classnode() throws Exception {
         TokenList tokens = new TokenList();
         tokens.add(new AccessModifierToken("public"));
-        tokens.add(new ClassToken());
+        tokens.add(new KeywordToken("class"));
 
         String classname = "Exampleclass";
 

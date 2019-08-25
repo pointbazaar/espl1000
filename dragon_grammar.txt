@@ -17,8 +17,8 @@
 //-----------------------------------------------------------------------------
 
 int ::= ... | -1 | 0 | 1 | 2 | ...
-char ::= 'a' | ... | 'z' | 'A' | ... | 'Z' | '_'
-alphanumeric ::= int | char
+char ::= 'a' | ... | 'z' | 'A' | ... | 'Z'
+alphanumeric ::= int | char | '_'
 identifier ::= char alphanumeric*
 string ::= '"' alphanumeric* '"'
 

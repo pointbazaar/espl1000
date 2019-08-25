@@ -5,7 +5,7 @@ import org.vanautrui.languages.lexing.tokens.utils.*;
 import com.fasterxml.jackson.annotation.*;
 import java.awt.*;
 
-public class BoolConstantToken implements Token {
+public class BoolConstantToken implements IToken {
 
 	//this class represents 'true' || 'false'
 
@@ -26,6 +26,7 @@ public class BoolConstantToken implements Token {
     }
 
     @Override
+    @JsonIgnore
     public String getContents() {
         return this.value+"";
     }
@@ -34,14 +35,6 @@ public class BoolConstantToken implements Token {
 	@JsonIgnore
     public Color getDisplayColor() {
         return Color.GREEN;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BoolConstantToken)) return false;
-        BoolConstantToken that = (BoolConstantToken) o;
-        return value==that.value;
     }
 
 }

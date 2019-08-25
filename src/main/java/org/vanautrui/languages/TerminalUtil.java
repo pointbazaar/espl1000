@@ -14,7 +14,7 @@ public class TerminalUtil {
     }
 
     public static String generateFileNameWithLine(Path path, int line){
-        return ansi().fg(Ansi.Color.CYAN).a(path+":"+line).toString();
+        return path+":"+line;
     }
 
     public static void println(String s,Ansi.Color color, PrintStream out){

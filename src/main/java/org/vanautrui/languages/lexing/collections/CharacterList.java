@@ -1,6 +1,5 @@
 package org.vanautrui.languages.lexing.collections;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -15,9 +14,6 @@ public class CharacterList{
     private List<Long> lineNumbers=new ArrayList<>();
 
     private List<Character> list;
-
-    private boolean stringValid = false;
-    private String stringValue = "";
 
     public CharacterList(String s,Path sourceFile) {
         //both paths need a root component for relativizing
@@ -48,9 +44,6 @@ public class CharacterList{
 
         this.lineNumbers    = new ArrayList<>(other.lineNumbers);
         this.list           = new ArrayList<>(other.list);
-
-        this.stringValid    = other.stringValid;
-        this.stringValue    = other.stringValue;
     }
 
     public int getCurrentLineNumber(){
@@ -61,8 +54,6 @@ public class CharacterList{
     public void consumeTokens(int amount) {
         this.list           = this.list.subList(amount, this.list.size());
         this.lineNumbers    = this.lineNumbers.subList(amount, this.lineNumbers.size());
-
-        this.stringValid = false;
     }
 
     public int size() {
@@ -90,10 +81,6 @@ public class CharacterList{
             throw new Exception("amount is too big. list not that long");
         }
 
-        if (this.stringValid && this.stringValue.length() >= amount) {
-            return this.stringValue.substring(0, amount);
-        }
-
         StringBuilder sb = new StringBuilder("");
 
         for (Character ch : this.list.subList(0, amount)) {
@@ -101,9 +88,6 @@ public class CharacterList{
         }
 
         String result = sb.toString();
-
-        this.stringValue = result;
-        this.stringValid = true;
 
         return result;
     }

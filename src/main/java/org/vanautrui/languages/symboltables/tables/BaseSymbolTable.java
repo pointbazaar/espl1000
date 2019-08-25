@@ -18,8 +18,6 @@ class BaseSymbolTable {
     public BaseSymbolTable(){}
 
     public void add(ISymbolTableRow row){
-        //DEBUG
-        //System.out.println("symbol table add");
 
         if(!this.containsVariable(row.getName())) {
             this.symbolTable.add(row);

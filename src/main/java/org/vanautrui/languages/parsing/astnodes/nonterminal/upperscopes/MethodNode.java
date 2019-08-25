@@ -1,7 +1,5 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.ElementList;
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IASTNode;

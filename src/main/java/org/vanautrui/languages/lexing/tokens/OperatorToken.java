@@ -1,13 +1,13 @@
 package org.vanautrui.languages.lexing.tokens;
 
-import org.simpleframework.xml.Attribute;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.Token;
-import com.fasterxml.jackson.annotation.*;
+import org.vanautrui.languages.lexing.tokens.utils.IToken;
+
 import java.awt.*;
 import java.nio.file.Paths;
 
-public class OperatorToken implements Token {
+public class OperatorToken implements IToken {
 
     //TODO: add all the operator tokens that should be supported
 
@@ -27,7 +27,6 @@ public class OperatorToken implements Token {
             "<",">","+","-","*","/","%",":","="
     };
 
-    @Attribute
     public String operator;
 
     public OperatorToken(CharacterList list) throws Exception {
@@ -55,6 +54,7 @@ public class OperatorToken implements Token {
     }
 
     @Override
+    @JsonIgnore
     public String getContents() {
         return this.operator;
     }
@@ -65,19 +65,4 @@ public class OperatorToken implements Token {
         return Color.GREEN;
     }
 
-    @Override
-    public boolean equals(Object other) {
-        if (other == null) {
-            return false;
-        }
-
-        if (other instanceof OperatorToken) {
-
-            return this.operator.equals(
-                    ((OperatorToken) other).operator
-            );
-        }
-
-        return false;
-    }
 }

@@ -1,14 +1,14 @@
 package org.vanautrui.languages.lexing.tokens;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.Token;
+import org.vanautrui.languages.lexing.tokens.utils.IToken;
 
 import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import com.fasterxml.jackson.annotation.*;
 
-public class FloatNonNegativeConstantToken implements Token {
+public class FloatNonNegativeConstantToken implements IToken {
 
     private static final String regex_float_constant = "^(0|[1-9][0-9]*)\\.([0-9]+)";
 
@@ -34,6 +34,7 @@ public class FloatNonNegativeConstantToken implements Token {
     }
 
     @Override
+    @JsonIgnore
     public String getContents() {
         return this.value+"";
     }

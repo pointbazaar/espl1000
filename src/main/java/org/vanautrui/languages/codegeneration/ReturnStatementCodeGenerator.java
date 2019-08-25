@@ -18,13 +18,19 @@ public class ReturnStatementCodeGenerator {
                                             LocalVarSymbolTable methodScopeSymbolTable,
                                             SubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception{
 
-        if(returnStatementNode.returnValue.isPresent()){
+        if(methodNode.methodName.methodName.name.equals("main")){
+            //main is Void in java, but we do not have 'Void' in this language
+            mv.visitInsn(RETURN);
+            return;
+        }
+
+        if(true){
             //put the expression on the stack
-            ExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,returnStatementNode.returnValue.get(),methodScopeSymbolTable,subroutineSymbolTable,debug);
+            ExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,returnStatementNode.returnValue,methodScopeSymbolTable,subroutineSymbolTable,debug);
 
             //determine the return type
             //TODO: consider the other return types
-            String returnValueType= TypeResolver.getTypeExpressionNode(returnStatementNode.returnValue.get(),methodNode,subroutineSymbolTable,methodScopeSymbolTable);
+            String returnValueType= TypeResolver.getTypeExpressionNode(returnStatementNode.returnValue,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
             switch (returnValueType){
                 case "Int":
                     mv.visitInsn(IRETURN);

@@ -3,7 +3,7 @@ package org.vanautrui.languages.parsing.astnodes.terminal;
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.IdentifierToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
-import org.vanautrui.languages.lexing.tokens.utils.Token;
+import org.vanautrui.languages.lexing.tokens.utils.IToken;
 import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.ITermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
@@ -22,7 +22,7 @@ public class VariableNode implements IASTNode, ITermNode {
 
         TokenList copy=new TokenList(tokens);
 
-        Token token = copy.get(0);
+        IToken token = copy.get(0);
 
         if (token instanceof IdentifierToken) {
             this.name = ((IdentifierToken) token).getContents();

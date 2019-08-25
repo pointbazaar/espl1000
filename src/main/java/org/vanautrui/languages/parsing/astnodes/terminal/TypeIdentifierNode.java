@@ -1,6 +1,6 @@
 package org.vanautrui.languages.parsing.astnodes.terminal;
 
-import org.vanautrui.languages.lexing.tokens.utils.Token;
+import org.vanautrui.languages.lexing.tokens.utils.IToken;
 import org.vanautrui.languages.lexing.tokens.TypeIdentifierToken;
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.IASTNode;
@@ -11,7 +11,7 @@ public class TypeIdentifierNode implements IASTNode {
 
     public TypeIdentifierNode(TokenList tokens) throws Exception {
 
-        Token token = tokens.get(0);
+        IToken token = tokens.get(0);
 
         if (token instanceof TypeIdentifierToken) {
             this.typeName = ((TypeIdentifierToken) token).getContents();
