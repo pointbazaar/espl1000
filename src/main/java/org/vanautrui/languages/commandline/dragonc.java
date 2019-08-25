@@ -98,7 +98,7 @@ public class dragonc {
         StringBuilder sbh = new StringBuilder("");
         StringBuilder sbf = new StringBuilder("");
 
-        sbh.append(ansi().bold().a("\ndgc - dragon compiler\n\n").reset().toString());
+        sbh.append(ansi().bold().a("\ndraco - dragon compiler\n\n").reset().toString());
 
         sbf.append("\n\n");
         sbf.append(ansi().bold().a("GITHUB\n").reset().toString());
@@ -115,7 +115,7 @@ public class dragonc {
 
         String header=sbh.toString();
         String footer=sbf.toString();
-        help.printHelp("dgc FILE...",header,options,footer,true);
+        help.printHelp("draco FILE...",header,options,footer,true);
     }
 
 
