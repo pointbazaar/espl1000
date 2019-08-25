@@ -1,6 +1,6 @@
 public class Math{
 	
-	public Void main(){
+	public Int main(){
 		println("hi");	
 		println(abs(1));
 		println(abs(-2));
@@ -32,6 +32,7 @@ public class Math{
 		println("e()");
 		println(e());
 		println();
+		return 0;
 	}
 
 	public Float sqrt(Float number){
