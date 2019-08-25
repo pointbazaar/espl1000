@@ -122,21 +122,23 @@ public class dragonc {
     private static Options createOptions(){
         //https://commons.apache.org/proper/commons-cli/usage.html
 
-        Options options = new Options();
+        Options opts = new Options();
         Option option_debug = new Option("debug",false,"provides debug output for development of the compiler");
-        options.addOption(option_debug);
+        opts.addOption(option_debug);
 
-        options.addOption(
+        opts.addOption(
                 new Option("timed",false,"provides a breakdown of how long each compiler phase took")
         );
 
-        options.addOption(new Option("help",false,"display an overview of the command line options"));
+        opts.addOption(new Option("tokens",false,"output the tokens used for parsing"));
 
-        options.addOption(new Option("strict",false,"do not compile if the code is likely to have bugs (TODO)"));
+        opts.addOption(new Option("help",false,"display an overview of the command line options"));
 
-        options.addOption(new Option("clean",false,"clears the cache"));
+        opts.addOption(new Option("strict",false,"do not compile if the code is likely to have bugs (TODO)"));
 
-        options.addOption(
+        opts.addOption(new Option("clean",false,"clears the cache"));
+
+        opts.addOption(
                 new Option(
                     "optimize",
                     false,
@@ -152,8 +154,8 @@ public class dragonc {
 
 
 
-        options.addOptionGroup(optionGroup);
-        return options;
+        opts.addOptionGroup(optionGroup);
+        return opts;
     }
 
     private static void compile_main_inner(List<File> sources,CommandLine cmd){
@@ -165,9 +167,8 @@ public class dragonc {
 
         long start_time_ms = currentTimeMillis();
 
-        //TODO: expand functionality to directories and multiple files
         try {
-            List<String> codes=new ArrayList();
+            List<String> codes=new ArrayList<String>();
             for(File file : sources){
                 String sourceCode = new String(Files.readAllBytes(file.toPath()));
                 codes.add(sourceCode);

@@ -235,7 +235,7 @@ public class CompilerPhases {
             try {
                 TokenList tokens = (new Lexer()).lexCodeWithoutComments(just_code_with_braces_without_comments);
 
-                if (debug) {
+                if (debug || cmd.hasOption("tokens")) {
                     System.out.println(tokens.toString());
                 }
                 list.add(tokens);
