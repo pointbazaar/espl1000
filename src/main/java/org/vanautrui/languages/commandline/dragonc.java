@@ -134,6 +134,7 @@ public class dragonc {
 
         opts.addOption(new Option("tokens",false,"print the tokens as json"));
         opts.addOption(new Option("ast",false,"print the AST as json"));
+        opts.addOption(new Option("symboltables",false,"print the symbol tables"));
 
         opts.addOption(new Option("help",false,"display an overview of the command line options"));
 

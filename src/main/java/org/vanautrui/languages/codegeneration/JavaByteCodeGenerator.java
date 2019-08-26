@@ -28,9 +28,7 @@ public class JavaByteCodeGenerator {
 
     public static byte[] generateByteCodeForClass(ClassNode classNode, SubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception {
 
-        if(debug){
-            System.out.println(subroutineSymbolTable.toString());
-        }
+
 
         ClassWriter cw = new ClassWriter(0);
 

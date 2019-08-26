@@ -103,6 +103,10 @@ public class CompilerPhases {
                     //TODO: create the symbol table with all classes in mind, not just this one
                     SubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
 
+                    if(debug || cmd.hasOption("symboltables")){
+                        System.out.println(subroutineSymbolTable.toString());
+                    }
+
                     //generate bytecode for that class
                     byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode, subroutineSymbolTable, debug);
 
