@@ -32,9 +32,7 @@ public class VariableCodeGenerator {
             if(!instanceType.equals(type) && varNode.indexOptional.isPresent()){
                 //we have an array
                 //TODO: do this for types other than integer
-                if(!instanceType.equals("Int")){
-                    throw new Exception("only Int accepted for now");
-                }
+                
 
                 //load the array
                 mv.visitIntInsn(ALOAD,varTable.getIndexOfVariable(varNode.name));
@@ -44,7 +42,16 @@ public class VariableCodeGenerator {
                 ExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,varNode.indexOptional.get(),varTable,subTable,debug);
 
                 //load from array at that index
-                mv.visitInsn(IALOAD);
+                switch (instanceType) {
+                    case "Int":
+                        mv.visitInsn(IALOAD);
+                        break;
+                    case "String":
+                        mv.visitInsn(AALOAD);
+                        break;
+                    default:
+                        throw new Exception("only Int,String accepted for now");
+                }
             }else {
 
                 switch (type) {
