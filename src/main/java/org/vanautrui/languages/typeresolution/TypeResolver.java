@@ -1,12 +1,13 @@
 package org.vanautrui.languages.typeresolution;
 
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ArrayConstantNode;
-import org.vanautrui.languages.symboltables.tables.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.MethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.*;
+import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
+import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -63,8 +64,10 @@ public class TypeResolver {
             return getTypeVariableNode((VariableNode) termNode.termNode,methodNode,subroutineSymbolTable,varTable);
 		}else if(termNode.termNode instanceof BoolConstantNode) {
             return "Bool";
-        }else if(termNode.termNode instanceof ArrayConstantNode){
-            return getTypeArrayConstNode((ArrayConstantNode) termNode.termNode,methodNode,subroutineSymbolTable,varTable);
+        }else if(termNode.termNode instanceof ArrayConstantNode) {
+            return getTypeArrayConstNode((ArrayConstantNode) termNode.termNode, methodNode, subroutineSymbolTable, varTable);
+        }else if(termNode.termNode instanceof CharConstantNode){
+            return "Char";
         }else{
             throw new Exception("unforeseen case in getTypeTermNode(...) in DragonTypeResolver");
         }

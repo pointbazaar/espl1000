@@ -1,11 +1,9 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminals.statements;
 
 import org.junit.Test;
+import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.collections.TokenList;
-import org.vanautrui.languages.lexing.tokens.IdentifierToken;
-import org.vanautrui.languages.lexing.tokens.IntegerNonNegativeConstantToken;
-import org.vanautrui.languages.lexing.tokens.OperatorToken;
-import org.vanautrui.languages.lexing.tokens.SymbolToken;
+import org.vanautrui.languages.lexing.tokens.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
 
 public class AssignmentStatementNodeTest {
@@ -76,6 +74,21 @@ public class AssignmentStatementNodeTest {
         tokens.add(new SymbolToken("["));
         tokens.add(new IntegerNonNegativeConstantToken(4));
         tokens.add(new SymbolToken("]"));
+
+        tokens.add(new SymbolToken(";"));
+
+        AssignmentStatementNode assignmentStatementNode = new AssignmentStatementNode(tokens);
+    }
+
+    @Test
+    public void test_assign_char()throws Exception{
+
+        TokenList tokens = new TokenList();
+
+        tokens.add(new IdentifierToken("x"));
+        tokens.add(new OperatorToken("="));
+
+        tokens.add(new CharConstantToken(new CharacterList("'x'")));
 
         tokens.add(new SymbolToken(";"));
 

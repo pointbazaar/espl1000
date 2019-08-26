@@ -40,16 +40,20 @@ public class MethodCallCodeGenerator {
                 //TODO: make getTypeJVMInternal() to make this easier? or just make a translator class for it
                 String expressionType= TypeResolver.getTypeExpressionNode(expressionNode,methodNode,subroutineSymbolTable,methodScopeSymbolTable);
 
-		//set the method signature to the type
-		//which accepts our arguments
-		switch(expressionType){
-			case "Int":
-				methodDescriptor="(I)V";
-				break;
-			case "Float":
-				methodDescriptor="(F)V";
-				break;
-		}
+                //set the method signature to the type
+                //which accepts our arguments
+                switch(expressionType){
+                    case "Int":
+                        methodDescriptor="(I)V";
+                        break;
+                    case "Char":
+                        methodDescriptor="(C)V";
+                        break;
+                    case "Float":
+                        methodDescriptor="(F)V";
+                        break;
+                }
+
                 ExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,expressionNode,methodScopeSymbolTable,subroutineSymbolTable,debug);
             }
 

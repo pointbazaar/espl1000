@@ -3,18 +3,17 @@ package org.vanautrui.languages.codegeneration;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ArrayConstantNode;
-import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
-import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.MethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.*;
+import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
+import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 
-import static org.objectweb.asm.Opcodes.*;
 import static org.vanautrui.languages.codegeneration.IntegerConstantCodeGenerator.pushIntegerConstant;
-import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.*;
+import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.pushFloatConstant;
 
 public class TermCodeGenerator {
 
@@ -51,9 +50,11 @@ public class TermCodeGenerator {
 		}else if(termNode.termNode instanceof BoolConstantNode) {
             BoolConstantNode b = (BoolConstantNode) termNode.termNode;
             BoolConstantCodeGenerator.visitBoolConstant(mv, b);
-        }else if(termNode.termNode instanceof ArrayConstantNode){
-	        ArrayConstantNode arrayConstantNode = (ArrayConstantNode)termNode.termNode;
-            ArrayConstantCodeGenerator.visitArrayConstant(cw,mv,classNode,methodNode,arrayConstantNode,varTable,subTable,debug);
+        }else if(termNode.termNode instanceof ArrayConstantNode) {
+        ArrayConstantNode arrayConstantNode = (ArrayConstantNode) termNode.termNode;
+        ArrayConstantCodeGenerator.visitArrayConstant(cw, mv, classNode, methodNode, arrayConstantNode, varTable, subTable, debug);
+        } else if (termNode.termNode instanceof CharConstantNode) {
+            CharConstantCodeGenerator.visitCharConstant(mv,(CharConstantNode)termNode.termNode);
         }else{
             throw new Exception("unhandled case in TermCodeGenerator.java");
         }

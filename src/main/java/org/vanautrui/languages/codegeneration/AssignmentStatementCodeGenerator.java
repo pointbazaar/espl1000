@@ -6,7 +6,6 @@ import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.VariableNode;
 import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
 import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.typeresolution.TypeResolver;
@@ -67,6 +66,7 @@ public class AssignmentStatementCodeGenerator {
 
         switch(expressionInstanceType){
             case "Int":
+            case "Char":
             case "Bool":
                 mv.visitVarInsn(ISTORE, local_var_index);
                 break;

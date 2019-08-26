@@ -202,12 +202,16 @@ public class TypeChecker {
 	typecheckTermNode(asts,classNode,methodNode,expr.term,subTable,varTable);
 	String type= TypeResolver.getTypeTermNode(expr.term,methodNode,subTable,varTable);
 	List<String> currentAllowedTypes=Arrays.asList("Int","Float");
+
+	//because the operators on them are not yet defined
+	List<String> lonelyAllowedTypes=Arrays.asList("String","[Int]","Char");
 	if(!currentAllowedTypes.contains(type)){
-		if(expr.termNodes.size()==0 && type.equals("String")){
+	    if(lonelyAllowedTypes.contains(type) && expr.termNodes.size()==0){
+
 			//string may be there as a single expression 
 			//to return a string from an subroutine or print one
 			//currently we do not support concatenation and such
-		}else if(expr.termNodes.size()==0 && type.equals("[Int]")){
+
 		    //TODO: make it generic for all array types
 
             //a single array

@@ -49,6 +49,7 @@ public class VariableCodeGenerator {
 
                 switch (type) {
                     case "Int":
+                    case "Char":
                     case "Bool":
                         mv.visitIntInsn(
                                 ILOAD,
