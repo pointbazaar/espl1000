@@ -137,6 +137,8 @@ public class dragonc {
 
         opts.addOption(new Option("clean",false,"clears the cache"));
 
+        opts.addOption(new Option("run",false,"execute the program after compilation"));
+
         opts.addOption(
                 new Option(
                     "optimize",
@@ -229,7 +231,7 @@ public class dragonc {
 
             start = currentTimeMillis();
             //PHASE CODE GENERATION
-            phase_codegeneration(asts,cmd);
+            List<Path> classFilePaths = phase_codegeneration(asts, cmd);
             end= currentTimeMillis();
             if(timed){
                 printDuration(start,end);
@@ -252,6 +254,11 @@ public class dragonc {
                 System.out.flush();
                 printBuildConclusion(true);
 
+            }
+
+            if(cmd.hasOption("run")){
+                //execute
+                phase_run_optional(classFilePaths,cmd);
             }
 
         } catch (Exception e) {

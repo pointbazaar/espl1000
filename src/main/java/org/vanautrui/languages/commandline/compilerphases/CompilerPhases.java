@@ -3,6 +3,7 @@ package org.vanautrui.languages.commandline.compilerphases;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.io.IOUtils;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.codegeneration.JavaByteCodeGenerator;
 import org.vanautrui.languages.lexing.Lexer;
@@ -50,7 +51,7 @@ public class CompilerPhases {
 
         //i have an idea how we can avoid an issue related to this
         final boolean debug=cmd.hasOption("debug");
-        List<String> results=new ArrayList();
+        List<String> results=new ArrayList<>();
         try {
             for(String codeWithoutCommentsWithoutUnneccesaryWhitespace: codesWithoutCommentsWithoutUnneccesaryWhitespace){
                 String just_code_with_braces_without_comments_without_newlines =
@@ -89,11 +90,35 @@ public class CompilerPhases {
         }
     }
 
-    public static void phase_codegeneration(List<AST> asts, CommandLine cmd)throws Exception{
+    public static void phase_run_optional(List<Path> classFilePaths,CommandLine cmd)throws Exception{
+
+        for(Path p: classFilePaths){
+            String command = "java -classpath "+p.toAbsolutePath().getParent()+" "+p.getFileName().toString().split("\\.")[0];
+            if(cmd.hasOption("debug")){
+                System.out.println("trying to execute: "+p.getFileName());
+                System.out.println("command: "+command);
+            }
+
+            Process pr = Runtime.getRuntime().exec(command);
+            //TODO: connect input and output to this process's input and output
+            pr.waitFor();
+            int exitValue = pr.exitValue();
+
+            if(exitValue!=0){
+                throw new Exception(IOUtils.toString(pr.getErrorStream()));
+            }
+
+            //for now, just display the output
+            String out = IOUtils.toString(pr.getInputStream());
+            System.out.println(out);
+        }
+    }
+
+    public static List<Path> phase_codegeneration(List<AST> asts, CommandLine cmd)throws Exception{
         final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
         printBeginPhase("CODE GENERATION",printLong);
 
-        //printBeginPhase("CODE GENERATION");
+        List<Path> classFilePaths=new ArrayList<>();
         final boolean debug=cmd.hasOption("debug");
 
         try {
@@ -112,11 +137,13 @@ public class CompilerPhases {
 
                     //System.out.println(ast.srcPath.toAbsolutePath().getParent());
                     String dir=ast.srcPath.toAbsolutePath().getParent().toString();
-
-                    Files.write(Paths.get(dir+"/"+classNode.name.typeName + ".class"), classResult);
+                    Path classFilePath = Paths.get(dir + "/" + classNode.name.typeName + ".class");
+                    Files.write(classFilePath, classResult);
+                    classFilePaths.add(classFilePath);
                 }
             }
             printEndPhase(true,printLong);
+            return classFilePaths;
 
         }catch (Exception e){
             printEndPhase(false,printLong);
