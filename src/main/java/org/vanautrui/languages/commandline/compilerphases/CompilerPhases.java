@@ -194,11 +194,11 @@ public class CompilerPhases {
             try {
                 AST ast = (new Parser()).parse(tokens,tokens.relPath);
 
-                if (debug) {
-                    TerminalUtil.println("DEBUG: pretty print source from AST in curly braces", RED);
-                    System.out.println(ast.toSourceCode());
+                if (debug || cmd.hasOption("ast")) {
+                    //TerminalUtil.println("DEBUG: pretty print source from AST in curly braces", RED);
+                    //System.out.println(ast.toSourceCode());
 
-                    TerminalUtil.println("DEBUG: PRINT AST JSON ", RED);
+                    TerminalUtil.println("\nDEBUG: PRINT AST JSON ", RED);
 
                     ObjectMapper mapper = new ObjectMapper();
                     mapper.enable(SerializationFeature.INDENT_OUTPUT);

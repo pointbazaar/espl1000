@@ -132,7 +132,8 @@ public class dragonc {
                 new Option("timed",false,"provides a breakdown of how long each compiler phase took")
         );
 
-        opts.addOption(new Option("tokens",false,"output the tokens used for parsing"));
+        opts.addOption(new Option("tokens",false,"print the tokens as json"));
+        opts.addOption(new Option("ast",false,"print the AST as json"));
 
         opts.addOption(new Option("help",false,"display an overview of the command line options"));
 
