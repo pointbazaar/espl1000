@@ -1,0 +1,5 @@
+class Experiment{
+	Int main([String] args){
+		return 1;
+	}
+}

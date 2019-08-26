@@ -1,12 +1,13 @@
 package org.vanautrui.languages.codegeneration;
 
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
-import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.ReturnStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
+import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.typeresolution.TypeResolver;
 
 import static org.objectweb.asm.Opcodes.*;
@@ -18,15 +19,25 @@ public class ReturnStatementCodeGenerator {
                                             LocalVarSymbolTable methodScopeSymbolTable,
                                             SubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception{
 
+        //put the expression on the stack
+        mv.visitLabel(new Label()); //i think it should not be neccessary
+
+        ExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,returnStatementNode.returnValue,methodScopeSymbolTable,subroutineSymbolTable,debug);
+
         if(methodNode.methodName.methodName.name.equals("main")){
             //main is Void in java, but we do not have 'Void' in this language
-            mv.visitInsn(RETURN);
-            return;
-        }
 
-        if(true){
-            //put the expression on the stack
-            ExpressionCodeGenerator.visitExpression(cw,mv,classNode,methodNode,returnStatementNode.returnValue,methodScopeSymbolTable,subroutineSymbolTable,debug);
+            //also consider the exit code
+            String methodDescriptor ="(I)V";
+            mv.visitMethodInsn(INVOKESTATIC,
+                    "java/lang/System",
+                    "exit",
+                    methodDescriptor);
+
+            mv.visitLabel(new Label());//i think it should not be neccessary
+            mv.visitInsn(RETURN);
+        }else{
+
 
             //determine the return type
             //TODO: consider the other return types
@@ -47,9 +58,6 @@ public class ReturnStatementCodeGenerator {
                 default:
                     throw new Exception("could not determine which return to use (ReturnStatementCodeGenerator)");
             }
-        }else {
-            //return control to the caller
-            mv.visitInsn(RETURN);
         }
     }
 }
