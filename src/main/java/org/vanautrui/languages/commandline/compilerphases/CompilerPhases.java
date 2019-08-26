@@ -126,7 +126,7 @@ public class CompilerPhases {
         return Paths.get(phase_clean_cache_dir+"."+hash+extension);
     }
 
-    private static final String phase_clean_cache_dir=System.getProperty("user.home")+"/dragoncache/clean/";
+    private static final String phase_clean_cache_dir=System.getProperty("user.home")+"/.dragoncache/clean/";
 
     public static List<CharacterList> phase_clean(List<String> sources, List<File> sourceFiles, CommandLine cmd)throws Exception{
         final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
