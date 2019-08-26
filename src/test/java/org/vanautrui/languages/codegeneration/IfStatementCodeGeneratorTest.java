@@ -4,7 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.vanautrui.languages.codegeneration.JavaByteCodeGeneratorTest.compile_and_run_one_class_for_testing;
+import static org.vanautrui.languages.codegeneration.CodeGeneratorTestUtils.compile_and_run_one_class_for_testing;
 
 public class IfStatementCodeGeneratorTest {
 

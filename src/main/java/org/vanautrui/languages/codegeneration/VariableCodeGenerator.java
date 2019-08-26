@@ -32,7 +32,7 @@ public class VariableCodeGenerator {
             if(!instanceType.equals(type) && varNode.indexOptional.isPresent()){
                 //we have an array
                 //TODO: do this for types other than integer
-                
+
 
                 //load the array
                 mv.visitIntInsn(ALOAD,varTable.getIndexOfVariable(varNode.name));

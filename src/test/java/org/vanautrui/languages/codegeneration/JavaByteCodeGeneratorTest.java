@@ -3,54 +3,19 @@ package org.vanautrui.languages.codegeneration;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.vanautrui.languages.lexing.Lexer;
-import org.vanautrui.languages.lexing.collections.TokenList;
-import org.vanautrui.languages.parsing.Parser;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 
 import java.io.BufferedOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class JavaByteCodeGeneratorTest {
-
-    public static Process compile_and_run_but_not_waitFor(String source,String classNameWithoutExtension) throws Exception{
-        TokenList tokens = (new Lexer()).lexCodeTestMode(source);
-        Parser parser = new Parser();
-        AST ast= parser.parseTestMode(tokens);
-
-        //we are in debug mode since we are running tests
-        byte[] result = JavaByteCodeGenerator.generateByteCodeForOneClass(ast.classNodeList.toArray(new ClassNode[]{})[0],true);
-        Path path = Paths.get(classNameWithoutExtension+".class");
-
-        Files.write(path,result);
-        Process pr = Runtime.getRuntime().exec("java "+classNameWithoutExtension);
-
-        return pr;
-    }
-
-    public static Process compile_and_run_one_class_for_testing(String source,String classNameWithoutExtension) throws Exception{
-
-        Path path = Paths.get(classNameWithoutExtension+".class");
-
-        Process pr = compile_and_run_but_not_waitFor(source,classNameWithoutExtension);
-
-        pr.waitFor();
-
-        //maybe it is safe to delete already
-        Files.delete(path);
-
-        return pr;
-    }
 
     @Test
     public void test_can_compile_simple_helloworld()throws Exception{
         String source="public class MainTest100 { public Int main(){ println(\"Hello World!\"); return 0; }}";
 
-        Process pr = compile_and_run_one_class_for_testing(source,"MainTest100");
+        Process pr = CodeGeneratorTestUtils.compile_and_run_one_class_for_testing(source,"MainTest100");
 
         Assert.assertEquals(0,pr.exitValue());
 
@@ -62,7 +27,7 @@ public class JavaByteCodeGeneratorTest {
     @Test
     public void test_can_compile_loop_statements()throws Exception{
         String source="public class MainTest22 { public Int main(){ loop 4 { print(\"1\"); } return 0; } }";
-        Process pr = compile_and_run_one_class_for_testing(source,"MainTest22");
+        Process pr = CodeGeneratorTestUtils.compile_and_run_one_class_for_testing(source,"MainTest22");
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("1111",IOUtils.toString(pr.getInputStream()));
@@ -83,7 +48,7 @@ public class JavaByteCodeGeneratorTest {
         //maybe this has optimization reasons
 
         String source="public class MainTest3 { public Int main(){ x="+x+"; println(x); return 0; } }";
-        Process pr = compile_and_run_one_class_for_testing(source,"MainTest3");
+        Process pr = CodeGeneratorTestUtils.compile_and_run_one_class_for_testing(source,"MainTest3");
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals(x+"\n",IOUtils.toString(pr.getInputStream()));
@@ -93,7 +58,7 @@ public class JavaByteCodeGeneratorTest {
     public void test_can_compile_multiple_assignment_to_same_variable_add()throws Exception{
 
         String source="public class MainTest4 { public Int main(){ x=1; x=x+1; println(x); return 0;} }";
-        Process pr = compile_and_run_one_class_for_testing(source,"MainTest4");
+        Process pr = CodeGeneratorTestUtils.compile_and_run_one_class_for_testing(source,"MainTest4");
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("2\n",IOUtils.toString(pr.getInputStream()));
@@ -103,7 +68,7 @@ public class JavaByteCodeGeneratorTest {
     public void test_can_compile_multiple_assignment_to_same_variable_multiply()throws Exception{
 
         String source="public class MainTest5 { public Int main(){ x=2; x=x*2; println(x); return 0; } }";
-        Process pr = compile_and_run_one_class_for_testing(source,"MainTest5");
+        Process pr = CodeGeneratorTestUtils.compile_and_run_one_class_for_testing(source,"MainTest5");
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("4\n",IOUtils.toString(pr.getInputStream()));
@@ -113,7 +78,7 @@ public class JavaByteCodeGeneratorTest {
     public void test_can_compile_assignment_to_multiple_local_variables()throws Exception{
 
         String source="public class MainTest6 { public Int main(){ x=2; y=1; x=x+y; println(x); return 0; } }";
-        Process pr = compile_and_run_one_class_for_testing(source,"MainTest6");
+        Process pr = CodeGeneratorTestUtils.compile_and_run_one_class_for_testing(source,"MainTest6");
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("3\n",IOUtils.toString(pr.getInputStream()));
@@ -123,7 +88,7 @@ public class JavaByteCodeGeneratorTest {
     public void test_can_compile_input_and_output_very_basic()throws Exception{
 
         String source="public class MainTest7 { public Int main(){ x=readln();  println(x); return 0;} }";
-        Process pr = compile_and_run_but_not_waitFor(source,"MainTest7");
+        Process pr = CodeGeneratorTestUtils.compile_and_run_but_not_waitFor(source,"MainTest7");
 
         //give input to process
         OutputStream out = pr.getOutputStream();
