@@ -3,10 +3,6 @@ package org.vanautrui.languages.commandline;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
 import org.fusesource.jansi.Ansi;
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.FieldVisitor;
-import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
@@ -22,7 +18,6 @@ import java.util.stream.Collectors;
 
 import static java.lang.System.currentTimeMillis;
 import static org.fusesource.jansi.Ansi.ansi;
-import static org.objectweb.asm.Opcodes.*;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.*;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhases.*;
 
@@ -270,62 +265,4 @@ public class dragonc {
             printBuildConclusion(false);
         }
     }
-
-    private static void try_generate_some_bytecode(){
-        ClassWriter cw = new ClassWriter(0);
-        FieldVisitor fv;
-        MethodVisitor mv;
-        AnnotationVisitor av0;
-
-        cw.visit(49,
-                ACC_PUBLIC + ACC_SUPER,
-                "Hello",
-                null,
-                "java/lang/Object",
-                null);
-
-        cw.visitSource("Hello.java", null);
-
-        {
-            mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
-            mv.visitVarInsn(ALOAD, 0);
-            mv.visitMethodInsn(INVOKESPECIAL,
-                    "java/lang/Object",
-                    "<init>",
-                    "()V");
-            mv.visitInsn(RETURN);
-            mv.visitMaxs(1, 1);
-            mv.visitEnd();
-        }
-        {
-            mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC,
-                    "main",
-                    "([Ljava/lang/String;)V",
-                    null,
-                    null);
-            mv.visitFieldInsn(GETSTATIC,
-                    "java/lang/System",
-                    "out",
-                    "Ljava/io/PrintStream;");
-            mv.visitLdcInsn("hello");
-            mv.visitMethodInsn(INVOKEVIRTUAL,
-                    "java/io/PrintStream",
-                    "println",
-                    "(Ljava/lang/String;)V");
-            mv.visitInsn(RETURN);
-            mv.visitMaxs(2, 1);
-            mv.visitEnd();
-        }
-        cw.visitEnd();
-
-        byte[] mybytecode = cw.toByteArray();
-
-        try {
-            Files.write(Paths.get("Hello.class"), mybytecode);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-
 }
