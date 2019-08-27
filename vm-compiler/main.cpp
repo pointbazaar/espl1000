@@ -38,6 +38,9 @@ int main(int argc, char** argv)
 			}
 			
 			vector<string> clean_lines = remove_comments(lines);
+			
+			//cout << clean_lines.size() << " clean lines found " <<endl;
+			cout << "--------------" << endl;
 			for(int i=0;i<clean_lines.size();i++){
 				cout << clean_lines.at(i) << endl;
 			}

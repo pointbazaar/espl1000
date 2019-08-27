@@ -1,12 +1,11 @@
-#ifndef REMOVECOMMENTS
-#define REMOVECOMMENTS
+#ifndef REMOVECOMMENTS_HPP
+#define REMOVECOMMENTS_HPP
 
-//#include <iostream>
-//#include <fstream>
-//#include <string>
-//#include <vector>
+#include <string>
+#include <vector>
 
 
 std::vector<std::string> remove_comments(std::vector<std::string> lines);
+bool isempty(std::string s);
 
 #endif
