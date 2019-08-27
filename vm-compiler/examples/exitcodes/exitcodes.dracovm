@@ -1,0 +1,9 @@
+//this program should return with exit code 0
+//or with exit code 1
+//depending on which line is commented out
+
+method main ([String])Int
+	//iconst 1
+	iconst 0
+	return
+	
