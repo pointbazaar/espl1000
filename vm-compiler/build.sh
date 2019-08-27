@@ -1,1 +1,1 @@
-g++ -o dracovmc main.cpp main.hpp
+g++ -o dracovmc *.cpp *.hpp 
