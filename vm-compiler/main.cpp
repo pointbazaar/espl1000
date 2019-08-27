@@ -5,6 +5,8 @@
 
 #include "removecomments.hpp"
 
+//https://de.wikipedia.org/wiki/Include-Guard
+
 using namespace std;
 
 int main(int argc, char** argv);
@@ -27,6 +29,8 @@ int main(int argc, char** argv)
 		
 		if(!f.good()){
 			cout << "could not read file: " << filearg << endl;
+			f.close();
+			return 1;
 		}else{
 		
 			string line;
@@ -50,8 +54,48 @@ int main(int argc, char** argv)
 			//and that the instructions are valid
 			
 			//TODO: generate assembly
+			ofstream fout;
+			string arg0=filearg;
+			arg0.append(".asm");
+			
+			string asm_file_name=arg0;
+			
+			fout.open(asm_file_name,ios::out);
+			
+			if(!fout.good()){
+				cout << "could not open file for writing: " << filearg << endl;
+				return 1;
+				fout.close();
+			}else{
+				//TODO: write assembly
+				
+				//this is from a tutorial
+				//http://asm.sourceforge.net/intro/hello.html
+				
+				fout << "section .text ;must be declared for linker (ld)" << endl;
+				fout << "global		_start" << endl;
+				
+				fout << "_start: 	;tell linker entry point" << endl;
+				
+				fout << "mov	eax,1	;system call number (sys_exit)" << endl;
+				fout << "int 0x80	;call kernel" << endl;
+			}
+			fout.close();
 			
 			//TODO: open process to call nasm to compile to machine code
+			
+			//$ nasm -f elf hello.asm                         # this will produce hello.o ELF object file
+			//$ ld -s -o hello hello.o                        # this will produce hello executable
+			
+			string arg1="nasm -f elf ";
+			arg1.append(asm_file_name);
+			
+			string arg2="ld -melf_i386 -s -o hello ";
+			arg2.append(filearg);
+			arg2.append(".o");
+			
+			system(arg1.c_str());
+			system(arg2.c_str());
 		}
 		f.close();
 	}
