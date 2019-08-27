@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 		cout << "usage: dracovmc file.dracovm" << endl; 
 	}else{
 		char* filearg = argv[1];
-		//TODO: read the file
+		//read the file
 		ifstream f;
 		f.open(filearg,ios::in);
 		
@@ -37,6 +37,7 @@ int main(int argc, char** argv)
 				//cout << line << endl;
 			}
 			
+			//remove comments
 			vector<string> clean_lines = remove_comments(lines);
 			
 			//cout << clean_lines.size() << " clean lines found " <<endl;
@@ -44,6 +45,13 @@ int main(int argc, char** argv)
 			for(int i=0;i<clean_lines.size();i++){
 				cout << clean_lines.at(i) << endl;
 			}
+			
+			//TODO: verify that all the lines have the correct format
+			//and that the instructions are valid
+			
+			//TODO: generate assembly
+			
+			//TODO: open process to call nasm to compile to machine code
 		}
 		f.close();
 	}
