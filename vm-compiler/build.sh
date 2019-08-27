@@ -1,1 +1,1 @@
-g++ -o main vmcompiler/main.cpp
+g++ -o main main.cpp
