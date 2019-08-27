@@ -1,6 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
+
+#include "main.hpp"
 
 using namespace std;
 
@@ -19,14 +22,44 @@ int main(int argc, char** argv)
 		ifstream f;
 		f.open(filearg,ios::in);
 		
-		string line;
+		if(!f.good()){
+			cout << "could not read file: " << filearg << endl;
+		}else{
 		
-		while(getline(f,line)){
-			cout << line << endl;
+			string line;
+			vector<string> lines;
+			
+			while(getline(f,line)){
+				lines.push_back(line);
+				//cout << line << endl;
+			}
+			
+			vector<string> clean_lines = remove_comments(lines);
+			for(int i=0;i<clean_lines.size();i++){
+				cout << clean_lines.at(i) << endl;
+			}
 		}
-		
 		f.close();
 	}
     
     return 0;
 }
+
+vector<string> remove_comments(vector<string> lines){
+	vector<string> result;
+	
+	for(int i=0;i<lines.size();i++){
+		string s = lines.at(i);
+		
+		int pos=s.find("//");
+		if(pos==-1){
+			result.push_back(s);
+		}else{
+			result.push_back(s.substr(0,pos));
+		}
+	}
+	
+	return result;
+}
+
+
