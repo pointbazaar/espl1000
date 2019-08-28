@@ -9,6 +9,7 @@ class AssemblyProgram{
 private:
 	std::vector<std::string> prog; //the assembly program
 	void cmd_with_comment(std::string cmd,std::string comment);
+	bool indented=false;
 	
 public:
 	std::vector<std::string> get_prog();

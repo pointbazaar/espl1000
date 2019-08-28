@@ -16,7 +16,11 @@ void AssemblyProgram::mov(string reg,int value,string comment){
 }
 
 void AssemblyProgram::label(string value,string comment){
+	//lines after a label should be indented,
+	//the label itself should not be indented
+	this->indented=false;
 	this->cmd_with_comment(value+":",comment);
+	this->indented=true;
 }
 
 vector<string> AssemblyProgram::get_prog(){
@@ -24,7 +28,11 @@ vector<string> AssemblyProgram::get_prog(){
 }
 
 void AssemblyProgram::cmd_with_comment(std::string cmd,std::string comment){
-	this->prog.push_back(cmd+"\t\t;"+comment);
+	string prefix="";
+	if(this->indented){
+		prefix="\t";
+	}
+	this->prog.push_back(prefix+cmd+"\t\t;"+comment);
 }
 
 void AssemblyProgram::global(std::string value,std::string comment){
