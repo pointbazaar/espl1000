@@ -1,7 +1,9 @@
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 #include "AssemblyProgram.hpp"
 
@@ -28,11 +30,20 @@ vector<string> AssemblyProgram::get_prog(){
 }
 
 void AssemblyProgram::cmd_with_comment(std::string cmd,std::string comment){
-	string prefix="";
+	//string prefix="";
+	//string res="";
+	//sprintf(&res,"%20s ;%20s",cmd,comment);
+	ostringstream ss;
+	
 	if(this->indented){
-		prefix="\t";
+		//this->prog.push_back("\t"+cmd+"\t;"+comment);
+		ss << "\t" << left << setfill(' ') << setw(10) << cmd << "\t" << left << setfill(' ') << setw(25) << (";"+comment);
+	}else{
+		//this->prog.push_back(cmd+"\t\t;"+comment);
+		ss << "" << left << setfill(' ') << setw(10) << cmd << "\t\t" << left << setfill(' ') << setw(25) << (";"+comment);
 	}
-	this->prog.push_back(prefix+cmd+"\t\t;"+comment);
+	
+	this->prog.push_back(ss.str());
 }
 
 void AssemblyProgram::global(std::string value,std::string comment){
