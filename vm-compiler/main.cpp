@@ -4,6 +4,9 @@
 #include <vector>
 
 #include "removecomments.hpp"
+#include "assemblywriter.hpp"
+
+//https://www.geeksforgeeks.org/compiler-design-tutorials/
 
 //https://de.wikipedia.org/wiki/Include-Guard
 
@@ -72,13 +75,12 @@ int main(int argc, char** argv)
 				//this is from a tutorial
 				//http://asm.sourceforge.net/intro/hello.html
 				
-				fout << "section .text ;must be declared for linker (ld)" << endl;
-				fout << "global		_start" << endl;
+				vector<string> asm_codes = write_assembly(clean_lines);
 				
-				fout << "_start: 	;tell linker entry point" << endl;
+				for(int i=0;i<asm_codes.size();i++){
+					fout << asm_codes.at(i) << endl;
+				}
 				
-				fout << "mov	eax,1	;system call number (sys_exit)" << endl;
-				fout << "int 0x80	;call kernel" << endl;
 			}
 			fout.close();
 			
