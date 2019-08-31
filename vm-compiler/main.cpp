@@ -70,7 +70,7 @@ int main(int argc, char** argv)
 				return 1;
 				fout.close();
 			}else{
-				//TODO: write assembly
+				//write assembly to file
 				
 				//this is from a tutorial
 				//http://asm.sourceforge.net/intro/hello.html
@@ -86,8 +86,8 @@ int main(int argc, char** argv)
 			
 			//TODO: open process to call nasm to compile to machine code
 			
-			//$ nasm -f elf hello.asm                         # this will produce hello.o ELF object file
-			//$ ld -s -o hello hello.o                        # this will produce hello executable
+			//$ nasm -f elf hello.asm  # this will produce hello.o ELF object file
+			//$ ld -s -o hello hello.o # this will produce hello executable
 			
 			string arg1="nasm -f elf ";
 			arg1.append(asm_file_name);

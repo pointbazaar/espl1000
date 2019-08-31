@@ -1,4 +1,4 @@
 main
 dracovmc
 hello
-*.asm
+.examples/*.asm
