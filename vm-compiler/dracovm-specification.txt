@@ -1,5 +1,6 @@
 
 DracoVM is supposed to be a stack based, compiled VM Language.
+It is ispired by the Jack VM (from Nand2Tetris)
 
 Commands supported:
 (for now commands support just integers)
@@ -45,3 +46,12 @@ ACCESSING MEMORY SEGMENTS:
 PROGRAM FLOW COMMANDS:
 	label	SYMBOL  //globally unique label for jumping
 	goto 	SYMBOL  //jump to a label specified earlier
+	if-goto	SYMBOL  //jumps to that label if TOP OF STACK is true (1)
+
+SUBROUTINE CALLING COMMANDS:
+	subroutine	SUBRNAME nLocals 
+	//number of local variables
+	call 		SUBRNAME nArgs	 
+	//nArgrs is number of arguments (is the same always, for a subroutine)
+	return
+	//transfer control back to the calling function
