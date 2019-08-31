@@ -2,8 +2,7 @@
 //or with exit code 1
 //depending on which line is commented out
 
-method main ([String])Int
-	//iconst 1
-	iconst 0
+subroutine main 0
+	push 0
 	return
 	

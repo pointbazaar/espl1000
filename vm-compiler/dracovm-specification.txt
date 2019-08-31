@@ -39,6 +39,7 @@ VIRTUAL MEMORY SEGMENTS
 
 
 ACCESSING MEMORY SEGMENTS:
+	push	CONSTANT		//push a constant integer on the stack
 	push 	SEGMENT index
 	pop 	SEGMENT index
 
@@ -55,3 +56,10 @@ SUBROUTINE CALLING COMMANDS:
 	//nArgrs is number of arguments (is the same always, for a subroutine)
 	return
 	//transfer control back to the calling function
+//all subroutines must pop all their arguments off the stack and always leave 1 return
+//value on the stack
+
+BUILTIN SUBROUTINES:
+	println		//prints the integer on stack, and a newline
+	print		//prints the integer on stack
+	read		//reads an integer from stdin, pushes it on the stack
