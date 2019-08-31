@@ -1,0 +1,47 @@
+
+DracoVM is supposed to be a stack based, compiled VM Language.
+
+Commands supported:
+(for now commands support just integers)
+
+hypothetical STACK:
+x
+a
+b
+
+the RETURNS is what is left on the stack after operands have been popped
+1 means true,
+0 means false
+
+COMMAND	RETURNS	COMMENT
+	add	a+b	integer addition
+	sub	a-b	integer subtraction
+	neg	-b	integer inversion
+	eq	1 or 0	equality
+	gt	1 or 0 	>
+	lt	1 or 0	<
+	geq	1 or 0	>=
+	leq	1 or 0	<=
+
+	and	1 or 0	conjunction
+	or	1 or 0	disjunction
+	not	1 or 0	negation
+
+VIRTUAL MEMORY SEGMENTS
+	the DracoVM manipulates various virtual memory segments
+	these memory segments have pointers which have a constant address in virtual memory
+	and can be used to access these segments
+
+	ARG	arguments to the subroutine
+	LOCAL	local variables for the subroutine
+	STATIC	static variables which have a constant virtual memory address
+
+
+ACCESSING MEMORY SEGMENTS:
+	push 	SEGMENT index
+	pop 	SEGMENT index
+
+
+PROGRAM FLOW COMMANDS:
+	label	SYMBOL  //globally unique label for jumping
+	goto 	SYMBOL  //jump to a label specified earlier
