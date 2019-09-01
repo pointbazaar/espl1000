@@ -75,38 +75,53 @@ public class DracoVMCodeGenerator {
         }
     }
 
+    private static void genVMCodeForFloatConst(FloatConstNode fconst,StringBuilder sb){
+        sb.append("fpush ").append(fconst.value);
+    }
+
+    private static void genVMCodeForIntConst(int iconst,StringBuilder sb){
+        sb.append("ipush ").append(iconst);
+    }
+
+    private static void genVMCodeForBoolConst(BoolConstNode bconst,StringBuilder sb){
+        sb.append("ipush ").append((bconst.value)?1:0);
+    }
+
     private static void genDracoVMCodeForTerm(TermNode tNode,StringBuilder sb)throws Exception{
         //TODO
         ITermNode t = tNode.termNode;
         if(t instanceof FloatConstNode){
-            FloatConstNode node=(FloatConstNode)t;
-            //TODO
+            genVMCodeForFloatConst((FloatConstNode)t,sb);
         }else if(t instanceof IntConstNode){
-            IntConstNode intConstNode = (IntConstNode)t;
-            //TODO
+            genVMCodeForIntConst(((IntConstNode)t).value,sb);
         }else if(t instanceof StringConstNode){
             StringConstNode stringConstNode = (StringConstNode)t;
             //push the string on the stack
             //TODO
+            throw new Exception("unhandled case");
         }else if(t instanceof ExpressionNode) {
             ExpressionNode expressionNode = (ExpressionNode)t;
-            //TODO
+            genDracoVMCodeForExpression(expressionNode,sb);
+            throw new Exception("currently unhandled case ");
         }else if(t instanceof VariableNode) {
             //find the local variable index
             // and push the variable onto the stack
             VariableNode variableNode = (VariableNode) t;
             //TODO
+            throw new Exception("unhandled case");
         }else if(t instanceof MethodCallNode){
             MethodCallNode methodCallNode = (MethodCallNode)t;
             //TODO
+            throw new Exception("unhandled case");
         }else if(t instanceof BoolConstNode) {
-            BoolConstNode b = (BoolConstNode) t;
-            //TODO
+            genVMCodeForBoolConst((BoolConstNode)t,sb);
         }else if(t instanceof ArrayConstantNode) {
             ArrayConstantNode arrayConstantNode = (ArrayConstantNode) t;
             //TODO
+            throw new Exception("currently unhandled case");
         }else if (t instanceof CharConstNode) {
-            //TODO
+            CharConstNode t1 = (CharConstNode) t;
+            genVMCodeForIntConst((int)t1.content,sb);
         }else{
             throw new Exception("unhandled case");
         }
