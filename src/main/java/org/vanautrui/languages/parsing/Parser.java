@@ -8,12 +8,13 @@ import java.nio.file.Paths;
 
 public class Parser {
     public AST parse(TokenList tokens, Path path) throws Exception {
-
-        AST result = new AST(tokens,path);
-        return result;
+        if(tokens.size()==0){
+            throw new Exception("did not receive any tokens as input");
+        }
+        return new AST(tokens,path);
     }
 
     public AST parseTestMode(TokenList tokens)throws Exception{
-        return new AST(tokens, Paths.get("/dev/null"));
+        return parse(tokens, Paths.get("/dev/null"));
     }
 }
