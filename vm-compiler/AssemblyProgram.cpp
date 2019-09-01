@@ -8,6 +8,9 @@
 #include "AssemblyProgram.hpp"
 
 using namespace std;
+
+//the assembly program class
+//should have a method to verify it?
 	
 void AssemblyProgram::section(string section, string comment){
 	this->cmd_with_comment("section "+section,comment);

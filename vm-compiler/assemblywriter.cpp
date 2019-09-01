@@ -12,6 +12,9 @@ vector<string> write_assembly(vector<string> vm_instr){
 	//the vm instructions are assumed to be clean 
 	//which means no comments and no empty lines
 	
+	//there should be some method to verify that the vm instructions
+	//form a correct dracovm program
+	
 	//vector<string> res;
 	
 	AssemblyProgram prog;
@@ -22,7 +25,11 @@ vector<string> write_assembly(vector<string> vm_instr){
 	
 	//TODO: translate the codes here
 	for(int i=0;i<vm_instr.size();i++){
+		string instr = vm_instr.at(i);
 		
+		if(instr.find("return")!=string::npos){
+			
+		}
 	}
 	
 	//TEMP
