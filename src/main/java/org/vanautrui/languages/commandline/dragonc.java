@@ -48,16 +48,6 @@ public class dragonc {
             printHelp();
         }else {
 
-            if(cmd.hasOption("splash")){
-                //display a splash screen
-                //http://patorjk.com/software/taag/#p=display&f=JS%20Stick%20Letters&t=Dragon
-                String splash=" __   __        __   __       \n" +
-                        "|  \\ |__)  /\\  / _` /  \\ |\\ | \n" +
-                        "|__/ |  \\ /~~\\ \\__> \\__/ | \\| \n" +
-                        "                              ";
-                System.out.println(splash);
-            }
-
             if(cmd.hasOption("clean")){
                 if(cmd.hasOption("debug")){
                     System.out.println("clearing the cache");
@@ -162,12 +152,7 @@ public class dragonc {
                     )
         );
 
-        opts.addOption(new Option("splash",false,"displays a splash screen with ascii art"));
-
         OptionGroup optionGroup = new OptionGroup();
-
-        optionGroup.addOption(new Option("nocurly",false,"accept only indentation for scopes (TODO)"));
-        optionGroup.addOption(new Option("curly",false,"accept only curly braces  for scopes (TODO)"));
 
         OptionGroup optGroup = new OptionGroup();
 
@@ -221,21 +206,6 @@ public class dragonc {
             if(timed) {
                 printDuration(start, end);
             }
-
-            //below code is on hold until i have some time for it
-            /*
-            List<String> just_code_with_braces_without_comments_without_newlines;
-
-            if(cmd.hasOption("nocurly")){
-                just_code_with_braces_without_comments_without_newlines
-                        =phase_conditional_weave_curly_braces(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd);
-            }else{
-                //the editor is curly by default
-                just_code_with_braces_without_comments_without_newlines
-                        =codeWithoutCommentsWithoutUnneccesaryWhitespace;
-            }
-
-             */
 
             start= currentTimeMillis();
             //PHASE LEXING

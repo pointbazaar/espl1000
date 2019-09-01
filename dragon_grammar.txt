@@ -4,14 +4,6 @@
 //it is sometimes inconsistent with the AST Node classes in src/ , but 
 //the goal is for both to be consistent with each other
 
-//the language can be written with indentation, or with curly braces,
-//depending on your preferences. before lexing, 
-//if there is indentation, it is replaced with curly braces
-//so everything after that brace-weaving recognizes only the curly braces variation
-
-//TODO: think about how to parse statements in method,
-//if the semicolons should perhaps be weaved in also or if we can do it otherwise
-
 //using regex notation , so '?' at the end means optional, and '+' means once or more
 //TODO
 //-----------------------------------------------------------------------------

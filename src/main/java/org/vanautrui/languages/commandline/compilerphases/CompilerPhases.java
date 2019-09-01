@@ -10,7 +10,6 @@ import org.vanautrui.languages.codegeneration.jvmbackend.JavaByteCodeGenerator;
 import org.vanautrui.languages.lexing.Lexer;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.collections.TokenList;
-import org.vanautrui.languages.lexing.utils.CurlyBracesWeaver;
 import org.vanautrui.languages.parsing.Parser;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
@@ -18,7 +17,9 @@ import org.vanautrui.languages.phase_clean_the_input.CommentRemover;
 import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.typechecking.TypeChecker;
 
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,45 +36,6 @@ import static org.vanautrui.languages.phase_clean_the_input.UnneccessaryWhiteSpa
 import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
 
 public class CompilerPhases {
-
-    public static List<String> phase_conditional_weave_curly_braces(List<String> codesWithoutCommentsWithoutUnneccesaryWhitespace, CommandLine cmd) throws Exception {
-        final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
-        printBeginPhase("PHASE: WEAVE IN CURLY BRACES",printLong);
-
-        //TODO: put the semicolons in?
-        //the tokens should know which line number they are at.
-        //at the end of each line which is not opening '{' or closing '}' a scope
-        //  with that being defined as '{' being the last token on the line
-        //  and '}' being the first token on the line respectively
-        //, there should be a ';' , a semicolon.
-
-        //so we can identify the different statements.
-        //but we cannot exactly do it like this because it would
-        //prevent people from making a multi-line statement
-        //let us abandon this approach for now.
-
-        //i have an idea how we can avoid an issue related to this
-        final boolean debug=cmd.hasOption("debug");
-        List<String> results=new ArrayList<>();
-        try {
-            for(String codeWithoutCommentsWithoutUnneccesaryWhitespace: codesWithoutCommentsWithoutUnneccesaryWhitespace){
-                String just_code_with_braces_without_comments_without_newlines =
-                        CurlyBracesWeaver
-                                .weave_scoping_curly_braces_and_remove_newlines(codeWithoutCommentsWithoutUnneccesaryWhitespace);
-
-                if(debug) {
-                    System.out.println(just_code_with_braces_without_comments_without_newlines);
-                }
-                results.add(just_code_with_braces_without_comments_without_newlines);
-            }
-            printEndPhase(true,printLong);
-            return results;
-        }catch (Exception e){
-            //TerminalUtil.println("⚠", RED);
-            printEndPhase(false,printLong);
-            throw e;
-        }
-    }
 
     public static void phase_typecheck(List<AST> asts, CommandLine cmd)throws Exception{
         final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
