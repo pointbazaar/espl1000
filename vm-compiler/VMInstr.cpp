@@ -32,3 +32,7 @@ vector<VMInstr> VMInstr::make_vm_instrs(vector<string> vmcodes){
 		}
 		return res;
 }
+
+int VMInstr::is(std::string instr){
+	return this->cmd.find(instr)!=string::npos;
+}

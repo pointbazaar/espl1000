@@ -29,8 +29,10 @@ vector<string> write_assembly(vector<VMInstr> codes){
 		VMInstr code = codes.at(i);
 		string instr=code.cmd;
 		
-		if(instr.find("return")!=string::npos){
-			
+		if(code.is("return")){
+			prog.ret();
+		}else if(code.is("add")){
+			//TODO: take topmost 2 items from stack, and add them
 		}
 	}
 	

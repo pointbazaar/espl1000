@@ -56,3 +56,7 @@ void AssemblyProgram::global(std::string value,std::string comment){
 void AssemblyProgram::any(std::string value,std::string comment){
 	this->cmd_with_comment(value,comment);
 }
+
+void AssemblyProgram::ret(){
+	this->cmd_with_comment("ret","");
+}

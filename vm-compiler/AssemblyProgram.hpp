@@ -17,6 +17,7 @@ public:
 	void label(std::string value,std::string comment);
 	void section(std::string section,std::string comment);
 	void global(std::string value,std::string comment);
+	void ret();
 	
 	//write any command
 	void any(std::string value,std::string comment); 
