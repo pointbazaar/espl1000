@@ -189,9 +189,14 @@ public class CompilerPhases {
                 SubroutineSymbolTable subTable = createSubroutineSymbolTable(new HashSet<>(asts));
                 String dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable);
 
-                //TODO: call the vm compiler
+                //call the vm compiler
+                //System.out.println(ast.srcPath.toAbsolutePath().getParent());
+                String dir = asts.get(0).srcPath.toAbsolutePath().getParent().toString();
+                Path dracovmCodePath = Paths.get(dir + "/" + "Main" + ".dracovm");
+                Files.write(dracovmCodePath, dracoVMCodes.getBytes());
 
-                //TODO: add generated executable to generatedFilesPaths
+                //add generated executable to generatedFilesPaths
+                generatedFilesPaths.add(dracovmCodePath);
                 throw new Exception("unsupported option right now");
             }else if(cmd.hasOption("targetjvm") || true){
                 //targetjvm is the default option currently
