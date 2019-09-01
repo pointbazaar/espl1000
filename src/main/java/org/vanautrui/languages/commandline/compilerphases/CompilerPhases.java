@@ -3,7 +3,6 @@ package org.vanautrui.languages.commandline.compilerphases;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.io.IOUtils;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.codegeneration.JavaByteCodeGenerator;
 import org.vanautrui.languages.lexing.Lexer;
@@ -17,12 +16,13 @@ import org.vanautrui.languages.phase_clean_the_input.CommentRemover;
 import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.typechecking.TypeChecker;
 
-import java.io.File;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import static org.fusesource.jansi.Ansi.Color.RED;
@@ -101,6 +101,65 @@ public class CompilerPhases {
 
             Process pr = Runtime.getRuntime().exec(command);
             //TODO: connect input and output to this process's input and output
+
+            InputStream out = pr.getInputStream();
+            OutputStream in = pr.getOutputStream();
+
+            Scanner sc = new Scanner(System.in);
+
+            //PipedInputStream pis = new PipedInputStream();
+            //PipedOutputStream pos = new PipedOutputStream(in);
+            (new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        while (sc.hasNextLine()) {
+                            System.out.println("//has next line from user");
+                            in.write(sc.nextLine().getBytes());
+                        }
+                        in.close();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            })).start();
+
+            (new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        char c;
+                        while ((c = (char) out.read()) != -1) {
+                            System.out.println("//read from process");
+                            System.out.print(c);
+                        }
+                        System.out.close();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        System.out.close();
+                    }
+                }
+            })).start();
+
+            /*
+            Scanner scanner = new Scanner(System.in);
+
+            while(
+                    (out.available()>0 || scanner.hasNext()) && pr.isAlive()
+            ){
+                System.out.println("//loop iteration");
+                if(out.available()>0){
+                    System.out.println("// out available: "+out.available());
+
+                    int read = out.read();
+                    System.out.print((char)read);
+                }else if(scanner.hasNextByte()){
+                    System.out.println("// scanner.hasNextByte()==true");
+                    in.write(scanner.nextByte());
+                    in.flush();
+                }
+            }
+
             pr.waitFor();
             int exitValue = pr.exitValue();
 
@@ -108,9 +167,11 @@ public class CompilerPhases {
                 throw new Exception(IOUtils.toString(pr.getErrorStream()));
             }
 
+             */
+
             //for now, just display the output
-            String out = IOUtils.toString(pr.getInputStream());
-            System.out.println(out);
+            //String out = IOUtils.toString(pr.getInputStream());
+            //System.out.println(out);
         }
     }
 
