@@ -3,9 +3,9 @@ package org.vanautrui.languages.commandline.compilerphases;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.cli.CommandLine;
-import org.apache.commons.io.IOUtils;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.codegeneration.dracovmbackend.DracoVMCodeGenerator;
+import org.vanautrui.languages.codegeneration.dracovmbackend.vmcompiler.DracoVMCompiler;
 import org.vanautrui.languages.codegeneration.jvmbackend.JavaByteCodeGenerator;
 import org.vanautrui.languages.lexing.Lexer;
 import org.vanautrui.languages.lexing.collections.CharacterList;
@@ -150,25 +150,34 @@ public class CompilerPhases {
         try {
             if(cmd.hasOption("targetnative")){
                 SubroutineSymbolTable subTable = createSubroutineSymbolTable(new HashSet<>(asts));
-                String dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable);
+                List<String> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable);
+                List<String> assembly_codes = DracoVMCompiler.compileVMCode(dracoVMCodes);
+                //$ nasm -f elf hello.asm  # this will produce hello.o ELF object file
+                //$ ld -s -o hello hello.o # this will produce hello executable
 
-                //call the vm compiler
-                //System.out.println(ast.srcPath.toAbsolutePath().getParent());
-                String dir = asts.get(0).srcPath.toAbsolutePath().getParent().toString();
-                Path dracovmCodePath = Paths.get(dir + "/" + "Main" + ".dracovm");
-                Files.write(dracovmCodePath, dracoVMCodes.getBytes());
+                if(cmd.hasOption("debug")){
+                    System.out.println("call nasm");
+                }
 
-                //call the dracovmc vm compiler
-                Process p = Runtime.getRuntime().exec("bash dracovmc " + dracovmCodePath.toString());
+                String filename = "main";
+                String asm_file_name = filename+".asm";
+                Files.write(Paths.get(asm_file_name),assembly_codes.stream().collect(Collectors.joining("\n")).getBytes());
+
+                Process p = Runtime.getRuntime().exec("nasm -f elf " + asm_file_name);
                 p.waitFor();
-                String output = IOUtils.toString(p.getInputStream());
-                System.out.println(output);
 
                 if(p.exitValue()!=0){
-                    throw new Exception("problems generating executable");
+                    throw new Exception("nasm exit with nonzero exit code");
                 }
+
+                Process p2 = Runtime.getRuntime().exec("ld -melf_i386 -s -o "+filename+" "+asm_file_name+".o");
+
+                if(p2.exitValue() != 0){
+                    throw new Exception("ld exit with nonzero exit code");
+                }
+
                 //add generated executable to generatedFilesPaths
-                generatedFilesPaths.add(dracovmCodePath);
+                generatedFilesPaths.add(Paths.get(filename));
 
             }else if(cmd.hasOption("targetjvm") || true){
                 //targetjvm is the default option currently

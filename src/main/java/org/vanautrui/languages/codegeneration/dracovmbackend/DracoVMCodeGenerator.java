@@ -19,13 +19,15 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNo
 import org.vanautrui.languages.parsing.astnodes.terminal.*;
 import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class DracoVMCodeGenerator {
 
-    public static String generateDracoVMCode(Set<AST> asts, SubroutineSymbolTable subTable) throws Exception{
+    public static List<String> generateDracoVMCode(Set<AST> asts, SubroutineSymbolTable subTable) throws Exception{
 
-        StringBuilder sb=new StringBuilder("");
+        List<String> sb =new ArrayList<>();
         //TODO:
         for(AST ast :asts){
             for(ClassNode classNode : ast.classNodeList){
@@ -38,19 +40,19 @@ public class DracoVMCodeGenerator {
             }
         }
 
-        return sb.toString();
+        return sb;
     }
 
-    private static void generateDracoVMCodeForMethod(MethodNode m, StringBuilder sb)throws Exception{
+    private static void generateDracoVMCodeForMethod(MethodNode m, List<String> sb)throws Exception{
         //TODO
-        sb.append("subroutine ").append(m.methodName.methodName.name).append(" ").append(m.arguments.size()).append("\n");
+        sb.add("subroutine "+m.methodName.methodName.name+" "+m.arguments.size());
         //not sure if it is number of arguments or number of local vars
         for(StatementNode stmt : m.statements){
             generateDracoVMCodeForStatement(stmt,sb);
         }
     }
 
-    private static void generateDracoVMCodeForStatement(StatementNode stmt,StringBuilder sb)throws Exception{
+    private static void generateDracoVMCodeForStatement(StatementNode stmt,List<String> sb)throws Exception{
         IStatementNode snode = stmt.statementNode;
         if(snode instanceof MethodCallNode){
             MethodCallNode call = (MethodCallNode)snode;
@@ -75,19 +77,19 @@ public class DracoVMCodeGenerator {
         }
     }
 
-    private static void genVMCodeForFloatConst(FloatConstNode fconst,StringBuilder sb){
-        sb.append("fpush ").append(fconst.value).append("\n");
+    private static void genVMCodeForFloatConst(FloatConstNode fconst,List<String> sb){
+        sb.add("fpush "+fconst.value);
     }
 
-    private static void genVMCodeForIntConst(int iconst,StringBuilder sb){
-        sb.append("ipush ").append(iconst).append("\n");
+    private static void genVMCodeForIntConst(int iconst,List<String> sb){
+        sb.add("ipush "+iconst);
     }
 
-    private static void genVMCodeForBoolConst(BoolConstNode bconst,StringBuilder sb){
-        sb.append("ipush ").append((bconst.value)?1:0).append("\n");
+    private static void genVMCodeForBoolConst(BoolConstNode bconst,List<String> sb){
+        sb.add("ipush "+((bconst.value)?1:0));
     }
 
-    private static void genDracoVMCodeForTerm(TermNode tNode,StringBuilder sb)throws Exception{
+    private static void genDracoVMCodeForTerm(TermNode tNode,List<String> sb)throws Exception{
         //TODO
         ITermNode t = tNode.termNode;
         if(t instanceof FloatConstNode){
@@ -127,24 +129,24 @@ public class DracoVMCodeGenerator {
         }
     }
 
-    private static void genVMCodeForMethodCall(MethodCallNode methodCallNode, StringBuilder sb) {
-        sb.append("call ").append(methodCallNode.identifierMethodName);
+    private static void genVMCodeForMethodCall(MethodCallNode methodCallNode, List<String> sb) {
+        sb.add("call "+methodCallNode.identifierMethodName);
     }
 
-    private static void genDracoVMCodeForOp(OperatorNode opNode,StringBuilder sb)throws Exception{
+    private static void genDracoVMCodeForOp(OperatorNode opNode,List<String> sb)throws Exception{
         switch (opNode.operator){
             case "+":
-                sb.append("add\n");
+                sb.add("add");
                 break;
             case "-":
-                sb.append("sub\n");
+                sb.add("sub");
                 break;
             default:
                 throw new Exception("currently unsupported op "+opNode.operator);
         }
     }
 
-    private static void genDracoVMCodeForExpression(ExpressionNode expr,StringBuilder sb)throws Exception{
+    private static void genDracoVMCodeForExpression(ExpressionNode expr,List<String> sb)throws Exception{
         genDracoVMCodeForTerm(expr.term,sb);
         for(int i=0;i<expr.termNodes.size();i++){
             genDracoVMCodeForTerm(expr.termNodes.get(i),sb);
@@ -152,8 +154,8 @@ public class DracoVMCodeGenerator {
         }
     }
 
-    private static void genDracoVMCodeForReturn(ReturnStatementNode retStmt,StringBuilder sb)throws Exception {
+    private static void genDracoVMCodeForReturn(ReturnStatementNode retStmt,List<String> sb)throws Exception {
         genDracoVMCodeForExpression(retStmt.returnValue,sb);
-        sb.append("return\n");
+        sb.add("return");
     }
 }
