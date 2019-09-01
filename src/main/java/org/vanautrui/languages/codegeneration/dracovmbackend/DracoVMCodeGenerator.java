@@ -111,7 +111,7 @@ public class DracoVMCodeGenerator {
             throw new Exception("unhandled case");
         }else if(t instanceof MethodCallNode){
             MethodCallNode methodCallNode = (MethodCallNode)t;
-            //TODO
+            genVMCodeForMethodCall(methodCallNode,sb);
             throw new Exception("unhandled case");
         }else if(t instanceof BoolConstNode) {
             genVMCodeForBoolConst((BoolConstNode)t,sb);
@@ -125,6 +125,10 @@ public class DracoVMCodeGenerator {
         }else{
             throw new Exception("unhandled case");
         }
+    }
+
+    private static void genVMCodeForMethodCall(MethodCallNode methodCallNode, StringBuilder sb) {
+        sb.append("call ").append(methodCallNode.identifierMethodName);
     }
 
     private static void genDracoVMCodeForOp(OperatorNode opNode,StringBuilder sb)throws Exception{
