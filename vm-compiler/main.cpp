@@ -5,6 +5,7 @@
 
 #include "removecomments.hpp"
 #include "assemblywriter.hpp"
+#include "VMInstr.hpp"
 
 //https://www.geeksforgeeks.org/compiler-design-tutorials/
 
@@ -75,7 +76,9 @@ int main(int argc, char** argv)
 				//this is from a tutorial
 				//http://asm.sourceforge.net/intro/hello.html
 				
-				vector<string> asm_codes = write_assembly(clean_lines);
+				vector<string> asm_codes = write_assembly(
+					VMInstr::make_vm_instrs(clean_lines)
+				);
 				
 				for(int i=0;i<asm_codes.size();i++){
 					fout << asm_codes.at(i) << endl;

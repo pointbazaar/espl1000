@@ -5,10 +5,11 @@
 
 #include "assemblywriter.hpp"
 #include "AssemblyProgram.hpp"
+#include "VMInstr.hpp"
 
 using namespace std;
 	
-vector<string> write_assembly(vector<string> vm_instr){
+vector<string> write_assembly(vector<VMInstr> codes){
 	//the vm instructions are assumed to be clean 
 	//which means no comments and no empty lines
 	
@@ -24,8 +25,9 @@ vector<string> write_assembly(vector<string> vm_instr){
 	prog.label("_start","tell linker entry point");
 	
 	//TODO: translate the codes here
-	for(int i=0;i<vm_instr.size();i++){
-		string instr = vm_instr.at(i);
+	for(int i=0;i<codes.size();i++){
+		VMInstr code = codes.at(i);
+		string instr=code.cmd;
 		
 		if(instr.find("return")!=string::npos){
 			
