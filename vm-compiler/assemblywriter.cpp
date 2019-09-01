@@ -32,7 +32,20 @@ vector<string> write_assembly(vector<VMInstr> codes){
 		if(code.is("return")){
 			prog.ret();
 		}else if(code.is("add")){
-			//TODO: take topmost 2 items from stack, and add them
+			//take topmost 2 items from stack, and add them
+			prog.pop("ebx");
+			prog.pop("eax");
+			prog.add("eax","ebx");
+			prog.push("eax");
+		}else if(code.is("sub")){
+			//take topmost 2 items from stack, and add them
+			prog.pop("ebx");
+			prog.pop("eax");
+			prog.sub("eax","ebx");
+			prog.push("eax");
+		}else{
+			printf("unconsidered case in assemblywriter.cpp\n");
+			exit(1);
 		}
 	}
 	

@@ -19,6 +19,12 @@ public:
 	void global(std::string value,std::string comment);
 	void ret();
 	
+	void add(std::string reg1,std::string reg2);
+	void sub(std::string reg1,std::string reg2);
+	
+	void push(std::string reg);
+	void pop(std::string reg);
+	
 	//write any command
 	void any(std::string value,std::string comment); 
 	

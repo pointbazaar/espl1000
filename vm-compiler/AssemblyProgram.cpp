@@ -59,4 +59,34 @@ void AssemblyProgram::any(std::string value,std::string comment){
 
 void AssemblyProgram::ret(){
 	this->cmd_with_comment("ret","");
+	//we should use our own handling of this,
+	//popping the program counter of the caller?
+}
+
+void AssemblyProgram::push(std::string reg){
+	string s="push ";
+	s.append(reg);
+	this->cmd_with_comment(s,"");
+}
+
+void AssemblyProgram::pop(std::string reg){
+		string s="pop ";
+		s.append(reg);
+		this->cmd_with_comment(s,"");
+}
+
+void AssemblyProgram::add(std::string reg1,std::string reg2){
+	string s="add ";
+	s.append(reg1);
+	s.append(",");
+	s.append(reg2);
+	this->cmd_with_comment(s,"");
+}
+
+void AssemblyProgram::sub(std::string reg1,std::string reg2){
+	string s="sub ";
+	s.append(reg1);
+	s.append(",");
+	s.append(reg2);
+	this->cmd_with_comment(s,"");
 }
