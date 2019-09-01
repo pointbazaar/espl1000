@@ -158,6 +158,7 @@ public class dragonc {
         optGroup.addOption(new Option("targetnative",false,"compile a native executable"));
         optGroup.addOption(new Option("targetjvm",false,"compile .class files to execute on the jvm"));
 
+        opts.addOptionGroup(optGroup);
         opts.addOptionGroup(optionGroup);
         return opts;
     }
