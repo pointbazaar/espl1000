@@ -35,16 +35,10 @@ public class JavaByteCodeGenerator {
     }
 
     public static byte[] generateByteCodeForClass(ClassNode classNode, SubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception {
-
-
-
         ClassWriter cw = new ClassWriter(0);
-
         //cw.newClass(this.name.typeName.getContents());
-
         //TODO: handle access modifiers
         //TODO: handle other modifiers
-
         {
             int access = ACC_SUPER;
             if (classNode.isPublic) {
@@ -52,11 +46,8 @@ public class JavaByteCodeGenerator {
             } else {
                 access += ACC_PRIVATE;
             }
-
             int classFileVersion = 49;
-
             String superClassName = "java/lang/Object";
-
             cw.visit(classFileVersion,
                     access,
                     classNode.name.typeName,
@@ -66,7 +57,6 @@ public class JavaByteCodeGenerator {
         }
 
         MethodVisitor mv;
-
         {
             //write the default constructor
             mv=cw.visitMethod(ACC_PUBLIC,"<init>","()V",null,null);
@@ -81,25 +71,14 @@ public class JavaByteCodeGenerator {
         }
 
         for(ClassFieldNode fieldNode : classNode.fieldNodeList){
-
-            //fieldNode.visit(cw, Optional.of(classNode),Optional.empty());
             visitClassFieldNode(cw,classNode,fieldNode);
         }
 
-        //first create the subroutine symbol table,
-        //so each method knows which methods it can call
-        //TODO: do this previous to compilation for all
-        //classes since a method can call methods from another class
-
-
-
         for(MethodNode methodNode : classNode.methodNodeList){
-            //methodNode.visit(cw,Optional.of(classNode),Optional.empty());
             MethodCodeGenerator.visitMethodNode(cw,classNode,methodNode,subroutineSymbolTable,debug);
         }
 
         cw.visitEnd();
-
         return cw.toByteArray();
     }
 
@@ -107,14 +86,6 @@ public class JavaByteCodeGenerator {
 	public static void pushFloatConstant(float f, MethodVisitor mv){
 		mv.visitLdcInsn(f);
 	}
-
-
-
-
-
-
-
-
 
     public static void visitClassFieldNode(ClassWriter cw, ClassNode classNode, ClassFieldNode classFieldNode){
         String owner = classNode.name.typeName;
