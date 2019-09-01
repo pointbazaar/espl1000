@@ -13,11 +13,25 @@ using namespace std;
 //should have a method to verify it?
 	
 void AssemblyProgram::section(string section, string comment){
+	this->indented=false;
 	this->cmd_with_comment("section "+section,comment);
+	this->indented=true;
 }
 
 void AssemblyProgram::mov(string reg,int value,string comment){
 	this->cmd_with_comment("mov "+reg+","+to_string(value),comment);
+}
+void AssemblyProgram::mov(string reg,int value){
+	this->mov(reg,value,"");
+}
+void AssemblyProgram::mov(string reg,string value){
+	this->cmd_with_comment("mov "+reg+","+value,"");
+}
+
+void AssemblyProgram::jmp(string label){
+	string s="jmp ";
+	s.append(label);
+	this->cmd_with_comment(s,"");
 }
 
 void AssemblyProgram::label(string value,string comment){

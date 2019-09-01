@@ -14,10 +14,14 @@ private:
 public:
 	std::vector<std::string> get_prog();
 	void mov(std::string reg,int value,std::string comment);
+	void mov(std::string reg,int value);
+	void mov(std::string reg,std::string value);
 	void label(std::string value,std::string comment);
 	void section(std::string section,std::string comment);
 	void global(std::string value,std::string comment);
 	void ret();
+	
+	void jmp(std::string label);
 	
 	void add(std::string reg1,std::string reg2);
 	void sub(std::string reg1,std::string reg2);
