@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.cli.CommandLine;
 import org.vanautrui.languages.TerminalUtil;
-import org.vanautrui.languages.codegeneration.JavaByteCodeGenerator;
+import org.vanautrui.languages.codegeneration.jvmbackend.JavaByteCodeGenerator;
 import org.vanautrui.languages.lexing.Lexer;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.collections.TokenList;

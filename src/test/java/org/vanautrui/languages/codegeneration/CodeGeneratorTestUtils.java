@@ -1,5 +1,6 @@
 package org.vanautrui.languages.codegeneration;
 
+import org.vanautrui.languages.codegeneration.jvmbackend.JavaByteCodeGenerator;
 import org.vanautrui.languages.lexing.Lexer;
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.Parser;

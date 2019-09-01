@@ -1,4 +1,4 @@
-package org.vanautrui.languages.codegeneration;
+package org.vanautrui.languages.codegeneration.jvmbackend;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.objectweb.asm.Opcodes.*;
-import static org.vanautrui.languages.codegeneration.LoopStatementCodeGenerator.visitLoopStatmentNode;
+import static org.vanautrui.languages.codegeneration.jvmbackend.LoopStatementCodeGenerator.visitLoopStatmentNode;
 
 public class StatementCodeGenerator {
 

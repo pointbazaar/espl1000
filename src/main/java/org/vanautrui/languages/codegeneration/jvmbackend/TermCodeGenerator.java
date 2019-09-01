@@ -1,4 +1,4 @@
-package org.vanautrui.languages.codegeneration;
+package org.vanautrui.languages.codegeneration.jvmbackend;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
@@ -12,8 +12,8 @@ import org.vanautrui.languages.parsing.astnodes.terminal.*;
 import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
 import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 
-import static org.vanautrui.languages.codegeneration.IntegerConstantCodeGenerator.pushIntegerConstant;
-import static org.vanautrui.languages.codegeneration.JavaByteCodeGenerator.pushFloatConstant;
+import static org.vanautrui.languages.codegeneration.jvmbackend.IntegerConstantCodeGenerator.pushIntegerConstant;
+import static org.vanautrui.languages.codegeneration.jvmbackend.JavaByteCodeGenerator.pushFloatConstant;
 
 public class TermCodeGenerator {
 

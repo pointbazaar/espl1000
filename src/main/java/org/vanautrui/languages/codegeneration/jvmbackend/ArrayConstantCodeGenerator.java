@@ -1,4 +1,4 @@
-package org.vanautrui.languages.codegeneration;
+package org.vanautrui.languages.codegeneration.jvmbackend;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
@@ -6,13 +6,12 @@ import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.ArrayConstantNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.BoolConstantNode;
 import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
 import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.typeresolution.TypeResolver;
 
 import static org.objectweb.asm.Opcodes.*;
-import static org.vanautrui.languages.codegeneration.IntegerConstantCodeGenerator.pushIntegerConstant;
+import static org.vanautrui.languages.codegeneration.jvmbackend.IntegerConstantCodeGenerator.pushIntegerConstant;
 
 public class ArrayConstantCodeGenerator {
 

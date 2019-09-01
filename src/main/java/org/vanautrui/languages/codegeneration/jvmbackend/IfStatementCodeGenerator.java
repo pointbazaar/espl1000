@@ -1,4 +1,4 @@
-package org.vanautrui.languages.codegeneration;
+package org.vanautrui.languages.codegeneration.jvmbackend;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;

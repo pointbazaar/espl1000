@@ -1,4 +1,4 @@
-package org.vanautrui.languages.codegeneration;
+package org.vanautrui.languages.codegeneration.jvmbackend;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
@@ -12,7 +12,7 @@ import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
 import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 
 import static org.objectweb.asm.Opcodes.*;
-import static org.vanautrui.languages.codegeneration.IntegerConstantCodeGenerator.pushIntegerConstant;
+import static org.vanautrui.languages.codegeneration.jvmbackend.IntegerConstantCodeGenerator.pushIntegerConstant;
 
 public class LoopStatementCodeGenerator {
 

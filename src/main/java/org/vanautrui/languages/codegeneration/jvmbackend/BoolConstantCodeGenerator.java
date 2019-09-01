@@ -1,9 +1,9 @@
-package org.vanautrui.languages.codegeneration;
+package org.vanautrui.languages.codegeneration.jvmbackend;
 
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.parsing.astnodes.terminal.BoolConstantNode;
 
-import static org.vanautrui.languages.codegeneration.IntegerConstantCodeGenerator.pushIntegerConstant;
+import static org.vanautrui.languages.codegeneration.jvmbackend.IntegerConstantCodeGenerator.pushIntegerConstant;
 
 public class BoolConstantCodeGenerator {
 
