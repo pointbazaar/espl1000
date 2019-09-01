@@ -165,8 +165,6 @@ public class dragonc {
 
     private static void compile_main_inner(List<File> sources,CommandLine cmd){
 
-
-
         boolean debug=cmd.hasOption("debug");
         boolean timed=cmd.hasOption("timed");
 

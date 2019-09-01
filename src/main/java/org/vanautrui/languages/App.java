@@ -34,7 +34,7 @@ public class App {
         }catch (Exception e){
             //e.printStackTrace();
             System.err.println(e.getMessage());
-            System.out.println("-help     for information about command line arguments");
+            System.err.println("-help     for information about command line arguments");
             System.exit(1);
         }
     }
