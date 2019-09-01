@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import static java.lang.System.currentTimeMillis;
@@ -82,7 +83,11 @@ public class dragonc {
             }
         }
         if(results.size()==0){
-            throw new Exception("could not find any files with '.dg' extension.");
+            //use stdin to receive codes
+            //if no files or directories are given as arguments
+            //(unix philosophy)
+            //throw new Exception("could not find any files with '.dg' extension.");
+            //results.add(Paths.get("/dev/stdin").toFile());
         }
         return results;
     }
@@ -178,6 +183,20 @@ public class dragonc {
                 if(debug) {
                     System.out.println(sourceCode);
                 }
+            }
+
+            if(sources.size()==0){
+                //use stdin to receive codes
+                //if no files or directories are given as arguments
+                //(unix philosophy)
+                StringBuilder sb=new StringBuilder();
+                Scanner sc = new Scanner(System.in);
+                while(sc.hasNextLine()){
+                    sb.append(sc.nextLine());
+                }
+                sc.close();
+                codes.add(sb.toString());
+                sources.add(Paths.get("Main.dg").toFile());
             }
 
             long start,end;
