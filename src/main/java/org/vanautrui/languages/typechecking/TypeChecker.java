@@ -12,6 +12,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.*;
 import org.vanautrui.languages.typeresolution.TypeResolver;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -25,14 +26,9 @@ public class TypeChecker {
     //AST Nodes that conform to the expected types.
 
     public void doTypeCheck(List<AST> asts) throws Exception{
-
+        SubroutineSymbolTable subroutineSymbolTable = SymbolTableGenerator.createSubroutineSymbolTable(new HashSet<>(asts));
         for(AST ast : asts){
             for(ClassNode classNode : ast.classNodeList){
-
-                //TODO: create a the  symbol table with all classes being compiled
-                //otherwise we cannot call methods from other classes
-                SubroutineSymbolTable subroutineSymbolTable = SymbolTableGenerator.createSubroutineSymbolTable(classNode);
-
                 typeCheckClassNode(asts,classNode,subroutineSymbolTable);
             }
         }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.cli.CommandLine;
 import org.vanautrui.languages.TerminalUtil;
+import org.vanautrui.languages.codegeneration.dracovmbackend.DracoVMCodeGenerator;
 import org.vanautrui.languages.codegeneration.jvmbackend.JavaByteCodeGenerator;
 import org.vanautrui.languages.lexing.Lexer;
 import org.vanautrui.languages.lexing.collections.CharacterList;
@@ -21,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -179,32 +181,42 @@ public class CompilerPhases {
         final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
         printBeginPhase("CODE GENERATION",printLong);
 
-        List<Path> classFilePaths=new ArrayList<>();
+        List<Path> generatedFilesPaths=new ArrayList<>();
         final boolean debug=cmd.hasOption("debug");
 
         try {
-            for(AST ast : asts) {
-                for (ClassNode classNode : ast.classNodeList) {
+            if(cmd.hasOption("targetnative")){
+                SubroutineSymbolTable subTable = createSubroutineSymbolTable(new HashSet<>(asts));
+                String dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable);
 
-                    //TODO: create the symbol table with all classes in mind, not just this one
-                    SubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
+                //TODO: call the vm compiler
 
-                    if(debug || cmd.hasOption("symboltables")){
-                        System.out.println(subroutineSymbolTable.toString());
+                //TODO: add generated executable to generatedFilesPaths
+                throw new Exception("unsupported option right now");
+            }else if(cmd.hasOption("targetjvm") || true){
+                //targetjvm is the default option currently
+                SubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(new HashSet<>(asts));
+
+                for (AST ast : asts) {
+                    for (ClassNode classNode : ast.classNodeList) {
+
+                        if (debug || cmd.hasOption("symboltables")) {
+                            System.out.println(subroutineSymbolTable.toString());
+                        }
+
+                        //generate bytecode for that class
+                        byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode, subroutineSymbolTable, debug);
+
+                        //System.out.println(ast.srcPath.toAbsolutePath().getParent());
+                        String dir = ast.srcPath.toAbsolutePath().getParent().toString();
+                        Path classFilePath = Paths.get(dir + "/" + classNode.name.typeName + ".class");
+                        Files.write(classFilePath, classResult);
+                        generatedFilesPaths.add(classFilePath);
                     }
-
-                    //generate bytecode for that class
-                    byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode, subroutineSymbolTable, debug);
-
-                    //System.out.println(ast.srcPath.toAbsolutePath().getParent());
-                    String dir=ast.srcPath.toAbsolutePath().getParent().toString();
-                    Path classFilePath = Paths.get(dir + "/" + classNode.name.typeName + ".class");
-                    Files.write(classFilePath, classResult);
-                    classFilePaths.add(classFilePath);
                 }
             }
             printEndPhase(true,printLong);
-            return classFilePaths;
+            return generatedFilesPaths;
 
         }catch (Exception e){
             printEndPhase(false,printLong);

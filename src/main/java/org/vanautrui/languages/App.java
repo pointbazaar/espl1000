@@ -43,29 +43,6 @@ public class App {
 
         //https://stackoverflow.com/questions/5346908/generating-a-hello-world-class-with-the-java-asm-library
 
-        /*
-        ClassNode cn = new ClassNode();
-
-        cn.version=V1_5;
-        cn.access=ACC_PUBLIC;
-        cn.name="pkg/Main";
-        cn.superName="java/lang/Object";
-
-        FieldNode fieldNode=new FieldNode(ACC_PUBLIC,"field","I",null, 1);
-
-        cn.fields.add(fieldNode);
-
-        MethodNode methodNode = new MethodNode(ACC_PUBLIC);
-
-        AbstractInsnNode ins = new InsnNode(ASTORE);
-        methodNode.instructions.add(ins);
-
-        cn.methods.add(methodNode);
-
-        System.out.println(cn.toString());
-
-         */
-
         //IMPORTANT: there are intellij plugins for viewing bytecode and such.
 
         //copied from https://stackoverflow.com/questions/5346908/generating-a-hello-world-class-with-the-java-asm-library

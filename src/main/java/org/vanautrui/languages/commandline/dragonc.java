@@ -153,7 +153,10 @@ public class dragonc {
         optionGroup.addOption(new Option("nocurly",false,"accept only indentation for scopes (TODO)"));
         optionGroup.addOption(new Option("curly",false,"accept only curly braces  for scopes (TODO)"));
 
+        OptionGroup optGroup = new OptionGroup();
 
+        optGroup.addOption(new Option("targetnative",false,"compile a native executable"));
+        optGroup.addOption(new Option("targetjvm",false,"compile .class files to execute on the jvm"));
 
         opts.addOptionGroup(optionGroup);
         return opts;
@@ -257,6 +260,8 @@ public class dragonc {
             }
 
             if(cmd.hasOption("run")){
+                //TODO: support running the native executable
+
                 //execute
                 phase_run_optional(classFilePaths,cmd);
             }

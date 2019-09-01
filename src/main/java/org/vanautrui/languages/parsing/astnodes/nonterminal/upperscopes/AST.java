@@ -15,6 +15,8 @@ public class AST implements IASTNode {
 
     public Path srcPath= Paths.get("/dev/null");
 
+    public AST(){}
+
     public AST(TokenList tokens, Path path) throws Exception {
         this.srcPath=path;
 

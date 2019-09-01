@@ -2,10 +2,14 @@ package org.vanautrui.languages.codegeneration.jvmbackend;
 
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassFieldNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+
+import java.util.HashSet;
+
 import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.*;
 import static org.objectweb.asm.Opcodes.*;
 
@@ -21,7 +25,11 @@ public class JavaByteCodeGenerator {
     //https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-2.html#jvms-2.1
 
     public static byte[] generateByteCodeForOneClass(ClassNode classNode, boolean debug)throws Exception{
-        SubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(classNode);
+        AST ast = new AST();
+        ast.classNodeList.add(classNode);
+        HashSet<AST> asts=new HashSet<>();
+        asts.add(ast);
+        SubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(asts);
 
         return generateByteCodeForClass(classNode,subroutineSymbolTable,debug);
     }

@@ -1,19 +1,29 @@
 package org.vanautrui.languages.symboltablegenerator;
 
-import org.vanautrui.languages.symboltables.tables.*;
-import org.vanautrui.languages.symboltables.rows.*;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.*;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.*;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.*;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.DeclaredArgumentNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.StatementNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+import org.vanautrui.languages.symboltables.rows.LocalVarSymbolTableRow;
+import org.vanautrui.languages.symboltables.rows.SubroutineSymbolTableRow;
+import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
+import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.typeresolution.TypeResolver;
 
-public class SymbolTableGenerator {
-	public static SubroutineSymbolTable createSubroutineSymbolTable(ClassNode classNode){
-		SubroutineSymbolTable subroutineSymbolTable = new SubroutineSymbolTable();
+import java.util.Set;
 
-		for(MethodNode methodNode : classNode.methodNodeList){
-		    SubroutineSymbolTableRow subrRow = new SubroutineSymbolTableRow(methodNode.methodName.methodName.name,methodNode.type.typeName);
-		    subroutineSymbolTable.add(subrRow);
+public class SymbolTableGenerator {
+	public static SubroutineSymbolTable createSubroutineSymbolTable(Set<AST> asts){
+		SubroutineSymbolTable subroutineSymbolTable = new SubroutineSymbolTable();
+		for(AST ast : asts) {
+			for(ClassNode classNode : ast.classNodeList) {
+				for (MethodNode methodNode : classNode.methodNodeList) {
+					SubroutineSymbolTableRow subrRow = new SubroutineSymbolTableRow(methodNode.methodName.methodName.name, methodNode.type.typeName);
+					subroutineSymbolTable.add(subrRow);
+				}
+			}
 		}
 		return subroutineSymbolTable;
 	}
