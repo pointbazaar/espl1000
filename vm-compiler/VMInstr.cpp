@@ -14,8 +14,10 @@ vector<VMInstr> VMInstr::make_vm_instrs(vector<string> vmcodes){
 		for(int i=0;i<vmcodes.size();i++){
 				string s = vmcodes.at(i);
 				VMInstr instr;
+				
 				//split it. as of now we have 
 				//a maximum of 3 seperate words
+				
 				for(int i=0;i<3;i++){
 					int x=s.find(" ");
 					if(x!=string::npos){
@@ -33,8 +35,10 @@ vector<VMInstr> VMInstr::make_vm_instrs(vector<string> vmcodes){
 								printf("unknown number of args in VMInstr.cpp\n");
 								exit(1);
 						}
+						s=s.substr(x);
+					}else{
+						break;
 					}
-					s=s.substr(x);
 				}
 				
 				res.push_back(instr);

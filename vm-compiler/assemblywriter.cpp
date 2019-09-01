@@ -43,8 +43,23 @@ vector<string> write_assembly(vector<VMInstr> codes){
 			prog.pop("eax");
 			prog.sub("eax","ebx");
 			prog.push("eax");
+		}else if(code.is("push")){
+			//consider the const case
+			if(
+				code.arg1.compare("0")==0
+				|| code.arg1.compare("1")==0
+			){
+				
+				prog.mov("eax",atoi(code.arg1.c_str()),"");
+				prog.push("eax");
+			}else{
+				printf("error 434\n");
+				exit(1);
+			}
+		}else if(code.is("pop")){
+			prog.pop(code.arg1);
 		}else{
-			printf("unconsidered case in assemblywriter.cpp\n");
+			printf("unconsidered case in assemblywriter.cpp: %s\n",code.cmd.c_str());
 			exit(1);
 		}
 	}
