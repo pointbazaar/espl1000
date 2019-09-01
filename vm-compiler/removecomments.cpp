@@ -21,6 +21,14 @@ vector<string> remove_comments(vector<string> lines){
 			s1=s.substr(0,pos);
 		}
 		
+		while(s1.front()=='\t' || s1.front()==' '){
+			s1=s1.substr(1,s1.length());
+		}
+		
+		while(s1.back()=='\t' || s1.back()==' '){
+			s1=s1.substr(0,s1.length()-1);
+		}
+		
 		//cout << s1 << endl;
 		
 		if(!isempty(s1)){

@@ -44,7 +44,7 @@ int main(int argc, char** argv)
 				lines.push_back(line);
 				//cout << line << endl;
 			}
-			
+			printf("PHASE: remove Comments\n");
 			//remove comments
 			vector<string> clean_lines = remove_comments(lines);
 			
@@ -76,9 +76,11 @@ int main(int argc, char** argv)
 				//this is from a tutorial
 				//http://asm.sourceforge.net/intro/hello.html
 				
-				vector<string> asm_codes = write_assembly(
-					VMInstr::make_vm_instrs(clean_lines)
-				);
+				printf("PHASE: parse VM Instructions\n");
+				vector<VMInstr> codes = VMInstr::make_vm_instrs(clean_lines);
+				
+				printf("PHASE: translate VM Code to Assembly\n");
+				vector<string> asm_codes = write_assembly(codes);
 				
 				for(int i=0;i<asm_codes.size();i++){
 					fout << asm_codes.at(i) << endl;
@@ -91,6 +93,8 @@ int main(int argc, char** argv)
 			
 			//$ nasm -f elf hello.asm  # this will produce hello.o ELF object file
 			//$ ld -s -o hello hello.o # this will produce hello executable
+			
+			printf("PHASE: call NASM\n");
 			
 			string arg1="nasm -f elf ";
 			arg1.append(asm_file_name);

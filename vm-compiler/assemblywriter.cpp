@@ -27,6 +27,7 @@ vector<string> write_assembly(vector<VMInstr> codes){
 	//TODO: translate the codes here
 	for(int i=0;i<codes.size();i++){
 		VMInstr code = codes.at(i);
+		printf("	translating '%s'  '%s'  '%s'\n",code.cmd.c_str(),code.arg1.c_str(),code.arg2.c_str());
 		string instr=code.cmd;
 		
 		if(code.is("return")){
@@ -53,7 +54,7 @@ vector<string> write_assembly(vector<VMInstr> codes){
 				prog.mov("eax",atoi(code.arg1.c_str()),"");
 				prog.push("eax");
 			}else{
-				printf("error 434\n");
+				printf("error 434 '%s' \n",code.arg1.c_str());
 				exit(1);
 			}
 		}else if(code.is("pop")){

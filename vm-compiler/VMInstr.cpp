@@ -15,6 +15,8 @@ vector<VMInstr> VMInstr::make_vm_instrs(vector<string> vmcodes){
 				string s = vmcodes.at(i);
 				VMInstr instr;
 				
+				printf("parsing: '%s'\n",s.c_str());
+				
 				//split it. as of now we have 
 				//a maximum of 3 seperate words
 				
@@ -31,11 +33,8 @@ vector<VMInstr> VMInstr::make_vm_instrs(vector<string> vmcodes){
 							case 2:
 								instr.arg2=s.substr(0,x);
 								break;
-							default:
-								printf("unknown number of args in VMInstr.cpp\n");
-								exit(1);
 						}
-						s=s.substr(x);
+						s=s.substr(x,s.length());
 					}else{
 						break;
 					}
