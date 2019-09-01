@@ -148,7 +148,7 @@ public class dragonc {
                 new Option(
                     "optimize",
                     false,
-                    "try to optimize the code. optimization effort goes from 0 (no optimization) to 10 (maximum optimization) (TODO)"
+                    "try to optimize the code."
                     )
         );
 
