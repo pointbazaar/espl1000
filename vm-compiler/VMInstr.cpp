@@ -16,18 +16,27 @@ vector<VMInstr> VMInstr::make_vm_instrs(vector<string> vmcodes){
 				VMInstr instr;
 				//split it. as of now we have 
 				//a maximum of 3 seperate words
-				int x=s.find(" ");
-				if(x!=string::npos){
-					instr.cmd=s.substr(0,x);
+				for(int i=0;i<3;i++){
+					int x=s.find(" ");
+					if(x!=string::npos){
+						switch(i){
+							case 0:
+								instr.cmd=s.substr(0,x);
+								break;
+							case 1:
+								instr.arg1=s.substr(0,x);
+								break;
+							case 2:
+								instr.arg2=s.substr(0,x);
+								break;
+							default:
+								printf("unknown number of args in VMInstr.cpp\n");
+								exit(1);
+						}
+					}
+					s=s.substr(x);
 				}
-				string s2=s.substr(x,s.length());
-				int x2=s2.find(" ");
-				if(x2!=string::npos){
-					instr.arg1=s2.substr(0,x2);
-					instr.arg2=s2.substr(x2,s2.length());
-				}else{
-					instr.arg2=s2;
-				}
+				
 				res.push_back(instr);
 		}
 		return res;
