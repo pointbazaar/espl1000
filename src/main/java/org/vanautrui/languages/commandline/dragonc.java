@@ -44,22 +44,32 @@ public class dragonc {
         //this simplifies the usage of the compiler
         //also, everything that doesnt start with '-' is either a source file or directory
 
-        if(cmd.hasOption("clean")){
-            if(cmd.hasOption("debug")){
-                System.out.println("clearing the cache");
-            }
-            final String cache_dir=System.getProperty("user.home")+"/dragoncache";
-            FileUtils.deleteDirectory(Paths.get(cache_dir).toFile());
-        }
-
         if(cmd.hasOption("help")){
             printHelp();
-            return;
+        }else {
+
+            if(cmd.hasOption("splash")){
+                //display a splash screen
+                //http://patorjk.com/software/taag/#p=display&f=JS%20Stick%20Letters&t=Dragon
+                String splash=" __   __        __   __       \n" +
+                        "|  \\ |__)  /\\  / _` /  \\ |\\ | \n" +
+                        "|__/ |  \\ /~~\\ \\__> \\__/ | \\| \n" +
+                        "                              ";
+                System.out.println(splash);
+            }
+
+            if(cmd.hasOption("clean")){
+                if(cmd.hasOption("debug")){
+                    System.out.println("clearing the cache");
+                }
+                final String cache_dir=System.getProperty("user.home")+"/dragoncache";
+                FileUtils.deleteDirectory(Paths.get(cache_dir).toFile());
+            }
+
+            List<String> fileArgs = args.stream().filter(str -> !str.startsWith("-")).collect(Collectors.toList());
+
+            compile_main_inner(getAllDragonFilesRecursively(fileArgs), cmd);
         }
-
-        List<String> fileArgs = args.stream().filter(str->!str.startsWith("-")).collect(Collectors.toList());
-
-        compile_main_inner(getAllDragonFilesRecursively(fileArgs),cmd);
     }
 
     private static List<File> getAllDragonFilesRecursively(List<String> fileArgs)throws Exception{
@@ -152,6 +162,7 @@ public class dragonc {
                     )
         );
 
+        opts.addOption(new Option("splash",false,"displays a splash screen with ascii art"));
 
         OptionGroup optionGroup = new OptionGroup();
 
