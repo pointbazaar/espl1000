@@ -3,6 +3,7 @@ package org.vanautrui.languages.commandline.compilerphases;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.io.IOUtils;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.codegeneration.dracovmbackend.DracoVMCodeGenerator;
 import org.vanautrui.languages.codegeneration.jvmbackend.JavaByteCodeGenerator;
@@ -195,9 +196,18 @@ public class CompilerPhases {
                 Path dracovmCodePath = Paths.get(dir + "/" + "Main" + ".dracovm");
                 Files.write(dracovmCodePath, dracoVMCodes.getBytes());
 
+                //call the dracovmc vm compiler
+                Process p = Runtime.getRuntime().exec("bash dracovmc " + dracovmCodePath.toString());
+                p.waitFor();
+                String output = IOUtils.toString(p.getInputStream());
+                System.out.println(output);
+
+                if(p.exitValue()!=0){
+                    throw new Exception("problems generating executable");
+                }
                 //add generated executable to generatedFilesPaths
                 generatedFilesPaths.add(dracovmCodePath);
-                throw new Exception("unsupported option right now");
+
             }else if(cmd.hasOption("targetjvm") || true){
                 //targetjvm is the default option currently
                 SubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(new HashSet<>(asts));

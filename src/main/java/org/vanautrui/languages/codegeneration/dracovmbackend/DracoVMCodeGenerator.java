@@ -43,7 +43,7 @@ public class DracoVMCodeGenerator {
 
     private static void generateDracoVMCodeForMethod(MethodNode m, StringBuilder sb)throws Exception{
         //TODO
-        sb.append("subroutine ").append(m).append(" ").append(m.arguments.size()).append("\n");
+        sb.append("subroutine ").append(m.methodName.methodName.name).append(" ").append(m.arguments.size()).append("\n");
         //not sure if it is number of arguments or number of local vars
         for(StatementNode stmt : m.statements){
             generateDracoVMCodeForStatement(stmt,sb);
@@ -54,7 +54,7 @@ public class DracoVMCodeGenerator {
         IStatementNode snode = stmt.statementNode;
         if(snode instanceof MethodCallNode){
             MethodCallNode call = (MethodCallNode)snode;
-            //TODO
+            genVMCodeForMethodCall(call,sb);
         }else if(snode instanceof LoopStatementNode) {
             LoopStatementNode loop = (LoopStatementNode) snode;
             //TODO
@@ -76,15 +76,15 @@ public class DracoVMCodeGenerator {
     }
 
     private static void genVMCodeForFloatConst(FloatConstNode fconst,StringBuilder sb){
-        sb.append("fpush ").append(fconst.value);
+        sb.append("fpush ").append(fconst.value).append("\n");
     }
 
     private static void genVMCodeForIntConst(int iconst,StringBuilder sb){
-        sb.append("ipush ").append(iconst);
+        sb.append("ipush ").append(iconst).append("\n");
     }
 
     private static void genVMCodeForBoolConst(BoolConstNode bconst,StringBuilder sb){
-        sb.append("ipush ").append((bconst.value)?1:0);
+        sb.append("ipush ").append((bconst.value)?1:0).append("\n");
     }
 
     private static void genDracoVMCodeForTerm(TermNode tNode,StringBuilder sb)throws Exception{
