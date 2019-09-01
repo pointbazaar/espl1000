@@ -101,6 +101,12 @@ public class dragonc {
         sbh.append(ansi().bold().a("\ndraco - dragon compiler\n\n").reset().toString());
 
         sbf.append("\n\n");
+        sbf.append(ansi().bold().a("EXAMPLES\n\n").reset().toString());
+        sbf.append("    draco Main.dg\n");
+        sbf.append("    draco -debug -ast Main.dg\n");
+        sbf.append("\n");
+
+        
         sbf.append(ansi().bold().a("GITHUB\n\n").reset().toString());
         sbf.append("    https://github.com/pointbazaar/dragon/\n");
         sbf.append("\n");
