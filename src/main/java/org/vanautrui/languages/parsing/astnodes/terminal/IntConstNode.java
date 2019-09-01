@@ -6,13 +6,13 @@ import org.vanautrui.languages.lexing.tokens.IntegerNonNegativeConstantToken;
 import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.ITermNode;
 
-public class IntegerConstantNode implements IASTNode, ITermNode {
+public class IntConstNode implements IASTNode, ITermNode {
 
     //this can also have a negative value if it is preceded by a '-' operator token
 
     public int value;
 
-    public IntegerConstantNode(TokenList tokens) throws Exception {
+    public IntConstNode(TokenList tokens) throws Exception {
 
         TokenList copy = new TokenList(tokens);
 

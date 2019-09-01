@@ -18,14 +18,14 @@ public class TypeResolver {
     //that can then convert the type description directly
     //to a jvm internal representation
 
-    public static String getTypeIntegerConstantNode(IntegerConstantNode integerConstantNode){
+    public static String getTypeIntegerConstantNode(IntConstNode intConstNode){
         return "Int";
     }
-    public static String getTypeFloatConstantNode(FloatConstantNode node){
+    public static String getTypeFloatConstantNode(FloatConstNode node){
     	return "Float";
     }
 
-    public static String getTypeStringConstantNode(StringConstantNode stringConstantNode){
+    public static String getTypeStringConstantNode(StringConstNode stringConstNode){
         return "String";
     }
 
@@ -54,19 +54,19 @@ public class TypeResolver {
             return getTypeExpressionNode((ExpressionNode)termNode.termNode,methodNode,subroutineSymbolTable,varTable);
         }else if (termNode.termNode instanceof MethodCallNode){
             return getTypeMethodCallNode((MethodCallNode)termNode.termNode,subroutineSymbolTable);
-	}else if(termNode.termNode instanceof FloatConstantNode){
-		return getTypeFloatConstantNode((FloatConstantNode)termNode.termNode);
-        }else if(termNode.termNode instanceof IntegerConstantNode){
-            return getTypeIntegerConstantNode((IntegerConstantNode)termNode.termNode);
-        }else if(termNode.termNode instanceof StringConstantNode){
-            return getTypeStringConstantNode((StringConstantNode)termNode.termNode);
+	}else if(termNode.termNode instanceof FloatConstNode){
+		return getTypeFloatConstantNode((FloatConstNode)termNode.termNode);
+        }else if(termNode.termNode instanceof IntConstNode){
+            return getTypeIntegerConstantNode((IntConstNode)termNode.termNode);
+        }else if(termNode.termNode instanceof StringConstNode){
+            return getTypeStringConstantNode((StringConstNode)termNode.termNode);
         }else if(termNode.termNode instanceof VariableNode){
             return getTypeVariableNode((VariableNode) termNode.termNode,methodNode,subroutineSymbolTable,varTable);
-		}else if(termNode.termNode instanceof BoolConstantNode) {
+		}else if(termNode.termNode instanceof BoolConstNode) {
             return "Bool";
         }else if(termNode.termNode instanceof ArrayConstantNode) {
             return getTypeArrayConstNode((ArrayConstantNode) termNode.termNode, methodNode, subroutineSymbolTable, varTable);
-        }else if(termNode.termNode instanceof CharConstantNode){
+        }else if(termNode.termNode instanceof CharConstNode){
             return "Char";
         }else{
             throw new Exception("unforeseen case in getTypeTermNode(...) in DragonTypeResolver");

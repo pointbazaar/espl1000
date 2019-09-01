@@ -5,13 +5,13 @@ import org.vanautrui.languages.lexing.tokens.*;
 import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.ITermNode;
 
-public class BoolConstantNode implements IASTNode, ITermNode {
+public class BoolConstNode implements IASTNode, ITermNode {
 
     //this can also have a negative value if it is preceded by a '-' operator token
 
     public boolean value;
 
-    public BoolConstantNode(TokenList tokens) throws Exception {
+    public BoolConstNode(TokenList tokens) throws Exception {
 
         TokenList copy = new TokenList(tokens);
 

@@ -6,14 +6,14 @@ import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.BoolConstantToken;
 
-public class BoolConstantNodeTest {
+public class BoolConstNodeTest {
 
     @Test
     public void test_parse_bool_constant_node() throws Exception {
         TokenList list = new TokenList();
         list.add(new BoolConstantToken(new CharacterList("true")));
 
-        BoolConstantNode node = new BoolConstantNode(list);
+        BoolConstNode node = new BoolConstNode(list);
         Assert.assertEquals(true,node.value);
     }
 }

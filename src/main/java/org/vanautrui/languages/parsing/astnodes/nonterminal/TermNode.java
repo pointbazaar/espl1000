@@ -31,13 +31,13 @@ public class TermNode implements IASTNode, IExpressionComputable {
 
         TokenList copy = new TokenList(tokens);
 		try{
-			this.termNode=new FloatConstantNode(copy);
+			this.termNode=new FloatConstNode(copy);
 		}catch(Exception e0){
 		    try{
-		        this.termNode=new IntegerConstantNode(copy);
+		        this.termNode=new IntConstNode(copy);
 		    }catch (Exception e1){
 		        try {
-		            this.termNode=new StringConstantNode(copy);
+		            this.termNode=new StringConstNode(copy);
 		        }catch (Exception e2){
 		            try {
 		                TokenList copy2=new TokenList(copy);
@@ -52,7 +52,7 @@ public class TermNode implements IASTNode, IExpressionComputable {
 		                    this.termNode=new MethodCallNode(copy);
 		                }catch (Exception e4){
 							try{
-								this.termNode=new BoolConstantNode(copy);
+								this.termNode=new BoolConstNode(copy);
 							}catch (Exception e5){
 							    try {
                                     this.termNode = new VariableNode(copy);
@@ -60,7 +60,7 @@ public class TermNode implements IASTNode, IExpressionComputable {
 							    	try {
 										this.termNode = new ArrayConstantNode(copy);
 									}catch (Exception e7){
-							    		this.termNode = new CharConstantNode(copy);
+							    		this.termNode = new CharConstNode(copy);
 									}
                                 }
 							}

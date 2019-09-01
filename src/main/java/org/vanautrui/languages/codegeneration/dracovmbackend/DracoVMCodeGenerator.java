@@ -1,5 +1,10 @@
 package org.vanautrui.languages.codegeneration.dracovmbackend;
 
+import org.vanautrui.languages.parsing.astnodes.ITermNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.ArrayConstantNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.ExpressionNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.OperatorNode;
+import org.vanautrui.languages.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.IStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.MethodCallNode;
@@ -11,6 +16,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlfl
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.*;
 import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 
 import java.util.Set;
@@ -69,7 +75,66 @@ public class DracoVMCodeGenerator {
         }
     }
 
-    private static void genDracoVMCodeForReturn(ReturnStatementNode retStmt,StringBuilder sb){
+    private static void genDracoVMCodeForTerm(TermNode tNode,StringBuilder sb)throws Exception{
         //TODO
+        ITermNode t = tNode.termNode;
+        if(t instanceof FloatConstNode){
+            FloatConstNode node=(FloatConstNode)t;
+            //TODO
+        }else if(t instanceof IntConstNode){
+            IntConstNode intConstNode = (IntConstNode)t;
+            //TODO
+        }else if(t instanceof StringConstNode){
+            StringConstNode stringConstNode = (StringConstNode)t;
+            //push the string on the stack
+            //TODO
+        }else if(t instanceof ExpressionNode) {
+            ExpressionNode expressionNode = (ExpressionNode)t;
+            //TODO
+        }else if(t instanceof VariableNode) {
+            //find the local variable index
+            // and push the variable onto the stack
+            VariableNode variableNode = (VariableNode) t;
+            //TODO
+        }else if(t instanceof MethodCallNode){
+            MethodCallNode methodCallNode = (MethodCallNode)t;
+            //TODO
+        }else if(t instanceof BoolConstNode) {
+            BoolConstNode b = (BoolConstNode) t;
+            //TODO
+        }else if(t instanceof ArrayConstantNode) {
+            ArrayConstantNode arrayConstantNode = (ArrayConstantNode) t;
+            //TODO
+        }else if (t instanceof CharConstNode) {
+            //TODO
+        }else{
+            throw new Exception("unhandled case");
+        }
+    }
+
+    private static void genDracoVMCodeForOp(OperatorNode opNode,StringBuilder sb)throws Exception{
+        switch (opNode.operator){
+            case "+":
+                sb.append("add\n");
+                break;
+            case "-":
+                sb.append("sub\n");
+                break;
+            default:
+                throw new Exception("currently unsupported op "+opNode.operator);
+        }
+    }
+
+    private static void genDracoVMCodeForExpression(ExpressionNode expr,StringBuilder sb)throws Exception{
+        genDracoVMCodeForTerm(expr.term,sb);
+        for(int i=0;i<expr.termNodes.size();i++){
+            genDracoVMCodeForTerm(expr.termNodes.get(i),sb);
+            genDracoVMCodeForOp(expr.operatorNodes.get(i),sb);
+        }
+    }
+
+    private static void genDracoVMCodeForReturn(ReturnStatementNode retStmt,StringBuilder sb)throws Exception {
+        genDracoVMCodeForExpression(retStmt.returnValue,sb);
+        sb.append("return\n");
     }
 }

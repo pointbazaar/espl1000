@@ -1,7 +1,6 @@
 package org.vanautrui.languages.codegeneration.jvmbackend;
 
 import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.parsing.astnodes.terminal.BoolConstantNode;
 
 import static org.objectweb.asm.Opcodes.*;
 

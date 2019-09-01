@@ -27,16 +27,16 @@ public class TermCodeGenerator {
             SubroutineSymbolTable subTable,
             boolean debug
     ) throws Exception {
-	if(termNode.termNode instanceof FloatConstantNode){
-		FloatConstantNode node=(FloatConstantNode)termNode.termNode;
-		pushFloatConstant(node.value,mv);
-	}else if(termNode.termNode instanceof IntegerConstantNode){
-            IntegerConstantNode integerConstantNode = (IntegerConstantNode)termNode.termNode;
-            pushIntegerConstant(integerConstantNode.value,mv);
-        }else if(termNode.termNode instanceof StringConstantNode){
-            StringConstantNode stringConstantNode = (StringConstantNode)termNode.termNode;
+        if(termNode.termNode instanceof FloatConstNode){
+            FloatConstNode node=(FloatConstNode)termNode.termNode;
+            pushFloatConstant(node.value,mv);
+        }else if(termNode.termNode instanceof IntConstNode){
+            IntConstNode intConstNode = (IntConstNode)termNode.termNode;
+            pushIntegerConstant(intConstNode.value,mv);
+        }else if(termNode.termNode instanceof StringConstNode){
+            StringConstNode stringConstNode = (StringConstNode)termNode.termNode;
             //push the string on the stack
-            StringConstantCodeGenerator.visitStringConstant(mv,stringConstantNode);
+            StringConstantCodeGenerator.visitStringConstant(mv, stringConstNode);
         }else if(termNode.termNode instanceof ExpressionNode) {
             ExpressionNode expressionNode = (ExpressionNode)termNode.termNode;
             ExpressionCodeGenerator.visitExpression(cw, mv, classNode, methodNode, expressionNode, varTable,subTable,debug);
@@ -47,14 +47,14 @@ public class TermCodeGenerator {
         }else if(termNode.termNode instanceof MethodCallNode){
             MethodCallNode methodCallNode = (MethodCallNode)termNode.termNode;
             MethodCallCodeGenerator.visitMethodCallNode(cw,mv,classNode,methodNode,methodCallNode,varTable,subTable,debug);
-		}else if(termNode.termNode instanceof BoolConstantNode) {
-            BoolConstantNode b = (BoolConstantNode) termNode.termNode;
+		}else if(termNode.termNode instanceof BoolConstNode) {
+            BoolConstNode b = (BoolConstNode) termNode.termNode;
             BoolConstantCodeGenerator.visitBoolConstant(mv, b);
         }else if(termNode.termNode instanceof ArrayConstantNode) {
-        ArrayConstantNode arrayConstantNode = (ArrayConstantNode) termNode.termNode;
-        ArrayConstantCodeGenerator.visitArrayConstant(cw, mv, classNode, methodNode, arrayConstantNode, varTable, subTable, debug);
-        } else if (termNode.termNode instanceof CharConstantNode) {
-            CharConstantCodeGenerator.visitCharConstant(mv,(CharConstantNode)termNode.termNode);
+            ArrayConstantNode arrayConstantNode = (ArrayConstantNode) termNode.termNode;
+            ArrayConstantCodeGenerator.visitArrayConstant(cw, mv, classNode, methodNode, arrayConstantNode, varTable, subTable, debug);
+        } else if (termNode.termNode instanceof CharConstNode) {
+            CharConstantCodeGenerator.visitCharConstant(mv,(CharConstNode)termNode.termNode);
         }else{
             throw new Exception("unhandled case in TermCodeGenerator.java");
         }

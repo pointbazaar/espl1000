@@ -6,11 +6,11 @@ import org.vanautrui.languages.lexing.tokens.utils.IToken;
 import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.ITermNode;
 
-public class StringConstantNode implements IASTNode, ITermNode {
+public class StringConstNode implements IASTNode, ITermNode {
 
     public String str;
 
-    public StringConstantNode(TokenList tokens) throws Exception {
+    public StringConstNode(TokenList tokens) throws Exception {
 
         IToken token = tokens.get(0);
 

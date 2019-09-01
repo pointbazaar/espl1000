@@ -5,7 +5,7 @@ import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.lexing.tokens.*;
 
-public class FloatConstantNodeTest {
+public class FloatConstNodeTest {
 
     @Test
     public void test1() throws Exception {
@@ -13,7 +13,7 @@ public class FloatConstantNodeTest {
         list.add(new OperatorToken("-"));
         list.add(new FloatNonNegativeConstantToken(new CharacterList("4.0")));
 
-        FloatConstantNode node = new FloatConstantNode(list);
+        FloatConstNode node = new FloatConstNode(list);
     }
 
 	@Test
@@ -21,6 +21,6 @@ public class FloatConstantNodeTest {
         TokenList list = new TokenList();
         list.add(new FloatNonNegativeConstantToken(new CharacterList("4.0")));
 
-        FloatConstantNode node = new FloatConstantNode(list);
+        FloatConstNode node = new FloatConstNode(list);
     }
 }

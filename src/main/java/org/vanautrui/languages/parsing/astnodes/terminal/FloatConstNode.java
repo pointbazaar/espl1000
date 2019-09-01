@@ -5,13 +5,13 @@ import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.ITermNode;
 
-public class FloatConstantNode implements IASTNode, ITermNode {
+public class FloatConstNode implements IASTNode, ITermNode {
 
     //this can also have a negative value if it is preceded by a '-' operator token
 
     public float value;
 
-    public FloatConstantNode(TokenList tokens) throws Exception {
+    public FloatConstNode(TokenList tokens) throws Exception {
 
         TokenList copy = new TokenList(tokens);
 

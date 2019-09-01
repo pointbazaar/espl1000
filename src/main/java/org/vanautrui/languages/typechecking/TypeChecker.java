@@ -233,11 +233,11 @@ public class TypeChecker {
     }
 
     private void typecheckTermNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, TermNode termNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
-	if(termNode.termNode instanceof FloatConstantNode){
+	if(termNode.termNode instanceof FloatConstNode){
 		    //nothing to do
-	}else if(termNode.termNode instanceof IntegerConstantNode){
+	}else if(termNode.termNode instanceof IntConstNode){
             //nothing to do
-        }else if(termNode.termNode instanceof StringConstantNode){
+        }else if(termNode.termNode instanceof StringConstNode){
             //nothing to do
         }else if(termNode.termNode instanceof ExpressionNode) {
             ExpressionNode expressionNode = (ExpressionNode) termNode.termNode;

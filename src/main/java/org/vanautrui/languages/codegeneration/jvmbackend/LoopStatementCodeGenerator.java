@@ -7,7 +7,7 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.Statement
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlflow.LoopStatementNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.IntegerConstantNode;
+import org.vanautrui.languages.parsing.astnodes.terminal.IntConstNode;
 import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
 import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 
@@ -38,11 +38,11 @@ public class LoopStatementCodeGenerator {
         Label end=new Label();
 
         //push our loop counter
-        if(loop.count.term.termNode instanceof IntegerConstantNode) {
-            IntegerConstantNode integerConstantNode = (IntegerConstantNode)loop.count.term.termNode;
+        if(loop.count.term.termNode instanceof IntConstNode) {
+            IntConstNode intConstNode = (IntConstNode)loop.count.term.termNode;
 
             //mv.visitIntInsn(BIPUSH, integerConstantNode.value);
-            pushIntegerConstant(integerConstantNode.value,mv);
+            pushIntegerConstant(intConstNode.value,mv);
         }else{
             //TODO: deal with the other cases
             throw new Exception(" not implemented yet");
