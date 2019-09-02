@@ -139,4 +139,12 @@ public class AssemblyWriter {
     public void call_kernel() throws Exception{
         any("int 0x80","call kernel");
     }
+
+    public void cmp(Register reg1, Register reg2) throws Exception{
+        any("cmp "+reg1+","+reg2);
+    }
+
+    public void je(String label) throws Exception{
+        any("je "+label);
+    }
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.vanautrui.languages.codegeneration.dracovmbackend.DracoVMCodeGenerator.unique;
 import static org.vanautrui.languages.codegeneration.dracovmbackend.vmcompiler.model.Register.*;
 import static org.vanautrui.languages.codegeneration.dracovmbackend.vmcompiler.model.Register.eax;
 
@@ -62,6 +63,9 @@ public class DracoVMCompiler {
         String current_subroutine;
 
         for(IVMInstr instr : vmcodes){
+            //uniqueness for labels
+            long uniq = unique();
+
             switch (instr.getCmd()){
                 //stack related
                 case "ipush":
@@ -155,8 +159,50 @@ public class DracoVMCompiler {
                     a.push(eax);
                     break;
 
+                case "eq":
+
+                    String labeltrue="eq_push1"+uniq;
+                    String labelend="eq_end"+uniq;
+
+                    a.pop(eax);
+                    a.pop(ebx);
+                    a.cmp(eax,ebx);
+                    a.je(labeltrue);
+
+                    //push 0 (false)
+                    a.mov(eax,0);
+                    a.push(eax);
+                    a.jmp(labelend);
+
+                    a.label(labeltrue);
+                    //push 1 (true)
+                    a.mov(eax,1);
+                    a.push(eax);
+                    a.jmp(labelend);
+
+                    a.label(labelend);
+
+                    break;
+
                 case "goto":
                     a.jmp(instr.getArg1().get());
+                    break;
+                case "if-goto":
+                    String truelabel = "ifgoto_true"+uniq;
+                    String endlabel = "ifgoto_end"+uniq;
+
+                    a.pop(eax);
+                    a.mov(ebx,1);
+                    a.cmp(eax,ebx);
+                    a.je(truelabel);
+                    a.jmp(endlabel);
+
+                    //in case top of stack is 1 (true)
+                    a.label(truelabel);
+                    a.jmp(instr.getArg1().get());
+
+                    //otherwise, just continue execution
+                    a.label(endlabel);
                     break;
                 case "label":
                     a.label(instr.getArg1().get());
