@@ -44,17 +44,18 @@ public class AssemblyWriter {
         if(finalized){
             throw new Exception("this assembly writer already has been finalized. ");
         }
+        final String spacer="        ";
         //base
         String prefix="";
         if(indented){
-            prefix="\t";
+            prefix=spacer;
         }
         String suffix="";
         if(!indented){
-            suffix="\t";
+            suffix=spacer;
         }
         instrs.add(
-                String.format(prefix+" %20s ; %20s"+suffix,cmd,comment)
+                String.format(prefix+"%-20s "+suffix+";%-20s",cmd,comment)
         );
     }
 
@@ -68,7 +69,9 @@ public class AssemblyWriter {
     }
 
     public void global(String s,String comment)throws Exception{
+        indented=false;
         any("global "+s,"");
+        indented=true;
     }
     public void global(String s)throws Exception{
         global(s,"");

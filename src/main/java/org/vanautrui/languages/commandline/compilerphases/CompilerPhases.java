@@ -151,6 +151,13 @@ public class CompilerPhases {
             if(cmd.hasOption("targetnative")){
                 SubroutineSymbolTable subTable = createSubroutineSymbolTable(new HashSet<>(asts));
                 List<String> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable);
+
+                if(cmd.hasOption("vmcodes") || cmd.hasOption("debug")){
+                    System.out.println("GENERATED VM CODES");
+                    dracoVMCodes.stream().forEach(str-> System.out.println(str));
+                    System.out.println();
+                }
+
                 List<String> assembly_codes = DracoVMCompiler.compileVMCode(dracoVMCodes);
                 //$ nasm -f elf hello.asm  # this will produce hello.o ELF object file
                 //$ ld -s -o hello hello.o # this will produce hello executable
@@ -161,7 +168,13 @@ public class CompilerPhases {
 
                 String filename = "main";
                 String asm_file_name = filename+".asm";
-                Files.write(Paths.get(asm_file_name),assembly_codes.stream().collect(Collectors.joining("\n")).getBytes());
+                Files.write(
+                        Paths.get(asm_file_name),
+                        (assembly_codes
+                                .stream()
+                                .collect(Collectors.joining("\n"))+"\n")
+                                .getBytes()
+                );
 
                 Process p = Runtime.getRuntime().exec("nasm -f elf " + asm_file_name);
                 p.waitFor();

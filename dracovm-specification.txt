@@ -43,6 +43,8 @@ ACCESSING MEMORY SEGMENTS:
 	fpush	x		//push a float constant on the stack
 	push 	SEGMENT index
 	pop 	SEGMENT index
+	pop 			//just pop the top item off the stack
+	dup			//duplicates the top of stack
 
 
 PROGRAM FLOW COMMANDS:

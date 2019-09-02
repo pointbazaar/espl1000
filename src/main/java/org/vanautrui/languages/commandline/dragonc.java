@@ -150,6 +150,8 @@ public class dragonc {
 
         opts.addOption(new Option("run",false,"execute the program after compilation"));
 
+        opts.addOption(new Option("vmcodes",false,"outputs the vm codes generated to the console. doesnt work with jvm backend"));
+
         opts.addOption(
                 new Option(
                     "optimize",

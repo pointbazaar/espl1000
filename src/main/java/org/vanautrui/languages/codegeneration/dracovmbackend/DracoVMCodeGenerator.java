@@ -21,6 +21,7 @@ import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 public class DracoVMCodeGenerator {
@@ -59,22 +60,112 @@ public class DracoVMCodeGenerator {
             genVMCodeForMethodCall(call,sb);
         }else if(snode instanceof LoopStatementNode) {
             LoopStatementNode loop = (LoopStatementNode) snode;
-            //TODO
+            genVMCodeForLoopStatement(loop,sb);
         }else if(snode instanceof AssignmentStatementNode) {
             AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode) snode;
             //TODO
+            throw new Exception("unhandled case");
         }else if(snode instanceof WhileStatementNode){
             WhileStatementNode whileStatementNode =(WhileStatementNode)snode;
-            //TODO
+            genVMCodeForWhileStatement(whileStatementNode,sb);
         }else if(snode instanceof IfStatementNode) {
             IfStatementNode ifStatementNode = (IfStatementNode) snode;
-            //TODO
+            genVMCodeForIfStatement(ifStatementNode,sb);
         }else if(snode instanceof ReturnStatementNode){
             ReturnStatementNode returnStatementNode = (ReturnStatementNode)snode;
             genDracoVMCodeForReturn(returnStatementNode,sb);
         }else{
             throw new Exception("unconsidered statement type: "+stmt.statementNode.getClass().getName());
         }
+    }
+
+    private static void genVMCodeForIfStatement(IfStatementNode ifstmt, List<String> sb) throws Exception{
+        Random r =new Random();
+        long unique=r.nextLong();
+        String startlabel = "ifstart"+unique;
+        String elselabel = "else"+unique;
+        String endlabel = "ifend"+unique;
+
+        sb.add("label "+startlabel);
+
+        //push the expression
+        genDracoVMCodeForExpression(ifstmt.condition,sb);
+        sb.add("neg");
+        //if condition is false, jump to else
+        sb.add("if-goto "+elselabel);
+
+        for(StatementNode stmt : ifstmt.statements){
+            generateDracoVMCodeForStatement(stmt,sb);
+        }
+
+        sb.add("goto "+endlabel);
+        sb.add("label "+elselabel);
+
+        for(StatementNode stmt : ifstmt.elseStatements){
+            generateDracoVMCodeForStatement(stmt,sb);
+        }
+
+        sb.add("label "+endlabel);
+    }
+
+    private static void genVMCodeForWhileStatement(WhileStatementNode whileStmt, List<String> sb)throws Exception {
+        Random r =new Random();
+        long unique=r.nextLong();
+        String startlabel = "whilestart"+unique;
+        String endlabel = "whileend"+unique;
+
+        sb.add("label "+startlabel);
+
+        //push the expression
+        genDracoVMCodeForExpression(whileStmt.condition,sb);
+        sb.add("neg");
+        //if condition is false, jump to end
+        sb.add("if-goto "+endlabel);
+
+        //execute statements
+        for(StatementNode stmt : whileStmt.statements){
+            generateDracoVMCodeForStatement(stmt,sb);
+        }
+
+
+        sb.add("goto "+startlabel);
+
+        sb.add("label "+endlabel);
+    }
+
+    private static void genVMCodeForLoopStatement(LoopStatementNode loop, List<String> sb) throws Exception {
+        Random r =new Random();
+        long unique=r.nextLong();
+        String startlabel = "loopstart"+unique;
+        String endlabel = "loopend"+unique;
+
+        //push the expression
+        genDracoVMCodeForExpression(loop.count,sb);
+        sb.add("dup");
+
+        sb.add("label "+startlabel);
+
+        //if counter is 0, jump to end
+        sb.add("ipush 0");
+        sb.add("eq");
+        sb.add("if-goto "+endlabel);
+
+        //execute statements
+        for(StatementNode stmt : loop.statements){
+            generateDracoVMCodeForStatement(stmt,sb);
+        }
+
+        //subtract 1 from the counter
+        sb.add("ipush 1");
+        sb.add("sub");
+
+        //duplicate top of stack so we can compare again
+        sb.add("dup");
+        sb.add("goto "+startlabel);
+
+        sb.add("label "+endlabel);
+
+        sb.add("pop");
     }
 
     private static void genVMCodeForFloatConst(FloatConstNode fconst,List<String> sb){
