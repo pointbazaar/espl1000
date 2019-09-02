@@ -4,7 +4,7 @@ public class Loop{
 
         loop 3{
 
-            print("x");
+            putchar('x');
        }
 	return 0;
     }

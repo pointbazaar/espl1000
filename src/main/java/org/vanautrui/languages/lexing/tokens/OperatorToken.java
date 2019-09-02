@@ -20,7 +20,8 @@ public class OperatorToken implements IToken {
             "==","!=",
             "::",
             "->","~>","<-","<~","-->","<--",
-            "<=",">="
+            "<=",">=",
+            "&&","||"
     };
 
     public static final String[] operator_symbols = new String[]{

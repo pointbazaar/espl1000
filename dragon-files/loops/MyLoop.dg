@@ -1,0 +1,47 @@
+class MyLoop{
+	
+	Int main(){
+		//display square
+
+		ncols=80;
+		nrows=40;
+		row=0;
+		col=0;
+		x=0;
+		k=0;
+		while(true){
+			row=0;
+			col=0;
+			while(row<nrows){
+				col=0;
+				while(col<ncols){
+
+					if( (row <= 60) && (row >=20) && (col>=20) && (col<=60) ){
+						print("*");
+					}else{
+						print(" ");
+					}
+				
+					//spin around a few times to waste time
+					x=0;
+					while(x<1000000000){
+						x=x+1;
+						k=0;
+						while(k<1000000){
+							k=k+1;
+						}
+					}
+	
+					col=col+1;
+				}
+				println();
+				row=row+1;
+			}
+			println();
+		}
+
+		println(x);
+		println(k);
+		return 0;
+	}
+}

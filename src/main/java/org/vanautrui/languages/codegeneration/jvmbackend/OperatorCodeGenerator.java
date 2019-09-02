@@ -24,10 +24,26 @@ public class OperatorCodeGenerator {
 		case "Float":
 			visitOperandNodeForFloat(mv,operatorNode);
 			break;
+		case "Bool":
+			visitOperandNodeForBool(mv,operatorNode);
+			break;
 		default:
 			throw new Exception("unrecognized operand type "+operandType);
 	}
     }
+
+	private static void visitOperandNodeForBool(MethodVisitor mv, OperatorNode opNode) throws Exception{
+		switch (opNode.operator) {
+			case "&&":
+				mv.visitInsn(IAND);
+				break;
+			case "||":
+				mv.visitInsn(IOR);
+				break;
+			default:
+				throw new Exception("unsupported operation on Bool values " + opNode.operator);
+		}
+	}
 
 
 	private static void visitOperandNodeForFloat(MethodVisitor mv, OperatorNode opNode) throws Exception{
