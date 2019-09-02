@@ -72,6 +72,12 @@ public class DracoVMCompiler {
                 case "pop":
                 case "push":
                     throw new Exception("not yet implemented");
+                case "dup":
+                    //duplicates top of stack
+                    a.pop(eax);
+                    a.push(eax);
+                    a.push(eax);
+                    break;
 
 
                 //subroutine calls
