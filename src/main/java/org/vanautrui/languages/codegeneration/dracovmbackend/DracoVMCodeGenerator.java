@@ -80,8 +80,8 @@ public class DracoVMCodeGenerator {
     }
 
     private static void genVMCodeForIfStatement(IfStatementNode ifstmt, List<String> sb) throws Exception{
-        Random r =new Random();
-        long unique=r.nextLong();
+
+        long unique=unique();
         String startlabel = "ifstart"+unique;
         String elselabel = "else"+unique;
         String endlabel = "ifend"+unique;
@@ -109,8 +109,8 @@ public class DracoVMCodeGenerator {
     }
 
     private static void genVMCodeForWhileStatement(WhileStatementNode whileStmt, List<String> sb)throws Exception {
-        Random r =new Random();
-        long unique=r.nextLong();
+
+        long unique=unique();
         String startlabel = "whilestart"+unique;
         String endlabel = "whileend"+unique;
 
@@ -134,8 +134,8 @@ public class DracoVMCodeGenerator {
     }
 
     private static void genVMCodeForLoopStatement(LoopStatementNode loop, List<String> sb) throws Exception {
-        Random r =new Random();
-        long unique=r.nextLong();
+
+        long unique=unique();
         String startlabel = "loopstart"+unique;
         String endlabel = "loopend"+unique;
 
@@ -248,5 +248,11 @@ public class DracoVMCodeGenerator {
     private static void genDracoVMCodeForReturn(ReturnStatementNode retStmt,List<String> sb)throws Exception {
         genDracoVMCodeForExpression(retStmt.returnValue,sb);
         sb.add("return");
+    }
+
+    private static long unique(){
+        //uniqueness for jump labels
+        Random r = new Random();
+        return Math.abs(r.nextLong());
     }
 }
