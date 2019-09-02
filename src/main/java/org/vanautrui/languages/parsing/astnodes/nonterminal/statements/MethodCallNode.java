@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 public class MethodCallNode implements IASTNode, IStatementNode, IExpressionComputable , ITermNode {
 
     public String getMethodName(){
-        return this.identifierMethodName.name;
+        return this.identifierMethodName;
     }
 
-    public IdentifierNode identifierMethodName;
+    public String identifierMethodName;
 
     public List<ExpressionNode> argumentList = new ArrayList<>();
 
@@ -28,7 +28,7 @@ public class MethodCallNode implements IASTNode, IStatementNode, IExpressionComp
 
         TokenList copy = tokens.copy();
 
-        this.identifierMethodName = new IdentifierNode(copy);
+        this.identifierMethodName = new IdentifierNode(copy).name;
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
 
@@ -59,7 +59,7 @@ public class MethodCallNode implements IASTNode, IStatementNode, IExpressionComp
 
     @Override
     public String toSourceCode() {
-        return this.identifierMethodName.toSourceCode()
+        return this.identifierMethodName
                 +"("+this.argumentList.stream().map(
                 ExpressionNode::toSourceCode
                 ).collect(Collectors.joining(","))

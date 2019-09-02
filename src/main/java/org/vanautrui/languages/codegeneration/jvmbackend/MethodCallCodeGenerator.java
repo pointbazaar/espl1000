@@ -61,7 +61,7 @@ public class MethodCallCodeGenerator {
             mv.visitLdcInsn("");
         }
 
-        switch (methodCallNode.identifierMethodName.name) {
+        switch (methodCallNode.identifierMethodName) {
             case "println":
                 mv.visitMethodInsn(INVOKEVIRTUAL,
                         "java/io/PrintStream",
@@ -75,7 +75,7 @@ public class MethodCallCodeGenerator {
                         methodDescriptor);
                 break;
             default:
-                throw new Exception("unrecognized method: '" + methodCallNode.identifierMethodName.name+ "'");
+                throw new Exception("unrecognized method: '" + methodCallNode.identifierMethodName+ "'");
 
         }
     }
@@ -87,10 +87,10 @@ public class MethodCallCodeGenerator {
             SubroutineSymbolTable subroutineSymbolTable, boolean debug
     ) throws Exception {
 
-        if(subroutineSymbolTable.containsVariable(methodCallNode.identifierMethodName.name)){
+        if(subroutineSymbolTable.containsVariable(methodCallNode.identifierMethodName)){
             String subrType = TypeResolver.getTypeMethodCallNode(methodCallNode,subroutineSymbolTable);
 
-            String methodName = methodCallNode.identifierMethodName.name;
+            String methodName = methodCallNode.identifierMethodName;
             String owner=classNode.name.typeName;
             String descriptor= TypeNameToJVMInternalTypeNameConverter.convertSubroutineName(
                     subrType,methodCallNode.argumentList.stream().map(expressionNode -> {
@@ -114,7 +114,7 @@ public class MethodCallCodeGenerator {
                 System.out.println("found method in symbol table");
             }
         }else {
-            switch (methodCallNode.identifierMethodName.name) {
+            switch (methodCallNode.identifierMethodName) {
                 case "readln":
                     compile_readln(cw,mv,classNode,methodNode,methodCallNode,
                             methodScopeSymbolTable,subroutineSymbolTable,debug);

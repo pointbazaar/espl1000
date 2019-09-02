@@ -44,7 +44,7 @@ public class StatementCodeGenerator {
             String returnType = TypeResolver.getTypeMethodCallNode(call,subTable);
 
             List<String> java_void_methods = Arrays.asList("print","println");
-            if(!java_void_methods.contains(call.identifierMethodName.name)){
+            if(!java_void_methods.contains(call.identifierMethodName)){
                 mv.visitInsn(POP);
             }
         }else if(statementNode.statementNode instanceof LoopStatementNode) {

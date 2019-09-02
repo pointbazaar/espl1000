@@ -154,11 +154,11 @@ public class TypeChecker {
         //which is actually declared and initialized
         //and is in scope
 
-		if(!subTable.containsVariable(methodCallNode.identifierMethodName.name)){
+		if(!subTable.containsVariable(methodCallNode.identifierMethodName)){
             List<String> builtins = Arrays.asList("print","println","read","readln");
-            if(!builtins.contains(methodCallNode.identifierMethodName.name)){
+            if(!builtins.contains(methodCallNode.identifierMethodName)){
 			     System.out.println(subTable.toString());
-			     throw new Exception("name of method not in subroutine symbol table: "+methodCallNode.identifierMethodName.name);
+			     throw new Exception("name of method not in subroutine symbol table: "+methodCallNode.identifierMethodName);
             }
 		}
 
