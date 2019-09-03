@@ -13,19 +13,26 @@ import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 
 import java.util.stream.Collectors;
 
+import static org.junit.Assert.assertEquals;
+
 public class SymbolTableGeneratorTest {
 
-    @Test
-    public void test_finds_1_local_var()throws Exception{
-
+    private AST parse_for_test(String s)throws Exception{
         Lexer lexer = new Lexer();
 
         TokenList tokens = lexer.lexCodeWithoutComments(new CharacterList(
-                "class Main{ Int main(){  } Int subr(Int n){x=3;} }"
+                s
         ));
 
         Parser parser = new Parser();
         AST ast = parser.parseTestMode(tokens);
+        return ast;
+    }
+
+    @Test
+    public void test_finds_1_local_var_and_1_arg()throws Exception{
+
+        AST ast = parse_for_test("class Main{ Int main(){  } Int subr(Int n){x=3;} }");
 
         SubroutineSymbolTable subTable = new SubroutineSymbolTable();
 
@@ -35,11 +42,25 @@ public class SymbolTableGeneratorTest {
 
         Assert.assertTrue(localVarTable.containsVariable("x"));
 
-        Assert.assertEquals(1,localVarTable.countArgs());
-        Assert.assertEquals(1,localVarTable.countLocals());
+        assertEquals(1,localVarTable.countArgs());
+        assertEquals(1,localVarTable.countLocals());
 
-        Assert.assertEquals("Int",localVarTable.getTypeOfVariable("x"));
-        Assert.assertEquals(2,localVarTable.size());
-        Assert.assertEquals(1,localVarTable.getIndexOfVariable("x"));
+        assertEquals("Int",localVarTable.getTypeOfVariable("x"));
+        assertEquals(2,localVarTable.size());
+        assertEquals(1,localVarTable.getIndexOfVariable("x"));
+    }
+
+    @Test
+    public void test_finds_local_vars_nested()throws Exception{
+        AST ast = parse_for_test("class Main{ Int main(){ x=3; if(x==3){y=5;} } }");
+
+        SubroutineSymbolTable subTable = new SubroutineSymbolTable();
+
+        MethodNode myMethod = ast.classNodeList.stream().collect(Collectors.toList()).get(0).methodNodeList.get(0);
+
+        LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable);
+
+        //System.out.println(localVarTable.toString());
+        assertEquals(2,localVarTable.countLocals());
     }
 }
