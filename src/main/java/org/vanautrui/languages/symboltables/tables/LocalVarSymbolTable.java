@@ -61,6 +61,14 @@ public class LocalVarSymbolTable implements ISymbolTable {
         return this.symbolTable.size();
     }
 
+    public long countLocals(){
+        return this.symbolTable.stream().filter(r->r.kind==LocalVarSymbolTableRow.KIND_LOCALVAR).count();
+    }
+
+    public long countArgs(){
+        return this.symbolTable.stream().filter(r->r.kind==LocalVarSymbolTableRow.KIND_ARGUMENT).count();
+    }
+
     @Override
     public List<ISymbolTableRow> getRows() {
         return this.symbolTable.stream().collect(Collectors.toList());
