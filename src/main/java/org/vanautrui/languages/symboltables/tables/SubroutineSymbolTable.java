@@ -7,6 +7,7 @@ import io.bretty.console.table.Table;
 import org.vanautrui.languages.symboltables.rows.ISymbolTableRow;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -18,7 +19,6 @@ public class SubroutineSymbolTable implements ISymbolTable {
         this.symbolTable=new BaseSymbolTable();
     }
 
-    @Override
     public void add(ISymbolTableRow row) {
         this.symbolTable.add(row);
     }
@@ -41,6 +41,11 @@ public class SubroutineSymbolTable implements ISymbolTable {
     @Override
     public int size() {
         return this.symbolTable.size();
+    }
+
+    @Override
+    public List<ISymbolTableRow> getRows() {
+        return symbolTable.getRows();
     }
 
     @Override

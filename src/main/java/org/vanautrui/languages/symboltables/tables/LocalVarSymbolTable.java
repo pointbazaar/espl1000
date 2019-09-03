@@ -5,37 +5,55 @@ import io.bretty.console.table.ColumnFormatter;
 import io.bretty.console.table.Precision;
 import io.bretty.console.table.Table;
 import org.vanautrui.languages.symboltables.rows.ISymbolTableRow;
+import org.vanautrui.languages.symboltables.rows.LocalVarSymbolTableRow;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class LocalVarSymbolTable implements ISymbolTable {
 
-    private BaseSymbolTable symbolTable;
+    private List<LocalVarSymbolTableRow> symbolTable;
 
     public LocalVarSymbolTable(){
-        this.symbolTable=new BaseSymbolTable();
+        this.symbolTable=new ArrayList<>();
     }
 
-    @Override
-    public void add(ISymbolTableRow row) {
+    public void add(LocalVarSymbolTableRow row) {
         this.symbolTable.add(row);
+    }
+
+    public LocalVarSymbolTableRow get(String varName)throws Exception{
+        for(int i=0;i<symbolTable.size();i++){
+            LocalVarSymbolTableRow r = symbolTable.get(i);
+            if(r.getName().equals(varName)){
+                return r;
+            }
+        }
+        throw new Exception("did not find symbol '"+varName+"' in symbol table");
     }
 
     @Override
     public boolean containsVariable(String varName) {
-        return this.symbolTable.containsVariable(varName);
+        return this.symbolTable.stream().filter(r->r.getName().equals(varName)).count()>0;
     }
 
     @Override
     public int getIndexOfVariable(String varName) throws Exception{
-        return this.symbolTable.getIndexOfVariable(varName);
+        for(int i=0;i<symbolTable.size();i++){
+            LocalVarSymbolTableRow r = symbolTable.get(i);
+            if(r.getName().equals(varName)){
+                return i;
+            }
+        }
+        throw new Exception("did not find symbol '"+varName+"' in symbol table");
     }
 
     @Override
-    public String getTypeOfVariable(String varName) {
-        return this.symbolTable.getTypeOfVariable(varName);
+    public String getTypeOfVariable(String varName) throws Exception{
+        return this.get(varName).getType();
     }
 
     @Override
@@ -44,10 +62,16 @@ public class LocalVarSymbolTable implements ISymbolTable {
     }
 
     @Override
+    public List<ISymbolTableRow> getRows() {
+        return this.symbolTable.stream().collect(Collectors.toList());
+    }
+
+    @Override
     public String toString(){
 
-        String[] names = this.symbolTable.getRows().stream().map(row->row.getName()).collect(Collectors.toList()).toArray(new String[]{});
-        String[] types = this.symbolTable.getRows().stream().map(row->row.getType()).collect(Collectors.toList()).toArray(new String[]{});
+        String[] names = this.symbolTable.stream().map(row->row.getName()).collect(Collectors.toList()).toArray(new String[]{});
+        String[] types = this.symbolTable.stream().map(row->row.getType()).collect(Collectors.toList()).toArray(new String[]{});
+        String[] kinds = this.symbolTable.stream().map(row->row.kind).collect(Collectors.toList()).toArray(new String[]{});
 
         int[] indices_inner = IntStream.range(0,this.symbolTable.size()).toArray();
         Integer[] indices = Arrays.stream( indices_inner ).boxed().toArray( Integer[]::new );
@@ -61,6 +85,7 @@ public class LocalVarSymbolTable implements ISymbolTable {
 
         builder.addColumn("Type", types, stringColumnFormatter);
         builder.addColumn("Index", indices, integerColumnFormatter);
+        builder.addColumn("Kind", kinds, stringColumnFormatter);
 
 
         Table table = builder.build();

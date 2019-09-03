@@ -34,7 +34,7 @@ public class SymbolTableGenerator {
 		//first, make the local variables for the arguments
 		//TODO: figure out if this is correct
 		for(DeclaredArgumentNode arg: methodNode.arguments){
-		    methodScopeSymbolTable.add(new LocalVarSymbolTableRow(arg.name.name,arg.type.typeName));
+		    methodScopeSymbolTable.add(new LocalVarSymbolTableRow(arg.name.name,arg.type.typeName,LocalVarSymbolTableRow.KIND_ARGUMENT));
 		}
 
 		for(StatementNode stmt : methodNode.statements) {
@@ -51,7 +51,8 @@ public class SymbolTableGenerator {
 		        methodScopeSymbolTable.add(
 		                new LocalVarSymbolTableRow(
 		                        assignmentStatementNode.variableNode.name,
-		                        expressionType
+		                        expressionType,
+								LocalVarSymbolTableRow.KIND_LOCALVAR
 		                )
 		        );
 		    }
