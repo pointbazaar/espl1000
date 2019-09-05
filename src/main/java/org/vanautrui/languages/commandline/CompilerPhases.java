@@ -214,7 +214,7 @@ public class CompilerPhases {
             try {
                 AST ast = (new Parser()).parse(tokens,tokens.relPath);
 
-                if (debug || cmd.hasOption(FLAG_PRINT_AST)) {
+                if (cmd.hasOption(FLAG_PRINT_AST)) {
 
                     TerminalUtil.println("\nDEBUG: PRINT AST JSON ", RED);
 
@@ -250,7 +250,7 @@ public class CompilerPhases {
             try {
                 TokenList tokens = (new Lexer()).lexCodeWithoutComments(just_code_with_braces_without_comments);
 
-                if (debug || cmd.hasOption(FLAG_PRINT_TOKENS)) {
+                if (cmd.hasOption(FLAG_PRINT_TOKENS)) {
                     System.out.println(tokens.toString());
                 }
                 list.add(tokens);
@@ -295,6 +295,11 @@ public class CompilerPhases {
                     if (line.startsWith("use")) {
                         String[] parts = line.split(" ");
                         if (parts.length == 2) {
+
+                            if(debug){
+                                System.out.println("PREPROCESSOR: USE "+parts[1]);
+                            }
+
                             Path filename_in_stdlib = Paths.get(System.getProperty("user.home")+"/dragon/stdlib/" + parts[1]);
                             Path filename_in_project = Paths.get(parts[1]);
                             //add those files contents to the files to be checked
