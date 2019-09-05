@@ -3,10 +3,16 @@ section .text
 
 _start:
 	;try some direct memory access
-	 ;mov eax,4
-         ;mov ebx,1
-	mov eax,'x'
-	push eax
+	;mov eax,'x'
+	;push eax
+
+	;access memory at location 0,write some char in it
+	mov eax,'e';
+	mov [0],eax;
+
+	;hope that we can get the char out and push it on stack
+	mov ebx,[0]
+	push ebx
 
          ;print the char on stack
          pop ecx ; //pop digit into ecx
