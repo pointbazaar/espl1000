@@ -1,6 +1,6 @@
+use Math.dg
 
-public class IncludeStatic{
-	includestatic "Math.dg";
+public class Use{
 
 	public Int main(){
 		println(sqrt(9.0));		

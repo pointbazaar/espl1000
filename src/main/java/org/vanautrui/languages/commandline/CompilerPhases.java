@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -183,8 +184,10 @@ public class CompilerPhases {
                 }
                 codeWithoutCommentsWithoutUnneccesaryWhitespace = new String(Files.readAllBytes(makeCleanPhaseCacheFilePathFromHash(hash)));
             }else {
+                String[] parts = source.split("\n");
+                String source_without_use_directive = Arrays.stream(parts).filter(str->!str.startsWith("use")).collect(Collectors.joining("\n"));
 
-                String codeWithoutCommentsAndWithoutEmptyLines = (new CommentRemoverAndWhitespaceRemover()).strip_all_comments_and_empty_lines(source);
+                String codeWithoutCommentsAndWithoutEmptyLines = (new CommentRemoverAndWhitespaceRemover()).strip_all_comments_and_empty_lines(source_without_use_directive);
 
                 codeWithoutCommentsWithoutUnneccesaryWhitespace =
                         remove_unneccessary_whitespace(codeWithoutCommentsAndWithoutEmptyLines);
@@ -241,7 +244,6 @@ public class CompilerPhases {
     public List<TokenList> phase_lexing(List<CharacterList> just_codes_with_braces_without_comments, CommandLine cmd)throws Exception{
         printBeginPhase("LEXING",printLong);
         List<TokenList> list=new ArrayList();
-        boolean didThrow = false;
         List<Exception> exceptions=new ArrayList<>();
 
         for(CharacterList just_code_with_braces_without_comments: just_codes_with_braces_without_comments){
@@ -254,11 +256,10 @@ public class CompilerPhases {
                 list.add(tokens);
             }catch (Exception e){
                 exceptions.add(e);
-                didThrow=true;
             }
         }
 
-        if(didThrow){
+        if(exceptions.size()>0){
             printEndPhase(false,printLong);
             //collect all the exceptions throw during lexing,
             //and combine their messages to throw a bigger exception
@@ -269,4 +270,73 @@ public class CompilerPhases {
         }
     }
 
+    public void phase_preprocessor(List<String> codes, List<File> sources, CommandLine cmd) throws Exception {
+        printBeginPhase("PREPROCESSING",printLong);
+        //appends the 'use' used files to codes list and source paths list.
+        //'use' statements will be removed later in the 'clean' phase
+        //TOOD
+
+        //'use' directives have to be at the top of the file
+        //and cannot have newlines between or before them
+        List<Exception> exceptions=new ArrayList<>();
+
+        List<String> files_to_be_checked_for_includes=new ArrayList<>(codes);
+
+
+        while (files_to_be_checked_for_includes.size() > 0) {
+
+            try {
+
+                String code = files_to_be_checked_for_includes.get(0);
+                String[] lines = code.split("\n");
+
+                for (int i = 0; i < lines.length; i++) {
+                    String line = lines[i];
+                    if (line.startsWith("use")) {
+                        String[] parts = line.split(" ");
+                        if (parts.length == 2) {
+                            Path filename_in_stdlib = Paths.get(System.getProperty("user.home")+"/dragon/stdlib/" + parts[1]);
+                            Path filename_in_project = Paths.get(parts[1]);
+                            //add those files contents to the files to be checked
+                            //search first in dragon stdlib and then in the project folder
+
+                            Path path;
+
+                            if (Files.exists(filename_in_stdlib)) {
+                                path = filename_in_stdlib;
+                            } else if (Files.exists(filename_in_project)) {
+                                path = filename_in_project;
+                            } else {
+                                String msg="neither "+filename_in_stdlib.toAbsolutePath().toString()+" nor "
+                                        +filename_in_project.toAbsolutePath().toString()+" exists";
+                                throw new Exception("tried to include file that does not exist. " + msg);
+                            }
+                            String content = new String(Files.readAllBytes(path));
+
+                            files_to_be_checked_for_includes.add(content);
+                            codes.add(content);
+                            sources.add(path.toFile());
+                        } else {
+                            throw new Exception(" 'use' directive only has 2 parts");
+                        }
+                    } else {
+                        //we hase reached the end of the include
+                        //directives
+                        break;
+                    }
+                }
+            }catch (Exception e) {
+                exceptions.add(e);
+            }
+
+            files_to_be_checked_for_includes.remove(0);
+        }
+
+        if(exceptions.size()>0){
+            printEndPhase(false,printLong);
+            throw new Exception(exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining("\n")));
+        }else {
+            printEndPhase(true,printLong);
+        }
+    }
 }

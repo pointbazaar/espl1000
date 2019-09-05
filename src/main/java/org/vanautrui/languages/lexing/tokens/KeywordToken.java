@@ -20,10 +20,7 @@ public class KeywordToken implements IToken {
 
             "while","for","loop","do","if","else",
 
-            "return",
-
-			"includestatic" //includes (copies) the static functions from another class 
-			//to this class
+            "return"
     );
 
     public String keyword;

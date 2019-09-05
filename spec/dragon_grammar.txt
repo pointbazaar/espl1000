@@ -23,9 +23,10 @@ arrayConstant ::= '[' expression (',' expression)* ']'
 keywordConstant ::= 'null' | 'this' | booleanConstant
 accessmodifier ::= public | private
 
-class ::= accessmodifier? class identifier '{' compilerDirective*  classField* method* '}'
+//this is the root AST Node
+AST ::= class+
 
-compilerDirective ::= 'includestatic' PATH ';' //any valid path to a .dg file. PATH is a string token
+class ::= accessmodifier? class identifier '{' classField* method* '}'
 
 classField ::= accessmodifier? Type identifier ';'
 

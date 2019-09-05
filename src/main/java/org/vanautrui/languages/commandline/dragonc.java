@@ -210,8 +210,13 @@ public class dragonc {
             CompilerPhases phases = new CompilerPhases(cmd);
 
             long start,end;
-
             start = currentTimeMillis();
+
+            //PHASE PREPROCESSOR
+            //processes the 'use' directive
+            phases.phase_preprocessor(codes,sources,cmd);
+
+
             //PHASE CLEAN
             List<CharacterList> codeWithoutCommentsWithoutUnneccesaryWhitespace
                     = phases.phase_clean(codes,sources,cmd);

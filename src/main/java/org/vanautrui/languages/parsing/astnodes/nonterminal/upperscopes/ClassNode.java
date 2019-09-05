@@ -1,11 +1,10 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes;
 
-import org.vanautrui.languages.lexing.utils.TokenList;
 import org.vanautrui.languages.lexing.tokens.KeywordToken;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
+import org.vanautrui.languages.lexing.utils.TokenList;
 import org.vanautrui.languages.parsing.IASTNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.AccessModifierNode;
-import org.vanautrui.languages.parsing.astnodes.terminal.CompilerDirectiveNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.TypeIdentifierNode;
 
 import java.nio.file.Path;
@@ -20,16 +19,14 @@ public class ClassNode implements IASTNode {
     public Path srcPath= Paths.get("/dev/null");
 
     public TypeIdentifierNode name;
-	public List<CompilerDirectiveNode> directiveNodeList = new ArrayList<>();
+
     public List<ClassFieldNode> fieldNodeList = new ArrayList<>();
     public List<MethodNode> methodNodeList = new ArrayList<>();
 
     public ClassNode(TokenList tokens,Path path) throws Exception {
-        //System.out.println("try parse DragonClassNode");
+
         this.srcPath=path;
         TokenList copy = tokens.copy();
-
-        //System.out.println(copy.toString());
 
         try {
             AccessModifierNode access = new AccessModifierNode(copy);
@@ -54,16 +51,6 @@ public class ClassNode implements IASTNode {
         //because classField is a prefix of Method.
         //similar errors could maybe be fixed by just looking at the Dragon Grammar
         //and structuring the parser accordingly
-
-		boolean directiveSuccess=true;
-		while(directiveSuccess){
-			try{
-				directiveNodeList.add(new CompilerDirectiveNode(copy));
-			}catch (Exception e){
-				directiveSuccess=false;
-			}
-		}
-
 
         boolean success_method = true;
         boolean success_field = true;
