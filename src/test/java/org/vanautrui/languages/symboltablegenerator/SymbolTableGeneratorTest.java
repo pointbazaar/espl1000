@@ -3,13 +3,13 @@ package org.vanautrui.languages.symboltablegenerator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.vanautrui.languages.lexing.Lexer;
-import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.collections.TokenList;
+import org.vanautrui.languages.lexing.utils.CharacterList;
+import org.vanautrui.languages.lexing.utils.TokenList;
 import org.vanautrui.languages.parsing.Parser;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
-import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
+import org.vanautrui.languages.symboltables.LocalVarSymbolTable;
+import org.vanautrui.languages.symboltables.SubroutineSymbolTable;
 
 import java.util.stream.Collectors;
 

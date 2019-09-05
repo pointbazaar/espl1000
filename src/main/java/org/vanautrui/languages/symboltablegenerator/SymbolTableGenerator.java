@@ -10,10 +10,10 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.controlfl
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.symboltables.rows.LocalVarSymbolTableRow;
-import org.vanautrui.languages.symboltables.rows.SubroutineSymbolTableRow;
-import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
-import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
+import org.vanautrui.languages.symboltables.LocalVarSymbolTableRow;
+import org.vanautrui.languages.symboltables.SubroutineSymbolTableRow;
+import org.vanautrui.languages.symboltables.LocalVarSymbolTable;
+import org.vanautrui.languages.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.typeresolution.TypeResolver;
 
 import java.util.List;

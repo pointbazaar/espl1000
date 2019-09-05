@@ -1,4 +1,4 @@
-package org.vanautrui.languages.lexing.tokens.utils;
+package org.vanautrui.languages.lexing.utils;
 
 public interface IToken {
 

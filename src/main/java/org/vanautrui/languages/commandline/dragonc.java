@@ -3,8 +3,8 @@ package org.vanautrui.languages.commandline;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
 import org.fusesource.jansi.Ansi;
-import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.collections.TokenList;
+import org.vanautrui.languages.lexing.utils.CharacterList;
+import org.vanautrui.languages.lexing.utils.TokenList;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 
 import java.io.File;
@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 
 import static java.lang.System.currentTimeMillis;
 import static org.fusesource.jansi.Ansi.ansi;
-import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.*;
-import static org.vanautrui.languages.commandline.compilerphases.CompilerPhases.*;
+import static org.vanautrui.languages.commandline.CompilerPhaseUtils.*;
+import static org.vanautrui.languages.commandline.CompilerPhases.*;
 
 public class dragonc {
     //this should be the compiler

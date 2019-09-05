@@ -1,7 +1,6 @@
 package org.vanautrui.languages.lexing.tokens;
 
-import org.vanautrui.languages.lexing.collections.*;
-import org.vanautrui.languages.lexing.tokens.utils.*;
+import org.vanautrui.languages.lexing.utils.*;
 import com.fasterxml.jackson.annotation.*;
 
 public class BoolConstantToken implements IToken {

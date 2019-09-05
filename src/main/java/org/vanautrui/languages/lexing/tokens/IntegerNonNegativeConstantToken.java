@@ -1,7 +1,7 @@
 package org.vanautrui.languages.lexing.tokens;
 
-import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.tokens.utils.IToken;
+import org.vanautrui.languages.lexing.utils.CharacterList;
+import org.vanautrui.languages.lexing.utils.IToken;
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.regex.Matcher;

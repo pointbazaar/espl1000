@@ -1,4 +1,4 @@
-package org.vanautrui.languages.symboltables.rows;
+package org.vanautrui.languages.symboltables;
 
 public class LocalVarSymbolTableRow  {
 

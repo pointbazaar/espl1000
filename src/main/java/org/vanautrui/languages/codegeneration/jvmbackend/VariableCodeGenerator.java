@@ -5,8 +5,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.VariableNode;
-import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
-import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
+import org.vanautrui.languages.symboltables.LocalVarSymbolTable;
+import org.vanautrui.languages.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.typeresolution.TypeResolver;
 
 import static org.objectweb.asm.Opcodes.*;

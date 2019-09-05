@@ -1,6 +1,6 @@
 package org.vanautrui.languages.parsing.astnodes.terminal;
 
-import org.vanautrui.languages.lexing.collections.TokenList;
+import org.vanautrui.languages.lexing.utils.TokenList;
 import org.vanautrui.languages.lexing.tokens.OperatorToken;
 import org.vanautrui.languages.lexing.tokens.IntegerNonNegativeConstantToken;
 import org.vanautrui.languages.parsing.IASTNode;

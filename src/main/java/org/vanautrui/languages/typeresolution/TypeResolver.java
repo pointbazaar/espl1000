@@ -6,8 +6,8 @@ import org.vanautrui.languages.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.statements.MethodCallNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.parsing.astnodes.terminal.*;
-import org.vanautrui.languages.symboltables.tables.LocalVarSymbolTable;
-import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
+import org.vanautrui.languages.symboltables.LocalVarSymbolTable;
+import org.vanautrui.languages.symboltables.SubroutineSymbolTable;
 
 import java.util.Arrays;
 import java.util.List;

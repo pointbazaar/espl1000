@@ -1,6 +1,6 @@
 package org.vanautrui.languages.parsing;
 
-import org.vanautrui.languages.lexing.collections.TokenList;
+import org.vanautrui.languages.lexing.utils.TokenList;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 
 import java.nio.file.Path;

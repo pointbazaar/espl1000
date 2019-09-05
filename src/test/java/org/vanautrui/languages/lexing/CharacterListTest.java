@@ -2,7 +2,7 @@ package org.vanautrui.languages.lexing;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.vanautrui.languages.lexing.collections.CharacterList;
+import org.vanautrui.languages.lexing.utils.CharacterList;
 
 public class CharacterListTest {
 

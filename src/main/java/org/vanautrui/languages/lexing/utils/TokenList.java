@@ -1,10 +1,9 @@
-package org.vanautrui.languages.lexing.collections;
+package org.vanautrui.languages.lexing.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
-import org.vanautrui.languages.lexing.tokens.utils.IToken;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

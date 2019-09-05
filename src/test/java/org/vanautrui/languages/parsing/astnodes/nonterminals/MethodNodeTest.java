@@ -1,7 +1,7 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminals;
 
 import org.junit.Test;
-import org.vanautrui.languages.lexing.collections.TokenList;
+import org.vanautrui.languages.lexing.utils.TokenList;
 import org.vanautrui.languages.lexing.tokens.*;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 

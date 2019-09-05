@@ -1,10 +1,10 @@
 package org.vanautrui.languages.lexing;
 
 import org.vanautrui.languages.TerminalUtil;
-import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.collections.TokenList;
+import org.vanautrui.languages.lexing.utils.CharacterList;
+import org.vanautrui.languages.lexing.utils.TokenList;
 import org.vanautrui.languages.lexing.tokens.*;
-import org.vanautrui.languages.lexing.tokens.utils.IToken;
+import org.vanautrui.languages.lexing.utils.IToken;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package org.vanautrui.languages.commandline.compilerphases;
+package org.vanautrui.languages.commandline;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -8,13 +8,13 @@ import org.vanautrui.languages.codegeneration.dracovmbackend.DracoVMCodeGenerato
 import org.vanautrui.languages.codegeneration.dracovmbackend.vmcompiler.DracoVMCompiler;
 import org.vanautrui.languages.codegeneration.jvmbackend.JavaByteCodeGenerator;
 import org.vanautrui.languages.lexing.Lexer;
-import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.collections.TokenList;
+import org.vanautrui.languages.lexing.utils.CharacterList;
+import org.vanautrui.languages.lexing.utils.TokenList;
 import org.vanautrui.languages.parsing.Parser;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.phase_clean_the_input.CommentRemoverAndWhitespaceRemover;
-import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
+import org.vanautrui.languages.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.typechecking.TypeChecker;
 
 import java.io.File;
@@ -30,8 +30,8 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import static org.fusesource.jansi.Ansi.Color.RED;
-import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printBeginPhase;
-import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printEndPhase;
+import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBeginPhase;
+import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printEndPhase;
 import static org.vanautrui.languages.phase_clean_the_input.CommentRemoverAndWhitespaceRemover.remove_unneccessary_whitespace;
 import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
 

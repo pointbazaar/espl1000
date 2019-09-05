@@ -1,4 +1,4 @@
-package org.vanautrui.languages.lexing.collections;
+package org.vanautrui.languages.lexing.utils;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

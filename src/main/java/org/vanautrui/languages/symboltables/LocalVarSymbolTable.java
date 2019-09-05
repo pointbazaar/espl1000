@@ -1,10 +1,9 @@
-package org.vanautrui.languages.symboltables.tables;
+package org.vanautrui.languages.symboltables;
 
 import io.bretty.console.table.Alignment;
 import io.bretty.console.table.ColumnFormatter;
 import io.bretty.console.table.Precision;
 import io.bretty.console.table.Table;
-import org.vanautrui.languages.symboltables.rows.LocalVarSymbolTableRow;
 
 import java.util.ArrayList;
 import java.util.Arrays;

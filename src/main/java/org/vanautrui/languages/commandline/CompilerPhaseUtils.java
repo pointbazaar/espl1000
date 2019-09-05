@@ -1,4 +1,4 @@
-package org.vanautrui.languages.commandline.compilerphases;
+package org.vanautrui.languages.commandline;
 
 import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.TerminalUtil;

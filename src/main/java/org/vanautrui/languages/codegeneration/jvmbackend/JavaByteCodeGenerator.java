@@ -3,7 +3,7 @@ package org.vanautrui.languages.codegeneration.jvmbackend;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
+import org.vanautrui.languages.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassFieldNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.MethodNode;
