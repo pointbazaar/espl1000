@@ -29,21 +29,15 @@ public class AssemblyWriter {
 
     }
 
-    public List<String> finalizeAndReturnAssemblyProgram(){
-
-
-        this.finalized=true;
+    public List<String> getAssemblyProgram(){
         return this.instrs;
     }
 
-    private void any(String cmd)throws Exception{
+    private void any(String cmd) {
         any(cmd,"");
     }
 
-    private void any(String cmd,String comment) throws Exception {
-        if(finalized){
-            throw new Exception("this assembly writer already has been finalized. ");
-        }
+    private void any(String cmd,String comment){
         final String spacer="        ";
         //base
         String prefix="";
@@ -59,92 +53,96 @@ public class AssemblyWriter {
         );
     }
 
-    public void section(String name,String comment)throws Exception{
+    public void section(String name,String comment) {
         indented=false;
         any("section "+name,comment);
         indented=true;
     }
-    public void section(String name)throws Exception{
+    public void section(String name) {
         section(name,"");
     }
 
-    public void global(String s,String comment)throws Exception{
+    public void global(String s,String comment) {
         indented=false;
         any("global "+s,"");
         indented=true;
     }
-    public void global(String s)throws Exception{
+    public void global(String s) {
         global(s,"");
     }
 
-    public void mov(Register dest, int value, String comment)throws Exception{
+    public void mov(Register dest, int value, String comment) {
         any("mov "+dest+","+value,comment);
     }
-    public void mov(Register dest,float value)throws Exception{
+    public void mov(Register dest,float value) {
         any("mov "+dest+","+value);
     }
-    public void mov(Register dest,int value)throws Exception{
+    public void mov(Register dest,int value) {
         any("mov "+dest+","+value);
     }
-    public void mov(Register dest, Register src, String comment)throws Exception{
+    public void mov(Register dest, Register src, String comment) {
         any("mov "+dest+","+src,comment);
     }
-    public void mov(Register dest,Register src)throws Exception{
+    public void mov(Register dest,Register src) {
         mov(dest,src,"");
     }
 
-    public void push(Register register) throws Exception {
+    public void push(Register register) {
         any("push "+register);
     }
-    public void pop(Register register) throws Exception {
+    public void pop(Register register) {
         any("pop "+register);
     }
 
-    public void call(String methodName) throws Exception {
+    public void call(String methodName) {
         any("call "+methodName);
     }
 
-    public void add(Register dest,int val)throws Exception{
+    public void add(Register dest,int val) {
         any("add "+dest+","+val);
     }
-    public void add(Register dest,Register reg2) throws Exception {
+    public void add(Register dest,Register reg2) {
         any("add "+dest+","+reg2);
     }
-    public void sub(Register dest,Register reg2) throws Exception {
+    public void sub(Register dest,Register reg2) {
         any("sub "+dest+","+reg2);
     }
 
-    public void label(String label,String comment)throws Exception{
+    public void label(String label,String comment) {
         indented=false;
         any(label+":");
         indented=true;
     }
-    public void label(String label) throws Exception {
+    public void label(String label) {
         label(label,"");
     }
 
-    public void jmp(String targetLabel) throws Exception {
+    public void jmp(String targetLabel) {
         any("jmp "+targetLabel);
     }
 
-    public void writeReturn() throws Exception {
+    public void writeReturn() {
         any("ret");
     }
 
-    public void mul(Register dest, Register other) throws Exception {
+    public void mul(Register dest, Register other) {
         //not sure about it
         any("mul "+dest+","+other);
     }
 
-    public void call_kernel() throws Exception{
+    public void call_kernel() {
         any("int 0x80","call kernel");
     }
 
-    public void cmp(Register reg1, Register reg2) throws Exception{
+    public void cmp(Register reg1, Register reg2) {
         any("cmp "+reg1+","+reg2);
     }
 
-    public void je(String label) throws Exception{
+    public void je(String label) {
         any("je "+label);
+    }
+
+    public void xor(Register reg1, Register reg2, String comment) {
+        any("xor "+reg1+","+reg2,comment);
     }
 }

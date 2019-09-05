@@ -14,8 +14,15 @@ public class Register {
     public static final Register ecx=new Register("ecx");
     public static final Register edx=new Register("edx");
 
+    public static final Register esi=new Register("esi");
+
     //stack pointer
     public static final Register esp=new Register("esp");
+
+    //stack base pointer
+    public static final Register ebp=new Register("ebp");
+
+    public static final Register edi=new Register("edi");
 
     @Override
     public String toString(){
