@@ -45,11 +45,23 @@ public class DracoVMCodeGenerator {
     }
 
     private static void generateDracoVMCodeForMethod(MethodNode m, List<String> sb)throws Exception{
-        //TODO
+
         sb.add("subroutine "+m.methodName.methodName.name+" "+m.arguments.size());
         //not sure if it is number of arguments or number of local vars
+
+        //TODO: setup a new stack frame
+        //push ebp
+        //mov esp ebp
+
         for(StatementNode stmt : m.statements){
             generateDracoVMCodeForStatement(stmt,sb);
+        }
+
+        //return should be the last statement in every possible branch for these statements
+
+        //remove the arguments off the stack
+        for(int i=0;i<m.arguments.size();i++){
+            sb.add("pop");
         }
     }
 
@@ -63,8 +75,7 @@ public class DracoVMCodeGenerator {
             genVMCodeForLoopStatement(loop,sb);
         }else if(snode instanceof AssignmentStatementNode) {
             AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode) snode;
-            //TODO
-            throw new Exception("unhandled case");
+            genVMCodeForAssignmentStatement(assignmentStatementNode,sb);
         }else if(snode instanceof WhileStatementNode){
             WhileStatementNode whileStatementNode =(WhileStatementNode)snode;
             genVMCodeForWhileStatement(whileStatementNode,sb);
@@ -77,6 +88,11 @@ public class DracoVMCodeGenerator {
         }else{
             throw new Exception("unconsidered statement type: "+stmt.statementNode.getClass().getName());
         }
+    }
+
+    private static void genVMCodeForAssignmentStatement(AssignmentStatementNode assignmentStatementNode, List<String> sb) throws Exception {
+        //TODO
+        throw new Exception("unhandled case");
     }
 
     private static void genVMCodeForIfStatement(IfStatementNode ifstmt, List<String> sb) throws Exception{
@@ -146,7 +162,7 @@ public class DracoVMCodeGenerator {
         sb.add("label "+startlabel);
 
         //if counter is 0, jump to end
-        sb.add("ipush 0");
+        sb.add("iconst 0");
         sb.add("eq");
         sb.add("if-goto "+endlabel);
 
@@ -156,7 +172,7 @@ public class DracoVMCodeGenerator {
         }
 
         //subtract 1 from the counter
-        sb.add("ipush 1");
+        sb.add("iconst 1");
         sb.add("sub");
 
         //duplicate top of stack so we can compare again
@@ -169,15 +185,15 @@ public class DracoVMCodeGenerator {
     }
 
     private static void genVMCodeForFloatConst(FloatConstNode fconst,List<String> sb){
-        sb.add("fpush "+fconst.value);
+        sb.add("fconst "+fconst.value);
     }
 
     private static void genVMCodeForIntConst(int iconst,List<String> sb){
-        sb.add("ipush "+iconst);
+        sb.add("iconst "+iconst);
     }
 
     private static void genVMCodeForBoolConst(BoolConstNode bconst,List<String> sb){
-        sb.add("ipush "+((bconst.value)?1:0));
+        sb.add("iconst "+((bconst.value)?1:0));
     }
 
     private static void genDracoVMCodeForTerm(TermNode tNode,List<String> sb)throws Exception{
@@ -220,7 +236,12 @@ public class DracoVMCodeGenerator {
         }
     }
 
-    private static void genVMCodeForMethodCall(MethodCallNode methodCallNode, List<String> sb) {
+    private static void genVMCodeForMethodCall(MethodCallNode methodCallNode, List<String> sb) throws Exception {
+        //push arguments on stack in reverse order
+        for(int i=methodCallNode.argumentList.size()-1;i>=0;i++){
+            ExpressionNode arg = methodCallNode.argumentList.get(i);
+            genDracoVMCodeForExpression(arg,sb);
+        }
         sb.add("call "+methodCallNode.identifierMethodName);
     }
 

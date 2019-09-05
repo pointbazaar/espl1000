@@ -68,8 +68,8 @@ public class DracoVMCompiler {
 
             switch (instr.getCmd()){
                 //stack related
-                case "ipush":
-                case "fpush":
+                case "iconst":
+                case "fconst":
                     a.mov(eax,Float.parseFloat(instr.getArg1().get()));
                     a.push(eax);
                     break;

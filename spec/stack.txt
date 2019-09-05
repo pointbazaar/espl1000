@@ -1,0 +1,18 @@
+dragon uses the stack to store local variables and arguments
+
+
+//empty stack:
+-1 undefined  <- TOP OF STACK
+
+//'push 1' //push arguments for the subroutine call on the stack in reverse order
+0 1 <- TOP OF STACK
+
+//'push 2'
+0 1 
+1 2 <- TOP OF STACK
+
+
+//'call Math.abs()'  //as Math.abs(2,1);
+//the subroutine now 
+
+

@@ -32,6 +32,7 @@ VIRTUAL MEMORY SEGMENTS
 	the DracoVM manipulates various virtual memory segments
 	these memory segments have pointers which have a constant address in virtual memory
 	and can be used to access these segments
+	ARG and LOCAL are on the stack, STATIC is in the .bss or .data segment probably
 
 	ARG	arguments to the subroutine
 	LOCAL	local variables for the subroutine
@@ -39,8 +40,8 @@ VIRTUAL MEMORY SEGMENTS
 
 
 ACCESSING MEMORY SEGMENTS:
-	ipush	n		//push a constant integer on the stack
-	fpush	x		//push a float constant on the stack
+	iconst	n		//push a constant integer on the stack
+	fconst	x		//push a float constant on the stack
 	push 	SEGMENT index
 	pop 	SEGMENT index
 	pop 			//just pop the top item off the stack
@@ -59,10 +60,23 @@ SUBROUTINE CALLING COMMANDS:
 	//nArgrs is number of arguments (is the same always, for a subroutine)
 	return
 	//transfer control back to the calling function
-//all subroutines must pop all their arguments off the stack and always leave 1 return
+//all subroutines must always leave 1 return
 //value on the stack
+
+
 
 BUILTIN SUBROUTINES:
 	println		//prints the integer on stack, and a newline
 	print		//prints the integer on stack
 	read		//reads an integer from stdin, pushes it on the stack
+
+
+CALLING CONVENTIONS:
+first, all the arguments to a subroutine are pushed on the stack,
+in reverse order.
+
+//dracovm should use the c calling convention for now, to be compatible with C.
+//if that causes problems later on then we have to give it up and do our own thing
+
+//good explanation of c calling conventions:
+//https://norasandler.com/2018/06/27/Write-a-Compiler-9.html
