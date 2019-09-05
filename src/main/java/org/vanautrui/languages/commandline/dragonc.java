@@ -148,8 +148,6 @@ public class dragonc {
 
         opts.addOption(new Option("clean",false,"clears the cache"));
 
-        opts.addOption(new Option("run",false,"execute the program after compilation"));
-
         opts.addOption(new Option("vmcodes",false,"outputs the vm codes generated to the console. doesnt work with jvm backend"));
 
         opts.addOption(
@@ -264,13 +262,6 @@ public class dragonc {
                 System.out.flush();
                 printBuildConclusion(true);
 
-            }
-
-            if(cmd.hasOption("run")){
-                //TODO: support running the native executable
-
-                //execute
-                phase_run_optional(classFilePaths,cmd);
             }
 
         } catch (Exception e) {

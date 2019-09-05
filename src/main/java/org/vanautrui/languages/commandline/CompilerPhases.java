@@ -18,15 +18,12 @@ import org.vanautrui.languages.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.typechecking.TypeChecker;
 
 import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import static org.fusesource.jansi.Ansi.Color.RED;
@@ -52,91 +49,6 @@ public class CompilerPhases {
             //TerminalUtil.println("⚠", RED);
             printEndPhase(true,printLong);
             throw e;
-        }
-    }
-
-    public static void phase_run_optional(List<Path> classFilePaths,CommandLine cmd)throws Exception{
-
-        for(Path p: classFilePaths){
-            String command = "java -classpath "+p.toAbsolutePath().getParent()+" "+p.getFileName().toString().split("\\.")[0];
-            if(cmd.hasOption("debug")){
-                System.out.println("trying to execute: "+p.getFileName());
-                System.out.println("command: "+command);
-            }
-
-            Process pr = Runtime.getRuntime().exec(command);
-            //TODO: connect input and output to this process's input and output
-
-            InputStream out = pr.getInputStream();
-            OutputStream in = pr.getOutputStream();
-
-            Scanner sc = new Scanner(System.in);
-
-            //PipedInputStream pis = new PipedInputStream();
-            //PipedOutputStream pos = new PipedOutputStream(in);
-            (new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        while (sc.hasNextLine()) {
-                            System.out.println("//has next line from user");
-                            in.write(sc.nextLine().getBytes());
-                        }
-                        in.close();
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
-                }
-            })).start();
-
-            (new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        char c;
-                        while ((c = (char) out.read()) != -1) {
-                            System.out.println("//read from process");
-                            System.out.print(c);
-                        }
-                        System.out.close();
-                    }catch (Exception e){
-                        e.printStackTrace();
-                        System.out.close();
-                    }
-                }
-            })).start();
-
-            /*
-            Scanner scanner = new Scanner(System.in);
-
-            while(
-                    (out.available()>0 || scanner.hasNext()) && pr.isAlive()
-            ){
-                System.out.println("//loop iteration");
-                if(out.available()>0){
-                    System.out.println("// out available: "+out.available());
-
-                    int read = out.read();
-                    System.out.print((char)read);
-                }else if(scanner.hasNextByte()){
-                    System.out.println("// scanner.hasNextByte()==true");
-                    in.write(scanner.nextByte());
-                    in.flush();
-                }
-            }
-
-            pr.waitFor();
-            int exitValue = pr.exitValue();
-
-            if(exitValue!=0){
-                throw new Exception(IOUtils.toString(pr.getErrorStream()));
-            }
-
-             */
-
-            //for now, just display the output
-            //String out = IOUtils.toString(pr.getInputStream());
-            //System.out.println(out);
         }
     }
 
