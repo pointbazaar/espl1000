@@ -112,8 +112,8 @@ public class dragonc {
 
         sbf.append(ansi().bold().a("AUTHOR\n\n").reset().toString());
         sbf.append(
-                String.format("    %-15s %-20s\n","@pointbazaar","alex23667@gmail.com")+
-                String.format("    %-15s %-20s\n","@Milo-D","David.Milosevic@web.de")
+                String.format("    %-20s\n","alex23667@gmail.com")+
+                String.format("    %-20s\n","David.Milosevic@web.de")
         );
         sbf.append("\n");
 
