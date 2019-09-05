@@ -10,7 +10,7 @@ _start:
 
          ;print the char on stack
          pop ecx ; //pop digit into ecx
-         add ecx,0x30 ; //add ascii offset
+         ;add ecx,0x30 ; //add ascii offset
          push ecx ;  //push it back on stack
          mov ecx,esp ;
 	mov eax,4 ;sys_write
