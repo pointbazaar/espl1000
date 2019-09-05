@@ -1,6 +1,6 @@
 package org.vanautrui.languages.symboltables.rows;
 
-public class LocalVarSymbolTableRow implements ISymbolTableRow {
+public class LocalVarSymbolTableRow  {
 
     public final String varName;
     public final String typeName;
@@ -23,14 +23,10 @@ public class LocalVarSymbolTableRow implements ISymbolTableRow {
         return String.format("| %8s | %8s | %8s |",varName,typeName,kind);
     }
 
-
-
-    @Override
     public String getName() {
         return this.varName;
     }
 
-    @Override
     public String getType() {
         return this.typeName;
     }

@@ -4,56 +4,61 @@ import io.bretty.console.table.Alignment;
 import io.bretty.console.table.ColumnFormatter;
 import io.bretty.console.table.Precision;
 import io.bretty.console.table.Table;
-import org.vanautrui.languages.symboltables.rows.ISymbolTableRow;
+import org.vanautrui.languages.symboltables.rows.SubroutineSymbolTableRow;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class SubroutineSymbolTable implements ISymbolTable {
+public class SubroutineSymbolTable {
 
-    private BaseSymbolTable symbolTable;
+    private List<SubroutineSymbolTableRow> symbolTable;
+    private int index_count=0;
 
     public SubroutineSymbolTable(){
-        this.symbolTable=new BaseSymbolTable();
+        this.symbolTable=new ArrayList<>();
     }
 
-    public void add(ISymbolTableRow row) {
-        this.symbolTable.add(row);
+    public void add(SubroutineSymbolTableRow row) {
+        if(!this.containsVariable(row.getName())) {
+            this.symbolTable.add(row);
+            index_count++;
+        }
     }
 
-    @Override
     public boolean containsVariable(String varName) {
-        return this.symbolTable.containsVariable(varName);
+        return symbolTable.stream().filter(e->e.getName().equals(varName)).collect(Collectors.toList()).size()>0;
     }
 
-    @Override
     public int getIndexOfVariable(String varName)throws Exception {
-        return this.symbolTable.getIndexOfVariable(varName);
+        if(!this.containsVariable(varName)){
+            throw new Exception("could not get index of variable "+varName+" in symbol table. ");
+        }
+
+        for(int i=0;i<this.symbolTable.size();i++){
+            SubroutineSymbolTableRow row = this.symbolTable.get(i);
+            if(row.getName().equals(varName)){
+                return i;
+            }
+        }
+        throw new Exception();
     }
 
-    @Override
     public String getTypeOfVariable(String varName) {
-        return this.symbolTable.getTypeOfVariable(varName);
+        return symbolTable.stream().filter(e->e.getName().equals(varName)).collect(Collectors.toList()).get(0).getType();
     }
 
-    @Override
     public int size() {
         return this.symbolTable.size();
     }
 
-    @Override
-    public List<ISymbolTableRow> getRows() {
-        return symbolTable.getRows();
-    }
-
-    @Override
     public String toString(){
 
         // define a formatter for each column
-        String[] names = this.symbolTable.getRows().stream().map(row->row.getName()).collect(Collectors.toList()).toArray(new String[]{});
-        String[] types = this.symbolTable.getRows().stream().map(row->row.getType()).collect(Collectors.toList()).toArray(new String[]{});
+        String[] names = this.symbolTable.stream().map(row->row.getName()).collect(Collectors.toList()).toArray(new String[]{});
+        String[] types = this.symbolTable.stream().map(row->row.getType()).collect(Collectors.toList()).toArray(new String[]{});
 
         int[] indices_inner = IntStream.range(0,this.symbolTable.size()).toArray();
         Integer[] indices = Arrays.stream( indices_inner ).boxed().toArray( Integer[]::new );

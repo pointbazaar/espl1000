@@ -4,7 +4,6 @@ import io.bretty.console.table.Alignment;
 import io.bretty.console.table.ColumnFormatter;
 import io.bretty.console.table.Precision;
 import io.bretty.console.table.Table;
-import org.vanautrui.languages.symboltables.rows.ISymbolTableRow;
 import org.vanautrui.languages.symboltables.rows.LocalVarSymbolTableRow;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class LocalVarSymbolTable implements ISymbolTable {
+public class LocalVarSymbolTable  {
 
     private List<LocalVarSymbolTableRow> symbolTable;
 
@@ -35,12 +34,10 @@ public class LocalVarSymbolTable implements ISymbolTable {
         throw new Exception("did not find symbol '"+varName+"' in symbol table");
     }
 
-    @Override
     public boolean containsVariable(String varName) {
         return this.symbolTable.stream().filter(r->r.getName().equals(varName)).count()>0;
     }
 
-    @Override
     public int getIndexOfVariable(String varName) throws Exception{
         for(int i=0;i<symbolTable.size();i++){
             LocalVarSymbolTableRow r = symbolTable.get(i);
@@ -51,12 +48,10 @@ public class LocalVarSymbolTable implements ISymbolTable {
         throw new Exception("did not find symbol '"+varName+"' in symbol table");
     }
 
-    @Override
     public String getTypeOfVariable(String varName) throws Exception{
         return this.get(varName).getType();
     }
 
-    @Override
     public int size() {
         return this.symbolTable.size();
     }
@@ -69,8 +64,7 @@ public class LocalVarSymbolTable implements ISymbolTable {
         return this.symbolTable.stream().filter(r->r.kind==LocalVarSymbolTableRow.KIND_ARGUMENT).count();
     }
 
-    @Override
-    public List<ISymbolTableRow> getRows() {
+    public List<LocalVarSymbolTableRow> getRows() {
         return this.symbolTable.stream().collect(Collectors.toList());
     }
 
