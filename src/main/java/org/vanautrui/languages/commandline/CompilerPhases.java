@@ -29,8 +29,7 @@ import java.util.stream.Collectors;
 import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBeginPhase;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printEndPhase;
-import static org.vanautrui.languages.commandline.dragonc.FLAG_DEBUG;
-import static org.vanautrui.languages.commandline.dragonc.FLAG_TIMED;
+import static org.vanautrui.languages.commandline.dragonc.*;
 import static org.vanautrui.languages.phase_clean_the_input.CommentRemoverAndWhitespaceRemover.remove_unneccessary_whitespace;
 import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
 
@@ -67,36 +66,37 @@ public class CompilerPhases {
         printBeginPhase("CODE GENERATION",printLong);
 
         List<Path> generatedFilesPaths=new ArrayList<>();
-        final boolean debug=cmd.hasOption("debug");
 
         try {
-            if(cmd.hasOption("targetnative")){
+            if(cmd.hasOption(FLAG_TARGET_NATIVE)){
                 SubroutineSymbolTable subTable = createSubroutineSymbolTable(new HashSet<>(asts));
                 List<String> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable);
 
-                if(cmd.hasOption("vmcodes") || cmd.hasOption("debug")){
+                if(cmd.hasOption(FLAG_PRINT_VM_CODES) || cmd.hasOption(FLAG_DEBUG)){
                     System.out.println("GENERATED VM CODES");
                     dracoVMCodes.stream().forEach(str-> System.out.println(str));
                     System.out.println();
                 }
 
-                List<String> assembly_codes = DracoVMCompiler.compileVMCode(dracoVMCodes);
+                final List<String> assembly_codes = DracoVMCompiler.compileVMCode(dracoVMCodes);
                 //$ nasm -f elf hello.asm  # this will produce hello.o ELF object file
                 //$ ld -s -o hello hello.o # this will produce hello executable
 
-                if(cmd.hasOption("debug")){
+                final String asm_codes = (assembly_codes
+                        .stream()
+                        .collect(Collectors.joining("\n"))+"\n");
+
+                if(cmd.hasOption(FLAG_PRINT_ASM)){
+                    System.out.println(asm_codes);
+                }
+
+                if(debug){
                     System.out.println("call nasm");
                 }
 
                 String filename = "main";
                 String asm_file_name = filename+".asm";
-                Files.write(
-                        Paths.get(asm_file_name),
-                        (assembly_codes
-                                .stream()
-                                .collect(Collectors.joining("\n"))+"\n")
-                                .getBytes()
-                );
+                Files.write(Paths.get(asm_file_name),asm_codes.getBytes());
 
                 Process p = Runtime.getRuntime().exec("nasm -f elf " + asm_file_name);
                 p.waitFor();
@@ -114,14 +114,14 @@ public class CompilerPhases {
                 //add generated executable to generatedFilesPaths
                 generatedFilesPaths.add(Paths.get(filename));
 
-            }else if(cmd.hasOption("targetjvm") || true){
+            }else if(cmd.hasOption(FLAG_TARGET_JVM) || true){
                 //targetjvm is the default option currently
                 SubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(new HashSet<>(asts));
 
                 for (AST ast : asts) {
                     for (ClassNode classNode : ast.classNodeList) {
 
-                        if (debug || cmd.hasOption("symboltables")) {
+                        if (debug || cmd.hasOption(FLAG_PRINT_SYMBOLTABLES)) {
                             System.out.println(subroutineSymbolTable.toString());
                         }
 
@@ -164,7 +164,6 @@ public class CompilerPhases {
             if(!Files.exists(Paths.get(phase_clean_cache_dir))){
                 Files.createDirectories(Paths.get(phase_clean_cache_dir));
             }
-            final boolean debug=cmd.hasOption("debug");
 
             int hash = source.hashCode();
             if(debug) {
@@ -194,16 +193,11 @@ public class CompilerPhases {
                 Files.write(makeCleanPhaseCacheFilePathFromHash(hash),codeWithoutCommentsWithoutUnneccesaryWhitespace.getBytes());
             }
             if(debug) {
-                //System.out.println(codeWithoutCommentsAndWithoutEmptyLines);
                 System.out.println(codeWithoutCommentsWithoutUnneccesaryWhitespace);
             }
             results.add(new CharacterList(codeWithoutCommentsWithoutUnneccesaryWhitespace,sourceFiles.get(i).toPath()));
         }
-
-        //TerminalUtil.println("✓", Ansi.Color.GREEN);
         printEndPhase(true,printLong);
-        
-
         return results;
     }
 
@@ -217,7 +211,7 @@ public class CompilerPhases {
             try {
                 AST ast = (new Parser()).parse(tokens,tokens.relPath);
 
-                if (debug || cmd.hasOption("ast")) {
+                if (debug || cmd.hasOption(FLAG_PRINT_AST)) {
 
                     TerminalUtil.println("\nDEBUG: PRINT AST JSON ", RED);
 
@@ -254,7 +248,7 @@ public class CompilerPhases {
             try {
                 TokenList tokens = (new Lexer()).lexCodeWithoutComments(just_code_with_braces_without_comments);
 
-                if (debug || cmd.hasOption("tokens")) {
+                if (debug || cmd.hasOption(FLAG_PRINT_TOKENS)) {
                     System.out.println(tokens.toString());
                 }
                 list.add(tokens);

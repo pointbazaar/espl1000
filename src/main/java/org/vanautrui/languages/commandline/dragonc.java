@@ -135,10 +135,14 @@ public class dragonc {
     public static final String FLAG_PRINT_SYMBOLTABLES="symboltables";
     public static final String FLAG_PRINT_VM_CODES="vmcodes";
     public static final String FLAG_PRINT_HELP="help";
+    public static final String FLAG_PRINT_ASM="asm";
 
     public static final String FLAG_STRICT="strict";
     public static final String FLAG_CLEAN="clean";
     public static final String FLAG_OPTIMIZE="optimize";
+
+    public static final String FLAG_TARGET_NATIVE="native";
+    public static final String FLAG_TARGET_JVM="jvm";
 
     private static Options createOptions(){
         //https://commons.apache.org/proper/commons-cli/usage.html
@@ -154,6 +158,7 @@ public class dragonc {
         opts.addOption(new Option(FLAG_PRINT_SYMBOLTABLES,false,"print the symbol tables"));
         opts.addOption(new Option(FLAG_PRINT_HELP,false,"display an overview of the command line options"));
         opts.addOption(new Option(FLAG_PRINT_VM_CODES,false,"outputs the vm codes generated to the console. doesnt work with jvm backend"));
+        opts.addOption(new Option(FLAG_PRINT_ASM,false,"prints the assembly code generated"));
 
         opts.addOption(new Option(FLAG_STRICT,false,"do not compile if the code is likely to have bugs (TODO)"));
 
@@ -163,8 +168,8 @@ public class dragonc {
 
         OptionGroup optGroup = new OptionGroup();
 
-        optGroup.addOption(new Option("targetnative",false,"compile a native executable"));
-        optGroup.addOption(new Option("targetjvm",false,"compile .class files to execute on the jvm"));
+        optGroup.addOption(new Option(FLAG_TARGET_NATIVE,false,"compile a native executable"));
+        optGroup.addOption(new Option(FLAG_TARGET_JVM,false,"compile .class files to execute on the jvm"));
 
         opts.addOptionGroup(optGroup);
         return opts;
@@ -191,6 +196,7 @@ public class dragonc {
                 //use stdin to receive codes
                 //if no files or directories are given as arguments
                 //(unix philosophy)
+                //this enables the program to better be used with other programs, piping text and outputs and such
                 StringBuilder sb=new StringBuilder();
                 Scanner sc = new Scanner(System.in);
                 while(sc.hasNextLine()){
