@@ -6,12 +6,23 @@ _start:
 	;mov eax,'x'
 	;push eax
 
-	;access memory at location 0,write some char in it
-	mov eax,'e';
-	mov [0],eax;
+	;allocate memory with mmap system call
+	mov eax,192	;mmap2
+	xor ebx,ebx	;addr=NULL
+	mov ecx,4096	; len=4096 ;length of segment to be allocated?
+	mov edx,0x7	; prot = PROT_READ | PROT_WRITE | PROT_EXEC
+	mov esi,0x22	; flags=MAP_PRIVATE | MAP_ANONYMOUS
+	mov edi,-1	; fd=-1
+	xor ebp,ebp	; offset=0
+	int 0x80	;make call
+	;syscall
+
+	;put a char in that memory location
+	mov ebx,'a'
+	mov [eax],ebx
 
 	;hope that we can get the char out and push it on stack
-	mov ebx,[0]
+	mov ebx,[eax]
 	push ebx
 
          ;print the char on stack
