@@ -4,16 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.cli.CommandLine;
 import org.vanautrui.languages.TerminalUtil;
-import org.vanautrui.languages.dragoncompiler.vmcodegenerator.DracoVMCodeGenerator;
-import org.vanautrui.languages.dragonvmcompiler.DracoVMCompiler;
-import org.vanautrui.languages.dragoncompiler.lexing.Lexer;
-import org.vanautrui.languages.dragoncompiler.lexing.utils.CharacterList;
-import org.vanautrui.languages.dragoncompiler.lexing.utils.TokenList;
-import org.vanautrui.languages.dragoncompiler.parsing.Parser;
-import org.vanautrui.languages.dragoncompiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.dragoncompiler.phase_clean_the_input.CommentRemoverAndWhitespaceRemover;
-import org.vanautrui.languages.dragoncompiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.dragoncompiler.typechecking.TypeChecker;
+import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
+import org.vanautrui.languages.vmcompiler.DracoVMCompiler;
+import org.vanautrui.languages.compiler.lexing.Lexer;
+import org.vanautrui.languages.compiler.lexing.utils.CharacterList;
+import org.vanautrui.languages.compiler.lexing.utils.TokenList;
+import org.vanautrui.languages.compiler.parsing.Parser;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.phase_clean_the_input.CommentRemoverAndWhitespaceRemover;
+import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.typechecking.TypeChecker;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -30,8 +30,8 @@ import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBeginPhase;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printEndPhase;
 import static org.vanautrui.languages.commandline.dragonc.*;
-import static org.vanautrui.languages.dragoncompiler.phase_clean_the_input.CommentRemoverAndWhitespaceRemover.remove_unneccessary_whitespace;
-import static org.vanautrui.languages.dragoncompiler.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
+import static org.vanautrui.languages.compiler.phase_clean_the_input.CommentRemoverAndWhitespaceRemover.remove_unneccessary_whitespace;
+import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
 
 public class CompilerPhases {
 
