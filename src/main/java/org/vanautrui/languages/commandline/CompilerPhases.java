@@ -29,13 +29,24 @@ import java.util.stream.Collectors;
 import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBeginPhase;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printEndPhase;
+import static org.vanautrui.languages.commandline.dragonc.FLAG_DEBUG;
+import static org.vanautrui.languages.commandline.dragonc.FLAG_TIMED;
 import static org.vanautrui.languages.phase_clean_the_input.CommentRemoverAndWhitespaceRemover.remove_unneccessary_whitespace;
 import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
 
 public class CompilerPhases {
 
-    public static void phase_typecheck(List<AST> asts, CommandLine cmd)throws Exception{
-        final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
+    private final boolean debug;
+    private final boolean timed;
+    private final boolean printLong;
+
+    public CompilerPhases(CommandLine cmd){
+        this.debug=cmd.hasOption(FLAG_DEBUG);
+        this.timed=cmd.hasOption(FLAG_TIMED);
+        this.printLong=debug||timed;
+    }
+
+    public void phase_typecheck(List<AST> asts, CommandLine cmd)throws Exception{
         printBeginPhase("TYPE CHECKING",printLong);
 
         //this should throw an exception, if it does not typecheck
@@ -52,8 +63,7 @@ public class CompilerPhases {
         }
     }
 
-    public static List<Path> phase_codegeneration(List<AST> asts, CommandLine cmd)throws Exception{
-        final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
+    public List<Path> phase_codegeneration(List<AST> asts, CommandLine cmd)throws Exception{
         printBeginPhase("CODE GENERATION",printLong);
 
         List<Path> generatedFilesPaths=new ArrayList<>();
@@ -135,7 +145,7 @@ public class CompilerPhases {
         }
     }
 
-    private static Path makeCleanPhaseCacheFilePathFromHash(int hash){
+    private Path makeCleanPhaseCacheFilePathFromHash(int hash){
         final String extension = ".dragon.cleaned";
         //hidden file. important, so that it does not be visible and bother people
         return Paths.get(phase_clean_cache_dir+"."+hash+extension);
@@ -143,8 +153,8 @@ public class CompilerPhases {
 
     private static final String phase_clean_cache_dir=System.getProperty("user.home")+"/.dragoncache/clean/";
 
-    public static List<CharacterList> phase_clean(List<String> sources, List<File> sourceFiles, CommandLine cmd)throws Exception{
-        final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
+    public List<CharacterList> phase_clean(List<String> sources, List<File> sourceFiles, CommandLine cmd)throws Exception{
+
         printBeginPhase("CLEAN",printLong);
         //(remove comments, empty lines, excess whitespace)
         List<CharacterList> results=new ArrayList();
@@ -197,9 +207,7 @@ public class CompilerPhases {
         return results;
     }
 
-    public static List<AST> phase_parsing(List<TokenList> list, CommandLine cmd)throws Exception{
-        final boolean debug=cmd.hasOption("debug");
-        final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
+    public List<AST> phase_parsing(List<TokenList> list, CommandLine cmd)throws Exception{
         printBeginPhase("PARSING",printLong);
         List<AST> asts=new ArrayList<>();
         boolean didThrow=false;
@@ -210,8 +218,6 @@ public class CompilerPhases {
                 AST ast = (new Parser()).parse(tokens,tokens.relPath);
 
                 if (debug || cmd.hasOption("ast")) {
-                    //TerminalUtil.println("DEBUG: pretty print source from AST in curly braces", RED);
-                    //System.out.println(ast.toSourceCode());
 
                     TerminalUtil.println("\nDEBUG: PRINT AST JSON ", RED);
 
@@ -238,9 +244,7 @@ public class CompilerPhases {
 
     }
 
-    public static List<TokenList> phase_lexing(List<CharacterList> just_codes_with_braces_without_comments, CommandLine cmd)throws Exception{
-        final boolean debug=cmd.hasOption("debug");
-        final boolean printLong = cmd.hasOption("debug")||cmd.hasOption("timed");
+    public List<TokenList> phase_lexing(List<CharacterList> just_codes_with_braces_without_comments, CommandLine cmd)throws Exception{
         printBeginPhase("LEXING",printLong);
         List<TokenList> list=new ArrayList();
         boolean didThrow = false;

@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 import static java.lang.System.currentTimeMillis;
 import static org.fusesource.jansi.Ansi.ansi;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.*;
-import static org.vanautrui.languages.commandline.CompilerPhases.*;
 
 public class dragonc {
     //this should be the compiler
@@ -126,39 +125,41 @@ public class dragonc {
         help.printHelp("draco FILE...",header,options,footer,true);
     }
 
+    //declaring these identifiers so that we can change the actual names of the options
+    //without having to comb through all the code
+    public static final String FLAG_DEBUG="debug";
+    public static final String FLAG_TIMED="timed";
+
+    public static final String FLAG_PRINT_TOKENS="tokens";
+    public static final String FLAG_PRINT_AST="ast";
+    public static final String FLAG_PRINT_SYMBOLTABLES="symboltables";
+    public static final String FLAG_PRINT_VM_CODES="vmcodes";
+    public static final String FLAG_PRINT_HELP="help";
+
+    public static final String FLAG_STRICT="strict";
+    public static final String FLAG_CLEAN="clean";
+    public static final String FLAG_OPTIMIZE="optimize";
 
     private static Options createOptions(){
         //https://commons.apache.org/proper/commons-cli/usage.html
 
         Options opts = new Options();
-        Option option_debug = new Option("debug",false,"provides debug output for development of the compiler");
-        opts.addOption(option_debug);
 
-        opts.addOption(
-                new Option("timed",false,"provides a breakdown of how long each compiler phase took")
-        );
+        opts.addOption(new Option(FLAG_DEBUG,false,"provides debug output for development of the compiler"));
 
-        opts.addOption(new Option("tokens",false,"print the tokens as json"));
-        opts.addOption(new Option("ast",false,"print the AST as json"));
-        opts.addOption(new Option("symboltables",false,"print the symbol tables"));
+        opts.addOption(new Option(FLAG_TIMED,false,"provides a breakdown of how long each compiler phase took"));
 
-        opts.addOption(new Option("help",false,"display an overview of the command line options"));
+        opts.addOption(new Option(FLAG_PRINT_TOKENS,false,"print the tokens as json"));
+        opts.addOption(new Option(FLAG_PRINT_AST,false,"print the AST as json"));
+        opts.addOption(new Option(FLAG_PRINT_SYMBOLTABLES,false,"print the symbol tables"));
+        opts.addOption(new Option(FLAG_PRINT_HELP,false,"display an overview of the command line options"));
+        opts.addOption(new Option(FLAG_PRINT_VM_CODES,false,"outputs the vm codes generated to the console. doesnt work with jvm backend"));
 
-        opts.addOption(new Option("strict",false,"do not compile if the code is likely to have bugs (TODO)"));
+        opts.addOption(new Option(FLAG_STRICT,false,"do not compile if the code is likely to have bugs (TODO)"));
 
-        opts.addOption(new Option("clean",false,"clears the cache"));
+        opts.addOption(new Option(FLAG_CLEAN,false,"clears the cache"));
 
-        opts.addOption(new Option("vmcodes",false,"outputs the vm codes generated to the console. doesnt work with jvm backend"));
-
-        opts.addOption(
-                new Option(
-                    "optimize",
-                    false,
-                    "try to optimize the code."
-                    )
-        );
-
-        OptionGroup optionGroup = new OptionGroup();
+        opts.addOption(new Option(FLAG_OPTIMIZE,false,"try to optimize the code."));
 
         OptionGroup optGroup = new OptionGroup();
 
@@ -166,14 +167,13 @@ public class dragonc {
         optGroup.addOption(new Option("targetjvm",false,"compile .class files to execute on the jvm"));
 
         opts.addOptionGroup(optGroup);
-        opts.addOptionGroup(optionGroup);
         return opts;
     }
 
     private static void compile_main_inner(List<File> sources,CommandLine cmd){
 
-        boolean debug=cmd.hasOption("debug");
-        boolean timed=cmd.hasOption("timed");
+        boolean debug=cmd.hasOption(FLAG_DEBUG);
+        boolean timed=cmd.hasOption(FLAG_TIMED);
 
         long start_time_ms = currentTimeMillis();
 
@@ -201,12 +201,14 @@ public class dragonc {
                 sources.add(Paths.get("Main.dg").toFile());
             }
 
+            CompilerPhases phases = new CompilerPhases(cmd);
+
             long start,end;
 
             start = currentTimeMillis();
             //PHASE CLEAN
             List<CharacterList> codeWithoutCommentsWithoutUnneccesaryWhitespace
-                    = phase_clean(codes,sources,cmd);
+                    = phases.phase_clean(codes,sources,cmd);
 
             end= currentTimeMillis();
             if(timed) {
@@ -215,7 +217,7 @@ public class dragonc {
 
             start= currentTimeMillis();
             //PHASE LEXING
-            List<TokenList> tokens = phase_lexing(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd);
+            List<TokenList> tokens = phases.phase_lexing(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd);
             end= currentTimeMillis();
             if(timed){
                 printDuration(start,end);
@@ -223,7 +225,7 @@ public class dragonc {
 
             start= currentTimeMillis();
             //PHASE PARSING
-            List<AST> asts = phase_parsing(tokens,cmd);
+            List<AST> asts = phases.phase_parsing(tokens,cmd);
             end= currentTimeMillis();
             if(timed){
                 printDuration(start,end);
@@ -231,7 +233,7 @@ public class dragonc {
 
             start= currentTimeMillis();
             //PHASE TYPE CHECKING
-            phase_typecheck(asts,cmd);
+            phases.phase_typecheck(asts,cmd);
             end = currentTimeMillis();
             if(timed){
                 printDuration(start,end);
@@ -239,7 +241,7 @@ public class dragonc {
 
             start = currentTimeMillis();
             //PHASE CODE GENERATION
-            List<Path> classFilePaths = phase_codegeneration(asts, cmd);
+            List<Path> classFilePaths = phases.phase_codegeneration(asts, cmd);
             end= currentTimeMillis();
             if(timed){
                 printDuration(start,end);
@@ -267,7 +269,7 @@ public class dragonc {
         } catch (Exception e) {
 
             System.err.println(e.getMessage());
-            if(cmd.hasOption("debug")) {
+            if(cmd.hasOption(FLAG_DEBUG)) {
                 //only print the stack trace for
                 //compiler developers
                 e.printStackTrace();
