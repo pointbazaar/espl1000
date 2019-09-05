@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.tokens.utils.IToken;
 
-import java.awt.*;
 import java.nio.file.Paths;
 
 public class OperatorToken implements IToken {
@@ -58,12 +57,6 @@ public class OperatorToken implements IToken {
     @JsonIgnore
     public String getContents() {
         return this.operator;
-    }
-
-    @Override
-	@JsonIgnore
-    public Color getDisplayColor() {
-        return Color.GREEN;
     }
 
 }

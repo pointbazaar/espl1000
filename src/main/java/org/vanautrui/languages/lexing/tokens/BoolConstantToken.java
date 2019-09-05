@@ -3,7 +3,6 @@ package org.vanautrui.languages.lexing.tokens;
 import org.vanautrui.languages.lexing.collections.*;
 import org.vanautrui.languages.lexing.tokens.utils.*;
 import com.fasterxml.jackson.annotation.*;
-import java.awt.*;
 
 public class BoolConstantToken implements IToken {
 
@@ -29,12 +28,6 @@ public class BoolConstantToken implements IToken {
     @JsonIgnore
     public String getContents() {
         return this.value+"";
-    }
-
-    @Override
-	@JsonIgnore
-    public Color getDisplayColor() {
-        return Color.GREEN;
     }
 
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.tokens.utils.IToken;
 
-import java.awt.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,12 +36,6 @@ public class FloatNonNegativeConstantToken implements IToken {
     @JsonIgnore
     public String getContents() {
         return this.value+"";
-    }
-
-    @Override
-	@JsonIgnore
-    public Color getDisplayColor() {
-        return Color.GREEN;
     }
 
 }

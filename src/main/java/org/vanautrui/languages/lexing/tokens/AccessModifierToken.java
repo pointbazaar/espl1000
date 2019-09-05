@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.tokens.utils.IToken;
 
-import java.awt.*;
-
 public class AccessModifierToken implements IToken {
 
     public boolean is_public;
@@ -43,9 +41,4 @@ public class AccessModifierToken implements IToken {
         return (this.is_public) ? "public" : "private";
     }
 
-    @Override
-	@JsonIgnore
-    public Color getDisplayColor() {
-        return Color.RED;
-    }
 }

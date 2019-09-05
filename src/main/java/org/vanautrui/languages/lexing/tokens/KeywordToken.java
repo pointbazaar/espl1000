@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.tokens.utils.IToken;
 
-import java.awt.*;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -56,9 +55,4 @@ public class KeywordToken implements IToken {
         return this.keyword;
     }
 
-    @Override
-	@JsonIgnore
-    public Color getDisplayColor() {
-        return Color.CYAN;
-    }
 }

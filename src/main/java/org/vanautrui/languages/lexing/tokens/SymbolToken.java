@@ -3,7 +3,7 @@ package org.vanautrui.languages.lexing.tokens;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.tokens.utils.IToken;
 import com.fasterxml.jackson.annotation.*;
-import java.awt.*;
+
 import java.nio.file.Paths;
 
 public class SymbolToken implements IToken {
@@ -44,9 +44,4 @@ public class SymbolToken implements IToken {
         return this.symbol;
     }
 
-    @Override
-	@JsonIgnore
-    public Color getDisplayColor() {
-        return Color.WHITE;
-    }
 }

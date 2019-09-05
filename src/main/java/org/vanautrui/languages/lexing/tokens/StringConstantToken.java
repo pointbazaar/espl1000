@@ -3,7 +3,7 @@ package org.vanautrui.languages.lexing.tokens;
 import org.vanautrui.languages.lexing.collections.CharacterList;
 import org.vanautrui.languages.lexing.tokens.utils.IToken;
 import com.fasterxml.jackson.annotation.*;
-import java.awt.*;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,12 +39,6 @@ public class StringConstantToken implements IToken {
     @JsonIgnore
     public String getContents() {
         return this.content;
-    }
-
-    @Override
-	@JsonIgnore
-    public Color getDisplayColor() {
-        return Color.WHITE;
     }
 
 
