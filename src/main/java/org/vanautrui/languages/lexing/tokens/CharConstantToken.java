@@ -13,6 +13,10 @@ public class CharConstantToken implements IToken {
 
     public char content;
 
+    public CharConstantToken(char c){
+        this.content=c;
+    }
+
     public CharConstantToken(CharacterList list) throws Exception {
         super();
         Pattern p = Pattern.compile(regex_char_constant);

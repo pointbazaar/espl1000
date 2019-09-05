@@ -1,11 +1,9 @@
 package org.vanautrui.languages.codegeneration;
 
-import org.vanautrui.languages.codegeneration.jvmbackend.JavaByteCodeGenerator;
 import org.vanautrui.languages.lexing.Lexer;
 import org.vanautrui.languages.lexing.utils.TokenList;
 import org.vanautrui.languages.parsing.Parser;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,9 +19,9 @@ public class CodeGeneratorTestUtils {
         AST ast= parser.parseTestMode(tokens);
 
         //we are in debug mode since we are running tests
-        byte[] result = JavaByteCodeGenerator.generateByteCodeForOneClass(ast.classNodeList.toArray(new ClassNode[]{})[0],true);
+
         Path path = Paths.get(classNameWithoutExtension+".class");
-        Files.write(path,result);
+        Files.write(path,new byte[0]);
         return path;
     }
 

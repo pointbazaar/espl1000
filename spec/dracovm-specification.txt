@@ -64,6 +64,15 @@ SUBROUTINE CALLING COMMANDS:
 //value on the stack
 
 
+MEMORY ALLOCATION/DEALLOCTAION:
+	malloc	AMOUNT 	
+	//amount is the amount of DWORDs (4 Bytes) to be reserved
+	//this is because our language currently operates in 32 bit mode
+	//this instructions takes 1 argument on the stack and returns one argument on the stack
+	//the return address is the address of the allocated memory
+
+	free	ADDRESS
+	//deallocates the previously allocated block of memory at that address
 
 BUILTIN SUBROUTINES:
 	println		//prints the integer on stack, and a newline

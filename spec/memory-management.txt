@@ -1,0 +1,10 @@
+the vm language shoud have statements
+to allow allocation of a block of memory,
+similar to malloc() in C.
+
+so if we want to use a string or an object in C,
+there has to be memory allocated for it.
+
+https://www.tutorialspoint.com/assembly_programming/assembly_memory_management.htm
+
+

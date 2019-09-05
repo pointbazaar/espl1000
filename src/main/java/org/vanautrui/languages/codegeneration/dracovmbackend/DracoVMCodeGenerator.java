@@ -203,11 +203,6 @@ public class DracoVMCodeGenerator {
             genVMCodeForFloatConst((FloatConstNode)t,sb);
         }else if(t instanceof IntConstNode){
             genVMCodeForIntConst(((IntConstNode)t).value,sb);
-        }else if(t instanceof StringConstNode){
-            StringConstNode stringConstNode = (StringConstNode)t;
-            //push the string on the stack
-            //TODO
-            throw new Exception("unhandled case");
         }else if(t instanceof ExpressionNode) {
             ExpressionNode expressionNode = (ExpressionNode)t;
             genDracoVMCodeForExpression(expressionNode,sb);

@@ -6,13 +6,11 @@ import org.apache.commons.cli.CommandLine;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.codegeneration.dracovmbackend.DracoVMCodeGenerator;
 import org.vanautrui.languages.codegeneration.dracovmbackend.vmcompiler.DracoVMCompiler;
-import org.vanautrui.languages.codegeneration.jvmbackend.JavaByteCodeGenerator;
 import org.vanautrui.languages.lexing.Lexer;
 import org.vanautrui.languages.lexing.utils.CharacterList;
 import org.vanautrui.languages.lexing.utils.TokenList;
 import org.vanautrui.languages.parsing.Parser;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.phase_clean_the_input.CommentRemoverAndWhitespaceRemover;
 import org.vanautrui.languages.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.typechecking.TypeChecker;
@@ -69,74 +67,53 @@ public class CompilerPhases {
         List<Path> generatedFilesPaths=new ArrayList<>();
 
         try {
-            if(cmd.hasOption(FLAG_TARGET_NATIVE)){
-                SubroutineSymbolTable subTable = createSubroutineSymbolTable(new HashSet<>(asts));
-                List<String> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable);
 
-                if(cmd.hasOption(FLAG_PRINT_VM_CODES) || cmd.hasOption(FLAG_DEBUG)){
-                    System.out.println("GENERATED VM CODES");
-                    dracoVMCodes.stream().forEach(str-> System.out.println(str));
-                    System.out.println();
-                }
+            SubroutineSymbolTable subTable = createSubroutineSymbolTable(new HashSet<>(asts));
+            List<String> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable);
 
-                final List<String> assembly_codes = DracoVMCompiler.compileVMCode(dracoVMCodes);
-                //$ nasm -f elf hello.asm  # this will produce hello.o ELF object file
-                //$ ld -s -o hello hello.o # this will produce hello executable
-
-                final String asm_codes = (assembly_codes
-                        .stream()
-                        .collect(Collectors.joining("\n"))+"\n");
-
-                if(cmd.hasOption(FLAG_PRINT_ASM)){
-                    System.out.println(asm_codes);
-                }
-
-                if(debug){
-                    System.out.println("call nasm");
-                }
-
-                String filename = "main";
-                String asm_file_name = filename+".asm";
-                Files.write(Paths.get(asm_file_name),asm_codes.getBytes());
-
-                Process p = Runtime.getRuntime().exec("nasm -f elf " + asm_file_name);
-                p.waitFor();
-
-                if(p.exitValue()!=0){
-                    throw new Exception("nasm exit with nonzero exit code");
-                }
-
-                Process p2 = Runtime.getRuntime().exec("ld -melf_i386 -s -o "+filename+" "+asm_file_name+".o");
-
-                if(p2.exitValue() != 0){
-                    throw new Exception("ld exit with nonzero exit code");
-                }
-
-                //add generated executable to generatedFilesPaths
-                generatedFilesPaths.add(Paths.get(filename));
-
-            }else if(cmd.hasOption(FLAG_TARGET_JVM) || true){
-                //targetjvm is the default option currently
-                SubroutineSymbolTable subroutineSymbolTable = createSubroutineSymbolTable(new HashSet<>(asts));
-
-                for (AST ast : asts) {
-                    for (ClassNode classNode : ast.classNodeList) {
-
-                        if (debug || cmd.hasOption(FLAG_PRINT_SYMBOLTABLES)) {
-                            System.out.println(subroutineSymbolTable.toString());
-                        }
-
-                        //generate bytecode for that class
-                        byte[] classResult = JavaByteCodeGenerator.generateByteCodeForClass(classNode, subroutineSymbolTable, debug);
-
-                        //System.out.println(ast.srcPath.toAbsolutePath().getParent());
-                        String dir = ast.srcPath.toAbsolutePath().getParent().toString();
-                        Path classFilePath = Paths.get(dir + "/" + classNode.name.typeName + ".class");
-                        Files.write(classFilePath, classResult);
-                        generatedFilesPaths.add(classFilePath);
-                    }
-                }
+            if(cmd.hasOption(FLAG_PRINT_VM_CODES) || cmd.hasOption(FLAG_DEBUG)){
+                System.out.println("GENERATED VM CODES");
+                dracoVMCodes.stream().forEach(str-> System.out.println(str));
+                System.out.println();
             }
+
+            final List<String> assembly_codes = DracoVMCompiler.compileVMCode(dracoVMCodes);
+            //$ nasm -f elf hello.asm  # this will produce hello.o ELF object file
+            //$ ld -s -o hello hello.o # this will produce hello executable
+
+            final String asm_codes = (assembly_codes
+                    .stream()
+                    .collect(Collectors.joining("\n"))+"\n");
+
+            if(cmd.hasOption(FLAG_PRINT_ASM)){
+                System.out.println(asm_codes);
+            }
+
+            if(debug){
+                System.out.println("call nasm");
+            }
+
+            String filename = "main";
+            String asm_file_name = filename+".asm";
+            Files.write(Paths.get(asm_file_name),asm_codes.getBytes());
+
+            Process p = Runtime.getRuntime().exec("nasm -f elf " + asm_file_name);
+            p.waitFor();
+
+            if(p.exitValue()!=0){
+                throw new Exception("nasm exit with nonzero exit code");
+            }
+
+            Process p2 = Runtime.getRuntime().exec("ld -melf_i386 -s -o "+filename+" "+asm_file_name+".o");
+
+            if(p2.exitValue() != 0){
+                throw new Exception("ld exit with nonzero exit code");
+            }
+
+            //add generated executable to generatedFilesPaths
+            generatedFilesPaths.add(Paths.get(filename));
+
+
             printEndPhase(true,printLong);
             return generatedFilesPaths;
 

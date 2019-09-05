@@ -74,8 +74,46 @@ public class DracoVMCompiler {
                     a.push(eax);
                     break;
                 case "pop":
+                    String segment = instr.getArg1().get();
+                    int index = Integer.parseInt(instr.getArg2().get());
+
+                    switch (segment){
+                        case "ARG":
+                            a.pop(eax);
+                            //TODO: get base address of argument segment on stack
+                            //TODO
+                            break;
+                        case "LOCAL":
+                            a.pop(eax);
+                            //TODO: get base address of local segment on stack
+                            //TODO
+                            break;
+                        case "STATIC":
+                            throw new Exception("not yet implemented");
+                        default:
+                            throw new Exception("fatal");
+                    }
+                    break;
                 case "push":
-                    throw new Exception("not yet implemented");
+                    String segment1 = instr.getArg1().get();
+                    int index1 = Integer.parseInt(instr.getArg2().get());
+                    switch (segment1){
+                        case "ARG":
+                            a.pop(eax);
+                            //TODO: get base address of argument segment on stack
+                            //TODO
+                            break;
+                        case "LOCAL":
+                            a.pop(eax);
+                            //TODO: get base address of local segment on stack
+                            //TODO
+                            break;
+                        case "STATIC":
+                            throw new Exception("not yet implemented");
+                        default:
+                            throw new Exception("fatal");
+                    }
+                    break;
                 case "dup":
                     //duplicates top of stack
                     a.pop(eax);

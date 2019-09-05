@@ -1,5 +1,8 @@
 package org.vanautrui.languages.parsing.astnodes.nonterminal;
 
+import org.vanautrui.languages.lexing.tokens.CharConstantToken;
+import org.vanautrui.languages.lexing.tokens.StringConstantToken;
+import org.vanautrui.languages.lexing.utils.IToken;
 import org.vanautrui.languages.lexing.utils.TokenList;
 import org.vanautrui.languages.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.parsing.IASTNode;
@@ -37,7 +40,34 @@ public class TermNode implements IASTNode, IExpressionComputable {
 		        this.termNode=new IntConstNode(copy);
 		    }catch (Exception e1){
 		        try {
-		            this.termNode=new StringConstNode(copy);
+		        	//a string constant is syntatic sugar.
+					//in the parsing stage it is converted to an array of char constants
+
+					//inline the stringConstant and its syntatic sugar
+
+					IToken token = tokens.get(0);
+
+					if (token instanceof StringConstantToken) {
+
+						String content = ((StringConstantToken) token).getContents();
+						TokenList tks = new TokenList();
+						tks.add(new SymbolToken("["));
+						for(int i=0;i<content.length();i++){
+							tks.add(new CharConstantToken(content.charAt(i)));
+							if(i<content.length()-1){
+								tks.add(new SymbolToken(","));
+							}
+						}
+						tks.add(new SymbolToken("["));
+						this.termNode=new ArrayConstantNode(tks);
+
+						tokens.consume(1);
+					} else {
+						throw new Exception("could not read stringConstant syntatic sugar");
+					}
+
+
+
 		        }catch (Exception e2){
 		            try {
 		                TokenList copy2=new TokenList(copy);

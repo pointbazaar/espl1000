@@ -25,10 +25,6 @@ public class TypeResolver {
     	return "Float";
     }
 
-    public static String getTypeStringConstantNode(StringConstNode stringConstNode){
-        return "String";
-    }
-
     public static String getTypeVariableNode(VariableNode variableNode, MethodNode methodNode, SubroutineSymbolTable subroutineSymbolTable, LocalVarSymbolTable varTable)throws Exception{
         //TODO: implement by looking at the definitions in the AST and such
 
@@ -58,8 +54,6 @@ public class TypeResolver {
 		return getTypeFloatConstantNode((FloatConstNode)termNode.termNode);
         }else if(termNode.termNode instanceof IntConstNode){
             return getTypeIntegerConstantNode((IntConstNode)termNode.termNode);
-        }else if(termNode.termNode instanceof StringConstNode){
-            return getTypeStringConstantNode((StringConstNode)termNode.termNode);
         }else if(termNode.termNode instanceof VariableNode){
             return getTypeVariableNode((VariableNode) termNode.termNode,methodNode,subroutineSymbolTable,varTable);
 		}else if(termNode.termNode instanceof BoolConstNode) {

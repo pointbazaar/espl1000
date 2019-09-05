@@ -1,0 +1,5 @@
+dracovm compiler
+uses the system calls in assembly to allocate and free memory on the heap
+
+it uses the assembly 'pop', 'push' commands to work with the stack
+

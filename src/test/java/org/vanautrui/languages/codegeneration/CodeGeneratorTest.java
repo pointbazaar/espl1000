@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class JavaByteCodeGeneratorTest {
+public class CodeGeneratorTest {
 
     @Test
     public void test_can_compile_simple_helloworld()throws Exception{

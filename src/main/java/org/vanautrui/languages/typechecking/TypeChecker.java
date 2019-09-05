@@ -238,8 +238,6 @@ public class TypeChecker {
 		    //nothing to do
 	}else if(termNode.termNode instanceof IntConstNode){
             //nothing to do
-        }else if(termNode.termNode instanceof StringConstNode){
-            //nothing to do
         }else if(termNode.termNode instanceof ExpressionNode) {
             ExpressionNode expressionNode = (ExpressionNode) termNode.termNode;
             typeCheckExpressionNode(asts,classNode,methodNode,expressionNode,subTable,varTable);

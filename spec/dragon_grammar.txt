@@ -12,7 +12,6 @@ int ::= ... | -1 | 0 | 1 | 2 | ...
 charConstant ::= 'a' | ... | 'z' | 'A' | ... | 'Z'
 alphanumeric ::= int | charConstant | '_'
 identifier ::= charConstant alphanumeric*
-string ::= '"' alphanumeric* '"'
 
 op ::= '+' | '-' | '*' | '/' | ...
 unaryOp ::= '-' | '!'
@@ -70,7 +69,7 @@ returnStatement ::= 'return' expression? ';'
 
 assignmentStatement ::= variable '=' expression ';'
 
-term ::= arrayConstant | boolConstant | integerConstant | string | charConstant | keywordConstant | methodCall | '(' expression ')' | unaryOp term | variable
+term ::= arrayConstant | boolConstant | integerConstant | charConstant | keywordConstant | methodCall | '(' expression ')' | unaryOp term | variable
 
 expression ::= term (op term)*
 

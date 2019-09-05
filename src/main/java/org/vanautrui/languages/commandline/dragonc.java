@@ -168,9 +168,6 @@ public class dragonc {
 
         OptionGroup optGroup = new OptionGroup();
 
-        optGroup.addOption(new Option(FLAG_TARGET_NATIVE,false,"compile native executable"));
-        optGroup.addOption(new Option(FLAG_TARGET_JVM,false,"compile .class (for JVM)"));
-
         opts.addOptionGroup(optGroup);
         return opts;
     }
