@@ -13,7 +13,7 @@ import org.vanautrui.languages.lexing.collections.TokenList;
 import org.vanautrui.languages.parsing.Parser;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.ClassNode;
-import org.vanautrui.languages.phase_clean_the_input.CommentRemover;
+import org.vanautrui.languages.phase_clean_the_input.CommentRemoverAndWhitespaceRemover;
 import org.vanautrui.languages.symboltables.tables.SubroutineSymbolTable;
 import org.vanautrui.languages.typechecking.TypeChecker;
 
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printBeginPhase;
 import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.printEndPhase;
-import static org.vanautrui.languages.phase_clean_the_input.UnneccessaryWhiteSpaceRemover.remove_unneccessary_whitespace;
+import static org.vanautrui.languages.phase_clean_the_input.CommentRemoverAndWhitespaceRemover.remove_unneccessary_whitespace;
 import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
 
 public class CompilerPhases {
@@ -263,7 +263,7 @@ public class CompilerPhases {
                 codeWithoutCommentsWithoutUnneccesaryWhitespace = new String(Files.readAllBytes(makeCleanPhaseCacheFilePathFromHash(hash)));
             }else {
 
-                String codeWithoutCommentsAndWithoutEmptyLines = (new CommentRemover()).strip_all_comments_and_empty_lines(source);
+                String codeWithoutCommentsAndWithoutEmptyLines = (new CommentRemoverAndWhitespaceRemover()).strip_all_comments_and_empty_lines(source);
 
                 codeWithoutCommentsWithoutUnneccesaryWhitespace =
                         remove_unneccessary_whitespace(codeWithoutCommentsAndWithoutEmptyLines);
