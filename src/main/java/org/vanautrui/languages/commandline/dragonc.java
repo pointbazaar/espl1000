@@ -97,16 +97,16 @@ public class dragonc {
         StringBuilder sbh = new StringBuilder("");
         StringBuilder sbf = new StringBuilder("");
 
-        sbh.append(ansi().bold().a("\ndraco - dragon compiler\n\n").reset().toString());
+        sbh.append(ansi().bold().a("\ndraco - a compiler for the dragon language\n").reset().toString());
 
-        sbf.append("\n\n");
+        sbf.append("\n");
         sbf.append(ansi().bold().a("EXAMPLES\n\n").reset().toString());
         sbf.append("    draco Main.dg\n");
         sbf.append("    draco -debug -ast Main.dg\n");
         sbf.append("\n");
 
 
-        sbf.append(ansi().bold().a("GITHUB\n\n").reset().toString());
+        sbf.append(ansi().bold().a("GITHUB").reset().toString());
         sbf.append("    https://github.com/pointbazaar/dragon/\n");
         sbf.append("\n");
 
@@ -117,7 +117,7 @@ public class dragonc {
         );
         sbf.append("\n");
 
-        sbf.append(ansi().bold().a("REPORTING BUGS\n\n").reset().toString());
+        sbf.append(ansi().bold().a("REPORTING BUGS").reset().toString());
         sbf.append("    https://github.com/pointbazaar/dragon/issues\n\n");
 
         String header=sbh.toString();
@@ -149,27 +149,27 @@ public class dragonc {
 
         Options opts = new Options();
 
-        opts.addOption(new Option(FLAG_DEBUG,false,"provides debug output for development of the compiler"));
+        opts.addOption(new Option(FLAG_DEBUG,false,"prints debug output"));
 
-        opts.addOption(new Option(FLAG_TIMED,false,"provides a breakdown of how long each compiler phase took"));
+        opts.addOption(new Option(FLAG_TIMED,false,"how long did the build take?"));
 
-        opts.addOption(new Option(FLAG_PRINT_TOKENS,false,"print the tokens as json"));
-        opts.addOption(new Option(FLAG_PRINT_AST,false,"print the AST as json"));
-        opts.addOption(new Option(FLAG_PRINT_SYMBOLTABLES,false,"print the symbol tables"));
-        opts.addOption(new Option(FLAG_PRINT_HELP,false,"display an overview of the command line options"));
-        opts.addOption(new Option(FLAG_PRINT_VM_CODES,false,"outputs the vm codes generated to the console. doesnt work with jvm backend"));
-        opts.addOption(new Option(FLAG_PRINT_ASM,false,"prints the assembly code generated"));
+        opts.addOption(new Option(FLAG_PRINT_TOKENS,false,"print tokens as JSON"));
+        opts.addOption(new Option(FLAG_PRINT_AST,false,"print AST as JSON"));
+        opts.addOption(new Option(FLAG_PRINT_SYMBOLTABLES,false,"print symbol tables"));
+        opts.addOption(new Option(FLAG_PRINT_HELP,false,"print help"));
+        opts.addOption(new Option(FLAG_PRINT_VM_CODES,false,"prints vm codes"));
+        opts.addOption(new Option(FLAG_PRINT_ASM,false,"prints assembly code"));
 
-        opts.addOption(new Option(FLAG_STRICT,false,"do not compile if the code is likely to have bugs (TODO)"));
+        opts.addOption(new Option(FLAG_STRICT,false,"do not compile if likely to have bugs"));
 
-        opts.addOption(new Option(FLAG_CLEAN,false,"clears the cache"));
+        opts.addOption(new Option(FLAG_CLEAN,false,"clear cache"));
 
-        opts.addOption(new Option(FLAG_OPTIMIZE,false,"try to optimize the code."));
+        opts.addOption(new Option(FLAG_OPTIMIZE,false,"optimize the code"));
 
         OptionGroup optGroup = new OptionGroup();
 
-        optGroup.addOption(new Option(FLAG_TARGET_NATIVE,false,"compile a native executable"));
-        optGroup.addOption(new Option(FLAG_TARGET_JVM,false,"compile .class files to execute on the jvm"));
+        optGroup.addOption(new Option(FLAG_TARGET_NATIVE,false,"compile native executable"));
+        optGroup.addOption(new Option(FLAG_TARGET_JVM,false,"compile .class (for JVM)"));
 
         opts.addOptionGroup(optGroup);
         return opts;
