@@ -87,11 +87,11 @@ public class MethodCallCodeGenerator {
             SubroutineSymbolTable subroutineSymbolTable, boolean debug
     ) throws Exception {
 
-        if(subroutineSymbolTable.containsVariable(methodCallNode.identifierMethodName)){
+        if(subroutineSymbolTable.containsSubroutine(methodCallNode.identifierMethodName)){
             String subrType = TypeResolver.getTypeMethodCallNode(methodCallNode,subroutineSymbolTable);
 
             String methodName = methodCallNode.identifierMethodName;
-            String owner=classNode.name.typeName;
+            String owner=subroutineSymbolTable.getContainingClassName(methodCallNode.identifierMethodName);
             String descriptor= TypeNameToJVMInternalTypeNameConverter.convertSubroutineName(
                     subrType,methodCallNode.argumentList.stream().map(expressionNode -> {
                         try {

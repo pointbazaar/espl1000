@@ -155,7 +155,7 @@ public class TypeChecker {
         //which is actually declared and initialized
         //and is in scope
 
-		if(!subTable.containsVariable(methodCallNode.identifierMethodName)){
+		if(!subTable.containsSubroutine(methodCallNode.identifierMethodName)){
             List<String> builtins = Arrays.asList("print","println","read","readln");
             if(!builtins.contains(methodCallNode.identifierMethodName)){
 			     System.out.println(subTable.toString());

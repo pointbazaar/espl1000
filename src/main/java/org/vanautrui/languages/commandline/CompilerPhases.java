@@ -297,7 +297,7 @@ public class CompilerPhases {
                         if (parts.length == 2) {
 
                             if(debug){
-                                System.out.println("PREPROCESSOR: USE "+parts[1]);
+                                System.out.println("\nPREPROCESSOR: USE "+parts[1]);
                             }
 
                             Path filename_in_stdlib = Paths.get(System.getProperty("user.home")+"/dragon/stdlib/" + parts[1]);

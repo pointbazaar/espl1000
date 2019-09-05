@@ -63,4 +63,6 @@ public class SymbolTableGeneratorTest {
         //System.out.println(localVarTable.toString());
         assertEquals(2,localVarTable.countLocals());
     }
+
+    //TODO: test the subroutine symbol table generation
 }

@@ -2,19 +2,24 @@ package org.vanautrui.languages.symboltables;
 
 public class SubroutineSymbolTableRow {
 
-    public final String subRoutineName;
-    public final String typeName;
+    private final String subRoutineName;
+    //almost all subroutines have a name, except anonymous subroutines or anonymous lambdas
+    //but we can make up names for these maybe
 
-    public SubroutineSymbolTableRow(String subRoutineName, String typeName){
+    private final String typeName;  //every subroutine has a return type
+    private final String className; //every subroutine is contained in a class
+
+    public SubroutineSymbolTableRow(String subRoutineName, String typeName,String className){
 
         this.typeName=typeName;
         this.subRoutineName = subRoutineName;
+        this.className=className;
     }
 
     @Override
     public String toString(){
 
-        return String.format("| %8s | %8s |", subRoutineName,typeName);
+        return String.format("| %8s | %8s | %8s |", subRoutineName,typeName,className);
     }
 
     public String getName() {
@@ -24,6 +29,8 @@ public class SubroutineSymbolTableRow {
     public String getType() {
         return this.typeName;
     }
+
+    public String getClassName(){return this.className;}
 }
 
 

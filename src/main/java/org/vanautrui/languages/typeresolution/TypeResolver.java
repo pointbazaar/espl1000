@@ -154,8 +154,8 @@ public class TypeResolver {
         }
         //TODO: handle the other builtin methods
 
-        if(subroutineSymbolTable.containsVariable(subrName)){
-            return subroutineSymbolTable.getTypeOfVariable(subrName);
+        if(subroutineSymbolTable.containsSubroutine(subrName)){
+            return subroutineSymbolTable.getReturnTypeOfSubroutine(subrName);
         }
 
         //TODO: throw exception if not found in symbol table

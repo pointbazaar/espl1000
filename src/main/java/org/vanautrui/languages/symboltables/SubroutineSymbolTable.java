@@ -21,32 +21,32 @@ public class SubroutineSymbolTable {
     }
 
     public void add(SubroutineSymbolTableRow row) {
-        if(!this.containsVariable(row.getName())) {
+        if(!this.containsSubroutine(row.getName())) {
             this.symbolTable.add(row);
             index_count++;
         }
     }
 
-    public boolean containsVariable(String varName) {
-        return symbolTable.stream().filter(e->e.getName().equals(varName)).collect(Collectors.toList()).size()>0;
+    public boolean containsSubroutine(String subroutineName) {
+        return symbolTable.stream().filter(e->e.getName().equals(subroutineName)).collect(Collectors.toList()).size()>0;
     }
 
-    public int getIndexOfVariable(String varName)throws Exception {
-        if(!this.containsVariable(varName)){
-            throw new Exception("could not get index of variable "+varName+" in symbol table. ");
+    public int getIndexOfSubroutine(String subroutineName)throws Exception {
+        if(!this.containsSubroutine(subroutineName)){
+            throw new Exception("could not get index of variable "+subroutineName+" in symbol table. ");
         }
 
         for(int i=0;i<this.symbolTable.size();i++){
             SubroutineSymbolTableRow row = this.symbolTable.get(i);
-            if(row.getName().equals(varName)){
+            if(row.getName().equals(subroutineName)){
                 return i;
             }
         }
         throw new Exception();
     }
 
-    public String getTypeOfVariable(String varName) {
-        return symbolTable.stream().filter(e->e.getName().equals(varName)).collect(Collectors.toList()).get(0).getType();
+    public String getReturnTypeOfSubroutine(String subroutineName) {
+        return symbolTable.stream().filter(e->e.getName().equals(subroutineName)).collect(Collectors.toList()).get(0).getType();
     }
 
     public int size() {
@@ -76,5 +76,19 @@ public class SubroutineSymbolTable {
         Table table = builder.build();
         //System.out.println(table); // NOTICE: table.toString() is called implicitly
         return "\nSUBROUTINE SYMBOL TABLE: \n"+table.toString();
+    }
+
+    public String getContainingClassName(String identifierMethodName) throws Exception{
+        return this.get(identifierMethodName).getClassName();
+    }
+
+    private SubroutineSymbolTableRow get(String methodName) throws Exception{
+        for(int i=0;i<this.symbolTable.size();i++){
+            SubroutineSymbolTableRow row = this.symbolTable.get(i);
+            if(row.getName().equals(methodName)){
+                return row;
+            }
+        }
+        throw new Exception("could not find "+methodName+" in subroutine symbol table");
     }
 }
