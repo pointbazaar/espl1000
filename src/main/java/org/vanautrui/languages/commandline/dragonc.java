@@ -3,9 +3,9 @@ package org.vanautrui.languages.commandline;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
 import org.fusesource.jansi.Ansi;
-import org.vanautrui.languages.lexing.utils.CharacterList;
-import org.vanautrui.languages.lexing.utils.TokenList;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.dragoncompiler.lexing.utils.CharacterList;
+import org.vanautrui.languages.dragoncompiler.lexing.utils.TokenList;
+import org.vanautrui.languages.dragoncompiler.parsing.astnodes.nonterminal.upperscopes.AST;
 
 import java.io.File;
 import java.nio.file.Files;

@@ -4,16 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.cli.CommandLine;
 import org.vanautrui.languages.TerminalUtil;
-import org.vanautrui.languages.codegeneration.dracovmbackend.DracoVMCodeGenerator;
-import org.vanautrui.languages.codegeneration.dracovmbackend.vmcompiler.DracoVMCompiler;
-import org.vanautrui.languages.lexing.Lexer;
-import org.vanautrui.languages.lexing.utils.CharacterList;
-import org.vanautrui.languages.lexing.utils.TokenList;
-import org.vanautrui.languages.parsing.Parser;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.phase_clean_the_input.CommentRemoverAndWhitespaceRemover;
-import org.vanautrui.languages.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.typechecking.TypeChecker;
+import org.vanautrui.languages.dragoncompiler.vmcodegenerator.DracoVMCodeGenerator;
+import org.vanautrui.languages.dragonvmcompiler.DracoVMCompiler;
+import org.vanautrui.languages.dragoncompiler.lexing.Lexer;
+import org.vanautrui.languages.dragoncompiler.lexing.utils.CharacterList;
+import org.vanautrui.languages.dragoncompiler.lexing.utils.TokenList;
+import org.vanautrui.languages.dragoncompiler.parsing.Parser;
+import org.vanautrui.languages.dragoncompiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.dragoncompiler.phase_clean_the_input.CommentRemoverAndWhitespaceRemover;
+import org.vanautrui.languages.dragoncompiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.dragoncompiler.typechecking.TypeChecker;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -25,12 +25,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.lang.System.out;
 import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBeginPhase;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printEndPhase;
 import static org.vanautrui.languages.commandline.dragonc.*;
-import static org.vanautrui.languages.phase_clean_the_input.CommentRemoverAndWhitespaceRemover.remove_unneccessary_whitespace;
-import static org.vanautrui.languages.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
+import static org.vanautrui.languages.dragoncompiler.phase_clean_the_input.CommentRemoverAndWhitespaceRemover.remove_unneccessary_whitespace;
+import static org.vanautrui.languages.dragoncompiler.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
 
 public class CompilerPhases {
 
@@ -42,6 +43,13 @@ public class CompilerPhases {
         this.debug=cmd.hasOption(FLAG_DEBUG);
         this.timed=cmd.hasOption(FLAG_TIMED);
         this.printLong=debug||timed;
+    }
+
+    public CompilerPhases() {
+        //for testing of compiler phases
+        this.debug=false;
+        this.timed=false;
+        this.printLong=false;
     }
 
     public void phase_typecheck(List<AST> asts, CommandLine cmd)throws Exception{
@@ -61,6 +69,24 @@ public class CompilerPhases {
         }
     }
 
+    public void generate_executable(String asm_codes,String filename_without_extension) throws Exception{
+        String asm_file_name = filename_without_extension+".asm";
+        Files.write(Paths.get(asm_file_name),asm_codes.getBytes());
+
+        Process p = Runtime.getRuntime().exec("nasm -f elf " + asm_file_name);
+        p.waitFor();
+
+        if(p.exitValue()!=0){
+            throw new Exception("nasm exit with nonzero exit code");
+        }
+
+        Process p2 = Runtime.getRuntime().exec("ld -melf_i386 -s -o "+filename_without_extension+" "+asm_file_name+".o");
+
+        if(p2.exitValue() != 0){
+            throw new Exception("ld exit with nonzero exit code");
+        }
+    }
+
     public List<Path> phase_codegeneration(List<AST> asts, CommandLine cmd)throws Exception{
         printBeginPhase("CODE GENERATION",printLong);
 
@@ -71,10 +97,10 @@ public class CompilerPhases {
             SubroutineSymbolTable subTable = createSubroutineSymbolTable(new HashSet<>(asts));
             List<String> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable);
 
-            if(cmd.hasOption(FLAG_PRINT_VM_CODES) || cmd.hasOption(FLAG_DEBUG)){
-                System.out.println("GENERATED VM CODES");
-                dracoVMCodes.stream().forEach(str-> System.out.println(str));
-                System.out.println();
+            if(cmd.hasOption(FLAG_PRINT_VM_CODES)){
+                out.println("GENERATED VM CODES");
+                dracoVMCodes.stream().forEach(str-> out.println(str));
+                out.println();
             }
 
             final List<String> assembly_codes = DracoVMCompiler.compileVMCode(dracoVMCodes);
@@ -86,33 +112,17 @@ public class CompilerPhases {
                     .collect(Collectors.joining("\n"))+"\n");
 
             if(cmd.hasOption(FLAG_PRINT_ASM)){
-                System.out.println(asm_codes);
+                out.println(asm_codes);
             }
 
             if(debug){
-                System.out.println("call nasm");
+                out.println("call nasm");
             }
 
             String filename = "main";
-            String asm_file_name = filename+".asm";
-            Files.write(Paths.get(asm_file_name),asm_codes.getBytes());
+            generate_executable(asm_codes,filename);
 
-            Process p = Runtime.getRuntime().exec("nasm -f elf " + asm_file_name);
-            p.waitFor();
-
-            if(p.exitValue()!=0){
-                throw new Exception("nasm exit with nonzero exit code");
-            }
-
-            Process p2 = Runtime.getRuntime().exec("ld -melf_i386 -s -o "+filename+" "+asm_file_name+".o");
-
-            if(p2.exitValue() != 0){
-                throw new Exception("ld exit with nonzero exit code");
-            }
-
-            //add generated executable to generatedFilesPaths
             generatedFilesPaths.add(Paths.get(filename));
-
 
             printEndPhase(true,printLong);
             return generatedFilesPaths;
@@ -145,7 +155,7 @@ public class CompilerPhases {
 
             int hash = source.hashCode();
             if(debug) {
-                System.out.println("phase clean: Hashcode of source string: " + hash);
+                out.println("phase clean: Hashcode of source string: " + hash);
             }
             boolean foundCachedCleanedFile = false;
 
@@ -157,7 +167,7 @@ public class CompilerPhases {
 
             if(foundCachedCleanedFile){
                 if(debug) {
-                    System.out.println("found a cached version that is already cleaned");
+                    out.println("found a cached version that is already cleaned");
                 }
                 codeWithoutCommentsWithoutUnneccesaryWhitespace = new String(Files.readAllBytes(makeCleanPhaseCacheFilePathFromHash(hash)));
             }else {
@@ -173,7 +183,7 @@ public class CompilerPhases {
                 Files.write(makeCleanPhaseCacheFilePathFromHash(hash),codeWithoutCommentsWithoutUnneccesaryWhitespace.getBytes());
             }
             if(debug) {
-                System.out.println(codeWithoutCommentsWithoutUnneccesaryWhitespace);
+                out.println(codeWithoutCommentsWithoutUnneccesaryWhitespace);
             }
             results.add(new CharacterList(codeWithoutCommentsWithoutUnneccesaryWhitespace,sourceFiles.get(i).toPath()));
         }
@@ -197,8 +207,8 @@ public class CompilerPhases {
 
                     ObjectMapper mapper = new ObjectMapper();
                     mapper.enable(SerializationFeature.INDENT_OUTPUT);
-                    System.out.println(mapper.writeValueAsString(ast));
-                    System.out.println();
+                    out.println(mapper.writeValueAsString(ast));
+                    out.println();
                 }
 
                 asts.add(ast);
@@ -228,7 +238,7 @@ public class CompilerPhases {
                 TokenList tokens = (new Lexer()).lexCodeWithoutComments(just_code_with_braces_without_comments);
 
                 if (cmd.hasOption(FLAG_PRINT_TOKENS)) {
-                    System.out.println(tokens.toString());
+                    out.println(tokens.toString());
                 }
                 list.add(tokens);
             }catch (Exception e){
@@ -274,7 +284,7 @@ public class CompilerPhases {
                         if (parts.length == 2) {
 
                             if(debug){
-                                System.out.println("\nPREPROCESSOR: USE "+parts[1]);
+                                out.println("\nPREPROCESSOR: USE "+parts[1]);
                             }
 
                             Path filename_in_stdlib = Paths.get(System.getProperty("user.home")+"/dragon/stdlib/" + parts[1]);
