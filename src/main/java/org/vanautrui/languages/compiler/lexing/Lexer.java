@@ -84,16 +84,16 @@ public class Lexer {
                 //pass
             }
 
-	    try {
+	        try {
                 result.add(new FloatNonNegativeConstantToken(myCode));
                 continue;
             } catch (Exception e) {
-                    try {
-		        result.add(new IntegerNonNegativeConstantToken(myCode));
-		        continue;
-		    } catch (Exception e2) {
-		        //pass
-		    }
+	            try {
+                    result.add(new IntegerNonNegativeConstantToken(myCode));
+                    continue;
+                } catch (Exception e2) {
+                    //pass
+                }
             }
 
             try {

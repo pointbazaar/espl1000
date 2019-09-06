@@ -8,6 +8,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.*;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.typechecking.TypeChecker;
 
 import java.util.Arrays;
 import java.util.List;
@@ -135,16 +136,14 @@ public class TypeResolver {
 
         String subrName = methodCallNode.getMethodName();
 
-        if(subrName.equals("readln")){
-            return "String";
-        }
+
 
         //these calls are Void
         //but since there is no void in this language, they are int
         //we have to think about that during code generation later on
-        List<String> builtin_stuff=Arrays.asList("print","println");
-        if(builtin_stuff.contains(subrName)){
-            return "Int";
+
+        if(TypeChecker.builtin_subroutine_types.keySet().contains(subrName)){
+            return TypeChecker.builtin_subroutine_types.get(subrName);
         }
         //TODO: handle the other builtin methods
 

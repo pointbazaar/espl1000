@@ -22,6 +22,7 @@ public class CharacterList{
         Path relativePath = workingDir.relativize(codePath);
         this.relSrcPath=relativePath;
         boolean insideString=false;
+        boolean insideChar=false;
 
         char[] chars=s.toCharArray();
         long currentLine=1;
@@ -30,11 +31,13 @@ public class CharacterList{
             if(c=='\"'){
                 insideString=!insideString;
             }
-
+            if(c=='\'' && !insideString){
+                insideChar=!insideChar;
+            }
 
             if(c=='\n'){
                 currentLine++;
-                if(insideString){
+                if(insideString || insideChar){
                     this.list.add(c);
                     this.lineNumbers.add(currentLine);
                 }
@@ -50,7 +53,7 @@ public class CharacterList{
     }
 
     public CharacterList(CharacterList other) {
-        this.relSrcPath = other.relSrcPath;
+        this.relSrcPath     = other.relSrcPath;
 
         this.lineNumbers    = new ArrayList<>(other.lineNumbers);
         this.list           = new ArrayList<>(other.list);

@@ -1,17 +1,19 @@
-package org.vanautrui.languages.vmcompiler;
+package org.vanautrui.languages.vmcompiler.codegenerator;
 
+import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
+import org.vanautrui.languages.vmcompiler.AssemblyWriter;
 import org.vanautrui.languages.vmcompiler.instructions.IVMInstr;
 import org.vanautrui.languages.vmcompiler.instructions.VMInstr;
-import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
 import org.vanautrui.languages.vmcompiler.model.Register;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.vanautrui.languages.vmcompiler.codegenerator.SubroutineCallVMCodeGenerator.compile_call;
 import static org.vanautrui.languages.vmcompiler.model.Register.*;
 
-public class DracoVMCompiler {
+public class VMCompilerMain {
 
     public static List<String> compileVMCode(List<String> vmcode)throws Exception{
         //clean the vm code
@@ -48,7 +50,7 @@ public class DracoVMCompiler {
         return clean_vm_codes.stream().map(VMInstr::new).collect(Collectors.toList());
     }
 
-    private static void compile_iconst(IVMInstr instr,AssemblyWriter a) {
+    private static void compile_iconst(IVMInstr instr, AssemblyWriter a) {
         a.mov(eax,Integer.parseInt(instr.getArg1().get()));
         a.push(eax);
     }
@@ -219,8 +221,8 @@ public class DracoVMCompiler {
     }
 
     private static void compile_sub(IVMInstr instr, AssemblyWriter a) {
-        a.pop(eax);
         a.pop(ebx);
+        a.pop(eax);
         a.sub(eax, ebx);
         a.push(eax);
     }
@@ -232,50 +234,7 @@ public class DracoVMCompiler {
         a.push(eax);
     }
 
-    private static void compile_call(IVMInstr instr, AssemblyWriter a) throws Exception {
-        String method = instr.getArg1().get();
-        if(method.equals("putchar")){
-            //https://stackoverflow.com/questions/8201613/printing-a-character-to-standard-output-in-assembly-x86
 
-            //TODO: print top of stack
-            //prog.pop("ecx");
-            a.mov(eax,4,"sys_writ");
-            a.mov(ebx,1,"std_out");
-
-            //prog.mov("byte [ecx]","'*'");
-            //prog.mov("[buffer]","'c'");
-            //prog.mov("ecx","[buffer]");
-            //prog.mov("ecx","achar"); //character
-
-            //print the char on stack
-            a.pop(ecx); //pop digit into ecx
-            a.add(ecx,0x30); //add ascii offset
-            a.push(ecx);  //push it back on stack
-            a.mov(ecx, Register.esp);
-            //prog.mov("ecx",65);
-            //prog.mov("byte [achar]",65,"");
-
-            //val length
-            a.mov(Register.edx,1);
-            a.call_kernel();
-            //a.any("int 0x80"," call kernel");
-
-            //pop from stack, as println is supposed to remove its argument
-            a.pop(Register.edx);
-
-            //push return value
-            a.mov(Register.edx,0);
-            a.push(Register.edx);
-        }else if(method.equals("print")
-                || method.equals("println")
-                || method.equals("read")
-                || method.equals("readln")
-        ){
-            throw new Exception("now yet implemented");
-        }else {
-            a.call(instr.getArg1().get());
-        }
-    }
 
     private static void compile_subroutine(IVMInstr instr, AssemblyWriter a) {
         a.label(instr.getArg1().get());

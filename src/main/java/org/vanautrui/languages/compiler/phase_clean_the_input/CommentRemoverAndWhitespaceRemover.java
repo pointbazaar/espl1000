@@ -39,16 +39,6 @@ public class CommentRemoverAndWhitespaceRemover {
                     result.append(c);
                 }
             }
-            /*
-            if (line.contains("//")) {
-                //TODO: consider if the comment is in a string
-                int i = line.indexOf("//");
-
-                result.append(line.substring(0, line.indexOf("//")));
-            } else {
-                result.append(line);
-            }
-             */
             result.append("\n");
         }
         return result.toString();

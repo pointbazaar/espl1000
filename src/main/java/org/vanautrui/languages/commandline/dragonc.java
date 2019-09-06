@@ -141,9 +141,6 @@ public class dragonc {
     public static final String FLAG_CLEAN="clean";
     public static final String FLAG_OPTIMIZE="optimize";
 
-    public static final String FLAG_TARGET_NATIVE="native";
-    public static final String FLAG_TARGET_JVM="jvm";
-
     private static Options createOptions(){
         //https://commons.apache.org/proper/commons-cli/usage.html
 

@@ -1,3 +1,5 @@
+use Base.dg
+
 public class Math{
 	
 	public Int main(){

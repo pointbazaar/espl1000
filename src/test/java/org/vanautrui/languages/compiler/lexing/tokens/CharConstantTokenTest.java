@@ -29,4 +29,14 @@ public class CharConstantTokenTest {
         }
     }
 
+    @Test
+    public void test_can_accept_escape_character() throws Exception{
+
+        CharacterList list = new CharacterList("'\n'");
+
+        CharConstantToken token = new CharConstantToken(list);
+
+        Assert.assertEquals("\n", token.getContents());
+    }
+
 }

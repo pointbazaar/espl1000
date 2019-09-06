@@ -75,9 +75,18 @@ MEMORY ALLOCATION/DEALLOCTAION:
 	//deallocates the previously allocated block of memory at that address
 
 BUILTIN SUBROUTINES:
-	println		//prints the integer on stack, and a newline
-	print		//prints the integer on stack
-	read		//reads an integer from stdin, pushes it on the stack
+			//these builtin subroutines are considered essential
+			//there should be no unneccessary subroutines here			
+	putchar		//prints the char on top of stack, the basis for all output
+
+	readint		//reads an integer from stdin, pushes it on the stack.
+
+	int2char	//converts an integer to its asciichar equivalent
+			//it takes the top of stack, pops it, converts it to char
+			//then pushes it
+	
+	float2int	//these explain themselves,
+	int2float	//and just change the top of stack from one to the other type
 
 
 CALLING CONVENTIONS:

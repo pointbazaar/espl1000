@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.cli.CommandLine;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
-import org.vanautrui.languages.vmcompiler.DracoVMCompiler;
+import org.vanautrui.languages.vmcompiler.codegenerator.VMCompilerMain;
 import org.vanautrui.languages.compiler.lexing.Lexer;
 import org.vanautrui.languages.compiler.lexing.utils.CharacterList;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
@@ -103,7 +103,7 @@ public class CompilerPhases {
                 out.println();
             }
 
-            final List<String> assembly_codes = DracoVMCompiler.compileVMCode(dracoVMCodes);
+            final List<String> assembly_codes = VMCompilerMain.compileVMCode(dracoVMCodes);
             //$ nasm -f elf hello.asm  # this will produce hello.o ELF object file
             //$ ld -s -o hello hello.o # this will produce hello executable
 

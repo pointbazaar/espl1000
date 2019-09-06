@@ -97,8 +97,19 @@ public class LexerTest {
 	public void test_lexes_float_constant()throws Exception{
 		TokenList ts = lexer.lexCodeTestMode("return 1.44;");
 
-	assertTrue(ts.get(0) instanceof KeywordToken);
+        assertTrue(ts.get(0) instanceof KeywordToken);
 
-	assertTrue(ts.get(1) instanceof FloatNonNegativeConstantToken);
+        assertTrue(ts.get(1) instanceof FloatNonNegativeConstantToken);
 	}
+
+	@Test
+    public void test_lexes_escaped_char()throws Exception{
+        TokenList ts = lexer.lexCodeTestMode("return('\n');");
+        System.out.println(ts.toString());
+        assertTrue(ts.get(0) instanceof KeywordToken);
+
+        assertTrue(ts.get(1) instanceof SymbolToken);
+        assertTrue(ts.get(2) instanceof CharConstantToken);
+        assertTrue(ts.get(3) instanceof SymbolToken);
+    }
 }

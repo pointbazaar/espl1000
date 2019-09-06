@@ -1,0 +1,33 @@
+
+
+//this file is supposed to provide basic functionality 
+//such as basic input and output, like
+//println, print, read, readln and such to the dragon language
+
+public class Base{
+
+	
+	public Int print(Int x){
+		printInt(x);
+		return 0;
+	}
+	
+	public Int println(Int n){
+		printInt(n);
+
+		printChar('\n');
+		return 0;
+	}
+	
+
+	public Int printChar(Char c){
+		putchar(c);
+		return 0;
+	}
+
+	public Int printInt(Int x){
+		putchar(int2char(x));
+		return 0;
+	}
+	
+}

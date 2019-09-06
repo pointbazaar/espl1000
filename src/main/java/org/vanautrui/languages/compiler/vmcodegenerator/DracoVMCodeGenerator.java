@@ -17,6 +17,8 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.*;
+import org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator;
+import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 
 import java.util.ArrayList;
@@ -33,7 +35,8 @@ public class DracoVMCodeGenerator {
         for(AST ast :asts){
             for(ClassNode classNode : ast.classNodeList){
                 for(MethodNode methodNode : classNode.methodNodeList){
-                    generateDracoVMCodeForMethod(methodNode,sb);
+
+                    generateDracoVMCodeForMethod(methodNode,sb,subTable);
                 }
                 if(classNode.fieldNodeList.size()>0){
                     throw new Exception("unhandled case in dracovm code generation");
@@ -44,7 +47,9 @@ public class DracoVMCodeGenerator {
         return sb;
     }
 
-    private static void generateDracoVMCodeForMethod(MethodNode m, List<String> sb)throws Exception{
+    private static void generateDracoVMCodeForMethod(MethodNode m, List<String> sb,SubroutineSymbolTable subTable)throws Exception{
+
+        LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(m,subTable);
 
         sb.add("subroutine "+m.methodName.methodName.name+" "+m.arguments.size());
         //not sure if it is number of arguments or number of local vars
@@ -54,7 +59,7 @@ public class DracoVMCodeGenerator {
         //mov esp ebp
 
         for(StatementNode stmt : m.statements){
-            generateDracoVMCodeForStatement(stmt,sb);
+            generateDracoVMCodeForStatement(stmt,sb,varTable);
         }
 
         //return should be the last statement in every possible branch for these statements
@@ -65,26 +70,26 @@ public class DracoVMCodeGenerator {
         }
     }
 
-    private static void generateDracoVMCodeForStatement(StatementNode stmt,List<String> sb)throws Exception{
+    private static void generateDracoVMCodeForStatement(StatementNode stmt,List<String> sb,LocalVarSymbolTable varTable)throws Exception{
         IStatementNode snode = stmt.statementNode;
         if(snode instanceof MethodCallNode){
             MethodCallNode call = (MethodCallNode)snode;
-            genVMCodeForMethodCall(call,sb);
+            genVMCodeForMethodCall(call,sb,varTable);
         }else if(snode instanceof LoopStatementNode) {
             LoopStatementNode loop = (LoopStatementNode) snode;
-            genVMCodeForLoopStatement(loop,sb);
+            genVMCodeForLoopStatement(loop,sb,varTable);
         }else if(snode instanceof AssignmentStatementNode) {
             AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode) snode;
             genVMCodeForAssignmentStatement(assignmentStatementNode,sb);
         }else if(snode instanceof WhileStatementNode){
             WhileStatementNode whileStatementNode =(WhileStatementNode)snode;
-            genVMCodeForWhileStatement(whileStatementNode,sb);
+            genVMCodeForWhileStatement(whileStatementNode,sb,varTable);
         }else if(snode instanceof IfStatementNode) {
             IfStatementNode ifStatementNode = (IfStatementNode) snode;
-            genVMCodeForIfStatement(ifStatementNode,sb);
+            genVMCodeForIfStatement(ifStatementNode,sb,varTable);
         }else if(snode instanceof ReturnStatementNode){
             ReturnStatementNode returnStatementNode = (ReturnStatementNode)snode;
-            genDracoVMCodeForReturn(returnStatementNode,sb);
+            genDracoVMCodeForReturn(returnStatementNode,sb,varTable);
         }else{
             throw new Exception("unconsidered statement type: "+stmt.statementNode.getClass().getName());
         }
@@ -95,7 +100,7 @@ public class DracoVMCodeGenerator {
         throw new Exception("unhandled case");
     }
 
-    private static void genVMCodeForIfStatement(IfStatementNode ifstmt, List<String> sb) throws Exception{
+    private static void genVMCodeForIfStatement(IfStatementNode ifstmt, List<String> sb,LocalVarSymbolTable varTable) throws Exception{
 
         long unique=unique();
         String startlabel = "ifstart"+unique;
@@ -105,26 +110,26 @@ public class DracoVMCodeGenerator {
         sb.add("label "+startlabel);
 
         //push the expression
-        genDracoVMCodeForExpression(ifstmt.condition,sb);
+        genDracoVMCodeForExpression(ifstmt.condition,sb,varTable);
         sb.add("neg");
         //if condition is false, jump to else
         sb.add("if-goto "+elselabel);
 
         for(StatementNode stmt : ifstmt.statements){
-            generateDracoVMCodeForStatement(stmt,sb);
+            generateDracoVMCodeForStatement(stmt,sb,varTable);
         }
 
         sb.add("goto "+endlabel);
         sb.add("label "+elselabel);
 
         for(StatementNode stmt : ifstmt.elseStatements){
-            generateDracoVMCodeForStatement(stmt,sb);
+            generateDracoVMCodeForStatement(stmt,sb,varTable);
         }
 
         sb.add("label "+endlabel);
     }
 
-    private static void genVMCodeForWhileStatement(WhileStatementNode whileStmt, List<String> sb)throws Exception {
+    private static void genVMCodeForWhileStatement(WhileStatementNode whileStmt, List<String> sb,LocalVarSymbolTable varTable)throws Exception {
 
         long unique=unique();
         String startlabel = "whilestart"+unique;
@@ -133,14 +138,14 @@ public class DracoVMCodeGenerator {
         sb.add("label "+startlabel);
 
         //push the expression
-        genDracoVMCodeForExpression(whileStmt.condition,sb);
+        genDracoVMCodeForExpression(whileStmt.condition,sb,varTable);
         sb.add("neg");
         //if condition is false, jump to end
         sb.add("if-goto "+endlabel);
 
         //execute statements
         for(StatementNode stmt : whileStmt.statements){
-            generateDracoVMCodeForStatement(stmt,sb);
+            generateDracoVMCodeForStatement(stmt,sb,varTable);
         }
 
 
@@ -149,14 +154,14 @@ public class DracoVMCodeGenerator {
         sb.add("label "+endlabel);
     }
 
-    private static void genVMCodeForLoopStatement(LoopStatementNode loop, List<String> sb) throws Exception {
+    private static void genVMCodeForLoopStatement(LoopStatementNode loop, List<String> sb,LocalVarSymbolTable varTable) throws Exception {
 
         long unique=unique();
         String startlabel = "loopstart"+unique;
         String endlabel = "loopend"+unique;
 
         //push the expression
-        genDracoVMCodeForExpression(loop.count,sb);
+        genDracoVMCodeForExpression(loop.count,sb,varTable);
         sb.add("dup");
 
         sb.add("label "+startlabel);
@@ -168,7 +173,7 @@ public class DracoVMCodeGenerator {
 
         //execute statements
         for(StatementNode stmt : loop.statements){
-            generateDracoVMCodeForStatement(stmt,sb);
+            generateDracoVMCodeForStatement(stmt,sb,varTable);
         }
 
         //subtract 1 from the counter
@@ -196,7 +201,7 @@ public class DracoVMCodeGenerator {
         sb.add("iconst "+((bconst.value)?1:0));
     }
 
-    private static void genDracoVMCodeForTerm(TermNode tNode,List<String> sb)throws Exception{
+    private static void genDracoVMCodeForTerm(TermNode tNode,List<String> sb,LocalVarSymbolTable varTable)throws Exception{
         //TODO
         ITermNode t = tNode.termNode;
         if(t instanceof FloatConstNode){
@@ -205,17 +210,16 @@ public class DracoVMCodeGenerator {
             genVMCodeForIntConst(((IntConstNode)t).value,sb);
         }else if(t instanceof ExpressionNode) {
             ExpressionNode expressionNode = (ExpressionNode)t;
-            genDracoVMCodeForExpression(expressionNode,sb);
+            genDracoVMCodeForExpression(expressionNode,sb,varTable);
             throw new Exception("currently unhandled case ");
         }else if(t instanceof VariableNode) {
             //find the local variable index
             // and push the variable onto the stack
             VariableNode variableNode = (VariableNode) t;
-            //TODO
-            throw new Exception("unhandled case");
+            genDracoVMCodeForVariable(variableNode,sb,varTable);
         }else if(t instanceof MethodCallNode){
             MethodCallNode methodCallNode = (MethodCallNode)t;
-            genVMCodeForMethodCall(methodCallNode,sb);
+            genVMCodeForMethodCall(methodCallNode,sb,varTable);
             throw new Exception("unhandled case");
         }else if(t instanceof BoolConstNode) {
             genVMCodeForBoolConst((BoolConstNode)t,sb);
@@ -231,11 +235,26 @@ public class DracoVMCodeGenerator {
         }
     }
 
-    private static void genVMCodeForMethodCall(MethodCallNode methodCallNode, List<String> sb) throws Exception {
+    private static void genDracoVMCodeForVariable(VariableNode variableNode, List<String> sb, LocalVarSymbolTable varTable) throws Exception{
+        //push the variable on the stack
+
+        //if the variable is local,
+        //or argument, that would be different segments
+        //we have to consider its index
+
+        String name = variableNode.name;
+
+        int index=varTable.getIndexOfVariable(name);
+        String segment = varTable.getSegment(name);
+
+        sb.add("push "+segment+" "+index);
+    }
+
+    private static void genVMCodeForMethodCall(MethodCallNode methodCallNode, List<String> sb,LocalVarSymbolTable varTable) throws Exception {
         //push arguments on stack in reverse order
         for(int i=methodCallNode.argumentList.size()-1;i>=0;i++){
             ExpressionNode arg = methodCallNode.argumentList.get(i);
-            genDracoVMCodeForExpression(arg,sb);
+            genDracoVMCodeForExpression(arg,sb,varTable);
         }
         sb.add("call "+methodCallNode.identifierMethodName);
     }
@@ -253,16 +272,16 @@ public class DracoVMCodeGenerator {
         }
     }
 
-    private static void genDracoVMCodeForExpression(ExpressionNode expr,List<String> sb)throws Exception{
-        genDracoVMCodeForTerm(expr.term,sb);
+    private static void genDracoVMCodeForExpression(ExpressionNode expr,List<String> sb,LocalVarSymbolTable varTable)throws Exception{
+        genDracoVMCodeForTerm(expr.term,sb,varTable);
         for(int i=0;i<expr.termNodes.size();i++){
-            genDracoVMCodeForTerm(expr.termNodes.get(i),sb);
+            genDracoVMCodeForTerm(expr.termNodes.get(i),sb,varTable);
             genDracoVMCodeForOp(expr.operatorNodes.get(i),sb);
         }
     }
 
-    private static void genDracoVMCodeForReturn(ReturnStatementNode retStmt,List<String> sb)throws Exception {
-        genDracoVMCodeForExpression(retStmt.returnValue,sb);
+    private static void genDracoVMCodeForReturn(ReturnStatementNode retStmt,List<String> sb,LocalVarSymbolTable varTable)throws Exception {
+        genDracoVMCodeForExpression(retStmt.returnValue,sb,varTable);
         sb.add("return");
     }
 

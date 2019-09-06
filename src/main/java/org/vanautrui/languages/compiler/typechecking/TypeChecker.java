@@ -2,20 +2,28 @@ package org.vanautrui.languages.compiler.typechecking;
 
 import org.apache.commons.lang3.StringUtils;
 import org.vanautrui.languages.TerminalUtil;
-import org.vanautrui.languages.compiler.symboltablegenerator.*;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.DeclaredArgumentNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.OperatorNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.StatementNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.IfStatementNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.LoopStatementNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.ReturnStatementNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.WhileStatementNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassFieldNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.*;
+import org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.*;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.*;
-import org.vanautrui.languages.compiler.parsing.astnodes.terminal.*;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.*;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.*;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class TypeChecker {
 
@@ -25,6 +33,27 @@ public class TypeChecker {
     //i.e. that it matches the type expected by its environment
     //and that itself contains only
     //AST Nodes that conform to the expected types.
+
+    /*
+    public static final List<String> builtins_methods =
+            Arrays.asList(
+                "putchar","readint",
+                    "int2char","float2int","int2float"
+            );
+
+     */
+
+    public static final Map<String,String> builtin_subroutine_types=new HashMap<String,String>(){{
+        put("putchar", "Int");
+        put("readint", "Int");
+        put("int2char", "Char");
+        put("float2int", "Int");
+        put("int2float", "Float");
+    }};
+
+    //the primitive types and their arrays
+    public static final List<String> primitive_types_and_arrays_of_them =
+            Arrays.asList("Int","Float","Bool","Char","[Int]","[Float]","[Bool]","[Char]");
 
     public void doTypeCheck(List<AST> asts) throws Exception{
         SubroutineSymbolTable subroutineSymbolTable = SymbolTableGenerator.createSubroutineSymbolTable(new HashSet<>(asts));
@@ -150,14 +179,19 @@ public class TypeChecker {
         }
     }
 
+
+
     private void typeCheckMethodCallNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, MethodCallNode methodCallNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
         //TODO: check that the method is called on an object
         //which is actually declared and initialized
         //and is in scope
 
-		if(!subTable.containsSubroutine(methodCallNode.identifierMethodName)){
-            List<String> builtins = Arrays.asList("print","println","read","readln");
-            if(!builtins.contains(methodCallNode.identifierMethodName)){
+
+
+        if(!subTable.containsSubroutine(methodCallNode.identifierMethodName)){
+
+
+            if(!builtin_subroutine_types.keySet().contains(methodCallNode.identifierMethodName)){
 			     System.out.println(subTable.toString());
 			     throw new Exception("name of method not in subroutine symbol table: "+methodCallNode.identifierMethodName);
             }
@@ -234,20 +268,28 @@ public class TypeChecker {
     }
 
     private void typecheckTermNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, TermNode termNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
-	if(termNode.termNode instanceof FloatConstNode){
-		    //nothing to do
-	}else if(termNode.termNode instanceof IntConstNode){
+        if(termNode.termNode instanceof CharConstNode) {
+            //nothing to do
+        }else if(termNode.termNode instanceof FloatConstNode){
+            //nothing to do
+        }else if(termNode.termNode instanceof IntConstNode){
             //nothing to do
         }else if(termNode.termNode instanceof ExpressionNode) {
+
             ExpressionNode expressionNode = (ExpressionNode) termNode.termNode;
             typeCheckExpressionNode(asts,classNode,methodNode,expressionNode,subTable,varTable);
+
         }else if(termNode.termNode instanceof VariableNode){
+
             VariableNode variableNode = (VariableNode) termNode.termNode;
             typeCheckVariableNode(asts,classNode,methodNode,variableNode,subTable,varTable);
-	}else if(termNode.termNode instanceof MethodCallNode){
-		typeCheckMethodCallNode(asts,classNode,methodNode,(MethodCallNode)termNode.termNode,subTable,varTable);
+
+        }else if(termNode.termNode instanceof MethodCallNode){
+
+            typeCheckMethodCallNode(asts,classNode,methodNode,(MethodCallNode)termNode.termNode,subTable,varTable);
+
         }else{
-            throw new Exception("unhandled case");
+            throw new Exception("unhandled case "+termNode.termNode.getClass().getName());
         }
     }
 
@@ -332,6 +374,8 @@ public class TypeChecker {
         }
     }
 
+
+
     private void typeCheckTypeIdentifierNode(
             List<AST> asts, ClassNode classNode,
             TypeIdentifierNode typeIdentifierNode
@@ -348,9 +392,7 @@ public class TypeChecker {
             }
         }
 
-        List<String> acceptable_types = Arrays.asList("Int","Float","Bool","String","[Int]","[Float]","[Bool]","[String]");
-
-        if(acceptable_types.contains(typeIdentifierNode.typeName)){
+        if(primitive_types_and_arrays_of_them.contains(typeIdentifierNode.typeName)){
             return;
         }
 

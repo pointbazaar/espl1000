@@ -51,6 +51,11 @@ public class LocalVarSymbolTable  {
         return this.get(varName).getType();
     }
 
+    public String getSegment(String name) throws Exception{
+        //get the appropriate vm segment
+        return get(name).kind;
+    }
+
     public int size() {
         return this.symbolTable.size();
     }
@@ -93,4 +98,6 @@ public class LocalVarSymbolTable  {
         //System.out.println(table); // NOTICE: table.toString() is called implicitly
         return "\n(METHOD SCOPE) VARIABLES SYMBOL TABLE: \n"+table.toString();
     }
+
+
 }
