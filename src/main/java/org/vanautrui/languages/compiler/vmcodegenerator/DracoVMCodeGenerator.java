@@ -252,7 +252,7 @@ public class DracoVMCodeGenerator {
 
     private static void genVMCodeForMethodCall(MethodCallNode methodCallNode, List<String> sb,LocalVarSymbolTable varTable) throws Exception {
         //push arguments on stack in reverse order
-        for(int i=methodCallNode.argumentList.size()-1;i>=0;i++){
+        for(int i=methodCallNode.argumentList.size()-1;i>=0;i--){
             ExpressionNode arg = methodCallNode.argumentList.get(i);
             genDracoVMCodeForExpression(arg,sb,varTable);
         }
