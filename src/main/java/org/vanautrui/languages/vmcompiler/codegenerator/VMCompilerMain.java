@@ -271,7 +271,10 @@ public class VMCompilerMain {
     }
 
     private static void compile_pop(IVMInstr instr, AssemblyWriter a) throws Exception{
+        
+        //TODO: handle the case of a plain 'pop' without arguments
         String segment = instr.getArg1().get();
+        
         int index = Integer.parseInt(instr.getArg2().get());
 
         switch (segment){
