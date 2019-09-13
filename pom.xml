@@ -33,22 +33,6 @@
             <version>3.9</version>
         </dependency>
 
-        <!--
-
-        <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm</artifactId>
-            <version>7.1</version>
-        </dependency>
-        -->
-
-        <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm-all -->
-        <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm-all</artifactId>
-            <version>5.2</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
             <groupId>commons-io</groupId>
@@ -56,11 +40,6 @@
             <version>2.6</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.twelvemonkeys.imageio/imageio-pnm -->
-        <dependency>
-            <groupId>com.twelvemonkeys.imageio</groupId>
-            <artifactId>imageio-pnm</artifactId>
-            <version>3.4.1</version>
-        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>

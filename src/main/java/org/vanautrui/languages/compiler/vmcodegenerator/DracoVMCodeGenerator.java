@@ -220,7 +220,6 @@ public class DracoVMCodeGenerator {
         }else if(t instanceof MethodCallNode){
             MethodCallNode methodCallNode = (MethodCallNode)t;
             genVMCodeForMethodCall(methodCallNode,sb,varTable);
-            throw new Exception("unhandled case");
         }else if(t instanceof BoolConstNode) {
             genVMCodeForBoolConst((BoolConstNode)t,sb);
         }else if(t instanceof ArrayConstantNode) {

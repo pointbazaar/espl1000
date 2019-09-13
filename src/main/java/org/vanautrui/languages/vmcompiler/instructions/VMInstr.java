@@ -11,7 +11,7 @@ public class VMInstr implements IVMInstr {
             this.arg1=Optional.of(parts[1]);
         }
         if(parts.length>2){
-            this.arg1=Optional.of(parts[2]);
+            this.arg2=Optional.of(parts[2]);
         }
     }
 
