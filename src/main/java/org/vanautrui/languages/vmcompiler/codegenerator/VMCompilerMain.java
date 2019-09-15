@@ -2,9 +2,7 @@ package org.vanautrui.languages.vmcompiler.codegenerator;
 
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
 import org.vanautrui.languages.vmcompiler.AssemblyWriter;
-import org.vanautrui.languages.vmcompiler.instructions.IVMInstr;
 import org.vanautrui.languages.vmcompiler.instructions.VMInstr;
-import org.vanautrui.languages.vmcompiler.model.Register;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +17,10 @@ public class VMCompilerMain {
         //clean the vm code
         List<String> clean_vm_codes = clean_vm_code(vmcode);
 
-        List<IVMInstr> ivmInstrs = parseVMInstrs(clean_vm_codes);
+        List<VMInstr> VMInstrs = parseVMInstrs(clean_vm_codes);
 
         //generate assembly
-        List<String> assembly_codes = vm_codes_to_assembly(ivmInstrs);
+        List<String> assembly_codes = vm_codes_to_assembly(VMInstrs);
 
         /*
         //TODO: open process to call nasm to compile to machine code
@@ -46,21 +44,21 @@ public class VMCompilerMain {
         return assembly_codes;
     }
 
-    private static List<IVMInstr> parseVMInstrs(List<String> clean_vm_codes) {
+    private static List<VMInstr> parseVMInstrs(List<String> clean_vm_codes) {
         return clean_vm_codes.stream().map(VMInstr::new).collect(Collectors.toList());
     }
 
-    private static void compile_iconst(IVMInstr instr, AssemblyWriter a) {
-        a.mov(eax,Integer.parseInt(instr.getArg1().get()));
+    private static void compile_iconst(VMInstr instr, AssemblyWriter a) {
+        a.mov(eax,Integer.parseInt(instr.arg1.get()));
         a.push(eax);
     }
 
-    private static void compile_fconst(IVMInstr instr,AssemblyWriter a) {
-        a.mov(eax,Float.parseFloat(instr.getArg1().get()));
+    private static void compile_fconst(VMInstr instr,AssemblyWriter a) {
+        a.mov(eax,Float.parseFloat(instr.arg1.get()));
         a.push(eax);
     }
 
-    private static List<String> vm_codes_to_assembly(List<IVMInstr> vmcodes) throws Exception {
+    private static List<String> vm_codes_to_assembly(List<VMInstr> vmcodes) throws Exception {
         //receives only clean VM Codes
         //TODO
         AssemblyWriter a=new AssemblyWriter();
@@ -72,12 +70,12 @@ public class VMCompilerMain {
         //at the start of the code, jump to main
         a.jmp("main");
 
-        for(IVMInstr instr : vmcodes){
+        for(VMInstr instr : vmcodes){
 
             //uniqueness for labels
             long uniq = DracoVMCodeGenerator.unique();
 
-            switch (instr.getCmd()){
+            switch (instr.cmd){
                 //stack related commands
                 case "iconst":
                     compile_iconst(instr,a);
@@ -119,13 +117,13 @@ public class VMCompilerMain {
                     break;
                 //control flow
                 case "goto":
-                    a.jmp(instr.getArg1().get());
+                    a.jmp(instr.arg1.get());
                     break;
                 case "if-goto":
                     compile_if_goto(instr,a,uniq);
                     break;
                 case "label":
-                    a.label(instr.getArg1().get());
+                    a.label(instr.arg1.get());
                     break;
                 case "malloc":
                     compile_malloc(instr,a);
@@ -133,7 +131,7 @@ public class VMCompilerMain {
                 case "free":
                     throw new Exception("free not yet implemented");
                 default:
-                    throw new Exception("unrecognized vm instr "+instr.getCmd());
+                    throw new Exception("unrecognized vm instr "+instr.cmd);
             }
         }
 
@@ -148,9 +146,9 @@ public class VMCompilerMain {
         return a.getAssemblyProgram();
     }
 
-    private static void compile_malloc(IVMInstr instr, AssemblyWriter a) {
+    private static void compile_malloc(VMInstr instr, AssemblyWriter a) {
         //malloc receives as an argument the amount of DWORDs to allocate
-        int amount = Integer.parseInt(instr.getArg1().get());
+        int amount = Integer.parseInt(instr.arg1.get());
 
         a.mov(eax,192,"192 : mmap system call");
         a.xor(ebx,ebx,"addr=NULL");
@@ -171,7 +169,7 @@ public class VMCompilerMain {
         a.push(eax);
     }
 
-    private static void compile_if_goto(IVMInstr instr, AssemblyWriter a,long uniq) {
+    private static void compile_if_goto(VMInstr instr, AssemblyWriter a,long uniq) {
 
         String truelabel = "ifgoto_true"+uniq;
         String endlabel = "ifgoto_end"+uniq;
@@ -184,13 +182,13 @@ public class VMCompilerMain {
 
         //in case top of stack is 1 (true)
         a.label(truelabel);
-        a.jmp(instr.getArg1().get());
+        a.jmp(instr.arg1.get());
 
         //otherwise, just continue execution
         a.label(endlabel);
     }
 
-    private static void compile_eq(IVMInstr instr, AssemblyWriter a,long uniq) {
+    private static void compile_eq(VMInstr instr, AssemblyWriter a,long uniq) {
         String labeltrue="eq_push1"+uniq;
         String labelend="eq_end"+uniq;
 
@@ -213,21 +211,21 @@ public class VMCompilerMain {
         a.label(labelend);
     }
 
-    private static void compile_neg(IVMInstr instr, AssemblyWriter a) {
+    private static void compile_neg(VMInstr instr, AssemblyWriter a) {
         a.pop(eax);
         a.mov(ebx,-1);
         a.mul(eax, ebx);
         a.push(eax);
     }
 
-    private static void compile_sub(IVMInstr instr, AssemblyWriter a) {
+    private static void compile_sub(VMInstr instr, AssemblyWriter a) {
         a.pop(ebx);
         a.pop(eax);
         a.sub(eax, ebx);
         a.push(eax);
     }
 
-    private static void compile_add(IVMInstr instr, AssemblyWriter a) {
+    private static void compile_add(VMInstr instr, AssemblyWriter a) {
         a.pop(eax);
         a.pop(ebx);
         a.add(eax, ebx);
@@ -236,22 +234,22 @@ public class VMCompilerMain {
 
 
 
-    private static void compile_subroutine(IVMInstr instr, AssemblyWriter a) {
-        a.label(instr.getArg1().get());
+    private static void compile_subroutine(VMInstr instr, AssemblyWriter a) {
+        a.label(instr.arg1.get());
         //push the number of local variables on the stack
         //but that should already be done by the vm code generator
     }
 
-    private static void compile_dup(IVMInstr instr, AssemblyWriter a) {
+    private static void compile_dup(VMInstr instr, AssemblyWriter a) {
         //duplicates top of stack
         a.pop(eax);
         a.push(eax);
         a.push(eax);
     }
 
-    private static void compile_push(IVMInstr instr, AssemblyWriter a) throws Exception {
-        String segment1 = instr.getArg1().get();
-        int index1 = Integer.parseInt(instr.getArg2().get());
+    private static void compile_push(VMInstr instr, AssemblyWriter a) throws Exception {
+        String segment1 = instr.arg1.get();
+        int index1 = Integer.parseInt(instr.arg2.get());
         switch (segment1){
             case "ARG":
                 a.pop(eax);
@@ -270,12 +268,12 @@ public class VMCompilerMain {
         }
     }
 
-    private static void compile_pop(IVMInstr instr, AssemblyWriter a) throws Exception{
+    private static void compile_pop(VMInstr instr, AssemblyWriter a) throws Exception{
         
         //TODO: handle the case of a plain 'pop' without arguments
-        String segment = instr.getArg1().get();
+        String segment = instr.arg1.get();
         
-        int index = Integer.parseInt(instr.getArg2().get());
+        int index = Integer.parseInt(instr.arg2.get());
 
         switch (segment){
             case "ARG":

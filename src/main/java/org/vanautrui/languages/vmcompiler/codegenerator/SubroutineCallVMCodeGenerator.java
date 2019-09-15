@@ -1,14 +1,13 @@
 package org.vanautrui.languages.vmcompiler.codegenerator;
 
 import org.vanautrui.languages.vmcompiler.AssemblyWriter;
-import org.vanautrui.languages.vmcompiler.instructions.IVMInstr;
+import org.vanautrui.languages.vmcompiler.instructions.VMInstr;
 import org.vanautrui.languages.vmcompiler.model.Register;
 
 import static org.vanautrui.languages.vmcompiler.model.Register.*;
-import static org.vanautrui.languages.vmcompiler.model.Register.ecx;
 
 public class SubroutineCallVMCodeGenerator {
-    private static void compile_putchar(IVMInstr instr, AssemblyWriter a){
+    private static void compile_putchar(VMInstr instr, AssemblyWriter a){
         //https://stackoverflow.com/questions/8201613/printing-a-character-to-standard-output-in-assembly-x86
 
         //prints top of stack as ascii char to stdout
@@ -34,12 +33,12 @@ public class SubroutineCallVMCodeGenerator {
         a.push(Register.edx);
     }
 
-    private static void compile_readint(IVMInstr instr, AssemblyWriter a){
+    private static void compile_readint(VMInstr instr, AssemblyWriter a){
         //TODO
     }
 
-    public static void compile_call(IVMInstr instr, AssemblyWriter a) throws Exception {
-        String method = instr.getArg1().get();
+    public static void compile_call(VMInstr instr, AssemblyWriter a) throws Exception {
+        String method = instr.arg1.get();
         switch (method){
             case "putchar":
                 compile_putchar(instr,a);
@@ -57,12 +56,12 @@ public class SubroutineCallVMCodeGenerator {
                 //TODO
                 break;
             default:
-                a.call(instr.getArg1().get());
+                a.call(instr.arg1.get());
                 break;
         }
     }
 
-    private static void compile_int2char(IVMInstr instr, AssemblyWriter a) {
+    private static void compile_int2char(VMInstr instr, AssemblyWriter a) {
 
     }
 }

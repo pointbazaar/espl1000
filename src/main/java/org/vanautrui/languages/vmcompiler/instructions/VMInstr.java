@@ -2,35 +2,29 @@ package org.vanautrui.languages.vmcompiler.instructions;
 
 import java.util.Optional;
 
-public class VMInstr implements IVMInstr {
+/**
+ * DAO for a single VM Instruction.
+ * It stores the command and its arguments.
+ */
+public class VMInstr{
 
     public VMInstr(String s){
         String[] parts=s.split(" ");
         this.cmd=parts[0];
         if(parts.length>1){
             this.arg1=Optional.of(parts[1]);
+        }else{
+            this.arg1=Optional.empty();
         }
         if(parts.length>2){
             this.arg2=Optional.of(parts[2]);
+        }else{
+            this.arg2=Optional.empty();
         }
     }
 
-    private String cmd;
-    private Optional<String> arg1=Optional.empty();
-    private Optional<String> arg2=Optional.empty();
+    public String cmd;
+    public final Optional<String> arg1;
+    public final Optional<String> arg2;
 
-    @Override
-    public String getCmd() {
-        return this.cmd;
-    }
-
-    @Override
-    public Optional<String> getArg1() {
-        return this.arg1;
-    }
-
-    @Override
-    public Optional<String> getArg2() {
-        return this.arg2;
-    }
 }
