@@ -24,7 +24,7 @@ public class AST implements IASTNode {
 
         boolean success_class = true;
         while (success_class) {
-
+            //TODO: just pass the tokens needed for this class
             try {
                 this.classNodeList.add(new ClassNode(copy,this.srcPath));
             } catch (Exception e) {

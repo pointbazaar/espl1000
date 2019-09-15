@@ -26,7 +26,7 @@ public class CodeGeneratorTest {
 
     @Test
     public void test_can_compile_loop_statements()throws Exception{
-        String source="public class MainTest22 { public Int main(){ loop 4 { print(\"1\"); } return 0; } }";
+        String source="public class MainTest22 { public Int main(){ loop 4 { print(1); } return 0; } }";
         Process pr = CodeGeneratorTestUtils.compile_and_run_one_class_for_testing(source,"MainTest22");
 
         Assert.assertEquals(0,pr.exitValue());

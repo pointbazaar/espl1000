@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -117,6 +118,14 @@ public class TokenList {
             return "ERROR SERIALIZING IN TokenList.java";
         }
 
+    }
+
+    /**
+     * @return returns the tokenlist, split in 2, with the first half being all tokens and the next block ( {...} is a block)
+     */
+    public Pair<TokenList,TokenList> split_into_tokens_and_next_block_and_later_tokens(){
+        //TODO:
+        TokenList start = new TokenList();
     }
 
     private String indent(int n){
