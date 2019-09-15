@@ -174,10 +174,10 @@ public class VMCompilerMain {
         String truelabel = "ifgoto_true"+uniq;
         String endlabel = "ifgoto_end"+uniq;
 
-        a.pop(eax);
-        a.mov(ebx,1);
+        a.pop(eax); //pops the condition into eax
+        a.mov(ebx,1);  //ebx := true==1
         a.cmp(eax, ebx);
-        a.je(truelabel);
+        a.je(truelabel); //jumps, if eax==ebx
         a.jmp(endlabel);
 
         //in case top of stack is 1 (true)

@@ -69,6 +69,12 @@ public class CompilerPhases {
         }
     }
 
+
+    /**
+     * @param asm_codes the assembly codes to be assembled and linked
+     * @param filename_without_extension the filename without extension to use for the .asm , .o and executable filename
+     * @throws Exception an exception is thrown if nasm or ld exit nonzero
+     */
     public void generate_executable(String asm_codes,String filename_without_extension) throws Exception{
         String asm_file_name = filename_without_extension+".asm";
         Files.write(Paths.get(asm_file_name),asm_codes.getBytes());
@@ -89,7 +95,6 @@ public class CompilerPhases {
 
     public List<Path> phase_codegeneration(List<AST> asts, CommandLine cmd)throws Exception{
         printBeginPhase("CODE GENERATION",printLong);
-
         List<Path> generatedFilesPaths=new ArrayList<>();
 
         try {
@@ -230,7 +235,7 @@ public class CompilerPhases {
 
     public List<TokenList> phase_lexing(List<CharacterList> just_codes_with_braces_without_comments, CommandLine cmd)throws Exception{
         printBeginPhase("LEXING",printLong);
-        List<TokenList> list=new ArrayList();
+        List<TokenList> list= new ArrayList<>();
         List<Exception> exceptions=new ArrayList<>();
 
         for(CharacterList just_code_with_braces_without_comments: just_codes_with_braces_without_comments){

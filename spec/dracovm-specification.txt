@@ -52,6 +52,7 @@ PROGRAM FLOW COMMANDS:
 	label	SYMBOL  //globally unique label for jumping
 	goto 	SYMBOL  //jump to a label specified earlier
 	if-goto	SYMBOL  //jumps to that label if TOP OF STACK is true (1)
+			//also pops the top of stack
 
 SUBROUTINE CALLING COMMANDS:
 	subroutine	SUBRNAME nLocals 
