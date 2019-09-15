@@ -268,28 +268,37 @@ public class VMCompilerMain {
         }
     }
 
+    /**
+     * @param instr the pop instruction to be compiled ta assembly
+     * @param a the AssemblyWriter we are using
+     * @throws Exception if we are pop - ing from a nonexisting segment
+     */
     private static void compile_pop(VMInstr instr, AssemblyWriter a) throws Exception{
-        
-        //TODO: handle the case of a plain 'pop' without arguments
-        String segment = instr.arg1.get();
-        
-        int index = Integer.parseInt(instr.arg2.get());
 
-        switch (segment){
-            case "ARG":
-                a.pop(eax);
-                //TODO: get base address of argument segment on stack
-                //TODO
-                break;
-            case "LOCAL":
-                a.pop(eax);
-                //TODO: get base address of local segment on stack
-                //TODO
-                break;
-            case "STATIC":
-                throw new Exception("not yet implemented");
-            default:
-                throw new Exception("fatal");
+        if(!instr.arg1.isPresent()){
+            a.pop(eax);
+        }else {
+
+            String segment = instr.arg1.get();
+
+            int index = Integer.parseInt(instr.arg2.get());
+
+            switch (segment) {
+                case "ARG":
+                    a.pop(eax);
+                    //TODO: get base address of argument segment on stack
+                    //TODO
+                    break;
+                case "LOCAL":
+                    a.pop(eax);
+                    //TODO: get base address of local segment on stack
+                    //TODO
+                    break;
+                case "STATIC":
+                    throw new Exception("not yet implemented");
+                default:
+                    throw new Exception("fatal");
+            }
         }
     }
 
