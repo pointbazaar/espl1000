@@ -16,19 +16,12 @@ import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.typechecking.TypeChecker;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.nio.file.*;
+import java.util.*;
 import java.util.stream.Collectors;
-
 import static java.lang.System.out;
 import static org.fusesource.jansi.Ansi.Color.RED;
-import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBeginPhase;
-import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printEndPhase;
+import static org.vanautrui.languages.commandline.CompilerPhaseUtils.*;
 import static org.vanautrui.languages.commandline.dragonc.*;
 import static org.vanautrui.languages.compiler.phase_clean_the_input.CommentRemoverAndWhitespaceRemover.remove_unneccessary_whitespace;
 import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
@@ -72,14 +65,16 @@ public class CompilerPhases {
 
     /**
      * @param asm_codes the assembly codes to be assembled and linked
-     * @param filename_without_extension the filename without extension to use for the .asm , .o and executable filename
+     *
      * @throws Exception an exception is thrown if nasm or ld exit nonzero
      */
-    public void generate_executable(String asm_codes,String filename_without_extension) throws Exception{
-        String asm_file_name = filename_without_extension+".asm";
-        Files.write(Paths.get(asm_file_name),asm_codes.getBytes());
+    public Path phase_generate_executable(List<String> asm_codes,String filename_without_extension) throws Exception{
 
-        Process p = Runtime.getRuntime().exec("nasm -f elf " + asm_file_name);
+        String asm_file_name = filename_without_extension+".asm";
+        Path asm_path = Paths.get(asm_file_name);
+        Files.write(asm_path,asm_codes.stream().collect(Collectors.joining("\n")).getBytes());
+
+        Process p = Runtime.getRuntime().exec("nasm -f elf -g -F stabs " + asm_file_name);
         p.waitFor();
 
         if(p.exitValue()!=0){
@@ -91,46 +86,39 @@ public class CompilerPhases {
         if(p2.exitValue() != 0){
             throw new Exception("ld exit with nonzero exit code");
         }
+
+        return Paths.get(filename_without_extension);
     }
 
-    public List<Path> phase_codegeneration(List<AST> asts, CommandLine cmd)throws Exception{
-        printBeginPhase("CODE GENERATION",printLong);
-        List<Path> generatedFilesPaths=new ArrayList<>();
+    public List<String> phase_vm_code_compilation(List<String> draco_vm_codes,boolean debug) throws Exception{
+        printBeginPhase("VM CODE COMPILATION",printLong);
+        final List<String> assembly_codes = VMCompilerMain.compileVMCode(draco_vm_codes);
+        //$ nasm -f elf hello.asm  # this will produce hello.o ELF object file
+        //$ ld -s -o hello hello.o # this will produce hello executable
+
+        if(debug){
+            out.println("call nasm");
+        }
+        printEndPhase(true,printLong);
+        return assembly_codes;
+    }
+
+    public List<String> phase_vm_codegeneration(List<AST> asts, boolean print_vm_codes)throws Exception{
+        printBeginPhase("VM CODE GENERATION",printLong);
 
         try {
 
             SubroutineSymbolTable subTable = createSubroutineSymbolTable(new HashSet<>(asts));
             List<String> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable);
 
-            if(cmd.hasOption(FLAG_PRINT_VM_CODES)){
+            if(print_vm_codes){
                 out.println("GENERATED VM CODES");
                 dracoVMCodes.stream().forEach(str-> out.println(str));
                 out.println();
             }
 
-            final List<String> assembly_codes = VMCompilerMain.compileVMCode(dracoVMCodes);
-            //$ nasm -f elf hello.asm  # this will produce hello.o ELF object file
-            //$ ld -s -o hello hello.o # this will produce hello executable
-
-            final String asm_codes = (assembly_codes
-                    .stream()
-                    .collect(Collectors.joining("\n"))+"\n");
-
-            if(cmd.hasOption(FLAG_PRINT_ASM)){
-                out.println(asm_codes);
-            }
-
-            if(debug){
-                out.println("call nasm");
-            }
-
-            String filename = "main";
-            generate_executable(asm_codes,filename);
-
-            generatedFilesPaths.add(Paths.get(filename));
-
             printEndPhase(true,printLong);
-            return generatedFilesPaths;
+            return dracoVMCodes;
 
         }catch (Exception e){
             printEndPhase(false,printLong);
@@ -146,7 +134,7 @@ public class CompilerPhases {
 
     private static final String phase_clean_cache_dir=System.getProperty("user.home")+"/.dragoncache/clean/";
 
-    public List<CharacterList> phase_clean(List<String> sources, List<File> sourceFiles, CommandLine cmd)throws Exception{
+    public List<CharacterList> phase_clean(List<String> sources, List<File> sourceFiles)throws Exception{
 
         printBeginPhase("CLEAN",printLong);
         //(remove comments, empty lines, excess whitespace)
@@ -196,7 +184,7 @@ public class CompilerPhases {
         return results;
     }
 
-    public List<AST> phase_parsing(List<TokenList> list, CommandLine cmd)throws Exception{
+    public List<AST> phase_parsing(List<TokenList> list,boolean print_ast)throws Exception{
         printBeginPhase("PARSING",printLong);
         List<AST> asts=new ArrayList<>();
         boolean didThrow=false;
@@ -206,7 +194,7 @@ public class CompilerPhases {
             try {
                 AST ast = (new Parser()).parse(tokens,tokens.relPath);
 
-                if (cmd.hasOption(FLAG_PRINT_AST)) {
+                if (print_ast) {
 
                     TerminalUtil.println("\nDEBUG: PRINT AST JSON ", RED);
 
@@ -233,7 +221,7 @@ public class CompilerPhases {
 
     }
 
-    public List<TokenList> phase_lexing(List<CharacterList> just_codes_with_braces_without_comments, CommandLine cmd)throws Exception{
+    public List<TokenList> phase_lexing(List<CharacterList> just_codes_with_braces_without_comments,boolean print_tokens)throws Exception{
         printBeginPhase("LEXING",printLong);
         List<TokenList> list= new ArrayList<>();
         List<Exception> exceptions=new ArrayList<>();
@@ -242,7 +230,7 @@ public class CompilerPhases {
             try {
                 TokenList tokens = (new Lexer()).lexCodeWithoutComments(just_code_with_braces_without_comments);
 
-                if (cmd.hasOption(FLAG_PRINT_TOKENS)) {
+                if (print_tokens) {
                     out.println(tokens.toString());
                 }
                 list.add(tokens);
@@ -262,7 +250,7 @@ public class CompilerPhases {
         }
     }
 
-    public void phase_preprocessor(List<String> codes, List<File> sources, CommandLine cmd) throws Exception {
+    public void phase_preprocessor(List<String> codes, List<File> sources) throws Exception {
         printBeginPhase("PREPROCESSING",printLong);
         //appends the 'use' used files to codes list and source paths list.
         //'use' statements will be removed later in the 'clean' phase

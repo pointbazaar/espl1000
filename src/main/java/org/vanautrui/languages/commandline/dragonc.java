@@ -137,9 +137,7 @@ public class dragonc {
     public static final String FLAG_PRINT_HELP="help";
     public static final String FLAG_PRINT_ASM="asm";
 
-    public static final String FLAG_STRICT="strict";
     public static final String FLAG_CLEAN="clean";
-    public static final String FLAG_OPTIMIZE="optimize";
 
     private static Options createOptions(){
         //https://commons.apache.org/proper/commons-cli/usage.html
@@ -157,11 +155,7 @@ public class dragonc {
         opts.addOption(new Option(FLAG_PRINT_VM_CODES,false,"prints vm codes"));
         opts.addOption(new Option(FLAG_PRINT_ASM,false,"prints assembly code"));
 
-        opts.addOption(new Option(FLAG_STRICT,false,"do not compile if likely to have bugs"));
-
         opts.addOption(new Option(FLAG_CLEAN,false,"clear cache"));
-
-        opts.addOption(new Option(FLAG_OPTIMIZE,false,"optimize the code"));
 
         OptionGroup optGroup = new OptionGroup();
 
@@ -203,54 +197,32 @@ public class dragonc {
 
             CompilerPhases phases = new CompilerPhases(cmd);
 
-            long start,end;
-            start = currentTimeMillis();
-
             //PHASE PREPROCESSOR
             //processes the 'use' directive
-            phases.phase_preprocessor(codes,sources,cmd);
-
+            phases.phase_preprocessor(codes,sources);
 
             //PHASE CLEAN
             List<CharacterList> codeWithoutCommentsWithoutUnneccesaryWhitespace
-                    = phases.phase_clean(codes,sources,cmd);
+                    = phases.phase_clean(codes,sources);
 
-            end= currentTimeMillis();
-            if(timed) {
-                printDuration(start, end);
-            }
-
-            start= currentTimeMillis();
             //PHASE LEXING
-            List<TokenList> tokens = phases.phase_lexing(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd);
-            end= currentTimeMillis();
-            if(timed){
-                printDuration(start,end);
-            }
+            List<TokenList> tokens = phases.phase_lexing(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd.hasOption(FLAG_PRINT_TOKENS));
 
-            start= currentTimeMillis();
             //PHASE PARSING
-            List<AST> asts = phases.phase_parsing(tokens,cmd);
-            end= currentTimeMillis();
-            if(timed){
-                printDuration(start,end);
-            }
+            List<AST> asts = phases.phase_parsing(tokens,cmd.hasOption(FLAG_PRINT_AST));
 
-            start= currentTimeMillis();
             //PHASE TYPE CHECKING
             phases.phase_typecheck(asts,cmd);
-            end = currentTimeMillis();
-            if(timed){
-                printDuration(start,end);
-            }
 
-            start = currentTimeMillis();
             //PHASE CODE GENERATION
-            List<Path> classFilePaths = phases.phase_codegeneration(asts, cmd);
-            end= currentTimeMillis();
-            if(timed){
-                printDuration(start,end);
-            }
+            List<String> vm_codes = phases.phase_vm_codegeneration(asts,cmd.hasOption(FLAG_PRINT_VM_CODES));
+
+            //PHASE VM CODE COMPILATION
+            List<String> asm_codes = phases.phase_vm_code_compilation(vm_codes,cmd.hasOption(FLAG_DEBUG));
+
+            //PHASE GENERATE EXECUTABLE
+            phases.phase_generate_executable(asm_codes,"main");
+
 
             long end_time_ms = currentTimeMillis();
             long duration = end_time_ms-start_time_ms;
