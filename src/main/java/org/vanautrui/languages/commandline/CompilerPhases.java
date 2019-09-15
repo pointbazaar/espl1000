@@ -81,7 +81,7 @@ public class CompilerPhases {
         }
 
         Process p2 = Runtime.getRuntime().exec("ld -melf_i386 -s -o "+filename_without_extension+" "+asm_file_name+".o");
-
+        p2.waitFor();
         if(p2.exitValue() != 0){
             throw new Exception("ld exit with nonzero exit code");
         }

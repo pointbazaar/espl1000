@@ -283,6 +283,6 @@ public class DracoVMCodeGenerator {
     public static long unique(){
         //uniqueness for jump labels
         Random r = new Random();
-        return Math.abs(r.nextLong());
+        return Math.abs(r.nextInt(100000));
     }
 }
