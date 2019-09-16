@@ -61,7 +61,10 @@ public class AssemblyWriter {
         any("mov "+dest+","+value,comment);
     }
     public void mov(Register dest,float value) {
-        any("mov "+dest+","+value);
+        mov(dest,value,"");
+    }
+    public void mov(Register register, float value, String comment) {
+        any("mov "+register+","+value,comment);
     }
     public void mov(Register dest,int value) {
         any("mov "+dest+","+value);
@@ -94,10 +97,16 @@ public class AssemblyWriter {
         any("add "+dest+","+val);
     }
     public void add(Register dest,Register reg2) {
-        any("add "+dest+","+reg2);
+        add(dest,reg2,"");
+    }
+    public void add(Register dest, Register reg2, String comment) {
+        any("add "+dest+","+reg2,comment);
     }
     public void sub(Register dest,Register reg2) {
-        any("sub "+dest+","+reg2);
+        sub(dest,reg2,"");
+    }
+    public void sub(Register dest, Register reg2, String comment) {
+        any("sub "+dest+","+reg2,comment);
     }
 
     public void label(String label,String comment) {
@@ -137,6 +146,7 @@ public class AssemblyWriter {
     public void xor(Register reg1, Register reg2, String comment) {
         any("xor "+reg1+","+reg2,comment);
     }
+
 
 
 }

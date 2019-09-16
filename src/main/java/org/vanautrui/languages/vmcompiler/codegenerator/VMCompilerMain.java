@@ -36,13 +36,14 @@ public class VMCompilerMain {
     }
 
     private static void compile_fconst(VMInstr instr,AssemblyWriter a) {
-        a.mov(eax,Float.parseFloat(instr.arg1.get()));
-        a.push(eax);
+        float f = Float.parseFloat(instr.arg1.get());
+        a.mov(eax,f,instr.toString());
+        a.push(eax,instr.toString());
     }
 
     private static List<String> vm_codes_to_assembly(List<VMInstr> vmcodes) throws Exception {
         //receives only clean VM Codes
-        //TODO
+
         AssemblyWriter a=new AssemblyWriter();
 
         a.section(".text","must be declared for linker (ld)");
@@ -218,32 +219,32 @@ public class VMCompilerMain {
     }
 
     private static void compile_sub(VMInstr instr, AssemblyWriter a) {
-        a.pop(ebx);
-        a.pop(eax);
-        a.sub(eax, ebx);
-        a.push(eax);
+        a.pop(ebx,instr.toString());
+        a.pop(eax,instr.toString());
+        a.sub(eax, ebx,instr.toString());
+        a.push(eax,instr.toString());
     }
 
     private static void compile_add(VMInstr instr, AssemblyWriter a) {
-        a.pop(eax);
-        a.pop(ebx);
-        a.add(eax, ebx);
-        a.push(eax);
+        a.pop(eax,instr.toString());
+        a.pop(ebx,instr.toString());
+        a.add(eax, ebx,instr.toString());
+        a.push(eax,instr.toString());
     }
 
 
 
     private static void compile_subroutine(VMInstr instr, AssemblyWriter a) {
-        a.label(instr.arg1.get());
+        a.label(instr.arg1.get(),instr.toString());
         //push the number of local variables on the stack
         //but that should already be done by the vm code generator
     }
 
     private static void compile_dup(VMInstr instr, AssemblyWriter a) {
         //duplicates top of stack
-        a.pop(eax);
-        a.push(eax);
-        a.push(eax);
+        a.pop(eax,instr.toString());
+        a.push(eax,instr.toString());
+        a.push(eax,instr.toString());
     }
 
     private static void compile_push(VMInstr instr, AssemblyWriter a) throws Exception {
