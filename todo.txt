@@ -1,0 +1,2 @@
+[ ] make a vm command to print a register dump to the console
+[ ] make a vm command to print a stack dump to the console

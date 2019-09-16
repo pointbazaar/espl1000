@@ -22,25 +22,6 @@ public class VMCompilerMain {
         //generate assembly
         List<String> assembly_codes = vm_codes_to_assembly(VMInstrs);
 
-        /*
-        //TODO: open process to call nasm to compile to machine code
-
-			//$ nasm -f elf hello.asm  # this will produce hello.o ELF object file
-			//$ ld -s -o hello hello.o # this will produce hello executable
-
-			printf("PHASE: call NASM\n");
-
-			string arg1="nasm -f elf ";
-			arg1.append(asm_file_name);
-
-			string arg2="ld -melf_i386 -s -o hello ";
-			arg2.append(filearg);
-			arg2.append(".o");
-
-			system(arg1.c_str());
-			system(arg2.c_str());
-         */
-
         return assembly_codes;
     }
 

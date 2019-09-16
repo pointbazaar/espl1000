@@ -23,4 +23,39 @@ public class VMCompilerMainTest {
     assertEquals(45,pr.exitValue());
     assertEquals("", IOUtils.toString(pr.getInputStream()));
   }
+
+  @Test
+  public void test_goto()throws Exception{
+    List<String> vmcodes = Arrays.asList(
+            "subroutine main 0",
+            "goto label1",
+            "iconst 45",
+            "exit",
+            "label label1",
+            "iconst 0",
+            "exit"
+    );
+    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "putchartesting");
+
+    assertEquals(0,pr.exitValue());
+    assertEquals("", IOUtils.toString(pr.getInputStream()));
+  }
+
+  @Test
+  public void test_if_goto()throws Exception{
+    List<String> vmcodes = Arrays.asList(
+            "subroutine main 0",
+            "iconst 1",
+            "if-goto label1",
+            "iconst 45",
+            "exit",
+            "label label1",
+            "iconst 0",
+            "exit"
+    );
+    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "putchartesting");
+
+    assertEquals(0,pr.exitValue());
+    assertEquals("", IOUtils.toString(pr.getInputStream()));
+  }
 }

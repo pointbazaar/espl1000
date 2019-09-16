@@ -23,7 +23,7 @@ public class CodeGeneratorTestUtils {
         //we are in debug mode since we are running tests
 
         CompilerPhases phases = new CompilerPhases();
-        List<String> vmcodes = phases.phase_vm_codegeneration(asts, true);
+        List<String> vmcodes = phases.phase_vm_codegeneration(asts, filename,true);
         return vmcodes;
     }
 
