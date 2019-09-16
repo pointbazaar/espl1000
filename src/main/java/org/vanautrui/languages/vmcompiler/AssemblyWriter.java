@@ -8,8 +8,7 @@ public class AssemblyWriter {
     //TODO: make this class and API more typesafe :)
 
     private List<String> instrs=new ArrayList<>();
-    private boolean indented=false;
-    private boolean finalized=false;
+    private boolean indented=true;
 
     public AssemblyWriter(){
 
