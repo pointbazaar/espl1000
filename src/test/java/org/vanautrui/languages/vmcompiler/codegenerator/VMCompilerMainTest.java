@@ -63,4 +63,46 @@ public class VMCompilerMainTest {
     assertEquals(0,pr.exitValue());
     assertEquals("", IOUtils.toString(pr.getInputStream()));
   }
+
+  @Test
+  public void test_eq_false()throws Exception{
+    DracoVMCodeWriter a=new DracoVMCodeWriter();
+
+    a.subroutine("main",0);
+    a.iconst(1);
+    a.iconst(0);
+    a.eq();
+    a.if_goto("label1");
+    a.iconst(45);
+    a.exit();
+    a.label("label1");
+    a.iconst(0);
+    a.exit();
+
+    List<String> vmcodes = a.getDracoVMCodeInstructions();
+    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "putchartesting");
+
+    assertEquals(45,pr.exitValue());
+  }
+
+  @Test
+  public void test_eq_true()throws Exception{
+    DracoVMCodeWriter a=new DracoVMCodeWriter();
+
+    a.subroutine("main",0);
+    a.iconst(11);
+    a.iconst(11);
+    a.eq();
+    a.if_goto("label1");
+    a.iconst(45);
+    a.exit();
+    a.label("label1");
+    a.iconst(3);
+    a.exit();
+
+    List<String> vmcodes = a.getDracoVMCodeInstructions();
+    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "putchartesting");
+
+    assertEquals(3,pr.exitValue());
+  }
 }
