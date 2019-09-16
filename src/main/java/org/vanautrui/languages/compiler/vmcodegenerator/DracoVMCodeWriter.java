@@ -1,5 +1,7 @@
 package org.vanautrui.languages.compiler.vmcodegenerator;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,88 +18,107 @@ public class DracoVMCodeWriter {
     return this.instrs;
   }
 
+  private static final int default_indent=4;
+  private static final int label_indent=1;
+  private static final int subroutine_indent=0;
+
+  private int indent=default_indent;
+
   public static final String SEGMENT_ARG = "ARG";
   public static final String SEGMENT_LOCAL = "LOCAL";
   public static final String SEGMENT_STATIC = "]STATIC";
 
   public DracoVMCodeWriter(){}
 
+  /**
+   * all access to this.instrs must flow through here because this subroutine
+   * keeps track of correct indentation
+   */
+  private void any(String command){
+    String myindent = StringUtils.repeat("  ", this.indent);
+    instrs.add(myindent+command);
+  }
+
   public void subroutine(String name,int nLocals){
-    instrs.add("subroutine "+name+" "+nLocals);
+    indent=subroutine_indent;
+    any("subroutine "+name+" "+nLocals);
+    indent=default_indent;
   }
 
   public void push(String segment, int index){
-    instrs.add("push "+segment+" "+index);
+    any("push "+segment+" "+index);
   }
 
   public void pop(String segment, int index){
-    instrs.add("pop "+segment+" "+index);
+    any("pop "+segment+" "+index);
   }
 
   public void pop(){
-    instrs.add("pop");
+    any("pop");
   }
 
   public void label(String name){
-    instrs.add("label "+name);
+    indent=label_indent;
+    any("label "+name);
+    indent=default_indent;
   }
 
   public void if_goto(String label){
-    instrs.add("if-goto "+label);
+    any("if-goto "+label);
   }
 
   public void _goto(String label){
-    instrs.add("goto "+label);
+    any("goto "+label);
   }
 
   public void neg(){
-    instrs.add("neg");
+    any("neg");
   }
 
   public void dup() {
-    instrs.add("dup");
+    any("dup");
   }
 
   public void iconst(int i) {
-    instrs.add("iconst "+i);
+    any("iconst "+i);
   }
 
   public void eq() {
-    instrs.add("eq");
+    any("eq");
   }
 
   public void dec() {
-    instrs.add("dec");
+    any("dec");
   }
   public void inc() {
-    instrs.add("inc");
+    any("inc");
   }
 
   public void fconst(float value) {
-    instrs.add("fconstn "+value);
+    any("fconstn "+value);
   }
 
   public void call(String methodName) {
-    instrs.add("call "+methodName);
+    any("call "+methodName);
   }
 
   public void add() {
-    instrs.add("add");
+    any("add");
   }
 
   public void sub() {
-    instrs.add("sub");
+    any("sub");
   }
 
   public void exit() {
-    instrs.add("exit");
+    any("exit");
   }
 
   public void _return() {
-    instrs.add("return");
+    any("return");
   }
 
   public void cconst(char c) {
-    instrs.add("cconst "+c);
+    any("cconst "+c);
   }
 }
