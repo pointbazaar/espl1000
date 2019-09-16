@@ -1,5 +1,6 @@
 package org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.vanautrui.languages.compiler.lexing.tokens.KeywordToken;
 import org.vanautrui.languages.compiler.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
@@ -23,18 +24,16 @@ public class ClassNode implements IASTNode {
     public List<ClassFieldNode> fieldNodeList = new ArrayList<>();
     public List<MethodNode> methodNodeList = new ArrayList<>();
 
-    public ClassNode(TokenList tokens,Path path) throws Exception {
+    public ClassNode(TokenList tokens,Path path,boolean debug) throws Exception {
+
+        if(debug){
+            System.out.println("try to parse "+this.getClass().getSimpleName()+" from "+tokens.toSourceCodeFragment());
+        }
 
         this.srcPath=path;
         TokenList copy = tokens.copy();
 
-        try {
-            AccessModifierNode access = new AccessModifierNode(copy);
-            this.isPublic=access.is_public;
-        }catch (Exception e){
-            //no access modifier node. then it is public by default
-            this.isPublic=true;
-        }
+        AccessModifierNode access = new AccessModifierNode(copy);
 
         copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("class"));
 
@@ -47,32 +46,39 @@ public class ClassNode implements IASTNode {
             throw new Exception(" a class should end with '}' but it did not ");
         }
 
-        //i hope, that with this piece of code, the method should always be tried out first
-        //because classField is a prefix of Method.
-        //similar errors could maybe be fixed by just looking at the Dragon Grammar
-        //and structuring the parser accordingly
+        //all fields must occur before the subroutines
+        //this simplifies the parser
 
-        boolean success_method = true;
         boolean success_field = true;
-
-        while (success_field || success_method) {
+        while (success_field) {
             try {
-                this.methodNodeList.add(new MethodNode(copy));
-                success_method = true;
-            } catch (Exception e11) {
-                success_method = false;
-            }
-
-            try {
-                this.fieldNodeList.add(new ClassFieldNode(copy));
-                success_field = true;
+                this.fieldNodeList.add(new ClassFieldNode(copy,debug));
             } catch (Exception e22) {
                 success_field = false;
             }
-
         }
 
-        //System.out.println(copy.toString());
+        boolean success_method = true;
+        Pair<TokenList, TokenList> pair = copy.split_into_tokens_and_next_block_and_later_tokens();
+        while (success_method){
+            //DEBUG
+            System.out.println("pair:");
+            System.out.println(pair.getLeft().toSourceCodeFragment());
+            System.out.println(pair.getRight().toSourceCodeFragment());
+            try {
+                int chunk_size=pair.getLeft().size();
+                this.methodNodeList.add(new MethodNode(pair.getLeft(),debug));
+                copy.consume(chunk_size);
+                pair = pair.getRight().split_into_tokens_and_next_block_and_later_tokens();
+            } catch (Exception e11) {
+                success_method = false;
+            }
+        }
+
+        //DEBUG:
+        System.out.println("tokens left after try to parse fields and methods:");
+        System.out.println(copy.toSourceCodeFragment());
+
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("}"));
 
         tokens.set(copy);

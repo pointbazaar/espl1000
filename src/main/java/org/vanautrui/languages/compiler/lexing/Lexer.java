@@ -144,7 +144,7 @@ public class Lexer {
             throw new Exception(msg);
         }
 
-        return new TokenList(result,lineNumbers,myCode.relSrcPath);
+        return new TokenList(result,myCode.relSrcPath);
     }
 
 }

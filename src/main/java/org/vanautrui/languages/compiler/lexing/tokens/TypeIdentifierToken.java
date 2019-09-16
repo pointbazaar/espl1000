@@ -17,10 +17,16 @@ public class TypeIdentifierToken implements IToken {
 
     public static final int MAX_IDENTIFIER_LENGTH = 100;
 
-    public String content;
+    public final String content;
+    private final long lineNumber;
+
+    @Override
+    public long getLineNumber() {
+        return this.lineNumber;
+    }
 
     public TypeIdentifierToken(CharacterList list) throws Exception {
-        super();
+        this.lineNumber=list.getCurrentLineNumber();
         CharacterList copy = new CharacterList(list);
         try{
             new KeywordToken(copy);

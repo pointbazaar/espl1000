@@ -192,7 +192,7 @@ public class CompilerPhases {
 
         for(TokenList tokens : list){
             try {
-                AST ast = (new Parser()).parse(tokens,tokens.relPath);
+                AST ast = (new Parser()).parse(tokens,tokens.relPath,debug);
 
                 if (print_ast) {
 
@@ -213,7 +213,11 @@ public class CompilerPhases {
 
         if(didThrow){
             printEndPhase(false,printLong);
-            throw new Exception(exceptions.stream().map(e->e.getMessage()).collect(Collectors.joining("\n")));
+            if(debug){
+                throw new Exception(exceptions.stream().map(Exception::toString).collect(Collectors.joining("\n")));
+            }else {
+                throw new Exception(exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining("\n")));
+            }
         }else{
             printEndPhase(true,printLong);
             return asts;

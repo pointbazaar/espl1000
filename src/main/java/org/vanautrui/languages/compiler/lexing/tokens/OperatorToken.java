@@ -27,10 +27,16 @@ public class OperatorToken implements IToken {
             "<",">","+","-","*","/","%",":","="
     };
 
-    public String operator;
+    public final String operator;
+    private final long lineNumber;
+
+    @Override
+    public long getLineNumber() {
+        return this.lineNumber;
+    }
 
     public OperatorToken(CharacterList list) throws Exception {
-        super();
+        this.lineNumber=list.getCurrentLineNumber();
         for (String sym : operator_symbols_2_chars_or_more) {
             if (list.startsWith(sym)) {
                 this.operator = sym;

@@ -13,10 +13,16 @@ public class StringConstantToken implements IToken {
 
     public static final int MAX_STRING_CONSTANT_LENGTH = 1000;
 
-    public String content;
+    public final String content;
+    private final long lineNumber;
+
+    @Override
+    public long getLineNumber() {
+        return this.lineNumber;
+    }
 
     public StringConstantToken(CharacterList list) throws Exception {
-        super();
+        this.lineNumber=list.getCurrentLineNumber();
         Pattern p = Pattern.compile(regex_string_constant);
 
         Matcher m = p.matcher(list.getLimitedStringMaybeShorter(MAX_STRING_CONSTANT_LENGTH));
@@ -28,11 +34,6 @@ public class StringConstantToken implements IToken {
         } else {
             throw new Exception("could not recognize identifier");
         }
-    }
-
-    public StringConstantToken(String newcontents) throws Exception {
-        super();
-        this.content = newcontents;
     }
 
     @Override

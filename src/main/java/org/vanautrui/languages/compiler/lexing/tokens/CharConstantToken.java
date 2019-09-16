@@ -10,13 +10,20 @@ public class CharConstantToken implements IToken {
     //public static final Pattern p = Pattern.compile(regex_char_constant);
 
     public char content;
+    private final long lineNumber;
+
+    @Override
+    public long getLineNumber() {
+        return this.lineNumber;
+    }
 
     public CharConstantToken(char c){
         this.content=c;
+        this.lineNumber=-1;
     }
 
     public CharConstantToken(CharacterList list) throws Exception {
-
+        this.lineNumber=list.getCurrentLineNumber();
 
         String s = list.getLimitedString(3);
         char c1=s.charAt(0);

@@ -7,9 +7,16 @@ import org.vanautrui.languages.compiler.lexing.utils.IToken;
 public class AccessModifierToken implements IToken {
 
     public boolean is_public;
+    private final long lineNumber;
+
+    @Override
+    public long getLineNumber() {
+        return this.lineNumber;
+    }
 
     public AccessModifierToken(CharacterList list) throws Exception {
-        super();
+
+        this.lineNumber=list.getCurrentLineNumber();
         if (list.startsWith("public")) {
             this.is_public = true;
             list.consumeTokens("public".length());
@@ -22,7 +29,7 @@ public class AccessModifierToken implements IToken {
     }
 
     public AccessModifierToken(String newcontents) throws Exception {
-        super();
+        this.lineNumber=0;
         switch (newcontents) {
             case "public":
                 is_public = true;
@@ -40,5 +47,7 @@ public class AccessModifierToken implements IToken {
     public String getContents() {
         return (this.is_public) ? "public" : "private";
     }
+
+
 
 }

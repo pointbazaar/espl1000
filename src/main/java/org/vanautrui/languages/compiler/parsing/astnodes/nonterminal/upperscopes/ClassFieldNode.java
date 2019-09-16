@@ -15,8 +15,10 @@ public class ClassFieldNode implements IASTNode {
 
     public IdentifierNode name;
 
-    public ClassFieldNode(TokenList tokens) throws Exception {
-        //System.out.println("try parse DragonClassFieldNode");
+    public ClassFieldNode(TokenList tokens,boolean debug) throws Exception {
+        if(debug){
+            System.out.println("try to parse "+this.getClass().getSimpleName()+" from "+tokens.toSourceCodeFragment());
+        }
 
         TokenList copy = tokens.copy();
 

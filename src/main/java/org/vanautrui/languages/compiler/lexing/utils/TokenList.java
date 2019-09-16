@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
+import org.vanautrui.languages.compiler.lexing.tokens.SymbolToken;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,19 +25,17 @@ public class TokenList {
     public Path relPath = Paths.get("/dev/null");
 
     private List<IToken> tokens=new ArrayList<>();
-    private List<Integer> lineNumbers=new ArrayList<>();
+
 
     public TokenList(){}
 
-    public TokenList(List<IToken> result, List<Integer> lineNumbers, Path sourceFile) {
+    public TokenList(List<IToken> result, Path sourceFile) {
         this.tokens = result;
-        this.lineNumbers=lineNumbers;
         this.relPath =sourceFile;
     }
 
     public TokenList(TokenList other) {
         this.tokens = new ArrayList<>(other.tokens);
-        this.lineNumbers=new ArrayList<>(other.lineNumbers);
         this.relPath =other.relPath;
     }
 
@@ -46,13 +45,11 @@ public class TokenList {
 
     public void add(IToken token) {
         this.tokens.add(token);
-        this.lineNumbers.add(-1);
     }
 
     public void consume(int amount) {
 
         this.tokens = this.tokens.subList(amount, this.tokens.size());
-        this.lineNumbers = this.lineNumbers.subList(amount, this.lineNumbers.size());
     }
 
     public int size() {
@@ -77,8 +74,9 @@ public class TokenList {
     }
 
     public void expectAndConsumeOtherWiseThrowException(IToken token) throws Exception {
-
-        //equals() should be implemented correctly in all the tokens
+        if(this.size()==0){
+            throw new Exception("no tokens");
+        }
 
         if (this.startsWith(token)) {
             this.consume(1);
@@ -97,7 +95,7 @@ public class TokenList {
                     + "\t"+expectedTokenMessage+"\n"
                     + "\t"+ actualTokenMessage +"\n"
                     + "in '" + sourceCodeFragment + "'\n"
-                    + "in "+ generateFileNameWithLine(relPath,lineNumbers.get(0));
+                    + "in "+ generateFileNameWithLine(relPath,this.head().getLineNumber());
 
             throw new Exception(message);
             //TODO: make sure the source file path is relative (for pretty output)
@@ -121,15 +119,67 @@ public class TokenList {
     }
 
     /**
-     * @return returns the tokenlist, split in 2, with the first half being all tokens and the next block ( {...} is a block)
+     * @param token the token to read until
+     * @return returns a tokenlist with tokens up until that token
      */
-    public Pair<TokenList,TokenList> split_into_tokens_and_next_block_and_later_tokens(){
-        //TODO:
-        TokenList start = new TokenList();
+    public TokenList until(IToken token){
+        TokenList left = new TokenList();
+        IToken tk;
+        int j=0;
+        while(j<tokens.size()){
+            tk=tokens.get(j);
+            if(tk.tokenEquals(token)){
+                break;
+            }else {
+                left.add(tk);
+                j++;
+            }
+        }
+        return left;
     }
 
-    private String indent(int n){
-        return new String(new char[n]).replace("\0","\t");
+    /**
+     * @return returns the tokenlist, split in 2,
+     * with the first half being all tokens and the next block ( {...} is a block)
+     */
+    public Pair<TokenList,TokenList> split_into_tokens_and_next_block_and_later_tokens()throws Exception{
+        if(tokens.size()==0){
+            return Pair.of(new TokenList(),new TokenList());
+        }
+
+        TokenList left = new TokenList();
+
+        //adds all the tokens until the first '{'
+        left.tokens.addAll(this.until(new SymbolToken("{")).tokens);
+
+        int block_nesting_level=0;
+        IToken tk;
+
+        //add the block
+        int i=left.size();
+        for(;i<this.tokens.size();i++){
+            tk = this.tokens.get(i);
+
+            if(tk.tokenEquals(new SymbolToken("{"))){
+                block_nesting_level++;
+            }else if(tk.tokenEquals(new SymbolToken("}"))){
+                if(block_nesting_level==0){
+                    break;
+                }
+                block_nesting_level--;
+            }else{
+                if(block_nesting_level==0){
+                    break;
+                }
+            }
+            left.add(tk);
+        }
+
+        TokenList right = new TokenList();
+
+        right.tokens.addAll(this.tokens.subList(i,this.tokens.size()));
+
+        return Pair.of(left,right);
     }
 
     public TokenList copy() {

@@ -30,7 +30,7 @@ public class ClassNodeTest {
 
         list.add(new SymbolToken("}"));
 
-        ClassNode classNode = new ClassNode(list, Paths.get("/dev/null"));
+        ClassNode classNode = new ClassNode(list, Paths.get("/dev/null"),true);
     }
 
     @Test
@@ -59,6 +59,6 @@ public class ClassNodeTest {
 
         list.add(new SymbolToken("}"));
 
-        ClassNode classNode = new ClassNode(list,Paths.get("/dev/null"));
+        ClassNode classNode = new ClassNode(list,Paths.get("/dev/null"),true);
     }
 }

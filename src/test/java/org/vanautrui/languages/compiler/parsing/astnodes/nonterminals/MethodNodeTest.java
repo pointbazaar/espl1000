@@ -31,7 +31,7 @@ public class MethodNodeTest {
 
         list.add(new SymbolToken("}"));
 
-        MethodNode methodNode = new MethodNode(list);
+        MethodNode methodNode = new MethodNode(list,true);
     }
 
     @Test
@@ -55,6 +55,6 @@ public class MethodNodeTest {
 
         list.add(new SymbolToken("}"));
 
-        MethodNode methodNode = new MethodNode(list);
+        MethodNode methodNode = new MethodNode(list,true);
     }
 }

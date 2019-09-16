@@ -8,9 +8,15 @@ public class BoolConstantToken implements IToken {
 	//this class represents 'true' || 'false'
 
     public boolean value;
+    private final long lineNumber;
+
+    @Override
+    public long getLineNumber() {
+        return this.lineNumber;
+    }
 
     public BoolConstantToken(CharacterList list) throws Exception {
-        super();
+        this.lineNumber=list.getCurrentLineNumber();
 
         if (list.startsWith("true")) {
             this.value = true;

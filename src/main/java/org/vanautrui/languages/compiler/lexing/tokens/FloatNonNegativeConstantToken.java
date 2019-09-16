@@ -17,9 +17,15 @@ public class FloatNonNegativeConstantToken implements IToken {
     private static final int MAX_FLOAT_CONSTANT_LENGTH = 20;
 
     public float value;
+    private final long lineNumber;
+
+    @Override
+    public long getLineNumber() {
+        return this.lineNumber;
+    }
 
     public FloatNonNegativeConstantToken(CharacterList list) throws Exception {
-        super();
+        this.lineNumber=list.getCurrentLineNumber();
         Pattern p = Pattern.compile(regex_float_constant);
 
         Matcher m = p.matcher(list.getLimitedStringMaybeShorter(MAX_FLOAT_CONSTANT_LENGTH));

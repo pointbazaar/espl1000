@@ -24,9 +24,15 @@ public class KeywordToken implements IToken {
     );
 
     public String keyword;
+    private final long lineNumber;
+
+    @Override
+    public long getLineNumber() {
+        return this.lineNumber;
+    }
 
     public KeywordToken(CharacterList list) throws Exception {
-        super();
+        this.lineNumber=list.getCurrentLineNumber();
         for (String sym : keywords) {
             Pattern p = Pattern.compile(sym+"([^a-z]|$)");
             Matcher m =p.matcher(list.getLimitedStringMaybeShorter(keywords.stream().map(s->s.length()).reduce(Integer::max).get()));

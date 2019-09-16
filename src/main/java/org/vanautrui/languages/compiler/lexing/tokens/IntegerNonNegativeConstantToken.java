@@ -17,9 +17,15 @@ public class IntegerNonNegativeConstantToken implements IToken {
     private static final int MAX_INT_CONSTANT_LENGTH = 20;
 
     public int value;
+    private final long lineNumber;
+
+    @Override
+    public long getLineNumber() {
+        return this.lineNumber;
+    }
 
     public IntegerNonNegativeConstantToken(CharacterList list) throws Exception {
-        super();
+        this.lineNumber=list.getCurrentLineNumber();
         Pattern p = Pattern.compile(regex_integer_constant);
 
         Matcher m = p.matcher(list.getLimitedStringMaybeShorter(MAX_INT_CONSTANT_LENGTH));
@@ -33,7 +39,7 @@ public class IntegerNonNegativeConstantToken implements IToken {
     }
 
     public IntegerNonNegativeConstantToken(int newcontents) throws Exception {
-        super();
+        this.lineNumber=-1;
         this.value = newcontents;
     }
 

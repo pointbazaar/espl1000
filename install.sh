@@ -6,5 +6,8 @@
 #STEP 1: clone this repo to your home directory
 
 #STEP 2:
+./buildandtest.sh
+
+#STEP 3:
 echo "source ~/dragon/.dragon.sh" >> ~/.bashrc
 

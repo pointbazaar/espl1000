@@ -7,14 +7,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Parser {
-    public AST parse(TokenList tokens, Path path) throws Exception {
+    public AST parse(TokenList tokens, Path path,boolean debug) throws Exception {
         if(tokens.size()==0){
             throw new Exception("did not receive any tokens as input");
         }
-        return new AST(tokens,path);
+        return new AST(tokens,path,debug);
     }
 
-    public AST parseTestMode(TokenList tokens)throws Exception{
-        return parse(tokens, Paths.get("/dev/null"));
+    public AST parseTestMode(TokenList tokens,boolean debug)throws Exception{
+        return parse(tokens, Paths.get("/dev/null"),debug);
     }
 }

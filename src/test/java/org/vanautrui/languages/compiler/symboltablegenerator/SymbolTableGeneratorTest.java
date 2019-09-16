@@ -25,7 +25,7 @@ public class SymbolTableGeneratorTest {
         ));
 
         Parser parser = new Parser();
-        AST ast = parser.parseTestMode(tokens);
+        AST ast = parser.parseTestMode(tokens,true);
         return ast;
     }
 

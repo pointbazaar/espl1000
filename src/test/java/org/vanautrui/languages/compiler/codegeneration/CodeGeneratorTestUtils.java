@@ -19,7 +19,7 @@ public class CodeGeneratorTestUtils {
     private static Path generateCodeAndWriteExecutable(String source, String filename)throws Exception{
         TokenList tokens = (new Lexer()).lexCodeTestMode(source);
         Parser parser = new Parser();
-        AST ast= parser.parseTestMode(tokens);
+        AST ast= parser.parseTestMode(tokens,true);
         List<AST> asts = new ArrayList<>();
         asts.add(ast);
         //we are in debug mode since we are running tests

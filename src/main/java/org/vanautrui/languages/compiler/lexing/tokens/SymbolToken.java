@@ -17,10 +17,16 @@ public class SymbolToken implements IToken {
             ",",";"
     };
 
-    public String symbol;
+    public final String symbol;
+    private final long lineNumber;
+
+    @Override
+    public long getLineNumber() {
+        return this.lineNumber;
+    }
 
     public SymbolToken(CharacterList list) throws Exception {
-        super();
+        this.lineNumber=list.getCurrentLineNumber();
         //should be for keywords such as {,},[,],+,-,.,','
 
         for (String sym : symbols) {

@@ -15,6 +15,11 @@ public interface IToken {
      */
     public long getLineNumber();
 
+    /**
+     * @param other the IToken to compare with
+     * @return returns true, if the 2 Tokens are deep equals, regaring their content.
+     * line number is not considered here. false otherwise.
+     */
     public default boolean tokenEquals(IToken other){
         boolean b1= this.getClass().getName().equals(other.getClass().getName());
         boolean b2=this.getContents().equals(other.getContents());

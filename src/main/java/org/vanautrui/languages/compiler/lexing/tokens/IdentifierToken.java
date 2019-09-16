@@ -17,9 +17,15 @@ public class IdentifierToken implements IToken {
     public static final int MAX_IDENTIFIER_LENGTH = 100;
 
     public String content;
+    private final long lineNumber;
+
+    @Override
+    public long getLineNumber() {
+        return this.lineNumber;
+    }
 
     public IdentifierToken(CharacterList list) throws Exception {
-        super();
+        this.lineNumber=list.getCurrentLineNumber();
         CharacterList copy = new CharacterList(list);
 
 

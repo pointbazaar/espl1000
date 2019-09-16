@@ -25,8 +25,10 @@ public class MethodNode implements IASTNode {
 
     public List<StatementNode> statements = new ArrayList<>();
 
-    public MethodNode(TokenList tokens) throws Exception {
-
+    public MethodNode(TokenList tokens,boolean debug) throws Exception {
+        if(debug){
+            System.out.println("try to parse "+this.getClass().getSimpleName()+" from "+tokens.toSourceCodeFragment());
+        }
         //TODO: consider the 2 alternative ways a method can be declared
 
         TokenList copy = tokens.copy();

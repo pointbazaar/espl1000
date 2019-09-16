@@ -19,7 +19,7 @@ public class TerminalUtil {
         return ansi().fg(Ansi.Color.RED).a(s).reset().toString();
     }
 
-    public static String generateFileNameWithLine(Path path, int line){
+    public static String generateFileNameWithLine(Path path, long line){
         return ansi().fg(Ansi.Color.CYAN).a(path+":"+line).reset().toString();
     }
 
