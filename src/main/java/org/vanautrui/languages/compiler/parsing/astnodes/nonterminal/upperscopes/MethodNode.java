@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 
 public class MethodNode implements IASTNode {
 
-    public boolean isPublic;
+    public final boolean isPublic;
 
-    public TypeIdentifierNode type;
+    public final String type;
 
-    public MethodNameNode methodName;
+    public final String methodName;
 
     public List<DeclaredArgumentNode> arguments = new ArrayList<>();
 
@@ -33,22 +33,16 @@ public class MethodNode implements IASTNode {
 
         TokenList copy = tokens.copy();
 
-        try {
-            AccessModifierNode access = new AccessModifierNode(copy);
-            this.isPublic=access.is_public;
-        }catch (Exception e){
-            //access doesnt have to be declared, the default is public
-            this.isPublic=true;
-        }
+        AccessModifierNode access = new AccessModifierNode(copy);
+        this.isPublic=access.is_public;
 
-        this.type = new TypeIdentifierNode(copy);
+        this.type = new TypeIdentifierNode(copy).typeName;
 
-        this.methodName = new MethodNameNode(copy);
+        this.methodName = new MethodNameNode(copy).methodName;
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
 
         // parse arguments
-
         boolean success_argument = true;
         try {
             this.arguments.add(new DeclaredArgumentNode(copy));
@@ -88,9 +82,9 @@ public class MethodNode implements IASTNode {
         return
                 ((this.isPublic)?" public":" private")
                 +" "
-                +this.type.toSourceCode()
+                +this.type
                 +" "
-                +this.methodName.toSourceCode()
+                +this.methodName
                 +"("
                 +this.arguments.stream()
                 .map(argument->argument.toSourceCode())

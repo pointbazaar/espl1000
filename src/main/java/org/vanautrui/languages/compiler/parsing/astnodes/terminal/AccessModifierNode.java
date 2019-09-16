@@ -7,12 +7,10 @@ import org.vanautrui.languages.compiler.parsing.IASTNode;
 
 public class AccessModifierNode implements IASTNode {
 
-    public boolean is_public;
+    public final boolean is_public;
 
     public AccessModifierNode(TokenList tokens) throws Exception {
-
         IToken token1 = tokens.get(0);
-
         if (token1 instanceof AccessModifierToken) {
             this.is_public = ((AccessModifierToken) token1).is_public;
             tokens.consume(1);
@@ -26,5 +24,4 @@ public class AccessModifierNode implements IASTNode {
     public String toSourceCode() {
         return (is_public) ? "public" : "private";
     }
-
 }

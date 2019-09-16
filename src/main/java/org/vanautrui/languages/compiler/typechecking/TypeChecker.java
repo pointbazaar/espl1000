@@ -111,7 +111,7 @@ public class TypeChecker {
         StatementNode statementNode = methodNode.statements.get(methodNode.statements.size() - 1);
         if(! (statementNode.statementNode instanceof ReturnStatementNode)){
 
-            throw new Exception("error in typechecking : "+methodNode.methodName.methodName.name+" does not have a return statement as the last statement ");
+            throw new Exception("error in typechecking : "+methodNode.methodName+" does not have a return statement as the last statement ");
         }
     }
 
@@ -152,7 +152,7 @@ public class TypeChecker {
         {
             String returnValueType= TypeResolver.getTypeExpressionNode(returnStatementNode.returnValue,methodNode,subTable,varTable);
             if(
-                !(returnValueType.equals(methodNode.type.typeName))
+                !(returnValueType.equals(methodNode.type))
             ){
                 throw new Exception(" return type has to equal the method type");
             }
@@ -188,12 +188,12 @@ public class TypeChecker {
 
 
 
-        if(!subTable.containsSubroutine(methodCallNode.identifierMethodName)){
+        if(!subTable.containsSubroutine(methodCallNode.methodName)){
 
 
-            if(!builtin_subroutine_types.keySet().contains(methodCallNode.identifierMethodName)){
+            if(!builtin_subroutine_types.keySet().contains(methodCallNode.methodName)){
 			     System.out.println(subTable.toString());
-			     throw new Exception("name of method not in subroutine symbol table: "+methodCallNode.identifierMethodName);
+			     throw new Exception("name of method not in subroutine symbol table: "+methodCallNode.methodName);
             }
 		}
 
@@ -303,7 +303,7 @@ public class TypeChecker {
         //there should be a context
 
         for(ClassFieldNode fieldNode : classNode.fieldNodeList){
-            if(fieldNode.name.name.equals(variableNode.name)){
+            if(fieldNode.name.equals(variableNode.name)){
                 //found the identifier declared here
                 return;
             }
@@ -313,7 +313,7 @@ public class TypeChecker {
         //method scope
 
         for(DeclaredArgumentNode arg : methodNode.arguments){
-            if(arg.name.name.equals(variableNode.name)){
+            if(arg.name.equals(variableNode.name)){
                 return;
             }
         }
@@ -378,7 +378,7 @@ public class TypeChecker {
 
     private void typeCheckTypeIdentifierNode(
             List<AST> asts, ClassNode classNode,
-            TypeIdentifierNode typeIdentifierNode
+            String typename
             ) throws Exception{
 
         //check that the type is defined somewhere
@@ -386,31 +386,31 @@ public class TypeChecker {
 
         for(AST ast : asts){
             for(ClassNode myclassNode : ast.classNodeList){
-                if(myclassNode.name.typeName.equals(typeIdentifierNode.typeName)){
+                if(myclassNode.name.typeName.equals(typename)){
                     return;
                 }
             }
         }
 
-        if(primitive_types_and_arrays_of_them.contains(typeIdentifierNode.typeName)){
+        if(primitive_types_and_arrays_of_them.contains(typename)){
             return;
         }
 
         String msg = TerminalUtil.gererateErrorString("TYPECHECKING: ")
                 + "could not find class for type:"
-                + StringUtils.wrap(typeIdentifierNode.typeName,"'")
+                + StringUtils.wrap(typename,"'")
                 +" in file : (TODO: display file and line number)";
         throw new Exception(msg);
     }
 
-    private void typeCheckMethodNameNode(List<AST> asts, ClassNode classNode, MethodNameNode methodNameNode)throws Exception{
+    private void typeCheckMethodNameNode(List<AST> asts, ClassNode classNode, String methodName)throws Exception{
         //method names should not be duplicate in a class
         //this may change in another version of dragon
 
-        long count = classNode.methodNodeList.stream().filter(mNode -> mNode.methodName.methodName.name.equals(methodNameNode.methodName.name)).count();
+        long count = classNode.methodNodeList.stream().filter(mNode -> mNode.methodName.equals(methodName)).count();
 
         if(count>1){
-            throw new Exception("duplicate declaration of method '"+methodNameNode.methodName.name+"' ");
+            throw new Exception("duplicate declaration of method '"+methodName+"' ");
         }
     }
 
@@ -429,7 +429,7 @@ public class TypeChecker {
 
 
         for(ClassFieldNode fieldNode : classNode.fieldNodeList){
-            if(fieldNode.name.name.equals(identifierNode.name)){
+            if(fieldNode.name.equals(identifierNode.name)){
                 //found the identifier declared here
                 return;
             }
@@ -439,7 +439,7 @@ public class TypeChecker {
         //method scope
 
         for(DeclaredArgumentNode arg : methodNode.arguments){
-            if(arg.name.name.equals(identifierNode.name)){
+            if(arg.name.equals(identifierNode.name)){
                 return;
             }
         }

@@ -16,10 +16,10 @@ import java.util.stream.Collectors;
 
 public class ClassNode implements IASTNode {
 
-    public boolean isPublic;
+    public final boolean isPublic;
     public Path srcPath= Paths.get("/dev/null");
 
-    public TypeIdentifierNode name;
+    public final TypeIdentifierNode name;
 
     public List<ClassFieldNode> fieldNodeList = new ArrayList<>();
     public List<MethodNode> methodNodeList = new ArrayList<>();
@@ -34,6 +34,7 @@ public class ClassNode implements IASTNode {
         TokenList copy = tokens.copy();
 
         AccessModifierNode access = new AccessModifierNode(copy);
+        this.isPublic=access.is_public;
 
         copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("class"));
 

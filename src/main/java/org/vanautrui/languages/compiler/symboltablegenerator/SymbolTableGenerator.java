@@ -26,7 +26,7 @@ public class SymbolTableGenerator {
 		for(AST ast : asts) {
 			for(ClassNode classNode : ast.classNodeList) {
 				for (MethodNode methodNode : classNode.methodNodeList) {
-					SubroutineSymbolTableRow subrRow = new SubroutineSymbolTableRow(methodNode.methodName.methodName.name, methodNode.type.typeName,classNode.name.typeName);
+					SubroutineSymbolTableRow subrRow = new SubroutineSymbolTableRow(methodNode.methodName, methodNode.type,classNode.name.typeName);
 					subroutineSymbolTable.add(subrRow);
 				}
 			}
@@ -39,7 +39,7 @@ public class SymbolTableGenerator {
 
 		//first, make the local variables for the arguments
 		for(DeclaredArgumentNode arg: methodNode.arguments){
-		    methodScopeSymbolTable.add(new LocalVarSymbolTableRow(arg.name.name,arg.type.typeName,LocalVarSymbolTableRow.KIND_ARGUMENT));
+		    methodScopeSymbolTable.add(new LocalVarSymbolTableRow(arg.name,arg.type,LocalVarSymbolTableRow.KIND_ARGUMENT));
 		}
 		for(StatementNode stmt : methodNode.statements) {
 			find_local_vars_recursively(stmt.statementNode,methodNode, methodScopeSymbolTable, subTable);

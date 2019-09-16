@@ -8,7 +8,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.ITermNode;
 
 public class CharConstNode implements IASTNode, ITermNode {
 
-    public char content;
+    public final char content;
 
     public CharConstNode(TokenList tokens) throws Exception {
 

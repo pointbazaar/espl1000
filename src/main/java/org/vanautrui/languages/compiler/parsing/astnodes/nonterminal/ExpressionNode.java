@@ -13,7 +13,7 @@ public class ExpressionNode implements IASTNode, IExpressionComputable, ITermNod
     //DragonExpressionNode should be similar to jack expression
     //an expression should be anything that returns a value or computes to a value
 
-    public TermNode term;
+    public final TermNode term;
 
     public List<OperatorNode> operatorNodes=new ArrayList<>();
 

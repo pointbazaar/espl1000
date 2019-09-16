@@ -47,7 +47,7 @@ public class DracoVMCodeGenerator {
 
         LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(m,subTable);
 
-        sb.add("subroutine "+m.methodName.methodName.name+" "+m.arguments.size());
+        sb.add("subroutine "+m.methodName+" "+m.arguments.size());
         //not sure if it is number of arguments or number of local vars
 
         //TODO: setup a new stack frame
@@ -250,7 +250,7 @@ public class DracoVMCodeGenerator {
             ExpressionNode arg = methodCallNode.argumentList.get(i);
             genDracoVMCodeForExpression(arg,sb,varTable);
         }
-        sb.add("call "+methodCallNode.identifierMethodName);
+        sb.add("call "+methodCallNode.methodName);
     }
 
     private static void genDracoVMCodeForOp(OperatorNode opNode,List<String> sb)throws Exception{
@@ -276,7 +276,7 @@ public class DracoVMCodeGenerator {
 
     private static void genDracoVMCodeForReturn(ReturnStatementNode retStmt,MethodNode containerMethod,List<String> sb,LocalVarSymbolTable varTable)throws Exception {
         genDracoVMCodeForExpression(retStmt.returnValue,sb,varTable);
-        if(containerMethod.methodName.methodName.name.equals("main")){
+        if(containerMethod.methodName.equals("main")){
             sb.add("exit");
         }else{
             sb.add("return");

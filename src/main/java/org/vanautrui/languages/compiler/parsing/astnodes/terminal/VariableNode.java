@@ -14,7 +14,7 @@ public class VariableNode implements IASTNode, ITermNode {
 
     //this identifies a variable
 
-    public String name;
+    public final String name;
 
     public Optional<ExpressionNode> indexOptional=Optional.empty();
 

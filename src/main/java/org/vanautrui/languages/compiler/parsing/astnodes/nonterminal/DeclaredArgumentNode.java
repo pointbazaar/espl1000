@@ -7,24 +7,23 @@ import org.vanautrui.languages.compiler.parsing.astnodes.terminal.TypeIdentifier
 
 public class DeclaredArgumentNode implements IASTNode {
 
-    public TypeIdentifierNode type;
+    public String type;
 
-    public IdentifierNode name;
+    public String name;
 
     public DeclaredArgumentNode(TokenList tokens) throws Exception {
 
         TokenList copy = tokens.copy();
 
-        this.type = new TypeIdentifierNode(copy);
-
-        this.name = new IdentifierNode(copy);
+        this.type = new TypeIdentifierNode(copy).typeName;
+        this.name = new IdentifierNode(copy).name;
 
         tokens.set(copy);
     }
 
     @Override
     public String toSourceCode() {
-        return this.type.toSourceCode()+" "+this.name.toSourceCode();
+        return this.type+" "+this.name;
     }
 
 }

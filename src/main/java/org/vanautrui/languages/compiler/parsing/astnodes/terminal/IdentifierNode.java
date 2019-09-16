@@ -8,8 +8,7 @@ import org.vanautrui.languages.compiler.parsing.IASTNode;
 public class IdentifierNode implements IASTNode {
 
     //this identifies a variable
-
-    public String name;
+    public final String name;
 
     public IdentifierNode(TokenList tokens) throws Exception {
 

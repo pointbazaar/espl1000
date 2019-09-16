@@ -9,8 +9,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.ITermNode;
 public class IntConstNode implements IASTNode, ITermNode {
 
     //this can also have a negative value if it is preceded by a '-' operator token
-
-    public int value;
+    public final int value;
 
     public IntConstNode(TokenList tokens) throws Exception {
 
@@ -30,7 +29,6 @@ public class IntConstNode implements IASTNode, ITermNode {
         } else {
             throw new Exception("could not read stringConstant node");
         }
-
         tokens.set(copy);
     }
 

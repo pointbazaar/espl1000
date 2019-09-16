@@ -11,9 +11,9 @@ public class ClassFieldNode implements IASTNode {
 
     public AccessModifierNode access;
 
-    public TypeIdentifierNode type;
+    public final String type;
 
-    public IdentifierNode name;
+    public String name;
 
     public ClassFieldNode(TokenList tokens,boolean debug) throws Exception {
         if(debug){
@@ -24,9 +24,9 @@ public class ClassFieldNode implements IASTNode {
 
         this.access = new AccessModifierNode(copy);
 
-        this.type = new TypeIdentifierNode(copy);
+        this.type = new TypeIdentifierNode(copy).typeName;
 
-        this.name = new IdentifierNode(copy);
+        this.name = new IdentifierNode(copy).name;
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(";"));
 
@@ -36,8 +36,8 @@ public class ClassFieldNode implements IASTNode {
     @Override
     public String toSourceCode() {
         return this.access.toSourceCode()
-                +" "+this.type.toSourceCode()
-                +" "+this.name.toSourceCode()
+                +" "+this.type
+                +" "+this.name
                 +";";
     }
 

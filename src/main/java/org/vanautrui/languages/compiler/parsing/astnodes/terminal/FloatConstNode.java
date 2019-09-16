@@ -8,8 +8,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.ITermNode;
 public class FloatConstNode implements IASTNode, ITermNode {
 
     //this can also have a negative value if it is preceded by a '-' operator token
-
-    public float value;
+    public final float value;
 
     public FloatConstNode(TokenList tokens) throws Exception {
 

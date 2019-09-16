@@ -134,7 +134,7 @@ public class TypeResolver {
 
     public static String getTypeMethodCallNode(MethodCallNode methodCallNode, SubroutineSymbolTable subroutineSymbolTable) throws Exception{
 
-        String subrName = methodCallNode.getMethodName();
+        String subrName = methodCallNode.methodName;
 
 
 

@@ -2,9 +2,11 @@ package org.vanautrui.languages.compiler.parsing;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.vanautrui.languages.compiler.lexing.Lexer;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.lexing.tokens.*;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 
 import java.util.stream.Collectors;
 
@@ -30,8 +32,32 @@ public class ParserTest {
         Assert.assertEquals(classname, ast.classNodeList.stream().collect(Collectors.toList()).get(0).name.typeName);
     }
 
-    public static class DragonASTTest {
+    @Test
+    public void test_can_parse_subroutine()throws Exception{
+        Lexer lexer = new Lexer();
+        TokenList tokens = lexer.lexCodeTestMode(
+                "Int main(){" +
+                "println(1);" +
+                "return 0;" +
+                "}");
+        System.out.println(tokens.toString());
 
-        //TODO
+        Parser parser = new Parser();
+        MethodNode methodNode = new MethodNode(tokens,true);
+    }
+
+    @Test
+    public void test_can_parse_some_class()throws Exception{
+        Lexer lexer = new Lexer();
+        TokenList tokens = lexer.lexCodeTestMode("class MyOutput{" +
+                "Int main(){" +
+                "println(1);" +
+                "return 0;" +
+                "}" +
+                "}");
+        System.out.println(tokens.toString());
+
+        Parser parser = new Parser();
+        AST ast = parser.parseTestMode(tokens, true);
     }
 }

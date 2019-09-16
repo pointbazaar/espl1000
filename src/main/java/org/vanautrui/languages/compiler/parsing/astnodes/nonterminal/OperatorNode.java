@@ -9,7 +9,7 @@ public class OperatorNode implements IASTNode {
 
     //same as the token
 
-    public String operator;
+    public final String operator;
 
     public OperatorNode(TokenList tokens)throws Exception{
 
