@@ -87,12 +87,17 @@ public class CompilerPhases {
             throw new Exception("ld exit with nonzero exit code");
         }
 
+        Files.delete(Paths.get(filename_without_extension+".o"));
+
         return Paths.get(filename_without_extension);
     }
 
     public List<String> phase_vm_code_compilation(List<String> draco_vm_codes,boolean debug) throws Exception{
         printBeginPhase("VM CODE COMPILATION",printLong);
         final List<String> assembly_codes = VMCompilerMain.compileVMCode(draco_vm_codes);
+        if(debug){
+            assembly_codes.stream().forEach(System.out::println);
+        }
         //$ nasm -f elf hello.asm  # this will produce hello.o ELF object file
         //$ ld -s -o hello hello.o # this will produce hello executable
 

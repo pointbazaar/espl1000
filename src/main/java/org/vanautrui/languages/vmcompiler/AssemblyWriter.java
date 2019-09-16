@@ -1,25 +1,11 @@
 package org.vanautrui.languages.vmcompiler;
 
 import org.vanautrui.languages.vmcompiler.model.Register;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class AssemblyWriter {
 
-    //TODO check for correct assembly syntax,
-    //and that the right registers are used.
-    //make this class and API typesafe :)
-
-    //this is not typesafe but improves readability
-    //and you can write your code faster
-    /*
-    public static final String eax="eax";
-    public static final String ebx="ebx";
-    public static final String ecx="ecx";
-    public static final String edx="edx";
-
-     */
+    //TODO: make this class and API more typesafe :)
 
     private List<String> instrs=new ArrayList<>();
     private boolean indented=false;
@@ -89,6 +75,9 @@ public class AssemblyWriter {
 
     public void push(Register register) {
         any("push "+register);
+    }
+    public void push(Register register,String comment) {
+        any("push "+register,comment);
     }
     public void pop(Register register) {
         any("pop "+register);

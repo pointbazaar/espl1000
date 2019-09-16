@@ -49,8 +49,9 @@ public class VMCompilerMain {
     }
 
     private static void compile_iconst(VMInstr instr, AssemblyWriter a) {
-        a.mov(eax,Integer.parseInt(instr.arg1.get()));
-        a.push(eax);
+        int x = Integer.parseInt(instr.arg1.get());
+        a.mov(eax,x,instr.toString());
+        a.push(eax,instr.toString());
     }
 
     private static void compile_fconst(VMInstr instr,AssemblyWriter a) {
@@ -82,6 +83,9 @@ public class VMCompilerMain {
                     break;
                 case "fconst":
                     compile_fconst(instr,a);
+                    break;
+                case "cconst":
+                    compile_cconst(instr,a);
                     break;
                 case "pop":
                     compile_pop(instr,a);
@@ -144,6 +148,12 @@ public class VMCompilerMain {
         ////https://cs.lmu.edu/~ray/notes/nasmtutorial/
         ////https://stackoverflow.com/questions/8201613/printing-a-character-to-standard-output-in-assembly-x86
         return a.getAssemblyProgram();
+    }
+
+    private static void compile_cconst(VMInstr instr, AssemblyWriter a) {
+        char c = instr.arg1.get().charAt(0);
+        a.mov(eax,(int)c,instr.toString());
+        a.push(eax,instr.toString());
     }
 
     private static void compile_malloc(VMInstr instr, AssemblyWriter a) {

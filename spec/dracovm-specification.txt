@@ -41,6 +41,8 @@ VIRTUAL MEMORY SEGMENTS
 
 ACCESSING MEMORY SEGMENTS:
 	iconst	n		//push a constant integer on the stack
+	cconst  c		//pushes a literal character value onto the stack, by converting it
+				//to it's ascii code
 	fconst	x		//push a float constant on the stack
 	push 	SEGMENT index
 	pop 	SEGMENT index

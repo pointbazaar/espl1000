@@ -16,9 +16,6 @@ public class SubroutineCallVMCodeGenerator {
         a.mov(ebx,1,"std_out");
 
         //print the char on stack
-        a.pop(ecx); //pop digit into ecx
-        a.add(ecx,0x30); //add ascii offset
-        a.push(ecx);  //push it back on stack
         a.mov(ecx, Register.esp);
 
         //val length

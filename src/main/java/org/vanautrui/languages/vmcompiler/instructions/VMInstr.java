@@ -27,4 +27,9 @@ public class VMInstr{
     public final Optional<String> arg1;
     public final Optional<String> arg2;
 
+    @Override
+    public String toString(){
+        return cmd+" "+arg1.orElse("")+arg2.orElse("");
+    }
+
 }

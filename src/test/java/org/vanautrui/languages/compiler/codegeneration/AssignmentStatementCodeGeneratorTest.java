@@ -4,7 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.vanautrui.languages.compiler.codegeneration.CodeGeneratorTestUtils.compile_and_run_one_class_for_testing;
+import static org.vanautrui.languages.CodeGeneratorTestUtils.compile_and_run_program_for_testing;
 
 public class AssignmentStatementCodeGeneratorTest {
 
@@ -18,7 +18,7 @@ public class AssignmentStatementCodeGeneratorTest {
                 "\t\tprint(x);" +
                 "\t return 0;}" +
                 "}";
-        Process pr = compile_and_run_one_class_for_testing(source,"MainTest333");
+        Process pr = compile_and_run_program_for_testing(source,"MainTest333");
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
@@ -34,7 +34,7 @@ public class AssignmentStatementCodeGeneratorTest {
                 "\t\tprint(arr[0]);" +
                 "\treturn 0;}" +
                 "}";
-        Process pr = compile_and_run_one_class_for_testing(source,"MainTest454");
+        Process pr = compile_and_run_program_for_testing(source,"MainTest454");
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("2",IOUtils.toString(pr.getInputStream()));
