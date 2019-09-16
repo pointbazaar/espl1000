@@ -148,5 +148,7 @@ public class AssemblyWriter {
     }
 
 
-
+    public void nop() {
+        any("nop");
+    }
 }

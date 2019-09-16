@@ -41,6 +41,75 @@ public class VMCompilerMain {
         a.push(eax,instr.toString());
     }
 
+    private static void compile_vm_instr(VMInstr instr,AssemblyWriter a)throws Exception{
+        //uniqueness for labels
+        long uniq = DracoVMCodeGenerator.unique();
+
+        switch (instr.cmd){
+            //stack related commands
+            case "iconst":
+                compile_iconst(instr,a);
+                break;
+            case "fconst":
+                compile_fconst(instr,a);
+                break;
+            case "cconst":
+                compile_cconst(instr,a);
+                break;
+            case "pop":
+                compile_pop(instr,a);
+                break;
+            case "push":
+                compile_push(instr,a);
+                break;
+            case "dup":
+                compile_dup(instr,a);
+                break;
+            //subroutine related commands
+            case "subroutine":
+                compile_subroutine(instr,a);
+                break;
+            case "call":
+                compile_call(instr,a);
+                break;
+            case "return":
+                a.writeReturn();
+                break;
+            case "exit":
+                compile_exit(instr,a);
+                //arithmetic commands
+            case "add":
+                compile_add(instr,a);
+                break;
+            case "sub":
+                compile_sub(instr,a);
+                break;
+            case "neg":
+                compile_neg(instr,a);
+                break;
+            case "eq":
+                compile_eq(instr,a,uniq);
+                break;
+            //control flow
+            case "goto":
+                a.jmp(instr.arg1.get());
+                break;
+            case "if-goto":
+                compile_if_goto(instr,a,uniq);
+                break;
+            case "label":
+                a.label(instr.arg1.get());
+                break;
+            case "malloc":
+                compile_malloc(instr,a);
+                break;
+            case "free":
+                throw new Exception("free not yet implemented");
+            default:
+                throw new Exception("unrecognized vm instr "+instr.cmd);
+        }
+    }
+
     private static List<String> vm_codes_to_assembly(List<VMInstr> vmcodes) throws Exception {
         //receives only clean VM Codes
 
@@ -50,78 +119,16 @@ public class VMCompilerMain {
         a.global("_start","");
         a.label("_start","tell linker entry point");
 
+        a.nop(); //the 2 nops are recommended by my assembly book
+
         //at the start of the code, jump to main
         a.jmp("main");
 
         for(VMInstr instr : vmcodes){
-
-            //uniqueness for labels
-            long uniq = DracoVMCodeGenerator.unique();
-
-            switch (instr.cmd){
-                //stack related commands
-                case "iconst":
-                    compile_iconst(instr,a);
-                    break;
-                case "fconst":
-                    compile_fconst(instr,a);
-                    break;
-                case "cconst":
-                    compile_cconst(instr,a);
-                    break;
-                case "pop":
-                    compile_pop(instr,a);
-                    break;
-                case "push":
-                    compile_push(instr,a);
-                    break;
-                case "dup":
-                    compile_dup(instr,a);
-                    break;
-                //subroutine related commands
-                case "subroutine":
-                    compile_subroutine(instr,a);
-                    break;
-                case "call":
-                    compile_call(instr,a);
-                    break;
-                case "return":
-                    a.writeReturn();
-                    break;
-                case "exit":
-                    compile_exit(instr,a);
-                //arithmetic commands
-                case "add":
-                    compile_add(instr,a);
-                    break;
-                case "sub":
-                    compile_sub(instr,a);
-                    break;
-                case "neg":
-                    compile_neg(instr,a);
-                    break;
-                case "eq":
-                    compile_eq(instr,a,uniq);
-                    break;
-                //control flow
-                case "goto":
-                    a.jmp(instr.arg1.get());
-                    break;
-                case "if-goto":
-                    compile_if_goto(instr,a,uniq);
-                    break;
-                case "label":
-                    a.label(instr.arg1.get());
-                    break;
-                case "malloc":
-                    compile_malloc(instr,a);
-                    break;
-                case "free":
-                    throw new Exception("free not yet implemented");
-                default:
-                    throw new Exception("unrecognized vm instr "+instr.cmd);
-            }
+            compile_vm_instr(instr,a);
         }
+
+        a.nop(); //the 2 nops are recommended by my assembly book
 
         a.section(".data","");
         //a.any("achar db '0'","");
