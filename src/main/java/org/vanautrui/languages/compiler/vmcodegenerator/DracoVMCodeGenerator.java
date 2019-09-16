@@ -68,6 +68,9 @@ public class DracoVMCodeGenerator {
         if(snode instanceof MethodCallNode){
             MethodCallNode call = (MethodCallNode)snode;
             genVMCodeForMethodCall(call,sb,varTable);
+            //there is no assignment, and the return value is not used in an expression,
+            // so the return value should be pop'd of the stack
+            sb.pop();
         }else if(snode instanceof LoopStatementNode) {
             LoopStatementNode loop = (LoopStatementNode) snode;
             genVMCodeForLoopStatement(loop,containerMethod,sb,varTable);
@@ -207,6 +210,7 @@ public class DracoVMCodeGenerator {
         }else if(t instanceof MethodCallNode){
             MethodCallNode methodCallNode = (MethodCallNode)t;
             genVMCodeForMethodCall(methodCallNode,sb,varTable);
+
         }else if(t instanceof BoolConstNode) {
             genVMCodeForBoolConst((BoolConstNode)t,sb);
         }else if(t instanceof ArrayConstantNode) {
