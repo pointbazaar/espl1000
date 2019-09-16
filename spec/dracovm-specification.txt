@@ -14,7 +14,7 @@ the RETURNS is what is left on the stack after operands have been popped
 1 means true,
 0 means false
 
-COMMAND	RETURNS	COMMENT
+	COMMAND	RETURNS	COMMENT
 	add	a+b	integer addition
 	sub	a-b	integer subtraction
 	neg	-b	integer inversion
@@ -27,6 +27,9 @@ COMMAND	RETURNS	COMMENT
 	and	1 or 0	conjunction
 	or	1 or 0	disjunction
 	not	1 or 0	negation
+
+	inc	tos+1	increment top of stack
+	dec	tos-1	decrement top of stack
 
 VIRTUAL MEMORY SEGMENTS
 	the DracoVM manipulates various virtual memory segments

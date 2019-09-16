@@ -151,4 +151,20 @@ public class AssemblyWriter {
     public void nop() {
         any("nop");
     }
+
+    /**
+     * Increments the value of a register
+     * @param register register to increment
+     */
+    public void inc(Register register) {
+        any("inc "+register);
+    }
+
+    /**
+     * Decrements the value of a register
+     * @param register register to decrement
+     */
+    public void dec(Register register){
+        any("dec "+register);
+    }
 }

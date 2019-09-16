@@ -27,11 +27,9 @@ public class DracoVMCodeGenerator {
     public static List<String> generateDracoVMCode(Set<AST> asts, SubroutineSymbolTable subTable) throws Exception{
 
         List<String> sb =new ArrayList<>();
-        //TODO:
         for(AST ast :asts){
             for(ClassNode classNode : ast.classNodeList){
                 for(MethodNode methodNode : classNode.methodNodeList){
-
                     generateDracoVMCodeForMethod(methodNode,sb,subTable);
                 }
                 if(classNode.fieldNodeList.size()>0){
@@ -39,7 +37,6 @@ public class DracoVMCodeGenerator {
                 }
             }
         }
-
         return sb;
     }
 
@@ -173,8 +170,7 @@ public class DracoVMCodeGenerator {
         }
 
         //subtract 1 from the counter
-        sb.add("iconst 1");
-        sb.add("sub");
+        sb.add("dec");
 
         //duplicate top of stack so we can compare again
         sb.add("dup");

@@ -90,6 +90,17 @@ public class VMCompilerMain {
             case "eq":
                 compile_eq(instr,a,uniq);
                 break;
+            //inc,dec
+            case "inc":
+                a.pop(eax);
+                a.inc(eax);
+                a.push(eax);
+                break;
+            case "dec":
+                a.pop(eax);
+                a.dec(eax);
+                a.push(eax);
+                break;
             //control flow
             case "goto":
                 a.jmp(instr.arg1.get());
