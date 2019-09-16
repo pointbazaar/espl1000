@@ -1,6 +1,8 @@
+use Base.dg
+
 class MyOutput{
 	Int main(){
-		println("hello");
+		println(2345);
 		return 0;
 	}
 }

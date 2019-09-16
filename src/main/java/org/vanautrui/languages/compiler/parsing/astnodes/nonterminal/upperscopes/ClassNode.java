@@ -62,10 +62,12 @@ public class ClassNode implements IASTNode {
         boolean success_method = true;
         Pair<TokenList, TokenList> pair = copy.split_into_tokens_and_next_block_and_later_tokens();
         while (success_method){
-            //DEBUG
-            System.out.println("pair:");
-            System.out.println(pair.getLeft().toSourceCodeFragment());
-            System.out.println(pair.getRight().toSourceCodeFragment());
+
+            if(debug) {
+                System.out.println("pair:");
+                System.out.println(pair.getLeft().toSourceCodeFragment());
+                System.out.println(pair.getRight().toSourceCodeFragment());
+            }
             try {
                 int chunk_size=pair.getLeft().size();
                 this.methodNodeList.add(new MethodNode(pair.getLeft(),debug));
@@ -77,8 +79,8 @@ public class ClassNode implements IASTNode {
         }
 
         //DEBUG:
-        System.out.println("tokens left after try to parse fields and methods:");
-        System.out.println(copy.toSourceCodeFragment());
+        //System.out.println("tokens left after try to parse fields and methods:");
+        //System.out.println(copy.toSourceCodeFragment());
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("}"));
 
