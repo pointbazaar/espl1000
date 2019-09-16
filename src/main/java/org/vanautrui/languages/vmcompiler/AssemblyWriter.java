@@ -74,13 +74,16 @@ public class AssemblyWriter {
     }
 
     public void push(Register register) {
-        any("push "+register);
+        push(register,"");
     }
     public void push(Register register,String comment) {
         any("push "+register,comment);
     }
     public void pop(Register register) {
-        any("pop "+register);
+        pop(register,"");
+    }
+    public void pop(Register reg, String comment) {
+        any("pop "+reg,comment);
     }
 
     public void call(String methodName) {
@@ -134,4 +137,6 @@ public class AssemblyWriter {
     public void xor(Register reg1, Register reg2, String comment) {
         any("xor "+reg1+","+reg2,comment);
     }
+
+
 }

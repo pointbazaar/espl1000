@@ -106,6 +106,8 @@ public class VMCompilerMain {
                 case "return":
                     a.writeReturn();
                     break;
+                case "exit":
+                    compile_exit(instr,a);
                 //arithmetic commands
                 case "add":
                     compile_add(instr,a);
@@ -148,6 +150,12 @@ public class VMCompilerMain {
         ////https://cs.lmu.edu/~ray/notes/nasmtutorial/
         ////https://stackoverflow.com/questions/8201613/printing-a-character-to-standard-output-in-assembly-x86
         return a.getAssemblyProgram();
+    }
+
+    private static void compile_exit(VMInstr instr, AssemblyWriter a) {
+        a.mov(eax,1,"exit: sytem call number (sys_exit)");
+        a.pop(ebx,"exit: pop exit status code from stack");
+        a.call_kernel();
     }
 
     private static void compile_cconst(VMInstr instr, AssemblyWriter a) {

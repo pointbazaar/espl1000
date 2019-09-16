@@ -9,21 +9,18 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class SubroutineCallVMCodeGeneratorTest {
+public class VMCompilerMainTest {
 
   @Test
-  public void test_compile_putchar()throws Exception{
+  public void test_correct_return_code_is_generated()throws Exception{
     List<String> vmcodes = Arrays.asList(
             "subroutine main 0",
-            "cconst c",
-            "call putchar", //should consume its one argument
-            "pop", //we pop putchar ' s return value as its return value is not assigned
-            "iconst 0",
+            "iconst 45",
             "exit"
     );
     Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "putchartesting");
 
-    assertEquals(0,pr.exitValue());
-    assertEquals("c", IOUtils.toString(pr.getInputStream()));
+    assertEquals(45,pr.exitValue());
+    assertEquals("", IOUtils.toString(pr.getInputStream()));
   }
 }

@@ -55,7 +55,7 @@ public class DracoVMCodeGenerator {
         //mov esp ebp
 
         for(StatementNode stmt : m.statements){
-            generateDracoVMCodeForStatement(stmt,sb,varTable);
+            generateDracoVMCodeForStatement(stmt,m,sb,varTable);
         }
 
         //return should be the last statement in every possible branch for these statements
@@ -66,26 +66,26 @@ public class DracoVMCodeGenerator {
         }
     }
 
-    private static void generateDracoVMCodeForStatement(StatementNode stmt,List<String> sb,LocalVarSymbolTable varTable)throws Exception{
+    private static void generateDracoVMCodeForStatement(StatementNode stmt,MethodNode containerMethod,List<String> sb,LocalVarSymbolTable varTable)throws Exception{
         IStatementNode snode = stmt.statementNode;
         if(snode instanceof MethodCallNode){
             MethodCallNode call = (MethodCallNode)snode;
             genVMCodeForMethodCall(call,sb,varTable);
         }else if(snode instanceof LoopStatementNode) {
             LoopStatementNode loop = (LoopStatementNode) snode;
-            genVMCodeForLoopStatement(loop,sb,varTable);
+            genVMCodeForLoopStatement(loop,containerMethod,sb,varTable);
         }else if(snode instanceof AssignmentStatementNode) {
             AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode) snode;
             genVMCodeForAssignmentStatement(assignmentStatementNode,sb);
         }else if(snode instanceof WhileStatementNode){
             WhileStatementNode whileStatementNode =(WhileStatementNode)snode;
-            genVMCodeForWhileStatement(whileStatementNode,sb,varTable);
+            genVMCodeForWhileStatement(whileStatementNode,containerMethod,sb,varTable);
         }else if(snode instanceof IfStatementNode) {
             IfStatementNode ifStatementNode = (IfStatementNode) snode;
-            genVMCodeForIfStatement(ifStatementNode,sb,varTable);
+            genVMCodeForIfStatement(ifStatementNode,containerMethod,sb,varTable);
         }else if(snode instanceof ReturnStatementNode){
             ReturnStatementNode returnStatementNode = (ReturnStatementNode)snode;
-            genDracoVMCodeForReturn(returnStatementNode,sb,varTable);
+            genDracoVMCodeForReturn(returnStatementNode,containerMethod,sb,varTable);
         }else{
             throw new Exception("unconsidered statement type: "+stmt.statementNode.getClass().getName());
         }
@@ -96,7 +96,7 @@ public class DracoVMCodeGenerator {
         throw new Exception("unhandled case");
     }
 
-    private static void genVMCodeForIfStatement(IfStatementNode ifstmt, List<String> sb,LocalVarSymbolTable varTable) throws Exception{
+    private static void genVMCodeForIfStatement(IfStatementNode ifstmt,MethodNode containerMethod, List<String> sb,LocalVarSymbolTable varTable) throws Exception{
 
         long unique=unique();
         String startlabel = "ifstart"+unique;
@@ -112,20 +112,20 @@ public class DracoVMCodeGenerator {
         sb.add("if-goto "+elselabel);
 
         for(StatementNode stmt : ifstmt.statements){
-            generateDracoVMCodeForStatement(stmt,sb,varTable);
+            generateDracoVMCodeForStatement(stmt,containerMethod,sb,varTable);
         }
 
         sb.add("goto "+endlabel);
         sb.add("label "+elselabel);
 
         for(StatementNode stmt : ifstmt.elseStatements){
-            generateDracoVMCodeForStatement(stmt,sb,varTable);
+            generateDracoVMCodeForStatement(stmt,containerMethod,sb,varTable);
         }
 
         sb.add("label "+endlabel);
     }
 
-    private static void genVMCodeForWhileStatement(WhileStatementNode whileStmt, List<String> sb,LocalVarSymbolTable varTable)throws Exception {
+    private static void genVMCodeForWhileStatement(WhileStatementNode whileStmt,MethodNode containerMethod, List<String> sb,LocalVarSymbolTable varTable)throws Exception {
 
         long unique=unique();
         String startlabel = "whilestart"+unique;
@@ -141,7 +141,7 @@ public class DracoVMCodeGenerator {
 
         //execute statements
         for(StatementNode stmt : whileStmt.statements){
-            generateDracoVMCodeForStatement(stmt,sb,varTable);
+            generateDracoVMCodeForStatement(stmt,containerMethod,sb,varTable);
         }
 
 
@@ -150,7 +150,7 @@ public class DracoVMCodeGenerator {
         sb.add("label "+endlabel);
     }
 
-    private static void genVMCodeForLoopStatement(LoopStatementNode loop, List<String> sb,LocalVarSymbolTable varTable) throws Exception {
+    private static void genVMCodeForLoopStatement(LoopStatementNode loop,MethodNode containerMethod, List<String> sb,LocalVarSymbolTable varTable) throws Exception {
 
         long unique=unique();
         String startlabel = "loopstart"+unique;
@@ -169,7 +169,7 @@ public class DracoVMCodeGenerator {
 
         //execute statements
         for(StatementNode stmt : loop.statements){
-            generateDracoVMCodeForStatement(stmt,sb,varTable);
+            generateDracoVMCodeForStatement(stmt,containerMethod,sb,varTable);
         }
 
         //subtract 1 from the counter
@@ -198,7 +198,6 @@ public class DracoVMCodeGenerator {
     }
 
     private static void genDracoVMCodeForTerm(TermNode tNode,List<String> sb,LocalVarSymbolTable varTable)throws Exception{
-        //TODO
         ITermNode t = tNode.termNode;
         if(t instanceof FloatConstNode){
             genVMCodeForFloatConst((FloatConstNode)t,sb);
@@ -275,9 +274,13 @@ public class DracoVMCodeGenerator {
         }
     }
 
-    private static void genDracoVMCodeForReturn(ReturnStatementNode retStmt,List<String> sb,LocalVarSymbolTable varTable)throws Exception {
+    private static void genDracoVMCodeForReturn(ReturnStatementNode retStmt,MethodNode containerMethod,List<String> sb,LocalVarSymbolTable varTable)throws Exception {
         genDracoVMCodeForExpression(retStmt.returnValue,sb,varTable);
-        sb.add("return");
+        if(containerMethod.methodName.methodName.name.equals("main")){
+            sb.add("exit");
+        }else{
+            sb.add("return");
+        }
     }
 
     public static long unique(){
