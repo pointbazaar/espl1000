@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.vanautrui.languages.CodeGeneratorTestUtils;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
