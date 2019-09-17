@@ -91,4 +91,8 @@ public class SubroutineSymbolTable {
         }
         throw new Exception("could not find "+methodName+" in subroutine symbol table");
     }
+
+    public int getNumberOfLocalVariablesOfSubroutine(String methodName) throws Exception{
+        return this.get(methodName).getNumberOfLocalVariables();
+    }
 }

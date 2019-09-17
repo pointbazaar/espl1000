@@ -39,9 +39,9 @@ public class DracoVMCodeWriter {
     instrs.add(myindent+command);
   }
 
-  public void subroutine(String name,int nLocals){
+  public void subroutine(String name,int nArgs,int nLocals){
     indent=subroutine_indent;
-    any("subroutine "+name+" "+nLocals);
+    any("subroutine "+name+" "+nArgs+" args "+nLocals+" locals");
     indent=default_indent;
   }
 

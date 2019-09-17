@@ -9,11 +9,14 @@ public class SubroutineSymbolTableRow {
     private final String typeName;  //every subroutine has a return type
     private final String className; //every subroutine is contained in a class
 
-    public SubroutineSymbolTableRow(String subRoutineName, String typeName,String className){
+    private final int numberOfLocalVariables;
+
+    public SubroutineSymbolTableRow(String subRoutineName, String typeName,String className,int numberOfLocalVariables){
 
         this.typeName=typeName;
         this.subRoutineName = subRoutineName;
         this.className=className;
+        this.numberOfLocalVariables=numberOfLocalVariables;
     }
 
     @Override
@@ -31,6 +34,10 @@ public class SubroutineSymbolTableRow {
     }
 
     public String getClassName(){return this.className;}
+
+    public int getNumberOfLocalVariables() {
+        return this.numberOfLocalVariables;
+    }
 }
 
 

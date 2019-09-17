@@ -7,10 +7,10 @@ public class WhileLoop{
 	        while (i < 3){
 
 			while(j<2){
-				println("inner");
+				putchar('i');
 				j=j+1;
 			}
-			println("outer");
+			putchar('o');
 			i=i+1;
 		}
 		return 0;

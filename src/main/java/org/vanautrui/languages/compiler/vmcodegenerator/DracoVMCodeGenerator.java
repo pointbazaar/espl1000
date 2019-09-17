@@ -44,7 +44,7 @@ public class DracoVMCodeGenerator {
 
         LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(m,subTable);
 
-        sb.subroutine(m.methodName,m.arguments.size());
+        sb.subroutine(m.methodName,m.arguments.size(),subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName));
         //not sure if it is number of arguments or number of local vars
 
         //TODO: setup a new stack frame

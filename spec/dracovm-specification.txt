@@ -47,8 +47,10 @@ ACCESSING MEMORY SEGMENTS:
 	cconst  c		//pushes a literal character value onto the stack, by converting it
 				//to it's ascii code
 	fconst	x		//push a float constant on the stack
+
 	push 	SEGMENT index
 	pop 	SEGMENT index
+
 	pop 			//just pop the top item off the stack
 	dup			//duplicates the top of stack
 
@@ -60,10 +62,12 @@ PROGRAM FLOW COMMANDS:
 			//also pops the top of stack
 
 SUBROUTINE CALLING COMMANDS:
-	subroutine	SUBRNAME nLocals 
-	//number of local variables
-	call 		SUBRNAME nArgs	 
-	//nArgrs is number of arguments (is the same always, for a subroutine)
+	subroutine	SUBRNAME NARGS args NLOCALS locals
+			//subroutine label with the number of local variables and number of arguments declared
+
+	call 		SUBRNAME 
+			//call a subroutine. the arguments should have been pushed on the stack first
+
 	return
 	//transfer control back to the calling function
 	exit		//exits from the program, the exit status code is the top of stack

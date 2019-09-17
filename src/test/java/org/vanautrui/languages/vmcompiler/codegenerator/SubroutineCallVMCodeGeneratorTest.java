@@ -16,7 +16,7 @@ public class SubroutineCallVMCodeGeneratorTest {
 
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0);
+    a.subroutine("main",0,0);
     a.cconst('c');
     a.call("putchar");
     a.pop();
@@ -36,7 +36,7 @@ public class SubroutineCallVMCodeGeneratorTest {
     final int exit_code=234;
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0);
+    a.subroutine("main",0,0);
 
     //push the exit code to use later
     a.iconst(exit_code);
