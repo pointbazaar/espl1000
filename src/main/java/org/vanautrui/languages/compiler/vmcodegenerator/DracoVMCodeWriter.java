@@ -129,4 +129,11 @@ public class DracoVMCodeWriter {
   public void lt() {
     any("lt");
   }
+
+  /**
+   * swaps the topmost 2 items on the stack
+   */
+  public void swap() {
+    any("swap");
+  }
 }

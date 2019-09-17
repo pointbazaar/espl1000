@@ -122,7 +122,7 @@ public class VMCompilerMainTest {
     a.exit();
 
     List<String> vmcodes = a.getDracoVMCodeInstructions();
-    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "putchartesting");
+    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "gttesting");
 
     assertEquals(3,pr.exitValue());
   }
@@ -144,7 +144,7 @@ public class VMCompilerMainTest {
     a.exit();
 
     List<String> vmcodes = a.getDracoVMCodeInstructions();
-    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "putchartesting");
+    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "gttestingfalse");
 
     assertEquals(45,pr.exitValue());
   }
@@ -167,7 +167,7 @@ public class VMCompilerMainTest {
     a.exit();
 
     List<String> vmcodes = a.getDracoVMCodeInstructions();
-    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "putchartesting");
+    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "lttestingtrue");
 
     assertEquals(3,pr.exitValue());
   }
@@ -189,9 +189,30 @@ public class VMCompilerMainTest {
     a.exit();
 
     List<String> vmcodes = a.getDracoVMCodeInstructions();
-    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "putchartesting");
+    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "lttesting");
 
     assertEquals(45,pr.exitValue());
   }
 
+  @Test
+  public void test_swap()throws Exception{
+    DracoVMCodeWriter a=new DracoVMCodeWriter();
+
+    a.subroutine("main",0,0);
+    a.iconst(2);
+    a.iconst(11);
+    a.swap();
+    a.gt();
+    a.if_goto("label1");
+    a.iconst(45);
+    a.exit();
+    a.label("label1");
+    a.iconst(3);
+    a.exit();
+
+    List<String> vmcodes = a.getDracoVMCodeInstructions();
+    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "swaptesting");
+
+    assertEquals(3,pr.exitValue());
+  }
 }

@@ -53,6 +53,7 @@ ACCESSING MEMORY SEGMENTS:
 
 	pop 			//just pop the top item off the stack
 	dup			//duplicates the top of stack
+	swap			//swaps the 2 topmost items on the stack
 
 
 PROGRAM FLOW COMMANDS:

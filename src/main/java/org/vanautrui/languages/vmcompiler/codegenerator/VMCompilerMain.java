@@ -65,6 +65,9 @@ public class VMCompilerMain {
             case "dup":
                 compile_dup(instr,a);
                 break;
+            case "swap":
+                compile_swap(instr,a);
+                break;
             //subroutine related commands
             case "subroutine":
                 compile_subroutine(instr,a);
@@ -125,6 +128,20 @@ public class VMCompilerMain {
             default:
                 throw new Exception("unrecognized vm instr "+instr.cmd);
         }
+    }
+
+    /**
+     * swaps the 2 topmost items on the stack
+     * @param instr
+     * @param a
+     */
+    private static void compile_swap(VMInstr instr, AssemblyWriter a) {
+
+        a.pop(eax,instr.toString());
+        a.pop(ebx,instr.toString());
+
+        a.push(eax,instr.toString());
+        a.push(ebx,instr.toString());
     }
 
     private static void compile_lt(VMInstr instr, AssemblyWriter a, long uniq) {
@@ -308,8 +325,6 @@ public class VMCompilerMain {
 
     private static void compile_subroutine(VMInstr instr, AssemblyWriter a) {
         a.label(instr.arg1.get(),instr.toString());
-
-
     }
 
     private static void compile_dup(VMInstr instr, AssemblyWriter a) {
