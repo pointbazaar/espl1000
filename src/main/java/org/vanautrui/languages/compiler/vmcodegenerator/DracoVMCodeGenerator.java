@@ -221,7 +221,6 @@ public class DracoVMCodeGenerator {
         }else if(t instanceof ExpressionNode) {
             ExpressionNode expressionNode = (ExpressionNode)t;
             genDracoVMCodeForExpression(expressionNode,sb,varTable);
-            throw new Exception("currently unhandled case ");
         }else if(t instanceof VariableNode) {
             //find the local variable index
             // and push the variable onto the stack
