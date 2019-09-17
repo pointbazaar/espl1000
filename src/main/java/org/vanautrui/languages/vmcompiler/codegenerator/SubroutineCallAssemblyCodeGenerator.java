@@ -30,35 +30,33 @@ public class SubroutineCallVMCodeGenerator {
         a.push(Register.edx);
     }
 
-    private static void compile_readint(VMInstr instr, AssemblyWriter a){
-        //TODO
+    private static void compile_readint(VMInstr instr, AssemblyWriter a)throws Exception{
+        throw new Exception("unhandled");
     }
 
     public static void compile_call(VMInstr instr, AssemblyWriter a) throws Exception {
         String method = instr.arg1.get();
         switch (method){
-            case "putchar":
-                compile_putchar(instr,a);
-                break;
-            case "readint":
-                compile_readint(instr,a);
-                break;
-            case "int2char":
-                compile_int2char(instr,a);
-                break;
-            case "int2float":
-                //TODO
-                break;
-            case "float2int":
-                //TODO
-                break;
+            case "putchar": compile_putchar(instr,a); break;
+            case "readint": compile_readint(instr,a); break;
+            case "int2char": compile_int2char(instr,a); break;
+            case "int2float": compile_int2float(instr,a); break;
+            case "float2int": compile_float2int(instr,a); break;
             default:
                 a.call(instr.arg1.get());
                 break;
         }
     }
 
-    private static void compile_int2char(VMInstr instr, AssemblyWriter a) {
+    private static void compile_float2int(VMInstr instr, AssemblyWriter a) throws Exception{
+        throw new Exception("unhandled");
+    }
 
+    private static void compile_int2float(VMInstr instr, AssemblyWriter a) throws Exception{
+        throw new Exception("unhandled");
+    }
+
+    private static void compile_int2char(VMInstr instr, AssemblyWriter a) throws Exception{
+        throw new Exception("unhandled");
     }
 }
