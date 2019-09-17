@@ -18,6 +18,9 @@ public class SubroutineSymbolTable {
 
     public SubroutineSymbolTable(){
         this.symbolTable=new ArrayList<>();
+
+        //add the builtin subroutines
+        this.add(new SubroutineSymbolTableRow("putchar","Int","Builtin",0,1));
     }
 
     public void add(SubroutineSymbolTableRow row) {
@@ -94,5 +97,9 @@ public class SubroutineSymbolTable {
 
     public int getNumberOfLocalVariablesOfSubroutine(String methodName) throws Exception{
         return this.get(methodName).getNumberOfLocalVariables();
+    }
+
+    public int getNumberOfArgumentsOfSubroutine(String methodName) throws Exception{
+        return this.get(methodName).getNumberOfArguments();
     }
 }

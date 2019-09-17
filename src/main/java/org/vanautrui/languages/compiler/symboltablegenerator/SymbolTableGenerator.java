@@ -27,7 +27,7 @@ public class SymbolTableGenerator {
 			for(ClassNode classNode : ast.classNodeList) {
 				for (MethodNode methodNode : classNode.methodNodeList) {
 
-					SubroutineSymbolTableRow subrRow = new SubroutineSymbolTableRow(methodNode.methodName, methodNode.type,classNode.name.typeName,count_local_vars(methodNode));
+					SubroutineSymbolTableRow subrRow = new SubroutineSymbolTableRow(methodNode.methodName, methodNode.type,classNode.name.typeName,count_local_vars(methodNode),methodNode.arguments.size());
 					subroutineSymbolTable.add(subrRow);
 				}
 			}

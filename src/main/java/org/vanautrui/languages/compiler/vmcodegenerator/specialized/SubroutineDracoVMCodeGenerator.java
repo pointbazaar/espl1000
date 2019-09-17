@@ -28,14 +28,11 @@ public class SubroutineDracoVMCodeGenerator {
     //mov esp ebp
 
     for(StatementNode stmt : m.statements){
-      generateDracoVMCodeForStatement(stmt,m,sb,varTable);
+      generateDracoVMCodeForStatement(stmt,m,sb,subTable,varTable);
     }
 
     //return should be the last statement in every possible branch for these statements
 
-    //remove the arguments off the stack
-    for(int i=0;i<m.arguments.size();i++){
-      sb.pop();
-    }
+
   }
 }

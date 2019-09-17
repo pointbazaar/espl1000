@@ -4,6 +4,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.WhileStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
 
 import static org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator.unique;
@@ -13,7 +14,7 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.State
 public class WhileStatementDracoVMCodeGenerator {
 
 
-  public static void genVMCodeForWhileStatement(WhileStatementNode whileStmt, MethodNode containerMethod, DracoVMCodeWriter sb, LocalVarSymbolTable varTable)throws Exception {
+  public static void genVMCodeForWhileStatement(WhileStatementNode whileStmt, MethodNode containerMethod, DracoVMCodeWriter sb, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable)throws Exception {
 
     long unique=unique();
     String startlabel = "whilestart"+unique;
@@ -22,14 +23,14 @@ public class WhileStatementDracoVMCodeGenerator {
     sb.label(startlabel);
 
     //push the expression
-    genDracoVMCodeForExpression(whileStmt.condition,sb,varTable);
+    genDracoVMCodeForExpression(whileStmt.condition,sb,subTable,varTable);
     sb.neg();
     //if condition is false, jump to end
     sb.if_goto(endlabel);
 
     //execute statements
     for(StatementNode stmt : whileStmt.statements){
-      generateDracoVMCodeForStatement(stmt,containerMethod,sb,varTable);
+      generateDracoVMCodeForStatement(stmt,containerMethod,sb,subTable,varTable);
     }
 
     sb._goto(startlabel);

@@ -43,15 +43,18 @@ public class SubroutineCallAssemblyCodeGeneratorTest {
 
     a.cconst('a');
     a.call("putchar");
-    a.pop();
+    a.pop(); //caller removes the return value, if it doesn't need it
+    a.pop(); //caller is supposed to remove the arguments
 
     a.cconst('b');
     a.call("putchar");
-    a.pop();
+    a.pop(); //caller removes the return value, if it doesn't need it
+    a.pop(); //caller is supposed to remove the arguments
 
     a.cconst('c');
     a.call("putchar");
-    a.pop();
+    a.pop(); //caller removes the return value, if it doesn't need it
+    a.pop(); //caller is supposed to remove the arguments
 
 
     a.exit();

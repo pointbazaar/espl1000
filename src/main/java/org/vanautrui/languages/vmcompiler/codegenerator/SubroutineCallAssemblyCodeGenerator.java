@@ -22,9 +22,6 @@ public class SubroutineCallAssemblyCodeGenerator {
         a.mov(Register.edx,1,"value length");
         a.call_kernel();
 
-        //pop from stack, as putchar is supposed to remove its argument
-        a.pop(Register.edx);
-
         //push return value
         a.mov(Register.edx,0);
         a.push(Register.edx);

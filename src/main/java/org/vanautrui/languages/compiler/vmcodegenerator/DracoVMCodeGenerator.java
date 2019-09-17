@@ -46,11 +46,11 @@ public class DracoVMCodeGenerator {
      * @param varTable   the Local Variable Symbol Table
      * @throws Exception if the variable is not in the symbol table
      */
-    public static void genVMCodeForAssignmentStatement(AssignmentStatementNode assignStmt, DracoVMCodeWriter sb,LocalVarSymbolTable varTable) throws Exception {
+    public static void genVMCodeForAssignmentStatement(AssignmentStatementNode assignStmt, DracoVMCodeWriter sb,SubroutineSymbolTable subTable,LocalVarSymbolTable varTable) throws Exception {
 
         //the variable being assigned to would be a local variable or argument.
         //the expression that is being assigned, there can be code generated to put it on the stack
-        genDracoVMCodeForExpression(assignStmt.expressionNode,sb,varTable);
+        genDracoVMCodeForExpression(assignStmt.expressionNode,sb,subTable,varTable);
 
         //then we just pop that value into the appropriate segment with the specified index
         String varName = assignStmt.variableNode.name;
@@ -74,7 +74,7 @@ public class DracoVMCodeGenerator {
         sb.iconst((bconst.value)?1:0);
     }
 
-    public static void genDracoVMCodeForTerm(TermNode tNode,DracoVMCodeWriter sb,LocalVarSymbolTable varTable)throws Exception{
+    public static void genDracoVMCodeForTerm(TermNode tNode,DracoVMCodeWriter sb,SubroutineSymbolTable subTable,LocalVarSymbolTable varTable)throws Exception{
         ITermNode t = tNode.termNode;
         if(t instanceof FloatConstNode){
             genVMCodeForFloatConst((FloatConstNode)t,sb);
@@ -82,7 +82,7 @@ public class DracoVMCodeGenerator {
             genVMCodeForIntConst(((IntConstNode)t).value,sb);
         }else if(t instanceof ExpressionNode) {
             ExpressionNode expressionNode = (ExpressionNode)t;
-            genDracoVMCodeForExpression(expressionNode,sb,varTable);
+            genDracoVMCodeForExpression(expressionNode,sb,subTable,varTable);
         }else if(t instanceof VariableNode) {
             //find the local variable index
             // and push the variable onto the stack
@@ -90,7 +90,7 @@ public class DracoVMCodeGenerator {
             genDracoVMCodeForVariable(variableNode,sb,varTable);
         }else if(t instanceof MethodCallNode){
             MethodCallNode methodCallNode = (MethodCallNode)t;
-            genVMCodeForMethodCall(methodCallNode,sb,varTable);
+            genVMCodeForMethodCall(methodCallNode,sb,subTable,varTable);
 
         }else if(t instanceof BoolConstNode) {
             genVMCodeForBoolConst((BoolConstNode)t,sb);
