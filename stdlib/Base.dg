@@ -26,8 +26,23 @@ public class Base{
 	}
 
 	public Int printInt(Int x){
-		putchar(int2char(x));
-		return 0;
+		if(x<0){
+			putchar('-');
+		}
+		x=x*(-1);
+		printIntPositive(x);
+	}
+	
+	public Int printIntPositive(Int x){
+		
+		if(x>10){
+			putchar(int2char(x));
+		}else{
+			lastdigit = (x % 10);
+			divided = x / 10;
+			printInt(divided);
+			putchar(int2char(lastdigit));
+		}
 	}
 	
 }

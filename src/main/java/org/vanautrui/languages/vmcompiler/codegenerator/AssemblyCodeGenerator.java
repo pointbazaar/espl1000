@@ -65,6 +65,8 @@ public class AssemblyCodeGenerator {
             //arithmetic commands
             case "add": compile_add(instr,a); break;
             case "sub": compile_sub(instr,a); break;
+            case "mul": compile_mul(instr,a); break;
+            case "div": compile_div(instr,a); break;
             case "neg": compile_neg(instr,a); break;
             case "eq": compile_eq(instr,a,uniq); break;
             case "gt": compile_gt(instr,a,uniq); break;
@@ -90,6 +92,21 @@ public class AssemblyCodeGenerator {
             //unhandled cases
             default: throw new Exception("unrecognized vm instr "+instr.cmd);
         }
+    }
+
+    private static void compile_div(VMInstr instr, AssemblyWriter a) {
+        a.pop(ecx);
+        a.pop(eax);
+        a.div_eax_by(ecx);
+    }
+
+    private static void compile_mul(VMInstr instr, AssemblyWriter a) {
+
+        a.pop(ebx);
+        a.pop(eax);
+
+        a.mul_eax_with(ebx);
+        a.push(eax);
     }
 
     private static void compile_arrayread(VMInstr instr, AssemblyWriter a) {
@@ -320,7 +337,7 @@ public class AssemblyCodeGenerator {
     private static void compile_neg(VMInstr instr, AssemblyWriter a) {
         a.pop(eax,instr.toString());
         a.mov(ebx,-1,instr.toString());
-        a.mul(ebx,instr.toString());
+        a.mul_eax_with(ebx,instr.toString());
         a.push(eax,instr.toString());
     }
 

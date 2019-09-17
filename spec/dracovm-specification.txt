@@ -15,9 +15,16 @@ the RETURNS is what is left on the stack after operands have been popped
 0 means false
 
 	COMMAND	RETURNS	COMMENT
+
+	//arithmetic 
 	add	a+b	integer addition
 	sub	a-b	integer subtraction
+	mul	a*b	integer multiplication
+	div	a/b	integer division
+
 	neg	-b	integer inversion
+
+
 	eq	1 or 0	equality
 	gt	1 or 0 	>
 	lt	1 or 0	<
@@ -130,8 +137,10 @@ MEMORY ALLOCATION/DEALLOCTAION:
 
 BUILTIN SUBROUTINES:
 			//these builtin subroutines are considered essential
-			//there should be no unneccessary subroutines here			
+
 	putchar		//prints the char on top of stack, the basis for all output
+	putdigit	//prints the digit on top of stack to console. works like putchar, 
+			//except it adds some offset to make an ascii char from an int
 
 	readint		//reads an integer from stdin, pushes it on the stack.
 

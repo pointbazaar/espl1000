@@ -179,6 +179,9 @@ public class DracoVMCodeGenerator {
             case "<":
                 sb.lt();
                 break;
+            case "/":
+                sb.div();
+                break;
             default:
                 throw new Exception("currently unsupported op "+opNode.operator);
         }

@@ -93,7 +93,10 @@ public class AssemblyWriter {
     }
 
     public void add(Register dest,int val) {
-        any("add "+dest+","+val);
+        add(dest,val,"");
+    }
+    public void add(Register dest,int val,String comment) {
+        any("add "+dest+","+val,comment);
     }
     public void add(Register dest,Register reg2) {
         add(dest,reg2,"");
@@ -129,10 +132,10 @@ public class AssemblyWriter {
      *  and computes eax=eax*other_register
      * @param other
      */
-    public void mul(Register other) {
-        mul(other,"");
+    public void mul_eax_with(Register other) {
+        mul_eax_with(other,"");
     }
-    public void mul(Register other,String comment) {
+    public void mul_eax_with(Register other, String comment) {
         any("mul "+other,comment);
     }
 
@@ -208,5 +211,9 @@ public class AssemblyWriter {
 
     public void store_second_into_memory_location_pointed_to_by_first(Register first, Register second, String comment) {
         any("mov ["+first+"],"+second,comment);
+    }
+
+    public void div_eax_by(Register register) {
+        any("div "+register);
     }
 }

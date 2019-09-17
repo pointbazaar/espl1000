@@ -128,6 +128,14 @@ public class DracoVMCodeWriter {
     any("sub");
   }
 
+  public void div() {
+    any("div");
+  }
+
+  public void mul(){
+    any("mul");
+  }
+
   public void exit() {
     any("exit");
   }
@@ -187,4 +195,6 @@ public class DracoVMCodeWriter {
      */
     any("arrayread");
   }
+
+
 }

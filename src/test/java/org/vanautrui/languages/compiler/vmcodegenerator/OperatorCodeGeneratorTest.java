@@ -44,7 +44,7 @@ public class OperatorCodeGeneratorTest {
 
 	@Test
     public void test_can_add_Int()throws Exception{
-        String source="public class MainTest6777 { public Int main(){ print(1/2); return 0;} }";
+        String source="public class MainTest6777 { public Int main(){ putdigit(1/2); return 0;} }";
         Process pr = compile_and_run_program_for_testing(source,"MainTest6777");
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("0",IOUtils.toString(pr.getInputStream()));

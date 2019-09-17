@@ -28,8 +28,12 @@ public class SubroutineSymbolTable {
         this.symbolTable=new ArrayList<>();
 
         //add the builtin subroutines
-        this.add(new SubroutineSymbolTableRow("putchar","Int","Builtin",0,1));
 
+        //already implemented subroutines
+        this.add(new SubroutineSymbolTableRow("putchar","Int","Builtin",0,1));
+        this.add(new SubroutineSymbolTableRow("putdigit","Int","Builtin",0,1));
+
+        //to be implemented later
         this.add(new SubroutineSymbolTableRow("readint","Int","Builtin",0,1));
         this.add(new SubroutineSymbolTableRow("int2char","Char","Builtin",0,1));
         this.add(new SubroutineSymbolTableRow("float2int","Int","Builtin",0,1));

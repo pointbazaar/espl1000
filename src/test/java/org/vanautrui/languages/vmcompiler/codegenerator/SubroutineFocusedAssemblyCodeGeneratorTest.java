@@ -32,6 +32,26 @@ public class SubroutineFocusedAssemblyCodeGeneratorTest {
   }
 
   @Test
+  public void test_compile_putdigit()throws Exception{
+
+    DracoVMCodeWriter a=new DracoVMCodeWriter();
+
+    a.subroutine("main",0,0);
+    a.iconst(3);
+    a.call("putdigit");
+    a.pop();
+    a.iconst(0);
+    a.exit();
+
+    List<String> vmcodes=a.getDracoVMCodeInstructions();
+
+    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "putchartesting");
+
+    assertEquals(0,pr.exitValue());
+    assertEquals("3", IOUtils.toString(pr.getInputStream()));
+  }
+
+  @Test
   public void test_compile_putchar_multile()throws Exception{
     final int exit_code=234;
     DracoVMCodeWriter a=new DracoVMCodeWriter();
