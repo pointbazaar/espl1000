@@ -1,4 +1,4 @@
-package org.vanautrui.languages.compiler.codegeneration;
+package org.vanautrui.languages.compiler.vmcodegenerator;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
@@ -25,14 +25,7 @@ public class CodeGeneratorTest {
         Assert.assertEquals("Hello World!\n",output);
     }
 
-    @Test
-    public void test_can_compile_loop_statements()throws Exception{
-        String source="public class MainTest22 { public Int main(){ loop 4 { print(1); } return 0; } }";
-        Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing(source,"MainTest22");
 
-        Assert.assertEquals(0,pr.exitValue());
-        Assert.assertEquals("1111",IOUtils.toString(pr.getInputStream()));
-    }
 
     @Test
     public void test_can_compile_assignment_statements()throws Exception{
