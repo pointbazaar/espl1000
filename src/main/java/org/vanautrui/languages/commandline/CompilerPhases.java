@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.cli.CommandLine;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
-import org.vanautrui.languages.vmcompiler.codegenerator.VMCompilerMain;
+import org.vanautrui.languages.vmcompiler.codegenerator.AssemblyCodeGenerator;
 import org.vanautrui.languages.compiler.lexing.Lexer;
 import org.vanautrui.languages.compiler.lexing.utils.CharacterList;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
@@ -94,7 +94,7 @@ public class CompilerPhases {
 
     public List<String> phase_vm_code_compilation(List<String> draco_vm_codes,boolean debug) throws Exception{
         printBeginPhase("VM CODE COMPILATION",printLong);
-        final List<String> assembly_codes = VMCompilerMain.compileVMCode(draco_vm_codes);
+        final List<String> assembly_codes = AssemblyCodeGenerator.compileVMCode(draco_vm_codes);
         if(debug){
             assembly_codes.stream().forEach(System.out::println);
         }

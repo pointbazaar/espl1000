@@ -6,7 +6,7 @@ import org.vanautrui.languages.vmcompiler.model.Register;
 
 import static org.vanautrui.languages.vmcompiler.model.Register.*;
 
-public class SubroutineCallVMCodeGenerator {
+public class SubroutineCallAssemblyCodeGenerator {
     private static void compile_putchar(VMInstr instr, AssemblyWriter a){
         //https://stackoverflow.com/questions/8201613/printing-a-character-to-standard-output-in-assembly-x86
 

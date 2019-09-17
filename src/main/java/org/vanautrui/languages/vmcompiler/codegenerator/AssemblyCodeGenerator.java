@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.vanautrui.languages.vmcompiler.codegenerator.SubroutineCallVMCodeGenerator.compile_call;
+import static org.vanautrui.languages.vmcompiler.codegenerator.SubroutineCallAssemblyCodeGenerator.compile_call;
 import static org.vanautrui.languages.vmcompiler.model.Register.*;
 
-public class VMCompilerMain {
+public class AssemblyCodeGenerator {
 
     public static List<String> compileVMCode(List<String> vmcode)throws Exception{
         //clean the vm code
