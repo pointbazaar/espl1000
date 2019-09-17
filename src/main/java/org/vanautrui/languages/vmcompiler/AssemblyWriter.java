@@ -125,9 +125,13 @@ public class AssemblyWriter {
         any("ret");
     }
 
-    public void mul(Register dest, Register other) {
-        //not sure about it
-        any("mul "+dest+","+other);
+    /** i read that the 'mul' instruction only takes one operang,
+     *  and computes eax=eax*other_register
+     * @param other
+     */
+    public void mul(Register other) {
+
+        any("mul "+other);
     }
 
     public void call_kernel() {

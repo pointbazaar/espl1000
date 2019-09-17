@@ -303,7 +303,7 @@ public class VMCompilerMain {
     private static void compile_neg(VMInstr instr, AssemblyWriter a) {
         a.pop(eax);
         a.mov(ebx,-1);
-        a.mul(eax, ebx);
+        a.mul(ebx);
         a.push(eax);
     }
 
