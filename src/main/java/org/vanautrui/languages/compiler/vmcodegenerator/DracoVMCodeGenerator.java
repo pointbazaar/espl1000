@@ -80,7 +80,7 @@ public class DracoVMCodeGenerator {
             genVMCodeForLoopStatement(loop,containerMethod,sb,varTable);
         }else if(snode instanceof AssignmentStatementNode) {
             AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode) snode;
-            genVMCodeForAssignmentStatement(assignmentStatementNode,sb);
+            genVMCodeForAssignmentStatement(assignmentStatementNode,sb,varTable);
         }else if(snode instanceof WhileStatementNode){
             WhileStatementNode whileStatementNode =(WhileStatementNode)snode;
             genVMCodeForWhileStatement(whileStatementNode,containerMethod,sb,varTable);
@@ -95,9 +95,25 @@ public class DracoVMCodeGenerator {
         }
     }
 
-    private static void genVMCodeForAssignmentStatement(AssignmentStatementNode assignmentStatementNode, DracoVMCodeWriter sb) throws Exception {
-        //TODO
-        throw new Exception("unhandled case");
+    /**
+     * @param assignStmt the AssignmentStatementNode being compiled
+     * @param sb         the VM Code Writer class
+     * @param varTable   the Local Variable Symbol Table
+     * @throws Exception if the variable is not in the symbol table
+     */
+    private static void genVMCodeForAssignmentStatement(AssignmentStatementNode assignStmt, DracoVMCodeWriter sb,LocalVarSymbolTable varTable) throws Exception {
+
+        //the variable being assigned to would be a local variable or argument.
+        //the expression that is being assigned, there can be code generated to put it on the stack
+        genDracoVMCodeForExpression(assignStmt.expressionNode,sb,varTable);
+
+        //then we just pop that value into the appropriate segment with the specified index
+        String varName = assignStmt.variableNode.name;
+        String segment = varTable.getSegment(varName);
+        int index = varTable.getIndexOfVariable(varName);
+        sb.pop(segment,index);
+
+        //TODO:handle the index at the variable
     }
 
     private static void genVMCodeForIfStatement(IfStatementNode ifstmt,MethodNode containerMethod, DracoVMCodeWriter sb,LocalVarSymbolTable varTable) throws Exception{
@@ -266,6 +282,7 @@ public class DracoVMCodeGenerator {
                 break;
             case "<":
                 sb.lt();
+                break;
             default:
                 throw new Exception("currently unsupported op "+opNode.operator);
         }
