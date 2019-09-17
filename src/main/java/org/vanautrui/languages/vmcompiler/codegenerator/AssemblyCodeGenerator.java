@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.vanautrui.languages.vmcompiler.codegenerator.SubroutineCallAssemblyCodeGenerator.compile_call;
+import static org.vanautrui.languages.vmcompiler.codegenerator.SubroutineFocusedAssemblyCodeGenerator.compile_call;
+import static org.vanautrui.languages.vmcompiler.codegenerator.SubroutineFocusedAssemblyCodeGenerator.compile_subroutine;
 import static org.vanautrui.languages.vmcompiler.model.Register.*;
 
 public class AssemblyCodeGenerator {
@@ -87,9 +88,9 @@ public class AssemblyCodeGenerator {
         }
     }
     private static void compile_dec(AssemblyWriter a){
-        a.pop(eax);
-        a.dec(eax);
-        a.push(eax);
+        a.pop(eax,"dec");
+        a.dec(eax,"dec");
+        a.push(eax,"dec");
     }
 
     private static void compile_inc(AssemblyWriter a){
@@ -199,6 +200,7 @@ public class AssemblyCodeGenerator {
 
     private static void compile_cconst(VMInstr instr, AssemblyWriter a) {
         char c = instr.arg1.get().charAt(0);
+
         a.mov(eax,(int)c,instr.toString());
         a.push(eax,instr.toString());
     }
@@ -269,10 +271,10 @@ public class AssemblyCodeGenerator {
     }
 
     private static void compile_neg(VMInstr instr, AssemblyWriter a) {
-        a.pop(eax);
-        a.mov(ebx,-1);
-        a.mul(ebx);
-        a.push(eax);
+        a.pop(eax,instr.toString());
+        a.mov(ebx,-1,instr.toString());
+        a.mul(ebx,instr.toString());
+        a.push(eax,instr.toString());
     }
 
     private static void compile_sub(VMInstr instr, AssemblyWriter a) {
@@ -289,12 +291,6 @@ public class AssemblyCodeGenerator {
         a.push(eax,instr.toString());
     }
 
-
-
-    private static void compile_subroutine(VMInstr instr, AssemblyWriter a) {
-        a.label(instr.arg1.get(),instr.toString());
-    }
-
     private static void compile_dup(VMInstr instr, AssemblyWriter a) {
         //duplicates top of stack
         a.pop(eax,instr.toString());
@@ -303,18 +299,49 @@ public class AssemblyCodeGenerator {
     }
 
     private static void compile_push(VMInstr instr, AssemblyWriter a) throws Exception {
-        String segment1 = instr.arg1.get();
-        int index1 = Integer.parseInt(instr.arg2.get());
-        switch (segment1){
+        //TODO: add comments to our generated vm code, to understand what is going on
+        String segment = instr.arg1.get();
+        int index = Integer.parseInt(instr.arg2.get());
+        switch (segment){
             case "ARG":
-                a.pop(eax);
-                //TODO: get base address of argument segment on stack
-                //TODO
+                //arguments are on stack in reverse order
+                //ebp is on the caller's return address, with the arguments above
+
+                //eax = ebp + index + 2 //the +2 is because there is the saved ebp on stack also,
+                //and the variables are indexed starting with 0
+                a.mov(eax,2);
+                a.add(eax,ebp);
+                a.add(eax,index);
+
+                // a.dereference(eax) -> mov eax,[eax]
+                a.dereference(eax);
+
+                //push eax
+                a.push(eax);
                 break;
             case "LOCAL":
-                a.pop(eax);
-                //TODO: get base address of local segment on stack
-                //TODO
+
+                //locals are on stack in order
+                //ebp is on the caller's return address, with the local variables below
+
+                //eax = ebp - index - 1 //the +1 is because there is the saved ebp on stack also
+
+                //eax=ebp
+                a.mov(eax,ebp);
+
+                //eax -= 1
+                a.mov(ebx,1);
+                a.sub(eax,ebx);
+
+                //eax -= index
+                a.mov(ebx,index);
+                a.sub(eax,ebx);
+
+                // a.dereference(eax) -> mov eax,[eax]
+                a.dereference(eax);
+
+                //push eax
+                a.push(eax);
                 break;
             case "STATIC":
                 throw new Exception("not yet implemented");
@@ -340,14 +367,43 @@ public class AssemblyCodeGenerator {
 
             switch (segment) {
                 case "ARG":
-                    a.pop(eax);
-                    //TODO: get base address of argument segment on stack
-                    //TODO
+                    //arguments are on stack in reverse order
+                    //ebp is on the caller's return address, with the arguments above
+
+                    //eax = ebp + index + 2 //the +2 is because there is the saved ebp on stack also,
+                    //and the variables are indexed starting with 0
+                    a.mov(eax,2);
+                    a.add(eax,ebp);
+                    a.add(eax,index);
+
+                    //get the value we want to pop
+                    a.pop(ebx);
+
+                    //get that value into the address pointed to by eax
+                    a.store_second_into_memory_location_pointed_to_by_first(eax,ebx);
                     break;
                 case "LOCAL":
-                    a.pop(eax);
-                    //TODO: get base address of local segment on stack
-                    //TODO
+
+                    //locals are on stack in order
+                    //ebp is on the caller's return address, with the local variables below
+
+                    //eax = ebp - index - 1 //the +1 is because there is the saved ebp on stack also
+
+                    //eax=ebp
+                    a.mov(eax,ebp);
+
+                    //eax -= 1
+                    a.mov(ebx,1);
+                    a.sub(eax,ebx);
+
+                    //eax -= index
+                    a.mov(ebx,index);
+                    a.sub(eax,ebx);
+
+                    //get the value we want to pop
+                    a.pop(ebx);
+
+                    a.store_second_into_memory_location_pointed_to_by_first(eax,ebx);
                     break;
                 case "STATIC":
                     throw new Exception("not yet implemented");

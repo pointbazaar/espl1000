@@ -8,7 +8,6 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.*;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.typechecking.TypeChecker;
 
 import java.util.Arrays;
 import java.util.List;
@@ -96,7 +95,7 @@ public class TypeResolver {
             return "Bool";
         }
 
-		if(
+		    if(
                 getTypeTermNode(expressionNode.term,methodNode,subTable,varTable).equals("Float") &&
                         expressionNode.termNodes.size()==1 &&
                         getTypeTermNode(expressionNode.termNodes.get(0),methodNode,subTable,varTable).equals("Float") &&
@@ -132,26 +131,20 @@ public class TypeResolver {
         return getTypeTermNode(expressionNode.term,methodNode,subTable,varTable);
     }
 
-    public static String getTypeMethodCallNode(MethodCallNode methodCallNode, SubroutineSymbolTable subroutineSymbolTable) throws Exception{
+    public static String getTypeMethodCallNode(MethodCallNode methodCallNode, SubroutineSymbolTable subTable) throws Exception{
 
         String subrName = methodCallNode.methodName;
-
-
 
         //these calls are Void
         //but since there is no void in this language, they are int
         //we have to think about that during code generation later on
 
-        if(TypeChecker.builtin_subroutine_types.keySet().contains(subrName)){
-            return TypeChecker.builtin_subroutine_types.get(subrName);
-        }
-        //TODO: handle the other builtin methods
-
-        if(subroutineSymbolTable.containsSubroutine(subrName)){
-            return subroutineSymbolTable.getReturnTypeOfSubroutine(subrName);
+        if(subTable.containsSubroutine(subrName)){
+            return subTable.getReturnTypeOfSubroutine(subrName);
         }
 
         //TODO: throw exception if not found in symbol table
-        throw new Exception("colud not get type of "+subrName+" ( in TypeResolver.java)");
+        System.out.println(subTable.toString());
+        throw new Exception("colud not get type of "+subrName+" (in TypeResolver.java)");
     }
 }

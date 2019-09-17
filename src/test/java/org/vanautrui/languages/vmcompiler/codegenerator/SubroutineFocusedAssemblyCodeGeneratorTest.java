@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class SubroutineCallAssemblyCodeGeneratorTest {
+public class SubroutineFocusedAssemblyCodeGeneratorTest {
 
   @Test
   public void test_compile_putchar()throws Exception{

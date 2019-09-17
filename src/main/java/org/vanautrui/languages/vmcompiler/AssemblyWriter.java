@@ -130,8 +130,10 @@ public class AssemblyWriter {
      * @param other
      */
     public void mul(Register other) {
-
-        any("mul "+other);
+        mul(other,"");
+    }
+    public void mul(Register other,String comment) {
+        any("mul "+other,comment);
     }
 
     public void call_kernel() {
@@ -159,8 +161,11 @@ public class AssemblyWriter {
      * Increments the value of a register
      * @param register register to increment
      */
-    public void inc(Register register) {
-        any("inc "+register);
+    public void inc(Register register,String comment) {
+        any("inc "+register,comment);
+    }
+    public void inc(Register reg){
+        inc(reg,"");
     }
 
     /**
@@ -168,7 +173,10 @@ public class AssemblyWriter {
      * @param register register to decrement
      */
     public void dec(Register register){
-        any("dec "+register);
+        dec(register,"");
+    }
+    public void dec(Register reg,String comment){
+        any("dec "+reg,comment);
     }
 
     //jump if comparison result was 'greater'
@@ -179,5 +187,17 @@ public class AssemblyWriter {
     //jump if comparison result was 'lesser'
     public void jl(String label) {
         any("jl "+label);
+    }
+
+    /** dereferences a pointer register,
+     * which means to set the value of the register to the value in memory which it points to
+     * @param register the register to be dereferenced
+     */
+    public void dereference(Register register) {
+        any("mov "+register+","+"["+register+"]","dereference "+register);
+    }
+
+    public void store_second_into_memory_location_pointed_to_by_first(Register first, Register second) {
+        any("mov ["+first+"],"+second);
     }
 }

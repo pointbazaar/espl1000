@@ -5,9 +5,7 @@ import io.bretty.console.table.ColumnFormatter;
 import io.bretty.console.table.Precision;
 import io.bretty.console.table.Table;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -16,11 +14,26 @@ public class SubroutineSymbolTable {
     private List<SubroutineSymbolTableRow> symbolTable;
     private int index_count=0;
 
+    /*
+    public static final Map<String,String> builtin_subroutine_types=new HashMap<String,String>(){{
+        put("putchar", "Int");
+        put("readint", "Int");
+        put("int2char", "Char");
+        put("float2int", "Int");
+        put("int2float", "Float");
+    }};
+    */
+
     public SubroutineSymbolTable(){
         this.symbolTable=new ArrayList<>();
 
         //add the builtin subroutines
         this.add(new SubroutineSymbolTableRow("putchar","Int","Builtin",0,1));
+
+        this.add(new SubroutineSymbolTableRow("readint","Int","Builtin",0,1));
+        this.add(new SubroutineSymbolTableRow("int2char","Char","Builtin",0,1));
+        this.add(new SubroutineSymbolTableRow("float2int","Int","Builtin",0,1));
+        this.add(new SubroutineSymbolTableRow("int2float","Float","Builtin",0,1));
     }
 
     public void add(SubroutineSymbolTableRow row) {

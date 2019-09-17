@@ -1,8 +1,7 @@
 
 class MethodCall{
 	Int main(){
-		x=0;
-		x=subr(2,1);
+		subr(2,1);
 		return 0;
 	}
 	Int subr(Int a,Int b){

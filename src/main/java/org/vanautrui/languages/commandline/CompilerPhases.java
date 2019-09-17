@@ -45,13 +45,13 @@ public class CompilerPhases {
         this.printLong=false;
     }
 
-    public void phase_typecheck(List<AST> asts, CommandLine cmd)throws Exception{
+    public void phase_typecheck(List<AST> asts)throws Exception{
         printBeginPhase("TYPE CHECKING",printLong);
 
         //this should throw an exception, if it does not typecheck
         try {
             TypeChecker typeChecker=new TypeChecker();
-            typeChecker.doTypeCheck(asts);
+            typeChecker.doTypeCheck(asts,debug);
 
             //TerminalUtil.println("✓", Ansi.Color.GREEN);
             printEndPhase(true,printLong);
@@ -72,7 +72,10 @@ public class CompilerPhases {
 
         String asm_file_name = filename_without_extension+".asm";
         Path asm_path = Paths.get(asm_file_name);
-        Files.write(asm_path,asm_codes.stream().collect(Collectors.joining("\n")).getBytes());
+        final String asm_codes_string = asm_codes.stream().collect(Collectors.joining("\n"))+"\n";
+        Files.write(
+                asm_path,asm_codes_string.getBytes()
+        );
 
         Process p = Runtime.getRuntime().exec("nasm -f elf -g -F stabs " + asm_file_name);
         p.waitFor();
@@ -113,12 +116,14 @@ public class CompilerPhases {
 
         try {
 
-            SubroutineSymbolTable subTable = createSubroutineSymbolTable(new HashSet<>(asts));
+            SubroutineSymbolTable subTable = createSubroutineSymbolTable(asts,debug);
             List<String> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable);
+
+            final String vm_codes_string = dracoVMCodes.stream().collect(Collectors.joining("\n"))+"\n";
 
             Files.write(
                     Paths.get(filename_without_extension+".dracovm"),
-                    dracoVMCodes.stream().collect(Collectors.joining("\n")).getBytes()
+                    vm_codes_string.getBytes()
             );
 
             if(print_vm_codes){

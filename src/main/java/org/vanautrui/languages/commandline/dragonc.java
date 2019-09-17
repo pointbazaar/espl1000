@@ -212,7 +212,7 @@ public class dragonc {
             List<AST> asts = phases.phase_parsing(tokens,cmd.hasOption(FLAG_PRINT_AST));
 
             //PHASE TYPE CHECKING
-            phases.phase_typecheck(asts,cmd);
+            phases.phase_typecheck(asts);
 
             //PHASE CODE GENERATION
             List<String> vm_codes = phases.phase_vm_codegeneration(asts,"main",cmd.hasOption(FLAG_PRINT_VM_CODES));

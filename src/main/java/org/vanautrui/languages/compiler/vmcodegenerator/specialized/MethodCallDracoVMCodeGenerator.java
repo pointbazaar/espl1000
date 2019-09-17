@@ -22,7 +22,10 @@ public class MethodCallDracoVMCodeGenerator {
     int nArgs = subTable.getNumberOfArgumentsOfSubroutine(methodCallNode.methodName);
     //caller removes the arguments off the stack
     for(int i=0;i<nArgs;i++){
-      sb.pop();
+
+      //we must swap first, as there is the return value on top of stack
+      sb.swap("remove previously pushed arguments off the stack");
+      sb.pop("remove previously pushed arguments off the stack");
     }
   }
 }

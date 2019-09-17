@@ -34,37 +34,32 @@ public class TypeChecker {
     //and that itself contains only
     //AST Nodes that conform to the expected types.
 
-    /*
-    public static final List<String> builtins_methods =
-            Arrays.asList(
-                "putchar","readint",
-                    "int2char","float2int","int2float"
-            );
 
-     */
-
-    public static final Map<String,String> builtin_subroutine_types=new HashMap<String,String>(){{
-        put("putchar", "Int");
-        put("readint", "Int");
-        put("int2char", "Char");
-        put("float2int", "Int");
-        put("int2float", "Float");
-    }};
 
     //the primitive types and their arrays
     public static final List<String> primitive_types_and_arrays_of_them =
             Arrays.asList("Int","Float","Bool","Char","[Int]","[Float]","[Bool]","[Char]");
 
-    public void doTypeCheck(List<AST> asts) throws Exception{
-        SubroutineSymbolTable subroutineSymbolTable = SymbolTableGenerator.createSubroutineSymbolTable(new HashSet<>(asts));
+    public void doTypeCheck(List<AST> asts,boolean debug) throws Exception{
+        if(debug){
+            System.out.println("TYPECHECKING");
+        }
+        SubroutineSymbolTable subroutineSymbolTable = SymbolTableGenerator.createSubroutineSymbolTable(asts,debug);
+        if(debug){
+            System.out.println("generate subroutine symbol table:");
+            System.out.println(subroutineSymbolTable.toString());
+        }
         for(AST ast : asts){
             for(ClassNode classNode : ast.classNodeList){
-                typeCheckClassNode(asts,classNode,subroutineSymbolTable);
+                typeCheckClassNode(asts,classNode,subroutineSymbolTable,debug);
             }
         }
     }
 
-    private void typeCheckClassNode(List<AST> asts, ClassNode classNode, SubroutineSymbolTable subroutineSymbolTable) throws Exception{
+    private void typeCheckClassNode(List<AST> asts, ClassNode classNode, SubroutineSymbolTable subroutineSymbolTable,boolean debug) throws Exception{
+        if(debug){
+            System.out.println("typechecking class:"+classNode.name);
+        }
         int count=0;
         for(AST ast : asts){
             for(ClassNode dragonClassNode : ast.classNodeList){
@@ -186,16 +181,10 @@ public class TypeChecker {
         //which is actually declared and initialized
         //and is in scope
 
-
-
         if(!subTable.containsSubroutine(methodCallNode.methodName)){
-
-
-            if(!builtin_subroutine_types.keySet().contains(methodCallNode.methodName)){
 			     System.out.println(subTable.toString());
 			     throw new Exception("name of method not in subroutine symbol table: "+methodCallNode.methodName);
-            }
-		}
+		    }
 
         //for static method calls, check that the class exists
 

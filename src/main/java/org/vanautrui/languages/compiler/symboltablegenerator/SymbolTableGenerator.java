@@ -10,24 +10,42 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTableRow;
-import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTableRow;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTableRow;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTableRow;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SymbolTableGenerator {
-	public static SubroutineSymbolTable createSubroutineSymbolTable(Set<AST> asts){
+	public static SubroutineSymbolTable createSubroutineSymbolTable(List<AST> asts,boolean debug)throws Exception{
+		if(debug){
+			System.out.println("creating a subroutine symbol table in "+SymbolTableGenerator.class.getSimpleName());
+		}
+
 		SubroutineSymbolTable subroutineSymbolTable = new SubroutineSymbolTable();
+
 		for(AST ast : asts) {
 			for(ClassNode classNode : ast.classNodeList) {
+				if(debug){
+					System.out.println(classNode.methodNodeList);
+				}
 				for (MethodNode methodNode : classNode.methodNodeList) {
+					if(debug){
+						System.out.println("creating subroutine symbol table row for subroutine: "+methodNode.methodName);
+					}
 
-					SubroutineSymbolTableRow subrRow = new SubroutineSymbolTableRow(methodNode.methodName, methodNode.type,classNode.name.typeName,count_local_vars(methodNode),methodNode.arguments.size());
+					SubroutineSymbolTableRow subrRow =
+									new SubroutineSymbolTableRow(
+													methodNode.methodName,
+													methodNode.type,classNode.name.typeName,
+													count_local_vars(methodNode,subroutineSymbolTable),
+													methodNode.arguments.size()
+									);
 					subroutineSymbolTable.add(subrRow);
 				}
 			}
@@ -49,39 +67,47 @@ public class SymbolTableGenerator {
 		return methodScopeSymbolTable;
 	}
 
-	private static int count_local_vars(MethodNode methodNode){
-		int count=0;
-		for(StatementNode stmt : methodNode.statements) {
-			count+=count_local_vars_recursively(stmt.statementNode,methodNode);
-		}
-		return count;
+	private static int count_local_vars(MethodNode methodNode,SubroutineSymbolTable subTable)throws Exception{
+
+		//we cannot build a LocalVarSymbolTable here because we are generating the SubroutineSymbolTable,
+		//which would be required to generate a LocalVarSymbolTable
+
+		//we need an approach which just counts the local variables
+
+		//LocalVarSymbolTable localVarSymbolTable = new LocalVarSymbolTable();
+		//find_local_vars_recursively_list(methodNode.statements.stream().map(stmt->stmt.statementNode).collect(Collectors.toList()), methodNode,localVarSymbolTable,subTable);
+
+		return find_local_vars_recursively_list_name_only(methodNode.statements.stream().map(stmt->stmt.statementNode).collect(Collectors.toList()), methodNode,subTable).size();
 	}
 
-	private static int count_local_vars_recursively_list(List<IStatementNode> stmts, MethodNode methodNode){
-		int count=0;
+	private static Set<String> find_local_vars_recursively_list_name_only(List<IStatementNode> stmts, MethodNode methodNode, SubroutineSymbolTable subTable)throws Exception{
+		Set<String> result = new HashSet<>();
 		for(IStatementNode stmt : stmts) {
-			count+= count_local_vars_recursively(stmt, methodNode);
+			result.addAll(find_local_vars_recursively_name_only(stmt, methodNode, subTable));
 		}
-		return count;
+		return result;
 	}
 
-	private static int count_local_vars_recursively(IStatementNode st, MethodNode methodNode){
+	private static Set<String> find_local_vars_recursively_name_only(IStatementNode st,MethodNode methodNode,SubroutineSymbolTable subTable)throws Exception{
+		Set<String> result = new HashSet<>();
 		if(st instanceof AssignmentStatementNode) {
-			return 1;
+			AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode)st;
+			result.add(assignmentStatementNode.variableNode.name);
 		}else{
+			//also get the assignment statements recursively
+			//that are inside the control flow statements.
 			if(st instanceof IfStatementNode) {
-				int count=0;
-				count+= count_local_vars_recursively_list( ((IfStatementNode) st).statements.stream().map(s->s.statementNode).collect(Collectors.toList()), methodNode);
-				count+= count_local_vars_recursively_list( ((IfStatementNode) st).elseStatements.stream().map(s->s.statementNode).collect(Collectors.toList()), methodNode);
-				return count;
+				result.addAll(find_local_vars_recursively_list_name_only( ((IfStatementNode) st).statements.stream().map(s->s.statementNode).collect(Collectors.toList()), methodNode,subTable));
+				result.addAll(find_local_vars_recursively_list_name_only( ((IfStatementNode) st).elseStatements.stream().map(s->s.statementNode).collect(Collectors.toList()), methodNode,subTable));
 			}else if(st instanceof LoopStatementNode) {
-				return count_local_vars_recursively_list(((LoopStatementNode) st).statements.stream().map(s -> s.statementNode).collect(Collectors.toList()), methodNode);
+				result.addAll(find_local_vars_recursively_list_name_only(((LoopStatementNode) st).statements.stream().map(s -> s.statementNode).collect(Collectors.toList()), methodNode, subTable));
 			}else if(st instanceof WhileStatementNode) {
-				return count_local_vars_recursively_list(((WhileStatementNode) st).statements.stream().map(s -> s.statementNode).collect(Collectors.toList()), methodNode);
+				result.addAll(find_local_vars_recursively_list_name_only(((WhileStatementNode) st).statements.stream().map(s -> s.statementNode).collect(Collectors.toList()), methodNode, subTable));
 			}
 		}
-		return 0;
+		return result;
 	}
+
 
 
 	private static void find_local_vars_recursively_list(List<IStatementNode> stmts,MethodNode methodNode,LocalVarSymbolTable methodScopeSymbolTable,SubroutineSymbolTable subTable)throws Exception{

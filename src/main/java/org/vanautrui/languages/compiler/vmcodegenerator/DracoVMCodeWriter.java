@@ -34,9 +34,19 @@ public class DracoVMCodeWriter {
    * all access to this.instrs must flow through here because this subroutine
    * keeps track of correct indentation
    */
-  private void any(String command){
+  private void any(String command,String comment){
     String myindent = StringUtils.repeat("  ", this.indent);
-    instrs.add(myindent+command);
+
+    String mycomment="";
+    if(!comment.isEmpty()){
+      mycomment="       //"+comment;
+    }
+
+    instrs.add(myindent+command+mycomment);
+  }
+
+  private void any(String command){
+    any(command,"");
   }
 
   public void subroutine(String name,int nArgs,int nLocals){
@@ -54,7 +64,10 @@ public class DracoVMCodeWriter {
   }
 
   public void pop(){
-    any("pop");
+    pop("");
+  }
+  public void pop(String comment){
+    any("pop",comment);
   }
 
   public void label(String name){
@@ -79,8 +92,13 @@ public class DracoVMCodeWriter {
     any("dup");
   }
 
+
+  public void iconst(int i,String comment){
+
+    any("iconst "+i,comment);
+  }
   public void iconst(int i) {
-    any("iconst "+i);
+    iconst(i,"");
   }
 
   public void eq() {
@@ -135,5 +153,8 @@ public class DracoVMCodeWriter {
    */
   public void swap() {
     any("swap");
+  }
+  public void swap(String comment) {
+    any("swap",comment);
   }
 }

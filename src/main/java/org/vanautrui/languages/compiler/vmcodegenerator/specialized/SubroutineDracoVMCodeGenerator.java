@@ -21,7 +21,7 @@ public class SubroutineDracoVMCodeGenerator {
 
     //push the number of local variables on the stack
     for(int i=0;i<subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName);i++){
-      sb.iconst(0);
+      sb.iconst(0,"push local vars on the stack");
     }
 
     //push ebp

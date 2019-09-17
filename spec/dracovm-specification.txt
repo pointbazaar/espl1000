@@ -103,11 +103,18 @@ BUILTIN SUBROUTINES:
 
 
 CALLING CONVENTIONS:
-first, all the arguments to a subroutine are pushed on the stack,
-in reverse order.
 
-//dracovm should use the c calling convention for now, to be compatible with C.
-//if that causes problems later on then we have to give it up and do our own thing
+	REGARDING ARGUMENTS:
+	first, all the arguments to a subroutine are pushed on the stack,
+	in reverse order.
+
+	REGARDING LOCAL VARIABLES:
+	local variables are pushed by the called subroutine in the order they
+	appear in the subroutine signature.
+	they must be cleared of the stack by the subroutine being called
+
+
+
 
 //good explanation of c calling conventions:
 //https://norasandler.com/2018/06/27/Write-a-Compiler-9.html
