@@ -1,2 +1,3 @@
 [ ] make a vm command to print a register dump to the console
 [ ] make a vm command to print a stack dump to the console
+[ ] work on either local variables or while statement vm code generation, as while statements with local variables seem to make a mess
