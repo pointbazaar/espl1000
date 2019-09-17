@@ -166,4 +166,14 @@ public class AssemblyWriter {
     public void dec(Register register){
         any("dec "+register);
     }
+
+    //jump if comparison result was 'greater'
+    public void jg(String label) {
+        any("jg "+label);
+    }
+
+    //jump if comparison result was 'lesser'
+    public void jl(String label) {
+        any("jl "+label);
+    }
 }

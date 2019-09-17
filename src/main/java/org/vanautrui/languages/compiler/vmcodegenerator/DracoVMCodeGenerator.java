@@ -52,7 +52,6 @@ public class DracoVMCodeGenerator {
             sb.iconst(0);
         }
 
-        //TODO: setup a new stack frame
         //push ebp
         //mov esp ebp
 
@@ -262,6 +261,11 @@ public class DracoVMCodeGenerator {
             case "-":
                 sb.sub();
                 break;
+            case ">":
+                sb.gt();
+                break;
+            case "<":
+                sb.lt();
             default:
                 throw new Exception("currently unsupported op "+opNode.operator);
         }

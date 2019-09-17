@@ -105,4 +105,93 @@ public class VMCompilerMainTest {
 
     assertEquals(3,pr.exitValue());
   }
+
+  @Test
+  public void test_gt_true()throws Exception{
+    DracoVMCodeWriter a=new DracoVMCodeWriter();
+
+    a.subroutine("main",0,0);
+    a.iconst(12);
+    a.iconst(11);
+    a.gt();
+    a.if_goto("label1");
+    a.iconst(45);
+    a.exit();
+    a.label("label1");
+    a.iconst(3);
+    a.exit();
+
+    List<String> vmcodes = a.getDracoVMCodeInstructions();
+    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "putchartesting");
+
+    assertEquals(3,pr.exitValue());
+  }
+
+
+  @Test
+  public void test_gt_false()throws Exception{
+    DracoVMCodeWriter a=new DracoVMCodeWriter();
+
+    a.subroutine("main",0,0);
+    a.iconst(11);
+    a.iconst(11);
+    a.gt();
+    a.if_goto("label1");
+    a.iconst(45);
+    a.exit();
+    a.label("label1");
+    a.iconst(3);
+    a.exit();
+
+    List<String> vmcodes = a.getDracoVMCodeInstructions();
+    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "putchartesting");
+
+    assertEquals(45,pr.exitValue());
+  }
+
+
+
+  @Test
+  public void test_lt_true()throws Exception{
+    DracoVMCodeWriter a=new DracoVMCodeWriter();
+
+    a.subroutine("main",0,0);
+    a.iconst(2);
+    a.iconst(11);
+    a.lt();
+    a.if_goto("label1");
+    a.iconst(45);
+    a.exit();
+    a.label("label1");
+    a.iconst(3);
+    a.exit();
+
+    List<String> vmcodes = a.getDracoVMCodeInstructions();
+    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "putchartesting");
+
+    assertEquals(3,pr.exitValue());
+  }
+
+
+  @Test
+  public void test_lt_false()throws Exception{
+    DracoVMCodeWriter a=new DracoVMCodeWriter();
+
+    a.subroutine("main",0,0);
+    a.iconst(11);
+    a.iconst(11);
+    a.lt();
+    a.if_goto("label1");
+    a.iconst(45);
+    a.exit();
+    a.label("label1");
+    a.iconst(3);
+    a.exit();
+
+    List<String> vmcodes = a.getDracoVMCodeInstructions();
+    Process pr = CodeGeneratorTestUtils.compile_and_run_vm_codes_for_testing(vmcodes, "putchartesting");
+
+    assertEquals(45,pr.exitValue());
+  }
+
 }

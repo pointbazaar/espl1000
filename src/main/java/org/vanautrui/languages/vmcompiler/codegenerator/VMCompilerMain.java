@@ -90,6 +90,12 @@ public class VMCompilerMain {
             case "eq":
                 compile_eq(instr,a,uniq);
                 break;
+            case "gt":
+                compile_gt(instr,a,uniq);
+                break;
+            case "lt":
+                compile_lt(instr,a,uniq);
+                break;
             //inc,dec
             case "inc":
                 a.pop(eax);
@@ -119,6 +125,54 @@ public class VMCompilerMain {
             default:
                 throw new Exception("unrecognized vm instr "+instr.cmd);
         }
+    }
+
+    private static void compile_lt(VMInstr instr, AssemblyWriter a, long uniq) {
+
+        String labeltrue="gt_push1"+uniq;
+        String labelend="gt_end"+uniq;
+
+        a.pop(eax);
+        a.pop(ebx);
+        a.cmp(eax, ebx);
+        a.jg(labeltrue);
+
+        //push 0 (false)
+        a.mov(eax,0);
+        a.push(eax);
+        a.jmp(labelend);
+
+        a.label(labeltrue);
+        //push 1 (true)
+        a.mov(eax,1);
+        a.push(eax);
+        a.jmp(labelend);
+
+        a.label(labelend);
+    }
+
+    private static void compile_gt(VMInstr instr, AssemblyWriter a, long uniq) {
+
+        String labeltrue="gt_push1"+uniq;
+        String labelend="gt_end"+uniq;
+
+        a.pop(eax);
+        a.pop(ebx);
+        a.cmp(eax, ebx);
+        a.jl(labeltrue);
+
+        //push 0 (false)
+        a.mov(eax,0);
+        a.push(eax);
+        a.jmp(labelend);
+
+        a.label(labeltrue);
+        //push 1 (true)
+        a.mov(eax,1);
+        a.push(eax);
+        a.jmp(labelend);
+
+        a.label(labelend);
     }
 
     private static List<String> vm_codes_to_assembly(List<VMInstr> vmcodes) throws Exception {

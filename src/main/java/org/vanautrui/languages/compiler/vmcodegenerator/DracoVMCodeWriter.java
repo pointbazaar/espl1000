@@ -121,4 +121,12 @@ public class DracoVMCodeWriter {
   public void cconst(char c) {
     any("cconst "+c);
   }
+
+  public void gt() {
+    any("gt");
+  }
+
+  public void lt() {
+    any("lt");
+  }
 }
