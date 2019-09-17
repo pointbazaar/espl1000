@@ -47,6 +47,11 @@ public class DracoVMCodeGenerator {
         sb.subroutine(m.methodName,m.arguments.size(),subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName));
         //not sure if it is number of arguments or number of local vars
 
+        //push the number of local variables on the stack
+        for(int i=0;i<subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName);i++){
+            sb.iconst(0);
+        }
+
         //TODO: setup a new stack frame
         //push ebp
         //mov esp ebp

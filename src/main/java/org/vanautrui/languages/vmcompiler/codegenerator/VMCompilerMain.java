@@ -254,8 +254,8 @@ public class VMCompilerMain {
 
     private static void compile_subroutine(VMInstr instr, AssemblyWriter a) {
         a.label(instr.arg1.get(),instr.toString());
-        //push the number of local variables on the stack
-        //but that should already be done by the vm code generator
+
+
     }
 
     private static void compile_dup(VMInstr instr, AssemblyWriter a) {
