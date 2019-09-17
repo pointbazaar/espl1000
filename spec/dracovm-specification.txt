@@ -78,13 +78,54 @@ SUBROUTINE CALLING COMMANDS:
 
 
 MEMORY ALLOCATION/DEALLOCTAION:
-	malloc	AMOUNT 	
+->	malloc	AMOUNT 	
 	//amount is the amount of DWORDs (4 Bytes) to be reserved
 	//this is because our language currently operates in 32 bit mode
 	//this instructions takes 1 argument on the stack and returns one argument on the stack
 	//the return address is the address of the allocated memory
 
-	free	ADDRESS
+
+	
+->	arraystore INDEX
+	//basically, before calling this vm command, the stack needs to look like:
+	//
+	//(stack grows downwards)
+	//|--------------|
+	//|undefined     |
+	//|--------------|
+	//|arr_addr      |
+	//|--------------|
+	//|index into arr|
+	//|--------------|
+	//|value_to_store| <- esp
+	//|--------------|
+	//this vm command removes both its arguments from the stack.
+	//after it completes, the stack looks like:
+	//|--------------|
+	//|undefined     | <- esp
+	//|--------------|
+	//arrays in dragon are length-prefixed, meaning the array [1,2] looks like this in memory:
+	//   | 2 | 1 | 2 |
+	//so the first element is always its length, so we can check if we are out of bounds.
+	//this bounds checking is not enabled now, but might be enabled later
+	//IMPORTANT:
+	// currently, arrays are not length-prefixed. 
+	// you can see it if you look how array constants are translated to vm code
+	// /// old ///arraystore INDEX already handles offseting the index by (+1), meaning we can index
+	// /// old ///into the array in the vm code as we wish
+
+->	arrayread
+	//stack looks like:
+	//|undefined
+	//|array address
+	//|array index <- esp
+	////after execution of this command, stack looks like
+	//|undefined
+	//|array[index] <-esp
+	//meaning this vm command reads from an array, and places the value on the stack
+
+
+->	free	ADDRESS
 	//deallocates the previously allocated block of memory at that address
 
 BUILTIN SUBROUTINES:

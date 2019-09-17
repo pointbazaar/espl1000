@@ -83,10 +83,55 @@ public class AssemblyCodeGenerator {
             case "malloc": compile_malloc(instr,a); break;
             case "free": throw new Exception("free not yet implemented");
 
+            //array related
+            case "arraystore": compile_arraystore(instr,a); break;
+            case "arrayread": compile_arrayread(instr,a); break;
+
             //unhandled cases
             default: throw new Exception("unrecognized vm instr "+instr.cmd);
         }
     }
+
+    private static void compile_arrayread(VMInstr instr, AssemblyWriter a) {
+        /*
+         arrayread
+        //stack looks like:
+        //|undefined
+        //|array address
+        //|array index <- esp
+        ////after execution of this command, stack looks like
+        //|undefined
+        //|array[index] <-esp
+        //meaning this vm command reads from an array, and places the value on the stack
+
+         */
+        a.pop(ebx,instr.toString()); //array index
+        a.pop(eax,instr.toString()); //array address in memory
+        a.add(eax,ebx,instr.toString()); //address of the value we want
+
+        a.dereference(eax,instr.toString()); //eax = memory[eax] <=> mov eax,[eax]
+
+        a.push(eax,instr.toString()); //push the value
+    }
+
+    /**
+     * Documentation for the behavior, expected stack state before and after are to be found in
+     * spec/dracovm-specification.txt
+     */
+    private static void compile_arraystore(VMInstr instr, AssemblyWriter a) {
+
+        a.pop(ebx,instr.toString()); //value to store
+
+        a.pop(ecx,instr.toString()); //index
+
+        a.pop(eax,instr.toString()); //array_address
+
+        //address to store into = addray_address + index
+        a.add(eax,ecx);
+
+        a.store_second_into_memory_location_pointed_to_by_first(eax,ebx,instr.toString());
+    }
+
     private static void compile_dec(AssemblyWriter a){
         a.pop(eax,"dec");
         a.dec(eax,"dec");
@@ -216,10 +261,12 @@ public class AssemblyCodeGenerator {
         a.mov(esi,0x22,"flags=MAP_PRIVATE | MAP_ANONYMOUS");
         a.mov(edi,-1,"fd=-1");
 
-        //TODO: worry about ebp which might be needed for the stack
-        //we should maybe save it somewhere
+        a.push(ebp,"save ebp as we should not mess with it"); //LINKED CODE 1 (they only work together)
+
         a.xor(ebp,ebp,"offset=0");
         a.call_kernel();
+
+        a.pop(ebp,"restore ebp as we should not mess with it"); //LINKED CODE 1 (they only work together)
 
         //eax should now contain
         //the address of the allocated memory segment

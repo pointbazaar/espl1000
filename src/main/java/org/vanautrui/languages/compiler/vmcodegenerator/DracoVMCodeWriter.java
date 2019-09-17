@@ -157,4 +157,34 @@ public class DracoVMCodeWriter {
   public void swap(String comment) {
     any("swap",comment);
   }
+
+  /**
+   * vm command to allocate the specified amount of DWORDs on the heap,
+   * and push the address of the allocated segment on the stack
+   * @param size_in_DWORDS
+   * @param comment
+   */
+  public void malloc(int size_in_DWORDS, String comment) {
+    any("malloc "+size_in_DWORDS,comment);
+  }
+
+
+  public void arraystore() {
+    any("arraystore");
+  }
+
+  public void arrayread() {
+    /*
+    arrayread
+        //stack looks like:
+        //|undefined
+        //|array address
+        //|array index <- esp
+        ////after execution of this command, stack looks like
+        //|undefined
+        //|array[index] <-esp
+        //meaning this vm command reads from an array, and places the value on the stack
+     */
+    any("arrayread");
+  }
 }

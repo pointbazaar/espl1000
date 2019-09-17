@@ -50,15 +50,26 @@ public class DracoVMCodeGenerator {
 
         //the variable being assigned to would be a local variable or argument.
         //the expression that is being assigned, there can be code generated to put it on the stack
-        genDracoVMCodeForExpression(assignStmt.expressionNode,sb,subTable,varTable);
+        final String varName = assignStmt.variableNode.name;
+        final String segment = varTable.getSegment(varName);
+        final int index = varTable.getIndexOfVariable(varName);
 
-        //then we just pop that value into the appropriate segment with the specified index
-        String varName = assignStmt.variableNode.name;
-        String segment = varTable.getSegment(varName);
-        int index = varTable.getIndexOfVariable(varName);
-        sb.pop(segment,index);
+        if(assignStmt.variableNode.indexOptional.isPresent()){
+            //push the array address on the stack
+            sb.push(segment,index);
 
-        //TODO:handle the index at the variable
+            //push the index
+            genDracoVMCodeForExpression(assignStmt.variableNode.indexOptional.get(),sb,subTable,varTable);
+
+            //push the value we want to store
+            genDracoVMCodeForExpression(assignStmt.expressionNode,sb,subTable,varTable);
+
+            sb.arraystore();
+        }else {
+            genDracoVMCodeForExpression(assignStmt.expressionNode,sb,subTable,varTable);
+            //then we just pop that value into the appropriate segment with the specified index
+            sb.pop(segment, index);
+        }
     }
 
 
@@ -87,7 +98,7 @@ public class DracoVMCodeGenerator {
             //find the local variable index
             // and push the variable onto the stack
             VariableNode variableNode = (VariableNode) t;
-            genDracoVMCodeForVariable(variableNode,sb,varTable);
+            genDracoVMCodeForVariable(variableNode,sb,subTable,varTable);
         }else if(t instanceof MethodCallNode){
             MethodCallNode methodCallNode = (MethodCallNode)t;
             genVMCodeForMethodCall(methodCallNode,sb,subTable,varTable);
@@ -96,8 +107,7 @@ public class DracoVMCodeGenerator {
             genVMCodeForBoolConst((BoolConstNode)t,sb);
         }else if(t instanceof ArrayConstantNode) {
             ArrayConstantNode arrayConstantNode = (ArrayConstantNode) t;
-            //TODO
-            throw new Exception("currently unhandled case");
+            genVMCodeForArrayConstant(arrayConstantNode,sb,subTable,varTable);
         }else if (t instanceof CharConstNode) {
             CharConstNode t1 = (CharConstNode) t;
             genVMCodeForIntConst((int)t1.content,sb);
@@ -106,7 +116,34 @@ public class DracoVMCodeGenerator {
         }
     }
 
-    public static void genDracoVMCodeForVariable(VariableNode variableNode, DracoVMCodeWriter sb, LocalVarSymbolTable varTable) throws Exception{
+    /**
+     * after this subroutine, the address of the array with the specified elements inside is on the stack
+     * @param arrayConstantNode
+     * @param sb
+     * @param subTable
+     * @param varTable
+     * @throws Exception
+     */
+    private static void genVMCodeForArrayConstant(ArrayConstantNode arrayConstantNode, DracoVMCodeWriter sb, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
+
+        //allocate space for the new array.
+        //this leaves the address of the new array (the new array resides on the heap) on the stack
+        sb.malloc(arrayConstantNode.elements.size(),"malloc some space for a new array");
+
+        //put the individual elements into the array
+        for(int i=0;i<arrayConstantNode.elements.size();i++) {
+            sb.dup(); //duplicate the array address as it is consumed with  'arraystore'
+
+            sb.iconst(i);//index to store into
+
+            //value we want to store
+            genDracoVMCodeForExpression(arrayConstantNode.elements.get(i),sb,subTable,varTable);
+
+            sb.arraystore();
+        }
+    }
+
+    public static void genDracoVMCodeForVariable(VariableNode variableNode, DracoVMCodeWriter sb,SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
         //push the variable on the stack
 
         //if the variable is local,
@@ -119,6 +156,12 @@ public class DracoVMCodeGenerator {
         String segment = varTable.getSegment(name);
 
         sb.push(segment,index);
+
+        if(variableNode.indexOptional.isPresent()){
+            //it is an array and we should read from the index
+            genDracoVMCodeForExpression(variableNode.indexOptional.get(),sb,subTable,varTable);
+            sb.arrayread();
+        }
     }
 
 

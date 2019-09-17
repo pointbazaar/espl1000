@@ -80,7 +80,6 @@
                 <version>2.21.0</version>
                 <configuration>
                     <excludes>
-                        <exclude>AssignmentStatementCodeGeneratorTest.java</exclude>
                         <exclude>CodeGeneratorTest.java</exclude>
                         <exclude>IfStatementCodeGeneratorTest.java</exclude>
                         <exclude>MethodCallStatementCodeGeneratorTest.java</exclude>

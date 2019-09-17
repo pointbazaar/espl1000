@@ -194,10 +194,19 @@ public class AssemblyWriter {
      * @param register the register to be dereferenced
      */
     public void dereference(Register register) {
-        any("mov "+register+","+"["+register+"]","dereference "+register);
+        dereference(register,"");
+    }
+
+    public void dereference(Register register, String comment) {
+        any("mov "+register+","+"["+register+"]","dereference "+register+"  comment: "+comment);
     }
 
     public void store_second_into_memory_location_pointed_to_by_first(Register first, Register second) {
-        any("mov ["+first+"],"+second);
+        store_second_into_memory_location_pointed_to_by_first(first,second,"");
+    }
+
+
+    public void store_second_into_memory_location_pointed_to_by_first(Register first, Register second, String comment) {
+        any("mov ["+first+"],"+second,comment);
     }
 }
