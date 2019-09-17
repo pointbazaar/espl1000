@@ -58,6 +58,10 @@ public class CodeGeneratorTestUtils {
 
         pr.waitFor();
         Files.delete(Paths.get(filename_without_extension));
+        Path vmpath = Paths.get(filename_without_extension + ".dracovm");
+        if(Files.exists(vmpath)) {
+            Files.delete(vmpath);
+        }
         Files.delete(Paths.get(filename_without_extension+".asm"));
 
         return pr;
