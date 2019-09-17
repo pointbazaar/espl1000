@@ -47,87 +47,55 @@ public class VMCompilerMain {
 
         switch (instr.cmd){
             //stack related commands
-            case "iconst":
-                compile_iconst(instr,a);
-                break;
-            case "fconst":
-                compile_fconst(instr,a);
-                break;
-            case "cconst":
-                compile_cconst(instr,a);
-                break;
-            case "pop":
-                compile_pop(instr,a);
-                break;
-            case "push":
-                compile_push(instr,a);
-                break;
-            case "dup":
-                compile_dup(instr,a);
-                break;
-            case "swap":
-                compile_swap(instr,a);
-                break;
+            case "iconst": compile_iconst(instr,a); break;
+            case "fconst": compile_fconst(instr,a); break;
+            case "cconst": compile_cconst(instr,a); break;
+            case "pop": compile_pop(instr,a); break;
+            case "push": compile_push(instr,a); break;
+            case "dup": compile_dup(instr,a); break;
+            case "swap": compile_swap(instr,a); break;
+
             //subroutine related commands
-            case "subroutine":
-                compile_subroutine(instr,a);
-                break;
-            case "call":
-                compile_call(instr,a);
-                break;
-            case "return":
-                a.writeReturn();
-                break;
-            case "exit":
-                compile_exit(instr,a);
-                //arithmetic commands
-            case "add":
-                compile_add(instr,a);
-                break;
-            case "sub":
-                compile_sub(instr,a);
-                break;
-            case "neg":
-                compile_neg(instr,a);
-                break;
-            case "eq":
-                compile_eq(instr,a,uniq);
-                break;
-            case "gt":
-                compile_gt(instr,a,uniq);
-                break;
-            case "lt":
-                compile_lt(instr,a,uniq);
-                break;
+            case "subroutine": compile_subroutine(instr,a); break;
+            case "call": compile_call(instr,a); break;
+            case "return": a.writeReturn(); break;
+            case "exit": compile_exit(instr,a); break;
+
+            //arithmetic commands
+            case "add": compile_add(instr,a); break;
+            case "sub": compile_sub(instr,a); break;
+            case "neg": compile_neg(instr,a); break;
+            case "eq": compile_eq(instr,a,uniq); break;
+            case "gt": compile_gt(instr,a,uniq); break;
+            case "lt": compile_lt(instr,a,uniq); break;
+
             //inc,dec
-            case "inc":
-                a.pop(eax);
-                a.inc(eax);
-                a.push(eax);
-                break;
-            case "dec":
-                a.pop(eax);
-                a.dec(eax);
-                a.push(eax);
-                break;
+            case "inc": compile_inc(a); break;
+            case "dec": compile_dec(a); break;
+
             //control flow
-            case "goto":
-                a.jmp(instr.arg1.get());
-                break;
-            case "if-goto":
-                compile_if_goto(instr,a,uniq);
-                break;
-            case "label":
-                a.label(instr.arg1.get());
-                break;
-            case "malloc":
-                compile_malloc(instr,a);
-                break;
-            case "free":
-                throw new Exception("free not yet implemented");
-            default:
-                throw new Exception("unrecognized vm instr "+instr.cmd);
+            case "goto": a.jmp(instr.arg1.get()); break;
+            case "if-goto": compile_if_goto(instr,a,uniq); break;
+            case "label": a.label(instr.arg1.get()); break;
+
+            //memory management
+            case "malloc": compile_malloc(instr,a); break;
+            case "free": throw new Exception("free not yet implemented");
+
+            //unhandled cases
+            default: throw new Exception("unrecognized vm instr "+instr.cmd);
         }
+    }
+    private static void compile_dec(AssemblyWriter a){
+        a.pop(eax);
+        a.dec(eax);
+        a.push(eax);
+    }
+
+    private static void compile_inc(AssemblyWriter a){
+        a.pop(eax);
+        a.inc(eax);
+        a.push(eax);
     }
 
     /**
