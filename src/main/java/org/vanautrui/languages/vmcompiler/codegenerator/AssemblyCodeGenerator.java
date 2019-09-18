@@ -6,8 +6,10 @@ import org.vanautrui.languages.vmcompiler.instructions.VMInstr;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.lang.Integer.parseInt;
 import static org.vanautrui.languages.vmcompiler.codegenerator.SubroutineFocusedAssemblyCodeGenerator.*;
 import static org.vanautrui.languages.vmcompiler.model.Register.*;
 
@@ -30,7 +32,7 @@ public class AssemblyCodeGenerator {
     }
 
     private static void compile_iconst(VMInstr instr, AssemblyWriter a) {
-        int x = Integer.parseInt(instr.arg1.get());
+        int x = parseInt(instr.arg1.get());
         a.mov(eax,x,instr.toString());
         a.push(eax,instr.toString());
     }
@@ -50,15 +52,21 @@ public class AssemblyCodeGenerator {
             case "iconst": compile_iconst(instr,a); break;
             case "fconst": compile_fconst(instr,a); break;
             case "cconst": compile_cconst(instr,a); break;
-            case "pop": compile_pop(instr,a); break;
-            case "push": compile_push(instr,a); break;
+            case "pop":
+                Optional<Integer> index = Optional.empty();
+                if(instr.arg2.isPresent()){
+                    index=Optional.of(parseInt(instr.arg2.get()));
+                }
+                compile_pop(instr.arg1,index,a);
+                break;
+            case "push": compile_push(instr.arg1.get(),parseInt(instr.arg2.get()),a); break;
             case "dup": compile_dup(instr,a); break;
-            case "swap": compile_swap(instr,a); break;
+            case "swap": compile_swap("",a); break;
 
             //subroutine related commands
-            case "subroutine": compile_subroutine(instr,a); break;
+            case "subroutine": compile_subroutine(instr.arg1.get(),a); break;
             case "call": compile_call(instr,a); break;
-            case "return": compile_return(instr,a); break;
+            case "return": compile_return(a); break;
             case "exit": compile_exit(instr,a); break;
 
             //arithmetic commands
@@ -194,62 +202,68 @@ public class AssemblyCodeGenerator {
 
     /**
      * swaps the 2 topmost items on the stack
-     * @param instr
      * @param a
      */
-    private static void compile_swap(VMInstr instr, AssemblyWriter a) {
+    public static void compile_swap(String mycomment, AssemblyWriter a) {
+        String comment=" swap ";
 
-        a.pop(eax,instr.toString());
-        a.pop(ebx,instr.toString());
+        if(!mycomment.isEmpty()){
+            comment=mycomment;
+        }
 
-        a.push(eax,instr.toString());
-        a.push(ebx,instr.toString());
+        a.pop(eax,comment);
+        a.pop(ebx,comment);
+
+        a.push(eax,comment);
+        a.push(ebx,comment);
     }
 
     private static void compile_lt(VMInstr instr, AssemblyWriter a, long uniq) {
 
+        final String comment = "lt";
+
         String labeltrue="lt_push1"+uniq;
         String labelend="lt_end"+uniq;
 
-        a.pop(ebx);
-        a.pop(eax);
-        a.cmp(eax, ebx);
-        a.jl(labeltrue);
+        a.pop(ebx,comment);
+        a.pop(eax,comment);
+        a.cmp(eax, ebx,comment);
+        a.jl(labeltrue,comment);
 
         //push 0 (false)
-        a.mov(eax,0);
-        a.push(eax);
-        a.jmp(labelend);
+        a.mov(eax,0,comment);
+        a.push(eax,comment);
+        a.jmp(labelend,comment);
 
-        a.label(labeltrue);
+        a.label(labeltrue,comment);
         //push 1 (true)
-        a.mov(eax,1);
-        a.push(eax);
+        a.mov(eax,1,comment);
+        a.push(eax,comment);
 
-        a.label(labelend);
+        a.label(labelend,comment);
     }
 
     private static void compile_gt(VMInstr instr, AssemblyWriter a, long uniq) {
-
+        final String comment = "lt";
         String labeltrue="gt_push1"+uniq;
         String labelend="gt_end"+uniq;
 
-        a.pop(ebx);
-        a.pop(eax);
-        a.cmp(eax, ebx);
-        a.jg(labeltrue);
+        a.pop(ebx,comment);
+        a.pop(eax,comment);
+        a.cmp(eax, ebx,comment);
+        a.jg(labeltrue,comment);
 
         //push 0 (false)
-        a.mov(eax,0);
-        a.push(eax);
-        a.jmp(labelend);
+        a.mov(eax,0,comment);
+        a.push(eax,comment);
+        a.jmp(labelend,comment);
 
-        a.label(labeltrue);
+        a.label(labeltrue,comment);
         //push 1 (true)
-        a.mov(eax,1);
-        a.push(eax);
+        a.mov(eax,1,comment);
+        a.push(eax,comment);
 
-        a.label(labelend);
+        a.label(labelend,comment);
     }
 
     private static List<String> vm_codes_to_assembly(List<VMInstr> vmcodes) throws Exception {
@@ -269,6 +283,10 @@ public class AssemblyCodeGenerator {
         for(VMInstr instr : vmcodes){
             compile_vm_instr(instr,a);
         }
+
+        //add the builtin subroutines
+        BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile.compile_putchar(a);
+        BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile.compile_putdigit(a);
 
         a.nop(); //the 2 nops are recommended by my assembly book
 
@@ -298,7 +316,7 @@ public class AssemblyCodeGenerator {
 
     private static void compile_malloc(VMInstr instr, AssemblyWriter a) {
         //malloc receives as an argument the amount of DWORDs to allocate
-        int amount = Integer.parseInt(instr.arg1.get());
+        int amount = parseInt(instr.arg1.get());
 
         a.mov(eax,192,"192 : mmap system call");
         a.xor(ebx,ebx,"addr=NULL");
@@ -323,44 +341,47 @@ public class AssemblyCodeGenerator {
 
     private static void compile_if_goto(VMInstr instr, AssemblyWriter a,long uniq) {
 
+        final String comment="if-goto";
+
         String truelabel = "ifgoto_true"+uniq;
         String endlabel = "ifgoto_end"+uniq;
 
-        a.pop(eax); //pops the condition into eax
-        a.mov(ebx,1);  //ebx := true==1
-        a.cmp(eax, ebx);
-        a.je(truelabel); //jumps, if eax==ebx
-        a.jmp(endlabel);
+        a.pop(eax,comment); //pops the condition into eax
+        a.mov(ebx,1,comment);  //ebx := true==1
+        a.cmp(eax, ebx,comment);
+        a.je(truelabel,comment); //jumps, if eax==ebx
+        a.jmp(endlabel,comment);
 
         //in case top of stack is 1 (true)
-        a.label(truelabel);
-        a.jmp(instr.arg1.get());
+        a.label(truelabel,comment);
+        a.jmp(instr.arg1.get(),comment);
 
         //otherwise, just continue execution
-        a.label(endlabel);
+        a.label(endlabel,comment);
     }
 
     private static void compile_eq(VMInstr instr, AssemblyWriter a,long uniq) {
+        final String comment ="eq";
+
         String labeltrue="eq_push1"+uniq;
         String labelend="eq_end"+uniq;
 
-        a.pop(eax);
-        a.pop(ebx);
-        a.cmp(eax, ebx);
-        a.je(labeltrue);
+        a.pop(eax,comment);
+        a.pop(ebx,comment);
+        a.cmp(eax, ebx,comment);
+        a.je(labeltrue,comment);
 
         //push 0 (false)
-        a.mov(eax,0);
-        a.push(eax);
-        a.jmp(labelend);
+        a.mov(eax,0,comment);
+        a.push(eax,comment);
+        a.jmp(labelend,comment);
 
-        a.label(labeltrue);
+        a.label(labeltrue,comment);
         //push 1 (true)
-        a.mov(eax,1);
-        a.push(eax);
-        a.jmp(labelend);
+        a.mov(eax,1,comment);
+        a.push(eax,comment);
 
-        a.label(labelend);
+        a.label(labelend,comment);
     }
 
     private static void compile_neg(VMInstr instr, AssemblyWriter a) {
@@ -391,50 +412,51 @@ public class AssemblyCodeGenerator {
         a.push(eax,instr.toString());
     }
 
-    private static void compile_push(VMInstr instr, AssemblyWriter a) throws Exception {
-        //TODO: add comments to our generated vm code, to understand what is going on
-        String segment = instr.arg1.get();
-        int index = Integer.parseInt(instr.arg2.get());
+    public static void compile_push(String segment,int index, AssemblyWriter a) throws Exception {
+        String comment="";
+
         switch (segment){
             case "ARG":
+                comment="push ARG "+index;
                 //arguments are on stack in reverse order
                 //ebp is on the caller's return address, with the arguments above
 
-                //eax = ebp + index + 2 //the +2 is because there is the saved ebp on stack also,
+                //eax = ebp + index + 2 * (4 (byte))
+                //the + 2 * (4 (byte)) is because there is the saved ebp on stack also,
                 //and the variables are indexed starting with 0
-                a.mov(eax,2);
-                a.add(eax,ebp);
-                a.add(eax,index);
+                a.mov(eax,2*4,comment); //4 bytes make up a 32 bit item on stack
+                a.add(eax,ebp,comment);
+                a.add(eax,index*4,comment); //4 bytes make up a 32 bit item on stack
 
                 // a.dereference(eax) -> mov eax,[eax]
-                a.dereference(eax);
+                a.dereference(eax,comment);
 
                 //push eax
-                a.push(eax);
+                a.push(eax,comment);
                 break;
             case "LOCAL":
-
+                comment="push LOCAL "+index;
                 //locals are on stack in order
                 //ebp is on the caller's return address, with the local variables below
 
                 //eax = ebp - index - 1 //the +1 is because there is the saved ebp on stack also
 
                 //eax=ebp
-                a.mov(eax,ebp);
+                a.mov(eax,ebp,comment);
 
                 //eax -= 1
-                a.mov(ebx,1);
-                a.sub(eax,ebx);
+                a.mov(ebx,1*4,comment); //4 bytes make up a 32 bit item on stack
+                a.sub(eax,ebx,comment);
 
                 //eax -= index
-                a.mov(ebx,index);
-                a.sub(eax,ebx);
+                a.mov(ebx,index*4,comment); //4 bytes make up a 32 bit item on stack
+                a.sub(eax,ebx,comment);
 
                 // a.dereference(eax) -> mov eax,[eax]
-                a.dereference(eax);
+                a.dereference(eax,comment);
 
                 //push eax
-                a.push(eax);
+                a.push(eax,comment);
                 break;
             case "STATIC":
                 throw new Exception("not yet implemented");
@@ -444,38 +466,42 @@ public class AssemblyCodeGenerator {
     }
 
     /**
-     * @param instr the pop instruction to be compiled ta assembly
+     * @param mysegment the Optional segment to pop into
      * @param a the AssemblyWriter we are using
      * @throws Exception if we are pop - ing from a nonexisting segment
      */
-    private static void compile_pop(VMInstr instr, AssemblyWriter a) throws Exception{
+    public static void compile_pop(Optional<String> mysegment,Optional<Integer> myindex, AssemblyWriter a) throws Exception{
 
-        if(!instr.arg1.isPresent()){
-            a.pop(eax);
+        if(!mysegment.isPresent()){
+            a.pop(eax,"pop");
         }else {
 
-            String segment = instr.arg1.get();
+            String segment = mysegment.get();
 
-            int index = Integer.parseInt(instr.arg2.get());
+            int index= myindex.get();
+            String comment="";
 
             switch (segment) {
                 case "ARG":
+                    comment = "pop ARG "+index;
+
                     //arguments are on stack in reverse order
                     //ebp is on the caller's return address, with the arguments above
 
                     //eax = ebp + index + 2 //the +2 is because there is the saved ebp on stack also,
                     //and the variables are indexed starting with 0
-                    a.mov(eax,2);
-                    a.add(eax,ebp);
-                    a.add(eax,index);
+                    a.mov(eax,2*4,comment); //4 bytes make up a 32 bit item on stack
+                    a.add(eax,ebp,comment);
+                    a.add(eax,index*4,comment);//4 bytes make up a 32 bit item on stack
 
                     //get the value we want to pop
-                    a.pop(ebx);
+                    a.pop(ebx,comment);
 
                     //get that value into the address pointed to by eax
-                    a.store_second_into_memory_location_pointed_to_by_first(eax,ebx);
+                    a.store_second_into_memory_location_pointed_to_by_first(eax,ebx,comment);
                     break;
                 case "LOCAL":
+                    comment = "pop LOCAL "+index;
 
                     //locals are on stack in order
                     //ebp is on the caller's return address, with the local variables below
@@ -483,20 +509,20 @@ public class AssemblyCodeGenerator {
                     //eax = ebp - index - 1 //the +1 is because there is the saved ebp on stack also
 
                     //eax=ebp
-                    a.mov(eax,ebp);
+                    a.mov(eax,ebp,comment);
 
                     //eax -= 1
-                    a.mov(ebx,1);
-                    a.sub(eax,ebx);
+                    a.mov(ebx,1 * 4,comment); //4 bytes make up a 32 bit item on stack
+                    a.sub(eax,ebx,comment);
 
                     //eax -= index
-                    a.mov(ebx,index);
-                    a.sub(eax,ebx);
+                    a.mov(ebx,index*4,comment); //4 bytes make up a 32 bit item on stack
+                    a.sub(eax,ebx,comment);
 
                     //get the value we want to pop
-                    a.pop(ebx);
+                    a.pop(ebx,comment);
 
-                    a.store_second_into_memory_location_pointed_to_by_first(eax,ebx);
+                    a.store_second_into_memory_location_pointed_to_by_first(eax,ebx,comment);
                     break;
                 case "STATIC":
                     throw new Exception("not yet implemented");

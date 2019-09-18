@@ -14,6 +14,9 @@ public class App {
     //https://tio.run/#
     //https://www.tutorialspoint.com/codingground.htm
 
+    //https://asmtutor.com/
+    //https://asmtutor.com/#lesson1
+
     public static final String lang_name = "DRAGON ";
 
     public static void main(String[] args) {

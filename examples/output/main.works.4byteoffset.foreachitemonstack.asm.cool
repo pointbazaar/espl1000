@@ -1,0 +1,96 @@
+section .text                ;must be declared for linker (ld)
+global _start                ;                    
+_start:                      ;tell linker entry point
+        nop                  ;                    
+        jmp main             ;                    
+main:                        ;subroutine main     
+        mov eax,0            ;fake return address for main()subroutine main
+        push eax             ;fake return address for main()subroutine main
+        mov ebp,esp          ;subroutine main anchor our ebp, with local variables below and saved ebp and args above
+        mov eax,'c'           ;iconst 99           
+        push eax             ;iconst 99           
+        call putchar         ;call putchar        
+        pop eax              ;swap return value with saved ebp
+        pop ebx              ;swap return value with saved ebp
+        push eax             ;swap return value with saved ebp
+        push ebx             ;swap return value with saved ebp
+        pop ebp              ;get our ebp back call putchar
+        pop eax              ; swap               
+        pop ebx              ; swap               
+        push eax             ; swap               
+        push ebx             ; swap               
+        pop eax              ;pop                 
+        pop eax              ;pop                 
+        mov eax,0            ;iconst 0            
+        push eax             ;iconst 0            
+        mov eax,1            ;exit: sytem call number (sys_exit)
+        pop ebx              ;exit: pop exit status code from stack
+        int 0x80             ;call kernel         
+putchar:                     ;subroutine putchar  
+        push ebp             ;push ebp to save ebp of caller subroutine putchar
+        pop eax              ;subroutine putchar  
+        pop ebx              ;subroutine putchar  
+        push eax             ;subroutine putchar  
+        push ebx             ;subroutine putchar  
+        mov ebp,esp          ;subroutine putchar anchor our ebp, with local variables below and saved ebp and args above
+	;
+	
+	;tried []
+        mov eax,8       ;push ARG 0          
+        add eax,ebp          ;push ARG 0          
+        add eax,0            ;push ARG 0          
+        mov ebx,[eax]        ;push ARG 0// dereference eax
+        push ebx             ;push ARG 0          
+	;
+
+	;DEBUG
+	;mov eax,65
+	;push eax
+
+
+        mov eax,4            ;putchar: sys_write  
+        mov ebx,1            ;putchar: std_out    
+        mov ecx,esp          ;putchar: print the char on the stack
+        mov edx,1            ;putchar: value length
+        int 0x80             ;call kernel         
+        pop eax              ;putchar: remove the ARG 0 which we had pushed
+        mov edx,0            ;putchar: push return value
+        push edx             ;putchar: push return value
+        pop eax              ;swap return address with return value to return
+        pop ebx              ;swap return address with return value to return
+        push eax             ;swap return address with return value to return
+        push ebx             ;swap return address with return value to return
+        ret                  ;                    
+putdigit:                    ;subroutine putdigit 
+        push ebp             ;push ebp to save ebp of caller subroutine putdigit
+        pop eax              ;subroutine putdigit 
+        pop ebx              ;subroutine putdigit 
+        push eax             ;subroutine putdigit 
+        push ebx             ;subroutine putdigit 
+        mov ebp,esp          ;subroutine putdigit anchor our ebp, with local variables below and saved ebp and args above
+        mov eax,2            ;push ARG 0          
+        add eax,ebp          ;push ARG 0          
+        add eax,0            ;push ARG 0          
+        mov eax,[eax]        ;push ARG 0// dereference eax
+        push eax             ;push ARG 0          
+        mov eax,4            ;putdigit sys_write  
+        mov ebx,1            ;putdigit std_out    
+        pop ecx              ;                    
+        push ecx             ;                    
+        add ecx,48           ;putdigit add offset to make it char
+        push ecx             ;                    
+        mov ecx,esp          ;putdigit print the Int on the stack
+        mov edx,1            ;putdigit value length
+        int 0x80             ;call kernel         
+        pop ecx              ;                    
+        pop ecx              ;                    
+        mov edx,0            ;putdigit push return value
+        push edx             ;putdigit push return value
+        pop eax              ;swap return address with return value to return
+        pop ebx              ;swap return address with return value to return
+        push eax             ;swap return address with return value to return
+        push ebx             ;swap return address with return value to return
+        ret                  ;                    
+        nop                  ;                    
+section .data                ;                    
+section .bss                 ;                    

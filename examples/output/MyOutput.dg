@@ -2,10 +2,6 @@
 class MyOutput{
 	Int main(){
 		putchar('c');
-		subr();
 		return 0;
-	}
-	Int subr(){
-		return 3;
 	}
 }
