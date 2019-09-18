@@ -197,4 +197,8 @@ public class DracoVMCodeWriter {
   }
 
 
+  public void not() {
+    //boolean negation
+    any("not");
+  }
 }

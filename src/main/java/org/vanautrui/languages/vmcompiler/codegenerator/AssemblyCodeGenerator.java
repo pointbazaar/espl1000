@@ -68,9 +68,12 @@ public class AssemblyCodeGenerator {
             case "mul": compile_mul(instr,a); break;
             case "div": compile_div(instr,a); break;
             case "neg": compile_neg(instr,a); break;
+
+            //logic commands
             case "eq": compile_eq(instr,a,uniq); break;
             case "gt": compile_gt(instr,a,uniq); break;
             case "lt": compile_lt(instr,a,uniq); break;
+            case "not": compile_not(instr,a,uniq); break;
 
             //inc,dec
             case "inc": compile_inc(a); break;
@@ -92,6 +95,34 @@ public class AssemblyCodeGenerator {
             //unhandled cases
             default: throw new Exception("unrecognized vm instr "+instr.cmd);
         }
+    }
+
+    private static void compile_not(VMInstr instr, AssemblyWriter a, long uniq) {
+        //logical not
+        //if there is a 1 (true) on the stack, after this vm command, there must be a 0 (false) on the stack
+        //if there is a 0 (false) on the stack, after this vm command, there must be a 1 (true) on the stack
+
+        //https://www.tutorialspoint.com/assembly_programming/assembly_logical_instructions.htm
+
+        String labeltrue="not_pushtrue"+uniq;
+        String labelend="not_end"+uniq;
+
+        a.mov(ebx,0);
+        a.pop(eax);
+        a.cmp(eax, ebx);
+        a.je(labeltrue);
+
+        //push 0 (false)
+        a.mov(eax,0);
+        a.push(eax);
+        a.jmp(labelend);
+
+        a.label(labeltrue);
+        //push 1 (true)
+        a.mov(eax,1);
+        a.push(eax);
+
+        a.label(labelend);
     }
 
     private static void compile_div(VMInstr instr, AssemblyWriter a) {
@@ -177,35 +208,11 @@ public class AssemblyCodeGenerator {
 
     private static void compile_lt(VMInstr instr, AssemblyWriter a, long uniq) {
 
-        String labeltrue="gt_push1"+uniq;
-        String labelend="gt_end"+uniq;
+        String labeltrue="lt_push1"+uniq;
+        String labelend="lt_end"+uniq;
 
-        a.pop(eax);
         a.pop(ebx);
-        a.cmp(eax, ebx);
-        a.jg(labeltrue);
-
-        //push 0 (false)
-        a.mov(eax,0);
-        a.push(eax);
-        a.jmp(labelend);
-
-        a.label(labeltrue);
-        //push 1 (true)
-        a.mov(eax,1);
-        a.push(eax);
-        a.jmp(labelend);
-
-        a.label(labelend);
-    }
-
-    private static void compile_gt(VMInstr instr, AssemblyWriter a, long uniq) {
-
-        String labeltrue="gt_push1"+uniq;
-        String labelend="gt_end"+uniq;
-
         a.pop(eax);
-        a.pop(ebx);
         a.cmp(eax, ebx);
         a.jl(labeltrue);
 
@@ -218,7 +225,29 @@ public class AssemblyCodeGenerator {
         //push 1 (true)
         a.mov(eax,1);
         a.push(eax);
+
+        a.label(labelend);
+    }
+
+    private static void compile_gt(VMInstr instr, AssemblyWriter a, long uniq) {
+
+        String labeltrue="gt_push1"+uniq;
+        String labelend="gt_end"+uniq;
+
+        a.pop(ebx);
+        a.pop(eax);
+        a.cmp(eax, ebx);
+        a.jg(labeltrue);
+
+        //push 0 (false)
+        a.mov(eax,0);
+        a.push(eax);
         a.jmp(labelend);
+
+        a.label(labeltrue);
+        //push 1 (true)
+        a.mov(eax,1);
+        a.push(eax);
 
         a.label(labelend);
     }

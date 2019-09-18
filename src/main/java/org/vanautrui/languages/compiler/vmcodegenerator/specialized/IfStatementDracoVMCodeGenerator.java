@@ -25,7 +25,7 @@ public class IfStatementDracoVMCodeGenerator {
 
     //push the expression
     genDracoVMCodeForExpression(ifstmt.condition,sb,subTable,varTable);
-    sb.neg();
+    sb.not();
     //if condition is false, jump to else
     sb.if_goto(elselabel);
 
