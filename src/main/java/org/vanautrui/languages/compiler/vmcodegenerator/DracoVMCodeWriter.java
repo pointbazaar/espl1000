@@ -1,6 +1,7 @@
 package org.vanautrui.languages.compiler.vmcodegenerator;
 
 import org.apache.commons.lang3.StringUtils;
+import org.vanautrui.languages.vmcompiler.codegenerator.SubroutineFocusedAssemblyCodeGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +51,12 @@ public class DracoVMCodeWriter {
   }
 
   public void subroutine(String name,int nArgs,int nLocals){
+   subroutine(name,nArgs,nLocals,"");
+  }
+
+  public void subroutine(String name,int nArgs,int nLocals,String comment){
     indent=subroutine_indent;
-    any("subroutine "+name+" "+nArgs+" args "+nLocals+" locals");
+    any("subroutine "+name+" "+nArgs+" args "+nLocals+" locals",SubroutineFocusedAssemblyCodeGenerator.compile_subroutine_description()+"//"+comment);
     indent=default_indent;
   }
 
@@ -117,7 +122,7 @@ public class DracoVMCodeWriter {
   }
 
   public void call(String methodName) {
-    any("call "+methodName);
+    any("call "+methodName, SubroutineFocusedAssemblyCodeGenerator.compile_call_description());
   }
 
   public void add() {
@@ -141,7 +146,7 @@ public class DracoVMCodeWriter {
   }
 
   public void _return() {
-    any("return");
+    any("return",SubroutineFocusedAssemblyCodeGenerator.compile_return_description());
   }
 
   public void cconst(char c) {

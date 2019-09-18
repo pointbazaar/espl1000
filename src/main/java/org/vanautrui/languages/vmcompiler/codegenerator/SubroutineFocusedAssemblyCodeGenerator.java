@@ -69,6 +69,10 @@ public class SubroutineFocusedAssemblyCodeGenerator {
         throw new Exception("unhandled");
     }
 
+    public static String compile_call_description(){
+        //this method offers a description which can be included in higher level vm code
+        return "pushes return address of current subroutine on the stack,jumps to subroutine,swaps returned value (on stack) with ebp, pops ebp (Source: SubroutineFocusedAssemblyCodeGenerator.java)";
+    }
     public static void compile_call(VMInstr instr, AssemblyWriter a) throws Exception {
         String method = instr.arg1.get();
         switch (method){
@@ -81,6 +85,13 @@ public class SubroutineFocusedAssemblyCodeGenerator {
             default:
 
                 a.call(instr.arg1.get()); //puts the return address on the stack and jumps to label
+
+                //swap return address with saved ebp
+                a.pop(eax);
+                a.pop(ebx);
+                a.push(eax);
+                a.push(ebx);
+
                 a.pop(ebp,"get our ebp back");
                 break;
         }
@@ -98,6 +109,9 @@ public class SubroutineFocusedAssemblyCodeGenerator {
         throw new Exception("unhandled");
     }
 
+    public static String compile_subroutine_description() {
+        return "pushes ebp, swaps that with the return address already on stack (source: SubroutineFocusedAssemblyCodeGenerator.java)";
+    }
     public static void compile_subroutine(VMInstr instr, AssemblyWriter a) {
         final String subroutine_name = instr.arg1.get();
 
@@ -129,4 +143,13 @@ public class SubroutineFocusedAssemblyCodeGenerator {
         //below it are its local variables
         a.mov(ebp,esp);
     }
+
+    public static void compile_return(VMInstr instr, AssemblyWriter a) {
+        a.ret();
+    }
+    public static String compile_return_description() {
+        return "pops the return address in the caller subroutine off the stack, and continues there. (source: SubroutineFocusedAssemblyCodeGenerator.java)";
+    }
+
+
 }

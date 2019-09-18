@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.vanautrui.languages.vmcompiler.codegenerator.SubroutineFocusedAssemblyCodeGenerator.compile_call;
-import static org.vanautrui.languages.vmcompiler.codegenerator.SubroutineFocusedAssemblyCodeGenerator.compile_subroutine;
+import static org.vanautrui.languages.vmcompiler.codegenerator.SubroutineFocusedAssemblyCodeGenerator.*;
 import static org.vanautrui.languages.vmcompiler.model.Register.*;
 
 public class AssemblyCodeGenerator {
@@ -59,7 +58,7 @@ public class AssemblyCodeGenerator {
             //subroutine related commands
             case "subroutine": compile_subroutine(instr,a); break;
             case "call": compile_call(instr,a); break;
-            case "return": a.writeReturn(); break;
+            case "return": compile_return(instr,a); break;
             case "exit": compile_exit(instr,a); break;
 
             //arithmetic commands

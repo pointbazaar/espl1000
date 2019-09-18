@@ -113,7 +113,7 @@ public class AssemblyWriter {
 
     public void label(String label,String comment) {
         indented=false;
-        any(label+":");
+        any(label+":",comment);
         indented=true;
     }
     public void label(String label) {
@@ -124,9 +124,7 @@ public class AssemblyWriter {
         any("jmp "+targetLabel);
     }
 
-    public void writeReturn() {
-        any("ret");
-    }
+
 
     /** i read that the 'mul' instruction only takes one operang,
      *  and computes eax=eax*other_register
@@ -215,5 +213,9 @@ public class AssemblyWriter {
 
     public void div_eax_by(Register register) {
         any("div "+register);
+    }
+
+    public void ret() {
+        any("ret");
     }
 }
