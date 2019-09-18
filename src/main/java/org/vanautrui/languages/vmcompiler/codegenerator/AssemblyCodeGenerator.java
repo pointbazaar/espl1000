@@ -129,6 +129,7 @@ public class AssemblyCodeGenerator {
         a.pop(ecx);
         a.pop(eax);
         a.div_eax_by(ecx);
+        a.push(eax);
     }
 
     private static void compile_mul(VMInstr instr, AssemblyWriter a) {

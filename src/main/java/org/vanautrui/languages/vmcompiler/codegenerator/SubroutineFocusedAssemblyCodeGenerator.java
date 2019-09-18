@@ -79,7 +79,7 @@ public class SubroutineFocusedAssemblyCodeGenerator {
             case "int2float": compile_int2float(instr,a); break;
             case "float2int": compile_float2int(instr,a); break;
             default:
-                a.push(ebp,"push ebp to save ebp of caller");
+
                 a.call(instr.arg1.get()); //puts the return address on the stack and jumps to label
                 a.pop(ebp,"get our ebp back");
                 break;
@@ -99,7 +99,29 @@ public class SubroutineFocusedAssemblyCodeGenerator {
     }
 
     public static void compile_subroutine(VMInstr instr, AssemblyWriter a) {
-        a.label(instr.arg1.get(),instr.toString());
+        final String subroutine_name = instr.arg1.get();
+
+        a.label(subroutine_name,instr.toString());
+
+        if(subroutine_name.equals("main")){
+            //we need not save ebp of the caller, as there is no caller
+            //our ebp is iconst 0, to reference local variables, we need an ebp
+            a.mov(eax,0,"fake return address for main()");
+            a.push(eax,"fake return address for main()");
+        }else {
+            //save the ebp of the caller
+            //push ebp
+            a.push(ebp, "push ebp to save ebp of caller");
+            //swap with return address to provide correct order
+            a.pop(eax);
+            a.pop(ebx);
+
+            a.push(eax);
+            a.push(ebx);
+        }
+
+
+
 
         //to provide a base to reference arguments and local variables
         //ebp will point to the return address of the caller

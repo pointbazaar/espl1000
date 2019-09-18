@@ -3,7 +3,6 @@ package org.vanautrui.languages.compiler.vmcodegenerator;
 import org.vanautrui.languages.compiler.parsing.astnodes.ITermNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ArrayConstantNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.OperatorNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
@@ -165,30 +164,7 @@ public class DracoVMCodeGenerator {
     }
 
 
-    public static void genDracoVMCodeForOp(OperatorNode opNode,DracoVMCodeWriter sb)throws Exception{
-        switch (opNode.operator){
-            case "+":
-                sb.add();
-                break;
-            case "-":
-                sb.sub();
-                break;
-            case ">":
-                sb.gt();
-                break;
-            case "<":
-                sb.lt();
-                break;
-            case "*":
-                sb.mul();
-                break;
-            case "/":
-                sb.div();
-                break;
-            default:
-                throw new Exception("currently unsupported op "+opNode.operator);
-        }
-    }
+
 
 
 

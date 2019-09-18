@@ -79,3 +79,4 @@ return value from add(...) <-esp
 //DONE. now there is only the return value on the stack.
 
 ANOTHER EXAMPLE: THIS EXAMPLE SHOWS HOW LOCAL VARIABLES ARE USED
+//we have subroutines main(), and subr(), where subr has 1 local variable

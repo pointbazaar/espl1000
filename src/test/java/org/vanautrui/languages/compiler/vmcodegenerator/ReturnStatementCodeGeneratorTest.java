@@ -11,11 +11,11 @@ public class ReturnStatementCodeGeneratorTest {
 
     @Test
     public void test_can_return_statement()throws Exception{
-        String source="public class MainTest266 { public Int main(){ print(subroutine()); return 0; } public String subroutine(){return \"subroutine\";} }";
+        String source="public class MainTest266 { public Int main(){ putdigit(subr()); return 0; } public Int subr(){return 3;} }";
         Process pr = compile_and_run_program_for_testing(source,"MainTest266");
 
         Assert.assertEquals(0,pr.exitValue());
-        Assert.assertEquals("subroutine",IOUtils.toString(pr.getInputStream()));
+        Assert.assertEquals("3",IOUtils.toString(pr.getInputStream()));
     }
 
     @Test
