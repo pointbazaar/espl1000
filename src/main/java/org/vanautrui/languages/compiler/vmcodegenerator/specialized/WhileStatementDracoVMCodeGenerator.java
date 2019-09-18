@@ -23,10 +23,11 @@ public class WhileStatementDracoVMCodeGenerator {
     sb.label(startlabel);
 
     //push the expression
-    genDracoVMCodeForExpression(whileStmt.condition,sb,subTable,varTable);
-    sb.neg();
+    genDracoVMCodeForExpression(whileStmt.condition,sb,subTable,varTable); //+1
+
+    sb.not();
     //if condition is false, jump to end
-    sb.if_goto(endlabel);
+    sb.if_goto(endlabel); //-1
 
     //execute statements
     for(StatementNode stmt : whileStmt.statements){
@@ -35,5 +36,6 @@ public class WhileStatementDracoVMCodeGenerator {
 
     sb._goto(startlabel);
     sb.label(endlabel);
+
   }
 }

@@ -6,6 +6,14 @@ import java.util.Arrays;
 
 public class App {
 
+    //Assembly debugging:
+    //(they are missing a stack display, but it be ok)
+    //https://carlosrafaelgn.com.br/Asm86/
+
+    //general having fun and trying different programming languages:
+    //https://tio.run/#
+    //https://www.tutorialspoint.com/codingground.htm
+
     public static final String lang_name = "DRAGON ";
 
     public static void main(String[] args) {

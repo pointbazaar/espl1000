@@ -21,15 +21,15 @@ public class LoopStatementDracoVMCodeGenerator {
     String endlabel = "loopend"+unique;
 
     //push the expression
-    genDracoVMCodeForExpression(loop.count,sb,subTable,varTable);
-    sb.dup();
+    genDracoVMCodeForExpression(loop.count,sb,subTable,varTable); //+1
+    sb.dup(); //+1
 
     sb.label(startlabel);
 
     //if counter is 0, jump to end
-    sb.iconst(0);
-    sb.eq();
-    sb.if_goto(endlabel);
+    sb.iconst(0); //+1
+    sb.eq(); //-1
+    sb.if_goto(endlabel); //-1
 
     //execute statements
     for(StatementNode stmt : loop.statements){
@@ -40,9 +40,10 @@ public class LoopStatementDracoVMCodeGenerator {
     sb.dec();
 
     //duplicate top of stack so we can compare again
-    sb.dup();
+    sb.dup(); //+1
     sb._goto(startlabel);
+
     sb.label(endlabel);
-    sb.pop();
+    sb.pop(); //-1
   }
 }

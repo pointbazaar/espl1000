@@ -88,8 +88,11 @@ public class AssemblyWriter {
         any("pop "+reg,comment);
     }
 
+    public void call(String methodName,String comment) {
+        any("call "+methodName,comment);
+    }
     public void call(String methodName) {
-        any("call "+methodName);
+        call(methodName,"");
     }
 
     public void add(Register dest,int val) {
@@ -120,10 +123,12 @@ public class AssemblyWriter {
         label(label,"");
     }
 
-    public void jmp(String targetLabel) {
-        any("jmp "+targetLabel);
+    public void jmp(String targetLabel,String comment) {
+        any("jmp "+targetLabel,comment);
     }
-
+    public void jmp(String targetLabel) {
+        jmp(targetLabel,"");
+    }
 
 
     /** i read that the 'mul' instruction only takes one operang,
@@ -142,12 +147,19 @@ public class AssemblyWriter {
     }
 
     public void cmp(Register reg1, Register reg2) {
-        any("cmp "+reg1+","+reg2);
+        cmp(reg1,reg2,"");
+    }
+    public void cmp(Register reg1, Register reg2,String comment) {
+        any("cmp "+reg1+","+reg2,comment);
     }
 
     public void je(String label) {
-        any("je "+label);
+        je(label,"");
     }
+    public void je(String label,String comment) {
+        any("je "+label,comment);
+    }
+
 
     public void xor(Register reg1, Register reg2, String comment) {
         any("xor "+reg1+","+reg2,comment);
@@ -182,12 +194,18 @@ public class AssemblyWriter {
 
     //jump if comparison result was 'greater'
     public void jg(String label) {
-        any("jg "+label);
+        jg(label,"");
+    }
+    public void jg(String label,String comment) {
+        any("jg "+label,comment);
     }
 
     //jump if comparison result was 'lesser'
     public void jl(String label) {
-        any("jl "+label);
+        jl(label,"");
+    }
+    public void jl(String label,String comment) {
+        any("jl "+label,comment);
     }
 
     /** dereferences a pointer register,
@@ -199,7 +217,7 @@ public class AssemblyWriter {
     }
 
     public void dereference(Register register, String comment) {
-        any("mov "+register+","+"["+register+"]","dereference "+register+"  comment: "+comment);
+        any("mov "+register+","+"["+register+"]",comment+"// dereference "+register);
     }
 
     public void store_second_into_memory_location_pointed_to_by_first(Register first, Register second) {
