@@ -1,8 +1,11 @@
-use Base.dg
 
 class MyOutput{
 	Int main(){
-		println(2345);
+		putchar('c');
+		subr();
 		return 0;
+	}
+	Int subr(){
+		return 3;
 	}
 }
