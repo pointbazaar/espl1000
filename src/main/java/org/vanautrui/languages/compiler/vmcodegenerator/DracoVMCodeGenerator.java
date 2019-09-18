@@ -179,6 +179,9 @@ public class DracoVMCodeGenerator {
             case "<":
                 sb.lt();
                 break;
+            case "*":
+                sb.mul();
+                break;
             case "/":
                 sb.div();
                 break;

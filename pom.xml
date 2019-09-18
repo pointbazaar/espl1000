@@ -83,7 +83,6 @@
                         <exclude>CodeGeneratorTest.java</exclude>
                         <exclude>IfStatementCodeGeneratorTest.java</exclude>
                         <exclude>MethodCallStatementCodeGeneratorTest.java</exclude>
-                        <exclude>OperatorCodeGeneratorTest.java</exclude>
                         <exclude>ReturnStatementCodeGeneratorTest.java</exclude>
                         <exclude>WhileStatementCodeGeneratorTest.java</exclude>
                         <exclude>StringConstantCodeGeneratorTest.java</exclude>
