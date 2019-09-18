@@ -1,0 +1,6 @@
+download sasm
+sasm is an assembly IDE and debugger
+
+(1) build the project
+(2) set some breakpoints
+(3) click 'debug'
