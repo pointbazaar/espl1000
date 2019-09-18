@@ -3,7 +3,7 @@ class Chars{
 	Int main(){
 		c='h';
 		
-		print(c);
+		putchar(c);
 		return 0;
 	}
 }

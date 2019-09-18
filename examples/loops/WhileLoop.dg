@@ -5,7 +5,7 @@ public class WhileLoop{
 		j=0;
 
 	        while (i < 3){
-
+			j=0;
 			while(j<2){
 				putchar('i');
 				j=j+1;
