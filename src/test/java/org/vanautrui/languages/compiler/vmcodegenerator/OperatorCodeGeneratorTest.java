@@ -68,10 +68,18 @@ public class OperatorCodeGeneratorTest {
         Assert.assertEquals("6",IOUtils.toString(pr.getInputStream()));
     }
 
-	@Test
+	  @Test
     public void test_can_div_Int()throws Exception{
         String source="public class MainTest6773 { public Int main(){ putdigit(3/2); return 0;} }";
         Process pr = compile_and_run_program_for_testing(source,"MainTest6773");
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
+    }
+
+    @Test
+    public void test_can_modulo_Int()throws Exception{
+        String source="public class MainTest67373 { public Int main(){ putdigit(3 % 2); return 0;} }";
+        Process pr = compile_and_run_program_for_testing(source,"MainTest67373");
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
     }

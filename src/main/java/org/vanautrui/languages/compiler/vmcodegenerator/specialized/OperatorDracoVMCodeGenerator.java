@@ -28,6 +28,9 @@ public class OperatorDracoVMCodeGenerator {
       case "!=":
         sb.neq();
         break;
+      case "%":
+        sb.mod();
+        break;
       default:
         throw new Exception("currently unsupported op: '"+opNode.operator+"'");
     }

@@ -74,6 +74,7 @@ public class AssemblyCodeGenerator {
             case "sub": compile_sub(instr,a); break;
             case "mul": compile_mul(instr,a); break;
             case "div": compile_div(instr,a); break;
+            case "mod": compile_mod(instr,a); break;
             case "neg": compile_neg(instr,a); break;
 
             //logic commands
@@ -102,6 +103,18 @@ public class AssemblyCodeGenerator {
             //unhandled cases
             default: throw new Exception("unrecognized vm instr "+instr.cmd);
         }
+    }
+
+    /**
+     * compiles the 'mod' dracovm instruction to assembly code
+     */
+    private static void compile_mod(VMInstr instr, AssemblyWriter a) {
+        //https://stackoverflow.com/questions/8021772/assembly-language-how-to-do-modulo
+        final String comment = instr.toString();
+        a.pop(ebx,comment);
+        a.pop(eax,comment);
+        a.div_eax_by(ebx,comment);
+        a.push(eax,comment);
     }
 
     private static void compile_not(VMInstr instr, AssemblyWriter a, long uniq) {

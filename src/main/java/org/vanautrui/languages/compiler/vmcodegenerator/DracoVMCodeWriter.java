@@ -215,4 +215,13 @@ public class DracoVMCodeWriter {
     eq();
     not();
   }
+
+  /**
+   * modulo. if the stack is like [ a,b <-esp]
+   * then after execution it would be:
+   * [ (a modulo b)  <- esp ]
+   */
+  public void mod() {
+    any("mod");
+  }
 }

@@ -230,7 +230,10 @@ public class AssemblyWriter {
     }
 
     public void div_eax_by(Register register) {
-        any("div "+register);
+        div_eax_by(register,"");
+    }
+    public void div_eax_by(Register register,String comment) {
+        any("div "+register,comment);
     }
 
     public void ret() {
