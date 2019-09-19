@@ -25,8 +25,11 @@ public class OperatorDracoVMCodeGenerator {
       case "/":
         sb.div();
         break;
+      case "!=":
+        sb.neq();
+        break;
       default:
-        throw new Exception("currently unsupported op "+opNode.operator);
+        throw new Exception("currently unsupported op: '"+opNode.operator+"'");
     }
   }
 }

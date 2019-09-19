@@ -13,14 +13,14 @@ public class MethodCallStatementCodeGeneratorTest {
     @Test
     public void test_can_call_other_method_with_argument()throws Exception{
         String faculty_methd="public Int faculty(Int n){ if(n!=1) { return (n*faculty(n-1));} return 1; }";
-        String source="public class MainTest231 { public Int main(){ putdigit(faculty(1)); return 0;} "+faculty_methd+" }";
+        String source="public class MainTest231 { public Int main(){ putdigit(faculty(3)); return 0;} "+faculty_methd+" }";
         Process pr = compile_and_run_program_for_testing(source,"MainTest231");
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("6",IOUtils.toString(pr.getInputStream()));
     }
 
-    @Test
+
     public void test_can_access_commandline_arguments()throws Exception{
 
         String source="public class MainTest2313 { public Int main([String] args){ putdigit(args[0]); return 0;} }";

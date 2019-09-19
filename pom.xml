@@ -81,8 +81,6 @@
                 <configuration>
                     <excludes>
                         <exclude>CodeGeneratorTest.java</exclude>
-                        <exclude>MethodCallStatementCodeGeneratorTest.java</exclude>
-                        <exclude>WhileStatementCodeGeneratorTest.java</exclude>
                         <exclude>StringConstantCodeGeneratorTest.java</exclude>
 
                     </excludes>

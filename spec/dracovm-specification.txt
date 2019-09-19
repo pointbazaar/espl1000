@@ -26,6 +26,7 @@ the RETURNS is what is left on the stack after operands have been popped
 
 
 	eq	1 or 0	equality
+	neq 1 or 0  !=  // not equals
 	gt	1 or 0 	>
 	lt	1 or 0	<
 	geq	1 or 0	>=

@@ -206,4 +206,13 @@ public class DracoVMCodeWriter {
     //boolean negation
     any("not");
   }
+
+  /**
+   * if the 2 topmost values on stack are not equal, this returs true
+   * else this returns false
+   */
+  public void neq() {
+    eq();
+    not();
+  }
 }
