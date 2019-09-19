@@ -26,11 +26,11 @@ public class Array1{
 		i=0;
 		while(i<size){
 
-			print(arr[i]);
-			print(",");
+			putdigit(arr[i]);
+			putchar(',');
 			i=i+1;
 		}
-		println();
+		putchar(' ');
 		return 0;
 	}
 }

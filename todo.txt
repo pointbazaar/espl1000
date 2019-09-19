@@ -1,3 +1,5 @@
 [ ] make a vm command to print a register dump to the console
 [ ] make a vm command to print a stack dump to the console
 [ ] make a dracovm code verifier, which checks that for every branch of execution in every subroutine, there amount left on the stack at the end is the correct amount. 
+[ ] maybe implement the primitive "Anything" Type. this would be helpful for implementing various subroutines that operate on arrays. i could implement a builtin 
+    subroutine "arrlen" that would determine the length of any arrays (arrays should be length-prefixed in dragon).
