@@ -7,6 +7,8 @@ import org.junit.Test;
 import static org.vanautrui.languages.CodeGeneratorTestUtils.compile_and_run_program_for_testing;
 
 public class OperatorCodeGeneratorTest {
+    //https://godbolt.org/
+
 	//this class tests that the 
 	//Dragon Operator Code Generator generates correct operator byte codes
 
