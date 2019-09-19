@@ -12,17 +12,6 @@ import java.util.stream.IntStream;
 public class SubroutineSymbolTable {
 
     private List<SubroutineSymbolTableRow> symbolTable;
-    private int index_count=0;
-
-    /*
-    public static final Map<String,String> builtin_subroutine_types=new HashMap<String,String>(){{
-        put("putchar", "Int");
-        put("readint", "Int");
-        put("int2char", "Char");
-        put("float2int", "Int");
-        put("int2float", "Float");
-    }};
-    */
 
     public SubroutineSymbolTable(){
         this.symbolTable=new ArrayList<>();
@@ -32,6 +21,7 @@ public class SubroutineSymbolTable {
         //already implemented subroutines
         this.add(new SubroutineSymbolTableRow("putchar","Int","Builtin",0,1));
         this.add(new SubroutineSymbolTableRow("putdigit","Int","Builtin",0,1));
+        this.add(new SubroutineSymbolTableRow("readchar","Char","Builtin",0,0));
 
         //to be implemented later
         this.add(new SubroutineSymbolTableRow("readint","Int","Builtin",0,1));
@@ -43,7 +33,6 @@ public class SubroutineSymbolTable {
     public void add(SubroutineSymbolTableRow row) {
         if(!this.containsSubroutine(row.getName())) {
             this.symbolTable.add(row);
-            index_count++;
         }
     }
 

@@ -14,9 +14,60 @@ import static org.vanautrui.languages.vmcompiler.model.Register.ecx;
  *
  * These subroutines must behave like any other subroutine when called.
  */
+
 public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
 
-  public static void compile_putchar(AssemblyWriter a)throws Exception{
+  /**
+   * Compiles all builtin subroutines.
+   * This is so that we can call this subroutine in assembly code generation,
+   * and do not forget a subroutine.
+   * So a new subroutine can be added easily
+   */
+  public static void compile_all_builtin_subroutines(AssemblyWriter a)throws Exception{
+    compile_readchar(a);
+    compile_putchar(a);
+    compile_putdigit(a);
+  }
+
+  /**
+   * reads a single character from stdin
+   */
+  private static void compile_readchar(AssemblyWriter a){
+    final String name="readchar: ";
+
+    //TODO: handle errors that could occur
+
+    SubroutineFocusedAssemblyCodeGenerator.compile_subroutine("readchar",a);
+
+    //push a placeholder for the value to read on the stack
+    a.mov(eax,0);
+    a.push(eax);
+
+    //SYSCALL START
+    a.mov(eax,3,name+"sys_read");
+    a.mov(ebx,0,name+"stdin");
+
+    //print the char on stack
+    a.mov(ecx, esp,name+"read into the placeholder DWORD we pushed onto the stack");
+
+    //val length
+    a.mov(Register.edx,1,name+"value length");
+    a.call_kernel();
+    //SYSCALL END
+
+    //push return value: we do not need to push a return value,
+    //as we already pushed a placeholder where our char (which has been read by now)
+    // should have been placed
+
+    //we must swap return value with the return address in order to return
+    //(i am so dumb. took me so long to find this.)
+    AssemblyCodeGenerator.compile_swap(name+"swap return address with return value to return",a);
+
+    //return from subroutine
+    SubroutineFocusedAssemblyCodeGenerator.compile_return(a);
+  }
+
+  private static void compile_putchar(AssemblyWriter a)throws Exception{
     //prints top of stack as ascii char to stdout
 
     SubroutineFocusedAssemblyCodeGenerator.compile_subroutine("putchar",a);
@@ -50,7 +101,7 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
     SubroutineFocusedAssemblyCodeGenerator.compile_return(a);
   }
 
-  public static void compile_putdigit(AssemblyWriter a) throws Exception{
+  private static void compile_putdigit(AssemblyWriter a) throws Exception{
     //prints the Int on top of stack as char to stdout
     SubroutineFocusedAssemblyCodeGenerator.compile_subroutine("putdigit",a);
     final String name="putdigit";

@@ -5,11 +5,42 @@ import org.junit.Test;
 import org.vanautrui.languages.CodeGeneratorTestUtils;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class SubroutineFocusedAssemblyCodeGeneratorTest {
+
+  @Test
+  public void test_compile_readchar()throws Exception{
+
+    DracoVMCodeWriter a=new DracoVMCodeWriter();
+
+    a.subroutine("main",0,0);
+
+    a.call("readchar");
+    a.call("putchar");
+    a.iconst(0);
+    a.exit();
+
+    List<String> vmcodes=a.getDracoVMCodeInstructions();
+
+    Process pr = CodeGeneratorTestUtils.compile_and_run_vmcodes_but_not_waitFor(vmcodes, "readchartesting");
+
+    pr.getOutputStream().write('c');
+    pr.getOutputStream().write('\n');
+    pr.getOutputStream().close();
+
+    pr.waitFor();
+
+    assertEquals(0,pr.exitValue());
+    assertEquals("c", IOUtils.toString(pr.getInputStream()));
+
+    Files.deleteIfExists(Paths.get("readchartesting"));
+    Files.deleteIfExists(Paths.get("readchartesting.asm"));
+  }
 
   @Test
   public void test_compile_putchar()throws Exception{

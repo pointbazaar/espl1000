@@ -1,13 +1,10 @@
 public class Input{
     	public Int main(){
 		
-        		//println("please enter a string");
 
-        		//readln() reads a string		
+        		x=readchar();
 
-        		x=readln();
-
-        		println(x);
+        		putchar(x);
 		return 0;
     	}
 }
