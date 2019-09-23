@@ -2,10 +2,7 @@ package org.vanautrui.languages.compiler.typechecking;
 
 import org.apache.commons.lang3.StringUtils;
 import org.vanautrui.languages.TerminalUtil;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.DeclaredArgumentNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.OperatorNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.*;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.StatementNode;
@@ -273,12 +270,31 @@ public class TypeChecker {
             VariableNode variableNode = (VariableNode) termNode.termNode;
             typeCheckVariableNode(asts,classNode,methodNode,variableNode,subTable,varTable);
 
-        }else if(termNode.termNode instanceof MethodCallNode){
+        }else if(termNode.termNode instanceof MethodCallNode) {
 
-            typeCheckMethodCallNode(asts,classNode,methodNode,(MethodCallNode)termNode.termNode,subTable,varTable);
-
+            typeCheckMethodCallNode(asts, classNode, methodNode, (MethodCallNode) termNode.termNode, subTable, varTable);
+        }else if(termNode.termNode instanceof ArrayConstantNode){
+            typeCheckArrayConstantNode(asts,classNode,methodNode,(ArrayConstantNode) termNode.termNode,subTable,varTable);
         }else{
             throw new Exception("unhandled case "+termNode.termNode.getClass().getName());
+        }
+    }
+
+    private void typeCheckArrayConstantNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, ArrayConstantNode arrConstNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {
+        //all the types of the elements should be the same
+        if(arrConstNode.elements.size()>0) {
+
+            String type_of_elements = TypeResolver.getTypeExpressionNode(arrConstNode.elements.get(0), methodNode, subTable, varTable);
+            for(ExpressionNode expr: arrConstNode.elements){
+                String element_type = TypeResolver.getTypeExpressionNode(expr,methodNode,subTable,varTable);
+                if(!element_type.equals(type_of_elements)){
+                    throw new Exception("type of the array items was inferred to "
+                            +type_of_elements
+                            +" from the first element's type, but type differed at index "
+                            +arrConstNode.elements.indexOf(expr)+" : it's type was "+element_type);
+                }
+                typeCheckExpressionNode(asts,classNode,methodNode,expr,subTable,varTable);
+            }
         }
     }
 
