@@ -1,5 +1,5 @@
 public class Array1{
-	public Int main(){
+	public PInt main(){
 
 		arr=[1,2,3,4];
 
@@ -10,7 +10,7 @@ public class Array1{
 		return 0;	
 
 	}
-	public [Int] reversearr([Int] arr,Int size){
+	public [PInt] reversearr([PInt] arr,PInt size){
 		//modified
 		arr2=[0,0,0,0];
 		i=0;
@@ -21,7 +21,7 @@ public class Array1{
 		}
 		return arr2;
 	}
-	public Int printarr([Int] arr,Int size){
+	public PInt printarr([PInt] arr,PInt size){
 		
 		i=0;
 		while(i<size){

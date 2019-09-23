@@ -283,10 +283,19 @@ public class TypeChecker {
     }
 
     private void typeCheckVariableNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, VariableNode variableNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
-        //TODO: it should check that the variable is
+        //it should check that the variable is
         //declared in method scope or class scope.
         //so there should be some declaration of it
-        //TODO: also check that the variable is not duplicate declaration
+
+        if(variableNode.indexOptional.isPresent()){
+            //if there is an index, it should be positive. we can check one of the bounds for free
+            //by only accepting PInt type
+            String index_type = TypeResolver.getTypeExpressionNode(variableNode.indexOptional.get(), methodNode, subTable, varTable);
+            if(!index_type.equals("PInt")){
+                throw new Exception("can only index into arrays with PInt type. Because an array index is >= 0.");
+            }
+        }
+
 
         //identifiers can only be used within a class or method so
         //there should be a context
@@ -298,19 +307,10 @@ public class TypeChecker {
             }
         }
 
-        //it is not declared in class scope, it should be declared in
-        //method scope
-
-        for(DeclaredArgumentNode arg : methodNode.arguments){
-            if(arg.name.equals(variableNode.name)){
-                return;
-            }
+        //search if identifier is declared as a local variable or argument variable
+        if(varTable.containsVariable(variableNode.name)){
+            return;
         }
-
-        //search if identifier is declared as a variable
-	if(varTable.containsVariable(variableNode.name)){
-		return;
-	}
 
         throw new Exception("could not find declaration for usage of variable '"+variableNode.name+"' \n"+subTable.toString());
     }
@@ -361,6 +361,9 @@ public class TypeChecker {
                     +" in source: '"+assignmentStatementNode.toSourceCode()+"'"
             );
         }
+
+        typeCheckVariableNode(asts,classNode,methodNode,assignmentStatementNode.variableNode,subTable,varTable);
+        typeCheckExpressionNode(asts,classNode,methodNode,assignmentStatementNode.expressionNode,subTable,varTable);
     }
 
     public static boolean isIntegralType(String type){
