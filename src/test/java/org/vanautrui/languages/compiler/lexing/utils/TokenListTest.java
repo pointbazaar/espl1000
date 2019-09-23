@@ -15,7 +15,7 @@ public class TokenListTest {
   @Test
   public void test_until() throws Exception{
     Lexer lexer = new Lexer();
-    TokenList tokens = lexer.lexCodeTestMode("public class Main { public Int }");
+    TokenList tokens = lexer.lexCodeTestMode("public class Main { public PInt }");
 
     TokenList untilTokens = tokens.until(new SymbolToken("{"));
 
@@ -26,35 +26,28 @@ public class TokenListTest {
   @Test
   public void test_split_blocks()throws Exception{
     Lexer lexer = new Lexer();
-    TokenList tokens = lexer.lexCodeTestMode("Int main(){ Int } Int subr(){ Char } ");
+    TokenList tokens = lexer.lexCodeTestMode("PInt main(){ PInt } PInt subr(){ Char } ");
 
     Pair<TokenList, TokenList> pair = tokens.split_into_tokens_and_next_block_and_later_tokens();
 
     TokenList left = pair.getLeft();
     TokenList right = pair.getRight();
 
-    //System.out.println(left.toSourceCodeFragment());
-    //System.out.println(right.toSourceCodeFragment());
-
     assertEquals(7,left.size());
     assertEquals(7,right.size());
-    assertTrue(left.startsWith(new TypeIdentifierToken("Int")));
-    assertTrue(right.startsWith(new TypeIdentifierToken("Int")));
+    assertTrue(left.startsWith(new TypeIdentifierToken("PInt")));
+    assertTrue(right.startsWith(new TypeIdentifierToken("PInt")));
   }
 
   @Test
   public void test_split_blocks_2()throws Exception{
     Lexer lexer = new Lexer();
-    TokenList tokens = lexer.lexCodeTestMode("Int main ( ) { x = 3 ; if ( x == 3 ) { y = 5 ; } } }");
+    TokenList tokens = lexer.lexCodeTestMode("PInt main ( ) { x = 3 ; if ( x == 3 ) { y = 5 ; } } }");
 
     Pair<TokenList, TokenList> pair = tokens.split_into_tokens_and_next_block_and_later_tokens();
 
     TokenList left = pair.getLeft();
     TokenList right = pair.getRight();
-
-    //System.out.println(left.toSourceCodeFragment());
-    //System.out.println(right.toSourceCodeFragment());
-
 
     assertEquals(1,right.size());
   }

@@ -36,7 +36,7 @@ public class ParserTest {
     public void test_can_parse_subroutine()throws Exception{
         Lexer lexer = new Lexer();
         TokenList tokens = lexer.lexCodeTestMode(
-                "Int main(){" +
+                "PInt main(){" +
                 "println(1);" +
                 "return 0;" +
                 "}");
@@ -50,7 +50,7 @@ public class ParserTest {
     public void test_can_parse_some_class()throws Exception{
         Lexer lexer = new Lexer();
         TokenList tokens = lexer.lexCodeTestMode("class MyOutput{" +
-                "Int main(){" +
+                "PInt main(){" +
                 "println(1);" +
                 "return 0;" +
                 "}" +

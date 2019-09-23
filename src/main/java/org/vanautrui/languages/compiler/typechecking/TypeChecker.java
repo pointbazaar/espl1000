@@ -38,7 +38,15 @@ public class TypeChecker {
 
     //the primitive types and their arrays
     public static final List<String> primitive_types_and_arrays_of_them =
-            Arrays.asList("Int","Float","Bool","Char","[Int]","[Float]","[Bool]","[Char]");
+            Arrays.asList(
+                    "PInt", // Int which is  >= 0
+                    "NInt", // Int which is <= 0
+                    "Integer",
+                    "Float","Bool","Char",
+                    "[PInt]","[NInt]",
+                    "[Integer]",
+                    "[Float]","[Bool]","[Char]"
+            );
 
     public void doTypeCheck(List<AST> asts,boolean debug) throws Exception{
         if(debug){
@@ -93,7 +101,6 @@ public class TypeChecker {
 
         typeCheckTypeIdentifierNode(asts,classNode,methodNode.type);
         for(StatementNode stmt : methodNode.statements){
-            //stmt.doTypeCheck(asts,classNode, Optional.of(methodNode));
             typeCheckStatementNode(asts,classNode,methodNode,stmt,subTable,varTable);
         }
         for(DeclaredArgumentNode arg : methodNode.arguments){
@@ -163,8 +170,8 @@ public class TypeChecker {
                                           LocalVarSymbolTable varTable) throws Exception{
         //the condition expression should be of type boolean
         String conditionType = TypeResolver.getTypeExpressionNode(ifStatementNode.condition,methodNode,subTable,varTable);
-        if(!conditionType.equals("Bool") && !conditionType.equals("Boolean")){
-            throw new Exception(" condition should be of type boolean");
+        if(!conditionType.equals("Bool")){
+            throw new Exception(" condition should be of type Bool");
         }
         for(StatementNode stmt : ifStatementNode.statements){
             typeCheckStatementNode(asts,classNode,methodNode,stmt,subTable,varTable);
@@ -173,8 +180,6 @@ public class TypeChecker {
             typeCheckStatementNode(asts,classNode,methodNode,stmt,subTable,varTable);
         }
     }
-
-
 
     private void typeCheckMethodCallNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, MethodCallNode methodCallNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
         //TODO: check that the method is called on an object
@@ -198,12 +203,6 @@ public class TypeChecker {
             List<AST> asts, ClassNode classNode, MethodNode methodNode,
             ExpressionNode expr, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable
     ) throws Exception{
-        //check that the terms have a type such that the operator will work
-
-        //for later:
-        //int * string      //repeat the string x times
-
-        //string + string   //concatenate
         //int + int
         //int - int
         //int * int
@@ -218,34 +217,35 @@ public class TypeChecker {
         //and let the other cases throw an exception
         //they should be implemented later
 
-	//the types should be all the same for now
-	typecheckTermNode(asts,classNode,methodNode,expr.term,subTable,varTable);
-	String type= TypeResolver.getTypeTermNode(expr.term,methodNode,subTable,varTable);
-	List<String> currentAllowedTypes=Arrays.asList("Int","Float");
+    //the types should be all the same for now
+    typecheckTermNode(asts,classNode,methodNode,expr.term,subTable,varTable);
+    String type= TypeResolver.getTypeTermNode(expr.term,methodNode,subTable,varTable);
+    List<String> currentAllowedTypes=Arrays.asList("PInt","Float");
 
-	//because the operators on them are not yet defined
-	List<String> lonelyAllowedTypes=Arrays.asList("String","[Int]","Char");
-	if(!currentAllowedTypes.contains(type)){
-	    if(lonelyAllowedTypes.contains(type) && expr.termNodes.size()==0){
+    //because the operators on them are not yet defined
+    List<String> lonelyAllowedTypes=Arrays.asList("String","[PInt]","Char");
+    if(!currentAllowedTypes.contains(type)){
+      if(lonelyAllowedTypes.contains(type) && expr.termNodes.size()==0){
 
-			//string may be there as a single expression 
-			//to return a string from an subroutine or print one
-			//currently we do not support concatenation and such
+      //string may be there as a single expression
+      //to return a string from an subroutine or print one
+      //currently we do not support concatenation and such
 
-		    //TODO: make it generic for all array types
+        //TODO: make it generic for all array types
 
             //a single array
         }else{
-			throw new Exception(type+" is not in the currently allowed types");
-		}
-	}
-        for (TermNode t : expr.termNodes){
-            if( !( TypeResolver.getTypeTermNode(t,methodNode,subTable,varTable).equals(type) ) ){
-                throw new Exception("for now, all types in an expression must be the same");
-            }
-            //typecheck the term node, maybe it contains identifiers that are not declared?
-            typecheckTermNode(asts,classNode,methodNode,t,subTable,varTable);
+            throw new Exception(type+" is not in the currently allowed types");
         }
+    }
+
+    for (TermNode t : expr.termNodes){
+        if( !( TypeResolver.getTypeTermNode(t,methodNode,subTable,varTable).equals(type) ) ){
+            throw new Exception("for now, all types in an expression must be the same");
+        }
+        //typecheck the term node, maybe it contains identifiers that are not declared?
+        typecheckTermNode(asts,classNode,methodNode,t,subTable,varTable);
+    }
 
 	List<String> currentAllowedOPs=Arrays.asList("+","-","*","/");
         for(OperatorNode op : expr.operatorNodes){
@@ -341,8 +341,8 @@ public class TypeChecker {
         //the condition expression should be of type boolean
 
         String countType= TypeResolver.getTypeExpressionNode(loopStatementNode.count,methodNode,subTable,varTable);
-        if(!countType.equals("Int")){
-            throw new Exception(" condition should be of type Int . this is a loop statement after all.");
+        if( ! countType.equals("PInt") ){
+            throw new Exception(" condition should be of an Integral Type >= 0 (PInt) . this is a loop statement after all.");
         }
         for(StatementNode stmt : loopStatementNode.statements){
             typeCheckStatementNode(asts,classNode,methodNode,stmt,subTable,varTable);
@@ -363,7 +363,9 @@ public class TypeChecker {
         }
     }
 
-
+    public static boolean isIntegralType(String type){
+        return Arrays.asList("PInt","NInt","Integer").contains(type);
+    }
 
     private void typeCheckTypeIdentifierNode(
             List<AST> asts, ClassNode classNode,

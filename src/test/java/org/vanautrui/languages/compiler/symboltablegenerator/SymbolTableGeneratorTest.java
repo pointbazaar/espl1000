@@ -32,7 +32,7 @@ public class SymbolTableGeneratorTest {
     @Test
     public void test_finds_1_local_var_and_1_arg()throws Exception{
 
-        AST ast = parse_for_test("class Main{ Int main(){  } Int subr(Int n){x=3;} }");
+        AST ast = parse_for_test("class Main{ PInt main(){  } PInt subr(PInt n){x=3;} }");
 
         SubroutineSymbolTable subTable = new SubroutineSymbolTable();
 
@@ -45,14 +45,14 @@ public class SymbolTableGeneratorTest {
         assertEquals(1,localVarTable.countArgs());
         assertEquals(1,localVarTable.countLocals());
 
-        assertEquals("Int",localVarTable.getTypeOfVariable("x"));
+        assertEquals("PInt",localVarTable.getTypeOfVariable("x"));
         assertEquals(2,localVarTable.size());
         assertEquals(1,localVarTable.getIndexOfVariable("x"));
     }
 
     @Test
     public void test_finds_local_vars_nested()throws Exception{
-        AST ast = parse_for_test("class Main{ Int main(){ x=3; if(x==3){y=5;} } }");
+        AST ast = parse_for_test("class Main{ PInt main(){ x=3; if(x==3){y=5;} } }");
 
         SubroutineSymbolTable subTable = new SubroutineSymbolTable();
 

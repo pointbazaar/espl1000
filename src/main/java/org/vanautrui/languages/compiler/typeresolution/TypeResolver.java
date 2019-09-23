@@ -12,6 +12,8 @@ import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.vanautrui.languages.compiler.typechecking.TypeChecker.isIntegralType;
+
 public class TypeResolver {
 
     //todo: make some class or global subroutine
@@ -19,7 +21,11 @@ public class TypeResolver {
     //to a jvm internal representation
 
     public static String getTypeIntegerConstantNode(IntConstNode intConstNode){
-        return "Int";
+        if(intConstNode.value>=0){
+            return "PInt";
+        }else{
+            return "NInt";
+        }
     }
     public static String getTypeFloatConstantNode(FloatConstNode node){
     	return "Float";
@@ -33,7 +39,7 @@ public class TypeResolver {
             //but this method should return the type also if it has an index
             if(variableNode.indexOptional.isPresent()){
                 String type = varTable.getTypeOfVariable(variableNode.name);
-                return type.substring(1,type.length()-1); //'[Int]' -> 'Int'
+                return type.substring(1,type.length()-1);
             }
 
 			return varTable.getTypeOfVariable(variableNode.name);
@@ -68,7 +74,12 @@ public class TypeResolver {
 
     }
 
-    private static String getTypeArrayConstNode(ArrayConstantNode arrayConstantNode,MethodNode methodNode, SubroutineSymbolTable subroutineSymbolTable, LocalVarSymbolTable varTable) throws Exception {
+    private static String getTypeArrayConstNode(
+            ArrayConstantNode arrayConstantNode,
+            MethodNode methodNode,
+            SubroutineSymbolTable subroutineSymbolTable,
+            LocalVarSymbolTable varTable) throws Exception
+    {
         //since the array types should be all the same,
         //that should be checked in the package responsible for typechecking
         //here we assume it will be checked there
@@ -82,13 +93,20 @@ public class TypeResolver {
         return "["+getTypeExpressionNode(arrayConstantNode.elements.get(0),methodNode,subroutineSymbolTable,varTable)+"]";
     }
 
-    public static String getTypeExpressionNode(ExpressionNode expressionNode, MethodNode methodNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
+
+
+    public static String getTypeExpressionNode(
+            ExpressionNode expressionNode,
+            MethodNode methodNode,
+            SubroutineSymbolTable subTable,
+            LocalVarSymbolTable varTable) throws Exception
+    {
         List<String> boolean_operators= Arrays.asList("<",">","<=",">=","==","!=");
 
         if(
-                getTypeTermNode(expressionNode.term,methodNode,subTable,varTable).equals("Int") &&
+                isIntegralType(getTypeTermNode(expressionNode.term,methodNode,subTable,varTable)) &&
                         expressionNode.termNodes.size()==1 &&
-                        getTypeTermNode(expressionNode.termNodes.get(0),methodNode,subTable,varTable).equals("Int") &&
+                        isIntegralType(getTypeTermNode(expressionNode.termNodes.get(0),methodNode,subTable,varTable)) &&
                         expressionNode.operatorNodes.size()==1 &&
                         (boolean_operators.contains(expressionNode.operatorNodes.get(0).operator))
         ){
@@ -108,15 +126,6 @@ public class TypeResolver {
 
         String type = getTypeTermNode(expressionNode.term,methodNode,subTable,varTable);
 
-        /*
-        for(DragonOperatorNode op : this.operatorNodes){
-            if(!op.operator.equals("+")){
-                throw new Exception("only '+' is supported for now");
-            }
-        }
-
-         */
-
         for (TermNode t : expressionNode.termNodes){
             String termType = getTypeTermNode(t,methodNode,subTable,varTable);
 
@@ -131,20 +140,19 @@ public class TypeResolver {
         return getTypeTermNode(expressionNode.term,methodNode,subTable,varTable);
     }
 
-    public static String getTypeMethodCallNode(MethodCallNode methodCallNode, SubroutineSymbolTable subTable) throws Exception{
+    public static String getTypeMethodCallNode(
+            MethodCallNode methodCallNode,
+            SubroutineSymbolTable subTable) throws Exception
+    {
 
         String subrName = methodCallNode.methodName;
-
-        //these calls are Void
-        //but since there is no void in this language, they are int
-        //we have to think about that during code generation later on
 
         if(subTable.containsSubroutine(subrName)){
             return subTable.getReturnTypeOfSubroutine(subrName);
         }
 
-        //TODO: throw exception if not found in symbol table
+
         System.out.println(subTable.toString());
-        throw new Exception("colud not get type of "+subrName+" (in TypeResolver.java)");
+        throw new Exception("could not get type of "+subrName+" (in TypeResolver.java)");
     }
 }

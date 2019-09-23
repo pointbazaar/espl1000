@@ -33,7 +33,7 @@ public class IdentifierTokenTest {
 
     @Test
     public void test_not_accept_uppercase()throws Exception{
-        CharacterList list = new CharacterList("Int x;");
+        CharacterList list = new CharacterList("PInt x;");
 
         try {
             IdentifierToken identifierToken = new IdentifierToken(list);

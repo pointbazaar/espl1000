@@ -19,7 +19,7 @@ public class ClassNodeTest {
         list.add(new SymbolToken("{"));
 
         list.add(new AccessModifierToken("public"));
-        list.add(new TypeIdentifierToken("Void"));
+        list.add(new TypeIdentifierToken("PInt"));
         list.add(new IdentifierToken("main"));
         list.add(new SymbolToken("("));
         list.add(new SymbolToken(")"));
@@ -43,7 +43,7 @@ public class ClassNodeTest {
         list.add(new SymbolToken("{"));
 
         list.add(new AccessModifierToken("public"));
-        list.add(new TypeIdentifierToken("Void"));
+        list.add(new TypeIdentifierToken("PInt"));
         list.add(new IdentifierToken("main"));
         list.add(new SymbolToken("("));
         list.add(new SymbolToken(")"));

@@ -8,36 +8,36 @@ public class TypeIdentifierTokenTest {
 
     @Test
     public void test_simple_type() throws Exception {
-        CharacterList list = new CharacterList("Int");
+        CharacterList list = new CharacterList("PInt");
 
         TypeIdentifierToken tk = new TypeIdentifierToken(list);
 
-        Assert.assertEquals("Int",tk.getContents());
+        Assert.assertEquals("PInt",tk.getContents());
     }
 
     @Test
     public void test_array_type() throws Exception {
-        CharacterList list = new CharacterList("[Int]");
+        CharacterList list = new CharacterList("[PInt]");
 
         TypeIdentifierToken tk = new TypeIdentifierToken(list);
 
-        Assert.assertEquals("[Int]",tk.getContents());
+        Assert.assertEquals("[PInt]",tk.getContents());
     }
 
     @Test
     public void test_parse_type_identifier_token() throws Exception {
 
-        CharacterList list = new CharacterList("Int x;");
+        CharacterList list = new CharacterList("PInt x;");
 
         TypeIdentifierToken identifierToken = new TypeIdentifierToken(list);
 
-        Assert.assertEquals("Int", identifierToken.getContents());
+        Assert.assertEquals("PInt", identifierToken.getContents());
     }
 
     @Test
     public void test_not_accept_lowercase() throws Exception {
 
-        CharacterList list = new CharacterList("int x;");
+        CharacterList list = new CharacterList("pint x;");
 
         try {
             TypeIdentifierToken identifierToken = new TypeIdentifierToken(list);

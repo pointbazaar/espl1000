@@ -19,14 +19,14 @@ public class SubroutineSymbolTable {
         //add the builtin subroutines
 
         //already implemented subroutines
-        this.add(new SubroutineSymbolTableRow("putchar","Int","Builtin",0,1));
-        this.add(new SubroutineSymbolTableRow("putdigit","Int","Builtin",0,1));
+        this.add(new SubroutineSymbolTableRow("putchar","PInt","Builtin",0,1));
+        this.add(new SubroutineSymbolTableRow("putdigit","PInt","Builtin",0,1));
         this.add(new SubroutineSymbolTableRow("readchar","Char","Builtin",0,0));
 
         //to be implemented later
-        this.add(new SubroutineSymbolTableRow("readint","Int","Builtin",0,1));
+        this.add(new SubroutineSymbolTableRow("readint","PInt","Builtin",0,1));
         this.add(new SubroutineSymbolTableRow("int2char","Char","Builtin",0,1));
-        this.add(new SubroutineSymbolTableRow("float2int","Int","Builtin",0,1));
+        this.add(new SubroutineSymbolTableRow("float2int","Integer","Builtin",0,1));
         this.add(new SubroutineSymbolTableRow("int2float","Float","Builtin",0,1));
     }
 

@@ -13,7 +13,7 @@ public class AssignmentStatementCodeGeneratorTest {
         //depends on loop statement,return statement already working
 
         String source="public class MainTest333{" +
-                "\tpublic Int main(){" +
+                "\tpublic PInt main(){" +
                 "\t\tx=3;" +
                 "\t\tloop x {putchar('x');}" +
                 "\t return 0;}" +
@@ -29,7 +29,7 @@ public class AssignmentStatementCodeGeneratorTest {
         //depends on loop statement,return statement already working
 
         String source="public class MainTest333{" +
-                "\tpublic Int main(){" +
+                "\tpublic PInt main(){" +
                 "\t\tx=3;" +
                 "\t\tx=2;" +
                 "\t\tloop x {putchar('x');}" +
@@ -44,7 +44,7 @@ public class AssignmentStatementCodeGeneratorTest {
     @Test
     public void test_can_read_from_array()throws Exception{
         String source="public class MainTest333{" +
-                "\tpublic Int main(){" +
+                "\tpublic PInt main(){" +
                 "\t\tarr=['A','B'];" +
                 "\t\tx=arr[0];" +
                 "\t\tputchar(x);" +
@@ -60,7 +60,7 @@ public class AssignmentStatementCodeGeneratorTest {
     @Test
     public void test_can_write_into_array()throws Exception{
         String source="public class MainTest454{" +
-                "\tpublic Int main(){" +
+                "\tpublic PInt main(){" +
                 "\t\tarr=['a','b','c'];" +
                 "\t\tarr[1]='d';" +
                 "\t\tputchar(arr[1]);" +

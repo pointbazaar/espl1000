@@ -14,7 +14,7 @@ public class MethodNodeTest {
 
 
         list.add(new AccessModifierToken("public"));
-        list.add(new TypeIdentifierToken("Void"));
+        list.add(new TypeIdentifierToken("PInt"));
         list.add(new IdentifierToken("main"));
         list.add(new SymbolToken("("));
         //arguments
@@ -41,7 +41,7 @@ public class MethodNodeTest {
 
 
         list.add(new AccessModifierToken("public"));
-        list.add(new TypeIdentifierToken("Void"));
+        list.add(new TypeIdentifierToken("PInt"));
         list.add(new IdentifierToken("main"));
         list.add(new SymbolToken("("));
         list.add(new SymbolToken(")"));
