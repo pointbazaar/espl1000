@@ -38,13 +38,7 @@ public class LocalVarSymbolTable  {
     }
 
     public int getIndexOfVariable(String varName) throws Exception{
-        for(int i=0;i<symbolTable.size();i++){
-            LocalVarSymbolTableRow r = symbolTable.get(i);
-            if(r.getName().equals(varName)){
-                return i;
-            }
-        }
-        throw new Exception("did not find symbol '"+varName+"' in symbol table");
+        return get(varName).getIndex();
     }
 
     public String getTypeOfVariable(String varName) throws Exception{

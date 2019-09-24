@@ -47,7 +47,7 @@ public class SymbolTableGeneratorTest {
 
         assertEquals("PInt",localVarTable.getTypeOfVariable("x"));
         assertEquals(2,localVarTable.size());
-        assertEquals(1,localVarTable.getIndexOfVariable("x"));
+        assertEquals(0,localVarTable.getIndexOfVariable("x"));
     }
 
     @Test
