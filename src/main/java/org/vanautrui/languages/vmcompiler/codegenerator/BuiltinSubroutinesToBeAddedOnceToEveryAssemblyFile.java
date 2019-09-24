@@ -75,6 +75,9 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
   }
 
   private static void compile_malloc(AssemblyWriter a) throws Exception{
+    //http://lxr.linux.no/#linux+v3.6/arch/x86/ia32/ia32entry.S#L372
+    //http://man7.org/linux/man-pages/man2/mmap.2.html
+
     //TODO: handle the error if memory could not be allocated
     final String name="malloc";
     //malloc receives as an argument the amount of DWORDs to allocate
@@ -84,16 +87,22 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
     //access our argument, push it onto the stack
     AssemblyCodeGenerator.compile_push(DracoVMCodeWriter.SEGMENT_ARG,0,a);
 
+    //this is to multiply by 4, so we allocate 32bit units.
+    a.pop(ecx,"size of segment to be allocated"); //pop our argument into ecx
+    a.mov(eax,4);
+    a.mul_eax_with(ecx);
+    a.mov(ecx,eax);
+
+
     a.mov(eax,192,"192 : mmap system call");
     a.xor(ebx,ebx,"addr=NULL");
-    a.pop(ecx,"size of segment to be allocated?"); //pop our argument into ecx
     a.mov(edx,0x7,"prot = PROT_READ | PROT_WRITE | PROT_EXEC");
     a.mov(esi,0x22,"flags=MAP_PRIVATE | MAP_ANONYMOUS");
     a.mov(edi,-1,"fd=-1");
 
     a.push(ebp,"save ebp as we should not mess with it"); //LINKED CODE 1 (they only work together)
 
-    a.xor(ebp,ebp,"offset=0");
+    a.mov(ebp,0,"offset=0 (4096*0)");
     a.call_kernel();
 
     a.pop(ebp,"restore ebp as we should not mess with it"); //LINKED CODE 1 (they only work together)

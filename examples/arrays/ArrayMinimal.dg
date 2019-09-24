@@ -1,0 +1,25 @@
+public class ArrayMinimal{
+	public PInt main(){
+
+		arr=[1,2];
+
+		putdigit(arr[0]);
+		putdigit(arr[1]);
+
+		//printarr(arr,4);
+		return 0;	
+
+	}
+	public PInt printarr([PInt] arr,PInt size){
+		
+		i=0;
+		while(i<size){
+
+			putdigit(arr[i]);
+			putchar(',');
+			i=i+1;
+		}
+		putchar(' ');
+		return 0;
+	}
+}

@@ -15,6 +15,8 @@ import static org.vanautrui.languages.vmcompiler.model.Register.*;
 
 public class AssemblyCodeGenerator {
 
+    //https://en.wikipedia.org/wiki/X86_instruction_listings
+
     public static List<String> compileVMCode(List<String> vmcode)throws Exception{
         //clean the vm code
         List<String> clean_vm_codes = clean_vm_code(vmcode);
@@ -33,14 +35,16 @@ public class AssemblyCodeGenerator {
 
     private static void compile_iconst(VMInstr instr, AssemblyWriter a) {
         int x = parseInt(instr.arg1.get());
-        a.mov(eax,x,instr.toString());
-        a.push(eax,instr.toString());
+        //a.mov(eax,x,instr.toString());
+        //a.push(eax,instr.toString());
+        a.push(x,instr.toString());
     }
 
     private static void compile_fconst(VMInstr instr,AssemblyWriter a) {
         float f = Float.parseFloat(instr.arg1.get());
-        a.mov(eax,f,instr.toString());
-        a.push(eax,instr.toString());
+        //a.mov(eax,f,instr.toString());
+        //a.push(eax,instr.toString());
+        a.push(f,instr.toString());
     }
 
     private static void compile_vm_instr(VMInstr instr,AssemblyWriter a)throws Exception{
@@ -81,7 +85,7 @@ public class AssemblyCodeGenerator {
             case "eq": compile_eq(instr,a,uniq); break;
             case "gt": compile_gt(instr,a,uniq); break;
             case "lt": compile_lt(instr,a,uniq); break;
-            case "not": compile_not(instr,a,uniq); break;
+            case "not": compile_not(instr,a); break;
 
             //inc,dec
             case "inc": compile_inc(a); break;
@@ -113,32 +117,19 @@ public class AssemblyCodeGenerator {
         a.push(eax,comment);
     }
 
-    private static void compile_not(VMInstr instr, AssemblyWriter a, long uniq) {
+    private static void compile_not(VMInstr instr, AssemblyWriter a) {
         //logical not
         //if there is a 1 (true) on the stack, after this vm command, there must be a 0 (false) on the stack
         //if there is a 0 (false) on the stack, after this vm command, there must be a 1 (true) on the stack
 
         //https://www.tutorialspoint.com/assembly_programming/assembly_logical_instructions.htm
 
-        String labeltrue="not_pushtrue"+uniq;
-        String labelend="not_end"+uniq;
+        final String comment = instr.toString();
 
-        a.mov(ebx,0);
-        a.pop(eax);
-        a.cmp(eax, ebx);
-        a.je(labeltrue);
-
-        //push 0 (false)
-        a.mov(eax,0);
-        a.push(eax);
-        a.jmp(labelend);
-
-        a.label(labeltrue);
-        //push 1 (true)
-        a.mov(eax,1);
-        a.push(eax);
-
-        a.label(labelend);
+        a.mov(ebx,1,comment);
+        a.pop(eax,comment);
+        a.xor(eax,ebx,comment);
+        a.push(eax,comment);
     }
 
     private static void compile_div(VMInstr instr, AssemblyWriter a) {
@@ -150,11 +141,11 @@ public class AssemblyCodeGenerator {
 
     private static void compile_mul(VMInstr instr, AssemblyWriter a) {
 
-        a.pop(ebx);
-        a.pop(eax);
+        a.pop(ebx,instr.toString());
+        a.pop(eax,instr.toString());
 
-        a.mul_eax_with(ebx);
-        a.push(eax);
+        a.mul_eax_with(ebx,instr.toString());
+        a.push(eax,instr.toString());
     }
 
     private static void compile_arrayread(VMInstr instr, AssemblyWriter a) {
@@ -185,16 +176,16 @@ public class AssemblyCodeGenerator {
      */
     private static void compile_arraystore(VMInstr instr, AssemblyWriter a) {
 
-        a.pop(ebx,instr.toString()); //value to store
+        a.pop(ebx,instr.toString()); //value to store //-1
 
-        a.pop(ecx,instr.toString()); //index
+        a.pop(ecx,instr.toString()); //index //-1
 
-        a.pop(eax,instr.toString()); //array_address
+        a.pop(eax,instr.toString()); //array_address //-1
 
         //address to store into = addray_address + index
-        a.add(eax,ecx);
+        a.add(eax,ecx,instr.toString()); //0
 
-        a.store_second_into_memory_location_pointed_to_by_first(eax,ebx,instr.toString());
+        a.store_second_into_memory_location_pointed_to_by_first(eax,ebx,instr.toString()); //0
     }
 
     private static void compile_dec(AssemblyWriter a){
@@ -204,9 +195,10 @@ public class AssemblyCodeGenerator {
     }
 
     private static void compile_inc(AssemblyWriter a){
-        a.pop(eax);
-        a.inc(eax);
-        a.push(eax);
+        final String comment="inc";
+        a.pop(eax,comment);
+        a.inc(eax,comment);
+        a.push(eax,comment);
     }
 
     /**
@@ -240,14 +232,12 @@ public class AssemblyCodeGenerator {
         a.jl(labeltrue,comment);
 
         //push 0 (false)
-        a.mov(eax,0,comment);
-        a.push(eax,comment);
+        a.push(0,comment);
         a.jmp(labelend,comment);
 
         a.label(labeltrue,comment);
         //push 1 (true)
-        a.mov(eax,1,comment);
-        a.push(eax,comment);
+        a.push(1,comment);
 
         a.label(labelend,comment);
     }
@@ -263,14 +253,12 @@ public class AssemblyCodeGenerator {
         a.jg(labeltrue,comment);
 
         //push 0 (false)
-        a.mov(eax,0,comment);
-        a.push(eax,comment);
+        a.push(0,comment);
         a.jmp(labelend,comment);
 
         a.label(labeltrue,comment);
         //push 1 (true)
-        a.mov(eax,1,comment);
-        a.push(eax,comment);
+        a.push(1,comment);
 
         a.label(labelend,comment);
     }
@@ -317,9 +305,7 @@ public class AssemblyCodeGenerator {
 
     private static void compile_cconst(VMInstr instr, AssemblyWriter a) {
         char c = instr.arg1.get().charAt(0);
-
-        a.mov(eax,(int)c,instr.toString());
-        a.push(eax,instr.toString());
+        a.push((int)c,instr.toString());
     }
 
 
@@ -328,21 +314,10 @@ public class AssemblyCodeGenerator {
 
         final String comment="if-goto";
 
-        String truelabel = "ifgoto_true"+uniq;
-        String endlabel = "ifgoto_end"+uniq;
-
         a.pop(eax,comment); //pops the condition into eax
         a.mov(ebx,1,comment);  //ebx := true==1
         a.cmp(eax, ebx,comment);
-        a.je(truelabel,comment); //jumps, if eax==ebx
-        a.jmp(endlabel,comment);
-
-        //in case top of stack is 1 (true)
-        a.label(truelabel,comment);
-        a.jmp(instr.arg1.get(),comment);
-
-        //otherwise, just continue execution
-        a.label(endlabel,comment);
+        a.je(instr.arg1.get(),comment); //jumps, if eax==ebx
     }
 
     private static void compile_eq(VMInstr instr, AssemblyWriter a,long uniq) {
@@ -357,14 +332,12 @@ public class AssemblyCodeGenerator {
         a.je(labeltrue,comment);
 
         //push 0 (false)
-        a.mov(eax,0,comment);
-        a.push(eax,comment);
+        a.push(0,comment);
         a.jmp(labelend,comment);
 
         a.label(labeltrue,comment);
         //push 1 (true)
-        a.mov(eax,1,comment);
-        a.push(eax,comment);
+        a.push(1,comment);
 
         a.label(labelend,comment);
     }
@@ -392,8 +365,9 @@ public class AssemblyCodeGenerator {
 
     private static void compile_dup(VMInstr instr, AssemblyWriter a) {
         //duplicates top of stack
-        a.pop(eax,instr.toString());
-        a.push(eax,instr.toString());
+        a.mov(eax,"[esp]",instr.toString());
+        //a.pop(eax,instr.toString());
+        //a.push(eax,instr.toString());
         a.push(eax,instr.toString());
     }
 

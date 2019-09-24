@@ -2,16 +2,34 @@ public class Array1{
 	public PInt main(){
 
 		arr=[1,2,3,4];
-
-		//x=arr[0];
-		printarr(arr,4);
+		
+		printarr(arr);
+		//printarr2(arr,0,0); //works
+		i=0;
+		while(i<2){
+			putdigit(arr[i]);
+			putchar(',');
+			i=i+1;
+		}
 		return 0;	
 
 	}
-	public PInt printarr([PInt] arr,PInt size){
+	public PInt printarr2([PInt] arr,PInt a,PInt b){
+
+		putdigit(arr[0]);
+		putchar(',');
+		putdigit(arr[1]);
+		putchar(',');
+		putdigit(arr[2]);
+		putchar(',');
+		putdigit(arr[3]);
+
+		return 0;
+	}
+	public PInt printarr([PInt] arr){
 		
 		i=0;
-		while(i<size){
+		while(i<2){
 
 			putdigit(arr[i]);
 			putchar(',');

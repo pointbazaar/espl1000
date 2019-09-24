@@ -74,6 +74,9 @@ public class AssemblyWriter {
     public void mov(Register dest,Register src) {
         mov(dest,src,"");
     }
+    public void mov(Register dest, String src, String comment) {
+        any("mov "+dest+","+src,comment);
+    }
 
     public void push(Register register) {
         push(register,"");
@@ -81,6 +84,14 @@ public class AssemblyWriter {
     public void push(Register register,String comment) {
         any("push "+register,comment);
     }
+    public void push(int value,String comment) {
+        any("push "+value,comment);
+    }
+    public void push(float f, String comment) {
+        any("push "+f,comment);
+    }
+
+
     public void pop(Register register) {
         pop(register,"");
     }
@@ -239,4 +250,7 @@ public class AssemblyWriter {
     public void ret() {
         any("ret");
     }
+
+
+
 }

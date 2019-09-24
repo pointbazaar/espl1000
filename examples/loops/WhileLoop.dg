@@ -1,5 +1,5 @@
 public class WhileLoop{
-	public Int main (){
+	public PInt main (){
 
 		i=0;
 		j=0;

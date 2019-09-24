@@ -24,9 +24,6 @@ public class SubroutineDracoVMCodeGenerator {
       sb.iconst(0,"push local vars on the stack");
     }
 
-    //push ebp
-    //mov esp ebp
-
     for(StatementNode stmt : m.statements){
       generateDracoVMCodeForStatement(stmt,m,sb,subTable,varTable);
     }
