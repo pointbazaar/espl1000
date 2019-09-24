@@ -85,15 +85,8 @@ SUBROUTINE CALLING COMMANDS:
 //value on the stack
 
 
-MEMORY ALLOCATION/DEALLOCTAION:
-->	malloc	AMOUNT 	
-	//amount is the amount of DWORDs (4 Bytes) to be reserved
-	//this is because our language currently operates in 32 bit mode
-	//this instructions takes 1 argument on the stack and returns one argument on the stack
-	//the return address is the address of the allocated memory
+ARRAY READ/WRITE:
 
-
-	
 ->	arraystore INDEX
 	//basically, before calling this vm command, the stack needs to look like:
 	//
@@ -133,24 +126,34 @@ MEMORY ALLOCATION/DEALLOCTAION:
 	//meaning this vm command reads from an array, and places the value on the stack
 
 
-->	free	ADDRESS
-	//deallocates the previously allocated block of memory at that address
 
 BUILTIN SUBROUTINES:
 			//these builtin subroutines are considered essential
 
-	putchar		//prints the char on top of stack, the basis for all output
-	putdigit	//prints the digit on top of stack to console. works like putchar, 
+	putchar(Char c)		//prints the char on top of stack, the basis for all output
+	putdigit(PInt digit)	//prints the digit on top of stack to console. works like putchar,
 			//except it adds some offset to make an ascii char from an int
 
-	readint		//reads an integer from stdin, pushes it on the stack.
+	readint()		//reads an integer from stdin, pushes it on the stack.
 
-	int2char	//converts an integer to its asciichar equivalent
+	int2char(Integer i)	//converts an integer to its asciichar equivalent
 			//it takes the top of stack, pops it, converts it to char
 			//then pushes it
 	
-	float2int	//these explain themselves,
-	int2float	//and just change the top of stack from one to the other type
+	float2int(Float f)	//these explain themselves,
+	int2float(Integer i)	//and just change the top of stack from one to the other type
+
+	malloc(PInt size) //returns a pointer to the allocated memory. size means the size in DWORDs
+
+	        //amount is the amount of DWORDs (4 Bytes) to be reserved
+            	//this is because our language currently operates in 32 bit mode
+            	//this instructions takes 1 argument on the stack and returns one argument on the stack
+            	//the return address is the address of the allocated memory
+
+
+
+	free(Integer pointer) //frees the allocated memory
+	//deallocates the previously allocated block of memory at that address
 
 
 CALLING CONVENTIONS:

@@ -1,5 +1,5 @@
 public class Read{
-	public Int main(){
+	public PInt main(){
 
 		arr=[1,2,3,4];
 

@@ -1,5 +1,5 @@
 public class Write{
-	public Int main(){
+	public PInt main(){
 
 		arr=[1,2];
 

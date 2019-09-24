@@ -5,21 +5,8 @@ public class Array1{
 
 		//x=arr[0];
 		printarr(arr,4);
-		arr2=reversearr(arr,4);
-		printarr(arr2,4);
 		return 0;	
 
-	}
-	public [PInt] reversearr([PInt] arr,PInt size){
-		//modified
-		arr2=[0,0,0,0];
-		i=0;
-		while(i<size){
-
-			arr2[i]=arr[size-i-1];
-			i=i+1;
-		}
-		return arr2;
 	}
 	public PInt printarr([PInt] arr,PInt size){
 		

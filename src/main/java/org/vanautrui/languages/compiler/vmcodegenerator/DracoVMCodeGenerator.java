@@ -1,15 +1,13 @@
 package org.vanautrui.languages.compiler.vmcodegenerator;
 
-import org.vanautrui.languages.compiler.parsing.astnodes.ITermNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ArrayConstantNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.terminal.*;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.FloatConstNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.VariableNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 
@@ -18,7 +16,6 @@ import java.util.Random;
 import java.util.Set;
 
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ExpressionDracoVMCodeGenerator.genDracoVMCodeForExpression;
-import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.MethodCallDracoVMCodeGenerator.genVMCodeForMethodCall;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.SubroutineDracoVMCodeGenerator.generateDracoVMCodeForMethod;
 
 public class DracoVMCodeGenerator {
@@ -84,36 +81,6 @@ public class DracoVMCodeGenerator {
         sb.iconst((bconst.value)?1:0);
     }
 
-    public static void genDracoVMCodeForTerm(TermNode tNode,DracoVMCodeWriter sb,SubroutineSymbolTable subTable,LocalVarSymbolTable varTable)throws Exception{
-        ITermNode t = tNode.termNode;
-        if(t instanceof FloatConstNode){
-            genVMCodeForFloatConst((FloatConstNode)t,sb);
-        }else if(t instanceof IntConstNode){
-            genVMCodeForIntConst(((IntConstNode)t).value,sb);
-        }else if(t instanceof ExpressionNode) {
-            ExpressionNode expressionNode = (ExpressionNode)t;
-            genDracoVMCodeForExpression(expressionNode,sb,subTable,varTable);
-        }else if(t instanceof VariableNode) {
-            //find the local variable index
-            // and push the variable onto the stack
-            VariableNode variableNode = (VariableNode) t;
-            genDracoVMCodeForVariable(variableNode,sb,subTable,varTable);
-        }else if(t instanceof MethodCallNode){
-            MethodCallNode methodCallNode = (MethodCallNode)t;
-            genVMCodeForMethodCall(methodCallNode,sb,subTable,varTable);
-
-        }else if(t instanceof BoolConstNode) {
-            genVMCodeForBoolConst((BoolConstNode)t,sb);
-        }else if(t instanceof ArrayConstantNode) {
-            ArrayConstantNode arrayConstantNode = (ArrayConstantNode) t;
-            genVMCodeForArrayConstant(arrayConstantNode,sb,subTable,varTable);
-        }else if (t instanceof CharConstNode) {
-            CharConstNode t1 = (CharConstNode) t;
-            genVMCodeForIntConst((int)t1.content,sb);
-        }else{
-            throw new Exception("unhandled case");
-        }
-    }
 
     /**
      * after this subroutine, the address of the array with the specified elements inside is on the stack
@@ -123,11 +90,17 @@ public class DracoVMCodeGenerator {
      * @param varTable
      * @throws Exception
      */
-    private static void genVMCodeForArrayConstant(ArrayConstantNode arrayConstantNode, DracoVMCodeWriter sb, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
+    public static void genVMCodeForArrayConstant(ArrayConstantNode arrayConstantNode, DracoVMCodeWriter sb, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
 
         //allocate space for the new array.
         //this leaves the address of the new array (the new array resides on the heap) on the stack
-        sb.malloc(arrayConstantNode.elements.size(),"malloc some space for a new array");
+
+        sb.iconst(arrayConstantNode.elements.size()); //amount of DWORD's to reserve
+        sb.call("malloc"); //should leave the address to the newly allocated space on the stack
+
+        //caller removes the arguments
+        sb.swap("remove previously pushed arguments");
+        sb.pop("remove previously pushed arguments");
 
         //put the individual elements into the array
         for(int i=0;i<arrayConstantNode.elements.size();i++) {

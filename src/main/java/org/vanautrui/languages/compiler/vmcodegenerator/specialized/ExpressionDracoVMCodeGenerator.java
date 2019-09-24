@@ -5,8 +5,8 @@ import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
 
-import static org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator.genDracoVMCodeForTerm;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.OperatorDracoVMCodeGenerator.genDracoVMCodeForOp;
+import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.TermDracoVMCodeGenerator.genDracoVMCodeForTerm;
 
 public class ExpressionDracoVMCodeGenerator {
 

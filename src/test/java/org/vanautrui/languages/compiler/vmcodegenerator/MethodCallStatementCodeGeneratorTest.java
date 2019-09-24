@@ -20,6 +20,16 @@ public class MethodCallStatementCodeGeneratorTest {
         Assert.assertEquals("6",IOUtils.toString(pr.getInputStream()));
     }
 
+    @Test
+    public void test_can_call_other_method_with_multiple_argument()throws Exception{
+        String subr="public PInt subr(PInt a,PInt b){ putdigit(a); putdigit(b); return 0; }";
+        String source="public class MainTest2311 { public PInt main(){ subr(1,2); return 0;} "+subr+" }";
+        Process pr = compile_and_run_program_for_testing(source,"MainTest2311");
+
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("12",IOUtils.toString(pr.getInputStream()));
+    }
+
 
     public void test_can_access_commandline_arguments()throws Exception{
 

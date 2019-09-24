@@ -6,7 +6,6 @@ import org.vanautrui.languages.vmcompiler.instructions.VMInstr;
 import org.vanautrui.languages.vmcompiler.model.Register;
 
 import static org.vanautrui.languages.vmcompiler.model.Register.*;
-import static org.vanautrui.languages.vmcompiler.model.Register.ecx;
 
 /**
  * contains the builtin subroutines of dragon, in assembly.
@@ -27,6 +26,9 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
     compile_readchar(a);
     compile_putchar(a);
     compile_putdigit(a);
+
+    compile_malloc(a);
+    compile_free(a);
   }
 
   /**
@@ -58,6 +60,49 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
     //push return value: we do not need to push a return value,
     //as we already pushed a placeholder where our char (which has been read by now)
     // should have been placed
+
+    //we must swap return value with the return address in order to return
+    //(i am so dumb. took me so long to find this.)
+    AssemblyCodeGenerator.compile_swap(name+"swap return address with return value to return",a);
+
+    //return from subroutine
+    SubroutineFocusedAssemblyCodeGenerator.compile_return(a);
+  }
+
+  private static void compile_free(AssemblyWriter a){
+    final String name = "free";
+    //TODO: not yet implemented
+  }
+
+  private static void compile_malloc(AssemblyWriter a) throws Exception{
+    //TODO: handle the error if memory could not be allocated
+    final String name="malloc";
+    //malloc receives as an argument the amount of DWORDs to allocate
+
+    SubroutineFocusedAssemblyCodeGenerator.compile_subroutine("malloc",a);
+
+    //access our argument, push it onto the stack
+    AssemblyCodeGenerator.compile_push(DracoVMCodeWriter.SEGMENT_ARG,0,a);
+
+    a.mov(eax,192,"192 : mmap system call");
+    a.xor(ebx,ebx,"addr=NULL");
+    a.pop(ecx,"size of segment to be allocated?"); //pop our argument into ecx
+    a.mov(edx,0x7,"prot = PROT_READ | PROT_WRITE | PROT_EXEC");
+    a.mov(esi,0x22,"flags=MAP_PRIVATE | MAP_ANONYMOUS");
+    a.mov(edi,-1,"fd=-1");
+
+    a.push(ebp,"save ebp as we should not mess with it"); //LINKED CODE 1 (they only work together)
+
+    a.xor(ebp,ebp,"offset=0");
+    a.call_kernel();
+
+    a.pop(ebp,"restore ebp as we should not mess with it"); //LINKED CODE 1 (they only work together)
+
+    //eax should now contain
+    //the address of the allocated memory segment
+
+    //now we push that pointer on the stack
+    a.push(eax);
 
     //we must swap return value with the return address in order to return
     //(i am so dumb. took me so long to find this.)

@@ -92,10 +92,6 @@ public class AssemblyCodeGenerator {
             case "if-goto": compile_if_goto(instr,a,uniq); break;
             case "label": a.label(instr.arg1.get()); break;
 
-            //memory management
-            case "malloc": compile_malloc(instr,a); break;
-            case "free": throw new Exception("free not yet implemented");
-
             //array related
             case "arraystore": compile_arraystore(instr,a); break;
             case "arrayread": compile_arrayread(instr,a); break;
@@ -326,30 +322,7 @@ public class AssemblyCodeGenerator {
         a.push(eax,instr.toString());
     }
 
-    private static void compile_malloc(VMInstr instr, AssemblyWriter a) {
-        //malloc receives as an argument the amount of DWORDs to allocate
-        int amount = parseInt(instr.arg1.get());
 
-        a.mov(eax,192,"192 : mmap system call");
-        a.xor(ebx,ebx,"addr=NULL");
-        a.mov(ecx, amount,"size of segment to be allocated?");
-        a.mov(edx,0x7,"prot = PROT_READ | PROT_WRITE | PROT_EXEC");
-        a.mov(esi,0x22,"flags=MAP_PRIVATE | MAP_ANONYMOUS");
-        a.mov(edi,-1,"fd=-1");
-
-        a.push(ebp,"save ebp as we should not mess with it"); //LINKED CODE 1 (they only work together)
-
-        a.xor(ebp,ebp,"offset=0");
-        a.call_kernel();
-
-        a.pop(ebp,"restore ebp as we should not mess with it"); //LINKED CODE 1 (they only work together)
-
-        //eax should now contain
-        //the address of the allocated memory segment
-
-        //now we push that pointer on the stack
-        a.push(eax);
-    }
 
     private static void compile_if_goto(VMInstr instr, AssemblyWriter a,long uniq) {
 

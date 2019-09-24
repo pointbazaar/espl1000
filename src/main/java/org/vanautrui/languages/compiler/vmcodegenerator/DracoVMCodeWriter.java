@@ -171,16 +171,6 @@ public class DracoVMCodeWriter {
     any("swap",comment);
   }
 
-  /**
-   * vm command to allocate the specified amount of DWORDs on the heap,
-   * and push the address of the allocated segment on the stack
-   * @param size_in_DWORDS
-   * @param comment
-   */
-  public void malloc(int size_in_DWORDS, String comment) {
-    any("malloc "+size_in_DWORDS,comment);
-  }
-
 
   public void arraystore() {
     any("arraystore");

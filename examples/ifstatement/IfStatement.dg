@@ -4,7 +4,9 @@ public class IfStatement{
 		x=3;
 
 		if(x<5){
-			println("x<5");
+			putchar('x');
+			putchar('<');
+			putchar('5');
 		}
 
 		return 0;
