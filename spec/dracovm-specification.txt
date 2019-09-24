@@ -162,10 +162,12 @@ CALLING CONVENTIONS:
 	first, all the arguments to a subroutine are pushed on the stack,
 	in reverse order.
 
+	after the callee has terminated, the caller clears the arguments off the stack.
+
 	REGARDING LOCAL VARIABLES:
 	local variables are pushed by the called subroutine in the order they
 	appear in the subroutine signature.
-	they must be cleared of the stack by the subroutine being called
+	they must be cleared off the stack by the subroutine being called
 
 
 
