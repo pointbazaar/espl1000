@@ -14,6 +14,17 @@ public class ReturnDracoVMCodeGenerator {
     if(containerMethod.methodName.equals("main")){
       sb.exit();
     }else{
+
+      //TODO: test the removal of local variables from the stack
+      //get rid of the local variables which were pushed before
+      int numberOfLocalVariablesOfSubroutine = subTable.getNumberOfLocalVariablesOfSubroutine(containerMethod.methodName);
+      final String comment  = "take local variables off the stack";
+      for(int i=0;i<numberOfLocalVariablesOfSubroutine;i++){
+        sb.swap(comment);
+        sb.pop(comment);
+      }
+
+
       //there is the return value on the stack,
       // we must swap that with the return address of the calling function, in order to return
       sb.swap("swap return value with return address of the calling function in order to return");

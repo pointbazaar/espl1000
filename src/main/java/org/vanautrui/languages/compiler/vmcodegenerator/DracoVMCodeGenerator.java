@@ -122,10 +122,10 @@ public class DracoVMCodeGenerator {
         //or argument, that would be different segments
         //we have to consider its index
 
-        String name = variableNode.name;
+        final String name = variableNode.name;
 
-        int index=varTable.getIndexOfVariable(name);
-        String segment = varTable.getSegment(name);
+        final int index=varTable.getIndexOfVariable(name);
+        final String segment = varTable.getSegment(name);
 
         sb.push(segment,index);
 
