@@ -1,11 +1,12 @@
 public class IfStatement{
-	public Int main(){
+	public PInt main(){
 
 		x=3;
 
 		if(x<5){
 			println("x<5");
 		}
+
 		return 0;
 	}
 }

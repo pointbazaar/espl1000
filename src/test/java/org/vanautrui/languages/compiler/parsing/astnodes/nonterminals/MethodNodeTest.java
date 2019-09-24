@@ -1,8 +1,12 @@
 package org.vanautrui.languages.compiler.parsing.astnodes.nonterminals;
 
 import org.junit.Test;
+import org.vanautrui.languages.compiler.lexing.Lexer;
+import org.vanautrui.languages.compiler.lexing.tokens.AccessModifierToken;
+import org.vanautrui.languages.compiler.lexing.tokens.IdentifierToken;
+import org.vanautrui.languages.compiler.lexing.tokens.SymbolToken;
+import org.vanautrui.languages.compiler.lexing.tokens.TypeIdentifierToken;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
-import org.vanautrui.languages.compiler.lexing.tokens.*;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 
 public class MethodNodeTest {
@@ -56,5 +60,12 @@ public class MethodNodeTest {
         list.add(new SymbolToken("}"));
 
         MethodNode methodNode = new MethodNode(list,true);
+    }
+
+    @Test
+    public void test2()throws Exception{
+        TokenList list = (new Lexer()).lexCodeTestMode("public PInt main ( ) { x = 3 ; if ( x < 5 ) { println ( x<5 ) ; } return 0 ; }");
+
+        MethodNode mthd = new MethodNode(list,true);
     }
 }

@@ -40,7 +40,7 @@ public class ParserTest {
                 "println(1);" +
                 "return 0;" +
                 "}");
-        System.out.println(tokens.toString());
+
 
         Parser parser = new Parser();
         MethodNode methodNode = new MethodNode(tokens,true);
@@ -55,7 +55,28 @@ public class ParserTest {
                 "return 0;" +
                 "}" +
                 "}");
-        System.out.println(tokens.toString());
+
+
+        Parser parser = new Parser();
+        AST ast = parser.parseTestMode(tokens, true);
+    }
+
+    @Test
+    public void test_can_parse_some_class2()throws Exception{
+        Lexer lexer = new Lexer();
+        TokenList tokens = lexer.lexCodeTestMode("public class IfStatement{\n" +
+                "\tpublic PInt main(){\n" +
+                "\n" +
+                "\t\tx=3;\n" +
+                "\n" +
+                "\t\tif(x<5){\n" +
+                "\t\t\tprintln(\"x<5\");\n" +
+                "\t\t}\n" +
+                "\n" +
+                "\t\treturn 0;\n" +
+                "\t}\n" +
+                "}\n");
+        //System.out.println(tokens.toString());
 
         Parser parser = new Parser();
         AST ast = parser.parseTestMode(tokens, true);

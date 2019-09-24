@@ -1,7 +1,7 @@
 package org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements;
 
-import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.lexing.tokens.SymbolToken;
+import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.IASTNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.IfStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.LoopStatementNode;
@@ -10,13 +10,10 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 
 public class StatementNode implements IASTNode {
 
-    //TODO: add more statement types
-
     //can be method call ,loop statement, while statement, ...
     public IStatementNode statementNode;
 
     public StatementNode(TokenList tokens) throws Exception {
-        //System.out.println("try parse DragonStatementNode");
 
         TokenList copy = tokens.copy();
 
@@ -24,7 +21,6 @@ public class StatementNode implements IASTNode {
             this.statementNode = new MethodCallNode(copy);
             copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(";"));
         }catch (Exception e1){
-            //maybe there is a loop statement
             try {
                 this.statementNode = new LoopStatementNode(copy);
             }catch (Exception e2){
@@ -49,6 +45,10 @@ public class StatementNode implements IASTNode {
 
     @Override
     public String toSourceCode() {
-        return this.statementNode.toSourceCode();
+        if(statementNode instanceof MethodCallNode){
+            return this.statementNode.toSourceCode()+";";
+        }else {
+            return this.statementNode.toSourceCode();
+        }
     }
 }

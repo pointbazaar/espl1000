@@ -43,6 +43,7 @@ public class TermNode implements IASTNode, IExpressionComputable {
 						//inline the stringConstant and its syntatic sugar
 						IToken token = tokens.get(0);
 						if (token instanceof StringConstantToken) {
+
 							String content = ((StringConstantToken) token).getContents();
 							TokenList tks = new TokenList();
 							tks.add(new SymbolToken("["));
@@ -55,10 +56,10 @@ public class TermNode implements IASTNode, IExpressionComputable {
 							tks.add(new SymbolToken("]"));
 							this.termNode=new ArrayConstantNode(tks);
 
-							tokens.consume(1);
-							} else {
-								throw new Exception("could not read stringConstant syntatic sugar");
-							}
+							copy.consume(1);
+						} else {
+							throw new Exception("could not read stringConstant syntatic sugar");
+						}
 					}catch (Exception e2){
 						try {
 							TokenList copy2=new TokenList(copy);

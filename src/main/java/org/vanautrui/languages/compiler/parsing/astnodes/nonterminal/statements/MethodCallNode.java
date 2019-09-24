@@ -35,6 +35,7 @@ public class MethodCallNode implements IASTNode, IStatementNode, IExpressionComp
         while (success_argument) {
             try {
                 TokenList copy2=new TokenList(copy);
+
                 copy2.expectAndConsumeOtherWiseThrowException(new SymbolToken(","));
                 this.argumentList.add(new ExpressionNode(copy2));
 
@@ -55,9 +56,7 @@ public class MethodCallNode implements IASTNode, IStatementNode, IExpressionComp
                 +"("+this.argumentList.stream().map(
                 ExpressionNode::toSourceCode
                 ).collect(Collectors.joining(","))
-                +")"
-                +";"
-        ;
+                +")";
     }
 
 }
