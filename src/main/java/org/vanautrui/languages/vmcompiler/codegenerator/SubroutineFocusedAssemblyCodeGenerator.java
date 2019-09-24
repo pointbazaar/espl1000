@@ -3,6 +3,7 @@ package org.vanautrui.languages.vmcompiler.codegenerator;
 import org.vanautrui.languages.vmcompiler.AssemblyWriter;
 import org.vanautrui.languages.vmcompiler.instructions.VMInstr;
 
+import static org.vanautrui.languages.vmcompiler.codegenerator.StackFocusedAssemblyCodeGenerator.compile_swap;
 import static org.vanautrui.languages.vmcompiler.model.Register.*;
 
 /**
@@ -23,7 +24,7 @@ public class SubroutineFocusedAssemblyCodeGenerator {
         a.call(subroutineName,instr.toString()); //puts the return address on the stack and jumps to label
 
         //swap return value with saved ebp
-        AssemblyCodeGenerator.compile_swap("swap return value with saved ebp",a);
+        compile_swap("swap return value with saved ebp",a);
 
         a.pop(ebp,"get our ebp back "+instr.toString());
     }
@@ -47,7 +48,7 @@ public class SubroutineFocusedAssemblyCodeGenerator {
             a.push(ebp, "push ebp to save ebp of caller "+comment);
 
             //swap with return address to provide correct order
-            AssemblyCodeGenerator.compile_swap(comment,a);
+            compile_swap(comment,a);
         }
 
         //to provide a base to reference arguments and local variables

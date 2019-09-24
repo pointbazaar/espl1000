@@ -1,17 +1,12 @@
 class Objects{
 
-	Int main(){
+	PInt main(){
 		a = new A;
 		a.x=3;
-		println(a.x);
+		putdigit(a.x);
 	}
 }
 
 class A{
-
-	Int x;
-
-	Int inc(){
-		this.x=this.x+1;
-	}
+	PInt x;
 }

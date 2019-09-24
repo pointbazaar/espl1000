@@ -5,6 +5,8 @@ import org.vanautrui.languages.vmcompiler.AssemblyWriter;
 import org.vanautrui.languages.vmcompiler.instructions.VMInstr;
 import org.vanautrui.languages.vmcompiler.model.Register;
 
+import static org.vanautrui.languages.vmcompiler.codegenerator.StackFocusedAssemblyCodeGenerator.compile_push;
+import static org.vanautrui.languages.vmcompiler.codegenerator.StackFocusedAssemblyCodeGenerator.compile_swap;
 import static org.vanautrui.languages.vmcompiler.model.Register.*;
 
 /**
@@ -63,7 +65,7 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
 
     //we must swap return value with the return address in order to return
     //(i am so dumb. took me so long to find this.)
-    AssemblyCodeGenerator.compile_swap(name+"swap return address with return value to return",a);
+    compile_swap(name+"swap return address with return value to return",a);
 
     //return from subroutine
     SubroutineFocusedAssemblyCodeGenerator.compile_return(a);
@@ -85,7 +87,7 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
     SubroutineFocusedAssemblyCodeGenerator.compile_subroutine("malloc",a);
 
     //access our argument, push it onto the stack
-    AssemblyCodeGenerator.compile_push(DracoVMCodeWriter.SEGMENT_ARG,0,a);
+    compile_push(DracoVMCodeWriter.SEGMENT_ARG,0,a);
 
     //this is to multiply by 4, so we allocate 32bit units.
     a.pop(ecx,"size of segment to be allocated"); //pop our argument into ecx
@@ -115,7 +117,7 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
 
     //we must swap return value with the return address in order to return
     //(i am so dumb. took me so long to find this.)
-    AssemblyCodeGenerator.compile_swap(name+"swap return address with return value to return",a);
+    compile_swap(name+"swap return address with return value to return",a);
 
     //return from subroutine
     SubroutineFocusedAssemblyCodeGenerator.compile_return(a);
@@ -127,7 +129,7 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
     SubroutineFocusedAssemblyCodeGenerator.compile_subroutine("putchar",a);
 
     //access our argument , ARG 0, by pushing it onto the stack
-    AssemblyCodeGenerator.compile_push(DracoVMCodeWriter.SEGMENT_ARG,0,a);
+    compile_push(DracoVMCodeWriter.SEGMENT_ARG,0,a);
 
     a.mov(eax,4,"putchar: sys_write");
     a.mov(ebx,1,"putchar: std_out");
@@ -149,7 +151,7 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
 
     //we must swap return value with the return address in order to return
     //(i am so dumb. took me so long to find this.)
-    AssemblyCodeGenerator.compile_swap("swap return address with return value to return",a);
+    compile_swap("swap return address with return value to return",a);
 
     //return from subroutine
     SubroutineFocusedAssemblyCodeGenerator.compile_return(a);
@@ -161,7 +163,7 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
     final String name="putdigit";
 
     //access our argument , ARG 0, by pushing it onto the stack
-    AssemblyCodeGenerator.compile_push(DracoVMCodeWriter.SEGMENT_ARG,0,a);
+    compile_push(DracoVMCodeWriter.SEGMENT_ARG,0,a);
 
     a.mov(eax,4,name+" sys_write");
     a.mov(ebx,1,name+" std_out");
@@ -190,7 +192,7 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
 
     //we must swap return value with the return address in order to return
     //(i am so dumb. took me so long to find this.)
-    AssemblyCodeGenerator.compile_swap("swap return address with return value to return",a);
+    compile_swap("swap return address with return value to return",a);
 
     SubroutineFocusedAssemblyCodeGenerator.compile_return(a);
   }
