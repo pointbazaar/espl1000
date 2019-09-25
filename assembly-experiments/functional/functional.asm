@@ -8,11 +8,7 @@ _start:	            ;tells linker entry point
    push subr ; pushing label on stack
 
    pop eax ; 
-
-   push _start_continue; together these 2 should make a 'call'
-   jmp eax    ;
-
-_start_continue:
+   call eax;
 
    mov eax,1; sys_exit
    int 0x80;

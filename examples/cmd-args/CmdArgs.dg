@@ -1,7 +1,7 @@
 class CmdArgs{
-	Int main([String] args){
+	PInt main([[Char]] args){
 		
-		println(args[0]);
+		putchar(args[0][0]);
 		return 0;
 	}
 }

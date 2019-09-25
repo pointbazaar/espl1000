@@ -1,5 +1,8 @@
 //PLANNED FOR NEXT GRAMMAR CHANGE
 
+
+//PLANNED FOR LATER
+
 simplevariable ::= identifier ('[' expression ']')?
 
 variable ::= simplevariable | variable '.' variable | methodCall '.' variable

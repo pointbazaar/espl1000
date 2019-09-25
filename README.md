@@ -28,7 +28,6 @@ This repo contains a simple, work-in-progress statically typed programming langu
 - [ ] pattern matching 
 - [ ] program verification (invariants)
 - [ ] strong type system
-- [ ] be able to call java code and be called from java code.
 
 object oriented programming, functional programming, imperative programming,
 concurrency, laziness, declarative programming, constraint based programming,
