@@ -1,4 +1,6 @@
 
+//inspiration: https://docs.oracle.com/javase/specs/jls/se7/html/jls-18.html
+
 //this file defines the grammar for the dragon language.
 
 //it is sometimes inconsistent with the AST Node classes in src/ , but 
@@ -30,8 +32,12 @@ class ::= accessmodifier? class identifier '{' classField* method* '}'
 classField ::= accessmodifier? Type identifier ';'
 
 Type ::= identifier 
+//TODO: implement below changes
+simplevariable ::= identifier ('[' expression ']')?
 
-variable ::= identifier ('[' expression ']')?
+//the variable should not have a method call at the end, because that is not something you can assign to.
+//TODO: implement below changes
+variable ::= simplevariable | variable '.' variable | methodCall '.' variable
 
 methodName ::= identifier
 
@@ -43,7 +49,7 @@ methodName ::= identifier
 
 method ::= accessmodifier Type methodName '(' declaredArgument* ')' '{' statement* '}'
 
-//TODO: implement the below
+
 // // functions are always public
 //functionTypeDecl ::= functionName '::' (Type '->')* Type
 // // like in haskell, there should be pattern matching available, so multiple definitions depending
@@ -59,8 +65,8 @@ declaredArgument ::= Type identifier
 
 //some of these have the semicolon themselves,
 statement ::= ( methodCall ';' | whileStatement | ifStatement | returnStatement | assignmentStatement )
-
-methodCall ::= methodName '(' (expression (, expression)*)?  ')'
+//TODO: implement below changes
+methodCall ::= variable? . methodName '(' (expression (, expression)*)?  ')'
 
 loopStatement ::= 'loop' expression '{' statement* '}'
 whileStatement ::= 'while' '(' expression ')' '{' statement* '}'
@@ -73,12 +79,27 @@ term ::= arrayConstant | boolConstant | integerConstant | charConstant | keyword
 
 expression ::= term (op term)*
 
-//this is a kind of expression inspired by haskell.
-//it is similar to the ternary operator
-//TODO: implement it
-ifThenElse ::= 'if' expression 'then' expression 'else' expression
 
-//TODO: these rules below are speculation. they are not yet in the language
-object ::= identifier
+
+//TODO: READ: IMPORTANT: these rules below are speculation. they are not yet in the language
+object ::= variable
 objectOrVariable ::= variable | fieldAccess | object
 fieldAccess ::= object '.' object | object '.' methodCall | methodCall '.' object
+
+//this is a kind of expression inspired by haskell.
+//it is similar to the ternary operator
+//maybe i should implement them
+ifThenElse ::= 'if' expression 'then' expression 'else' expression
+
+
+
+
+
+
+
+
+
+
+
+
+

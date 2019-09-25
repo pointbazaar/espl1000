@@ -12,3 +12,7 @@ and not have to deal with the interfaces of the jvm which i cannot change.
 idea:
 
 .dg -(draco compiler)-> .dgvm -(dracovm compiler)-> .asm -(nasm)-> executable machine code
+
+
+//https://cs.nyu.edu/courses/spring07/G22.3130-001/code_gen.html
+//https://cs.nyu.edu/courses/spring03/G22.2130-001/386_assembly_reference.txt
