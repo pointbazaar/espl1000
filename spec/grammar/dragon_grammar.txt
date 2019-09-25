@@ -1,0 +1,60 @@
+
+int ::= ... | -1 | 0 | 1 | 2 | ...
+charConstant ::= 'a' | ... | 'z' | 'A' | ... | 'Z'
+alphanumeric ::= int | charConstant | '_'
+
+identifier ::= charConstant alphanumeric*
+
+op ::= '+' | '-' | '*' | '/' | ...
+unaryOp ::= '-' | '!'
+boolConstant ::= 'true' | 'false'
+
+arrayConstant ::= '[' expression (',' expression)* ']'
+
+keywordConstant ::= 'null' | 'this' | booleanConstant
+accessmodifier ::= public | private
+
+
+AST ::= class+
+
+class ::= accessmodifier? class identifier '{' classField* method* '}'
+
+classField ::= accessmodifier? Type identifier ';'
+
+Type ::= identifier 
+
+variable ::= identifier ('[' expression ']')?
+
+methodName ::= identifier
+
+method ::= accessmodifier Type methodName '(' declaredArgument* ')' '{' statement* '}'
+
+declaredArgument ::= Type identifier
+
+statement ::= ( methodCall ';' | whileStatement | ifStatement | returnStatement | assignmentStatement )
+
+methodCall ::= methodName '(' (expression (, expression)*)?  ')'
+
+loopStatement ::= 'loop' expression '{' statement* '}'
+whileStatement ::= 'while' '(' expression ')' '{' statement* '}'
+ifStatement ::= 'if' '(' expression ')' '{' statement* '}' ( 'else' '{' statement* '}' )?
+returnStatement ::= 'return' expression? ';'
+
+assignmentStatement ::= variable '=' expression ';'
+
+term ::= arrayConstant | boolConstant | integerConstant | charConstant | keywordConstant | methodCall | '(' expression ')' | unaryOp term | variable
+
+expression ::= term (op term)*
+
+
+
+
+
+
+
+
+
+
+
+
+

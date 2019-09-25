@@ -1,0 +1,9 @@
+use Math.dg
+
+public class Use{
+
+	public Int main(){
+		println(sqrt(9.0));		
+		return 0;
+	}
+}

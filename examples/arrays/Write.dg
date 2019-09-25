@@ -1,0 +1,12 @@
+public class Write{
+	public PInt main(){
+
+		arr=[1,2];
+
+		arr[0]=2;
+		putdigit(arr[0]); 
+		return 0;
+		//2
+
+	}
+}

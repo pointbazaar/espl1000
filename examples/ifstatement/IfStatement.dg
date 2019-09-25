@@ -1,0 +1,14 @@
+public class IfStatement{
+	public PInt main(){
+
+		x=3;
+
+		if(x<5){
+			putchar('x');
+			putchar('<');
+			putchar('5');
+		}
+
+		return 0;
+	}
+}

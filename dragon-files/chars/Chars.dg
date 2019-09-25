@@ -1,9 +1,0 @@
-class Chars{
-	
-	Int main(){
-		c='h';
-		
-		print(c);
-		return 0;
-	}
-}

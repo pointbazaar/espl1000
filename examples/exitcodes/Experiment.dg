@@ -1,0 +1,5 @@
+class Experiment{
+	Int main(){
+		return 0;
+	}
+}

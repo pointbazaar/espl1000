@@ -1,0 +1,5 @@
+PInt //32 bit int which is >=0
+NInt //32 bit int which is <=0
+Integer //32 bit signed int without constraints, it takes longer to type, to encourage usage of more constrained types
+Float //32 bit floating point value
+Bool //boolean value

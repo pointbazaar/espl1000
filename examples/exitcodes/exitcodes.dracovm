@@ -1,0 +1,8 @@
+//this program should return with exit code 0
+//or with exit code 1
+//depending on which line is commented out
+
+subroutine main 0
+	push 0
+	return
+	

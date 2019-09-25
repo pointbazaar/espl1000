@@ -1,0 +1,11 @@
+public class Loop{
+
+    public Int main (){
+
+        loop 3{
+
+            putchar('x');
+       }
+	return 0;
+    }
+}

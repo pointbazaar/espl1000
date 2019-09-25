@@ -1,0 +1,15 @@
+class MethodCall2{
+	Int main(){
+		subr(2,1);
+		return 0;
+	}
+
+	Int subr(Int a,Int b){
+		return subr2(a);
+	}
+
+	Int subr2(Int a){
+		putchar('c');
+		return a;
+	}
+}

@@ -3,13 +3,9 @@ package org.vanautrui.languages.commandline;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
 import org.fusesource.jansi.Ansi;
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.FieldVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.vanautrui.languages.lexing.collections.CharacterList;
-import org.vanautrui.languages.lexing.collections.TokenList;
-import org.vanautrui.languages.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.lexing.utils.CharacterList;
+import org.vanautrui.languages.compiler.lexing.utils.TokenList;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -18,13 +14,12 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import static java.lang.System.currentTimeMillis;
 import static org.fusesource.jansi.Ansi.ansi;
-import static org.objectweb.asm.Opcodes.*;
-import static org.vanautrui.languages.commandline.compilerphases.CompilerPhaseUtils.*;
-import static org.vanautrui.languages.commandline.compilerphases.CompilerPhases.*;
+import static org.vanautrui.languages.commandline.CompilerPhaseUtils.*;
 
 public class dragonc {
     //this should be the compiler
@@ -48,22 +43,22 @@ public class dragonc {
         //this simplifies the usage of the compiler
         //also, everything that doesnt start with '-' is either a source file or directory
 
-        if(cmd.hasOption("clean")){
-            if(cmd.hasOption("debug")){
-                System.out.println("clearing the cache");
-            }
-            final String cache_dir=System.getProperty("user.home")+"/dragoncache";
-            FileUtils.deleteDirectory(Paths.get(cache_dir).toFile());
-        }
-
         if(cmd.hasOption("help")){
             printHelp();
-            return;
+        }else {
+
+            if(cmd.hasOption("clean")){
+                if(cmd.hasOption("debug")){
+                    System.out.println("clearing the cache");
+                }
+                final String cache_dir=System.getProperty("user.home")+"/dragoncache";
+                FileUtils.deleteDirectory(Paths.get(cache_dir).toFile());
+            }
+
+            List<String> fileArgs = args.stream().filter(str -> !str.startsWith("-")).collect(Collectors.toList());
+
+            compile_main_inner(getAllDragonFilesRecursively(fileArgs), cmd);
         }
-
-        List<String> fileArgs = args.stream().filter(str->!str.startsWith("-")).collect(Collectors.toList());
-
-        compile_main_inner(getAllDragonFilesRecursively(fileArgs),cmd);
     }
 
     private static List<File> getAllDragonFilesRecursively(List<String> fileArgs)throws Exception{
@@ -87,7 +82,11 @@ public class dragonc {
             }
         }
         if(results.size()==0){
-            throw new Exception("could not find any files with '.dg' extension.");
+            //use stdin to receive codes
+            //if no files or directories are given as arguments
+            //(unix philosophy)
+            //throw new Exception("could not find any files with '.dg' extension.");
+            //results.add(Paths.get("/dev/stdin").toFile());
         }
         return results;
     }
@@ -98,21 +97,27 @@ public class dragonc {
         StringBuilder sbh = new StringBuilder("");
         StringBuilder sbf = new StringBuilder("");
 
-        sbh.append(ansi().bold().a("\ndraco - dragon compiler\n\n").reset().toString());
+        sbh.append(ansi().bold().a("\ndraco - a compiler for the dragon language\n").reset().toString());
 
-        sbf.append("\n\n");
-        sbf.append(ansi().bold().a("GITHUB\n\n").reset().toString());
+        sbf.append("\n");
+        sbf.append(ansi().bold().a("EXAMPLES\n\n").reset().toString());
+        sbf.append("    draco Main.dg\n");
+        sbf.append("    draco -debug -ast Main.dg\n");
+        sbf.append("\n");
+
+
+        sbf.append(ansi().bold().a("GITHUB").reset().toString());
         sbf.append("    https://github.com/pointbazaar/dragon/\n");
         sbf.append("\n");
 
         sbf.append(ansi().bold().a("AUTHOR\n\n").reset().toString());
         sbf.append(
-                String.format("    %-15s %-20s\n","@pointbazaar","alex23667@gmail.com")+
-                String.format("    %-15s %-20s\n","@Milo-D","David.Milosevic@web.de")
+                String.format("    %-20s\n","alex23667@gmail.com")+
+                String.format("    %-20s\n","David.Milosevic@web.de")
         );
         sbf.append("\n");
 
-        sbf.append(ansi().bold().a("REPORTING BUGS\n\n").reset().toString());
+        sbf.append(ansi().bold().a("REPORTING BUGS").reset().toString());
         sbf.append("    https://github.com/pointbazaar/dragon/issues\n\n");
 
         String header=sbh.toString();
@@ -120,52 +125,48 @@ public class dragonc {
         help.printHelp("draco FILE...",header,options,footer,true);
     }
 
+    //declaring these identifiers so that we can change the actual names of the options
+    //without having to comb through all the code
+    public static final String FLAG_DEBUG="debug";
+    public static final String FLAG_TIMED="timed";
+
+    public static final String FLAG_PRINT_TOKENS="tokens";
+    public static final String FLAG_PRINT_AST="ast";
+    public static final String FLAG_PRINT_SYMBOLTABLES="symboltables";
+    public static final String FLAG_PRINT_VM_CODES="vmcodes";
+    public static final String FLAG_PRINT_HELP="help";
+    public static final String FLAG_PRINT_ASM="asm";
+
+    public static final String FLAG_CLEAN="clean";
 
     private static Options createOptions(){
         //https://commons.apache.org/proper/commons-cli/usage.html
 
         Options opts = new Options();
-        Option option_debug = new Option("debug",false,"provides debug output for development of the compiler");
-        opts.addOption(option_debug);
 
-        opts.addOption(
-                new Option("timed",false,"provides a breakdown of how long each compiler phase took")
-        );
+        opts.addOption(new Option(FLAG_DEBUG,false,"prints debug output"));
 
-        opts.addOption(new Option("tokens",false,"output the tokens used for parsing"));
+        opts.addOption(new Option(FLAG_TIMED,false,"how long did the build take?"));
 
-        opts.addOption(new Option("help",false,"display an overview of the command line options"));
+        opts.addOption(new Option(FLAG_PRINT_TOKENS,false,"print tokens as JSON"));
+        opts.addOption(new Option(FLAG_PRINT_AST,false,"print AST as JSON"));
+        opts.addOption(new Option(FLAG_PRINT_SYMBOLTABLES,false,"print symbol tables"));
+        opts.addOption(new Option(FLAG_PRINT_HELP,false,"print help"));
+        opts.addOption(new Option(FLAG_PRINT_VM_CODES,false,"prints vm codes"));
+        opts.addOption(new Option(FLAG_PRINT_ASM,false,"prints assembly code"));
 
-        opts.addOption(new Option("strict",false,"do not compile if the code is likely to have bugs (TODO)"));
+        opts.addOption(new Option(FLAG_CLEAN,false,"clear cache"));
 
-        opts.addOption(new Option("clean",false,"clears the cache"));
+        OptionGroup optGroup = new OptionGroup();
 
-        opts.addOption(
-                new Option(
-                    "optimize",
-                    false,
-                    "try to optimize the code. optimization effort goes from 0 (no optimization) to 10 (maximum optimization) (TODO)"
-                    )
-        );
-
-
-        OptionGroup optionGroup = new OptionGroup();
-
-        optionGroup.addOption(new Option("nocurly",false,"accept only indentation for scopes (TODO)"));
-        optionGroup.addOption(new Option("curly",false,"accept only curly braces  for scopes (TODO)"));
-
-
-
-        opts.addOptionGroup(optionGroup);
+        opts.addOptionGroup(optGroup);
         return opts;
     }
 
     private static void compile_main_inner(List<File> sources,CommandLine cmd){
 
-
-
-        boolean debug=cmd.hasOption("debug");
-        boolean timed=cmd.hasOption("timed");
+        boolean debug=cmd.hasOption(FLAG_DEBUG);
+        boolean timed=cmd.hasOption(FLAG_TIMED);
 
         long start_time_ms = currentTimeMillis();
 
@@ -179,64 +180,49 @@ public class dragonc {
                 }
             }
 
-            long start,end;
+            if(sources.size()==0){
+                //use stdin to receive codes
+                //if no files or directories are given as arguments
+                //(unix philosophy)
+                //this enables the program to better be used with other programs, piping text and outputs and such
+                StringBuilder sb=new StringBuilder();
+                Scanner sc = new Scanner(System.in);
+                while(sc.hasNextLine()){
+                    sb.append(sc.nextLine());
+                }
+                sc.close();
+                codes.add(sb.toString());
+                sources.add(Paths.get("Main.dg").toFile());
+            }
 
-            start = currentTimeMillis();
+            CompilerPhases phases = new CompilerPhases(cmd);
+
+            //PHASE PREPROCESSOR
+            //processes the 'use' directive
+            phases.phase_preprocessor(codes,sources);
+
             //PHASE CLEAN
             List<CharacterList> codeWithoutCommentsWithoutUnneccesaryWhitespace
-                    = phase_clean(codes,sources,cmd);
+                    = phases.phase_clean(codes,sources);
 
-            end= currentTimeMillis();
-            if(timed) {
-                printDuration(start, end);
-            }
-
-            //below code is on hold until i have some time for it
-            /*
-            List<String> just_code_with_braces_without_comments_without_newlines;
-
-            if(cmd.hasOption("nocurly")){
-                just_code_with_braces_without_comments_without_newlines
-                        =phase_conditional_weave_curly_braces(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd);
-            }else{
-                //the editor is curly by default
-                just_code_with_braces_without_comments_without_newlines
-                        =codeWithoutCommentsWithoutUnneccesaryWhitespace;
-            }
-
-             */
-
-            start= currentTimeMillis();
             //PHASE LEXING
-            List<TokenList> tokens = phase_lexing(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd);
-            end= currentTimeMillis();
-            if(timed){
-                printDuration(start,end);
-            }
+            List<TokenList> tokens = phases.phase_lexing(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd.hasOption(FLAG_PRINT_TOKENS));
 
-            start= currentTimeMillis();
             //PHASE PARSING
-            List<AST> asts = phase_parsing(tokens,cmd);
-            end= currentTimeMillis();
-            if(timed){
-                printDuration(start,end);
-            }
+            List<AST> asts = phases.phase_parsing(tokens,cmd.hasOption(FLAG_PRINT_AST));
 
-            start= currentTimeMillis();
             //PHASE TYPE CHECKING
-            phase_typecheck(asts,cmd);
-            end = currentTimeMillis();
-            if(timed){
-                printDuration(start,end);
-            }
+            phases.phase_typecheck(asts);
 
-            start = currentTimeMillis();
             //PHASE CODE GENERATION
-            phase_codegeneration(asts,cmd);
-            end= currentTimeMillis();
-            if(timed){
-                printDuration(start,end);
-            }
+            List<String> vm_codes = phases.phase_vm_codegeneration(asts,"main",cmd.hasOption(FLAG_PRINT_VM_CODES));
+
+            //PHASE VM CODE COMPILATION
+            List<String> asm_codes = phases.phase_vm_code_compilation(vm_codes,cmd.hasOption(FLAG_DEBUG));
+
+            //PHASE GENERATE EXECUTABLE
+            phases.phase_generate_executable(asm_codes,"main");
+
 
             long end_time_ms = currentTimeMillis();
             long duration = end_time_ms-start_time_ms;
@@ -260,7 +246,7 @@ public class dragonc {
         } catch (Exception e) {
 
             System.err.println(e.getMessage());
-            if(cmd.hasOption("debug")) {
+            if(cmd.hasOption(FLAG_DEBUG)) {
                 //only print the stack trace for
                 //compiler developers
                 e.printStackTrace();
@@ -268,62 +254,4 @@ public class dragonc {
             printBuildConclusion(false);
         }
     }
-
-    private static void try_generate_some_bytecode(){
-        ClassWriter cw = new ClassWriter(0);
-        FieldVisitor fv;
-        MethodVisitor mv;
-        AnnotationVisitor av0;
-
-        cw.visit(49,
-                ACC_PUBLIC + ACC_SUPER,
-                "Hello",
-                null,
-                "java/lang/Object",
-                null);
-
-        cw.visitSource("Hello.java", null);
-
-        {
-            mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
-            mv.visitVarInsn(ALOAD, 0);
-            mv.visitMethodInsn(INVOKESPECIAL,
-                    "java/lang/Object",
-                    "<init>",
-                    "()V");
-            mv.visitInsn(RETURN);
-            mv.visitMaxs(1, 1);
-            mv.visitEnd();
-        }
-        {
-            mv = cw.visitMethod(ACC_PUBLIC + ACC_STATIC,
-                    "main",
-                    "([Ljava/lang/String;)V",
-                    null,
-                    null);
-            mv.visitFieldInsn(GETSTATIC,
-                    "java/lang/System",
-                    "out",
-                    "Ljava/io/PrintStream;");
-            mv.visitLdcInsn("hello");
-            mv.visitMethodInsn(INVOKEVIRTUAL,
-                    "java/io/PrintStream",
-                    "println",
-                    "(Ljava/lang/String;)V");
-            mv.visitInsn(RETURN);
-            mv.visitMaxs(2, 1);
-            mv.visitEnd();
-        }
-        cw.visitEnd();
-
-        byte[] mybytecode = cw.toByteArray();
-
-        try {
-            Files.write(Paths.get("Hello.class"), mybytecode);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-
 }

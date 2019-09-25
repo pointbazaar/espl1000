@@ -1,9 +1,0 @@
-
-public class IncludeStatic{
-	includestatic "Math.dg";
-
-	public Int main(){
-		println(sqrt(9.0));		
-		return 0;
-	}
-}

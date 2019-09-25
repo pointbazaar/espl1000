@@ -1,0 +1,10 @@
+
+class MethodCall{
+	PInt main(){
+		subr(2,1);
+		return 0;
+	}
+	PInt subr(PInt a,PInt b){
+		return (a+b);
+	}
+}

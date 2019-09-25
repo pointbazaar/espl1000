@@ -6,33 +6,26 @@ This repo contains a simple, work-in-progress statically typed programming langu
 
 ## Goals
 
-- [ ] type inference (type annotations should be optional)
-  - [x] simple local variable type inference by looking what type the value has that it is being assigned
-  - [ ] type inference for functions and methods
-    - [ ] argument type inference
-    - [ ] return type inference
-- [ ] compiles to java bytecode
-  - [x] some basic constructs compile to java bytecode
-- [ ] compiles to javascript
-- [ ] compiles to C / C++ to produce native executables to improve speed and have more control
+- [x] simple local variable type inference 
+- [x] compiles to intel x86 assembly
 - [ ] functional programming
   - [ ] functions are first-class citizens and can be passed as parameters
   - [ ] lambda expressions
-  - [ ] common functions (haskell inspired) [map,reduce,filter,sum,zip,unzip,head,tail,init]
+  - [ ] common functions (haskell inspired) map,reduce,filter,sum,zip,unzip,head,tail,init
+- [ ] structs
 - [ ] objects
   - [ ] support for creating objects
   - [ ] generics (Type parameters)
   - [ ] type aliases
 - [ ] optional laziness, declare a method or function or block of statements to be lazy...
 - [ ] multithreading
-- [ ] standard library (will probably use part of java's standard library under the hood
+- [ ] standard library 
   - [ ] networking 
   - [ ] math
   - [ ] string manipulations
 - [ ] support for functional style
-- [ ]  support for object oriented style
-- [ ] pattern matching
-- [ ] guards 
+- [ ] support for object oriented style
+- [ ] pattern matching 
 - [ ] program verification (invariants)
 - [ ] strong type system
 - [ ] be able to call java code and be called from java code.
@@ -63,19 +56,12 @@ results easily, so 5 to the power of 100 doesn't have to be computed anew all th
 
 the language should allow for easy json style notation of things.
 
-Dragon should compile to C,java bytecode(to run on the jvm),java,javascript(to run in the browser),
-and arm assembly language to demonstrate runtime guarantees on raspberry pi
-
-Dragon should also have tooling to be able to compile java,javascript to Dragon
-to easy any migration you might want to do.
-
 Dragon will be developed and tested against a variety of programming tasks,
 from online coding katas(expressiveness,speed of execution) to hackathons(speed of development,tooling,versatility)
 and business(typical business web applications, file processing) but also research programming(machine learning, artificial intelligence, rare language features,extensibility,forkability).
 
 this should make it a practical language. goal is the ability to transfer thought into code with less code,
 and enable programmer to solve tasks in new ways and think outside the box
-
 
 [1,2,3,3].map(\x->x+1)
 

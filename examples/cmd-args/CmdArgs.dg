@@ -1,0 +1,7 @@
+class CmdArgs{
+	Int main([String] args){
+		
+		println(args[0]);
+		return 0;
+	}
+}

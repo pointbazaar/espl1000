@@ -1,0 +1,82 @@
+dragon uses the stack to store local variables and arguments
+
+TOP OF STACK is always pointed to by esp
+
+let us say we have a subroutine main(),
+and a subroutine add(Int a,Int b), where add takes 2 arguments.
+we want to call add(2,1).
+
+this documents how that should happen. first
+the vm commands, then their result as on the stack.
+
+ebp register should always point to the caller's return address.
+so we can use it to find our arguments (above the callers return address)
+and to find our local variables (below the callers return address)
+
+//first there is an empty stack:
+undefined  <-esp
+
+//'iconst 1' //push arguments for the subroutine call on the stack in reverse order
+1 <-esp
+
+//'iconst 2' //push arguments for the subroutine call
+1 
+2 <-esp
+
+
+//'call add' //pushes our ebp on the stack, to save it
+1
+2
+saved ebp of main()
+return addr. of main() <- esp
+
+//now 'mov ebp,esp' is executed
+//to provide a base for add(...) to address arguments and local variables
+
+1
+2
+saved ebp of main()
+return addr. of main() <- esp,ebp
+
+//now the local variables will be pushed, but in this case there are none.
+
+//after add does its thing, it leaves a return value on the stack
+
+1
+2
+saved ebp of main()
+return addr. of main() <- ebp
+return value from add(...) <-esp
+
+//now we must call 'swap' vm command to allow code to return 
+//'swap'
+1
+2
+saved ebp of main()
+return value from add(...)
+return addr. of main() <-esp
+
+//'ret' asm command to return control
+1
+2
+saved ebp of main()
+return value from add(...) <-esp
+
+//'swap' to be able to gather our ebp
+1
+2
+return value from add(...)
+saved ebp of main()
+
+//'pop ebp' asm cmd
+1
+2
+return value from add(...) <-esp
+
+//now the caller 'swap' and then 'pop' as many times as it takes to pop all the arguments to add(...)
+return value from add(...) <-esp
+
+//DONE. now there is only the return value on the stack.
+
+ANOTHER EXAMPLE: THIS EXAMPLE SHOWS HOW LOCAL VARIABLES ARE USED
+//we have subroutines main(), and subr(), where subr has 1 local variable

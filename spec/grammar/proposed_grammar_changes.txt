@@ -1,0 +1,34 @@
+//PLANNED FOR NEXT GRAMMAR CHANGE
+
+simplevariable ::= identifier ('[' expression ']')?
+
+variable ::= simplevariable | variable '.' variable | methodCall '.' variable
+
+methodCall ::= variable? . methodName '(' (expression (, expression)*)?  ')'
+
+//PLANNED FOR LATER
+
+
+//MAYBE
+
+
+object ::= variable
+objectOrVariable ::= variable | fieldAccess | object
+fieldAccess ::= object '.' object | object '.' methodCall | methodCall '.' object
+
+//this is a kind of expression inspired by haskell.
+//it is similar to the ternary operator
+//maybe i should implement them
+ifThenElse ::= 'if' expression 'then' expression 'else' expression
+
+
+// // functions are always public
+//functionTypeDecl ::= functionName '::' (Type '->')* Type
+// // like in haskell, there should be pattern matching available, so multiple definitions depending
+// // on the value of the pattern
+//function ::= namedFunction | anonFunction
+//namedFunction ::= functionName identifier* = value
+//value ::= arrayConstant | boolConstant | integerConstant | string | keywordConstant | functionCall | value op value | ...
+//functionName ::= identifier
+//functionCall ::= functionName expression*
+//anonFunction ::= '\' declaredArgument* '->' value

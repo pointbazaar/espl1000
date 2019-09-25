@@ -1,0 +1,10 @@
+public class Input{
+    	public Int main(){
+		
+
+        		x=readchar();
+
+        		putchar(x);
+		return 0;
+    	}
+}
