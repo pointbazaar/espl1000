@@ -1,0 +1,17 @@
+//i want to split it into Void method and Value Method
+//and ... wait ... what if we eliminate Void from the language? that would
+//make so many things easier since every method and every function would return a value
+//and a programmer could simply make the method as Int and return 0;
+//maybe that could be integrated into the Void method/function
+
+
+//'AST' is the root AST Node
+
+//inspiration: https://docs.oracle.com/javase/specs/jls/se7/html/jls-18.html
+
+//dragon_grammar.txt is sometimes inconsistent with the AST Node classes in src/ , but
+//the goal is for both to be consistent with each other
+
+
+//dragon_grammar.txt defines the grammar for the dragon language.
+//in that file i am using regex notation , so '?' at the end means optional, and '+' means once or more
