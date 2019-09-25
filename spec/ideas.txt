@@ -16,3 +16,5 @@ idea:
 
 //https://cs.nyu.edu/courses/spring07/G22.3130-001/code_gen.html
 //https://cs.nyu.edu/courses/spring03/G22.2130-001/386_assembly_reference.txt
+
+//https://stackoverflow.com/questions/58089756/how-does-functional-programming-work-at-the-assembly-level/58089889#58089889
