@@ -7,6 +7,8 @@ import org.vanautrui.languages.compiler.parsing.IASTNode;
 
 public class AccessModifierNode implements IASTNode {
 
+    //TODO: implement the other states from AccessModifierToken
+
     public final boolean is_public;
 
     public AccessModifierNode(TokenList tokens) throws Exception {

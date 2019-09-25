@@ -1,13 +1,14 @@
 package org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes;
 
-import org.vanautrui.languages.compiler.lexing.utils.TokenList;
+import org.vanautrui.languages.compiler.lexing.tokens.ArrowToken;
 import org.vanautrui.languages.compiler.lexing.tokens.SymbolToken;
+import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.IASTNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.DeclaredArgumentNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.terminal.MethodNameNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.StatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.AccessModifierNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.terminal.TypeIdentifierNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IdentifierNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,9 @@ public class MethodNode implements IASTNode {
 
     public final boolean isPublic;
 
-    public final String type;
+    public final boolean has_side_effects;
+
+    public final TypeNode type;
 
     public final String methodName;
 
@@ -35,10 +38,6 @@ public class MethodNode implements IASTNode {
 
         AccessModifierNode access = new AccessModifierNode(copy);
         this.isPublic=access.is_public;
-
-        this.type = new TypeIdentifierNode(copy).typeName;
-
-        this.methodName = new MethodNameNode(copy).methodName;
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("("));
 
@@ -59,6 +58,18 @@ public class MethodNode implements IASTNode {
         }
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken(")"));
+
+        if(copy.head() instanceof ArrowToken){
+            ArrowToken head = (ArrowToken) copy.head();
+            this.has_side_effects=!head.is_functional;
+            copy.consume(1);
+        }else {
+            throw new Exception("expected arrow here");
+        }
+
+        this.type = new TypeNode(copy);
+
+        this.methodName = new IdentifierNode(copy).name;
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("{"));
 

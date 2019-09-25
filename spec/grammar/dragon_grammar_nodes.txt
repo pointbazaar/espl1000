@@ -1,0 +1,47 @@
+
+ArrayConstant ::= '[' expression (',' expression)* ']'
+
+AST ::= class+
+
+class ::= accessmodifier? 'class' identifier '{' classField* method* '}'
+
+classField ::= accessmodifier? Type identifier ';'
+
+
+SubroutineType ::= '(' Type* ')' arrow ( SimpleType | '(' SubroutineType ')' )
+SimpleType ::= upperCaseLetter alphanumeric*
+Type ::= SimpleType | SubroutineType
+
+variable ::= identifier ('[' expression ']')?
+
+method ::= accessmodifier '(' declaredArgument* ')' arrow Type identifier '{' statement* '}'
+
+declaredArgument ::= Type identifier
+
+statement ::= ( methodCall ';' | whileStatement | ifStatement | returnStatement | assignmentStatement )
+
+methodCall ::= methodName '(' (expression (, expression)*)?  ')'
+
+loopStatement ::= 'loop' expression '{' statement* '}'
+whileStatement ::= 'while' '(' expression ')' '{' statement* '}'
+ifStatement ::= 'if' '(' expression ')' '{' statement* '}' ( 'else' '{' statement* '}' )?
+returnStatement ::= 'return' expression? ';'
+
+assignmentStatement ::= variable '=' expression ';'
+
+Term ::= ArrayConstant | boolConstant | integerConstant | charConstant | keywordConstant | methodCall | '(' expression ')' | unaryOp term | variable
+
+expression ::= Term (op Term)*
+
+
+
+
+
+
+
+
+
+
+
+
+

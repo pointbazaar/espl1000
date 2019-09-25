@@ -5,13 +5,13 @@ import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.IASTNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.AccessModifierNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IdentifierNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.terminal.TypeIdentifierNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 
 public class ClassFieldNode implements IASTNode {
 
     public AccessModifierNode access;
 
-    public final String type;
+    public final TypeNode type;
 
     public String name;
 
@@ -24,7 +24,7 @@ public class ClassFieldNode implements IASTNode {
 
         this.access = new AccessModifierNode(copy);
 
-        this.type = new TypeIdentifierNode(copy).typeName;
+        this.type = new TypeNode(copy);
 
         this.name = new IdentifierNode(copy).name;
 

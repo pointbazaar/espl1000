@@ -68,7 +68,7 @@ public class TypeChecker {
         int count=0;
         for(AST ast : asts){
             for(ClassNode dragonClassNode : ast.classNodeList){
-                if(dragonClassNode.name.typeName.equals(classNode.name.typeName)){
+                if(dragonClassNode.name.getTypeName().equals(classNode.name.getTypeName())){
                     count++;
                 }
             }
@@ -85,7 +85,7 @@ public class TypeChecker {
         }
 
         if(count!=1){
-            throw new Exception("multiple definitions of class '"+classNode.name.typeName+"'");
+            throw new Exception("multiple definitions of class '"+classNode.name.getTypeName()+"'");
         }
     }
 
@@ -96,7 +96,7 @@ public class TypeChecker {
 
         typeCheckMethodNameNode(asts,classNode,methodNode.methodName);
 
-        typeCheckTypeIdentifierNode(asts,classNode,methodNode.type);
+        typeCheckTypeIdentifierNode(asts,classNode,methodNode.type.getTypeName());
         for(StatementNode stmt : methodNode.statements){
             typeCheckStatementNode(asts,classNode,methodNode,stmt,subTable,varTable);
         }
@@ -117,7 +117,7 @@ public class TypeChecker {
     private void typeCheckClassFieldNode(
             List<AST> asts, ClassNode classNode, ClassFieldNode classFieldNode
     ) throws Exception{
-        typeCheckTypeIdentifierNode(asts,classNode,classFieldNode.type);
+        typeCheckTypeIdentifierNode(asts,classNode,classFieldNode.type.getTypeName());
     }
 
     private void typeCheckStatementNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, StatementNode statementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable)throws Exception{
@@ -396,7 +396,7 @@ public class TypeChecker {
 
         for(AST ast : asts){
             for(ClassNode myclassNode : ast.classNodeList){
-                if(myclassNode.name.typeName.equals(typename)){
+                if(myclassNode.name.getTypeName().equals(typename)){
                     return;
                 }
             }

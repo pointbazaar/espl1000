@@ -43,7 +43,7 @@ public class SymbolTableGenerator {
 					SubroutineSymbolTableRow subrRow =
 									new SubroutineSymbolTableRow(
 													methodNode.methodName,
-													methodNode.type,classNode.name.typeName,
+													methodNode.type.getTypeName(),classNode.name.getTypeName(),
 													count_local_vars(methodNode,subroutineSymbolTable),
 													methodNode.arguments.size()
 									);

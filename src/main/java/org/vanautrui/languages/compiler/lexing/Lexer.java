@@ -118,6 +118,13 @@ public class Lexer {
             }
 
             try {
+                result.add(new ArrowToken(myCode));
+                continue;
+            } catch (Exception e) {
+                //pass
+            }
+
+            try {
                 result.add(new OperatorToken(myCode));
                 continue;
             } catch (Exception e) {

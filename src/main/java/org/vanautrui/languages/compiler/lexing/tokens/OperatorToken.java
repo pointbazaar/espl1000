@@ -11,14 +11,14 @@ public class OperatorToken implements IToken {
     //TODO: add all the operator tokens that should be supported
 
     //the 2 char operators should be considered first
+    //"<-","<~",-->,<--,-/->,-/>,<-/-,</-, => , \|/,
 
     public static final String[] operator_symbols_2_chars_or_more = new String[]{
             ">>","<<",
             "++","--",
             "-=","+=","*=","/=",
             "==","!=",
-            "::",
-            "->","~>","<-","<~","-->","<--",
+
             "<=",">=",
             "&&","||"
     };

@@ -1,0 +1,21 @@
+//this file contains the tokens recognized by the lexer.
+//tokenization simplifies parsing
+
+int ::= ... | -1 | 0 | 1 | 2 | ...
+upperCaseLetter ::= 'A' | ... | 'Z'
+charConstant ::= 'a' | ... | 'z' | 'A' | ... | 'Z'
+alphanumeric ::= int | charConstant | '_'
+
+identifier ::= charConstant alphanumeric*
+
+op ::= '+' | '-' | '*' | '/' | ...
+unaryOp ::= '-' | '!'
+boolConstant ::= 'true' | 'false'
+
+accessmodifier ::= public | private | dir-private
+
+keyword ::= 'class' | 'method' | 'function' | 'interface' | 'wrapper' |
+            'entity' | 'model' | 'adapter' | 'while' | 'for' | 'loop' |
+            'do' | 'if' | 'else' | 'return'
+
+arrow ::= '->' | '~>'

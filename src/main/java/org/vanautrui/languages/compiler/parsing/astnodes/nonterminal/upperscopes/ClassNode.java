@@ -6,7 +6,7 @@ import org.vanautrui.languages.compiler.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.IASTNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.AccessModifierNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.terminal.TypeIdentifierNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.SimpleTypeNode;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -19,7 +19,7 @@ public class ClassNode implements IASTNode {
     public final boolean isPublic;
     public Path srcPath= Paths.get("/dev/null");
 
-    public final TypeIdentifierNode name;
+    public final SimpleTypeNode name;
 
     public List<ClassFieldNode> fieldNodeList = new ArrayList<>();
     public List<MethodNode> methodNodeList = new ArrayList<>();
@@ -38,7 +38,7 @@ public class ClassNode implements IASTNode {
 
         copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("class"));
 
-        this.name = new TypeIdentifierNode(copy);
+        this.name = new SimpleTypeNode(copy);
 
         copy.expectAndConsumeOtherWiseThrowException(new SymbolToken("{"));
 

@@ -32,7 +32,7 @@ public class SymbolTableGeneratorTest {
     @Test
     public void test_finds_1_local_var_and_1_arg()throws Exception{
 
-        AST ast = parse_for_test("class Main{ PInt main(){  } PInt subr(PInt n){x=3;} }");
+        AST ast = parse_for_test("class Main{ ()~>PInt main{  } (PInt n)~>PInt subr{x=3;} }");
 
         SubroutineSymbolTable subTable = new SubroutineSymbolTable();
 
@@ -54,7 +54,7 @@ public class SymbolTableGeneratorTest {
 
     @Test
     public void test_finds_local_vars_nested()throws Exception{
-        AST ast = parse_for_test("class Main{ PInt main(){ x=3; if(x==3){y=5;} } }");
+        AST ast = parse_for_test("class Main{ ()~>PInt main{ x=3; if(x==3){y=5;} } }");
 
         SubroutineSymbolTable subTable = new SubroutineSymbolTable();
 
