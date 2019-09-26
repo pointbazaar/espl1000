@@ -3,6 +3,7 @@ package org.vanautrui.languages.compiler.parsing.astnodes.typenodes;
 import org.vanautrui.languages.compiler.lexing.tokens.ArrowToken;
 import org.vanautrui.languages.compiler.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.simple.SimpleTypeNode;
 
 import java.util.ArrayList;
 import java.util.List;

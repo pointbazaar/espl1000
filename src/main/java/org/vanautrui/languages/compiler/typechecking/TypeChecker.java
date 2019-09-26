@@ -16,7 +16,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.*;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.SimpleTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.simple.SimpleTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.SubroutineTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator;
@@ -176,7 +176,7 @@ public class TypeChecker {
         //the condition expression should be of type boolean
         ITypeNode conditionType = TypeResolver.getTypeExpressionNode(ifStatementNode.condition,methodNode,subTable,varTable);
         if(!conditionType.getTypeName().equals("Bool")){
-            throw new Exception(" condition should be of type Bool");
+            throw new Exception(" condition should be of type Bool, but is of type: "+conditionType.getTypeName());
         }
         for(StatementNode stmt : ifStatementNode.statements){
             typeCheckStatementNode(asts,classNode,methodNode,stmt,subTable,varTable);
@@ -237,7 +237,15 @@ public class TypeChecker {
         ITypeNode type= TypeResolver.getTypeTermNode(expr.term,methodNode,subTable,varTable);
         List<String> currentAllowedTypes=Arrays.asList("PInt","Float");
 
-
+        if(expr.termNodes.size()==1 && expr.operatorNodes.size()==1 && expr.operatorNodes.get(0).operator.equals("==")) {
+            //can only compare stuff which is the same
+            ITypeNode otherType = TypeResolver.getTypeTermNode(expr.termNodes.get(0),methodNode,subTable,varTable);
+            if(!otherType.getTypeName().equals(type.getTypeName())){
+                throw new Exception(getClass().getSimpleName()+": to compare with '==', they have to be the same type ");
+            }
+            typecheckTermNode(asts,classNode,methodNode,expr.termNodes.get(0),subTable,varTable);
+            return;
+        }
 
         if(!currentAllowedTypes.contains(type.getTypeName())){
             if(expr.termNodes.size()==0){
@@ -394,7 +402,7 @@ public class TypeChecker {
         ITypeNode rightSideType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,varTable);
         if(!leftSideType.getTypeName().equals(rightSideType.getTypeName())){
             throw new Exception(
-                    "with an assignment, both sides have to have the same type. here, a value of type "+rightSideType+" was assigned to a value of type "+leftSideType
+                    "with an assignment, both sides have to have the same type. here, a value of type "+rightSideType.getTypeName()+" was assigned to a value of type "+leftSideType.getTypeName()
                     +" in source: '"+assignmentStatementNode.toSourceCode()+"'"
             );
         }

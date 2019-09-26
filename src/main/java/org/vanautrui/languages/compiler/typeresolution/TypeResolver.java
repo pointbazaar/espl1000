@@ -7,7 +7,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.*;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.SimpleTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.simple.SimpleTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 
@@ -95,7 +95,7 @@ public class TypeResolver {
 
         //for the array to have a type, it has to either be annotated,
         // or contain atleast 1 element of which the type can be known
-        return new SimpleTypeNode("["+getTypeExpressionNode(arrayConstantNode.elements.get(0),methodNode,subroutineSymbolTable,varTable)+"]");
+        return new SimpleTypeNode("["+getTypeExpressionNode(arrayConstantNode.elements.get(0),methodNode,subroutineSymbolTable,varTable).getTypeName()+"]");
     }
 
 
@@ -119,9 +119,9 @@ public class TypeResolver {
         }
 
 		    if(
-                getTypeTermNode(expressionNode.term,methodNode,subTable,varTable).equals("Float") &&
+                getTypeTermNode(expressionNode.term,methodNode,subTable,varTable).getTypeName().equals("Float") &&
                         expressionNode.termNodes.size()==1 &&
-                        getTypeTermNode(expressionNode.termNodes.get(0),methodNode,subTable,varTable).equals("Float") &&
+                        getTypeTermNode(expressionNode.termNodes.get(0),methodNode,subTable,varTable).getTypeName().equals("Float") &&
                         expressionNode.operatorNodes.size()==1 &&
                         (boolean_operators.contains(expressionNode.operatorNodes.get(0).operator))
         ){

@@ -16,3 +16,4 @@ BLOCKED TASKS: (cannot proceed on them until something else gets done first)
 [ ] length-prefixed arrays. i want to remain typesafe, and do not want a watered down type system where you can just convert types by casting.
     so i need a type parameter for the builtin subroutine which creates a new array.
     so i need to implement type parameters first
+[ ] write a lot of tests to protect our functional programming features against regression!

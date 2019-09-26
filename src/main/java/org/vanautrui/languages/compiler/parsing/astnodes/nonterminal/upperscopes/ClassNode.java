@@ -6,7 +6,7 @@ import org.vanautrui.languages.compiler.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.IASTNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.AccessModifierNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.SimpleTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.simple.SimpleTypeNode;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

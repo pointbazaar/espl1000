@@ -3,6 +3,7 @@ package org.vanautrui.languages.compiler.parsing.astnodes.typenodes;
 import org.vanautrui.languages.compiler.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.IASTNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.simple.SimpleTypeNode;
 
 public class TypeNode implements IASTNode {
 

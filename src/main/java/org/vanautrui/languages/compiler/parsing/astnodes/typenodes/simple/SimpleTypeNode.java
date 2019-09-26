@@ -1,8 +1,9 @@
-package org.vanautrui.languages.compiler.parsing.astnodes.typenodes;
+package org.vanautrui.languages.compiler.parsing.astnodes.typenodes.simple;
 
 import org.vanautrui.languages.compiler.lexing.tokens.TypeIdentifierToken;
 import org.vanautrui.languages.compiler.lexing.utils.IToken;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
 
 public class SimpleTypeNode implements ITypeNode {
 

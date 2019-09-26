@@ -18,7 +18,7 @@ public class DeclaredArgumentNodeTest {
 
     DeclaredArgumentNode node = new DeclaredArgumentNode(list);
 
-    assertEquals(node.type, type);
+    assertEquals(node.type.getTypeName(), type);
     assertEquals("subr",node.name);
     assertEquals(0,list.size());
   }

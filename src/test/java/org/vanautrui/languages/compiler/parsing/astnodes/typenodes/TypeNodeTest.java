@@ -3,6 +3,7 @@ package org.vanautrui.languages.compiler.parsing.astnodes.typenodes;
 import org.junit.Test;
 import org.vanautrui.languages.compiler.lexing.Lexer;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.simple.SimpleTypeNode;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
