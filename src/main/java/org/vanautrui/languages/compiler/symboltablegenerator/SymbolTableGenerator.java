@@ -10,6 +10,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTableRow;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
@@ -43,7 +44,7 @@ public class SymbolTableGenerator {
 					SubroutineSymbolTableRow subrRow =
 									new SubroutineSymbolTableRow(
 													methodNode.methodName,
-													methodNode.type.getTypeName(),classNode.name.getTypeName(),
+													methodNode.getType(),classNode.name.getTypeName(),
 													count_local_vars(methodNode,subroutineSymbolTable),
 													methodNode.arguments.size()
 									);
@@ -60,7 +61,8 @@ public class SymbolTableGenerator {
 		//first, make the local variables for the arguments
 		int arg_index_counter=0;
 		for(DeclaredArgumentNode arg: methodNode.arguments){
-		    methodScopeSymbolTable.add(new LocalVarSymbolTableRow(arg.name,arg.type,LocalVarSymbolTableRow.KIND_ARGUMENT,arg_index_counter));
+
+				methodScopeSymbolTable.add(new LocalVarSymbolTableRow(arg.name, arg.type.typenode, LocalVarSymbolTableRow.KIND_ARGUMENT, arg_index_counter));
 		    arg_index_counter++;
 		}
 
@@ -126,7 +128,7 @@ public class SymbolTableGenerator {
 		if(st instanceof AssignmentStatementNode) {
 			AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode)st;
 
-			String expressionType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,methodScopeSymbolTable);
+			ITypeNode expressionType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,methodScopeSymbolTable);
 
 			methodScopeSymbolTable.add(
 					new LocalVarSymbolTableRow(

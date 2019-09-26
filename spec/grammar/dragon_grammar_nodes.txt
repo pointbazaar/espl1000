@@ -20,7 +20,7 @@ declaredArgument ::= Type identifier
 
 statement ::= ( methodCall ';' | whileStatement | ifStatement | returnStatement | assignmentStatement )
 
-methodCall ::= methodName '(' (expression (, expression)*)?  ')'
+methodCall ::= identifier '(' (expression (, expression)*)?  ')'
 
 loopStatement ::= 'loop' expression '{' statement* '}'
 whileStatement ::= 'while' '(' expression ')' '{' statement* '}'

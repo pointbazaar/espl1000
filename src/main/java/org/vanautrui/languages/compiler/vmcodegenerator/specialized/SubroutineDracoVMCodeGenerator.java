@@ -1,6 +1,7 @@
 package org.vanautrui.languages.compiler.vmcodegenerator.specialized;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.StatementNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
@@ -12,11 +13,11 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.State
 public class SubroutineDracoVMCodeGenerator {
 
 
-  public static void generateDracoVMCodeForMethod(MethodNode m, DracoVMCodeWriter sb, SubroutineSymbolTable subTable)throws Exception{
+  public static void generateDracoVMCodeForMethod(ClassNode containerClass, MethodNode m, DracoVMCodeWriter sb, SubroutineSymbolTable subTable)throws Exception{
 
     LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(m,subTable);
 
-    sb.subroutine(m.methodName,m.arguments.size(),subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName));
+    sb.subroutine(containerClass.name.typeName,m.methodName,m.arguments.size(),subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName));
     //not sure if it is number of arguments or number of local vars
 
     //push the number of local variables on the stack

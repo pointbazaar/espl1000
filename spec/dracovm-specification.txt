@@ -84,6 +84,13 @@ SUBROUTINE CALLING COMMANDS:
 //all subroutines must always leave 1 return
 //value on the stack
 
+FUNCTIONAL PROGRAMMING COMMANDS:
+    callfromstack
+        //calls the subroutine laying on the stack. The other stuff is same as normal 'call' vm command
+
+    pushsubroutine  SUBRNAME
+        //pushes the label for that subroutine on the stack
+
 
 ARRAY READ/WRITE:
 

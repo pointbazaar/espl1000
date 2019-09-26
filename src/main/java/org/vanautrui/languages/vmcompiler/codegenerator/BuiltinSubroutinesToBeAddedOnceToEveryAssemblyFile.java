@@ -41,7 +41,7 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
 
     //TODO: handle errors that could occur
 
-    SubroutineFocusedAssemblyCodeGenerator.compile_subroutine("readchar",a);
+    SubroutineFocusedAssemblyCodeGenerator.compile_subroutine("Builtin_readchar",a);
 
     //push a placeholder for the value to read on the stack
     a.mov(eax,0);
@@ -72,7 +72,7 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
   }
 
   private static void compile_free(AssemblyWriter a){
-    final String name = "free";
+    final String name = "Builtin_free";
     //TODO: not yet implemented
   }
 
@@ -84,7 +84,7 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
     final String name="malloc";
     //malloc receives as an argument the amount of DWORDs to allocate
 
-    SubroutineFocusedAssemblyCodeGenerator.compile_subroutine("malloc",a);
+    SubroutineFocusedAssemblyCodeGenerator.compile_subroutine("Builtin_malloc",a);
 
     //access our argument, push it onto the stack
     compile_push(DracoVMCodeWriter.SEGMENT_ARG,0,a);
@@ -126,7 +126,7 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
   private static void compile_putchar(AssemblyWriter a)throws Exception{
     //prints top of stack as ascii char to stdout
 
-    SubroutineFocusedAssemblyCodeGenerator.compile_subroutine("putchar",a);
+    SubroutineFocusedAssemblyCodeGenerator.compile_subroutine("Builtin_putchar",a);
 
     //access our argument , ARG 0, by pushing it onto the stack
     compile_push(DracoVMCodeWriter.SEGMENT_ARG,0,a);
@@ -159,7 +159,7 @@ public class BuiltinSubroutinesToBeAddedOnceToEveryAssemblyFile {
 
   private static void compile_putdigit(AssemblyWriter a) throws Exception{
     //prints the Int on top of stack as char to stdout
-    SubroutineFocusedAssemblyCodeGenerator.compile_subroutine("putdigit",a);
+    SubroutineFocusedAssemblyCodeGenerator.compile_subroutine("Builtin_putdigit",a);
     final String name="putdigit";
 
     //access our argument , ARG 0, by pushing it onto the stack

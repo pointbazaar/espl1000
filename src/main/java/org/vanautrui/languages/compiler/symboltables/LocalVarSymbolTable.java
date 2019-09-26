@@ -4,6 +4,7 @@ import io.bretty.console.table.Alignment;
 import io.bretty.console.table.ColumnFormatter;
 import io.bretty.console.table.Precision;
 import io.bretty.console.table.Table;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +42,7 @@ public class LocalVarSymbolTable  {
         return get(varName).getIndex();
     }
 
-    public String getTypeOfVariable(String varName) throws Exception{
+    public ITypeNode getTypeOfVariable(String varName) throws Exception{
         return this.get(varName).getType();
     }
 
@@ -94,4 +95,8 @@ public class LocalVarSymbolTable  {
     }
 
 
+    public ITypeNode getReturnTypeOfSubroutineVariable(String subrName) throws Exception{
+        //this variable is a subroutine. we want to know its return type from the local variable symbol table
+        return this.get(subrName).getReturnTypeIfIsSubroutine();
+    }
 }

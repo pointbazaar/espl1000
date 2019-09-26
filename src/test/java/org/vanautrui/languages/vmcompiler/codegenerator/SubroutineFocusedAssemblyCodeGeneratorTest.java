@@ -20,10 +20,10 @@ public class SubroutineFocusedAssemblyCodeGeneratorTest {
 
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0,0);
+    a.subroutine("Main","main",0,0);
 
-    a.call("readchar");
-    a.call("putchar");
+    a.call("Builtin","readchar");
+    a.call("Builtin","putchar");
     a.iconst(0);
     a.exit();
 
@@ -49,9 +49,9 @@ public class SubroutineFocusedAssemblyCodeGeneratorTest {
 
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0,0);
+    a.subroutine("Main","main",0,0);
     a.cconst('c');
-    a.call("putchar");
+    a.call("Builtin","putchar");
     a.pop();
     a.iconst(0);
     a.exit();
@@ -69,9 +69,9 @@ public class SubroutineFocusedAssemblyCodeGeneratorTest {
 
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0,0);
+    a.subroutine("Main","main",0,0);
     a.iconst(3);
-    a.call("putdigit");
+    a.call("Builtin","putdigit");
     a.pop();
     a.iconst(0);
     a.exit();
@@ -89,23 +89,23 @@ public class SubroutineFocusedAssemblyCodeGeneratorTest {
     final int exit_code=234;
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0,0);
+    a.subroutine("Main","main",0,0);
 
     //push the exit code to use later
     a.iconst(exit_code);
 
     a.cconst('a');
-    a.call("putchar");
+    a.call("Builtin","putchar");
     a.pop(); //caller removes the return value, if it doesn't need it
     a.pop(); //caller is supposed to remove the arguments
 
     a.cconst('b');
-    a.call("putchar");
+    a.call("Builtin","putchar");
     a.pop(); //caller removes the return value, if it doesn't need it
     a.pop(); //caller is supposed to remove the arguments
 
     a.cconst('c');
-    a.call("putchar");
+    a.call("Builtin","putchar");
     a.pop(); //caller removes the return value, if it doesn't need it
     a.pop(); //caller is supposed to remove the arguments
 

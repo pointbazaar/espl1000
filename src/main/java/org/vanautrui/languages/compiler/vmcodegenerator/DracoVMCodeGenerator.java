@@ -1,17 +1,19 @@
 package org.vanautrui.languages.compiler.vmcodegenerator;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ArrayConstantNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.FloatConstNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.terminal.VariableNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTableRow;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -26,7 +28,7 @@ public class DracoVMCodeGenerator {
         for(AST ast :asts){
             for(ClassNode classNode : ast.classNodeList){
                 for(MethodNode methodNode : classNode.methodNodeList){
-                    generateDracoVMCodeForMethod(methodNode,sb,subTable);
+                    generateDracoVMCodeForMethod(classNode,methodNode,sb,subTable);
                 }
                 if(classNode.fieldNodeList.size()>0){
                     throw new Exception("unhandled case in dracovm code generation");
@@ -96,7 +98,7 @@ public class DracoVMCodeGenerator {
         //this leaves the address of the new array (the new array resides on the heap) on the stack
 
         sb.iconst(arrayConstantNode.elements.size()); //amount of DWORD's to reserve
-        sb.call("malloc"); //should leave the address to the newly allocated space on the stack
+        sb.call("Builtin","malloc"); //should leave the address to the newly allocated space on the stack
 
         //caller removes the arguments
         sb.swap("remove previously pushed arguments");
@@ -115,24 +117,34 @@ public class DracoVMCodeGenerator {
         }
     }
 
-    public static void genDracoVMCodeForVariable(VariableNode variableNode, DracoVMCodeWriter sb,SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
+    public static void genDracoVMCodeForVariable(String varName, Optional<ExpressionNode> indexOptional, DracoVMCodeWriter sb, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
         //push the variable on the stack
 
-        //if the variable is local,
-        //or argument, that would be different segments
-        //we have to consider its index
+        //final String name = variableNode.name;
 
-        final String name = variableNode.name;
+        if(varTable.containsVariable(varName)) {
+            //if the variable is local,
+            //or argument, that would be different segments
+            //we have to consider its index
 
-        final int index=varTable.getIndexOfVariable(name);
-        final String segment = varTable.getSegment(name);
+            //it is a local variable
+            final int index = varTable.getIndexOfVariable(varName);
+            final String segment = varTable.getSegment(varName);
 
-        sb.push(segment,index);
+            sb.push(segment, index);
 
-        if(variableNode.indexOptional.isPresent()){
-            //it is an array and we should read from the index
-            genDracoVMCodeForExpression(variableNode.indexOptional.get(),sb,subTable,varTable);
-            sb.arrayread();
+            if (indexOptional.isPresent()) {
+                //it is an array and we should read from the index
+                genDracoVMCodeForExpression(indexOptional.get(), sb, subTable, varTable);
+                sb.arrayread();
+            }
+        }else if(subTable.containsSubroutine(varName)){
+            //it is a subroutine
+            String vmcodesubroutinename = SubroutineSymbolTableRow.generateVMCodeSubroutineName(subTable.getContainingClassName(varName),varName);
+            //push the corresponding label on the stack
+            sb.pushsubroutine(vmcodesubroutinename);
+        }else {
+            throw new Exception("DracoVMCodeGenerator: '"+varName+"' was not found in local variable symbol table  and also not found in subroutine symbol table.");
         }
     }
 

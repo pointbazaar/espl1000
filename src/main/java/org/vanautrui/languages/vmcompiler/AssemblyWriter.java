@@ -99,6 +99,12 @@ public class AssemblyWriter {
         any("pop "+reg,comment);
     }
 
+    /** enables to call a subroutine at an address contained in a register
+     * @param register the register containing the destination address
+     */
+    public void call(Register register,String comment) {
+        any("call "+register,comment);
+    }
     public void call(String methodName,String comment) {
         any("call "+methodName,comment);
     }
@@ -252,5 +258,10 @@ public class AssemblyWriter {
     }
 
 
-
+    /** this subroutine is intended to be able to push a label on the stack, to facilitate functional programming
+     * @param labelName the label to be pushed
+     */
+    public void push(String labelName, String comment) {
+        any("push "+labelName,comment);
+    }
 }

@@ -2,9 +2,13 @@ package org.vanautrui.languages.compiler.vmcodegenerator.specialized;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.SubroutineTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
+
+import java.util.Optional;
 
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ExpressionDracoVMCodeGenerator.genDracoVMCodeForExpression;
 
@@ -17,9 +21,26 @@ public class MethodCallDracoVMCodeGenerator {
       ExpressionNode arg = methodCallNode.argumentList.get(i);
       genDracoVMCodeForExpression(arg,sb,subTable,varTable);
     }
-    sb.call(methodCallNode.methodName);
+    final int nArgs;
 
-    int nArgs = subTable.getNumberOfArgumentsOfSubroutine(methodCallNode.methodName);
+    if(varTable.containsVariable(methodCallNode.methodName)){
+      //compile call to subroutine which is given as local variable or argument
+
+      //push the label on the stack from either LOCAL SEGMENT or ARG SEGMENT
+      DracoVMCodeGenerator.genDracoVMCodeForVariable(methodCallNode.methodName, Optional.empty(),sb,subTable,varTable);
+
+      //perform a call to the label on stack
+      sb.callfromstack();
+
+      //TODO: very hacky. very dirty. should be cleaner. like with polymorphy.
+      //TODO: different types implementing an interface which is then in a collection in the local var symbol table
+      nArgs = ((SubroutineTypeNode)varTable.get(methodCallNode.methodName).getType()).argumentTypes.size();
+    }else if(subTable.containsSubroutine(methodCallNode.methodName)) {
+      sb.call(subTable.getContainingClassName(methodCallNode.methodName), methodCallNode.methodName);
+      nArgs = subTable.getNumberOfArgumentsOfSubroutine(methodCallNode.methodName);
+    }else{
+      throw new Exception("subroutine "+methodCallNode.methodName+" not found in local variables and also not found in subroutines");
+    }
     //caller removes the arguments off the stack
     for(int i=0;i<nArgs;i++){
 

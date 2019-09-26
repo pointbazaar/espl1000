@@ -7,7 +7,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 
 public class DeclaredArgumentNode implements IASTNode {
 
-    public String type;
+    public TypeNode type;
 
     public String name;
 
@@ -15,7 +15,7 @@ public class DeclaredArgumentNode implements IASTNode {
 
         TokenList copy = tokens.copy();
 
-        this.type = new TypeNode(copy).getTypeName();
+        this.type = new TypeNode(copy);
         this.name = new IdentifierNode(copy).name;
 
         tokens.set(copy);
@@ -23,7 +23,7 @@ public class DeclaredArgumentNode implements IASTNode {
 
     @Override
     public String toSourceCode() {
-        return this.type+" "+this.name;
+        return this.type.toSourceCode()+" "+this.name;
     }
 
 }

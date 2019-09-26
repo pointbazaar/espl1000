@@ -31,4 +31,11 @@ public class TypeNode implements IASTNode {
         return this.typenode.toSourceCode();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TypeNode)) return false;
+        TypeNode typeNode = (TypeNode) o;
+        return this.toSourceCode().equals(typeNode.toSourceCode());
+    }
 }

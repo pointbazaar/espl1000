@@ -10,6 +10,20 @@ import static org.junit.Assert.assertTrue;
 public class TypeNodeTest {
 
   @Test
+  public void test_type_parsing2()throws Exception{
+    final String source = "((PInt)~>PInt)->PInt";
+
+    Lexer lexer = new Lexer();
+    TokenList list = lexer.lexCodeTestMode(source);
+
+    TypeNode node = new TypeNode(list);
+
+    assertTrue(node.typenode instanceof SubroutineTypeNode);
+    assertEquals(source,node.getTypeName());
+    assertEquals(0,list.size());
+  }
+
+  @Test
   public void test_type_parsing()throws Exception{
     final String source = "(PInt,NInt,MyType)~>((PInt)->PInt)";
 

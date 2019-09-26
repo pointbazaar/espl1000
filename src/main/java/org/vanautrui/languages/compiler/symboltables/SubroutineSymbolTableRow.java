@@ -1,18 +1,20 @@
 package org.vanautrui.languages.compiler.symboltables;
 
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
+
 public class SubroutineSymbolTableRow {
 
     private final String subRoutineName;
     //almost all subroutines have a name, except anonymous subroutines or anonymous lambdas
     //but we can make up names for these maybe
 
-    private final String typeName;  //every subroutine has a return type
+    private final ITypeNode typeName;  //every subroutine has a return type
     private final String className; //every subroutine is contained in a class
 
     private final int numberOfLocalVariables;
     private final int numberOfArguments;
 
-    public SubroutineSymbolTableRow(String subRoutineName, String typeName,String className,int numberOfLocalVariables,int nArgs){
+    public SubroutineSymbolTableRow(String subRoutineName, ITypeNode typeName,String className,int numberOfLocalVariables,int nArgs){
 
         this.typeName=typeName;
         this.subRoutineName = subRoutineName;
@@ -31,7 +33,7 @@ public class SubroutineSymbolTableRow {
         return this.subRoutineName;
     }
 
-    public String getType() {
+    public ITypeNode getType() {
         return this.typeName;
     }
 
@@ -43,6 +45,14 @@ public class SubroutineSymbolTableRow {
 
     public int getNumberOfArguments() {
         return this.numberOfArguments;
+    }
+
+    public static String generateVMCodeSubroutineName(String className,String subRoutineName){
+        if(subRoutineName.equals("main")){
+            return "main"; //main must be the same, even if we are in a different class
+        }else {
+            return className + "_" + subRoutineName;
+        }
     }
 }
 

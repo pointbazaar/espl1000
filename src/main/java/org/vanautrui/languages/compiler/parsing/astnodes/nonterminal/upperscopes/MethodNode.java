@@ -1,5 +1,6 @@
 package org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes;
 
+import org.vanautrui.languages.compiler.lexing.Lexer;
 import org.vanautrui.languages.compiler.lexing.tokens.ArrowToken;
 import org.vanautrui.languages.compiler.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
@@ -8,19 +9,21 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.DeclaredArg
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.StatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.AccessModifierNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IdentifierNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.SubroutineTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MethodNode implements IASTNode {
+public class MethodNode implements IASTNode, ITypeNode {
 
     public final boolean isPublic;
 
     public final boolean has_side_effects;
 
-    public final TypeNode type;
+    public final TypeNode returnType;
 
     public final String methodName;
 
@@ -67,7 +70,7 @@ public class MethodNode implements IASTNode {
             throw new Exception("expected arrow here");
         }
 
-        this.type = new TypeNode(copy);
+        this.returnType = new TypeNode(copy);
 
         this.methodName = new IdentifierNode(copy).name;
 
@@ -93,7 +96,7 @@ public class MethodNode implements IASTNode {
         return
                 ((this.isPublic)?" public":" private")
                 +" "
-                +this.type
+                +this.returnType
                 +" "
                 +this.methodName
                 +"("
@@ -110,5 +113,32 @@ public class MethodNode implements IASTNode {
                 +"}"
         ;
     }
+    @Override
+    public String getTypeName() {
+        if(this.returnType.typenode instanceof SubroutineTypeNode){
+            return
+                    "("
+                            + this.arguments
+                            .stream()
+                            .map(declaredArgumentNode -> declaredArgumentNode.type)
+                            .map(TypeNode::getTypeName)
+                            .collect(Collectors.joining(","))
+                            + ")" + ((this.has_side_effects) ? "~>" : "->") + "("+returnType.getTypeName()+")";
+        }else {
+            return
+                    "("
+                            + this.arguments
+                            .stream()
+                            .map(declaredArgumentNode -> declaredArgumentNode.type)
+                            .map(TypeNode::getTypeName)
+                            .collect(Collectors.joining(","))
+                            + ")" + ((this.has_side_effects) ? "~>" : "->") + returnType.getTypeName();
+        }
+    }
 
+    public ITypeNode getType() throws Exception{
+        //TODO: THIS IS UGLY, we are doing work that already has been done.
+        //TODO: change this. gather the type information while parsing.
+        return new SubroutineTypeNode(new Lexer().lexCodeTestMode(this.getTypeName()));
+    }
 }

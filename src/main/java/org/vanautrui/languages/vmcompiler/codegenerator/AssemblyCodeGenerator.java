@@ -74,6 +74,10 @@ public class AssemblyCodeGenerator {
             case "return": compile_return(a); break;
             case "exit": compile_exit(instr,a); break;
 
+            //function programming related
+            case "pushsubroutine": compile_pushsubroutine(instr,a); break;
+            case "callfromstack": compile_callfromstack(instr,a); break;
+
             //arithmetic commands
             case "add": compile_add(instr,a); break;
             case "sub": compile_sub(instr,a); break;
@@ -104,6 +108,13 @@ public class AssemblyCodeGenerator {
             //unhandled cases
             default: throw new Exception("unrecognized vm instr "+instr.cmd);
         }
+    }
+
+
+
+    private static void compile_pushsubroutine(VMInstr instr, AssemblyWriter a) {
+        final String subrName = instr.arg1.get();
+        a.push(subrName,instr.toString());
     }
 
     /**

@@ -15,7 +15,7 @@ public class AssemblyCodeGeneratorTest {
   public void test_correct_return_code_is_generated()throws Exception{
 
     DracoVMCodeWriter a=new DracoVMCodeWriter();
-    a.subroutine("main",0,0,"");
+    a.subroutine("Main","main",0,0,"");
     a.iconst(45);
     a.exit();
 
@@ -29,7 +29,7 @@ public class AssemblyCodeGeneratorTest {
   @Test
   public void test_goto()throws Exception{
     DracoVMCodeWriter a=new DracoVMCodeWriter();
-    a.subroutine("main",0,0,"");
+    a.subroutine("Main","main",0,0,"");
     a._goto("label1");
     a.iconst(45);
     a.exit();
@@ -48,7 +48,7 @@ public class AssemblyCodeGeneratorTest {
   public void test_if_goto()throws Exception{
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0,0,"");
+    a.subroutine("Main","main",0,0,"");
     a.iconst(1);
     a.if_goto("label1");
     a.iconst(45);
@@ -68,7 +68,7 @@ public class AssemblyCodeGeneratorTest {
   public void test_eq_false()throws Exception{
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0,0,"");
+    a.subroutine("Main","main",0,0,"");
     a.iconst(1);
     a.iconst(0);
     a.eq();
@@ -89,7 +89,7 @@ public class AssemblyCodeGeneratorTest {
   public void test_eq_true()throws Exception{
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0,0,"");
+    a.subroutine("Main","main",0,0,"");
     a.iconst(11);
     a.iconst(11);
     a.eq();
@@ -110,7 +110,7 @@ public class AssemblyCodeGeneratorTest {
   public void test_neq_true()throws Exception{
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0,0,"");
+    a.subroutine("Main","main",0,0,"");
     a.iconst(1);
     a.iconst(0);
     a.neq();
@@ -131,7 +131,7 @@ public class AssemblyCodeGeneratorTest {
   public void test_neq_false()throws Exception{
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0,0,"");
+    a.subroutine("Main","main",0,0,"");
     a.iconst(11);
     a.iconst(11);
     a.neq();
@@ -152,7 +152,7 @@ public class AssemblyCodeGeneratorTest {
   public void test_gt_true()throws Exception{
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0,0);
+    a.subroutine("Main","main",0,0);
     a.iconst(12);
     a.iconst(11);
     a.gt();
@@ -174,7 +174,7 @@ public class AssemblyCodeGeneratorTest {
   public void test_gt_false()throws Exception{
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0,0);
+    a.subroutine("Main","main",0,0);
     a.iconst(11);
     a.iconst(11);
     a.gt();
@@ -197,7 +197,7 @@ public class AssemblyCodeGeneratorTest {
   public void test_lt_true()throws Exception{
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0,0);
+    a.subroutine("Main","main",0,0);
     a.iconst(2);
     a.iconst(11);
     a.lt();
@@ -219,7 +219,7 @@ public class AssemblyCodeGeneratorTest {
   public void test_lt_false()throws Exception{
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0,0);
+    a.subroutine("Main","main",0,0);
     a.iconst(11);
     a.iconst(11);
     a.lt();
@@ -240,7 +240,7 @@ public class AssemblyCodeGeneratorTest {
   public void test_swap()throws Exception{
     DracoVMCodeWriter a=new DracoVMCodeWriter();
 
-    a.subroutine("main",0,0);
+    a.subroutine("Main","main",0,0);
     a.iconst(2);
     a.iconst(11);
     a.swap();

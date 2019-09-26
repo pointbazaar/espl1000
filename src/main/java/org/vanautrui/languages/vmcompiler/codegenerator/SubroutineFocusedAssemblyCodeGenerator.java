@@ -18,13 +18,26 @@ public class SubroutineFocusedAssemblyCodeGenerator {
         //this method offers a description which can be included in higher level vm code
         return "pushes return address of current subroutine on the stack,jumps to subroutine,swaps returned value (on stack) with ebp, pops ebp (Source: SubroutineFocusedAssemblyCodeGenerator.java)";
     }
-    public static void compile_call(VMInstr instr, AssemblyWriter a) throws Exception {
+    public static void compile_call(VMInstr instr, AssemblyWriter a){
         String subroutineName = instr.arg1.get();
 
         a.call(subroutineName,instr.toString()); //puts the return address on the stack and jumps to label
 
         //swap return value with saved ebp
         compile_swap("swap return value with saved ebp",a);
+
+        a.pop(ebp,"get our ebp back "+instr.toString());
+    }
+
+    public static void compile_callfromstack(VMInstr instr, AssemblyWriter a) {
+        //this subroutine should be closely related to the compile_call subroutine
+
+        a.pop(eax,instr.toString()); //pop our destination from stack
+
+        a.call(eax,instr.toString()); //puts the return address on the stack and jumps to label
+
+        //swap return value with saved ebp
+        compile_swap("swap return value with saved ebp"+instr.toString(),a);
 
         a.pop(ebp,"get our ebp back "+instr.toString());
     }

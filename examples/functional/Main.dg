@@ -1,0 +1,15 @@
+public class Main{
+	()~>PInt main{
+		putdigit(subr(id));
+		return 0;
+	}
+
+	
+	(PInt n)->PInt id{
+		return n;
+	}
+	
+	((PInt)~>PInt subr1)->PInt subr{
+		return subr1(2);
+	}
+}
