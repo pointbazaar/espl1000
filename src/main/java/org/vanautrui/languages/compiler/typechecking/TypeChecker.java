@@ -83,7 +83,9 @@ public class TypeChecker {
                                        SubroutineSymbolTable subTable,
                                        LocalVarSymbolTable varTable) throws Exception {
     //the condition expression should be of type boolean
-    ITypeNode conditionType = TypeResolver.getTypeExpressionNode(ifStatementNode.condition, methodNode, subTable, varTable);
+    ITypeNode conditionType =
+            TypeResolver.getTypeExpressionNode(ifStatementNode.condition, methodNode, subTable, varTable);
+    
     if (!conditionType.getTypeName().equals("Bool")) {
       throw new Exception(" condition should be of type Bool, but is of type: " + conditionType.getTypeName());
     }
@@ -95,24 +97,29 @@ public class TypeChecker {
     }
   }
 
-  static void typeCheckMethodCallNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, MethodCallNode methodCallNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {
-    //TODO: check that the method is called on an object
-    //which is actually declared and initialized
-    //and is in scope
-
+  static void typeCheckMethodCallNode(List<AST> asts, ClassNode classNode,
+                                      MethodNode methodNode, MethodCallNode methodCallNode,
+                                      SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {
     boolean found = false;
 
     if (subTable.containsSubroutine(methodCallNode.methodName)) {
       found = true;
     }
 
-    if (varTable.containsVariable(methodCallNode.methodName) && varTable.get(methodCallNode.methodName).getType() instanceof SubroutineTypeNode) {
+    if (
+            varTable.containsVariable(methodCallNode.methodName)
+            && varTable.get(methodCallNode.methodName).getType() instanceof SubroutineTypeNode
+    ) {
       found = true;
     }
 
     if (!found) {
       System.out.println(subTable.toString());
-      throw new Exception("name of method not in subroutine symbol table and not in local variable table (or not a subroutine variable): " + methodCallNode.methodName);
+      throw
+          new Exception(
+                  "name of method not in subroutine symbol table and not in local variable table (or not a subroutine variable): "
+                  + methodCallNode.methodName
+          );
     }
 
     //for static method calls, check that the class exists
@@ -124,11 +131,16 @@ public class TypeChecker {
   }
 
 
-  static void typeCheckArrayConstantNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, ArrayConstantNode arrConstNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {
+  static void typeCheckArrayConstantNode(List<AST> asts, ClassNode classNode, MethodNode methodNode,
+                                         ArrayConstantNode arrConstNode, SubroutineSymbolTable subTable,
+                                         LocalVarSymbolTable varTable) throws Exception
+  {
     //all the types of the elements should be the same
     if (arrConstNode.elements.size() > 0) {
 
-      ITypeNode type_of_elements = TypeResolver.getTypeExpressionNode(arrConstNode.elements.get(0), methodNode, subTable, varTable);
+      ITypeNode type_of_elements =
+              TypeResolver.getTypeExpressionNode(arrConstNode.elements.get(0), methodNode, subTable, varTable);
+
       for (ExpressionNode expr : arrConstNode.elements) {
         ITypeNode element_type = TypeResolver.getTypeExpressionNode(expr, methodNode, subTable, varTable);
         if (!element_type.getTypeName().equals(type_of_elements.getTypeName())) {
@@ -152,9 +164,13 @@ public class TypeChecker {
           LocalVarSymbolTable varTable
   ) throws Exception {
     //the condition expression should be of type boolean
-    ITypeNode conditionType = TypeResolver.getTypeExpressionNode(whileStatementNode.condition, methodNode, subTable, varTable);
+    ITypeNode conditionType =
+            TypeResolver.getTypeExpressionNode(whileStatementNode.condition, methodNode, subTable, varTable);
+
     if (!conditionType.getTypeName().equals("Bool")) {
-      throw new Exception(" condition should be of type Bool : '" + whileStatementNode.condition.toSourceCode() + "' but was of type: " + conditionType);
+      throw new Exception(" condition should be of type Bool : '"
+              + whileStatementNode.condition.toSourceCode()
+              + "' but was of type: " + conditionType);
     }
     for (StatementNode stmt : whileStatementNode.statements) {
       typeCheckStatementNode(asts, classNode, methodNode, stmt, subTable, varTable);
@@ -170,7 +186,10 @@ public class TypeChecker {
 
     ITypeNode countType = TypeResolver.getTypeExpressionNode(loopStatementNode.count, methodNode, subTable, varTable);
     if (!countType.getTypeName().equals("PInt")) {
-      throw new Exception(" condition should be of an Integral Type >= 0 (PInt) . this is a loop statement after all.");
+      throw
+          new Exception(
+                  " condition should be of an Integral Type >= 0 (PInt) . this is a loop statement after all."
+          );
     }
     for (StatementNode stmt : loopStatementNode.statements) {
       typeCheckStatementNode(asts, classNode, methodNode, stmt, subTable, varTable);
@@ -194,11 +213,18 @@ public class TypeChecker {
     }
   }
 
-  static void typeCheckDeclaredArgumentNode(List<AST> asts, ClassNode classNode, DeclaredArgumentNode declaredArgumentNode) throws Exception {
+  static void typeCheckDeclaredArgumentNode(List<AST> asts,
+                                            ClassNode classNode,
+                                            DeclaredArgumentNode declaredArgumentNode) throws Exception {
     typeCheckITypeNode(asts, classNode, declaredArgumentNode.type.typenode);
   }
 
-  private void typeCheckIdentifierNode(Set<AST> asts, ClassNode classNode, MethodNode methodNode, IdentifierNode identifierNode) throws Exception {
+  private void typeCheckIdentifierNode(Set<AST> asts,
+                                       ClassNode classNode,
+                                       MethodNode methodNode,
+                                       IdentifierNode identifierNode)
+  throws Exception
+  {
     //TODO: it should check that the identifier is
     //declared in method scope or class scope.
     //so there should be some declaration of it
