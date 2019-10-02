@@ -34,6 +34,14 @@ public class OperatorDracoVMCodeGenerator {
       case "==":
         sb.eq();
         break;
+
+      case "<<":
+        sb.lshiftl();
+        break;
+      case ">>":
+        sb.lshiftr();
+        break;
+
       default:
         throw new Exception("currently unsupported op: '"+opNode.operator+"'");
     }

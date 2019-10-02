@@ -85,7 +85,7 @@ public class TypeChecker {
     //the condition expression should be of type boolean
     ITypeNode conditionType =
             TypeResolver.getTypeExpressionNode(ifStatementNode.condition, methodNode, subTable, varTable);
-    
+
     if (!conditionType.getTypeName().equals("Bool")) {
       throw new Exception(" condition should be of type Bool, but is of type: " + conditionType.getTypeName());
     }

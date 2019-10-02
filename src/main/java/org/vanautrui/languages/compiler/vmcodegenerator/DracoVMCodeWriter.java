@@ -223,4 +223,12 @@ public class DracoVMCodeWriter {
   public void callfromstack() {
     any("callfromstack");
   }
+
+  public void lshiftl() {
+    any("lshiftl");
+  }
+
+  public void lshiftr() {
+    any("lshiftr");
+  }
 }

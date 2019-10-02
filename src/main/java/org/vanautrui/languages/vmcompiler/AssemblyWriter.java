@@ -264,4 +264,14 @@ public class AssemblyWriter {
     public void push(String labelName, String comment) {
         any("push "+labelName,comment);
     }
+
+    public void shl(Register register, Register lower_half_of_cx_probably,String comment) {
+        //usure if we only can shift by cl ?
+        any("shl "+register+","+lower_half_of_cx_probably,comment);
+    }
+
+    public void shr(Register register, Register lower_half_of_cx_probably,String comment) {
+        //usure if we only can shift by cl ?
+        any("shr "+register+","+lower_half_of_cx_probably,comment);
+    }
 }

@@ -85,4 +85,20 @@ public class OperatorCodeGeneratorTest {
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
     }
+
+    @Test
+    public void test_can_bitshift_1()throws Exception{
+        String source="public class MainTest673733 { public ()~>PInt main{ putdigit(1 << 1); return 0;} }";
+        Process pr = compile_and_run_program_for_testing(source,"MainTest673733");
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("2",IOUtils.toString(pr.getInputStream()));
+    }
+
+    @Test
+    public void test_can_bitshift_2()throws Exception{
+        String source="public class MainTest673734 { public ()~>PInt main{ putdigit(2 >> 1); return 0;} }";
+        Process pr = compile_and_run_program_for_testing(source,"MainTest673734");
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
+    }
 }

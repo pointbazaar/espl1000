@@ -1,9 +1,10 @@
 public class BitShift{
 	public ()~>PInt main{
 		a=1;
-		ashifted = a << 1;
+		ashifted = a << 2;
 
-		//should output '2'
+		//should output '4'
 		putdigit(ashifted);
+		return 0;
 	}
 }

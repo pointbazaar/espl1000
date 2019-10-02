@@ -105,11 +105,30 @@ public class AssemblyCodeGenerator {
             case "arraystore": compile_arraystore(instr,a); break;
             case "arrayread": compile_arrayread(instr,a); break;
 
+            //bit shifting
+            case "lshiftl": compile_lshiftl(instr,a); break;
+            case "lshiftr": compile_lshiftr(instr,a); break;
+
             //unhandled cases
             default: throw new Exception("unrecognized vm instr "+instr.cmd);
         }
     }
 
+    private static void compile_lshiftr(VMInstr instr, AssemblyWriter a) {
+        final String cmt = instr.toString();
+        a.pop(ecx,cmt);
+        a.pop(eax,cmt);
+        a.shr(eax,cl,cmt);
+        a.push(eax,cmt);
+    }
+
+    private static void compile_lshiftl(VMInstr instr, AssemblyWriter a) {
+        final String cmt = instr.toString();
+        a.pop(ecx,cmt);
+        a.pop(eax,cmt);
+        a.shl(eax,cl,cmt);
+        a.push(eax,cmt);
+    }
 
 
     private static void compile_pushsubroutine(VMInstr instr, AssemblyWriter a) {

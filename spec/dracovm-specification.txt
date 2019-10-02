@@ -5,39 +5,44 @@ It is ispired by the Jack VM (from Nand2Tetris)
 Commands supported:
 (for now commands support just integers)
 
-hypothetical STACK:
+hypothetical STACK (relevant for description of commands):
 x
 a
-b
+b <- esp
 
 the RETURNS is what is left on the stack after operands have been popped
 1 means true,
 0 means false
 
-	COMMAND	RETURNS	COMMENT
+	COMMAND	RETURNS	    COMMENT
 
 	//arithmetic 
-	add	a+b	integer addition
-	sub	a-b	integer subtraction
-	mul	a*b	integer multiplication
-	div	a/b	integer division
+	add	a+b	integer     addition
+	sub	a-b	integer     subtraction
+	mul	a*b	integer     multiplication
+	div	a/b	integer     division
 
-	neg	-b	integer inversion
+	neg	-b	integer     inversion
 
 
-	eq	1 or 0	equality
-	neq 1 or 0  !=  // not equals
+	eq	1 or 0	        equality
+	neq 1 or 0  !=      not equals
 	gt	1 or 0 	>
 	lt	1 or 0	<
 	geq	1 or 0	>=
 	leq	1 or 0	<=
 
-	and	1 or 0	conjunction
-	or	1 or 0	disjunction
-	not	1 or 0	negation
+    //logical
+	and	1 or 0	        conjunction
+	or	1 or 0	        disjunction
+	not	1 or 0	        negation
 
-	inc	tos+1	increment top of stack
-	dec	tos-1	decrement top of stack
+	inc	tos+1	        increment top of stack
+	dec	tos-1	        decrement top of stack
+
+	//bit-shifting
+	lshifl a << b       logical shift left by b bits
+	lshiftr a >> b      logical shift right by b bits
 
 VIRTUAL MEMORY SEGMENTS
 	the DracoVM manipulates various virtual memory segments
