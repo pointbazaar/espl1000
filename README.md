@@ -2,21 +2,22 @@
 
 !!Work in Progress!!
 
-This repo contains a simple, work-in-progress statically typed programming language
+This repo contains a simple, work-in-progress statically typed programming language.
+Its main debugger is [noBG](https://github.com/Milo-D/noBG-Assembly-Debugger)
 
 ## Goals
 
 - [x] simple local variable type inference 
 - [x] compiles to intel x86 assembly
 - [ ] functional programming
-  - [ ] functions are first-class citizens and can be passed as parameters
+  - [x] functions are first-class citizens and can be passed as parameters to subroutines
   - [ ] lambda expressions
   - [ ] common functions (haskell inspired) map,reduce,filter,sum,zip,unzip,head,tail,init
 - [ ] structs
 - [ ] objects
   - [ ] support for creating objects
   - [ ] generics (Type parameters)
-  - [ ] type aliases
+  - [ ] type aliases 
 - [ ] optional laziness, declare a method or function or block of statements to be lazy...
 - [ ] multithreading
 - [ ] standard library 
