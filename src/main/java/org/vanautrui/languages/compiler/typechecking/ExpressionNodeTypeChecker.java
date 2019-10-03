@@ -101,7 +101,7 @@ public class ExpressionNodeTypeChecker {
       }
 
 
-      if(!bitshifting_operators_for_epressions_with_2_operands.contains(opNode.operator)){
+      if(!arithmetic_operators_for_epressions_with_2_operands.contains(opNode.operator)){
         throw new Exception("operator '"+opNode.operator+"' not supported for expression with 2 Terms.");
       }
 
