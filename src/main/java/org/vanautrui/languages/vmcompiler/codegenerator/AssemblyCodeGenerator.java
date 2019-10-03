@@ -1,6 +1,5 @@
 package org.vanautrui.languages.vmcompiler.codegenerator;
 
-import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
 import org.vanautrui.languages.vmcompiler.AssemblyWriter;
 import org.vanautrui.languages.vmcompiler.instructions.VMInstr;
 
@@ -49,8 +48,6 @@ public class AssemblyCodeGenerator {
     }
 
     private static void compile_vm_instr(VMInstr instr,AssemblyWriter a)throws Exception{
-        //uniqueness for labels
-        long uniq = DracoVMCodeGenerator.unique();
 
         switch (instr.cmd){
             //stack related commands
@@ -87,9 +84,9 @@ public class AssemblyCodeGenerator {
             case "neg": compile_neg(instr,a); break;
 
             //logic commands
-            case "eq": compile_eq(instr,a,uniq); break;
-            case "gt": compile_gt(instr,a,uniq); break;
-            case "lt": compile_lt(instr,a,uniq); break;
+            case "eq": compile_eq(instr,a); break;
+            case "gt": compile_gt(instr,a); break;
+            case "lt": compile_lt(instr,a); break;
             case "not": compile_not(instr,a); break;
 
             //inc,dec
@@ -98,7 +95,7 @@ public class AssemblyCodeGenerator {
 
             //control flow
             case "goto": a.jmp(instr.arg1.get()); break;
-            case "if-goto": compile_if_goto(instr,a,uniq); break;
+            case "if-goto": compile_if_goto(instr,a); break;
             case "label": a.label(instr.arg1.get()); break;
 
             //array related
@@ -234,12 +231,12 @@ public class AssemblyCodeGenerator {
 
 
 
-    private static void compile_lt(VMInstr instr, AssemblyWriter a, long uniq) {
+    private static void compile_lt(VMInstr instr, AssemblyWriter a) {
 
         final String comment = "lt";
 
-        String labeltrue="lt_push1"+uniq;
-        String labelend="lt_end"+uniq;
+        String labeltrue=".lt_push1";
+        String labelend=".lt_end";
 
         a.pop(ebx,comment);
         a.pop(eax,comment);
@@ -257,10 +254,10 @@ public class AssemblyCodeGenerator {
         a.label(labelend,comment);
     }
 
-    private static void compile_gt(VMInstr instr, AssemblyWriter a, long uniq) {
-        final String comment = "lt";
-        String labeltrue="gt_push1"+uniq;
-        String labelend="gt_end"+uniq;
+    private static void compile_gt(VMInstr instr, AssemblyWriter a) {
+        final String comment = "gt";
+        String labeltrue=".gt_push1";
+        String labelend=".gt_end";
 
         a.pop(ebx,comment);
         a.pop(eax,comment);
@@ -325,7 +322,7 @@ public class AssemblyCodeGenerator {
 
 
 
-    private static void compile_if_goto(VMInstr instr, AssemblyWriter a,long uniq) {
+    private static void compile_if_goto(VMInstr instr, AssemblyWriter a) {
 
         final String comment="if-goto";
 
@@ -335,11 +332,11 @@ public class AssemblyCodeGenerator {
         a.je(instr.arg1.get(),comment); //jumps, if eax==ebx
     }
 
-    private static void compile_eq(VMInstr instr, AssemblyWriter a,long uniq) {
+    private static void compile_eq(VMInstr instr, AssemblyWriter a) {
         final String comment ="eq";
 
-        String labeltrue="eq_push1"+uniq;
-        String labelend="eq_end"+uniq;
+        String labeltrue=".eq_push1";
+        String labelend=".eq_end";
 
         a.pop(eax,comment);
         a.pop(ebx,comment);
