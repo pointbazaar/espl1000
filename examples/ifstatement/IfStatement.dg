@@ -1,4 +1,4 @@
-public class IfStatement{
+public namespace IfStatement{
 	public PInt main(){
 
 		x=3;

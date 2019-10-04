@@ -1,11 +1,8 @@
 //PLANNED FOR NEXT GRAMMAR CHANGE
 
-AST ::= namespace+
-
-namespace ::= accessmodifier? 'namespace' identifier '{' method* '}'
+struct ::= 'struct' identifier '{' declaredArgument (',' declaredArgument)* '}'
 
 //PLANNED FOR LATER
-struct ::= 'struct' identifier '{' declaredArgument (',' declaredArgument)* '}'
 
 simplevariable ::= identifier ('[' expression ']')?
 

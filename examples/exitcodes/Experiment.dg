@@ -1,4 +1,4 @@
-class Experiment{
+namespace Experiment{
 	Int main(){
 		return 0;
 	}

@@ -1,4 +1,4 @@
-public class Array1{
+public namespace Array1{
 	public ()~>PInt main{
 
 		arr=[1,2,3,4];

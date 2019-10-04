@@ -1,4 +1,4 @@
-class MethodCall2{
+namespace MethodCall2{
 	Int main(){
 		subr(2,1);
 		return 0;

@@ -1,4 +1,4 @@
-public class Faculty{
+public namespace Faculty{
 	public Int main(){
 		
 		println(faculty(3));

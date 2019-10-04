@@ -1,6 +1,6 @@
 use Math.dg
 
-public class Use{
+public namespace Use{
 
 	public Int main(){
 		println(sqrt(9.0));		

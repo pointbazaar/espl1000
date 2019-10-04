@@ -1,4 +1,4 @@
-public class Main{
+public namespace Main{
 	()~>PInt main{
 		putdigit(subr(id));
 		putchar(' ');

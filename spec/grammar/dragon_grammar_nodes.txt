@@ -1,9 +1,9 @@
 
 ArrayConstant ::= '[' expression (',' expression)* ']'
 
-AST ::= class+
+AST ::= namespace+
 
-class ::= accessmodifier? 'class' identifier '{' method* '}'
+namespace ::= accessmodifier? 'namespace' identifier '{' method* '}'
 
 
 SubroutineType ::= '(' Type* ')' arrow ( SimpleType | '(' SubroutineType ')' )

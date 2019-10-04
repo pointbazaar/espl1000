@@ -1,4 +1,4 @@
-public class ArrayMinimal{
+public namespace ArrayMinimal{
 	public PInt main(){
 
 		arr=[1,2];

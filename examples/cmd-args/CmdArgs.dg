@@ -1,4 +1,4 @@
-class CmdArgs{
+namespace CmdArgs{
 	PInt main([[Char]] args){
 		
 		putchar(args[0][0]);

@@ -1,4 +1,4 @@
-public class Fibonacci{
+public namespace Fibonacci{
 
 	public Int main(){
 		x=100;

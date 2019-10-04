@@ -1,4 +1,4 @@
-public class Read{
+public namespace Read{
 	public PInt main(){
 
 		arr=[1,2,3,4];

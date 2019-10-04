@@ -1,4 +1,4 @@
-public class Filter{
+public namespace Filter{
 	()~>PInt main{
 		arr=[1,2];
 

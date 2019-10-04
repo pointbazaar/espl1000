@@ -1,4 +1,4 @@
-public class Input{
+public namespace Input{
     	public Int main(){
 		
 

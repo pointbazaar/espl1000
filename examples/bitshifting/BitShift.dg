@@ -1,4 +1,4 @@
-public class BitShift{
+public namespace BitShift{
 	public ()~>PInt main{
 		a=1;
 		ashifted = a << 2;

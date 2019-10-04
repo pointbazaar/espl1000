@@ -1,4 +1,4 @@
-class MultiLineStrings{
+namespace MultiLineStrings{
 	Int main(){
 		x="
 

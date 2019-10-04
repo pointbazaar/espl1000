@@ -1,5 +1,5 @@
 
-class MyOutput{
+namespace MyOutput{
 	Int main(){
 		putchar('c');
 		return 0;

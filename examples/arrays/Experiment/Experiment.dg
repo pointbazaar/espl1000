@@ -1,4 +1,4 @@
-public class Experiment{
+public namespace Experiment{
 	public Int main(){
 		arr=[0];
 		i=0;

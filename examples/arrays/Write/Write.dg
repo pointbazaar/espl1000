@@ -1,4 +1,4 @@
-public class Write{
+public namespace Write{
 	public ()~>PInt main{
 
 		arr=[1];

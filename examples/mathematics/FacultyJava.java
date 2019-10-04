@@ -1,4 +1,4 @@
-public class FacultyJava{
+public namespace FacultyJava{
 	public static void main(String[] args){
 		System.out.println(faculty(3));
 	}
