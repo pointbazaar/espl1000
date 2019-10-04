@@ -14,11 +14,6 @@ methodCall ::= variable? . methodName '(' (expression (, expression)*)?  ')'
 
 //MAYBE
 
-
-object ::= variable
-objectOrVariable ::= variable | fieldAccess | object
-fieldAccess ::= object '.' object | object '.' methodCall | methodCall '.' object
-
 //this is a kind of expression inspired by haskell.
 //it is similar to the ternary operator
 //maybe i should implement them

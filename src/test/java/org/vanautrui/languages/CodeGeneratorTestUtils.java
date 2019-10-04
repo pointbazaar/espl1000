@@ -17,7 +17,7 @@ public class CodeGeneratorTestUtils {
     public static List<String> generateVMCodeFromDragonCode(String source,String filename) throws Exception{
         TokenList tokens = (new Lexer()).lexCodeTestMode(source);
         Parser parser = new Parser();
-        AST ast= parser.parseTestMode(tokens,true);
+        AST ast= parser.parseTestMode(tokens,false);
         List<AST> asts = new ArrayList<>();
         asts.add(ast);
         //we are in debug mode since we are running tests
@@ -33,7 +33,7 @@ public class CodeGeneratorTestUtils {
 
     public static Path generateFromVMCodeAndWriteExecutable(List<String> vmcodes,String filename)throws Exception{
         CompilerPhases phases = new CompilerPhases();
-        List<String> asm_codes = phases.phase_vm_code_compilation(vmcodes,true);
+        List<String> asm_codes = phases.phase_vm_code_compilation(vmcodes,false);
         Path path = phases.phase_generate_executable(asm_codes,filename);
 
         return path;

@@ -30,7 +30,7 @@ public class ExpressionNodeTest {
 
         Lexer lexer = new Lexer();
         TokenList tokens = lexer.lexCodeTestMode("\"hello\"");
-        System.out.println(tokens.toString());
+        //System.out.println(tokens.toString());
 
         ExpressionNode expr = new ExpressionNode(tokens);
     }

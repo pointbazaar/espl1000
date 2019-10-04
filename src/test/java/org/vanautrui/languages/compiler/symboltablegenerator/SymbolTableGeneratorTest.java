@@ -25,7 +25,7 @@ public class SymbolTableGeneratorTest {
         ));
 
         Parser parser = new Parser();
-        AST ast = parser.parseTestMode(tokens,true);
+        AST ast = parser.parseTestMode(tokens,false);
         return ast;
     }
 
@@ -62,7 +62,7 @@ public class SymbolTableGeneratorTest {
 
         LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable);
 
-        System.out.println(localVarTable.toString());
+        //System.out.println(localVarTable.toString());
 
         assertEquals(2,localVarTable.countLocals());
         assertEquals(0,localVarTable.countArgs());
@@ -86,7 +86,7 @@ public class SymbolTableGeneratorTest {
 
         LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable);
 
-        System.out.println(localVarTable.toString());
+        //System.out.println(localVarTable.toString());
 
         assertEquals(1,localVarTable.countLocals());
         assertEquals(0,localVarTable.countArgs());
@@ -106,7 +106,7 @@ public class SymbolTableGeneratorTest {
 
         LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable);
 
-        System.out.println(localVarTable.toString());
+        //System.out.println(localVarTable.toString());
 
         assertEquals(1,localVarTable.countLocals());
         assertEquals(0,localVarTable.countArgs());
