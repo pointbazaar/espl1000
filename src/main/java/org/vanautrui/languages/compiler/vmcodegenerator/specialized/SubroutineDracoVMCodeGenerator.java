@@ -1,7 +1,7 @@
 package org.vanautrui.languages.compiler.vmcodegenerator.specialized;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.StatementNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
@@ -13,7 +13,7 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.State
 public class SubroutineDracoVMCodeGenerator {
 
 
-  public static void generateDracoVMCodeForMethod(ClassNode containerClass, MethodNode m, DracoVMCodeWriter sb, SubroutineSymbolTable subTable,boolean debug,boolean printsymboltables)throws Exception{
+  public static void generateDracoVMCodeForMethod(NamespaceNode containerClass, MethodNode m, DracoVMCodeWriter sb, SubroutineSymbolTable subTable, boolean debug, boolean printsymboltables)throws Exception{
 
     LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(m,subTable);
     if(debug || printsymboltables){

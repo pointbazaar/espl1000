@@ -7,14 +7,12 @@ import org.vanautrui.languages.CodeGeneratorTestUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 public class CodeGeneratorTest {
 
     @Test
     public void test_can_compile_simple_helloworld()throws Exception{
-        String source="public class MainTest100 { public PInt main(){ println(\"Hello World!\"); return 0; }}";
+        String source="public namespace MainTest100 { public PInt main(){ println(\"Hello World!\"); return 0; }}";
 
         Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing(source,"MainTest100");
 
@@ -41,7 +39,7 @@ public class CodeGeneratorTest {
         //on the stack. we cannot use the more general BIPUSH
         //maybe this has optimization reasons
 
-        String source="public class MainTest3 { public PInt main(){ x="+x+"; println(x); return 0; } }";
+        String source="public namespace MainTest3 { public PInt main(){ x="+x+"; println(x); return 0; } }";
         Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing(source,"MainTest3");
 
         Assert.assertEquals(0,pr.exitValue());
@@ -51,7 +49,7 @@ public class CodeGeneratorTest {
     @Test
     public void test_can_compile_multiple_assignment_to_same_variable_add()throws Exception{
 
-        String source="public class MainTest4 { public PInt main(){ x=1; x=x+1; println(x); return 0;} }";
+        String source="public namespace MainTest4 { public PInt main(){ x=1; x=x+1; println(x); return 0;} }";
         Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing(source,"MainTest4");
 
         Assert.assertEquals(0,pr.exitValue());
@@ -61,7 +59,7 @@ public class CodeGeneratorTest {
     @Test
     public void test_can_compile_multiple_assignment_to_same_variable_multiply()throws Exception{
 
-        String source="public class MainTest5 { public PInt main(){ x=2; x=x*2; println(x); return 0; } }";
+        String source="public namespace MainTest5 { public PInt main(){ x=2; x=x*2; println(x); return 0; } }";
         Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing(source,"MainTest5");
 
         Assert.assertEquals(0,pr.exitValue());
@@ -71,7 +69,7 @@ public class CodeGeneratorTest {
     @Test
     public void test_can_compile_assignment_to_multiple_local_variables()throws Exception{
 
-        String source="public class MainTest6 { public PInt main(){ x=2; y=1; x=x+y; println(x); return 0; } }";
+        String source="public namespace MainTest6 { public PInt main(){ x=2; y=1; x=x+y; println(x); return 0; } }";
         Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing(source,"MainTest6");
 
         Assert.assertEquals(0,pr.exitValue());
@@ -81,7 +79,7 @@ public class CodeGeneratorTest {
     @Test
     public void test_can_compile_input_and_output_very_basic()throws Exception{
 
-        String source="public class MainTest7 { public PInt main(){ x=readln();  println(x); return 0;} }";
+        String source="public namespace MainTest7 { public PInt main(){ x=readln();  println(x); return 0;} }";
         Process pr = CodeGeneratorTestUtils.compile_and_run_but_not_waitFor(source,"MainTest7");
 
         //give input to process
@@ -94,7 +92,6 @@ public class CodeGeneratorTest {
 
         pr.waitFor();
 
-        Files.delete(Paths.get("MainTest7.class"));
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("2\n",IOUtils.toString(pr.getInputStream()));

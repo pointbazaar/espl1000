@@ -9,7 +9,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.LoopStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.WhileStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IdentifierNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
@@ -60,15 +60,15 @@ public class TypeChecker {
       System.out.println(subroutineSymbolTable.toString());
     }
     for (AST ast : asts) {
-      for (ClassNode classNode : ast.classNodeList) {
-        typeCheckClassNode(asts, classNode, subroutineSymbolTable, debug);
+      for (NamespaceNode namespaceNode : ast.namespaceNodeList) {
+        typeCheckClassNode(asts, namespaceNode, subroutineSymbolTable, debug);
       }
     }
   }
 
 
 
-  static void typeCheckIfStatementNode(List<AST> asts, ClassNode classNode,
+  static void typeCheckIfStatementNode(List<AST> asts, NamespaceNode namespaceNode,
                                        MethodNode methodNode,
                                        IfStatementNode ifStatementNode,
                                        SubroutineSymbolTable subTable,
@@ -81,14 +81,14 @@ public class TypeChecker {
       throw new Exception(" condition should be of type Bool, but is of type: " + conditionType.getTypeName());
     }
     for (StatementNode stmt : ifStatementNode.statements) {
-      typeCheckStatementNode(asts, classNode, methodNode, stmt, subTable, varTable);
+      typeCheckStatementNode(asts, namespaceNode, methodNode, stmt, subTable, varTable);
     }
     for (StatementNode stmt : ifStatementNode.elseStatements) {
-      typeCheckStatementNode(asts, classNode, methodNode, stmt, subTable, varTable);
+      typeCheckStatementNode(asts, namespaceNode, methodNode, stmt, subTable, varTable);
     }
   }
 
-  static void typeCheckMethodCallNode(List<AST> asts, ClassNode classNode,
+  static void typeCheckMethodCallNode(List<AST> asts, NamespaceNode namespaceNode,
                                       MethodNode methodNode, MethodCallNode methodCallNode,
                                       SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {
     boolean found = false;
@@ -117,12 +117,12 @@ public class TypeChecker {
 
     //all arguments should typecheck
     for (ExpressionNode expr : methodCallNode.argumentList) {
-      typeCheckExpressionNode(asts, classNode, methodNode, expr, subTable, varTable);
+      typeCheckExpressionNode(asts, namespaceNode, methodNode, expr, subTable, varTable);
     }
   }
 
 
-  static void typeCheckArrayConstantNode(List<AST> asts, ClassNode classNode, MethodNode methodNode,
+  static void typeCheckArrayConstantNode(List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode,
                                          ArrayConstantNode arrConstNode, SubroutineSymbolTable subTable,
                                          LocalVarSymbolTable varTable) throws Exception
   {
@@ -140,7 +140,7 @@ public class TypeChecker {
                   + " from the first element's type, but type differed at index "
                   + arrConstNode.elements.indexOf(expr) + " : it's type was " + element_type);
         }
-        typeCheckExpressionNode(asts, classNode, methodNode, expr, subTable, varTable);
+        typeCheckExpressionNode(asts, namespaceNode, methodNode, expr, subTable, varTable);
       }
     }
   }
@@ -148,7 +148,7 @@ public class TypeChecker {
 
   static void typeCheckWhileStatementNode(
           List<AST> asts,
-          ClassNode classNode,
+          NamespaceNode namespaceNode,
           MethodNode methodNode,
           WhileStatementNode whileStatementNode,
           SubroutineSymbolTable subTable,
@@ -164,12 +164,12 @@ public class TypeChecker {
               + "' but was of type: " + conditionType);
     }
     for (StatementNode stmt : whileStatementNode.statements) {
-      typeCheckStatementNode(asts, classNode, methodNode, stmt, subTable, varTable);
+      typeCheckStatementNode(asts, namespaceNode, methodNode, stmt, subTable, varTable);
     }
   }
 
   static void typeCheckLoopStatementNode(
-          List<AST> asts, ClassNode classNode, MethodNode methodNode,
+          List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode,
           LoopStatementNode loopStatementNode, SubroutineSymbolTable subTable,
           LocalVarSymbolTable varTable
   ) throws Exception {
@@ -183,7 +183,7 @@ public class TypeChecker {
           );
     }
     for (StatementNode stmt : loopStatementNode.statements) {
-      typeCheckStatementNode(asts, classNode, methodNode, stmt, subTable, varTable);
+      typeCheckStatementNode(asts, namespaceNode, methodNode, stmt, subTable, varTable);
     }
   }
 
@@ -193,11 +193,11 @@ public class TypeChecker {
   }
 
 
-  static void typeCheckMethodNameNode(List<AST> asts, ClassNode classNode, String methodName) throws Exception {
+  static void typeCheckMethodNameNode(List<AST> asts, NamespaceNode namespaceNode, String methodName) throws Exception {
     //method names should not be duplicate in a class
     //this may change in another version of dragon
 
-    long count = classNode.methodNodeList.stream().filter(mNode -> mNode.methodName.equals(methodName)).count();
+    long count = namespaceNode.methodNodeList.stream().filter(mNode -> mNode.methodName.equals(methodName)).count();
 
     if (count > 1) {
       throw new Exception("duplicate declaration of method '" + methodName + "' ");
@@ -205,13 +205,13 @@ public class TypeChecker {
   }
 
   static void typeCheckDeclaredArgumentNode(List<AST> asts,
-                                            ClassNode classNode,
+                                            NamespaceNode namespaceNode,
                                             DeclaredArgumentNode declaredArgumentNode) throws Exception {
-    typeCheckITypeNode(asts, classNode, declaredArgumentNode.type.typenode);
+    typeCheckITypeNode(asts, namespaceNode, declaredArgumentNode.type.typenode);
   }
 
   private void typeCheckIdentifierNode(Set<AST> asts,
-                                       ClassNode classNode,
+                                       NamespaceNode namespaceNode,
                                        MethodNode methodNode,
                                        IdentifierNode identifierNode)
   throws Exception

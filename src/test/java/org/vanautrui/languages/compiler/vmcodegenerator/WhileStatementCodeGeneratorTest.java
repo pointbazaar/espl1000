@@ -11,7 +11,7 @@ public class WhileStatementCodeGeneratorTest {
 
     @Test
     public void test_can_while_statement()throws Exception{
-        String source="public class MainTest22 { public ()~>PInt main{ i=0; while (i<3) { putchar('1'); i=i+1; } return 0;} }";
+        String source="public namespace MainTest22 { public ()~>PInt main{ i=0; while (i<3) { putchar('1'); i=i+1; } return 0;} }";
         Process pr = compile_and_run_program_for_testing(source,"MainTest22");
 
         assertEquals(0,pr.exitValue());

@@ -8,7 +8,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.LoopStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.WhileStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
@@ -31,11 +31,11 @@ public class SymbolTableGenerator {
 		SubroutineSymbolTable subroutineSymbolTable = new SubroutineSymbolTable();
 
 		for(AST ast : asts) {
-			for(ClassNode classNode : ast.classNodeList) {
+			for(NamespaceNode namespaceNode : ast.namespaceNodeList) {
 				if(debug){
-					System.out.println(classNode.methodNodeList);
+					System.out.println(namespaceNode.methodNodeList);
 				}
-				for (MethodNode methodNode : classNode.methodNodeList) {
+				for (MethodNode methodNode : namespaceNode.methodNodeList) {
 					if(debug){
 						System.out.println("creating subroutine symbol table row for subroutine: "+methodNode.methodName);
 					}
@@ -43,7 +43,7 @@ public class SymbolTableGenerator {
 					SubroutineSymbolTableRow subrRow =
 									new SubroutineSymbolTableRow(
 													methodNode.methodName,
-													methodNode.getType(),classNode.name.getTypeName(),
+													methodNode.getType(), namespaceNode.name.getTypeName(),
 													count_local_vars(methodNode,subroutineSymbolTable),
 													methodNode.arguments.size()
 									);

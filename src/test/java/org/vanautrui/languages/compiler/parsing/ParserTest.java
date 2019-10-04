@@ -16,18 +16,18 @@ public class ParserTest {
     public void test_can_create_correct_classnode() throws Exception {
         Lexer lexer=new Lexer();
         TokenList tokens = lexer.lexCodeTestMode(
-                "public class ExampleClass{" +
+                "public namespace ExampleClass{" +
                         "}");
 
         AST ast = parser.parseTestMode(tokens,false);
 
-        Assert.assertEquals("ExampleClass", ast.classNodeList.stream().collect(Collectors.toList()).get(0).name.getTypeName());
+        Assert.assertEquals("ExampleClass", ast.namespaceNodeList.stream().collect(Collectors.toList()).get(0).name.getTypeName());
     }
 
     @Test
     public void test_can_parse_some_class()throws Exception{
         Lexer lexer = new Lexer();
-        TokenList tokens = lexer.lexCodeTestMode("class MyOutput{" +
+        TokenList tokens = lexer.lexCodeTestMode("namespace MyOutput{" +
                 "()~>PInt main{" +
                 "println(1);" +
                 "return 0;" +
@@ -42,7 +42,7 @@ public class ParserTest {
     @Test
     public void test_can_parse_some_class2()throws Exception{
         Lexer lexer = new Lexer();
-        TokenList tokens = lexer.lexCodeTestMode("public class IfStatement{\n" +
+        TokenList tokens = lexer.lexCodeTestMode("public namespace IfStatement{\n" +
                 "\tpublic ()~>PInt main{\n" +
                 "\n" +
                 "\t\tx=3;\n" +

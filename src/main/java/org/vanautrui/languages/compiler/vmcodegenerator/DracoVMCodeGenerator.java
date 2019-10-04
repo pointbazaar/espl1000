@@ -4,7 +4,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ArrayConsta
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.FloatConstNode;
@@ -26,9 +26,9 @@ public class DracoVMCodeGenerator {
 
         DracoVMCodeWriter sb = new DracoVMCodeWriter();
         for(AST ast :asts){
-            for(ClassNode classNode : ast.classNodeList){
-                for(MethodNode methodNode : classNode.methodNodeList){
-                    generateDracoVMCodeForMethod(classNode,methodNode,sb,subTable,debug,printsymboltables);
+            for(NamespaceNode namespaceNode : ast.namespaceNodeList){
+                for(MethodNode methodNode : namespaceNode.methodNodeList){
+                    generateDracoVMCodeForMethod(namespaceNode,methodNode,sb,subTable,debug,printsymboltables);
                 }
             }
         }

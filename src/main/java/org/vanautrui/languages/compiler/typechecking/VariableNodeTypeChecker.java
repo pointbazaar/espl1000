@@ -1,7 +1,7 @@
 package org.vanautrui.languages.compiler.typechecking;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.VariableNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
@@ -14,7 +14,7 @@ import java.util.List;
 public class VariableNodeTypeChecker {
 
 
-  static void typeCheckVariableNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, VariableNode variableNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
+  static void typeCheckVariableNode(List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode, VariableNode variableNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
     //it should check that the variable is
     //declared in method scope or class scope.
     //so there should be some declaration of it

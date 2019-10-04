@@ -3,7 +3,7 @@ package org.vanautrui.languages.compiler.typechecking;
 import org.apache.commons.lang3.StringUtils;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.SubroutineTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
@@ -17,7 +17,7 @@ public class ITypeNodeTypeChecker {
 
 
   static void typeCheckITypeNode(
-          List<AST> asts, ClassNode classNode,
+          List<AST> asts, NamespaceNode namespaceNode,
           ITypeNode typename
   ) throws Exception {
 
@@ -30,16 +30,16 @@ public class ITypeNodeTypeChecker {
       }
 
       for (AST ast : asts) {
-        for (ClassNode myclassNode : ast.classNodeList) {
+        for (NamespaceNode myclassNode : ast.namespaceNodeList) {
           if (myclassNode.name.getTypeName().equals(typename.getTypeName())) {
             return;
           }
         }
       }
     } else if (typename instanceof SubroutineTypeNode) {
-      typeCheckITypeNode(asts, classNode, ((SubroutineTypeNode) typename).returnType);
+      typeCheckITypeNode(asts, namespaceNode, ((SubroutineTypeNode) typename).returnType);
       for (TypeNode argType : ((SubroutineTypeNode) typename).argumentTypes) {
-        typeCheckITypeNode(asts, classNode, argType.typenode);
+        typeCheckITypeNode(asts, namespaceNode, argType.typenode);
       }
       return;
     }

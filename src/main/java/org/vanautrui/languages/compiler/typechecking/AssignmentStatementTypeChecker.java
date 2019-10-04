@@ -2,7 +2,7 @@ package org.vanautrui.languages.compiler.typechecking;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
@@ -17,7 +17,7 @@ import static org.vanautrui.languages.compiler.typechecking.VariableNodeTypeChec
 public class AssignmentStatementTypeChecker {
 
   static void typeCheckAssignmentStatementNode(
-          List<AST> asts, ClassNode classNode, MethodNode methodNode,
+          List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode,
           AssignmentStatementNode assignmentStatementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable
   ) throws Exception{
     ITypeNode leftSideType = TypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,methodNode,subTable,varTable);
@@ -29,7 +29,7 @@ public class AssignmentStatementTypeChecker {
       );
     }
 
-    typeCheckVariableNode(asts,classNode,methodNode,assignmentStatementNode.variableNode,subTable,varTable);
-    typeCheckExpressionNode(asts,classNode,methodNode,assignmentStatementNode.expressionNode,subTable,varTable);
+    typeCheckVariableNode(asts, namespaceNode,methodNode,assignmentStatementNode.variableNode,subTable,varTable);
+    typeCheckExpressionNode(asts, namespaceNode,methodNode,assignmentStatementNode.expressionNode,subTable,varTable);
   }
 }

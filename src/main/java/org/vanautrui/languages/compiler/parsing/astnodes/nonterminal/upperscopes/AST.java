@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 public class AST implements IASTNode {
 
-    public Set<ClassNode> classNodeList = new HashSet<>();
+    public Set<NamespaceNode> namespaceNodeList = new HashSet<>();
 
     public Path srcPath= Paths.get("/dev/null");
 
@@ -31,12 +31,12 @@ public class AST implements IASTNode {
 
             try {
                 int chunk_size = pair.getLeft().size();
-                this.classNodeList.add(new ClassNode(pair.getLeft(),this.srcPath,debug));
+                this.namespaceNodeList.add(new NamespaceNode(pair.getLeft(),this.srcPath,debug));
                 copy.consume(chunk_size);
                 pair = pair.getRight().split_into_tokens_and_next_block_and_later_tokens();
             } catch (Exception e) {
 
-                if (this.classNodeList.size() == 0) {
+                if (this.namespaceNodeList.size() == 0) {
                     throw e;
                 }
                 success_class = false;
@@ -48,7 +48,7 @@ public class AST implements IASTNode {
 
     @Override
     public String toSourceCode() {
-        return this.classNodeList
+        return this.namespaceNodeList
                 .stream()
                 .map(node -> node.toSourceCode())
                 .collect(Collectors.joining("\n"));

@@ -5,7 +5,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionN
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.CharConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.FloatConstNode;
@@ -22,7 +22,7 @@ import static org.vanautrui.languages.compiler.typechecking.VariableNodeTypeChec
 
 public class TermNodeTypeChecker {
 
-  static void typecheckTermNode(List<AST> asts, ClassNode classNode, MethodNode methodNode, TermNode termNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
+  static void typecheckTermNode(List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode, TermNode termNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
     if(termNode.termNode instanceof CharConstNode) {
       //nothing to do
     }else if(termNode.termNode instanceof FloatConstNode){
@@ -32,18 +32,18 @@ public class TermNodeTypeChecker {
     }else if(termNode.termNode instanceof ExpressionNode) {
 
       ExpressionNode expressionNode = (ExpressionNode) termNode.termNode;
-      typeCheckExpressionNode(asts,classNode,methodNode,expressionNode,subTable,varTable);
+      typeCheckExpressionNode(asts, namespaceNode,methodNode,expressionNode,subTable,varTable);
 
     }else if(termNode.termNode instanceof VariableNode){
 
       VariableNode variableNode = (VariableNode) termNode.termNode;
-      typeCheckVariableNode(asts,classNode,methodNode,variableNode,subTable,varTable);
+      typeCheckVariableNode(asts, namespaceNode,methodNode,variableNode,subTable,varTable);
 
     }else if(termNode.termNode instanceof MethodCallNode) {
 
-      typeCheckMethodCallNode(asts, classNode, methodNode, (MethodCallNode) termNode.termNode, subTable, varTable);
+      typeCheckMethodCallNode(asts, namespaceNode, methodNode, (MethodCallNode) termNode.termNode, subTable, varTable);
     }else if(termNode.termNode instanceof ArrayConstantNode){
-      typeCheckArrayConstantNode(asts,classNode,methodNode,(ArrayConstantNode) termNode.termNode,subTable,varTable);
+      typeCheckArrayConstantNode(asts, namespaceNode,methodNode,(ArrayConstantNode) termNode.termNode,subTable,varTable);
     }else{
       throw new Exception("unhandled case "+termNode.termNode.getClass().getName());
     }

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ClassNode implements IASTNode {
+public class NamespaceNode implements IASTNode {
 
     public final boolean isPublic;
     public Path srcPath= Paths.get("/dev/null");
@@ -23,7 +23,7 @@ public class ClassNode implements IASTNode {
 
     public List<MethodNode> methodNodeList = new ArrayList<>();
 
-    public ClassNode(TokenList tokens,Path path,boolean debug) throws Exception {
+    public NamespaceNode(TokenList tokens, Path path, boolean debug) throws Exception {
 
         if(debug){
             System.out.println("try to parse "+this.getClass().getSimpleName()+" from "+tokens.toSourceCodeFragment());
@@ -35,7 +35,7 @@ public class ClassNode implements IASTNode {
         AccessModifierNode access = new AccessModifierNode(copy);
         this.isPublic=access.is_public;
 
-        copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("class"));
+        copy.expectAndConsumeOtherWiseThrowException(new KeywordToken("namespace"));
 
         this.name = new SimpleTypeNode(copy);
 
@@ -43,7 +43,7 @@ public class ClassNode implements IASTNode {
 
         if(!copy.endsWith(new SymbolToken("}"))){
             //we assume the class only received a token stream with only the relavant info for it
-            throw new Exception(" a class should end with '}' but it did not ");
+            throw new Exception(" a namespace should end with '}' but it did not ");
         }
 
         boolean success_method = true;
@@ -79,7 +79,7 @@ public class ClassNode implements IASTNode {
     public String toSourceCode() {
         String result = "";
 
-        result+=((this.isPublic)?" public":" private")+" class "+this.name.toSourceCode()+" {";
+        result+=((this.isPublic)?" public":" private")+" namespace "+this.name.toSourceCode()+" {";
 
         result += methodNodeList
                 .stream()

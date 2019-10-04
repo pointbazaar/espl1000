@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class KeywordToken implements IToken {
 
     public static final List<String> keywords = Arrays.asList(
-            "class",
+            "namespace",
             "method", "function",
 
             "interface","wrapper","entity","model","adapter",
@@ -23,7 +23,7 @@ public class KeywordToken implements IToken {
             "return"
     );
 
-    public String keyword;
+    public final String keyword;
     private final long lineNumber;
 
     @Override
@@ -31,7 +31,7 @@ public class KeywordToken implements IToken {
         return this.lineNumber;
     }
 
-    public KeywordToken(CharacterList list) throws Exception {
+    public KeywordToken(final CharacterList list) throws Exception {
         this.lineNumber=list.getCurrentLineNumber();
         for (String sym : keywords) {
             Pattern p = Pattern.compile(sym+"([^a-z]|$)");
@@ -48,7 +48,7 @@ public class KeywordToken implements IToken {
         throw new Exception("could not recognize a keyword");
     }
 
-    public KeywordToken(String s)throws Exception{
+    public KeywordToken(final String s)throws Exception{
         this(new CharacterList(s, Paths.get("/dev/null")));
     }
 

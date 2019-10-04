@@ -4,7 +4,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionN
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.OperatorNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
@@ -19,7 +19,7 @@ import static org.vanautrui.languages.compiler.typechecking.TermNodeTypeChecker.
 public class ExpressionNodeTypeChecker {
 
   static void typeCheckExpressionNode(
-          List<AST> asts, ClassNode classNode, MethodNode methodNode,
+          List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode,
           ExpressionNode expr, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable
   ) throws Exception{
     //expression is compiled to evaluate in order. meaning
@@ -29,19 +29,19 @@ public class ExpressionNodeTypeChecker {
 
     //check expression with only 1 operand
     if(expr.operatorNodes.size()==0 && expr.termNodes.size()==0){
-      typecheckTermNode(asts,classNode,methodNode,expr.term,subTable,varTable);
+      typecheckTermNode(asts, namespaceNode,methodNode,expr.term,subTable,varTable);
     }else if(expr.operatorNodes.size()==1 && expr.termNodes.size()==1){
       //check expressions with only 2 operands
-      typeCheckExpressionNodeWith2Operands(asts,classNode,methodNode,expr.term,expr.operatorNodes.get(0),expr.termNodes.get(0),subTable,varTable);
+      typeCheckExpressionNodeWith2Operands(asts, namespaceNode,methodNode,expr.term,expr.operatorNodes.get(0),expr.termNodes.get(0),subTable,varTable);
     }else{
-      typeCheckExpressionNodeWithMoreThan2Operands(asts,classNode,methodNode,expr,subTable,varTable);
+      typeCheckExpressionNodeWithMoreThan2Operands(asts, namespaceNode,methodNode,expr,subTable,varTable);
     }
   }
 
-  private static void typeCheckExpressionNodeWithMoreThan2Operands(List<AST> asts, ClassNode classNode, MethodNode methodNode, ExpressionNode expr, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {
+  private static void typeCheckExpressionNodeWithMoreThan2Operands(List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode, ExpressionNode expr, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {
 
     //the types should be all the same for now
-    typecheckTermNode(asts,classNode,methodNode,expr.term,subTable,varTable);
+    typecheckTermNode(asts, namespaceNode,methodNode,expr.term,subTable,varTable);
     ITypeNode type= TypeResolver.getTypeTermNode(expr.term,methodNode,subTable,varTable);
     final List<String> currentAllowedTypes= Arrays.asList("PInt","Float");
     final List<String> allowed_operators_for_expressions_with_more_than_2_terms=Arrays.asList("+","-");
@@ -53,7 +53,7 @@ public class ExpressionNodeTypeChecker {
       if(!otherType.getTypeName().equals(type.getTypeName())){
         throw new Exception(TypeChecker.class.getSimpleName()+": to compare with '==', they have to be the same type ");
       }
-      typecheckTermNode(asts,classNode,methodNode,expr.termNodes.get(0),subTable,varTable);
+      typecheckTermNode(asts, namespaceNode,methodNode,expr.termNodes.get(0),subTable,varTable);
       return;
     }
 
@@ -66,7 +66,7 @@ public class ExpressionNodeTypeChecker {
         throw new Exception("for now, all types in an expression must be the same");
       }
       //typecheck the term node, maybe it contains identifiers that are not declared?
-      typecheckTermNode(asts,classNode,methodNode,t,subTable,varTable);
+      typecheckTermNode(asts, namespaceNode,methodNode,t,subTable,varTable);
     }
 
     for(OperatorNode op : expr.operatorNodes){
@@ -77,7 +77,7 @@ public class ExpressionNodeTypeChecker {
     //TODO: look for the other cases
   }
 
-  private static void typeCheckExpressionNodeWith2Operands(List<AST> asts, ClassNode classNode, MethodNode methodNode, TermNode term1, OperatorNode opNode, TermNode term2, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {
+  private static void typeCheckExpressionNodeWith2Operands(List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode, TermNode term1, OperatorNode opNode, TermNode term2, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {
 
 
 
@@ -85,7 +85,7 @@ public class ExpressionNodeTypeChecker {
     final List<String> bitshifting_operators_for_epressions_with_2_operands=Arrays.asList("<<",">>");
 
     if(bitshifting_operators_for_epressions_with_2_operands.contains(opNode.operator)){
-      typeCheckExpressionNodeWith2OperandsBitShifting(asts,classNode,methodNode,term1,opNode,term2,subTable,varTable);
+      typeCheckExpressionNodeWith2OperandsBitShifting(asts, namespaceNode,methodNode,term1,opNode,term2,subTable,varTable);
     }else if(arithmetic_operators_for_epressions_with_2_operands.contains(opNode.operator)){
       final List<String> currentAllowedTypes= Arrays.asList("PInt","Float");
 
@@ -109,12 +109,12 @@ public class ExpressionNodeTypeChecker {
         throw new Exception("in an expression with 2 terms, both have to have the same type. But "+type1.getTypeName()+" and "+type2.getTypeName()+" are different types.");
       }
 
-      typecheckTermNode(asts,classNode,methodNode,term1,subTable,varTable);
-      typecheckTermNode(asts,classNode,methodNode,term2,subTable,varTable);
+      typecheckTermNode(asts, namespaceNode,methodNode,term1,subTable,varTable);
+      typecheckTermNode(asts, namespaceNode,methodNode,term2,subTable,varTable);
     }
   }
 
-  private static void typeCheckExpressionNodeWith2OperandsBitShifting(List<AST> asts, ClassNode classNode, MethodNode methodNode, TermNode term1, OperatorNode opNode, TermNode term2, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {
+  private static void typeCheckExpressionNodeWith2OperandsBitShifting(List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode, TermNode term1, OperatorNode opNode, TermNode term2, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {
     final List<String> bitshifting_operators_for_epressions_with_2_operands=Arrays.asList("<<",">>");
 
     final String current_allowed_type_for_bitshifting="PInt";
@@ -126,7 +126,7 @@ public class ExpressionNodeTypeChecker {
       throw new Exception("one or two of the operands for bitshifting were not of type "+current_allowed_type_for_bitshifting);
     }
 
-    typecheckTermNode(asts,classNode,methodNode,term1,subTable,varTable);
-    typecheckTermNode(asts,classNode,methodNode,term2,subTable,varTable);
+    typecheckTermNode(asts, namespaceNode,methodNode,term1,subTable,varTable);
+    typecheckTermNode(asts, namespaceNode,methodNode,term2,subTable,varTable);
   }
 }

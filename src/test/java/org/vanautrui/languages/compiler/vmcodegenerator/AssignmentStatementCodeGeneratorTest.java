@@ -12,7 +12,7 @@ public class AssignmentStatementCodeGeneratorTest {
     public void test_can_assign_to_local_variable()throws Exception{
         //depends on loop statement,return statement already working
 
-        String source="public class MainTest333{" +
+        String source="public namespace MainTest333{" +
                 "\tpublic ()~>PInt main{" +
                 "\t\tx=3;" +
                 "\t\tloop x {putchar('x');}" +
@@ -28,7 +28,7 @@ public class AssignmentStatementCodeGeneratorTest {
     public void test_can_assign_to_local_variable_muliple_times()throws Exception{
         //depends on loop statement,return statement already working
 
-        String source="public class MainTest333{" +
+        String source="public namespace MainTest333{" +
                 "\tpublic ()~>PInt main{" +
                 "\t\tx=3;" +
                 "\t\tx=2;" +
@@ -43,7 +43,7 @@ public class AssignmentStatementCodeGeneratorTest {
 
     @Test
     public void test_can_read_from_array()throws Exception{
-        String source="public class MainTest333{" +
+        String source="public namespace MainTest333{" +
                 "\tpublic ()~>PInt main{" +
                 "\t\tarr=['A','B'];" +
                 "\t\tx=arr[0];" +
@@ -59,7 +59,7 @@ public class AssignmentStatementCodeGeneratorTest {
 
     @Test
     public void test_can_write_into_array()throws Exception{
-        String source="public class MainTest454{" +
+        String source="public namespace MainTest454{" +
                 "\tpublic ()~>PInt main{" +
                 "\t\tarr=['a','b','c'];" +
                 "\t\tarr[1]='d';" +
