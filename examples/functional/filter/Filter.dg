@@ -2,14 +2,11 @@ public class Filter{
 	()~>PInt main{
 		arr=[1,2];
 
-		putchar('.');
 		arr2 = filter(arr,myfilter);
 		
 
-		putchar('.');
 		putdigit(arr2[0]);
 
-		putchar('.');
 		putdigit(arr2[1]);
 
 		return 0;
@@ -25,17 +22,13 @@ public class Filter{
 		i=0;
 
 		while(i<2){
-			putchar(',');
 
 			arr2[i]=0; //this line is causing the segfault
 
-			putchar(',');
 
 			if(myfilterr(arr[i])){
-				putchar(',');
 				arr2[i]=arr[i];
 			}
-			putchar(';');
 			i=i+1;
 		}
 
