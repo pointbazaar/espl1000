@@ -9,7 +9,6 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.LoopStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.WhileStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassFieldNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IdentifierNode;
@@ -66,14 +65,6 @@ public class TypeChecker {
       }
     }
   }
-
-
-  static void typeCheckClassFieldNode(
-          List<AST> asts, ClassNode classNode, ClassFieldNode classFieldNode
-  ) throws Exception {
-    typeCheckITypeNode(asts, classNode, classFieldNode.type.typenode);
-  }
-
 
 
 
@@ -232,13 +223,6 @@ public class TypeChecker {
 
     //identifiers can only be used within a class or method so
     //there should be a context
-
-    for (ClassFieldNode fieldNode : classNode.fieldNodeList) {
-      if (fieldNode.name.equals(identifierNode.name)) {
-        //found the identifier declared here
-        return;
-      }
-    }
 
     //it is not declared in class scope, it should be declared in
     //method scope

@@ -30,9 +30,6 @@ public class DracoVMCodeGenerator {
                 for(MethodNode methodNode : classNode.methodNodeList){
                     generateDracoVMCodeForMethod(classNode,methodNode,sb,subTable,debug,printsymboltables);
                 }
-                if(classNode.fieldNodeList.size()>0){
-                    throw new Exception("unhandled case in dracovm code generation");
-                }
             }
         }
         return sb.getDracoVMCodeInstructions();

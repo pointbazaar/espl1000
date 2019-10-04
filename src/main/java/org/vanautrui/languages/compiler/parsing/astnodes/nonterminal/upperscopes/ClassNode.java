@@ -21,7 +21,6 @@ public class ClassNode implements IASTNode {
 
     public final SimpleTypeNode name;
 
-    public List<ClassFieldNode> fieldNodeList = new ArrayList<>();
     public List<MethodNode> methodNodeList = new ArrayList<>();
 
     public ClassNode(TokenList tokens,Path path,boolean debug) throws Exception {
@@ -45,18 +44,6 @@ public class ClassNode implements IASTNode {
         if(!copy.endsWith(new SymbolToken("}"))){
             //we assume the class only received a token stream with only the relavant info for it
             throw new Exception(" a class should end with '}' but it did not ");
-        }
-
-        //all fields must occur before the subroutines
-        //this simplifies the parser
-
-        boolean success_field = true;
-        while (success_field) {
-            try {
-                this.fieldNodeList.add(new ClassFieldNode(copy,debug));
-            } catch (Exception e22) {
-                success_field = false;
-            }
         }
 
         boolean success_method = true;
@@ -93,12 +80,6 @@ public class ClassNode implements IASTNode {
         String result = "";
 
         result+=((this.isPublic)?" public":" private")+" class "+this.name.toSourceCode()+" {";
-
-        result += fieldNodeList
-                .stream()
-                .map(node -> node.toSourceCode())
-                .collect(Collectors.joining("\n"));
-        result+="\n";
 
         result += methodNodeList
                 .stream()

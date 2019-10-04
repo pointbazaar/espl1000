@@ -1,7 +1,6 @@
 package org.vanautrui.languages.compiler.typechecking;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassFieldNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
@@ -9,7 +8,6 @@ import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import java.util.List;
 
 import static org.vanautrui.languages.compiler.typechecking.MethodNodeTypeChecker.typeCheckMethodNode;
-import static org.vanautrui.languages.compiler.typechecking.TypeChecker.typeCheckClassFieldNode;
 
 public class ClassNodeTypeChecker {
 
@@ -25,12 +23,6 @@ public class ClassNodeTypeChecker {
           count++;
         }
       }
-    }
-
-    //check that fields and methods are typesafe
-
-    for(ClassFieldNode fieldNode : classNode.fieldNodeList){
-      typeCheckClassFieldNode(asts,classNode,fieldNode);
     }
 
     for(MethodNode methodNode : classNode.methodNodeList){

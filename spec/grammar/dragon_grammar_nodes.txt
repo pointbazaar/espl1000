@@ -3,9 +3,7 @@ ArrayConstant ::= '[' expression (',' expression)* ']'
 
 AST ::= class+
 
-class ::= accessmodifier? 'class' identifier '{' classField* method* '}'
-
-classField ::= accessmodifier? Type identifier ';'
+class ::= accessmodifier? 'class' identifier '{' method* '}'
 
 
 SubroutineType ::= '(' Type* ')' arrow ( SimpleType | '(' SubroutineType ')' )
