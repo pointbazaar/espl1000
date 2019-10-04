@@ -111,13 +111,13 @@ public class CompilerPhases {
         return assembly_codes;
     }
 
-    public List<String> phase_vm_codegeneration(List<AST> asts,String filename_without_extension, boolean print_vm_codes)throws Exception{
+    public List<String> phase_vm_codegeneration(List<AST> asts,String filename_without_extension, boolean print_vm_codes,boolean printsymboltables)throws Exception{
         printBeginPhase("VM CODE GENERATION",printLong);
 
         try {
 
             SubroutineSymbolTable subTable = createSubroutineSymbolTable(asts,debug);
-            List<String> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable);
+            List<String> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable,debug,printsymboltables);
 
             final String vm_codes_string = dracoVMCodes.stream().collect(Collectors.joining("\n"))+"\n";
 

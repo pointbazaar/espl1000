@@ -22,13 +22,13 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.Subro
 
 public class DracoVMCodeGenerator {
 
-    public static List<String> generateDracoVMCode(Set<AST> asts, SubroutineSymbolTable subTable) throws Exception{
+    public static List<String> generateDracoVMCode(Set<AST> asts, SubroutineSymbolTable subTable,boolean debug,boolean printsymboltables) throws Exception{
 
         DracoVMCodeWriter sb = new DracoVMCodeWriter();
         for(AST ast :asts){
             for(ClassNode classNode : ast.classNodeList){
                 for(MethodNode methodNode : classNode.methodNodeList){
-                    generateDracoVMCodeForMethod(classNode,methodNode,sb,subTable);
+                    generateDracoVMCodeForMethod(classNode,methodNode,sb,subTable,debug,printsymboltables);
                 }
                 if(classNode.fieldNodeList.size()>0){
                     throw new Exception("unhandled case in dracovm code generation");

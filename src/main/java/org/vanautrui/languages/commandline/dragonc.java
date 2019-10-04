@@ -215,7 +215,7 @@ public class dragonc {
             phases.phase_typecheck(asts);
 
             //PHASE CODE GENERATION
-            List<String> vm_codes = phases.phase_vm_codegeneration(asts,"main",cmd.hasOption(FLAG_PRINT_VM_CODES));
+            List<String> vm_codes = phases.phase_vm_codegeneration(asts,"main",cmd.hasOption(FLAG_PRINT_VM_CODES),cmd.hasOption(FLAG_PRINT_SYMBOLTABLES));
 
             //PHASE VM CODE COMPILATION
             List<String> asm_codes = phases.phase_vm_code_compilation(vm_codes,cmd.hasOption(FLAG_DEBUG));

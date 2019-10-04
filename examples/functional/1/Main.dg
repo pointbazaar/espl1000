@@ -1,0 +1,19 @@
+public class Main{
+	()~>PInt main{
+		putdigit(subr(id));
+		putchar(' ');
+		putdigit(subr(twice));
+
+		return 0;
+	}
+
+	(PInt n)->PInt id{
+		return n;
+	}
+	
+	(PInt n)->PInt twice{return 2*n;}
+
+	((PInt)~>PInt subr1)->PInt subr{
+		return subr1(2);
+	}
+}

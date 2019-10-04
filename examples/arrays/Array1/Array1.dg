@@ -1,23 +1,23 @@
 public class Array1{
-	public PInt main(){
+	public ()~>PInt main{
 
 		arr=[1,2,3,4];
 		
 		printarr(arr);
-		//printarr2(arr,0,0); //works
+		//printarr2(arr); //works
 
-		putchar('+');
-		i=0;
+		//putchar('+');
+		//i=0;
 		//while(i<2){
 		//	putdigit(arr[i]);
 		//	putchar(',');
 		//	i=i+1;
 		//}
-		putchar('-');
+		//putchar('-');
 		return 0;	
 
 	}
-	public PInt printarr2([PInt] arr,PInt a,PInt b){
+	public ([PInt] arr)~>PInt printarr2{
 
 		putdigit(arr[0]);
 		putchar(',');
@@ -29,13 +29,13 @@ public class Array1{
 
 		return 0;
 	}
-	public PInt printarr([PInt] arr){
+	public ([PInt] arr)~>PInt printarr{
 		i=0;
-		while(i<2){
+		while(i<4){
 
 			putdigit(arr[i]);
 
-			putdigit(8);
+			//putdigit(8);
 			i=i+1;
 		}
 		putchar('.');

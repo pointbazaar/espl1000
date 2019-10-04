@@ -1,6 +1,5 @@
 package org.vanautrui.languages.compiler.symboltablegenerator;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.vanautrui.languages.compiler.lexing.Lexer;
 import org.vanautrui.languages.compiler.lexing.utils.CharacterList;
@@ -14,6 +13,7 @@ import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SymbolTableGeneratorTest {
 
@@ -40,7 +40,7 @@ public class SymbolTableGeneratorTest {
 
         LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable);
 
-        Assert.assertTrue(localVarTable.containsVariable("x"));
+        assertTrue(localVarTable.containsVariable("x"));
 
         assertEquals(1,localVarTable.countArgs());
         assertEquals(1,localVarTable.countLocals());
@@ -62,8 +62,58 @@ public class SymbolTableGeneratorTest {
 
         LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable);
 
-        //System.out.println(localVarTable.toString());
+        System.out.println(localVarTable.toString());
+
         assertEquals(2,localVarTable.countLocals());
+        assertEquals(0,localVarTable.countArgs());
+
+        assertEquals(2,localVarTable.size());
+
+        assertTrue(localVarTable.containsVariable("x"));
+        assertEquals(0,localVarTable.getIndexOfVariable("x"));
+
+        assertTrue(localVarTable.containsVariable("y"));
+        assertEquals(1,localVarTable.getIndexOfVariable("y"));
+    }
+
+    @Test
+    public void test_does_not_produce_duplicates()throws Exception{
+        AST ast = parse_for_test("class Main{ ()~>PInt main{ x=3; x=2; return 0;} }");
+
+        SubroutineSymbolTable subTable = new SubroutineSymbolTable();
+
+        MethodNode myMethod = ast.classNodeList.stream().collect(Collectors.toList()).get(0).methodNodeList.get(0);
+
+        LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable);
+
+        System.out.println(localVarTable.toString());
+
+        assertEquals(1,localVarTable.countLocals());
+        assertEquals(0,localVarTable.countArgs());
+
+        assertTrue(localVarTable.containsVariable("x"));
+        assertEquals(0,localVarTable.getIndexOfVariable("x"));
+        assertEquals(1,localVarTable.size());
+    }
+
+    @Test
+    public void test_does_not_produce_duplicates_with_different_types()throws Exception{
+        AST ast = parse_for_test("class Main{ ()~>PInt main{ x=3; x=[1,2]; return 0;} }");
+
+        SubroutineSymbolTable subTable = new SubroutineSymbolTable();
+
+        MethodNode myMethod = ast.classNodeList.stream().collect(Collectors.toList()).get(0).methodNodeList.get(0);
+
+        LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable);
+
+        System.out.println(localVarTable.toString());
+
+        assertEquals(1,localVarTable.countLocals());
+        assertEquals(0,localVarTable.countArgs());
+
+        assertTrue(localVarTable.containsVariable("x"));
+        assertEquals(0,localVarTable.getIndexOfVariable("x"));
+        assertEquals(1,localVarTable.size());
     }
 
     //TODO: test the subroutine symbol table generation

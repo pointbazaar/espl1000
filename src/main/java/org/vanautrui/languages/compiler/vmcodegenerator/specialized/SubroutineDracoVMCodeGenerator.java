@@ -13,9 +13,12 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.State
 public class SubroutineDracoVMCodeGenerator {
 
 
-  public static void generateDracoVMCodeForMethod(ClassNode containerClass, MethodNode m, DracoVMCodeWriter sb, SubroutineSymbolTable subTable)throws Exception{
+  public static void generateDracoVMCodeForMethod(ClassNode containerClass, MethodNode m, DracoVMCodeWriter sb, SubroutineSymbolTable subTable,boolean debug,boolean printsymboltables)throws Exception{
 
     LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(m,subTable);
+    if(debug || printsymboltables){
+      System.out.println(varTable.toString());
+    }
 
     sb.subroutine(containerClass.name.typeName,m.methodName,m.arguments.size(),subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName));
     //not sure if it is number of arguments or number of local vars

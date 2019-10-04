@@ -12,17 +12,14 @@ public class LocalVarSymbolTableRow  {
     private final ITypeNode typeName; //this always contains the full type name
 
     final String kind;
-    public final int index;
 
     public final static String KIND_LOCALVAR="LOCAL";
     public final static String KIND_ARGUMENT="ARG";
 
-    public LocalVarSymbolTableRow(String varName, ITypeNode typeName,String kind,int index) {
+    public LocalVarSymbolTableRow(String varName, ITypeNode typeName,String kind) {
         this.typeName=typeName;
         this.varName=varName;
         this.kind=kind;
-        this.index=index;
-
     }
 
     @Override
@@ -57,7 +54,5 @@ public class LocalVarSymbolTableRow  {
      * ARG 0, ARG 1
      * @return returns the index of the local variable in it's segment.
      */
-    public int getIndex() {
-        return this.index;
-    }
+
 }
