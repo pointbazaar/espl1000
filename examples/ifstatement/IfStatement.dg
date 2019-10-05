@@ -1,5 +1,5 @@
 public namespace IfStatement{
-	public PInt main(){
+	public ()~>PInt main{
 
 		x=3;
 

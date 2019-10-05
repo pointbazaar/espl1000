@@ -23,9 +23,6 @@ public namespace Filter{
 
 		while(i<2){
 
-			arr2[i]=0; //this line is causing the segfault
-
-
 			if(myfilterr(arr[i])){
 				arr2[i]=arr[i];
 			}
