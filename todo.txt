@@ -13,6 +13,12 @@ IDEAS:
     so i need to implement type parameters first
 [ ] write a lot of tests to protect our functional programming features against regression!
 
-[ ] do typechecking for structs. you should not be able to declare structs with primitive data types, structs can only be declared once for a struct type, etc....
+[ ] implement the vm code generation for struct member access, struct initialization, ...
 
 [ ] write tests for the different typechecking classes and what they typecheck
+
+[ ] check in typechecking that the correct type signature is used for subroutines with side effects ('~>') and for subroutines without side effects ('->')
+    and also note it in the symbol table
+
+[ ] make all classes final as my coding style forbids 'extends' for classes
+

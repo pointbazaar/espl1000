@@ -4,9 +4,9 @@
 
 simplevariable ::= identifier ('[' expression ']')?
 
-variable ::= simplevariable | variable '.' variable | methodCall '.' variable
+variable ::= simplevariable | simplevariable '.' variable | methodCall '.' variable
 
-methodCall ::= variable? . methodName '(' (expression (, expression)*)?  ')'
+
 
 //PLANNED FOR LATER
 

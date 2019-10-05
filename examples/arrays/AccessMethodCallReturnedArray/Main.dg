@@ -1,0 +1,10 @@
+namespace Main{
+	()~>PInt main{
+		i=subr()[0];
+		return 0;
+	}
+
+	()~>[PInt] subr{
+		return [1,2];
+	}
+}

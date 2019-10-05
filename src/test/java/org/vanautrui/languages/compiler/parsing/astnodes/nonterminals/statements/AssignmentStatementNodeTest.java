@@ -1,6 +1,7 @@
 package org.vanautrui.languages.compiler.parsing.astnodes.nonterminals.statements;
 
 import org.junit.Test;
+import org.vanautrui.languages.compiler.lexing.Lexer;
 import org.vanautrui.languages.compiler.lexing.utils.CharacterList;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.lexing.tokens.*;
@@ -17,6 +18,15 @@ public class AssignmentStatementNodeTest {
         tokens.add(new OperatorToken("="));
         tokens.add(new IntegerNonNegativeConstantToken(4));
         tokens.add(new SymbolToken(";"));
+
+        AssignmentStatementNode assignmentStatementNode = new AssignmentStatementNode(tokens);
+    }
+
+    @Test
+    public void test_can_assign_array_indexed_but_returned_from_subroutine_call()throws Exception{
+
+        Lexer l = new Lexer();
+        TokenList tokens = l.lexCodeTestMode("x=subr()[0];");
 
         AssignmentStatementNode assignmentStatementNode = new AssignmentStatementNode(tokens);
     }
