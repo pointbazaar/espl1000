@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class StructDeclNode implements IASTNode, ITypeNode {
+public final class StructDeclNode implements IASTNode, ITypeNode {
 
-  private final SimpleTypeNode structType;
-  public List<StructMemberDeclNode> structMembersList=new ArrayList<>();
+  public final SimpleTypeNode structType;
+  public final List<StructMemberDeclNode> structMembersList=new ArrayList<>();
 
   public StructDeclNode(TokenList tokens, boolean debug) throws Exception {
 

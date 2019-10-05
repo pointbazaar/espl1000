@@ -8,12 +8,11 @@ IDEAS:
     thinking about "Anything" Type, what if we shorten that to "*" and it looks even cooler with Type Constraints.
     Like "public Int print((* implements IShow) item){...}".
 
-BLOCKED TASKS: (cannot proceed on them until something else gets done first)
-[ ] functional programming in dragon, would need the ability to pass function references on the stack,
-    but we do not know the offset (in the code segment) of these functions. so we would maybe need a custom assembler ?
-    i would like to know how other functional languages handle it
-
 [ ] length-prefixed arrays. i want to remain typesafe, and do not want a watered down type system where you can just convert types by casting.
     so i need a type parameter for the builtin subroutine which creates a new array.
     so i need to implement type parameters first
 [ ] write a lot of tests to protect our functional programming features against regression!
+
+[ ] do typechecking for structs. you should not be able to declare structs with primitive data types, structs can only be declared once for a struct type, etc....
+
+[ ] write tests for the different typechecking classes and what they typecheck

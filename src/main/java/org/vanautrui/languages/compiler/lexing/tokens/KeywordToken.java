@@ -17,9 +17,9 @@ public class KeywordToken implements IToken {
 
             "struct",
 
-            "method", "function",
+            "method", "function", //currently not used, reserved for maybe later
 
-            "interface","wrapper","entity","model","adapter",
+            "interface","wrapper","entity","model","adapter", //not used, reserved for later maybe
 
             "while","for","loop","do","if","else",
 

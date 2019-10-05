@@ -5,8 +5,8 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionN
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.CharConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.FloatConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IntConstNode;
@@ -16,8 +16,9 @@ import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 
 import java.util.List;
 
+import static org.vanautrui.languages.compiler.typechecking.ArrayConstantNodeTypeChecker.typeCheckArrayConstantNode;
 import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeChecker.typeCheckExpressionNode;
-import static org.vanautrui.languages.compiler.typechecking.TypeChecker.*;
+import static org.vanautrui.languages.compiler.typechecking.MethodCallNodeTypeChecker.typeCheckMethodCallNode;
 import static org.vanautrui.languages.compiler.typechecking.VariableNodeTypeChecker.typeCheckVariableNode;
 
 public class TermNodeTypeChecker {

@@ -13,10 +13,10 @@ import java.util.List;
 
 import static org.vanautrui.languages.compiler.typechecking.TypeChecker.primitive_types_and_arrays_of_them;
 
-public class ITypeNodeTypeChecker {
+public final class ITypeNodeTypeChecker {
 
 
-  static void typeCheckITypeNode(
+  public synchronized static void typeCheckITypeNode(
           List<AST> asts, NamespaceNode namespaceNode,
           ITypeNode typename
   ) throws Exception {

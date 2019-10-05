@@ -12,6 +12,7 @@ import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 
 import java.util.List;
 
+import static org.vanautrui.languages.compiler.typechecking.DeclaredArgumentNodeTypeChecker.typeCheckDeclaredArgumentNode;
 import static org.vanautrui.languages.compiler.typechecking.ITypeNodeTypeChecker.typeCheckITypeNode;
 import static org.vanautrui.languages.compiler.typechecking.StatementNodeTypeChecker.typeCheckStatementNode;
 import static org.vanautrui.languages.compiler.typechecking.TypeChecker.*;
