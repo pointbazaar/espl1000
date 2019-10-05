@@ -14,6 +14,9 @@ public class KeywordToken implements IToken {
 
     public static final List<String> keywords = Arrays.asList(
             "namespace",
+
+            "struct",
+
             "method", "function",
 
             "interface","wrapper","entity","model","adapter",

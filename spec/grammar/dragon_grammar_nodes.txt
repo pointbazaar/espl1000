@@ -3,8 +3,11 @@ ArrayConstant ::= '[' expression (',' expression)* ']'
 
 AST ::= namespace+
 
-namespace ::= accessmodifier? 'namespace' identifier '{' method* '}'
+namespace ::= accessmodifier? 'namespace' SimpleType '{' structDecl* method* '}'
 
+structDecl ::= 'struct' SimpleType '{' structMemberDecl (',' structMemberDecl)* '}'
+
+structMemberDecl ::= Type identifier
 
 SubroutineType ::= '(' Type* ')' arrow ( SimpleType | '(' SubroutineType ')' )
 SimpleType ::= upperCaseLetter alphanumeric*

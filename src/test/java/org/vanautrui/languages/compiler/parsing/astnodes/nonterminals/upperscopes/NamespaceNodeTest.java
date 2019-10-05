@@ -14,7 +14,23 @@ import static org.junit.Assert.*;
 public class NamespaceNodeTest {
 
     @Test
-    public void test_can_parse_class_with_1_empty_method() throws Exception {
+    public void test_can_parse_namespace_with_1_empty_struct() throws Exception {
+
+        Lexer lexer=new Lexer();
+        TokenList list = lexer.lexCodeTestMode("public namespace Main { struct MyStruct{} }");
+
+        NamespaceNode namespaceNode = new NamespaceNode(list, Paths.get("/dev/null"),false);
+
+        assertEquals(namespaceNode.name.typeName,"Main");
+        assertTrue(namespaceNode.isPublic);
+
+        assertEquals(1, namespaceNode.structDeclNodeList.size());
+        assertEquals("MyStruct",namespaceNode.structDeclNodeList.get(0).getTypeName());
+        assertEquals(0,namespaceNode.structDeclNodeList.get(0).structMembersList.size());
+    }
+
+    @Test
+    public void test_can_parse_namespace_with_1_empty_method() throws Exception {
 
         Lexer lexer=new Lexer();
         TokenList list = lexer.lexCodeTestMode("public namespace Main { public ()~>PInt main{} }");
@@ -27,7 +43,7 @@ public class NamespaceNodeTest {
     }
 
     @Test
-    public void test_can_parse_class_with_1_method() throws Exception {
+    public void test_can_parse_namespace_with_1_method() throws Exception {
 
         Lexer lexer=new Lexer();
         TokenList list = lexer.lexCodeTestMode("public namespace Main { public ()~>PInt main{main();} }");
@@ -43,7 +59,7 @@ public class NamespaceNodeTest {
     }
 
     @Test
-    public void test_rejects_class_with_function_type()throws Exception{
+    public void test_rejects_namespace_with_function_type()throws Exception{
         Lexer lexer=new Lexer();
         TokenList list = lexer.lexCodeTestMode("public namespace ()->Main { public ()~>PInt main{main();} }");
 
@@ -70,7 +86,7 @@ public class NamespaceNodeTest {
     }
 
     @Test
-    public void test_can_parse_class_subroutine_calling_subroutine_argument() throws Exception {
+    public void test_can_parse_namespace_subroutine_calling_subroutine_argument() throws Exception {
 
         Lexer lexer=new Lexer();
         TokenList list = lexer.lexCodeTestMode("public namespace Main { public ()~>PInt main{return subr(id);} (PInt n)->PInt id{return n;} ((PInt)->PInt f)~>PInt subr{return f(3);} }");

@@ -4,7 +4,27 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.vanautrui.languages.compiler.lexing.utils.CharacterList;
 
+import static org.junit.Assert.assertEquals;
+
 public class KeywordTokenTest {
+
+    @Test
+    public void test4() throws Exception {
+        CharacterList list = new CharacterList("namespace");
+        KeywordToken k = new KeywordToken(list);
+
+        assertEquals(0,list.size());
+        assertEquals("namespace", k.getContents());
+    }
+
+    @Test
+    public void test3() throws Exception {
+        CharacterList list = new CharacterList("struct");
+        KeywordToken k = new KeywordToken(list);
+
+        assertEquals(0,list.size());
+        assertEquals("struct", k.getContents());
+    }
 
     @Test
     public void test1() throws Exception {
@@ -12,8 +32,8 @@ public class KeywordTokenTest {
         KeywordToken k = new KeywordToken(list);
 
 
-        Assert.assertEquals(1,list.size());
-        Assert.assertEquals("return", k.getContents());
+        assertEquals(1,list.size());
+        assertEquals("return", k.getContents());
     }
 
     @Test
@@ -25,6 +45,6 @@ public class KeywordTokenTest {
         }catch (Exception e){
             //pass. this is an identifier
         }
-        Assert.assertEquals("returna".length(),list.size());
+        assertEquals("returna".length(),list.size());
     }
 }

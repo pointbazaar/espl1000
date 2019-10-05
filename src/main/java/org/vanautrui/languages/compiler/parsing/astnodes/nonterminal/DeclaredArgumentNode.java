@@ -7,9 +7,9 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 
 public class DeclaredArgumentNode implements IASTNode {
 
-    public TypeNode type;
+    public final TypeNode type;
 
-    public String name;
+    public final String name;
 
     public DeclaredArgumentNode(TokenList tokens) throws Exception {
 

@@ -1,9 +1,5 @@
 //PLANNED FOR NEXT GRAMMAR CHANGE
 
-struct ::= 'struct' identifier '{' structMemberDecl (',' structMemberDecl)* '}'
-
-structMemberDecl ::= Type identifier
-
 //PLANNED FOR LATER
 
 simplevariable ::= identifier ('[' expression ']')?

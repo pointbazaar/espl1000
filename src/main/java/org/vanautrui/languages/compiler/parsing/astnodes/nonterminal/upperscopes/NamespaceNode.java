@@ -21,6 +21,9 @@ public class NamespaceNode implements IASTNode {
 
     public final SimpleTypeNode name;
 
+    //structs must be declared before the subroutines
+    public List<StructDeclNode> structDeclNodeList = new ArrayList<>();
+
     public List<MethodNode> methodNodeList = new ArrayList<>();
 
     public NamespaceNode(TokenList tokens, Path path, boolean debug) throws Exception {
@@ -44,6 +47,15 @@ public class NamespaceNode implements IASTNode {
         if(!copy.endsWith(new SymbolToken("}"))){
             //we assume the class only received a token stream with only the relavant info for it
             throw new Exception(" a namespace should end with '}' but it did not ");
+        }
+
+        boolean success_struct = true;
+        while(success_struct){
+            try{
+                this.structDeclNodeList.add(new StructDeclNode(copy,debug));
+            }catch (Exception e){
+                success_struct=false;
+            }
         }
 
         boolean success_method = true;
