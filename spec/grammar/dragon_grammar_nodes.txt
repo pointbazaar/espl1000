@@ -30,7 +30,7 @@ returnStatement ::= 'return' expression? ';'
 
 assignmentStatement ::= variable '=' expression ';'
 
-Term ::= ArrayConstant | boolConstant | integerConstant | charConstant | keywordConstant | methodCall | '(' expression ')' | unaryOp term | variable
+Term ::= ArrayConstant | boolConstant | integerConstant | charConstant | methodCall | '(' expression ')' | variable
 
 expression ::= Term (op Term)*
 

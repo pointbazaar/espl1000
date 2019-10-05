@@ -2,9 +2,21 @@
 
 //PLANNED FOR LATER
 
-simplevariable ::= identifier ('[' expression ']')?
+variable ::= identifier
 
-variable ::= simplevariable | simplevariable '.' variable | methodCall '.' variable
+memberAccess ::= ('[' expression ']')? | '.' variable
+
+assignmentStatement ::= variable '=' expression ';'
+
+Term ::= ArrayConstant | boolConstant | integerConstant | charConstant | keywordConstant | methodCall | '(' expression ')' | unaryOp term | variable
+
+expression ::= Term (op Term)*
+//('[' expression ']')?
+
+
+//simplevariable ::= identifier ('[' expression ']')?
+
+//variable ::= simplevariable | simplevariable '.' variable | methodCall '.' variable
 
 
 
