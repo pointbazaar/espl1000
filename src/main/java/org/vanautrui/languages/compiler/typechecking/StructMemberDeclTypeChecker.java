@@ -23,6 +23,6 @@ public final class StructMemberDeclTypeChecker {
         throw new Exception("struct member "+structMemberDeclNode.name+" was declared "+count+" times. should have only been declared once.");
       }
 
-      ITypeNodeTypeChecker.typeCheckITypeNode(asts,namespaceNode,structMemberDeclNode.type.typenode);
+      IBasicAndWrappedTypeNodeTypeChecker.typeCheckIBasicAndWrappedTypeNode(asts,namespaceNode,structMemberDeclNode.type.typenode);
     }
 }

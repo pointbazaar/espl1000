@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.vanautrui.languages.compiler.lexing.tokens.TypeIdentifierToken;
 import org.vanautrui.languages.compiler.lexing.utils.CharacterList;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,7 +15,7 @@ public class SimpleTypeNodeTest {
     TokenList list = new TokenList();
     list.add(new TypeIdentifierToken(new CharacterList("MyType")));
 
-    TypeNode node = new TypeNode(list);
+    BasicTypeWrappedNode node = new BasicTypeWrappedNode(list);
     assertEquals("MyType",node.getTypeName());
     assertEquals(0,list.size());
   }

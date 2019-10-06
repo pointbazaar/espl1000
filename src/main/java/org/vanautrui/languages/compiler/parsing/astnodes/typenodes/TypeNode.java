@@ -1,42 +1,36 @@
 package org.vanautrui.languages.compiler.parsing.astnodes.typenodes;
 
-import org.vanautrui.languages.compiler.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.IASTNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.simple.SimpleTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 
 public class TypeNode implements IASTNode {
 
-    public final ITypeNode typenode;
+  public ITypeNode type;
 
-    public TypeNode(TokenList tokens) throws Exception {
+  public TypeNode(TokenList tokens)throws Exception{
 
-        TokenList copy = tokens.copy();
+    TokenList copy = tokens.copy();
 
-        ITypeNode candidate;
-        if(copy.size()>1 && copy.get(0).tokenEquals(new SymbolToken("("))){
-            candidate=new SubroutineTypeNode(copy);
-        }else{
-            candidate=new SimpleTypeNode(copy);
-        }
-        this.typenode=candidate;
-        tokens.set(copy);
+    try{
+      this.type=new ArrayTypeNode(copy);
+    }catch (Exception e){
+      try {
+        this.type = new TypeParameterNode(copy);
+      }catch (Exception e2){
+        this.type = new BasicTypeWrappedNode(copy);
+      }
     }
 
-    public String getTypeName(){
-        return this.toSourceCode();
-    }
+    tokens.set(copy);
+  }
 
-    @Override
-    public String toSourceCode() {
-        return this.typenode.toSourceCode();
-    }
+  @Override
+  public String toSourceCode() {
+    return this.type.toSourceCode();
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TypeNode)) return false;
-        TypeNode typeNode = (TypeNode) o;
-        return this.toSourceCode().equals(typeNode.toSourceCode());
-    }
+  public String getTypeName() {
+    return this.toSourceCode();
+  }
 }

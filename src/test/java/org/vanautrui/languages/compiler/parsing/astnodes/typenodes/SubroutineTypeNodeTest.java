@@ -3,6 +3,7 @@ package org.vanautrui.languages.compiler.parsing.astnodes.typenodes;
 import org.junit.Test;
 import org.vanautrui.languages.compiler.lexing.Lexer;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,7 +15,7 @@ public class SubroutineTypeNodeTest {
     Lexer lexer = new Lexer();
     TokenList list = lexer.lexCodeTestMode(source);
 
-    TypeNode node = new TypeNode(list);
+    BasicTypeWrappedNode node = new BasicTypeWrappedNode(list);
     assertEquals(source,node.getTypeName());
     assertEquals(0,list.size());
   }
@@ -25,7 +26,7 @@ public class SubroutineTypeNodeTest {
     final String source="(PInt)->PInt";
     TokenList list = lexer.lexCodeTestMode(source);
 
-    TypeNode node = new TypeNode(list);
+    BasicTypeWrappedNode node = new BasicTypeWrappedNode(list);
     assertEquals(source,node.getTypeName());
     assertEquals(0,list.size());
   }
@@ -36,7 +37,7 @@ public class SubroutineTypeNodeTest {
     Lexer lexer = new Lexer();
     TokenList list = lexer.lexCodeTestMode(source);
 
-    TypeNode node = new TypeNode(list);
+    BasicTypeWrappedNode node = new BasicTypeWrappedNode(list);
     assertEquals(source,node.getTypeName());
     assertEquals(0,list.size());
   }

@@ -5,7 +5,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IdentifierNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 
@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import static org.vanautrui.languages.compiler.typechecking.ITypeNodeTypeChecker.typeCheckITypeNode;
 import static org.vanautrui.languages.compiler.typechecking.NamespaceNodeTypeChecker.typeCheckNamespaceNode;
 
 public class TypeChecker {
@@ -59,7 +58,7 @@ public class TypeChecker {
 
 
 
-  public static boolean isIntegralType(ITypeNode type) {
+  public static boolean isIntegralType(IBasicAndWrappedTypeNode type) {
     return Arrays.asList("PInt", "NInt", "Integer").contains(type.getTypeName());
   }
 

@@ -10,7 +10,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTableRow;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
@@ -40,10 +40,14 @@ public class SymbolTableGenerator {
 						System.out.println("creating subroutine symbol table row for subroutine: "+methodNode.methodName);
 					}
 
+					if(!(methodNode.returnType.type instanceof IBasicAndWrappedTypeNode)){
+						throw new Exception("not supported yet");
+					}
+
 					SubroutineSymbolTableRow subrRow =
 									new SubroutineSymbolTableRow(
 													methodNode.methodName,
-													methodNode.getType(), namespaceNode.name.getTypeName(),
+													(IBasicAndWrappedTypeNode)methodNode.returnType.type, namespaceNode.name.getTypeName(),
 													count_local_vars(methodNode,subroutineSymbolTable),
 													methodNode.arguments.size()
 									);
@@ -60,7 +64,11 @@ public class SymbolTableGenerator {
 		//first, make the local variables for the arguments
 		for(DeclaredArgumentNode arg: methodNode.arguments){
 
-				methodScopeSymbolTable.add_idempotent(new LocalVarSymbolTableRow(arg.name, arg.type.typenode, LocalVarSymbolTableRow.KIND_ARGUMENT));
+				if(!(arg.type.type instanceof IBasicAndWrappedTypeNode) || !arg.name.isPresent()){
+					throw new Exception("not supported yet");
+				}
+
+				methodScopeSymbolTable.add_idempotent(new LocalVarSymbolTableRow(arg.name.get(), (IBasicAndWrappedTypeNode) arg.type.type, LocalVarSymbolTableRow.KIND_ARGUMENT));
 		}
 
 		for(StatementNode stmt : methodNode.statements) {
@@ -124,7 +132,7 @@ public class SymbolTableGenerator {
 		if(st instanceof AssignmentStatementNode) {
 			AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode)st;
 
-			ITypeNode expressionType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,methodScopeSymbolTable);
+			IBasicAndWrappedTypeNode expressionType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,methodScopeSymbolTable);
 
 			methodScopeSymbolTable.add_idempotent(
 					new LocalVarSymbolTableRow(

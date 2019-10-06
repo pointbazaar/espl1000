@@ -1,6 +1,6 @@
 package org.vanautrui.languages.compiler.symboltables;
 
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 
 public class SubroutineSymbolTableRow {
 
@@ -8,13 +8,13 @@ public class SubroutineSymbolTableRow {
     //almost all subroutines have a name, except anonymous subroutines or anonymous lambdas
     //but we can make up names for these maybe
 
-    private final ITypeNode typeName;  //every subroutine has a return type
+    private final IBasicAndWrappedTypeNode typeName;  //every subroutine has a return type
     private final String className; //every subroutine is contained in a class
 
     private final int numberOfLocalVariables;
     private final int numberOfArguments;
 
-    public SubroutineSymbolTableRow(String subRoutineName, ITypeNode typeName,String className,int numberOfLocalVariables,int nArgs){
+    public SubroutineSymbolTableRow(String subRoutineName, IBasicAndWrappedTypeNode typeName, String className, int numberOfLocalVariables, int nArgs){
 
         this.typeName=typeName;
         this.subRoutineName = subRoutineName;
@@ -33,7 +33,7 @@ public class SubroutineSymbolTableRow {
         return this.subRoutineName;
     }
 
-    public ITypeNode getType() {
+    public IBasicAndWrappedTypeNode getType() {
         return this.typeName;
     }
 

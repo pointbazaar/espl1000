@@ -6,8 +6,8 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.*;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.simple.SimpleTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SimpleTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 
@@ -22,25 +22,25 @@ public class TypeResolver {
     //that can then convert the type description directly
     //to a jvm internal representation
 
-    public static ITypeNode getTypeIntegerConstantNode(IntConstNode intConstNode){
+    public static IBasicAndWrappedTypeNode getTypeIntegerConstantNode(IntConstNode intConstNode){
         if(intConstNode.value>=0){
             return new SimpleTypeNode("PInt");
         }else{
             return new SimpleTypeNode("NInt");
         }
     }
-    public static ITypeNode getTypeFloatConstantNode(FloatConstNode node){
+    public static IBasicAndWrappedTypeNode getTypeFloatConstantNode(FloatConstNode node){
     	return new SimpleTypeNode("Float");
     }
 
-    public static ITypeNode getTypeVariableNode(VariableNode variableNode, MethodNode methodNode, SubroutineSymbolTable subroutineSymbolTable, LocalVarSymbolTable varTable)throws Exception{
+    public static IBasicAndWrappedTypeNode getTypeVariableNode(VariableNode variableNode, MethodNode methodNode, SubroutineSymbolTable subroutineSymbolTable, LocalVarSymbolTable varTable)throws Exception{
         //TODO: implement by looking at the definitions in the AST and such
 
         if( varTable.containsVariable(variableNode.name) ) {
             //the symbol table should contain the array type, if it is an array
             //but this method should return the type also if it has an index
             if (variableNode.indexOptional.isPresent()) {
-                ITypeNode type = varTable.getTypeOfVariable(variableNode.name);
+                IBasicAndWrappedTypeNode type = varTable.getTypeOfVariable(variableNode.name);
                 return new SimpleTypeNode(type.getTypeName().substring(1, type.getTypeName().length() - 1));
             }
 
@@ -52,9 +52,9 @@ public class TypeResolver {
         }
     }
 
-    public static ITypeNode getTypeTermNode(TermNode termNode, MethodNode methodNode,
-                                         SubroutineSymbolTable subroutineSymbolTable,
-                                         LocalVarSymbolTable varTable
+    public static IBasicAndWrappedTypeNode getTypeTermNode(TermNode termNode, MethodNode methodNode,
+                                                           SubroutineSymbolTable subroutineSymbolTable,
+                                                           LocalVarSymbolTable varTable
     )throws Exception{
 
         if(termNode.termNode instanceof ExpressionNode){
@@ -79,7 +79,7 @@ public class TypeResolver {
 
     }
 
-    private static ITypeNode getTypeArrayConstNode(
+    private static IBasicAndWrappedTypeNode getTypeArrayConstNode(
             ArrayConstantNode arrayConstantNode,
             MethodNode methodNode,
             SubroutineSymbolTable subroutineSymbolTable,
@@ -100,7 +100,7 @@ public class TypeResolver {
 
 
 
-    public static ITypeNode getTypeExpressionNode(
+    public static IBasicAndWrappedTypeNode getTypeExpressionNode(
             ExpressionNode expressionNode,
             MethodNode methodNode,
             SubroutineSymbolTable subTable,
@@ -129,10 +129,10 @@ public class TypeResolver {
         }
 
 
-        ITypeNode type = getTypeTermNode(expressionNode.term,methodNode,subTable,varTable);
+        IBasicAndWrappedTypeNode type = getTypeTermNode(expressionNode.term,methodNode,subTable,varTable);
 
         for (TermNode t : expressionNode.termNodes){
-            ITypeNode termType = getTypeTermNode(t,methodNode,subTable,varTable);
+            IBasicAndWrappedTypeNode termType = getTypeTermNode(t,methodNode,subTable,varTable);
 
             if(!(termType.getTypeName().equals(type.getTypeName()))){
                 throw new Exception(
@@ -145,7 +145,7 @@ public class TypeResolver {
         return getTypeTermNode(expressionNode.term,methodNode,subTable,varTable);
     }
 
-    public static ITypeNode getTypeMethodCallNode(
+    public static IBasicAndWrappedTypeNode getTypeMethodCallNode(
             MethodCallNode methodCallNode,
             SubroutineSymbolTable subTable,LocalVarSymbolTable varTable) throws Exception
     {

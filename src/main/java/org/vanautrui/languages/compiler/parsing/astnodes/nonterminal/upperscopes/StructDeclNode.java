@@ -5,14 +5,14 @@ import org.vanautrui.languages.compiler.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.IASTNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.StructMemberDeclNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.simple.SimpleTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SimpleTypeNode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class StructDeclNode implements IASTNode, ITypeNode {
+public final class StructDeclNode implements IASTNode, IBasicAndWrappedTypeNode {
 
   public final SimpleTypeNode structType;
   public final List<StructMemberDeclNode> structMembersList=new ArrayList<>();

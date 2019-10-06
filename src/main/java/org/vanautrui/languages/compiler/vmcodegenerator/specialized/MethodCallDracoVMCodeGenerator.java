@@ -2,7 +2,7 @@ package org.vanautrui.languages.compiler.vmcodegenerator.specialized;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.SubroutineTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;

@@ -1,7 +1,7 @@
 package org.vanautrui.languages.compiler.symboltables;
 
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.SubroutineTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
 
 public class LocalVarSymbolTableRow  {
 
@@ -9,14 +9,14 @@ public class LocalVarSymbolTableRow  {
     //TODO: so that we can easily distingush between subroutine variables and normal variables and dont have so many optionals
 
     private final String varName;
-    private final ITypeNode typeName; //this always contains the full type name
+    private final IBasicAndWrappedTypeNode typeName; //this always contains the full type name
 
     final String kind;
 
     public final static String KIND_LOCALVAR="LOCAL";
     public final static String KIND_ARGUMENT="ARG";
 
-    public LocalVarSymbolTableRow(String varName, ITypeNode typeName,String kind) {
+    public LocalVarSymbolTableRow(String varName, IBasicAndWrappedTypeNode typeName, String kind) {
         this.typeName=typeName;
         this.varName=varName;
         this.kind=kind;
@@ -32,11 +32,11 @@ public class LocalVarSymbolTableRow  {
         return this.varName;
     }
 
-    public ITypeNode getType() {
+    public IBasicAndWrappedTypeNode getType() {
         return this.typeName;
     }
 
-    public ITypeNode getReturnTypeIfIsSubroutine()throws Exception{
+    public IBasicAndWrappedTypeNode getReturnTypeIfIsSubroutine()throws Exception{
         if(this.typeName instanceof SubroutineTypeNode){
             return ((SubroutineTypeNode) this.typeName).returnType;
         }else {

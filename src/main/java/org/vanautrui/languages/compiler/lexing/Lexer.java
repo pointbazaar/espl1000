@@ -84,6 +84,13 @@ public class Lexer {
                 //pass
             }
 
+            try {
+                result.add(new TypeParameterIdentifierToken(myCode));
+                continue;
+            } catch (Exception e) {
+                //pass
+            }
+
 	        try {
                 result.add(new FloatNonNegativeConstantToken(myCode));
                 continue;

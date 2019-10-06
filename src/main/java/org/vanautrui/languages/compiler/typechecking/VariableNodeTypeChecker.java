@@ -4,7 +4,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.VariableNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
@@ -22,7 +22,7 @@ public class VariableNodeTypeChecker {
     if(variableNode.indexOptional.isPresent()){
       //if there is an index, it should be positive. we can check one of the bounds for free
       //by only accepting PInt type
-      ITypeNode index_type = TypeResolver.getTypeExpressionNode(variableNode.indexOptional.get(), methodNode, subTable, varTable);
+      IBasicAndWrappedTypeNode index_type = TypeResolver.getTypeExpressionNode(variableNode.indexOptional.get(), methodNode, subTable, varTable);
       if(!index_type.getTypeName().equals("PInt")){
         throw new Exception("can only index into arrays with PInt type. Because an array index is >= 0.");
       }

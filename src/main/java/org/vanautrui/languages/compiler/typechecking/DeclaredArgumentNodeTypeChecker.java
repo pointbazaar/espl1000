@@ -13,6 +13,6 @@ public final class DeclaredArgumentNodeTypeChecker {
   public synchronized static void typeCheckDeclaredArgumentNode(List<AST> asts,
                                             NamespaceNode namespaceNode,
                                             DeclaredArgumentNode declaredArgumentNode) throws Exception {
-    typeCheckITypeNode(asts, namespaceNode, declaredArgumentNode.type.typenode);
+    typeCheckITypeNode(asts, namespaceNode, declaredArgumentNode.type.type);
   }
 }

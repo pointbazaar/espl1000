@@ -9,15 +9,22 @@ structDecl ::= 'struct' SimpleType '{' structMemberDecl (',' structMemberDecl)* 
 
 structMemberDecl ::= Type identifier
 
-SubroutineType ::= '(' Type* ')' arrow ( SimpleType | '(' SubroutineType ')' )
+SubroutineType ::= '(' Type* ')' arrow Type
 SimpleType ::= upperCaseLetter alphanumeric*
-Type ::= SimpleType | SubroutineType
+BasicTypeWrapped ::= SimpleType | '(' SubroutineType ')'
+
+TypeParameter ::= '?T' ( 0 | 1 | ... )
+
+ArrayType :: = '[' Type ']'
+
+Type ::= BasicTypeWrapped | TypeParameter | ArrayType
 
 variable ::= identifier ('[' expression ']')?
 
 method ::= accessmodifier '(' declaredArgument* ')' arrow Type identifier '{' statement* '}'
 
-declaredArgument ::= Type identifier
+declaredArgument ::= Type identifier? //just Type is there to support for example the " (?T0,PInt size)~>[?T0] newarray{...} " builtin subroutine.
+                                      //in that case we receive just the type as a parameter, not an instance of it.
 
 statement ::= ( methodCall ';' | whileStatement | ifStatement | returnStatement | assignmentStatement )
 

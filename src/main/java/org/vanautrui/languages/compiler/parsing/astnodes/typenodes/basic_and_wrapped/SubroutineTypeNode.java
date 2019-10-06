@@ -1,21 +1,20 @@
-package org.vanautrui.languages.compiler.parsing.astnodes.typenodes;
+package org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped;
 
 import org.vanautrui.languages.compiler.lexing.tokens.ArrowToken;
 import org.vanautrui.languages.compiler.lexing.tokens.SymbolToken;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.simple.SimpleTypeNode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SubroutineTypeNode implements ITypeNode {
+public class SubroutineTypeNode implements IBasicAndWrappedTypeNode {
 
-  public final ITypeNode returnType;
+  public final IBasicAndWrappedTypeNode returnType;
 
   public final boolean has_side_effects;
 
-  public List<TypeNode> argumentTypes=new ArrayList<>();
+  public List<BasicTypeWrappedNode> argumentTypes=new ArrayList<>();
 
   public SubroutineTypeNode(TokenList tokens)throws Exception{
 
@@ -25,7 +24,7 @@ public class SubroutineTypeNode implements ITypeNode {
 
     boolean sucess_argument_types=true;
     try {
-      this.argumentTypes.add(new TypeNode(copy));
+      this.argumentTypes.add(new BasicTypeWrappedNode(copy));
     }catch (Exception e){
       sucess_argument_types=false;
     }
@@ -34,7 +33,7 @@ public class SubroutineTypeNode implements ITypeNode {
         TokenList copy2 = copy.copy();
 
         copy2.expectAndConsumeOtherWiseThrowException(new SymbolToken(","));
-        this.argumentTypes.add(new TypeNode(copy2));
+        this.argumentTypes.add(new BasicTypeWrappedNode(copy2));
 
         copy.set(copy2);
       }catch (Exception e){
@@ -76,7 +75,7 @@ public class SubroutineTypeNode implements ITypeNode {
               "("
                       + argumentTypes
                       .stream()
-                      .map(TypeNode::getTypeName)
+                      .map(BasicTypeWrappedNode::getTypeName)
                       .collect(Collectors.joining(","))
                       + ")" + ((this.has_side_effects) ? "~>" : "->") + "("+returnType.getTypeName()+")";
     }else {
@@ -84,7 +83,7 @@ public class SubroutineTypeNode implements ITypeNode {
               "("
                       + argumentTypes
                       .stream()
-                      .map(TypeNode::getTypeName)
+                      .map(BasicTypeWrappedNode::getTypeName)
                       .collect(Collectors.joining(","))
                       + ")" + ((this.has_side_effects) ? "~>" : "->") + returnType.getTypeName();
     }

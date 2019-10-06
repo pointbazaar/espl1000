@@ -1,11 +1,10 @@
-package org.vanautrui.languages.compiler.parsing.astnodes.typenodes.simple;
+package org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped;
 
 import org.vanautrui.languages.compiler.lexing.tokens.TypeIdentifierToken;
 import org.vanautrui.languages.compiler.lexing.utils.IToken;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
 
-public class SimpleTypeNode implements ITypeNode {
+public class SimpleTypeNode implements IBasicAndWrappedTypeNode {
 
   public final String typeName;
 

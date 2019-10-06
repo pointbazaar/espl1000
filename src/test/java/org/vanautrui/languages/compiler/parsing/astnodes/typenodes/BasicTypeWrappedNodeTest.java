@@ -3,21 +3,23 @@ package org.vanautrui.languages.compiler.parsing.astnodes.typenodes;
 import org.junit.Test;
 import org.vanautrui.languages.compiler.lexing.Lexer;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.simple.SimpleTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SimpleTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class TypeNodeTest {
+public class BasicTypeWrappedNodeTest {
 
   @Test
   public void test_type_parsing2()throws Exception{
-    final String source = "((PInt)~>PInt)->PInt";
+    final String source = "(((PInt)~>PInt)->PInt)";
 
     Lexer lexer = new Lexer();
     TokenList list = lexer.lexCodeTestMode(source);
 
-    TypeNode node = new TypeNode(list);
+    BasicTypeWrappedNode node = new BasicTypeWrappedNode(list);
 
     assertTrue(node.typenode instanceof SubroutineTypeNode);
     assertEquals(source,node.getTypeName());
@@ -26,12 +28,12 @@ public class TypeNodeTest {
 
   @Test
   public void test_type_parsing()throws Exception{
-    final String source = "(PInt,NInt,MyType)~>((PInt)->PInt)";
+    final String source = "((PInt,NInt,MyType)~>((PInt)->PInt))";
 
     Lexer lexer = new Lexer();
     TokenList list = lexer.lexCodeTestMode(source);
 
-    TypeNode node = new TypeNode(list);
+    BasicTypeWrappedNode node = new BasicTypeWrappedNode(list);
 
     assertTrue(node.typenode instanceof SubroutineTypeNode);
     assertEquals(source,node.getTypeName());
@@ -41,12 +43,12 @@ public class TypeNodeTest {
   @Test
   public void test_type_parsing_complicated()throws Exception{
     //a subroutine which returns a function which returns a function
-    final String source = "(PInt,NInt,MyType) ~> ( (PInt)->((PInt)->PInt) )".replaceAll(" ","");
+    final String source = "((PInt,NInt,MyType) ~> ( (PInt)->((PInt)->PInt) ))".replaceAll(" ","");
 
     Lexer lexer = new Lexer();
     TokenList list = lexer.lexCodeTestMode(source);
 
-    TypeNode node = new TypeNode(list);
+    BasicTypeWrappedNode node = new BasicTypeWrappedNode(list);
 
     assertTrue(node.typenode instanceof SubroutineTypeNode);
     SubroutineTypeNode mytype = (SubroutineTypeNode) node.typenode;
@@ -69,7 +71,7 @@ public class TypeNodeTest {
     Lexer lexer = new Lexer();
     TokenList list = lexer.lexCodeTestMode(source);
 
-    TypeNode node = new TypeNode(list);
+    BasicTypeWrappedNode node = new BasicTypeWrappedNode(list);
 
     assertEquals(source,node.getTypeName());
     assertTrue(node.typenode instanceof SimpleTypeNode);
