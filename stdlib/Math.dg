@@ -100,6 +100,62 @@ public class Math{
 		return 3.14159;
 	}
 
+	/* Suggested Math Functions and a Typecast Function
+	
+	public Float euclid_dist(Int a, Int b, Int c, Int d) {
+
+		/* Calculating Euclidian Distance between 
+		*  two points [a, b] and [c, d]
+		*
+		*  sqrt( pow(a - c) + pow(b - d) )
+		**/
+
+		Int sum = pow(a - c, 2) + pow(b - d, 2);
+		return sqrt(float(sum));
+	}
+	
+	public Int sigma(Int start, Int end) {
+
+		sum = 0;
+
+		while(start < end) {
+
+			sum = sum + start;
+			start = start + 1;
+		}
+
+		return sum;
+	}
+
+	public Float float(Int x) {
+
+		float_num = 0.00;
+		y = 0.00;
+		
+		while(x > 0) {
+
+			mod = x % 10;
+
+			while(y < 10.00) {
+
+				if(mod == y) {
+
+					float_num = float_num + y;
+					break;
+				}
+				
+				y = y + 1.00; 
+			}
+
+			y = 0.00;
+			x = x / 10;
+		}
+
+		return float_num;
+	}
+
+	*/
+
 	/*
 	public Float sin(Float x){
 		i=0;
