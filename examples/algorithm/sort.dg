@@ -2,7 +2,7 @@
 
 public class Sort {
 
-	public Int main() {
+	public PInt main() {
 
 		size = 7; i = 0;
 		sort = [2, 4, 1, 0, 20, 4, 5];
@@ -26,13 +26,17 @@ public class Sort {
 			i = i + 1;
 			j = 0;
 		}
-	}
 
-	k = 0;
+		k = 0;
 
-	while(k < size) {
+		while(k < size) {
 
-		putdigit(sort[k]);
-		putchar(',');
+			putdigit(sort[k]);
+			putchar(',');
+
+			k = k + 1;
+		}
+
+		return 0;
 	}
 }
