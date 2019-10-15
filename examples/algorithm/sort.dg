@@ -1,0 +1,38 @@
+/* Sorting Algorithm in Dragon Language */
+
+public class Sort {
+
+	public Int main() {
+
+		size = 7; i = 0;
+		sort = [2, 4, 1, 0, 20, 4, 5];
+
+		while(i < size) {
+
+			j = i + 1;
+
+			while(j < size) {
+
+				if(sort[i] < sort[j]) {
+
+					temp = sort[i];
+					sort[i] = sort[j];
+					sort[j] = temp;
+				}				
+
+				j = j + 1;
+			}
+
+			i = i + 1;
+			j = 0;
+		}
+	}
+
+	k = 0;
+
+	while(k < size) {
+
+		putdigit(sort[k]);
+		putchar(',');
+	}
+}
