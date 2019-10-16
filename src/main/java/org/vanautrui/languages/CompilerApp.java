@@ -4,7 +4,7 @@ import org.vanautrui.languages.commandline.dragonc;
 
 import java.util.Arrays;
 
-public class App {
+public class CompilerApp {
 
     //Assembly debugging:
     //(they are missing a stack display, but it be ok)
