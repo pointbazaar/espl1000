@@ -6,6 +6,7 @@ import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.compiler.lexing.utils.CharacterList;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.vmcompiler.VMCompilerPhases;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -197,6 +198,7 @@ public class dragonc {
             }
 
             CompilerPhases phases = new CompilerPhases(cmd);
+            ParserPhases pphases = new ParserPhases();
 
             //PHASE PREPROCESSOR
             //processes the 'use' directive
@@ -204,13 +206,13 @@ public class dragonc {
 
             //PHASE CLEAN
             List<CharacterList> codeWithoutCommentsWithoutUnneccesaryWhitespace
-                    = phases.phase_clean(codes,sources);
+                    = pphases.phase_clean(codes,sources);
 
             //PHASE LEXING
-            List<TokenList> tokens = phases.phase_lexing(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd.hasOption(FLAG_PRINT_TOKENS));
+            List<TokenList> tokens = pphases.phase_lexing(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd.hasOption(FLAG_PRINT_TOKENS));
 
             //PHASE PARSING
-            List<AST> asts = phases.phase_parsing(tokens,cmd.hasOption(FLAG_PRINT_AST));
+            List<AST> asts = pphases.phase_parsing(tokens,cmd.hasOption(FLAG_PRINT_AST));
 
             //PHASE TYPE CHECKING
             phases.phase_typecheck(asts);
@@ -222,7 +224,7 @@ public class dragonc {
             List<String> asm_codes = phases.phase_vm_code_compilation(vm_codes,cmd.hasOption(FLAG_DEBUG));
 
             //PHASE GENERATE EXECUTABLE
-            phases.phase_generate_executable(asm_codes,"main");
+            (new VMCompilerPhases()).phase_generate_executable(asm_codes,"main");
 
 
             long end_time_ms = currentTimeMillis();
