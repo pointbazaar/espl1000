@@ -19,12 +19,12 @@
         <dependency>
             <groupId>com.github.pointbazaar</groupId>
             <artifactId>dragon-parser</artifactId>
-            <version>1df80daac4</version>
+            <version>64bfbe18404496a7271099586663d46ac2adb2d8</version>
         </dependency>
         <dependency>
             <groupId>com.github.pointbazaar</groupId>
             <artifactId>dracovm-compiler</artifactId>
-            <version>a9c8036a78</version>
+            <version>81a2279e01</version>
         </dependency>
 
 
@@ -154,6 +154,14 @@
                 <version>3.0.0</version>
                 <configuration>
                     <source>1.8</source>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>10</source>
+                    <target>10</target>
                 </configuration>
             </plugin>
         </plugins>

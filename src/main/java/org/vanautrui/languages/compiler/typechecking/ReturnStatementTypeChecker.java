@@ -17,7 +17,7 @@ public class ReturnStatementTypeChecker {
 
   static void typeCheckReturnStatementNode(List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode, ReturnStatementNode returnStatementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {
     //the type of the value returned should be the same as the method return type
-    IBasicAndWrappedTypeNode returnValueType = TypeResolver.getTypeExpressionNode(returnStatementNode.returnValue, methodNode, subTable, varTable);
+    var returnValueType = TypeResolver.getTypeExpressionNode(returnStatementNode.returnValue, methodNode, subTable, varTable);
     if (
             !(returnValueType.getTypeName().equals(methodNode.returnType.getTypeName()))
     ) {

@@ -41,14 +41,14 @@ public class SymbolTableGenerator {
 						System.out.println("creating subroutine symbol table row for subroutine: "+methodNode.methodName);
 					}
 
-					if(!(methodNode.returnType.type instanceof IBasicAndWrappedTypeNode)){
+					if(!(methodNode.returnType.type instanceof BasicTypeWrappedNode)){
 						throw new Exception("not supported yet");
 					}
 
 					SubroutineSymbolTableRow subrRow =
 									new SubroutineSymbolTableRow(
 													methodNode.methodName,
-													(IBasicAndWrappedTypeNode)methodNode.returnType.type, namespaceNode.name.getTypeName(),
+													((BasicTypeWrappedNode)methodNode.returnType.type).typenode, namespaceNode.name.getTypeName(),
 													count_local_vars(methodNode,subroutineSymbolTable),
 													methodNode.arguments.size()
 									);
@@ -135,7 +135,7 @@ public class SymbolTableGenerator {
 		if(st instanceof AssignmentStatementNode) {
 			AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode)st;
 
-			IBasicAndWrappedTypeNode expressionType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,methodScopeSymbolTable);
+			var expressionType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,methodScopeSymbolTable);
 
 			methodScopeSymbolTable.add_idempotent(
 					new LocalVarSymbolTableRow(

@@ -23,7 +23,7 @@ public final class IfStatementNodeTypeChecker {
                                        SubroutineSymbolTable subTable,
                                        LocalVarSymbolTable varTable) throws Exception {
     //the condition expression should be of type boolean
-    IBasicAndWrappedTypeNode conditionType =
+    var conditionType =
             TypeResolver.getTypeExpressionNode(ifStatementNode.condition, methodNode, subTable, varTable);
 
     if (!conditionType.getTypeName().equals("Bool")) {

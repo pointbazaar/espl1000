@@ -27,7 +27,7 @@ public final class MethodCallNodeTypeChecker {
 
     if (
             varTable.containsVariable(methodCallNode.methodName)
-                    && varTable.get(methodCallNode.methodName).getType() instanceof SubroutineTypeNode
+                    && varTable.get(methodCallNode.methodName).getType().type instanceof SubroutineTypeNode
     ) {
       found = true;
     }

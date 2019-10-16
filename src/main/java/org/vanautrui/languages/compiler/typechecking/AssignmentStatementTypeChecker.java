@@ -20,8 +20,8 @@ public class AssignmentStatementTypeChecker {
           List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode,
           AssignmentStatementNode assignmentStatementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable
   ) throws Exception{
-    IBasicAndWrappedTypeNode leftSideType = TypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,methodNode,subTable,varTable);
-    IBasicAndWrappedTypeNode rightSideType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,varTable);
+    var leftSideType = TypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,methodNode,subTable,varTable);
+    var rightSideType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,varTable);
     if(!leftSideType.getTypeName().equals(rightSideType.getTypeName())){
       throw new Exception(
               "with an assignment, both sides have to have the same type. here, a value of type "+rightSideType.getTypeName()+" was assigned to a value of type "+leftSideType.getTypeName()

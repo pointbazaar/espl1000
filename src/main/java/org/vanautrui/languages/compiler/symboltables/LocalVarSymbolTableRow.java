@@ -1,5 +1,6 @@
 package org.vanautrui.languages.compiler.symboltables;
 
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
@@ -10,19 +11,24 @@ public class LocalVarSymbolTableRow  {
     //TODO: so that we can easily distingush between subroutine variables and normal variables and dont have so many optionals
 
     private final String varName;
-    private final IBasicAndWrappedTypeNode typeName; //this always contains the full type name
+    private final TypeNode typeName; //this always contains the full type name
 
     final String kind;
 
     public final static String KIND_LOCALVAR="LOCAL";
     public final static String KIND_ARGUMENT="ARG";
-    public LocalVarSymbolTableRow(String varName, IBasicAndWrappedTypeNode typeName, String kind) {
+    public LocalVarSymbolTableRow(String varName, TypeNode typeName, String kind) {
         this.typeName=typeName;
         this.varName=varName;
         this.kind=kind;
     }
+    public LocalVarSymbolTableRow(String varName, IBasicAndWrappedTypeNode typeName, String kind) {
+        this.typeName=new TypeNode(new BasicTypeWrappedNode(typeName));
+        this.varName=varName;
+        this.kind=kind;
+    }
     public LocalVarSymbolTableRow(String varName, BasicTypeWrappedNode typeName, String kind) {
-        this.typeName=typeName.typenode;
+        this.typeName=new TypeNode(typeName);
         this.varName=varName;
         this.kind=kind;
     }
@@ -37,13 +43,13 @@ public class LocalVarSymbolTableRow  {
         return this.varName;
     }
 
-    public IBasicAndWrappedTypeNode getType() {
+    public TypeNode getType() {
         return this.typeName;
     }
 
-    public IBasicAndWrappedTypeNode getReturnTypeIfIsSubroutine()throws Exception{
-        if(this.typeName instanceof SubroutineTypeNode){
-            return ((SubroutineTypeNode) this.typeName).returnType;
+    public TypeNode getReturnTypeIfIsSubroutine()throws Exception{
+        if(this.typeName.type instanceof SubroutineTypeNode){
+            return ((SubroutineTypeNode) this.typeName.type).returnType;
         }else {
             throw new Exception(this.getClass().getSimpleName()
                     +": tried to get return type of subroutine variable "

@@ -6,6 +6,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
@@ -42,14 +43,14 @@ public class ExpressionNodeTypeChecker {
 
     //the types should be all the same for now
     typecheckTermNode(asts, namespaceNode,methodNode,expr.term,subTable,varTable);
-    IBasicAndWrappedTypeNode type= TypeResolver.getTypeTermNode(expr.term,methodNode,subTable,varTable);
+    TypeNode type= TypeResolver.getTypeTermNode(expr.term,methodNode,subTable,varTable);
     final List<String> currentAllowedTypes= Arrays.asList("PInt","Float");
     final List<String> allowed_operators_for_expressions_with_more_than_2_terms=Arrays.asList("+","-");
 
 
     if(expr.termNodes.size()==1 && expr.operatorNodes.size()==1 && expr.operatorNodes.get(0).operator.equals("==")) {
       //can only compare stuff which is the same
-      IBasicAndWrappedTypeNode otherType = TypeResolver.getTypeTermNode(expr.termNodes.get(0),methodNode,subTable,varTable);
+      TypeNode otherType = TypeResolver.getTypeTermNode(expr.termNodes.get(0),methodNode,subTable,varTable);
       if(!otherType.getTypeName().equals(type.getTypeName())){
         throw new Exception(TypeChecker.class.getSimpleName()+": to compare with '==', they have to be the same type ");
       }
@@ -89,8 +90,8 @@ public class ExpressionNodeTypeChecker {
     }else if(arithmetic_operators_for_epressions_with_2_operands.contains(opNode.operator)){
       final List<String> currentAllowedTypes= Arrays.asList("PInt","Float");
 
-      final IBasicAndWrappedTypeNode type1 = TypeResolver.getTypeTermNode(term1,methodNode,subTable,varTable);
-      final IBasicAndWrappedTypeNode type2 = TypeResolver.getTypeTermNode(term2,methodNode,subTable,varTable);
+      final TypeNode type1 = TypeResolver.getTypeTermNode(term1,methodNode,subTable,varTable);
+      final TypeNode type2 = TypeResolver.getTypeTermNode(term2,methodNode,subTable,varTable);
 
       if(!currentAllowedTypes.contains(type1.getTypeName())){
         throw new Exception(""+type1.getTypeName()+" is not a supported type for expressions with 2 terms.");
@@ -119,8 +120,8 @@ public class ExpressionNodeTypeChecker {
 
     final String current_allowed_type_for_bitshifting="PInt";
 
-    final IBasicAndWrappedTypeNode type1 = TypeResolver.getTypeTermNode(term1,methodNode,subTable,varTable);
-    final IBasicAndWrappedTypeNode type2 = TypeResolver.getTypeTermNode(term2,methodNode,subTable,varTable);
+    final TypeNode type1 = TypeResolver.getTypeTermNode(term1,methodNode,subTable,varTable);
+    final TypeNode type2 = TypeResolver.getTypeTermNode(term2,methodNode,subTable,varTable);
 
     if(!type1.getTypeName().equals(current_allowed_type_for_bitshifting) || !type2.getTypeName().equals(current_allowed_type_for_bitshifting)){
       throw new Exception("one or two of the operands for bitshifting were not of type "+current_allowed_type_for_bitshifting);

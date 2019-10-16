@@ -4,6 +4,7 @@ import io.bretty.console.table.Alignment;
 import io.bretty.console.table.ColumnFormatter;
 import io.bretty.console.table.Precision;
 import io.bretty.console.table.Table;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SimpleTypeNode;
 
@@ -15,7 +16,7 @@ public class SubroutineSymbolTable {
 
     private List<SubroutineSymbolTableRow> symbolTable;
 
-    public SubroutineSymbolTable(){
+    public SubroutineSymbolTable()throws Exception{
         this.symbolTable=new ArrayList<>();
 
         //add the builtin subroutines
@@ -56,7 +57,7 @@ public class SubroutineSymbolTable {
         throw new Exception();
     }
 
-    public IBasicAndWrappedTypeNode getReturnTypeOfSubroutine(String subroutineName) {
+    public TypeNode getReturnTypeOfSubroutine(String subroutineName) {
         return symbolTable.stream().filter(e->e.getName().equals(subroutineName)).collect(Collectors.toList()).get(0).getType();
     }
 
@@ -111,7 +112,7 @@ public class SubroutineSymbolTable {
         return this.get(methodName).getNumberOfArguments();
     }
 
-    public IBasicAndWrappedTypeNode getTypeOfSubroutine(String subroutine_name) throws Exception{
+    public TypeNode getTypeOfSubroutine(String subroutine_name) throws Exception{
         return this.get(subroutine_name).getType();
     }
 }

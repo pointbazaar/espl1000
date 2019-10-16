@@ -24,7 +24,7 @@ public final class LoopStatementNodeTypeChecker {
   ) throws Exception {
     //the condition expression should be of type boolean
 
-    IBasicAndWrappedTypeNode countType = TypeResolver.getTypeExpressionNode(loopStatementNode.count, methodNode, subTable, varTable);
+    var countType = TypeResolver.getTypeExpressionNode(loopStatementNode.count, methodNode, subTable, varTable);
     if (!countType.getTypeName().equals("PInt")) {
       throw
               new Exception(

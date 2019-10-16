@@ -34,7 +34,7 @@ public class MethodCallDracoVMCodeGenerator {
 
       //TODO: very hacky. very dirty. should be cleaner. like with polymorphy.
       //TODO: different types implementing an interface which is then in a collection in the local var symbol table
-      nArgs = ((SubroutineTypeNode)varTable.get(methodCallNode.methodName).getType()).argumentTypes.size();
+      nArgs = ((SubroutineTypeNode)varTable.get(methodCallNode.methodName).getType().type).argumentTypes.size();
     }else if(subTable.containsSubroutine(methodCallNode.methodName)) {
       sb.call(subTable.getContainingClassName(methodCallNode.methodName), methodCallNode.methodName);
       nArgs = subTable.getNumberOfArgumentsOfSubroutine(methodCallNode.methodName);

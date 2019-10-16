@@ -26,7 +26,7 @@ public final class WhileStatementNodeTypeChecker {
           LocalVarSymbolTable varTable
   ) throws Exception {
     //the condition expression should be of type boolean
-    IBasicAndWrappedTypeNode conditionType =
+    var conditionType =
             TypeResolver.getTypeExpressionNode(whileStatementNode.condition, methodNode, subTable, varTable);
 
     if (!conditionType.getTypeName().equals("Bool")) {

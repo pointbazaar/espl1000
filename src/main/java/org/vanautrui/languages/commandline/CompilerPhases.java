@@ -62,22 +62,6 @@ public class CompilerPhases {
         }
     }
 
-    public List<String> phase_vm_code_compilation(List<String> draco_vm_codes,boolean debug) throws Exception{
-        printBeginPhase("VM CODE COMPILATION",printLong);
-        final List<String> assembly_codes = AssemblyCodeGenerator.compileVMCode(draco_vm_codes);
-        if(debug){
-            assembly_codes.stream().forEach(System.out::println);
-        }
-        //$ nasm -f elf hello.asm  # this will produce hello.o ELF object file
-        //$ ld -s -o hello hello.o # this will produce hello executable
-
-        if(debug){
-            out.println("call nasm");
-        }
-        printEndPhase(true,printLong);
-        return assembly_codes;
-    }
-
     public List<String> phase_vm_codegeneration(List<AST> asts,String filename_without_extension, boolean print_vm_codes,boolean printsymboltables)throws Exception{
         printBeginPhase("VM CODE GENERATION",printLong);
 

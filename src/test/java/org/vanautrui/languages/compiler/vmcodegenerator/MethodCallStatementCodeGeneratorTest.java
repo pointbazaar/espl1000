@@ -23,7 +23,7 @@ public class MethodCallStatementCodeGeneratorTest {
     @Test
     public void test_can_call_subroutine_argument()throws Exception{
         String method1="public (PInt n)->PInt id{  return n; }";
-        String method2="public ((PInt)~>PInt subr1)->PInt subr{  return subr1(2); }";
+        String method2="public (((PInt)~>PInt) subr1)->PInt subr{  return subr1(2); }";
         String source="public namespace MainTest23138 { public ()~>PInt main{ putdigit(subr(id)); return 0;} "+method1+method2+" }";
         Process pr = compile_and_run_program_for_testing(source,"MainTest23138");
 

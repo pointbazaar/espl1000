@@ -221,7 +221,7 @@ public class dragonc {
             List<String> vm_codes = phases.phase_vm_codegeneration(asts,"main",cmd.hasOption(FLAG_PRINT_VM_CODES),cmd.hasOption(FLAG_PRINT_SYMBOLTABLES));
 
             //PHASE VM CODE COMPILATION
-            List<String> asm_codes = phases.phase_vm_code_compilation(vm_codes,cmd.hasOption(FLAG_DEBUG));
+            List<String> asm_codes = (new VMCompilerPhases().phase_vm_code_compilation(vm_codes,cmd.hasOption(FLAG_DEBUG)));
 
             //PHASE GENERATE EXECUTABLE
             (new VMCompilerPhases()).phase_generate_executable(asm_codes,"main");
