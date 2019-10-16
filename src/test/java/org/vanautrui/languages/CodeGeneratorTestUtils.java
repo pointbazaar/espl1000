@@ -5,6 +5,7 @@ import org.vanautrui.languages.compiler.lexing.Lexer;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.Parser;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.vmcompiler.VMCompilerPhases;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,7 +35,7 @@ public class CodeGeneratorTestUtils {
     public static Path generateFromVMCodeAndWriteExecutable(List<String> vmcodes,String filename)throws Exception{
         CompilerPhases phases = new CompilerPhases();
         List<String> asm_codes = phases.phase_vm_code_compilation(vmcodes,false);
-        Path path = phases.phase_generate_executable(asm_codes,filename);
+        Path path = (new VMCompilerPhases()).phase_generate_executable(asm_codes,filename);
 
         return path;
     }

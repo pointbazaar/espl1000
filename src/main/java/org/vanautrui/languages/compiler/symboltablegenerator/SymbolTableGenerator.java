@@ -10,6 +10,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTableRow;
@@ -64,11 +65,13 @@ public class SymbolTableGenerator {
 		//first, make the local variables for the arguments
 		for(DeclaredArgumentNode arg: methodNode.arguments){
 
-				if(!(arg.type.type instanceof IBasicAndWrappedTypeNode) || !arg.name.isPresent()){
+
+
+				if(!(arg.type.type instanceof BasicTypeWrappedNode) || !arg.name.isPresent()){
 					throw new Exception("not supported yet");
 				}
 
-				methodScopeSymbolTable.add_idempotent(new LocalVarSymbolTableRow(arg.name.get(), (IBasicAndWrappedTypeNode) arg.type.type, LocalVarSymbolTableRow.KIND_ARGUMENT));
+				methodScopeSymbolTable.add_idempotent(new LocalVarSymbolTableRow(arg.name.get(), (BasicTypeWrappedNode) arg.type.type, LocalVarSymbolTableRow.KIND_ARGUMENT));
 		}
 
 		for(StatementNode stmt : methodNode.statements) {

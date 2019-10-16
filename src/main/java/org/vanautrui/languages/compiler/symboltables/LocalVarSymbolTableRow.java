@@ -1,5 +1,6 @@
 package org.vanautrui.languages.compiler.symboltables;
 
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
 
@@ -15,9 +16,13 @@ public class LocalVarSymbolTableRow  {
 
     public final static String KIND_LOCALVAR="LOCAL";
     public final static String KIND_ARGUMENT="ARG";
-
     public LocalVarSymbolTableRow(String varName, IBasicAndWrappedTypeNode typeName, String kind) {
         this.typeName=typeName;
+        this.varName=varName;
+        this.kind=kind;
+    }
+    public LocalVarSymbolTableRow(String varName, BasicTypeWrappedNode typeName, String kind) {
+        this.typeName=typeName.typenode;
         this.varName=varName;
         this.kind=kind;
     }
