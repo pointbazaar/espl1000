@@ -9,15 +9,13 @@ Its main debugger is [noBG](https://github.com/Milo-D/noBG-Assembly-Debugger)
 
 - [x] simple local variable type inference 
 - [x] compiles to intel x86 assembly
-- [ ] functional programming
+- [ ] functional programming (currently without closures and without some other stuff)
   - [x] functions are first-class citizens and can be passed as parameters to subroutines
   - [ ] lambda expressions
   - [ ] common functions (haskell inspired) map,reduce,filter,sum,zip,unzip,head,tail,init
-- [ ] structs
-- [ ] objects
-  - [ ] support for creating objects
-  - [ ] generics (Type parameters)
-  - [ ] type aliases 
+- [ ] structs (user-defined composite data types)
+- [ ] generics (Type parameters)
+- [ ] type aliases (using a different, user-defined name for a type)
 - [ ] optional laziness, declare a method or function or block of statements to be lazy...
 - [ ] multithreading
 - [ ] standard library 
@@ -29,9 +27,8 @@ Its main debugger is [noBG](https://github.com/Milo-D/noBG-Assembly-Debugger)
 - [ ] pattern matching 
 - [ ] program verification (invariants)
 - [ ] strong type system
-- [ ] be able to call java code and be called from java code.
 
-object oriented programming, functional programming, imperative programming,
+functional programming, imperative programming,
 concurrency, laziness, declarative programming, constraint based programming,
 logic programming.
 
