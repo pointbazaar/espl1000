@@ -2,7 +2,8 @@
 
 [![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/dragon/badge)](https://www.codefactor.io/repository/github/pointbazaar/dragon)
 [![](https://jitpack.io/v/pointbazaar/dragon.svg)](https://jitpack.io/#pointbazaar/dragon)
-
+ [![Known Vulnerabilities](https://snyk.io/test/github/pointbazaar/dragon/badge.svg)](https://snyk.io/test/github/pointbazaar/dragon) 
+ 
 !!Work in Progress!!
 
 This repo contains a simple, work-in-progress statically typed programming language.
