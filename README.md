@@ -8,6 +8,7 @@ Its main debugger is [noBG](https://github.com/Milo-D/noBG-Assembly-Debugger)
 ## Basic Dependency Graph between these related repositories
 
 - dragon depends on dragon-parser, dracovm-compiler
+- dragon-parser depends on dragon-lexer
 
 the other dependencies are just your standard maven dependencies
 
