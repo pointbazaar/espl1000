@@ -2,6 +2,9 @@ package org.vanautrui.languages.compiler.vmcodegenerator.specialized;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
@@ -34,7 +37,12 @@ public class MethodCallDracoVMCodeGenerator {
 
       //TODO: very hacky. very dirty. should be cleaner. like with polymorphy.
       //TODO: different types implementing an interface which is then in a collection in the local var symbol table
-      nArgs = ((SubroutineTypeNode)varTable.get(methodCallNode.methodName).getType().type).argumentTypes.size();
+      ITypeNode type = varTable.get(methodCallNode.methodName).getType().type;
+      IBasicAndWrappedTypeNode type1 = ((BasicTypeWrappedNode)type).typenode;
+      SubroutineTypeNode type2 = (SubroutineTypeNode)type1;
+      final int mynargs = type2.argumentTypes.size();
+      nArgs=mynargs;
+      //nArgs = ((SubroutineTypeNode)varTable.get(methodCallNode.methodName).getType().type).argumentTypes.size();
     }else if(subTable.containsSubroutine(methodCallNode.methodName)) {
       sb.call(subTable.getContainingClassName(methodCallNode.methodName), methodCallNode.methodName);
       nArgs = subTable.getNumberOfArgumentsOfSubroutine(methodCallNode.methodName);

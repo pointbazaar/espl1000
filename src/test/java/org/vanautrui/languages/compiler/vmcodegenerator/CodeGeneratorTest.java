@@ -74,7 +74,7 @@ public class CodeGeneratorTest {
         Assert.assertEquals("3",IOUtils.toString(pr.getInputStream()));
     }
 
-    @Test
+    //@Test
     public void test_can_compile_input_and_output_very_basic()throws Exception{
 
         String source="public namespace MainTest7 { public ()~>PInt main{ x=readint();  putdigit(x); return 0;} }";
