@@ -1,5 +1,7 @@
 # Dragon
 
+[![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/dragon/badge)](https://www.codefactor.io/repository/github/pointbazaar/dragon)
+
 !!Work in Progress!!
 
 This repo contains a simple, work-in-progress statically typed programming language.
