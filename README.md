@@ -5,6 +5,12 @@
 This repo contains a simple, work-in-progress statically typed programming language.
 Its main debugger is [noBG](https://github.com/Milo-D/noBG-Assembly-Debugger)
 
+## Basic Dependency Graph between these related repositories
+
+- dragon depends on dragon-parser, dracovm-compiler
+
+the other dependencies are just your standard maven dependencies
+
 ## Goals
 
 - [x] simple local variable type inference 
