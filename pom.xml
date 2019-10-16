@@ -16,7 +16,11 @@
     </repositories>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.github.pointbazaar</groupId>
+            <artifactId>dragon-parser</artifactId>
+            <version>1df80daac4</version>
+        </dependency>
         <dependency>
             <groupId>com.github.pointbazaar</groupId>
             <artifactId>dracovm-compiler</artifactId>

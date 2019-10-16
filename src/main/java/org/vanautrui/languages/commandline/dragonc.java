@@ -19,7 +19,8 @@ import java.util.stream.Collectors;
 
 import static java.lang.System.currentTimeMillis;
 import static org.fusesource.jansi.Ansi.ansi;
-import static org.vanautrui.languages.commandline.CompilerPhaseUtils.*;
+import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBuildConclusion;
+import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printDurationFeedback;
 
 public class dragonc {
     //this should be the compiler
