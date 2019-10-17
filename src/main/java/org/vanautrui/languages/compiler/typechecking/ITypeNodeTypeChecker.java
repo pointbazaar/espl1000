@@ -30,7 +30,7 @@ public final class ITypeNodeTypeChecker {
       //TODO
       throw new Exception("TODO");
     } else if(typename instanceof BasicTypeWrappedNode){
-      IBasicAndWrappedTypeNodeTypeChecker.typeCheckIBasicAndWrappedTypeNode(asts,namespaceNode, (IBasicAndWrappedTypeNode) typename);
+      IBasicAndWrappedTypeNodeTypeChecker.typeCheckIBasicAndWrappedTypeNode(asts,namespaceNode, ((BasicTypeWrappedNode) typename).typenode);
       return;
     }
 
