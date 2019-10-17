@@ -1,5 +1,6 @@
 package org.vanautrui.languages.compiler.symboltablegenerator;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.vanautrui.languages.compiler.lexing.Lexer;
 import org.vanautrui.languages.compiler.lexing.utils.CharacterList;
@@ -9,7 +10,10 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.vmcodegenerator.specialized.SubroutineDracoVMCodeGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -116,5 +120,15 @@ public class SymbolTableGeneratorTest {
         assertEquals(1,localVarTable.size());
     }
 
-    //TODO: test the subroutine symbol table generation
+    @Test
+    public void test_subroutine_symbol_table_generation()throws Exception{
+
+        AST ast = parse_for_test("namespace Main{ ()~>PInt main{ x=3; x=[1,2]; return 0;} }");
+        final List<AST> asts=new ArrayList<>();
+        asts.add(ast);
+        SubroutineSymbolTable subTable = SymbolTableGenerator.createSubroutineSymbolTable(asts, false);
+
+        assertEquals(1,subTable.getNumberOfLocalVariablesOfSubroutine("main"));
+        assertEquals(0,subTable.getNumberOfArgumentsOfSubroutine("main"));
+    }
 }

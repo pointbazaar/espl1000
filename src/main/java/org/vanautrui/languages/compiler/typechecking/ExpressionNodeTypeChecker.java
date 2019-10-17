@@ -75,7 +75,6 @@ public class ExpressionNodeTypeChecker {
         throw new Exception("currently not supported operator: "+op.operator);
       }
     }
-    //TODO: look for the other cases
   }
 
   private static void typeCheckExpressionNodeWith2Operands(List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode, TermNode term1, OperatorNode opNode, TermNode term2, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {

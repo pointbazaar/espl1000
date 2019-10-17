@@ -35,8 +35,8 @@ public class MethodCallDracoVMCodeGenerator {
       //perform a call to the label on stack
       sb.callfromstack();
 
-      //TODO: very hacky. very dirty. should be cleaner. like with polymorphy.
-      //TODO: different types implementing an interface which is then in a collection in the local var symbol table
+      //very hacky. very dirty. should be cleaner. like with polymorphy.
+      //different types implementing an interface which is then in a collection in the local var symbol table
       ITypeNode type = varTable.get(methodCallNode.methodName).getType().type;
       IBasicAndWrappedTypeNode type1 = ((BasicTypeWrappedNode)type).typenode;
       SubroutineTypeNode type2 = (SubroutineTypeNode)type1;

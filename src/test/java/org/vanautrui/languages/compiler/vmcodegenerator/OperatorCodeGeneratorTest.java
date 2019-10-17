@@ -12,7 +12,7 @@ public class OperatorCodeGeneratorTest {
 	//this class tests that the 
 	//Dragon Operator Code Generator generates correct operator byte codes
 
-    //TODO: re-enable the Float specific tests later on when the compiler is able to pass them
+    //re-enable the Float specific tests later on when the compiler is able to pass them
 
     public void test_can_add_Float()throws Exception{
         String source="public namespace MainTest2777 { public ()~>PInt main{ print(1.0+2.0); return 0;} }";

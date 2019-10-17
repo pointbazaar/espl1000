@@ -7,8 +7,8 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 
 public class LocalVarSymbolTableRow  {
 
-    //TODO: in the future there should be 2 classes for a row, and they should both implement an interface.
-    //TODO: so that we can easily distingush between subroutine variables and normal variables and dont have so many optionals
+    //in the future there should be 2 classes for a row, and they should both implement an interface.
+    //so that we can easily distingush between subroutine variables and normal variables and dont have so many optionals
 
     private final String varName;
     private final TypeNode typeName; //this always contains the full type name

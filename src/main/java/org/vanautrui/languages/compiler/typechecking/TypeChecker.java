@@ -83,10 +83,10 @@ public class TypeChecker {
                                        IdentifierNode identifierNode)
   throws Exception
   {
-    //TODO: it should check that the identifier is
+    //it should check that the identifier is
     //declared in method scope or class scope.
     //so there should be some declaration of it
-    //TODO: also check that the identifier is not duplicate declaration
+    //also check that the identifier is not duplicate declaration
 
     //identifiers can only be used within a class or method so
     //there should be a context
@@ -100,7 +100,7 @@ public class TypeChecker {
       }
     }
 
-    //TODO: search if identifier is declared as a variable
+    //search if identifier is declared as a variable
     //by a statement above its usage in the method
     //this should maybe be done in another implementation
     //of this method in another node class,
