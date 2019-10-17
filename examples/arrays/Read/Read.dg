@@ -1,0 +1,12 @@
+public namespace Read{
+	public PInt main(){
+
+		arr=[1,2,3,4];
+
+		x=arr[0];
+		putdigit(x); //read
+		//1
+
+		return 0;
+	}
+}

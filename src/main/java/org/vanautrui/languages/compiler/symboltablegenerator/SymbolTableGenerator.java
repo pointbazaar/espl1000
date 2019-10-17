@@ -8,15 +8,16 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.LoopStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.WhileStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.ClassNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTableRow;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTableRow;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
-import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,19 +32,23 @@ public class SymbolTableGenerator {
 		SubroutineSymbolTable subroutineSymbolTable = new SubroutineSymbolTable();
 
 		for(AST ast : asts) {
-			for(ClassNode classNode : ast.classNodeList) {
+			for(NamespaceNode namespaceNode : ast.namespaceNodeList) {
 				if(debug){
-					System.out.println(classNode.methodNodeList);
+					System.out.println(namespaceNode.methodNodeList);
 				}
-				for (MethodNode methodNode : classNode.methodNodeList) {
+				for (MethodNode methodNode : namespaceNode.methodNodeList) {
 					if(debug){
 						System.out.println("creating subroutine symbol table row for subroutine: "+methodNode.methodName);
+					}
+
+					if(!(methodNode.returnType.type instanceof BasicTypeWrappedNode)){
+						throw new Exception("not supported yet");
 					}
 
 					SubroutineSymbolTableRow subrRow =
 									new SubroutineSymbolTableRow(
 													methodNode.methodName,
-													methodNode.type,classNode.name.typeName,
+													((BasicTypeWrappedNode)methodNode.returnType.type).typenode, namespaceNode.name.getTypeName(),
 													count_local_vars(methodNode,subroutineSymbolTable),
 													methodNode.arguments.size()
 									);
@@ -58,15 +63,19 @@ public class SymbolTableGenerator {
 		LocalVarSymbolTable methodScopeSymbolTable=new LocalVarSymbolTable();
 
 		//first, make the local variables for the arguments
-		int arg_index_counter=0;
 		for(DeclaredArgumentNode arg: methodNode.arguments){
-		    methodScopeSymbolTable.add(new LocalVarSymbolTableRow(arg.name,arg.type,LocalVarSymbolTableRow.KIND_ARGUMENT,arg_index_counter));
-		    arg_index_counter++;
+
+
+
+				if(!(arg.type.type instanceof BasicTypeWrappedNode) || !arg.name.isPresent()){
+					throw new Exception("not supported yet");
+				}
+
+				methodScopeSymbolTable.add_idempotent(new LocalVarSymbolTableRow(arg.name.get(), (BasicTypeWrappedNode) arg.type.type, LocalVarSymbolTableRow.KIND_ARGUMENT));
 		}
 
-		BigInteger local_var_next_index_counter=new BigInteger("0");
 		for(StatementNode stmt : methodNode.statements) {
-			find_local_vars_recursively(stmt.statementNode,methodNode, methodScopeSymbolTable, subTable,local_var_next_index_counter);
+			find_local_vars_recursively(stmt.statementNode,methodNode, methodScopeSymbolTable, subTable);
 		}
 
 		return methodScopeSymbolTable;
@@ -115,39 +124,37 @@ public class SymbolTableGenerator {
 
 
 
-	private static void find_local_vars_recursively_list(List<IStatementNode> stmts,MethodNode methodNode,LocalVarSymbolTable methodScopeSymbolTable,SubroutineSymbolTable subTable,BigInteger local_var_next_index_counter)throws Exception{
+	private static void find_local_vars_recursively_list(List<IStatementNode> stmts, MethodNode methodNode, LocalVarSymbolTable methodScopeSymbolTable, SubroutineSymbolTable subTable)throws Exception{
 		for(IStatementNode stmt : stmts) {
-			find_local_vars_recursively(stmt, methodNode,methodScopeSymbolTable, subTable, local_var_next_index_counter);
+			find_local_vars_recursively(stmt, methodNode,methodScopeSymbolTable, subTable);
 		}
 	}
 
-	private static void find_local_vars_recursively(IStatementNode st, MethodNode methodNode, LocalVarSymbolTable methodScopeSymbolTable, SubroutineSymbolTable subTable, BigInteger local_var_next_index_counter)throws Exception{
+	private static void find_local_vars_recursively(IStatementNode st, MethodNode methodNode, LocalVarSymbolTable methodScopeSymbolTable, SubroutineSymbolTable subTable)throws Exception{
 
 		if(st instanceof AssignmentStatementNode) {
 			AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode)st;
 
-			String expressionType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,methodScopeSymbolTable);
+			var expressionType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,methodScopeSymbolTable);
 
-			methodScopeSymbolTable.add(
+			methodScopeSymbolTable.add_idempotent(
 					new LocalVarSymbolTableRow(
 							assignmentStatementNode.variableNode.name,
 							expressionType,
-							LocalVarSymbolTableRow.KIND_LOCALVAR,
-							local_var_next_index_counter.intValue()
+							LocalVarSymbolTableRow.KIND_LOCALVAR
 					)
 			);
-			local_var_next_index_counter.add(new BigInteger("1"));
 		}else{
 			//also get the assignment statements recursively
 			//that are inside the control flow statements.
 
 			if(st instanceof IfStatementNode) {
-				find_local_vars_recursively_list( ((IfStatementNode) st).statements.stream().map(s->s.statementNode).collect(Collectors.toList()), methodNode,methodScopeSymbolTable,subTable,local_var_next_index_counter);
-				find_local_vars_recursively_list( ((IfStatementNode) st).elseStatements.stream().map(s->s.statementNode).collect(Collectors.toList()), methodNode,methodScopeSymbolTable,subTable,local_var_next_index_counter);
+				find_local_vars_recursively_list( ((IfStatementNode) st).statements.stream().map(s->s.statementNode).collect(Collectors.toList()), methodNode,methodScopeSymbolTable,subTable);
+				find_local_vars_recursively_list( ((IfStatementNode) st).elseStatements.stream().map(s->s.statementNode).collect(Collectors.toList()), methodNode,methodScopeSymbolTable,subTable);
 			}else if(st instanceof LoopStatementNode) {
-				find_local_vars_recursively_list(((LoopStatementNode) st).statements.stream().map(s -> s.statementNode).collect(Collectors.toList()), methodNode, methodScopeSymbolTable, subTable,local_var_next_index_counter);
+				find_local_vars_recursively_list(((LoopStatementNode) st).statements.stream().map(s -> s.statementNode).collect(Collectors.toList()), methodNode, methodScopeSymbolTable, subTable);
 			}else if(st instanceof WhileStatementNode) {
-				find_local_vars_recursively_list(((WhileStatementNode) st).statements.stream().map(s -> s.statementNode).collect(Collectors.toList()), methodNode, methodScopeSymbolTable, subTable,local_var_next_index_counter);
+				find_local_vars_recursively_list(((WhileStatementNode) st).statements.stream().map(s -> s.statementNode).collect(Collectors.toList()), methodNode, methodScopeSymbolTable, subTable);
 			}
 		}
 	}

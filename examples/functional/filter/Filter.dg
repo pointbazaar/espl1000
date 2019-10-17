@@ -1,0 +1,34 @@
+public namespace Filter{
+	()~>PInt main{
+		arr=[1,2];
+
+		arr2 = filter(arr,myfilter);
+		
+
+		putdigit(arr2[0]);
+
+		putdigit(arr2[1]);
+
+		return 0;
+	}
+
+	(PInt item)->Bool myfilter{
+		return (item==2);	
+	}
+
+	([PInt] arr,((PInt)->Bool) myfilterr)->[PInt] filter{
+		arr2 = [0,0];
+
+		i=0;
+
+		while(i<2){
+
+			if(myfilterr(arr[i])){
+				arr2[i]=arr[i];
+			}
+			i=i+1;
+		}
+
+		return arr2;
+	}
+}

@@ -1,0 +1,44 @@
+public namespace Array1{
+	public ()~>PInt main{
+
+		arr=[1,2,3,4];
+		
+		printarr(arr);
+		//printarr2(arr); //works
+
+		//putchar('+');
+		//i=0;
+		//while(i<2){
+		//	putdigit(arr[i]);
+		//	putchar(',');
+		//	i=i+1;
+		//}
+		//putchar('-');
+		return 0;	
+
+	}
+	public ([PInt] arr)~>PInt printarr2{
+
+		putdigit(arr[0]);
+		putchar(',');
+		putdigit(arr[1]);
+		putchar(',');
+		putdigit(arr[2]);
+		putchar(',');
+		putdigit(arr[3]);
+
+		return 0;
+	}
+	public ([PInt] arr)~>PInt printarr{
+		i=0;
+		while(i<4){
+
+			putdigit(arr[i]);
+
+			//putdigit(8);
+			i=i+1;
+		}
+		putchar('.');
+		return 0;
+	}
+}

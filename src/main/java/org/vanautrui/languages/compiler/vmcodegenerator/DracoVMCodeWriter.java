@@ -1,6 +1,7 @@
 package org.vanautrui.languages.compiler.vmcodegenerator;
 
 import org.apache.commons.lang3.StringUtils;
+import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTableRow;
 import org.vanautrui.languages.vmcompiler.codegenerator.SubroutineFocusedAssemblyCodeGenerator;
 
 import java.util.ArrayList;
@@ -50,13 +51,13 @@ public class DracoVMCodeWriter {
     any(command,"");
   }
 
-  public void subroutine(String name,int nArgs,int nLocals){
-   subroutine(name,nArgs,nLocals,"");
+  public void subroutine(String containing_class_name,String name,int nArgs,int nLocals){
+   subroutine(containing_class_name,name,nArgs,nLocals,"");
   }
 
-  public void subroutine(String name,int nArgs,int nLocals,String comment){
+  public void subroutine(String containing_class_name,String name,int nArgs,int nLocals,String comment){
     indent=subroutine_indent;
-    any("subroutine "+name+" "+nArgs+" args "+nLocals+" locals",SubroutineFocusedAssemblyCodeGenerator.compile_subroutine_description()+"//"+comment);
+    any("subroutine "+ SubroutineSymbolTableRow.generateVMCodeSubroutineName(containing_class_name,name) +" "+nArgs+" args "+nLocals+" locals",SubroutineFocusedAssemblyCodeGenerator.compile_subroutine_description()+"//"+comment);
     indent=default_indent;
   }
 
@@ -121,8 +122,8 @@ public class DracoVMCodeWriter {
     any("fconstn "+value);
   }
 
-  public void call(String methodName) {
-    any("call "+methodName, SubroutineFocusedAssemblyCodeGenerator.compile_call_description());
+  public void call(String containing_class_name,String methodName) {
+    any("call "+SubroutineSymbolTableRow.generateVMCodeSubroutineName(containing_class_name,methodName), SubroutineFocusedAssemblyCodeGenerator.compile_call_description());
   }
 
   public void add() {
@@ -213,5 +214,21 @@ public class DracoVMCodeWriter {
    */
   public void mod() {
     any("mod");
+  }
+
+  public void pushsubroutine(String subroutine_name) {
+    any("pushsubroutine "+subroutine_name);
+  }
+
+  public void callfromstack() {
+    any("callfromstack");
+  }
+
+  public void lshiftl() {
+    any("lshiftl");
+  }
+
+  public void lshiftr() {
+    any("lshiftr");
   }
 }

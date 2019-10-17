@@ -1,4 +1,4 @@
-public class Other2{
+public namespace Other2{
 
 	public Int main(){
 		

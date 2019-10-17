@@ -1,4 +1,4 @@
-public class Imports{
+public namespace Imports{
 
 	public Int main(){
 		//tests that we can use the standard library

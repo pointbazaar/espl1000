@@ -13,5 +13,13 @@
 //the goal is for both to be consistent with each other
 
 
-//dragon_grammar.txt defines the grammar for the dragon language.
-//in that file i am using regex notation , so '?' at the end means optional, and '+' means once or more
+//in the grammar files i am using regex notation , so '?' at the end means optional, and '+' means once or more, and so on
+
+
+
+//           dragon_grammar_nodes.txt
+// defines the grammar for the dragon language.
+// Tt defines the nodes recognized by the parser.
+
+//           dragon_grammar_tokens.txt
+// defines the tokens recognized by the lexer.

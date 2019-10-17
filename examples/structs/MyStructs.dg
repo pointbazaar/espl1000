@@ -1,0 +1,18 @@
+namespace MyStructs{
+	
+	struct MyStruct{
+		PInt a,
+		PInt b
+	}
+
+
+	()~>PInt main{
+		MyStruct s = new MyStruct;
+
+		s.a=1; //struct member store
+
+		putdigit(s.a); //struct member load
+
+		return 0;
+	}
+}

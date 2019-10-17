@@ -1,6 +1,7 @@
 package org.vanautrui.languages.commandline;
 
 import org.fusesource.jansi.Ansi;
+import org.vanautrui.languages.CompilerApp;
 import org.vanautrui.languages.TerminalUtil;
 
 import static org.fusesource.jansi.Ansi.Color.GREEN;
@@ -70,13 +71,13 @@ public class CompilerPhaseUtils {
     public static void printDurationFeedback(long duration /*milliseconds*/){
         String str = duration + " ms";
         if(duration>500) {
-            TerminalUtil.println("☠ "+str+" Compilation took too long. This needs to be fixed. Please file an Issue on GitHub.", Ansi.Color.RED);
+            CompilerApp.println("☠ "+str+" Compilation took too long. This needs to be fixed. Please file an Issue on GitHub.", Ansi.Color.RED);
         }else if(duration>200) {
-            TerminalUtil.println("☠ "+str+" we are truly sorry for the delay :(", Ansi.Color.YELLOW);
+            CompilerApp.println("☠ "+str+" we are truly sorry for the delay :(", Ansi.Color.YELLOW);
         }else if(duration>100){
-            TerminalUtil.println("✝ "+str+" sorry it took so long!", Ansi.Color.YELLOW);
+            CompilerApp.println("✝ "+str+" sorry it took so long!", Ansi.Color.YELLOW);
         }else {
-            TerminalUtil.println("☕ " + str, Ansi.Color.GREEN);
+            CompilerApp.println("☕ " + str, Ansi.Color.GREEN);
         }
     }
 }

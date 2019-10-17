@@ -30,7 +30,7 @@ public class TermDracoVMCodeGenerator {
       //find the local variable index
       // and push the variable onto the stack
       VariableNode variableNode = (VariableNode) t;
-      genDracoVMCodeForVariable(variableNode,sb,subTable,varTable);
+      genDracoVMCodeForVariable(variableNode.name,variableNode.indexOptional,sb,subTable,varTable);
     }else if(t instanceof MethodCallNode){
       MethodCallNode methodCallNode = (MethodCallNode)t;
       genVMCodeForMethodCall(methodCallNode,sb,subTable,varTable);

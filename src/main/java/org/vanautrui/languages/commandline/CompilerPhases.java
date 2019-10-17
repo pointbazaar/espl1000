@@ -62,62 +62,13 @@ public class CompilerPhases {
         }
     }
 
-
-    /**
-     * @param asm_codes the assembly codes to be assembled and linked
-     *
-     * @throws Exception an exception is thrown if nasm or ld exit nonzero
-     */
-    public Path phase_generate_executable(List<String> asm_codes,String filename_without_extension) throws Exception{
-
-        String asm_file_name = filename_without_extension+".asm";
-        Path asm_path = Paths.get(asm_file_name);
-        final String asm_codes_string = asm_codes.stream().collect(Collectors.joining("\n"))+"\n";
-        Files.write(
-                asm_path,asm_codes_string.getBytes()
-        );
-
-        Process p = Runtime.getRuntime().exec("nasm -f elf -g -F stabs " + asm_file_name);
-        p.waitFor();
-
-        if(p.exitValue()!=0){
-            throw new Exception("nasm exit with nonzero exit code");
-        }
-
-        Process p2 = Runtime.getRuntime().exec("ld -melf_i386 -s -o "+filename_without_extension+" "+filename_without_extension+".o");
-        p2.waitFor();
-        if(p2.exitValue() != 0){
-            throw new Exception("ld exit with nonzero exit code");
-        }
-
-        Files.delete(Paths.get(filename_without_extension+".o"));
-
-        return Paths.get(filename_without_extension);
-    }
-
-    public List<String> phase_vm_code_compilation(List<String> draco_vm_codes,boolean debug) throws Exception{
-        printBeginPhase("VM CODE COMPILATION",printLong);
-        final List<String> assembly_codes = AssemblyCodeGenerator.compileVMCode(draco_vm_codes);
-        if(debug){
-            assembly_codes.stream().forEach(System.out::println);
-        }
-        //$ nasm -f elf hello.asm  # this will produce hello.o ELF object file
-        //$ ld -s -o hello hello.o # this will produce hello executable
-
-        if(debug){
-            out.println("call nasm");
-        }
-        printEndPhase(true,printLong);
-        return assembly_codes;
-    }
-
-    public List<String> phase_vm_codegeneration(List<AST> asts,String filename_without_extension, boolean print_vm_codes)throws Exception{
+    public List<String> phase_vm_codegeneration(List<AST> asts,String filename_without_extension, boolean print_vm_codes,boolean printsymboltables)throws Exception{
         printBeginPhase("VM CODE GENERATION",printLong);
 
         try {
 
             SubroutineSymbolTable subTable = createSubroutineSymbolTable(asts,debug);
-            List<String> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable);
+            List<String> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable,debug,printsymboltables);
 
             final String vm_codes_string = dracoVMCodes.stream().collect(Collectors.joining("\n"))+"\n";
 
@@ -138,134 +89,6 @@ public class CompilerPhases {
         }catch (Exception e){
             printEndPhase(false,printLong);
             throw e;
-        }
-    }
-
-    private Path makeCleanPhaseCacheFilePathFromHash(int hash){
-        final String extension = ".dragon.cleaned";
-        //hidden file. important, so that it does not be visible and bother people
-        return Paths.get(phase_clean_cache_dir+"."+hash+extension);
-    }
-
-    private static final String phase_clean_cache_dir=System.getProperty("user.home")+"/.dragoncache/clean/";
-
-    public List<CharacterList> phase_clean(List<String> sources, List<File> sourceFiles)throws Exception{
-
-        printBeginPhase("CLEAN",printLong);
-        //(remove comments, empty lines, excess whitespace)
-        List<CharacterList> results=new ArrayList();
-
-        for(int i=0;i<sources.size();i++){
-            String source=sources.get(i);
-            if(!Files.exists(Paths.get(phase_clean_cache_dir))){
-                Files.createDirectories(Paths.get(phase_clean_cache_dir));
-            }
-
-            int hash = source.hashCode();
-            if(debug) {
-                out.println("phase clean: Hashcode of source string: " + hash);
-            }
-            boolean foundCachedCleanedFile = false;
-
-            if(Files.exists(makeCleanPhaseCacheFilePathFromHash(hash))){
-                foundCachedCleanedFile=true;
-            }
-
-            String codeWithoutCommentsWithoutUnneccesaryWhitespace;
-
-            if(foundCachedCleanedFile){
-                if(debug) {
-                    out.println("found a cached version that is already cleaned");
-                }
-                codeWithoutCommentsWithoutUnneccesaryWhitespace = new String(Files.readAllBytes(makeCleanPhaseCacheFilePathFromHash(hash)));
-            }else {
-                String[] parts = source.split("\n");
-                String source_without_use_directive = Arrays.stream(parts).filter(str->!str.startsWith("use")).collect(Collectors.joining("\n"));
-
-                String codeWithoutCommentsAndWithoutEmptyLines = (new CommentRemoverAndWhitespaceRemover()).strip_all_comments_and_empty_lines(source_without_use_directive);
-
-                codeWithoutCommentsWithoutUnneccesaryWhitespace =
-                        remove_unneccessary_whitespace(codeWithoutCommentsAndWithoutEmptyLines);
-
-                //write file for caching
-                Files.write(makeCleanPhaseCacheFilePathFromHash(hash),codeWithoutCommentsWithoutUnneccesaryWhitespace.getBytes());
-            }
-            if(debug) {
-                out.println(codeWithoutCommentsWithoutUnneccesaryWhitespace);
-            }
-            results.add(new CharacterList(codeWithoutCommentsWithoutUnneccesaryWhitespace,sourceFiles.get(i).toPath()));
-        }
-        printEndPhase(true,printLong);
-        return results;
-    }
-
-    public List<AST> phase_parsing(List<TokenList> list,boolean print_ast)throws Exception{
-        printBeginPhase("PARSING",printLong);
-        List<AST> asts=new ArrayList<>();
-        boolean didThrow=false;
-        List<Exception> exceptions=new ArrayList<>();
-
-        for(TokenList tokens : list){
-            try {
-                AST ast = (new Parser()).parse(tokens,tokens.relPath,debug);
-
-                if (print_ast) {
-
-                    TerminalUtil.println("\nDEBUG: PRINT AST JSON ", RED);
-
-                    ObjectMapper mapper = new ObjectMapper();
-                    mapper.enable(SerializationFeature.INDENT_OUTPUT);
-                    out.println(mapper.writeValueAsString(ast));
-                    out.println();
-                }
-
-                asts.add(ast);
-            }catch (Exception e) {
-                didThrow=true;
-                exceptions.add(e);
-            }
-        }
-
-        if(didThrow){
-            printEndPhase(false,printLong);
-            if(debug){
-                throw new Exception(exceptions.stream().map(Exception::toString).collect(Collectors.joining("\n")));
-            }else {
-                throw new Exception(exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining("\n")));
-            }
-        }else{
-            printEndPhase(true,printLong);
-            return asts;
-        }
-
-    }
-
-    public List<TokenList> phase_lexing(List<CharacterList> just_codes_with_braces_without_comments,boolean print_tokens)throws Exception{
-        printBeginPhase("LEXING",printLong);
-        List<TokenList> list= new ArrayList<>();
-        List<Exception> exceptions=new ArrayList<>();
-
-        for(CharacterList just_code_with_braces_without_comments: just_codes_with_braces_without_comments){
-            try {
-                TokenList tokens = (new Lexer()).lexCodeWithoutComments(just_code_with_braces_without_comments);
-
-                if (print_tokens) {
-                    out.println(tokens.toString());
-                }
-                list.add(tokens);
-            }catch (Exception e){
-                exceptions.add(e);
-            }
-        }
-
-        if(exceptions.size()>0){
-            printEndPhase(false,printLong);
-            //collect all the exceptions throw during lexing,
-            //and combine their messages to throw a bigger exception
-            throw new Exception(exceptions.stream().map(Throwable::getMessage).collect(Collectors.joining("\n")));
-        }else {
-            printEndPhase(true,printLong);
-            return list;
         }
     }
 

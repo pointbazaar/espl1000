@@ -1,20 +1,61 @@
 //PLANNED FOR NEXT GRAMMAR CHANGE
 
-simplevariable ::= identifier ('[' expression ']')?
 
-variable ::= simplevariable | variable '.' variable | methodCall '.' variable
+/*
 
-methodCall ::= variable? . methodName '(' (expression (, expression)*)?  ')'
+    ArrayConstant is complicating stuff. maybe i should convert it to syntactic sugar?
+    I converted StringConstant to syntactic sugar and that worked great.
+    What would be needed to convert arrayconstantnode to syntactic sugar?
+
+    Maybe convert the array constant to a subroutine call (the subroutine in question accepts variadic number of arguments),
+    this kind of breaks the type system but it stays within the compiler so no problem.
+
+    this subroutine call would create the array in question and return a reference to it.
+    so it can be used in expressions.
+
+maybe i should remove the array constant entirely from the language.
+it is not that essential. and it would simplify the grammar.
+
+but i should create a subroutine with type parameter then in order to create an array of a desired type.
+but i can just create a '*' type which tells the compiler 'Do not typecheck this, it is ok' , but that would be on the same
+level of savagery as 'type casting' and we do not want to get dirty with savage non-typechecked stuff.
+so type parameters are the way to go brothers. just need to find a way to implement them.
+*/
+
+//PLANNED FOR LATER
+
+simplevariable ::= identifier
+
+variable ::= simplevariable (indexAccess | memberAccess)*
+
+indexAccess :: = '[' expression ']'
+
+memberAccess ::= '.' identifier
+
+assignmentStatement ::= variable '=' expression ';'
+
+ExpressionInParentheses ::= '(' expression ')'
+
+MayHaveMembersOrMayBeIndexedInto_ExcludingVariable ::= ArrayConstant | ExpressionInParentheses | methodCall //excludes variable because variable has indexing and member access already
+
+expressionIndexAcessOrMemberAccess ::= MayHaveMembersOrMayBeIndexedInto_ExcludingVariable (indexAccess | memberAccess)*;
+
+Term ::= ArrayConstant | boolConstant | integerConstant | charConstant | methodCall | ExpressionInParentheses | variable | expressionIndexAcessOrMemberAccess
+
+expression ::= Term (op Term)*
+//('[' expression ']')?
+
+
+//simplevariable ::= identifier ('[' expression ']')?
+
+//variable ::= simplevariable | simplevariable '.' variable | methodCall '.' variable
+
+
 
 //PLANNED FOR LATER
 
 
 //MAYBE
-
-
-object ::= variable
-objectOrVariable ::= variable | fieldAccess | object
-fieldAccess ::= object '.' object | object '.' methodCall | methodCall '.' object
 
 //this is a kind of expression inspired by haskell.
 //it is similar to the ternary operator

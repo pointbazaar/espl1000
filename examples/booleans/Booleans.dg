@@ -1,4 +1,4 @@
-public class Booleans{
+public namespace Booleans{
 	
 	public Int main(){
 		a=true;

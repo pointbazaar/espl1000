@@ -6,6 +6,10 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.*;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SimpleTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 
@@ -20,61 +24,64 @@ public class TypeResolver {
     //that can then convert the type description directly
     //to a jvm internal representation
 
-    public static String getTypeIntegerConstantNode(IntConstNode intConstNode){
+    public static IBasicAndWrappedTypeNode getTypeIntegerConstantNode(IntConstNode intConstNode) throws Exception {
         if(intConstNode.value>=0){
-            return "PInt";
+            return new SimpleTypeNode("PInt");
         }else{
-            return "NInt";
+            return new SimpleTypeNode("NInt");
         }
     }
-    public static String getTypeFloatConstantNode(FloatConstNode node){
-    	return "Float";
+    public static IBasicAndWrappedTypeNode getTypeFloatConstantNode(FloatConstNode node) throws Exception {
+    	return new SimpleTypeNode("Float");
     }
 
-    public static String getTypeVariableNode(VariableNode variableNode, MethodNode methodNode, SubroutineSymbolTable subroutineSymbolTable, LocalVarSymbolTable varTable)throws Exception{
-        //TODO: implement by looking at the definitions in the AST and such
+    public static TypeNode getTypeVariableNode(VariableNode variableNode, MethodNode methodNode, SubroutineSymbolTable subroutineSymbolTable, LocalVarSymbolTable varTable)throws Exception{
+        //a variable can have any type, maybe a subroutine type, a type variable type, or a simple type or maybe even something else
 
-        if( varTable.containsVariable(variableNode.name) ){
+        if( varTable.containsVariable(variableNode.name) ) {
             //the symbol table should contain the array type, if it is an array
             //but this method should return the type also if it has an index
-            if(variableNode.indexOptional.isPresent()){
-                String type = varTable.getTypeOfVariable(variableNode.name);
-                return type.substring(1,type.length()-1);
+            if (variableNode.indexOptional.isPresent()) {
+                var type = varTable.getTypeOfVariable(variableNode.name);
+                return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode(type.getTypeName().substring(1, type.getTypeName().length() - 1))));
             }
 
-			return varTable.getTypeOfVariable(variableNode.name);
+            return varTable.getTypeOfVariable(variableNode.name);
+        }else if(subroutineSymbolTable.containsSubroutine(variableNode.name)){
+            return subroutineSymbolTable.getTypeOfSubroutine(variableNode.name);
         }else{
             throw new Exception("could not determine type of "+variableNode.name);
         }
     }
 
-    public static String getTypeTermNode(TermNode termNode, MethodNode methodNode,
-                                         SubroutineSymbolTable subroutineSymbolTable,
-                                         LocalVarSymbolTable varTable
+    public static TypeNode getTypeTermNode(TermNode termNode, MethodNode methodNode,
+                                                           SubroutineSymbolTable subroutineSymbolTable,
+                                                           LocalVarSymbolTable varTable
     )throws Exception{
+
         if(termNode.termNode instanceof ExpressionNode){
             return getTypeExpressionNode((ExpressionNode)termNode.termNode,methodNode,subroutineSymbolTable,varTable);
         }else if (termNode.termNode instanceof MethodCallNode){
-            return getTypeMethodCallNode((MethodCallNode)termNode.termNode,subroutineSymbolTable);
-	}else if(termNode.termNode instanceof FloatConstNode){
-		return getTypeFloatConstantNode((FloatConstNode)termNode.termNode);
+            return getTypeMethodCallNode((MethodCallNode)termNode.termNode,subroutineSymbolTable,varTable);
+	      }else if(termNode.termNode instanceof FloatConstNode){
+		        return new TypeNode(new BasicTypeWrappedNode(getTypeFloatConstantNode((FloatConstNode)termNode.termNode)));
         }else if(termNode.termNode instanceof IntConstNode){
-            return getTypeIntegerConstantNode((IntConstNode)termNode.termNode);
+            return new TypeNode(new BasicTypeWrappedNode(getTypeIntegerConstantNode((IntConstNode)termNode.termNode)));
         }else if(termNode.termNode instanceof VariableNode){
             return getTypeVariableNode((VariableNode) termNode.termNode,methodNode,subroutineSymbolTable,varTable);
-		}else if(termNode.termNode instanceof BoolConstNode) {
-            return "Bool";
+		    }else if(termNode.termNode instanceof BoolConstNode) {
+            return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Bool")));
         }else if(termNode.termNode instanceof ArrayConstantNode) {
-            return getTypeArrayConstNode((ArrayConstantNode) termNode.termNode, methodNode, subroutineSymbolTable, varTable);
+            return new TypeNode(new BasicTypeWrappedNode(getTypeArrayConstNode((ArrayConstantNode) termNode.termNode, methodNode, subroutineSymbolTable, varTable)));
         }else if(termNode.termNode instanceof CharConstNode){
-            return "Char";
+            return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Char")));
         }else{
             throw new Exception("unforeseen case in getTypeTermNode(...) in DragonTypeResolver");
         }
 
     }
 
-    private static String getTypeArrayConstNode(
+    private static IBasicAndWrappedTypeNode getTypeArrayConstNode(
             ArrayConstantNode arrayConstantNode,
             MethodNode methodNode,
             SubroutineSymbolTable subroutineSymbolTable,
@@ -90,12 +97,12 @@ public class TypeResolver {
 
         //for the array to have a type, it has to either be annotated,
         // or contain atleast 1 element of which the type can be known
-        return "["+getTypeExpressionNode(arrayConstantNode.elements.get(0),methodNode,subroutineSymbolTable,varTable)+"]";
+        return new SimpleTypeNode("["+getTypeExpressionNode(arrayConstantNode.elements.get(0),methodNode,subroutineSymbolTable,varTable).getTypeName()+"]");
     }
 
 
 
-    public static String getTypeExpressionNode(
+    public static TypeNode getTypeExpressionNode(
             ExpressionNode expressionNode,
             MethodNode methodNode,
             SubroutineSymbolTable subTable,
@@ -110,26 +117,26 @@ public class TypeResolver {
                         expressionNode.operatorNodes.size()==1 &&
                         (boolean_operators.contains(expressionNode.operatorNodes.get(0).operator))
         ){
-            return "Bool";
+            return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode( "Bool")));
         }
 
 		    if(
-                getTypeTermNode(expressionNode.term,methodNode,subTable,varTable).equals("Float") &&
+                getTypeTermNode(expressionNode.term,methodNode,subTable,varTable).getTypeName().equals("Float") &&
                         expressionNode.termNodes.size()==1 &&
-                        getTypeTermNode(expressionNode.termNodes.get(0),methodNode,subTable,varTable).equals("Float") &&
+                        getTypeTermNode(expressionNode.termNodes.get(0),methodNode,subTable,varTable).getTypeName().equals("Float") &&
                         expressionNode.operatorNodes.size()==1 &&
                         (boolean_operators.contains(expressionNode.operatorNodes.get(0).operator))
         ){
-            return "Bool";
+            return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Bool")));
         }
 
 
-        String type = getTypeTermNode(expressionNode.term,methodNode,subTable,varTable);
+        TypeNode type = getTypeTermNode(expressionNode.term,methodNode,subTable,varTable);
 
         for (TermNode t : expressionNode.termNodes){
-            String termType = getTypeTermNode(t,methodNode,subTable,varTable);
+            TypeNode termType = getTypeTermNode(t,methodNode,subTable,varTable);
 
-            if(!(termType.equals(type))){
+            if(!(termType.getTypeName().equals(type.getTypeName()))){
                 throw new Exception(
 					"the types are not the same, "+type+" collides with "+termType
 					+" in '"+expressionNode.toSourceCode()+"'"
@@ -140,9 +147,9 @@ public class TypeResolver {
         return getTypeTermNode(expressionNode.term,methodNode,subTable,varTable);
     }
 
-    public static String getTypeMethodCallNode(
+    public static TypeNode getTypeMethodCallNode(
             MethodCallNode methodCallNode,
-            SubroutineSymbolTable subTable) throws Exception
+            SubroutineSymbolTable subTable,LocalVarSymbolTable varTable) throws Exception
     {
 
         String subrName = methodCallNode.methodName;
@@ -151,8 +158,11 @@ public class TypeResolver {
             return subTable.getReturnTypeOfSubroutine(subrName);
         }
 
+        if(varTable.containsVariable(subrName)){
+            return varTable.getReturnTypeOfSubroutineVariable(subrName);
+        }
 
         System.out.println(subTable.toString());
-        throw new Exception("could not get type of "+subrName+" (in TypeResolver.java)");
+        throw new Exception("could not get type of "+subrName+" (in "+ TypeResolver.class.getSimpleName()+")");
     }
 }

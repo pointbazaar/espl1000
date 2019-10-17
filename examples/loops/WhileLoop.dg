@@ -1,4 +1,4 @@
-public class WhileLoop{
+public namespace WhileLoop{
 	public PInt main (){
 
 		i=0;

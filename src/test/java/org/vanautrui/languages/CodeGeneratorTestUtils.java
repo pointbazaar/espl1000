@@ -5,6 +5,7 @@ import org.vanautrui.languages.compiler.lexing.Lexer;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.Parser;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.vmcompiler.VMCompilerPhases;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,13 +18,13 @@ public class CodeGeneratorTestUtils {
     public static List<String> generateVMCodeFromDragonCode(String source,String filename) throws Exception{
         TokenList tokens = (new Lexer()).lexCodeTestMode(source);
         Parser parser = new Parser();
-        AST ast= parser.parseTestMode(tokens,true);
+        AST ast= parser.parseTestMode(tokens,false);
         List<AST> asts = new ArrayList<>();
         asts.add(ast);
         //we are in debug mode since we are running tests
 
         CompilerPhases phases = new CompilerPhases();
-        List<String> vmcodes = phases.phase_vm_codegeneration(asts, filename,true);
+        List<String> vmcodes = phases.phase_vm_codegeneration(asts, filename,false,false);
         return vmcodes;
     }
 
@@ -33,8 +34,8 @@ public class CodeGeneratorTestUtils {
 
     public static Path generateFromVMCodeAndWriteExecutable(List<String> vmcodes,String filename)throws Exception{
         CompilerPhases phases = new CompilerPhases();
-        List<String> asm_codes = phases.phase_vm_code_compilation(vmcodes,true);
-        Path path = phases.phase_generate_executable(asm_codes,filename);
+        List<String> asm_codes = new VMCompilerPhases().phase_vm_code_compilation(vmcodes,false);
+        Path path = (new VMCompilerPhases()).phase_generate_executable(asm_codes,filename);
 
         return path;
     }

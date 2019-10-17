@@ -1,4 +1,4 @@
-public class Locals{
+public namespace Locals{
 
 	public Int main () {
 		x=55;

@@ -1,4 +1,4 @@
-class Chars{
+namespace Chars{
 	
 	Int main(){
 		c='h';

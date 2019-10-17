@@ -1,18 +1,37 @@
-IDEAS:
+TODO:
+
 [ ] make a vm command to print a register dump to the console
+
 [ ] make a vm command to print a stack dump to the console
-[ ] make a dracovm code verifier, which checks that for every branch of execution in every subroutine, there amount left on the stack at the end is the correct amount. 
-[ ] maybe implement the primitive "Anything" Type. this would be helpful for implementing various subroutines that operate on arrays. i could implement a builtin 
+
+[ ] make a dracovm code verifier, which checks that for every branch of execution in every subroutine,
+    there amount left on the stack at the end is the correct amount.
+
+[ ] maybe implement the primitive "Anything" Type.
+    this would be helpful for implementing various subroutines that operate on arrays. i could implement a builtin
     subroutine "arrlen" that would determine the length of any arrays (arrays should be length-prefixed in dragon).
     ...
     thinking about "Anything" Type, what if we shorten that to "*" and it looks even cooler with Type Constraints.
     Like "public Int print((* implements IShow) item){...}".
 
-BLOCKED TASKS: (cannot proceed on them until something else gets done first)
-[ ] functional programming in dragon, would need the ability to pass function references on the stack,
-    but we do not know the offset (in the code segment) of these functions. so we would maybe need a custom assembler ?
-    i would like to know how other functional languages handle it
-
-[ ] length-prefixed arrays. i want to remain typesafe, and do not want a watered down type system where you can just convert types by casting.
+[ ] length-prefixed arrays. i want to remain typesafe,
+    and do not want a watered down type system where you can just convert types by casting.
     so i need a type parameter for the builtin subroutine which creates a new array.
     so i need to implement type parameters first
+[ ] write a lot of tests to protect our functional programming features against regression!
+
+[ ] implement the vm code generation for struct member access, struct initialization, ...
+
+[ ] write tests for the different typechecking classes and what they typecheck
+
+[ ] check in typechecking that the correct type signature
+    is used for subroutines with side effects ('~>') and for subroutines without side effects ('->')
+    and also note it in the symbol table
+
+[ ] make all classes final as my coding style forbids 'extends' for classes
+
+[ ] typecheck that there should be no assignment to arguments.
+    assignment to members of arguments is ok in subroutines with side effecs
+
+[ ] remove array constants from the language, instead replace it in the examples with a subroutine which takes
+    a type parameter and length of the array, and returns an array of that type with the specified length

@@ -1,4 +1,4 @@
-public class Loop{
+public namespace Loop{
 
     public Int main (){
 

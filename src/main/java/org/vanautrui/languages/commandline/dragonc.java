@@ -6,6 +6,7 @@ import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.compiler.lexing.utils.CharacterList;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.vmcompiler.VMCompilerPhases;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -19,7 +20,8 @@ import java.util.stream.Collectors;
 
 import static java.lang.System.currentTimeMillis;
 import static org.fusesource.jansi.Ansi.ansi;
-import static org.vanautrui.languages.commandline.CompilerPhaseUtils.*;
+import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBuildConclusion;
+import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printDurationFeedback;
 
 public class dragonc {
     //this should be the compiler
@@ -196,6 +198,7 @@ public class dragonc {
             }
 
             CompilerPhases phases = new CompilerPhases(cmd);
+            ParserPhases pphases = new ParserPhases();
 
             //PHASE PREPROCESSOR
             //processes the 'use' directive
@@ -203,25 +206,25 @@ public class dragonc {
 
             //PHASE CLEAN
             List<CharacterList> codeWithoutCommentsWithoutUnneccesaryWhitespace
-                    = phases.phase_clean(codes,sources);
+                    = pphases.phase_clean(codes,sources);
 
             //PHASE LEXING
-            List<TokenList> tokens = phases.phase_lexing(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd.hasOption(FLAG_PRINT_TOKENS));
+            List<TokenList> tokens = pphases.phase_lexing(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd.hasOption(FLAG_PRINT_TOKENS));
 
             //PHASE PARSING
-            List<AST> asts = phases.phase_parsing(tokens,cmd.hasOption(FLAG_PRINT_AST));
+            List<AST> asts = pphases.phase_parsing(tokens,cmd.hasOption(FLAG_PRINT_AST));
 
             //PHASE TYPE CHECKING
             phases.phase_typecheck(asts);
 
             //PHASE CODE GENERATION
-            List<String> vm_codes = phases.phase_vm_codegeneration(asts,"main",cmd.hasOption(FLAG_PRINT_VM_CODES));
+            List<String> vm_codes = phases.phase_vm_codegeneration(asts,"main",cmd.hasOption(FLAG_PRINT_VM_CODES),cmd.hasOption(FLAG_PRINT_SYMBOLTABLES));
 
             //PHASE VM CODE COMPILATION
-            List<String> asm_codes = phases.phase_vm_code_compilation(vm_codes,cmd.hasOption(FLAG_DEBUG));
+            List<String> asm_codes = (new VMCompilerPhases().phase_vm_code_compilation(vm_codes,cmd.hasOption(FLAG_DEBUG)));
 
             //PHASE GENERATE EXECUTABLE
-            phases.phase_generate_executable(asm_codes,"main");
+            (new VMCompilerPhases()).phase_generate_executable(asm_codes,"main");
 
 
             long end_time_ms = currentTimeMillis();
