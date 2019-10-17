@@ -48,14 +48,18 @@ public class LocalVarSymbolTableRow  {
     }
 
     public TypeNode getReturnTypeIfIsSubroutine()throws Exception{
-        if(this.typeName.type instanceof SubroutineTypeNode){
-            return ((SubroutineTypeNode) this.typeName.type).returnType;
-        }else {
-            throw new Exception(this.getClass().getSimpleName()
-                    +": tried to get return type of subroutine variable "
-                    +this.varName+" but it is not a subroutine variable. its type is "
-                    +this.getType());
+        if(this.typeName.type instanceof BasicTypeWrappedNode){
+            BasicTypeWrappedNode t1 = (BasicTypeWrappedNode)this.typeName.type;
+            if(t1.typenode instanceof SubroutineTypeNode){
+                return ((SubroutineTypeNode) t1.typenode).returnType;
+            }
         }
+
+        throw new Exception(this.getClass().getSimpleName()
+                +": tried to get return type of subroutine variable "
+                +this.varName+" but it is not a subroutine variable. its type is "
+                +this.getType());
+
     }
 
     /**there may be 2 local variables and 2 local argument variables in a subroutine.
