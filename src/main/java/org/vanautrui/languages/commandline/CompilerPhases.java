@@ -92,14 +92,6 @@ public class CompilerPhases {
         }
     }
 
-    private Path makeCleanPhaseCacheFilePathFromHash(int hash){
-        final String extension = ".dragon.cleaned";
-        //hidden file. important, so that it does not be visible and bother people
-        return Paths.get(phase_clean_cache_dir+"."+hash+extension);
-    }
-
-    private static final String phase_clean_cache_dir=System.getProperty("user.home")+"/.dragoncache/clean/";
-
     public void phase_preprocessor(List<String> codes, List<File> sources) throws Exception {
         printBeginPhase("PREPROCESSING",printLong);
         //appends the 'use' used files to codes list and source paths list.
