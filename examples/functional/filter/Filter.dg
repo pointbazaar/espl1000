@@ -16,7 +16,7 @@ public namespace Filter{
 		return (item==2);	
 	}
 
-	([PInt] arr,(PInt)->Bool myfilterr)->[PInt] filter{
+	([PInt] arr,((PInt)->Bool) myfilterr)->[PInt] filter{
 		arr2 = [0,0];
 
 		i=0;

@@ -13,7 +13,7 @@ public namespace Main{
 	
 	(PInt n)->PInt twice{return 2*n;}
 
-	((PInt)~>PInt subr1)->PInt subr{
+	(((PInt)~>PInt) subr1)->PInt subr{
 		return subr1(2);
 	}
 }
