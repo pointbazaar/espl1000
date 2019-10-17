@@ -5,6 +5,8 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
@@ -30,6 +32,20 @@ public final class MethodCallNodeTypeChecker {
                     && varTable.get(methodCallNode.methodName).getType().type instanceof SubroutineTypeNode
     ) {
       found = true;
+    }
+
+    //search in arguments, for a subroutine argument
+    if(methodNode.arguments.stream().filter(declaredArgumentNode -> {
+        if(declaredArgumentNode.type.type instanceof BasicTypeWrappedNode){
+          IBasicAndWrappedTypeNode t1=((BasicTypeWrappedNode) declaredArgumentNode.type.type).typenode;
+          if(t1 instanceof SubroutineTypeNode){
+            return true;
+          }
+        }
+        return false;
+      }).count()>0
+    ){
+      found=true;
     }
 
     if (!found) {
