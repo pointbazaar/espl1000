@@ -52,7 +52,8 @@ public final class MethodCallNodeTypeChecker {
       System.out.println(subTable.toString());
       throw
               new Exception(
-                      "name of method not in subroutine symbol table and not in local variable table (or not a subroutine variable): "
+                      "name of method not in subroutine symbol table " +
+                              "and not in local variable table (or not a subroutine variable): "
                               + methodCallNode.methodName
               );
     }
