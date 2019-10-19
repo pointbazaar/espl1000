@@ -34,4 +34,8 @@ public final class StructsSymbolTableRow {
         }
         throw new Exception("could not find struct member: "+memberName+" in struct: "+structName);
     }
+
+    public final String getTypeOfMember(final String memberName) throws Exception{
+        return this.memberTypes.get(getIndexOfMember(memberName));
+    }
 }
