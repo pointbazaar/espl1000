@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.vanautrui.languages.CodeGeneratorTestUtils.compile_and_run_program_for_testing;
 
 public class AssignmentStatementCodeGeneratorTest {
@@ -20,8 +21,8 @@ public class AssignmentStatementCodeGeneratorTest {
                 "}";
         Process pr = compile_and_run_program_for_testing(source,"MainTest333");
 
-        Assert.assertEquals(0,pr.exitValue());
-        Assert.assertEquals("xxx",IOUtils.toString(pr.getInputStream()));
+        assertEquals(0,pr.exitValue());
+        assertEquals("xxx",IOUtils.toString(pr.getInputStream()));
     }
 
     @Test
@@ -37,8 +38,8 @@ public class AssignmentStatementCodeGeneratorTest {
                 "}";
         Process pr = compile_and_run_program_for_testing(source,"MainTest333");
 
-        Assert.assertEquals(0,pr.exitValue());
-        Assert.assertEquals("xx",IOUtils.toString(pr.getInputStream()));
+        assertEquals(0,pr.exitValue());
+        assertEquals("xx",IOUtils.toString(pr.getInputStream()));
     }
 
     @Test
@@ -52,8 +53,8 @@ public class AssignmentStatementCodeGeneratorTest {
                 "}";
         Process pr = compile_and_run_program_for_testing(source,"MainTest333");
 
-        Assert.assertEquals(0,pr.exitValue());
-        Assert.assertEquals("A",IOUtils.toString(pr.getInputStream()));
+        assertEquals(0,pr.exitValue());
+        assertEquals("A",IOUtils.toString(pr.getInputStream()));
     }
 
 
@@ -68,7 +69,40 @@ public class AssignmentStatementCodeGeneratorTest {
                 "}";
         Process pr = compile_and_run_program_for_testing(source,"MainTest454");
 
-        Assert.assertEquals(0,pr.exitValue());
-        Assert.assertEquals("d",IOUtils.toString(pr.getInputStream()));
+        assertEquals(0,pr.exitValue());
+        assertEquals("d",IOUtils.toString(pr.getInputStream()));
+    }
+
+    @Test
+    public void test_can_use_structs()throws Exception{
+        String source="public namespace MainTest954{" +
+                "struct MyStruct{PInt b}"+
+                "\tpublic ()~>PInt main{" +
+                "\t\ta=newstruct(MyStruct);" +
+                "\t\ta.b=1;" +
+                "\t\tputdigit(a.b);" +
+                "\treturn 0;}" +
+                "}";
+        Process pr = compile_and_run_program_for_testing(source,"MainTest954");
+
+        assertEquals(0,pr.exitValue());
+        assertEquals("1",IOUtils.toString(pr.getInputStream()));
+    }
+
+    @Test
+    public void test_can_use_structs_nested()throws Exception{
+        String source="public namespace MainTest9541{" +
+                "struct MyStruct{PInt b,MyStruct s}"+
+                "\tpublic ()~>PInt main{" +
+                "\t\ta = newstruct(MyStruct);" +
+                "a.s = newstruct(MyStruct);"+
+                "\t\ta.s.b=1;" +
+                "\t\tputdigit(a.s.b);" +
+                "\treturn 0;}" +
+                "}";
+        Process pr = compile_and_run_program_for_testing(source,"MainTest9541");
+
+        assertEquals(0,pr.exitValue());
+        assertEquals("1",IOUtils.toString(pr.getInputStream()));
     }
 }
