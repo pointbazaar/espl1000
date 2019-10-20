@@ -4,45 +4,47 @@
 //such as basic input and output, like
 //println, print, read, readln and such to the dragon language
 
-public class Base{
-
+public namespace Base{
 	
-	public Int print(Int x){
-		printInt(x);
+	public (PInt x)~>PInt print{
+		printPInt(x);
 		return 0;
 	}
 	
-	public Int println(Int n){
-		printInt(n);
+	public (PInt n)~>PInt println{
+		printPInt(n);
 
 		printChar('\n');
 		return 0;
 	}
 	
 
-	public Int printChar(Char c){
+	public (Char c)~>PInt printChar{
 		putchar(c);
 		return 0;
 	}
 
-	public Int printInt(Int x){
+	/*
+	public (NInt x)~>PInt printNInt{
 		if(x<0){
 			putchar('-');
 		}
-		x=x*(-1);
-		printIntPositive(x);
+		y=x*(-1);
+		printPInt(y);
 	}
+	*/
 	
-	public Int printIntPositive(Int x){
+	public (PInt x)~>PInt printPInt{
 		
 		if(x>10){
 			putchar(int2char(x));
 		}else{
 			lastdigit = (x % 10);
 			divided = x / 10;
-			printInt(divided);
+			printPInt(divided);
 			putchar(int2char(lastdigit));
 		}
+		return 0;
 	}
 	
 }

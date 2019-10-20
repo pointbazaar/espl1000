@@ -33,7 +33,6 @@ public final class ReturnDracoVMCodeGenerator {
         sb.pop(comment);
       }
 
-
       //there is the return value on the stack,
       // we must swap that with the return address of the calling function, in order to return
       sb.swap("swap return value with return address of the calling function in order to return");

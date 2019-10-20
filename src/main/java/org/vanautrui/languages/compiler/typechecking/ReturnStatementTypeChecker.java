@@ -29,11 +29,23 @@ public class ReturnStatementTypeChecker {
     var returnValueType = TypeResolver.getTypeExpressionNode(returnStatementNode.returnValue, methodNode, subTable, varTable,structsTable);
     if (
             !(returnValueType.getTypeName().equals(methodNode.returnType.getTypeName()))
+
+            && !contains_type(returnValueType.getTypeName(),methodNode.returnType.getTypeName())
     ) {
       throw new Exception(TypeChecker.class.getSimpleName()
               + ": return type of the method has to equal the return value type. return type '"
-              + methodNode.returnType.getTypeName() + "' does not equal the returned type '" + returnValueType + "'");
+              + methodNode.returnType.getTypeName() + "' does not equal the returned type '" + returnValueType.getTypeName() + "'. found in method: "+methodNode.methodName);
     }
     typeCheckExpressionNode(asts, namespaceNode, methodNode, returnStatementNode.returnValue, subTable, varTable,structsTable);
+  }
+
+  private static boolean contains_type(String typename, String maybeContainerType) {
+    //Integer contains PInt, NInt
+    if(maybeContainerType.equals("Integer")){
+      if(typename.equals("PInt") || typename.equals("NInt")){
+        return true;
+      }
+    }
+    return false;
   }
 }

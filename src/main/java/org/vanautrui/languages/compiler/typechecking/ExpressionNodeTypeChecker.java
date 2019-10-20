@@ -111,7 +111,7 @@ public class ExpressionNodeTypeChecker {
     if(bitshifting_operators_for_epressions_with_2_operands.contains(opNode.operator)){
       typeCheckExpressionNodeWith2OperandsBitShifting(asts, namespaceNode,methodNode,term1,opNode,term2,subTable,varTable,structsTable);
     }else if(arithmetic_operators_for_epressions_with_2_operands.contains(opNode.operator)){
-      final List<String> currentAllowedTypes= Arrays.asList("PInt","Float");
+      final List<String> currentAllowedTypes= Arrays.asList("PInt","Float","NInt","Integer");
 
       final TypeNode type1 = TypeResolver.getTypeTermNode(term1,methodNode,subTable,varTable,structsTable);
       final TypeNode type2 = TypeResolver.getTypeTermNode(term2,methodNode,subTable,varTable,structsTable);
@@ -130,7 +130,16 @@ public class ExpressionNodeTypeChecker {
       }
 
       if(!type1.getTypeName().equals(type2.getTypeName())){
-        throw new Exception("in an expression with 2 terms, both have to have the same type. But "+type1.getTypeName()+" and "+type2.getTypeName()+" are different types.");
+        List<String> integral_types  = Arrays.asList("PInt","NInt","Integer");
+        if(!
+                (
+                        integral_types.contains(type1.getTypeName())
+                        && integral_types.contains(type2.getTypeName())
+                )
+        ) {
+
+          throw new Exception("in an expression with 2 terms, both have to have the same type. But " + type1.getTypeName() + " and " + type2.getTypeName() + " are different types.");
+        }
       }
 
       typecheckTermNode(asts, namespaceNode,methodNode,term1,subTable,varTable,structsTable);

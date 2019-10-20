@@ -16,8 +16,14 @@ public class OperatorDracoVMCodeGenerator {
       case ">":
         sb.gt();
         break;
+      case ">=":
+        sb.geq();
+        break;
       case "<":
         sb.lt();
+        break;
+      case "<=":
+        sb.leq();
         break;
       case "*":
         sb.mul();

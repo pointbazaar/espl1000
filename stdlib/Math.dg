@@ -1,8 +1,8 @@
 use Base.dg
 
-public class Math{
+public namespace Math{
 	
-	public Int main(){
+	public ()~>PInt main{
 		println("hi");	
 		println(abs(1));
 		println(abs(-2));
@@ -41,7 +41,7 @@ public class Math{
 		return 0;
 	}
 
-	public Float sqrt(Float number){
+	public (Float number)->Float sqrt{
 		t=0.0;
 		squareRoot=number/2.0;
 		
@@ -55,15 +55,14 @@ public class Math{
 
 		return squareRoot;
 	}
-	public Int abs(Int n){
+	public (PInt n)->Integer abs{
 		if(n<0){
 			return (-1)*n;
-			//return n;
 		}
 		return n;
 	}
 	
-	public Int sign(Int n){
+	public (PInt n)->Integer sign{
 		if(n>0){
 			return 1;
 		}
@@ -72,7 +71,7 @@ public class Math{
 		}
 		return -1;
 	}
-	public Int pow(Int base,Int power){
+	public (PInt base,PInt power)->PInt pow{
 		result=1;
 		i=0;
 		while(i<power){
@@ -81,22 +80,22 @@ public class Math{
 		}
 		return result;
 	}
-	public Int faculty(Int n){
+	public (PInt n)->PInt faculty{
 		if(n<=1){ return 1; }
 		return (n*faculty(n-1));
 	}
-	public Int max(Int a,Int b){
+	public (PInt a,PInt b)->PInt max{
 		if(a>b){return a;}
 		return b;
 	}
-	public Int min(Int a,Int b){
+	public (PInt a,PInt b)->PInt min{
 		if(a<b){return a;}
 		return b;
 	}
-	public Float e(){
+	public ()->Float e{
 		return 2.71828;
 	}
-	public Float pi(){
+	public ()->Float pi{
 		return 3.14159;
 	}
 
