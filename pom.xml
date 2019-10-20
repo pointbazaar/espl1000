@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.github.pointbazaar</groupId>
             <artifactId>dragon-parser</artifactId>
-            <version>1823f4a4a0</version>
+            <version>9bc4da9b83</version>
         </dependency>
         <dependency>
             <groupId>com.github.pointbazaar</groupId>

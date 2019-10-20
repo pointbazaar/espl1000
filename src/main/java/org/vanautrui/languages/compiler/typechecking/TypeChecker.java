@@ -9,6 +9,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +39,11 @@ public class TypeChecker {
                   "[Float]", "[Bool]", "[Char]"
           );
 
-  public static void doTypeCheck(List<AST> asts, boolean debug) throws Exception {
+  public static void doTypeCheck(
+          List<AST> asts,
+          boolean debug,
+          StructsSymbolTable structsTable
+  ) throws Exception {
     if (debug) {
       System.out.println("TYPECHECKING");
     }
@@ -49,7 +54,7 @@ public class TypeChecker {
     }
     for (AST ast : asts) {
       for (NamespaceNode namespaceNode : ast.namespaceNodeList) {
-        typeCheckNamespaceNode(asts, namespaceNode, subroutineSymbolTable, debug);
+        typeCheckNamespaceNode(asts, namespaceNode, subroutineSymbolTable, debug,structsTable);
       }
     }
   }

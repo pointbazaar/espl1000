@@ -8,6 +8,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
 import java.util.List;
@@ -18,13 +19,17 @@ public final class LoopStatementNodeTypeChecker {
 
 
   public synchronized static void typeCheckLoopStatementNode(
-          List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode,
-          LoopStatementNode loopStatementNode, SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable
+          List<AST> asts,
+          NamespaceNode namespaceNode,
+          MethodNode methodNode,
+          LoopStatementNode loopStatementNode,
+          SubroutineSymbolTable subTable,
+          LocalVarSymbolTable varTable,
+          StructsSymbolTable structsTable
   ) throws Exception {
     //the condition expression should be of type boolean
 
-    var countType = TypeResolver.getTypeExpressionNode(loopStatementNode.count, methodNode, subTable, varTable);
+    final var countType = TypeResolver.getTypeExpressionNode(loopStatementNode.count, methodNode, subTable, varTable,structsTable);
     if (!countType.getTypeName().equals("PInt")) {
       throw
               new Exception(
@@ -32,7 +37,7 @@ public final class LoopStatementNodeTypeChecker {
               );
     }
     for (StatementNode stmt : loopStatementNode.statements) {
-      typeCheckStatementNode(asts, namespaceNode, methodNode, stmt, subTable, varTable);
+      typeCheckStatementNode(asts, namespaceNode, methodNode, stmt, subTable, varTable,structsTable);
     }
   }
 }

@@ -12,10 +12,11 @@ import static org.vanautrui.languages.compiler.typechecking.StructMemberDeclType
 
 public final class StructDeclNodeTypeChecker {
 
-  public static synchronized void typeCheckStructDeclNode (final List<AST> asts,
-                                                           final NamespaceNode namespaceNode,
-                                                           final StructDeclNode structDeclNode,
-                                                           final SubroutineSymbolTable subroutineSymbolTable
+  public static synchronized void typeCheckStructDeclNode (
+          final List<AST> asts,
+          final NamespaceNode namespaceNode,
+          final StructDeclNode structDeclNode,
+          final SubroutineSymbolTable subroutineSymbolTable
   ) throws Exception{
     //the type of the struct is simple, by construction (see constructor)
 

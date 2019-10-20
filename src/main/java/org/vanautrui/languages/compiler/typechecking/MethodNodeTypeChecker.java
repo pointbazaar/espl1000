@@ -9,6 +9,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 
 import java.util.List;
 
@@ -19,7 +20,12 @@ import static org.vanautrui.languages.compiler.typechecking.TypeChecker.typeChec
 
 public class MethodNodeTypeChecker {
 
-  static void typeCheckMethodNode(List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode, SubroutineSymbolTable subTable) throws Exception{
+  static void typeCheckMethodNode(List<AST> asts,
+                                  NamespaceNode namespaceNode,
+                                  MethodNode methodNode,
+                                  SubroutineSymbolTable subTable,
+                                  StructsSymbolTable structsTable
+  ) throws Exception{
 
     //create the variable Symbol table, to typecheck the statements
     LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(methodNode,subTable);
@@ -28,7 +34,7 @@ public class MethodNodeTypeChecker {
 
     typeCheckITypeNode(asts, namespaceNode,methodNode.returnType.type);
     for(StatementNode stmt : methodNode.statements){
-      typeCheckStatementNode(asts, namespaceNode,methodNode,stmt,subTable,varTable);
+      typeCheckStatementNode(asts, namespaceNode,methodNode,stmt,subTable,varTable,structsTable);
     }
     for(DeclaredArgumentNode arg : methodNode.arguments){
       typeCheckDeclaredArgumentNode(asts, namespaceNode,arg);

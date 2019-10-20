@@ -8,6 +8,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
 import java.util.List;
@@ -19,23 +20,24 @@ public final class WhileStatementNodeTypeChecker {
 
   public synchronized static void typeCheckWhileStatementNode(
           List<AST> asts,
-          NamespaceNode namespaceNode,
+          NamespaceNode namespace,
           MethodNode methodNode,
-          WhileStatementNode whileStatementNode,
+          WhileStatementNode whileNode,
           SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable
+          LocalVarSymbolTable varTable,
+          StructsSymbolTable structsTable
   ) throws Exception {
     //the condition expression should be of type boolean
     var conditionType =
-            TypeResolver.getTypeExpressionNode(whileStatementNode.condition, methodNode, subTable, varTable);
+            TypeResolver.getTypeExpressionNode(whileNode.condition, methodNode, subTable, varTable,structsTable);
 
     if (!conditionType.getTypeName().equals("Bool")) {
       throw new Exception(" condition should be of type Bool : '"
-              + whileStatementNode.condition.toSourceCode()
+              + whileNode.condition.toSourceCode()
               + "' but was of type: " + conditionType);
     }
-    for (StatementNode stmt : whileStatementNode.statements) {
-      typeCheckStatementNode(asts, namespaceNode, methodNode, stmt, subTable, varTable);
+    for (StatementNode stmt : whileNode.statements) {
+      typeCheckStatementNode(asts, namespace, methodNode, stmt, subTable, varTable,structsTable);
     }
   }
 }

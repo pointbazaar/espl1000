@@ -10,9 +10,13 @@ import java.util.List;
 
 public final class StructMemberDeclTypeChecker {
 
-    public static void typeCheckStructMemberDeclNode(List<AST> asts, NamespaceNode namespaceNode,
-                                                 StructDeclNode structDeclNode, StructMemberDeclNode structMemberDeclNode,
-                                                 SubroutineSymbolTable subroutineSymbolTable)throws Exception{
+    public static void typeCheckStructMemberDeclNode(
+            List<AST> asts,
+            NamespaceNode namespaceNode,
+            StructDeclNode structDeclNode,
+            StructMemberDeclNode structMemberDeclNode,
+            SubroutineSymbolTable subTable
+    )throws Exception{
 
       //check that the member is only declared once
       long count=0;

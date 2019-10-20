@@ -106,7 +106,9 @@ public class SymbolTableGenerator {
 		Set<String> result = new HashSet<>();
 		if(st instanceof AssignmentStatementNode) {
 			AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode)st;
-			result.add(assignmentStatementNode.variableNode.name);
+			if(assignmentStatementNode.variableNode.memberAccessList.size()==0) {
+				result.add(assignmentStatementNode.variableNode.simpleVariableNode.name);
+			}
 		}else{
 			//also get the assignment statements recursively
 			//that are inside the control flow statements.
@@ -137,13 +139,15 @@ public class SymbolTableGenerator {
 
 			var expressionType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,methodScopeSymbolTable);
 
-			methodScopeSymbolTable.add_idempotent(
-					new LocalVarSymbolTableRow(
-							assignmentStatementNode.variableNode.name,
-							expressionType,
-							LocalVarSymbolTableRow.KIND_LOCALVAR
-					)
-			);
+			if(assignmentStatementNode.variableNode.memberAccessList.size()==0) {
+				methodScopeSymbolTable.add_idempotent(
+						new LocalVarSymbolTableRow(
+								assignmentStatementNode.variableNode.simpleVariableNode.name,
+								expressionType,
+								LocalVarSymbolTableRow.KIND_LOCALVAR
+						)
+				);
+			}
 		}else{
 			//also get the assignment statements recursively
 			//that are inside the control flow statements.
