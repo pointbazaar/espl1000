@@ -11,6 +11,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.terminal.FloatConstNode
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTableRow;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,53 +21,25 @@ import java.util.Set;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ExpressionDracoVMCodeGenerator.genDracoVMCodeForExpression;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.SubroutineDracoVMCodeGenerator.generateDracoVMCodeForMethod;
 
-public class DracoVMCodeGenerator {
+public final class DracoVMCodeGenerator {
 
-    public static List<String> generateDracoVMCode(Set<AST> asts, SubroutineSymbolTable subTable,boolean debug,boolean printsymboltables) throws Exception{
+    public static List<String> generateDracoVMCode(
+            Set<AST> asts,
+            SubroutineSymbolTable subTable,
+            StructsSymbolTable structsTable,
+            boolean debug,boolean printsymboltables
+    ) throws Exception{
 
         DracoVMCodeWriter sb = new DracoVMCodeWriter();
         for(AST ast :asts){
             for(NamespaceNode namespaceNode : ast.namespaceNodeList){
                 for(MethodNode methodNode : namespaceNode.methodNodeList){
-                    generateDracoVMCodeForMethod(namespaceNode,methodNode,sb,subTable,debug,printsymboltables);
+                    generateDracoVMCodeForMethod(namespaceNode,methodNode,sb,subTable, structsTable,debug,printsymboltables);
                 }
             }
         }
         return sb.getDracoVMCodeInstructions();
     }
-
-    /**
-     * @param assignStmt the AssignmentStatementNode being compiled
-     * @param sb         the VM Code Writer class
-     * @param varTable   the Local Variable Symbol Table
-     * @throws Exception if the variable is not in the symbol table
-     */
-    public static void genVMCodeForAssignmentStatement(AssignmentStatementNode assignStmt, DracoVMCodeWriter sb,SubroutineSymbolTable subTable,LocalVarSymbolTable varTable) throws Exception {
-
-        //the variable being assigned to would be a local variable or argument.
-        //the expression that is being assigned, there can be code generated to put it on the stack
-        final String varName = assignStmt.variableNode.name;
-        final String segment = varTable.getSegment(varName);
-        final int index = varTable.getIndexOfVariable(varName);
-
-        if(assignStmt.variableNode.indexOptional.isPresent()){
-            //push the array address on the stack
-            sb.push(segment,index);
-
-            //push the index
-            genDracoVMCodeForExpression(assignStmt.variableNode.indexOptional.get(),sb,subTable,varTable);
-
-            //push the value we want to store
-            genDracoVMCodeForExpression(assignStmt.expressionNode,sb,subTable,varTable);
-
-            sb.arraystore();
-        }else {
-            genDracoVMCodeForExpression(assignStmt.expressionNode,sb,subTable,varTable);
-            //then we just pop that value into the appropriate segment with the specified index
-            sb.pop(segment, index);
-        }
-    }
-
 
     public static void genVMCodeForFloatConst(FloatConstNode fconst,DracoVMCodeWriter sb){
         sb.fconst(fconst.value);
@@ -89,7 +62,13 @@ public class DracoVMCodeGenerator {
      * @param varTable
      * @throws Exception
      */
-    public static void genVMCodeForArrayConstant(ArrayConstantNode arrayConstantNode, DracoVMCodeWriter sb, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
+    public static void genVMCodeForArrayConstant(
+            ArrayConstantNode arrayConstantNode,
+            DracoVMCodeWriter sb,
+            SubroutineSymbolTable subTable,
+            LocalVarSymbolTable varTable,
+            StructsSymbolTable structsTable
+    ) throws Exception{
 
         //allocate space for the new array.
         //this leaves the address of the new array (the new array resides on the heap) on the stack
@@ -108,47 +87,11 @@ public class DracoVMCodeGenerator {
             sb.iconst(i);//index to store into
 
             //value we want to store
-            genDracoVMCodeForExpression(arrayConstantNode.elements.get(i),sb,subTable,varTable);
+            genDracoVMCodeForExpression(arrayConstantNode.elements.get(i),sb,subTable,varTable,structsTable);
 
             sb.arraystore();
         }
     }
-
-    public static void genDracoVMCodeForVariable(String varName, Optional<ExpressionNode> indexOptional, DracoVMCodeWriter sb, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
-        //push the variable on the stack
-
-        //final String name = variableNode.name;
-
-        if(varTable.containsVariable(varName)) {
-            //if the variable is local,
-            //or argument, that would be different segments
-            //we have to consider its index
-
-            //it is a local variable
-            final int index = varTable.getIndexOfVariable(varName);
-            final String segment = varTable.getSegment(varName);
-
-            sb.push(segment, index);
-
-            if (indexOptional.isPresent()) {
-                //it is an array and we should read from the index
-                genDracoVMCodeForExpression(indexOptional.get(), sb, subTable, varTable);
-                sb.arrayread();
-            }
-        }else if(subTable.containsSubroutine(varName)){
-            //it is a subroutine
-            String vmcodesubroutinename = SubroutineSymbolTableRow.generateVMCodeSubroutineName(subTable.getContainingClassName(varName),varName);
-            //push the corresponding label on the stack
-            sb.pushsubroutine(vmcodesubroutinename);
-        }else {
-            throw new Exception("DracoVMCodeGenerator: '"+varName+"' was not found in local variable symbol table  and also not found in subroutine symbol table.");
-        }
-    }
-
-
-
-
-
 
     public static long unique(){
         //uniqueness for jump labels

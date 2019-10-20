@@ -12,15 +12,16 @@ import static org.vanautrui.languages.compiler.typechecking.StructMemberDeclType
 
 public final class StructDeclNodeTypeChecker {
 
-  public static synchronized void typeCheckStructDeclNode (final List<AST> asts,
-                                                           final NamespaceNode namespaceNode,
-                                                           final StructDeclNode structDeclNode,
-                                                           final SubroutineSymbolTable subroutineSymbolTable
+  public static synchronized void typeCheckStructDeclNode (
+          final List<AST> asts,
+          final NamespaceNode namespaceNode,
+          final StructDeclNode structDeclNode,
+          final SubroutineSymbolTable subroutineSymbolTable
   ) throws Exception{
     //the type of the struct is simple, by construction (see constructor)
 
     //check that it does not have a primitive type
-    if(TypeChecker.primitive_types_and_arrays_of_them.contains(structDeclNode.structType.typeName)){
+    if(TypeChecker.primitive_types_and_arrays_of_them.contains(structDeclNode.structType.getTypeName())){
       throw new Exception("struct type cannot be primitive ");
     }
 

@@ -9,6 +9,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
 import java.util.List;
@@ -18,25 +19,31 @@ import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeCh
 public final class ArrayConstantNodeTypeChecker {
 
 
-  public synchronized static void typeCheckArrayConstantNode(List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode,
-                                         ArrayConstantNode arrConstNode, SubroutineSymbolTable subTable,
-                                         LocalVarSymbolTable varTable) throws Exception
+  public synchronized static void typeCheckArrayConstantNode(
+          List<AST> asts,
+          NamespaceNode namespaceNode,
+          MethodNode methodNode,
+          ArrayConstantNode arrConstNode,
+          SubroutineSymbolTable subTable,
+          LocalVarSymbolTable varTable,
+          StructsSymbolTable structsTable
+  ) throws Exception
   {
     //all the types of the elements should be the same
     if (arrConstNode.elements.size() > 0) {
 
-      TypeNode type_of_elements =
-              TypeResolver.getTypeExpressionNode(arrConstNode.elements.get(0), methodNode, subTable, varTable);
+      final TypeNode type_of_elements =
+              TypeResolver.getTypeExpressionNode(arrConstNode.elements.get(0), methodNode, subTable, varTable,structsTable);
 
       for (ExpressionNode expr : arrConstNode.elements) {
-        TypeNode element_type = TypeResolver.getTypeExpressionNode(expr, methodNode, subTable, varTable);
+        final TypeNode element_type = TypeResolver.getTypeExpressionNode(expr, methodNode, subTable, varTable,structsTable);
         if (!element_type.getTypeName().equals(type_of_elements.getTypeName())) {
           throw new Exception("type of the array items was inferred to "
                   + type_of_elements
                   + " from the first element's type, but type differed at index "
                   + arrConstNode.elements.indexOf(expr) + " : it's type was " + element_type);
         }
-        typeCheckExpressionNode(asts, namespaceNode, methodNode, expr, subTable, varTable);
+        typeCheckExpressionNode(asts, namespaceNode, methodNode, expr, subTable, varTable,structsTable);
       }
     }
   }

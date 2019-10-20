@@ -31,6 +31,10 @@ public class SubroutineSymbolTable {
         this.add(new SubroutineSymbolTableRow("int2char",new SimpleTypeNode("Char"),"Builtin",0,1));
         this.add(new SubroutineSymbolTableRow("float2int",new SimpleTypeNode("Integer"),"Builtin",0,1));
         this.add(new SubroutineSymbolTableRow("int2float",new SimpleTypeNode("Float"),"Builtin",0,1));
+
+        //to be implemented?
+        //for structs, to be able to allocate them
+        this.add(new SubroutineSymbolTableRow("malloc",new SimpleTypeNode("#"),"Builtin",0,1));
     }
 
     public void add(SubroutineSymbolTableRow row) {

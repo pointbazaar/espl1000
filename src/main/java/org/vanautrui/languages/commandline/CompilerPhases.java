@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.cli.CommandLine;
 import org.vanautrui.languages.TerminalUtil;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
 import org.vanautrui.languages.vmcompiler.codegenerator.AssemblyCodeGenerator;
 import org.vanautrui.languages.compiler.lexing.Lexer;
@@ -24,6 +25,7 @@ import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.*;
 import static org.vanautrui.languages.commandline.dragonc.*;
 import static org.vanautrui.languages.compiler.phase_clean_the_input.CommentRemoverAndWhitespaceRemover.remove_unneccessary_whitespace;
+import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createStructsSymbolTable;
 import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
 
 public class CompilerPhases {
@@ -68,7 +70,8 @@ public class CompilerPhases {
         try {
 
             SubroutineSymbolTable subTable = createSubroutineSymbolTable(asts,debug);
-            List<String> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable,debug,printsymboltables);
+            StructsSymbolTable structsTable = createStructsSymbolTable(asts,debug);
+            List<String> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable,structsTable,debug,printsymboltables);
 
             final String vm_codes_string = dracoVMCodes.stream().collect(Collectors.joining("\n"))+"\n";
 

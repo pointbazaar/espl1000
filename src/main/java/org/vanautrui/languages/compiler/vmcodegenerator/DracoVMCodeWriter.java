@@ -13,9 +13,9 @@ import java.util.List;
  * IntelliJ's autocomplete.
  * It provides subroutines for almost? every dracovm instruction
  */
-public class DracoVMCodeWriter {
+public final class DracoVMCodeWriter {
 
-  private List<String> instrs=new ArrayList<>();
+  private final List<String> instrs=new ArrayList<>();
   public List<String> getDracoVMCodeInstructions(){
     return this.instrs;
   }
@@ -37,7 +37,7 @@ public class DracoVMCodeWriter {
    * keeps track of correct indentation
    */
   private void any(String command,String comment){
-    String myindent = StringUtils.repeat("  ", this.indent);
+    final String myindent = StringUtils.repeat("  ", this.indent);
 
     String mycomment="";
     if(!comment.isEmpty()){

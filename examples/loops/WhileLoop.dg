@@ -1,5 +1,5 @@
 public namespace WhileLoop{
-	public PInt main (){
+	public ()~>PInt main {
 
 		i=0;
 		j=0;

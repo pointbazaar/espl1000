@@ -10,9 +10,11 @@ import static org.vanautrui.languages.compiler.typechecking.ITypeNodeTypeChecker
 
 public final class DeclaredArgumentNodeTypeChecker {
 
-  public synchronized static void typeCheckDeclaredArgumentNode(List<AST> asts,
-                                            NamespaceNode namespaceNode,
-                                            DeclaredArgumentNode declaredArgumentNode) throws Exception {
+  public synchronized static void typeCheckDeclaredArgumentNode(
+          List<AST> asts,
+          NamespaceNode namespaceNode,
+          DeclaredArgumentNode declaredArgumentNode
+  ) throws Exception {
     typeCheckITypeNode(asts, namespaceNode, declaredArgumentNode.type.type);
   }
 }

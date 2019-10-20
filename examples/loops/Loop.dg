@@ -1,6 +1,6 @@
 public namespace Loop{
 
-    public Int main (){
+    public ()~>PInt main{ 
 
         loop 3{
 

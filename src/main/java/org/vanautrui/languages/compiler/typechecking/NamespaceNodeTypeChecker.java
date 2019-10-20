@@ -5,6 +5,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.StructDeclNode;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 
 import java.util.List;
 
@@ -14,29 +15,35 @@ import static org.vanautrui.languages.compiler.typechecking.StructDeclNodeTypeCh
 public class NamespaceNodeTypeChecker {
 
 
-  static void typeCheckNamespaceNode(List<AST> asts, NamespaceNode namespaceNode, SubroutineSymbolTable subroutineSymbolTable, boolean debug) throws Exception{
+  static void typeCheckNamespaceNode(
+          List<AST> asts,
+          NamespaceNode namespace,
+          SubroutineSymbolTable subTable,
+          boolean debug,
+          StructsSymbolTable structsTable
+  ) throws Exception{
     if(debug){
-      System.out.println("typechecking class:"+ namespaceNode.name);
+      System.out.println("typechecking class:"+ namespace.name);
     }
     int count=0;
     for(AST ast : asts){
       for(NamespaceNode dragonNamespaceNode : ast.namespaceNodeList){
-        if(dragonNamespaceNode.name.getTypeName().equals(namespaceNode.name.getTypeName())){
+        if(dragonNamespaceNode.name.getTypeName().equals(namespace.name.getTypeName())){
           count++;
         }
       }
     }
 
-    for(StructDeclNode structDeclNode : namespaceNode.structDeclNodeList){
-      typeCheckStructDeclNode(asts, namespaceNode,structDeclNode,subroutineSymbolTable);
+    for(StructDeclNode structDeclNode : namespace.structDeclNodeList){
+      typeCheckStructDeclNode(asts, namespace,structDeclNode,subTable);
     }
 
-    for(MethodNode methodNode : namespaceNode.methodNodeList){
-      typeCheckMethodNode(asts, namespaceNode,methodNode,subroutineSymbolTable);
+    for(MethodNode methodNode : namespace.methodNodeList){
+      typeCheckMethodNode(asts, namespace,methodNode,subTable,structsTable);
     }
 
     if(count!=1){
-      throw new Exception("multiple definitions of namespace '"+ namespaceNode.name.getTypeName()+"'");
+      throw new Exception("multiple definitions of namespace '"+ namespace.name.getTypeName()+"'");
     }
   }
 }

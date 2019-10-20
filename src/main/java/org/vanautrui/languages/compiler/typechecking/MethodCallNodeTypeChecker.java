@@ -10,6 +10,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 
 import java.util.List;
 
@@ -18,9 +19,15 @@ import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeCh
 public final class MethodCallNodeTypeChecker {
 
 
-  public synchronized static void typeCheckMethodCallNode(List<AST> asts, NamespaceNode namespaceNode,
-                                      MethodNode methodNode, MethodCallNode methodCallNode,
-                                      SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {
+  public synchronized static void typeCheckMethodCallNode(
+    List<AST> asts,
+    NamespaceNode namespaceNode,
+    MethodNode methodNode,
+    MethodCallNode methodCallNode,
+    SubroutineSymbolTable subTable,
+    LocalVarSymbolTable varTable,
+    StructsSymbolTable structsTable
+  ) throws Exception {
     boolean found = false;
 
     if (subTable.containsSubroutine(methodCallNode.methodName)) {
@@ -52,7 +59,8 @@ public final class MethodCallNodeTypeChecker {
       System.out.println(subTable.toString());
       throw
               new Exception(
-                      "name of method not in subroutine symbol table and not in local variable table (or not a subroutine variable): "
+                      "name of method not in subroutine symbol table " +
+                              "and not in local variable table (or not a subroutine variable): "
                               + methodCallNode.methodName
               );
     }
@@ -61,7 +69,7 @@ public final class MethodCallNodeTypeChecker {
 
     //all arguments should typecheck
     for (ExpressionNode expr : methodCallNode.argumentList) {
-      typeCheckExpressionNode(asts, namespaceNode, methodNode, expr, subTable, varTable);
+      typeCheckExpressionNode(asts, namespaceNode, methodNode, expr, subTable, varTable,structsTable);
     }
   }
 }

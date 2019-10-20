@@ -7,6 +7,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
 import java.util.List;
@@ -14,22 +15,33 @@ import java.util.List;
 import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeChecker.typeCheckExpressionNode;
 import static org.vanautrui.languages.compiler.typechecking.VariableNodeTypeChecker.typeCheckVariableNode;
 
-public class AssignmentStatementTypeChecker {
+public final class AssignmentStatementTypeChecker {
 
   static void typeCheckAssignmentStatementNode(
-          List<AST> asts, NamespaceNode namespaceNode, MethodNode methodNode,
-          AssignmentStatementNode assignmentStatementNode, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable
+          List<AST> asts,
+          NamespaceNode namespaceNode,
+          MethodNode methodNode,
+          AssignmentStatementNode assignmentStatementNode,
+          SubroutineSymbolTable subTable,
+          LocalVarSymbolTable varTable,
+          StructsSymbolTable structsTable
   ) throws Exception{
-    var leftSideType = TypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,methodNode,subTable,varTable);
-    var rightSideType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,varTable);
-    if(!leftSideType.getTypeName().equals(rightSideType.getTypeName())){
+    final var leftSideType = TypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,methodNode,subTable,varTable,structsTable);
+    final var rightSideType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,varTable,structsTable);
+
+    final boolean types_equal = leftSideType.getTypeName().equals(rightSideType.getTypeName());
+    final boolean one_is_wildcard = leftSideType.getTypeName().equals("#") || rightSideType.getTypeName().equals("#");
+
+    if(
+            !types_equal && !one_is_wildcard
+    ){
       throw new Exception(
               "with an assignment, both sides have to have the same type. here, a value of type "+rightSideType.getTypeName()+" was assigned to a value of type "+leftSideType.getTypeName()
                       +" in source: '"+assignmentStatementNode.toSourceCode()+"'"
       );
     }
 
-    typeCheckVariableNode(asts, namespaceNode,methodNode,assignmentStatementNode.variableNode,subTable,varTable);
-    typeCheckExpressionNode(asts, namespaceNode,methodNode,assignmentStatementNode.expressionNode,subTable,varTable);
+    typeCheckVariableNode(asts, namespaceNode,methodNode,assignmentStatementNode.variableNode,subTable,varTable,structsTable);
+    typeCheckExpressionNode(asts, namespaceNode,methodNode,assignmentStatementNode.expressionNode,subTable,varTable,structsTable);
   }
 }
