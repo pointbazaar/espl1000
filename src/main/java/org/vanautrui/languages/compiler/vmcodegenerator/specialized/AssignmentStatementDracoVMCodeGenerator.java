@@ -43,7 +43,7 @@ public final class AssignmentStatementDracoVMCodeGenerator {
             LocalVarSymbolTable varTable,
             StructsSymbolTable structsTable
     ) throws Exception {
-        //TODO: dereference up until the last member access / last index access,
+        //dereference up until the last member access / last index access,
         //then use arraystore to store what is being assigned
 
         /*
