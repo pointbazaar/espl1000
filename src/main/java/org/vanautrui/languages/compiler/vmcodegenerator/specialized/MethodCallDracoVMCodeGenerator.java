@@ -17,7 +17,6 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.Expre
 
 public class MethodCallDracoVMCodeGenerator {
 
-
   public static void genVMCodeForMethodCall(MethodCallNode methodCallNode, DracoVMCodeWriter sb, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {
     //push arguments on stack in reverse order
     for(int i=methodCallNode.argumentList.size()-1;i>=0;i--){
@@ -30,7 +29,7 @@ public class MethodCallDracoVMCodeGenerator {
       //compile call to subroutine which is given as local variable or argument
 
       //push the label on the stack from either LOCAL SEGMENT or ARG SEGMENT
-      DracoVMCodeGenerator.genDracoVMCodeForVariable(methodCallNode.methodName, Optional.empty(),sb,subTable,varTable);
+      VariableDracoVMCodeGenerator.genDracoVMCodeForSimpleVariable(methodCallNode.methodName, Optional.empty(),sb,subTable,varTable);
 
       //perform a call to the label on stack
       sb.callfromstack();

@@ -6,6 +6,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
 
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.StatementDracoVMCodeGenerator.generateDracoVMCodeForStatement;
@@ -13,9 +14,17 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.State
 public class SubroutineDracoVMCodeGenerator {
 
 
-  public static void generateDracoVMCodeForMethod(NamespaceNode containerClass, MethodNode m, DracoVMCodeWriter sb, SubroutineSymbolTable subTable, boolean debug, boolean printsymboltables)throws Exception{
+  public static void generateDracoVMCodeForMethod(
+          NamespaceNode containerClass,
+          MethodNode m,
+          DracoVMCodeWriter sb,
+          SubroutineSymbolTable subTable,
+          StructsSymbolTable structsTable,
+          boolean debug,
+          boolean printsymboltables
+  )throws Exception{
 
-    LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(m,subTable);
+    LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(m,subTable,structsTable);
     if(debug || printsymboltables){
       System.out.println(varTable.toString());
     }

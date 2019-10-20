@@ -13,7 +13,6 @@ import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
 
-import static org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator.genVMCodeForAssignmentStatement;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.IfStatementDracoVMCodeGenerator.genVMCodeForIfStatement;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.LoopStatementDracoVMCodeGenerator.genVMCodeForLoopStatement;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.MethodCallDracoVMCodeGenerator.genVMCodeForMethodCall;
@@ -36,7 +35,7 @@ public class StatementDracoVMCodeGenerator {
       genVMCodeForLoopStatement(loop,containerMethod,sb,subTable,varTable);
     }else if(snode instanceof AssignmentStatementNode) {
       AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode) snode;
-      genVMCodeForAssignmentStatement(assignmentStatementNode,sb,subTable,varTable);
+      AssignmentStatementDracoVMCodeGenerator.genVMCodeForAssignmentStatement(assignmentStatementNode,sb,subTable,varTable);
     }else if(snode instanceof WhileStatementNode){
       WhileStatementNode whileStatementNode =(WhileStatementNode)snode;
       genVMCodeForWhileStatement(whileStatementNode,containerMethod,sb,subTable,varTable);
