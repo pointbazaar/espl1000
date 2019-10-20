@@ -9,6 +9,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.*;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
 
@@ -22,7 +23,8 @@ public class TermDracoVMCodeGenerator {
           TermNode tNode,
           DracoVMCodeWriter sb,
           SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable
+          LocalVarSymbolTable varTable,
+          StructsSymbolTable structsTable
   )throws Exception{
     ITermNode t = tNode.termNode;
     if(t instanceof FloatConstNode){
@@ -31,22 +33,22 @@ public class TermDracoVMCodeGenerator {
       DracoVMCodeGenerator.genVMCodeForIntConst(((IntConstNode)t).value,sb);
     }else if(t instanceof ExpressionNode) {
       ExpressionNode expressionNode = (ExpressionNode)t;
-      genDracoVMCodeForExpression(expressionNode,sb,subTable,varTable);
+      genDracoVMCodeForExpression(expressionNode,sb,subTable,varTable,structsTable);
     }else if(t instanceof VariableNode) {
       //find the local variable index
       // and push the variable onto the stack
       VariableNode variableNode = (VariableNode) t;
 
-      VariableDracoVMCodeGenerator.genDracoVMCodeForVariable(variableNode,sb,subTable,varTable);
+      VariableDracoVMCodeGenerator.genDracoVMCodeForVariable(variableNode,sb,subTable,varTable,structsTable);
     }else if(t instanceof MethodCallNode){
       MethodCallNode methodCallNode = (MethodCallNode)t;
-      genVMCodeForMethodCall(methodCallNode,sb,subTable,varTable);
+      genVMCodeForMethodCall(methodCallNode,sb,subTable,varTable,structsTable);
 
     }else if(t instanceof BoolConstNode) {
       DracoVMCodeGenerator.genVMCodeForBoolConst((BoolConstNode)t,sb);
     }else if(t instanceof ArrayConstantNode) {
       ArrayConstantNode arrayConstantNode = (ArrayConstantNode) t;
-      DracoVMCodeGenerator.genVMCodeForArrayConstant(arrayConstantNode,sb,subTable,varTable);
+      DracoVMCodeGenerator.genVMCodeForArrayConstant(arrayConstantNode,sb,subTable,varTable,structsTable);
     }else if (t instanceof CharConstNode) {
       CharConstNode t1 = (CharConstNode) t;
       DracoVMCodeGenerator.genVMCodeForIntConst((int)t1.content,sb);

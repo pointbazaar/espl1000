@@ -8,6 +8,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
 
@@ -17,11 +18,17 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.Expre
 
 public class MethodCallDracoVMCodeGenerator {
 
-  public static void genVMCodeForMethodCall(MethodCallNode methodCallNode, DracoVMCodeWriter sb, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception {
+  public static void genVMCodeForMethodCall(
+          MethodCallNode methodCallNode,
+          DracoVMCodeWriter sb,
+          SubroutineSymbolTable subTable,
+          LocalVarSymbolTable varTable,
+          StructsSymbolTable structsTable
+  ) throws Exception {
     //push arguments on stack in reverse order
     for(int i=methodCallNode.argumentList.size()-1;i>=0;i--){
       ExpressionNode arg = methodCallNode.argumentList.get(i);
-      genDracoVMCodeForExpression(arg,sb,subTable,varTable);
+      genDracoVMCodeForExpression(arg,sb,subTable,varTable,structsTable);
     }
     final int nArgs;
 
@@ -29,7 +36,7 @@ public class MethodCallDracoVMCodeGenerator {
       //compile call to subroutine which is given as local variable or argument
 
       //push the label on the stack from either LOCAL SEGMENT or ARG SEGMENT
-      VariableDracoVMCodeGenerator.genDracoVMCodeForSimpleVariable(methodCallNode.methodName, Optional.empty(),sb,subTable,varTable);
+      VariableDracoVMCodeGenerator.genDracoVMCodeForSimpleVariable(methodCallNode.methodName, Optional.empty(),sb,subTable,varTable,structsTable);
 
       //perform a call to the label on stack
       sb.callfromstack();

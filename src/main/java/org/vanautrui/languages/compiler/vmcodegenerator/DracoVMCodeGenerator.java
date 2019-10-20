@@ -11,6 +11,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.terminal.FloatConstNode
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTableRow;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,13 +23,18 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.Subro
 
 public final class DracoVMCodeGenerator {
 
-    public static List<String> generateDracoVMCode(Set<AST> asts, SubroutineSymbolTable subTable,boolean debug,boolean printsymboltables) throws Exception{
+    public static List<String> generateDracoVMCode(
+            Set<AST> asts,
+            SubroutineSymbolTable subTable,
+            StructsSymbolTable structsTable,
+            boolean debug,boolean printsymboltables
+    ) throws Exception{
 
         DracoVMCodeWriter sb = new DracoVMCodeWriter();
         for(AST ast :asts){
             for(NamespaceNode namespaceNode : ast.namespaceNodeList){
                 for(MethodNode methodNode : namespaceNode.methodNodeList){
-                    generateDracoVMCodeForMethod(namespaceNode,methodNode,sb,subTable,debug,printsymboltables);
+                    generateDracoVMCodeForMethod(namespaceNode,methodNode,sb,subTable, structsTable,debug,printsymboltables);
                 }
             }
         }
@@ -56,7 +62,13 @@ public final class DracoVMCodeGenerator {
      * @param varTable
      * @throws Exception
      */
-    public static void genVMCodeForArrayConstant(ArrayConstantNode arrayConstantNode, DracoVMCodeWriter sb, SubroutineSymbolTable subTable, LocalVarSymbolTable varTable) throws Exception{
+    public static void genVMCodeForArrayConstant(
+            ArrayConstantNode arrayConstantNode,
+            DracoVMCodeWriter sb,
+            SubroutineSymbolTable subTable,
+            LocalVarSymbolTable varTable,
+            StructsSymbolTable structsTable
+    ) throws Exception{
 
         //allocate space for the new array.
         //this leaves the address of the new array (the new array resides on the heap) on the stack
@@ -75,7 +87,7 @@ public final class DracoVMCodeGenerator {
             sb.iconst(i);//index to store into
 
             //value we want to store
-            genDracoVMCodeForExpression(arrayConstantNode.elements.get(i),sb,subTable,varTable);
+            genDracoVMCodeForExpression(arrayConstantNode.elements.get(i),sb,subTable,varTable,structsTable);
 
             sb.arraystore();
         }

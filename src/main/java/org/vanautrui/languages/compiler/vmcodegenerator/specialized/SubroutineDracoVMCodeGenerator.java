@@ -38,7 +38,7 @@ public class SubroutineDracoVMCodeGenerator {
     }
 
     for(StatementNode stmt : m.statements){
-      generateDracoVMCodeForStatement(stmt,m,sb,subTable,varTable);
+      generateDracoVMCodeForStatement(stmt,m,sb,subTable,varTable,structsTable);
     }
 
     //return should be the last statement in every possible branch for these statements

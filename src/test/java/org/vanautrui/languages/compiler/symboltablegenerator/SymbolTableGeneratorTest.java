@@ -10,6 +10,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.vmcodegenerator.specialized.SubroutineDracoVMCodeGenerator;
 
 import java.util.ArrayList;
@@ -42,7 +43,11 @@ public class SymbolTableGeneratorTest {
 
         MethodNode myMethod = ast.namespaceNodeList.stream().collect(Collectors.toList()).get(0).methodNodeList.get(1);
 
-        LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable);
+
+        List<AST> asts = new ArrayList<>();
+        asts.add(ast);
+        StructsSymbolTable structsTable = SymbolTableGenerator.createStructsSymbolTable(asts,false);
+        LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable,structsTable);
 
         assertTrue(localVarTable.containsVariable("x"));
 
@@ -64,7 +69,10 @@ public class SymbolTableGeneratorTest {
 
         MethodNode myMethod = ast.namespaceNodeList.stream().collect(Collectors.toList()).get(0).methodNodeList.get(0);
 
-        LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable);
+        List<AST> asts = new ArrayList<>();
+        asts.add(ast);
+        StructsSymbolTable structsTable = SymbolTableGenerator.createStructsSymbolTable(asts,false);
+        LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable,structsTable);
 
         //System.out.println(localVarTable.toString());
 
@@ -88,7 +96,10 @@ public class SymbolTableGeneratorTest {
 
         MethodNode myMethod = ast.namespaceNodeList.stream().collect(Collectors.toList()).get(0).methodNodeList.get(0);
 
-        LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable);
+        List<AST> asts = new ArrayList<>();
+        asts.add(ast);
+        StructsSymbolTable structsTable = SymbolTableGenerator.createStructsSymbolTable(asts,false);
+        LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable,structsTable);
 
         //System.out.println(localVarTable.toString());
 
@@ -108,7 +119,11 @@ public class SymbolTableGeneratorTest {
 
         MethodNode myMethod = ast.namespaceNodeList.stream().collect(Collectors.toList()).get(0).methodNodeList.get(0);
 
-        LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable);
+
+        List<AST> asts = new ArrayList<>();
+        asts.add(ast);
+        StructsSymbolTable structsTable = SymbolTableGenerator.createStructsSymbolTable(asts,false);
+        LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable,structsTable);
 
         //System.out.println(localVarTable.toString());
 
