@@ -13,8 +13,8 @@ public namespace Math{
 		println("sign(-3)");
 		println(sign(-3));
 		
-		println("sqrt(4.0)");
-		println(sqrt(4.0));
+		//println("sqrt(4.0)");
+		//println(sqrt(4.0));
 
 		println("pow(2,3)");
 		println(pow(2,3));
@@ -26,7 +26,8 @@ public namespace Math{
 		println("max(2,6)");
 		println(max(2,6));
 		println();
-
+		
+/*
 		println("pi()");
 		println(pi());
 		println();
@@ -35,12 +36,13 @@ public namespace Math{
 		println(e());
 		println();
 
-
+*/
 		//println("sin(pi()/2.0)");
 		//println(sin(pi()/2.0));
 		return 0;
 	}
 
+	/*
 	public (Float number)->Float sqrt{
 		t=0.0;
 		squareRoot=number/2.0;
@@ -55,6 +57,8 @@ public namespace Math{
 
 		return squareRoot;
 	}
+	*/
+
 	public (PInt n)->Integer abs{
 		if(n<0){
 			return (-1)*n;
@@ -92,12 +96,15 @@ public namespace Math{
 		if(a<b){return a;}
 		return b;
 	}
+	/*
 	public ()->Float e{
 		return 2.71828;
 	}
+	
 	public ()->Float pi{
 		return 3.14159;
 	}
+	*/
 
 	/*
 	public Float sin(Float x){

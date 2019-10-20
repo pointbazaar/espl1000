@@ -5,44 +5,50 @@
 //println, print, read, readln and such to the dragon language
 
 public namespace Base{
-	
-	public (PInt x)~>PInt print{
-		printPInt(x);
-		return 0;
-	}
-	
-	public (PInt n)~>PInt println{
-		printPInt(n);
 
-		printChar('\n');
+	struct String{
+		Char c,
+		Bool hasNext,
+		String next
+	}
+
+	public (Char c1)~>String string1{
+		String s=malloc(3);
+
+		s.hasNext=false;
+		s.c=c1;
+
+		return s;
+	}
+
+	public (String s)~>PInt printString{
+		printChar(s.c);
+		if(s.hasNext){
+			printString(s.next);
+		}
 		return 0;
 	}
 	
+	public ()~>PInt println{
+		putchar('\');
+		putchar('n');
+		return 0;
+	}	
 
 	public (Char c)~>PInt printChar{
 		putchar(c);
 		return 0;
 	}
 
-	/*
-	public (NInt x)~>PInt printNInt{
-		if(x<0){
-			putchar('-');
-		}
-		y=x*(-1);
-		printPInt(y);
-	}
-	*/
-	
 	public (PInt x)~>PInt printPInt{
 		
 		if(x>10){
-			putchar(int2char(x));
+			putdigit(x);
 		}else{
 			lastdigit = (x % 10);
 			divided = x / 10;
 			printPInt(divided);
-			putchar(int2char(lastdigit));
+			putdigit(lastdigit);
 		}
 		return 0;
 	}
