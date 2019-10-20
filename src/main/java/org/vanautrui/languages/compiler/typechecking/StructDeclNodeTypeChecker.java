@@ -21,7 +21,7 @@ public final class StructDeclNodeTypeChecker {
     //the type of the struct is simple, by construction (see constructor)
 
     //check that it does not have a primitive type
-    if(TypeChecker.primitive_types_and_arrays_of_them.contains(structDeclNode.structType.typeName)){
+    if(TypeChecker.primitive_types_and_arrays_of_them.contains(structDeclNode.structType.getTypeName())){
       throw new Exception("struct type cannot be primitive ");
     }
 

@@ -93,7 +93,7 @@ public final class AssignmentStatementDracoVMCodeGenerator {
             sb.arrayread();
 
             //for the next one
-            previous_type = varTable.getTypeOfVariable(varNode.memberAccessList.get(i).name).getTypeName();
+            previous_type = struct.getTypeOfMember(memberName);
 
             if(varNode.memberAccessList.get(i).indexOptional.isPresent()){
                 final ExpressionNode indexIntoMemberExpr = varNode.memberAccessList.get(i).indexOptional.get();

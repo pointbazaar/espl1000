@@ -3,6 +3,9 @@ package org.vanautrui.languages.compiler.vmcodegenerator;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
+import org.vanautrui.languages.compiler.lexing.Lexer;
+import org.vanautrui.languages.compiler.lexing.utils.TokenList;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
 
 import static org.junit.Assert.assertEquals;
 import static org.vanautrui.languages.CodeGeneratorTestUtils.compile_and_run_program_for_testing;
@@ -78,7 +81,7 @@ public class AssignmentStatementCodeGeneratorTest {
         String source="public namespace MainTest954{" +
                 "struct MyStruct{PInt b}"+
                 "\tpublic ()~>PInt main{" +
-                "\t\ta=newstruct(MyStruct);" +
+                "\t\tMyStruct a=malloc(1);" +
                 "\t\ta.b=1;" +
                 "\t\tputdigit(a.b);" +
                 "\treturn 0;}" +
@@ -94,8 +97,8 @@ public class AssignmentStatementCodeGeneratorTest {
         String source="public namespace MainTest9541{" +
                 "struct MyStruct{PInt b,MyStruct s}"+
                 "\tpublic ()~>PInt main{" +
-                "\t\ta = newstruct(MyStruct);" +
-                "a.s = newstruct(MyStruct);"+
+                "\t\tMyStruct a = malloc(2);" +
+                "a.s = malloc(2);"+
                 "\t\ta.s.b=1;" +
                 "\t\tputdigit(a.s.b);" +
                 "\treturn 0;}" +

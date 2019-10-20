@@ -11,6 +11,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.StructDeclNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
@@ -65,12 +66,10 @@ public class SymbolTableGenerator {
 	public static LocalVarSymbolTable createMethodScopeSymbolTable(
 			MethodNode methodNode, SubroutineSymbolTable subTable,StructsSymbolTable structsTable
 	)throws Exception{
-		LocalVarSymbolTable methodScopeSymbolTable=new LocalVarSymbolTable();
+		final LocalVarSymbolTable methodScopeSymbolTable=new LocalVarSymbolTable();
 
 		//first, make the local variables for the arguments
 		for(DeclaredArgumentNode arg: methodNode.arguments){
-
-
 
 				if(!(arg.type.type instanceof BasicTypeWrappedNode) || !arg.name.isPresent()){
 					throw new Exception("not supported yet");
@@ -148,15 +147,21 @@ public class SymbolTableGenerator {
 	)throws Exception{
 
 		if(st instanceof AssignmentStatementNode) {
-			AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode)st;
+			final AssignmentStatementNode assignStmtNode = (AssignmentStatementNode)st;
 
-			var expressionType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,methodScopeSymbolTable,structsTable);
+			TypeNode type_of_var;
 
-			if(assignmentStatementNode.variableNode.memberAccessList.size()==0) {
+			if(assignStmtNode.optTypeNode.isPresent()){
+				type_of_var=assignStmtNode.optTypeNode.get();
+			}else {
+				type_of_var = TypeResolver.getTypeExpressionNode(assignStmtNode.expressionNode, methodNode, subTable, methodScopeSymbolTable, structsTable);
+			}
+
+			if(assignStmtNode.variableNode.memberAccessList.size()==0) {
 				methodScopeSymbolTable.add_idempotent(
 						new LocalVarSymbolTableRow(
-								assignmentStatementNode.variableNode.simpleVariableNode.name,
-								expressionType,
+								assignStmtNode.variableNode.simpleVariableNode.name,
+								type_of_var,
 								LocalVarSymbolTableRow.KIND_LOCALVAR
 						)
 				);

@@ -29,7 +29,7 @@ public class SubroutineDracoVMCodeGenerator {
       System.out.println(varTable.toString());
     }
 
-    sb.subroutine(containerClass.name.typeName,m.methodName,m.arguments.size(),subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName));
+    sb.subroutine(containerClass.name.getTypeName(),m.methodName,m.arguments.size(),subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName));
     //not sure if it is number of arguments or number of local vars
 
     //push the number of local variables on the stack

@@ -16,7 +16,7 @@ import java.util.Optional;
 
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ExpressionDracoVMCodeGenerator.genDracoVMCodeForExpression;
 
-public class MethodCallDracoVMCodeGenerator {
+public final class MethodCallDracoVMCodeGenerator {
 
   public static void genVMCodeForMethodCall(
           MethodCallNode methodCallNode,
