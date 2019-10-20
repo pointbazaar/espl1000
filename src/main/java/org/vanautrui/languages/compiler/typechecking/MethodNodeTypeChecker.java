@@ -28,7 +28,7 @@ public class MethodNodeTypeChecker {
   ) throws Exception{
 
     //create the variable Symbol table, to typecheck the statements
-    LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(methodNode,subTable);
+    LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(methodNode,subTable,structsTable);
 
     typeCheckMethodNameNode(asts, namespaceNode,methodNode.methodName);
 

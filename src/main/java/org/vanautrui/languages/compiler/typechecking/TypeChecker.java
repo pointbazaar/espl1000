@@ -41,13 +41,13 @@ public class TypeChecker {
 
   public static void doTypeCheck(
           List<AST> asts,
-          boolean debug,
-          StructsSymbolTable structsTable
+          boolean debug
   ) throws Exception {
     if (debug) {
       System.out.println("TYPECHECKING");
     }
-    SubroutineSymbolTable subroutineSymbolTable = SymbolTableGenerator.createSubroutineSymbolTable(asts, debug);
+    final SubroutineSymbolTable subroutineSymbolTable = SymbolTableGenerator.createSubroutineSymbolTable(asts, debug);
+    final StructsSymbolTable structsTable = SymbolTableGenerator.createStructsSymbolTable(asts, debug);
     if (debug) {
       System.out.println("generate subroutine symbol table:");
       System.out.println(subroutineSymbolTable.toString());
