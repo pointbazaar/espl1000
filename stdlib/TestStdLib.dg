@@ -6,7 +6,9 @@ use Math.dg
 public namespace TestStdLib{
 	public ()~>PInt main{
 
-                printPInt(abs(1));
+		putchar('c');
+                //printPInt(abs(1));
+		/*
                 printPInt(abs(-2));
 		println();
 
@@ -24,6 +26,7 @@ public namespace TestStdLib{
 		printPInt(min(4,5));
                 printPInt(max(2,6));
                 println();
+		*/
 
 		return 0;
 	}
