@@ -16,7 +16,8 @@ public final class StructDeclNodeTypeChecker {
           final List<AST> asts,
           final NamespaceNode namespaceNode,
           final StructDeclNode structDeclNode,
-          final SubroutineSymbolTable subroutineSymbolTable
+          final SubroutineSymbolTable subroutineSymbolTable,
+          final boolean debug
   ) throws Exception{
     //the type of the struct is simple, by construction (see constructor)
 
@@ -29,9 +30,12 @@ public final class StructDeclNodeTypeChecker {
     //check that it does not have the name of a namespace
     int count=0;
     for(AST ast : asts){
-      for(NamespaceNode dragonNamespaceNode : ast.namespaceNodeList){
-        for(StructDeclNode structDeclNode1 : dragonNamespaceNode.structDeclNodeList){
+      for(NamespaceNode namespace : ast.namespaceNodeList){
+        for(StructDeclNode structDeclNode1 : namespace.structDeclNodeList){
           if(structDeclNode1.getTypeName().equals(structDeclNode.getTypeName())){
+            if(debug){
+              System.out.println(structDeclNode.getTypeName()+" declared in namespace "+namespace.name.getTypeName());
+            }
             count++;
           }
         }
@@ -40,10 +44,12 @@ public final class StructDeclNodeTypeChecker {
         }
       }
     }
-    if(count!=1){
-      throw new Exception("struct "+structDeclNode.getTypeName()+" was declared multiple times");
+    if(count>1){
+      throw new Exception("struct "+structDeclNode.getTypeName()+" was declared multiple times.");
     }
-
+    if(count==0){
+      throw new Exception("struct "+structDeclNode.getTypeName()+" was not declared.");
+    }
     //typecheck Members
     for(final StructMemberDeclNode structMemberDeclNode : structDeclNode.structMembersList){
       typeCheckStructMemberDeclNode(asts,namespaceNode,structDeclNode,structMemberDeclNode,subroutineSymbolTable);
