@@ -1,8 +1,14 @@
 
+/*
 
-//this file is supposed to provide basic functionality 
-//such as basic input and output, like
-//println, print, read, readln and such to the dragon language
+this file is supposed to provide basic functionality 
+such as basic input and output.
+
+	Subroutines provided:
+	Base::println()			//prints a newline to stdout
+	Base::printString(string1)	//prints a string to stdout
+	Base::printPInt(pint1)		//prints a PInt to stdout
+*/
 
 public namespace Base{
 

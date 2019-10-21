@@ -1,64 +1,18 @@
 use Base.dg
 
+/*
+	Subroutines provided:
+
+	Math.abs(i)
+	Math.sign(i)
+	Math.pow(i,n)
+	Math.faculty(n)
+	Math.min(i1,i2)
+	Math.max(i1,i2)
+*/
+
 public namespace Math{
 	
-	public ()~>PInt main{
-		println("hi");	
-		println(abs(1));
-		println(abs(-2));
-
-		println("sign(4):");
-		println(sign(4));
-
-		println("sign(-3)");
-		println(sign(-3));
-		
-		//println("sqrt(4.0)");
-		//println(sqrt(4.0));
-
-		println("pow(2,3)");
-		println(pow(2,3));
-
-		println("3!");
-		println(faculty(3));
-		println();
-
-		println("max(2,6)");
-		println(max(2,6));
-		println();
-		
-/*
-		println("pi()");
-		println(pi());
-		println();
-
-		println("e()");
-		println(e());
-		println();
-
-*/
-		//println("sin(pi()/2.0)");
-		//println(sin(pi()/2.0));
-		return 0;
-	}
-
-	/*
-	public (Float number)->Float sqrt{
-		t=0.0;
-		squareRoot=number/2.0;
-		
-		t=squareRoot;
-		squareRoot=(t+(number/t))/2.0;
-
-		while((t-squareRoot)!=0.0){
-			t=squareRoot;
-			squareRoot=(t+(number/t))/2.0;
-		}
-
-		return squareRoot;
-	}
-	*/
-
 	public (PInt n)->Integer abs{
 		if(n<0){
 			return (-1)*n;
@@ -96,34 +50,4 @@ public namespace Math{
 		if(a<b){return a;}
 		return b;
 	}
-	/*
-	public ()->Float e{
-		return 2.71828;
-	}
-	
-	public ()->Float pi{
-		return 3.14159;
-	}
-	*/
-
-	/*
-	public Float sin(Float x){
-		i=0;
-		up=0;
-		down=0;
-		f=0.0;
-		sum=0.0;
-
-		while(i<6){
-			up=pow((-1),i);
-			down=faculty(2n+1);
-			f=pow(x,2n+1);
-
-			sum=sum+((up/down)*f);
-			i=i+1;
-		}
-
-		return sum;
-	}
-	*/
 }
