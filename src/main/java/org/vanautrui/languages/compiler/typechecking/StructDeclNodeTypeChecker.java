@@ -6,7 +6,9 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.StructDeclNode;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.vanautrui.languages.compiler.typechecking.StructMemberDeclTypeChecker.typeCheckStructMemberDeclNode;
 
@@ -26,6 +28,8 @@ public final class StructDeclNodeTypeChecker {
       throw new Exception("struct type cannot be primitive ");
     }
 
+    final List<NamespaceNode> namespaces_where_struct_was_declared = new ArrayList<>();
+
     //check that it is only declared once,
     //check that it does not have the name of a namespace
     int count=0;
@@ -36,6 +40,7 @@ public final class StructDeclNodeTypeChecker {
             if(debug){
               System.out.println(structDeclNode.getTypeName()+" declared in namespace "+namespace.name.getTypeName());
             }
+            namespaces_where_struct_was_declared.add(namespace);
             count++;
           }
         }
@@ -45,7 +50,16 @@ public final class StructDeclNodeTypeChecker {
       }
     }
     if(count>1){
-      throw new Exception("struct "+structDeclNode.getTypeName()+" was declared multiple times.");
+      throw
+              new Exception(
+                      "struct "
+                              +structDeclNode.getTypeName()
+                              +" was declared multiple times, in namespaces: "
+                              +namespaces_where_struct_was_declared
+                              .stream()
+                              .map(ns->ns.name.getTypeName())
+                              .collect(Collectors.joining(","))
+              );
     }
     if(count==0){
       throw new Exception("struct "+structDeclNode.getTypeName()+" was not declared.");

@@ -1,30 +1,26 @@
 package org.vanautrui.languages.commandline;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import org.apache.commons.cli.CommandLine;
-import org.vanautrui.languages.TerminalUtil;
-import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
-import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
-import org.vanautrui.languages.vmcompiler.codegenerator.AssemblyCodeGenerator;
-import org.vanautrui.languages.compiler.lexing.Lexer;
-import org.vanautrui.languages.compiler.lexing.utils.CharacterList;
-import org.vanautrui.languages.compiler.lexing.utils.TokenList;
-import org.vanautrui.languages.compiler.parsing.Parser;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.phase_clean_the_input.CommentRemoverAndWhitespaceRemover;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.typechecking.TypeChecker;
+import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
 
 import java.io.File;
-import java.nio.file.*;
-import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Collectors;
+
 import static java.lang.System.out;
-import static org.fusesource.jansi.Ansi.Color.RED;
-import static org.vanautrui.languages.commandline.CompilerPhaseUtils.*;
-import static org.vanautrui.languages.commandline.dragonc.*;
-import static org.vanautrui.languages.compiler.phase_clean_the_input.CommentRemoverAndWhitespaceRemover.remove_unneccessary_whitespace;
+import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBeginPhase;
+import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printEndPhase;
+import static org.vanautrui.languages.commandline.dragonc.FLAG_DEBUG;
+import static org.vanautrui.languages.commandline.dragonc.FLAG_TIMED;
 import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createStructsSymbolTable;
 import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
 
@@ -52,14 +48,11 @@ public class CompilerPhases {
 
         //this should throw an exception, if it does not typecheck
         try {
-            TypeChecker typeChecker=new TypeChecker();
-            typeChecker.doTypeCheck(asts,debug);
+            TypeChecker.doTypeCheck(asts,debug);
 
-            //TerminalUtil.println("✓", Ansi.Color.GREEN);
             printEndPhase(true,printLong);
         }catch (Exception e){
-            //TerminalUtil.println("⚠", RED);
-            printEndPhase(true,printLong);
+            printEndPhase(false,printLong);
             throw e;
         }
     }
@@ -103,51 +96,61 @@ public class CompilerPhases {
 
         //'use' directives have to be at the top of the file
         //and cannot have newlines between or before them
-        List<Exception> exceptions=new ArrayList<>();
+        final List<Exception> exceptions=new ArrayList<>();
 
-        List<String> files_to_be_checked_for_includes=new ArrayList<>(codes);
+        final List<String> files_to_be_checked_for_includes=new ArrayList<>(codes);
 
 
         while (files_to_be_checked_for_includes.size() > 0) {
 
             try {
 
-                String code = files_to_be_checked_for_includes.get(0);
-                String[] lines = code.split("\n");
+                final String code = files_to_be_checked_for_includes.get(0);
+                final String[] lines = code.split("\n");
 
-                for (int i = 0; i < lines.length; i++) {
-                    String line = lines[i];
+                for (final String line : lines) {
                     if (line.startsWith("use")) {
-                        String[] parts = line.split(" ");
+                        final String[] parts = line.split(" ");
                         if (parts.length == 2) {
+                            final String filename_to_include = parts[1];
 
-                            if(debug){
-                                out.println("\nPREPROCESSOR: USE "+parts[1]);
+                            if (debug) {
+                                out.println("\nPREPROCESSOR: USE " + filename_to_include);
                             }
 
-                            Path filename_in_stdlib = Paths.get(System.getProperty("user.home")+"/dragon/stdlib/" + parts[1]);
-                            Path filename_in_project = Paths.get(parts[1]);
-                            //add those files contents to the files to be checked
-                            //search first in dragon stdlib and then in the project folder
+                            if(sources.stream().noneMatch(file -> file.getName().equals(filename_to_include))) {
+                                if(debug){
+                                    out.println("\nPREPROCESSOR: actually include "+filename_to_include);
+                                }
 
-                            Path path;
+                                Path filename_in_stdlib = Paths.get(System.getProperty("user.home") + "/dragon/stdlib/" + filename_to_include);
+                                Path filename_in_project = Paths.get(filename_to_include);
+                                //add those files contents to the files to be checked
+                                //search first in dragon stdlib and then in the project folder
 
-                            if (Files.exists(filename_in_stdlib)) {
-                                path = filename_in_stdlib;
-                            } else if (Files.exists(filename_in_project)) {
-                                path = filename_in_project;
-                            } else {
-                                String msg="neither "+filename_in_stdlib.toAbsolutePath().toString()+" nor "
-                                        +filename_in_project.toAbsolutePath().toString()+" exists";
-                                throw new Exception("tried to include file that does not exist. " + msg);
+                                Path path;
+
+                                if (Files.exists(filename_in_stdlib)) {
+                                    path = filename_in_stdlib;
+                                } else if (Files.exists(filename_in_project)) {
+                                    path = filename_in_project;
+                                } else {
+                                    final String msg = "neither " + filename_in_stdlib.toAbsolutePath().toString() + " nor "
+                                            + filename_in_project.toAbsolutePath().toString() + " exists";
+                                    throw new Exception("tried to include file that does not exist. " + msg);
+                                }
+                                final String content = new String(Files.readAllBytes(path));
+
+                                files_to_be_checked_for_includes.add(content);
+                                codes.add(content);
+                                sources.add(path.toFile());
+                            }else{
+                                if(debug){
+                                    out.println("\nPREPROCESSOR: skipping "+filename_to_include+" as it was already included.");
+                                }
                             }
-                            String content = new String(Files.readAllBytes(path));
-
-                            files_to_be_checked_for_includes.add(content);
-                            codes.add(content);
-                            sources.add(path.toFile());
                         } else {
-                            throw new Exception(" 'use' directive only has 2 parts");
+                            throw new Exception(" 'use' directive only has 2 parts, but this one did not: "+line);
                         }
                     } else {
                         //we hase reached the end of the include
