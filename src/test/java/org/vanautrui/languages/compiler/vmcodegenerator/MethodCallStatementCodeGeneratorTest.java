@@ -9,6 +9,14 @@ import static org.vanautrui.languages.CodeGeneratorTestUtils.compile_and_run_pro
 
 public class MethodCallStatementCodeGeneratorTest {
 
+    @Test
+    public void test_putchar_newline_works()throws Exception{
+        String source="public namespace MainTest2331 { public ()~>PInt main{ putchar('\\n'); return 0;}  }";
+        Process pr = compile_and_run_program_for_testing(source,"MainTest2331");
+
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("\n",IOUtils.toString(pr.getInputStream()));
+    }
 
     @Test
     public void test_can_call_other_method_with_argument()throws Exception{

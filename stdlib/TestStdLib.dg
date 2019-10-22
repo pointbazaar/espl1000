@@ -13,8 +13,7 @@ public namespace TestStdLib{
 		println();
 
                 printPInt(sign(4));
-                printPInt(sign(-3));
-		/*
+                //printPInt(sign(-3));
 		println();
 
 
@@ -27,7 +26,6 @@ public namespace TestStdLib{
 		printPInt(min(4,5));
                 printPInt(max(2,6));
                 println();
-		*/
 
 		return 0;
 	}

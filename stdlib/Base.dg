@@ -36,8 +36,9 @@ public namespace Base{
 	}
 	
 	public ()~>PInt println{
-		putchar('\');
-		putchar('n');
+		//putchar('\');
+		//putchar('n');
+		putchar('\n');
 		return 0;
 	}	
 
