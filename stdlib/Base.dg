@@ -48,7 +48,7 @@ public namespace Base{
 
 	public (PInt x)~>PInt printPInt{
 		
-		if(x>10){
+		if(x<10){
 			putdigit(x);
 		}else{
 			lastdigit = (x % 10);

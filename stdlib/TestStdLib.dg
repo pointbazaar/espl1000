@@ -6,14 +6,15 @@ use Math.dg
 public namespace TestStdLib{
 	public ()~>PInt main{
 
-		putchar('c');
-                //printPInt(abs(1));
-		/*
+		//putchar('c');
+                printPInt(abs(1));
+		
                 printPInt(abs(-2));
 		println();
 
                 printPInt(sign(4));
                 printPInt(sign(-3));
+		/*
 		println();
 
 
