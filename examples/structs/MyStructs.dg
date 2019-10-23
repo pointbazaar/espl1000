@@ -7,11 +7,14 @@ namespace MyStructs{
 
 
 	()~>PInt main{
-		MyStruct s = malloc(2); //as MyStruct has 2 members
+		MyStruct s = new(2); //as MyStruct has 2 members
 
 		s.a=1; //struct member store
 
+		putdigit(len(s));
 		putdigit(s.a); //struct member load
+	
+		//putdigit(len(s));
 
 		return 0;
 	}
