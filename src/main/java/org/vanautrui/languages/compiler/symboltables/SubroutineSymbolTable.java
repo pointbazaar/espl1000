@@ -26,15 +26,18 @@ public class SubroutineSymbolTable {
         this.add(new SubroutineSymbolTableRow("putdigit",new SimpleTypeNode("PInt"),"Builtin",0,1));
         this.add(new SubroutineSymbolTableRow("readchar",new SimpleTypeNode("Char"),"Builtin",0,0));
 
-        //to be implemented later
+        //to be maybe implemented later
+        /*
         this.add(new SubroutineSymbolTableRow("readint",new SimpleTypeNode("PInt"),"Builtin",0,1));
         this.add(new SubroutineSymbolTableRow("int2char",new SimpleTypeNode("Char"),"Builtin",0,1));
         this.add(new SubroutineSymbolTableRow("float2int",new SimpleTypeNode("Integer"),"Builtin",0,1));
         this.add(new SubroutineSymbolTableRow("int2float",new SimpleTypeNode("Float"),"Builtin",0,1));
+        */
 
-        //to be implemented?
-        //for structs, to be able to allocate them
-        this.add(new SubroutineSymbolTableRow("malloc",new SimpleTypeNode("#"),"Builtin",0,1));
+        //for structs, to be able to allocate them, and for arrays.
+        //as per dracovm spec
+        this.add(new SubroutineSymbolTableRow("new",new SimpleTypeNode("#"),"Builtin",0,1));
+        this.add(new SubroutineSymbolTableRow("len",new SimpleTypeNode("PInt"),"Builtin",0,1));
     }
 
     public void add(SubroutineSymbolTableRow row) {

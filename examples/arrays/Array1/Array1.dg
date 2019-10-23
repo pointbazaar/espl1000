@@ -4,16 +4,6 @@ public namespace Array1{
 		arr=[1,2,3,4];
 		
 		printarr(arr);
-		//printarr2(arr); //works
-
-		//putchar('+');
-		//i=0;
-		//while(i<2){
-		//	putdigit(arr[i]);
-		//	putchar(',');
-		//	i=i+1;
-		//}
-		//putchar('-');
 		return 0;	
 
 	}
