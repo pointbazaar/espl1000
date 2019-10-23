@@ -16,15 +16,16 @@ Its main debugger is [noBG](https://github.com/Milo-D/noBG-Assembly-Debugger)
 
 the other dependencies are just your standard maven dependencies
 
-## Goals
+## Goals 
 
 - [x] simple local variable type inference 
 - [x] compiles to intel x86 assembly
 - [ ] functional programming (currently without closures and without some other stuff)
-  - [x] functions are first-class citizens and can be passed as parameters to subroutines
+  - [x] functions can be passed as parameters to subroutines
   - [ ] lambda expressions
   - [ ] common functions (haskell inspired) map,reduce,filter,sum,zip,unzip,head,tail,init
-- [ ] structs (user-defined composite data types)
+- [x] structs (user-defined composite data types)
+- [x] length-prefixed arrays
 - [ ] generics (Type parameters)
 - [ ] type aliases (using a different, user-defined name for a type)
 - [ ] optional laziness, declare a method or function or block of statements to be lazy...
@@ -32,6 +33,8 @@ the other dependencies are just your standard maven dependencies
 - [ ] standard library 
   - [ ] networking 
   - [ ] math
+   - [x] abs,max,min,sign
+   - [ ] sin,cos,tan,...
   - [ ] string manipulations
 - [ ] support for functional style
 - [ ] support for object oriented style
