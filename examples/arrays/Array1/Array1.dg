@@ -7,16 +7,16 @@ public namespace Array1{
 		arr[1]=1;
 		
 		//putdigit(len(arr));
-		//printarr(arr);
-		putdigit(len(new(2)));
+		printarr(arr);
+		//putdigit(len(new(2)));
 		return 0;	
 
 	}
 
 	public ([PInt] arr)~>PInt printarr{
 		i=0;
-		//while(i<len(arr)){
-		while(i<2){
+		while(i < (len(arr)) ){
+		//while(i<2){
 			//putdigit(len(arr));
 			putdigit(i);
 			putchar('.');
