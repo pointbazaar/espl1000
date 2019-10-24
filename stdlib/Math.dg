@@ -13,7 +13,7 @@ use Base.dg
 
 public namespace Math{
 	
-	public (PInt n)->Integer abs{
+	public (Integer n)->Integer abs{
 		if(n<0){
 			return (-1)*n;
 		}

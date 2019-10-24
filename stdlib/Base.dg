@@ -30,6 +30,21 @@ public namespace Base{
 		return 0;
 	}	
 
+	public (Integer x)~>PInt printInteger{
+		if(x<0){
+			putchar('-');
+		}
+		x=x*(-1);
+		if(x<10){
+			putdigit(x);
+		}else{
+			lastdigit = (x%10);
+			divided   = x/10;
+			printInteger(divided);
+			putdigit(lastdigit);
+		}
+	}
+
 	public (PInt x)~>PInt printPInt{
 		
 		if(x<10){

@@ -93,8 +93,14 @@ public final class MethodCallNodeTypeChecker {
       final TypeNode arg_type_expected = subTable.getArgTypeOfSubroutineAtIndex(methodCallNode.methodName,i);
 
       if(!arg_type.getTypeName().equals(arg_type_expected.getTypeName())){
-        throw new Exception("in call of "+methodCallNode.toSourceCode()
-                +" , the types at index "+i+" did not match. expected type was "+arg_type_expected.getTypeName()+", but "+arg_type.getTypeName()+" was supplied");
+        //check if maybe the expected type is a wider type that contains the supplied type
+        if(TypeChecker.isIntegralType(arg_type) && arg_type_expected.getTypeName().equals("Integer")){
+          //it is ok
+        }else {
+
+          throw new Exception("in call of " + methodCallNode.toSourceCode()
+                  + " , the types at index " + i + " did not match. expected type was " + arg_type_expected.getTypeName() + ", but " + arg_type.getTypeName() + " was supplied");
+        }
       }
     }
 

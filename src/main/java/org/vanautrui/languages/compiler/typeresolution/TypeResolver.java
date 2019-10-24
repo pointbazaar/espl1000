@@ -131,7 +131,7 @@ public class TypeResolver {
         //here we assume it will be checked there
 
         if(arrayConstantNode.elements.size()==0){
-            throw new Exception("array size should be atleast 1, for the type to be inferred without type annotations");
+            throw new Exception("array size should be atleast 1, for the type to be inferred without type annotations: "+arrayConstantNode.toSourceCode()+" , in "+methodNode.methodName);
         }
 
         //for the array to have a type, it has to either be annotated,
@@ -150,7 +150,7 @@ public class TypeResolver {
     ) throws Exception
     {
         final List<String> boolean_operators = Arrays.asList("<",">","<=",">=","==","!=");
-        final List<String> some_arithmetic_operators = Arrays.asList("+","-","*","/");
+        final List<String> some_arithmetic_operators = Arrays.asList("+","-","*","/","%");
 
 
 
