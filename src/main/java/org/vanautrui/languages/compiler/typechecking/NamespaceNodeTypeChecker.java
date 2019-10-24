@@ -35,7 +35,7 @@ public class NamespaceNodeTypeChecker {
     }
 
     for(StructDeclNode structDeclNode : namespace.structDeclNodeList){
-      typeCheckStructDeclNode(asts, namespace,structDeclNode,subTable);
+      typeCheckStructDeclNode(asts, namespace,structDeclNode,subTable,debug);
     }
 
     for(MethodNode methodNode : namespace.methodNodeList){

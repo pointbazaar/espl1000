@@ -8,6 +8,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.CharConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.FloatConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IntConstNode;
@@ -38,6 +39,8 @@ public class TermNodeTypeChecker {
         } else if (termNode.termNode instanceof FloatConstNode) {
             //nothing to do
         } else if (termNode.termNode instanceof IntConstNode) {
+            //nothing to do
+        }else if(termNode.termNode instanceof BoolConstNode){
             //nothing to do
         } else if (termNode.termNode instanceof ExpressionNode) {
 

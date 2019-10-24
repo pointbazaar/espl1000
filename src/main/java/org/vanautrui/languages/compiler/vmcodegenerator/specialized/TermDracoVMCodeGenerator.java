@@ -50,8 +50,11 @@ public class TermDracoVMCodeGenerator {
       ArrayConstantNode arrayConstantNode = (ArrayConstantNode) t;
       DracoVMCodeGenerator.genVMCodeForArrayConstant(arrayConstantNode,sb,subTable,varTable,structsTable);
     }else if (t instanceof CharConstNode) {
-      CharConstNode t1 = (CharConstNode) t;
-      DracoVMCodeGenerator.genVMCodeForIntConst((int)t1.content,sb);
+      final CharConstNode t1 = (CharConstNode) t;
+
+      final int ascii_value = t1.content;
+
+      DracoVMCodeGenerator.genVMCodeForIntConst(ascii_value,sb);
     }else{
       throw new Exception("unhandled case");
     }

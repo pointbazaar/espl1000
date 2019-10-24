@@ -1,6 +1,7 @@
 package org.vanautrui.languages.compiler.typechecking;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.DeclaredArgumentNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
@@ -56,6 +57,23 @@ public class TypeChecker {
       for (NamespaceNode namespaceNode : ast.namespaceNodeList) {
         typeCheckNamespaceNode(asts, namespaceNode, subroutineSymbolTable, debug,structsTable);
       }
+    }
+    find_exactly_one_entry_point(asts);
+  }
+
+  private static void find_exactly_one_entry_point(List<AST> asts)throws Exception{
+    int count=0;
+    for (AST ast : asts) {
+      for (NamespaceNode namespaceNode : ast.namespaceNodeList) {
+        for(MethodNode methodNode : namespaceNode.methodNodeList){
+          if(methodNode.methodName.equals("main")){
+            count++;
+          }
+        }
+      }
+    }
+    if(count!=1){
+      throw new Exception("found more or less than 1 entry point '()~>PInt main'");
     }
   }
 

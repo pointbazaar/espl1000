@@ -54,7 +54,7 @@ public class SymbolTableGenerator {
 													methodNode.methodName,
 													((BasicTypeWrappedNode)methodNode.returnType.type).typenode, namespaceNode.name.getTypeName(),
 													count_local_vars(methodNode,subroutineSymbolTable),
-													methodNode.arguments.size()
+													methodNode.arguments.stream().map(a->a.type).collect(Collectors.toList())
 									);
 					subroutineSymbolTable.add(subrRow);
 				}

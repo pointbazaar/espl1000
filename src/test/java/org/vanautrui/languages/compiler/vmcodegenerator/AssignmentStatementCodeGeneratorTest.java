@@ -81,7 +81,7 @@ public class AssignmentStatementCodeGeneratorTest {
         String source="public namespace MainTest954{" +
                 "struct MyStruct{PInt b}"+
                 "\tpublic ()~>PInt main{" +
-                "\t\tMyStruct a=malloc(1);" +
+                "\t\tMyStruct a=new(1);" +
                 "\t\ta.b=1;" +
                 "\t\tputdigit(a.b);" +
                 "\treturn 0;}" +
@@ -97,8 +97,8 @@ public class AssignmentStatementCodeGeneratorTest {
         String source="public namespace MainTest9541{" +
                 "struct MyStruct{PInt b,MyStruct s}"+
                 "\tpublic ()~>PInt main{" +
-                "\t\tMyStruct a = malloc(2);" +
-                "a.s = malloc(2);"+
+                "\t\tMyStruct a = new(2);" +
+                "a.s = new(2);"+
                 "\t\ta.s.b=1;" +
                 "\t\tputdigit(a.s.b);" +
                 "\treturn 0;}" +

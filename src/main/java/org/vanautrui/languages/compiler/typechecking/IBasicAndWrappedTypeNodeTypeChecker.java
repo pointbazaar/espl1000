@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.StructDeclNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
@@ -31,10 +32,13 @@ public final class IBasicAndWrappedTypeNodeTypeChecker {
       }
 
       for (AST ast : asts) {
-        for (NamespaceNode myclassNode : ast.namespaceNodeList) {
-          if (myclassNode.name.getTypeName().equals(typename.getTypeName())) {
-            return;
+        for (NamespaceNode namespace : ast.namespaceNodeList) {
+          for(StructDeclNode sdn : namespace.structDeclNodeList){
+            if (sdn.getTypeName().equals(typename.getTypeName())) {
+              return;
+            }
           }
+
         }
       }
     } else if (typename instanceof SubroutineTypeNode) {

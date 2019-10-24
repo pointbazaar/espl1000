@@ -131,7 +131,7 @@ public class TypeResolver {
         //here we assume it will be checked there
 
         if(arrayConstantNode.elements.size()==0){
-            throw new Exception("array size should be atleast 1, for the type to be inferred without type annotations");
+            throw new Exception("array size should be atleast 1, for the type to be inferred without type annotations: "+arrayConstantNode.toSourceCode()+" , in "+methodNode.methodName);
         }
 
         //for the array to have a type, it has to either be annotated,
@@ -149,7 +149,7 @@ public class TypeResolver {
             StructsSymbolTable structsTable
     ) throws Exception
     {
-        List<String> boolean_operators= Arrays.asList("<",">","<=",">=","==","!=");
+        final List<String> boolean_operators = Arrays.asList("<",">","<=",">=","==","!=");
 
         if(
                 isIntegralType(getTypeTermNode(expressionNode.term,methodNode,subTable,varTable,structsTable)) &&
@@ -171,6 +171,17 @@ public class TypeResolver {
             return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Bool")));
         }
 
+        return getTypeExpressionNodeNonSimple(expressionNode, methodNode, subTable, varTable, structsTable);
+    }
+
+    private static TypeNode getTypeExpressionNodeNonSimple(
+            ExpressionNode expressionNode,
+            MethodNode methodNode,
+            SubroutineSymbolTable subTable,
+            LocalVarSymbolTable varTable,
+            StructsSymbolTable structsTable
+    ) throws Exception {
+        final List<String> some_arithmetic_operators = Arrays.asList("+","-","*","/","%");
 
         final TypeNode type = getTypeTermNode(expressionNode.term,methodNode,subTable,varTable,structsTable);
 
@@ -178,10 +189,21 @@ public class TypeResolver {
             TypeNode termType = getTypeTermNode(t,methodNode,subTable,varTable,structsTable);
 
             if(!(termType.getTypeName().equals(type.getTypeName()))){
+
+                if(
+                        isIntegralType(getTypeTermNode(expressionNode.term,methodNode,subTable,varTable,structsTable)) &&
+                                expressionNode.termNodes.size()==1 &&
+                                isIntegralType(getTypeTermNode(expressionNode.termNodes.get(0),methodNode,subTable,varTable,structsTable)) &&
+                                expressionNode.operatorNodes.size()==1 &&
+                                (some_arithmetic_operators.contains(expressionNode.operatorNodes.get(0).operator))
+                ){
+                    return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode( "Integer")));
+                }
+
                 throw new Exception(
-					"the types are not the same, "+type+" collides with "+termType
-					+" in '"+expressionNode.toSourceCode()+"'"
-				);
+                        "the types are not the same, "+type.getTypeName()+" collides with "+termType.getTypeName()
+                                +" in '"+expressionNode.toSourceCode()+"'"
+                );
             }
         }
 

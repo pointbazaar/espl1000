@@ -18,7 +18,7 @@ public final class StructDeclNodeTypeCheckerTest {
     Lexer lexer=new Lexer();
     Parser parser=new Parser();
     TokenList tokens = lexer.lexCodeTestMode(
-            "public namespace ExampleClass{ struct MyStruct{}" +
+            "public namespace ExampleClass{ struct MyStruct{} ()~>PInt main{ return 0;}" +
                     "}");
 
     AST ast = parser.parseTestMode(tokens,false);
@@ -50,13 +50,12 @@ public final class StructDeclNodeTypeCheckerTest {
 
   @Test
   public void test_typechecking_struct_invalid_multiple_declarations() throws Exception{
-    Lexer lexer=new Lexer();
-    Parser parser=new Parser();
-    TokenList tokens = lexer.lexCodeTestMode(
+
+    final TokenList tokens = (new Lexer()).lexCodeTestMode(
             "public namespace ExampleClass{ struct MyStruct{} struct MyStruct{}" +
                     "}");
 
-    AST ast = parser.parseTestMode(tokens,false);
+    AST ast = (new Parser()).parseTestMode(tokens,false);
 
     ArrayList<AST> asts = new ArrayList<>();
     asts.add(ast);

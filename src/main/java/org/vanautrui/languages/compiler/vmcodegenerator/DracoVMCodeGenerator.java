@@ -74,7 +74,7 @@ public final class DracoVMCodeGenerator {
         //this leaves the address of the new array (the new array resides on the heap) on the stack
 
         sb.iconst(arrayConstantNode.elements.size()); //amount of DWORD's to reserve
-        sb.call("Builtin","malloc"); //should leave the address to the newly allocated space on the stack
+        sb.call("Builtin","new"); //should leave the address to the newly allocated space on the stack
 
         //caller removes the arguments
         sb.swap("remove previously pushed arguments");

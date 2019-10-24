@@ -119,7 +119,7 @@ public final class DracoVMCodeWriter {
   }
 
   public void fconst(float value) {
-    any("fconstn "+value);
+    any("fconst "+value);
   }
 
   public void call(String containing_class_name,String methodName) {
@@ -230,5 +230,15 @@ public final class DracoVMCodeWriter {
 
   public void lshiftr() {
     any("lshiftr");
+  }
+
+  public void geq() {
+    //greater than or equal
+    any("geq");
+  }
+
+  public void leq() {
+    //lesser than or equal
+    any("leq");
   }
 }

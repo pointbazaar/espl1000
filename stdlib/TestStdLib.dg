@@ -1,0 +1,28 @@
+use Base.dg
+use Math.dg
+
+//this is to manually test the standard library subroutines
+
+public namespace TestStdLib{
+	public ()~>PInt main{
+
+		println("sign(4)");
+                printi(sign(4));
+		println(" ");
+
+		
+                printi(pow(2,3));
+		println(" ");
+
+                printi(faculty(3));
+                println(" ");
+
+		printi(min(4,5));
+		println(" ");
+                printi(max(2,6));
+                println(" ");
+		
+		
+		return 0;
+	}
+}

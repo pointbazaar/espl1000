@@ -1,44 +1,30 @@
 public namespace Array1{
 	public ()~>PInt main{
 
-		arr=[1,2,3,4];
+		//arr=[1,2,3,4,5,6];
+		[PInt] arr = new(2);
+		arr[0]=0; //with only this assignment, and not the other, it works
+		arr[1]=1;
 		
+		//putdigit(len(arr));
 		printarr(arr);
-		//printarr2(arr); //works
-
-		//putchar('+');
-		//i=0;
-		//while(i<2){
-		//	putdigit(arr[i]);
-		//	putchar(',');
-		//	i=i+1;
-		//}
-		//putchar('-');
+		//putdigit(len(new(2)));
 		return 0;	
 
 	}
-	public ([PInt] arr)~>PInt printarr2{
 
-		putdigit(arr[0]);
-		putchar(',');
-		putdigit(arr[1]);
-		putchar(',');
-		putdigit(arr[2]);
-		putchar(',');
-		putdigit(arr[3]);
-
-		return 0;
-	}
 	public ([PInt] arr)~>PInt printarr{
 		i=0;
-		while(i<4){
+		putchar('[');
+		while(i < (len(arr)) ){
+			//putdigit(len(arr));
+			putdigit(i);
+			putchar(',');
+			//putdigit(arr[i]);
 
-			putdigit(arr[i]);
-
-			//putdigit(8);
 			i=i+1;
 		}
-		putchar('.');
+		putchar(']');
 		return 0;
 	}
 }

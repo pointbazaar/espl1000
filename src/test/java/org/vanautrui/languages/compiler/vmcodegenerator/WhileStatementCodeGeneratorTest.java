@@ -18,5 +18,41 @@ public class WhileStatementCodeGeneratorTest {
         assertEquals("111",IOUtils.toString(pr.getInputStream()));
     }
 
+    @Test
+    public void test_can_while_statement_and_call_builtin_subroutines()throws Exception{
+        String source="public namespace MainTest223 { public ()~>PInt main{ [PInt] arr=new(2); i=0; while (i<len(arr)) { putchar('1'); i=i+1; } return 0;} }";
+        Process pr = compile_and_run_program_for_testing(source,"MainTest223");
 
+        assertEquals(0,pr.exitValue());
+        assertEquals("11",IOUtils.toString(pr.getInputStream()));
+    }
+
+    @Test
+    public void test_can_while_statement_and_call_builtin_subroutines_other_subroutine()throws Exception{
+
+        final String printarr = "([PInt] arr)~>PInt printarr{ i=0; while (i<len(arr)) { putchar('1'); i=i+1; } return 0;}";
+
+        final String main = "public ()~>PInt main{ [PInt] arr=new(2); printarr(arr); return 0;}";
+
+        final String source="public namespace MainTest223 { "+main+" "+printarr+" }";
+        Process pr = compile_and_run_program_for_testing(source,"MainTest223");
+
+        assertEquals(0,pr.exitValue());
+        assertEquals("11",IOUtils.toString(pr.getInputStream()));
+    }
+
+    @Test
+    public void test_can_while_statement_and_call_builtin_subroutines_other_subroutine_and_assign()throws Exception{
+
+        final String printarr = "([PInt] arr)~>PInt printarr{ i=0; while (i<len(arr)) { putchar('1'); i=i+1; } return 0;}";
+
+        //arr[0]=0; arr[1]=1; seems to be causing problems later on
+        final String main = "public ()~>PInt main{ [PInt] arr=new(2); arr[0]=0; arr[1]=1; printarr(arr); return 0;}";
+
+        final String source="public namespace MainTest223 { "+main+" "+printarr+" }";
+        final Process pr = compile_and_run_program_for_testing(source,"MainTest223");
+
+        assertEquals(0,pr.exitValue());
+        assertEquals("11",IOUtils.toString(pr.getInputStream()));
+    }
 }
