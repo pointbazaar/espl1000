@@ -41,6 +41,12 @@ public class OperatorDracoVMCodeGenerator {
         sb.eq();
         break;
 
+      case "&&":
+        sb.and();
+        break;
+      case "||":
+        sb.or();
+
       case "<<":
         sb.lshiftl();
         break;

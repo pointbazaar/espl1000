@@ -150,6 +150,7 @@ public class TypeResolver {
     ) throws Exception
     {
         final List<String> boolean_operators = Arrays.asList("<",">","<=",">=","==","!=");
+        final List<String> primitive_types_not_integral = Arrays.asList("Bool","Char","Float");
 
         if(
                 isIntegralType(getTypeTermNode(expressionNode.term,methodNode,subTable,varTable,structsTable)) &&
@@ -161,14 +162,16 @@ public class TypeResolver {
             return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode( "Bool")));
         }
 
-		    if(
-                getTypeTermNode(expressionNode.term,methodNode,subTable,varTable,structsTable).getTypeName().equals("Float") &&
-                        expressionNode.termNodes.size()==1 &&
-                        getTypeTermNode(expressionNode.termNodes.get(0),methodNode,subTable,varTable,structsTable).getTypeName().equals("Float") &&
-                        expressionNode.operatorNodes.size()==1 &&
-                        (boolean_operators.contains(expressionNode.operatorNodes.get(0).operator))
-        ){
-            return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Bool")));
+        for(String primitive_type_not_integral : primitive_types_not_integral) {
+            if (
+                    getTypeTermNode(expressionNode.term, methodNode, subTable, varTable, structsTable).getTypeName().equals(primitive_type_not_integral) &&
+                            expressionNode.termNodes.size() == 1 &&
+                            getTypeTermNode(expressionNode.termNodes.get(0), methodNode, subTable, varTable, structsTable).getTypeName().equals(primitive_type_not_integral) &&
+                            expressionNode.operatorNodes.size() == 1 &&
+                            (boolean_operators.contains(expressionNode.operatorNodes.get(0).operator))
+            ) {
+                return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Bool")));
+            }
         }
 
         return getTypeExpressionNodeNonSimple(expressionNode, methodNode, subTable, varTable, structsTable);

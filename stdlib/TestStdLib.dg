@@ -43,6 +43,10 @@ public namespace TestStdLib{
 		arr=[1,2,3];
 		printarr(arr);
 
+
+		println("trimleft('  hi')");
+		println(trimleft("  hi"));
+
 		return 0;
 	}
 }

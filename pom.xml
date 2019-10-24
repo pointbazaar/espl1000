@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.github.pointbazaar</groupId>
             <artifactId>dracovm-compiler</artifactId>
-            <version>47749211ae</version>
+            <version>da19f91eec</version>
         </dependency>
 
 

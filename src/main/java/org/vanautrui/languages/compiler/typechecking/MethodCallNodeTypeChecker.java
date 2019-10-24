@@ -94,8 +94,10 @@ public final class MethodCallNodeTypeChecker {
 
       if(!arg_type.getTypeName().equals(arg_type_expected.getTypeName())){
         //check if maybe the expected type is a wider type that contains the supplied type
-        if(TypeChecker.isIntegralType(arg_type) && arg_type_expected.getTypeName().equals("Integer")){
+        if(TypeChecker.isIntegralType(arg_type) && arg_type_expected.getTypeName().equals("Integer")) {
           //it is ok
+        }else  if(arg_type_expected.getTypeName().equals("#")){
+          //it is ok, as # means anything
         }else {
 
           throw new Exception("in call of " + methodCallNode.toSourceCode()
