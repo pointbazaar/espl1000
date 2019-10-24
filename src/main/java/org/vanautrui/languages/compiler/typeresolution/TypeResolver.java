@@ -150,9 +150,6 @@ public class TypeResolver {
     ) throws Exception
     {
         final List<String> boolean_operators = Arrays.asList("<",">","<=",">=","==","!=");
-        final List<String> some_arithmetic_operators = Arrays.asList("+","-","*","/","%");
-
-
 
         if(
                 isIntegralType(getTypeTermNode(expressionNode.term,methodNode,subTable,varTable,structsTable)) &&
@@ -174,6 +171,17 @@ public class TypeResolver {
             return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Bool")));
         }
 
+        return getTypeExpressionNodeNonSimple(expressionNode, methodNode, subTable, varTable, structsTable);
+    }
+
+    private static TypeNode getTypeExpressionNodeNonSimple(
+            ExpressionNode expressionNode,
+            MethodNode methodNode,
+            SubroutineSymbolTable subTable,
+            LocalVarSymbolTable varTable,
+            StructsSymbolTable structsTable
+    ) throws Exception {
+        final List<String> some_arithmetic_operators = Arrays.asList("+","-","*","/","%");
 
         final TypeNode type = getTypeTermNode(expressionNode.term,methodNode,subTable,varTable,structsTable);
 
@@ -193,9 +201,9 @@ public class TypeResolver {
                 }
 
                 throw new Exception(
-					"the types are not the same, "+type.getTypeName()+" collides with "+termType.getTypeName()
-					+" in '"+expressionNode.toSourceCode()+"'"
-				);
+                        "the types are not the same, "+type.getTypeName()+" collides with "+termType.getTypeName()
+                                +" in '"+expressionNode.toSourceCode()+"'"
+                );
             }
         }
 

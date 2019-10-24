@@ -57,7 +57,9 @@ public class SubroutineSymbolTable {
 
         //len
         final List<TypeNode> len_arg_types = Arrays.asList(new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("#"))));
-        //TODO: arg type should really be [#], but not sure if i want to implement that yet.
+        // arg type should really be [#], but not sure if i want to implement that yet.
+        // dragon would then have to match nested types to find out if the types are compatible
+        // i want to implement that later
         this.add(new SubroutineSymbolTableRow("len",new SimpleTypeNode("PInt"),"Builtin",0,len_arg_types));
 
         //abs
