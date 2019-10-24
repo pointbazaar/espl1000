@@ -1,0 +1,15 @@
+use Base.dg
+
+namespace String{
+	
+	public ([Char] s, PInt i, PInt j)->[Char] substr{
+		PInt l=abs(j-i);
+		[Char] res=new(l);
+		PInt k=0;
+		while(k<l){
+			res[k]=s[i+k];
+			k=k+1;
+		}
+		return res;
+	}
+}
