@@ -7,25 +7,26 @@ public namespace TestStdLib{
 	public ()~>PInt main{
 
 		//putchar('c');
+		println("abs(1)");
                 printPInt(abs(1));
 		
                 printPInt(abs(-2));
-		println();
+		println("");
 
                 printPInt(sign(4));
                 //printPInt(sign(-3));
-		println();
+		println("");
 
 
                 printPInt(pow(2,3));
-		println();
+		println("");
 
                 printPInt(faculty(3));
-                println();
+                println("");
 
 		printPInt(min(4,5));
                 printPInt(max(2,6));
-                println();
+                println("");
 
 		return 0;
 	}

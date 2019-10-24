@@ -5,47 +5,30 @@ this file is supposed to provide basic functionality
 such as basic input and output.
 
 	Subroutines provided:
-	Base::println()			//prints a newline to stdout
-	Base::printString(string1)	//prints a string to stdout
-	Base::printPInt(pint1)		//prints a PInt to stdout
+	Base::println			
+	Base::print
+	Base::printPInt		
 */
 
 public namespace Base{
 
 	struct String{
-		Char c,
-		Bool hasNext,
-		String next
+		[Char] chars
 	}
 
-	public (Char c1)~>String string1{
-		String s=malloc(3);
-
-		s.hasNext=false;
-		s.c=c1;
-
-		return s;
-	}
-
-	public (String s)~>PInt printString{
-		printChar(s.c);
-		if(s.hasNext){
-			printString(s.next);
+	public ([Char] str)~>PInt print{
+		i=0;
+		while(i<len(str)){
+			putchar(str[i]);
 		}
 		return 0;
 	}
 	
-	public ()~>PInt println{
-		//putchar('\');
-		//putchar('n');
+	public ([Char] str)~>PInt println{
+		print(str);
 		putchar('\n');
 		return 0;
 	}	
-
-	public (Char c)~>PInt printChar{
-		putchar(c);
-		return 0;
-	}
 
 	public (PInt x)~>PInt printPInt{
 		

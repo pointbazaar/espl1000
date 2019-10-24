@@ -5,7 +5,7 @@ import io.bretty.console.table.ColumnFormatter;
 import io.bretty.console.table.Precision;
 import io.bretty.console.table.Table;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SimpleTypeNode;
 
 import java.util.*;
@@ -22,9 +22,23 @@ public class SubroutineSymbolTable {
         //add the builtin subroutines
 
         //already implemented subroutines
-        this.add(new SubroutineSymbolTableRow("putchar",new SimpleTypeNode("PInt"),"Builtin",0,1));
-        this.add(new SubroutineSymbolTableRow("putdigit",new SimpleTypeNode("PInt"),"Builtin",0,1));
-        this.add(new SubroutineSymbolTableRow("readchar",new SimpleTypeNode("Char"),"Builtin",0,0));
+
+        //putchar
+        final List<TypeNode> putchar_arg_types = Arrays.asList(new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Char"))));
+        final SubroutineSymbolTableRow putchar = new SubroutineSymbolTableRow("putchar",new SimpleTypeNode("PInt"),"Builtin",0,putchar_arg_types);
+        this.add(putchar);
+
+        //putdigit
+        final List<TypeNode> putdigit_arg_types = Arrays.asList(new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("PInt"))));
+        final SubroutineSymbolTableRow putdigit = new SubroutineSymbolTableRow("putdigit",new SimpleTypeNode("PInt"),"Builtin",0,putdigit_arg_types);
+        this.add(putdigit);
+
+        //readchar
+        final List<TypeNode> readchar_arg_types = new ArrayList<>();
+        final SubroutineSymbolTableRow readchar = new SubroutineSymbolTableRow("readchar",new SimpleTypeNode("Char"),"Builtin",0,readchar_arg_types);
+        this.add(readchar);
+
+
 
         //to be maybe implemented later
         /*
@@ -36,8 +50,16 @@ public class SubroutineSymbolTable {
 
         //for structs, to be able to allocate them, and for arrays.
         //as per dracovm spec
-        this.add(new SubroutineSymbolTableRow("new",new SimpleTypeNode("#"),"Builtin",0,1));
-        this.add(new SubroutineSymbolTableRow("len",new SimpleTypeNode("PInt"),"Builtin",0,1));
+
+        //new
+        final List<TypeNode> new_arg_types = Arrays.asList(new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("PInt"))));
+        this.add(new SubroutineSymbolTableRow("new",new SimpleTypeNode("#"),"Builtin",0,new_arg_types));
+
+        //len
+        final List<TypeNode> len_arg_types = Arrays.asList(new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("#"))));
+        //TODO: arg type should really be [#], but not sure if i want to implement that yet.
+
+        this.add(new SubroutineSymbolTableRow("len",new SimpleTypeNode("PInt"),"Builtin",0,len_arg_types));
     }
 
     public void add(SubroutineSymbolTableRow row) {
@@ -65,7 +87,7 @@ public class SubroutineSymbolTable {
     }
 
     public TypeNode getReturnTypeOfSubroutine(String subroutineName) {
-        return symbolTable.stream().filter(e->e.getName().equals(subroutineName)).collect(Collectors.toList()).get(0).getType();
+        return symbolTable.stream().filter(e->e.getName().equals(subroutineName)).collect(Collectors.toList()).get(0).getReturnType();
     }
 
     public int size() {
@@ -76,7 +98,7 @@ public class SubroutineSymbolTable {
 
         // define a formatter for each column
         String[] names = this.symbolTable.stream().map(SubroutineSymbolTableRow::getName).collect(Collectors.toList()).toArray(new String[]{});
-        String[] types = this.symbolTable.stream().map(row->row.getType().getTypeName()).collect(Collectors.toList()).toArray(new String[]{});
+        String[] types = this.symbolTable.stream().map(row->row.getReturnType().getTypeName()).collect(Collectors.toList()).toArray(new String[]{});
 
         int[] indices_inner = IntStream.range(0,this.symbolTable.size()).toArray();
         Integer[] indices = Arrays.stream( indices_inner ).boxed().toArray( Integer[]::new );
@@ -120,6 +142,10 @@ public class SubroutineSymbolTable {
     }
 
     public TypeNode getTypeOfSubroutine(String subroutine_name) throws Exception{
-        return this.get(subroutine_name).getType();
+        return this.get(subroutine_name).getReturnType();
+    }
+
+    public TypeNode getArgTypeOfSubroutineAtIndex(final String methodName, final int index) throws Exception {
+        return get(methodName).getArgumentTypes().get(index);
     }
 }

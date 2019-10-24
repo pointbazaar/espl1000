@@ -4,46 +4,60 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SubroutineSymbolTableRow {
 
     private final String subRoutineName;
     //almost all subroutines have a name, except anonymous subroutines or anonymous lambdas
     //but we can make up names for these maybe
 
-    private final TypeNode typeName;  //every subroutine has a return type
+    private final TypeNode returnTypeName;  //every subroutine has a return type
     private final String className; //every subroutine is contained in a class
 
     private final int numberOfLocalVariables;
-    private final int numberOfArguments;
-    public SubroutineSymbolTableRow(String subRoutineName, IBasicAndWrappedTypeNode typeName, String className, int numberOfLocalVariables, int nArgs){
+    //private final int numberOfArguments;
 
-        this.typeName=new TypeNode(new BasicTypeWrappedNode(typeName));
+    private final List<TypeNode> argumentTypes=new ArrayList<>();
+
+    public SubroutineSymbolTableRow(String subRoutineName, IBasicAndWrappedTypeNode returnTypeName, String className, int numberOfLocalVariables, List<TypeNode> arg_types){
+
+        this.returnTypeName =new TypeNode(new BasicTypeWrappedNode(returnTypeName));
         this.subRoutineName = subRoutineName;
         this.className=className;
         this.numberOfLocalVariables=numberOfLocalVariables;
-        this.numberOfArguments=nArgs;
+        //this.numberOfArguments=nArgs;
+
+        this.argumentTypes.addAll(arg_types);
     }
-    public SubroutineSymbolTableRow(String subRoutineName, TypeNode typeName, String className, int numberOfLocalVariables, int nArgs){
+    public SubroutineSymbolTableRow(String subRoutineName, TypeNode returnTypeName, String className, int numberOfLocalVariables, List<TypeNode> arg_types){
 
-        this.typeName=typeName;
+        this.returnTypeName = returnTypeName;
         this.subRoutineName = subRoutineName;
         this.className=className;
         this.numberOfLocalVariables=numberOfLocalVariables;
-        this.numberOfArguments=nArgs;
+        //this.numberOfArguments=nArgs;
+
+        this.argumentTypes.addAll(arg_types);
     }
 
     @Override
     public String toString(){
 
-        return String.format("| %8s | %8s | %8s |", subRoutineName,typeName,className);
+        return String.format("| %8s | %8s | %8s |", subRoutineName, returnTypeName,className);
     }
 
     public String getName() {
         return this.subRoutineName;
     }
 
-    public TypeNode getType() {
-        return this.typeName;
+    public TypeNode getReturnType() {
+        return this.returnTypeName;
+    }
+
+    public List<TypeNode> getArgumentTypes(){
+        return this.argumentTypes;
     }
 
     public String getClassName(){return this.className;}
@@ -53,7 +67,7 @@ public class SubroutineSymbolTableRow {
     }
 
     public int getNumberOfArguments() {
-        return this.numberOfArguments;
+        return this.argumentTypes.size();
     }
 
     public static String generateVMCodeSubroutineName(String className,String subRoutineName){
