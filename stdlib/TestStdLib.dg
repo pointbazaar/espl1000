@@ -6,27 +6,23 @@ use Math.dg
 public namespace TestStdLib{
 	public ()~>PInt main{
 
-		//println("abs(1)");
-                //printInteger(abs(1*(-1)*(-1)));
-		
-                //printInteger(abs(-2));
-		//println(" ");
-
 		println("sign(4)");
-                printInteger(sign(4));
+                printi(sign(4));
 		println(" ");
 
-
-                printPInt(pow(2,3));
+		
+                printi(pow(2,3));
 		println(" ");
 
-                printPInt(faculty(3));
+                printi(faculty(3));
                 println(" ");
 
-		printPInt(min(4,5));
-                printPInt(max(2,6));
+		printi(min(4,5));
+		println(" ");
+                printi(max(2,6));
                 println(" ");
-
+		
+		
 		return 0;
 	}
 }

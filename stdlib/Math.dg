@@ -3,7 +3,6 @@ use Base.dg
 /*
 	Subroutines provided:
 
-	Math.abs(i)
 	Math.sign(i)
 	Math.pow(i,n)
 	Math.faculty(n)
@@ -12,13 +11,6 @@ use Base.dg
 */
 
 public namespace Math{
-	
-	public (Integer n)->Integer abs{
-		if(n<0){
-			return (-1)*n;
-		}
-		return n;
-	}
 	
 	public (PInt n)->Integer sign{
 		if(n>0){
