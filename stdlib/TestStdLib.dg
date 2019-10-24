@@ -2,6 +2,7 @@ use Base.dg
 use Math.dg
 use String.dg
 use Vector.dg
+use Array.dg
 
 //this is to manually test the standard library subroutines
 
@@ -37,6 +38,10 @@ public namespace TestStdLib{
 		print(",");
 		printi(res.b);
 		println(" ");
+		
+
+		arr=[1,2,3];
+		printarr(arr);
 
 		return 0;
 	}
