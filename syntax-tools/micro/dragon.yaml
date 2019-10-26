@@ -6,6 +6,9 @@ rules:
     - type: "\\b(PInt|NInt|Integer|PFloat|NFloat|Float|Char|Bool)\\b"
     - statement: "\\b(if|else|while|loop|return)\\b"
     - special: "\\b(namespace|struct)\\b"
+
+    - preproc: "use [A-Z].*\\.dg"
+    
     - constant: "\\b(true|false)\\b"
     - constant.number: "\\b[0-9]+\\b"
 
