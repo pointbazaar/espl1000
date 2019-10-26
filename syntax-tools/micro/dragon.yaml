@@ -11,7 +11,13 @@ rules:
     
     - constant: "\\b(true|false)\\b"
     - constant.number: "\\b[0-9]+\\b"
-
+    - constant.string:
+            start: "\""
+            end: "\""
+            skip: "\\\\."
+            rules:
+                - constant.specialChar: "\\\\."
+                
     - comment.line: "//.*"
 
     - comment: 
