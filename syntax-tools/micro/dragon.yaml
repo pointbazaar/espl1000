@@ -1,0 +1,10 @@
+filetype: dragon
+detect:
+    filename: "\\.dg$"
+
+rules:
+    - special: "\\b(namespace|struct|return)\\b"
+
+    - comment.line: "//.*"
+
+    - todo: "TODO:?"
