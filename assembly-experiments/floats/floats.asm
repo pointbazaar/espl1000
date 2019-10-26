@@ -34,9 +34,6 @@ _start:	            ;tells linker entry point
 	and eax, 0b10000000000000000000000000000000
 	shr eax, 31 
 
-	;DEBUG: TODO: remove this
-	;mov eax,13
-	
 
 	; pick out the last digit by using %10
 	; https://stackoverflow.com/questions/8021772/assembly-language-how-to-do-modulo
