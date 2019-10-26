@@ -36,6 +36,7 @@ _start:	            ;tells linker entry point
 
 	add eax, 0x30	; convert digit to ascii
 	push 49 ; push ascii '1'
+	mov ecx,esp ;for printchar_on_stack
 	call printchar_on_stack ;print the char
 	pop eax
 
@@ -47,11 +48,7 @@ printchar_on_stack:
 	; this subroutine is to print one char, which is on the stack
 	; the stack should not be changed by this subroutine
 
-	mov ecx, esp
-	add ecx, 4 		
-	; as esp points to the next location where the next dword would
-	; be placed on the stack, and in linux the stack grows toward low memory
-
+	;mov ecx, esp
 	
 	;put a pointer to our string in ecx
 	;because we are printing the char at top of stack, esp will suffice
