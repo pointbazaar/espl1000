@@ -1,0 +1,4 @@
+highlight namespace ctermfg=cyan guifg=#00ffff
+highlight struct ctermfg=green guifg=#00ff00
+highlight PrimitiveType ctermfg=blue guifg=#0000ff
+highlight Braces ctermfg=yellow guifg=#0f0f0f
