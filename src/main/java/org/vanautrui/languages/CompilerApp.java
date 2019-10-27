@@ -31,10 +31,6 @@ public final class CompilerApp {
         }
     }
 
-    public static String b(String s){
-        return s;
-    }
-
     public static void println(String s, PrintStream out){
         print(s,out);
         print("\n",out);
