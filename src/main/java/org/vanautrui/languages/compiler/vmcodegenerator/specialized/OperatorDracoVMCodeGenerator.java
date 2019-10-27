@@ -3,7 +3,7 @@ package org.vanautrui.languages.compiler.vmcodegenerator.specialized;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.OperatorNode;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
 
-public class OperatorDracoVMCodeGenerator {
+public final class OperatorDracoVMCodeGenerator {
 
   public static void genDracoVMCodeForOp(OperatorNode opNode, DracoVMCodeWriter sb)throws Exception{
     switch (opNode.operator){

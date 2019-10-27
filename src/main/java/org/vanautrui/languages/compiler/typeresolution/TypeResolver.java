@@ -21,7 +21,7 @@ import java.util.List;
 
 import static org.vanautrui.languages.compiler.typechecking.TypeChecker.isIntegralType;
 
-public class TypeResolver {
+public final class TypeResolver {
 
     //todo: make some class or global subroutine
     //that can then convert the type description directly

@@ -9,7 +9,7 @@ import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.OperatorDracoVMCodeGenerator.genDracoVMCodeForOp;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.TermDracoVMCodeGenerator.genDracoVMCodeForTerm;
 
-public class ExpressionDracoVMCodeGenerator {
+public final class ExpressionDracoVMCodeGenerator {
 
   public static void genDracoVMCodeForExpression(
           ExpressionNode expr, DracoVMCodeWriter sb,

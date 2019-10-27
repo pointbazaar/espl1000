@@ -2,7 +2,7 @@ package org.vanautrui.languages.commandline;
 
 import org.vanautrui.languages.CompilerApp;
 
-public class CompilerPhaseUtils {
+public final class CompilerPhaseUtils {
     static void printBeginPhase(String phaseName, boolean debug) {
         if(debug) {
             System.out.println(phaseName);

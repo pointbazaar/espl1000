@@ -18,7 +18,7 @@ import java.util.Set;
 
 import static org.vanautrui.languages.compiler.typechecking.NamespaceNodeTypeChecker.typeCheckNamespaceNode;
 
-public class TypeChecker {
+public final class TypeChecker {
 
   //this class is supposed to typecheck the program.
   //it receives the 'environment' of a node as arguments

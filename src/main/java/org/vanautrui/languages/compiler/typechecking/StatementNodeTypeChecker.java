@@ -23,7 +23,7 @@ import static org.vanautrui.languages.compiler.typechecking.MethodCallNodeTypeCh
 import static org.vanautrui.languages.compiler.typechecking.ReturnStatementTypeChecker.typeCheckReturnStatementNode;
 import static org.vanautrui.languages.compiler.typechecking.WhileStatementNodeTypeChecker.typeCheckWhileStatementNode;
 
-public class StatementNodeTypeChecker {
+public final class StatementNodeTypeChecker {
 
 
     static void typeCheckStatementNode(

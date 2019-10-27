@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class SymbolTableGenerator {
+public final class SymbolTableGenerator {
 	public static SubroutineSymbolTable createSubroutineSymbolTable(List<AST> asts,boolean debug)throws Exception{
 		if(debug){
 			System.out.println("creating a subroutine symbol table in "+SymbolTableGenerator.class.getSimpleName());

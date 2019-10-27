@@ -20,7 +20,7 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.Metho
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ReturnDracoVMCodeGenerator.genDracoVMCodeForReturn;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.WhileStatementDracoVMCodeGenerator.genVMCodeForWhileStatement;
 
-public class StatementDracoVMCodeGenerator {
+public final class StatementDracoVMCodeGenerator {
 
 
   public static void generateDracoVMCodeForStatement(

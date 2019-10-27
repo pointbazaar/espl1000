@@ -5,7 +5,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
 
-public class LocalVarSymbolTableRow  {
+public final class LocalVarSymbolTableRow  {
 
     //in the future there should be 2 classes for a row, and they should both implement an interface.
     //so that we can easily distingush between subroutine variables and normal variables and dont have so many optionals

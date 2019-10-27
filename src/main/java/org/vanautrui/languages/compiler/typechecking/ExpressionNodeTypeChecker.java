@@ -18,7 +18,7 @@ import java.util.List;
 
 import static org.vanautrui.languages.compiler.typechecking.TermNodeTypeChecker.typecheckTermNode;
 
-public class ExpressionNodeTypeChecker {
+public final class ExpressionNodeTypeChecker {
 
   static void typeCheckExpressionNode(
           List<AST> asts,

@@ -24,7 +24,7 @@ import static org.vanautrui.languages.commandline.dragonc.FLAG_TIMED;
 import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createStructsSymbolTable;
 import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
 
-public class CompilerPhases {
+public final class CompilerPhases {
 
     private final boolean debug;
     private final boolean timed;

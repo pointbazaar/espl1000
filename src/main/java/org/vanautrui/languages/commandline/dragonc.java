@@ -23,7 +23,7 @@ import static java.lang.System.currentTimeMillis;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBuildConclusion;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printDurationFeedback;
 
-public class dragonc {
+public final class dragonc {
     //this should be the compiler
 
     //one thing to note would be that

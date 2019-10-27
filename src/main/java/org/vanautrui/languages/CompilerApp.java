@@ -5,7 +5,7 @@ import org.vanautrui.languages.commandline.dragonc;
 import java.io.PrintStream;
 import java.util.Arrays;
 
-public class CompilerApp {
+public final class CompilerApp {
 
     //Assembly debugging:
     //(they are missing a stack display, but it be ok)
