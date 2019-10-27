@@ -32,8 +32,10 @@ public final class AssignmentStatementTypeChecker {
     final boolean types_equal = leftSideType.getTypeName().equals(rightSideType.getTypeName());
     final boolean one_is_wildcard = leftSideType.getTypeName().equals("#") || rightSideType.getTypeName().equals("#");
 
+    final boolean leftside_type_contains_rightside_type = leftSideType.getTypeName().equals("Integer") && TypeChecker.isIntegralType(rightSideType);
+
     if(
-            !types_equal && !one_is_wildcard
+            !types_equal && !one_is_wildcard && !leftside_type_contains_rightside_type
     ){
       throw new Exception(
               "with an assignment, both sides have to have the same type. here, a value of type "+rightSideType.getTypeName()+" was assigned to a value of type "+leftSideType.getTypeName()

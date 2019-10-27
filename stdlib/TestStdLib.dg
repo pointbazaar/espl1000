@@ -47,6 +47,11 @@ public namespace TestStdLib{
 		println("trimleft('  hi')");
 		println(trimleft("  hi"));
 
+		println("time()");
+		Integer mytime=time();
+		mytime=mytime*(-1);
+		printi(mytime);
+
 		return 0;
 	}
 }

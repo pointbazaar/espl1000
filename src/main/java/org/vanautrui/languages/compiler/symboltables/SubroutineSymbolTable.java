@@ -63,9 +63,12 @@ public final class SubroutineSymbolTable {
         this.add(new SubroutineSymbolTableRow("len",new SimpleTypeNode("PInt"),"Builtin",0,len_arg_types));
 
         //abs
-        //len
         final List<TypeNode> abs_arg_types = Arrays.asList(new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Integer"))));
         this.add(new SubroutineSymbolTableRow("abs",new SimpleTypeNode("PInt"),"Builtin",0,abs_arg_types));
+
+        //time
+        final List<TypeNode> time_arg_types = new ArrayList<>();
+        this.add(new SubroutineSymbolTableRow("time",new SimpleTypeNode("PInt"),"Builtin",0,time_arg_types));
     }
 
     public void add(SubroutineSymbolTableRow row) {
