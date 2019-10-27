@@ -47,10 +47,24 @@ public namespace TestStdLib{
 		println("trimleft('  hi')");
 		println(trimleft("  hi"));
 
+		printi(0);
+		println(" ");
+
+		printi(-1);
+		println(" ");
+
+		//below code gives 'floating point exception (core dumped)'
+		printi(-933738);
+		println("-933738");
+
 		println("time()");
 		Integer mytime=time();
-		mytime=mytime*(-1);
+		if(mytime<0){
+			mytime=mytime*(-1);
+		}
 		printi(mytime);
+		println(" ");
+		
 
 		return 0;
 	}

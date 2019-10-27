@@ -31,11 +31,14 @@ public namespace Base{
 	public (Integer x)~>PInt printi{
 		if(x<0){
 			putchar('-');
+		
+			x=x*(-1);
 		}
-		x=x*(-1);
+		//x >=0 from now on
 		if(x<10){
 			putdigit(abs(x));
 		}else{
+		
 			lastdigit = (x%10);
 			divided   = x/10;
 			printi(divided);
