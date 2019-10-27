@@ -21,10 +21,11 @@
             <artifactId>dragon-parser</artifactId>
             <version>e57618f485</version>
         </dependency>
+
         <dependency>
             <groupId>com.github.pointbazaar</groupId>
             <artifactId>dracovm-compiler</artifactId>
-            <version>da19f91eec</version>
+            <version>ed5eba656e</version>
         </dependency>
 
 
