@@ -12,9 +12,6 @@ such as basic input and output.
 
 public namespace Base{
 
-	struct String{
-		[Char] chars
-	}
 
 	public ([Char] str)~>PInt print{
 		i=0;
