@@ -3,18 +3,19 @@ package org.vanautrui.languages.commandline;
 import org.vanautrui.languages.CompilerApp;
 
 public class CompilerPhaseUtils {
-    public static void printBeginPhase(String phaseName,boolean printLongForm) throws InterruptedException {
-
-        System.out.println(phaseName);
+    static void printBeginPhase(String phaseName, boolean debug) {
+        if(debug) {
+            System.out.println(phaseName);
+        }
     }
 
-    public static void printEndPhase(boolean success, boolean debug) {
+    static void printEndPhase(boolean success, boolean debug) {
 
         if(debug) {
             System.out.println((success)?"✓":"⚠");
         }
     }
-    public static void printBuildConclusion(boolean success){
+    static void printBuildConclusion(boolean success){
         if(success) {
             System.out.println("BUILD SUCCESS");
         }else {
@@ -27,8 +28,8 @@ public class CompilerPhaseUtils {
         System.out.println(String.format("Duration: %6sms",duration));
     }
 
-    public static void printDurationFeedback(long duration /*milliseconds*/){
-        String str = duration + " ms";
+    static void printDurationFeedback(long duration /*milliseconds*/){
+        final String str = duration + " ms";
         if(duration>500) {
             CompilerApp.println("☠ "+str+" Compilation took too long. This needs to be fixed. Please file an Issue on GitHub.");
         }else if(duration>200) {
