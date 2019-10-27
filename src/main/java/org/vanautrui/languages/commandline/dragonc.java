@@ -2,6 +2,7 @@ package org.vanautrui.languages.commandline;
 
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.compiler.lexing.utils.CharacterList;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
@@ -17,6 +18,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static java.lang.System.currentTimeMillis;
 import static org.fusesource.jansi.Ansi.ansi;
@@ -197,19 +199,21 @@ public class dragonc {
                 sources.add(Paths.get("Main.dg").toFile());
             }
 
-            CompilerPhases phases = new CompilerPhases(cmd);
-            ParserPhases pphases = new ParserPhases();
+            final CompilerPhases phases = new CompilerPhases(cmd);
+            final ParserPhases pphases = new ParserPhases();
+            final LexerPhases lphases=new LexerPhases();
 
             //PHASE PREPROCESSOR
             //processes the 'use' directive
-            phases.phase_preprocessor(codes,sources);
+            lphases.phase_preprocessor(codes,sources);
 
             //PHASE CLEAN
-            List<CharacterList> codeWithoutCommentsWithoutUnneccesaryWhitespace
-                    = pphases.phase_clean(codes,sources);
+            List<CharacterList> codeWithoutCommentsWithoutUnneccesaryWhitespace = lphases.phase_clean(
+                    IntStream.range(0,Math.min(codes.size(),sources.size())).mapToObj(i-> Pair.of(codes.get(i),sources.get(i))).collect(Collectors.toList())
+            );
 
             //PHASE LEXING
-            List<TokenList> tokens = pphases.phase_lexing(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd.hasOption(FLAG_PRINT_TOKENS));
+            List<TokenList> tokens = lphases.phase_lexing(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd.hasOption(FLAG_PRINT_TOKENS));
 
             //PHASE PARSING
             List<AST> asts = pphases.phase_parsing(tokens,cmd.hasOption(FLAG_PRINT_AST));

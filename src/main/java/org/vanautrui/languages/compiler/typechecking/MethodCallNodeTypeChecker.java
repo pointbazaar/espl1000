@@ -5,6 +5,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
@@ -38,7 +39,9 @@ public final class MethodCallNodeTypeChecker {
 
     if (
             varTable.containsVariable(methodCallNode.methodName)
-                    && varTable.get(methodCallNode.methodName).getType().type instanceof SubroutineTypeNode
+                    && (
+                            varTable.get(methodCallNode.methodName).getType().type instanceof ITypeNode
+            )
     ) {
       found = true;
     }

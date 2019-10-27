@@ -2,7 +2,6 @@ package org.vanautrui.languages.commandline;
 
 import org.fusesource.jansi.Ansi;
 import org.vanautrui.languages.CompilerApp;
-import org.vanautrui.languages.TerminalUtil;
 
 import static org.fusesource.jansi.Ansi.Color.GREEN;
 import static org.fusesource.jansi.Ansi.Color.RED;

@@ -88,6 +88,7 @@ public class CompilerPhases {
         }
     }
 
+    /*
     public void phase_preprocessor(List<String> codes, List<File> sources) throws Exception {
         printBeginPhase("PREPROCESSING",printLong);
         //appends the 'use' used files to codes list and source paths list.
@@ -172,4 +173,6 @@ public class CompilerPhases {
             printEndPhase(true,printLong);
         }
     }
+
+     */
 }

@@ -1,14 +1,12 @@
 package org.vanautrui.languages.compiler.typechecking;
 
 import org.apache.commons.lang3.StringUtils;
-import org.vanautrui.languages.TerminalUtil;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ArrayTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeParameterNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 
 import java.util.List;
 
@@ -34,7 +32,7 @@ public final class ITypeNodeTypeChecker {
       return;
     }
 
-    String msg = TerminalUtil.gererateErrorString("TYPECHECKING: ")
+    String msg = ("TYPECHECKING: ")
             + "could not find class for type: "
             + StringUtils.wrap(typename.toSourceCode(), "'")
             + " in file : (TODO: display file and line number)";
