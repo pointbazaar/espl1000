@@ -201,26 +201,18 @@ public final class dragonc {
             final ParserPhases pphases = new ParserPhases();
             final LexerPhases lphases=new LexerPhases();
 
-            //PHASE PREPROCESSOR
+            //PHASE PREPROCESSOR, PHASE CLEAN, PHASE LEXING
             //processes the 'use' directive
-            lphases.phase_preprocessor(codes,sources);
-
-            //PHASE CLEAN
-            List<CharacterList> codeWithoutCommentsWithoutUnneccesaryWhitespace = lphases.phase_clean(
-                    IntStream.range(0,Math.min(codes.size(),sources.size())).mapToObj(i-> Pair.of(codes.get(i),sources.get(i))).collect(Collectors.toList())
-            );
-
-            //PHASE LEXING
-            List<TokenList> tokens = lphases.phase_lexing(codeWithoutCommentsWithoutUnneccesaryWhitespace,cmd.hasOption(FLAG_PRINT_TOKENS));
+            final List<TokenList> tokens = lphases.phase_preprocessor_then_clean_then_lexing(codes, sources, debug);
 
             //PHASE PARSING
-            List<AST> asts = pphases.phase_parsing(tokens,cmd.hasOption(FLAG_PRINT_AST));
+            final List<AST> asts = pphases.phase_parsing(tokens,cmd.hasOption(FLAG_PRINT_AST));
 
             //PHASE TYPE CHECKING
             phases.phase_typecheck(asts);
 
             //PHASE CODE GENERATION
-            List<String> vm_codes = phases.phase_vm_codegeneration(asts,"main",cmd.hasOption(FLAG_PRINT_VM_CODES),cmd.hasOption(FLAG_PRINT_SYMBOLTABLES));
+            final List<String> vm_codes = phases.phase_vm_codegeneration(asts,"main",cmd.hasOption(FLAG_PRINT_VM_CODES),cmd.hasOption(FLAG_PRINT_SYMBOLTABLES));
 
             //PHASE VM CODE COMPILATION, PHASE GENERATE EXECUTABLE
             (new VMCompilerPhases()).compile_vm_codes_and_generate_executable(vm_codes,"main",debug);
