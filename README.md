@@ -8,6 +8,7 @@ This repo contains a simple, work-in-progress statically typed programming langu
 
 - [x] simple local variable type inference 
 - [x] compiles to intel x86 assembly
+- [ ] 64 bit only, to enable 64 bit primitives by default
 - [ ] functional programming
   - [ ] functions are first-class citizens and can be passed as parameters
   - [ ] lambda expressions
