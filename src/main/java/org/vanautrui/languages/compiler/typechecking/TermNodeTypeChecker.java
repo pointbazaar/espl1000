@@ -23,7 +23,7 @@ import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeCh
 import static org.vanautrui.languages.compiler.typechecking.MethodCallNodeTypeChecker.typeCheckMethodCallNode;
 import static org.vanautrui.languages.compiler.typechecking.VariableNodeTypeChecker.typeCheckVariableNode;
 
-public class TermNodeTypeChecker {
+public final class TermNodeTypeChecker {
 
     static void typecheckTermNode(
             List<AST> asts,

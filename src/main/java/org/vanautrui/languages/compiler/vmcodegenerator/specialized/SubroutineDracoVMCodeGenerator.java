@@ -11,7 +11,7 @@ import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
 
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.StatementDracoVMCodeGenerator.generateDracoVMCodeForStatement;
 
-public class SubroutineDracoVMCodeGenerator {
+public final class SubroutineDracoVMCodeGenerator {
 
 
   public static void generateDracoVMCodeForMethod(

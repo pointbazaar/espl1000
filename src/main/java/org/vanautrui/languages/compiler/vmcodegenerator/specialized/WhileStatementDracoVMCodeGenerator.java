@@ -12,7 +12,7 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenera
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ExpressionDracoVMCodeGenerator.genDracoVMCodeForExpression;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.StatementDracoVMCodeGenerator.generateDracoVMCodeForStatement;
 
-public class WhileStatementDracoVMCodeGenerator {
+public final class WhileStatementDracoVMCodeGenerator {
 
 
   public static void genVMCodeForWhileStatement(

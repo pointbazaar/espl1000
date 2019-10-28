@@ -5,16 +5,14 @@ this file is supposed to provide basic functionality
 such as basic input and output.
 
 	Subroutines provided:
-	Base::println			
-	Base::print
-	Base::printPInt		
+	Base::print			
+	Base::println
+	Base::printi
+	Base::delay		
 */
 
 public namespace Base{
 
-	struct String{
-		[Char] chars
-	}
 
 	public ([Char] str)~>PInt print{
 		i=0;
@@ -34,11 +32,14 @@ public namespace Base{
 	public (Integer x)~>PInt printi{
 		if(x<0){
 			putchar('-');
+		
+			x=x*(-1);
 		}
-		x=x*(-1);
+		//x >=0 from now on
 		if(x<10){
 			putdigit(abs(x));
 		}else{
+		
 			lastdigit = (x%10);
 			divided   = x/10;
 			printi(divided);
@@ -46,5 +47,14 @@ public namespace Base{
 		}
 		return 0;
 	}
-	
+	public (PInt seconds)~>PInt delay{
+
+		start=time();
+		while(
+			(start+seconds)>time()
+		){
+			//do nothing
+		}
+		return 0;
+	}
 }

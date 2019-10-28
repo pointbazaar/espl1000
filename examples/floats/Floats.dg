@@ -1,19 +1,23 @@
-public namespace Floats{
-	public Int main(){
+use Base.dg
+use Math.dg
+
+namespace Floats{
+
+	public ()~>PInt main{
 		println("PI/2");
-		println(subr(3.14159,2.0));
+		printfl(subr(3.14159,2.0));
 
 		println("3.5*2");
-		println(3.5*2.0);
+		printfl(3.5*2.0);
 
 		println("6.0+2.0");
-		println(6.0+2.0);
+		printfl(6.0+2.0);
 
 		println("2.0-4.0");
-		println(2.0-4.0);
+		printfl(2.0-4.0);
 		return 0;
 	}
-	public Float subr(Float a,Float b){
+	public (Float a,Float b)~>Float subr{
 		return a/b;
 	}
 }

@@ -1,0 +1,37 @@
+use Base.dg
+
+namespace String{
+	
+	public ([Char] s, PInt i, PInt j)->[Char] substr{
+		PInt l=abs(j-i);
+		[Char] res=new(l);
+		PInt k=0;
+		while(k<l){
+			res[k]=s[i+k];
+			k=k+1;
+		}
+		return res;
+	}
+	
+	public ([Char] s)->[Char] trimleft{
+		
+		i=0;
+		blank=true;
+		while( (i<len(s)) && blank){
+			if(s[i] != ' '){
+				blank=false;
+			}else{
+				i=i+1;
+			}
+		}
+
+		[Char] r = new(len(s)-i);
+		k=0;
+		while(i<len(s)){
+			r[k]=s[i];
+			k=k+1;
+			i=i+1;
+		}
+		return r;
+	}
+}

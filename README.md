@@ -20,8 +20,9 @@ the other dependencies are just your standard maven dependencies
 
 - [x] simple local variable type inference 
 - [x] compiles to intel x86 assembly
+- [ ] 64 bit by default, 32 bit should also be supported
 - [ ] functional programming (currently without closures and without some other stuff)
-  - [x] functions can be passed as parameters to subroutines
+  - [x] functions can be passed as arguments to subroutines
   - [ ] lambda expressions
   - [ ] common functions (haskell inspired) map,reduce,filter,sum,zip,unzip,head,tail,init
 - [x] structs (user-defined composite data types)

@@ -33,9 +33,7 @@ public class CodeGeneratorTestUtils {
     }
 
     public static Path generateFromVMCodeAndWriteExecutable(List<String> vmcodes,String filename)throws Exception{
-        CompilerPhases phases = new CompilerPhases();
-        List<String> asm_codes = new VMCompilerPhases().phase_vm_code_compilation(vmcodes,false);
-        Path path = (new VMCompilerPhases()).phase_generate_executable(asm_codes,filename);
+        Path path = (new VMCompilerPhases()).compile_vm_codes_and_generate_executable(vmcodes,filename,false);
 
         return path;
     }

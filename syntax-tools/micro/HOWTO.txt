@@ -1,0 +1,4 @@
+create a symlink to this file in
+~/.config/micro/syntax/
+
+when starting micro, it should highlight it according to this file

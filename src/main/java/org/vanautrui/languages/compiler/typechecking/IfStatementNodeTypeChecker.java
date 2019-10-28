@@ -32,7 +32,7 @@ public final class IfStatementNodeTypeChecker {
       TypeResolver.getTypeExpressionNode(ifStatementNode.condition, methodNode, subTable, varTable,structsTable);
 
     if (!conditionType.getTypeName().equals("Bool")) {
-      throw new Exception(" condition should be of type Bool, but is of type: " + conditionType.getTypeName());
+      throw new Exception(" condition should be of type Bool, but is of type: " + conditionType.getTypeName()+" in : "+ifStatementNode.condition.toSourceCode());
     }
     for (StatementNode stmt : ifStatementNode.statements) {
       typeCheckStatementNode(asts, namespaceNode, methodNode, stmt, subTable, varTable,structsTable);

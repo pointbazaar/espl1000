@@ -1,0 +1,8 @@
+the compiler should be able to generate code 
+to handle floating point values. 
+so we need assembly codes
+to add such values, push, pop them,
+print them to stdout and so on.
+
+https://www.cs.uaf.edu/courses/cs301/2014-fall/notes/float-asm/
+

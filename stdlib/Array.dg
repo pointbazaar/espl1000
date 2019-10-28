@@ -1,0 +1,35 @@
+use Base.dg
+
+namespace Array{
+	
+	([PInt] arr1,[PInt] arr2)->Bool arreq{
+		
+		if(len(arr1)!=len(arr2)){
+			return false;
+		}
+		i=0;
+		while(i<len(arr1)){
+			if(arr1[i]!=arr2[i]){
+				return false;
+			}
+			i=i+1;
+		}
+		return true;
+	}
+	
+	([PInt] arr)->PInt printarr{
+		
+		i=0;
+		putchar('[');
+		while(i<len(arr)){
+			printi(arr[i]);
+			if(i< (len(arr)-1)){
+				putchar(',');
+			}
+			i=i+1;
+		}
+		putchar(']');
+		println(" ");
+		return 0;
+	}
+}

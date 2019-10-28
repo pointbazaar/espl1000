@@ -241,4 +241,12 @@ public final class DracoVMCodeWriter {
     //lesser than or equal
     any("leq");
   }
+
+  public void and() {
+    any("and");
+  }
+
+  public void or() {
+    any("or");
+  }
 }

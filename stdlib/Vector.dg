@@ -1,0 +1,25 @@
+namespace Vector{
+	
+	struct V2{
+		Integer a,
+		Integer b
+	}
+	
+	(Integer a,Integer b)->V2 v2{
+		V2 r = new(2);
+
+		r.a=a;
+		r.b=b;
+
+		return r;
+	}
+
+	(V2 a, V2 b)->V2 add{
+		V2 res=new(2);
+
+		res.a=a.a+b.a;
+		res.b=a.b+b.b;
+
+		return res;
+	}
+}

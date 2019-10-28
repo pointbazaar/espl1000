@@ -12,7 +12,7 @@ import java.util.List;
 import static org.vanautrui.languages.compiler.typechecking.MethodNodeTypeChecker.typeCheckMethodNode;
 import static org.vanautrui.languages.compiler.typechecking.StructDeclNodeTypeChecker.typeCheckStructDeclNode;
 
-public class NamespaceNodeTypeChecker {
+public final class NamespaceNodeTypeChecker {
 
 
   static void typeCheckNamespaceNode(

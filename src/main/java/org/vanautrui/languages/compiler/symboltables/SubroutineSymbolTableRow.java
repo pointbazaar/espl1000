@@ -7,7 +7,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubroutineSymbolTableRow {
+public final class SubroutineSymbolTableRow {
 
     private final String subRoutineName;
     //almost all subroutines have a name, except anonymous subroutines or anonymous lambdas

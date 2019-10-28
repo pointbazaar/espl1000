@@ -18,7 +18,7 @@ import static org.vanautrui.languages.compiler.typechecking.ITypeNodeTypeChecker
 import static org.vanautrui.languages.compiler.typechecking.StatementNodeTypeChecker.typeCheckStatementNode;
 import static org.vanautrui.languages.compiler.typechecking.TypeChecker.typeCheckMethodNameNode;
 
-public class MethodNodeTypeChecker {
+public final class MethodNodeTypeChecker {
 
   static void typeCheckMethodNode(List<AST> asts,
                                   NamespaceNode namespaceNode,

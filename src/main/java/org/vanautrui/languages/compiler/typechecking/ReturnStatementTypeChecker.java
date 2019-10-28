@@ -14,7 +14,7 @@ import java.util.List;
 
 import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeChecker.typeCheckExpressionNode;
 
-public class ReturnStatementTypeChecker {
+public final class ReturnStatementTypeChecker {
 
   static void typeCheckReturnStatementNode(
           List<AST> asts,

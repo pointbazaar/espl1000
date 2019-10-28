@@ -1,5 +1,8 @@
 use Base.dg
 use Math.dg
+use String.dg
+use Vector.dg
+use Array.dg
 
 //this is to manually test the standard library subroutines
 
@@ -21,8 +24,51 @@ public namespace TestStdLib{
 		println(" ");
                 printi(max(2,6));
                 println(" ");
+	
+		println("substr('hello',1,3)");	
+		println(substr("hello",1,3));		
+	
+		//make 2 vectors, add them
+		V2 a = v2(1,0);
+		V2 b = v2(0,1);
+
+		V2 res = add(a,b);
+		println("vector sum:");
+		printi(res.a);
+		print(",");
+		printi(res.b);
+		println(" ");
 		
-		
+
+		arr=[1,2,3];
+		printarr(arr);
+
+
+		println("trimleft('  hi')");
+		println(trimleft("  hi"));
+
+		printi(0);
+		println(" ");
+
+		printi(-1);
+		println(" ");
+
+		//below code gives 'floating point exception (core dumped)'
+		printi(-933738);
+		println("-933738");
+
+		println("time()");
+		Integer mytime=time();
+		if(mytime<0){
+			mytime=mytime*(-1);
+		}
+		printi(mytime);
+		println(" ");
+
+		println("start delay(1)");
+		delay(1);
+		println("end delay(1)");
+
 		return 0;
 	}
 }

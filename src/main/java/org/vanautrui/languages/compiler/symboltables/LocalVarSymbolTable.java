@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 
 import static org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTableRow.KIND_ARGUMENT;
 
-public class LocalVarSymbolTable  {
+public final class LocalVarSymbolTable  {
 
     private List<LocalVarSymbolTableRow> symbolTable;
 
