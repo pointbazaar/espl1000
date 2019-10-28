@@ -5,9 +5,10 @@ this file is supposed to provide basic functionality
 such as basic input and output.
 
 	Subroutines provided:
-	Base::println			
-	Base::print
-	Base::printPInt		
+	Base::print			
+	Base::println
+	Base::printi
+	Base::delay		
 */
 
 public namespace Base{
@@ -46,5 +47,14 @@ public namespace Base{
 		}
 		return 0;
 	}
-	
+	public (PInt seconds)~>PInt delay{
+
+		start=time();
+		while(
+			(start+seconds)>time()
+		){
+			//do nothing
+		}
+		return 0;
+	}
 }

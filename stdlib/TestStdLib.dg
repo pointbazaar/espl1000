@@ -64,7 +64,10 @@ public namespace TestStdLib{
 		}
 		printi(mytime);
 		println(" ");
-		
+
+		println("start delay(1)");
+		delay(1);
+		println("end delay(1)");
 
 		return 0;
 	}
