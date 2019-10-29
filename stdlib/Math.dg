@@ -8,6 +8,7 @@ use Base.dg
 	faculty(n)
 	min(i1,i2)
 	max(i1,i2)
+	gcd(i1,i2) //greatest common divisor
 */
 
 public namespace Math{
@@ -21,6 +22,7 @@ public namespace Math{
 		}
 		return -1;
 	}
+	
 	public (Integer base,PInt power)->Integer pow{
 		Integer result=1;
 		i=0;
@@ -30,16 +32,24 @@ public namespace Math{
 		}
 		return result;
 	}
+	
 	public (PInt n)->PInt faculty{
 		if(n<=1){ return 1; }
 		return (n*faculty(n-1));
 	}
+	
 	public (Integer a,Integer b)->Integer max{
 		if(a>b){return a;}
 		return b;
 	}
+	
 	public (Integer a,Integer b)->Integer min{
 		if(a<b){return a;}
 		return b;
+	}
+
+	public (Integer a, Integer b)->Integer gcd{
+		if(a==0){return b;}
+		return gcd(b%a,a);
 	}
 }
