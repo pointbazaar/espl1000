@@ -1,16 +1,17 @@
 # Dragon
 
-!!Work in Progress!!
+!! Work in Progress !!
 
-This repo contains a simple, work-in-progress statically typed programming language
+This repo contains a simple, work-in-progress statically typed programming language.
 
 ## Goals
 
 - [x] simple local variable type inference 
 - [x] compiles to intel x86 assembly
+- [x] syntax highlighting available in Micro
 - [ ] 64 bit only, to enable 64 bit primitives by default
 - [ ] functional programming
-  - [ ] functions are first-class citizens and can be passed as parameters
+  - [x] functions can be passed as parameters
   - [ ] lambda expressions
   - [ ] common functions (haskell inspired) map,reduce,filter,sum,zip,unzip,head,tail,init
 - [ ] structs
@@ -22,13 +23,20 @@ This repo contains a simple, work-in-progress statically typed programming langu
 - [ ] multithreading
 - [ ] standard library 
   - [ ] networking 
-  - [ ] math
-  - [ ] string manipulations
+  - [x] stdin,stdout (readchar,putchar,printi,println)
+  - [ ] file system (creating files, reading files, writing files)
+  - [x] math (min,max,faculty,pow,sign)
+  - [x] string manipulations (substr)
 - [ ] support for functional style
 - [ ] support for object oriented style
 - [ ] pattern matching 
 - [ ] program verification (invariants)
 - [ ] strong type system
+  - [ ] Various Types of Integers
+    - [x] PInt (Integer >=0) (required type for any array index)
+    - [x] NInt (Integer <=0)
+    - [x] Integer (can be any integer)
+    - [ ] NZInt (Integer =/= 0) (will be required as the type of any divisor later on)
 
 object oriented programming, functional programming, imperative programming,
 concurrency, laziness, declarative programming, constraint based programming,
