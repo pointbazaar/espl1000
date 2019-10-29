@@ -47,8 +47,12 @@ public namespace TestStdLib{
 		println("trimleft('  hi')");
 		println(trimleft("  hi"));
 
-		println("gcd(10,15)");
+		println("gcd(10,15)==5");
 		printi(gcd(10,15));
+		println(" ");
+
+		println("lcm(15,20)==60");
+		printi(lcm(15,20));
 		println(" ");
 
 		println("time()");

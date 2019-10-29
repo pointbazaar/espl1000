@@ -9,6 +9,7 @@ use Base.dg
 	min(i1,i2)
 	max(i1,i2)
 	gcd(i1,i2) //greatest common divisor
+	lcm(i1,i2) //least common multiple
 */
 
 public namespace Math{
@@ -51,5 +52,10 @@ public namespace Math{
 	public (Integer a, Integer b)->Integer gcd{
 		if(a==0){return b;}
 		return gcd(b%a,a);
+	}
+
+	public(Integer a, Integer b)->Integer lcm{
+
+		return (a*b)/gcd(a,b);
 	}
 }
