@@ -7,18 +7,14 @@ import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.typechecking.TypeChecker;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
 
-import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.lang.System.out;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBeginPhase;
-import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printEndPhase;
 import static org.vanautrui.languages.commandline.dragonc.FLAG_DEBUG;
 import static org.vanautrui.languages.commandline.dragonc.FLAG_TIMED;
 import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createStructsSymbolTable;
@@ -44,21 +40,19 @@ public final class CompilerPhases {
     }
 
     public void phase_typecheck(List<AST> asts)throws Exception{
-        printBeginPhase("TYPE CHECKING",printLong);
+        printBeginPhase("TYPE CHECKING");
 
         //this should throw an exception, if it does not typecheck
         try {
             TypeChecker.doTypeCheck(asts,debug);
 
-            printEndPhase(true,printLong);
         }catch (Exception e){
-            printEndPhase(false,printLong);
             throw e;
         }
     }
 
     public List<String> phase_vm_codegeneration(List<AST> asts,String filename_without_extension, boolean print_vm_codes,boolean printsymboltables)throws Exception{
-        printBeginPhase("VM CODE GENERATION",printLong);
+        printBeginPhase("VM CODE GENERATION");
 
         try {
 
@@ -79,11 +73,11 @@ public final class CompilerPhases {
                 out.println();
             }
 
-            printEndPhase(true,printLong);
+
             return dracoVMCodes;
 
         }catch (Exception e){
-            printEndPhase(false,printLong);
+
             throw e;
         }
     }

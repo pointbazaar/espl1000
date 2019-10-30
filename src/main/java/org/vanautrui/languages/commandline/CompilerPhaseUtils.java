@@ -3,29 +3,17 @@ package org.vanautrui.languages.commandline;
 import org.vanautrui.languages.CompilerApp;
 
 public final class CompilerPhaseUtils {
-    static void printBeginPhase(String phaseName, boolean debug) {
-        if(debug) {
-            System.out.println(phaseName);
-        }
+
+    static void printBeginPhase(final String phaseName) {
+        System.out.println(phaseName);
     }
 
-    static void printEndPhase(boolean success, boolean debug) {
-
-        if(debug) {
-            System.out.println((success)?"✓":"⚠");
-        }
-    }
     static void printBuildConclusion(boolean success){
         if(success) {
             System.out.println("BUILD SUCCESS");
         }else {
             System.out.println("BUILD FAILURE");
         }
-    }
-
-    public static void printDuration(long start,long end){
-        long duration=end-start;
-        System.out.println(String.format("Duration: %6sms",duration));
     }
 
     static void printDurationFeedback(long duration /*milliseconds*/){
