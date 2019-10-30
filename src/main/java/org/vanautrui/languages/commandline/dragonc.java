@@ -132,8 +132,6 @@ public final class dragonc {
     public static final String FLAG_DEBUG="debug";
     public static final String FLAG_TIMED="timed";
 
-    public static final String FLAG_PRINT_TOKENS="tokens";
-    public static final String FLAG_PRINT_AST="ast";
     public static final String FLAG_PRINT_SYMBOLTABLES="symboltables";
     public static final String FLAG_PRINT_VM_CODES="vmcodes";
     public static final String FLAG_PRINT_HELP="help";
@@ -150,8 +148,6 @@ public final class dragonc {
 
         opts.addOption(new Option(FLAG_TIMED,false,"how long did the build take?"));
 
-        opts.addOption(new Option(FLAG_PRINT_TOKENS,false,"print tokens as JSON"));
-        opts.addOption(new Option(FLAG_PRINT_AST,false,"print AST as JSON"));
         opts.addOption(new Option(FLAG_PRINT_SYMBOLTABLES,false,"print symbol tables"));
         opts.addOption(new Option(FLAG_PRINT_HELP,false,"print help"));
         opts.addOption(new Option(FLAG_PRINT_VM_CODES,false,"prints vm codes"));
@@ -206,7 +202,7 @@ public final class dragonc {
             final List<TokenList> tokens = lphases.phase_preprocessor_then_clean_then_lexing(codes, sources, debug);
 
             //PHASE PARSING
-            final List<AST> asts = pphases.phase_parsing(tokens,cmd.hasOption(FLAG_PRINT_AST));
+            final List<AST> asts = pphases.phase_parsing(tokens,false);
 
             //PHASE TYPE CHECKING
             phases.phase_typecheck(asts);
