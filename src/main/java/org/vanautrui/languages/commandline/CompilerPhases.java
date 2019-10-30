@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.lang.System.out;
-import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBeginPhase;
 import static org.vanautrui.languages.commandline.dragonc.FLAG_DEBUG;
 import static org.vanautrui.languages.commandline.dragonc.FLAG_TIMED;
 import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createStructsSymbolTable;
@@ -40,7 +39,7 @@ public final class CompilerPhases {
     }
 
     public void phase_typecheck(List<AST> asts)throws Exception{
-        printBeginPhase("TYPE CHECKING");
+        System.out.println("TYPE CHECKING");
 
         //this should throw an exception, if it does not typecheck
         try {
@@ -52,7 +51,7 @@ public final class CompilerPhases {
     }
 
     public List<String> phase_vm_codegeneration(List<AST> asts,String filename_without_extension, boolean print_vm_codes,boolean printsymboltables)throws Exception{
-        printBeginPhase("VM CODE GENERATION");
+        System.out.println("VM CODE GENERATION");
 
         try {
 

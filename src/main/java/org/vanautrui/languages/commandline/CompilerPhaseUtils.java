@@ -4,10 +4,6 @@ import org.vanautrui.languages.CompilerApp;
 
 public final class CompilerPhaseUtils {
 
-    static void printBeginPhase(final String phaseName) {
-        System.out.println(phaseName);
-    }
-
     static void printBuildConclusion(boolean success){
         if(success) {
             System.out.println("BUILD SUCCESS");
