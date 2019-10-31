@@ -195,14 +195,10 @@ public final class dragonc {
 
             final CompilerPhases phases = new CompilerPhases(cmd);
             final ParserPhases pphases = new ParserPhases();
-            final LexerPhases lphases=new LexerPhases();
 
-            //PHASE PREPROCESSOR, PHASE CLEAN, PHASE LEXING
-            //processes the 'use' directive
-            final List<TokenList> tokens = lphases.phase_preprocessor_then_clean_then_lexing(codes, sources, debug);
+            //PHASE PREPROCESSOR (processes 'use' directive), PHASE CLEAN, PHASE LEXING, PHASE PARSING
 
-            //PHASE PARSING
-            final List<AST> asts = pphases.phase_parsing(tokens,false);
+            final List<AST> asts = pphases.phase_preprocessor_and_clean_and_lexing_and_parsing(codes,sources);
 
             //PHASE TYPE CHECKING
             phases.phase_typecheck(asts);

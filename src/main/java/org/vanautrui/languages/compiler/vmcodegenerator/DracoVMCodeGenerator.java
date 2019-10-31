@@ -13,10 +13,7 @@ import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTableRow;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ExpressionDracoVMCodeGenerator.genDracoVMCodeForExpression;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.SubroutineDracoVMCodeGenerator.generateDracoVMCodeForMethod;
@@ -30,15 +27,29 @@ public final class DracoVMCodeGenerator {
             boolean debug,boolean printsymboltables
     ) throws Exception{
 
-        DracoVMCodeWriter sb = new DracoVMCodeWriter();
-        for(AST ast :asts){
+        final List<String> dracovmcodeinstructions = Collections.synchronizedList(new ArrayList<>());
+
+        asts.parallelStream().forEach(ast -> {
+            final DracoVMCodeWriter writer = new DracoVMCodeWriter();
+
             for(NamespaceNode namespaceNode : ast.namespaceNodeList){
                 for(MethodNode methodNode : namespaceNode.methodNodeList){
-                    generateDracoVMCodeForMethod(namespaceNode,methodNode,sb,subTable, structsTable,debug,printsymboltables);
+                    try {
+                        //namespaceNode, methodNode, writer are not accessed from other threads
+                        //debug, printsymboltables are only read, not written to.
+                        //subTable, structsTable are probably only read from, but need to be synchronized,
+                        //as they are important to all threads.
+                        generateDracoVMCodeForMethod(namespaceNode, methodNode, writer, subTable, structsTable, debug, printsymboltables);
+                    }catch (Exception e){
+                        throw new RuntimeException(e);
+                    }
                 }
             }
-        }
-        return sb.getDracoVMCodeInstructions();
+
+            dracovmcodeinstructions.addAll(writer.getDracoVMCodeInstructions());
+        });
+
+        return dracovmcodeinstructions;
     }
 
     public static void genVMCodeForFloatConst(FloatConstNode fconst,DracoVMCodeWriter sb){
