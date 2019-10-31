@@ -44,7 +44,7 @@
         <dependency>
             <groupId>org.vanautrui.languages</groupId>
             <artifactId>dracovm-compiler</artifactId>
-            <version>0.1</version>
+            <version>0.1001</version>
             <!--
             <type>jar</type>
             <scope>provided</scope>
