@@ -22,15 +22,8 @@
     </repositories>
 
     <dependencies>
-        <dependency>
-            <groupId>org.vanautrui.languages</groupId>
-            <artifactId>dragon-lexer</artifactId>
-            <version>0.1</version>
-            <!--
-            <type>jar</type>
-            <scope>provided</scope>
-            -->
-        </dependency>
+
+        
         <dependency>
             <groupId>org.vanautrui.languages</groupId>
             <artifactId>dragon-parser</artifactId>
