@@ -33,7 +33,7 @@ public class CodeGeneratorTestUtils {
     }
 
     public static Path generateFromVMCodeAndWriteExecutable(List<String> vmcodes,String filename)throws Exception{
-        Path path = (new VMCompilerPhases()).compile_vm_codes_and_generate_executable(vmcodes,filename,false);
+        Path path = (new VMCompilerPhases()).compile_vm_codes_and_generate_executable(vmcodes,filename);
 
         return path;
     }

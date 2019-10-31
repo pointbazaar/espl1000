@@ -207,7 +207,7 @@ public final class dragonc {
             final List<String> vm_codes = phases.phase_vm_codegeneration(asts,"main",cmd.hasOption(FLAG_PRINT_VM_CODES),cmd.hasOption(FLAG_PRINT_SYMBOLTABLES));
 
             //PHASE VM CODE COMPILATION, PHASE GENERATE EXECUTABLE
-            (new VMCompilerPhases()).compile_vm_codes_and_generate_executable(vm_codes,"main",debug);
+            (new VMCompilerPhases()).compile_vm_codes_and_generate_executable(vm_codes,"main");
 
             long end_time_ms = currentTimeMillis();
             long duration = end_time_ms-start_time_ms;

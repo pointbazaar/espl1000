@@ -8,24 +8,28 @@
     <name>dragon</name>
     <url>http://maven.apache.org</url>
 
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
-            <groupId>com.github.pointbazaar</groupId>
+            <groupId>org.vanautrui.languages</groupId>
+            <artifactId>dragon-lexer</artifactId>
+            <version>0.1</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.vanautrui.languages</groupId>
             <artifactId>dragon-parser</artifactId>
-            <version>8094a45068</version>
+            <version>0.1</version>
+            <type>jar</type>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.github.pointbazaar</groupId>
+            <groupId>org.vanautrui.languages</groupId>
             <artifactId>dracovm-compiler</artifactId>
-            <version>5f520765e0</version>
+            <version>0.1</version>
+            <type>jar</type>
+            <scope>provided</scope>
         </dependency>
 
 
