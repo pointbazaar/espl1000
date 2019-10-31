@@ -8,28 +8,47 @@
     <name>dragon</name>
     <url>http://maven.apache.org</url>
 
+    <repositories>
+        <repository>
+            <id>pointbazaar-dragon</id>
+            <url>https://packagecloud.io/pointbazaar/dragon/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.vanautrui.languages</groupId>
             <artifactId>dragon-lexer</artifactId>
             <version>0.1</version>
+            <!--
             <type>jar</type>
             <scope>provided</scope>
+            -->
         </dependency>
         <dependency>
             <groupId>org.vanautrui.languages</groupId>
             <artifactId>dragon-parser</artifactId>
             <version>0.1</version>
+            <!--
             <type>jar</type>
             <scope>provided</scope>
+            -->
         </dependency>
 
         <dependency>
             <groupId>org.vanautrui.languages</groupId>
             <artifactId>dracovm-compiler</artifactId>
             <version>0.1</version>
+            <!--
             <type>jar</type>
             <scope>provided</scope>
+            -->
         </dependency>
 
 
