@@ -36,7 +36,7 @@ public final class DracoVMCodeGenerator {
                         //subTable, structsTable are probably only read from, but need to be synchronized,
                         //as they are important to all threads.
                         final List<String> subr_vm_codes = generateDracoVMCodeForMethod(namespaceNode, methodNode, subTable, structsTable, debug, printsymboltables);
-                        dracovmcodeinstructions.put(methodNode.methodName,subr_vm_codes);
+                        dracovmcodeinstructions.put(namespaceNode.name.getTypeName()+"_"+methodNode.methodName,subr_vm_codes);
                     }catch (Exception e){
                         throw new RuntimeException(e);
                     }

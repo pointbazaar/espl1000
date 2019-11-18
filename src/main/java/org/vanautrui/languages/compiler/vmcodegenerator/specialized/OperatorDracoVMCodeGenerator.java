@@ -10,9 +10,9 @@ public final class OperatorDracoVMCodeGenerator {
   public static List<String> genDracoVMCodeForOp(OperatorNode opNode)throws Exception{
     switch (opNode.operator){
       case "+":
-        return Arrays.asList("add");
+        return Arrays.asList("iadd");
       case "-":
-        return Arrays.asList("sub");
+        return Arrays.asList("isub");
       case ">":
         return Arrays.asList("igt");
       case ">=":

@@ -52,7 +52,7 @@ public final class CompilerPhases {
         }
     }
 
-    public List<Path> phase_vm_codegeneration(List<AST> asts, Path filename_without_extension, boolean printsymboltables)throws Exception{
+    public List<Path> phase_vm_codegeneration(final List<AST> asts, boolean printsymboltables)throws Exception{
         System.out.println("VM CODE GENERATION");
 
         final SubroutineSymbolTable subTable = createSubroutineSymbolTable(asts,debug);
@@ -64,7 +64,8 @@ public final class CompilerPhases {
         for(Map.Entry<String,List<String>> subr : dracoVMCodes.entrySet()){
 
             //write a file with the vmcode for each subroutine
-            final Path path = Paths.get(subr.getKey()+"subroutine.dracovm");
+            final Path path = Paths.get(subr.getKey()+".subroutine.dracovm");
+            System.out.println("write: "+path);
             Files.write(
                     path,
                     (subr.getValue().stream().collect(Collectors.joining("\n"))+"\n").getBytes()

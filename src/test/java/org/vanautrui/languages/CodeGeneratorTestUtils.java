@@ -20,13 +20,14 @@ public final class CodeGeneratorTestUtils {
     public static Process compile_and_run_program_for_testing_with_cmd_args(String dragon_source_code, String filename_without_extension, String[] args) throws Exception {
         //gets a dragon source code, compiles to vm code, calls dracovm, and starts the executable
 
+        //should create the .dracovm files for it
         final List<Path> vmcodes =
                 generateVMCodeFromDragonCode(
-                        dragon_source_code,
-                        Paths.get(filename_without_extension)
+                        dragon_source_code
                 );
 
-        Process pr = compile_and_run_vm_codes(
+        //should create the executable and run it
+        final Process pr = compile_and_run_vm_codes(
                 vmcodes,
                 Paths.get(filename_without_extension,args),
                 args
@@ -39,7 +40,7 @@ public final class CodeGeneratorTestUtils {
         final Path filename_without_extns = Paths.get(filename_without_extension);
 
         //generate the vm code
-        final List<Path> paths = generateVMCodeFromDragonCode(dragon_source, filename_without_extns);
+        final List<Path> paths = generateVMCodeFromDragonCode(dragon_source);
 
         //generate the executable
         generateFromVMCodeAndWriteExecutable(paths,filename_without_extns);
@@ -50,7 +51,7 @@ public final class CodeGeneratorTestUtils {
     }
 
 
-    private static List<Path> generateVMCodeFromDragonCode(final String source, final Path filename) throws Exception{
+    private static List<Path> generateVMCodeFromDragonCode(final String source) throws Exception{
         //generates vm codes from dragon codes, and writes them to files. returns paths to those files
 
         final TokenList tokens = (new Lexer()).lexCodeTestMode(source);
@@ -62,24 +63,28 @@ public final class CodeGeneratorTestUtils {
 
         CompilerPhases phases = new CompilerPhases();
 
-        return phases.phase_vm_codegeneration(asts, filename,false);
+        return phases.phase_vm_codegeneration(asts,false);
     }
 
-    private static Path generateFromVMCodeAndWriteExecutable(List<Path> vmcodes, Path filename) throws IOException, InterruptedException {
+    private static void generateFromVMCodeAndWriteExecutable(List<Path> vmcodes, Path filename) throws IOException, InterruptedException {
         //writes an executable with the name we requested
-        final Process process = Runtime.getRuntime().exec("dracovm -o "+filename.toString()+" "+vmcodes.stream().map(p->p.toString()).collect(Collectors.joining(" ")));
+
+        final String call = "dracovm -o "+filename.toString()+" "+vmcodes.stream().map(p->p.toString()).collect(Collectors.joining(" "));
+        System.out.println(call);
+
+        final Process process = Runtime.getRuntime().exec(call);
         process.waitFor();
 
-        return filename;
     }
 
     private static Process compile_and_run_vmcodes_but_not_waitFor(final List<Path> vmcode_paths, final Path filename_without_extension, String[] args) throws Exception{
 
-
-
         generateFromVMCodeAndWriteExecutable(vmcode_paths,filename_without_extension);
 
-        Process pr = Runtime.getRuntime().exec("./"+filename_without_extension+" "+ String.join(" ", Arrays.asList(args)));
+        final String call = "./"+filename_without_extension+" "+ String.join(" ", Arrays.asList(args));
+        System.out.println(call);
+
+        Process pr = Runtime.getRuntime().exec(call);
         return pr;
     }
 
@@ -92,12 +97,24 @@ public final class CodeGeneratorTestUtils {
         );
 
         pr.waitFor();
-        Files.delete(filename_without_extension);
-        Path vmpath = Paths.get(filename_without_extension + ".dracovm");
-        if(Files.exists(vmpath)) {
-            Files.delete(vmpath);
+
+        //delete all the .dracovm  files that have been created
+        for(Path dracovmfilepath : vmcode_paths){
+            System.out.println("delete: "+dracovmfilepath);
+            Files.delete(dracovmfilepath);
         }
-        Files.delete(Paths.get(filename_without_extension+".asm"));
+
+        //delete the executable
+        System.out.println("delete: "+filename_without_extension);
+        Files.delete(filename_without_extension);
+
+        //delete the assembly file
+        final Path asm_path = Paths.get(filename_without_extension+"_main.asm");
+        System.out.println("delete: "+asm_path.toString());
+        Files.delete(asm_path);
+
+        //TODO: there could be multiple assembly files, as the dracovm compiler becomes incremental
+        //TODO: delete those aswell, as we are in a test environment
 
         return pr;
     }

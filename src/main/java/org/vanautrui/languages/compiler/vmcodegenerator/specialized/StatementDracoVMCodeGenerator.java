@@ -23,10 +23,10 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.Metho
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ReturnDracoVMCodeGenerator.genDracoVMCodeForReturn;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.WhileStatementDracoVMCodeGenerator.genVMCodeForWhileStatement;
 
-public final class StatementDracoVMCodeGenerator {
+final class StatementDracoVMCodeGenerator {
 
 
-    public static List<String> generateDracoVMCodeForStatement(
+    static List<String> generateDracoVMCodeForStatement(
             StatementNode stmt,
             MethodNode containerMethod,
             SubroutineSymbolTable subTable,

@@ -195,7 +195,7 @@ public final class dragonc {
             phases.phase_typecheck(asts);
 
             //PHASE CODE GENERATION, returns a list of paths where the files for the subroutines are
-            final List<Path> vm_code_files = phases.phase_vm_codegeneration(asts,Paths.get("main"),cmd.hasOption(FLAG_PRINT_SYMBOLTABLES));
+            final List<Path> vm_code_files = phases.phase_vm_codegeneration(asts, cmd.hasOption(FLAG_PRINT_SYMBOLTABLES));
 
             //PHASE VM CODE COMPILATION, PHASE GENERATE EXECUTABLE
             //this phase depends on 'dracovm'

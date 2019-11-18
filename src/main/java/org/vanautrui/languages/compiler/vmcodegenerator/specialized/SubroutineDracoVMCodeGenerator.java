@@ -37,7 +37,7 @@ public final class SubroutineDracoVMCodeGenerator {
 
     //push the number of local variables on the stack
     for(int i=0;i<subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName);i++){
-      vminstrs.add("iconst 0  //push local vars on the stack");
+      vminstrs.add("iconst 0"); //push local vars on the stack"
     }
 
     for(StatementNode stmt : m.statements){
