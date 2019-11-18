@@ -1,8 +1,6 @@
 package org.vanautrui.languages.compiler.vmcodegenerator;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ArrayConstantNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
@@ -10,7 +8,6 @@ import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.FloatConstNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTableRow;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 
 import java.util.*;
@@ -20,7 +17,7 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.Subro
 
 public final class DracoVMCodeGenerator {
 
-    public static List<String> generateDracoVMCode(
+    public static Map<String, List<String>> generateDracoVMCode(
             Set<AST> asts,
             SubroutineSymbolTable subTable,
             StructsSymbolTable structsTable,

@@ -2,11 +2,7 @@ package org.vanautrui.languages.commandline;
 
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.tuple.Pair;
-import org.vanautrui.languages.compiler.lexing.utils.CharacterList;
-import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.vmcompiler.VMCompilerPhases;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -17,7 +13,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static java.lang.System.currentTimeMillis;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBuildConclusion;
@@ -203,11 +198,16 @@ public final class dragonc {
             //PHASE TYPE CHECKING
             phases.phase_typecheck(asts);
 
-            //PHASE CODE GENERATION
-            final List<String> vm_codes = phases.phase_vm_codegeneration(asts,"main",cmd.hasOption(FLAG_PRINT_VM_CODES),cmd.hasOption(FLAG_PRINT_SYMBOLTABLES));
+            //PHASE CODE GENERATION, returns a list of paths where the files for the subroutines are
+            final List<Path> vm_code_files = phases.phase_vm_codegeneration(asts,"main",cmd.hasOption(FLAG_PRINT_VM_CODES),cmd.hasOption(FLAG_PRINT_SYMBOLTABLES));
 
             //PHASE VM CODE COMPILATION, PHASE GENERATE EXECUTABLE
-            (new VMCompilerPhases()).compile_vm_codes_and_generate_executable(vm_codes,"main");
+            //this phase depends on 'dracovm'
+            //which can be obtained here: https://github.com/pointbazaar/dracovm-compiler
+            //for each subroutine in vm code, make a NAME.subroutine.dracovm file
+
+            final Process process = Runtime.getRuntime().exec("dracovm "+vm_code_files.stream().map(path->path.toString()).collect(Collectors.joining(" ")));
+            process.waitFor();
 
             long end_time_ms = currentTimeMillis();
             long duration = end_time_ms-start_time_ms;
@@ -218,7 +218,6 @@ public final class dragonc {
             }
             {
                 printBuildConclusion(true);
-
             }
 
         } catch (Exception e) {

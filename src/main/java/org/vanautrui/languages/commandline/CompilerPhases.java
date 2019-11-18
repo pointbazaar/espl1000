@@ -8,12 +8,14 @@ import org.vanautrui.languages.compiler.typechecking.TypeChecker;
 import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
 
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import static java.lang.System.out;
 import static org.vanautrui.languages.commandline.dragonc.FLAG_DEBUG;
 import static org.vanautrui.languages.commandline.dragonc.FLAG_TIMED;
 import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createStructsSymbolTable;
@@ -50,35 +52,27 @@ public final class CompilerPhases {
         }
     }
 
-    public List<String> phase_vm_codegeneration(List<AST> asts,String filename_without_extension, boolean print_vm_codes,boolean printsymboltables)throws Exception{
+    public List<Path> phase_vm_codegeneration(List<AST> asts, String filename_without_extension, boolean print_vm_codes, boolean printsymboltables)throws Exception{
         System.out.println("VM CODE GENERATION");
 
-        try {
+        final SubroutineSymbolTable subTable = createSubroutineSymbolTable(asts,debug);
+        final StructsSymbolTable structsTable = createStructsSymbolTable(asts,debug);
+        final Map<String,List<String>> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable,structsTable,debug,printsymboltables);
 
-            SubroutineSymbolTable subTable = createSubroutineSymbolTable(asts,debug);
-            StructsSymbolTable structsTable = createStructsSymbolTable(asts,debug);
-            List<String> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(new HashSet<>(asts), subTable,structsTable,debug,printsymboltables);
+        final List<Path> paths = new ArrayList<>();
 
-            final String vm_codes_string = dracoVMCodes.stream().collect(Collectors.joining("\n"))+"\n";
+        for(Map.Entry<String,List<String>> subr : dracoVMCodes.entrySet()){
 
+            //write a file with the vmcode for each subroutine
+            final Path path = Paths.get(subr.getKey()+"subroutine.dracovm");
             Files.write(
-                    Paths.get(filename_without_extension+".dracovm"),
-                    vm_codes_string.getBytes()
+                    path,
+                    (subr.getValue().stream().collect(Collectors.joining("\n"))+"\n").getBytes()
             );
-
-            if(print_vm_codes){
-                out.println("GENERATED VM CODES");
-                dracoVMCodes.stream().forEach(str-> out.println(str));
-                out.println();
-            }
-
-
-            return dracoVMCodes;
-
-        }catch (Exception e){
-
-            throw e;
+            paths.add(path);
         }
+
+        return paths;
     }
 
 }
