@@ -52,7 +52,7 @@ public final class CompilerPhases {
         }
     }
 
-    public List<Path> phase_vm_codegeneration(List<AST> asts, String filename_without_extension, boolean print_vm_codes, boolean printsymboltables)throws Exception{
+    public List<Path> phase_vm_codegeneration(List<AST> asts, Path filename_without_extension, boolean printsymboltables)throws Exception{
         System.out.println("VM CODE GENERATION");
 
         final SubroutineSymbolTable subTable = createSubroutineSymbolTable(asts,debug);

@@ -128,9 +128,7 @@ public final class dragonc {
     public static final String FLAG_TIMED="timed";
 
     public static final String FLAG_PRINT_SYMBOLTABLES="symboltables";
-    public static final String FLAG_PRINT_VM_CODES="vmcodes";
     public static final String FLAG_PRINT_HELP="help";
-    public static final String FLAG_PRINT_ASM="asm";
 
     public static final String FLAG_CLEAN="clean";
 
@@ -145,8 +143,6 @@ public final class dragonc {
 
         opts.addOption(new Option(FLAG_PRINT_SYMBOLTABLES,false,"print symbol tables"));
         opts.addOption(new Option(FLAG_PRINT_HELP,false,"print help"));
-        opts.addOption(new Option(FLAG_PRINT_VM_CODES,false,"prints vm codes"));
-        opts.addOption(new Option(FLAG_PRINT_ASM,false,"prints assembly code"));
 
         opts.addOption(new Option(FLAG_CLEAN,false,"clear cache"));
 
@@ -199,7 +195,7 @@ public final class dragonc {
             phases.phase_typecheck(asts);
 
             //PHASE CODE GENERATION, returns a list of paths where the files for the subroutines are
-            final List<Path> vm_code_files = phases.phase_vm_codegeneration(asts,"main",cmd.hasOption(FLAG_PRINT_VM_CODES),cmd.hasOption(FLAG_PRINT_SYMBOLTABLES));
+            final List<Path> vm_code_files = phases.phase_vm_codegeneration(asts,Paths.get("main"),cmd.hasOption(FLAG_PRINT_SYMBOLTABLES));
 
             //PHASE VM CODE COMPILATION, PHASE GENERATE EXECUTABLE
             //this phase depends on 'dracovm'
