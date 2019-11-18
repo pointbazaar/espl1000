@@ -6,7 +6,9 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
-import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator.unique;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ExpressionDracoVMCodeGenerator.genDracoVMCodeForExpression;
@@ -15,35 +17,37 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.State
 public final class WhileStatementDracoVMCodeGenerator {
 
 
-  public static void genVMCodeForWhileStatement(
-          WhileStatementNode whileStmt,
-          MethodNode containerMethod,
-          DracoVMCodeWriter sb,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
-  )throws Exception {
+    public static List<String> genVMCodeForWhileStatement(
+            WhileStatementNode whileStmt,
+            MethodNode containerMethod,
+            SubroutineSymbolTable subTable,
+            LocalVarSymbolTable varTable,
+            StructsSymbolTable structsTable
+    ) throws Exception {
 
-    long unique=unique();
-    String startlabel = "whilestart"+unique;
-    String endlabel = "whileend"+unique;
+        final List<String> vm = new ArrayList<>();
 
-    sb.label(startlabel);
+        final long unique = unique();
+        final String startlabel = "whilestart" + unique;
+        final String endlabel = "whileend" + unique;
 
-    //push the expression
-    genDracoVMCodeForExpression(whileStmt.condition,sb,subTable,varTable,structsTable); //+1
+        vm.add("label "+startlabel);
 
-    sb.not();
-    //if condition is false, jump to end
-    sb.if_goto(endlabel); //-1
+        //push the expression
+        vm.addAll(genDracoVMCodeForExpression(whileStmt.condition, subTable, varTable, structsTable)); //+1
 
-    //execute statements
-    for(StatementNode stmt : whileStmt.statements){
-      generateDracoVMCodeForStatement(stmt,containerMethod,sb,subTable,varTable,structsTable);
+        vm.add("not");
+        //if condition is false, jump to end
+        vm.add("if-goto "+endlabel);
+
+        //execute statements
+        for (StatementNode stmt : whileStmt.statements) {
+            vm.addAll(generateDracoVMCodeForStatement(stmt, containerMethod, subTable, varTable, structsTable));
+        }
+
+        vm.add("goto "+startlabel);
+        vm.add("label "+endlabel);
+
+        return vm;
     }
-
-    sb._goto(startlabel);
-    sb.label(endlabel);
-
-  }
 }

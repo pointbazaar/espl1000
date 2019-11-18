@@ -1,58 +1,46 @@
 package org.vanautrui.languages.compiler.vmcodegenerator.specialized;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.OperatorNode;
-import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
+
+import java.util.Arrays;
+import java.util.List;
 
 public final class OperatorDracoVMCodeGenerator {
 
-  public static void genDracoVMCodeForOp(OperatorNode opNode, DracoVMCodeWriter sb)throws Exception{
+  public static List<String> genDracoVMCodeForOp(OperatorNode opNode)throws Exception{
     switch (opNode.operator){
       case "+":
-        sb.add();
-        break;
+        return Arrays.asList("add");
       case "-":
-        sb.sub();
-        break;
+        return Arrays.asList("sub");
       case ">":
-        sb.gt();
-        break;
+        return Arrays.asList("igt");
       case ">=":
-        sb.geq();
-        break;
+        return Arrays.asList("igeq");
       case "<":
-        sb.lt();
-        break;
+        return Arrays.asList("ilt");
       case "<=":
-        sb.leq();
-        break;
+        return Arrays.asList("ileq");
       case "*":
-        sb.mul();
-        break;
+        return Arrays.asList("imul");
       case "/":
-        sb.div();
-        break;
+        return Arrays.asList("idiv");
       case "!=":
-        sb.neq();
-        break;
+        return Arrays.asList("ineq");
       case "%":
-        sb.mod();
-        break;
+        return Arrays.asList("imod");
       case "==":
-        sb.eq();
-        break;
+        return Arrays.asList("ieq");
 
       case "&&":
-        sb.and();
-        break;
+        return Arrays.asList("and");
       case "||":
-        sb.or();
+        return Arrays.asList("or");
 
       case "<<":
-        sb.lshiftl();
-        break;
+        return Arrays.asList("lshiftl");
       case ">>":
-        sb.lshiftr();
-        break;
+        return Arrays.asList("lshiftr");
 
       default:
         throw new Exception("currently unsupported op: '"+opNode.operator+"'");

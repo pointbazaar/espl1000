@@ -5,7 +5,6 @@ import org.vanautrui.languages.compiler.lexing.Lexer;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.Parser;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.vmcompiler.VMCompilerPhases;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

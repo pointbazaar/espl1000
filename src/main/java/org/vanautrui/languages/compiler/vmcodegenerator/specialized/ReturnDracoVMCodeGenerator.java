@@ -5,38 +5,44 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
-import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ExpressionDracoVMCodeGenerator.genDracoVMCodeForExpression;
 
 public final class ReturnDracoVMCodeGenerator {
 
-  public static void genDracoVMCodeForReturn(
-          ReturnStatementNode retStmt,
-          MethodNode containerMethod,
-          DracoVMCodeWriter sb,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
-  )throws Exception {
-    genDracoVMCodeForExpression(retStmt.returnValue,sb,subTable,varTable,structsTable);
-    if(containerMethod.methodName.equals("main")){
-      sb.exit();
-    }else{
+    static List<String> genDracoVMCodeForReturn(
+            ReturnStatementNode retStmt,
+            MethodNode containerMethod,
+            SubroutineSymbolTable subTable,
+            LocalVarSymbolTable varTable,
+            StructsSymbolTable structsTable
+    ) throws Exception {
+        final List<String> vm = new ArrayList<>();
 
-      //TODO: test the removal of local variables from the stack
-      //get rid of the local variables which were pushed before
-      int numberOfLocalVariablesOfSubroutine = subTable.getNumberOfLocalVariablesOfSubroutine(containerMethod.methodName);
-      final String comment  = "take local variables off the stack";
-      for(int i=0;i<numberOfLocalVariablesOfSubroutine;i++){
-        sb.swap(comment);
-        sb.pop(comment);
-      }
+        vm.addAll(genDracoVMCodeForExpression(retStmt.returnValue, subTable, varTable, structsTable));
+        if (containerMethod.methodName.equals("main")) {
+            vm.add("exit");
+        } else {
 
-      //there is the return value on the stack,
-      // we must swap that with the return address of the calling function, in order to return
-      sb.swap("swap return value with return address of the calling function in order to return");
-      sb._return();
+            //TODO: test the removal of local variables from the stack
+            //get rid of the local variables which were pushed before
+            int numberOfLocalVariablesOfSubroutine = subTable.getNumberOfLocalVariablesOfSubroutine(containerMethod.methodName);
+            final String comment = "take local variables off the stack";
+            for (int i = 0; i < numberOfLocalVariablesOfSubroutine; i++) {
+                vm.add("swap");
+                vm.add("pop");
+            }
+
+            //there is the return value on the stack,
+            // we must swap that with the return address of the calling function, in order to return
+            //"swap return value with return address of the calling function in order to return");
+            vm.add("swap");
+
+            vm.add("return");
+        }
+        return vm;
     }
-  }
 }

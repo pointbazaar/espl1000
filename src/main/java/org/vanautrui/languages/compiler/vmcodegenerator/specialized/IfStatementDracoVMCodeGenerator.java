@@ -6,7 +6,9 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
-import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator.unique;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ExpressionDracoVMCodeGenerator.genDracoVMCodeForExpression;
@@ -15,38 +17,41 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.State
 public final class IfStatementDracoVMCodeGenerator {
 
 
-  public static void genVMCodeForIfStatement(
+  public static List<String> genVMCodeForIfStatement(
           IfStatementNode ifstmt, MethodNode containerMethod,
-          DracoVMCodeWriter sb,
           SubroutineSymbolTable subTable,
           LocalVarSymbolTable varTable,
           StructsSymbolTable structsTable
   ) throws Exception{
 
-    long unique=unique();
-    String startlabel = "ifstart"+unique;
-    String elselabel = "else"+unique;
-    String endlabel = "ifend"+unique;
+    final List<String> vm = new ArrayList<>();
 
-    sb.label(startlabel);
+    final long unique=unique();
+    final String startlabel = "ifstart"+unique;
+    final String elselabel = "else"+unique;
+    final String endlabel = "ifend"+unique;
+
+    vm.add("label "+startlabel);
 
     //push the expression
-    genDracoVMCodeForExpression(ifstmt.condition,sb,subTable,varTable,structsTable);
-    sb.not();
+    vm.addAll(genDracoVMCodeForExpression(ifstmt.condition, subTable,varTable,structsTable));
+    vm.add("not");
     //if condition is false, jump to else
-    sb.if_goto(elselabel);
+    vm.add("if-goto "+elselabel);
 
     for(StatementNode stmt : ifstmt.statements){
-      generateDracoVMCodeForStatement(stmt,containerMethod,sb,subTable,varTable,structsTable);
+      vm.addAll(generateDracoVMCodeForStatement(stmt,containerMethod, subTable,varTable,structsTable));
     }
 
-    sb._goto(endlabel);
-    sb.label(elselabel);
+    vm.add("goto "+endlabel);
+    vm.add("label "+elselabel);
 
     for(StatementNode stmt : ifstmt.elseStatements){
-      generateDracoVMCodeForStatement(stmt,containerMethod,sb,subTable,varTable,structsTable);
+      vm.addAll(generateDracoVMCodeForStatement(stmt,containerMethod, subTable,varTable,structsTable));
     }
 
-    sb.label(endlabel);
+    vm.add("label "+endlabel);
+
+    return vm;
   }
 }
