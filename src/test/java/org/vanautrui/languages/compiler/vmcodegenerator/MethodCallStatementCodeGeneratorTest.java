@@ -30,6 +30,10 @@ public class MethodCallStatementCodeGeneratorTest {
 
     @Test
     public void test_can_call_subroutine_argument()throws Exception{
+        //https://stackoverflow.com/questions/9380363/resolving-circular-dependencies-by-linking-the-same-library-twice
+        //apparently the order of linking problem can be solved by linking the same library twice? idk.
+        //this is just general, not just related to this test
+
         String method1="public (PInt n)->PInt id{  return n; }";
         String method2="public (((PInt)~>PInt) subr1)->PInt subr{  return subr1(2); }";
         String source="public namespace MainTest23138 { public ()~>PInt main{ putdigit(subr(id)); return 0;} "+method1+method2+" }";
