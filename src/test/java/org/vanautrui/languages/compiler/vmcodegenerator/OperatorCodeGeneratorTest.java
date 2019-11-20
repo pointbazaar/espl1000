@@ -97,9 +97,20 @@ public class OperatorCodeGeneratorTest {
 
     @Test
     public void test_can_bitshift_2()throws Exception{
-        String source="public namespace MainTest673734 { public ()~>PInt main{ putdigit(2 >> 1); return 0;} }";
+        final String source="public namespace MainTest673734 { public ()~>PInt main{ putdigit(2 >> 1); return 0;} }";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest673734",new String[0]);
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
+    }
+
+    @Test
+    public void test_can_exp_int()throws Exception{
+        //tests the '^' operator for exponentiation
+        //, for calculating exponentials
+
+        final String source="public namespace MainTest6737341 { public ()~>PInt main{ return (2 ^ 3); } }";
+        Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest6737341",new String[0]);
+        Assert.assertEquals(0,pr.exitValue());
+        Assert.assertEquals("8",IOUtils.toString(pr.getInputStream()));
     }
 }
