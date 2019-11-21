@@ -110,7 +110,7 @@ public class OperatorCodeGeneratorTest {
 
         final String source="public namespace MainTest6737341 { public ()~>PInt main{ return (2 ^ 3); } }";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest6737341",new String[0]);
-        Assert.assertEquals(0,pr.exitValue());
-        Assert.assertEquals("8",IOUtils.toString(pr.getInputStream()));
+        Assert.assertEquals(8,pr.exitValue());
+        Assert.assertEquals("",IOUtils.toString(pr.getInputStream()));
     }
 }

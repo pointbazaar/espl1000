@@ -13,6 +13,7 @@ public final class OperatorDracoVMCodeGenerator {
         return Arrays.asList("iadd");
       case "-":
         return Arrays.asList("isub");
+
       case ">":
         return Arrays.asList("igt");
       case ">=":
@@ -21,10 +22,12 @@ public final class OperatorDracoVMCodeGenerator {
         return Arrays.asList("ilt");
       case "<=":
         return Arrays.asList("ileq");
+
       case "*":
         return Arrays.asList("imul");
       case "/":
         return Arrays.asList("idiv");
+
       case "!=":
         return Arrays.asList("ineq");
       case "%":
@@ -41,6 +44,9 @@ public final class OperatorDracoVMCodeGenerator {
         return Arrays.asList("lshiftl");
       case ">>":
         return Arrays.asList("lshiftr");
+
+      case "^":
+        return Arrays.asList("iexp");
 
       default:
         throw new Exception("currently unsupported op: '"+opNode.operator+"'");
