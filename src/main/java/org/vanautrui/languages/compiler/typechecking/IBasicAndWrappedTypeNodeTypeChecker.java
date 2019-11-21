@@ -1,6 +1,5 @@
 package org.vanautrui.languages.compiler.typechecking;
 
-import org.apache.commons.lang3.StringUtils;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.StructDeclNode;
@@ -11,6 +10,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 
 import java.util.List;
 
+import static org.vanautrui.languages.compiler.typechecking.ITypeNodeTypeChecker.wrap;
 import static org.vanautrui.languages.compiler.typechecking.TypeChecker.primitive_types_and_arrays_of_them;
 
 public final class IBasicAndWrappedTypeNodeTypeChecker {
@@ -50,7 +50,7 @@ public final class IBasicAndWrappedTypeNodeTypeChecker {
 
     String msg = ("TYPECHECKING: ")
             + "could not find class for type: "
-            + StringUtils.wrap(typename.getTypeName(), "'")
+            + wrap(typename.getTypeName(), "'")
             + " in file : (TODO: display file and line number)";
     throw new Exception(msg);
   }
