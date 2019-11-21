@@ -28,7 +28,6 @@ the other dependencies are just your standard maven dependencies
 - [x] structs (user-defined composite data types)
 - [x] length-prefixed arrays
 - [ ] generics (Type parameters)
-- [ ] type aliases (using a different, user-defined name for a type)
 - [ ] optional laziness, declare a method or function or block of statements to be lazy...
 - [ ] multithreading
 - [ ] standard library 
