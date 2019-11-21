@@ -1,14 +1,13 @@
 package org.vanautrui.languages.compiler.symboltables;
 
-import io.bretty.console.table.Alignment;
-import io.bretty.console.table.ColumnFormatter;
-import io.bretty.console.table.Precision;
-import io.bretty.console.table.Table;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SimpleTypeNode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -112,18 +111,20 @@ public final class SubroutineSymbolTable {
         int[] indices_inner = IntStream.range(0,this.symbolTable.size()).toArray();
         Integer[] indices = Arrays.stream( indices_inner ).boxed().toArray( Integer[]::new );
 
-        ColumnFormatter<String> stringColumnFormatter = ColumnFormatter.text(Alignment.LEFT, 20);
-        ColumnFormatter<Number> integerColumnFormatter = ColumnFormatter.number(Alignment.RIGHT, 7, Precision.ZERO);
+        final StringBuilder table = new StringBuilder();
 
+        //append table headers
+        table.append(String.format("%12s | %12s | %12s \n","Subroutine Name","Type","Index"));
 
-        Table.Builder builder = new Table.Builder("Subroutine Name",names, stringColumnFormatter);
+        for(final int i : indices){
 
+            final String varname = names[i];
+            final String type = types[i];
+            final int index = indices[i]; //just for pattern sake
 
-        builder.addColumn("Type", types, stringColumnFormatter);
-        builder.addColumn("Index", indices, integerColumnFormatter);
-
-
-        Table table = builder.build();
+            //append a row
+            table.append(String.format("%12s | %12s | %12d \n",varname,type,index));
+        }
         //System.out.println(table); // NOTICE: table.toString() is called implicitly
         return "\nSUBROUTINE SYMBOL TABLE: \n"+table.toString();
     }
