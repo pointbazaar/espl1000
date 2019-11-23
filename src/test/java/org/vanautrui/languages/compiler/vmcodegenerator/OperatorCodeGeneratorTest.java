@@ -16,7 +16,7 @@ public class OperatorCodeGeneratorTest {
 
     @Test
     public void test_can_add_Float()throws Exception{
-        String source="public namespace MainTest2777 { public ()~>PInt main{ if(1.0+2.0 > 1.0){ putdigit(1); } return 0;} }";
+        String source="public namespace MainTest2777 { public ()~>PInt main{ x=1.0+2.0; if( (x>2.9) && (x<3.1)  ){ putdigit(1); } return 0;} }";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest2777",new String[0]);
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
@@ -24,27 +24,27 @@ public class OperatorCodeGeneratorTest {
 
     @Test
     public void test_can_sub_Float()throws Exception{
-        String source="public namespace MainTest2775 { public ()~>PInt main{ print(1.0-2.0); return 0;} }";
+        String source="public namespace MainTest2775 { public ()~>PInt main{ x=1.0-2.0; if(x < 0.0){ putdigit(1); } return 0;} }";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest2775",new String[0]);
         Assert.assertEquals(0,pr.exitValue());
-        Assert.assertEquals("-1.0",IOUtils.toString(pr.getInputStream()));
+        Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
     }
 
 
     @Test
     public void test_can_multiply_Float()throws Exception{
-        String source="public namespace MainTest2774 { public ()~>PInt main{ print(5.0*2.0); return 0;} }";
+        String source="public namespace MainTest2774 { public ()~>PInt main{ f=5.0*2.0; if( (f<10.1) && (f>9.9) ){ putdigit(1); } return 0;} }";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest2774",new String[0]);
         Assert.assertEquals(0,pr.exitValue());
-        Assert.assertEquals("10.0",IOUtils.toString(pr.getInputStream()));
+        Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
     }
 
     @Test
     public void test_can_div_Float()throws Exception{
-        String source="public namespace MainTest2773 { public ()~>PInt main{ print(3.0/2.0); return 0; } }";
+        String source="public namespace MainTest2773 { public ()~>PInt main{ f=3.0/2.0; if( (f > 1.4) && (f < 1.6)){ putdigit(1); } return 0; } }";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest2773",new String[0]);
         Assert.assertEquals(0,pr.exitValue());
-        Assert.assertEquals("1.5",IOUtils.toString(pr.getInputStream()));
+        Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
     }
 
 	@Test
