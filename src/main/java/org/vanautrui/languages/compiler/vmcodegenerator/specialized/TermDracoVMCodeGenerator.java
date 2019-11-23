@@ -6,11 +6,13 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionN
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.VariableNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.terminal.*;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.CharConstNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.FloatConstNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IntConstNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
-import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
 
 import java.util.List;
 
@@ -30,7 +32,9 @@ public final class TermDracoVMCodeGenerator {
     ) throws Exception {
         final ITermNode t = tNode.termNode;
         if (t instanceof FloatConstNode) {
-            return genVMCodeForFloatConst((FloatConstNode) t);
+            return genVMCodeForFloatConst(
+                    ((FloatConstNode) t).value
+            );
         } else if (t instanceof IntConstNode) {
             return genVMCodeForIntConst(((IntConstNode) t).value);
         } else if (t instanceof ExpressionNode) {

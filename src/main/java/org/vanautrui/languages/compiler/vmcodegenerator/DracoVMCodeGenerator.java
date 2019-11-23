@@ -2,10 +2,9 @@ package org.vanautrui.languages.compiler.vmcodegenerator;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ArrayConstantNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.terminal.FloatConstNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
@@ -47,7 +46,7 @@ public final class DracoVMCodeGenerator {
         return dracovmcodeinstructions;
     }
 
-    public static List<String> genVMCodeForFloatConst(FloatConstNode fconst){
+    public static List<String> genVMCodeForFloatConst(float fconst){
         return Arrays.asList("fconst "+fconst);
     }
 
