@@ -98,20 +98,26 @@ public final class CodeGeneratorTestUtils {
 
         pr.waitFor();
 
-        //delete all the .dracovm  files that have been created
-        for(Path dracovmfilepath : vmcode_paths){
-            System.out.println("delete: "+dracovmfilepath);
-            Files.delete(dracovmfilepath);
+        //for debugging purposes
+        final boolean deleteArtifacts = false;
+
+        if(deleteArtifacts) {
+
+            //delete all the .dracovm  files that have been created
+            for (Path dracovmfilepath : vmcode_paths) {
+                System.out.println("delete: " + dracovmfilepath);
+                Files.delete(dracovmfilepath);
+            }
+
+            //delete the executable
+            System.out.println("delete: " + filename_without_extension);
+            Files.delete(filename_without_extension);
+
+            //delete the assembly file
+            final Path asm_path = Paths.get(filename_without_extension + "_main.asm");
+            System.out.println("delete: " + asm_path.toString());
+            Files.delete(asm_path);
         }
-
-        //delete the executable
-        System.out.println("delete: "+filename_without_extension);
-        Files.delete(filename_without_extension);
-
-        //delete the assembly file
-        final Path asm_path = Paths.get(filename_without_extension+"_main.asm");
-        System.out.println("delete: "+asm_path.toString());
-        Files.delete(asm_path);
 
         //TODO: there could be multiple assembly files, as the dracovm compiler becomes incremental
         //TODO: delete those aswell, as we are in a test environment

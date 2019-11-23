@@ -16,6 +16,10 @@ public class OperatorCodeGeneratorTest {
 
     @Test
     public void test_can_add_Float()throws Exception{
+        //TODO:
+        //the problem with this test is, the compiler generates dracovm insructions for integer comparison
+        //it should generate dracovm instructions for float comparisons
+
         String source="public namespace MainTest2777 { public ()~>PInt main{ x=1.0+2.0; if( (x>2.9) && (x<3.1)  ){ putdigit(1); } return 0;} }";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest2777",new String[0]);
         Assert.assertEquals(0,pr.exitValue());

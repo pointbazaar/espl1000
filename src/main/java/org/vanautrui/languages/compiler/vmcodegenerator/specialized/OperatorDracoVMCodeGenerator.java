@@ -7,46 +7,68 @@ import java.util.List;
 
 public final class OperatorDracoVMCodeGenerator {
 
-  public static List<String> genDracoVMCodeForOp(OperatorNode opNode)throws Exception{
+  public static List<String> genDracoVMCodeForOp(OperatorNode opNode, boolean isFloatNode)throws Exception{
+    return Arrays.asList(genDracoVMCodeForOpSingleInstr(opNode,isFloatNode));
+  }
+
+  private static String genDracoVMCodeForOpSingleInstr(OperatorNode opNode, boolean isFloatOperands)throws Exception{
+
     switch (opNode.operator){
       case "+":
-        return Arrays.asList("iadd");
+        if(isFloatOperands){
+          return "fadd";
+        }else {
+          return "iadd";
+        }
       case "-":
-        return Arrays.asList("isub");
-
+        if(isFloatOperands) {
+          return "fsub";
+        }else {
+          return "isub";
+        }
       case ">":
-        return Arrays.asList("igt");
-      case ">=":
-        return Arrays.asList("igeq");
+        if(isFloatOperands){
+          return "fgt";
+        }else {
+          return "igt";
+        }
       case "<":
-        return Arrays.asList("ilt");
+        return (isFloatOperands)?"flt":"ilt";
+      case ">=":
+        return (isFloatOperands)?"fgeq":"igeq";
       case "<=":
-        return Arrays.asList("ileq");
+        return (isFloatOperands)?"fleq":"ileq";
 
       case "*":
-        return Arrays.asList("imul");
+        return (isFloatOperands)?"fmul":"imul";
       case "/":
-        return Arrays.asList("idiv");
+        return (isFloatOperands)?"fdiv":"idiv";
 
       case "!=":
-        return Arrays.asList("ineq");
+        if(isFloatOperands){
+          throw new Exception("not implemented for float: !=");
+        }
+        return "ineq";
       case "%":
-        return Arrays.asList("imod");
+        return (isFloatOperands)?"fmod":"imod";
       case "==":
-        return Arrays.asList("ieq");
+        if(isFloatOperands){
+          throw new Exception("not implemented for float: ==");
+        }
+        return "ieq";
 
       case "&&":
-        return Arrays.asList("and");
+        return "and";
       case "||":
-        return Arrays.asList("or");
+        return "or";
 
       case "<<":
-        return Arrays.asList("lshiftl");
+        return "lshiftl";
       case ">>":
-        return Arrays.asList("lshiftr");
+        return "lshiftr";
 
       case "^":
-        return Arrays.asList("iexp");
+        return "iexp";
 
       default:
         throw new Exception("currently unsupported op: '"+opNode.operator+"'");

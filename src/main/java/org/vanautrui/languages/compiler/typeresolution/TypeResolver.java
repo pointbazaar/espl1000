@@ -34,7 +34,8 @@ public final class TypeResolver {
             return new SimpleTypeNode("NInt");
         }
     }
-    public static IBasicAndWrappedTypeNode getTypeFloatConstantNode(FloatConstNode node) throws Exception {
+    public static IBasicAndWrappedTypeNode getTypeFloatConstantNode() throws Exception {
+        //TODO: decide between NZFloat, PFloat, ...
     	return new SimpleTypeNode("Float");
     }
 
@@ -101,7 +102,7 @@ public final class TypeResolver {
         }else if (termNode.termNode instanceof MethodCallNode){
             return getTypeMethodCallNode((MethodCallNode)termNode.termNode,subroutineSymbolTable,varTable);
 	      }else if(termNode.termNode instanceof FloatConstNode){
-		        return new TypeNode(new BasicTypeWrappedNode(getTypeFloatConstantNode((FloatConstNode)termNode.termNode)));
+		        return new TypeNode(new BasicTypeWrappedNode(getTypeFloatConstantNode()));
         }else if(termNode.termNode instanceof IntConstNode){
             return new TypeNode(new BasicTypeWrappedNode(getTypeIntegerConstantNode((IntConstNode)termNode.termNode)));
         }else if(termNode.termNode instanceof VariableNode){
@@ -131,7 +132,7 @@ public final class TypeResolver {
         //here we assume it will be checked there
 
         if(arrayConstantNode.elements.size()==0){
-            throw new Exception("array size should be atleast 1, for the type to be inferred without type annotations: "+arrayConstantNode.toSourceCode()+" , in "+methodNode.methodName);
+            throw new Exception("array size should be atleast 1, for the type to be inferred without type annotations: "+arrayConstantNode.toSourceCode()+" , ");
         }
 
         //for the array to have a type, it has to either be annotated,
