@@ -1,7 +1,7 @@
 package org.vanautrui.languages;
 
 import org.vanautrui.languages.commandline.CompilerPhases;
-import org.vanautrui.languages.compiler.lexing.Lexer;
+import org.vanautrui.languages.commandline.ParserPhases;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.Parser;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
@@ -54,7 +54,7 @@ public final class CodeGeneratorTestUtils {
     private static List<Path> generateVMCodeFromDragonCode(final String source) throws Exception{
         //generates vm codes from dragon codes, and writes them to files. returns paths to those files
 
-        final TokenList tokens = (new Lexer()).lexCodeTestMode(source);
+        final TokenList tokens = ParserPhases.makeTokenList(source);
         final Parser parser = new Parser();
         final AST ast= parser.parseTestMode(tokens,false);
         final List<AST> asts = new ArrayList<>();

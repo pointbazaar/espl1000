@@ -1,9 +1,7 @@
 package org.vanautrui.languages.compiler.symboltablegenerator;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.vanautrui.languages.compiler.lexing.Lexer;
-import org.vanautrui.languages.compiler.lexing.utils.CharacterList;
+import org.vanautrui.languages.commandline.ParserPhases;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.Parser;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
@@ -11,7 +9,6 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
-import org.vanautrui.languages.compiler.vmcodegenerator.specialized.SubroutineDracoVMCodeGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +20,8 @@ import static org.junit.Assert.assertTrue;
 public class SymbolTableGeneratorTest {
 
     private AST parse_for_test(String s)throws Exception{
-        Lexer lexer = new Lexer();
 
-        TokenList tokens = lexer.lexCodeWithoutComments(new CharacterList(
-                s
-        ));
+        TokenList tokens = ParserPhases.makeTokenList(s);
 
         Parser parser = new Parser();
         AST ast = parser.parseTestMode(tokens,false);
