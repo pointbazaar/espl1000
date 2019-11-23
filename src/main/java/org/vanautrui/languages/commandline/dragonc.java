@@ -189,7 +189,7 @@ public final class dragonc {
 
             //PHASE PREPROCESSOR (processes 'use' directive), PHASE CLEAN, PHASE LEXING, PHASE PARSING
 
-            final List<AST> asts = pphases.phase_preprocessor_and_clean_and_lexing_and_parsing(codes,sources);
+            final List<AST> asts = pphases.phase_preprocessor_and_clean_and_lexing_and_parsing(sources);
 
             //PHASE TYPE CHECKING
             phases.phase_typecheck(asts);

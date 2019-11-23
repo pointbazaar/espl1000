@@ -16,10 +16,10 @@ public class OperatorCodeGeneratorTest {
 
     @Test
     public void test_can_add_Float()throws Exception{
-        String source="public namespace MainTest2777 { public ()~>PInt main{ putfloat(1.0+2.0); return 0;} }";
+        String source="public namespace MainTest2777 { public ()~>PInt main{ if(1.0+2.0 > 1.0){ putdigit(1); } return 0;} }";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest2777",new String[0]);
         Assert.assertEquals(0,pr.exitValue());
-        Assert.assertEquals("3.0",IOUtils.toString(pr.getInputStream()));
+        Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
     }
 
     @Test
