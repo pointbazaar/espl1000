@@ -99,7 +99,7 @@ public final class CodeGeneratorTestUtils {
         pr.waitFor();
 
         //for debugging purposes
-        final boolean deleteArtifacts = false;
+        final boolean deleteArtifacts = true;
 
         if(deleteArtifacts) {
 

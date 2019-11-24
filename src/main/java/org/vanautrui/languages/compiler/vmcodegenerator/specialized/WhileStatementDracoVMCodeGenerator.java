@@ -3,9 +3,7 @@ package org.vanautrui.languages.compiler.vmcodegenerator.specialized;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.StatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.WhileStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +18,7 @@ public final class WhileStatementDracoVMCodeGenerator {
     public static List<String> genVMCodeForWhileStatement(
             WhileStatementNode whileStmt,
             MethodNode containerMethod,
-            SubroutineSymbolTable subTable,
-            LocalVarSymbolTable varTable,
-            StructsSymbolTable structsTable
+            SymbolTableContext ctx
     ) throws Exception {
 
         final List<String> vm = new ArrayList<>();
@@ -34,7 +30,7 @@ public final class WhileStatementDracoVMCodeGenerator {
         vm.add("label "+startlabel);
 
         //push the expression
-        vm.addAll(genDracoVMCodeForExpression(whileStmt.condition, subTable, varTable, structsTable)); //+1
+        vm.addAll(genDracoVMCodeForExpression(whileStmt.condition, ctx)); //+1
 
         vm.add("not");
         //if condition is false, jump to end
@@ -42,7 +38,7 @@ public final class WhileStatementDracoVMCodeGenerator {
 
         //execute statements
         for (StatementNode stmt : whileStmt.statements) {
-            vm.addAll(generateDracoVMCodeForStatement(stmt, containerMethod, subTable, varTable, structsTable));
+            vm.addAll(generateDracoVMCodeForStatement(stmt, containerMethod, ctx));
         }
 
         vm.add("goto "+startlabel);

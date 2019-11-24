@@ -5,6 +5,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,21 +16,24 @@ public final class ReturnDracoVMCodeGenerator {
 
     static List<String> genDracoVMCodeForReturn(
             ReturnStatementNode retStmt,
-            MethodNode containerMethod,
-            SubroutineSymbolTable subTable,
-            LocalVarSymbolTable varTable,
-            StructsSymbolTable structsTable
+            MethodNode m,
+            SymbolTableContext ctx
     ) throws Exception {
+
+        final SubroutineSymbolTable subTable=ctx.subTable;
+        final LocalVarSymbolTable varTable=ctx.varTable;
+        final StructsSymbolTable structsTable=ctx.structsTable;
+
         final List<String> vm = new ArrayList<>();
 
-        vm.addAll(genDracoVMCodeForExpression(retStmt.returnValue, subTable, varTable, structsTable));
-        if (containerMethod.methodName.equals("main")) {
+        vm.addAll(genDracoVMCodeForExpression(retStmt.returnValue, ctx));
+        if (m.methodName.equals("main")) {
             vm.add("exit");
         } else {
 
             //TODO: test the removal of local variables from the stack
             //get rid of the local variables which were pushed before
-            int numberOfLocalVariablesOfSubroutine = subTable.getNumberOfLocalVariablesOfSubroutine(containerMethod.methodName);
+            int numberOfLocalVariablesOfSubroutine = subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName);
             final String comment = "take local variables off the stack";
             for (int i = 0; i < numberOfLocalVariablesOfSubroutine; i++) {
                 vm.add("swap");

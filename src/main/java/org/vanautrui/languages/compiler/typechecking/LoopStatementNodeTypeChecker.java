@@ -5,7 +5,6 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
@@ -29,7 +28,7 @@ public final class LoopStatementNodeTypeChecker {
   ) throws Exception {
     //the condition expression should be of type boolean
 
-    final var countType = TypeResolver.getTypeExpressionNode(loopStatementNode.count, methodNode, subTable, varTable,structsTable);
+    final var countType = TypeResolver.getTypeExpressionNode(loopStatementNode.count, subTable, varTable,structsTable);
     if (!countType.getTypeName().equals("PInt")) {
       throw
               new Exception(

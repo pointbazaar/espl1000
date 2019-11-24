@@ -9,6 +9,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,17 +22,20 @@ public final class MethodCallDracoVMCodeGenerator {
 
     public static List<String> genVMCodeForMethodCall(
             MethodCallNode methodCallNode,
-            SubroutineSymbolTable subTable,
-            LocalVarSymbolTable varTable,
-            StructsSymbolTable structsTable
+            SymbolTableContext ctx
     ) throws Exception {
+
+
+        final SubroutineSymbolTable subTable=ctx.subTable;
+        final LocalVarSymbolTable varTable=ctx.varTable;
+        final StructsSymbolTable structsTable=ctx.structsTable;
 
         final List<String> instrs = new ArrayList<>();
 
         //push arguments on stack in reverse order
         for (int i = methodCallNode.argumentList.size() - 1; i >= 0; i--) {
             final ExpressionNode arg = methodCallNode.argumentList.get(i);
-            instrs.addAll(genDracoVMCodeForExpression(arg, subTable, varTable, structsTable));
+            instrs.addAll(genDracoVMCodeForExpression(arg, ctx));
 
         }
         final int nArgs;
@@ -40,7 +44,7 @@ public final class MethodCallDracoVMCodeGenerator {
             //compile call to subroutine which is given as local variable or argument
 
             //push the label on the stack from either LOCAL SEGMENT or ARG SEGMENT
-            instrs.addAll(genDracoVMCodeForSimpleVariable(methodCallNode.methodName, Optional.empty(), subTable, varTable, structsTable));
+            instrs.addAll(genDracoVMCodeForSimpleVariable(methodCallNode.methodName, Optional.empty(), ctx));
 
             //perform a call to the label on stack
             instrs.add("callfromstack");

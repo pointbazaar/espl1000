@@ -5,7 +5,6 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
@@ -29,7 +28,7 @@ public final class IfStatementNodeTypeChecker {
   ) throws Exception {
     //the condition expression should be of type boolean
     final var conditionType =
-      TypeResolver.getTypeExpressionNode(ifStatementNode.condition, methodNode, subTable, varTable,structsTable);
+      TypeResolver.getTypeExpressionNode(ifStatementNode.condition, subTable, varTable,structsTable);
 
     if (!conditionType.getTypeName().equals("Bool")) {
       throw new Exception(" condition should be of type Bool, but is of type: " + conditionType.getTypeName()+" in : "+ifStatementNode.condition.toSourceCode());

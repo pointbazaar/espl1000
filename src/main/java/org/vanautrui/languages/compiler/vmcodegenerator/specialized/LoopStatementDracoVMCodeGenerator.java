@@ -3,9 +3,7 @@ package org.vanautrui.languages.compiler.vmcodegenerator.specialized;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.StatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.LoopStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +18,7 @@ public class LoopStatementDracoVMCodeGenerator {
   static List<String> genVMCodeForLoopStatement(
           LoopStatementNode loop,
           MethodNode containerMethod,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
+          SymbolTableContext ctx
   ) throws Exception {
 
     final List<String> vm = new ArrayList<>();
@@ -32,7 +28,7 @@ public class LoopStatementDracoVMCodeGenerator {
     final String endlabel = "loopend"+unique;
 
     //push the expression
-    vm.addAll(genDracoVMCodeForExpression(loop.count, subTable,varTable,structsTable)); //+1
+    vm.addAll(genDracoVMCodeForExpression(loop.count, ctx)); //+1
 
     vm.add("dup"); //+1
 
@@ -45,7 +41,7 @@ public class LoopStatementDracoVMCodeGenerator {
 
     //execute statements
     for(StatementNode stmt : loop.statements){
-      vm.addAll(generateDracoVMCodeForStatement(stmt,containerMethod, subTable,varTable,structsTable));
+      vm.addAll(generateDracoVMCodeForStatement(stmt,containerMethod,ctx));
     }
 
     //subtract 1 from the counter

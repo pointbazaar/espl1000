@@ -8,6 +8,7 @@ import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTableRow;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTableRow;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +20,12 @@ public final class VariableDracoVMCodeGenerator {
 
     static List<String> genDracoVMCodeForSimpleVariable(
             String varName, Optional<ExpressionNode> indexOptional,
-            SubroutineSymbolTable subTable,
-            LocalVarSymbolTable varTable,
-            StructsSymbolTable structsTable
+            SymbolTableContext ctx
     ) throws Exception{
+
+        final SubroutineSymbolTable subTable=ctx.subTable;
+        final LocalVarSymbolTable varTable=ctx.varTable;
+        final StructsSymbolTable structsTable=ctx.structsTable;
 
         final List<String> vm = new ArrayList<>();
 
@@ -41,7 +44,7 @@ public final class VariableDracoVMCodeGenerator {
 
             if (indexOptional.isPresent()) {
                 //it is an array and we should read from the index
-                vm.addAll(genDracoVMCodeForExpression(indexOptional.get(), subTable, varTable,structsTable));
+                vm.addAll(genDracoVMCodeForExpression(indexOptional.get(), ctx));
                 vm.add("arrayread");
             }
         }else if(subTable.containsSubroutine(varName)){
@@ -58,10 +61,13 @@ public final class VariableDracoVMCodeGenerator {
 
     static List<String> genDracoVMCodeForVariable(
             VariableNode varNode,
-            SubroutineSymbolTable subTable,
-            LocalVarSymbolTable varTable,
-            StructsSymbolTable structsTable
+            SymbolTableContext ctx
     ) throws Exception{
+
+
+        final SubroutineSymbolTable subTable=ctx.subTable;
+        final LocalVarSymbolTable varTable=ctx.varTable;
+        final StructsSymbolTable structsTable=ctx.structsTable;
 
         final List<String> vm = new ArrayList<>();
         //push the variable on the stack
@@ -81,7 +87,7 @@ public final class VariableDracoVMCodeGenerator {
 
             if (varNode.simpleVariableNode.indexOptional.isPresent()) {
                 //it is an array and we should read from the index
-                vm.addAll(genDracoVMCodeForExpression(varNode.simpleVariableNode.indexOptional.get(), subTable, varTable,structsTable));
+                vm.addAll(genDracoVMCodeForExpression(varNode.simpleVariableNode.indexOptional.get(), ctx));
                 vm.add("arrayread");
             }
 
@@ -101,7 +107,7 @@ public final class VariableDracoVMCodeGenerator {
 
                 if(varNode.memberAccessList.get(i).indexOptional.isPresent()){
                     final ExpressionNode indexIntoMemberExpr = varNode.memberAccessList.get(i).indexOptional.get();
-                    vm.addAll(genDracoVMCodeForExpression(indexIntoMemberExpr, subTable,varTable,structsTable));
+                    vm.addAll(genDracoVMCodeForExpression(indexIntoMemberExpr, ctx));
                     vm.add("arrayread");
                 }
                 i++;

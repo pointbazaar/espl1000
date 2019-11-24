@@ -8,6 +8,7 @@ import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTableRow;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,21 +19,18 @@ final class AssignmentStatementDracoVMCodeGenerator {
 
     /**
      * @param assignStmt the AssignmentStatementNode being compiled
-     * @param varTable   the Local Variable Symbol Table
      * @throws Exception if the variable is not in the symbol table
      */
     static List<String> genVMCodeForAssignmentStatement(
             AssignmentStatementNode assignStmt,
-            SubroutineSymbolTable subTable,
-            LocalVarSymbolTable varTable,
-            StructsSymbolTable structsTable
+            SymbolTableContext ctx
     ) throws Exception {
         final List<String> vm = new ArrayList<>();
 
         if(assignStmt.variableNode.memberAccessList.size()==0){
-            vm.addAll(genVMCodeForSimpleAssignmentStatementWithoutStructAccess(assignStmt.variableNode.simpleVariableNode,assignStmt.expressionNode,subTable,varTable,structsTable));
+            vm.addAll(genVMCodeForSimpleAssignmentStatementWithoutStructAccess(assignStmt.variableNode.simpleVariableNode,assignStmt.expressionNode,ctx));
         }else{
-            vm.addAll(genVMCodeForAssignmentStatementWithStructAccess(assignStmt,subTable,varTable,structsTable));
+            vm.addAll(genVMCodeForAssignmentStatementWithStructAccess(assignStmt,ctx));
         }
 
         return vm;
@@ -40,10 +38,12 @@ final class AssignmentStatementDracoVMCodeGenerator {
 
     private static List<String> genVMCodeForAssignmentStatementWithStructAccess(
             AssignmentStatementNode assignStmt,
-            SubroutineSymbolTable subTable,
-            LocalVarSymbolTable varTable,
-            StructsSymbolTable structsTable
+            SymbolTableContext ctx
     ) throws Exception {
+
+        final SubroutineSymbolTable subTable=ctx.subTable;
+        final LocalVarSymbolTable varTable=ctx.varTable;
+        final StructsSymbolTable structsTable=ctx.structsTable;
 
         final List<String> vm = new ArrayList<>();
         //dereference up until the last member access / last index access,
@@ -78,7 +78,7 @@ final class AssignmentStatementDracoVMCodeGenerator {
 
         if (varNode.simpleVariableNode.indexOptional.isPresent()) {
             //it is an array and we should read from the index
-            vm.addAll(genDracoVMCodeForExpression(varNode.simpleVariableNode.indexOptional.get(), subTable, varTable,structsTable));
+            vm.addAll(genDracoVMCodeForExpression(varNode.simpleVariableNode.indexOptional.get(), ctx));
             vm.add("arrayread");
         }
 
@@ -100,7 +100,7 @@ final class AssignmentStatementDracoVMCodeGenerator {
 
             if(varNode.memberAccessList.get(i).indexOptional.isPresent()){
                 final ExpressionNode indexIntoMemberExpr = varNode.memberAccessList.get(i).indexOptional.get();
-                vm.addAll(genDracoVMCodeForExpression(indexIntoMemberExpr, subTable,varTable,structsTable));
+                vm.addAll(genDracoVMCodeForExpression(indexIntoMemberExpr, ctx));
                 vm.add("arrayread");
 
                 //unwrap our previous type, as we have indexed into it
@@ -133,7 +133,7 @@ final class AssignmentStatementDracoVMCodeGenerator {
 
         if(last.indexOptional.isPresent()){
             //push the index into the array
-            genDracoVMCodeForExpression(last.indexOptional.get(), subTable,varTable,structsTable);
+            genDracoVMCodeForExpression(last.indexOptional.get(), ctx);
         }{
             //push the index into the struct
 
@@ -144,7 +144,7 @@ final class AssignmentStatementDracoVMCodeGenerator {
             vm.add("iconst "+indexOfMember);
         }
 
-        vm.addAll(genDracoVMCodeForExpression(expr, subTable,varTable,structsTable));
+        vm.addAll(genDracoVMCodeForExpression(expr, ctx));
         vm.add("arraystore");
 
         return vm;
@@ -153,10 +153,13 @@ final class AssignmentStatementDracoVMCodeGenerator {
     private static List<String> genVMCodeForSimpleAssignmentStatementWithoutStructAccess(
             SimpleVariableNode varNode,
             ExpressionNode expr,
-            SubroutineSymbolTable subTable,
-            LocalVarSymbolTable varTable,
-            StructsSymbolTable structsTable
+            SymbolTableContext ctx
     )throws Exception{
+
+        final SubroutineSymbolTable subTable=ctx.subTable;
+        final LocalVarSymbolTable varTable=ctx.varTable;
+        final StructsSymbolTable structsTable=ctx.structsTable;
+
         //the variable being assigned to would be a local variable or argument.
         //the expression that is being assigned, there can be code generated to put it on the stack
         final String varName = varNode.name;
@@ -170,14 +173,14 @@ final class AssignmentStatementDracoVMCodeGenerator {
             vm.add("push "+segment+" "+index);
 
             //push the index
-            vm.addAll(genDracoVMCodeForExpression(varNode.indexOptional.get(), subTable,varTable,structsTable));
+            vm.addAll(genDracoVMCodeForExpression(varNode.indexOptional.get(), ctx));
 
             //push the value we want to store
-            vm.addAll(genDracoVMCodeForExpression(expr, subTable,varTable,structsTable));
+            vm.addAll(genDracoVMCodeForExpression(expr, ctx));
 
             vm.add("arraystore");
         }else {
-            vm.addAll(genDracoVMCodeForExpression(expr, subTable,varTable,structsTable));
+            vm.addAll(genDracoVMCodeForExpression(expr, ctx));
             //then we just pop that value into the appropriate segment with the specified index
             vm.add("pop "+segment+" "+index);
         }

@@ -6,7 +6,6 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
@@ -33,10 +32,10 @@ public final class ArrayConstantNodeTypeChecker {
     if (arrConstNode.elements.size() > 0) {
 
       final TypeNode type_of_elements =
-              TypeResolver.getTypeExpressionNode(arrConstNode.elements.get(0), methodNode, subTable, varTable,structsTable);
+              TypeResolver.getTypeExpressionNode(arrConstNode.elements.get(0), subTable, varTable,structsTable);
 
       for (ExpressionNode expr : arrConstNode.elements) {
-        final TypeNode element_type = TypeResolver.getTypeExpressionNode(expr, methodNode, subTable, varTable,structsTable);
+        final TypeNode element_type = TypeResolver.getTypeExpressionNode(expr, subTable, varTable,structsTable);
         if (!element_type.getTypeName().equals(type_of_elements.getTypeName())) {
           throw new Exception("type of the array items was inferred to "
                   + type_of_elements

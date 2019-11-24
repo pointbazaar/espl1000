@@ -13,6 +13,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IntConstNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.List;
 
@@ -26,10 +27,13 @@ public final class TermDracoVMCodeGenerator {
 
     public static List<String> genDracoVMCodeForTerm(
             TermNode tNode,
-            SubroutineSymbolTable subTable,
-            LocalVarSymbolTable varTable,
-            StructsSymbolTable structsTable
+            SymbolTableContext ctx
     ) throws Exception {
+
+        final SubroutineSymbolTable subTable=ctx.subTable;
+        final LocalVarSymbolTable varTable=ctx.varTable;
+        final StructsSymbolTable structsTable=ctx.structsTable;
+
         final ITermNode t = tNode.termNode;
         if (t instanceof FloatConstNode) {
             return genVMCodeForFloatConst(
@@ -39,22 +43,22 @@ public final class TermDracoVMCodeGenerator {
             return genVMCodeForIntConst(((IntConstNode) t).value);
         } else if (t instanceof ExpressionNode) {
             final ExpressionNode expressionNode = (ExpressionNode) t;
-            return genDracoVMCodeForExpression(expressionNode, subTable, varTable, structsTable);
+            return genDracoVMCodeForExpression(expressionNode,ctx);
         } else if (t instanceof VariableNode) {
             //find the local variable index
             // and push the variable onto the stack
             final VariableNode variableNode = (VariableNode) t;
 
-            return genDracoVMCodeForVariable(variableNode, subTable, varTable, structsTable);
+            return genDracoVMCodeForVariable(variableNode, ctx);
         } else if (t instanceof MethodCallNode) {
             final MethodCallNode methodCallNode = (MethodCallNode) t;
-            return genVMCodeForMethodCall(methodCallNode, subTable, varTable, structsTable);
+            return genVMCodeForMethodCall(methodCallNode, ctx);
 
         } else if (t instanceof BoolConstNode) {
             return genVMCodeForBoolConst((BoolConstNode) t);
         } else if (t instanceof ArrayConstantNode) {
             final ArrayConstantNode arrayConstantNode = (ArrayConstantNode) t;
-            return genVMCodeForArrayConstant(arrayConstantNode, subTable, varTable, structsTable);
+            return genVMCodeForArrayConstant(arrayConstantNode, ctx);
         } else if (t instanceof CharConstNode) {
             final CharConstNode t1 = (CharConstNode) t;
 

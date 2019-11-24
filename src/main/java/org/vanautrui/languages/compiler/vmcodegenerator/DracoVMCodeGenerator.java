@@ -8,6 +8,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.*;
 
@@ -62,16 +63,17 @@ public final class DracoVMCodeGenerator {
     /**
      * after this subroutine, the address of the array with the specified elements inside is on the stack
      * @param arrayConstantNode
-     * @param subTable
-     * @param varTable
      * @throws Exception
      */
     public static List<String> genVMCodeForArrayConstant(
             ArrayConstantNode arrayConstantNode,
-            SubroutineSymbolTable subTable,
-            LocalVarSymbolTable varTable,
-            StructsSymbolTable structsTable
+            SymbolTableContext ctx
     ) throws Exception{
+
+
+        final SubroutineSymbolTable subTable=ctx.subTable;
+        final LocalVarSymbolTable varTable=ctx.varTable;
+        final StructsSymbolTable structsTable=ctx.structsTable;
 
         final List<String> vm = new ArrayList<>();
 
@@ -93,7 +95,7 @@ public final class DracoVMCodeGenerator {
             vm.add("iconst "+i);//index to store into
 
             //value we want to store
-            vm.addAll(genDracoVMCodeForExpression(arrayConstantNode.elements.get(i), subTable,varTable,structsTable));
+            vm.addAll(genDracoVMCodeForExpression(arrayConstantNode.elements.get(i), ctx));
 
             vm.add("arraystore");
         }

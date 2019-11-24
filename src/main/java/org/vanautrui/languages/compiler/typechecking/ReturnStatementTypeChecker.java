@@ -2,9 +2,8 @@ package org.vanautrui.languages.compiler.typechecking;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.ReturnStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
@@ -26,7 +25,7 @@ public final class ReturnStatementTypeChecker {
           StructsSymbolTable structsTable
   ) throws Exception {
     //the type of the value returned should be the same as the method return type
-    var returnValueType = TypeResolver.getTypeExpressionNode(returnStatementNode.returnValue, methodNode, subTable, varTable,structsTable);
+    var returnValueType = TypeResolver.getTypeExpressionNode(returnStatementNode.returnValue, subTable, varTable,structsTable);
     if (
             !(returnValueType.getTypeName().equals(methodNode.returnType.getTypeName()))
 

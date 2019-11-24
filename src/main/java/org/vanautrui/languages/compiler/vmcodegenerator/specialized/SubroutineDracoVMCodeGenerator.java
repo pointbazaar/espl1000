@@ -7,6 +7,7 @@ import org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerato
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +41,10 @@ public final class SubroutineDracoVMCodeGenerator {
       vminstrs.add("iconst 0"); //push local vars on the stack"
     }
 
+    final SymbolTableContext ctx = new SymbolTableContext(subTable,varTable,structsTable);
+
     for(StatementNode stmt : m.statements){
-      vminstrs.addAll(generateDracoVMCodeForStatement(stmt,m,subTable,varTable,structsTable));
+      vminstrs.addAll(generateDracoVMCodeForStatement(stmt,m,ctx));
     }
 
     //return should be the last statement in every possible branch for these statements

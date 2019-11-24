@@ -2,9 +2,8 @@ package org.vanautrui.languages.compiler.typechecking;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
@@ -26,8 +25,8 @@ public final class AssignmentStatementTypeChecker {
           LocalVarSymbolTable varTable,
           StructsSymbolTable structsTable
   ) throws Exception{
-    final var leftSideType = TypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,methodNode,subTable,varTable,structsTable);
-    final var rightSideType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,methodNode,subTable,varTable,structsTable);
+    final var leftSideType = TypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,subTable,varTable,structsTable);
+    final var rightSideType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,subTable,varTable,structsTable);
 
     final boolean types_equal = leftSideType.getTypeName().equals(rightSideType.getTypeName());
     final boolean one_is_wildcard = leftSideType.getTypeName().equals("#") || rightSideType.getTypeName().equals("#");

@@ -4,10 +4,9 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionN
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.OperatorNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
@@ -57,14 +56,14 @@ public final class ExpressionNodeTypeChecker {
 
     //the types should be all the same for now
     typecheckTermNode(asts, namespaceNode,methodNode,expr.term,subTable,varTable,structsTable);
-    TypeNode type= TypeResolver.getTypeTermNode(expr.term,methodNode,subTable,varTable,structsTable);
+    TypeNode type= TypeResolver.getTypeTermNode(expr.term,subTable,varTable,structsTable);
     final List<String> currentAllowedTypes= Arrays.asList("PInt","Float");
     final List<String> allowed_operators_for_expressions_with_more_than_2_terms=Arrays.asList("+","-");
 
 
     if(expr.termNodes.size()==1 && expr.operatorNodes.size()==1 && expr.operatorNodes.get(0).operator.equals("==")) {
       //can only compare stuff which is the same
-      TypeNode otherType = TypeResolver.getTypeTermNode(expr.termNodes.get(0),methodNode,subTable,varTable,structsTable);
+      TypeNode otherType = TypeResolver.getTypeTermNode(expr.termNodes.get(0),subTable,varTable,structsTable);
       if(!otherType.getTypeName().equals(type.getTypeName())){
         throw new Exception(TypeChecker.class.getSimpleName()+": to compare with '==', they have to be the same type ");
       }
@@ -77,7 +76,7 @@ public final class ExpressionNodeTypeChecker {
     }
 
     for (TermNode t : expr.termNodes){
-      if( !( TypeResolver.getTypeTermNode(t,methodNode,subTable,varTable,structsTable).equals(type) ) ){
+      if( !( TypeResolver.getTypeTermNode(t,subTable,varTable,structsTable).equals(type) ) ){
         throw new Exception("for now, all types in an expression must be the same");
       }
       //typecheck the term node, maybe it contains identifiers that are not declared?
@@ -113,8 +112,8 @@ public final class ExpressionNodeTypeChecker {
     }else if(arithmetic_operators_for_epressions_with_2_operands.contains(opNode.operator)){
       final List<String> currentAllowedTypes= Arrays.asList("PInt","Float","NInt","Integer");
 
-      final TypeNode type1 = TypeResolver.getTypeTermNode(term1,methodNode,subTable,varTable,structsTable);
-      final TypeNode type2 = TypeResolver.getTypeTermNode(term2,methodNode,subTable,varTable,structsTable);
+      final TypeNode type1 = TypeResolver.getTypeTermNode(term1,subTable,varTable,structsTable);
+      final TypeNode type2 = TypeResolver.getTypeTermNode(term2,subTable,varTable,structsTable);
 
       if(!currentAllowedTypes.contains(type1.getTypeName())){
         throw new Exception(""+type1.getTypeName()+" is not a supported type for expressions with 2 terms.");
@@ -162,8 +161,8 @@ public final class ExpressionNodeTypeChecker {
 
     final String current_allowed_type_for_bitshifting="PInt";
 
-    final TypeNode type1 = TypeResolver.getTypeTermNode(term1,methodNode,subTable,varTable,structsTable);
-    final TypeNode type2 = TypeResolver.getTypeTermNode(term2,methodNode,subTable,varTable,structsTable);
+    final TypeNode type1 = TypeResolver.getTypeTermNode(term1,subTable,varTable,structsTable);
+    final TypeNode type2 = TypeResolver.getTypeTermNode(term2,subTable,varTable,structsTable);
 
     if(!type1.getTypeName().equals(current_allowed_type_for_bitshifting) || !type2.getTypeName().equals(current_allowed_type_for_bitshifting)){
       throw new Exception("one or two of the operands for bitshifting were not of type "+current_allowed_type_for_bitshifting);
