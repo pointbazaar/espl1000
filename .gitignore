@@ -1,4 +1,5 @@
 target/
+dracovm.info
 .idea/
 .idea/*
 *.iml
@@ -7,3 +8,4 @@ target/
 crend
 *.class
 .**.asm
+*.tokens

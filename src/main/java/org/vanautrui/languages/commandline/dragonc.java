@@ -2,6 +2,7 @@ package org.vanautrui.languages.commandline;
 
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 
 import java.io.File;
@@ -11,7 +12,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 import static java.lang.System.currentTimeMillis;
@@ -160,28 +160,14 @@ public final class dragonc {
         long start_time_ms = currentTimeMillis();
 
         try {
-            List<String> codes=new ArrayList<String>();
+            final List<String> codes=new ArrayList<String>();
+            
             for(File file : sources){
                 String sourceCode = new String(Files.readAllBytes(file.toPath()));
                 codes.add(sourceCode);
                 if(debug) {
                     System.out.println(sourceCode);
                 }
-            }
-
-            if(sources.size()==0){
-                //use stdin to receive codes
-                //if no files or directories are given as arguments
-                //(unix philosophy)
-                //this enables the program to better be used with other programs, piping text and outputs and such
-                StringBuilder sb=new StringBuilder();
-                Scanner sc = new Scanner(System.in);
-                while(sc.hasNextLine()){
-                    sb.append(sc.nextLine());
-                }
-                sc.close();
-                codes.add(sb.toString());
-                sources.add(Paths.get("Main.dg").toFile());
             }
 
             final CompilerPhases phases = new CompilerPhases(cmd);
@@ -201,9 +187,15 @@ public final class dragonc {
             //this phase depends on 'dracovm'
             //which can be obtained here: https://github.com/pointbazaar/dracovm-compiler
             //for each subroutine in vm code, make a NAME.subroutine.dracovm file
+            final String call = "dracovm -o main"+vm_code_files.stream().map(path->path.toString()).collect(Collectors.joining(" "));
+            System.out.println(call);
 
-            final Process process = Runtime.getRuntime().exec("dracovm "+vm_code_files.stream().map(path->path.toString()).collect(Collectors.joining(" ")));
+            final Process process = Runtime.getRuntime().exec(call);
             process.waitFor();
+            final String output = IOUtils.toString(process.getInputStream());
+            System.out.println(output);
+            final String output2 = IOUtils.toString(process.getErrorStream());
+            System.out.println(output2);
 
             long end_time_ms = currentTimeMillis();
             long duration = end_time_ms-start_time_ms;
