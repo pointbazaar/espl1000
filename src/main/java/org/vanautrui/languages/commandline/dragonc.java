@@ -219,11 +219,7 @@ public final class dragonc {
         } catch (Exception e) {
 
             System.err.println(e.getMessage());
-            if(cmd.hasOption(FLAG_DEBUG)) {
-                //only print the stack trace for
-                //compiler developers
-                e.printStackTrace();
-            }
+            e.printStackTrace();
             printBuildConclusion(false);
         }
     }
