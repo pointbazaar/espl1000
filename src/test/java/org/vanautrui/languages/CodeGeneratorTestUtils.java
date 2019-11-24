@@ -5,6 +5,7 @@ import org.vanautrui.languages.commandline.ParserPhases;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.Parser;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.util.Filenames;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -114,7 +115,7 @@ public final class CodeGeneratorTestUtils {
             Files.delete(filename_without_extension);
 
             //delete the assembly file
-            final Path asm_path = Paths.get(filename_without_extension + "_main.asm");
+            final Path asm_path = Paths.get(Filenames.asm_filename(filename_without_extension+"_main"));
             System.out.println("delete: " + asm_path.toString());
             Files.delete(asm_path);
         }
