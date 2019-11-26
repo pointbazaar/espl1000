@@ -13,16 +13,17 @@ public namespace TestStdLib{
 		assert(sign(4)==1);
 
 		println("pow(2,3)==8");
-        assert(pow(2,3)==8);
+        	assert(pow(2,3)==8);
 
 		println("faculty(3)==6");
-        assert(faculty(3)==6);
+		//printi(faculty(3));
+        	assert(faculty(3)==6);
 
 		println("min(4,5)==4");
 		assert(min(4,5)==4);
 
 		println("max(2,6)==6");		
-        assert(max(2,6)==6);
+        	assert(max(2,6)==6);
 	
 		println("substr('hello',1,3)");	
 		println(substr("hello",1,3));		
