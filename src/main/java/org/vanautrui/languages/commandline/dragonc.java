@@ -161,7 +161,7 @@ public final class dragonc {
 
         try {
             final List<String> codes=new ArrayList<String>();
-            
+
             for(File file : sources){
                 String sourceCode = new String(Files.readAllBytes(file.toPath()));
                 codes.add(sourceCode);
@@ -187,7 +187,7 @@ public final class dragonc {
             //this phase depends on 'dracovm'
             //which can be obtained here: https://github.com/pointbazaar/dracovm-compiler
             //for each subroutine in vm code, make a NAME.subroutine.dracovm file
-            final String call = "dracovm -o main"+vm_code_files.stream().map(path->path.toString()).collect(Collectors.joining(" "));
+            final String call = "dracovm "+vm_code_files.stream().map(path->path.toString()).collect(Collectors.joining(" "));
             System.out.println(call);
 
             final Process process = Runtime.getRuntime().exec(call);
