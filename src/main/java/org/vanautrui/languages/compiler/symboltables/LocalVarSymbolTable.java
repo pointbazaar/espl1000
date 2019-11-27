@@ -1,11 +1,6 @@
 package org.vanautrui.languages.compiler.symboltables;
 
-import io.bretty.console.table.Alignment;
-import io.bretty.console.table.ColumnFormatter;
-import io.bretty.console.table.Precision;
-import io.bretty.console.table.Table;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -92,20 +87,23 @@ public final class LocalVarSymbolTable  {
         int[] indices_inner = IntStream.range(0,this.symbolTable.size()).toArray();
         Integer[] indices = Arrays.stream( indices_inner ).boxed().toArray( Integer[]::new );
 
-        ColumnFormatter<String> stringColumnFormatter = ColumnFormatter.text(Alignment.LEFT, 20);
-        ColumnFormatter<Number> integerColumnFormatter = ColumnFormatter.number(Alignment.RIGHT, 7, Precision.ZERO);
+        final StringBuilder table = new StringBuilder();
+
+        //append table headers
+        table.append(String.format("%12s | %12s | %12s | %12s\n","Variable Name","Type","Index","Kind"));
+
+        for(final int i : indices){
+
+            final String varname = names[i];
+            final String type = types[i];
+            final int index = indices[i]; //just for pattern sake
+            final String kind = kinds[i];
+
+            //append a row
+            table.append(String.format("%12s | %12s | %12d | %12s\n",varname,type,index,kind));
+        }
 
 
-        Table.Builder builder = new Table.Builder("Variable Name",names, stringColumnFormatter);
-
-
-        builder.addColumn("Type", types, stringColumnFormatter);
-        builder.addColumn("Index", indices, integerColumnFormatter);
-        builder.addColumn("Kind", kinds, stringColumnFormatter);
-
-
-        Table table = builder.build();
-        //System.out.println(table); // NOTICE: table.toString() is called implicitly
         return "\n(METHOD SCOPE) VARIABLES SYMBOL TABLE: \n"+table.toString();
     }
 

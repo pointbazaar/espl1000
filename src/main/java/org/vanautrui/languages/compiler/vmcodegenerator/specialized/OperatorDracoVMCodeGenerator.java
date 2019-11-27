@@ -1,58 +1,74 @@
 package org.vanautrui.languages.compiler.vmcodegenerator.specialized;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.OperatorNode;
-import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
+
+import java.util.Arrays;
+import java.util.List;
 
 public final class OperatorDracoVMCodeGenerator {
 
-  public static void genDracoVMCodeForOp(OperatorNode opNode, DracoVMCodeWriter sb)throws Exception{
+  public static List<String> genDracoVMCodeForOp(OperatorNode opNode, boolean isFloatNode)throws Exception{
+    return Arrays.asList(genDracoVMCodeForOpSingleInstr(opNode,isFloatNode));
+  }
+
+  private static String genDracoVMCodeForOpSingleInstr(OperatorNode opNode, boolean isFloatOperands)throws Exception{
+
     switch (opNode.operator){
       case "+":
-        sb.add();
-        break;
+        if(isFloatOperands){
+          return "fadd";
+        }else {
+          return "iadd";
+        }
       case "-":
-        sb.sub();
-        break;
+        if(isFloatOperands) {
+          return "fsub";
+        }else {
+          return "isub";
+        }
       case ">":
-        sb.gt();
-        break;
-      case ">=":
-        sb.geq();
-        break;
+        if(isFloatOperands){
+          return "fgt";
+        }else {
+          return "igt";
+        }
       case "<":
-        sb.lt();
-        break;
+        return (isFloatOperands)?"flt":"ilt";
+      case ">=":
+        return (isFloatOperands)?"fgeq":"igeq";
       case "<=":
-        sb.leq();
-        break;
+        return (isFloatOperands)?"fleq":"ileq";
+
       case "*":
-        sb.mul();
-        break;
+        return (isFloatOperands)?"fmul":"imul";
       case "/":
-        sb.div();
-        break;
+        return (isFloatOperands)?"fdiv":"idiv";
+
       case "!=":
-        sb.neq();
-        break;
+        if(isFloatOperands){
+          throw new Exception("not implemented for float: !=");
+        }
+        return "ineq";
       case "%":
-        sb.mod();
-        break;
+        return (isFloatOperands)?"fmod":"imod";
       case "==":
-        sb.eq();
-        break;
+        if(isFloatOperands){
+          throw new Exception("not implemented for float: ==");
+        }
+        return "ieq";
 
       case "&&":
-        sb.and();
-        break;
+        return "and";
       case "||":
-        sb.or();
+        return "or";
 
       case "<<":
-        sb.lshiftl();
-        break;
+        return "lshiftl";
       case ">>":
-        sb.lshiftr();
-        break;
+        return "lshiftr";
+
+      case "^":
+        return "iexp";
 
       default:
         throw new Exception("currently unsupported op: '"+opNode.operator+"'");

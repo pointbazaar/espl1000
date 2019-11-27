@@ -3,16 +3,18 @@ use Base.dg
 /*
 	Subroutines provided:
 
-	Math.sign(i)
-	Math.pow(i,n)
-	Math.faculty(n)
-	Math.min(i1,i2)
-	Math.max(i1,i2)
+	sign(i)
+	pow(i,n)
+	faculty(n)
+	min(i1,i2)
+	max(i1,i2)
+	gcd(i1,i2) //greatest common divisor
+	lcm(i1,i2) //least common multiple
 */
 
 public namespace Math{
 	
-	public (PInt n)->Integer sign{
+	public (Integer n)->Integer sign{
 		if(n>0){
 			return 1;
 		}
@@ -21,8 +23,9 @@ public namespace Math{
 		}
 		return -1;
 	}
-	public (PInt base,PInt power)->PInt pow{
-		result=1;
+	
+	public (Integer base,PInt power)->Integer pow{
+		Integer result=1;
 		i=0;
 		while(i<power){
 			result=result*base;
@@ -30,16 +33,29 @@ public namespace Math{
 		}
 		return result;
 	}
+	
 	public (PInt n)->PInt faculty{
 		if(n<=1){ return 1; }
 		return (n*faculty(n-1));
 	}
-	public (PInt a,PInt b)->PInt max{
+	
+	public (Integer a,Integer b)->Integer max{
 		if(a>b){return a;}
 		return b;
 	}
-	public (PInt a,PInt b)->PInt min{
+	
+	public (Integer a,Integer b)->Integer min{
 		if(a<b){return a;}
 		return b;
+	}
+
+	public (Integer a, Integer b)->Integer gcd{
+		if(a==0){return b;}
+		return gcd(b%a,a);
+	}
+
+	public(Integer a, Integer b)->Integer lcm{
+
+		return (a*b)/gcd(a,b);
 	}
 }

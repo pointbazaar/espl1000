@@ -8,12 +8,11 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.LoopStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.WhileStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.StructDeclNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTableRow;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
@@ -154,7 +153,7 @@ public final class SymbolTableGenerator {
 			if(assignStmtNode.optTypeNode.isPresent()){
 				type_of_var=assignStmtNode.optTypeNode.get();
 			}else {
-				type_of_var = TypeResolver.getTypeExpressionNode(assignStmtNode.expressionNode, methodNode, subTable, methodScopeSymbolTable, structsTable);
+				type_of_var = TypeResolver.getTypeExpressionNode(assignStmtNode.expressionNode, subTable, methodScopeSymbolTable, structsTable);
 			}
 
 			if(assignStmtNode.variableNode.memberAccessList.size()==0) {

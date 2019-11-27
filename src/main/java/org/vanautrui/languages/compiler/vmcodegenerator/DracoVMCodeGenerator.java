@@ -1,96 +1,105 @@
 package org.vanautrui.languages.compiler.vmcodegenerator;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ArrayConstantNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.terminal.FloatConstNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTableRow;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ExpressionDracoVMCodeGenerator.genDracoVMCodeForExpression;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.SubroutineDracoVMCodeGenerator.generateDracoVMCodeForMethod;
 
 public final class DracoVMCodeGenerator {
 
-    public static List<String> generateDracoVMCode(
+    public static Map<String, List<String>> generateDracoVMCode(
             Set<AST> asts,
             SubroutineSymbolTable subTable,
             StructsSymbolTable structsTable,
             boolean debug,boolean printsymboltables
-    ) throws Exception{
+    ) {
 
-        DracoVMCodeWriter sb = new DracoVMCodeWriter();
-        for(AST ast :asts){
+        final Map<String,List<String>> dracovmcodeinstructions = new HashMap<>();
+
+        asts.parallelStream().forEach(ast -> {
+
             for(NamespaceNode namespaceNode : ast.namespaceNodeList){
                 for(MethodNode methodNode : namespaceNode.methodNodeList){
-                    generateDracoVMCodeForMethod(namespaceNode,methodNode,sb,subTable, structsTable,debug,printsymboltables);
+                    try {
+                        //namespaceNode, methodNode, writer are not accessed from other threads
+                        //debug, printsymboltables are only read, not written to.
+                        //subTable, structsTable are probably only read from, but need to be synchronized,
+                        //as they are important to all threads.
+                        final List<String> subr_vm_codes = generateDracoVMCodeForMethod(namespaceNode, methodNode, subTable, structsTable, debug, printsymboltables);
+                        dracovmcodeinstructions.put(namespaceNode.name.getTypeName()+"_"+methodNode.methodName,subr_vm_codes);
+                    }catch (Exception e){
+                        throw new RuntimeException(e);
+                    }
                 }
             }
-        }
-        return sb.getDracoVMCodeInstructions();
+        });
+
+        return dracovmcodeinstructions;
     }
 
-    public static void genVMCodeForFloatConst(FloatConstNode fconst,DracoVMCodeWriter sb){
-        sb.fconst(fconst.value);
+    public static List<String> genVMCodeForFloatConst(float fconst){
+        return Arrays.asList("fconst "+fconst);
     }
 
-    public static void genVMCodeForIntConst(int iconst,DracoVMCodeWriter sb){
-        sb.iconst(iconst);
+    public static List<String> genVMCodeForIntConst(int iconst){
+        return Arrays.asList("iconst "+iconst);
     }
 
-    public static void genVMCodeForBoolConst(BoolConstNode bconst,DracoVMCodeWriter sb){
-        sb.iconst((bconst.value)?1:0);
+    public static List<String> genVMCodeForBoolConst(BoolConstNode bconst){
+        return Arrays.asList("iconst "+((bconst.value)?1:0));
     }
 
 
     /**
      * after this subroutine, the address of the array with the specified elements inside is on the stack
      * @param arrayConstantNode
-     * @param sb
-     * @param subTable
-     * @param varTable
      * @throws Exception
      */
-    public static void genVMCodeForArrayConstant(
+    public static List<String> genVMCodeForArrayConstant(
             ArrayConstantNode arrayConstantNode,
-            DracoVMCodeWriter sb,
-            SubroutineSymbolTable subTable,
-            LocalVarSymbolTable varTable,
-            StructsSymbolTable structsTable
+            SymbolTableContext ctx
     ) throws Exception{
+
+
+        final SubroutineSymbolTable subTable=ctx.subTable;
+        final LocalVarSymbolTable varTable=ctx.varTable;
+        final StructsSymbolTable structsTable=ctx.structsTable;
+
+        final List<String> vm = new ArrayList<>();
 
         //allocate space for the new array.
         //this leaves the address of the new array (the new array resides on the heap) on the stack
+        vm.add("iconst "+arrayConstantNode.elements.size());//amount of DWORD's to reserve
 
-        sb.iconst(arrayConstantNode.elements.size()); //amount of DWORD's to reserve
-        sb.call("Builtin","new"); //should leave the address to the newly allocated space on the stack
+        vm.add("call Builtin_new"); //should leave the address to the newly allocated space on the stack
 
         //caller removes the arguments
-        sb.swap("remove previously pushed arguments");
-        sb.pop("remove previously pushed arguments");
+        vm.add("swap"); //remove previously pushed arguments");
+        vm.add("pop");  //remove previously pushed arguments");
 
         //put the individual elements into the array
         for(int i=0;i<arrayConstantNode.elements.size();i++) {
-            sb.dup(); //duplicate the array address as it is consumed with  'arraystore'
+            //duplicate the array address as it is consumed with  'arraystore'
+            vm.add("dup");
 
-            sb.iconst(i);//index to store into
+            vm.add("iconst "+i);//index to store into
 
             //value we want to store
-            genDracoVMCodeForExpression(arrayConstantNode.elements.get(i),sb,subTable,varTable,structsTable);
+            vm.addAll(genDracoVMCodeForExpression(arrayConstantNode.elements.get(i), ctx));
 
-            sb.arraystore();
+            vm.add("arraystore");
         }
+        return vm;
     }
 
     public static long unique(){

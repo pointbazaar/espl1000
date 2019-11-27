@@ -3,13 +3,33 @@ detect:
     filename: "\\.dg$"
 
 rules:
+    #Builtin primitive types
     - type: "\\b(PInt|NInt|Integer|PFloat|NFloat|Float|Char|Bool)\\b"
-    - statement: "\\b(if|else|while|loop|return)\\b"
+
+    #user-defined types. all types start with an uppercase letter
+    - type: "[A-Z][A-Za-z0-9]*"
+
+    - statement: "\\b(return)\\b"
+    - statement.control: "\\b(if|else|while|loop)\\b"
+    - statement.access: "\\b(public|private)\\b"
+    
     - special: "\\b(namespace|struct)\\b"
+
+    - identifier: "[a-z][A-Za-z0-9]* "
+
+    - symbol.brackets: "(\\{|\\})"
+    - symbol.brackets: "(\\(|\\))"
+    - symbol.brackets: "(\\[|\\])"
+
+    - symbol.operator: "\\b(\\+|\\-|==|=|\\*)\\b"
+    #comparison
+    - symbol.operator: "\\b(\\<|\\>|\\<=|\\>=)\\b"
+    #arrows
+    - symbol.operator: "\\b(->|-->|~>|~~>|=>|==>)\\b"
 
     - preproc: "use [A-Z].*\\.dg"
     
-    - constant: "\\b(true|false)\\b"
+    - constant.bool: "\\b(true|false)\\b"
     - constant.number: "\\b[0-9]+\\b"
     - constant.string:
             start: "\""
@@ -25,4 +45,10 @@ rules:
         end: "\\*/"
         rules: []
 
-    - todo: "TODO:?"
+    - todo: "(TODO|FIXME):?"
+
+    # stupid stuff like null that will never enter the language
+    - error: "\\b(null|undefined|NaN)\\b"
+    
+    # reserved words, may be used later on
+    - error: "\\b(enum,implements,package,interface,protected)\\b"

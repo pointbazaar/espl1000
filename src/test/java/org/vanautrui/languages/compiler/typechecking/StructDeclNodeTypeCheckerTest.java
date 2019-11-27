@@ -1,7 +1,7 @@
 package org.vanautrui.languages.compiler.typechecking;
 
 import org.junit.Test;
-import org.vanautrui.languages.compiler.lexing.Lexer;
+import org.vanautrui.languages.commandline.ParserPhases;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.Parser;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
@@ -15,9 +15,9 @@ public final class StructDeclNodeTypeCheckerTest {
 
   @Test
   public void test_typechecking_struct_valid() throws Exception{
-    Lexer lexer=new Lexer();
+
     Parser parser=new Parser();
-    TokenList tokens = lexer.lexCodeTestMode(
+    TokenList tokens = ParserPhases.makeTokenList(
             "public namespace ExampleClass{ struct MyStruct{} ()~>PInt main{ return 0;}" +
                     "}");
 
@@ -30,9 +30,9 @@ public final class StructDeclNodeTypeCheckerTest {
 
   @Test
   public void test_typechecking_struct_invalid_primitive_typename() throws Exception{
-    Lexer lexer=new Lexer();
+
     Parser parser=new Parser();
-    TokenList tokens = lexer.lexCodeTestMode(
+    TokenList tokens = ParserPhases.makeTokenList(
             "public namespace ExampleClass{ struct PInt{}" +
                     "}");
 
@@ -51,7 +51,7 @@ public final class StructDeclNodeTypeCheckerTest {
   @Test
   public void test_typechecking_struct_invalid_multiple_declarations() throws Exception{
 
-    final TokenList tokens = (new Lexer()).lexCodeTestMode(
+    final TokenList tokens = ParserPhases.makeTokenList(
             "public namespace ExampleClass{ struct MyStruct{} struct MyStruct{}" +
                     "}");
 

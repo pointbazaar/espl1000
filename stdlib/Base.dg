@@ -5,10 +5,11 @@ this file is supposed to provide basic functionality
 such as basic input and output.
 
 	Subroutines provided:
-	Base::print			
-	Base::println
-	Base::printi
-	Base::delay		
+	Base:print			
+	Base:println
+	Base:printi
+	Base:delay	
+	Base:assert	
 */
 
 public namespace Base{
@@ -47,6 +48,7 @@ public namespace Base{
 		}
 		return 0;
 	}
+	
 	public (PInt seconds)~>PInt delay{
 
 		start=time();
@@ -56,5 +58,14 @@ public namespace Base{
 			//do nothing
 		}
 		return 0;
+	}
+
+	public (Bool condition)~>Bool assert{
+		if(condition){
+			println("PASS");
+		}else{
+			println("FAIL");
+		}
+		return condition;
 	}
 }

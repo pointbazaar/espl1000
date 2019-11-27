@@ -31,7 +31,7 @@ public final class VariableNodeTypeChecker {
     if(varNode.simpleVariableNode.indexOptional.isPresent()){
       //if there is an index, it should be positive. we can check one of the bounds for free
       //by only accepting PInt type
-      TypeNode index_type = TypeResolver.getTypeExpressionNode(varNode.simpleVariableNode.indexOptional.get(), methodNode, subTable, varTable,structsTable);
+      TypeNode index_type = TypeResolver.getTypeExpressionNode(varNode.simpleVariableNode.indexOptional.get(), subTable, varTable,structsTable);
       if(!index_type.getTypeName().equals("PInt")){
         throw new Exception("can only index into arrays with PInt type. Because an array index is >= 0.");
       }

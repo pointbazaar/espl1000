@@ -12,49 +12,70 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
-import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.AssignmentStatementDracoVMCodeGenerator.*;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.IfStatementDracoVMCodeGenerator.genVMCodeForIfStatement;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.LoopStatementDracoVMCodeGenerator.genVMCodeForLoopStatement;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.MethodCallDracoVMCodeGenerator.genVMCodeForMethodCall;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ReturnDracoVMCodeGenerator.genDracoVMCodeForReturn;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.WhileStatementDracoVMCodeGenerator.genVMCodeForWhileStatement;
 
-public final class StatementDracoVMCodeGenerator {
+final class StatementDracoVMCodeGenerator {
 
 
-  public static void generateDracoVMCodeForStatement(
-          StatementNode stmt,
-          MethodNode containerMethod,
-          DracoVMCodeWriter sb,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
-  )throws Exception{
-    IStatementNode snode = stmt.statementNode;
-    if(snode instanceof MethodCallNode){
-      MethodCallNode call = (MethodCallNode)snode;
-      genVMCodeForMethodCall(call,sb,subTable,varTable,structsTable);
-      //there is no assignment, and the return value is not used in an expression,
-      // so the return value should be pop'd of the stack
-      sb.pop();
-    }else if(snode instanceof LoopStatementNode) {
-      LoopStatementNode loop = (LoopStatementNode) snode;
-      genVMCodeForLoopStatement(loop,containerMethod,sb,subTable,varTable,structsTable);
-    }else if(snode instanceof AssignmentStatementNode) {
-      AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode) snode;
-      AssignmentStatementDracoVMCodeGenerator.genVMCodeForAssignmentStatement(assignmentStatementNode,sb,subTable,varTable,structsTable);
-    }else if(snode instanceof WhileStatementNode){
-      WhileStatementNode whileStatementNode =(WhileStatementNode)snode;
-      genVMCodeForWhileStatement(whileStatementNode,containerMethod,sb,subTable,varTable,structsTable);
-    }else if(snode instanceof IfStatementNode) {
-      IfStatementNode ifStatementNode = (IfStatementNode) snode;
-      genVMCodeForIfStatement(ifStatementNode,containerMethod,sb,subTable,varTable,structsTable);
-    }else if(snode instanceof ReturnStatementNode){
-      ReturnStatementNode returnStatementNode = (ReturnStatementNode)snode;
-      genDracoVMCodeForReturn(returnStatementNode,containerMethod,sb,subTable,varTable,structsTable);
-    }else{
-      throw new Exception("unconsidered statement type: "+stmt.statementNode.getClass().getName());
+    static List<String> generateDracoVMCodeForStatement(
+            StatementNode stmt,
+            MethodNode m,
+            SymbolTableContext ctx
+    ) throws Exception {
+
+        final SubroutineSymbolTable subTable=ctx.subTable;
+        final LocalVarSymbolTable varTable=ctx.varTable;
+        final StructsSymbolTable structsTable=ctx.structsTable;
+
+        final List<String> vminstrs = new ArrayList<>();
+        final IStatementNode snode = stmt.statementNode;
+
+        if (snode instanceof MethodCallNode) {
+            final MethodCallNode call = (MethodCallNode) snode;
+            vminstrs.addAll(genVMCodeForMethodCall(call, ctx));
+            //there is no assignment, and the return value is not used in an expression,
+            // so the return value should be pop'd of the stack
+            vminstrs.add("pop");
+        } else if (snode instanceof LoopStatementNode) {
+
+            final LoopStatementNode loop = (LoopStatementNode) snode;
+
+            vminstrs.addAll(genVMCodeForLoopStatement(loop, m, ctx));
+
+        } else if (snode instanceof AssignmentStatementNode) {
+
+            final AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode) snode;
+            vminstrs.addAll(genVMCodeForAssignmentStatement(assignmentStatementNode, ctx));
+
+        } else if (snode instanceof WhileStatementNode) {
+
+            final WhileStatementNode whileStatementNode = (WhileStatementNode) snode;
+            vminstrs.addAll(genVMCodeForWhileStatement(whileStatementNode, m, ctx));
+
+        } else if (snode instanceof IfStatementNode) {
+
+            final IfStatementNode ifStatementNode = (IfStatementNode) snode;
+            vminstrs.addAll(genVMCodeForIfStatement(ifStatementNode, m, ctx));
+
+        } else if (snode instanceof ReturnStatementNode) {
+
+            final ReturnStatementNode returnStatementNode = (ReturnStatementNode) snode;
+            vminstrs.addAll(genDracoVMCodeForReturn(returnStatementNode, m, ctx));
+
+        } else {
+            throw new Exception("unconsidered statement type: " + stmt.statementNode.getClass().getName());
+        }
+
+        return vminstrs;
     }
-  }
 }

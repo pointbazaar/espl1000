@@ -5,8 +5,10 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionN
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.VariableNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.terminal.*;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.CharConstNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.FloatConstNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IntConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
@@ -34,12 +36,13 @@ public final class TypeResolver {
             return new SimpleTypeNode("NInt");
         }
     }
-    public static IBasicAndWrappedTypeNode getTypeFloatConstantNode(FloatConstNode node) throws Exception {
+    public static IBasicAndWrappedTypeNode getTypeFloatConstantNode() throws Exception {
+        //TODO: decide between NZFloat, PFloat, ...
     	return new SimpleTypeNode("Float");
     }
 
     public static TypeNode getTypeVariableNode(VariableNode varNode,
-                                               MethodNode methodNode,
+                                               //MethodNode methodNode,
                                                SubroutineSymbolTable subTable,
                                                LocalVarSymbolTable varTable,
                                                StructsSymbolTable structsTable
@@ -90,26 +93,26 @@ public final class TypeResolver {
     }
 
     public static TypeNode getTypeTermNode(TermNode termNode,
-                                           MethodNode methodNode,
+                                           //MethodNode methodNode,
                                            SubroutineSymbolTable subroutineSymbolTable,
                                            LocalVarSymbolTable varTable,
                                            StructsSymbolTable structsTable
     )throws Exception{
 
         if(termNode.termNode instanceof ExpressionNode){
-            return getTypeExpressionNode((ExpressionNode)termNode.termNode,methodNode,subroutineSymbolTable,varTable,structsTable);
+            return getTypeExpressionNode((ExpressionNode)termNode.termNode,subroutineSymbolTable,varTable,structsTable);
         }else if (termNode.termNode instanceof MethodCallNode){
             return getTypeMethodCallNode((MethodCallNode)termNode.termNode,subroutineSymbolTable,varTable);
 	      }else if(termNode.termNode instanceof FloatConstNode){
-		        return new TypeNode(new BasicTypeWrappedNode(getTypeFloatConstantNode((FloatConstNode)termNode.termNode)));
+		        return new TypeNode(new BasicTypeWrappedNode(getTypeFloatConstantNode()));
         }else if(termNode.termNode instanceof IntConstNode){
             return new TypeNode(new BasicTypeWrappedNode(getTypeIntegerConstantNode((IntConstNode)termNode.termNode)));
         }else if(termNode.termNode instanceof VariableNode){
-            return getTypeVariableNode((VariableNode)termNode.termNode,methodNode,subroutineSymbolTable,varTable,structsTable);
+            return getTypeVariableNode((VariableNode)termNode.termNode,subroutineSymbolTable,varTable,structsTable);
 		    }else if(termNode.termNode instanceof BoolConstNode) {
             return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Bool")));
         }else if(termNode.termNode instanceof ArrayConstantNode) {
-            return new TypeNode(new BasicTypeWrappedNode(getTypeArrayConstNode((ArrayConstantNode) termNode.termNode, methodNode, subroutineSymbolTable, varTable,structsTable)));
+            return new TypeNode(new BasicTypeWrappedNode(getTypeArrayConstNode((ArrayConstantNode) termNode.termNode, subroutineSymbolTable, varTable,structsTable)));
         }else if(termNode.termNode instanceof CharConstNode){
             return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Char")));
         }else{
@@ -120,7 +123,7 @@ public final class TypeResolver {
 
     private static IBasicAndWrappedTypeNode getTypeArrayConstNode(
             ArrayConstantNode arrayConstantNode,
-            MethodNode methodNode,
+            //MethodNode methodNode,
             SubroutineSymbolTable subroutineSymbolTable,
             LocalVarSymbolTable varTable,
             StructsSymbolTable structsTable
@@ -131,19 +134,19 @@ public final class TypeResolver {
         //here we assume it will be checked there
 
         if(arrayConstantNode.elements.size()==0){
-            throw new Exception("array size should be atleast 1, for the type to be inferred without type annotations: "+arrayConstantNode.toSourceCode()+" , in "+methodNode.methodName);
+            throw new Exception("array size should be atleast 1, for the type to be inferred without type annotations: "+arrayConstantNode.toSourceCode()+" , ");
         }
 
         //for the array to have a type, it has to either be annotated,
         // or contain atleast 1 element of which the type can be known
-        return new SimpleTypeNode("["+getTypeExpressionNode(arrayConstantNode.elements.get(0),methodNode,subroutineSymbolTable,varTable,structsTable).getTypeName()+"]");
+        return new SimpleTypeNode("["+getTypeExpressionNode(arrayConstantNode.elements.get(0),subroutineSymbolTable,varTable,structsTable).getTypeName()+"]");
     }
 
 
 
     public static TypeNode getTypeExpressionNode(
             ExpressionNode expressionNode,
-            MethodNode methodNode,
+            //MethodNode methodNode,
             SubroutineSymbolTable subTable,
             LocalVarSymbolTable varTable,
             StructsSymbolTable structsTable
@@ -153,9 +156,9 @@ public final class TypeResolver {
         final List<String> primitive_types_not_integral = Arrays.asList("Bool","Char","Float");
 
         if(
-                isIntegralType(getTypeTermNode(expressionNode.term,methodNode,subTable,varTable,structsTable)) &&
+                isIntegralType(getTypeTermNode(expressionNode.term,subTable,varTable,structsTable)) &&
                         expressionNode.termNodes.size()==1 &&
-                        isIntegralType(getTypeTermNode(expressionNode.termNodes.get(0),methodNode,subTable,varTable,structsTable)) &&
+                        isIntegralType(getTypeTermNode(expressionNode.termNodes.get(0),subTable,varTable,structsTable)) &&
                         expressionNode.operatorNodes.size()==1 &&
                         (boolean_operators.contains(expressionNode.operatorNodes.get(0).operator))
         ){
@@ -164,9 +167,9 @@ public final class TypeResolver {
 
         for(String primitive_type_not_integral : primitive_types_not_integral) {
             if (
-                    getTypeTermNode(expressionNode.term, methodNode, subTable, varTable, structsTable).getTypeName().equals(primitive_type_not_integral) &&
+                    getTypeTermNode(expressionNode.term, subTable, varTable, structsTable).getTypeName().equals(primitive_type_not_integral) &&
                             expressionNode.termNodes.size() == 1 &&
-                            getTypeTermNode(expressionNode.termNodes.get(0), methodNode, subTable, varTable, structsTable).getTypeName().equals(primitive_type_not_integral) &&
+                            getTypeTermNode(expressionNode.termNodes.get(0), subTable, varTable, structsTable).getTypeName().equals(primitive_type_not_integral) &&
                             expressionNode.operatorNodes.size() == 1 &&
                             (boolean_operators.contains(expressionNode.operatorNodes.get(0).operator))
             ) {
@@ -174,29 +177,29 @@ public final class TypeResolver {
             }
         }
 
-        return getTypeExpressionNodeNonSimple(expressionNode, methodNode, subTable, varTable, structsTable);
+        return getTypeExpressionNodeNonSimple(expressionNode, subTable, varTable, structsTable);
     }
 
     private static TypeNode getTypeExpressionNodeNonSimple(
             ExpressionNode expressionNode,
-            MethodNode methodNode,
+            //MethodNode methodNode,
             SubroutineSymbolTable subTable,
             LocalVarSymbolTable varTable,
             StructsSymbolTable structsTable
     ) throws Exception {
         final List<String> some_arithmetic_operators = Arrays.asList("+","-","*","/","%");
 
-        final TypeNode type = getTypeTermNode(expressionNode.term,methodNode,subTable,varTable,structsTable);
+        final TypeNode type = getTypeTermNode(expressionNode.term,subTable,varTable,structsTable);
 
         for (TermNode t : expressionNode.termNodes){
-            TypeNode termType = getTypeTermNode(t,methodNode,subTable,varTable,structsTable);
+            TypeNode termType = getTypeTermNode(t,subTable,varTable,structsTable);
 
             if(!(termType.getTypeName().equals(type.getTypeName()))){
 
                 if(
-                        isIntegralType(getTypeTermNode(expressionNode.term,methodNode,subTable,varTable,structsTable)) &&
+                        isIntegralType(getTypeTermNode(expressionNode.term,subTable,varTable,structsTable)) &&
                                 expressionNode.termNodes.size()==1 &&
-                                isIntegralType(getTypeTermNode(expressionNode.termNodes.get(0),methodNode,subTable,varTable,structsTable)) &&
+                                isIntegralType(getTypeTermNode(expressionNode.termNodes.get(0),subTable,varTable,structsTable)) &&
                                 expressionNode.operatorNodes.size()==1 &&
                                 (some_arithmetic_operators.contains(expressionNode.operatorNodes.get(0).operator))
                 ){
@@ -210,12 +213,14 @@ public final class TypeResolver {
             }
         }
 
-        return getTypeTermNode(expressionNode.term,methodNode,subTable,varTable,structsTable);
+        return getTypeTermNode(expressionNode.term,subTable,varTable,structsTable);
     }
 
     public static TypeNode getTypeMethodCallNode(
             MethodCallNode methodCallNode,
-            SubroutineSymbolTable subTable,LocalVarSymbolTable varTable) throws Exception
+            SubroutineSymbolTable subTable,
+            LocalVarSymbolTable varTable
+    ) throws Exception
     {
 
         String subrName = methodCallNode.methodName;

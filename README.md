@@ -25,6 +25,7 @@ the other dependencies are just your standard maven dependencies
   - [x] functions can be passed as arguments to subroutines
   - [ ] lambda expressions
   - [ ] common functions (haskell inspired) map,reduce,filter,sum,zip,unzip,head,tail,init
+  - [x] syntax highlighting available in micro
 - [x] structs (user-defined composite data types)
 - [x] length-prefixed arrays
 - [ ] generics (Type parameters)
@@ -33,14 +34,21 @@ the other dependencies are just your standard maven dependencies
 - [ ] standard library 
   - [ ] networking 
   - [ ] math
-   - [x] abs,max,min,sign
+   - [x] abs,max,min,sign,pow
    - [ ] sin,cos,tan,...
-  - [ ] string manipulations
+  - [ ] string manipulations (substr)
+  - [x] stdin,stdout (readchar,putchar,printi,println)
+  - [ ] file system (creating files, reading files, writing files)
 - [ ] support for functional style
 - [ ] support for object oriented style
 - [ ] pattern matching 
 - [ ] program verification (invariants)
 - [ ] strong type system
+  - [ ] Various Types of Integers
+    - [x] PInt (Integer >=0) (required type for any array index)
+    - [x] NInt (Integer <=0)
+    - [x] Integer (can be any integer)
+    - [ ] NZInt (Integer =/= 0) (will be required as the type of any divisor later on)
 
 functional programming, imperative programming,
 concurrency, laziness, declarative programming, constraint based programming,

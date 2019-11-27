@@ -1,6 +1,5 @@
 package org.vanautrui.languages.compiler.typechecking;
 
-import org.apache.commons.lang3.StringUtils;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ArrayTypeNode;
@@ -34,8 +33,12 @@ public final class ITypeNodeTypeChecker {
 
     String msg = ("TYPECHECKING: ")
             + "could not find class for type: "
-            + StringUtils.wrap(typename.toSourceCode(), "'")
+            + wrap(typename.toSourceCode(), "'")
             + " in file : (TODO: display file and line number)";
     throw new Exception(msg);
+  }
+
+  public static String wrap(String s, String wrap){
+    return wrap+s+wrap;
   }
 }

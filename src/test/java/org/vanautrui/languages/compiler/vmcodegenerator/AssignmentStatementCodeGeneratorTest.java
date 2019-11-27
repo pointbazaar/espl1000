@@ -1,14 +1,10 @@
 package org.vanautrui.languages.compiler.vmcodegenerator;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Assert;
 import org.junit.Test;
-import org.vanautrui.languages.compiler.lexing.Lexer;
-import org.vanautrui.languages.compiler.lexing.utils.TokenList;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
 
 import static org.junit.Assert.assertEquals;
-import static org.vanautrui.languages.CodeGeneratorTestUtils.compile_and_run_program_for_testing;
+import static org.vanautrui.languages.CodeGeneratorTestUtils.compile_and_run_program_for_testing_with_cmd_args;
 
 public class AssignmentStatementCodeGeneratorTest {
 
@@ -22,7 +18,7 @@ public class AssignmentStatementCodeGeneratorTest {
                 "\t\tloop x {putchar('x');}" +
                 "\t return 0;}" +
                 "}";
-        Process pr = compile_and_run_program_for_testing(source,"MainTest333");
+        Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest333",new String[0]);
 
         assertEquals(0,pr.exitValue());
         assertEquals("xxx",IOUtils.toString(pr.getInputStream()));
@@ -39,7 +35,7 @@ public class AssignmentStatementCodeGeneratorTest {
                 "\t\tloop x {putchar('x');}" +
                 "\t return 0;}" +
                 "}";
-        Process pr = compile_and_run_program_for_testing(source,"MainTest333");
+        Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest333",new String[0]);
 
         assertEquals(0,pr.exitValue());
         assertEquals("xx",IOUtils.toString(pr.getInputStream()));
@@ -54,7 +50,7 @@ public class AssignmentStatementCodeGeneratorTest {
                 "\t\tputchar(x);" +
                 "\t return 0;}" +
                 "}";
-        Process pr = compile_and_run_program_for_testing(source,"MainTest333");
+        Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest333",new String[0]);
 
         assertEquals(0,pr.exitValue());
         assertEquals("A",IOUtils.toString(pr.getInputStream()));
@@ -70,7 +66,7 @@ public class AssignmentStatementCodeGeneratorTest {
                 "\t\tputchar(arr[1]);" +
                 "\treturn 0;}" +
                 "}";
-        Process pr = compile_and_run_program_for_testing(source,"MainTest454");
+        Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest454",new String[0]);
 
         assertEquals(0,pr.exitValue());
         assertEquals("d",IOUtils.toString(pr.getInputStream()));
@@ -86,7 +82,7 @@ public class AssignmentStatementCodeGeneratorTest {
                 "\t\tputdigit(a.b);" +
                 "\treturn 0;}" +
                 "}";
-        Process pr = compile_and_run_program_for_testing(source,"MainTest954");
+        Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest954",new String[0]);
 
         assertEquals(0,pr.exitValue());
         assertEquals("1",IOUtils.toString(pr.getInputStream()));
@@ -103,7 +99,7 @@ public class AssignmentStatementCodeGeneratorTest {
                 "\t\tputdigit(a.s.b);" +
                 "\treturn 0;}" +
                 "}";
-        Process pr = compile_and_run_program_for_testing(source,"MainTest9541");
+        Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest9541",new String[0]);
 
         assertEquals(0,pr.exitValue());
         assertEquals("1",IOUtils.toString(pr.getInputStream()));

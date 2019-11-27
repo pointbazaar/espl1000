@@ -1,14 +1,13 @@
 package org.vanautrui.languages.compiler.symboltables;
 
-import io.bretty.console.table.Alignment;
-import io.bretty.console.table.ColumnFormatter;
-import io.bretty.console.table.Precision;
-import io.bretty.console.table.Table;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SimpleTypeNode;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -17,7 +16,7 @@ public final class SubroutineSymbolTable {
     private List<SubroutineSymbolTableRow> symbolTable;
 
     public SubroutineSymbolTable()throws Exception{
-        this.symbolTable=new ArrayList<>();
+        this.symbolTable = Collections.synchronizedList(new ArrayList<>());
 
         //add the builtin subroutines
 
@@ -71,17 +70,17 @@ public final class SubroutineSymbolTable {
         this.add(new SubroutineSymbolTableRow("time",new SimpleTypeNode("PInt"),"Builtin",0,time_arg_types));
     }
 
-    public void add(SubroutineSymbolTableRow row) {
+    public synchronized void add(SubroutineSymbolTableRow row) {
         if(!this.containsSubroutine(row.getName())) {
             this.symbolTable.add(row);
         }
     }
 
-    public boolean containsSubroutine(String subroutineName) {
+    public synchronized boolean containsSubroutine(String subroutineName) {
         return symbolTable.stream().filter(e->e.getName().equals(subroutineName)).collect(Collectors.toList()).size()>0;
     }
 
-    public int getIndexOfSubroutine(String subroutineName)throws Exception {
+    public synchronized int getIndexOfSubroutine(String subroutineName)throws Exception {
         if(!this.containsSubroutine(subroutineName)){
             throw new Exception("could not get index of variable "+subroutineName+" in symbol table. ");
         }
@@ -95,15 +94,15 @@ public final class SubroutineSymbolTable {
         throw new Exception();
     }
 
-    public TypeNode getReturnTypeOfSubroutine(String subroutineName) {
+    public synchronized TypeNode getReturnTypeOfSubroutine(String subroutineName) {
         return symbolTable.stream().filter(e->e.getName().equals(subroutineName)).collect(Collectors.toList()).get(0).getReturnType();
     }
 
-    public int size() {
+    public synchronized int size() {
         return this.symbolTable.size();
     }
 
-    public String toString(){
+    public synchronized String toString(){
 
         // define a formatter for each column
         String[] names = this.symbolTable.stream().map(SubroutineSymbolTableRow::getName).collect(Collectors.toList()).toArray(new String[]{});
@@ -112,49 +111,50 @@ public final class SubroutineSymbolTable {
         int[] indices_inner = IntStream.range(0,this.symbolTable.size()).toArray();
         Integer[] indices = Arrays.stream( indices_inner ).boxed().toArray( Integer[]::new );
 
-        ColumnFormatter<String> stringColumnFormatter = ColumnFormatter.text(Alignment.LEFT, 20);
-        ColumnFormatter<Number> integerColumnFormatter = ColumnFormatter.number(Alignment.RIGHT, 7, Precision.ZERO);
+        final StringBuilder table = new StringBuilder();
 
+        //append table headers
+        table.append(String.format("%12s | %12s | %12s \n","Subroutine Name","Type","Index"));
 
-        Table.Builder builder = new Table.Builder("Subroutine Name",names, stringColumnFormatter);
+        for(final int i : indices){
 
+            final String varname = names[i];
+            final String type = types[i];
+            final int index = indices[i]; //just for pattern sake
 
-        builder.addColumn("Type", types, stringColumnFormatter);
-        builder.addColumn("Index", indices, integerColumnFormatter);
-
-
-        Table table = builder.build();
+            //append a row
+            table.append(String.format("%12s | %12s | %12d \n",varname,type,index));
+        }
         //System.out.println(table); // NOTICE: table.toString() is called implicitly
         return "\nSUBROUTINE SYMBOL TABLE: \n"+table.toString();
     }
 
-    public String getContainingClassName(String identifierMethodName) throws Exception{
+    public synchronized String getContainingClassName(String identifierMethodName) throws Exception{
         return this.get(identifierMethodName).getClassName();
     }
 
-    private SubroutineSymbolTableRow get(String methodName) throws Exception{
-        for(int i=0;i<this.symbolTable.size();i++){
-            SubroutineSymbolTableRow row = this.symbolTable.get(i);
-            if(row.getName().equals(methodName)){
+    private synchronized SubroutineSymbolTableRow get(String methodName) throws Exception{
+        for (final SubroutineSymbolTableRow row : this.symbolTable) {
+            if (row.getName().equals(methodName)) {
                 return row;
             }
         }
         throw new Exception("could not find "+methodName+" in subroutine symbol table");
     }
 
-    public int getNumberOfLocalVariablesOfSubroutine(String methodName) throws Exception{
+    public synchronized int getNumberOfLocalVariablesOfSubroutine(String methodName) throws Exception{
         return this.get(methodName).getNumberOfLocalVariables();
     }
 
-    public int getNumberOfArgumentsOfSubroutine(String methodName) throws Exception{
+    public synchronized int getNumberOfArgumentsOfSubroutine(String methodName) throws Exception{
         return this.get(methodName).getNumberOfArguments();
     }
 
-    public TypeNode getTypeOfSubroutine(String subroutine_name) throws Exception{
+    public synchronized TypeNode getTypeOfSubroutine(String subroutine_name) throws Exception{
         return this.get(subroutine_name).getReturnType();
     }
 
-    public TypeNode getArgTypeOfSubroutineAtIndex(final String methodName, final int index) throws Exception {
+    public synchronized TypeNode getArgTypeOfSubroutineAtIndex(final String methodName, final int index) throws Exception {
         return get(methodName).getArgumentTypes().get(index);
     }
 }

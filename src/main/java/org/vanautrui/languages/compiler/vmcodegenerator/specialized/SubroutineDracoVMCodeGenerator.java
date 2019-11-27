@@ -7,42 +7,47 @@ import org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerato
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
-import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.StatementDracoVMCodeGenerator.generateDracoVMCodeForStatement;
 
 public final class SubroutineDracoVMCodeGenerator {
 
 
-  public static void generateDracoVMCodeForMethod(
+  public static List<String> generateDracoVMCodeForMethod(
           NamespaceNode containerClass,
           MethodNode m,
-          DracoVMCodeWriter sb,
           SubroutineSymbolTable subTable,
           StructsSymbolTable structsTable,
           boolean debug,
           boolean printsymboltables
   )throws Exception{
 
-    LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(m,subTable,structsTable);
+    List<String> vminstrs = new ArrayList<>();
+
+    final LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(m,subTable,structsTable);
     if(debug || printsymboltables){
       System.out.println(varTable.toString());
     }
 
-    sb.subroutine(containerClass.name.getTypeName(),m.methodName,m.arguments.size(),subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName));
-    //not sure if it is number of arguments or number of local vars
+    vminstrs.add("subroutine "+containerClass.name.getTypeName()+"_"+m.methodName+" "+m.arguments.size()+" args "+subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName)+" locals");
+
 
     //push the number of local variables on the stack
     for(int i=0;i<subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName);i++){
-      sb.iconst(0,"push local vars on the stack");
+      vminstrs.add("iconst 0"); //push local vars on the stack"
     }
 
+    final SymbolTableContext ctx = new SymbolTableContext(subTable,varTable,structsTable);
+
     for(StatementNode stmt : m.statements){
-      generateDracoVMCodeForStatement(stmt,m,sb,subTable,varTable,structsTable);
+      vminstrs.addAll(generateDracoVMCodeForStatement(stmt,m,ctx));
     }
 
     //return should be the last statement in every possible branch for these statements
-
-
+    return vminstrs;
   }
 }

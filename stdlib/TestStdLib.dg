@@ -9,21 +9,21 @@ use Array.dg
 public namespace TestStdLib{
 	public ()~>PInt main{
 
-		println("sign(4)");
-                printi(sign(4));
-		println(" ");
+		println("sign(4)==1");
+		assert(sign(4)==1);
 
-		
-                printi(pow(2,3));
-		println(" ");
+		println("pow(2,3)==8");
+        	assert(pow(2,3)==8);
 
-                printi(faculty(3));
-                println(" ");
+		println("faculty(3)==6");
+		//printi(faculty(3));
+        	assert(faculty(3)==6);
 
-		printi(min(4,5));
-		println(" ");
-                printi(max(2,6));
-                println(" ");
+		println("min(4,5)==4");
+		assert(min(4,5)==4);
+
+		println("max(2,6)==6");		
+        	assert(max(2,6)==6);
 	
 		println("substr('hello',1,3)");	
 		println(substr("hello",1,3));		
@@ -47,22 +47,16 @@ public namespace TestStdLib{
 		println("trimleft('  hi')");
 		println(trimleft("  hi"));
 
-		printi(0);
+		println("gcd(10,15)==5");
+		printi(gcd(10,15));
 		println(" ");
 
-		printi(-1);
+		println("lcm(15,20)==60");
+		printi(lcm(15,20));
 		println(" ");
-
-		//below code gives 'floating point exception (core dumped)'
-		printi(-933738);
-		println("-933738");
 
 		println("time()");
-		Integer mytime=time();
-		if(mytime<0){
-			mytime=mytime*(-1);
-		}
-		printi(mytime);
+		printi(time());
 		println(" ");
 
 		println("start delay(1)");

@@ -5,6 +5,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public final class SubroutineSymbolTableRow {
@@ -19,7 +20,7 @@ public final class SubroutineSymbolTableRow {
     private final int numberOfLocalVariables;
     //private final int numberOfArguments;
 
-    private final List<TypeNode> argumentTypes=new ArrayList<>();
+    private final List<TypeNode> argumentTypes = Collections.synchronizedList(new ArrayList<>());
 
     public SubroutineSymbolTableRow(String subRoutineName, IBasicAndWrappedTypeNode returnTypeName, String className, int numberOfLocalVariables, List<TypeNode> arg_types){
 
@@ -43,34 +44,34 @@ public final class SubroutineSymbolTableRow {
     }
 
     @Override
-    public String toString(){
+    public synchronized String toString(){
 
         return String.format("| %8s | %8s | %8s |", subRoutineName, returnTypeName,className);
     }
 
-    public String getName() {
+    public synchronized String getName() {
         return this.subRoutineName;
     }
 
-    public TypeNode getReturnType() {
+    public synchronized TypeNode getReturnType() {
         return this.returnTypeName;
     }
 
-    public List<TypeNode> getArgumentTypes(){
+    public synchronized List<TypeNode> getArgumentTypes(){
         return this.argumentTypes;
     }
 
-    public String getClassName(){return this.className;}
+    public synchronized String getClassName(){return this.className;}
 
-    public int getNumberOfLocalVariables() {
+    public synchronized int getNumberOfLocalVariables() {
         return this.numberOfLocalVariables;
     }
 
-    public int getNumberOfArguments() {
+    public synchronized int getNumberOfArguments() {
         return this.argumentTypes.size();
     }
 
-    public static String generateVMCodeSubroutineName(String className,String subRoutineName){
+    public synchronized static String generateVMCodeSubroutineName(String className,String subRoutineName){
         if(subRoutineName.equals("main")){
             return "Main_main"; //main must be the same, even if we are in a different class
         }else {

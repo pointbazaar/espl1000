@@ -14,7 +14,7 @@ public class CodeGeneratorTest {
     public void test_can_compile_simple_helloworld()throws Exception{
         String source="public namespace MainTest100 { public ()~>PInt main{ putchar('h'); putchar('w'); return 0; }}";
 
-        Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing(source,"MainTest100");
+        Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing_with_cmd_args(source,"MainTest100",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
 
@@ -38,7 +38,7 @@ public class CodeGeneratorTest {
         //maybe this has optimization reasons
 
         String source="public namespace MainTest3 { public ()~>PInt main{ x="+x+"; putdigit(x); return 0; } }";
-        Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing(source,"MainTest3");
+        Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing_with_cmd_args(source,"MainTest3",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals(x+"",IOUtils.toString(pr.getInputStream()));
@@ -48,7 +48,7 @@ public class CodeGeneratorTest {
     public void test_can_compile_multiple_assignment_to_same_variable_add()throws Exception{
 
         String source="public namespace MainTest4 { public ()~>PInt main{ x=1; x=x+1; putdigit(x); return 0;} }";
-        Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing(source,"MainTest4");
+        Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing_with_cmd_args(source,"MainTest4",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("2",IOUtils.toString(pr.getInputStream()));
@@ -58,7 +58,7 @@ public class CodeGeneratorTest {
     public void test_can_compile_multiple_assignment_to_same_variable_multiply()throws Exception{
 
         String source="public namespace MainTest5 { public ()~>PInt main{ x=2; x=x*2; putdigit(x); return 0; } }";
-        Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing(source,"MainTest5");
+        Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing_with_cmd_args(source,"MainTest5",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("4",IOUtils.toString(pr.getInputStream()));
@@ -68,7 +68,7 @@ public class CodeGeneratorTest {
     public void test_can_compile_assignment_to_multiple_local_variables()throws Exception{
 
         String source="public namespace MainTest6 { public ()~>PInt main{ x=2; y=1; x=x+y; putdigit(x); return 0; } }";
-        Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing(source,"MainTest6");
+        Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing_with_cmd_args(source,"MainTest6",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("3",IOUtils.toString(pr.getInputStream()));

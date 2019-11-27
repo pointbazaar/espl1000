@@ -6,57 +6,67 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionN
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.VariableNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.terminal.*;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.CharConstNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.FloatConstNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IntConstNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
-import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
-import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeWriter;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
+import java.util.List;
+
+import static org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator.*;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ExpressionDracoVMCodeGenerator.genDracoVMCodeForExpression;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.MethodCallDracoVMCodeGenerator.genVMCodeForMethodCall;
+import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.VariableDracoVMCodeGenerator.genDracoVMCodeForVariable;
 
 public final class TermDracoVMCodeGenerator {
 
 
-  public static void genDracoVMCodeForTerm(
-          TermNode tNode,
-          DracoVMCodeWriter sb,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
-  )throws Exception{
-    ITermNode t = tNode.termNode;
-    if(t instanceof FloatConstNode){
-      DracoVMCodeGenerator.genVMCodeForFloatConst((FloatConstNode)t,sb);
-    }else if(t instanceof IntConstNode){
-      DracoVMCodeGenerator.genVMCodeForIntConst(((IntConstNode)t).value,sb);
-    }else if(t instanceof ExpressionNode) {
-      ExpressionNode expressionNode = (ExpressionNode)t;
-      genDracoVMCodeForExpression(expressionNode,sb,subTable,varTable,structsTable);
-    }else if(t instanceof VariableNode) {
-      //find the local variable index
-      // and push the variable onto the stack
-      VariableNode variableNode = (VariableNode) t;
+    public static List<String> genDracoVMCodeForTerm(
+            TermNode tNode,
+            SymbolTableContext ctx
+    ) throws Exception {
 
-      VariableDracoVMCodeGenerator.genDracoVMCodeForVariable(variableNode,sb,subTable,varTable,structsTable);
-    }else if(t instanceof MethodCallNode){
-      MethodCallNode methodCallNode = (MethodCallNode)t;
-      genVMCodeForMethodCall(methodCallNode,sb,subTable,varTable,structsTable);
+        final SubroutineSymbolTable subTable=ctx.subTable;
+        final LocalVarSymbolTable varTable=ctx.varTable;
+        final StructsSymbolTable structsTable=ctx.structsTable;
 
-    }else if(t instanceof BoolConstNode) {
-      DracoVMCodeGenerator.genVMCodeForBoolConst((BoolConstNode)t,sb);
-    }else if(t instanceof ArrayConstantNode) {
-      ArrayConstantNode arrayConstantNode = (ArrayConstantNode) t;
-      DracoVMCodeGenerator.genVMCodeForArrayConstant(arrayConstantNode,sb,subTable,varTable,structsTable);
-    }else if (t instanceof CharConstNode) {
-      final CharConstNode t1 = (CharConstNode) t;
+        final ITermNode t = tNode.termNode;
+        if (t instanceof FloatConstNode) {
+            return genVMCodeForFloatConst(
+                    ((FloatConstNode) t).value
+            );
+        } else if (t instanceof IntConstNode) {
+            return genVMCodeForIntConst(((IntConstNode) t).value);
+        } else if (t instanceof ExpressionNode) {
+            final ExpressionNode expressionNode = (ExpressionNode) t;
+            return genDracoVMCodeForExpression(expressionNode,ctx);
+        } else if (t instanceof VariableNode) {
+            //find the local variable index
+            // and push the variable onto the stack
+            final VariableNode variableNode = (VariableNode) t;
 
-      final int ascii_value = t1.content;
+            return genDracoVMCodeForVariable(variableNode, ctx);
+        } else if (t instanceof MethodCallNode) {
+            final MethodCallNode methodCallNode = (MethodCallNode) t;
+            return genVMCodeForMethodCall(methodCallNode, ctx);
 
-      DracoVMCodeGenerator.genVMCodeForIntConst(ascii_value,sb);
-    }else{
-      throw new Exception("unhandled case");
+        } else if (t instanceof BoolConstNode) {
+            return genVMCodeForBoolConst((BoolConstNode) t);
+        } else if (t instanceof ArrayConstantNode) {
+            final ArrayConstantNode arrayConstantNode = (ArrayConstantNode) t;
+            return genVMCodeForArrayConstant(arrayConstantNode, ctx);
+        } else if (t instanceof CharConstNode) {
+            final CharConstNode t1 = (CharConstNode) t;
+
+            final int ascii_value = t1.content;
+
+            return genVMCodeForIntConst(ascii_value);
+        } else {
+            throw new Exception("unhandled case");
+        }
     }
-  }
 }

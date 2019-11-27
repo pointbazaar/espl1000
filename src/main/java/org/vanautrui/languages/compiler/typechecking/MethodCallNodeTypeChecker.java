@@ -92,7 +92,7 @@ public final class MethodCallNodeTypeChecker {
     //check that the types of the arguments match the types declared
     for(int i=0;i<nargs_expected;i++){
 
-      final TypeNode arg_type = TypeResolver.getTypeExpressionNode(methodCallNode.argumentList.get(i), methodNode, subTable, varTable, structsTable);
+      final TypeNode arg_type = TypeResolver.getTypeExpressionNode(methodCallNode.argumentList.get(i), subTable, varTable, structsTable);
       final TypeNode arg_type_expected = subTable.getArgTypeOfSubroutineAtIndex(methodCallNode.methodName,i);
 
       if(!arg_type.getTypeName().equals(arg_type_expected.getTypeName())){
