@@ -88,3 +88,7 @@ and business(typical business web applications, file processing) but also resear
 this should make it a practical language. goal is the ability to transfer thought into code with less code,
 and enable programmer to solve tasks in new ways and think outside the box
 
+## interesting language projects
+
+[vlang](https://github.com/vlang/v)
+[haskell](https://www.haskell.org/)
