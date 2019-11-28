@@ -22,6 +22,7 @@ the other dependencies are just your standard maven dependencies
 ## Safety Goals 
 - [ ] linear/affine/... types to manage deallocations without a garbage collector and without manual memory management (like in rust)
 - [x] no null/undefined/NULL/...
+- [ ] possibility to do a termination proof of your program (if it is written in a special way) and termination proof friendly control structures (use foreach instead of while, use the 'loop' construct,...)
 - [x] no global state
 - [ ] no uninitialized variables
   - [x] no uninitialized primitives
