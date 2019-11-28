@@ -16,7 +16,21 @@ Its main debugger is [noBG](https://github.com/Milo-D/noBG-Assembly-Debugger)
 
 the other dependencies are just your standard maven dependencies
 
-## Goals 
+## Safety Goals 
+- [x] no null/undefined/NULL/...
+- [ ] no uninitialized variables
+ - [x] no uninitialized primitives
+ - [ ] no uninitialized struct members
+- [ ] pattern matching 
+- [ ] program verification (invariants)
+- [ ] strong type system
+  - [ ] Various Types of Integers
+    - [x] PInt (Integer >=0) (required type for any array index)(basically one-way array bounds checking at compile time)
+    - [x] NInt (Integer <=0)
+    - [x] Integer (can be any integer)
+    - [ ] NZInt (Integer =/= 0) (will be required as the type of any divisor later on)
+
+## Other Goals 
 
 - [x] simple local variable type inference 
 - [x] compiles to intel x86 assembly
@@ -41,14 +55,7 @@ the other dependencies are just your standard maven dependencies
   - [ ] file system (creating files, reading files, writing files)
 - [ ] support for functional style
 - [ ] support for object oriented style
-- [ ] pattern matching 
-- [ ] program verification (invariants)
-- [ ] strong type system
-  - [ ] Various Types of Integers
-    - [x] PInt (Integer >=0) (required type for any array index)
-    - [x] NInt (Integer <=0)
-    - [x] Integer (can be any integer)
-    - [ ] NZInt (Integer =/= 0) (will be required as the type of any divisor later on)
+
 
 functional programming, imperative programming,
 concurrency, laziness, declarative programming, constraint based programming,
@@ -74,16 +81,10 @@ methods(side effects).
 you can specify that a function can be run in seperate thread and cache it's 
 results easily, so 5 to the power of 100 doesn't have to be computed anew all the time.
 
-the language should allow for easy json style notation of things.
-
 Dragon will be developed and tested against a variety of programming tasks,
 from online coding katas(expressiveness,speed of execution) to hackathons(speed of development,tooling,versatility)
 and business(typical business web applications, file processing) but also research programming(machine learning, artificial intelligence, rare language features,extensibility,forkability).
 
 this should make it a practical language. goal is the ability to transfer thought into code with less code,
 and enable programmer to solve tasks in new ways and think outside the box
-
-[1,2,3,3].map(\x->x+1)
-
-map (\x->x+1) [1,2,3,3]
 
