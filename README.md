@@ -16,8 +16,13 @@ Its main debugger is [noBG](https://github.com/Milo-D/noBG-Assembly-Debugger)
 
 the other dependencies are just your standard maven dependencies
 
+## Simplicity Goals
+- [x] no macros (no preprocessor needed, easier to read and understand code)
+
 ## Safety Goals 
+- [ ] linear/affine/... types to manage deallocations without a garbage collector and without manual memory management (like in rust)
 - [x] no null/undefined/NULL/...
+- [x] no global state
 - [ ] no uninitialized variables
   - [x] no uninitialized primitives
   - [ ] no uninitialized struct members
@@ -38,7 +43,7 @@ the other dependencies are just your standard maven dependencies
 - [ ] functional programming (currently without closures and without some other stuff)
   - [x] functions can be passed as arguments to subroutines
   - [ ] lambda expressions
-  - [ ] common functions (haskell inspired) map,reduce,filter,sum,zip,unzip,head,tail,init
+  - [ ] map, reduce, filter, sum, zip, unzip, head, tail, init
   - [x] syntax highlighting available in micro
 - [x] structs (user-defined composite data types)
 - [x] length-prefixed arrays
@@ -92,3 +97,4 @@ and enable programmer to solve tasks in new ways and think outside the box
 
 [vlang](https://github.com/vlang/v)
 [haskell](https://www.haskell.org/)
+[ats](http://www.ats-lang.org/)
