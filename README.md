@@ -19,8 +19,8 @@ the other dependencies are just your standard maven dependencies
 ## Safety Goals 
 - [x] no null/undefined/NULL/...
 - [ ] no uninitialized variables
- - [x] no uninitialized primitives
- - [ ] no uninitialized struct members
+  - [x] no uninitialized primitives
+  - [ ] no uninitialized struct members
 - [ ] pattern matching 
 - [ ] program verification (invariants)
 - [ ] strong type system
