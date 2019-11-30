@@ -99,3 +99,9 @@ and enable programmer to solve tasks in new ways and think outside the box
 [vlang](https://github.com/vlang/v)
 [haskell](https://www.haskell.org/)
 [ats](http://www.ats-lang.org/)
+
+## Contributions
+
+Feel free to fork the Project. 
+Pull Requests are not welcome and will not be merged. 
+Issues are always welcome (Suggestions for Improvement, Bug Reports, ...)
