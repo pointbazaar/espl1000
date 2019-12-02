@@ -19,6 +19,7 @@ the other dependencies are just your standard maven dependencies
 ## Simplicity Goals
 - [x] no macros (no preprocessor needed, easier to read and understand code)
 - [x] no backwards compatibility (the language will change whenever a feature gets added / removed from the language. Little consideration will be given to existing code. )
+- [x] Dragon has a very simple calling convention for simplicity reasons. It is incompatible with the C calling convention.
 
 ## Safety Goals 
 - [ ] linear/affine/... types to manage deallocations without a garbage collector and without manual memory management (like in rust)
