@@ -40,6 +40,8 @@ the other dependencies are just your standard maven dependencies
 
 ## Other Goals 
 
+- [ ] user defined infix,prefix,postfix functions for builtin and user defined types
+  - [ ] ability to override builtin infix operators for user defined types
 - [x] simple local variable type inference 
 - [x] compiles to intel x86 assembly
 - [ ] 64 bit by default, 32 bit should also be supported
