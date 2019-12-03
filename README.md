@@ -1,15 +1,11 @@
-# Dragon
+# Dragon (work in progress)
 
 [![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/dragon/badge)](https://www.codefactor.io/repository/github/pointbazaar/dragon)
-
  [![Known Vulnerabilities](https://snyk.io/test/github/pointbazaar/dragon/badge.svg)](https://snyk.io/test/github/pointbazaar/dragon) 
  
-!!Work in Progress!!
-
 This repo contains a simple, work-in-progress statically typed programming language.
 
 Its main debugger is [noBG](https://github.com/Milo-D/noBG-Assembly-Debugger).
-
 The editor of choice for Dragon currently is [micro](https://micro-editor.github.io/), because there is a basic syntax highlighting for it.
 
 ## Basic Dependency Graph between these related repositories
