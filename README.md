@@ -32,6 +32,8 @@ the other dependencies are just your standard maven dependencies
 - [ ] **linear/affine types** to manage deallocations without a garbage collector and without manual memory management (like in rust) to get memory safety
 - [x] **no null/undefined/NULL/...**
 - [ ] **all programs which compile will terminate**
+  - there shall be control structures which allow stuff to execute for a long time, like for web servers, command prompt loops, game loops and such, but at some point in the future it must terminate. This property is important to me. 
+  - once termination proofs for suitably written programs are in the compiler, the next interesting property in that direction would be proving that it terminates in a specified timeframe (assumed unlimited memory, a given cpu clock speed, and some details)
   - [ ] possibility to do a termination proof of your program (if it is written in a special way that uses termination proof friendly control structures)
   - [ ] several termination proof friendly control structures and features
     - [x] 'loop' construct to execute a block of code a finite number of times
