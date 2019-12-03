@@ -10,7 +10,7 @@ This repo contains a simple, work-in-progress statically typed programming langu
 
 Its main debugger is [noBG](https://github.com/Milo-D/noBG-Assembly-Debugger).
 
-The editor of choice for Dragon currently is micro, because there is a basic syntax highlighting for it.
+The editor of choice for Dragon currently is [micro](https://micro-editor.github.io/), because there is a basic syntax highlighting for it.
 
 ## Basic Dependency Graph between these related repositories
 
