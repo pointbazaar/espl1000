@@ -24,6 +24,7 @@ the other dependencies are just your standard maven dependencies
 - [x] **strict evaluation** . Dragon has no laziness, for simplicity and performance reasons.
 - [x] no user defined prefix , infix or suffix operators. This simplifies the parser.
 - [x] this is not and will never be a self hosting compiler. this is for stability reasons. also, other languages are great too. i think it's a bit narcissitic to have a self-hosting compiler.
+- [x] no aliasing of anything in general. this improves readability. 
 
 ## Safety Goals 
 
