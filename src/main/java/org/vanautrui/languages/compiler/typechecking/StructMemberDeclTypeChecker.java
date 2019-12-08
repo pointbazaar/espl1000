@@ -1,17 +1,15 @@
 package org.vanautrui.languages.compiler.typechecking;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.StructMemberDeclNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.StructDeclNode;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 
-import java.util.List;
-
 public final class StructMemberDeclTypeChecker {
 
     public static void typeCheckStructMemberDeclNode(
-            List<AST> asts,
+            final AST_Whole_Program asts,
             NamespaceNode namespaceNode,
             StructDeclNode structDeclNode,
             StructMemberDeclNode structMemberDeclNode,

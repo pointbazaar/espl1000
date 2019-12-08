@@ -2,7 +2,7 @@ package org.vanautrui.languages.compiler.typechecking;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ArrayConstantNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
@@ -11,15 +11,13 @@ import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
-import java.util.List;
-
 import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeChecker.typeCheckExpressionNode;
 
 public final class ArrayConstantNodeTypeChecker {
 
 
   public synchronized static void typeCheckArrayConstantNode(
-          List<AST> asts,
+          final AST_Whole_Program asts,
           NamespaceNode namespaceNode,
           MethodNode methodNode,
           ArrayConstantNode arrConstNode,

@@ -5,9 +5,7 @@ import org.junit.Test;
 import org.vanautrui.languages.commandline.ParserPhases;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.Parser;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-
-import java.util.ArrayList;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 
 public final class MethodCallNodeTypeCheckerTest {
 
@@ -15,16 +13,13 @@ public final class MethodCallNodeTypeCheckerTest {
     public void test_methodcall_must_supply_correct_number_of_arguments() throws Exception{
 
         final TokenList tokens = ParserPhases.makeTokenList(
-                "public namespace ExampleClass{ (PInt x)~>PInt subr{return 0;} ()~>PInt main{ subr(); return 0;}" +
-                        "}");
+                "(PInt x)~>PInt subr{return 0;} ()~>PInt main{ subr(); return 0;} ");
 
-        final AST ast = (new Parser()).parseTestMode(tokens,false);
+        final AST_Whole_Program ast = (new Parser()).parseTestMode(tokens,false,"Main");
 
-        final ArrayList<AST> asts = new ArrayList<>();
-        asts.add(ast);
 
         try {
-            TypeChecker.doTypeCheck(asts, false);
+            TypeChecker.doTypeCheck(ast, false);
             Assert.fail();
         }catch (Exception e){
             //pass
@@ -35,16 +30,13 @@ public final class MethodCallNodeTypeCheckerTest {
     public void test_methodcall_must_supply_correct_type_of_arguments() throws Exception{
 
         final TokenList tokens = ParserPhases.makeTokenList(
-                "public namespace ExampleClass{ (PInt x)~>PInt subr{return 0;} ()~>PInt main{ subr('c'); return 0;}" +
-                        "}");
+                " (PInt x)~>PInt subr{return 0;} ()~>PInt main{ subr('c'); return 0;} ");
 
-        final AST ast = (new Parser()).parseTestMode(tokens,false);
+        final AST_Whole_Program ast = (new Parser()).parseTestMode(tokens,false,"Main");
 
-        final ArrayList<AST> asts = new ArrayList<>();
-        asts.add(ast);
 
         try {
-            TypeChecker.doTypeCheck(asts, false);
+            TypeChecker.doTypeCheck(ast, false);
             Assert.fail();
         }catch (Exception e){
             //pass

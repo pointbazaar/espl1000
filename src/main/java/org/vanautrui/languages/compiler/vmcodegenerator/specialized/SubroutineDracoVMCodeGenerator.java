@@ -33,7 +33,7 @@ public final class SubroutineDracoVMCodeGenerator {
       System.out.println(varTable.toString());
     }
 
-    vminstrs.add("subroutine "+containerClass.name.getTypeName()+"_"+m.methodName+" "+m.arguments.size()+" args "+subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName)+" locals");
+    vminstrs.add("subroutine "+containerClass.name+"_"+m.methodName+" "+m.arguments.size()+" args "+subTable.getNumberOfLocalVariablesOfSubroutine(m.methodName)+" locals");
 
 
     //push the number of local variables on the stack

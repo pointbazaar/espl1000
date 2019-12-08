@@ -3,7 +3,7 @@ package org.vanautrui.languages.commandline;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -175,13 +175,13 @@ public final class dragonc {
 
             //PHASE PREPROCESSOR (processes 'use' directive), PHASE CLEAN, PHASE LEXING, PHASE PARSING
 
-            final List<AST> asts = pphases.phase_preprocessor_and_clean_and_lexing_and_parsing(sources);
+            final AST_Whole_Program ast = pphases.phase_preprocessor_and_clean_and_lexing_and_parsing(sources);
 
             //PHASE TYPE CHECKING
-            phases.phase_typecheck(asts);
+            phases.phase_typecheck(ast);
 
             //PHASE CODE GENERATION, returns a list of paths where the files for the subroutines are
-            final List<Path> vm_code_files = phases.phase_vm_codegeneration(asts, cmd.hasOption(FLAG_PRINT_SYMBOLTABLES));
+            final List<Path> vm_code_files = phases.phase_vm_codegeneration(ast, cmd.hasOption(FLAG_PRINT_SYMBOLTABLES));
 
             //PHASE VM CODE COMPILATION, PHASE GENERATE EXECUTABLE
             //this phase depends on 'dracovm'

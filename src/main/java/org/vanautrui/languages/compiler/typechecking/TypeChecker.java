@@ -1,20 +1,17 @@
 package org.vanautrui.languages.compiler.typechecking;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.DeclaredArgumentNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IdentifierNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import static org.vanautrui.languages.compiler.typechecking.NamespaceNodeTypeChecker.typeCheckNamespaceNode;
 
@@ -41,7 +38,7 @@ public final class TypeChecker {
           );
 
   public static void doTypeCheck(
-          List<AST> asts,
+          AST_Whole_Program asts,
           boolean debug
   ) throws Exception {
     if (debug) {
@@ -53,25 +50,24 @@ public final class TypeChecker {
       System.out.println("generate subroutine symbol table:");
       System.out.println(subroutineSymbolTable.toString());
     }
-    for (AST ast : asts) {
-      for (NamespaceNode namespaceNode : ast.namespaceNodeList) {
-        typeCheckNamespaceNode(asts, namespaceNode, subroutineSymbolTable, debug,structsTable);
-      }
+
+    for (NamespaceNode namespaceNode : asts.namespaceNodeList) {
+      typeCheckNamespaceNode(asts, namespaceNode, subroutineSymbolTable, debug,structsTable);
     }
+
     find_exactly_one_entry_point(asts);
   }
 
-  private static void find_exactly_one_entry_point(List<AST> asts)throws Exception{
+  private static void find_exactly_one_entry_point(final AST_Whole_Program asts)throws Exception{
     int count=0;
-    for (AST ast : asts) {
-      for (NamespaceNode namespaceNode : ast.namespaceNodeList) {
-        for(MethodNode methodNode : namespaceNode.methodNodeList){
-          if(methodNode.methodName.equals("main")){
-            count++;
-          }
+    for (NamespaceNode namespaceNode : asts.namespaceNodeList) {
+      for(MethodNode methodNode : namespaceNode.methodNodeList){
+        if(methodNode.methodName.equals("main")){
+          count++;
         }
       }
     }
+
     if(count!=1){
       throw new Exception("found more or less than 1 entry point '()~>PInt main'");
     }
@@ -87,7 +83,7 @@ public final class TypeChecker {
   }
 
 
-  static void typeCheckMethodNameNode(List<AST> asts, NamespaceNode namespaceNode, String methodName) throws Exception {
+  static void typeCheckMethodNameNode(final AST_Whole_Program asts, NamespaceNode namespaceNode, String methodName) throws Exception {
     //method names should not be duplicate in a class
     //this may change in another version of dragon
 
@@ -100,7 +96,7 @@ public final class TypeChecker {
 
 
 
-  private void typeCheckIdentifierNode(Set<AST> asts,
+  private void typeCheckIdentifierNode(final AST_Whole_Program asts,
                                        NamespaceNode namespaceNode,
                                        MethodNode methodNode,
                                        IdentifierNode identifierNode)

@@ -11,7 +11,7 @@ public class ReturnStatementCodeGeneratorTest {
 
     @Test
     public void test_can_return_statement()throws Exception{
-        String source="public namespace MainTest266 { public ()~>PInt main{ return subr(); return 0; } public ()~>PInt subr{return 3;} }";
+        String source=" public ()~>PInt main{ return subr(); return 0; } public ()~>PInt subr{return 3;} ";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest266",new String[0]);
 
         Assert.assertEquals(3,pr.exitValue());
@@ -20,7 +20,7 @@ public class ReturnStatementCodeGeneratorTest {
 
     @Test
     public void test_can_return_before_end_of_method()throws Exception{
-        String source="public namespace MainTest27 { public ()~>PInt main{ putchar('1'); return 0; putchar('2'); } }";
+        String source="public ()~>PInt main{ putchar('1'); return 0; putchar('2'); } ";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest27",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
@@ -29,7 +29,7 @@ public class ReturnStatementCodeGeneratorTest {
 
 
 	public void test_can_return_Float()throws Exception{
-        String source="public namespace MainTest273 { public ()~>PInt main{ putfloat(subroutine()); return 0;} public ()~>Float subroutine{return 1.0;} }";
+        String source=" public ()~>PInt main{ putfloat(subroutine()); return 0;} public ()~>Float subroutine{return 1.0;} ";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest273",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());

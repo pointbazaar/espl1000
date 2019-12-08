@@ -1,19 +1,18 @@
 package org.vanautrui.languages.compiler.typechecking;
 
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ArrayTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeParameterNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 
-import java.util.List;
-
 public final class ITypeNodeTypeChecker {
 
 
   public synchronized static void typeCheckITypeNode(
-          List<AST> asts, NamespaceNode namespaceNode,
+          final AST_Whole_Program asts,
+          NamespaceNode namespaceNode,
           ITypeNode typename
   ) throws Exception {
 

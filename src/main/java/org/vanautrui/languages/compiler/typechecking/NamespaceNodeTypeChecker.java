@@ -1,6 +1,6 @@
 package org.vanautrui.languages.compiler.typechecking;
 
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.StructDeclNode;
@@ -16,7 +16,7 @@ public final class NamespaceNodeTypeChecker {
 
 
   static void typeCheckNamespaceNode(
-          List<AST> asts,
+          AST_Whole_Program asts,
           NamespaceNode namespace,
           SubroutineSymbolTable subTable,
           boolean debug,
@@ -26,11 +26,10 @@ public final class NamespaceNodeTypeChecker {
       System.out.println("typechecking class:"+ namespace.name);
     }
     int count=0;
-    for(AST ast : asts){
-      for(NamespaceNode dragonNamespaceNode : ast.namespaceNodeList){
-        if(dragonNamespaceNode.name.getTypeName().equals(namespace.name.getTypeName())){
-          count++;
-        }
+
+    for(NamespaceNode dragonNamespaceNode : asts.namespaceNodeList){
+      if(dragonNamespaceNode.name.equals(namespace.name)){
+        count++;
       }
     }
 
@@ -43,7 +42,7 @@ public final class NamespaceNodeTypeChecker {
     }
 
     if(count!=1){
-      throw new Exception("multiple definitions of namespace '"+ namespace.name.getTypeName()+"'");
+      throw new Exception("multiple definitions of namespace '"+ namespace.name+"'");
     }
   }
 }

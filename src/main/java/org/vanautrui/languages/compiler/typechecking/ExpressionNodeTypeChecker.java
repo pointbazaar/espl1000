@@ -3,7 +3,7 @@ package org.vanautrui.languages.compiler.typechecking;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.OperatorNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
@@ -20,7 +20,7 @@ import static org.vanautrui.languages.compiler.typechecking.TermNodeTypeChecker.
 public final class ExpressionNodeTypeChecker {
 
   static void typeCheckExpressionNode(
-          List<AST> asts,
+          final AST_Whole_Program asts,
           NamespaceNode namespaceNode,
           MethodNode methodNode,
           ExpressionNode expr,
@@ -45,7 +45,7 @@ public final class ExpressionNodeTypeChecker {
   }
 
   private static void typeCheckExpressionNodeWithMoreThan2Operands(
-          List<AST> asts,
+          final AST_Whole_Program asts,
           NamespaceNode namespaceNode,
           MethodNode methodNode,
           ExpressionNode expr,
@@ -91,7 +91,7 @@ public final class ExpressionNodeTypeChecker {
   }
 
   private static void typeCheckExpressionNodeWith2Operands(
-          List<AST> asts,
+          final AST_Whole_Program asts,
           NamespaceNode namespaceNode,
           MethodNode methodNode,
           TermNode term1,
@@ -147,7 +147,7 @@ public final class ExpressionNodeTypeChecker {
   }
 
   private static void typeCheckExpressionNodeWith2OperandsBitShifting(
-          List<AST> asts,
+          final AST_Whole_Program asts,
           NamespaceNode namespaceNode,
           MethodNode methodNode,
           TermNode term1,

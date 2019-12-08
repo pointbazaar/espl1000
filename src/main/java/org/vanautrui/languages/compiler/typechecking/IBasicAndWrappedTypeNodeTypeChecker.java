@@ -1,14 +1,12 @@
 package org.vanautrui.languages.compiler.typechecking;
 
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.StructDeclNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SimpleTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
-
-import java.util.List;
 
 import static org.vanautrui.languages.compiler.typechecking.ITypeNodeTypeChecker.wrap;
 import static org.vanautrui.languages.compiler.typechecking.TypeChecker.primitive_types_and_arrays_of_them;
@@ -17,7 +15,8 @@ public final class IBasicAndWrappedTypeNodeTypeChecker {
 
 
   public synchronized static void typeCheckIBasicAndWrappedTypeNode(
-          List<AST> asts, NamespaceNode namespaceNode,
+          final AST_Whole_Program asts,
+          NamespaceNode namespaceNode,
           IBasicAndWrappedTypeNode typename
   ) throws Exception {
 
@@ -29,16 +28,15 @@ public final class IBasicAndWrappedTypeNodeTypeChecker {
         return;
       }
 
-      for (AST ast : asts) {
-        for (NamespaceNode namespace : ast.namespaceNodeList) {
-          for(StructDeclNode sdn : namespace.structDeclNodeList){
-            if (sdn.getTypeName().equals(typename.getTypeName())) {
-              return;
-            }
+      for (NamespaceNode namespace : asts.namespaceNodeList) {
+        for(StructDeclNode sdn : namespace.structDeclNodeList){
+          if (sdn.getTypeName().equals(typename.getTypeName())) {
+            return;
           }
-
         }
+
       }
+
     } else if (typename instanceof SubroutineTypeNode) {
 
       ITypeNodeTypeChecker.typeCheckITypeNode(asts, namespaceNode, ((SubroutineTypeNode) typename).returnType.type);

@@ -4,9 +4,7 @@ import org.junit.Test;
 import org.vanautrui.languages.commandline.ParserPhases;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.Parser;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
-
-import java.util.ArrayList;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 
 import static org.junit.Assert.fail;
 
@@ -18,14 +16,11 @@ public final class StructDeclNodeTypeCheckerTest {
 
     Parser parser=new Parser();
     TokenList tokens = ParserPhases.makeTokenList(
-            "public namespace ExampleClass{ struct MyStruct{} ()~>PInt main{ return 0;}" +
-                    "}");
+            " struct MyStruct{} ()~>PInt main{ return 0;} " );
 
-    AST ast = parser.parseTestMode(tokens,false);
+    final AST_Whole_Program ast = parser.parseTestMode(tokens,false,"Main");
 
-    ArrayList<AST> asts = new ArrayList<>();
-    asts.add(ast);
-    TypeChecker.doTypeCheck(asts,false);
+    TypeChecker.doTypeCheck(ast,false);
   }
 
   @Test
@@ -33,15 +28,12 @@ public final class StructDeclNodeTypeCheckerTest {
 
     Parser parser=new Parser();
     TokenList tokens = ParserPhases.makeTokenList(
-            "public namespace ExampleClass{ struct PInt{}" +
-                    "}");
+            " struct PInt{} " );
 
-    AST ast = parser.parseTestMode(tokens,false);
+    final AST_Whole_Program ast = parser.parseTestMode(tokens,false,"Main");
 
-    ArrayList<AST> asts = new ArrayList<>();
-    asts.add(ast);
     try {
-      TypeChecker.doTypeCheck(asts, false);
+      TypeChecker.doTypeCheck(ast, false);
       fail();
     }catch (Exception e){
       //
@@ -52,15 +44,12 @@ public final class StructDeclNodeTypeCheckerTest {
   public void test_typechecking_struct_invalid_multiple_declarations() throws Exception{
 
     final TokenList tokens = ParserPhases.makeTokenList(
-            "public namespace ExampleClass{ struct MyStruct{} struct MyStruct{}" +
-                    "}");
+            " struct MyStruct{} struct MyStruct{} " );
 
-    AST ast = (new Parser()).parseTestMode(tokens,false);
+    final AST_Whole_Program ast = (new Parser()).parseTestMode(tokens,false,"Main");
 
-    ArrayList<AST> asts = new ArrayList<>();
-    asts.add(ast);
     try {
-      TypeChecker.doTypeCheck(asts, false);
+      TypeChecker.doTypeCheck(ast, false);
       fail();
     }catch (Exception e){
       //

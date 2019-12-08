@@ -2,7 +2,7 @@ package org.vanautrui.languages.compiler.typechecking;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
@@ -15,15 +15,13 @@ import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
-import java.util.List;
-
 import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeChecker.typeCheckExpressionNode;
 
 public final class MethodCallNodeTypeChecker {
 
 
   public synchronized static void typeCheckMethodCallNode(
-    List<AST> asts,
+    final AST_Whole_Program asts,
     NamespaceNode namespaceNode,
     MethodNode methodNode,
     MethodCallNode methodCallNode,
@@ -75,9 +73,12 @@ public final class MethodCallNodeTypeChecker {
   }
 
   private static void typeCheckMethodCallArguments(
-          List<AST> asts, NamespaceNode namespaceNode,
-          MethodNode methodNode, MethodCallNode methodCallNode,
-          SubroutineSymbolTable subTable, LocalVarSymbolTable varTable,
+          final AST_Whole_Program asts,
+          NamespaceNode namespaceNode,
+          MethodNode methodNode,
+          MethodCallNode methodCallNode,
+          SubroutineSymbolTable subTable,
+          LocalVarSymbolTable varTable,
           StructsSymbolTable structsTable
   )throws Exception {
 

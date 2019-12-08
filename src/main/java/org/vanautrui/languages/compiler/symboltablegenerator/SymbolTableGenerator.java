@@ -7,7 +7,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.IfStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.LoopStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.WhileStatementNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.StructDeclNode;
@@ -27,38 +27,37 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public final class SymbolTableGenerator {
-	public static SubroutineSymbolTable createSubroutineSymbolTable(List<AST> asts,boolean debug)throws Exception{
+	public static SubroutineSymbolTable createSubroutineSymbolTable(AST_Whole_Program ast, boolean debug)throws Exception{
 		if(debug){
 			System.out.println("creating a subroutine symbol table in "+SymbolTableGenerator.class.getSimpleName());
 		}
 
 		SubroutineSymbolTable subroutineSymbolTable = new SubroutineSymbolTable();
 
-		for(AST ast : asts) {
-			for(NamespaceNode namespaceNode : ast.namespaceNodeList) {
+		for(NamespaceNode namespaceNode : ast.namespaceNodeList) {
+			if(debug){
+				System.out.println(namespaceNode.methodNodeList);
+			}
+			for (MethodNode methodNode : namespaceNode.methodNodeList) {
 				if(debug){
-					System.out.println(namespaceNode.methodNodeList);
+					System.out.println("creating subroutine symbol table row for subroutine: "+methodNode.methodName);
 				}
-				for (MethodNode methodNode : namespaceNode.methodNodeList) {
-					if(debug){
-						System.out.println("creating subroutine symbol table row for subroutine: "+methodNode.methodName);
-					}
 
-					if(!(methodNode.returnType.type instanceof BasicTypeWrappedNode)){
-						throw new Exception("not supported yet");
-					}
-
-					SubroutineSymbolTableRow subrRow =
-									new SubroutineSymbolTableRow(
-													methodNode.methodName,
-													((BasicTypeWrappedNode)methodNode.returnType.type).typenode, namespaceNode.name.getTypeName(),
-													count_local_vars(methodNode,subroutineSymbolTable),
-													methodNode.arguments.stream().map(a->a.type).collect(Collectors.toList())
-									);
-					subroutineSymbolTable.add(subrRow);
+				if(!(methodNode.returnType.type instanceof BasicTypeWrappedNode)){
+					throw new Exception("not supported yet");
 				}
+
+				SubroutineSymbolTableRow subrRow =
+								new SubroutineSymbolTableRow(
+												methodNode.methodName,
+												((BasicTypeWrappedNode)methodNode.returnType.type).typenode, namespaceNode.name,
+												count_local_vars(methodNode,subroutineSymbolTable),
+												methodNode.arguments.stream().map(a->a.type).collect(Collectors.toList())
+								);
+				subroutineSymbolTable.add(subrRow);
 			}
 		}
+
 		return subroutineSymbolTable;
 	}
 
@@ -180,38 +179,37 @@ public final class SymbolTableGenerator {
 		}
 	}
 
-	public static StructsSymbolTable createStructsSymbolTable(List<AST> asts, boolean debug) throws Exception{
+	public static StructsSymbolTable createStructsSymbolTable(AST_Whole_Program ast, boolean debug) throws Exception{
 		if(debug){
 			System.out.println("creating a structs symbol table in "+SymbolTableGenerator.class.getSimpleName());
 		}
 
 		StructsSymbolTable sTable = new StructsSymbolTable();
 
-		for(AST ast : asts) {
-			for(NamespaceNode namespaceNode : ast.namespaceNodeList) {
+		for(NamespaceNode namespaceNode : ast.namespaceNodeList) {
+			if(debug){
+				System.out.println(namespaceNode.structDeclNodeList);
+			}
+
+			for (StructDeclNode sNode : namespaceNode.structDeclNodeList) {
 				if(debug){
-					System.out.println(namespaceNode.structDeclNodeList);
+					System.out.println("creating struct symbol table row for struct: "+sNode.getTypeName());
 				}
 
-				for (StructDeclNode sNode : namespaceNode.structDeclNodeList) {
-					if(debug){
-						System.out.println("creating struct symbol table row for struct: "+sNode.getTypeName());
-					}
+				final List<String> memberNames = sNode.structMembersList.stream().map(x -> x.name).collect(Collectors.toList());
+				final List<String> memberTypes = sNode.structMembersList.stream().map(x -> x.type.getTypeName()).collect(Collectors.toList());
 
-					final List<String> memberNames = sNode.structMembersList.stream().map(x -> x.name).collect(Collectors.toList());
-					final List<String> memberTypes = sNode.structMembersList.stream().map(x -> x.type.getTypeName()).collect(Collectors.toList());
+				final StructsSymbolTableRow row =
+						new StructsSymbolTableRow(
+								sNode.getTypeName(),
+								memberNames,
+								memberTypes
+						);
 
-					final StructsSymbolTableRow row =
-							new StructsSymbolTableRow(
-									sNode.getTypeName(),
-									memberNames,
-									memberTypes
-							);
-
-					sTable.addIfNotAlreadyKnown(row);
-				}
+				sTable.addIfNotAlreadyKnown(row);
 			}
 		}
+
 		return sTable;
 	}
 }

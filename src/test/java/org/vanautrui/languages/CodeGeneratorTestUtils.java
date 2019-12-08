@@ -4,14 +4,13 @@ import org.vanautrui.languages.commandline.CompilerPhases;
 import org.vanautrui.languages.commandline.ParserPhases;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.Parser;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.util.Filenames;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,14 +56,12 @@ public final class CodeGeneratorTestUtils {
 
         final TokenList tokens = ParserPhases.makeTokenList(source);
         final Parser parser = new Parser();
-        final AST ast= parser.parseTestMode(tokens,false);
-        final List<AST> asts = new ArrayList<>();
-        asts.add(ast);
+        final AST_Whole_Program ast= parser.parseTestMode(tokens,false,"Main");
         //we are in debug mode since we are running tests
 
         CompilerPhases phases = new CompilerPhases();
 
-        return phases.phase_vm_codegeneration(asts,false);
+        return phases.phase_vm_codegeneration(ast,false);
     }
 
     private static void generateFromVMCodeAndWriteExecutable(List<Path> vmcodes, Path filename) throws IOException, InterruptedException {

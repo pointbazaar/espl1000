@@ -1,7 +1,7 @@
 package org.vanautrui.languages.compiler.vmcodegenerator;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ArrayConstantNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
@@ -18,31 +18,31 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.Subro
 public final class DracoVMCodeGenerator {
 
     public static Map<String, List<String>> generateDracoVMCode(
-            Set<AST> asts,
+            final AST_Whole_Program asts,
             SubroutineSymbolTable subTable,
             StructsSymbolTable structsTable,
-            boolean debug,boolean printsymboltables
+            boolean debug,
+            boolean printsymboltables
     ) {
 
         final Map<String,List<String>> dracovmcodeinstructions = new HashMap<>();
 
-        asts.parallelStream().forEach(ast -> {
 
-            for(NamespaceNode namespaceNode : ast.namespaceNodeList){
-                for(MethodNode methodNode : namespaceNode.methodNodeList){
-                    try {
-                        //namespaceNode, methodNode, writer are not accessed from other threads
-                        //debug, printsymboltables are only read, not written to.
-                        //subTable, structsTable are probably only read from, but need to be synchronized,
-                        //as they are important to all threads.
-                        final List<String> subr_vm_codes = generateDracoVMCodeForMethod(namespaceNode, methodNode, subTable, structsTable, debug, printsymboltables);
-                        dracovmcodeinstructions.put(namespaceNode.name.getTypeName()+"_"+methodNode.methodName,subr_vm_codes);
-                    }catch (Exception e){
-                        throw new RuntimeException(e);
-                    }
+        for(NamespaceNode namespaceNode : asts.namespaceNodeList){
+            for(MethodNode methodNode : namespaceNode.methodNodeList){
+                try {
+                    //namespaceNode, methodNode, writer are not accessed from other threads
+                    //debug, printsymboltables are only read, not written to.
+                    //subTable, structsTable are probably only read from, but need to be synchronized,
+                    //as they are important to all threads.
+                    final List<String> subr_vm_codes = generateDracoVMCodeForMethod(namespaceNode, methodNode, subTable, structsTable, debug, printsymboltables);
+                    dracovmcodeinstructions.put(namespaceNode.name+"_"+methodNode.methodName,subr_vm_codes);
+                }catch (Exception e){
+                    throw new RuntimeException(e);
                 }
             }
-        });
+
+        }
 
         return dracovmcodeinstructions;
     }
