@@ -5,7 +5,6 @@ import org.vanautrui.languages.commandline.ParserPhases;
 import org.vanautrui.languages.compiler.lexing.utils.TokenList;
 import org.vanautrui.languages.compiler.parsing.Parser;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
-import org.vanautrui.languages.util.Filenames;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -67,11 +66,15 @@ public final class CodeGeneratorTestUtils {
     private static void generateFromVMCodeAndWriteExecutable(List<Path> vmcodes, Path filename) throws IOException, InterruptedException {
         //writes an executable with the name we requested
 
-        final String call = "dracovm -o "+filename.toString()+" "+vmcodes.stream().map(p->p.toString()).collect(Collectors.joining(" "));
+        //dracovm only accepts filenames as arguments
+        final String call = "dracovm "+vmcodes.stream().map(p->p.toString()).collect(Collectors.joining(" "));
         System.out.println(call);
 
         final Process process = Runtime.getRuntime().exec(call);
         process.waitFor();
+
+        //move our 'main' executable into the desired filename
+        Runtime.getRuntime().exec("mv main "+filename.toString()).waitFor();
 
     }
 
@@ -111,10 +114,8 @@ public final class CodeGeneratorTestUtils {
             System.out.println("delete: " + filename_without_extension);
             Files.delete(filename_without_extension);
 
-            //delete the assembly file
-            final Path asm_path = Paths.get(Filenames.asm_filename(filename_without_extension+"_main"));
-            System.out.println("delete: " + asm_path.toString());
-            Files.delete(asm_path);
+            //TODO: delete the assembly files of the subroutines
+
         }
 
         //TODO: there could be multiple assembly files, as the dracovm compiler becomes incremental

@@ -6,17 +6,18 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.vanautrui.languages.CodeGeneratorTestUtils.compile_and_run_program_for_testing_with_cmd_args;
 
-public class AssignmentStatementCodeGeneratorTest {
+public final class AssignmentStatementCodeGeneratorTest {
 
     @Test
     public void test_can_assign_to_local_variable()throws Exception{
         //depends on loop statement,return statement already working
 
-        String source=
-                "\tpublic ()~>PInt main{" +
-                "\t\tx=3;" +
-                "\t\tloop x {putchar('x');}" +
-                "\t return 0;} " ;
+        final String source=
+                "public ()~>PInt main{" +
+                "   x=3;" +
+                "   loop x {putchar('x');}" +
+                "   return 0;" +
+                "} ";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest333",new String[0]);
 
         assertEquals(0,pr.exitValue());
