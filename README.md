@@ -21,7 +21,7 @@ You@Terminal:~$ draco Main.dg
 
 the other dependencies are just your standard maven dependencies
 
-## Simplicity Goals
+## Simplicity
 
 - [x] **no macros** (no preprocessor needed, easier to read and understand code)
 - [x] **no backwards compatibility** (the language will change whenever a feature gets added / removed from the language. Little consideration will be given to existing code. )
@@ -29,8 +29,9 @@ the other dependencies are just your standard maven dependencies
 - [x] **no void**. Every subroutine returns a value
 - [x] **strict evaluation** . Dragon has no laziness, for simplicity and performance reasons.
 - [x] no user defined prefix , infix or suffix operators. This simplifies the parser.
-- [x] this is not and will never be a self hosting compiler. this is for stability reasons. also, other languages are great too. i think it's a bit narcissitic to have a self-hosting compiler.
+- [x] this is **not a self hosting compiler**. this is for stability reasons. also, other languages are great too. i think it's a bit narcissitic to have a self-hosting compiler.
 - [x] no aliasing of anything in general. this improves readability. 
+- [x] no need to declare a namespace. the filename is the name of the namespace. subroutine and struct declarations are at the first level of indentation.
 
 ## Safety Goals 
 
@@ -85,8 +86,7 @@ the other dependencies are just your standard maven dependencies
 
 
 functional programming, imperative programming,
-concurrency, laziness, declarative programming, constraint based programming,
-logic programming.
+concurrency, laziness, declarative programming, constraint based programming.
 
 Dragon should have an easy and simple syntax, similar to C and Haskell.
 
@@ -97,17 +97,10 @@ should be able to verify that on a specified computer
 with a certain clock rate and memory access latecy
 some function will complete in the specified time or not.
 
-Dragon should support mapping of functions to integrated circuits wherever possible.
-so when you make a function that accepts array type and returns another fixed size type
-then this should be able to map to an abstract hardware description language.
-
-
 The language differentiates between functions(no side effects) and 
 methods(with side effects) will enforce correct annotation of these properties.
 
-Dragon will be developed and tested against a variety of programming tasks,
-from online coding katas(expressiveness,speed of execution) to hackathons(speed of development,tooling,versatility)
-and business(typical business web applications, file processing) but also research programming(machine learning, artificial intelligence, rare language features,extensibility,forkability).
+Dragon will be developed and tested against a variety of programming tasks.
 
 ## Programming Language projects that seem interesting to me
 
@@ -122,6 +115,6 @@ and business(typical business web applications, file processing) but also resear
 
 ## Contributions
 
-Feel free to fork the Project. 
-Pull Requests are not welcome and will not be merged. 
-Issues are always welcome (Suggestions for Improvement, Bug Reports, ...)
+- Feel free to fork the Project. 
+- Pull Requests are not welcome and will not be merged. 
+- Issues are always welcome (Suggestions for Improvement, Bug Reports, ...)
