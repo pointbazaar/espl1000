@@ -46,7 +46,7 @@ public class MethodCallStatementCodeGeneratorTest {
     @Test
     public void test_can_call_other_method_with_multiple_argument()throws Exception{
         String subr="public (PInt a,PInt b)~>PInt subr{ putdigit(a); putdigit(b); return 0; }";
-        String source=" public ()~>PInt main{ subr(1,2); return 0;} "+subr+" ";
+        String source=" public ()~>PInt main{ subr( 1 , 2 ); return 0;} "+subr+" ";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest2311",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
