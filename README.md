@@ -10,6 +10,28 @@ The editor of choice for Dragon currently is [micro](https://micro-editor.github
 
 ## Usage
 
+Basic Program:
+
+```dragon
+struct Point{
+  PInt x,
+  PInt y
+}
+
+
+fn main :: () ~> PInt
+fn main () {
+  //every variable is always initialized
+  Point p = (1,2);  //structs can also be interpreted as tuples
+  return subr(1,p.y);
+}
+
+fn subr :: (PInt,PInt) -> PInt
+fn subr (a,b) {
+  return a+b;
+}
+```
+
 ```console
 You@Terminal:~$ draco Main.dg
 ```
