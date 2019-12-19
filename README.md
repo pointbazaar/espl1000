@@ -28,7 +28,8 @@ fn main () {
 
 fn subr :: (PInt,PInt) -> PInt
 fn subr (a,b) {
-  return a+b;
+  z=b+1;  //local variable type inference
+  return a+z;
 }
 ```
 
