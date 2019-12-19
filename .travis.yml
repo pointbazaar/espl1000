@@ -8,4 +8,8 @@ before_install:
 - cd dragon-parser
 - mvn install -DskipTests
 - cd ..
+- git clone https://github.com/pointbazaar/dracovm-compiler
+- cd dracovm-compiler/src
+- sudo ./build.sh
+- cd ..
 install: mvn install
