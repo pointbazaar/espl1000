@@ -55,6 +55,7 @@ the other dependencies are just your standard maven dependencies
 - [x] this is **not a self hosting compiler**. this is for stability reasons. also, other languages are great too. i think it's a bit narcissitic to have a self-hosting compiler.
 - [x] no aliasing of anything in general. this improves readability. 
 - [x] no need to declare a namespace. the filename is the name of the namespace. subroutine and struct declarations are at the first level of indentation.
+- [ ] simple syntax. access modifiers (public, private, ...) and such can be defined (might be implemented later) in a .dg.json file. So don't need to build a parser for that, can just use a simple json parser.
 
 ## Safety Goals 
 
