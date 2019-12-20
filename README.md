@@ -3,6 +3,7 @@
 [![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/dragon/badge)](https://www.codefactor.io/repository/github/pointbazaar/dragon)
  [![Known Vulnerabilities](https://snyk.io/test/github/pointbazaar/dragon/badge.svg)](https://snyk.io/test/github/pointbazaar/dragon) 
  [![GitHub license](https://img.shields.io/github/license/pointbazaar/dragon.svg)](https://github.com/pointbazaar/dragon/blob/master/LICENSE)
+ [![GitHub issues](https://img.shields.io/github/issues/pointbazaar/dragon.svg)](https://GitHub.com/pointbazaar/dragon/issues/)
  
 This repo contains a simple, work-in-progress statically typed programming language.
 
