@@ -5,6 +5,7 @@
  [![GitHub license](https://img.shields.io/github/license/pointbazaar/dragon.svg)](https://github.com/pointbazaar/dragon/blob/master/LICENSE)
  [![GitHub issues](https://img.shields.io/github/issues/pointbazaar/dragon.svg)](https://GitHub.com/pointbazaar/dragon/issues/)
  [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/pointbazaar/dragon.svg)](http://isitmaintained.com/project/pointbazaar/dragon "Average time to resolve an issue")
+ [![HitCount](http://hits.dwyl.io/pointbazaar/dragon.svg)](http://hits.dwyl.io/pointbazaar/dragon)
  
 This repo contains a simple, work-in-progress statically typed programming language.
 
