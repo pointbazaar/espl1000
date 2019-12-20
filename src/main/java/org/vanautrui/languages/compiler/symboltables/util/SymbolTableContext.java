@@ -15,7 +15,7 @@ public final class SymbolTableContext {
     public final LocalVarSymbolTable varTable;
     public final StructsSymbolTable structsTable;
 
-    public SymbolTableContext(SubroutineSymbolTable subTable, LocalVarSymbolTable varTable, StructsSymbolTable structsTable) {
+    public SymbolTableContext(final SubroutineSymbolTable subTable, final LocalVarSymbolTable varTable, final StructsSymbolTable structsTable) {
         this.subTable = subTable;
         this.varTable = varTable;
         this.structsTable = structsTable;

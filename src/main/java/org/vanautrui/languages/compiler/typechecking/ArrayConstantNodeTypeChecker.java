@@ -18,12 +18,12 @@ public final class ArrayConstantNodeTypeChecker {
 
   public synchronized static void typeCheckArrayConstantNode(
           final AST_Whole_Program asts,
-          NamespaceNode namespaceNode,
-          MethodNode methodNode,
-          ArrayConstantNode arrConstNode,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
+          final NamespaceNode namespaceNode,
+          final MethodNode methodNode,
+          final ArrayConstantNode arrConstNode,
+          final SubroutineSymbolTable subTable,
+          final LocalVarSymbolTable varTable,
+          final StructsSymbolTable structsTable
   ) throws Exception
   {
     //all the types of the elements should be the same
@@ -32,7 +32,7 @@ public final class ArrayConstantNodeTypeChecker {
       final TypeNode type_of_elements =
               TypeResolver.getTypeExpressionNode(arrConstNode.elements.get(0), subTable, varTable,structsTable);
 
-      for (ExpressionNode expr : arrConstNode.elements) {
+      for (final ExpressionNode expr : arrConstNode.elements) {
         final TypeNode element_type = TypeResolver.getTypeExpressionNode(expr, subTable, varTable,structsTable);
         if (!element_type.getTypeName().equals(type_of_elements.getTypeName())) {
           throw new Exception("type of the array items was inferred to "

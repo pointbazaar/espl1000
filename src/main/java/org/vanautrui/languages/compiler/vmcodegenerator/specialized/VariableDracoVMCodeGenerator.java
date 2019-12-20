@@ -19,13 +19,13 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.Expre
 public final class VariableDracoVMCodeGenerator {
 
     static List<String> genDracoVMCodeForSimpleVariable(
-            String varName, Optional<ExpressionNode> indexOptional,
-            SymbolTableContext ctx
+            final String varName,
+            final Optional<ExpressionNode> indexOptional,
+            final SymbolTableContext ctx
     ) throws Exception{
 
         final SubroutineSymbolTable subTable=ctx.subTable;
         final LocalVarSymbolTable varTable=ctx.varTable;
-        final StructsSymbolTable structsTable=ctx.structsTable;
 
         final List<String> vm = new ArrayList<>();
 
@@ -60,8 +60,8 @@ public final class VariableDracoVMCodeGenerator {
     }
 
     static List<String> genDracoVMCodeForVariable(
-            VariableNode varNode,
-            SymbolTableContext ctx
+            final VariableNode varNode,
+            final SymbolTableContext ctx
     ) throws Exception{
 
 

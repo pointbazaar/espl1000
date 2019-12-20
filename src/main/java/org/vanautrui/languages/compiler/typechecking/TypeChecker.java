@@ -73,17 +73,16 @@ public final class TypeChecker {
     }
   }
 
-
-
-
-
-
-  public static boolean isIntegralType(TypeNode type) {
+  public static boolean isIntegralType(final TypeNode type) {
     return Arrays.asList("PInt", "NInt", "Integer").contains(type.getTypeName());
   }
 
 
-  static void typeCheckMethodNameNode(final AST_Whole_Program asts, NamespaceNode namespaceNode, String methodName) throws Exception {
+  static void typeCheckMethodNameNode(
+          final AST_Whole_Program ast,
+          final NamespaceNode namespaceNode,
+          final String methodName
+  ) throws Exception {
     //method names should not be duplicate in a class
     //this may change in another version of dragon
 
@@ -94,16 +93,14 @@ public final class TypeChecker {
     }
   }
 
-
-
-  private void typeCheckIdentifierNode(final AST_Whole_Program asts,
-                                       NamespaceNode namespaceNode,
-                                       MethodNode methodNode,
-                                       IdentifierNode identifierNode)
-  throws Exception
-  {
+  private void typeCheckIdentifierNode(
+          final AST_Whole_Program asts,
+          final NamespaceNode namespaceNode,
+          final MethodNode methodNode,
+          final IdentifierNode identifierNode
+  ) throws Exception {
     //it should check that the identifier is
-    //declared in method scope or class scope.
+    //declared in method scope.
     //so there should be some declaration of it
     //also check that the identifier is not duplicate declaration
 
@@ -113,8 +110,8 @@ public final class TypeChecker {
     //it is not declared in class scope, it should be declared in
     //method scope
 
-    for (DeclaredArgumentNode arg : methodNode.arguments) {
-      if (arg.name.equals(identifierNode.name)) {
+    for (final DeclaredArgumentNode arg : methodNode.arguments) {
+      if (arg.name.get().equals(identifierNode.name)) {
         return;
       }
     }

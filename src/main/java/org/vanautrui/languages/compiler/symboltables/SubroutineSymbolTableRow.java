@@ -22,7 +22,13 @@ public final class SubroutineSymbolTableRow {
 
     private final List<TypeNode> argumentTypes = Collections.synchronizedList(new ArrayList<>());
 
-    public SubroutineSymbolTableRow(String subRoutineName, IBasicAndWrappedTypeNode returnTypeName, String className, int numberOfLocalVariables, List<TypeNode> arg_types){
+    public SubroutineSymbolTableRow(
+            final String subRoutineName,
+            final IBasicAndWrappedTypeNode returnTypeName,
+            final String className,
+            final int numberOfLocalVariables,
+            final List<TypeNode> arg_types
+    ){
 
         this.returnTypeName =new TypeNode(new BasicTypeWrappedNode(returnTypeName));
         this.subRoutineName = subRoutineName;
@@ -32,7 +38,14 @@ public final class SubroutineSymbolTableRow {
 
         this.argumentTypes.addAll(arg_types);
     }
-    public SubroutineSymbolTableRow(String subRoutineName, TypeNode returnTypeName, String className, int numberOfLocalVariables, List<TypeNode> arg_types){
+
+    public SubroutineSymbolTableRow(
+            final String subRoutineName,
+            final TypeNode returnTypeName,
+            final String className,
+            final int numberOfLocalVariables,
+            final List<TypeNode> arg_types
+    ){
 
         this.returnTypeName = returnTypeName;
         this.subRoutineName = subRoutineName;
@@ -71,7 +84,10 @@ public final class SubroutineSymbolTableRow {
         return this.argumentTypes.size();
     }
 
-    public synchronized static String generateVMCodeSubroutineName(String className,String subRoutineName){
+    public synchronized static String generateVMCodeSubroutineName(
+            final String className,
+            final String subRoutineName
+    ){
         if(subRoutineName.equals("main")){
             return "Main_main"; //main must be the same, even if we are in a different class
         }else {

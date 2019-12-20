@@ -18,15 +18,15 @@ public final class SubroutineDracoVMCodeGenerator {
 
 
   public static List<String> generateDracoVMCodeForMethod(
-          NamespaceNode containerClass,
-          MethodNode m,
-          SubroutineSymbolTable subTable,
-          StructsSymbolTable structsTable,
-          boolean debug,
-          boolean printsymboltables
+          final NamespaceNode containerClass,
+          final MethodNode m,
+          final SubroutineSymbolTable subTable,
+          final StructsSymbolTable structsTable,
+          final boolean debug,
+          final boolean printsymboltables
   )throws Exception{
 
-    List<String> vminstrs = new ArrayList<>();
+    final List<String> vminstrs = new ArrayList<>();
 
     final LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(m,subTable,structsTable);
     if(debug || printsymboltables){
@@ -43,7 +43,7 @@ public final class SubroutineDracoVMCodeGenerator {
 
     final SymbolTableContext ctx = new SymbolTableContext(subTable,varTable,structsTable);
 
-    for(StatementNode stmt : m.statements){
+    for(final StatementNode stmt : m.statements){
       vminstrs.addAll(generateDracoVMCodeForStatement(stmt,m,ctx));
     }
 

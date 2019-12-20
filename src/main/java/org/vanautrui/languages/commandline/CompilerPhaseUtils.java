@@ -1,10 +1,8 @@
 package org.vanautrui.languages.commandline;
 
-import org.vanautrui.languages.CompilerApp;
-
 public final class CompilerPhaseUtils {
 
-    static void printBuildConclusion(boolean success){
+    static void printBuildConclusion(final boolean success){
         if(success) {
             System.out.println("BUILD SUCCESS");
         }else {
@@ -12,16 +10,16 @@ public final class CompilerPhaseUtils {
         }
     }
 
-    static void printDurationFeedback(long duration /*milliseconds*/){
-        final String str = duration + " ms";
-        if(duration>500) {
-            CompilerApp.println("☠ "+str+" Compilation took too long. This needs to be fixed. Please file an Issue on GitHub.");
-        }else if(duration>200) {
-            CompilerApp.println("☠ "+str+" we are truly sorry for the delay :(");
-        }else if(duration>100){
-            CompilerApp.println("✝ "+str+" sorry it took so long!");
+    static void printDurationFeedback(final long duration_millis){
+        final String str = duration_millis + " ms";
+        if(duration_millis>500) {
+            System.out.println("☠ "+str+" Compilation took too long. This needs to be fixed. Please file an Issue on GitHub.");
+        }else if(duration_millis>200) {
+            System.out.println("☠ "+str+" we are truly sorry for the delay :(");
+        }else if(duration_millis>100){
+            System.out.println("✝ "+str+" sorry it took so long!");
         }else {
-            CompilerApp.println("☕ " + str);
+            System.out.println("☕ " + str);
         }
     }
 }

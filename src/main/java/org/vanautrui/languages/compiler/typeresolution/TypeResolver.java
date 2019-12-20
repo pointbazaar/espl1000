@@ -29,23 +29,24 @@ public final class TypeResolver {
     //that can then convert the type description directly
     //to a jvm internal representation
 
-    public static IBasicAndWrappedTypeNode getTypeIntegerConstantNode(IntConstNode intConstNode) throws Exception {
+    public static IBasicAndWrappedTypeNode getTypeIntegerConstantNode(final IntConstNode intConstNode) throws Exception {
         if(intConstNode.value>=0){
             return new SimpleTypeNode("PInt");
         }else{
             return new SimpleTypeNode("NInt");
         }
     }
+
     public static IBasicAndWrappedTypeNode getTypeFloatConstantNode() throws Exception {
         //TODO: decide between NZFloat, PFloat, ...
     	return new SimpleTypeNode("Float");
     }
 
-    public static TypeNode getTypeVariableNode(VariableNode varNode,
-                                               //MethodNode methodNode,
-                                               SubroutineSymbolTable subTable,
-                                               LocalVarSymbolTable varTable,
-                                               StructsSymbolTable structsTable
+    public static TypeNode getTypeVariableNode(
+            final VariableNode varNode,
+            final SubroutineSymbolTable subTable,
+            final LocalVarSymbolTable varTable,
+            final StructsSymbolTable structsTable
     )throws Exception{
         //a variable can have any type, maybe a subroutine type, a type variable type, or a simple type or maybe even something else
 
@@ -92,11 +93,11 @@ public final class TypeResolver {
         }
     }
 
-    public static TypeNode getTypeTermNode(TermNode termNode,
-                                           //MethodNode methodNode,
-                                           SubroutineSymbolTable subroutineSymbolTable,
-                                           LocalVarSymbolTable varTable,
-                                           StructsSymbolTable structsTable
+    public static TypeNode getTypeTermNode(
+            final TermNode termNode,
+            final SubroutineSymbolTable subroutineSymbolTable,
+            final LocalVarSymbolTable varTable,
+            final StructsSymbolTable structsTable
     )throws Exception{
 
         if(termNode.termNode instanceof ExpressionNode){
@@ -122,11 +123,10 @@ public final class TypeResolver {
     }
 
     private static IBasicAndWrappedTypeNode getTypeArrayConstNode(
-            ArrayConstantNode arrayConstantNode,
-            //MethodNode methodNode,
-            SubroutineSymbolTable subroutineSymbolTable,
-            LocalVarSymbolTable varTable,
-            StructsSymbolTable structsTable
+            final ArrayConstantNode arrayConstantNode,
+            final SubroutineSymbolTable subroutineSymbolTable,
+            final LocalVarSymbolTable varTable,
+            final StructsSymbolTable structsTable
     ) throws Exception
     {
         //since the array types should be all the same,
@@ -145,11 +145,10 @@ public final class TypeResolver {
 
 
     public static TypeNode getTypeExpressionNode(
-            ExpressionNode expressionNode,
-            //MethodNode methodNode,
-            SubroutineSymbolTable subTable,
-            LocalVarSymbolTable varTable,
-            StructsSymbolTable structsTable
+            final ExpressionNode expressionNode,
+            final SubroutineSymbolTable subTable,
+            final LocalVarSymbolTable varTable,
+            final StructsSymbolTable structsTable
     ) throws Exception
     {
         final List<String> boolean_operators = Arrays.asList("<",">","<=",">=","==","!=");
@@ -165,7 +164,7 @@ public final class TypeResolver {
             return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode( "Bool")));
         }
 
-        for(String primitive_type_not_integral : primitive_types_not_integral) {
+        for(final String primitive_type_not_integral : primitive_types_not_integral) {
             if (
                     getTypeTermNode(expressionNode.term, subTable, varTable, structsTable).getTypeName().equals(primitive_type_not_integral) &&
                             expressionNode.termNodes.size() == 1 &&
@@ -181,17 +180,16 @@ public final class TypeResolver {
     }
 
     private static TypeNode getTypeExpressionNodeNonSimple(
-            ExpressionNode expressionNode,
-            //MethodNode methodNode,
-            SubroutineSymbolTable subTable,
-            LocalVarSymbolTable varTable,
-            StructsSymbolTable structsTable
+            final ExpressionNode expressionNode,
+            final SubroutineSymbolTable subTable,
+            final LocalVarSymbolTable varTable,
+            final StructsSymbolTable structsTable
     ) throws Exception {
         final List<String> some_arithmetic_operators = Arrays.asList("+","-","*","/","%");
 
         final TypeNode type = getTypeTermNode(expressionNode.term,subTable,varTable,structsTable);
 
-        for (TermNode t : expressionNode.termNodes){
+        for (final TermNode t : expressionNode.termNodes){
             TypeNode termType = getTypeTermNode(t,subTable,varTable,structsTable);
 
             if(!(termType.getTypeName().equals(type.getTypeName()))){
@@ -217,13 +215,13 @@ public final class TypeResolver {
     }
 
     public static TypeNode getTypeMethodCallNode(
-            MethodCallNode methodCallNode,
-            SubroutineSymbolTable subTable,
-            LocalVarSymbolTable varTable
+            final MethodCallNode methodCallNode,
+            final SubroutineSymbolTable subTable,
+            final LocalVarSymbolTable varTable
     ) throws Exception
     {
 
-        String subrName = methodCallNode.methodName;
+        final String subrName = methodCallNode.methodName;
 
         if(subTable.containsSubroutine(subrName)){
             return subTable.getReturnTypeOfSubroutine(subrName);

@@ -18,8 +18,8 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.TermD
 public final class ExpressionDracoVMCodeGenerator {
 
     public static List<String> genDracoVMCodeForExpression(
-            ExpressionNode expr,
-            SymbolTableContext ctx
+            final ExpressionNode expr,
+            final SymbolTableContext ctx
     ) throws Exception {
 
         final SubroutineSymbolTable subTable=ctx.subTable;

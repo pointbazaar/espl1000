@@ -23,34 +23,34 @@ import static org.vanautrui.languages.compiler.typechecking.WhileStatementNodeTy
 
 public final class StatementNodeTypeChecker {
 
-
     static void typeCheckStatementNode(
             final AST_Whole_Program asts,
-            NamespaceNode namespace,
-            MethodNode methodNode,
-            StatementNode node,
-            SubroutineSymbolTable subTable,
-            LocalVarSymbolTable varTable,
-            StructsSymbolTable structsTable
+            final NamespaceNode namespace,
+            final MethodNode methodNode,
+            final StatementNode node,
+            final SubroutineSymbolTable subTable,
+            final LocalVarSymbolTable varTable,
+            final StructsSymbolTable structsTable
     ) throws Exception {
+
         //it depends on the instance
         if (node.statementNode instanceof AssignmentStatementNode) {
-            AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode) node.statementNode;
+            final AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode) node.statementNode;
             typeCheckAssignmentStatementNode(asts, namespace, methodNode, assignmentStatementNode, subTable, varTable,structsTable);
         } else if (node.statementNode instanceof LoopStatementNode) {
-            LoopStatementNode loopStatementNode = (LoopStatementNode) node.statementNode;
+            final LoopStatementNode loopStatementNode = (LoopStatementNode) node.statementNode;
             typeCheckLoopStatementNode(asts, namespace, methodNode, loopStatementNode, subTable, varTable,structsTable);
         } else if (node.statementNode instanceof WhileStatementNode) {
-            WhileStatementNode whileStatementNode = (WhileStatementNode) node.statementNode;
+            final WhileStatementNode whileStatementNode = (WhileStatementNode) node.statementNode;
             typeCheckWhileStatementNode(asts, namespace, methodNode, whileStatementNode, subTable, varTable,structsTable);
         } else if (node.statementNode instanceof MethodCallNode) {
-            MethodCallNode methodCallNode = (MethodCallNode) node.statementNode;
+            final MethodCallNode methodCallNode = (MethodCallNode) node.statementNode;
             typeCheckMethodCallNode(asts, namespace, methodNode, methodCallNode, subTable, varTable,structsTable);
         } else if (node.statementNode instanceof IfStatementNode) {
-            IfStatementNode ifStatementNode = (IfStatementNode) node.statementNode;
+            final IfStatementNode ifStatementNode = (IfStatementNode) node.statementNode;
             typeCheckIfStatementNode(asts, namespace, methodNode, ifStatementNode, subTable, varTable,structsTable);
         } else if (node.statementNode instanceof ReturnStatementNode) {
-            ReturnStatementNode returnStatementNode = (ReturnStatementNode) node.statementNode;
+            final ReturnStatementNode returnStatementNode = (ReturnStatementNode) node.statementNode;
             typeCheckReturnStatementNode(asts, namespace, methodNode, returnStatementNode, subTable, varTable,structsTable);
         } else {
             throw new Exception("unconsidered case in typechecking ");

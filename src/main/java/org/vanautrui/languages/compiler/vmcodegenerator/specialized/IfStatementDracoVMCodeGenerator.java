@@ -3,9 +3,6 @@ package org.vanautrui.languages.compiler.vmcodegenerator.specialized;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.StatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.IfStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.ArrayList;
@@ -19,15 +16,10 @@ public final class IfStatementDracoVMCodeGenerator {
 
 
   public static List<String> genVMCodeForIfStatement(
-          IfStatementNode ifstmt,
-          MethodNode containerMethod,
-          SymbolTableContext ctx
+          final IfStatementNode ifstmt,
+          final MethodNode containerMethod,
+          final SymbolTableContext ctx
   ) throws Exception{
-
-
-    final SubroutineSymbolTable subTable=ctx.subTable;
-    final LocalVarSymbolTable varTable=ctx.varTable;
-    final StructsSymbolTable structsTable=ctx.structsTable;
 
     final List<String> vm = new ArrayList<>();
 
@@ -44,14 +36,14 @@ public final class IfStatementDracoVMCodeGenerator {
     //if condition is false, jump to else
     vm.add("if-goto "+elselabel);
 
-    for(StatementNode stmt : ifstmt.statements){
+    for(final StatementNode stmt : ifstmt.statements){
       vm.addAll(generateDracoVMCodeForStatement(stmt,containerMethod, ctx));
     }
 
     vm.add("goto "+endlabel);
     vm.add("label "+elselabel);
 
-    for(StatementNode stmt : ifstmt.elseStatements){
+    for(final StatementNode stmt : ifstmt.elseStatements){
       vm.addAll(generateDracoVMCodeForStatement(stmt,containerMethod, ctx));
     }
 

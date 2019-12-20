@@ -14,15 +14,14 @@ import static org.vanautrui.languages.compiler.typechecking.StatementNodeTypeChe
 
 public final class IfStatementNodeTypeChecker {
 
-
   public static void typeCheckIfStatementNode(
           final AST_Whole_Program asts,
-          NamespaceNode namespaceNode,
-          MethodNode methodNode,
-          IfStatementNode ifStatementNode,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
+          final NamespaceNode namespaceNode,
+          final MethodNode methodNode,
+          final IfStatementNode ifStatementNode,
+          final SubroutineSymbolTable subTable,
+          final LocalVarSymbolTable varTable,
+          final StructsSymbolTable structsTable
   ) throws Exception {
     //the condition expression should be of type boolean
     final var conditionType =

@@ -17,12 +17,12 @@ public final class LoopStatementNodeTypeChecker {
 
   public synchronized static void typeCheckLoopStatementNode(
           final AST_Whole_Program asts,
-          NamespaceNode namespaceNode,
-          MethodNode methodNode,
-          LoopStatementNode loopStatementNode,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
+          final NamespaceNode namespaceNode,
+          final MethodNode methodNode,
+          final LoopStatementNode loopStatementNode,
+          final SubroutineSymbolTable subTable,
+          final LocalVarSymbolTable varTable,
+          final StructsSymbolTable structsTable
   ) throws Exception {
     //the condition expression should be of type boolean
 
@@ -33,7 +33,7 @@ public final class LoopStatementNodeTypeChecker {
                       " condition should be of an Integral Type >= 0 (PInt) . this is a loop statement after all."
               );
     }
-    for (StatementNode stmt : loopStatementNode.statements) {
+    for (final StatementNode stmt : loopStatementNode.statements) {
       typeCheckStatementNode(asts, namespaceNode, methodNode, stmt, subTable, varTable,structsTable);
     }
   }

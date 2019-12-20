@@ -10,9 +10,6 @@ import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.CharConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.FloatConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IntConstNode;
-import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.List;
@@ -24,15 +21,10 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.Varia
 
 public final class TermDracoVMCodeGenerator {
 
-
     public static List<String> genDracoVMCodeForTerm(
-            TermNode tNode,
-            SymbolTableContext ctx
+            final TermNode tNode,
+            final SymbolTableContext ctx
     ) throws Exception {
-
-        final SubroutineSymbolTable subTable=ctx.subTable;
-        final LocalVarSymbolTable varTable=ctx.varTable;
-        final StructsSymbolTable structsTable=ctx.structsTable;
 
         final ITermNode t = tNode.termNode;
         if (t instanceof FloatConstNode) {

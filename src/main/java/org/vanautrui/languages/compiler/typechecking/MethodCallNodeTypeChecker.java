@@ -5,7 +5,6 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
@@ -22,38 +21,27 @@ public final class MethodCallNodeTypeChecker {
 
   public synchronized static void typeCheckMethodCallNode(
     final AST_Whole_Program asts,
-    NamespaceNode namespaceNode,
-    MethodNode methodNode,
-    MethodCallNode methodCallNode,
-    SubroutineSymbolTable subTable,
-    LocalVarSymbolTable varTable,
-    StructsSymbolTable structsTable
+    final NamespaceNode namespaceNode,
+    final MethodNode methodNode,
+    final MethodCallNode methodCallNode,
+    final SubroutineSymbolTable subTable,
+    final LocalVarSymbolTable varTable,
+    final StructsSymbolTable structsTable
   ) throws Exception {
+
     boolean found = false;
 
-    if (subTable.containsSubroutine(methodCallNode.methodName)) {
-      found = true;
-    }
-
-    if (
-            varTable.containsVariable(methodCallNode.methodName)
-                    && (
-                            varTable.get(methodCallNode.methodName).getType().type instanceof ITypeNode
-            )
-    ) {
-      found = true;
-    }
+    found = subTable.containsSubroutine(methodCallNode.methodName)
+            || varTable.containsVariable(methodCallNode.methodName);
 
     //search in arguments, for a subroutine argument
-    if(methodNode.arguments.stream().filter(declaredArgumentNode -> {
-        if(declaredArgumentNode.type.type instanceof BasicTypeWrappedNode){
-          IBasicAndWrappedTypeNode t1=((BasicTypeWrappedNode) declaredArgumentNode.type.type).typenode;
-          if(t1 instanceof SubroutineTypeNode){
-            return true;
-          }
-        }
-        return false;
-      }).count()>0
+    if(methodNode.arguments.stream().anyMatch(declaredArgumentNode -> {
+      if (declaredArgumentNode.type.type instanceof BasicTypeWrappedNode) {
+        final IBasicAndWrappedTypeNode t1 = ((BasicTypeWrappedNode) declaredArgumentNode.type.type).typenode;
+        return t1 instanceof SubroutineTypeNode;
+      }
+      return false;
+    })
     ){
       found=true;
     }
@@ -74,12 +62,12 @@ public final class MethodCallNodeTypeChecker {
 
   private static void typeCheckMethodCallArguments(
           final AST_Whole_Program asts,
-          NamespaceNode namespaceNode,
-          MethodNode methodNode,
-          MethodCallNode methodCallNode,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
+          final NamespaceNode namespaceNode,
+          final MethodNode methodNode,
+          final MethodCallNode methodCallNode,
+          final SubroutineSymbolTable subTable,
+          final LocalVarSymbolTable varTable,
+          final StructsSymbolTable structsTable
   )throws Exception {
 
     final int nargs_expected = subTable.getNumberOfArgumentsOfSubroutine(methodCallNode.methodName);
@@ -111,7 +99,7 @@ public final class MethodCallNodeTypeChecker {
     }
 
     //all arguments should typecheck
-    for (ExpressionNode expr : methodCallNode.argumentList) {
+    for (final ExpressionNode expr : methodCallNode.argumentList) {
       typeCheckExpressionNode(asts, namespaceNode, methodNode, expr, subTable, varTable,structsTable);
     }
   }

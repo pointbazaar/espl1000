@@ -22,8 +22,8 @@ final class AssignmentStatementDracoVMCodeGenerator {
      * @throws Exception if the variable is not in the symbol table
      */
     static List<String> genVMCodeForAssignmentStatement(
-            AssignmentStatementNode assignStmt,
-            SymbolTableContext ctx
+            final AssignmentStatementNode assignStmt,
+            final SymbolTableContext ctx
     ) throws Exception {
         final List<String> vm = new ArrayList<>();
 
@@ -37,8 +37,8 @@ final class AssignmentStatementDracoVMCodeGenerator {
     }
 
     private static List<String> genVMCodeForAssignmentStatementWithStructAccess(
-            AssignmentStatementNode assignStmt,
-            SymbolTableContext ctx
+            final AssignmentStatementNode assignStmt,
+            final SymbolTableContext ctx
     ) throws Exception {
 
         final SubroutineSymbolTable subTable=ctx.subTable;
@@ -151,9 +151,9 @@ final class AssignmentStatementDracoVMCodeGenerator {
     }
 
     private static List<String> genVMCodeForSimpleAssignmentStatementWithoutStructAccess(
-            SimpleVariableNode varNode,
-            ExpressionNode expr,
-            SymbolTableContext ctx
+            final SimpleVariableNode varNode,
+            final ExpressionNode expr,
+            final SymbolTableContext ctx
     )throws Exception{
 
         final SubroutineSymbolTable subTable=ctx.subTable;

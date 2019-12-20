@@ -16,9 +16,9 @@ public final class WhileStatementDracoVMCodeGenerator {
 
 
     public static List<String> genVMCodeForWhileStatement(
-            WhileStatementNode whileStmt,
-            MethodNode containerMethod,
-            SymbolTableContext ctx
+            final WhileStatementNode whileStmt,
+            final MethodNode containerMethod,
+            final SymbolTableContext ctx
     ) throws Exception {
 
         final List<String> vm = new ArrayList<>();

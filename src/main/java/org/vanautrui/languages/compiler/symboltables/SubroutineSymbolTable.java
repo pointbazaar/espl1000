@@ -70,17 +70,17 @@ public final class SubroutineSymbolTable {
         this.add(new SubroutineSymbolTableRow("time",new SimpleTypeNode("PInt"),"Builtin",0,time_arg_types));
     }
 
-    public synchronized void add(SubroutineSymbolTableRow row) {
+    public synchronized void add(final SubroutineSymbolTableRow row) {
         if(!this.containsSubroutine(row.getName())) {
             this.symbolTable.add(row);
         }
     }
 
-    public synchronized boolean containsSubroutine(String subroutineName) {
+    public synchronized boolean containsSubroutine(final String subroutineName) {
         return symbolTable.stream().filter(e->e.getName().equals(subroutineName)).collect(Collectors.toList()).size()>0;
     }
 
-    public synchronized int getIndexOfSubroutine(String subroutineName)throws Exception {
+    public synchronized int getIndexOfSubroutine(final String subroutineName)throws Exception {
         if(!this.containsSubroutine(subroutineName)){
             throw new Exception("could not get index of variable "+subroutineName+" in symbol table. ");
         }
@@ -94,7 +94,7 @@ public final class SubroutineSymbolTable {
         throw new Exception();
     }
 
-    public synchronized TypeNode getReturnTypeOfSubroutine(String subroutineName) {
+    public synchronized TypeNode getReturnTypeOfSubroutine(final String subroutineName) {
         return symbolTable.stream().filter(e->e.getName().equals(subroutineName)).collect(Collectors.toList()).get(0).getReturnType();
     }
 
@@ -129,11 +129,11 @@ public final class SubroutineSymbolTable {
         return "\nSUBROUTINE SYMBOL TABLE: \n"+table.toString();
     }
 
-    public synchronized String getContainingClassName(String identifierMethodName) throws Exception{
+    public synchronized String getContainingClassName(final String identifierMethodName) throws Exception{
         return this.get(identifierMethodName).getClassName();
     }
 
-    private synchronized SubroutineSymbolTableRow get(String methodName) throws Exception{
+    private synchronized SubroutineSymbolTableRow get(final String methodName) throws Exception{
         for (final SubroutineSymbolTableRow row : this.symbolTable) {
             if (row.getName().equals(methodName)) {
                 return row;
@@ -142,15 +142,15 @@ public final class SubroutineSymbolTable {
         throw new Exception("could not find "+methodName+" in subroutine symbol table");
     }
 
-    public synchronized int getNumberOfLocalVariablesOfSubroutine(String methodName) throws Exception{
+    public synchronized int getNumberOfLocalVariablesOfSubroutine(final String methodName) throws Exception{
         return this.get(methodName).getNumberOfLocalVariables();
     }
 
-    public synchronized int getNumberOfArgumentsOfSubroutine(String methodName) throws Exception{
+    public synchronized int getNumberOfArgumentsOfSubroutine(final String methodName) throws Exception{
         return this.get(methodName).getNumberOfArguments();
     }
 
-    public synchronized TypeNode getTypeOfSubroutine(String subroutine_name) throws Exception{
+    public synchronized TypeNode getTypeOfSubroutine(final String subroutine_name) throws Exception{
         return this.get(subroutine_name).getReturnType();
     }
 

@@ -18,13 +18,13 @@ public final class LocalVarSymbolTable  {
         this.symbolTable=new ArrayList<>();
     }
 
-    public void add_idempotent(LocalVarSymbolTableRow row) {
+    public void add_idempotent(final LocalVarSymbolTableRow row) {
         if(!this.containsVariable(row.getName())) {
             this.symbolTable.add(row);
         }
     }
 
-    public LocalVarSymbolTableRow get(String varName)throws Exception{
+    public LocalVarSymbolTableRow get(final String varName)throws Exception{
         for(int i=0;i<symbolTable.size();i++){
             LocalVarSymbolTableRow r = symbolTable.get(i);
             if(r.getName().equals(varName)){
@@ -34,17 +34,18 @@ public final class LocalVarSymbolTable  {
         throw new Exception("did not find symbol '"+varName+"' in symbol table");
     }
 
-    public boolean containsVariable(String varName) {
-        return this.symbolTable.stream().filter(r->r.getName().equals(varName)).count()>0;
+    public boolean containsVariable(final String varName) {
+        return this.symbolTable
+                .stream().anyMatch(r -> r.getName().equals(varName));
     }
 
-    public int getIndexOfVariable(String varName) throws Exception{
+    public int getIndexOfVariable(final String varName) throws Exception{
         //return get(varName).getIndex();
         final String mykind = getSegment(varName);
         final List<LocalVarSymbolTableRow> mykinds = this.symbolTable.stream().filter(row -> row.kind.equals(mykind)).collect(Collectors.toList());
 
         for(int i=0;i<mykinds.size();i++){
-            LocalVarSymbolTableRow row = mykinds.get(i);
+            final LocalVarSymbolTableRow row = mykinds.get(i);
             if(row.getName().equals(varName)){
                 return i;
             }
@@ -52,11 +53,11 @@ public final class LocalVarSymbolTable  {
         throw new Exception("could not find the index of local variable "+varName);
     }
 
-    public TypeNode getTypeOfVariable(String varName) throws Exception{
+    public TypeNode getTypeOfVariable(final String varName) throws Exception{
         return this.get(varName).getType();
     }
 
-    public String getSegment(String name) throws Exception{
+    public String getSegment(final String name) throws Exception{
         //get the appropriate vm segment
         return get(name).kind;
     }
@@ -66,26 +67,26 @@ public final class LocalVarSymbolTable  {
     }
 
     public long countLocals(){
-        return this.symbolTable.stream().filter(r->r.kind==LocalVarSymbolTableRow.KIND_LOCALVAR).count();
+        return this.symbolTable.stream().filter(r-> r.kind.equals(LocalVarSymbolTableRow.KIND_LOCALVAR)).count();
     }
 
     public long countArgs(){
-        return this.symbolTable.stream().filter(r->r.kind== KIND_ARGUMENT).count();
+        return this.symbolTable.stream().filter(r-> r.kind.equals(KIND_ARGUMENT)).count();
     }
 
     public List<LocalVarSymbolTableRow> getRows() {
-        return this.symbolTable.stream().collect(Collectors.toList());
+        return new ArrayList<>(this.symbolTable);
     }
 
     @Override
     public String toString(){
 
-        String[] names = this.symbolTable.stream().map(row->row.getName()).collect(Collectors.toList()).toArray(new String[]{});
-        String[] types = this.symbolTable.stream().map(row->row.getType().getTypeName()).collect(Collectors.toList()).toArray(new String[]{});
-        String[] kinds = this.symbolTable.stream().map(row->row.kind).collect(Collectors.toList()).toArray(new String[]{});
+        final String[] names = this.symbolTable.stream().map(LocalVarSymbolTableRow::getName).collect(Collectors.toList()).toArray(new String[]{});
+        final String[] types = this.symbolTable.stream().map(row->row.getType().getTypeName()).collect(Collectors.toList()).toArray(new String[]{});
+        final String[] kinds = this.symbolTable.stream().map(row->row.kind).collect(Collectors.toList()).toArray(new String[]{});
 
-        int[] indices_inner = IntStream.range(0,this.symbolTable.size()).toArray();
-        Integer[] indices = Arrays.stream( indices_inner ).boxed().toArray( Integer[]::new );
+        final int[] indices_inner = IntStream.range(0,this.symbolTable.size()).toArray();
+        final Integer[] indices = Arrays.stream( indices_inner ).boxed().toArray( Integer[]::new );
 
         final StringBuilder table = new StringBuilder();
 

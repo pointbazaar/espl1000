@@ -9,11 +9,10 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 
 public final class ITypeNodeTypeChecker {
 
-
   public synchronized static void typeCheckITypeNode(
           final AST_Whole_Program asts,
-          NamespaceNode namespaceNode,
-          ITypeNode typename
+          final NamespaceNode namespaceNode,
+          final ITypeNode typename
   ) throws Exception {
 
     //if it is a simple type, check that the type is defined somewhere
@@ -30,14 +29,14 @@ public final class ITypeNodeTypeChecker {
       return;
     }
 
-    String msg = ("TYPECHECKING: ")
+    final String msg = ("TYPECHECKING: ")
             + "could not find class for type: "
             + wrap(typename.toSourceCode(), "'")
             + " in file : (TODO: display file and line number)";
     throw new Exception(msg);
   }
 
-  public static String wrap(String s, String wrap){
+  public static String wrap(final String s, final String wrap){
     return wrap+s+wrap;
   }
 }

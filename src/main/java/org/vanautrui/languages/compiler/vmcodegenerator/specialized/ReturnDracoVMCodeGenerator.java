@@ -2,9 +2,7 @@ package org.vanautrui.languages.compiler.vmcodegenerator.specialized;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.ReturnStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.ArrayList;
@@ -15,14 +13,12 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.Expre
 public final class ReturnDracoVMCodeGenerator {
 
     static List<String> genDracoVMCodeForReturn(
-            ReturnStatementNode retStmt,
-            MethodNode m,
-            SymbolTableContext ctx
+            final ReturnStatementNode retStmt,
+            final MethodNode m,
+            final SymbolTableContext ctx
     ) throws Exception {
 
         final SubroutineSymbolTable subTable=ctx.subTable;
-        final LocalVarSymbolTable varTable=ctx.varTable;
-        final StructsSymbolTable structsTable=ctx.structsTable;
 
         final List<String> vm = new ArrayList<>();
 

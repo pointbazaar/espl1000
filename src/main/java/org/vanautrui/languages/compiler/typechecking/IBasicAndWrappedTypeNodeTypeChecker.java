@@ -16,8 +16,8 @@ public final class IBasicAndWrappedTypeNodeTypeChecker {
 
   public synchronized static void typeCheckIBasicAndWrappedTypeNode(
           final AST_Whole_Program asts,
-          NamespaceNode namespaceNode,
-          IBasicAndWrappedTypeNode typename
+          final NamespaceNode namespaceNode,
+          final IBasicAndWrappedTypeNode typename
   ) throws Exception {
 
     //if it is a simple type, check that the type is defined somewhere
@@ -28,8 +28,8 @@ public final class IBasicAndWrappedTypeNodeTypeChecker {
         return;
       }
 
-      for (NamespaceNode namespace : asts.namespaceNodeList) {
-        for(StructDeclNode sdn : namespace.structDeclNodeList){
+      for (final NamespaceNode namespace : asts.namespaceNodeList) {
+        for(final StructDeclNode sdn : namespace.structDeclNodeList){
           if (sdn.getTypeName().equals(typename.getTypeName())) {
             return;
           }
@@ -40,7 +40,7 @@ public final class IBasicAndWrappedTypeNodeTypeChecker {
     } else if (typename instanceof SubroutineTypeNode) {
 
       ITypeNodeTypeChecker.typeCheckITypeNode(asts, namespaceNode, ((SubroutineTypeNode) typename).returnType.type);
-      for (TypeNode argType : ((SubroutineTypeNode) typename).argumentTypes) {
+      for (final TypeNode argType : ((SubroutineTypeNode) typename).argumentTypes) {
         ITypeNodeTypeChecker.typeCheckITypeNode(asts, namespaceNode, argType.type);
       }
       return;

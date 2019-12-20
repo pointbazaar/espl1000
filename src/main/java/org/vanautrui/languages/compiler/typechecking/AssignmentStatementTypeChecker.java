@@ -16,12 +16,12 @@ public final class AssignmentStatementTypeChecker {
 
   static void typeCheckAssignmentStatementNode(
           final AST_Whole_Program asts,
-          NamespaceNode namespaceNode,
-          MethodNode methodNode,
-          AssignmentStatementNode assignmentStatementNode,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
+          final NamespaceNode namespaceNode,
+          final MethodNode methodNode,
+          final AssignmentStatementNode assignmentStatementNode,
+          final SubroutineSymbolTable subTable,
+          final LocalVarSymbolTable varTable,
+          final StructsSymbolTable structsTable
   ) throws Exception{
     final var leftSideType = TypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,subTable,varTable,structsTable);
     final var rightSideType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,subTable,varTable,structsTable);

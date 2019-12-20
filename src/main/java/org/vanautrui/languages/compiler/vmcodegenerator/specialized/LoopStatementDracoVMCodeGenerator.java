@@ -12,13 +12,13 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenera
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ExpressionDracoVMCodeGenerator.genDracoVMCodeForExpression;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.StatementDracoVMCodeGenerator.generateDracoVMCodeForStatement;
 
-public class LoopStatementDracoVMCodeGenerator {
+public final class LoopStatementDracoVMCodeGenerator {
 
 
   static List<String> genVMCodeForLoopStatement(
-          LoopStatementNode loop,
-          MethodNode containerMethod,
-          SymbolTableContext ctx
+          final LoopStatementNode loop,
+          final MethodNode containerMethod,
+          final SymbolTableContext ctx
   ) throws Exception {
 
     final List<String> vm = new ArrayList<>();
@@ -40,7 +40,7 @@ public class LoopStatementDracoVMCodeGenerator {
     vm.add("if-goto "+endlabel);
 
     //execute statements
-    for(StatementNode stmt : loop.statements){
+    for(final StatementNode stmt : loop.statements){
       vm.addAll(generateDracoVMCodeForStatement(stmt,containerMethod,ctx));
     }
 

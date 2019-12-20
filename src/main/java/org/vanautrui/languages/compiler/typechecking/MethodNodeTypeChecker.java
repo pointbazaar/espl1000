@@ -18,30 +18,31 @@ import static org.vanautrui.languages.compiler.typechecking.TypeChecker.typeChec
 
 public final class MethodNodeTypeChecker {
 
-  static void typeCheckMethodNode(final AST_Whole_Program asts,
-                                  NamespaceNode namespaceNode,
-                                  MethodNode methodNode,
-                                  SubroutineSymbolTable subTable,
-                                  StructsSymbolTable structsTable
+  static void typeCheckMethodNode(
+          final AST_Whole_Program asts,
+          final NamespaceNode namespaceNode,
+          final MethodNode methodNode,
+          final SubroutineSymbolTable subTable,
+          final StructsSymbolTable structsTable
   ) throws Exception{
 
     //create the variable Symbol table, to typecheck the statements
-    LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(methodNode,subTable,structsTable);
+    final LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(methodNode,subTable,structsTable);
 
     typeCheckMethodNameNode(asts, namespaceNode,methodNode.methodName);
 
     typeCheckITypeNode(asts, namespaceNode,methodNode.returnType.type);
-    for(StatementNode stmt : methodNode.statements){
+    for(final StatementNode stmt : methodNode.statements){
       typeCheckStatementNode(asts, namespaceNode,methodNode,stmt,subTable,varTable,structsTable);
     }
-    for(DeclaredArgumentNode arg : methodNode.arguments){
+    for(final DeclaredArgumentNode arg : methodNode.arguments){
       typeCheckDeclaredArgumentNode(asts, namespaceNode,arg);
     }
 
     //at the end of every method/function, there has to be some return statement
     //atleast for now
 
-    StatementNode statementNode = methodNode.statements.get(methodNode.statements.size() - 1);
+    final StatementNode statementNode = methodNode.statements.get(methodNode.statements.size() - 1);
     if(! (statementNode.statementNode instanceof ReturnStatementNode)){
 
       throw new Exception("error in typechecking : "+methodNode.methodName+" does not have a return statement as the last statement ");

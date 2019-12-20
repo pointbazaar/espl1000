@@ -21,12 +21,12 @@ public final class ExpressionNodeTypeChecker {
 
   static void typeCheckExpressionNode(
           final AST_Whole_Program asts,
-          NamespaceNode namespaceNode,
-          MethodNode methodNode,
-          ExpressionNode expr,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
+          final NamespaceNode namespaceNode,
+          final MethodNode methodNode,
+          final ExpressionNode expr,
+          final SubroutineSymbolTable subTable,
+          final LocalVarSymbolTable varTable,
+          final StructsSymbolTable structsTable
   ) throws Exception{
     //expression is compiled to evaluate in order. meaning
     //that if there are 3 terms,
@@ -46,12 +46,12 @@ public final class ExpressionNodeTypeChecker {
 
   private static void typeCheckExpressionNodeWithMoreThan2Operands(
           final AST_Whole_Program asts,
-          NamespaceNode namespaceNode,
-          MethodNode methodNode,
-          ExpressionNode expr,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
+          final NamespaceNode namespaceNode,
+          final MethodNode methodNode,
+          final ExpressionNode expr,
+          final SubroutineSymbolTable subTable,
+          final LocalVarSymbolTable varTable,
+          final StructsSymbolTable structsTable
   ) throws Exception {
 
     //the types should be all the same for now
@@ -92,17 +92,15 @@ public final class ExpressionNodeTypeChecker {
 
   private static void typeCheckExpressionNodeWith2Operands(
           final AST_Whole_Program asts,
-          NamespaceNode namespaceNode,
-          MethodNode methodNode,
-          TermNode term1,
-          OperatorNode opNode,
-          TermNode term2,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
+          final NamespaceNode namespaceNode,
+          final MethodNode methodNode,
+          final TermNode term1,
+          final OperatorNode opNode,
+          final TermNode term2,
+          final SubroutineSymbolTable subTable,
+          final LocalVarSymbolTable varTable,
+          final StructsSymbolTable structsTable
   ) throws Exception {
-
-
 
     final List<String> arithmetic_operators_for_epressions_with_2_operands=Arrays.asList("+","-","*","/");
     final List<String> bitshifting_operators_for_epressions_with_2_operands=Arrays.asList("<<",">>");
@@ -148,14 +146,14 @@ public final class ExpressionNodeTypeChecker {
 
   private static void typeCheckExpressionNodeWith2OperandsBitShifting(
           final AST_Whole_Program asts,
-          NamespaceNode namespaceNode,
-          MethodNode methodNode,
-          TermNode term1,
-          OperatorNode opNode,
-          TermNode term2,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
+          final NamespaceNode namespaceNode,
+          final MethodNode methodNode,
+          final TermNode term1,
+          final OperatorNode opNode,
+          final TermNode term2,
+          final SubroutineSymbolTable subTable,
+          final LocalVarSymbolTable varTable,
+          final StructsSymbolTable structsTable
   ) throws Exception {
     final List<String> bitshifting_operators_for_epressions_with_2_operands=Arrays.asList("<<",">>");
 

@@ -15,12 +15,12 @@ public final class VariableNodeTypeChecker {
 
   static void typeCheckVariableNode(
           final AST_Whole_Program asts,
-          NamespaceNode namespaceNode,
-          MethodNode methodNode,
-          VariableNode varNode,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
+          final NamespaceNode namespaceNode,
+          final MethodNode methodNode,
+          final VariableNode varNode,
+          final SubroutineSymbolTable subTable,
+          final LocalVarSymbolTable varTable,
+          final StructsSymbolTable structsTable
   ) throws Exception{
     //it should check that the variable is
     //declared in method scope or class scope.
@@ -29,12 +29,11 @@ public final class VariableNodeTypeChecker {
     if(varNode.simpleVariableNode.indexOptional.isPresent()){
       //if there is an index, it should be positive. we can check one of the bounds for free
       //by only accepting PInt type
-      TypeNode index_type = TypeResolver.getTypeExpressionNode(varNode.simpleVariableNode.indexOptional.get(), subTable, varTable,structsTable);
+      final TypeNode index_type = TypeResolver.getTypeExpressionNode(varNode.simpleVariableNode.indexOptional.get(), subTable, varTable,structsTable);
       if(!index_type.getTypeName().equals("PInt")){
         throw new Exception("can only index into arrays with PInt type. Because an array index is >= 0.");
       }
     }
-
 
     //identifiers can only be used within a class or method so
     //there should be a context

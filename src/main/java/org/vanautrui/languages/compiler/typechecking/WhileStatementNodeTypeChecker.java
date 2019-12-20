@@ -17,12 +17,12 @@ public final class WhileStatementNodeTypeChecker {
 
   public synchronized static void typeCheckWhileStatementNode(
           final AST_Whole_Program asts,
-          NamespaceNode namespace,
-          MethodNode methodNode,
-          WhileStatementNode whileNode,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
+          final NamespaceNode namespace,
+          final MethodNode methodNode,
+          final WhileStatementNode whileNode,
+          final SubroutineSymbolTable subTable,
+          final LocalVarSymbolTable varTable,
+          final StructsSymbolTable structsTable
   ) throws Exception {
     //the condition expression should be of type boolean
     var conditionType =
@@ -33,7 +33,7 @@ public final class WhileStatementNodeTypeChecker {
               + whileNode.condition.toSourceCode()
               + "' but was of type: " + conditionType);
     }
-    for (StatementNode stmt : whileNode.statements) {
+    for (final StatementNode stmt : whileNode.statements) {
       typeCheckStatementNode(asts, namespace, methodNode, stmt, subTable, varTable,structsTable);
     }
   }

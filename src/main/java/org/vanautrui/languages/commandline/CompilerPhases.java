@@ -24,22 +24,19 @@ public final class CompilerPhases {
 
     private final boolean debug;
     private final boolean timed;
-    private final boolean printLong;
 
-    public CompilerPhases(CommandLine cmd){
+    public CompilerPhases(final CommandLine cmd){
         this.debug=cmd.hasOption(FLAG_DEBUG);
         this.timed=cmd.hasOption(FLAG_TIMED);
-        this.printLong=debug||timed;
     }
 
     public CompilerPhases() {
         //for testing of compiler phases
         this.debug=false;
         this.timed=false;
-        this.printLong=false;
     }
 
-    public void phase_typecheck(AST_Whole_Program ast)throws Exception{
+    public void phase_typecheck(final AST_Whole_Program ast)throws Exception{
         System.out.println("TYPE CHECKING");
 
         //this should throw an exception, if it does not typecheck
@@ -51,7 +48,7 @@ public final class CompilerPhases {
         }
     }
 
-    public List<Path> phase_vm_codegeneration(final AST_Whole_Program ast, boolean printsymboltables)throws Exception{
+    public List<Path> phase_vm_codegeneration(final AST_Whole_Program ast, final boolean printsymboltables)throws Exception{
         System.out.println("VM CODE GENERATION");
 
         final SubroutineSymbolTable subTable = createSubroutineSymbolTable(ast,debug);

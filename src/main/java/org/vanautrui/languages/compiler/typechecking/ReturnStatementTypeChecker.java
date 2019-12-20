@@ -15,12 +15,12 @@ public final class ReturnStatementTypeChecker {
 
   static void typeCheckReturnStatementNode(
           final AST_Whole_Program asts,
-          NamespaceNode namespaceNode,
-          MethodNode methodNode,
-          ReturnStatementNode returnStatementNode,
-          SubroutineSymbolTable subTable,
-          LocalVarSymbolTable varTable,
-          StructsSymbolTable structsTable
+          final NamespaceNode namespaceNode,
+          final MethodNode methodNode,
+          final ReturnStatementNode returnStatementNode,
+          final SubroutineSymbolTable subTable,
+          final LocalVarSymbolTable varTable,
+          final StructsSymbolTable structsTable
   ) throws Exception {
     //the type of the value returned should be the same as the method return type
     var returnValueType = TypeResolver.getTypeExpressionNode(returnStatementNode.returnValue, subTable, varTable,structsTable);
@@ -36,12 +36,10 @@ public final class ReturnStatementTypeChecker {
     typeCheckExpressionNode(asts, namespaceNode, methodNode, returnStatementNode.returnValue, subTable, varTable,structsTable);
   }
 
-  private static boolean contains_type(String typename, String maybeContainerType) {
+  private static boolean contains_type(final String typename, final String maybeContainerType) {
     //Integer contains PInt, NInt
     if(maybeContainerType.equals("Integer")){
-      if(typename.equals("PInt") || typename.equals("NInt")){
-        return true;
-      }
+      return typename.equals("PInt") || typename.equals("NInt");
     }
     return false;
   }

@@ -27,18 +27,19 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public final class SymbolTableGenerator {
-	public static SubroutineSymbolTable createSubroutineSymbolTable(AST_Whole_Program ast, boolean debug)throws Exception{
+
+	public static SubroutineSymbolTable createSubroutineSymbolTable(final AST_Whole_Program ast, final boolean debug)throws Exception{
 		if(debug){
 			System.out.println("creating a subroutine symbol table in "+SymbolTableGenerator.class.getSimpleName());
 		}
 
-		SubroutineSymbolTable subroutineSymbolTable = new SubroutineSymbolTable();
+		final SubroutineSymbolTable subroutineSymbolTable = new SubroutineSymbolTable();
 
-		for(NamespaceNode namespaceNode : ast.namespaceNodeList) {
+		for(final NamespaceNode namespaceNode : ast.namespaceNodeList) {
 			if(debug){
 				System.out.println(namespaceNode.methodNodeList);
 			}
-			for (MethodNode methodNode : namespaceNode.methodNodeList) {
+			for (final MethodNode methodNode : namespaceNode.methodNodeList) {
 				if(debug){
 					System.out.println("creating subroutine symbol table row for subroutine: "+methodNode.methodName);
 				}
@@ -47,7 +48,7 @@ public final class SymbolTableGenerator {
 					throw new Exception("not supported yet");
 				}
 
-				SubroutineSymbolTableRow subrRow =
+				final SubroutineSymbolTableRow subrRow =
 								new SubroutineSymbolTableRow(
 												methodNode.methodName,
 												((BasicTypeWrappedNode)methodNode.returnType.type).typenode, namespaceNode.name,
@@ -62,12 +63,14 @@ public final class SymbolTableGenerator {
 	}
 
 	public static LocalVarSymbolTable createMethodScopeSymbolTable(
-			MethodNode methodNode, SubroutineSymbolTable subTable,StructsSymbolTable structsTable
+			final MethodNode methodNode,
+			final SubroutineSymbolTable subTable,
+			final StructsSymbolTable structsTable
 	)throws Exception{
 		final LocalVarSymbolTable methodScopeSymbolTable=new LocalVarSymbolTable();
 
 		//first, make the local variables for the arguments
-		for(DeclaredArgumentNode arg: methodNode.arguments){
+		for(final DeclaredArgumentNode arg: methodNode.arguments){
 
 				if(!(arg.type.type instanceof BasicTypeWrappedNode) || !arg.name.isPresent()){
 					throw new Exception("not supported yet");
@@ -76,14 +79,14 @@ public final class SymbolTableGenerator {
 				methodScopeSymbolTable.add_idempotent(new LocalVarSymbolTableRow(arg.name.get(), (BasicTypeWrappedNode) arg.type.type, LocalVarSymbolTableRow.KIND_ARGUMENT));
 		}
 
-		for(StatementNode stmt : methodNode.statements) {
+		for(final StatementNode stmt : methodNode.statements) {
 			find_local_vars_recursively(stmt.statementNode,methodNode, methodScopeSymbolTable, subTable, structsTable);
 		}
 
 		return methodScopeSymbolTable;
 	}
 
-	private static int count_local_vars(MethodNode methodNode,SubroutineSymbolTable subTable)throws Exception{
+	private static int count_local_vars(final MethodNode methodNode,final SubroutineSymbolTable subTable)throws Exception{
 
 		//we cannot build a LocalVarSymbolTable here because we are generating the SubroutineSymbolTable,
 		//which would be required to generate a LocalVarSymbolTable
@@ -93,21 +96,37 @@ public final class SymbolTableGenerator {
 		//LocalVarSymbolTable localVarSymbolTable = new LocalVarSymbolTable();
 		//find_local_vars_recursively_list(methodNode.statements.stream().map(stmt->stmt.statementNode).collect(Collectors.toList()), methodNode,localVarSymbolTable,subTable);
 
-		return find_local_vars_recursively_list_name_only(methodNode.statements.stream().map(stmt->stmt.statementNode).collect(Collectors.toList()), methodNode,subTable).size();
+		return find_local_vars_recursively_list_name_only(
+				methodNode.statements
+					.stream()
+					.map(stmt->stmt.statementNode)
+					.collect(Collectors.toList()),
+				methodNode,
+				subTable
+		).size();
 	}
 
-	private static Set<String> find_local_vars_recursively_list_name_only(List<IStatementNode> stmts, MethodNode methodNode, SubroutineSymbolTable subTable)throws Exception{
-		Set<String> result = new HashSet<>();
-		for(IStatementNode stmt : stmts) {
+	private static Set<String> find_local_vars_recursively_list_name_only(
+			final List<IStatementNode> stmts,
+			final MethodNode methodNode,
+			final SubroutineSymbolTable subTable
+	)throws Exception{
+		final Set<String> result = new HashSet<>();
+
+		for(final IStatementNode stmt : stmts) {
 			result.addAll(find_local_vars_recursively_name_only(stmt, methodNode, subTable));
 		}
 		return result;
 	}
 
-	private static Set<String> find_local_vars_recursively_name_only(IStatementNode st,MethodNode methodNode,SubroutineSymbolTable subTable)throws Exception{
-		Set<String> result = new HashSet<>();
+	private static Set<String> find_local_vars_recursively_name_only(
+			final IStatementNode st,
+			final MethodNode methodNode,
+			final SubroutineSymbolTable subTable
+	)throws Exception{
+		final Set<String> result = new HashSet<>();
 		if(st instanceof AssignmentStatementNode) {
-			AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode)st;
+			final AssignmentStatementNode assignmentStatementNode = (AssignmentStatementNode)st;
 			if(assignmentStatementNode.variableNode.memberAccessList.size()==0) {
 				result.add(assignmentStatementNode.variableNode.simpleVariableNode.name);
 			}
@@ -126,34 +145,33 @@ public final class SymbolTableGenerator {
 		return result;
 	}
 
-
-
 	private static void find_local_vars_recursively_list(
-			List<IStatementNode> stmts, MethodNode methodNode, LocalVarSymbolTable methodScopeSymbolTable, SubroutineSymbolTable subTable, StructsSymbolTable structsTable
+			final List<IStatementNode> stmts,
+			final MethodNode methodNode,
+			final LocalVarSymbolTable methodScopeSymbolTable,
+			final SubroutineSymbolTable subTable,
+			final StructsSymbolTable structsTable
 	)throws Exception{
-		for(IStatementNode stmt : stmts) {
+		for(final IStatementNode stmt : stmts) {
 			find_local_vars_recursively(stmt, methodNode,methodScopeSymbolTable, subTable,structsTable);
 		}
 	}
 
 	private static void find_local_vars_recursively(
-			IStatementNode st,
-			MethodNode methodNode,
-			LocalVarSymbolTable methodScopeSymbolTable,
-			SubroutineSymbolTable subTable,
-			StructsSymbolTable structsTable
+			final IStatementNode st,
+			final MethodNode methodNode,
+			final LocalVarSymbolTable methodScopeSymbolTable,
+			final SubroutineSymbolTable subTable,
+			final StructsSymbolTable structsTable
 	)throws Exception{
 
 		if(st instanceof AssignmentStatementNode) {
 			final AssignmentStatementNode assignStmtNode = (AssignmentStatementNode)st;
 
-			TypeNode type_of_var;
-
-			if(assignStmtNode.optTypeNode.isPresent()){
-				type_of_var=assignStmtNode.optTypeNode.get();
-			}else {
-				type_of_var = TypeResolver.getTypeExpressionNode(assignStmtNode.expressionNode, subTable, methodScopeSymbolTable, structsTable);
-			}
+			final TypeNode type_of_var =
+					(assignStmtNode.optTypeNode.isPresent())?
+					assignStmtNode.optTypeNode.get()
+					:TypeResolver.getTypeExpressionNode(assignStmtNode.expressionNode, subTable, methodScopeSymbolTable, structsTable);
 
 			if(assignStmtNode.variableNode.memberAccessList.size()==0) {
 				methodScopeSymbolTable.add_idempotent(
@@ -179,19 +197,19 @@ public final class SymbolTableGenerator {
 		}
 	}
 
-	public static StructsSymbolTable createStructsSymbolTable(AST_Whole_Program ast, boolean debug) throws Exception{
+	public static StructsSymbolTable createStructsSymbolTable(final AST_Whole_Program ast, final boolean debug) {
 		if(debug){
 			System.out.println("creating a structs symbol table in "+SymbolTableGenerator.class.getSimpleName());
 		}
 
-		StructsSymbolTable sTable = new StructsSymbolTable();
+		final StructsSymbolTable sTable = new StructsSymbolTable();
 
-		for(NamespaceNode namespaceNode : ast.namespaceNodeList) {
+		for(final NamespaceNode namespaceNode : ast.namespaceNodeList) {
 			if(debug){
 				System.out.println(namespaceNode.structDeclNodeList);
 			}
 
-			for (StructDeclNode sNode : namespaceNode.structDeclNodeList) {
+			for (final StructDeclNode sNode : namespaceNode.structDeclNodeList) {
 				if(debug){
 					System.out.println("creating struct symbol table row for struct: "+sNode.getTypeName());
 				}

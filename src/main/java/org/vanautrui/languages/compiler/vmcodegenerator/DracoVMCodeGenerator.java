@@ -5,7 +5,6 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
-import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
@@ -19,17 +18,16 @@ public final class DracoVMCodeGenerator {
 
     public static Map<String, List<String>> generateDracoVMCode(
             final AST_Whole_Program asts,
-            SubroutineSymbolTable subTable,
-            StructsSymbolTable structsTable,
-            boolean debug,
-            boolean printsymboltables
+            final SubroutineSymbolTable subTable,
+            final StructsSymbolTable structsTable,
+            final boolean debug,
+            final boolean printsymboltables
     ) {
 
         final Map<String,List<String>> dracovmcodeinstructions = new HashMap<>();
 
-
-        for(NamespaceNode namespaceNode : asts.namespaceNodeList){
-            for(MethodNode methodNode : namespaceNode.methodNodeList){
+        for(final NamespaceNode namespaceNode : asts.namespaceNodeList){
+            for(final MethodNode methodNode : namespaceNode.methodNodeList){
                 try {
                     //namespaceNode, methodNode, writer are not accessed from other threads
                     //debug, printsymboltables are only read, not written to.
@@ -47,18 +45,17 @@ public final class DracoVMCodeGenerator {
         return dracovmcodeinstructions;
     }
 
-    public static List<String> genVMCodeForFloatConst(float fconst){
+    public static List<String> genVMCodeForFloatConst(final float fconst){
         return Arrays.asList("fconst "+fconst);
     }
 
-    public static List<String> genVMCodeForIntConst(int iconst){
+    public static List<String> genVMCodeForIntConst(final int iconst){
         return Arrays.asList("iconst "+iconst);
     }
 
-    public static List<String> genVMCodeForBoolConst(BoolConstNode bconst){
+    public static List<String> genVMCodeForBoolConst(final BoolConstNode bconst){
         return Arrays.asList("iconst "+((bconst.value)?1:0));
     }
-
 
     /**
      * after this subroutine, the address of the array with the specified elements inside is on the stack
@@ -66,14 +63,9 @@ public final class DracoVMCodeGenerator {
      * @throws Exception
      */
     public static List<String> genVMCodeForArrayConstant(
-            ArrayConstantNode arrayConstantNode,
-            SymbolTableContext ctx
+            final ArrayConstantNode arrayConstantNode,
+            final SymbolTableContext ctx
     ) throws Exception{
-
-
-        final SubroutineSymbolTable subTable=ctx.subTable;
-        final LocalVarSymbolTable varTable=ctx.varTable;
-        final StructsSymbolTable structsTable=ctx.structsTable;
 
         final List<String> vm = new ArrayList<>();
 
@@ -104,7 +96,6 @@ public final class DracoVMCodeGenerator {
 
     public static long unique(){
         //uniqueness for jump labels
-        Random r = new Random();
-        return Math.abs(r.nextInt(100000));
+        return Math.abs((new Random()).nextInt(100000));
     }
 }

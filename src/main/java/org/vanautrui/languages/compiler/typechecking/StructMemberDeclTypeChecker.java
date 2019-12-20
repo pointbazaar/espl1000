@@ -10,10 +10,10 @@ public final class StructMemberDeclTypeChecker {
 
     public static void typeCheckStructMemberDeclNode(
             final AST_Whole_Program asts,
-            NamespaceNode namespaceNode,
-            StructDeclNode structDeclNode,
-            StructMemberDeclNode structMemberDeclNode,
-            SubroutineSymbolTable subTable
+            final NamespaceNode namespaceNode,
+            final StructDeclNode structDeclNode,
+            final StructMemberDeclNode structMemberDeclNode,
+            final SubroutineSymbolTable subTable
     )throws Exception{
 
       //check that the member is only declared once

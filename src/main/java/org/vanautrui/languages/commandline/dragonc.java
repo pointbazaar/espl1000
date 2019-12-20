@@ -29,12 +29,12 @@ public final class dragonc {
     //before reaching the final representation
     //from which code can be generated
 
-    public static void compile_main(List<String> args) throws Exception {
+    public static void compile_main(final List<String> args) throws Exception {
         //Apache  CLI tools is just AWESOME!!
-        Options options = createOptions();
+        final Options options = createOptions();
 
-        CommandLineParser parser = new DefaultParser();
-        CommandLine cmd = parser.parse(options, args.toArray(new String[]{}));
+        final CommandLineParser parser = new DefaultParser();
+        final CommandLine cmd = parser.parse(options, args.toArray(new String[]{}));
 
         //as no option currently has an argument,
         //this simplifies the usage of the compiler
@@ -58,15 +58,15 @@ public final class dragonc {
         }
     }
 
-    private static List<File> getAllDragonFilesRecursively(List<String> fileArgs)throws Exception{
+    private static List<File> getAllDragonFilesRecursively(final List<String> fileArgs) {
         //from dgc options, this can either be files or directories
         //which must be compiled together.
-        List<File> results=new ArrayList<>();
-        for(String s : fileArgs) {
-            Path path = Paths.get(s);
+        final List<File> results=new ArrayList<>();
+        for(final String s : fileArgs) {
+            final Path path = Paths.get(s);
             if(path.toFile().isDirectory()) {
                 //add all the files recursively
-                Collection<File> files = FileUtils.listFiles(
+                final Collection<File> files = FileUtils.listFiles(
                         path.toFile(),
                         new String[]{"dg"},
                         true
@@ -78,17 +78,10 @@ public final class dragonc {
                 }
             }
         }
-        if(results.size()==0){
-            //use stdin to receive codes
-            //if no files or directories are given as arguments
-            //(unix philosophy)
-            //throw new Exception("could not find any files with '.dg' extension.");
-            //results.add(Paths.get("/dev/stdin").toFile());
-        }
         return results;
     }
 
-    public static void printHelp(){
+    private static void printHelp(){
         Options options = createOptions();
         HelpFormatter help = new HelpFormatter();
         StringBuilder sbh = new StringBuilder("");
@@ -152,18 +145,18 @@ public final class dragonc {
         return opts;
     }
 
-    private static void compile_main_inner(List<File> sources,CommandLine cmd){
+    private static void compile_main_inner(final List<File> sources, final CommandLine cmd){
 
-        boolean debug=cmd.hasOption(FLAG_DEBUG);
-        boolean timed=cmd.hasOption(FLAG_TIMED);
+        final boolean debug=cmd.hasOption(FLAG_DEBUG);
+        final boolean timed=cmd.hasOption(FLAG_TIMED);
 
-        long start_time_ms = currentTimeMillis();
+        final long start_time_ms = currentTimeMillis();
 
         try {
             final List<String> codes=new ArrayList<String>();
 
-            for(File file : sources){
-                String sourceCode = new String(Files.readAllBytes(file.toPath()));
+            for(final File file : sources){
+                final String sourceCode = new String(Files.readAllBytes(file.toPath()));
                 codes.add(sourceCode);
                 if(debug) {
                     System.out.println(sourceCode);
@@ -197,8 +190,8 @@ public final class dragonc {
             final String output2 = IOUtils.toString(process.getErrorStream());
             System.out.println(output2);
 
-            long end_time_ms = currentTimeMillis();
-            long duration = end_time_ms-start_time_ms;
+            final long end_time_ms = currentTimeMillis();
+            final long duration = end_time_ms-start_time_ms;
 
             //https://www.utf8icons.com/
             if(timed) {
@@ -208,7 +201,7 @@ public final class dragonc {
                 printBuildConclusion(true);
             }
 
-        } catch (Exception e) {
+        } catch (final Exception e) {
 
             System.err.println(e.getMessage());
             e.printStackTrace();

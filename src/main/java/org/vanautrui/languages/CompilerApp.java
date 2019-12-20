@@ -2,7 +2,6 @@ package org.vanautrui.languages;
 
 import org.vanautrui.languages.commandline.dragonc;
 
-import java.io.PrintStream;
 import java.util.Arrays;
 
 public final class CompilerApp {
@@ -29,23 +28,5 @@ public final class CompilerApp {
             System.err.println("-help     for information about command line arguments");
             System.exit(1);
         }
-    }
-
-    public static void println(String s, PrintStream out){
-        print(s,out);
-        print("\n",out);
-    }
-
-    public static void print(String s, PrintStream out){
-        out.print(s);
-    }
-
-    public static void println(String s){
-        print(s);
-        print("\n");
-    }
-
-    public static void print(String s ){
-        print(s,System.out);
     }
 }

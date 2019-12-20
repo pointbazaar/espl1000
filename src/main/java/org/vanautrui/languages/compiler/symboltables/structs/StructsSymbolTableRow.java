@@ -18,7 +18,7 @@ public final class StructsSymbolTableRow {
         this.members=new ArrayList<>();
     }
 
-    public StructsSymbolTableRow(final String myStructName, List<String> memberNames, List<String> memberTypeNames){
+    public StructsSymbolTableRow(final String myStructName, final List<String> memberNames, final List<String> memberTypeNames){
         this.structName=myStructName;
         this.members=memberNames;
         this.memberTypes=memberTypeNames;

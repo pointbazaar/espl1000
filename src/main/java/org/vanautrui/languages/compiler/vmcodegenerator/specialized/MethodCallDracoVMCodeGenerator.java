@@ -8,27 +8,25 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ExpressionDracoVMCodeGenerator.genDracoVMCodeForExpression;
-import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.VariableDracoVMCodeGenerator.*;
+import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.VariableDracoVMCodeGenerator.genDracoVMCodeForSimpleVariable;
 
 public final class MethodCallDracoVMCodeGenerator {
 
     public static List<String> genVMCodeForMethodCall(
-            MethodCallNode methodCallNode,
-            SymbolTableContext ctx
+            final MethodCallNode methodCallNode,
+            final SymbolTableContext ctx
     ) throws Exception {
-
 
         final SubroutineSymbolTable subTable=ctx.subTable;
         final LocalVarSymbolTable varTable=ctx.varTable;
-        final StructsSymbolTable structsTable=ctx.structsTable;
 
         final List<String> instrs = new ArrayList<>();
 
@@ -65,15 +63,16 @@ public final class MethodCallDracoVMCodeGenerator {
         } else {
             throw new Exception("subroutine " + methodCallNode.methodName + " not found in local variables and also not found in subroutines");
         }
-        //caller removes the arguments off the stack
-        for (int i = 0; i < nArgs; i++) {
 
+        //caller removes the arguments off the stack
+        IntStream.range(0,nArgs).map(i->1).forEach(i->{
             //we must swap first, as there is the return value on top of stack
             //remove previously pushed arguments off the stack
             //remove previously pushed arguments off the stack
             instrs.add("swap");
             instrs.add("pop");
-        }
+        });
+
         return instrs;
     }
 }

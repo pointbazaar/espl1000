@@ -10,8 +10,8 @@ public final class DeclaredArgumentNodeTypeChecker {
 
   public synchronized static void typeCheckDeclaredArgumentNode(
           final AST_Whole_Program asts,
-          NamespaceNode namespaceNode,
-          DeclaredArgumentNode declaredArgumentNode
+          final NamespaceNode namespaceNode,
+          final DeclaredArgumentNode declaredArgumentNode
   ) throws Exception {
     typeCheckITypeNode(asts, namespaceNode, declaredArgumentNode.type.type);
   }

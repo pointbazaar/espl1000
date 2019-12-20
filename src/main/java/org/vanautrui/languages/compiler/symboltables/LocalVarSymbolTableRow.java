@@ -17,17 +17,32 @@ public final class LocalVarSymbolTableRow  {
 
     public final static String KIND_LOCALVAR="LOCAL";
     public final static String KIND_ARGUMENT="ARG";
-    public LocalVarSymbolTableRow(String varName, TypeNode typeName, String kind) {
+
+    public LocalVarSymbolTableRow(
+            final String varName,
+            final TypeNode typeName,
+            final String kind
+    ) {
         this.typeName=typeName;
         this.varName=varName;
         this.kind=kind;
     }
-    public LocalVarSymbolTableRow(String varName, IBasicAndWrappedTypeNode typeName, String kind) {
+
+    public LocalVarSymbolTableRow(
+            final String varName,
+            final IBasicAndWrappedTypeNode typeName,
+            final String kind
+    ) {
         this.typeName=new TypeNode(new BasicTypeWrappedNode(typeName));
         this.varName=varName;
         this.kind=kind;
     }
-    public LocalVarSymbolTableRow(String varName, BasicTypeWrappedNode typeName, String kind) {
+
+    public LocalVarSymbolTableRow(
+            final String varName,
+            final BasicTypeWrappedNode typeName,
+            final String kind
+    ) {
         this.typeName=new TypeNode(typeName);
         this.varName=varName;
         this.kind=kind;

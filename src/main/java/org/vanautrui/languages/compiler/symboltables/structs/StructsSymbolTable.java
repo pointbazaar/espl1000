@@ -25,7 +25,7 @@ public final class StructsSymbolTable {
         return this.elements.stream().filter(sstr -> sstr.structName.equals(mystructName)).count()>0;
     }
 
-    public final void addIfNotAlreadyKnown(StructsSymbolTableRow row){
+    public final void addIfNotAlreadyKnown(final StructsSymbolTableRow row){
         if(!this.containsStructDefinition(row.structName)){
             this.elements.add(row);
         }

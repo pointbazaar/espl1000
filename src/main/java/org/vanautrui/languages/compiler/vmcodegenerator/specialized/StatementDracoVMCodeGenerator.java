@@ -9,15 +9,12 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.ReturnStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.WhileStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
-import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.AssignmentStatementDracoVMCodeGenerator.*;
+import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.AssignmentStatementDracoVMCodeGenerator.genVMCodeForAssignmentStatement;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.IfStatementDracoVMCodeGenerator.genVMCodeForIfStatement;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.LoopStatementDracoVMCodeGenerator.genVMCodeForLoopStatement;
 import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.MethodCallDracoVMCodeGenerator.genVMCodeForMethodCall;
@@ -26,16 +23,11 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.While
 
 final class StatementDracoVMCodeGenerator {
 
-
     static List<String> generateDracoVMCodeForStatement(
-            StatementNode stmt,
-            MethodNode m,
-            SymbolTableContext ctx
+            final StatementNode stmt,
+            final MethodNode m,
+            final SymbolTableContext ctx
     ) throws Exception {
-
-        final SubroutineSymbolTable subTable=ctx.subTable;
-        final LocalVarSymbolTable varTable=ctx.varTable;
-        final StructsSymbolTable structsTable=ctx.structsTable;
 
         final List<String> vminstrs = new ArrayList<>();
         final IStatementNode snode = stmt.statementNode;
