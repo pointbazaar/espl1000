@@ -15,7 +15,7 @@ This repo contains a simple, work-in-progress statically typed programming langu
 Its main debugger is [noBG](https://github.com/Milo-D/noBG-Assembly-Debugger).
 The editor of choice for Dragon currently is [micro](https://micro-editor.github.io/), because there is a basic syntax highlighting for it.
 
-## Usage
+## Examples
 
 Basic Program:
 
@@ -42,14 +42,20 @@ fn subr (a,b) {
 
 ```console
 You@Terminal:~$ draco Main.dg
+You@Terminal:~$ ./main
 ```
 
-## Basic Dependency Graph between these related repositories
+## How to install / use this Project ?
 
-- dragon depends on dragon-parser, dracovm-compiler
-- dragon-parser depends on dragon-lexer
+This Project will probably only work with Linux.
 
-the other dependencies are just your standard maven dependencies
+0. install gcc, make, g++
+1. install nasm, ld, 
+2. install maven, jdk>=11
+3. clone [dragon-lexer](https://github.com/pointbazaar/dragon-lexer) and install it according to .travis.yml
+4. clone [dragon-parser](https://github.com/pointbazaar/dragon-parser) and install it according to .travis.yml
+5. clone [dracovm-compiler](https://github.com/pointbazaar/dracovm-compiler) and install it according to .travis.yml
+6. try compiling some sample program
 
 ## Simplicity
 
