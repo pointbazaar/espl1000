@@ -6,6 +6,7 @@
  [![GitHub issues](https://img.shields.io/github/issues/pointbazaar/dragon.svg)](https://GitHub.com/pointbazaar/dragon/issues/)
  [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/pointbazaar/dragon.svg)](http://isitmaintained.com/project/pointbazaar/dragon "Average time to resolve an issue")
  [![HitCount](http://hits.dwyl.io/pointbazaar/dragon.svg)](http://hits.dwyl.io/pointbazaar/dragon)
+ [![Open Source Love png2](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
  
 This repo contains a simple, work-in-progress statically typed programming language.
 
