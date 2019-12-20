@@ -20,8 +20,8 @@ public class MethodCallStatementCodeGeneratorTest {
 
     @Test
     public void test_can_call_other_method_with_argument()throws Exception{
-        String faculty_methd=" (PInt n)->PInt faculty{ if(n!=1) { return (n*faculty(n-1));} return 1; }";
-        String source=" ()~>PInt main{ putdigit(faculty(3)); return 0;} "+faculty_methd+" ";
+        String faculty_methd=" (PInt n)->PInt faculty{ if( n != 1) { return ( n * faculty( n - 1 ));} return 1; }";
+        String source=" ()~>PInt main{ putdigit( faculty( 3 ) ); return 0;} "+faculty_methd+" ";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest231",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());

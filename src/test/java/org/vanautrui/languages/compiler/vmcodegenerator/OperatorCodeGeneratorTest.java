@@ -37,7 +37,7 @@ public class OperatorCodeGeneratorTest {
 
     @Test
     public void test_can_multiply_Float()throws Exception{
-        String source=" ()~>PInt main{ f=5.0*2.0; if( (f<10.1) && (f>9.9) ){ putdigit(1); } return 0;} ";
+        String source=" ()~>PInt main{ f = 5.0*2.0; if( (f<10.1) && (f>9.9) ){ putdigit(1); } return 0;} ";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest2774",new String[0]);
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
@@ -45,7 +45,7 @@ public class OperatorCodeGeneratorTest {
 
     @Test
     public void test_can_div_Float()throws Exception{
-        String source=" ()~>PInt main{ f=3.0/2.0; if( (f > 1.4) && (f < 1.6)){ putdigit(1); } return 0; } ";
+        String source=" ()~>PInt main{ f = 3.0 / 2.0; if( ( f > 1.4 ) && (f < 1.6)){ putdigit(1); } return 0; } ";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest2773",new String[0]);
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
@@ -77,7 +77,7 @@ public class OperatorCodeGeneratorTest {
 
 	  @Test
     public void test_can_div_Int()throws Exception{
-        String source=" ()~>PInt main{ putdigit(3/2); return 0;} ";
+        String source=" ()~>PInt main{ putdigit(3 / 2); return 0;} ";
         Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest6773",new String[0]);
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
