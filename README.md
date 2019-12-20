@@ -4,7 +4,7 @@
  [![Known Vulnerabilities](https://snyk.io/test/github/pointbazaar/dragon/badge.svg)](https://snyk.io/test/github/pointbazaar/dragon) 
  [![GitHub license](https://img.shields.io/github/license/pointbazaar/dragon.svg)](https://github.com/pointbazaar/dragon/blob/master/LICENSE)
  [![GitHub issues](https://img.shields.io/github/issues/pointbazaar/dragon.svg)](https://GitHub.com/pointbazaar/dragon/issues/)
- [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/pointbazaar/badges.svg)](http://isitmaintained.com/project/pointbazaar/badges "Average time to resolve an issue")
+ [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/pointbazaar/dragon.svg)](http://isitmaintained.com/project/pointbazaar/dragon "Average time to resolve an issue")
  
 This repo contains a simple, work-in-progress statically typed programming language.
 
