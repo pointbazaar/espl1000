@@ -9,7 +9,6 @@
  [![Open Source Love png2](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
  [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/pointbazaar/dragon/graphs/commit-activity)
  [![Generic badge](https://img.shields.io/badge/evaluation-strict-purple.svg)](https://shields.io/)
- [![Generic badge](https://img.shields.io/badge/global_state-no-green.svg)](https://shields.io/)
  
 This repo contains a simple, work-in-progress statically typed programming language.
 
