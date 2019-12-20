@@ -4,74 +4,80 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.OperatorNod
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+
+import static java.util.Map.entry;
 
 public final class OperatorDracoVMCodeGenerator {
 
-  public static List<String> genDracoVMCodeForOp(OperatorNode opNode, boolean isFloatNode)throws Exception{
-    return Arrays.asList(genDracoVMCodeForOpSingleInstr(opNode,isFloatNode));
+  private static Map<String,String> vmcodes_for_op_bool = Map.ofEntries(
+      entry("&&","and"),
+      entry("||","or"),
+      entry("==","ieq"),
+      entry("!=","ineq")
+  );
+
+  private static Map<String,String> vmcodes_for_op_int = Map.ofEntries(
+      entry("+","iadd"),
+      entry("-","isub"),
+      entry("*","imul"),
+      entry("/","idiv"),
+
+      entry(">","igt"),
+      entry("<","ilt"),
+      entry("<=","ileq"),
+      entry(">=","igeq"),
+
+      entry("!=","ineq"),
+      entry("==","ieq"),
+
+      entry( "%","imod"),
+
+      entry( "<<","lshiftl"),
+      entry( ">>","lshiftr"),
+
+      entry( "^","iexp")
+  );
+
+  private static Map<String,String> vmcodes_for_op_float = Map.of(
+          "+","fadd",
+          "-","fsub",
+          "*","fmul",
+          "/","fdiv",
+
+          ">","fgt",
+          "<","flt",
+          "<=","fleq",
+          ">=","fgeq",
+
+          "%","fmod"
+  );
+
+  public static List<String> genDracoVMCodeForOp(OperatorNode opNode, boolean isFloatNode, final boolean isBoolOperands)throws Exception{
+    return Arrays.asList(genDracoVMCodeForOpSingleInstr(opNode,isFloatNode,isBoolOperands));
   }
 
-  private static String genDracoVMCodeForOpSingleInstr(OperatorNode opNode, boolean isFloatOperands)throws Exception{
+  private static String genDracoVMCodeForOpSingleInstr(OperatorNode opNode, boolean isFloatOperands, boolean isBoolOperands)throws Exception{
 
-    switch (opNode.operator){
-      case "+":
-        if(isFloatOperands){
-          return "fadd";
-        }else {
-          return "iadd";
-        }
-      case "-":
-        if(isFloatOperands) {
-          return "fsub";
-        }else {
-          return "isub";
-        }
-      case ">":
-        if(isFloatOperands){
-          return "fgt";
-        }else {
-          return "igt";
-        }
-      case "<":
-        return (isFloatOperands)?"flt":"ilt";
-      case ">=":
-        return (isFloatOperands)?"fgeq":"igeq";
-      case "<=":
-        return (isFloatOperands)?"fleq":"ileq";
-
-      case "*":
-        return (isFloatOperands)?"fmul":"imul";
-      case "/":
-        return (isFloatOperands)?"fdiv":"idiv";
-
-      case "!=":
-        if(isFloatOperands){
-          throw new Exception("not implemented for float: !=");
-        }
-        return "ineq";
-      case "%":
-        return (isFloatOperands)?"fmod":"imod";
-      case "==":
-        if(isFloatOperands){
-          throw new Exception("not implemented for float: ==");
-        }
-        return "ieq";
-
-      case "&&":
-        return "and";
-      case "||":
-        return "or";
-
-      case "<<":
-        return "lshiftl";
-      case ">>":
-        return "lshiftr";
-
-      case "^":
-        return "iexp";
-
-      default:
-        throw new Exception("currently unsupported op: '"+opNode.operator+"'");
+    if(isFloatOperands){
+      if(vmcodes_for_op_float.containsKey(opNode.operator)){
+        return vmcodes_for_op_float.get(opNode.operator);
+      }else{
+        throw new Exception("not implemented for float: '"+opNode.operator+"'");
+      }
+    }else if(isBoolOperands) {
+      if(vmcodes_for_op_bool.containsKey(opNode.operator)){
+        return vmcodes_for_op_bool.get(opNode.operator);
+      }else{
+        throw new Exception("not implemented for bool: '"+opNode.operator+"'");
+      }
+    }else{
+      if(vmcodes_for_op_int.containsKey(opNode.operator)){
+        return vmcodes_for_op_int.get(opNode.operator);
+      }else{
+        throw new Exception("not implemented for int: '"+opNode.operator+"'");
+      }
     }
+
   }
 }

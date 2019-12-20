@@ -42,7 +42,8 @@ public final class ExpressionDracoVMCodeGenerator {
             //TODO: this does not work well. the list of term nodes should probably be converted into a tree structure.
             //hacky
             final boolean hasFloatOperands = type.getTypeName().equals("Float");
-            vm.addAll(genDracoVMCodeForOp(expr.operatorNodes.get(i),hasFloatOperands));
+            final boolean hasBoolOperands = type.getTypeName().equals("Bool");
+            vm.addAll(genDracoVMCodeForOp(expr.operatorNodes.get(i),hasFloatOperands,hasBoolOperands));
         }
 
         return vm;
