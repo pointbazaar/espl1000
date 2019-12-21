@@ -25,16 +25,15 @@ struct Point{
   PInt y
 }
 
+fn main () ~> PInt {
 
-fn main :: () ~> PInt
-fn main () {
   //every variable is always initialized
   Point p = (1,2);  //structs can also be interpreted as tuples
   return subr(1,p.y);
 }
 
-fn subr :: (PInt,PInt) -> PInt
-fn subr (a,b) {
+fn subr  (PInt a, PInt a) -> PInt{
+
   z=b+1;  //local variable type inference
   return a+z;
 }
