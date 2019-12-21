@@ -1,16 +1,6 @@
 
-/*
 
-this file is supposed to provide basic functionality 
-such as basic input and output.
 
-	Subroutines provided:
-	Base:print			
-	Base:println
-	Base:printi
-	Base:delay	
-	Base:assert	
-*/
 
 fn print ([Char] str)~>PInt {
 	i=0;

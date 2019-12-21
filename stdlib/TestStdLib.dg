@@ -1,5 +1,4 @@
 
-//this is to manually test the standard library subroutines
 
 fn main ()~>PInt {
 
@@ -10,8 +9,7 @@ fn main ()~>PInt {
        	assert(pow(2,3)==8);
 
 	println("faculty(3)==6");
-	//printi(faculty(3));
-       	assert(faculty(3)==6);
+    assert(faculty(3)==6);
 
 	println("min(4,5)==4");
 	assert(min(4,5)==4);
