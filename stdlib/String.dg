@@ -1,37 +1,34 @@
-use Base.dg
 
-namespace String{
-	
-	public ([Char] s, PInt i, PInt j)->[Char] substr{
-		PInt l=abs(j-i);
-		[Char] res=new(l);
-		PInt k=0;
-		while(k<l){
-			res[k]=s[i+k];
-			k=k+1;
-		}
-		return res;
+fn substr ([Char] s, PInt i, PInt j)->[Char] {
+	PInt l=abs(j-i);
+	[Char] res=new(l);
+	PInt k=0;
+	while(k<l){
+		res[k]=s[i+k];
+		k=k+1;
 	}
-	
-	public ([Char] s)->[Char] trimleft{
-		
-		i=0;
-		blank=true;
-		while( (i<len(s)) && blank){
-			if(s[i] != ' '){
-				blank=false;
-			}else{
-				i=i+1;
-			}
-		}
+	return res;
+}
 
-		[Char] r = new(len(s)-i);
-		k=0;
-		while(i<len(s)){
-			r[k]=s[i];
-			k=k+1;
+fn trimleft ([Char] s)->[Char] {
+	
+	i=0;
+	blank=true;
+	while( (i<len(s)) && blank){
+		if(s[i] != ' '){
+			blank=false;
+		}else{
 			i=i+1;
 		}
-		return r;
 	}
+
+	[Char] r = new(len(s)-i);
+	k=0;
+	while(i<len(s)){
+		r[k]=s[i];
+		k=k+1;
+		i=i+1;
+	}
+	return r;
 }
+

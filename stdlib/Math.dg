@@ -1,4 +1,3 @@
-use Base.dg
 
 /*
 	Subroutines provided:
@@ -12,50 +11,48 @@ use Base.dg
 	lcm(i1,i2) //least common multiple
 */
 
-public namespace Math{
-	
-	public (Integer n)->Integer sign{
-		if(n>0){
-			return 1;
-		}
-		if(n==0){
-			return 0;
-		}
-		return -1;
+fn sign (Int n)->Int {
+	if(n>0){
+		return 1;
 	}
-	
-	public (Integer base,PInt power)->Integer pow{
-		Integer result=1;
-		i=0;
-		while(i<power){
-			result=result*base;
-			i=i+1;
-		}
-		return result;
+	if(n==0){
+		return 0;
 	}
-	
-	public (PInt n)->PInt faculty{
-		if(n<=1){ return 1; }
-		return (n*faculty(n-1));
-	}
-	
-	public (Integer a,Integer b)->Integer max{
-		if(a>b){return a;}
-		return b;
-	}
-	
-	public (Integer a,Integer b)->Integer min{
-		if(a<b){return a;}
-		return b;
-	}
-
-	public (Integer a, Integer b)->Integer gcd{
-		if(a==0){return b;}
-		return gcd(b%a,a);
-	}
-
-	public(Integer a, Integer b)->Integer lcm{
-
-		return (a*b)/gcd(a,b);
-	}
+	return -1;
 }
+
+fn pow (Int base,PInt power)->Int {
+	Int result=1;
+	i=0;
+	while(i<power){
+		result=result*base;
+		i=i+1;
+	}
+	return result;
+}
+
+fn faculty (PInt n)->PInt {
+	if(n<=1){ return 1; }
+	return (n*faculty(n-1));
+}
+
+fn max (Int a,Int b)->Int {
+	if(a>b){return a;}
+	return b;
+}
+
+fn min (Int a,Int b)->Int {
+	if(a<b){return a;}
+	return b;
+}
+
+fn gcd (Int a, Int b)->Int {
+	if(a==0){return b;}
+	return gcd(b%a,a);
+}
+
+fn lcm (Int a, Int b)->Int {
+
+	return (a*b)/gcd(a,b);
+}
+

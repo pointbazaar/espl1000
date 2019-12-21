@@ -12,60 +12,57 @@ such as basic input and output.
 	Base:assert	
 */
 
-public namespace Base{
-
-
-	public ([Char] str)~>PInt print{
-		i=0;
-		while(i<len(str)){
-			putchar(str[i]);
-			i=i+1;
-		}
-		return 0;
+fn print ([Char] str)~>PInt {
+	i=0;
+	while(i<len(str)){
+		putchar(str[i]);
+		i=i+1;
 	}
-	
-	public ([Char] str)~>PInt println{
-		print(str);
-		putchar('\n');
-		return 0;
-	}	
-
-	public (Integer x)~>PInt printi{
-		if(x<0){
-			putchar('-');
-		
-			x=x*(-1);
-		}
-		//x >=0 from now on
-		if(x<10){
-			putdigit(abs(x));
-		}else{
-		
-			lastdigit = (x%10);
-			divided   = x/10;
-			printi(divided);
-			putdigit(abs(lastdigit));
-		}
-		return 0;
-	}
-	
-	public (PInt seconds)~>PInt delay{
-
-		start=time();
-		while(
-			(start+seconds)>time()
-		){
-			//do nothing
-		}
-		return 0;
-	}
-
-	public (Bool condition)~>Bool assert{
-		if(condition){
-			println("PASS");
-		}else{
-			println("FAIL");
-		}
-		return condition;
-	}
+	return 0;
 }
+
+fn println ([Char] str)~>PInt {
+	print(str);
+	putchar('\n');
+	return 0;
+}	
+
+fn printi (Integer x)~>PInt {
+	if(x<0){
+		putchar('-');
+	
+		x=x*(-1);
+	}
+	//x >=0 from now on
+	if(x<10){
+		putdigit(abs(x));
+	}else{
+	
+		lastdigit = (x%10);
+		divided   = x/10;
+		printi(divided);
+		putdigit(abs(lastdigit));
+	}
+	return 0;
+}
+
+fn delay (PInt seconds)~>PInt {
+
+	start=time();
+	while(
+		(start+seconds)>time()
+	){
+		//do nothing
+	}
+	return 0;
+}
+
+fn assert (Bool condition)~>Bool {
+	if(condition){
+		println("PASS");
+	}else{
+		println("FAIL");
+	}
+	return condition;
+}
+
