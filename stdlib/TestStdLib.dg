@@ -9,7 +9,7 @@ fn main ()~>PInt {
        	assert(pow(2,3)==8);
 
 	println("faculty(3)==6");
-    assert(faculty(3)==6);
+	assert(faculty(3)==6);
 
 	println("min(4,5)==4");
 	assert(min(4,5)==4);
@@ -57,3 +57,5 @@ fn main ()~>PInt {
 
 	return 0;
 }
+
+

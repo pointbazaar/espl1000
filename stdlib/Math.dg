@@ -1,7 +1,6 @@
 
 /*
-	Subroutines provided:
-
+	
 	sign(i)
 	pow(i,n)
 	faculty(n)
