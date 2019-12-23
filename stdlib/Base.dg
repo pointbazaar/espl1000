@@ -2,11 +2,11 @@
 
 
 
-fn print ([Char] str)~>PInt {
-	i=0;
-	while(i<len(str)){
+fn print ( [ Char ] str ) ~> PInt {
+	i = 0 ;
+	while( i < len(str) ){
 		putchar(str[i]);
-		i=i+1;
+		i = i + 1;
 	}
 	return 0;
 }
@@ -17,19 +17,22 @@ fn println ([Char] str)~>PInt {
 	return 0;
 }	
 
-fn printi (Integer x)~>PInt {
-	if(x<0){
+fn printi (Int x)~>PInt {
+
+	if( x < 0 ){
+	
 		putchar('-');
 	
-		x=x*(-1);
+		x = x * ( - 1 );
 	}
-	//x >=0 from now on
-	if(x<10){
+	
+	if( x < 10 ){
 		putdigit(abs(x));
 	}else{
 	
-		lastdigit = (x%10);
-		divided   = x/10;
+		lastdigit = ( x % 10 );
+		
+		divided   = x / 10;
 		printi(divided);
 		putdigit(abs(lastdigit));
 	}

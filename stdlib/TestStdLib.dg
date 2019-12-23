@@ -3,22 +3,22 @@
 fn main ()~>PInt {
 
 	println("sign(4)==1");
-	assert(sign(4)==1);
+	assert(sign(4) == 1);
 
 	println("pow(2,3)==8");
-       	assert(pow(2,3)==8);
+    assert( pow(2,3) == 8 );
 
 	println("faculty(3)==6");
-	assert(faculty(3)==6);
+	assert( faculty(3) == 6 );
 
 	println("min(4,5)==4");
-	assert(min(4,5)==4);
+	assert( min(4,5) == 4 );
 
 	println("max(2,6)==6");		
-       	assert(max(2,6)==6);
+    assert( max(2,6) == 6 );
 
 	println("substr('hello',1,3)");	
-	println(substr("hello",1,3));		
+	println( substr("hello",1,3) );		
 
 	//make 2 vectors, add them
 	V2 a = v2(1,0);
@@ -32,7 +32,7 @@ fn main ()~>PInt {
 	println(" ");
 	
 
-	arr=[1,2,3];
+	arr = [ 1,2,3 ];
 	printarr(arr);
 
 
