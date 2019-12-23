@@ -15,21 +15,21 @@ import java.util.stream.Collectors;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class SymbolTableGeneratorTest {
+public final class SymbolTableGeneratorTest {
 
     private AST_Whole_Program parse_for_test(String s)throws Exception{
 
-        TokenList tokens = ParserPhases.makeTokenList(s);
+        final TokenList tokens = ParserPhases.makeTokenList(s);
 
-        Parser parser = new Parser();
-        AST_Whole_Program ast = parser.parseTestMode(tokens,false,"Main");
+        final Parser parser = new Parser();
+        final AST_Whole_Program ast = parser.parseTestMode(tokens,false,"Main");
         return ast;
     }
 
     @Test
     public void test_finds_1_local_var_and_1_arg()throws Exception{
 
-        AST_Whole_Program ast = parse_for_test(" ()~>PInt main{  } (PInt n)~>PInt subr{x=3;} ");
+        AST_Whole_Program ast = parse_for_test(" fn main () ~> PInt {  } fn subr (PInt n) ~> PInt { x = 3; } ");
 
         SubroutineSymbolTable subTable = new SubroutineSymbolTable();
 

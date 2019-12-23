@@ -2,7 +2,7 @@ package org.vanautrui.languages.compiler.symboltables;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.IBasicAndWrappedTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SimpleTypeNode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +22,7 @@ public final class SubroutineSymbolTableRow {
 
     private final List<TypeNode> argumentTypes = Collections.synchronizedList(new ArrayList<>());
 
+    /*
     public SubroutineSymbolTableRow(
             final String subRoutineName,
             final IBasicAndWrappedTypeNode returnTypeName,
@@ -39,6 +40,8 @@ public final class SubroutineSymbolTableRow {
         this.argumentTypes.addAll(arg_types);
     }
 
+     */
+
     public SubroutineSymbolTableRow(
             final String subRoutineName,
             final TypeNode returnTypeName,
@@ -54,6 +57,10 @@ public final class SubroutineSymbolTableRow {
         //this.numberOfArguments=nArgs;
 
         this.argumentTypes.addAll(arg_types);
+    }
+
+    public SubroutineSymbolTableRow(String subr_name, SimpleTypeNode typeNode, String class_name, int numberOfLocalVariables, List<TypeNode> arg_types) {
+        this(subr_name,new TypeNode(new BasicTypeWrappedNode(typeNode)),class_name,numberOfLocalVariables,arg_types);
     }
 
     @Override
