@@ -74,7 +74,7 @@ public final class TypeChecker {
   }
 
   public static boolean isIntegralType(final TypeNode type) {
-    return Arrays.asList("PInt", "NInt", "Integer").contains(type.getTypeName());
+    return Arrays.asList("PInt", "NInt", "Integer","Int").contains(type.getTypeName());
   }
 
 

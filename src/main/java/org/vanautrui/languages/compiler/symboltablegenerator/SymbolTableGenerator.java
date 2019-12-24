@@ -12,7 +12,6 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.StructDeclNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTableRow;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
@@ -28,6 +27,8 @@ import java.util.stream.Collectors;
 
 public final class SymbolTableGenerator {
 
+	//https://www.youtube.com/watch?v=JHVbSYvK_AQ
+
 	public static SubroutineSymbolTable createSubroutineSymbolTable(final AST_Whole_Program ast, final boolean debug)throws Exception{
 		if(debug){
 			System.out.println("creating a subroutine symbol table in "+SymbolTableGenerator.class.getSimpleName());
@@ -42,10 +43,6 @@ public final class SymbolTableGenerator {
 			for (final MethodNode methodNode : namespaceNode.methodNodeList) {
 				if(debug){
 					System.out.println("creating subroutine symbol table row for subroutine: "+methodNode.methodName);
-				}
-
-				if(!(methodNode.returnType.type instanceof BasicTypeWrappedNode)){
-					throw new Exception("not supported yet");
 				}
 
 				final SubroutineSymbolTableRow subrRow =

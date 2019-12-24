@@ -1,5 +1,3 @@
-
-
 fn main ()~>PInt {
 
 	println("sign(4)==1");

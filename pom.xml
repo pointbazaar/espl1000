@@ -14,7 +14,7 @@
         <dependency>
             <groupId>org.vanautrui.languages</groupId>
             <artifactId>dragon-parser</artifactId>
-            <version>0.1017</version>
+            <version>0.1018</version>
         </dependency>
 
         <dependency>

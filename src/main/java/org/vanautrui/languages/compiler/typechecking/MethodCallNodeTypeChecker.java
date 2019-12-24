@@ -86,14 +86,19 @@ public final class MethodCallNodeTypeChecker {
 
       if(!arg_type.getTypeName().equals(arg_type_expected.getTypeName())){
         //check if maybe the expected type is a wider type that contains the supplied type
-        if(TypeChecker.isIntegralType(arg_type) && arg_type_expected.getTypeName().equals("Integer")) {
+        if(TypeChecker.isIntegralType(arg_type) && arg_type_expected.getTypeName().equals("Int")) {
           //it is ok
         }else  if(arg_type_expected.getTypeName().equals("#")){
           //it is ok, as # means anything
         }else {
 
-          throw new Exception("in call of " + methodCallNode.toSourceCode()
-                  + " , the types at index " + i + " did not match. expected type was " + arg_type_expected.getTypeName() + ", but " + arg_type.getTypeName() + " was supplied");
+          String msg = "in call of " + methodCallNode.toSourceCode()
+                  + " , the types at index " + i + " did not match. expected type was "
+                  + arg_type_expected.getTypeName() + ", but " + arg_type.getTypeName() + " was supplied";
+
+          msg+=" in context "+methodNode.toSourceCode();
+
+          throw new Exception(msg);
         }
       }
     }

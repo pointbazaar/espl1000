@@ -201,7 +201,7 @@ public final class TypeResolver {
                                 expressionNode.operatorNodes.size()==1 &&
                                 (some_arithmetic_operators.contains(expressionNode.operatorNodes.get(0).operator))
                 ){
-                    return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode( "Integer")));
+                    return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode( "Int")));
                 }
 
                 throw new Exception(
