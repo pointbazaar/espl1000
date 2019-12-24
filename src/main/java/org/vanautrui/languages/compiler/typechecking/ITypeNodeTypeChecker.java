@@ -23,7 +23,7 @@ public final class ITypeNodeTypeChecker {
 
       final TypeNode element_type = ((ArrayTypeNode) typename).element_type;
       ITypeNodeTypeChecker.typeCheckITypeNode(asts,namespaceNode,element_type.type);
-
+      return;
     } else if (typename instanceof TypeParameterNode) {
       //TODO
       throw new Exception("TODO");
@@ -33,7 +33,7 @@ public final class ITypeNodeTypeChecker {
     }
 
     final String msg = ("TYPECHECKING: ")
-            + "could not find class for type: "
+            + "could not find struct for type: "
             + wrap(typename.toSourceCode(), "'")
             + " in file : (TODO: display file and line number)";
     throw new Exception(msg);
