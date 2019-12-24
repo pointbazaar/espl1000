@@ -7,12 +7,12 @@ import org.junit.Test;
 
 import static org.vanautrui.languages.CodeGeneratorTestUtils.compile_and_run_program_for_testing_with_cmd_args;
 
-public class MethodCallStatementCodeGeneratorTest {
+public final class MethodCallStatementCodeGeneratorTest {
 
     @Test
     public void test_putchar_newline_works()throws Exception{
-        String source=" ()~>PInt main{ putchar('\\n'); return 0;}  ";
-        Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest2331",new String[0]);
+        final String source="fn main ()~>PInt { putchar('\\n'); return 0;}  ";
+        final Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest2331",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("\n",IOUtils.toString(pr.getInputStream()));
@@ -20,9 +20,9 @@ public class MethodCallStatementCodeGeneratorTest {
 
     @Test
     public void test_can_call_other_method_with_argument()throws Exception{
-        String faculty_methd=" (PInt n)->PInt faculty{ if( n != 1) { return ( n * faculty( n - 1 ));} return 1; }";
-        String source=" ()~>PInt main{ putdigit( faculty( 3 ) ); return 0;} "+faculty_methd+" ";
-        Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest231",new String[0]);
+        final String faculty_methd="fn faculty (PInt n)->PInt { if( n != 1) { return ( n * faculty( n - 1 ));} return 1; }";
+        final String source="fn main ()~>PInt { putdigit( faculty( 3 ) ); return 0;} "+faculty_methd+" ";
+        final Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest231",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("6",IOUtils.toString(pr.getInputStream()));
@@ -34,10 +34,10 @@ public class MethodCallStatementCodeGeneratorTest {
         //apparently the order of linking problem can be solved by linking the same library twice? idk.
         //this is just general, not just related to this test
 
-        String method1=" (PInt n)->PInt id{  return n; }";
-        String method2=" (((PInt)~>PInt) subr1)->PInt subr{  return subr1(2); }";
-        String source="  ()~>PInt main{ putdigit(subr(id)); return 0;} "+method1+method2+" ";
-        Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest23138",new String[0]);
+        final String method1="fn id (PInt n)->PInt {  return n; }";
+        final String method2="fn subr (((PInt)~>PInt) subr1)->PInt {  return subr1(2); }";
+        final String source="fn main ()~>PInt { putdigit(subr(id)); return 0;} "+method1+method2+" ";
+        final Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest23138",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("2",IOUtils.toString(pr.getInputStream()));
@@ -45,9 +45,9 @@ public class MethodCallStatementCodeGeneratorTest {
 
     @Test
     public void test_can_call_other_method_with_multiple_argument()throws Exception{
-        String subr=" (PInt a,PInt b)~>PInt subr{ putdigit(a); putdigit(b); return 0; }";
-        String source=" ()~>PInt main{ subr( 1 , 2 ); return 0;} "+subr+" ";
-        Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest2311",new String[0]);
+        final String subr="fn subr (PInt a,PInt b)~>PInt { putdigit(a); putdigit(b); return 0; }";
+        final String source="fn main ()~>PInt { subr( 1 , 2 ); return 0;} "+subr+" ";
+        final Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest2311",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("12",IOUtils.toString(pr.getInputStream()));
@@ -57,8 +57,8 @@ public class MethodCallStatementCodeGeneratorTest {
     @Test
     public void test_can_access_commandline_arguments()throws Exception{
 
-        String source=" ([String] args)~>PInt main{ putdigit(args[0]); return 0;} ";
-        Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest2313",new String[]{"7"});
+        final String source="fn main ([String] args)~>PInt { putdigit(args[0]); return 0;} ";
+        final Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest2313",new String[]{"7"});
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("7",IOUtils.toString(pr.getInputStream()));

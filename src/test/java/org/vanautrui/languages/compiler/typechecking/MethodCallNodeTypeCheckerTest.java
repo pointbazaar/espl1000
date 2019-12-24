@@ -13,10 +13,9 @@ public final class MethodCallNodeTypeCheckerTest {
     public void test_methodcall_must_supply_correct_number_of_arguments() throws Exception{
 
         final TokenList tokens = ParserPhases.makeTokenList(
-                "(PInt x)~>PInt subr{return 0;} ()~>PInt main{ subr(); return 0;} ");
+                "fn subr (PInt x)~>PInt {return 0;} fn main ()~>PInt{ subr(); return 0;} ");
 
         final AST_Whole_Program ast = (new Parser()).parseTestMode(tokens,false,"Main");
-
 
         try {
             TypeChecker.doTypeCheck(ast, false);
@@ -30,10 +29,9 @@ public final class MethodCallNodeTypeCheckerTest {
     public void test_methodcall_must_supply_correct_type_of_arguments() throws Exception{
 
         final TokenList tokens = ParserPhases.makeTokenList(
-                " (PInt x)~>PInt subr{return 0;} ()~>PInt main{ subr('c'); return 0;} ");
+                "fn subr (PInt x)~>PInt {return 0;} fn main ()~>PInt { subr('c'); return 0;} ");
 
         final AST_Whole_Program ast = (new Parser()).parseTestMode(tokens,false,"Main");
-
 
         try {
             TypeChecker.doTypeCheck(ast, false);

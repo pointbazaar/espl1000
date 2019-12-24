@@ -22,22 +22,19 @@ public final class DracoVMCodeGenerator {
             final StructsSymbolTable structsTable,
             final boolean debug,
             final boolean printsymboltables
-    ) {
+    ) throws Exception {
 
         final Map<String,List<String>> dracovmcodeinstructions = new HashMap<>();
 
         for(final NamespaceNode namespaceNode : asts.namespaceNodeList){
             for(final MethodNode methodNode : namespaceNode.methodNodeList){
-                try {
-                    //namespaceNode, methodNode, writer are not accessed from other threads
-                    //debug, printsymboltables are only read, not written to.
-                    //subTable, structsTable are probably only read from, but need to be synchronized,
-                    //as they are important to all threads.
-                    final List<String> subr_vm_codes = generateDracoVMCodeForMethod(namespaceNode, methodNode, subTable, structsTable, debug, printsymboltables);
-                    dracovmcodeinstructions.put(namespaceNode.name+"_"+methodNode.methodName,subr_vm_codes);
-                }catch (Exception e){
-                    throw new RuntimeException(e);
-                }
+
+                //namespaceNode, methodNode, writer are not accessed from other threads
+                //debug, printsymboltables are only read, not written to.
+                //subTable, structsTable are probably only read from, but need to be synchronized,
+                //as they are important to all threads.
+                final List<String> subr_vm_codes = generateDracoVMCodeForMethod(namespaceNode, methodNode, subTable, structsTable, debug, printsymboltables);
+                dracovmcodeinstructions.put(namespaceNode.name+"_"+methodNode.methodName,subr_vm_codes);
             }
 
         }
