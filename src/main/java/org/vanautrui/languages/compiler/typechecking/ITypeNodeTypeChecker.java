@@ -4,6 +4,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ArrayTypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeParameterNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 
@@ -19,7 +20,10 @@ public final class ITypeNodeTypeChecker {
     //so there should exist a class with that type
 
     if (typename instanceof ArrayTypeNode) {
-      //TODO
+      
+      final TypeNode element_type = ((ArrayTypeNode) typename).element_type;
+      ITypeNodeTypeChecker.typeCheckITypeNode(asts,namespaceNode,element_type.type);
+
       throw new Exception("TODO");
     } else if (typename instanceof TypeParameterNode) {
       //TODO

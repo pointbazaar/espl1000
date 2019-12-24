@@ -23,10 +23,15 @@ fn main ()~>PInt {
 	V2 b = v2(0,1);
 
 	V2 res = add(a,b);
+	
 	println("vector sum:");
+	
 	printi(res.a);
+	
 	print(",");
+	
 	printi(res.b);
+	
 	println(" ");
 	
 
