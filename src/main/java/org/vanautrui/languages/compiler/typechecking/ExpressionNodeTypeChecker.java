@@ -21,6 +21,8 @@ public final class ExpressionNodeTypeChecker {
 
   private static final List<String> currentAllowedTypes = Arrays.asList("PInt","NInt","Int","Float");
 
+  private static final List<String> integral_types  = Arrays.asList("PInt","NInt","Int");
+
   static void typeCheckExpressionNode(
           final AST_Whole_Program asts,
           final NamespaceNode namespaceNode,
@@ -121,18 +123,17 @@ public final class ExpressionNodeTypeChecker {
         throw new Exception(""+type2.getTypeName()+" is not a supported type for expressions with 2 terms.");
       }
 
-
       if(!arithmetic_operators_for_epressions_with_2_operands.contains(opNode.operator)){
         throw new Exception("operator '"+opNode.operator+"' not supported for expression with 2 Terms.");
       }
 
       if(!type1.getTypeName().equals(type2.getTypeName())){
-        List<String> integral_types  = Arrays.asList("PInt","NInt","Integer");
+
         if(!
-                (
-                        integral_types.contains(type1.getTypeName())
-                        && integral_types.contains(type2.getTypeName())
-                )
+            (
+                integral_types.contains(type1.getTypeName())
+                && integral_types.contains(type2.getTypeName())
+            )
         ) {
 
           throw new Exception("in an expression with 2 terms, both have to have the same type. But " + type1.getTypeName() + " and " + type2.getTypeName() + " are different types.");
@@ -155,7 +156,6 @@ public final class ExpressionNodeTypeChecker {
           final LocalVarSymbolTable varTable,
           final StructsSymbolTable structsTable
   ) throws Exception {
-    final List<String> bitshifting_operators_for_epressions_with_2_operands=Arrays.asList("<<",">>");
 
     final String current_allowed_type_for_bitshifting="PInt";
 
