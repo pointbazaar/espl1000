@@ -57,7 +57,7 @@ public final class ExpressionNodeTypeChecker {
     //the types should be all the same for now
     typecheckTermNode(asts, namespaceNode,methodNode,expr.term,subTable,varTable,structsTable);
     TypeNode type= TypeResolver.getTypeTermNode(expr.term,subTable,varTable,structsTable);
-    final List<String> currentAllowedTypes= Arrays.asList("PInt","Float");
+    final List<String> currentAllowedTypes= Arrays.asList("PInt","NInt","Int","Float");
     final List<String> allowed_operators_for_expressions_with_more_than_2_terms=Arrays.asList("+","-");
 
 
