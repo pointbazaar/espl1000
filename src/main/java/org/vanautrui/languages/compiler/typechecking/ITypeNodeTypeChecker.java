@@ -20,11 +20,10 @@ public final class ITypeNodeTypeChecker {
     //so there should exist a class with that type
 
     if (typename instanceof ArrayTypeNode) {
-      
+
       final TypeNode element_type = ((ArrayTypeNode) typename).element_type;
       ITypeNodeTypeChecker.typeCheckITypeNode(asts,namespaceNode,element_type.type);
 
-      throw new Exception("TODO");
     } else if (typename instanceof TypeParameterNode) {
       //TODO
       throw new Exception("TODO");
