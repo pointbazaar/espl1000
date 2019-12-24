@@ -19,6 +19,8 @@ import static org.vanautrui.languages.compiler.typechecking.TermNodeTypeChecker.
 
 public final class ExpressionNodeTypeChecker {
 
+  private static final List<String> currentAllowedTypes = Arrays.asList("PInt","NInt","Int","Float");
+
   static void typeCheckExpressionNode(
           final AST_Whole_Program asts,
           final NamespaceNode namespaceNode,
@@ -57,7 +59,6 @@ public final class ExpressionNodeTypeChecker {
     //the types should be all the same for now
     typecheckTermNode(asts, namespaceNode,methodNode,expr.term,subTable,varTable,structsTable);
     TypeNode type= TypeResolver.getTypeTermNode(expr.term,subTable,varTable,structsTable);
-    final List<String> currentAllowedTypes= Arrays.asList("PInt","NInt","Int","Float");
     final List<String> allowed_operators_for_expressions_with_more_than_2_terms=Arrays.asList("+","-");
 
 
@@ -108,7 +109,6 @@ public final class ExpressionNodeTypeChecker {
     if(bitshifting_operators_for_epressions_with_2_operands.contains(opNode.operator)){
       typeCheckExpressionNodeWith2OperandsBitShifting(asts, namespaceNode,methodNode,term1,opNode,term2,subTable,varTable,structsTable);
     }else if(arithmetic_operators_for_epressions_with_2_operands.contains(opNode.operator)){
-      final List<String> currentAllowedTypes= Arrays.asList("PInt","Float","NInt","Integer");
 
       final TypeNode type1 = TypeResolver.getTypeTermNode(term1,subTable,varTable,structsTable);
       final TypeNode type2 = TypeResolver.getTypeTermNode(term2,subTable,varTable,structsTable);
