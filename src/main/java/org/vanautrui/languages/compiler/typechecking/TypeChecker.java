@@ -12,6 +12,8 @@ import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.vanautrui.languages.compiler.typechecking.NamespaceNodeTypeChecker.typeCheckNamespaceNode;
 
@@ -24,18 +26,21 @@ public final class TypeChecker {
   //and that itself contains only
   //AST Nodes that conform to the expected types.
 
+  private static final List<String> primitive_types = Arrays.asList(
+          "PInt",
+          "NInt",
+          "Int",
+          "Float",
+          "Bool",
+          "Char"
+  );
+
+  private static final List<String> primitive_types_arrays = primitive_types.stream().map(t-> ("["+t+"]")).collect(Collectors.toList());
 
   //the primitive types and their arrays
   public static final List<String> primitive_types_and_arrays_of_them =
-          Arrays.asList(
-                  "PInt", // Int which is  >= 0
-                  "NInt", // Int which is <= 0
-                  "Integer",
-                  "Float", "Bool", "Char",
-                  "[PInt]", "[NInt]",
-                  "[Integer]",
-                  "[Float]", "[Bool]", "[Char]"
-          );
+          Stream.concat(primitive_types.stream(),primitive_types_arrays.stream()).collect(Collectors.toList());
+
 
   public static void doTypeCheck(
           AST_Whole_Program asts,
