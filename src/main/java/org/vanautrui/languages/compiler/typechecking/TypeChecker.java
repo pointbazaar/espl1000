@@ -73,8 +73,12 @@ public final class TypeChecker {
       }
     }
 
-    if(count!=1){
-      throw new Exception("found more or less than 1 entry point '()~>PInt main'");
+    final String hint = "'fn main ()~>PInt '";
+
+    if(count==0){
+      throw new Exception("found no entry point "+hint);
+    }else if(count>1){
+      throw new Exception("found more than 1 entry point "+hint);
     }
   }
 

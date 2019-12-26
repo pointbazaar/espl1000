@@ -60,7 +60,7 @@ public final class CodeGeneratorTestUtils {
 
         CompilerPhases phases = new CompilerPhases();
 
-        return phases.phase_vm_codegeneration(ast,false);
+        return phases.phase_vm_codegeneration(ast,false,false);
     }
 
     private static void generateFromVMCodeAndWriteExecutable(List<Path> vmcodes, Path filename) throws IOException, InterruptedException {

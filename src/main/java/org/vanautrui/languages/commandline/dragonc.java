@@ -163,7 +163,7 @@ public final class dragonc {
                 }
             }
 
-            final CompilerPhases phases = new CompilerPhases(cmd);
+
             final ParserPhases pphases = new ParserPhases();
 
             //PHASE PREPROCESSOR (processes 'use' directive), PHASE CLEAN, PHASE LEXING, PHASE PARSING
@@ -171,10 +171,10 @@ public final class dragonc {
             final AST_Whole_Program ast = pphases.phase_preprocessor_and_clean_and_lexing_and_parsing(sources);
 
             //PHASE TYPE CHECKING
-            phases.phase_typecheck(ast);
+            CompilerPhases.phase_typecheck(ast,debug);
 
             //PHASE CODE GENERATION, returns a list of paths where the files for the subroutines are
-            final List<Path> vm_code_files = phases.phase_vm_codegeneration(ast, cmd.hasOption(FLAG_PRINT_SYMBOLTABLES));
+            final List<Path> vm_code_files = CompilerPhases.phase_vm_codegeneration(ast, cmd.hasOption(FLAG_PRINT_SYMBOLTABLES),debug);
 
             //PHASE VM CODE COMPILATION, PHASE GENERATE EXECUTABLE
             //this phase depends on 'dracovm'

@@ -1,6 +1,5 @@
 package org.vanautrui.languages.commandline;
 
-import org.apache.commons.cli.CommandLine;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
@@ -15,29 +14,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.vanautrui.languages.commandline.dragonc.FLAG_DEBUG;
-import static org.vanautrui.languages.commandline.dragonc.FLAG_TIMED;
 import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createStructsSymbolTable;
 import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
 
 public final class CompilerPhases {
 
-    private final boolean debug;
-    private final boolean timed;
-
-    public CompilerPhases(final CommandLine cmd){
-        this.debug=cmd.hasOption(FLAG_DEBUG);
-        this.timed=cmd.hasOption(FLAG_TIMED);
-    }
-
-    public CompilerPhases() {
-        //for testing of compiler phases
-        this.debug=false;
-        this.timed=false;
-    }
-
-    public void phase_typecheck(final AST_Whole_Program ast)throws Exception{
-        System.out.println("TYPE CHECKING");
+    public static void phase_typecheck(final AST_Whole_Program ast, final boolean debug)throws Exception{
+        if(debug) {
+            System.out.println("TYPE CHECKING");
+        }
 
         //this should throw an exception, if it does not typecheck
         try {
@@ -48,8 +33,14 @@ public final class CompilerPhases {
         }
     }
 
-    public List<Path> phase_vm_codegeneration(final AST_Whole_Program ast, final boolean printsymboltables)throws Exception{
-        System.out.println("VM CODE GENERATION");
+    public static List<Path> phase_vm_codegeneration(
+            final AST_Whole_Program ast,
+            final boolean printsymboltables,
+            final boolean debug
+    )throws Exception{
+        if(debug) {
+            System.out.println("VM CODE GENERATION");
+        }
 
         final SubroutineSymbolTable subTable = createSubroutineSymbolTable(ast,debug);
         final StructsSymbolTable structsTable = createStructsSymbolTable(ast,debug);
