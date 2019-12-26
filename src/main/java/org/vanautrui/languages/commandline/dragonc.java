@@ -92,7 +92,7 @@ public final class dragonc {
         sbf.append("\n");
         sbf.append("EXAMPLES\n\n");
         sbf.append("    draco Main.dg\n");
-        sbf.append("    draco -debug -ast Main.dg\n");
+        sbf.append("    draco -debug Main.dg\n");
         sbf.append("\n");
 
 
