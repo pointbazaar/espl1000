@@ -71,11 +71,11 @@ public final class SymbolTableGenerator {
 		//first, make the local variables for the arguments
 		for(final DeclaredArgumentNode arg: methodNode.arguments){
 
-				if(!arg.name.isPresent()){
-					throw new Exception("not supported yet");
-				}
+			if(!arg.name.isPresent()){
+				throw new Exception("not supported yet");
+			}
 
-				varTable.add_idempotent(new LocalVarSymbolTableRow(arg.name.get(), arg.type, LocalVarSymbolTableRow.KIND_ARGUMENT));
+			varTable.add_idempotent(new LocalVarSymbolTableRow(arg.name.get(), arg.type, LocalVarSymbolTableRow.KIND_ARGUMENT));
 		}
 
 		final SymbolTableContext ctx = new SymbolTableContext(subTable,varTable,structsTable);

@@ -12,14 +12,15 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createStructsSymbolTable;
 import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
 
 public final class CompilerPhases {
 
-    public static void phase_typecheck(final AST_Whole_Program ast, final boolean debug)throws Exception{
+    public static void phase_typecheck(
+            final AST_Whole_Program ast, final boolean debug
+    )throws Exception{
         if(debug) {
             System.out.println("TYPE CHECKING");
         }
@@ -38,6 +39,7 @@ public final class CompilerPhases {
             final boolean printsymboltables,
             final boolean debug
     )throws Exception{
+
         if(debug) {
             System.out.println("VM CODE GENERATION");
         }
@@ -52,11 +54,16 @@ public final class CompilerPhases {
 
             //write a file with the vmcode for each subroutine
             final Path path = Paths.get(subr.getKey()+".subroutine.dracovm");
-            System.out.println("write: "+path);
+
+            if(debug) {
+                System.out.println("write: " + path);
+            }
+
             Files.write(
                     path,
-                    (subr.getValue().stream().collect(Collectors.joining("\n"))+"\n").getBytes()
+                    (String.join("\n", subr.getValue()) +"\n").getBytes()
             );
+
             paths.add(path);
         }
 

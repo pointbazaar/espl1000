@@ -180,8 +180,14 @@ public final class dragonc {
             //this phase depends on 'dracovm'
             //which can be obtained here: https://github.com/pointbazaar/dracovm-compiler
             //for each subroutine in vm code, make a NAME.subroutine.dracovm file
-            final String call = "dracovm "+vm_code_files.stream().map(path->path.toString()).collect(Collectors.joining(" "));
-            System.out.println(call);
+            final String call = "dracovm "+vm_code_files
+                    .stream()
+                    .map(Path::toString)
+                    .collect(Collectors.joining(" "));
+
+            if(debug) {
+                System.out.println(call);
+            }
 
             final Process process = Runtime.getRuntime().exec(call);
             process.waitFor();
@@ -197,16 +203,17 @@ public final class dragonc {
             if(timed) {
                 printDurationFeedback(duration);
             }
-            {
-                printBuildConclusion(true);
-            }
+
+            printBuildConclusion(true);
 
         } catch (final Exception e) {
 
             System.err.println(e.getMessage());
+
             if(debug) {
                 e.printStackTrace();
             }
+
             printBuildConclusion(false);
         }
     }
