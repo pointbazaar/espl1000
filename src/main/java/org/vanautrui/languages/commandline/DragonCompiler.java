@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,12 +19,36 @@ import static java.lang.System.currentTimeMillis;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBuildConclusion;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printDurationFeedback;
 
-public final class dragonc {
+public final class DragonCompiler {
 
     //prevents instance creation
-    private dragonc(){}
+    private DragonCompiler(){}
 
     //this should be the compiler
+
+    //Assembly debugging:
+    //(they are missing a stack display, but it be ok)
+    //https://carlosrafaelgn.com.br/Asm86/
+
+    //general having fun and trying different programming languages:
+    //https://tio.run/#
+    //https://www.tutorialspoint.com/codingground.htm
+
+    //https://asmtutor.com/
+    //https://asmtutor.com/#lesson1
+
+    //https://www.youtube.com/watch?v=ubXXmQzzNGo
+
+    public static void main(String[] args) {
+        try {
+            DragonCompiler.compile_main(Arrays.asList(args));
+            System.exit(0);
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+            System.err.println("-help     for information about command line arguments");
+            System.exit(1);
+        }
+    }
 
     //one thing to note would be that
     //we can include multiple stages of tokenization
