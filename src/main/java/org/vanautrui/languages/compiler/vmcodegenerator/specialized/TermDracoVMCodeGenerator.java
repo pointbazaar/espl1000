@@ -27,6 +27,7 @@ public final class TermDracoVMCodeGenerator {
     ) throws Exception {
 
         final ITermNode t = tNode.termNode;
+
         if (t instanceof FloatConstNode) {
             return genVMCodeForFloatConst(
                     ((FloatConstNode) t).value
