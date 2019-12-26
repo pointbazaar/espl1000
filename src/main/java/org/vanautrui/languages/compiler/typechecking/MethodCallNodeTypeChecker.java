@@ -12,6 +12,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
 import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeChecker.typeCheckExpressionNode;
@@ -24,10 +25,11 @@ public final class MethodCallNodeTypeChecker {
     final NamespaceNode namespaceNode,
     final MethodNode methodNode,
     final MethodCallNode methodCallNode,
-    final SubroutineSymbolTable subTable,
-    final LocalVarSymbolTable varTable,
-    final StructsSymbolTable structsTable
+    final SymbolTableContext ctx
   ) throws Exception {
+
+    final SubroutineSymbolTable subTable = ctx.subTable;
+    final LocalVarSymbolTable varTable = ctx.varTable;
 
     boolean found = false;
 
@@ -56,7 +58,7 @@ public final class MethodCallNodeTypeChecker {
               );
     }
 
-    typeCheckMethodCallArguments(asts,namespaceNode,methodNode,methodCallNode,subTable,varTable,structsTable);
+    typeCheckMethodCallArguments(asts,namespaceNode,methodNode,methodCallNode,ctx);
     //for static method calls, check that the class exists
   }
 
@@ -65,10 +67,12 @@ public final class MethodCallNodeTypeChecker {
           final NamespaceNode namespaceNode,
           final MethodNode methodNode,
           final MethodCallNode methodCallNode,
-          final SubroutineSymbolTable subTable,
-          final LocalVarSymbolTable varTable,
-          final StructsSymbolTable structsTable
-  )throws Exception {
+          final SymbolTableContext ctx
+          )throws Exception {
+
+    final SubroutineSymbolTable subTable = ctx.subTable;
+    final LocalVarSymbolTable varTable = ctx.varTable;
+    final StructsSymbolTable structsTable = ctx.structsTable;
 
     final int nargs_expected = subTable.getNumberOfArgumentsOfSubroutine(methodCallNode.methodName);
     final int nargs_supplied = methodCallNode.argumentList.size();
@@ -81,7 +85,7 @@ public final class MethodCallNodeTypeChecker {
     //check that the types of the arguments match the types declared
     for(int i=0;i<nargs_expected;i++){
 
-      final TypeNode arg_type = TypeResolver.getTypeExpressionNode(methodCallNode.argumentList.get(i), subTable, varTable, structsTable);
+      final TypeNode arg_type = TypeResolver.getTypeExpressionNode(methodCallNode.argumentList.get(i), ctx);
       final TypeNode arg_type_expected = subTable.getArgTypeOfSubroutineAtIndex(methodCallNode.methodName,i);
 
       if(!arg_type.getTypeName().equals(arg_type_expected.getTypeName())){
@@ -105,7 +109,7 @@ public final class MethodCallNodeTypeChecker {
 
     //all arguments should typecheck
     for (final ExpressionNode expr : methodCallNode.argumentList) {
-      typeCheckExpressionNode(asts, namespaceNode, methodNode, expr, subTable, varTable,structsTable);
+      typeCheckExpressionNode(asts, namespaceNode, methodNode, expr, ctx);
     }
   }
 }

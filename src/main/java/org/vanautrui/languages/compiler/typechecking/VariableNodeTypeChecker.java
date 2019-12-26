@@ -8,6 +8,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
 public final class VariableNodeTypeChecker {
@@ -18,10 +19,13 @@ public final class VariableNodeTypeChecker {
           final NamespaceNode namespaceNode,
           final MethodNode methodNode,
           final VariableNode varNode,
-          final SubroutineSymbolTable subTable,
-          final LocalVarSymbolTable varTable,
-          final StructsSymbolTable structsTable
+          final SymbolTableContext ctx
   ) throws Exception{
+
+    final SubroutineSymbolTable subTable = ctx.subTable;
+    final LocalVarSymbolTable varTable = ctx.varTable;
+    final StructsSymbolTable structsTable = ctx.structsTable;
+
     //it should check that the variable is
     //declared in method scope or class scope.
     //so there should be some declaration of it
@@ -29,7 +33,7 @@ public final class VariableNodeTypeChecker {
     if(varNode.simpleVariableNode.indexOptional.isPresent()){
       //if there is an index, it should be positive. we can check one of the bounds for free
       //by only accepting PInt type
-      final TypeNode index_type = TypeResolver.getTypeExpressionNode(varNode.simpleVariableNode.indexOptional.get(), subTable, varTable,structsTable);
+      final TypeNode index_type = TypeResolver.getTypeExpressionNode(varNode.simpleVariableNode.indexOptional.get(), ctx);
       if(!index_type.getTypeName().equals("PInt")){
         throw new Exception("can only index into arrays with PInt type. Because an array index is >= 0.");
       }

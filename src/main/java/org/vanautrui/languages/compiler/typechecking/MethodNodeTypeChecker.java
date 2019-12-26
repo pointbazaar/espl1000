@@ -10,6 +10,7 @@ import org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerato
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import static org.vanautrui.languages.compiler.typechecking.DeclaredArgumentNodeTypeChecker.typeCheckDeclaredArgumentNode;
 import static org.vanautrui.languages.compiler.typechecking.ITypeNodeTypeChecker.typeCheckITypeNode;
@@ -29,11 +30,13 @@ public final class MethodNodeTypeChecker {
     //create the variable Symbol table, to typecheck the statements
     final LocalVarSymbolTable varTable = SymbolTableGenerator.createMethodScopeSymbolTable(methodNode,subTable,structsTable);
 
+    final SymbolTableContext ctx = new SymbolTableContext(subTable,varTable,structsTable);
+
     typeCheckMethodNameNode(asts, namespaceNode,methodNode.methodName);
 
     typeCheckITypeNode(asts, namespaceNode,methodNode.returnType.type);
     for(final StatementNode stmt : methodNode.statements){
-      typeCheckStatementNode(asts, namespaceNode,methodNode,stmt,subTable,varTable,structsTable);
+      typeCheckStatementNode(asts, namespaceNode,methodNode,stmt,ctx);
     }
     for(final DeclaredArgumentNode arg : methodNode.arguments){
       typeCheckDeclaredArgumentNode(asts, namespaceNode,arg);

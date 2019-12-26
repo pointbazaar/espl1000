@@ -5,9 +5,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
-import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
 import static org.vanautrui.languages.compiler.typechecking.StatementNodeTypeChecker.typeCheckStatementNode;
@@ -19,22 +17,22 @@ public final class IfStatementNodeTypeChecker {
           final NamespaceNode namespaceNode,
           final MethodNode methodNode,
           final IfStatementNode ifStatementNode,
-          final SubroutineSymbolTable subTable,
-          final LocalVarSymbolTable varTable,
-          final StructsSymbolTable structsTable
+          final SymbolTableContext ctx
   ) throws Exception {
+
+
     //the condition expression should be of type boolean
     final var conditionType =
-      TypeResolver.getTypeExpressionNode(ifStatementNode.condition, subTable, varTable,structsTable);
+      TypeResolver.getTypeExpressionNode(ifStatementNode.condition, ctx);
 
     if (!conditionType.getTypeName().equals("Bool")) {
       throw new Exception(" condition should be of type Bool, but is of type: " + conditionType.getTypeName()+" in : "+ifStatementNode.condition.toSourceCode());
     }
     for (StatementNode stmt : ifStatementNode.statements) {
-      typeCheckStatementNode(asts, namespaceNode, methodNode, stmt, subTable, varTable,structsTable);
+      typeCheckStatementNode(asts, namespaceNode, methodNode, stmt, ctx);
     }
     for (StatementNode stmt : ifStatementNode.elseStatements) {
-      typeCheckStatementNode(asts, namespaceNode, methodNode, stmt, subTable, varTable,structsTable);
+      typeCheckStatementNode(asts, namespaceNode, methodNode, stmt, ctx);
     }
   }
 }

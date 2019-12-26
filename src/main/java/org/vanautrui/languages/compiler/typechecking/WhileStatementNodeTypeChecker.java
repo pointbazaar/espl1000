@@ -5,9 +5,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
-import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
 import static org.vanautrui.languages.compiler.typechecking.StatementNodeTypeChecker.typeCheckStatementNode;
@@ -20,13 +18,12 @@ public final class WhileStatementNodeTypeChecker {
           final NamespaceNode namespace,
           final MethodNode methodNode,
           final WhileStatementNode whileNode,
-          final SubroutineSymbolTable subTable,
-          final LocalVarSymbolTable varTable,
-          final StructsSymbolTable structsTable
+          final SymbolTableContext ctx
   ) throws Exception {
+
     //the condition expression should be of type boolean
     var conditionType =
-            TypeResolver.getTypeExpressionNode(whileNode.condition, subTable, varTable,structsTable);
+            TypeResolver.getTypeExpressionNode(whileNode.condition, ctx);
 
     if (!conditionType.getTypeName().equals("Bool")) {
       throw new Exception(" condition should be of type Bool : '"
@@ -34,7 +31,7 @@ public final class WhileStatementNodeTypeChecker {
               + "' but was of type: " + conditionType);
     }
     for (final StatementNode stmt : whileNode.statements) {
-      typeCheckStatementNode(asts, namespace, methodNode, stmt, subTable, varTable,structsTable);
+      typeCheckStatementNode(asts, namespace, methodNode, stmt, ctx);
     }
   }
 }

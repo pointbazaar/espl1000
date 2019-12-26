@@ -9,6 +9,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
 import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeChecker.typeCheckExpressionNode;
@@ -21,26 +22,29 @@ public final class ArrayConstantNodeTypeChecker {
           final NamespaceNode namespaceNode,
           final MethodNode methodNode,
           final ArrayConstantNode arrConstNode,
-          final SubroutineSymbolTable subTable,
-          final LocalVarSymbolTable varTable,
-          final StructsSymbolTable structsTable
-  ) throws Exception
+          final SymbolTableContext ctx
+          ) throws Exception
   {
+
+    final SubroutineSymbolTable subTable = ctx.subTable;
+    final LocalVarSymbolTable varTable = ctx.varTable;
+    final StructsSymbolTable structsTable = ctx.structsTable;
+
     //all the types of the elements should be the same
     if (arrConstNode.elements.size() > 0) {
 
       final TypeNode type_of_elements =
-              TypeResolver.getTypeExpressionNode(arrConstNode.elements.get(0), subTable, varTable,structsTable);
+              TypeResolver.getTypeExpressionNode(arrConstNode.elements.get(0), ctx);
 
       for (final ExpressionNode expr : arrConstNode.elements) {
-        final TypeNode element_type = TypeResolver.getTypeExpressionNode(expr, subTable, varTable,structsTable);
+        final TypeNode element_type = TypeResolver.getTypeExpressionNode(expr, ctx);
         if (!element_type.getTypeName().equals(type_of_elements.getTypeName())) {
           throw new Exception("type of the array items was inferred to "
                   + type_of_elements
                   + " from the first element's type, but type differed at index "
                   + arrConstNode.elements.indexOf(expr) + " : it's type was " + element_type);
         }
-        typeCheckExpressionNode(asts, namespaceNode, methodNode, expr, subTable, varTable,structsTable);
+        typeCheckExpressionNode(asts, namespaceNode, methodNode, expr, ctx);
       }
     }
   }

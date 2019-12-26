@@ -36,7 +36,7 @@ public final class ExpressionDracoVMCodeGenerator {
 
             vm.addAll(genDracoVMCodeForTerm(term,ctx));
 
-            final TypeNode type = TypeResolver.getTypeTermNode(term, subTable, varTable, structsTable);
+            final TypeNode type = TypeResolver.getTypeTermNode(term, ctx);
 
 
             //TODO: this does not work well. the list of term nodes should probably be converted into a tree structure.

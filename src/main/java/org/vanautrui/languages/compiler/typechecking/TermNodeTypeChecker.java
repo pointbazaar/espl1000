@@ -16,6 +16,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IntConstNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import static org.vanautrui.languages.compiler.typechecking.ArrayConstantNodeTypeChecker.typeCheckArrayConstantNode;
 import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeChecker.typeCheckExpressionNode;
@@ -29,10 +30,12 @@ public final class TermNodeTypeChecker {
             final NamespaceNode namespaceNode,
             final MethodNode methodNode,
             final TermNode termNode,
-            final SubroutineSymbolTable subTable,
-            final LocalVarSymbolTable varTable,
-            final StructsSymbolTable structsTable
+            final SymbolTableContext ctx
     ) throws Exception {
+
+        final SubroutineSymbolTable subTable = ctx.subTable;
+        final LocalVarSymbolTable varTable = ctx.varTable;
+        final StructsSymbolTable structsTable = ctx.structsTable;
 
         /*
         In cases of
@@ -51,18 +54,18 @@ public final class TermNodeTypeChecker {
         }else if (node instanceof ExpressionNode) {
 
             final ExpressionNode expressionNode = (ExpressionNode) node;
-            typeCheckExpressionNode(asts, namespaceNode, methodNode, expressionNode, subTable, varTable,structsTable);
+            typeCheckExpressionNode(asts, namespaceNode, methodNode, expressionNode, ctx);
 
         } else if (node instanceof VariableNode) {
 
             final VariableNode variableNode = (VariableNode) node;
-            typeCheckVariableNode(asts, namespaceNode, methodNode, variableNode, subTable, varTable,structsTable);
+            typeCheckVariableNode(asts, namespaceNode, methodNode, variableNode, ctx);
 
         } else if (node instanceof MethodCallNode) {
 
-            typeCheckMethodCallNode(asts, namespaceNode, methodNode, (MethodCallNode) node, subTable, varTable,structsTable);
+            typeCheckMethodCallNode(asts, namespaceNode, methodNode, (MethodCallNode) node, ctx);
         } else if (node instanceof ArrayConstantNode) {
-            typeCheckArrayConstantNode(asts, namespaceNode, methodNode, (ArrayConstantNode) termNode.termNode, subTable, varTable,structsTable);
+            typeCheckArrayConstantNode(asts, namespaceNode, methodNode, (ArrayConstantNode) termNode.termNode, ctx);
         } else {
             throw new Exception("unhandled case " + termNode.termNode.getClass().getName());
         }

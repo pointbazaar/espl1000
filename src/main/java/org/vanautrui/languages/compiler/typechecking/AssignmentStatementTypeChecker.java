@@ -4,9 +4,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
-import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
 import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeChecker.typeCheckExpressionNode;
@@ -19,12 +17,11 @@ public final class AssignmentStatementTypeChecker {
           final NamespaceNode namespaceNode,
           final MethodNode methodNode,
           final AssignmentStatementNode assignmentStatementNode,
-          final SubroutineSymbolTable subTable,
-          final LocalVarSymbolTable varTable,
-          final StructsSymbolTable structsTable
-  ) throws Exception{
-    final var leftSideType = TypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,subTable,varTable,structsTable);
-    final var rightSideType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,subTable,varTable,structsTable);
+          final SymbolTableContext ctx
+          ) throws Exception{
+
+    final var leftSideType = TypeResolver.getTypeVariableNode(assignmentStatementNode.variableNode,ctx);
+    final var rightSideType = TypeResolver.getTypeExpressionNode(assignmentStatementNode.expressionNode,ctx);
 
     final boolean types_equal = leftSideType.getTypeName().equals(rightSideType.getTypeName());
     final boolean one_is_wildcard = leftSideType.getTypeName().equals("#") || rightSideType.getTypeName().equals("#");
@@ -40,7 +37,7 @@ public final class AssignmentStatementTypeChecker {
       );
     }
 
-    typeCheckVariableNode(asts, namespaceNode,methodNode,assignmentStatementNode.variableNode,subTable,varTable,structsTable);
-    typeCheckExpressionNode(asts, namespaceNode,methodNode,assignmentStatementNode.expressionNode,subTable,varTable,structsTable);
+    typeCheckVariableNode(asts, namespaceNode,methodNode,assignmentStatementNode.variableNode,ctx);
+    typeCheckExpressionNode(asts, namespaceNode,methodNode,assignmentStatementNode.expressionNode,ctx);
   }
 }

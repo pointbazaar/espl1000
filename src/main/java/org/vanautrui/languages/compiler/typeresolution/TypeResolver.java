@@ -17,6 +17,7 @@ import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTableRow;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,10 +45,12 @@ public final class TypeResolver {
 
     public static TypeNode getTypeVariableNode(
             final VariableNode varNode,
-            final SubroutineSymbolTable subTable,
-            final LocalVarSymbolTable varTable,
-            final StructsSymbolTable structsTable
+            final SymbolTableContext ctx
     )throws Exception{
+        final SubroutineSymbolTable subTable = ctx.subTable;
+        final LocalVarSymbolTable varTable = ctx.varTable;
+        final StructsSymbolTable structsTable = ctx.structsTable;
+
         //a variable can have any type, maybe a subroutine type, a type variable type, or a simple type or maybe even something else
 
         //if it is a struct, we must get the last type
@@ -95,25 +98,27 @@ public final class TypeResolver {
 
     public static TypeNode getTypeTermNode(
             final TermNode termNode,
-            final SubroutineSymbolTable subroutineSymbolTable,
-            final LocalVarSymbolTable varTable,
-            final StructsSymbolTable structsTable
+            final SymbolTableContext ctx
     )throws Exception{
 
+        final SubroutineSymbolTable subTable = ctx.subTable;
+        final LocalVarSymbolTable varTable = ctx.varTable;
+        final StructsSymbolTable structsTable = ctx.structsTable;
+
         if(termNode.termNode instanceof ExpressionNode){
-            return getTypeExpressionNode((ExpressionNode)termNode.termNode,subroutineSymbolTable,varTable,structsTable);
+            return getTypeExpressionNode((ExpressionNode)termNode.termNode,ctx);
         }else if (termNode.termNode instanceof MethodCallNode){
-            return getTypeMethodCallNode((MethodCallNode)termNode.termNode,subroutineSymbolTable,varTable);
+            return getTypeMethodCallNode((MethodCallNode)termNode.termNode,subTable,varTable);
 	      }else if(termNode.termNode instanceof FloatConstNode){
 		        return new TypeNode(new BasicTypeWrappedNode(getTypeFloatConstantNode()));
         }else if(termNode.termNode instanceof IntConstNode){
             return new TypeNode(new BasicTypeWrappedNode(getTypeIntegerConstantNode((IntConstNode)termNode.termNode)));
         }else if(termNode.termNode instanceof VariableNode){
-            return getTypeVariableNode((VariableNode)termNode.termNode,subroutineSymbolTable,varTable,structsTable);
+            return getTypeVariableNode((VariableNode)termNode.termNode,ctx);
 		    }else if(termNode.termNode instanceof BoolConstNode) {
             return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Bool")));
         }else if(termNode.termNode instanceof ArrayConstantNode) {
-            return new TypeNode(new BasicTypeWrappedNode(getTypeArrayConstNode((ArrayConstantNode) termNode.termNode, subroutineSymbolTable, varTable,structsTable)));
+            return new TypeNode(new BasicTypeWrappedNode(getTypeArrayConstNode((ArrayConstantNode) termNode.termNode, ctx)));
         }else if(termNode.termNode instanceof CharConstNode){
             return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Char")));
         }else{
@@ -124,11 +129,12 @@ public final class TypeResolver {
 
     private static IBasicAndWrappedTypeNode getTypeArrayConstNode(
             final ArrayConstantNode arrayConstantNode,
-            final SubroutineSymbolTable subroutineSymbolTable,
-            final LocalVarSymbolTable varTable,
-            final StructsSymbolTable structsTable
-    ) throws Exception
-    {
+            final SymbolTableContext ctx
+    ) throws Exception {
+        final SubroutineSymbolTable subTable = ctx.subTable;
+        final LocalVarSymbolTable varTable = ctx.varTable;
+        final StructsSymbolTable structsTable = ctx.structsTable;
+
         //since the array types should be all the same,
         //that should be checked in the package responsible for typechecking
         //here we assume it will be checked there
@@ -139,25 +145,26 @@ public final class TypeResolver {
 
         //for the array to have a type, it has to either be annotated,
         // or contain atleast 1 element of which the type can be known
-        return new SimpleTypeNode("["+getTypeExpressionNode(arrayConstantNode.elements.get(0),subroutineSymbolTable,varTable,structsTable).getTypeName()+"]");
+        return new SimpleTypeNode("["+getTypeExpressionNode(arrayConstantNode.elements.get(0),ctx).getTypeName()+"]");
     }
 
 
 
     public static TypeNode getTypeExpressionNode(
             final ExpressionNode expressionNode,
-            final SubroutineSymbolTable subTable,
-            final LocalVarSymbolTable varTable,
-            final StructsSymbolTable structsTable
-    ) throws Exception
-    {
+            final SymbolTableContext ctx
+    ) throws Exception {
+        final SubroutineSymbolTable subTable = ctx.subTable;
+        final LocalVarSymbolTable varTable = ctx.varTable;
+        final StructsSymbolTable structsTable = ctx.structsTable;
+
         final List<String> boolean_operators = Arrays.asList("<",">","<=",">=","==","!=");
         final List<String> primitive_types_not_integral = Arrays.asList("Bool","Char","Float");
 
         if(
-                isIntegralType(getTypeTermNode(expressionNode.term,subTable,varTable,structsTable)) &&
+                isIntegralType(getTypeTermNode(expressionNode.term,ctx)) &&
                         expressionNode.termNodes.size()==1 &&
-                        isIntegralType(getTypeTermNode(expressionNode.termNodes.get(0),subTable,varTable,structsTable)) &&
+                        isIntegralType(getTypeTermNode(expressionNode.termNodes.get(0),ctx)) &&
                         expressionNode.operatorNodes.size()==1 &&
                         (boolean_operators.contains(expressionNode.operatorNodes.get(0).operator))
         ){
@@ -166,9 +173,9 @@ public final class TypeResolver {
 
         for(final String primitive_type_not_integral : primitive_types_not_integral) {
             if (
-                    getTypeTermNode(expressionNode.term, subTable, varTable, structsTable).getTypeName().equals(primitive_type_not_integral) &&
+                    getTypeTermNode(expressionNode.term, ctx).getTypeName().equals(primitive_type_not_integral) &&
                             expressionNode.termNodes.size() == 1 &&
-                            getTypeTermNode(expressionNode.termNodes.get(0), subTable, varTable, structsTable).getTypeName().equals(primitive_type_not_integral) &&
+                            getTypeTermNode(expressionNode.termNodes.get(0), ctx).getTypeName().equals(primitive_type_not_integral) &&
                             expressionNode.operatorNodes.size() == 1 &&
                             (boolean_operators.contains(expressionNode.operatorNodes.get(0).operator))
             ) {
@@ -176,28 +183,30 @@ public final class TypeResolver {
             }
         }
 
-        return getTypeExpressionNodeNonSimple(expressionNode, subTable, varTable, structsTable);
+        return getTypeExpressionNodeNonSimple(expressionNode, ctx);
     }
 
     private static TypeNode getTypeExpressionNodeNonSimple(
             final ExpressionNode expressionNode,
-            final SubroutineSymbolTable subTable,
-            final LocalVarSymbolTable varTable,
-            final StructsSymbolTable structsTable
+            final SymbolTableContext ctx
     ) throws Exception {
+        final SubroutineSymbolTable subTable = ctx.subTable;
+        final LocalVarSymbolTable varTable = ctx.varTable;
+        final StructsSymbolTable structsTable = ctx.structsTable;
+
         final List<String> some_arithmetic_operators = Arrays.asList("+","-","*","/","%");
 
-        final TypeNode type = getTypeTermNode(expressionNode.term,subTable,varTable,structsTable);
+        final TypeNode type = getTypeTermNode(expressionNode.term,ctx);
 
         for (final TermNode t : expressionNode.termNodes){
-            TypeNode termType = getTypeTermNode(t,subTable,varTable,structsTable);
+            TypeNode termType = getTypeTermNode(t,ctx);
 
             if(!(termType.getTypeName().equals(type.getTypeName()))){
 
                 if(
-                        isIntegralType(getTypeTermNode(expressionNode.term,subTable,varTable,structsTable)) &&
+                        isIntegralType(getTypeTermNode(expressionNode.term,ctx)) &&
                                 expressionNode.termNodes.size()==1 &&
-                                isIntegralType(getTypeTermNode(expressionNode.termNodes.get(0),subTable,varTable,structsTable)) &&
+                                isIntegralType(getTypeTermNode(expressionNode.termNodes.get(0),ctx)) &&
                                 expressionNode.operatorNodes.size()==1 &&
                                 (some_arithmetic_operators.contains(expressionNode.operatorNodes.get(0).operator))
                 ){
@@ -211,7 +220,7 @@ public final class TypeResolver {
             }
         }
 
-        return getTypeTermNode(expressionNode.term,subTable,varTable,structsTable);
+        return getTypeTermNode(expressionNode.term,ctx);
     }
 
     public static TypeNode getTypeMethodCallNode(

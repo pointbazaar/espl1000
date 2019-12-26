@@ -7,6 +7,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
+import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
 import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeChecker.typeCheckExpressionNode;
@@ -18,12 +19,15 @@ public final class ReturnStatementTypeChecker {
           final NamespaceNode namespaceNode,
           final MethodNode methodNode,
           final ReturnStatementNode returnStatementNode,
-          final SubroutineSymbolTable subTable,
-          final LocalVarSymbolTable varTable,
-          final StructsSymbolTable structsTable
+          final SymbolTableContext ctx
   ) throws Exception {
+
+    final SubroutineSymbolTable subTable = ctx.subTable;
+    final LocalVarSymbolTable varTable = ctx.varTable;
+    final StructsSymbolTable structsTable = ctx.structsTable;
+
     //the type of the value returned should be the same as the method return type
-    var returnValueType = TypeResolver.getTypeExpressionNode(returnStatementNode.returnValue, subTable, varTable,structsTable);
+    var returnValueType = TypeResolver.getTypeExpressionNode(returnStatementNode.returnValue, ctx);
     if (
             !(returnValueType.getTypeName().equals(methodNode.returnType.getTypeName()))
 
@@ -33,7 +37,7 @@ public final class ReturnStatementTypeChecker {
               + ": return type of the method has to equal the return value type. return type '"
               + methodNode.returnType.getTypeName() + "' does not equal the returned type '" + returnValueType.getTypeName() + "'. found in method: "+methodNode.methodName);
     }
-    typeCheckExpressionNode(asts, namespaceNode, methodNode, returnStatementNode.returnValue, subTable, varTable,structsTable);
+    typeCheckExpressionNode(asts, namespaceNode, methodNode, returnStatementNode.returnValue, ctx);
   }
 
   private static boolean contains_type(final String typename, final String maybeContainerType) {
