@@ -204,7 +204,9 @@ public final class dragonc {
         } catch (final Exception e) {
 
             System.err.println(e.getMessage());
-            e.printStackTrace();
+            if(debug) {
+                e.printStackTrace();
+            }
             printBuildConclusion(false);
         }
     }
