@@ -12,6 +12,8 @@ sudo apt-get install -y nasm
 #STEP 3: execute the tests and build the .jar with dependencies
 ./buildandtest.sh
 
-#STEP 4: add this to your .bashrc to be able to call 'draco' from your command line
-echo "source ~/dragon/.dragon.sh" >> ~/.bashrc
 
+#STEP 4: build the C program to invoke the java program
+# the benefit is that we have an actual executable 
+gcc -o draco draco.c
+cp draco /usr/bin/draco
