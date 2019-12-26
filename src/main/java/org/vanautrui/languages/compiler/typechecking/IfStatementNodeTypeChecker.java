@@ -12,6 +12,9 @@ import static org.vanautrui.languages.compiler.typechecking.StatementNodeTypeChe
 
 public final class IfStatementNodeTypeChecker {
 
+  //prevents instance creation
+  private IfStatementNodeTypeChecker(){}
+
   public static void typeCheckIfStatementNode(
           final AST_Whole_Program asts,
           final NamespaceNode namespaceNode,

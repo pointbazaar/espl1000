@@ -15,6 +15,8 @@ import static org.vanautrui.languages.compiler.typechecking.StatementNodeTypeChe
 
 public final class LoopStatementNodeTypeChecker {
 
+  //prevents instance creation
+  private LoopStatementNodeTypeChecker(){}
 
   public synchronized static void typeCheckLoopStatementNode(
           final AST_Whole_Program asts,

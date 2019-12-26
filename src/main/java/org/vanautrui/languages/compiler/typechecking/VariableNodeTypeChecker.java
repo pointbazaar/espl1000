@@ -7,12 +7,13 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
 public final class VariableNodeTypeChecker {
 
+  //prevents instance creation
+  private VariableNodeTypeChecker(){}
 
   static void typeCheckVariableNode(
           final AST_Whole_Program asts,
@@ -24,7 +25,6 @@ public final class VariableNodeTypeChecker {
 
     final SubroutineSymbolTable subTable = ctx.subTable;
     final LocalVarSymbolTable varTable = ctx.varTable;
-    final StructsSymbolTable structsTable = ctx.structsTable;
 
     //it should check that the variable is
     //declared in method scope or class scope.
@@ -49,7 +49,7 @@ public final class VariableNodeTypeChecker {
 
     //search if identifier is declared as a subroutine
     if(subTable.containsSubroutine(varNode.simpleVariableNode.name)){
-      if(!varNode.simpleVariableNode.indexOptional.isPresent()){
+      if(varNode.simpleVariableNode.indexOptional.isEmpty()){
         return;
       }else{
         throw new Exception("TypeChecker: '"+varNode.toSourceCode()+"' has been used with an index, : '"+varNode.toSourceCode()+"' , but it is a subroutine. you cannot index into subroutines");

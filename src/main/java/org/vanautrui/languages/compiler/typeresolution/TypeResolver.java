@@ -26,9 +26,8 @@ import static org.vanautrui.languages.compiler.typechecking.TypeChecker.isIntegr
 
 public final class TypeResolver {
 
-    //todo: make some class or global subroutine
-    //that can then convert the type description directly
-    //to a jvm internal representation
+    //prevents instance creation
+    private TypeResolver(){}
 
     public static IBasicAndWrappedTypeNode getTypeIntegerConstantNode(final IntConstNode intConstNode) throws Exception {
         if(intConstNode.value>=0){

@@ -54,13 +54,12 @@ public final class CodeGeneratorTestUtils {
         //generates vm codes from dragon codes, and writes them to files. returns paths to those files
 
         final TokenList tokens = ParserPhases.makeTokenList(source);
-        final Parser parser = new Parser();
-        final AST_Whole_Program ast= parser.parseTestMode(tokens,false,"Main");
+
+        final AST_Whole_Program ast= Parser.parseTestMode(tokens,false,"Main");
         //we are in debug mode since we are running tests
 
-        CompilerPhases phases = new CompilerPhases();
 
-        return phases.phase_vm_codegeneration(ast,false,false);
+        return CompilerPhases.phase_vm_codegeneration(ast,false,false);
     }
 
     private static void generateFromVMCodeAndWriteExecutable(List<Path> vmcodes, Path filename) throws IOException, InterruptedException {

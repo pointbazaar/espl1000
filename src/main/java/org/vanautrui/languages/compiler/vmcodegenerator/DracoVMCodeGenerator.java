@@ -16,6 +16,9 @@ import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.Subro
 
 public final class DracoVMCodeGenerator {
 
+    //prevents instance creation
+    private DracoVMCodeGenerator(){}
+
     public static Map<String, List<String>> generateDracoVMCode(
             final AST_Whole_Program asts,
             final SubroutineSymbolTable subTable,

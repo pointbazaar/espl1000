@@ -28,6 +28,9 @@ import java.util.stream.Collectors;
 
 public final class SymbolTableGenerator {
 
+	//prevents instance creation
+	private SymbolTableGenerator(){}
+
 	//https://www.youtube.com/watch?v=JHVbSYvK_AQ
 
 	public static SubroutineSymbolTable createSubroutineSymbolTable(final AST_Whole_Program ast, final boolean debug)throws Exception{

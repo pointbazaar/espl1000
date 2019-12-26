@@ -18,6 +18,9 @@ import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableG
 
 public final class CompilerPhases {
 
+    //prevents instance creation
+    private CompilerPhases(){}
+
     public static void phase_typecheck(
             final AST_Whole_Program ast, final boolean debug
     )throws Exception{

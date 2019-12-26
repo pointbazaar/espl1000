@@ -12,6 +12,8 @@ import static org.vanautrui.languages.compiler.typechecking.StructDeclNodeTypeCh
 
 public final class NamespaceNodeTypeChecker {
 
+  //prevents instance creation
+  private NamespaceNodeTypeChecker(){}
 
   static void typeCheckNamespaceNode(
           final AST_Whole_Program asts,

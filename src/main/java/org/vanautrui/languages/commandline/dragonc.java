@@ -19,6 +19,10 @@ import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBuildC
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printDurationFeedback;
 
 public final class dragonc {
+
+    //prevents instance creation
+    private dragonc(){}
+
     //this should be the compiler
 
     //one thing to note would be that
@@ -164,11 +168,9 @@ public final class dragonc {
             }
 
 
-            final ParserPhases pphases = new ParserPhases();
-
             //PHASE PREPROCESSOR (processes 'use' directive), PHASE CLEAN, PHASE LEXING, PHASE PARSING
 
-            final AST_Whole_Program ast = pphases.phase_preprocessor_and_clean_and_lexing_and_parsing(sources);
+            final AST_Whole_Program ast = ParserPhases.phase_preprocessor_and_clean_and_lexing_and_parsing(sources,debug);
 
             //PHASE TYPE CHECKING
             CompilerPhases.phase_typecheck(ast,debug);

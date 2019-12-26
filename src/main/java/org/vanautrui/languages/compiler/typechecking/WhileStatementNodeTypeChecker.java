@@ -12,6 +12,8 @@ import static org.vanautrui.languages.compiler.typechecking.StatementNodeTypeChe
 
 public final class WhileStatementNodeTypeChecker {
 
+  //prevents instance creation
+  private WhileStatementNodeTypeChecker(){}
 
   public synchronized static void typeCheckWhileStatementNode(
           final AST_Whole_Program asts,

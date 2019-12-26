@@ -12,6 +12,9 @@ import static org.vanautrui.languages.compiler.typechecking.VariableNodeTypeChec
 
 public final class AssignmentStatementTypeChecker {
 
+  //prevents instance creation
+  private AssignmentStatementTypeChecker(){}
+
   static void typeCheckAssignmentStatementNode(
           final AST_Whole_Program asts,
           final NamespaceNode namespaceNode,

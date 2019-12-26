@@ -20,6 +20,9 @@ import static org.vanautrui.languages.compiler.typechecking.TermNodeTypeChecker.
 
 public final class ExpressionNodeTypeChecker {
 
+  //prevents instance creation
+  private ExpressionNodeTypeChecker(){}
+
   private static final List<String> currentAllowedTypes = Arrays.asList("PInt","NInt","Int","Float");
 
   private static final List<String> integral_types  = Arrays.asList("PInt","NInt","Int");

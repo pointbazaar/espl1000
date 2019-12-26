@@ -15,7 +15,7 @@ public final class MethodCallNodeTypeCheckerTest {
         final TokenList tokens = ParserPhases.makeTokenList(
                 "fn subr (PInt x)~>PInt {return 0;} fn main ()~>PInt{ subr(); return 0;} ");
 
-        final AST_Whole_Program ast = (new Parser()).parseTestMode(tokens,false,"Main");
+        final AST_Whole_Program ast = Parser.parseTestMode(tokens,false,"Main");
 
         try {
             TypeChecker.doTypeCheck(ast, false);
@@ -31,7 +31,7 @@ public final class MethodCallNodeTypeCheckerTest {
         final TokenList tokens = ParserPhases.makeTokenList(
                 "fn subr (PInt x)~>PInt {return 0;} fn main ()~>PInt { subr('c'); return 0;} ");
 
-        final AST_Whole_Program ast = (new Parser()).parseTestMode(tokens,false,"Main");
+        final AST_Whole_Program ast = Parser.parseTestMode(tokens,false,"Main");
 
         try {
             TypeChecker.doTypeCheck(ast, false);

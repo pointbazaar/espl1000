@@ -14,6 +14,9 @@ import static org.vanautrui.languages.compiler.typechecking.StructMemberDeclType
 
 public final class StructDeclNodeTypeChecker {
 
+  //prevents instance creation
+  private StructDeclNodeTypeChecker(){}
+
   public static synchronized void typeCheckStructDeclNode (
           final AST_Whole_Program asts,
           final NamespaceNode namespaceNode,

@@ -25,6 +25,9 @@ import static org.vanautrui.languages.compiler.typechecking.VariableNodeTypeChec
 
 public final class TermNodeTypeChecker {
 
+    //prevents instance creation
+    private TermNodeTypeChecker(){}
+
     static void typecheckTermNode(
             final AST_Whole_Program asts,
             final NamespaceNode namespaceNode,

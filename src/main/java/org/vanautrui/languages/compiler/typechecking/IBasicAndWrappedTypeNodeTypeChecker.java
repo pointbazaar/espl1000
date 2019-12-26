@@ -13,6 +13,8 @@ import static org.vanautrui.languages.compiler.typechecking.TypeChecker.primitiv
 
 public final class IBasicAndWrappedTypeNodeTypeChecker {
 
+  //prevents instance creation
+  private IBasicAndWrappedTypeNodeTypeChecker(){}
 
   public synchronized static void typeCheckIBasicAndWrappedTypeNode(
           final AST_Whole_Program asts,

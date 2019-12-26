@@ -2,6 +2,9 @@ package org.vanautrui.languages.commandline;
 
 public final class CompilerPhaseUtils {
 
+    //prevents instance creation
+    private CompilerPhaseUtils(){}
+
     static void printBuildConclusion(final boolean success){
         if(success) {
             System.out.println("BUILD SUCCESS");

@@ -28,8 +28,7 @@ public final class SymbolTableGeneratorTest {
 
         final TokenList tokens = ParserPhases.makeTokenList(s);
 
-        final Parser parser = new Parser();
-        final AST_Whole_Program ast = parser.parseTestMode(tokens,false,"Main");
+        final AST_Whole_Program ast = Parser.parseTestMode(tokens,false,"Main");
         return ast;
     }
 

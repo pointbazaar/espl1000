@@ -16,6 +16,8 @@ import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeCh
 
 public final class ArrayConstantNodeTypeChecker {
 
+  //prevents instance creation
+  private ArrayConstantNodeTypeChecker(){}
 
   public synchronized static void typeCheckArrayConstantNode(
           final AST_Whole_Program asts,

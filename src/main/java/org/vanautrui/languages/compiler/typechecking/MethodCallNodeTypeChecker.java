@@ -19,6 +19,8 @@ import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeCh
 
 public final class MethodCallNodeTypeChecker {
 
+  //prevents instance creation
+  private MethodCallNodeTypeChecker(){}
 
   public synchronized static void typeCheckMethodCallNode(
     final AST_Whole_Program asts,

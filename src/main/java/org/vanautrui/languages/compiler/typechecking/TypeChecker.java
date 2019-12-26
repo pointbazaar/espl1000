@@ -19,6 +19,9 @@ import static org.vanautrui.languages.compiler.typechecking.NamespaceNodeTypeChe
 
 public final class TypeChecker {
 
+  //prevents instance creation
+  private TypeChecker(){}
+
   //this class is supposed to typecheck the program.
   //it receives the 'environment' of a node as arguments
   //so each node can check if it is correct,

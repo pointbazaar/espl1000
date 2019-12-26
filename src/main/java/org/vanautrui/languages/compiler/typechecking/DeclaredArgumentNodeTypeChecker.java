@@ -8,6 +8,9 @@ import static org.vanautrui.languages.compiler.typechecking.ITypeNodeTypeChecker
 
 public final class DeclaredArgumentNodeTypeChecker {
 
+  //prevents instance creation
+  private DeclaredArgumentNodeTypeChecker(){}
+
   public synchronized static void typeCheckDeclaredArgumentNode(
           final AST_Whole_Program asts,
           final NamespaceNode namespaceNode,

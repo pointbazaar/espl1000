@@ -14,11 +14,10 @@ public final class StructDeclNodeTypeCheckerTest {
   @Test
   public void test_typechecking_struct_valid() throws Exception{
 
-    final Parser parser=new Parser();
     final TokenList tokens = ParserPhases.makeTokenList(
             " struct MyStruct{} fn main ()~>PInt { return 0;} " );
 
-    final AST_Whole_Program ast = parser.parseTestMode(tokens,false,"Main");
+    final AST_Whole_Program ast = Parser.parseTestMode(tokens,false,"Main");
 
     TypeChecker.doTypeCheck(ast,false);
   }
@@ -26,11 +25,10 @@ public final class StructDeclNodeTypeCheckerTest {
   @Test
   public void test_typechecking_struct_invalid_primitive_typename() throws Exception{
 
-    final Parser parser=new Parser();
     final TokenList tokens = ParserPhases.makeTokenList(
             " struct PInt{} " );
 
-    final AST_Whole_Program ast = parser.parseTestMode(tokens,false,"Main");
+    final AST_Whole_Program ast = Parser.parseTestMode(tokens,false,"Main");
 
     try {
       TypeChecker.doTypeCheck(ast, false);
@@ -46,7 +44,7 @@ public final class StructDeclNodeTypeCheckerTest {
     final TokenList tokens = ParserPhases.makeTokenList(
             " struct MyStruct{} struct MyStruct{} " );
 
-    final AST_Whole_Program ast = (new Parser()).parseTestMode(tokens,false,"Main");
+    final AST_Whole_Program ast = Parser.parseTestMode(tokens,false,"Main");
 
     try {
       TypeChecker.doTypeCheck(ast, false);

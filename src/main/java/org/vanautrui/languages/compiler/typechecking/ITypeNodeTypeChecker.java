@@ -10,6 +10,9 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 
 public final class ITypeNodeTypeChecker {
 
+  //prevents instance creation
+  private ITypeNodeTypeChecker(){}
+
   public synchronized static void typeCheckITypeNode(
           final AST_Whole_Program asts,
           final NamespaceNode namespaceNode,

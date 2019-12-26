@@ -19,6 +19,9 @@ import static org.vanautrui.languages.compiler.typechecking.TypeChecker.typeChec
 
 public final class MethodNodeTypeChecker {
 
+  //prevents instance creation
+  private MethodNodeTypeChecker(){}
+
   static void typeCheckMethodNode(
           final AST_Whole_Program asts,
           final NamespaceNode namespaceNode,

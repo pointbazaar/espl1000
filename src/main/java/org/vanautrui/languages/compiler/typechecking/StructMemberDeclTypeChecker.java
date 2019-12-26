@@ -8,6 +8,9 @@ import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 
 public final class StructMemberDeclTypeChecker {
 
+    //prevents instance creation
+    private StructMemberDeclTypeChecker(){}
+
     public static void typeCheckStructMemberDeclNode(
             final AST_Whole_Program asts,
             final NamespaceNode namespaceNode,

@@ -6,6 +6,9 @@ import java.util.Arrays;
 
 public final class CompilerApp {
 
+    //prevents instance creation
+    private CompilerApp(){}
+
     //Assembly debugging:
     //(they are missing a stack display, but it be ok)
     //https://carlosrafaelgn.com.br/Asm86/

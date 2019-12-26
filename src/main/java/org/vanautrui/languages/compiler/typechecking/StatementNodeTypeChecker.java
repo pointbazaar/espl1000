@@ -10,9 +10,6 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
-import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import static org.vanautrui.languages.compiler.typechecking.AssignmentStatementTypeChecker.typeCheckAssignmentStatementNode;
@@ -24,6 +21,9 @@ import static org.vanautrui.languages.compiler.typechecking.WhileStatementNodeTy
 
 public final class StatementNodeTypeChecker {
 
+    //prevents instance creation
+    private StatementNodeTypeChecker(){}
+
     static void typeCheckStatementNode(
             final AST_Whole_Program asts,
             final NamespaceNode namespace,
@@ -31,10 +31,6 @@ public final class StatementNodeTypeChecker {
             final StatementNode node,
             final SymbolTableContext ctx
     ) throws Exception {
-
-        final SubroutineSymbolTable subTable = ctx.subTable;
-        final LocalVarSymbolTable varTable = ctx.varTable;
-        final StructsSymbolTable structsTable = ctx.structsTable;
 
         //it depends on the instance
         if (node.statementNode instanceof AssignmentStatementNode) {

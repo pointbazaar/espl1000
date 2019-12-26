@@ -14,6 +14,9 @@ import static org.vanautrui.languages.compiler.typechecking.ExpressionNodeTypeCh
 
 public final class ReturnStatementTypeChecker {
 
+  //prevents instance creation
+  private ReturnStatementTypeChecker(){}
+
   static void typeCheckReturnStatementNode(
           final AST_Whole_Program asts,
           final NamespaceNode namespaceNode,
