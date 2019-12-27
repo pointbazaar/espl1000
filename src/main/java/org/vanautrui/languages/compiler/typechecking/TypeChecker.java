@@ -123,7 +123,7 @@ public final class TypeChecker {
     //method scope
 
     for (final DeclaredArgumentNode arg : methodNode.arguments) {
-      if (arg.name.get().equals(identifierNode.name)) {
+      if (arg.name.get().equals(identifierNode.identifier)) {
         return;
       }
     }
@@ -134,6 +134,6 @@ public final class TypeChecker {
     //of this method in another node class,
     //perhaps in MethodNode.doTypeCheck();
 
-    throw new Exception("could not find declaration for usage of Identifier '" + identifierNode.name + "'");
+    throw new Exception("could not find declaration for usage of Identifier '" + identifierNode.identifier + "'");
   }
 }

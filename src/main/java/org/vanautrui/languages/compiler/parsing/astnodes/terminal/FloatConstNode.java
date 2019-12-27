@@ -6,15 +6,15 @@ import org.vanautrui.languages.compiler.parsing.astnodes.ITermNode;
 public final class FloatConstNode implements IASTNode, ITermNode {
 
 	//this can also have a negative value if it is preceded by a '-' operator token
-	public final float value;
+	public final float floatValue;
 
-	public FloatConstNode(final float value){
-		this.value=value;
+	public FloatConstNode(final float floatValue){
+		this.floatValue = floatValue;
 	}
 
 	@Override
 	public String toSourceCode() {
-		return this.value + "";
+		return this.floatValue + "";
 	}
 
 }

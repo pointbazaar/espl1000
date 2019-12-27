@@ -5,15 +5,15 @@ import org.vanautrui.languages.compiler.parsing.astnodes.ITermNode;
 
 public final class BoolConstNode implements IASTNode, ITermNode {
 
-	public final boolean value;
+	public final boolean boolValue;
 
-	public BoolConstNode(final boolean value){
-		this.value=value;
+	public BoolConstNode(final boolean boolValue){
+		this.boolValue = boolValue;
 	}
 
 	@Override
 	public String toSourceCode() {
-		return this.value + "";
+		return this.boolValue + "";
 	}
 
 }

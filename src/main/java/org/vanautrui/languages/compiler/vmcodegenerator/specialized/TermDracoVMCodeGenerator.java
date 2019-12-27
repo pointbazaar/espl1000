@@ -30,10 +30,10 @@ public final class TermDracoVMCodeGenerator {
 
         if (t instanceof FloatConstNode) {
             return genVMCodeForFloatConst(
-                    ((FloatConstNode) t).value
+                    ((FloatConstNode) t).floatValue
             );
         } else if (t instanceof IntConstNode) {
-            return genVMCodeForIntConst(((IntConstNode) t).value);
+            return genVMCodeForIntConst(((IntConstNode) t).number);
         } else if (t instanceof ExpressionNode) {
             final ExpressionNode expressionNode = (ExpressionNode) t;
             return genDracoVMCodeForExpression(expressionNode,ctx);

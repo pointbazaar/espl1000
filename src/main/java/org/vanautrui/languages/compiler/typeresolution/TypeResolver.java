@@ -30,7 +30,7 @@ public final class TypeResolver {
     private TypeResolver(){}
 
     public static IBasicAndWrappedTypeNode getTypeIntegerConstantNode(final IntConstNode intConstNode) throws Exception {
-        if(intConstNode.value>=0){
+        if(intConstNode.number >= 0){
             return new SimpleTypeNode("PInt");
         }else{
             return new SimpleTypeNode("NInt");

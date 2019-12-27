@@ -54,7 +54,7 @@ public final class DracoVMCodeGenerator {
     }
 
     public static List<String> genVMCodeForBoolConst(final BoolConstNode bconst){
-        return Arrays.asList("iconst "+((bconst.value)?1:0));
+        return Arrays.asList("iconst "+((bconst.boolValue)?1:0));
     }
 
     /**
