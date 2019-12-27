@@ -16,7 +16,10 @@ import static java.lang.System.out;
 
 public final class TestUtils {
 
-    public static AST_Whole_Program parse_for_test(final String sourceCode, final boolean debug) throws Exception {
+    public static AST_Whole_Program parse_for_test(
+            final String sourceCode,
+            final boolean debug
+    ) throws Exception {
 
         //Write to file
         final String filename = "Main.dg";
@@ -62,7 +65,7 @@ public final class TestUtils {
 
     public static Process compileAndRunProgramForTesting(
             final String sourceCode,
-            final String filename,
+            final String filename_without_extension,
             final String[] args,
             final boolean debug
     ) throws Exception {
@@ -73,12 +76,12 @@ public final class TestUtils {
         }
 
         //should create the .dracovm files for it
-        final List<Path> vmcodes = generateVMCodeFromDragonCode(sourceCode, debug);
+        final List<Path> vmcodes = generateVMCodeFromDragonCode(sourceCode, debug, Paths.get(filename_without_extension+".dg").toFile());
 
         //should create the executable and run it
         final Process pr = compile_and_run_vm_codes(
                 vmcodes,
-                Paths.get(filename,args),
+                Paths.get(filename_without_extension,args),
                 args,
                 debug
         );
@@ -94,7 +97,7 @@ public final class TestUtils {
         final Path filename_without_extns = Paths.get(filename_without_extension);
 
         //generate the vm code
-        final List<Path> paths = generateVMCodeFromDragonCode(dragon_source, false);
+        final List<Path> paths = generateVMCodeFromDragonCode(dragon_source, false, Paths.get(filename_without_extension+".dg").toFile());
 
         //generate the executable
         generateFromVMCodeAndWriteExecutable(paths,filename_without_extns,debug);
@@ -105,19 +108,22 @@ public final class TestUtils {
     }
 
 
-    private static List<Path> generateVMCodeFromDragonCode(final String source, final boolean debug) throws Exception{
+    private static List<Path> generateVMCodeFromDragonCode(
+            final String source,
+            final boolean debug,
+            File filename) throws Exception{
         //generates vm codes from dragon codes, and writes them to files. returns paths to those files
 
-        final String filename = "Main.dg";
+
 
         //write dragon code to file
         if(debug){
             out.println("write to "+filename);
         }
-        Files.writeString(Paths.get(filename),source);
+        Files.writeString(filename.toPath(),source);
 
         //invoke dragon-lexer
-        DragonCompiler.invokeDragonLexer(Paths.get(filename).toFile(),debug);
+        DragonCompiler.invokeDragonLexer(filename,debug);
 
         final File tokensFile = Paths.get("."+filename+".tokens").toFile();
 
