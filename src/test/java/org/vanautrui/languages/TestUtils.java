@@ -167,13 +167,13 @@ public final class TestUtils {
 
         pr.waitFor();
 
-        //for debugging purposes
-        final boolean deleteArtifacts = false;
+        //for debugging purposes we can keep the artifacts to look at them later.
+        final boolean deleteArtifacts = !debug;
 
         if(deleteArtifacts) {
 
             //delete all the .dracovm  files that have been created
-            for (Path dracovmfilepath : vmcode_paths) {
+            for (final Path dracovmfilepath : vmcode_paths) {
                 if(debug) {
                     System.out.println("delete: " + dracovmfilepath);
                 }

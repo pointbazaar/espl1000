@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.lang.System.currentTimeMillis;
+import static java.lang.System.*;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBuildConclusion;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printDurationFeedback;
 
@@ -49,8 +49,8 @@ public final class DragonCompiler {
 			DragonCompiler.compile_main(Arrays.asList(args));
 			System.exit(0);
 		}catch (Exception e){
-			System.err.println(e.getMessage());
-			System.err.println("-help     for information about command line arguments");
+			out.println(e.getMessage());
+			out.println("-help     for information about command line arguments");
 			System.exit(1);
 		}
 	}
@@ -80,7 +80,7 @@ public final class DragonCompiler {
 
 			if(cmd.hasOption("clean")){
 				if(cmd.hasOption("debug")){
-					System.out.println("clearing the cache");
+					out.println("clearing the cache");
 				}
 				final String cache_dir=System.getProperty("user.home")+"/dragoncache";
 				FileUtils.deleteDirectory(Paths.get(cache_dir).toFile());
@@ -226,10 +226,10 @@ public final class DragonCompiler {
 
 		} catch (final Exception e) {
 
-			System.err.println(e.getMessage());
+			out.println(e.getMessage());
 
 			if(debug) {
-				e.printStackTrace();
+				e.printStackTrace(out);
 			}
 
 			printBuildConclusion(false);
@@ -237,20 +237,20 @@ public final class DragonCompiler {
 	}
 
 	public static void invokeDragonLexer(final File filename, final boolean debug)throws Exception{
-		final String call = "dragon-lexer "+filename;
+		final String call = ((debug)?"dragon-lexer-debug ":"dragon-lexer ")+filename;
 		if(debug){
-			System.out.println(call);
+			out.println(call);
 		}
 		Process p = Runtime.getRuntime().exec(call);
 		p.waitFor();
 
 		if(debug){
 			final InputStream is = p.getInputStream();
-			System.out.println(IOUtils.toString(is));
+			out.println(IOUtils.toString(is));
 		}
 
-		if(p.exitValue()==0){
-			System.out.println("... exit successfully");
+		if(p.exitValue()==0 && debug){
+			out.println("... exit successfully");
 		}else{
 			throw new Exception("dragon-lexer exit with nonzero exit code");
 		}
@@ -264,51 +264,52 @@ public final class DragonCompiler {
 				.collect(Collectors.joining(" "));
 
 		if(debug) {
-			System.out.println(call);
+			out.println(call);
 		}
 
 		final Process process = Runtime.getRuntime().exec(call);
 		process.waitFor();
 
-		if(process.exitValue() != 0){
+		if(process.exitValue() != 0 ){
 			throw new Exception("dracovm exited with nonzero exit value.");
 		}else{
-			System.out.println("... exit successfully");
+			if(debug) {
+				out.println("... exit successfully");
+			}
 		}
 
 		if(debug) {
 			final String output = IOUtils.toString(process.getInputStream());
-			System.out.println(output);
+			out.println(output);
 			final String output2 = IOUtils.toString(process.getErrorStream());
-			System.out.println(output2);
+			out.println(output2);
 		}
 	}
 
 	public static void invokeDragonParser(final File tokensFile, final boolean debug) throws Exception {
 		final String call = "dragon-parser "+((debug)?" -debug ":" ")+tokensFile.toString();
 		if(debug){
-			System.out.println(call);
+			out.println(call);
 		}
+
 		final Process p = Runtime.getRuntime().exec(call);
 		p.waitFor();
 
 		if(debug){
 			final InputStream is = p.getInputStream();
-			System.out.println(IOUtils.toString(is));
+			out.println(IOUtils.toString(is));
 		}
 
 		if(p.exitValue() != 0){
 			throw new Exception("dragon-parser exited with nonzero exit value.");
 		}else{
-			System.out.println("... exit successfully");
+			if(debug) {
+				out.println("... exit successfully");
+			}
 		}
 	}
 
 	private static NamespaceNode parseNamespaceFromJsonFile(final File jsonFile, boolean debug) throws Exception {
-
-		//calls dragon-parser with the source file to produce our AST in .json
-
-		invokeDragonParser(jsonFile,debug);
 
 		final String astJSON = Files.readString(jsonFile.toPath());
 
