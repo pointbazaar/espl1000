@@ -42,9 +42,9 @@ public final class SymbolTableGenerator {
 
 		for(final NamespaceNode namespaceNode : ast.namespaceNodeList) {
 			if(debug){
-				System.out.println(namespaceNode.methodNodeList);
+				System.out.println(namespaceNode.methods);
 			}
-			for (final MethodNode methodNode : namespaceNode.methodNodeList) {
+			for (final MethodNode methodNode : namespaceNode.methods) {
 				if(debug){
 					System.out.println("creating subroutine symbol table row for subroutine: "+methodNode.methodName);
 				}
@@ -211,10 +211,10 @@ public final class SymbolTableGenerator {
 
 		for(final NamespaceNode namespaceNode : ast.namespaceNodeList) {
 			if(debug){
-				System.out.println(namespaceNode.structDeclNodeList);
+				System.out.println(namespaceNode.structs);
 			}
 
-			for (final StructDeclNode sNode : namespaceNode.structDeclNodeList) {
+			for (final StructDeclNode sNode : namespaceNode.structs) {
 				if(debug){
 					System.out.println("creating struct symbol table row for struct: "+sNode.getTypeName());
 				}

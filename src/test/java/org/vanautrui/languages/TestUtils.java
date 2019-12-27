@@ -1,20 +1,36 @@
 package org.vanautrui.languages;
 
 import org.vanautrui.languages.commandline.CompilerPhases;
-import org.vanautrui.languages.commandline.ParserPhases;
-import org.vanautrui.languages.compiler.lexing.utils.TokenList;
-import org.vanautrui.languages.compiler.parsing.Parser;
+import org.vanautrui.languages.commandline.DragonCompiler;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 
-import java.io.IOException;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public final class CodeGeneratorTestUtils {
+public final class TestUtils {
+
+    public static AST_Whole_Program parse_for_test(final String sourceCode) throws Exception {
+        final boolean debug=true;
+
+        //Write to file
+        final String filename = "Main.dg";
+        Files.writeString(Paths.get(filename),sourceCode);
+
+        //invoke dragon-lexer
+        DragonCompiler.invokeDragonLexer(Paths.get(filename).toFile(),debug);
+
+        //invoke dragon-parser
+        DragonCompiler.invokeDragonParser(Paths.get("."+filename+".tokens").toFile(),debug);
+
+        final ArrayList<File> files=new ArrayList<>();
+        
+        return DragonCompiler.parseAST_from_JSON(files,debug);
+    }
 
     public static Process compile_and_run_program_for_testing_with_cmd_args(String dragon_source_code, String filename_without_extension, String[] args) throws Exception {
         //gets a dragon source code, compiles to vm code, calls dracovm, and starts the executable
@@ -35,7 +51,9 @@ public final class CodeGeneratorTestUtils {
     }
 
 
-    public static Process compile_and_run_but_not_waitFor(String dragon_source,String filename_without_extension) throws Exception{
+    public static Process compile_and_run_but_not_waitFor(
+            final String dragon_source,final String filename_without_extension
+    ) throws Exception{
         final Path filename_without_extns = Paths.get(filename_without_extension);
 
         //generate the vm code
@@ -53,31 +71,48 @@ public final class CodeGeneratorTestUtils {
     private static List<Path> generateVMCodeFromDragonCode(final String source) throws Exception{
         //generates vm codes from dragon codes, and writes them to files. returns paths to those files
 
-        final TokenList tokens = ParserPhases.makeTokenList(source);
+        final List<File> files = new ArrayList<>();
+        final String filename = "Main.dg";
+        final boolean debug=false;
 
-        final AST_Whole_Program ast= Parser.parseTestMode(tokens,false,"Main");
+        //write dragon code to file
+        Files.writeString(Paths.get(filename),source);
+
+        //invoke dragon-lexer
+        DragonCompiler.invokeDragonLexer(Paths.get(filename).toFile(),debug);
+
+        final File tokensFile = Paths.get("."+filename+".tokens").toFile();
+
+        //invoke dragon-parser
+        DragonCompiler.invokeDragonParser(tokensFile,false);
+
+        files.add(Paths.get(".Main.dg.json").toFile());
+
+        final AST_Whole_Program ast = DragonCompiler.parseAST_from_JSON(files,false);
         //we are in debug mode since we are running tests
-
 
         return CompilerPhases.phase_vm_codegeneration(ast,false,false);
     }
 
-    private static void generateFromVMCodeAndWriteExecutable(List<Path> vmcodes, Path filename) throws IOException, InterruptedException {
+    private static void generateFromVMCodeAndWriteExecutable(
+            final List<Path> vmcodes, final Path filename
+    ) throws Exception {
         //writes an executable with the name we requested
 
         //dracovm only accepts filenames as arguments
-        final String call = "dracovm "+vmcodes.stream().map(p->p.toString()).collect(Collectors.joining(" "));
-        System.out.println(call);
+        final boolean debug=true;
 
-        final Process process = Runtime.getRuntime().exec(call);
-        process.waitFor();
+        DragonCompiler.invokeDracoVMCompiler(vmcodes,debug);
+
 
         //move our 'main' executable into the desired filename
         Runtime.getRuntime().exec("mv main "+filename.toString()).waitFor();
 
     }
 
-    private static Process compile_and_run_vmcodes_but_not_waitFor(final List<Path> vmcode_paths, final Path filename_without_extension, String[] args) throws Exception{
+    private static Process compile_and_run_vmcodes_but_not_waitFor(
+            final List<Path> vmcode_paths, final Path filename_without_extension, String[] args
+    ) throws Exception{
 
         generateFromVMCodeAndWriteExecutable(vmcode_paths,filename_without_extension);
 
@@ -88,7 +123,11 @@ public final class CodeGeneratorTestUtils {
         return pr;
     }
 
-    private static Process compile_and_run_vm_codes(final List<Path> vmcode_paths, final Path filename_without_extension, final String[] args) throws Exception{
+    private static Process compile_and_run_vm_codes(
+            final List<Path> vmcode_paths,
+            final Path filename_without_extension,
+            final String[] args
+    ) throws Exception{
 
         final Process pr = compile_and_run_vmcodes_but_not_waitFor(
                 vmcode_paths,

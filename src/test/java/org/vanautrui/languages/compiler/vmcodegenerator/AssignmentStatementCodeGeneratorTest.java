@@ -4,7 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.vanautrui.languages.CodeGeneratorTestUtils.compile_and_run_program_for_testing_with_cmd_args;
+import static org.vanautrui.languages.TestUtils.compile_and_run_program_for_testing_with_cmd_args;
 
 public final class AssignmentStatementCodeGeneratorTest {
 

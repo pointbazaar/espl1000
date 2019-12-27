@@ -3,7 +3,7 @@ package org.vanautrui.languages.compiler.vmcodegenerator;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Test;
-import org.vanautrui.languages.CodeGeneratorTestUtils;
+import org.vanautrui.languages.TestUtils;
 
 import java.io.BufferedOutputStream;
 import java.io.OutputStream;
@@ -14,7 +14,7 @@ public class CodeGeneratorTest {
     public void test_can_compile_simple_helloworld()throws Exception{
         final String source="fn main ()~>PInt { putchar('h'); putchar('w'); return 0; } ";
 
-        final Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing_with_cmd_args(source,"MainTest100",new String[0]);
+        final Process pr = TestUtils.compile_and_run_program_for_testing_with_cmd_args(source,"MainTest100",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
 
@@ -38,7 +38,7 @@ public class CodeGeneratorTest {
         //maybe this has optimization reasons
 
         final String source="fn main ()~>PInt { x="+x+"; putdigit(x); return 0; } ";
-        final Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing_with_cmd_args(source,"MainTest3",new String[0]);
+        final Process pr = TestUtils.compile_and_run_program_for_testing_with_cmd_args(source,"MainTest3",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals(x+"",IOUtils.toString(pr.getInputStream()));
@@ -48,7 +48,7 @@ public class CodeGeneratorTest {
     public void test_can_compile_multiple_assignment_to_same_variable_add()throws Exception{
 
         final String source="fn main ()~>PInt { x=1; x=x+1; putdigit(x); return 0;} ";
-        final Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing_with_cmd_args(source,"MainTest4",new String[0]);
+        final Process pr = TestUtils.compile_and_run_program_for_testing_with_cmd_args(source,"MainTest4",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("2",IOUtils.toString(pr.getInputStream()));
@@ -58,7 +58,7 @@ public class CodeGeneratorTest {
     public void test_can_compile_multiple_assignment_to_same_variable_multiply()throws Exception{
 
         final String source="fn main ()~>PInt { x=2; x=x*2; putdigit(x); return 0; } ";
-        final Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing_with_cmd_args(source,"MainTest5",new String[0]);
+        final Process pr = TestUtils.compile_and_run_program_for_testing_with_cmd_args(source,"MainTest5",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("4",IOUtils.toString(pr.getInputStream()));
@@ -68,7 +68,7 @@ public class CodeGeneratorTest {
     public void test_can_compile_assignment_to_multiple_local_variables()throws Exception{
 
         final String source="fn main ()~>PInt { x=2; y=1; x=x+y; putdigit(x); return 0; } ";
-        final Process pr = CodeGeneratorTestUtils.compile_and_run_program_for_testing_with_cmd_args(source,"MainTest6",new String[0]);
+        final Process pr = TestUtils.compile_and_run_program_for_testing_with_cmd_args(source,"MainTest6",new String[0]);
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("3",IOUtils.toString(pr.getInputStream()));
@@ -78,7 +78,7 @@ public class CodeGeneratorTest {
     public void test_can_compile_input_and_output_very_basic()throws Exception{
 
         final String source="fn main ()~>PInt { x=readint();  putdigit(x); return 0;} ";
-        final Process pr = CodeGeneratorTestUtils.compile_and_run_but_not_waitFor(source,"MainTest7");
+        final Process pr = TestUtils.compile_and_run_but_not_waitFor(source,"MainTest7");
 
         //give input to process
         OutputStream out = pr.getOutputStream();

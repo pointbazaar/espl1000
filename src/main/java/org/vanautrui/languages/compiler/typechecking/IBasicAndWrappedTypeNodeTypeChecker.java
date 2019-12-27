@@ -31,7 +31,7 @@ public final class IBasicAndWrappedTypeNodeTypeChecker {
       }
 
       for (final NamespaceNode namespace : asts.namespaceNodeList) {
-        for(final StructDeclNode sdn : namespace.structDeclNodeList){
+        for(final StructDeclNode sdn : namespace.structs){
           if (sdn.getTypeName().equals(typename.getTypeName())) {
             return;
           }

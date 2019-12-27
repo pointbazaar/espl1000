@@ -33,11 +33,11 @@ public final class NamespaceNodeTypeChecker {
       }
     }
 
-    for(final StructDeclNode structDeclNode : namespace.structDeclNodeList){
+    for(final StructDeclNode structDeclNode : namespace.structs){
       typeCheckStructDeclNode(asts, namespace,structDeclNode,subTable,debug);
     }
 
-    for(final MethodNode methodNode : namespace.methodNodeList){
+    for(final MethodNode methodNode : namespace.methods){
       typeCheckMethodNode(asts, namespace,methodNode,subTable,structsTable);
     }
 

@@ -37,7 +37,7 @@ public final class StructDeclNodeTypeChecker {
     //check that it does not have the name of a namespace
     int count=0;
     for(NamespaceNode namespace : asts.namespaceNodeList){
-      for(StructDeclNode structDeclNode1 : namespace.structDeclNodeList){
+      for(StructDeclNode structDeclNode1 : namespace.structs){
         if(structDeclNode1.getTypeName().equals(structDeclNode.getTypeName())){
           if(debug){
             System.out.println(structDeclNode.getTypeName()+" declared in namespace "+namespace.name);

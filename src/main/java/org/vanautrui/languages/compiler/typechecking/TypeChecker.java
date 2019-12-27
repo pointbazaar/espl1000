@@ -69,7 +69,7 @@ public final class TypeChecker {
   private static void find_exactly_one_entry_point(final AST_Whole_Program asts)throws Exception{
     int count=0;
     for (NamespaceNode namespaceNode : asts.namespaceNodeList) {
-      for(MethodNode methodNode : namespaceNode.methodNodeList){
+      for(MethodNode methodNode : namespaceNode.methods){
         if(methodNode.methodName.equals("main")){
           count++;
         }
@@ -98,7 +98,7 @@ public final class TypeChecker {
     //method names should not be duplicate in a class
     //this may change in another version of dragon
 
-    long count = namespaceNode.methodNodeList.stream().filter(mNode -> mNode.methodName.equals(methodName)).count();
+    long count = namespaceNode.methods.stream().filter(mNode -> mNode.methodName.equals(methodName)).count();
 
     if (count > 1) {
       throw new Exception("duplicate declaration of method '" + methodName + "' ");

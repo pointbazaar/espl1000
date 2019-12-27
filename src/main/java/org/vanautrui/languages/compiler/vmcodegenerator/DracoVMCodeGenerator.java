@@ -30,7 +30,7 @@ public final class DracoVMCodeGenerator {
         final Map<String,List<String>> dracovmcodeinstructions = new HashMap<>();
 
         for(final NamespaceNode namespaceNode : asts.namespaceNodeList){
-            for(final MethodNode methodNode : namespaceNode.methodNodeList){
+            for(final MethodNode methodNode : namespaceNode.methods){
 
                 //namespaceNode, methodNode, writer are not accessed from other threads
                 //debug, printsymboltables are only read, not written to.
