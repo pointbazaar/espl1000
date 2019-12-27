@@ -14,8 +14,7 @@ import java.util.List;
 
 public final class TestUtils {
 
-    public static AST_Whole_Program parse_for_test(final String sourceCode) throws Exception {
-        final boolean debug=true;
+    public static AST_Whole_Program parse_for_test(final String sourceCode, final boolean debug) throws Exception {
 
         //Write to file
         final String filename = "Main.dg";
@@ -32,42 +31,51 @@ public final class TestUtils {
 
         final ArrayList<File> files=new ArrayList<>();
 
-        final AST_Whole_Program ast = DragonCompiler.parseAST_from_JSON(files, debug);
-        
+        final AST_Whole_Program ast = DragonCompiler.parseASTFromTokenFiles(files, debug);
+
         //TODO: we have the AST now. we can delete the .json file now
 
         return ast;
     }
 
-    public static Process compile_and_run_program_for_testing_with_cmd_args(String dragon_source_code, String filename_without_extension, String[] args) throws Exception {
+    public static Process compileAndRunProgramForTesting(
+            final String sourceCode,
+            final String filename,
+            final String[] args,
+            final boolean debug
+    ) throws Exception {
         //gets a dragon source code, compiles to vm code, calls dracovm, and starts the executable
 
+        if(debug){
+            System.out.println("TestUtils::compileAndRunProgramForTesting");
+        }
+
         //should create the .dracovm files for it
-        final List<Path> vmcodes =
-                generateVMCodeFromDragonCode(
-                        dragon_source_code
-                );
+        final List<Path> vmcodes = generateVMCodeFromDragonCode(sourceCode, debug);
 
         //should create the executable and run it
         final Process pr = compile_and_run_vm_codes(
                 vmcodes,
-                Paths.get(filename_without_extension,args),
-                args
+                Paths.get(filename,args),
+                args,
+                debug
         );
         return pr;
     }
 
 
     public static Process compile_and_run_but_not_waitFor(
-            final String dragon_source,final String filename_without_extension
+            final String dragon_source,
+            final String filename_without_extension,
+            final boolean debug
     ) throws Exception{
         final Path filename_without_extns = Paths.get(filename_without_extension);
 
         //generate the vm code
-        final List<Path> paths = generateVMCodeFromDragonCode(dragon_source);
+        final List<Path> paths = generateVMCodeFromDragonCode(dragon_source, false);
 
         //generate the executable
-        generateFromVMCodeAndWriteExecutable(paths,filename_without_extns);
+        generateFromVMCodeAndWriteExecutable(paths,filename_without_extns,debug);
 
         //run that executable
         final Process pr = Runtime.getRuntime().exec("./"+filename_without_extension);
@@ -75,14 +83,16 @@ public final class TestUtils {
     }
 
 
-    private static List<Path> generateVMCodeFromDragonCode(final String source) throws Exception{
+    private static List<Path> generateVMCodeFromDragonCode(final String source, final boolean debug) throws Exception{
         //generates vm codes from dragon codes, and writes them to files. returns paths to those files
 
         final List<File> files = new ArrayList<>();
         final String filename = "Main.dg";
-        final boolean debug=false;
 
         //write dragon code to file
+        if(debug){
+            System.out.println("write to "+filename);
+        }
         Files.writeString(Paths.get(filename),source);
 
         //invoke dragon-lexer
@@ -90,41 +100,48 @@ public final class TestUtils {
 
         final File tokensFile = Paths.get("."+filename+".tokens").toFile();
 
-        //invoke dragon-parser
-        DragonCompiler.invokeDragonParser(tokensFile,false);
+        files.add(tokensFile);
 
-        files.add(Paths.get(".Main.dg.json").toFile());
-
-        final AST_Whole_Program ast = DragonCompiler.parseAST_from_JSON(files,false);
+        final AST_Whole_Program ast = DragonCompiler.parseASTFromTokenFiles(files,debug);
         //we are in debug mode since we are running tests
 
-        return CompilerPhases.phase_vm_codegeneration(ast,false,false);
+        return CompilerPhases.phase_vm_codegeneration(ast,false,debug);
     }
 
     private static void generateFromVMCodeAndWriteExecutable(
-            final List<Path> vmcodes, final Path filename
+            final List<Path> vmcodes,
+            final Path filename,
+            final boolean debug
     ) throws Exception {
         //writes an executable with the name we requested
 
         //dracovm only accepts filenames as arguments
-        final boolean debug=true;
 
         DragonCompiler.invokeDracoVMCompiler(vmcodes,debug);
 
 
         //move our 'main' executable into the desired filename
-        Runtime.getRuntime().exec("mv main "+filename.toString()).waitFor();
-
+        final String call = "mv main "+filename.toString();
+        if(debug){
+            System.out.println(call);
+        }
+        Runtime.getRuntime().exec(call).waitFor();
     }
 
     private static Process compile_and_run_vmcodes_but_not_waitFor(
-            final List<Path> vmcode_paths, final Path filename_without_extension, String[] args
+            final List<Path> vmcode_paths,
+            final Path filename_without_extension,
+            final String[] args,
+            final boolean debug
     ) throws Exception{
 
-        generateFromVMCodeAndWriteExecutable(vmcode_paths,filename_without_extension);
+        generateFromVMCodeAndWriteExecutable(vmcode_paths,filename_without_extension,debug);
 
         final String call = "./"+filename_without_extension+" "+ String.join(" ", Arrays.asList(args));
-        System.out.println(call);
+
+        if(debug) {
+            System.out.println(call);
+        }
 
         Process pr = Runtime.getRuntime().exec(call);
         return pr;
@@ -133,13 +150,15 @@ public final class TestUtils {
     private static Process compile_and_run_vm_codes(
             final List<Path> vmcode_paths,
             final Path filename_without_extension,
-            final String[] args
+            final String[] args,
+            final boolean debug
     ) throws Exception{
 
         final Process pr = compile_and_run_vmcodes_but_not_waitFor(
                 vmcode_paths,
                 filename_without_extension,
-                args
+                args,
+                debug
         );
 
         pr.waitFor();
@@ -151,12 +170,16 @@ public final class TestUtils {
 
             //delete all the .dracovm  files that have been created
             for (Path dracovmfilepath : vmcode_paths) {
-                System.out.println("delete: " + dracovmfilepath);
+                if(debug) {
+                    System.out.println("delete: " + dracovmfilepath);
+                }
                 Files.delete(dracovmfilepath);
             }
 
             //delete the executable
-            System.out.println("delete: " + filename_without_extension);
+            if (debug) {
+                System.out.println("delete: " + filename_without_extension);
+            }
             Files.delete(filename_without_extension);
 
             //TODO: delete the assembly files of the subroutines

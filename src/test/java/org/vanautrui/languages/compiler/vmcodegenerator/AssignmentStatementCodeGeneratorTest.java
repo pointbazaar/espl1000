@@ -4,7 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.vanautrui.languages.TestUtils.compile_and_run_program_for_testing_with_cmd_args;
+import static org.vanautrui.languages.TestUtils.compileAndRunProgramForTesting;
 
 public final class AssignmentStatementCodeGeneratorTest {
 
@@ -18,7 +18,9 @@ public final class AssignmentStatementCodeGeneratorTest {
                 "   loop x {putchar('x');}" +
                 "   return 0;" +
                 "} ";
-        final Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest333",new String[0]);
+
+        final Process pr =
+            compileAndRunProgramForTesting(source,"MainTest333",new String[0],true);
 
         assertEquals(0,pr.exitValue());
         assertEquals("xxx",IOUtils.toString(pr.getInputStream()));
@@ -34,7 +36,7 @@ public final class AssignmentStatementCodeGeneratorTest {
                 "   x=2;" +
                 "   loop x {putchar('x');}" +
                 " return 0;} " ;
-        final Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest333",new String[0]);
+        final Process pr = compileAndRunProgramForTesting(source,"MainTest333",new String[0],false);
 
         assertEquals(0,pr.exitValue());
         assertEquals("xx",IOUtils.toString(pr.getInputStream()));
@@ -48,7 +50,7 @@ public final class AssignmentStatementCodeGeneratorTest {
                 "   x=arr[0];" +
                 "   putchar(x);" +
                 " return 0;} ";
-        final Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest333",new String[0]);
+        final Process pr = compileAndRunProgramForTesting(source,"MainTest333",new String[0],false);
 
         assertEquals(0,pr.exitValue());
         assertEquals("A",IOUtils.toString(pr.getInputStream()));
@@ -63,7 +65,7 @@ public final class AssignmentStatementCodeGeneratorTest {
                 "   arr[1]='d';" +
                 "   putchar(arr[1]);" +
                 "return 0;} ";
-        final Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest454",new String[0]);
+        final Process pr = compileAndRunProgramForTesting(source,"MainTest454",new String[0],false);
 
         assertEquals(0,pr.exitValue());
         assertEquals("d",IOUtils.toString(pr.getInputStream()));
@@ -78,7 +80,7 @@ public final class AssignmentStatementCodeGeneratorTest {
                 "   a.b=1;" +
                 "   putdigit(a.b);" +
                 "return 0;} ";
-        final Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest954",new String[0]);
+        final Process pr = compileAndRunProgramForTesting(source,"MainTest954",new String[0],false);
 
         assertEquals(0,pr.exitValue());
         assertEquals("1",IOUtils.toString(pr.getInputStream()));
@@ -94,7 +96,7 @@ public final class AssignmentStatementCodeGeneratorTest {
                 "   a.s.b=1;" +
                 "   putdigit(a.s.b);" +
                 "return 0;} ";
-        final Process pr = compile_and_run_program_for_testing_with_cmd_args(source,"MainTest9541",new String[0]);
+        final Process pr = compileAndRunProgramForTesting(source,"MainTest9541",new String[0],false);
 
         assertEquals(0,pr.exitValue());
         assertEquals("1",IOUtils.toString(pr.getInputStream()));

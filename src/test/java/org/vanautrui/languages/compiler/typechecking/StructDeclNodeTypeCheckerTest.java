@@ -14,7 +14,7 @@ public final class StructDeclNodeTypeCheckerTest {
 
     final String source = " struct MyStruct{} fn main ()~>PInt { return 0;} ";
 
-    final AST_Whole_Program ast = TestUtils.parse_for_test(source);
+    final AST_Whole_Program ast = TestUtils.parse_for_test(source, false);
 
     TypeChecker.doTypeCheck(ast,false);
   }
@@ -24,7 +24,7 @@ public final class StructDeclNodeTypeCheckerTest {
 
     final String source = " struct PInt{} ";
 
-    final AST_Whole_Program ast = TestUtils.parse_for_test(source);
+    final AST_Whole_Program ast = TestUtils.parse_for_test(source, false);
 
     try {
       TypeChecker.doTypeCheck(ast, false);
@@ -39,7 +39,7 @@ public final class StructDeclNodeTypeCheckerTest {
 
     final String source = " struct MyStruct{} struct MyStruct{} ";
 
-    final AST_Whole_Program ast = TestUtils.parse_for_test(source);
+    final AST_Whole_Program ast = TestUtils.parse_for_test(source, false);
 
     try {
       TypeChecker.doTypeCheck(ast, false);

@@ -21,7 +21,6 @@ import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -76,7 +75,7 @@ public final class SymbolTableGeneratorTest {
 
         final SubroutineSymbolTable subTable = new SubroutineSymbolTable();
 
-        final AST_Whole_Program ast = parse_for_test("fn main ()~>PInt { x=3; if(x==3){y=5;} } ");
+        final AST_Whole_Program ast = parse_for_test("fn main ()~>PInt { x=3; if(x==3){y=5;} } ", false);
 
         final StructsSymbolTable structsTable =
                 SymbolTableGenerator.createStructsSymbolTable(ast,false);
@@ -96,11 +95,11 @@ public final class SymbolTableGeneratorTest {
 
     @Test
     public void test_does_not_produce_duplicates()throws Exception{
-        final AST_Whole_Program ast = parse_for_test("fn main ()~>PInt { x=3; x=2; return 0;} ");
+        final AST_Whole_Program ast = parse_for_test("fn main ()~>PInt { x=3; x=2; return 0;} ", false);
 
         final SubroutineSymbolTable subTable = new SubroutineSymbolTable();
 
-        final MethodNode myMethod = ast.namespaceNodeList.stream().collect(Collectors.toList()).get(0).methods.get(0);
+        final MethodNode myMethod = new ArrayList<>(ast.namespaceNodeList).get(0).methods.get(0);
 
         final StructsSymbolTable structsTable = SymbolTableGenerator.createStructsSymbolTable(ast,false);
         final LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable,structsTable);
@@ -116,11 +115,11 @@ public final class SymbolTableGeneratorTest {
     @Test
     public void test_does_not_produce_duplicates_with_different_types()throws Exception{
 
-        final AST_Whole_Program ast = parse_for_test("fn main ()~>PInt { x=3; x=[1,2]; return 0;} ");
+        final AST_Whole_Program ast = parse_for_test("fn main ()~>PInt { x=3; x=[1,2]; return 0;} ", false);
 
         final SubroutineSymbolTable subTable = new SubroutineSymbolTable();
 
-        final MethodNode myMethod = ast.namespaceNodeList.stream().collect(Collectors.toList()).get(0).methods.get(0);
+        final MethodNode myMethod = new ArrayList<>(ast.namespaceNodeList).get(0).methods.get(0);
 
         final StructsSymbolTable structsTable = SymbolTableGenerator.createStructsSymbolTable(ast,false);
         final LocalVarSymbolTable localVarTable = SymbolTableGenerator.createMethodScopeSymbolTable(myMethod,subTable,structsTable);
@@ -136,7 +135,7 @@ public final class SymbolTableGeneratorTest {
     @Test
     public void test_subroutine_symbol_table_generation()throws Exception{
 
-        final AST_Whole_Program ast = parse_for_test("fn main ()~>PInt { x=3; x=[1,2]; return 0;}  ");
+        final AST_Whole_Program ast = parse_for_test("fn main ()~>PInt { x=3; x=[1,2]; return 0;}  ", false);
 
         final SubroutineSymbolTable subTable = SymbolTableGenerator.createSubroutineSymbolTable(ast, false);
 
