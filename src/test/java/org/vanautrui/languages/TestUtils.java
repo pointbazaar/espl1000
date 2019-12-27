@@ -24,12 +24,19 @@ public final class TestUtils {
         //invoke dragon-lexer
         DragonCompiler.invokeDragonLexer(Paths.get(filename).toFile(),debug);
 
+        //TODO: we now have the token file. can delete the source file
+
         //invoke dragon-parser
         DragonCompiler.invokeDragonParser(Paths.get("."+filename+".tokens").toFile(),debug);
+        //TODO: we now have the .json file. can delete the .tokens file now
 
         final ArrayList<File> files=new ArrayList<>();
+
+        final AST_Whole_Program ast = DragonCompiler.parseAST_from_JSON(files, debug);
         
-        return DragonCompiler.parseAST_from_JSON(files,debug);
+        //TODO: we have the AST now. we can delete the .json file now
+
+        return ast;
     }
 
     public static Process compile_and_run_program_for_testing_with_cmd_args(String dragon_source_code, String filename_without_extension, String[] args) throws Exception {
