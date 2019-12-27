@@ -21,7 +21,7 @@ public final class StructMemberDeclTypeChecker {
 
       //check that the member is only declared once
       long count=0;
-      for(StructMemberDeclNode member : structDeclNode.structMembersList){
+      for(StructMemberDeclNode member : structDeclNode.members){
         if(member.name.equals(structMemberDeclNode.name)){count++;}
       }
       if(count!=1){

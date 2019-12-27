@@ -27,7 +27,7 @@ public final class StructDeclNodeTypeChecker {
     //the type of the struct is simple, by construction (see constructor)
 
     //check that it does not have a primitive type
-    if(TypeChecker.primitive_types_and_arrays_of_them.contains(structDeclNode.structType.getTypeName())){
+    if(TypeChecker.primitive_types_and_arrays_of_them.contains(structDeclNode.type.getTypeName())){
       throw new Exception("struct type cannot be primitive ");
     }
 
@@ -67,7 +67,7 @@ public final class StructDeclNodeTypeChecker {
       throw new Exception("struct "+structDeclNode.getTypeName()+" was not declared.");
     }
     //typecheck Members
-    for(final StructMemberDeclNode structMemberDeclNode : structDeclNode.structMembersList){
+    for(final StructMemberDeclNode structMemberDeclNode : structDeclNode.members){
       typeCheckStructMemberDeclNode(asts,namespaceNode,structDeclNode,structMemberDeclNode,subroutineSymbolTable);
     }
   }
