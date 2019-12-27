@@ -1,4 +1,4 @@
-# Dragon (work in progress)
+# The Dragon Programming Language (work in progress) 
 [![Build Status](https://travis-ci.org/pointbazaar/dragon.svg?branch=master)](https://travis-ci.org/pointbazaar/dragon)
 [![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/dragon/badge)](https://www.codefactor.io/repository/github/pointbazaar/dragon)
  [![Known Vulnerabilities](https://snyk.io/test/github/pointbazaar/dragon/badge.svg)](https://snyk.io/test/github/pointbazaar/dragon) 
@@ -58,6 +58,7 @@ This Project will probably only work with Linux.
 
 ## Simplicity
 
+- [x] **hackable to the core**. Make it your own. Everything in this Lang is created with extendability and modularity in Mind. 
 - [x] **no macros** (no preprocessor needed, easier to read and understand code)
 - [x] **no backwards compatibility** (the language will change whenever a feature gets added / removed from the language. Little consideration will be given to existing code. )
 - [x] Dragon has a **very simple stack based calling convention** for simplicity reasons. It is incompatible with the C calling convention.
