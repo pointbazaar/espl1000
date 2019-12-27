@@ -71,17 +71,19 @@ public final class TestUtils {
     ) throws Exception {
         //gets a dragon source code, compiles to vm code, calls dracovm, and starts the executable
 
+        final Path filename = Paths.get(filename_without_extension+".dg");
+
         if(debug){
             out.println("TestUtils::compileAndRunProgramForTesting");
         }
 
         //should create the .dracovm files for it
-        final List<Path> vmcodes = generateVMCodeFromDragonCode(sourceCode, debug, Paths.get(filename_without_extension+".dg").toFile());
+        final List<Path> vmcodes = generateVMCodeFromDragonCode(sourceCode, debug, filename.toFile());
 
         //should create the executable and run it
         final Process pr = compile_and_run_vm_codes(
                 vmcodes,
-                Paths.get(filename_without_extension,args),
+                Paths.get(filename.toString(),args),
                 args,
                 debug
         );
@@ -111,10 +113,9 @@ public final class TestUtils {
     private static List<Path> generateVMCodeFromDragonCode(
             final String source,
             final boolean debug,
-            File filename) throws Exception{
+            final File filename
+    ) throws Exception{
         //generates vm codes from dragon codes, and writes them to files. returns paths to those files
-
-
 
         //write dragon code to file
         if(debug){
@@ -161,14 +162,14 @@ public final class TestUtils {
 
     private static Process compile_and_run_vmcodes_but_not_waitFor(
             final List<Path> vmcode_paths,
-            final Path filename_without_extension,
+            final Path filename,
             final String[] args,
             final boolean debug
     ) throws Exception{
 
-        generateFromVMCodeAndWriteExecutable(vmcode_paths,filename_without_extension,debug);
+        generateFromVMCodeAndWriteExecutable(vmcode_paths,filename,debug);
 
-        final String call = "./"+filename_without_extension+" "+ String.join(" ", Arrays.asList(args));
+        final String call = "./"+filename+" "+ String.join(" ", Arrays.asList(args));
 
         if(debug) {
             out.println(call);
@@ -180,14 +181,14 @@ public final class TestUtils {
 
     private static Process compile_and_run_vm_codes(
             final List<Path> vmcode_paths,
-            final Path filename_without_extension,
+            final Path filename,
             final String[] args,
             final boolean debug
     ) throws Exception{
 
         final Process pr = compile_and_run_vmcodes_but_not_waitFor(
                 vmcode_paths,
-                filename_without_extension,
+                filename,
                 args,
                 debug
         );
@@ -209,9 +210,9 @@ public final class TestUtils {
 
             //delete the executable
             if (debug) {
-                out.println("delete: " + filename_without_extension);
+                out.println("delete: " + filename);
             }
-            Files.delete(filename_without_extension);
+            Files.delete(filename);
 
             //TODO: delete the assembly files of the subroutines
 

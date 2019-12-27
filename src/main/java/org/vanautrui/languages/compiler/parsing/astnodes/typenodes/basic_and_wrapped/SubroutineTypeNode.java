@@ -10,7 +10,7 @@ public final class SubroutineTypeNode implements IBasicAndWrappedTypeNode {
 
 	public TypeNode returnType;
 
-	public boolean has_side_effects;
+	public boolean hasSideEffects;
 
 	public List<TypeNode> argumentTypes = new ArrayList<>();
 
@@ -18,7 +18,7 @@ public final class SubroutineTypeNode implements IBasicAndWrappedTypeNode {
 
 	public SubroutineTypeNode(final TypeNode return_type, final boolean hasSideEffects) {
 		this.returnType = return_type;
-		this.has_side_effects = hasSideEffects;
+		this.hasSideEffects = hasSideEffects;
 	}
 
 
@@ -36,7 +36,7 @@ public final class SubroutineTypeNode implements IBasicAndWrappedTypeNode {
 						.map(TypeNode::getTypeName)
 						.collect(Collectors.joining(","))
 						+ ")"
-						+ ((this.has_side_effects) ? "~>" : "->")
+						+ ((this.hasSideEffects) ? "~>" : "->")
 
 						+ returnType.getTypeName();
 
