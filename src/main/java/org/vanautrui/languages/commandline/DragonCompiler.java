@@ -9,6 +9,7 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -178,7 +179,7 @@ public final class DragonCompiler {
 		return opts;
 	}
 
-	private static void compile_main_inner(final List<File> sources, final CommandLine cmd){
+	private static void compile_main_inner(final List<File> sourceFiles, final CommandLine cmd){
 
 		final boolean debug=cmd.hasOption(FLAG_DEBUG);
 		final boolean timed=cmd.hasOption(FLAG_TIMED);
@@ -187,9 +188,19 @@ public final class DragonCompiler {
 
 		try {
 
-			//PHASE PREPROCESSOR (processes 'use' directive), PHASE CLEAN, PHASE LEXING, PHASE PARSING
+			//PHASE LEXING
+			for(final File sourceFile : sourceFiles) {
+				invokeDragonLexer(sourceFile,debug);
+			}
 
-			final AST_Whole_Program ast = parseASTFromTokenFiles(sources,debug);
+			//PHASE PARSING
+			for(final File sourceFile : sourceFiles) {
+				invokeDragonParser(Paths.get("."+sourceFile.toString()+".tokens").toFile(),debug);
+			}
+
+			final List<File> jsonFiles = sourceFiles.stream().map(f->Paths.get("."+f+".json").toFile()).collect(Collectors.toList());
+
+			final AST_Whole_Program ast = parseASTFromJSONFiles(jsonFiles,debug);
 
 			//PHASE TYPE CHECKING
 			CompilerPhases.phase_typecheck(ast,debug);
@@ -232,6 +243,11 @@ public final class DragonCompiler {
 		}
 		Process p = Runtime.getRuntime().exec(call);
 		p.waitFor();
+
+		if(debug){
+			final InputStream is = p.getInputStream();
+			System.out.println(IOUtils.toString(is));
+		}
 
 		if(p.exitValue()==0){
 			System.out.println("... exit successfully");
@@ -276,6 +292,11 @@ public final class DragonCompiler {
 		final Process p = Runtime.getRuntime().exec(call);
 		p.waitFor();
 
+		if(debug){
+			final InputStream is = p.getInputStream();
+			System.out.println(IOUtils.toString(is));
+		}
+
 		if(p.exitValue() != 0){
 			throw new Exception("dragon-parser exited with nonzero exit value.");
 		}else{
@@ -283,13 +304,13 @@ public final class DragonCompiler {
 		}
 	}
 
-	private static NamespaceNode parseNamespaceFromJSON(final File tokensFile, boolean debug) throws Exception {
+	private static NamespaceNode parseNamespaceFromJsonFile(final File jsonFile, boolean debug) throws Exception {
 
 		//calls dragon-parser with the source file to produce our AST in .json
 
-		invokeDragonParser(tokensFile,debug);
+		invokeDragonParser(jsonFile,debug);
 
-		final String astJSON = Files.readString(Paths.get(tokensFile.toString()+".json"));
+		final String astJSON = Files.readString(jsonFile.toPath());
 
 		final ObjectMapper mapper = new ObjectMapper();
 		final JsonNode jsonNode = mapper.readTree(astJSON);
@@ -299,12 +320,12 @@ public final class DragonCompiler {
 		return namespaceNode;
 	}
 
-	public static AST_Whole_Program parseASTFromTokenFiles(final List<File> tokenFiles, final boolean debug) throws Exception {
+	public static AST_Whole_Program parseASTFromJSONFiles(final List<File> jsonFiles, final boolean debug) throws Exception {
 
 		final AST_Whole_Program ast = new AST_Whole_Program();
 
-		for(File file : tokenFiles){
-			ast.namespaceNodeList.add(parseNamespaceFromJSON(file,debug));
+		for(File file : jsonFiles){
+			ast.namespaceNodeList.add(parseNamespaceFromJsonFile(file,debug));
 		}
 
 		return ast;

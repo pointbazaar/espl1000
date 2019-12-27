@@ -30,8 +30,9 @@ public final class TestUtils {
         //TODO: we now have the .json file. can delete the .tokens file now
 
         final ArrayList<File> files=new ArrayList<>();
+        files.add(Paths.get("."+filename+".json").toFile());
 
-        final AST_Whole_Program ast = DragonCompiler.parseASTFromTokenFiles(files, debug);
+        final AST_Whole_Program ast = DragonCompiler.parseASTFromJSONFiles(files, debug);
 
         //TODO: we have the AST now. we can delete the .json file now
 
@@ -86,7 +87,6 @@ public final class TestUtils {
     private static List<Path> generateVMCodeFromDragonCode(final String source, final boolean debug) throws Exception{
         //generates vm codes from dragon codes, and writes them to files. returns paths to those files
 
-        final List<File> files = new ArrayList<>();
         final String filename = "Main.dg";
 
         //write dragon code to file
@@ -100,9 +100,13 @@ public final class TestUtils {
 
         final File tokensFile = Paths.get("."+filename+".tokens").toFile();
 
-        files.add(tokensFile);
+        //invoke dragon-parser
+        DragonCompiler.invokeDragonParser(tokensFile,debug);
 
-        final AST_Whole_Program ast = DragonCompiler.parseASTFromTokenFiles(files,debug);
+        final ArrayList<File> jsonFiles=new ArrayList<>();
+        jsonFiles.add(Paths.get("."+filename+".json").toFile());
+
+        final AST_Whole_Program ast = DragonCompiler.parseASTFromJSONFiles(jsonFiles,debug);
         //we are in debug mode since we are running tests
 
         return CompilerPhases.phase_vm_codegeneration(ast,false,debug);
