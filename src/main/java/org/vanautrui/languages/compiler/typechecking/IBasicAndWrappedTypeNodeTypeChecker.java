@@ -32,7 +32,7 @@ public final class IBasicAndWrappedTypeNodeTypeChecker {
 
       for (final NamespaceNode namespace : asts.namespaceNodeList) {
         for(final StructDeclNode sdn : namespace.structs){
-          if (sdn.getTypeName().equals(typename.getTypeName())) {
+          if (sdn.type.getTypeName().equals(typename.getTypeName())) {
             return;
           }
         }
@@ -41,9 +41,9 @@ public final class IBasicAndWrappedTypeNodeTypeChecker {
 
     } else if (typename instanceof SubroutineTypeNode) {
 
-      ITypeNodeTypeChecker.typeCheckITypeNode(asts, namespaceNode, ((SubroutineTypeNode) typename).returnType.type);
+      ITypeNodeTypeChecker.typeCheckITypeNode(asts, namespaceNode, ((SubroutineTypeNode) typename).returnType.typeNode);
       for (final TypeNode argType : ((SubroutineTypeNode) typename).argumentTypes) {
-        ITypeNodeTypeChecker.typeCheckITypeNode(asts, namespaceNode, argType.type);
+        ITypeNodeTypeChecker.typeCheckITypeNode(asts, namespaceNode, argType.typeNode);
       }
       return;
     }

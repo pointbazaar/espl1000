@@ -40,8 +40,8 @@ public final class MethodCallNodeTypeChecker {
 
     //search in arguments, for a subroutine argument
     if(methodNode.arguments.stream().anyMatch(declaredArgumentNode -> {
-      if (declaredArgumentNode.type.type instanceof BasicTypeWrappedNode) {
-        final IBasicAndWrappedTypeNode t1 = ((BasicTypeWrappedNode) declaredArgumentNode.type.type).typenode;
+      if (declaredArgumentNode.type.typeNode instanceof BasicTypeWrappedNode) {
+        final IBasicAndWrappedTypeNode t1 = ((BasicTypeWrappedNode) declaredArgumentNode.type.typeNode).typeNode;
         return t1 instanceof SubroutineTypeNode;
       }
       return false;

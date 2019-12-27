@@ -16,6 +16,6 @@ public final class DeclaredArgumentNodeTypeChecker {
           final NamespaceNode namespaceNode,
           final DeclaredArgumentNode declaredArgumentNode
   ) throws Exception {
-    typeCheckITypeNode(asts, namespaceNode, declaredArgumentNode.type.type);
+    typeCheckITypeNode(asts, namespaceNode, declaredArgumentNode.type.typeNode);
   }
 }

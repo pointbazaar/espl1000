@@ -10,9 +10,11 @@ import java.util.stream.Collectors;
 
 public final class WhileStatementNode implements IASTNode, IStatementNode {
 
-	public final ExpressionNode condition;
+	public ExpressionNode condition;
 
-	public final List<StatementNode> statements;
+	public List<StatementNode> statements;
+
+	public WhileStatementNode(){}
 
 	public WhileStatementNode(final ExpressionNode condition, final List<StatementNode> statements) {
 

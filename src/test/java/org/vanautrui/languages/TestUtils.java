@@ -12,22 +12,37 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static java.lang.System.out;
+
 public final class TestUtils {
 
     public static AST_Whole_Program parse_for_test(final String sourceCode, final boolean debug) throws Exception {
 
         //Write to file
         final String filename = "Main.dg";
+        if(debug){
+            out.println("write to "+filename);
+        }
         Files.writeString(Paths.get(filename),sourceCode);
 
         //invoke dragon-lexer
         DragonCompiler.invokeDragonLexer(Paths.get(filename).toFile(),debug);
 
-        //TODO: we now have the token file. can delete the source file
+        //we now have the token file. can delete the source file
+        if(debug){
+            out.println("delete "+filename);
+        }
+        Files.delete(Paths.get(filename));
 
         //invoke dragon-parser
-        DragonCompiler.invokeDragonParser(Paths.get("."+filename+".tokens").toFile(),debug);
-        //TODO: we now have the .json file. can delete the .tokens file now
+        final File tokensFile = Paths.get("."+filename+".tokens").toFile();
+        DragonCompiler.invokeDragonParser(tokensFile,debug);
+
+        //we now have the .json file. can delete the .tokens file now
+        if(debug){
+            out.println("delete "+tokensFile.toPath());
+        }
+        Files.delete(tokensFile.toPath());
 
         final ArrayList<File> files=new ArrayList<>();
         files.add(Paths.get("."+filename+".json").toFile());
@@ -48,7 +63,7 @@ public final class TestUtils {
         //gets a dragon source code, compiles to vm code, calls dracovm, and starts the executable
 
         if(debug){
-            System.out.println("TestUtils::compileAndRunProgramForTesting");
+            out.println("TestUtils::compileAndRunProgramForTesting");
         }
 
         //should create the .dracovm files for it
@@ -91,7 +106,7 @@ public final class TestUtils {
 
         //write dragon code to file
         if(debug){
-            System.out.println("write to "+filename);
+            out.println("write to "+filename);
         }
         Files.writeString(Paths.get(filename),source);
 
@@ -127,7 +142,7 @@ public final class TestUtils {
         //move our 'main' executable into the desired filename
         final String call = "mv main "+filename.toString();
         if(debug){
-            System.out.println(call);
+            out.println(call);
         }
         Runtime.getRuntime().exec(call).waitFor();
     }
@@ -144,7 +159,7 @@ public final class TestUtils {
         final String call = "./"+filename_without_extension+" "+ String.join(" ", Arrays.asList(args));
 
         if(debug) {
-            System.out.println(call);
+            out.println(call);
         }
 
         Process pr = Runtime.getRuntime().exec(call);
@@ -175,14 +190,14 @@ public final class TestUtils {
             //delete all the .dracovm  files that have been created
             for (final Path dracovmfilepath : vmcode_paths) {
                 if(debug) {
-                    System.out.println("delete: " + dracovmfilepath);
+                    out.println("delete: " + dracovmfilepath);
                 }
                 Files.delete(dracovmfilepath);
             }
 
             //delete the executable
             if (debug) {
-                System.out.println("delete: " + filename_without_extension);
+                out.println("delete: " + filename_without_extension);
             }
             Files.delete(filename_without_extension);
 

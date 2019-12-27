@@ -49,8 +49,8 @@ public final class MethodCallDracoVMCodeGenerator {
 
             //very hacky. very dirty. should be cleaner. like with polymorphy.
             //different types implementing an interface which is then in a collection in the local var symbol table
-            final ITypeNode type = varTable.get(methodCallNode.methodName).getType().type;
-            final IBasicAndWrappedTypeNode type1 = ((BasicTypeWrappedNode) type).typenode;
+            final ITypeNode type = varTable.get(methodCallNode.methodName).getType().typeNode;
+            final IBasicAndWrappedTypeNode type1 = ((BasicTypeWrappedNode) type).typeNode;
             final SubroutineTypeNode type2 = (SubroutineTypeNode) type1;
             final int mynargs = type2.argumentTypes.size();
             nArgs = mynargs;

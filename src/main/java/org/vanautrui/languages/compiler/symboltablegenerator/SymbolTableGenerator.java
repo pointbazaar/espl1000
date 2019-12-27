@@ -216,7 +216,7 @@ public final class SymbolTableGenerator {
 
 			for (final StructDeclNode sNode : namespaceNode.structs) {
 				if(debug){
-					System.out.println("creating struct symbol table row for struct: "+sNode.getTypeName());
+					System.out.println("creating struct symbol table row for struct: "+sNode.type.getTypeName());
 				}
 
 				final List<String> memberNames = sNode.members.stream().map(x -> x.name).collect(Collectors.toList());
@@ -224,7 +224,7 @@ public final class SymbolTableGenerator {
 
 				final StructsSymbolTableRow row =
 						new StructsSymbolTableRow(
-								sNode.getTypeName(),
+								sNode.type.getTypeName(),
 								memberNames,
 								memberTypes
 						);

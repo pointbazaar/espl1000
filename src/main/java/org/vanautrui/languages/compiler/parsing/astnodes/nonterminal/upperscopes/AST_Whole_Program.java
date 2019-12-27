@@ -10,10 +10,9 @@ public final class AST_Whole_Program implements IASTNode {
 
 	//this contains all namespace nodes for the whole program
 
-	public final Set<NamespaceNode> namespaceNodeList = new HashSet<>();
+	public Set<NamespaceNode> namespaceNodeList = new HashSet<>();
 
-	public AST_Whole_Program() {
-	}
+	public AST_Whole_Program() { }
 
 	public AST_Whole_Program(final NamespaceNode myNamespace) {
 		//utility method, to facilitate creating AST_Whole_Program from a single namespace node

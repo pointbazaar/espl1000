@@ -10,11 +10,13 @@ import java.util.stream.Collectors;
 
 public final class IfStatementNode implements IASTNode, IStatementNode {
 
-	public final ExpressionNode condition;
+	public ExpressionNode condition;
 
-	public final List<StatementNode> statements;
+	public List<StatementNode> statements;
 
-	public final List<StatementNode> elseStatements;
+	public List<StatementNode> elseStatements;
+
+	public IfStatementNode(){}
 
 	public IfStatementNode(final ExpressionNode condition, final List<StatementNode> statements, final List<StatementNode> elseStatements) {
 		this.condition=condition;

@@ -63,10 +63,10 @@ public final class LocalVarSymbolTableRow  {
     }
 
     public TypeNode getReturnTypeIfIsSubroutine()throws Exception{
-        if(this.typeName.type instanceof BasicTypeWrappedNode){
-            BasicTypeWrappedNode t1 = (BasicTypeWrappedNode)this.typeName.type;
-            if(t1.typenode instanceof SubroutineTypeNode){
-                return ((SubroutineTypeNode) t1.typenode).returnType;
+        if(this.typeName.typeNode instanceof BasicTypeWrappedNode){
+            BasicTypeWrappedNode t1 = (BasicTypeWrappedNode)this.typeName.typeNode;
+            if(t1.typeNode instanceof SubroutineTypeNode){
+                return ((SubroutineTypeNode) t1.typeNode).returnType;
             }
         }
 

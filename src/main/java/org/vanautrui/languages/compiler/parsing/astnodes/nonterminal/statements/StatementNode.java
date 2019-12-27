@@ -5,7 +5,10 @@ import org.vanautrui.languages.compiler.parsing.IASTNode;
 public final class StatementNode implements IASTNode {
 
 	//can be method call ,loop statement, while statement, ...
-	public final IStatementNode statementNode;
+	//TODO: figure out  how to deserialize it with jackson
+	public IStatementNode statementNode;
+
+	public StatementNode(){}
 
 	public StatementNode(final IStatementNode stmt) {
 		this.statementNode = stmt;

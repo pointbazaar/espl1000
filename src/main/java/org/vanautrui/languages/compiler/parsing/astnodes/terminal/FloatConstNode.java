@@ -6,7 +6,9 @@ import org.vanautrui.languages.compiler.parsing.astnodes.ITermNode;
 public final class FloatConstNode implements IASTNode, ITermNode {
 
 	//this can also have a negative value if it is preceded by a '-' operator token
-	public final float floatValue;
+	public float floatValue;
+
+	public FloatConstNode(){}
 
 	public FloatConstNode(final float floatValue){
 		this.floatValue = floatValue;

@@ -9,11 +9,13 @@ import java.util.Optional;
 
 public final class AssignmentStatementNode implements IASTNode, IStatementNode {
 
-	public final Optional<TypeNode> optTypeNode;
+	public Optional<TypeNode> optTypeNode;
 
-	public final VariableNode variableNode;
+	public VariableNode variableNode;
 
-	public final ExpressionNode expressionNode;
+	public ExpressionNode expressionNode;
+
+	public AssignmentStatementNode(){}
 
 	public AssignmentStatementNode(final VariableNode var, final ExpressionNode expr) {
 		this.variableNode = var;

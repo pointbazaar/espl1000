@@ -1,22 +1,23 @@
 package org.vanautrui.languages.compiler.parsing.astnodes.nonterminal;
 
 import org.vanautrui.languages.compiler.parsing.IASTNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.IExpressionComputable;
 import org.vanautrui.languages.compiler.parsing.astnodes.ITermNode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ExpressionNode implements IASTNode, IExpressionComputable, ITermNode {
+public final class ExpressionNode implements IASTNode, ITermNode {
 
 	//DragonExpressionNode should be similar to jack expression
 	//an expression should be anything that returns a value or computes to a value
 
-	public final TermNode term;
+	public TermNode term;
 
-	public final List<OperatorNode> operatorNodes;
+	public List<OperatorNode> operatorNodes;
 
-	public final List<TermNode> termNodes;
+	public List<TermNode> termNodes;
+
+	public ExpressionNode(){}
 
 	public ExpressionNode(final TermNode term) {
 		this.term = term;

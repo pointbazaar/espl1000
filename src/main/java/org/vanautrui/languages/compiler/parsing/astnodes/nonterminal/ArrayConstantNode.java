@@ -10,6 +10,8 @@ public final class ArrayConstantNode implements IASTNode, ITermNode {
 
 	public List<ExpressionNode> elements;
 
+	public ArrayConstantNode(){}
+
 	public ArrayConstantNode(final List<ExpressionNode> elements){
 		this.elements=elements;
 	}

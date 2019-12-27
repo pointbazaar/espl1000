@@ -1,6 +1,6 @@
 package org.vanautrui.languages.commandline;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
@@ -13,13 +13,11 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.lang.System.*;
+import static java.lang.System.currentTimeMillis;
+import static java.lang.System.out;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBuildConclusion;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printDurationFeedback;
 
@@ -314,7 +312,13 @@ public final class DragonCompiler {
 		final String astJSON = Files.readString(jsonFile.toPath());
 
 		final ObjectMapper mapper = new ObjectMapper();
-		final JsonNode jsonNode = mapper.readTree(astJSON);
+
+		mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
+				.withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+				.withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+				.withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+				.withCreatorVisibility(JsonAutoDetect.Visibility.NONE)
+		);
 
 		final NamespaceNode namespaceNode = mapper.readValue(astJSON,NamespaceNode.class);
 

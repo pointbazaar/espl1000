@@ -8,11 +8,13 @@ import java.util.stream.Collectors;
 
 public final class SubroutineTypeNode implements IBasicAndWrappedTypeNode {
 
-	public final TypeNode returnType;
+	public TypeNode returnType;
 
-	public final boolean has_side_effects;
+	public boolean has_side_effects;
 
-	public final List<TypeNode> argumentTypes = new ArrayList<>();
+	public List<TypeNode> argumentTypes = new ArrayList<>();
+
+	public SubroutineTypeNode(){}
 
 	public SubroutineTypeNode(final TypeNode return_type, final boolean hasSideEffects) {
 		this.returnType = return_type;

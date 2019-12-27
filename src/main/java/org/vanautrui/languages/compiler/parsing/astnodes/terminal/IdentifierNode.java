@@ -5,7 +5,9 @@ import org.vanautrui.languages.compiler.parsing.IASTNode;
 public final class IdentifierNode implements IASTNode {
 
 	//this identifies a variable
-	public final String identifier;
+	public String identifier;
+
+	public IdentifierNode(){}
 
 	public IdentifierNode(final String identifier){
 		this.identifier = identifier;

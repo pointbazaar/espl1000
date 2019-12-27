@@ -4,7 +4,9 @@ import org.vanautrui.languages.compiler.parsing.IASTNode;
 
 public final class ArrayTypeNode implements IASTNode, ITypeNode {
 
-	public final TypeNode element_type;
+	public TypeNode element_type;
+
+	public ArrayTypeNode(){}
 
 	public ArrayTypeNode(final TypeNode element_type) {
 		this.element_type = element_type;

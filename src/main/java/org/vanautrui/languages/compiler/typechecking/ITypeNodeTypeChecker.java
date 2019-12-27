@@ -25,13 +25,13 @@ public final class ITypeNodeTypeChecker {
     if (typename instanceof ArrayTypeNode) {
 
       final TypeNode element_type = ((ArrayTypeNode) typename).element_type;
-      ITypeNodeTypeChecker.typeCheckITypeNode(asts,namespaceNode,element_type.type);
+      ITypeNodeTypeChecker.typeCheckITypeNode(asts,namespaceNode,element_type.typeNode);
       return;
     } else if (typename instanceof TypeParameterNode) {
       //TODO
       throw new Exception("TODO");
     } else if(typename instanceof BasicTypeWrappedNode){
-      IBasicAndWrappedTypeNodeTypeChecker.typeCheckIBasicAndWrappedTypeNode(asts,namespaceNode, ((BasicTypeWrappedNode) typename).typenode);
+      IBasicAndWrappedTypeNodeTypeChecker.typeCheckIBasicAndWrappedTypeNode(asts,namespaceNode, ((BasicTypeWrappedNode) typename).typeNode);
       return;
     }
 

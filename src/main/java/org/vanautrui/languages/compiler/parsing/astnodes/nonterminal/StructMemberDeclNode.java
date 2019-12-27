@@ -5,8 +5,10 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 
 public final class StructMemberDeclNode implements IASTNode {
 
-	public final BasicTypeWrappedNode type;
-	public final String name;
+	public BasicTypeWrappedNode type;
+	public String name;
+
+	public StructMemberDeclNode(){}
 
 	public StructMemberDeclNode(final BasicTypeWrappedNode type, final String name){
 		this.type=type;

@@ -38,15 +38,15 @@ public final class StructDeclNodeTypeChecker {
     int count=0;
     for(NamespaceNode namespace : asts.namespaceNodeList){
       for(StructDeclNode structDeclNode1 : namespace.structs){
-        if(structDeclNode1.getTypeName().equals(structDeclNode.getTypeName())){
+        if(structDeclNode1.type.getTypeName().equals(structDeclNode.type.getTypeName())){
           if(debug){
-            System.out.println(structDeclNode.getTypeName()+" declared in namespace "+namespace.name);
+            System.out.println(structDeclNode.type.getTypeName()+" declared in namespace "+namespace.name);
           }
           namespaces_where_struct_was_declared.add(namespace);
           count++;
         }
       }
-      if(namespaceNode.name.equals(structDeclNode.getTypeName())){
+      if(namespaceNode.name.equals(structDeclNode.type.getTypeName())){
         throw new Exception("struct type name must not be a namespace name");
       }
     }
@@ -55,7 +55,7 @@ public final class StructDeclNodeTypeChecker {
       throw
               new Exception(
                       "struct "
-                              +structDeclNode.getTypeName()
+                              +structDeclNode.type.getTypeName()
                               +" was declared multiple times, in namespaces: "
                               +namespaces_where_struct_was_declared
                               .stream()
@@ -64,7 +64,7 @@ public final class StructDeclNodeTypeChecker {
               );
     }
     if(count==0){
-      throw new Exception("struct "+structDeclNode.getTypeName()+" was not declared.");
+      throw new Exception("struct "+structDeclNode.type.getTypeName()+" was not declared.");
     }
     //typecheck Members
     for(final StructMemberDeclNode structMemberDeclNode : structDeclNode.members){

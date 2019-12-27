@@ -9,9 +9,11 @@ public final class SimpleVariableNode implements IASTNode {
 
 	//this identifies a variable
 
-	public final String name;
+	public String name;
 
-	public final Optional<ExpressionNode> indexOptional;
+	public Optional<ExpressionNode> indexOptional;
+
+	public SimpleVariableNode(){}
 
 	public SimpleVariableNode(final String name) {
 		this.name = name;

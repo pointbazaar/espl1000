@@ -5,10 +5,12 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.ITypeNode;
 
 public final class BasicTypeWrappedNode implements IASTNode, ITypeNode {
 
-	public final IBasicAndWrappedTypeNode typenode;
+	public IBasicAndWrappedTypeNode typeNode;
 
-	public BasicTypeWrappedNode(final IBasicAndWrappedTypeNode typenode) {
-		this.typenode = typenode;
+	public BasicTypeWrappedNode(){}
+
+	public BasicTypeWrappedNode(final IBasicAndWrappedTypeNode typeNode) {
+		this.typeNode = typeNode;
 	}
 
 	public String getTypeName() {
@@ -17,15 +19,15 @@ public final class BasicTypeWrappedNode implements IASTNode, ITypeNode {
 
 	@Override
 	public String toSourceCode() {
-		if (this.typenode instanceof SubroutineTypeNode) {
-			return "(" + this.typenode.toSourceCode() + ")";
+		if (this.typeNode instanceof SubroutineTypeNode) {
+			return "(" + this.typeNode.toSourceCode() + ")";
 		} else {
-			return this.typenode.toSourceCode();
+			return this.typeNode.toSourceCode();
 		}
 	}
 
 	@Override
 	public boolean isPrimitive() {
-		return this.typenode.isPrimitive();
+		return this.typeNode.isPrimitive();
 	}
 }

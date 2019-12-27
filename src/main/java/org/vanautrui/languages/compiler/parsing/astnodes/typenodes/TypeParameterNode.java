@@ -4,7 +4,9 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 
 public final class TypeParameterNode implements IBasicAndWrappedTypeNode, ITypeNode {
 
-	public final int typeParameterIndex;
+	public int typeParameterIndex;
+
+	public TypeParameterNode(){}
 
 	public TypeParameterNode(final int typeParameterIndex){
 		this.typeParameterIndex=typeParameterIndex;

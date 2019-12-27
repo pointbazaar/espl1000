@@ -4,16 +4,17 @@ import org.vanautrui.languages.compiler.parsing.IASTNode;
 
 public final class TypeNode implements IASTNode {
 
-	public ITypeNode type;
+	public ITypeNode typeNode;
 
-	public TypeNode(ITypeNode type) {
-		this.type = type;
+	public TypeNode(){}
+
+	public TypeNode(ITypeNode typeNode) {
+		this.typeNode = typeNode;
 	}
-
 
 	@Override
 	public String toSourceCode() {
-		return this.type.toSourceCode();
+		return this.typeNode.toSourceCode();
 	}
 
 	public String getTypeName() {

@@ -37,7 +37,7 @@ public final class MethodNodeTypeChecker {
 
     typeCheckMethodNameNode(asts, namespaceNode,methodNode.methodName);
 
-    typeCheckITypeNode(asts, namespaceNode,methodNode.returnType.type);
+    typeCheckITypeNode(asts, namespaceNode,methodNode.returnType.typeNode);
     for(final StatementNode stmt : methodNode.statements){
       typeCheckStatementNode(asts, namespaceNode,methodNode,stmt,ctx);
     }

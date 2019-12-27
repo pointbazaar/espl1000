@@ -9,9 +9,11 @@ import java.util.List;
 
 public final class LoopStatementNode implements IASTNode, IStatementNode {
 
-	public final ExpressionNode count;
+	public ExpressionNode count;
 
-	public final List<StatementNode> statements;
+	public List<StatementNode> statements;
+
+	public LoopStatementNode(){}
 
 	public LoopStatementNode(final ExpressionNode count, final List<StatementNode> statements) {
 

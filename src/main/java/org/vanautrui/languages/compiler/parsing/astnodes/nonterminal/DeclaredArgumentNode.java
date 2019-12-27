@@ -7,9 +7,11 @@ import java.util.Optional;
 
 public final class DeclaredArgumentNode implements IASTNode {
 
-	public final TypeNode type;
+	public TypeNode type;
 
-	public final Optional<String> name;
+	public Optional<String> name;
+
+	public DeclaredArgumentNode(){}
 
 	public DeclaredArgumentNode(final TypeNode type, final Optional<String> name){
 		this.type=type;

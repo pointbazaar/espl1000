@@ -5,7 +5,9 @@ import org.vanautrui.languages.compiler.parsing.astnodes.ITermNode;
 
 public final class CharConstNode implements IASTNode, ITermNode {
 
-	public final char content;
+	public char content;
+
+	public CharConstNode(){}
 
 	public CharConstNode(final char content){
 		this.content=content;

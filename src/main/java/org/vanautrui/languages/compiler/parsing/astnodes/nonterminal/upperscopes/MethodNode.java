@@ -11,28 +11,30 @@ import java.util.stream.Collectors;
 
 public final class MethodNode implements IASTNode {
 
-	public final boolean isPublic = true;
+	public boolean isPublic = true;
 
-	public final boolean has_side_effects;
+	public boolean hasSideEffects;
 
-	public final TypeNode returnType;
+	public TypeNode returnType;
 
-	public final String methodName;
+	public String methodName;
 
-	public final List<DeclaredArgumentNode> arguments = new ArrayList<>();
+	public List<DeclaredArgumentNode> arguments = new ArrayList<>();
 
-	public final List<StatementNode> statements = new ArrayList<>();
+	public List<StatementNode> statements = new ArrayList<>();
+
+	public MethodNode(){}
 
 	public MethodNode(final TypeNode returnType, final String methodName) {
 		this.returnType = returnType;
 		this.methodName = methodName;
-		this.has_side_effects = false;
+		this.hasSideEffects = false;
 	}
 
 	public MethodNode(final TypeNode returnType, final String methodName, final List<StatementNode> statements) {
 		this.returnType = returnType;
 		this.methodName = methodName;
-		this.has_side_effects = false;
+		this.hasSideEffects = false;
 		this.statements.addAll(statements);
 	}
 

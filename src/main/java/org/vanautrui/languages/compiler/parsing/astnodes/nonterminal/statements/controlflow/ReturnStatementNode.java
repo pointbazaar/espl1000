@@ -6,7 +6,9 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 
 public final class ReturnStatementNode implements IASTNode, IStatementNode {
 
-	public final ExpressionNode returnValue;
+	public ExpressionNode returnValue;
+
+	public ReturnStatementNode(){}
 
 	public ReturnStatementNode(final ExpressionNode returnValue) {
 		this.returnValue = returnValue;
