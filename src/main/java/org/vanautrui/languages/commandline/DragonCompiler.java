@@ -2,6 +2,7 @@ package org.vanautrui.languages.commandline;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -247,9 +248,11 @@ public final class DragonCompiler {
 			out.println(IOUtils.toString(is));
 		}
 
-		if(p.exitValue()==0 && debug){
+		if(p.exitValue()==0 && debug) {
 			out.println("... exit successfully");
-		}else{
+		}
+
+		if(p.exitValue()!=0){
 			throw new Exception("dragon-lexer exit with nonzero exit code");
 		}
 	}
@@ -319,6 +322,8 @@ public final class DragonCompiler {
 				.withSetterVisibility(JsonAutoDetect.Visibility.NONE)
 				.withCreatorVisibility(JsonAutoDetect.Visibility.NONE)
 		);
+
+		mapper.registerModule(new Jdk8Module());
 
 		final NamespaceNode namespaceNode = mapper.readValue(astJSON,NamespaceNode.class);
 

@@ -27,7 +27,7 @@ public final class StructDeclNodeTypeChecker {
     //the type of the struct is simple, by construction (see constructor)
 
     //check that it does not have a primitive type
-    if(TypeChecker.primitive_types_and_arrays_of_them.contains(structDeclNode.type.getTypeName())){
+    if(TypeChecker.primitive_types_and_arrays_of_them.contains(structDeclNode.typeNode.getTypeName())){
       throw new Exception("struct type cannot be primitive ");
     }
 
@@ -38,15 +38,15 @@ public final class StructDeclNodeTypeChecker {
     int count=0;
     for(NamespaceNode namespace : asts.namespaceNodeList){
       for(StructDeclNode structDeclNode1 : namespace.structs){
-        if(structDeclNode1.type.getTypeName().equals(structDeclNode.type.getTypeName())){
+        if(structDeclNode1.typeNode.getTypeName().equals(structDeclNode.typeNode.getTypeName())){
           if(debug){
-            System.out.println(structDeclNode.type.getTypeName()+" declared in namespace "+namespace.name);
+            System.out.println(structDeclNode.typeNode.getTypeName() + " declared in namespace " + namespace.name);
           }
           namespaces_where_struct_was_declared.add(namespace);
           count++;
         }
       }
-      if(namespaceNode.name.equals(structDeclNode.type.getTypeName())){
+      if(namespaceNode.name.equals(structDeclNode.typeNode.getTypeName())){
         throw new Exception("struct type name must not be a namespace name");
       }
     }
@@ -55,7 +55,7 @@ public final class StructDeclNodeTypeChecker {
       throw
               new Exception(
                       "struct "
-                              +structDeclNode.type.getTypeName()
+                              +structDeclNode.typeNode.getTypeName()
                               +" was declared multiple times, in namespaces: "
                               +namespaces_where_struct_was_declared
                               .stream()
@@ -64,7 +64,7 @@ public final class StructDeclNodeTypeChecker {
               );
     }
     if(count==0){
-      throw new Exception("struct "+structDeclNode.type.getTypeName()+" was not declared.");
+      throw new Exception("struct " + structDeclNode.typeNode.getTypeName() + " was not declared.");
     }
     //typecheck Members
     for(final StructMemberDeclNode structMemberDeclNode : structDeclNode.members){

@@ -24,9 +24,20 @@ public final class JSONDeserializationIntegrationTest {
 		//depends on loop statement,return statement already working
 
 		final String source=
-				"fn main ()->PInt { x = 3; } ";
+				"fn main ()->PInt {  } ";
 
-		final AST_Whole_Program ast = parse_for_test(source , true);
+		final AST_Whole_Program ast = parse_for_test(source , false);
+		Assert.assertEquals(1,ast.namespaceNodeList.size());
+	}
+
+	@Test
+	public void testCanDeserializeAssignment()throws Exception{
+		//depends on loop statement,return statement already working
+
+		final String source=
+				"fn main ()->PInt { PInt x=3;  } ";
+
+		final AST_Whole_Program ast = parse_for_test(source , false);
 		Assert.assertEquals(1,ast.namespaceNodeList.size());
 	}
 }

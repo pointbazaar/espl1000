@@ -7,13 +7,15 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class StructDeclNode implements IASTNode/*, IBasicAndWrappedTypeNode*/ {
+public final class StructDeclNode implements IASTNode {
 
-	public SimpleTypeNode type;
+	public SimpleTypeNode typeNode;
 	public List<StructMemberDeclNode> members;
 
-	public StructDeclNode(final SimpleTypeNode type, final List<StructMemberDeclNode> structMemberDeclNodes){
-		this.type = type;
+	public StructDeclNode(){}
+
+	public StructDeclNode(final SimpleTypeNode typeNode, final List<StructMemberDeclNode> structMemberDeclNodes){
+		this.typeNode = typeNode;
 		this.members =structMemberDeclNodes;
 	}
 
@@ -27,7 +29,7 @@ public final class StructDeclNode implements IASTNode/*, IBasicAndWrappedTypeNod
 
 	@Override
 	public String toSourceCode() {
-		return "struct " + this.type.toSourceCode() + "{" + this.members.stream().map(member -> member.toSourceCode()).collect(Collectors.joining(",")) + "}";
+		return "struct " + this.typeNode.toSourceCode() + "{" + this.members.stream().map(member -> member.toSourceCode()).collect(Collectors.joining(",")) + "}";
 	}
 
 	/*

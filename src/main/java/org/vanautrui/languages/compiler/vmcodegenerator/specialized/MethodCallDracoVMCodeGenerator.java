@@ -31,8 +31,8 @@ public final class MethodCallDracoVMCodeGenerator {
         final List<String> instrs = new ArrayList<>();
 
         //push arguments on stack in reverse order
-        for (int i = methodCallNode.argumentList.size() - 1; i >= 0; i--) {
-            final ExpressionNode arg = methodCallNode.argumentList.get(i);
+        for (int i = methodCallNode.arguments.size() - 1; i >= 0; i--) {
+            final ExpressionNode arg = methodCallNode.arguments.get(i);
             instrs.addAll(genDracoVMCodeForExpression(arg, ctx));
 
         }

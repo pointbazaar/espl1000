@@ -77,7 +77,7 @@ public final class MethodCallNodeTypeChecker {
     final StructsSymbolTable structsTable = ctx.structsTable;
 
     final int nargs_expected = subTable.getNumberOfArgumentsOfSubroutine(methodCallNode.methodName);
-    final int nargs_supplied = methodCallNode.argumentList.size();
+    final int nargs_supplied = methodCallNode.arguments.size();
 
     //number of arguments supplied should equal the number of arguments declared
     if(nargs_expected != nargs_supplied){
@@ -87,7 +87,7 @@ public final class MethodCallNodeTypeChecker {
     //check that the types of the arguments match the types declared
     for(int i=0;i<nargs_expected;i++){
 
-      final TypeNode arg_type = TypeResolver.getTypeExpressionNode(methodCallNode.argumentList.get(i), ctx);
+      final TypeNode arg_type = TypeResolver.getTypeExpressionNode(methodCallNode.arguments.get(i), ctx);
       final TypeNode arg_type_expected = subTable.getArgTypeOfSubroutineAtIndex(methodCallNode.methodName,i);
 
       if(!arg_type.getTypeName().equals(arg_type_expected.getTypeName())){
@@ -110,7 +110,7 @@ public final class MethodCallNodeTypeChecker {
     }
 
     //all arguments should typecheck
-    for (final ExpressionNode expr : methodCallNode.argumentList) {
+    for (final ExpressionNode expr : methodCallNode.arguments) {
       typeCheckExpressionNode(asts, namespaceNode, methodNode, expr, ctx);
     }
   }

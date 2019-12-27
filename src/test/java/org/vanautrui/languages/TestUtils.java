@@ -45,11 +45,17 @@ public final class TestUtils {
         Files.delete(tokensFile.toPath());
 
         final ArrayList<File> files=new ArrayList<>();
-        files.add(Paths.get("."+filename+".json").toFile());
+        final File jsonFile=Paths.get("."+filename+".json").toFile();
+
+        files.add(jsonFile);
 
         final AST_Whole_Program ast = DragonCompiler.parseASTFromJSONFiles(files, debug);
 
-        //TODO: we have the AST now. we can delete the .json file now
+        //we have the AST now. we can delete the .json file now
+        if(debug){
+            out.println("delete "+jsonFile.toPath());
+        }
+        Files.delete(jsonFile.toPath());
 
         return ast;
     }

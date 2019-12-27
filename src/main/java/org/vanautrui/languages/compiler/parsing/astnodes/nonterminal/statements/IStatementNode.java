@@ -17,7 +17,8 @@ import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.
 		@JsonSubTypes.Type(value = WhileStatementNode.class, name = "WhileStatementNode"),
 		@JsonSubTypes.Type(value = LoopStatementNode.class, name = "LoopStatementNode"),
 		@JsonSubTypes.Type(value = ReturnStatementNode.class, name = "ReturnStatementNode"),
-		@JsonSubTypes.Type(value = AssignmentStatementNode.class, name = "AssignmentStatementNode")
+		@JsonSubTypes.Type(value = AssignmentStatementNode.class, name = "AssignmentStatementNode"),
+		@JsonSubTypes.Type(value = MethodCallNode.class, name = "MethodCallNode")
 })
 public interface IStatementNode extends IASTNode {
 
