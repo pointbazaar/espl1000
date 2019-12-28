@@ -1,10 +1,9 @@
-public namespace Booleans{
+fn main() ~> PInt {
+	a=true;
 	
-	public Int main(){
-		a=true;
-		if(a){
-			println("true");
-		}
-		return 0;
+	if(a){
+		println("true");
 	}
+	return 0;
 }
+

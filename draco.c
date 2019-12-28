@@ -8,7 +8,7 @@ int main(int argc, char** argv){
 	
 	call[0]='\0';
 
-	strcat(call,"java -jar ~/dragon/target/dragon-0.1-jar-with-dependencies.jar ");
+	strcat(call,"java --enable-preview -jar ~/dragon/target/dragon-0.1-jar-with-dependencies.jar ");
 
 	for(int i=0;i<argc;i++){
 		strcat(call,argv[i]);
