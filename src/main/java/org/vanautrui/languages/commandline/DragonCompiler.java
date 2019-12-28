@@ -178,6 +178,18 @@ public final class DragonCompiler {
 		return opts;
 	}
 
+	public static Path makePathHiddenWithCustomExtension(final File filename, final String fullextension){
+
+		//provide a Path for a file, which places a '.' in front of the filename and adds a custom extension
+
+		final String filenameWithoutPath = filename.getName();
+		final String directoryPath = filename.getParent(); //could be null
+
+		final String correctFilename = ((directoryPath==null)?".":directoryPath)+"/."+filenameWithoutPath+fullextension;
+
+		return Paths.get(correctFilename);
+	}
+
 	private static void compile_main_inner(final List<File> sourceFiles, final CommandLine cmd){
 
 		final boolean debug=cmd.hasOption(FLAG_DEBUG);
@@ -194,10 +206,16 @@ public final class DragonCompiler {
 
 			//PHASE PARSING
 			for(final File sourceFile : sourceFiles) {
-				invokeDragonParser(Paths.get("."+sourceFile.toString()+".tokens").toFile(),debug);
+
+				final Path correctTokenFilename = makePathHiddenWithCustomExtension(sourceFile,".tokens");
+
+				invokeDragonParser(correctTokenFilename.toFile(),debug);
 			}
 
-			final List<File> jsonFiles = sourceFiles.stream().map(f->Paths.get("."+f+".json").toFile()).collect(Collectors.toList());
+			final List<File> jsonFiles = sourceFiles
+					.stream()
+					.map(f-> makePathHiddenWithCustomExtension(f,".json").toFile())
+					.collect(Collectors.toList());
 
 			final AST_Whole_Program ast = parseASTFromJSONFiles(jsonFiles,debug);
 
