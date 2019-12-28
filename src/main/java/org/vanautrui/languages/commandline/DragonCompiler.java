@@ -263,7 +263,7 @@ public final class DragonCompiler {
 
 		//path should be e.g. .Main.subroutine.dracovm
 
-		final String call = "dracovm "+vm_code_files
+		final String call = ((debug)?"dracovm-debug":"dracovm")+" "+vm_code_files
 				.stream()
 				.map(Path::toString)
 				.collect(Collectors.joining(" "));
