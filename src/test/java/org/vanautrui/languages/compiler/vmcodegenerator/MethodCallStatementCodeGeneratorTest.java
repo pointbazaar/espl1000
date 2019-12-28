@@ -22,7 +22,7 @@ public final class MethodCallStatementCodeGeneratorTest {
     public void test_can_call_other_method_with_argument()throws Exception{
         final String faculty_methd="fn faculty (PInt n)->PInt { if( n != 1) { return ( n * faculty( n - 1 ));} return 1; }";
         final String source="fn main ()~>PInt { putdigit( faculty( 3 ) ); return 0;} "+faculty_methd+" ";
-        final Process pr = compileAndRunProgramForTesting(source,"MainTest231",new String[0],false);
+        final Process pr = compileAndRunProgramForTesting(source,"MainTest232431",new String[0],false);
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("6",IOUtils.toString(pr.getInputStream()));

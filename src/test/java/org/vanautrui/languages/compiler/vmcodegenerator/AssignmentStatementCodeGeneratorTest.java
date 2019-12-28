@@ -20,7 +20,7 @@ public final class AssignmentStatementCodeGeneratorTest {
                 "} ";
 
         final Process pr =
-            compileAndRunProgramForTesting(source,"MainTest333",new String[0],true);
+            compileAndRunProgramForTesting(source,"MainTest3943833",new String[0],true);
 
         assertEquals(0,pr.exitValue());
         assertEquals("xxx",IOUtils.toString(pr.getInputStream()));
@@ -36,7 +36,7 @@ public final class AssignmentStatementCodeGeneratorTest {
                 "   x=2;" +
                 "   loop x {putchar('x');}" +
                 " return 0;} " ;
-        final Process pr = compileAndRunProgramForTesting(source,"MainTest333",new String[0],false);
+        final Process pr = compileAndRunProgramForTesting(source,"MainTest3323843",new String[0],false);
 
         assertEquals(0,pr.exitValue());
         assertEquals("xx",IOUtils.toString(pr.getInputStream()));
@@ -50,7 +50,7 @@ public final class AssignmentStatementCodeGeneratorTest {
                 "   x=arr[0];" +
                 "   putchar(x);" +
                 " return 0;} ";
-        final Process pr = compileAndRunProgramForTesting(source,"MainTest333",new String[0],false);
+        final Process pr = compileAndRunProgramForTesting(source,"MainTest3983433",new String[0],false);
 
         assertEquals(0,pr.exitValue());
         assertEquals("A",IOUtils.toString(pr.getInputStream()));
@@ -65,7 +65,7 @@ public final class AssignmentStatementCodeGeneratorTest {
                 "   arr[1]='d';" +
                 "   putchar(arr[1]);" +
                 "return 0;} ";
-        final Process pr = compileAndRunProgramForTesting(source,"MainTest454",new String[0],false);
+        final Process pr = compileAndRunProgramForTesting(source,"MainTest349454",new String[0],false);
 
         assertEquals(0,pr.exitValue());
         assertEquals("d",IOUtils.toString(pr.getInputStream()));
@@ -80,7 +80,7 @@ public final class AssignmentStatementCodeGeneratorTest {
                 "   a.b=1;" +
                 "   putdigit(a.b);" +
                 "return 0;} ";
-        final Process pr = compileAndRunProgramForTesting(source,"MainTest954",new String[0],false);
+        final Process pr = compileAndRunProgramForTesting(source,"MainTest953434",new String[0],false);
 
         assertEquals(0,pr.exitValue());
         assertEquals("1",IOUtils.toString(pr.getInputStream()));
@@ -96,7 +96,7 @@ public final class AssignmentStatementCodeGeneratorTest {
                 "   a.s.b=1;" +
                 "   putdigit(a.s.b);" +
                 "return 0;} ";
-        final Process pr = compileAndRunProgramForTesting(source,"MainTest9541",new String[0],false);
+        final Process pr = compileAndRunProgramForTesting(source,"MainTest943541",new String[0],false);
 
         assertEquals(0,pr.exitValue());
         assertEquals("1",IOUtils.toString(pr.getInputStream()));

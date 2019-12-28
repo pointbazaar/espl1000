@@ -1,5 +1,14 @@
 package org.vanautrui.languages.commandline;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.HashSet;
+
+import static java.nio.file.attribute.PosixFilePermission.*;
+import static java.nio.file.attribute.PosixFilePermission.OTHERS_READ;
+
 public final class CompilerPhaseUtils {
 
     //prevents instance creation
@@ -24,5 +33,18 @@ public final class CompilerPhaseUtils {
         }else {
             System.out.println("☕ " + str);
         }
+    }
+
+    public static void giveAllPermissionsOnFile(final Path path) throws IOException {
+        Files.setPosixFilePermissions(
+                path,
+                new HashSet<>(
+                        Arrays.asList(
+                                OWNER_WRITE,GROUP_WRITE,OTHERS_WRITE,
+                                OWNER_READ,GROUP_READ,OTHERS_READ,
+                                OWNER_EXECUTE,GROUP_EXECUTE,OTHERS_EXECUTE
+                        )
+                )
+        );
     }
 }

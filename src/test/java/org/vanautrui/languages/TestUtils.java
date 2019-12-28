@@ -1,5 +1,6 @@
 package org.vanautrui.languages;
 
+import org.vanautrui.languages.commandline.CompilerPhaseUtils;
 import org.vanautrui.languages.commandline.CompilerPhases;
 import org.vanautrui.languages.commandline.DragonCompiler;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
@@ -21,21 +22,29 @@ public final class TestUtils {
             final boolean debug
     ) throws Exception {
 
+        if (debug){
+            out.println("TestUtils::parse_for_test");
+        }
+
         //Write to file
-        final String filename = "Main.dg";
+        final Path filename = Paths.get("Main.dg");
+
         if(debug){
             out.println("write to "+filename);
         }
-        Files.writeString(Paths.get(filename),sourceCode);
+        if(Files.exists(filename)){
+            CompilerPhaseUtils.giveAllPermissionsOnFile(filename);
+        }
+        Files.writeString(filename,sourceCode);
 
         //invoke dragon-lexer
-        DragonCompiler.invokeDragonLexer(Paths.get(filename).toFile(),debug);
+        DragonCompiler.invokeDragonLexer(filename.toFile(),debug);
 
         //we now have the token file. can delete the source file
         if(debug){
             out.println("delete "+filename);
         }
-        Files.delete(Paths.get(filename));
+        Files.delete(filename);
 
         //invoke dragon-parser
         final File tokensFile = Paths.get("."+filename+".tokens").toFile();
@@ -115,11 +124,19 @@ public final class TestUtils {
             final boolean debug,
             final File filename
     ) throws Exception{
+        if(debug){
+            out.println("TestUtils::generateVMCodeFromDragonCode");
+        }
         //generates vm codes from dragon codes, and writes them to files. returns paths to those files
 
         //write dragon code to file
         if(debug){
             out.println("write to "+filename);
+        }
+
+        //set appropriate permission if file exists
+        if(Files.exists(filename.toPath())){
+            CompilerPhaseUtils.giveAllPermissionsOnFile(filename.toPath());
         }
         Files.writeString(filename.toPath(),source);
 
@@ -168,6 +185,9 @@ public final class TestUtils {
     ) throws Exception{
 
         generateFromVMCodeAndWriteExecutable(vmcode_paths,filename,debug);
+
+        //do we have the correct permissions to run the file?
+        CompilerPhaseUtils.giveAllPermissionsOnFile(filename);
 
         final String call = "./"+filename+" "+ String.join(" ", Arrays.asList(args));
 

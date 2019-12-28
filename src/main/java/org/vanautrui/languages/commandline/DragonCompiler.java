@@ -259,6 +259,8 @@ public final class DragonCompiler {
 
 	public static void invokeDracoVMCompiler(final List<Path> vm_code_files, final boolean debug) throws Exception {
 
+		//path should be e.g. .Main.subroutine.dracovm
+
 		final String call = "dracovm "+vm_code_files
 				.stream()
 				.map(Path::toString)
