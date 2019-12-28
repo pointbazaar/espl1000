@@ -135,7 +135,7 @@ public final class SymbolTableGeneratorTest {
     @Test
     public void test_subroutine_symbol_table_generation()throws Exception{
 
-        final AST_Whole_Program ast = parse_for_test("fn main ()~>PInt { x = 3; x = [ 1 , 2 ]; return 0; }  ", true);
+        final AST_Whole_Program ast = parse_for_test("fn main ()~>PInt { x = 3; x = [ 1 , 2 ]; return 0; }  ", false);
 
         final SubroutineSymbolTable subTable = SymbolTableGenerator.createSubroutineSymbolTable(ast, false);
 

@@ -47,7 +47,7 @@ public final class MethodCallStatementCodeGeneratorTest {
     public void test_can_call_other_method_with_multiple_argument()throws Exception{
         final String subr="fn subr (PInt a,PInt b)~>PInt { putdigit(a); putdigit(b); return 0; }";
         final String source="fn main ()~>PInt { subr( 1 , 2 ); return 0;} "+subr+" ";
-        final Process pr = compileAndRunProgramForTesting(source,"MainTest2311",new String[0],true);
+        final Process pr = compileAndRunProgramForTesting(source,"MainTest2311",new String[0],false);
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("12",IOUtils.toString(pr.getInputStream()));
