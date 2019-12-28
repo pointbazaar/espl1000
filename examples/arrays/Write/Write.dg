@@ -1,5 +1,5 @@
-public namespace Write{
-	public ()~>PInt main{
+
+	fn main ()~>PInt {
 
 		arr=[1];
 
@@ -7,4 +7,3 @@ public namespace Write{
 		putdigit(arr[0]); 
 		return 0;
 	}
-}

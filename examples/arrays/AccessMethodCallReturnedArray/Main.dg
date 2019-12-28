@@ -1,6 +1,7 @@
 
 fn main ()~>PInt {
-	i = subr() [ 0 ];
+	i = subr();
+	j = i[ 0 ];
 	return 0;
 }
 

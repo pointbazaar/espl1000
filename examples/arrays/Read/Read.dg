@@ -1,5 +1,4 @@
-public namespace Read{
-	public PInt main(){
+	fn main () ~> PInt {
 
 		arr=[1,2,3,4];
 
@@ -9,4 +8,4 @@ public namespace Read{
 
 		return 0;
 	}
-}
+

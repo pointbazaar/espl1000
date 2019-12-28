@@ -1,5 +1,5 @@
-public namespace Array1{
-	public ()~>PInt main{
+
+	fn main ()~>PInt {
 
 		//arr=[1,2,3,4,5,6];
 		[PInt] arr = new(2);
@@ -13,7 +13,7 @@ public namespace Array1{
 
 	}
 
-	public ([PInt] arr)~>PInt printarr{
+	fn printarr ([PInt] arr)~>PInt {
 		i=0;
 		putchar('[');
 		while(i < (len(arr)) ){
@@ -27,4 +27,4 @@ public namespace Array1{
 		putchar(']');
 		return 0;
 	}
-}
+
