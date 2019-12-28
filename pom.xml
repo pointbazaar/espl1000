@@ -60,11 +60,16 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.21.0</version>
                 <configuration>
+                    <argLine>--enable-preview</argLine>
+                    <!-- the executable name is always 'main', this prevents parallel test execution. TODO: fix it -->
+                    <!--
+                    <forkCount>16</forkCount>
+                    <reuseForks>true</reuseForks>
+                    -->
                     <excludes>
                     </excludes>
                     <includes>
                     </includes>
-                    <argLine>--enable-preview</argLine>
                 </configuration>
             </plugin>
 

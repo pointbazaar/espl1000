@@ -148,11 +148,9 @@ public final class TestUtils {
         //invoke dragon-parser
         DragonCompiler.invokeDragonParser(tokensFile,debug);
 
-        final ArrayList<File> jsonFiles=new ArrayList<>();
-        jsonFiles.add(Paths.get("."+filename+".json").toFile());
+        final File jsonFile = Paths.get("."+filename+".json").toFile();
 
-        final AST_Whole_Program ast = DragonCompiler.parseASTFromJSONFiles(jsonFiles,debug);
-        //we are in debug mode since we are running tests
+        final AST_Whole_Program ast = DragonCompiler.parseASTFromJSONFiles(Arrays.asList(jsonFile),debug);
 
         return CompilerPhases.phase_vm_codegeneration(ast,false,debug);
     }

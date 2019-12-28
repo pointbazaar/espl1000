@@ -245,7 +245,9 @@ public final class DragonCompiler {
 
 		if(debug){
 			final InputStream is = p.getInputStream();
-			out.println(IOUtils.toString(is));
+			final String output = IOUtils.toString(is);
+			final List<String> outputlist = Arrays.stream(output.split("\n")).map(s -> "\t" + s).collect(Collectors.toList());
+			outputlist.forEach(out::println);
 		}
 
 		if(p.exitValue()==0 && debug) {
@@ -273,6 +275,13 @@ public final class DragonCompiler {
 		final Process process = Runtime.getRuntime().exec(call);
 		process.waitFor();
 
+		if(debug) {
+			final var is =process.getInputStream();
+			final String output = IOUtils.toString(is);
+			final List<String> outputlist = Arrays.stream(output.split("\n")).map(s -> "\t" + s).collect(Collectors.toList());
+			outputlist.forEach(out::println);
+		}
+
 		if(process.exitValue() != 0 ){
 			throw new Exception("dracovm exited with nonzero exit value.");
 		}else{
@@ -281,12 +290,6 @@ public final class DragonCompiler {
 			}
 		}
 
-		if(debug) {
-			final String output = IOUtils.toString(process.getInputStream());
-			out.println(output);
-			final String output2 = IOUtils.toString(process.getErrorStream());
-			out.println(output2);
-		}
 	}
 
 	public static void invokeDragonParser(final File tokensFile, final boolean debug) throws Exception {
@@ -300,7 +303,9 @@ public final class DragonCompiler {
 
 		if(debug){
 			final InputStream is = p.getInputStream();
-			out.println(IOUtils.toString(is));
+			final String output = IOUtils.toString(is);
+			final List<String> outputlist = Arrays.stream(output.split("\n")).map(s -> "\t" + s).collect(Collectors.toList());
+			outputlist.forEach(out::println);
 		}
 
 		if(p.exitValue() != 0){
