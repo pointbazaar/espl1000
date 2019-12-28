@@ -121,7 +121,7 @@ But the .dg.json file is optional and does not obstruct the simplicity of the .d
   - [x] stdin,stdout (readchar,putchar,printi,println)
   - [ ] file system (creating files, reading files, writing files)
 - [ ] support for functional style
-
+- [ ] compiler functions, such as sizeof , and support for differentiating expressions (which may contain pure functions) for some variable.   
 
 functional programming, imperative programming,
 concurrency, laziness, declarative programming, constraint based programming.
