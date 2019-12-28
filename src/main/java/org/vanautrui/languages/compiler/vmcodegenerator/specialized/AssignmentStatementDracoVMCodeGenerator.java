@@ -86,7 +86,7 @@ final class AssignmentStatementDracoVMCodeGenerator {
         int i=0;
         while (i<varNode.memberAccessList.size()-1){
             //access that struct member, and its index in the struct
-            final String memberName=varNode.memberAccessList.get(i).name;
+            final String memberName=varNode.memberAccessList.get(i).simpleVariableNode.name;
 
             //figure out which struct
             final StructsSymbolTableRow struct = structsTable.get(previous_type);
@@ -98,8 +98,8 @@ final class AssignmentStatementDracoVMCodeGenerator {
             //for the next one
             previous_type = struct.getTypeOfMember(memberName);
 
-            if(varNode.memberAccessList.get(i).indexOptional.isPresent()){
-                final ExpressionNode indexIntoMemberExpr = varNode.memberAccessList.get(i).indexOptional.get();
+            if(varNode.memberAccessList.get(i).simpleVariableNode.indexOptional.isPresent()){
+                final ExpressionNode indexIntoMemberExpr = varNode.memberAccessList.get(i).simpleVariableNode.indexOptional.get();
                 vm.addAll(genDracoVMCodeForExpression(indexIntoMemberExpr, ctx));
                 vm.add("arrayread");
 
@@ -111,7 +111,7 @@ final class AssignmentStatementDracoVMCodeGenerator {
         }
 
         //now we have .x or .x[4] left. if we have an index on the last one, we want to dereference one more time.
-        final SimpleVariableNode last = varNode.memberAccessList.get(varNode.memberAccessList.size()-1);
+        final SimpleVariableNode last = varNode.memberAccessList.get(varNode.memberAccessList.size()-1).simpleVariableNode;
         if(last.indexOptional.isPresent()){
             //access that struct member, and its index in the struct
             final String memberName=last.name;

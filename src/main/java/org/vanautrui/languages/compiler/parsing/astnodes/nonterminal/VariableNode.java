@@ -11,11 +11,11 @@ import java.util.stream.Collectors;
 public final class VariableNode implements IASTNode, ITermNode {
 
 	public SimpleVariableNode simpleVariableNode;
-	public List<SimpleVariableNode> memberAccessList = new ArrayList<>();
+	public List<VariableNode> memberAccessList = new ArrayList<>();
 
 	public VariableNode(){}
 
-	public VariableNode(SimpleVariableNode simpleVariableNode, List<SimpleVariableNode> list) {
+	public VariableNode(SimpleVariableNode simpleVariableNode, List<VariableNode> list) {
 		this.simpleVariableNode = simpleVariableNode;
 		this.memberAccessList.addAll(list);
 	}

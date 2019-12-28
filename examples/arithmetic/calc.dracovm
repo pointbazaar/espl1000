@@ -1,8 +1,0 @@
-
-subroutine main 0
-	push 0
-	push 1
-	add
-	call println
-	push 0
-	return 

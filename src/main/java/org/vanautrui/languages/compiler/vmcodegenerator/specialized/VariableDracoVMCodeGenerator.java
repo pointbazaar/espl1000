@@ -95,7 +95,7 @@ public final class VariableDracoVMCodeGenerator {
             int i=0;
             while (i<varNode.memberAccessList.size()){
                 //access that struct member, and maybe its index also
-                final String memberName=varNode.memberAccessList.get(i).name;
+                final String memberName=varNode.memberAccessList.get(i).simpleVariableNode.name;
 
                 //figure out which struct
                 final TypeNode firstType = varTable.getTypeOfVariable(varNode.simpleVariableNode.name);
@@ -105,8 +105,8 @@ public final class VariableDracoVMCodeGenerator {
                 vm.add("iconst "+indexOfMember);
                 vm.add("arrayread");
 
-                if(varNode.memberAccessList.get(i).indexOptional.isPresent()){
-                    final ExpressionNode indexIntoMemberExpr = varNode.memberAccessList.get(i).indexOptional.get();
+                if(varNode.memberAccessList.get(i).simpleVariableNode.indexOptional.isPresent()){
+                    final ExpressionNode indexIntoMemberExpr = varNode.memberAccessList.get(i).simpleVariableNode.indexOptional.get();
                     vm.addAll(genDracoVMCodeForExpression(indexIntoMemberExpr, ctx));
                     vm.add("arrayread");
                 }

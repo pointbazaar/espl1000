@@ -74,8 +74,8 @@ public final class TypeResolver {
                 while(i<varNode.memberAccessList.size()){
                     final StructsSymbolTableRow row = structsTable.get(type.getTypeName());
 
-                    String typeOfMember = row.getTypeOfMember(varNode.memberAccessList.get(i).name);
-                    if(varNode.memberAccessList.get(i).indexOptional.isPresent()){
+                    String typeOfMember = row.getTypeOfMember(varNode.memberAccessList.get(i).simpleVariableNode.name);
+                    if(varNode.memberAccessList.get(i).simpleVariableNode.indexOptional.isPresent()){
                         typeOfMember=typeOfMember.substring(1,typeOfMember.length()-1);
                     }
 
