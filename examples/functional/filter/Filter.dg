@@ -16,7 +16,7 @@
 		return (item==2);	
 	}
 
-	fn filter ([PInt] arr,((PInt)->Bool) myfilterr)->[PInt] {
+	fn filter ([PInt] arr, ( (PInt)->Bool ) myfilterr)->[PInt] {
 		arr2 = [0,0];
 
 		i=0;

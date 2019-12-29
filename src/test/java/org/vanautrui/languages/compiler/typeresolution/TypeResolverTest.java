@@ -62,7 +62,7 @@ public final class TypeResolverTest {
 
 
 		final TypeNode typeExpressionNode = TypeResolver.getTypeExpressionNode(expr, ctx);
-		
+
 		Assert.assertEquals("PInt",typeExpressionNode.getTypeName());
 	}
 }

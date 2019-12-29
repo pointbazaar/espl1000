@@ -1,10 +1,9 @@
 package org.vanautrui.languages.compiler.symboltables;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public final class SubroutineSymbolTableRow {
@@ -13,14 +12,11 @@ public final class SubroutineSymbolTableRow {
     //almost all subroutines have a name, except anonymous subroutines or anonymous lambdas
     //but we can make up names for these maybe
 
-    private final TypeNode returnTypeName;  //every subroutine has a return type
     private final String className; //every subroutine is contained in a class
 
     private final int numberOfLocalVariables;
-    //private final int numberOfArguments;
 
-    private final List<TypeNode> argumentTypes = Collections.synchronizedList(new ArrayList<>());
-    private final SubroutineTypeNode type;
+    private final SubroutineTypeNode type;  //contains return type, argument types
 
     public SubroutineSymbolTableRow(
             final String subRoutineName,
@@ -31,13 +27,10 @@ public final class SubroutineSymbolTableRow {
             final boolean hasSideEffects
     ){
 
-        this.returnTypeName = returnTypeName;
         this.subRoutineName = subRoutineName;
         this.className=className;
         this.numberOfLocalVariables=numberOfLocalVariables;
-        this.type = new SubroutineTypeNode(argumentTypes,returnTypeName,hasSideEffects);
-
-        this.argumentTypes.addAll(arg_types);
+        this.type = new SubroutineTypeNode(arg_types,returnTypeName,hasSideEffects);
     }
 
     public SubroutineSymbolTableRow(
@@ -46,19 +39,17 @@ public final class SubroutineSymbolTableRow {
             final int numberOfLocalVariables,
             SubroutineTypeNode type){
 
-        this.returnTypeName = type.returnType;
         this.subRoutineName = subRoutineName;
         this.className=className;
         this.numberOfLocalVariables=numberOfLocalVariables;
         this.type = type;
 
-        this.argumentTypes.addAll(type.argumentTypes);
     }
 
     @Override
     public synchronized String toString(){
 
-        return String.format("| %8s | %8s | %8s |", subRoutineName, returnTypeName,className);
+        return String.format("| %8s | %8s | %8s |", subRoutineName, type.returnType,className);
     }
 
     public synchronized String getName() {
@@ -66,11 +57,11 @@ public final class SubroutineSymbolTableRow {
     }
 
     public synchronized TypeNode getReturnType() {
-        return this.returnTypeName;
+        return this.type.returnType;
     }
 
     public synchronized List<TypeNode> getArgumentTypes(){
-        return this.argumentTypes;
+        return this.type.argumentTypes;
     }
 
     public synchronized String getClassName(){return this.className;}
@@ -80,7 +71,7 @@ public final class SubroutineSymbolTableRow {
     }
 
     public synchronized int getNumberOfArguments() {
-        return this.argumentTypes.size();
+        return this.type.argumentTypes.size();
     }
 
     public synchronized static String generateVMCodeSubroutineName(
@@ -95,7 +86,7 @@ public final class SubroutineSymbolTableRow {
     }
 
     public TypeNode getType() {
-        return new TypeNode(this.type);
+        return new TypeNode(new BasicTypeWrappedNode(this.type));
     }
 }
 
