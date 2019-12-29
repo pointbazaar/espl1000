@@ -4,6 +4,7 @@ import org.vanautrui.languages.compiler.parsing.IASTNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.ITermNode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class ExpressionNode implements IASTNode, ITermNode {
@@ -29,6 +30,16 @@ public final class ExpressionNode implements IASTNode, ITermNode {
 		this.term=term;
 		this.operatorNodes=operators;
 		this.termNodes=termNodes;
+	}
+
+	public ExpressionNode(final TermNode term, final OperatorNode op, final TermNode term2) {
+		//this is a convenience constructor to easily construct binary expressions
+		//TODO: expression should be a tree-like structure maybe, maybe for ease of code generation?
+		//TODO: wonder about operator precedence in general
+		this.term=term;
+		this.operatorNodes= Arrays.asList(op);
+		this.termNodes=Arrays.asList(term2);
+
 	}
 
 	@Override

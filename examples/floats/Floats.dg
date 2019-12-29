@@ -1,9 +1,5 @@
-use Base.dg
-use Math.dg
 
-namespace Floats{
-
-	public ()~>PInt main{
+	fn main ()~>PInt {
 		println("PI/2");
 		printfl(subr(3.14159,2.0));
 
@@ -17,7 +13,7 @@ namespace Floats{
 		printfl(2.0-4.0);
 		return 0;
 	}
-	public (Float a,Float b)~>Float subr{
-		return a/b;
+	
+	fn subr (Float a,Float b)~>Float {
+		return a / b;
 	}
-}

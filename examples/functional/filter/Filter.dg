@@ -1,5 +1,5 @@
-public namespace Filter{
-	()~>PInt main{
+
+	fn main ()~>PInt {
 		arr=[1,2];
 
 		arr2 = filter(arr,myfilter);
@@ -12,11 +12,11 @@ public namespace Filter{
 		return 0;
 	}
 
-	(PInt item)->Bool myfilter{
+	fn myfilter (PInt item)->Bool {
 		return (item==2);	
 	}
 
-	([PInt] arr,((PInt)->Bool) myfilterr)->[PInt] filter{
+	fn filter ([PInt] arr,((PInt)->Bool) myfilterr)->[PInt] {
 		arr2 = [0,0];
 
 		i=0;
@@ -31,4 +31,3 @@ public namespace Filter{
 
 		return arr2;
 	}
-}

@@ -3,6 +3,7 @@ package org.vanautrui.languages.compiler.symboltables;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.BasicTypeWrappedNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SimpleTypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +16,7 @@ public final class SubroutineSymbolTable {
 
     private List<SubroutineSymbolTableRow> symbolTable;
 
-    public SubroutineSymbolTable()throws Exception{
+    public SubroutineSymbolTable() {
         this.symbolTable = Collections.synchronizedList(new ArrayList<>());
 
         //add the builtin subroutines
@@ -23,18 +24,31 @@ public final class SubroutineSymbolTable {
         //already implemented subroutines
 
         //putchar
+        final TypeNode putchar_returnType = new TypeNode(new SimpleTypeNode("PInt"));
         final List<TypeNode> putchar_arg_types = Arrays.asList(new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Char"))));
-        final SubroutineSymbolTableRow putchar = new SubroutineSymbolTableRow("putchar",new SimpleTypeNode("PInt"),"Builtin",0,putchar_arg_types);
+        final SubroutineTypeNode putchar_type = new SubroutineTypeNode(putchar_arg_types, putchar_returnType,true);
+        final SubroutineSymbolTableRow putchar = new SubroutineSymbolTableRow(
+                "putchar",
+                "Builtin",
+                0,
+                putchar_type
+        );
         this.add(putchar);
 
+
+
         //putdigit
+        final TypeNode putdigit_returnType = new TypeNode(new SimpleTypeNode("PInt"));
         final List<TypeNode> putdigit_arg_types = Arrays.asList(new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("PInt"))));
-        final SubroutineSymbolTableRow putdigit = new SubroutineSymbolTableRow("putdigit",new SimpleTypeNode("PInt"),"Builtin",0,putdigit_arg_types);
+        final SubroutineTypeNode putdigit_type = new SubroutineTypeNode(putdigit_arg_types,putdigit_returnType,true);
+        final SubroutineSymbolTableRow putdigit = new SubroutineSymbolTableRow("putdigit", "Builtin",0, putdigit_type);
         this.add(putdigit);
 
         //readchar
+        final TypeNode readchar_returnType = new TypeNode(new SimpleTypeNode("Char"));
         final List<TypeNode> readchar_arg_types = new ArrayList<>();
-        final SubroutineSymbolTableRow readchar = new SubroutineSymbolTableRow("readchar",new SimpleTypeNode("Char"),"Builtin",0,readchar_arg_types);
+        final SubroutineTypeNode readchar_type = new SubroutineTypeNode(readchar_arg_types,readchar_returnType,true);
+        final SubroutineSymbolTableRow readchar = new SubroutineSymbolTableRow("readchar","Builtin",0,readchar_type);
         this.add(readchar);
 
 
@@ -52,22 +66,30 @@ public final class SubroutineSymbolTable {
 
         //new
         final List<TypeNode> new_arg_types = Arrays.asList(new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("PInt"))));
-        this.add(new SubroutineSymbolTableRow("new",new SimpleTypeNode("#"),"Builtin",0,new_arg_types));
+        final TypeNode new_returnType = new TypeNode(new SimpleTypeNode("#"));
+        final SubroutineTypeNode new_type = new SubroutineTypeNode(new_arg_types,new_returnType,false);
+        this.add(new SubroutineSymbolTableRow("new","Builtin",0,new_type));
 
         //len
         final List<TypeNode> len_arg_types = Arrays.asList(new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("#"))));
+        final TypeNode len_returnType = new TypeNode(new SimpleTypeNode("PInt"));
+        final SubroutineTypeNode len_type = new SubroutineTypeNode(len_arg_types,len_returnType,false);
         // arg type should really be [#], but not sure if i want to implement that yet.
         // dragon would then have to match nested types to find out if the types are compatible
         // i want to implement that later
-        this.add(new SubroutineSymbolTableRow("len",new SimpleTypeNode("PInt"),"Builtin",0,len_arg_types));
+        this.add(new SubroutineSymbolTableRow("len","Builtin",0, len_type));
 
         //abs
         final List<TypeNode> abs_arg_types = Arrays.asList(new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Int"))));
-        this.add(new SubroutineSymbolTableRow("abs",new SimpleTypeNode("PInt"),"Builtin",0,abs_arg_types));
+        final TypeNode abs_returnType = new TypeNode(new SimpleTypeNode("PInt"));
+        final SubroutineTypeNode abs_type = new SubroutineTypeNode(abs_arg_types,abs_returnType,false);
+        this.add(new SubroutineSymbolTableRow("abs","Builtin",0, abs_type));
 
         //time
         final List<TypeNode> time_arg_types = new ArrayList<>();
-        this.add(new SubroutineSymbolTableRow("time",new SimpleTypeNode("PInt"),"Builtin",0,time_arg_types));
+        final TypeNode time_returnType = new TypeNode(new SimpleTypeNode("PInt"));
+        final SubroutineTypeNode time_type = new SubroutineTypeNode(time_arg_types,time_returnType,true);
+        this.add(new SubroutineSymbolTableRow("time","Builtin",0, time_type));
     }
 
     public synchronized void add(final SubroutineSymbolTableRow row) {
@@ -94,8 +116,8 @@ public final class SubroutineSymbolTable {
         throw new Exception();
     }
 
-    public synchronized TypeNode getReturnTypeOfSubroutine(final String subroutineName) {
-        return symbolTable.stream().filter(e->e.getName().equals(subroutineName)).collect(Collectors.toList()).get(0).getReturnType();
+    public synchronized TypeNode getReturnTypeOfSubroutine(final String subroutineName) throws Exception {
+        return this.get(subroutineName).getReturnType();
     }
 
     public synchronized int size() {
@@ -105,25 +127,31 @@ public final class SubroutineSymbolTable {
     public synchronized String toString(){
 
         // define a formatter for each column
-        String[] names = this.symbolTable.stream().map(SubroutineSymbolTableRow::getName).collect(Collectors.toList()).toArray(new String[]{});
-        String[] types = this.symbolTable.stream().map(row->row.getReturnType().getTypeName()).collect(Collectors.toList()).toArray(new String[]{});
+        final String[] names = this.symbolTable.stream().map(SubroutineSymbolTableRow::getName).collect(Collectors.toList()).toArray(new String[]{});
 
-        int[] indices_inner = IntStream.range(0,this.symbolTable.size()).toArray();
-        Integer[] indices = Arrays.stream( indices_inner ).boxed().toArray( Integer[]::new );
+        final String[] returntypes = this.symbolTable.stream().map(row->row.getReturnType().getTypeName()).collect(Collectors.toList()).toArray(new String[]{});
+
+        final String[] types = this.symbolTable.stream().map(row -> row.getType().getTypeName()).collect(Collectors.toList()).toArray(new String[]{});
+
+        final int[] indices_inner = IntStream.range(0,this.symbolTable.size()).toArray();
+        final Integer[] indices = Arrays.stream( indices_inner ).boxed().toArray( Integer[]::new );
 
         final StringBuilder table = new StringBuilder();
 
+        final String formatString = "%18s | %12s | %17s | %12s \n";
+
         //append table headers
-        table.append(String.format("%12s | %12s | %12s \n","Subroutine Name","Type","Index"));
+        table.append(String.format(formatString,"Subroutine Name","Return Type","Type","Index"));
 
         for(final int i : indices){
 
             final String varname = names[i];
+            final String returntype = returntypes[i];
             final String type = types[i];
             final int index = indices[i]; //just for pattern sake
 
             //append a row
-            table.append(String.format("%12s | %12s | %12d \n",varname,type,index));
+            table.append(String.format(formatString,varname,returntype,type,index));
         }
         //System.out.println(table); // NOTICE: table.toString() is called implicitly
         return "\nSUBROUTINE SYMBOL TABLE: \n"+table.toString();
@@ -150,8 +178,9 @@ public final class SubroutineSymbolTable {
         return this.get(methodName).getNumberOfArguments();
     }
 
-    public synchronized TypeNode getTypeOfSubroutine(final String subroutine_name) throws Exception{
-        return this.get(subroutine_name).getReturnType();
+    public synchronized TypeNode getTypeOfSubroutine(final String subroutineName) throws Exception{
+
+        return this.get(subroutineName).getType();
     }
 
     public synchronized TypeNode getArgTypeOfSubroutineAtIndex(final String methodName, final int index) throws Exception {

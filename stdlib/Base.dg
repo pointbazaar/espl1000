@@ -1,7 +1,5 @@
 
 
-
-
 fn print ( [ Char ] str ) ~> PInt {
 	i = 0 ;
 	while( i < len(str) ){
@@ -11,7 +9,8 @@ fn print ( [ Char ] str ) ~> PInt {
 	return 0;
 }
 
-fn println ([Char] str)~>PInt {
+fn println ( [ Char ] str)~>PInt {
+
 	print(str);
 	putchar('\n');
 	return 0;
@@ -39,6 +38,63 @@ fn printi (Int x)~>PInt {
 	return 0;
 }
 
+/*
+fn printfl (Float f) ~> PInt {
+	//to print a float (without newline)
+	if(f < 0.0 ){
+		putchar('-');
+		
+		return printfl_positive( - f);
+	}
+	
+	return printfl_positive(f);
+}
+
+fn fl_floordigit (Float f)~> PInt{
+	//floors a single float digit which must be positive
+	if(f < 1.0){
+		return 0;
+	}else
+	
+	return 1 + fl_floordigit(f - 1.0);
+}
+
+fn fl_floor(Float f) ~> PInt {
+	//floors a positive float
+	if(f < 10.0){
+		return fl_floordigit(f);
+	}
+	Int accumulator = 0;
+	
+	lastdigit = f % 10.0;
+	accumulator = fl_floordigit(lastdigit);
+
+	divided = f / 10.0;
+
+	accumulator = accumulator + (10 * fl_floor(divided));
+
+	return accumulator;
+}
+
+fn printfl_positive (Float f) ~> PInt {
+
+	//print the integer part
+	printi(fn_floor(f));
+	putchar('.');
+	
+	// print the decimals, with 2 decimal places
+
+	Float decimal = f % 1.0;
+	
+	Int decimals = fl_floor( (decimal * 100.0)  );
+
+	printi(decimals);
+	
+	
+	return 0;
+}
+
+*/
 fn delay (PInt seconds)~>PInt {
 
 	start=time();

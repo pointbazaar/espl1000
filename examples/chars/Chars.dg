@@ -1,9 +1,7 @@
-namespace Chars{
 	
-	Int main(){
+	fn main ()~>PInt{
 		c='h';
 		
 		putchar(c);
 		return 0;
 	}
-}

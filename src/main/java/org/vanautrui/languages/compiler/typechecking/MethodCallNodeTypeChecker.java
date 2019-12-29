@@ -11,7 +11,6 @@ import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wra
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SubroutineTypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
-import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
@@ -73,8 +72,6 @@ public final class MethodCallNodeTypeChecker {
           )throws Exception {
 
     final SubroutineSymbolTable subTable = ctx.subTable;
-    final LocalVarSymbolTable varTable = ctx.varTable;
-    final StructsSymbolTable structsTable = ctx.structsTable;
 
     final int nargs_expected = subTable.getNumberOfArgumentsOfSubroutine(methodCallNode.methodName);
     final int nargs_supplied = methodCallNode.arguments.size();
@@ -99,8 +96,8 @@ public final class MethodCallNodeTypeChecker {
         }else {
 
           String msg = "in call of " + methodCallNode.toSourceCode()
-                  + " , the types at index " + i + " did not match. expected type was "
-                  + arg_type_expected.getTypeName() + ", but " + arg_type.getTypeName() + " was supplied";
+                  + " , the types at index " + i + " did not match. expected type was '"
+                  + arg_type_expected.getTypeName() + "' , but '" + arg_type.getTypeName() + "' was supplied";
 
           msg+=" in context "+methodNode.toSourceCode();
 

@@ -102,7 +102,6 @@ public final class TypeResolver {
 
         final SubroutineSymbolTable subTable = ctx.subTable;
         final LocalVarSymbolTable varTable = ctx.varTable;
-        final StructsSymbolTable structsTable = ctx.structsTable;
 
         if(termNode.termNode instanceof ExpressionNode){
             return getTypeExpressionNode((ExpressionNode)termNode.termNode,ctx);
@@ -153,9 +152,6 @@ public final class TypeResolver {
             final ExpressionNode expressionNode,
             final SymbolTableContext ctx
     ) throws Exception {
-        final SubroutineSymbolTable subTable = ctx.subTable;
-        final LocalVarSymbolTable varTable = ctx.varTable;
-        final StructsSymbolTable structsTable = ctx.structsTable;
 
         final List<String> boolean_operators = Arrays.asList("<",">","<=",">=","==","!=");
         final List<String> primitive_types_not_integral = Arrays.asList("Bool","Char","Float");
@@ -189,9 +185,6 @@ public final class TypeResolver {
             final ExpressionNode expressionNode,
             final SymbolTableContext ctx
     ) throws Exception {
-        final SubroutineSymbolTable subTable = ctx.subTable;
-        final LocalVarSymbolTable varTable = ctx.varTable;
-        final StructsSymbolTable structsTable = ctx.structsTable;
 
         final List<String> some_arithmetic_operators = Arrays.asList("+","-","*","/","%");
 

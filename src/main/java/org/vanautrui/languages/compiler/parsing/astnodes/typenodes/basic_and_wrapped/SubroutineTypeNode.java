@@ -16,7 +16,8 @@ public final class SubroutineTypeNode implements IBasicAndWrappedTypeNode {
 
 	public SubroutineTypeNode(){}
 
-	public SubroutineTypeNode(final TypeNode return_type, final boolean hasSideEffects) {
+	public SubroutineTypeNode(List<TypeNode> argumentTypes, final TypeNode return_type, final boolean hasSideEffects) {
+		this.argumentTypes=argumentTypes;
 		this.returnType = return_type;
 		this.hasSideEffects = hasSideEffects;
 	}
