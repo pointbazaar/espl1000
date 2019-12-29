@@ -186,4 +186,8 @@ public final class SubroutineSymbolTable {
     public synchronized TypeNode getArgTypeOfSubroutineAtIndex(final String methodName, final int index) throws Exception {
         return get(methodName).getArgumentTypes().get(index);
     }
+
+    public SubroutineTypeNode getUnwrappedType(String methodName) throws Exception {
+        return get(methodName).getUnwrappedType();
+    }
 }

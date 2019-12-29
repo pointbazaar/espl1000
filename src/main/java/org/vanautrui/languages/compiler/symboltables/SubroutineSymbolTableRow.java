@@ -88,6 +88,10 @@ public final class SubroutineSymbolTableRow {
     public TypeNode getType() {
         return new TypeNode(new BasicTypeWrappedNode(this.type));
     }
+
+    public SubroutineTypeNode getUnwrappedType(){
+        return this.type;
+    }
 }
 
 

@@ -73,7 +73,26 @@ public final class MethodCallNodeTypeChecker {
 
     final SubroutineSymbolTable subTable = ctx.subTable;
 
-    final int nargs_expected = subTable.getNumberOfArgumentsOfSubroutine(methodCallNode.methodName);
+
+
+    SubroutineTypeNode subrType;
+
+    try{
+      //try if it is a known subroutine
+      subrType = subTable.getUnwrappedType(methodCallNode.methodName);
+
+    }catch (Exception e){
+      //so it must be local variable or arg, stored in varTable
+      final TypeNode method_type = ctx.varTable.get(methodCallNode.methodName).getType();
+      BasicTypeWrappedNode t0 = (BasicTypeWrappedNode)method_type.typeNode;
+      IBasicAndWrappedTypeNode t1 = t0.typeNode;
+
+      subrType =(SubroutineTypeNode)t1;
+
+    }
+    int nargs_expected = subrType.argumentTypes.size();
+
+
     final int nargs_supplied = methodCallNode.arguments.size();
 
     //number of arguments supplied should equal the number of arguments declared
@@ -85,7 +104,8 @@ public final class MethodCallNodeTypeChecker {
     for(int i=0;i<nargs_expected;i++){
 
       final TypeNode arg_type = TypeResolver.getTypeExpressionNode(methodCallNode.arguments.get(i), ctx);
-      final TypeNode arg_type_expected = subTable.getArgTypeOfSubroutineAtIndex(methodCallNode.methodName,i);
+      final TypeNode arg_type_expected = subrType.argumentTypes.get(i);
+      //subTable.getArgTypeOfSubroutineAtIndex(methodCallNode.methodName,i);
 
       if(!arg_type.getTypeName().equals(arg_type_expected.getTypeName())){
         //check if maybe the expected type is a wider type that contains the supplied type

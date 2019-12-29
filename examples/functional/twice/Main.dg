@@ -1,5 +1,5 @@
-public namespace Main{
-	()~>PInt main{
+
+	fn main ()~>PInt {
 		putdigit(subr(id));
 		putchar(' ');
 		putdigit(subr(twice));
@@ -7,13 +7,13 @@ public namespace Main{
 		return 0;
 	}
 
-	(PInt n)->PInt id{
+	fn id (PInt n)->PInt {
 		return n;
 	}
 	
-	(PInt n)->PInt twice{return 2*n;}
+	fn twice (PInt n)->PInt {return 2*n;}
 
-	(((PInt)~>PInt) subr1)->PInt subr{
+	fn subr (((PInt)->PInt) subr1)->PInt {
 		return subr1(2);
 	}
-}
+
