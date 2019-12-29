@@ -1,6 +1,6 @@
-public namespace Other1{
 
-	public Int main(){
+
+	fn main ()~>PInt {
 		
 		x1=1;
 		x2=2;
@@ -20,10 +20,10 @@ public namespace Other1{
 		x16=16;
 
 		println("4");
-		println(x4);
+		printi(x4);
 
 		println("16");
-		println(x16);
+		printi(x16);
 		return 0;
 	}
-}
+

@@ -1,15 +1,14 @@
-namespace MethodCall2{
-	Int main(){
+
+	fn main ()~>PInt {
 		subr(2,1);
 		return 0;
 	}
 
-	Int subr(Int a,Int b){
+	fn subr(Int a,Int b) -> Int{
 		return subr2(a);
 	}
 
-	Int subr2(Int a){
+	fn subr2 (Int a) -> Int{
 		putchar('c');
 		return a;
 	}
-}

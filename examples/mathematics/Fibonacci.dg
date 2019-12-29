@@ -1,12 +1,13 @@
-public namespace Fibonacci{
 
-	public Int main(){
-		x=100;
-		println(fibonacci(x));
+	fn main () ~> PInt{
+		x=10;
+		printi(fibonacci(x));
+
+		println(" ");
 		return 0;
 	}
 
-	public Int fibonacci(Int n){
+	fn fibonacci (PInt n) -> PInt{
 		
 		if(n<2){
 			return 1;
@@ -15,4 +16,4 @@ public namespace Fibonacci{
 		}
 		return 0;
 	}
-}
+

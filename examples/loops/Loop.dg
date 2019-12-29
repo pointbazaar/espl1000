@@ -1,11 +1,8 @@
-public namespace Loop{
+fn main ()~>PInt { 
 
-    public ()~>PInt main{ 
-
-        loop 3{
-
-            putchar('x');
-       }
+	loop 3{
+		putchar('x');
+	}
 	return 0;
-    }
+
 }

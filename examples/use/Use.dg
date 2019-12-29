@@ -1,9 +1,7 @@
-use Math.dg
 
-public namespace Use{
 
-	public Int main(){
-		println(sqrt(9.0));		
+	fn main ()~>PInt {
+		printi(sqrt(9.0));		
+		println(" ");
 		return 0;
 	}
-}

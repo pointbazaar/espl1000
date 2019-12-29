@@ -1,8 +1,0 @@
-
-namespace MyOutput{
-	()~>PInt main{
-		putchar('c');
-		putdigit(3);
-		return 0;
-	}
-}

@@ -1,9 +1,6 @@
-public namespace Locals{
+fn main ()~> PInt {
+	x=55;
 
-	public Int main () {
-		x=55;
-
-		println("Hii");
-		return 0;
-	}
+	println("Hii");
+	return 0;
 }

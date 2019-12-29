@@ -1,10 +1,9 @@
 
-namespace MethodCall{
-	PInt main(){
-		subr(2,1);
-		return 0;
-	}
-	PInt subr(PInt a,PInt b){
-		return (a+b);
-	}
+fn main ()~>PInt {
+	subr(2,1);
+	return 0;
+}
+	
+fn subr (PInt a,PInt b) ~> PInt{
+	return (a+b);
 }

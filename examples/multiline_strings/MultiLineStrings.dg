@@ -1,5 +1,5 @@
-namespace MultiLineStrings{
-	Int main(){
+
+	fn main ()~>PInt {
 		x="
 
 		hello,
@@ -16,4 +16,3 @@ namespace MultiLineStrings{
 
 		return 0;
 	}
-}

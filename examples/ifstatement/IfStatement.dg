@@ -1,14 +1,13 @@
-public namespace IfStatement{
-	public ()~>PInt main{
 
-		x=3;
+fn main ()~>PInt {
 
-		if(x<5){
-			putchar('x');
-			putchar('<');
-			putchar('5');
-		}
+	x=3;
 
-		return 0;
+	if(x<5){
+		putchar('x');
+		putchar('<');
+		putchar('5');
 	}
+
+	return 0;
 }

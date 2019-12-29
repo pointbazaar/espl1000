@@ -1,4 +1,4 @@
-namespace MyStructs{
+
 	
 	struct MyStruct{
 		PInt a,
@@ -6,7 +6,7 @@ namespace MyStructs{
 	}
 
 
-	()~>PInt main{
+	fn main ()~>PInt {
 		MyStruct s = new(2); //as MyStruct has 2 members
 
 		s.a=1; //struct member store
@@ -18,4 +18,3 @@ namespace MyStructs{
 
 		return 0;
 	}
-}

@@ -1,14 +1,17 @@
-public namespace Faculty{
-	public Int main(){
+
+	fn main ()~>PInt {
 		
-		println(faculty(3));
+		printi(faculty(3));
+		println(" ");
 		return 0;
 	}
 	
-	Int faculty(Int n){
-		if(n!=1){
+	fn faculty (PInt n) -> PInt{
+	
+		if(n != 1){
 			return (n*faculty(n-1));
 		}
+		
 		return 1;
 	}
-}
+

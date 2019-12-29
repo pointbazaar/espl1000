@@ -1,10 +1,5 @@
-public namespace Input{
-    	public Int main(){
-		
-
-        		x=readchar();
-
-        		putchar(x);
-		return 0;
-    	}
+fn main ()~>PInt {
+    x=readchar();
+    putchar(x);
+	return 0;
 }

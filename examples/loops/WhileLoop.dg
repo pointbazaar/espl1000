@@ -1,5 +1,5 @@
-public namespace WhileLoop{
-	public ()~>PInt main {
+
+	fn main ()~>PInt {
 
 		i=0;
 		j=0;
@@ -15,4 +15,3 @@ public namespace WhileLoop{
 		}
 		return 0;
 	}
-}

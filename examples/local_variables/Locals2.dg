@@ -1,11 +1,9 @@
-public namespace Locals2{
-
-	public Int main () {
+fn main ()~> PInt {
 		x=55;
 
 		x=x*2;
 
-		println(x);
+		printi(x);
+		println(" ");
 		return 0;
-	}
 }
