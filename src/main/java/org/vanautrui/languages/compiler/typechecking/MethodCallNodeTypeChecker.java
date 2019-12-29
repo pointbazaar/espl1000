@@ -105,7 +105,6 @@ public final class MethodCallNodeTypeChecker {
 
       final TypeNode arg_type = TypeResolver.getTypeExpressionNode(methodCallNode.arguments.get(i), ctx);
       final TypeNode arg_type_expected = subrType.argumentTypes.get(i);
-      //subTable.getArgTypeOfSubroutineAtIndex(methodCallNode.methodName,i);
 
       if(!arg_type.getTypeName().equals(arg_type_expected.getTypeName())){
         //check if maybe the expected type is a wider type that contains the supplied type
