@@ -1,0 +1,16 @@
+def temp1 r16
+def temp2 r17
+def temp3 r18
+def temp4 r19
+
+def XL r26
+def XH r27
+
+def YL r28
+def YH r29
+
+def BASE_LOW r30
+def BASE_HIGH r31
+
+def SPL 0x3d
+def SPH 0x3e
