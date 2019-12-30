@@ -164,7 +164,7 @@ public final class TestUtils {
 
         //dracovm only accepts filenames as arguments
 
-        DragonCompiler.invokeDracoVMCompiler(vmcodes,debug);
+        DragonCompiler.invokeDracoVMCompiler(vmcodes,debug, false);
 
 
         //move our 'main' executable into the desired filename

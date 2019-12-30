@@ -125,6 +125,7 @@ public final class DragonCompiler {
 		sbf.append("\n");
 		sbf.append("EXAMPLES\n\n");
 		sbf.append("    draco Main.dg\n");
+		sbf.append("    draco -targetATMEL Main.dg\n");
 		sbf.append("    draco -debug Main.dg\n");
 		sbf.append("\n");
 
@@ -152,6 +153,7 @@ public final class DragonCompiler {
 	//without having to comb through all the code
 	public static final String FLAG_DEBUG="debug";
 	public static final String FLAG_TIMED="timed";
+	public static final String FLAG_TARGET_ATMEL="targetATMEL";
 
 	public static final String FLAG_PRINT_SYMBOLTABLES="symboltables";
 	public static final String FLAG_PRINT_HELP="help";
@@ -166,6 +168,7 @@ public final class DragonCompiler {
 		opts.addOption(new Option(FLAG_DEBUG,false,"prints debug output"));
 
 		opts.addOption(new Option(FLAG_TIMED,false,"how long did the build take?"));
+		opts.addOption(new Option(FLAG_TARGET_ATMEL,false,"generate .asm files for ATMEL Microcontrollers ?"));
 
 		opts.addOption(new Option(FLAG_PRINT_SYMBOLTABLES,false,"print symbol tables"));
 		opts.addOption(new Option(FLAG_PRINT_HELP,false,"print help"));
@@ -194,6 +197,7 @@ public final class DragonCompiler {
 
 		final boolean debug=cmd.hasOption(FLAG_DEBUG);
 		final boolean timed=cmd.hasOption(FLAG_TIMED);
+		final boolean targetATMEL = cmd.hasOption(FLAG_TARGET_ATMEL);
 
 		final long start_time_ms = currentTimeMillis();
 
@@ -229,7 +233,7 @@ public final class DragonCompiler {
 			//this phase depends on 'dracovm'
 			//which can be obtained here: https://github.com/pointbazaar/dracovm-compiler
 			//for each subroutine in vm code, make a NAME.subroutine.dracovm file
-			invokeDracoVMCompiler(vm_code_files,debug);
+			invokeDracoVMCompiler(vm_code_files,debug, targetATMEL);
 
 			final long end_time_ms = currentTimeMillis();
 			final long duration = end_time_ms-start_time_ms;
@@ -277,11 +281,17 @@ public final class DragonCompiler {
 		}
 	}
 
-	public static void invokeDracoVMCompiler(final List<Path> vm_code_files, final boolean debug) throws Exception {
+	public static void invokeDracoVMCompiler(
+			final List<Path> vm_code_files,
+			final boolean debug,
+			final boolean targetATMEL
+	) throws Exception {
 
 		//path should be e.g. .Main.subroutine.dracovm
 
-		final String call = ((debug)?"dracovm-debug":"dracovm")+" "+vm_code_files
+		final String call =
+				((debug)?"dracovm-debug":"dracovm")+" "+(targetATMEL?" -targetATMEL ":"  ")
+				+vm_code_files
 				.stream()
 				.map(Path::toString)
 				.collect(Collectors.joining(" "));
