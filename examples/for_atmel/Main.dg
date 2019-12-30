@@ -1,0 +1,9 @@
+
+
+fn main ()~> PInt{
+
+	x = 5+6;	//11 = 0xb
+	x = x - 9; //2
+	
+	return 0;
+}
