@@ -71,4 +71,50 @@ public final class SimplifierTest {
 		Assert.assertTrue(expr2.op.isEmpty());
 
 	}
+
+	@Test
+	public void testSimplificationComplicated(){
+
+		/*
+		1 + ( 2 * ( 3 % 2) ) / 7 -> 1 + ( 2 ) / 7 -> 1
+		1 + (...)
+			(2 * (...)) / 7
+		 */
+
+		final ExpressionNode expr = new ExpressionNode(
+				new TermNode(new IntConstNode(1)),
+				new OperatorNode("+"),
+				new TermNode(
+						new ExpressionNode(
+								new TermNode(new ExpressionNode(
+										new TermNode(new IntConstNode(2)),
+										new OperatorNode("*"),
+										new TermNode(new ExpressionNode(
+												new TermNode(new IntConstNode(3)),
+												new OperatorNode("%"),
+												new TermNode(new IntConstNode(2))
+										))
+								)),
+								new OperatorNode("/"),
+								new TermNode(new IntConstNode(7))
+						)
+				)
+		);
+
+		//DEBUG
+		//System.out.println(expr.toSourceCode());
+
+		final ExpressionNode expr2 = Simplifier.simplifyExpressionNode(expr,false);
+
+		//DEBUG
+		//System.out.println(expr2.toSourceCode());
+
+		Assert.assertTrue(expr2.term1.termNode instanceof IntConstNode);
+		IntConstNode iconst = (IntConstNode)expr2.term1.termNode;
+		Assert.assertEquals(1,iconst.number);
+
+		Assert.assertTrue(expr2.term2.isEmpty());
+		Assert.assertTrue(expr2.op.isEmpty());
+
+	}
 }
