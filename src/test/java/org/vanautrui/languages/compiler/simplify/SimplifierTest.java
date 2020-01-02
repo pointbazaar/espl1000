@@ -31,8 +31,44 @@ public final class SimplifierTest {
 		IntConstNode iconst = (IntConstNode)expr2.term1.termNode;
 		Assert.assertEquals(3,iconst.number);
 
-		Assert.assertEquals(true,expr2.term2.isEmpty());
-		Assert.assertEquals(true,expr2.op.isEmpty());
+		Assert.assertTrue(expr2.term2.isEmpty());
+		Assert.assertTrue(expr2.op.isEmpty());
+
+	}
+
+	@Test
+	public void testSimplificationOfNestedExpression(){
+
+		/*
+		1 + (2+3) -> 6
+		 */
+
+		final ExpressionNode expr = new ExpressionNode(
+				new TermNode(new IntConstNode(1)),
+				new OperatorNode("+"),
+				new TermNode(
+						new ExpressionNode(
+								new TermNode(new IntConstNode(2)),
+								new OperatorNode("+"),
+								new TermNode(new IntConstNode(3))
+						)
+				)
+		);
+
+		//DEBUG
+		//System.out.println(expr.toSourceCode());
+
+		final ExpressionNode expr2 = Simplifier.simplifyExpressionNode(expr,false);
+
+		//DEBUG
+		//System.out.println(expr2.toSourceCode());
+
+		Assert.assertTrue(expr2.term1.termNode instanceof IntConstNode);
+		IntConstNode iconst = (IntConstNode)expr2.term1.termNode;
+		Assert.assertEquals(6,iconst.number);
+
+		Assert.assertTrue(expr2.term2.isEmpty());
+		Assert.assertTrue(expr2.op.isEmpty());
 
 	}
 }

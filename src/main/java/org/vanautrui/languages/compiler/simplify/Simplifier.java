@@ -78,7 +78,7 @@ public final class Simplifier {
 		final OperatorNode op = expr.op.get();
 		final TermNode term2 = expr.term2.get();
 
-		return simplifyConstantExpressionInner(term1,op,term2,debug);
+		return simplifyExpressionInner(term1,op,term2,debug);
 	}
 
 	private static TermNode simplifyTermNode(TermNode term1,final boolean debug) {
@@ -89,7 +89,7 @@ public final class Simplifier {
 		return term1;
 	}
 
-	public static ExpressionNode simplifyConstantExpressionInner(
+	public static ExpressionNode simplifyExpressionInner(
 			final TermNode term1,
 			final OperatorNode op,
 			final TermNode term2,
@@ -100,8 +100,25 @@ public final class Simplifier {
 		//TODO: this would make these routines much simpler
 
 		//try to simplify terms in case there is a subexpression among them that can be simplified.
-		final TermNode nTerm1 = simplifyTermNode(term1,debug);
-		final TermNode nTerm2 = simplifyTermNode(term2,debug);
+		TermNode nTerm1 = simplifyTermNode(term1,debug);
+		TermNode nTerm2 = simplifyTermNode(term2,debug);
+
+		//TODO: maybe lift a term from expression in term. this could be the cause for the failing test
+		if(nTerm1.termNode instanceof ExpressionNode){
+			try {
+				nTerm1 = mayUnwrapExpression((ExpressionNode)nTerm1.termNode,debug);
+			} catch (Exception e) {
+				//pass
+			}
+		}
+
+		if(nTerm2.termNode instanceof ExpressionNode){
+			try {
+				nTerm2 = mayUnwrapExpression((ExpressionNode)nTerm2.termNode,debug);
+			} catch (Exception e) {
+				//pass
+			}
+		}
 
 		//if we then have 2 constant expressions, we can simplify it.
 		if(nTerm1.termNode instanceof IConstantNode && nTerm2.termNode instanceof IConstantNode){
@@ -146,15 +163,15 @@ public final class Simplifier {
 			final FloatConstNode i2 = (FloatConstNode)term2;
 			switch (op.operator){
 				case "+":
-					return new TermNode(new FloatConstNode(i1.floatValue+i2.floatValue));
+					return new TermNode(new FloatConstNode(i1.floatValue + i2.floatValue));
 				case "-":
-					return new TermNode(new FloatConstNode(i1.floatValue-i2.floatValue));
+					return new TermNode(new FloatConstNode(i1.floatValue - i2.floatValue));
 				case "*":
-					return new TermNode(new FloatConstNode(i1.floatValue*i2.floatValue));
+					return new TermNode(new FloatConstNode(i1.floatValue * i2.floatValue));
 				case "/":
-					return new TermNode(new FloatConstNode(i1.floatValue/i2.floatValue));
+					return new TermNode(new FloatConstNode(i1.floatValue / i2.floatValue));
 				case "%":
-					return new TermNode(new FloatConstNode(i1.floatValue%i2.floatValue));
+					return new TermNode(new FloatConstNode(i1.floatValue % i2.floatValue));
 			}
 		}else if(
 				term1 instanceof BoolConstNode

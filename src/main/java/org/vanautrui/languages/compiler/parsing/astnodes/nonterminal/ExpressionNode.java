@@ -30,7 +30,7 @@ public final class ExpressionNode implements IASTNode, ITermNode {
 	public String toSourceCode() {
 		if(this.op.isPresent() && this.term2.isPresent()){
 
-			return this.term1.toSourceCode()+" "+this.op.get().toSourceCode()+" "+this.term2.get().toSourceCode();
+			return "("+this.term1.toSourceCode()+" "+this.op.get().toSourceCode()+" "+this.term2.get().toSourceCode()+")";
 		}else{
 			return this.term1.toSourceCode();
 		}
