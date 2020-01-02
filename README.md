@@ -12,7 +12,7 @@
  
 This repo contains a simple, work-in-progress statically typed programming language.
 
-Its main debugger is [noBG](https://github.com/Milo-D/noBG-Assembly-Debugger).
+Its main debugger is [mdx](https://github.com/Milo-D/MDX-Assembly-Debugger).
 The editor of choice for Dragon currently is [micro](https://micro-editor.github.io/), because there is a basic syntax highlighting for it.
 
 ## Examples
