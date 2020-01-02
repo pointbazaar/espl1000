@@ -223,8 +223,11 @@ public final class DragonCompiler {
 
 			final AST_Whole_Program ast = parseASTFromJSONFiles(jsonFiles,debug);
 
-			//PHASE TYPE CHECKING
+			//PHASE: TYPE CHECKING
 			CompilerPhases.phase_typecheck(ast,debug);
+
+			//PHASE: SIMPLIFY
+			CompilerPhases.phase_simplify(ast,debug);
 
 			//PHASE CODE GENERATION, returns a list of paths where the files for the subroutines are
 			final List<Path> vm_code_files = CompilerPhases.phase_vm_codegeneration(ast, cmd.hasOption(FLAG_PRINT_SYMBOLTABLES),debug);
@@ -235,11 +238,9 @@ public final class DragonCompiler {
 			//for each subroutine in vm code, make a NAME.subroutine.dracovm file
 			invokeDracoVMCompiler(vm_code_files,debug, targetATMEL);
 
-			final long end_time_ms = currentTimeMillis();
-			final long duration = end_time_ms-start_time_ms;
-
-			//https://www.utf8icons.com/
 			if(timed) {
+				final long end_time_ms = currentTimeMillis();
+				final long duration = end_time_ms-start_time_ms;
 				printDurationFeedback(duration);
 			}
 

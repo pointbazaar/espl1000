@@ -1,5 +1,8 @@
 package org.vanautrui.languages.commandline;
 
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.IStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
@@ -73,4 +76,29 @@ public final class CompilerPhases {
         return paths;
     }
 
+    public static void phase_simplify(
+            final AST_Whole_Program ast,
+            final boolean debug
+    ) {
+        //TODO: simplify and evaluate constant expressions like '1+2' -> '3'
+        if(debug){
+            System.out.println("CompilerPhases::phase_simplify");
+        }
+
+        ast.namespaceNodeList.forEach(namespaceNode -> {
+            //we can only simplify subroutines
+            namespaceNode.methods.forEach(method->{
+                //first focus on the statements
+                method.statements.forEach(stmt->{
+                    final IStatementNode istmt = stmt.statementNode;
+                    if(istmt instanceof AssignmentStatementNode){
+                        final AssignmentStatementNode astmt = (AssignmentStatementNode)istmt;
+                        final ExpressionNode expr = astmt.expressionNode;
+
+                        //TODO: look if expr is composed of only constant terms
+                    }
+                });
+            });
+        });
+    }
 }
