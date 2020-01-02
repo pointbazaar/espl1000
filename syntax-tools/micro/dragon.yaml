@@ -4,14 +4,14 @@ detect:
 
 rules:
     #types identifiers. all types start with an uppercase letter
-    - type: "[A-Z][A-Za-z0-9]*"
+    - type: "\\b[A-Z][A-Za-z0-9]*\\b"
 
     - statement: "\\b(return)\\b"
     - statement.control: "\\b(if|else|while|loop)\\b"
     
-    - special: "\\b(namespace|struct)\\b"
+    - special: "\\b(fn|struct)\\b"
 
-    - identifier: "[a-z][A-Za-z0-9]* "
+    - identifier: "\\b[a-z][A-Za-z0-9]*\\b"
 
     - symbol.brackets: "(\\{|\\})"
     - symbol.brackets: "(\\(|\\))"

@@ -1,5 +1,9 @@
-fn main ()~>PInt { 
+struct Example {
+	
+}
 
+fn main ()~>PInt { 
+	
 	loop 3{
 		putchar('x');
 	}
