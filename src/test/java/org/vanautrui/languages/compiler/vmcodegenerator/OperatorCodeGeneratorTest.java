@@ -110,15 +110,4 @@ public final class OperatorCodeGeneratorTest {
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals("1",IOUtils.toString(pr.getInputStream()));
     }
-
-    @Test
-    public void test_can_exp_int()throws Exception{
-        //tests the '^' operator for exponentiation
-        //, for calculating exponentials
-
-        final String source = "fn main ()~>PInt { return (2 ^ 3); } ";
-        final Process pr = compileAndRunProgramForTesting(source,"MainTest6737341",new String[0],false);
-        Assert.assertEquals(8,pr.exitValue());
-        Assert.assertEquals("",IOUtils.toString(pr.getInputStream()));
-    }
 }

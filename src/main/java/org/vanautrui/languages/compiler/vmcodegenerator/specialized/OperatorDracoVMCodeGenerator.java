@@ -34,9 +34,7 @@ public final class OperatorDracoVMCodeGenerator {
       entry( "%","imod"),
 
       entry( "<<","lshiftl"),
-      entry( ">>","lshiftr"),
-
-      entry( "^","iexp")
+      entry( ">>","lshiftr")
   );
 
   private static Map<String,String> vmcodes_for_op_float = Map.of(
