@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.OperatorNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IntConstNode;
 
 public final class SimplifierTest {
@@ -112,6 +113,33 @@ public final class SimplifierTest {
 		Assert.assertTrue(expr2.term1.termNode instanceof IntConstNode);
 		IntConstNode iconst = (IntConstNode)expr2.term1.termNode;
 		Assert.assertEquals(1,iconst.number);
+
+		Assert.assertTrue(expr2.term2.isEmpty());
+		Assert.assertTrue(expr2.op.isEmpty());
+
+	}
+
+	@Test
+	public void testSimplificationOfComparisons(){
+
+		/*
+		1 < 2 -> true
+		 */
+
+		final ExpressionNode expr = new ExpressionNode(
+				new TermNode(new IntConstNode(1)),
+				new OperatorNode("<"),
+				new TermNode(new IntConstNode(2))
+		);
+
+		final ExpressionNode expr2 = Simplifier.simplifyExpressionNode(expr,false);
+
+		//DEBUG
+		//System.out.println(expr2.toSourceCode());
+
+		Assert.assertTrue(expr2.term1.termNode instanceof BoolConstNode);
+		BoolConstNode iconst = (BoolConstNode) expr2.term1.termNode;
+		Assert.assertTrue(iconst.boolValue);
 
 		Assert.assertTrue(expr2.term2.isEmpty());
 		Assert.assertTrue(expr2.op.isEmpty());

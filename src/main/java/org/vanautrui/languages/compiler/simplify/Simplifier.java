@@ -143,16 +143,31 @@ public final class Simplifier {
 			final IntConstNode i1 = (IntConstNode)term1;
 			final IntConstNode i2 = (IntConstNode)term2;
 			switch (op.operator){
+				//arithmetic
 				case "+":
-					return new TermNode(new IntConstNode(i1.number+i2.number));
+					return new TermNode(new IntConstNode(i1.number + i2.number));
 				case "-":
-					return new TermNode(new IntConstNode(i1.number-i2.number));
+					return new TermNode(new IntConstNode(i1.number - i2.number));
 				case "*":
-					return new TermNode(new IntConstNode(i1.number*i2.number));
+					return new TermNode(new IntConstNode(i1.number * i2.number));
 				case "/":
-					return new TermNode(new IntConstNode(i1.number/i2.number));
+					return new TermNode(new IntConstNode(i1.number / i2.number));
 				case "%":
-					return new TermNode(new IntConstNode(i1.number%i2.number));
+					return new TermNode(new IntConstNode(i1.number % i2.number));
+
+				//comparisons
+				case ">":
+					return new TermNode(new BoolConstNode(i1.number > i2.number));
+				case ">=":
+					return new TermNode(new BoolConstNode(i1.number >= i2.number));
+				case "<":
+					return new TermNode(new BoolConstNode(i1.number < i2.number));
+				case "<=":
+					return new TermNode(new BoolConstNode(i1.number <= i2.number));
+				case "!=":
+					return new TermNode(new BoolConstNode(i1.number != i2.number));
+				case "==":
+					return new TermNode(new BoolConstNode(i1.number == i2.number));
 			}
 
 		}else if(
@@ -162,6 +177,7 @@ public final class Simplifier {
 			final FloatConstNode i1 = (FloatConstNode)term1;
 			final FloatConstNode i2 = (FloatConstNode)term2;
 			switch (op.operator){
+				//arithmetic
 				case "+":
 					return new TermNode(new FloatConstNode(i1.floatValue + i2.floatValue));
 				case "-":
@@ -172,6 +188,20 @@ public final class Simplifier {
 					return new TermNode(new FloatConstNode(i1.floatValue / i2.floatValue));
 				case "%":
 					return new TermNode(new FloatConstNode(i1.floatValue % i2.floatValue));
+
+				//comparisons
+				case ">":
+					return new TermNode(new BoolConstNode(i1.floatValue > i2.floatValue));
+				case ">=":
+					return new TermNode(new BoolConstNode(i1.floatValue >= i2.floatValue));
+				case "<":
+					return new TermNode(new BoolConstNode(i1.floatValue < i2.floatValue));
+				case "<=":
+					return new TermNode(new BoolConstNode(i1.floatValue <= i2.floatValue));
+				case "!=":
+					return new TermNode(new BoolConstNode(i1.floatValue != i2.floatValue));
+				case "==":
+					return new TermNode(new BoolConstNode(i1.floatValue == i2.floatValue));
 			}
 		}else if(
 				term1 instanceof BoolConstNode
@@ -184,6 +214,10 @@ public final class Simplifier {
 					return new TermNode(new BoolConstNode(i1.boolValue && i2.boolValue));
 				case "||":
 					return new TermNode(new BoolConstNode(i1.boolValue || i2.boolValue));
+				case "!=":
+					return new TermNode(new BoolConstNode(i1.boolValue != i2.boolValue));
+				case "==":
+					return new TermNode(new BoolConstNode(i1.boolValue == i2.boolValue));
 			}
 		}
 
