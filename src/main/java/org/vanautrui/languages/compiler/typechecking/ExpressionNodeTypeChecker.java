@@ -44,11 +44,11 @@ public final class ExpressionNodeTypeChecker {
     final StructsSymbolTable structsTable = ctx.structsTable;
 
     //check expression with only 1 operand
-    if(expr.operatorNodes.size()==0 && expr.termNodes.size()==0){
-      typecheckTermNode(asts, namespaceNode,methodNode,expr.term,ctx);
-    }else if(expr.operatorNodes.size()==1 && expr.termNodes.size()==1){
+    if(expr.op.isEmpty() && expr.term2.isEmpty()){
+      typecheckTermNode(asts, namespaceNode,methodNode,expr.term1,ctx);
+    }else if(expr.op.isPresent() && expr.term2.isPresent()){
       //check expressions with only 2 operands
-      typeCheckExpressionNodeWith2Operands(asts, namespaceNode,methodNode,expr.term,expr.operatorNodes.get(0),expr.termNodes.get(0),ctx);
+      typeCheckExpressionNodeWith2Operands(asts, namespaceNode,methodNode,expr.term1,expr.op.get(),expr.term2.get(),ctx);
     }else{
       typeCheckExpressionNodeWithMoreThan2Operands(asts, namespaceNode,methodNode,expr,ctx);
     }
@@ -63,18 +63,18 @@ public final class ExpressionNodeTypeChecker {
   ) throws Exception {
 
     //the types should be all the same for now
-    typecheckTermNode(asts, namespaceNode,methodNode,expr.term,ctx);
-    TypeNode type= TypeResolver.getTypeTermNode(expr.term,ctx);
+    typecheckTermNode(asts, namespaceNode,methodNode,expr.term1,ctx);
+    TypeNode type= TypeResolver.getTypeTermNode(expr.term1,ctx);
     final List<String> allowed_operators_for_expressions_with_more_than_2_terms=Arrays.asList("+","-");
 
 
-    if(expr.termNodes.size()==1 && expr.operatorNodes.size()==1 && expr.operatorNodes.get(0).operator.equals("==")) {
+    if(expr.term2.isPresent() && expr.op.isPresent() && expr.op.get().operator.equals("==")) {
       //can only compare stuff which is the same
-      TypeNode otherType = TypeResolver.getTypeTermNode(expr.termNodes.get(0),ctx);
+      TypeNode otherType = TypeResolver.getTypeTermNode(expr.term2.get(),ctx);
       if(!otherType.getTypeName().equals(type.getTypeName())){
         throw new Exception(TypeChecker.class.getSimpleName()+": to compare with '==', they have to be the same type ");
       }
-      typecheckTermNode(asts, namespaceNode,methodNode,expr.termNodes.get(0),ctx);
+      typecheckTermNode(asts, namespaceNode,methodNode,expr.term2.get(),ctx);
       return;
     }
 
@@ -82,7 +82,8 @@ public final class ExpressionNodeTypeChecker {
         throw new Exception(type+" is not in the currently allowed types for use in expression with more than 2 terms");
     }
 
-    for (TermNode t : expr.termNodes){
+    if (expr.term2.isPresent()){
+      final TermNode t = expr.term2.get();
       if( !( TypeResolver.getTypeTermNode(t,ctx).equals(type) ) ){
         throw new Exception("for now, all types in an expression must be the same");
       }
@@ -90,7 +91,8 @@ public final class ExpressionNodeTypeChecker {
       typecheckTermNode(asts, namespaceNode,methodNode,t,ctx);
     }
 
-    for(OperatorNode op : expr.operatorNodes){
+    if(expr.op.isPresent()){
+      final OperatorNode op = expr.op.get();
       if(!allowed_operators_for_expressions_with_more_than_2_terms.contains(op.operator)){
         throw new Exception("currently not supported operator: "+op.operator);
       }

@@ -149,7 +149,7 @@ public final class TypeResolver {
 
 
     public static TypeNode getTypeExpressionNode(
-            final ExpressionNode expressionNode,
+            final ExpressionNode expr,
             final SymbolTableContext ctx
     ) throws Exception {
 
@@ -157,62 +157,63 @@ public final class TypeResolver {
         final List<String> primitive_types_not_integral = Arrays.asList("Bool","Char","Float");
 
         if(
-                isIntegralType(getTypeTermNode(expressionNode.term,ctx)) &&
-                        expressionNode.termNodes.size()==1 &&
-                        isIntegralType(getTypeTermNode(expressionNode.termNodes.get(0),ctx)) &&
-                        expressionNode.operatorNodes.size()==1 &&
-                        (boolean_operators.contains(expressionNode.operatorNodes.get(0).operator))
+		        isIntegralType(getTypeTermNode(expr.term1,ctx)) &&
+                        expr.term2.isPresent() &&
+		        isIntegralType(getTypeTermNode(expr.term2.get(),ctx))  &&
+		        (boolean_operators.contains(expr.op.get().operator))
         ){
             return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode( "Bool")));
         }
 
         for(final String primitive_type_not_integral : primitive_types_not_integral) {
             if (
-                    getTypeTermNode(expressionNode.term, ctx).getTypeName().equals(primitive_type_not_integral) &&
-                            expressionNode.termNodes.size() == 1 &&
-                            getTypeTermNode(expressionNode.termNodes.get(0), ctx).getTypeName().equals(primitive_type_not_integral) &&
-                            expressionNode.operatorNodes.size() == 1 &&
-                            (boolean_operators.contains(expressionNode.operatorNodes.get(0).operator))
+		            getTypeTermNode(expr.term1, ctx).getTypeName().equals(primitive_type_not_integral) &&
+                            expr.term2.isPresent() &&
+		            getTypeTermNode(expr.term2.get(), ctx).getTypeName().equals(primitive_type_not_integral) &&
+                            expr.op.isPresent() &&
+		            (boolean_operators.contains(expr.op.get().operator))
             ) {
                 return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode("Bool")));
             }
         }
 
-        return getTypeExpressionNodeNonSimple(expressionNode, ctx);
+        return getTypeExpressionNodeNonSimple(expr, ctx);
     }
 
     private static TypeNode getTypeExpressionNodeNonSimple(
-            final ExpressionNode expressionNode,
+            final ExpressionNode expr,
             final SymbolTableContext ctx
     ) throws Exception {
 
         final List<String> some_arithmetic_operators = Arrays.asList("+","-","*","/","%");
 
-        final TypeNode type = getTypeTermNode(expressionNode.term,ctx);
+        final TypeNode type = getTypeTermNode(expr.term1,ctx);
 
-        for (final TermNode t : expressionNode.termNodes){
+        if(expr.term2.isPresent()){
+
+            final TermNode t = expr.term2.get();
             TypeNode termType = getTypeTermNode(t,ctx);
 
             if(!(termType.getTypeName().equals(type.getTypeName()))){
 
                 if(
-                        isIntegralType(getTypeTermNode(expressionNode.term,ctx)) &&
-                                expressionNode.termNodes.size()==1 &&
-                                isIntegralType(getTypeTermNode(expressionNode.termNodes.get(0),ctx)) &&
-                                expressionNode.operatorNodes.size()==1 &&
-                                (some_arithmetic_operators.contains(expressionNode.operatorNodes.get(0).operator))
+		                isIntegralType(getTypeTermNode(expr.term1,ctx)) &&
+                                expr.term2.isPresent() &&
+		                isIntegralType(getTypeTermNode(expr.term2.get(),ctx)) &&
+                                expr.op.isPresent() &&
+		                (some_arithmetic_operators.contains(expr.op.get().operator))
                 ){
                     return new TypeNode(new BasicTypeWrappedNode(new SimpleTypeNode( "Int")));
                 }
 
                 throw new Exception(
                         "the types are not the same, "+type.getTypeName()+" collides with "+termType.getTypeName()
-                                +" in '"+expressionNode.toSourceCode()+"'"
+                                +" in '"+expr.toSourceCode()+"'"
                 );
             }
         }
 
-        return getTypeTermNode(expressionNode.term,ctx);
+        return getTypeTermNode(expr.term1,ctx);
     }
 
     public static TypeNode getTypeMethodCallNode(

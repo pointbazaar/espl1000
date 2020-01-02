@@ -1,7 +1,6 @@
 package org.vanautrui.languages.compiler.vmcodegenerator.specialized;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
@@ -28,22 +27,17 @@ public final class ExpressionDracoVMCodeGenerator {
 
         final List<String> vm=new ArrayList<>();
 
-        vm.addAll(genDracoVMCodeForTerm(expr.term, ctx));
+        vm.addAll(genDracoVMCodeForTerm(expr.term1, ctx));
 
-        for (int i = 0; i < expr.termNodes.size(); i++) {
+        if(expr.term2.isPresent()){
 
-            final TermNode term = expr.termNodes.get(i);
+            vm.addAll(genDracoVMCodeForTerm(expr.term2.get(),ctx));
 
-            vm.addAll(genDracoVMCodeForTerm(term,ctx));
+            final TypeNode type = TypeResolver.getTypeTermNode(expr.term2.get(), ctx);
 
-            final TypeNode type = TypeResolver.getTypeTermNode(term, ctx);
-
-
-            //TODO: this does not work well. the list of term nodes should probably be converted into a tree structure.
-            //hacky
             final boolean hasFloatOperands = type.getTypeName().equals("Float");
             final boolean hasBoolOperands = type.getTypeName().equals("Bool");
-            vm.addAll(genDracoVMCodeForOp(expr.operatorNodes.get(i),hasFloatOperands,hasBoolOperands));
+            vm.addAll(genDracoVMCodeForOp(expr.op.get(),hasFloatOperands,hasBoolOperands));
         }
 
         return vm;

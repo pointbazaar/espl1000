@@ -3,55 +3,36 @@ package org.vanautrui.languages.compiler.parsing.astnodes.nonterminal;
 import org.vanautrui.languages.compiler.parsing.IASTNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.ITermNode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Optional;
 
 public final class ExpressionNode implements IASTNode, ITermNode {
 
 	//DragonExpressionNode should be similar to jack expression
 	//an expression should be anything that returns a value or computes to a value
 
-	public TermNode term;
-
-	public List<OperatorNode> operatorNodes;
-
-	public List<TermNode> termNodes;
+	public TermNode term1;
+	public Optional<OperatorNode> op = Optional.empty();
+	public Optional<TermNode> term2 = Optional.empty();
 
 	public ExpressionNode(){}
 
-	public ExpressionNode(final TermNode term) {
-		this.term = term;
-		this.operatorNodes=new ArrayList<>();
-		this.termNodes=new ArrayList<>();
+	public ExpressionNode(final TermNode term1) {
+		this.term1 = term1;
 	}
 
-	public ExpressionNode(final TermNode term, final List<OperatorNode> operators, final List<TermNode> termNodes){
-		this.term=term;
-		this.operatorNodes=operators;
-		this.termNodes=termNodes;
-	}
-
-	public ExpressionNode(final TermNode term, final OperatorNode op, final TermNode term2) {
-		//this is a convenience constructor to easily construct binary expressions
-		//TODO: expression should be a tree-like structure maybe, maybe for ease of code generation?
-		//TODO: wonder about operator precedence in general
-		this.term=term;
-		this.operatorNodes= Arrays.asList(op);
-		this.termNodes=Arrays.asList(term2);
-
+	public ExpressionNode(final TermNode term1, final OperatorNode op, final TermNode term2){
+		this.term1 = term1;
+		this.op = Optional.of(op);
+		this.term2 = Optional.of(term2);
 	}
 
 	@Override
 	public String toSourceCode() {
-		final StringBuilder res = new StringBuilder(term.toSourceCode());
+		if(this.op.isPresent() && this.term2.isPresent()){
 
-		for (int i = 0; i < this.operatorNodes.size(); i++) {
-			OperatorNode o = this.operatorNodes.get(i);
-			TermNode t = this.termNodes.get(i);
-			res.append(" ").append(o.toSourceCode()).append(" ").append(t.toSourceCode()).append(" ");
+			return this.term1.toSourceCode()+" "+this.op.get().toSourceCode()+" "+this.term2.get().toSourceCode();
+		}else{
+			return this.term1.toSourceCode();
 		}
-
-		return res.toString();
 	}
 }

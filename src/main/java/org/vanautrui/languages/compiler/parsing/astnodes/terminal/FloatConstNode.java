@@ -3,7 +3,7 @@ package org.vanautrui.languages.compiler.parsing.astnodes.terminal;
 import org.vanautrui.languages.compiler.parsing.IASTNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.ITermNode;
 
-public final class FloatConstNode implements IASTNode, ITermNode {
+public final class FloatConstNode implements IASTNode, ITermNode, IConstantNode {
 
 	//this can also have a negative value if it is preceded by a '-' operator token
 	public float floatValue;
