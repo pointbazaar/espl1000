@@ -25,4 +25,9 @@ public final class LoopStatementNode implements IASTNode, IStatementNode {
 	public String toSourceCode() {
 		return " loop " + this.count.toSourceCode() + " { " + this.statements.stream().map(stmt -> stmt.toSourceCode()) + " } ";
 	}
+
+	@Override
+	public boolean containsSubroutineCalls() {
+		return count.containsSubroutineCalls() || statements.stream().anyMatch(StatementNode::containsSubroutineCalls);
+	}
 }

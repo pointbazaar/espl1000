@@ -3,146 +3,60 @@ package org.vanautrui.languages.compiler.simplify;
 import org.junit.Assert;
 import org.junit.Test;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.OperatorNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.VariableNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.StatementNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.controlflow.IfStatementNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IntConstNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.SimpleVariableNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SimpleTypeNode;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public final class SimplifierTest {
 
 	@Test
-	public void testSimpleSimplification(){
+	public void testCanEliminateIfStatement(){
 
 		/*
-		1 + 2 -> 3
+		if(false){
+			x=3;
+		}
+		-> //nothing at all
 		 */
 
-		final ExpressionNode expr = new ExpressionNode(
-				new TermNode(new IntConstNode(1)),
-				new OperatorNode("+"),
-				new TermNode(new IntConstNode(2))
-		);
-
-		final ExpressionNode expr2 = ExpressionSimplifier.simplifyExpressionNode(expr,false);
-		
-		//DEBUG
-		//System.out.println(expr2.toSourceCode());
-
-		Assert.assertTrue(expr2.term1.termNode instanceof IntConstNode);
-		IntConstNode iconst = (IntConstNode)expr2.term1.termNode;
-		Assert.assertEquals(3,iconst.number);
-
-		Assert.assertTrue(expr2.term2.isEmpty());
-		Assert.assertTrue(expr2.op.isEmpty());
-
-	}
-
-	@Test
-	public void testSimplificationOfNestedExpression(){
-
-		/*
-		1 + (2+3) -> 6
-		 */
-
-		final ExpressionNode expr = new ExpressionNode(
-				new TermNode(new IntConstNode(1)),
-				new OperatorNode("+"),
-				new TermNode(
-						new ExpressionNode(
-								new TermNode(new IntConstNode(2)),
-								new OperatorNode("+"),
-								new TermNode(new IntConstNode(3))
+		final MethodNode m = new MethodNode(
+				new TypeNode(new SimpleTypeNode("Int")),
+				"main",
+				Arrays.asList(new StatementNode(
+						new IfStatementNode(
+								new ExpressionNode(new TermNode(new BoolConstNode(false))),
+								Arrays.asList(
+										new StatementNode(
+												new AssignmentStatementNode(
+														new VariableNode(new SimpleVariableNode("x")),
+														new ExpressionNode(new TermNode(new IntConstNode(3)))
+												)
+										)
+								),
+								new ArrayList<>()
 						)
-				)
+				))
 		);
 
 		//DEBUG
-		//System.out.println(expr.toSourceCode());
+		//System.out.println(m.toSourceCode());
 
-		final ExpressionNode expr2 = ExpressionSimplifier.simplifyExpressionNode(expr,false);
-
-		//DEBUG
-		//System.out.println(expr2.toSourceCode());
-
-		Assert.assertTrue(expr2.term1.termNode instanceof IntConstNode);
-		IntConstNode iconst = (IntConstNode)expr2.term1.termNode;
-		Assert.assertEquals(6,iconst.number);
-
-		Assert.assertTrue(expr2.term2.isEmpty());
-		Assert.assertTrue(expr2.op.isEmpty());
-
-	}
-
-	@Test
-	public void testSimplificationComplicated(){
-
-		/*
-		1 + ( 2 * ( 3 % 2) ) / 7 -> 1 + ( 2 ) / 7 -> 1
-		1 + (...)
-			(2 * (...)) / 7
-		 */
-
-		final ExpressionNode expr = new ExpressionNode(
-				new TermNode(new IntConstNode(1)),
-				new OperatorNode("+"),
-				new TermNode(
-						new ExpressionNode(
-								new TermNode(new ExpressionNode(
-										new TermNode(new IntConstNode(2)),
-										new OperatorNode("*"),
-										new TermNode(new ExpressionNode(
-												new TermNode(new IntConstNode(3)),
-												new OperatorNode("%"),
-												new TermNode(new IntConstNode(2))
-										))
-								)),
-								new OperatorNode("/"),
-								new TermNode(new IntConstNode(7))
-						)
-				)
-		);
+		final MethodNode m2 = Simplifier.simplifyMethodNode(m,false);
 
 		//DEBUG
-		//System.out.println(expr.toSourceCode());
+		//System.out.println(m2.toSourceCode());
 
-		final ExpressionNode expr2 = ExpressionSimplifier.simplifyExpressionNode(expr,false);
-
-		//DEBUG
-		//System.out.println(expr2.toSourceCode());
-
-		Assert.assertTrue(expr2.term1.termNode instanceof IntConstNode);
-		IntConstNode iconst = (IntConstNode)expr2.term1.termNode;
-		Assert.assertEquals(1,iconst.number);
-
-		Assert.assertTrue(expr2.term2.isEmpty());
-		Assert.assertTrue(expr2.op.isEmpty());
-
-	}
-
-	@Test
-	public void testSimplificationOfComparisons(){
-
-		/*
-		1 < 2 -> true
-		 */
-
-		final ExpressionNode expr = new ExpressionNode(
-				new TermNode(new IntConstNode(1)),
-				new OperatorNode("<"),
-				new TermNode(new IntConstNode(2))
-		);
-
-		final ExpressionNode expr2 = ExpressionSimplifier.simplifyExpressionNode(expr,false);
-
-		//DEBUG
-		//System.out.println(expr2.toSourceCode());
-
-		Assert.assertTrue(expr2.term1.termNode instanceof BoolConstNode);
-		BoolConstNode iconst = (BoolConstNode) expr2.term1.termNode;
-		Assert.assertTrue(iconst.boolValue);
-
-		Assert.assertTrue(expr2.term2.isEmpty());
-		Assert.assertTrue(expr2.op.isEmpty());
-
+		Assert.assertEquals(0,m2.statements.size());
 	}
 }

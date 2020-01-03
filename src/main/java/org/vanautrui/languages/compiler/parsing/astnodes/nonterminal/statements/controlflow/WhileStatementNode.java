@@ -26,4 +26,9 @@ public final class WhileStatementNode implements IASTNode, IStatementNode {
 	public String toSourceCode() {
 		return " while ( " + this.condition.toSourceCode() + " ) { " + this.statements.stream().map(stmt -> stmt.toSourceCode()).collect(Collectors.joining(" ")) + " } ";
 	}
+
+	@Override
+	public boolean containsSubroutineCalls() {
+		return condition.containsSubroutineCalls() || statements.stream().anyMatch(StatementNode::containsSubroutineCalls);
+	}
 }

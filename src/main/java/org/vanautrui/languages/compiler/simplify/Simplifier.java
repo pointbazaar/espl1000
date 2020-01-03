@@ -36,6 +36,7 @@ public final class Simplifier {
 		subr.statements = subr.statements
 				.stream()
 				.map(stmt-> simplifyStatementNode(stmt,debug))
+				.filter(stmt -> Eliminator.isRequired(stmt,debug))
 				.collect(Collectors.toList());
 
 		return subr;

@@ -35,4 +35,12 @@ public final class ExpressionNode implements IASTNode, ITermNode {
 			return this.term1.toSourceCode();
 		}
 	}
+
+	public boolean containsSubroutineCalls() {
+		if(term2.isPresent()){
+			return term1.containsSubroutineCalls() && term2.get().containsSubroutineCalls();
+		}else{
+			return term1.containsSubroutineCalls();
+		}
+	}
 }

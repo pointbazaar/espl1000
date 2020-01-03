@@ -1,5 +1,6 @@
 package org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.vanautrui.languages.compiler.parsing.IASTNode;
 
 public final class StatementNode implements IASTNode {
@@ -19,5 +20,10 @@ public final class StatementNode implements IASTNode {
 	public String toSourceCode() {
 		return this.statementNode.toSourceCode()
 				+ ((statementNode instanceof MethodCallNode) ? ";" : "");
+	}
+
+	@JsonIgnore
+	public boolean containsSubroutineCalls(){
+		return this.statementNode.containsSubroutineCalls();
 	}
 }

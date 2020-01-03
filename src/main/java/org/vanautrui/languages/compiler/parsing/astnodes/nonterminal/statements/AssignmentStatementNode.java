@@ -34,4 +34,9 @@ public final class AssignmentStatementNode implements IASTNode, IStatementNode {
 		return this.getStringForTypeOrEmptyString() + variableNode.toSourceCode()
 				+ " = " + this.expressionNode.toSourceCode() + ";";
 	}
+
+	@Override
+	public boolean containsSubroutineCalls() {
+		return expressionNode.containsSubroutineCalls();
+	}
 }

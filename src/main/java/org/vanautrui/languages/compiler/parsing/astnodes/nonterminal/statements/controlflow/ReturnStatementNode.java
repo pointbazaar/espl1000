@@ -18,4 +18,9 @@ public final class ReturnStatementNode implements IASTNode, IStatementNode {
 	public String toSourceCode() {
 		return "return " + this.returnValue.toSourceCode() + ";";
 	}
+
+	@Override
+	public boolean containsSubroutineCalls() {
+		return this.returnValue.containsSubroutineCalls();
+	}
 }

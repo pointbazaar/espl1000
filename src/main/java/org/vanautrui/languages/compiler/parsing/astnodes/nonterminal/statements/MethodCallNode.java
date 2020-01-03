@@ -30,4 +30,8 @@ public final class MethodCallNode implements IASTNode, IStatementNode,  ITermNod
 				+ ")";
 	}
 
+	@Override
+	public boolean containsSubroutineCalls() {
+		return true;
+	}
 }

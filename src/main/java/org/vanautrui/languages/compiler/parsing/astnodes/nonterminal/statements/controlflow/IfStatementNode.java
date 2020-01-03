@@ -35,4 +35,11 @@ public final class IfStatementNode implements IASTNode, IStatementNode {
 			return if_string;
 		}
 	}
+
+	@Override
+	public boolean containsSubroutineCalls() {
+		return this.condition.containsSubroutineCalls() ||
+		       this.statements.stream().anyMatch(StatementNode::containsSubroutineCalls)
+				|| this.elseStatements.stream().anyMatch(StatementNode::containsSubroutineCalls);
+	}
 }
