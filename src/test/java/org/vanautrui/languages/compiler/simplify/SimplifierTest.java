@@ -59,4 +59,59 @@ public final class SimplifierTest {
 
 		Assert.assertEquals(0,m2.statements.size());
 	}
+
+	@Test
+	public void testCanEliminateNestedIfStatement(){
+
+		/*
+		if(false){
+			if(false){
+				x=3;
+			}
+		}
+		-> //nothing at all
+		 */
+
+		final IfStatementNode innerIf =
+		new IfStatementNode(
+				new ExpressionNode(
+						new TermNode(
+								new BoolConstNode(false)
+						)
+				),
+				Arrays.asList(
+					new StatementNode(
+							new AssignmentStatementNode(
+									new VariableNode(new SimpleVariableNode("x")),
+									new ExpressionNode(new TermNode(new IntConstNode(3)))
+							)
+					)
+				),
+	new ArrayList<>()
+		);
+
+		final MethodNode m = new MethodNode(
+				new TypeNode(new SimpleTypeNode("Int")),
+				"main",
+				Arrays.asList(new StatementNode(
+						new IfStatementNode(
+								new ExpressionNode(new TermNode(new BoolConstNode(false))),
+								Arrays.asList(
+										new StatementNode(innerIf)
+								),
+								new ArrayList<>()
+						)
+				))
+		);
+
+		//DEBUG
+		//System.out.println(m.toSourceCode());
+
+		final MethodNode m2 = Simplifier.simplifyMethodNode(m,false);
+
+		//DEBUG
+		//System.out.println(m2.toSourceCode());
+
+		Assert.assertEquals(0,m2.statements.size());
+	}
 }
