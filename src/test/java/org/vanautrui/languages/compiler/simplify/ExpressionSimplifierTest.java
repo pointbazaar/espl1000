@@ -5,8 +5,10 @@ import org.junit.Test;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.OperatorNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.VariableNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.BoolConstNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.terminal.IntConstNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.terminal.SimpleVariableNode;
 
 public final class ExpressionSimplifierTest {
 
@@ -143,6 +145,48 @@ public final class ExpressionSimplifierTest {
 
 		Assert.assertTrue(expr2.term2.isEmpty());
 		Assert.assertTrue(expr2.op.isEmpty());
+
+	}
+
+	@Test
+	public void testCanLiftUnknownToPerformSimplification(){
+
+		/*
+		3 + (1 + a) -> 4 + a
+		 */
+
+		final ExpressionNode expr = new ExpressionNode(
+				new TermNode(new IntConstNode(3)),
+				new OperatorNode("+"),
+				new TermNode(
+			new ExpressionNode(
+						new TermNode(new IntConstNode(1)),
+						new OperatorNode("+"),
+						new TermNode(new VariableNode(new SimpleVariableNode("a")))
+					)
+				)
+		);
+
+		//DEBUG
+		System.out.println(expr.toSourceCode());
+
+		final ExpressionNode expr2 = ExpressionSimplifier.simplifyExpressionNode(expr,false);
+
+		//DEBUG
+		System.out.println(expr2.toSourceCode());
+
+		Assert.assertTrue(expr2.term1.termNode instanceof IntConstNode);
+		IntConstNode iconst = (IntConstNode) expr2.term1.termNode;
+		Assert.assertEquals(4,iconst.number);
+
+		Assert.assertTrue(expr2.op.isPresent());
+		Assert.assertEquals("+",expr2.op.get());
+
+		Assert.assertTrue(expr2.term2.isPresent());
+		final TermNode term2 = expr2.term2.get();
+		final VariableNode v = (VariableNode)term2.termNode;
+		final SimpleVariableNode sv = v.simpleVariableNode;
+		Assert.assertEquals("a",sv.name);
 
 	}
 }
