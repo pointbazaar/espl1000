@@ -23,7 +23,7 @@ public final class SimplifierTest {
 				new TermNode(new IntConstNode(2))
 		);
 
-		final ExpressionNode expr2 = Simplifier.simplifyExpressionNode(expr,false);
+		final ExpressionNode expr2 = ExpressionSimplifier.simplifyExpressionNode(expr,false);
 		
 		//DEBUG
 		//System.out.println(expr2.toSourceCode());
@@ -59,7 +59,7 @@ public final class SimplifierTest {
 		//DEBUG
 		//System.out.println(expr.toSourceCode());
 
-		final ExpressionNode expr2 = Simplifier.simplifyExpressionNode(expr,false);
+		final ExpressionNode expr2 = ExpressionSimplifier.simplifyExpressionNode(expr,false);
 
 		//DEBUG
 		//System.out.println(expr2.toSourceCode());
@@ -105,7 +105,7 @@ public final class SimplifierTest {
 		//DEBUG
 		//System.out.println(expr.toSourceCode());
 
-		final ExpressionNode expr2 = Simplifier.simplifyExpressionNode(expr,false);
+		final ExpressionNode expr2 = ExpressionSimplifier.simplifyExpressionNode(expr,false);
 
 		//DEBUG
 		//System.out.println(expr2.toSourceCode());
@@ -132,7 +132,7 @@ public final class SimplifierTest {
 				new TermNode(new IntConstNode(2))
 		);
 
-		final ExpressionNode expr2 = Simplifier.simplifyExpressionNode(expr,false);
+		final ExpressionNode expr2 = ExpressionSimplifier.simplifyExpressionNode(expr,false);
 
 		//DEBUG
 		//System.out.println(expr2.toSourceCode());
