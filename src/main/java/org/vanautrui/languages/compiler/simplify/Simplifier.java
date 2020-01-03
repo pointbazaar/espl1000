@@ -59,6 +59,7 @@ public final class Simplifier {
 		}else if(istmt instanceof LoopStatementNode){
 			//TODO: see if the loop only executes once, maybe we can lift the statements out of it
 			//TODO: see if the loop doesn't execute at all, then we can get rid of these statements
+			return new StatementNode(simplifyLoopStatementNode((LoopStatementNode)istmt,debug));
 		}else if(istmt instanceof WhileStatementNode){
 			//TODO: see if the condition is false, then we can get rid of all the statements in the while loop
 			return new StatementNode(simplifyWhileStatementNode((WhileStatementNode)istmt,debug));
@@ -69,6 +70,16 @@ public final class Simplifier {
 		}
 
 		return new StatementNode(istmt);
+	}
+
+	private static LoopStatementNode simplifyLoopStatementNode(LoopStatementNode lstmt, boolean debug) {
+		return new LoopStatementNode(
+			simplifyExpressionNode(lstmt.count,debug),
+			lstmt.statements
+					.stream()
+					.map(stmt->simplifyStatementNode(stmt,debug))
+					.collect(Collectors.toList())
+		);
 	}
 
 	private static IStatementNode simplifyIfStatementNode(IfStatementNode ifstmt, boolean debug) {
