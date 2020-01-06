@@ -3,7 +3,6 @@ package org.vanautrui.languages.commandline;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import org.apache.commons.cli.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
@@ -14,7 +13,10 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.lang.System.currentTimeMillis;
@@ -63,22 +65,26 @@ public final class DragonCompiler {
 	//from which code can be generated
 
 	public static void compile_main(final List<String> args) throws Exception {
-		//Apache  CLI tools is just AWESOME!!
-		final Options options = createOptions();
 
-		final CommandLineParser parser = new DefaultParser();
-		final CommandLine cmd = parser.parse(options, args.toArray(new String[]{}));
+		final List<String> options = createOptions();
+
+		//get all flags and remove prefixed '-'
+		final List<String> flags = args
+				.stream()
+				.filter(s->s.startsWith("-"))
+				.map(s->s.substring(1))
+				.collect(Collectors.toList());
 
 		//as no option currently has an argument,
 		//this simplifies the usage of the compiler
 		//also, everything that doesnt start with '-' is either a source file or directory
 
-		if(cmd.hasOption("help")){
+		if(flags.contains("help")){
 			printHelp();
 		}else {
 
-			if(cmd.hasOption("clean")){
-				if(cmd.hasOption("debug")){
+			if(flags.contains("clean")){
+				if(flags.contains("debug")){
 					out.println("clearing the cache");
 				}
 				final String cache_dir=System.getProperty("user.home")+"/dragoncache";
@@ -87,7 +93,7 @@ public final class DragonCompiler {
 
 			List<String> fileArgs = args.stream().filter(str -> !str.startsWith("-")).collect(Collectors.toList());
 
-			compile_main_inner(getAllDragonFilesRecursively(fileArgs), cmd);
+			compile_main_inner(getAllDragonFilesRecursively(fileArgs), flags);
 		}
 	}
 
@@ -115,8 +121,7 @@ public final class DragonCompiler {
 	}
 
 	private static void printHelp(){
-		Options options = createOptions();
-		HelpFormatter help = new HelpFormatter();
+
 		StringBuilder sbh = new StringBuilder("");
 		StringBuilder sbf = new StringBuilder("");
 
@@ -146,7 +151,11 @@ public final class DragonCompiler {
 
 		String header=sbh.toString();
 		String footer=sbf.toString();
-		help.printHelp("draco FILE...",header,options,footer,true);
+
+		out.println("draco FILE...");
+		out.println(header);
+		out.println(createOptions().stream().collect(Collectors.joining("\n")));
+		out.println(footer);
 	}
 
 	//declaring these identifiers so that we can change the actual names of the options
@@ -160,25 +169,21 @@ public final class DragonCompiler {
 
 	public static final String FLAG_CLEAN="clean";
 
-	private static Options createOptions(){
-		//https://commons.apache.org/proper/commons-cli/usage.html
+	private static List<String> createOptions(){
 
-		Options opts = new Options();
+		ArrayList<String> arr = new ArrayList<String>();
 
-		opts.addOption(new Option(FLAG_DEBUG,false,"prints debug output"));
+		arr.add(FLAG_DEBUG);//,false,"prints debug output"));
 
-		opts.addOption(new Option(FLAG_TIMED,false,"how long did the build take?"));
-		opts.addOption(new Option(FLAG_TARGET_ATMEL,false,"generate .asm files for ATMEL Microcontrollers ?"));
+		arr.add(FLAG_TIMED);//,false,"how long did the build take?"));
+		arr.add(FLAG_TARGET_ATMEL);//,false,"generate .asm files for ATMEL Microcontrollers ?"));
 
-		opts.addOption(new Option(FLAG_PRINT_SYMBOLTABLES,false,"print symbol tables"));
-		opts.addOption(new Option(FLAG_PRINT_HELP,false,"print help"));
+		arr.add(FLAG_PRINT_SYMBOLTABLES);//,false,"print symbol tables"));
+		arr.add(FLAG_PRINT_HELP);//,false,"print help"));
 
-		opts.addOption(new Option(FLAG_CLEAN,false,"clear cache"));
+		arr.add(FLAG_CLEAN);//,false,"clear cache"));
 
-		OptionGroup optGroup = new OptionGroup();
-
-		opts.addOptionGroup(optGroup);
-		return opts;
+		return arr;
 	}
 
 	public static Path makePathHiddenWithCustomExtension(final File filename, final String fullextension){
@@ -193,11 +198,11 @@ public final class DragonCompiler {
 		return Paths.get(correctFilename);
 	}
 
-	private static void compile_main_inner(final List<File> sourceFiles, final CommandLine cmd){
+	private static void compile_main_inner(final List<File> sourceFiles, final List<String> flags){
 
-		final boolean debug=cmd.hasOption(FLAG_DEBUG);
-		final boolean timed=cmd.hasOption(FLAG_TIMED);
-		final boolean targetATMEL = cmd.hasOption(FLAG_TARGET_ATMEL);
+		final boolean debug=flags.contains(FLAG_DEBUG);
+		final boolean timed=flags.contains(FLAG_TIMED);
+		final boolean targetATMEL = flags.contains(FLAG_TARGET_ATMEL);
 
 		final long start_time_ms = currentTimeMillis();
 
@@ -230,7 +235,7 @@ public final class DragonCompiler {
 			CompilerPhases.phase_simplify(ast,debug);
 
 			//PHASE CODE GENERATION, returns a list of paths where the files for the subroutines are
-			final List<Path> vm_code_files = CompilerPhases.phase_vm_codegeneration(ast, cmd.hasOption(FLAG_PRINT_SYMBOLTABLES),debug);
+			final List<Path> vm_code_files = CompilerPhases.phase_vm_codegeneration(ast, flags.contains(FLAG_PRINT_SYMBOLTABLES),debug);
 
 			//PHASE VM CODE COMPILATION, PHASE GENERATE EXECUTABLE
 			//this phase depends on 'dracovm'

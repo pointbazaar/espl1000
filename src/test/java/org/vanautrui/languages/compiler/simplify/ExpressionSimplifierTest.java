@@ -1,6 +1,7 @@
 package org.vanautrui.languages.compiler.simplify;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.OperatorNode;
@@ -148,6 +149,7 @@ public final class ExpressionSimplifierTest {
 
 	}
 
+	@Ignore
 	@Test
 	public void testCanLiftUnknownToPerformSimplification(){
 
