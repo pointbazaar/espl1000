@@ -1,3 +1,5 @@
+![logo](https://raw.githubusercontent.com/pointbazaar/dragon-lexer/master/img/dragon-logo.png)
+
 # The Dragon Programming Language (work in progress) 
 [![Build Status](https://travis-ci.org/pointbazaar/dragon.svg?branch=master)](https://travis-ci.org/pointbazaar/dragon)
 [![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/dragon/badge)](https://www.codefactor.io/repository/github/pointbazaar/dragon)
