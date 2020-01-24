@@ -2,17 +2,21 @@
 //standard headers
 #include <vector>
 #include <set>
+#include <optional>
+#include <algorithm>
 
 //project headers
 #include "VariableNode.hpp"
 
-public final class VariableNode implements IASTNode, ITermNode {
+class VariableNode : IASTNode, ITermNode {
 
-	public final SimpleVariableNode simpleVariableNode;
-	public final List<VariableNode> memberAccessList = new ArrayList<>();
+public:
+	
+	SimpleVariableNode simpleVariableNode;
+	vector<VariableNode> memberAccessList;
 
-	public VariableNode(TokenList tokens) throws Exception {
-		final TokenList copy = tokens.copy();
+	VariableNode(TokenList tokens) throws Exception {
+		TokenList copy = tokens.copy();
 
 		this.simpleVariableNode = new SimpleVariableNode(copy);
 
@@ -33,4 +37,4 @@ public final class VariableNode implements IASTNode, ITermNode {
 		tokens.set(copy);
 	}
 
-}
+};

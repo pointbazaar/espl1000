@@ -6,15 +6,18 @@
 //project headers
 #include "OperatorNode.hpp"
 
-public final class OperatorNode implements IASTNode {
+using namespace std;
 
-	public final String operator;
+class OperatorNode : IASTNode {
 
-	public OperatorNode(final TokenList tokens) throws Exception {
+public:
+	string operator;
 
-		final TokenList copy = new TokenList(tokens);
+	OperatorNode(TokenList tokens) throws Exception {
 
-		final IToken token = copy.get(0);
+		TokenList copy = new TokenList(tokens);
+
+		IToken token = copy.get(0);
 
 		if (token instanceof OperatorToken) {
 
@@ -44,4 +47,4 @@ public final class OperatorNode implements IASTNode {
 		tokens.set(copy);
 	}
 
-}
+};

@@ -6,17 +6,18 @@
 //project headers
 #include "ArrayTypeNode.hpp"
 
-public final class ArrayTypeNode implements IASTNode, ITypeNode {
+class ArrayTypeNode : IASTNode, ITypeNode {
 
-	public final TypeNode element_type;
+public:
+	TypeNode element_type;
 
-	public ArrayTypeNode(final TypeNode element_type) {
+	ArrayTypeNode(TypeNode element_type) {
 		this.element_type = element_type;
 	}
 
-	public ArrayTypeNode(final TokenList tokens) throws Exception {
+	ArrayTypeNode(TokenList tokens) throws Exception {
 
-		final TokenList copy1 = tokens.copy();
+		TokenList copy1 = tokens.copy();
 
 		copy1.expectAndConsumeOtherWiseThrowException(new LBracketToken());
 		this.element_type = new TypeNode(copy1);
@@ -26,4 +27,4 @@ public final class ArrayTypeNode implements IASTNode, ITypeNode {
 		tokens.set(copy1);
 	}
 
-}
+};

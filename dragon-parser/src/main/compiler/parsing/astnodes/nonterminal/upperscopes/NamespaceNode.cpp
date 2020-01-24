@@ -6,24 +6,22 @@
 //project headers
 #include "NamespaceNode.hpp"
 
-public final class NamespaceNode implements IASTNode {
+class NamespaceNode : IASTNode {
 
+public:
 	//a namespace is represented by a filename.
 	//the contents of a namespace are the contents of the file
 
-	public final Path srcPath;
-
-	public final String name;
-
+	Path srcPath;
+	string name;
 	//structs must be declared before the subroutines
-	public final List<StructDeclNode> structs = new ArrayList<>();
+	vector<StructDeclNode> structs;
+	vector<MethodNode> methods;
 
-	public final List<MethodNode> methods = new ArrayList<>();
-
-	public NamespaceNode(
-			final TokenList tokens,
-			final String namespace,
-			final boolean debug
+	NamespaceNode(
+			TokenList tokens,
+			String namespace,
+			bool debug
 	) throws Exception {
 
 		if (debug) {
@@ -32,7 +30,7 @@ public final class NamespaceNode implements IASTNode {
 
 		this.srcPath = Paths.get("/dev/null");
 		this.name = namespace;
-		final TokenList copy = tokens.copy();
+		TokenList copy = tokens.copy();
 
 		if(copy.size()>0) {
 
@@ -71,4 +69,4 @@ public final class NamespaceNode implements IASTNode {
 		tokens.set(copy);
 	}
 
-}
+};

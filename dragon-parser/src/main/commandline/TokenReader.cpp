@@ -1,16 +1,16 @@
 //standard includes
-include <vector> 
-include <stdio>
-include <map>
+#include <vector> 
+#include <stdio>
+#include <map>
 
 //project includes
-include "../compiler/lexing/tokens.*.hpp"
-include "../compiler/lexing/tokens.no_members.*.hpp"
-include "../compiler/lexing/tokens.no_members.keywords.*.hpp"
-include "../compiler/lexing/utils.IToken.hpp"
+#include "../compiler/lexing/tokens.*.hpp"
+#include "../compiler/lexing/tokens.no_members.*.hpp"
+#include "../compiler/lexing/tokens.no_members.keywords.*.hpp"
+#include "../compiler/lexing/utils.IToken.hpp"
 
-include "../commandline/TokenKeys/*.hpp"
-include "../commandline/TokenKeys/LOOP.hpp"
+#include "../commandline/TokenKeys/*.hpp"
+#include "../commandline/TokenKeys/LOOP.hpp"
 
 
 StringConstantToken recognizeStrConstToken(string strconst) {
@@ -38,15 +38,15 @@ Optional<BaseToken> recognizeToken(string tkn, bool debug) throws Exception {
 		out.println("recognize: " + tkn);
 	}
 
-	final String[] parts = tkn.split(" ");
+	String[] parts = tkn.split(" ");
 
-	final int tkn_id = Integer.parseInt(parts[0]);
+	int tkn_id = Integer.parseInt(parts[0]);
 
 	int line_no = 1;
 
 
 	if (tkn_id == LINE_NO) {
-		final int line_no_change = parseInt(parts[1]);
+		int line_no_change = parseInt(parts[1]);
 		line_no += line_no_change;
 		return Optional.empty();
 		//break;

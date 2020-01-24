@@ -2,19 +2,20 @@
 //standard headers
 #include <vector>
 #include <set>
+#include <optional>
 
 //project headers
 #include "DeclaredArgumentNode.hpp"
 
-public final class DeclaredArgumentNode implements IASTNode {
+class DeclaredArgumentNode : IASTNode {
 
-	public final TypeNode type;
+public:
+	TypeNode type;
+	optional<String> name;
 
-	public final Optional<String> name;
+	DeclaredArgumentNode(TokenList tokens) throws Exception {
 
-	public DeclaredArgumentNode(final TokenList tokens) throws Exception {
-
-		final TokenList copy = tokens.copy();
+		TokenList copy = tokens.copy();
 
 		this.type = new TypeNode(copy);
 		this.name = Optional.of(new IdentifierNode(copy).identifier);
@@ -22,4 +23,4 @@ public final class DeclaredArgumentNode implements IASTNode {
 		tokens.set(copy);
 	}
 
-}
+};

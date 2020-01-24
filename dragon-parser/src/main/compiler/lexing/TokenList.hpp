@@ -1,9 +1,17 @@
+#ifndef TOKENLIST
+#define
 
 //standard headers
 #include <vector>
+#include <string>
+#include <map>
+#include <algorithm>
+#include <optional>
 
 //project headers
 #include "BaseToken.hpp"
+
+using namespace std;
 
 class TokenList {
 public:
@@ -27,3 +35,5 @@ public:
 	BaseToken head();
 	string toSourceCodeFragment();
 }
+
+#endif

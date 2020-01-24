@@ -5,6 +5,7 @@
 
 //project headers
 
+/*
 @JsonTypeInfo(
 		use = JsonTypeInfo.Id.NAME,
 		include = JsonTypeInfo.As.PROPERTY,
@@ -18,6 +19,8 @@
 		@JsonSubTypes.Type(value = SimpleTypeNode.class, name = "SimpleTypeNode"),
 		@JsonSubTypes.Type(value = SubroutineTypeNode.class, name = "SubroutineTypeNode")
 })
-public interface ITypeNode extends IASTNode {
+*/
 
-}
+class ITypeNode : IASTNode {
+
+};

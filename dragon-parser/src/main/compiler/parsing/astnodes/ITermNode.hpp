@@ -5,6 +5,7 @@
 
 //project headers
 
+/*
 @JsonTypeInfo(
 		use = JsonTypeInfo.Id.NAME,
 		include = JsonTypeInfo.As.PROPERTY,
@@ -19,8 +20,10 @@
 		@JsonSubTypes.Type(value = FloatConstNode.class, name = "FloatConstNode"),
 		@JsonSubTypes.Type(value = IntConstNode.class, name = "IntConstNode")
 })
-public interface ITermNode extends IASTNode {
+*/
+
+class ITermNode : IASTNode {
 
 	//pseudo interface,
 	//only (AST Nodes classes) which are on the right side of a 'term' production should implement it
-}
+};

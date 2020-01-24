@@ -1,14 +1,19 @@
 
 //standard headers
 #include <vector>
+#include <string>
+#include <map>
+#include <stdio.h>
 
 //project headers
 #include "IfStatementNode.hpp"
 #include "../../../../../lexing/TokenList.hpp"
 
+using namespace std;
+
 IfStatementNode::IfStatementNode(TokenList tokens) throws Exception {
 
-	final TokenList copy = new TokenList(tokens);
+	TokenList copy = new TokenList(tokens);
 
 	copy.expectAndConsumeOtherWiseThrowException(new IfToken());
 

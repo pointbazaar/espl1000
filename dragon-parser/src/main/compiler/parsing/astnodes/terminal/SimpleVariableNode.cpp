@@ -2,23 +2,26 @@
 //standard headers
 #include <vector>
 #include <set>
+#include <optional>
+#include <string>
 
 //project headers
 #include "SimpleVariableNode.hpp"
 
-public final class SimpleVariableNode implements IASTNode {
+using namespace std;
 
-	//this identifies a variable
+class SimpleVariableNode : IASTNode {
 
-	public final String name;
+public:
+	string name;
 
-	public final Optional<ExpressionNode> indexOptional;
+	optional<ExpressionNode> indexOptional;
 
-	public SimpleVariableNode(final TokenList tokens) throws Exception {
+	SimpleVariableNode(TokenList tokens) throws Exception {
 
-		final TokenList copy = new TokenList(tokens);
+		TokenList copy = new TokenList(tokens);
 
-		final IToken token = copy.get(0);
+		IToken token = copy.get(0);
 
 		if (token instanceof IdentifierToken) {
 			this.name = token.getContents();
@@ -45,4 +48,4 @@ public final class SimpleVariableNode implements IASTNode {
 		tokens.set(copy);
 	}
 
-}
+};

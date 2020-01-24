@@ -2,45 +2,46 @@
 //standard headers
 #include <vector>
 #include <set>
+#include <optional>
 
 //project headers
 #include "ExpressionNode.hpp"
 
-public final class ExpressionNode implements IASTNode,  ITermNode {
+class ExpressionNode : IASTNode,  ITermNode {
 
+public:
 	//DragonExpressionNode should be similar to jack expression
 	//an expression should be anything that returns a value or computes to a value
 
-	public TermNode term1;
-	public Optional<OperatorNode> op = Optional.empty();
-	public Optional<TermNode> term2 = Optional.empty();
+	TermNode term1;
+	optional<OperatorNode> op = optional.empty();
+	optional<TermNode> term2 = optional.empty();
 
-
-	public ExpressionNode(final TermNode term) {
+	ExpressionNode(TermNode term) {
 		this.term1 = term;
 	}
 
-	public ExpressionNode(final TokenList tokens) throws Exception {
+	ExpressionNode(TokenList tokens) throws Exception {
 
 		// temporary containers
 
-		final List<OperatorNode> operatorNodes = new ArrayList<>();
+		vector<OperatorNode> operatorNodes;
 
-		final List<TermNode> termNodes = new ArrayList<>();
+		vector<TermNode> termNodes;
 
 		// end of temporary containers
 
-		final TokenList copy = tokens.copy();
+		TokenList copy = tokens.copy();
 
 		termNodes.add(new TermNode(copy));
 
 		try {
 
 			while (true) {
-				final TokenList copy2 = new TokenList(copy);
+				TokenList copy2 = new TokenList(copy);
 
-				final OperatorNode myop = new OperatorNode(copy2);
-				final TermNode myterm = new TermNode(copy2);
+				OperatorNode myop = new OperatorNode(copy2);
+				TermNode myterm = new TermNode(copy2);
 
 				operatorNodes.add(myop);
 				termNodes.add(myterm);
@@ -56,15 +57,15 @@ public final class ExpressionNode implements IASTNode,  ITermNode {
 		performTreeTransformation(operatorNodes,termNodes);
 	}
 
-	public ExpressionNode(TermNode leftTerm, OperatorNode op, TermNode rightTerm) {
+	ExpressionNode(TermNode leftTerm, OperatorNode op, TermNode rightTerm) {
 		this.term1=leftTerm;
 		this.op=Optional.of(op);
 		this.term2=Optional.of(rightTerm);
 	}
 
-	private void performTreeTransformation(
-			final List<OperatorNode> ops,
-			final List<TermNode> terms
+	void performTreeTransformation(
+			vector<OperatorNode> ops,
+			vector<TermNode> terms
 	){
 		//transform the list into a tree, respecting operator precedence
 
@@ -82,7 +83,7 @@ public final class ExpressionNode implements IASTNode,  ITermNode {
 		 */
 
 		//we can construct an array list and compare indices
-		List<String> operatorPrecedence = Arrays.asList(
+		vector<string> operatorPrecedence = Arrays.asList(
 				"*","/","%",
 				"+","-",
 				"<<",">>",
@@ -135,4 +136,4 @@ public final class ExpressionNode implements IASTNode,  ITermNode {
 			this.term2 = Optional.of(terms.get(1));
 		}
 	}
-}
+};

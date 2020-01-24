@@ -5,13 +5,14 @@
 //project headers
 #include "MethodCallNode.hpp"
 
-public final class MethodCallNode implements IASTNode, IStatementNode, ITermNode {
+class MethodCallNode : IASTNode, IStatementNode, ITermNode {
 
-	public final String methodName;
+public:
+	string methodName;
 
-	public final List<ExpressionNode> arguments = new ArrayList<>();
+	vector<ExpressionNode> arguments = new ArrayList<>();
 
-	public MethodCallNode(final TokenList tokens) throws Exception {
+	MethodCallNode(final TokenList tokens) throws Exception {
 
 		final TokenList copy = tokens.copy();
 
@@ -34,4 +35,4 @@ public final class MethodCallNode implements IASTNode, IStatementNode, ITermNode
 		tokens.set(copy);
 	}
 
-}
+};

@@ -6,20 +6,19 @@
 //project headers
 #include "SubroutineTypeNode.hpp"
 
-public final class SubroutineTypeNode implements IBasicAndWrappedTypeNode  {
+class SubroutineTypeNode : IBasicAndWrappedTypeNode  {
 
-	public final TypeNode returnType;
+public:
+	TypeNode returnType;
+	bool hasSideEffects;
+	vector<TypeNode> argumentTypes;
 
-	public final boolean hasSideEffects;
-
-	public final List<TypeNode> argumentTypes = new ArrayList<>();
-
-	public SubroutineTypeNode(final TypeNode return_type, final boolean hasSideEffects) {
+	SubroutineTypeNode(TypeNode return_type, final boolean hasSideEffects) {
 		this.returnType = return_type;
 		this.hasSideEffects = hasSideEffects;
 	}
 
-	public SubroutineTypeNode(final TokenList tokens) throws Exception {
+	SubroutineTypeNode(TokenList tokens) throws Exception {
 
 		final TokenList copy = tokens.copy();
 
@@ -59,4 +58,4 @@ public final class SubroutineTypeNode implements IBasicAndWrappedTypeNode  {
 		tokens.set(copy);
 	}
 
-}
+};

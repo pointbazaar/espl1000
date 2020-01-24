@@ -5,9 +5,11 @@
 //project headers
 #include "LoopStatementNode.hpp"
 
-LoopStatementNode::LoopStatementNode(final TokenList tokens) throws Exception {
+using namespace std;
 
-	final TokenList copy = new TokenList(tokens);
+LoopStatementNode::LoopStatementNode(TokenList tokens) throws Exception {
+
+	TokenList copy = new TokenList(tokens);
 
 	copy.expectAndConsumeOtherWiseThrowException(new LoopToken());
 

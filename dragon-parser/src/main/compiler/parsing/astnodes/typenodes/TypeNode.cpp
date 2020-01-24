@@ -6,15 +6,16 @@
 //project headers
 #include "TypeNode.hpp"
 
-public final class TypeNode implements IASTNode {
+class TypeNode : IASTNode {
 
-	public ITypeNode typeNode;
+public:
+	ITypeNode typeNode;
 
-	public TypeNode(ITypeNode typeNode) {
+	TypeNode(ITypeNode typeNode) {
 		this.typeNode = typeNode;
 	}
 
-	public TypeNode(TokenList tokens) throws Exception {
+	TypeNode(TokenList tokens) throws Exception {
 
 		TokenList copy = tokens.copy();
 

@@ -6,26 +6,22 @@
 //project headers
 #include "MethodNode.hpp"
 
-public final class MethodNode implements IASTNode {
+class MethodNode : IASTNode {
 
-	public final boolean isPublic = true;
+public:
+	bool isPublic = true;
+	bool hasSideEffects;
+	TypeNode returnType;
+	string methodName;
+	vector<DeclaredArgumentNode> arguments;
+	vector<StatementNode> statements;
 
-	public final boolean hasSideEffects;
-
-	public final TypeNode returnType;
-
-	public final String methodName;
-
-	public final List<DeclaredArgumentNode> arguments = new ArrayList<>();
-
-	public final List<StatementNode> statements = new ArrayList<>();
-
-	public MethodNode(final TokenList tokens, final boolean debug) throws Exception {
+	MethodNode(TokenList tokens, bool debug) throws Exception {
 		if (debug) {
 			System.out.println("try to parse " + this.getClass().getSimpleName() + " from '" + tokens.toSourceCodeFragment() + "'");
 		}
 
-		final TokenList copy = tokens.copy();
+		TokenList copy = tokens.copy();
 
 		copy.expectAndConsumeOtherWiseThrowException(new FnToken());
 
@@ -68,4 +64,4 @@ public final class MethodNode implements IASTNode {
 		tokens.set(copy);
 	}
 
-}
+};

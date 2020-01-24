@@ -6,18 +6,19 @@
 //project headers
 #include "StructDeclNode.hpp"
 
-public final class StructDeclNode implements IASTNode{
+class StructDeclNode : IASTNode{
 
-	public final SimpleTypeNode typeNode;
-	public final List<StructMemberDeclNode> members = new ArrayList<>();
+public:
+	SimpleTypeNode typeNode;
+	vector<StructMemberDeclNode> members;
 
-	public StructDeclNode(final TokenList tokens, final boolean debug) throws Exception {
+	StructDeclNode(TokenList tokens, bool debug) throws Exception {
 
 		if (debug) {
 			System.out.println("try to parse " + this.getClass().getSimpleName() + " from '" + tokens.toSourceCodeFragment() + "'");
 		}
 
-		final TokenList copy = tokens.copy();
+		TokenList copy = tokens.copy();
 
 		copy.expectAndConsumeOtherWiseThrowException(new StructToken());
 
@@ -42,4 +43,4 @@ public final class StructDeclNode implements IASTNode{
 		tokens.set(copy);
 	}
 
-}
+};

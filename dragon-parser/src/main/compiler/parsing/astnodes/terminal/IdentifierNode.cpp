@@ -6,14 +6,15 @@
 //project headers
 #include "IdentifierNode.hpp"
 
-public final class IdentifierNode implements IASTNode {
+class IdentifierNode : IASTNode {
 
+public:
 	//this identifies a variable
-	public final String identifier;
+	string identifier;
 
-	public IdentifierNode(final TokenList tokens) throws Exception {
+	IdentifierNode(TokenList tokens) throws Exception {
 
-		final IToken token = tokens.get(0);
+		IToken token = tokens.get(0);
 
 		if (token instanceof IdentifierToken) {
 			this.identifier = token.getContents();
@@ -29,4 +30,4 @@ public final class IdentifierNode implements IASTNode {
 
 	}
 
-}
+};

@@ -6,13 +6,14 @@
 //project headers
 #include "BoolConstNode.hpp"
 
-public final class BoolConstNode implements IASTNode, ITermNode {
+class BoolConstNode : IASTNode, ITermNode {
 
-	public final boolean boolValue;
+public:
+	bool boolValue;
 
-	public BoolConstNode(final TokenList tokens) throws Exception {
+	BoolConstNode(TokenList tokens) throws Exception {
 
-		final TokenList copy = new TokenList(tokens);
+		TokenList copy = new TokenList(tokens);
 
 		if (copy.get(0) instanceof BoolConstantToken) {
 			BoolConstantToken tk = (BoolConstantToken) copy.get(0);
@@ -25,4 +26,4 @@ public final class BoolConstNode implements IASTNode, ITermNode {
 		tokens.set(copy);
 	}
 
-}
+};

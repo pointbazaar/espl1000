@@ -5,12 +5,15 @@
 
 //project headers
 #include "TypeParameterNode.hpp"
+//	  compiler/parsing/astnodes/typenodes/TypeNode.cpp
+#include "../../../lexing/TokenList.hpp"
 
-public final class TypeParameterNode implements IBasicAndWrappedTypeNode, ITypeNode {
+class TypeParameterNode : IBasicAndWrappedTypeNode, ITypeNode {
 
-	public final int typeParameterIndex;
+public:
+	int typeParameterIndex;
 
-	public TypeParameterNode(final TokenList tokens) throws Exception {
+	TypeParameterNode(TokenList tokens) throws Exception {
 		IToken token = tokens.get(0);
 		if (token instanceof TypeParameterIdentifierToken) {
 			this.typeParameterIndex = ((TypeParameterIdentifierToken) token).type_parameter_number;
@@ -20,4 +23,4 @@ public final class TypeParameterNode implements IBasicAndWrappedTypeNode, ITypeN
 		}
 	}
 
-}
+};

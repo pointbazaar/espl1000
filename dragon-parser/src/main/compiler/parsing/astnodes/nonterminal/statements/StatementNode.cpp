@@ -5,20 +5,21 @@
 //project headers
 #include "StatementNode.hpp"
 
-public final class StatementNode implements IASTNode {
+class StatementNode : IASTNode {
 
+public:
 	//can be method call ,loop statement, while statement, ...
-	public final IStatementNode statementNode;
+	IStatementNode statementNode;
 
-	public StatementNode(final TokenList tokens) throws Exception {
+	StatementNode(final TokenList tokens) throws Exception {
 
-		final TokenList copy = tokens.copy();
+		TokenList copy = tokens.copy();
 
 		if (copy.size() == 0) {
 			throw new Exception("tried to parse a Statement, but there are no tokens left");
 		}
 
-		final IToken first = copy.get(0);
+		IToken first = copy.get(0);
 
 		if (first instanceof LoopToken) {
 			this.statementNode = new LoopStatementNode(copy);
@@ -51,4 +52,4 @@ public final class StatementNode implements IASTNode {
 		tokens.set(copy);
 	}
 
-}
+};

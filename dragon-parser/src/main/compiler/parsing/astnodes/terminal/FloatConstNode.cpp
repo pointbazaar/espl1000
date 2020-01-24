@@ -6,14 +6,15 @@
 //project headers
 #include "FloatConstNode.hpp"
 
-public final class FloatConstNode implements IASTNode, ITermNode {
+class FloatConstNode : IASTNode, ITermNode {
 
+public:
 	//this can also have a negative value if it is preceded by a '-' operator token
-	public final float floatValue;
+	float floatValue;
 
-	public FloatConstNode(final TokenList tokens) throws Exception {
+	FloatConstNode(TokenList tokens) throws Exception {
 
-		final TokenList copy = new TokenList(tokens);
+		TokenList copy = new TokenList(tokens);
 
 		if (copy.get(0) instanceof OperatorToken) {
 			OperatorToken tk = (OperatorToken) copy.get(0);
@@ -33,4 +34,4 @@ public final class FloatConstNode implements IASTNode, ITermNode {
 		tokens.set(copy);
 	}
 
-}
+};

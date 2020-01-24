@@ -1,11 +1,14 @@
 //standard includes
-include <vector> 
-include <stdio>
-include <map>
+#include <vector> 
+#include <stdio.h>
+#include <map>
+#include <stdbool.h>
+#include <string>
+#include <optional>
 
 //project includes
-include "../compiler/lexing/utils/TokenList.hpp"
-include "../compiler/parsing/astnodes/nonterminal/upperscopes/NamespaceNode.hpp"
+#include "../compiler/lexing/TokenList.hpp"
+#include "../compiler/parsing/astnodes/nonterminal/upperscopes/NamespaceNode.hpp"
 
 using namespace std;
 

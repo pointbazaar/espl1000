@@ -1,10 +1,13 @@
 
 //standard headers
 #include <vector>
+#include <map>
+#include <algorithm>
 
 //project headers
 #include "WhileStatementNode.hpp"
 
+using namespace std;
 
 WhileStatementNode::WhileStatementNode(final TokenList tokens) throws Exception {
 

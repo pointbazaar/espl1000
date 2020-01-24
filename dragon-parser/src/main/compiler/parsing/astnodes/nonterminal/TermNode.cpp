@@ -6,17 +6,18 @@
 //project headers
 #include "TermNode.hpp"
 
-public final class TermNode implements IASTNode {
+class TermNode : IASTNode {
 
-	public ITermNode termNode;
+public:
+	ITermNode termNode;
 
-	public TermNode(final ExpressionNode expr){
+	TermNode(ExpressionNode expr){
 		this.termNode=expr;
 	}
 
-	public TermNode(final TokenList tokens) throws Exception {
+	TermNode(TokenList tokens) throws Exception {
 
-		final TokenList copy = new TokenList(tokens);
+		TokenList copy = new TokenList(tokens);
 
 		try {
 			this.termNode = new FloatConstNode(copy);
@@ -81,4 +82,4 @@ public final class TermNode implements IASTNode {
 		tokens.set(copy);
 	}
 
-}
+};

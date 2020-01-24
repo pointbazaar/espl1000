@@ -6,13 +6,14 @@
 //project headers
 #include "ArrayConstantNode.hpp"
 
-public final class ArrayConstantNode implements IASTNode, ITermNode {
+class ArrayConstantNode : IASTNode, ITermNode {
 
-	public List<ExpressionNode> elements = new ArrayList<>();
+public:
+	vector<ExpressionNode> elements;
 
-	public ArrayConstantNode(final TokenList tokens) throws Exception {
+	ArrayConstantNode(TokenList tokens) throws Exception {
 
-		final TokenList copy = new TokenList(tokens);
+		TokenList copy = new TokenList(tokens);
 
 		copy.expectAndConsumeOtherWiseThrowException(new LBracketToken());
 
@@ -30,4 +31,4 @@ public final class ArrayConstantNode implements IASTNode, ITermNode {
 		tokens.set(copy);
 	}
 
-}
+};

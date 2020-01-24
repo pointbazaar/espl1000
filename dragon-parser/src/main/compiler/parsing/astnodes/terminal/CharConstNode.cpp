@@ -6,13 +6,16 @@
 //project headers
 #include "CharConstNode.hpp"
 
-public final class CharConstNode implements IASTNode, ITermNode {
+using namespace std;
 
-	public final char content;
+class CharConstNode : IASTNode, ITermNode {
 
-	public CharConstNode(final TokenList tokens) throws Exception {
+public:
+	char content;
 
-		final IToken token = tokens.get(0);
+	CharConstNode(TokenList tokens) throws Exception {
+
+		IToken token = tokens.get(0);
 
 		if (token instanceof CharConstantToken) {
 			this.content = ((CharConstantToken) token).content;
@@ -23,4 +26,4 @@ public final class CharConstNode implements IASTNode, ITermNode {
 
 	}
 
-}
+};

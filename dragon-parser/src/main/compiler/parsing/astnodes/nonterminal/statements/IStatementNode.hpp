@@ -5,6 +5,7 @@
 //project headers
 #include "IStatementNode.hpp"
 
+/*
 @JsonTypeInfo(
 		use = JsonTypeInfo.Id.NAME,
 		include = JsonTypeInfo.As.PROPERTY,
@@ -17,7 +18,10 @@
 		@JsonSubTypes.Type(value = AssignmentStatementNode.class, name = "AssignmentStatementNode"),
 		@JsonSubTypes.Type(value = MethodCallNode.class, name = "MethodCallNode")
 })
-public interface IStatementNode extends IASTNode {
+*/
+
+
+class IStatementNode extends IASTNode {
 
 	//so the different statements do not have to have seperate
 	//field in the DragonStatementNode AST node that is

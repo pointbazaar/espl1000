@@ -6,11 +6,12 @@
 //project headers
 #include "SimpleTypeNode.hpp"
 
-public final class SimpleTypeNode implements IBasicAndWrappedTypeNode {
+class SimpleTypeNode : IBasicAndWrappedTypeNode {
 
-	public final String typeName;
+public:
+	string typeName;
 
-	public SimpleTypeNode(final TokenList tokens) throws Exception {
+	SimpleTypeNode(TokenList tokens) throws Exception {
 		if (tokens.size() == 0) {
 			throw new Exception();
 		}
@@ -29,9 +30,9 @@ public final class SimpleTypeNode implements IBasicAndWrappedTypeNode {
 		}
 	}
 
-	public SimpleTypeNode(String typeName) {
+	SimpleTypeNode(String typeName) {
 		this.typeName = typeName;
 	}
 
 
-}
+};

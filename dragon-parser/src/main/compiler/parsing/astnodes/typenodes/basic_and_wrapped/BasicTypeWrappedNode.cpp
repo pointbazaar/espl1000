@@ -6,17 +6,18 @@
 //project headers
 #include "BasicTypeWrappedNode.hpp"
 
-public final class BasicTypeWrappedNode implements IASTNode, ITypeNode {
+class BasicTypeWrappedNode : IASTNode, ITypeNode {
 
-	public final IBasicAndWrappedTypeNode typeNode;
+public:
+	IBasicAndWrappedTypeNode typeNode;
 
-	public BasicTypeWrappedNode(final IBasicAndWrappedTypeNode typeNode) {
+	BasicTypeWrappedNode(IBasicAndWrappedTypeNode typeNode) {
 		this.typeNode = typeNode;
 	}
 
-	public BasicTypeWrappedNode(final TokenList tokens) throws Exception {
+	BasicTypeWrappedNode(TokenList tokens) throws Exception {
 
-		final TokenList copy = tokens.copy();
+		TokenList copy = tokens.copy();
 
 		IBasicAndWrappedTypeNode candidate;
 		if (copy.size() > 1 && copy.get(0).tokenEquals(new LParensToken())) {
@@ -35,4 +36,4 @@ public final class BasicTypeWrappedNode implements IASTNode, ITypeNode {
 		tokens.set(copy);
 	}
 
-}
+};

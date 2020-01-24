@@ -5,6 +5,8 @@
 //project headers
 #include "ReturnStatementNode.hpp"
 
+using namespace std;
+
 ReturnStatemenNode::ReturnStatementNode(TokenList tokens) throws Exception {
 
 	TokenList copy = new TokenList(tokens);

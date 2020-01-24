@@ -1,5 +1,5 @@
 //standard headers
-include <vector>
+#include <vector>
 
 //project headers
 #include "TokenList.hpp"
@@ -7,8 +7,9 @@ include <vector>
 //this is to facilitate special features
 //which would be convenient in a token list for our compiler
 
+using namespace std;
 
-TokenList::TokenList(List<BaseToken> result, Path sourceFile) {
+TokenList::TokenList(vector<BaseToken> result, Path sourceFile) {
 	this.tokens = result;
 	this.relPath = sourceFile;
 }
