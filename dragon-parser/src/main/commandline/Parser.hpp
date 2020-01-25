@@ -1,9 +1,9 @@
 #ifndef PARSER 
-#define
+#define PARSER
 
 //standard includes
 #include <vector> 
-#include <stdio>
+#include <stdio.h>
 #include <map>
 #include <algorithm>
 #include <optional>
@@ -27,5 +27,8 @@ void main_inner(File tokensFile, bool debug) throws Exception;
 TokenList makeTokenListByCallingLexer(File file, bool debug) throws Exception;
 TokenList readTokensFromTokensFile(File tokensFile, bool debug)throws Exception;
 TokenList makeTokenList(string code,bool debug) throws Exception;
+
+vector<string> createOptions();
+void printHelp();
 
 #endif

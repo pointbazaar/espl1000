@@ -8,12 +8,12 @@
 
 using namespace std;
 
-class CharConstNode : IASTNode, ITermNode {
+class CharConstNode : ITermNode {
 
 public:
 	char content;
 
-	CharConstNode(TokenList tokens) throws Exception {
+	CharConstNode(TokenList tokens) {
 
 		IToken token = tokens.get(0);
 

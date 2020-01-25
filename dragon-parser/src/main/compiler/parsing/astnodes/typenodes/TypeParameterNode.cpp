@@ -7,20 +7,17 @@
 #include "TypeParameterNode.hpp"
 //	  compiler/parsing/astnodes/typenodes/TypeNode.cpp
 #include "../../../lexing/TokenList.hpp"
+#include "basic_and_wrapped/IBasicAndWrappedTypeNode.hpp"
 
-class TypeParameterNode : IBasicAndWrappedTypeNode, ITypeNode {
+using namespace std;
 
-public:
-	int typeParameterIndex;
-
-	TypeParameterNode(TokenList tokens) throws Exception {
-		IToken token = tokens.get(0);
-		if (token instanceof TypeParameterIdentifierToken) {
-			this.typeParameterIndex = ((TypeParameterIdentifierToken) token).type_parameter_number;
-			tokens.consume(1);
-		} else {
-			throw new Exception("could not read type parameter node");
-		}
+TypeParameterNode::TypeParameterNode(TokenList tokens){
+	IToken token = tokens.get(0);
+	if (token instanceof TypeParameterIdentifierToken) {
+		this.typeParameterIndex = ((TypeParameterIdentifierToken) token).type_parameter_number;
+		tokens.consume(1);
+	} else {
+		throw "could not read type parameter node";
 	}
+}
 
-};

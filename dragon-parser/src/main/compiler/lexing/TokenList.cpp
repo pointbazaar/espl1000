@@ -1,8 +1,13 @@
 //standard headers
 #include <vector>
+#include <map>
+#include <algorithm>
+#include <iostream>
+#include <fstream>
 
 //project headers
 #include "TokenList.hpp"
+#include "BaseToken.hpp"
 
 //this is to facilitate special features
 //which would be convenient in a token list for our compiler
@@ -32,7 +37,7 @@ void TokenList::add(BaseToken token) {
 	this.tokens.add(token);
 }
 
-void TokenList::addAll(BaseToken[] arr) {
+void TokenList::addAll(vector<BaseToken> arr) {
 	for (BaseToken tk : arr) {
 		this.add(tk);
 	}
@@ -64,11 +69,11 @@ bool TokenList::endsWith(BaseToken token) {
 	return false;
 }
 
-string TokenList::wrap(final String s, final String wrap) {
+string TokenList::wrap(string s, string wrap) {
 	return wrap + s + wrap;
 }
 
-void TokenList::expectAndConsumeOtherWiseThrowException(BaseToken token) throws Exception {
+void TokenList::expectAndConsumeOtherWiseThrowException(BaseToken token) {
 	if (this.size() == 0) {
 		throw new Exception("no tokens");
 	}
@@ -76,23 +81,23 @@ void TokenList::expectAndConsumeOtherWiseThrowException(BaseToken token) throws 
 	if (this.startsWith(token)) {
 		this.consume(1);
 	} else {
-		final String expectedStart = String.format("\t%-20s", "expected:");
-		final String expectedEnd = String.format("%-20s", wrap(token.getContents(), "'"));
-		final String expectedTokenMessage = expectedStart + expectedEnd + " (" + token.getClass().getSimpleName() + ")";
+		string expectedStart = String.format("\t%-20s", "expected:");
+		string expectedEnd = String.format("%-20s", wrap(token.getContents(), "'"));
+		string expectedTokenMessage = expectedStart + expectedEnd + " (" + token.getClass().getSimpleName() + ")";
 
-		final String actualStart = String.format("\t%-20s", "actual:");
-		final String actualEnd = String.format("%-20s", wrap(this.head().getContents(), "'"));
-		final String actualTokenMessage = actualStart + actualEnd + " (" + this.head().getClass().getSimpleName() + ")";
+		string actualStart = String.format("\t%-20s", "actual:");
+		string actualEnd = String.format("%-20s", wrap(this.head().getContents(), "'"));
+		string actualTokenMessage = actualStart + actualEnd + " (" + this.head().getClass().getSimpleName() + ")";
 
-		final String sourceCodeFragment = (this.toSourceCodeFragment().substring(0, Math.min(this.toSourceCodeFragment().length(), 100)));
+		string sourceCodeFragment = (this.toSourceCodeFragment().substring(0, Math.min(this.toSourceCodeFragment().length(), 100)));
 
-		final String message = "Parsing Error: \n"
+		string message = "Parsing Error: \n"
 				+ "\t" + expectedTokenMessage + "\n"
 				+ "\t" + actualTokenMessage + "\n"
 				+ "in '" + sourceCodeFragment + "'\n"
 				+ "in " + (relPath + ":" + this.head().getLineNumber());
 
-		throw new Exception(message);
+		throw message;
 	}
 }
 
@@ -105,11 +110,11 @@ void TokenList::set(TokenList copy) {
 	this.tokens.addAll(copy.tokens);
 }
 
-IToken TokenList::get(int i) {
+BaseToken TokenList::get(int i) {
 	return this.tokens.get(i);
 }
 
-IToken TokenList::head() {
+BaseToken TokenList::head() {
 	return this.get(0);
 }
 

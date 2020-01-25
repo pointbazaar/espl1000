@@ -1,9 +1,9 @@
 #ifndef BASETOKEN
-#define
+#define BASETOKEN
 
 //standard includes
 #include <vector> 
-#include <stdio>
+#include <stdio.h>
 #include <map>
 
 //project includes
@@ -25,5 +25,5 @@ class BaseToken {
 		string value;
 
 	
-}
+};
 #endif

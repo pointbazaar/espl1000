@@ -4,6 +4,7 @@
 
 //project headers
 #include "StatementNode.hpp"
+#include "IASTNode.hpp"
 
 class StatementNode : IASTNode {
 
@@ -11,7 +12,7 @@ public:
 	//can be method call ,loop statement, while statement, ...
 	IStatementNode statementNode;
 
-	StatementNode(final TokenList tokens) throws Exception {
+	StatementNode(TokenList tokens) throws Exception {
 
 		TokenList copy = tokens.copy();
 

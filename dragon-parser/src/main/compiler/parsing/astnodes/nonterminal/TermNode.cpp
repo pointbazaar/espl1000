@@ -6,7 +6,7 @@
 //project headers
 #include "TermNode.hpp"
 
-class TermNode : IASTNode {
+class TermNode {
 
 public:
 	ITermNode termNode;
@@ -15,16 +15,16 @@ public:
 		this.termNode=expr;
 	}
 
-	TermNode(TokenList tokens) throws Exception {
+	TermNode(TokenList tokens) {
 
 		TokenList copy = new TokenList(tokens);
 
 		try {
 			this.termNode = new FloatConstNode(copy);
-		} catch (Exception e0) {
+		} catch (string e0) {
 			try {
 				this.termNode = new IntConstNode(copy);
-			} catch (Exception e1) {
+			} catch (string e1) {
 				try {
 					//a string constant is syntatic sugar.
 					//in the parsing stage it is converted to an array of char constants
@@ -46,9 +46,9 @@ public:
 
 						copy.consume(1);
 					} else {
-						throw new Exception("could not read stringConstant syntatic sugar");
+						throw "could not read stringConstant syntatic sugar";
 					}
-				} catch (Exception e2) {
+				} catch (string e2) {
 					try {
 						TokenList copy2 = new TokenList(copy);
 
@@ -57,19 +57,19 @@ public:
 						copy2.expectAndConsumeOtherWiseThrowException(new RParensToken());
 
 						copy.set(copy2);
-					} catch (Exception e3) {
+					} catch (string e3) {
 						try {
 							this.termNode = new MethodCallNode(copy);
-						} catch (Exception e4) {
+						} catch (string e4) {
 							try {
 								this.termNode = new BoolConstNode(copy);
-							} catch (Exception e5) {
+							} catch (string e5) {
 								try {
 									this.termNode = new VariableNode(copy);
-								} catch (Exception e6) {
+								} catch (string e6) {
 									try {
 										this.termNode = new ArrayConstantNode(copy);
-									} catch (Exception e7) {
+									} catch (string e7) {
 										this.termNode = new CharConstNode(copy);
 									}
 								}

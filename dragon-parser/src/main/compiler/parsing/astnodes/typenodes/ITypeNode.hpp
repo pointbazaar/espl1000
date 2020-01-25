@@ -1,3 +1,6 @@
+#ifndef ITYPENODE
+#define ITYPENODE
+
 
 //standard headers
 #include <vector>
@@ -21,6 +24,8 @@
 })
 */
 
-class ITypeNode : IASTNode {
+class ITypeNode {
 
 };
+
+#endif

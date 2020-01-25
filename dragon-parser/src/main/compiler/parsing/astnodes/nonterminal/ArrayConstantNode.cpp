@@ -5,8 +5,9 @@
 
 //project headers
 #include "ArrayConstantNode.hpp"
+#include "ITermNode.hpp"
 
-class ArrayConstantNode : IASTNode, ITermNode {
+class ArrayConstantNode : ITermNode {
 
 public:
 	vector<ExpressionNode> elements;

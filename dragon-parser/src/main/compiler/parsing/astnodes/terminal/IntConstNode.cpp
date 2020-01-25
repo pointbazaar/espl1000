@@ -6,13 +6,13 @@
 //project headers
 #include "IntConstNode.hpp"
 
-class IntConstNode : IASTNode, ITermNode {
+class IntConstNode : ITermNode {
 
 public:
 	//this can also have a negative value if it is preceded by a '-' operator token
 	int number;
 
-	IntConstNode(TokenList tokens) throws Exception {
+	IntConstNode(TokenList tokens) {
 
 		TokenList copy = new TokenList(tokens);
 

@@ -20,14 +20,14 @@ public:
 
 	SubroutineTypeNode(TokenList tokens) throws Exception {
 
-		final TokenList copy = tokens.copy();
+		TokenList copy = tokens.copy();
 
 		copy.expectAndConsumeOtherWiseThrowException(new LParensToken());
 
 		boolean sucess_argument_types = true;
 		try {
 			this.argumentTypes.add(new TypeNode(copy));
-		} catch (Exception e) {
+		} catch (string e) {
 			sucess_argument_types = false;
 		}
 		while (sucess_argument_types) {
@@ -38,7 +38,7 @@ public:
 				this.argumentTypes.add(new TypeNode(copy2));
 
 				copy.set(copy2);
-			} catch (Exception e) {
+			} catch (string e) {
 				sucess_argument_types = false;
 			}
 		}
@@ -50,7 +50,7 @@ public:
 			this.hasSideEffects = !arrow.is_functional;
 			copy.consume(1);
 		} else {
-			throw new Exception("expected an arrow token here");
+			throw "expected an arrow token here";
 		}
 
 		this.returnType = new TypeNode(copy);

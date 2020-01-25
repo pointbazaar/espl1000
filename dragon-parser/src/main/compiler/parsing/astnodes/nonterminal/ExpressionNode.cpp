@@ -3,38 +3,34 @@
 #include <vector>
 #include <set>
 #include <optional>
+#include <string>
 
 //project headers
 #include "ExpressionNode.hpp"
+#include "ITermNode.hpp"
 
-class ExpressionNode : IASTNode,  ITermNode {
+class ExpressionNode : ITermNode {
 
 public:
 	//DragonExpressionNode should be similar to jack expression
 	//an expression should be anything that returns a value or computes to a value
 
 	TermNode term1;
-	optional<OperatorNode> op = optional.empty();
-	optional<TermNode> term2 = optional.empty();
+	optional<OperatorNode> op;
+	optional<TermNode> term2;
 
 	ExpressionNode(TermNode term) {
 		this.term1 = term;
 	}
 
-	ExpressionNode(TokenList tokens) throws Exception {
+	ExpressionNode(TokenList tokens) {
 
 		// temporary containers
-
 		vector<OperatorNode> operatorNodes;
-
 		vector<TermNode> termNodes;
-
 		// end of temporary containers
-
 		TokenList copy = tokens.copy();
-
 		termNodes.add(new TermNode(copy));
-
 		try {
 
 			while (true) {
@@ -103,7 +99,7 @@ public:
 		 */
 
 		while (terms.size()>2){
-			final OperatorNode opWithLargestPrecedence = ops.stream().reduce((o1,o2)->{
+			OperatorNode opWithLargestPrecedence = ops.stream().reduce((o1,o2)->{
 				if(operatorPrecedence.indexOf(o1.operator)<operatorPrecedence.indexOf(o2.operator)){
 					return o1;
 				}else{
@@ -111,12 +107,12 @@ public:
 				}
 			}).get();
 
-			final int indexOfOp = ops.indexOf(opWithLargestPrecedence);
+			int indexOfOp = ops.indexOf(opWithLargestPrecedence);
 
-			final TermNode leftTerm = terms.get(indexOfOp);
-			final TermNode rightTerm = terms.get(indexOfOp+1);
+			TermNode leftTerm = terms.get(indexOfOp);
+			TermNode rightTerm = terms.get(indexOfOp+1);
 
-			final ExpressionNode expr = new ExpressionNode(leftTerm,opWithLargestPrecedence,rightTerm);
+			ExpressionNode expr = new ExpressionNode(leftTerm,opWithLargestPrecedence,rightTerm);
 
 			//simplify
 			terms.remove(leftTerm);
@@ -132,7 +128,7 @@ public:
 
 		//in case of only one term
 		if(ops.size()>0) {
-			this.op = Optional.of(ops.get(0));
+			this.op = ops.get(0);
 			this.term2 = Optional.of(terms.get(1));
 		}
 	}

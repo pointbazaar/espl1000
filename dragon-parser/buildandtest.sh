@@ -5,7 +5,6 @@ src/main/commandline/*.cpp \
 src/main/commandline/*.hpp \
 src/main/compiler/lexing/*.cpp \
 src/main/compiler/lexing/*.hpp \
-src/main/compiler/parsing/*.hpp \
 src/main/compiler/parsing/astnodes/*.hpp \
 src/main/compiler/parsing/astnodes/nonterminal/*.cpp \
 src/main/compiler/parsing/astnodes/nonterminal/*.hpp \

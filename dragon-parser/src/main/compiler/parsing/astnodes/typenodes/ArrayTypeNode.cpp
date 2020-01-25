@@ -5,8 +5,11 @@
 
 //project headers
 #include "ArrayTypeNode.hpp"
+#include "ITypeNode.hpp"
+#include "TypeNode.hpp"
+#include "TokenList.hpp"
 
-class ArrayTypeNode : IASTNode, ITypeNode {
+class ArrayTypeNode : ITypeNode {
 
 public:
 	TypeNode element_type;
@@ -15,7 +18,7 @@ public:
 		this.element_type = element_type;
 	}
 
-	ArrayTypeNode(TokenList tokens) throws Exception {
+	ArrayTypeNode(TokenList tokens) {
 
 		TokenList copy1 = tokens.copy();
 

@@ -5,13 +5,14 @@
 
 //project headers
 #include "SimpleTypeNode.hpp"
+#include "TokenList.hpp"
 
 class SimpleTypeNode : IBasicAndWrappedTypeNode {
 
 public:
 	string typeName;
 
-	SimpleTypeNode(TokenList tokens) throws Exception {
+	SimpleTypeNode(TokenList tokens) {
 		if (tokens.size() == 0) {
 			throw new Exception();
 		}
@@ -26,11 +27,11 @@ public:
 			tokens.consume(1);
 			this.typeName = "#";
 		} else {
-			throw new Exception("could not read simple type identifier");
+			throw "could not read simple type identifier";
 		}
 	}
 
-	SimpleTypeNode(String typeName) {
+	SimpleTypeNode(string typeName) {
 		this.typeName = typeName;
 	}
 

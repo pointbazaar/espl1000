@@ -4,6 +4,9 @@
 
 //project headers
 #include "MethodCallNode.hpp"
+#include "IASTNode.hpp"
+#include "IStatementNode.hpp"
+#include "ITermNode.hpp"
 
 class MethodCallNode : IASTNode, IStatementNode, ITermNode {
 
@@ -12,9 +15,9 @@ public:
 
 	vector<ExpressionNode> arguments = new ArrayList<>();
 
-	MethodCallNode(final TokenList tokens) throws Exception {
+	MethodCallNode(TokenList tokens) throws Exception {
 
-		final TokenList copy = tokens.copy();
+		TokenList copy = tokens.copy();
 
 		this.methodName = new IdentifierNode(copy).identifier;
 

@@ -4,18 +4,22 @@
 #include <set>
 #include <optional>
 #include <algorithm>
+#include <map>
 
 //project headers
 #include "VariableNode.hpp"
+#include "ITermNode.hpp"
+#include "StructMemberAccessToken.hpp"
+#include "SimpleVariableNode.hpp"
+#include "IToken.hpp"
 
-class VariableNode : IASTNode, ITermNode {
+class VariableNode : ITermNode {
 
 public:
-	
 	SimpleVariableNode simpleVariableNode;
 	vector<VariableNode> memberAccessList;
 
-	VariableNode(TokenList tokens) throws Exception {
+	VariableNode(TokenList tokens) {
 		TokenList copy = tokens.copy();
 
 		this.simpleVariableNode = new SimpleVariableNode(copy);

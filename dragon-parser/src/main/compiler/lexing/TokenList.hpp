@@ -1,5 +1,5 @@
 #ifndef TOKENLIST
-#define
+#define TOKENLIST
 
 //standard headers
 #include <vector>
@@ -23,7 +23,7 @@ public:
 	TokenList();
 	vector<BaseToken> getTokens();
 	void add(BaseToken token);
-	void addAll(BaseToken[] tokens);
+	void addAll(vector<BaseToken> tokens);
 	void consume(int n);
 	bool startsWith(BaseToken itk);
 	bool endsWith(BaseToken itk);
@@ -34,6 +34,6 @@ public:
 	BaseToken get(int i);
 	BaseToken head();
 	string toSourceCodeFragment();
-}
+};
 
 #endif

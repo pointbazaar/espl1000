@@ -13,10 +13,10 @@
 AssignmentStatementNode(TokenList tokens) throws Exception {
 	optional<TypeNode> optTypeNode1; //to have this.optTypeNode as final
 
-	final TokenList copy = tokens.copy();
+	TokenList copy = tokens.copy();
 
 	try {
-		final TokenList copy2 = copy.copy();
+		TokenList copy2 = copy.copy();
 		optTypeNode1 = Optional.of(new TypeNode(copy2));
 		copy.set(copy2);
 	} catch (Exception e) {

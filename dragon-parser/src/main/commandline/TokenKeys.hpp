@@ -1,9 +1,9 @@
 #ifndef TOKENKEYS
-#define
+#define TOKENKEYS
 
 //standard includes
 #include <vector> 
-#include <stdio>
+#include <stdio.h>
 #include <map>
 
 //project includes

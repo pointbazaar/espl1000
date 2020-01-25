@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <string>
 #include <optional>
+#include <iostream>
+#include <fstream>
 
 //project includes
 #include "../compiler/lexing/TokenList.hpp"
@@ -13,35 +15,32 @@
 using namespace std;
 
 int main(int argc, char** argv){
-
-
 	//this project is to parse a Dragon AST
 	//from Tokens written into .tokens files by Dragon-Lexer,
 	//and store it in a .json file to be retrieved by the Dragon Compiler
-
 	//for simplicity, we invoke with just one filename as argument.
 	//such we can easily have
 	//multiple parallel invocations of the parser in the compiler.
 
 	const vector<string> options = createOptions();
+	const vector<string> flags;
+	const vector<string> filenames;
 
-	const List<String> flags = Arrays.stream(args)
-			.filter(s->s.startsWith("-"))
-			.collect(Collectors.toList());
-
-	const List<String> filenames = Arrays.stream(args)
-			.filter(s->!s.startsWith("-"))
-			.collect(Collectors.toList());
+	for(int i=1;i<argc;i++){
+		string arg = to_string(argv[i]);
+		if(argv[i][0] == '-'){
+			options.push(arg);
+		}else{
+			filenames.push(arg);
+		}
+	}
 
 	bool debug = true;
-
 	try {
-
 		debug = flags.contains(FLAG_DEBUG);
 		if(debug){
 			out.println("Parser::main");
 		}
-
 		bool help = flags.contains(FLAG_HELP);
 		bool test = flags.contains(FLAG_TEST);
 
@@ -51,19 +50,13 @@ int main(int argc, char** argv){
 			ParserTest.test_all();
 		}else{
 			if(filenames.size() != 1){
-				throw new Exception("expected exactly 1 filename argument.");
+				throw "expected exactly 1 filename argument.";
 			}
-			main_inner(Paths.get(filenames.get(0)).toFile(),debug);
+			main_inner(filenames.at(0),debug);
 		}
 
-	} catch (Exception e) {
-		if(debug) {
-			e.printStackTrace(out);
-		}
-
-		out.println(e.getMessage());
-
-		System.exit(1);
+	} catch (string e) {
+		exit(1);
 	}
 }
 
@@ -73,24 +66,18 @@ void build_ast_json_file(File tokensFile, File astJsonFile, bool debug) throws E
 	}
 
 	const TokenList tokens = ParserPhases.readTokensFromTokensFile(tokensFile,debug);
-
 	//get just the namespace name from .FILENAME.dg.tokens
 	const String tokenFileName = tokensFile.getName();
 	const String namespaceName = tokenFileName.substring(1,tokenFileName.length()-(".dg.tokens").length());
 
 	const NamespaceNode mynamespace = new NamespaceNode(tokens,namespaceName,debug);
 
-	//write json file
-	ObjectMapper mapper = new ObjectMapper(JsonFactory.builder().build());
-	mapper.enable(SerializationFeature.INDENT_OUTPUT);
-	mapper.registerModule(new Jdk8Module());
-
 	const String str = mapper.writeValueAsString(mynamespace);
-
 
 	if(debug){
 		out.println("write to "+astJsonFile.toPath());
 	}
+
 	Files.writeString(astJsonFile.toPath(),str);
 }
 
@@ -113,11 +100,11 @@ void main_inner(File tokensFile, bool debug) throws Exception {
 	//file should not be rebuilt
 
 	if(tokensFile.exists()) {
-		final long tokensLastModified = tokensFile.lastModified();
+		long tokensLastModified = tokensFile.lastModified();
 
-		final String astJSONFilename = tokensFile.toString().substring(0,tokensFile.toString().length()-(".tokens").length())+".json";
+		string astJSONFilename = tokensFile.toString().substring(0,tokensFile.toString().length()-(".tokens").length())+".json";
 
-		final File ast_json_file = (
+		File ast_json_file = (
 				Paths.get(astJSONFilename)
 		).toFile();
 
@@ -126,7 +113,7 @@ void main_inner(File tokensFile, bool debug) throws Exception {
 				out.println(ast_json_file+"  already exists.");
 			}
 			//see which is more recent
-			final long ast_json_last_modified = ast_json_file.lastModified();
+			long ast_json_last_modified = ast_json_file.lastModified();
 
 			if(ast_json_last_modified < tokensLastModified){
 				build_ast_json_file(tokensFile,ast_json_file,debug);
@@ -146,7 +133,6 @@ void main_inner(File tokensFile, bool debug) throws Exception {
 }
 
 void printHelp() {
-
 
 	string header = "dragon-parser - a parser for the dragon programming language\n";
 
@@ -177,15 +163,13 @@ vector<string> createOptions() {
 	vector<string> res;
 
 	res.push_back(Parser.FLAG_DEBUG); //,false,"prints debug output"));
-
 	res.push_back(Parser.FLAG_HELP); //false,"print help"));
-
 	res.push_back(Parser.FLAG_TEST); //false, "run tests"));
 
 	return res;
 }
 
-TokenList makeTokenListByCallingLexer(File file, bool debug) throws Exception {
+TokenList makeTokenListByCallingLexer(File file, bool debug) {
 
 	// - call dragon-lexer with the filename
 	// - read its output file, the tokens, put them in a TokenList
@@ -196,13 +180,13 @@ TokenList makeTokenListByCallingLexer(File file, bool debug) throws Exception {
 		out.println(call);
 	}
 
-	final Process proc = Runtime.getRuntime().exec(call);
+	Process proc = Runtime.getRuntime().exec(call);
 	proc.waitFor();
 
 	if (debug) {
 		out.println("stdout: ");
 		BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-		String s = null;
+		string s = null;
 		while ((s = stdInput.readLine()) != null) {
 			out.println(s);
 		}
@@ -211,7 +195,7 @@ TokenList makeTokenListByCallingLexer(File file, bool debug) throws Exception {
 	if (debug) {
 		out.println("stderr: ");
 		final BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-		String s2 = null;
+		string s2 = null;
 		while ((s2 = stdError.readLine()) != null) {
 			out.println(s2);
 		}
@@ -226,7 +210,7 @@ TokenList makeTokenListByCallingLexer(File file, bool debug) throws Exception {
 	//AccessModifierToken is_private=true
 	//OperatorToken op='+'
 	//...
-	String dirname = file.getParent();
+	string dirname = file.getParent();
 	if (dirname == null) {
 		dirname = ".";
 	}

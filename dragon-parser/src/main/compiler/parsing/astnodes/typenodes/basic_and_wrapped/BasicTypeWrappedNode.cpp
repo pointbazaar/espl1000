@@ -6,7 +6,7 @@
 //project headers
 #include "BasicTypeWrappedNode.hpp"
 
-class BasicTypeWrappedNode : IASTNode, ITypeNode {
+class BasicTypeWrappedNode :  ITypeNode {
 
 public:
 	IBasicAndWrappedTypeNode typeNode;
@@ -15,7 +15,7 @@ public:
 		this.typeNode = typeNode;
 	}
 
-	BasicTypeWrappedNode(TokenList tokens) throws Exception {
+	BasicTypeWrappedNode(TokenList tokens) {
 
 		TokenList copy = tokens.copy();
 

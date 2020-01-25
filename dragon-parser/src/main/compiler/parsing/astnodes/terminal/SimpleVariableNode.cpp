@@ -7,17 +7,17 @@
 
 //project headers
 #include "SimpleVariableNode.hpp"
+#include "../nonterminal/ExpressionNode.hpp"
 
 using namespace std;
 
-class SimpleVariableNode : IASTNode {
+class SimpleVariableNode {
 
 public:
 	string name;
-
 	optional<ExpressionNode> indexOptional;
 
-	SimpleVariableNode(TokenList tokens) throws Exception {
+	SimpleVariableNode(TokenList tokens) {
 
 		TokenList copy = new TokenList(tokens);
 

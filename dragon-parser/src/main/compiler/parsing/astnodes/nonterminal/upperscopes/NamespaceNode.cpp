@@ -6,7 +6,7 @@
 //project headers
 #include "NamespaceNode.hpp"
 
-class NamespaceNode : IASTNode {
+class NamespaceNode {
 
 public:
 	//a namespace is represented by a filename.
@@ -25,7 +25,7 @@ public:
 	) throws Exception {
 
 		if (debug) {
-			System.out.println("try to parse " + this.getClass().getSimpleName() + " from " + tokens.toSourceCodeFragment());
+			System.out.println("try to parse from " + tokens.toSourceCodeFragment());
 		}
 
 		this.srcPath = Paths.get("/dev/null");

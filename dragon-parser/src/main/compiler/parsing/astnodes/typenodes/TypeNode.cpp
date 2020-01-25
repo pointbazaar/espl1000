@@ -5,9 +5,9 @@
 
 //project headers
 #include "TypeNode.hpp"
+#include "ITypeNode.hpp"
 
-class TypeNode : IASTNode {
-
+class TypeNode {
 public:
 	ITypeNode typeNode;
 
@@ -15,13 +15,13 @@ public:
 		this.typeNode = typeNode;
 	}
 
-	TypeNode(TokenList tokens) throws Exception {
+	TypeNode(TokenList tokens){
 
 		TokenList copy = tokens.copy();
 
 		try {
 			this.typeNode = new ArrayTypeNode(copy);
-		} catch (Exception e) {
+		} catch (string e) {
 			try {
 				this.typeNode = new TypeParameterNode(copy);
 			} catch (Exception e2) {
@@ -32,4 +32,4 @@ public:
 		tokens.set(copy);
 	}
 
-}
+};

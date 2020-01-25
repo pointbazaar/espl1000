@@ -1,3 +1,5 @@
+#ifndef ITERMNODE
+#define ITERMNODE
 
 //standard headers
 #include <vector>
@@ -22,8 +24,10 @@
 })
 */
 
-class ITermNode : IASTNode {
+class ITermNode {
 
 	//pseudo interface,
 	//only (AST Nodes classes) which are on the right side of a 'term' production should implement it
 };
+
+#endif

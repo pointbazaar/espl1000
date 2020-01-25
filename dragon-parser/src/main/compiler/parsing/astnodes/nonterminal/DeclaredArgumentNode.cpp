@@ -3,17 +3,19 @@
 #include <vector>
 #include <set>
 #include <optional>
+#include <string>
 
 //project headers
 #include "DeclaredArgumentNode.hpp"
+#include "TokenList.hpp"
 
-class DeclaredArgumentNode : IASTNode {
+class DeclaredArgumentNode  {
 
 public:
 	TypeNode type;
-	optional<String> name;
+	optional<string> name;
 
-	DeclaredArgumentNode(TokenList tokens) throws Exception {
+	DeclaredArgumentNode(TokenList tokens) {
 
 		TokenList copy = tokens.copy();
 

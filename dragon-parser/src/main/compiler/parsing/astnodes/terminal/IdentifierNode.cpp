@@ -2,17 +2,22 @@
 //standard headers
 #include <vector>
 #include <set>
+#include <string>
+#include <algorithm>
+#include <map>
 
 //project headers
 #include "IdentifierNode.hpp"
+#include "TokenList.hpp"
+#include "IToken.hpp"
 
-class IdentifierNode : IASTNode {
+class IdentifierNode  {
 
 public:
 	//this identifies a variable
 	string identifier;
 
-	IdentifierNode(TokenList tokens) throws Exception {
+	IdentifierNode(TokenList tokens) {
 
 		IToken token = tokens.get(0);
 

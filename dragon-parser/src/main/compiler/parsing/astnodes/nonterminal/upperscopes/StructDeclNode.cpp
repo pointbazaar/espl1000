@@ -6,16 +6,16 @@
 //project headers
 #include "StructDeclNode.hpp"
 
-class StructDeclNode : IASTNode{
+class StructDeclNode {
 
 public:
 	SimpleTypeNode typeNode;
 	vector<StructMemberDeclNode> members;
 
-	StructDeclNode(TokenList tokens, bool debug) throws Exception {
+	StructDeclNode(TokenList tokens, bool debug) {
 
 		if (debug) {
-			System.out.println("try to parse " + this.getClass().getSimpleName() + " from '" + tokens.toSourceCodeFragment() + "'");
+			System.out.println("try to parse from '" + tokens.toSourceCodeFragment() + "'");
 		}
 
 		TokenList copy = tokens.copy();

@@ -6,12 +6,12 @@
 //project headers
 #include "BoolConstNode.hpp"
 
-class BoolConstNode : IASTNode, ITermNode {
+class BoolConstNode : ITermNode {
 
 public:
 	bool boolValue;
 
-	BoolConstNode(TokenList tokens) throws Exception {
+	BoolConstNode(TokenList tokens) {
 
 		TokenList copy = new TokenList(tokens);
 

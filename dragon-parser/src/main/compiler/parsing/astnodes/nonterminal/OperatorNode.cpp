@@ -2,18 +2,21 @@
 //standard headers
 #include <vector>
 #include <set>
+#include <string>
+#include <map>
 
 //project headers
 #include "OperatorNode.hpp"
+#include "TokenList.hpp"
 
 using namespace std;
 
-class OperatorNode : IASTNode {
+class OperatorNode  {
 
 public:
 	string operator;
 
-	OperatorNode(TokenList tokens) throws Exception {
+	OperatorNode(TokenList tokens) {
 
 		TokenList copy = new TokenList(tokens);
 
@@ -34,14 +37,14 @@ public:
 					this.operator = "==";
 					copy.consume(2);
 				} else {
-					throw new Exception("could not recognize operator token: got " + token.getContents());
+					throw "could not recognize operator token: got " + token.getContents();
 				}
 			} else {
 				this.operator = ((OperatorToken) token).operator;
 				copy.consume(1);
 			}
 		} else {
-			throw new Exception("could not recognize operator token: got " + token.getContents());
+			throw "could not recognize operator token: got " + token.getContents();
 		}
 
 		tokens.set(copy);

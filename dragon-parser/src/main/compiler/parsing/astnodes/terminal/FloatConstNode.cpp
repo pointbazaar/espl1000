@@ -6,13 +6,13 @@
 //project headers
 #include "FloatConstNode.hpp"
 
-class FloatConstNode : IASTNode, ITermNode {
+class FloatConstNode : ITermNode {
 
 public:
 	//this can also have a negative value if it is preceded by a '-' operator token
 	float floatValue;
 
-	FloatConstNode(TokenList tokens) throws Exception {
+	FloatConstNode(TokenList tokens) {
 
 		TokenList copy = new TokenList(tokens);
 

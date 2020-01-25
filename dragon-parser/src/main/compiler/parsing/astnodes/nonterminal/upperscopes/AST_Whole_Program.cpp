@@ -7,7 +7,7 @@
 //project headers
 #include "AST_Whole_Program.hpp"
 
-class AST_Whole_Program : IASTNode {
+class AST_Whole_Program  {
 
 public:
 	//this contains all namespace nodes for the whole program
@@ -22,7 +22,7 @@ public:
 		this.namespaceNodes.add(myNamespace);
 	}
 
-	AST_Whole_Program(TokenList tokens, string namespace, bool debug) throws Exception {
+	AST_Whole_Program(TokenList tokens, string namespace, bool debug) {
 
 		//use this constructor as a shortcut to create an AST
 		//if there is just a single namespace
