@@ -7,7 +7,7 @@
 
 //project headers
 #include "OperatorNode.hpp"
-#include "TokenList.hpp"
+#include "../../../lexing/TokenList.hpp"
 
 using namespace std;
 
