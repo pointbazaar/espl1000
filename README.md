@@ -54,9 +54,8 @@ This Project will probably only work with Linux.
 1. install nasm, ld, 
 2. install maven, openjdk >= 13
 3. clone [dragon-lexer](https://github.com/pointbazaar/dragon-lexer) and install it according to .travis.yml
-4. clone [dragon-parser](https://github.com/pointbazaar/dragon-parser) and install it according to .travis.yml
-5. clone [dracovm-compiler](https://github.com/pointbazaar/dracovm-compiler) and install it according to .travis.yml
-6. try compiling some sample program
+4. clone [dracovm-compiler](https://github.com/pointbazaar/dracovm-compiler) and install it according to .travis.yml
+5. try compiling some sample program
 
 ## Simplicity
 
