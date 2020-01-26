@@ -3,22 +3,19 @@
 
 //standard includes
 #include <vector> 
+#include <string>
 #include <stdio.h>
 #include <map>
+#include <optional>
 
 //project includes
-#include "../compiler/lexing/tokens.*.hpp"
-#include "../compiler/lexing/tokens.no_members.*.hpp"
-#include "../compiler/lexing/tokens.no_members.keywords.*.hpp"
-#include "../compiler/lexing/utils.IToken.hpp"
+#include "../lexing/BaseToken.hpp"
+#include "../lexing/TokenList.hpp"
+#include "TokenKeys.hpp"
 
-#include "../commandline/TokenKeys/*.hpp"
-#include "../commandline/TokenKeys/LOOP.hpp"
+BaseToken recognizeStrConstToken(string strconst);
+BaseToken recognizeCharConstToken(string charconst);
 
-
-StringConstantToken recognizeStrConstToken(string strconst);
-CharConstantToken recognizeCharConstToken(string charconst);
-
-Optional<BaseToken> recognizeToken(string tkn, bool debug) throws Exception;
+optional<BaseToken> recognizeToken(string tkn, bool debug) throws Exception;
 
 #endif

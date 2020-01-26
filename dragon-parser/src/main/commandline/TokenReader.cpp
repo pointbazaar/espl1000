@@ -2,32 +2,26 @@
 #include <vector> 
 #include <stdio.h>
 #include <map>
+#include <optional>
 
 //project includes
-#include "../compiler/lexing/tokens.*.hpp"
-#include "../compiler/lexing/tokens.no_members.*.hpp"
-#include "../compiler/lexing/tokens.no_members.keywords.*.hpp"
-#include "../compiler/lexing/utils.IToken.hpp"
+#include "TokenReader.hpp"
 
-#include "../commandline/TokenKeys/*.hpp"
-#include "../commandline/TokenKeys/LOOP.hpp"
+BaseToken recognizeStrConstToken(string strconst) {
 
-
-StringConstantToken recognizeStrConstToken(string strconst) {
-
-	return new StringConstantToken(strconst.substring(1, strconst.length() - 1));
+	return new BaseToken(strconst.substring(1, strconst.length() - 1));
 }
 
-CharConstantToken recognizeCharConstToken(string charconst) {
+BaseToken recognizeCharConstToken(string charconst) {
 
 	char v = charconst.charAt(1);
 	if (charconst.equals("'\\n'")) {
 		v = '\n';
 	}
-	return new CharConstantToken(v);
+	return new BaseToken(v);
 }
 
-Optional<BaseToken> recognizeToken(string tkn, bool debug) throws Exception {
+optional<BaseToken> recognizeToken(string tkn, bool debug) {
 	//parses the token, as encoded by the lexer
 
 	//everything being seperated by a space, and the whole line not
@@ -38,7 +32,7 @@ Optional<BaseToken> recognizeToken(string tkn, bool debug) throws Exception {
 		out.println("recognize: " + tkn);
 	}
 
-	String[] parts = tkn.split(" ");
+	string[] parts = tkn.split(" ");
 
 	int tkn_id = Integer.parseInt(parts[0]);
 
@@ -48,74 +42,139 @@ Optional<BaseToken> recognizeToken(string tkn, bool debug) throws Exception {
 	if (tkn_id == LINE_NO) {
 		int line_no_change = parseInt(parts[1]);
 		line_no += line_no_change;
-		return Optional.empty();
+		return make_optional();
 		//break;
 	}
 
-	const BaseToken result = switch (tkn_id) {
+	const BaseToken result;
 
-		case STRINGCONST -> recognizeStrConstToken(tkn.substring((STRINGCONST + " ").length()));
-		case CHARCONST -> recognizeCharConstToken(tkn.substring((CHARCONST + " ").length()));
+	switch (tkn_id) {
 
-		case ANYTYPE -> new AnyTypeToken();
+		case STRINGCONST : 
+			result= recognizeStrConstToken(tkn.substring((STRINGCONST + " ").length()));
+			break;
+		case CHARCONST : 
+			result= recognizeCharConstToken(tkn.substring((CHARCONST + " ").length()));
+			break;
+		case ANYTYPE : 
+			result= BaseToken(ANYTYPE);
+			break;
 
 		//CONSTANTS
-		case BOOLCONST -> new BoolConstantToken(parseBoolean(parts[1]));
-		case FLOATING -> new FloatNonNegativeConstantToken(parseFloat(parts[1]));
-		case INTEGER -> new IntegerNonNegativeConstantToken(parseInt(parts[1]));
+		case BOOLCONST : 
+			result= BaseToken(BOOLCONST,parseBoolean(parts[1]));
+			break;
+		case FLOATING : 
+			result=BaseToken(FLOATING,parseFloat(parts[1]));
+			break;
+		case INTEGER : 
+			result= BaseToken(INTEGER,parseInt(parts[1]));
+			break;
 
 		//IDENTIFIERS
-		case IDENTIFIER -> new IdentifierToken(parts[1]);
-		case TYPEIDENTIFIER -> new TypeIdentifierToken(parts[1]);
-
+		case IDENTIFIER : 
+			result= BaseToken(IDENTIFIER,parts[1]);
+			break;
+		case TYPEIDENTIFIER : 
+			result= BaseToken(TYPEIDENTIFIER,parts[1]);
+			break;
 
 		//SECTION: OPERATORNS
-		case OPERATOR -> new OperatorToken(parts[1]);
+		case OPERATOR : 
+			result= BaseToken(OPERATOR,parts[1]);
+			break;
 
-		case EQ -> new OperatorToken("=");
+		case EQ : 
+			result=BaseToken(EQ,"=");
+			break;
 
-		case STRUCTMEMBERACCESS -> new StructMemberAccessToken();
+		case STRUCTMEMBERACCESS : 
+			result= BaseToken(STRUCTMEMBERACCESS);
+			break;
 
-		case TYPEPARAM -> new TypeParameterIdentifierToken(parseInt(parts[1]));
+		case TYPEPARAM : 
+			result= BaseToken(TYPEPARAM,parseInt(parts[1]));
+			break;
 
-		case NAMESPACE -> new NamespaceToken();
+		case NAMESPACE : 
+			result= BaseToken(NAMESPACE);
+			break;
 
 		//BRACKETS, BRACES, PARENTHESES
-		case LBRACKET -> new LBracketToken();
-		case RBRACKET -> new RBracketToken();
+		case LBRACKET : 
+			result= BaseToken(LBRACKET);
+			break;
+		case RBRACKET : 
+			result= BaseToken(RBRACKET);
+			break;
 
-		case LPARENS -> new LParensToken();
-		case RPARENS -> new RParensToken();
+		case LPARENS : 
+			result= BaseToken(LPARENS);
+			break;
+		case RPARENS : 
+			result= BaseToken(RPARENS);
+			break;
 
-		case LCURLY -> new LCurlyToken();
-		case RCURLY -> new RCurlyToken();
+		case LCURLY : 
+			result=	BaseToken(LCURLY);
+			break;
+		case RCURLY : 
+			result= BaseToken(RCURLY);
+			break;
 
-		case GREATER -> new OperatorToken(">");
-		case LESSER -> new OperatorToken("<");
+		case GREATER: 
+			result= BaseToken(">");
+			break;
 
-		case WAVE -> new WaveToken();
+		case LESSER : 
+			result=BaseToken("<");
+			break;
 
-		case SEMICOLON -> new SemicolonToken();
+		case WAVE : 
+			result= BaseToken(WAVE);
+			break;
 
-		case COMMA -> new CommaToken();
+		case SEMICOLON : 
+			result= BaseToken(SEMICOLON);
+			break;
 
-		case ARROW -> (parts[1].equals("->")) ?
-				new ArrowToken(true, true) :
-				new ArrowToken(true, false);
+		case COMMA : 
+			result= BaseToken(COMMA);
+			break;
+		case ARROW : 
+			result= (parts[1].equals("->")) ?
+				BaseToken(true, true) :
+				BaseToken(true, false);
+			break;
 
 		//KEYWORDS
-		case RETURN -> new ReturnToken();
-		case FN -> new FnToken();
-		case STRUCT -> new StructToken();
-		case IF -> new IfToken();
-		case ELSE -> new ElseToken();
-		case WHILE -> new WhileToken();
-		case LOOP -> new LoopToken();
+		case RETURN : 
+			result= BaseToken(RETURN);
+			break;
+		case FN : 
+			result= BaseToken(FN);
+			break;
+		case STRUCT : 
+			result= BaseToken(STRUCT);
+			break;
+		case IF : 
+			result= BaseToken(IF);
+			break;
+		case ELSE : 
+			result= BaseToken(ELSE);
+			break;
+		case WHILE : 
+			result= BaseToken(WHILE);
+			break;
+		case LOOP : 
+			result= BaseToken(LOOP);
+			break;
 
-		default -> throw new Exception("unreconized token id : " + tkn_id);
+		default : 
+			result= throw ("unreconized token id : " + tkn_id);
 	};
 
-	result.setLineNumber(line_no);
+	result.lineNumber=line_no;
 
-	return Optional.of(result);
+	return make_optional(result);
 }

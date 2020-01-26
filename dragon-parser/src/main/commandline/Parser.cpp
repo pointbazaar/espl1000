@@ -7,10 +7,10 @@
 #include <optional>
 #include <iostream>
 #include <fstream>
+#include <cstdlib>
 
 //project includes
-#include "../compiler/lexing/TokenList.hpp"
-#include "../compiler/parsing/astnodes/nonterminal/upperscopes/NamespaceNode.hpp"
+#include "Parser.hpp"
 
 using namespace std;
 
@@ -39,7 +39,7 @@ int main(int argc, char** argv){
 	try {
 		debug = flags.contains(FLAG_DEBUG);
 		if(debug){
-			out.println("Parser::main");
+			cout << "Parser::main" << endl;
 		}
 		bool help = flags.contains(FLAG_HELP);
 		bool test = flags.contains(FLAG_TEST);
@@ -60,36 +60,39 @@ int main(int argc, char** argv){
 	}
 }
 
-void build_ast_json_file(File tokensFile, File astJsonFile, bool debug) throws Exception {
+void build_ast_json_file(string tokensFile, string astJsonFile, bool debug) {
 	if(debug){
-		out.println("Parser::build_ast_json_file");
+		cout << "Parser::build_ast_json_file" << endl;
 	}
 
 	const TokenList tokens = ParserPhases.readTokensFromTokensFile(tokensFile,debug);
 	//get just the namespace name from .FILENAME.dg.tokens
-	const String tokenFileName = tokensFile.getName();
-	const String namespaceName = tokenFileName.substring(1,tokenFileName.length()-(".dg.tokens").length());
+	const string tokenFileName = tokensFile.getName();
+	const string namespaceName = tokenFileName.substring(1,tokenFileName.length()-(".dg.tokens").length());
 
 	const NamespaceNode mynamespace = new NamespaceNode(tokens,namespaceName,debug);
 
-	const String str = mapper.writeValueAsString(mynamespace);
+	const string str = mapper.writeValueAsString(mynamespace);
 
 	if(debug){
-		out.println("write to "+astJsonFile.toPath());
+		cout << "write to "+astJsonFile << endl;
 	}
 
-	Files.writeString(astJsonFile.toPath(),str);
+	ofstream file;
+	file.open(astJsonFile, ios::out);
+	file << str;
+	file.close();
 }
 
-void main_inner(File tokensFile, bool debug) throws Exception {
+void main_inner(string tokensFile, bool debug) {
 
 	if(debug){
-		out.println("Parser::main_inner");
-		out.println("Tokens File to parse: "+tokensFile.toString());
+		cout << "Parser::main_inner" << endl;
+		cout << "Tokens File to parse: "+tokensFile << endl;
 	}
 
 	if(!tokensFile.toString().endsWith(".tokens")){
-		throw new Exception(tokensFile.toString()+" does not have .tokens extension. Exiting.");
+		throw (tokensFile.toString()+" does not have .tokens extension. Exiting.");
 	}
 
 	//it should receive a .filename.dg.tokens file as path
@@ -127,7 +130,7 @@ void main_inner(File tokensFile, bool debug) throws Exception {
 			build_ast_json_file(tokensFile,ast_json_file,debug);
 		}
 	}else {
-		throw new Exception("argument file "+tokensFile.toString()+" does not exist.");
+		throw ("argument file "+tokensFile.toString()+" does not exist.");
 	}
 
 }
@@ -169,22 +172,22 @@ vector<string> createOptions() {
 	return res;
 }
 
-TokenList makeTokenListByCallingLexer(File file, bool debug) {
+TokenList makeTokenListByCallingLexer(string file, bool debug) {
 
 	// - call dragon-lexer with the filename
 	// - read its output file, the tokens, put them in a TokenList
 
-	string call = ((debug)?"dragon-lexer-debug ":"dragon-lexer ") + file.toPath().toString();
+	string call = ((debug)?"dragon-lexer-debug ":"dragon-lexer ") + file;
 
 	if (debug) {
-		out.println(call);
+		cout << call << endl;
 	}
 
 	Process proc = Runtime.getRuntime().exec(call);
 	proc.waitFor();
 
 	if (debug) {
-		out.println("stdout: ");
+		cout << "stdout: " << endl;
 		BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 		string s = null;
 		while ((s = stdInput.readLine()) != null) {
@@ -193,83 +196,81 @@ TokenList makeTokenListByCallingLexer(File file, bool debug) {
 	}
 
 	if (debug) {
-		out.println("stderr: ");
-		final BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+		cout << "stderr: " << endl;
+		BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
 		string s2 = null;
 		while ((s2 = stdError.readLine()) != null) {
-			out.println(s2);
+			cout << s2 << endl;
 		}
 	}
 
 	if (proc.exitValue() != 0) {
-		throw new Exception("dragon-lexer exit with nonzero exit code: " + proc.exitValue());
+		throw ("dragon-lexer exit with nonzero exit code: " + proc.exitValue());
 	}
 
-	//each line containing a token, in a custom syntax
-	//e.g.
-	//AccessModifierToken is_private=true
-	//OperatorToken op='+'
-	//...
 	string dirname = file.getParent();
 	if (dirname == null) {
 		dirname = ".";
 	}
-	Path path = Paths.get(dirname + "/." + file.getName() + ".tokens");
+	string path = (dirname + "/." + file + ".tokens");
 	if(debug) {
-		out.println("read from: " + path);
+		cout << "read from: " + path << endl;
 	}
 	return readTokensFromTokensFile(path.toFile(),debug);
 }
 
-TokenList readTokensFromTokensFile(File tokensFile, bool debug)throws Exception{
+TokenList readTokensFromTokensFile(string tokensFile, bool debug){
 
 	string fileNameWithoutPath = tokensFile.getName();
 
 	if(! fileNameWithoutPath.endsWith(".tokens")){
-		throw new Exception("tokens file must end with '.tokens' . Got "+fileNameWithoutPath );
+		throw ("tokens file must end with '.tokens' . Got "+fileNameWithoutPath );
 	}
 
 	if(! fileNameWithoutPath.startsWith(".")){
-		throw new Exception("tokens file must start with '.'. A token File should be hidden. Got "+fileNameWithoutPath );
+		throw "tokens file must start with '.'. A token File should be hidden. Got "+fileNameWithoutPath ;
 	}
 
-	vector<string> lines = Files.readAllLines(tokensFile.toPath());
+	vector<string> lines = Files.readAllLines(tokensFile);
 
 	if(debug) {
-		out.println("read was successful");
+		cout << "read was successful" << endl;
 	}
 
-	TokenList tks = new TokenList(new ArrayList<>(), tokensFile.toPath());
+	TokenList tks = new TokenList(tokensFile);
 
 	for (string line : lines) {
-		var tkn = TokenReader.recognizeToken(line, debug);
+		BaseToken tkn = TokenReader.recognizeToken(line, debug);
 		tkn.ifPresent(tks::add);
 	}
 
 	//DEBUG
 	if (debug) {
-		out.println("done recognizing tokens");
+		cout << "done recognizing tokens" << endl;
 	}
 
 	return tks;
 }
 
-TokenList makeTokenList(string code,bool debug) throws Exception {
+TokenList makeTokenList(string code,bool debug) {
 
 	//makes token list from a code
 	//randomize the file somewhat, so that the tests can be run in parallel.
 	//this will fill up the disk, but it is in /tmp
 	//so it will be deleted on restart?
 
-	long rand = (new Random()).nextLong();
-	Path path = Paths.get("/tmp/temp" + rand + ".dg");
+	int rand = rand();
+	string path = ((string)"/tmp/temp") + to_string(rand) + (string)(".dg");
 
 	if(debug) {
-		out.println("write to: " + path.toAbsolutePath());
+		cout << "write to: " << path << endl;
 	}
 
-	Files.write(path, code.getBytes());
+	ofstream outfile;
+	outfile.open(path, ios::out);
+	outfile << code;
+	outfile.close();
 
-	return makeTokenListByCallingLexer(path.toFile(), debug);
+	return makeTokenListByCallingLexer(path, debug);
 }
 
