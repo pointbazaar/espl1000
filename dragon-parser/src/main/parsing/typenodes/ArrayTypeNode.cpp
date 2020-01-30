@@ -9,25 +9,21 @@
 #include "TypeNode.hpp"
 #include "TokenList.hpp"
 
-class ArrayTypeNode : ITypeNode {
+using namespace std;
 
-public:
-	TypeNode element_type;
+ArrayTypeNode::ArrayTypeNode(TypeNode element_type) {
+	this->element_type = element_type;
+}
 
-	ArrayTypeNode(TypeNode element_type) {
-		this.element_type = element_type;
-	}
+ArrayTypeNode::ArrayTypeNode(TokenList tokens) {
 
-	ArrayTypeNode(TokenList tokens) {
+	TokenList copy1 = tokens.copy();
 
-		TokenList copy1 = tokens.copy();
-
-		copy1.expectAndConsumeOtherWiseThrowException(new LBracketToken());
-		this.element_type = new TypeNode(copy1);
-		copy1.expectAndConsumeOtherWiseThrowException(new RBracketToken());
+	copy1.expectAndConsumeOtherWiseThrowException(new LBracketToken());
+	this->element_type = new TypeNode(copy1);
+	copy1.expectAndConsumeOtherWiseThrowException(new RBracketToken());
 
 
-		tokens.set(copy1);
-	}
+	tokens.set(copy1);
+}
 
-};

@@ -29,18 +29,18 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 
 	//DEBUG
 	if (debug) {
-		out.println("recognize: " + tkn);
+		cout << ("recognize: " + tkn) << endl;
 	}
 
 	string[] parts = tkn.split(" ");
 
-	int tkn_id = Integer.parseInt(parts[0]);
+	int tkn_id = stoi(parts[0]);
 
 	int line_no = 1;
 
 
 	if (tkn_id == LINE_NO) {
-		int line_no_change = parseInt(parts[1]);
+		int line_no_change = stoi(parts[1]);
 		line_no += line_no_change;
 		return make_optional();
 		//break;
@@ -65,10 +65,10 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 			result= BaseToken(BOOLCONST,parseBoolean(parts[1]));
 			break;
 		case FLOATING : 
-			result=BaseToken(FLOATING,parseFloat(parts[1]));
+			result=BaseToken(FLOATING,stof(parts[1]));
 			break;
 		case INTEGER : 
-			result= BaseToken(INTEGER,parseInt(parts[1]));
+			result= BaseToken(INTEGER,stoi(parts[1]));
 			break;
 
 		//IDENTIFIERS
@@ -93,7 +93,7 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 			break;
 
 		case TYPEPARAM : 
-			result= BaseToken(TYPEPARAM,parseInt(parts[1]));
+			result= BaseToken(TYPEPARAM,stoi(parts[1]));
 			break;
 
 		case NAMESPACE : 

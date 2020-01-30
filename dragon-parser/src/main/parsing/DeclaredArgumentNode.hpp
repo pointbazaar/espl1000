@@ -1,12 +1,12 @@
+#ifndef DECLAREDARGUMENTNODE
+#define DECLAREDARGUMENTNODE
 
 #include <optional>
 #include <string>
 
 #include "typenodes/TypeNode.hpp"
 
-#ifndef DECLAREDARGUMENTNODE
-#define DECLAREDARGUMENTNODE
-
+using namespace std;
 
 class DeclaredArgumentNode  {
 

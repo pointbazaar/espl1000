@@ -22,9 +22,9 @@ int main(int argc, char** argv){
 	//such we can easily have
 	//multiple parallel invocations of the parser in the compiler.
 
-	const vector<string> options = createOptions();
-	const vector<string> flags;
-	const vector<string> filenames;
+	vector<string> options = createOptions();
+	vector<string> flags;
+	vector<string> filenames;
 
 	for(int i=1;i<argc;i++){
 		string arg = to_string(argv[i]);
@@ -65,14 +65,14 @@ void build_ast_json_file(string tokensFile, string astJsonFile, bool debug) {
 		cout << "Parser::build_ast_json_file" << endl;
 	}
 
-	const TokenList tokens = ParserPhases.readTokensFromTokensFile(tokensFile,debug);
+	TokenList tokens = ParserPhases.readTokensFromTokensFile(tokensFile,debug);
 	//get just the namespace name from .FILENAME.dg.tokens
-	const string tokenFileName = tokensFile.getName();
-	const string namespaceName = tokenFileName.substring(1,tokenFileName.length()-(".dg.tokens").length());
+	string tokenFileName = tokensFile.getName();
+	string namespaceName = tokenFileName.substring(1,strlen(tokenFileName) - strlen(".dg.tokens"));
 
-	const NamespaceNode mynamespace = new NamespaceNode(tokens,namespaceName,debug);
+	NamespaceNode mynamespace = new NamespaceNode(tokens,namespaceName,debug);
 
-	const string str = mapper.writeValueAsString(mynamespace);
+	string str = mapper.writeValueAsString(mynamespace);
 
 	if(debug){
 		cout << "write to "+astJsonFile << endl;

@@ -3,6 +3,8 @@
 
 #include "ITermNode.hpp"
 
+using namespace std;
+
 class CharConstNode : ITermNode {
 
 public:

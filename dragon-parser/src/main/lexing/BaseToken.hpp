@@ -17,10 +17,15 @@ class BaseToken {
 	*/
 
 	public: 
-		long lineNumber = -1;
+		BaseToken(string kind);
+		long lineNumber;
 		string kind;
 		string value;
 
+		string getContents(){
+
+			return this->value;
+		}
 	
 };
 #endif

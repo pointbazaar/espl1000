@@ -16,6 +16,6 @@
 BaseToken recognizeStrConstToken(string strconst);
 BaseToken recognizeCharConstToken(string charconst);
 
-optional<BaseToken> recognizeToken(string tkn, bool debug) throws Exception;
+optional<BaseToken> recognizeToken(string tkn, bool debug);
 
 #endif

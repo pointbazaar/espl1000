@@ -9,11 +9,11 @@
 #include "ExpressionNode.hpp"
 #include "ITermNode.hpp"
 
-ExpressionNode(TermNode term) {
+ExpressionNode::ExpressionNode(TermNode term) {
 	this.term1 = term;
 }
 
-ExpressionNode(TokenList tokens) {
+ExpressionNode::ExpressionNode(TokenList tokens) {
 
 	// temporary containers
 	vector<OperatorNode> operatorNodes;
@@ -43,7 +43,7 @@ ExpressionNode(TokenList tokens) {
 	performTreeTransformation(operatorNodes,termNodes);
 }
 
-ExpressionNode(TermNode leftTerm, OperatorNode op, TermNode rightTerm) {
+ExpressionNode::ExpressionNode(TermNode leftTerm, OperatorNode op, TermNode rightTerm) {
 	this.term1=leftTerm;
 	this.op=Optional.of(op);
 	this.term2=Optional.of(rightTerm);

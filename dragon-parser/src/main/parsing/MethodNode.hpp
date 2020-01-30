@@ -9,6 +9,8 @@
 #ifndef METHODNODE
 #define METHODNODE
 
+using namespace std;
+
 class MethodNode {
 
 public:

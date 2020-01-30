@@ -18,6 +18,8 @@
 })
 */
 
+using namespace std;
+
 class ITermNode {
 
 	//pseudo interface,

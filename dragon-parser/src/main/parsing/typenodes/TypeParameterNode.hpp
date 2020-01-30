@@ -8,7 +8,7 @@
 //project headers
 #include "TypeParameterNode.hpp"
 #include "../../lexing/TokenList.hpp"
-#include "basic_and_wrapped/IBasicAndWrappedTypeNode.hpp"
+#include "IBasicAndWrappedTypeNode.hpp"
 
 using namespace std;
 

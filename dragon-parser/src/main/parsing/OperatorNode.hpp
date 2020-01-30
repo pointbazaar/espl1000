@@ -8,7 +8,7 @@ using namespace std;
 class OperatorNode  {
 
 public:
-	string operator;
+	string op;
 
 };
 

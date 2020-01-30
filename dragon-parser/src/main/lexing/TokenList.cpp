@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 //project headers
 #include "TokenList.hpp"
@@ -11,41 +12,40 @@
 
 using namespace std;
 
-TokenList::TokenList(vector<BaseToken> result, Path sourceFile) {
-	this.tokens = result;
-	this.relPath = sourceFile;
+TokenList::TokenList(vector<BaseToken> result, string sourceFile) {
+	this->tokens = result;
+	this->relPath = sourceFile;
 }
 
 TokenList::TokenList(TokenList other) {
-	this.tokens = new ArrayList<>(other.tokens);
-	this.relPath = other.relPath;
+	this->relPath = other->relPath;
 }
 
-TokenList::TokenList(Path path) {
-	this.tokens = new ArrayList<>();
-	this.relPath = path;
+TokenList::TokenList(string path) {
+	this->relPath = path;
 }
 
 vector<BaseToken> TokenList::getTokens() {
-	return this.tokens;
+	return this->tokens;
 }
 
 void TokenList::add(BaseToken token) {
-	this.tokens.add(token);
+	this->tokens.push_back(token);
 }
 
 void TokenList::addAll(vector<BaseToken> arr) {
 	for (BaseToken tk : arr) {
-		this.add(tk);
+		this->add(tk);
 	}
 }
 
 void TokenList::consume(int amount) {
-	this.tokens = this.tokens.subList(amount, this.tokens.size());
+	vector<BaseToken> res(this->tokens.begin()+amount,this->tokens.end());
+	this->tokens = res;
 }
 
 int TokenList::size() {
-	return this.tokens.size();
+	return this->tokens.size();
 }
 
 bool TokenList::startsWith(BaseToken token) {
@@ -53,15 +53,15 @@ bool TokenList::startsWith(BaseToken token) {
 	//we should use interfaces we can rely on classes to implement
 	//the class and the content of the token should be the same for them to be the same
 
-	if (this.tokens.size() > 0) {
-		return this.tokens.get(0).tokenEquals(token);
+	if (this->tokens.size() > 0) {
+		return this->tokens.at(0).tokenEquals(token);
 	}
 	return false;
 }
 
 bool TokenList::endsWith(BaseToken token) {
-	if (this.tokens.size() > 0) {
-		return this.tokens.get(this.tokens.size() - 1).tokenEquals(token);
+	if (this->tokens.size() > 0) {
+		return this->tokens.at(this->tokens.size() - 1).tokenEquals(token);
 	}
 	return false;
 }
@@ -71,53 +71,64 @@ string TokenList::wrap(string s, string wrap) {
 }
 
 void TokenList::expectAndConsumeOtherWiseThrowException(BaseToken token) {
-	if (this.size() == 0) {
+	if (this->size() == 0) {
 		throw ("no tokens");
 	}
 
-	if (this.startsWith(token)) {
-		this.consume(1);
+	if (this->startsWith(token)) {
+		this->consume(1);
 	} else {
-		string expectedStart = String.format("\t%-20s", "expected:");
-		string expectedEnd = String.format("%-20s", wrap(token.getContents(), "'"));
-		string expectedTokenMessage = expectedStart + expectedEnd + " (" + token.getClass().getSimpleName() + ")";
+		stringstream str;
 
-		string actualStart = String.format("\t%-20s", "actual:");
-		string actualEnd = String.format("%-20s", wrap(this.head().getContents(), "'"));
-		string actualTokenMessage = actualStart + actualEnd + " (" + this.head().getClass().getSimpleName() + ")";
+		str << "\t expected:"
+		<< wrap(token.getContents(), "'")
+		<< expectedStart 
+		<< expectedEnd 
+		<< " (" + token.getClass().getSimpleName() + ")"
 
-		string sourceCodeFragment = (this.toSourceCodeFragment().substring(0, Math.min(this.toSourceCodeFragment().length(), 100)));
+		<< "\t actual:"
+		<< wrap(this->head().getContents(), "'")
+		<< actualStart 
+		<< actualEnd 
+		<< " (" + this->head().getClass().getSimpleName() + ")"
 
-		string message = "Parsing Error: \n"
-				+ "\t" + expectedTokenMessage + "\n"
-				+ "\t" + actualTokenMessage + "\n"
-				+ "in '" + sourceCodeFragment + "'\n"
-				+ "in " + (relPath + ":" + this.head().getLineNumber());
+		<< (this->toSourceCodeFragment().substring(0, Math.min(this->toSourceCodeFragment().length(), 100)))
 
-		throw message;
+		<<  "Parsing Error: \n"
+				<< "\t" << expectedTokenMessage << "\n"
+				<< "\t" << actualTokenMessage << "\n"
+				<< "in '" << sourceCodeFragment << "'\n"
+				<< "in " << (relPath << ":" << this->head().getLineNumber());
+
+		throw to_string(str);
 	}
 }
 
 TokenList TokenList::copy() {
-	return new TokenList(this);
+	return TokenList(this);
 }
 
 void TokenList::set(TokenList copy) {
-	this.tokens.clear();
-	this.tokens.addAll(copy.tokens);
+	this->tokens.clear();
+	for(BaseToken tk : copy->tokens){
+		this->add(tk);
+	}
 }
 
 BaseToken TokenList::get(int i) {
-	return this.tokens.get(i);
+	return this->tokens.get(i);
 }
 
 BaseToken TokenList::head() {
-	return this.get(0);
+	return this->get(0);
 }
 
 string TokenList::toSourceCodeFragment() {
-	return this.tokens
-		.stream()
-		.map(token -> token.getContents())
-		.collect(Collectors.joining(" "));
+	stringstream str;
+
+	for(BaseToken tk : this->tokens){
+		str << tk.getContents();
+		str << " ";
+	}
+	return to_string(str);
 }

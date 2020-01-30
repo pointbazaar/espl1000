@@ -8,9 +8,8 @@
 //project headers
 #include "VariableNode.hpp"
 #include "ITermNode.hpp"
-#include "StructMemberAccessToken.hpp"
 #include "SimpleVariableNode.hpp"
-#include "IToken.hpp"
+#include "../lexing/BaseToken.hpp"
 
 	VariableNode(TokenList tokens) {
 		TokenList copy = tokens.copy();

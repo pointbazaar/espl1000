@@ -10,8 +10,8 @@
 
 //project headers
 #include "StructMemberDeclNode.hpp"
-#include "../../../lexing/TokenList.hpp"
-#include "BasicTypeWrappedNode.hpp"
+#include "../lexing/TokenList.hpp"
+#include "typenodes/BasicTypeWrappedNode.hpp"
 #include "IdentifierNode.hpp"
 
 using namespace std;

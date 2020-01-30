@@ -24,6 +24,8 @@
 })
 */
 
+using namespace std;
+
 class ITypeNode {
 
 };

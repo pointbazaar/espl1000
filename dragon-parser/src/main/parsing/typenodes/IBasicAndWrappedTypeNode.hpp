@@ -1,9 +1,12 @@
+#ifndef IBASICANDWRAPPEDTYPENODE 
+#define IBASICANDWRAPPEDTYPENODE
 
 //standard headers
 #include <vector>
 #include <set>
 
 //project headers
+#include "ITypeNode.hpp"
 
 /*
 @JsonTypeInfo(
@@ -16,8 +19,12 @@
 })
 */
 
+using namespace std;
+
 class IBasicAndWrappedTypeNode : ITypeNode {
 
 	//classes implementing this interface are also used to communicate type information throughout the compiler.
 	//so it is not just for parsing.
 };
+
+#endif

@@ -4,6 +4,8 @@
 #ifndef AST_WHOLE_PROGRAM
 #define AST_WHOLE_PROGRAM
 
+using namespace std;
+
 class AST_Whole_Program  {
 
 public:
