@@ -5,15 +5,17 @@
 
 //project headers
 #include "SimpleTypeNode.hpp"
-#include "TokenList.hpp"
+#include "../../lexing/TokenList.hpp"
+#include "../../lexing/BaseToken.hpp"
 
+using namespace std;
 
 SimpleTypeNode::SimpleTypeNode(TokenList tokens) {
 	if (tokens.size() == 0) {
 		throw new Exception();
 	}
 
-	IToken token = tokens.get(0);
+	BaseToken token = tokens.get(0);
 	if (token instanceof TypeIdentifierToken) {
 		this.typeName =
 				token.getContents();

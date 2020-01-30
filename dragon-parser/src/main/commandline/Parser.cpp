@@ -67,7 +67,7 @@ void build_ast_json_file(string tokensFile, string astJsonFile, bool debug) {
 
 	TokenList tokens = ParserPhases.readTokensFromTokensFile(tokensFile,debug);
 	//get just the namespace name from .FILENAME.dg.tokens
-	string tokenFileName = tokensFile.getName();
+	string tokenFileName = tokensFile;
 	string namespaceName = tokenFileName.substring(1,strlen(tokenFileName) - strlen(".dg.tokens"));
 
 	NamespaceNode mynamespace = new NamespaceNode(tokens,namespaceName,debug);
@@ -113,7 +113,7 @@ void main_inner(string tokensFile, bool debug) {
 
 		if(ast_json_file.exists()){
 			if(debug){
-				out.println(ast_json_file+"  already exists.");
+				cout << ast_json_file+"  already exists." << endl;
 			}
 			//see which is more recent
 			long ast_json_last_modified = ast_json_file.lastModified();
@@ -122,7 +122,7 @@ void main_inner(string tokensFile, bool debug) {
 				build_ast_json_file(tokensFile,ast_json_file,debug);
 			}else{
 				if(debug) {
-					out.println("the AST .json file was more recent than the tokens file. nothing needs to be done.");
+					cout << "the AST .json file was more recent than the tokens file. nothing needs to be done." << endl;
 				}
 			}
 		}else{
@@ -191,7 +191,7 @@ TokenList makeTokenListByCallingLexer(string file, bool debug) {
 		BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 		string s = null;
 		while ((s = stdInput.readLine()) != null) {
-			out.println(s);
+			cout << s << endl;
 		}
 	}
 

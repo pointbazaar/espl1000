@@ -69,14 +69,14 @@ void performTreeTransformation(
 	 */
 
 	//we can construct an array list and compare indices
-	vector<string> operatorPrecedence = Arrays.asList(
+	vector<string> operatorPrecedence = {
 			"*","/","%",
 			"+","-",
 			"<<",">>",
 			"!=","==",
 			"&&",
 			"||"
-	);
+	};
 
 	/*
 	Algorithm:
@@ -99,10 +99,10 @@ void performTreeTransformation(
 
 		int indexOfOp = ops.indexOf(opWithLargestPrecedence);
 
-		TermNode leftTerm = terms.get(indexOfOp);
-		TermNode rightTerm = terms.get(indexOfOp+1);
+		TermNode leftTerm = terms.at(indexOfOp);
+		TermNode rightTerm = terms.at(indexOfOp+1);
 
-		ExpressionNode expr = new ExpressionNode(leftTerm,opWithLargestPrecedence,rightTerm);
+		ExpressionNode expr = ExpressionNode(leftTerm,opWithLargestPrecedence,rightTerm);
 
 		//simplify
 		terms.remove(leftTerm);
@@ -110,15 +110,15 @@ void performTreeTransformation(
 		ops.remove(opWithLargestPrecedence);
 
 		//insert newly created expression
-		terms.add(indexOfOp,new TermNode(expr));
+		terms.add(indexOfOp,TermNode(expr));
 	}
 
 	//now only 2 terms left
-	this.term1 = terms.get(0);
+	this.term1 = terms.at(0);
 
 	//in case of only one term
 	if(ops.size()>0) {
-		this.op = ops.get(0);
-		this.term2 = Optional.of(terms.get(1));
+		this.op = ops.at(0);
+		this.term2 = Optional.of(terms.at(1));
 	}
 }

@@ -6,6 +6,7 @@
 
 //project includes
 #include "TokenReader.hpp"
+#include "TokenKeys.hpp"
 
 BaseToken recognizeStrConstToken(string strconst) {
 
@@ -15,7 +16,7 @@ BaseToken recognizeStrConstToken(string strconst) {
 BaseToken recognizeCharConstToken(string charconst) {
 
 	char v = charconst.charAt(1);
-	if (charconst.equals("'\\n'")) {
+	if (charconst == '\n') {
 		v = '\n';
 	}
 	return new BaseToken(v);
@@ -29,7 +30,7 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 
 	//DEBUG
 	if (debug) {
-		cout << ("recognize: " + tkn) << endl;
+		cout << "recognize: " << tkn << endl;
 	}
 
 	string[] parts = tkn.split(" ");
@@ -46,7 +47,7 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 		//break;
 	}
 
-	const BaseToken result;
+	BaseToken result;
 
 	switch (tkn_id) {
 

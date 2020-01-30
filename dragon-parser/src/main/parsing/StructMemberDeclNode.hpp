@@ -10,6 +10,8 @@ using namespace std;
 class StructMemberDeclNode {
 
 public:
+	StructMemberDeclNode(TokenList tokens, bool b);
+
 	BasicTypeWrappedNode typeNode;
 	string name;
 };

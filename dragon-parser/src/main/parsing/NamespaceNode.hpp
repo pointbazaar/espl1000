@@ -6,6 +6,7 @@
 
 #include "StructDeclNode.hpp"
 #include "MethodNode.hpp"
+#include "../lexing/TokenList.hpp"
 
 using namespace std;
 
@@ -14,6 +15,12 @@ class NamespaceNode {
 public:
 	//a namespace is represented by a filename.
 	//the contents of a namespace are the contents of the file
+	NamespaceNode(
+		TokenList tokens,
+		string namespace,
+		bool debug
+	);
+
 
 	string srcPath;
 	string name;

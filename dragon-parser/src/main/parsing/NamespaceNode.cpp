@@ -11,7 +11,7 @@ using namespace std;
 
 NamespaceNode::NamespaceNode(
 		TokenList tokens,
-		string namespace,
+		string name,
 		bool debug
 ) {
 
@@ -20,7 +20,7 @@ NamespaceNode::NamespaceNode(
 	}
 
 	this.srcPath = "/dev/null";
-	this.name = namespace;
+	this.name = name;
 	TokenList copy = tokens.copy();
 
 	if(copy.size()>0) {

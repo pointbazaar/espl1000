@@ -6,14 +6,14 @@
 
 //project headers
 #include "IdentifierNode.hpp"
-#include "TokenList.hpp"
-#include "IToken.hpp"
+#include "../lexing/TokenList.hpp"
+#include "../lexing/BaseToken.hpp"
 
 using namespace std;
 
 IdentifierNode::IdentifierNode(TokenList tokens) {
 
-	IToken token = tokens.get(0);
+	BaseToken token = tokens.get(0);
 
 	if (token instanceof IdentifierToken) {
 		this.identifier = token.getContents();

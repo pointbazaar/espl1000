@@ -8,12 +8,12 @@
 
 using namespace std;
 
-SubroutineTypeNode::SubroutineTypeNode(TypeNode return_type, final boolean hasSideEffects) {
+SubroutineTypeNode::SubroutineTypeNode(TypeNode return_type, boolean hasSideEffects) {
 	this.returnType = return_type;
 	this.hasSideEffects = hasSideEffects;
 }
 
-SubroutineTypeNode::SubroutineTypeNode(TokenList tokens) throws Exception {
+SubroutineTypeNode::SubroutineTypeNode(TokenList tokens){
 
 	TokenList copy = tokens.copy();
 

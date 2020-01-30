@@ -3,13 +3,16 @@
 
 #include <string>
 
+#include "../lexing/TokenList.hpp"
+
 using namespace std;
 
 class OperatorNode  {
 
 public:
-	string op;
+	OperatorNode(TokenList tokens);
 
+	string op;
 };
 
 #endif
