@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
+#include <algorithm>
 
 //project includes
 #include "Parser.hpp"
@@ -22,32 +23,32 @@ int main(int argc, char** argv){
 	//such we can easily have
 	//multiple parallel invocations of the parser in the compiler.
 
-	vector<string> options = createOptions();
 	vector<string> flags;
 	vector<string> filenames;
 
 	for(int i=1;i<argc;i++){
-		string arg = to_string(argv[i]);
+		string arg = string(argv[i]);
 		if(argv[i][0] == '-'){
-			options.push(arg);
+			flags.push_back(arg);
 		}else{
-			filenames.push(arg);
+			filenames.push_back(arg);
 		}
 	}
 
 	bool debug = true;
 	try {
-		debug = flags.contains(FLAG_DEBUG);
+		debug = find(flags.begin(),flags.end(),FLAG_DEBUG) != flags.end();
 		if(debug){
 			cout << "Parser::main" << endl;
 		}
-		bool help = flags.contains(FLAG_HELP);
-		bool test = flags.contains(FLAG_TEST);
+		bool help = find(flags.begin(),flags.end(),FLAG_HELP) != flags.end();
+		bool test = find(flags.begin(),flags.end(),FLAG_TEST) != flags.end();
 
 		if(help) {
-			ParserCLIUtils.printHelp();
+			printHelp();
 		}else if(test){
-			ParserTest.test_all();
+			//TODO: re-enable later
+			//ParserTest.test_all();
 		}else{
 			if(filenames.size() != 1){
 				throw "expected exactly 1 filename argument.";
@@ -65,14 +66,15 @@ void build_ast_json_file(string tokensFile, string astJsonFile, bool debug) {
 		cout << "Parser::build_ast_json_file" << endl;
 	}
 
-	TokenList tokens = ParserPhases.readTokensFromTokensFile(tokensFile,debug);
+	TokenList tokens = readTokensFromTokensFile(tokensFile,debug);
 	//get just the namespace name from .FILENAME.dg.tokens
 	string tokenFileName = tokensFile;
-	string namespaceName = tokenFileName.substring(1,strlen(tokenFileName) - strlen(".dg.tokens"));
+	string namespaceName = tokenFileName.substr(1,string(tokenFileName).size() - string(".dg.tokens").size());
 
-	NamespaceNode mynamespace = new NamespaceNode(tokens,namespaceName,debug);
+	NamespaceNode mynamespace = NamespaceNode(tokens,namespaceName,debug);
 
-	string str = mapper.writeValueAsString(mynamespace);
+	//TODO: generate our custom AST Format
+	string str = "TODO: generate our custom AST format";
 
 	if(debug){
 		cout << "write to "+astJsonFile << endl;
@@ -91,9 +93,12 @@ void main_inner(string tokensFile, bool debug) {
 		cout << "Tokens File to parse: "+tokensFile << endl;
 	}
 
-	if(!tokensFile.toString().endsWith(".tokens")){
-		throw (tokensFile.toString()+" does not have .tokens extension. Exiting.");
+	//TODO: re-enable this check later
+	/*
+	if(!tokensFile.endsWith(".tokens")){
+		throw (tokensFile+" does not have .tokens extension. Exiting.");
 	}
+	*/
 
 	//it should receive a .filename.dg.tokens file as path
 	//and write a .filename.dg.json file to disk
@@ -102,16 +107,20 @@ void main_inner(string tokensFile, bool debug) {
 	//of the .json file is later than that of the .tokens file, the .json
 	//file should not be rebuilt
 
-	if(tokensFile.exists()) {
-		long tokensLastModified = tokensFile.lastModified();
+	ifstream f(tokensFile.c_str());
 
-		string astJSONFilename = tokensFile.toString().substring(0,tokensFile.toString().length()-(".tokens").length())+".json";
+	if(f.good()) {
+		f.close();
 
-		File ast_json_file = (
-				Paths.get(astJSONFilename)
-		).toFile();
+		//TODO: re-enable the incremental later on
+		//long tokensLastModified = tokensFile.lastModified();
 
-		if(ast_json_file.exists()){
+		string astJSONFilename = tokensFile.substr(0,tokensFile.size()-string(".tokens").size())+".json";
+
+		/*
+		ifstream f2(astJSONFilename);
+		if(f2.good()){
+			f2.close()
 			if(debug){
 				cout << ast_json_file+"  already exists." << endl;
 			}
@@ -126,50 +135,35 @@ void main_inner(string tokensFile, bool debug) {
 				}
 			}
 		}else{
+		*/
 			//ast .json file does not exist
-			build_ast_json_file(tokensFile,ast_json_file,debug);
-		}
+			build_ast_json_file(tokensFile,astJSONFilename,debug);
+		//}
 	}else {
-		throw ("argument file "+tokensFile.toString()+" does not exist.");
+		throw ("argument file "+tokensFile+" does not exist.");
 	}
 
 }
 
 void printHelp() {
 
-	string header = "dragon-parser - a parser for the dragon programming language\n";
+	cout << "dragon-parser FILE" << endl
+		<< "	dragon-parser - a parser for the dragon programming language" << endl
 
-	string footer = "EXAMPLES\n" +
-	                      "   dragon-parser .Main.dg.tokens\n" +
-	                      "   dragon-parser -debug .Main.dg.tokens\n" +
-	                      "\n" +
-	                      "            GITHUB\n" +
-	                      "   https://github.com/pointbazaar/dragon-parser/\n" +
-	                      "\n" +
-	                      "AUTHOR\n" +
-	                      "alex23667@gmail.com\n" +
-	                      "\n" +
-	                      "            REPORTING BUGS\n" +
-	                      "   https://github.com/pointbazaar/dragon/issues\n" +
-	                      "\n";
-
-	cout 
-		<< "dragon-parser FILE" << endl
-		<< header << endl
-		<< endl
-		<< String.join("\n", createOptions())
-		<< endl
-		<< footer << endl;
-}
-
-vector<string> createOptions() {
-	vector<string> res;
-
-	res.push_back(Parser.FLAG_DEBUG); //,false,"prints debug output"));
-	res.push_back(Parser.FLAG_HELP); //false,"print help"));
-	res.push_back(Parser.FLAG_TEST); //false, "run tests"));
-
-	return res;
+	<< "EXAMPLES" << endl
+	<< "   dragon-parser .Main.dg.tokens" << endl
+	<< "   dragon-parser -debug .Main.dg.tokens" << endl
+	<< endl
+	<< "GITHUB" << endl
+	<< "   https://github.com/pointbazaar/dragon-parser/" << endl
+	<< endl
+	<< "AUTHOR" << endl
+	<< "	alex23667@gmail.com" << endl
+	<< endl
+	<< "REPORTING BUGS" << endl
+	<< "   https://github.com/pointbazaar/dragon/issues" << endl
+	<< endl;
+		
 }
 
 TokenList makeTokenListByCallingLexer(string file, bool debug) {
@@ -183,6 +177,10 @@ TokenList makeTokenListByCallingLexer(string file, bool debug) {
 		cout << call << endl;
 	}
 
+	//TODO: think about this later, 
+	//when it compiles again
+
+	/*
 	Process proc = Runtime.getRuntime().exec(call);
 	proc.waitFor();
 
@@ -208,6 +206,7 @@ TokenList makeTokenListByCallingLexer(string file, bool debug) {
 		throw ("dragon-lexer exit with nonzero exit code: " + proc.exitValue());
 	}
 
+
 	string dirname = file.getParent();
 	if (dirname == null) {
 		dirname = ".";
@@ -216,13 +215,17 @@ TokenList makeTokenListByCallingLexer(string file, bool debug) {
 	if(debug) {
 		cout << "read from: " + path << endl;
 	}
-	return readTokensFromTokensFile(path.toFile(),debug);
+	*/
+	return readTokensFromTokensFile(file,debug);
 }
 
 TokenList readTokensFromTokensFile(string tokensFile, bool debug){
 
-	string fileNameWithoutPath = tokensFile.getName();
+	//TODO: fix
+	string fileNameWithoutPath = tokensFile;//.getName();
 
+	//TODO: re-enable
+	/*
 	if(! fileNameWithoutPath.endsWith(".tokens")){
 		throw ("tokens file must end with '.tokens' . Got "+fileNameWithoutPath );
 	}
@@ -230,18 +233,25 @@ TokenList readTokensFromTokensFile(string tokensFile, bool debug){
 	if(! fileNameWithoutPath.startsWith(".")){
 		throw "tokens file must start with '.'. A token File should be hidden. Got "+fileNameWithoutPath ;
 	}
+	*/
 
-	vector<string> lines = Files.readAllLines(tokensFile);
+	vector<string> lines;
+	ifstream file(tokensFile);
+    string str; 
+    while (getline(file, str))
+    {
+        lines.push_back(str);
+    }
 
 	if(debug) {
 		cout << "read was successful" << endl;
 	}
 
-	TokenList tks = new TokenList(tokensFile);
+	TokenList tks = TokenList(tokensFile);
 
 	for (string line : lines) {
 		BaseToken tkn = TokenReader.recognizeToken(line, debug);
-		tkn.ifPresent(tks::add);
+		tks.add(tkn);
 	}
 
 	//DEBUG

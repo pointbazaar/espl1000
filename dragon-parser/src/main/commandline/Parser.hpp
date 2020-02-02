@@ -29,7 +29,6 @@ TokenList makeTokenListByCallingLexer(string file, bool debug);
 TokenList readTokensFromTokensFile(string tokensFile, bool debug);
 TokenList makeTokenList(string code,bool debug);
 
-vector<string> createOptions();
 void printHelp();
 
 #endif
