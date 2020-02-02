@@ -17,7 +17,7 @@ public:
 	//the contents of a namespace are the contents of the file
 	NamespaceNode(
 		TokenList tokens,
-		string namespace,
+		string name,
 		bool debug
 	);
 

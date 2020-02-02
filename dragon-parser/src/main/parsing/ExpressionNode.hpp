@@ -4,8 +4,9 @@
 #include <optional>
 
 #include "TermNode.hpp"
-#include "OperatorNode.hpp"
 #include "ITermNode.hpp"
+#include "OperatorNode.hpp"
+#include "../lexing/TokenList.hpp"
 
 using namespace std;
 

@@ -172,7 +172,7 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 			break;
 
 		default : 
-			result= throw ("unreconized token id : " + tkn_id);
+			throw ("unreconized token id : " + tkn_id);
 	};
 
 	result.lineNumber=line_no;

@@ -116,7 +116,7 @@ void TokenList::set(TokenList copy) {
 }
 
 BaseToken TokenList::get(int i) {
-	return this->tokens.get(i);
+	return this->tokens.at(i);
 }
 
 BaseToken TokenList::head() {
