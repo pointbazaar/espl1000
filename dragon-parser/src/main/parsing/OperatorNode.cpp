@@ -15,7 +15,7 @@ using namespace std;
 
 OperatorNode::OperatorNode(TokenList tokens) {
 
-	TokenList copy = new TokenList(tokens);
+	TokenList copy = TokenList(tokens);
 
 	BaseToken token = copy.get(0);
 

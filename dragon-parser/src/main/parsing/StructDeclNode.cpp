@@ -6,7 +6,7 @@
 //project headers
 #include "StructDeclNode.hpp"
 #include "../lexing/TokenList.hpp"
-#include "../lexing/TokenKeys.hpp"
+#include "../commandline/TokenKeys.hpp"
 
 using namespace std;
 

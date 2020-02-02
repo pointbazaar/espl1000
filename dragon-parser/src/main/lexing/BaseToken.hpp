@@ -18,6 +18,10 @@ class BaseToken {
 
 	public: 
 		BaseToken(string kind);
+		BaseToken(string kind, char value);
+		BaseToken(char idk);
+		BaseToken(bool value);
+		BaseToken();
 		long lineNumber;
 		string kind;
 		string value;

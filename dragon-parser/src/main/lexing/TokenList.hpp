@@ -19,6 +19,7 @@ public:
 	vector<BaseToken> tokens;
 
 	TokenList(vector<BaseToken> tks, int x);
+	TokenList(string path);
 	TokenList();
 
 	vector<BaseToken> getTokens();

@@ -3,23 +3,26 @@
 #include <stdio.h>
 #include <map>
 #include <optional>
+#include <iostream>
+#include <sstream>
 
 //project includes
 #include "TokenReader.hpp"
 #include "TokenKeys.hpp"
+#include "../lexing/BaseToken.hpp"
 
 BaseToken recognizeStrConstToken(string strconst) {
 
-	return new BaseToken(strconst.substring(1, strconst.length() - 1));
+	return BaseToken(strconst.substr(1, strconst.size() - 1));
 }
 
 BaseToken recognizeCharConstToken(string charconst) {
 
-	char v = charconst.charAt(1);
-	if (charconst == '\n') {
+	char v = charconst.c_str()[1];
+	if (charconst.at(0) == '\n') {
 		v = '\n';
 	}
-	return new BaseToken(v);
+	return BaseToken(v);
 }
 
 optional<BaseToken> recognizeToken(string tkn, bool debug) {
@@ -33,17 +36,22 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 		cout << "recognize: " << tkn << endl;
 	}
 
-	string[] parts = tkn.split(" ");
+	vector<string> parts;
+
+	stringstream ss(tkn);
+    string token;
+    while (getline(ss, token, ' ')) {
+        parts.push_back(token);
+    }
 
 	int tkn_id = stoi(parts[0]);
 
 	int line_no = 1;
 
-
 	if (tkn_id == LINE_NO) {
 		int line_no_change = stoi(parts[1]);
 		line_no += line_no_change;
-		return make_optional();
+		return nullopt;
 		//break;
 	}
 
@@ -52,10 +60,14 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 	switch (tkn_id) {
 
 		case STRINGCONST : 
-			result= recognizeStrConstToken(tkn.substring((STRINGCONST + " ").length()));
+			result= recognizeStrConstToken(
+				tkn.substr(string(STRINGCONST + " ").size())
+			);
 			break;
 		case CHARCONST : 
-			result= recognizeCharConstToken(tkn.substring((CHARCONST + " ").length()));
+			result= recognizeCharConstToken(
+				tkn.substr(string(CHARCONST + " ").size())
+			);
 			break;
 		case ANYTYPE : 
 			result= BaseToken(ANYTYPE);
@@ -63,26 +75,29 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 
 		//CONSTANTS
 		case BOOLCONST : 
-			result= BaseToken(BOOLCONST,parseBoolean(parts[1]));
+			result= BaseToken(
+					BOOLCONST,
+					(bool)stoi(parts.at(1))
+				);
 			break;
 		case FLOATING : 
-			result=BaseToken(FLOATING,stof(parts[1]));
+			result=BaseToken(FLOATING,stof(parts.at(1));
 			break;
 		case INTEGER : 
-			result= BaseToken(INTEGER,stoi(parts[1]));
+			result= BaseToken(INTEGER,stoi(parts.at(1));
 			break;
 
 		//IDENTIFIERS
 		case IDENTIFIER : 
-			result= BaseToken(IDENTIFIER,parts[1]);
+			result= BaseToken(IDENTIFIER,parts.at(1));
 			break;
 		case TYPEIDENTIFIER : 
-			result= BaseToken(TYPEIDENTIFIER,parts[1]);
+			result= BaseToken(TYPEIDENTIFIER,parts.at(1));
 			break;
 
 		//SECTION: OPERATORNS
 		case OPERATOR : 
-			result= BaseToken(OPERATOR,parts[1]);
+			result= BaseToken(OPERATOR,parts.at(1));
 			break;
 
 		case EQ : 
@@ -94,7 +109,7 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 			break;
 
 		case TYPEPARAM : 
-			result= BaseToken(TYPEPARAM,stoi(parts[1]));
+			result= BaseToken(TYPEPARAM,stoi(parts.at(1)));
 			break;
 
 		case NAMESPACE : 
@@ -143,7 +158,7 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 			result= BaseToken(COMMA);
 			break;
 		case ARROW : 
-			result= (parts[1].equals("->")) ?
+			result= (parts.at(1).equals("->")) ?
 				BaseToken(true, true) :
 				BaseToken(true, false);
 			break;
@@ -177,5 +192,5 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 
 	result.lineNumber=line_no;
 
-	return make_optional(result);
+	return optional<BaseToken>(result);
 }

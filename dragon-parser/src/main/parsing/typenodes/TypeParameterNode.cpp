@@ -8,7 +8,7 @@
 #include "../../lexing/TokenList.hpp"
 #include "../../lexing/BaseToken.hpp"
 #include "IBasicAndWrappedTypeNode.hpp"
-#include "../../lexing/commandline/TokenKeys.hpp"
+#include "../../commandline/TokenKeys.hpp"
 
 using namespace std;
 

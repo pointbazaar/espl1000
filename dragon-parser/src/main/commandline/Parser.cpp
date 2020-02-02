@@ -10,8 +10,12 @@
 #include <cstdlib>
 #include <algorithm>
 
+#include <stdlib.h>
+#include <time.h>
+
 //project includes
 #include "Parser.hpp"
+#include "TokenReader.hpp"
 
 using namespace std;
 
@@ -247,10 +251,10 @@ TokenList readTokensFromTokensFile(string tokensFile, bool debug){
 		cout << "read was successful" << endl;
 	}
 
-	TokenList tks = TokenList(tokensFile);
+	TokenList tks(tokensFile);
 
 	for (string line : lines) {
-		BaseToken tkn = TokenReader.recognizeToken(line, debug);
+		BaseToken tkn = recognizeToken(line, debug).value();
 		tks.add(tkn);
 	}
 
@@ -269,8 +273,8 @@ TokenList makeTokenList(string code,bool debug) {
 	//this will fill up the disk, but it is in /tmp
 	//so it will be deleted on restart?
 
-	int rand = rand();
-	string path = ((string)"/tmp/temp") + to_string(rand) + (string)(".dg");
+	int r = rand() % 1000;
+	string path = ((string)"/tmp/temp") + to_string(r) + (string)(".dg");
 
 	if(debug) {
 		cout << "write to: " << path << endl;
