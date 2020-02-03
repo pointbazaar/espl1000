@@ -81,10 +81,13 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 				);
 			break;
 		case FLOATING : 
-			result=BaseToken(FLOATING,stof(parts.at(1));
+			;
+			result = BaseToken(
+				FLOATING,stof(parts.at(1))
+				);
 			break;
 		case INTEGER : 
-			result= BaseToken(INTEGER,stoi(parts.at(1));
+			result= BaseToken(INTEGER,stoi(parts.at(1)));
 			break;
 
 		//IDENTIFIERS
@@ -158,7 +161,7 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 			result= BaseToken(COMMA);
 			break;
 		case ARROW : 
-			result= (parts.at(1).equals("->")) ?
+			result= (parts.at(1).compare("->") == 0) ?
 				BaseToken(true, true) :
 				BaseToken(true, false);
 			break;

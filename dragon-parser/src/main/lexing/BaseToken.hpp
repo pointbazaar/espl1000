@@ -18,8 +18,12 @@ class BaseToken {
 
 	public: 
 		BaseToken(string kind);
+		BaseToken(string kind, float value);
 		BaseToken(string kind, char value);
+		BaseToken(int kind, string value);
 		BaseToken(char idk);
+		BaseToken(int idk);
+		BaseToken(int idk, bool value);
 		BaseToken(bool value);
 		BaseToken();
 		long lineNumber;
@@ -31,5 +35,6 @@ class BaseToken {
 			return this->value;
 		}
 	
+		bool tokenEquals(BaseToken other);
 };
 #endif

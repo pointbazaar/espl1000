@@ -12,7 +12,7 @@ using namespace std;
 
 AST_Whole_Program::AST_Whole_Program(NamespaceNode myNamespace) {
 	//utility method, to facilitate creating AST_Whole_Program from a single namespace node
-	this.namespaceNodes.add(myNamespace);
+	this->namespaceNodes.add(myNamespace);
 }
 
 AST_Whole_Program::AST_Whole_Program(TokenList tokens, string namespace, bool debug) {
@@ -24,6 +24,6 @@ AST_Whole_Program::AST_Whole_Program(TokenList tokens, string namespace, bool de
 		System.out.println("parse AST_Whole_Program");
 	}
 
-	this.namespaceNodes.add(new NamespaceNode(tokens, namespace, debug));
+	this->namespaceNodes.add(NamespaceNode(tokens, namespace, debug));
 }
 

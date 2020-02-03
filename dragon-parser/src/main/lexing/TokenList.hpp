@@ -18,6 +18,8 @@ public:
 	string relPath;
 	vector<BaseToken> tokens;
 
+	TokenList(TokenList& other);
+	TokenList(vector<BaseToken> result, string sourceFile);
 	TokenList(vector<BaseToken> tks, int x);
 	TokenList(string path);
 	TokenList();
@@ -38,6 +40,9 @@ public:
 
 	BaseToken get(int i);
 	BaseToken head();
+
+	int size();
+
 
 	string toSourceCodeFragment();
 };

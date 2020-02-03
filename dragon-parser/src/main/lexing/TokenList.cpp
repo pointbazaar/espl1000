@@ -17,8 +17,8 @@ TokenList::TokenList(vector<BaseToken> result, string sourceFile) {
 	this->relPath = sourceFile;
 }
 
-TokenList::TokenList(TokenList other) {
-	this->relPath = other->relPath;
+TokenList::TokenList(TokenList& other) {
+	this->relPath = other.relPath;
 }
 
 TokenList::TokenList(string path) {
@@ -82,17 +82,15 @@ void TokenList::expectAndConsumeOtherWiseThrowException(BaseToken token) {
 
 		str << "\t expected:"
 		<< wrap(token.getContents(), "'")
-		<< expectedStart 
-		<< expectedEnd 
-		<< " (" + token.getClass().getSimpleName() + ")"
+		
+		<< " (" + token.kind + ")"
 
 		<< "\t actual:"
 		<< wrap(this->head().getContents(), "'")
-		<< actualStart 
-		<< actualEnd 
-		<< " (" + this->head().getClass().getSimpleName() + ")"
+		
+		<< " (" + this->head().kind + ")"
 
-		<< (this->toSourceCodeFragment().substring(0, Math.min(this->toSourceCodeFragment().length(), 100)))
+		<< (this->toSourceCodeFragment().substr(0, Math.min(this->toSourceCodeFragment().length(), 100)))
 
 		<<  "Parsing Error: \n"
 				<< "\t" << expectedTokenMessage << "\n"
