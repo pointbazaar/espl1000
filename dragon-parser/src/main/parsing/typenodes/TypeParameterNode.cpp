@@ -16,8 +16,8 @@ TypeParameterNode::TypeParameterNode(TokenList tokens){
 	
 	BaseToken token = tokens.get(0);
 
-	if (token->kind == TYPEPARAM) {
-		this->typeParameterIndex = stoi(token->value);
+	if (token.kind == TYPEPARAM) {
+		this->typeParameterIndex = stoi(token.value);
 		tokens.consume(1);
 	} else {
 		throw "could not read type parameter node";

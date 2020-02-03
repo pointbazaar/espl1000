@@ -4,6 +4,7 @@
 #include <set>
 #include <algorithm>
 #include <string>
+#include <iostream>
 
 //project headers
 #include "AST_Whole_Program.hpp"
@@ -12,18 +13,18 @@ using namespace std;
 
 AST_Whole_Program::AST_Whole_Program(NamespaceNode myNamespace) {
 	//utility method, to facilitate creating AST_Whole_Program from a single namespace node
-	this->namespaceNodes.add(myNamespace);
+	this->namespaceNodes.insert(myNamespace);
 }
 
-AST_Whole_Program::AST_Whole_Program(TokenList tokens, string namespace, bool debug) {
+AST_Whole_Program::AST_Whole_Program(TokenList tokens, string myNamespace, bool debug) {
 
 	//use this constructor as a shortcut to create an AST
 	//if there is just a single namespace
 
 	if (debug) {
-		System.out.println("parse AST_Whole_Program");
+		cout << "parse AST_Whole_Program" << endl;
 	}
 
-	this->namespaceNodes.add(NamespaceNode(tokens, namespace, debug));
+	this->namespaceNodes.insert(NamespaceNode(tokens, myNamespace, debug));
 }
 

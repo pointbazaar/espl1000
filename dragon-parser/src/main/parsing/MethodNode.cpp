@@ -10,6 +10,7 @@
 using namespace std;
 
 MethodNode::MethodNode(TokenList tokens, bool debug) {
+
 	if (debug) {
 		System.out.println("try to parse MethodNode from '" + tokens.toSourceCodeFragment() + "'");
 	}
@@ -18,17 +19,17 @@ MethodNode::MethodNode(TokenList tokens, bool debug) {
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(FN));
 
-	this.methodName = IdentifierNode(copy).identifier;
+	this->methodName = IdentifierNode(copy).identifier;
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LPARENS));
 
 	//while there is no ')' up, continue parsing arguments
-	IToken next = copy.get(0);
+	BaseToken next = copy.get(0);
 	while (!(next instanceof RParensToken)) {
-		if (this.arguments.size() > 0) {
+		if (this->arguments.size() > 0) {
 			copy.expectAndConsumeOtherWiseThrowException(BaseToken(COMMA));
 		}
-		this.arguments.add(DeclaredArgumentNode(copy));
+		this->arguments.add(DeclaredArgumentNode(copy));
 		next = copy.get(0);
 	}
 
@@ -36,19 +37,19 @@ MethodNode::MethodNode(TokenList tokens, bool debug) {
 
 	if (copy.head() instanceof ArrowToken) {
 		ArrowToken head = (ArrowToken) copy.head();
-		this.hasSideEffects = !head.is_functional;
+		this->hasSideEffects = !head.is_functional;
 		copy.consume(1);
 	} else {
 		throw ("expected arrow here");
 	}
 
-	this.returnType = TypeNode(copy);
+	this->returnType = TypeNode(copy);
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LCURLY));
 
 	IToken statement_next = copy.get(0);
 	while (!(statement_next.kind != RCURLY)) {
-		this.statements.add(StatementNode(copy));
+		this->statements.push_back(StatementNode(copy));
 		statement_next = copy.get(0);
 	}
 

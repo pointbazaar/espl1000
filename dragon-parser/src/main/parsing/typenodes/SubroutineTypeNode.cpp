@@ -8,20 +8,20 @@
 
 using namespace std;
 
-SubroutineTypeNode::SubroutineTypeNode(TypeNode return_type, boolean hasSideEffects) {
-	this.returnType = return_type;
-	this.hasSideEffects = hasSideEffects;
+SubroutineTypeNode::SubroutineTypeNode(TypeNode return_type, bool hasSideEffects) {
+	this->returnType = return_type;
+	this->hasSideEffects = hasSideEffects;
 }
 
 SubroutineTypeNode::SubroutineTypeNode(TokenList tokens){
 
 	TokenList copy = tokens.copy();
 
-	copy.expectAndConsumeOtherWiseThrowException(new LParensToken());
+	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LPARENS));
 
-	boolean sucess_argument_types = true;
+	bool sucess_argument_types = true;
 	try {
-		this.argumentTypes.add(new TypeNode(copy));
+		this->argumentTypes.push_back(TypeNode(copy));
 	} catch (string e) {
 		sucess_argument_types = false;
 	}
@@ -29,8 +29,8 @@ SubroutineTypeNode::SubroutineTypeNode(TokenList tokens){
 		try {
 			TokenList copy2 = copy.copy();
 
-			copy2.expectAndConsumeOtherWiseThrowException(new CommaToken());
-			this.argumentTypes.add(new TypeNode(copy2));
+			copy2.expectAndConsumeOtherWiseThrowException(BaseToken(COMMA));
+			this->argumentTypes.push_back(TypeNode(copy2));
 
 			copy.set(copy2);
 		} catch (string e) {
@@ -38,17 +38,17 @@ SubroutineTypeNode::SubroutineTypeNode(TokenList tokens){
 		}
 	}
 
-	copy.expectAndConsumeOtherWiseThrowException(new RParensToken());
+	copy.expectAndConsumeOtherWiseThrowException(BaseToken(RPARENS));
 
-	if (copy.head() instanceof ArrowToken) {
-		ArrowToken arrow = (ArrowToken) copy.head();
+	if (copy.head().kind == ARROW) {
+		BaseToken arrow = copy.head();
 		this.hasSideEffects = !arrow.is_functional;
 		copy.consume(1);
 	} else {
 		throw "expected an arrow token here";
 	}
 
-	this.returnType = new TypeNode(copy);
+	this.returnType = TypeNode(copy);
 
 	tokens.set(copy);
 }

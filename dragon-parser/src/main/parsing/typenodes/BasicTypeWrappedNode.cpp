@@ -6,11 +6,12 @@
 //project headers
 #include "BasicTypeWrappedNode.hpp"
 #include "../../lexing/TokenList.hpp"
+#include "../../commandline/TokenKeys.hpp"
 
 using namespace std;
 
 BasicTypeWrappedNode::BasicTypeWrappedNode(IBasicAndWrappedTypeNode typeNode) {
-	this.typeNode = typeNode;
+	this->typeNode = typeNode;
 }
 
 BasicTypeWrappedNode::BasicTypeWrappedNode(TokenList tokens) {
@@ -18,19 +19,19 @@ BasicTypeWrappedNode::BasicTypeWrappedNode(TokenList tokens) {
 	TokenList copy = tokens.copy();
 
 	IBasicAndWrappedTypeNode candidate;
-	if (copy.size() > 1 && copy.get(0).tokenEquals(new LParensToken())) {
+	if (copy.size() > 1 && copy.get(0).tokenEquals(BaseToken(LPARENS))) {
 		TokenList copy2 = copy.copy();
 
-		copy2.expectAndConsumeOtherWiseThrowException(new LParensToken());
-		candidate = new SubroutineTypeNode(copy2);
-		copy2.expectAndConsumeOtherWiseThrowException(new RParensToken());
+		copy2.expectAndConsumeOtherWiseThrowException(BaseToken(LPARENS));
+		candidate = SubroutineTypeNode(copy2);
+		copy2.expectAndConsumeOtherWiseThrowException(BaseToken(RPARENS));
 
 		copy.set(copy2);
 
 	} else {
-		candidate = new SimpleTypeNode(copy);
+		candidate = SimpleTypeNode(copy);
 	}
-	this.typeNode = candidate;
+	this->typeNode = candidate;
 	tokens.set(copy);
 }
 

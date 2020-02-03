@@ -13,7 +13,9 @@
 
 BaseToken recognizeStrConstToken(string strconst) {
 
-	return BaseToken(strconst.substr(1, strconst.size() - 1));
+	return BaseToken(
+		strconst.substr(1, strconst.size() - 1)
+	);
 }
 
 BaseToken recognizeCharConstToken(string charconst) {

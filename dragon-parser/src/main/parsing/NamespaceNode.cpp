@@ -2,11 +2,13 @@
 //standard headers
 #include <vector>
 #include <string>
+#include <iostream>
 
 //project headers
 #include "NamespaceNode.hpp"
 #include "../lexing/TokenList.hpp"
 #include "../lexing/BaseToken.hpp"
+#include "../commandline/TokenKeys.hpp"
 
 using namespace std;
 

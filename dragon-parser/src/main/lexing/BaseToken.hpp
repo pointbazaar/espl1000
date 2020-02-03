@@ -17,17 +17,17 @@ class BaseToken {
 	*/
 
 	public: 
-		BaseToken(string kind);
-		BaseToken(string kind, float value);
-		BaseToken(string kind, char value);
-		BaseToken(int kind, string value);
-		BaseToken(char idk);
-		BaseToken(int idk);
-		BaseToken(int idk, bool value);
-		BaseToken(bool value);
 		BaseToken();
+		BaseToken(int kind);
+		BaseToken(char idk);
+		BaseToken(bool value);
+		BaseToken(int kind, float value);
+		BaseToken(int kind, char value);
+		BaseToken(int kind, string value);
+		BaseToken(int idk, bool value);
+
 		long lineNumber;
-		string kind;
+		int kind;
 		string value;
 
 		string getContents(){

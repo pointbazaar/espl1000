@@ -17,13 +17,13 @@ IdentifierNode::IdentifierNode(TokenList tokens) {
 	BaseToken token = tokens.get(0);
 
 	if (token.kind == IDENTIFIER) {
-		this.identifier = token.getContents();
+		this->identifier = token.getContents();
 		tokens.consume(1);
 
 	} else {
-		String msg = "could not read identifier from token: " + token.getContents();
+		string msg = "could not read identifier from token: " + token.getContents();
 		msg += " in " + tokens.relPath + ":" + token.getLineNumber();
-		msg += " in context '" + tokens.toSourceCodeFragment().substr(0, Math.min(20, tokens.toSourceCodeFragment().size())) + "'";
+		msg += " in context '" + tokens.toSourceCodeFragment().substr(0, min(20, tokens.toSourceCodeFragment().size())) + "'";
 
 		throw (msg);
 	}

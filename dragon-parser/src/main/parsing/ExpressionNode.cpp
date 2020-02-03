@@ -10,7 +10,7 @@
 #include "ITermNode.hpp"
 
 ExpressionNode::ExpressionNode(TermNode term) {
-	this.term1 = term;
+	this->term1 = term;
 }
 
 ExpressionNode::ExpressionNode(TokenList tokens) {
@@ -20,17 +20,17 @@ ExpressionNode::ExpressionNode(TokenList tokens) {
 	vector<TermNode> termNodes;
 	// end of temporary containers
 	TokenList copy = tokens.copy();
-	termNodes.add(new TermNode(copy));
+	termNodes.push_back(TermNode(copy));
 	try {
 
 		while (true) {
-			TokenList copy2 = new TokenList(copy);
+			TokenList copy2 = TokenList(copy);
 
-			OperatorNode myop = new OperatorNode(copy2);
-			TermNode myterm = new TermNode(copy2);
+			OperatorNode myop = OperatorNode(copy2);
+			TermNode myterm = TermNode(copy2);
 
-			operatorNodes.add(myop);
-			termNodes.add(myterm);
+			operatorNodes.push_back(myop);
+			termNodes.push_back(myterm);
 
 			copy.set(copy2);
 		}
@@ -44,9 +44,9 @@ ExpressionNode::ExpressionNode(TokenList tokens) {
 }
 
 ExpressionNode::ExpressionNode(TermNode leftTerm, OperatorNode op, TermNode rightTerm) {
-	this.term1=leftTerm;
-	this.op=Optional.of(op);
-	this.term2=Optional.of(rightTerm);
+	this->term1=leftTerm;
+	this->op=Optional.of(op);
+	this->term2=Optional.of(rightTerm);
 }
 
 void performTreeTransformation(
@@ -114,11 +114,11 @@ void performTreeTransformation(
 	}
 
 	//now only 2 terms left
-	this.term1 = terms.at(0);
+	this->term1 = terms.at(0);
 
 	//in case of only one term
 	if(ops.size()>0) {
-		this.op = ops.at(0);
-		this.term2 = Optional.of(terms.at(1));
+		this->op = ops.at(0);
+		this->term2 = Optional.of(terms.at(1));
 	}
 }

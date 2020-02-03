@@ -10,27 +10,28 @@
 #include "ITermNode.hpp"
 #include "SimpleVariableNode.hpp"
 #include "../lexing/BaseToken.hpp"
+#include "../commandline/TokenKeys.hpp"
+#include "../lexing/TokenList.hpp"
 
-	VariableNode(TokenList tokens) {
-		TokenList copy = tokens.copy();
+VariableNode::VariableNode(TokenList tokens) {
+	TokenList copy = tokens.copy();
 
-		this.simpleVariableNode = new SimpleVariableNode(copy);
+	this->simpleVariableNode = SimpleVariableNode(copy);
 
-		if (copy.size() > 0) {
-			IToken next = copy.get(0);
-			while (next instanceof StructMemberAccessToken) {
+	if (copy.size() > 0) {
+		BaseToken next = copy.get(0);
+		while (next.kind == STRUCTMEMBERACCESS) {
 
-				copy.expectAndConsumeOtherWiseThrowException(new StructMemberAccessToken());
-				this.memberAccessList.add(new VariableNode(copy));
-				if (copy.size() > 0) {
-					next = copy.get(0);
-				} else {
-					break;
-				}
+			copy.expectAndConsumeOtherWiseThrowException(BaseToken(STRUCTMEMBERACCESS));
+			this.memberAccessList.add(VariableNode(copy));
+			if (copy.size() > 0) {
+				next = copy.get(0);
+			} else {
+				break;
 			}
 		}
-
-		tokens.set(copy);
 	}
 
-};
+	tokens.set(copy);
+}
+

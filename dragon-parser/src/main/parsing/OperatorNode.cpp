@@ -9,6 +9,7 @@
 #include "OperatorNode.hpp"
 #include "../lexing/TokenList.hpp"
 #include "../lexing/BaseToken.hpp"
+#include "../commandline/TokenKeys.hpp"
 
 using namespace std;
 
@@ -19,25 +20,25 @@ OperatorNode::OperatorNode(TokenList tokens) {
 
 	BaseToken token = copy.get(0);
 
-	if (token instanceof OperatorToken) {
+	if (token.kind == OPERATOR) {
 
-		if (copy.get(1) instanceof OperatorToken) {
-			OperatorToken opleft = (OperatorToken) token;
-			OperatorToken opright = (OperatorToken) copy.get(1);
+		if (copy.get(1).kind == OPERATOR) {
+			BaseToken opleft = token;
+			BaseToken opright = copy.get(1);
 
-			if ((opleft.operator.equals("<")) || opleft.operator.equals(">")
-					&& opright.operator.equals("=")
+			if ((opleft.value.compare("<")==0) || opleft.value.compare(">")==0
+					&& opright.value.compare("=")==0
 			) {
-				this.op = opleft.operator + opright.operator;
+				this->op = opleft.value + opright.value;
 				copy.consume(2);
-			} else if (opleft.operator.equals("=") && opright.operator.equals("=")) {
-				this.op = "==";
+			} else if (opleft.value.compare("=")==0 && opright.operator.compare("=")==0) {
+				this->op = "==";
 				copy.consume(2);
 			} else {
 				throw "could not recognize operator token: got " + token.getContents();
 			}
 		} else {
-			this.op = ((OperatorToken) token).operator;
+			this->op = (token).value;
 			copy.consume(1);
 		}
 	} else {

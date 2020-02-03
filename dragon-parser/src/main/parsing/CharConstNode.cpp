@@ -15,7 +15,7 @@ CharConstNode::CharConstNode(TokenList tokens) {
 	BaseToken token = tokens.get(0);
 
 	if (token.kind == CHARCONST) {
-		this->content = ((CharConstantToken) token).content;
+		this->content = token.value.at(0);
 		tokens.consume(1);
 	} else {
 		throw ("could not read charConstant node");

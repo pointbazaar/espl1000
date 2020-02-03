@@ -10,6 +10,8 @@ class TypeNode {
 
 public:
 	TypeNode(TokenList tokens);
+	TypeNode(ITypeNode typeNode);
+	
 	ITypeNode typeNode;
 };
 

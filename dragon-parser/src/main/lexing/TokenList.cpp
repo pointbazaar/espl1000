@@ -83,14 +83,14 @@ void TokenList::expectAndConsumeOtherWiseThrowException(BaseToken token) {
 		str << "\t expected:"
 		<< wrap(token.getContents(), "'")
 		
-		<< " (" + token.kind + ")"
+		<< " (" << token.kind << ")"
 
 		<< "\t actual:"
 		<< wrap(this->head().getContents(), "'")
 		
-		<< " (" + this->head().kind + ")"
+		<< " (" << this->head().kind << ")"
 
-		<< (this->toSourceCodeFragment().substr(0, Math.min(this->toSourceCodeFragment().length(), 100)))
+		<< (this->toSourceCodeFragment().substr(0, min(this->toSourceCodeFragment().length(), 100)))
 
 		<<  "Parsing Error: \n"
 				<< "\t" << expectedTokenMessage << "\n"
