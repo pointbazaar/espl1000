@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class IntConstNode : ITermNode {
+class IntConstNode : public ITermNode {
 
 public:
 

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class SimpleTypeNode : IBasicAndWrappedTypeNode {
+class SimpleTypeNode : public IBasicAndWrappedTypeNode {
 
 public:
 

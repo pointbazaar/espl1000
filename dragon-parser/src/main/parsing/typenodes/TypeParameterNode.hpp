@@ -12,7 +12,7 @@
 
 using namespace std;
 
-class TypeParameterNode : IBasicAndWrappedTypeNode {
+class TypeParameterNode : public IBasicAndWrappedTypeNode {
 
 public:
 	int typeParameterIndex;

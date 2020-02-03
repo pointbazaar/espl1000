@@ -9,7 +9,7 @@
 
 using namespace std;
 
-class VariableNode : ITermNode {
+class VariableNode : public ITermNode {
 
 public:
 	VariableNode(TokenList tokens);

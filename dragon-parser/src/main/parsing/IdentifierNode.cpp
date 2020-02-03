@@ -31,7 +31,7 @@ IdentifierNode::IdentifierNode(TokenList tokens) {
 		<< tokens.toSourceCodeFragment().substr(0, min(20, (int)tokens.toSourceCodeFragment().size())) 
 		<< "'";
 
-		throw (to_string(msg));
+		throw msg.str();
 	}
 
 }

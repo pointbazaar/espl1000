@@ -4,6 +4,7 @@
 #include <set>
 #include <optional>
 #include <string>
+#include <algorithm>
 
 //project headers
 #include "ExpressionNode.hpp"
@@ -36,7 +37,7 @@ ExpressionNode::ExpressionNode(TokenList tokens) {
 
 			copy.set(copy2);
 		}
-	} catch (Exception e) {
+	} catch (string e) {
 		//pass
 	}
 
@@ -47,8 +48,8 @@ ExpressionNode::ExpressionNode(TokenList tokens) {
 
 ExpressionNode::ExpressionNode(TermNode leftTerm, OperatorNode op, TermNode rightTerm) {
 	this->term1=leftTerm;
-	this->op=Optional.of(op);
-	this->term2=Optional.of(rightTerm);
+	this->op=optional<OperatorNode>(op);
+	this->term2=optional<TermNode>(rightTerm);
 }
 
 void performTreeTransformation(
@@ -91,18 +92,17 @@ void performTreeTransformation(
 	 */
 
 	while (terms.size()>2){
-		OperatorNode opWithLargestPrecedence = 
-		ops
-		.stream()
-		.reduce((o1,o2)->{
-			if(operatorPrecedence.indexOf(o1.operator)<operatorPrecedence.indexOf(o2.operator)){
-				return o1;
-			}else{
-				return o2;
-			}
-		}).get();
+		OperatorNode opWithLargestPrecedence=ops.at(0);
+		int lowest=99;
 
+		for(OperatorNode o1 : ops){
+			if(operatorPrecedence.indexOf(o1.operator)<lowest){
+				lowest = find(operatorPrecedence,o1.operator);
+				opWithLargestPrecedence=o1;
+			}
+		}
 		int indexOfOp = ops.indexOf(opWithLargestPrecedence);
+
 
 		TermNode leftTerm = terms.at(indexOfOp);
 		TermNode rightTerm = terms.at(indexOfOp+1);
@@ -110,12 +110,12 @@ void performTreeTransformation(
 		ExpressionNode expr = ExpressionNode(leftTerm,opWithLargestPrecedence,rightTerm);
 
 		//simplify
-		terms.remove(leftTerm);
-		terms.remove(rightTerm);
-		ops.remove(opWithLargestPrecedence);
+		terms.erase(leftTerm);
+		terms.erase(rightTerm);
+		ops.erase(opWithLargestPrecedence);
 
 		//insert newly created expression
-		terms.add(indexOfOp,TermNode(expr));
+		terms.push_back(indexOfOp,TermNode(expr));
 	}
 
 	//now only 2 terms left
@@ -124,6 +124,6 @@ void performTreeTransformation(
 	//in case of only one term
 	if(ops.size()>0) {
 		this->op = ops.at(0);
-		this->term2 = Optional.of(terms.at(1));
+		this->term2 = optional<TermNode>(terms.at(1));
 	}
 }

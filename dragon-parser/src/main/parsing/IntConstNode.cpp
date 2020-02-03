@@ -21,7 +21,7 @@ IntConstNode::IntConstNode(TokenList tokens) {
 			this->number = - stoi( copy.get(1).value );
 			copy.consume(2);
 		} else {
-			throw "cannot parse integer constant node with such operator:" + tk.operator;
+			throw "cannot parse integer constant node with such operator:" + (string)tk.value;
 		}
 	} else if (copy.get(0).kind == INTEGER) {
 		this->number = stoi( copy.get(0).value);

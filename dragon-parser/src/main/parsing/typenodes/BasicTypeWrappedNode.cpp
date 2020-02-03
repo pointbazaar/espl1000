@@ -8,6 +8,7 @@
 #include "../../lexing/TokenList.hpp"
 #include "../../commandline/TokenKeys.hpp"
 #include "SubroutineTypeNode.hpp"
+#include "SimpleTypeNode.hpp"
 
 using namespace std;
 

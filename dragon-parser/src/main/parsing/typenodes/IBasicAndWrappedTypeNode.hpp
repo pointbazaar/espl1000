@@ -21,7 +21,7 @@
 
 using namespace std;
 
-class IBasicAndWrappedTypeNode : ITypeNode {
+class IBasicAndWrappedTypeNode : public ITypeNode {
 
 	//classes implementing this interface are also used to communicate type information throughout the compiler.
 	//so it is not just for parsing.

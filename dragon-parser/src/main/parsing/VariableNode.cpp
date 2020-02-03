@@ -23,7 +23,7 @@ VariableNode::VariableNode(TokenList tokens) {
 		while (next.kind == STRUCTMEMBERACCESS) {
 
 			copy.expectAndConsumeOtherWiseThrowException(BaseToken(STRUCTMEMBERACCESS));
-			this.memberAccessList.add(VariableNode(copy));
+			this->memberAccessList.push_back(VariableNode(copy));
 			if (copy.size() > 0) {
 				next = copy.get(0);
 			} else {

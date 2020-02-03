@@ -43,7 +43,7 @@ SimpleVariableNode::SimpleVariableNode(TokenList tokens) {
 		<< tokens.toSourceCodeFragment().substr(0, min(20, tokens.toSourceCodeFragment().size())) 
 		<< "'";
 
-		throw to_string(msg);
+		throw msg.str();
 	}
 
 	tokens.set(copy);

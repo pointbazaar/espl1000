@@ -9,28 +9,28 @@
 #include "AssignmentStatementNode.hpp"
 
 
-AssignmentStatementNode(TokenList tokens) throws Exception {
-	optional<TypeNode> optTypeNode1; //to have this.optTypeNode as final
+AssignmentStatementNode(TokenList tokens) {
+	optional<TypeNode> optTypeNode1; 
 
 	TokenList copy = tokens.copy();
 
 	try {
 		TokenList copy2 = copy.copy();
-		optTypeNode1 = Optional.of(new TypeNode(copy2));
+		optTypeNode1 = optional<TypeNode>(TypeNode(copy2));
 		copy.set(copy2);
-	} catch (Exception e) {
+	} catch (string e) {
 		optTypeNode1 = Optional.empty();
 		//pass
 	}
 
 	optTypeNode = optTypeNode1;
-	this.variableNode = new VariableNode(copy);
+	this->variableNode = VariableNode(copy);
 
-	copy.expectAndConsumeOtherWiseThrowException(new OperatorToken("="));
+	copy.expectAndConsumeOtherWiseThrowException( OperatorToken("="));
 
-	this.expressionNode = new ExpressionNode(copy);
+	this->expressionNode = ExpressionNode(copy);
 
-	copy.expectAndConsumeOtherWiseThrowException(new SemicolonToken());
+	copy.expectAndConsumeOtherWiseThrowException( SemicolonToken());
 
 	tokens.set(copy);
 }

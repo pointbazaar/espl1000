@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class CharConstNode : ITermNode {
+class CharConstNode : public ITermNode {
 
 public:
 	CharConstNode(TokenList tokens);

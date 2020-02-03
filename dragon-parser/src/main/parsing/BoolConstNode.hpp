@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class BoolConstNode : ITermNode {
+class BoolConstNode : public ITermNode {
 
 public:
 	BoolConstNode(TokenList tokens);

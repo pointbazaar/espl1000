@@ -7,9 +7,9 @@
 //project headers
 #include "SubroutineTypeNode.hpp"
 #include "TypeNode.hpp"
-#include "../../lexing/TokenList.hpp";
-#include "../../lexing/BaseToken.hpp";
-#include "../../commandline/TokenKeys.hpp";
+#include "../../lexing/TokenList.hpp"
+#include "../../lexing/BaseToken.hpp"
+#include "../../commandline/TokenKeys.hpp"
 
 using namespace std;
 
@@ -47,13 +47,13 @@ SubroutineTypeNode::SubroutineTypeNode(TokenList tokens){
 
 	if (copy.head().kind == ARROW) {
 		BaseToken arrow = copy.head();
-		this.hasSideEffects = !arrow.is_functional;
+		this->hasSideEffects = false;//!arrow.is_functional;
 		copy.consume(1);
 	} else {
 		throw "expected an arrow token here";
 	}
 
-	this.returnType = TypeNode(copy);
+	this->returnType = TypeNode(copy);
 
 	tokens.set(copy);
 }

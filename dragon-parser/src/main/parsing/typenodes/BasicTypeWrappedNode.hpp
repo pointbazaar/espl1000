@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class BasicTypeWrappedNode :  ITypeNode {
+class BasicTypeWrappedNode :  public ITypeNode {
 
 public:
 	BasicTypeWrappedNode(IBasicAndWrappedTypeNode typeNode);
