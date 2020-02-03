@@ -4,6 +4,7 @@
 #include <set>
 #include <optional>
 #include <string>
+#include <sstream>
 
 //project headers
 #include "SimpleVariableNode.hpp"
@@ -32,11 +33,17 @@ SimpleVariableNode::SimpleVariableNode(TokenList tokens) {
 		}
 
 	} else {
-		string msg = tokens.relPath.toString() + ":" + token.getLineNumber();
-		msg += ": could not read variable name. token was " + token.getContents();
-		msg += " from context  '" + tokens.toSourceCodeFragment().substr(0, min(20, tokens.toSourceCodeFragment().size())) + "'";
+		stringstream msg;
+		msg << tokens.relPath 
+		<< string(":") 
+		<< token.lineNumber
+		<< ": could not read variable name. token was " 
+		<< token.getContents()
+		<< " from context  '" 
+		<< tokens.toSourceCodeFragment().substr(0, min(20, tokens.toSourceCodeFragment().size())) 
+		<< "'";
 
-		throw msg;
+		throw to_string(msg);
 	}
 
 	tokens.set(copy);

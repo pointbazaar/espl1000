@@ -36,8 +36,8 @@ MethodNode::MethodNode(TokenList tokens, bool debug) {
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(RPARENS));
 
 	if (copy.head() instanceof ArrowToken) {
-		ArrowToken head = (ArrowToken) copy.head();
-		this->hasSideEffects = !head.is_functional;
+		BaseToken head = copy.head();
+		this->hasSideEffects = false;	//TODO: put in the real value
 		copy.consume(1);
 	} else {
 		throw ("expected arrow here");

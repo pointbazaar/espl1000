@@ -8,6 +8,8 @@
 //project headers
 #include "ExpressionNode.hpp"
 #include "ITermNode.hpp"
+#include "../lexing/TokenList.hpp"
+#include "TermNode.hpp"
 
 ExpressionNode::ExpressionNode(TermNode term) {
 	this->term1 = term;
@@ -89,7 +91,10 @@ void performTreeTransformation(
 	 */
 
 	while (terms.size()>2){
-		OperatorNode opWithLargestPrecedence = ops.stream().reduce((o1,o2)->{
+		OperatorNode opWithLargestPrecedence = 
+		ops
+		.stream()
+		.reduce((o1,o2)->{
 			if(operatorPrecedence.indexOf(o1.operator)<operatorPrecedence.indexOf(o2.operator)){
 				return o1;
 			}else{

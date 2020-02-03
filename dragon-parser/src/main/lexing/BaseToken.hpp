@@ -21,6 +21,8 @@ class BaseToken {
 		BaseToken(int kind);
 		BaseToken(char idk);
 		BaseToken(bool value);
+		BaseToken(string value);
+		BaseToken(int kind, int value);
 		BaseToken(int kind, float value);
 		BaseToken(int kind, char value);
 		BaseToken(int kind, string value);

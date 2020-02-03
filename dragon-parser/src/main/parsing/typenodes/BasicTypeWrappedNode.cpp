@@ -7,6 +7,7 @@
 #include "BasicTypeWrappedNode.hpp"
 #include "../../lexing/TokenList.hpp"
 #include "../../commandline/TokenKeys.hpp"
+#include "SubroutineTypeNode.hpp"
 
 using namespace std;
 

@@ -5,8 +5,16 @@
 #include <string>
 
 //project headers
-#include "TermNode.hpp"
 #include "../lexing/TokenList.hpp"
+#include "../lexing/BaseToken.hpp"
+#include "../commandline/TokenKeys.hpp"
+#include "TermNode.hpp"
+#include "FloatConstNode.hpp"
+#include "CharConstNode.hpp"
+#include "IntConstNode.hpp"
+#include "BoolConstNode.hpp"
+#include "ExpressionNode.hpp"
+#include "VariableNode.hpp"
 
 using namespace std;
 
@@ -29,6 +37,8 @@ TermNode::TermNode(TokenList tokens) {
 				//in the parsing stage it is converted to an array of char constants
 				//inline the stringConstant and its syntatic sugar
 				BaseToken token = tokens.get(0);
+				//TODO: re-enable this later on
+				/*
 				if (token.kind == STRINGCONSTANT) {
 
 					string content = token.getContents();
@@ -45,8 +55,9 @@ TermNode::TermNode(TokenList tokens) {
 
 					copy.consume(1);
 				} else {
+				*/
 					throw "could not read stringConstant syntatic sugar";
-				}
+				//}
 			} catch (string e2) {
 				try {
 					TokenList copy2 = TokenList(copy);
@@ -66,11 +77,14 @@ TermNode::TermNode(TokenList tokens) {
 							try {
 								this->termNode = VariableNode(copy);
 							} catch (string e6) {
+								//TODO: re-enable later
+								/*
 								try {
 									this->termNode = ArrayConstantNode(copy);
 								} catch (string e7) {
+									*/
 									this->termNode = CharConstNode(copy);
-								}
+								//}
 							}
 						}
 					}

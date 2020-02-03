@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 
 //project headers
 #include "TokenList.hpp"
@@ -90,25 +91,32 @@ void TokenList::expectAndConsumeOtherWiseThrowException(BaseToken token) {
 		
 		<< " (" << this->head().kind << ")"
 
-		<< (this->toSourceCodeFragment().substr(0, min(this->toSourceCodeFragment().length(), 100)))
+		<< this->toSourceCodeFragment()
+			.substr(
+				0, 
+				min((int)this->toSourceCodeFragment().size(), 100)
+			)
 
 		<<  "Parsing Error: \n"
-				<< "\t" << expectedTokenMessage << "\n"
-				<< "\t" << actualTokenMessage << "\n"
-				<< "in '" << sourceCodeFragment << "'\n"
-				<< "in " << (relPath << ":" << this->head().getLineNumber());
+				//<< "\t" << expectedTokenMessage << "\n"
+				//<< "\t" << actualTokenMessage << "\n"
+				//<< "in '" << sourceCodeFragment << "'\n"
+				<< "in " 
+				<< this->relPath 
+				<< ":" 
+				<< this->head().lineNumber;
 
-		throw to_string(str);
+		throw str.str();
 	}
 }
 
 TokenList TokenList::copy() {
-	return TokenList(this);
+	return TokenList(*this);
 }
 
 void TokenList::set(TokenList copy) {
 	this->tokens.clear();
-	for(BaseToken tk : copy->tokens){
+	for(BaseToken tk : copy.tokens){
 		this->add(tk);
 	}
 }
@@ -128,5 +136,5 @@ string TokenList::toSourceCodeFragment() {
 		str << tk.getContents();
 		str << " ";
 	}
-	return to_string(str);
+	return str.str();
 }

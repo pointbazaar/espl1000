@@ -8,6 +8,7 @@
 #include "DeclaredArgumentNode.hpp"
 #include "../lexing/TokenList.hpp"
 #include "typenodes/TypeNode.hpp"
+#include "IdentifierNode.hpp"
 
 using namespace std;
 
@@ -16,7 +17,7 @@ DeclaredArgumentNode::DeclaredArgumentNode(TokenList tokens) {
 	TokenList copy = tokens.copy();
 
 	this->type = TypeNode(copy);
-	this->name = Optional.of(IdentifierNode(copy).identifier);
+	this->name = optional<IdentifierNode>(IdentifierNode(copy).identifier);
 
 	tokens.set(copy);
 }

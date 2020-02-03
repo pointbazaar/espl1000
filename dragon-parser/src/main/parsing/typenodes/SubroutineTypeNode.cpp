@@ -2,9 +2,14 @@
 //standard headers
 #include <vector>
 #include <set>
+#include <iostream>
 
 //project headers
 #include "SubroutineTypeNode.hpp"
+#include "TypeNode.hpp"
+#include "../../lexing/TokenList.hpp";
+#include "../../lexing/BaseToken.hpp";
+#include "../../commandline/TokenKeys.hpp";
 
 using namespace std;
 

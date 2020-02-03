@@ -7,7 +7,7 @@
 
 using namespace std;
 
-class ArrayTypeNode : ITypeNode {
+class ArrayTypeNode : public ITypeNode {
 
 public:
 

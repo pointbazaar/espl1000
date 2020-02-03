@@ -3,6 +3,7 @@
 #include <vector>
 #include <set>
 #include <string>
+#include <sstream>
 
 //project headers
 #include "IdentifierNode.hpp"
@@ -21,11 +22,16 @@ IdentifierNode::IdentifierNode(TokenList tokens) {
 		tokens.consume(1);
 
 	} else {
-		string msg = "could not read identifier from token: " + token.getContents();
-		msg += " in " + tokens.relPath + ":" + token.getLineNumber();
-		msg += " in context '" + tokens.toSourceCodeFragment().substr(0, min(20, tokens.toSourceCodeFragment().size())) + "'";
+		stringstream msg;
+		msg << "could not read identifier from token: " 
+		<< token.getContents()
+		<< " in " << tokens.relPath << ":" 
+		<< token.lineNumber
+		<< " in context '" 
+		<< tokens.toSourceCodeFragment().substr(0, min(20, (int)tokens.toSourceCodeFragment().size())) 
+		<< "'";
 
-		throw (msg);
+		throw (to_string(msg));
 	}
 
 }

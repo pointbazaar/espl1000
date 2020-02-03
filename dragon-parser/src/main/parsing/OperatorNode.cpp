@@ -31,7 +31,7 @@ OperatorNode::OperatorNode(TokenList tokens) {
 			) {
 				this->op = opleft.value + opright.value;
 				copy.consume(2);
-			} else if (opleft.value.compare("=")==0 && opright.operator.compare("=")==0) {
+			} else if (opleft.value.compare("=")==0 && opright.value.compare("=")==0) {
 				this->op = "==";
 				copy.consume(2);
 			} else {

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class SubroutineTypeNode : IBasicAndWrappedTypeNode  {
+class SubroutineTypeNode : public IBasicAndWrappedTypeNode  {
 
 public:
 	SubroutineTypeNode(TypeNode tn, bool hasSideEffects);

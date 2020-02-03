@@ -6,6 +6,10 @@
 //project headers
 #include "TypeNode.hpp"
 #include "ITypeNode.hpp"
+#include "../../lexing/TokenList.hpp"
+#include "ArrayTypeNode.hpp"
+#include "TypeParameterNode.hpp"
+#include "BasicTypeWrappedNode.hpp"
 
 using namespace std;
 
@@ -18,12 +22,12 @@ TypeNode::TypeNode(TokenList tokens){
 	TokenList copy = tokens.copy();
 
 	try {
-		this.typeNode = new ArrayTypeNode(copy);
+		this->typeNode = ArrayTypeNode(copy);
 	} catch (string e) {
 		try {
-			this.typeNode = new TypeParameterNode(copy);
-		} catch (Exception e2) {
-			this.typeNode = new BasicTypeWrappedNode(copy);
+			this->typeNode = TypeParameterNode(copy);
+		} catch (string e2) {
+			this->typeNode = BasicTypeWrappedNode(copy);
 		}
 	}
 
