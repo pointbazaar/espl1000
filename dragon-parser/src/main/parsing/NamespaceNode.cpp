@@ -6,6 +6,7 @@
 //project headers
 #include "NamespaceNode.hpp"
 #include "../lexing/TokenList.hpp"
+#include "../lexing/BaseToken.hpp"
 
 using namespace std;
 
@@ -19,10 +20,12 @@ NamespaceNode::NamespaceNode(
 		cout << "try to parse from " + tokens.toSourceCodeFragment() << endl;
 	}
 
-	this.srcPath = "/dev/null";
-	this.name = name;
+	this->srcPath = "/dev/null";
+	this->name = name;
 	TokenList copy = tokens.copy();
 
+	//TODO: add them in back later
+	/*
 	if(copy.size()>0) {
 
 		IToken next_struct = copy.get(0);
@@ -37,6 +40,7 @@ NamespaceNode::NamespaceNode(
 			}
 		}
 	}
+	*/
 
 	//it is be nice to have prefix 'fn' before a function
 	//to make parsing easier.
@@ -44,10 +48,10 @@ NamespaceNode::NamespaceNode(
 	//and would probably make the parser faster
 	if (copy.size() > 0) {
 
-		IToken next_subr = copy.get(0);
+		BaseToken next_subr = copy.get(0);
 
-		while (next_subr instanceof FnToken) {
-			this.methods.add(new MethodNode(copy, debug));
+		while (next_subr.kind == FN) {
+			this->methods.push_back(MethodNode(copy, debug));
 
 			if (copy.size() > 0) {
 				next_subr = copy.get(0);

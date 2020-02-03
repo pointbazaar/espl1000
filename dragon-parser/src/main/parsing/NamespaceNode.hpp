@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 
-#include "StructDeclNode.hpp"
 #include "MethodNode.hpp"
 #include "../lexing/TokenList.hpp"
 
@@ -25,7 +24,9 @@ public:
 	string srcPath;
 	string name;
 	//structs must be declared before the subroutines
-	vector<StructDeclNode> structs;
+	
+	//TODO: add them back later when the rewrite is complete
+	//vector<StructDeclNode> structs;
 	vector<MethodNode> methods;
 };
 
