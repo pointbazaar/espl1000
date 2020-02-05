@@ -59,7 +59,7 @@ This Project will probably only work with Linux.
 
 ## Simplicity
 
-- [x] **hackable to the core**. Make it your own. Everything in this Lang is created with extendability and modularity in Mind. 
+- [x] **hackable to the core**. Make it your own. Everything in this Lang is created with extendability and modularity in Mind. The Compiler is composed of many small programs, written in different language, which communicate via easy-to-understand file formats and protocols. No Dependencies other than the Respective Standard Libraries will be required in the future.
 - [x] **no macros** (no preprocessor needed, easier to read and understand code)
 - [x] **no backwards compatibility** (the language will change whenever a feature gets added / removed from the language. Little consideration will be given to existing code. )
 - [x] Dragon has a **very simple stack based calling convention** for simplicity reasons. It is incompatible with the C calling convention.
