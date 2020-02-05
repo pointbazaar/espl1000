@@ -1,5 +1,8 @@
 #ifndef RETURNSTATEMENTNODE
-#define
+#define RETURNSTATEMENTNODE
+
+#include "../ExpressionNode.hpp"
+#include "../../commandline/TokenList.hpp"
 
 using namespace std;
 

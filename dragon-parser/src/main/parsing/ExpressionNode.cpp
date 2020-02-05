@@ -9,7 +9,7 @@
 //project headers
 #include "ExpressionNode.hpp"
 #include "ITermNode.hpp"
-#include "../lexing/TokenList.hpp"
+#include "../commandline/TokenList.hpp"
 #include "TermNode.hpp"
 
 ExpressionNode::ExpressionNode(TermNode term) {
@@ -52,7 +52,7 @@ ExpressionNode::ExpressionNode(TermNode leftTerm, OperatorNode op, TermNode righ
 	this->term2=optional<TermNode>(rightTerm);
 }
 
-void performTreeTransformation(
+void ExpressionNode::performTreeTransformation(
 		vector<OperatorNode> ops,
 		vector<TermNode> terms
 ){
@@ -96,12 +96,12 @@ void performTreeTransformation(
 		int lowest=99;
 
 		for(OperatorNode o1 : ops){
-			if(operatorPrecedence.indexOf(o1.operator)<lowest){
+			if(find(operatorPrecedence,o1.operator) < lowest){
 				lowest = find(operatorPrecedence,o1.operator);
 				opWithLargestPrecedence=o1;
 			}
 		}
-		int indexOfOp = ops.indexOf(opWithLargestPrecedence);
+		int indexOfOp = find(ops,opWithLargestPrecedence);
 
 
 		TermNode leftTerm = terms.at(indexOfOp);

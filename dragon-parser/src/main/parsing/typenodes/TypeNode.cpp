@@ -6,7 +6,7 @@
 //project headers
 #include "TypeNode.hpp"
 #include "ITypeNode.hpp"
-#include "../../lexing/TokenList.hpp"
+#include "../../commandline/TokenList.hpp"
 #include "ArrayTypeNode.hpp"
 #include "TypeParameterNode.hpp"
 #include "BasicTypeWrappedNode.hpp"

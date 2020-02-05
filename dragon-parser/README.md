@@ -62,11 +62,12 @@ statement ::=   ( methodCall ';' )
 
 methodCall ::= identifier '(' (expression (, expression)*)?  ')'
 
+//currently not in use
 loopStatement ::= 'loop' expression '{' statement* '}'
 
-whileStatement ::= 'while' '(' expression ')' '{' statement* '}'
+whileStatement ::= 'while' expression '{' statement* '}'
 
-ifStatement ::= 'if' '(' expression ')' '{' statement* '}' 
+ifStatement ::= 'if' expression '{' statement* '}' 
 				( 'else' '{' statement* '}' )?
 				
 returnStatement ::= 'return' expression? ';'

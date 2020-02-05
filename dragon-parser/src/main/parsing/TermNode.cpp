@@ -5,8 +5,8 @@
 #include <string>
 
 //project headers
-#include "../lexing/TokenList.hpp"
-#include "../lexing/BaseToken.hpp"
+#include "../commandline/TokenList.hpp"
+#include "../commandline/BaseToken.hpp"
 #include "../commandline/TokenKeys.hpp"
 #include "TermNode.hpp"
 //#include "FloatConstNode.hpp"
@@ -15,7 +15,7 @@
 #include "BoolConstNode.hpp"
 #include "ExpressionNode.hpp"
 #include "VariableNode.hpp"
-#include "../statements/MethodCallNode.hpp"
+#include "statements/MethodCallNode.hpp"
 
 using namespace std;
 

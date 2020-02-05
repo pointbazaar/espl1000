@@ -5,7 +5,7 @@
 
 //project headers
 #include "BoolConstNode.hpp"
-#include "../lexing/TokenList.hpp"
+#include "../commandline/TokenList.hpp"
 #include "../commandline/TokenKeys.hpp"
 
 using namespace std;

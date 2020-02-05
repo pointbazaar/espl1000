@@ -1,7 +1,7 @@
 #include <vector>
 
 #include "NamespaceNode.hpp"
-#include "../lexing/TokenList.hpp"
+#include "../commandline/TokenList.hpp"
 
 #ifndef AST_WHOLE_PROGRAM
 #define AST_WHOLE_PROGRAM

@@ -6,7 +6,7 @@
 #include "TermNode.hpp"
 #include "ITermNode.hpp"
 #include "OperatorNode.hpp"
-#include "../lexing/TokenList.hpp"
+#include "../commandline/TokenList.hpp"
 
 using namespace std;
 

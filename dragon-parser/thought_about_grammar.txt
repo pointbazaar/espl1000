@@ -43,3 +43,10 @@ subr :: (PInt a,PInt b) -> PInt
 subr :: {
         return a+b;
 }
+
+
+//that there are no '(' ')' parentheses required
+//for if-statements and while-statements
+//is inspired by rust. it is simply not needed. 
+//of course you can still write them if you want,
+//because every expression can be surrounded by parentheses

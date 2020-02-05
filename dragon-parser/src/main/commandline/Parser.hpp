@@ -10,7 +10,7 @@
 #include <string>
 
 //project includes
-#include "../lexing/TokenList.hpp"
+#include "TokenList.hpp"
 #include "../parsing/NamespaceNode.hpp"
 
 using namespace std;

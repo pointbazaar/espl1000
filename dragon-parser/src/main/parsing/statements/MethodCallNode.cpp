@@ -4,27 +4,30 @@
 
 //project headers
 #include "MethodCallNode.hpp"
+#include "../IdentifierNode.hpp"
+#include "../../commandline/TokenKeys.hpp"
+#include "../../commandline/TokenList.hpp"
+#include "../../commandline/BaseToken.hpp"
 
-
-MethodCallNode::MethodCallNode(TokenList tokens) throws Exception {
+MethodCallNode::MethodCallNode(TokenList tokens) {
 
 	TokenList copy = tokens.copy();
 
-	this.methodName = new IdentifierNode(copy).identifier;
+	this->methodName = IdentifierNode(copy).identifier;
 
-	copy.expectAndConsumeOtherWiseThrowException(new LParensToken());
+	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LPARENS));
 
 	//while there is no ')' up, continue parsing arguments
-	IToken next = copy.get(0);
-	while (!(next instanceof RParensToken)) {
+	BaseToken next = copy.get(0);
+	while (!(next.kind == RPARENS)) {
 		if (arguments.size() > 0) {
-			copy.expectAndConsumeOtherWiseThrowException(new CommaToken());
+			copy.expectAndConsumeOtherWiseThrowException(BaseToken(COMMA));
 		}
-		this.arguments.add(new ExpressionNode(copy));
+		this->arguments.push_back(ExpressionNode(copy));
 		next = copy.get(0);
 	}
 
-	copy.expectAndConsumeOtherWiseThrowException(new RParensToken());
+	copy.expectAndConsumeOtherWiseThrowException(BaseToken(RPARENS));
 
 	tokens.set(copy);
 }

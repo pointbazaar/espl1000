@@ -6,8 +6,8 @@
 
 //project headers
 #include "NamespaceNode.hpp"
-#include "../lexing/TokenList.hpp"
-#include "../lexing/BaseToken.hpp"
+#include "../commandline/TokenList.hpp"
+#include "../commandline/BaseToken.hpp"
 #include "../commandline/TokenKeys.hpp"
 
 using namespace std;

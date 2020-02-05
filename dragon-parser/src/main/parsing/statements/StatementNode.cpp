@@ -4,25 +4,33 @@
 
 //project headers
 #include "StatementNode.hpp"
+#include "../../commandline/TokenList.hpp"
+#include "../../commandline/TokenKeys.hpp"
+#include "../../commandline/BaseToken.hpp"
+#include "WhileStatementNode.hpp"
+#include "IfStatementNode.hpp"
+#include "ReturnStatementNode.hpp"
+#include "MethodCallNode.hpp"
+#include "AssignmentStatementNode.hpp"
 
-StatementNode::StatementNode(TokenList tokens) throws Exception {
+StatementNode::StatementNode(TokenList tokens) {
 
 	TokenList copy = tokens.copy();
 
 	if (copy.size() == 0) {
-		throw new Exception("tried to parse a Statement, but there are no tokens left");
+		throw ("tried to parse a Statement, but there are no tokens left");
 	}
 
-	IToken first = copy.get(0);
+	BaseToken first = copy.get(0);
 
-	if (first instanceof LoopToken) {
-		this.statementNode = new LoopStatementNode(copy);
-	} else if (first instanceof WhileToken) {
-		this.statementNode = new WhileStatementNode(copy);
-	} else if (first instanceof IfToken) {
-		this.statementNode = new IfStatementNode(copy);
-	} else if (first instanceof ReturnToken) {
-		this.statementNode = new ReturnStatementNode(copy);
+	if (first.kind == LOOP) {
+		//this->statementNode = LoopStatementNode(copy);
+	} else if (first.kind == WHILE) {
+		this->statementNode = WhileStatementNode(copy);
+	} else if (first.kind == IF) {
+		this->statementNode = IfStatementNode(copy);
+	} else if (first.kind == RETURN) {
+		this->statementNode = ReturnStatementNode(copy);
 	} else {
 		//TODO: we have to figure something out here.
 		//i don't want 'let' statements
@@ -32,15 +40,15 @@ StatementNode::StatementNode(TokenList tokens) throws Exception {
 
 		IStatementNode statementNode1; //temp variable so that this.statementNode can be final
 		try {
-			final TokenList copy2 = copy.copy();
-			statementNode1 = new MethodCallNode(copy2);
-			copy2.expectAndConsumeOtherWiseThrowException(new SemicolonToken());
+			TokenList copy2 = copy.copy();
+			statementNode1 = MethodCallNode(copy2);
+			copy2.expectAndConsumeOtherWiseThrowException(BaseToken(SEMICOLON));
 
 			copy.set(copy2);
-		} catch (Exception e1) {
-			statementNode1 = new AssignmentStatementNode(copy);
+		} catch (string e1) {
+			statementNode1 = AssignmentStatementNode(copy);
 		}
-		this.statementNode = statementNode1;
+		this->statementNode = statementNode1;
 	}
 
 	tokens.set(copy);

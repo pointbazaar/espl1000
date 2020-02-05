@@ -5,8 +5,8 @@
 
 //project headers
 #include "TypeParameterNode.hpp"
-#include "../../lexing/TokenList.hpp"
-#include "../../lexing/BaseToken.hpp"
+#include "../../commandline/TokenList.hpp"
+#include "../../commandline/BaseToken.hpp"
 #include "IBasicAndWrappedTypeNode.hpp"
 #include "../../commandline/TokenKeys.hpp"
 

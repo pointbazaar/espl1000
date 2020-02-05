@@ -6,7 +6,7 @@
 
 //project headers
 #include "DeclaredArgumentNode.hpp"
-#include "../lexing/TokenList.hpp"
+#include "../commandline/TokenList.hpp"
 #include "typenodes/TypeNode.hpp"
 #include "IdentifierNode.hpp"
 

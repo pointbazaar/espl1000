@@ -2,7 +2,7 @@
 #define TYPENODE
 
 #include "ITypeNode.hpp"
-#include "../../lexing/TokenList.hpp"
+#include "../../commandline/TokenList.hpp"
 
 using namespace std;
 

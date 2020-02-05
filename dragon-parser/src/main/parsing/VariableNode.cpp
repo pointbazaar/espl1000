@@ -9,9 +9,9 @@
 #include "VariableNode.hpp"
 #include "ITermNode.hpp"
 #include "SimpleVariableNode.hpp"
-#include "../lexing/BaseToken.hpp"
+#include "../commandline/BaseToken.hpp"
 #include "../commandline/TokenKeys.hpp"
-#include "../lexing/TokenList.hpp"
+#include "../commandline/TokenList.hpp"
 
 VariableNode::VariableNode(TokenList tokens) {
 	TokenList copy = tokens.copy();

@@ -9,7 +9,7 @@
 //project includes
 #include "TokenReader.hpp"
 #include "TokenKeys.hpp"
-#include "../lexing/BaseToken.hpp"
+#include "BaseToken.hpp"
 
 BaseToken recognizeStrConstToken(string strconst) {
 

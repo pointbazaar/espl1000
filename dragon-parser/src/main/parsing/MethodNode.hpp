@@ -5,7 +5,7 @@
 #include "DeclaredArgumentNode.hpp"
 #include "statements/StatementNode.hpp"
 #include "typenodes/TypeNode.hpp"
-#include "../lexing/TokenList.hpp"
+#include "../commandline/TokenList.hpp"
 
 #ifndef METHODNODE
 #define METHODNODE

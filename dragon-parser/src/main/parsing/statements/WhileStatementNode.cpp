@@ -6,30 +6,29 @@
 
 //project headers
 #include "WhileStatementNode.hpp"
+#include "../../commandline/TokenList.hpp"
+#include "../../commandline/TokenKeys.hpp"
+#include "../../commandline/BaseToken.hpp"
 
 using namespace std;
 
-WhileStatementNode::WhileStatementNode(final TokenList tokens) throws Exception {
+WhileStatementNode::WhileStatementNode(TokenList tokens){
 
-	TokenList copy = new TokenList(tokens);
+	TokenList copy = TokenList(tokens);
 
-	copy.expectAndConsumeOtherWiseThrowException(new WhileToken());
+	copy.expectAndConsumeOtherWiseThrowException(BaseToken(WHILE));
 
-	copy.expectAndConsumeOtherWiseThrowException(new LParensToken());
+	this->condition = ExpressionNode(copy);
 
-	this.condition = new ExpressionNode(copy);
-
-	copy.expectAndConsumeOtherWiseThrowException(new RParensToken());
-
-	copy.expectAndConsumeOtherWiseThrowException(new LCurlyToken());
+	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LCURLY));
 
 	BaseToken next = copy.get(0);
-	while (!(next instanceof RCurlyToken)) {
-		this.statements.add(new StatementNode(copy));
+	while (!(next.kind == RCURLY)) {
+		this->statements.push_back(StatementNode(copy));
 		next = copy.get(0);
 	}
 
-	copy.expectAndConsumeOtherWiseThrowException(new RCurlyToken());
+	copy.expectAndConsumeOtherWiseThrowException(BaseToken(RCURLY));
 
 	tokens.set(copy);
 }

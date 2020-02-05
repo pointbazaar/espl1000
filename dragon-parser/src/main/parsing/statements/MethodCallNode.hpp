@@ -1,16 +1,19 @@
 #ifndef METHODCALLNODE
 #define METHODCALLNODE
 
-#include "IASTNode.hpp"
+#include <vector>
+
+#include "../ExpressionNode.hpp"
 #include "IStatementNode.hpp"
-#include "ITermNode.hpp"
+#include "../ITermNode.hpp"
+#include "../../commandline/TokenList.hpp"
 
-
-class MethodCallNode : IASTNode, IStatementNode, ITermNode {
+class MethodCallNode : public IStatementNode, public ITermNode {
 
 public:
-	string methodName;
+	MethodCallNode(TokenList tokens);
 
+	string methodName;
 	vector<ExpressionNode> arguments;
 };
 

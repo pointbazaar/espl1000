@@ -2,7 +2,7 @@
 #define CHARCONSTNODE
 
 #include "ITermNode.hpp"
-#include "../lexing/TokenList.hpp"
+#include "../commandline/TokenList.hpp"
 
 using namespace std;
 

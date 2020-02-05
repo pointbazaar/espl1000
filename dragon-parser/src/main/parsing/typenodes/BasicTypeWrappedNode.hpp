@@ -3,7 +3,7 @@
 
 #include "ITypeNode.hpp"
 #include "IBasicAndWrappedTypeNode.hpp"
-#include "../../lexing/TokenList.hpp"
+#include "../../commandline/TokenList.hpp"
 
 using namespace std;
 

@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "../lexing/TokenList.hpp"
+#include "../commandline/TokenList.hpp"
 
 using namespace std;
 

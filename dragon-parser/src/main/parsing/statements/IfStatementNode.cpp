@@ -7,50 +7,48 @@
 
 //project headers
 #include "IfStatementNode.hpp"
+#include "../../commandline/TokenKeys.hpp"
+#include "../../commandline/TokenList.hpp"
 
 using namespace std;
 
-IfStatementNode::IfStatementNode(TokenList tokens) throws Exception {
+IfStatementNode::IfStatementNode(TokenList tokens) {
 
-	TokenList copy = new TokenList(tokens);
+	TokenList copy = TokenList(tokens);
 
-	copy.expectAndConsumeOtherWiseThrowException(new IfToken());
+	copy.expectAndConsumeOtherWiseThrowException(BaseToken(IF));
 
-	copy.expectAndConsumeOtherWiseThrowException(new LParensToken());
+	this->condition = ExpressionNode(copy);
 
-	this.condition = new ExpressionNode(copy);
+	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LCURLY));
 
-	copy.expectAndConsumeOtherWiseThrowException(new RParensToken());
+	BaseToken next = copy.get(0);
 
-	copy.expectAndConsumeOtherWiseThrowException(new LCurlyToken());
+	while (!(next.kind == RCURLY)) {
 
-	IToken next = copy.get(0);
-
-	while (!(next instanceof RCurlyToken)) {
-
-		this.statements.add(new StatementNode(copy));
+		this->statements.push_back(StatementNode(copy));
 		next = copy.get(0);
 	}
 
-	copy.expectAndConsumeOtherWiseThrowException(new RCurlyToken());
+	copy.expectAndConsumeOtherWiseThrowException(BaseToken(RCURLY));
 
 	//maybe there is an else
-	if (copy.startsWith(new ElseToken())) {
+	if (copy.startsWith(BaseToken(ELSE))) {
 
-		copy.expectAndConsumeOtherWiseThrowException(new ElseToken());
+		copy.expectAndConsumeOtherWiseThrowException(BaseToken(ELSE));
 
-		copy.expectAndConsumeOtherWiseThrowException(new LCurlyToken());
+		copy.expectAndConsumeOtherWiseThrowException(BaseToken(LCURLY));
 
 		//maybe there be some statements
-		IToken elsenext = copy.get(0);
+		BaseToken elsenext = copy.get(0);
 
-		while (!(elsenext instanceof RCurlyToken)) {
+		while (!(elsenext.kind == RCURLY)) {
 
-			this.elseStatements.add(new StatementNode(copy));
+			this->elseStatements.push_back(StatementNode(copy));
 			elsenext = copy.get(0);
 		}
 
-		copy.expectAndConsumeOtherWiseThrowException(new RCurlyToken());
+		copy.expectAndConsumeOtherWiseThrowException(BaseToken(RCURLY));
 	}
 
 	tokens.set(copy);

@@ -4,8 +4,6 @@
 //standard includes
 #include <string>
 
-//project includes
-
 using namespace std;
 
 class BaseToken {

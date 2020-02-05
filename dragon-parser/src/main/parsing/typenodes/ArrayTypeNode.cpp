@@ -7,7 +7,7 @@
 #include "ArrayTypeNode.hpp"
 #include "ITypeNode.hpp"
 #include "TypeNode.hpp"
-#include "../../lexing/TokenList.hpp"
+#include "../../commandline/TokenList.hpp"
 #include "../../commandline/TokenKeys.hpp"
 
 using namespace std;

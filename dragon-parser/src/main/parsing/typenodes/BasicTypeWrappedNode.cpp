@@ -5,7 +5,7 @@
 
 //project headers
 #include "BasicTypeWrappedNode.hpp"
-#include "../../lexing/TokenList.hpp"
+#include "../../commandline/TokenList.hpp"
 #include "../../commandline/TokenKeys.hpp"
 #include "SubroutineTypeNode.hpp"
 #include "SimpleTypeNode.hpp"

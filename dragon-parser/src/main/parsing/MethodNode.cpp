@@ -6,8 +6,10 @@
 //project headers
 #include "MethodNode.hpp"
 #include "typenodes/TypeNode.hpp"
-#include "../lexing/TokenList.hpp"
+#include "../commandline/TokenList.hpp"
 #include "../commandline/TokenKeys.hpp"
+#include "../commandline/BaseToken.hpp"
+#include "IdentifierNode.hpp"
 
 using namespace std;
 
@@ -31,7 +33,7 @@ MethodNode::MethodNode(TokenList tokens, bool debug) {
 		if (this->arguments.size() > 0) {
 			copy.expectAndConsumeOtherWiseThrowException(BaseToken(COMMA));
 		}
-		this->arguments.add(DeclaredArgumentNode(copy));
+		this->arguments.push_back(DeclaredArgumentNode(copy));
 		next = copy.get(0);
 	}
 

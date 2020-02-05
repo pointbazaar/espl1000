@@ -9,13 +9,15 @@
 #include <optional>
 
 //project includes
-#include "../lexing/BaseToken.hpp"
-#include "../lexing/TokenList.hpp"
+#include "BaseToken.hpp"
+#include "TokenList.hpp"
 #include "TokenKeys.hpp"
 
 BaseToken recognizeStrConstToken(string strconst);
 BaseToken recognizeCharConstToken(string charconst);
 
 optional<BaseToken> recognizeToken(string tkn, bool debug);
+
+
 
 #endif
