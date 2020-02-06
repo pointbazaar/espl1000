@@ -21,6 +21,7 @@
 #include "../parsing/DeclaredArgumentNode.hpp"
 #include "../parsing/statements/StatementNode.hpp"
 #include "../parsing/typenodes/TypeNode.hpp"
+#include "ASTWriter.hpp"
 
 using namespace std;
 
@@ -92,67 +93,6 @@ void build_ast_json_file(string tokensFile, string astJsonFile, bool debug) {
 	write_ast(astJsonFile,mynamespace);
 }
 
-void write(NamespaceNode nsn, ofstream* file){
-
-	*file << nsn.srcPath;
-	*file << "\t";
-	*file << nsn.name;
-	*file << "\t";
-
-	*file << nsn.methods.size();
-	for(MethodNode m : nsn.methods){
-		write(m,file);
-	}
-}
-
-
-void write(MethodNode m, ofstream* file){
-
-	*file << m.isPublic;
-	*file << "\t";
-	*file << m.hasSideEffects;
-	*file << "\t";
-
-	write( *(m.returnType),file);
-
-	*file << m.methodName;
-	*file << "\t";
-
-	*file << m.arguments.size();
-	for(DeclaredArgumentNode* arg : m.arguments){
-		write(*arg,file);
-	}
-
-	*file << m.statements.size();
-	for(StatementNode* s : m.statements){
-		write(*s,file);
-	}
-}
-
-
-void write(DeclaredArgumentNode m, ofstream* file){
-	//TODO
-}
-
-void write(StatementNode m, ofstream* file){
-	//TODO
-}
-
-void write(TypeNode m, ofstream* file){
-	//TODO
-}
-
-void write_ast(string filename, NamespaceNode namespaceNode){
-	ofstream file;
-	file.open(filename, ios::out);
-
-	//TODO: generate our binary AST Format
-	string str = "TODO: generate our custom AST format";
-
-	write(namespaceNode,&file);
-
-	file.close();
-}
 
 void main_inner(string tokensFile, bool debug) {
 
