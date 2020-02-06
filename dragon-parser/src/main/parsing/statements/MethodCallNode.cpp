@@ -8,6 +8,7 @@
 #include "../../commandline/TokenKeys.hpp"
 #include "../../commandline/TokenList.hpp"
 #include "../../commandline/BaseToken.hpp"
+#include "../ExpressionNode.hpp"
 
 MethodCallNode::MethodCallNode(TokenList tokens) {
 
@@ -23,7 +24,7 @@ MethodCallNode::MethodCallNode(TokenList tokens) {
 		if (arguments.size() > 0) {
 			copy.expectAndConsumeOtherWiseThrowException(BaseToken(COMMA));
 		}
-		this->arguments.push_back(ExpressionNode(copy));
+		this->arguments.push_back(new ExpressionNode(copy));
 		next = copy.get(0);
 	}
 

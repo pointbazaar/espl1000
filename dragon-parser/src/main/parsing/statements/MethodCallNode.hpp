@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "../ExpressionNode.hpp"
+class ExpressionNode;
 #include "../../commandline/TokenList.hpp"
 
 class MethodCallNode {
@@ -13,7 +13,7 @@ public:
 	MethodCallNode(TokenList tokens);
 
 	string methodName;
-	vector<ExpressionNode> arguments;
+	vector<ExpressionNode*> arguments;
 };
 
 #endif
