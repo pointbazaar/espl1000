@@ -28,6 +28,8 @@ int main(int argc, char** argv){
 	//such we can easily have
 	//multiple parallel invocations of the parser in the compiler.
 
+	cout << "dragon parser" << endl;
+
 	vector<string> flags;
 	vector<string> filenames;
 

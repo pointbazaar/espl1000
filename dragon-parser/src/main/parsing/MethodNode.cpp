@@ -1,6 +1,5 @@
 //standard headers
 #include <vector>
-#include <set>
 #include <iostream>
 
 //project headers
@@ -10,6 +9,8 @@
 #include "../commandline/TokenKeys.hpp"
 #include "../commandline/BaseToken.hpp"
 #include "IdentifierNode.hpp"
+#include "statements/StatementNode.hpp"
+#include "DeclaredArgumentNode.hpp"
 
 using namespace std;
 
@@ -33,7 +34,7 @@ MethodNode::MethodNode(TokenList tokens, bool debug) {
 		if (this->arguments.size() > 0) {
 			copy.expectAndConsumeOtherWiseThrowException(BaseToken(COMMA));
 		}
-		this->arguments.push_back(DeclaredArgumentNode(copy));
+		this->arguments.push_back(new DeclaredArgumentNode(copy));
 		next = copy.get(0);
 	}
 
@@ -47,13 +48,13 @@ MethodNode::MethodNode(TokenList tokens, bool debug) {
 		throw "expected arrow here";
 	}
 
-	this->returnType = TypeNode(copy);
+	this->returnType = new TypeNode(copy);
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LCURLY));
 
 	BaseToken statement_next = copy.get(0);
 	while (!(statement_next.kind != RCURLY)) {
-		this->statements.push_back(StatementNode(copy));
+		this->statements.push_back(new StatementNode(copy));
 		statement_next = copy.get(0);
 	}
 

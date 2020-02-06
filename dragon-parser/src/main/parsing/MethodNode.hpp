@@ -1,16 +1,13 @@
-#include <string>
-#include <optional>
-#include <vector>
-
-#include "DeclaredArgumentNode.hpp"
-#include "statements/StatementNode.hpp"
-#include "typenodes/TypeNode.hpp"
-#include "../commandline/TokenList.hpp"
-
 #ifndef METHODNODE
 #define METHODNODE
 
-using namespace std;
+#include <string>
+#include <vector>
+
+class DeclaredArgumentNode;
+class StatementNode;
+class TypeNode;
+#include "../commandline/TokenList.hpp"
 
 class MethodNode {
 
@@ -20,10 +17,10 @@ public:
 
 	bool isPublic = true;
 	bool hasSideEffects;
-	TypeNode returnType;
-	string methodName;
-	vector<DeclaredArgumentNode> arguments;
-	vector<StatementNode> statements;
+	TypeNode* returnType;
+	std::string methodName;
+	std::vector<DeclaredArgumentNode*> arguments;
+	std::vector<StatementNode*> statements;
 };
 
 #endif
