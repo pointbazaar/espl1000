@@ -2,10 +2,11 @@
 #define EXPRESSIONNODE
 
 #include <optional>
+#include <vector>
 
-#include "TermNode.hpp"
 #include "ITermNode.hpp"
 #include "OperatorNode.hpp"
+#include "TermNode.hpp"
 #include "../commandline/TokenList.hpp"
 
 using namespace std;

@@ -1,10 +1,11 @@
+#ifndef AST_WHOLE_PROGRAM
+#define AST_WHOLE_PROGRAM
+
 #include <vector>
+#include <string>
 
 #include "NamespaceNode.hpp"
 #include "../commandline/TokenList.hpp"
-
-#ifndef AST_WHOLE_PROGRAM
-#define AST_WHOLE_PROGRAM
 
 using namespace std;
 

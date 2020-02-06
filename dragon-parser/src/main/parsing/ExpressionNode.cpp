@@ -96,8 +96,8 @@ void ExpressionNode::performTreeTransformation(
 		int lowest=99;
 
 		for(OperatorNode o1 : ops){
-			if(find(operatorPrecedence,o1.operator) < lowest){
-				lowest = find(operatorPrecedence,o1.operator);
+			if(find(operatorPrecedence,o1.op) < lowest){
+				lowest = find(operatorPrecedence,o1.op);
 				opWithLargestPrecedence=o1;
 			}
 		}

@@ -2,6 +2,7 @@
 #define METHODCALLNODE
 
 #include <vector>
+#include <string>
 
 #include "../ExpressionNode.hpp"
 #include "IStatementNode.hpp"

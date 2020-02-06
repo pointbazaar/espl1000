@@ -11,9 +11,9 @@ class TermNode {
 
 public:
 
-
-	TermNode(ExpressionNode myexpr);
-	TermNode(TokenList tokens);
+	TermNode ( ExpressionNode myexpr);
+	
+	TermNode ( TokenList tokens);
 
 	ITermNode termNode;
 

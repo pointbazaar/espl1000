@@ -30,10 +30,7 @@ class BaseToken {
 		int kind;
 		string value;
 
-		string getContents(){
-
-			return this->value;
-		}
+		string getContents();
 	
 		bool tokenEquals(BaseToken other);
 };
