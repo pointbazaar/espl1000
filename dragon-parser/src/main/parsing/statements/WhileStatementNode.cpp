@@ -1,14 +1,14 @@
 
 //standard headers
 #include <vector>
-#include <map>
-#include <algorithm>
 
 //project headers
 #include "WhileStatementNode.hpp"
 #include "../../commandline/TokenList.hpp"
 #include "../../commandline/TokenKeys.hpp"
 #include "../../commandline/BaseToken.hpp"
+#include "../ExpressionNode.hpp"
+#include "StatementNode.hpp"
 
 using namespace std;
 
@@ -18,13 +18,13 @@ WhileStatementNode::WhileStatementNode(TokenList tokens){
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(WHILE));
 
-	this->condition = ExpressionNode(copy);
+	this->condition = new ExpressionNode(copy);
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LCURLY));
 
 	BaseToken next = copy.get(0);
 	while (!(next.kind == RCURLY)) {
-		this->statements.push_back(StatementNode(copy));
+		this->statements.push_back(new StatementNode(copy));
 		next = copy.get(0);
 	}
 

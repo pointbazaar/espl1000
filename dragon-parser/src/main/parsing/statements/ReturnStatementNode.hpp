@@ -1,15 +1,13 @@
 #ifndef RETURNSTATEMENTNODE
 #define RETURNSTATEMENTNODE
 
-#include "../ExpressionNode.hpp"
+class ExpressionNode;
 #include "../../commandline/TokenList.hpp"
-
-using namespace std;
 
 class ReturnStatementNode{
 
 public:
-	ExpressionNode returnValue;
+	ExpressionNode* returnValue;
 	ReturnStatementNode(TokenList list);
 };
 

@@ -1,13 +1,9 @@
 
-//standard headers
-#include <vector>
-
-//project headers
 #include "ReturnStatementNode.hpp"
 #include "../../commandline/TokenList.hpp"
 #include "../../commandline/TokenKeys.hpp"
-
-using namespace std;
+#include "../../commandline/BaseToken.hpp"
+#include "../ExpressionNode.hpp"
 
 ReturnStatementNode::ReturnStatementNode(TokenList tokens){
 
@@ -15,7 +11,7 @@ ReturnStatementNode::ReturnStatementNode(TokenList tokens){
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(RETURN));
 
-	this->returnValue = ExpressionNode(copy);
+	this->returnValue = new ExpressionNode(copy);
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(SEMICOLON));
 

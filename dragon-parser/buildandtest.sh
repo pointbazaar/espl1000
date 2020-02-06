@@ -16,10 +16,7 @@ src/main/parsing/ExpressionNode.cpp \
 src/main/parsing/DeclaredArgumentNode.cpp \
 src/main/parsing/VariableNode.cpp \
 src/main/parsing/SimpleVariableNode.cpp \
-src/main/parsing/statements/MethodCallNode.cpp \
-src/main/parsing/statements/AssignmentStatementNode.cpp \
-src/main/parsing/statements/IfStatementNode.cpp \
-src/main/parsing/statements/StatementNode.cpp \
+src/main/parsing/statements/*cpp \
 src/main/parsing/typenodes/*.cpp \
 #src/main/parsing/statements/*.hpp 
 
