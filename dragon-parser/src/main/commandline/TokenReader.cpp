@@ -63,12 +63,12 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 
 		case STRINGCONST : 
 			result= recognizeStrConstToken(
-				tkn.substr(string(STRINGCONST + " ").size())
+				tkn.substr(3,tkn.size())
 			);
 			break;
 		case CHARCONST : 
 			result= recognizeCharConstToken(
-				tkn.substr(string(CHARCONST + " ").size())
+				tkn.substr(2,tkn.size())
 			);
 			break;
 		case ANYTYPE : 
@@ -77,7 +77,7 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 
 		//CONSTANTS
 		case BOOLCONST : 
-			result= BaseToken(BOOLCONST,(bool)stoi(parts.at(1)));
+			result= BaseToken(BOOLCONST, parts.at(1) == "true" );
 			break;
 		case FLOATING : 
 			;
