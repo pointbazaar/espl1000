@@ -1,7 +1,6 @@
 
 //standard headers
 #include <vector>
-#include <variant>
 
 //project headers
 #include "StatementNode.hpp"
@@ -27,11 +26,11 @@ StatementNode::StatementNode(TokenList tokens) {
 	if (first.kind == LOOP) {
 		//this->statementNode = LoopStatementNode(copy);
 	} else if (first.kind == WHILE) {
-		this->statementNode = WhileStatementNode(copy);
+		this->m2 = new WhileStatementNode(copy);
 	} else if (first.kind == IF) {
-		this->statementNode = IfStatementNode(copy);
+		this->m3 = new IfStatementNode(copy);
 	} else if (first.kind == RETURN) {
-		this->statementNode = ReturnStatementNode(copy);
+		this->m4 = new ReturnStatementNode(copy);
 	} else {
 		//TODO: we have to figure something out here.
 		//i don't want 'let' statements
@@ -39,17 +38,15 @@ StatementNode::StatementNode(TokenList tokens) {
 		//just bloat to write.
 		//but parsing should be straightforward. to give good error messages
 
-		variant<MethodCallNode,WhileStatementNode,IfStatementNode,ReturnStatementNode,AssignmentStatementNode> statementNode1; //temp variable so that this.statementNode can be final
 		try {
 			TokenList copy2 = copy.copy();
-			statementNode1 = MethodCallNode(copy2);
+			this->m1 = new MethodCallNode(copy2);
 			copy2.expectAndConsumeOtherWiseThrowException(BaseToken(SEMICOLON));
 
 			copy.set(copy2);
 		} catch (string e1) {
-			statementNode1 = AssignmentStatementNode(copy);
+			this->m5 = new AssignmentStatementNode(copy);
 		}
-		this->statementNode = statementNode1;
 	}
 
 	tokens.set(copy);

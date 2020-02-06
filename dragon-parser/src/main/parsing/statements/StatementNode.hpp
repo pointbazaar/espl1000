@@ -1,22 +1,24 @@
 #ifndef STATEMENTNODE
 #define STATEMENTNODE
 
-#include <variant>
-
 #include "../../commandline/TokenList.hpp"
-#include "MethodCallNode.hpp"
-#include "WhileStatementNode.hpp"
-#include "IfStatementNode.hpp"
-#include "ReturnStatementNode.hpp"
-#include "AssignmentStatementNode.hpp"
-
-using namespace std;
+class MethodCallNode;
+class WhileStatementNode;
+class IfStatementNode;
+class ReturnStatementNode;
+class AssignmentStatementNode;
 
 class StatementNode {
 
 public:
 	StatementNode(TokenList tokens);
-	variant<MethodCallNode,WhileStatementNode,IfStatementNode,ReturnStatementNode,AssignmentStatementNode> statementNode;
+
+	//only one of those will be != NULL
+	MethodCallNode* m1 = NULL;
+	WhileStatementNode* m2 = NULL;
+	IfStatementNode* m3 = NULL;
+	ReturnStatementNode* m4 = NULL;
+	AssignmentStatementNode* m5 = NULL;
 };
 
 #endif
