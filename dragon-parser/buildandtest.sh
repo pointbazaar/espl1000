@@ -2,7 +2,7 @@
 
 # do not use .hpp's in g++ call
 
-g++ -O0 --std=c++17 -o dragon-parser \
+g++ -O0 -g --std=c++17 -o dragon-parser \
 src/main/commandline/Parser.cpp \
 src/main/commandline/BaseToken.cpp \
 src/main/commandline/TokenList.cpp \

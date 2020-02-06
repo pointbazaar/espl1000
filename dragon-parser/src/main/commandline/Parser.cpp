@@ -64,6 +64,7 @@ int main(int argc, char** argv){
 		}
 
 	} catch (string e) {
+		cout << e << endl;
 		exit(1);
 	}
 }
