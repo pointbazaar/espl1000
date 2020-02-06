@@ -13,14 +13,14 @@
 VariableNode::VariableNode(TokenList tokens) {
 	TokenList copy = tokens.copy();
 
-	this->simpleVariableNode = SimpleVariableNode(copy);
+	this->simpleVariableNode = new SimpleVariableNode(copy);
 
 	if (copy.size() > 0) {
 		BaseToken next = copy.get(0);
 		while (next.kind == STRUCTMEMBERACCESS) {
 
 			copy.expectAndConsumeOtherWiseThrowException(BaseToken(STRUCTMEMBERACCESS));
-			this->memberAccessList.push_back(VariableNode(copy));
+			this->memberAccessList.push_back(new VariableNode(copy));
 			if (copy.size() > 0) {
 				next = copy.get(0);
 			} else {

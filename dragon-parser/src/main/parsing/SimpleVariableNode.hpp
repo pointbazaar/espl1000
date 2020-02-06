@@ -4,7 +4,7 @@
 #include <string>
 #include <optional>
 
-#include "ExpressionNode.hpp"
+class ExpressionNode;
 #include "../commandline/TokenList.hpp"
 
 using namespace std;
@@ -15,7 +15,7 @@ public:
 	SimpleVariableNode(TokenList tokens);
 
 	string name;
-	optional<ExpressionNode> indexOptional;
+	optional<ExpressionNode*> indexOptional;
 };
 
 #endif

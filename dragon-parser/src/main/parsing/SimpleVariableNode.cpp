@@ -9,6 +9,7 @@
 //project headers
 #include "SimpleVariableNode.hpp"
 #include "../commandline/TokenKeys.hpp"
+#include "ExpressionNode.hpp"
 
 using namespace std;
 
@@ -25,7 +26,7 @@ SimpleVariableNode::SimpleVariableNode(TokenList tokens) {
 		//it could have an index
 		if (copy.size() > 0 && copy.get(0).kind == LBRACKET) {
 			copy.expectAndConsumeOtherWiseThrowException(BaseToken(LBRACKET));
-			this->indexOptional = optional(ExpressionNode(copy));
+			this->indexOptional = optional(new ExpressionNode(copy));
 			copy.expectAndConsumeOtherWiseThrowException(BaseToken(RBRACKET));
 		} else {
 			this->indexOptional = nullopt;
@@ -40,7 +41,7 @@ SimpleVariableNode::SimpleVariableNode(TokenList tokens) {
 		<< ": could not read variable name. token was " 
 		<< token.getContents()
 		<< " from context  '" 
-		<< tokens.toSourceCodeFragment().substr(0, min(20, tokens.toSourceCodeFragment().size())) 
+		<< tokens.toSourceCodeFragment().substr(0, min(20, (int)tokens.toSourceCodeFragment().size())) 
 		<< "'";
 
 		throw msg.str();
