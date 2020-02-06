@@ -1,20 +1,27 @@
 
 //standard headers
 #include <vector>
-#include <set>
+#include <variant>
 
 //project headers
 #include "TypeNode.hpp"
-#include "ITypeNode.hpp"
 #include "../../commandline/TokenList.hpp"
 #include "ArrayTypeNode.hpp"
 #include "TypeParameterNode.hpp"
 #include "BasicTypeWrappedNode.hpp"
 
-using namespace std;
+//using namespace std;
 
-TypeNode::TypeNode(ITypeNode typeNode) {
-	this->typeNode = typeNode;
+TypeNode::TypeNode(BasicTypeWrappedNode* typeNode){
+	this->m1 = typeNode;
+}
+
+TypeNode::TypeNode(ArrayTypeNode* typeNode){
+	this->m3 = typeNode;
+}
+
+TypeNode::TypeNode(TypeParameterNode* typeNode){
+	this->m2 = typeNode;
 }
 
 TypeNode::TypeNode(TokenList tokens){
@@ -22,14 +29,15 @@ TypeNode::TypeNode(TokenList tokens){
 	TokenList copy = tokens.copy();
 
 	try {
-		this->typeNode = ArrayTypeNode(copy);
-	} catch (string e) {
+		this->m3 = new ArrayTypeNode(copy);
+	} catch (std::string e) {
 		try {
-			this->typeNode = TypeParameterNode(copy);
+			this->m2 = new TypeParameterNode(copy);
 		} catch (string e2) {
-			this->typeNode = BasicTypeWrappedNode(copy);
+			this->m1 = new BasicTypeWrappedNode(copy);
 		}
 	}
+
 
 	tokens.set(copy);
 }

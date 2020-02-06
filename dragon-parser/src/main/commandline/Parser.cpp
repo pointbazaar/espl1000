@@ -16,6 +16,7 @@
 //project includes
 #include "Parser.hpp"
 #include "TokenReader.hpp"
+#include "../parsing/NamespaceNode.hpp"
 
 using namespace std;
 

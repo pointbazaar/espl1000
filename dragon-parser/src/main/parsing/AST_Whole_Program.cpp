@@ -1,12 +1,13 @@
 
 //standard headers
 #include <vector>
-#include <algorithm>
 #include <string>
 #include <iostream>
 
 //project headers
 #include "AST_Whole_Program.hpp"
+#include "NamespaceNode.hpp"
+#include "../commandline/TokenList.hpp"
 
 using namespace std;
 

@@ -1,7 +1,6 @@
 
 //standard headers
 #include <vector>
-#include <set>
 
 //project headers
 #include "SimpleTypeNode.hpp"
@@ -9,7 +8,7 @@
 #include "../../commandline/BaseToken.hpp"
 #include "../../commandline/TokenKeys.hpp"
 
-using namespace std;
+//using namespace std;
 
 SimpleTypeNode::SimpleTypeNode(TokenList tokens) {
 
@@ -29,7 +28,7 @@ SimpleTypeNode::SimpleTypeNode(TokenList tokens) {
 	}
 }
 
-SimpleTypeNode::SimpleTypeNode(string typeName) {
+SimpleTypeNode::SimpleTypeNode(std::string typeName) {
 	this->typeName = typeName;
 }
 

@@ -1,12 +1,11 @@
 #ifndef BOOLCONSTNODE
 #define BOOLCONSTNODE
 
-#include "ITermNode.hpp"
 #include "../commandline/TokenList.hpp"
 
 using namespace std;
 
-class BoolConstNode : public ITermNode {
+class BoolConstNode {
 
 public:
 	BoolConstNode(TokenList tokens);

@@ -2,20 +2,17 @@
 #define SIMPLETYPENODE
 
 #include <string>
+//#include "../../commandline/TokenList.hpp"
+class TokenList;
 
-#include "IBasicAndWrappedTypeNode.hpp"
-#include "../../commandline/TokenList.hpp"
-
-using namespace std;
-
-class SimpleTypeNode : public IBasicAndWrappedTypeNode {
+class SimpleTypeNode {
 
 public:
 
 	SimpleTypeNode(TokenList tokens);
-	SimpleTypeNode(string typeName);
+	SimpleTypeNode(std::string typeName);
 
-	string typeName;
+	std::string typeName;
 
 };
 

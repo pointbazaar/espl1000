@@ -4,12 +4,11 @@
 #include <vector>
 
 #include "SimpleVariableNode.hpp"
-#include "ITermNode.hpp"
 #include "../commandline/TokenList.hpp"
 
 using namespace std;
 
-class VariableNode : public ITermNode {
+class VariableNode {
 
 public:
 	VariableNode(TokenList tokens);

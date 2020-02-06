@@ -1,12 +1,11 @@
 #ifndef INTCONSTNODE
 #define INTCONSTNODE
 
-#include "ITermNode.hpp"
 #include "../commandline/TokenList.hpp"
 
 using namespace std;
 
-class IntConstNode : public ITermNode {
+class IntConstNode {
 
 public:
 

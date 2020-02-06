@@ -1,18 +1,10 @@
 #ifndef TYPEPARAMETERNODE
 #define TYPEPARAMETERNODE
 
+//#include "../../commandline/TokenList.hpp"
+class TokenList;
 
-//standard headers
-#include <string>
-
-//project headers
-#include "TypeParameterNode.hpp"
-#include "../../commandline/TokenList.hpp"
-#include "IBasicAndWrappedTypeNode.hpp"
-
-using namespace std;
-
-class TypeParameterNode : public IBasicAndWrappedTypeNode {
+class TypeParameterNode {
 
 public:
 	int typeParameterIndex;

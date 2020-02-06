@@ -1,16 +1,14 @@
 
 //standard headers
 #include <vector>
-#include <set>
 
 //project headers
 #include "TypeParameterNode.hpp"
 #include "../../commandline/TokenList.hpp"
 #include "../../commandline/BaseToken.hpp"
-#include "IBasicAndWrappedTypeNode.hpp"
 #include "../../commandline/TokenKeys.hpp"
 
-using namespace std;
+//using namespace std;
 
 TypeParameterNode::TypeParameterNode(TokenList tokens){
 	

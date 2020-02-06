@@ -1,23 +1,22 @@
+
 #ifndef SUBROUTINETYPENODE
 #define SUBROUTINETYPENODE
 
 #include <vector>
+//#include "TypeNode.hpp"
+//#include "../../commandline/TokenList.hpp"
+class TokenList;
+class TypeNode;
 
-#include "TypeNode.hpp"
-#include "../../commandline/TokenList.hpp"
-#include "IBasicAndWrappedTypeNode.hpp"
-
-using namespace std;
-
-class SubroutineTypeNode : public IBasicAndWrappedTypeNode  {
+class SubroutineTypeNode {
 
 public:
-	SubroutineTypeNode(TypeNode tn, bool hasSideEffects);
+	SubroutineTypeNode(TypeNode* tn, bool hasSideEffects);
 	SubroutineTypeNode(TokenList tokens);
 
-	TypeNode returnType;
+	TypeNode* returnType;
 	bool hasSideEffects;
-	vector<TypeNode> argumentTypes;
+	std::vector<TypeNode*> argumentTypes;
 
 };
 

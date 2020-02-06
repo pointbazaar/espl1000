@@ -1,18 +1,28 @@
 #ifndef TYPENODE
 #define TYPENODE
 
-#include "ITypeNode.hpp"
-#include "../../commandline/TokenList.hpp"
+#include <variant>
 
-using namespace std;
+//#include "../../commandline/TokenList.hpp"
+class TokenList;
+
+
+class BasicTypeWrappedNode;
+class TypeParameterNode;
+class ArrayTypeNode;
 
 class TypeNode {
 
 public:
 	TypeNode(TokenList tokens);
-	TypeNode(ITypeNode typeNode);
+	TypeNode(BasicTypeWrappedNode* typeNode);
+	TypeNode(TypeParameterNode* typeNode);
+	TypeNode(ArrayTypeNode* typeNode);
 	
-	ITypeNode typeNode;
+	//only one of these is != NULL
+	BasicTypeWrappedNode* m1 = NULL;
+	TypeParameterNode* m2 = NULL;
+	ArrayTypeNode* m3 = NULL;
 };
 
 #endif

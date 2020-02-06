@@ -8,7 +8,6 @@
 
 //project headers
 #include "ExpressionNode.hpp"
-#include "ITermNode.hpp"
 #include "../commandline/TokenList.hpp"
 #include "TermNode.hpp"
 

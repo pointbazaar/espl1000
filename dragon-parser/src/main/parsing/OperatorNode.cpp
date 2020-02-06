@@ -1,9 +1,7 @@
 
 //standard headers
 #include <vector>
-#include <set>
 #include <string>
-#include <map>
 
 //project headers
 #include "OperatorNode.hpp"

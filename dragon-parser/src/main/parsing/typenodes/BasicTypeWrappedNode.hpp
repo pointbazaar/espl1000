@@ -1,19 +1,30 @@
+
 #ifndef BASICTYPEWRAPPEDNODE
 #define BASICTYPEWRAPPEDNODE
 
-#include "ITypeNode.hpp"
-#include "IBasicAndWrappedTypeNode.hpp"
-#include "../../commandline/TokenList.hpp"
+#include <variant>
+//#include "../../commandline/TokenList.hpp"
+class TokenList;
+class SimpleTypeNode;
+class SubroutineTypeNode;
+/*
+#include "SimpleTypeNode.hpp"
+#include "SubroutineTypeNode.hpp"
+*/
 
-using namespace std;
-
-class BasicTypeWrappedNode :  public ITypeNode {
+class BasicTypeWrappedNode {
 
 public:
-	BasicTypeWrappedNode(IBasicAndWrappedTypeNode typeNode);
+	BasicTypeWrappedNode(SimpleTypeNode* typeNode);
+	BasicTypeWrappedNode(SubroutineTypeNode* typeNode);
 	BasicTypeWrappedNode(TokenList tokens);
 
-	IBasicAndWrappedTypeNode typeNode;
+	//these are alternatives,
+	//to replace my use of <variant> which was
+	//causing me problems
+	//only one of these is != NULL
+	SimpleTypeNode* m1 = NULL;
+	SubroutineTypeNode* m2 = NULL;
 };
 
 #endif

@@ -5,11 +5,9 @@
 #include <string>
 
 #include "../ExpressionNode.hpp"
-#include "IStatementNode.hpp"
-#include "../ITermNode.hpp"
 #include "../../commandline/TokenList.hpp"
 
-class MethodCallNode : public IStatementNode, public ITermNode {
+class MethodCallNode {
 
 public:
 	MethodCallNode(TokenList tokens);

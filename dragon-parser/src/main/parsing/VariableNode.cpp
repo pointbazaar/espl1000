@@ -1,13 +1,10 @@
 
 //standard headers
 #include <vector>
-#include <set>
 #include <optional>
-#include <map>
 
 //project headers
 #include "VariableNode.hpp"
-#include "ITermNode.hpp"
 #include "SimpleVariableNode.hpp"
 #include "../commandline/BaseToken.hpp"
 #include "../commandline/TokenKeys.hpp"

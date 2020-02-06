@@ -12,10 +12,9 @@
 #include "../VariableNode.hpp"
 #include "../ExpressionNode.hpp"
 #include "../typenodes/TypeNode.hpp"
-#include "IStatementNode.hpp"
 #include "../../commandline/TokenList.hpp"
 
-class AssignmentStatementNode : public IStatementNode {
+class AssignmentStatementNode {
 
 public:
 	AssignmentStatementNode(TokenList tokens);

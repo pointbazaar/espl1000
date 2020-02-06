@@ -1,7 +1,6 @@
 
 //standard headers
 #include <vector>
-#include <set>
 #include <iostream>
 
 //project headers
@@ -11,9 +10,9 @@
 #include "../../commandline/BaseToken.hpp"
 #include "../../commandline/TokenKeys.hpp"
 
-using namespace std;
+//using namespace std;
 
-SubroutineTypeNode::SubroutineTypeNode(TypeNode return_type, bool hasSideEffects) {
+SubroutineTypeNode::SubroutineTypeNode(TypeNode* return_type, bool hasSideEffects){
 	this->returnType = return_type;
 	this->hasSideEffects = hasSideEffects;
 }
@@ -26,8 +25,8 @@ SubroutineTypeNode::SubroutineTypeNode(TokenList tokens){
 
 	bool sucess_argument_types = true;
 	try {
-		this->argumentTypes.push_back(TypeNode(copy));
-	} catch (string e) {
+		this->argumentTypes.push_back(new TypeNode(copy));
+	} catch (std::string e) {
 		sucess_argument_types = false;
 	}
 	while (sucess_argument_types) {
@@ -35,10 +34,10 @@ SubroutineTypeNode::SubroutineTypeNode(TokenList tokens){
 			TokenList copy2 = copy.copy();
 
 			copy2.expectAndConsumeOtherWiseThrowException(BaseToken(COMMA));
-			this->argumentTypes.push_back(TypeNode(copy2));
+			this->argumentTypes.push_back(new TypeNode(copy2));
 
 			copy.set(copy2);
-		} catch (string e) {
+		} catch (std::string e) {
 			sucess_argument_types = false;
 		}
 	}
@@ -53,7 +52,7 @@ SubroutineTypeNode::SubroutineTypeNode(TokenList tokens){
 		throw "expected an arrow token here";
 	}
 
-	this->returnType = TypeNode(copy);
+	this->returnType = new TypeNode(copy);
 
 	tokens.set(copy);
 }

@@ -1,6 +1,7 @@
 
 //standard headers
 #include <vector>
+#include <variant>
 
 //project headers
 #include "StatementNode.hpp"
@@ -38,7 +39,7 @@ StatementNode::StatementNode(TokenList tokens) {
 		//just bloat to write.
 		//but parsing should be straightforward. to give good error messages
 
-		IStatementNode statementNode1; //temp variable so that this.statementNode can be final
+		variant<MethodCallNode,WhileStatementNode,IfStatementNode,ReturnStatementNode,AssignmentStatementNode> statementNode1; //temp variable so that this.statementNode can be final
 		try {
 			TokenList copy2 = copy.copy();
 			statementNode1 = MethodCallNode(copy2);

@@ -1,7 +1,6 @@
 
 //standard headers
 #include <vector>
-#include <set>
 
 //project headers
 #include "CharConstNode.hpp"

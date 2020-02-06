@@ -1,12 +1,11 @@
 #ifndef CHARCONSTNODE
 #define CHARCONSTNODE
 
-#include "ITermNode.hpp"
 #include "../commandline/TokenList.hpp"
 
 using namespace std;
 
-class CharConstNode : public ITermNode {
+class CharConstNode {
 
 public:
 	CharConstNode(TokenList tokens);

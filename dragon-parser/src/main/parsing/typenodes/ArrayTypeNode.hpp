@@ -1,20 +1,21 @@
 #ifndef ARRAYTYPENODE
 #define ARRAYTYPENODE
 
-#include "ITypeNode.hpp"
-#include "TypeNode.hpp"
-#include "../../commandline/TokenList.hpp"
 
-using namespace std;
+//#include "TypeNode.hpp"
+//#include "../../commandline/TokenList.hpp"
 
-class ArrayTypeNode : public ITypeNode {
+class TokenList;
+class TypeNode;
+
+class ArrayTypeNode {
 
 public:
 
-	ArrayTypeNode(TypeNode element_type);
+	ArrayTypeNode(TypeNode* element_type);
 	ArrayTypeNode(TokenList tokens);
 
-	TypeNode element_type;
+	TypeNode* element_type;
 
 };
 

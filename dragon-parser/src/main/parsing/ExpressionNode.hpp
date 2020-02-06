@@ -4,14 +4,13 @@
 #include <optional>
 #include <vector>
 
-#include "ITermNode.hpp"
 #include "OperatorNode.hpp"
 #include "TermNode.hpp"
 #include "../commandline/TokenList.hpp"
 
 using namespace std;
 
-class ExpressionNode : public ITermNode {
+class ExpressionNode {
 
 public:
 	//DragonExpressionNode should be similar to jack expression

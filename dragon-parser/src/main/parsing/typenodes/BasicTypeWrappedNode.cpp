@@ -2,6 +2,7 @@
 //standard headers
 #include <vector>
 #include <set>
+#include <variant>
 
 //project headers
 #include "BasicTypeWrappedNode.hpp"
@@ -10,30 +11,32 @@
 #include "SubroutineTypeNode.hpp"
 #include "SimpleTypeNode.hpp"
 
-using namespace std;
+//using namespace std;
 
-BasicTypeWrappedNode::BasicTypeWrappedNode(IBasicAndWrappedTypeNode typeNode) {
-	this->typeNode = typeNode;
+BasicTypeWrappedNode::BasicTypeWrappedNode(SimpleTypeNode* typeNode) {
+	this->m1 = typeNode;
+}
+
+BasicTypeWrappedNode::BasicTypeWrappedNode(SubroutineTypeNode* typeNode) {
+	this->m2 = typeNode;
 }
 
 BasicTypeWrappedNode::BasicTypeWrappedNode(TokenList tokens) {
 
 	TokenList copy = tokens.copy();
 
-	IBasicAndWrappedTypeNode candidate;
 	if (copy.size() > 1 && copy.get(0).tokenEquals(BaseToken(LPARENS))) {
 		TokenList copy2 = copy.copy();
 
 		copy2.expectAndConsumeOtherWiseThrowException(BaseToken(LPARENS));
-		candidate = SubroutineTypeNode(copy2);
+		this->m2 = new SubroutineTypeNode(copy2);
 		copy2.expectAndConsumeOtherWiseThrowException(BaseToken(RPARENS));
 
 		copy.set(copy2);
 
 	} else {
-		candidate = SimpleTypeNode(copy);
+		this->m1 = new SimpleTypeNode(copy);
 	}
-	this->typeNode = candidate;
 	tokens.set(copy);
 }
 
