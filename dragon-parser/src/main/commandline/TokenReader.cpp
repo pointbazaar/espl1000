@@ -77,16 +77,11 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 
 		//CONSTANTS
 		case BOOLCONST : 
-			result= BaseToken(
-					BOOLCONST,
-					(bool)stoi(parts.at(1))
-				);
+			result= BaseToken(BOOLCONST,(bool)stoi(parts.at(1)));
 			break;
 		case FLOATING : 
 			;
-			result = BaseToken(
-				FLOATING,stof(parts.at(1))
-				);
+			result = BaseToken(FLOATING,stof(parts.at(1)));
 			break;
 		case INTEGER : 
 			result= BaseToken(INTEGER,stoi(parts.at(1)));

@@ -228,45 +228,32 @@ TokenList makeTokenListByCallingLexer(string file, bool debug) {
 }
 
 TokenList readTokensFromTokensFile(string tokensFile, bool debug){
-
 	//TODO: fix
 	string fileNameWithoutPath = tokensFile;//.getName();
-
 	//TODO: re-enable
 	/*
 	if(! fileNameWithoutPath.endsWith(".tokens")){
 		throw ("tokens file must end with '.tokens' . Got "+fileNameWithoutPath );
 	}
-
 	if(! fileNameWithoutPath.startsWith(".")){
 		throw "tokens file must start with '.'. A token File should be hidden. Got "+fileNameWithoutPath ;
 	}
 	*/
-
-	vector<string> lines;
+	TokenList tks(tokensFile);
 	ifstream file(tokensFile);
     string str; 
     while (getline(file, str))
     {
-        lines.push_back(str);
+		optional<BaseToken> tkn = recognizeToken(str, debug); //.value();
+    	if(tkn.has_value()){
+			tks.add(tkn.value());
+    	}
     }
 
 	if(debug) {
 		cout << "read was successful" << endl;
-	}
-
-	TokenList tks(tokensFile);
-
-	for (string line : lines) {
-		BaseToken tkn = recognizeToken(line, debug).value();
-		tks.add(tkn);
-	}
-
-	//DEBUG
-	if (debug) {
 		cout << "done recognizing tokens" << endl;
 	}
-
 	return tks;
 }
 
