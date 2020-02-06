@@ -11,6 +11,9 @@ src/main/parsing/IntConstNode.cpp \
 src/main/parsing/BoolConstNode.cpp \
 src/main/parsing/IdentifierNode.cpp \
 src/main/parsing/OperatorNode.cpp \
+src/main/parsing/TermNode.cpp \
+src/main/parsing/ExpressionNode.cpp \
+src/main/parsing/DeclaredArgumentNode.cpp \
 src/main/parsing/typenodes/*.cpp \
 #src/main/parsing/statements/*.hpp 
 

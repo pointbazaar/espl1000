@@ -16,7 +16,7 @@ DeclaredArgumentNode::DeclaredArgumentNode(TokenList tokens) {
 
 	TokenList copy = tokens.copy();
 
-	this->type = TypeNode(copy);
+	this->type = new TypeNode(copy);
 
 	this->name = optional<string>(IdentifierNode(copy).identifier);
 

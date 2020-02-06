@@ -3,13 +3,14 @@
 
 #include <variant>
 
-#include "ExpressionNode.hpp"
-#include "BoolConstNode.hpp"
-#include "CharConstNode.hpp"
-#include "IntConstNode.hpp"
-#include "VariableNode.hpp"
-#include "ExpressionNode.hpp"
-#include "statements/MethodCallNode.hpp"
+class ExpressionNode;
+class BoolConstNode;
+class CharConstNode;
+class IntConstNode;
+class VariableNode;
+class ExpressionNode;
+class MethodCallNode;
+
 #include "../commandline/TokenList.hpp"
 
 using namespace std;
@@ -18,11 +19,17 @@ class TermNode {
 
 public:
 
-	TermNode ( ExpressionNode myexpr);
+	TermNode ( ExpressionNode* myexpr);
 	
 	TermNode ( TokenList tokens);
 
-	variant<BoolConstNode,IntConstNode,CharConstNode,MethodCallNode,ExpressionNode,VariableNode> termNode;
+	//only one of these may be != NULL
+	BoolConstNode* m1 = NULL;
+	IntConstNode* m2 = NULL;
+	CharConstNode* m3 = NULL;
+	MethodCallNode* m4 = NULL;
+	ExpressionNode* m5 = NULL;
+	VariableNode* m6 = NULL;
 
 };
 

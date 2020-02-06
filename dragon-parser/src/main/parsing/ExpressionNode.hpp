@@ -4,8 +4,8 @@
 #include <optional>
 #include <vector>
 
-#include "OperatorNode.hpp"
-#include "TermNode.hpp"
+class OperatorNode;
+class TermNode;
 #include "../commandline/TokenList.hpp"
 
 using namespace std;
@@ -17,18 +17,18 @@ public:
 	//an expression should be anything that returns a value or computes to a value
 
 	ExpressionNode(TokenList tkl);
-	ExpressionNode(TermNode myterm);
-	ExpressionNode(TermNode leftTerm, OperatorNode op, TermNode rightTerm);
+	ExpressionNode(TermNode* myterm);
+	ExpressionNode(TermNode* leftTerm, OperatorNode* op, TermNode* rightTerm);
 
 
 	void performTreeTransformation(
-		vector<OperatorNode> ops,
-		vector<TermNode> terms
+		vector<OperatorNode*> ops,
+		vector<TermNode*> terms
 	);
 
-	TermNode term1;
-	optional<OperatorNode> op;
-	optional<TermNode> term2;
+	TermNode* term1 = NULL;
+	optional<OperatorNode*> op = nullopt;
+	optional<TermNode*> term2 = nullopt;
 };
 
 #endif

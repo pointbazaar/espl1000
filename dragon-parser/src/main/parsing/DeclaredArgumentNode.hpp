@@ -4,7 +4,7 @@
 #include <optional>
 #include <string>
 
-#include "typenodes/TypeNode.hpp"
+class TypeNode;
 #include "../commandline/TokenList.hpp"
 
 using namespace std;
@@ -15,7 +15,7 @@ public:
 
 	DeclaredArgumentNode(TokenList tokens);
 
-	TypeNode type;
+	TypeNode* type = NULL;
 	optional<string> name;
 };
 

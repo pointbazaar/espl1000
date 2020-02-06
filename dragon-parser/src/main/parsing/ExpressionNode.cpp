@@ -10,26 +10,27 @@
 #include "ExpressionNode.hpp"
 #include "../commandline/TokenList.hpp"
 #include "TermNode.hpp"
+#include "OperatorNode.hpp"
 
-ExpressionNode::ExpressionNode(TermNode term) {
+ExpressionNode::ExpressionNode(TermNode* term) {
 	this->term1 = term;
 }
 
 ExpressionNode::ExpressionNode(TokenList tokens) {
 
 	// temporary containers
-	vector<OperatorNode> operatorNodes;
-	vector<TermNode> termNodes;
+	vector<OperatorNode*> operatorNodes;
+	vector<TermNode*> termNodes;
 	// end of temporary containers
 	TokenList copy = tokens.copy();
-	termNodes.push_back(TermNode(copy));
+	termNodes.push_back(new TermNode(copy));
 	try {
 
 		while (true) {
 			TokenList copy2 = TokenList(copy);
 
-			OperatorNode myop = OperatorNode(copy2);
-			TermNode myterm = TermNode(copy2);
+			OperatorNode* myop = new OperatorNode(copy2);
+			TermNode* myterm = new TermNode(copy2);
 
 			operatorNodes.push_back(myop);
 			termNodes.push_back(myterm);
@@ -45,15 +46,15 @@ ExpressionNode::ExpressionNode(TokenList tokens) {
 	performTreeTransformation(operatorNodes,termNodes);
 }
 
-ExpressionNode::ExpressionNode(TermNode leftTerm, OperatorNode op, TermNode rightTerm) {
+ExpressionNode::ExpressionNode(TermNode* leftTerm, OperatorNode* op, TermNode* rightTerm) {
 	this->term1=leftTerm;
-	this->op=optional<OperatorNode>(op);
-	this->term2=optional<TermNode>(rightTerm);
+	this->op=optional<OperatorNode*>(op);
+	this->term2=optional<TermNode*>(rightTerm);
 }
 
 void ExpressionNode::performTreeTransformation(
-		vector<OperatorNode> ops,
-		vector<TermNode> terms
+		vector<OperatorNode*> ops,
+		vector<TermNode*> terms
 ){
 	//transform the list into a tree, respecting operator precedence
 
@@ -91,30 +92,37 @@ void ExpressionNode::performTreeTransformation(
 	 */
 
 	while (terms.size()>2){
-		OperatorNode opWithLargestPrecedence=ops.at(0);
-		int lowest=99;
+		OperatorNode* opWithLargestPrecedence = ops.at(0);
+		vector<string>::iterator lowest = operatorPrecedence.end();
 
-		for(OperatorNode o1 : ops){
-			if(find(operatorPrecedence,o1.op) < lowest){
-				lowest = find(operatorPrecedence,o1.op);
-				opWithLargestPrecedence=o1;
+		for(OperatorNode* o1 : ops){
+			if(find(operatorPrecedence.begin(),operatorPrecedence.end(),o1->op) < lowest){
+				lowest = find(operatorPrecedence.begin(),operatorPrecedence.end(),o1->op);
+				opWithLargestPrecedence = o1;
 			}
 		}
-		int indexOfOp = find(ops,opWithLargestPrecedence);
+		vector<OperatorNode*>::iterator indexOfOp = find(ops.begin(),ops.end(),opWithLargestPrecedence);
 
 
-		TermNode leftTerm = terms.at(indexOfOp);
-		TermNode rightTerm = terms.at(indexOfOp+1);
+		TermNode* leftTerm = terms.at(indexOfOp - ops.begin());
+		TermNode* rightTerm = terms.at((indexOfOp - ops.begin())+1);
 
 		ExpressionNode expr = ExpressionNode(leftTerm,opWithLargestPrecedence,rightTerm);
 
 		//simplify
-		terms.erase(leftTerm);
-		terms.erase(rightTerm);
-		ops.erase(opWithLargestPrecedence);
+		vector<TermNode*>::iterator i1;
+		i1 = find(terms.begin(),terms.end(),leftTerm);
+		terms.erase(i1);
+		i1 = find(terms.begin(),terms.end(),rightTerm);
+		terms.erase(i1);
+
+		vector<OperatorNode*>::iterator i2 = find(ops.begin(),ops.end(),opWithLargestPrecedence);
+		ops.erase(i2);
 
 		//insert newly created expression
-		terms.push_back(indexOfOp,TermNode(expr));
+		TermNode* ttmp = new TermNode(&expr);
+		vector<TermNode*>::iterator indexOfOpIt = terms.begin() + (indexOfOp - ops.begin());
+		terms.insert(indexOfOpIt,ttmp);
 	}
 
 	//now only 2 terms left
@@ -123,6 +131,6 @@ void ExpressionNode::performTreeTransformation(
 	//in case of only one term
 	if(ops.size()>0) {
 		this->op = ops.at(0);
-		this->term2 = optional<TermNode>(terms.at(1));
+		this->term2 = optional<TermNode*>(terms.at(1));
 	}
 }

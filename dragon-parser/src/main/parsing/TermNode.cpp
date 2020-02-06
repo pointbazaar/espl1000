@@ -19,8 +19,8 @@
 
 using namespace std;
 
-TermNode::TermNode(ExpressionNode expr){
-	this->termNode=expr;
+TermNode::TermNode(ExpressionNode* expr){
+	this->m5 = expr;
 }
 
 TermNode::TermNode(TokenList tokens) {
@@ -33,7 +33,7 @@ TermNode::TermNode(TokenList tokens) {
 		throw "later";
 	} catch (string e0) {
 		try {
-			this->termNode = IntConstNode(copy);
+			this->m2 = new IntConstNode(copy);
 		} catch (string e1) {
 			try {
 				//a string constant is syntatic sugar.
@@ -66,19 +66,19 @@ TermNode::TermNode(TokenList tokens) {
 					TokenList copy2 = TokenList(copy);
 
 					copy2.expectAndConsumeOtherWiseThrowException(BaseToken(LPARENS));
-					this->termNode = ExpressionNode(copy2);
+					this->m5 = new ExpressionNode(copy2);
 					copy2.expectAndConsumeOtherWiseThrowException(BaseToken(RPARENS));
 
 					copy.set(copy2);
 				} catch (string e3) {
 					try {
-						this->termNode = MethodCallNode(copy);
+						this->m4 = new MethodCallNode(copy);
 					} catch (string e4) {
 						try {
-							this->termNode = BoolConstNode(copy);
+							this->m1 = new BoolConstNode(copy);
 						} catch (string e5) {
 							try {
-								this->termNode = VariableNode(copy);
+								this->m6 = new VariableNode(copy);
 							} catch (string e6) {
 								//TODO: re-enable later
 								/*
@@ -86,7 +86,7 @@ TermNode::TermNode(TokenList tokens) {
 									this->termNode = ArrayConstantNode(copy);
 								} catch (string e7) {
 									*/
-									this->termNode = CharConstNode(copy);
+									this->m3 = new CharConstNode(copy);
 								//}
 							}
 						}
