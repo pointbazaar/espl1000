@@ -9,6 +9,8 @@
 #include "IfStatementNode.hpp"
 #include "../../commandline/TokenKeys.hpp"
 #include "../../commandline/TokenList.hpp"
+#include "../ExpressionNode.hpp"
+#include "StatementNode.hpp"
 
 using namespace std;
 
@@ -18,7 +20,7 @@ IfStatementNode::IfStatementNode(TokenList tokens) {
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(IF));
 
-	this->condition = ExpressionNode(copy);
+	this->condition = new ExpressionNode(copy);
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LCURLY));
 
@@ -26,7 +28,7 @@ IfStatementNode::IfStatementNode(TokenList tokens) {
 
 	while (!(next.kind == RCURLY)) {
 
-		this->statements.push_back(StatementNode(copy));
+		this->statements.push_back(new StatementNode(copy));
 		next = copy.get(0);
 	}
 
@@ -44,7 +46,7 @@ IfStatementNode::IfStatementNode(TokenList tokens) {
 
 		while (!(elsenext.kind == RCURLY)) {
 
-			this->elseStatements.push_back(StatementNode(copy));
+			this->elseStatements.push_back(new StatementNode(copy));
 			elsenext = copy.get(0);
 		}
 
