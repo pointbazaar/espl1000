@@ -1,6 +1,5 @@
 #ifndef ASTWRITER
 #define ASTWRITER
-
 //../parsing
 #include "../parsing/AST_Whole_Program.hpp"
 #include "../parsing/NamespaceNode.hpp"
@@ -15,7 +14,6 @@
 #include "../parsing/SimpleVariableNode.hpp"
 #include "../parsing/TermNode.hpp"
 #include "../parsing/VariableNode.hpp"
-
 //statements
 #include "../parsing/statements/IfStatementNode.hpp"
 #include "../parsing/statements/WhileStatementNode.hpp"
@@ -23,7 +21,6 @@
 #include "../parsing/statements/AssignmentStatementNode.hpp"
 #include "../parsing/statements/StatementNode.hpp"
 #include "../parsing/statements/MethodCallNode.hpp"
-
 //typenodes
 #include "../parsing/typenodes/ArrayTypeNode.hpp"
 #include "../parsing/typenodes/BasicTypeWrappedNode.hpp"
@@ -34,7 +31,6 @@
 
 void write_ast(string filename, NamespaceNode namespaceNode);
 
-
 void write(NamespaceNode m, ofstream* file);
 void write(MethodNode m, ofstream* file);
 void write(DeclaredArgumentNode m, ofstream* file);
@@ -43,6 +39,9 @@ void write(OperatorNode m, ofstream* file);
 void write(IntConstNode m, ofstream* file);
 void write(BoolConstNode m, ofstream* file);
 void write(CharConstNode m, ofstream* file);
+void write(VariableNode m, ofstream* file);
+void write(SimpleVariableNode m, ofstream* file);
+void write(TermNode m, ofstream* file);
 
 //statementnodes
 void write(StatementNode m, ofstream* file);
@@ -56,5 +55,8 @@ void write(MethodCallNode m, ofstream* file);
 void write(TypeNode m, ofstream* file);
 void write(SubroutineTypeNode m, ofstream* file);
 void write(SimpleTypeNode m, ofstream* file);
+void write(ArrayTypeNode m, ofstream* file);
+void write(TypeParameterNode m, ofstream* file);
+void write(BasicTypeWrappedNode m, ofstream* file);
 
 #endif
