@@ -1,7 +1,7 @@
 
 //standard headers
 #include <vector>
-
+#include <iostream>
 //project headers
 #include "MethodCallNode.hpp"
 #include "../IdentifierNode.hpp"
@@ -10,7 +10,7 @@
 #include "../../commandline/BaseToken.hpp"
 #include "../ExpressionNode.hpp"
 
-MethodCallNode::MethodCallNode(TokenList tokens) {
+MethodCallNode::MethodCallNode(TokenList tokens,bool debug) {
 
 	TokenList copy = tokens.copy();
 

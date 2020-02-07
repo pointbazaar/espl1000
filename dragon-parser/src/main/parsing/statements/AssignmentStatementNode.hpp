@@ -14,7 +14,7 @@ class TypeNode;
 class AssignmentStatementNode {
 
 public:
-	AssignmentStatementNode(TokenList tokens);
+	AssignmentStatementNode(TokenList tokens,bool debug);
 	
 	optional<TypeNode*> optTypeNode;
 	VariableNode* variableNode;

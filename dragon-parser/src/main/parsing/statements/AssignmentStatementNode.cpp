@@ -2,7 +2,7 @@
 //standard headers
 #include <vector>
 #include <optional>
-
+#include <iostream>
 //project headers
 #include "AssignmentStatementNode.hpp"
 #include "../../commandline/TokenList.hpp"
@@ -12,7 +12,7 @@
 #include "../VariableNode.hpp"
 #include "../ExpressionNode.hpp"
 
-AssignmentStatementNode::AssignmentStatementNode(TokenList tokens) {
+AssignmentStatementNode::AssignmentStatementNode(TokenList tokens,bool debug) {
 	optional<TypeNode*> optTypeNode1; 
 
 	TokenList copy = tokens.copy();

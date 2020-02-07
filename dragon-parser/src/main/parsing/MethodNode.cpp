@@ -54,7 +54,7 @@ MethodNode::MethodNode(TokenList tokens, bool debug) {
 
 	BaseToken statement_next = copy.get(0);
 	while (!(statement_next.kind != RCURLY)) {
-		this->statements.push_back(new StatementNode(copy));
+		this->statements.push_back(new StatementNode(copy,debug));
 		statement_next = copy.get(0);
 	}
 

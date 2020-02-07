@@ -10,8 +10,8 @@ class ExpressionNode;
 class MethodCallNode {
 
 public:
-	MethodCallNode(TokenList tokens);
-
+	MethodCallNode(TokenList tokens,bool debug);
+	
 	string methodName;
 	vector<ExpressionNode*> arguments;
 };

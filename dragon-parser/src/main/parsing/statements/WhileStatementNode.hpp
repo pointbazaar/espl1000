@@ -12,7 +12,7 @@ class StatementNode;
 class WhileStatementNode  {
 
 public:
-	WhileStatementNode(TokenList tokens);
+	WhileStatementNode(TokenList tokens,bool debug);
 
 	ExpressionNode* condition;
 	vector<StatementNode*> statements;

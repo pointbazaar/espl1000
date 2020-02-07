@@ -3,7 +3,7 @@
 
 //standard headers
 #include <vector>
-
+#include <iostream>
 //project headers
 class ExpressionNode;
 class StatementNode;
@@ -12,7 +12,7 @@ class StatementNode;
 class IfStatementNode{
 
 public:
-	IfStatementNode(TokenList tokens);
+	IfStatementNode(TokenList tokens,bool debug);
 
 	ExpressionNode* condition;
 	vector<StatementNode*> statements;

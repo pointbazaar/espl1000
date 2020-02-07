@@ -14,21 +14,22 @@
 
 using namespace std;
 
-IfStatementNode::IfStatementNode(TokenList tokens) {
+IfStatementNode::IfStatementNode(TokenList tokens, bool debug) {
+
+	if(debug){
+		cout << "IfStatementNode(...)" << endl; 
+	}
 
 	TokenList copy = TokenList(tokens);
-
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(IF));
-
 	this->condition = new ExpressionNode(copy);
-
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LCURLY));
 
 	BaseToken next = copy.get(0);
 
 	while (!(next.kind == RCURLY)) {
 
-		this->statements.push_back(new StatementNode(copy));
+		this->statements.push_back(new StatementNode(copy,debug));
 		next = copy.get(0);
 	}
 
@@ -46,7 +47,7 @@ IfStatementNode::IfStatementNode(TokenList tokens) {
 
 		while (!(elsenext.kind == RCURLY)) {
 
-			this->elseStatements.push_back(new StatementNode(copy));
+			this->elseStatements.push_back(new StatementNode(copy,debug));
 			elsenext = copy.get(0);
 		}
 

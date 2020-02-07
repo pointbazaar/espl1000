@@ -72,7 +72,7 @@ TermNode::TermNode(TokenList tokens) {
 					copy.set(copy2);
 				} catch (string e3) {
 					try {
-						this->m4 = new MethodCallNode(copy);
+						this->m4 = new MethodCallNode(copy,true); //TODO: replace debug param
 					} catch (string e4) {
 						try {
 							this->m1 = new BoolConstNode(copy);

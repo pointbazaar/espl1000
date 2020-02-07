@@ -1,7 +1,7 @@
 
 //standard headers
 #include <vector>
-
+#include <iostream>
 //project headers
 #include "WhileStatementNode.hpp"
 #include "../../commandline/TokenList.hpp"
@@ -12,7 +12,7 @@
 
 using namespace std;
 
-WhileStatementNode::WhileStatementNode(TokenList tokens){
+WhileStatementNode::WhileStatementNode(TokenList tokens, bool debug){
 
 	TokenList copy = TokenList(tokens);
 
@@ -24,7 +24,7 @@ WhileStatementNode::WhileStatementNode(TokenList tokens){
 
 	BaseToken next = copy.get(0);
 	while (!(next.kind == RCURLY)) {
-		this->statements.push_back(new StatementNode(copy));
+		this->statements.push_back(new StatementNode(copy,debug));
 		next = copy.get(0);
 	}
 

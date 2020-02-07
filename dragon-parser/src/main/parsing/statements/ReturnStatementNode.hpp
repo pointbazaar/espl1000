@@ -8,7 +8,7 @@ class ReturnStatementNode{
 
 public:
 	ExpressionNode* returnValue;
-	ReturnStatementNode(TokenList list);
+	ReturnStatementNode(TokenList list,bool debug);
 };
 
 #endif

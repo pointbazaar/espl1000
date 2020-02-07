@@ -11,7 +11,7 @@ class AssignmentStatementNode;
 class StatementNode {
 
 public:
-	StatementNode(TokenList tokens);
+	StatementNode(TokenList tokens, bool debug);
 
 	//only one of those will be != NULL
 	MethodCallNode* m1 = NULL;

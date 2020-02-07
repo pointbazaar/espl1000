@@ -1,11 +1,15 @@
-
+#include <iostream>
 #include "ReturnStatementNode.hpp"
 #include "../../commandline/TokenList.hpp"
 #include "../../commandline/TokenKeys.hpp"
 #include "../../commandline/BaseToken.hpp"
 #include "../ExpressionNode.hpp"
 
-ReturnStatementNode::ReturnStatementNode(TokenList tokens){
+ReturnStatementNode::ReturnStatementNode(TokenList tokens, bool debug){
+
+	if(debug){
+		cout << "ReturnStatementNode(...)" << endl;
+	}
 
 	TokenList copy = TokenList(tokens);
 
