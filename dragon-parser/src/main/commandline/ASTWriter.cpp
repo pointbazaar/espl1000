@@ -147,11 +147,8 @@ void write(SubroutineTypeNode m, ofstream* file){
 void write_ast(string filename, NamespaceNode namespaceNode){
 	ofstream file;
 	file.open(filename, ios::out);
-
-	//TODO: generate our binary AST Format
-	string str = "TODO: generate our custom AST format";
-
+	
 	write(namespaceNode,&file);
-
+	
 	file.close();
 }

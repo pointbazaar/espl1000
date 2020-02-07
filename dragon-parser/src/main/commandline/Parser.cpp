@@ -75,7 +75,7 @@ int main(int argc, char** argv){
 	}
 }
 
-void build_ast_json_file(string tokensFile, string astJsonFile, bool debug) {
+void build_ast_file(string tokensFile, string astJsonFile, bool debug) {
 	if(debug){
 		cout << "Parser::build_ast_json_file" << endl;
 	}
@@ -124,7 +124,7 @@ void main_inner(string tokensFile, bool debug) {
 		//TODO: re-enable the incremental later on
 		//long tokensLastModified = tokensFile.lastModified();
 
-		string astJSONFilename = tokensFile.substr(0,tokensFile.size()-string(".tokens").size())+".json";
+		string astJSONFilename = tokensFile.substr(0,tokensFile.size()-string(".tokens").size())+".ast";
 
 		/*
 		ifstream f2(astJSONFilename);
@@ -146,7 +146,7 @@ void main_inner(string tokensFile, bool debug) {
 		}else{
 		*/
 			//ast .json file does not exist
-			build_ast_json_file(tokensFile,astJSONFilename,debug);
+			build_ast_file(tokensFile,astJSONFilename,debug);
 		//}
 	}else {
 		throw ("argument file "+tokensFile+" does not exist.");

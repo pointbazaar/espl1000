@@ -26,7 +26,7 @@ const string FLAG_TEST = "-test";
 
 int main(int argc, char** argv);
 
-void build_ast_json_file(string tokensFile, string astJsonFile, bool debug);
+void build_ast_file(string tokensFile, string astJsonFile, bool debug);
 
 
 void main_inner(string tokensFile, bool debug);
