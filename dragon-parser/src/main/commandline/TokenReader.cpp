@@ -11,29 +11,10 @@
 #include "TokenKeys.hpp"
 #include "BaseToken.hpp"
 
-BaseToken recognizeStrConstToken(string strconst) {
-
-	return BaseToken(
-		strconst.substr(1, strconst.size() - 1)
-	);
-}
-
-BaseToken recognizeCharConstToken(string charconst) {
-
-	char v = charconst.c_str()[1];
-	if (charconst.at(0) == '\n') {
-		v = '\n';
-	}
-	return BaseToken(v);
-}
-
 optional<BaseToken> recognizeToken(string tkn, bool debug) {
 	//parses the token, as encoded by the lexer
-
 	//everything being seperated by a space, and the whole line not
 	//having any spaces in front or at the back is important to keep parsing simple.
-
-	//DEBUG
 	if (debug) {
 		cout << "recognize: " << tkn << endl;
 	}
@@ -45,9 +26,7 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
     while (getline(ss, token, ' ')) {
         parts.push_back(token);
     }
-
 	int tkn_id = stoi(parts[0]);
-
 	int line_no = 1;
 
 	if (tkn_id == LINE_NO) {
@@ -56,20 +35,15 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 		return nullopt;
 		//break;
 	}
-
 	BaseToken result;
 
 	switch (tkn_id) {
 
 		case STRINGCONST : 
-			result= recognizeStrConstToken(
-				tkn.substr(3,tkn.size())
-			);
+			result = BaseToken(STRINGCONST, tkn.substr(3,tkn.size()));
 			break;
 		case CHARCONST : 
-			result= recognizeCharConstToken(
-				tkn.substr(2,tkn.size())
-			);
+			result = BaseToken(CHARCONST,tkn.substr(2,tkn.size()));
 			break;
 		case ANYTYPE : 
 			result= BaseToken(ANYTYPE);
@@ -77,14 +51,14 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 
 		//CONSTANTS
 		case BOOLCONST : 
-			result= BaseToken(BOOLCONST, parts.at(1) == "true" );
+			result= BaseToken(BOOLCONST, parts.at(1) );
 			break;
 		case FLOATING : 
 			;
-			result = BaseToken(FLOATING,stof(parts.at(1)));
+			result = BaseToken(FLOATING, parts.at(1));
 			break;
 		case INTEGER : 
-			result= BaseToken(INTEGER,stoi(parts.at(1)));
+			result= BaseToken(INTEGER, parts.at(1));
 			break;
 
 		//IDENTIFIERS
@@ -109,7 +83,7 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 			break;
 
 		case TYPEPARAM : 
-			result= BaseToken(TYPEPARAM,stoi(parts.at(1)));
+			result= BaseToken(TYPEPARAM, parts.at(1));
 			break;
 
 		case NAMESPACE : 
@@ -128,39 +102,37 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 			result= BaseToken(LPARENS);
 			break;
 		case RPARENS : 
-			result= BaseToken(RPARENS);
+			result = BaseToken(RPARENS);
 			break;
 
 		case LCURLY : 
-			result=	BaseToken(LCURLY);
+			result = BaseToken(LCURLY);
 			break;
 		case RCURLY : 
-			result= BaseToken(RCURLY);
+			result = BaseToken(RCURLY);
 			break;
 
 		case GREATER: 
-			result= BaseToken(">");
+			result = BaseToken(GREATER,">");
 			break;
 
 		case LESSER : 
-			result=BaseToken("<");
+			result =BaseToken(LESSER,"<");
 			break;
 
 		case WAVE : 
-			result= BaseToken(WAVE);
+			result = BaseToken(WAVE);
 			break;
 
 		case SEMICOLON : 
-			result= BaseToken(SEMICOLON);
+			result = BaseToken(SEMICOLON);
 			break;
 
 		case COMMA : 
-			result= BaseToken(COMMA);
+			result = BaseToken(COMMA);
 			break;
 		case ARROW : 
-			result= (parts.at(1).compare("->") == 0) ?
-				BaseToken(true, true) :
-				BaseToken(true, false);
+			result = BaseToken(ARROW,parts.at(1));
 			break;
 
 		//KEYWORDS
