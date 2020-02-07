@@ -19,6 +19,7 @@ NamespaceNode::NamespaceNode(
 ) {
 
 	if (debug) {
+		cout << "try to parse NamespaceNode" << endl;
 		cout << "try to parse from " + tokens.toSourceCodeFragment() << endl;
 	}
 
@@ -54,13 +55,16 @@ NamespaceNode::NamespaceNode(
 
 		while (next_subr.kind == FN) {
 			this->methods.push_back(MethodNode(copy, debug));
-
 			if (copy.size() > 0) {
 				next_subr = copy.get(0);
 			} else {
 				break;
 			}
 		}
+	}
+
+	if(debug){
+		cout << "done parsing NamespaceNode" << endl;
 	}
 
 	tokens.set(copy);
