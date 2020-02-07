@@ -38,6 +38,11 @@ void write_ast(string filename, NamespaceNode namespaceNode);
 void write(NamespaceNode m, ofstream* file);
 void write(MethodNode m, ofstream* file);
 void write(DeclaredArgumentNode m, ofstream* file);
+void write(ExpressionNode m, ofstream* file);
+void write(OperatorNode m, ofstream* file);
+void write(IntConstNode m, ofstream* file);
+void write(BoolConstNode m, ofstream* file);
+void write(CharConstNode m, ofstream* file);
 
 //statementnodes
 void write(StatementNode m, ofstream* file);
@@ -49,5 +54,7 @@ void write(MethodCallNode m, ofstream* file);
 
 //typenodes
 void write(TypeNode m, ofstream* file);
+void write(SubroutineTypeNode m, ofstream* file);
+void write(SimpleTypeNode m, ofstream* file);
 
 #endif

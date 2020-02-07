@@ -13,11 +13,8 @@ void write(NamespaceNode nsn, ofstream* file){
 	*file << "\t";
 
 	*file << nsn.methods.size();
-	for(MethodNode m : nsn.methods){
-		write(m,file);
-	}
+	for(MethodNode m : nsn.methods){ write(m,file); }
 }
-
 
 void write(MethodNode m, ofstream* file){
 
@@ -32,14 +29,10 @@ void write(MethodNode m, ofstream* file){
 	*file << "\t";
 
 	*file << m.arguments.size();
-	for(DeclaredArgumentNode* arg : m.arguments){
-		write(*arg,file);
-	}
+	for(DeclaredArgumentNode* arg : m.arguments){ write(*arg,file); }
 
 	*file << m.statements.size();
-	for(StatementNode* s : m.statements){
-		write(*s,file);
-	}
+	for(StatementNode* s : m.statements){ write(*s,file); }
 }
 
 
@@ -59,7 +52,6 @@ void write(StatementNode m, ofstream* file){
 
 	//the reader has to know which type it is,
 	//we can print a small number
-
 	if(m.m1 != NULL){*file << "1" << "\t"; write(*m.m1,file); }
 	if(m.m2 != NULL){*file << "2" << "\t"; write(*m.m2,file); }
 	if(m.m3 != NULL){*file << "3" << "\t"; write(*m.m3,file); }
@@ -67,24 +59,47 @@ void write(StatementNode m, ofstream* file){
 	if(m.m5 != NULL){*file << "5" << "\t"; write(*m.m5,file); }
 }
 void write(IfStatementNode m, ofstream* file){
-	//TODO
+
+	write(*(m.condition),file);
+
+	for(StatementNode* s : m.statements){ write(*s,file); }
+
+	for(StatementNode* s2 : m.elseStatements){ write(*s2,file); }
 }
 void write(WhileStatementNode m, ofstream* file){
-	//TODO
+	write(*(m.condition),file);
+	for(StatementNode* s : m.statements){ write(*s,file); }
 }
 void write(ReturnStatementNode m, ofstream* file){
-	//TODO
+	write(*(m.returnValue),file);
 }
 void write(AssignmentStatementNode m, ofstream* file){
-	//TODO
+	if(m.optTypeNode.has_value()){
+		write(*(m.optTypeNode.value()),file);
+	}else{
+		file << "NULL" << "\t";
+	}
+	write(*(m.variableNode),file);
+	write(*(m.expressionNode),file);
 }
 void write(MethodCallNode m, ofstream* file){
-	//TODO
+	file << m.methodName << "\t";
+	for(ExpressionNode* e : m.arguments){ write(*e,file); }
 }
 
 
 void write(TypeNode m, ofstream* file){
-	//TODO
+	//there is an alternative. we give a small number to indicate the alternative
+	if(m.m1 != NULL){
+		file << "1" << "\t";
+		write(*(m.m1),file);
+	}else if(m.m2 != NULL){
+		file << "2" << "\t";
+		write(*(m.m2),file);
+	}else if(m.m3 != NULL){
+		file << "3" << "\t";
+		write(*(m.m3),file);
+	}
 }
 
 void write_ast(string filename, NamespaceNode namespaceNode){
