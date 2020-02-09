@@ -21,29 +21,29 @@ Method::Method(TokenList tokens, bool debug) {
 
 	TokenList copy = tokens.copy();
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(FN));
+	copy.expect(Token(FN));
 
 	this->methodName = Identifier(&copy,debug).identifier;
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(LPARENS));
+	copy.expect(Token(LPARENS));
 
 	//while there is no ')' up, continue parsing arguments
 	Token next = copy.get(0);
 	while (!(next.kind == RPARENS)) {
 		if (this->arguments.size() > 0) {
-			copy.expectAndConsumeOtherWiseThrowException(Token(COMMA));
+			copy.expect(Token(COMMA));
 		}
 		this->arguments.push_back(new DeclaredArg(&copy, debug));
 		next = copy.get(0);
 	}
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(RPARENS));
+	copy.expect(Token(RPARENS));
 	
-	copy.expectAndConsumeOtherWiseThrowException(Token(ARROW));
+	copy.expect(Token(ARROW));
 	
 	this->returnType = new Type(copy);
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(LCURLY));
+	copy.expect(Token(LCURLY));
 
 	Token statement_next = copy.get(0);
 	while (!(statement_next.kind != RCURLY)) {
@@ -51,7 +51,7 @@ Method::Method(TokenList tokens, bool debug) {
 		statement_next = copy.get(0);
 	}
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(RCURLY));
+	copy.expect(Token(RCURLY));
 
 	tokens.set(copy);
 }

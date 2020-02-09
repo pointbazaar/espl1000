@@ -14,11 +14,11 @@ RetStmt::RetStmt(TokenList tokens, bool debug){
 
 	TokenList copy = TokenList(tokens);
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(RETURN));
+	copy.expect(Token(RETURN));
 
 	this->returnValue = new Expr(copy,debug);
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(SEMICOLON));
+	copy.expect(Token(SEMICOLON));
 
 	tokens.set(copy);
 }

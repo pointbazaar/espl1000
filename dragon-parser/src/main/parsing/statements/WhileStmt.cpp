@@ -19,11 +19,11 @@ WhileStmt::WhileStmt(TokenList tokens, bool debug){
 
 	TokenList copy = TokenList(tokens);
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(WHILE));
+	copy.expect(Token(WHILE));
 
 	this->condition = new Expr(copy,debug);
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(LCURLY));
+	copy.expect(Token(LCURLY));
 
 	Token next = copy.get(0);
 	while (!(next.kind == RCURLY)) {
@@ -31,7 +31,7 @@ WhileStmt::WhileStmt(TokenList tokens, bool debug){
 		next = copy.get(0);
 	}
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(RCURLY));
+	copy.expect(Token(RCURLY));
 
 	tokens.set(copy);
 }

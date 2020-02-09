@@ -21,9 +21,9 @@ BasicTypeWrapped::BasicTypeWrapped(TokenList tokens) {
 	if (copy.size() > 1 && copy.get(0).tokenEquals(Token(LPARENS))) {
 		TokenList copy2 = copy.copy();
 
-		copy2.expectAndConsumeOtherWiseThrowException(Token(LPARENS));
+		copy2.expect(Token(LPARENS));
 		this->m2 = new SubrType(copy2);
-		copy2.expectAndConsumeOtherWiseThrowException(Token(RPARENS));
+		copy2.expect(Token(RPARENS));
 
 		copy.set(copy2);
 

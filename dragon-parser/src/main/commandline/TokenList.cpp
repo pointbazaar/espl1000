@@ -73,10 +73,13 @@ string TokenList::wrap(string s, string wrap) {
 	return wrap + s + wrap;
 }
 
-void TokenList::expectAndConsumeOtherWiseThrowException(Token token) {
+void TokenList::expect(Token token) {
+	//it expect a token or a kind of token, 
+	//otherwise throws an exception
+	
 	if (this->size() == 0) {
 		cout << "Error: no tokens" << endl;
-		throw ("no tokens");
+		throw "no tokens";
 	}
 
 	if (this->startsWith(token)) {

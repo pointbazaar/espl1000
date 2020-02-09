@@ -16,7 +16,7 @@ SubrType::SubrType(TokenList tokens){
 
 	TokenList copy = tokens.copy();
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(LPARENS));
+	copy.expect(Token(LPARENS));
 
 	bool sucess_argument_types = true;
 	try {
@@ -28,7 +28,7 @@ SubrType::SubrType(TokenList tokens){
 		try {
 			TokenList copy2 = copy.copy();
 
-			copy2.expectAndConsumeOtherWiseThrowException(Token(COMMA));
+			copy2.expect(Token(COMMA));
 			this->argumentTypes.push_back(new Type(copy2));
 
 			copy.set(copy2);
@@ -37,7 +37,7 @@ SubrType::SubrType(TokenList tokens){
 		}
 	}
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(RPARENS));
+	copy.expect(Token(RPARENS));
 
 	if (copy.head().kind == ARROW) {
 		Token arrow = copy.head();

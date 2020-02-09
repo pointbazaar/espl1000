@@ -31,7 +31,7 @@ public:
 
 	string wrap(string s, string wrap);
 
-	void expectAndConsumeOtherWiseThrowException(Token itk);
+	void expect(Token itk);
 	TokenList copy();
 	void set(TokenList other);
 

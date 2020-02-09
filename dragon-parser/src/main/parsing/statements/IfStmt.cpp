@@ -19,9 +19,9 @@ IfStmt::IfStmt(TokenList tokens, bool debug) {
 	}
 
 	TokenList copy = TokenList(tokens);
-	copy.expectAndConsumeOtherWiseThrowException(Token(IF));
+	copy.expect(Token(IF));
 	this->condition = new Expr(copy,debug);
-	copy.expectAndConsumeOtherWiseThrowException(Token(LCURLY));
+	copy.expect(Token(LCURLY));
 
 	Token next = copy.get(0);
 
@@ -31,14 +31,14 @@ IfStmt::IfStmt(TokenList tokens, bool debug) {
 		next = copy.get(0);
 	}
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(RCURLY));
+	copy.expect(Token(RCURLY));
 
 	//maybe there is an else
 	if (copy.startsWith(Token(ELSE))) {
 
-		copy.expectAndConsumeOtherWiseThrowException(Token(ELSE));
+		copy.expect(Token(ELSE));
 
-		copy.expectAndConsumeOtherWiseThrowException(Token(LCURLY));
+		copy.expect(Token(LCURLY));
 
 		//maybe there be some statements
 		Token elsenext = copy.get(0);
@@ -49,7 +49,7 @@ IfStmt::IfStmt(TokenList tokens, bool debug) {
 			elsenext = copy.get(0);
 		}
 
-		copy.expectAndConsumeOtherWiseThrowException(Token(RCURLY));
+		copy.expect(Token(RCURLY));
 	}
 
 	tokens.set(copy);

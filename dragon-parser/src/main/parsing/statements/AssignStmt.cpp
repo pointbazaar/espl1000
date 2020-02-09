@@ -33,11 +33,11 @@ AssignStmt::AssignStmt(TokenList tokens,bool debug) {
 	this->optTypeNode = optTypeNode1;
 	this->variableNode = new Variable(copy,debug);
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(OPKEY,"="));
+	copy.expect(Token(OPKEY,"="));
 
 	this->expressionNode = new Expr(copy,debug);
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(SEMICOLON));
+	copy.expect(Token(SEMICOLON));
 
 	tokens.set(copy);
 }

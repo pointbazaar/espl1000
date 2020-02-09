@@ -44,7 +44,7 @@ Stmt::Stmt(TokenList tokens, bool debug) {
 		try {
 			TokenList copy2 = copy.copy();
 			this->m1 = new MethodCall(copy2,debug);
-			copy2.expectAndConsumeOtherWiseThrowException(Token(SEMICOLON));
+			copy2.expect(Token(SEMICOLON));
 			copy.set(copy2);
 		} catch (string e1) {
 			this->m5 = new AssignStmt(copy,debug);

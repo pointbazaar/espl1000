@@ -18,19 +18,19 @@ MethodCall::MethodCall(TokenList tokens,bool debug) {
 
 	this->methodName = Identifier(&copy,debug).identifier;
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(LPARENS));
+	copy.expect(Token(LPARENS));
 
 	//while there is no ')' up, continue parsing arguments
 	Token next = copy.get(0);
 	while (!(next.kind == RPARENS)) {
 		if (arguments.size() > 0) {
-			copy.expectAndConsumeOtherWiseThrowException(Token(COMMA));
+			copy.expect(Token(COMMA));
 		}
 		this->arguments.push_back(new Expr(copy,debug));
 		next = copy.get(0);
 	}
 
-	copy.expectAndConsumeOtherWiseThrowException(Token(RPARENS));
+	copy.expect(Token(RPARENS));
 
 	tokens.set(copy);
 }

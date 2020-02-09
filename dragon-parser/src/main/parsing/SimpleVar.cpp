@@ -28,9 +28,9 @@ SimpleVar::SimpleVar(TokenList tokens, bool debug) {
 
 		//it could have an index
 		if (copy.size() > 0 && copy.get(0).kind == LBRACKET) {
-			copy.expectAndConsumeOtherWiseThrowException(Token(LBRACKET));
+			copy.expect(Token(LBRACKET));
 			this->indexOptional = optional(new Expr(copy,debug));
-			copy.expectAndConsumeOtherWiseThrowException(Token(RBRACKET));
+			copy.expect(Token(RBRACKET));
 		} else {
 			this->indexOptional = nullopt;
 			//pass, this assignment has no index to it
@@ -44,7 +44,7 @@ SimpleVar::SimpleVar(TokenList tokens, bool debug) {
 		<< ": could not read variable name. token was " 
 		<< token.value
 		<< " from context  '" 
-		<< tokens.toSourceCodeFragment().substr(0, min(20, (int)tokens.toSourceCodeFragment().size())) 
+		<< tokens.toSourceCodeFragment()
 		<< "'";
 
 		throw msg.str();

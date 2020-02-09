@@ -65,9 +65,9 @@ Term::Term(TokenList tokens, bool debug) {
 				try {
 					TokenList copy2 = TokenList(copy);
 
-					copy2.expectAndConsumeOtherWiseThrowException(Token(LPARENS));
+					copy2.expect(Token(LPARENS));
 					this->m5 = new Expr(copy2,debug);
-					copy2.expectAndConsumeOtherWiseThrowException(Token(RPARENS));
+					copy2.expect(Token(RPARENS));
 
 					copy.set(copy2);
 				} catch (string e3) {

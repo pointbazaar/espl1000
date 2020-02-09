@@ -22,7 +22,7 @@ Variable::Variable(TokenList tokens, bool debug) {
 		Token next = copy.get(0);
 		while (next.kind == STRUCTMEMBERACCESS) {
 
-			copy.expectAndConsumeOtherWiseThrowException(Token(STRUCTMEMBERACCESS));
+			copy.expect(Token(STRUCTMEMBERACCESS));
 			this->memberAccessList.push_back(new Variable(copy,debug));
 			if (copy.size() > 0) {
 				next = copy.get(0);

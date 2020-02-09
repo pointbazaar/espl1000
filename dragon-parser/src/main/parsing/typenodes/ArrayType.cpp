@@ -13,9 +13,9 @@ ArrayType::ArrayType(TokenList tokens) {
 
 	TokenList copy1 = tokens.copy();
 
-	copy1.expectAndConsumeOtherWiseThrowException(Token(LBRACKET));
+	copy1.expect(Token(LBRACKET));
 	this->element_type = new Type(copy1);
-	copy1.expectAndConsumeOtherWiseThrowException(Token(RBRACKET));
+	copy1.expect(Token(RBRACKET));
 
 	tokens.set(copy1);
 }
