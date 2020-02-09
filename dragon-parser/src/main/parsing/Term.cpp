@@ -75,7 +75,7 @@ Term::Term(TokenList tokens, bool debug) {
 						this->m4 = new MethodCall(copy,debug);
 					} catch (string e4) {
 						try {
-							this->m1 = new BoolConst(copy,debug);
+							this->m1 = makeBoolConst(copy,debug);
 						} catch (string e5) {
 							try {
 								this->m6 = new Variable(copy,debug);

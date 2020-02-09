@@ -3,12 +3,11 @@
 
 #include "../commandline/TokenList.hpp"
 
-class BoolConst {
-
-public:
-	BoolConst(TokenList tokens, bool debug);
-
+struct BoolConst{
 	bool boolValue;
 };
 
+struct BoolConst* makeBoolConst(TokenList tokens, bool debug);
+
+	
 #endif

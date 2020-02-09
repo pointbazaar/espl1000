@@ -38,15 +38,9 @@ Method::Method(TokenList tokens, bool debug) {
 	}
 
 	copy.expectAndConsumeOtherWiseThrowException(Token(RPARENS));
-
-	if (copy.head().kind == ARROW) {
-		Token head = copy.head();
-		this->hasSideEffects = false;	//TODO: put in the real value
-		copy.consume(1);
-	} else {
-		throw "expected arrow here";
-	}
-
+	
+	copy.expectAndConsumeOtherWiseThrowException(Token(ARROW));
+	
 	this->returnType = new Type(copy);
 
 	copy.expectAndConsumeOtherWiseThrowException(Token(LCURLY));

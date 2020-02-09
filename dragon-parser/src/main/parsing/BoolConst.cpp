@@ -7,7 +7,9 @@
 
 using namespace std;
 
-BoolConst::BoolConst(TokenList tokens, bool debug) {
+struct BoolConst* makeBoolConst(TokenList tokens, bool debug) {
+
+	struct BoolConst* res = (struct BoolConst*)malloc(sizeof(BoolConst));
 
 	if(debug){
 		cout << "BoolConst(...)" << endl;
@@ -19,9 +21,9 @@ BoolConst::BoolConst(TokenList tokens, bool debug) {
 		Token tk = copy.get(0);
 
 		if(tk.value.compare("true")==0){
-			this->boolValue=true;
+			res->boolValue=true;
 		}else  if (tk.value.compare("false")==0){
-			this->boolValue=true;
+			res->boolValue=true;
 		}else{
 			throw "could not read Bool Constant node";
 		}
@@ -32,4 +34,6 @@ BoolConst::BoolConst(TokenList tokens, bool debug) {
 	}
 
 	tokens.set(copy);
+
+	return res;
 }
