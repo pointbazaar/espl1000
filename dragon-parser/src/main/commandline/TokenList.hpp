@@ -1,7 +1,6 @@
 #ifndef TOKENLIST
 #define TOKENLIST
 
-//standard headers
 #include <vector>
 #include <string>
 #include <optional>

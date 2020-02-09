@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "NamespaceNode.hpp"
+#include "Namespace.hpp"
 #include "../commandline/TokenList.hpp"
 
 class AST_Whole_Program  {
@@ -12,9 +12,9 @@ class AST_Whole_Program  {
 public:
 	//this contains all namespace nodes for the whole program
 
-	std::vector<NamespaceNode> namespaceNodes;
+	std::vector<Namespace> namespaceNodes;
 
-	AST_Whole_Program(NamespaceNode myNamespace);
+	AST_Whole_Program(Namespace myNamespace);
 	AST_Whole_Program(TokenList tokens, std::string myNamespace, bool debug);
 };
 

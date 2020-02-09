@@ -1,13 +1,11 @@
 #include <string>
 #include "Token.hpp"
 
-using namespace std;
-
 Token::Token(int kind){
 	this->kind = kind;
 }
 
-Token::Token(int kind, string value){
+Token::Token(int kind, std::string value){
 	this->kind = kind;
 	this->value = value;
 }

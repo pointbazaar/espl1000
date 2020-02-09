@@ -34,23 +34,25 @@ optional<Token> recognizeToken(string tkn, bool debug) {
 		return nullopt;
 		//break;
 	}
-	Token r = Token(NAMESPACE,"namespace");
+	Token r = Token(CCONST,"c");
 
 	switch (tkn_id) {
 
+		/*
 		case STRINGCONST : 
 			r = Token(STRINGCONST, tkn.substr(3,tkn.size()));
 			break;
-		case CHARCONST : 
-			r = Token(CHARCONST,tkn.substr(2,tkn.size()));
+		*/
+		case CCONST : 
+			r = Token(CCONST,tkn.substr(2,tkn.size()));
 			break;
 		case ANYTYPE : 
 			r = Token(ANYTYPE,"#");
 			break;
 
 		//CONSTANTS
-		case BOOLCONST : 
-			r = Token(BOOLCONST, parts.at(1) );
+		case BCONST : 
+			r = Token(BCONST, parts.at(1) );
 			break;
 		case FLOATING : 
 			;
@@ -61,16 +63,16 @@ optional<Token> recognizeToken(string tkn, bool debug) {
 			break;
 
 		//IDENTIFIERS
-		case IDENTIFIER : 
-			r = Token(IDENTIFIER,parts.at(1));
+		case ID : 
+			r = Token(ID,parts.at(1));
 			break;
 		case TYPEIDENTIFIER : 
 			r = Token(TYPEIDENTIFIER,parts.at(1));
 			break;
 
 		//SECTION: OPERATORNS
-		case OPERATOR : 
-			r = Token(OPERATOR,parts.at(1));
+		case OPKEY : 
+			r = Token(OPKEY,parts.at(1));
 			break;
 
 		case EQ : 
@@ -81,13 +83,15 @@ optional<Token> recognizeToken(string tkn, bool debug) {
 			r = Token(STRUCTMEMBERACCESS,".");
 			break;
 
-		case TYPEPARAM : 
-			r = Token(TYPEPARAM, parts.at(1));
+		case TPARAM : 
+			r = Token(TPARAM, parts.at(1));
 			break;
 
+		/*
 		case NAMESPACE : 
 			r = Token(NAMESPACE,"namespace");
 			break;
+		*/
 
 		//BRACKETS, BRACES, PARENTHESES
 		case LBRACKET : 

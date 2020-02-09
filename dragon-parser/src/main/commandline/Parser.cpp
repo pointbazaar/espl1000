@@ -17,11 +17,11 @@
 //project includes
 #include "Parser.hpp"
 #include "TokenReader.hpp"
-#include "../parsing/NamespaceNode.hpp"
-#include "../parsing/MethodNode.hpp"
-#include "../parsing/DeclaredArgumentNode.hpp"
-#include "../parsing/statements/StatementNode.hpp"
-#include "../parsing/typenodes/TypeNode.hpp"
+#include "../parsing/Namespace.hpp"
+#include "../parsing/Method.hpp"
+#include "../parsing/DeclaredArg.hpp"
+#include "../parsing/statements/Stmt.hpp"
+#include "../parsing/typenodes/Type.hpp"
 #include "ASTWriter.hpp"
 
 using namespace std;
@@ -88,7 +88,7 @@ void build_ast_file(string tokensFile, string astJsonFile, bool debug) {
 	//get just the namespace name from .FILENAME.dg.tokens
 	string namespaceName = tokensFile.substr(1,string(tokensFile).size() - string(".dg.tokens").size());
 
-	NamespaceNode mynamespace = NamespaceNode(&tokens,namespaceName,debug);
+	Namespace mynamespace = Namespace(&tokens,namespaceName,debug);
 
 	if(debug){
 		cout << "write to "+astJsonFile << endl;

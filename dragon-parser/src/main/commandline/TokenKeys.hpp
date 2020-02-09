@@ -1,28 +1,28 @@
 #ifndef TOKENKEYS
 #define TOKENKEYS
 
-const int BOOLCONST = 2;
+const int BCONST = 2;
 
-const int IDENTIFIER = 4;
+const int ID = 4;	//identifier
 const int TYPEIDENTIFIER = 5;
 
 
-const int TYPEPARAM = 6;
+const int TPARAM = 6;	//Type Parameter Token
 const int FLOATING = 7;
 
 const int INTEGER = 8;
-const int CHARCONST = 9;
-const int STRINGCONST = 10;
+const int CCONST = 9;
+//const int STRINGCONST = 10;
 
 const int LINE_NO = 11;
 
 const int ARROW = 12;
 const int ANYTYPE = 13;
-const int OPERATOR = 14;
+const int OPKEY = 14;
 const int STRUCTMEMBERACCESS = 15;
 const int IF = 16;
 const int WHILE = 17;
-const int NAMESPACE = 18;
+//const int NAMESPACE = 18;
 const int RETURN = 21;
 const int LPARENS = 22;
 const int RPARENS = 23;

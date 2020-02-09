@@ -8,6 +8,6 @@
 #include "TokenList.hpp"
 #include "TokenKeys.hpp"
 
-optional<Token> recognizeToken(string tkn, bool debug);
+optional<Token> recognizeToken(std::string tkn, bool debug);
 
 #endif
