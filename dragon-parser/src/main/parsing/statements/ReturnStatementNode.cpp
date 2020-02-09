@@ -15,7 +15,7 @@ ReturnStatementNode::ReturnStatementNode(TokenList tokens, bool debug){
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(RETURN));
 
-	this->returnValue = new ExpressionNode(copy);
+	this->returnValue = new ExpressionNode(copy,debug);
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(SEMICOLON));
 

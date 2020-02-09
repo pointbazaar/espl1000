@@ -8,7 +8,7 @@ using namespace std;
 class CharConstNode {
 
 public:
-	CharConstNode(TokenList tokens);
+	CharConstNode(TokenList tokens,bool debug);
 
 	char content;
 };

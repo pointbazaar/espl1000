@@ -1,5 +1,4 @@
-
-//standard headers
+#include <iostream>
 #include <vector>
 #include <set>
 #include <optional>
@@ -13,7 +12,11 @@
 
 using namespace std;
 
-SimpleVariableNode::SimpleVariableNode(TokenList tokens) {
+SimpleVariableNode::SimpleVariableNode(TokenList tokens, bool debug) {
+
+	if(debug){
+		cout << "WhileStatementNode(...)" << endl;
+	}
 
 	TokenList copy = TokenList(tokens);
 
@@ -26,7 +29,7 @@ SimpleVariableNode::SimpleVariableNode(TokenList tokens) {
 		//it could have an index
 		if (copy.size() > 0 && copy.get(0).kind == LBRACKET) {
 			copy.expectAndConsumeOtherWiseThrowException(BaseToken(LBRACKET));
-			this->indexOptional = optional(new ExpressionNode(copy));
+			this->indexOptional = optional(new ExpressionNode(copy,debug));
 			copy.expectAndConsumeOtherWiseThrowException(BaseToken(RBRACKET));
 		} else {
 			this->indexOptional = nullopt;

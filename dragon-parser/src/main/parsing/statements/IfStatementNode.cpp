@@ -22,7 +22,7 @@ IfStatementNode::IfStatementNode(TokenList tokens, bool debug) {
 
 	TokenList copy = TokenList(tokens);
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(IF));
-	this->condition = new ExpressionNode(copy);
+	this->condition = new ExpressionNode(copy,debug);
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LCURLY));
 
 	BaseToken next = copy.get(0);

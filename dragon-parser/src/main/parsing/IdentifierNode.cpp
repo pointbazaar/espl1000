@@ -1,5 +1,4 @@
-
-//standard headers
+#include <iostream>
 #include <vector>
 #include <string>
 #include <sstream>
@@ -12,22 +11,26 @@
 
 using namespace std;
 
-IdentifierNode::IdentifierNode(TokenList tokens) {
+IdentifierNode::IdentifierNode(TokenList* tokens, bool debug) {
 
-	BaseToken token = tokens.get(0);
+	if(debug){
+		cout << "IdentifierNode(...)" << endl;
+	}
+
+	BaseToken token = tokens->get(0);
 
 	if (token.kind == IDENTIFIER) {
 		this->identifier = token.value;
-		tokens.consume(1);
+		tokens->consume(1);
 
 	} else {
 		stringstream msg;
 		msg << "could not read identifier from token: " 
 		<< token.value
-		<< " in " << tokens.relPath << ":" 
+		<< " in " << tokens->relPath << ":" 
 		<< token.lineNumber
 		<< " in context '" 
-		<< tokens.toSourceCodeFragment().substr(0, min(20, (int)tokens.toSourceCodeFragment().size())) 
+		<< tokens->toSourceCodeFragment()
 		<< "'";
 
 		throw msg.str();

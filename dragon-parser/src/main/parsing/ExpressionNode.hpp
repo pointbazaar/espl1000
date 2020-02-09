@@ -16,7 +16,7 @@ public:
 	//DragonExpressionNode should be similar to jack expression
 	//an expression should be anything that returns a value or computes to a value
 
-	ExpressionNode(TokenList tkl);
+	ExpressionNode(TokenList tkl, bool debug);
 	ExpressionNode(TermNode* myterm);
 	ExpressionNode(TermNode* leftTerm, OperatorNode* op, TermNode* rightTerm);
 

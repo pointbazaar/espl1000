@@ -10,7 +10,7 @@ using namespace std;
 class OperatorNode  {
 
 public:
-	OperatorNode(TokenList tokens);
+	OperatorNode(TokenList tokens, bool debug);
 
 	string op;
 };

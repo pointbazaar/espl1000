@@ -35,7 +35,7 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 		return nullopt;
 		//break;
 	}
-	BaseToken result;
+	BaseToken result = BaseToken(NAMESPACE,"namespace");
 
 	switch (tkn_id) {
 

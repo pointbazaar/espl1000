@@ -12,9 +12,13 @@
 
 MethodCallNode::MethodCallNode(TokenList tokens,bool debug) {
 
+	if(debug){
+		cout << "MethodCallNode(...)" << endl;
+	}
+
 	TokenList copy = tokens.copy();
 
-	this->methodName = IdentifierNode(copy).identifier;
+	this->methodName = IdentifierNode(&copy,debug).identifier;
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LPARENS));
 
@@ -24,7 +28,7 @@ MethodCallNode::MethodCallNode(TokenList tokens,bool debug) {
 		if (arguments.size() > 0) {
 			copy.expectAndConsumeOtherWiseThrowException(BaseToken(COMMA));
 		}
-		this->arguments.push_back(new ExpressionNode(copy));
+		this->arguments.push_back(new ExpressionNode(copy,debug));
 		next = copy.get(0);
 	}
 

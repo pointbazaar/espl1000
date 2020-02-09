@@ -1,5 +1,4 @@
-
-//standard headers
+#include <iostream>
 #include <vector>
 #include <set>
 #include <optional>
@@ -16,21 +15,25 @@ ExpressionNode::ExpressionNode(TermNode* term) {
 	this->term1 = term;
 }
 
-ExpressionNode::ExpressionNode(TokenList tokens) {
+ExpressionNode::ExpressionNode(TokenList tokens, bool debug) {
+
+	if(debug){
+		cout << "ExpressionNode(...)" << endl;
+	}
 
 	// temporary containers
 	vector<OperatorNode*> operatorNodes;
 	vector<TermNode*> termNodes;
 	// end of temporary containers
 	TokenList copy = tokens.copy();
-	termNodes.push_back(new TermNode(copy));
+	termNodes.push_back(new TermNode(copy,debug));
 	try {
 
 		while (true) {
 			TokenList copy2 = TokenList(copy);
 
-			OperatorNode* myop = new OperatorNode(copy2);
-			TermNode* myterm = new TermNode(copy2);
+			OperatorNode* myop = new OperatorNode(copy2,debug);
+			TermNode* myterm = new TermNode(copy2,debug);
 
 			operatorNodes.push_back(myop);
 			termNodes.push_back(myterm);

@@ -1,5 +1,4 @@
-
-//standard headers
+#include <iostream>
 #include <vector>
 
 //project headers
@@ -9,7 +8,11 @@
 
 using namespace std;
 
-BoolConstNode::BoolConstNode(TokenList tokens) {
+BoolConstNode::BoolConstNode(TokenList tokens, bool debug) {
+
+	if(debug){
+		cout << "BoolConstNode(...)" << endl;
+	}
 
 	TokenList copy = TokenList(tokens);
 

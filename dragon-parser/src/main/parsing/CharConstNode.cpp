@@ -1,5 +1,4 @@
-
-//standard headers
+#include <iostream>
 #include <vector>
 
 //project headers
@@ -9,7 +8,11 @@
 
 using namespace std;
 
-CharConstNode::CharConstNode(TokenList tokens) {
+CharConstNode::CharConstNode(TokenList tokens, bool debug) {
+
+	if(debug){
+		cout << "CharConstNode(...)" << endl;
+	}
 
 	BaseToken token = tokens.get(0);
 

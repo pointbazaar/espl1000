@@ -1,5 +1,4 @@
-
-//standard headers
+#include <iostream>
 #include <vector>
 #include <string>
 #include <variant>
@@ -23,7 +22,11 @@ TermNode::TermNode(ExpressionNode* expr){
 	this->m5 = expr;
 }
 
-TermNode::TermNode(TokenList tokens) {
+TermNode::TermNode(TokenList tokens, bool debug) {
+
+	if(debug){
+		cout << "TermNode(...)" << endl;
+	}
 
 	TokenList copy = TokenList(tokens);
 
@@ -33,7 +36,7 @@ TermNode::TermNode(TokenList tokens) {
 		throw "later";
 	} catch (string e0) {
 		try {
-			this->m2 = new IntConstNode(copy);
+			this->m2 = new IntConstNode(copy,debug);
 		} catch (string e1) {
 			try {
 				//a string constant is syntatic sugar.
@@ -66,19 +69,19 @@ TermNode::TermNode(TokenList tokens) {
 					TokenList copy2 = TokenList(copy);
 
 					copy2.expectAndConsumeOtherWiseThrowException(BaseToken(LPARENS));
-					this->m5 = new ExpressionNode(copy2);
+					this->m5 = new ExpressionNode(copy2,debug);
 					copy2.expectAndConsumeOtherWiseThrowException(BaseToken(RPARENS));
 
 					copy.set(copy2);
 				} catch (string e3) {
 					try {
-						this->m4 = new MethodCallNode(copy,true); //TODO: replace debug param
+						this->m4 = new MethodCallNode(copy,debug);
 					} catch (string e4) {
 						try {
-							this->m1 = new BoolConstNode(copy);
+							this->m1 = new BoolConstNode(copy,debug);
 						} catch (string e5) {
 							try {
-								this->m6 = new VariableNode(copy);
+								this->m6 = new VariableNode(copy,debug);
 							} catch (string e6) {
 								//TODO: re-enable later
 								/*
@@ -86,7 +89,7 @@ TermNode::TermNode(TokenList tokens) {
 									this->termNode = ArrayConstantNode(copy);
 								} catch (string e7) {
 									*/
-									this->m3 = new CharConstNode(copy);
+									this->m3 = new CharConstNode(copy,debug);
 								//}
 							}
 						}

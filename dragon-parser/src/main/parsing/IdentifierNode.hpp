@@ -11,7 +11,7 @@ class IdentifierNode  {
 
 public:
 
-	IdentifierNode(TokenList tokens);
+	IdentifierNode(TokenList* tokens, bool debug);
 
 	string identifier;
 };

@@ -20,6 +20,9 @@ TokenList::TokenList(vector<BaseToken> result, string sourceFile) {
 
 TokenList::TokenList(TokenList& other) {
 	this->relPath = other.relPath;
+	for(BaseToken tk : other.tokens){
+		this->tokens.push_back(tk);
+	}
 }
 
 TokenList::TokenList(string path) {
@@ -41,8 +44,7 @@ void TokenList::addAll(vector<BaseToken> arr) {
 }
 
 void TokenList::consume(int amount) {
-	vector<BaseToken> res(this->tokens.begin()+amount,this->tokens.end());
-	this->tokens = res;
+	this->tokens.erase(this->tokens.begin(),this->tokens.begin()+amount);
 }
 
 int TokenList::size() {
@@ -73,6 +75,7 @@ string TokenList::wrap(string s, string wrap) {
 
 void TokenList::expectAndConsumeOtherWiseThrowException(BaseToken token) {
 	if (this->size() == 0) {
+		cout << "Error: no tokens" << endl;
 		throw ("no tokens");
 	}
 
@@ -106,6 +109,7 @@ void TokenList::expectAndConsumeOtherWiseThrowException(BaseToken token) {
 				<< ":" 
 				<< this->head().lineNumber;
 
+		cout << "Error: " << str.str() << endl;
 		throw str.str();
 	}
 }
@@ -130,11 +134,15 @@ BaseToken TokenList::head() {
 }
 
 string TokenList::toSourceCodeFragment() {
-	stringstream str;
+	//it should be a limited fragment 
 
+	stringstream str;
+	int i=0;
 	for(BaseToken tk : this->tokens){
-		str << tk.value;
-		str << " ";
+		if(i++ < 10){
+			str << tk.value;
+			str << " ";
+		}
 	}
 	return str.str();
 }

@@ -11,7 +11,7 @@ using namespace std;
 class VariableNode {
 
 public:
-	VariableNode(TokenList tokens);
+	VariableNode(TokenList tokens, bool debug);
 
 	SimpleVariableNode* simpleVariableNode;
 	vector<VariableNode*> memberAccessList;

@@ -13,6 +13,11 @@
 #include "../ExpressionNode.hpp"
 
 AssignmentStatementNode::AssignmentStatementNode(TokenList tokens,bool debug) {
+
+	if(debug){
+		cout << "AssignmentStatementNode(...)" << endl;
+	}
+
 	optional<TypeNode*> optTypeNode1; 
 
 	TokenList copy = tokens.copy();
@@ -27,11 +32,11 @@ AssignmentStatementNode::AssignmentStatementNode(TokenList tokens,bool debug) {
 	}
 
 	this->optTypeNode = optTypeNode1;
-	this->variableNode = new VariableNode(copy);
+	this->variableNode = new VariableNode(copy,debug);
 
 	copy.expectAndConsumeOtherWiseThrowException( BaseToken(OPERATOR,"="));
 
-	this->expressionNode = new ExpressionNode(copy);
+	this->expressionNode = new ExpressionNode(copy,debug);
 
 	copy.expectAndConsumeOtherWiseThrowException( BaseToken(SEMICOLON));
 

@@ -76,16 +76,19 @@ int main(int argc, char** argv){
 }
 
 void build_ast_file(string tokensFile, string astJsonFile, bool debug) {
+
 	if(debug){
-		cout << "Parser::build_ast_json_file" << endl;
+		cout << "Parser::build_ast_file" << endl;
 	}
 
 	TokenList tokens = readTokensFromTokensFile(tokensFile,debug);
-	//get just the namespace name from .FILENAME.dg.tokens
-	string tokenFileName = tokensFile;
-	string namespaceName = tokenFileName.substr(1,string(tokenFileName).size() - string(".dg.tokens").size());
 
-	NamespaceNode mynamespace = NamespaceNode(tokens,namespaceName,debug);
+	cout << tokens.toSourceCodeFragment() << endl;
+
+	//get just the namespace name from .FILENAME.dg.tokens
+	string namespaceName = tokensFile.substr(1,string(tokensFile).size() - string(".dg.tokens").size());
+
+	NamespaceNode mynamespace = NamespaceNode(&tokens,namespaceName,debug);
 
 	if(debug){
 		cout << "write to "+astJsonFile << endl;
@@ -198,14 +201,14 @@ TokenList makeTokenListByCallingLexer(string file, bool debug) {
 
 TokenList readTokensFromTokensFile(string tokensFile, bool debug){
 
-	string fileNameWithoutPath = tokensFile;//.getName();
+	string fileNameWithoutPath = tokensFile;
 	
 	TokenList tks(tokensFile);
 	ifstream file(tokensFile);
     string str; 
     while (getline(file, str)){
-    	
-		optional<BaseToken> tkn = recognizeToken(str, debug); //.value();
+
+		optional<BaseToken> tkn = recognizeToken(str, debug);
     	if(tkn.has_value()){
 			tks.add(tkn.value());
     	}
@@ -213,7 +216,7 @@ TokenList readTokensFromTokensFile(string tokensFile, bool debug){
 
 	if(debug) {
 		cout << "read was successful" << endl;
-		cout << "done recognizing tokens" << endl;
+		cout << "done recognizing " << tks.size() << " tokens" << endl;
 	}
 	return tks;
 }

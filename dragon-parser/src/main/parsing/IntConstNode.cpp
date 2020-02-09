@@ -1,5 +1,4 @@
-
-//standard headers
+#include <iostream>
 #include <vector>
 #include <set>
 
@@ -10,7 +9,11 @@
 
 using namespace std;
 
-IntConstNode::IntConstNode(TokenList tokens) {
+IntConstNode::IntConstNode(TokenList tokens, bool debug) {
+
+	if(debug){
+		cout << "IntConstNode(...)" << endl;
+	}
 
 	TokenList copy = TokenList(tokens);
 

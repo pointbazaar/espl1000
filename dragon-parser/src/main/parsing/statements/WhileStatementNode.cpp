@@ -14,11 +14,15 @@ using namespace std;
 
 WhileStatementNode::WhileStatementNode(TokenList tokens, bool debug){
 
+	if(debug){
+		cout << "WhileStatementNode(...)" << endl;
+	}
+
 	TokenList copy = TokenList(tokens);
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(WHILE));
 
-	this->condition = new ExpressionNode(copy);
+	this->condition = new ExpressionNode(copy,debug);
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LCURLY));
 

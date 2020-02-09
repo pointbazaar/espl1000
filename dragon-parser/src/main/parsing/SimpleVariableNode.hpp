@@ -12,7 +12,7 @@ using namespace std;
 class SimpleVariableNode {
 
 public:
-	SimpleVariableNode(TokenList tokens);
+	SimpleVariableNode(TokenList tokens, bool debug);
 
 	string name;
 	optional<ExpressionNode*> indexOptional;

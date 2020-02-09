@@ -1,5 +1,4 @@
 
-//standard headers
 #include <vector>
 #include <string>
 #include <iostream>
@@ -13,19 +12,21 @@
 using namespace std;
 
 NamespaceNode::NamespaceNode(
-		TokenList tokens,
+		TokenList* tokens,
 		string name,
 		bool debug
 ) {
 
 	if (debug) {
-		cout << "try to parse NamespaceNode" << endl;
-		cout << "try to parse from " + tokens.toSourceCodeFragment() << endl;
+		cout << "NamespaceNode(...)" << endl;
+		cout << "from: " + tokens->toSourceCodeFragment() << endl;
+		cout << tokens->size() << endl;
 	}
 
 	this->srcPath = "/dev/null";
 	this->name = name;
-	TokenList copy = tokens.copy();
+	TokenList copy_1 = tokens->copy();
+	TokenList* copy = &copy_1;
 
 	//TODO: add them in back later
 	/*
@@ -49,14 +50,16 @@ NamespaceNode::NamespaceNode(
 	//to make parsing easier.
 	//this does not add much boilerplate to the syntax
 	//and would probably make the parser faster
-	if (copy.size() > 0) {
+	cout << copy->size() << endl;
+	if (copy->size() > 0) {
 
-		BaseToken next_subr = copy.get(0);
+		BaseToken next_subr = copy->get(0);
+		cout << next_subr.kind << endl;
 
 		while (next_subr.kind == FN) {
-			this->methods.push_back(MethodNode(copy, debug));
-			if (copy.size() > 0) {
-				next_subr = copy.get(0);
+			this->methods.push_back(MethodNode(*copy, debug));
+			if (copy->size() > 0) {
+				next_subr = copy->get(0);
 			} else {
 				break;
 			}
@@ -67,6 +70,6 @@ NamespaceNode::NamespaceNode(
 		cout << "done parsing NamespaceNode" << endl;
 	}
 
-	tokens.set(copy);
+	tokens->set(*copy);
 }
 

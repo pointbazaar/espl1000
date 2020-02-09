@@ -19,9 +19,9 @@ class TermNode {
 
 public:
 
-	TermNode ( ExpressionNode* myexpr);
+	TermNode(ExpressionNode* myexpr);
 	
-	TermNode ( TokenList tokens);
+	TermNode(TokenList tokens, bool debug);
 
 	//only one of these may be != NULL
 	BoolConstNode* m1 = NULL;

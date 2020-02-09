@@ -1,8 +1,6 @@
 //standard headers
 #include <vector>
 #include <iostream>
-
-//project headers
 #include "MethodNode.hpp"
 #include "typenodes/TypeNode.hpp"
 #include "../commandline/TokenList.hpp"
@@ -17,14 +15,15 @@ using namespace std;
 MethodNode::MethodNode(TokenList tokens, bool debug) {
 
 	if (debug) {
-		cout << "try to parse MethodNode from '" << tokens.toSourceCodeFragment() << "'" << endl;
+		cout << "MethodNode(...)" << endl;
+		cout << "from: " << endl << tokens.toSourceCodeFragment() << "" << endl;
 	}
 
 	TokenList copy = tokens.copy();
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(FN));
 
-	this->methodName = IdentifierNode(copy).identifier;
+	this->methodName = IdentifierNode(&copy,debug).identifier;
 
 	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LPARENS));
 
@@ -34,7 +33,7 @@ MethodNode::MethodNode(TokenList tokens, bool debug) {
 		if (this->arguments.size() > 0) {
 			copy.expectAndConsumeOtherWiseThrowException(BaseToken(COMMA));
 		}
-		this->arguments.push_back(new DeclaredArgumentNode(copy));
+		this->arguments.push_back(new DeclaredArgumentNode(copy, debug));
 		next = copy.get(0);
 	}
 

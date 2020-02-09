@@ -1,9 +1,6 @@
-
-//standard headers
+#include <iostream>
 #include <vector>
 #include <string>
-
-//project headers
 #include "OperatorNode.hpp"
 #include "../commandline/TokenList.hpp"
 #include "../commandline/BaseToken.hpp"
@@ -12,7 +9,11 @@
 using namespace std;
 
 
-OperatorNode::OperatorNode(TokenList tokens) {
+OperatorNode::OperatorNode(TokenList tokens, bool debug) {
+
+	if(debug){
+		cout << "OperatorNode(...)" << endl;
+	}
 
 	TokenList copy = TokenList(tokens);
 

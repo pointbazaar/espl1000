@@ -15,7 +15,7 @@ public:
 	//a namespace is represented by a filename.
 	//the contents of a namespace are the contents of the file
 	NamespaceNode(
-		TokenList tokens,
+		TokenList* tokens,
 		string name,
 		bool debug
 	);

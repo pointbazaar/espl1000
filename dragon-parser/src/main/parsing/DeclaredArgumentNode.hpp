@@ -13,7 +13,7 @@ class DeclaredArgumentNode  {
 
 public:
 
-	DeclaredArgumentNode(TokenList tokens);
+	DeclaredArgumentNode(TokenList tokens, bool debug);
 
 	TypeNode* type = NULL;
 	optional<string> name;

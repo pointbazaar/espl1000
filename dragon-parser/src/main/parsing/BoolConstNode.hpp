@@ -8,7 +8,7 @@ using namespace std;
 class BoolConstNode {
 
 public:
-	BoolConstNode(TokenList tokens);
+	BoolConstNode(TokenList tokens, bool debug);
 
 	bool boolValue;
 };

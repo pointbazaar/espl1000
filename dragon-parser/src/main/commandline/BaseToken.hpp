@@ -15,7 +15,6 @@ class BaseToken {
 	*/
 
 	public: 
-		BaseToken();
 		BaseToken(int kind);
 		BaseToken(int kind, string value);
 

@@ -1,10 +1,6 @@
-
-//standard headers
 #include <vector>
 #include <string>
 #include <iostream>
-
-//project headers
 #include "AST_Whole_Program.hpp"
 #include "NamespaceNode.hpp"
 #include "../commandline/TokenList.hpp"
@@ -25,6 +21,6 @@ AST_Whole_Program::AST_Whole_Program(TokenList tokens, string myNamespace, bool 
 		cout << "parse AST_Whole_Program" << endl;
 	}
 
-	this->namespaceNodes.push_back(NamespaceNode(tokens, myNamespace, debug));
+	this->namespaceNodes.push_back(NamespaceNode(&tokens, myNamespace, debug));
 }
 
