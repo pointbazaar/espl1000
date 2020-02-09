@@ -20,7 +20,7 @@ SimpleVariableNode::SimpleVariableNode(TokenList tokens) {
 	BaseToken token = copy.get(0);
 
 	if (token.kind == IDENTIFIER) {
-		this->name = token.getContents();
+		this->name = token.value;
 		copy.consume(1);
 
 		//it could have an index
@@ -39,7 +39,7 @@ SimpleVariableNode::SimpleVariableNode(TokenList tokens) {
 		<< string(":") 
 		<< token.lineNumber
 		<< ": could not read variable name. token was " 
-		<< token.getContents()
+		<< token.value
 		<< " from context  '" 
 		<< tokens.toSourceCodeFragment().substr(0, min(20, (int)tokens.toSourceCodeFragment().size())) 
 		<< "'";

@@ -82,12 +82,12 @@ void TokenList::expectAndConsumeOtherWiseThrowException(BaseToken token) {
 		stringstream str;
 
 		str << "\t expected:"
-		<< wrap(token.getContents(), "'")
+		<< wrap(token.value, "'")
 		
 		<< " (" << token.kind << ")"
 
 		<< "\t actual:"
-		<< wrap(this->head().getContents(), "'")
+		<< wrap(this->head().value, "'")
 		
 		<< " (" << this->head().kind << ")"
 
@@ -133,7 +133,7 @@ string TokenList::toSourceCodeFragment() {
 	stringstream str;
 
 	for(BaseToken tk : this->tokens){
-		str << tk.getContents();
+		str << tk.value;
 		str << " ";
 	}
 	return str.str();

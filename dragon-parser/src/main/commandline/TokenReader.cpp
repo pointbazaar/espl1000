@@ -46,7 +46,7 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 			result = BaseToken(CHARCONST,tkn.substr(2,tkn.size()));
 			break;
 		case ANYTYPE : 
-			result= BaseToken(ANYTYPE);
+			result= BaseToken(ANYTYPE,"#");
 			break;
 
 		//CONSTANTS
@@ -79,7 +79,7 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 			break;
 
 		case STRUCTMEMBERACCESS : 
-			result= BaseToken(STRUCTMEMBERACCESS);
+			result= BaseToken(STRUCTMEMBERACCESS,".");
 			break;
 
 		case TYPEPARAM : 
@@ -87,29 +87,29 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 			break;
 
 		case NAMESPACE : 
-			result= BaseToken(NAMESPACE);
+			result= BaseToken(NAMESPACE,"namespace");
 			break;
 
 		//BRACKETS, BRACES, PARENTHESES
 		case LBRACKET : 
-			result= BaseToken(LBRACKET);
+			result= BaseToken(LBRACKET,"[");
 			break;
 		case RBRACKET : 
-			result= BaseToken(RBRACKET);
+			result= BaseToken(RBRACKET,"]");
 			break;
 
 		case LPARENS : 
-			result= BaseToken(LPARENS);
+			result= BaseToken(LPARENS,"(");
 			break;
 		case RPARENS : 
-			result = BaseToken(RPARENS);
+			result = BaseToken(RPARENS,")");
 			break;
 
 		case LCURLY : 
-			result = BaseToken(LCURLY);
+			result = BaseToken(LCURLY,"{");
 			break;
 		case RCURLY : 
-			result = BaseToken(RCURLY);
+			result = BaseToken(RCURLY,"}");
 			break;
 
 		case GREATER: 
@@ -121,15 +121,15 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 			break;
 
 		case WAVE : 
-			result = BaseToken(WAVE);
+			result = BaseToken(WAVE,"~");
 			break;
 
 		case SEMICOLON : 
-			result = BaseToken(SEMICOLON);
+			result = BaseToken(SEMICOLON,";");
 			break;
 
 		case COMMA : 
-			result = BaseToken(COMMA);
+			result = BaseToken(COMMA,",");
 			break;
 		case ARROW : 
 			result = BaseToken(ARROW,parts.at(1));
@@ -137,25 +137,25 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 
 		//KEYWORDS
 		case RETURN : 
-			result= BaseToken(RETURN);
+			result= BaseToken(RETURN,"return");
 			break;
 		case FN : 
-			result= BaseToken(FN);
+			result= BaseToken(FN,"fn");
 			break;
 		case STRUCT : 
-			result= BaseToken(STRUCT);
+			result= BaseToken(STRUCT,"struct");
 			break;
 		case IF : 
-			result= BaseToken(IF);
+			result= BaseToken(IF,"if");
 			break;
 		case ELSE : 
-			result= BaseToken(ELSE);
+			result= BaseToken(ELSE,"else");
 			break;
 		case WHILE : 
-			result= BaseToken(WHILE);
+			result= BaseToken(WHILE,"while");
 			break;
 		case LOOP : 
-			result= BaseToken(LOOP);
+			result= BaseToken(LOOP,"loop");
 			break;
 
 		default : 

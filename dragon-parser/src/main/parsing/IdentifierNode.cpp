@@ -17,13 +17,13 @@ IdentifierNode::IdentifierNode(TokenList tokens) {
 	BaseToken token = tokens.get(0);
 
 	if (token.kind == IDENTIFIER) {
-		this->identifier = token.getContents();
+		this->identifier = token.value;
 		tokens.consume(1);
 
 	} else {
 		stringstream msg;
 		msg << "could not read identifier from token: " 
-		<< token.getContents()
+		<< token.value
 		<< " in " << tokens.relPath << ":" 
 		<< token.lineNumber
 		<< " in context '" 

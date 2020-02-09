@@ -109,45 +109,13 @@ void main_inner(string tokensFile, bool debug) {
 	}
 	*/
 
-	//it should receive a .filename.dg.tokens file as path
-	//and write a .filename.dg.json file to disk
-
-	//in this approach it should be incremental. if the modified time
-	//of the .json file is later than that of the .tokens file, the .json
-	//file should not be rebuilt
-
 	ifstream f(tokensFile.c_str());
 
 	if(f.good()) {
 		f.close();
+		string AST_filename = tokensFile.substr(0,tokensFile.size()-string(".tokens").size())+".ast";
 
-		//TODO: re-enable the incremental later on
-		//long tokensLastModified = tokensFile.lastModified();
-
-		string astJSONFilename = tokensFile.substr(0,tokensFile.size()-string(".tokens").size())+".ast";
-
-		/*
-		ifstream f2(astJSONFilename);
-		if(f2.good()){
-			f2.close()
-			if(debug){
-				cout << ast_json_file+"  already exists." << endl;
-			}
-			//see which is more recent
-			long ast_json_last_modified = ast_json_file.lastModified();
-
-			if(ast_json_last_modified < tokensLastModified){
-				build_ast_json_file(tokensFile,ast_json_file,debug);
-			}else{
-				if(debug) {
-					cout << "the AST .json file was more recent than the tokens file. nothing needs to be done." << endl;
-				}
-			}
-		}else{
-		*/
-			//ast .json file does not exist
-			build_ast_file(tokensFile,astJSONFilename,debug);
-		//}
+		build_ast_file(tokensFile,AST_filename,debug);
 	}else {
 		throw ("argument file "+tokensFile+" does not exist.");
 	}
@@ -229,22 +197,14 @@ TokenList makeTokenListByCallingLexer(string file, bool debug) {
 }
 
 TokenList readTokensFromTokensFile(string tokensFile, bool debug){
-	//TODO: fix
+
 	string fileNameWithoutPath = tokensFile;//.getName();
-	//TODO: re-enable
-	/*
-	if(! fileNameWithoutPath.endsWith(".tokens")){
-		throw ("tokens file must end with '.tokens' . Got "+fileNameWithoutPath );
-	}
-	if(! fileNameWithoutPath.startsWith(".")){
-		throw "tokens file must start with '.'. A token File should be hidden. Got "+fileNameWithoutPath ;
-	}
-	*/
+	
 	TokenList tks(tokensFile);
 	ifstream file(tokensFile);
     string str; 
-    while (getline(file, str))
-    {
+    while (getline(file, str)){
+    	
 		optional<BaseToken> tkn = recognizeToken(str, debug); //.value();
     	if(tkn.has_value()){
 			tks.add(tkn.value());

@@ -33,14 +33,14 @@ OperatorNode::OperatorNode(TokenList tokens) {
 				this->op = "==";
 				copy.consume(2);
 			} else {
-				throw "could not recognize operator token: got " + token.getContents();
+				throw "could not recognize operator token: got " + token.value;
 			}
 		} else {
 			this->op = (token).value;
 			copy.consume(1);
 		}
 	} else {
-		throw "could not recognize operator token: got " + token.getContents();
+		throw "could not recognize operator token: got " + token.value;
 	}
 
 	tokens.set(copy);

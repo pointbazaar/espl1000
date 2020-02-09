@@ -22,8 +22,6 @@ class BaseToken {
 		long lineNumber=-1;
 		int kind=-1;
 		string value="";
-
-		string getContents();
 	
 		bool tokenEquals(BaseToken other);
 };

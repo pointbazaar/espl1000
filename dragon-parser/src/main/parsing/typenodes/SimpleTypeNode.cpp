@@ -18,7 +18,7 @@ SimpleTypeNode::SimpleTypeNode(TokenList tokens) {
 
 	BaseToken token = tokens.get(0);
 	if (token.kind == TYPEIDENTIFIER) {
-		this->typeName = token.getContents();
+		this->typeName = token.value;
 		tokens.consume(1);
 	} else if (token.kind == ANYTYPE) {
 		tokens.consume(1);

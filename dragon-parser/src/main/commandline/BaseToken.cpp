@@ -11,10 +11,6 @@ BaseToken::BaseToken(int kind, string value){
 	this->kind = kind;
 	this->value = value;
 }
-
-string BaseToken::getContents(){
-	return this->value;
-}
 	
 bool BaseToken::tokenEquals(BaseToken other){
 	//return this->value.compare(other.value)==0;
