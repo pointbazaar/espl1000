@@ -1,11 +1,18 @@
 #include <vector>
+#include <iostream>
 
 #include "SimpleType.hpp"
 #include "../../commandline/TokenList.hpp"
 #include "../../commandline/Token.hpp"
 #include "../../commandline/TokenKeys.hpp"
 
-SimpleType::SimpleType(TokenList tokens) {
+using namespace std;
+
+SimpleType::SimpleType(TokenList tokens, bool debug) {
+
+	if(debug){
+		cout << "SimpleType(...)" << endl;
+	}
 
 	if (tokens.size() == 0) {
 		throw "exception";

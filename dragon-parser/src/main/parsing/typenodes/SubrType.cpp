@@ -7,12 +7,18 @@
 #include "../../commandline/Token.hpp"
 #include "../../commandline/TokenKeys.hpp"
 
+using namespace std;
+
 SubrType::SubrType(Type* return_type, bool hasSideEffects){
 	this->returnType = return_type;
 	this->hasSideEffects = hasSideEffects;
 }
 
-SubrType::SubrType(TokenList tokens){
+SubrType::SubrType(TokenList tokens, bool debug){
+
+	if(debug){
+		cout << "SubrType(...)" << endl;
+	}
 
 	TokenList copy = tokens.copy();
 
@@ -20,7 +26,7 @@ SubrType::SubrType(TokenList tokens){
 
 	bool sucess_argument_types = true;
 	try {
-		this->argumentTypes.push_back(new Type(copy));
+		this->argumentTypes.push_back(new Type(copy,debug));
 	} catch (std::string e) {
 		sucess_argument_types = false;
 	}
@@ -29,7 +35,7 @@ SubrType::SubrType(TokenList tokens){
 			TokenList copy2 = copy.copy();
 
 			copy2.expect(Token(COMMA));
-			this->argumentTypes.push_back(new Type(copy2));
+			this->argumentTypes.push_back(new Type(copy2,debug));
 
 			copy.set(copy2);
 		} catch (std::string e) {
@@ -47,7 +53,7 @@ SubrType::SubrType(TokenList tokens){
 		throw "expected an arrow token here";
 	}
 
-	this->returnType = new Type(copy);
+	this->returnType = new Type(copy,debug);
 
 	tokens.set(copy);
 }

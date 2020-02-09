@@ -25,7 +25,11 @@ Method::Method(TokenList tokens, bool debug) {
 
 	this->methodName = Identifier(&copy,debug).identifier;
 
+	cout << "1" << endl;
+
 	copy.expect(Token(LPARENS));
+
+	cout << "2" << endl;
 
 	//while there is no ')' up, continue parsing arguments
 	Token next = copy.get(0);
@@ -37,19 +41,31 @@ Method::Method(TokenList tokens, bool debug) {
 		next = copy.get(0);
 	}
 
+	cout << "4" << endl;
+
 	copy.expect(Token(RPARENS));
-	
+
 	copy.expect(Token(ARROW));
+
+	cout << "7" << endl;
+
+	cout << copy.toSourceCodeFragment() << endl;
 	
-	this->returnType = new Type(copy);
+	this->returnType = new Type(copy,debug);
+
+	cout << "9" << endl;
 
 	copy.expect(Token(LCURLY));
+
+	cout << "11" << endl;
 
 	Token statement_next = copy.get(0);
 	while (!(statement_next.kind != RCURLY)) {
 		this->statements.push_back(new Stmt(copy,debug));
 		statement_next = copy.get(0);
 	}
+
+	cout << "13" << endl;
 
 	copy.expect(Token(RCURLY));
 

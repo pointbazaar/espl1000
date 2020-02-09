@@ -8,7 +8,7 @@ class ArrayType {
 
 public:
 	ArrayType(Type* element_type);
-	ArrayType(TokenList tokens);
+	ArrayType(TokenList tokens, bool debug);
 
 	Type* element_type;
 };

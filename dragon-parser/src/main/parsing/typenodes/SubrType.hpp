@@ -11,7 +11,7 @@ class SubrType {
 
 public:
 	SubrType(Type* tn, bool hasSideEffects);
-	SubrType(TokenList tokens);
+	SubrType(TokenList tokens, bool debug);
 
 	Type* returnType;
 	bool hasSideEffects;

@@ -7,7 +7,7 @@ class TypeParam {
 
 public:
 	int typeParameterIndex;
-	TypeParam(TokenList);
+	TypeParam(TokenList, bool debug);
 };
 
 #endif

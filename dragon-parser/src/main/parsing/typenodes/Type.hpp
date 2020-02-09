@@ -9,7 +9,7 @@ class ArrayType;
 class Type {
 
 public:
-	Type(TokenList tokens);
+	Type(TokenList tokens, bool debug);
 	Type(BasicTypeWrapped* typeNode);
 	Type(TypeParam* typeNode);
 	Type(ArrayType* typeNode);

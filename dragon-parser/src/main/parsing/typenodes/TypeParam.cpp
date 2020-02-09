@@ -1,11 +1,18 @@
 #include <vector>
+#include <iostream>
 
 #include "TypeParam.hpp"
 #include "../../commandline/TokenList.hpp"
 #include "../../commandline/Token.hpp"
 #include "../../commandline/TokenKeys.hpp"
 
-TypeParam::TypeParam(TokenList tokens){
+using namespace std;
+
+TypeParam::TypeParam(TokenList tokens, bool debug){
+
+	if(debug){
+		cout << "TypeParam(...)" << endl;
+	}
 	
 	Token token = tokens.get(0);
 

@@ -10,7 +10,7 @@ class BasicTypeWrapped {
 public:
 	BasicTypeWrapped(SimpleType* typeNode);
 	BasicTypeWrapped(SubrType* typeNode);
-	BasicTypeWrapped(TokenList tokens);
+	BasicTypeWrapped(TokenList tokens, bool debug);
 
 	//these are alternatives,
 	//to replace my use of <variant> which was

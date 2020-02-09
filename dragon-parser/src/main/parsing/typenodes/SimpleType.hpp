@@ -9,7 +9,7 @@ class SimpleType {
 
 public:
 
-	SimpleType(TokenList tokens);
+	SimpleType(TokenList tokens, bool debug);
 	SimpleType(std::string typeName);
 
 	std::string typeName;

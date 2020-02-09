@@ -23,7 +23,7 @@ AssignStmt::AssignStmt(TokenList tokens,bool debug) {
 
 	try {
 		TokenList copy2 = copy.copy();
-		optTypeNode1 = optional<Type*>(new Type(copy2));
+		optTypeNode1 = optional<Type*>(new Type(copy2,debug));
 		copy.set(copy2);
 	} catch (string e) {
 		optTypeNode1 = nullopt;

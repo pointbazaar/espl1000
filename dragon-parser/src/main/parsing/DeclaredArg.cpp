@@ -19,7 +19,7 @@ DeclaredArg::DeclaredArg(TokenList* tokens, bool debug) {
 
 	TokenList copy = tokens->copy();
 
-	this->type = new Type(copy);
+	this->type = new Type(copy,debug);
 
 	this->name = optional<string>(Identifier(&copy,debug).identifier);
 
