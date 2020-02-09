@@ -38,11 +38,10 @@ optional<Token> recognizeToken(string tkn, bool debug) {
 
 	switch (tkn_id) {
 
-		/*
 		case STRINGCONST : 
 			r = Token(STRINGCONST, tkn.substr(3,tkn.size()));
 			break;
-		*/
+		
 		case CCONST : 
 			r = Token(CCONST,tkn.substr(2,tkn.size()));
 			break;

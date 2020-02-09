@@ -12,7 +12,7 @@ const int FLOATING = 7;
 
 const int INTEGER = 8;
 const int CCONST = 9;
-//const int STRINGCONST = 10;
+const int STRINGCONST = 10;
 
 const int LINE_NO = 11;
 
