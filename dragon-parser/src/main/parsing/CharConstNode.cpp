@@ -14,7 +14,7 @@ CharConstNode::CharConstNode(TokenList tokens, bool debug) {
 		cout << "CharConstNode(...)" << endl;
 	}
 
-	BaseToken token = tokens.get(0);
+	Token token = tokens.get(0);
 
 	if (token.kind == CHARCONST) {
 		this->content = token.value.at(0);

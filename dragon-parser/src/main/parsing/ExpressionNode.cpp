@@ -5,7 +5,6 @@
 #include <string>
 #include <algorithm>
 
-//project headers
 #include "ExpressionNode.hpp"
 #include "../commandline/TokenList.hpp"
 #include "TermNode.hpp"

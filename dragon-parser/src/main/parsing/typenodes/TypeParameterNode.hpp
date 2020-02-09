@@ -1,7 +1,6 @@
 #ifndef TYPEPARAMETERNODE
 #define TYPEPARAMETERNODE
 
-//#include "../../commandline/TokenList.hpp"
 class TokenList;
 
 class TypeParameterNode {

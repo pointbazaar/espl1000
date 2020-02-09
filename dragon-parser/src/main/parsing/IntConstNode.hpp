@@ -2,7 +2,6 @@
 #define INTCONSTNODE
 
 #include "../commandline/TokenList.hpp"
-using namespace std;
 
 class IntConstNode {
 

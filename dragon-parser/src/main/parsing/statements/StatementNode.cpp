@@ -6,7 +6,7 @@
 #include "StatementNode.hpp"
 #include "../../commandline/TokenList.hpp"
 #include "../../commandline/TokenKeys.hpp"
-#include "../../commandline/BaseToken.hpp"
+#include "../../commandline/Token.hpp"
 #include "WhileStatementNode.hpp"
 #include "IfStatementNode.hpp"
 #include "ReturnStatementNode.hpp"
@@ -25,16 +25,16 @@ StatementNode::StatementNode(TokenList tokens, bool debug) {
 		throw "tried to parse a Statement, but there are no tokens left";
 	}
 
-	BaseToken first = copy.get(0);
+	Token first = copy.get(0);
 
 	if (first.kind == LOOP) {
 		//this->statementNode = LoopStatementNode(copy);
 	} else if (first.kind == WHILE) {
-		this->m2 = new WhileStatementNode(copy,debug);
+		this->m2 = new WhileStatementNode	(copy,debug);
 	} else if (first.kind == IF) {
-		this->m3 = new IfStatementNode(copy,debug);
+		this->m3 = new IfStatementNode		(copy,debug);
 	} else if (first.kind == RETURN) {
-		this->m4 = new ReturnStatementNode(copy,debug);
+		this->m4 = new ReturnStatementNode	(copy,debug);
 	} else {
 		//TODO: we have to figure something out here.
 		//i don't want 'let' statements
@@ -45,7 +45,7 @@ StatementNode::StatementNode(TokenList tokens, bool debug) {
 		try {
 			TokenList copy2 = copy.copy();
 			this->m1 = new MethodCallNode(copy2,debug);
-			copy2.expectAndConsumeOtherWiseThrowException(BaseToken(SEMICOLON));
+			copy2.expectAndConsumeOtherWiseThrowException(Token(SEMICOLON));
 
 			copy.set(copy2);
 		} catch (string e1) {

@@ -2,7 +2,6 @@
 #define SIMPLETYPENODE
 
 #include <string>
-//#include "../../commandline/TokenList.hpp"
 class TokenList;
 
 class SimpleTypeNode {
@@ -13,7 +12,5 @@ public:
 	SimpleTypeNode(std::string typeName);
 
 	std::string typeName;
-
 };
-
 #endif

@@ -13,8 +13,6 @@ class MethodCallNode;
 
 #include "../commandline/TokenList.hpp"
 
-using namespace std;
-
 class TermNode {
 
 public:

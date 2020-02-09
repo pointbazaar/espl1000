@@ -21,11 +21,11 @@ IfStatementNode::IfStatementNode(TokenList tokens, bool debug) {
 	}
 
 	TokenList copy = TokenList(tokens);
-	copy.expectAndConsumeOtherWiseThrowException(BaseToken(IF));
+	copy.expectAndConsumeOtherWiseThrowException(Token(IF));
 	this->condition = new ExpressionNode(copy,debug);
-	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LCURLY));
+	copy.expectAndConsumeOtherWiseThrowException(Token(LCURLY));
 
-	BaseToken next = copy.get(0);
+	Token next = copy.get(0);
 
 	while (!(next.kind == RCURLY)) {
 
@@ -33,17 +33,17 @@ IfStatementNode::IfStatementNode(TokenList tokens, bool debug) {
 		next = copy.get(0);
 	}
 
-	copy.expectAndConsumeOtherWiseThrowException(BaseToken(RCURLY));
+	copy.expectAndConsumeOtherWiseThrowException(Token(RCURLY));
 
 	//maybe there is an else
-	if (copy.startsWith(BaseToken(ELSE))) {
+	if (copy.startsWith(Token(ELSE))) {
 
-		copy.expectAndConsumeOtherWiseThrowException(BaseToken(ELSE));
+		copy.expectAndConsumeOtherWiseThrowException(Token(ELSE));
 
-		copy.expectAndConsumeOtherWiseThrowException(BaseToken(LCURLY));
+		copy.expectAndConsumeOtherWiseThrowException(Token(LCURLY));
 
 		//maybe there be some statements
-		BaseToken elsenext = copy.get(0);
+		Token elsenext = copy.get(0);
 
 		while (!(elsenext.kind == RCURLY)) {
 
@@ -51,7 +51,7 @@ IfStatementNode::IfStatementNode(TokenList tokens, bool debug) {
 			elsenext = copy.get(0);
 		}
 
-		copy.expectAndConsumeOtherWiseThrowException(BaseToken(RCURLY));
+		copy.expectAndConsumeOtherWiseThrowException(Token(RCURLY));
 	}
 
 	tokens.set(copy);

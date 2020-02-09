@@ -6,7 +6,7 @@
 //project headers
 #include "AssignmentStatementNode.hpp"
 #include "../../commandline/TokenList.hpp"
-#include "../../commandline/BaseToken.hpp"
+#include "../../commandline/Token.hpp"
 #include "../../commandline/TokenKeys.hpp"
 #include "../typenodes/TypeNode.hpp"
 #include "../VariableNode.hpp"
@@ -34,11 +34,11 @@ AssignmentStatementNode::AssignmentStatementNode(TokenList tokens,bool debug) {
 	this->optTypeNode = optTypeNode1;
 	this->variableNode = new VariableNode(copy,debug);
 
-	copy.expectAndConsumeOtherWiseThrowException( BaseToken(OPERATOR,"="));
+	copy.expectAndConsumeOtherWiseThrowException(Token(OPERATOR,"="));
 
 	this->expressionNode = new ExpressionNode(copy,debug);
 
-	copy.expectAndConsumeOtherWiseThrowException( BaseToken(SEMICOLON));
+	copy.expectAndConsumeOtherWiseThrowException(Token(SEMICOLON));
 
 	tokens.set(copy);
 }

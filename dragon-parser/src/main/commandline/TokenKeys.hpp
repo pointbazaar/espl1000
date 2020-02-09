@@ -1,13 +1,6 @@
 #ifndef TOKENKEYS
 #define TOKENKEYS
 
-//standard includes
-#include <vector> 
-#include <stdio.h>
-#include <map>
-
-//project includes
-
 const int BOOLCONST = 2;
 
 const int IDENTIFIER = 4;

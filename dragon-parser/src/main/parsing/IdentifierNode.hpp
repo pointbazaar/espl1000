@@ -5,15 +5,13 @@
 
 #include "../commandline/TokenList.hpp"
 
-using namespace std;
-
 class IdentifierNode  {
 
 public:
 
 	IdentifierNode(TokenList* tokens, bool debug);
 
-	string identifier;
+	std::string identifier;
 };
 
 #endif

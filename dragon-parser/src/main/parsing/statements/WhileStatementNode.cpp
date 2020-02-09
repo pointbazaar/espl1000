@@ -6,7 +6,7 @@
 #include "WhileStatementNode.hpp"
 #include "../../commandline/TokenList.hpp"
 #include "../../commandline/TokenKeys.hpp"
-#include "../../commandline/BaseToken.hpp"
+#include "../../commandline/Token.hpp"
 #include "../ExpressionNode.hpp"
 #include "StatementNode.hpp"
 
@@ -20,19 +20,19 @@ WhileStatementNode::WhileStatementNode(TokenList tokens, bool debug){
 
 	TokenList copy = TokenList(tokens);
 
-	copy.expectAndConsumeOtherWiseThrowException(BaseToken(WHILE));
+	copy.expectAndConsumeOtherWiseThrowException(Token(WHILE));
 
 	this->condition = new ExpressionNode(copy,debug);
 
-	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LCURLY));
+	copy.expectAndConsumeOtherWiseThrowException(Token(LCURLY));
 
-	BaseToken next = copy.get(0);
+	Token next = copy.get(0);
 	while (!(next.kind == RCURLY)) {
 		this->statements.push_back(new StatementNode(copy,debug));
 		next = copy.get(0);
 	}
 
-	copy.expectAndConsumeOtherWiseThrowException(BaseToken(RCURLY));
+	copy.expectAndConsumeOtherWiseThrowException(Token(RCURLY));
 
 	tokens.set(copy);
 }

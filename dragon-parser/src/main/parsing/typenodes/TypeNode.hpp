@@ -2,11 +2,7 @@
 #define TYPENODE
 
 #include <variant>
-
-//#include "../../commandline/TokenList.hpp"
 class TokenList;
-
-
 class BasicTypeWrappedNode;
 class TypeParameterNode;
 class ArrayTypeNode;

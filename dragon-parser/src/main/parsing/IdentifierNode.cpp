@@ -6,7 +6,7 @@
 //project headers
 #include "IdentifierNode.hpp"
 #include "../commandline/TokenList.hpp"
-#include "../commandline/BaseToken.hpp"
+#include "../commandline/Token.hpp"
 #include "../commandline/TokenKeys.hpp"
 
 using namespace std;
@@ -15,9 +15,10 @@ IdentifierNode::IdentifierNode(TokenList* tokens, bool debug) {
 
 	if(debug){
 		cout << "IdentifierNode(...)" << endl;
+		cout << "from " << tokens->toSourceCodeFragment() << endl;
 	}
 
-	BaseToken token = tokens->get(0);
+	Token token = tokens->get(0);
 
 	if (token.kind == IDENTIFIER) {
 		this->identifier = token.value;
@@ -33,6 +34,7 @@ IdentifierNode::IdentifierNode(TokenList* tokens, bool debug) {
 		<< tokens->toSourceCodeFragment()
 		<< "'";
 
+		cout << msg.str() << endl;
 		throw msg.str();
 	}
 

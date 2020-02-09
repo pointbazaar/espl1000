@@ -11,18 +11,19 @@
 
 using namespace std;
 
-DeclaredArgumentNode::DeclaredArgumentNode(TokenList tokens, bool debug) {
+DeclaredArgumentNode::DeclaredArgumentNode(TokenList* tokens, bool debug) {
 
 	if(debug){
 		cout << "DeclaredArgumentNode(...)" << endl;
+		cout << "from " << tokens->toSourceCodeFragment() << endl;
 	}
 
-	TokenList copy = tokens.copy();
+	TokenList copy = tokens->copy();
 
 	this->type = new TypeNode(copy);
 
 	this->name = optional<string>(IdentifierNode(&copy,debug).identifier);
 
-	tokens.set(copy);
+	tokens->set(copy);
 }
 

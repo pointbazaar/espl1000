@@ -1,12 +1,10 @@
-
 #include <vector>
 #include <string>
 #include <iostream>
 
-//project headers
 #include "NamespaceNode.hpp"
 #include "../commandline/TokenList.hpp"
-#include "../commandline/BaseToken.hpp"
+#include "../commandline/Token.hpp"
 #include "../commandline/TokenKeys.hpp"
 
 using namespace std;
@@ -53,7 +51,7 @@ NamespaceNode::NamespaceNode(
 	cout << copy->size() << endl;
 	if (copy->size() > 0) {
 
-		BaseToken next_subr = copy->get(0);
+		Token next_subr = copy->get(0);
 		cout << next_subr.kind << endl;
 
 		while (next_subr.kind == FN) {

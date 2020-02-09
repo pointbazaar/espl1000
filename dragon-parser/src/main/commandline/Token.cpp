@@ -1,18 +1,18 @@
 #include <string>
-#include "BaseToken.hpp"
+#include "Token.hpp"
 
 using namespace std;
 
-BaseToken::BaseToken(int kind){
+Token::Token(int kind){
 	this->kind = kind;
 }
 
-BaseToken::BaseToken(int kind, string value){
+Token::Token(int kind, string value){
 	this->kind = kind;
 	this->value = value;
 }
 	
-bool BaseToken::tokenEquals(BaseToken other){
+bool Token::tokenEquals(Token other){
 	if(this->value.size()==0 || other.value.size()==0){
 		return this->kind == other.kind;
 	}

@@ -3,11 +3,10 @@
 #include <string>
 #include "OperatorNode.hpp"
 #include "../commandline/TokenList.hpp"
-#include "../commandline/BaseToken.hpp"
+#include "../commandline/Token.hpp"
 #include "../commandline/TokenKeys.hpp"
 
 using namespace std;
-
 
 OperatorNode::OperatorNode(TokenList tokens, bool debug) {
 
@@ -17,13 +16,13 @@ OperatorNode::OperatorNode(TokenList tokens, bool debug) {
 
 	TokenList copy = TokenList(tokens);
 
-	BaseToken token = copy.get(0);
+	Token token = copy.get(0);
 
 	if (token.kind == OPERATOR) {
 
 		if (copy.get(1).kind == OPERATOR) {
-			BaseToken opleft = token;
-			BaseToken opright = copy.get(1);
+			Token opleft = token;
+			Token opright = copy.get(1);
 
 			if ((opleft.value.compare("<")==0) || opleft.value.compare(">")==0
 					&& opright.value.compare("=")==0

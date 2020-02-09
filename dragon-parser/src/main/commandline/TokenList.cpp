@@ -13,14 +13,14 @@
 
 using namespace std;
 
-TokenList::TokenList(vector<BaseToken> result, string sourceFile) {
+TokenList::TokenList(vector<Token> result, string sourceFile) {
 	this->tokens = result;
 	this->relPath = sourceFile;
 }
 
 TokenList::TokenList(TokenList& other) {
 	this->relPath = other.relPath;
-	for(BaseToken tk : other.tokens){
+	for(Token tk : other.tokens){
 		this->tokens.push_back(tk);
 	}
 }
@@ -29,16 +29,16 @@ TokenList::TokenList(string path) {
 	this->relPath = path;
 }
 
-vector<BaseToken> TokenList::getTokens() {
+vector<Token> TokenList::getTokens() {
 	return this->tokens;
 }
 
-void TokenList::add(BaseToken token) {
+void TokenList::add(Token token) {
 	this->tokens.push_back(token);
 }
 
-void TokenList::addAll(vector<BaseToken> arr) {
-	for (BaseToken tk : arr) {
+void TokenList::addAll(vector<Token> arr) {
+	for (Token tk : arr) {
 		this->add(tk);
 	}
 }
@@ -51,7 +51,7 @@ int TokenList::size() {
 	return this->tokens.size();
 }
 
-bool TokenList::startsWith(BaseToken token) {
+bool TokenList::startsWith(Token token) {
 	//we cannot rely on .equals()
 	//we should use interfaces we can rely on classes to implement
 	//the class and the content of the token should be the same for them to be the same
@@ -62,7 +62,7 @@ bool TokenList::startsWith(BaseToken token) {
 	return false;
 }
 
-bool TokenList::endsWith(BaseToken token) {
+bool TokenList::endsWith(Token token) {
 	if (this->tokens.size() > 0) {
 		return this->tokens.at(this->tokens.size() - 1).tokenEquals(token);
 	}
@@ -73,7 +73,7 @@ string TokenList::wrap(string s, string wrap) {
 	return wrap + s + wrap;
 }
 
-void TokenList::expectAndConsumeOtherWiseThrowException(BaseToken token) {
+void TokenList::expectAndConsumeOtherWiseThrowException(Token token) {
 	if (this->size() == 0) {
 		cout << "Error: no tokens" << endl;
 		throw ("no tokens");
@@ -120,16 +120,16 @@ TokenList TokenList::copy() {
 
 void TokenList::set(TokenList copy) {
 	this->tokens.clear();
-	for(BaseToken tk : copy.tokens){
+	for(Token tk : copy.tokens){
 		this->add(tk);
 	}
 }
 
-BaseToken TokenList::get(int i) {
+Token TokenList::get(int i) {
 	return this->tokens.at(i);
 }
 
-BaseToken TokenList::head() {
+Token TokenList::head() {
 	return this->get(0);
 }
 
@@ -138,7 +138,7 @@ string TokenList::toSourceCodeFragment() {
 
 	stringstream str;
 	int i=0;
-	for(BaseToken tk : this->tokens){
+	for(Token tk : this->tokens){
 		if(i++ < 10){
 			str << tk.value;
 			str << " ";

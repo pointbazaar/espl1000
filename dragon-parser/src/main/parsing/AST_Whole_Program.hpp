@@ -7,17 +7,15 @@
 #include "NamespaceNode.hpp"
 #include "../commandline/TokenList.hpp"
 
-using namespace std;
-
 class AST_Whole_Program  {
 
 public:
 	//this contains all namespace nodes for the whole program
 
-	vector<NamespaceNode> namespaceNodes;
+	std::vector<NamespaceNode> namespaceNodes;
 
 	AST_Whole_Program(NamespaceNode myNamespace);
-	AST_Whole_Program(TokenList tokens, string myNamespace, bool debug);
+	AST_Whole_Program(TokenList tokens, std::string myNamespace, bool debug);
 };
 
 #endif

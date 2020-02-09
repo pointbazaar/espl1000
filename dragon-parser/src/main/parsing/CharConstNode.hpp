@@ -3,8 +3,6 @@
 
 #include "../commandline/TokenList.hpp"
 
-using namespace std;
-
 class CharConstNode {
 
 public:

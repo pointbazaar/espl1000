@@ -3,12 +3,10 @@
 #include <string>
 #include <variant>
 
-//project headers
 #include "../commandline/TokenList.hpp"
-#include "../commandline/BaseToken.hpp"
+#include "../commandline/Token.hpp"
 #include "../commandline/TokenKeys.hpp"
 #include "TermNode.hpp"
-//#include "FloatConstNode.hpp"
 #include "CharConstNode.hpp"
 #include "IntConstNode.hpp"
 #include "BoolConstNode.hpp"
@@ -42,7 +40,7 @@ TermNode::TermNode(TokenList tokens, bool debug) {
 				//a string constant is syntatic sugar.
 				//in the parsing stage it is converted to an array of char constants
 				//inline the stringConstant and its syntatic sugar
-				BaseToken token = tokens.get(0);
+				Token token = tokens.get(0);
 				//TODO: re-enable this later on
 				/*
 				if (token.kind == STRINGCONSTANT) {
@@ -68,9 +66,9 @@ TermNode::TermNode(TokenList tokens, bool debug) {
 				try {
 					TokenList copy2 = TokenList(copy);
 
-					copy2.expectAndConsumeOtherWiseThrowException(BaseToken(LPARENS));
+					copy2.expectAndConsumeOtherWiseThrowException(Token(LPARENS));
 					this->m5 = new ExpressionNode(copy2,debug);
-					copy2.expectAndConsumeOtherWiseThrowException(BaseToken(RPARENS));
+					copy2.expectAndConsumeOtherWiseThrowException(Token(RPARENS));
 
 					copy.set(copy2);
 				} catch (string e3) {

@@ -208,7 +208,7 @@ TokenList readTokensFromTokensFile(string tokensFile, bool debug){
     string str; 
     while (getline(file, str)){
 
-		optional<BaseToken> tkn = recognizeToken(str, debug);
+		optional<Token> tkn = recognizeToken(str, debug);
     	if(tkn.has_value()){
 			tks.add(tkn.value());
     	}

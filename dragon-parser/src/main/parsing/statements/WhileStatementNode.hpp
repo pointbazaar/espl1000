@@ -1,7 +1,6 @@
 #ifndef WHILESTATEMENTNODE
 #define WHILESTATEMENTNODE
 
-//standard headers
 #include <vector>
 
 //project headers

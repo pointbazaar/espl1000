@@ -2,7 +2,7 @@
 #include "ReturnStatementNode.hpp"
 #include "../../commandline/TokenList.hpp"
 #include "../../commandline/TokenKeys.hpp"
-#include "../../commandline/BaseToken.hpp"
+#include "../../commandline/Token.hpp"
 #include "../ExpressionNode.hpp"
 
 ReturnStatementNode::ReturnStatementNode(TokenList tokens, bool debug){
@@ -13,11 +13,11 @@ ReturnStatementNode::ReturnStatementNode(TokenList tokens, bool debug){
 
 	TokenList copy = TokenList(tokens);
 
-	copy.expectAndConsumeOtherWiseThrowException(BaseToken(RETURN));
+	copy.expectAndConsumeOtherWiseThrowException(Token(RETURN));
 
 	this->returnValue = new ExpressionNode(copy,debug);
 
-	copy.expectAndConsumeOtherWiseThrowException(BaseToken(SEMICOLON));
+	copy.expectAndConsumeOtherWiseThrowException(Token(SEMICOLON));
 
 	tokens.set(copy);
 }

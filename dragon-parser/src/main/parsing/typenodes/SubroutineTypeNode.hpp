@@ -3,8 +3,6 @@
 #define SUBROUTINETYPENODE
 
 #include <vector>
-//#include "TypeNode.hpp"
-//#include "../../commandline/TokenList.hpp"
 class TokenList;
 class TypeNode;
 

@@ -1,12 +1,12 @@
-#ifndef BASETOKEN
-#define BASETOKEN
+#ifndef TOKEN
+#define TOKEN
 
 //standard includes
 #include <string>
 
 using namespace std;
 
-class BaseToken {
+class Token {
 
 	/*
 	It should have fields for 
@@ -15,13 +15,13 @@ class BaseToken {
 	*/
 
 	public: 
-		BaseToken(int kind);
-		BaseToken(int kind, string value);
+		Token(int kind);
+		Token(int kind, string value);
 
 		long lineNumber=-1;
 		int kind=-1;
 		string value="";
 	
-		bool tokenEquals(BaseToken other);
+		bool tokenEquals(Token other);
 };
 #endif

@@ -7,15 +7,13 @@
 class ExpressionNode;
 #include "../commandline/TokenList.hpp"
 
-using namespace std;
-
 class SimpleVariableNode {
 
 public:
 	SimpleVariableNode(TokenList tokens, bool debug);
 
-	string name;
-	optional<ExpressionNode*> indexOptional;
+	std::string name;
+	std::optional<ExpressionNode*> indexOptional;
 };
 
 #endif

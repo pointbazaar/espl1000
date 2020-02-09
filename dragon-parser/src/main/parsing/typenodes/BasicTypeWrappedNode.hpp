@@ -1,16 +1,10 @@
-
 #ifndef BASICTYPEWRAPPEDNODE
 #define BASICTYPEWRAPPEDNODE
 
 #include <variant>
-//#include "../../commandline/TokenList.hpp"
 class TokenList;
 class SimpleTypeNode;
 class SubroutineTypeNode;
-/*
-#include "SimpleTypeNode.hpp"
-#include "SubroutineTypeNode.hpp"
-*/
 
 class BasicTypeWrappedNode {
 

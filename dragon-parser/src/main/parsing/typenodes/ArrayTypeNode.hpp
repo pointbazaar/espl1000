@@ -1,10 +1,6 @@
 #ifndef ARRAYTYPENODE
 #define ARRAYTYPENODE
 
-
-//#include "TypeNode.hpp"
-//#include "../../commandline/TokenList.hpp"
-
 class TokenList;
 class TypeNode;
 

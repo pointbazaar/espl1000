@@ -7,8 +7,6 @@
 #include "MethodNode.hpp"
 #include "../commandline/TokenList.hpp"
 
-using namespace std;
-
 class NamespaceNode {
 
 public:
@@ -16,18 +14,18 @@ public:
 	//the contents of a namespace are the contents of the file
 	NamespaceNode(
 		TokenList* tokens,
-		string name,
+		std::string name,
 		bool debug
 	);
 
 
-	string srcPath;
-	string name;
+	std::string srcPath;
+	std::string name;
 	//structs must be declared before the subroutines
 	
 	//TODO: add them back later when the rewrite is complete
 	//vector<StructDeclNode> structs;
-	vector<MethodNode> methods;
+	std::vector<MethodNode> methods;
 };
 
 #endif

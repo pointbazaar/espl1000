@@ -25,12 +25,12 @@ BasicTypeWrappedNode::BasicTypeWrappedNode(TokenList tokens) {
 
 	TokenList copy = tokens.copy();
 
-	if (copy.size() > 1 && copy.get(0).tokenEquals(BaseToken(LPARENS))) {
+	if (copy.size() > 1 && copy.get(0).tokenEquals(Token(LPARENS))) {
 		TokenList copy2 = copy.copy();
 
-		copy2.expectAndConsumeOtherWiseThrowException(BaseToken(LPARENS));
+		copy2.expectAndConsumeOtherWiseThrowException(Token(LPARENS));
 		this->m2 = new SubroutineTypeNode(copy2);
-		copy2.expectAndConsumeOtherWiseThrowException(BaseToken(RPARENS));
+		copy2.expectAndConsumeOtherWiseThrowException(Token(RPARENS));
 
 		copy.set(copy2);
 

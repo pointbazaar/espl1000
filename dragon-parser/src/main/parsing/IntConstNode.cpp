@@ -2,7 +2,6 @@
 #include <vector>
 #include <set>
 
-//project headers
 #include "IntConstNode.hpp"
 #include "../commandline/TokenList.hpp"
 #include "../commandline/TokenKeys.hpp"
@@ -19,7 +18,7 @@ IntConstNode::IntConstNode(TokenList tokens, bool debug) {
 
 	if (copy.get(0).kind == OPERATOR) {
 
-		BaseToken tk = copy.get(0);
+		Token tk = copy.get(0);
 		if (tk.value.compare("-")==0 && (copy.get(1).kind == INTEGER)) {
 			this->number = - stoi( copy.get(1).value );
 			copy.consume(2);

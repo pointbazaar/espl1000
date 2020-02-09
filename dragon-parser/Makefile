@@ -7,7 +7,7 @@ all: dragon-parser
 dragon-parser: commandline parsing typenodes statements
 	g++ $(FLAGS) -o dragon-parser *.o
 
-commandline: src/main/commandline/ASTWriter.cpp src/main/commandline/BaseToken.cpp src/main/commandline/Parser.cpp src/main/commandline/TokenList.cpp src/main/commandline/TokenReader.cpp
+commandline: src/main/commandline/ASTWriter.cpp src/main/commandline/Token.cpp src/main/commandline/Parser.cpp src/main/commandline/TokenList.cpp src/main/commandline/TokenReader.cpp
 	g++ $(FLAGS) -c src/main/commandline/*.cpp
 
 parsing: src/main/parsing/*.cpp

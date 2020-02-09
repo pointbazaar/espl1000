@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 
-//project headers
 #include "BoolConstNode.hpp"
 #include "../commandline/TokenList.hpp"
 #include "../commandline/TokenKeys.hpp"
@@ -17,7 +16,7 @@ BoolConstNode::BoolConstNode(TokenList tokens, bool debug) {
 	TokenList copy = TokenList(tokens);
 
 	if (copy.get(0).kind == BOOLCONST) {
-		BaseToken tk = copy.get(0);
+		Token tk = copy.get(0);
 
 		if(tk.value.compare("true")==0){
 			this->boolValue=true;

@@ -1,16 +1,12 @@
 
-//standard headers
 #include <vector>
 #include <variant>
-
-//project headers
 #include "TypeNode.hpp"
 #include "../../commandline/TokenList.hpp"
 #include "ArrayTypeNode.hpp"
 #include "TypeParameterNode.hpp"
 #include "BasicTypeWrappedNode.hpp"
 
-//using namespace std;
 
 TypeNode::TypeNode(BasicTypeWrappedNode* typeNode){
 	this->m1 = typeNode;

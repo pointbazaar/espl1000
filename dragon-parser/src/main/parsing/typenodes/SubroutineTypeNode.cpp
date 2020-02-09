@@ -1,16 +1,11 @@
 
-//standard headers
 #include <vector>
 #include <iostream>
-
-//project headers
 #include "SubroutineTypeNode.hpp"
 #include "TypeNode.hpp"
 #include "../../commandline/TokenList.hpp"
-#include "../../commandline/BaseToken.hpp"
+#include "../../commandline/Token.hpp"
 #include "../../commandline/TokenKeys.hpp"
-
-//using namespace std;
 
 SubroutineTypeNode::SubroutineTypeNode(TypeNode* return_type, bool hasSideEffects){
 	this->returnType = return_type;
@@ -21,7 +16,7 @@ SubroutineTypeNode::SubroutineTypeNode(TokenList tokens){
 
 	TokenList copy = tokens.copy();
 
-	copy.expectAndConsumeOtherWiseThrowException(BaseToken(LPARENS));
+	copy.expectAndConsumeOtherWiseThrowException(Token(LPARENS));
 
 	bool sucess_argument_types = true;
 	try {
@@ -33,7 +28,7 @@ SubroutineTypeNode::SubroutineTypeNode(TokenList tokens){
 		try {
 			TokenList copy2 = copy.copy();
 
-			copy2.expectAndConsumeOtherWiseThrowException(BaseToken(COMMA));
+			copy2.expectAndConsumeOtherWiseThrowException(Token(COMMA));
 			this->argumentTypes.push_back(new TypeNode(copy2));
 
 			copy.set(copy2);
@@ -42,10 +37,10 @@ SubroutineTypeNode::SubroutineTypeNode(TokenList tokens){
 		}
 	}
 
-	copy.expectAndConsumeOtherWiseThrowException(BaseToken(RPARENS));
+	copy.expectAndConsumeOtherWiseThrowException(Token(RPARENS));
 
 	if (copy.head().kind == ARROW) {
-		BaseToken arrow = copy.head();
+		Token arrow = copy.head();
 		this->hasSideEffects = false;//!arrow.is_functional;
 		copy.consume(1);
 	} else {

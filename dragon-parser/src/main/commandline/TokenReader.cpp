@@ -6,12 +6,11 @@
 #include <iostream>
 #include <sstream>
 
-//project includes
 #include "TokenReader.hpp"
 #include "TokenKeys.hpp"
-#include "BaseToken.hpp"
+#include "Token.hpp"
 
-optional<BaseToken> recognizeToken(string tkn, bool debug) {
+optional<Token> recognizeToken(string tkn, bool debug) {
 	//parses the token, as encoded by the lexer
 	//everything being seperated by a space, and the whole line not
 	//having any spaces in front or at the back is important to keep parsing simple.
@@ -35,134 +34,134 @@ optional<BaseToken> recognizeToken(string tkn, bool debug) {
 		return nullopt;
 		//break;
 	}
-	BaseToken result = BaseToken(NAMESPACE,"namespace");
+	Token r = Token(NAMESPACE,"namespace");
 
 	switch (tkn_id) {
 
 		case STRINGCONST : 
-			result = BaseToken(STRINGCONST, tkn.substr(3,tkn.size()));
+			r = Token(STRINGCONST, tkn.substr(3,tkn.size()));
 			break;
 		case CHARCONST : 
-			result = BaseToken(CHARCONST,tkn.substr(2,tkn.size()));
+			r = Token(CHARCONST,tkn.substr(2,tkn.size()));
 			break;
 		case ANYTYPE : 
-			result= BaseToken(ANYTYPE,"#");
+			r = Token(ANYTYPE,"#");
 			break;
 
 		//CONSTANTS
 		case BOOLCONST : 
-			result= BaseToken(BOOLCONST, parts.at(1) );
+			r = Token(BOOLCONST, parts.at(1) );
 			break;
 		case FLOATING : 
 			;
-			result = BaseToken(FLOATING, parts.at(1));
+			r = Token(FLOATING, parts.at(1));
 			break;
 		case INTEGER : 
-			result= BaseToken(INTEGER, parts.at(1));
+			r = Token(INTEGER, parts.at(1));
 			break;
 
 		//IDENTIFIERS
 		case IDENTIFIER : 
-			result= BaseToken(IDENTIFIER,parts.at(1));
+			r = Token(IDENTIFIER,parts.at(1));
 			break;
 		case TYPEIDENTIFIER : 
-			result= BaseToken(TYPEIDENTIFIER,parts.at(1));
+			r = Token(TYPEIDENTIFIER,parts.at(1));
 			break;
 
 		//SECTION: OPERATORNS
 		case OPERATOR : 
-			result= BaseToken(OPERATOR,parts.at(1));
+			r = Token(OPERATOR,parts.at(1));
 			break;
 
 		case EQ : 
-			result=BaseToken(EQ,"=");
+			r = Token(EQ,"=");
 			break;
 
 		case STRUCTMEMBERACCESS : 
-			result= BaseToken(STRUCTMEMBERACCESS,".");
+			r = Token(STRUCTMEMBERACCESS,".");
 			break;
 
 		case TYPEPARAM : 
-			result= BaseToken(TYPEPARAM, parts.at(1));
+			r = Token(TYPEPARAM, parts.at(1));
 			break;
 
 		case NAMESPACE : 
-			result= BaseToken(NAMESPACE,"namespace");
+			r = Token(NAMESPACE,"namespace");
 			break;
 
 		//BRACKETS, BRACES, PARENTHESES
 		case LBRACKET : 
-			result= BaseToken(LBRACKET,"[");
+			r = Token(LBRACKET,"[");
 			break;
 		case RBRACKET : 
-			result= BaseToken(RBRACKET,"]");
+			r = Token(RBRACKET,"]");
 			break;
 
 		case LPARENS : 
-			result= BaseToken(LPARENS,"(");
+			r = Token(LPARENS,"(");
 			break;
 		case RPARENS : 
-			result = BaseToken(RPARENS,")");
+			r = Token(RPARENS,")");
 			break;
 
 		case LCURLY : 
-			result = BaseToken(LCURLY,"{");
+			r = Token(LCURLY,"{");
 			break;
 		case RCURLY : 
-			result = BaseToken(RCURLY,"}");
+			r = Token(RCURLY,"}");
 			break;
 
 		case GREATER: 
-			result = BaseToken(GREATER,">");
+			r = Token(GREATER,">");
 			break;
 
 		case LESSER : 
-			result =BaseToken(LESSER,"<");
+			r = Token(LESSER,"<");
 			break;
 
 		case WAVE : 
-			result = BaseToken(WAVE,"~");
+			r = Token(WAVE,"~");
 			break;
 
 		case SEMICOLON : 
-			result = BaseToken(SEMICOLON,";");
+			r = Token(SEMICOLON,";");
 			break;
 
 		case COMMA : 
-			result = BaseToken(COMMA,",");
+			r = Token(COMMA,",");
 			break;
 		case ARROW : 
-			result = BaseToken(ARROW,parts.at(1));
+			r = Token(ARROW,parts.at(1));
 			break;
 
 		//KEYWORDS
 		case RETURN : 
-			result= BaseToken(RETURN,"return");
+			r = Token(RETURN,"return");
 			break;
 		case FN : 
-			result= BaseToken(FN,"fn");
+			r = Token(FN,"fn");
 			break;
 		case STRUCT : 
-			result= BaseToken(STRUCT,"struct");
+			r = Token(STRUCT,"struct");
 			break;
 		case IF : 
-			result= BaseToken(IF,"if");
+			r = Token(IF,"if");
 			break;
 		case ELSE : 
-			result= BaseToken(ELSE,"else");
+			r = Token(ELSE,"else");
 			break;
 		case WHILE : 
-			result= BaseToken(WHILE,"while");
+			r = Token(WHILE,"while");
 			break;
 		case LOOP : 
-			result= BaseToken(LOOP,"loop");
+			r = Token(LOOP,"loop");
 			break;
 
 		default : 
 			throw ("unreconized token id : " + tkn_id);
 	};
 
-	result.lineNumber=line_no;
+	r.lineNumber=line_no;
 
-	return optional<BaseToken>(result);
+	return optional<Token>(r);
 }

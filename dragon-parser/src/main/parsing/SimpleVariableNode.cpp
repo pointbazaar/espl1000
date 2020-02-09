@@ -20,7 +20,7 @@ SimpleVariableNode::SimpleVariableNode(TokenList tokens, bool debug) {
 
 	TokenList copy = TokenList(tokens);
 
-	BaseToken token = copy.get(0);
+	Token token = copy.get(0);
 
 	if (token.kind == IDENTIFIER) {
 		this->name = token.value;
@@ -28,9 +28,9 @@ SimpleVariableNode::SimpleVariableNode(TokenList tokens, bool debug) {
 
 		//it could have an index
 		if (copy.size() > 0 && copy.get(0).kind == LBRACKET) {
-			copy.expectAndConsumeOtherWiseThrowException(BaseToken(LBRACKET));
+			copy.expectAndConsumeOtherWiseThrowException(Token(LBRACKET));
 			this->indexOptional = optional(new ExpressionNode(copy,debug));
-			copy.expectAndConsumeOtherWiseThrowException(BaseToken(RBRACKET));
+			copy.expectAndConsumeOtherWiseThrowException(Token(RBRACKET));
 		} else {
 			this->indexOptional = nullopt;
 			//pass, this assignment has no index to it
