@@ -1,211 +1,139 @@
-package org.vanautrui.languages.test;
+#include "ParserTest.hpp"
 
-import org.vanautrui.languages.commandline.ParserPhases;
-import org.vanautrui.languages.compiler.lexing.utils.TokenList;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
-import org.vanautrui.languages.test.astnodes.nonterminals.*;
-import org.vanautrui.languages.test.astnodes.nonterminals.statements.AssignmentStatementNodeTest;
-import org.vanautrui.languages.test.astnodes.nonterminals.statements.MethodCallNodeTest;
-import org.vanautrui.languages.test.astnodes.nonterminals.statements.StatementNodeTest;
-import org.vanautrui.languages.test.astnodes.nonterminals.statements.controlflow.IfStatementNodeTest;
-import org.vanautrui.languages.test.astnodes.nonterminals.statements.controlflow.LoopStatementNodeTest;
-import org.vanautrui.languages.test.astnodes.nonterminals.statements.controlflow.ReturnStatementNodeTest;
-import org.vanautrui.languages.test.astnodes.nonterminals.statements.controlflow.WhileStatementNodeTest;
-import org.vanautrui.languages.test.astnodes.nonterminals.statements.upperscopes.MethodNodeTest;
-import org.vanautrui.languages.test.astnodes.terminal.*;
-import org.vanautrui.languages.test.astnodes.typenodes.BasicTypeWrappedNodeTest;
-import org.vanautrui.languages.test.astnodes.typenodes.SimpleTypeNodeTest;
-import org.vanautrui.languages.test.astnodes.typenodes.SubroutineTypeNodeTest;
+#include "ArrayConstTest.hpp"        
+#include "BoolConstTest.hpp"  
+#include "ExprTest.hpp"
+#include "LoopStmtTest.hpp"    
+#include "NamespaceTest.hpp"   
+#include "SimpleVarTest.hpp"   
+#include "StructMemberTest.hpp"  
+#include "VariableTest.hpp"
+#include "AssignStmtTest.hpp"        
+#include "CharConstTest.hpp"  
+#include "FloatConstTest.hpp"  
+#include "MethodCallTest.hpp"  
+#include "RetStmtTest.hpp"     
+#include "StmtTest.hpp"        
+#include "SubrTypeTest.hpp"      
+#include "WhileStmtTest.hpp"
+#include "BasicTypeWrappedTest.hpp"  
+#include "DeclArgTest.hpp"    
+#include "IfStmtTest.hpp"      
+#include "MethodTest.hpp"      
+#include "SimpleTypeTest.hpp"  
+#include "StructDeclTest.hpp"  
+#include "TermTest.hpp"
 
-public final class ParserTest {
+void test_all(){
 
-	public static void test_all() throws Exception {
-		//TODO: execute all tests and give feedback
-		//every test should stdout its name, such that failing tests can be identified easily
+	cout << "running Dragon-Parser Tests..." << endl;
 
-		int count=0;
-		int passed=0;
+	//TODO: execute all tests and give feedback
+	//every test should stdout its name, such that failing tests can be identified easily
 
-		passed += ParserTest.test_can_parse_some_class();
-		passed += ParserTest.test_can_parse_some_class2();
-		passed += ParserTest.test_can_parse_struct_access();
-		count+=3;
+	int count=0;
+	int passed=0;
 
-		//nonterminals
-			//statements
-				//controlflow
-				passed += IfStatementNodeTest.test1();
-				passed += IfStatementNodeTest.test2();
-				passed += IfStatementNodeTest.test3();
-				count += 3;
-
-				passed += LoopStatementNodeTest.test1();
-				count += 1;
-
-				passed += ReturnStatementNodeTest.test1();
-				passed += ReturnStatementNodeTest.test2();
-				passed += ReturnStatementNodeTest.test3();
-				count += 3;
-
-				passed += WhileStatementNodeTest.test1();
-				count += 1;
-
-			passed += AssignmentStatementNodeTest.test1();
-			passed += AssignmentStatementNodeTest.test_assign_char();
-			passed += AssignmentStatementNodeTest.test_assign_method_call_result();
-			passed += AssignmentStatementNodeTest.test_assign_method_call_result_2();
-			passed += AssignmentStatementNodeTest.test_assign_variable_with_array_index();
-			passed += AssignmentStatementNodeTest.test_can_assign_to_struct_member();
-			passed += AssignmentStatementNodeTest.test_type_declaration_for_variable();
-			count += 7;
-
-			passed += MethodCallNodeTest.test1();
-			passed += MethodCallNodeTest.test2();
-			passed += MethodCallNodeTest.test3();
-			passed += MethodCallNodeTest.test_can_parse_subroutine_call();
-			passed += MethodCallNodeTest.test_can_parse_subroutine_call2();
-			passed += MethodCallNodeTest.test_can_parse_subroutine_call_with_type_param_argument();
-			count += 6;
-
-			passed += StatementNodeTest.test_assignment_statement_with_method_call();
-			passed += StatementNodeTest.test_assignment_statement_with_struct_access();
+	//nonterminals
+		//statements
+			//controlflow
+			passed += if_test1();
+			passed += if_test2();
 			count += 2;
 
-			//upperscopes
-			passed += MethodNodeTest.test2();
-			passed += MethodNodeTest.test_can_parse_method_with_arguments();
-			passed += MethodNodeTest.test_can_parse_method_with_subroutine_argument();
-			passed += MethodNodeTest.test_can_parse_method_without_arguments();
-			passed += MethodNodeTest.test_can_parse_subroutine();
-			passed += MethodNodeTest.test_parse_methodnode_with_struct_access_statements();
-			count += 6;
+			passed += loop_test1();
+			count += 1;
 
-		passed += ArrayConstantNodeTest.test_array_multiple_elements();
-		passed += ArrayConstantNodeTest.test_empty_array();
-		passed += ArrayConstantNodeTest.test_simple_array();
-		count+=3;
+			passed += retstmt_test1();
+			passed += retstmt_test2();
+			passed += retstmt_test3();
+			count += 3;
 
-		passed += DeclaredArgumentNodeTest.test_parse_declared_argument();
-		count++;
+			passed += whilestmt_test1();
+			count += 1;
 
-		passed += StructMemberDeclNodeTest.test_can_parse_struct_member();
-		count++;
+		passed += assignstmt_test1();
+		passed += assignstmt_test_assign_char();
+		passed += assignstmt_test_assign_method_call_result();
+		passed += assignstmt_test_assign_method_call_result_2();
+		passed += assignstmt_test_assign_variable_with_array_index();
+		passed += assignstmt_test_can_assign_to_struct_member();
+		passed += assignstmt_test_type_declaration_for_variable();
+		count += 7;
 
-		passed += TermNodeTest.test_simple_term();
-		passed += TermNodeTest.test_variable_term();
-		count+=2;
+		passed += methodcall_test1();
+		passed += methodcall_test2();
+		passed += methodcall_test3();
+		passed += methodcall_test_can_parse_subroutine_call();
+		passed += methodcall_test_can_parse_subroutine_call2();
+		count += 6;
 
-		passed += VariableNodeTest.test_parse_index_access();
-		passed += VariableNodeTest.test_parse_struct_member_access();
-		passed += VariableNodeTest.test_parse_struct_member_access_and_index_access();
-		count  += 3;
-
-		//terminal
-		passed += BoolConstNodeTest.test_parse_bool_constant_node();
-		passed += CharConstNodeTest.test_parse_char_constant_node();
-		passed += CharConstNodeTest.test_parse_char_constant_node_newline();
-		count+=3;
-
-		passed += ExpressionNodeTest.recognize_string_constant_expression();
-		passed += ExpressionNodeTest.test_simple_expression();
-		passed += ExpressionNodeTest.test_variable_name_expression();
-		count+=3;
-
-		passed += FloatConstNodeTest.test1();
-		passed += FloatConstNodeTest.test2();
-		count+=2;
-
-		passed += SimpleVariableNodeTest.test_parse_simple_indexed_variable();
-		passed += SimpleVariableNodeTest.test_parse_simple_variable();
+		passed += stmt_test_assignment_statement_with_method_call();
+		passed += stmt_test_assignment_statement_with_struct_access();
 		count += 2;
 
-		//typenodes
-		passed += BasicTypeWrappedNodeTest.test_type_parsing2();
-		passed += BasicTypeWrappedNodeTest.test_type_parsing_simple_type();
-		passed += BasicTypeWrappedNodeTest.test_type_parsing_complicated();
-		passed += BasicTypeWrappedNodeTest.test_type_parsing_basic_type_wrapped_node();
-		count+=4;
+		//upperscopes
+		passed += method_test_can_parse_method_with_arguments();
+		passed += method_test_can_parse_method_with_subroutine_argument();
+		passed += method_test_can_parse_method_without_arguments();
+		passed += method_test_can_parse_subroutine();
+		passed += method_test_parse_methodnode_with_struct_access_statements();
+		count += 6;
 
-		passed += SimpleTypeNodeTest.test_typenode_parsing();
-		passed += SimpleTypeNodeTest.test_typenode_parsing_anytype();
-		passed += SimpleTypeNodeTest.test_typenode_parsing_fails();
-		count+=3;
+	passed += arrayconst_test_array_multiple_elements();
+	passed += arrayconst_test_empty_array();
+	passed += arrayconst_test_simple_array();
+	count+=3;
 
-		passed += SubroutineTypeNodeTest.test_subroutine_type_parsing_subroutine_with_side_effects();
-		passed += SubroutineTypeNodeTest.test_subroutine_type_parsing_subroutine_with_subroutine_argument();
-		passed += SubroutineTypeNodeTest.test_subroutine_type_parsing_subroutine_without_side_effects();
-		passed += SubroutineTypeNodeTest.test_typename();
-		passed += SubroutineTypeNodeTest.test_typename_subroutine_return_type();
-		count+=5;
+	passed += declarg_test_parse_declared_argument();
+	count++;
 
-		System.out.println(String.format("passed %d of %d ",passed,count));
-	}
+	passed += structmember_test_can_parse_struct_member();
+	count++;
 
-	public static int test_can_parse_some_class() throws Exception {
-		System.out.println("test_can_parse_some_class");
+	passed += term_test_simple_term();
+	passed += term_test_variable_term();
+	count+=2;
 
-		final TokenList tokens = ParserPhases.makeTokenList(
-				"fn main ()~>PInt {" +
-							"println(1);" +
-							"return 0;" +
-						"}",
-				false
-		);
+	passed += variable_test_parse_index_access();
+	passed += variable_test_parse_struct_member_access();
+	passed += variable_test_parse_struct_member_access_and_index_access();
+	count  += 3;
 
+	//terminal
+	passed += boolconst_test_parse_bool_constant_node();
+	passed += charconst_test_parse_char_constant_node();
+	passed += charconst_test_parse_char_constant_node_newline();
+	count+=3;
 
-		try {
-			AST_Whole_Program astWholeProgram = new AST_Whole_Program(tokens, "Main", false);
-			return 1;
-		}catch (Exception e){
-			return 0;
-		}
-	}
+	passed += expr_recognize_string_constant_expression();
+	passed += expr_test_simple_expression();
+	passed += expr_test_variable_name_expression();
+	count+=3;
 
-	public static int test_can_parse_some_class2() throws Exception {
-		System.out.println("test_can_parse_some_class2");
+	passed += floatconst_test1();
+	passed += floatconst_test2();
+	count+=2;
 
-		final TokenList tokens = ParserPhases.makeTokenList(
-				"fn main ()~>PInt {" +
+	passed += simplevar_test_parse_simple_indexed_variable();
+	passed += simplevar_test_parse_simple_variable();
+	count += 2;
 
-						"x=3;" +
+	//typenodes
+	passed += basictypewrapped_test_type_parsing_simple_type();
+	count+=1;
 
-						"if(x<5){" +
-						"println(\"x<5\");" +
-						"}" +
+	passed += simpletype_test_typenode_parsing();
+	passed += simpletype_test_typenode_parsing_anytype();
+	passed += simpletype_test_typenode_parsing_fails();
+	count+=3;
 
-						"return 0;" +
-						"}",
-				false);
-		//System.out.println(tokens.toString());
+	passed += subrtype_test_subroutine_type_parsing_subroutine_with_side_effects();
+	passed += subrtype_test_subroutine_type_parsing_subroutine_with_subroutine_argument();
+	passed += subrtype_test_subroutine_type_parsing_subroutine_without_side_effects();
+	passed += subrtype_test_typename();
+	passed += subrtype_test_typename_subroutine_return_type();
+	count+=5;
 
-		try {
-			final AST_Whole_Program astWholeProgram = new AST_Whole_Program(tokens, "Main", false);
-			return 1;
-		}catch (Exception e){
-			return 0;
-		}
-	}
-
-	public static int test_can_parse_struct_access() throws Exception {
-		System.out.println("test_can_parse_struct_access");
-
-		final TokenList tokens = ParserPhases.makeTokenList(
-
-				"struct MyStruct{"
-						+ "PInt a"
-						+ "}"
-
-						+ "fn main ()~>PInt {"
-						+ "x=flip(y);"
-						+ "x.a=3;"
-
-						+ "}",
-				false);
-
-		final AST_Whole_Program astWholeProgram = new AST_Whole_Program(tokens, "Main", false);
-
-		boolean assrt = 0 == tokens.size(); //all tokens should have been consumed
-
-		return (assrt)?1:0;
-	}
+	cout << "passed " << passed << "of " << count << endl;;
 }

@@ -14,7 +14,7 @@ Identifier::Identifier(TokenList* tokens, bool debug) {
 
 	if(debug){
 		cout << "Identifier(...)" << endl;
-		cout << "from " << tokens->code() << endl;
+		cout << "from: " << tokens->code() << endl;
 	}
 
 	Token token = tokens->get(0);

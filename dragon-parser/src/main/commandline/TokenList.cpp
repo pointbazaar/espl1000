@@ -29,8 +29,20 @@ TokenList::TokenList(string path) {
 	this->relPath = path;
 }
 
+TokenList::TokenList() {
+	this->relPath = "/dev/null";
+}
+
 vector<Token> TokenList::getTokens() {
 	return this->tokens;
+}
+
+void TokenList::add(int token_kind, string token_value){
+	this->tokens.push_back(Token(token_kind,token_value));
+}
+
+void TokenList::add(int token_kind){
+	this->tokens.push_back(Token(token_kind));
 }
 
 void TokenList::add(Token token) {

@@ -4,7 +4,7 @@
 #include "../parsing/AST_Whole_Program.hpp"
 #include "../parsing/Namespace.hpp"
 #include "../parsing/Method.hpp"
-#include "../parsing/DeclaredArg.hpp"
+#include "../parsing/DeclArg.hpp"
 #include "../parsing/BoolConst.hpp"
 #include "../parsing/CharConst.hpp"
 #include "../parsing/Expr.hpp"

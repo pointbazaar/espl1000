@@ -147,59 +147,6 @@ void printHelp() {
 		
 }
 
-TokenList makeTokenListByCallingLexer(string file, bool debug) {
-
-	// - call dragon-lexer with the filename
-	// - read its output file, the tokens, put them in a TokenList
-
-	string call = ((debug)?"dragon-lexer-debug ":"dragon-lexer ") + file;
-
-	if (debug) {
-		cout << call << endl;
-	}
-
-	//TODO: think about this later, 
-	//when it compiles again
-
-	/*
-	Process proc = Runtime.getRuntime().exec(call);
-	proc.waitFor();
-
-	if (debug) {
-		cout << "stdout: " << endl;
-		BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-		string s = null;
-		while ((s = stdInput.readLine()) != null) {
-			cout << s << endl;
-		}
-	}
-
-	if (debug) {
-		cout << "stderr: " << endl;
-		BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-		string s2 = null;
-		while ((s2 = stdError.readLine()) != null) {
-			cout << s2 << endl;
-		}
-	}
-
-	if (proc.exitValue() != 0) {
-		throw ("dragon-lexer exit with nonzero exit code: " + proc.exitValue());
-	}
-
-
-	string dirname = file.getParent();
-	if (dirname == null) {
-		dirname = ".";
-	}
-	string path = (dirname + "/." + file + ".tokens");
-	if(debug) {
-		cout << "read from: " + path << endl;
-	}
-	*/
-	return readTokensFromTokensFile(file,debug);
-}
-
 TokenList readTokensFromTokensFile(string tokensFile, bool debug){
 
 	string fileNameWithoutPath = tokensFile;
@@ -220,27 +167,5 @@ TokenList readTokensFromTokensFile(string tokensFile, bool debug){
 		cout << "done recognizing " << tks.size() << " tokens" << endl;
 	}
 	return tks;
-}
-
-TokenList makeTokenList(string code,bool debug) {
-
-	//makes token list from a code
-	//randomize the file somewhat, so that the tests can be run in parallel.
-	//this will fill up the disk, but it is in /tmp
-	//so it will be deleted on restart?
-
-	int r = rand() % 1000;
-	string path = ((string)"/tmp/temp") + to_string(r) + (string)(".dg");
-
-	if(debug) {
-		cout << "write to: " << path << endl;
-	}
-
-	ofstream outfile;
-	outfile.open(path, ios::out);
-	outfile << code;
-	outfile.close();
-
-	return makeTokenListByCallingLexer(path, debug);
 }
 

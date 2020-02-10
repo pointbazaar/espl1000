@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-class DeclaredArg;
+class DeclArg;
 class Stmt;
 class Type;
 #include "../commandline/TokenList.hpp"
@@ -19,7 +19,7 @@ public:
 	bool hasSideEffects;
 	Type* returnType;
 	std::string methodName;
-	std::vector<DeclaredArg*> arguments;
+	std::vector<DeclArg*> arguments;
 	std::vector<Stmt*> statements;
 };
 

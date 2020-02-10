@@ -22,8 +22,12 @@ public:
 	TokenList();
 
 	vector<Token> getTokens();
+	
 	void add(Token token);
+	void add(int token_kind);
+	void add(int token_kind, string token_value);
 	void addAll(vector<Token> tokens);
+
 	void consume(int n);
 
 	bool startsWith(Token itk);

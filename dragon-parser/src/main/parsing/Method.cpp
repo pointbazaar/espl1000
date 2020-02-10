@@ -8,7 +8,7 @@
 #include "../commandline/Token.hpp"
 #include "Identifier.hpp"
 #include "statements/Stmt.hpp"
-#include "DeclaredArg.hpp"
+#include "DeclArg.hpp"
 
 using namespace std;
 
@@ -37,7 +37,7 @@ Method::Method(TokenList tokens, bool debug) {
 		if (this->arguments.size() > 0) {
 			copy.expect(Token(COMMA));
 		}
-		this->arguments.push_back(new DeclaredArg(&copy, debug));
+		this->arguments.push_back(new DeclArg(&copy, debug));
 		next = copy.get(0);
 	}
 

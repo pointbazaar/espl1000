@@ -51,7 +51,6 @@ Namespace::Namespace(
 	if (copy->size() > 0) {
 
 		Token next_subr = copy->get(0);
-		cout << next_subr.kind << endl;
 
 		while (next_subr.kind == FN) {
 			this->methods.push_back(Method(*copy, debug));

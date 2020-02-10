@@ -4,7 +4,7 @@ FLAGS := -O0 -march=native -g --std=c++17
 
 all: dragon-parser
 
-dragon-parser: commandline parsing typenodes statements
+dragon-parser: commandline parsing typenodes statements tests
 	g++ $(FLAGS) -o dragon-parser *.o
 
 commandline: src/main/commandline/ASTWriter.cpp src/main/commandline/Token.cpp src/main/commandline/Parser.cpp src/main/commandline/TokenList.cpp src/main/commandline/TokenReader.cpp
@@ -18,3 +18,7 @@ typenodes: src/main/parsing/typenodes/*.cpp
 
 statements: src/main/parsing/statements/*.cpp
 	g++ $(FLAGS) -c src/main/parsing/statements/*.cpp
+
+tests:	src/test/ParserTest.cpp src/test/astnodes/*.cpp
+	g++ $(FLAGS) -c src/test/ParserTest.cpp src/test/astnodes/*.cpp
+	

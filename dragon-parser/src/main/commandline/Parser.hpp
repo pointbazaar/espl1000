@@ -13,7 +13,7 @@
 #include "TokenList.hpp"
 #include "../parsing/Namespace.hpp"
 #include "../parsing/Method.hpp"
-#include "../parsing/DeclaredArg.hpp"
+#include "../parsing/DeclArg.hpp"
 #include "../parsing/statements/Stmt.hpp"
 
 using namespace std;
@@ -29,9 +29,7 @@ void build_ast_file(string tokensFile, string astJsonFile, bool debug);
 
 void main_inner(string tokensFile, bool debug);
 
-TokenList makeTokenListByCallingLexer 	(string file, bool debug);
 TokenList readTokensFromTokensFile 		(string tokensFile, bool debug);
-TokenList makeTokenList 				(string code,bool debug);
 
 void printHelp();
 
