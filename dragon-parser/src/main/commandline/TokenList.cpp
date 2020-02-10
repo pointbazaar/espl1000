@@ -97,10 +97,10 @@ void TokenList::expect(Token token) {
 		
 		<< " (" << this->head().kind << ")"
 
-		<< this->toSourceCodeFragment()
+		<< this->code()
 			.substr(
 				0, 
-				min((int)this->toSourceCodeFragment().size(), 100)
+				min((int)this->code().size(), 100)
 			)
 
 		<<  "Parsing Error: \n"
@@ -136,7 +136,7 @@ Token TokenList::head() {
 	return this->get(0);
 }
 
-string TokenList::toSourceCodeFragment() {
+string TokenList::code() {
 	//it should be a limited fragment 
 
 	stringstream str;
@@ -144,6 +144,7 @@ string TokenList::toSourceCodeFragment() {
 	for(Token tk : this->tokens){
 		if(i++ < 10){
 			str << tk.value;
+			str << "(" << tk.kind << ")";
 			str << " ";
 		}
 	}

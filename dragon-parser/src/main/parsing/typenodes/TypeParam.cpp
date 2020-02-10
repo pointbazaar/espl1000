@@ -20,7 +20,8 @@ TypeParam::TypeParam(TokenList tokens, bool debug){
 		this->typeParameterIndex = stoi(token.value);
 		tokens.consume(1);
 	} else {
-		throw "could not read type parameter node";
+		cout << "Error: could not read type parameter" << endl;
+		throw string("could not read type parameter node");
 	}
 }
 

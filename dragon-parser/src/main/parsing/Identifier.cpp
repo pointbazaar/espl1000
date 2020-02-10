@@ -14,7 +14,7 @@ Identifier::Identifier(TokenList* tokens, bool debug) {
 
 	if(debug){
 		cout << "Identifier(...)" << endl;
-		cout << "from " << tokens->toSourceCodeFragment() << endl;
+		cout << "from " << tokens->code() << endl;
 	}
 
 	Token token = tokens->get(0);
@@ -30,7 +30,7 @@ Identifier::Identifier(TokenList* tokens, bool debug) {
 		<< " in " << tokens->relPath << ":" 
 		<< token.lineNumber
 		<< " in context '" 
-		<< tokens->toSourceCodeFragment()
+		<< tokens->code()
 		<< "'";
 
 		cout << msg.str() << endl;

@@ -16,7 +16,7 @@ Method::Method(TokenList tokens, bool debug) {
 
 	if (debug) {
 		cout << "Method(...)" << endl;
-		cout << "from: " << endl << tokens.toSourceCodeFragment() << "" << endl;
+		cout << "from: " << tokens.code() << "" << endl;
 	}
 
 	TokenList copy = tokens.copy();
@@ -49,7 +49,7 @@ Method::Method(TokenList tokens, bool debug) {
 
 	cout << "7" << endl;
 
-	cout << copy.toSourceCodeFragment() << endl;
+	cout << copy.code() << endl;
 	
 	this->returnType = new Type(copy,debug);
 

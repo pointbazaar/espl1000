@@ -14,7 +14,7 @@ DeclaredArg::DeclaredArg(TokenList* tokens, bool debug) {
 
 	if(debug){
 		cout << "DeclaredArg(...)" << endl;
-		cout << "from " << tokens->toSourceCodeFragment() << endl;
+		cout << "from " << tokens->code() << endl;
 	}
 
 	TokenList copy = tokens->copy();

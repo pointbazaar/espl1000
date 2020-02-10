@@ -25,6 +25,7 @@ Type::Type(TokenList tokens, bool debug){
 
 	if(debug){
 		cout << "Type(...)" << endl;
+		cout << "from: " << tokens.code() << endl;
 	}
 
 	TokenList copy = tokens.copy();

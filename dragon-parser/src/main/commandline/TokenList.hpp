@@ -41,7 +41,7 @@ public:
 	int size();
 
 
-	string toSourceCodeFragment();
+	string code();
 };
 
 #endif

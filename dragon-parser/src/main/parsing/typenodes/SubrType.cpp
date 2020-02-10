@@ -45,13 +45,7 @@ SubrType::SubrType(TokenList tokens, bool debug){
 
 	copy.expect(Token(RPARENS));
 
-	if (copy.head().kind == ARROW) {
-		Token arrow = copy.head();
-		this->hasSideEffects = false;//!arrow.is_functional;
-		copy.consume(1);
-	} else {
-		throw "expected an arrow token here";
-	}
+	copy.expect(Token(ARROW));
 
 	this->returnType = new Type(copy,debug);
 

@@ -14,17 +14,14 @@ SimpleType::SimpleType(TokenList tokens, bool debug) {
 		cout << "SimpleType(...)" << endl;
 	}
 
-	if (tokens.size() == 0) {
-		throw "exception";
-	}
-
 	Token token = tokens.get(0);
 	if (token.kind == TYPEIDENTIFIER) {
 		this->typeName = token.value;
 	} else if (token.kind == ANYTYPE) {
 		this->typeName = "#";
 	} else {
-		throw "could not read simple type identifier";
+		cout << "Error: could not read simple type identifier" << endl;
+		throw string("could not read simple type identifier");
 	}
 	tokens.consume(1);
 }
@@ -32,5 +29,3 @@ SimpleType::SimpleType(TokenList tokens, bool debug) {
 SimpleType::SimpleType(std::string typeName) {
 	this->typeName = typeName;
 }
-
-

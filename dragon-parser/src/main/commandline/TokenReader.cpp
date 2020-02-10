@@ -15,6 +15,7 @@ optional<Token> recognizeToken(string tkn, bool debug) {
 	//everything being seperated by a space, and the whole line not
 	//having any spaces in front or at the back is important to keep parsing simple.
 	if (debug) {
+		cout << "recognizeToken(...)" << endl;
 		cout << "recognize: " << tkn << endl;
 	}
 

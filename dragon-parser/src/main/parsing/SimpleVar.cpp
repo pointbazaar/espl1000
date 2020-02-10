@@ -44,7 +44,7 @@ SimpleVar::SimpleVar(TokenList tokens, bool debug) {
 		<< ": could not read variable name. token was " 
 		<< token.value
 		<< " from context  '" 
-		<< tokens.toSourceCodeFragment()
+		<< tokens.code()
 		<< "'";
 
 		throw msg.str();

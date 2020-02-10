@@ -83,7 +83,8 @@ void build_ast_file(string tokensFile, string astJsonFile, bool debug) {
 
 	TokenList tokens = readTokensFromTokensFile(tokensFile,debug);
 
-	cout << tokens.toSourceCodeFragment() << endl;
+	cout << "Tokens as Source Code Fragment : " << endl;
+	cout << tokens.code() << endl << endl;
 
 	//get just the namespace name from .FILENAME.dg.tokens
 	string namespaceName = tokensFile.substr(1,string(tokensFile).size() - string(".dg.tokens").size());

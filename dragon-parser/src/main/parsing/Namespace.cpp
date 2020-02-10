@@ -17,8 +17,7 @@ Namespace::Namespace(
 
 	if (debug) {
 		cout << "Namespace(...)" << endl;
-		cout << "from: " + tokens->toSourceCodeFragment() << endl;
-		cout << tokens->size() << endl;
+		cout << "from: " + tokens->code() << endl;
 	}
 
 	this->srcPath = "/dev/null";
@@ -48,7 +47,7 @@ Namespace::Namespace(
 	//to make parsing easier.
 	//this does not add much boilerplate to the syntax
 	//and would probably make the parser faster
-	cout << copy->size() << endl;
+	
 	if (copy->size() > 0) {
 
 		Token next_subr = copy->get(0);
