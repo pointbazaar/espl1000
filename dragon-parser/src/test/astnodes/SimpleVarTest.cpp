@@ -9,7 +9,11 @@
 #include "../../main/parsing/Expr.hpp"
 #include "../../main/parsing/Term.hpp"
 
+#include <stdio.h>
+
 int simplevar_test_parse_simple_variable() {
+
+	printf("simplevar_test_parse_simple_variable()\n");
 
 	TokenList list = TokenList();
 	list.add(ID,"x");
@@ -21,6 +25,9 @@ int simplevar_test_parse_simple_variable() {
 }
 
 int simplevar_test_parse_simple_indexed_variable() {
+
+	printf("simplevar_test_parse_simple_indexed_variable()\n");
+
 	TokenList list = TokenList();
 	list.add(ID,"x");
 	list.add(LBRACKET,"[");

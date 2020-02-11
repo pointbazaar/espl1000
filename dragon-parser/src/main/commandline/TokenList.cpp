@@ -5,6 +5,8 @@
 #include <sstream>
 #include <algorithm>
 
+#include <unistd.h>
+
 //project headers
 #include "TokenList.hpp"
 #include "TokenKeys.hpp"
@@ -99,7 +101,33 @@ void TokenList::expect(Token token) {
 	} else {
 		stringstream str;
 
-		str << "Syntax Error " << "in "<< this->relPath << ":" << this->head().lineNumber  <<": expected: "
+		string reset = "\u001b[0m";
+
+		bool tty = isatty(STDOUT_FILENO);
+		//\u001b[36m
+		if(tty){
+			str << "\u001b[31m";	//RED
+		}
+
+		str << "Syntax Error ";
+
+		if(tty){
+			str << reset;	
+		}
+
+		str << "in ";
+
+		if(tty){
+			str << "\u001b[36m";	//CYAN
+		}
+
+		str << this->relPath ;
+
+		if(tty){
+			str << reset;
+		}
+
+		str << ":" << this->head().lineNumber  <<": expected: "
 		
 		<< token.value
 		

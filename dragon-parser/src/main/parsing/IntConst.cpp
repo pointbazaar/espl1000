@@ -7,13 +7,13 @@
 
 using namespace std;
 
-IntConst::IntConst(TokenList tokens, bool debug) {
+IntConst::IntConst(TokenList* tokens, bool debug) {
 
 	if(debug){
 		cout << "IntConst(...)" << endl;
 	}
 
-	TokenList copy = TokenList(tokens);
+	TokenList copy = TokenList(*tokens);
 
 	if (copy.get(0).kind == OPKEY) {
 
@@ -30,6 +30,6 @@ IntConst::IntConst(TokenList tokens, bool debug) {
 	} else {
 		throw string("could not read IntConst node");
 	}
-	tokens.set(copy);
+	tokens->set(copy);
 }
 

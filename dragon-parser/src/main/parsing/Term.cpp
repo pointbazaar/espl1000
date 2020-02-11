@@ -38,7 +38,7 @@ Term::Term(TokenList tokens, bool debug) {
 		copy.set(copy2);
 	} catch (string e0) {
 		try {
-			this->m2 = new IntConst(copy,debug);
+			this->m2 = new IntConst(&copy,debug);
 		} catch (string e1) {
 			try {
 				//a string constant is syntatic sugar.

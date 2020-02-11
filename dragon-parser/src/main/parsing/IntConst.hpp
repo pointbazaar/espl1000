@@ -6,7 +6,7 @@
 class IntConst {
 
 public:
-	IntConst(TokenList tokens, bool debug);
+	IntConst(TokenList* tokens, bool debug);
 
 	int number;
 };
