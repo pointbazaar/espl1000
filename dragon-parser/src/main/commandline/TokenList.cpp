@@ -90,8 +90,7 @@ void TokenList::expect(Token token) {
 	//otherwise throws an exception
 	
 	if (this->size() == 0) {
-		cout << "Error: no tokens" << endl;
-		throw "no tokens";
+		throw string("Error: no tokens");
 	}
 
 	if (this->startsWith(token)) {
@@ -99,7 +98,7 @@ void TokenList::expect(Token token) {
 	} else {
 		stringstream str;
 
-		str << "\t expected: "
+		str << "Error:\t expected: "
 		<< token.value
 		
 		<< " (" << token.kind << ")"
@@ -112,9 +111,9 @@ void TokenList::expect(Token token) {
 		<< this->code()
 		<< endl
 		<<  "\tParsing Error in "
-				<< this->relPath << ":" << this->head().lineNumber;
-
-		cout << "Error: " << str.str() << endl;
+		<< this->relPath << ":" << this->head().lineNumber
+		<< endl;
+		
 		throw str.str();
 	}
 }
