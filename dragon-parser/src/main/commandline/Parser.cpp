@@ -23,6 +23,7 @@
 #include "../parsing/statements/Stmt.hpp"
 #include "../parsing/typenodes/Type.hpp"
 #include "ASTWriter.hpp"
+#include "../../test/ParserTest.hpp"
 
 using namespace std;
 
@@ -60,8 +61,8 @@ int main(int argc, char** argv){
 		if(help) {
 			printHelp();
 		}else if(test){
-			//TODO: re-enable later
-			//ParserTest.test_all();
+			
+			test_all();
 		}else{
 			if(filenames.size() != 1){
 				throw "expected exactly 1 filename argument.";

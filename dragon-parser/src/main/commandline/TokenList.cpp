@@ -99,30 +99,20 @@ void TokenList::expect(Token token) {
 	} else {
 		stringstream str;
 
-		str << "\t expected:"
-		<< wrap(token.value, "'")
+		str << "\t expected: "
+		<< token.value
 		
 		<< " (" << token.kind << ")"
 
-		<< "\t actual:"
-		<< wrap(this->head().value, "'")
+		<< "\t actual: "
+		<< this->head().value
 		
 		<< " (" << this->head().kind << ")"
-
+		<< "     "
 		<< this->code()
-			.substr(
-				0, 
-				min((int)this->code().size(), 100)
-			)
-
-		<<  "Parsing Error: \n"
-				//<< "\t" << expectedTokenMessage << "\n"
-				//<< "\t" << actualTokenMessage << "\n"
-				//<< "in '" << sourceCodeFragment << "'\n"
-				<< "in " 
-				<< this->relPath 
-				<< ":" 
-				<< this->head().lineNumber;
+		<< endl
+		<<  "\tParsing Error in "
+				<< this->relPath << ":" << this->head().lineNumber;
 
 		cout << "Error: " << str.str() << endl;
 		throw str.str();
@@ -156,9 +146,17 @@ string TokenList::code() {
 	for(Token tk : this->tokens){
 		if(i++ < 10){
 			str << tk.value;
-			str << "(" << tk.kind << ")";
-			str << " ";
 		}
 	}
+	str << "    ";
+	str << "[";
+	i=0;
+	for(Token tk : this->tokens){
+		if(i++ < 10){
+			str  << tk.kind;
+			str << ",";
+		}
+	}
+	str << "]";
 	return str.str();
 }

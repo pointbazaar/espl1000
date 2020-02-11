@@ -36,7 +36,7 @@ Op::Op(TokenList tokens, bool debug){
 			}else if(opl.value.compare("=") == 0 && opr.value.compare("=")){
 				this->op = "==";
 			}else{
-				throw "could not make operator";
+				throw string("could not make operator");
 			}
 			copy.consume(2);
 		}else{
@@ -44,7 +44,7 @@ Op::Op(TokenList tokens, bool debug){
 			copy.consume(1);
 		}
 	}else{
-		throw "could not recognize operator, got : " + tkn.value;
+		throw string("could not recognize operator, got : ") + tkn.value;
 	}
 
 	tokens.set(copy);

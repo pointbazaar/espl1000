@@ -7,6 +7,7 @@ class CharConst;
 class IntConst;
 class Variable;
 class MethodCall;
+class FloatConst;
 
 #include "../commandline/TokenList.hpp"
 
@@ -25,7 +26,7 @@ public:
 	MethodCall* m4 = NULL;
 	Expr* m5 = NULL;
 	Variable* m6 = NULL;
-
+	FloatConst* m7 = NULL;
 };
 
 #endif

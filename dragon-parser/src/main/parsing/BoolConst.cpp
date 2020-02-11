@@ -25,12 +25,12 @@ struct BoolConst* makeBoolConst(TokenList tokens, bool debug) {
 		}else  if (tk.value.compare("false")==0){
 			res->boolValue=true;
 		}else{
-			throw "could not read Bool Constant node";
+			throw string("could not read Bool Constant node");
 		}
 		
 		copy.consume(1);
 	} else {
-		throw "could not read Bool Constant node";
+		throw string("could not read Bool Constant node");
 	}
 
 	tokens.set(copy);

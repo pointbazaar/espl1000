@@ -9,6 +9,7 @@
 #include "CharConst.hpp"
 #include "IntConst.hpp"
 #include "BoolConst.hpp"
+#include "FloatConst.hpp"
 #include "Expr.hpp"
 #include "Variable.hpp"
 #include "statements/MethodCall.hpp"
@@ -28,9 +29,7 @@ Term::Term(TokenList tokens, bool debug) {
 	TokenList copy = TokenList(tokens);
 
 	try {
-		//TODO: re-insert later on
-		//this->termNode = FloatConstNode(copy);
-		throw "later";
+		this->m7 = new FloatConst(&copy,debug);
 	} catch (string e0) {
 		try {
 			this->m2 = new IntConst(copy,debug);
@@ -59,7 +58,7 @@ Term::Term(TokenList tokens, bool debug) {
 					copy.consume(1);
 				} else {
 				*/
-					throw "could not read stringConstant syntatic sugar";
+					throw string("could not read stringConstant syntatic sugar");
 				//}
 			} catch (string e2) {
 				try {

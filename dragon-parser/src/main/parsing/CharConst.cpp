@@ -19,7 +19,7 @@ CharConst::CharConst(TokenList tokens, bool debug) {
 		this->content = token.value.at(0);
 		tokens.consume(1);
 	} else {
-		throw ("could not read charConstant node");
+		throw string("could not read charConstant node");
 	}
 
 }
