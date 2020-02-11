@@ -26,7 +26,7 @@ MethodCall::MethodCall(TokenList tokens,bool debug) {
 		if (arguments.size() > 0) {
 			copy.expect(Token(COMMA));
 		}
-		this->arguments.push_back(new Expr(copy,debug));
+		this->arguments.push_back(makeExpr(&copy,debug));
 		next = copy.get(0);
 	}
 

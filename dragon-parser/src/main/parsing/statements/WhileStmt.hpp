@@ -13,7 +13,7 @@ class WhileStmt  {
 public:
 	WhileStmt(TokenList tokens,bool debug);
 
-	Expr* condition;
+	struct Expr* condition;
 	vector<Stmt*> statements;
 };
 

@@ -15,7 +15,7 @@ class Term {
 
 public:
 
-	Term(Expr* myexpr);
+	Term(struct Expr* myexpr);
 	
 	Term(TokenList tokens, bool debug);
 
@@ -24,7 +24,7 @@ public:
 	IntConst* m2 = NULL;
 	CharConst* m3 = NULL;
 	MethodCall* m4 = NULL;
-	Expr* m5 = NULL;
+	struct Expr* m5 = NULL;
 	Variable* m6 = NULL;
 	FloatConst* m7 = NULL;
 };

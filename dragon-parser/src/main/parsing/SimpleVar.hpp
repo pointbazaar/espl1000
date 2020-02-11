@@ -14,7 +14,7 @@ public:
 	SimpleVar(TokenList tokens, bool debug);
 
 	std::string name;
-	std::optional<Expr*> indexOptional;
+	std::optional<struct Expr*> indexOptional;
 };
 
 #endif

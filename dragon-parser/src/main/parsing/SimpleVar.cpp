@@ -28,9 +28,9 @@ SimpleVar::SimpleVar(TokenList tokens, bool debug) {
 
 		//it could have an index
 		if (copy.size() > 0 && copy.get(0).kind == LBRACKET) {
-			copy.expect(Token(LBRACKET));
-			this->indexOptional = optional(new Expr(copy,debug));
-			copy.expect(Token(RBRACKET));
+			copy.expect(Token(LBRACKET,"["));
+			this->indexOptional = optional(makeExpr(&copy,debug));
+			copy.expect(Token(RBRACKET,"]"));
 		} else {
 			this->indexOptional = nullopt;
 			//pass, this assignment has no index to it

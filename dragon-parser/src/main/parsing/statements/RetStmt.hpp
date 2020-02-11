@@ -8,7 +8,7 @@ class Expr;
 class RetStmt{
 
 public:
-	Expr* returnValue;
+	struct Expr* returnValue;
 	RetStmt(TokenList list,bool debug);
 };
 

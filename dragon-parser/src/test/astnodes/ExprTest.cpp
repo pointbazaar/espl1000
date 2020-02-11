@@ -11,7 +11,7 @@ int expr_test_simple_expression() {
 	try {
 		TokenList* list = new TokenList();
 		list->add(INTEGER,"4");
-		Expr* expr = new Expr(*list,false);
+		struct Expr* expr = makeExpr(list,false);
 
 		return 1;
 	}catch (string e){
@@ -25,7 +25,7 @@ int expr_test_variable_name_expression() {
 		TokenList* list = new TokenList();
 
 		list->add(ID,"x");
-		Expr* expr = new Expr(*list,false);
+		struct Expr* expr = makeExpr(list,false);
 		return 1;
 	}catch (string e){
 		return 0;
@@ -39,7 +39,7 @@ int expr_recognize_string_constant_expression() {
 
 		tokens->add(STRINGCONST,"hello");
 
-		Expr* expr = new Expr(*tokens,false);
+		struct Expr* expr = makeExpr(tokens,false);
 		return 1;
 	}catch (string e){
 		return 0;

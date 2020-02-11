@@ -14,7 +14,7 @@ class IfStmt{
 public:
 	IfStmt(TokenList tokens,bool debug);
 
-	Expr* condition;
+	struct Expr* condition;
 	vector<Stmt*> statements;
 	vector<Stmt*> elseStatements;
 };

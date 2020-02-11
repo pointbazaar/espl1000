@@ -14,7 +14,7 @@ public:
 	MethodCall(TokenList tokens,bool debug);
 	
 	string methodName;
-	vector<Expr*> arguments;
+	vector<struct Expr*> arguments;
 };
 
 #endif

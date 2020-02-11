@@ -42,16 +42,16 @@ void write(Variable m, ofstream* file){
 void write(SimpleVar m, ofstream* file){
 	*file << m.name << "\t";
 	if(m.indexOptional.has_value()){
-		write(*(m.indexOptional.value()),file);
+		write(m.indexOptional.value(),file);
 	}else{
 		*file << "NULL" << "\t";
 	}
 }
-void write(Expr m, ofstream* file){
-	write(*(m.term1),file);
-	if(m.op.has_value()){
-		write(*(m.op.value()),file);
-		write(*(m.term2.value()),file);
+void write(struct Expr* m, ofstream* file){
+	write(*(m->term1),file);
+	if(m->op != NULL){
+		write(*(m->op),file);
+		write(*(m->term2),file);
 	}else{
 		*file << "NULL" << "\t";
 	}
@@ -61,7 +61,7 @@ void write(Term m, ofstream* file){
 	if(m.m2 != NULL){ *file << "2" << "\t"; write(*(m.m2),file); }
 	if(m.m3 != NULL){ *file << "3" << "\t"; write(*(m.m3),file); }
 	if(m.m4 != NULL){ *file << "4" << "\t"; write(*(m.m4),file); }
-	if(m.m5 != NULL){ *file << "5" << "\t"; write(*(m.m5),file); }
+	if(m.m5 != NULL){ *file << "5" << "\t"; write(m.m5,file); }
 	if(m.m6 != NULL){ *file << "6" << "\t"; write(*(m.m6),file); }
 }
 void write(BoolConst m, ofstream* file){
@@ -87,16 +87,16 @@ void write(Stmt m, ofstream* file){
 	if(m.m5 != NULL){*file << "5" << "\t"; write(*m.m5,file); }
 }
 void write(IfStmt m, ofstream* file){
-	write(*(m.condition),file);
+	write(m.condition,file);
 	for(Stmt* s : m.statements){ write(*s,file); }
 	for(Stmt* s2 : m.elseStatements){ write(*s2,file); }
 }
 void write(WhileStmt m, ofstream* file){
-	write(*(m.condition),file);
+	write(m.condition,file);
 	for(Stmt* s : m.statements){ write(*s,file); }
 }
 void write(RetStmt m, ofstream* file){
-	write(*(m.returnValue),file);
+	write(m.returnValue,file);
 }
 void write(AssignStmt m, ofstream* file){
 	if(m.optTypeNode.has_value()){
@@ -105,11 +105,11 @@ void write(AssignStmt m, ofstream* file){
 		*file << "NULL" << "\t";
 	}
 	write(*(m.variableNode),file);
-	write(*(m.expressionNode),file);
+	write(m.expressionNode,file);
 }
 void write(MethodCall m, ofstream* file){
 	*file << m.methodName << "\t";
-	for(Expr* e : m.arguments){ write(*e,file); }
+	for(struct Expr* e : m.arguments){ write(e,file); }
 }
 // --------- TYPENODES --------------
 void write(Type m, ofstream* file){

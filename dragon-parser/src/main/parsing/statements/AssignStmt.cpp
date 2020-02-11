@@ -35,7 +35,7 @@ AssignStmt::AssignStmt(TokenList tokens,bool debug) {
 
 	copy.expect(Token(OPKEY,"="));
 
-	this->expressionNode = new Expr(copy,debug);
+	this->expressionNode = makeExpr(&copy,debug);
 
 	copy.expect(Token(SEMICOLON));
 

@@ -16,7 +16,7 @@ RetStmt::RetStmt(TokenList tokens, bool debug){
 
 	copy.expect(Token(RETURN));
 
-	this->returnValue = new Expr(copy,debug);
+	this->returnValue = makeExpr(&copy,debug);
 
 	copy.expect(Token(SEMICOLON));
 

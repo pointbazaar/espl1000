@@ -20,7 +20,7 @@ IfStmt::IfStmt(TokenList tokens, bool debug) {
 
 	TokenList copy = TokenList(tokens);
 	copy.expect(Token(IF));
-	this->condition = new Expr(copy,debug);
+	this->condition = makeExpr(&copy,debug);
 	copy.expect(Token(LCURLY));
 
 	Token next = copy.get(0);

@@ -21,7 +21,7 @@ WhileStmt::WhileStmt(TokenList tokens, bool debug){
 
 	copy.expect(Token(WHILE));
 
-	this->condition = new Expr(copy,debug);
+	this->condition = makeExpr(&copy,debug);
 
 	copy.expect(Token(LCURLY));
 

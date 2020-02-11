@@ -23,9 +23,9 @@ int simplevar_test_parse_simple_variable() {
 int simplevar_test_parse_simple_indexed_variable() {
 	TokenList list = TokenList();
 	list.add(ID,"x");
-	list.add(LBRACKET);
+	list.add(LBRACKET,"[");
 	list.add(INTEGER,"0");
-	list.add(RBRACKET);
+	list.add(RBRACKET,"]");
 
 
 	SimpleVar* node = new SimpleVar(list,false);

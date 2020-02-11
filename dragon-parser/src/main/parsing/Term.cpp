@@ -16,7 +16,7 @@
 
 using namespace std;
 
-Term::Term(Expr* expr){
+Term::Term(struct Expr* expr){
 	this->m5 = expr;
 }
 
@@ -32,7 +32,7 @@ Term::Term(TokenList tokens, bool debug) {
 		TokenList copy2 = TokenList(copy);
 
 		copy2.expect(Token(LPARENS));
-		this->m5 = new Expr(copy2,debug);
+		this->m5 = makeExpr(&copy2,debug);
 		copy2.expect(Token(RPARENS));
 
 		copy.set(copy2);

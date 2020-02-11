@@ -10,11 +10,15 @@
 #include "Term.hpp"
 #include "Op.hpp"
 
-Expr::Expr(Term* term) {
-	this->term1 = term;
+struct Expr* makeExpr(Term* term) {
+	struct Expr* res = (struct Expr*)malloc(sizeof(struct Expr));
+	res->term1 = term;
+	res->op    = NULL;
+	res->term2 = NULL;
+	return res;
 }
 
-Expr::Expr(TokenList tokens, bool debug) {
+struct Expr* makeExpr(TokenList* tokens, bool debug) {
 
 	if(debug){
 		cout << "Expr(...)" << endl;
@@ -24,7 +28,7 @@ Expr::Expr(TokenList tokens, bool debug) {
 	vector<Op*> operatorNodes;
 	vector<Term*> termNodes;
 	// end of temporary containers
-	TokenList copy = tokens.copy();
+	TokenList copy = tokens->copy();
 	termNodes.push_back(new Term(copy,debug));
 	try {
 
@@ -43,23 +47,30 @@ Expr::Expr(TokenList tokens, bool debug) {
 		//pass
 	}
 
-	tokens.set(copy);
+	tokens->set(copy);
 
-	performTreeTransformation(operatorNodes,termNodes);
+	return performTreeTransformation(operatorNodes,termNodes);
 }
 
-Expr::Expr(Term* leftTerm, Op* op, Term* rightTerm) {
-	this->term1=leftTerm;
-	this->op=optional<Op*>(op);
-	this->term2=optional<Term*>(rightTerm);
+struct Expr* makeExpr(Term* leftTerm, Op* op, Term* rightTerm) {
+
+	struct Expr* res = (struct Expr*)malloc(sizeof(struct Expr));
+	res->term1 = leftTerm;
+	res->op    = op;
+	res->term2 = rightTerm;
+	return res;
 }
 
-void Expr::performTreeTransformation(
+struct Expr* performTreeTransformation(
 		vector<Op*> ops,
 		vector<Term*> terms
 ){
 	//transform the list into a tree, respecting operator precedence
 
+	struct Expr* res = (struct Expr*)malloc(sizeof(struct Expr));
+	res->term1 = NULL;
+	res->op    = NULL;
+	res->term2 = NULL;
 	/*
 	Operator Precedences (lower number means higher precedence)
 
@@ -109,7 +120,7 @@ void Expr::performTreeTransformation(
 		Term* leftTerm = terms.at(indexOfOp - ops.begin());
 		Term* rightTerm = terms.at((indexOfOp - ops.begin())+1);
 
-		Expr expr = Expr(leftTerm,opWithLargestPrecedence,rightTerm);
+		struct Expr* expr = makeExpr(leftTerm,opWithLargestPrecedence,rightTerm);
 
 		//simplify
 		vector<Term*>::iterator i1;
@@ -122,17 +133,19 @@ void Expr::performTreeTransformation(
 		ops.erase(i2);
 
 		//insert newly created expression
-		Term* ttmp = new Term(&expr);
+		Term* ttmp = new Term(expr);
 		vector<Term*>::iterator indexOfOpIt = terms.begin() + (indexOfOp - ops.begin());
 		terms.insert(indexOfOpIt,ttmp);
 	}
 
 	//now only 2 terms left
-	this->term1 = terms.at(0);
+	res->term1 = terms.at(0);
 
 	//in case of only one term
 	if(ops.size()>0) {
-		this->op = ops.at(0);
-		this->term2 = optional<Term*>(terms.at(1));
+		res->op = ops.at(0);
+		res->term2 = terms.at(1);
 	}
+
+	return res;
 }

@@ -7,6 +7,7 @@
 
 //project headers
 #include "TokenList.hpp"
+#include "TokenKeys.hpp"
 
 //this is to facilitate special features
 //which would be convenient in a token list for our compiler
@@ -98,7 +99,8 @@ void TokenList::expect(Token token) {
 	} else {
 		stringstream str;
 
-		str << "Error:\t expected: "
+		str << "Syntax Error " << "in "<< this->relPath << ":" << this->head().lineNumber  <<": expected: "
+		
 		<< token.value
 		
 		<< " (" << token.kind << ")"
@@ -109,9 +111,8 @@ void TokenList::expect(Token token) {
 		<< " (" << this->head().kind << ")"
 		<< "     "
 		<< this->code()
-		<< endl
-		<<  "\tParsing Error in "
-		<< this->relPath << ":" << this->head().lineNumber
+		
+		
 		<< endl;
 		
 		throw str.str();

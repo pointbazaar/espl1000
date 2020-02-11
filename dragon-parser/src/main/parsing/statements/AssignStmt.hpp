@@ -17,7 +17,7 @@ public:
 	
 	optional<Type*> optTypeNode;
 	Variable* variableNode;
-	Expr* expressionNode;
+	struct Expr* expressionNode;
 };
 
 #endif

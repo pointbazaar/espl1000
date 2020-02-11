@@ -1,7 +1,6 @@
 #ifndef EXPR
 #define EXPR
 
-#include <optional>
 #include <vector>
 
 class Op;
@@ -10,23 +9,22 @@ class Term;
 
 using namespace std;
 
-class Expr {
-
-public:
-	//DragonExpressionNode should be similar to jack expression
-	//an expression should be anything that returns a value or computes to a value
-
-	Expr(TokenList tkl, bool debug);
-	Expr(Term* myterm);
-	Expr(Term* leftTerm, Op* op, Term* rightTerm);
-
-	void performTreeTransformation(
-		vector<Op*> ops,
-		vector<Term*> terms
-	);
+struct Expr {
 
 	Term* term1 = NULL;
-	optional<Op*> op = nullopt;
-	optional<Term*> term2 = nullopt;
+
+	//these 2 may be NULL
+	Op* op = NULL;
+	Term* term2 = NULL;
 };
+
+
+//DragonExpressionNode should be similar to jack expression
+//an expression should be anything that returns a value or computes to a value
+
+struct Expr* makeExpr(TokenList* tkl, bool debug);
+struct Expr* makeExpr(Term* myterm);
+struct Expr* makeExpr(Term* leftTerm, Op* op, Term* rightTerm);
+struct Expr* performTreeTransformation(vector<Op*> ops,vector<Term*> terms);
+
 #endif
