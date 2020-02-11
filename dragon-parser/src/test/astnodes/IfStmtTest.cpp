@@ -10,13 +10,13 @@ int if_test1() {
 	TokenList* list = new TokenList();
 	list->add(IF);
 
-	list->add(LPARENS);
+	//list->add(LPARENS);
 
 	list->add(INTEGER, "5");
 	list->add(OPKEY, "<");
 	list->add(INTEGER, "3");
 
-	list->add(RPARENS);
+	//list->add(RPARENS);
 
 	list->add(LCURLY);
 
@@ -35,13 +35,13 @@ int if_test2() {
 
 		l->add(IF);
 
-		l->add(LPARENS);
+		//l->add(LPARENS);
 
 		l->add(ID,"x");
 		l->add(OPKEY,"<");
 		l->add(INTEGER,"5");
 
-		l->add(RPARENS);
+		//l->add(RPARENS);
 
 		l->add(LCURLY);
 
@@ -56,7 +56,7 @@ int if_test2() {
 
 		l->add(RCURLY);
 
-		IfStmt* i = new IfStmt(*l,false);
+		IfStmt* i = new IfStmt(*l,true);
 
 		return 1;
 	}catch (string e){

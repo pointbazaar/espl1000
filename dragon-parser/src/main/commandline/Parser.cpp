@@ -62,7 +62,7 @@ int main(int argc, char** argv){
 			printHelp();
 		}else if(test){
 			
-			test_all();
+			test_all(debug);
 		}else{
 			if(filenames.size() != 1){
 				throw "expected exactly 1 filename argument.";

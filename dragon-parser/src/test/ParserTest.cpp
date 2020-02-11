@@ -26,9 +26,9 @@
 
 using namespace std;
 
-void test_all(){
+void test_all(bool debug){
 	try{
-		test_all_inner();
+		test_all_inner(debug);
 	}catch(string e1){
 		cout << "catched!" << endl;
 		cout << e1 << endl;
@@ -38,62 +38,100 @@ void test_all(){
 	}
 }
 
-void test_all_inner(){
+void test_all_inner(bool debug){
 
 	cout << "running Dragon-Parser Tests..." << endl;
 
-	//TODO: execute all tests and give feedback
+	//execute all tests and give feedback
 	//every test should stdout its name, such that failing tests can be identified easily
+
+	//the tests should start with the easy tests first
 
 	int count=0;
 	int passed=0;
 
-	//nonterminals
-		//statements
-			//controlflow
-			cout << "Test: IfStmt" << endl;
-			passed += if_test1();
-			passed += if_test2();
-			count += 2;
 
-			cout << "Test: RetStmt" << endl;
-			passed += retstmt_test1();
-			passed += retstmt_test2();
-			passed += retstmt_test3();
-			count += 3;
+	cout << "Test: BoolConst" << endl;
+	passed += boolconst_test_parse_bool_constant_node();
 
-			cout << "Test: WhileStmt" << endl;
-			passed += whilestmt_test1();
-			count += 1;
+	cout << "Test: CharConst" << endl;
+	passed += charconst_test_parse_char_constant_node();
+	passed += charconst_test_parse_char_constant_node_newline();
+	count+=3;
 
-		cout << "Test: AssignStmt" << endl;
-		passed += assignstmt_test1();
-		passed += assignstmt_test_assign_char();
-		passed += assignstmt_test_assign_method_call_result();
-		passed += assignstmt_test_assign_method_call_result_2();
-		passed += assignstmt_test_assign_variable_with_array_index();
-		passed += assignstmt_test_can_assign_to_struct_member();
-		passed += assignstmt_test_type_declaration_for_variable();
-		count += 7;
+	cout << "Test: FloatConst" << endl;
+	passed += floatconst_test1();
+	passed += floatconst_test2();
+	count+=2;
 
-		cout << "Test: MethodCall" << endl;
-		passed += methodcall_test1();
-		passed += methodcall_test2();
-		passed += methodcall_test3();
-		passed += methodcall_test_can_parse_subroutine_call();
-		passed += methodcall_test_can_parse_subroutine_call2();
-		count += 6;
+	cout << "Test: Term" << endl;
+	passed += term_test_simple_term();
+	passed += term_test_variable_term();
+	count+=2;
 
-		cout << "Test: Stmt" << endl;
-		passed += stmt_test_assignment_statement_with_method_call();
-		passed += stmt_test_assignment_statement_with_struct_access();
-		count += 2;
+	
+	cout << "Test: SimpleVar" << endl;
+	passed += simplevar_test_parse_simple_indexed_variable();
+	passed += simplevar_test_parse_simple_variable();
+	count += 2;
 
-		cout << "Test: Method" << endl;
-		passed += method_test_can_parse_method_with_arguments();
-		passed += method_test_can_parse_method_without_arguments();
-		passed += method_test_can_parse_subroutine();
-		count += 3;
+	cout << "Test: Variable" << endl;
+	passed += variable_test_parse_index_access();
+	passed += variable_test_parse_struct_member_access();
+	passed += variable_test_parse_struct_member_access_and_index_access();
+	count  += 3;
+
+
+	cout << "Test: Expr" << endl;
+	passed += expr_recognize_string_constant_expression();
+	passed += expr_test_simple_expression();
+	passed += expr_test_variable_name_expression();
+	count+=3;
+
+
+	cout << "Test: IfStmt" << endl;
+	passed += if_test1();
+	passed += if_test2();
+	count += 2;
+
+	cout << "Test: RetStmt" << endl;
+	passed += retstmt_test1();
+	passed += retstmt_test2();
+	passed += retstmt_test3();
+	count += 3;
+
+	cout << "Test: WhileStmt" << endl;
+	passed += whilestmt_test1();
+	count += 1;
+
+	cout << "Test: AssignStmt" << endl;
+	passed += assignstmt_test1();
+	passed += assignstmt_test_assign_char();
+	passed += assignstmt_test_assign_method_call_result();
+	passed += assignstmt_test_assign_method_call_result_2();
+	passed += assignstmt_test_assign_variable_with_array_index();
+	passed += assignstmt_test_can_assign_to_struct_member();
+	passed += assignstmt_test_type_declaration_for_variable();
+	count += 7;
+
+	cout << "Test: MethodCall" << endl;
+	passed += methodcall_test1();
+	passed += methodcall_test2();
+	passed += methodcall_test3();
+	passed += methodcall_test_can_parse_subroutine_call();
+	passed += methodcall_test_can_parse_subroutine_call2();
+	count += 6;
+
+	cout << "Test: Stmt" << endl;
+	passed += stmt_test_assignment_statement_with_method_call();
+	passed += stmt_test_assignment_statement_with_struct_access();
+	count += 2;
+
+	cout << "Test: Method" << endl;
+	passed += method_test_can_parse_method_with_arguments();
+	passed += method_test_can_parse_method_without_arguments();
+	passed += method_test_can_parse_subroutine();
+	count += 3;
 
 
 	cout << "Test: DeclArg" << endl;
@@ -104,39 +142,8 @@ void test_all_inner(){
 	passed += structmember_test_can_parse_struct_member();
 	count++;
 
-	cout << "Test: Term" << endl;
-	passed += term_test_simple_term();
-	passed += term_test_variable_term();
-	count+=2;
+	
 
-	cout << "Test: Variable" << endl;
-	passed += variable_test_parse_index_access();
-	passed += variable_test_parse_struct_member_access();
-	passed += variable_test_parse_struct_member_access_and_index_access();
-	count  += 3;
-
-	cout << "Test: BoolConst" << endl;
-	passed += boolconst_test_parse_bool_constant_node();
-	cout << "Test: CharConst" << endl;
-	passed += charconst_test_parse_char_constant_node();
-	passed += charconst_test_parse_char_constant_node_newline();
-	count+=3;
-
-	cout << "Test: Expr" << endl;
-	passed += expr_recognize_string_constant_expression();
-	passed += expr_test_simple_expression();
-	passed += expr_test_variable_name_expression();
-	count+=3;
-
-	cout << "Test: FloatConst" << endl;
-	passed += floatconst_test1();
-	passed += floatconst_test2();
-	count+=2;
-
-	cout << "Test: SimpleVar" << endl;
-	passed += simplevar_test_parse_simple_indexed_variable();
-	passed += simplevar_test_parse_simple_variable();
-	count += 2;
 
 	cout << "Test: BasicTypeWrapped" << endl;
 	passed += basictypewrapped_test_type_parsing_simple_type();

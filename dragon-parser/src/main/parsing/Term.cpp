@@ -29,7 +29,13 @@ Term::Term(TokenList tokens, bool debug) {
 	TokenList copy = TokenList(tokens);
 
 	try {
-		this->m7 = new FloatConst(&copy,debug);
+		TokenList copy2 = TokenList(copy);
+
+		copy2.expect(Token(LPARENS));
+		this->m5 = new Expr(copy2,debug);
+		copy2.expect(Token(RPARENS));
+
+		copy.set(copy2);
 	} catch (string e0) {
 		try {
 			this->m2 = new IntConst(copy,debug);
@@ -62,13 +68,7 @@ Term::Term(TokenList tokens, bool debug) {
 				//}
 			} catch (string e2) {
 				try {
-					TokenList copy2 = TokenList(copy);
-
-					copy2.expect(Token(LPARENS));
-					this->m5 = new Expr(copy2,debug);
-					copy2.expect(Token(RPARENS));
-
-					copy.set(copy2);
+					this->m7 = new FloatConst(&copy,debug);
 				} catch (string e3) {
 					try {
 						this->m4 = new MethodCall(copy,debug);
