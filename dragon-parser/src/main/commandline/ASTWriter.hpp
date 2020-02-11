@@ -39,7 +39,7 @@ void write(Op m, ofstream* file);
 void write(IntConst m, ofstream* file);
 void write(BoolConst m, ofstream* file);
 void write(CharConst m, ofstream* file);
-void write(Variable m, ofstream* file);
+void write(struct Variable* m, ofstream* file);
 void write(SimpleVar m, ofstream* file);
 void write(Term m, ofstream* file);
 

@@ -2,10 +2,10 @@
 #define TERM
 
 struct Expr;
-class BoolConst;
+struct BoolConst;
 class CharConst;
 class IntConst;
-class Variable;
+struct Variable;
 class MethodCall;
 class FloatConst;
 
@@ -18,7 +18,7 @@ struct Term{
 	CharConst* m3 = NULL;
 	MethodCall* m4 = NULL;
 	struct Expr* m5 = NULL;
-	Variable* m6 = NULL;
+	struct Variable* m6 = NULL;
 	FloatConst* m7 = NULL;
 };
 

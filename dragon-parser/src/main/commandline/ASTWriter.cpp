@@ -35,9 +35,9 @@ void write(DeclArg m, ofstream* file){
 	}
 	*file << "\t";
 }
-void write(Variable m, ofstream* file){
-	write(*(m.simpleVariableNode),file);
-	for(Variable* v : m.memberAccessList){ write(*v,file); }
+void write(struct Variable* m, ofstream* file){
+	write(*(m->simpleVariableNode),file);
+	for(struct Variable* v : m->memberAccessList){ write(v,file); }
 }
 void write(SimpleVar m, ofstream* file){
 	*file << m.name << "\t";
@@ -62,7 +62,7 @@ void write(Term m, ofstream* file){
 	if(m.m3 != NULL){ *file << "3" << "\t"; write(*(m.m3),file); }
 	if(m.m4 != NULL){ *file << "4" << "\t"; write(*(m.m4),file); }
 	if(m.m5 != NULL){ *file << "5" << "\t"; write(m.m5,file); }
-	if(m.m6 != NULL){ *file << "6" << "\t"; write(*(m.m6),file); }
+	if(m.m6 != NULL){ *file << "6" << "\t"; write(m.m6,file); }
 }
 void write(BoolConst m, ofstream* file){
 	*file << m.boolValue << "\t";
@@ -104,7 +104,7 @@ void write(AssignStmt m, ofstream* file){
 	}else{
 		*file << "NULL" << "\t";
 	}
-	write(*(m.variableNode),file);
+	write(m.variableNode,file);
 	write(m.expressionNode,file);
 }
 void write(MethodCall m, ofstream* file){

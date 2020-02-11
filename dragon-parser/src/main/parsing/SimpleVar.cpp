@@ -21,6 +21,10 @@ SimpleVar::SimpleVar(TokenList tokens, bool debug) {
 
 	TokenList copy = TokenList(tokens);
 
+	if(copy.size()==0){
+		throw string("no tokens");
+	}
+
 	Token token = copy.get(0);
 
 	if (token.kind == ID) {

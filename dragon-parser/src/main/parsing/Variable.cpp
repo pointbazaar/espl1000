@@ -8,22 +8,27 @@
 #include "../commandline/TokenKeys.hpp"
 #include "../commandline/TokenList.hpp"
 
-Variable::Variable(TokenList tokens, bool debug) {
+struct Variable* makeVariable(TokenList* tokens, bool debug) {
+
+	struct Variable* res = (struct Variable*)malloc(sizeof(struct Variable));
+	res->simpleVariableNode = NULL;
+	res->memberAccessList = vector<struct Variable*>();
 
 	if(debug){
 		cout << "Variable(...)" << endl;
+		cout << "from " << tokens->code() << endl;
 	}
 
-	TokenList copy = tokens.copy();
+	TokenList copy = tokens->copy();
 
-	this->simpleVariableNode = new SimpleVar(copy,debug);
+	res->simpleVariableNode = new SimpleVar(copy,debug);
 
 	if (copy.size() > 0) {
 		Token next = copy.get(0);
 		while (next.kind == STRUCTMEMBERACCESS) {
 
 			copy.expect(Token(STRUCTMEMBERACCESS));
-			this->memberAccessList.push_back(new Variable(copy,debug));
+			res->memberAccessList.push_back(makeVariable(&copy,debug));
 			if (copy.size() > 0) {
 				next = copy.get(0);
 			} else {
@@ -32,6 +37,8 @@ Variable::Variable(TokenList tokens, bool debug) {
 		}
 	}
 
-	tokens.set(copy);
+	tokens->set(copy);
+
+	return res;
 }
 

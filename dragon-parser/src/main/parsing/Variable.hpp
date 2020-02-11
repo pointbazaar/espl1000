@@ -6,13 +6,12 @@
 class SimpleVar;
 #include "../commandline/TokenList.hpp"
 
-class Variable {
-
-public:
-	Variable(TokenList tokens, bool debug);
+struct Variable {
 
 	SimpleVar* simpleVariableNode;
-	std::vector<Variable*> memberAccessList;
+	std::vector<struct Variable*> memberAccessList;
 };
+
+struct Variable* makeVariable(TokenList* tokens, bool debug);
 
 #endif

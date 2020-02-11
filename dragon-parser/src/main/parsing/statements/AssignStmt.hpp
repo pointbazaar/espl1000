@@ -16,7 +16,7 @@ public:
 	AssignStmt(TokenList tokens,bool debug);
 	
 	optional<Type*> optTypeNode;
-	Variable* variableNode;
+	struct Variable* variableNode;
 	struct Expr* expressionNode;
 };
 

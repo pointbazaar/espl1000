@@ -76,9 +76,9 @@ void test_all_inner(bool debug){
 	count += 2;
 
 	cout << "Test: Variable" << endl;
-	passed += variable_test_parse_index_access();
-	passed += variable_test_parse_struct_member_access();
-	passed += variable_test_parse_struct_member_access_and_index_access();
+	passed += variable_test_parse_index_access(debug);
+	passed += variable_test_parse_struct_member_access(debug);
+	passed += variable_test_parse_struct_member_access_and_index_access(debug);
 	count  += 3;
 
 

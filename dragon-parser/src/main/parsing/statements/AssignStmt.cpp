@@ -31,7 +31,7 @@ AssignStmt::AssignStmt(TokenList tokens,bool debug) {
 	}
 
 	this->optTypeNode = optTypeNode1;
-	this->variableNode = new Variable(copy,debug);
+	this->variableNode = makeVariable(&copy,debug);
 
 	copy.expect(Token(OPKEY,"="));
 

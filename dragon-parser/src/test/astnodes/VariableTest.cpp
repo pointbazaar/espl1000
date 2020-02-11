@@ -7,13 +7,13 @@
 #include "../../main/parsing/Variable.hpp"
 #include "../../main/parsing/SimpleVar.hpp"
 
-int variable_test_parse_struct_member_access() {
+int variable_test_parse_struct_member_access(bool debug) {
 	TokenList tokens = TokenList();
 	tokens.add(ID,"x");
 	tokens.add(STRUCTMEMBERACCESS);
 	tokens.add(ID,"a");
 
-	Variable* v = new Variable(tokens,false);
+	struct Variable* v = makeVariable(&tokens,debug);
 
 	bool assert1 = (1 == v->memberAccessList.size());
 	bool assert2 = string("x").compare( v->simpleVariableNode->name)==0;
@@ -24,14 +24,14 @@ int variable_test_parse_struct_member_access() {
 	return (assert1&&assert2&&assert3&&assert4&&assert5)?1:0;
 }
 
-int variable_test_parse_index_access() {
+int variable_test_parse_index_access(bool debug) {
 	TokenList tokens = TokenList();
 	tokens.add(ID,"x");
 	tokens.add(LBRACKET);
-	tokens.add(INTEGER,0);
+	tokens.add(INTEGER,"0");
 	tokens.add(RBRACKET);
 
-	Variable* node = new Variable(tokens,false);
+	struct Variable* node = makeVariable(&tokens,debug);
 
 	bool assert1 = (0 == node->memberAccessList.size());
 	bool assert2 = string("x").compare(node->simpleVariableNode->name) == 0;
@@ -40,7 +40,7 @@ int variable_test_parse_index_access() {
 	return (assert1&&assert2&&assert3)?1:0;
 }
 
-int variable_test_parse_struct_member_access_and_index_access() {
+int variable_test_parse_struct_member_access_and_index_access(bool debug) {
 	// x.a[0].b
 	TokenList tokens = TokenList();
 	tokens.add(ID,"x");
@@ -54,7 +54,7 @@ int variable_test_parse_struct_member_access_and_index_access() {
 	tokens.add(STRUCTMEMBERACCESS);
 	tokens.add(ID,"b");
 
-	Variable* node = new Variable(tokens,false);
+	struct Variable* node = makeVariable(&tokens,debug);
 
 	bool assert1 = (1 == node->memberAccessList.size());
 	bool assert2 = string("x").compare(node->simpleVariableNode->name) == 0;

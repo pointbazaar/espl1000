@@ -97,7 +97,7 @@ struct Term* makeTerm(TokenList* tokens, bool debug) {
 							res->m1 = makeBoolConst(copy,debug);
 						} catch (string e5) {
 							try {
-								res->m6 = new Variable(copy,debug);
+								res->m6 = makeVariable(&copy,debug);
 							} catch (string e6) {
 								res->m3 = new CharConst(copy,debug);
 							}
