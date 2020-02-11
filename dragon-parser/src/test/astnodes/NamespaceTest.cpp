@@ -8,17 +8,17 @@
 
 int namespace_test_can_parse_namespace_with_1_empty_struct() {
 
-	TokenList l = new TokenList();
+	TokenList l = TokenList();
 
 	l.add(STRUCT);
 	l.add(TYPEIDENTIFIER,"MyStruct");
 	l.add(LCURLY);
 	l.add(RCURLY);
 
-	Namespace* n = new Namespace(l, false);
+	Namespace* n = new Namespace(&l,"Main", false);
 
 	bool assert1 = (1 == n->structs.size());
-	bool assert2 = (0 == n->structs.get(0).members.size());
+	bool assert2 = (0 == n->structs.at(0).members.size());
 
 	return (assert1&&assert2)?1:0;
 }
@@ -32,7 +32,7 @@ int namespace_test_can_parse_namespace_with_1_empty_method() {
 
 
 
-	TokenList l = new TokenList();
+	TokenList l = TokenList();
 
 	l.add(FN);
 	l.add(ID,"main");
@@ -46,7 +46,7 @@ int namespace_test_can_parse_namespace_with_1_empty_method() {
 
 	l.add(RCURLY);
 
-	Namespace* n = new Namespace(l, false);
+	Namespace* n = new Namespace(&l,"Main", false);
 
 	bool assert1 = string("Main").compare(n->name) == 0;
 	bool assert2 = (1 == n->methods.size());

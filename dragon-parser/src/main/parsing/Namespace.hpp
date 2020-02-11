@@ -5,6 +5,7 @@
 #include <string>
 
 #include "Method.hpp"
+#include "StructDecl.hpp"
 #include "../commandline/TokenList.hpp"
 
 class Namespace {
@@ -21,11 +22,10 @@ public:
 
 	std::string srcPath;
 	std::string name;
+
 	//structs must be declared before the subroutines
-	
-	//TODO: add them back later when the rewrite is complete
-	//vector<StructDeclNode> structs;
 	std::vector<Method> methods;
+	std::vector<StructDecl> structs;
 };
 
 #endif

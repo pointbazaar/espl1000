@@ -33,7 +33,7 @@ void write_ast(string filename, Namespace namespaceNode);
 
 void write(Namespace m, ofstream* file);
 void write(Method m, ofstream* file);
-void write(DeclaredArg m, ofstream* file);
+void write(DeclArg m, ofstream* file);
 void write(Expr m, ofstream* file);
 void write(Op m, ofstream* file);
 void write(IntConst m, ofstream* file);

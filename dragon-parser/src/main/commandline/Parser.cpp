@@ -19,7 +19,7 @@
 #include "TokenReader.hpp"
 #include "../parsing/Namespace.hpp"
 #include "../parsing/Method.hpp"
-#include "../parsing/DeclaredArg.hpp"
+#include "../parsing/DeclArg.hpp"
 #include "../parsing/statements/Stmt.hpp"
 #include "../parsing/typenodes/Type.hpp"
 #include "ASTWriter.hpp"

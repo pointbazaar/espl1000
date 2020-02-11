@@ -9,7 +9,7 @@
 
 int method_test_can_parse_method_with_arguments() {
 
-	TokenList l = new TokenList(); //ParserPhases.makeTokenList("fn main (String hello)~>PInt { main(); }", false);
+	TokenList l = TokenList(); //ParserPhases.makeTokenList("fn main (String hello)~>PInt { main(); }", false);
 
 	l.add(FN);
 	l.add(ID,"main");
@@ -35,14 +35,14 @@ int method_test_can_parse_method_with_arguments() {
 int method_test_can_parse_subroutine() {
 
 	try {
-		TokenList l = new TokenList();
+		TokenList l = TokenList();
 
 		l.add(FN);
 		l.add(ID,"main");
 		l.add(LPARENS);
 		l.add(RPARENS);
 		l.add(ARROW);
-		l.add(TYPEIDENTIFIER,"PInt")
+		l.add(TYPEIDENTIFIER,"PInt");
 		l.add(LCURLY);
 			l.add(ID,"println");
 			l.add(LPARENS);
@@ -63,7 +63,7 @@ int method_test_can_parse_subroutine() {
 
 int method_test_can_parse_method_without_arguments() {
 
-	TokenList l = new TokenList();
+	TokenList l = TokenList();
 
 	l.add(FN);
 	l.add(ID,"main");

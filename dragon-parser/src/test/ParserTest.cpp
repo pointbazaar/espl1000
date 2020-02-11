@@ -1,28 +1,30 @@
 #include "ParserTest.hpp"
+       
+#include "astnodes/BoolConstTest.hpp"  
+#include "astnodes/ExprTest.hpp"   
+#include "astnodes/NamespaceTest.hpp"   
+#include "astnodes/SimpleVarTest.hpp"   
+#include "astnodes/StructMemberTest.hpp"  
+#include "astnodes/VariableTest.hpp"
+#include "astnodes/AssignStmtTest.hpp"        
+#include "astnodes/CharConstTest.hpp"  
+#include "astnodes/FloatConstTest.hpp"  
+#include "astnodes/MethodCallTest.hpp"  
+#include "astnodes/RetStmtTest.hpp"     
+#include "astnodes/StmtTest.hpp"        
+#include "astnodes/SubrTypeTest.hpp"      
+#include "astnodes/WhileStmtTest.hpp"
+#include "astnodes/BasicTypeWrappedTest.hpp"  
+#include "astnodes/DeclArgTest.hpp"    
+#include "astnodes/IfStmtTest.hpp"      
+#include "astnodes/MethodTest.hpp"      
+#include "astnodes/SimpleTypeTest.hpp"  
+#include "astnodes/StructDeclTest.hpp"  
+#include "astnodes/TermTest.hpp"
 
-#include "ArrayConstTest.hpp"        
-#include "BoolConstTest.hpp"  
-#include "ExprTest.hpp"
-#include "LoopStmtTest.hpp"    
-#include "NamespaceTest.hpp"   
-#include "SimpleVarTest.hpp"   
-#include "StructMemberTest.hpp"  
-#include "VariableTest.hpp"
-#include "AssignStmtTest.hpp"        
-#include "CharConstTest.hpp"  
-#include "FloatConstTest.hpp"  
-#include "MethodCallTest.hpp"  
-#include "RetStmtTest.hpp"     
-#include "StmtTest.hpp"        
-#include "SubrTypeTest.hpp"      
-#include "WhileStmtTest.hpp"
-#include "BasicTypeWrappedTest.hpp"  
-#include "DeclArgTest.hpp"    
-#include "IfStmtTest.hpp"      
-#include "MethodTest.hpp"      
-#include "SimpleTypeTest.hpp"  
-#include "StructDeclTest.hpp"  
-#include "TermTest.hpp"
+#include <iostream>
+
+using namespace std;
 
 void test_all(){
 
@@ -40,9 +42,6 @@ void test_all(){
 			passed += if_test1();
 			passed += if_test2();
 			count += 2;
-
-			passed += loop_test1();
-			count += 1;
 
 			passed += retstmt_test1();
 			passed += retstmt_test2();
@@ -74,16 +73,10 @@ void test_all(){
 
 		//upperscopes
 		passed += method_test_can_parse_method_with_arguments();
-		passed += method_test_can_parse_method_with_subroutine_argument();
 		passed += method_test_can_parse_method_without_arguments();
 		passed += method_test_can_parse_subroutine();
-		passed += method_test_parse_methodnode_with_struct_access_statements();
-		count += 6;
+		count += 3;
 
-	passed += arrayconst_test_array_multiple_elements();
-	passed += arrayconst_test_empty_array();
-	passed += arrayconst_test_simple_array();
-	count+=3;
 
 	passed += declarg_test_parse_declared_argument();
 	count++;
@@ -129,11 +122,10 @@ void test_all(){
 	count+=3;
 
 	passed += subrtype_test_subroutine_type_parsing_subroutine_with_side_effects();
-	passed += subrtype_test_subroutine_type_parsing_subroutine_with_subroutine_argument();
 	passed += subrtype_test_subroutine_type_parsing_subroutine_without_side_effects();
 	passed += subrtype_test_typename();
 	passed += subrtype_test_typename_subroutine_return_type();
-	count+=5;
+	count+=4;
 
 	cout << "passed " << passed << "of " << count << endl;;
 }

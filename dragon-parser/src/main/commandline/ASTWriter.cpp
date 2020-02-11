@@ -22,11 +22,11 @@ void write(Method m, ofstream* file){
 	*file << m.methodName;
 	*file << "\t";
 	*file << m.arguments.size();
-	for(DeclaredArg* arg : m.arguments){ write(*arg,file); }
+	for(DeclArg* arg : m.arguments){ write(*arg,file); }
 	*file << m.statements.size();
 	for(Stmt* s : m.statements){ write(*s,file); }
 }
-void write(DeclaredArg m, ofstream* file){
+void write(DeclArg m, ofstream* file){
 	write(*(m.type),file);
 	if(m.name.has_value()){
 		*file << m.name.value();

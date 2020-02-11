@@ -8,26 +8,24 @@
 #include "../../main/parsing/SimpleVar.hpp"
 
 int variable_test_parse_struct_member_access() {
-
-	TokenList tokens = new TokenList();
+	TokenList tokens = TokenList();
 	tokens.add(ID,"x");
 	tokens.add(STRUCTMEMBERACCESS);
 	tokens.add(ID,"a");
 
-	Variable* v = new Variable(tokens);
+	Variable* v = new Variable(tokens,false);
 
 	bool assert1 = (1 == v->memberAccessList.size());
 	bool assert2 = string("x").compare( v->simpleVariableNode->name)==0;
 	bool assert3 = !(v->simpleVariableNode->indexOptional.has_value());
-	bool assert4 = string("a").compare( v->memberAccessList.at(0).simpleVariableNode->name);
-	bool assert5 = !(v->memberAccessList.at(0).simpleVariableNode->indexOptional.has_value());
+	bool assert4 = string("a").compare( v->memberAccessList.at(0)->simpleVariableNode->name);
+	bool assert5 = !(v->memberAccessList.at(0)->simpleVariableNode->indexOptional.has_value());
 
 	return (assert1&&assert2&&assert3&&assert4&&assert5)?1:0;
 }
 
 int variable_test_parse_index_access() {
-
-	TokenList tokens = new TokenList();
+	TokenList tokens = TokenList();
 	tokens.add(ID,"x");
 	tokens.add(LBRACKET);
 	tokens.add(INTEGER,0);
@@ -43,10 +41,8 @@ int variable_test_parse_index_access() {
 }
 
 int variable_test_parse_struct_member_access_and_index_access() {
-
 	// x.a[0].b
-
-	TokenList tokens = new TokenList();
+	TokenList tokens = TokenList();
 	tokens.add(ID,"x");
 	tokens.add(STRUCTMEMBERACCESS);
 	tokens.add(ID,"a");
@@ -63,8 +59,8 @@ int variable_test_parse_struct_member_access_and_index_access() {
 	bool assert1 = (1 == node->memberAccessList.size());
 	bool assert2 = string("x").compare(node->simpleVariableNode->name) == 0;
 
-	bool assert3 = string("a").compare( node->memberAccessList.at(0).simpleVariableNode->name) == 0;
-	bool assert4 = (node->memberAccessList.at(0).simpleVariableNode.indexOptional.has_value());
+	bool assert3 = string("a").compare( node->memberAccessList.at(0)->simpleVariableNode->name) == 0;
+	bool assert4 = (node->memberAccessList.at(0)->simpleVariableNode->indexOptional.has_value());
 
 	return (assert1&&assert2&&assert3&&assert4)?1:0;
 }

@@ -9,14 +9,13 @@
 
 int basictypewrapped_test_type_parsing_simple_type() {
 
-	TokenList list = new TokenList();
-	list.add(TYPEIDENTIFIER,"PInt");
+	TokenList* list = new TokenList();
+	list->add(TYPEIDENTIFIER,"PInt");
 
-	BasicTypeWrapped* b = new BasicTypeWrapped(list);
+	BasicTypeWrapped* b = new BasicTypeWrapped(*list,false);
 
-	//TODO:
-	bool assert1 = (b->typeNode instanceof SimpleTypeNode);
-	bool assert2 = (0 == list.size());
+	bool assert1 = (b->m1 != NULL && b->m2 == NULL);	//it is SimpleType
+	bool assert2 = (0 == list->size());
 
 	return (assert1&&assert2)?1:0;
 }

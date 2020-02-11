@@ -6,16 +6,17 @@
 
 
 #include "../../main/parsing/StructDecl.hpp"
+#include "../../main/parsing/StructMember.hpp"
 
 int structdecl_test_can_parse_empty_struct_decl() {
 
-	TokenList list = new TokenList(); 
+	TokenList list = TokenList(); 
 	list.add(STRUCT);
 	list.add(TYPEIDENTIFIER,"MyStruct");
 	list.add(LCURLY);
 	list.add(RCURLY);
 
-	StructDecl* s = new StructDecl(list, false);
+	StructDecl* s = new StructDecl(&list, false);
 
 	bool assert1 = (0 == s->members.size());
 
@@ -24,7 +25,7 @@ int structdecl_test_can_parse_empty_struct_decl() {
 
 int structdecl_test_will_not_parse_invalid_typename_for_struct() {
 
-	TokenList list = new TokenList(); 
+	TokenList list = TokenList(); 
 
 	list.add(STRUCT);
 	list.add(ID,"myStruct");
@@ -32,7 +33,7 @@ int structdecl_test_will_not_parse_invalid_typename_for_struct() {
 	list.add(RCURLY);
 
 	try {
-		StructDecl* s = new StructDecl(list, false);
+		StructDecl* s = new StructDecl(&list, false);
 		return 0;
 	} catch (string e) {
 		return 1;
@@ -41,7 +42,7 @@ int structdecl_test_will_not_parse_invalid_typename_for_struct() {
 
 int structdecl_test_rejects_struct_with_subroutine_type() {
 
-	TokenList list = new TokenList(); 
+	TokenList list = TokenList(); 
 
 	list.add(STRUCT);
 	list.add(LPARENS);
@@ -52,7 +53,7 @@ int structdecl_test_rejects_struct_with_subroutine_type() {
 	list.add(RCURLY);
 
 	try {
-		StructDecl* s = new StructDecl(list, false);
+		StructDecl* s = new StructDecl(&list, false);
 		return 0;
 	} catch (string e) {
 		return 1;
@@ -61,7 +62,7 @@ int structdecl_test_rejects_struct_with_subroutine_type() {
 
 int structdecl_test_can_parse_struct_with_1_member() {
 
-	TokenList list = new TokenList();
+	TokenList list = TokenList();
 
 	list.add(STRUCT);
 	list.add(TYPEIDENTIFIER,"MyStruct");
@@ -70,17 +71,17 @@ int structdecl_test_can_parse_struct_with_1_member() {
 	list.add(ID,"a");
 	list.add(RCURLY);
 
-	StructDecl* node = new StructDecl(list, false);
+	StructDecl* node = new StructDecl(&list, false);
 
 	bool assert1 = (1 == node->members.size());
-	bool assert2 = "a".compare( node->members.at(0).name) == 0;
+	bool assert2 = string("a").compare( node->members.at(0)->name) == 0;
 
 	return (assert1&&assert2)?1:0;
 }
 
 int structdecl_test_can_parse_struct_with_2_members() {
 
-	TokenList list = new TokenList(); 
+	TokenList list = TokenList(); 
 
 	list.add(STRUCT);
 	list.add(TYPEIDENTIFIER,"MyStruct");
@@ -92,13 +93,13 @@ int structdecl_test_can_parse_struct_with_2_members() {
 	list.add(ID,"b");
 	list.add(RCURLY);
 
-	StructDecl* node = new StructDecl(list, false);
+	StructDecl* node = new StructDecl(&list, false);
 
 	bool assert1 = (2 == node->members.size());
 
-	bool assert2 = "a".compare( node->members.get(0).name) == 0;
+	bool assert2 = string("a").compare( node->members.at(0)->name) == 0;
 
-	bool assert3 = "b".compare( node->members.get(1).name) == 0;
+	bool assert3 = string("b").compare( node->members.at(1)->name) == 0;
 
 	return (assert1&&assert2&&assert3)?1:0;
 }

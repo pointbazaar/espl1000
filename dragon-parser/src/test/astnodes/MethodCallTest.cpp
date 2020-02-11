@@ -8,20 +8,20 @@
 #include "../../main/parsing/statements/MethodCall.hpp"
 
 int methodcall_test1() {
-	TokenList list = new TokenList();
+	TokenList l = TokenList();
 
-	list.add(ID,"main");
-	list.add(LPARENS);
-	list.add(RPARENS);
+	l.add(ID,"main");
+	l.add(LPARENS);
+	l.add(RPARENS);
 
-	MethodCall* call = new MethodCall(list,false);
+	MethodCall* call = new MethodCall(l,false);
 
-	bool assert1 = (0 == list.size());
+	bool assert1 = (0 == l.size());
 	return (assert1)?1:0;
 }
 
 int methodcall_test2() {
-	TokenList list = new TokenList();
+	TokenList list = TokenList();
 
 	list.add(ID,"main");
 	list.add(LPARENS);
@@ -35,7 +35,7 @@ int methodcall_test2() {
 }
 
 int methodcall_test3() {
-	TokenList list = new TokenList();
+	TokenList list = TokenList();
 
 	list.add(ID,"main");
 	list.add(LPARENS);
@@ -49,7 +49,7 @@ int methodcall_test3() {
 
 int methodcall_test_can_parse_subroutine_call() {
 
-	TokenList tl = new TokenList();
+	TokenList tl = TokenList();
 	tl.add(ID,"println");
 	tl.add(LPARENS);
 	tl.add(INTEGER,"1");
@@ -64,7 +64,7 @@ int methodcall_test_can_parse_subroutine_call() {
 int methodcall_test_can_parse_subroutine_call2() {
 	//println("x<5")
 
-	TokenList tokens = new TokenList();
+	TokenList tokens = TokenList();
 	tokens.add(ID,"println");
 	tokens.add(LPARENS);
 	tokens.add(STRINGCONST,"x<5");

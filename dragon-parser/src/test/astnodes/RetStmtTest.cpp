@@ -8,7 +8,7 @@
 
 int retstmt_test1() {
 	try {
-		TokenList list = new TokenList();
+		TokenList list = TokenList();
 		list.add(RETURN);
 
 		list.add(LPARENS);
@@ -30,7 +30,7 @@ int retstmt_test1() {
 
 int retstmt_test2(){
 	try {
-		TokenList list = new TokenList();
+		TokenList list = TokenList();
 		list.add(RETURN);
 
 		list.add(LPARENS);
@@ -47,7 +47,7 @@ int retstmt_test2(){
 
 		list.add(SEMICOLON);
 
-		RetStmt* r = new RetStmt(list);
+		RetStmt* r = new RetStmt(list,false);
 
 		return 1;
 	}catch (string e){
@@ -58,7 +58,7 @@ int retstmt_test2(){
 int retstmt_test3() {
 
 	try {
-		TokenList list = new TokenList();
+		TokenList list = TokenList();
 
 		list.add(Token(RETURN));
 

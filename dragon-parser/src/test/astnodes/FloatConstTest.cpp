@@ -8,10 +8,10 @@
 
 int floatconst_test1() {
 	try {
-		TokenList list = new TokenList();
-		list.add(OPKEY,"-");
-		list.add(FLOAT,"4.0f");
-		FloatConst* node = new FloatConst(list);
+		TokenList* list = new TokenList();
+		list->add(OPKEY,"-");
+		list->add(FLOATING,"4.0f");
+		FloatConst* node = new FloatConst(list,false);
 		return 1;
 	}catch (string e){
 		return 0;
@@ -20,9 +20,9 @@ int floatconst_test1() {
 
 int floatconst_test2() {
 	try {
-		TokenList list = new TokenList();
-		list.add(FLOAT,"4.0f");
-		FloatConst* node = new FloatConst(list);
+		TokenList* list = new TokenList();
+		list->add(FLOATING,"4.0f");
+		FloatConst* node = new FloatConst(list,false);
 		return 1;
 	}catch (string e){
 		return 0;

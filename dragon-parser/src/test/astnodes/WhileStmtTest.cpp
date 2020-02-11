@@ -8,20 +8,20 @@
 
 int whilestmt_test1() {
 	try {
-		TokenList* list = new TokenList();
-		list->add(WHILE);
+		TokenList list = TokenList();
+		list.add(WHILE);
 
-		list->add(LPARENS);
+		list.add(LPARENS);
 
-		list->add(INTEGER,"5");
-		list->add(OPKEY,"<");
-		list->add(INTEGER,"3");
+		list.add(INTEGER,"5");
+		list.add(OPKEY,"<");
+		list.add(INTEGER,"3");
 
-		list->add(RPARENS);
+		list.add(RPARENS);
 
-		list->add(LCURLY);
+		list.add(LCURLY);
 
-		list->add(RCURLY);
+		list.add(RCURLY);
 
 		WhileStmt* whileStatement = new WhileStmt(list,false);
 

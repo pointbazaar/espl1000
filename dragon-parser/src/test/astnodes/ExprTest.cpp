@@ -9,9 +9,9 @@
 int expr_test_simple_expression() {
 
 	try {
-		TokenList list = new TokenList();
-		list.add(INTEGER,"4");
-		Expr* expr = new Expr(list,false);
+		TokenList* list = new TokenList();
+		list->add(INTEGER,"4");
+		Expr* expr = new Expr(*list,false);
 
 		return 1;
 	}catch (string e){
@@ -22,10 +22,10 @@ int expr_test_simple_expression() {
 int expr_test_variable_name_expression() {
 
 	try {
-		TokenList list = new TokenList();
+		TokenList* list = new TokenList();
 
-		list.add(ID,"x");
-		Expr* expr = new Expr(list,false);
+		list->add(ID,"x");
+		Expr* expr = new Expr(*list,false);
 		return 1;
 	}catch (string e){
 		return 0;
@@ -35,11 +35,11 @@ int expr_test_variable_name_expression() {
 int expr_recognize_string_constant_expression() {
 
 	try {
-		TokenList tokens = new TokenList();
+		TokenList* tokens = new TokenList();
 
-		tokens.add(STRINGCONST,"hello");
+		tokens->add(STRINGCONST,"hello");
 
-		Expr* expr = new Expr(tokens,false);
+		Expr* expr = new Expr(*tokens,false);
 		return 1;
 	}catch (string e){
 		return 0;

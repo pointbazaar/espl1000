@@ -9,7 +9,7 @@
 
 int structmember_test_can_parse_struct_member() {
 
-	TokenList list = new TokenList();
+	TokenList list = TokenList();
 
 	list.add(LPARENS);
 	list.add(RPARENS);
@@ -20,9 +20,9 @@ int structmember_test_can_parse_struct_member() {
 	list.add(RPARENS);
 	list.add(ID,"subr");
 
-	StructMemberDecl* node = new StructMemberDecl(list);
+	StructMember* node = new StructMember(&list,false);
 
-	bool assert1 = "subr".compare( node->name) == 0;
+	bool assert1 = string("subr").compare( node->name) == 0;
 	bool assert2 = (0 == list.size());
 
 	return (assert1&&assert2)?1:0;

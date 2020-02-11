@@ -9,7 +9,7 @@
 
 int subrtype_test_typename() {
 	//(PInt,PInt)->PInt
-	TokenList l = new TokenList();
+	TokenList l = TokenList();
 
 	l.add(LPARENS);
 	l.add(TYPEIDENTIFIER,"PInt");
@@ -28,7 +28,7 @@ int subrtype_test_typename() {
 
 int subrtype_test_typename_subroutine_return_type() {
 	//(PInt,PInt)->((PInt)->PInt) 
-	TokenList l = new TokenList();
+	TokenList l = TokenList();
 
 	l.add(LPARENS);
 		l.add(TYPEIDENTIFIER,"PInt");
@@ -55,8 +55,7 @@ int subrtype_test_typename_subroutine_return_type() {
 
 int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects()  {
 	//(PInt,MyType)~>PInt
-
-	TokenList l = new TokenList();
+	TokenList l = TokenList();
 
 	l.add(LPARENS);
 	l.add(TYPEIDENTIFIER,"PInt");
@@ -72,9 +71,8 @@ int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects()  {
 }
 
 int subrtype_test_subroutine_type_parsing_subroutine_without_side_effects() {
-
 	//(PInt)->PInt
-	TokenList l = new TokenList(); 
+	TokenList l = TokenList(); 
 
 	l.add(LPARENS);
 	l.add(TYPEIDENTIFIER,"PInt");

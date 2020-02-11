@@ -7,11 +7,11 @@
 #include "../../main/parsing/BoolConst.hpp"
 
 int boolconst_test_parse_bool_constant_node()  {
-	TokenList list = new TokenList();
+	TokenList* list = new TokenList();
 	
-	list.add(BCONST,"true");
+	list->add(BCONST,"true");
 
-	BoolConst* b = new BoolConst(list,false);
+	BoolConst* b = makeBoolConst(*list,false);
 	bool assert1 = ( b->boolValue);
 
 	return (assert1)?1:0;

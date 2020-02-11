@@ -9,7 +9,7 @@
 
 int stmt_test_assignment_statement_with_struct_access() {
 
-	TokenList tokens = new TokenList();
+	TokenList tokens = TokenList();
 	tokens.add(ID,"x");
 	tokens.add(STRUCTMEMBERACCESS);
 	tokens.add(ID,"a");
@@ -25,7 +25,7 @@ int stmt_test_assignment_statement_with_struct_access() {
 
 int stmt_test_assignment_statement_with_method_call() {
 
-	TokenList tokens = new TokenList();
+	TokenList tokens = TokenList();
 
 	tokens.add(ID,"flip");
 	tokens.add(LPARENS);

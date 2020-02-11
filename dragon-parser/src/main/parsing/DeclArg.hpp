@@ -11,7 +11,7 @@ class DeclArg  {
 
 public:
 
-	DeclaredArg(TokenList* tokens, bool debug);
+	DeclArg(TokenList* tokens, bool debug);
 
 	Type* type = NULL;
 	optional<std::string> name;
