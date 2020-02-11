@@ -16,6 +16,7 @@ SimpleVar::SimpleVar(TokenList tokens, bool debug) {
 
 	if(debug){
 		cout << "SimpleVar(...)" << endl;
+		cout << "from " << tokens.code() << endl;
 	}
 
 	TokenList copy = TokenList(tokens);

@@ -1,7 +1,7 @@
 #ifndef TERM
 #define TERM
 
-class Expr;
+struct Expr;
 class BoolConst;
 class CharConst;
 class IntConst;
@@ -11,14 +11,7 @@ class FloatConst;
 
 #include "../commandline/TokenList.hpp"
 
-class Term {
-
-public:
-
-	Term(struct Expr* myexpr);
-	
-	Term(TokenList tokens, bool debug);
-
+struct Term{
 	//only one of these may be != NULL
 	struct BoolConst* m1 = NULL;
 	IntConst* m2 = NULL;
@@ -28,5 +21,8 @@ public:
 	Variable* m6 = NULL;
 	FloatConst* m7 = NULL;
 };
+
+struct Term* makeTerm(struct Expr* myexpr);	
+struct Term* makeTerm(TokenList* tokens, bool debug);
 
 #endif

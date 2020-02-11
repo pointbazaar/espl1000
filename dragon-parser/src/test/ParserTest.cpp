@@ -71,8 +71,8 @@ void test_all_inner(bool debug){
 
 	
 	cout << "Test: SimpleVar" << endl;
-	passed += simplevar_test_parse_simple_indexed_variable();
-	passed += simplevar_test_parse_simple_variable();
+	passed += simplevar_test_parse_simple_indexed_variable(debug);
+	passed += simplevar_test_parse_simple_variable(debug);
 	count += 2;
 
 	cout << "Test: Variable" << endl;

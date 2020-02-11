@@ -16,35 +16,55 @@
 
 using namespace std;
 
-Term::Term(struct Expr* expr){
-	this->m5 = expr;
+struct Term* makeTerm(struct Expr* expr){
+	struct Term* res = (struct Term*)malloc(sizeof(struct Term));
+	res->m1 = NULL;
+	res->m2 = NULL;
+	res->m3 = NULL;
+	res->m4 = NULL;
+	res->m5 = NULL;
+	res->m6 = NULL;
+	res->m7 = NULL;
+
+	res->m5 = expr;
+	return res;
 }
 
-Term::Term(TokenList tokens, bool debug) {
+struct Term* makeTerm(TokenList* tokens, bool debug) {
+
+	struct Term* res = (struct Term*)malloc(sizeof(struct Term));
+	res->m1 = NULL;
+	res->m2 = NULL;
+	res->m3 = NULL;
+	res->m4 = NULL;
+	res->m5 = NULL;
+	res->m6 = NULL;
+	res->m7 = NULL;
 
 	if(debug){
 		cout << "Term(...)" << endl;
+		cout << "from " << tokens->code() << endl;
 	}
 
-	TokenList copy = TokenList(tokens);
+	TokenList copy = TokenList(*tokens);
 
 	try {
 		TokenList copy2 = TokenList(copy);
 
 		copy2.expect(Token(LPARENS));
-		this->m5 = makeExpr(&copy2,debug);
+		res->m5 = makeExpr(&copy2,debug);
 		copy2.expect(Token(RPARENS));
 
 		copy.set(copy2);
 	} catch (string e0) {
 		try {
-			this->m2 = new IntConst(&copy,debug);
+			res->m2 = new IntConst(&copy,debug);
 		} catch (string e1) {
 			try {
 				//a string constant is syntatic sugar.
 				//in the parsing stage it is converted to an array of char constants
 				//inline the stringConstant and its syntatic sugar
-				Token token = tokens.get(0);
+				Token token = tokens->get(0);
 				//TODO: re-enable this later on
 				/*
 				if (token.kind == STRINGCONSTANT) {
@@ -68,25 +88,18 @@ Term::Term(TokenList tokens, bool debug) {
 				//}
 			} catch (string e2) {
 				try {
-					this->m7 = new FloatConst(&copy,debug);
+					res->m7 = new FloatConst(&copy,debug);
 				} catch (string e3) {
 					try {
-						this->m4 = new MethodCall(copy,debug);
+						res->m4 = new MethodCall(copy,debug);
 					} catch (string e4) {
 						try {
-							this->m1 = makeBoolConst(copy,debug);
+							res->m1 = makeBoolConst(copy,debug);
 						} catch (string e5) {
 							try {
-								this->m6 = new Variable(copy,debug);
+								res->m6 = new Variable(copy,debug);
 							} catch (string e6) {
-								//TODO: re-enable later
-								/*
-								try {
-									this->termNode = ArrayConstantNode(copy);
-								} catch (string e7) {
-									*/
-									this->m3 = new CharConst(copy,debug);
-								//}
+								res->m3 = new CharConst(copy,debug);
 							}
 						}
 					}
@@ -94,6 +107,8 @@ Term::Term(TokenList tokens, bool debug) {
 			}
 		}
 	}
-	tokens.set(copy);
+	tokens->set(copy);
+
+	return res;
 }
 

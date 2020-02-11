@@ -10,7 +10,7 @@
 #include "Term.hpp"
 #include "Op.hpp"
 
-struct Expr* makeExpr(Term* term) {
+struct Expr* makeExpr(struct Term* term) {
 	struct Expr* res = (struct Expr*)malloc(sizeof(struct Expr));
 	res->term1 = term;
 	res->op    = NULL;
@@ -22,21 +22,22 @@ struct Expr* makeExpr(TokenList* tokens, bool debug) {
 
 	if(debug){
 		cout << "Expr(...)" << endl;
+		cout << "from " << tokens->code() << endl;
 	}
 
 	// temporary containers
 	vector<Op*> operatorNodes;
-	vector<Term*> termNodes;
+	vector<struct Term*> termNodes;
 	// end of temporary containers
 	TokenList copy = tokens->copy();
-	termNodes.push_back(new Term(copy,debug));
+	termNodes.push_back(makeTerm(&copy,debug));
 	try {
 
 		while (true) {
 			TokenList copy2 = TokenList(copy);
 
 			Op* myop = new Op(copy2,debug);
-			Term* myterm = new Term(copy2,debug);
+			struct Term* myterm = makeTerm(&copy2,debug);
 
 			operatorNodes.push_back(myop);
 			termNodes.push_back(myterm);
@@ -52,7 +53,7 @@ struct Expr* makeExpr(TokenList* tokens, bool debug) {
 	return performTreeTransformation(operatorNodes,termNodes);
 }
 
-struct Expr* makeExpr(Term* leftTerm, Op* op, Term* rightTerm) {
+struct Expr* makeExpr(struct Term* leftTerm, Op* op, struct Term* rightTerm) {
 
 	struct Expr* res = (struct Expr*)malloc(sizeof(struct Expr));
 	res->term1 = leftTerm;
@@ -63,7 +64,7 @@ struct Expr* makeExpr(Term* leftTerm, Op* op, Term* rightTerm) {
 
 struct Expr* performTreeTransformation(
 		vector<Op*> ops,
-		vector<Term*> terms
+		vector<struct Term*> terms
 ){
 	//transform the list into a tree, respecting operator precedence
 
@@ -117,13 +118,13 @@ struct Expr* performTreeTransformation(
 		vector<Op*>::iterator indexOfOp = find(ops.begin(),ops.end(),opWithLargestPrecedence);
 
 
-		Term* leftTerm = terms.at(indexOfOp - ops.begin());
-		Term* rightTerm = terms.at((indexOfOp - ops.begin())+1);
+		struct Term* leftTerm = terms.at(indexOfOp - ops.begin());
+		struct Term* rightTerm = terms.at((indexOfOp - ops.begin())+1);
 
 		struct Expr* expr = makeExpr(leftTerm,opWithLargestPrecedence,rightTerm);
 
 		//simplify
-		vector<Term*>::iterator i1;
+		vector<struct Term*>::iterator i1;
 		i1 = find(terms.begin(),terms.end(),leftTerm);
 		terms.erase(i1);
 		i1 = find(terms.begin(),terms.end(),rightTerm);
@@ -133,8 +134,8 @@ struct Expr* performTreeTransformation(
 		ops.erase(i2);
 
 		//insert newly created expression
-		Term* ttmp = new Term(expr);
-		vector<Term*>::iterator indexOfOpIt = terms.begin() + (indexOfOp - ops.begin());
+		struct Term* ttmp = makeTerm(expr);
+		vector<struct Term*>::iterator indexOfOpIt = terms.begin() + (indexOfOp - ops.begin());
 		terms.insert(indexOfOpIt,ttmp);
 	}
 

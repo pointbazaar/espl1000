@@ -4,18 +4,18 @@
 #include <vector>
 
 class Op;
-class Term;
+struct Term;
 #include "../commandline/TokenList.hpp"
 
 using namespace std;
 
 struct Expr {
 
-	Term* term1 = NULL;
+	struct Term* term1 = NULL;
 
 	//these 2 may be NULL
 	Op* op = NULL;
-	Term* term2 = NULL;
+	struct Term* term2 = NULL;
 };
 
 
@@ -23,8 +23,8 @@ struct Expr {
 //an expression should be anything that returns a value or computes to a value
 
 struct Expr* makeExpr(TokenList* tkl, bool debug);
-struct Expr* makeExpr(Term* myterm);
-struct Expr* makeExpr(Term* leftTerm, Op* op, Term* rightTerm);
-struct Expr* performTreeTransformation(vector<Op*> ops,vector<Term*> terms);
+struct Expr* makeExpr(struct Term* myterm);
+struct Expr* makeExpr(struct Term* leftTerm, Op* op, struct Term* rightTerm);
+struct Expr* performTreeTransformation(vector<Op*> ops,vector<struct Term*> terms);
 
 #endif

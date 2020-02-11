@@ -11,20 +11,20 @@
 
 #include <stdio.h>
 
-int simplevar_test_parse_simple_variable() {
+int simplevar_test_parse_simple_variable(bool debug) {
 
 	printf("simplevar_test_parse_simple_variable()\n");
 
 	TokenList list = TokenList();
 	list.add(ID,"x");
 
-	SimpleVar* node = new SimpleVar(list,false);
+	SimpleVar* node = new SimpleVar(list,debug);
 	bool assert1 = string("x").compare(node->name)==0;
 
 	return (assert1)?1:0;
 }
 
-int simplevar_test_parse_simple_indexed_variable() {
+int simplevar_test_parse_simple_indexed_variable(bool debug) {
 
 	printf("simplevar_test_parse_simple_indexed_variable()\n");
 
@@ -35,7 +35,7 @@ int simplevar_test_parse_simple_indexed_variable() {
 	list.add(RBRACKET,"]");
 
 
-	SimpleVar* node = new SimpleVar(list,false);
+	SimpleVar* node = new SimpleVar(list,debug);
 	bool assert1 = string("x").compare( node->name) == 0;
 	bool assert2 = (node->indexOptional.has_value());
 
