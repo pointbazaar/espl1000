@@ -12,14 +12,16 @@
 
 using namespace std;
 
-SimpleVar::SimpleVar(TokenList tokens, bool debug) {
+SimpleVar::SimpleVar(TokenList* tokens, bool debug) {
 
 	if(debug){
 		cout << "SimpleVar(...)" << endl;
-		cout << "from " << tokens.code() << endl;
+		cout << "from " << tokens->code() << endl;
 	}
 
-	TokenList copy = TokenList(tokens);
+	this->indexOptional = NULL;
+
+	TokenList copy = TokenList(*tokens);
 
 	if(copy.size()==0){
 		throw string("no tokens");
@@ -34,27 +36,27 @@ SimpleVar::SimpleVar(TokenList tokens, bool debug) {
 		//it could have an index
 		if (copy.size() > 0 && copy.get(0).kind == LBRACKET) {
 			copy.expect(Token(LBRACKET,"["));
-			this->indexOptional = optional(makeExpr(&copy,debug));
+			this->indexOptional = makeExpr(&copy,debug);
 			copy.expect(Token(RBRACKET,"]"));
 		} else {
-			this->indexOptional = nullopt;
+			this->indexOptional = NULL;
 			//pass, this assignment has no index to it
 		}
 
 	} else {
 		stringstream msg;
-		msg << tokens.relPath 
+		msg << tokens->relPath 
 		<< string(":") 
 		<< token.lineNumber
 		<< ": could not read variable name. token was " 
 		<< token.value
 		<< " from context  '" 
-		<< tokens.code()
+		<< tokens->code()
 		<< "'";
 
 		throw msg.str();
 	}
 
-	tokens.set(copy);
+	tokens->set(copy);
 }
 

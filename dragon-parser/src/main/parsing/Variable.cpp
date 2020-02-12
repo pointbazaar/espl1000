@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <optional>
 
 #include "Variable.hpp"
 #include "SimpleVar.hpp"
@@ -21,9 +20,9 @@ struct Variable* makeVariable(TokenList* tokens, bool debug) {
 
 	TokenList copy = tokens->copy();
 
-	res->simpleVariableNode = new SimpleVar(copy,debug);
+	res->simpleVariableNode = new SimpleVar(&copy,debug);
 
-	if (copy.size() > 0) {
+	if (copy.size() >= 2) {
 		Token next = copy.get(0);
 		while (next.kind == STRUCTMEMBERACCESS) {
 

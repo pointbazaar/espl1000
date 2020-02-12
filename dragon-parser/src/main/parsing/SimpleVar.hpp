@@ -11,10 +11,12 @@ class Expr;
 class SimpleVar {
 
 public:
-	SimpleVar(TokenList tokens, bool debug);
+	SimpleVar(TokenList* tokens, bool debug);
 
 	std::string name;
-	std::optional<struct Expr*> indexOptional;
+
+	//may be NULL
+	struct Expr* indexOptional = NULL;
 };
 
 #endif

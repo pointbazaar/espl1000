@@ -41,8 +41,8 @@ void write(struct Variable* m, ofstream* file){
 }
 void write(SimpleVar m, ofstream* file){
 	*file << m.name << "\t";
-	if(m.indexOptional.has_value()){
-		write(m.indexOptional.value(),file);
+	if(m.indexOptional != NULL){
+		write(m.indexOptional,file);
 	}else{
 		*file << "NULL" << "\t";
 	}

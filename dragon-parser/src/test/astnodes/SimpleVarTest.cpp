@@ -18,7 +18,7 @@ int simplevar_test_parse_simple_variable(bool debug) {
 	TokenList list = TokenList();
 	list.add(ID,"x");
 
-	SimpleVar* node = new SimpleVar(list,debug);
+	SimpleVar* node = new SimpleVar(&list,debug);
 	bool assert1 = string("x").compare(node->name)==0;
 
 	return (assert1)?1:0;
@@ -35,13 +35,13 @@ int simplevar_test_parse_simple_indexed_variable(bool debug) {
 	list.add(RBRACKET,"]");
 
 
-	SimpleVar* node = new SimpleVar(list,debug);
+	SimpleVar* node = new SimpleVar(&list,debug);
 	bool assert1 = string("x").compare( node->name) == 0;
-	bool assert2 = (node->indexOptional.has_value());
+	bool assert2 = (node->indexOptional != NULL);
 
 	bool assert3 = (
 			0 == 
-			(node->indexOptional.value()->term1->m2)	//IntConst
+			(node->indexOptional->term1->m2)	//IntConst
 			->number
 	);
 

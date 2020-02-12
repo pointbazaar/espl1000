@@ -87,12 +87,6 @@ optional<Token> recognizeToken(string tkn, bool debug) {
 			r = Token(TPARAM, parts.at(1));
 			break;
 
-		/*
-		case NAMESPACE : 
-			r = Token(NAMESPACE,"namespace");
-			break;
-		*/
-
 		//BRACKETS, BRACES, PARENTHESES
 		case LBRACKET : 
 			r = Token(LBRACKET,"[");
