@@ -45,7 +45,7 @@ void write(Term m, ofstream* file);
 
 //statementnodes
 void write(Stmt m, ofstream* file);
-void write(IfStmt m, ofstream* file);
+void write(struct IfStmt* m, ofstream* file);
 void write(WhileStmt m, ofstream* file);
 void write(RetStmt m, ofstream* file);
 void write(AssignStmt m, ofstream* file);

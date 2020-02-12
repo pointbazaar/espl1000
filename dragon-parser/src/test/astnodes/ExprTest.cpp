@@ -6,12 +6,18 @@
 
 #include "../../main/parsing/Expr.hpp"
 
-int expr_test_simple_expression() {
+#include <stdio.h>
+
+int expr_test_simple_expression(bool debug) {
+
+	if(debug){
+		printf("expr_test_simple_expression(...)\n");
+	}
 
 	try {
 		TokenList* list = new TokenList();
 		list->add(INTEGER,"4");
-		struct Expr* expr = makeExpr(list,false);
+		struct Expr* expr = makeExpr(list,debug);
 
 		return 1;
 	}catch (string e){
@@ -19,27 +25,37 @@ int expr_test_simple_expression() {
 	}
 }
 
-int expr_test_variable_name_expression() {
+int expr_test_variable_name_expression(bool debug) {
+
+	if(debug){
+		printf("expr_test_variable_name_expression(...)\n");
+	}
 
 	try {
 		TokenList* list = new TokenList();
 
 		list->add(ID,"x");
-		struct Expr* expr = makeExpr(list,false);
+		struct Expr* expr = makeExpr(list,debug);
 		return 1;
 	}catch (string e){
 		return 0;
 	}
 }
 
-int expr_recognize_string_constant_expression() {
+int expr_recognize_2_op_expr(bool debug) {
+
+	if(debug){
+		printf("expr_recognize_2_op_expr(...)\n");
+	}
 
 	try {
 		TokenList* tokens = new TokenList();
 
-		tokens->add(STRINGCONST,"hello");
+		tokens->add(INTEGER,"1");
+		tokens->add(OPKEY,"+");
+		tokens->add(INTEGER,"2");
 
-		struct Expr* expr = makeExpr(tokens,false);
+		struct Expr* expr = makeExpr(tokens,debug);
 		return 1;
 	}catch (string e){
 		return 0;

@@ -6,7 +6,7 @@
 
 #include "../../main/parsing/statements/IfStmt.hpp"
 
-int if_test1() {
+int if_test1(bool debug) {
 	TokenList* list = new TokenList();
 	list->add(IF);
 
@@ -22,13 +22,13 @@ int if_test1() {
 
 	list->add(RCURLY);
 
-	IfStmt* i = new IfStmt(*list,false);
+	struct IfStmt* i = makeIfStmt(list,debug);
 	bool assert1 = (0 == list->size());
 
 	return  (assert1)?1:0;
 }
 
-int if_test2() {
+int if_test2(bool debug) {
 
 	try {
 		TokenList* l = new TokenList();
@@ -56,7 +56,7 @@ int if_test2() {
 
 		l->add(RCURLY);
 
-		IfStmt* i = new IfStmt(*l,true);
+		struct IfStmt* i = makeIfStmt(l,debug);
 
 		return 1;
 	}catch (string e){

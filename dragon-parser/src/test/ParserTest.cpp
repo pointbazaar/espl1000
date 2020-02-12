@@ -83,15 +83,15 @@ void test_all_inner(bool debug){
 
 
 	cout << "Test: Expr" << endl;
-	passed += expr_recognize_string_constant_expression();
-	passed += expr_test_simple_expression();
-	passed += expr_test_variable_name_expression();
+	passed += expr_recognize_2_op_expr(debug);
+	passed += expr_test_simple_expression(debug);
+	passed += expr_test_variable_name_expression(debug);
 	count+=3;
 
 
 	cout << "Test: IfStmt" << endl;
-	passed += if_test1();
-	passed += if_test2();
+	passed += if_test1(debug);
+	passed += if_test2(debug);
 	count += 2;
 
 	cout << "Test: RetStmt" << endl;

@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <stdio.h>
+#include <iostream>
 
 #include "IfStmt.hpp"
 #include "../../commandline/TokenKeys.hpp"
@@ -12,22 +13,28 @@
 
 using namespace std;
 
-IfStmt::IfStmt(TokenList tokens, bool debug) {
+struct IfStmt* makeIfStmt(TokenList* tokens, bool debug) {
+
+	struct IfStmt* res = (struct IfStmt*)malloc(sizeof(struct IfStmt));
+	res->condition = NULL;
+	res->statements = vector<Stmt*>();
+	res->elseStatements = vector<Stmt*>();
+
 
 	if(debug){
 		cout << "IfStmt(...)" << endl; 
 	}
 
-	TokenList copy = TokenList(tokens);
+	TokenList copy = TokenList(*tokens);
 	copy.expect(Token(IF));
-	this->condition = makeExpr(&copy,debug);
+	res->condition = makeExpr(&copy,debug);
 	copy.expect(Token(LCURLY));
 
 	Token next = copy.get(0);
 
 	while (!(next.kind == RCURLY)) {
 
-		this->statements.push_back(new Stmt(copy,debug));
+		res->statements.push_back(new Stmt(copy,debug));
 		next = copy.get(0);
 	}
 
@@ -45,13 +52,15 @@ IfStmt::IfStmt(TokenList tokens, bool debug) {
 
 		while (!(elsenext.kind == RCURLY)) {
 
-			this->elseStatements.push_back(new Stmt(copy,debug));
+			res->elseStatements.push_back(new Stmt(copy,debug));
 			elsenext = copy.get(0);
 		}
 
 		copy.expect(Token(RCURLY));
 	}
 
-	tokens.set(copy);
+	tokens->set(copy);
+
+	return res;
 }
 

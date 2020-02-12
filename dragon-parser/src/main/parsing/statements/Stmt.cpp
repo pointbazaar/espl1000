@@ -31,7 +31,7 @@ Stmt::Stmt(TokenList tokens, bool debug) {
 	} else if (first.kind == WHILE) {
 		this->m2 = new WhileStmt	(copy,debug);
 	} else if (first.kind == IF) {
-		this->m3 = new IfStmt		(copy,debug);
+		this->m3 = makeIfStmt		(&copy,debug);
 	} else if (first.kind == RETURN) {
 		this->m4 = new RetStmt		(copy,debug);
 	} else {

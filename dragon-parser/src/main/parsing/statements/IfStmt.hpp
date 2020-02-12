@@ -2,21 +2,18 @@
 #define IFSTMT
 
 #include <vector>
-#include <iostream>
 
 #include "../../commandline/TokenList.hpp"
 
-class Expr;
+struct Expr;
 class Stmt;
 
-class IfStmt{
-
-public:
-	IfStmt(TokenList tokens,bool debug);
-
-	struct Expr* condition;
-	vector<Stmt*> statements;
-	vector<Stmt*> elseStatements;
+struct IfStmt{
+	struct Expr* condition = NULL;
+	std::vector<Stmt*> statements = vector<Stmt*>();
+	std::vector<Stmt*> elseStatements = vector<Stmt*>();
 };
+	
+struct IfStmt* makeIfStmt(TokenList* tokens,bool debug);
 
 #endif

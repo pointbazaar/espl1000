@@ -82,14 +82,14 @@ void write(Stmt m, ofstream* file){
 	//we can print a small number
 	if(m.m1 != NULL){*file << "1" << "\t"; write(*m.m1,file); }
 	if(m.m2 != NULL){*file << "2" << "\t"; write(*m.m2,file); }
-	if(m.m3 != NULL){*file << "3" << "\t"; write(*m.m3,file); }
+	if(m.m3 != NULL){*file << "3" << "\t"; write(m.m3,file); }
 	if(m.m4 != NULL){*file << "4" << "\t"; write(*m.m4,file); }
 	if(m.m5 != NULL){*file << "5" << "\t"; write(*m.m5,file); }
 }
-void write(IfStmt m, ofstream* file){
-	write(m.condition,file);
-	for(Stmt* s : m.statements){ write(*s,file); }
-	for(Stmt* s2 : m.elseStatements){ write(*s2,file); }
+void write(struct IfStmt* m, ofstream* file){
+	write(m->condition,file);
+	for(Stmt* s : m->statements){ write(*s,file); }
+	for(Stmt* s2 : m->elseStatements){ write(*s2,file); }
 }
 void write(WhileStmt m, ofstream* file){
 	write(m.condition,file);

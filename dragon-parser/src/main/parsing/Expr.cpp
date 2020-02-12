@@ -33,7 +33,7 @@ struct Expr* makeExpr(TokenList* tokens, bool debug) {
 	termNodes.push_back(makeTerm(&copy,debug));
 	try {
 
-		while (true) {
+		while (copy.size()>=2) {
 			TokenList copy2 = TokenList(copy);
 
 			Op* myop = new Op(copy2,debug);
