@@ -64,7 +64,7 @@ int variable_test_parse_struct_member_access_and_index_access(bool debug) {
 	tokens.add(ID,"a");
 
 	tokens.add(LBRACKET);
-	tokens.add(INTEGER,0);
+	tokens.add(INTEGER,"0");
 	tokens.add(RBRACKET);
 
 	tokens.add(STRUCTMEMBERACCESS);
