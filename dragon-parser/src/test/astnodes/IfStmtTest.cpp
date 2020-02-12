@@ -6,7 +6,14 @@
 
 #include "../../main/parsing/statements/IfStmt.hpp"
 
+#include <stdio.h>
+
 int if_test1(bool debug) {
+
+	if(debug){
+		printf("if_test1\n");
+	}
+
 	TokenList* list = new TokenList();
 	list->add(IF);
 
@@ -29,6 +36,10 @@ int if_test1(bool debug) {
 }
 
 int if_test2(bool debug) {
+
+	if(debug){
+		printf("if_test2\n");
+	}
 
 	try {
 		TokenList* l = new TokenList();

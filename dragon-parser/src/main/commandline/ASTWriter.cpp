@@ -88,8 +88,8 @@ void write(Stmt m, ofstream* file){
 }
 void write(struct IfStmt* m, ofstream* file){
 	write(m->condition,file);
-	for(Stmt* s : m->statements){ write(*s,file); }
-	for(Stmt* s2 : m->elseStatements){ write(*s2,file); }
+	for(Stmt* s : *(m->statements)){ write(*s,file); }
+	for(Stmt* s2 : *(m->elseStatements)){ write(*s2,file); }
 }
 void write(WhileStmt m, ofstream* file){
 	write(m.condition,file);

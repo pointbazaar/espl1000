@@ -10,8 +10,8 @@ class Stmt;
 
 struct IfStmt{
 	struct Expr* condition = NULL;
-	std::vector<Stmt*> statements = vector<Stmt*>();
-	std::vector<Stmt*> elseStatements = vector<Stmt*>();
+	std::vector<Stmt*>* statements = NULL;
+	std::vector<Stmt*>* elseStatements = NULL;
 };
 	
 struct IfStmt* makeIfStmt(TokenList* tokens,bool debug);
