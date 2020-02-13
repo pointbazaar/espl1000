@@ -3,11 +3,10 @@
 
 #include "../commandline/TokenList.hpp"
 
-class IntConst {
-
-public:
-	IntConst(TokenList* tokens, bool debug);
-
+struct IntConst {
 	int number;
 };
+
+struct IntConst* makeIntConst(TokenList* tokens, bool debug);
+
 #endif

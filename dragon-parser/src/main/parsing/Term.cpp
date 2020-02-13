@@ -58,7 +58,7 @@ struct Term* makeTerm(TokenList* tokens, bool debug) {
 		copy.set(copy2);
 	} catch (string e0) {
 		try {
-			res->m2 = new IntConst(&copy,debug);
+			res->m2 = makeIntConst(&copy,debug);
 		} catch (string e1) {
 			try {
 				//a string constant is syntatic sugar.

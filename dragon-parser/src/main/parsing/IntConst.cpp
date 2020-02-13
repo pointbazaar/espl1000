@@ -7,7 +7,9 @@
 
 using namespace std;
 
-IntConst::IntConst(TokenList* tokens, bool debug) {
+struct IntConst* makeIntConst(TokenList* tokens, bool debug) {
+
+	struct IntConst* res = (struct IntConst*)malloc(sizeof(struct IntConst));
 
 	if(debug){
 		cout << "IntConst(...)" << endl;
@@ -19,17 +21,19 @@ IntConst::IntConst(TokenList* tokens, bool debug) {
 
 		Token tk = copy.get(0);
 		if (tk.value.compare("-")==0 && (copy.get(1).kind == INTEGER)) {
-			this->number = - stoi( copy.get(1).value );
+			res->number = - stoi( copy.get(1).value );
 			copy.consume(2);
 		} else {
 			throw string("cannot parse integer constant node with such operator:") + (string)tk.value;
 		}
 	} else if (copy.get(0).kind == INTEGER) {
-		this->number = stoi( copy.get(0).value);
+		res->number = stoi( copy.get(0).value);
 		copy.consume(1);
 	} else {
 		throw string("could not read IntConst node");
 	}
 	tokens->set(copy);
+
+	return res;
 }
 
