@@ -10,3 +10,4 @@ crend
 *.class
 .**.asm
 *.tokens
+*.ast
