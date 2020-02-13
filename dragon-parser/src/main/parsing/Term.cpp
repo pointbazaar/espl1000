@@ -99,7 +99,7 @@ struct Term* makeTerm(TokenList* tokens, bool debug) {
 							try {
 								res->m6 = makeVariable(&copy,debug);
 							} catch (string e6) {
-								res->m3 = new CharConst(copy,debug);
+								res->m3 = makeCharConst(copy,debug);
 							}
 						}
 					}

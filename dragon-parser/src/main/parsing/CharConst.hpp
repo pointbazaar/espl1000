@@ -3,12 +3,10 @@
 
 #include "../commandline/TokenList.hpp"
 
-class CharConst {
-
-public:
-	CharConst(TokenList tokens,bool debug);
-
+struct CharConst {
 	char content;
 };
+
+struct CharConst* makeCharConst(TokenList tokens,bool debug);
 
 #endif

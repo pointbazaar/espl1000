@@ -7,7 +7,9 @@
 
 using namespace std;
 
-CharConst::CharConst(TokenList tokens, bool debug) {
+struct CharConst* makeCharConst(TokenList tokens, bool debug) {
+
+	struct CharConst* res = (struct CharConst*)malloc(sizeof(struct CharConst));
 
 	if(debug){
 		cout << "CharConst(...)" << endl;
@@ -16,11 +18,12 @@ CharConst::CharConst(TokenList tokens, bool debug) {
 	Token token = tokens.get(0);
 
 	if (token.kind == CCONST) {
-		this->content = token.value.at(0);
+		res->content = token.value.at(0);
 		tokens.consume(1);
 	} else {
 		throw string("could not read charConstant node");
 	}
 
+	return res;
 }
 

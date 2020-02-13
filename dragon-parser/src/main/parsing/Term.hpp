@@ -15,7 +15,7 @@ struct Term{
 	//only one of these may be != NULL
 	struct BoolConst* m1 = NULL;
 	struct IntConst* m2 = NULL;
-	CharConst* m3 = NULL;
+	struct CharConst* m3 = NULL;
 	MethodCall* m4 = NULL;
 	struct Expr* m5 = NULL;
 	struct Variable* m6 = NULL;
