@@ -3,12 +3,10 @@
 
 class TokenList;
 
-class FloatConst{
-
-public:
+struct FloatConst{
 	float value;
-
-	FloatConst(TokenList* tokens, bool debug);
 };
+
+struct FloatConst* makeFloatConst(TokenList* tokens, bool debug);
 
 #endif

@@ -11,7 +11,7 @@ int floatconst_test1() {
 		TokenList* list = new TokenList();
 		list->add(OPKEY,"-");
 		list->add(FLOATING,"4.0f");
-		FloatConst* node = new FloatConst(list,false);
+		struct FloatConst* node = makeFloatConst(list,false);
 		return 1;
 	}catch (string e){
 		return 0;
@@ -22,7 +22,7 @@ int floatconst_test2() {
 	try {
 		TokenList* list = new TokenList();
 		list->add(FLOATING,"4.0f");
-		FloatConst* node = new FloatConst(list,false);
+		struct FloatConst* node = makeFloatConst(list,false);
 		return 1;
 	}catch (string e){
 		return 0;

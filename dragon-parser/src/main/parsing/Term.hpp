@@ -19,7 +19,7 @@ struct Term{
 	MethodCall* m4 = NULL;
 	struct Expr* m5 = NULL;
 	struct Variable* m6 = NULL;
-	FloatConst* m7 = NULL;
+	struct FloatConst* m7 = NULL;
 };
 
 struct Term* makeTerm(struct Expr* myexpr);	
