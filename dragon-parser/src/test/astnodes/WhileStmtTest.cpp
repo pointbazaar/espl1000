@@ -23,7 +23,7 @@ int whilestmt_test1() {
 
 		list.add(RCURLY);
 
-		WhileStmt* whileStatement = new WhileStmt(list,false);
+		struct WhileStmt* whileStatement = makeWhileStmt(&list,false);
 
 		return 1;
 	}catch (string e){

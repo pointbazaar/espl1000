@@ -12,63 +12,63 @@
 
 using namespace std;
 
-Method::Method(TokenList tokens, bool debug) {
+struct Method* makeMethod(TokenList* tokens, bool debug) {
 
 	if (debug) {
-		cout << "Method(...)" << endl;
-		cout << "from: " << tokens.code() << "" << endl;
+		cout << "Method(...)" << "from: " << tokens->code() << "" << endl;
 	}
 
-	TokenList copy = tokens.copy();
+	struct Method* res = (struct Method*)malloc(sizeof(struct Method));
 
-	copy.expect(Token(FN));
+	//init
+	res->count_arguments = 0;
+	res->arguments = (struct DeclArg**)malloc(sizeof(struct DeclArg*)*1);
+	res->count_statements = 0;
+	res->statements = (struct Stmt**)malloc(sizeof(struct Stmt*)*1);
 
-	this->methodName = Identifier(&copy,debug).identifier;
+	TokenList copy = tokens->copy();
 
-	cout << "1" << endl;
+	copy.expect(FN);
 
-	copy.expect(Token(LPARENS));
+	res->methodName = makeIdentifier(&copy,debug)->identifier;
 
-	cout << "2" << endl;
+	copy.expect(LPARENS);
 
 	//while there is no ')' up, continue parsing arguments
 	Token next = copy.get(0);
 	while (!(next.kind == RPARENS)) {
-		if (this->arguments.size() > 0) {
-			copy.expect(Token(COMMA));
+		if (res->count_arguments > 0) {
+			copy.expect(COMMA);
 		}
-		this->arguments.push_back(new DeclArg(&copy, debug));
+		res->arguments[res->count_arguments++] = makeDeclArg(&copy, debug);
+		res->arguments = (struct DeclArg**)realloc(res->statements,sizeof(struct DeclArg*)*(res->count_arguments+1));
+
 		next = copy.get(0);
 	}
 
-	cout << "4" << endl;
+	copy.expect(RPARENS);
 
-	copy.expect(Token(RPARENS));
-
-	copy.expect(Token(ARROW));
-
-	cout << "7" << endl;
+	copy.expect(ARROW);
 
 	cout << copy.code() << endl;
 	
-	this->returnType = new Type(copy,debug);
+	res->returnType = makeType(&copy,debug);
 
-	cout << "9" << endl;
-
-	copy.expect(Token(LCURLY));
-
-	cout << "11" << endl;
+	copy.expect(LCURLY);
 
 	Token statement_next = copy.get(0);
 	while (!(statement_next.kind != RCURLY)) {
-		this->statements.push_back(new Stmt(copy,debug));
+
+		res->statements[res->count_statements++] = makeStmt(&copy, debug);
+		res->statements = (struct Stmt**)realloc(res->statements,sizeof(struct Stmt*)*(res->count_statements+1));
+
 		statement_next = copy.get(0);
 	}
 
-	cout << "13" << endl;
+	copy.expect(RCURLY);
 
-	copy.expect(Token(RCURLY));
+	tokens->set(copy);
 
-	tokens.set(copy);
+	return res;
 }
 

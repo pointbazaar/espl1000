@@ -1,22 +1,16 @@
 #ifndef SIMPLEVAR
 #define SIMPLEVAR
 
-#include <string>
-#include <optional>
+class TokenList;
+struct Expr;
 
-#include "../commandline/TokenList.hpp"
+struct SimpleVar {
 
-class Expr;
-
-class SimpleVar {
-
-public:
-	SimpleVar(TokenList* tokens, bool debug);
-
-	std::string name;
-
+	char* name;
 	//may be NULL
 	struct Expr* indexOptional = NULL;
 };
+
+struct SimpleVar* makeSimpleVar(TokenList* tokens, bool debug);
 
 #endif

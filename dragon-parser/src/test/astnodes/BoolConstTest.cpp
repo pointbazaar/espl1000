@@ -6,12 +6,12 @@
 
 #include "../../main/parsing/BoolConst.hpp"
 
-int boolconst_test_parse_bool_constant_node()  {
+int boolconst_test_parse_bool_constant_node(bool debug)  {
 	TokenList* list = new TokenList();
 	
 	list->add(BCONST,"true");
 
-	BoolConst* b = makeBoolConst(*list,false);
+	struct BoolConst* b = makeBoolConst(list,debug);
 	bool assert1 = ( b->boolValue);
 
 	return (assert1)?1:0;

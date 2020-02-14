@@ -1,8 +1,7 @@
 #ifndef OP
 #define OP
 
-
-#include "../commandline/TokenList.hpp"
+class TokenList;
 
 struct Op {
 	char* op;

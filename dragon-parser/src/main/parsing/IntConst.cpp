@@ -12,26 +12,36 @@ struct IntConst* makeIntConst(TokenList* tokens, bool debug) {
 	struct IntConst* res = (struct IntConst*)malloc(sizeof(struct IntConst));
 
 	if(debug){
-		cout << "IntConst(...)" << endl;
+		cout << "IntConst(...)" << " from " << tokens->code() << endl;
 	}
 
 	TokenList copy = TokenList(*tokens);
 
-	if (copy.get(0).kind == OPKEY) {
+	Token tk = copy.get(0);
 
-		Token tk = copy.get(0);
-		if (tk.value.compare("-")==0 && (copy.get(1).kind == INTEGER)) {
-			res->number = - stoi( copy.get(1).value );
-			copy.consume(2);
-		} else {
-			throw string("cannot parse integer constant node with such operator:") + (string)tk.value;
-		}
-	} else if (copy.get(0).kind == INTEGER) {
-		res->number = stoi( copy.get(0).value);
-		copy.consume(1);
-	} else {
-		throw string("could not read IntConst node");
+	switch (tk.kind){
+
+		case OPKEY: 
+			;
+			if (tk.value.compare("-")==0 && (copy.get(1).kind == INTEGER)) {
+				res->number = - stoi( copy.get(1).value );
+				copy.consume(2);
+			} else {
+				throw string("cannot parse integer constant node with such operator:") + (string)tk.value;
+			}
+			break;
+
+		case INTEGER: 
+			;
+			res->number = stoi(tk.value);
+			copy.consume(1);
+			break;
+
+		default:
+			;
+			throw string("could not read IntConst node");
 	}
+
 	tokens->set(copy);
 
 	return res;

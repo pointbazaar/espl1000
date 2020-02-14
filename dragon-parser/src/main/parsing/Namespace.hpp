@@ -1,31 +1,26 @@
 #ifndef NAMESPACE
 #define NAMESPACE
 
-#include <vector>
-#include <string>
+struct Method;
+struct StructDecl;
 
-#include "Method.hpp"
-#include "StructDecl.hpp"
-#include "../commandline/TokenList.hpp"
+class TokenList;
 
-class Namespace {
-
-public:
+struct Namespace {
 	//a namespace is represented by a filename.
 	//the contents of a namespace are the contents of the file
-	Namespace(
-		TokenList* tokens,
-		std::string name,
-		bool debug
-	);
 
-
-	std::string srcPath;
-	std::string name;
+	char* srcPath;
+	char* name;
 
 	//structs must be declared before the subroutines
-	std::vector<Method> methods;
-	std::vector<StructDecl> structs;
+	struct Method** methods;
+	int count_methods;
+
+	struct StructDecl** structs;
+	int count_structs;
 };
+
+struct Namespace* makeNamespace(TokenList* tokens, char* name, bool debug);
 
 #endif

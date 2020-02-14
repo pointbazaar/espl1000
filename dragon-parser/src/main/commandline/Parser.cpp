@@ -92,7 +92,7 @@ void build_ast_file(string tokensFile, string astJsonFile, bool debug) {
 	//get just the namespace name from .FILENAME.dg.tokens
 	string namespaceName = tokensFile.substr(1,string(tokensFile).size() - string(".dg.tokens").size());
 
-	Namespace mynamespace = Namespace(&tokens,namespaceName,debug);
+	struct Namespace* mynamespace = makeNamespace(&tokens,(char*)namespaceName.c_str(),debug);
 
 	if(debug){
 		cout << "write to "+astJsonFile << endl;

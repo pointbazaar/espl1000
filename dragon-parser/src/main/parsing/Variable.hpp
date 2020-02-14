@@ -1,15 +1,15 @@
 #ifndef VARIABLE
 #define VARIABLE
 
-#include <vector>
-
-class SimpleVar;
-#include "../commandline/TokenList.hpp"
+struct SimpleVar;
+class TokenList;
 
 struct Variable {
 
-	SimpleVar* simpleVariableNode;
-	std::vector<struct Variable*> memberAccessList;
+	struct SimpleVar* simpleVariableNode;
+
+	struct Variable** memberAccessList;
+	int count_memberAccessList;
 };
 
 struct Variable* makeVariable(TokenList* tokens, bool debug);

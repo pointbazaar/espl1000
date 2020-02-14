@@ -2,20 +2,20 @@
 #ifndef SUBROUTINETYPE
 #define SUBROUTINETYPE
 
-#include <vector>
-
 class TokenList;
-class Type;
+struct Type;
 
-class SubrType {
+struct SubrType {
 
-public:
-	SubrType(Type* tn, bool hasSideEffects);
-	SubrType(TokenList tokens, bool debug);
-
-	Type* returnType;
+	struct Type* returnType;
 	bool hasSideEffects;
-	std::vector<Type*> argumentTypes;
+
+	struct Type** argumentTypes;
+	int count_argumentTypes=0;
 
 };
+
+struct SubrType* makeSubrType(struct Type* tn, bool hasSideEffects);
+struct SubrType* makeSubrType(TokenList* tokens, bool debug);
+
 #endif

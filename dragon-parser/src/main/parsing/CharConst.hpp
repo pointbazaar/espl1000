@@ -1,12 +1,12 @@
 #ifndef CHARCONST
 #define CHARCONST
 
-#include "../commandline/TokenList.hpp"
+class TokenList;
 
 struct CharConst {
 	char content;
 };
 
-struct CharConst* makeCharConst(TokenList tokens,bool debug);
+struct CharConst* makeCharConst(TokenList* tokens,bool debug);
 
 #endif

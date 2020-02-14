@@ -1,13 +1,13 @@
 #ifndef BOOLCONST
 #define BOOLCONST
 
-#include "../commandline/TokenList.hpp"
+class TokenList;
 
 struct BoolConst{
 	bool boolValue;
 };
 
-struct BoolConst* makeBoolConst(TokenList tokens, bool debug);
+struct BoolConst* makeBoolConst(TokenList* tokens, bool debug);
 
 	
 #endif

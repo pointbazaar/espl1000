@@ -12,7 +12,7 @@ int basictypewrapped_test_type_parsing_simple_type() {
 	TokenList* list = new TokenList();
 	list->add(TYPEIDENTIFIER,"PInt");
 
-	BasicTypeWrapped* b = new BasicTypeWrapped(*list,false);
+	struct BasicTypeWrapped* b = makeBasicTypeWrapped(list,false);
 
 	bool assert1 = (b->m1 != NULL && b->m2 == NULL);	//it is SimpleType
 	bool assert2 = (0 == list->size());

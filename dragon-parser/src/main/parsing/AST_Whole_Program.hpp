@@ -1,21 +1,17 @@
 #ifndef AST_WHOLE_PROGRAM
 #define AST_WHOLE_PROGRAM
 
-#include <vector>
-#include <string>
+struct Namespace;
+class TokenList;
 
-#include "Namespace.hpp"
-#include "../commandline/TokenList.hpp"
-
-class AST_Whole_Program  {
-
-public:
+struct AST_Whole_Program  {
 	//this contains all namespace nodes for the whole program
 
-	std::vector<Namespace> namespaceNodes;
-
-	AST_Whole_Program(Namespace myNamespace);
-	AST_Whole_Program(TokenList tokens, std::string myNamespace, bool debug);
+	struct Namespace** namespaces;
+	int count_namespaces;
 };
+
+struct AST_Whole_Program* makeAST_Whole_Program(struct Namespace* myNamespace);
+struct AST_Whole_Program* makeAST_Whole_Program(TokenList* tokens, char* myNamespace, bool debug);
 
 #endif

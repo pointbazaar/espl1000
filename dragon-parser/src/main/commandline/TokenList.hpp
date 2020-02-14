@@ -26,6 +26,7 @@ public:
 	void add(Token token);
 	void add(int token_kind);
 	void add(int token_kind, string token_value);
+	
 	void addAll(vector<Token> tokens);
 
 	void consume(int n);
@@ -36,6 +37,9 @@ public:
 	string wrap(string s, string wrap);
 
 	void expect(Token itk);
+	void expect(int token_kind);
+	void expect(int token_kind, string token_value);
+
 	TokenList copy();
 	void set(TokenList other);
 

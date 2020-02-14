@@ -52,7 +52,7 @@ void test_all_inner(bool debug){
 
 
 	cout << "Test: BoolConst" << endl;
-	passed += boolconst_test_parse_bool_constant_node();
+	passed += boolconst_test_parse_bool_constant_node(debug);
 
 	cout << "Test: CharConst" << endl;
 	passed += charconst_test_parse_char_constant_node();
@@ -95,9 +95,9 @@ void test_all_inner(bool debug){
 	count += 2;
 
 	cout << "Test: RetStmt" << endl;
-	passed += retstmt_test1();
-	passed += retstmt_test2();
-	passed += retstmt_test3();
+	passed += retstmt_test1(debug);
+	passed += retstmt_test2(debug);
+	passed += retstmt_test3(debug);
 	count += 3;
 
 	cout << "Test: WhileStmt" << endl;

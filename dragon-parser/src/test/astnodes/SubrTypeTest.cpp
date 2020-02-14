@@ -19,7 +19,7 @@ int subrtype_test_typename() {
 	l.add(ARROW);
 	l.add(TYPEIDENTIFIER,"PInt");
 
-	SubrType* sub = new SubrType(l,false);
+	struct SubrType* sub = makeSubrType(&l,false);
 
 	bool assert1 = (0 == l.size());
 
@@ -47,7 +47,7 @@ int subrtype_test_typename_subroutine_return_type() {
 		l.add(TYPEIDENTIFIER,"PInt");
 	l.add(RPARENS);
 
-	SubrType* sub = new SubrType(l,false);
+	struct SubrType* sub = makeSubrType(&l,false);
 
 	bool assert1 = (0 == l.size());
 	return (assert1)?1:0;
@@ -65,7 +65,8 @@ int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects()  {
 	l.add(ARROW);
 	l.add(TYPEIDENTIFIER,"PInt");
 
-	SubrType* node = new SubrType(l,false);
+	struct SubrType* node = makeSubrType(&l,false);
+
 	bool assert1 = (0 == l.size());
 	return (assert1)?1:0;
 }
@@ -80,7 +81,8 @@ int subrtype_test_subroutine_type_parsing_subroutine_without_side_effects() {
 	l.add(ARROW);
 	l.add(TYPEIDENTIFIER,"PInt");
 
-	SubrType* node = new SubrType(l,false);
+	struct SubrType* node = makeSubrType(&l,false);
+
 	bool assert1 = (0 == l.size());
 	return (assert1)?1:0;
 }

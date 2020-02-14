@@ -11,34 +11,39 @@
 #include "../Variable.hpp"
 #include "../Expr.hpp"
 
-AssignStmt::AssignStmt(TokenList tokens,bool debug) {
+#include <stdio.h>
+
+struct AssignStmt* makeAssignStmt(TokenList* tokens,bool debug) {
 
 	if(debug){
-		cout << "AssignStmt(...)" << endl;
+		printf("AssignStmt(...)\n");
 	}
 
-	optional<Type*> optTypeNode1; 
+	struct AssignStmt* res = (struct AssignStmt*)malloc(sizeof(struct AssignStmt));
 
-	TokenList copy = tokens.copy();
+	res->optTypeNode = NULL;
+
+	TokenList copy = tokens->copy();
 
 	try {
 		TokenList copy2 = copy.copy();
-		optTypeNode1 = optional<Type*>(new Type(copy2,debug));
+		res->optTypeNode = makeType(&copy2,debug);
 		copy.set(copy2);
+
 	} catch (string e) {
-		optTypeNode1 = nullopt;
 		//pass
 	}
 
-	this->optTypeNode = optTypeNode1;
-	this->variableNode = makeVariable(&copy,debug);
+	res->variableNode = makeVariable(&copy,debug);
 
-	copy.expect(Token(OPKEY,"="));
+	copy.expect(OPKEY,"=");
 
-	this->expressionNode = makeExpr(&copy,debug);
+	res->expressionNode = makeExpr(&copy,debug);
 
-	copy.expect(Token(SEMICOLON));
+	copy.expect(SEMICOLON);
 
-	tokens.set(copy);
+	tokens->set(copy);
+
+	return res;
 }
 

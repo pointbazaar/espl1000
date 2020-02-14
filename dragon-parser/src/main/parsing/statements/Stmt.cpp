@@ -12,13 +12,22 @@
 #include "MethodCall.hpp"
 #include "AssignStmt.hpp"
 
-Stmt::Stmt(TokenList tokens, bool debug) {
+struct Stmt* makeStmt(TokenList* tokens, bool debug) {
 
 	if(debug){
 		cout << "Stmt(...)" << endl;
 	}
 
-	TokenList copy = tokens.copy();
+	struct Stmt* res = (struct Stmt*)malloc(sizeof(struct Stmt));
+
+	//init
+	res->m1 = NULL;
+	res->m2 = NULL;
+	res->m3 = NULL;
+	res->m4 = NULL;
+	res->m5 = NULL;
+
+	TokenList copy = tokens->copy();
 
 	if (copy.size() == 0) {
 		throw "tried to parse a Statement, but there are no tokens left";
@@ -29,11 +38,11 @@ Stmt::Stmt(TokenList tokens, bool debug) {
 	if (first.kind == LOOP) {
 		//this->statementNode = LoopStatementNode(copy);
 	} else if (first.kind == WHILE) {
-		this->m2 = new WhileStmt	(copy,debug);
+		res->m2 = makeWhileStmt		(&copy,debug);
 	} else if (first.kind == IF) {
-		this->m3 = makeIfStmt		(&copy,debug);
+		res->m3 = makeIfStmt		(&copy,debug);
 	} else if (first.kind == RETURN) {
-		this->m4 = new RetStmt		(copy,debug);
+		res->m4 = makeRetStmt		(&copy,debug);
 	} else {
 		//TODO: we have to figure something out here.
 		//i don't want 'let' statements
@@ -42,15 +51,19 @@ Stmt::Stmt(TokenList tokens, bool debug) {
 		//but parsing should be straightforward. to give good error messages
 
 		try {
+
 			TokenList copy2 = copy.copy();
-			this->m1 = makeMethodCall(copy2,debug);
-			copy2.expect(Token(SEMICOLON));
+			res->m1 = makeMethodCall(&copy2,debug);
+			copy2.expect(SEMICOLON);
 			copy.set(copy2);
+
 		} catch (string e1) {
-			this->m5 = new AssignStmt(copy,debug);
+			res->m5 = makeAssignStmt(&copy,debug);
 		}
 	}
 
-	tokens.set(copy);
+	tokens->set(copy);
+
+	return res;
 }
 

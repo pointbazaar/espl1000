@@ -29,34 +29,34 @@
 #include "../parsing/typenodes/Type.hpp"
 #include "../parsing/typenodes/TypeParam.hpp"
 
-void write_ast(string filename, Namespace namespaceNode);
+void write_ast(string filename, struct Namespace* namespaceNode);
 
-void write(Namespace m, ofstream* file);
-void write(Method m, ofstream* file);
-void write(DeclArg m, ofstream* file);
-void write(struct Expr* m, ofstream* file);
-void write(Op m, ofstream* file);
-void write(struct IntConst* m, ofstream* file);
-void write(struct BoolConst* m, ofstream* file);
-void write(struct CharConst* m, ofstream* file);
-void write(struct Variable* m, ofstream* file);
-void write(SimpleVar m, ofstream* file);
-void write(Term m, ofstream* file);
+void write(struct Namespace* m, 	ofstream* file);
+void write(struct Method* m, 		ofstream* file);
+void write(struct DeclArg* m, 		ofstream* file);
+void write(struct Expr* m, 			ofstream* file);
+void write(struct Op* m, 			ofstream* file);
+void write(struct IntConst* m, 		ofstream* file);
+void write(struct BoolConst* m, 	ofstream* file);
+void write(struct CharConst* m, 	ofstream* file);
+void write(struct Variable* m, 		ofstream* file);
+void write(struct SimpleVar* m, 	ofstream* file);
+void write(struct Term* m, 			ofstream* file);
 
 //statementnodes
-void write(Stmt m, ofstream* file);
-void write(struct IfStmt* m, ofstream* file);
-void write(WhileStmt m, ofstream* file);
-void write(RetStmt m, ofstream* file);
-void write(AssignStmt m, ofstream* file);
-void write(struct MethodCall* m, ofstream* file);
+void write(struct Stmt* m, 			ofstream* file);
+void write(struct IfStmt* m, 		ofstream* file);
+void write(struct WhileStmt* m, 	ofstream* file);
+void write(struct RetStmt* m, 		ofstream* file);
+void write(struct AssignStmt* m, 	ofstream* file);
+void write(struct MethodCall* m, 	ofstream* file);
 
 //typenodes
-void write(Type m, ofstream* file);
-void write(SubrType m, ofstream* file);
-void write(SimpleType m, ofstream* file);
-void write(ArrayType m, ofstream* file);
-void write(TypeParam m, ofstream* file);
-void write(BasicTypeWrapped m, ofstream* file);
+void write(struct Type* m, 				ofstream* file);
+void write(struct SubrType* m, 			ofstream* file);
+void write(struct SimpleType* m, 		ofstream* file);
+void write(struct ArrayType* m, 		ofstream* file);
+void write(struct TypeParam* m, 		ofstream* file);
+void write(struct BasicTypeWrapped* m, 	ofstream* file);
 
 #endif

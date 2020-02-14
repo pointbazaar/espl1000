@@ -2,14 +2,14 @@
 #define ARRAYTYPE
 
 class TokenList;
-class Type;
+struct Type;
 
-class ArrayType {
+struct ArrayType {
 
-public:
-	ArrayType(Type* element_type);
-	ArrayType(TokenList tokens, bool debug);
-
-	Type* element_type;
+	struct Type* element_type;
 };
+
+struct ArrayType* makeArrayType(struct Type* element_type);
+struct ArrayType* makeArrayType(TokenList* tokens, bool debug);
+
 #endif

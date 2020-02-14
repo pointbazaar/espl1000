@@ -1,25 +1,27 @@
 #include <iostream>
 #include <vector>
-#include <set>
-#include <optional>
 #include <string>
 #include <sstream>
 
 //project headers
 #include "SimpleVar.hpp"
 #include "../commandline/TokenKeys.hpp"
+#include "../commandline/Token.hpp"
+#include "../commandline/TokenList.hpp"
 #include "Expr.hpp"
 
 using namespace std;
 
-SimpleVar::SimpleVar(TokenList* tokens, bool debug) {
+struct SimpleVar* makeSimpleVar(TokenList* tokens, bool debug) {
 
 	if(debug){
 		cout << "SimpleVar(...)" << endl;
 		cout << "from " << tokens->code() << endl;
 	}
 
-	this->indexOptional = NULL;
+	struct SimpleVar* res = (struct SimpleVar*)malloc(sizeof(struct SimpleVar));
+
+	res->indexOptional = NULL;
 
 	TokenList copy = TokenList(*tokens);
 
@@ -30,16 +32,16 @@ SimpleVar::SimpleVar(TokenList* tokens, bool debug) {
 	Token token = copy.get(0);
 
 	if (token.kind == ID) {
-		this->name = token.value;
+		res->name = (char*)token.value.c_str();
 		copy.consume(1);
 
 		//it could have an index
 		if (copy.size() > 0 && copy.get(0).kind == LBRACKET) {
-			copy.expect(Token(LBRACKET,"["));
-			this->indexOptional = makeExpr(&copy,debug);
-			copy.expect(Token(RBRACKET,"]"));
+			copy.expect(LBRACKET,"[");
+			res->indexOptional = makeExpr(&copy,debug);
+			copy.expect(RBRACKET,"]");
 		} else {
-			this->indexOptional = NULL;
+			res->indexOptional = NULL;
 			//pass, this assignment has no index to it
 		}
 
@@ -58,5 +60,7 @@ SimpleVar::SimpleVar(TokenList* tokens, bool debug) {
 	}
 
 	tokens->set(copy);
+
+	return res;
 }
 

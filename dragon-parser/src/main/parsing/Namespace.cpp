@@ -3,45 +3,58 @@
 #include <iostream>
 
 #include "Namespace.hpp"
+#include "Method.hpp"
+#include "StructDecl.hpp"
 #include "../commandline/TokenList.hpp"
 #include "../commandline/Token.hpp"
 #include "../commandline/TokenKeys.hpp"
 
+#include <stdio.h>
+
 using namespace std;
 
-Namespace::Namespace(
-		TokenList* tokens,
-		string name,
-		bool debug
-) {
+struct Namespace* makeNamespace(TokenList* tokens, char* name, bool debug) {
 
 	if (debug) {
 		cout << "Namespace(...)" << endl;
 		cout << "from: " + tokens->code() << endl;
 	}
 
-	this->srcPath = "/dev/null";
-	this->name = name;
+	struct Namespace* res = (struct Namespace*)malloc(sizeof(struct Namespace));
+
+	if(res==NULL){
+		printf("could not malloc.\n");
+		exit(1);
+	}
+
+	res->count_methods = 0;
+	res->count_structs = 0;
+
+	res->methods = (struct Method**)malloc(sizeof(struct Method*)*1);
+	res->structs = (struct StructDecl**)malloc(sizeof(struct StructDecl*)*1);
+
+	res->srcPath = (char*)"/dev/null";
+	res->name = name;
 	TokenList copy_1 = tokens->copy();
 	TokenList* copy = &copy_1;
 
-	//TODO: add them in back later
-	/*
-	if(copy.size()>0) {
+	
+	if(copy->size()>0) {
 
-		IToken next_struct = copy.get(0);
+		Token next_struct = copy->get(0);
 
-		while (next_struct instanceof StructToken) {
-			this.structs.add(new StructDeclNode(copy, debug));
+		while (next_struct.kind == STRUCT) {
+			res->structs[res->count_structs++] = makeStructDecl(copy, debug);
+			res->structs = (struct StructDecl**)realloc(res->structs,sizeof(struct StructDecl*)*(res->count_structs+1));
 
-			if (copy.size() > 0) {
-				next_struct = copy.get(0);
+			if (copy->size() > 0) {
+				next_struct = copy->get(0);
 			} else {
 				break;
 			}
 		}
 	}
-	*/
+	
 
 	//it is be nice to have prefix 'fn' before a function
 	//to make parsing easier.
@@ -53,7 +66,9 @@ Namespace::Namespace(
 		Token next_subr = copy->get(0);
 
 		while (next_subr.kind == FN) {
-			this->methods.push_back(Method(*copy, debug));
+			res->methods[res->count_methods++] = makeMethod(copy, debug);
+			res->methods = (struct Method**)realloc(res->methods,sizeof(struct Method*)*(res->count_methods+1));
+
 			if (copy->size() > 0) {
 				next_subr = copy->get(0);
 			} else {
@@ -67,5 +82,7 @@ Namespace::Namespace(
 	}
 
 	tokens->set(*copy);
+
+	return res;
 }
 

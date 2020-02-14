@@ -1,26 +1,26 @@
 #ifndef METHOD
 #define METHOD
 
-#include <string>
-#include <vector>
+struct DeclArg;
+struct Stmt;
+struct Type;
 
-class DeclArg;
-class Stmt;
-class Type;
-#include "../commandline/TokenList.hpp"
+class TokenList;
 
-class Method {
-
-public:
-
-	Method(TokenList tokens, bool debug);
+struct Method {
 
 	bool isPublic = true;
 	bool hasSideEffects;
-	Type* returnType;
-	std::string methodName;
-	std::vector<DeclArg*> arguments;
-	std::vector<Stmt*> statements;
+	struct Type* returnType;
+	char* methodName;
+
+	int count_arguments;
+	struct DeclArg** arguments;
+
+	int count_statements;
+	struct Stmt** statements;
 };
+
+struct Method* makeMethod(TokenList* tokens, bool debug);
 
 #endif

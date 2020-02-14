@@ -1,7 +1,7 @@
 #ifndef INTCONST
 #define INTCONST
 
-#include "../commandline/TokenList.hpp"
+class TokenList;
 
 struct IntConst {
 	int number;

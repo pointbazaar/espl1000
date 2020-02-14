@@ -20,11 +20,14 @@ struct IfStmt* makeIfStmt(TokenList* tokens, bool debug) {
 	}
 
 	struct IfStmt* res = (struct IfStmt*)malloc(sizeof(struct IfStmt));
+	
 	res->condition = NULL;
-	vector<Stmt*> r;
-	vector<Stmt*> r2;
-	res->statements = &r;
-	res->elseStatements = &r2;
+	
+	res->count_statements = 0;
+	res->statements 	= (struct Stmt**)malloc(sizeof(struct Stmt*)*1);
+
+	res->count_elseStatements = 0;
+	res->elseStatements = (struct Stmt**)malloc(sizeof(struct Stmt*)*1);
 
 	TokenList copy = TokenList(*tokens);
 
@@ -38,9 +41,13 @@ struct IfStmt* makeIfStmt(TokenList* tokens, bool debug) {
 
 	Token next = copy.get(0);
 	
-	while (!(next.kind == RCURLY)) {
+	while (next.kind != RCURLY) {
 
-		res->statements->push_back(new Stmt(copy,debug));
+		res->statements[res->count_statements] = makeStmt(&copy,debug);
+		res->count_statements++;
+		int newsize = sizeof(struct Stmt*) * res->count_statements+1;
+		res->statements = (struct Stmt**)realloc(res->statements,newsize);
+
 		next = copy.get(0);
 	}
 
@@ -56,9 +63,13 @@ struct IfStmt* makeIfStmt(TokenList* tokens, bool debug) {
 		//maybe there be some statements
 		Token elsenext = copy.get(0);
 
-		while (!(elsenext.kind == RCURLY)) {
+		while (elsenext.kind != RCURLY) {
 
-			res->elseStatements->push_back(new Stmt(copy,debug));
+			res->elseStatements[res->count_elseStatements] = makeStmt(&copy,debug);
+			res->count_elseStatements++;
+			int newsize2 = sizeof(struct Stmt*) * res->count_elseStatements+1;
+			res->elseStatements = (struct Stmt**)realloc(res->elseStatements,newsize2);
+
 			elsenext = copy.get(0);
 		}
 

@@ -9,38 +9,76 @@
 
 using namespace std;
 
-Type::Type(BasicTypeWrapped* typeNode){
-	this->m1 = typeNode;
-}
+struct Type* makeType(struct BasicTypeWrapped* typeNode){
 
-Type::Type(ArrayType* typeNode){
-	this->m3 = typeNode;
-}
+	struct Type* res = (struct Type*)malloc(sizeof(struct Type));
 
-Type::Type(TypeParam* typeNode){
-	this->m2 = typeNode;
-}
-
-Type::Type(TokenList tokens, bool debug){
-
-	if(debug){
-		cout << "Type(...)" << endl;
-		cout << "from: " << tokens.code() << endl;
+	if(res == NULL){
+		printf("could not malloc.\n");
+		exit(1);
 	}
 
-	TokenList copy = tokens.copy();
+	res->m1 = typeNode;
+
+	return res;
+}
+
+struct Type* makeType(struct ArrayType* typeNode){
+
+	struct Type* res = (struct Type*)malloc(sizeof(struct Type));
+
+	if(res == NULL){
+		printf("could not malloc.\n");
+		exit(1);
+	}
+
+	res->m3 = typeNode;
+
+	return res;
+}
+
+struct Type* makeType(struct TypeParam* typeNode){
+
+	struct Type* res = (struct Type*)malloc(sizeof(struct Type));
+
+	if(res == NULL){
+		printf("could not malloc.\n");
+		exit(1);
+	}
+
+	res->m2 = typeNode;
+
+	return res;
+}
+
+struct Type* makeType(TokenList* tokens, bool debug){
+
+	if(debug){
+		cout << "Type(...)" << "from: " << tokens->code() << endl;
+	}
+
+	struct Type* res = (struct Type*)malloc(sizeof(struct Type));
+
+	if(res == NULL){
+		printf("could not malloc.\n");
+		exit(1);
+	}
+
+	TokenList copy = tokens->copy();
 
 	try {
-		this->m3 = new ArrayType(copy,debug);
+		res->m3 	= makeArrayType			(&copy,debug);
 	} catch (std::string e) {
 		try {
-			this->m2 = new TypeParam(copy,debug);
+			res->m2 = makeTypeParam			(&copy,debug);
 		} catch (std::string e2) {
-			this->m1 = new BasicTypeWrapped(copy,debug);
+			res->m1 = makeBasicTypeWrapped	(&copy,debug);
 		}
 	}
 
 
-	tokens.set(copy);
+	tokens->set(copy);
+
+	return res;
 }
 

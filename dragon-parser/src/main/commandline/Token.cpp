@@ -3,6 +3,7 @@
 
 Token::Token(int kind){
 	this->kind = kind;
+	this->value = "";
 }
 
 Token::Token(int kind, std::string value){

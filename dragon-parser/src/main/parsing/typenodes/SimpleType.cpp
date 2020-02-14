@@ -8,24 +8,32 @@
 
 using namespace std;
 
-SimpleType::SimpleType(TokenList tokens, bool debug) {
+struct SimpleType* makeSimpleType(TokenList* tokens, bool debug) {
 
 	if(debug){
 		cout << "SimpleType(...)" << endl;
 	}
 
-	Token token = tokens.get(0);
+	struct SimpleType* res = (struct SimpleType*)malloc(sizeof(struct SimpleType));
+
+	Token token = tokens->get(0);
 	if (token.kind == TYPEIDENTIFIER) {
-		this->typeName = token.value;
+		res->typeName = (char*)token.value.c_str();
 	} else if (token.kind == ANYTYPE) {
-		this->typeName = "#";
+		res->typeName = (char*)string("#").c_str();
 	} else {
 		cout << "Error: could not read simple type identifier" << endl;
 		throw string("could not read simple type identifier");
 	}
-	tokens.consume(1);
+	tokens->consume(1);
+
+	return res;
 }
 
-SimpleType::SimpleType(std::string typeName) {
-	this->typeName = typeName;
+struct SimpleType* makeSimpleType(char* typeName) {
+	struct SimpleType* res = (struct SimpleType*)malloc(sizeof(struct SimpleType));
+
+	res->typeName = typeName;
+
+	return res;
 }

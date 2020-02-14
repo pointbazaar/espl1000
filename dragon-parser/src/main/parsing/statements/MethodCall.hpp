@@ -1,9 +1,9 @@
 #ifndef METHODCALL
 #define METHODCALL
 
-#include "../../commandline/TokenList.hpp"
+class TokenList;
 
-class Expr;
+struct Expr;
 
 struct MethodCall {
 	
@@ -14,6 +14,6 @@ struct MethodCall {
 	struct Expr** args;
 };
 
-struct MethodCall* makeMethodCall(TokenList tokens,bool debug);
+struct MethodCall* makeMethodCall(TokenList* tokens,bool debug);
 
 #endif

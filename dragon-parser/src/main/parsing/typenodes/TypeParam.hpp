@@ -3,11 +3,11 @@
 
 class TokenList;
 
-class TypeParam {
+struct TypeParam {
 
-public:
 	int typeParameterIndex;
-	TypeParam(TokenList, bool debug);
 };
+
+struct TypeParam* makeTypeParam(TokenList* tokens, bool debug);
 
 #endif

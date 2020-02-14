@@ -9,24 +9,44 @@
 
 using namespace std;
 
-SubrType::SubrType(Type* return_type, bool hasSideEffects){
-	this->returnType = return_type;
-	this->hasSideEffects = hasSideEffects;
+struct SubrType* makeSubrType(struct Type* return_type, bool hasSideEffects){
+	struct SubrType* res = (struct SubrType*)malloc(sizeof(struct SubrType));
+
+	res->returnType = return_type;
+	res->hasSideEffects = hasSideEffects;
+
+	return res;
 }
 
-SubrType::SubrType(TokenList tokens, bool debug){
+struct SubrType* makeSubrType(TokenList* tokens, bool debug){
 
 	if(debug){
 		cout << "SubrType(...)" << endl;
 	}
 
-	TokenList copy = tokens.copy();
+	struct SubrType* res = (struct SubrType*)malloc(sizeof(struct SubrType));
 
-	copy.expect(Token(LPARENS));
+	if(res==NULL){
+		printf("could not malloc.\n");
+		exit(1);
+	}
+
+	res->argumentTypes = (struct Type**)malloc(sizeof(struct Type*)*1);
+
+	if(res->argumentTypes == NULL){
+		printf("could not malloc.\n");
+		exit(1);
+	}
+
+	TokenList copy = tokens->copy();
+
+	copy.expect(LPARENS);
 
 	bool sucess_argument_types = true;
 	try {
-		this->argumentTypes.push_back(new Type(copy,debug));
+		res->argumentTypes[res->count_argumentTypes++] = makeType(&copy,debug);
+		res->argumentTypes = (struct Type**)realloc(res->argumentTypes,sizeof(struct Type*)*(res->count_argumentTypes));
+
 	} catch (std::string e) {
 		sucess_argument_types = false;
 	}
@@ -34,8 +54,12 @@ SubrType::SubrType(TokenList tokens, bool debug){
 		try {
 			TokenList copy2 = copy.copy();
 
-			copy2.expect(Token(COMMA));
-			this->argumentTypes.push_back(new Type(copy2,debug));
+			copy2.expect(COMMA);
+			
+			res->argumentTypes[res->count_argumentTypes] = makeType(&copy2,debug);
+			res->count_argumentTypes++;
+
+			res->argumentTypes = (struct Type**)realloc(res->argumentTypes,sizeof(struct Type*)*(res->count_argumentTypes));
 
 			copy.set(copy2);
 		} catch (std::string e) {
@@ -43,12 +67,14 @@ SubrType::SubrType(TokenList tokens, bool debug){
 		}
 	}
 
-	copy.expect(Token(RPARENS));
+	copy.expect(RPARENS);
 
-	copy.expect(Token(ARROW));
+	copy.expect(ARROW);
 
-	this->returnType = new Type(copy,debug);
+	res->returnType = makeType(&copy,debug);
 
-	tokens.set(copy);
+	tokens->set(copy);
+
+	return res;
 }
 

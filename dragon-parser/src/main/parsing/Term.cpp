@@ -14,10 +14,18 @@
 #include "Variable.hpp"
 #include "statements/MethodCall.hpp"
 
+#include <stdio.h>
+
 using namespace std;
 
 struct Term* makeTerm(struct Expr* expr){
 	struct Term* res = (struct Term*)malloc(sizeof(struct Term));
+
+	if(res == NULL){
+		printf("could not malloc.\n");
+		exit(1);
+	}
+
 	res->m1 = NULL;
 	res->m2 = NULL;
 	res->m3 = NULL;
@@ -32,7 +40,17 @@ struct Term* makeTerm(struct Expr* expr){
 
 struct Term* makeTerm(TokenList* tokens, bool debug) {
 
+	if(debug){
+		cout << "Term(...)" << "from " << tokens->code() << endl;
+	}
+
 	struct Term* res = (struct Term*)malloc(sizeof(struct Term));
+
+	if(res == NULL){
+		printf("could not malloc.\n");
+		exit(1);
+	}
+	
 	res->m1 = NULL;
 	res->m2 = NULL;
 	res->m3 = NULL;
@@ -41,19 +59,14 @@ struct Term* makeTerm(TokenList* tokens, bool debug) {
 	res->m6 = NULL;
 	res->m7 = NULL;
 
-	if(debug){
-		cout << "Term(...)" << endl;
-		cout << "from " << tokens->code() << endl;
-	}
-
 	TokenList copy = TokenList(*tokens);
 
 	try {
 		TokenList copy2 = TokenList(copy);
 
-		copy2.expect(Token(LPARENS));
+		copy2.expect(LPARENS);
 		res->m5 = makeExpr(&copy2,debug);
-		copy2.expect(Token(RPARENS));
+		copy2.expect(RPARENS);
 
 		copy.set(copy2);
 	} catch (string e0) {
@@ -91,15 +104,15 @@ struct Term* makeTerm(TokenList* tokens, bool debug) {
 					res->m7 = makeFloatConst(&copy,debug);
 				} catch (string e3) {
 					try {
-						res->m4 = makeMethodCall(copy,debug);
+						res->m4 = makeMethodCall(&copy,debug);
 					} catch (string e4) {
 						try {
-							res->m1 = makeBoolConst(copy,debug);
+							res->m1 = makeBoolConst(&copy,debug);
 						} catch (string e5) {
 							try {
 								res->m6 = makeVariable(&copy,debug);
 							} catch (string e6) {
-								res->m3 = makeCharConst(copy,debug);
+								res->m3 = makeCharConst(&copy,debug);
 							}
 						}
 					}

@@ -1,20 +1,16 @@
 #ifndef DECLARG
 #define DECLARG
 
-#include <optional>
-#include <string>
+class TokenList;
 
-class Type;
-#include "../commandline/TokenList.hpp"
+struct Type;
 
-class DeclArg  {
+struct DeclArg  {
 
-public:
-
-	DeclArg(TokenList* tokens, bool debug);
-
-	Type* type = NULL;
-	optional<std::string> name;
+	struct Type* type = NULL;
+	char* name;
 };
+
+struct DeclArg* makeDeclArg(TokenList* tokens, bool debug);
 
 #endif

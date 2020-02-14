@@ -6,20 +6,31 @@
 #include "../../commandline/Token.hpp"
 #include "../Expr.hpp"
 
-RetStmt::RetStmt(TokenList tokens, bool debug){
+#include <stdio.h>
+
+struct RetStmt* makeRetStmt(TokenList* tokens, bool debug){
 
 	if(debug){
 		cout << "RetStmt(...)" << endl;
 	}
 
-	TokenList copy = TokenList(tokens);
+	struct RetStmt* res = (struct RetStmt*)malloc(sizeof(struct RetStmt));
 
-	copy.expect(Token(RETURN));
+	if(res==NULL){
+		printf("could not malloc.\n");
+		exit(1);
+	}
 
-	this->returnValue = makeExpr(&copy,debug);
+	TokenList copy = TokenList(*tokens);
 
-	copy.expect(Token(SEMICOLON));
+	copy.expect(RETURN);
 
-	tokens.set(copy);
+	res->returnValue = makeExpr(&copy,debug);
+
+	copy.expect(SEMICOLON);
+
+	tokens->set(copy);
+
+	return res;
 }
 

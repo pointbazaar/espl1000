@@ -14,7 +14,7 @@ int methodcall_test1() {
 	l.add(LPARENS);
 	l.add(RPARENS);
 
-	struct MethodCall* call = makeMethodCall(l,false);
+	struct MethodCall* call = makeMethodCall(&l,false);
 
 	bool assert1 = (0 == l.size());
 	return (assert1)?1:0;
@@ -28,7 +28,7 @@ int methodcall_test2() {
 	list.add(INTEGER,"4");
 	list.add(RPARENS);
 
-	struct MethodCall* call = makeMethodCall(list,false);
+	struct MethodCall* call = makeMethodCall(&list,false);
 	bool assert1 = (0 == list.size());
 
 	return (assert1)?1:0;
@@ -42,7 +42,7 @@ int methodcall_test3() {
 	list.add(ID,"x");
 	list.add(RPARENS);
 
-	struct MethodCall* call = makeMethodCall(list,false);
+	struct MethodCall* call = makeMethodCall(&list,false);
 	bool assert1 = (0 == list.size());
 	return (assert1)?1:0;
 }
@@ -55,7 +55,7 @@ int methodcall_test_can_parse_subroutine_call() {
 	tl.add(INTEGER,"1");
 	tl.add(RPARENS);
 
-	struct MethodCall* call = makeMethodCall(tl,false);
+	struct MethodCall* call = makeMethodCall(&tl,false);
 	bool assert1 = (0 == tl.size());
 
 	return (assert1)?1:0;
@@ -70,7 +70,7 @@ int methodcall_test_can_parse_subroutine_call2() {
 	tokens.add(STRINGCONST,"x<5");
 	tokens.add(RPARENS);
 
-	struct MethodCall* call = makeMethodCall(tokens,false);
+	struct MethodCall* call = makeMethodCall(&tokens,false);
 	bool assert1 = (0 == tokens.size());
 
 	return (assert1)?1:0;

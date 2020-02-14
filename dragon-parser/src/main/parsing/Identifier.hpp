@@ -1,15 +1,13 @@
 #ifndef IDENTIFIER
 #define IDENTIFIER
 
-#include <string>
+class TokenList;
 
-#include "../commandline/TokenList.hpp"
+struct Identifier  {
 
-class Identifier  {
-
-public:
-	Identifier(TokenList* tokens, bool debug);
-
-	std::string identifier;
+	char* identifier;
 };
+
+struct Identifier* makeIdentifier(TokenList* tokens, bool debug);
+
 #endif

@@ -1,17 +1,15 @@
 #ifndef STRUCTDECL
 #define STRUCTDECL
 
-#include <vector>
-
-class StructMember;
+struct StructMember;
 class TokenList;
 
-class StructDecl{
+struct StructDecl{
 
-public:
-	std::vector<StructMember*> members;
-
-	StructDecl(TokenList* tokens, bool debug);
+	struct StructMember** members;
+	int count_members;
 };
+
+struct StructDecl* makeStructDecl(TokenList* tokens, bool debug);
 
 #endif

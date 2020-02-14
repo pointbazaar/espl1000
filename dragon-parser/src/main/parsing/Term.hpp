@@ -3,13 +3,13 @@
 
 struct Expr;
 struct BoolConst;
-class CharConst;
-class IntConst;
+struct CharConst;
+struct IntConst;
 struct Variable;
-class MethodCall;
-class FloatConst;
+struct MethodCall;
+struct FloatConst;
 
-#include "../commandline/TokenList.hpp"
+class TokenList;
 
 struct Term{
 	//only one of these may be != NULL

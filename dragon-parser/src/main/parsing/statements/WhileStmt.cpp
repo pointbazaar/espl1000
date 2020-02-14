@@ -9,30 +9,45 @@
 #include "../Expr.hpp"
 #include "Stmt.hpp"
 
+#include <stdio.h>
+
 using namespace std;
 
-WhileStmt::WhileStmt(TokenList tokens, bool debug){
+struct WhileStmt* makeWhileStmt(TokenList* tokens, bool debug){
 
 	if(debug){
-		cout << "WhileStmt(...)" << endl;
+		printf("WhileStmt(...)\n");
 	}
 
-	TokenList copy = TokenList(tokens);
+	struct WhileStmt* res = (struct WhileStmt*)malloc(sizeof(struct WhileStmt));
 
-	copy.expect(Token(WHILE));
+	res->statements = (struct Stmt**)malloc(sizeof(struct Stmt*)*1);
+	res->count_statements = 0;
 
-	this->condition = makeExpr(&copy,debug);
+	TokenList copy = TokenList(*tokens);
 
-	copy.expect(Token(LCURLY));
+	copy.expect(WHILE);
+
+	res->condition = makeExpr(&copy,debug);
+
+	copy.expect(LCURLY);
 
 	Token next = copy.get(0);
-	while (!(next.kind == RCURLY)) {
-		this->statements.push_back(new Stmt(copy,debug));
+	while (next.kind != RCURLY) {
+
+
+		res->statements[res->count_statements] = makeStmt(&copy,debug);
+		res->count_statements++;
+		int newsize = res->count_statements;
+		res->statements = (struct Stmt**)realloc(res->statements, sizeof(struct Stmt*) * newsize);
+
 		next = copy.get(0);
 	}
 
-	copy.expect(Token(RCURLY));
+	copy.expect(RCURLY);
 
-	tokens.set(copy);
+	tokens->set(copy);
+
+	return res;
 }
 

@@ -11,7 +11,9 @@ struct Variable* makeVariable(TokenList* tokens, bool debug) {
 
 	struct Variable* res = (struct Variable*)malloc(sizeof(struct Variable));
 	res->simpleVariableNode = NULL;
-	res->memberAccessList = vector<struct Variable*>();
+
+	res->memberAccessList = (struct Variable**)malloc(sizeof(struct Variable*)*1);
+	res->count_memberAccessList = 0;
 
 	if(debug){
 		cout << "Variable(...)" << endl;
@@ -20,14 +22,17 @@ struct Variable* makeVariable(TokenList* tokens, bool debug) {
 
 	TokenList copy = tokens->copy();
 
-	res->simpleVariableNode = new SimpleVar(&copy,debug);
+	res->simpleVariableNode = makeSimpleVar(&copy,debug);
 
 	if (copy.size() >= 2) {
 		Token next = copy.get(0);
 		while (next.kind == STRUCTMEMBERACCESS) {
 
-			copy.expect(Token(STRUCTMEMBERACCESS));
-			res->memberAccessList.push_back(makeVariable(&copy,debug));
+			copy.expect(STRUCTMEMBERACCESS);
+
+			res->memberAccessList[res->count_memberAccessList++] = makeVariable(&copy,debug);
+			res->memberAccessList = (struct Variable**)realloc(res->memberAccessList,sizeof(struct Variable*)*res->count_memberAccessList);
+
 			if (copy.size() > 0) {
 				next = copy.get(0);
 			} else {

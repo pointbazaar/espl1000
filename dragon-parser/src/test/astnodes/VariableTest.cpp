@@ -22,11 +22,11 @@ int variable_test_parse_struct_member_access(bool debug) {
 
 	struct Variable* v = makeVariable(&tokens,debug);
 
-	bool assert1 = (1 == v->memberAccessList.size());
+	bool assert1 = (1 == v->count_memberAccessList);
 	bool assert2 = string("x").compare( v->simpleVariableNode->name)==0;
 	bool assert3 = !(v->simpleVariableNode->indexOptional != NULL);
-	bool assert4 = string("a").compare( v->memberAccessList.at(0)->simpleVariableNode->name);
-	bool assert5 = !(v->memberAccessList.at(0)->simpleVariableNode->indexOptional != NULL);
+	bool assert4 = string("a").compare( v->memberAccessList[0]->simpleVariableNode->name);
+	bool assert5 = !(v->memberAccessList[0]->simpleVariableNode->indexOptional != NULL);
 
 	return (assert1&&assert2&&assert3&&assert4&&assert5)?1:0;
 }
@@ -44,7 +44,7 @@ int variable_test_parse_index_access(bool debug) {
 
 	struct Variable* node = makeVariable(&tokens,debug);
 
-	bool assert1 = (0 == node->memberAccessList.size());
+	bool assert1 = (0 == node->count_memberAccessList);
 	bool assert2 = string("x").compare(node->simpleVariableNode->name) == 0;
 	bool assert3 = (node->simpleVariableNode->indexOptional != NULL);
 
@@ -72,11 +72,11 @@ int variable_test_parse_struct_member_access_and_index_access(bool debug) {
 
 	struct Variable* node = makeVariable(&tokens,debug);
 
-	bool assert1 = (1 == node->memberAccessList.size());
+	bool assert1 = (1 == node->count_memberAccessList);
 	bool assert2 = string("x").compare(node->simpleVariableNode->name) == 0;
 
-	bool assert3 = string("a").compare( node->memberAccessList.at(0)->simpleVariableNode->name) == 0;
-	bool assert4 = (node->memberAccessList.at(0)->simpleVariableNode->indexOptional != NULL);
+	bool assert3 = string("a").compare( node->memberAccessList[0]->simpleVariableNode->name) == 0;
+	bool assert4 = (node->memberAccessList[0]->simpleVariableNode->indexOptional != NULL);
 
 	return (assert1&&assert2&&assert3&&assert4)?1:0;
 }

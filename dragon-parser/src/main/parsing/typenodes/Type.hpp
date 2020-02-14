@@ -2,22 +2,23 @@
 #define TYPE
 
 class TokenList;
-class BasicTypeWrapped;
-class TypeParam;
-class ArrayType;
 
-class Type {
+struct BasicTypeWrapped;
+struct TypeParam;
+struct ArrayType;
 
-public:
-	Type(TokenList tokens, bool debug);
-	Type(BasicTypeWrapped* typeNode);
-	Type(TypeParam* typeNode);
-	Type(ArrayType* typeNode);
+struct Type {
+
 	
 	//only one of these is != NULL
-	BasicTypeWrapped* m1 = NULL;
-	TypeParam* m2 = NULL;
-	ArrayType* m3 = NULL;
+	struct BasicTypeWrapped* m1 = NULL;
+	struct TypeParam* m2 = NULL;
+	struct ArrayType* m3 = NULL;
 };
+
+struct Type* makeType(TokenList* tokens, bool debug);
+struct Type* makeType(struct BasicTypeWrapped* typeNode);
+struct Type* makeType(struct TypeParam* typeNode);
+struct Type* makeType(struct ArrayType* typeNode);
 
 #endif

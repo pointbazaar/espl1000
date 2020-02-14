@@ -20,7 +20,7 @@ int structmember_test_can_parse_struct_member() {
 	list.add(RPARENS);
 	list.add(ID,"subr");
 
-	StructMember* node = new StructMember(&list,false);
+	struct StructMember* node = makeStructMember(&list,false);
 
 	bool assert1 = string("subr").compare( node->name) == 0;
 	bool assert2 = (0 == list.size());

@@ -17,7 +17,7 @@ int stmt_test_assignment_statement_with_struct_access() {
 	tokens.add(INTEGER,"3");
 	tokens.add(SEMICOLON);
 
-	Stmt* node = new Stmt(tokens,false);
+	struct Stmt* node = makeStmt(&tokens,false);
 
 	bool assert1 = (0 == tokens.size()); //all tokens should have been consumed
 	return (assert1)?1:0;
@@ -33,7 +33,7 @@ int stmt_test_assignment_statement_with_method_call() {
 	tokens.add(RPARENS);
 	tokens.add(SEMICOLON);
 
-	Stmt* node = new Stmt(tokens,false);
+	struct Stmt* node = makeStmt(&tokens,false);
 
 	bool assert1 = (0 == tokens.size()); //all tokens should have been consumed
 

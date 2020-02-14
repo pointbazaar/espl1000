@@ -3,7 +3,17 @@
 #include "../commandline/TokenKeys.hpp"
 #include "../commandline/Token.hpp"
 
-StructMember::StructMember(TokenList* tokens, bool debug){
+#include <stdio.h>
+
+struct StructMember* makeStructMember(TokenList* tokens, bool debug){
+
+	if(debug){
+		printf("makeStructMember(...)\n");
+	}
+
+	struct StructMember* res = (struct StructMember*)malloc(sizeof(struct StructMember));
 
 	//TODO
+	
+	return res;
 }

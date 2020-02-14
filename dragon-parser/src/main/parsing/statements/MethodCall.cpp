@@ -10,7 +10,7 @@
 
 #include <stdio.h>
 
-struct MethodCall* makeMethodCall(TokenList tokens,bool debug) {
+struct MethodCall* makeMethodCall(TokenList* tokens,bool debug) {
 
 	if(debug){
 		cout << "MethodCall(...)" << endl;
@@ -27,9 +27,9 @@ struct MethodCall* makeMethodCall(TokenList tokens,bool debug) {
 
 	res->count_args = 0;
 
-	TokenList copy = tokens.copy();
+	TokenList copy = tokens->copy();
 
-	res->methodName = (char*)Identifier(&copy,debug).identifier.c_str();
+	res->methodName = makeIdentifier(&copy,debug)->identifier;
 
 	copy.expect(LPARENS);
 
@@ -49,7 +49,7 @@ struct MethodCall* makeMethodCall(TokenList tokens,bool debug) {
 
 	copy.expect(RPARENS);
 
-	tokens.set(copy);
+	tokens->set(copy);
 
 	return res;
 }

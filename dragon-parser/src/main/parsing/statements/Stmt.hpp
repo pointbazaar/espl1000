@@ -1,23 +1,23 @@
 #ifndef STMT
 #define STMT
 
-#include "../../commandline/TokenList.hpp"
-class MethodCall;
-class WhileStmt;
-class IfStmt;
-class RetStmt;
-class AssignStmt;
+class TokenList;
 
-class Stmt {
+struct MethodCall;
+struct WhileStmt;
+struct IfStmt;
+struct RetStmt;
+struct AssignStmt;
 
-public:
-	Stmt(TokenList tokens, bool debug);
-
+struct Stmt {
 	//only one of those will be != NULL
 	struct MethodCall* m1 = NULL;
-	WhileStmt* m2 = NULL;
-	IfStmt* m3 = NULL;
-	RetStmt* m4 = NULL;
-	AssignStmt* m5 = NULL;
+	struct WhileStmt* m2 = NULL;
+	struct IfStmt* m3 = NULL;
+	struct RetStmt* m4 = NULL;
+	struct AssignStmt* m5 = NULL;
 };
+
+struct Stmt* makeStmt(TokenList* tokens, bool debug);
+
 #endif

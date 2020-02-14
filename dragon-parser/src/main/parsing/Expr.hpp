@@ -3,9 +3,10 @@
 
 #include <vector>
 
-class Op;
+class TokenList;
+
+struct Op;
 struct Term;
-#include "../commandline/TokenList.hpp"
 
 using namespace std;
 

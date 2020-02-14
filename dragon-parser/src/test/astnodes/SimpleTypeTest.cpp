@@ -12,7 +12,7 @@ int simpletype_test_typenode_parsing() {
 	TokenList list = TokenList();
 	list.add(TYPEIDENTIFIER,"MyType");
 
-	BasicTypeWrapped* node = new BasicTypeWrapped(list,false);
+	struct BasicTypeWrapped* node = makeBasicTypeWrapped(&list,false);
 	bool assert1 = (0 == list.size());
 
 	return (assert1)?1:0;
@@ -25,7 +25,7 @@ int simpletype_test_typenode_parsing_fails() {
 	list.add(ID,"myIllegalType");
 
 	try {
-		BasicTypeWrapped* node = new BasicTypeWrapped(list,false);
+		struct BasicTypeWrapped* node = makeBasicTypeWrapped(&list,false);
 		return 0;
 	} catch (string e) {
 		return 1;
@@ -38,7 +38,7 @@ int simpletype_test_typenode_parsing_anytype() {
 	TokenList list = TokenList();
 	list.add(ANYTYPE);
 
-	SimpleType* node = new SimpleType(list,false);
+	struct SimpleType* node = makeSimpleType(&list,false);
 	bool assert1 = (0 == list.size());
 
 	return (assert1)?1:0;

@@ -1,17 +1,19 @@
 #ifndef IFSTMT
 #define IFSTMT
 
-#include <vector>
-
-#include "../../commandline/TokenList.hpp"
+class TokenList;
 
 struct Expr;
-class Stmt;
+struct Stmt;
 
 struct IfStmt{
 	struct Expr* condition = NULL;
-	std::vector<Stmt*>* statements = NULL;
-	std::vector<Stmt*>* elseStatements = NULL;
+
+	int count_statements = 0;
+	Stmt** statements = NULL;
+
+	int count_elseStatements = 0;
+	Stmt** elseStatements = NULL;
 };
 	
 struct IfStmt* makeIfStmt(TokenList* tokens,bool debug);

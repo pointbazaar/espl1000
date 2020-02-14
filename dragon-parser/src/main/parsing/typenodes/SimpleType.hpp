@@ -1,17 +1,14 @@
 #ifndef SIMPLETYPE
 #define SIMPLETYPE
 
-#include <string>
-
 class TokenList;
 
-class SimpleType {
-
-public:
-
-	SimpleType(TokenList tokens, bool debug);
-	SimpleType(std::string typeName);
-
-	std::string typeName;
+struct SimpleType {
+	
+	char* typeName;
 };
+
+struct SimpleType* makeSimpleType(TokenList* tokens, bool debug);
+struct SimpleType* makeSimpleType(char* typeName);
+
 #endif

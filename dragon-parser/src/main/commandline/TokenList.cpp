@@ -147,6 +147,15 @@ void TokenList::expect(Token token) {
 	}
 }
 
+void TokenList::expect(int token_kind){
+
+	return this->expect(Token(token_kind));
+}
+
+void TokenList::expect(int token_kind, string token_value){
+	return this->expect(Token(token_kind,token_value));
+}
+
 TokenList TokenList::copy() {
 	return TokenList(*this);
 }

@@ -1,19 +1,17 @@
 #ifndef STRUCTMEMBER
 #define STRUCTMEMBER
 
-#include <string>
-
 class TokenList;
-class Type;
-class Identifier;
+struct Type;
+struct Identifier;
 
-class StructMember{
+struct StructMember{
 
-public:
-	Type* type;
-	std::string name;
+	struct Type* type;
+	char* name;
 
-	StructMember(TokenList* tokens, bool debug);
 };
+
+struct StructMember* makeStructMember(TokenList* tokens, bool debug);
 
 #endif

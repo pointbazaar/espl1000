@@ -8,19 +8,28 @@
 #include "../commandline/Token.hpp"
 #include "../commandline/TokenKeys.hpp"
 
+#include <stdio.h>
+
 using namespace std;
 
-Identifier::Identifier(TokenList* tokens, bool debug) {
+struct Identifier* makeIdentifier(TokenList* tokens, bool debug) {
 
 	if(debug){
 		cout << "Identifier(...)" << endl;
 		cout << "from: " << tokens->code() << endl;
 	}
 
+	struct Identifier* res = (struct Identifier*)malloc(sizeof(struct Identifier));
+
+	if(res==NULL){
+		printf("could not malloc.");
+		exit(1);
+	}
+
 	Token token = tokens->get(0);
 
 	if (token.kind == ID) {
-		this->identifier = token.value;
+		res->identifier = (char*)token.value.c_str();
 		tokens->consume(1);
 
 	} else {
@@ -37,5 +46,6 @@ Identifier::Identifier(TokenList* tokens, bool debug) {
 		throw msg.str();
 	}
 
+	return res;
 }
 

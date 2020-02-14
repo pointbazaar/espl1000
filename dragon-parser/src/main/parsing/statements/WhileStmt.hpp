@@ -1,20 +1,19 @@
 #ifndef WHILESTMT
 #define WHILESTMT
 
-#include <vector>
+class TokenList;
 
-#include "../../commandline/TokenList.hpp"
+struct Expr;
+struct Stmt;
 
-class Expr;
-class Stmt;
-
-class WhileStmt  {
-
-public:
-	WhileStmt(TokenList tokens,bool debug);
+struct WhileStmt  {
 
 	struct Expr* condition;
-	vector<Stmt*> statements;
+
+	int count_statements = 0;
+	struct Stmt** statements;
 };
+	
+struct WhileStmt* makeWhileStmt(TokenList* tokens,bool debug);
 
 #endif

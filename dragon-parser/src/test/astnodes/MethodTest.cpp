@@ -27,9 +27,9 @@ int method_test_can_parse_method_with_arguments() {
 
 	l.add(RCURLY);
 
-	Method* m = new Method(l, false);
+	struct Method* m = makeMethod(&l, false);
 
-	return  m->arguments.size();
+	return  m->count_arguments;
 }
 
 int method_test_can_parse_subroutine() {
@@ -54,7 +54,7 @@ int method_test_can_parse_subroutine() {
 			
 		l.add(RCURLY);
 
-		Method* m = new Method(l, false);
+		struct Method* m = makeMethod(&l, false);
 		return 1;
 	}catch (string e){
 		return 0;
@@ -81,8 +81,8 @@ int method_test_can_parse_method_without_arguments() {
 
 	l.add(RCURLY);
 
-	Method* m = new Method(l, false);
-	bool assert1 = (0 == m->arguments.size());
+	struct Method* m = makeMethod(&l, false);
+	bool assert1 = (0 == m->count_arguments);
 
 	return (assert1)?1:0;
 }

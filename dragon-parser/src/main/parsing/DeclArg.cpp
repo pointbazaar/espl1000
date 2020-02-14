@@ -10,7 +10,9 @@
 
 using namespace std;
 
-DeclArg::DeclArg(TokenList* tokens, bool debug) {
+struct DeclArg* makeDeclArg(TokenList* tokens, bool debug) {
+
+	struct DeclArg* res = (struct DeclArg*)malloc(sizeof(struct DeclArg));
 
 	if(debug){
 		cout << "DeclaredArg(...)" << endl;
@@ -19,10 +21,17 @@ DeclArg::DeclArg(TokenList* tokens, bool debug) {
 
 	TokenList copy = tokens->copy();
 
-	this->type = new Type(copy,debug);
+	res->type = makeType(&copy,debug);
 
-	this->name = optional<string>(Identifier(&copy,debug).identifier);
+	try{
+		res->name = NULL;
+		res->name = makeIdentifier(&copy,debug)->identifier;
+	}catch(string e){
+		//pass
+	}
 
 	tokens->set(copy);
+
+	return res;
 }
 

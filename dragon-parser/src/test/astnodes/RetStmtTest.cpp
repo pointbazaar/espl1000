@@ -6,7 +6,12 @@
 
 #include "../../main/parsing/statements/RetStmt.hpp"
 
-int retstmt_test1() {
+#include <stdio.h>
+
+int retstmt_test1(bool debug) {
+
+	printf("retstmt_test1\n");
+
 	try {
 		TokenList list = TokenList();
 		list.add(RETURN);
@@ -20,7 +25,7 @@ int retstmt_test1() {
 
 		list.add(SEMICOLON);
 
-		RetStmt* r = new RetStmt(list,false);
+		struct RetStmt* r = makeRetStmt(&list,debug);
 
 		return 1;
 	}catch (string e){
@@ -28,7 +33,10 @@ int retstmt_test1() {
 	}
 }
 
-int retstmt_test2(){
+int retstmt_test2(bool debug){
+
+	printf("retstmt_test2\n");
+
 	try {
 		TokenList list = TokenList();
 		list.add(RETURN);
@@ -47,7 +55,7 @@ int retstmt_test2(){
 
 		list.add(SEMICOLON);
 
-		RetStmt* r = new RetStmt(list,false);
+		struct RetStmt* r = makeRetStmt(&list,debug);
 
 		return 1;
 	}catch (string e){
@@ -55,23 +63,25 @@ int retstmt_test2(){
 	}
 }
 
-int retstmt_test3() {
+int retstmt_test3(bool debug) {
+
+	printf("retstmt_test3\n");
 
 	try {
 		TokenList list = TokenList();
 
-		list.add(Token(RETURN));
+		list.add(RETURN);
 
-		list.add(Token(ID,"arr"));
+		list.add(ID,"arr");
 
-		list.add(Token(LBRACKET));
-		list.add(Token(INTEGER,"0"));
+		list.add(LBRACKET);
+		list.add(INTEGER,"0");
 
-		list.add(Token(RBRACKET));
+		list.add(RBRACKET);
 
-		list.add(Token(SEMICOLON));
+		list.add(SEMICOLON);
 
-		RetStmt* r = new RetStmt(list,false);
+		struct RetStmt* r = makeRetStmt(&list,debug);
 		return 1;
 	}catch (string e){
 		return 0;

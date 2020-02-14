@@ -1,23 +1,21 @@
 #ifndef ASSIGNSTMT
 #define ASSIGNSTMT
 
-#include <optional>
+class TokenList;
 
-#include "AssignStmt.hpp"
-#include "../../commandline/TokenList.hpp"
+struct Variable;
+struct Expr;
+struct Type;
 
-class Variable;
-class Expr;
-class Type;
+struct AssignStmt {
 
-class AssignStmt {
 
-public:
-	AssignStmt(TokenList tokens,bool debug);
-	
-	optional<Type*> optTypeNode;
+	struct Type* optTypeNode;	//may be NULL (optional)
+
 	struct Variable* variableNode;
 	struct Expr* expressionNode;
 };
+
+struct AssignStmt* makeAssignStmt(TokenList* tokens,bool debug);
 
 #endif

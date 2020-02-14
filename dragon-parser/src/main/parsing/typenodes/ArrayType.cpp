@@ -8,22 +8,30 @@
 
 using namespace std;
 
-ArrayType::ArrayType(Type* element_type){
-	this->element_type = element_type;
+struct ArrayType* makeArrayType(struct Type* element_type){
+	struct ArrayType* res = (struct ArrayType*)malloc(sizeof(struct ArrayType));
+
+	res->element_type = element_type;
+
+	return res;
 }
 
-ArrayType::ArrayType(TokenList tokens, bool debug) {
+struct ArrayType* makeArrayType(TokenList* tokens, bool debug) {
 
 	if(debug){
 		cout << "ArrayType(...)" << endl;
 	}
 
-	TokenList copy1 = tokens.copy();
+	struct ArrayType* res = (struct ArrayType*)malloc(sizeof(struct ArrayType));
 
-	copy1.expect(Token(LBRACKET));
-	this->element_type = new Type(copy1,debug);
-	copy1.expect(Token(RBRACKET));
+	TokenList copy1 = tokens->copy();
 
-	tokens.set(copy1);
+	copy1.expect(LBRACKET);
+	res->element_type = makeType(&copy1,debug);
+	copy1.expect(RBRACKET);
+
+	tokens->set(copy1);
+
+	return res;
 }
 

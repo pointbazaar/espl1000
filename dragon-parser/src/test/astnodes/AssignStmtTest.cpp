@@ -18,7 +18,7 @@ int assignstmt_test1() {
 		tokens->add(Token(INTEGER,"4"));
 		tokens->add(SEMICOLON);
 
-		AssignStmt* a = new AssignStmt(*tokens,false);
+		struct AssignStmt* a = makeAssignStmt(tokens,false);
 
 		return 1;
 	}catch (string e){
@@ -43,7 +43,7 @@ int assignstmt_test_assign_method_call_result() {
 
 		tokens->add(SEMICOLON);
 
-		AssignStmt* a = new AssignStmt(*tokens,false);
+		struct AssignStmt* a = makeAssignStmt(tokens,false);
 		return 1;
 	}catch (string e){
 		return 0;
@@ -66,7 +66,7 @@ int assignstmt_test_assign_method_call_result_2() {
 
 		tokens->add(SEMICOLON);
 
-		AssignStmt* a = new AssignStmt(*tokens,false);
+		struct AssignStmt* a = makeAssignStmt(tokens,false);
 		return 1;
 	}catch (string e){
 		return 0;
@@ -90,7 +90,7 @@ int assignstmt_test_assign_variable_with_array_index() {
 
 		tokens->add(SEMICOLON);
 
-		AssignStmt* a = new AssignStmt(*tokens,false);
+		struct AssignStmt* a = makeAssignStmt(tokens,false);
 		return 1;
 	}catch (string e){
 		return 0;
@@ -109,7 +109,7 @@ int assignstmt_test_assign_char() {
 
 		tokens->add(SEMICOLON);
 
-		AssignStmt* a = new AssignStmt(*tokens,false);
+		struct AssignStmt* a = makeAssignStmt(tokens,false);
 
 		return 1;
 	}catch (string e){
@@ -128,7 +128,7 @@ int assignstmt_test_can_assign_to_struct_member() {
 		tokens->add(Token(INTEGER,"3"));
 		tokens->add(SEMICOLON);
 
-		AssignStmt* a = new AssignStmt(*tokens,false);
+		struct AssignStmt* a = makeAssignStmt(tokens,false);
 
 		return 1;
 	}catch (string e){
@@ -145,9 +145,9 @@ int assignstmt_test_type_declaration_for_variable() {
 	tokens->add(Token(INTEGER,"3"));
 	tokens->add(SEMICOLON);
 
-	AssignStmt* a = new AssignStmt(*tokens,false);
-	bool assert1 = (a->optTypeNode.has_value());
-	bool assert2 = (0 == a->variableNode->memberAccessList.size());
+	struct AssignStmt* a = makeAssignStmt(tokens,false);
+	bool assert1 = (a->optTypeNode != NULL);
+	bool assert2 = (0 == a->variableNode->count_memberAccessList);
 	bool assert3 = (0 == tokens->size());
 
 	return (assert1&&assert2&&assert3)?1:0;
