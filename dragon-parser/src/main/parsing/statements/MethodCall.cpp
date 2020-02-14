@@ -23,36 +23,15 @@ struct MethodCall* makeMethodCall(TokenList tokens,bool debug) {
 		exit(1);
 	}
 
-	if(debug){
-		printf("init struct...\n");
-	}
-
-	
 	res->args = (struct Expr**)malloc(sizeof(struct Expr*)*1);
-
-	if(debug){
-		printf("1...\n");
-	}
 
 	res->count_args = 0;
 
-	if(debug){
-		printf("3...\n");
-	}
-
 	TokenList copy = tokens.copy();
-
-	if(debug){
-		printf("parsing method name...\n");
-	}
 
 	res->methodName = (char*)Identifier(&copy,debug).identifier.c_str();
 
 	copy.expect(LPARENS);
-
-	if(debug){
-		printf("parsing args...\n");
-	}
 
 	Token next = copy.get(0);
 	bool found = false;

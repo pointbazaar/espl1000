@@ -15,6 +15,10 @@ using namespace std;
 
 struct IfStmt* makeIfStmt(TokenList* tokens, bool debug) {
 
+	if(debug){
+		cout << "IfStmt(...)" << endl; 
+	}
+
 	struct IfStmt* res = (struct IfStmt*)malloc(sizeof(struct IfStmt));
 	res->condition = NULL;
 	vector<Stmt*> r;
@@ -22,19 +26,15 @@ struct IfStmt* makeIfStmt(TokenList* tokens, bool debug) {
 	res->statements = &r;
 	res->elseStatements = &r2;
 
-	if(debug){
-		cout << "IfStmt(...)" << endl; 
-	}
-
 	TokenList copy = TokenList(*tokens);
 
 	if(copy.size() < 3){
 		throw string("not enough tokens");
 	}
 
-	copy.expect(Token(IF));
+	copy.expect(IF);
 	res->condition = makeExpr(&copy,debug);
-	copy.expect(Token(LCURLY));
+	copy.expect(LCURLY);
 
 	Token next = copy.get(0);
 	
@@ -44,14 +44,14 @@ struct IfStmt* makeIfStmt(TokenList* tokens, bool debug) {
 		next = copy.get(0);
 	}
 
-	copy.expect(Token(RCURLY));
+	copy.expect(RCURLY);
 
 	//maybe there is an else
-	if (copy.startsWith(Token(ELSE))) {
+	if (copy.startsWith(ELSE)) {
 
-		copy.expect(Token(ELSE));
+		copy.expect(ELSE);
 
-		copy.expect(Token(LCURLY));
+		copy.expect(LCURLY);
 
 		//maybe there be some statements
 		Token elsenext = copy.get(0);
@@ -62,7 +62,7 @@ struct IfStmt* makeIfStmt(TokenList* tokens, bool debug) {
 			elsenext = copy.get(0);
 		}
 
-		copy.expect(Token(RCURLY));
+		copy.expect(RCURLY);
 	}
 
 	tokens->set(copy);

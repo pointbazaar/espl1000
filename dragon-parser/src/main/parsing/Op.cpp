@@ -7,15 +7,25 @@
 #include "../commandline/Token.hpp"
 #include "../commandline/TokenKeys.hpp"
 
+#include <stdio.h>
+#include <string.h>
+
 using namespace std;
 
-Op::Op(TokenList tokens, bool debug){
+struct Op* makeOp(TokenList* tokens, bool debug){
 
 	if(debug){
-		cout << "Op(...)" << endl;
+		cout << "Op(...)" << "from" << tokens->code() << endl;
 	}
 
-	TokenList copy = tokens.copy();
+	struct Op* res = (struct Op*)malloc(sizeof(struct Op));
+
+	if(res==NULL){
+		printf("could not malloc.\n");
+		exit(1);
+	}
+
+	TokenList copy = tokens->copy();
 
 	Token tkn = copy.get(0);
 
@@ -32,20 +42,22 @@ Op::Op(TokenList tokens, bool debug){
 				) && opr.value.compare("=")==0
 
 			){
-				this->op = opl.value + opr.value;
+				res->op = (char*)(opl.value + opr.value).c_str();
 			}else if(opl.value.compare("=") == 0 && opr.value.compare("=")){
-				this->op = "==";
+				strcmp(res->op,"==")==0;
 			}else{
 				throw string("could not make operator");
 			}
 			copy.consume(2);
 		}else{
-			this->op = tkn.value;
+			res->op = (char*)tkn.value.c_str();
 			copy.consume(1);
 		}
 	}else{
 		throw string("could not recognize operator, got : ") + tkn.value;
 	}
 
-	tokens.set(copy);
+	tokens->set(copy);
+
+	return res;
 }
