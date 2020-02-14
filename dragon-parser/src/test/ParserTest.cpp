@@ -65,8 +65,8 @@ void test_all_inner(bool debug){
 	count+=2;
 
 	cout << "Test: Term" << endl;
-	passed += term_test_simple_term();
-	passed += term_test_variable_term();
+	passed += term_test_simple_term(debug);
+	passed += term_test_variable_term(debug);
 	count+=2;
 
 	

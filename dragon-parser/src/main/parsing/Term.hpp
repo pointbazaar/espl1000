@@ -16,7 +16,7 @@ struct Term{
 	struct BoolConst* m1 = NULL;
 	struct IntConst* m2 = NULL;
 	struct CharConst* m3 = NULL;
-	MethodCall* m4 = NULL;
+	struct MethodCall* m4 = NULL;
 	struct Expr* m5 = NULL;
 	struct Variable* m6 = NULL;
 	struct FloatConst* m7 = NULL;

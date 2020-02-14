@@ -1,20 +1,19 @@
 #ifndef METHODCALL
 #define METHODCALL
 
-#include <vector>
-#include <string>
-
 #include "../../commandline/TokenList.hpp"
 
 class Expr;
 
-class MethodCall {
-
-public:
-	MethodCall(TokenList tokens,bool debug);
+struct MethodCall {
 	
-	string methodName;
-	vector<struct Expr*> arguments;
+	char* methodName;
+
+	//arguments to the subroutine call
+	int count_args;
+	struct Expr** args;
 };
+
+struct MethodCall* makeMethodCall(TokenList tokens,bool debug);
 
 #endif

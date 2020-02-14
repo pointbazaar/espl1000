@@ -91,7 +91,7 @@ struct Term* makeTerm(TokenList* tokens, bool debug) {
 					res->m7 = makeFloatConst(&copy,debug);
 				} catch (string e3) {
 					try {
-						res->m4 = new MethodCall(copy,debug);
+						res->m4 = makeMethodCall(copy,debug);
 					} catch (string e4) {
 						try {
 							res->m1 = makeBoolConst(copy,debug);

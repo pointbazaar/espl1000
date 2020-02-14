@@ -57,21 +57,21 @@ void write(struct Expr* m, ofstream* file){
 	}
 }
 void write(Term m, ofstream* file){
-	if(m.m1 != NULL){ *file << "1" << "\t"; write(*(m.m1),file); }
-	if(m.m2 != NULL){ *file << "2" << "\t"; write(*(m.m2),file); }
-	if(m.m3 != NULL){ *file << "3" << "\t"; write(*(m.m3),file); }
-	if(m.m4 != NULL){ *file << "4" << "\t"; write(*(m.m4),file); }
+	if(m.m1 != NULL){ *file << "1" << "\t"; write(m.m1,file); }
+	if(m.m2 != NULL){ *file << "2" << "\t"; write(m.m2,file); }
+	if(m.m3 != NULL){ *file << "3" << "\t"; write(m.m3,file); }
+	if(m.m4 != NULL){ *file << "4" << "\t"; write(m.m4,file); }
 	if(m.m5 != NULL){ *file << "5" << "\t"; write(m.m5,file); }
 	if(m.m6 != NULL){ *file << "6" << "\t"; write(m.m6,file); }
 }
-void write(BoolConst m, ofstream* file){
-	*file << m.boolValue << "\t";
+void write(struct BoolConst* m, ofstream* file){
+	*file << m->boolValue << "\t";
 }
-void write(IntConst m, ofstream* file){
-	*file << m.number << "\t";
+void write(struct IntConst* m, ofstream* file){
+	*file << m->number << "\t";
 }
-void write(CharConst m, ofstream* file){
-	*file << m.content << "\t";
+void write(struct CharConst* m, ofstream* file){
+	*file << m->content << "\t";
 }
 void write(Op m, ofstream* file){
 	*file << m.op << "\t";
@@ -80,7 +80,7 @@ void write(Op m, ofstream* file){
 void write(Stmt m, ofstream* file){
 	//the reader has to know which type it is,
 	//we can print a small number
-	if(m.m1 != NULL){*file << "1" << "\t"; write(*m.m1,file); }
+	if(m.m1 != NULL){*file << "1" << "\t"; write(m.m1,file); }
 	if(m.m2 != NULL){*file << "2" << "\t"; write(*m.m2,file); }
 	if(m.m3 != NULL){*file << "3" << "\t"; write(m.m3,file); }
 	if(m.m4 != NULL){*file << "4" << "\t"; write(*m.m4,file); }
@@ -107,9 +107,12 @@ void write(AssignStmt m, ofstream* file){
 	write(m.variableNode,file);
 	write(m.expressionNode,file);
 }
-void write(MethodCall m, ofstream* file){
-	*file << m.methodName << "\t";
-	for(struct Expr* e : m.arguments){ write(e,file); }
+void write(struct MethodCall* m, ofstream* file){
+	*file << m->methodName << "\t";
+	for(int i=0;i < m->count_args;i++){ 
+		struct Expr* e = m->args[i];
+		write(e,file); 
+	}
 }
 // --------- TYPENODES --------------
 void write(Type m, ofstream* file){

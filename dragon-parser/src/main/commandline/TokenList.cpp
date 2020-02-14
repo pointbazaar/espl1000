@@ -159,6 +159,9 @@ void TokenList::set(TokenList copy) {
 }
 
 Token TokenList::get(int i) {
+	if(this->tokens.size() <= i){
+		throw string("not enough tokens.");
+	}
 	return this->tokens.at(i);
 }
 

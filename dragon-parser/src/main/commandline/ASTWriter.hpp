@@ -36,9 +36,9 @@ void write(Method m, ofstream* file);
 void write(DeclArg m, ofstream* file);
 void write(struct Expr* m, ofstream* file);
 void write(Op m, ofstream* file);
-void write(IntConst m, ofstream* file);
-void write(BoolConst m, ofstream* file);
-void write(CharConst m, ofstream* file);
+void write(struct IntConst* m, ofstream* file);
+void write(struct BoolConst* m, ofstream* file);
+void write(struct CharConst* m, ofstream* file);
 void write(struct Variable* m, ofstream* file);
 void write(SimpleVar m, ofstream* file);
 void write(Term m, ofstream* file);
@@ -49,7 +49,7 @@ void write(struct IfStmt* m, ofstream* file);
 void write(WhileStmt m, ofstream* file);
 void write(RetStmt m, ofstream* file);
 void write(AssignStmt m, ofstream* file);
-void write(MethodCall m, ofstream* file);
+void write(struct MethodCall* m, ofstream* file);
 
 //typenodes
 void write(Type m, ofstream* file);

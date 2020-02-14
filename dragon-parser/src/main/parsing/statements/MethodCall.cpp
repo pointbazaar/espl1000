@@ -8,30 +8,70 @@
 #include "../../commandline/Token.hpp"
 #include "../Expr.hpp"
 
-MethodCall::MethodCall(TokenList tokens,bool debug) {
+#include <stdio.h>
+
+struct MethodCall* makeMethodCall(TokenList tokens,bool debug) {
 
 	if(debug){
-		cout << "MethodCallNode(...)" << endl;
+		cout << "MethodCall(...)" << endl;
+	}
+
+	struct MethodCall* res = (struct MethodCall*)malloc(sizeof(struct MethodCall));
+
+	if(res==NULL){
+		printf("could not malloc\n");
+		exit(1);
+	}
+
+	if(debug){
+		printf("init struct...\n");
+	}
+
+	
+	res->args = (struct Expr**)malloc(sizeof(struct Expr*)*1);
+
+	if(debug){
+		printf("1...\n");
+	}
+
+	res->count_args = 0;
+
+	if(debug){
+		printf("3...\n");
 	}
 
 	TokenList copy = tokens.copy();
 
-	this->methodName = Identifier(&copy,debug).identifier;
-
-	copy.expect(Token(LPARENS));
-
-	//while there is no ')' up, continue parsing arguments
-	Token next = copy.get(0);
-	while (!(next.kind == RPARENS)) {
-		if (arguments.size() > 0) {
-			copy.expect(Token(COMMA));
-		}
-		this->arguments.push_back(makeExpr(&copy,debug));
-		next = copy.get(0);
+	if(debug){
+		printf("parsing method name...\n");
 	}
 
-	copy.expect(Token(RPARENS));
+	res->methodName = (char*)Identifier(&copy,debug).identifier.c_str();
+
+	copy.expect(LPARENS);
+
+	if(debug){
+		printf("parsing args...\n");
+	}
+
+	Token next = copy.get(0);
+	bool found = false;
+	while (next.kind != RPARENS) {
+		if (found) {
+			copy.expect(COMMA);
+		}
+
+		res->args[res->count_args++] = makeExpr(&copy,debug);
+		res->args = (struct Expr**)realloc(res->args, sizeof(struct Expr*) * res->count_args);
+
+		next = copy.get(0);
+		found = true;
+	}
+
+	copy.expect(RPARENS);
 
 	tokens.set(copy);
+
+	return res;
 }
 

@@ -14,7 +14,7 @@ public:
 	Stmt(TokenList tokens, bool debug);
 
 	//only one of those will be != NULL
-	MethodCall* m1 = NULL;
+	struct MethodCall* m1 = NULL;
 	WhileStmt* m2 = NULL;
 	IfStmt* m3 = NULL;
 	RetStmt* m4 = NULL;

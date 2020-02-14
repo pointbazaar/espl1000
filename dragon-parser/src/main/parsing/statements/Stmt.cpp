@@ -43,7 +43,7 @@ Stmt::Stmt(TokenList tokens, bool debug) {
 
 		try {
 			TokenList copy2 = copy.copy();
-			this->m1 = new MethodCall(copy2,debug);
+			this->m1 = makeMethodCall(copy2,debug);
 			copy2.expect(Token(SEMICOLON));
 			copy.set(copy2);
 		} catch (string e1) {
