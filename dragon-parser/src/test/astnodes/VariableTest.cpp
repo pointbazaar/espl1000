@@ -7,12 +7,12 @@
 #include "../../main/parsing/Variable.hpp"
 #include "../../main/parsing/SimpleVar.hpp"
 
-#include <iostream>
+#include <stdio.h>
 
 int variable_test_parse_struct_member_access(bool debug) {
 
 	if(debug){
-		cout << "variable_test_parse_struct_member_access(...)" << endl;
+		printf("variable_test_parse_struct_member_access(...)\n");
 	}
 
 	TokenList tokens = TokenList();
@@ -33,7 +33,7 @@ int variable_test_parse_struct_member_access(bool debug) {
 
 int variable_test_parse_index_access(bool debug) {
 	if(debug){
-		cout << "variable_test_parse_index_access(...)" << endl;
+		printf("variable_test_parse_index_access(...)\n");
 	}
 
 	TokenList tokens = TokenList();
@@ -54,7 +54,7 @@ int variable_test_parse_index_access(bool debug) {
 int variable_test_parse_struct_member_access_and_index_access(bool debug) {
 
 	if(debug){
-		cout << "variable_test_parse_struct_member_access_and_index_access(...)" << endl;
+		printf("variable_test_parse_struct_member_access_and_index_access(...)\n");
 	}
 
 	// x.a[0].b

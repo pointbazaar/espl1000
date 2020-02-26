@@ -22,6 +22,7 @@
 #include "astnodes/StructDeclTest.hpp"  
 #include "astnodes/TermTest.hpp"
 
+#include <stdio.h>
 #include <iostream>
 
 using namespace std;
@@ -30,17 +31,15 @@ void test_all(bool debug){
 	try{
 		test_all_inner(debug);
 	}catch(string e1){
-		cout << "catched!" << endl;
-		cout << e1 << endl;
+		printf("catched! %s\n",(char*)e1.c_str());
 	}catch(char const* e2){
-		cout << "catched!" << endl;
-		cout << e2 << endl;
+		printf("catched! %s\n",e2);
 	}
 }
 
 void test_all_inner(bool debug){
 
-	cout << "running Dragon-Parser Tests..." << endl;
+	printf("running Dragon-Parser Tests...\n");
 
 	//execute all tests and give feedback
 	//every test should stdout its name, such that failing tests can be identified easily
@@ -51,60 +50,60 @@ void test_all_inner(bool debug){
 	int passed=0;
 
 
-	cout << "Test: BoolConst" << endl;
+	printf("Test: BoolConst\n");
 	passed += boolconst_test_parse_bool_constant_node(debug);
 
-	cout << "Test: CharConst" << endl;
+	printf("Test: CharConst\n");
 	passed += charconst_test_parse_char_constant_node();
 	passed += charconst_test_parse_char_constant_node_newline();
 	count+=3;
 
-	cout << "Test: FloatConst" << endl;
+	printf("Test: FloatConst\n");
 	passed += floatconst_test1();
 	passed += floatconst_test2();
 	count+=2;
 
-	cout << "Test: Term" << endl;
+	printf("Test: Term\n");
 	passed += term_test_simple_term(debug);
 	passed += term_test_variable_term(debug);
 	count+=2;
 
 	
-	cout << "Test: SimpleVar" << endl;
+	printf("Test: SimpleVar\n");
 	passed += simplevar_test_parse_simple_indexed_variable(debug);
 	passed += simplevar_test_parse_simple_variable(debug);
 	count += 2;
 
-	cout << "Test: Variable" << endl;
+	printf("Test: Variable\n");
 	passed += variable_test_parse_index_access(debug);
 	passed += variable_test_parse_struct_member_access(debug);
 	passed += variable_test_parse_struct_member_access_and_index_access(debug);
 	count  += 3;
 
 
-	cout << "Test: Expr" << endl;
+	printf("Test: Expr\n");
 	passed += expr_recognize_2_op_expr(debug);
 	passed += expr_test_simple_expression(debug);
 	passed += expr_test_variable_name_expression(debug);
 	count+=3;
 
 
-	cout << "Test: IfStmt" << endl;
+	printf("Test: IfStmt\n");
 	passed += if_test1(debug);
 	passed += if_test2(debug);
 	count += 2;
 
-	cout << "Test: RetStmt" << endl;
+	printf("Test: RetStmt\n");
 	passed += retstmt_test1(debug);
 	passed += retstmt_test2(debug);
 	passed += retstmt_test3(debug);
 	count += 3;
 
-	cout << "Test: WhileStmt" << endl;
+	printf("Test: WhileStmt\n");
 	passed += whilestmt_test1();
 	count += 1;
 
-	cout << "Test: AssignStmt" << endl;
+	printf("Test: AssignStmt\n");
 	passed += assignstmt_test1();
 	passed += assignstmt_test_assign_char();
 	passed += assignstmt_test_assign_method_call_result();
@@ -114,7 +113,7 @@ void test_all_inner(bool debug){
 	passed += assignstmt_test_type_declaration_for_variable();
 	count += 7;
 
-	cout << "Test: MethodCall" << endl;
+	printf("Test: MethodCall\n");
 	passed += methodcall_test1();
 	passed += methodcall_test2();
 	passed += methodcall_test3();
@@ -122,45 +121,45 @@ void test_all_inner(bool debug){
 	passed += methodcall_test_can_parse_subroutine_call2();
 	count += 6;
 
-	cout << "Test: Stmt" << endl;
+	printf("Test: Stmt\n");
 	passed += stmt_test_assignment_statement_with_method_call();
 	passed += stmt_test_assignment_statement_with_struct_access();
 	count += 2;
 
-	cout << "Test: Method" << endl;
+	printf("Test: Method\n");
 	passed += method_test_can_parse_method_with_arguments();
 	passed += method_test_can_parse_method_without_arguments();
 	passed += method_test_can_parse_subroutine();
 	count += 3;
 
 
-	cout << "Test: DeclArg" << endl;
+	printf("Test: DeclArg\n");
 	passed += declarg_test_parse_declared_argument();
 	count++;
 
-	cout << "Test: StructMember" << endl;
+	printf("Test: StructMember\n");
 	passed += structmember_test_can_parse_struct_member();
 	count++;
 
 	
 
 
-	cout << "Test: BasicTypeWrapped" << endl;
+	printf("Test: BasicTypeWrapped\n");
 	passed += basictypewrapped_test_type_parsing_simple_type();
 	count+=1;
 
-	cout << "Test: SimpleType" << endl;
+	printf("Test: SimpleType\n");
 	passed += simpletype_test_typenode_parsing();
 	passed += simpletype_test_typenode_parsing_anytype();
 	passed += simpletype_test_typenode_parsing_fails();
 	count+=3;
 
-	cout << "Test: SubrType" << endl;
+	printf("Test: SubrType\n");
 	passed += subrtype_test_subroutine_type_parsing_subroutine_with_side_effects();
 	passed += subrtype_test_subroutine_type_parsing_subroutine_without_side_effects();
 	passed += subrtype_test_typename();
 	passed += subrtype_test_typename_subroutine_return_type();
 	count+=4;
 
-	cout << "passed " << passed << "of " << count << endl;;
+	printf("passed %d of %d \n",passed,count);
 }

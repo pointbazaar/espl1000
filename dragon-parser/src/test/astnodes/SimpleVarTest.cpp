@@ -42,7 +42,7 @@ int simplevar_test_parse_simple_indexed_variable(bool debug) {
 	bool assert3 = (
 			0 == 
 			(node->indexOptional->term1->m2)	//IntConst
-			->number
+			->value
 	);
 
 	return (assert1&&assert2&&assert3)?1:0;
