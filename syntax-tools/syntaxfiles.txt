@@ -1,3 +1,11 @@
+Dragon should have atleast syntax highlighting 
+in some of my most favorite Text Editors.
+This makes it much more fun to program in Dragon.
+
+- [x] vim
+- [x] micro
+- [ ] sublime text
+
 https://github.com/zyedidia/micro/issues/573
 
 https://github.com/zyedidia/micro/tree/master/runtime/syntax
