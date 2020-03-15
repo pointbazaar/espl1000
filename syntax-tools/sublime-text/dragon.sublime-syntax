@@ -17,6 +17,8 @@ contexts:
     - include: keywords
     - include: numbers
     - include: strings
+    - include: types
+    - include: primitives
 
   keywords:
     # Keywords are if, else for and while.
@@ -56,3 +58,11 @@ contexts:
         - meta_scope: comment.line.double-slash.dg
         - match: $\n?
           pop: true
+
+  primitives:
+    - match: '\b(PInt|NInt|NZInt|Int)\b'
+      scope: keyword.control.dg
+
+  types:
+    - match: '\b[A-Z][A-Za-z0-8_]*\b'
+      scope: keyword.control.dg
