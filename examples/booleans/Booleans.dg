@@ -7,3 +7,8 @@ fn main() ~> PInt {
 	return 0;
 }
 
+//my single line comment
+
+/*
+my multi line comment
+*/
