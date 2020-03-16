@@ -12,7 +12,7 @@ struct SubrType {
 	bool hasSideEffects;
 
 	struct Type** argumentTypes;
-	int count_argumentTypes=0;
+	int count_argumentTypes;
 
 };
 

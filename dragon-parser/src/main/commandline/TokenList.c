@@ -9,15 +9,21 @@
 //which would be convenient in a token list for our compiler
 
 struct TokenList* makeTokenList_3(struct Token** result, int resultc, char* sourceFile) {
-	this->tokens = result;
-	this->tokensc = 0;
-	this->relPath = sourceFile;
+	struct TokenList* res = malloc(sizeof(struct TokenList));
+	res->tokens = result;
+	res->tokensc = 0;
+	res->relPath = sourceFile;
+
+	return res;
 }
 
 struct TokenList* makeTokenList() {
-	this->relPath = "/dev/null";
-	this->tokensc = 0;
-	this->tokens = smalloc(sizeof(struct Token**)*1);
+	struct TokenList* res = malloc(sizeof(struct TokenList));
+	res->relPath = "/dev/null";
+	res->tokensc = 0;
+	res->tokens = smalloc(sizeof(struct Token**)*1);
+
+	return res;
 }
 
 /*
@@ -88,30 +94,30 @@ bool list_expect_internal(struct TokenList* list, struct Token* token) {
 		char str[100];
 		str[0]='\0';
 
-		char* reset = "\u001b[0m";
+		//char* reset = "\u001b[0m";
 
-		bool tty = isatty(STDOUT_FILENO);
+		const bool tty = isatty(STDOUT_FILENO);
 		//\u001b[36m
 		if(tty){
-			strcat(str,"\u001b[31m");	//RED
+			//strcat(str,"\u001b[31m");	//RED
 		}
 
 		strcat(str,"Syntax Error ");
 
 		if(tty){
-			strcat(str,reset);	
+			//strcat(str,reset);	
 		}
 
 		strcat(str,"in ");
 
 		if(tty){
-			strcat(str,"\u001b[36m");	//CYAN
+			//strcat(str,"\u001b[36m");	//CYAN
 		}
 
 		strcat(str,this->relPath);
 
 		if(tty){
-			strcat(str,reset);
+			//strcat(str,reset);
 		}
 
 		strcat(str,":");
@@ -148,7 +154,7 @@ void list_expect(struct TokenList* list, int token_kind){
 }
 
 void list_expect(struct TokenList* list, int token_kind, char* token_value){
-	return list_expect(list,makeToken_2(token_kind,token_value));
+	return list_expect(list,makeToken2(token_kind,token_value));
 }
 
 struct TokenList* list_copy(struct TokenList* list) {

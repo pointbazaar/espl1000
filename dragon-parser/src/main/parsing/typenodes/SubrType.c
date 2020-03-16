@@ -15,6 +15,7 @@ struct SubrType* makeSubrType(struct Type* return_type, bool hasSideEffects){
 
 	res->returnType = return_type;
 	res->hasSideEffects = hasSideEffects;
+	res->count_argumentTypes = 0;
 
 	return res;
 }
@@ -28,6 +29,7 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 	struct SubrType* res = smalloc(sizeof(struct SubrType));
 
 	res->argumentTypes = smalloc(sizeof(struct Type*)*1);
+	res->count_argumentTypes = 0;
 
 	struct TokenList* copy = list_copy(tokens);
 

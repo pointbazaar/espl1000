@@ -29,7 +29,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped(struct SubrType* typeNode) {
 	return res;
 }
 
-struct BasicTypeWrapped* makeBasicTypeWrapped(struct TokenList* tokens, bool debug) {
+struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool debug) {
 
 	if(debug){
 		printf("BasicTypeWrapped(...)\n");

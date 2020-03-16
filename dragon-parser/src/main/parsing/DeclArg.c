@@ -18,7 +18,7 @@ struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 
 	struct TokenList* copy = list_copy(tokens);
 
-	res->type = makeType(copy,debug);
+	res->type = makeType2(copy,debug);
 	if(res->type == NULL){return NULL;}
 
 	res->name = makeIdentifier(copy,debug)->identifier;

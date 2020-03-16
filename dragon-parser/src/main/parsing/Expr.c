@@ -106,7 +106,7 @@ int find(void* arr, int size, int element){
 }
 
 struct Expr* performTreeTransformation(
-		struct Op** ops, int opsc
+		struct Op** ops, int opsc,
 		struct Term** terms, int termsc
 ){
 	//transform the list into a tree, respecting operator precedence
@@ -150,15 +150,15 @@ struct Expr* performTreeTransformation(
 		//simplify
 		int i1;
 		i1 = find(terms,termsc,leftTerm);
-		terms.erase(i1);
+		erase(terms,i1);
 		i1 = find(terms,termsc,rightTerm);
-		terms.erase(i1);
+		erase(terms,i1);
 
-		int i2 = find(ops,opsc,opWithLargestPrecedence);
-		ops.erase(i2);
+		const int i2 = find(ops,opsc,opWithLargestPrecedence);
+		erase(ops,i2);
 
 		//insert newly created expression
-		struct Term* ttmp = makeTerm(expr);
+		struct Term* ttmp = makeTerm_other(expr);
 		if(ttmp == NULL){ return NULL; }
 
 		list_insert(terms, indexOfOp,ttmp);

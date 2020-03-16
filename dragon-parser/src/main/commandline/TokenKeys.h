@@ -1,45 +1,47 @@
 #ifndef TOKENKEYS
 #define TOKENKEYS
 
-const int BCONST = 2;
+#define BCONST 2
 
-const int ID = 4;	//identifier
-const int TYPEIDENTIFIER = 5;
+//identifier
+#define ID 4	
+#define TYPEIDENTIFIER 5
 
+//Type Parameter Token
+#define TPARAM 6
+#define FLOATING 7
 
-const int TPARAM = 6;	//Type Parameter Token
-const int FLOATING = 7;
+#define INTEGER 8
+#define CCONST 9
+#define STRINGCONST 10
 
-const int INTEGER = 8;
-const int CCONST = 9;
-const int STRINGCONST = 10;
+#define LINE_NO 11
 
-const int LINE_NO = 11;
+#define ARROW 12
+#define ANYTYPE 13
+#define OPKEY 14
+#define STRUCTMEMBERACCESS 15
+#define IF 16
+#define WHILE 17
+//#define NAMESPACE 18
+#define RETURN 21
+#define LPARENS 22
+#define RPARENS 23
+#define LBRACKET 24
+#define RBRACKET 25
+#define LCURLY 26
+#define RCURLY 27
 
-const int ARROW = 12;
-const int ANYTYPE = 13;
-const int OPKEY = 14;
-const int STRUCTMEMBERACCESS = 15;
-const int IF = 16;
-const int WHILE = 17;
-//const int NAMESPACE = 18;
-const int RETURN = 21;
-const int LPARENS = 22;
-const int RPARENS = 23;
-const int LBRACKET = 24;
-const int RBRACKET = 25;
-const int LCURLY = 26;
-const int RCURLY = 27;
+#define GREATER 28
+#define LESSER 29
+#define WAVE 30
+#define SEMICOLON 31
+#define EQ 32
 
-const int GREATER = 28;
-const int LESSER = 29;
-const int WAVE = 30;
-const int SEMICOLON = 31;
-const int EQ = 32;
+#define STRUCT 34
+#define COMMA 35
+#define LOOP 36
+#define FN 37
+#define ELSE 38
 
-const int STRUCT = 34;
-const int COMMA = 35;
-const int LOOP = 36;
-const int FN = 37;
-const int ELSE = 38;
 #endif

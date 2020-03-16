@@ -57,7 +57,7 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 
 	if(!list_expect(copy, ARROW)){return NULL;}
 	
-	res->returnType = makeType(copy,debug);
+	res->returnType = makeType2(copy,debug);
 	if(res->returnType == NULL){return NULL;}
 
 	if(!list_expect(copy, LCURLY)){return NULL;}

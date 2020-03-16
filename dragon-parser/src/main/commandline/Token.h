@@ -19,6 +19,6 @@ struct Token {
 bool tokenEquals(struct Token* a, struct Token* b);
 
 struct Token* makeToken(int kind);
-struct Token* makeToken_2(int kind, char* value);
+struct Token* makeToken2(int kind, char* value);
 
 #endif

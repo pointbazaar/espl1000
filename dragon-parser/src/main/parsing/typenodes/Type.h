@@ -12,14 +12,14 @@ struct Type {
 
 	
 	//only one of these is != NULL
-	struct BasicTypeWrapped* m1 = NULL;
-	struct TypeParam* m2 = NULL;
-	struct ArrayType* m3 = NULL;
+	struct BasicTypeWrapped* m1;
+	struct TypeParam* m2;
+	struct ArrayType* m3;
 };
 
-struct Type* makeType(struct TokenList* tokens, bool debug);
-struct Type* makeType(struct BasicTypeWrapped* typeNode);
-struct Type* makeType(struct TypeParam* typeNode);
-struct Type* makeType(struct ArrayType* typeNode);
+struct Type* makeType2(struct TokenList* tokens, bool debug);
+struct Type* makeType_1(struct BasicTypeWrapped* typeNode);
+struct Type* makeType_2(struct TypeParam* typeNode);
+struct Type* makeType_3(struct ArrayType* typeNode);
 
 #endif

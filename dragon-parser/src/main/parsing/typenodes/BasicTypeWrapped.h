@@ -13,12 +13,12 @@ struct BasicTypeWrapped {
 	//to replace my use of <variant> which was
 	//causing me problems
 	//only one of these is != NULL
-	struct SimpleType* m1 = NULL;
-	struct SubrType* m2 = NULL;
+	struct SimpleType* m1;
+	struct SubrType* m2;
 };
 
 struct BasicTypeWrapped* makeBasicTypeWrapped(struct SimpleType* typeNode);
 struct BasicTypeWrapped* makeBasicTypeWrapped(struct SubrType* typeNode);
-struct BasicTypeWrapped* makeBasicTypeWrapped(struct TokenList* tokens, bool debug);
+struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool debug);
 
 #endif

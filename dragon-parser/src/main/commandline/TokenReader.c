@@ -33,124 +33,124 @@ struct Token* recognizeToken(char* tkn, bool debug) {
 		return NULL;
 		//break;
 	}
-	struct Token* r = makeToken(CCONST,"c");
+	struct Token* r = makeToken2(CCONST,"c");
 
 	switch (tkn_id) {
 
 		case STRINGCONST : 
-			r = makeToken(STRINGCONST, tkn.substr(3,strlen(tkn)));
+			r = makeToken2(STRINGCONST, tkn.substr(3,strlen(tkn)));
 			break;
 		
 		case CCONST : 
-			r = makeToken(CCONST,tkn.substr(2,strlen(tkn)));
+			r = makeToken2(CCONST,tkn.substr(2,strlen(tkn)));
 			break;
 		case ANYTYPE : 
-			r = makeToken(ANYTYPE,"#");
+			r = makeToken2(ANYTYPE,"#");
 			break;
 
 		//CONSTANTS
 		case BCONST : 
-			r = makeToken(BCONST, parts[1] );
+			r = makeToken2(BCONST, parts[1] );
 			break;
 		case FLOATING : 
 			;
-			r = makeToken(FLOATING, parts[1]);
+			r = makeToken2(FLOATING, parts[1]);
 			break;
 		case INTEGER : 
-			r = makeToken(INTEGER, parts[1]);
+			r = makeToken2(INTEGER, parts[1]);
 			break;
 
 		//IDENTIFIERS
 		case ID : 
-			r = makeToken(ID,parts[1]);
+			r = makeToken2(ID,parts[1]);
 			break;
 		case TYPEIDENTIFIER : 
-			r = makeToken(TYPEIDENTIFIER,parts[1]);
+			r = makeToken2(TYPEIDENTIFIER,parts[1]);
 			break;
 
 		//SECTION: OPERATORNS
 		case OPKEY : 
-			r = makeToken(OPKEY,parts[1]);
+			r = makeToken2(OPKEY,parts[1]);
 			break;
 
 		case EQ : 
-			r = makeToken(EQ,"=");
+			r = makeToken2(EQ,"=");
 			break;
 
 		case STRUCTMEMBERACCESS : 
-			r = makeToken(STRUCTMEMBERACCESS,".");
+			r = makeToken2(STRUCTMEMBERACCESS,".");
 			break;
 
 		case TPARAM : 
-			r = makeToken(TPARAM, parts[1]);
+			r = makeToken2(TPARAM, parts[1]);
 			break;
 
 		//BRACKETS, BRACES, PARENTHESES
 		case LBRACKET : 
-			r = makeToken(LBRACKET,"[");
+			r = makeToken2(LBRACKET,"[");
 			break;
 		case RBRACKET : 
-			r = makeToken(RBRACKET,"]");
+			r = makeToken2(RBRACKET,"]");
 			break;
 
 		case LPARENS : 
-			r = makeToken(LPARENS,"(");
+			r = makeToken2(LPARENS,"(");
 			break;
 		case RPARENS : 
-			r = makeToken(RPARENS,")");
+			r = makeToken2(RPARENS,")");
 			break;
 
 		case LCURLY : 
-			r = makeToken(LCURLY,"{");
+			r = makeToken2(LCURLY,"{");
 			break;
 		case RCURLY : 
-			r = makeToken(RCURLY,"}");
+			r = makeToken2(RCURLY,"}");
 			break;
 
 		case GREATER: 
-			r = makeToken(GREATER,">");
+			r = makeToken2(GREATER,">");
 			break;
 
 		case LESSER : 
-			r = makeToken(LESSER,"<");
+			r = makeToken2(LESSER,"<");
 			break;
 
 		case WAVE : 
-			r = makeToken(WAVE,"~");
+			r = makeToken2(WAVE,"~");
 			break;
 
 		case SEMICOLON : 
-			r = makeToken(SEMICOLON,";");
+			r = makeToken2(SEMICOLON,";");
 			break;
 
 		case COMMA : 
-			r = makeToken(COMMA,",");
+			r = makeToken2(COMMA,",");
 			break;
 		case ARROW : 
-			r = makeToken(ARROW,parts[1]);
+			r = makeToken2(ARROW,parts[1]);
 			break;
 
 		//KEYWORDS
 		case RETURN : 
-			r = makeToken(RETURN,"return");
+			r = makeToken2(RETURN,"return");
 			break;
 		case FN : 
-			r = makeToken(FN,"fn");
+			r = makeToken2(FN,"fn");
 			break;
 		case STRUCT : 
-			r = makeToken(STRUCT,"struct");
+			r = makeToken2(STRUCT,"struct");
 			break;
 		case IF : 
-			r = makeToken(IF,"if");
+			r = makeToken2(IF,"if");
 			break;
 		case ELSE : 
-			r = makeToken(ELSE,"else");
+			r = makeToken2(ELSE,"else");
 			break;
 		case WHILE : 
-			r = makeToken(WHILE,"while");
+			r = makeToken2(WHILE,"while");
 			break;
 		case LOOP : 
-			r = makeToken(LOOP,"loop");
+			r = makeToken2(LOOP,"loop");
 			break;
 
 		default : 
@@ -158,7 +158,7 @@ struct Token* recognizeToken(char* tkn, bool debug) {
 			return NULL;
 	};
 
-	r->lineNumber=line_no;
+	r->lineNumber = line_no;
 
 	return r;
 }

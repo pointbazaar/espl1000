@@ -31,7 +31,11 @@ struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 		strcat(msg,tokens->relPath);
 		strcat(msg,":");
 
-		strcat(msg,sprintf("%d",token->lineNumber));
+		char my[10];
+		my[0]='\0';
+		sprintf(my,"%d",token->lineNumber)
+
+		strcat(msg,my);
 		strcat(msg," in context '"); 
 		strcat(msg,list_code(tokens));
 		strcat(msg,"'");

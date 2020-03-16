@@ -8,7 +8,7 @@ struct Token* makeToken(int kind){
 	return makeToken(kind,"");
 }
 
-struct Token* makeToken_2(int kind, char* value){
+struct Token* makeToken2(int kind, char* value){
 	struct Token* res = smalloc(sizeof(struct Token));
 	res->kind = kind;
 	res->value = value;
