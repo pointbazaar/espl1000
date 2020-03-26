@@ -1,10 +1,10 @@
-#include "IfStmtTest.hpp"
+#include "IfStmtTest.h"
 
-#include "../../main/commandline/TokenList.hpp"
-#include "../../main/commandline/TokenKeys.hpp"
-#include "../../main/commandline/Token.hpp"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
 
-#include "../../main/parsing/statements/IfStmt.hpp"
+#include "../../main/parsing/statements/IfStmt.h"
 
 #include <stdio.h>
 

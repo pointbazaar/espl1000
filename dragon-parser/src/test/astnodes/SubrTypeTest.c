@@ -1,11 +1,8 @@
-#include "SubrTypeTest.hpp"
-
-#include "../../main/commandline/TokenList.hpp"
-#include "../../main/commandline/TokenKeys.hpp"
-#include "../../main/commandline/Token.hpp"
-
-
-#include "../../main/parsing/typenodes/SubrType.hpp"
+#include "SubrTypeTest.h"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
+#include "../../main/parsing/typenodes/SubrType.h"
 
 int subrtype_test_typename() {
 	//(PInt,PInt)->PInt

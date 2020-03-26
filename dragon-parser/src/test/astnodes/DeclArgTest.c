@@ -1,10 +1,10 @@
-#include "DeclArgTest.hpp"
+#include "DeclArgTest.h"
 
-#include "../../main/commandline/TokenList.hpp"
-#include "../../main/commandline/TokenKeys.hpp"
-#include "../../main/commandline/Token.hpp"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
 
-#include "../../main/parsing/DeclArg.hpp"
+#include "../../main/parsing/DeclArg.h"
 
 int declarg_test_parse_declared_argument() {
 	string source = "((PInt)~>PInt) subr";

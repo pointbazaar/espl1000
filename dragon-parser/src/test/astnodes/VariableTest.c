@@ -1,11 +1,9 @@
-#include "VariableTest.hpp"
-
-#include "../../main/commandline/TokenList.hpp"
-#include "../../main/commandline/TokenKeys.hpp"
-#include "../../main/commandline/Token.hpp"
-
-#include "../../main/parsing/Variable.hpp"
-#include "../../main/parsing/SimpleVar.hpp"
+#include "VariableTest.h"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
+#include "../../main/parsing/Variable.h"
+#include "../../main/parsing/SimpleVar.h"
 
 #include <stdio.h>
 

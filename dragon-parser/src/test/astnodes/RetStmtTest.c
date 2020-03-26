@@ -1,10 +1,8 @@
-#include "RetStmtTest.hpp"
-
-#include "../../main/commandline/TokenList.hpp"
-#include "../../main/commandline/TokenKeys.hpp"
-#include "../../main/commandline/Token.hpp"
-
-#include "../../main/parsing/statements/RetStmt.hpp"
+#include "RetStmtTest.h"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
+#include "../../main/parsing/statements/RetStmt.h"
 
 #include <stdio.h>
 

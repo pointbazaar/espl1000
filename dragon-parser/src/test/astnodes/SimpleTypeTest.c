@@ -1,11 +1,9 @@
-#include "SimpleTypeTest.hpp"
-
-#include "../../main/commandline/TokenList.hpp"
-#include "../../main/commandline/TokenKeys.hpp"
-#include "../../main/commandline/Token.hpp"
-
-#include "../../main/parsing/typenodes/SimpleType.hpp"
-#include "../../main/parsing/typenodes/BasicTypeWrapped.hpp"
+#include "SimpleTypeTest.h"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
+#include "../../main/parsing/typenodes/SimpleType.h"
+#include "../../main/parsing/typenodes/BasicTypeWrapped.h"
 
 int simpletype_test_typenode_parsing() {
 

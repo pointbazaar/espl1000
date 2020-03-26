@@ -1,11 +1,8 @@
-#include "MethodTest.hpp"
-
-#include "../../main/commandline/TokenList.hpp"
-#include "../../main/commandline/TokenKeys.hpp"
-#include "../../main/commandline/Token.hpp"
-
-
-#include "../../main/parsing/Method.hpp"
+#include "MethodTest.h"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
+#include "../../main/parsing/Method.h"
 
 int method_test_can_parse_method_with_arguments() {
 

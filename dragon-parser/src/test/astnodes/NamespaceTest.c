@@ -1,11 +1,9 @@
-#include "NamespaceTest.hpp"
-
-#include "../../main/commandline/TokenList.hpp"
-#include "../../main/commandline/TokenKeys.hpp"
-#include "../../main/commandline/Token.hpp"
-
-#include "../../main/parsing/Namespace.hpp"
-#include "../../main/parsing/StructDecl.hpp"
+#include "NamespaceTest.h"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
+#include "../../main/parsing/Namespace.h"
+#include "../../main/parsing/StructDecl.h"
 
 int namespace_test_can_parse_namespace_with_1_empty_struct() {
 

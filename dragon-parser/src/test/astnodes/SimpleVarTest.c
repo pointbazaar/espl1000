@@ -1,13 +1,11 @@
-#include "SimpleVarTest.hpp"
-
-#include "../../main/commandline/TokenList.hpp"
-#include "../../main/commandline/TokenKeys.hpp"
-#include "../../main/commandline/Token.hpp"
-
-#include "../../main/parsing/SimpleVar.hpp"
-#include "../../main/parsing/IntConst.hpp"
-#include "../../main/parsing/Expr.hpp"
-#include "../../main/parsing/Term.hpp"
+#include "SimpleVarTest.h"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
+#include "../../main/parsing/SimpleVar.h"
+#include "../../main/parsing/IntConst.h"
+#include "../../main/parsing/Expr.h"
+#include "../../main/parsing/Term.h"
 
 #include <stdio.h>
 

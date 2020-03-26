@@ -1,11 +1,8 @@
-#include "StmtTest.hpp"
-
-#include "../../main/commandline/TokenList.hpp"
-#include "../../main/commandline/TokenKeys.hpp"
-#include "../../main/commandline/Token.hpp"
-
-
-#include "../../main/parsing/statements/Stmt.hpp"
+#include "StmtTest.h"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
+#include "../../main/parsing/statements/Stmt.h"
 
 int stmt_test_assignment_statement_with_struct_access() {
 

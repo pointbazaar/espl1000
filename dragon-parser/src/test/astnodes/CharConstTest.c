@@ -1,10 +1,10 @@
-#include "CharConstTest.hpp"
+#include "CharConstTest.h"
 
-#include "../../main/commandline/TokenList.hpp"
-#include "../../main/commandline/TokenKeys.hpp"
-#include "../../main/commandline/Token.hpp"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
 
-#include "../../main/parsing/CharConst.hpp"
+#include "../../main/parsing/CharConst.h"
 
 int charconst_test_parse_char_constant_node() {
 	TokenList* list = new TokenList();

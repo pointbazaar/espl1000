@@ -1,10 +1,10 @@
-#include "ExprTest.hpp"
+#include "ExprTest.h"
 
-#include "../../main/commandline/TokenList.hpp"
-#include "../../main/commandline/TokenKeys.hpp"
-#include "../../main/commandline/Token.hpp"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
 
-#include "../../main/parsing/Expr.hpp"
+#include "../../main/parsing/Expr.h"
 
 #include <stdio.h>
 

@@ -1,11 +1,11 @@
-#include "BasicTypeWrappedTest.hpp"
+#include "BasicTypeWrappedTest.h"
 
-#include "../../main/commandline/TokenList.hpp"
-#include "../../main/commandline/TokenKeys.hpp"
-#include "../../main/commandline/Token.hpp"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
 
 
-#include "../../main/parsing/typenodes/BasicTypeWrapped.hpp"
+#include "../../main/parsing/typenodes/BasicTypeWrapped.h"
 
 int basictypewrapped_test_type_parsing_simple_type() {
 

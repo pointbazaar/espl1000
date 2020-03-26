@@ -1,12 +1,12 @@
-#include "AssignStmtTest.hpp"
+#include "AssignStmtTest.h"
 
-#include "../../main/commandline/TokenList.hpp"
-#include "../../main/commandline/TokenKeys.hpp"
-#include "../../main/commandline/Token.hpp"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
 
-#include "../../main/parsing/statements/AssignStmt.hpp"
-#include "../../main/parsing/Expr.hpp"
-#include "../../main/parsing/Variable.hpp"
+#include "../../main/parsing/statements/AssignStmt.h"
+#include "../../main/parsing/Expr.h"
+#include "../../main/parsing/Variable.h"
 
 int assignstmt_test1() {
 

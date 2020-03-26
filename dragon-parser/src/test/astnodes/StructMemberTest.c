@@ -1,11 +1,8 @@
-#include "StructMemberTest.hpp"
-
-#include "../../main/commandline/TokenList.hpp"
-#include "../../main/commandline/TokenKeys.hpp"
-#include "../../main/commandline/Token.hpp"
-
-
-#include "../../main/parsing/StructMember.hpp"
+#include "StructMemberTest.h"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
+#include "../../main/parsing/StructMember.h"
 
 int structmember_test_can_parse_struct_member() {
 
