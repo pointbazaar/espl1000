@@ -1,31 +1,30 @@
-#include "ParserTest.hpp"
+#include "ParserTest.h"
        
-#include "astnodes/BoolConstTest.hpp"  
-#include "astnodes/ExprTest.hpp"   
-#include "astnodes/NamespaceTest.hpp"   
-#include "astnodes/SimpleVarTest.hpp"   
-#include "astnodes/StructMemberTest.hpp"  
-#include "astnodes/VariableTest.hpp"
-#include "astnodes/AssignStmtTest.hpp"        
-#include "astnodes/CharConstTest.hpp"  
-#include "astnodes/FloatConstTest.hpp"  
-#include "astnodes/MethodCallTest.hpp"  
-#include "astnodes/RetStmtTest.hpp"     
-#include "astnodes/StmtTest.hpp"        
-#include "astnodes/SubrTypeTest.hpp"      
-#include "astnodes/WhileStmtTest.hpp"
-#include "astnodes/BasicTypeWrappedTest.hpp"  
-#include "astnodes/DeclArgTest.hpp"    
-#include "astnodes/IfStmtTest.hpp"      
-#include "astnodes/MethodTest.hpp"      
-#include "astnodes/SimpleTypeTest.hpp"  
-#include "astnodes/StructDeclTest.hpp"  
-#include "astnodes/TermTest.hpp"
+#include "astnodes/BoolConstTest.h"  
+#include "astnodes/ExprTest.h" 
+#include "astnodes/NamespaceTest.h" 
+#include "astnodes/SimpleVarTest.h"
+#include "astnodes/StructMemberTest.h"
+#include "astnodes/VariableTest.h"
+#include "astnodes/AssignStmtTest.h"
+#include "astnodes/CharConstTest.h"
+#include "astnodes/FloatConstTest.h"
+#include "astnodes/MethodCallTest.h"
+#include "astnodes/RetStmtTest.h"
+#include "astnodes/StmtTest.h"
+#include "astnodes/SubrTypeTest.h"
+#include "astnodes/WhileStmtTest.h"
+#include "astnodes/BasicTypeWrappedTest.h"
+#include "astnodes/DeclArgTest.h"
+#include "astnodes/IfStmtTest.h"
+#include "astnodes/MethodTest.h"
+#include "astnodes/SimpleTypeTest.h"
+#include "astnodes/StructDeclTest.h"
+#include "astnodes/TermTest.h"
 
 #include <stdio.h>
-#include <iostream>
-
-using namespace std;
+#include <stdlib.h>
+#include <stbool.h>
 
 void test_all(bool debug){
 	try{
