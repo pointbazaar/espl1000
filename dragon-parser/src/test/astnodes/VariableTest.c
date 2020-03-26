@@ -6,6 +6,7 @@
 #include "../../main/parsing/SimpleVar.h"
 
 #include <stdio.h>
+#include <stdbool.h>
 
 int variable_test_parse_struct_member_access(bool debug) {
 
@@ -13,7 +14,7 @@ int variable_test_parse_struct_member_access(bool debug) {
 		printf("variable_test_parse_struct_member_access(...)\n");
 	}
 
-	TokenList tokens = TokenList();
+	struct TokenList tokens = makeTokenList();
 	tokens.add(ID,"x");
 	tokens.add(STRUCTMEMBERACCESS,".");
 	tokens.add(ID,"a");
@@ -34,7 +35,7 @@ int variable_test_parse_index_access(bool debug) {
 		printf("variable_test_parse_index_access(...)\n");
 	}
 
-	TokenList tokens = TokenList();
+	struct TokenList tokens = makeTokenList();
 	tokens.add(ID,"x");
 	tokens.add(LBRACKET);
 	tokens.add(INTEGER,"0");
