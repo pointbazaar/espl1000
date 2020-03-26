@@ -3,6 +3,7 @@
 # do not use .hpp's in g++ call
 
 make -j8
+make clean
 
 #copy the executable to /usr/bin
 cp dragon-parser /usr/bin/

@@ -5,6 +5,9 @@ COMPILER := gcc
 
 all: dragon-parser
 
+clean: 
+	rm *.o
+
 dragon-parser: commandline parsing typenodes statements tests
 	$(COMPILER) $(FLAGS) -o dragon-parser *.o
 
