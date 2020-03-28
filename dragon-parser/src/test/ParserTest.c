@@ -27,16 +27,17 @@
 #include <stbool.h>
 
 void test_all(bool debug){
-	try{
-		test_all_inner(debug);
-	}catch(string e1){
-		printf("catched! %s\n",(char*)e1.c_str());
-	}catch(char const* e2){
-		printf("catched! %s\n",e2);
+	
+	bool res = test_all_inner(debug);
+	if(res){
+		printf("Passed all Tests.");
+	}else{
+		printf("Failed some Tests.");
 	}
+	
 }
 
-void test_all_inner(bool debug){
+bool test_all_inner(bool debug){
 
 	printf("running Dragon-Parser Tests...\n");
 
@@ -161,4 +162,6 @@ void test_all_inner(bool debug){
 	count+=4;
 
 	printf("passed %d of %d \n",passed,count);
+
+	return passed == count;
 }

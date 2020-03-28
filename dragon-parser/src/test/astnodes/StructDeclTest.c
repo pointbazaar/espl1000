@@ -5,15 +5,18 @@
 #include "../../main/parsing/StructDecl.h"
 #include "../../main/parsing/StructMember.h"
 
+#include <stdbool.h>
+
 int structdecl_test_can_parse_empty_struct_decl() {
 
-	TokenList list = TokenList(); 
-	list.add(STRUCT);
-	list.add(TYPEIDENTIFIER,"MyStruct");
-	list.add(LCURLY);
-	list.add(RCURLY);
+	struct TokenList* list = makeTokenList(); 
 
-	struct StructDecl* s = makeStructDecl(&list, false);
+	list_add(list, makeToken(STRUCT) );
+	list_add(list, makeToken2(TYPEIDENTIFIER,"MyStruct") );
+	list_add(list, makeToken(LCURLY) );
+	list_add(list, makeToken(RCURLY) );
+
+	struct StructDecl* s = makeStructDecl(list, false);
 
 	bool assert1 = (0 == s->count_members);
 
@@ -22,53 +25,45 @@ int structdecl_test_can_parse_empty_struct_decl() {
 
 int structdecl_test_will_not_parse_invalid_typename_for_struct() {
 
-	TokenList list = TokenList(); 
+	struct TokenList* list = makeTokenList(); 
 
-	list.add(STRUCT);
-	list.add(ID,"myStruct");
-	list.add(LCURLY);
-	list.add(RCURLY);
+	list_add(list, makeToken(STRUCT));
+	list_add(list, makeToken2(ID,"myStruct"));
+	list_add(list, makeToken(LCURLY));
+	list_add(list, makeToken(RCURLY));
 
-	try {
-		struct StructDecl* s = makeStructDecl(&list, false);
-		return 0;
-	} catch (string e) {
-		return 1;
-	}
+	struct StructDecl* s = makeStructDecl(list, false);
+	return (s!=NULL)?1:0;
 }
 
 int structdecl_test_rejects_struct_with_subroutine_type() {
 
-	TokenList list = TokenList(); 
+	struct TokenList* list = makeTokenList(); 
 
-	list.add(STRUCT);
-	list.add(LPARENS);
-	list.add(RPARENS);
-	list.add(ARROW);
-	list.add(TYPEIDENTIFIER,"MyStruct");
-	list.add(LCURLY);
-	list.add(RCURLY);
+	list_add(list, makeToken(STRUCT) );
+	list_add(list, makeToken(LPARENS) );
+	list_add(list, makeToken(RPARENS) );
+	list_add(list, makeToken(ARROW) );
+	list_add(list, makeToken2(TYPEIDENTIFIER,"MyStruct") );
+	list_add(list, makeToken(LCURLY) );
+	list_add(list, makeToken(RCURLY) );
 
-	try {
-		struct StructDecl* s = makeStructDecl(&list, false);
-		return 0;
-	} catch (string e) {
-		return 1;
-	}
+	struct StructDecl* s = makeStructDecl(list, false);
+	return (s!=NULL)?1:0;
 }
 
 int structdecl_test_can_parse_struct_with_1_member() {
 
-	TokenList list = TokenList();
+	struct TokenList* list = makeTokenList();
 
-	list.add(STRUCT);
-	list.add(TYPEIDENTIFIER,"MyStruct");
-	list.add(LCURLY);
-	list.add(TYPEIDENTIFIER,"PInt");
-	list.add(ID,"a");
-	list.add(RCURLY);
+	list_add(list, makeToken(STRUCT) );
+	list_add(list, makeToken2(TYPEIDENTIFIER,"MyStruct") );
+	list_add(list, makeToken(LCURLY) );
+	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt") );
+	list_add(list, makeToken(ID,"a") );
+	list_add(list, makeToken(RCURLY) );
 
-	struct StructDecl* node = makeStructDecl(&list, false);
+	struct StructDecl* node = makeStructDecl(list, false);
 
 	bool assert1 = (1 == node->count_members);
 	bool assert2 = string("a").compare( node->members[0]->name) == 0;
@@ -78,19 +73,19 @@ int structdecl_test_can_parse_struct_with_1_member() {
 
 int structdecl_test_can_parse_struct_with_2_members() {
 
-	TokenList list = TokenList(); 
+	struct TokenList* list = makeTokenList(); 
 
-	list.add(STRUCT);
-	list.add(TYPEIDENTIFIER,"MyStruct");
-	list.add(LCURLY);
-	list.add(TYPEIDENTIFIER,"PInt");
-	list.add(ID,"a");
-	list.add(COMMA),
-	list.add(TYPEIDENTIFIER,"PInt");
-	list.add(ID,"b");
-	list.add(RCURLY);
+	list_add(list, makeToken(STRUCT) );
+	list_add(list, makeToken2(TYPEIDENTIFIER,"MyStruct") );
+	list_add(list, makeToken(LCURLY) );
+	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt") );
+	list_add(list, makeToken2(ID,"a") );
+	list_add(list, makeToken(COMMA) ),
+	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt") );
+	list_add(list, makeToken2(ID,"b") );
+	list_add(list, makeToken(RCURLY) );
 
-	struct StructDecl* node = makeStructDecl(&list, false);
+	struct StructDecl* node = makeStructDecl(list, false);
 
 	bool assert1 = (2 == node->count_members);
 

@@ -5,13 +5,15 @@
 #include "../../main/parsing/typenodes/SimpleType.h"
 #include "../../main/parsing/typenodes/BasicTypeWrapped.h"
 
+#include <stdbool.h>
+
 int simpletype_test_typenode_parsing() {
 
-	TokenList list = TokenList();
-	list.add(TYPEIDENTIFIER,"MyType");
+	struct TokenList* list = TokenList();
+	list_add(list, makeToken(TYPEIDENTIFIER,"MyType") );
 
-	struct BasicTypeWrapped* node = makeBasicTypeWrapped(&list,false);
-	bool assert1 = (0 == list.size());
+	struct BasicTypeWrapped* node = makeBasicTypeWrapped(list,false);
+	bool assert1 = (0 == list_size(list));
 
 	return (assert1)?1:0;
 }
@@ -19,25 +21,21 @@ int simpletype_test_typenode_parsing() {
 
 int simpletype_test_typenode_parsing_fails() {
 
-	TokenList list = TokenList();
-	list.add(ID,"myIllegalType");
+	struct TokenList* list = TokenList();
+	list_add(list, makeToken(ID,"myIllegalType") );
 
-	try {
-		struct BasicTypeWrapped* node = makeBasicTypeWrapped(&list,false);
-		return 0;
-	} catch (string e) {
-		return 1;
-	}
+	struct BasicTypeWrapped* node = makeBasicTypeWrapped(list,false);
+	return (node!=NULL)?1:0;
 }
 
 
 int simpletype_test_typenode_parsing_anytype() {
 
-	TokenList list = TokenList();
-	list.add(ANYTYPE);
+	struct TokenList* list = TokenList();
+	list_add(list, makeToken(ANYTYPE) );
 
-	struct SimpleType* node = makeSimpleType(&list,false);
-	bool assert1 = (0 == list.size());
+	struct SimpleType* node = makeSimpleType(list,false);
+	bool assert1 = (0 == list_size(list));
 
 	return (assert1)?1:0;
 }

@@ -5,83 +5,74 @@
 #include "../../main/parsing/statements/RetStmt.h"
 
 #include <stdio.h>
+#include <stdbool.h>
 
 int retstmt_test1(bool debug) {
 
 	printf("retstmt_test1\n");
 
-	try {
-		TokenList list = TokenList();
-		list.add(RETURN);
+		struct TokenList* list = makeTokenList();
 
-		list.add(LPARENS);
+		list_add( makeToken(RETURN));
 
-		list.add(Token(OPKEY,"-"));
-		list.add(Token(INTEGER,"5"));
+		list_add( makeToken(LPARENS));
 
-		list.add(RPARENS);
+		list_add( makeToken2(OPKEY,"-"));
+		list_add( makeToken2(INTEGER,"5"));
 
-		list.add(SEMICOLON);
+		list_add( makeToken(RPARENS));
+
+		list_add( makeToken(SEMICOLON));
 
 		struct RetStmt* r = makeRetStmt(&list,debug);
 
-		return 1;
-	}catch (string e){
-		return 0;
-	}
+		return (r!=NULL)?1:0;
 }
 
 int retstmt_test2(bool debug){
 
 	printf("retstmt_test2\n");
 
-	try {
-		TokenList list = TokenList();
-		list.add(RETURN);
+	struct TokenList* list = makeTokenList();
+	list.add(RETURN);
 
-		list.add(LPARENS);
+	list_add(list, makeToken(LPARENS));
 
-		list.add(Token(OPKEY,"-"));
+	list_add(list, makeToken2(OPKEY,"-"));
 
-		list.add(Token(INTEGER,"5"));
+	list_add(list, makeToken2(INTEGER,"5"));
 
-		list.add(RPARENS);
+	list_add(list, makeToken(RPARENS));
 
-		list.add(Token(OPKEY,"*"));
+	list_add(list, makeToken2(OPKEY,"*"));
 
-		list.add(Token(ID,"n"));
+	list_add(list, makeToken2(ID,"n"));
 
-		list.add(SEMICOLON);
+	list_add(list, makeToken(SEMICOLON));
 
-		struct RetStmt* r = makeRetStmt(&list,debug);
+	struct RetStmt* r = makeRetStmt(&list,debug);
 
-		return 1;
-	}catch (string e){
-		return 0;
-	}
+	return (r!=NULL)?1:0;
 }
 
 int retstmt_test3(bool debug) {
 
 	printf("retstmt_test3\n");
 
-	try {
-		TokenList list = TokenList();
+	struct TokenList* list = makeTokenList();
 
-		list.add(RETURN);
+	list_add(list, makeToken(RETURN));
 
-		list.add(ID,"arr");
+	list_add(list, makeToken2(ID,"arr"));
 
-		list.add(LBRACKET);
-		list.add(INTEGER,"0");
+	list_add(list, makeToken(LBRACKET));
+	list_add(list, makeToken2(INTEGER,"0"));
 
-		list.add(RBRACKET);
+	list_add(list, makeToken(RBRACKET));
 
-		list.add(SEMICOLON);
+	list_add(list, makeToken(SEMICOLON));
 
-		struct RetStmt* r = makeRetStmt(&list,debug);
-		return 1;
-	}catch (string e){
-		return 0;
-	}
+	struct RetStmt* r = makeRetStmt(&list,debug);
+
+	return (r!=NULL)?1:0;
 }

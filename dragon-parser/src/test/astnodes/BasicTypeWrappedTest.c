@@ -9,8 +9,8 @@
 
 int basictypewrapped_test_type_parsing_simple_type() {
 
-	TokenList* list = new TokenList();
-	list->add(TYPEIDENTIFIER,"PInt");
+	struct TokenList* list = makeTokenList();
+	list_add(list, makeToken(TYPEIDENTIFIER,"PInt"));
 
 	struct BasicTypeWrapped* b = makeBasicTypeWrapped(list,false);
 

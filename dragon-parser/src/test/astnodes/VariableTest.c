@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 
 int variable_test_parse_struct_member_access(bool debug) {
 
@@ -14,12 +15,12 @@ int variable_test_parse_struct_member_access(bool debug) {
 		printf("variable_test_parse_struct_member_access(...)\n");
 	}
 
-	struct TokenList tokens = makeTokenList();
-	tokens.add(ID,"x");
-	tokens.add(STRUCTMEMBERACCESS,".");
-	tokens.add(ID,"a");
+	struct TokenList* tokens = makeTokenList();
+	list_add(tokens, makeToken2(ID,"x"));
+	list_add(tokens, makeToken2(STRUCTMEMBERACCESS,"."));
+	list_add(tokens, makeToken2(ID,"a"));
 
-	struct Variable* v = makeVariable(&tokens,debug);
+	struct Variable* v = makeVariable(tokens,debug);
 
 	bool assert1 = (1 == v->count_memberAccessList);
 	bool assert2 = string("x").compare( v->simpleVariableNode->name)==0;
@@ -35,16 +36,16 @@ int variable_test_parse_index_access(bool debug) {
 		printf("variable_test_parse_index_access(...)\n");
 	}
 
-	struct TokenList tokens = makeTokenList();
-	tokens.add(ID,"x");
-	tokens.add(LBRACKET);
-	tokens.add(INTEGER,"0");
-	tokens.add(RBRACKET);
+	struct TokenList* tokens = makeTokenList();
+	list_add(tokens, makeToken2(ID,"x"));
+	list_add(tokens, makeToken(LBRACKET));
+	list_add(tokens, makeToken2(INTEGER,"0"));
+	list_add(tokens, makeToken(RBRACKET));
 
 	struct Variable* node = makeVariable(&tokens,debug);
 
 	bool assert1 = (0 == node->count_memberAccessList);
-	bool assert2 = string("x").compare(node->simpleVariableNode->name) == 0;
+	bool assert2 = strcmp("x", node->simpleVariableNode->name) == 0;
 	bool assert3 = (node->simpleVariableNode->indexOptional != NULL);
 
 	return (assert1&&assert2&&assert3)?1:0;
@@ -57,24 +58,24 @@ int variable_test_parse_struct_member_access_and_index_access(bool debug) {
 	}
 
 	// x.a[0].b
-	TokenList tokens = TokenList();
-	tokens.add(ID,"x");
-	tokens.add(STRUCTMEMBERACCESS);
-	tokens.add(ID,"a");
+	struct TokenList* tokens = makeTokenList();
+	list_add(tokens, makeToken2(ID,"x") );
+	list_add(tokens, makeToken(STRUCTMEMBERACCESS) );
+	list_add(tokens, makeToken2(ID,"a") );
 
-	tokens.add(LBRACKET);
-	tokens.add(INTEGER,"0");
-	tokens.add(RBRACKET);
+	list_add(tokens, makeToken(LBRACKET) );
+	list_add(tokens, makeToken2(INTEGER,"0") );
+	list_add(tokens, makeToken(RBRACKET) );
 
-	tokens.add(STRUCTMEMBERACCESS);
-	tokens.add(ID,"b");
+	list_add(tokens, makeToken(STRUCTMEMBERACCESS) );
+	list_add(tokens, makeToken2(ID,"b") );
 
-	struct Variable* node = makeVariable(&tokens,debug);
+	struct Variable* node = makeVariable(tokens,debug);
 
 	bool assert1 = (1 == node->count_memberAccessList);
-	bool assert2 = string("x").compare(node->simpleVariableNode->name) == 0;
+	bool assert2 = strcmp("x", node->simpleVariableNode->name) == 0;
 
-	bool assert3 = string("a").compare( node->memberAccessList[0]->simpleVariableNode->name) == 0;
+	bool assert3 = strcmp("a", node->memberAccessList[0]->simpleVariableNode->name) == 0;
 	bool assert4 = (node->memberAccessList[0]->simpleVariableNode->indexOptional != NULL);
 
 	return (assert1&&assert2&&assert3&&assert4)?1:0;

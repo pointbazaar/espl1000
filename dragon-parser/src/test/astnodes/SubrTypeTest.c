@@ -4,47 +4,49 @@
 #include "../../main/commandline/Token.h"
 #include "../../main/parsing/typenodes/SubrType.h"
 
+#include <stdbool.h>
+
 int subrtype_test_typename() {
 	//(PInt,PInt)->PInt
-	TokenList l = TokenList();
+	struct TokenList* l = makeTokenList();
 
-	l.add(LPARENS);
-	l.add(TYPEIDENTIFIER,"PInt");
-	l.add(COMMA);
-	l.add(TYPEIDENTIFIER,"PInt");
-	l.add(RPARENS);
-	l.add(ARROW);
-	l.add(TYPEIDENTIFIER,"PInt");
+	list_add(l, makeToken(LPARENS) );
+	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt") );
+	list_add(l, makeToken(COMMA) );
+	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt") );
+	list_add(l, makeToken(RPARENS) );
+	list_add(l, makeToken(ARROW) );
+	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt") );
 
-	struct SubrType* sub = makeSubrType(&l,false);
+	struct SubrType* sub = makeSubrType(l,false);
 
-	bool assert1 = (0 == l.size());
+	bool assert1 = (0 == list_size(l));
 
 	return (assert1)?1:0;
 }
 
 int subrtype_test_typename_subroutine_return_type() {
 	//(PInt,PInt)->((PInt)->PInt) 
-	TokenList l = TokenList();
+	struct TokenList* l = makeTokenList();
 
-	l.add(LPARENS);
-		l.add(TYPEIDENTIFIER,"PInt");
-		l.add(COMMA);
-		l.add(TYPEIDENTIFIER,"PInt");
-	l.add(RPARENS);
+	list_add(l, makeToken(LPARENS) );
+		list_add(l, makeToken2(TYPEIDENTIFIER,"PInt") );
+		list_add(l, makeToken(COMMA) );
+		list_add(l, makeToken2(TYPEIDENTIFIER,"PInt") );
+	list_add(l, makeToken(RPARENS) );
 
-	l.add(ARROW);
+	list_add(l, makeToken(ARROW) );
 
-	l.add(LPARENS);
-		l.add(LPARENS);
-			l.add(TYPEIDENTIFIER,"PInt");
-		l.add(RPARENS);
+	list_add(l, makeToken(LPARENS) );
+		list_add(l, makeToken(LPARENS) );
+			list_add(l, makeToken2(TYPEIDENTIFIER,"PInt") );
+		list_add(l, makeToken(RPARENS) );
 
-		l.add(ARROW);
-		l.add(TYPEIDENTIFIER,"PInt");
-	l.add(RPARENS);
+		list_add(l, makeToken(ARROW) );
+		list_add(l, makeToken2(TYPEIDENTIFIER,"PInt") );
+	list_add(l, makeToken(RPARENS) );
 
-	struct SubrType* sub = makeSubrType(&l,false);
+	struct SubrType* sub = makeSubrType(l,false);
 
 	bool assert1 = (0 == l.size());
 	return (assert1)?1:0;
@@ -52,35 +54,35 @@ int subrtype_test_typename_subroutine_return_type() {
 
 int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects()  {
 	//(PInt,MyType)~>PInt
-	TokenList l = TokenList();
+	struct TokenList* l = makeTokenList();
 
-	l.add(LPARENS);
-	l.add(TYPEIDENTIFIER,"PInt");
-	l.add(COMMA);
-	l.add(TYPEIDENTIFIER,"MyType");
-	l.add(RPARENS);
-	l.add(ARROW);
-	l.add(TYPEIDENTIFIER,"PInt");
+	list_add(l, makeToken(LPARENS) );
+	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt") );
+	list_add(l, makeToken(COMMA) );
+	list_add(l, makeToken2(TYPEIDENTIFIER,"MyType") );
+	list_add(l, makeToken(RPARENS) );
+	list_add(l, makeToken(ARROW) );
+	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt") );
 
-	struct SubrType* node = makeSubrType(&l,false);
+	struct SubrType* node = makeSubrType(l,false);
 
-	bool assert1 = (0 == l.size());
+	bool assert1 = (0 == list_size(l));
 	return (assert1)?1:0;
 }
 
 int subrtype_test_subroutine_type_parsing_subroutine_without_side_effects() {
 	//(PInt)->PInt
-	TokenList l = TokenList(); 
+	struct TokenList l* = makeTokenList(); 
 
-	l.add(LPARENS);
-	l.add(TYPEIDENTIFIER,"PInt");
-	l.add(RPARENS);
-	l.add(ARROW);
-	l.add(TYPEIDENTIFIER,"PInt");
+	list_add(l, makeToken(LPARENS) );
+	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt") );
+	list_add(l, makeToken(RPARENS) );
+	list_add(l, makeToken(ARROW) );
+	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt") );
 
-	struct SubrType* node = makeSubrType(&l,false);
+	struct SubrType* node = makeSubrType(l,false);
 
-	bool assert1 = (0 == l.size());
+	bool assert1 = (0 == list_size(l));
 	return (assert1)?1:0;
 }
 

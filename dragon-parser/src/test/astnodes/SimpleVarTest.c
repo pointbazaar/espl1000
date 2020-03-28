@@ -8,13 +8,14 @@
 #include "../../main/parsing/Term.h"
 
 #include <stdio.h>
+#include <stdbool.h>
 
 int simplevar_test_parse_simple_variable(bool debug) {
 
 	printf("simplevar_test_parse_simple_variable()\n");
 
-	TokenList list = TokenList();
-	list.add(ID,"x");
+	struct TokenList* list = makeTokenList();
+	list_add(list, makeToken2(ID,"x") );
 
 	struct SimpleVar* node = makeSimpleVar(&list,debug);
 	bool assert1 = string("x").compare(node->name)==0;
@@ -26,11 +27,12 @@ int simplevar_test_parse_simple_indexed_variable(bool debug) {
 
 	printf("simplevar_test_parse_simple_indexed_variable()\n");
 
-	TokenList list = TokenList();
-	list.add(ID,"x");
-	list.add(LBRACKET,"[");
-	list.add(INTEGER,"0");
-	list.add(RBRACKET,"]");
+	struct TokenList* list = makeTokenList();
+
+	list_add(list, makeToken2(ID,"x")) ;
+	list_add(list, makeToken2(LBRACKET,"[")) ;
+	list_add(list, makeToken2(INTEGER,"0")) ;
+	list_add(list, makeToken2(RBRACKET,"]")) ;
 
 
 	struct SimpleVar* node = makeSimpleVar(&list,debug);

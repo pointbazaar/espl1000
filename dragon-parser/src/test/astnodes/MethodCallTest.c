@@ -1,18 +1,17 @@
 #include "MethodCallTest.h"
-
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
 #include "../../main/commandline/Token.h"
-
-
 #include "../../main/parsing/statements/MethodCall.h"
 
-int methodcall_test1() {
-	TokenList l = TokenList();
+#include <stdbool.h>
 
-	l.add(ID,"main");
-	l.add(LPARENS);
-	l.add(RPARENS);
+int methodcall_test1() {
+	struct TokenList* l = makeTokenList();
+
+	list_add(l, makeToken2(ID,"main"));
+	list_add(l, makeToken(LPARENS));
+	list_add(l, makeToken(RPARENS));
 
 	struct MethodCall* call = makeMethodCall(&l,false);
 
@@ -21,12 +20,12 @@ int methodcall_test1() {
 }
 
 int methodcall_test2() {
-	TokenList list = TokenList();
+	struct TokenList* list = makeTokenList();
 
-	list.add(ID,"main");
-	list.add(LPARENS);
-	list.add(INTEGER,"4");
-	list.add(RPARENS);
+	list_add( makeToken2(ID,"main"));
+	list_add( makeToken2(LPARENS));
+	list_add( makeToken2(INTEGER,"4"));
+	list_add( makeToken2(RPARENS));
 
 	struct MethodCall* call = makeMethodCall(&list,false);
 	bool assert1 = (0 == list.size());
@@ -35,12 +34,12 @@ int methodcall_test2() {
 }
 
 int methodcall_test3() {
-	TokenList list = TokenList();
+	struct TokenList* list = makeTokenList();
 
-	list.add(ID,"main");
-	list.add(LPARENS);
-	list.add(ID,"x");
-	list.add(RPARENS);
+	list_add( makeToken2(ID,"main"));
+	list_add( makeToken2(LPARENS));
+	list_add( makeToken2(ID,"x"));
+	list_add( makeToken2(RPARENS));
 
 	struct MethodCall* call = makeMethodCall(&list,false);
 	bool assert1 = (0 == list.size());
@@ -49,11 +48,11 @@ int methodcall_test3() {
 
 int methodcall_test_can_parse_subroutine_call() {
 
-	TokenList tl = TokenList();
-	tl.add(ID,"println");
-	tl.add(LPARENS);
-	tl.add(INTEGER,"1");
-	tl.add(RPARENS);
+	struct TokenList* tl = makeTokenList();
+	list_add(makeToken2(ID,"println"));
+	list_add(makeToken(LPARENS));
+	list_add(makeToken2(INTEGER,"1"));
+	list_add(makeToken(RPARENS));
 
 	struct MethodCall* call = makeMethodCall(&tl,false);
 	bool assert1 = (0 == tl.size());
@@ -64,11 +63,11 @@ int methodcall_test_can_parse_subroutine_call() {
 int methodcall_test_can_parse_subroutine_call2() {
 	//println("x<5")
 
-	TokenList tokens = TokenList();
-	tokens.add(ID,"println");
-	tokens.add(LPARENS);
-	tokens.add(STRINGCONST,"x<5");
-	tokens.add(RPARENS);
+	struct TokenList* tokens = makeTokenList();
+	list_add(tokens, makeToken2(ID,"println"));
+	list_add(tokens, makeToken(LPARENS));
+	list_add(tokens, makeToken2(STRINGCONST,"x<5"));
+	list_add(tokens, makeToken(RPARENS));
 
 	struct MethodCall* call = makeMethodCall(&tokens,false);
 	bool assert1 = (0 == tokens.size());

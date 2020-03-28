@@ -1,12 +1,11 @@
 #include "IfStmtTest.h"
-
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
 #include "../../main/commandline/Token.h"
-
 #include "../../main/parsing/statements/IfStmt.h"
 
 #include <stdio.h>
+#include <stdbool.h>
 
 int if_test1(bool debug) {
 
@@ -14,20 +13,16 @@ int if_test1(bool debug) {
 		printf("if_test1\n");
 	}
 
-	TokenList* list = new TokenList();
-	list->add(IF);
+	struct TokenList* list = makeTokenList();
+	list_add(list, IF);
 
-	//list->add(LPARENS);
+	list_add(list, makeToken(INTEGER, "5"));
+	list_add(list, makeToken(OPKEY, "<"));
+	list_add(list, makeToken(INTEGER, "3"));
 
-	list->add(INTEGER, "5");
-	list->add(OPKEY, "<");
-	list->add(INTEGER, "3");
+	list_add(list, LCURLY);
 
-	//list->add(RPARENS);
-
-	list->add(LCURLY);
-
-	list->add(RCURLY);
+	list_add(list, RCURLY);
 
 	struct IfStmt* i = makeIfStmt(list,debug);
 	bool assert1 = (0 == list->size());
@@ -41,36 +36,32 @@ int if_test2(bool debug) {
 		printf("if_test2\n");
 	}
 
-	try {
-		TokenList* l = new TokenList();
+	struct TokenList* l = makeTokenList();
 
-		l->add(IF);
+	list_add(l, makeToken(IF));
 
-		//l->add(LPARENS);
+	//l->add(LPARENS);
 
-		l->add(ID,"x");
-		l->add(OPKEY,"<");
-		l->add(INTEGER,"5");
+	list_add(l, makeToken(ID,"x"));
+	list_add(l, makeToken2(OPKEY,"<"));
+	list_add(l, makeToken2(INTEGER,"5"));
 
-		//l->add(RPARENS);
+	//l->add(RPARENS);
 
-		l->add(LCURLY);
+	list_add(l, makeToken(LCURLY));
 
-		l->add(ID,"println");
+	list_add(l, makeToken2(ID,"println"));
 
 
-		l->add(LPARENS);
-		l->add(STRINGCONST,"x<5");
-		l->add(RPARENS);
+	list_add(l, makeToken(LPARENS));
+	list_add(l, makeToken2(STRINGCONST,"x<5"));
+	list_add(l, makeToken(RPARENS));
 
-		l->add(SEMICOLON);
+	list_add(l, makeToken(SEMICOLON));
 
-		l->add(RCURLY);
+	list_add(l, makeToken(RCURLY));
 
-		struct IfStmt* i = makeIfStmt(l,debug);
+	struct IfStmt* i = makeIfStmt(l,debug);
 
-		return 1;
-	}catch (string e){
-		return 0;
-	}
+	return (i!=NULL)?1:0;
 }

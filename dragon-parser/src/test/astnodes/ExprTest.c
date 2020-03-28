@@ -1,12 +1,11 @@
 #include "ExprTest.h"
-
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
 #include "../../main/commandline/Token.h"
-
 #include "../../main/parsing/Expr.h"
 
 #include <stdio.h>
+#include <stdbool.h>
 
 int expr_test_simple_expression(bool debug) {
 
@@ -14,15 +13,11 @@ int expr_test_simple_expression(bool debug) {
 		printf("expr_test_simple_expression(...)\n");
 	}
 
-	try {
-		TokenList* list = new TokenList();
-		list->add(INTEGER,"4");
-		struct Expr* expr = makeExpr(list,debug);
+	struct TokenList* list = new TokenList();
+	list_add(list, INTEGER,"4");
+	struct Expr* expr = makeExpr(list,debug);
 
-		return 1;
-	}catch (string e){
-		return 0;
-	}
+	return (expr!=NULL)?1:0;
 }
 
 int expr_test_variable_name_expression(bool debug) {
@@ -31,15 +26,11 @@ int expr_test_variable_name_expression(bool debug) {
 		printf("expr_test_variable_name_expression(...)\n");
 	}
 
-	try {
-		TokenList* list = new TokenList();
+	struct TokenList* list = new TokenList();
 
-		list->add(ID,"x");
-		struct Expr* expr = makeExpr(list,debug);
-		return 1;
-	}catch (string e){
-		return 0;
-	}
+	list_add(list, makeToken(ID,"x"));
+	struct Expr* expr = makeExpr(list,debug);
+	return (expr!=NULL)?1:0;
 }
 
 int expr_recognize_2_op_expr(bool debug) {
@@ -48,17 +39,13 @@ int expr_recognize_2_op_expr(bool debug) {
 		printf("expr_recognize_2_op_expr(...)\n");
 	}
 
-	try {
-		TokenList* tokens = new TokenList();
+	struct TokenList* tokens = new TokenList();
 
-		tokens->add(INTEGER,"1");
-		tokens->add(OPKEY,"+");
-		tokens->add(INTEGER,"2");
+	list_add(tokens, makeToken(INTEGER,"1"));
+	list_add(tokens, makeToken(OPKEY,"+"));
+	list_add(tokens, makeToken(INTEGER,"2"));
 
-		struct Expr* expr = makeExpr(tokens,debug);
-		return 1;
-	}catch (string e){
-		return 0;
-	}
+	struct Expr* expr = makeExpr(tokens,debug);
+	return (expr!=NULL)?1:0;
 }
 

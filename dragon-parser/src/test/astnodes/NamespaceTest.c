@@ -5,14 +5,16 @@
 #include "../../main/parsing/Namespace.h"
 #include "../../main/parsing/StructDecl.h"
 
+#include <stdbool.h>
+
 int namespace_test_can_parse_namespace_with_1_empty_struct() {
 
-	TokenList l = TokenList();
+	struct TokenList* l = makeTokenList();
 
-	l.add(STRUCT);
-	l.add(TYPEIDENTIFIER,"MyStruct");
-	l.add(LCURLY);
-	l.add(RCURLY);
+	list_add(l, makeToken(STRUCT));
+	list_add(l, makeToken2(TYPEIDENTIFIER,"MyStruct"));
+	list_add(l, makeToken(LCURLY));
+	list_add(l, makeToken(RCURLY));
 
 	struct Namespace* n = makeNamespace(&l,"Main", false);
 
@@ -29,19 +31,19 @@ int namespace_test_can_parse_namespace_with_1_empty_method() {
 	//they also test the lexer.
 	//i should write the tests so that the parser alone can accomplic shem
 
-	TokenList l = TokenList();
+	struct TokenList* l = makeTokenList();
 
-	l.add(FN);
-	l.add(ID,"main");
-	l.add(LPARENS);
-	l.add(TYPEIDENTIFIER,"String");
-	l.add(ID,"hello");
-	l.add(RPARENS);
-	l.add(ARROW);
-	l.add(TYPEIDENTIFIER,"PInt");
-	l.add(LCURLY);
+	list_add(l, makeToken(FN));
+	list_add(l, makeToken2(ID,"main"));
+	list_add(l, makeToken(LPARENS));
+	list_add(l, makeToken2(TYPEIDENTIFIER,"String"));
+	list_add(l, makeToken2(ID,"hello"));
+	list_add(l, makeToken(RPARENS));
+	list_add(l, makeToken(ARROW));
+	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt"));
+	list_add(l, makeToken(LCURLY));
 
-	l.add(RCURLY);
+	list_add(l, makeToken(RCURLY));
 
 	struct Namespace* n = makeNamespace(&l,"Main", false);
 

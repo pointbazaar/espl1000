@@ -4,28 +4,28 @@
 #include "../../main/commandline/Token.h"
 #include "../../main/parsing/statements/WhileStmt.h"
 
+#include <stdbool.h>
+
 int whilestmt_test1() {
-	try {
-		TokenList list = TokenList();
-		list.add(WHILE);
+	
+	struct TokenList* list = makeTokenList();
 
-		list.add(LPARENS);
+	list_add(list, makeToken(WHILE) );
 
-		list.add(INTEGER,"5");
-		list.add(OPKEY,"<");
-		list.add(INTEGER,"3");
+	list_add(list, makeToken(LPARENS) );
 
-		list.add(RPARENS);
+	list_add(list, makeToken2(INTEGER,"5") );
+	list_add(list, makeToken2(OPKEY,"<") );
+	list_add(list, makeToken2(INTEGER,"3") );
 
-		list.add(LCURLY);
+	list_add(list, makeToken(RPARENS) );
 
-		list.add(RCURLY);
+	list_add(list, makeToken(LCURLY) );
 
-		struct WhileStmt* whileStatement = makeWhileStmt(&list,false);
+	list_add(list, makeToken(RCURLY) );
 
-		return 1;
-	}catch (string e){
-		return 0;
-	}
+	struct WhileStmt* ws = makeWhileStmt(list,false);
+
+	return (ws!=NULL)?1:0;
 }
 
