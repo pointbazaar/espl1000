@@ -5,11 +5,10 @@
 #include "BoolConst.h"
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
-#include "../commandline/smalloc.h"
 
 struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 
-	struct BoolConst* res = smalloc(sizeof(struct BoolConst));
+	struct BoolConst* res = malloc(sizeof(struct BoolConst));
 
 	if(debug){
 		printf("BoolConst(...)\n");

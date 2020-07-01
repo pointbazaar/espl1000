@@ -5,7 +5,6 @@
 #include "CharConst.h"
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
-#include "../commandline/smalloc.h"
 
 struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 
@@ -13,7 +12,7 @@ struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 		printf("CharConst(...)\n");
 	}
 
-	struct CharConst* res = smalloc(sizeof(struct CharConst));
+	struct CharConst* res = malloc(sizeof(struct CharConst));
 
 	struct Token* token = list_get(tokens, 0);
 	if(token == NULL){return NULL;}

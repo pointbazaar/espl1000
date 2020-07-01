@@ -6,7 +6,6 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/Token.h"
 #include "../commandline/TokenKeys.h"
-#include "../commandline/smalloc.h"
 #include "Term.h"
 #include "CharConst.h"
 #include "IntConst.h"
@@ -17,7 +16,7 @@
 #include "statements/MethodCall.h"
 
 struct Term* makeTerm_other(struct Expr* expr){
-	struct Term* res = smalloc(sizeof(struct Term));
+	struct Term* res = malloc(sizeof(struct Term));
 
 	res->m1 = NULL;
 	res->m2 = NULL;
@@ -37,7 +36,7 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 		printf("Term(...) from %s\n", list_code(tokens));
 	}
 
-	struct Term* res = smalloc(sizeof(struct Term));
+	struct Term* res = malloc(sizeof(struct Term));
 	
 	res->m1 = NULL;
 	res->m2 = NULL;

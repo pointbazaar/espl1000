@@ -8,7 +8,6 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
 #include "../commandline/Token.h"
-#include "../commandline/smalloc.h"
 #include "Identifier.h"
 #include "statements/Stmt.h"
 #include "DeclArg.h"
@@ -19,15 +18,15 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 		printf("Method(...) from: %s\n", list_code(tokens));
 	}
 
-	struct Method* res = smalloc(sizeof(struct Method));
+	struct Method* res = malloc(sizeof(struct Method));
 
 	//init
 	res->isPublic = true;
 	res->hasSideEffects = true;
 	res->count_arguments = 0;
-	res->arguments = smalloc(sizeof(struct DeclArg*)*1);
+	res->arguments = malloc(sizeof(struct DeclArg*)*1);
 	res->count_statements = 0;
-	res->statements = smalloc(sizeof(struct Stmt*)*1);
+	res->statements = malloc(sizeof(struct Stmt*)*1);
 
 	struct TokenList* copy = list_copy(tokens);
 

@@ -4,13 +4,12 @@
 
 #include "DeclArg.h"
 #include "../commandline/TokenList.h"
-#include "../commandline/smalloc.h"
 #include "typenodes/Type.h"
 #include "Identifier.h"
 
 struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 
-	struct DeclArg* res = smalloc(sizeof(struct DeclArg));
+	struct DeclArg* res = malloc(sizeof(struct DeclArg));
 
 	if(debug){
 		printf("DeclaredArg(...) from %s",list_code(tokens));

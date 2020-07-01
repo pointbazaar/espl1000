@@ -6,7 +6,6 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/Token.h"
 #include "../../commandline/TokenKeys.h"
-#include "../../commandline/smalloc.h"
 
 struct SimpleType* makeSimpleType(struct TokenList* tokens, bool debug) {
 
@@ -14,7 +13,7 @@ struct SimpleType* makeSimpleType(struct TokenList* tokens, bool debug) {
 		printf("SimpleType(...)\n");
 	}
 
-	struct SimpleType* res = smalloc(sizeof(struct SimpleType));
+	struct SimpleType* res = malloc(sizeof(struct SimpleType));
 
 	struct Token* token = list_get(tokens, 0);
 	if(token == NULL){return NULL;}
@@ -34,7 +33,7 @@ struct SimpleType* makeSimpleType(struct TokenList* tokens, bool debug) {
 }
 
 struct SimpleType* makeSimpleType(char* typeName) {
-	struct SimpleType* res = smalloc(sizeof(struct SimpleType));
+	struct SimpleType* res = malloc(sizeof(struct SimpleType));
 
 	res->typeName = typeName;
 

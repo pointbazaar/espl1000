@@ -3,13 +3,12 @@
 #include <stdlib.h>
 
 #include "../commandline/TokenList.h"
-#include "../commandline/smalloc.h"
 #include "Expr.h"
 #include "Term.h"
 #include "Op.h"
 
 struct Expr* makeExpr_1(struct Term* term) {
-	struct Expr* res = smalloc(sizeof(struct Expr));
+	struct Expr* res = malloc(sizeof(struct Expr));
 	res->term1 = term;
 	res->op    = NULL;
 	res->term2 = NULL;
@@ -24,10 +23,10 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 
 	//we assume they never have more than 200 terms
 
-	struct Op** ops = smalloc(sizeof(struct Op*)*200);
+	struct Op** ops = malloc(sizeof(struct Op*)*200);
 	int opsc = 0;
 
-	struct Term** terms = smalloc(sizeof(struct Term*)*200);;
+	struct Term** terms = malloc(sizeof(struct Term*)*200);;
 	int termsc = 0;
 
 	struct TokenList* copy = list_copy(tokens);
@@ -58,7 +57,7 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 
 struct Expr* makeExpr_3(struct Term* leftTerm, struct Op* op, struct Term* rightTerm) {
 
-	struct Expr* res = smalloc(sizeof(struct Expr));
+	struct Expr* res = malloc(sizeof(struct Expr));
 	res->term1 = leftTerm;
 	res->op    = op;
 	res->term2 = rightTerm;
@@ -111,7 +110,7 @@ struct Expr* performTreeTransformation(
 ){
 	//transform the list into a tree, respecting operator precedence
 
-	struct Expr* res = smalloc(sizeof(struct Expr));
+	struct Expr* res = malloc(sizeof(struct Expr));
 	res->term1 = NULL;
 	res->op    = NULL;
 	res->term2 = NULL;

@@ -8,14 +8,13 @@
 #include "../commandline/Token.h"
 #include "../commandline/TokenKeys.h"
 #include "../commandline/TokenList.h"
-#include "../commandline/smalloc.h"
 
 struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 
-	struct Variable* res = smalloc(sizeof(struct Variable));
+	struct Variable* res = malloc(sizeof(struct Variable));
 	res->simpleVariableNode = NULL;
 
-	res->memberAccessList = smalloc(sizeof(struct Variable*)*1);
+	res->memberAccessList = malloc(sizeof(struct Variable*)*1);
 	res->count_memberAccessList = 0;
 
 	if(debug){

@@ -9,7 +9,6 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/Token.h"
 #include "../commandline/TokenKeys.h"
-#include "../commandline/smalloc.h"
 
 struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug) {
 
@@ -17,7 +16,7 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 		printf("Namespace(...) from: %s\n", list_code(tokens));
 	}
 
-	struct Namespace* res = smalloc(sizeof(struct Namespace));
+	struct Namespace* res = malloc(sizeof(struct Namespace));
 
 	if(res==NULL){
 		printf("could not malloc.\n");
@@ -27,8 +26,8 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 	res->count_methods = 0;
 	res->count_structs = 0;
 
-	res->methods = smalloc(sizeof(struct Method*)*1);
-	res->structs = smalloc(sizeof(struct StructDecl*)*1);
+	res->methods = malloc(sizeof(struct Method*)*1);
+	res->structs = malloc(sizeof(struct StructDecl*)*1);
 
 	res->srcPath = "/dev/null";
 	res->name = name;

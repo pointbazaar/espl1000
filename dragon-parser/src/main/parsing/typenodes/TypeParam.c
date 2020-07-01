@@ -7,7 +7,6 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/Token.h"
 #include "../../commandline/TokenKeys.h"
-#include "../../commandline/smalloc.h"
 
 struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
 
@@ -15,7 +14,7 @@ struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
 		printf("TypeParam(...)\n");
 	}
 
-	struct TypeParam* res = smalloc(sizeof(struct TypeParam));
+	struct TypeParam* res = malloc(sizeof(struct TypeParam));
 
 	struct Token* token = list_get(tokens, 0);
 	if(token == NULL){return NULL;}

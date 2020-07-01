@@ -5,7 +5,6 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../commandline/Token.h"
-#include "../../commandline/smalloc.h"
 #include "../Expr.h"
 #include "Stmt.h"
 
@@ -15,9 +14,9 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 		printf("WhileStmt(...)\n");
 	}
 
-	struct WhileStmt* res = smalloc(sizeof(struct WhileStmt));
+	struct WhileStmt* res = malloc(sizeof(struct WhileStmt));
 
-	res->statements = smalloc(sizeof(struct Stmt*)*1);
+	res->statements = malloc(sizeof(struct Stmt*)*1);
 	res->count_statements = 0;
 
 	struct TokenList* copy = makeTokenList(tokens);

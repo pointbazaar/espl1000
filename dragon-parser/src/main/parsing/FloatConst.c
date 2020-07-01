@@ -6,11 +6,10 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
 #include "../commandline/Token.h"
-#include "../commandline/smalloc.h"
 
 struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
-	struct FloatConst* res = smalloc(sizeof(struct FloatConst));
+	struct FloatConst* res = malloc(sizeof(struct FloatConst));
 
 	if(debug){
 		printf("FloatConst(...)\n");

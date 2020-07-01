@@ -7,11 +7,10 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/Token.h"
 #include "../../commandline/TokenKeys.h"
-#include "../../commandline/smalloc.h"
 
 struct SubrType* makeSubrType(struct Type* return_type, bool hasSideEffects){
 	
-	struct SubrType* res = smalloc(sizeof(struct SubrType));
+	struct SubrType* res = malloc(sizeof(struct SubrType));
 
 	res->returnType = return_type;
 	res->hasSideEffects = hasSideEffects;
@@ -26,9 +25,9 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 		printf("SubrType(...)\n");
 	}
 
-	struct SubrType* res = smalloc(sizeof(struct SubrType));
+	struct SubrType* res = malloc(sizeof(struct SubrType));
 
-	res->argumentTypes = smalloc(sizeof(struct Type*)*1);
+	res->argumentTypes = malloc(sizeof(struct Type*)*1);
 	res->count_argumentTypes = 0;
 
 	struct TokenList* copy = list_copy(tokens);

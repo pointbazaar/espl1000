@@ -6,7 +6,6 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
 #include "../commandline/Token.h"
-#include "../commandline/smalloc.h"
 
 struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 
@@ -14,7 +13,7 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 		printf("makeStructDecl(...)\n");
 	}
 
-	struct StructDecl* res = smalloc(sizeof(struct StructDecl));
+	struct StructDecl* res = malloc(sizeof(struct StructDecl));
 
 	//TODO
 	res->members = NULL;

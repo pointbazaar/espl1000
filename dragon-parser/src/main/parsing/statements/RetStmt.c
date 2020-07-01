@@ -5,7 +5,6 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../commandline/Token.h"
-#include "../../commandline/smalloc.h"
 #include "../Expr.h"
 
 struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
@@ -14,7 +13,7 @@ struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
 		printf("RetStmt(...)\n");
 	}
 
-	struct RetStmt* res = smalloc(sizeof(struct RetStmt));
+	struct RetStmt* res = malloc(sizeof(struct RetStmt));
 
 	struct TokenList* copy = makeTokenList(tokens);
 

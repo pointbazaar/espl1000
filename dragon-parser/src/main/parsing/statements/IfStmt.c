@@ -4,7 +4,6 @@
 #include "IfStmt.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../commandline/TokenList.h"
-#include "../../commandline/smalloc.h"
 #include "../Expr.h"
 #include "Stmt.h"
 
@@ -14,15 +13,15 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 		printf("IfStmt(...)\n"); 
 	}
 
-	struct IfStmt* res = smalloc(sizeof(struct IfStmt));
+	struct IfStmt* res = malloc(sizeof(struct IfStmt));
 	
 	res->condition = NULL;
 	
 	res->count_statements = 0;
-	res->statements 	= smalloc(sizeof(struct Stmt*)*1);
+	res->statements 	= malloc(sizeof(struct Stmt*)*1);
 
 	res->count_elseStatements = 0;
-	res->elseStatements = smalloc(sizeof(struct Stmt*)*1);
+	res->elseStatements = malloc(sizeof(struct Stmt*)*1);
 
 	struct TokenList* copy = makeTokenList(tokens);
 

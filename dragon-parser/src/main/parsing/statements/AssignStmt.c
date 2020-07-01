@@ -5,7 +5,6 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/Token.h"
 #include "../../commandline/TokenKeys.h"
-#include "../../commandline/smalloc.h"
 #include "../typenodes/Type.h"
 #include "../Variable.h"
 #include "../Expr.h"
@@ -16,7 +15,7 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens,bool debug) {
 		printf("AssignStmt(...)\n");
 	}
 
-	struct AssignStmt* res = smalloc(sizeof(struct AssignStmt));
+	struct AssignStmt* res = malloc(sizeof(struct AssignStmt));
 
 	res->optTypeNode = NULL;
 

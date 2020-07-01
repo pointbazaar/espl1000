@@ -8,7 +8,6 @@
 #include "../commandline/Token.h"
 #include "../commandline/TokenList.h"
 #include "Expr.h"
-#include "../commandline/smalloc.h"
 
 struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 
@@ -16,7 +15,7 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 		printf("SimpleVar(...) from %s\n", list_code(tokens));
 	}
 
-	struct SimpleVar* res = smalloc(sizeof(struct SimpleVar));
+	struct SimpleVar* res = malloc(sizeof(struct SimpleVar));
 
 	res->indexOptional = NULL;
 

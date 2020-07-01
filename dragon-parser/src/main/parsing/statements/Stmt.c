@@ -5,7 +5,6 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../commandline/Token.h"
-#include "../../commandline/smalloc.h"
 #include "WhileStmt.h"
 #include "IfStmt.h"
 #include "RetStmt.h"
@@ -18,7 +17,7 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 		printf("Stmt(...)\n");
 	}
 
-	struct Stmt* res = smalloc(sizeof(struct Stmt));
+	struct Stmt* res = malloc(sizeof(struct Stmt));
 
 	//init
 	res->m1 = NULL;

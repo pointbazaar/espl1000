@@ -5,13 +5,12 @@
 #include "BasicTypeWrapped.h"
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
-#include "../../commandline/smalloc.h"
 #include "SubrType.h"
 #include "SimpleType.h"
 
 struct BasicTypeWrapped* makeBasicTypeWrapped(struct SimpleType* typeNode) {
 
-	struct BasicTypeWrapped* res = smalloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
 
 	res->m1 = typeNode;
 	res->m2 = NULL;
@@ -21,7 +20,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped(struct SimpleType* typeNode) {
 
 struct BasicTypeWrapped* makeBasicTypeWrapped(struct SubrType* typeNode) {
 
-	struct BasicTypeWrapped* res = smalloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
 
 	res->m1 = NULL;
 	res->m2 = typeNode;
@@ -35,7 +34,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 		printf("BasicTypeWrapped(...)\n");
 	}
 
-	struct BasicTypeWrapped* res = smalloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
 
 	struct TokenList* copy = list_copy(tokens);
 
