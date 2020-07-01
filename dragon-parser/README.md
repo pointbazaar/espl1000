@@ -3,16 +3,10 @@
 # Dragon-Parser
 [![Build Status](https://travis-ci.org/pointbazaar/dragon-parser.svg?branch=master)](https://travis-ci.org/pointbazaar/dragon-parser)
 [![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/dragon-parser/badge)](https://www.codefactor.io/repository/github/pointbazaar/dragon-parser)
-[![](https://jitpack.io/v/pointbazaar/dragon-parser.svg)](https://jitpack.io/#pointbazaar/dragon-parser)
-[![Known Vulnerabilities](https://snyk.io/test/github/pointbazaar/dragon-parser/badge.svg)](https://snyk.io/test/github/pointbazaar/dragon-parser)
 [![GitHub license](https://img.shields.io/github/license/pointbazaar/dragon-parser.svg)](https://github.com/pointbazaar/dragon-parser/blob/master/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/pointbazaar/dragon-parser.svg)](https://GitHub.com/pointbazaar/dragon-parser/issues/)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/pointbazaar/dragon-parser.svg)](http://isitmaintained.com/project/pointbazaar/dragon-parser "Average time to resolve an issue")
-[![HitCount](http://hits.dwyl.io/pointbazaar/dragon-parser.svg)](http://hits.dwyl.io/pointbazaar/dragon-parser)
 [![Open Source Love png2](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/pointbazaar/dragon-parser/graphs/commit-activity)
 
-This is the parser for [dragon](https://github.com/pointbazaar/dragon), 
+This is the parser for [smalldragon](https://github.com/pointbazaar/smalldragon), 
 a simple, statically typed, compiled programming language.
 
 You can use it to build your own
