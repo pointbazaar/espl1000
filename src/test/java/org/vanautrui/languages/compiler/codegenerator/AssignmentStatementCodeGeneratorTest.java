@@ -20,7 +20,7 @@ public final class AssignmentStatementCodeGeneratorTest {
                 "} ";
 
         final Process pr =
-            compileAndRunProgramForTesting(source,"MainTest3943833",new String[0],false);
+            compileAndRunProgramForTesting(source,"MainTest3943833",new String[0],true);
 
         assertEquals(0,pr.exitValue());
         assertEquals("xxx",IOUtils.toString(pr.getInputStream()));

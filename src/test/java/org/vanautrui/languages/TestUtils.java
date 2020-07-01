@@ -152,7 +152,7 @@ public final class TestUtils {
 
         final AST_Whole_Program ast = DragonCompiler.parseASTFromJSONFiles(Arrays.asList(jsonFile),debug);
 
-        return CompilerPhases.phase_vm_codegeneration(ast,false,debug);
+        return CompilerPhases.phase_java_codegeneration(ast,false,debug);
     }
 
     private static void generateFromVMCodeAndWriteExecutable(
@@ -164,7 +164,7 @@ public final class TestUtils {
 
         //dracovm only accepts filenames as arguments
 
-        DragonCompiler.invokeJavaCompiler(vmcodes,debug, false);
+        DragonCompiler.invokeJavaCompiler(vmcodes,debug);
 
         //move our 'main' executable into the desired filename
         final String call = "mv main "+filename.toString();

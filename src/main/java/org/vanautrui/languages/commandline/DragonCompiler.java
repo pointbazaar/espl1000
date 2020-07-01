@@ -235,13 +235,13 @@ public final class DragonCompiler {
 			CompilerPhases.phase_simplify(ast,debug);
 
 			//PHASE CODE GENERATION, returns a list of paths where the files for the subroutines are
-			final List<Path> vm_code_files = CompilerPhases.phase_vm_codegeneration(ast, flags.contains(FLAG_PRINT_SYMBOLTABLES),debug);
+			final List<Path> vm_code_files = CompilerPhases.phase_java_codegeneration(ast, flags.contains(FLAG_PRINT_SYMBOLTABLES),debug);
 
 			//PHASE VM CODE COMPILATION, PHASE GENERATE EXECUTABLE
 			//this phase depends on 'dracovm'
 			//which can be obtained here: https://github.com/pointbazaar/dracovm-compiler
 			//for each subroutine in vm code, make a NAME.subroutine.dracovm file
-			invokeJavaCompiler(vm_code_files,debug, targetATMEL);
+			invokeJavaCompiler(vm_code_files,debug);
 
 			if(timed) {
 				final long end_time_ms = currentTimeMillis();
@@ -289,8 +289,7 @@ public final class DragonCompiler {
 
 	public static void invokeJavaCompiler(
 			final List<Path> vm_code_files,
-			final boolean debug,
-			final boolean targetATMEL
+			final boolean debug
 	) throws Exception {
 
 		//path should be e.g. .Main.subroutine.dracovm
