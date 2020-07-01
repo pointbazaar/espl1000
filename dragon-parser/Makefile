@@ -11,7 +11,7 @@ clean:
 dragon-parser: commandline parsing typenodes statements tests
 	$(COMPILER) $(FLAGS) -o dragon-parser *.o
 
-commandline: src/main/commandline/ASTWriter.c src/main/commandline/Token.c src/main/commandline/Parser.c src/main/commandline/TokenList.c src/main/commandline/TokenReader.c 
+commandline: src/main/commandline/*.c
 	$(COMPILER) $(FLAGS) -c src/main/commandline/*.c
 
 parsing: src/main/parsing/*.c

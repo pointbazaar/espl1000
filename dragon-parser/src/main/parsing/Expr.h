@@ -18,7 +18,7 @@ struct Expr {
 };
 
 //how many operators there are
-const int nops = 11;	
+#define nops 11
 
 //DragonExpressionNode should be similar to jack expression
 //an expression should be anything that returns a value or computes to a value

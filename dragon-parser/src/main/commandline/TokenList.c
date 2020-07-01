@@ -124,7 +124,7 @@ bool list_expect_internal(struct TokenList* list, struct Token* token) {
 		strcat(str,list_head(list)->value);
 		
 		strcat(str, " (");
-		
+
 		sprintf(buf, "%d", list_head(list)->kind);
 		strcat(str, buf);
 
@@ -144,7 +144,7 @@ bool list_expect(struct TokenList* list, int token_kind){
 	return list_expect_internal(list, makeToken(token_kind));
 }
 
-bool list_expect2(struct TokenList* list, int token_kind, char* token_value){
+bool list_expect_2(struct TokenList* list, int token_kind, char* token_value){
 	return list_expect_internal(list, makeToken2(token_kind, token_value));
 }
 
