@@ -44,10 +44,9 @@ You@Terminal:~$ ./main
 
 This Project will probably only work with Linux.
 
-0. install gcc, make, g++
-1. install nasm, ld, 
-2. install maven, openjdk >= 14
-3. try compiling some sample program
+0. install gcc, make 
+1. install maven, openjdk >= 14
+2. try compiling some sample program
 
 ## Simplicity
 
