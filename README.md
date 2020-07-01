@@ -3,7 +3,6 @@
 # The SmallDragon Programming Language (Work in Progress) 
 [![Build Status](https://travis-ci.org/pointbazaar/dragon.svg?branch=master)](https://travis-ci.org/pointbazaar/dragon)
 [![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/smalldragon/badge)](https://www.codefactor.io/repository/github/pointbazaar/dragon)
-[![Known Vulnerabilities](https://snyk.io/test/github/pointbazaar/dragon/badge.svg)](https://snyk.io/test/github/pointbazaar/dragon) 
 [![GitHub license](https://img.shields.io/github/license/pointbazaar/dragon.svg)](https://github.com/pointbazaar/dragon/blob/master/LICENSE)
 [![Open Source Love png2](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
  
