@@ -21,8 +21,10 @@ struct Token* recognizeToken(char* tkn, bool debug) {
 
 	char* ss = tkn;
     char* token;
-    while (getline(ss, token, ' ')) {
+    token = strtok(ss, " ");
+    while (token != NULL) {
         parts[partsc++] = token;
+        token = strtok(ss, " ");
     }
 	int tkn_id = atoi(parts[0]);
 	int line_no = 1;

@@ -85,7 +85,9 @@ void build_ast_file(char* tokensFile, char* astJsonFile, bool debug) {
 
 	//get just the namespace name from .FILENAME.dg.tokens
 	int l = strlen(".dg.tokens");
-	char* namespaceName = tokensFile.substr(1,strlen(tokensFile) - l);
+	int end = strlen(tokensFile) - l;
+	char* namespaceName = tokensFile + 1;
+	namespaceName[end] = '\0';
 
 	struct Namespace* mynamespace = makeNamespace(tokens,namespaceName,debug);
 
@@ -107,7 +109,8 @@ void main_inner(char* tokensFile, bool debug) {
 	//TODO: re-enable this check later
 	/*
 	if(!tokensFile.endsWith(".tokens")){
-		throw (tokensFile+" does not have .tokens extension. Exiting.");
+		printf(tokensFile+" does not have .tokens extension. Exiting.");
+		exit(1);
 	}
 	*/
 
@@ -115,7 +118,11 @@ void main_inner(char* tokensFile, bool debug) {
 
 	if(f != NULL) {
 		fclose(f);
-		char* AST_filename = tokensFile.substr(0,tokensFile.size()-strlen(".tokens"))+".ast";
+		char* AST_filename = malloc(sizeof(char)*100);
+		strcpy(AST_filename, tokensFile);
+		int l = strlen(tokensFile) - strlen(".tokens");
+		AST_filename[l] = '\0';
+		strcat(AST_filename, ".ast");
 
 		build_ast_file(tokensFile,AST_filename,debug);
 	}else {

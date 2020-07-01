@@ -17,8 +17,8 @@ struct BasicTypeWrapped {
 	struct SubrType* m2;
 };
 
-struct BasicTypeWrapped* makeBasicTypeWrapped(struct SimpleType* typeNode);
-struct BasicTypeWrapped* makeBasicTypeWrapped(struct SubrType* typeNode);
+struct BasicTypeWrapped* makeBasicTypeWrappedSimple(struct SimpleType* typeNode);
+struct BasicTypeWrapped* makeBasicTypeWrappedSubr(struct SubrType* typeNode);
 struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool debug);
 
 #endif

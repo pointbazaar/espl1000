@@ -8,7 +8,7 @@
 #include "SubrType.h"
 #include "SimpleType.h"
 
-struct BasicTypeWrapped* makeBasicTypeWrapped(struct SimpleType* typeNode) {
+struct BasicTypeWrapped* makeBasicTypeWrappedSimple(struct SimpleType* typeNode) {
 
 	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
 
@@ -18,7 +18,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped(struct SimpleType* typeNode) {
 	return res;
 }
 
-struct BasicTypeWrapped* makeBasicTypeWrapped(struct SubrType* typeNode) {
+struct BasicTypeWrapped* makeBasicTypeWrappedSubr(struct SubrType* typeNode) {
 
 	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
 

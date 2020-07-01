@@ -21,9 +21,10 @@ struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
 
 	if (token->kind == TPARAM) {
 		res->typeParameterIndex = atoi(token->value);
-		if(list_consume(tokens, 1) == NULL){
+		if(list_size(tokens) == 0){
 			return NULL;
 		}
+		list_consume(tokens, 1);
 	} else {
 		//("Error: could not read type parameter node");
 		return NULL;

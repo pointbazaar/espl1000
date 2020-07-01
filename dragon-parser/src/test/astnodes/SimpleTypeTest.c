@@ -12,7 +12,7 @@ int simpletype_test_typenode_parsing() {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(TYPEIDENTIFIER,"MyType") );
 
-	struct BasicTypeWrapped* node = makeBasicTypeWrapped(list);
+	struct BasicTypeWrapped* node = makeBasicTypeWrapped2(list, false);
 	bool assert1 = (0 == list_size(list));
 
 	return (assert1)?1:0;
@@ -24,7 +24,7 @@ int simpletype_test_typenode_parsing_fails() {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ID,"myIllegalType") );
 
-	struct BasicTypeWrapped* node = makeBasicTypeWrapped(list);
+	struct BasicTypeWrapped* node = makeBasicTypeWrapped2(list, false);
 	return (node!=NULL)?1:0;
 }
 

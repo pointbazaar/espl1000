@@ -176,7 +176,7 @@ struct Token* list_head(struct TokenList* list) {
 char* list_code(struct TokenList* list) {
 	//it should be a limited fragment 
 
-	char str[100];
+	char* str = malloc(sizeof(char)*100);
 	str[0]='\0';
 
 	int i=0;

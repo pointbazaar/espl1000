@@ -139,7 +139,7 @@ struct Expr* performTreeTransformation(
 			}
 		}
 
-		int indexOfOp = find(ops,opsc,opWithLargestPrecedence);
+		int indexOfOp = find((void**)ops,opsc,opWithLargestPrecedence);
 
 
 		struct Term* leftTerm = terms[indexOfOp];
@@ -150,19 +150,20 @@ struct Expr* performTreeTransformation(
 
 		//simplify
 		int i1;
-		i1 = find(terms,termsc,leftTerm);
+		i1 = find((void**)terms,termsc,leftTerm);
 		erase(terms,i1);
-		i1 = find(terms,termsc,rightTerm);
+		i1 = find((void**)terms,termsc,rightTerm);
+		
 		erase(terms,i1);
 
-		const int i2 = find(ops,opsc,opWithLargestPrecedence);
+		const int i2 = find((void**)ops,opsc,opWithLargestPrecedence);
 		erase(ops,i2);
 
 		//insert newly created expression
 		struct Term* ttmp = makeTerm_other(expr);
 		if(ttmp == NULL){ return NULL; }
 
-		list_insert(terms, indexOfOp,ttmp);
+		list_insert(terms, indexOfOp, ttmp);
 	}
 
 	//now only 2 terms left

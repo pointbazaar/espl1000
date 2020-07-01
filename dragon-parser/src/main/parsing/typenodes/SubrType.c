@@ -8,7 +8,7 @@
 #include "../../commandline/Token.h"
 #include "../../commandline/TokenKeys.h"
 
-struct SubrType* makeSubrType(struct Type* return_type, bool hasSideEffects){
+struct SubrType* makeSubrType2(struct Type* return_type, bool hasSideEffects){
 	
 	struct SubrType* res = malloc(sizeof(struct SubrType));
 
