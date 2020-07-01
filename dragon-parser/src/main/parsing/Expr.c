@@ -151,19 +151,28 @@ struct Expr* performTreeTransformation(
 		//simplify
 		int i1;
 		i1 = find((void**)terms,termsc,leftTerm);
-		erase(terms,i1);
+		
+		terms = (struct Term**)erase((void**)terms,i1, termsc);
+		termsc--;
+
 		i1 = find((void**)terms,termsc,rightTerm);
 		
-		erase(terms,i1);
+		terms = (struct Term**)erase((void**)terms,i1, termsc);
+		termsc--;
 
 		const int i2 = find((void**)ops,opsc,opWithLargestPrecedence);
-		erase(ops,i2);
+		ops = (struct Op**)erase((void**)ops,i2,opsc);
+		opsc--;
 
 		//insert newly created expression
 		struct Term* ttmp = makeTerm_other(expr);
 		if(ttmp == NULL){ return NULL; }
 
-		list_insert(terms, indexOfOp, ttmp);
+		//list_insert occurs here only once,
+		//so i do not implement special function
+		//list_insert(terms, indexOfOp, ttmp);
+		terms = (struct Term**)insert((void**)terms, indexOfOp, (void*)ttmp, termsc);
+		termsc++; //because we inserted
 	}
 
 	//now only 2 terms left
@@ -175,5 +184,35 @@ struct Expr* performTreeTransformation(
 		res->term2 = terms[1];
 	}
 
+	return res;
+}
+
+void** insert(void** arr, int index, void* element, int size_before){
+	//insert 'element' into 'arr' at index 'index'
+	void** res = malloc(sizeof(void*)*(size_before+1));
+
+	for(int i=0;i<size_before+1;i++){
+		if(i < index){
+			res[i] = arr[i];
+		}else if(i == index){
+			res[i] = element;
+		}else{
+			res[i] = arr[i-1];
+		}
+	}
+	return res;
+}
+
+void** erase(void** arr, int index, int size_before){
+	//erase the element at 'index'
+	void** res = malloc(sizeof(void*)*(size_before-1));
+
+	int i1 = 0;
+	for(int i=0;i<size_before-1;i++){
+		if(i1 == index){
+			i1++;
+		}
+		res[i] = arr[i1++];
+	}
 	return res;
 }

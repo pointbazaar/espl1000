@@ -36,4 +36,8 @@ int find(void** arr, int size, void* element);
 
 int prec_index(char* op);
 
+void** insert(void** arr, int index, void* element, int size_before);
+
+void** erase(void** arr, int index, int size_before);
+
 #endif
