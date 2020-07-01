@@ -14,9 +14,12 @@ struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 	}
 
 	struct Identifier* res = malloc(sizeof(struct Identifier));
+	if(res == NULL){return NULL;}
 
-	struct Token* token = list_get(tokens, 0);
-	if(token == NULL){return NULL;}
+	if(list_size(tokens) == 0){
+		return NULL;
+	}
+	struct Token* token = list_head(tokens);
 
 	if (token->kind == ID) {
 		res->identifier = token->value;

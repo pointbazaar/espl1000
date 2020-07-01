@@ -195,11 +195,6 @@ void list_set(struct TokenList* list, struct TokenList* copy) {
 }
 
 struct Token* list_get(struct TokenList* list, int i) {
-	if(list_size(list) <= i){
-		//"not enough tokens.";
-		printf("not enough tokens in the list\n");
-		return NULL;
-	}
 	return list->tokens[i];
 }
 

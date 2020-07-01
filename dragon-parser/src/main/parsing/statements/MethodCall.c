@@ -16,6 +16,7 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 	}
 
 	struct MethodCall* res = malloc(sizeof(struct MethodCall));
+	if(res==NULL){return NULL;}
 
 	res->args = malloc(sizeof(struct Expr*)*1);
 
@@ -23,13 +24,15 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 
 	struct TokenList* copy = list_copy(tokens);
 
-	res->methodName = makeIdentifier(copy,debug)->identifier;
-	if(res->methodName == NULL){return NULL;}
+	struct Identifier* id = makeIdentifier(copy,debug);
+	if(id == NULL){return NULL;}
+
+	res->methodName = id->identifier;
 
 	if(!list_expect(copy, LPARENS)){return NULL;}
 
-	struct Token* next = list_get(copy, 0);
-	if(next == NULL){return NULL;}
+	if(list_size(copy) == 0){return NULL;}
+	struct Token* next = list_head(copy);
 
 	bool found = false;
 	while (next->kind != RPARENS) {
