@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/pointbazaar/dragon-lexer/master/img/dragon-logo.png)
+<img src="https://raw.githubusercontent.com/pointbazaar/dragon-lexer/master/img/dragon-logo.svg" width="100" height="100"/>
 
 # Dragon-Parser
 [![Build Status](https://travis-ci.org/pointbazaar/dragon-parser.svg?branch=master)](https://travis-ci.org/pointbazaar/dragon-parser)
