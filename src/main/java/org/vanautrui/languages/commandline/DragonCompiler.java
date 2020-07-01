@@ -241,7 +241,7 @@ public final class DragonCompiler {
 			//this phase depends on 'dracovm'
 			//which can be obtained here: https://github.com/pointbazaar/dracovm-compiler
 			//for each subroutine in vm code, make a NAME.subroutine.dracovm file
-			invokeDracoVMCompiler(vm_code_files,debug, targetATMEL);
+			invokeJavaCompiler(vm_code_files,debug, targetATMEL);
 
 			if(timed) {
 				final long end_time_ms = currentTimeMillis();
@@ -287,7 +287,7 @@ public final class DragonCompiler {
 		}
 	}
 
-	public static void invokeDracoVMCompiler(
+	public static void invokeJavaCompiler(
 			final List<Path> vm_code_files,
 			final boolean debug,
 			final boolean targetATMEL
@@ -296,7 +296,7 @@ public final class DragonCompiler {
 		//path should be e.g. .Main.subroutine.dracovm
 
 		final String call =
-				((debug)?"dracovm-debug":"dracovm")+" "+(targetATMEL?" -targetATMEL ":"  ")
+				"javac "
 				+vm_code_files
 				.stream()
 				.map(Path::toString)
@@ -317,7 +317,7 @@ public final class DragonCompiler {
 		}
 
 		if(process.exitValue() != 0 ){
-			throw new Exception("dracovm exited with nonzero exit value.");
+			throw new Exception("javac exited with nonzero exit value.");
 		}else{
 			if(debug) {
 				out.println("... exit successfully");
@@ -366,9 +366,7 @@ public final class DragonCompiler {
 
 		mapper.registerModule(new Jdk8Module());
 
-		final NamespaceNode namespaceNode = mapper.readValue(astJSON,NamespaceNode.class);
-
-		return namespaceNode;
+		return mapper.readValue(astJSON,NamespaceNode.class);
 	}
 
 	public static AST_Whole_Program parseASTFromJSONFiles(final List<File> jsonFiles, final boolean debug) throws Exception {

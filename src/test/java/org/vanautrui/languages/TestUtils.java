@@ -87,7 +87,7 @@ public final class TestUtils {
         }
 
         //should create the .dracovm files for it
-        final List<Path> vmcodes = generateVMCodeFromDragonCode(sourceCode, debug, filename.toFile());
+        final List<Path> vmcodes = generateJavaCodeFromDragonCode(sourceCode, debug, filename.toFile());
 
         //should create the executable and run it
         final Process pr = compile_and_run_vm_codes(
@@ -108,7 +108,7 @@ public final class TestUtils {
         final Path filename_without_extns = Paths.get(filename_without_extension);
 
         //generate the vm code
-        final List<Path> paths = generateVMCodeFromDragonCode(dragon_source, false, Paths.get(filename_without_extension+".dg").toFile());
+        final List<Path> paths = generateJavaCodeFromDragonCode(dragon_source, false, Paths.get(filename_without_extension+".dg").toFile());
 
         //generate the executable
         generateFromVMCodeAndWriteExecutable(paths,filename_without_extns,debug);
@@ -119,7 +119,7 @@ public final class TestUtils {
     }
 
 
-    private static List<Path> generateVMCodeFromDragonCode(
+    private static List<Path> generateJavaCodeFromDragonCode(
             final String source,
             final boolean debug,
             final File filename
@@ -164,8 +164,7 @@ public final class TestUtils {
 
         //dracovm only accepts filenames as arguments
 
-        DragonCompiler.invokeDracoVMCompiler(vmcodes,debug, false);
-
+        DragonCompiler.invokeJavaCompiler(vmcodes,debug, false);
 
         //move our 'main' executable into the desired filename
         final String call = "mv main "+filename.toString();

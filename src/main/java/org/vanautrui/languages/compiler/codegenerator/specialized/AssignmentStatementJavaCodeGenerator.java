@@ -1,4 +1,4 @@
-package org.vanautrui.languages.compiler.vmcodegenerator.specialized;
+package org.vanautrui.languages.compiler.codegenerator.specialized;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.VariableNode;
@@ -13,9 +13,9 @@ import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.ExpressionDracoVMCodeGenerator.genDracoVMCodeForExpression;
+import static org.vanautrui.languages.compiler.codegenerator.specialized.ExpressionJavaCodeGenerator.genDracoVMCodeForExpression;
 
-final class AssignmentStatementDracoVMCodeGenerator {
+final class AssignmentStatementJavaCodeGenerator {
 
     /**
      * @param assignStmt the AssignmentStatementNode being compiled
@@ -78,7 +78,7 @@ final class AssignmentStatementDracoVMCodeGenerator {
 
         if (varNode.simpleVariableNode.indexOptional.isPresent()) {
             //it is an array and we should read from the index
-            vm.addAll(genDracoVMCodeForExpression(varNode.simpleVariableNode.indexOptional.get(), ctx));
+            vm.add(genDracoVMCodeForExpression(varNode.simpleVariableNode.indexOptional.get(), ctx));
             vm.add("arrayread");
         }
 
@@ -100,7 +100,7 @@ final class AssignmentStatementDracoVMCodeGenerator {
 
             if(varNode.memberAccessList.get(i).simpleVariableNode.indexOptional.isPresent()){
                 final ExpressionNode indexIntoMemberExpr = varNode.memberAccessList.get(i).simpleVariableNode.indexOptional.get();
-                vm.addAll(genDracoVMCodeForExpression(indexIntoMemberExpr, ctx));
+                vm.add(genDracoVMCodeForExpression(indexIntoMemberExpr, ctx));
                 vm.add("arrayread");
 
                 //unwrap our previous type, as we have indexed into it
@@ -144,7 +144,7 @@ final class AssignmentStatementDracoVMCodeGenerator {
             vm.add("iconst "+indexOfMember);
         }
 
-        vm.addAll(genDracoVMCodeForExpression(expr, ctx));
+        vm.add(genDracoVMCodeForExpression(expr, ctx));
         vm.add("arraystore");
 
         return vm;
@@ -173,14 +173,14 @@ final class AssignmentStatementDracoVMCodeGenerator {
             vm.add("push "+segment+" "+index);
 
             //push the index
-            vm.addAll(genDracoVMCodeForExpression(varNode.indexOptional.get(), ctx));
+            vm.add(genDracoVMCodeForExpression(varNode.indexOptional.get(), ctx));
 
             //push the value we want to store
-            vm.addAll(genDracoVMCodeForExpression(expr, ctx));
+            vm.add(genDracoVMCodeForExpression(expr, ctx));
 
             vm.add("arraystore");
         }else {
-            vm.addAll(genDracoVMCodeForExpression(expr, ctx));
+            vm.add(genDracoVMCodeForExpression(expr, ctx));
             //then we just pop that value into the appropriate segment with the specified index
             vm.add("pop "+segment+" "+index);
         }

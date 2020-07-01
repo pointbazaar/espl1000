@@ -6,7 +6,7 @@ import org.vanautrui.languages.compiler.simplify.Simplifier;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.typechecking.TypeChecker;
-import org.vanautrui.languages.compiler.vmcodegenerator.DracoVMCodeGenerator;
+import org.vanautrui.languages.compiler.codegenerator.JavaCodeGenerator;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,7 +52,7 @@ public final class CompilerPhases {
 
         final SubroutineSymbolTable subTable = createSubroutineSymbolTable(ast,debug);
         final StructsSymbolTable structsTable = createStructsSymbolTable(ast,debug);
-        final Map<String,List<String>> dracoVMCodes = DracoVMCodeGenerator.generateDracoVMCode(ast, subTable,structsTable,debug,printsymboltables);
+        final Map<String,List<String>> dracoVMCodes = JavaCodeGenerator.generateJavaCode(ast, subTable,structsTable,debug,printsymboltables);
 
         final List<Path> paths = new ArrayList<>();
 

@@ -1,4 +1,4 @@
-package org.vanautrui.languages.compiler.vmcodegenerator;
+package org.vanautrui.languages.compiler.codegenerator;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;

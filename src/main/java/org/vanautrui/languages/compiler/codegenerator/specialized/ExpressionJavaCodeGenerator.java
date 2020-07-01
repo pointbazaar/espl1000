@@ -1,4 +1,4 @@
-package org.vanautrui.languages.compiler.vmcodegenerator.specialized;
+package org.vanautrui.languages.compiler.codegenerator.specialized;
 
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
@@ -10,13 +10,14 @@ import org.vanautrui.languages.compiler.typeresolution.TypeResolver;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.OperatorDracoVMCodeGenerator.genDracoVMCodeForOp;
-import static org.vanautrui.languages.compiler.vmcodegenerator.specialized.TermDracoVMCodeGenerator.genDracoVMCodeForTerm;
+import static org.vanautrui.languages.compiler.codegenerator.specialized.OperatorJavaCodeGenerator.genJavaCodeForOp;
+import static org.vanautrui.languages.compiler.codegenerator.specialized.TermJavaCodeGenerator.genJavaCodeForTerm;
 
-public final class ExpressionDracoVMCodeGenerator {
+public final class ExpressionJavaCodeGenerator {
 
-    public static List<String> genDracoVMCodeForExpression(
+    public static String genDracoVMCodeForExpression(
             final ExpressionNode expr,
             final SymbolTableContext ctx
     ) throws Exception {
@@ -27,19 +28,19 @@ public final class ExpressionDracoVMCodeGenerator {
 
         final List<String> vm=new ArrayList<>();
 
-        vm.addAll(genDracoVMCodeForTerm(expr.term1, ctx));
+        vm.addAll(genJavaCodeForTerm(expr.term1, ctx));
 
         if(expr.term2.isPresent()){
 
-            vm.addAll(genDracoVMCodeForTerm(expr.term2.get(),ctx));
+            vm.addAll(genJavaCodeForTerm(expr.term2.get(),ctx));
 
             final TypeNode type = TypeResolver.getTypeTermNode(expr.term2.get(), ctx);
 
             final boolean hasFloatOperands = type.getTypeName().equals("Float");
             final boolean hasBoolOperands = type.getTypeName().equals("Bool");
-            vm.addAll(genDracoVMCodeForOp(expr.op.get(),hasFloatOperands,hasBoolOperands));
+            vm.addAll(genJavaCodeForOp(expr.op.get(),hasFloatOperands,hasBoolOperands));
         }
 
-        return vm;
+        return vm.stream().collect(Collectors.joining(" "));
     }
 }
