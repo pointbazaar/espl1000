@@ -68,7 +68,7 @@ bool list_endsWith(struct TokenList* list, struct Token* token) {
 }
 
 char* wrap(char* s, char* wrap) {
-	char res[strlen(s)+2*strlen(wrap)];
+	char* res = malloc(sizeof(char)*strlen(s)+2*strlen(wrap));
 	sprintf(res,"%s%s%s",wrap,s,wrap);
 	return res;
 }
@@ -104,20 +104,30 @@ bool list_expect_internal(struct TokenList* list, struct Token* token) {
 			//strcat(str,reset);
 		}
 		strcat(str,":");
-		strcat(str,list_head(list)->lineNumber);
-		strcat(str,": expected: ");
+
+		char buf[10];
+		sprintf(buf, "%d", list_head(list)->lineNumber);
+
+		strcat(str, buf);
+		strcat(str, ": expected: ");
 		
 		strcat(str,token->value);
 		
 		strcat(str," (");
-		strcat(str,token->kind);
+
+		sprintf(buf, "%d", token->kind);
+		strcat(str, buf);
+
 		strcat(str,")");
 
 		strcat(str,"\t actual: ");
 		strcat(str,list_head(list)->value);
 		
 		strcat(str, " (");
-		strcat(str,list_head(list)->kind);
+		
+		sprintf(buf, "%d", list_head(list)->kind);
+		strcat(str, buf);
+
 		strcat(str,")");
 		strcat(str,"     ");
 		strcat(str,list_code(list));
@@ -193,7 +203,9 @@ char* list_code(struct TokenList* list) {
 	while(i < list_size(list)){
 		struct Token* tk = list->tokens[i];
 		if(i++ < 10){
-			strcat(str,tk->kind);
+			char buf[10];
+			sprintf(buf, "%d", tk->kind);
+			strcat(str, buf);
 			strcat(str,",");
 		}
 	}

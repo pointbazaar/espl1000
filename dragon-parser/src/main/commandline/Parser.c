@@ -159,7 +159,8 @@ struct TokenList* readTokensFromTokensFile(char* tokensFile, bool debug){
 	struct TokenList* tks = makeTokenList(tokensFile);
 	FILE* file = fopen(tokensFile,"r");
     char* str; 
-    while (getline(str, 1000, file)){
+    size_t size = 1000;
+    while (getline(&str, &size, file)){
 
 		struct Token* tkn = recognizeToken(str, debug);
     	if(tkn != NULL){
