@@ -2,7 +2,7 @@ This file documents the Software Architecture of Dragon
 
 -------------------------------------------------------------------
 
-Dragon has 4 Components:
+SmallDragon has 3 Components:
 ___________________________________________________________________
 |- dragon-lexer : a lexer which produces .tokens files.
 |  it is written in C because the project is simple and C offers
@@ -13,13 +13,8 @@ ___________________________________________________________________
 |  in a .json file. It is written in C++.
 |  
 |- dragon : a compiler which reads multiple .json AST's and produces
-|  .subroutine.dracovm files. It is written in Java. Java is not the
+|  .java files. It is written in Java. Java is not the
 |  ideal choice here, but a rewrite would take too much time.
-|  
-|- dracovm-compiler : a VM compiler which can produce assembly code
-|  for a target architecture (e.g. x86). It consumes .subroutine.dracovm
-|  files and it is written in C++,
-|  because it offers better speed than Java and also has Objects.
 |___________________________________________________________________
 
 
@@ -32,5 +27,3 @@ For example, the lexer can be used independently
 to create syntax highlighting. The .json representation provided 
 by the parser can be used to help an IDE generate good Autocomplete and
 show useful syntax errors.
-
-The VM Compiler can even be used by other languages as a target.
