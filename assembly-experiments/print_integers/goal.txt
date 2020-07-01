@@ -1,9 +1,0 @@
-goal is to create a subroutine to print
-a 32 bit integer to stdout.
-
-dragon (at time of writing) only has a builtin
-'putchar' subroutine and a 'putdigit' subroutine, the printing of integers
-is implemented in the stdlib.
-
-we want to change it by implementing 'puti' in assembly,
-then removing 'putdigit'
