@@ -13,9 +13,9 @@ int assignstmt_test1() {
 
 	struct TokenList* tokens = makeTokenList();
 
-	list_add(tokens, makeToken(ID,"x"));
-	list_add(tokens, makeToken(OPKEY,"="));
-	list_add(tokens, makeToken(INTEGER,"4"));
+	list_add(tokens, makeToken2(ID,"x"));
+	list_add(tokens, makeToken2(OPKEY,"="));
+	list_add(tokens, makeToken2(INTEGER,"4"));
 	list_add(tokens, SEMICOLON);
 
 	struct AssignStmt* a = makeAssignStmt(tokens,false);
@@ -27,14 +27,14 @@ int assignstmt_test_assign_method_call_result() {
 
 	struct TokenList* tokens = makeTokenList();
 
-	list_add(tokens, makeToken(ID,"x"));
-	list_add(tokens, makeToken(OPKEY,"="));
+	list_add(tokens, makeToken2(ID,"x"));
+	list_add(tokens, makeToken2(OPKEY,"="));
 
 	//nop refers to the no operation method. it does nothing with its argument
-	list_add(tokens, makeToken(ID,"nop"));
+	list_add(tokens, makeToken2(ID,"nop"));
 
 	list_add(tokens, LPARENS);
-	list_add(tokens, makeToken(INTEGER,"4"));
+	list_add(tokens, makeToken2(INTEGER,"4"));
 	list_add(tokens, RPARENS);
 
 	list_add(tokens, SEMICOLON);
@@ -48,11 +48,11 @@ int assignstmt_test_assign_method_call_result_2() {
 
 	struct TokenList* tokens = makeTokenList();
 
-	list_add(tokens, makeToken(ID,"x"));
-	list_add(tokens, makeToken(OPKEY,"="));
+	list_add(tokens, makeToken2(ID,"x"));
+	list_add(tokens, makeToken2(OPKEY,"="));
 
 	//nop refers to the no operation method. it does nothing with its argument
-	list_add(tokens, makeToken(ID,"nop"));
+	list_add(tokens, makeToken2(ID,"nop"));
 
 	list_add(tokens, LPARENS);
 	list_add(tokens, RPARENS);
@@ -68,14 +68,14 @@ int assignstmt_test_assign_variable_with_array_index() {
 
 	struct TokenList* tokens = makeTokenList();
 
-	list_add(tokens, makeToken(ID,"x"));
-	list_add(tokens, makeToken(OPKEY,"="));
+	list_add(tokens, makeToken2(ID,"x"));
+	list_add(tokens, makeToken2(OPKEY,"="));
 
 	//nop refers to the no operation method. it does nothing with its argument
-	list_add(tokens, makeToken(ID,"arr"));
+	list_add(tokens, makeToken2(ID,"arr"));
 
 	list_add(tokens, LBRACKET);
-	list_add(tokens, makeToken(INTEGER,"4"));
+	list_add(tokens, makeToken2(INTEGER,"4"));
 	list_add(tokens, RBRACKET);
 
 	list_add(tokens, SEMICOLON);
@@ -89,10 +89,10 @@ int assignstmt_test_assign_char() {
 
 	struct TokenList* tokens = makeTokenList();
 
-	list_add(tokens, makeToken(ID,"x"));
-	list_add(tokens, makeToken(OPKEY,"="));
+	list_add(tokens, makeToken2(ID,"x"));
+	list_add(tokens, makeToken2(OPKEY,"="));
 
-	list_add(tokens, makeToken(CCONST,"x"));
+	list_add(tokens, makeToken2(CCONST,"x"));
 
 	list_add(tokens, SEMICOLON);
 
@@ -106,11 +106,11 @@ int assignstmt_test_can_assign_to_struct_member() {
 
 	struct TokenList* tokens = makeTokenList();
 
-	list_add(tokens, makeToken(ID,"x"));
+	list_add(tokens, makeToken2(ID,"x"));
 	list_add(tokens, STRUCTMEMBERACCESS);
-	list_add(tokens, makeToken(ID,"a"));
-	list_add(tokens, makeToken(OPKEY,"="));
-	list_add(tokens, makeToken(INTEGER,"3"));
+	list_add(tokens, makeToken2(ID,"a"));
+	list_add(tokens, makeToken2(OPKEY,"="));
+	list_add(tokens, makeToken2(INTEGER,"3"));
 	list_add(tokens, SEMICOLON);
 
 	struct AssignStmt* a = makeAssignStmt(tokens,false);
@@ -121,10 +121,10 @@ int assignstmt_test_can_assign_to_struct_member() {
 int assignstmt_test_type_declaration_for_variable() {
 
 	struct TokenList* tokens = makeTokenList();
-	list_add(tokens, makeToken(TYPEIDENTIFIER,"PInt"));
-	list_add(tokens, makeToken(ID,"x"));
-	list_add(tokens, makeToken(OPKEY,"="));
-	list_add(tokens, makeToken(INTEGER,"3"));
+	list_add(tokens, makeToken2(TYPEIDENTIFIER,"PInt"));
+	list_add(tokens, makeToken2(ID,"x"));
+	list_add(tokens, makeToken2(OPKEY,"="));
+	list_add(tokens, makeToken2(INTEGER,"3"));
 	list_add(tokens, SEMICOLON);
 
 	struct AssignStmt* a = makeAssignStmt(tokens,false);

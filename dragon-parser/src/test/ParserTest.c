@@ -24,7 +24,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stbool.h>
+#include <stdbool.h>
 
 void test_all(bool debug){
 	

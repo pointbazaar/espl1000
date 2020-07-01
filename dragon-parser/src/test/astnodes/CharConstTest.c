@@ -8,7 +8,7 @@
 
 int charconst_test_parse_char_constant_node() {
 	struct TokenList* list = makeTokenList();
-	list_add(list, makeToken(CCONST,"h"));
+	list_add(list, makeToken2(CCONST,"h"));
 
 	struct CharConst* node = makeCharConst(list,false);
 	bool assert1 = ('h'== node->content);
@@ -19,7 +19,7 @@ int charconst_test_parse_char_constant_node() {
 int charconst_test_parse_char_constant_node_newline() {
 
 	struct TokenList* list = makeTokenList();
-	list_add(list, makeToken(CCONST,"\n"));
+	list_add(list, makeToken2(CCONST,"\n"));
 
 	struct CharConst* node = makeCharConst(list,false);
 	bool assert1 = ('\n' == node->content);

@@ -34,7 +34,7 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 
 	while (next->kind != RCURLY) {
 
-		res->statements[res->count_statements] = makeStmt(&copy,debug);
+		res->statements[res->count_statements] = makeStmt(copy,debug);
 		res->count_statements++;
 		int newsize = res->count_statements;
 		res->statements = realloc(res->statements, sizeof(struct Stmt*) * newsize);

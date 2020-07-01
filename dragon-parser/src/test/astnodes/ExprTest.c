@@ -13,8 +13,8 @@ int expr_test_simple_expression(bool debug) {
 		printf("expr_test_simple_expression(...)\n");
 	}
 
-	struct TokenList* list = new TokenList();
-	list_add(list, INTEGER,"4");
+	struct TokenList* list = makeTokenList();
+	list_add(list, makeToken2(INTEGER,"4"));
 	struct Expr* expr = makeExpr(list,debug);
 
 	return (expr!=NULL)?1:0;
@@ -26,9 +26,9 @@ int expr_test_variable_name_expression(bool debug) {
 		printf("expr_test_variable_name_expression(...)\n");
 	}
 
-	struct TokenList* list = new TokenList();
+	struct TokenList* list = makeTokenList();
 
-	list_add(list, makeToken(ID,"x"));
+	list_add(list, makeToken2(ID,"x"));
 	struct Expr* expr = makeExpr(list,debug);
 	return (expr!=NULL)?1:0;
 }
@@ -39,11 +39,11 @@ int expr_recognize_2_op_expr(bool debug) {
 		printf("expr_recognize_2_op_expr(...)\n");
 	}
 
-	struct TokenList* tokens = new TokenList();
+	struct TokenList* tokens = makeTokenList();
 
-	list_add(tokens, makeToken(INTEGER,"1"));
-	list_add(tokens, makeToken(OPKEY,"+"));
-	list_add(tokens, makeToken(INTEGER,"2"));
+	list_add(tokens, makeToken2(INTEGER,"1"));
+	list_add(tokens, makeToken2(OPKEY,"+"));
+	list_add(tokens, makeToken2(INTEGER,"2"));
 
 	struct Expr* expr = makeExpr(tokens,debug);
 	return (expr!=NULL)?1:0;

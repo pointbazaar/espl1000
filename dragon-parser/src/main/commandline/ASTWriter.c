@@ -3,46 +3,46 @@
 
 #include "ASTWriter.h"
 
-void write(struct Namespace* nsn, FILE* file){
+void writeNamespace(struct Namespace* nsn, FILE* file){
 	fprintf(file,"%s\t%s\t%d\t",nsn->srcPath,nsn->name,nsn->count_methods);
 	
 	for(int i=0;i < nsn->count_methods;i++){ 
 		struct Method* m = nsn->methods[i];
-		write(m,file);
+		writeMethod(m,file);
 	}
 }
-void write(struct Method* m, FILE* file){
+void writeMethod(struct Method* m, FILE* file){
 	fprintf(file,"%d\t%d\t%s\t",m->isPublic,m->hasSideEffects,m->methodName);
-	write(m->returnType,file);
+	writeType(m->returnType,file);
 
 	fprintf(file,"%d\t",m->count_arguments);
 	for(int i = 0;i < m->count_arguments;i++){ 
 		struct DeclArg* arg = m->arguments[i];
-		write(arg,file); 
+		writeDeclArg(arg,file); 
 	}
 
 	fprintf(file,"%d\t",m->count_statements);
 	for(int i = 0;i < m->count_statements;i++){ 
 		struct Stmt* s = m->statements[i];
-		write(s,file); 
+		writeStmt(s,file); 
 	}
 }
-void write(struct DeclArg* m, FILE* file){
-	write(m->type,file);
+void writeDeclArg(struct DeclArg* m, FILE* file){
+	writeType(m->type,file);
 	if(m->name != NULL){
 		fprintf(file,"%s\t",m->name);
 	}else{
 		fprintf(file,"NULL\t");
 	}
 }
-void write(struct Variable* m, FILE* file){
+void writeVariable(struct Variable* m, FILE* file){
 	write(m->simpleVariableNode,file);
 	for(int i = 0;i < m->count_memberAccessList;i++){ 
 		struct Variable* v = m->memberAccessList[i];
-		write(v,file); 
+		writeSimpleVar(v,file); 
 	}
 }
-void write(struct SimpleVar* m, FILE* file){
+void writeSimpleVar(struct SimpleVar* m, FILE* file){
 	fprintf(file,"%s\t",m->name);
 	if(m->indexOptional != NULL){
 		write(m->indexOptional,file);
@@ -50,16 +50,16 @@ void write(struct SimpleVar* m, FILE* file){
 		fprintf(file,"NULL\t");
 	}
 }
-void write(struct Expr* m, FILE* file){
+void writeExpr(struct Expr* m, FILE* file){
 	write(m->term1,file);
 	if(m->op != NULL){
-		write(m->op,file);
-		write(m->term2,file);
+		writeOp(m->op,file);
+		writeTerm(m->term2,file);
 	}else{
 		fprintf(file,"NULL\t");
 	}
 }
-void write(struct Term* m, FILE* file){
+void writeTerm(struct Term* m, FILE* file){
 	if(m->m1 != NULL){ fprintf(file,"1\t"); write(m->m1,file); }
 	if(m->m2 != NULL){ fprintf(file,"2\t"); write(m->m2,file); }
 	if(m->m3 != NULL){ fprintf(file,"3\t"); write(m->m3,file); }
@@ -67,20 +67,20 @@ void write(struct Term* m, FILE* file){
 	if(m->m5 != NULL){ fprintf(file,"5\t"); write(m->m5,file); }
 	if(m->m6 != NULL){ fprintf(file,"6\t"); write(m->m6,file); }
 }
-void write(struct BoolConst* m, FILE* file){
+void writeBoolConst(struct BoolConst* m, FILE* file){
 	fprintf(file,"%d\t",m->value);
 }
-void write(struct IntConst* m, FILE* file){
+void writeIntConst(struct IntConst* m, FILE* file){
 	fprintf(file,"%d\t",m->value);
 }
-void write(struct CharConst* m, FILE* file){
+void writeCharConst(struct CharConst* m, FILE* file){
 	fprintf(file,"%s\t",m->content);
 }
-void write(struct Op* m, FILE* file){
-	fprintf(file,,"%s\t",m->op);
+void writeOp(struct Op* m, FILE* file){
+	fprintf(file,"%s\t",m->op);
 }
 // ---------------- STATEMENTNODES ---------------------
-void write(struct Stmt* m, FILE* file){
+void writeStmt(struct Stmt* m, FILE* file){
 	//the reader has to know which type it is,
 	//we can print a small number
 	if(m->m1 != NULL){ fprintf(file,"1\t"); write(m->m1,file); }
@@ -90,51 +90,51 @@ void write(struct Stmt* m, FILE* file){
 	if(m->m5 != NULL){ fprintf(file,"5\t"); write(m->m5,file); }
 }
 
-void write(struct IfStmt* m, FILE* file){
-	write(m->condition,file);
+void writeIfStmt(struct IfStmt* m, FILE* file){
+	writeExpr(m->condition,file);
 	for(int i = 0;i < m->count_statements;i++){ 
 		struct Stmt* s = m->statements[i];
-		write(s,file); 
+		writeStmt(s,file); 
 	}
 
 	for(int i = 0;i < m->count_elseStatements;i++){ 
 		struct Stmt* s2 = m->elseStatements[i];
-		write(s2,file); 
+		writeStmt(s2,file); 
 	}
 }
 
-void write(struct WhileStmt* m, FILE* file){
+void writeWhileStmt(struct WhileStmt* m, FILE* file){
 
-	write(m->condition,file);
+	writeExpr(m->condition,file);
 
 	for(int i = 0;i < (m->count_statements);i++){ 
 		struct Stmt* s = m->statements[i];
-		write(s,file); 
+		writeStmt(s,file); 
 	}
 }
 
-void write(struct RetStmt* m, FILE* file){
-	write(m->returnValue,file);
+void writeRetStmt(struct RetStmt* m, FILE* file){
+	writeExpr(m->returnValue,file);
 }
 
-void write(struct AssignStmt* m, FILE* file){
+void writeAssignStmt(struct AssignStmt* m, FILE* file){
 	if(m->optTypeNode != NULL){
-		write(m->optTypeNode,file);
+		writeType(m->optTypeNode,file);
 	}else{
 		fprintf(file,"NULL\t");
 	}
-	write(m->variableNode,file);
-	write(m->expressionNode,file);
+	writeVariable(m->variableNode,file);
+	writeExpr(m->expressionNode,file);
 }
-void write(struct MethodCall* m, FILE* file){
+void writeMethodCall(struct MethodCall* m, FILE* file){
 	fprintf(file,"%s\t",m->methodName);
 	for(int i=0;i < m->count_args;i++){ 
 		struct Expr* e = m->args[i];
-		write(e,file); 
+		writeExpr(e,file); 
 	}
 }
 // --------- TYPENODES --------------
-void write(struct Type* m, FILE* file){
+void writeType(struct Type* m, FILE* file){
 	//there is an alternative. we give a small number to indicate the alternative
 	
 	if(m->m1 != NULL){
@@ -151,26 +151,26 @@ void write(struct Type* m, FILE* file){
 	}
 }
 
-void write(struct ArrayType* m, FILE* file){
+void writeArrayType(struct ArrayType* m, FILE* file){
 	write(m->element_type,file);
 }
 
-void write(struct TypeParam* m, FILE* file){
+void writeTypeParam(struct TypeParam* m, FILE* file){
 	fprintf(file,"%d\t",m->typeParameterIndex);
 }
 
-void write(struct BasicTypeWrapped* m, FILE* file){
+void writeBasicTypeWrapped(struct BasicTypeWrapped* m, FILE* file){
 	if(m->m1 != NULL){ fprintf(file,"1\t"); write(m->m1,file); }
 
 	if(m->m2 != NULL){ fprintf(file,"2\t"); write(m->m2,file); }
 }
 
-void write(struct SimpleType* m, FILE* file){
+void writeSimpleType(struct SimpleType* m, FILE* file){
 	fprintf(file,"%s\t",m->typeName);
 }
 
-void write(struct SubrType* m, FILE* file){
-	write(m->returnType,file);
+void writeSubrType(struct SubrType* m, FILE* file){
+	writeType(m->returnType,file);
 	fprintf(file,"%s\t",m->hasSideEffects);
 
 	for(int i = 0;i < m->count_argumentTypes;i++){
@@ -183,7 +183,7 @@ void write_ast(char* filename, struct Namespace* namespaceNode){
 	FILE* file;
 	file = fopen(filename, "w");
 	
-	write(namespaceNode,&file);
+	writeNamespace(namespaceNode,&file);
 	
 	fclose(file);
 }

@@ -31,7 +31,7 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens,bool debug) {
 
 	res->variableNode = makeVariable(copy,debug);
 
-	if(!list_expect(copy, OPKEY,"=")){ return NULL;}
+	if(!list_expect2(copy, OPKEY,"=")){ return NULL;}
 
 	res->expressionNode = makeExpr(copy,debug);
 	if(res->expressionNode == NULL){return NULL;}

@@ -10,8 +10,6 @@
 #include "../parsing/DeclArg.h"
 #include "../parsing/statements/Stmt.h"
 
-using namespace std;
-
 const char* FLAG_DEBUG = "-debug";
 const char* FLAG_HELP = "-help";
 const char* FLAG_TEST = "-test";

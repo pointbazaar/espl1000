@@ -38,11 +38,11 @@ struct Token* recognizeToken(char* tkn, bool debug) {
 	switch (tkn_id) {
 
 		case STRINGCONST : 
-			r = makeToken2(STRINGCONST, tkn.substr(3,strlen(tkn)));
+			r = makeToken2(STRINGCONST, tkn+3);
 			break;
 		
 		case CCONST : 
-			r = makeToken2(CCONST,tkn.substr(2,strlen(tkn)));
+			r = makeToken2(CCONST, tkn+2);
 			break;
 		case ANYTYPE : 
 			r = makeToken2(ANYTYPE,"#");

@@ -16,7 +16,7 @@ struct SubrType {
 
 };
 
-struct SubrType* makeSubrType(struct Type* tn, bool hasSideEffects);
 struct SubrType* makeSubrType(struct TokenList* tokens, bool debug);
+struct SubrType* makeSubrType2(struct Type* tn, bool hasSideEffects);
 
 #endif

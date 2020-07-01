@@ -21,7 +21,7 @@ struct TokenList* makeTokenList() {
 	struct TokenList* res = malloc(sizeof(struct TokenList));
 	res->relPath = "/dev/null";
 	res->tokensc = 0;
-	res->tokens = smalloc(sizeof(struct Token**)*1);
+	res->tokens = malloc(sizeof(struct Token**)*1);
 
 	return res;
 }
@@ -46,11 +46,14 @@ void list_addAll(struct TokenList* list, struct Token** arr, int arrc) {
 	}
 }
 
-void list_consume(struct TokenList* list, int amount) {
-	list->tokens.erase(list->tokens.begin(),list->tokens.begin()+amount);
+bool list_consume(struct TokenList* list, int amount) {
+	for(int i=0;i<amount;i++){
+		list->tokens = list->tokens+(sizeof(struct Token*)*1);
+		list->tokensc -= 1;
+	}
 }
 
-int list_size(struct TokenList* list, ) {
+int list_size(struct TokenList* list) {
 	return list->tokensc;
 }
 
@@ -59,15 +62,15 @@ bool list_startsWith(struct TokenList* list, struct Token* token) {
 	//we should use interfaces we can rely on classes to implement
 	//the class and the content of the token should be the same for them to be the same
 
-	if (list->tokensc > 0) {
+	if (list_size(list) > 0) {
 		return tokenEquals(list->tokens[0],token);
 	}
 	return false;
 }
 
 bool list_endsWith(struct TokenList* list, struct Token* token) {
-	if (list->tokensc > 0) {
-		return tokenEquals(list->tokens.at(list->tokensc - 1),token);
+	if (list_size(list) > 0) {
+		return tokenEquals(list->tokens[list_size(list) - 1],token);
 	}
 	return false;
 }
@@ -79,47 +82,35 @@ char* wrap(char* s, char* wrap) {
 }
 
 bool list_expect_internal(struct TokenList* list, struct Token* token) {
-	//it expect a token or a kind of token, 
-	//otherwise throws an exception
-	
+	//it expect a token or a kind of token, otherwise throws an exception
 	if (list_size(list) == 0) {
 		return false;
 	}
-
 	if (list_startsWith(list, token)) {
 		list_consume(list, 1);
 		return true;
-
 	} else {
 		char str[100];
 		str[0]='\0';
 
 		//char* reset = "\u001b[0m";
-
 		const bool tty = isatty(STDOUT_FILENO);
 		//\u001b[36m
 		if(tty){
 			//strcat(str,"\u001b[31m");	//RED
 		}
-
 		strcat(str,"Syntax Error ");
-
 		if(tty){
 			//strcat(str,reset);	
 		}
-
 		strcat(str,"in ");
-
 		if(tty){
 			//strcat(str,"\u001b[36m");	//CYAN
 		}
-
-		strcat(str,this->relPath);
-
+		strcat(str,list->relPath);
 		if(tty){
 			//strcat(str,reset);
 		}
-
 		strcat(str,":");
 		strcat(str,list_head(list)->lineNumber);
 		strcat(str,": expected: ");
@@ -139,46 +130,47 @@ bool list_expect_internal(struct TokenList* list, struct Token* token) {
 		strcat(str,"     ");
 		strcat(str,list_code(list));
 		
-		
 		strcat(str,"\n");
 		
 		return false;
 	}
-
 	return true;
 }
 
-void list_expect(struct TokenList* list, int token_kind){
+bool list_expect(struct TokenList* list, int token_kind){
 
-	return list_expect_internal(list,makeToken(token_kind));
+	return list_expect_internal(list, makeToken(token_kind));
 }
 
-void list_expect(struct TokenList* list, int token_kind, char* token_value){
-	return list_expect(list,makeToken2(token_kind,token_value));
+bool list_expect2(struct TokenList* list, int token_kind, char* token_value){
+	return list_expect_internal(list, makeToken2(token_kind, token_value));
 }
 
-struct TokenList* list_copy(struct TokenList* list) {
-	struct TokenList* res = smalloc(sizeof(TokenList));
+struct TokenList* list_copy(struct TokenList* other) {
+	struct TokenList* res = makeTokenList();
 
-	res->relPath = other.relPath;
-	for(int i=0;i<other.tokensc;i++){
-		struct Token* tk = other.tokens[i];
-		res->tokens.push_back(tk);
+	res->relPath = other->relPath;
+	
+	for(int i = 0; i < list_size(other); i++){
+		
+		struct Token* tk = other->tokens[i];
+		list_add(res,tk);
 	}
-	res->tokensc = other ->tokensc;
+	
+	res->tokensc = other->tokensc;
 	return res;
 }
 
 void list_set(struct TokenList* list, struct TokenList* copy) {
 	list->tokens.clear();
-	for(int i=0;i<copy.tokensc;i++){
-		struct Token* tk = copy.tokens[i];
+	for(int i=0; i < list_size(copy);i++){
+		struct Token* tk = copy->tokens[i];
 		list_add(list, tk);
 	}
 }
 
 struct Token* list_get(struct TokenList* list, int i) {
-	if(list->tokensc <= i){
+	if(list_size(list) <= i){
 		//"not enough tokens.";
 		return NULL;
 	}
@@ -196,7 +188,7 @@ char* list_code(struct TokenList* list) {
 	str[0]='\0';
 
 	int i=0;
-	while(i < list->tokensc){
+	while(i < list_size(list)){
 		struct Token* tk = list->tokens[i];
 		if(i++ < 10){
 			strcat(str, tk->value);
@@ -206,7 +198,7 @@ char* list_code(struct TokenList* list) {
 	strcat(str,"[");
 
 	i=0;
-	while(i < list->tokensc){
+	while(i < list_size(list)){
 		struct Token* tk = list->tokens[i];
 		if(i++ < 10){
 			strcat(str,tk->kind);

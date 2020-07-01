@@ -5,11 +5,11 @@
 #include "Token.h"
 
 struct Token* makeToken(int kind){
-	return makeToken(kind,"");
+	return makeToken2(kind,"");
 }
 
 struct Token* makeToken2(int kind, char* value){
-	struct Token* res = smalloc(sizeof(struct Token));
+	struct Token* res = malloc(sizeof(struct Token));
 	res->kind = kind;
 	res->value = value;
 	res->lineNumber = -1;
@@ -24,5 +24,5 @@ bool tokenEquals(struct Token* a, struct Token* b){
 	}
 
 	return a->kind == b->kind 
-		&& strcmp(a->value,other->value) == 0;
+		&& strcmp(a->value,b->value) == 0;
 }

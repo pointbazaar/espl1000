@@ -37,11 +37,11 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 		//it could have an index
 		if (list_size(copy) > 0 && list_get(copy, 0)->kind == LBRACKET) {
 
-			if(!list_expect(copy, LBRACKET,"[")){return NULL;}
+			if(!list_expect(copy, LBRACKET)){return NULL;}
 			res->indexOptional = makeExpr(copy,debug);
 			if(res->indexOptional == NULL){return NULL;}
 
-			if(!list_expect(copy, RBRACKET,"]")){return NULL;}
+			if(!list_expect(copy, RBRACKET)){return NULL;}
 
 		} else {
 			res->indexOptional = NULL;

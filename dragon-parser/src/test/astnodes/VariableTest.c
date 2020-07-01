@@ -23,9 +23,13 @@ int variable_test_parse_struct_member_access(bool debug) {
 	struct Variable* v = makeVariable(tokens,debug);
 
 	bool assert1 = (1 == v->count_memberAccessList);
-	bool assert2 = string("x").compare( v->simpleVariableNode->name)==0;
+	
+	bool assert2 = strcmp("x", v->simpleVariableNode->name) == 0;
+	
 	bool assert3 = !(v->simpleVariableNode->indexOptional != NULL);
-	bool assert4 = string("a").compare( v->memberAccessList[0]->simpleVariableNode->name);
+	
+	bool assert4 = strcmp("a", v->memberAccessList[0]->simpleVariableNode->name) == 0;
+	
 	bool assert5 = !(v->memberAccessList[0]->simpleVariableNode->indexOptional != NULL);
 
 	return (assert1&&assert2&&assert3&&assert4&&assert5)?1:0;
@@ -42,7 +46,7 @@ int variable_test_parse_index_access(bool debug) {
 	list_add(tokens, makeToken2(INTEGER,"0"));
 	list_add(tokens, makeToken(RBRACKET));
 
-	struct Variable* node = makeVariable(&tokens,debug);
+	struct Variable* node = makeVariable(tokens,debug);
 
 	bool assert1 = (0 == node->count_memberAccessList);
 	bool assert2 = strcmp("x", node->simpleVariableNode->name) == 0;

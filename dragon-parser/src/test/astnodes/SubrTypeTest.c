@@ -48,7 +48,7 @@ int subrtype_test_typename_subroutine_return_type() {
 
 	struct SubrType* sub = makeSubrType(l,false);
 
-	bool assert1 = (0 == l.size());
+	bool assert1 = (0 == list_size(l));
 	return (assert1)?1:0;
 }
 
@@ -72,7 +72,7 @@ int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects()  {
 
 int subrtype_test_subroutine_type_parsing_subroutine_without_side_effects() {
 	//(PInt)->PInt
-	struct TokenList l* = makeTokenList(); 
+	struct TokenList* l = makeTokenList(); 
 
 	list_add(l, makeToken(LPARENS) );
 	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt") );

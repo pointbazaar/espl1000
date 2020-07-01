@@ -17,8 +17,8 @@ int simplevar_test_parse_simple_variable(bool debug) {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ID,"x") );
 
-	struct SimpleVar* node = makeSimpleVar(&list,debug);
-	bool assert1 = string("x").compare(node->name)==0;
+	struct SimpleVar* node = makeSimpleVar(list,debug);
+	bool assert1 = strcmp("x", node->name)==0;
 
 	return (assert1)?1:0;
 }
@@ -35,8 +35,8 @@ int simplevar_test_parse_simple_indexed_variable(bool debug) {
 	list_add(list, makeToken2(RBRACKET,"]")) ;
 
 
-	struct SimpleVar* node = makeSimpleVar(&list,debug);
-	bool assert1 = string("x").compare( node->name) == 0;
+	struct SimpleVar* node = makeSimpleVar(list,debug);
+	bool assert1 = strcmp("x", node->name) == 0;
 	bool assert2 = (node->indexOptional != NULL);
 
 	bool assert3 = (

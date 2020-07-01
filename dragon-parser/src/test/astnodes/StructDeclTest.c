@@ -60,13 +60,13 @@ int structdecl_test_can_parse_struct_with_1_member() {
 	list_add(list, makeToken2(TYPEIDENTIFIER,"MyStruct") );
 	list_add(list, makeToken(LCURLY) );
 	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt") );
-	list_add(list, makeToken(ID,"a") );
+	list_add(list, makeToken2(ID,"a") );
 	list_add(list, makeToken(RCURLY) );
 
 	struct StructDecl* node = makeStructDecl(list, false);
 
 	bool assert1 = (1 == node->count_members);
-	bool assert2 = string("a").compare( node->members[0]->name) == 0;
+	bool assert2 = strcmp("a", node->members[0]->name) == 0;
 
 	return (assert1&&assert2)?1:0;
 }
@@ -89,9 +89,9 @@ int structdecl_test_can_parse_struct_with_2_members() {
 
 	bool assert1 = (2 == node->count_members);
 
-	bool assert2 = string("a").compare( node->members[0]->name) == 0;
+	bool assert2 = strcmp("a", node->members[0]->name) == 0;
 
-	bool assert3 = string("b").compare( node->members[1]->name) == 0;
+	bool assert3 = strcmp("b", node->members[1]->name) == 0;
 
 	return (assert1&&assert2&&assert3)?1:0;
 }

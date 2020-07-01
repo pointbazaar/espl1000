@@ -26,43 +26,50 @@ int main(int argc, char** argv){
 
 	printf("dragon parser\n");
 
-	vector<char*> flags;
-	vector<char*> filenames;
+	char** filenames = malloc(sizeof(char*)*100);
+	int filenamescount = 0;
+	
+	char** flags = malloc(sizeof(char*)*100;
+	int flagscount = 0;
 
 	for(int i=1;i<argc;i++){
 		char* arg = argv[i];
 		if(argv[i][0] == '-'){
-			flags.push_back(arg);
+			flags[flagscount++] = arg;
 		}else{
-			filenames.push_back(arg);
+			filenames[filenamescount++] = arg;
 		}
 	}
 
 	bool debug = true;
-	try {
-		debug = find(flags.begin(),flags.end(),FLAG_DEBUG) != flags.end();
-		if(debug){
-			printf("Parser::main\n");
-		}
-		bool help = find(flags.begin(),flags.end(),FLAG_HELP) != flags.end();
-		bool test = find(flags.begin(),flags.end(),FLAG_TEST) != flags.end();
-
-		if(help) {
-			printHelp();
-		}else if(test){
-			
-			test_all(debug);
-		}else{
-			if(filenames.size() != 1){
-				throw string("expected exactly 1 filename argument.");
-			}
-			main_inner(filenames[0],debug);
-		}
-
-	} catch (char* e) {
-		cout << e << endl;
-		exit(1);
+	if(debug){
+		printf("Parser::main\n");
 	}
+	bool help = false;
+	bool test = false;
+	
+	for(int i=0;i<flagscount;i++){
+		if(strcmp(FLAG_HELP, flags[i])==0){
+			help = true;
+		}
+		if(strcmp(FLAG_TEST, flags[i])==0){
+			test = true;
+		}
+	}
+
+	if(help) {
+		printHelp();
+	}else if(test){
+		test_all(debug);
+	}else{
+		if(filenamescount != 1){
+			printf("expected exactly 1 filename argument.\n");
+			exit(1);
+		}
+		main_inner(filenames[0],debug);
+	}
+
+	exit(0);
 }
 
 void build_ast_file(char* tokensFile, char* astJsonFile, bool debug) {
@@ -74,10 +81,11 @@ void build_ast_file(char* tokensFile, char* astJsonFile, bool debug) {
 	struct TokenList* tokens = readTokensFromTokensFile(tokensFile,debug);
 
 	printf("Tokens as Source Code Fragment : \n");
-	printf("%s\n",tokens.code());
+	printf("%s\n", list_code(tokens));
 
 	//get just the namespace name from .FILENAME.dg.tokens
-	char* namespaceName = tokensFile.substr(1,strlen(tokensFile) - strlen(".dg.tokens"));
+	int l = strlen(".dg.tokens");
+	char* namespaceName = tokensFile.substr(1,strlen(tokensFile) - l);
 
 	struct Namespace* mynamespace = makeNamespace(tokens,namespaceName,debug);
 
@@ -103,15 +111,16 @@ void main_inner(char* tokensFile, bool debug) {
 	}
 	*/
 
-	ifstream f(tokensFile.c_str());
+	FILE* f = fopen(tokensFile, "rw");
 
-	if(f.good()) {
-		f.close();
-		string AST_filename = tokensFile.substr(0,tokensFile.size()-strlen(".tokens"))+".ast";
+	if(f != NULL) {
+		fclose(f);
+		char* AST_filename = tokensFile.substr(0,tokensFile.size()-strlen(".tokens"))+".ast";
 
 		build_ast_file(tokensFile,AST_filename,debug);
 	}else {
-		throw "argument file "+tokensFile+" does not exist.";
+		printf("argument file %s does not exist.", tokensFile);
+		exit(1);
 	}
 
 }
@@ -136,12 +145,12 @@ void printHelp() {
 		
 }
 
-TokenList readTokensFromTokensFile(char* tokensFile, bool debug){
+struct TokenList* readTokensFromTokensFile(char* tokensFile, bool debug){
 
 	char* fileNameWithoutPath = tokensFile;
 	
 	struct TokenList* tks = makeTokenList(tokensFile);
-	ifstream file(tokensFile);
+	FILE* file = fopen(tokensFile,"r");
     char* str; 
     while (getline(file, str)){
 
@@ -153,7 +162,7 @@ TokenList readTokensFromTokensFile(char* tokensFile, bool debug){
 
 	if(debug) {
 		printf("read was successful\n");
-		printf("done recognizing %d tokens\n",tks.size());
+		printf("done recognizing %d tokens\n", list_size(tks));
 	}
 	return tks;
 }

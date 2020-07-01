@@ -14,18 +14,18 @@ int if_test1(bool debug) {
 	}
 
 	struct TokenList* list = makeTokenList();
-	list_add(list, IF);
+	list_add(list, makeToken(IF));
 
-	list_add(list, makeToken(INTEGER, "5"));
-	list_add(list, makeToken(OPKEY, "<"));
-	list_add(list, makeToken(INTEGER, "3"));
+	list_add(list, makeToken2(INTEGER, "5"));
+	list_add(list, makeToken2(OPKEY, "<"));
+	list_add(list, makeToken2(INTEGER, "3"));
 
-	list_add(list, LCURLY);
+	list_add(list, makeToken(LCURLY));
 
-	list_add(list, RCURLY);
+	list_add(list, makeToken(RCURLY));
 
 	struct IfStmt* i = makeIfStmt(list,debug);
-	bool assert1 = (0 == list->size());
+	bool assert1 = (0 == list_size(list));
 
 	return  (assert1)?1:0;
 }
@@ -42,7 +42,7 @@ int if_test2(bool debug) {
 
 	//l->add(LPARENS);
 
-	list_add(l, makeToken(ID,"x"));
+	list_add(l, makeToken2(ID,"x"));
 	list_add(l, makeToken2(OPKEY,"<"));
 	list_add(l, makeToken2(INTEGER,"5"));
 

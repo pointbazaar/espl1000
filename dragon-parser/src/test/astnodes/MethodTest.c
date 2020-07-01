@@ -10,23 +10,23 @@ int method_test_can_parse_method_with_arguments() {
 
 	struct TokenList* l = makeTokenList(); //ParserPhases.makeTokenList("fn main (String hello)~>PInt { main(); }", false);
 
-	list_add( makeToken(FN));
-	list_add( makeToken2(ID,"main"));
-	list_add( makeToken(LPARENS));
-	list_add( makeToken2(TYPEIDENTIFIER,"String"));
-	list_add( makeToken2(ID,"hello"));
-	list_add( makeToken(RPARENS));
-	list_add( makeToken(ARROW));
-	list_add( makeToken2(TYPEIDENTIFIER,"PInt"));
-	list_add( makeToken(LCURLY));
-		list_add( makeToken2(ID,"main"));
-		list_add( makeToken(LPARENS));
-		list_add( makeToken(RPARENS));
-		list_add( makeToken(SEMICOLON));
+	list_add(l, makeToken(FN));
+	list_add(l, makeToken2(ID,"main"));
+	list_add(l, makeToken(LPARENS));
+	list_add(l, makeToken2(TYPEIDENTIFIER,"String"));
+	list_add(l, makeToken2(ID,"hello"));
+	list_add(l, makeToken(RPARENS));
+	list_add(l, makeToken(ARROW));
+	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt"));
+	list_add(l, makeToken(LCURLY));
+		list_add(l, makeToken2(ID,"main"));
+		list_add(l, makeToken(LPARENS));
+		list_add(l, makeToken(RPARENS));
+		list_add(l, makeToken(SEMICOLON));
 
-	list_add( makeToken(RCURLY));
+	list_add(l, makeToken(RCURLY));
 
-	struct Method* m = makeMethod(&l, false);
+	struct Method* m = makeMethod(l, false);
 
 	return  m->count_arguments;
 }
@@ -35,48 +35,48 @@ int method_test_can_parse_subroutine() {
 
 		struct TokenList* l = makeTokenList();
 
-		list_add( makeToken(FN));
-		list_add( makeToken2(ID,"main"));
-		list_add( makeToken(LPARENS));
-		list_add( makeToken(RPARENS));
-		list_add( makeToken(ARROW));
-		list_add( makeToken2(TYPEIDENTIFIER,"PInt"));
-		list_add( makeToken(LCURLY));
-			list_add( makeToken2(ID,"println"));
-			list_add( makeToken(LPARENS));
-			list_add( makeToken(RPARENS));
-			list_add( makeToken(SEMICOLON));
+		list_add(l, makeToken(FN));
+		list_add(l, makeToken2(ID,"main"));
+		list_add(l, makeToken(LPARENS));
+		list_add(l, makeToken(RPARENS));
+		list_add(l, makeToken(ARROW));
+		list_add(l, makeToken2(TYPEIDENTIFIER,"PInt"));
+		list_add(l, makeToken(LCURLY));
+			list_add(l, makeToken2(ID,"println"));
+			list_add(l, makeToken(LPARENS));
+			list_add(l, makeToken(RPARENS));
+			list_add(l, makeToken(SEMICOLON));
 
-			list_add( makeToken(RETURN));
-			list_add( makeToken2(INTEGER,"0"));
+			list_add(l, makeToken(RETURN));
+			list_add(l, makeToken2(INTEGER,"0"));
 			
-		list_add( makeToken(RCURLY));
+		list_add(l, makeToken(RCURLY));
 
-		struct Method* m = makeMethod(&l, false);
+		struct Method* m = makeMethod(l, false);
 		return (m!=NULL)?1:0;
 }
 
 int method_test_can_parse_method_without_arguments() {
 
-	struct TokenList l = makeTokenList();
+	struct TokenList* l = makeTokenList();
 
-	list_add( makeToken(FN));
-	list_add( makeToken2(ID,"main"));
-	list_add( makeToken(LPARENS));
-	list_add( makeToken2(TYPEIDENTIFIER,"String"));
-	list_add( makeToken2(ID,"hello"));
-	list_add( makeToken(RPARENS));
-	list_add( makeToken(ARROW));
-	list_add( makeToken2(TYPEIDENTIFIER,"PInt"));
-	list_add( makeToken(LCURLY));
-		list_add( makeToken2(ID,"main"));
-		list_add( makeToken(LPARENS));
-		list_add( makeToken(RPARENS));
-		list_add( makeToken(SEMICOLON));
+	list_add(l, makeToken(FN));
+	list_add(l, makeToken2(ID,"main"));
+	list_add(l, makeToken(LPARENS));
+	list_add(l, makeToken2(TYPEIDENTIFIER,"String"));
+	list_add(l, makeToken2(ID,"hello"));
+	list_add(l, makeToken(RPARENS));
+	list_add(l, makeToken(ARROW));
+	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt"));
+	list_add(l, makeToken(LCURLY));
+		list_add(l, makeToken2(ID,"main"));
+		list_add(l, makeToken(LPARENS));
+		list_add(l, makeToken(RPARENS));
+		list_add(l, makeToken(SEMICOLON));
 
-	list_add( makeToken(RCURLY));
+	list_add(l, makeToken(RCURLY));
 
-	struct Method* m = makeMethod(&l, false);
+	struct Method* m = makeMethod(l, false);
 	bool assert1 = (0 == m->count_arguments);
 
 	return (assert1)?1:0;
