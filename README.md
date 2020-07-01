@@ -136,7 +136,7 @@ methods(with side effects) will enforce correct annotation of these properties.
 Dragon will be developed and tested against a variety of programming tasks.
 It is intended to be used for (but not limited to)
 - writing a library in SmallDragon and transpiling it to multiple Programming Language Ecosystems (NodeJS/npm, Python/PIP, Java/Maven-Central)
-
+- You are in the situation that your code has to run in some Language Ecosystem where you don't like the Language. Then you can use SmallDragon and just transpile to that language. And don't actually have to learn it.
 
 ## Contributions
 
