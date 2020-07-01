@@ -1,16 +1,16 @@
-![logo](https://raw.githubusercontent.com/pointbazaar/dragon-lexer/master/img/dragon-logo.svg)
+![logo](https://raw.githubusercontent.com/pointbazaar/dragon-lexer/master/img/dragon-logo.svg =250x250)
 
 # The Dragon Programming Language (work in progress) 
 [![Build Status](https://travis-ci.org/pointbazaar/dragon.svg?branch=master)](https://travis-ci.org/pointbazaar/dragon)
 [![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/dragon/badge)](https://www.codefactor.io/repository/github/pointbazaar/dragon)
- [![Known Vulnerabilities](https://snyk.io/test/github/pointbazaar/dragon/badge.svg)](https://snyk.io/test/github/pointbazaar/dragon) 
- [![GitHub license](https://img.shields.io/github/license/pointbazaar/dragon.svg)](https://github.com/pointbazaar/dragon/blob/master/LICENSE)
- [![GitHub issues](https://img.shields.io/github/issues/pointbazaar/dragon.svg)](https://GitHub.com/pointbazaar/dragon/issues/)
- [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/pointbazaar/dragon.svg)](http://isitmaintained.com/project/pointbazaar/dragon "Average time to resolve an issue")
- [![HitCount](http://hits.dwyl.io/pointbazaar/dragon.svg)](http://hits.dwyl.io/pointbazaar/dragon)
- [![Open Source Love png2](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
- [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/pointbazaar/dragon/graphs/commit-activity)
- [![Generic badge](https://img.shields.io/badge/evaluation-strict-purple.svg)](https://shields.io/)
+[![Known Vulnerabilities](https://snyk.io/test/github/pointbazaar/dragon/badge.svg)](https://snyk.io/test/github/pointbazaar/dragon) 
+[![GitHub license](https://img.shields.io/github/license/pointbazaar/dragon.svg)](https://github.com/pointbazaar/dragon/blob/master/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/pointbazaar/dragon.svg)](https://GitHub.com/pointbazaar/dragon/issues/)
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/pointbazaar/dragon.svg)](http://isitmaintained.com/project/pointbazaar/dragon "Average time to resolve an issue")
+[![HitCount](http://hits.dwyl.io/pointbazaar/dragon.svg)](http://hits.dwyl.io/pointbazaar/dragon)
+[![Open Source Love png2](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/pointbazaar/dragon/graphs/commit-activity)
+[![Generic badge](https://img.shields.io/badge/evaluation-strict-purple.svg)](https://shields.io/)
  
 This repo contains a simple, work-in-progress statically typed programming language.
 
