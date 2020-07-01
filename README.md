@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/pointbazaar/dragon-lexer/master/img/dragon-logo.svg | width=250)
+<img src="https://raw.githubusercontent.com/pointbazaar/dragon-lexer/master/img/dragon-logo.svg" width="200" height="200" />
 
 # The Dragon Programming Language (work in progress) 
 [![Build Status](https://travis-ci.org/pointbazaar/dragon.svg?branch=master)](https://travis-ci.org/pointbazaar/dragon)
