@@ -39,19 +39,19 @@ void writeVariable(struct Variable* m, FILE* file){
 	writeSimpleVar(m->simpleVariableNode,file);
 	for(int i = 0;i < m->count_memberAccessList;i++){ 
 		struct Variable* v = m->memberAccessList[i];
-		writeSimpleVar(v,file); 
+		writeSimpleVar(v->simpleVariableNode,file); 
 	}
 }
 void writeSimpleVar(struct SimpleVar* m, FILE* file){
 	fprintf(file,"%s\t",m->name);
 	if(m->indexOptional != NULL){
-		write(m->indexOptional,file);
+		writeExpr(m->indexOptional, file);
 	}else{
 		fprintf(file,"NULL\t");
 	}
 }
 void writeExpr(struct Expr* m, FILE* file){
-	write(m->term1,file);
+	writeTerm(m->term1, file);
 	if(m->op != NULL){
 		writeOp(m->op,file);
 		writeTerm(m->term2,file);
@@ -60,12 +60,27 @@ void writeExpr(struct Expr* m, FILE* file){
 	}
 }
 void writeTerm(struct Term* m, FILE* file){
-	if(m->m1 != NULL){ fprintf(file,"1\t"); write(m->m1,file); }
-	if(m->m2 != NULL){ fprintf(file,"2\t"); write(m->m2,file); }
-	if(m->m3 != NULL){ fprintf(file,"3\t"); write(m->m3,file); }
-	if(m->m4 != NULL){ fprintf(file,"4\t"); write(m->m4,file); }
-	if(m->m5 != NULL){ fprintf(file,"5\t"); write(m->m5,file); }
-	if(m->m6 != NULL){ fprintf(file,"6\t"); write(m->m6,file); }
+	if(m->m1 != NULL){ 
+		fprintf(file,"1\t"); writeBoolConst(m->m1,file);
+	}
+	if(m->m2 != NULL){ 
+		fprintf(file,"2\t"); writeIntConst(m->m2,file); 
+	}
+	if(m->m3 != NULL){ 
+		fprintf(file,"3\t"); writeCharConst(m->m3,file); 
+	}
+	if(m->m4 != NULL){ 
+		fprintf(file,"4\t"); writeMethodCall(m->m4,file); 
+	}
+	if(m->m5 != NULL){ 
+		fprintf(file,"5\t"); writeExpr(m->m5,file); 
+	}
+	if(m->m6 != NULL){ 
+		fprintf(file,"6\t"); writeVariable(m->m6,file); 
+	}
+	if(m->m7 != NULL){
+		fprintf(file,"7\t"); writeFloatConst(m->m7,file); 
+	}
 }
 void writeBoolConst(struct BoolConst* m, FILE* file){
 	fprintf(file,"%d\t",m->value);
@@ -76,6 +91,9 @@ void writeIntConst(struct IntConst* m, FILE* file){
 void writeCharConst(struct CharConst* m, FILE* file){
 	fprintf(file,"%c\t",m->content);
 }
+void writeFloatConst(struct FloatConst* m, 	FILE* file){
+	fprintf(file,"%f\t",m->value);
+}
 void writeOp(struct Op* m, FILE* file){
 	fprintf(file,"%s\t",m->op);
 }
@@ -83,11 +101,11 @@ void writeOp(struct Op* m, FILE* file){
 void writeStmt(struct Stmt* m, FILE* file){
 	//the reader has to know which type it is,
 	//we can print a small number
-	if(m->m1 != NULL){ fprintf(file,"1\t"); write(m->m1,file); }
-	if(m->m2 != NULL){ fprintf(file,"2\t"); write(m->m2,file); }
-	if(m->m3 != NULL){ fprintf(file,"3\t"); write(m->m3,file); }
-	if(m->m4 != NULL){ fprintf(file,"4\t"); write(m->m4,file); }
-	if(m->m5 != NULL){ fprintf(file,"5\t"); write(m->m5,file); }
+	if(m->m1 != NULL){ fprintf(file,"1\t"); writeMethodCall(m->m1,file); }
+	if(m->m2 != NULL){ fprintf(file,"2\t"); writeWhileStmt(m->m2,file); }
+	if(m->m3 != NULL){ fprintf(file,"3\t"); writeIfStmt(m->m3,file); }
+	if(m->m4 != NULL){ fprintf(file,"4\t"); writeRetStmt(m->m4,file); }
+	if(m->m5 != NULL){ fprintf(file,"5\t"); writeAssignStmt(m->m5,file); }
 }
 
 void writeIfStmt(struct IfStmt* m, FILE* file){
@@ -139,20 +157,20 @@ void writeType(struct Type* m, FILE* file){
 	
 	if(m->m1 != NULL){
 		fprintf(file,"1\t");
-		write(m->m1,file);
+		writeBasicTypeWrapped(m->m1,file);
 
 	}else if(m->m2 != NULL){
 		fprintf(file,"2\t");
-		write(m->m2,file);
+		writeTypeParam(m->m2,file);
 
 	}else if(m->m3 != NULL){
 		fprintf(file,"3\t");
-		write(m->m3,file);
+		writeArrayType(m->m3,file);
 	}
 }
 
 void writeArrayType(struct ArrayType* m, FILE* file){
-	write(m->element_type,file);
+	writeType(m->element_type,file);
 }
 
 void writeTypeParam(struct TypeParam* m, FILE* file){
@@ -160,9 +178,13 @@ void writeTypeParam(struct TypeParam* m, FILE* file){
 }
 
 void writeBasicTypeWrapped(struct BasicTypeWrapped* m, FILE* file){
-	if(m->m1 != NULL){ fprintf(file,"1\t"); write(m->m1,file); }
+	if(m->m1 != NULL){ 
+		fprintf(file,"1\t"); writeSimpleType(m->m1,file); 
+	}
 
-	if(m->m2 != NULL){ fprintf(file,"2\t"); write(m->m2,file); }
+	if(m->m2 != NULL){ 
+		fprintf(file,"2\t"); writeSubrType(m->m2,file); 
+	}
 }
 
 void writeSimpleType(struct SimpleType* m, FILE* file){
@@ -175,7 +197,7 @@ void writeSubrType(struct SubrType* m, FILE* file){
 
 	for(int i = 0;i < m->count_argumentTypes;i++){
 		struct Type* t = m->argumentTypes[i];
-		write(t,file); 
+		writeType(t,file); 
 	}
 }
 // --------- OTHER ----------

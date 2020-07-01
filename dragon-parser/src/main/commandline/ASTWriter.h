@@ -7,6 +7,7 @@
 #include "../parsing/DeclArg.h"
 #include "../parsing/BoolConst.h"
 #include "../parsing/CharConst.h"
+#include "../parsing/FloatConst.h"
 #include "../parsing/Expr.h"
 #include "../parsing/Identifier.h"
 #include "../parsing/IntConst.h"
@@ -43,6 +44,7 @@ void writeOp(struct Op* m, 			FILE* file);
 void writeIntConst(struct IntConst* m, 		FILE* file);
 void writeBoolConst(struct BoolConst* m, 	FILE* file);
 void writeCharConst(struct CharConst* m, 	FILE* file);
+void writeFloatConst(struct FloatConst* m, 	FILE* file);
 void writeVariable(struct Variable* m, 		FILE* file);
 void writeSimpleVar(struct SimpleVar* m, 	FILE* file);
 void writeTerm(struct Term* m, 			FILE* file);

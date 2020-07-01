@@ -18,7 +18,7 @@ struct AST_Whole_Program* makeAST_Whole_Program(struct Namespace* myNamespace) {
 	return res;
 }
 
-struct AST_Whole_Program* makeAST_Whole_Program(struct TokenList* tokens, char* myNamespace, bool debug) {
+struct AST_Whole_Program* makeAST_Whole_Program3(struct TokenList* tokens, char* myNamespace, bool debug) {
 
 	//use this constructor as a shortcut to create an AST
 	//if there is just a single namespace
