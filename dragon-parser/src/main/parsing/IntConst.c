@@ -32,7 +32,7 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 				if(mytk == NULL){return NULL;}
 				
 				res->value = - atoi( mytk->value );
-				if(!list_consume(copy, 2)){return NULL;}
+				list_consume(copy, 2);
 			} else {
 				// "cannot parse integer constant node with such operator:" + tk->value;
 				return NULL;
@@ -42,7 +42,7 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 		case INTEGER: 
 			;
 			res->value = atoi(tk->value);
-			if(!list_consume(copy, 1)){return NULL;}
+			list_consume(copy, 1);
 			break;
 
 		default:

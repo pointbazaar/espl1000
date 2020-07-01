@@ -19,7 +19,7 @@ struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 
 	if (token->kind == CCONST) {
 		res->content = token->value[0];
-		if(!list_consume(tokens, 1)){return NULL;}
+		list_consume(tokens, 1);
 	} else {
 		//"Error: could not read charConstant node";
 		return NULL;

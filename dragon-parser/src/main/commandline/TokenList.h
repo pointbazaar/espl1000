@@ -11,6 +11,12 @@ struct TokenList {
 	char* relPath;
 
 	struct Token** tokens;
+
+	//how many pointers we can store
+	//with the currently allocated memory
+	int capacity;
+
+	//token count
 	int tokensc;
 
 };
@@ -24,7 +30,7 @@ void list_add(struct TokenList* tknList,struct Token* token);
 
 void list_addAll(struct TokenList* tknList,struct Token** tokens, int tokensc);
 
-bool list_consume(struct TokenList* tknList, int amount);
+void list_consume(struct TokenList* tknList, int amount);
 
 bool list_startsWith(struct TokenList* tknList, struct Token* itk);
 bool list_endsWith(struct TokenList* tknList, struct Token* itk);

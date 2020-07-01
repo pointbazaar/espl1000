@@ -27,7 +27,7 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 
-	if(!list_consume(tokens, 1)){return NULL;}
+	list_consume(tokens, 1);
 
 	return res;
 }

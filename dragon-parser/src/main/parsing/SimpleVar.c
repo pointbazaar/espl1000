@@ -31,7 +31,10 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 
 	if (token->kind == ID) {
 		res->name = token->value;
-		if(!list_consume(copy,1)){return NULL;}
+		if(list_size(copy) < 1){
+			return NULL;
+		}
+		list_consume(copy,1);
 
 		//it could have an index
 		if (list_size(copy) > 0 && list_get(copy, 0)->kind == LBRACKET) {

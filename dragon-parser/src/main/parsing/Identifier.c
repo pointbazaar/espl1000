@@ -20,7 +20,7 @@ struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 
 	if (token->kind == ID) {
 		res->identifier = token->value;
-		if(!list_consume(tokens, 1)){return NULL;}
+		list_consume(tokens, 1);
 
 	} else {
 		char msg[200];

@@ -9,24 +9,47 @@
 //which would be convenient in a token list for our compiler
 
 struct TokenList* makeTokenList_3(struct Token** result, int resultc, char* sourceFile) {
+
 	struct TokenList* res = malloc(sizeof(struct TokenList));
+
 	res->tokens = result;
-	res->tokensc = 0;
+	res->tokensc = resultc;
+	res->capacity = resultc;
+
 	res->relPath = sourceFile;
 
 	return res;
 }
 
 struct TokenList* makeTokenList() {
+	const int initial_size = 10;
+
+	//DEBUG
+	printf("makeTokenList()\n");
+
 	struct TokenList* res = malloc(sizeof(struct TokenList));
 	res->relPath = "/dev/null";
 	res->tokensc = 0;
-	res->tokens = malloc(sizeof(struct Token**)*1);
+
+	res->tokens = malloc(sizeof(struct Token*)*initial_size);
+	res->capacity = initial_size;
 
 	return res;
 }
 
 void list_add(struct TokenList* list, struct Token* token) {
+
+	//DEBUG
+	printf("list_add\n");
+
+	if(list->tokensc + 1 > list->capacity){
+		printf("resize TokenList instance\n");
+		//we don't have enough capacity
+		//double the capacity		
+		list->capacity = list->capacity * 2;
+		list->tokens = realloc(list->tokens, list->capacity);
+	}
+
 	list->tokens[list->tokensc] = token;
 	list->tokensc += 1;
 }
@@ -38,7 +61,7 @@ void list_addAll(struct TokenList* list, struct Token** arr, int arrc) {
 	}
 }
 
-bool list_consume(struct TokenList* list, int amount) {
+void list_consume(struct TokenList* list, int amount) {
 	for(int i=0;i<amount;i++){
 		list->tokens = list->tokens+(sizeof(struct Token*)*1);
 		list->tokensc -= 1;
@@ -174,6 +197,7 @@ void list_set(struct TokenList* list, struct TokenList* copy) {
 struct Token* list_get(struct TokenList* list, int i) {
 	if(list_size(list) <= i){
 		//"not enough tokens.";
+		printf("not enough tokens in the list\n");
 		return NULL;
 	}
 	return list->tokens[i];

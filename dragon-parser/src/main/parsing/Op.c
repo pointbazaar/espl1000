@@ -48,10 +48,16 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 				// "could not make operator";
 				return NULL;
 			}
-			if(!list_consume(copy, 2)){return NULL;}
+			if(list_size(copy) < 2){
+				return NULL;
+			}
+			list_consume(copy, 2);
 		}else{
 			res->op = tkn->value;
-			if(!list_consume(copy, 1)){return NULL;}
+			if(list_size(copy) < 1){
+				return NULL;
+			}
+			list_consume(copy, 1);
 		}
 	}else{
 		//"could not recognize operator, got : " + tkn->value;
