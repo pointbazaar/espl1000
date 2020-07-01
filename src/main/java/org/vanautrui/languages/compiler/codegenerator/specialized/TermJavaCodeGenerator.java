@@ -36,7 +36,7 @@ public final class TermJavaCodeGenerator {
         } else if (t instanceof VariableNode variableNode) {
             return genJavaCodeForVariable(variableNode, ctx);
         } else if (t instanceof MethodCallNode methodCallNode) {
-            return genVMCodeForMethodCall(methodCallNode, ctx);
+            return List.of(genVMCodeForMethodCall(methodCallNode, ctx));
         } else if (t instanceof BoolConstNode) {
             return genJavaCodeForBoolConst((BoolConstNode) t);
         } else if (t instanceof ArrayConstantNode arrayConstantNode) {
