@@ -187,11 +187,11 @@ struct TokenList* list_copy(struct TokenList* other) {
 }
 
 void list_set(struct TokenList* list, struct TokenList* copy) {
-	list->tokens = NULL;
-	for(int i=0; i < list_size(copy);i++){
-		struct Token* tk = copy->tokens[i];
-		list_add(list, tk);
-	}
+	list->tokens = malloc(sizeof(struct Token*) * copy->capacity);
+	list->capacity = copy->capacity;
+	list->tokensc = copy->tokensc;
+
+	memcpy(list->tokens, copy->tokens, copy->tokensc);
 }
 
 struct Token* list_get(struct TokenList* list, int i) {

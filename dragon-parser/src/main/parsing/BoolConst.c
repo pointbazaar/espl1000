@@ -16,7 +16,12 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 
 	struct TokenList* copy = makeTokenList(tokens);
 
-	if(list_size(copy) == 0){return NULL;}
+	if(list_size(copy) == 0){
+		if(debug){
+				printf("token list did not contain any tokens.\n");
+			}
+		return NULL;
+	}
 	
 	if (list_get(copy, 0)->kind == BCONST) {
 		struct Token* tk = list_get(copy, 0);
@@ -26,11 +31,17 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 		}else if(strcmp(tk->value,"false") == 0){
 			res->value = false;
 		}else{
+			if(debug){
+				printf("tk->value was not satisfactory.\n");
+			}
 			return NULL;
 		}
 		list_consume(copy, 1);
 	} else {
 		//"could not read Bool Constant node";
+		if(debug){
+				printf("token was not the right kind.\n");
+			}
 		return NULL;
 	}
 
