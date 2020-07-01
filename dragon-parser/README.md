@@ -3,8 +3,6 @@
 # Dragon-Parser
 [![Build Status](https://travis-ci.org/pointbazaar/dragon-parser.svg?branch=master)](https://travis-ci.org/pointbazaar/dragon-parser)
 [![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/dragon-parser/badge)](https://www.codefactor.io/repository/github/pointbazaar/dragon-parser)
-[![GitHub license](https://img.shields.io/github/license/pointbazaar/dragon-parser.svg)](https://github.com/pointbazaar/dragon-parser/blob/master/LICENSE)
-[![Open Source Love png2](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
 
 This is the parser for [smalldragon](https://github.com/pointbazaar/smalldragon), 
 a simple, statically typed, compiled programming language.
