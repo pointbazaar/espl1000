@@ -1,6 +1,6 @@
 <img src="https://raw.githubusercontent.com/pointbazaar/dragon-lexer/master/img/dragon-logo.svg" width="100" height="100" />
 
-# The Dragon Programming Language (work in progress) 
+# The SmallDragon Programming Language (Work in Progress) 
 [![Build Status](https://travis-ci.org/pointbazaar/dragon.svg?branch=master)](https://travis-ci.org/pointbazaar/dragon)
 [![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/smalldragon/badge)](https://www.codefactor.io/repository/github/pointbazaar/dragon)
 [![Known Vulnerabilities](https://snyk.io/test/github/pointbazaar/dragon/badge.svg)](https://snyk.io/test/github/pointbazaar/dragon) 
@@ -10,7 +10,8 @@
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/pointbazaar/dragon/graphs/commit-activity)
 [![Generic badge](https://img.shields.io/badge/evaluation-strict-purple.svg)](https://shields.io/)
  
-This repo contains a simple, work-in-progress statically typed programming language.
+This repo contains a simple, work-in-progress statically typed programming language that aims to be able to be compiled to
+several high-level languages.
 
 Its main debugger is [mdx](https://github.com/Milo-D/MDX-Assembly-Debugger).
 The editor of choice for Dragon currently is [micro](https://micro-editor.github.io/), because there is a basic syntax highlighting for it.
@@ -138,17 +139,9 @@ The language differentiates between functions(no side effects) and
 methods(with side effects) will enforce correct annotation of these properties.
 
 Dragon will be developed and tested against a variety of programming tasks.
+It is intended to be used for (but not limited to)
+- writing a library in SmallDragon and transpiling it to multiple Programming Language Ecosystems (NodeJS/npm, Python/PIP, Java/Maven-Central)
 
-## Programming Language projects that seem interesting to me
-
-[C](https://en.wikipedia.org/wiki/C_(programming_language))
-[vlang](https://github.com/vlang/v)
-[haskell](https://www.haskell.org/)
-[ats](http://www.ats-lang.org/)
-
-## Interesting websites related to programming languages
-
-[lambda the ultimate](http://lambda-the-ultimate.org/)
 
 ## Contributions
 
