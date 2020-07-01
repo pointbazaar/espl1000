@@ -9,7 +9,6 @@
 This repo contains a simple, work-in-progress statically typed programming language that aims to be able to be compiled to
 several high-level languages.
 
-Its main debugger is [mdx](https://github.com/Milo-D/MDX-Assembly-Debugger).
 The editor of choice for Dragon currently is [micro](https://micro-editor.github.io/), because there is a basic syntax highlighting for it.
 
 ## Examples
