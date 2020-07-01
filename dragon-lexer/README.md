@@ -1,12 +1,6 @@
 <img src="https://raw.githubusercontent.com/pointbazaar/dragon-lexer/master/img/dragon-logo.svg" width="100" heigth="100"/>
 
 # Dragon-Lexer
-
-[![Build Status](https://travis-ci.org/pointbazaar/dragon-lexer.svg?branch=master)](https://travis-ci.org/pointbazaar/dragon-lexer)
-[![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/dragon-lexer/badge)](https://www.codefactor.io/repository/github/pointbazaar/dragon-lexer)
-[![GitHub license](https://img.shields.io/github/license/pointbazaar/dragon-lexer.svg)](https://github.com/pointbazaar/dragon-lexer/blob/master/LICENSE)
-[![Open Source Love png2](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
-
 this is the lexer for [smalldragon](https://github.com/pointbazaar/smalldragon/)
 
 ## Tokens Grammar (the tokens recognized by the lexer)
