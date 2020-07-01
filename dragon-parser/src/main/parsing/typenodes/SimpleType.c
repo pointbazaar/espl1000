@@ -7,7 +7,7 @@
 #include "../../commandline/Token.h"
 #include "../../commandline/TokenKeys.h"
 
-struct SimpleType* makeSimpleType(struct TokenList* tokens, bool debug) {
+struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 
 	if(debug){
 		printf("SimpleType(...)\n");

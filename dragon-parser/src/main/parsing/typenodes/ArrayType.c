@@ -27,7 +27,7 @@ struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug) {
 
 	if(!list_expect(copy1, LBRACKET)){return NULL;}
 
-	res->element_type = makeType(copy1,debug);
+	res->element_type = makeType2(copy1,debug);
 	if(res->element_type == NULL){return NULL;}
 
 	if(!list_expect(copy1, RBRACKET)){return NULL;}

@@ -22,11 +22,10 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens,bool debug) {
 	struct TokenList* copy = list_copy(tokens);
 
 	struct TokenList* copy2 = list_copy(copy);
-	res->optTypeNode = makeType(copy2,debug);
-	if(expr != NULL){
+	res->optTypeNode = makeType2(copy2,debug);
+	if(res->optTypeNode != NULL){
 		list_set(copy, copy2);
 	}
-
 
 	res->variableNode = makeVariable(copy,debug);
 

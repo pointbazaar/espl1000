@@ -95,9 +95,11 @@ int prec_index(char* op){
 	return -1;
 }
 
-int find(void* arr, int size, int element){
-	for(int i=0;i<size;i++){
-		if((int)arr[i] == element){
+int find(void** arr, int size, void* element){
+
+	for(int i = 0; i < size; i++){
+
+		if(arr[i] == element){
 			return i;
 		}
 	}
@@ -143,7 +145,7 @@ struct Expr* performTreeTransformation(
 		struct Term* leftTerm = terms[indexOfOp];
 		struct Term* rightTerm = terms[indexOfOp+1];
 
-		struct Expr* expr = makeExpr(leftTerm,opWithLargestPrecedence,rightTerm);
+		struct Expr* expr = makeExpr_3(leftTerm,opWithLargestPrecedence,rightTerm);
 		if(expr == NULL){return NULL;}
 
 		//simplify

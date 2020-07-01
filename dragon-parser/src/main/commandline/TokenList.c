@@ -26,17 +26,9 @@ struct TokenList* makeTokenList() {
 	return res;
 }
 
-/*
-void list_add(struct TokenList* list, int token_kind, char* token_value){
-	this->tokens.push_back(makeToken(token_kind,token_value));
-}
-
-void list_add(struct TokenList* list, int token_kind){
-	this->tokens.push_back(makeToken(token_kind));
-}
-*/
 void list_add(struct TokenList* list, struct Token* token) {
-	list->tokens.push_back(token);
+	list->tokens[list->tokensc] = token;
+	list->tokensc += 1;
 }
 
 void list_addAll(struct TokenList* list, struct Token** arr, int arrc) {
@@ -162,7 +154,7 @@ struct TokenList* list_copy(struct TokenList* other) {
 }
 
 void list_set(struct TokenList* list, struct TokenList* copy) {
-	list->tokens.clear();
+	list->tokens = NULL;
 	for(int i=0; i < list_size(copy);i++){
 		struct Token* tk = copy->tokens[i];
 		list_add(list, tk);

@@ -37,7 +37,7 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 	bool sucess_argument_types = true;
 
 	bool fail = false;
-	struct Type* mytype = makeType(copy,debug);
+	struct Type* mytype = makeType2(copy,debug);
 	if(mytype == NULL){fail=true;}
 
 	if(!fail){
@@ -56,7 +56,7 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 		if(!list_expect(copy2, COMMA)){fail2 = true;}
 		
 		if(!fail2){
-			struct Type* mytype = makeType(copy2,debug);
+			struct Type* mytype = makeType2(copy2,debug);
 			if(mytype == NULL){fail2 = true;}
 
 			if(!fail2){
@@ -76,7 +76,7 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 
 	if(!list_expect(copy, ARROW)){return NULL;}
 
-	res->returnType = makeType(copy,debug);
+	res->returnType = makeType2(copy,debug);
 	if(res->returnType == NULL){return NULL;}
 
 	list_set(tokens, copy);

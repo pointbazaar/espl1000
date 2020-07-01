@@ -36,7 +36,7 @@ void writeDeclArg(struct DeclArg* m, FILE* file){
 	}
 }
 void writeVariable(struct Variable* m, FILE* file){
-	write(m->simpleVariableNode,file);
+	writeSimpleVar(m->simpleVariableNode,file);
 	for(int i = 0;i < m->count_memberAccessList;i++){ 
 		struct Variable* v = m->memberAccessList[i];
 		writeSimpleVar(v,file); 
@@ -74,7 +74,7 @@ void writeIntConst(struct IntConst* m, FILE* file){
 	fprintf(file,"%d\t",m->value);
 }
 void writeCharConst(struct CharConst* m, FILE* file){
-	fprintf(file,"%s\t",m->content);
+	fprintf(file,"%c\t",m->content);
 }
 void writeOp(struct Op* m, FILE* file){
 	fprintf(file,"%s\t",m->op);
@@ -171,7 +171,7 @@ void writeSimpleType(struct SimpleType* m, FILE* file){
 
 void writeSubrType(struct SubrType* m, FILE* file){
 	writeType(m->returnType,file);
-	fprintf(file,"%s\t",m->hasSideEffects);
+	fprintf(file,"%d\t",m->hasSideEffects);
 
 	for(int i = 0;i < m->count_argumentTypes;i++){
 		struct Type* t = m->argumentTypes[i];
@@ -183,7 +183,7 @@ void write_ast(char* filename, struct Namespace* namespaceNode){
 	FILE* file;
 	file = fopen(filename, "w");
 	
-	writeNamespace(namespaceNode,&file);
+	writeNamespace(namespaceNode, file);
 	
 	fclose(file);
 }

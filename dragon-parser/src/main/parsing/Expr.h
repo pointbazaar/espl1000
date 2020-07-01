@@ -32,7 +32,7 @@ struct Expr* performTreeTransformation(
 	struct Term** terms, int termsc
 );
 
-int find(void* arr, int size, int element);
+int find(void** arr, int size, void* element);
 
 int prec_index(char* op);
 

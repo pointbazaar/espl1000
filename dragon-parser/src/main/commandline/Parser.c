@@ -29,7 +29,7 @@ int main(int argc, char** argv){
 	char** filenames = malloc(sizeof(char*)*100);
 	int filenamescount = 0;
 	
-	char** flags = malloc(sizeof(char*)*100;
+	char** flags = malloc(sizeof(char*)*100);
 	int flagscount = 0;
 
 	for(int i=1;i<argc;i++){
@@ -152,11 +152,11 @@ struct TokenList* readTokensFromTokensFile(char* tokensFile, bool debug){
 	struct TokenList* tks = makeTokenList(tokensFile);
 	FILE* file = fopen(tokensFile,"r");
     char* str; 
-    while (getline(file, str)){
+    while (getline(str, 1000, file)){
 
 		struct Token* tkn = recognizeToken(str, debug);
     	if(tkn != NULL){
-			tks.add(tkn);
+			list_add(tks, tkn);
     	}
     }
 

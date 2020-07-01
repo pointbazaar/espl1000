@@ -38,7 +38,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 
 	struct TokenList* copy = list_copy(tokens);
 
-	if (list_size(copy) > 1 && tokenEquals(list_get(copy,0),LPARENS) ) {
+	if (list_size(copy) > 1 && tokenEquals(list_get(copy,0), makeToken(LPARENS)) ) {
 		struct TokenList* copy2 = list_copy(copy);
 
 		if(!list_expect(copy2, LPARENS)){return NULL;}
@@ -51,7 +51,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 		list_set(copy, copy2);
 
 	} else {
-		res->m1 = makeSimpleType(copy,debug);
+		res->m1 = makeSimpleType2(copy,debug);
 		if(res->m1 == NULL){return NULL;}
 	}
 

@@ -3,8 +3,9 @@
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
 #include "../../main/commandline/Token.h"
-
 #include "../../main/parsing/BoolConst.h"
+
+#include <stdbool.h>
 
 int boolconst_test_parse_bool_constant_node(bool debug)  {
 	struct TokenList* list = makeTokenList();

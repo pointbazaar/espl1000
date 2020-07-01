@@ -11,13 +11,13 @@ int declarg_test_parse_declared_argument() {
 
 	struct TokenList* list = makeTokenList();
 
-	list_add(list, LPARENS);
-	list_add(list, LPARENS);
+	list_add(list, makeToken(LPARENS));
+	list_add(list, makeToken(LPARENS));
 	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt"));
-	list_add(list, LPARENS);
-	list_add(list, ARROW);
+	list_add(list, makeToken(LPARENS));
+	list_add(list, makeToken(ARROW));
 	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt"));
-	list_add(list, RPARENS);
+	list_add(list, makeToken(RPARENS));
 	list_add(list, makeToken2(ID,"subr"));
 
 	struct DeclArg* node = makeDeclArg(list,false);

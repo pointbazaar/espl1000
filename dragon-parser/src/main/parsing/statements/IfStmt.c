@@ -52,7 +52,7 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 	if(!list_expect(copy, RCURLY)){return NULL;}
 
 	//maybe there is an else
-	if (list_startsWith(copy, ELSE)) {
+	if (list_startsWith(copy, makeToken(ELSE))) {
 
 		if(!list_expect(copy, ELSE)){return NULL;}
 
