@@ -149,7 +149,7 @@ bool test_all_inner(bool debug){
 	}	
 	
 
-	printf("passed %d of %d \n",passed,count);
+	printf("passed %d of %d(this run) of %d(total test suite) \n",passed,count, k);
 
 	return passed == count;
 }
