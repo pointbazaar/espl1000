@@ -14,7 +14,7 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 		printf("IntConst(...) from %s\n", list_code(tokens, debug));
 	}
 
-	struct TokenList* copy = makeTokenList(tokens);
+	struct TokenList* copy = list_copy(tokens);
 
 	struct Token* tk = list_get(copy, 0);
 	if(tk == NULL){return NULL;}

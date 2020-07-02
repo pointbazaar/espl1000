@@ -7,7 +7,8 @@
 #include <stdbool.h>
 
 int declarg_test_parse_declared_argument(bool debug) {
-	char* source = "((PInt)~>PInt) subr";
+	
+	//  ((PInt)~>PInt) subr
 
 	struct TokenList* list = makeTokenList();
 

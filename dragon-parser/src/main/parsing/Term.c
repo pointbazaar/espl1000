@@ -73,7 +73,7 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 			//a string constant is syntatic sugar.
 			//in the parsing stage it is converted to an array of char constants
 			//inline the stringConstant and its syntatic sugar
-			struct Token* token = list_get(tokens, 0);
+			//struct Token* token = list_get(tokens, 0);
 			
 			//"Error: could not read stringConstant syntatic sugar";
 			fail = true;

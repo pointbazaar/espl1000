@@ -16,7 +16,8 @@ int methodcall_test1(bool debug) {
 	struct MethodCall* call = makeMethodCall(l,false);
 
 	bool assert1 = (0 == list_size(l));
-	return (assert1)?1:0;
+	bool assert2 = call != NULL;
+	return (assert1 && assert2)?1:0;
 }
 
 int methodcall_test2(bool debug) {
@@ -28,9 +29,11 @@ int methodcall_test2(bool debug) {
 	list_add(list, makeToken(RPARENS));
 
 	struct MethodCall* call = makeMethodCall(list,false);
-	bool assert1 = (0 == list_size(list));
 
-	return (assert1)?1:0;
+	bool assert1 = (0 == list_size(list));
+	bool assert2 = call != NULL;
+
+	return (assert1 && assert2)?1:0;
 }
 
 int methodcall_test3(bool debug) {
@@ -42,8 +45,11 @@ int methodcall_test3(bool debug) {
 	list_add(list, makeToken(RPARENS));
 
 	struct MethodCall* call = makeMethodCall(list,false);
+
 	bool assert1 = (0 == list_size(list));
-	return (assert1)?1:0;
+	bool assert2 = call != NULL;
+
+	return (assert1 && assert2)?1:0;
 }
 
 int methodcall_test_can_parse_subroutine_call(bool debug) {
@@ -55,9 +61,11 @@ int methodcall_test_can_parse_subroutine_call(bool debug) {
 	list_add(tl, makeToken(RPARENS));
 
 	struct MethodCall* call = makeMethodCall(tl,false);
-	bool assert1 = (0 == list_size(tl));
 
-	return (assert1)?1:0;
+	bool assert1 = (0 == list_size(tl));
+	bool assert2 = call != NULL;
+
+	return (assert1 && assert2)?1:0;
 }
 
 int methodcall_test_can_parse_subroutine_call2(bool debug) {
@@ -70,8 +78,10 @@ int methodcall_test_can_parse_subroutine_call2(bool debug) {
 	list_add(tokens, makeToken(RPARENS));
 
 	struct MethodCall* call = makeMethodCall(tokens,false);
-	bool assert1 = (0 == list_size(tokens));
 
-	return (assert1)?1:0;
+	bool assert1 = (0 == list_size(tokens));
+	bool assert2 = call != NULL;
+
+	return (assert1 && assert2)?1:0;
 }
 

@@ -36,11 +36,13 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
 		res->value = atof(list_get(copy, 0)->value);
 		list_consume(copy, 1);
-		
+
 	}else{
 		//could not find a float const
 		return NULL;
 	}
+
+	res->value *= f;
 
 	//--------------------------
 

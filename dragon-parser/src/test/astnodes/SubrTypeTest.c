@@ -21,8 +21,9 @@ int subrtype_test_typename(bool debug) {
 	struct SubrType* sub = makeSubrType(l,debug);
 
 	bool assert1 = (0 == list_size(l));
+	bool assert2 = sub != NULL;
 
-	return (assert1)?1:0;
+	return (assert1 && assert2)?1:0;
 }
 
 int subrtype_test_typename_subroutine_return_type(bool debug) {
@@ -49,7 +50,9 @@ int subrtype_test_typename_subroutine_return_type(bool debug) {
 	struct SubrType* sub = makeSubrType(l,debug);
 
 	bool assert1 = (0 == list_size(l));
-	return (assert1)?1:0;
+	bool assert2 = sub != NULL;
+
+	return (assert1 && assert2)?1:0;
 }
 
 int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(bool debug)  {
@@ -67,7 +70,9 @@ int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(bool debu
 	struct SubrType* node = makeSubrType(l,debug);
 
 	bool assert1 = (0 == list_size(l));
-	return (assert1)?1:0;
+	bool assert2 = node != NULL;
+
+	return (assert1 && assert2)?1:0;
 }
 
 int subrtype_test_subroutine_type_parsing_subroutine_without_side_effects(bool debug) {
@@ -83,6 +88,8 @@ int subrtype_test_subroutine_type_parsing_subroutine_without_side_effects(bool d
 	struct SubrType* node = makeSubrType(l,debug);
 
 	bool assert1 = (0 == list_size(l));
-	return (assert1)?1:0;
+	bool assert2 = node != NULL;
+
+	return (assert1 && assert2)?1:0;
 }
 

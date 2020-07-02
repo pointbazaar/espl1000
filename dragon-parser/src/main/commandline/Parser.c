@@ -154,7 +154,7 @@ void printHelp() {
 
 struct TokenList* readTokensFromTokensFile(char* tokensFile, bool debug){
 
-	char* fileNameWithoutPath = tokensFile;
+	//char* fileNameWithoutPath = tokensFile;
 	
 	struct TokenList* tks = makeTokenList(tokensFile);
 	FILE* file = fopen(tokensFile,"r");

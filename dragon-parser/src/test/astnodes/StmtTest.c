@@ -19,7 +19,9 @@ int stmt_test_assignment_statement_with_struct_access(bool debug) {
 	struct Stmt* node = makeStmt(tokens,false);
 
 	bool assert1 = (0 == list_size(tokens)); //all tokens should have been consumed
-	return (assert1)?1:0;
+	bool assert2 = node != NULL;
+
+	return (assert1 && assert2)?1:0;
 }
 
 int stmt_test_assignment_statement_with_method_call(bool debug) {
@@ -35,6 +37,7 @@ int stmt_test_assignment_statement_with_method_call(bool debug) {
 	struct Stmt* node = makeStmt(tokens,false);
 
 	bool assert1 = (0 == list_size(tokens)); //all tokens should have been consumed
+	bool assert2 = node != NULL;
 
-	return (assert1)?1:0;
+	return (assert1 && assert2)?1:0;
 }

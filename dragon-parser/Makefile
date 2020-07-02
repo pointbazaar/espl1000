@@ -1,4 +1,4 @@
-FLAGS := -O0 -march=native -g
+FLAGS := -O0 -march=native -g -Wall
 
 #this is a very crude makefile.
 

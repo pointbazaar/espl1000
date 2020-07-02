@@ -91,7 +91,7 @@ int prec_index(char* op){
 	a[7] = "!=";
 	a[8] = "==";
 	a[9] = "&&";
-	a[10] == "||";
+	a[10] = "||";
 
 	for(int i=0;i<nops;i++){
 		if(strcmp(op,a[i])==0){ return i; }

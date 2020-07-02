@@ -25,9 +25,11 @@ int if_test1(bool debug) {
 	list_add(list, makeToken(RCURLY));
 
 	struct IfStmt* i = makeIfStmt(list,debug);
-	bool assert1 = (0 == list_size(list));
 
-	return  (assert1)?1:0;
+	bool assert1 = (0 == list_size(list));
+	bool assert2 = i != NULL;
+
+	return  (assert1 && assert2)?1:0;
 }
 
 int if_test2(bool debug) {
