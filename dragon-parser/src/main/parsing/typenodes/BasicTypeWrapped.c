@@ -31,14 +31,15 @@ struct BasicTypeWrapped* makeBasicTypeWrappedSubr(struct SubrType* typeNode) {
 struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("BasicTypeWrapped(...)\n");
+		printf("BasicTypeWrapped(...) from: %s\n", list_code(tokens));
 	}
 
 	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
+	if(res == NULL){return NULL;}
 
 	struct TokenList* copy = list_copy(tokens);
 
-	if (list_size(copy) > 1 && tokenEquals(list_get(copy,0), makeToken(LPARENS)) ) {
+	if (list_size(copy) > 1 && tokenEquals(list_head(copy), makeToken(LPARENS)) ) {
 		struct TokenList* copy2 = list_copy(copy);
 
 		if(!list_expect(copy2, LPARENS)){return NULL;}

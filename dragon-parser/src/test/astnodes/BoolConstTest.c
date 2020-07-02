@@ -10,8 +10,9 @@
 
 int boolconst_test_parse_bool_constant_node(bool debug)  {
 
-	//DEBUG
-	printf("boolconst_test_parse_bool_constant_node\n");
+	if(debug){
+		printf("boolconst_test_parse_bool_constant_node\n");
+	}
 
 	struct TokenList* list = makeTokenList();
 	

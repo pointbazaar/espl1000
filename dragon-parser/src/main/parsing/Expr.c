@@ -29,7 +29,12 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 	struct Term** terms = malloc(sizeof(struct Term*)*200);;
 	int termsc = 0;
 
+	if(terms == NULL || ops == NULL){
+		return NULL;
+	}
+
 	struct TokenList* copy = list_copy(tokens);
+	
 	struct Term* myterm2 = makeTerm(copy,debug);
 	if(myterm2 == NULL){return NULL;}
 	terms[termsc++] = myterm2;

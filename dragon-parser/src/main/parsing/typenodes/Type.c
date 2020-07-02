@@ -48,6 +48,10 @@ struct Type* makeType2(struct TokenList* tokens, bool debug){
 	}
 
 	struct Type* res = malloc(sizeof(struct Type));
+	if(res == NULL){return NULL;}
+	res->m1 = NULL;
+	res->m2 = NULL;
+	res->m3 = NULL;
 
 	struct TokenList* copy = list_copy(tokens);
 

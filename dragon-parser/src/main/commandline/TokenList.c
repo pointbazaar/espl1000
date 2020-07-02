@@ -213,6 +213,7 @@ char* list_code(struct TokenList* list) {
 		struct Token* tk = list->tokens[i];
 		if(i++ < 10){
 			strcat(str, tk->value);
+			strcat(str, " ");
 		}
 	}
 	strcat(str,"    ");

@@ -104,13 +104,13 @@ bool test_all_inner(bool debug){
 	count += 1;
 
 	printf("Test: AssignStmt\n");
-	passed += assignstmt_test1();
-	passed += assignstmt_test_assign_char();
-	passed += assignstmt_test_assign_method_call_result();
-	passed += assignstmt_test_assign_method_call_result_2();
-	passed += assignstmt_test_assign_variable_with_array_index();
-	passed += assignstmt_test_can_assign_to_struct_member();
-	passed += assignstmt_test_type_declaration_for_variable();
+	passed += assignstmt_test1(debug);
+	passed += assignstmt_test_assign_char(debug);
+	passed += assignstmt_test_assign_method_call_result(debug);
+	passed += assignstmt_test_assign_method_call_result_2(debug);
+	passed += assignstmt_test_assign_variable_with_array_index(debug);
+	passed += assignstmt_test_can_assign_to_struct_member(debug);
+	passed += assignstmt_test_type_declaration_for_variable(debug);
 	count += 7;
 
 	printf("Test: MethodCall\n");

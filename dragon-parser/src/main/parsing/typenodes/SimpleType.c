@@ -10,12 +10,15 @@
 struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("SimpleType(...)\n");
+		printf("SimpleType(...) from: %s\n", list_code(tokens));
 	}
 
 	struct SimpleType* res = malloc(sizeof(struct SimpleType));
+	if(res == NULL){return NULL;}
 
-	struct Token* token = list_get(tokens, 0);
+	if(list_size(tokens) == 0){return NULL;}
+
+	struct Token* token = list_head(tokens);
 	if(token == NULL){return NULL;}
 
 	if (token->kind == TYPEIDENTIFIER) {
@@ -23,7 +26,9 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 	} else if (token->kind == ANYTYPE) {
 		res->typeName = "#";
 	} else {
-		//("Error: could not read simple type identifier");
+		if(debug){
+			printf("Error: could not read simple type identifier\n");
+		}
 		return NULL;
 	}
 
@@ -34,6 +39,7 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 
 struct SimpleType* makeSimpleType(char* typeName) {
 	struct SimpleType* res = malloc(sizeof(struct SimpleType));
+	if(res == NULL){return NULL;}
 
 	res->typeName = typeName;
 

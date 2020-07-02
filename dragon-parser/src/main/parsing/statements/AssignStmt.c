@@ -16,6 +16,7 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens,bool debug) {
 	}
 
 	struct AssignStmt* res = malloc(sizeof(struct AssignStmt));
+	if(res == NULL){return NULL;}
 
 	res->optTypeNode = NULL;
 
@@ -28,6 +29,7 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens,bool debug) {
 	}
 
 	res->variableNode = makeVariable(copy,debug);
+	if(res->variableNode == NULL){return NULL;}
 
 	if(!list_expect_2(copy, OPKEY,"=")){ return NULL;}
 
