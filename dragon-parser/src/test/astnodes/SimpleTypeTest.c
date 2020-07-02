@@ -7,7 +7,7 @@
 
 #include <stdbool.h>
 
-int simpletype_test_typenode_parsing() {
+int simpletype_test_typenode_parsing(bool debug) {
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(TYPEIDENTIFIER,"MyType") );
@@ -19,7 +19,7 @@ int simpletype_test_typenode_parsing() {
 }
 
 
-int simpletype_test_typenode_parsing_fails() {
+int simpletype_test_typenode_parsing_fails(bool debug) {
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ID,"myIllegalType") );
@@ -29,12 +29,12 @@ int simpletype_test_typenode_parsing_fails() {
 }
 
 
-int simpletype_test_typenode_parsing_anytype() {
+int simpletype_test_typenode_parsing_anytype(bool debug) {
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken(ANYTYPE) );
 
-	struct SimpleType* node = makeSimpleType(list_code(list));
+	struct SimpleType* node = makeSimpleType(list_code(list, false));
 	bool assert1 = (0 == list_size(list));
 
 	return (assert1)?1:0;

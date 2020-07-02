@@ -9,7 +9,8 @@ struct Type;
 struct DeclArg  {
 
 	struct Type* type;
-	char* name;
+
+	char name[20];
 };
 
 struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug);

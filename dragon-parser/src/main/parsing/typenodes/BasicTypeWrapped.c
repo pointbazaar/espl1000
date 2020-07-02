@@ -31,7 +31,7 @@ struct BasicTypeWrapped* makeBasicTypeWrappedSubr(struct SubrType* typeNode) {
 struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("BasicTypeWrapped(...) from: %s\n", list_code(tokens));
+		printf("BasicTypeWrapped(...) from: %s\n", list_code(tokens, debug));
 	}
 
 	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
@@ -57,6 +57,10 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 	}
 
 	list_set(tokens, copy);
+
+	if(debug){
+		printf("\tsuccess parsing BasicTypeWrapped\n");
+	}
 
 	return res;
 }

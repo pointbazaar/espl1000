@@ -10,21 +10,26 @@
 struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("SimpleType(...) from: %s\n", list_code(tokens));
+		printf("SimpleType(...) from: %s\n", list_code(tokens, debug));
 	}
 
 	struct SimpleType* res = malloc(sizeof(struct SimpleType));
 	if(res == NULL){return NULL;}
+	res->typeName[0] = '\0';
 
 	if(list_size(tokens) == 0){return NULL;}
 
 	struct Token* token = list_head(tokens);
 	if(token == NULL){return NULL;}
 
+
+	if(debug){
+		printf("\tinspect token kind\n");
+	}
 	if (token->kind == TYPEIDENTIFIER) {
-		res->typeName = token->value;
+		strcpy(res->typeName, token->value);
 	} else if (token->kind == ANYTYPE) {
-		res->typeName = "#";
+		strcpy(res->typeName, "#");
 	} else {
 		if(debug){
 			printf("Error: could not read simple type identifier\n");
@@ -34,6 +39,10 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 
 	list_consume(tokens, 1);
 
+	if(debug){
+		printf("\tsuccess parsing SimpleType\n");
+	}
+
 	return res;
 }
 
@@ -41,7 +50,7 @@ struct SimpleType* makeSimpleType(char* typeName) {
 	struct SimpleType* res = malloc(sizeof(struct SimpleType));
 	if(res == NULL){return NULL;}
 
-	res->typeName = typeName;
+	strcpy(res->typeName, typeName);
 
 	return res;
 }

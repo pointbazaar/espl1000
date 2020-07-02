@@ -6,7 +6,7 @@
 
 #include <string.h>
 
-int structmember_test_can_parse_struct_member() {
+int structmember_test_can_parse_struct_member(bool debug) {
 
 	struct TokenList* list = makeTokenList();
 

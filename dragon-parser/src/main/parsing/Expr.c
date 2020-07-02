@@ -18,7 +18,7 @@ struct Expr* makeExpr_1(struct Term* term) {
 struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("Expr(...) from %s\n", list_code(tokens));
+		printf("Expr(...) from %s\n", list_code(tokens, debug));
 	}
 
 	//we assume they never have more than 200 terms

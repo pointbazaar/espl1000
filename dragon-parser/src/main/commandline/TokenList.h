@@ -2,13 +2,17 @@
 #define TOKENLIST
 
 #include <string.h>
+#include <stdbool.h>
 
 #include "Token.h"
 
 struct TokenList {
 
 	//relative path of the source file
-	char* relPath;
+	//this is part of the struct and not a 'char*'
+	//on purpose. to reduce indirection
+	//and make the program simpler.
+	char relPath[100];
 
 	struct Token** tokens;
 
@@ -50,6 +54,6 @@ struct Token* list_get(struct TokenList* tknList,int i);
 struct Token* list_head(struct TokenList* tknList);
 int list_size(struct TokenList* tknList);
 
-char* list_code(struct TokenList* tknList);
+char* list_code(struct TokenList* tknList, bool debug);
 
 #endif

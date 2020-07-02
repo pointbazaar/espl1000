@@ -6,7 +6,7 @@
 
 #include <stdbool.h>
 
-int methodcall_test1() {
+int methodcall_test1(bool debug) {
 	struct TokenList* l = makeTokenList();
 
 	list_add(l, makeToken2(ID,"main"));
@@ -19,7 +19,7 @@ int methodcall_test1() {
 	return (assert1)?1:0;
 }
 
-int methodcall_test2() {
+int methodcall_test2(bool debug) {
 	struct TokenList* list = makeTokenList();
 
 	list_add(list, makeToken2(ID,"main"));
@@ -33,7 +33,7 @@ int methodcall_test2() {
 	return (assert1)?1:0;
 }
 
-int methodcall_test3() {
+int methodcall_test3(bool debug) {
 	struct TokenList* list = makeTokenList();
 
 	list_add(list, makeToken2(ID,"main"));
@@ -46,7 +46,7 @@ int methodcall_test3() {
 	return (assert1)?1:0;
 }
 
-int methodcall_test_can_parse_subroutine_call() {
+int methodcall_test_can_parse_subroutine_call(bool debug) {
 
 	struct TokenList* tl = makeTokenList();
 	list_add(tl, makeToken2(ID,"println"));
@@ -60,7 +60,7 @@ int methodcall_test_can_parse_subroutine_call() {
 	return (assert1)?1:0;
 }
 
-int methodcall_test_can_parse_subroutine_call2() {
+int methodcall_test_can_parse_subroutine_call2(bool debug) {
 	//println("x<5")
 
 	struct TokenList* tokens = makeTokenList();

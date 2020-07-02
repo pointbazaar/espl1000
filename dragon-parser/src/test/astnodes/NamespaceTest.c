@@ -7,7 +7,7 @@
 
 #include <stdbool.h>
 
-int namespace_test_can_parse_namespace_with_1_empty_struct() {
+int namespace_test_can_parse_namespace_with_1_empty_struct(bool debug) {
 
 	struct TokenList* l = makeTokenList();
 
@@ -24,7 +24,7 @@ int namespace_test_can_parse_namespace_with_1_empty_struct() {
 	return (assert1&&assert2)?1:0;
 }
 
-int namespace_test_can_parse_namespace_with_1_empty_method() {
+int namespace_test_can_parse_namespace_with_1_empty_method(bool debug) {
 
 	//TODO:
 	//these parser tests are problematic, because they don't just test the parser,

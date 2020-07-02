@@ -33,7 +33,7 @@ struct Term* makeTerm_other(struct Expr* expr){
 struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("Term(...) from %s\n", list_code(tokens));
+		printf("Term(...) from %s\n", list_code(tokens, debug));
 	}
 
 	struct Term* res = malloc(sizeof(struct Term));

@@ -18,16 +18,17 @@ struct ArrayType* makeArrayType(struct Type* element_type){
 struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("ArrayType(...)\n");
+		printf("ArrayType(...) from: %s\n", list_code(tokens, debug));
 	}
 
 	struct ArrayType* res = malloc(sizeof(struct ArrayType));
+	if(res == NULL){return NULL;}
 
 	struct TokenList* copy1 = list_copy(tokens);
 
 	if(!list_expect(copy1, LBRACKET)){return NULL;}
 
-	res->element_type = makeType2(copy1,debug);
+	res->element_type = makeType2(copy1, debug);
 	if(res->element_type == NULL){return NULL;}
 
 	if(!list_expect(copy1, RBRACKET)){return NULL;}

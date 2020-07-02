@@ -13,7 +13,10 @@ struct Token {
 	*/
 	int lineNumber;
 	int kind;
-	char* value;
+
+	//this is intentionally not a 'char*'
+	//in an effort to make the program simple.
+	char value[20];
 };
 
 bool tokenEquals(struct Token* a, struct Token* b);

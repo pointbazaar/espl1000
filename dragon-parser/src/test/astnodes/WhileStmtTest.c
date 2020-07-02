@@ -6,7 +6,7 @@
 
 #include <stdbool.h>
 
-int whilestmt_test1() {
+int whilestmt_test1(bool debug) {
 	
 	struct TokenList* list = makeTokenList();
 
@@ -24,7 +24,7 @@ int whilestmt_test1() {
 
 	list_add(list, makeToken(RCURLY) );
 
-	struct WhileStmt* ws = makeWhileStmt(list,false);
+	struct WhileStmt* ws = makeWhileStmt(list,debug);
 
 	return (ws!=NULL)?1:0;
 }

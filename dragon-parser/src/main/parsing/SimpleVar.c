@@ -12,7 +12,7 @@
 struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("SimpleVar(...) from %s\n", list_code(tokens));
+		printf("SimpleVar(...) from %s\n", list_code(tokens, debug));
 	}
 
 	struct SimpleVar* res = malloc(sizeof(struct SimpleVar));
@@ -55,7 +55,7 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 			tokens->relPath,
 			token->lineNumber,
 			token->value,
-			list_code(tokens)
+			list_code(tokens, debug)
 		);
 
 		return NULL;

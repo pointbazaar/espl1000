@@ -15,7 +15,7 @@
 struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 
 	if (debug) {
-		printf("Method(...) from: %s\n", list_code(tokens));
+		printf("Method(...) from: %s\n", list_code(tokens, debug));
 	}
 
 	struct Method* res = malloc(sizeof(struct Method));

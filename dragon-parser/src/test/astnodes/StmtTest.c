@@ -6,7 +6,7 @@
 
 #include <stdbool.h>
 
-int stmt_test_assignment_statement_with_struct_access() {
+int stmt_test_assignment_statement_with_struct_access(bool debug) {
 
 	struct TokenList* tokens = makeTokenList();
 	list_add(tokens, makeToken2(ID,"x") );
@@ -22,7 +22,7 @@ int stmt_test_assignment_statement_with_struct_access() {
 	return (assert1)?1:0;
 }
 
-int stmt_test_assignment_statement_with_method_call() {
+int stmt_test_assignment_statement_with_method_call(bool debug) {
 
 	struct TokenList* tokens = makeTokenList();
 

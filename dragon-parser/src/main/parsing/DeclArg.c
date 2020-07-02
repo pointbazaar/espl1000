@@ -12,7 +12,7 @@ struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 	struct DeclArg* res = malloc(sizeof(struct DeclArg));
 
 	if(debug){
-		printf("DeclaredArg(...) from %s",list_code(tokens));
+		printf("DeclaredArg(...) from %s",list_code(tokens, debug));
 	}
 
 	struct TokenList* copy = list_copy(tokens);
@@ -20,8 +20,11 @@ struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 	res->type = makeType2(copy,debug);
 	if(res->type == NULL){return NULL;}
 
-	res->name = makeIdentifier(copy,debug)->identifier;
-	if(res->name == NULL){return NULL;}
+	struct Identifier* id = makeIdentifier(copy,debug);
+	if(id == NULL){ return NULL; }
+	res->name[0]='\0';
+	strcpy(res->name, id->identifier);
+	
 
 	list_set(tokens, copy);
 

@@ -44,7 +44,7 @@ struct Type* makeType_3(struct ArrayType* typeNode){
 struct Type* makeType2(struct TokenList* tokens, bool debug){
 
 	if(debug){
-		printf("Type(...) from: %s\n",list_code(tokens));
+		printf("Type(...) from: %s\n",list_code(tokens, debug));
 	}
 
 	struct Type* res = malloc(sizeof(struct Type));
@@ -67,6 +67,10 @@ struct Type* makeType2(struct TokenList* tokens, bool debug){
 	}
 
 	list_set(tokens, copy);
+
+	if(debug){
+		printf("\tsuccess parsing Type\n");
+	}
 
 	return res;
 }

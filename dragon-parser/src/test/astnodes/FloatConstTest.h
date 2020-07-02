@@ -1,8 +1,10 @@
 #ifndef FLOATCONSTTEST
 #define FLOATCONSTTEST
 
-int floatconst_test1();
+#include <stdbool.h>
 
-int floatconst_test2();
+int floatconst_test1(bool debug);
+
+int floatconst_test2(bool debug);
 
 #endif

@@ -7,7 +7,7 @@
 
 #include "../../main/parsing/typenodes/BasicTypeWrapped.h"
 
-int basictypewrapped_test_type_parsing_simple_type() {
+int basictypewrapped_test_type_parsing_simple_type(bool debug) {
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt"));

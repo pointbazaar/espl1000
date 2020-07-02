@@ -6,7 +6,7 @@
 
 #include "../../main/parsing/FloatConst.h"
 
-int floatconst_test1() {
+int floatconst_test1(bool debug) {
 
 	struct TokenList* list = makeTokenList();
 
@@ -18,7 +18,7 @@ int floatconst_test1() {
 	return (node != NULL)?1:0;
 }
 
-int floatconst_test2() {
+int floatconst_test2(bool debug) {
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(FLOATING,"4.0f"));

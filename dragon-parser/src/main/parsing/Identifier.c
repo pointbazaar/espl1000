@@ -10,7 +10,7 @@
 struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("Identifier(...) from: %s\n", list_code(tokens));
+		printf("Identifier(...) from: %s\n", list_code(tokens, debug));
 	}
 
 	struct Identifier* res = malloc(sizeof(struct Identifier));
@@ -39,7 +39,7 @@ struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 
 		strcat(msg,my);
 		strcat(msg," in context '"); 
-		strcat(msg,list_code(tokens));
+		strcat(msg,list_code(tokens, debug));
 		strcat(msg,"'");
 
 		return NULL;

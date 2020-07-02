@@ -11,7 +11,7 @@
 struct Op* makeOp(struct TokenList* tokens, bool debug){
 
 	if(debug){
-		printf("Op(...) from %s\n", list_code(tokens));
+		printf("Op(...) from %s\n", list_code(tokens, debug));
 	}
 
 	struct Op* res = malloc(sizeof(struct Op));

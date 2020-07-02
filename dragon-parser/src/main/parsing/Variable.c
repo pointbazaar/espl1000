@@ -11,15 +11,15 @@
 
 struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 
+	if(debug){
+		printf("Variable(...) from %s\n", list_code(tokens, debug));
+	}
+
 	struct Variable* res = malloc(sizeof(struct Variable));
 	res->simpleVariableNode = NULL;
 
 	res->memberAccessList = malloc(sizeof(struct Variable*)*1);
 	res->count_memberAccessList = 0;
-
-	if(debug){
-		printf("Variable(...) from %s\n", list_code(tokens));
-	}
 
 	struct TokenList* copy = list_copy(tokens);
 

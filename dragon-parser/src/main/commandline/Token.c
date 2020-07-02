@@ -11,7 +11,11 @@ struct Token* makeToken(int kind){
 struct Token* makeToken2(int kind, char* value){
 	struct Token* res = malloc(sizeof(struct Token));
 	res->kind = kind;
-	res->value = value;
+
+	res->value[0]='\0';
+	if(value != NULL){
+		strcpy(res->value, value);
+	}
 	res->lineNumber = -1;
 	return res;
 }

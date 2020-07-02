@@ -1,6 +1,8 @@
 #ifndef WHILESTMTTEST
 #define WHILESTMTTEST
 
-int whilestmt_test1();
+#include <stdbool.h>
+
+int whilestmt_test1(bool debug);
 
 #endif

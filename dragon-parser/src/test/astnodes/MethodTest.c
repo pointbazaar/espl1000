@@ -6,7 +6,7 @@
 
 #include <stdbool.h>
 
-int method_test_can_parse_method_with_arguments() {
+int method_test_can_parse_method_with_arguments(bool debug) {
 
 	struct TokenList* l = makeTokenList(); //ParserPhases.makeTokenList("fn main (String hello)~>PInt { main(); }", false);
 
@@ -31,7 +31,7 @@ int method_test_can_parse_method_with_arguments() {
 	return  m->count_arguments;
 }
 
-int method_test_can_parse_subroutine() {
+int method_test_can_parse_subroutine(bool debug) {
 
 		struct TokenList* l = makeTokenList();
 
@@ -56,7 +56,7 @@ int method_test_can_parse_subroutine() {
 		return (m!=NULL)?1:0;
 }
 
-int method_test_can_parse_method_without_arguments() {
+int method_test_can_parse_method_without_arguments(bool debug) {
 
 	struct TokenList* l = makeTokenList();
 

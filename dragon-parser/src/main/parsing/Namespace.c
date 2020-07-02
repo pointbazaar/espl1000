@@ -13,7 +13,7 @@
 struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug) {
 
 	if (debug) {
-		printf("Namespace(...) from: %s\n", list_code(tokens));
+		printf("Namespace(...) from: %s\n", list_code(tokens, debug));
 	}
 
 	struct Namespace* res = malloc(sizeof(struct Namespace));

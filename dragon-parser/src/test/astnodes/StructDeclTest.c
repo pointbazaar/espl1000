@@ -7,7 +7,7 @@
 
 #include <stdbool.h>
 
-int structdecl_test_can_parse_empty_struct_decl() {
+int structdecl_test_can_parse_empty_struct_decl(bool debug) {
 
 	struct TokenList* list = makeTokenList(); 
 
@@ -16,14 +16,14 @@ int structdecl_test_can_parse_empty_struct_decl() {
 	list_add(list, makeToken(LCURLY) );
 	list_add(list, makeToken(RCURLY) );
 
-	struct StructDecl* s = makeStructDecl(list, false);
+	struct StructDecl* s = makeStructDecl(list, debug);
 
 	bool assert1 = (0 == s->count_members);
 
 	return (assert1)?1:0;
 }
 
-int structdecl_test_will_not_parse_invalid_typename_for_struct() {
+int structdecl_test_will_not_parse_invalid_typename_for_struct(bool debug) {
 
 	struct TokenList* list = makeTokenList(); 
 
@@ -32,11 +32,11 @@ int structdecl_test_will_not_parse_invalid_typename_for_struct() {
 	list_add(list, makeToken(LCURLY));
 	list_add(list, makeToken(RCURLY));
 
-	struct StructDecl* s = makeStructDecl(list, false);
+	struct StructDecl* s = makeStructDecl(list, debug);
 	return (s!=NULL)?1:0;
 }
 
-int structdecl_test_rejects_struct_with_subroutine_type() {
+int structdecl_test_rejects_struct_with_subroutine_type(bool debug) {
 
 	struct TokenList* list = makeTokenList(); 
 
@@ -48,11 +48,11 @@ int structdecl_test_rejects_struct_with_subroutine_type() {
 	list_add(list, makeToken(LCURLY) );
 	list_add(list, makeToken(RCURLY) );
 
-	struct StructDecl* s = makeStructDecl(list, false);
+	struct StructDecl* s = makeStructDecl(list, debug);
 	return (s!=NULL)?1:0;
 }
 
-int structdecl_test_can_parse_struct_with_1_member() {
+int structdecl_test_can_parse_struct_with_1_member(bool debug) {
 
 	struct TokenList* list = makeTokenList();
 
@@ -63,7 +63,7 @@ int structdecl_test_can_parse_struct_with_1_member() {
 	list_add(list, makeToken2(ID,"a") );
 	list_add(list, makeToken(RCURLY) );
 
-	struct StructDecl* node = makeStructDecl(list, false);
+	struct StructDecl* node = makeStructDecl(list, debug);
 
 	bool assert1 = (1 == node->count_members);
 	bool assert2 = strcmp("a", node->members[0]->name) == 0;
@@ -71,7 +71,7 @@ int structdecl_test_can_parse_struct_with_1_member() {
 	return (assert1&&assert2)?1:0;
 }
 
-int structdecl_test_can_parse_struct_with_2_members() {
+int structdecl_test_can_parse_struct_with_2_members(bool debug) {
 
 	struct TokenList* list = makeTokenList(); 
 
@@ -85,7 +85,7 @@ int structdecl_test_can_parse_struct_with_2_members() {
 	list_add(list, makeToken2(ID,"b") );
 	list_add(list, makeToken(RCURLY) );
 
-	struct StructDecl* node = makeStructDecl(list, false);
+	struct StructDecl* node = makeStructDecl(list, debug);
 
 	bool assert1 = (2 == node->count_members);
 

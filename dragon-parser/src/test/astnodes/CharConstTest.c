@@ -6,7 +6,7 @@
 
 #include "../../main/parsing/CharConst.h"
 
-int charconst_test_parse_char_constant_node() {
+int charconst_test_parse_char_constant_node(bool debug) {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(CCONST,"h"));
 
@@ -16,7 +16,7 @@ int charconst_test_parse_char_constant_node() {
 	return (assert1)?1:0;
 }
 
-int charconst_test_parse_char_constant_node_newline() {
+int charconst_test_parse_char_constant_node_newline(bool debug) {
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(CCONST,"\n"));

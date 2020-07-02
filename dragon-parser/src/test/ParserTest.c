@@ -22,6 +22,8 @@
 #include "astnodes/StructDeclTest.h"
 #include "astnodes/TermTest.h"
 
+#include "commandline/TokenListTest.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -30,9 +32,9 @@ void test_all(bool debug){
 	
 	bool res = test_all_inner(debug);
 	if(res){
-		printf("Passed all Tests.");
+		printf("Passed all Tests.\n");
 	}else{
-		printf("Failed some Tests.");
+		printf("Failed some Tests.\n");
 	}
 	
 }
@@ -40,6 +42,11 @@ void test_all(bool debug){
 bool test_all_inner(bool debug){
 
 	printf("running Dragon-Parser Tests...\n");
+
+	//if some tests fail, the test suit should be 
+	//stopped right there. no use running other tests
+	//if one test already failed. we can work
+	//on the failed test then.
 
 	//execute all tests and give feedback
 	//every test should stdout its name, such that failing tests can be identified easily
@@ -49,117 +56,94 @@ bool test_all_inner(bool debug){
 	int count=0;
 	int passed=0;
 
+	int num_tests = 50;
 
-	printf("Test: BoolConst\n");
-	passed += boolconst_test_parse_bool_constant_node(debug);
+	//https://stackoverflow.com/questions/252748/how-can-i-use-an-array-of-function-pointers
+	//function pointer array for the tests
+	int (*tests[num_tests]) (bool debug);
 
-	printf("Test: CharConst\n");
-	passed += charconst_test_parse_char_constant_node();
-	passed += charconst_test_parse_char_constant_node_newline();
-	count+=3;
+	tests[0] = test_tokenlist1;
+	tests[1] = test_tokenlist_consume;
 
-	printf("Test: FloatConst\n");
-	passed += floatconst_test1();
-	passed += floatconst_test2();
-	count+=2;
+	tests[2] = boolconst_test_parse_bool_constant_node;
 
-	printf("Test: Term\n");
-	passed += term_test_simple_term(debug);
-	passed += term_test_variable_term(debug);
-	count+=2;
+	tests[3] = charconst_test_parse_char_constant_node;
+	tests[4] = charconst_test_parse_char_constant_node_newline;
 
+	tests[5] = floatconst_test1;
+	tests[6] = floatconst_test2;
+
+	tests[7] = term_test_simple_term;
+	tests[8] = term_test_variable_term;
+
+	tests[9] = simplevar_test_parse_simple_indexed_variable;
+	tests[10] = simplevar_test_parse_simple_variable;
 	
-	printf("Test: SimpleVar\n");
-	passed += simplevar_test_parse_simple_indexed_variable(debug);
-	passed += simplevar_test_parse_simple_variable(debug);
-	count += 2;
+	tests[11] = variable_test_parse_index_access;
+	tests[12] = variable_test_parse_struct_member_access;
+	tests[13] = variable_test_parse_struct_member_access_and_index_access;
 
-	printf("Test: Variable\n");
-	passed += variable_test_parse_index_access(debug);
-	passed += variable_test_parse_struct_member_access(debug);
-	passed += variable_test_parse_struct_member_access_and_index_access(debug);
-	count  += 3;
+	tests[14] = expr_recognize_2_op_expr;
+	tests[15] = expr_test_simple_expression;
+	tests[16] = expr_test_variable_name_expression;
 
+	tests[17] = if_test1;
+	tests[18] = if_test2;
 
-	printf("Test: Expr\n");
-	passed += expr_recognize_2_op_expr(debug);
-	passed += expr_test_simple_expression(debug);
-	passed += expr_test_variable_name_expression(debug);
-	count+=3;
+	tests[19] = retstmt_test1;
+	tests[20] = retstmt_test2;
+	tests[21] = retstmt_test3;
 
+	tests[22] = whilestmt_test1;
 
-	printf("Test: IfStmt\n");
-	passed += if_test1(debug);
-	passed += if_test2(debug);
-	count += 2;
-
-	printf("Test: RetStmt\n");
-	passed += retstmt_test1(debug);
-	passed += retstmt_test2(debug);
-	passed += retstmt_test3(debug);
-	count += 3;
-
-	printf("Test: WhileStmt\n");
-	passed += whilestmt_test1();
-	count += 1;
-
-	printf("Test: AssignStmt\n");
-	passed += assignstmt_test1(debug);
-	passed += assignstmt_test_assign_char(debug);
-	passed += assignstmt_test_assign_method_call_result(debug);
-	passed += assignstmt_test_assign_method_call_result_2(debug);
-	passed += assignstmt_test_assign_variable_with_array_index(debug);
-	passed += assignstmt_test_can_assign_to_struct_member(debug);
-	passed += assignstmt_test_type_declaration_for_variable(debug);
-	count += 7;
-
-	printf("Test: MethodCall\n");
-	passed += methodcall_test1();
-	passed += methodcall_test2();
-	passed += methodcall_test3();
-	passed += methodcall_test_can_parse_subroutine_call();
-	passed += methodcall_test_can_parse_subroutine_call2();
-	count += 6;
-
-	printf("Test: Stmt\n");
-	passed += stmt_test_assignment_statement_with_method_call();
-	passed += stmt_test_assignment_statement_with_struct_access();
-	count += 2;
-
-	printf("Test: Method\n");
-	passed += method_test_can_parse_method_with_arguments();
-	passed += method_test_can_parse_method_without_arguments();
-	passed += method_test_can_parse_subroutine();
-	count += 3;
-
-
-	printf("Test: DeclArg\n");
-	passed += declarg_test_parse_declared_argument();
-	count++;
-
-	printf("Test: StructMember\n");
-	passed += structmember_test_can_parse_struct_member();
-	count++;
-
+	tests[23] = assignstmt_test1;
+	tests[24] = assignstmt_test_assign_char;
+	tests[25] = assignstmt_test_assign_method_call_result;
+	tests[26] = assignstmt_test_assign_method_call_result_2;
+	tests[27] = assignstmt_test_assign_variable_with_array_index;
+	tests[28] = assignstmt_test_can_assign_to_struct_member;
+	tests[29] = assignstmt_test_type_declaration_for_variable;
 	
-
-
-	printf("Test: BasicTypeWrapped\n");
-	passed += basictypewrapped_test_type_parsing_simple_type();
-	count+=1;
-
-	printf("Test: SimpleType\n");
-	passed += simpletype_test_typenode_parsing();
-	passed += simpletype_test_typenode_parsing_anytype();
-	passed += simpletype_test_typenode_parsing_fails();
-	count+=3;
-
-	printf("Test: SubrType\n");
-	passed += subrtype_test_subroutine_type_parsing_subroutine_with_side_effects();
-	passed += subrtype_test_subroutine_type_parsing_subroutine_without_side_effects();
-	passed += subrtype_test_typename();
-	passed += subrtype_test_typename_subroutine_return_type();
-	count+=4;
+	tests[30] = methodcall_test1;
+	tests[31] = methodcall_test2;
+	tests[32] = methodcall_test3;
+	tests[33] = methodcall_test_can_parse_subroutine_call;
+	tests[34] = methodcall_test_can_parse_subroutine_call2;
+	
+	tests[35] = stmt_test_assignment_statement_with_method_call;
+	tests[36] = stmt_test_assignment_statement_with_struct_access;
+	
+	tests[37] = method_test_can_parse_method_with_arguments;
+	tests[38] = method_test_can_parse_method_without_arguments;
+	tests[39] = method_test_can_parse_subroutine;
+	
+	tests[40] = declarg_test_parse_declared_argument;
+	
+	tests[41] = structmember_test_can_parse_struct_member;
+	
+	tests[42] = basictypewrapped_test_type_parsing_simple_type;
+	
+	tests[43] = simpletype_test_typenode_parsing;
+	tests[44] = simpletype_test_typenode_parsing_anytype;
+	tests[45] = simpletype_test_typenode_parsing_fails;
+	
+	tests[46] = subrtype_test_subroutine_type_parsing_subroutine_with_side_effects;
+	tests[47] = subrtype_test_subroutine_type_parsing_subroutine_without_side_effects;
+	tests[48] = subrtype_test_typename;
+	tests[49] = subrtype_test_typename_subroutine_return_type;
+	
+	for(int i=0; i<num_tests;i++){
+		passed += tests[i](debug);
+		count++;
+		if(passed < count){
+			printf("last test did not pass!\n");
+			printf("Isolating the failing Test:\n");
+			printf("------------------------------\n");
+			tests[i](debug);
+			break;
+		}
+	}	
+	
 
 	printf("passed %d of %d \n",passed,count);
 

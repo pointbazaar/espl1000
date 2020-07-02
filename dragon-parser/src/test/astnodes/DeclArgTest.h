@@ -1,6 +1,8 @@
 #ifndef DECLARGTEST
 #define DECLARGTEST
 
-int declarg_test_parse_declared_argument();
+#include <stdbool.h>
+
+int declarg_test_parse_declared_argument(bool debug);
 
 #endif

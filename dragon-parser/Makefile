@@ -22,6 +22,6 @@ typenodes: src/main/parsing/typenodes/*.c
 statements: src/main/parsing/statements/*.c
 	gcc $(FLAGS) -c src/main/parsing/statements/*.c
 
-tests:	src/test/ParserTest.c src/test/astnodes/*.c
-	gcc $(FLAGS) -c src/test/ParserTest.c src/test/astnodes/*.c
+tests:	src/test/ParserTest.c src/test/astnodes/*.c src/test/commandline/*.c
+	gcc $(FLAGS) -c src/test/ParserTest.c src/test/astnodes/*.c src/test/commandline/*.c
 	

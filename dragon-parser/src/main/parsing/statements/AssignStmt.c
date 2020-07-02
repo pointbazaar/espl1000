@@ -9,10 +9,10 @@
 #include "../Variable.h"
 #include "../Expr.h"
 
-struct AssignStmt* makeAssignStmt(struct TokenList* tokens,bool debug) {
+struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("AssignStmt(...)\n");
+		printf("AssignStmt(...) from: %s\n", list_code(tokens, debug));
 	}
 
 	struct AssignStmt* res = malloc(sizeof(struct AssignStmt));
@@ -23,9 +23,15 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens,bool debug) {
 	struct TokenList* copy = list_copy(tokens);
 
 	struct TokenList* copy2 = list_copy(copy);
+
 	res->optTypeNode = makeType2(copy2,debug);
 	if(res->optTypeNode != NULL){
 		list_set(copy, copy2);
+	}
+
+	if(debug){
+		printf("%s\n", list_code(copy, debug));
+		printf("DEBUG\n");
 	}
 
 	res->variableNode = makeVariable(copy,debug);
