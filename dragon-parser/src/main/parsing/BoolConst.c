@@ -11,15 +11,12 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 	struct BoolConst* res = malloc(sizeof(struct BoolConst));
 
 	if(debug){
-		printf("makeBoolConst(...)\n");
+		printf("makeBoolConst(...) from: %s\n", list_code(tokens, debug));
 	}
 
-	struct TokenList* copy = makeTokenList(tokens);
+	struct TokenList* copy = list_copy(tokens);
 
 	if(list_size(copy) == 0){
-		if(debug){
-				printf("token list did not contain any tokens.\n");
-			}
 		return NULL;
 	}
 	
@@ -38,10 +35,9 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 		}
 		list_consume(copy, 1);
 	} else {
-		//"could not read Bool Constant node";
 		if(debug){
-				printf("token was not the right kind.\n");
-			}
+			printf("token was not the right kind.\n");
+		}
 		return NULL;
 	}
 

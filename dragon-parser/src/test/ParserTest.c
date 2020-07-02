@@ -56,83 +56,86 @@ bool test_all_inner(bool debug){
 	int count=0;
 	int passed=0;
 
-	int num_tests = 50;
+	int num_tests_max = 55;
 
 	//https://stackoverflow.com/questions/252748/how-can-i-use-an-array-of-function-pointers
 	//function pointer array for the tests
-	int (*tests[num_tests]) (bool debug);
+	int (*tests[num_tests_max]) (bool debug);
 
-	tests[0] = test_tokenlist1;
-	tests[1] = test_tokenlist_consume;
+	int k = 0; //our index counter
 
-	tests[2] = boolconst_test_parse_bool_constant_node;
+	tests[k++] = test_tokenlist1;
+	tests[k++] = test_tokenlist_consume;
+	tests[k++] = test_tokenlist_get;
 
-	tests[3] = charconst_test_parse_char_constant_node;
-	tests[4] = charconst_test_parse_char_constant_node_newline;
+	tests[k++] = boolconst_test_parse_bool_constant_node;
 
-	tests[5] = floatconst_test1;
-	tests[6] = floatconst_test2;
+	tests[k++] = charconst_test_parse_char_constant_node;
+	tests[k++] = charconst_test_parse_char_constant_node_newline;
 
-	tests[7] = term_test_simple_term;
-	tests[8] = term_test_variable_term;
+	tests[k++] = floatconst_test1;
+	tests[k++] = floatconst_test2;
 
-	tests[9] = simplevar_test_parse_simple_indexed_variable;
-	tests[10] = simplevar_test_parse_simple_variable;
+	tests[k++] = term_test_simple_term;
+	tests[k++] = term_test_variable_term;
+
+	tests[k++] = simplevar_test_parse_simple_indexed_variable;
+	tests[k++] = simplevar_test_parse_simple_variable;
 	
-	tests[11] = variable_test_parse_index_access;
-	tests[12] = variable_test_parse_struct_member_access;
-	tests[13] = variable_test_parse_struct_member_access_and_index_access;
+	tests[k++] = variable_test_parse_index_access;
+	tests[k++] = variable_test_parse_struct_member_access;
+	tests[k++] = variable_test_parse_struct_member_access_and_index_access;
 
-	tests[14] = expr_recognize_2_op_expr;
-	tests[15] = expr_test_simple_expression;
-	tests[16] = expr_test_variable_name_expression;
+	tests[k++] = expr_recognize_2_op_expr;
+	tests[k++] = expr_test_simple_expression;
+	tests[k++] = expr_test_variable_name_expression;
 
-	tests[17] = if_test1;
-	tests[18] = if_test2;
+	tests[k++] = if_test1;
+	tests[k++] = if_test2;
 
-	tests[19] = retstmt_test1;
-	tests[20] = retstmt_test2;
-	tests[21] = retstmt_test3;
+	tests[k++] = retstmt_test1;
+	tests[k++] = retstmt_test2;
+	tests[k++] = retstmt_test3;
 
-	tests[22] = whilestmt_test1;
+	tests[k++] = whilestmt_test1;
 
-	tests[23] = assignstmt_test1;
-	tests[24] = assignstmt_test_assign_char;
-	tests[25] = assignstmt_test_assign_method_call_result;
-	tests[26] = assignstmt_test_assign_method_call_result_2;
-	tests[27] = assignstmt_test_assign_variable_with_array_index;
-	tests[28] = assignstmt_test_can_assign_to_struct_member;
-	tests[29] = assignstmt_test_type_declaration_for_variable;
+	tests[k++] = assignstmt_test1;
+	tests[k++] = assignstmt_test_assign_char;
+	tests[k++] = assignstmt_test_assign_method_call_result;
+	tests[k++] = assignstmt_test_assign_method_call_result_2;
+	tests[k++] = assignstmt_test_assign_variable_with_array_index;
+	tests[k++] = assignstmt_test_can_assign_to_struct_member;
+	tests[k++] = assignstmt_test_type_declaration_for_variable;
 	
-	tests[30] = methodcall_test1;
-	tests[31] = methodcall_test2;
-	tests[32] = methodcall_test3;
-	tests[33] = methodcall_test_can_parse_subroutine_call;
-	tests[34] = methodcall_test_can_parse_subroutine_call2;
+	tests[k++] = methodcall_test1;
+	tests[k++] = methodcall_test2;
+	tests[k++] = methodcall_test3;
+	tests[k++] = methodcall_test_can_parse_subroutine_call;
+	tests[k++] = methodcall_test_can_parse_subroutine_call2;
 	
-	tests[35] = stmt_test_assignment_statement_with_method_call;
-	tests[36] = stmt_test_assignment_statement_with_struct_access;
+	tests[k++] = stmt_test_assignment_statement_with_method_call;
+	tests[k++] = stmt_test_assignment_statement_with_struct_access;
 	
-	tests[37] = method_test_can_parse_method_with_arguments;
-	tests[38] = method_test_can_parse_method_without_arguments;
-	tests[39] = method_test_can_parse_subroutine;
+	tests[k++] = method_test_can_parse_method_with_arguments;
+	tests[k++] = method_test_can_parse_method_without_arguments;
+	tests[k++] = method_test_can_parse_subroutine;
 	
-	tests[40] = declarg_test_parse_declared_argument;
+	tests[k++] = declarg_test_parse_declared_argument;
 	
-	tests[41] = structmember_test_can_parse_struct_member;
+	tests[k++] = structmember_test_can_parse_struct_member;
 	
-	tests[42] = basictypewrapped_test_type_parsing_simple_type;
+	tests[k++] = basictypewrapped_test_type_parsing_simple_type;
 	
-	tests[43] = simpletype_test_typenode_parsing;
-	tests[44] = simpletype_test_typenode_parsing_anytype;
-	tests[45] = simpletype_test_typenode_parsing_fails;
+	tests[k++] = simpletype_test_typenode_parsing;
+	tests[k++] = simpletype_test_typenode_parsing_anytype;
+	tests[k++] = simpletype_test_typenode_parsing_fails;
 	
-	tests[46] = subrtype_test_subroutine_type_parsing_subroutine_with_side_effects;
-	tests[47] = subrtype_test_subroutine_type_parsing_subroutine_without_side_effects;
-	tests[48] = subrtype_test_typename;
-	tests[49] = subrtype_test_typename_subroutine_return_type;
+	tests[k++] = subrtype_test_subroutine_type_parsing_subroutine_with_side_effects;
+	tests[k++] = subrtype_test_subroutine_type_parsing_subroutine_without_side_effects;
+	tests[k++] = subrtype_test_typename;
+	tests[k++] = subrtype_test_typename_subroutine_return_type;
 	
-	for(int i=0; i<num_tests;i++){
+	for(int i=0; i < k;i++){
 		passed += tests[i](debug);
 		count++;
 		if(passed < count){

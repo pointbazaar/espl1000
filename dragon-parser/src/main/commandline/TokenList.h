@@ -29,8 +29,6 @@ struct TokenList* makeTokenList_3(struct Token** result, int resultc, char* sour
 struct TokenList* makeTokenList();
 
 void list_add(struct TokenList* tknList,struct Token* token);
-//void list_add(struct TokenList* tknList,int token_kind);
-//void list_add(struct TokenList* tknList,int token_kind, char* token_value);
 
 void list_addAll(struct TokenList* tknList,struct Token** tokens, int tokensc);
 
