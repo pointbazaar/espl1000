@@ -7,6 +7,8 @@
 #include "../commandline/TokenKeys.h"
 #include "../commandline/Token.h"
 
+#include <stdbool.h>
+
 struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
 	struct FloatConst* res = malloc(sizeof(struct FloatConst));
@@ -16,12 +18,33 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 	}
 	if(list_size(tokens) == 0){return NULL;}
 
-	if(list_get(tokens, 0)->kind == FLOATING){
-		res->value = atof(list_get(tokens, 0)->value);
+	struct TokenList* copy = list_copy(tokens);
+
+	//---------------------------
+
+	struct Token* tk = list_head(copy);
+
+	float f = 1.0;
+	if(tk->kind == OPKEY && strcmp(tk->value, "-") == 0){
+		f = -1.0;
+		list_consume(copy, 1);
+	}
+
+	if(list_size(copy) == 0){return NULL;}
+
+	if(list_get(copy, 0)->kind == FLOATING){
+
+		res->value = atof(list_get(copy, 0)->value);
+		list_consume(copy, 1);
+		
 	}else{
-		//"could not find a float const";
+		//could not find a float const
 		return NULL;
 	}
+
+	//--------------------------
+
+	list_set(tokens, copy);
 
 	return res;
 }

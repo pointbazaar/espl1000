@@ -6,7 +6,14 @@
 
 #include "../../main/parsing/CharConst.h"
 
+#include <stdio.h>
+
 int charconst_test_parse_char_constant_node(bool debug) {
+
+	if(debug){
+		printf("charconst_test_parse_char_constant_node\n");
+	}
+
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(CCONST,"h"));
 
@@ -17,6 +24,10 @@ int charconst_test_parse_char_constant_node(bool debug) {
 }
 
 int charconst_test_parse_char_constant_node_newline(bool debug) {
+
+	if(debug){
+		printf("charconst_test_parse_char_constant_node_newline\n");
+	}
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(CCONST,"\n"));

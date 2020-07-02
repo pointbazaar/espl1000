@@ -23,7 +23,7 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 	res->count_elseStatements = 0;
 	res->elseStatements = malloc(sizeof(struct Stmt*)*1);
 
-	struct TokenList* copy = makeTokenList(tokens);
+	struct TokenList* copy = list_copy(tokens);
 
 	if(list_size(copy) < 3){
 		//"not enough tokens";

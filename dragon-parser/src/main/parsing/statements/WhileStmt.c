@@ -19,7 +19,7 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 	res->statements = malloc(sizeof(struct Stmt*)*1);
 	res->count_statements = 0;
 
-	struct TokenList* copy = makeTokenList(tokens);
+	struct TokenList* copy = list_copy(tokens);
 
 	if(!list_expect(copy, WHILE)){return NULL;}
 

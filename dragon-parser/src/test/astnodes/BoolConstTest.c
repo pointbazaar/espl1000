@@ -21,7 +21,6 @@ int boolconst_test_parse_bool_constant_node(bool debug)  {
 	struct BoolConst* b = makeBoolConst(list,debug);
 
 	if(b == NULL){
-		printf("unsuccessful\n");
 		return 0;
 	}
 

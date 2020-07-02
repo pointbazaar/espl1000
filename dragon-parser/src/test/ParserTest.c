@@ -143,7 +143,7 @@ bool test_all_inner(bool debug){
 			printf("last test did not pass!\n");
 			printf("Isolating the failing Test:\n");
 			printf("------------------------------\n");
-			tests[i](debug);
+			tests[i](true);
 			break;
 		}
 	}	

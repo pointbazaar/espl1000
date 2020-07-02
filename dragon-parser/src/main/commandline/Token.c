@@ -9,6 +9,7 @@ struct Token* makeToken(int kind){
 }
 
 struct Token* makeToken2(int kind, char* value){
+	
 	struct Token* res = malloc(sizeof(struct Token));
 	res->kind = kind;
 
