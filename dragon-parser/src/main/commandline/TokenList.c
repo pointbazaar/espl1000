@@ -209,14 +209,9 @@ char* list_code(struct TokenList* list, bool debug) {
 	str[0]='\0';
 
 	
-
 	int i=0;
 	while(i < list_size(list) && (i < 10)){
 		struct Token* tk = list_get(list,i);
-
-		if(debug){
-			printf("p1\n");
-		}
 
 		strcat(str, tk->value);
 		strcat(str, " ");
@@ -224,10 +219,6 @@ char* list_code(struct TokenList* list, bool debug) {
 	}
 	strcat(str,"    ");
 	strcat(str,"[");
-
-	if(debug){
-		printf("p2\n");
-	}
 
 	i=0;
 	while(i < list_size(list) && (i < 10)){
