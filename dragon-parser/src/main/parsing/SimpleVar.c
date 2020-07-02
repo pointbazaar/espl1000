@@ -19,14 +19,14 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 
 	res->indexOptional = NULL;
 
-	struct TokenList* copy = makeTokenList(tokens);
+	struct TokenList* copy = list_copy(tokens);
 
 	if(list_size(copy) == 0){
 		//"Error: no tokens"
 		return NULL;
 	}
 
-	struct Token* token = list_get(copy,0);
+	struct Token* token = list_head(copy);
 	if(token == NULL){return NULL;}
 
 	if (token->kind == ID) {
@@ -37,7 +37,7 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 		list_consume(copy,1);
 
 		//it could have an index
-		if (list_size(copy) > 0 && list_get(copy, 0)->kind == LBRACKET) {
+		if (list_size(copy) > 0 && list_head(copy)->kind == LBRACKET) {
 
 			if(!list_expect(copy, LBRACKET)){return NULL;}
 			res->indexOptional = makeExpr(copy,debug);
