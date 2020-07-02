@@ -56,13 +56,6 @@ void list_add(struct TokenList* list, struct Token* token) {
 	list->tokensc += 1;
 }
 
-void list_addAll(struct TokenList* list, struct Token** arr, int arrc) {
-	for (int i = 0;i < arrc;i++) {
-		
-		list_add(list, arr[i]);
-	}
-}
-
 void list_consume(struct TokenList* list, int amount) {
 	for(int i = 0; i < amount; i++){
 		list->tokens = list->tokens+(sizeof(struct Token*)*1);
@@ -82,16 +75,6 @@ bool list_startsWith(struct TokenList* list, struct Token* token) {
 	if (list_size(list) > 0) {
 		return tokenEquals(
 			list_get(list,0),
-			token
-		);
-	}
-	return false;
-}
-
-bool list_endsWith(struct TokenList* list, struct Token* token) {
-	if (list_size(list) > 0) {
-		return tokenEquals(
-			list_get(list, list_size(list) - 1),
 			token
 		);
 	}

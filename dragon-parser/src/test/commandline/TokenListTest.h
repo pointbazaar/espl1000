@@ -9,4 +9,6 @@ int test_tokenlist_consume(bool debug);
 
 int test_tokenlist_get(bool debug);
 
+int test_tokenlist_startswith(bool debug);
+
 #endif

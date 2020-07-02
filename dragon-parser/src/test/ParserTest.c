@@ -67,6 +67,7 @@ bool test_all_inner(bool debug){
 	tests[k++] = test_tokenlist1;
 	tests[k++] = test_tokenlist_consume;
 	tests[k++] = test_tokenlist_get;
+	tests[k++] = test_tokenlist_startswith;
 
 	tests[k++] = boolconst_test_parse_bool_constant_node;
 

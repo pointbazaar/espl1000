@@ -30,12 +30,9 @@ struct TokenList* makeTokenList();
 
 void list_add(struct TokenList* tknList,struct Token* token);
 
-void list_addAll(struct TokenList* tknList,struct Token** tokens, int tokensc);
-
 void list_consume(struct TokenList* tknList, int amount);
 
 bool list_startsWith(struct TokenList* tknList, struct Token* itk);
-bool list_endsWith(struct TokenList* tknList, struct Token* itk);
 
 char* wrap(char* s, char* wrap);
 

@@ -65,3 +65,18 @@ int test_tokenlist_get(bool debug){
 
 	return (assert1 && assert2)?1:0;
 }
+
+int test_tokenlist_startswith(bool debug){
+
+	if(debug){
+		printf("test_tokenlist_startswith\n");
+	}
+
+	struct TokenList* list = makeTokenList();
+
+	list_add(list, makeToken2(ID,"x"));
+
+	bool assert1 = list_startsWith(list, makeToken2(ID,"x"));
+
+	return (assert1)?1:0;
+}
