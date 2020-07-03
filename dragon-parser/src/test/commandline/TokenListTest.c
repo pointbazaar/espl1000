@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <inttypes.h>
 
 int test_tokenlist1(bool debug){
 
@@ -76,15 +77,6 @@ int test_tokenlist_get(bool debug){
 	struct Token* tk4 = list_get(list,3);
 	bool a7 = tk4->kind == ID;
 	bool a8 = strcmp(tk4->value,"z") == 0;
-
-	if(debug){
-		for(int k=0;k < list_size(list) && (k < 10);k++){
-			struct Token* tk = list_get(list,k);
-		
-			printf(" %d", tk->kind);
-		}
-		printf("\n");
-	}
 
 	return (a1 && a2 && a3 && a4 && a5 && a6 && a7 && a8)?1:0;
 }

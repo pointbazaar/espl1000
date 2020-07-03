@@ -1,6 +1,5 @@
-FLAGS := -O0 -march=native -g -Wall
-
-#this is a very crude makefile.
+FLAGS := -O0 -march=native -g
+#-Wall
 
 all: dragon-parser
 

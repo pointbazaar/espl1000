@@ -55,7 +55,7 @@ void list_add(struct TokenList* list, struct Token* token) {
 		list->tokens = realloc(list->tokens, list->capacity * sizeof(struct Token*));
 	}
 
-	list->tokens[(list->tokensc) * sizeof(struct Token*)] = token;
+	list->tokens[list->tokensc] = token;
 	list->tokensc += 1;
 }
 
@@ -188,7 +188,7 @@ void list_set(struct TokenList* list, struct TokenList* copy) {
 }
 
 struct Token* list_get(struct TokenList* list, int i) {
-	return list->tokens[i*sizeof(struct Token*)];
+	return list->tokens[i]; //<=> *(list->tokens + sizeof(struct Token*) * i)
 }
 
 struct Token* list_head(struct TokenList* list) {
