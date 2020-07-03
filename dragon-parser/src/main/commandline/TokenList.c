@@ -10,7 +10,7 @@
 
 struct TokenList* makeTokenList_3(struct Token** result, int resultc, char* sourceFile) {
 
-	struct TokenList* res = malloc(sizeof(struct TokenList));
+	struct TokenList* res = makeTokenList();
 
 	res->tokens = result;
 	res->tokensc = resultc;
@@ -29,11 +29,14 @@ struct TokenList* makeTokenList() {
 	printf("makeTokenList()\n");
 
 	struct TokenList* res = malloc(sizeof(struct TokenList));
-	res->relPath[0]='\0';
+	if(res == NULL){ exit(1);}
+	
 	strcpy(res->relPath, "/dev/null");
 	res->tokensc = 0;
 
 	res->tokens = malloc(sizeof(struct Token*)*initial_size);
+	if(res->tokens == NULL){ exit(1);}
+
 	res->capacity = initial_size;
 
 	return res;
@@ -52,7 +55,7 @@ void list_add(struct TokenList* list, struct Token* token) {
 		list->tokens = realloc(list->tokens, list->capacity * sizeof(struct Token*));
 	}
 
-	list->tokens[list->tokensc * sizeof(struct Token*)] = token;
+	list->tokens[(list->tokensc) * sizeof(struct Token*)] = token;
 	list->tokensc += 1;
 }
 
@@ -199,35 +202,30 @@ char* list_code(struct TokenList* list, bool debug) {
 		printf("list_code(...)\n");
 	}
 
-	if(list == NULL){
-		printf("list == NULL\n");
-		exit(1);
-	}
-
 	char* str = malloc(sizeof(char)*100);
 	if(str == NULL){ return "ERROR"; exit(1);}
-	str[0]='\0';
+	strcpy(str, "");
 
 	
-	int i=0;
-	while(i < list_size(list) && (i < 10)){
+	for(int i=0;i < list_size(list) && (i < 10);i++){
 		struct Token* tk = list_get(list,i);
 
 		strcat(str, tk->value);
 		strcat(str, " ");
-		i++;
 	}
 	strcat(str,"    ");
 	strcat(str,"[");
 
-	i=0;
-	while(i < list_size(list) && (i < 10)){
-		struct Token* tk = list_get(list,i);
-		char buf[10];
+	char buf[100];
+	strcpy(buf,"");
+
+	for(int k=0;k < list_size(list) && (k < 10);k++){
+		struct Token* tk = list_get(list,k);
+		
 		sprintf(buf, "%d", tk->kind);
+
 		strcat(str, buf);
 		strcat(str,",");
-		i++;
 	}
 	strcat(str,"]");
 

@@ -11,8 +11,8 @@ struct Token {
 	 - Kind 	(the kind of token, for example RPARENS)
 	 - Value	(for example "subr" for an identifier)
 	*/
-	int lineNumber;
 	int kind;
+	int lineNumber;
 
 	//this is intentionally not a 'char*'
 	//in an effort to make the program simple.

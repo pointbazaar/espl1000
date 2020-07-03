@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "Token.h"
 
@@ -11,13 +12,12 @@ struct Token* makeToken(int kind){
 struct Token* makeToken2(int kind, char* value){
 	
 	struct Token* res = malloc(sizeof(struct Token));
-	res->kind = kind;
+	if(res == NULL){ exit(1); }
 
-	res->value[0]='\0';
-	if(value != NULL){
-		strcpy(res->value, value);
-	}
+	res->kind = kind;
+	strncpy(res->value, value, 20);
 	res->lineNumber = -1;
+
 	return res;
 }
 	

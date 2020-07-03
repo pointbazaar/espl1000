@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# do not use .hpp's in g++ call
+#this script should be run with sudo
+
+rm /usr/bin/dragon-parser
 
 make -j8
 make clean
@@ -8,4 +10,4 @@ make clean
 #copy the executable to /usr/bin
 cp dragon-parser /usr/bin/
 
-#dragon-parser -test
+dragon-parser -test

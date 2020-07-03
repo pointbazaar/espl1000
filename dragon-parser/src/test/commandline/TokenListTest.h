@@ -11,4 +11,6 @@ int test_tokenlist_get(bool debug);
 
 int test_tokenlist_startswith(bool debug);
 
+int test_tokenlist_code(bool debug);
+
 #endif

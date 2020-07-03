@@ -34,7 +34,7 @@ int simplevar_test_parse_simple_indexed_variable(bool debug) {
 
 	list_add(list, makeToken2(ID,"x")) ;
 	list_add(list, makeToken2(LBRACKET,"[")) ;
-	list_add(list, makeToken2(INTEGER,"0")) ;
+	list_add(list, makeToken2(INTEGER,"1")) ;
 	list_add(list, makeToken2(RBRACKET,"]")) ;
 
 
@@ -47,7 +47,7 @@ int simplevar_test_parse_simple_indexed_variable(bool debug) {
 	bool assert2 = (node->indexOptional != NULL);
 
 	bool assert3 = (
-			0 == 
+			1 == 
 			(node->indexOptional->term1->m2)	//IntConst
 			->value
 	);
