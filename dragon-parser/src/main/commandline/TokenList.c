@@ -61,7 +61,8 @@ void list_add(struct TokenList* list, struct Token* token) {
 
 void list_consume(struct TokenList* list, int amount) {
 	for(int i = 0; i < amount; i++){
-		list->tokens = list->tokens+(sizeof(struct Token*)*1);
+		struct Token** tks = list->tokens;
+		list->tokens = tks + 1;
 		list->tokensc -= 1;
 	}
 }

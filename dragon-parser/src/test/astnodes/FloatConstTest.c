@@ -18,7 +18,7 @@ int floatconst_test1(bool debug) {
 
 	list_add(list, makeToken2(FLOATING,"4.0"));
 
-	struct FloatConst* node = makeFloatConst(list,false);
+	struct FloatConst* node = makeFloatConst(list,debug);
 
 	return (node != NULL)?1:0;
 }
@@ -34,7 +34,7 @@ int floatconst_test2(bool debug) {
 	list_add(list, makeToken2(OPKEY,"-"));
 	list_add(list, makeToken2(FLOATING,"4.0"));
 
-	struct FloatConst* node = makeFloatConst(list,false);
+	struct FloatConst* node = makeFloatConst(list,debug);
 	
 	return (node!=NULL)?1:0;
 }

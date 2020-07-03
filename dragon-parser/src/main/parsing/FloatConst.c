@@ -28,11 +28,19 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 	if(tk->kind == OPKEY && strcmp(tk->value, "-") == 0){
 		f = -1.0;
 		list_consume(copy, 1);
+
+		if(debug){
+			printf("parsed sign\n");
+		}
+	}
+
+	if(debug){
+		printf("%s\n", list_code(copy,debug));
 	}
 
 	if(list_size(copy) == 0){return NULL;}
 
-	if(list_get(copy, 0)->kind == FLOATING){
+	if(list_head(copy)->kind == FLOATING){
 
 		res->value = atof(list_get(copy, 0)->value);
 		list_consume(copy, 1);

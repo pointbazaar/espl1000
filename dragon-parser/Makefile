@@ -1,5 +1,4 @@
-FLAGS := -O0 -march=native -g
-#-Wall
+FLAGS := -O0 -march=native -g -Wall
 
 all: dragon-parser
 
