@@ -11,7 +11,7 @@
 int floatconst_test1(bool debug) {
 
 	if(debug){
-		printf("floatconst_test1\n");
+		printf("TEST: floatconst_test1\n");
 	}
 
 	struct TokenList* list = makeTokenList();
@@ -26,7 +26,7 @@ int floatconst_test1(bool debug) {
 int floatconst_test2(bool debug) {
 
 	if(debug){
-		printf("floatconst_test2\n");
+		printf("TEST: floatconst_test2\n");
 	}
 
 	struct TokenList* list = makeTokenList();

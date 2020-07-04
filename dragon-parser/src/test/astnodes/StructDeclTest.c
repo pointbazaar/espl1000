@@ -6,8 +6,13 @@
 #include "../../main/parsing/StructMember.h"
 
 #include <stdbool.h>
+#include <stdio.h>
 
 int structdecl_test_can_parse_empty_struct_decl(bool debug) {
+
+	if(debug){
+		printf("TEST: structdecl_test_can_parse_empty_struct_decl\n");
+	}
 
 	struct TokenList* list = makeTokenList(); 
 
@@ -25,6 +30,10 @@ int structdecl_test_can_parse_empty_struct_decl(bool debug) {
 
 int structdecl_test_will_not_parse_invalid_typename_for_struct(bool debug) {
 
+	if(debug){
+		printf("TEST: structdecl_test_will_not_parse_invalid_typename_for_struct\n");
+	}
+
 	struct TokenList* list = makeTokenList(); 
 
 	list_add(list, makeToken(STRUCT));
@@ -37,6 +46,10 @@ int structdecl_test_will_not_parse_invalid_typename_for_struct(bool debug) {
 }
 
 int structdecl_test_rejects_struct_with_subroutine_type(bool debug) {
+
+	if(debug){
+		printf("TEST: structdecl_test_rejects_struct_with_subroutine_type\n");
+	}
 
 	struct TokenList* list = makeTokenList(); 
 
@@ -53,6 +66,10 @@ int structdecl_test_rejects_struct_with_subroutine_type(bool debug) {
 }
 
 int structdecl_test_can_parse_struct_with_1_member(bool debug) {
+
+	if(debug){
+		printf("TEST: structdecl_test_can_parse_struct_with_1_member\n");
+	}
 
 	struct TokenList* list = makeTokenList();
 
@@ -72,6 +89,10 @@ int structdecl_test_can_parse_struct_with_1_member(bool debug) {
 }
 
 int structdecl_test_can_parse_struct_with_2_members(bool debug) {
+
+	if(debug){
+		printf("TEST: structdecl_test_can_parse_struct_with_2_members\n");
+	}
 
 	struct TokenList* list = makeTokenList(); 
 

@@ -11,7 +11,9 @@
 
 int term_test_simple_term(bool debug) {
 
-	printf("term_test_simple_term()\n");
+	if(debug){
+		printf("TEST: term_test_simple_term()\n");
+	}
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(INTEGER,"4"));
@@ -21,7 +23,9 @@ int term_test_simple_term(bool debug) {
 
 int term_test_variable_term(bool debug) {
 
-	printf("term_test_variable_term()\n");
+	if(debug){
+		printf("TEST: term_test_variable_term()\n");
+	}
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ID,"x"));

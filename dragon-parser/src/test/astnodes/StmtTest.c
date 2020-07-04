@@ -5,8 +5,13 @@
 #include "../../main/parsing/statements/Stmt.h"
 
 #include <stdbool.h>
+#include <stdio.h>
 
 int stmt_test_assignment_statement_with_struct_access(bool debug) {
+
+	if(debug){
+		printf("TEST: stmt_test_assignment_statement_with_struct_access\n");
+	}
 
 	struct TokenList* tokens = makeTokenList();
 	list_add(tokens, makeToken2(ID,"x") );
@@ -16,7 +21,7 @@ int stmt_test_assignment_statement_with_struct_access(bool debug) {
 	list_add(tokens, makeToken2(INTEGER,"3") );
 	list_add(tokens, makeToken(SEMICOLON) );
 
-	struct Stmt* node = makeStmt(tokens,false);
+	struct Stmt* node = makeStmt(tokens,debug);
 
 	bool assert1 = (0 == list_size(tokens)); //all tokens should have been consumed
 	bool assert2 = node != NULL;
@@ -26,6 +31,10 @@ int stmt_test_assignment_statement_with_struct_access(bool debug) {
 
 int stmt_test_assignment_statement_with_method_call(bool debug) {
 
+	if(debug){
+		printf("TEST: stmt_test_assignment_statement_with_method_call\n");
+	}
+
 	struct TokenList* tokens = makeTokenList();
 
 	list_add(tokens, makeToken2(ID,"flip") );
@@ -34,7 +43,7 @@ int stmt_test_assignment_statement_with_method_call(bool debug) {
 	list_add(tokens, makeToken(RPARENS) );
 	list_add(tokens, makeToken(SEMICOLON) );
 
-	struct Stmt* node = makeStmt(tokens,false);
+	struct Stmt* node = makeStmt(tokens,debug);
 
 	bool assert1 = (0 == list_size(tokens)); //all tokens should have been consumed
 	bool assert2 = node != NULL;

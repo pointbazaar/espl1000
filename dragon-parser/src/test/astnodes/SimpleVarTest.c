@@ -12,7 +12,9 @@
 
 int simplevar_test_parse_simple_variable(bool debug) {
 
-	printf("simplevar_test_parse_simple_variable()\n");
+	if(debug){
+		printf("TEST: simplevar_test_parse_simple_variable()\n");
+	}
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ID,"x") );
@@ -28,7 +30,9 @@ int simplevar_test_parse_simple_variable(bool debug) {
 
 int simplevar_test_parse_simple_indexed_variable(bool debug) {
 
-	printf("simplevar_test_parse_simple_indexed_variable()\n");
+	if(debug){
+		printf("TEST: simplevar_test_parse_simple_indexed_variable()\n");
+	}
 
 	struct TokenList* list = makeTokenList();
 

@@ -12,7 +12,7 @@
 int variable_test_parse_struct_member_access(bool debug) {
 
 	if(debug){
-		printf("variable_test_parse_struct_member_access(...)\n");
+		printf("TEST: variable_test_parse_struct_member_access(...)\n");
 	}
 
 	struct TokenList* tokens = makeTokenList();
@@ -39,8 +39,9 @@ int variable_test_parse_struct_member_access(bool debug) {
 }
 
 int variable_test_parse_index_access(bool debug) {
+	
 	if(debug){
-		printf("variable_test_parse_index_access(...)\n");
+		printf("TEST: variable_test_parse_index_access(...)\n");
 	}
 
 	struct TokenList* tokens = makeTokenList();
@@ -64,7 +65,7 @@ int variable_test_parse_index_access(bool debug) {
 int variable_test_parse_struct_member_access_and_index_access(bool debug) {
 
 	if(debug){
-		printf("variable_test_parse_struct_member_access_and_index_access(...)\n");
+		printf("TEST: variable_test_parse_struct_member_access_and_index_access(...)\n");
 	}
 
 	// x.a[0].b

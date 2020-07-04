@@ -9,29 +9,33 @@
 
 int retstmt_test1(bool debug) {
 
-	printf("retstmt_test1\n");
+	if(debug){
+		printf("TEST: retstmt_test1\n");
+	}
 
-		struct TokenList* list = makeTokenList();
+	struct TokenList* list = makeTokenList();
 
-		list_add(list, makeToken(RETURN));
+	list_add(list, makeToken(RETURN));
 
-		list_add(list, makeToken(LPARENS));
+	list_add(list, makeToken(LPARENS));
 
-		list_add(list, makeToken2(OPKEY,"-"));
-		list_add(list, makeToken2(INTEGER,"5"));
+	list_add(list, makeToken2(OPKEY,"-"));
+	list_add(list, makeToken2(INTEGER,"5"));
 
-		list_add(list, makeToken(RPARENS));
+	list_add(list, makeToken(RPARENS));
 
-		list_add(list, makeToken(SEMICOLON));
+	list_add(list, makeToken(SEMICOLON));
 
-		struct RetStmt* r = makeRetStmt(list,debug);
+	struct RetStmt* r = makeRetStmt(list,debug);
 
-		return (r!=NULL)?1:0;
+	return (r!=NULL)?1:0;
 }
 
 int retstmt_test2(bool debug){
 
-	printf("retstmt_test2\n");
+	if(debug){
+		printf("TEST: retstmt_test2\n");
+	}
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken(RETURN));
@@ -57,7 +61,9 @@ int retstmt_test2(bool debug){
 
 int retstmt_test3(bool debug) {
 
-	printf("retstmt_test3\n");
+	if(debug){
+		printf("TEST: retstmt_test3\n");
+	}
 
 	struct TokenList* list = makeTokenList();
 

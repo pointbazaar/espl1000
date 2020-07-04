@@ -5,8 +5,13 @@
 #include "../../main/parsing/StructMember.h"
 
 #include <string.h>
+#include <stdio.h>
 
 int structmember_test_can_parse_struct_member(bool debug) {
+
+	if(debug){
+		printf("TEST: structmember_test_can_parse_struct_member\n");
+	}
 
 	struct TokenList* list = makeTokenList();
 
@@ -19,7 +24,7 @@ int structmember_test_can_parse_struct_member(bool debug) {
 	list_add(list, makeToken(RPARENS) );
 	list_add(list, makeToken2(ID,"subr") );
 
-	struct StructMember* node = makeStructMember(list,false);
+	struct StructMember* node = makeStructMember(list,debug);
 
 	bool assert1 = strcmp("subr", node->name) == 0;
 	bool assert2 = (0 == list_size(list));

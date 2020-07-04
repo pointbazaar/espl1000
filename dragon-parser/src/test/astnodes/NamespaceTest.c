@@ -6,8 +6,13 @@
 #include "../../main/parsing/StructDecl.h"
 
 #include <stdbool.h>
+#include <stdio.h>
 
 int namespace_test_can_parse_namespace_with_1_empty_struct(bool debug) {
+
+	if(debug){
+		printf("TEST: namespace_test_can_parse_namespace_with_1_empty_struct\n");
+	}
 
 	struct TokenList* l = makeTokenList();
 
@@ -16,7 +21,7 @@ int namespace_test_can_parse_namespace_with_1_empty_struct(bool debug) {
 	list_add(l, makeToken(LCURLY));
 	list_add(l, makeToken(RCURLY));
 
-	struct Namespace* n = makeNamespace(l,"Main", false);
+	struct Namespace* n = makeNamespace(l,"Main", debug);
 
 	bool assert1 = (1 == n->count_structs);
 	bool assert2 = (0 == n->structs[0]->count_members);
@@ -25,6 +30,10 @@ int namespace_test_can_parse_namespace_with_1_empty_struct(bool debug) {
 }
 
 int namespace_test_can_parse_namespace_with_1_empty_method(bool debug) {
+
+	if(debug){
+		printf("TEST: namespace_test_can_parse_namespace_with_1_empty_method\n");
+	}
 
 	//TODO:
 	//these parser tests are problematic, because they don't just test the parser,
@@ -45,7 +54,7 @@ int namespace_test_can_parse_namespace_with_1_empty_method(bool debug) {
 
 	list_add(l, makeToken(RCURLY));
 
-	struct Namespace* n = makeNamespace(l,"Main", false);
+	struct Namespace* n = makeNamespace(l,"Main", debug);
 
 	bool assert1 = strcmp("Main", n->name) == 0;
 	bool assert2 = (1 == n->count_methods);

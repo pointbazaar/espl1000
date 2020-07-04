@@ -5,8 +5,14 @@
 #include "../../main/parsing/typenodes/SubrType.h"
 
 #include <stdbool.h>
+#include <stdio.h>
 
 int subrtype_test_typename(bool debug) {
+
+	if(debug){
+		printf("TEST: subrtype_test_typename\n");
+	}
+
 	//(PInt,PInt)->PInt
 	struct TokenList* l = makeTokenList();
 
@@ -27,6 +33,11 @@ int subrtype_test_typename(bool debug) {
 }
 
 int subrtype_test_typename_subroutine_return_type(bool debug) {
+
+	if(debug){
+		printf("TEST: subrtype_test_typename_subroutine_return_type\n");
+	}
+
 	//(PInt,PInt)->((PInt)->PInt) 
 	struct TokenList* l = makeTokenList();
 
@@ -56,6 +67,11 @@ int subrtype_test_typename_subroutine_return_type(bool debug) {
 }
 
 int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(bool debug)  {
+
+	if(debug){
+		printf("TEST: subrtype_test_subroutine_type_parsing_subroutine_with_side_effects\n");
+	}
+
 	//(PInt,MyType)~>PInt
 	struct TokenList* l = makeTokenList();
 
@@ -76,6 +92,11 @@ int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(bool debu
 }
 
 int subrtype_test_subroutine_type_parsing_subroutine_without_side_effects(bool debug) {
+
+	if(debug){
+		printf("TEST: subrtype_test_subroutine_type_parsing_subroutine_without_side_effects\n");
+	}
+
 	//(PInt)->PInt
 	struct TokenList* l = makeTokenList(); 
 

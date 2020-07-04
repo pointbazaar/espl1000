@@ -5,8 +5,13 @@
 #include "../../main/parsing/statements/WhileStmt.h"
 
 #include <stdbool.h>
+#include <stdio.h>
 
 int whilestmt_test1(bool debug) {
+
+	if(debug){
+		printf("TEST: whilestmt_test1\n");
+	}
 	
 	struct TokenList* list = makeTokenList();
 

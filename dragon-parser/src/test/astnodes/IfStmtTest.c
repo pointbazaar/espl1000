@@ -11,7 +11,7 @@
 int if_test1(bool debug) {
 
 	if(debug){
-		printf("if_test1\n");
+		printf("TEST: if_test1\n");
 	}
 
 	struct TokenList* list = makeTokenList();
@@ -46,7 +46,7 @@ int if_test1(bool debug) {
 int if_test2(bool debug) {
 
 	if(debug){
-		printf("if_test2\n");
+		printf("TEST: if_test2\n");
 	}
 
 	struct TokenList* l = makeTokenList();

@@ -14,7 +14,7 @@
 int expr_test_simple_expression(bool debug) {
 
 	if(debug){
-		printf("expr_test_simple_expression(...)\n");
+		printf("TEST: expr_test_simple_expression(...)\n");
 	}
 
 	struct TokenList* list = makeTokenList();
@@ -33,7 +33,7 @@ int expr_test_simple_expression(bool debug) {
 int expr_test_variable_name_expression(bool debug) {
 
 	if(debug){
-		printf("expr_test_variable_name_expression(...)\n");
+		printf("TEST: expr_test_variable_name_expression(...)\n");
 	}
 
 	struct TokenList* list = makeTokenList();
@@ -55,7 +55,7 @@ int expr_test_variable_name_expression(bool debug) {
 int expr_recognize_2_op_expr(bool debug) {
 
 	if(debug){
-		printf("expr_recognize_2_op_expr(...)\n");
+		printf("TEST: expr_recognize_2_op_expr(...)\n");
 	}
 
 	struct TokenList* tokens = makeTokenList();
@@ -77,7 +77,7 @@ int expr_recognize_2_op_expr(bool debug) {
 int expr_test_comparison(bool debug){
 
 	if(debug){
-		printf("expr_test_comparison\n");
+		printf("TEST: expr_test_comparison\n");
 	}
 
 	struct TokenList* l = makeTokenList();

@@ -11,7 +11,7 @@
 int charconst_test_parse_char_constant_node(bool debug) {
 
 	if(debug){
-		printf("charconst_test_parse_char_constant_node\n");
+		printf("TEST: charconst_test_parse_char_constant_node\n");
 	}
 
 	struct TokenList* list = makeTokenList();
@@ -26,7 +26,7 @@ int charconst_test_parse_char_constant_node(bool debug) {
 int charconst_test_parse_char_constant_node_newline(bool debug) {
 
 	if(debug){
-		printf("charconst_test_parse_char_constant_node_newline\n");
+		printf("TEST: charconst_test_parse_char_constant_node_newline\n");
 	}
 
 	struct TokenList* list = makeTokenList();

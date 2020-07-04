@@ -5,8 +5,13 @@
 #include "../../main/parsing/Method.h"
 
 #include <stdbool.h>
+#include <stdio.h>
 
 int method_test_can_parse_method_with_arguments(bool debug) {
+
+	if(debug){
+		printf("TEST: method_test_can_parse_method_with_arguments\n");
+	}
 
 	struct TokenList* l = makeTokenList(); //ParserPhases.makeTokenList("fn main (String hello)~>PInt { main(); }", false);
 
@@ -26,12 +31,16 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 
 	list_add(l, makeToken(RCURLY));
 
-	struct Method* m = makeMethod(l, false);
+	struct Method* m = makeMethod(l, debug);
 
 	return  m->count_arguments;
 }
 
 int method_test_can_parse_subroutine(bool debug) {
+
+	if(debug){
+		printf("TEST: method_test_can_parse_subroutine\n");
+	}
 
 	struct TokenList* l = makeTokenList();
 
@@ -52,11 +61,15 @@ int method_test_can_parse_subroutine(bool debug) {
 		
 	list_add(l, makeToken(RCURLY));
 
-	struct Method* m = makeMethod(l, false);
+	struct Method* m = makeMethod(l, debug);
 	return (m!=NULL)?1:0;
 }
 
 int method_test_can_parse_method_without_arguments(bool debug) {
+
+	if (debug) {
+		printf("TEST: method_test_can_parse_method_without_arguments\n");
+	}
 
 	struct TokenList* l = makeTokenList();
 

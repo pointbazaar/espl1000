@@ -11,7 +11,7 @@
 int test_tokenlist1(bool debug){
 
 	if(debug){
-		printf("test_tokenlist1\n");
+		printf("TEST: test_tokenlist1\n");
 	}
 
 	struct TokenList* list = makeTokenList();
@@ -33,7 +33,7 @@ int test_tokenlist1(bool debug){
 int test_tokenlist_consume(bool debug){
 
 	if(debug){
-		printf("test_tokenlist_consume\n");
+		printf("TEST: test_tokenlist_consume\n");
 	}
 
 	struct TokenList* list = makeTokenList();
@@ -52,7 +52,7 @@ int test_tokenlist_consume(bool debug){
 int test_tokenlist_get(bool debug){
 
 	if(debug){
-		printf("test_tokenlist_get\n");
+		printf("TEST: test_tokenlist_get\n");
 	}
 
 	struct TokenList* list = makeTokenList();
@@ -84,7 +84,7 @@ int test_tokenlist_get(bool debug){
 int test_tokenlist_startswith(bool debug){
 
 	if(debug){
-		printf("test_tokenlist_startswith\n");
+		printf("TEST: test_tokenlist_startswith\n");
 	}
 
 	struct TokenList* list = makeTokenList();
@@ -99,7 +99,7 @@ int test_tokenlist_startswith(bool debug){
 int test_tokenlist_code(bool debug){
 
 	if(debug){
-		printf("test_tokenlist_code\n");
+		printf("TEST: test_tokenlist_code\n");
 	}
 
 	struct TokenList* list = makeTokenList();

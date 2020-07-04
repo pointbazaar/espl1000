@@ -31,21 +31,27 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 	}
 
 	if(!list_expect(copy, IF)){return NULL;}
+
 	res->condition = makeExpr(copy,debug);
 	if(res->condition == NULL){return NULL;}
+
 	if(!list_expect(copy, LCURLY)){return NULL;}
 
-	struct Token* next = list_get(copy, 0);
+	struct Token* next = list_head(copy);
 	if(next == NULL){return NULL;}
 	
 	while (next->kind != RCURLY) {
 
-		res->statements[res->count_statements] = makeStmt(copy,debug);
+		struct Stmt* stmt = makeStmt(copy, debug);
+		if(stmt == NULL){return NULL;}
+
+		res->statements[res->count_statements] = stmt;
 		res->count_statements++;
-		int newsize = sizeof(struct Stmt*) * res->count_statements+1;
+
+		const int newsize = sizeof(struct Stmt*) * (res->count_statements+1);
 		res->statements = realloc(res->statements,newsize);
 
-		next = list_get(copy, 0);
+		next = list_head(copy);
 		if(next == NULL){return NULL;}
 	}
 
@@ -58,18 +64,21 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 
 		if(!list_expect(copy, LCURLY)){return NULL;}
 
-		//maybe there be some statements
-		struct Token* elsenext = list_get(copy, 0);
+		struct Token* elsenext = list_head(copy);
 		if(elsenext == NULL){return NULL;}
 
 		while (elsenext->kind != RCURLY) {
 
-			res->elseStatements[res->count_elseStatements] = makeStmt(copy,debug);
+			struct Stmt* stmt = makeStmt(copy, debug);
+			if(stmt == NULL){return NULL;}
+
+			res->elseStatements[res->count_elseStatements] = stmt;
+
 			res->count_elseStatements++;
-			int newsize2 = sizeof(struct Stmt*) * res->count_elseStatements+1;
+			const int newsize2 = sizeof(struct Stmt*) * res->count_elseStatements+1;
 			res->elseStatements = realloc(res->elseStatements,newsize2);
 
-			elsenext = list_get(copy, 0);
+			elsenext = list_head(copy);
 			if(elsenext == NULL){return NULL;}
 		}
 

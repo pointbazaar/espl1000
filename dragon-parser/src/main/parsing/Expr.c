@@ -37,6 +37,7 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 	
 	struct Term* myterm2 = makeTerm(copy,debug);
 	if(myterm2 == NULL){return NULL;}
+
 	terms[termsc++] = myterm2;
 	
 	bool fail = false;
@@ -112,8 +113,10 @@ int find(void** arr, int size, void* element){
 }
 
 struct Expr* performTreeTransformation(
-		struct Op** ops, int opsc,
-		struct Term** terms, int termsc
+		struct Op** ops, 
+		int opsc,
+		struct Term** terms, 
+		int termsc
 ){
 	//transform the list into a tree, respecting operator precedence
 

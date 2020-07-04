@@ -4,10 +4,15 @@
 #include "../../main/commandline/TokenKeys.h"
 #include "../../main/commandline/Token.h"
 
-
 #include "../../main/parsing/typenodes/BasicTypeWrapped.h"
 
+#include <stdio.h>
+
 int basictypewrapped_test_type_parsing_simple_type(bool debug) {
+
+	if(debug){
+		printf("TEST: basictypewrapped_test_type_parsing_simple_type\n");
+	}
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt"));
