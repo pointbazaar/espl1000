@@ -44,25 +44,33 @@ int method_test_can_parse_subroutine(bool debug) {
 
 	struct TokenList* l = makeTokenList();
 
-	list_add(l, makeToken(FN));
+	list_add(l, makeToken2(FN,"fn"));
 	list_add(l, makeToken2(ID,"main"));
-	list_add(l, makeToken(LPARENS));
-	list_add(l, makeToken(RPARENS));
-	list_add(l, makeToken(ARROW));
-	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt"));
-	list_add(l, makeToken(LCURLY));
-		list_add(l, makeToken2(ID,"println"));
-		list_add(l, makeToken(LPARENS));
-		list_add(l, makeToken(RPARENS));
-		list_add(l, makeToken(SEMICOLON));
 
-		list_add(l, makeToken(RETURN));
+	list_add(l, makeToken2(LPARENS,"("));
+	list_add(l, makeToken2(RPARENS,")"));
+
+	list_add(l, makeToken2(ARROW,"->"));
+	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt"));
+
+	list_add(l, makeToken2(LCURLY,"{"));
+
+		list_add(l, makeToken2(ID,"println"));
+		list_add(l, makeToken2(LPARENS,"("));
+		list_add(l, makeToken2(RPARENS,")"));
+		list_add(l, makeToken2(SEMICOLON,";"));
+
+		list_add(l, makeToken2(RETURN,"return"));
 		list_add(l, makeToken2(INTEGER,"0"));
 		
-	list_add(l, makeToken(RCURLY));
+	list_add(l, makeToken2(RCURLY,"}"));
 
 	struct Method* m = makeMethod(l, debug);
-	return (m!=NULL)?1:0;
+	if(m == NULL){return 0;}
+
+	bool a1 = m->count_arguments == 0;
+
+	return (a1)?1:0;
 }
 
 int method_test_can_parse_method_without_arguments(bool debug) {
@@ -97,7 +105,7 @@ int method_test_can_parse_method_without_arguments(bool debug) {
 	struct Method* m = makeMethod(l, debug);
 	if(m == NULL){return 0;}
 
-	bool assert1 = (0 == m->count_arguments);
+	bool assert1 = (1 == m->count_arguments);
 
 	return (assert1)?1:0;
 }
