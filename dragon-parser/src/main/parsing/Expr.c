@@ -38,6 +38,8 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 	struct Term* myterm2 = makeTerm(copy,debug);
 	if(myterm2 == NULL){return NULL;}
 
+	if(debug){printf("parsed first term\n");}
+
 	terms[termsc++] = myterm2;
 	
 	bool fail = false;
@@ -58,7 +60,7 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 
 	list_set(tokens, copy);
 
-	return performTreeTransformation(ops,opsc, terms,termsc);
+	return performTreeTransformation(ops,opsc, terms,termsc, debug);
 }
 
 struct Expr* makeExpr_3(struct Term* leftTerm, struct Op* op, struct Term* rightTerm) {
@@ -116,8 +118,14 @@ struct Expr* performTreeTransformation(
 		struct Op** ops, 
 		int opsc,
 		struct Term** terms, 
-		int termsc
+		int termsc,
+		bool debug
 ){
+
+	if(debug){
+		printf("performTreeTransformation(..., %d, ..., %d, %d)\n", opsc, termsc, debug);
+	}
+
 	//transform the list into a tree, respecting operator precedence
 
 	struct Expr* res = malloc(sizeof(struct Expr));
@@ -190,6 +198,10 @@ struct Expr* performTreeTransformation(
 	if(opsc > 0) {
 		res->op = ops[0];
 		res->term2 = terms[1];
+	}
+
+	if(debug){
+		printf("return from performTreeTransformation(...)\n");
 	}
 
 	return res;

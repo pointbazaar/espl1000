@@ -32,6 +32,10 @@ struct Term* makeTerm_other(struct Expr* expr){
 
 struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 
+	/*
+	Term := IntConst | CharConst | FloatConst | MethodCall | BoolConst | Variable | '(' Expr ')'
+	*/
+
 	if(debug){
 		printf("Term(...) from %s\n", list_code(tokens, debug));
 	}
@@ -48,22 +52,27 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 
 	struct TokenList* copy = list_copy(tokens);
 
-	bool fail = false;
-	struct TokenList* copy2 = list_copy(copy);
+	if(list_head(copy)->kind == LPARENS){
 
-	if(!list_expect(copy2,LPARENS)){fail=true;}
-	if(!fail){
-		res->m5 = makeExpr(copy2,debug);
-		if(res->m5 == NULL){fail=true;}
-		if(!fail){
-			if(!list_expect(copy2, RPARENS)){fail=true;}
-
-			list_set(copy,copy2);
+		if(debug){
+			printf("try to parse Expr in Term\n");
 		}
-	}
 
-	if(fail) {
-		fail=false;
+		if(!list_expect(copy,LPARENS)){ return NULL;}
+
+		res->m5 = makeExpr(copy,debug);
+		if(res->m5 == NULL){return NULL;}
+		
+		if(!list_expect(copy, RPARENS)){return NULL;}
+
+	}else{
+
+		if(debug){
+			printf("try to parse ordinary Term\n");
+		}
+
+		bool fail = false;
+		
 		res->m2 = makeIntConst(copy,debug);
 		if(res->m2 == NULL){fail = true;}
 
@@ -87,6 +96,10 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 					fail=false;
 					res->m4 = makeMethodCall(copy,debug);
 					if(res->m4 == NULL){fail = true;}
+
+					if(fail && debug){
+						printf("parsing MethodCall failed\n");
+					}
 
 					if(fail) {
 						fail=false;

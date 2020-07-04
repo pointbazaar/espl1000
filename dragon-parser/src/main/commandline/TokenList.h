@@ -39,7 +39,7 @@ char* wrap(char* s, char* wrap);
 //they return 'false' if the token is not present
 bool list_expect_internal(struct TokenList* tknList,struct Token* itk);
 bool list_expect(struct TokenList* tknList,int token_kind);
-bool list_expect_2(struct TokenList* tknList,int token_kind, char* token_value);
+bool list_expect_2(struct TokenList* tknList, struct Token* tk);
 
 struct TokenList* list_copy(struct TokenList* tknList);
 

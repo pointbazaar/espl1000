@@ -29,7 +29,8 @@ struct Expr* makeExpr_3(struct Term* leftTerm, struct Op* op, struct Term* right
 
 struct Expr* performTreeTransformation(
 	struct Op** ops, int opsc,
-	struct Term** terms, int termsc
+	struct Term** terms, int termsc,
+	bool debug
 );
 
 int find(void** arr, int size, void* element);

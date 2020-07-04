@@ -22,12 +22,17 @@ struct Token* makeToken2(int kind, char* value){
 }
 	
 bool tokenEquals(struct Token* a, struct Token* b){
-	if( strlen(a->value)==0 
-		|| strlen(b->value)==0
-	){
-		return a->kind == b->kind;
-	}
+	const bool kindEq = a->kind == b->kind;
+	if(kindEq){
 
-	return a->kind == b->kind 
-		&& strcmp(a->value,b->value) == 0;
+		if(a->value != NULL && b->value != NULL){
+			if(strlen(a->value)==0 || strlen(b->value)==0){
+				return true;
+			}else{
+				return strcmp(a->value,b->value) == 0;
+			}
+		}
+		return true;
+	}
+	return false;
 }

@@ -78,7 +78,7 @@ bool list_startsWith(struct TokenList* list, struct Token* token) {
 
 	if (list_size(list) > 0) {
 		return tokenEquals(
-			list_get(list,0),
+			list_head(list),
 			token
 		);
 	}
@@ -99,50 +99,41 @@ bool list_expect_internal(struct TokenList* list, struct Token* token) {
 	if (list_startsWith(list, token)) {
 		list_consume(list, 1);
 		return true;
-	} else {
-		char str[100];
-		str[0]='\0';
-		
-		strcat(str,"Syntax Error ");
-		
-		strcat(str,"in ");
-		
-		strcat(str,list->relPath);
-		
-		strcat(str,":");
-
-		char buf[20];
-		sprintf(buf, "%d", list_head(list)->lineNumber);
-
-		strcat(str, buf);
-		strcat(str, ": expected: ");
-		
-		strcat(str,token->value);
-		
-		strcat(str," (");
-
-		sprintf(buf, "%d", token->kind);
-		strcat(str, buf);
-
-		strcat(str,")");
-
-		strcat(str,"\t actual: ");
-		strcat(str,list_head(list)->value);
-		
-		strcat(str, " (");
-
-		sprintf(buf, "%d", list_head(list)->kind);
-		strcat(str, buf);
-
-		strcat(str,")");
-		strcat(str,"     ");
-		strcat(str,list_code(list, false));
-		
-		strcat(str,"\n");
-		
-		return false;
 	}
-	return true;
+
+	char str[100];
+	str[0]='\0';
+	strcat(str,"Syntax Error in ");
+	strcat(str,list->relPath);
+	strcat(str,":");
+
+	char buf[20];
+	sprintf(buf, "%d", list_head(list)->lineNumber);
+	strcat(str, buf);
+	strcat(str, ": expected: ");
+	
+	strcat(str,token->value);
+	
+	strcat(str," (");
+	sprintf(buf, "%d", token->kind);
+	strcat(str, buf);
+	strcat(str,")");
+
+	strcat(str,"\t actual: ");
+	strcat(str,list_head(list)->value);
+	
+	strcat(str, " (");
+
+	sprintf(buf, "%d", list_head(list)->kind);
+	strcat(str, buf);
+
+	strcat(str,")");
+	strcat(str,"     ");
+	strcat(str,list_code(list, false));
+	
+	strcat(str,"\n");
+	
+	return false;
 }
 
 bool list_expect(struct TokenList* list, int token_kind){
@@ -150,8 +141,8 @@ bool list_expect(struct TokenList* list, int token_kind){
 	return list_expect_internal(list, makeToken(token_kind));
 }
 
-bool list_expect_2(struct TokenList* list, int token_kind, char* token_value){
-	return list_expect_internal(list, makeToken2(token_kind, token_value));
+bool list_expect_2(struct TokenList* list, struct Token* tk){
+	return list_expect_internal(list, tk);
 }
 
 struct TokenList* list_copy(struct TokenList* other) {

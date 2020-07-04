@@ -16,32 +16,13 @@ struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 	struct Identifier* res = malloc(sizeof(struct Identifier));
 	if(res == NULL){return NULL;}
 
-	if(list_size(tokens) == 0){
-		return NULL;
-	}
-	struct Token* token = list_head(tokens);
+	if(list_size(tokens) == 0){ return NULL; }
+	struct Token* tk = list_head(tokens);
 
-	if (token->kind == ID) {
-		res->identifier = token->value;
+	if (tk->kind == ID) {
+		res->identifier = tk->value;
 		list_consume(tokens, 1);
-
 	} else {
-		char msg[200];
-		sprintf(msg,"Error: could not read identifier from token: ");
-		strcat(msg,token->value);
-		strcat(msg," in ");
-		strcat(msg,tokens->relPath);
-		strcat(msg,":");
-
-		char my[10];
-		my[0]='\0';
-		sprintf(my,"%d",token->lineNumber);
-
-		strcat(msg,my);
-		strcat(msg," in context '"); 
-		strcat(msg,list_code(tokens, debug));
-		strcat(msg,"'");
-
 		return NULL;
 	}
 

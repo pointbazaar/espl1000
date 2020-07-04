@@ -12,7 +12,7 @@
 struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 
 	if(debug){
-		printf("MethodCall(...)\n");
+		printf("MethodCall(...) from: %s\n", list_code(tokens, debug));
 	}
 
 	struct MethodCall* res = malloc(sizeof(struct MethodCall));
@@ -29,7 +29,16 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 
 	res->methodName = id->identifier;
 
+	if(debug){
+		printf("try to parse LPARENS\n");
+	}
+
+	if(list_size(copy) == 0){return NULL;}
 	if(!list_expect(copy, LPARENS)){return NULL;}
+
+	if(debug){
+		printf("try to parse args\n");
+	}
 
 	if(list_size(copy) == 0){return NULL;}
 	struct Token* next = list_head(copy);
@@ -43,10 +52,12 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 		struct Expr* expr = makeExpr(copy,debug);
 		if(expr == NULL){return NULL;}
 
-		res->args[res->count_args++] = expr;
-		res->args = realloc(res->args, sizeof(struct Expr*) * res->count_args);
+		res->args[res->count_args] = expr;
+		res->count_args += 1;
 
-		next = list_get(copy, 0);
+		res->args = realloc(res->args, sizeof(struct Expr*) * (res->count_args + 1));
+
+		next = list_head(copy);
 		if(next == NULL){return NULL;}
 
 		found = true;
