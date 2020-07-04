@@ -84,6 +84,7 @@ bool test_all_inner(bool debug){
 	tests[k++] = expr_recognize_2_op_expr;
 	tests[k++] = expr_test_simple_expression;
 	tests[k++] = expr_test_variable_name_expression;
+	tests[k++] = expr_test_comparison;
 
 	tests[k++] = simplevar_test_parse_simple_indexed_variable;
 	tests[k++] = simplevar_test_parse_simple_variable;

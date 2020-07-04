@@ -64,7 +64,58 @@ int expr_recognize_2_op_expr(bool debug) {
 	list_add(tokens, makeToken2(OPKEY,"+"));
 	list_add(tokens, makeToken2(INTEGER,"2"));
 
+	list_add(tokens, makeToken2(LCURLY,"{"));
+
 	struct Expr* expr = makeExpr(tokens,debug);
-	return (expr!=NULL)?1:0;
+	if(expr == NULL){return 0;}
+
+	bool a1 = list_size(tokens) == 1;
+
+	return (a1)?1:0;
 }
 
+int expr_test_comparison(bool debug){
+
+	if(debug){
+		printf("expr_test_comparison\n");
+	}
+
+	struct TokenList* l = makeTokenList();
+
+	list_add(l, makeToken2(ID,"x"));
+	list_add(l, makeToken2(OPKEY,"<"));
+	list_add(l, makeToken2(INTEGER,"5"));
+
+	list_add(l, makeToken2(LCURLY,"{"));
+
+	struct Expr* expr = makeExpr(l,debug);
+	if(expr == NULL){return 0;}
+
+	bool a1 = list_size(l) == 1;
+
+	struct Term* term1 = expr->term1;
+	if(term1 == NULL){return 0;}
+
+	struct Term* term2 = expr->term2;
+	if(term2 == NULL){return 0;}
+
+	struct Op* op = expr->op;
+	if(op == NULL){return 0;}
+
+	//assert about the terms
+
+	struct Variable* v = term1->m6;
+	if(v == NULL){return 0;}
+
+	struct IntConst* ic = term2->m2;
+	if(ic == NULL){return 0;}
+
+	bool a2 = ic->value == 5;
+
+	struct SimpleVar* sv = v->simpleVariableNode;
+	if(sv == NULL){return 0;}
+
+	bool a3 = strcmp(sv->name, "x") == 0;
+
+	return (a1 && a2 && a3)?1:0;
+}
