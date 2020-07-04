@@ -70,14 +70,14 @@ int variable_test_parse_struct_member_access_and_index_access(bool debug) {
 	// x.a[0].b
 	struct TokenList* tokens = makeTokenList();
 	list_add(tokens, makeToken2(ID,"x") );
-	list_add(tokens, makeToken(STRUCTMEMBERACCESS) );
+	list_add(tokens, makeToken2(STRUCTMEMBERACCESS,".") );
 	list_add(tokens, makeToken2(ID,"a") );
 
-	list_add(tokens, makeToken(LBRACKET) );
+	list_add(tokens, makeToken2(LBRACKET,"[") );
 	list_add(tokens, makeToken2(INTEGER,"0") );
-	list_add(tokens, makeToken(RBRACKET) );
+	list_add(tokens, makeToken2(RBRACKET,"]") );
 
-	list_add(tokens, makeToken(STRUCTMEMBERACCESS) );
+	list_add(tokens, makeToken2(STRUCTMEMBERACCESS,".") );
 	list_add(tokens, makeToken2(ID,"b") );
 
 	struct Variable* node = makeVariable(tokens,debug);

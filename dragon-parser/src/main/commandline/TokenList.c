@@ -176,7 +176,7 @@ void list_set(struct TokenList* list, struct TokenList* copy) {
 	//DEBUG
 	printf("list_set(...)\n");
 
-	free(list->tokens);
+	//free(list->tokens);
 	list->tokens = malloc(sizeof(struct Token*) * copy->capacity);
 
 	list->capacity = copy->capacity;
