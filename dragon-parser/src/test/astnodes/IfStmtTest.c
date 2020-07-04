@@ -63,7 +63,7 @@ int if_test2(bool debug) {
 
 
 	list_add(l, makeToken2(LPARENS,"("));
-	list_add(l, makeToken2(STRINGCONST,"x<5"));
+	list_add(l, makeToken2(INTEGER,"5"));
 	list_add(l, makeToken2(RPARENS,")"));
 
 	list_add(l, makeToken2(SEMICOLON,";"));

@@ -101,7 +101,7 @@ bool list_expect_internal(struct TokenList* list, struct Token* token) {
 		return true;
 	}
 
-	char str[100];
+	char str[1000];
 	str[0]='\0';
 	strcat(str,"Syntax Error in ");
 	strcat(str,list->relPath);

@@ -98,7 +98,7 @@ int methodcall_test_can_parse_subroutine_call2(bool debug) {
 	struct TokenList* tokens = makeTokenList();
 	list_add(tokens, makeToken2(ID,"println"));
 	list_add(tokens, makeToken2(LPARENS,"("));
-	list_add(tokens, makeToken2(STRINGCONST,"x<5"));
+	list_add(tokens, makeToken2(INTEGER,"5"));
 	list_add(tokens, makeToken2(RPARENS,")"));
 
 	struct MethodCall* call = makeMethodCall(tokens,debug);
