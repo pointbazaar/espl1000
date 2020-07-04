@@ -3,6 +3,10 @@
 #include "../../main/commandline/TokenKeys.h"
 #include "../../main/commandline/Token.h"
 #include "../../main/parsing/Expr.h"
+#include "../../main/parsing/Term.h"
+#include "../../main/parsing/IntConst.h"
+#include "../../main/parsing/Variable.h"
+#include "../../main/parsing/SimpleVar.h"
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -17,7 +21,13 @@ int expr_test_simple_expression(bool debug) {
 	list_add(list, makeToken2(INTEGER,"4"));
 	struct Expr* expr = makeExpr(list,debug);
 
-	return (expr!=NULL)?1:0;
+	if(expr == NULL){return 0;}
+
+	if(expr->term1 == NULL){return 0;}
+
+	bool a1 = expr->term1->m2->value == 4;
+
+	return (a1)?1:0;
 }
 
 int expr_test_variable_name_expression(bool debug) {
@@ -30,7 +40,16 @@ int expr_test_variable_name_expression(bool debug) {
 
 	list_add(list, makeToken2(ID,"x"));
 	struct Expr* expr = makeExpr(list,debug);
-	return (expr!=NULL)?1:0;
+
+	if(expr == NULL){return 0;}
+
+	if(expr->term1->m6 == NULL){return 0;}
+
+	if(expr->term1->m6->simpleVariableNode == NULL){return 0;}
+
+	bool a1 = strcmp(expr->term1->m6->simpleVariableNode->name, "x") == 0;
+
+	return (a1)?1:0;
 }
 
 int expr_recognize_2_op_expr(bool debug) {

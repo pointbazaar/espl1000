@@ -81,16 +81,16 @@ bool test_all_inner(bool debug){
 	tests[k++] = term_test_simple_term;
 	tests[k++] = term_test_variable_term;
 
-	tests[k++] = simplevar_test_parse_simple_indexed_variable;
-	tests[k++] = simplevar_test_parse_simple_variable;
-	
-	tests[k++] = variable_test_parse_index_access;
-	tests[k++] = variable_test_parse_struct_member_access;
-	tests[k++] = variable_test_parse_struct_member_access_and_index_access;
-
 	tests[k++] = expr_recognize_2_op_expr;
 	tests[k++] = expr_test_simple_expression;
 	tests[k++] = expr_test_variable_name_expression;
+
+	tests[k++] = simplevar_test_parse_simple_indexed_variable;
+	tests[k++] = simplevar_test_parse_simple_variable;
+
+	tests[k++] = variable_test_parse_index_access;
+	tests[k++] = variable_test_parse_struct_member_access;
+	tests[k++] = variable_test_parse_struct_member_access_and_index_access;
 
 	tests[k++] = if_test1;
 	tests[k++] = if_test2;

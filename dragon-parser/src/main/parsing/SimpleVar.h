@@ -7,6 +7,7 @@ struct Expr;
 struct SimpleVar {
 
 	char* name;
+	
 	//may be NULL
 	struct Expr* indexOptional;
 };

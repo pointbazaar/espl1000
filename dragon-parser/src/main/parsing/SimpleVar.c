@@ -26,8 +26,12 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 
+	if(debug){printf("1\n");}
+
 	struct Token* token = list_head(copy);
 	if(token == NULL){return NULL;}
+
+	if(debug){printf("2\n");}
 
 	if (token->kind == ID) {
 		res->name = token->value;
@@ -50,6 +54,8 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 			//pass, this assignment has no index to it
 		}
 
+		if(debug){printf("3\n");}
+
 	} else {
 		printf("%s : %d : could not read variabe name. token was %s from context '%s'",
 			tokens->relPath,
@@ -60,6 +66,8 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 
 		return NULL;
 	}
+
+	if(debug){printf("4\n");}
 
 	list_set(tokens,copy);
 

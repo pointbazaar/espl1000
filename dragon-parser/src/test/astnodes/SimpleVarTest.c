@@ -46,6 +46,10 @@ int simplevar_test_parse_simple_indexed_variable(bool debug) {
 	bool assert1 = strcmp("x", node->name) == 0;
 	bool assert2 = (node->indexOptional != NULL);
 
+	if(!assert2){ return 0;}
+	if(node->indexOptional->term1 == NULL){return 0;}
+	if(node->indexOptional->term1->m2 == NULL){return 0;}
+
 	bool assert3 = (
 			1 == 
 			(node->indexOptional->term1->m2)	//IntConst
