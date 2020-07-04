@@ -26,7 +26,7 @@ struct TokenList* makeTokenList() {
 	const int initial_size = 10;
 
 	//DEBUG
-	printf("makeTokenList()\n");
+	//printf("makeTokenList()\n");
 
 	struct TokenList* res = malloc(sizeof(struct TokenList));
 	if(res == NULL){ exit(1);}
@@ -45,7 +45,7 @@ struct TokenList* makeTokenList() {
 void list_add(struct TokenList* list, struct Token* token) {
 
 	//DEBUG
-	printf("list_add\n");
+	//printf("list_add\n");
 
 	if((list->tokensc + 1) > list->capacity){
 		printf("resize TokenList instance\n");
@@ -157,7 +157,7 @@ bool list_expect_2(struct TokenList* list, int token_kind, char* token_value){
 struct TokenList* list_copy(struct TokenList* other) {
 
 	//DEBUG
-	printf("list_copy(...)\n");
+	//printf("list_copy(...)\n");
 
 	struct TokenList* res = makeTokenList();
 
@@ -174,7 +174,7 @@ struct TokenList* list_copy(struct TokenList* other) {
 void list_set(struct TokenList* list, struct TokenList* copy) {
 
 	//DEBUG
-	printf("list_set(...)\n");
+	//printf("list_set(...)\n");
 
 	//free(list->tokens);
 	list->tokens = malloc(sizeof(struct Token*) * copy->capacity);
@@ -185,7 +185,7 @@ void list_set(struct TokenList* list, struct TokenList* copy) {
 	memcpy(list->tokens, copy->tokens, copy->tokensc * sizeof(struct Token*));
 
 	//DEBUG
-	printf("return from list_set\n");
+	//printf("return from list_set\n");
 }
 
 struct Token* list_get(struct TokenList* list, int i) {

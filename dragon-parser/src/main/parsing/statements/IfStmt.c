@@ -10,7 +10,7 @@
 struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("IfStmt(...)\n"); 
+		printf("IfStmt(...) from: %s\n", list_code(tokens, debug)); 
 	}
 
 	struct IfStmt* res = malloc(sizeof(struct IfStmt));

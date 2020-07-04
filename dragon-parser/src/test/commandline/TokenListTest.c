@@ -109,12 +109,6 @@ int test_tokenlist_code(bool debug){
 	list_add(list, makeToken2(ID,"y"));
 	list_add(list, makeToken2(RBRACKET,"]"));
 
-	for(int k=0;k < list_size(list) && (k < 10);k++){
-		struct Token* tk = list_get(list,k);
-		
-		printf(" %d", tk->kind);
-	}
-
 	char* str = list_code(list, debug);
 	char* expect = "x z y ]     [4,4,4,25,]";
 	if(debug){

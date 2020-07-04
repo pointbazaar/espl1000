@@ -11,4 +11,4 @@ make clean
 #copy the executable to /usr/bin
 cp dragon-parser /usr/bin/
 
-dragon-parser -test
+dragon-parser -test -debug

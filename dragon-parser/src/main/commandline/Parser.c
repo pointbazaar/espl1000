@@ -24,7 +24,7 @@ int main(int argc, char** argv){
 
 	setbuf(stdout,NULL);
 
-	printf("dragon parser\n");
+	printf("main -- dragon parser\n");
 
 	char** filenames = malloc(sizeof(char*)*100);
 	int filenamescount = 0;
@@ -41,10 +41,7 @@ int main(int argc, char** argv){
 		}
 	}
 
-	bool debug = true;
-	if(debug){
-		printf("Parser::main\n");
-	}
+	bool debug = false;
 	bool help = false;
 	bool test = false;
 	
@@ -54,6 +51,9 @@ int main(int argc, char** argv){
 		}
 		if(strcmp(FLAG_TEST, flags[i])==0){
 			test = true;
+		}
+		if(strcmp(FLAG_DEBUG, flags[i])==0){
+			debug = true;
 		}
 	}
 
