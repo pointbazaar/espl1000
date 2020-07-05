@@ -12,25 +12,37 @@ struct Token* recognizeToken(char* tkn, bool debug) {
 	//everything being seperated by a space, and the whole line not
 	//having any spaces in front or at the back is important to keep parsing simple.
 	if (debug) {
-		printf("recognizeToken(...)\n");
-		printf("recognize: %s\n", tkn);
+		printf("recognizeToken(%s, %d)\n", tkn, debug);
 	}
 
-	char* parts[10];
-	int partsc = 0;
+	
+	char part1[10];
+	char part2[30];
 
-	char* ss = tkn;
-    char* token;
-    token = strtok(ss, " ");
-    while (token != NULL) {
-        parts[partsc++] = token;
-        token = strtok(ss, " ");
-    }
-	int tkn_id = atoi(parts[0]);
+	//find first space
+	int space_index = -1;
+	for(int i=0;i<strlen(tkn);i++){
+		if(tkn[i] == ' '){
+			space_index = i;
+			break;
+		}
+	}
+
+	if(space_index == -1){
+		printf("could not read 2 parts of token\n");
+		return NULL;
+	}
+
+	tkn[space_index] = '\0';
+	
+	strcpy(part1, tkn);
+	strcpy(part2, tkn+space_index+1);
+
+	int tkn_id = atoi(part1);
 	int line_no = 1;
 
 	if (tkn_id == LINE_NO) {
-		int line_no_change = atoi(parts[1]);
+		int line_no_change = atoi(part2);
 		line_no += line_no_change;
 		return NULL;
 		//break;
@@ -52,27 +64,27 @@ struct Token* recognizeToken(char* tkn, bool debug) {
 
 		//CONSTANTS
 		case BCONST : 
-			r = makeToken2(BCONST, parts[1] );
+			r = makeToken2(BCONST, part2);
 			break;
 		case FLOATING : 
 			;
-			r = makeToken2(FLOATING, parts[1]);
+			r = makeToken2(FLOATING, part2);
 			break;
 		case INTEGER : 
-			r = makeToken2(INTEGER, parts[1]);
+			r = makeToken2(INTEGER, part2);
 			break;
 
 		//IDENTIFIERS
 		case ID : 
-			r = makeToken2(ID,parts[1]);
+			r = makeToken2(ID,part2);
 			break;
 		case TYPEIDENTIFIER : 
-			r = makeToken2(TYPEIDENTIFIER,parts[1]);
+			r = makeToken2(TYPEIDENTIFIER,part2);
 			break;
 
 		//SECTION: OPERATORNS
 		case OPKEY : 
-			r = makeToken2(OPKEY,parts[1]);
+			r = makeToken2(OPKEY,part2);
 			break;
 
 		case EQ : 
@@ -84,7 +96,7 @@ struct Token* recognizeToken(char* tkn, bool debug) {
 			break;
 
 		case TPARAM : 
-			r = makeToken2(TPARAM, parts[1]);
+			r = makeToken2(TPARAM, part2);
 			break;
 
 		//BRACKETS, BRACES, PARENTHESES
@@ -129,7 +141,7 @@ struct Token* recognizeToken(char* tkn, bool debug) {
 			r = makeToken2(COMMA,",");
 			break;
 		case ARROW : 
-			r = makeToken2(ARROW,parts[1]);
+			r = makeToken2(ARROW,part2);
 			break;
 
 		//KEYWORDS

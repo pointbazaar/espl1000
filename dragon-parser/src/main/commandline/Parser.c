@@ -22,7 +22,7 @@ int main(int argc, char** argv){
 	//such we can easily have
 	//multiple parallel invocations of the parser in the compiler.
 
-	setbuf(stdout,NULL);
+	//setbuf(stdout,NULL);
 
 	printf("main -- dragon parser\n");
 
@@ -31,6 +31,9 @@ int main(int argc, char** argv){
 	
 	char** flags = malloc(sizeof(char*)*100);
 	int flagscount = 0;
+
+	printf("read flags, filenames\n");
+	
 
 	for(int i=1;i<argc;i++){
 		char* arg = argv[i];
@@ -44,6 +47,10 @@ int main(int argc, char** argv){
 	bool debug = false;
 	bool help = false;
 	bool test = false;
+
+	
+	printf("apply flags\n");
+	
 	
 	for(int i=0;i<flagscount;i++){
 		if(strcmp(FLAG_HELP, flags[i])==0){
@@ -75,7 +82,7 @@ int main(int argc, char** argv){
 void build_ast_file(char* tokensFile, char* astJsonFile, bool debug) {
 
 	if(debug){
-		printf("Parser::build_ast_file\n");
+		printf("Parser::build_ast_file(%s, %s, %d)\n", tokensFile, astJsonFile, debug);
 	}
 
 	struct TokenList* tokens = readTokensFromTokensFile(tokensFile,debug);
@@ -154,7 +161,9 @@ void printHelp() {
 
 struct TokenList* readTokensFromTokensFile(char* tokensFile, bool debug){
 
-	//char* fileNameWithoutPath = tokensFile;
+	if(debug){
+		printf("readTokensFromTokensFile(%s, %d)\n", tokensFile, debug);
+	}
 	
 	struct TokenList* tks = makeTokenList(tokensFile);
 	FILE* file = fopen(tokensFile,"r");
@@ -165,6 +174,8 @@ struct TokenList* readTokensFromTokensFile(char* tokensFile, bool debug){
 		struct Token* tkn = recognizeToken(str, debug);
     	if(tkn != NULL){
 			list_add(tks, tkn);
+    	}else{
+    		break;
     	}
     }
 

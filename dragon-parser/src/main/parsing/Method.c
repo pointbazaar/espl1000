@@ -30,10 +30,20 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 
 	struct TokenList* copy = list_copy(tokens);
 
-	list_expect(copy, FN);
+	if(!list_expect(copy, FN)){
+		//as a subroutine is parsed deterministically (we know to parse a subroutine by the 'fn' keyword),
+		//give a little parse error message
+		printf("expected 'fn', but was: %s\n", list_code(copy,debug));
+		return NULL;
+	}
 
-	res->methodName = makeIdentifier(copy,debug)->identifier;
-	if(res->methodName == NULL){return NULL;}
+	struct Identifier* id = makeIdentifier(copy,debug);
+	if(id == NULL){
+		printf("expected method name, but was: %s\n", list_code(copy, debug));
+		return NULL;
+	}
+
+	res->methodName = id->identifier;
 
 	if(!list_expect(copy, LPARENS)){return NULL;}
 
