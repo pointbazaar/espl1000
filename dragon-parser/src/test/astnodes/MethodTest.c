@@ -62,13 +62,21 @@ int method_test_can_parse_subroutine(bool debug) {
 
 		list_add(l, makeToken2(RETURN,"return"));
 		list_add(l, makeToken2(INTEGER,"0"));
+		list_add(l, makeToken2(SEMICOLON,";"));
 		
 	list_add(l, makeToken2(RCURLY,"}"));
 
 	struct Method* m = makeMethod(l, debug);
-	if(m == NULL){return 0;}
+	if(m == NULL){
+		printf("Method could not be parsed\n");
+		return 0;
+	}
 
 	bool a1 = m->count_arguments == 0;
+
+	if(!a1){
+		printf("Assertion failed: m did not have 0 arguments\n");
+	}
 
 	return (a1)?1:0;
 }

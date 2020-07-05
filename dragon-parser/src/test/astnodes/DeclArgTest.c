@@ -18,12 +18,13 @@ int declarg_test_parse_declared_argument(bool debug) {
 	struct TokenList* list = makeTokenList();
 
 	list_add(list, makeToken2(LPARENS,"("));
-	list_add(list, makeToken2(LPARENS,"("));
-	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt"));
-	list_add(list, makeToken2(LPARENS,"("));
-	list_add(list, makeToken2(ARROW,"->"));
-	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt"));
+		list_add(list, makeToken2(LPARENS,"("));
+		list_add(list, makeToken2(TYPEIDENTIFIER,"PInt"));
+		list_add(list, makeToken2(RPARENS,")"));
+		list_add(list, makeToken2(ARROW,"->"));
+		list_add(list, makeToken2(TYPEIDENTIFIER,"PInt"));
 	list_add(list, makeToken2(RPARENS,")"));
+
 	list_add(list, makeToken2(ID,"subr"));
 
 	struct DeclArg* node = makeDeclArg(list,debug);
