@@ -57,7 +57,6 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 	//https://nothings.org/computer/lexing.html
 
 	uint64_t input_index = 0;	//our index in the input file
-	bool first_write = true;
 
 	if(DEBUG){
 		printf("lex_main(...)\n");
@@ -390,8 +389,7 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 		tokens[tokens_index++] = tkn;
 
 		if(tokens_index >= tokens_capacity){
-			writeToFile(tkn_filename, tokens,tokens_capacity,tokens_index,input_index,free_tokens);
-			first_write=false;
+			writeToFile(tkn_filename, tokens,tokens_capacity,tokens_index,free_tokens);
 			tokens_index=0;
 		}
 
@@ -403,8 +401,7 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 		}
 	}
 
-	writeToFile(tkn_filename, tokens,tokens_capacity,tokens_index,input_index,free_tokens);
-	first_write=false;
+	writeToFile(tkn_filename, tokens,tokens_capacity,tokens_index,free_tokens);
 
 	//TODO: handle the deletion of the .tokens file
 	//if any errors were encountered anywhere or
@@ -480,7 +477,6 @@ void writeToFile(
 	struct Token** tokens, 
 	int tokens_capacity, 
 	int len,
-	bool first_write,
 	bool free_tokens
 ){
 
@@ -488,12 +484,8 @@ void writeToFile(
 		printf("writeToFile(...) : write to %s\n",tkn_filename);
 	}
 
-	FILE* file2;
-	if(first_write){
-		file2 = fopen(tkn_filename,"w");
-	}else{
-		file2 = fopen(tkn_filename,"a");
-	}
+	FILE* file2 = fopen(tkn_filename,"w");
+	
 
 	if(file2 == NULL){
 		printf("could not open output file \n");

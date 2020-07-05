@@ -30,7 +30,6 @@ void writeToFile(
 	struct Token** tokens, 
 	int tokens_capacity, 
 	int len,
-	bool first_write,
 	bool free_tokens
 );
 
