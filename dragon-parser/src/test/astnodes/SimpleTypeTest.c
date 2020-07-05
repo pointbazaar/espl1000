@@ -37,7 +37,9 @@ int simpletype_test_typenode_parsing_fails(bool debug) {
 
 	struct BasicTypeWrapped* node = makeBasicTypeWrapped2(list, debug);
 
-	return (node!=NULL)?1:0;
+	bool a1 = node == NULL;
+
+	return (a1)?1:0;
 }
 
 
@@ -48,9 +50,9 @@ int simpletype_test_typenode_parsing_anytype(bool debug) {
 	}
 
 	struct TokenList* list = makeTokenList();
-	list_add(list, makeToken(ANYTYPE) );
+	list_add(list, makeToken2(ANYTYPE,"#"));
 
-	struct SimpleType* node = makeSimpleType(list_code(list, debug));
+	struct SimpleType* node = makeSimpleType2(list, debug);
 
 	bool assert1 = (0 == list_size(list));
 	bool assert2 = node != NULL;
