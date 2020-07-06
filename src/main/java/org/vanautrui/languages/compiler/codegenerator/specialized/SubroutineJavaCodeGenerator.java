@@ -3,6 +3,7 @@ package org.vanautrui.languages.compiler.codegenerator.specialized;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.StatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.basic_and_wrapped.SimpleTypeNode;
 import org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator;
 import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
@@ -10,6 +11,7 @@ import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,7 +37,11 @@ public final class SubroutineJavaCodeGenerator {
 
     final String argsString = m.arguments.stream().map(arg -> arg.type+" "+arg.name.orElse("error")).collect(Collectors.joining(","));
 
-    vm.add("public static "+m.returnType.getTypeName()+m.methodName+"("+argsString+") {");
+    String typeNameInJava = m.returnType.getTypeName();
+    if(Arrays.asList("PInt","NInt","NZInt","Int").contains(typeNameInJava)){
+      typeNameInJava = "int";
+    }
+    vm.add("public static "+typeNameInJava+m.methodName+"("+argsString+") {");
 
     final SymbolTableContext ctx = new SymbolTableContext(subTable,varTable,structsTable);
 

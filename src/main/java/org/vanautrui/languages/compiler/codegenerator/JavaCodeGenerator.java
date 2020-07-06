@@ -30,15 +30,19 @@ public final class JavaCodeGenerator {
         final Map<String,List<String>> instructions = new HashMap<>();
 
         for(final NamespaceNode namespaceNode : asts.namespaceNodeList){
+
+            final List<String> classLines = new ArrayList<>();
+
             for(final MethodNode methodNode : namespaceNode.methods){
 
                 //namespaceNode, methodNode, writer are not accessed from other threads
                 //debug, printsymboltables are only read, not written to.
                 //subTable, structsTable are probably only read from, but need to be synchronized,
                 //as they are important to all threads.
-                final List<String> subr_vm_codes = generateJavaCodeForMethod(namespaceNode, methodNode, subTable, structsTable, debug, printsymboltables);
-                instructions.put(namespaceNode.name+"_"+methodNode.methodName,subr_vm_codes);
+                final List<String> javaLinesForMethod = generateJavaCodeForMethod(namespaceNode, methodNode, subTable, structsTable, debug, printsymboltables);
+                classLines.addAll(javaLinesForMethod);
             }
+            instructions.put(namespaceNode.name,classLines);
         }
         return instructions;
     }

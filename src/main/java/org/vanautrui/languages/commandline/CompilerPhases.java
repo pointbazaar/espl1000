@@ -52,11 +52,11 @@ public final class CompilerPhases {
 
         final SubroutineSymbolTable subTable = createSubroutineSymbolTable(ast,debug);
         final StructsSymbolTable structsTable = createStructsSymbolTable(ast,debug);
-        final Map<String,List<String>> dracoVMCodes = JavaCodeGenerator.generateJavaCode(ast, subTable,structsTable,debug,printsymboltables);
+        final Map<String,List<String>> javaCodes = JavaCodeGenerator.generateJavaCode(ast, subTable,structsTable,debug,printsymboltables);
 
         final List<Path> paths = new ArrayList<>();
 
-        for(Map.Entry<String,List<String>> subr : dracoVMCodes.entrySet()){
+        for(Map.Entry<String,List<String>> subr : javaCodes.entrySet()){
 
             //write a file with the vmcode for each subroutine
             final Path path = Paths.get(subr.getKey()+".java");

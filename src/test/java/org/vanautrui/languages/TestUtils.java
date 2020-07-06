@@ -39,9 +39,7 @@ public final class TestUtils {
         DragonCompiler.invokeDragonLexer(filename.toFile(),debug);
 
         //we now have the token file. can delete the source file
-        if(debug){
-            out.println("delete "+filename);
-        }
+        if(debug){ out.println("delete "+filename); }
         Files.delete(filename);
 
         //invoke dragon-parser
@@ -125,12 +123,10 @@ public final class TestUtils {
         if(debug){
             out.println("TestUtils::generateVMCodeFromDragonCode");
         }
-        //generates vm codes from dragon codes, and writes them to files. returns paths to those files
+        //generates java codes from dragon codes, and writes them to files. returns paths to those files
 
         //write dragon code to file
-        if(debug){
-            out.println("write to "+filename);
-        }
+        if(debug){ out.println("write to "+filename); }
 
         //set appropriate permission if file exists
         if(Files.exists(filename.toPath())){
@@ -138,9 +134,11 @@ public final class TestUtils {
             Files.delete(filename.toPath());
         }
         Files.writeString(filename.toPath(),source);
+
         //invoke dragon-lexer
         DragonCompiler.invokeDragonLexer(filename,debug);
         final File tokensFile = Paths.get("."+filename+".tokens").toFile();
+
         //invoke dragon-parser
         DragonCompiler.invokeDragonParser(tokensFile,debug);
 
@@ -197,16 +195,13 @@ public final class TestUtils {
         if(deleteArtifacts) {
 
             for (final Path path : vmcode_paths) {
-                if(debug) { out.println("delete: " + path); }
+                out.println("delete: " + path);
                 Files.delete(path);
             }
             //delete the executable
-            if (debug) { out.println("delete: " + filename); }
+            out.println("delete: " + filename);
             Files.delete(filename);
-            //TODO: delete the assembly files of the subroutines
         }
-        //TODO: there could be multiple assembly files, as the dracovm compiler becomes incremental
-        //TODO: delete those aswell, as we are in a test environment
         return pr;
     }
 }
