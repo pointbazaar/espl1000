@@ -67,6 +67,10 @@ public final class ASTReader {
     }
 
     private static int parseMethod(String[] arr, MethodNode m, int i){
+
+        final String verify = arr[i++];
+        if(!verify.equals("Method")){throw  new RuntimeException("AST Parse Error");}
+
         m.isPublic = Boolean.parseBoolean(arr[i++]);
         m.hasSideEffects = Boolean.parseBoolean(arr[i++]);
         m.methodName = arr[i++];
@@ -89,33 +93,40 @@ public final class ASTReader {
     }
 
     private static int parseStmt(String[] arr, StatementNode stmt, int i) {
+        final String verify = arr[i++];
+        if(!verify.equals("Stmt")){throw  new RuntimeException("AST Parse Error");}
+
         final int which = Integer.parseInt(arr[i++]);
         switch (which) {
-            case 1:
+            case 1 -> {
                 stmt.statementNode = new MethodCallNode();
-                i = parseMethodCall(arr, (MethodCallNode)stmt.statementNode, i);
-                break;
-            case 2:
+                i = parseMethodCall(arr, (MethodCallNode) stmt.statementNode, i);
+            }
+            case 2 -> {
                 stmt.statementNode = new WhileStatementNode();
                 i = parseWhileStmt(arr, (WhileStatementNode) stmt.statementNode, i);
-                break;
-            case 3:
+            }
+            case 3 -> {
                 stmt.statementNode = new IfStatementNode();
-                i = parseIfStmt(arr, (IfStatementNode)stmt.statementNode, i);
-                break;
-            case 4:
+                i = parseIfStmt(arr, (IfStatementNode) stmt.statementNode, i);
+            }
+            case 4 -> {
                 stmt.statementNode = new ReturnStatementNode();
-                i = parseRetStmt(arr, (ReturnStatementNode)stmt.statementNode, i);
-                break;
-            case 5:
+                i = parseRetStmt(arr, (ReturnStatementNode) stmt.statementNode, i);
+            }
+            case 5 -> {
                 stmt.statementNode = new AssignmentStatementNode();
-                i = parseAssignStmt(arr, (AssignmentStatementNode)stmt.statementNode, i);
-                break;
+                i = parseAssignStmt(arr, (AssignmentStatementNode) stmt.statementNode, i);
+            }
         }
         return i;
     }
 
     private static int parseType(String[] arr, TypeNode type, int i){
+
+        final String verify = arr[i++];
+        if(!verify.equals("Type")){throw  new RuntimeException("AST Parse Error");}
+
         final int which = Integer.parseInt(arr[i++]);
         switch (which) {
             case 1 -> {
@@ -128,13 +139,16 @@ public final class ASTReader {
             }
             case 3 -> {
                 type.typeNode = new ArrayTypeNode();
-                i = parseArrTypeNode(arr, (ArrayTypeNode) type.typeNode, i);
+                i = parseArrayTypeNode(arr, (ArrayTypeNode) type.typeNode, i);
             }
         }
         return i;
     }
 
     private static int parseExpr(String[] arr, ExpressionNode expr, int i){
+
+        final String verify = arr[i++];
+        if(!verify.equals("Expr")){throw  new RuntimeException("AST Parse Error");}
 
         expr.term1 = new TermNode();
         i = parseTerm(arr, expr.term1, i);
@@ -153,11 +167,18 @@ public final class ASTReader {
     }
 
     private static int parseOp(String[] arr, OperatorNode op, int i) {
+
+        final String verify = arr[i++];
+        if(!verify.equals("Op")){throw  new RuntimeException("AST Parse Error");}
+
         op.operator = arr[i++];
         return i;
     }
 
     private static int parseTerm(String[] arr, TermNode term, int i){
+        final String verify = arr[i++];
+        if(!verify.equals("Term")){throw  new RuntimeException("AST Parse Error");}
+
         final int which = Integer.parseInt(arr[i++]);
         switch (which) {
             case 1 -> {
@@ -193,6 +214,10 @@ public final class ASTReader {
     }
 
     private static int parseVariable(String[] arr, VariableNode varNode, int i){
+
+        final String verify = arr[i++];
+        if(!verify.equals("Variable")){throw  new RuntimeException("AST Parse Error");}
+
         varNode.simpleVariableNode = new SimpleVariableNode();
         i = parseSimpleVariable(arr, varNode.simpleVariableNode, i);
         final String next = arr[i];
@@ -207,6 +232,10 @@ public final class ASTReader {
     }
 
     private static int parseSimpleVariable(String[] arr, SimpleVariableNode simpleVariableNode, int i) {
+
+        final String verify = arr[i++];
+        if(!verify.equals("SimpleVariable")){throw  new RuntimeException("AST Parse Error");}
+
         simpleVariableNode.name = arr[i++];
         final String next = arr[i];
         if(next.equals("NULL")){
@@ -219,6 +248,10 @@ public final class ASTReader {
     }
 
     private static int parseMethodCall(String[] arr, MethodCallNode mcn, int i){
+
+        final String verify = arr[i++];
+        if(!verify.equals("MethodCall")){throw  new RuntimeException("AST Parse Error");}
+
         mcn.methodName = arr[i++];
         final int countArgs = Integer.parseInt(arr[i++]);
         for(int k=0;k<countArgs;k++){
@@ -230,6 +263,9 @@ public final class ASTReader {
     }
 
     private static int parseWhileStmt(String[] arr, WhileStatementNode wstmt, int i){
+
+        final String verify = arr[i++];
+        if(!verify.equals("WhileStmt")){throw  new RuntimeException("AST Parse Error");}
 
         final ExpressionNode condition = new ExpressionNode();
         i = parseExpr(arr, condition, i);
@@ -245,6 +281,9 @@ public final class ASTReader {
     }
 
     private static int parseIfStmt(String[] arr, IfStatementNode ifstmt, int i){
+
+        final String verify = arr[i++];
+        if(!verify.equals("IfStmt")){throw  new RuntimeException("AST Parse Error");}
 
         final ExpressionNode condition = new ExpressionNode();
         i = parseExpr(arr, condition, i);
@@ -268,6 +307,10 @@ public final class ASTReader {
     }
 
     private static int parseRetStmt(String[] arr, ReturnStatementNode retStmt, int i){
+
+        final String verify = arr[i++];
+        if(!verify.equals("RetStmt")){throw  new RuntimeException("AST Parse Error");}
+
         final ExpressionNode expr = new ExpressionNode();
         i = parseExpr(arr, expr, i);
         retStmt.returnValue = expr;
@@ -275,6 +318,9 @@ public final class ASTReader {
     }
 
     private static int parseAssignStmt(String[] arr, AssignmentStatementNode assignStmt, int i){
+
+        final String verify = arr[i++];
+        if(!verify.equals("AssignStmt")){throw  new RuntimeException("AST Parse Error");}
 
         final String next = arr[i];
         if(next.equals("NULL")){
@@ -293,26 +339,40 @@ public final class ASTReader {
     }
 
     private static int parseBoolConst(String[] arr, BoolConstNode bc, int i){
+
+        final String verify = arr[i++];
+        if(!verify.equals("BoolConst")){throw  new RuntimeException("AST Parse Error");}
+
         bc.boolValue = Boolean.parseBoolean(arr[i++]);
         return i;
     }
 
     private static int parseIntConst(String[] arr, IntConstNode ic, int i){
+        final String verify = arr[i++];
+        if(!verify.equals("IntConst")){throw  new RuntimeException("AST Parse Error");}
         ic.number = Integer.parseInt(arr[i++]);
         return i;
     }
 
     private static int parseCharConst(String[] arr, CharConstNode cc, int i){
+        final String verify = arr[i++];
+        if(!verify.equals("CharConst")){throw  new RuntimeException("AST Parse Error");}
         cc.content = arr[i++].charAt(1);
         return i;
     }
 
     private static int parseFloatConst(String[] arr, FloatConstNode fc, int i){
+        final String verify = arr[i++];
+        if(!verify.equals("FloatConst")){throw  new RuntimeException("AST Parse Error");}
         fc.floatValue = Float.parseFloat(arr[i++]);
         return i;
     }
 
     private static int parseBasicTypeWrapped(String[] arr, BasicTypeWrappedNode btw, int i){
+
+        final String verify = arr[i++];
+        if(!verify.equals("BasicTypeWrapped")){throw  new RuntimeException("AST Parse Error");}
+
         final int which = Integer.parseInt(arr[i++]);
         switch (which) {
             case 1 -> {
@@ -328,6 +388,9 @@ public final class ASTReader {
     }
 
     private static int parseSubrType(String[] arr, SubroutineTypeNode typeNode, int i) {
+        final String verify = arr[i++];
+        if(!verify.equals("SubrType")){throw  new RuntimeException("AST Parse Error");}
+
         typeNode.hasSideEffects = Boolean.parseBoolean(arr[i++]);
 
         final int countArgTypes = Integer.parseInt(arr[i++]);
@@ -340,16 +403,27 @@ public final class ASTReader {
     }
 
     private static int parseSimpleType(String[] arr, SimpleTypeNode typeNode, int i) {
+        final String verify = arr[i++];
+        if(!verify.equals("SimpleType")){throw  new RuntimeException("AST Parse Error");}
+
         typeNode.typeName = arr[i++];
         return i;
     }
 
     private static int parseTypeParam(String[] arr, TypeParameterNode tp, int i){
+
+        final String verify = arr[i++];
+        if(!verify.equals("TypeParam")){throw  new RuntimeException("AST Parse Error");}
+
         tp.typeParameterIndex = Integer.parseInt(arr[i++]);
         return i;
     }
 
-    private static int parseArrTypeNode(String[] arr, ArrayTypeNode at, int i){
+    private static int parseArrayTypeNode(String[] arr, ArrayTypeNode at, int i){
+
+        final String verify = arr[i++];
+        if(!verify.equals("ArrayType")){throw  new RuntimeException("AST Parse Error");}
+
         at.element_type = new TypeNode();
         i = parseType(arr, at.element_type, i);
         return i;

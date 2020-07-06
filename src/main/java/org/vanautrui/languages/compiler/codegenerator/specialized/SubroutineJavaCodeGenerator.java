@@ -38,10 +38,10 @@ public final class SubroutineJavaCodeGenerator {
     final String argsString = m.arguments.stream().map(arg -> arg.type+" "+arg.name.orElse("error")).collect(Collectors.joining(","));
 
     String typeNameInJava = m.returnType.getTypeName();
-    if(Arrays.asList("PInt","NInt","NZInt","Int").contains(typeNameInJava)){
+    if(Arrays.asList("PInt","NInt","NZInt","Int").contains(typeNameInJava.trim())){
       typeNameInJava = "int";
     }
-    vm.add("public static "+typeNameInJava+m.methodName+"("+argsString+") {");
+    vm.add("\tpublic static "+typeNameInJava+" "+m.methodName+"("+argsString+") {");
 
     final SymbolTableContext ctx = new SymbolTableContext(subTable,varTable,structsTable);
 
@@ -54,7 +54,7 @@ public final class SubroutineJavaCodeGenerator {
       );
     }
 
-    vm.add("}");
+    vm.add("\t}");
 
     return vm;
   }

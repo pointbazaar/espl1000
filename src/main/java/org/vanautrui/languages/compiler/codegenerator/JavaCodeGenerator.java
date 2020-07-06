@@ -36,6 +36,7 @@ public final class JavaCodeGenerator {
         for(final NamespaceNode namespaceNode : asts.namespaceNodeList){
 
             final List<String> classLines = new ArrayList<>();
+            classLines.add("public class "+namespaceNode.name+" {");
 
             for(final MethodNode methodNode : namespaceNode.methods){
 
@@ -46,6 +47,7 @@ public final class JavaCodeGenerator {
                 final List<String> javaLinesForMethod = generateJavaCodeForMethod(namespaceNode, methodNode, subTable, structsTable, debug, printsymboltables);
                 classLines.addAll(javaLinesForMethod);
             }
+            classLines.add("}");
 
             instructions.put(namespaceNode.name,classLines);
         }
