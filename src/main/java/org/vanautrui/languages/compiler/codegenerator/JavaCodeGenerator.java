@@ -11,6 +11,7 @@ import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
 import java.util.*;
 
+import static java.lang.System.out;
 import static org.vanautrui.languages.compiler.codegenerator.specialized.ExpressionJavaCodeGenerator.genDracoVMCodeForExpression;
 import static org.vanautrui.languages.compiler.codegenerator.specialized.SubroutineJavaCodeGenerator.generateJavaCodeForMethod;
 
@@ -26,6 +27,9 @@ public final class JavaCodeGenerator {
             final boolean debug,
             final boolean printsymboltables
     ) throws Exception {
+        if(debug){
+            out.println(String.format("generateJavaCode(...,...,..., debug = %b, printsymboltables = %b)",debug,printsymboltables));
+        }
 
         final Map<String,List<String>> instructions = new HashMap<>();
 
@@ -42,6 +46,7 @@ public final class JavaCodeGenerator {
                 final List<String> javaLinesForMethod = generateJavaCodeForMethod(namespaceNode, methodNode, subTable, structsTable, debug, printsymboltables);
                 classLines.addAll(javaLinesForMethod);
             }
+
             instructions.put(namespaceNode.name,classLines);
         }
         return instructions;

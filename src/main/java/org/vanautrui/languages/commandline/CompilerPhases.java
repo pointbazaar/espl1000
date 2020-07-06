@@ -47,7 +47,7 @@ public final class CompilerPhases {
     )throws Exception{
 
         if(debug) {
-            System.out.println("JAVA CODE GENERATION");
+            System.out.println(String.format("CompilerPhases::phase_java_codegeneration(...,printsymboltables = %b, debug = %b)",printsymboltables,debug));
         }
 
         final SubroutineSymbolTable subTable = createSubroutineSymbolTable(ast,debug);
@@ -58,8 +58,8 @@ public final class CompilerPhases {
 
         for(Map.Entry<String,List<String>> subr : javaCodes.entrySet()){
 
-            //write a file with the vmcode for each subroutine
-            final Path path = Paths.get(subr.getKey()+".java");
+            final String extension = ".java";
+            final Path path = Paths.get(subr.getKey()+extension);
 
             if(debug) {
                 System.out.println("write: " + path);

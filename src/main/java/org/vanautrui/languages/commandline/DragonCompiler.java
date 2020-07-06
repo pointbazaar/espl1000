@@ -238,13 +238,13 @@ public final class DragonCompiler {
 			CompilerPhases.phase_simplify(ast,debug);
 
 			//PHASE CODE GENERATION, returns a list of paths where the files for the subroutines are
-			final List<Path> vm_code_files = CompilerPhases.phase_java_codegeneration(ast, flags.contains(FLAG_PRINT_SYMBOLTABLES),debug);
+			final List<Path> javaFiles = CompilerPhases.phase_java_codegeneration(ast, flags.contains(FLAG_PRINT_SYMBOLTABLES),debug);
 
 			//PHASE VM CODE COMPILATION, PHASE GENERATE EXECUTABLE
 			//this phase depends on 'dracovm'
 			//which can be obtained here: https://github.com/pointbazaar/dracovm-compiler
 			//for each subroutine in vm code, make a NAME.subroutine.dracovm file
-			invokeJavaCompiler(vm_code_files,debug);
+			invokeJavaCompiler(javaFiles,debug);
 
 			if(timed) {
 				final long end_time_ms = currentTimeMillis();
@@ -290,11 +290,15 @@ public final class DragonCompiler {
 		}
 	}
 
-	public static void invokeJavaCompiler(final List<Path> vm_code_files, final boolean debug ) throws Exception {
-		//path should be e.g. .Main.subroutine.dracovm
+	public static void invokeJavaCompiler(final List<Path> javaFiles, final boolean debug ) throws Exception {
+
+		if(debug){
+			out.println(String.format("invokeJavaCompiler(%s,%b)",javaFiles.stream().map(Path::toString).collect(Collectors.joining(",")),debug));
+		}
+
 		final String call =
 				"javac "
-				+vm_code_files
+				+javaFiles
 				.stream()
 				.map(Path::toString)
 				.collect(Collectors.joining(" "));
@@ -305,10 +309,14 @@ public final class DragonCompiler {
 		process.waitFor();
 
 		if(debug) {
-			final var is =process.getInputStream();
+			final var is = process.getInputStream();
 			final String output = IOUtils.toString(is);
 			final List<String> outputlist = Arrays.stream(output.split("\n")).map(s -> "\t" + s).collect(Collectors.toList());
 			outputlist.forEach(out::println);
+
+			final var es = process.getErrorStream();
+			final String eo = IOUtils.toString(es);
+			out.println(eo);
 		}
 
 		if(process.exitValue() != 0 ){

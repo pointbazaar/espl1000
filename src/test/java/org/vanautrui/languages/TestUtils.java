@@ -10,6 +10,7 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.lang.System.out;
 
@@ -47,23 +48,21 @@ public final class TestUtils {
         DragonCompiler.invokeDragonParser(tokensFile,debug);
 
         //we now have the .json file. can delete the .tokens file now
-        if(debug){
-            out.println("delete "+tokensFile.toPath());
-        }
+        if(debug){ out.println("delete "+tokensFile.toPath()); }
         Files.delete(tokensFile.toPath());
 
         final ArrayList<File> files=new ArrayList<>();
-        final File jsonFile=Paths.get("."+filename+".json").toFile();
+        final File astFile = Paths.get("."+filename+".ast").toFile();
 
-        files.add(jsonFile);
+        files.add(astFile);
 
         final AST_Whole_Program ast = DragonCompiler.parseASTFromASTFiles(files, debug);
 
         //we have the AST now. we can delete the .json file now
         if(debug){
-            out.println("delete "+jsonFile.toPath());
+            out.println("delete "+astFile.toPath());
         }
-        Files.delete(jsonFile.toPath());
+        Files.delete(astFile.toPath());
 
         return ast;
     }
@@ -78,21 +77,17 @@ public final class TestUtils {
 
         final Path filename = Paths.get(filename_without_extension+".dg");
 
-        if(debug){
-            out.println("TestUtils::compileAndRunProgramForTesting");
-        }
+        if(debug){ out.println("TestUtils::compileAndRunProgramForTesting"); }
 
-        //should create the .dracovm files for it
-        final List<Path> vmcodes = generateJavaCodeFromDragonCode(sourceCode, debug, filename.toFile());
+        final List<Path> javaFilePaths = generateJavaCodeFromDragonCode(sourceCode, debug, filename.toFile());
 
         //should create the executable and run it
-        final Process pr = compile_and_run_vm_codes(
-                vmcodes,
+        return compile_and_run_vm_codes(
+                javaFilePaths,
                 Paths.get(filename.toString(),args),
                 args,
                 debug
         );
-        return pr;
     }
 
 
@@ -101,19 +96,21 @@ public final class TestUtils {
             final String filename_without_extension,
             final boolean debug
     ) throws Exception{
+        if(debug){
+            out.println(String.format("compile_and_run_but_not_waitfor(...,%s,%b)",filename_without_extension,debug));
+        }
+
         final Path filename_without_extns = Paths.get(filename_without_extension);
 
-        //generate the vm code
-        final List<Path> paths = generateJavaCodeFromDragonCode(dragon_source, false, Paths.get(filename_without_extension+".dg").toFile());
+        //generate code from smalldragon source code
+        final List<Path> paths = generateJavaCodeFromDragonCode(dragon_source, debug, Paths.get(filename_without_extension+".dg").toFile());
 
-        //generate the executable
-        generateFromVMCodeAndWriteExecutable(paths,filename_without_extns,debug);
+        //compile generated code
+        generateFromJavaCodeAndWriteExecutable(paths,filename_without_extns,debug);
 
-        //run that executable
-        final Process pr = Runtime.getRuntime().exec("./"+filename_without_extension);
-        return pr;
+        //run that
+        return Runtime.getRuntime().exec("./"+filename_without_extension);
     }
-
 
     private static List<Path> generateJavaCodeFromDragonCode(
             final String source,
@@ -121,7 +118,7 @@ public final class TestUtils {
             final File filename
     ) throws Exception{
         if(debug){
-            out.println("TestUtils::generateVMCodeFromDragonCode");
+            out.println(String.format("TestUtils::generateJavaCodeFromDragonCode(..., debug = %b, %s)",debug, filename.toString()));
         }
         //generates java codes from dragon codes, and writes them to files. returns paths to those files
 
@@ -149,13 +146,16 @@ public final class TestUtils {
         return CompilerPhases.phase_java_codegeneration(ast,false,debug);
     }
 
-    private static void generateFromVMCodeAndWriteExecutable(
-            final List<Path> vmcodes,
+    private static void generateFromJavaCodeAndWriteExecutable(
+            final List<Path> javaCodes,
             final Path filename,
             final boolean debug
     ) throws Exception {
+        if(debug){
+            out.println(String.format("TestUtils::generateFromJavaCodeAndWriteExecutable(%s,%s,%b)",javaCodes.stream().map(Path::toString).collect(Collectors.joining(" ")),filename.toString(),debug));
+        }
         //writes an executable with the name we requested
-        DragonCompiler.invokeJavaCompiler(vmcodes,debug);
+        DragonCompiler.invokeJavaCompiler(javaCodes,debug);
         //move our 'main' executable into the desired filename
         final String call = "mv main "+filename.toString();
         if(debug){ out.println(call); }
@@ -163,15 +163,15 @@ public final class TestUtils {
     }
 
     private static Process compile_and_run_vmcodes_but_not_waitFor(
-            final List<Path> vmcode_paths,
+            final List<Path> javaCodePaths,
             final Path filename,
             final String[] args,
             final boolean debug
     ) throws Exception{
-        generateFromVMCodeAndWriteExecutable(vmcode_paths,filename,debug);
+        generateFromJavaCodeAndWriteExecutable(javaCodePaths,filename,debug);
         //do we have the correct permissions to run the file?
         CompilerPhaseUtils.giveAllPermissionsOnFile(filename);
-        final String call = "./"+filename+" "+ String.join(" ", Arrays.asList(args));
+        final String call = "java "+filename+" "+ String.join(" ", Arrays.asList(args));
         if(debug) { out.println(call); }
         return Runtime.getRuntime().exec(call);
     }
@@ -182,6 +182,7 @@ public final class TestUtils {
             final String[] args,
             final boolean debug
     ) throws Exception{
+
         final Process pr = compile_and_run_vmcodes_but_not_waitFor(
                 vmcode_paths,
                 filename,

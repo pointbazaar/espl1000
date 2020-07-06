@@ -35,7 +35,7 @@ public final class ASTReader {
 
     static NamespaceNode parseNamespaceFromASTFile(final File astFile, boolean debug) throws Exception {
         if(debug){
-            out.println(String.format("parseNamespaceFromASTFile(%s,%b)",astFile.toPath().toString(), debug));
+            out.println(String.format("ASTReader::parseNamespaceFromASTFile(%s,%b)",astFile.toPath().toString(), debug));
         }
         final String astJSON = Files.readString(astFile.toPath());
         final String[] parts = astJSON.split("\t");
@@ -43,11 +43,20 @@ public final class ASTReader {
         //This reads our custom AST Format
         //i chose this over JSON, as there are no dependencies needed to parse it.
         //and it uses less space on disk, as there is no extra json specific syntax
-        final NamespaceNode nsn = new NamespaceNode(astFile.getName().substring(1,astFile.getName().substring(1).indexOf(".")));
+        final String name = astFile.getName().substring(1,astFile.getName().substring(1).indexOf("."));
+        if(debug){
+            out.println("name of namespace: "+name);
+        }
+        final NamespaceNode nsn = new NamespaceNode(name);
 
         int i = 0;
         nsn.srcPath = Path.of(parts[i++]);
-        nsn.name = parts[i++];
+
+        //TODO: investigate. this causes issues, as a '.' is often appended to the file
+        //nsn.name = parts[i++];
+        //for now: skip it
+        i++;
+
         final int count_methods = Integer.parseInt(parts[i++]);
         for(int k=0;k<count_methods;k++){
             final MethodNode m = new MethodNode();
