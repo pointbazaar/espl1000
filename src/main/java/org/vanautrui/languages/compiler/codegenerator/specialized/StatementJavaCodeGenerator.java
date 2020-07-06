@@ -32,6 +32,8 @@ final class StatementJavaCodeGenerator {
         final List<String> vminstrs = new ArrayList<>();
         final IStatementNode snode = stmt.statementNode;
 
+        //TODO: manage the adding of ';' at the end of a statement in this method exclusively
+
         if (snode instanceof MethodCallNode call) {
             vminstrs.add(genVMCodeForMethodCall(call, ctx)+";");
         } else if (snode instanceof LoopStatementNode loop) {

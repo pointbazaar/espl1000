@@ -31,6 +31,8 @@ void writeMethod(struct Method* m, FILE* file){
 	}
 }
 void writeDeclArg(struct DeclArg* m, FILE* file){
+	fprintf(file, "DeclaredArg\t");
+
 	writeType(m->type,file);
 	if(m->name != NULL){
 		fprintf(file,"%s\t",m->name);

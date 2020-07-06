@@ -1,9 +1,6 @@
 package org.vanautrui.languages.commandline;
 
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.OperatorNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.TermNode;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.VariableNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.*;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.AssignmentStatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.MethodCallNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.StatementNode;
@@ -81,14 +78,31 @@ public final class ASTReader {
 
         final int argCount = Integer.parseInt(arr[i++]);
         for(int k=0;k<argCount;k++){
-            final ExpressionNode expr = new ExpressionNode();
-            i = parseExpr(arr, expr, i);
+            final DeclaredArgumentNode decl = new DeclaredArgumentNode();
+            i = parseDeclaredArg(arr, decl, i);
+            m.arguments.add(decl);
         }
         final int stmtCount = Integer.parseInt(arr[i++]);
         for(int k=0;k<stmtCount;k++){
             final StatementNode stmt = new StatementNode();
             i = parseStmt(arr, stmt, i);
+            m.statements.add(stmt);
         }
+        return i;
+    }
+
+    private static int parseDeclaredArg(String[] arr, DeclaredArgumentNode decl, int i) {
+        final String verify = arr[i++];
+        if(!verify.equals("DeclaredArg")){throw  new RuntimeException("AST Parse Error");}
+
+        decl.type = new TypeNode();
+        i = parseType(arr, decl.type, i);
+
+        final String next = arr[i];
+        if (!next.equals("NULL")) {
+            decl.name = Optional.of(next);
+        }
+        i++;
         return i;
     }
 

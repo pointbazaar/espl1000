@@ -19,7 +19,7 @@ public final class ReturnJavaCodeGenerator {
     ) throws Exception {
 
         final List<String> vm = new ArrayList<>();
-        vm.add("return " + genDracoVMCodeForExpression(retStmt.returnValue, ctx));
+        vm.add("return " + genDracoVMCodeForExpression(retStmt.returnValue, ctx)+" ;");
         return vm;
     }
 }
