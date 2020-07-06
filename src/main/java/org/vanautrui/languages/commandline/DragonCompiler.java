@@ -1,12 +1,14 @@
 package org.vanautrui.languages.commandline;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.ExpressionNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.statements.StatementNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
+import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.MethodNode;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
+import org.vanautrui.languages.compiler.parsing.astnodes.typenodes.TypeNode;
 
 import java.io.File;
 import java.io.InputStream;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.System.currentTimeMillis;
 import static java.lang.System.out;
+import static org.vanautrui.languages.commandline.ASTReader.parseNamespaceFromASTFile;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBuildConclusion;
 import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printDurationFeedback;
 
@@ -226,7 +229,7 @@ public final class DragonCompiler {
 					.map(f-> makePathHiddenWithCustomExtension(f,".json").toFile())
 					.collect(Collectors.toList());
 
-			final AST_Whole_Program ast = parseASTFromJSONFiles(jsonFiles,debug);
+			final AST_Whole_Program ast = parseASTFromASTFiles(jsonFiles,debug);
 
 			//PHASE: TYPE CHECKING
 			CompilerPhases.phase_typecheck(ast,debug);
@@ -287,13 +290,8 @@ public final class DragonCompiler {
 		}
 	}
 
-	public static void invokeJavaCompiler(
-			final List<Path> vm_code_files,
-			final boolean debug
-	) throws Exception {
-
+	public static void invokeJavaCompiler(final List<Path> vm_code_files, final boolean debug ) throws Exception {
 		//path should be e.g. .Main.subroutine.dracovm
-
 		final String call =
 				"javac "
 				+vm_code_files
@@ -301,9 +299,7 @@ public final class DragonCompiler {
 				.map(Path::toString)
 				.collect(Collectors.joining(" "));
 
-		if(debug) {
-			out.println(call);
-		}
+		if(debug) { out.println(call); }
 
 		final Process process = Runtime.getRuntime().exec(call);
 		process.waitFor();
@@ -318,11 +314,8 @@ public final class DragonCompiler {
 		if(process.exitValue() != 0 ){
 			throw new Exception("javac exited with nonzero exit value.");
 		}else{
-			if(debug) {
-				out.println("... exit successfully");
-			}
+			if(debug) { out.println("... exit successfully"); }
 		}
-
 	}
 
 	public static void invokeDragonParser(final File tokensFile, final boolean debug) throws Exception {
@@ -330,10 +323,8 @@ public final class DragonCompiler {
 		if(debug){
 			out.println(call);
 		}
-
 		final Process p = Runtime.getRuntime().exec(call);
 		p.waitFor();
-
 		if(debug){
 			final InputStream is = p.getInputStream();
 			final String output = IOUtils.toString(is);
@@ -350,32 +341,13 @@ public final class DragonCompiler {
 		}
 	}
 
-	private static NamespaceNode parseNamespaceFromJsonFile(final File jsonFile, boolean debug) throws Exception {
 
-		final String astJSON = Files.readString(jsonFile.toPath());
-
-		final ObjectMapper mapper = new ObjectMapper();
-
-		mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
-				.withFieldVisibility(JsonAutoDetect.Visibility.ANY)
-				.withGetterVisibility(JsonAutoDetect.Visibility.NONE)
-				.withSetterVisibility(JsonAutoDetect.Visibility.NONE)
-				.withCreatorVisibility(JsonAutoDetect.Visibility.NONE)
-		);
-
-		mapper.registerModule(new Jdk8Module());
-
-		return mapper.readValue(astJSON,NamespaceNode.class);
-	}
-
-	public static AST_Whole_Program parseASTFromJSONFiles(final List<File> jsonFiles, final boolean debug) throws Exception {
+	public static AST_Whole_Program parseASTFromASTFiles(final List<File> astFiles, final boolean debug) throws Exception {
 
 		final AST_Whole_Program ast = new AST_Whole_Program();
-
-		for(File file : jsonFiles){
-			ast.namespaceNodeList.add(parseNamespaceFromJsonFile(file,debug));
+		for(File file : astFiles){
+			ast.namespaceNodeList.add(parseNamespaceFromASTFile(file,debug));
 		}
-
 		return ast;
 	}
 }

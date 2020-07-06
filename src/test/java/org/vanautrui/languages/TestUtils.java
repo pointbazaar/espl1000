@@ -6,9 +6,7 @@ import org.vanautrui.languages.commandline.DragonCompiler;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -61,7 +59,7 @@ public final class TestUtils {
 
         files.add(jsonFile);
 
-        final AST_Whole_Program ast = DragonCompiler.parseASTFromJSONFiles(files, debug);
+        final AST_Whole_Program ast = DragonCompiler.parseASTFromASTFiles(files, debug);
 
         //we have the AST now. we can delete the .json file now
         if(debug){
@@ -137,20 +135,18 @@ public final class TestUtils {
         //set appropriate permission if file exists
         if(Files.exists(filename.toPath())){
             CompilerPhaseUtils.giveAllPermissionsOnFile(filename.toPath());
+            Files.delete(filename.toPath());
         }
         Files.writeString(filename.toPath(),source);
-
         //invoke dragon-lexer
         DragonCompiler.invokeDragonLexer(filename,debug);
-
         final File tokensFile = Paths.get("."+filename+".tokens").toFile();
-
         //invoke dragon-parser
         DragonCompiler.invokeDragonParser(tokensFile,debug);
 
-        final File jsonFile = Paths.get("."+filename+".json").toFile();
+        final File astFile = Paths.get("."+filename+".ast").toFile();
 
-        final AST_Whole_Program ast = DragonCompiler.parseASTFromJSONFiles(Arrays.asList(jsonFile),debug);
+        final AST_Whole_Program ast = DragonCompiler.parseASTFromASTFiles(Arrays.asList(astFile),debug);
 
         return CompilerPhases.phase_java_codegeneration(ast,false,debug);
     }
@@ -161,16 +157,10 @@ public final class TestUtils {
             final boolean debug
     ) throws Exception {
         //writes an executable with the name we requested
-
-        //dracovm only accepts filenames as arguments
-
         DragonCompiler.invokeJavaCompiler(vmcodes,debug);
-
         //move our 'main' executable into the desired filename
         final String call = "mv main "+filename.toString();
-        if(debug){
-            out.println(call);
-        }
+        if(debug){ out.println(call); }
         Runtime.getRuntime().exec(call).waitFor();
     }
 
@@ -180,20 +170,12 @@ public final class TestUtils {
             final String[] args,
             final boolean debug
     ) throws Exception{
-
         generateFromVMCodeAndWriteExecutable(vmcode_paths,filename,debug);
-
         //do we have the correct permissions to run the file?
         CompilerPhaseUtils.giveAllPermissionsOnFile(filename);
-
         final String call = "./"+filename+" "+ String.join(" ", Arrays.asList(args));
-
-        if(debug) {
-            out.println(call);
-        }
-
-        Process pr = Runtime.getRuntime().exec(call);
-        return pr;
+        if(debug) { out.println(call); }
+        return Runtime.getRuntime().exec(call);
     }
 
     private static Process compile_and_run_vm_codes(
@@ -202,42 +184,29 @@ public final class TestUtils {
             final String[] args,
             final boolean debug
     ) throws Exception{
-
         final Process pr = compile_and_run_vmcodes_but_not_waitFor(
                 vmcode_paths,
                 filename,
                 args,
                 debug
         );
-
         pr.waitFor();
 
         //for debugging purposes we can keep the artifacts to look at them later.
         final boolean deleteArtifacts = !debug;
-
         if(deleteArtifacts) {
 
-            //delete all the .dracovm  files that have been created
-            for (final Path dracovmfilepath : vmcode_paths) {
-                if(debug) {
-                    out.println("delete: " + dracovmfilepath);
-                }
-                Files.delete(dracovmfilepath);
+            for (final Path path : vmcode_paths) {
+                if(debug) { out.println("delete: " + path); }
+                Files.delete(path);
             }
-
             //delete the executable
-            if (debug) {
-                out.println("delete: " + filename);
-            }
+            if (debug) { out.println("delete: " + filename); }
             Files.delete(filename);
-
             //TODO: delete the assembly files of the subroutines
-
         }
-
         //TODO: there could be multiple assembly files, as the dracovm compiler becomes incremental
         //TODO: delete those aswell, as we are in a test environment
-
         return pr;
     }
 }

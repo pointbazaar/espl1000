@@ -109,12 +109,16 @@ void writeStmt(struct Stmt* m, FILE* file){
 }
 
 void writeIfStmt(struct IfStmt* m, FILE* file){
+
 	writeExpr(m->condition,file);
+
+	fprintf(file, "%d\t", m->count_statements);
 	for(int i = 0;i < m->count_statements;i++){ 
 		struct Stmt* s = m->statements[i];
 		writeStmt(s,file); 
 	}
 
+	fprintf(file, "%d\t", m->count_elseStatements);
 	for(int i = 0;i < m->count_elseStatements;i++){ 
 		struct Stmt* s2 = m->elseStatements[i];
 		writeStmt(s2,file); 
@@ -125,6 +129,7 @@ void writeWhileStmt(struct WhileStmt* m, FILE* file){
 
 	writeExpr(m->condition,file);
 
+	fprintf(file, "%d\t", m->count_statements);
 	for(int i = 0;i < (m->count_statements);i++){ 
 		struct Stmt* s = m->statements[i];
 		writeStmt(s,file); 
@@ -145,7 +150,8 @@ void writeAssignStmt(struct AssignStmt* m, FILE* file){
 	writeExpr(m->expressionNode,file);
 }
 void writeMethodCall(struct MethodCall* m, FILE* file){
-	fprintf(file,"%s\t",m->methodName);
+	fprintf(file, "%s\t", m->methodName);
+	fprintf(file, "%d\t", m->count_args);
 	for(int i=0;i < m->count_args;i++){ 
 		struct Expr* e = m->args[i];
 		writeExpr(e,file); 
@@ -195,6 +201,7 @@ void writeSubrType(struct SubrType* m, FILE* file){
 	writeType(m->returnType,file);
 	fprintf(file,"%d\t",m->hasSideEffects);
 
+	fprintf(file,"%d\t",m->count_argumentTypes);
 	for(int i = 0;i < m->count_argumentTypes;i++){
 		struct Type* t = m->argumentTypes[i];
 		writeType(t,file); 

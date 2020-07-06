@@ -6,21 +6,34 @@ import org.junit.Test;
 import org.vanautrui.languages.TestUtils;
 
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 public class CodeGeneratorTest {
 
+
+    @Test
+    public void test_can_return_value()throws Exception{
+        final String source="fn main ()~>PInt { return 5; } ";
+
+        final Process pr = TestUtils.compileAndRunProgramForTesting(source,"MainTest1050",new String[0],true);
+
+        Assert.assertEquals(5,pr.exitValue());
+    }
+
     @Test
     public void test_can_compile_simple_helloworld()throws Exception{
-        final String source="fn main ()~>PInt { putchar('h'); putchar('w'); return 0; } ";
+        final String source="fn main ()~>PInt { putdigit(1); return 0; } ";
 
-        final Process pr = TestUtils.compileAndRunProgramForTesting(source,"MainTest100",new String[0],false);
+        final Process pr = TestUtils.compileAndRunProgramForTesting(source,"MainTest100",new String[0],true);
+
 
         Assert.assertEquals(0,pr.exitValue());
 
         final String output = IOUtils.toString(pr.getInputStream());
 
-        Assert.assertEquals("hw",output);
+        Assert.assertEquals("1",output);
     }
 
     @Test
@@ -38,7 +51,8 @@ public class CodeGeneratorTest {
         //maybe this has optimization reasons
 
         final String source="fn main ()~>PInt { x="+x+"; putdigit(x); return 0; } ";
-        final Process pr = TestUtils.compileAndRunProgramForTesting(source,"MainTest3",new String[0],false);
+        final Process pr = TestUtils.compileAndRunProgramForTesting(source,"MainTest3",new String[0],true);
+
 
         Assert.assertEquals(0,pr.exitValue());
         Assert.assertEquals(x+"",IOUtils.toString(pr.getInputStream()));
