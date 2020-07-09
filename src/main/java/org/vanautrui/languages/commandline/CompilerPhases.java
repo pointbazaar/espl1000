@@ -75,19 +75,4 @@ public final class CompilerPhases {
 
         return paths;
     }
-
-    public static void phase_simplify(
-            final AST_Whole_Program ast,
-            final boolean debug
-    ) {
-
-        if(debug){
-            System.out.println("SIMPLIFY");
-        }
-
-        ast.namespaceNodeList = ast.namespaceNodeList
-                .stream()
-                .map((NamespaceNode namespaceNode) -> Simplifier.simplifyNamespaceNode(namespaceNode,debug))
-                .collect(Collectors.toSet());
-    }
 }

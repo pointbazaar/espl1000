@@ -227,9 +227,6 @@ public final class DragonCompiler {
 			//PHASE: TYPE CHECKING
 			CompilerPhases.phase_typecheck(ast,debug);
 
-			//PHASE: SIMPLIFY
-			CompilerPhases.phase_simplify(ast,debug);
-
 			//PHASE CODE GENERATION, returns a list of paths where the files for the subroutines are
 			final List<Path> javaFiles = CompilerPhases.phase_java_codegeneration(ast, flags.contains(FLAG_PRINT_SYMBOLTABLES),debug);
 
