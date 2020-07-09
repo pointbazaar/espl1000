@@ -9,14 +9,19 @@ ___________________________________________________________________
 |  great performance.
 |
 |- dragon-parser : a parser which reads .tokens files 
-|  and produces an AST
-|  in a .json file. It is written in C++.
+|  and produces an AST in a custom format
+|  in a .ast file. It is written in C.
 |  
-|- dragon : a compiler which reads multiple .json AST's and produces
-|  .java files. It is written in Java. Java is not the
-|  ideal choice here, but a rewrite would take too much time.
+|- smalldragon : a compiler which reads multiple .ast AST's and produces
+|  .java files. It is written in Java. But it shall be rewritten 
+|  in C
 |___________________________________________________________________
 
+
++----------+         +----------+         +--------+           +--------+
+|.dg       | lexer   |.tokens   | parser  |.ast    | transpiler|.c      |
+|          | ------> |          | ------> |        | --------->|.java   |
++----------+         +----------+         +--------+           +--------+
 
 The division into multiple components is so that they can be reused
 by others. This also enables the Dragon to take advantages of 
@@ -24,6 +29,5 @@ multiple languages and follows the Unix philosophy of having a program
 do one thing.
 
 For example, the lexer can be used independently 
-to create syntax highlighting. The .json representation provided 
-by the parser can be used to help an IDE generate good Autocomplete and
-show useful syntax errors.
+to create syntax highlighting. The .ast representation provided 
+by the parser can be used indpendently.
