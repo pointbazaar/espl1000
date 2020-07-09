@@ -3,11 +3,7 @@
 
 #include <stdbool.h>
 
-struct TokenList;
-
-struct IntConst {
-	int value;
-};
+#include "../../../../ast/ast.h"
 
 struct IntConst* makeIntConst(struct TokenList* tokens, bool debug);
 

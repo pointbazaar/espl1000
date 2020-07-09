@@ -2,15 +2,7 @@
 #define STRUCTMEMBER
 
 struct TokenList;
-struct Type;
-struct Identifier;
-
-struct StructMember{
-
-	struct Type* type;
-	char* name;
-
-};
+#include "../../../../ast/ast.h"
 
 struct StructMember* makeStructMember(struct TokenList* tokens, bool debug);
 

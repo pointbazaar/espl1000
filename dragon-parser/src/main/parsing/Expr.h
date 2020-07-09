@@ -4,18 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-struct TokenList;
-struct Op;
-struct Term;
-
-struct Expr {
-
-	struct Term* term1;
-
-	//these 2 may be NULL
-	struct Op* op;
-	struct Term* term2;
-};
+#include "../../../../ast/ast.h"
 
 //how many operators there are
 #define nops 11

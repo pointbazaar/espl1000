@@ -5,18 +5,7 @@
 
 struct TokenList;
 
-struct Variable;
-struct Expr;
-struct Type;
-
-struct AssignStmt {
-
-
-	struct Type* optTypeNode;	//may be NULL (optional)
-
-	struct Variable* variableNode;
-	struct Expr* expressionNode;
-};
+#include "../../../../../ast/ast.h"
 
 struct AssignStmt* makeAssignStmt(struct TokenList* tokens,bool debug);
 

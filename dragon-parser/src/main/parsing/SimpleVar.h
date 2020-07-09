@@ -2,15 +2,7 @@
 #define SIMPLEVAR
 
 struct TokenList;
-struct Expr;
-
-struct SimpleVar {
-
-	char* name;
-	
-	//may be NULL
-	struct Expr* indexOptional;
-};
+#include "../../../../ast/ast.h"
 
 struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug);
 

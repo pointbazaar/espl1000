@@ -3,12 +3,8 @@
 
 #include <stdbool.h>
 
-struct TokenList;
+#include "../../../../ast/ast.h"
 
-struct Identifier  {
-
-	char* identifier;
-};
 
 struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug);
 

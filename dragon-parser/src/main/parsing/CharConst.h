@@ -3,11 +3,7 @@
 
 #include <stdbool.h>
 
-struct TokenList;
-
-struct CharConst {
-	char content;
-};
+#include "../../../../ast/ast.h"
 
 struct CharConst* makeCharConst(struct TokenList* tokens,bool debug);
 

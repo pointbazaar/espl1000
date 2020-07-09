@@ -4,13 +4,7 @@
 #include <stdbool.h>
 
 struct TokenList;
-struct Type;
-
-struct ArrayType {
-
-	struct Type* element_type;
-};
-
+#include "../../../../../ast/ast.h"
 struct ArrayType* makeArrayType(struct Type* element_type);
 struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug);
 

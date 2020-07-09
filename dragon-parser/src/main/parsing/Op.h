@@ -3,9 +3,7 @@
 
 struct TokenList;
 
-struct Op {
-	char* op;
-};
+#include "../../../../ast/ast.h"
 
 struct Op* makeOp(struct TokenList* tokens, bool debug);
 

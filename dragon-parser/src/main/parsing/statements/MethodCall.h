@@ -4,17 +4,7 @@
 #include <stdbool.h>
 
 struct TokenList;
-struct Expr;
-
-struct MethodCall {
-	
-	char* methodName;
-
-	//arguments to the subroutine call
-	int count_args;
-	struct Expr** args;
-};
-
+#include "../../../../../ast/ast.h"
 struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug);
 
 #endif

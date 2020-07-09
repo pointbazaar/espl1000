@@ -3,16 +3,9 @@
 
 #include <stdbool.h>
 
-struct SimpleVar;
 struct TokenList;
 
-struct Variable {
-
-	struct SimpleVar* simpleVariableNode;
-
-	struct Variable** memberAccessList;
-	int count_memberAccessList;
-};
+#include "../../../../ast/ast.h"
 
 struct Variable* makeVariable(struct TokenList* tokens, bool debug);
 

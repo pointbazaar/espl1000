@@ -1,17 +1,8 @@
-#ifndef AST_WHOLE_PROGRAM
-#define AST_WHOLE_PROGRAM
+#ifndef AST_WHOLE_PROGRAM_PARSE
+#define AST_WHOLE_PROGRAM_PARSE
 
 #include <stdbool.h>
-
-struct Namespace;
-struct TokenList;
-
-struct AST_Whole_Program  {
-	//this contains all namespace nodes for the whole program
-
-	struct Namespace** namespaces;
-	int count_namespaces;
-};
+#include "../../../../ast/ast.h"
 
 struct AST_Whole_Program* makeAST_Whole_Program(struct Namespace* myNamespace);
 struct AST_Whole_Program* makeAST_Whole_Program3(struct TokenList* tokens, char* myNamespace, bool debug);

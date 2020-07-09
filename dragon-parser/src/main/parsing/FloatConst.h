@@ -3,11 +3,7 @@
 
 #include <stdbool.h>
 
-struct TokenList;
-
-struct FloatConst{
-	float value;
-};
+#include "../../../../ast/ast.h"
 
 struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug);
 

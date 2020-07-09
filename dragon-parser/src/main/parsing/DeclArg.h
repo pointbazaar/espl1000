@@ -3,15 +3,7 @@
 
 #include <stdbool.h>
 
-struct TokenList;
-struct Type;
-
-struct DeclArg  {
-
-	struct Type* type;
-
-	char name[20];
-};
+#include "../../../../ast/ast.h"
 
 struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug);
 

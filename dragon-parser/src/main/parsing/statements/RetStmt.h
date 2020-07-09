@@ -3,14 +3,8 @@
 
 #include <stdbool.h>
 
-struct Expr;
 struct TokenList;
-
-struct RetStmt{
-
-	struct Expr* returnValue;
-};
-
+#include "../../../../../ast/ast.h"
 struct RetStmt* makeRetStmt(struct TokenList* list,bool debug);
 
 #endif
