@@ -20,3 +20,38 @@ TODO:
 
 [ ] remove array constants from the language, instead replace it in the examples with a subroutine which takes
     a type parameter and length of the array, and returns an array of that type with the specified length
+
+[ ] add a foreach loop to iterate over an array
+    for PInt x in arr {
+
+    }
+
+[ ] enable multi-line strings. newlines in sourcecode should then
+    be converted into newlines in the string.
+
+[ ] read https://hackernoon.com/considerations-for-programming-language-design-a-rebuttal-5fb7ef2fd4ba
+
+[ ] maybe implement the language server protocol to get some IDE support going. (if it is easy to implement)
+
+[ ] read https://doc.rust-lang.org/book/foreword.html
+
+[ ] maybe get smalldragon into some official repository (long term goal)
+
+[ ] enable setting dependent types for primitive variables.
+
+[ ] enable structs to use type parameters (generics)
+
+[ ] full incremental compilation support
+
+[ ] enable integers to be typed as even or odd
+
+[ ] subroutine arguments should be immutable. assignments to them
+    should throw a type error.
+
+[ ] read
+    - http://beza1e1.tuxen.de/federation_future.html
+    - http://beza1e1.tuxen.de/strings.html
+    - http://beza1e1.tuxen.de/articles/better_c.html 
+    - http://beza1e1.tuxen.de/articles/faster_than_C.html
+    - http://beza1e1.tuxen.de/articles/proglang_mistakes.html
+
