@@ -5,11 +5,9 @@ import org.vanautrui.languages.compiler.symboltables.LocalVarSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.vanautrui.languages.compiler.codegenerator.specialized.ExpressionJavaCodeGenerator.genDracoVMCodeForExpression;
+import static org.vanautrui.languages.compiler.codegenerator.specialized.ExpressionJavaCodeGenerator.genJavaCodeForExpression;
 
 public final class MethodCallJavaCodeGenerator {
 
@@ -28,11 +26,10 @@ public final class MethodCallJavaCodeGenerator {
         } else if (subTable.containsSubroutine(methodCallNode.methodName)) {
 
             final String methodName = subTable.getContainingClassName(methodCallNode.methodName)+"."+methodCallNode.methodName;
-
             final String s =
               methodCallNode.arguments.stream().map(expr -> {
                   try {
-                      return genDracoVMCodeForExpression(expr,ctx);
+                      return genJavaCodeForExpression(expr,ctx);
                   } catch (Exception e) {
                       e.printStackTrace();
                       throw new RuntimeException(e);

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.vanautrui.languages.compiler.codegenerator.specialized.ExpressionJavaCodeGenerator.genDracoVMCodeForExpression;
+import static org.vanautrui.languages.compiler.codegenerator.specialized.ExpressionJavaCodeGenerator.genJavaCodeForExpression;
 import static org.vanautrui.languages.compiler.codegenerator.specialized.StatementJavaCodeGenerator.generateJavaCodeForStatement;
 
 public final class IfStatementJavaCodeGenerator {
@@ -22,7 +22,7 @@ public final class IfStatementJavaCodeGenerator {
 
     final List<String> vm = new ArrayList<>();
 
-    vm.add("if (" + genDracoVMCodeForExpression(ifstmt.condition, ctx) + ") {");
+    vm.add("if (" + genJavaCodeForExpression(ifstmt.condition, ctx) + ") {");
 
     for(final StatementNode stmt : ifstmt.statements){
       vm.addAll(

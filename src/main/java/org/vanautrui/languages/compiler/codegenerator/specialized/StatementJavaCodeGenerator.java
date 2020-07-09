@@ -45,7 +45,7 @@ final class StatementJavaCodeGenerator {
         } else if (snode instanceof IfStatementNode ifStatementNode) {
             vminstrs.addAll(genVMCodeForIfStatement(ifStatementNode, m, ctx));
         } else if (snode instanceof ReturnStatementNode returnStatementNode) {
-            vminstrs.addAll(genJavaCodeForReturn(returnStatementNode, m, ctx));
+            vminstrs.addAll(genJavaCodeForReturn(returnStatementNode, ctx));
         } else {
             throw new Exception("unconsidered statement type: " + stmt.statementNode.getClass().getName());
         }

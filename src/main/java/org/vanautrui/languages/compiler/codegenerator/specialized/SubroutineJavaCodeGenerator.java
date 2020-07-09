@@ -20,7 +20,6 @@ import static org.vanautrui.languages.compiler.codegenerator.specialized.Stateme
 public final class SubroutineJavaCodeGenerator {
 
   public static List<String> generateJavaCodeForMethod(
-          final NamespaceNode containerClass,
           final MethodNode m,
           final SubroutineSymbolTable subTable,
           final StructsSymbolTable structsTable,

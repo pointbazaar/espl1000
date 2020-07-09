@@ -10,14 +10,14 @@ import static java.util.Map.entry;
 
 public final class OperatorJavaCodeGenerator {
 
-  private static Map<String,String> javacodes_for_op_bool = Map.ofEntries(
+  private static final Map<String,String> javacodes_for_op_bool = Map.ofEntries(
       entry("&&","&&"),
       entry("||","||"),
       entry("==","=="),
       entry("!=","!=")
   );
 
-  private static Map<String,String> javacodes_for_op_int = Map.ofEntries(
+  private static final Map<String,String> javacodes_for_op_int = Map.ofEntries(
       entry("+","+"),
       entry("-","-"),
       entry("*","*"),
@@ -37,7 +37,7 @@ public final class OperatorJavaCodeGenerator {
       entry( ">>",">>")
   );
 
-  private static Map<String,String> vmcodes_for_op_float = Map.of(
+  private static final Map<String,String> vmcodes_for_op_float = Map.of(
           "+","+",
           "-","-",
           "*","*",
@@ -76,6 +76,5 @@ public final class OperatorJavaCodeGenerator {
         throw new Exception("not implemented for int: '"+opNode.operator+"'");
       }
     }
-
   }
 }

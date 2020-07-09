@@ -17,14 +17,10 @@ import static org.vanautrui.languages.compiler.codegenerator.specialized.TermJav
 
 public final class ExpressionJavaCodeGenerator {
 
-    public static String genDracoVMCodeForExpression(
+    public static String genJavaCodeForExpression(
             final ExpressionNode expr,
             final SymbolTableContext ctx
     ) throws Exception {
-
-        final SubroutineSymbolTable subTable=ctx.subTable;
-        final LocalVarSymbolTable varTable=ctx.varTable;
-        final StructsSymbolTable structsTable=ctx.structsTable;
 
         final List<String> vm=new ArrayList<>();
 

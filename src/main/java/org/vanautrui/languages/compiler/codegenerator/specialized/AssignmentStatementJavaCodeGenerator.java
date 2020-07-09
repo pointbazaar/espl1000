@@ -13,7 +13,7 @@ import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.vanautrui.languages.compiler.codegenerator.specialized.ExpressionJavaCodeGenerator.genDracoVMCodeForExpression;
+import static org.vanautrui.languages.compiler.codegenerator.specialized.ExpressionJavaCodeGenerator.genJavaCodeForExpression;
 
 final class AssignmentStatementJavaCodeGenerator {
 
@@ -78,7 +78,7 @@ final class AssignmentStatementJavaCodeGenerator {
 
         if (varNode.simpleVariableNode.indexOptional.isPresent()) {
             //it is an array and we should read from the index
-            vm.add(genDracoVMCodeForExpression(varNode.simpleVariableNode.indexOptional.get(), ctx));
+            vm.add(genJavaCodeForExpression(varNode.simpleVariableNode.indexOptional.get(), ctx));
             vm.add("arrayread");
         }
 
@@ -100,7 +100,7 @@ final class AssignmentStatementJavaCodeGenerator {
 
             if(varNode.memberAccessList.get(i).simpleVariableNode.indexOptional.isPresent()){
                 final ExpressionNode indexIntoMemberExpr = varNode.memberAccessList.get(i).simpleVariableNode.indexOptional.get();
-                vm.add(genDracoVMCodeForExpression(indexIntoMemberExpr, ctx));
+                vm.add(genJavaCodeForExpression(indexIntoMemberExpr, ctx));
                 vm.add("arrayread");
 
                 //unwrap our previous type, as we have indexed into it
@@ -133,7 +133,7 @@ final class AssignmentStatementJavaCodeGenerator {
 
         if(last.indexOptional.isPresent()){
             //push the index into the array
-            genDracoVMCodeForExpression(last.indexOptional.get(), ctx);
+            genJavaCodeForExpression(last.indexOptional.get(), ctx);
         }{
             //push the index into the struct
 
@@ -144,7 +144,7 @@ final class AssignmentStatementJavaCodeGenerator {
             vm.add("iconst "+indexOfMember);
         }
 
-        vm.add(genDracoVMCodeForExpression(expr, ctx));
+        vm.add(genJavaCodeForExpression(expr, ctx));
         vm.add("arraystore");
 
         return vm;
@@ -173,14 +173,14 @@ final class AssignmentStatementJavaCodeGenerator {
             vm.add("push "+segment+" "+index);
 
             //push the index
-            vm.add(genDracoVMCodeForExpression(varNode.indexOptional.get(), ctx));
+            vm.add(genJavaCodeForExpression(varNode.indexOptional.get(), ctx));
 
             //push the value we want to store
-            vm.add(genDracoVMCodeForExpression(expr, ctx));
+            vm.add(genJavaCodeForExpression(expr, ctx));
 
             vm.add("arraystore");
         }else {
-            vm.add(genDracoVMCodeForExpression(expr, ctx));
+            vm.add(genJavaCodeForExpression(expr, ctx));
             //then we just pop that value into the appropriate segment with the specified index
             vm.add("pop "+segment+" "+index);
         }

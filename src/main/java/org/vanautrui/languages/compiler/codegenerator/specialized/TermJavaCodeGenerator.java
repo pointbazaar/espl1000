@@ -15,7 +15,7 @@ import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 import java.util.List;
 
 import static org.vanautrui.languages.compiler.codegenerator.JavaCodeGenerator.*;
-import static org.vanautrui.languages.compiler.codegenerator.specialized.ExpressionJavaCodeGenerator.genDracoVMCodeForExpression;
+import static org.vanautrui.languages.compiler.codegenerator.specialized.ExpressionJavaCodeGenerator.genJavaCodeForExpression;
 import static org.vanautrui.languages.compiler.codegenerator.specialized.MethodCallJavaCodeGenerator.genVMCodeForMethodCall;
 import static org.vanautrui.languages.compiler.codegenerator.specialized.VariableJavaCodeGenerator.genJavaCodeForVariable;
 
@@ -32,7 +32,7 @@ public final class TermJavaCodeGenerator {
         } else if (t instanceof IntConstNode icn) {
             return genJavaCodeForIntConst(icn.number);
         } else if (t instanceof ExpressionNode expressionNode) {
-            return List.of(genDracoVMCodeForExpression(expressionNode,ctx));
+            return List.of(genJavaCodeForExpression(expressionNode,ctx));
         } else if (t instanceof VariableNode variableNode) {
             return genJavaCodeForVariable(variableNode, ctx);
         } else if (t instanceof MethodCallNode methodCallNode) {

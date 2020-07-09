@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.vanautrui.languages.compiler.codegenerator.JavaCodeGenerator.unique;
-import static org.vanautrui.languages.compiler.codegenerator.specialized.ExpressionJavaCodeGenerator.genDracoVMCodeForExpression;
+import static org.vanautrui.languages.compiler.codegenerator.specialized.ExpressionJavaCodeGenerator.genJavaCodeForExpression;
 import static org.vanautrui.languages.compiler.codegenerator.specialized.StatementJavaCodeGenerator.generateJavaCodeForStatement;
 
 public final class WhileStatementJavaCodeGenerator {
@@ -23,8 +22,7 @@ public final class WhileStatementJavaCodeGenerator {
     ) throws Exception {
 
         final List<String> vm = new ArrayList<>();
-
-        vm.add("while ("+genDracoVMCodeForExpression(whileStmt.condition, ctx)+") {");
+        vm.add("while ("+ genJavaCodeForExpression(whileStmt.condition, ctx)+") {");
 
         for (StatementNode stmt : whileStmt.statements) {
             vm.addAll(

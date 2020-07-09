@@ -12,7 +12,7 @@ import org.vanautrui.languages.compiler.symboltables.util.SymbolTableContext;
 import java.util.*;
 
 import static java.lang.System.out;
-import static org.vanautrui.languages.compiler.codegenerator.specialized.ExpressionJavaCodeGenerator.genDracoVMCodeForExpression;
+import static org.vanautrui.languages.compiler.codegenerator.specialized.ExpressionJavaCodeGenerator.genJavaCodeForExpression;
 import static org.vanautrui.languages.compiler.codegenerator.specialized.SubroutineJavaCodeGenerator.generateJavaCodeForMethod;
 
 public final class JavaCodeGenerator {
@@ -44,7 +44,7 @@ public final class JavaCodeGenerator {
                 //debug, printsymboltables are only read, not written to.
                 //subTable, structsTable are probably only read from, but need to be synchronized,
                 //as they are important to all threads.
-                final List<String> javaLinesForMethod = generateJavaCodeForMethod(namespaceNode, methodNode, subTable, structsTable, debug, printsymboltables);
+                final List<String> javaLinesForMethod = generateJavaCodeForMethod(methodNode, subTable, structsTable, debug, printsymboltables);
                 classLines.addAll(javaLinesForMethod);
             }
             classLines.add("}");
@@ -80,7 +80,7 @@ public final class JavaCodeGenerator {
 
         for(int i=0;i<arrayConstantNode.elements.size();i++) {
 
-            vm.add(genDracoVMCodeForExpression(arrayConstantNode.elements.get(i), ctx));
+            vm.add(genJavaCodeForExpression(arrayConstantNode.elements.get(i), ctx));
         }
         throw new RuntimeException("NOT IMPLEMENTED");
     }

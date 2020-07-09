@@ -27,7 +27,7 @@ public final class LoopStatementJavaCodeGenerator {
 
     //init our counter
     vm.add("final int "+counterName+"=");
-    vm.add(ExpressionJavaCodeGenerator.genDracoVMCodeForExpression(loop.count,ctx));
+    vm.add(ExpressionJavaCodeGenerator.genJavaCodeForExpression(loop.count,ctx));
     vm.add(";");
 
     vm.add("while ("+counterName+" > 0) {");
