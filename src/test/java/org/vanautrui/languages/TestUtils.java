@@ -1,6 +1,5 @@
 package org.vanautrui.languages;
 
-import org.vanautrui.languages.commandline.CompilerPhaseUtils;
 import org.vanautrui.languages.commandline.CompilerPhases;
 import org.vanautrui.languages.commandline.DragonCompiler;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
@@ -30,9 +29,6 @@ public final class TestUtils {
 
         if(debug){
             out.println("write to "+filename);
-        }
-        if(Files.exists(filename)){
-            CompilerPhaseUtils.giveAllPermissionsOnFile(filename);
         }
         Files.writeString(filename,sourceCode);
 
@@ -127,7 +123,6 @@ public final class TestUtils {
 
         //set appropriate permission if file exists
         if(Files.exists(filename.toPath())){
-            CompilerPhaseUtils.giveAllPermissionsOnFile(filename.toPath());
             Files.delete(filename.toPath());
         }
         Files.writeString(filename.toPath(),source);
@@ -170,7 +165,6 @@ public final class TestUtils {
     ) throws Exception{
         generateFromJavaCodeAndWriteExecutable(javaCodePaths,filename,debug);
         //do we have the correct permissions to run the file?
-        CompilerPhaseUtils.giveAllPermissionsOnFile(filename);
         final String call = "java "+filename+" "+ String.join(" ", Arrays.asList(args));
         if(debug) { out.println(call); }
         return Runtime.getRuntime().exec(call);

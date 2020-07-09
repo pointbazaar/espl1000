@@ -3,6 +3,7 @@ package org.vanautrui.languages.commandline;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
+import org.vanautrui.languages.compiler.typechecking.TypeChecker;
 
 import java.io.File;
 import java.io.InputStream;
@@ -17,8 +18,6 @@ import java.util.stream.Collectors;
 import static java.lang.System.currentTimeMillis;
 import static java.lang.System.out;
 import static org.vanautrui.languages.commandline.ASTReader.parseNamespaceFromASTFile;
-import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printBuildConclusion;
-import static org.vanautrui.languages.commandline.CompilerPhaseUtils.printDurationFeedback;
 
 public final class DragonCompiler {
 
@@ -157,29 +156,12 @@ public final class DragonCompiler {
 	//declaring these identifiers so that we can change the actual names of the options
 	//without having to comb through all the code
 	public static final String FLAG_DEBUG="debug";
-	public static final String FLAG_TIMED="timed";
-	public static final String FLAG_TARGET_ATMEL="targetATMEL";
-
 	public static final String FLAG_PRINT_SYMBOLTABLES="symboltables";
 	public static final String FLAG_PRINT_HELP="help";
-
 	public static final String FLAG_CLEAN="clean";
 
 	private static List<String> createOptions(){
-
-		ArrayList<String> arr = new ArrayList<String>();
-
-		arr.add(FLAG_DEBUG);//,false,"prints debug output"));
-
-		arr.add(FLAG_TIMED);//,false,"how long did the build take?"));
-		arr.add(FLAG_TARGET_ATMEL);//,false,"generate .asm files for ATMEL Microcontrollers ?"));
-
-		arr.add(FLAG_PRINT_SYMBOLTABLES);//,false,"print symbol tables"));
-		arr.add(FLAG_PRINT_HELP);//,false,"print help"));
-
-		arr.add(FLAG_CLEAN);//,false,"clear cache"));
-
-		return arr;
+		return Arrays.asList(FLAG_DEBUG, FLAG_PRINT_SYMBOLTABLES, FLAG_PRINT_HELP, FLAG_CLEAN);
 	}
 
 	public static Path makePathHiddenWithCustomExtension(final File filename, final String fullextension){
@@ -196,11 +178,7 @@ public final class DragonCompiler {
 
 	private static void compile_main_inner(final List<File> sourceFiles, final List<String> flags){
 
-		final boolean debug=flags.contains(FLAG_DEBUG);
-		final boolean timed=flags.contains(FLAG_TIMED);
-		final boolean targetATMEL = flags.contains(FLAG_TARGET_ATMEL);
-
-		final long start_time_ms = currentTimeMillis();
+		final boolean debug = flags.contains(FLAG_DEBUG);
 
 		try {
 
@@ -211,9 +189,7 @@ public final class DragonCompiler {
 
 			//PHASE PARSING
 			for(final File sourceFile : sourceFiles) {
-
 				final Path correctTokenFilename = makePathHiddenWithCustomExtension(sourceFile,".tokens");
-
 				invokeDragonParser(correctTokenFilename.toFile(),debug);
 			}
 
@@ -225,24 +201,16 @@ public final class DragonCompiler {
 			final AST_Whole_Program ast = parseASTFromASTFiles(jsonFiles,debug);
 
 			//PHASE: TYPE CHECKING
-			CompilerPhases.phase_typecheck(ast,debug);
+			if(debug) { out.println("TYPE CHECKING"); }
+			TypeChecker.doTypeCheck(ast, debug);
 
 			//PHASE CODE GENERATION, returns a list of paths where the files for the subroutines are
 			final List<Path> javaFiles = CompilerPhases.phase_java_codegeneration(ast, flags.contains(FLAG_PRINT_SYMBOLTABLES),debug);
 
-			//PHASE VM CODE COMPILATION, PHASE GENERATE EXECUTABLE
-			//this phase depends on 'dracovm'
-			//which can be obtained here: https://github.com/pointbazaar/dracovm-compiler
-			//for each subroutine in vm code, make a NAME.subroutine.dracovm file
+			//PHASE JAVA CODE COMPILATION, PHASE GENERATE EXECUTABLE
 			invokeJavaCompiler(javaFiles,debug);
 
-			if(timed) {
-				final long end_time_ms = currentTimeMillis();
-				final long duration = end_time_ms-start_time_ms;
-				printDurationFeedback(duration);
-			}
-
-			printBuildConclusion(true);
+			out.println("BUILD SUCCESS");
 
 		} catch (final Exception e) {
 
@@ -252,7 +220,7 @@ public final class DragonCompiler {
 				e.printStackTrace(out);
 			}
 
-			printBuildConclusion(false);
+			out.println("BUILD FAILURE");
 		}
 	}
 
@@ -338,7 +306,6 @@ public final class DragonCompiler {
 			}
 		}
 	}
-
 
 	public static AST_Whole_Program parseASTFromASTFiles(final List<File> astFiles, final boolean debug) throws Exception {
 
