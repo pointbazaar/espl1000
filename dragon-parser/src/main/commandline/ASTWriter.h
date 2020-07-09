@@ -1,35 +1,8 @@
 #ifndef ASTWRITER
 #define ASTWRITER
-//../parsing
-#include "../parsing/AST_Whole_Program.h"
-#include "../parsing/Namespace.h"
-#include "../parsing/Method.h"
-#include "../parsing/DeclArg.h"
-#include "../parsing/BoolConst.h"
-#include "../parsing/CharConst.h"
-#include "../parsing/FloatConst.h"
-#include "../parsing/Expr.h"
-#include "../parsing/Identifier.h"
-#include "../parsing/IntConst.h"
-#include "../parsing/Op.h"
-#include "../parsing/SimpleVar.h"
-#include "../parsing/Term.h"
-#include "../parsing/Variable.h"
-//statements
-#include "../parsing/statements/IfStmt.h"
-#include "../parsing/statements/WhileStmt.h"
-#include "../parsing/statements/RetStmt.h"
-#include "../parsing/statements/AssignStmt.h"
-#include "../parsing/statements/Stmt.h"
-#include "../parsing/statements/MethodCall.h"
-//typenodes
-#include "../parsing/typenodes/ArrayType.h"
-#include "../parsing/typenodes/BasicTypeWrapped.h"
-#include "../parsing/typenodes/SimpleType.h"
-#include "../parsing/typenodes/SubrType.h"
-#include "../parsing/typenodes/Type.h"
-#include "../parsing/typenodes/TypeParam.h"
 
+
+#include "../../../../ast/ast.h"
 
 #include <stdlib.h>
 #include <stdio.h>
