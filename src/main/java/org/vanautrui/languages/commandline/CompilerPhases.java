@@ -1,12 +1,10 @@
 package org.vanautrui.languages.commandline;
 
+import org.vanautrui.languages.compiler.codegenerator.JavaCodeGenerator;
 import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.AST_Whole_Program;
-import org.vanautrui.languages.compiler.parsing.astnodes.nonterminal.upperscopes.NamespaceNode;
-import org.vanautrui.languages.compiler.simplify.Simplifier;
 import org.vanautrui.languages.compiler.symboltables.SubroutineSymbolTable;
 import org.vanautrui.languages.compiler.symboltables.structs.StructsSymbolTable;
 import org.vanautrui.languages.compiler.typechecking.TypeChecker;
-import org.vanautrui.languages.compiler.codegenerator.JavaCodeGenerator;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,7 +12,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createStructsSymbolTable;
 import static org.vanautrui.languages.compiler.symboltablegenerator.SymbolTableGenerator.createSubroutineSymbolTable;
