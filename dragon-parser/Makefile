@@ -8,8 +8,8 @@ clean:
 dragon-parser: commandline parsing typenodes statements tests
 	gcc $(FLAGS) -o dragon-parser *.o
 
-commandline: src/main/commandline/*.c
-	gcc $(FLAGS) -c src/main/commandline/*.c
+commandline: src/main/commandline/*.c ../ast/*.c
+	gcc $(FLAGS) -c src/main/commandline/*.c ../ast/*.c
 
 parsing: src/main/parsing/*.c
 	gcc $(FLAGS) -c src/main/parsing/*.c

@@ -11,7 +11,7 @@
 #include "../parsing/DeclArg.h"
 #include "../parsing/statements/Stmt.h"
 #include "../parsing/typenodes/Type.h"
-#include "ASTWriter.h"
+#include "../../../../ast/ASTWriter.h"
 #include "../../test/ParserTest.h"
 
 int main(int argc, char** argv){
