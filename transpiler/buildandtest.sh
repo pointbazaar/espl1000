@@ -2,13 +2,13 @@
 
 #this script should be run with sudo
 
-rm /usr/bin/smalldragon
-rm smalldragon
+rm sdg
+rm /usr/bin/sdg
 
 make -j8
 make clean
 
 #copy the executable to /usr/bin
-cp smalldragon /usr/bin/
+cp sdg /usr/bin/
 
-smalldragon -test -debug
+sdg -test -debug

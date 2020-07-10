@@ -21,7 +21,7 @@ int main(int argc, char* argv[]){
 	
 	check_dg_extension(filename);
 	
-	//TODO: invoke lexer, parser to generate .dg.ast file
+	//invoke lexer, parser to generate .dg.ast file
 	invoke_lexer_parser(filename);
 
 	char ast_filename[100];
@@ -43,7 +43,6 @@ int main(int argc, char* argv[]){
 	strcat(fname_out, ".java");
 
 	//TODO: create symbol tables
-
 	
 	gen_java_code(ast, fname_out);
 
@@ -59,7 +58,7 @@ void check_dg_extension(char* filename){
 }
 
 void invoke_lexer_parser(char* filename){
-	//TODO
+	
 	char cmd1[100];
 	strcpy(cmd1, "dragon-lexer ");
 	strcat(cmd1, filename);
