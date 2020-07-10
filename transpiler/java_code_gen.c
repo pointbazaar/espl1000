@@ -25,5 +25,25 @@ void gen_java_namespace(struct Namespace* ns, FILE* file){
 	
 	fprintf(file, "public class %s {\n", ns->name);
 	
+	//for each subroutine, generate a static method in java
+	
+	fprintf(file, "}\n");
+}
+
+void gen_java_method(struct Method* m, FILE* file){
+	
+	fprintf(file, "public static %s %s (", "int", m->methodName);
+	
+	
+	for(int i=0;i < m->count_arguments; i++){
+			//TODO: print argument
+	}
+	
+	fprintf(file, "){\n");
+	
+	for(int i=0;i < m->count_statements; i++){
+			//TODO: print statement
+	}
+	
 	fprintf(file, "}\n");
 }
