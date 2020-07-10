@@ -45,9 +45,11 @@ void writeVariable(struct Variable* m, FILE* file){
 	fprintf(file, "Variable\t");
 
 	writeSimpleVar(m->simpleVariableNode,file);
+
+	fprintf(file, "%d\n", m->count_memberAccessList);
 	for(int i = 0;i < m->count_memberAccessList;i++){ 
 		struct Variable* v = m->memberAccessList[i];
-		writeSimpleVar(v->simpleVariableNode,file); 
+		writeVariable(v, file); 
 	}
 }
 void writeSimpleVar(struct SimpleVar* m, FILE* file){
