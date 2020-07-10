@@ -52,8 +52,9 @@ struct CharConst {
 	char content;
 };
 struct DeclArg  {
-
 	struct Type* type;
+
+	bool has_name;
 	char name[20];
 };
 struct Expr {
