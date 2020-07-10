@@ -18,6 +18,12 @@ int main(int argc, char* argv[]){
 	}
 
 	char* filename = argv[1];
+	
+	int ext_index = strlen(filename)-3;
+	if(strcmp(filename+ext_index, ".dg") != 0){
+			printf("filename has to have .dg extension\n");
+			exit(1);
+	}
 
 	printf("try to open file %s\n", filename);
 
