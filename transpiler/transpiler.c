@@ -20,14 +20,20 @@ int main(int argc, char* argv[]){
 	char* filename = argv[1];
 	
 	check_dg_extension(filename);
+	
+	//TODO: invoke lexer, parser to generate .dg.ast file
+	invoke_lexer_parser(filename);
 
-	printf("try to open file %s\n", filename);
+	char ast_filename[100];
+	sprintf(ast_filename, ".%s.ast", filename);
+	
+	printf("try to open file %s\n", ast_filename);
 
 	//parse AST
-	struct AST_Whole_Program* ast = readAST(filename);
+	struct AST_Whole_Program* ast = readAST(ast_filename);
 
 	if(ast == NULL){
-		printf("Error parsing from %s\n", filename);
+		printf("Error parsing from %s\n", ast_filename);
 		exit(1);
 	}
 
@@ -50,4 +56,18 @@ void check_dg_extension(char* filename){
 			printf("filename has to have .dg extension\n");
 			exit(1);
 	}
+}
+
+void invoke_lexer_parser(char* filename){
+	//TODO
+	char cmd1[100];
+	strcpy(cmd1, "dragon-lexer ");
+	strcat(cmd1, filename);
+	
+	system(cmd1);
+	
+	char cmd2[100];
+	sprintf(cmd2, "dragon-parser .%s.tokens", filename);
+	
+	system(cmd2);
 }
