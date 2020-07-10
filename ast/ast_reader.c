@@ -328,23 +328,64 @@ struct Type* readType(FILE* file){
 	return b;
 }
 struct SubrType* readSubrType(FILE* file){
-	//TODO
-	return NULL;
+	struct SubrType* v = malloc(sizeof(struct SubrType));
+	char next[10];
+	fscanf(file, "%s\t",next);
+	if(strcmp(next,"SubrType") != 0){ return NULL; }
+
+	v->returnType = readType(file);
+	fscanf(file, "%d\t", (int*)(v->hasSideEffects));
+
+	fscanf(file, "%d\t", &(v->count_argumentTypes));
+	v->argumentTypes = malloc(sizeof(struct Type*)*(v->count_argumentTypes));
+	for(int i=0;i < (v->count_argumentTypes); i++){
+		v->argumentTypes[i] = readType(file);
+	}
+	return v;
 }
 struct SimpleType* readSimpleType(FILE* file){
-	//TODO
-	return NULL;
+	struct SimpleType* v = malloc(sizeof(struct SimpleType));
+	char next[10];
+	fscanf(file, "%s\t",next);
+	if(strcmp(next,"SimpleType") != 0){ return NULL; }
+	
+	fscanf(file, "%s\t", v->typeName);
+	return v;
 }
 struct ArrayType* readArrayType(FILE* file){
-	//TODO
-	return NULL;
+	struct ArrayType* v = malloc(sizeof(struct ArrayType));
+	char next[10];
+	fscanf(file, "%s\t",next);
+	if(strcmp(next,"ArrayType") != 0){ return NULL; }
+	v->element_type = readType(file);
+	return v;
 }
 struct TypeParam* readTypeParam(FILE* file){
-	//TODO
-	return NULL;
+	struct TypeParam* v = malloc(sizeof(struct TypeParam));
+	char next[10];
+	fscanf(file, "%s\t",next);
+	if(strcmp(next,"TypeParam") != 0){ return NULL; }
+	fscanf(file, "%d\t", &(v->typeParameterIndex));
+	return v;
 }
 struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file){
-	//TODO
-	return NULL;
+	struct BasicTypeWrapped* v = malloc(sizeof(struct BasicTypeWrapped));
+	char next[10];
+	fscanf(file, "%s\t",next);
+	if(strcmp(next,"BasicTypeWrapped") != 0){ return NULL; }
+	
+	int kind = 0;
+	fscanf(file, "%d\t", &kind);
+	switch(kind){
+		case 1: 
+			v->m1 = readSimpleType(file);
+			v->m2 = NULL;
+			break;
+		case 2: 
+			v->m1 = NULL;
+			v->m2 = readSubrType(file);
+			break;
+	}
+	return v;
 }
 
