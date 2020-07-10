@@ -34,12 +34,6 @@ int main(int argc, char* argv[]){
 	char fname_out[32]; //new output filename
 
 	strcpy(fname_out, filename);
-	//we expect '.' somewhere inside
-	for(int i=0;i<strlen(fname_out);i++){
-		if(fname_out[i] == '.'){
-			fname_out[i] = '\0';
-		}
-	}
 	strcat(fname_out, ".java");
 
 	//TODO: create symbol tables
