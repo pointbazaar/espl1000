@@ -1,6 +1,5 @@
-#ifndef ASTWRITER
-#define ASTWRITER
-
+#ifndef ASTREADER
+#define ASTREADER
 
 #include "ast.h"
 
