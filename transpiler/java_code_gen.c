@@ -23,6 +23,8 @@ int gen_java_code(struct AST_Whole_Program* ast, char* fname_out){
 
 void gen_java_namespace(struct Namespace* ns, FILE* file){
 	
+	printf("gen_java_namespace(...)\n");
+	
 	fprintf(file, "public class %s {\n", ns->name);
 	
 	//for each subroutine, generate a static method in java
@@ -31,6 +33,8 @@ void gen_java_namespace(struct Namespace* ns, FILE* file){
 }
 
 void gen_java_method(struct Method* m, FILE* file){
+	
+	printf("gen_java_method(...)\n");
 	
 	fprintf(file, "public static %s %s (", "int", m->methodName);
 	
