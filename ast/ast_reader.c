@@ -7,10 +7,12 @@
 
 struct AST_Whole_Program* readAST(char* filename){
 	FILE* file = fopen(filename,"r");
+	if(file == NULL){return NULL;}
 
 	struct AST_Whole_Program* ast = malloc(sizeof(struct AST_Whole_Program));
 
 	struct Namespace* ns = readNamespace(file);
+	if(ns == NULL){return NULL;}
 	ast->count_namespaces = 1;
 
 	ast->namespaces = malloc(sizeof(struct Namespace*));

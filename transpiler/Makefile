@@ -8,5 +8,5 @@ clean:
 smalldragon: main
 	gcc $(FLAGS) -o smalldragon *.o
 
-main: transpiler.c ../ast/ast_reader.c
-	gcc $(FLAGS) -c transpiler.c ../ast/ast_reader.c
+main: *.c ../ast/ast_reader.c
+	gcc $(FLAGS) -c *.c ../ast/ast_reader.c
