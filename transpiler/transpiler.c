@@ -19,11 +19,7 @@ int main(int argc, char* argv[]){
 
 	char* filename = argv[1];
 	
-	int ext_index = strlen(filename)-3;
-	if(strcmp(filename+ext_index, ".dg") != 0){
-			printf("filename has to have .dg extension\n");
-			exit(1);
-	}
+	check_dg_extension(filename);
 
 	printf("try to open file %s\n", filename);
 
@@ -52,4 +48,12 @@ int main(int argc, char* argv[]){
 	gen_java_code(ast, fname_out);
 
 	exit(0);
+}
+
+void check_dg_extension(char* filename){
+	const int ext_index = strlen(filename)-3;
+	if(strcmp(filename+ext_index, ".dg") != 0){
+			printf("filename has to have .dg extension\n");
+			exit(1);
+	}
 }
