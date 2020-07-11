@@ -18,7 +18,7 @@ int assignstmt_test1(bool debug) {
 	struct TokenList* tokens = makeTokenList();
 
 	list_add(tokens, makeToken2(ID,"x"));
-	list_add(tokens, makeToken2(OPKEY,"="));
+	list_add(tokens, makeToken2(EQ,"="));
 	list_add(tokens, makeToken2(INTEGER,"4"));
 	list_add(tokens, makeToken(SEMICOLON));
 
@@ -36,7 +36,7 @@ int assignstmt_test_assign_method_call_result(bool debug) {
 	struct TokenList* tokens = makeTokenList();
 
 	list_add(tokens, makeToken2(ID,"x"));
-	list_add(tokens, makeToken2(OPKEY,"="));
+	list_add(tokens, makeToken2(EQ,"="));
 
 	//nop refers to the no operation method. it does nothing with its argument
 	list_add(tokens, makeToken2(ID,"nop"));
@@ -61,7 +61,7 @@ int assignstmt_test_assign_method_call_result_2(bool debug) {
 	struct TokenList* tokens = makeTokenList();
 
 	list_add(tokens, makeToken2(ID,"x"));
-	list_add(tokens, makeToken2(OPKEY,"="));
+	list_add(tokens, makeToken2(EQ,"="));
 
 	//nop refers to the no operation method. it does nothing with its argument
 	list_add(tokens, makeToken2(ID,"nop"));
@@ -85,7 +85,7 @@ int assignstmt_test_assign_variable_with_array_index(bool debug) {
 	struct TokenList* tokens = makeTokenList();
 
 	list_add(tokens, makeToken2(ID,"x"));
-	list_add(tokens, makeToken2(OPKEY,"="));
+	list_add(tokens, makeToken2(EQ,"="));
 
 	//nop refers to the no operation method. it does nothing with its argument
 	list_add(tokens, makeToken2(ID,"arr"));
@@ -110,7 +110,7 @@ int assignstmt_test_assign_char(bool debug) {
 	struct TokenList* tokens = makeTokenList();
 
 	list_add(tokens, makeToken2(ID,"x"));
-	list_add(tokens, makeToken2(OPKEY,"="));
+	list_add(tokens, makeToken2(EQ,"="));
 
 	list_add(tokens, makeToken2(CCONST,"x"));
 
@@ -133,7 +133,7 @@ int assignstmt_test_can_assign_to_struct_member(bool debug) {
 	list_add(tokens, makeToken2(ID,"x"));
 	list_add(tokens, makeToken(STRUCTMEMBERACCESS));
 	list_add(tokens, makeToken2(ID,"a"));
-	list_add(tokens, makeToken2(OPKEY,"="));
+	list_add(tokens, makeToken2(EQ,"="));
 	list_add(tokens, makeToken2(INTEGER,"3"));
 	list_add(tokens, makeToken(SEMICOLON));
 
@@ -151,7 +151,7 @@ int assignstmt_test_type_declaration_for_variable(bool debug) {
 	struct TokenList* tokens = makeTokenList();
 	list_add(tokens, makeToken2(TYPEIDENTIFIER,"PInt"));
 	list_add(tokens, makeToken2(ID,"x"));
-	list_add(tokens, makeToken2(OPKEY,"="));
+	list_add(tokens, makeToken2(EQ,"="));
 	list_add(tokens, makeToken2(INTEGER,"3"));
 	list_add(tokens, makeToken(SEMICOLON));
 

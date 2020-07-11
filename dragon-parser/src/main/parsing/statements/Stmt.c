@@ -42,35 +42,60 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 		exit(1);
 	} else if (first->kind == WHILE) {
 		res->m2 = makeWhileStmt		(copy,debug);
-		if(res->m2 == NULL){return NULL;}
+		if(res->m2 == NULL){
+			//parsing is deterministic here. 
+			//so this is a fatal error
+			printf("expected while stmt, but was:\n");
+			printf("%s\n", list_code(copy, debug));
+			exit(1);
+			return NULL;
+		}
 
 	} else if (first->kind == IF) {
 		res->m3 = makeIfStmt		(copy,debug);
-		if(res->m3 == NULL){return NULL;}
+		if(res->m3 == NULL){
+			//parsing is deterministic here. 
+			//so this is a fatal error
+			printf("expected if stmt, but was:\n");
+			printf("%s\n", list_code(copy, debug));
+			exit(1);
+			return NULL;
+		}
 
 	} else if (first->kind == RETURN) {
 		res->m4 = makeRetStmt		(copy,debug);
-		if(res->m4 == NULL){return NULL;}
+		if(res->m4 == NULL){
+			//parsing is deterministic here. 
+			//so this is a fatal error
+			printf("expected return stmt, but was:\n");
+			printf("%s\n", list_code(copy, debug));
+			exit(1);
+			return NULL;
+		}
 
 	} else {
 		//TODO: we have to figure something out here.
 		//i don't want 'let' statements
 		//because it just messes up the code and is
 		//just bloat to write.
-		//but parsing should be straightforward. to give good error messages
-
-		bool fail = false;
-
-		struct TokenList* copy2 = list_copy(copy);
-		res->m1 = makeMethodCall(copy2,debug);
-		if(res->m1 == NULL){fail = true;}
-
-		if(!list_expect(copy2, SEMICOLON)){fail = true;}
-
-		if(!fail){
-			list_set(copy, copy2);
-		}else {
-			res->m5 = makeAssignStmt(copy,debug);
+		//but parsing should be straightforward
+		//and mostly deterministic
+		//because it gives good performance and
+		//to give good error messages
+		
+		res->m5 = makeAssignStmt(copy,debug);
+		
+		if(res->m5 == NULL){
+			
+			res->m1 = makeMethodCall(copy,debug);
+			if(res->m1 == NULL){
+				printf("expected method call, but was:\n");
+				printf("%s\n", list_code(copy, debug));
+				exit(1);
+			}
+			if(!list_expect(copy, SEMICOLON)){
+				exit(1);
+			}
 		}
 	}
 	
