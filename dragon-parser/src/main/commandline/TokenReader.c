@@ -12,7 +12,7 @@ struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
 	//everything being seperated by a space, and the whole line not
 	//having any spaces in front or at the back is important to keep parsing simple.
 	if (debug) {
-		printf("recognizeToken(%s, %d)\n", tkn, debug);
+		printf("recognizeToken('%s', %d)\n", tkn, debug);
 	}
 
 	
