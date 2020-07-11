@@ -3,7 +3,7 @@
 fn main ()~> PInt{
 
 	x = 0;
-	while (x < 4) {
+	while x < 4 {
 	
 		x = x+1;
 	}

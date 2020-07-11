@@ -38,17 +38,23 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 		return NULL;
 	}
 
-	struct Token* next = list_get(copy, 0);
+	struct Token* next = list_head(copy);
 	if(next == NULL){return NULL;}
 
 	while (next->kind != RCURLY) {
 
-		res->statements[res->count_statements] = makeStmt(copy,debug);
+		struct Stmt* stmt = makeStmt(copy,debug);
+		if(stmt == NULL){
+			printf("expected a statement, but got: %s\n",list_code(copy, debug));
+			exit(1);
+		}
+		
+		res->statements[res->count_statements] = stmt;
 		res->count_statements++;
 		int newsize = res->count_statements;
 		res->statements = realloc(res->statements, sizeof(struct Stmt*) * newsize);
 
-		next = list_get(copy, 0);
+		next = list_head(copy);
 		if(next == NULL){return NULL;}
 	}
 

@@ -90,6 +90,8 @@ struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
 
 		//SECTION: OPERATORNS
 		case OPKEY : 
+		case GREATER:
+		case LESSER:
 			r = makeToken2(OPKEY,part2);
 			break;
 
@@ -125,14 +127,6 @@ struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
 			break;
 		case RCURLY : 
 			r = makeToken2(RCURLY,"}");
-			break;
-
-		case GREATER: 
-			r = makeToken2(GREATER,">");
-			break;
-
-		case LESSER : 
-			r = makeToken2(LESSER,"<");
 			break;
 
 		case WAVE : 

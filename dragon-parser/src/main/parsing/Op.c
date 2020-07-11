@@ -18,7 +18,7 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 
 	struct TokenList* copy = list_copy(tokens);
 
-	struct Token* tkn = list_get(copy, 0);
+	struct Token* tkn = list_head(copy);
 	if(tkn == NULL){return NULL;}
 
 	if(tkn->kind == OPKEY){
@@ -54,9 +54,7 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 			list_consume(copy, 2);
 		}else{
 			res->op = tkn->value;
-			if(list_size(copy) < 1){
-				return NULL;
-			}
+			
 			list_consume(copy, 1);
 		}
 	}else{

@@ -42,15 +42,14 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 
 	terms[termsc++] = myterm2;
 	
-	bool fail = false;
-	while (list_size(copy) >= 2 && !fail) {
+	while (list_size(copy) >= 2) {
 		struct TokenList* copy2 = list_copy(copy);
 
 		struct Op* myop = makeOp(copy2,debug);
-		if(myop == NULL){fail = true; break;}
+		if(myop == NULL){ break;}
 
 		struct Term* myterm = makeTerm(copy2,debug);
-		if(myterm == NULL){fail = true; break;}
+		if(myterm == NULL){ break;}
 
 		ops[opsc++] = myop;
 		terms[termsc++] = myterm;
