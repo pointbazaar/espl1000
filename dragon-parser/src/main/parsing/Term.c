@@ -53,17 +53,22 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 	struct TokenList* copy = list_copy(tokens);
 
 	if(list_head(copy)->kind == LPARENS){
-
+		
 		if(debug){
 			printf("try to parse Expr in Term\n");
 		}
-
-		if(!list_expect(copy,LPARENS)){ return NULL;}
+		
+		list_consume(copy, 1);
 
 		res->m5 = makeExpr(copy,debug);
 		if(res->m5 == NULL){return NULL;}
 		
-		if(!list_expect(copy, RPARENS)){return NULL;}
+		if(!list_expect(copy, RPARENS)){
+			//this part can be parsed deterministically
+			printf("expected ')', but was: %s\n", list_code(copy, debug));
+			exit(1);
+			return NULL;
+		}
 
 	}else{
 
