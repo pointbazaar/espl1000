@@ -47,3 +47,32 @@ int term_test_variable_term(bool debug) {
 }
 
 
+int term_test_parentheses(bool debug){
+	
+	if(debug){
+		printf("TEST: term_test_parentheses()\n");
+	}
+
+	struct TokenList* list = makeTokenList();
+	list_add(list, makeToken2(LPARENS, "("));
+	list_add(list, makeToken2(ID,"x"));
+	list_add(list, makeToken2(RPARENS, ")"));
+
+	struct Term* t = makeTerm(list, debug);
+	if(t == NULL){return 0;}
+	
+	struct Expr* expr = t->m5;
+	if(expr == NULL){ return 0;}
+
+	const bool a1 = list_size(list) == 0;
+
+	struct Variable* v = expr->term1->m6;
+	if(v == NULL){return 0;}
+
+	struct SimpleVar* sv = v->simpleVariableNode;
+	if(sv == NULL){return 0;}
+
+	const bool a2 = strcmp(sv->name,"x") == 0;
+
+	return (a1 && a2)?1:0;
+}

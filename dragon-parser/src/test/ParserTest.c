@@ -80,6 +80,7 @@ bool test_all_inner(bool debug){
 
 	tests[k++] = term_test_simple_term;
 	tests[k++] = term_test_variable_term;
+	tests[k++] = term_test_parentheses;
 
 	tests[k++] = expr_recognize_2_op_expr;
 	tests[k++] = expr_test_simple_expression;
