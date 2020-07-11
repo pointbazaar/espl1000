@@ -21,12 +21,22 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 
 	struct TokenList* copy = list_copy(tokens);
 
-	if(!list_expect(copy, WHILE)){return NULL;}
+	if(!list_expect(copy, WHILE)){
+		//this part can be parsed deterministically
+		printf("expected 'while', but was: %s\n", list_code(copy, debug));
+		exit(1);
+		return NULL;
+	}
 
 	res->condition = makeExpr(copy,debug);
 	if(res->condition == NULL){return NULL;}
 
-	if(!list_expect(copy, LCURLY)){return NULL;}
+	if(!list_expect(copy, LCURLY)){
+		//this part can be parsed deterministically
+		printf("expected '{', but was: %s\n", list_code(copy, debug));
+		exit(1);
+		return NULL;
+	}
 
 	struct Token* next = list_get(copy, 0);
 	if(next == NULL){return NULL;}
@@ -42,7 +52,12 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 		if(next == NULL){return NULL;}
 	}
 
-	if(!list_expect(copy, RCURLY)){return NULL;}
+	if(!list_expect(copy, RCURLY)){
+		//this part can be parsed deterministically
+		printf("expected '}', but was: %s\n", list_code(copy, debug));
+		exit(1);
+		return NULL;
+	}
 	
 	if(debug){
 		printf("sucess parsing WhileStmt\n");
