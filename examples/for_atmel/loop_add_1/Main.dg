@@ -2,8 +2,8 @@
 
 fn main ()~> PInt{
 
-	x=0;
-	loop 4 {
+	x = 0;
+	while (x < 4) {
 	
 		x = x+1;
 	}
