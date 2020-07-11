@@ -64,6 +64,10 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 	}
 
 	if(!list_expect(copy, RPARENS)){return NULL;}
+	
+	if(debug){
+		printf("sucess parsing MethodCall\n");
+	}
 
 	list_set(tokens, copy);
 

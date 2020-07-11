@@ -43,6 +43,10 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 	}
 
 	if(!list_expect(copy, RCURLY)){return NULL;}
+	
+	if(debug){
+		printf("sucess parsing WhileStmt\n");
+	}
 
 	list_set(tokens, copy);
 

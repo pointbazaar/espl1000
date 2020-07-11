@@ -55,6 +55,10 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 
 		return NULL;
 	}
+	
+	if(debug){
+		printf("sucess parsing SimpleVar\n");
+	}
 
 	list_set(tokens,copy);
 

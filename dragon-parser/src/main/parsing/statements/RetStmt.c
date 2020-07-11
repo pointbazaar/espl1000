@@ -23,6 +23,10 @@ struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
 	if(res->returnValue == NULL){return NULL;}
 
 	if(!list_expect(copy, SEMICOLON)){return NULL;}
+	
+	if(debug){
+		printf("sucess parsing RetStmt\n");
+	}
 
 	list_set(tokens, copy);
 

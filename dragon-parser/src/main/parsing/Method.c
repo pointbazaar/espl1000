@@ -48,7 +48,7 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 	if(!list_expect(copy, LPARENS)){return NULL;}
 
 	//while there is no ')' up, continue parsing arguments
-	struct Token* next = list_get(copy, 0);
+	struct Token* next = list_head(copy);
 	if(next == NULL){return NULL;}
 
 	while (next->kind != RPARENS) {
@@ -58,7 +58,7 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 		res->arguments[res->count_arguments++] = makeDeclArg(copy, debug);
 		res->arguments = realloc(res->statements,sizeof(struct DeclArg*)*(res->count_arguments+1));
 
-		next = list_get(copy, 0);
+		next = list_head(copy);
 		if(next == NULL){return NULL;}
 	}
 
@@ -71,22 +71,28 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 
 	if(!list_expect(copy, LCURLY)){return NULL;}
 
-	struct Token* statement_next = list_get(copy, 0);
-	if(statement_next == NULL){return NULL;}
+	struct Token* tk_next = list_head(copy);
+	if(tk_next == NULL){return NULL;}
 
-	while (statement_next->kind != RCURLY) {
+	while (tk_next->kind != RCURLY) {
 
 		struct Stmt* mystmt = makeStmt(copy, debug);
 		if(mystmt == NULL){return NULL;}
 
-		res->statements[res->count_statements++] = mystmt;
+		res->statements[res->count_statements] = mystmt;
+		res->count_statements += 1;
+		
 		res->statements = realloc(res->statements,sizeof(struct Stmt*)*(res->count_statements+1));
 
-		statement_next = list_get(copy, 0);
-		if(statement_next == NULL){return NULL;}
+		tk_next = list_head(copy);
+		if(tk_next == NULL){return NULL;}
 	}
 
 	if(!list_expect(copy, RCURLY)){return NULL;}
+	
+	if(debug){
+		printf("sucess parsing Method\n");
+	}
 
 	list_set(tokens, copy);
 

@@ -180,6 +180,16 @@ void list_set(struct TokenList* list, struct TokenList* copy) {
 }
 
 struct Token* list_get(struct TokenList* list, int i) {
+	
+	//this is to give an indication to what went wrong
+	if( i >= list_size(list)){
+		printf(
+			"access at index %d, but list is only %d long\n",
+			i,
+			list_size(list)
+		);
+	}
+	
 	return list->tokens[i]; //<=> *(list->tokens + sizeof(struct Token*) * i)
 }
 

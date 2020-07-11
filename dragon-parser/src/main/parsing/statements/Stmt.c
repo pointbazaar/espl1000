@@ -73,6 +73,10 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 			res->m5 = makeAssignStmt(copy,debug);
 		}
 	}
+	
+	if(debug){
+		printf("sucess parsing Stmt\n");
+	}
 
 	list_set(tokens, copy);
 

@@ -46,6 +46,10 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 			}
 		}
 	}
+	
+	if(debug){
+		printf("sucess parsing Variable\n");
+	}
 
 	list_set(tokens,copy);
 

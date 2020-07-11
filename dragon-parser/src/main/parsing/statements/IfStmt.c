@@ -84,6 +84,10 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 
 		if(!list_expect(copy, RCURLY)){return NULL;}
 	}
+	
+	if(debug){
+		printf("sucess parsing IfStmt\n");
+	}
 
 	list_set(tokens, copy);
 

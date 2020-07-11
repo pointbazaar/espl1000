@@ -43,6 +43,10 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 	if(res->expressionNode == NULL){return NULL;}
 
 	if(!list_expect(copy, SEMICOLON)){return NULL;}
+	
+	if(debug){
+		printf("sucess parsing AssignStmt\n");
+	}
 
 	list_set(tokens, copy);
 
