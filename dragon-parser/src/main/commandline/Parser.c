@@ -171,7 +171,10 @@ struct TokenList* readTokensFromTokensFile(char* tokensFile, bool debug){
     size_t size = 1000;
     while (getline(&str, &size, file)){
 
-		struct Token* tkn = recognizeToken(str, debug);
+		bool isLineNo = false;
+		struct Token* tkn = recognizeToken(str, &isLineNo, debug);
+    	if(isLineNo){ continue; }
+    	
     	if(tkn != NULL){
 			list_add(tks, tkn);
     	}else{

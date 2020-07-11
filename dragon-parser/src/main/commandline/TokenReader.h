@@ -9,6 +9,6 @@
 #include "TokenKeys.h"
 
 //may return NULL if no token was recognized
-struct Token* recognizeToken(char* tkn, bool debug);
+struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug);
 
 #endif
