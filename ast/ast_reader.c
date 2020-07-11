@@ -5,13 +5,13 @@
 #include "ast.h"
 #include "ast_reader.h"
 
-struct AST_Whole_Program* readAST(char* filename){
+struct AST_Whole_Program* readAST(char* filename, bool debug){
 	FILE* file = fopen(filename,"r");
 	if(file == NULL){return NULL;}
 
 	struct AST_Whole_Program* ast = malloc(sizeof(struct AST_Whole_Program));
 
-	struct Namespace* ns = readNamespace(file);
+	struct Namespace* ns = readNamespace(file, debug);
 	if(ns == NULL){return NULL;}
 	ast->count_namespaces = 1;
 
@@ -22,19 +22,35 @@ struct AST_Whole_Program* readAST(char* filename){
 	return ast;
 }
 
-struct Namespace* readNamespace(FILE* file){
+struct Namespace* readNamespace(FILE* file, bool debug){
+	if(debug){
+			printf("readNamespace(...)\n");
+	}
 	struct Namespace* ns = malloc(sizeof(struct Namespace));
 
-	fscanf(file,"%s\t%s\t%d\t", ns->srcPath, ns->name,&(ns->count_methods));
+	int count = fscanf(file,"%s %s %d ", ns->srcPath, ns->name, &(ns->count_methods));
+
+	if(count != 3){
+		fclose(file);
+		printf("error in readNamespace ,%d\n",count);
+		exit(1);
+	}
 
 	for(int i=0; i < ns->count_methods; i++){
-		struct Method* m =  readMethod(file);
-		if(m == NULL){ return NULL; }
+		struct Method* m =  readMethod(file, debug);
+		if(m == NULL){
+			fclose(file);
+			printf("error in readNamespace 2\n");
+			exit(1);
+		}
 		ns->methods[i] = m;
 	}
 	return ns;
 }
-struct Method* readMethod(FILE* file){
+struct Method* readMethod(FILE* file, bool debug){
+	if(debug){
+			printf("readMethod(...)\n");
+	}
 	fscanf(file, "Method\t");
 	struct Method* m = malloc(sizeof(struct Method));
 

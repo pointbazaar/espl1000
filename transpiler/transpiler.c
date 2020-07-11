@@ -18,6 +18,7 @@ int main(int argc, char* argv[]){
 	}
 
 	char* filename = argv[1];
+	bool debug = true;
 	
 	check_dg_extension(filename);
 	
@@ -30,7 +31,7 @@ int main(int argc, char* argv[]){
 	printf("try to open file %s\n", ast_filename);
 
 	//parse AST
-	struct AST_Whole_Program* ast = readAST(ast_filename);
+	struct AST_Whole_Program* ast = readAST(ast_filename, debug);
 
 	if(ast == NULL){
 		printf("Error parsing from %s\n", ast_filename);

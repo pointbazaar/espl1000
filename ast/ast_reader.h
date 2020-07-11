@@ -5,11 +5,12 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
-struct AST_Whole_Program* readAST(char* filename);
+struct AST_Whole_Program* readAST(char* filename, bool debug);
 
-struct Namespace* readNamespace(FILE* file);
-struct Method* readMethod(FILE* file);
+struct Namespace* readNamespace(FILE* file, bool debug);
+struct Method* readMethod(FILE* file, bool debug);
 struct DeclArg* readDeclArg(FILE* file);
 struct Expr* readExpr(FILE* file);
 struct Op* readOp(FILE* file);

@@ -92,8 +92,8 @@ struct Namespace {
 	//a namespace is represented by a filename.
 	//the contents of a namespace are the contents of the file
 
-	char* srcPath;
-	char* name;
+	char srcPath[20];
+	char name[20];
 
 	//structs must be declared before the subroutines
 	struct Method** methods;
