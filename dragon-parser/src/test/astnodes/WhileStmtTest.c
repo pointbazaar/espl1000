@@ -30,7 +30,49 @@ int whilestmt_test1(bool debug) {
 	list_add(list, makeToken(RCURLY) );
 
 	struct WhileStmt* ws = makeWhileStmt(list,debug);
-
-	return (ws!=NULL)?1:0;
+	if(ws == NULL){return 0;}
+	
+	
+	bool a1 = ws->count_statements == 0;
+	bool a2 = ws->condition != NULL;
+	
+	return (a1 && a2)?1:0;
 }
 
+
+int whilestmt_test2(bool debug){
+	
+	if(debug){
+		printf("TEST: whilestmt_test2\n");
+	}
+	
+	struct TokenList* list = makeTokenList();
+
+	list_add(list, makeToken(WHILE) );
+
+	list_add(list, makeToken(LPARENS) );
+
+	list_add(list, makeToken2(INTEGER,"x") );
+	list_add(list, makeToken2(OPKEY,"<") );
+	list_add(list, makeToken2(INTEGER,"4") );
+
+	list_add(list, makeToken(RPARENS) );
+
+	list_add(list, makeToken(LCURLY) );
+
+	list_add(list, makeToken(RCURLY) );
+
+	struct WhileStmt* ws = makeWhileStmt(list,debug);
+	if(ws == NULL){ return 0; }
+	
+	bool a1 = ws->count_statements == 0;
+	bool a2 = ws->condition != NULL;
+	
+	struct Expr* e = ws->condition;
+	
+	if(e->term1 == NULL){
+		return 0;
+	}
+
+	return (a1 && a2)?1:0;
+}

@@ -63,6 +63,10 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 		//"could not recognize operator, got : " + tkn->value;
 		return NULL;
 	}
+	
+	if(debug){
+		printf("sucess parsing Op\n");
+	}
 
 	list_set(tokens,copy);
 

@@ -57,6 +57,10 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 
 		list_set(copy, copy2);
 	}
+	
+	if(debug){
+		printf("sucess parsing Expr\n");
+	}
 
 	list_set(tokens, copy);
 

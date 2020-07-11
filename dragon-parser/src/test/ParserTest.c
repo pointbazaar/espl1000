@@ -101,6 +101,7 @@ bool test_all_inner(bool debug){
 	tests[k++] = retstmt_test3;
 
 	tests[k++] = whilestmt_test1;
+	tests[k++] = whilestmt_test2;
 
 	tests[k++] = assignstmt_test1;
 	tests[k++] = assignstmt_test_assign_char;

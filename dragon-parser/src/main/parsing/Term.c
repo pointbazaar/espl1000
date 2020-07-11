@@ -121,6 +121,10 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 			}
 		}
 	}
+	
+	if(debug){
+		printf("sucess parsing Term\n");
+	}
 
 	list_set(tokens, copy);
 

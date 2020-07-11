@@ -5,4 +5,6 @@
 
 int whilestmt_test1(bool debug);
 
+int whilestmt_test2(bool debug);
+
 #endif
