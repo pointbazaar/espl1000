@@ -55,3 +55,4 @@ TODO:
     - http://beza1e1.tuxen.de/articles/faster_than_C.html
     - http://beza1e1.tuxen.de/articles/proglang_mistakes.html
 
+[ ] add C as the primary target language for the smalldragon transpiler.
