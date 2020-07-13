@@ -231,12 +231,14 @@ void writeTypeParam(struct TypeParam* m, FILE* file){
 void writeBasicTypeWrapped(struct BasicTypeWrapped* m, FILE* file){
 	fprintf(file, "BasicTypeWrapped\t");
 
-	if(m->m1 != NULL){ 
-		fprintf(file,"1\t"); writeSimpleType(m->m1,file); 
+	if(m->simpleType != NULL){ 
+		fprintf(file,"1\t"); 
+		writeSimpleType(m->simpleType,file); 
 	}
 
-	if(m->m2 != NULL){ 
-		fprintf(file,"2\t"); writeSubrType(m->m2,file); 
+	if(m->subrType != NULL){ 
+		fprintf(file,"2\t"); 
+		writeSubrType(m->subrType,file); 
 	}
 }
 

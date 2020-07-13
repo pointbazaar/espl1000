@@ -181,8 +181,8 @@ struct BasicTypeWrapped {
 	//to replace my use of <variant> which was
 	//causing me problems
 	//only one of these is != NULL
-	struct SimpleType* m1;
-	struct SubrType* m2;
+	struct SimpleType* simpleType;
+	struct SubrType* subrType;
 };
 struct SimpleType {
 	//the typeName is not a 'char*',

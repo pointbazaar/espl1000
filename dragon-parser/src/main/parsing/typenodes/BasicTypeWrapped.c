@@ -12,8 +12,8 @@ struct BasicTypeWrapped* makeBasicTypeWrappedSimple(struct SimpleType* typeNode)
 
 	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
 
-	res->m1 = typeNode;
-	res->m2 = NULL;
+	res->simpleType = typeNode;
+	res->subrType = NULL;
 
 	return res;
 }
@@ -22,8 +22,8 @@ struct BasicTypeWrapped* makeBasicTypeWrappedSubr(struct SubrType* typeNode) {
 
 	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
 
-	res->m1 = NULL;
-	res->m2 = typeNode;
+	res->simpleType = NULL;
+	res->subrType = typeNode;
 
 	return res;
 }
@@ -44,16 +44,16 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 
 		if(!list_expect(copy2, LPARENS)){return NULL;}
 
-		res->m2 = makeSubrType(copy2,debug);
-		if(res->m2 == NULL){return NULL;}
+		res->subrType = makeSubrType(copy2,debug);
+		if(res->subrType == NULL){return NULL;}
 
 		if(!list_expect(copy2, RPARENS)){return NULL;}
 
 		list_set(copy, copy2);
 
 	} else {
-		res->m1 = makeSimpleType2(copy,debug);
-		if(res->m1 == NULL){return NULL;}
+		res->simpleType = makeSimpleType2(copy,debug);
+		if(res->simpleType == NULL){return NULL;}
 	}
 
 	list_set(tokens, copy);

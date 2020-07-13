@@ -396,12 +396,12 @@ struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file){
 	fscanf(file, "%d\t", &kind);
 	switch(kind){
 		case 1: 
-			v->m1 = readSimpleType(file);
-			v->m2 = NULL;
+			v->simpleType = readSimpleType(file);
+			v->subrType = NULL;
 			break;
 		case 2: 
-			v->m1 = NULL;
-			v->m2 = readSubrType(file);
+			v->simpleType = NULL;
+			v->subrType = readSubrType(file);
 			break;
 	}
 	return v;
