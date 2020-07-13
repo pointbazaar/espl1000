@@ -54,7 +54,7 @@ struct Method* readMethod(FILE* file, bool debug){
 	fscanf(file, "Method\t");
 	struct Method* m = malloc(sizeof(struct Method));
 
-	fscanf(file,"%d\t%d\t%s\t",(int*)&(m->isPublic),(int*)&(m->hasSideEffects), m->methodName);
+	fscanf(file,"%d\t%d\t%s\t",(int*)&(m->isPublic),(int*)&(m->hasSideEffects), m->name);
 
 	m->returnType = readType(file);
 	if(m->returnType == NULL){return NULL;}

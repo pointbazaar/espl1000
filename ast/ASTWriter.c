@@ -15,7 +15,7 @@ void writeMethod(struct Method* m, FILE* file){
 
 	fprintf(file, "Method\t");
 
-	fprintf(file,"%d\t%d\t%s\t",m->isPublic,m->hasSideEffects,m->methodName);
+	fprintf(file,"%d\t%d\t%s\t",m->isPublic,m->hasSideEffects,m->name);
 	writeType(m->returnType,file);
 
 	fprintf(file,"%d\t",m->count_args);

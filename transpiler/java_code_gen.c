@@ -36,7 +36,7 @@ void gen_java_method(struct Method* m, FILE* file){
 	
 	printf("gen_java_method(...)\n");
 	
-	fprintf(file, "public static %s %s (", "int", m->methodName);
+	fprintf(file, "public static %s %s (", "int", m->name);
 	
 	
 	for(int i=0;i < m->count_args; i++){

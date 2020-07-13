@@ -43,7 +43,7 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 
-	res->methodName = id->identifier;
+	res->name = id->identifier;
 
 	if(!list_expect(copy, LPARENS)){return NULL;}
 
