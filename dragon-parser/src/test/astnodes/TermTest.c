@@ -38,7 +38,7 @@ int term_test_variable_term(bool debug) {
 	struct Variable* v = t->m6;
 	if(v == NULL){return 0;}
 
-	struct SimpleVar* sv = v->simpleVariableNode;
+	struct SimpleVar* sv = v->simpleVar;
 	if(sv == NULL){return 0;}
 
 	bool a2 = strcmp(sv->name,"x") == 0;
@@ -69,7 +69,7 @@ int term_test_parentheses(bool debug){
 	struct Variable* v = expr->term1->m6;
 	if(v == NULL){return 0;}
 
-	struct SimpleVar* sv = v->simpleVariableNode;
+	struct SimpleVar* sv = v->simpleVar;
 	if(sv == NULL){return 0;}
 
 	const bool a2 = strcmp(sv->name,"x") == 0;

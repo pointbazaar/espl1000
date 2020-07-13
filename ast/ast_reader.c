@@ -159,7 +159,7 @@ struct Variable* readVariable(FILE* file){
 	fscanf(file, "%s\t",next);
 	if(strcmp(next,"Variable") != 0){ return NULL; }
 
-	v->simpleVariableNode = readSimpleVar(file);
+	v->simpleVar = readSimpleVar(file);
 	int memberAccessCount = 0;
 	fscanf(file, "%d\t", &memberAccessCount);
 

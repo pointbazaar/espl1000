@@ -16,15 +16,15 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 	}
 
 	struct Variable* res = malloc(sizeof(struct Variable));
-	res->simpleVariableNode = NULL;
+	res->simpleVar = NULL;
 
 	res->memberAccessList = malloc(sizeof(struct Variable*)*1);
 	res->count_memberAccessList = 0;
 
 	struct TokenList* copy = list_copy(tokens);
 
-	res->simpleVariableNode = makeSimpleVar(copy,debug);
-	if(res->simpleVariableNode == NULL){return NULL;}
+	res->simpleVar = makeSimpleVar(copy,debug);
+	if(res->simpleVar == NULL){return NULL;}
 
 	if (list_size(copy) >= 2) {
 		struct Token* next = list_get(copy, 0);

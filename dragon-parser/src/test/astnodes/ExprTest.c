@@ -45,9 +45,9 @@ int expr_test_variable_name_expression(bool debug) {
 
 	if(expr->term1->m6 == NULL){return 0;}
 
-	if(expr->term1->m6->simpleVariableNode == NULL){return 0;}
+	if(expr->term1->m6->simpleVar == NULL){return 0;}
 
-	bool a1 = strcmp(expr->term1->m6->simpleVariableNode->name, "x") == 0;
+	bool a1 = strcmp(expr->term1->m6->simpleVar->name, "x") == 0;
 
 	return (a1)?1:0;
 }
@@ -112,7 +112,7 @@ int expr_test_comparison(bool debug){
 
 	bool a2 = ic->value == 5;
 
-	struct SimpleVar* sv = v->simpleVariableNode;
+	struct SimpleVar* sv = v->simpleVar;
 	if(sv == NULL){return 0;}
 
 	bool a3 = strcmp(sv->name, "x") == 0;

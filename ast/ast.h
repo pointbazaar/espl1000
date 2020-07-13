@@ -130,7 +130,7 @@ struct Term{
 	struct FloatConst* m7;
 };
 struct Variable {
-	struct SimpleVar* simpleVariableNode;
+	struct SimpleVar* simpleVar;
 
 	struct Variable** memberAccessList;
 	int count_memberAccessList;
