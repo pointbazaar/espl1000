@@ -111,7 +111,7 @@ void writeIntConst(struct IntConst* m, FILE* file){
 }
 void writeCharConst(struct CharConst* m, FILE* file){
 	fprintf(file, "CharConst\t");
-	fprintf(file,"%c\t",m->content);
+	fprintf(file,"%c\t",m->value);
 }
 void writeFloatConst(struct FloatConst* m, 	FILE* file){
 	fprintf(file, "FloatConst\t");

@@ -49,7 +49,7 @@ struct BoolConst{
 	bool value;
 };
 struct CharConst {
-	char content;
+	char value;
 };
 struct DeclArg  {
 	struct Type* type;

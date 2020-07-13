@@ -141,7 +141,7 @@ struct CharConst* readCharConst(FILE* file){
 	fscanf(file, "%s\t",next);
 	if(strcmp(next,"CharConst") != 0){ return NULL; }
 
-	fscanf(file, "%c\t", &(b->content));
+	fscanf(file, "%c\t", &(b->value));
 	return b;
 }
 struct FloatConst* readFloatConst(FILE* file){
