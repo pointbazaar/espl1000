@@ -354,10 +354,10 @@ struct SubrType* readSubrType(FILE* file){
 	v->returnType = readType(file);
 	fscanf(file, "%d\t", (int*)(v->hasSideEffects));
 
-	fscanf(file, "%d\t", &(v->count_argumentTypes));
-	v->argumentTypes = malloc(sizeof(struct Type*)*(v->count_argumentTypes));
-	for(int i=0;i < (v->count_argumentTypes); i++){
-		v->argumentTypes[i] = readType(file);
+	fscanf(file, "%d\t", &(v->count_argTypes));
+	v->argTypes = malloc(sizeof(struct Type*)*(v->count_argTypes));
+	for(int i=0;i < (v->count_argTypes); i++){
+		v->argTypes[i] = readType(file);
 	}
 	return v;
 }

@@ -14,7 +14,7 @@ struct SubrType* makeSubrType2(struct Type* return_type, bool hasSideEffects){
 
 	res->returnType = return_type;
 	res->hasSideEffects = hasSideEffects;
-	res->count_argumentTypes = 0;
+	res->count_argTypes = 0;
 
 	return res;
 }
@@ -27,8 +27,8 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 
 	struct SubrType* res = malloc(sizeof(struct SubrType));
 
-	res->argumentTypes = malloc(sizeof(struct Type*)*1);
-	res->count_argumentTypes = 0;
+	res->argTypes = malloc(sizeof(struct Type*)*1);
+	res->count_argTypes = 0;
 
 	struct TokenList* copy = list_copy(tokens);
 
@@ -41,8 +41,8 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 	if(mytype == NULL){fail=true;}
 
 	if(!fail){
-		res->argumentTypes[res->count_argumentTypes++] = mytype;
-		res->argumentTypes = realloc(res->argumentTypes,sizeof(struct Type*)*(res->count_argumentTypes));
+		res->argTypes[res->count_argTypes++] = mytype;
+		res->argTypes = realloc(res->argTypes,sizeof(struct Type*)*(res->count_argTypes));
 
 	}else{
 		sucess_argument_types = false;
@@ -60,10 +60,10 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 			if(mytype == NULL){fail2 = true;}
 
 			if(!fail2){
-				res->argumentTypes[res->count_argumentTypes] = mytype;
-				res->count_argumentTypes++;
+				res->argTypes[res->count_argTypes] = mytype;
+				res->count_argTypes++;
 
-				res->argumentTypes = realloc(res->argumentTypes,sizeof(struct Type*)*(res->count_argumentTypes));
+				res->argTypes = realloc(res->argTypes,sizeof(struct Type*)*(res->count_argTypes));
 
 				list_set(copy, copy2);
 			}

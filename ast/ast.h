@@ -197,8 +197,8 @@ struct SubrType {
 	struct Type* returnType;
 	bool hasSideEffects;
 
-	struct Type** argumentTypes;
-	int count_argumentTypes;
+	struct Type** argTypes;
+	int count_argTypes;
 };
 struct Type {
 	//only one of these is != NULL

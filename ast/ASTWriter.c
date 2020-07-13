@@ -251,9 +251,9 @@ void writeSubrType(struct SubrType* m, FILE* file){
 	writeType(m->returnType,file);
 	fprintf(file,"%d\t",m->hasSideEffects);
 
-	fprintf(file,"%d\t",m->count_argumentTypes);
-	for(int i = 0;i < m->count_argumentTypes;i++){
-		struct Type* t = m->argumentTypes[i];
+	fprintf(file,"%d\t",m->count_argTypes);
+	for(int i = 0;i < m->count_argTypes;i++){
+		struct Type* t = m->argTypes[i];
 		writeType(t,file); 
 	}
 }
