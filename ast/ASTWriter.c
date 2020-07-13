@@ -180,13 +180,13 @@ void writeAssignStmt(struct AssignStmt* m, FILE* file){
 
 	fprintf(file, "AssignStmt\t");
 
-	if(m->optTypeNode != NULL){
-		writeType(m->optTypeNode,file);
+	if(m->optType != NULL){
+		writeType(m->optType, file);
 	}else{
 		fprintf(file,"NULL\t");
 	}
-	writeVariable(m->variableNode,file);
-	writeExpr(m->expressionNode,file);
+	writeVariable(m->var, file);
+	writeExpr(m->expr, file);
 }
 void writeMethodCall(struct MethodCall* m, FILE* file){
 

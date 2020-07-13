@@ -297,13 +297,13 @@ struct AssignStmt* readAssignStmt(FILE* file){
 
 	fscanf(file, "%s\t", next);
 	if(strcmp(next, "NULL") == 0){
-		v->optTypeNode = NULL;
+		v->optType = NULL;
 	}else{
-		v->optTypeNode = readType(file);
+		v->optType = readType(file);
 	}
 
-	v->variableNode = readVariable(file);
-	v->expressionNode = readExpr(file);
+	v->var = readVariable(file);
+	v->expr = readExpr(file);
 
 	return v;
 }

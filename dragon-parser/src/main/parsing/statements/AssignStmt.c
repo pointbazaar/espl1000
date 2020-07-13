@@ -18,14 +18,14 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 	struct AssignStmt* res = malloc(sizeof(struct AssignStmt));
 	if(res == NULL){return NULL;}
 
-	res->optTypeNode = NULL;
+	res->optType = NULL;
 
 	struct TokenList* copy = list_copy(tokens);
 
 	struct TokenList* copy2 = list_copy(copy);
 
-	res->optTypeNode = makeType2(copy2,debug);
-	if(res->optTypeNode != NULL){
+	res->optType = makeType2(copy2,debug);
+	if(res->optType != NULL){
 		list_set(copy, copy2);
 	}
 
@@ -34,13 +34,13 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 		printf("DEBUG\n");
 	}
 
-	res->variableNode = makeVariable(copy,debug);
-	if(res->variableNode == NULL){return NULL;}
+	res->var = makeVariable(copy,debug);
+	if(res->var == NULL){return NULL;}
 
 	if(!list_expect_2(copy, makeToken2(EQ,"="))){ return NULL;}
 
-	res->expressionNode = makeExpr(copy,debug);
-	if(res->expressionNode == NULL){return NULL;}
+	res->expr = makeExpr(copy,debug);
+	if(res->expr == NULL){return NULL;}
 
 	if(!list_expect(copy, SEMICOLON)){return NULL;}
 	

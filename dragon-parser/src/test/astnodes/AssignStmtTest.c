@@ -158,10 +158,10 @@ int assignstmt_test_type_declaration_for_variable(bool debug) {
 	struct AssignStmt* a = makeAssignStmt(tokens,debug);
 	if(a == NULL){return 0;}
 
-	bool assert1 = (a->optTypeNode != NULL);
-	if(a->variableNode == NULL){return 0;}
+	bool assert1 = (a->optType != NULL);
+	if(a->var == NULL){return 0;}
 	
-	bool assert2 = (0 == a->variableNode->count_memberAccessList);
+	bool assert2 = (0 == a->var->count_memberAccessList);
 	bool assert3 = (0 == list_size(tokens));
 
 	return (assert1&&assert2&&assert3)?1:0;

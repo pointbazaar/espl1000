@@ -136,10 +136,10 @@ struct Variable {
 	int count_memberAccessList;
 };
 struct AssignStmt {
-	struct Type* optTypeNode;	//may be NULL (optional)
+	struct Type* optType;	//may be NULL (optional)
 
-	struct Variable* variableNode;
-	struct Expr* expressionNode;
+	struct Variable* var;
+	struct Expr* expr;
 };
 struct IfStmt{
 	struct Expr* condition;
