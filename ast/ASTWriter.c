@@ -18,15 +18,15 @@ void writeMethod(struct Method* m, FILE* file){
 	fprintf(file,"%d\t%d\t%s\t",m->isPublic,m->hasSideEffects,m->methodName);
 	writeType(m->returnType,file);
 
-	fprintf(file,"%d\t",m->count_arguments);
-	for(int i = 0;i < m->count_arguments;i++){ 
-		struct DeclArg* arg = m->arguments[i];
+	fprintf(file,"%d\t",m->count_args);
+	for(int i = 0;i < m->count_args;i++){ 
+		struct DeclArg* arg = m->args[i];
 		writeDeclArg(arg,file); 
 	}
 
-	fprintf(file,"%d\t",m->count_statements);
-	for(int i = 0;i < m->count_statements;i++){ 
-		struct Stmt* s = m->statements[i];
+	fprintf(file,"%d\t",m->count_stmts);
+	for(int i = 0;i < m->count_stmts;i++){ 
+		struct Stmt* s = m->stmts[i];
 		writeStmt(s,file); 
 	}
 }

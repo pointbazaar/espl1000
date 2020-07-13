@@ -33,7 +33,7 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 
 	struct Method* m = makeMethod(l, debug);
 
-	return  m->count_arguments;
+	return  m->count_args;
 }
 
 int method_test_can_parse_subroutine(bool debug) {
@@ -72,7 +72,7 @@ int method_test_can_parse_subroutine(bool debug) {
 		return 0;
 	}
 
-	bool a1 = m->count_arguments == 0;
+	bool a1 = m->count_args == 0;
 
 	if(!a1){
 		printf("Assertion failed: m did not have 0 arguments\n");
@@ -113,7 +113,7 @@ int method_test_can_parse_method_without_arguments(bool debug) {
 	struct Method* m = makeMethod(l, debug);
 	if(m == NULL){return 0;}
 
-	bool assert1 = (1 == m->count_arguments);
+	bool assert1 = (1 == m->count_args);
 
 	return (assert1)?1:0;
 }

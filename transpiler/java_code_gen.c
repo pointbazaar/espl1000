@@ -39,13 +39,13 @@ void gen_java_method(struct Method* m, FILE* file){
 	fprintf(file, "public static %s %s (", "int", m->methodName);
 	
 	
-	for(int i=0;i < m->count_arguments; i++){
+	for(int i=0;i < m->count_args; i++){
 			//TODO: print argument
 	}
 	
 	fprintf(file, "){\n");
 	
-	for(int i=0;i < m->count_statements; i++){
+	for(int i=0;i < m->count_stmts; i++){
 			//TODO: print statement
 	}
 	

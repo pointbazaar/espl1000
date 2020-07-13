@@ -82,11 +82,11 @@ struct Method {
 	struct Type* returnType;
 	char* methodName;
 
-	int count_arguments;
-	struct DeclArg** arguments;
+	int count_args;
+	struct DeclArg** args;
 
-	int count_statements;
-	struct Stmt** statements;
+	int count_stmts;
+	struct Stmt** stmts;
 };
 struct Namespace {
 	//a namespace is represented by a filename.

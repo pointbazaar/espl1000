@@ -29,8 +29,8 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 	res->methods = malloc(sizeof(struct Method*)*1);
 	res->structs = malloc(sizeof(struct StructDecl*)*1);
 
-	res->srcPath = "/dev/null";
-	res->name = name;
+	strcpy(res->srcPath, "/dev/null");
+	strcpy(res->name, name);
 	struct TokenList* copy_1 = list_copy(tokens);
 	struct TokenList* copy = copy_1;
 

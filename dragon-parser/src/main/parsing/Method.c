@@ -23,10 +23,10 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 	//init
 	res->isPublic = true;
 	res->hasSideEffects = true;
-	res->count_arguments = 0;
-	res->arguments = malloc(sizeof(struct DeclArg*)*1);
-	res->count_statements = 0;
-	res->statements = malloc(sizeof(struct Stmt*)*1);
+	res->count_args = 0;
+	res->args = malloc(sizeof(struct DeclArg*)*1);
+	res->count_stmts = 0;
+	res->stmts = malloc(sizeof(struct Stmt*)*1);
 
 	struct TokenList* copy = list_copy(tokens);
 
@@ -52,11 +52,11 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 	if(next == NULL){return NULL;}
 
 	while (next->kind != RPARENS) {
-		if (res->count_arguments > 0) {
+		if (res->count_args > 0) {
 			if(!list_expect(copy, COMMA)){return NULL;}
 		}
-		res->arguments[res->count_arguments++] = makeDeclArg(copy, debug);
-		res->arguments = realloc(res->statements,sizeof(struct DeclArg*)*(res->count_arguments+1));
+		res->args[res->count_args++] = makeDeclArg(copy, debug);
+		res->args = realloc(res->stmts,sizeof(struct DeclArg*)*(res->count_args+1));
 
 		next = list_head(copy);
 		if(next == NULL){return NULL;}
@@ -79,10 +79,10 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 		struct Stmt* mystmt = makeStmt(copy, debug);
 		if(mystmt == NULL){return NULL;}
 
-		res->statements[res->count_statements] = mystmt;
-		res->count_statements += 1;
+		res->stmts[res->count_stmts] = mystmt;
+		res->count_stmts += 1;
 		
-		res->statements = realloc(res->statements,sizeof(struct Stmt*)*(res->count_statements+1));
+		res->stmts = realloc(res->stmts,sizeof(struct Stmt*)*(res->count_stmts+1));
 
 		tk_next = list_head(copy);
 		if(tk_next == NULL){return NULL;}

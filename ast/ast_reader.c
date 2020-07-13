@@ -59,16 +59,16 @@ struct Method* readMethod(FILE* file, bool debug){
 	m->returnType = readType(file);
 	if(m->returnType == NULL){return NULL;}
 
-	fscanf(file,"%d\t",&(m->count_arguments));
+	fscanf(file,"%d\t",&(m->count_args));
 
-	for(int i = 0;i < m->count_arguments;i++){
-		m->arguments[i] = readDeclArg(file);
+	for(int i = 0;i < m->count_args;i++){
+		m->args[i] = readDeclArg(file);
 	}
 
-	fscanf(file,"%d\t",&(m->count_statements));
+	fscanf(file,"%d\t",&(m->count_stmts));
 
-	for(int i = 0;i < m->count_statements;i++){
-		m->statements[i] = readStmt(file);
+	for(int i = 0;i < m->count_stmts;i++){
+		m->stmts[i] = readStmt(file);
 	}
 	return m;
 }
