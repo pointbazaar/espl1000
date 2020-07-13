@@ -179,9 +179,9 @@ struct SimpleVar* readSimpleVar(FILE* file){
 	fscanf(file, "%s\t",next);
 
 	if(strcmp(next, "NULL") != 0){
-		b->indexOptional = readExpr(file);
+		b->optIndex = readExpr(file);
 	}else{
-		b->indexOptional = NULL;
+		b->optIndex = NULL;
 	}
 	return b;
 }

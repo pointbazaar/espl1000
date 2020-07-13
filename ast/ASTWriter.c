@@ -57,8 +57,8 @@ void writeSimpleVar(struct SimpleVar* m, FILE* file){
 	fprintf(file, "SimpleVariable\t");
 
 	fprintf(file,"%s\t",m->name);
-	if(m->indexOptional != NULL){
-		writeExpr(m->indexOptional, file);
+	if(m->optIndex != NULL){
+		writeExpr(m->optIndex, file);
 	}else{
 		fprintf(file,"NULL\t");
 	}

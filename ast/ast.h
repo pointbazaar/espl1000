@@ -109,7 +109,7 @@ struct SimpleVar {
 	char* name;
 	
 	//may be NULL
-	struct Expr* indexOptional;
+	struct Expr* optIndex;
 };
 struct StructDecl{
 	struct StructMember** members;

@@ -17,7 +17,7 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 
 	struct SimpleVar* res = malloc(sizeof(struct SimpleVar));
 
-	res->indexOptional = NULL;
+	res->optIndex = NULL;
 
 	struct TokenList* copy = list_copy(tokens);
 
@@ -35,13 +35,13 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 		if (list_size(copy) > 0 && list_head(copy)->kind == LBRACKET) {
 
 			if(!list_expect(copy, LBRACKET)){return NULL;}
-			res->indexOptional = makeExpr(copy,debug);
-			if(res->indexOptional == NULL){return NULL;}
+			res->optIndex = makeExpr(copy,debug);
+			if(res->optIndex == NULL){return NULL;}
 
 			if(!list_expect(copy, RBRACKET)){return NULL;}
 
 		} else {
-			res->indexOptional = NULL;
+			res->optIndex = NULL;
 			//pass, this assignment has no index to it
 		}
 
