@@ -20,7 +20,7 @@ struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
 	if(token == NULL){return NULL;}
 
 	if (token->kind == TPARAM) {
-		res->typeParameterIndex = atoi(token->value);
+		res->index = atoi(token->value);
 		if(list_size(tokens) == 0){
 			return NULL;
 		}

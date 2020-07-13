@@ -207,6 +207,7 @@ struct Type {
 	struct ArrayType* m3;
 };
 struct TypeParam {
-	int typeParameterIndex;
+	//the type parameter index
+	int index;
 };
 #endif

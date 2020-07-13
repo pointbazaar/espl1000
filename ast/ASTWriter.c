@@ -225,7 +225,7 @@ void writeArrayType(struct ArrayType* m, FILE* file){
 
 void writeTypeParam(struct TypeParam* m, FILE* file){
 	fprintf(file, "TypeParam\t");
-	fprintf(file,"%d\t",m->typeParameterIndex);
+	fprintf(file,"%d\t",m->index);
 }
 
 void writeBasicTypeWrapped(struct BasicTypeWrapped* m, FILE* file){

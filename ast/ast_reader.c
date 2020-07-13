@@ -383,7 +383,7 @@ struct TypeParam* readTypeParam(FILE* file){
 	char next[10];
 	fscanf(file, "%s\t",next);
 	if(strcmp(next,"TypeParam") != 0){ return NULL; }
-	fscanf(file, "%d\t", &(v->typeParameterIndex));
+	fscanf(file, "%d\t", &(v->index));
 	return v;
 }
 struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file){
