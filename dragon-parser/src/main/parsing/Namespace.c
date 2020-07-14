@@ -31,25 +31,24 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 
 	strcpy(res->srcPath, "/dev/null");
 	strcpy(res->name, name);
-	struct TokenList* copy_1 = list_copy(tokens);
-	struct TokenList* copy = copy_1;
-
+	
+	struct TokenList* copy = list_copy(tokens);
 	
 	if(list_size(copy)>0) {
 
-		struct Token* next_struct = list_get(copy, 0);
+		struct Token* next_struct = list_head(copy);
 		if(next_struct == NULL){return NULL;}
 
 		while (next_struct->kind == STRUCT) {
 			struct StructDecl* mystructdecl = makeStructDecl(copy,debug);
 			if(mystructdecl == NULL){return NULL;}
 
-			res->structs[res->count_structs++] = mystructdecl;
+			res->structs[res->count_structs] = mystructdecl;
+			res->count_structs++;
 			res->structs = realloc(res->structs,sizeof(struct StructDecl*)*(res->count_structs+1));
 
 			if (list_size(copy) > 0) {
-				next_struct = list_get(copy, 0);
-				if(next_struct == NULL){return NULL;}
+				next_struct = list_head(copy);
 			} else {
 				break;
 			}
@@ -64,7 +63,7 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 	
 	if (list_size(copy) > 0) {
 
-		struct Token* next_subr = list_get(copy, 0);
+		struct Token* next_subr = list_head(copy);
 
 		while (next_subr->kind == FN) {
 			struct Method* mthd = makeMethod(copy,debug);
@@ -74,7 +73,7 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 			res->methods = realloc(res->methods,sizeof(struct Method*)*(res->count_methods+1));
 
 			if (list_size(copy) > 0) {
-				next_subr = list_get(copy, 0);
+				next_subr = list_head(copy);
 			} else {
 				break;
 			}
