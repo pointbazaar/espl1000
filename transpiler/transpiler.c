@@ -66,9 +66,11 @@ void check_dg_extension(char* filename){
 void invoke_lexer_parser(char* filename, bool debug){
 	
 	char cmd1[100];
-	strcpy(cmd1, "dragon-lexer ");
+	
 	if(debug){
-		strcat(cmd1, "-debug ");
+		strcpy(cmd1, "dragon-lexer-debug ");
+	}else{
+		strcpy(cmd1, "dragon-lexer ");
 	}
 	strcat(cmd1, filename);
 	

@@ -4,6 +4,8 @@
 #include "ASTWriter.h"
 
 void writeNamespace(struct Namespace* nsn, FILE* file){
+	printf("writeNamespace\n");
+	
 	fprintf(file,"%s\t%s\t%d\t",nsn->srcPath,nsn->name,nsn->count_methods);
 	
 	//write methods
@@ -20,6 +22,8 @@ void writeNamespace(struct Namespace* nsn, FILE* file){
 	
 }
 void writeMethod(struct Method* m, FILE* file){
+	printf("writeMethod\n");
+	
 	fprintf(file, "Method\t");
 
 	fprintf(file,"%d\t%d\t%s\t",m->isPublic,m->hasSideEffects,m->name);
@@ -38,10 +42,12 @@ void writeMethod(struct Method* m, FILE* file){
 	}
 }
 void writeStructDecl(struct StructDecl* m, FILE* file){
+	printf("writeStructDecl\n");
+	
 	fprintf(file, "StructDecl\t");
 	fprintf(file, "%d\t", m->count_members);
 	for(int i=0;i < m->count_members;i++){
-		writeStructMember(file, m->members[i]);
+		writeStructMember(m->members[i], file);
 	}
 }
 void writeStructMember(struct StructMember* m, FILE* file){
@@ -280,6 +286,7 @@ void writeSubrType(struct SubrType* m, FILE* file){
 }
 // --------- OTHER ----------
 void write_ast(char* filename, struct Namespace* namespaceNode){
+	printf("write_ast\n");
 	FILE* file;
 	file = fopen(filename, "w");
 	
