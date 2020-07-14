@@ -12,18 +12,23 @@ int main(int argc, char* argv[]){
 	printf("smalldragon v0.01\n");
 
 	//TODO: consider flags
-	if(argc != 2){
-		printf("Exactly 1 filename required as argument.\n");
-		exit(1);
-	}
 
-	char* filename = argv[1];
-	bool debug = true;
+	char* filename;
+	bool debug = false;
+	
+	for(int i=1; i < argc; i++){
+		char* arg = argv[i];
+		if(strcmp(arg, "-debug") == 0){
+			debug = true;
+		}else{
+			filename = arg;
+		}
+	}
 	
 	check_dg_extension(filename);
 	
 	//invoke lexer, parser to generate .dg.ast file
-	invoke_lexer_parser(filename);
+	invoke_lexer_parser(filename, debug);
 
 	char ast_filename[100];
 	sprintf(ast_filename, ".%s.ast", filename);
@@ -58,16 +63,24 @@ void check_dg_extension(char* filename){
 	}
 }
 
-void invoke_lexer_parser(char* filename){
+void invoke_lexer_parser(char* filename, bool debug){
 	
 	char cmd1[100];
 	strcpy(cmd1, "dragon-lexer ");
+	if(debug){
+		strcat(cmd1, "-debug ");
+	}
 	strcat(cmd1, filename);
 	
 	system(cmd1);
 	
 	char cmd2[100];
-	sprintf(cmd2, "dragon-parser .%s.tokens", filename);
+	sprintf(
+		cmd2, 
+		"dragon-parser %s .%s.tokens", 
+		(debug)?"-debug":"",
+		filename
+	);
 	
 	system(cmd2);
 }
