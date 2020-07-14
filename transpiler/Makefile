@@ -6,7 +6,7 @@ clean:
 	rm *.o
 
 smalldragon: main
-	gcc $(FLAGS) -o sdg *.o
+	gcc $(FLAGS) -o sd *.o
 
 main: *.c ../ast/ast_reader.c
 	gcc $(FLAGS) -c *.c ../ast/ast_reader.c

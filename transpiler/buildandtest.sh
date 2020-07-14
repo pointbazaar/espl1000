@@ -2,13 +2,13 @@
 
 #this script should be run with sudo
 
-rm sdg
-rm /usr/bin/sdg
+rm sd
+rm /usr/bin/sd
 
 make -j8
 make clean
 
 #copy the executable to /usr/bin
-cp sdg /usr/bin/
+cp sd /usr/bin/
 
-sdg -test -debug
+sd -test -debug
