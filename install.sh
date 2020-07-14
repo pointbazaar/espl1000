@@ -19,5 +19,5 @@ cd ..
 
 #STEP 5: build the transpiler
 cd transpiler
-sudo ./build.sh
+sudo ./buildandtest.sh
 cd ..
