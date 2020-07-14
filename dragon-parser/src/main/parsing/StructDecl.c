@@ -36,11 +36,22 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 	
 		struct Token* next = list_head(copy);
 		
-		if(next->kind != STRUCT){return NULL;}
+		if(next->kind != STRUCT){
+			printf("parsing error, expected 'struct' , but got: %s\n", list_code(copy,debug));
+			exit(1);
+		}
+		list_consume(copy, 1);
+		
+		
+		//read name
+		strcpy(res->name, list_head(copy)->value);
 		list_consume(copy, 1);
 			
 		next = list_head(copy);
-		if(next->kind != LCURLY){return NULL;}
+		if(next->kind != LCURLY){
+			printf("parsing error, expected '{' , but got: %s\n", list_code(copy,debug));
+			exit(1);
+		}
 		list_consume(copy, 1);
 		
 		struct StructMember* member;
@@ -61,7 +72,10 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 		}
 		
 		next = list_head(copy);
-		if(next->kind != RCURLY){return NULL;}
+		if(next->kind != RCURLY){
+			printf("parsing error, expected '}' , but got: %s\n", list_code(copy,debug));
+			exit(1);
+		}
 		list_consume(copy, 1);
 	}
 	

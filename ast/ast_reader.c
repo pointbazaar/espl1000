@@ -96,7 +96,7 @@ struct Method* readMethod(FILE* file, bool debug){
 struct StructDecl* readStructDecl(FILE* file, bool debug){
 	struct StructDecl* res = malloc(sizeof(struct StructDecl));
 	fscanf(file, "StructDecl\t");
-	fscanf(file, "%d\t", &(res->count_members));
+	fscanf(file, "%s\t%d\t",res->name, &(res->count_members));
 	res->members = malloc(sizeof(struct StructMember*)*res->count_members);
 	for(int i=0;i < res->count_members;i++){
 		res->members[i] = readStructMember(file, debug);

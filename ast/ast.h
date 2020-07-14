@@ -112,6 +112,9 @@ struct SimpleVar {
 	struct Expr* optIndex;
 };
 struct StructDecl{
+	//the name of the struct
+	char name[20];
+	
 	struct StructMember** members;
 	int count_members;
 };

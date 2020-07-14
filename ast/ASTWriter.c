@@ -14,6 +14,7 @@ void writeNamespace(struct Namespace* nsn, FILE* file){
 		writeMethod(m,file);
 	}
 	
+	fprintf(file, "%d\t", nsn->count_structs);
 	//write structs
 	for(int i=0;i < nsn->count_structs;i++){ 
 		struct StructDecl* m = nsn->structs[i];
@@ -45,7 +46,7 @@ void writeStructDecl(struct StructDecl* m, FILE* file){
 	printf("writeStructDecl\n");
 	
 	fprintf(file, "StructDecl\t");
-	fprintf(file, "%d\t", m->count_members);
+	fprintf(file, "%s\t%d\t", m->name, m->count_members);
 	for(int i=0;i < m->count_members;i++){
 		writeStructMember(m->members[i], file);
 	}
