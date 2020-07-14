@@ -51,11 +51,15 @@ void writeStructDecl(struct StructDecl* m, FILE* file){
 	}
 }
 void writeStructMember(struct StructMember* m, FILE* file){
+	printf("writeStructMember\n");
+	
 	fprintf(file, "StructMember\t");
 	writeType(m->type, file);
 	fprintf(file, "%s\t", m->name);
 }
 void writeDeclArg(struct DeclArg* m, FILE* file){
+	printf("writeDeclArg\n");
+	
 	fprintf(file, "DeclaredArg\t");
 
 	writeType(m->type,file);

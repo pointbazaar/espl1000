@@ -8,12 +8,16 @@
 #STEP 2: install its dependencies as described in README.MD
 
 #STEP 3: build dragon-lexer
+cd dragon-lexer/src
+sudo ./build.sh
+cd ../..
 
 #STEP 4: build dragon-parser
+cd dragon-parser
+sudo ./build.sh
+cd ..
 
 #STEP 5: build the transpiler
-
-#STEP 6: build the C program to invoke the transpiler
-#the benefit is that we have an actual executable 
-gcc -o draco draco.c
-cp draco /usr/bin/draco
+cd transpiler
+sudo ./build.sh
+cd ..

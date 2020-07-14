@@ -34,51 +34,9 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 	
 	struct TokenList* copy = list_copy(tokens);
 	
-	if(list_size(copy)>0) {
-
-		struct Token* next_struct = list_head(copy);
-		if(next_struct == NULL){return NULL;}
-
-		while (next_struct->kind == STRUCT) {
-			struct StructDecl* mystructdecl = makeStructDecl(copy,debug);
-			if(mystructdecl == NULL){return NULL;}
-
-			res->structs[res->count_structs] = mystructdecl;
-			res->count_structs++;
-			res->structs = realloc(res->structs,sizeof(struct StructDecl*)*(res->count_structs+1));
-
-			if (list_size(copy) > 0) {
-				next_struct = list_head(copy);
-			} else {
-				break;
-			}
-		}
-	}
+	ns_parse_structs(res, copy, debug);
 	
-
-	//it is be nice to have prefix 'fn' before a function
-	//to make parsing easier.
-	//this does not add much boilerplate to the syntax
-	//and would probably make the parser faster
-	
-	if (list_size(copy) > 0) {
-
-		struct Token* next_subr = list_head(copy);
-
-		while (next_subr->kind == FN) {
-			struct Method* mthd = makeMethod(copy,debug);
-			if(mthd == NULL){return NULL;}
-
-			res->methods[res->count_methods++] = mthd;
-			res->methods = realloc(res->methods,sizeof(struct Method*)*(res->count_methods+1));
-
-			if (list_size(copy) > 0) {
-				next_subr = list_head(copy);
-			} else {
-				break;
-			}
-		}
-	}
+	ns_parse_methods(res, copy, debug);
 
 	if(debug){
 		printf("done parsing Namespace Node\n");
@@ -87,5 +45,56 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 	list_set(tokens, copy);
 
 	return res;
+}
+
+void ns_parse_methods(struct Namespace* res, struct TokenList* copy, bool debug){
+	
+	if (list_size(copy) > 0) {
+
+		struct Token* next = list_head(copy);
+
+		while (next->kind == FN) {
+			struct Method* m = makeMethod(copy,debug);
+			if(m == NULL){
+				printf("parsing error, expected a method, but got %s\n", list_code(copy,debug));
+				exit(1);
+			}
+
+			res->methods[res->count_methods++] = m;
+			res->methods = realloc(res->methods,sizeof(struct Method*)*(res->count_methods+1));
+
+			if (list_size(copy) > 0) {
+				next = list_head(copy);
+			} else {
+				break;
+			}
+		}
+	}
+}
+void ns_parse_structs(struct Namespace* res, struct TokenList* copy, bool debug){
+	
+	if(list_size(copy)>0) {
+
+		struct Token* next = list_head(copy);
+
+		while (next->kind == STRUCT) {
+			struct StructDecl* sd = makeStructDecl(copy,debug);
+			if(sd == NULL){
+				printf("parsing error, expected a struct, but got %s\n", list_code(copy,debug));
+				exit(1);
+			}
+
+			res->structs[res->count_structs] = sd;
+			res->count_structs++;
+			
+			res->structs = realloc(res->structs,sizeof(struct StructDecl*)*(res->count_structs+1));
+
+			if (list_size(copy) > 0) {
+				next = list_head(copy);
+			} else {
+				break;
+			}
+		}
+	}
 }
 
