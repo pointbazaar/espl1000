@@ -36,6 +36,8 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 		exit(1);
 	}
 
+	//read methods
+	ns->methods = malloc(sizeof(struct Method*)*(ns->count_methods));
 	for(int i=0; i < ns->count_methods; i++){
 		struct Method* m =  readMethod(file, debug);
 		if(m == NULL){
@@ -45,6 +47,25 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 		}
 		ns->methods[i] = m;
 	}
+	
+	//read structs
+	count = fscanf(file, "%d\t", &(ns->count_structs));
+	if(count != 1){
+		fclose(file);
+		printf("error in readNamespace 3 ,%d\n",count);
+		exit(1);
+	}
+	ns->structs = malloc(sizeof(struct StructDecl*)*(ns->count_structs));
+	for(int i=0;i < ns->count_structs; i++){
+		struct StructDecl* s = readStructDecl(file, debug);
+		if(s == NULL){
+			fclose(file);
+			printf("error in readNamespace 4\n");
+			exit(1);
+		}
+		ns->structs[i] = s;
+	}
+	
 	return ns;
 }
 struct Method* readMethod(FILE* file, bool debug){
@@ -71,6 +92,23 @@ struct Method* readMethod(FILE* file, bool debug){
 		m->stmts[i] = readStmt(file);
 	}
 	return m;
+}
+struct StructDecl* readStructDecl(FILE* file, bool debug){
+	struct StructDecl* res = malloc(sizeof(struct StructDecl));
+	fscanf(file, "StructDecl\t");
+	fscanf(file, "%d\t", &(res->count_members));
+	res->members = malloc(sizeof(struct StructMember*)*res->count_members);
+	for(int i=0;i < res->count_members;i++){
+		res->members[i] = readStructMember(file, debug);
+	}
+	return res;
+}
+struct StructMember* readStructMember(FILE* file, bool debug){
+	struct StructMember* res = malloc(sizeof(struct StructMember));
+	fscanf(file, "StructMember\t");
+	res->type = readType(file);
+	fscanf(file, "%s\t", res->name);
+	return res;
 }
 struct DeclArg* readDeclArg(FILE* file){
 	struct DeclArg* da = malloc(sizeof(struct DeclArg));

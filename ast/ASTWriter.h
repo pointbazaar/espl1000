@@ -9,8 +9,17 @@
 
 void write_ast(char* filename, struct Namespace* namespaceNode);
 
+// --- high level structures ---------
+
 void writeNamespace(struct Namespace* m, 	FILE* file);
+
 void writeMethod(struct Method* m, 		FILE* file);
+
+void writeStructDecl(struct StructDecl* m, FILE* file);
+void writeStructMember(struct StructMember* m, FILE* file);
+
+// -----------------------------------
+
 void writeDeclArg(struct DeclArg* m, 		FILE* file);
 void writeExpr(struct Expr* m, 			FILE* file);
 void writeOp(struct Op* m, 			FILE* file);

@@ -11,6 +11,10 @@ struct AST_Whole_Program* readAST(char* filename, bool debug);
 
 struct Namespace* readNamespace(FILE* file, bool debug);
 struct Method* readMethod(FILE* file, bool debug);
+struct StructDecl* readStructDecl(FILE* file, bool debug);
+struct StructMember* readStructMember(FILE* file, bool debug);
+
+// ------------------------
 struct DeclArg* readDeclArg(FILE* file);
 struct Expr* readExpr(FILE* file);
 struct Op* readOp(FILE* file);
