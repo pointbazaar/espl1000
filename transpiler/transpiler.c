@@ -13,7 +13,7 @@ int main(int argc, char* argv[]){
 
 	//TODO: consider flags
 
-	char* filename;
+	char* filename = NULL;
 	bool debug = false;
 	
 	for(int i=1; i < argc; i++){
@@ -23,6 +23,11 @@ int main(int argc, char* argv[]){
 		}else{
 			filename = arg;
 		}
+	}
+	
+	if(filename == NULL){
+		printf("expected at least 1 filename\n");
+		exit(1);
 	}
 	
 	check_dg_extension(filename);
