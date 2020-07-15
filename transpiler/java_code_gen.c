@@ -40,14 +40,39 @@ void gen_java_method(struct Method* m, FILE* file){
 	
 	
 	for(int i=0;i < m->count_args; i++){
-			//TODO: print argument
+		
+			struct DeclArg* da = m->args[i];
+			gen_java_declarg(da, file);
+			if(i < (m->count_args - 1)){
+				fprintf(file, ", ");
+			}
 	}
 	
 	fprintf(file, "){\n");
 	
 	for(int i=0;i < m->count_stmts; i++){
 			//TODO: print statement
+			printf("not implemented yet! (java_code_gen.c)\n");
+			exit(1);
 	}
 	
 	fprintf(file, "}\n");
+}
+
+// --------------------------------
+
+void gen_java_declarg(struct DeclArg* da, FILE* file){
+	
+	printf("gen_java_declarg(...)\n");
+	
+	gen_java_type(da->type, file);
+	if(da->has_name){
+		fprintf(file, " %s", da->name);
+	}
+}
+
+void gen_java_type(struct Type* type, FILE* file){
+	//TODO
+	printf("not implemented yet! (java_code_gen.c)\n");
+	exit(1);
 }
