@@ -51,6 +51,8 @@ int main(int argc, char* argv[]){
 	char fname_out[32]; //new output filename
 
 	strcpy(fname_out, filename);
+	//remove the '.dg'
+	fname_out[strlen(fname_out)-3] = '\0';
 	strcat(fname_out, ".java");
 
 	//TODO: create symbol tables

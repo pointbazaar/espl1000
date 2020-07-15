@@ -92,7 +92,7 @@ void build_ast_file(char* tokensFile, char* astJsonFile, bool debug) {
 
 	//get just the namespace name from .FILENAME.dg.tokens
 	int l = strlen(".dg.tokens");
-	int end = strlen(tokensFile) - l;
+	int end = strlen(tokensFile) - l -1;
 	char* namespaceName = tokensFile + 1;
 	namespaceName[end] = '\0';
 
