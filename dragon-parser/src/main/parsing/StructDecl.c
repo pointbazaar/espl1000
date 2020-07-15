@@ -62,6 +62,12 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 			res->members[res->count_members] = member;
 			res->count_members++;
 			
+			next = list_head(copy);
+			if(next->kind != COMMA){
+				break;
+			}
+			list_consume(copy, 1);
+			
 			//we just hope that the realloc will go through here
 			res->members = realloc(
 				res->members, 

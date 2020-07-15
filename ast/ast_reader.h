@@ -15,31 +15,31 @@ struct StructDecl* readStructDecl(FILE* file, bool debug);
 struct StructMember* readStructMember(FILE* file, bool debug);
 
 // ------------------------
-struct DeclArg* readDeclArg(FILE* file);
-struct Expr* readExpr(FILE* file);
-struct Op* readOp(FILE* file);
-struct IntConst* readIntConst(FILE* file);
-struct BoolConst* readBoolConst(FILE* file);
-struct CharConst* readCharConst(FILE* file);
-struct FloatConst* readFloatConst(FILE* file);
-struct Variable* readVariable(FILE* file);
-struct SimpleVar* readSimpleVar(FILE* file);
-struct Term* readTerm(FILE* file);
+struct DeclArg* readDeclArg(FILE* file, bool debug);
+struct Expr* readExpr(FILE* file, bool debug);
+struct Op* readOp(FILE* file, bool debug);
+struct IntConst* readIntConst(FILE* file, bool debug);
+struct BoolConst* readBoolConst(FILE* file, bool debug);
+struct CharConst* readCharConst(FILE* file, bool debug);
+struct FloatConst* readFloatConst(FILE* file, bool debug);
+struct Variable* readVariable(FILE* file, bool debug);
+struct SimpleVar* readSimpleVar(FILE* file, bool debug);
+struct Term* readTerm(FILE* file, bool debug);
 
 //statementnodes
-struct Stmt* readStmt(FILE* file);
-struct IfStmt* readIfStmt(FILE* file);
-struct WhileStmt* readWhileStmt(FILE* file);
-struct RetStmt* readRetStmt(FILE* file);
-struct AssignStmt* readAssignStmt(FILE* file);
-struct MethodCall* readMethodCall(FILE* file);
+struct Stmt* readStmt(FILE* file, bool debug);
+struct IfStmt* readIfStmt(FILE* file, bool debug);
+struct WhileStmt* readWhileStmt(FILE* file, bool debug);
+struct RetStmt* readRetStmt(FILE* file, bool debug);
+struct AssignStmt* readAssignStmt(FILE* file, bool debug);
+struct MethodCall* readMethodCall(FILE* file, bool debug);
 
 //typenodes
-struct Type* readType(FILE* file);
-struct SubrType* readSubrType(FILE* file);
-struct SimpleType* readSimpleType(FILE* file);
-struct ArrayType* readArrayType(FILE* file);
-struct TypeParam* readTypeParam(FILE* file);
-struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file);
+struct Type* readType(FILE* file, bool debug);
+struct SubrType* readSubrType(FILE* file, bool debug);
+struct SimpleType* readSimpleType(FILE* file, bool debug);
+struct ArrayType* readArrayType(FILE* file, bool debug);
+struct TypeParam* readTypeParam(FILE* file, bool debug);
+struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug);
 
 #endif

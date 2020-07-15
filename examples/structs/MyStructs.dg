@@ -7,14 +7,12 @@
 
 
 	fn main ()~>PInt {
-		MyStruct s = new(2); //as MyStruct has 2 members
+		MyStruct s = new(2); 
 
-		s.a=1; //struct member store
+		s.a=1; 
 
 		putdigit(len(s));
-		putdigit(s.a); //struct member load
+		putdigit(s.a); 
 	
-		//putdigit(len(s));
-
 		return 0;
 	}
