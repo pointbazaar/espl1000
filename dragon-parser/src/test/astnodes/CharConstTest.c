@@ -19,6 +19,8 @@ int charconst_test_parse_char_constant_node(bool debug) {
 
 	struct CharConst* node = makeCharConst(list,false);
 	bool assert1 = ('h'== node->value);
+	
+	freeTokenList(list);
 
 	return (assert1)?1:0;
 }
@@ -34,6 +36,8 @@ int charconst_test_parse_char_constant_node_newline(bool debug) {
 
 	struct CharConst* node = makeCharConst(list,false);
 	bool assert1 = ('\n' == node->value);
+	
+	freeTokenList(list);
 
 	return (assert1)?1:0;
 }

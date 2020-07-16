@@ -28,6 +28,8 @@ int subrtype_test_typename(bool debug) {
 
 	bool assert1 = (0 == list_size(l));
 	bool assert2 = sub != NULL;
+	
+	freeTokenList(l);
 
 	return (assert1 && assert2)?1:0;
 }
@@ -62,6 +64,8 @@ int subrtype_test_typename_subroutine_return_type(bool debug) {
 
 	bool assert1 = (0 == list_size(l));
 	bool assert2 = sub != NULL;
+	
+	freeTokenList(l);
 
 	return (assert1 && assert2)?1:0;
 }
@@ -87,6 +91,8 @@ int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(bool debu
 
 	bool assert1 = (0 == list_size(l));
 	bool assert2 = node != NULL;
+	
+	freeTokenList(l);
 
 	return (assert1 && assert2)?1:0;
 }
@@ -110,6 +116,8 @@ int subrtype_test_subroutine_type_parsing_subroutine_without_side_effects(bool d
 
 	bool assert1 = (0 == list_size(l));
 	bool assert2 = node != NULL;
+	
+	freeTokenList(l);
 
 	return (assert1 && assert2)?1:0;
 }

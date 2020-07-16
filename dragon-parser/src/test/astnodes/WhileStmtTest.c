@@ -36,6 +36,8 @@ int whilestmt_test1(bool debug) {
 	bool a1 = ws->count_statements == 0;
 	bool a2 = ws->condition != NULL;
 	
+	freeTokenList(list);
+	
 	return (a1 && a2)?1:0;
 }
 
@@ -73,6 +75,8 @@ int whilestmt_test2(bool debug){
 	if(e->term1 == NULL){
 		return 0;
 	}
+	
+	freeTokenList(list);
 
 	return (a1 && a2)?1:0;
 }

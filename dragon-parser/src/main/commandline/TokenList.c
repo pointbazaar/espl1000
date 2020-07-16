@@ -236,3 +236,13 @@ char* list_code(struct TokenList* list, bool debug) {
 
 	return str;
 }
+
+void freeTokenList(struct TokenList* list){
+	
+	//also frees the tokens within
+	for(int i=0;i < list->tokensc; i++){
+		freeToken(list->tokens[i]);
+	}
+	
+	free(list);
+}

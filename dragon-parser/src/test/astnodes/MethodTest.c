@@ -32,6 +32,8 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 	list_add(l, makeToken(RCURLY));
 
 	struct Method* m = makeMethod(l, debug);
+	
+	freeTokenList(l);
 
 	return  m->count_args;
 }
@@ -77,6 +79,8 @@ int method_test_can_parse_subroutine(bool debug) {
 	if(!a1){
 		printf("Assertion failed: m did not have 0 arguments\n");
 	}
+	
+	freeTokenList(l);
 
 	return (a1)?1:0;
 }
@@ -114,6 +118,8 @@ int method_test_can_parse_method_without_arguments(bool debug) {
 	if(m == NULL){return 0;}
 
 	bool assert1 = (1 == m->count_args);
+	
+	freeTokenList(l);
 
 	return (assert1)?1:0;
 }

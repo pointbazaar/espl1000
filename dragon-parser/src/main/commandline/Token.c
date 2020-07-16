@@ -36,3 +36,8 @@ bool tokenEquals(struct Token* a, struct Token* b){
 	}
 	return false;
 }
+
+void freeToken(struct Token* token){
+	
+	free(token);
+}

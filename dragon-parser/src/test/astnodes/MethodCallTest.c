@@ -23,6 +23,9 @@ int methodcall_test1(bool debug) {
 
 	bool assert1 = (0 == list_size(l));
 	bool assert2 = call != NULL;
+	
+	freeTokenList(l);
+	
 	return (assert1 && assert2)?1:0;
 }
 
@@ -43,6 +46,8 @@ int methodcall_test2(bool debug) {
 
 	bool assert1 = (0 == list_size(list));
 	bool assert2 = call != NULL;
+	
+	freeTokenList(list);
 
 	return (assert1 && assert2)?1:0;
 }
@@ -64,6 +69,8 @@ int methodcall_test3(bool debug) {
 
 	bool assert1 = (0 == list_size(list));
 	bool assert2 = call != NULL;
+	
+	freeTokenList(list);
 
 	return (assert1 && assert2)?1:0;
 }
@@ -84,6 +91,8 @@ int methodcall_test_can_parse_subroutine_call(bool debug) {
 
 	bool assert1 = (0 == list_size(tl));
 	bool assert2 = call != NULL;
+	
+	freeTokenList(tl);
 
 	return (assert1 && assert2)?1:0;
 }
@@ -105,6 +114,8 @@ int methodcall_test_can_parse_subroutine_call2(bool debug) {
 
 	bool assert1 = (0 == list_size(tokens));
 	bool assert2 = call != NULL;
+	
+	freeTokenList(tokens);
 
 	return (assert1 && assert2)?1:0;
 }

@@ -24,4 +24,6 @@ bool tokenEquals(struct Token* a, struct Token* b);
 struct Token* makeToken(int kind);
 struct Token* makeToken2(int kind, char* value);
 
+void freeToken(struct Token* token);
+
 #endif

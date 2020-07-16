@@ -25,6 +25,8 @@ int test_tokenlist1(bool debug){
 	list_add(list, makeToken(SEMICOLON));
 
 	bool assert2 = list_size(list) == 4;
+	
+	freeTokenList(list);
 
 	return (assert1 && assert2)?1:0;
 
@@ -45,6 +47,8 @@ int test_tokenlist_consume(bool debug){
 	list_consume(list, 1);
 
 	bool assert2 = list_size(list) == 0;
+	
+	freeTokenList(list);
 
 	return (assert1 && assert2)?1:0;
 }
@@ -77,6 +81,8 @@ int test_tokenlist_get(bool debug){
 	struct Token* tk4 = list_get(list,3);
 	bool a7 = tk4->kind == ID;
 	bool a8 = strcmp(tk4->value,"z") == 0;
+	
+	freeTokenList(list);
 
 	return (a1 && a2 && a3 && a4 && a5 && a6 && a7 && a8)?1:0;
 }
@@ -92,6 +98,8 @@ int test_tokenlist_startswith(bool debug){
 	list_add(list, makeToken2(ID,"x"));
 
 	bool assert1 = list_startsWith(list, makeToken2(ID,"x"));
+	
+	freeTokenList(list);
 
 	return (assert1)?1:0;
 }
@@ -118,6 +126,8 @@ int test_tokenlist_code(bool debug){
 		printf("%s\n", str);
 	}
 	bool assert1 = strcmp(str, expect) == 0;
+	
+	freeTokenList(list);
 
 	return (assert1)?1:0;
 }
@@ -142,6 +152,8 @@ int test_tokenlist_stresstest(bool debug){
 	
 	struct Token* tk = list_head(list);
 	bool a1 = tk != NULL;
+	
+	freeTokenList(list);
 
 	return (a1)?1:0;
 }

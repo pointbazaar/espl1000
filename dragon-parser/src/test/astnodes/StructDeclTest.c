@@ -24,6 +24,8 @@ int structdecl_test_can_parse_empty_struct_decl(bool debug) {
 	struct StructDecl* s = makeStructDecl(list, debug);
 
 	bool assert1 = (0 == s->count_members);
+	
+	freeTokenList(list);
 
 	return (assert1)?1:0;
 }
@@ -42,6 +44,9 @@ int structdecl_test_will_not_parse_invalid_typename_for_struct(bool debug) {
 	list_add(list, makeToken(RCURLY));
 
 	struct StructDecl* s = makeStructDecl(list, debug);
+	
+	freeTokenList(list);
+	
 	return (s!=NULL)?1:0;
 }
 
@@ -62,6 +67,9 @@ int structdecl_test_rejects_struct_with_subroutine_type(bool debug) {
 	list_add(list, makeToken(RCURLY) );
 
 	struct StructDecl* s = makeStructDecl(list, debug);
+	
+	freeTokenList(list);
+	
 	return (s!=NULL)?1:0;
 }
 
@@ -84,6 +92,8 @@ int structdecl_test_can_parse_struct_with_1_member(bool debug) {
 
 	bool assert1 = (1 == node->count_members);
 	bool assert2 = strcmp("a", node->members[0]->name) == 0;
+	
+	freeTokenList(list);
 
 	return (assert1&&assert2)?1:0;
 }
@@ -113,6 +123,8 @@ int structdecl_test_can_parse_struct_with_2_members(bool debug) {
 	bool assert2 = strcmp("a", node->members[0]->name) == 0;
 
 	bool assert3 = strcmp("b", node->members[1]->name) == 0;
+	
+	freeTokenList(list);
 
 	return (assert1&&assert2&&assert3)?1:0;
 }

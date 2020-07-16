@@ -25,6 +25,8 @@ int namespace_test_can_parse_namespace_with_1_empty_struct(bool debug) {
 
 	bool assert1 = (1 == n->count_structs);
 	bool assert2 = (0 == n->structs[0]->count_members);
+	
+	freeTokenList(l);
 
 	return (assert1&&assert2)?1:0;
 }
@@ -58,6 +60,8 @@ int namespace_test_can_parse_namespace_with_1_empty_method(bool debug) {
 
 	bool assert1 = strcmp("Main", n->name) == 0;
 	bool assert2 = (1 == n->count_methods);
+	
+	freeTokenList(l);
 
 	return (assert1&&assert2)?1:0;
 }

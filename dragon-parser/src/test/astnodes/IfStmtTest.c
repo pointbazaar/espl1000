@@ -40,6 +40,8 @@ int if_test1(bool debug) {
 	if(condition->op == NULL){return 0;}
 	if(condition->term2 == NULL){return 0;}
 	
+	freeTokenList(list);
+	
 	return  (a1 && a2 && a3)?1:0;
 }
 
@@ -79,6 +81,8 @@ int if_test2(bool debug) {
 
 	bool a1 = i->count_statements == 1;
 	bool a2 = i->count_elseStatements == 0;
+	
+	freeTokenList(l);
 
 	return (a1 && a2)?1:0;
 }
