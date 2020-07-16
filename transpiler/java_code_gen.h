@@ -14,4 +14,13 @@ void gen_java_method(struct Method* m, FILE* file);
 void gen_java_declarg(struct DeclArg* da, FILE* file);
 
 void gen_java_type(struct Type* type, FILE* file);
+
+void gen_java_stmt(struct Stmt* stmt, FILE* file);
+	
+void gen_java_methodcall(struct MethodCall* m, FILE* file);
+void gen_java_whilestmt(struct WhileStmt* m, FILE* file);
+void gen_java_ifstmt(struct IfStmt* m, FILE* file);
+void gen_java_retstmt(struct RetStmt* m, FILE* file);
+void gen_java_assignstmt(struct AssignStmt* m, FILE* file);
+
 #endif

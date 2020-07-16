@@ -27,7 +27,12 @@ void gen_java_namespace(struct Namespace* ns, FILE* file){
 	
 	fprintf(file, "public class %s {\n", ns->name);
 	
+	//TODO: handle the structures
+	
 	//for each subroutine, generate a static method in java
+	for(int i=0;i<ns->count_methods;i++){
+		gen_java_method(ns->methods[i], file);
+	}
 	
 	fprintf(file, "}\n");
 }
@@ -51,9 +56,7 @@ void gen_java_method(struct Method* m, FILE* file){
 	fprintf(file, "){\n");
 	
 	for(int i=0;i < m->count_stmts; i++){
-			//TODO: print statement
-			printf("not implemented yet! (java_code_gen.c)\n");
-			exit(1);
+			gen_java_stmt(m->stmts[i], file);
 	}
 	
 	fprintf(file, "}\n");
@@ -75,4 +78,76 @@ void gen_java_type(struct Type* type, FILE* file){
 	//TODO
 	printf("not implemented yet! (java_code_gen.c)\n");
 	exit(1);
+}
+
+void gen_java_stmt(struct Stmt* stmt, FILE* file){
+
+	if(stmt->m1 != NULL){
+		gen_java_methodcall(stmt->m1, file);
+	}else if(stmt->m2 != NULL){
+		gen_java_whilestmt(stmt->m2, file);
+	}else if(stmt->m3 != NULL){
+		gen_java_ifstmt(stmt->m3, file);
+	}else if(stmt->m4 != NULL){
+		gen_java_retstmt(stmt->m4, file);
+	}else if(stmt->m5 != NULL){
+		gen_java_assignstmt(stmt->m5, file);
+	}
+	
+	//newline, ';' at the end
+	fprintf(file, ";\n");
+}
+
+void gen_java_methodcall(struct MethodCall* m, FILE* file){
+	fprintf(file, "%s(", m->methodName);
+	
+	for(int i=0;i<m->count_args;i++){
+		gen_java_expr(m->args[i], file);
+	}
+	fprintf(file, ")", m->methodName);
+}
+void gen_java_whilestmt(struct WhileStmt* m, FILE* file){
+	fprintf(file, "while (");
+	gen_java_expr(m->condition, file);
+	fprintf(file, ") {\n");
+	
+	for(int i=0;i<m->count_stmts;i++){
+		gen_java_stmt(m->stmts[i], file);
+	}
+	
+	fprintf(file, "}");
+}
+void gen_java_ifstmt(struct IfStmt* m, FILE* file){
+	fprintf(file, "if (");
+	gen_java_expr(m->condition, file);
+	fprintf(file, ") {\n");
+	
+	for(int i=0;i<m->count_stmts;i++){
+		gen_java_stmt(m->stmts[i], file);
+	}
+	
+	fprintf(file, "}");
+	
+	fprintf(file, "else if (");
+	gen_java_expr(m->elseC, file);
+	fprintf(file, ") {\n");
+	
+	for(int i=0;i<m->count_elseStatements;i++){
+		gen_java_stmt(m->elseStatements[i], file);
+	}
+	
+	fprintf(file, "}");
+}
+void gen_java_retstmt(struct RetStmt* m, FILE* file){
+	fprintf(file, "return ");
+	gen_java_expr(m->returnValue, file);
+}
+void gen_java_assignstmt(struct AssignStmt* m, FILE* file){
+	if(m->optType != NULL){
+		gen_java_type(m->optType, file);
+	}
+	gen_java_var(m->var, file);
+	fprintf(file, " = ");
+	
+	gen_java_expr(m->expr, file);
 }
