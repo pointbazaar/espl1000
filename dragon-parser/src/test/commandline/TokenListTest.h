@@ -13,4 +13,6 @@ int test_tokenlist_startswith(bool debug);
 
 int test_tokenlist_code(bool debug);
 
+int test_tokenlist_stresstest(bool debug);
+
 #endif

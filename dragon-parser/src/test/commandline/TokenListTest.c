@@ -121,3 +121,27 @@ int test_tokenlist_code(bool debug){
 
 	return (assert1)?1:0;
 }
+
+int test_tokenlist_stresstest(bool debug){
+	//add and consume tokens
+	//trigger a resize
+	if(debug){
+		printf("TEST: test_tokenlist_stresstest\n");
+	}
+
+	struct TokenList* list = makeTokenList();
+
+	list_add(list, makeToken2(ID,"x"));
+	list_add(list, makeToken2(ID,"x"));
+	
+	list_consume(list, 1);
+	
+	for(int i=0;i< 100;i++){
+		list_add(list, makeToken2(ID,"x"));
+	}
+	
+	struct Token* tk = list_head(list);
+	bool a1 = tk != NULL;
+
+	return (a1)?1:0;
+}

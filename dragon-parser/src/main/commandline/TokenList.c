@@ -60,11 +60,14 @@ void list_add(struct TokenList* list, struct Token* token) {
 }
 
 void list_consume(struct TokenList* list, int amount) {
-	for(int i = 0; i < amount; i++){
-		struct Token** tks = list->tokens;
-		list->tokens = tks + 1;
-		list->tokensc -= 1;
-	}
+	
+	list->tokensc -= amount;
+	const size_t size = list->tokensc * sizeof(struct Token*);
+	
+	// '... +amount' it already multiplies with the correct
+	//number of bytes as it recognizes the pointer type
+	const void* src = (list->tokens)+amount;
+	memcpy(list->tokens, src, size);
 }
 
 int list_size(struct TokenList* list) {

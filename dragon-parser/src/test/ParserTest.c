@@ -69,6 +69,7 @@ bool test_all_inner(bool debug){
 	tests[k++] = test_tokenlist_get;
 	tests[k++] = test_tokenlist_startswith;
 	tests[k++] = test_tokenlist_code;
+	tests[k++] = test_tokenlist_stresstest;
 
 	tests[k++] = boolconst_test_parse_bool_constant_node;
 
