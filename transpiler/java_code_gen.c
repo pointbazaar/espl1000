@@ -104,15 +104,15 @@ void gen_java_methodcall(struct MethodCall* m, FILE* file){
 	for(int i=0;i<m->count_args;i++){
 		gen_java_expr(m->args[i], file);
 	}
-	fprintf(file, ")", m->methodName);
+	fprintf(file, ")");
 }
 void gen_java_whilestmt(struct WhileStmt* m, FILE* file){
 	fprintf(file, "while (");
 	gen_java_expr(m->condition, file);
 	fprintf(file, ") {\n");
 	
-	for(int i=0;i<m->count_stmts;i++){
-		gen_java_stmt(m->stmts[i], file);
+	for(int i=0;i<m->count_statements;i++){
+		gen_java_stmt(m->statements[i], file);
 	}
 	
 	fprintf(file, "}");
@@ -122,15 +122,13 @@ void gen_java_ifstmt(struct IfStmt* m, FILE* file){
 	gen_java_expr(m->condition, file);
 	fprintf(file, ") {\n");
 	
-	for(int i=0;i<m->count_stmts;i++){
-		gen_java_stmt(m->stmts[i], file);
+	for(int i=0;i<m->count_statements;i++){
+		gen_java_stmt(m->statements[i], file);
 	}
 	
 	fprintf(file, "}");
 	
-	fprintf(file, "else if (");
-	gen_java_expr(m->elseC, file);
-	fprintf(file, ") {\n");
+	fprintf(file, "else if {\n");
 	
 	for(int i=0;i<m->count_elseStatements;i++){
 		gen_java_stmt(m->elseStatements[i], file);
@@ -150,4 +148,16 @@ void gen_java_assignstmt(struct AssignStmt* m, FILE* file){
 	fprintf(file, " = ");
 	
 	gen_java_expr(m->expr, file);
+}
+
+
+void gen_java_var(struct Variable* m, FILE* file){
+	//TODO
+	printf("not implemented yet! (java_code_gen.c)\n");
+	exit(1);
+}
+void gen_java_expr(struct Expr* m, FILE* file){
+	//TODO
+	printf("not implemented yet! (java_code_gen.c)\n");
+	exit(1);
 }

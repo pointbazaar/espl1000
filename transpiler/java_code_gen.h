@@ -23,4 +23,6 @@ void gen_java_ifstmt(struct IfStmt* m, FILE* file);
 void gen_java_retstmt(struct RetStmt* m, FILE* file);
 void gen_java_assignstmt(struct AssignStmt* m, FILE* file);
 
+void gen_java_var(struct Variable* m, FILE* file);
+void gen_java_expr(struct Expr* m, FILE* file);
 #endif
