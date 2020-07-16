@@ -152,12 +152,59 @@ void gen_java_assignstmt(struct AssignStmt* m, FILE* file){
 
 
 void gen_java_var(struct Variable* m, FILE* file){
-	//TODO
-	printf("not implemented yet! (java_code_gen.c)\n");
-	exit(1);
+	gen_java_simplevar(m->simpleVar, file);
+	for(int i=0;i < m->count_memberAccessList;i++){
+		fprintf(file, ".");
+		gen_java_var(m->memberAccessList[i], file);
+	}
 }
 void gen_java_expr(struct Expr* m, FILE* file){
-	//TODO
-	printf("not implemented yet! (java_code_gen.c)\n");
-	exit(1);
+	gen_java_term(m->term1, file);
+	if(m->op != NULL){
+		gen_java_op(m->op, file);
+		gen_java_term(m->term2, file);
+	}
+}
+void gen_java_simplevar(struct SimpleVar* m, FILE* file){
+	fprintf(file, "%s", m->name);
+	if(m->optIndex != NULL){
+		fprintf(file, "[");
+		gen_java_expr(m->optIndex, file);
+		fprintf(file, "]");
+	}
+}
+
+void gen_java_op(struct Op* m, FILE* file){
+	fprintf(file, " %s ", m->op);
+}
+void gen_java_term(struct Term* t, FILE* file){
+	if(t->m1 != NULL){
+		gen_java_boolconst(t->m1, file);
+	}else if(t->m2 != NULL){
+		gen_java_intconst(t->m2, file);
+	}else if(t->m3 != NULL){
+		gen_java_charconst(t->m3, file);
+	}else if(t->m4 != NULL){
+		gen_java_methodcall(t->m4, file);
+	}else if(t->m5 != NULL){
+		gen_java_expr(t->m5, file);
+	}else if(t->m6 != NULL){
+		gen_java_var(t->m6, file);
+	}else if(t->m7 != NULL){
+		gen_java_floatconst(t->m7, file);
+	}
+}
+
+
+void gen_java_boolconst(struct BoolConst* m, FILE* file){
+	fprintf(file, "%d", m->value);
+}
+void gen_java_intconst(struct IntConst* m, FILE* file){
+	fprintf(file, "%d", m->value);
+}
+void gen_java_charconst(struct CharConst* m, FILE* file){
+	fprintf(file, "%c", m->value);
+}
+void gen_java_floatconst(struct FloatConst* m, FILE* file){
+	fprintf(file, "%f", m->value);
 }

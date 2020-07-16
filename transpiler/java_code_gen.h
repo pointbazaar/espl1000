@@ -25,4 +25,15 @@ void gen_java_assignstmt(struct AssignStmt* m, FILE* file);
 
 void gen_java_var(struct Variable* m, FILE* file);
 void gen_java_expr(struct Expr* m, FILE* file);
+void gen_java_simplevar(struct SimpleVar* m, FILE* file);
+
+void gen_java_op(struct Op* m, FILE* file);
+void gen_java_term(struct Term* t, FILE* file);
+
+// const code generators
+void gen_java_boolconst(struct BoolConst* m, FILE* file);
+void gen_java_intconst(struct IntConst* m, FILE* file);
+void gen_java_charconst(struct CharConst* m, FILE* file);
+void gen_java_floatconst(struct FloatConst* m, FILE* file);
+
 #endif
