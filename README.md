@@ -1,6 +1,6 @@
 <img src="https://raw.githubusercontent.com/pointbazaar/smalldragon/master/dragon-lexer/img/dragon-logo.svg" width="100" height="100"/>
 
-# The SmallDragon Programming Language (Work in Progress) 
+# SmallDragon, a simple Programming Language (Work in Progress) 
 [![Build Status](https://travis-ci.org/pointbazaar/dragon.svg?branch=master)](https://travis-ci.org/pointbazaar/dragon)
 [![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/smalldragon/badge)](https://www.codefactor.io/repository/github/pointbazaar/dragon)
 [![GitHub license](https://img.shields.io/github/license/pointbazaar/dragon.svg)](https://github.com/pointbazaar/dragon/blob/master/LICENSE)
@@ -9,7 +9,7 @@
 This repo contains a simple, work-in-progress statically typed programming language that aims to be able to be compiled to
 several high-level languages.
 
-The editor of choice for Dragon currently is [micro](https://micro-editor.github.io/), because there is a basic syntax highlighting for it.
+The editor of choice for smalldragon currently is [micro](https://micro-editor.github.io/), because there is a basic syntax highlighting for it.
 
 ## Examples
 
@@ -53,7 +53,6 @@ This Project will probably only work with Linux.
 - [x] **hackable to the core**. Make it your own. Everything in this Lang is created with extendability and modularity in Mind. The Compiler is composed of many small programs, written in different language, which communicate via easy-to-understand file formats and protocols. No Dependencies other than the Respective Standard Libraries will be required in the future.
 - [x] **no macros** (no preprocessor needed, easier to read and understand code)
 - [x] **no backwards compatibility** (the language will change whenever a feature gets added / removed from the language. Little consideration will be given to existing code. )
-- [x] Dragon has a **very simple stack based calling convention** for simplicity reasons. It is incompatible with the C calling convention.
 - [x] **no void**. Every subroutine returns a value
 - [x] **strict evaluation** . Dragon has no laziness, for simplicity and performance reasons.
 - [x] no user defined prefix , infix or suffix operators. This simplifies the parser.
@@ -67,7 +66,7 @@ But the .dg.json file is optional and does not obstruct the simplicity of the .d
 
 - [ ] **linear/affine types** to manage deallocations without a garbage collector and without manual memory management (like in rust) to get memory safety
 - [x] **no null/undefined/NULL/...**
-- [ ] **all programs which compile will terminate**
+- [ ] **termination proof for suitably written programs/functions**
   - there shall be control structures which allow stuff to execute for a long time, like for web servers, command prompt loops, game loops and such, but at some point in the future it must terminate. This property is important to me. 
   - once termination proofs for suitably written programs are in the compiler, the next interesting property in that direction would be proving that it terminates in a specified timeframe (assumed unlimited memory, a given cpu clock speed, and some details)
   - [ ] possibility to do a termination proof of your program (if it is written in a special way that uses termination proof friendly control structures)
@@ -91,8 +90,6 @@ But the .dg.json file is optional and does not obstruct the simplicity of the .d
 ## Other Goals 
 
 - [x] simple local variable type inference 
-- [x] compiles to intel x86 assembly
-- [ ] 64 bit by default, 32 bit should also be supported
 - [ ] functional programming (currently without closures and without some other stuff)
   - [x] functions can be passed as arguments to subroutines
   - [ ] lambda expressions
@@ -105,12 +102,10 @@ But the .dg.json file is optional and does not obstruct the simplicity of the .d
 - [ ] standard library with function names and signatures similar to those found in the C Standard Library
   - [ ] networking 
   - [ ] math
-    - [x] abs,max,min,sign,pow
+    - [ ] abs,max,min,sign,pow
     - [ ] sin,cos,tan,...
   - [ ] string manipulations 
-    - [x] substr
-    - [ ] ...
-  - [x] stdin,stdout (readchar,putchar,printi,println)
+  - [ ] stdin,stdout (readchar,putchar,printi,println)
   - [ ] file system (creating files, reading files, writing files)
 - [ ] support for functional style
 - [ ] compiler functions, such as sizeof , and support for differentiating expressions (which may contain pure functions) for some variable.   
@@ -118,19 +113,13 @@ But the .dg.json file is optional and does not obstruct the simplicity of the .d
 functional programming, imperative programming,
 concurrency, laziness, declarative programming, constraint based programming.
 
-Dragon should have an easy and simple syntax, similar to C and Haskell.
+smalldragon should have an easy and simple syntax, similar to C and Haskell.
 
-Dragon should supports program verification
-and programmed runtime constraints,
-such as **maximum time allowed for a function to run**,
-should be able to verify that on a specified computer 
-with a certain clock rate and memory access latecy
-some function will complete in the specified time or not.
-
+smalldragon should supports program verification.
 The language differentiates between functions(no side effects) and 
 methods(with side effects) will enforce correct annotation of these properties.
 
-Dragon will be developed and tested against a variety of programming tasks.
+smalldragon will be developed and tested against a variety of programming tasks.
 It is intended to be used for (but not limited to)
 - writing a library in SmallDragon and transpiling it to multiple Programming Language Ecosystems (NodeJS/npm, Python/PIP, Java/Maven-Central)
 - You are in the situation that your code has to run in some Language Ecosystem where you don't like the Language. Then you can use SmallDragon and just transpile to that language. And don't actually have to learn it.
