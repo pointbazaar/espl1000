@@ -6,7 +6,6 @@
 int gen_java_code(struct AST_Whole_Program* ast, char* fname_out){
 
 	printf("writing to: %s\n", fname_out);
-	//TODO
 	FILE* fout = fopen(fname_out, "w");
 
 	const int ns_count = ast->count_namespaces;
@@ -74,10 +73,15 @@ void gen_java_declarg(struct DeclArg* da, FILE* file){
 	}
 }
 
-void gen_java_type(struct Type* type, FILE* file){
-	//TODO
-	printf("not implemented yet! (java_code_gen.c)\n");
-	exit(1);
+void gen_java_type(struct Type* t, FILE* file){
+	
+	if(t->m1 != NULL){
+		gen_java_basictypewrapped(t->m1, file);
+	}else if(t->m2 != NULL){
+		gen_java_typeparam(t->m2, file);
+	}else if(t->m3 != NULL){
+		gen_java_arraytype(t->m3, file);
+	}
 }
 
 void gen_java_stmt(struct Stmt* stmt, FILE* file){
@@ -194,7 +198,7 @@ void gen_java_term(struct Term* t, FILE* file){
 		gen_java_floatconst(t->m7, file);
 	}
 }
-
+// constant -------
 
 void gen_java_boolconst(struct BoolConst* m, FILE* file){
 	fprintf(file, "%d", m->value);
@@ -207,4 +211,30 @@ void gen_java_charconst(struct CharConst* m, FILE* file){
 }
 void gen_java_floatconst(struct FloatConst* m, FILE* file){
 	fprintf(file, "%f", m->value);
+}
+
+// other type stuff 
+
+void gen_java_basictypewrapped(struct BasicTypeWrapped* t, FILE* file){
+	if(t->simpleType != NULL){
+		gen_java_simpleType(t->simpleType, file);
+	}else if(t->subrType != NULL){
+		gen_java_subrType(t->subrType, file);
+	}
+}
+void gen_java_typeparam(struct TypeParam* m, FILE* file){
+	fprintf(file, "T%d", m->index);
+}
+void gen_java_arraytype(struct ArrayType* m, FILE* file){
+	gen_java_type(m->element_type, file);
+	fprintf(file, "[]");
+}
+
+void gen_java_simpleType(struct SimpleType* m, FILE* file){
+	fprintf(file, "%s", m->typeName);
+}
+void gen_java_subrType(struct SubrType* m, FILE* file){
+	//TODO
+	printf("failure in java_code_gen.c : could not print subroutine.\n");
+	exit(1);
 }

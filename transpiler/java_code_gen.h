@@ -36,4 +36,12 @@ void gen_java_intconst(struct IntConst* m, FILE* file);
 void gen_java_charconst(struct CharConst* m, FILE* file);
 void gen_java_floatconst(struct FloatConst* m, FILE* file);
 
+//type stuff
+
+void gen_java_basictypewrapped(struct BasicTypeWrapped* m, FILE* file);
+void gen_java_typeparam(struct TypeParam* m, FILE* file);
+void gen_java_arraytype(struct ArrayType* m, FILE* file);
+
+void gen_java_simpleType(struct SimpleType* m, FILE* file);
+void gen_java_subrType(struct SubrType* m, FILE* file);
 #endif
