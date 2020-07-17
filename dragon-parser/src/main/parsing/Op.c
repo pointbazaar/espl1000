@@ -44,7 +44,7 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 				) && strcmp(opr->value,"=")==0
 
 			){
-				res->op = malloc(sizeof(char)*3);
+				res->op = smalloc(sizeof(char)*3);
 				res->op[2]='\0';
 				strcat(res->op,opl->value);
 				strcat(res->op,opr->value);

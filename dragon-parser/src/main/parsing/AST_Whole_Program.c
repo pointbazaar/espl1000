@@ -12,7 +12,7 @@ struct AST_Whole_Program* makeAST_Whole_Program(struct Namespace* myNamespace) {
 
 	struct AST_Whole_Program* res = smalloc(sizeof(struct AST_Whole_Program));
 
-	res->namespaces = malloc(sizeof(struct Namespace*)*1);
+	res->namespaces = smalloc(sizeof(struct Namespace*)*1);
 
 	res->namespaces[0] = myNamespace;
 

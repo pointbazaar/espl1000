@@ -9,7 +9,7 @@
 #include "../../../../util/util.h"
 
 struct Expr* makeExpr_1(struct Term* term) {
-	struct Expr* res = malloc(sizeof(struct Expr));
+	struct Expr* res = smalloc(sizeof(struct Expr));
 	res->term1 = term;
 	res->op    = NULL;
 	res->term2 = NULL;
@@ -77,7 +77,7 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 
 struct Expr* makeExpr_3(struct Term* leftTerm, struct Op* op, struct Term* rightTerm) {
 
-	struct Expr* res = malloc(sizeof(struct Expr));
+	struct Expr* res = smalloc(sizeof(struct Expr));
 	res->term1 = leftTerm;
 	res->op    = op;
 	res->term2 = rightTerm;
@@ -225,7 +225,7 @@ struct Expr* performTreeTransformation(
 
 void** insert(void** arr, int index, void* element, int size_before){
 	//insert 'element' into 'arr' at index 'index'
-	void** res = malloc(sizeof(void*)*(size_before+1));
+	void** res = smalloc(sizeof(void*)*(size_before+1));
 
 	for(int i=0;i<size_before+1;i++){
 		if(i < index){

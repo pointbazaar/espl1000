@@ -173,7 +173,7 @@ struct TokenList* readTokensFromTokensFile(char* tokensFile, bool debug){
 	struct TokenList* tks = makeTokenList(tokensFile);
 	FILE* file = fopen(tokensFile,"r");
 	size_t size = 50;
-    char* line = malloc(sizeof(char)*size);
+    char* line = smalloc(sizeof(char)*size);
     
     while (getline(&line, &size, file)){
 		
