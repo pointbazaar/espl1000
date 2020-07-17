@@ -39,6 +39,7 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	if (first->kind == LOOP) {
 		//this->statementNode = LoopStatementNode(copy);
 		printf("currently unsupported : 'LOOP'\n");
+		freeTokenListShallow(copy);
 		exit(1);
 	} else if (first->kind == WHILE) {
 		res->m2 = makeWhileStmt		(copy,debug);
@@ -47,6 +48,7 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 			//so this is a fatal error
 			printf("expected while stmt, but was:\n");
 			printf("%s\n", list_code(copy, debug));
+			freeTokenListShallow(copy);
 			exit(1);
 			return NULL;
 		}
@@ -58,6 +60,7 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 			//so this is a fatal error
 			printf("expected if stmt, but was:\n");
 			printf("%s\n", list_code(copy, debug));
+			freeTokenListShallow(copy);
 			exit(1);
 			return NULL;
 		}
@@ -69,6 +72,7 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 			//so this is a fatal error
 			printf("expected return stmt, but was:\n");
 			printf("%s\n", list_code(copy, debug));
+			freeTokenListShallow(copy);
 			exit(1);
 			return NULL;
 		}
@@ -91,9 +95,11 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 			if(res->m1 == NULL){
 				printf("expected method call, but was:\n");
 				printf("%s\n", list_code(copy, debug));
+				freeTokenListShallow(copy);
 				exit(1);
 			}
 			if(!list_expect(copy, SEMICOLON)){
+				freeTokenListShallow(copy);
 				exit(1);
 			}
 		}

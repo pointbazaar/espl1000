@@ -32,7 +32,10 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 
 	struct TokenList* copy = list_copy(tokens);
 
-	if(!list_expect(copy, LPARENS)){return NULL;}
+	if(!list_expect(copy, LPARENS)){
+		freeTokenListShallow(copy);
+		return NULL;
+	}
 
 	bool sucess_argument_types = true;
 
@@ -75,12 +78,21 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 		freeTokenListShallow(copy2);
 	}
 
-	if(!list_expect(copy, RPARENS)){return NULL;}
+	if(!list_expect(copy, RPARENS)){
+		freeTokenListShallow(copy);
+		return NULL;
+	}
 
-	if(!list_expect(copy, ARROW)){return NULL;}
+	if(!list_expect(copy, ARROW)){
+		freeTokenListShallow(copy);
+		return NULL;
+	}
 
 	res->returnType = makeType2(copy,debug);
-	if(res->returnType == NULL){return NULL;}
+	if(res->returnType == NULL){
+		freeTokenListShallow(copy);
+		return NULL;
+	}
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
