@@ -26,12 +26,21 @@ struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug) {
 
 	struct TokenList* copy1 = list_copy(tokens);
 
-	if(!list_expect(copy1, LBRACKET)){return NULL;}
+	if(!list_expect(copy1, LBRACKET)){
+		freeTokenListShallow(copy1);
+		return NULL;
+	}
 
 	res->element_type = makeType2(copy1, debug);
-	if(res->element_type == NULL){return NULL;}
+	if(res->element_type == NULL){
+		freeTokenListShallow(copy1);
+		return NULL;
+	}
 
-	if(!list_expect(copy1, RBRACKET)){return NULL;}
+	if(!list_expect(copy1, RBRACKET)){
+		freeTokenListShallow(copy1);
+		return NULL;
+	}
 
 	list_set(tokens, copy1);
 	freeTokenListShallow(copy1);

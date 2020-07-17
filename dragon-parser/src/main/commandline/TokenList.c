@@ -23,7 +23,9 @@ struct TokenList* makeTokenList_3(struct Token** result, int resultc, char* sour
 }
 
 struct TokenList* makeTokenList() {
-	const int initial_size = 10;
+	
+	//this is enough for most tests
+	const int initial_size = 20;
 
 	//DEBUG
 	//printf("makeTokenList()\n");
