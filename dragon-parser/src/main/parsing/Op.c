@@ -54,10 +54,12 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 			}else{
 				// "could not make operator";
 				free(res);
+				freeTokenListShallow(copy);
 				return NULL;
 			}
 			if(list_size(copy) < 2){
 				free(res);
+				freeTokenListShallow(copy);
 				return NULL;
 			}
 			list_consume(copy, 2);
@@ -69,6 +71,7 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 	}else{
 		//"could not recognize operator, got : " + tkn->value;
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 	

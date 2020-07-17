@@ -20,6 +20,7 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 	struct Token* tk = list_head(copy);
 	if(tk == NULL){
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 
@@ -35,6 +36,7 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 				struct Token* mytk = list_get(copy,1);
 				if(mytk == NULL){
 					free(res);
+					freeTokenListShallow(copy);
 					return NULL;
 				}
 				
@@ -43,6 +45,7 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 			} else {
 				// "cannot parse integer constant node with such operator:" + tk->value;
 				free(res);
+				freeTokenListShallow(copy);
 				return NULL;
 			}
 			break;
@@ -57,6 +60,7 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 			;
 			// "could not read IntConst node";
 			free(res);
+			freeTokenListShallow(copy);
 			return NULL;
 	}
 

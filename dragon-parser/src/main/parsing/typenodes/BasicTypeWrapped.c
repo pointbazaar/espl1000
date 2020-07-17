@@ -48,6 +48,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 		if(!list_expect(copy2, LPARENS)){
 			freeTokenListShallow(copy2);
 			free(res);
+			freeTokenListShallow(copy);
 			return NULL;
 		}
 
@@ -55,12 +56,14 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 		if(res->subrType == NULL){
 			freeTokenListShallow(copy2);
 			free(res);
+			freeTokenListShallow(copy);
 			return NULL;
 		}
 
 		if(!list_expect(copy2, RPARENS)){
 			freeTokenListShallow(copy2);
 			free(res);
+			freeTokenListShallow(copy);
 			return NULL;
 		}
 
@@ -71,6 +74,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 		res->simpleType = makeSimpleType2(copy,debug);
 		if(res->simpleType == NULL){
 			free(res);
+			freeTokenListShallow(copy);
 			return NULL;
 		}
 	}

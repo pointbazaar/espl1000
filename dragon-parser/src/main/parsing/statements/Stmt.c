@@ -17,6 +17,10 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	if(debug){
 		printf("Stmt(...)\n");
 	}
+	
+	if (list_size(tokens) == 0) {
+		return NULL;
+	}
 
 	struct Stmt* res = smalloc(sizeof(struct Stmt));
 
@@ -29,15 +33,11 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 
 	struct TokenList* copy = list_copy(tokens);
 
-	if (list_size(copy) == 0) {
-		//("tried to parse a Statement, but there are no tokens left");
-		free(res);
-		return NULL;
-	}
-
 	struct Token* first = list_head(copy);
+	
 	if(first == NULL){
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 

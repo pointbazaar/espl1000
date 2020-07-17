@@ -15,17 +15,16 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 	if(debug){
 		printf("SimpleVar(...) from %s\n", list_code(tokens, debug));
 	}
+	
+	if(list_size(tokens) == 0){ 
+		return NULL; 
+	}
 
 	struct SimpleVar* res = smalloc(sizeof(struct SimpleVar));
 
 	res->optIndex = NULL;
 
 	struct TokenList* copy = list_copy(tokens);
-
-	if(list_size(copy) == 0){ 
-		free(res);
-		return NULL; 
-	}
 
 	struct Token* token = list_head(copy);
 
@@ -38,16 +37,19 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 
 			if(!list_expect(copy, LBRACKET)){
 				free(res);
+				freeTokenListShallow(copy);
 				return NULL;
 			}
 			res->optIndex = makeExpr(copy,debug);
 			if(res->optIndex == NULL){
 				free(res);
+				freeTokenListShallow(copy);
 				return NULL;
 			}
 
 			if(!list_expect(copy, RBRACKET)){
 				free(res);
+				freeTokenListShallow(copy);
 				return NULL;
 			}
 
@@ -64,6 +66,7 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 			list_code(tokens, debug)
 		);
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 	

@@ -39,6 +39,7 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 			struct Variable* myvar = makeVariable(copy,debug);
 			if(myvar == NULL){
 				free(res);
+				freeTokenListShallow(copy);
 				return NULL;
 			}
 
@@ -51,6 +52,7 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 				next = list_head(copy);
 				if(next == NULL){
 					free(res);
+					freeTokenListShallow(copy);
 					return NULL;
 				}
 			} else {

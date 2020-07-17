@@ -43,6 +43,7 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
 	if(list_size(copy) == 0){
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 
@@ -54,6 +55,7 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 	}else{
 		//could not find a float const
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 

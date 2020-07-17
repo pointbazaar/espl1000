@@ -62,6 +62,7 @@ struct Type* makeType2(struct TokenList* tokens, bool debug){
 			res->m1 = makeBasicTypeWrapped2	(copy,debug);
 			if(res->m1 == NULL){
 				free(res);
+				freeTokenListShallow(copy);
 				return NULL;
 			}
 		}

@@ -9,21 +9,21 @@
 
 struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 
-	struct BoolConst* res = smalloc(sizeof(struct BoolConst));
-
 	if(debug){
 		printf("makeBoolConst(...) from: %s\n", list_code(tokens, debug));
 	}
 
-	struct TokenList* copy = list_copy(tokens);
-
-	if(list_size(copy) == 0){
-		free(res);
+	if(list_size(tokens) == 0){
 		return NULL;
 	}
+
+	struct TokenList* copy = list_copy(tokens);
+	
+	struct BoolConst* res = smalloc(sizeof(struct BoolConst));
 	
 	if (list_head(copy)->kind == BCONST) {
-		struct Token* tk = list_get(copy, 0);
+		
+		struct Token* tk = list_head(copy);
 
 		if(strcmp(tk->value,"true") == 0) {
 			res->value = true;
@@ -34,6 +34,7 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 				printf("tk->value was not satisfactory.\n");
 			}
 			free(res);
+			freeTokenListShallow(copy);
 			return NULL;
 		}
 		list_consume(copy, 1);
@@ -41,6 +42,8 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 		if(debug){
 			printf("token was not the right kind.\n");
 		}
+		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 

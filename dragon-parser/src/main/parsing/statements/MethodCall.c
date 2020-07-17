@@ -26,6 +26,7 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 	struct Identifier* id = makeIdentifier(copy,debug);
 	if(id == NULL){
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 
@@ -37,10 +38,12 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 
 	if(list_size(copy) == 0){
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 	if(!list_expect(copy, LPARENS)){
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 
@@ -50,6 +53,7 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 
 	if(list_size(copy) == 0){
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 	struct Token* next = list_head(copy);
@@ -59,6 +63,7 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 		if (found) {
 			if(!list_expect(copy, COMMA)){
 				free(res);
+				freeTokenListShallow(copy);
 				return NULL;
 			}
 		}
@@ -66,6 +71,7 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 		struct Expr* expr = makeExpr(copy,debug);
 		if(expr == NULL){
 			free(res);
+			freeTokenListShallow(copy);
 			return NULL;
 		}
 
@@ -77,6 +83,7 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 		next = list_head(copy);
 		if(next == NULL){
 			free(res);
+			freeTokenListShallow(copy);
 			return NULL;
 		}
 
@@ -85,6 +92,7 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 
 	if(!list_expect(copy, RPARENS)){
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 	
