@@ -81,6 +81,7 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 	if(res->returnType == NULL){return NULL;}
 
 	list_set(tokens, copy);
+	freeTokenListShallow(copy);
 
 	return res;
 }

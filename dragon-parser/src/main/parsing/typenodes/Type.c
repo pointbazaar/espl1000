@@ -67,6 +67,7 @@ struct Type* makeType2(struct TokenList* tokens, bool debug){
 	}
 
 	list_set(tokens, copy);
+	freeTokenListShallow(copy);
 
 	if(debug){
 		printf("\tsuccess parsing Type\n");

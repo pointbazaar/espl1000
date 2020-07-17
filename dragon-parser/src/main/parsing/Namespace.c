@@ -43,6 +43,7 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 	}
 
 	list_set(tokens, copy);
+	freeTokenListShallow(copy);
 
 	return res;
 }

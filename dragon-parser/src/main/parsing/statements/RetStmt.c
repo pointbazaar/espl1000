@@ -29,12 +29,15 @@ struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
 	}
 
 	list_set(tokens, copy);
+	freeTokenListShallow(copy);
 
 	return res;
 }
 
 void freeRetStmt(struct RetStmt* rs){
 	
-	freeExpr(rs->returnValue);
+	if(rs->returnValue != NULL){
+		freeExpr(rs->returnValue);
+	}
 	free(rs);
 }

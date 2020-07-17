@@ -28,6 +28,7 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 	res->name = id->identifier;
 
 	list_set(tokens, copy);
+	freeTokenListShallow(copy);
 	
 	return res;
 }

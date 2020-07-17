@@ -75,6 +75,9 @@ int main(int argc, char** argv){
 		}
 		main_inner(filenames[0],debug);
 	}
+	
+	free(flags);
+	free(filenames);
 
 	exit(0);
 }

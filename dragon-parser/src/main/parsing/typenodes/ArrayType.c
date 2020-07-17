@@ -34,6 +34,7 @@ struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug) {
 	if(!list_expect(copy1, RBRACKET)){return NULL;}
 
 	list_set(tokens, copy1);
+	freeTokenListShallow(copy1);
 
 	return res;
 }

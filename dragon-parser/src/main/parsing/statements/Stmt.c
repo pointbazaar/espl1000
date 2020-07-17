@@ -104,6 +104,7 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	}
 
 	list_set(tokens, copy);
+	freeTokenListShallow(copy);
 
 	return res;
 }
@@ -111,7 +112,7 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 void freeStmt(struct Stmt* s){
 	printf("DEBUG: freeStmt\n");
 	//TODO
-	/*
+	
 	if(s->m1 != NULL){
 		freeMethodCall(s->m1);
 		
@@ -127,7 +128,7 @@ void freeStmt(struct Stmt* s){
 	}else if(s->m5 != NULL){
 		freeAssignStmt(s->m5);
 	}
-	*/
+	
 	printf("DEBUG: freeStmt 2\n");
 	//TODO
 	//free(s);

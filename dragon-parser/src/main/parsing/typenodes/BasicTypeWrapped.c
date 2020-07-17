@@ -60,6 +60,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 	}
 
 	list_set(tokens, copy);
+	freeTokenListShallow(copy);
 
 	if(debug){
 		printf("\tsuccess parsing BasicTypeWrapped\n");

@@ -27,6 +27,7 @@ struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 	
 
 	list_set(tokens, copy);
+	freeTokenListShallow(copy);
 
 	return res;
 }

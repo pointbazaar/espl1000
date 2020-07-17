@@ -243,6 +243,11 @@ void freeTokenList(struct TokenList* list){
 	for(int i=0;i < list->tokensc; i++){
 		freeToken(list->tokens[i]);
 	}
-	
+	free(list->tokens);
+	free(list);
+}
+
+void freeTokenListShallow(struct TokenList* list){
+	free(list->tokens);
 	free(list);
 }

@@ -62,6 +62,7 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 	}
 
 	list_set(tokens, copy);
+	freeTokenListShallow(copy);
 
 	return performTreeTransformation(ops,opsc, terms,termsc, debug);
 }
@@ -206,6 +207,10 @@ struct Expr* performTreeTransformation(
 	if(debug){
 		printf("return from performTreeTransformation(...)\n");
 	}
+	
+	//we do not need them anymore
+	free(terms);
+	free(ops);
 
 	return res;
 }
