@@ -29,6 +29,7 @@ int retstmt_test1(bool debug) {
 	struct RetStmt* r = makeRetStmt(list,debug);
 	
 	freeTokenList(list);
+	freeRetStmt(r);
 
 	return (r!=NULL)?1:0;
 }
@@ -59,6 +60,7 @@ int retstmt_test2(bool debug){
 	struct RetStmt* r = makeRetStmt(list,debug);
 	
 	freeTokenList(list);
+	freeRetStmt(r);
 
 	return (r!=NULL)?1:0;
 }
@@ -85,6 +87,7 @@ int retstmt_test3(bool debug) {
 	struct RetStmt* r = makeRetStmt(list,debug);
 	
 	freeTokenList(list);
+	freeRetStmt(r);
 
 	return (r!=NULL)?1:0;
 }

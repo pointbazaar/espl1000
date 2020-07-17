@@ -21,6 +21,7 @@ int floatconst_test1(bool debug) {
 	struct FloatConst* node = makeFloatConst(list,debug);
 	
 	freeTokenList(list);
+	freeFloatConst(node);
 
 	return (node != NULL)?1:0;
 }
@@ -39,6 +40,7 @@ int floatconst_test2(bool debug) {
 	struct FloatConst* node = makeFloatConst(list,debug);
 	
 	freeTokenList(list);
+	freeFloatConst(node);
 	
 	return (node!=NULL)?1:0;
 }

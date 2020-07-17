@@ -36,6 +36,7 @@ int variable_test_parse_struct_member_access(bool debug) {
 	bool assert5 = !(v->memberAccessList[0]->simpleVar->optIndex != NULL);
 	
 	freeTokenList(tokens);
+	freeVariable(v);
 
 	return (assert1&&assert2&&assert3&&assert4&&assert5)?1:0;
 }
@@ -62,6 +63,7 @@ int variable_test_parse_index_access(bool debug) {
 	bool assert3 = (node->simpleVar->optIndex != NULL);
 	
 	freeTokenList(tokens);
+	freeVariable(node);
 
 	return (assert1&&assert2&&assert3)?1:0;
 }
@@ -98,6 +100,7 @@ int variable_test_parse_struct_member_access_and_index_access(bool debug) {
 	bool assert4 = (node->memberAccessList[0]->simpleVar->optIndex != NULL);
 	
 	freeTokenList(tokens);
+	freeVariable(node);
 
 	return (assert1&&assert2&&assert3&&assert4)?1:0;
 }

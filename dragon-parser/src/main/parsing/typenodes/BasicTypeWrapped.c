@@ -67,10 +67,15 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 
 void freeBasicTypeWrapped(struct BasicTypeWrapped* btw){
 	
+	printf("DEBUG: freeBasicTypeWrapped\n");
 	if(btw->simpleType != NULL){
 		freeSimpleType(btw->simpleType);
+		
 	}else if(btw->subrType != NULL){
 		freeSubrType(btw->subrType);
 	}
-	free(btw);
+	printf("DEBUG: freeBasicTypeWrapped 2\n");
+	
+	//TODO
+	//free(btw);
 }

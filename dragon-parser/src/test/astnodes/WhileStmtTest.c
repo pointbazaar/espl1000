@@ -37,6 +37,7 @@ int whilestmt_test1(bool debug) {
 	bool a2 = ws->condition != NULL;
 	
 	freeTokenList(list);
+	freeWhileStmt(ws);
 	
 	return (a1 && a2)?1:0;
 }
@@ -77,6 +78,7 @@ int whilestmt_test2(bool debug){
 	}
 	
 	freeTokenList(list);
+	freeWhileStmt(ws);
 
 	return (a1 && a2)?1:0;
 }

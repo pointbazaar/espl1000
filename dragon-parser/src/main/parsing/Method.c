@@ -43,7 +43,8 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 
-	res->name = id->identifier;
+	strcpy(res->name, id->identifier);
+	freeIdentifier(id);
 
 	if(!list_expect(copy, LPARENS)){return NULL;}
 
@@ -55,8 +56,15 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 		if (res->count_args > 0) {
 			if(!list_expect(copy, COMMA)){return NULL;}
 		}
-		res->args[res->count_args++] = makeDeclArg(copy, debug);
-		res->args = realloc(res->stmts,sizeof(struct DeclArg*)*(res->count_args+1));
+		
+		struct DeclArg* da = makeDeclArg(copy, debug);
+		if(da == NULL){
+			return NULL;
+		}
+		res->args[res->count_args] = da;
+		res->count_args++;
+		
+		res->args = realloc(res->args,sizeof(struct DeclArg*)*(res->count_args+1));
 
 		next = list_head(copy);
 		if(next == NULL){return NULL;}
@@ -82,7 +90,8 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 		res->stmts[res->count_stmts] = mystmt;
 		res->count_stmts += 1;
 		
-		res->stmts = realloc(res->stmts,sizeof(struct Stmt*)*(res->count_stmts+1));
+		size_t newsize = sizeof(struct Stmt*)*(res->count_stmts+1);
+		res->stmts = realloc(res->stmts, newsize);
 
 		tk_next = list_head(copy);
 		if(tk_next == NULL){return NULL;}
@@ -100,6 +109,8 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 }
 
 void freeMethod(struct Method* m){
+	
+	printf("DEBUG: freeMethod\n");
 	
 	freeType(m->returnType);
 	for(int i=0;i < m->count_args; i++){

@@ -42,7 +42,7 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 
 	if(!fail){
 		res->argTypes[res->count_argTypes++] = mytype;
-		res->argTypes = realloc(res->argTypes,sizeof(struct Type*)*(res->count_argTypes));
+		res->argTypes = realloc(res->argTypes,sizeof(struct Type*)*(res->count_argTypes + 1));
 
 	}else{
 		sucess_argument_types = false;
@@ -63,7 +63,8 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 				res->argTypes[res->count_argTypes] = mytype;
 				res->count_argTypes++;
 
-				res->argTypes = realloc(res->argTypes,sizeof(struct Type*)*(res->count_argTypes));
+				size_t newsize = sizeof(struct Type*)*(res->count_argTypes + 1);
+				res->argTypes = realloc(res->argTypes, newsize);
 
 				list_set(copy, copy2);
 			}

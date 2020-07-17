@@ -17,11 +17,12 @@ int term_test_simple_term(bool debug) {
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(INTEGER,"4"));
-	struct Term* expr = makeTerm(list,debug);
+	struct Term* t = makeTerm(list,debug);
 	
 	freeTokenList(list);
+	freeTerm(t);
 	
-	return (expr!=NULL)?1:0;
+	return (t != NULL)?1:0;
 }
 
 int term_test_variable_term(bool debug) {
@@ -47,6 +48,7 @@ int term_test_variable_term(bool debug) {
 	bool a2 = strcmp(sv->name,"x") == 0;
 	
 	freeTokenList(list);
+	freeTerm(t);
 
 	return (a1 && a2)?1:0;
 }
@@ -80,6 +82,7 @@ int term_test_parentheses(bool debug){
 	const bool a2 = strcmp(sv->name,"x") == 0;
 	
 	freeTokenList(list);
+	freeTerm(t);
 
 	return (a1 && a2)?1:0;
 }

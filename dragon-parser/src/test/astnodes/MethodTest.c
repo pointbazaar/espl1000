@@ -17,23 +17,42 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 
 	list_add(l, makeToken(FN));
 	list_add(l, makeToken2(ID,"main"));
+	
 	list_add(l, makeToken(LPARENS));
 	list_add(l, makeToken2(TYPEIDENTIFIER,"String"));
 	list_add(l, makeToken2(ID,"hello"));
 	list_add(l, makeToken(RPARENS));
+	
 	list_add(l, makeToken(ARROW));
 	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt"));
+	
 	list_add(l, makeToken(LCURLY));
 		list_add(l, makeToken2(ID,"main"));
 		list_add(l, makeToken(LPARENS));
 		list_add(l, makeToken(RPARENS));
 		list_add(l, makeToken(SEMICOLON));
-
 	list_add(l, makeToken(RCURLY));
 
 	struct Method* m = makeMethod(l, debug);
+	if(
+		m == NULL
+		|| m->count_args != 1
+		|| m->count_stmts != 1
+		|| m->stmts == NULL
+		|| m->args == NULL
+		|| m->stmts[0] == NULL
+		|| m->args[0] == NULL
+	){ 
+		printf("method not complete \n");
+		return 0;
+	}
+	
+	if(debug){
+		printf("free stuff\n");
+	}
 	
 	freeTokenList(l);
+	freeMethod(m);
 
 	return  m->count_args;
 }
@@ -81,6 +100,7 @@ int method_test_can_parse_subroutine(bool debug) {
 	}
 	
 	freeTokenList(l);
+	freeMethod(m);
 
 	return (a1)?1:0;
 }
@@ -120,6 +140,7 @@ int method_test_can_parse_method_without_arguments(bool debug) {
 	bool assert1 = (1 == m->count_args);
 	
 	freeTokenList(l);
+	freeMethod(m);
 
 	return (assert1)?1:0;
 }

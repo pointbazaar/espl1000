@@ -15,7 +15,8 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 
 	struct SimpleType* res = malloc(sizeof(struct SimpleType));
 	if(res == NULL){return NULL;}
-	res->typeName[0] = '\0';
+	
+	strcpy(res->typeName, "");
 
 	if(list_size(tokens) == 0){return NULL;}
 
@@ -56,6 +57,8 @@ struct SimpleType* makeSimpleType(char* typeName) {
 }
 
 void freeSimpleType(struct SimpleType* st){
-	
-	free(st);
+	printf("DEBUG: freeSimpleType\n");
+	//TODO:
+	//free(st);
+	printf("DEBUG: freeSimpleType done\n");
 }

@@ -80,7 +80,7 @@ struct Method {
 	bool hasSideEffects;
 
 	struct Type* returnType;
-	char* name;
+	char name[20];
 
 	int count_args;
 	struct DeclArg** args;

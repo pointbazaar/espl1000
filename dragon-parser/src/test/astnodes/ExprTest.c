@@ -28,6 +28,7 @@ int expr_test_simple_expression(bool debug) {
 	bool a1 = expr->term1->m2->value == 4;
 	
 	freeTokenList(list);
+	freeExpr(expr);
 
 	return (a1)?1:0;
 }
@@ -52,6 +53,7 @@ int expr_test_variable_name_expression(bool debug) {
 	bool a1 = strcmp(expr->term1->m6->simpleVar->name, "x") == 0;
 	
 	freeTokenList(list);
+	freeExpr(expr);
 
 	return (a1)?1:0;
 }
@@ -76,6 +78,7 @@ int expr_recognize_2_op_expr(bool debug) {
 	bool a1 = list_size(tokens) == 1;
 	
 	freeTokenList(tokens);
+	freeExpr(expr);
 
 	return (a1)?1:0;
 }
@@ -124,6 +127,7 @@ int expr_test_comparison(bool debug){
 	bool a3 = strcmp(sv->name, "x") == 0;
 	
 	freeTokenList(l);
+	freeExpr(expr);
 
 	return (a1 && a2 && a3)?1:0;
 }

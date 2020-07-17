@@ -34,5 +34,6 @@ struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
 }
 
 void freeTypeParam(struct TypeParam* tp){
+	
 	free(tp);
 }

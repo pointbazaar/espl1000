@@ -32,8 +32,9 @@ struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 }
 
 void freeDeclArg(struct DeclArg* da){
-	
+	printf("DEBUG: freeDeclArg\n");
 	freeType(da->type);
+	printf("DEBUG: freeDeclArg 2\n");
 	free(da);
 }
 

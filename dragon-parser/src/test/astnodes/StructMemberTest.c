@@ -33,6 +33,7 @@ int structmember_test_can_parse_struct_member(bool debug) {
 	bool assert2 = (0 == list_size(list));
 	
 	freeTokenList(list);
+	freeStructMember(node);
 
 	return (assert1&&assert2)?1:0;
 }

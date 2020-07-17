@@ -23,6 +23,7 @@ int simpletype_test_typenode_parsing(bool debug) {
 	bool assert2 = node != NULL;
 	
 	freeTokenList(list);
+	freeBasicTypeWrapped(node);
 
 	return (assert1 && assert2)?1:0;
 }
@@ -42,6 +43,7 @@ int simpletype_test_typenode_parsing_fails(bool debug) {
 	bool a1 = node == NULL;
 	
 	freeTokenList(list);
+	//we do not free 'node' as it should have failed
 
 	return (a1)?1:0;
 }
@@ -62,6 +64,7 @@ int simpletype_test_typenode_parsing_anytype(bool debug) {
 	bool assert2 = node != NULL;
 	
 	freeTokenList(list);
+	freeSimpleType(node);
 
 	return (assert1 && assert2)?1:0;
 }

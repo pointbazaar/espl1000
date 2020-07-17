@@ -33,6 +33,7 @@ int declarg_test_parse_declared_argument(bool debug) {
 	bool assert2 = (0 == list_size(list));
 	
 	freeTokenList(list);
+	freeDeclArg(node);
 
 	return (assert1&&assert2)?1:0;
 }
