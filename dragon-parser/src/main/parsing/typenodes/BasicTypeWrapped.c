@@ -53,6 +53,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 		if(!list_expect(copy2, RPARENS)){return NULL;}
 
 		list_set(copy, copy2);
+		freeTokenListShallow(copy2);
 
 	} else {
 		res->simpleType = makeSimpleType2(copy,debug);

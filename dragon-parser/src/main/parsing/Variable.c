@@ -27,7 +27,7 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 	if(res->simpleVar == NULL){return NULL;}
 
 	if (list_size(copy) >= 2) {
-		struct Token* next = list_get(copy, 0);
+		struct Token* next = list_head(copy);
 		while (next->kind == STRUCTMEMBERACCESS) {
 
 			if(!list_expect(copy, STRUCTMEMBERACCESS)){return NULL;}
@@ -35,11 +35,13 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 			struct Variable* myvar = makeVariable(copy,debug);
 			if(myvar == NULL){return NULL;}
 
-			res->memberAccessList[res->count_memberAccessList++] = myvar;
-			res->memberAccessList = (struct Variable**)realloc(res->memberAccessList,sizeof(struct Variable*)*res->count_memberAccessList);
+			res->memberAccessList[res->count_memberAccessList] = myvar;
+			res->count_memberAccessList += 1;
+			size_t newsize = sizeof(struct Variable*)*(res->count_memberAccessList+1);
+			res->memberAccessList = (struct Variable**)realloc(res->memberAccessList, newsize);
 
 			if (list_size(copy) > 0) {
-				next = list_get(copy,0);
+				next = list_head(copy);
 				if(next == NULL){return NULL;}
 			} else {
 				break;

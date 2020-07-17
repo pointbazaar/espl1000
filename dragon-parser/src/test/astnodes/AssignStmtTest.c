@@ -23,8 +23,13 @@ int assignstmt_test1(bool debug) {
 	list_add(tokens, makeToken(SEMICOLON));
 
 	struct AssignStmt* a = makeAssignStmt(tokens,debug);
+	
+	const bool a1 = a != NULL;
+	
+	freeAssignStmt(a);
+	freeTokenList(tokens);
 
-	return (a==NULL)?0:1;
+	return (a1)?1:0;
 }
 
 int assignstmt_test_assign_method_call_result(bool debug) {
@@ -48,7 +53,13 @@ int assignstmt_test_assign_method_call_result(bool debug) {
 	list_add(tokens, makeToken(SEMICOLON));
 
 	struct AssignStmt* a = makeAssignStmt(tokens,debug);
-	return (a==NULL)?0:1;
+	
+	const bool a1 = a != NULL;
+	
+	freeAssignStmt(a);
+	freeTokenList(tokens);
+	
+	return (a1)?1:0;
 		
 }
 
@@ -72,7 +83,13 @@ int assignstmt_test_assign_method_call_result_2(bool debug) {
 	list_add(tokens, makeToken(SEMICOLON));
 
 	struct AssignStmt* a = makeAssignStmt(tokens,debug);
-	return (a==NULL)?0:1;
+	
+	const bool a1 = a != NULL;
+	
+	freeAssignStmt(a);
+	freeTokenList(tokens);
+	
+	return (a1)?1:0;
 		
 }
 
@@ -97,8 +114,12 @@ int assignstmt_test_assign_variable_with_array_index(bool debug) {
 	list_add(tokens, makeToken(SEMICOLON));
 
 	struct AssignStmt* a = makeAssignStmt(tokens,debug);
-	return (a==NULL)?0:1;
-
+	const bool a1 = a != NULL;
+	
+	freeAssignStmt(a);
+	freeTokenList(tokens);
+	
+	return (a1)?1:0;
 }
 
 int assignstmt_test_assign_char(bool debug) {
@@ -117,8 +138,13 @@ int assignstmt_test_assign_char(bool debug) {
 	list_add(tokens, makeToken(SEMICOLON));
 
 	struct AssignStmt* a = makeAssignStmt(tokens,debug);
+	
+	const bool a1 = a != NULL;
+	
+	freeAssignStmt(a);
+	freeTokenList(tokens);
 
-	return (a==NULL)?0:1;
+	return (a1)?1:0;
 
 }
 
@@ -138,7 +164,13 @@ int assignstmt_test_can_assign_to_struct_member(bool debug) {
 	list_add(tokens, makeToken(SEMICOLON));
 
 	struct AssignStmt* a = makeAssignStmt(tokens,debug);
-	return (a==NULL)?0:1;
+	
+	const bool a1 = a != NULL;
+	
+	freeAssignStmt(a);
+	freeTokenList(tokens);
+	
+	return (a1)?1:0;
 
 }
 
@@ -149,6 +181,7 @@ int assignstmt_test_type_declaration_for_variable(bool debug) {
 	}
 
 	struct TokenList* tokens = makeTokenList();
+	
 	list_add(tokens, makeToken2(TYPEIDENTIFIER,"PInt"));
 	list_add(tokens, makeToken2(ID,"x"));
 	list_add(tokens, makeToken2(EQ,"="));
@@ -163,6 +196,9 @@ int assignstmt_test_type_declaration_for_variable(bool debug) {
 	
 	bool assert2 = (0 == a->var->count_memberAccessList);
 	bool assert3 = (0 == list_size(tokens));
+	
+	freeAssignStmt(a);
+	freeTokenList(tokens);
 
 	return (assert1&&assert2&&assert3)?1:0;
 }

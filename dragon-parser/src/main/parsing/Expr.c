@@ -46,15 +46,22 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 		struct TokenList* copy2 = list_copy(copy);
 
 		struct Op* myop = makeOp(copy2,debug);
-		if(myop == NULL){ break;}
+		if(myop == NULL){
+			freeTokenListShallow(copy2);
+			break;
+		}
 
 		struct Term* myterm = makeTerm(copy2,debug);
-		if(myterm == NULL){ break;}
+		if(myterm == NULL){
+			freeTokenListShallow(copy2);
+			break;
+		}
 
 		ops[opsc++] = myop;
 		terms[termsc++] = myterm;
 
 		list_set(copy, copy2);
+		freeTokenListShallow(copy2);
 	}
 	
 	if(debug){

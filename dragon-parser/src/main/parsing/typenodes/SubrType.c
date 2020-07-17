@@ -71,6 +71,8 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 		}else {
 			sucess_argument_types = false;
 		}
+		
+		freeTokenListShallow(copy2);
 	}
 
 	if(!list_expect(copy, RPARENS)){return NULL;}
