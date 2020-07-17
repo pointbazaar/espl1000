@@ -28,6 +28,8 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 	if(res->optType != NULL){
 		list_set(copy, copy2);
 	}
+	
+	freeTokenListShallow(copy2);
 
 	if(debug){
 		printf("%s\n", list_code(copy, debug));
