@@ -36,6 +36,9 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 
 	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
 	if(res == NULL){return NULL;}
+	
+	res->simpleType = NULL;
+	res->subrType = NULL;
 
 	struct TokenList* copy = list_copy(tokens);
 

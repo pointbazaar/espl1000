@@ -21,6 +21,9 @@ int basictypewrapped_test_type_parsing_simple_type(bool debug) {
 
 	bool assert1 = (b->simpleType != NULL && b->subrType == NULL);	//it is SimpleType
 	bool assert2 = (0 == list_size(list));
+	
+	freeTokenList(list);
+	freeBasicTypeWrapped(b);
 
 	return (assert1&&assert2)?1:0;
 }

@@ -51,10 +51,12 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 		printf("free stuff\n");
 	}
 	
+	const bool a1 = m->count_args == 1;
+	
 	freeTokenList(l);
 	freeMethod(m);
 
-	return  m->count_args;
+	return  a1;
 }
 
 int method_test_can_parse_subroutine(bool debug) {
