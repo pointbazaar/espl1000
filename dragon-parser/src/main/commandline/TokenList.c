@@ -6,22 +6,6 @@
 #include "TokenKeys.h"
 #include "../../../../util/util.h"
 
-//this is to facilitate special features
-//which would be convenient in a token list for our compiler
-
-struct TokenList* makeTokenList_3(struct Token** result, int resultc, char* sourceFile) {
-
-	struct TokenList* res = makeTokenList();
-
-	res->tokens = result;
-	res->tokensc = resultc;
-	res->capacity = resultc;
-
-	strcpy(res->relPath, sourceFile);
-
-	return res;
-}
-
 struct TokenList* makeTokenList() {
 	
 	//this is enough for most tests
@@ -36,6 +20,7 @@ struct TokenList* makeTokenList() {
 	res->tokensc = 0;
 
 	res->tokens = smalloc(sizeof(struct Token*)*initial_size);
+	res->indexHead = 0;
 
 	res->capacity = initial_size;
 
@@ -47,7 +32,7 @@ void list_add(struct TokenList* list, struct Token* token) {
 	//DEBUG
 	//printf("list_add\n");
 
-	if((list->tokensc + 1) > list->capacity){
+	if((list->indexHead + list->tokensc + 1) > list->capacity){
 		printf("resize TokenList instance\n");
 		//we don't have enough capacity
 		//double the capacity		
@@ -55,19 +40,14 @@ void list_add(struct TokenList* list, struct Token* token) {
 		list->tokens = realloc(list->tokens, list->capacity * sizeof(struct Token*));
 	}
 
-	list->tokens[list->tokensc] = token;
+	list->tokens[list->indexHead + list->tokensc] = token;
 	list->tokensc += 1;
 }
 
 void list_consume(struct TokenList* list, int amount) {
 	
 	list->tokensc -= amount;
-	const size_t size = list->tokensc * sizeof(struct Token*);
-	
-	// '... +amount' it already multiplies with the correct
-	//number of bytes as it recognizes the pointer type
-	const void* src = (list->tokens)+amount;
-	memcpy(list->tokens, src, size);
+	list->indexHead += amount;
 }
 
 int list_size(struct TokenList* list) {
@@ -166,19 +146,14 @@ struct TokenList* list_copy(struct TokenList* other) {
 }
 
 void list_set(struct TokenList* list, struct TokenList* copy) {
-
-	//DEBUG
-	//printf("list_set(...)\n");
-
+	
 	list->tokens = smalloc(sizeof(struct Token*) * copy->capacity);
 
 	list->capacity = copy->capacity;
 	list->tokensc = copy->tokensc;
+	list->indexHead = copy->indexHead;
 
-	memcpy(list->tokens, copy->tokens, copy->tokensc * sizeof(struct Token*));
-
-	//DEBUG
-	//printf("return from list_set\n");
+	memcpy(list->tokens, copy->tokens, copy->capacity * sizeof(struct Token*));
 }
 
 struct Token* list_get(struct TokenList* list, int i) {
@@ -192,7 +167,7 @@ struct Token* list_get(struct TokenList* list, int i) {
 		);
 	}
 	
-	return list->tokens[i]; //<=> *(list->tokens + sizeof(struct Token*) * i)
+	return list->tokens[list->indexHead + i];
 }
 
 struct Token* list_head(struct TokenList* list) {
@@ -237,12 +212,13 @@ char* list_code(struct TokenList* list, bool debug) {
 
 void freeTokenList(struct TokenList* list){
 	
-	//also frees the tokens within
-	for(int i=0;i < list->tokensc; i++){
+	//also frees the tokens within,
+	//even those already consumed
+	size_t size = list->indexHead + list->tokensc;
+	for(int i=0;i < size; i++){
 		freeToken(list->tokens[i]);
 	}
-	free(list->tokens);
-	free(list);
+	freeTokenListShallow(list);
 }
 
 void freeTokenListShallow(struct TokenList* list){

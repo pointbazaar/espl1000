@@ -6,6 +6,9 @@
 
 #include "Token.h"
 
+//the TokenList should only ever be
+//accessed by the methods provided
+
 struct TokenList {
 
 	//relative path of the source file
@@ -14,18 +17,22 @@ struct TokenList {
 	//and make the program simpler.
 	char relPath[100];
 
-	struct Token** tokens;
-
+	//all the tokens, including those 
+	//already consumed
+	struct Token** tokens; //private
 	//how many pointers we can store
 	//with the currently allocated memory
-	int capacity;
+	int capacity; //private
+	
+	//the index of the first token that was
+	//not already consumed
+	int indexHead;
 
 	//token count
-	int tokensc;
+	int tokensc; //private
 
 };
 
-struct TokenList* makeTokenList_3(struct Token** result, int resultc, char* sourceFile);
 struct TokenList* makeTokenList();
 
 void list_add(struct TokenList* tknList,struct Token* token);

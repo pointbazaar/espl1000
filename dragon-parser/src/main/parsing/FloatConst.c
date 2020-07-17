@@ -10,20 +10,17 @@
 
 struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
-	struct FloatConst* res = smalloc(sizeof(struct FloatConst));
-
 	if(debug){
 		printf("FloatConst(...)\n");
 	}
-	
+
 	if(list_size(tokens) == 0){
-		free(res);
 		return NULL;
 	}
 
-	struct TokenList* copy = list_copy(tokens);
+	struct FloatConst* res = smalloc(sizeof(struct FloatConst));
 
-	//---------------------------
+	struct TokenList* copy = list_copy(tokens);
 
 	struct Token* tk = list_head(copy);
 
