@@ -56,3 +56,6 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
+void freeIntConst(struct IntConst* ic){
+	free(ic);
+}

@@ -94,3 +94,15 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
+void freeIfStmt(struct IfStmt* is){
+	
+	freeExpr(is->condition);
+	for(int i=0;i < is->count_statements; i++){
+		freeStmt(is->statements[i]);
+	}
+	for(int i=0;i < is->count_elseStatements; i++){
+		freeStmt(is->elseStatements[i]);
+	}
+	free(is);
+}
+

@@ -74,3 +74,10 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 	return res;
 }
 
+void freeMethodCall(struct MethodCall* mc){
+	//TODO: inline mc->methodName
+	for(int i=0;i < mc->count_args; i++){
+		freeExpr(mc->args[i]);
+	}
+	free(mc);
+}

@@ -30,4 +30,6 @@ void** insert(void** arr, int index, void* element, int size_before);
 
 void** erase(void** arr, int index, int size_before);
 
+
+void freeExpr(struct Expr* expr);
 #endif

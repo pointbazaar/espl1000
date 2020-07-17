@@ -53,3 +53,12 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
+void freeAssignStmt(struct AssignStmt* as){
+	
+	if(as->optType != NULL){
+		freeType(as->optType);
+	}
+	freeVariable(as->var);
+	freeExpr(as->expr);
+	free(as);
+}

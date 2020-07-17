@@ -70,3 +70,8 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 
 	return res;
 }
+
+void freeOp(struct Op* op){
+	//TODO: inline op->op
+	free(op);
+}

@@ -99,3 +99,15 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
+void freeMethod(struct Method* m){
+	
+	freeType(m->returnType);
+	for(int i=0;i < m->count_args; i++){
+		freeDeclArg(m->args[i]);
+	}
+	for(int i=0;i < m->count_stmts; i++){
+		freeStmt(m->stmts[i]);
+	}
+	free(m);
+}
+

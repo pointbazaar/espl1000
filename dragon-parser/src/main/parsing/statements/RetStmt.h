@@ -7,4 +7,6 @@ struct TokenList;
 #include "../../../../../ast/ast.h"
 struct RetStmt* makeRetStmt(struct TokenList* list,bool debug);
 
+void freeRetStmt(struct RetStmt* rs);
+
 #endif

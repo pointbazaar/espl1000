@@ -10,4 +10,6 @@ struct TokenList;
 
 struct Method* makeMethod(struct TokenList* tokens, bool debug);
 
+void freeMethod(struct Method* m);
+
 #endif

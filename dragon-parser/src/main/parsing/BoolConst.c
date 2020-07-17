@@ -45,3 +45,7 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 
 	return res;
 }
+
+void freeBoolConst(struct BoolConst* bc){
+	free(bc);
+}

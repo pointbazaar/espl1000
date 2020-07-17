@@ -136,3 +136,23 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
+void freeTerm(struct Term* t){
+	
+	if(t->m1 != NULL){
+		freeBoolConst(t->m1);
+	}else if(t->m2 != NULL){
+		freeIntConst(t->m2);
+	}else if(t->m3 != NULL){
+		freeCharConst(t->m3);
+	}else if(t->m4 != NULL){
+		freeMethodCall(t->m4);
+	}else if(t->m5 != NULL){
+		freeExpr(t->m5);
+	}else if(t->m6 != NULL){
+		freeVariable(t->m6);
+	}else if(t->m7 != NULL){
+		freeFloatConst(t->m7);
+	}
+	free(t);
+}
+

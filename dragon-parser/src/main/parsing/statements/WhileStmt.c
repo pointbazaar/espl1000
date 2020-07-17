@@ -74,3 +74,10 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 	return res;
 }
 
+void freeWhileStmt(struct WhileStmt* ws){
+	freeExpr(ws->condition);
+	for(int i=0;i < ws->count_statements; i++){
+		freeStmt(ws->statements[i]);
+	}
+	free(ws);
+}

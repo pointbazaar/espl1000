@@ -31,3 +31,9 @@ struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
+void freeDeclArg(struct DeclArg* da){
+	
+	freeType(da->type);
+	free(da);
+}
+

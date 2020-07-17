@@ -8,4 +8,6 @@
 
 struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug);
 
+void freeIdentifier(struct Identifier* id);
+
 #endif

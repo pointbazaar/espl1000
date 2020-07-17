@@ -58,3 +58,7 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
 	return res;
 }
+
+void freeFloatConst(struct FloatConst* fc){
+	free(fc);
+}

@@ -7,5 +7,5 @@
 
 struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug);
 
-	
+void freeBoolConst(struct BoolConst* bc);	
 #endif

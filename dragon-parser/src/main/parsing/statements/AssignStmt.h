@@ -9,4 +9,6 @@ struct TokenList;
 
 struct AssignStmt* makeAssignStmt(struct TokenList* tokens,bool debug);
 
+void freeAssignStmt(struct AssignStmt* as);
+
 #endif

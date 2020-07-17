@@ -56,3 +56,11 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
+void freeVariable(struct Variable* var){
+	
+	freeSimpleVar(var->simpleVar);
+	for(int i=0;i < var->count_memberAccessList; i++){
+		freeVariable(var->memberAccessList[i]);
+	}
+	free(var);
+}

@@ -38,3 +38,10 @@ struct AST_Whole_Program* makeAST_Whole_Program3(struct TokenList* tokens, char*
 	return res;
 }
 
+void freeAST_Whole_Program(struct AST_Whole_Program* ast){
+	
+	for(int i=0;i < ast->count_namespaces;i++){
+		freeNamespace(ast->namespaces[i]);
+	}
+	free(ast);
+}

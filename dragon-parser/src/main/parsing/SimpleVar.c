@@ -65,3 +65,11 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
+void freeSimpleVar(struct SimpleVar* sv){
+	
+	if(sv->optIndex != NULL){
+		freeExpr(sv->optIndex);
+	}
+	free(sv);
+}
+

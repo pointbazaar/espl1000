@@ -9,4 +9,6 @@ struct TokenList;
 struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug);
 struct SimpleType* makeSimpleType(char* typeName);
 
+void freeSimpleType(struct SimpleType* st);
+
 #endif

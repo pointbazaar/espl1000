@@ -38,3 +38,7 @@ struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
+void freeArrayType(struct ArrayType* at){
+	freeType(at->element_type);
+	free(at);
+}

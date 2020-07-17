@@ -8,4 +8,6 @@ struct TokenList;
 
 struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug);
 
+void freeStructDecl(struct StructDecl* sd);
+
 #endif

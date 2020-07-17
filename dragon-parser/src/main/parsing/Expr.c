@@ -239,3 +239,12 @@ void** erase(void** arr, int index, int size_before){
 	}
 	return res;
 }
+
+void freeExpr(struct Expr* expr){
+	freeTerm(expr->term1);
+	if(expr->op != NULL){
+		freeOp(expr->op);
+		freeTerm(expr->term2);
+	}
+	free(expr);
+}

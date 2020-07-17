@@ -28,3 +28,6 @@ struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
+void freeCharConst(struct CharConst* cc){
+	free(cc);
+}

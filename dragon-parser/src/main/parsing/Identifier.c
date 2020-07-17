@@ -29,3 +29,8 @@ struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
+void freeIdentifier(struct Identifier* id){
+	//TODO:
+	//think about id->identifier
+	free(id);
+}

@@ -31,3 +31,9 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 	
 	return res;
 }
+
+void freeStructMember(struct StructMember* sm){
+	//TODO: inline sm->name into the struct
+	freeType(sm->type);
+	free(sm);
+}

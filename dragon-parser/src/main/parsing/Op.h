@@ -7,4 +7,6 @@ struct TokenList;
 
 struct Op* makeOp(struct TokenList* tokens, bool debug);
 
+void freeOp(struct Op* op);
+
 #endif

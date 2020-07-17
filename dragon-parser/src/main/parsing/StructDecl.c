@@ -89,3 +89,11 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 
 	return res;
 }
+
+void freeStructDecl(struct StructDecl* sd){
+	
+	for(int i=0;i < sd->count_members; i++){
+		freeStructMember(sd->members[i]);
+	}
+	free(sd);
+}

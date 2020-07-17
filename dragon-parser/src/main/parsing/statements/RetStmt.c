@@ -33,3 +33,8 @@ struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
 	return res;
 }
 
+void freeRetStmt(struct RetStmt* rs){
+	
+	freeExpr(rs->returnValue);
+	free(rs);
+}

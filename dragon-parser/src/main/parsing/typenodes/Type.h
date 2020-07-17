@@ -10,4 +10,6 @@ struct Type* makeType_1(struct BasicTypeWrapped* typeNode);
 struct Type* makeType_2(struct TypeParam* typeNode);
 struct Type* makeType_3(struct ArrayType* typeNode);
 
+void freeType(struct Type* t);
+
 #endif

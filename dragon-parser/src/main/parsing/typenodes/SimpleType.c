@@ -54,3 +54,8 @@ struct SimpleType* makeSimpleType(char* typeName) {
 
 	return res;
 }
+
+void freeSimpleType(struct SimpleType* st){
+	
+	free(st);
+}

@@ -8,4 +8,6 @@ struct TokenList;
 struct ArrayType* makeArrayType(struct Type* element_type);
 struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug);
 
+void freeArrayType(struct ArrayType* at);
+
 #endif
