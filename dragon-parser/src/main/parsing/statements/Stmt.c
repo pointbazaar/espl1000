@@ -10,6 +10,7 @@
 #include "RetStmt.h"
 #include "MethodCall.h"
 #include "AssignStmt.h"
+#include "../../../../../util/util.h"
 
 struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 
@@ -17,7 +18,7 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 		printf("Stmt(...)\n");
 	}
 
-	struct Stmt* res = malloc(sizeof(struct Stmt));
+	struct Stmt* res = smalloc(sizeof(struct Stmt));
 
 	//init
 	res->m1 = NULL;
@@ -30,11 +31,15 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 
 	if (list_size(copy) == 0) {
 		//("tried to parse a Statement, but there are no tokens left");
+		free(res);
 		return NULL;
 	}
 
-	struct Token* first = list_get(copy, 0);
-	if(first == NULL){return NULL;}
+	struct Token* first = list_head(copy);
+	if(first == NULL){
+		free(res);
+		return NULL;
+	}
 
 	if (first->kind == LOOP) {
 		//this->statementNode = LoopStatementNode(copy);

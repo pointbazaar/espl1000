@@ -4,6 +4,7 @@
 
 #include "TokenList.h"
 #include "TokenKeys.h"
+#include "../../../../util/util.h"
 
 //this is to facilitate special features
 //which would be convenient in a token list for our compiler
@@ -16,7 +17,6 @@ struct TokenList* makeTokenList_3(struct Token** result, int resultc, char* sour
 	res->tokensc = resultc;
 	res->capacity = resultc;
 
-	res->relPath[0] = '\0';
 	strcpy(res->relPath, sourceFile);
 
 	return res;
@@ -30,14 +30,12 @@ struct TokenList* makeTokenList() {
 	//DEBUG
 	//printf("makeTokenList()\n");
 
-	struct TokenList* res = malloc(sizeof(struct TokenList));
-	if(res == NULL){ exit(1);}
+	struct TokenList* res = smalloc(sizeof(struct TokenList));
 	
 	strcpy(res->relPath, "/dev/null");
 	res->tokensc = 0;
 
-	res->tokens = malloc(sizeof(struct Token*)*initial_size);
-	if(res->tokens == NULL){ exit(1);}
+	res->tokens = smalloc(sizeof(struct Token*)*initial_size);
 
 	res->capacity = initial_size;
 
@@ -91,7 +89,7 @@ bool list_startsWith(struct TokenList* list, struct Token* token) {
 }
 
 char* wrap(char* s, char* wrap) {
-	char* res = malloc(sizeof(char)*strlen(s)+2*strlen(wrap));
+	char* res = smalloc(sizeof(char)*strlen(s)+2*strlen(wrap));
 	sprintf(res,"%s%s%s",wrap,s,wrap);
 	return res;
 }
@@ -172,8 +170,7 @@ void list_set(struct TokenList* list, struct TokenList* copy) {
 	//DEBUG
 	//printf("list_set(...)\n");
 
-	//free(list->tokens);
-	list->tokens = malloc(sizeof(struct Token*) * copy->capacity);
+	list->tokens = smalloc(sizeof(struct Token*) * copy->capacity);
 
 	list->capacity = copy->capacity;
 	list->tokensc = copy->tokensc;
@@ -209,8 +206,7 @@ char* list_code(struct TokenList* list, bool debug) {
 		printf("list_code(...)\n");
 	}
 
-	char* str = malloc(sizeof(char)*100);
-	if(str == NULL){ return "ERROR"; exit(1);}
+	char* str = smalloc(sizeof(char)*100);
 	strcpy(str, "");
 
 	

@@ -7,7 +7,7 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/Token.h"
 #include "../Expr.h"
-
+#include "../../../../../util/util.h"
 
 struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 
@@ -15,17 +15,19 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 		printf("MethodCall(...) from: %s\n", list_code(tokens, debug));
 	}
 
-	struct MethodCall* res = malloc(sizeof(struct MethodCall));
-	if(res==NULL){return NULL;}
+	struct MethodCall* res = smalloc(sizeof(struct MethodCall));
 
-	res->args = malloc(sizeof(struct Expr*)*1);
+	res->args = smalloc(sizeof(struct Expr*)*1);
 
 	res->count_args = 0;
 
 	struct TokenList* copy = list_copy(tokens);
 
 	struct Identifier* id = makeIdentifier(copy,debug);
-	if(id == NULL){return NULL;}
+	if(id == NULL){
+		free(res);
+		return NULL;
+	}
 
 	res->methodName = id->identifier;
 
@@ -33,24 +35,39 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 		printf("try to parse LPARENS\n");
 	}
 
-	if(list_size(copy) == 0){return NULL;}
-	if(!list_expect(copy, LPARENS)){return NULL;}
+	if(list_size(copy) == 0){
+		free(res);
+		return NULL;
+	}
+	if(!list_expect(copy, LPARENS)){
+		free(res);
+		return NULL;
+	}
 
 	if(debug){
 		printf("try to parse args\n");
 	}
 
-	if(list_size(copy) == 0){return NULL;}
+	if(list_size(copy) == 0){
+		free(res);
+		return NULL;
+	}
 	struct Token* next = list_head(copy);
 
 	bool found = false;
 	while (next->kind != RPARENS) {
 		if (found) {
-			if(!list_expect(copy, COMMA)){return NULL;}
+			if(!list_expect(copy, COMMA)){
+				free(res);
+				return NULL;
+			}
 		}
 
 		struct Expr* expr = makeExpr(copy,debug);
-		if(expr == NULL){return NULL;}
+		if(expr == NULL){
+			free(res);
+			return NULL;
+		}
 
 		res->args[res->count_args] = expr;
 		res->count_args += 1;
@@ -58,12 +75,18 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 		res->args = realloc(res->args, sizeof(struct Expr*) * (res->count_args + 1));
 
 		next = list_head(copy);
-		if(next == NULL){return NULL;}
+		if(next == NULL){
+			free(res);
+			return NULL;
+		}
 
 		found = true;
 	}
 
-	if(!list_expect(copy, RPARENS)){return NULL;}
+	if(!list_expect(copy, RPARENS)){
+		free(res);
+		return NULL;
+	}
 	
 	if(debug){
 		printf("sucess parsing MethodCall\n");

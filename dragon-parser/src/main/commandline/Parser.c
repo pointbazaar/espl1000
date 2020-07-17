@@ -14,6 +14,8 @@
 #include "../../../../ast/ASTWriter.h"
 #include "../../test/ParserTest.h"
 
+#include "../../../../util/util.h"
+
 int main(int argc, char** argv){
 	//this project is to parse a Dragon AST
 	//from Tokens written into .tokens files by Dragon-Lexer,
@@ -26,10 +28,10 @@ int main(int argc, char** argv){
 
 	printf("main -- dragon parser\n");
 
-	char** filenames = malloc(sizeof(char*)*100);
+	char** filenames = smalloc(sizeof(char*)*100);
 	int filenamescount = 0;
 	
-	char** flags = malloc(sizeof(char*)*100);
+	char** flags = smalloc(sizeof(char*)*100);
 	int flagscount = 0;
 
 	printf("read flags, filenames\n");
@@ -128,7 +130,7 @@ void main_inner(char* tokensFile, bool debug) {
 
 	if(f != NULL) {
 		fclose(f);
-		char* AST_filename = malloc(sizeof(char)*100);
+		char* AST_filename = smalloc(sizeof(char)*100);
 		strcpy(AST_filename, tokensFile);
 		int l = strlen(tokensFile) - strlen(".tokens");
 		AST_filename[l] = '\0';

@@ -7,6 +7,7 @@
 #include "../../commandline/Token.h"
 #include "../Expr.h"
 #include "Stmt.h"
+#include "../../../../../util/util.h"
 
 struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 
@@ -14,9 +15,9 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 		printf("WhileStmt(...)\n");
 	}
 
-	struct WhileStmt* res = malloc(sizeof(struct WhileStmt));
+	struct WhileStmt* res = smalloc(sizeof(struct WhileStmt));
 
-	res->statements = malloc(sizeof(struct Stmt*)*1);
+	res->statements = smalloc(sizeof(struct Stmt*)*1);
 	res->count_statements = 0;
 
 	struct TokenList* copy = list_copy(tokens);
@@ -29,7 +30,10 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 	}
 
 	res->condition = makeExpr(copy,debug);
-	if(res->condition == NULL){return NULL;}
+	if(res->condition == NULL){
+		free(res);
+		return NULL;
+	}
 
 	if(!list_expect(copy, LCURLY)){
 		//this part can be parsed deterministically
@@ -39,7 +43,10 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 	}
 
 	struct Token* next = list_head(copy);
-	if(next == NULL){return NULL;}
+	if(next == NULL){
+		free(res);
+		return NULL;
+	}
 
 	while (next->kind != RCURLY) {
 
@@ -55,7 +62,10 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 		res->statements = realloc(res->statements, sizeof(struct Stmt*) * newsize);
 
 		next = list_head(copy);
-		if(next == NULL){return NULL;}
+		if(next == NULL){
+			free(res);
+			return NULL;
+		}
 	}
 
 	if(!list_expect(copy, RCURLY)){

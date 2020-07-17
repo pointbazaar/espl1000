@@ -6,6 +6,7 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/Token.h"
 #include "../../commandline/TokenKeys.h"
+#include "../../../../../util/util.h"
 
 struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 
@@ -13,16 +14,16 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 		printf("SimpleType(...) from: %s\n", list_code(tokens, debug));
 	}
 
-	struct SimpleType* res = malloc(sizeof(struct SimpleType));
-	if(res == NULL){return NULL;}
+	struct SimpleType* res = smalloc(sizeof(struct SimpleType));
 	
 	strcpy(res->typeName, "");
 
-	if(list_size(tokens) == 0){return NULL;}
+	if(list_size(tokens) == 0){
+		free(res);
+		return NULL;
+	}
 
 	struct Token* token = list_head(tokens);
-	if(token == NULL){return NULL;}
-
 
 	if(debug){
 		printf("\tinspect token kind\n");
@@ -35,6 +36,7 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 		if(debug){
 			printf("Error: could not read simple type identifier\n");
 		}
+		free(res);
 		return NULL;
 	}
 
@@ -48,8 +50,7 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 }
 
 struct SimpleType* makeSimpleType(char* typeName) {
-	struct SimpleType* res = malloc(sizeof(struct SimpleType));
-	if(res == NULL){return NULL;}
+	struct SimpleType* res = smalloc(sizeof(struct SimpleType));
 
 	strcpy(res->typeName, typeName);
 

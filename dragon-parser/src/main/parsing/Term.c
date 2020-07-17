@@ -14,9 +14,10 @@
 #include "Expr.h"
 #include "Variable.h"
 #include "statements/MethodCall.h"
+#include "../../../../util/util.h"
 
 struct Term* makeTerm_other(struct Expr* expr){
-	struct Term* res = malloc(sizeof(struct Term));
+	struct Term* res = smalloc(sizeof(struct Term));
 
 	res->m1 = NULL;
 	res->m2 = NULL;
@@ -32,15 +33,11 @@ struct Term* makeTerm_other(struct Expr* expr){
 
 struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 
-	/*
-	Term := IntConst | CharConst | FloatConst | MethodCall | BoolConst | Variable | '(' Expr ')'
-	*/
-
 	if(debug){
 		printf("Term(...) from %s\n", list_code(tokens, debug));
 	}
 
-	struct Term* res = malloc(sizeof(struct Term));
+	struct Term* res = smalloc(sizeof(struct Term));
 	
 	res->m1 = NULL;
 	res->m2 = NULL;
@@ -61,7 +58,10 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 		list_consume(copy, 1);
 
 		res->m5 = makeExpr(copy,debug);
-		if(res->m5 == NULL){return NULL;}
+		if(res->m5 == NULL){
+			free(res);
+			return NULL;
+		}
 		
 		if(!list_expect(copy, RPARENS)){
 			//this part can be parsed deterministically
@@ -118,7 +118,10 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 
 							if(fail) {
 								res->m3 = makeCharConst(copy,debug);
-								if(res->m3 == NULL){return NULL;}
+								if(res->m3 == NULL){
+									free(res);
+									return NULL;
+								}
 							}
 						}
 					}

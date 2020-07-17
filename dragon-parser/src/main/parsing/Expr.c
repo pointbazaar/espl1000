@@ -6,6 +6,7 @@
 #include "Expr.h"
 #include "Term.h"
 #include "Op.h"
+#include "../../../../util/util.h"
 
 struct Expr* makeExpr_1(struct Term* term) {
 	struct Expr* res = malloc(sizeof(struct Expr));
@@ -23,20 +24,20 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 
 	//we assume they never have more than 200 terms
 
-	struct Op** ops = malloc(sizeof(struct Op*)*200);
+	struct Op** ops = smalloc(sizeof(struct Op*)*200);
 	int opsc = 0;
 
-	struct Term** terms = malloc(sizeof(struct Term*)*200);;
+	struct Term** terms = smalloc(sizeof(struct Term*)*200);;
 	int termsc = 0;
-
-	if(terms == NULL || ops == NULL){
-		return NULL;
-	}
 
 	struct TokenList* copy = list_copy(tokens);
 	
 	struct Term* myterm2 = makeTerm(copy,debug);
-	if(myterm2 == NULL){return NULL;}
+	if(myterm2 == NULL){
+		free(ops);
+		free(terms);
+		return NULL;
+	}
 
 	if(debug){printf("parsed first term\n");}
 
@@ -139,7 +140,7 @@ struct Expr* performTreeTransformation(
 
 	//transform the list into a tree, respecting operator precedence
 
-	struct Expr* res = malloc(sizeof(struct Expr));
+	struct Expr* res = smalloc(sizeof(struct Expr));
 	res->term1 = NULL;
 	res->op    = NULL;
 	res->term2 = NULL;
@@ -240,7 +241,7 @@ void** insert(void** arr, int index, void* element, int size_before){
 
 void** erase(void** arr, int index, int size_before){
 	//erase the element at 'index'
-	void** res = malloc(sizeof(void*)*(size_before-1));
+	void** res = smalloc(sizeof(void*)*(size_before-1));
 
 	int i1 = 0;
 	for(int i=0;i<size_before-1;i++){

@@ -7,6 +7,7 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/Token.h"
 #include "../commandline/TokenKeys.h"
+#include "../../../../util/util.h"
 
 struct Op* makeOp(struct TokenList* tokens, bool debug){
 
@@ -14,17 +15,23 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 		printf("Op(...) from %s\n", list_code(tokens, debug));
 	}
 
-	struct Op* res = malloc(sizeof(struct Op));
+	struct Op* res = smalloc(sizeof(struct Op));
 
 	struct TokenList* copy = list_copy(tokens);
 
 	struct Token* tkn = list_head(copy);
-	if(tkn == NULL){return NULL;}
+	if(tkn == NULL){
+		free(res);
+		return NULL;
+	}
 
 	if(tkn->kind == OPKEY){
 
 		struct Token* snd = list_get(copy,1);
-		if(snd == NULL){return NULL;}
+		if(snd == NULL){
+			free(res);
+			return NULL;
+		}
 
 		if(snd->kind == OPKEY){
 			struct Token* opl = tkn;
@@ -46,9 +53,11 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 				res->op = "==";
 			}else{
 				// "could not make operator";
+				free(res);
 				return NULL;
 			}
 			if(list_size(copy) < 2){
+				free(res);
 				return NULL;
 			}
 			list_consume(copy, 2);
@@ -59,6 +68,7 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 		}
 	}else{
 		//"could not recognize operator, got : " + tkn->value;
+		free(res);
 		return NULL;
 	}
 	

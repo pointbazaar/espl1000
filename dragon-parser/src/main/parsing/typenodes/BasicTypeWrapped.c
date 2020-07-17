@@ -7,10 +7,11 @@
 #include "../../commandline/TokenKeys.h"
 #include "SubrType.h"
 #include "SimpleType.h"
+#include "../../../../../util/util.h"
 
 struct BasicTypeWrapped* makeBasicTypeWrappedSimple(struct SimpleType* typeNode) {
 
-	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* res = smalloc(sizeof(struct BasicTypeWrapped));
 
 	res->simpleType = typeNode;
 	res->subrType = NULL;
@@ -20,7 +21,7 @@ struct BasicTypeWrapped* makeBasicTypeWrappedSimple(struct SimpleType* typeNode)
 
 struct BasicTypeWrapped* makeBasicTypeWrappedSubr(struct SubrType* typeNode) {
 
-	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* res = smalloc(sizeof(struct BasicTypeWrapped));
 
 	res->simpleType = NULL;
 	res->subrType = typeNode;
@@ -34,8 +35,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 		printf("BasicTypeWrapped(...) from: %s\n", list_code(tokens, debug));
 	}
 
-	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
-	if(res == NULL){return NULL;}
+	struct BasicTypeWrapped* res = smalloc(sizeof(struct BasicTypeWrapped));
 	
 	res->simpleType = NULL;
 	res->subrType = NULL;
@@ -47,17 +47,20 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 
 		if(!list_expect(copy2, LPARENS)){
 			freeTokenListShallow(copy2);
+			free(res);
 			return NULL;
 		}
 
 		res->subrType = makeSubrType(copy2,debug);
 		if(res->subrType == NULL){
 			freeTokenListShallow(copy2);
+			free(res);
 			return NULL;
 		}
 
 		if(!list_expect(copy2, RPARENS)){
 			freeTokenListShallow(copy2);
+			free(res);
 			return NULL;
 		}
 
@@ -66,7 +69,10 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 
 	} else {
 		res->simpleType = makeSimpleType2(copy,debug);
-		if(res->simpleType == NULL){return NULL;}
+		if(res->simpleType == NULL){
+			free(res);
+			return NULL;
+		}
 	}
 
 	list_set(tokens, copy);

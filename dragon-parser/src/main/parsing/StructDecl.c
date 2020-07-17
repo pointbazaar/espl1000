@@ -7,27 +7,17 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
 #include "../commandline/Token.h"
+#include "../../../../util/util.h"
 
 struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 
 	if(debug){
 		printf("makeStructDecl(...) from: %s\n", list_code(tokens, debug));
 	}
-	
-	/*
-	struct StructDecl{
-		struct StructMember** members;
-		int count_members;
-	};
-	struct StructMember{
-		struct Type* type;
-		char* name;
-	};
-	 */
 
-	struct StructDecl* res = malloc(sizeof(struct StructDecl));
+	struct StructDecl* res = smalloc(sizeof(struct StructDecl));
 	
-	res->members = malloc(sizeof(struct StructMember*)*1);
+	res->members = smalloc(sizeof(struct StructMember*)*1);
 	res->count_members = 0;
 	
 	struct TokenList* copy = list_copy(tokens);

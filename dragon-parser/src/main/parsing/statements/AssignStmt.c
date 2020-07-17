@@ -8,6 +8,7 @@
 #include "../typenodes/Type.h"
 #include "../Variable.h"
 #include "../Expr.h"
+#include "../../../../../util/util.h"
 
 struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 
@@ -15,8 +16,7 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 		printf("AssignStmt(...) from: %s\n", list_code(tokens, debug));
 	}
 
-	struct AssignStmt* res = malloc(sizeof(struct AssignStmt));
-	if(res == NULL){return NULL;}
+	struct AssignStmt* res = smalloc(sizeof(struct AssignStmt));
 
 	res->optType = NULL;
 
@@ -37,14 +37,26 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 	}
 
 	res->var = makeVariable(copy,debug);
-	if(res->var == NULL){return NULL;}
+	if(res->var == NULL){
+		free(res);
+		return NULL;
+	}
 
-	if(!list_expect_2(copy, makeToken2(EQ,"="))){ return NULL;}
+	if(!list_expect_2(copy, makeToken2(EQ,"="))){ 
+		free(res);
+		return NULL;
+	}
 
 	res->expr = makeExpr(copy,debug);
-	if(res->expr == NULL){return NULL;}
+	if(res->expr == NULL){
+		free(res);
+		return NULL;
+	}
 
-	if(!list_expect(copy, SEMICOLON)){return NULL;}
+	if(!list_expect(copy, SEMICOLON)){
+		free(res);
+		return NULL;
+	}
 	
 	if(debug){
 		printf("sucess parsing AssignStmt\n");

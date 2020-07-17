@@ -6,17 +6,20 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
 #include "../commandline/Token.h"
-
-#include <stdbool.h>
+#include "../../../../util/util.h"
 
 struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
-	struct FloatConst* res = malloc(sizeof(struct FloatConst));
+	struct FloatConst* res = smalloc(sizeof(struct FloatConst));
 
 	if(debug){
 		printf("FloatConst(...)\n");
 	}
-	if(list_size(tokens) == 0){return NULL;}
+	
+	if(list_size(tokens) == 0){
+		free(res);
+		return NULL;
+	}
 
 	struct TokenList* copy = list_copy(tokens);
 
@@ -38,15 +41,19 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 		printf("%s\n", list_code(copy,debug));
 	}
 
-	if(list_size(copy) == 0){return NULL;}
+	if(list_size(copy) == 0){
+		free(res);
+		return NULL;
+	}
 
 	if(list_head(copy)->kind == FLOATING){
 
-		res->value = atof(list_get(copy, 0)->value);
+		res->value = atof(list_head(copy)->value);
 		list_consume(copy, 1);
 
 	}else{
 		//could not find a float const
+		free(res);
 		return NULL;
 	}
 

@@ -5,8 +5,11 @@ all: dragon-parser
 clean: 
 	rm *.o
 
-dragon-parser: commandline parsing typenodes statements tests
+dragon-parser: commandline parsing typenodes statements util tests
 	gcc $(FLAGS) -o dragon-parser *.o
+
+util: ../util/*.c
+	gcc $(FLAGS) -c ../util/*.c
 
 commandline: src/main/commandline/*.c ../ast/*.c
 	gcc $(FLAGS) -c src/main/commandline/*.c ../ast/*.c

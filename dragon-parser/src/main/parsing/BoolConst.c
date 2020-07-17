@@ -5,10 +5,11 @@
 #include "BoolConst.h"
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
+#include "../../../../util/util.h"
 
 struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 
-	struct BoolConst* res = malloc(sizeof(struct BoolConst));
+	struct BoolConst* res = smalloc(sizeof(struct BoolConst));
 
 	if(debug){
 		printf("makeBoolConst(...) from: %s\n", list_code(tokens, debug));
@@ -17,10 +18,11 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 	struct TokenList* copy = list_copy(tokens);
 
 	if(list_size(copy) == 0){
+		free(res);
 		return NULL;
 	}
 	
-	if (list_get(copy, 0)->kind == BCONST) {
+	if (list_head(copy)->kind == BCONST) {
 		struct Token* tk = list_get(copy, 0);
 
 		if(strcmp(tk->value,"true") == 0) {
@@ -31,6 +33,7 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 			if(debug){
 				printf("tk->value was not satisfactory.\n");
 			}
+			free(res);
 			return NULL;
 		}
 		list_consume(copy, 1);

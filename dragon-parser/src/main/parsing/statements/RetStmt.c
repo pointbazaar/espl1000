@@ -6,6 +6,7 @@
 #include "../../commandline/TokenKeys.h"
 #include "../../commandline/Token.h"
 #include "../Expr.h"
+#include "../../../../../util/util.h"
 
 struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
 
@@ -13,16 +14,25 @@ struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
 		printf("RetStmt(...)\n");
 	}
 
-	struct RetStmt* res = malloc(sizeof(struct RetStmt));
+	struct RetStmt* res = smalloc(sizeof(struct RetStmt));
 
 	struct TokenList* copy = list_copy(tokens);
 
-	if(!list_expect(copy, RETURN)){return NULL;}
+	if(!list_expect(copy, RETURN)){
+		free(res);
+		return NULL;
+	}
 
 	res->returnValue = makeExpr(copy,debug);
-	if(res->returnValue == NULL){return NULL;}
+	if(res->returnValue == NULL){
+		free(res);
+		return NULL;
+	}
 
-	if(!list_expect(copy, SEMICOLON)){return NULL;}
+	if(!list_expect(copy, SEMICOLON)){
+		free(res);
+		return NULL;
+	}
 	
 	if(debug){
 		printf("sucess parsing RetStmt\n");

@@ -7,10 +7,11 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/Token.h"
 #include "../../commandline/TokenKeys.h"
+#include "../../../../../util/util.h"
 
 struct SubrType* makeSubrType2(struct Type* return_type, bool hasSideEffects){
 	
-	struct SubrType* res = malloc(sizeof(struct SubrType));
+	struct SubrType* res = smalloc(sizeof(struct SubrType));
 
 	res->returnType = return_type;
 	res->hasSideEffects = hasSideEffects;
@@ -25,15 +26,16 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 		printf("SubrType(...)\n");
 	}
 
-	struct SubrType* res = malloc(sizeof(struct SubrType));
+	struct SubrType* res = smalloc(sizeof(struct SubrType));
 
-	res->argTypes = malloc(sizeof(struct Type*)*1);
+	res->argTypes = smalloc(sizeof(struct Type*)*1);
 	res->count_argTypes = 0;
 
 	struct TokenList* copy = list_copy(tokens);
 
 	if(!list_expect(copy, LPARENS)){
 		freeTokenListShallow(copy);
+		free(res);
 		return NULL;
 	}
 
@@ -80,17 +82,20 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 
 	if(!list_expect(copy, RPARENS)){
 		freeTokenListShallow(copy);
+		free(res);
 		return NULL;
 	}
 
 	if(!list_expect(copy, ARROW)){
 		freeTokenListShallow(copy);
+		free(res);
 		return NULL;
 	}
 
 	res->returnType = makeType2(copy,debug);
 	if(res->returnType == NULL){
 		freeTokenListShallow(copy);
+		free(res);
 		return NULL;
 	}
 

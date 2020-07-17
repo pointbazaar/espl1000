@@ -8,6 +8,7 @@
 #include "../commandline/Token.h"
 #include "../commandline/TokenList.h"
 #include "Expr.h"
+#include "../../../../util/util.h"
 
 struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 
@@ -15,30 +16,40 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 		printf("SimpleVar(...) from %s\n", list_code(tokens, debug));
 	}
 
-	struct SimpleVar* res = malloc(sizeof(struct SimpleVar));
+	struct SimpleVar* res = smalloc(sizeof(struct SimpleVar));
 
 	res->optIndex = NULL;
 
 	struct TokenList* copy = list_copy(tokens);
 
-	if(list_size(copy) == 0){ return NULL; }
+	if(list_size(copy) == 0){ 
+		free(res);
+		return NULL; 
+	}
 
 	struct Token* token = list_head(copy);
-	if(token == NULL){return NULL;}
 
 	if (token->kind == ID) {
 		res->name = token->value;
-		if(list_size(copy) == 0){ return NULL; }
 		list_consume(copy,1);
 
 		//it could have an index
 		if (list_size(copy) > 0 && list_head(copy)->kind == LBRACKET) {
 
-			if(!list_expect(copy, LBRACKET)){return NULL;}
+			if(!list_expect(copy, LBRACKET)){
+				free(res);
+				return NULL;
+			}
 			res->optIndex = makeExpr(copy,debug);
-			if(res->optIndex == NULL){return NULL;}
+			if(res->optIndex == NULL){
+				free(res);
+				return NULL;
+			}
 
-			if(!list_expect(copy, RBRACKET)){return NULL;}
+			if(!list_expect(copy, RBRACKET)){
+				free(res);
+				return NULL;
+			}
 
 		} else {
 			res->optIndex = NULL;
@@ -52,7 +63,7 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 			token->value,
 			list_code(tokens, debug)
 		);
-
+		free(res);
 		return NULL;
 	}
 	

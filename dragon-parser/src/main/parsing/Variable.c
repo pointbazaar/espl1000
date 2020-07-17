@@ -8,6 +8,7 @@
 #include "../commandline/Token.h"
 #include "../commandline/TokenKeys.h"
 #include "../commandline/TokenList.h"
+#include "../../../../util/util.h"
 
 struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 
@@ -15,16 +16,19 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 		printf("Variable(...) from %s\n", list_code(tokens, debug));
 	}
 
-	struct Variable* res = malloc(sizeof(struct Variable));
+	struct Variable* res = smalloc(sizeof(struct Variable));
 	res->simpleVar = NULL;
 
-	res->memberAccessList = malloc(sizeof(struct Variable*)*1);
+	res->memberAccessList = smalloc(sizeof(struct Variable*)*1);
 	res->count_memberAccessList = 0;
 
 	struct TokenList* copy = list_copy(tokens);
 
 	res->simpleVar = makeSimpleVar(copy,debug);
-	if(res->simpleVar == NULL){return NULL;}
+	if(res->simpleVar == NULL){
+		free(res);
+		return NULL;
+	}
 
 	if (list_size(copy) >= 2) {
 		struct Token* next = list_head(copy);
@@ -33,7 +37,10 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 			if(!list_expect(copy, STRUCTMEMBERACCESS)){return NULL;}
 
 			struct Variable* myvar = makeVariable(copy,debug);
-			if(myvar == NULL){return NULL;}
+			if(myvar == NULL){
+				free(res);
+				return NULL;
+			}
 
 			res->memberAccessList[res->count_memberAccessList] = myvar;
 			res->count_memberAccessList += 1;
@@ -42,7 +49,10 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 
 			if (list_size(copy) > 0) {
 				next = list_head(copy);
-				if(next == NULL){return NULL;}
+				if(next == NULL){
+					free(res);
+					return NULL;
+				}
 			} else {
 				break;
 			}

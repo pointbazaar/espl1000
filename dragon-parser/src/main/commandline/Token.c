@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "Token.h"
+#include "../../../../util/util.h"
 
 struct Token* makeToken(int kind){
 	return makeToken2(kind,"");
@@ -11,8 +12,7 @@ struct Token* makeToken(int kind){
 
 struct Token* makeToken2(int kind, char* value){
 	
-	struct Token* res = malloc(sizeof(struct Token));
-	if(res == NULL){ exit(1); }
+	struct Token* res = smalloc(sizeof(struct Token));
 
 	res->kind = kind;
 	strncpy(res->value, value, 20);

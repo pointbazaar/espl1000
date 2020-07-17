@@ -7,6 +7,7 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/Token.h"
 #include "../../commandline/TokenKeys.h"
+#include "../../../../../util/util.h"
 
 struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
 
@@ -14,19 +15,23 @@ struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
 		printf("TypeParam(...)\n");
 	}
 
-	struct TypeParam* res = malloc(sizeof(struct TypeParam));
-
-	struct Token* token = list_get(tokens, 0);
-	if(token == NULL){return NULL;}
+	struct Token* token = list_head(tokens);
+	if(token == NULL){
+		return NULL;
+	}
+	
+	struct TypeParam* res = smalloc(sizeof(struct TypeParam));
 
 	if (token->kind == TPARAM) {
 		res->index = atoi(token->value);
 		if(list_size(tokens) == 0){
+			free(res);
 			return NULL;
 		}
 		list_consume(tokens, 1);
 	} else {
 		//("Error: could not read type parameter node");
+		free(res);
 		return NULL;
 	}
 

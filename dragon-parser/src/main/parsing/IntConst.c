@@ -5,10 +5,11 @@
 #include "IntConst.h"
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
+#include "../../../../util/util.h"
 
 struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 
-	struct IntConst* res = malloc(sizeof(struct IntConst));
+	struct IntConst* res = smalloc(sizeof(struct IntConst));
 
 	if(debug){
 		printf("IntConst(...) from %s\n", list_code(tokens, debug));
@@ -16,8 +17,11 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 
 	struct TokenList* copy = list_copy(tokens);
 
-	struct Token* tk = list_get(copy, 0);
-	if(tk == NULL){return NULL;}
+	struct Token* tk = list_head(copy);
+	if(tk == NULL){
+		free(res);
+		return NULL;
+	}
 
 	switch (tk->kind){
 
@@ -29,12 +33,16 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 
 			) {
 				struct Token* mytk = list_get(copy,1);
-				if(mytk == NULL){return NULL;}
+				if(mytk == NULL){
+					free(res);
+					return NULL;
+				}
 				
 				res->value = - atoi( mytk->value );
 				list_consume(copy, 2);
 			} else {
 				// "cannot parse integer constant node with such operator:" + tk->value;
+				free(res);
 				return NULL;
 			}
 			break;
@@ -48,6 +56,7 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 		default:
 			;
 			// "could not read IntConst node";
+			free(res);
 			return NULL;
 	}
 
