@@ -78,5 +78,6 @@ void freeVariable(struct Variable* var){
 	for(int i=0;i < var->count_memberAccessList; i++){
 		freeVariable(var->memberAccessList[i]);
 	}
+	free(var->memberAccessList);
 	free(var);
 }

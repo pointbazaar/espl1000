@@ -121,7 +121,10 @@ bool list_expect_internal(struct TokenList* list, struct Token* token) {
 
 bool list_expect(struct TokenList* list, int token_kind){
 
-	return list_expect_internal(list, makeToken(token_kind));
+	struct Token* tk = makeToken(token_kind);
+	const bool res = list_expect_internal(list, tk);
+	freeToken(tk);
+	return res;
 }
 
 bool list_expect_2(struct TokenList* list, struct Token* tk){
@@ -147,13 +150,16 @@ struct TokenList* list_copy(struct TokenList* other) {
 
 void list_set(struct TokenList* list, struct TokenList* copy) {
 	
+	free(list->tokens);
+	
 	list->tokens = smalloc(sizeof(struct Token*) * copy->capacity);
 
 	list->capacity = copy->capacity;
 	list->tokensc = copy->tokensc;
 	list->indexHead = copy->indexHead;
 
-	memcpy(list->tokens, copy->tokens, copy->capacity * sizeof(struct Token*));
+	size_t size = copy->capacity * sizeof(struct Token*);
+	memcpy(list->tokens, copy->tokens, size);
 }
 
 struct Token* list_get(struct TokenList* list, int i) {

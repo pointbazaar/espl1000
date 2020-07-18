@@ -20,11 +20,12 @@ int boolconst_test_parse_bool_constant_node(bool debug)  {
 
 	struct BoolConst* b = makeBoolConst(list,debug);
 
-	if(b == NULL){
-		return 0;
-	}
+	if(b == NULL){ return 0;}
 
 	bool assert1 = b->value;
+	
+	freeBoolConst(b);
+	freeTokenList(list);
 
 	return (assert1)?1:0;
 }

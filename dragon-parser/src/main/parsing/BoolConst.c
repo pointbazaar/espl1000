@@ -18,38 +18,32 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 
-	struct TokenList* copy = list_copy(tokens);
+	//struct TokenList* copy = list_copy(tokens);
 	
 	struct BoolConst* res = smalloc(sizeof(struct BoolConst));
 	
-	if (list_head(copy)->kind == BCONST) {
+	struct Token* tk = list_head(tokens);
+	
+	if (tk->kind == BCONST) {
 		
-		struct Token* tk = list_head(copy);
-
 		if(strcmp(tk->value,"true") == 0) {
 			res->value = true;
 		}else if(strcmp(tk->value,"false") == 0){
 			res->value = false;
 		}else{
-			if(debug){
-				printf("tk->value was not satisfactory.\n");
-			}
+			printf("tk->value was not satisfactory.\n");
+			printf("boolconst parsing fatal error\n");
 			free(res);
-			freeTokenListShallow(copy);
-			return NULL;
+			exit(1);
 		}
-		list_consume(copy, 1);
+		list_consume(tokens, 1);
 	} else {
 		if(debug){
 			printf("token was not the right kind.\n");
 		}
 		free(res);
-		freeTokenListShallow(copy);
 		return NULL;
 	}
-
-	list_set(tokens, copy);
-	freeTokenListShallow(copy);
 
 	return res;
 }

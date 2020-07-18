@@ -15,6 +15,8 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 		printf("MethodCall(...) from: ");
 		list_print(tokens);
 	}
+	
+	if(list_size(tokens) < 3){ return NULL;}
 
 	struct MethodCall* res = smalloc(sizeof(struct MethodCall));
 
@@ -26,23 +28,24 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 
 	struct Identifier* id = makeIdentifier(copy,debug);
 	if(id == NULL){
+		free(res->args);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
 	}
 
-	res->methodName = id->identifier;
-
-	if(debug){
-		printf("try to parse LPARENS\n");
-	}
+	strcpy(res->methodName, id->identifier);
+	freeIdentifier(id);
 
 	if(list_size(copy) == 0){
+		free(res->args);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
 	}
+	
 	if(!list_expect(copy, LPARENS)){
+		free(res->args);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
@@ -53,6 +56,7 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 	}
 
 	if(list_size(copy) == 0){
+		free(res->args);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
@@ -71,6 +75,7 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 
 		struct Expr* expr = makeExpr(copy,debug);
 		if(expr == NULL){
+			free(res->args);
 			free(res);
 			freeTokenListShallow(copy);
 			return NULL;
@@ -83,6 +88,7 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 
 		next = list_head(copy);
 		if(next == NULL){
+			free(res->args);
 			free(res);
 			freeTokenListShallow(copy);
 			return NULL;
@@ -92,6 +98,7 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 	}
 
 	if(!list_expect(copy, RPARENS)){
+		free(res->args);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
@@ -109,10 +116,11 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 
 void freeMethodCall(struct MethodCall* mc){
 	printf("DEBUG: freeMethodCall\n");
-	//TODO: inline mc->methodName
+	
 	for(int i=0;i < mc->count_args; i++){
 		freeExpr(mc->args[i]);
 	}
+	free(mc->args);
 	printf("DEBUG: freeMethodCall 2\n");
 	free(mc);
 }

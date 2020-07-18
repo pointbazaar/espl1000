@@ -154,7 +154,7 @@ struct IfStmt{
 	struct Stmt** elseStatements;
 };
 struct MethodCall {
-	char* methodName;
+	char methodName[20];
 
 	//arguments to the subroutine call
 	int count_args;

@@ -14,9 +14,7 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 		printf("FloatConst(...)\n");
 	}
 
-	if(list_size(tokens) == 0){
-		return NULL;
-	}
+	if(list_size(tokens) == 0){ return NULL; }
 
 	struct FloatConst* res = smalloc(sizeof(struct FloatConst));
 
@@ -24,41 +22,32 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
 	struct Token* tk = list_head(copy);
 
-	float f = 1.0;
+	res->value = 1.0;
+	
 	if(tk->kind == OPKEY && strcmp(tk->value, "-") == 0){
-		f = -1.0;
+		
+		res->value = -1.0;
+		
 		list_consume(copy, 1);
 
-		if(debug){
-			printf("parsed sign\n");
-		}
-	}
-
-	if(debug){
-		printf("%s\n", list_code(copy,debug));
+		if(debug){ printf("parsed sign\n"); }
 	}
 
 	if(list_size(copy) == 0){
-		free(res);
+		freeFloatConst(res);
 		freeTokenListShallow(copy);
 		return NULL;
 	}
 
-	if(list_head(copy)->kind == FLOATING){
-
-		res->value = atof(list_head(copy)->value);
-		list_consume(copy, 1);
-
-	}else{
-		//could not find a float const
-		free(res);
+	if(list_head(copy)->kind != FLOATING){
+		freeFloatConst(res);
 		freeTokenListShallow(copy);
 		return NULL;
 	}
 
-	res->value *= f;
+	res->value *= atof(list_head(copy)->value);
+	list_consume(copy, 1);
 
-	//--------------------------
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
