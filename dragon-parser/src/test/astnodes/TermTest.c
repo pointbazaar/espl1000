@@ -81,6 +81,7 @@ int term_test_parentheses(bool debug){
 
 	const bool a2 = strcmp(sv->name,"x") == 0;
 	
+	
 	freeTokenList(list);
 	freeTerm(t);
 

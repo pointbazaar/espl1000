@@ -142,8 +142,8 @@ bool test_all_inner(bool debug){
 	tests[k++] = subrtype_test_typename_subroutine_return_type;
 	
 	//TODO: 
-	for(int i=0; i < k;i++){
-	//for(int i=0; i < 14;i++){
+	//for(int i=0; i < k;i++){
+	for(int i=0; i < 25;i++){
 		passed += tests[i](debug);
 		count++;
 		if(passed < count){

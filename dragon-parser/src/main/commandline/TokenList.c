@@ -21,6 +21,7 @@ struct TokenList* makeTokenList() {
 
 	res->tokens = smalloc(sizeof(struct Token*)*initial_size);
 	res->indexHead = 0;
+	res->tokensStored = 0;
 
 	res->capacity = initial_size;
 
@@ -39,9 +40,11 @@ void list_add(struct TokenList* list, struct Token* token) {
 		list->capacity = list->capacity * 2;
 		list->tokens = realloc(list->tokens, list->capacity * sizeof(struct Token*));
 	}
-
+	
+	
 	list->tokens[list->indexHead + list->tokensc] = token;
 	list->tokensc += 1;
+	list->tokensStored += 1;
 }
 
 void list_consume(struct TokenList* list, int amount) {
@@ -60,10 +63,12 @@ bool list_startsWith(struct TokenList* list, struct Token* token) {
 	//the class and the content of the token should be the same for them to be the same
 
 	if (list_size(list) > 0) {
-		return tokenEquals(
+		const bool res = tokenEquals(
 			list_head(list),
 			token
 		);
+		
+		return res;
 	}
 	return false;
 }
@@ -103,6 +108,7 @@ bool list_expect_internal(struct TokenList* list, struct Token* token) {
 	strcat(str,")");
 
 	strcat(str,"\t actual: ");
+	
 	strcat(str,list_head(list)->value);
 	
 	strcat(str, " (");
@@ -112,9 +118,14 @@ bool list_expect_internal(struct TokenList* list, struct Token* token) {
 
 	strcat(str,")");
 	strcat(str,"     ");
-	strcat(str,list_code(list, false));
+	char* code = list_code(list, false);
+	strcat(str, code);
 	
 	strcat(str,"\n");
+	
+	printf("%s",str);
+	
+	free(code);
 	
 	return false;
 }
@@ -136,16 +147,10 @@ struct TokenList* list_copy(struct TokenList* other) {
 	//DEBUG
 	//printf("list_copy(...)\n");
 
-	struct TokenList* res = makeTokenList();
-
-	strcpy(res->relPath, other->relPath);
+	struct TokenList* list = makeTokenList();
+	list_set(list, other);
 	
-	for(int i = 0; i < list_size(other); i++){
-		
-		list_add(res, list_get(other, i));
-	}
-	
-	return res;
+	return list;
 }
 
 void list_set(struct TokenList* list, struct TokenList* copy) {
@@ -157,6 +162,7 @@ void list_set(struct TokenList* list, struct TokenList* copy) {
 	list->capacity = copy->capacity;
 	list->tokensc = copy->tokensc;
 	list->indexHead = copy->indexHead;
+	list->tokensStored = copy->tokensStored;
 
 	size_t size = copy->capacity * sizeof(struct Token*);
 	memcpy(list->tokens, copy->tokens, size);
@@ -227,8 +233,10 @@ void freeTokenList(struct TokenList* list){
 	
 	//also frees the tokens within,
 	//even those already consumed
-	size_t size = list->indexHead + list->tokensc;
-	for(int i=0;i < size; i++){
+	
+	for(int i=0;i < list->tokensStored; i++){
+		//DEBUG
+		//printf("free element %d\n", i);
 		freeToken(list->tokens[i]);
 	}
 	freeTokenListShallow(list);

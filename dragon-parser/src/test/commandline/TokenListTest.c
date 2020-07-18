@@ -42,15 +42,18 @@ int test_tokenlist_consume(bool debug){
 
 	list_add(list, makeToken2(ID,"x"));
 	
-	bool assert1 = list_size(list) == 1;
+	bool a1 = list_size(list) == 1;
 
 	list_consume(list, 1);
 
-	bool assert2 = list_size(list) == 0;
+	bool a2 = list_size(list) == 0;
+	
+	//introspection
+	bool a3 = list->indexHead == 1;
 	
 	freeTokenList(list);
 
-	return (assert1 && assert2)?1:0;
+	return (a1 && a2 && a3)?1:0;
 }
 
 int test_tokenlist_get(bool debug){

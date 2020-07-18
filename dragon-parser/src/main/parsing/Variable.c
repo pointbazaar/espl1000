@@ -16,6 +16,8 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 		printf("Variable(...) from ");
 		list_print(tokens);
 	}
+	
+	if(list_size(tokens) < 1){ return NULL; }
 
 	struct Variable* res = smalloc(sizeof(struct Variable));
 	res->simpleVar = NULL;
@@ -27,6 +29,7 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 
 	res->simpleVar = makeSimpleVar(copy,debug);
 	if(res->simpleVar == NULL){
+		free(res->memberAccessList);
 		free(res);
 		return NULL;
 	}
@@ -39,6 +42,7 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 
 			struct Variable* myvar = makeVariable(copy,debug);
 			if(myvar == NULL){
+				free(res->memberAccessList);
 				free(res);
 				freeTokenListShallow(copy);
 				return NULL;
@@ -52,6 +56,7 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 			if (list_size(copy) > 0) {
 				next = list_head(copy);
 				if(next == NULL){
+					free(res->memberAccessList);
 					free(res);
 					freeTokenListShallow(copy);
 					return NULL;

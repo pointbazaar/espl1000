@@ -37,6 +37,8 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 		printf("Term(...) from ");
 		list_print(tokens);
 	}
+	
+	if(list_size(tokens) == 0){return NULL;}
 
 	struct Term* res = smalloc(sizeof(struct Term));
 	
@@ -61,14 +63,17 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 		res->m5 = makeExpr(copy,debug);
 		if(res->m5 == NULL){
 			free(res);
-			return NULL;
+			freeTokenListShallow(copy);
+			printf("expected an Expression, but got :");
+			list_print(copy);
+			exit(1);
 		}
 		
 		if(!list_expect(copy, RPARENS)){
 			//this part can be parsed deterministically
-			printf("expected ')', but was: %s\n", list_code(copy, debug));
+			printf("expected ')', but was: ");
+			list_print(copy);
 			exit(1);
-			return NULL;
 		}
 
 	}else{
@@ -76,53 +81,28 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 		if(debug){
 			printf("try to parse ordinary Term\n");
 		}
-
-		bool fail = false;
 		
-		res->m2 = makeIntConst(copy,debug);
-		if(res->m2 == NULL){fail = true;}
-
-		if(fail) {
-			fail = false;
-		
-			//a string constant is syntatic sugar.
-			//in the parsing stage it is converted to an array of char constants
-			//inline the stringConstant and its syntatic sugar
-			//struct Token* token = list_get(tokens, 0);
+		   res->m2 = makeIntConst(copy,debug);
+		if(res->m2 == NULL){
 			
-			//"Error: could not read stringConstant syntatic sugar";
-			fail = true;
+			   res->m7 = makeFloatConst(copy,debug);
+			if(res->m7 == NULL){
 				
-			if(fail){
-				fail=false;
-				res->m7 = makeFloatConst(copy,debug);
-				if(res->m7 == NULL){fail = true;}
-
-				if(fail){
-					fail=false;
-					res->m4 = makeMethodCall(copy,debug);
-					if(res->m4 == NULL){fail = true;}
-
-					if(fail && debug){
-						printf("parsing MethodCall failed\n");
-					}
-
-					if(fail) {
-						fail=false;
-						res->m1 = makeBoolConst(copy,debug);
-						if(res->m1 == NULL){fail = true;}
-
-						if(fail) {
-							fail = false;
-							res->m6 = makeVariable(copy,debug);
-							if(res->m6 == NULL){fail=true;}
-
-							if(fail) {
-								res->m3 = makeCharConst(copy,debug);
-								if(res->m3 == NULL){
-									free(res);
-									return NULL;
-								}
+				   res->m4 = makeMethodCall(copy,debug);
+				if(res->m4 == NULL){
+					
+					   res->m1 = makeBoolConst(copy,debug);
+					if(res->m1 == NULL){
+						
+						   res->m6 = makeVariable(copy,debug);
+						if(res->m6 == NULL){
+							
+							   res->m3 = makeCharConst(copy,debug);
+							if(res->m3 == NULL){
+								
+								free(res);
+								freeTokenListShallow(copy);
+								return NULL;
 							}
 						}
 					}

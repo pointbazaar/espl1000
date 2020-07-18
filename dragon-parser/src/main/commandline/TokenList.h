@@ -27,6 +27,10 @@ struct TokenList {
 	//the index of the first token that was
 	//not already consumed
 	int indexHead;
+	
+	//the amount of tokens stored,
+	//even if they have already been consumed
+	int tokensStored;
 
 	//token count
 	int tokensc; //private

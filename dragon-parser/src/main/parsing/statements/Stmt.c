@@ -18,9 +18,7 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 		printf("Stmt(...)\n");
 	}
 	
-	if (list_size(tokens) == 0) {
-		return NULL;
-	}
+	if (list_size(tokens) == 0) { return NULL; }
 
 	struct Stmt* res = smalloc(sizeof(struct Stmt));
 
@@ -49,7 +47,6 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 			printf("%s\n", list_code(copy, debug));
 			freeTokenListShallow(copy);
 			exit(1);
-			return NULL;
 		}
 
 	} else if (first->kind == IF) {
@@ -61,7 +58,6 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 			printf("%s\n", list_code(copy, debug));
 			freeTokenListShallow(copy);
 			exit(1);
-			return NULL;
 		}
 
 	} else if (first->kind == RETURN) {
@@ -73,7 +69,6 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 			printf("%s\n", list_code(copy, debug));
 			freeTokenListShallow(copy);
 			exit(1);
-			return NULL;
 		}
 
 	} else {
