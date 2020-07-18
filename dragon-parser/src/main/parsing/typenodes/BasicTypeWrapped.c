@@ -32,7 +32,8 @@ struct BasicTypeWrapped* makeBasicTypeWrappedSubr(struct SubrType* typeNode) {
 struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("BasicTypeWrapped(...) from: %s\n", list_code(tokens, debug));
+		printf("BasicTypeWrapped(...) from: ");
+		list_print(tokens);
 	}
 
 	struct BasicTypeWrapped* res = smalloc(sizeof(struct BasicTypeWrapped));

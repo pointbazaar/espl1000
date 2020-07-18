@@ -210,6 +210,13 @@ char* list_code(struct TokenList* list, bool debug) {
 	return str;
 }
 
+void list_print(struct TokenList* list){
+	
+	char* str = list_code(list, false);
+	printf("%s\n", str);
+	free(str);
+}
+
 void freeTokenList(struct TokenList* list){
 	
 	//also frees the tokens within,

@@ -13,7 +13,8 @@ struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 	struct DeclArg* res = smalloc(sizeof(struct DeclArg));
 
 	if(debug){
-		printf("DeclaredArg(...) from %s",list_code(tokens, debug));
+		printf("DeclaredArg(...) from ");
+		list_print(tokens);
 	}
 
 	struct TokenList* copy = list_copy(tokens);

@@ -12,7 +12,8 @@
 struct Op* makeOp(struct TokenList* tokens, bool debug){
 
 	if(debug){
-		printf("Op(...) from %s\n", list_code(tokens, debug));
+		printf("Op(...) from ");
+		list_print(tokens);
 	}
 
 	struct Op* res = smalloc(sizeof(struct Op));

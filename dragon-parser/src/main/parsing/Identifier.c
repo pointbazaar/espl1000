@@ -11,7 +11,8 @@
 struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("Identifier(...) from: %s\n", list_code(tokens, debug));
+		printf("Identifier(...) from: ");
+		list_print(tokens);
 	}
 
 	struct Identifier* res = smalloc(sizeof(struct Identifier));

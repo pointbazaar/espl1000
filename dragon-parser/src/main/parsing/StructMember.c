@@ -13,7 +13,8 @@
 struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 
 	if(debug){
-		printf("makeStructMember(...) from: %s\n", list_code(tokens, debug));
+		printf("makeStructMember(...) from: ");
+		list_print(tokens);
 	}
 
 	struct StructMember* res = smalloc(sizeof(struct StructMember));

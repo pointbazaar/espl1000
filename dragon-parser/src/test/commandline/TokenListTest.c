@@ -1,12 +1,12 @@
-#include "TokenListTest.h"
-
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-#include "../../main/commandline/Token.h"
-
 #include <stdio.h>
 #include <stdbool.h>
 #include <inttypes.h>
+#include <stdlib.h>
+
+#include "TokenListTest.h"
+#include "../../main/commandline/TokenList.h"
+#include "../../main/commandline/TokenKeys.h"
+#include "../../main/commandline/Token.h"
 
 int test_tokenlist1(bool debug){
 
@@ -95,9 +95,10 @@ int test_tokenlist_startswith(bool debug){
 
 	struct TokenList* list = makeTokenList();
 
-	list_add(list, makeToken2(ID,"x"));
+	struct Token* tk = makeToken2(ID,"x");
+	list_add(list, tk);
 
-	bool assert1 = list_startsWith(list, makeToken2(ID,"x"));
+	bool assert1 = list_startsWith(list, tk);
 	
 	freeTokenList(list);
 
@@ -127,6 +128,7 @@ int test_tokenlist_code(bool debug){
 	}
 	bool assert1 = strcmp(str, expect) == 0;
 	
+	free(str);
 	freeTokenList(list);
 
 	return (assert1)?1:0;

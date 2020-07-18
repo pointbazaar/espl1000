@@ -12,7 +12,8 @@
 struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 
 	if(debug){
-		printf("MethodCall(...) from: %s\n", list_code(tokens, debug));
+		printf("MethodCall(...) from: ");
+		list_print(tokens);
 	}
 
 	struct MethodCall* res = smalloc(sizeof(struct MethodCall));

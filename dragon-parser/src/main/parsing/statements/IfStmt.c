@@ -11,7 +11,8 @@
 struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("IfStmt(...) from: %s\n", list_code(tokens, debug)); 
+		printf("IfStmt(...) from: ");
+		list_print(tokens);
 	}
 
 	struct IfStmt* res = smalloc(sizeof(struct IfStmt));

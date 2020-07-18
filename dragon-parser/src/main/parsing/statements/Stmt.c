@@ -34,12 +34,6 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	struct TokenList* copy = list_copy(tokens);
 
 	struct Token* first = list_head(copy);
-	
-	if(first == NULL){
-		free(res);
-		freeTokenListShallow(copy);
-		return NULL;
-	}
 
 	if (first->kind == LOOP) {
 		//this->statementNode = LoopStatementNode(copy);

@@ -34,7 +34,8 @@ struct Term* makeTerm_other(struct Expr* expr){
 struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("Term(...) from %s\n", list_code(tokens, debug));
+		printf("Term(...) from ");
+		list_print(tokens);
 	}
 
 	struct Term* res = smalloc(sizeof(struct Term));

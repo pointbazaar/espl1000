@@ -10,7 +10,8 @@
 struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("makeBoolConst(...) from: %s\n", list_code(tokens, debug));
+		printf("makeBoolConst(...) from: ");
+		list_print(tokens);
 	}
 
 	if(list_size(tokens) == 0){

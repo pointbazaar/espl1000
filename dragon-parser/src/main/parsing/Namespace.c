@@ -14,7 +14,8 @@
 struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug) {
 
 	if (debug) {
-		printf("Namespace(...) from: %s\n", list_code(tokens, debug));
+		printf("Namespace(...) from: ");
+		list_print(tokens);
 	}
 
 	struct Namespace* res = smalloc(sizeof(struct Namespace));

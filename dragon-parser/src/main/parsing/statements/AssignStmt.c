@@ -13,7 +13,8 @@
 struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("AssignStmt(...) from: %s\n", list_code(tokens, debug));
+		printf("AssignStmt(...) from: ");
+		list_print(tokens);
 	}
 
 	struct AssignStmt* res = smalloc(sizeof(struct AssignStmt));

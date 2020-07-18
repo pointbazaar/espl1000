@@ -19,7 +19,8 @@ struct ArrayType* makeArrayType(struct Type* element_type){
 struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("ArrayType(...) from: %s\n", list_code(tokens, debug));
+		printf("ArrayType(...) from: ");
+		list_print(tokens);
 	}
 
 	struct ArrayType* res = smalloc(sizeof(struct ArrayType));

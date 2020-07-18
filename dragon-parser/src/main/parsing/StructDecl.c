@@ -12,7 +12,8 @@
 struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 
 	if(debug){
-		printf("makeStructDecl(...) from: %s\n", list_code(tokens, debug));
+		printf("makeStructDecl(...) from: ");
+		list_print(tokens);
 	}
 
 	struct StructDecl* res = smalloc(sizeof(struct StructDecl));

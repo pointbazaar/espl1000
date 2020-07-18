@@ -13,7 +13,8 @@
 struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("Variable(...) from %s\n", list_code(tokens, debug));
+		printf("Variable(...) from ");
+		list_print(tokens);
 	}
 
 	struct Variable* res = smalloc(sizeof(struct Variable));

@@ -11,7 +11,8 @@
 struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("SimpleType(...) from: %s\n", list_code(tokens, debug));
+		printf("SimpleType(...) from: ");
+		list_print(tokens);
 	}
 
 	struct SimpleType* res = smalloc(sizeof(struct SimpleType));

@@ -13,7 +13,8 @@
 struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("SimpleVar(...) from %s\n", list_code(tokens, debug));
+		printf("SimpleVar(...) from ");
+		list_print(tokens);
 	}
 	
 	if(list_size(tokens) == 0){ 
