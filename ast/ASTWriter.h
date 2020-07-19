@@ -18,6 +18,8 @@ void writeMethod(struct Method* m, 		FILE* file);
 void writeStructDecl(struct StructDecl* m, FILE* file);
 void writeStructMember(struct StructMember* m, FILE* file);
 
+void writeStmtBlock(struct StmtBlock* block, FILE* file);
+
 // -----------------------------------
 
 void writeDeclArg(struct DeclArg* m, 		FILE* file);

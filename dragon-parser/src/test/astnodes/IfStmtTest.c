@@ -30,8 +30,8 @@ int if_test1(bool debug) {
 	bool a1 = (0 == list_size(list));
 	if(i == NULL){return 0;}
 
-	bool a2 = i->count_statements == 0;
-	bool a3 = i->count_elseStatements == 0;
+	bool a2 = i->block->count == 0;
+	bool a3 = i->elseBlock == NULL;
 
 	struct Expr* condition = i->condition;
 	if(condition == NULL){return 0;}
@@ -80,8 +80,8 @@ int if_test2(bool debug) {
 	struct Expr* condition = i->condition;
 	if(condition == NULL){return 0;}
 
-	bool a1 = i->count_statements == 1;
-	bool a2 = i->count_elseStatements == 0;
+	bool a1 = i->block->count == 1;
+	bool a2 = i->elseBlock == NULL;
 	
 	freeTokenList(l);
 	freeIfStmt(i);

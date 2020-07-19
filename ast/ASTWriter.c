@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "ASTWriter.h"
+#include "../util/util.h"
 
 void writeNamespace(struct Namespace* nsn, FILE* file){
 	printf("writeNamespace\n");
@@ -33,14 +34,10 @@ void writeMethod(struct Method* m, FILE* file){
 	fprintf(file,"%d\t",m->count_args);
 	for(int i = 0;i < m->count_args;i++){ 
 		struct DeclArg* arg = m->args[i];
-		writeDeclArg(arg,file); 
+		writeDeclArg(arg, file); 
 	}
 
-	fprintf(file,"%d\t",m->count_stmts);
-	for(int i = 0;i < m->count_stmts;i++){ 
-		struct Stmt* s = m->stmts[i];
-		writeStmt(s,file); 
-	}
+	writeStmtBlock(m->block, file);
 }
 void writeStructDecl(struct StructDecl* m, FILE* file){
 	printf("writeStructDecl\n");
@@ -58,6 +55,19 @@ void writeStructMember(struct StructMember* m, FILE* file){
 	writeType(m->type, file);
 	fprintf(file, "%s\t", m->name);
 }
+
+void writeStmtBlock(struct StmtBlock* block, FILE* file){
+	printf("writeStmtBlock\n");
+	
+	fprintf(file, "StmtBlock\t");
+	fprintf(file, "%d\t", block->count);
+	for(int i=0;i < block->count; i++){
+		writeStmt(block->stmts[i], file);
+	}
+}
+
+// ----------------------------
+
 void writeDeclArg(struct DeclArg* m, FILE* file){
 	printf("writeDeclArg\n");
 	
@@ -171,18 +181,15 @@ void writeIfStmt(struct IfStmt* m, FILE* file){
 
 	fprintf(file, "IfStmt\t");
 
-	writeExpr(m->condition,file);
+	writeExpr(m->condition, file);
 
-	fprintf(file, "%d\t", m->count_statements);
-	for(int i = 0;i < m->count_statements;i++){ 
-		struct Stmt* s = m->statements[i];
-		writeStmt(s,file); 
-	}
-
-	fprintf(file, "%d\t", m->count_elseStatements);
-	for(int i = 0;i < m->count_elseStatements;i++){ 
-		struct Stmt* s2 = m->elseStatements[i];
-		writeStmt(s2,file); 
+	writeStmtBlock(m->block, file);
+	
+	//indicate if there is an else block
+	fprintf(file, "%d\t", (m->elseBlock != NULL)?1:0);
+	
+	if(m->elseBlock != NULL){
+		writeStmtBlock(m->elseBlock, file);
 	}
 }
 
@@ -190,13 +197,9 @@ void writeWhileStmt(struct WhileStmt* m, FILE* file){
 
 	fprintf(file, "WhileStmt\t");
 
-	writeExpr(m->condition,file);
+	writeExpr(m->condition, file);
 
-	fprintf(file, "%d\t", m->count_statements);
-	for(int i = 0;i < (m->count_statements);i++){ 
-		struct Stmt* s = m->statements[i];
-		writeStmt(s,file); 
-	}
+	writeStmtBlock(m->block, file);
 }
 
 void writeRetStmt(struct RetStmt* m, FILE* file){

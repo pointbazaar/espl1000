@@ -12,6 +12,7 @@
 #include "astnodes/MethodCallTest.h"
 #include "astnodes/RetStmtTest.h"
 #include "astnodes/StmtTest.h"
+#include "astnodes/StmtBlockTest.h"
 #include "astnodes/SubrTypeTest.h"
 #include "astnodes/WhileStmtTest.h"
 #include "astnodes/BasicTypeWrappedTest.h"
@@ -95,23 +96,9 @@ bool test_all_inner(bool debug){
 	tests[k++] = variable_test_parse_struct_member_access;
 	tests[k++] = variable_test_parse_struct_member_access_and_index_access;
 
-	tests[k++] = if_test1;
-	tests[k++] = if_test2;
-
 	tests[k++] = retstmt_test1;
 	tests[k++] = retstmt_test2;
 	tests[k++] = retstmt_test3;
-
-	tests[k++] = whilestmt_test1;
-	tests[k++] = whilestmt_test2;
-
-	tests[k++] = assignstmt_test1;
-	tests[k++] = assignstmt_test_assign_char;
-	tests[k++] = assignstmt_test_assign_method_call_result;
-	tests[k++] = assignstmt_test_assign_method_call_result_2;
-	tests[k++] = assignstmt_test_assign_variable_with_array_index;
-	tests[k++] = assignstmt_test_can_assign_to_struct_member;
-	tests[k++] = assignstmt_test_type_declaration_for_variable;
 	
 	tests[k++] = methodcall_test1;
 	tests[k++] = methodcall_test2;
@@ -122,6 +109,22 @@ bool test_all_inner(bool debug){
 	tests[k++] = stmt_test_assignment_statement_with_method_call;
 	tests[k++] = stmt_test_assignment_statement_with_struct_access;
 	
+	tests[k++] = assignstmt_test1;
+	tests[k++] = assignstmt_test_assign_char;
+	tests[k++] = assignstmt_test_assign_method_call_result;
+	tests[k++] = assignstmt_test_assign_method_call_result_2;
+	tests[k++] = assignstmt_test_assign_variable_with_array_index;
+	tests[k++] = assignstmt_test_can_assign_to_struct_member;
+	tests[k++] = assignstmt_test_type_declaration_for_variable;
+	
+	tests[k++] = test_stmtblock_1;
+	
+	tests[k++] = if_test1;
+	tests[k++] = if_test2;
+
+	tests[k++] = whilestmt_test1;
+	tests[k++] = whilestmt_test2;
+
 	tests[k++] = method_test_can_parse_method_with_arguments;
 	tests[k++] = method_test_can_parse_method_without_arguments;
 	tests[k++] = method_test_can_parse_subroutine;
@@ -142,8 +145,8 @@ bool test_all_inner(bool debug){
 	tests[k++] = subrtype_test_typename_subroutine_return_type;
 	
 	//TODO: 
-	//for(int i=0; i < k;i++){
-	for(int i=0; i < 25;i++){
+	for(int i=0; i < k;i++){
+	//for(int i=0; i < 25;i++){
 		passed += tests[i](debug);
 		count++;
 		if(passed < count){

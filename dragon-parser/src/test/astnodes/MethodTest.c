@@ -37,10 +37,10 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 	if(
 		m == NULL
 		|| m->count_args != 1
-		|| m->count_stmts != 1
-		|| m->stmts == NULL
+		|| m->block->count != 1
+		|| m->block == NULL
 		|| m->args == NULL
-		|| m->stmts[0] == NULL
+		|| m->block->stmts[0] == NULL
 		|| m->args[0] == NULL
 	){ 
 		printf("method not complete \n");

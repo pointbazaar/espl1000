@@ -38,7 +38,9 @@ Type ::= BasicTypeWrapped | TypeParameter | ArrayType
 simplevariable ::= identifier ('[' expression ']')?
 variable ::= simplevariable ('.' variable)*
 
-method ::= 'fn' identifier '(' declaredArgument* ')' arrow Type '{' statement* '}'
+stmtblock ::= '{' statement* '}'
+
+method ::= 'fn' identifier '(' declaredArgument* ')' arrow Type stmtblock
 
 declaredArgument ::= Type identifier? 
 
@@ -55,12 +57,12 @@ statement ::=   ( methodCall ';' )
 methodCall ::= identifier '(' (expression (, expression)*)?  ')'
 
 //currently not in use
-loopStatement ::= 'loop' expression '{' statement* '}'
+loopStatement ::= 'loop' expression stmtblock
 
-whileStatement ::= 'while' expression '{' statement* '}'
+whileStatement ::= 'while' expression stmtblock
 
-ifStatement ::= 'if' expression '{' statement* '}' 
-				( 'else' '{' statement* '}' )?
+ifStatement ::= 'if' expression stmtblock
+				( 'else' stmtblock )?
 				
 returnStatement ::= 'return' expression? ';'
 

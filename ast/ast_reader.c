@@ -4,6 +4,7 @@
 
 #include "ast.h"
 #include "ast_reader.h"
+#include "../util/util.h"
 
 struct AST_Whole_Program* readAST(char* filename, bool debug){
 	FILE* file = fopen(filename,"r");
@@ -86,15 +87,12 @@ struct Method* readMethod(FILE* file, bool debug){
 		m->args[i] = readDeclArg(file, debug);
 	}
 
-	fscanf(file,"%d\t",&(m->count_stmts));
-
-	for(int i = 0;i < m->count_stmts;i++){
-		m->stmts[i] = readStmt(file, debug);
-	}
+	m->block = readStmtBlock(file, debug);
+	
 	return m;
 }
 struct StructDecl* readStructDecl(FILE* file, bool debug){
-	struct StructDecl* res = malloc(sizeof(struct StructDecl));
+	struct StructDecl* res = smalloc(sizeof(struct StructDecl));
 	fscanf(file, "StructDecl\t");
 	fscanf(file, "%s\t%d\t",res->name, &(res->count_members));
 	res->members = malloc(sizeof(struct StructMember*)*res->count_members);
@@ -104,12 +102,26 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 	return res;
 }
 struct StructMember* readStructMember(FILE* file, bool debug){
-	struct StructMember* res = malloc(sizeof(struct StructMember));
+	struct StructMember* res = smalloc(sizeof(struct StructMember));
 	fscanf(file, "StructMember\t");
 	res->type = readType(file, debug);
 	fscanf(file, "%s\t", res->name);
 	return res;
 }
+
+struct StmtBlock* readStmtBlock(FILE* file, bool debug){
+	struct StmtBlock* block = smalloc(sizeof(struct StmtBlock));
+	fscanf(file, "StmtBlock\t");
+	fscanf(file, "%d\t", &(block->count));
+	block->stmts = smalloc(sizeof(struct Stmt*)* block->count);
+	for(int i=0;i < block->count; i++){
+		block->stmts[i] = readStmt(file, debug);
+	}
+	return block;
+}
+
+// -----------------------
+
 struct DeclArg* readDeclArg(FILE* file, bool debug){
 	struct DeclArg* da = malloc(sizeof(struct DeclArg));
 
@@ -280,25 +292,23 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	return b;
 }
 struct IfStmt* readIfStmt(FILE* file, bool debug){
-	struct IfStmt* v = malloc(sizeof(struct IfStmt));
+	struct IfStmt* v = smalloc(sizeof(struct IfStmt));
+	v->condition = NULL;
+	v->block = NULL;
+	v->elseBlock = NULL;
+	
 	char next[10];
 	fscanf(file, "%s\t",next);
 	if(strcmp(next,"IfStmt") != 0){ return NULL; }
 
 	v->condition = readExpr(file, debug);
 
-	v->count_statements = 0;
-	fscanf(file, "%d\t", &(v->count_statements));
-	v->statements = malloc(sizeof(struct Stmt*)*(v->count_statements));
-	for(int i=0;i < (v->count_statements);i++){
-		v->statements[i] = readStmt(file, debug);
-	}
+	v->block = readStmtBlock(file, debug);
 
-	v->count_elseStatements = 0;
-	fscanf(file, "%d\t", &(v->count_elseStatements));
-	v->elseStatements = malloc(sizeof(struct Stmt*)*(v->count_elseStatements));
-	for(int i=0;i < (v->count_elseStatements);i++){
-		v->elseStatements[i] = readStmt(file, debug);
+	int hasElse=0;
+	fscanf(file, "%d\t", &hasElse);
+	if(hasElse != 0){
+		v->elseBlock = readStmtBlock(file, debug);
 	}
 	return v;
 }
@@ -309,13 +319,8 @@ struct WhileStmt* readWhileStmt(FILE* file, bool debug){
 	if(strcmp(next,"WhileStmt") != 0){ return NULL; }
 
 	v->condition = readExpr(file, debug);
-
-	v->count_statements = 0;
-	fscanf(file, "%d\t", &(v->count_statements));
-	v->statements = malloc(sizeof(struct Stmt*)*(v->count_statements));
-	for(int i=0;i < (v->count_statements);i++){
-		v->statements[i] = readStmt(file, debug);
-	}
+	v->block = readStmtBlock(file, debug);
+	
 	return v;
 }
 struct RetStmt* readRetStmt(FILE* file, bool debug){

@@ -33,7 +33,7 @@ int whilestmt_test1(bool debug) {
 	if(ws == NULL){return 0;}
 	
 	
-	bool a1 = ws->count_statements == 0;
+	bool a1 = ws->block->count == 0;
 	bool a2 = ws->condition != NULL;
 	
 	freeTokenList(list);
@@ -68,7 +68,7 @@ int whilestmt_test2(bool debug){
 	struct WhileStmt* ws = makeWhileStmt(list,debug);
 	if(ws == NULL){ return 0; }
 	
-	bool a1 = ws->count_statements == 0;
+	bool a1 = ws->block->count == 0;
 	bool a2 = ws->condition != NULL;
 	
 	struct Expr* e = ws->condition;

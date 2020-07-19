@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "Method.h"
+#include "StmtBlock.h"
 #include "typenodes/Type.h"
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
@@ -27,8 +28,7 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 	res->hasSideEffects = true;
 	res->count_args = 0;
 	res->args = smalloc(sizeof(struct DeclArg*)*1);
-	res->count_stmts = 0;
-	res->stmts = smalloc(sizeof(struct Stmt*)*1);
+	res->block = NULL;
 
 	struct TokenList* copy = list_copy(tokens);
 
@@ -80,60 +80,34 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 		next = list_head(copy);
 		if(next == NULL){
 			free(res);
+			freeTokenListShallow(copy);
 			return NULL;
 		}
 	}
 
 	if(!list_expect(copy, RPARENS)){
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 
 	if(!list_expect(copy, ARROW)){
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 	
 	res->returnType = makeType2(copy,debug);
 	if(res->returnType == NULL){
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 
-	if(!list_expect(copy, LCURLY)){
+	res->block = makeStmtBlock(copy, debug);
+	if(res->block == NULL){
 		free(res);
-		return NULL;
-	}
-
-	struct Token* tk_next = list_head(copy);
-	if(tk_next == NULL){
-		free(res);
-		return NULL;
-	}
-
-	while (tk_next->kind != RCURLY) {
-
-		struct Stmt* mystmt = makeStmt(copy, debug);
-		if(mystmt == NULL){
-			free(res);
-			return NULL;
-		}
-
-		res->stmts[res->count_stmts] = mystmt;
-		res->count_stmts += 1;
-		
-		size_t newsize = sizeof(struct Stmt*)*(res->count_stmts+1);
-		res->stmts = realloc(res->stmts, newsize);
-
-		tk_next = list_head(copy);
-		if(tk_next == NULL){
-			free(res);
-			return NULL;
-		}
-	}
-
-	if(!list_expect(copy, RCURLY)){
-		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 	
@@ -155,9 +129,9 @@ void freeMethod(struct Method* m){
 	for(int i=0;i < m->count_args; i++){
 		freeDeclArg(m->args[i]);
 	}
-	for(int i=0;i < m->count_stmts; i++){
-		freeStmt(m->stmts[i]);
-	}
+	free(m->args);
+	
+	freeStmtBlock(m->block);
 	free(m);
 }
 

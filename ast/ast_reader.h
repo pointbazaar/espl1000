@@ -13,6 +13,7 @@ struct Namespace* readNamespace(FILE* file, bool debug);
 struct Method* readMethod(FILE* file, bool debug);
 struct StructDecl* readStructDecl(FILE* file, bool debug);
 struct StructMember* readStructMember(FILE* file, bool debug);
+struct StmtBlock* readStmtBlock(FILE* file, bool debug);
 
 // ------------------------
 struct DeclArg* readDeclArg(FILE* file, bool debug);

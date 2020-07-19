@@ -9,6 +9,8 @@ struct Namespace;
 struct Method;
 struct StructDecl;
 
+struct StmtBlock;
+
 struct TokenList;
 struct Op;
 struct Term;
@@ -85,8 +87,7 @@ struct Method {
 	int count_args;
 	struct DeclArg** args;
 
-	int count_stmts;
-	struct Stmt** stmts;
+	struct StmtBlock* block;
 };
 struct Namespace {
 	//a namespace is represented by a filename.
@@ -101,6 +102,10 @@ struct Namespace {
 
 	struct StructDecl** structs;
 	int count_structs;
+};
+struct StmtBlock {
+	int count;
+	struct Stmt** stmts;
 };
 struct Op {
 	char* op;
@@ -147,11 +152,8 @@ struct AssignStmt {
 struct IfStmt{
 	struct Expr* condition;
 
-	int count_statements;
-	struct Stmt** statements;
-
-	int count_elseStatements;
-	struct Stmt** elseStatements;
+	struct StmtBlock* block;
+	struct StmtBlock* elseBlock;
 };
 struct MethodCall {
 	char methodName[20];
@@ -173,8 +175,7 @@ struct Stmt {
 };
 struct WhileStmt  {
 	struct Expr* condition;
-	int count_statements;
-	struct Stmt** statements;
+	struct StmtBlock* block;
 };
 struct ArrayType {
 	struct Type* element_type;
