@@ -2,12 +2,15 @@ FLAGS := -O0 -march=native -g -Wall
 
 all: dragon-parser
 
-dragon-parser: commandline parsing typenodes statements build/util.o tests
+dragon-parser: commandline parsing typenodes statements build/util.o build/ASTWriter.o tests
 	mv *.o build/
 	gcc $(FLAGS) -o dragon-parser build/*.o
 
-build/util.o: ../util/util.c ../util/util.h
+build/util.o: 
 	gcc $(FLAGS) -c ../util/util.c
+
+build/ASTWriter.o: 
+	gcc $(FLAGS) -c ../ast/ASTWriter.c
 
 commandline: src/main/commandline/*.c ../ast/*.c
 	gcc $(FLAGS) -c src/main/commandline/*.c ../ast/*.c

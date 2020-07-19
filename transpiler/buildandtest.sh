@@ -5,8 +5,7 @@
 rm sd
 rm /usr/bin/sd
 
-make -j8
-make clean
+make -j8 smalldragon
 
 #copy the executable to /usr/bin
 cp sd /usr/bin/
