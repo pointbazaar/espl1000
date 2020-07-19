@@ -2,14 +2,12 @@ FLAGS := -O0 -march=native -g -Wall
 
 all: dragon-parser
 
-clean: 
-	rm *.o
+dragon-parser: commandline parsing typenodes statements build/util.o tests
+	mv *.o build/
+	gcc $(FLAGS) -o dragon-parser build/*.o
 
-dragon-parser: commandline parsing typenodes statements util tests
-	gcc $(FLAGS) -o dragon-parser *.o
-
-util: ../util/*.c
-	gcc $(FLAGS) -c ../util/*.c
+build/util.o: ../util/util.c ../util/util.h
+	gcc $(FLAGS) -c ../util/util.c
 
 commandline: src/main/commandline/*.c ../ast/*.c
 	gcc $(FLAGS) -c src/main/commandline/*.c ../ast/*.c
