@@ -9,6 +9,8 @@ void gen_java_namespace(struct Namespace* ns, FILE* file);
 
 void gen_java_method(struct Method* m, FILE* file);
 
+void gen_java_stmtblock(struct StmtBlock* m, FILE* file);
+
 //-----------------------
 
 void gen_java_declarg(struct DeclArg* da, FILE* file);

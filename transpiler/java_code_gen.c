@@ -52,12 +52,15 @@ void gen_java_method(struct Method* m, FILE* file){
 			}
 	}
 	
+	gen_java_stmtblock(m->block, file);
+	
+}
+
+void gen_java_stmtblock(struct StmtBlock* block, FILE* file){
 	fprintf(file, "){\n");
-	
-	for(int i=0;i < m->count_stmts; i++){
-			gen_java_stmt(m->stmts[i], file);
+	for(int i=0;i < block->count; i++){
+		gen_java_stmt(block->stmts[i], file);
 	}
-	
 	fprintf(file, "}\n");
 }
 
@@ -113,32 +116,21 @@ void gen_java_methodcall(struct MethodCall* m, FILE* file){
 void gen_java_whilestmt(struct WhileStmt* m, FILE* file){
 	fprintf(file, "while (");
 	gen_java_expr(m->condition, file);
-	fprintf(file, ") {\n");
+	fprintf(file, ") ");
 	
-	for(int i=0;i<m->count_statements;i++){
-		gen_java_stmt(m->statements[i], file);
-	}
-	
-	fprintf(file, "}");
+	gen_java_stmtblock(m->block, file);
 }
 void gen_java_ifstmt(struct IfStmt* m, FILE* file){
 	fprintf(file, "if (");
 	gen_java_expr(m->condition, file);
-	fprintf(file, ") {\n");
+	fprintf(file, ") ");
 	
-	for(int i=0;i<m->count_statements;i++){
-		gen_java_stmt(m->statements[i], file);
+	gen_java_stmtblock(m->block, file);
+	
+	if(m->elseBlock != NULL){
+		fprintf(file, "else if ");
+		gen_java_stmtblock(m->elseBlock, file);
 	}
-	
-	fprintf(file, "}");
-	
-	fprintf(file, "else if {\n");
-	
-	for(int i=0;i<m->count_elseStatements;i++){
-		gen_java_stmt(m->elseStatements[i], file);
-	}
-	
-	fprintf(file, "}");
 }
 void gen_java_retstmt(struct RetStmt* m, FILE* file){
 	fprintf(file, "return ");
