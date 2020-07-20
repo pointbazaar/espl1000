@@ -35,6 +35,7 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 
 	if(!list_expect(copy, LPARENS)){
 		freeTokenListShallow(copy);
+		free(res->argTypes);
 		free(res);
 		return NULL;
 	}
@@ -82,12 +83,14 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 
 	if(!list_expect(copy, RPARENS)){
 		freeTokenListShallow(copy);
+		free(res->argTypes);
 		free(res);
 		return NULL;
 	}
 
 	if(!list_expect(copy, ARROW)){
 		freeTokenListShallow(copy);
+		free(res->argTypes);
 		free(res);
 		return NULL;
 	}
@@ -95,6 +98,7 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 	res->returnType = makeType2(copy,debug);
 	if(res->returnType == NULL){
 		freeTokenListShallow(copy);
+		free(res->argTypes);
 		free(res);
 		return NULL;
 	}
@@ -110,5 +114,6 @@ void freeSubrType(struct SubrType* st){
 	for(int i=0;i < st->count_argTypes; i++){
 		freeType(st->argTypes[i]);
 	}
+	free(st->argTypes);
 	free(st);
 }

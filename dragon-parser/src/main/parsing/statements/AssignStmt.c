@@ -42,12 +42,15 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 
-	if(!list_expect_2(copy, makeToken2(EQ,"="))){ 
+	struct Token* tkeq = makeToken2(EQ,"=");
+	if(!list_expect_2(copy, tkeq)){ 
+		freeToken(tkeq);
 		freeVariable(res->var);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
 	}
+	freeToken(tkeq);
 
 	res->expr = makeExpr(copy,debug);
 	if(res->expr == NULL){

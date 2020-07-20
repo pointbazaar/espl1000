@@ -36,7 +36,10 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	if (first->kind == LOOP) {
 		//this->statementNode = LoopStatementNode(copy);
 		printf("currently unsupported : 'LOOP'\n");
+		
 		freeTokenListShallow(copy);
+		free(res);
+		
 		exit(1);
 	} else if (first->kind == WHILE) {
 		res->m2 = makeWhileStmt		(copy,debug);
@@ -44,8 +47,11 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 			//parsing is deterministic here. 
 			//so this is a fatal error
 			printf("expected while stmt, but was:\n");
-			printf("%s\n", list_code(copy, debug));
+			list_print(copy);
+			
 			freeTokenListShallow(copy);
+			free(res);
+			
 			exit(1);
 		}
 
@@ -55,8 +61,10 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 			//parsing is deterministic here. 
 			//so this is a fatal error
 			printf("expected if stmt, but was:\n");
-			printf("%s\n", list_code(copy, debug));
+			list_print(copy);
+			
 			freeTokenListShallow(copy);
+			free(res);
 			exit(1);
 		}
 
@@ -66,8 +74,10 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 			//parsing is deterministic here. 
 			//so this is a fatal error
 			printf("expected return stmt, but was:\n");
-			printf("%s\n", list_code(copy, debug));
+			list_print(copy);
+			
 			freeTokenListShallow(copy);
+			free(res);
 			exit(1);
 		}
 
@@ -88,12 +98,17 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 			res->m1 = makeMethodCall(copy,debug);
 			if(res->m1 == NULL){
 				printf("expected method call, but was:\n");
-				printf("%s\n", list_code(copy, debug));
+				list_print(copy);
+				
 				freeTokenListShallow(copy);
+				free(res);
+				
 				exit(1);
 			}
 			if(!list_expect(copy, SEMICOLON)){
 				freeTokenListShallow(copy);
+				free(res);
+				
 				exit(1);
 			}
 		}
@@ -110,8 +125,6 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 }
 
 void freeStmt(struct Stmt* s){
-	printf("DEBUG: freeStmt\n");
-	//TODO
 	
 	if(s->m1 != NULL){
 		freeMethodCall(s->m1);
@@ -129,8 +142,6 @@ void freeStmt(struct Stmt* s){
 		freeAssignStmt(s->m5);
 	}
 	
-	printf("DEBUG: freeStmt 2\n");
-	//TODO
-	//free(s);
+	free(s);
 }
 

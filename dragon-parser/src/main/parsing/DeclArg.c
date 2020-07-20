@@ -22,16 +22,19 @@ struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 	res->type = makeType2(copy,debug);
 	if(res->type == NULL){
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 
 	struct Identifier* id = makeIdentifier(copy,debug);
 	if(id == NULL){ 
 		free(res);
+		freeType(res->type);
+		freeTokenListShallow(copy);
 		return NULL; 
 	}
-	strcpy(res->name, id->identifier);
-	
+	strncpy(res->name, id->identifier, 19);
+	freeIdentifier(id);
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
@@ -40,9 +43,7 @@ struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 }
 
 void freeDeclArg(struct DeclArg* da){
-	printf("DEBUG: freeDeclArg\n");
 	freeType(da->type);
-	printf("DEBUG: freeDeclArg 2\n");
 	free(da);
 }
 

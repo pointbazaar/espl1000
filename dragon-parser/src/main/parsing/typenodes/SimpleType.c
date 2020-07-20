@@ -14,21 +14,19 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 		printf("SimpleType(...) from: ");
 		list_print(tokens);
 	}
+	
+	if(list_size(tokens) == 0){ return NULL; }
 
 	struct SimpleType* res = smalloc(sizeof(struct SimpleType));
 	
 	strcpy(res->typeName, "");
-
-	if(list_size(tokens) == 0){
-		free(res);
-		return NULL;
-	}
 
 	struct Token* token = list_head(tokens);
 
 	if(debug){
 		printf("\tinspect token kind\n");
 	}
+	
 	if (token->kind == TYPEIDENTIFIER) {
 		strcpy(res->typeName, token->value);
 	} else if (token->kind == ANYTYPE) {
@@ -59,8 +57,6 @@ struct SimpleType* makeSimpleType(char* typeName) {
 }
 
 void freeSimpleType(struct SimpleType* st){
-	printf("DEBUG: freeSimpleType\n");
-	//TODO:
-	//free(st);
-	printf("DEBUG: freeSimpleType done\n");
+	
+	free(st);
 }

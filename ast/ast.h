@@ -70,8 +70,7 @@ struct FloatConst{
 	float value;
 };
 struct Identifier  {
-
-	char* identifier;
+	char identifier[20];
 };
 struct IntConst {
 	int value;
@@ -125,7 +124,7 @@ struct StructDecl{
 };
 struct StructMember{
 	struct Type* type;
-	char* name;
+	char name[20];
 };
 struct Term{
 	//only one of these may be != NULL

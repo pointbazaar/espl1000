@@ -29,6 +29,7 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 
 	res->simpleVar = makeSimpleVar(copy,debug);
 	if(res->simpleVar == NULL){
+		freeTokenListShallow(copy);
 		free(res->memberAccessList);
 		free(res);
 		return NULL;

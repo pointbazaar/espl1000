@@ -21,19 +21,22 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 
 	struct TokenList* copy = list_copy(tokens);
 
-	struct Type* type = makeType2(copy, debug);
-	if(type == NULL){
+	res->type = makeType2(copy, debug);
+	if(res->type == NULL){
 		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
-	res->type = type;
 
 	struct Identifier* id = makeIdentifier(copy, debug);
 	if(id == NULL){
 		free(res);
+		freeType(res->type);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
-	res->name = id->identifier;
+	strncpy(res->name, id->identifier, 19);
+	freeIdentifier(id);
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
@@ -42,7 +45,6 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 }
 
 void freeStructMember(struct StructMember* sm){
-	//TODO: inline sm->name into the struct
 	freeType(sm->type);
 	free(sm);
 }

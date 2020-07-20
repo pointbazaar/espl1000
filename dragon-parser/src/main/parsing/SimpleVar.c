@@ -60,12 +60,12 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 		}
 
 	} else {
-		printf("%s : %d : could not read variabe name. token was %s from context '%s'",
+		printf("%s : %d : could not read variabe name. token was %s from context:",
 			tokens->relPath,
 			token->lineNumber,
-			token->value,
-			list_code(tokens, debug)
+			token->value
 		);
+		list_print(copy);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;

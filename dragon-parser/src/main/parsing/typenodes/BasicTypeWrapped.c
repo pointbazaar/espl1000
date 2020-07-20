@@ -42,14 +42,19 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 	res->subrType = NULL;
 
 	struct TokenList* copy = list_copy(tokens);
+	struct Token* lparens = makeToken(LPARENS);
 
-	if (list_size(copy) > 1 && tokenEquals(list_head(copy), makeToken(LPARENS)) ) {
+	if (
+		list_size(copy) > 1 
+		&& list_startsWith(copy, lparens)
+	){
 		struct TokenList* copy2 = list_copy(copy);
 
 		if(!list_expect(copy2, LPARENS)){
 			freeTokenListShallow(copy2);
 			free(res);
 			freeTokenListShallow(copy);
+			freeToken(lparens);
 			return NULL;
 		}
 
@@ -58,6 +63,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 			freeTokenListShallow(copy2);
 			free(res);
 			freeTokenListShallow(copy);
+			freeToken(lparens);
 			return NULL;
 		}
 
@@ -65,6 +71,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 			freeTokenListShallow(copy2);
 			free(res);
 			freeTokenListShallow(copy);
+			freeToken(lparens);
 			return NULL;
 		}
 
@@ -76,9 +83,12 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 		if(res->simpleType == NULL){
 			free(res);
 			freeTokenListShallow(copy);
+			freeToken(lparens);
 			return NULL;
 		}
 	}
+	
+	freeToken(lparens);
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
@@ -92,15 +102,12 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 
 void freeBasicTypeWrapped(struct BasicTypeWrapped* btw){
 	
-	printf("DEBUG: freeBasicTypeWrapped\n");
 	if(btw->simpleType != NULL){
 		freeSimpleType(btw->simpleType);
 		
 	}else if(btw->subrType != NULL){
 		freeSubrType(btw->subrType);
 	}
-	printf("DEBUG: freeBasicTypeWrapped 2\n");
 	
-	//TODO
-	//free(btw);
+	free(btw);
 }

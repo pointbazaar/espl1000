@@ -81,8 +81,6 @@ struct Type* makeType2(struct TokenList* tokens, bool debug){
 
 void freeType(struct Type* t){
 	
-	printf("DEBUG: freeType\n");
-	
 	if(t->m1 != NULL){
 		freeBasicTypeWrapped(t->m1);
 	}else if(t->m2 != NULL){
@@ -90,6 +88,5 @@ void freeType(struct Type* t){
 	}else if(t->m3 != NULL){
 		freeArrayType(t->m3);
 	}
-	printf("DEBUG: freeType 2\n");
 	free(t);
 }

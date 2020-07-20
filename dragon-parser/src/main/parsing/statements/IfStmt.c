@@ -45,7 +45,9 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 	}
 
 	//maybe there is an else
-	if (list_startsWith(copy, makeToken(ELSE))) {
+	struct Token* tkelse = makeToken(ELSE);
+	if (list_startsWith(copy, tkelse)) {
+		
 		list_consume(copy, 1);
 
 		res->elseBlock = makeStmtBlock(copy, debug);
@@ -54,9 +56,11 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 			freeExpr(res->condition);
 			freeStmtBlock(res->block);
 			free(res);
+			freeToken(tkelse);
 			return NULL;
 		}
 	}
+	freeToken(tkelse);
 	
 	if(debug){
 		printf("sucess parsing IfStmt\n");

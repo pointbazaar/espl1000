@@ -15,16 +15,14 @@ struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 		list_print(tokens);
 	}
 
+	if(list_size(tokens) == 0){ return NULL; }
+
 	struct Identifier* res = smalloc(sizeof(struct Identifier));
 
-	if(list_size(tokens) == 0){ 
-		free(res);
-		return NULL; 
-	}
 	struct Token* tk = list_head(tokens);
 
 	if (tk->kind == ID) {
-		res->identifier = tk->value;
+		strncpy(res->identifier, tk->value, 19);
 		list_consume(tokens, 1);
 	} else {
 		free(res);
@@ -35,7 +33,5 @@ struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 }
 
 void freeIdentifier(struct Identifier* id){
-	//TODO:
-	//think about id->identifier
 	free(id);
 }
