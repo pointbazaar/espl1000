@@ -45,13 +45,15 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 				) && strcmp(opr->value,"=")==0
 
 			){
-				res->op = smalloc(sizeof(char)*3);
-				res->op[2]='\0';
-				strcat(res->op,opl->value);
+				
+				strcpy(res->op,opl->value);
 				strcat(res->op,opr->value);
 				
-			}else if( strcmp(opl->value,"=") == 0 && strcmp(opr->value,"=") == 0){
-				res->op = "==";
+			}else if( 
+				strcmp(opl->value,"=") == 0 
+				&& strcmp(opr->value,"=") == 0
+			){
+				strcpy(res->op, "==");
 			}else{
 				// "could not make operator";
 				free(res);
@@ -65,7 +67,7 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 			}
 			list_consume(copy, 2);
 		}else{
-			res->op = tkn->value;
+			strcpy(res->op, tkn->value);
 			
 			list_consume(copy, 1);
 		}
@@ -87,6 +89,5 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 }
 
 void freeOp(struct Op* op){
-	//TODO: inline op->op
 	free(op);
 }

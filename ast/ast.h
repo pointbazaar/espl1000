@@ -107,10 +107,10 @@ struct StmtBlock {
 	struct Stmt** stmts;
 };
 struct Op {
-	char* op;
+	char op[20];
 };
 struct SimpleVar {
-	char* name;
+	char name[20];
 	
 	//may be NULL
 	struct Expr* optIndex;
