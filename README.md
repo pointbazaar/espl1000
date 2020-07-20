@@ -131,7 +131,6 @@ It is intended to be used for (but not limited to):
 
 - writing a Program in SmallDragon and transpiling it to C.
 - writing a part of your Program in C and another part in SmallDragon.
-- 
 
 ## Contributions
 
