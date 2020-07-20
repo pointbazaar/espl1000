@@ -5,7 +5,6 @@
 #include "transpiler.h"
 #include "../ast/ast_reader.h"
 #include "../ast/ast.h"
-#include "java_code_gen.h"
 
 int main(int argc, char* argv[]){
 	
@@ -55,9 +54,7 @@ int main(int argc, char* argv[]){
 	fname_out[strlen(fname_out)-3] = '\0';
 	strcat(fname_out, ".java");
 
-	//TODO: create symbol tables
-	
-	gen_java_code(ast, fname_out);
+	//TODO
 
 	exit(0);
 }
