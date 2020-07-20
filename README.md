@@ -14,7 +14,14 @@ and allow writing some parts of the Project in a higher-level language such as S
 The Goal is for the Experience to be similar to working with C and Assembly. 
 There you have more control of implementation details with Assembly, but more abstraction and productivity with C.
 
-That's the Vision for SmallDragon, to be more abstract than C, but to be able to work closely with it by transpiling to it.
+That's the Vision for SmallDragon, to be more abstract than C, but to be able to work closely with it by transpiling to it. 
+SmallDragon should be a clean abstraction over C.
+
+The goal is to actually **understand** what is going on, meaning that if you understand **C**, then you can easily understand 
+**smalldragon** and leverage your existing understanding of C. Many languages of a level higher than C do not work
+on top of it, but based on entirely different abstractions, like a VM or an Interpreter. It is often very difficult to understand
+what is actually going on at runtime, even if the semantics of the language are very simple. 
+
 
 
 There is currently no plan to have a library for SmallDragon, besides some small utility files in C, to get some basic abstractions going.
