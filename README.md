@@ -57,6 +57,8 @@ You@Terminal:~$ sd Main.dg
 You@Terminal:~$ ./main
 ```
 
+[SmallDragon's Architecture](https://raw.githubusercontent.com/pointbazaar/smalldragon/dev/architecture.svg)
+
 ## How to install / use this Project ?
 
 This Project will probably only work with Linux.
