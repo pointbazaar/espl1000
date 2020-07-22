@@ -3,8 +3,9 @@
 #include <string.h>
 
 #include "transpiler.h"
-#include "../ast/ast_reader.h"
-#include "../ast/ast.h"
+#include "../../ast/ast_reader.h"
+#include "../../ast/ast.h"
+#include "c_code_gen.h"
 
 int main(int argc, char* argv[]){
 	
@@ -52,7 +53,7 @@ int main(int argc, char* argv[]){
 	strcpy(fname_out, filename);
 	//remove the '.dg'
 	fname_out[strlen(fname_out)-3] = '\0';
-	strcat(fname_out, ".java");
+	strcat(fname_out, ".c");
 
 	//TODO
 
