@@ -41,6 +41,8 @@ void transpileArrayType(struct ArrayType* atype, FILE* file);
 void transpileSimpleType(struct SimpleType* simpleType, FILE* file);
 void transpileSubrType(struct SubrType* subrType, FILE* file);
 
+void transpileDeclArg(struct DeclArg* da, FILE* file);
+
 void transpileAndWrite(char* filename, struct AST_Whole_Program* ast){
 
 	FILE* fout = fopen(filename, "w");
@@ -90,7 +92,7 @@ void transpileMethod(struct Method* m, FILE* file){
 	fprintf(file, "void %s(", m->name);
 
 	for(int i=0; i < m->count_args; i++){
-		//TODO
+		transpileDeclArg(m->args[i], file);
 	}
 
 	fprintf(file, ")");
@@ -269,6 +271,7 @@ void transpileBasicTypeWrapped(struct BasicTypeWrapped* btw, FILE* file){
 
 void transpileTypeParam(struct TypeParam* tp, FILE* file){
 	//TODO
+	printf("transpileTypeParam not yet implemented!\n");
 	exit(1);
 }
 
@@ -304,5 +307,27 @@ void transpileSimpleType(struct SimpleType* simpleType, FILE* file){
 }
 
 void transpileSubrType(struct SubrType* subrType, FILE* file){
-	//TODO
+
+	//return type
+	transpileType(subrType->returnType, file);
+
+	//TODO: i do not really understand how
+	//this is written in C. 
+	//maybe trying some examples in C would help.
+	fprintf(file, "(*function_ptr(");
+
+	//arguments
+	for(int i=0; i < subrType->count_argTypes; i++){
+		transpileType(subrType->argTypes[i], file);
+	}
+	fprintf(file, "))");
+}
+
+void transpileDeclArg(struct DeclArg* da, FILE* file){
+	
+	transpileType(da->type, file);
+
+	if(da->has_name){
+		fprintf(file, " %s", da->name);
+	}
 }
