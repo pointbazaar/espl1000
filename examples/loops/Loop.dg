@@ -1,12 +1,9 @@
-struct Example {
-	
-}
 
-fn main ()~>PInt { 
+fn main () ~> PInt { 
 	
-	loop 3{
+	loop 3 {
 		putchar('x');
 	}
-	return 0;
 
+	return 0;
 }

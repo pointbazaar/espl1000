@@ -1,14 +1,6 @@
 fn main() ~> PInt {
-	a=true;
+	a = true;
 	
-	if(a){
-		println("true");
-	}
 	return 0;
 }
 
-//my single line comment
-
-/*
-my multi line comment
-*/

@@ -1,9 +1,9 @@
 
-fn main ()~>PInt {
+fn main () ~> PInt {
 
-	x=3;
+	x = 3 ;
 
-	if(x<5){
+	if( x < 5 ){
 		putchar('x');
 		putchar('<');
 		putchar('5');
