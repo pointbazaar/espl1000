@@ -32,9 +32,6 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 	} else if (token->kind == ANYTYPE) {
 		strcpy(res->typeName, "#");
 	} else {
-		if(debug){
-			printf("Error: could not read simple type identifier\n");
-		}
 		free(res);
 		return NULL;
 	}
