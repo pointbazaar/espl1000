@@ -1,0 +1,3 @@
+fn main () -> PInt {
+	return 0;
+}
