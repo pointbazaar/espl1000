@@ -1,15 +1,7 @@
-language: java
+language: c
 before_install:
 - git clone https://github.com/pointbazaar/dragon-lexer
 - cd dragon-lexer/src
 - sudo ./build.sh
 - cd ../..
-- git clone https://github.com/pointbazaar/dragon-parser
-- cd dragon-parser
-- mvn install -DskipTests
-- cd ..
-- git clone https://github.com/pointbazaar/dracovm-compiler
-- cd dracovm-compiler/src
-- sudo ./build.sh
-- cd ..
-install: mvn install
+install: ./install.sh
