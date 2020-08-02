@@ -8,12 +8,12 @@
 #STEP 2: install its dependencies as described in README.MD
 
 #STEP 3: build dragon-lexer
-cd dragon-lexer/src
+cd lexer/src
 sudo ./build.sh
 cd ../..
 
 #STEP 4: build dragon-parser
-cd dragon-parser
+cd parser
 sudo ./build.sh
 cd ..
 
