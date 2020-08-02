@@ -1,6 +1,7 @@
 language: c
+os: linux
 before_install:
 - pwd
 - cd .
-install: ./install.sh
-script: 
+install: pwd
+script: ./install.sh 
