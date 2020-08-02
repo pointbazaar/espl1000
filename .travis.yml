@@ -3,3 +3,4 @@ before_install:
 - pwd
 - cd .
 install: ./install.sh
+script: 
