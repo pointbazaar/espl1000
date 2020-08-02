@@ -1,7 +1,4 @@
 language: c
 before_install:
-- git clone https://github.com/pointbazaar/dragon-lexer
-- cd dragon-lexer/src
-- sudo ./build.sh
-- cd ../..
+- cd .
 install: ./install.sh
