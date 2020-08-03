@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <libgen.h>
 
 #include "transpiler.h"
 #include "../../ast/ast_reader.h"
@@ -8,10 +9,6 @@
 #include "c_code_gen.h"
 
 int main(int argc, char* argv[]){
-	
-	
-
-	//TODO: consider flags
 
 	char* filename = NULL;
 	bool debug = false;
@@ -40,7 +37,9 @@ int main(int argc, char* argv[]){
 	invoke_lexer_parser(filename, debug);
 
 	char ast_filename[100];
-	sprintf(ast_filename, ".%s.ast", filename);
+	char* base_name = basename(filename);
+	char* dir_name = dirname(filename);
+	sprintf(ast_filename, "%s/.%s.ast", dir_name, base_name);
 	
 	printf("try to open file %s\n", ast_filename);
 
@@ -83,14 +82,21 @@ void invoke_lexer_parser(char* filename, bool debug){
 	}
 	strcat(cmd1, filename);
 	
+	if(debug){
+		printf("executing: %s\n", cmd1);
+	}
 	system(cmd1);
+	
+	char* base_name = basename(filename);
+	char* dir_name = dirname(filename);
 	
 	char cmd2[100];
 	sprintf(
 		cmd2, 
-		"dragon-parser %s .%s.tokens", 
+		"dragon-parser %s %s/.%s.tokens", 
 		(debug)?"-debug":"",
-		filename
+		dir_name,
+		base_name
 	);
 	
 	system(cmd2);
