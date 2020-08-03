@@ -26,16 +26,13 @@ int main(int argc, char** argv){
 
 	//setbuf(stdout,NULL);
 
-	printf("main -- dragon parser\n");
-
 	char** filenames = smalloc(sizeof(char*)*100);
 	int filenamescount = 0;
 	
 	char** flags = smalloc(sizeof(char*)*100);
 	int flagscount = 0;
-
-	printf("read flags, filenames\n");
 	
+	//read flags, filenames
 
 	for(int i=1;i<argc;i++){
 		char* arg = argv[i];
@@ -51,7 +48,7 @@ int main(int argc, char** argv){
 	bool test = false;
 
 	
-	printf("apply flags\n");
+	//apply flags
 	
 	
 	for(int i=0;i<flagscount;i++){
@@ -64,6 +61,10 @@ int main(int argc, char** argv){
 		if(strcmp(FLAG_DEBUG, flags[i])==0){
 			debug = true;
 		}
+	}
+	
+	if(debug){
+		printf("--- dragon-parser ---\n");
 	}
 
 	if(help) {

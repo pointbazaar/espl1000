@@ -9,7 +9,7 @@
 
 int main(int argc, char* argv[]){
 	
-	printf("smalldragon v0.01\n");
+	
 
 	//TODO: consider flags
 
@@ -23,6 +23,10 @@ int main(int argc, char* argv[]){
 		}else{
 			filename = arg;
 		}
+	}
+	
+	if(debug){
+		printf("smalldragon v0.01\n");
 	}
 	
 	if(filename == NULL){

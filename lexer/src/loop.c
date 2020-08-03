@@ -66,12 +66,16 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 
 	uint64_t tokens_index = 0;
 
-	printf("initializing deterministic finite automaton (a kind of state machine) \n");
+	if(DEBUG){
+		printf("initializing deterministic finite automaton (a kind of state machine) \n");
+	}
 
 	const uint64_t n_states = 150;		//number of states in our state machine
 	const uint64_t n_transitions = 256; //possible ascii chars
 
-	printf("allocating memory for state machine \n");
+	if(DEBUG){
+		printf("allocating memory for state machine \n");
+	}
 
 	//deterministic finite automaton
 	//int dfa[n_states][n_transitions];
@@ -86,7 +90,9 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 
 	init_dfa(dfa,final_state, n_states);
 	
-	printf("starting lexer loop\n");
+	if(DEBUG){
+		printf("starting lexer loop\n");
+	}
 
 	short state;
 
