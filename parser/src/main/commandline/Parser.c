@@ -171,7 +171,8 @@ struct TokenList* readTokensFromTokensFile(char* tokensFile, bool debug){
 		printf("readTokensFromTokensFile(%s, %d)\n", tokensFile, debug);
 	}
 	
-	struct TokenList* tks = makeTokenList(tokensFile);
+	struct TokenList* tks = makeTokenList();
+	strcpy(tks->relPath, tokensFile);
 	FILE* file = fopen(tokensFile,"r");
 	size_t size = 50;
     char* line = smalloc(sizeof(char)*size);

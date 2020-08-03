@@ -37,8 +37,11 @@ int main(int argc, char* argv[]){
 	invoke_lexer_parser(filename, debug);
 
 	char ast_filename[100];
-	char* base_name = basename(filename);
-	char* dir_name = dirname(filename);
+	char fnamecpy[100];
+	strcpy(fnamecpy, filename);
+	
+	char* base_name = basename(fnamecpy);
+	char* dir_name = dirname(fnamecpy);
 	sprintf(ast_filename, "%s/.%s.ast", dir_name, base_name);
 	
 	printf("try to open file %s\n", ast_filename);
@@ -83,12 +86,15 @@ void invoke_lexer_parser(char* filename, bool debug){
 	strcat(cmd1, filename);
 	
 	if(debug){
-		printf("executing: %s\n", cmd1);
+		printf("DEBUG: executing: %s\n", cmd1);
 	}
 	system(cmd1);
 	
-	char* base_name = basename(filename);
-	char* dir_name = dirname(filename);
+	char fnamecpy[100];
+	strcpy(fnamecpy, filename);
+	
+	char* base_name = basename(fnamecpy);
+	char* dir_name = dirname(fnamecpy);
 	
 	char cmd2[100];
 	sprintf(
@@ -99,5 +105,8 @@ void invoke_lexer_parser(char* filename, bool debug){
 		base_name
 	);
 	
+	if(debug){
+		printf("DEBUG: executing: %s\n", cmd2);
+	}
 	system(cmd2);
 }
