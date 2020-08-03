@@ -44,7 +44,9 @@ int main(int argc, char* argv[]){
 	char* dir_name = dirname(fnamecpy);
 	sprintf(ast_filename, "%s/.%s.ast", dir_name, base_name);
 	
-	printf("try to open file %s\n", ast_filename);
+	if(debug){
+		printf("try to open file %s\n", ast_filename);
+	}
 
 	//parse AST
 	struct AST_Whole_Program* ast = readAST(ast_filename, debug);

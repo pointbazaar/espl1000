@@ -29,7 +29,12 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	}
 	struct Namespace* ns = malloc(sizeof(struct Namespace));
 
-	int count = fscanf(file,"%s %s %d ", ns->srcPath, ns->name, &(ns->count_methods));
+	int count = fscanf(file,
+		"%s\t%s\t%d\t", 
+		ns->srcPath, 
+		ns->name, 
+		&(ns->count_methods)
+	);
 
 	if(count != 3){
 		fclose(file);
@@ -73,7 +78,7 @@ struct Method* readMethod(FILE* file, bool debug){
 	if(debug){
 			printf("readMethod(...)\n");
 	}
-	if(fscanf(file, "Method\t") != 1){
+	if(fscanf(file, "Method\t") == EOF){
 		printf("Error reading Method\n");
 		exit(1);
 	}
@@ -97,8 +102,13 @@ struct Method* readMethod(FILE* file, bool debug){
 struct StructDecl* readStructDecl(FILE* file, bool debug){
 	struct StructDecl* res = smalloc(sizeof(struct StructDecl));
 	
-	if(fscanf(file, "StructDecl\t") != 1){
+	if(fscanf(file, "StructDecl\t") == EOF){
 		printf("Error reading StructDecl\n");
+		char buffer[14];
+		
+		fread(buffer, sizeof(char), 14, file);
+		buffer[13] = '\0';
+		printf("actual: %s\n", buffer);
 		exit(1);
 	}
 	
@@ -112,7 +122,7 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 }
 struct StructMember* readStructMember(FILE* file, bool debug){
 	struct StructMember* res = smalloc(sizeof(struct StructMember));
-	if(fscanf(file, "StructMember\t") != 1){
+	if(fscanf(file, "StructMember\t") == EOF){
 		printf("Error reading StructMember\n");
 		exit(1);
 	}
@@ -124,7 +134,7 @@ struct StructMember* readStructMember(FILE* file, bool debug){
 struct StmtBlock* readStmtBlock(FILE* file, bool debug){
 	struct StmtBlock* block = smalloc(sizeof(struct StmtBlock));
 	
-	if(fscanf(file, "StmtBlock\t") != 1){
+	if(fscanf(file, "StmtBlock\t") == EOF){
 		printf("Error reading StmtBlock\n");
 		exit(1);
 	}
@@ -142,7 +152,7 @@ struct StmtBlock* readStmtBlock(FILE* file, bool debug){
 struct DeclArg* readDeclArg(FILE* file, bool debug){
 	struct DeclArg* da = malloc(sizeof(struct DeclArg));
 
-	if(fscanf(file, "DeclaredArg\t") != 1){
+	if(fscanf(file, "DeclaredArg\t") == EOF){
 		printf("Error reading DeclaredArg\n");
 		exit(1);
 	}
@@ -195,9 +205,8 @@ struct Op* readOp(FILE* file, bool debug){
 }
 struct IntConst* readIntConst(FILE* file, bool debug){
 	struct IntConst* ic = malloc(sizeof(struct IntConst));
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"IntConst") != 0){ 
+	
+	if(fscanf(file, "IntConst\t") == EOF){
 		printf("Error reading IntConst\n");
 		exit(1);
 	}
@@ -207,9 +216,8 @@ struct IntConst* readIntConst(FILE* file, bool debug){
 }
 struct BoolConst* readBoolConst(FILE* file, bool debug){
 	struct BoolConst* b = malloc(sizeof(struct BoolConst));
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"BoolConst") != 0){ 
+	
+	if(fscanf(file, "BoolConst\t") == EOF){
 		printf("Error reading BoolConst\n");
 		exit(1);
 	}
@@ -219,9 +227,8 @@ struct BoolConst* readBoolConst(FILE* file, bool debug){
 }
 struct CharConst* readCharConst(FILE* file, bool debug){
 	struct CharConst* b = malloc(sizeof(struct CharConst));
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"CharConst") != 0){ 
+	
+	if(fscanf(file, "CharConst\t") == EOF){
 		printf("Error reading CharConst\n");
 		exit(1);
 	}
@@ -231,9 +238,8 @@ struct CharConst* readCharConst(FILE* file, bool debug){
 }
 struct FloatConst* readFloatConst(FILE* file, bool debug){
 	struct FloatConst* ic = malloc(sizeof(struct FloatConst));
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"FloatConst") != 0){ 
+	
+	if(fscanf(file, "FloatConst\t") == EOF){
 		printf("Error reading FloatConst\n");
 		exit(1);
 	}
@@ -243,9 +249,8 @@ struct FloatConst* readFloatConst(FILE* file, bool debug){
 }
 struct Variable* readVariable(FILE* file, bool debug){
 	struct Variable* v = malloc(sizeof(struct Variable));
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"Variable") != 0){ 
+	
+	if(fscanf(file, "Variable\t") == EOF){
 		printf("Error reading Variable\n");
 		exit(1);
 	}
@@ -263,8 +268,8 @@ struct Variable* readVariable(FILE* file, bool debug){
 struct SimpleVar* readSimpleVar(FILE* file, bool debug){
 	struct SimpleVar* b = malloc(sizeof(struct SimpleVar));
 	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"SimpleVar") != 0){ 
+	
+	if(fscanf(file, "SimpleVar\t") == EOF){
 		printf("Error reading SimpleVar\n");
 		exit(1);
 	}
@@ -290,8 +295,8 @@ struct Term* readTerm(FILE* file, bool debug){
 	b->m7 = NULL;
 
 	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"Term") != 0){ 
+	
+	if(fscanf(file, "Term\t") == EOF){
 		printf("Error reading Term\n");
 		exit(1);
 	}
@@ -322,8 +327,8 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	b->m5 = NULL;
 
 	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"Stmt") != 0){ 
+	
+	if(fscanf(file, "Stmt\t") == EOF){
 		printf("Error reading Stmt\n");
 		exit(1);
 	}
@@ -342,14 +347,14 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	return b;
 }
 struct IfStmt* readIfStmt(FILE* file, bool debug){
+	
 	struct IfStmt* v = smalloc(sizeof(struct IfStmt));
+	
 	v->condition = NULL;
 	v->block = NULL;
 	v->elseBlock = NULL;
 	
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"IfStmt") != 0){ 
+	if(fscanf(file, "IfStmt\t") == EOF){
 		printf("Error reading IfStmt\n");
 		exit(1);
 	}
@@ -367,9 +372,9 @@ struct IfStmt* readIfStmt(FILE* file, bool debug){
 }
 struct WhileStmt* readWhileStmt(FILE* file, bool debug){
 	struct WhileStmt* v = malloc(sizeof(struct WhileStmt));
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"WhileStmt") != 0){ 
+	
+	
+	if(fscanf(file, "WhileStmt\t") == EOF){
 		printf("Error reading WhileStmt\n");
 		exit(1);
 	}
@@ -381,9 +386,9 @@ struct WhileStmt* readWhileStmt(FILE* file, bool debug){
 }
 struct RetStmt* readRetStmt(FILE* file, bool debug){
 	struct RetStmt* v = malloc(sizeof(struct RetStmt));
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"RetStmt") != 0){ 
+	
+	
+	if(fscanf(file, "RetStmt\t") == EOF){
 		printf("Error reading RetStmt\n");
 		exit(1);
 	}
@@ -394,8 +399,8 @@ struct RetStmt* readRetStmt(FILE* file, bool debug){
 struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 	struct AssignStmt* v = malloc(sizeof(struct AssignStmt));
 	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"AssignStmt") != 0){ 
+	
+	if(fscanf(file, "AssignStmt\t") == EOF){
 		printf("Error reading AssignStmt\n");
 		exit(1);
 	}
@@ -414,13 +419,11 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 }
 struct MethodCall* readMethodCall(FILE* file, bool debug){
 	struct MethodCall* v = malloc(sizeof(struct MethodCall));
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"MethodCall") != 0){ 
+	
+	if(fscanf(file, "MethodCall\t") == EOF){
 		printf("Error reading MethodCall\n");
 		exit(1);
 	}
-
 
 	fscanf(file, "%s\t%d\t", v->methodName, &(v->count_args));
 
@@ -442,8 +445,8 @@ struct Type* readType(FILE* file, bool debug){
 	b->m3 = NULL;
 
 	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"Type") != 0){ 
+	
+	if(fscanf(file, "Type\t") == EOF){
 		printf("Error reading Type\n");
 		exit(1);
 	}
@@ -461,9 +464,9 @@ struct Type* readType(FILE* file, bool debug){
 }
 struct SubrType* readSubrType(FILE* file, bool debug){
 	struct SubrType* v = malloc(sizeof(struct SubrType));
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"SubrType") != 0){ 
+	
+	
+	if(fscanf(file, "SubrType\t") == EOF){
 		printf("Error reading SubrType\n");
 		exit(1);
 	}
@@ -480,9 +483,9 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 }
 struct SimpleType* readSimpleType(FILE* file, bool debug){
 	struct SimpleType* v = malloc(sizeof(struct SimpleType));
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"SimpleType") != 0){ 
+	
+	
+	if(fscanf(file, "SimpleType\t") == EOF){
 		printf("Error reading SimpleType\n");
 		exit(1);
 	}
@@ -492,9 +495,9 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 }
 struct ArrayType* readArrayType(FILE* file, bool debug){
 	struct ArrayType* v = malloc(sizeof(struct ArrayType));
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"ArrayType") != 0){ 
+	
+	if(fscanf(file, "ArrayType\t") == EOF){
+	
 		printf("Error reading ArrayType\n");
 		exit(1);
 	}
@@ -503,9 +506,8 @@ struct ArrayType* readArrayType(FILE* file, bool debug){
 }
 struct TypeParam* readTypeParam(FILE* file, bool debug){
 	struct TypeParam* v = malloc(sizeof(struct TypeParam));
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"TypeParam") != 0){ 
+	
+	if(fscanf(file, "TypeParam\t") == EOF){
 		printf("Error reading TypeParam\n");
 		exit(1);
 	}
@@ -514,9 +516,8 @@ struct TypeParam* readTypeParam(FILE* file, bool debug){
 }
 struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug){
 	struct BasicTypeWrapped* v = malloc(sizeof(struct BasicTypeWrapped));
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"BasicTypeWrapped") != 0){ 
+	
+	if(fscanf(file, "BasicTypeWrapped\t") == EOF){
 		printf("Error reading BasicTypeWrapped\n");
 		exit(1);
 	}

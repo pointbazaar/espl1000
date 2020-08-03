@@ -7,7 +7,12 @@
 void writeNamespace(struct Namespace* nsn, FILE* file){
 	printf("writeNamespace\n");
 	
-	fprintf(file,"%s\t%s\t%d\t",nsn->srcPath,nsn->name,nsn->count_methods);
+	fprintf(file,
+		"%s\t%s\t%d\t",
+		nsn->srcPath,
+		nsn->name,
+		nsn->count_methods
+	);
 	
 	//write methods
 	for(int i=0;i < nsn->count_methods;i++){ 
