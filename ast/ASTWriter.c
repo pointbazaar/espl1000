@@ -130,11 +130,15 @@ void writeExpr(struct Expr* m, FILE* file){
 	fprintf(file, "Expr\t");
 
 	writeTerm(m->term1, file);
+	
+	
 	if(m->op != NULL){
+		fprintf(file, "0\t");
+		
 		writeOp(m->op,file);
 		writeTerm(m->term2,file);
 	}else{
-		fprintf(file,"NULL\t");
+		fprintf(file,"1\t");
 	}
 }
 void writeTerm(struct Term* m, FILE* file){

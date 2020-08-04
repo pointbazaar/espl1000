@@ -203,19 +203,24 @@ struct Expr* readExpr(FILE* file, bool debug){
 	}
 	
 	struct Expr* expr = smalloc(sizeof(struct Expr));
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"Expr") == EOF){ 
+	
+	if(fscanf(file,"Expr\t") == EOF){ 
 		printf("Error reading Expr\n");
 		exit(1);
 	}
 
 	expr->term1 = readTerm(file, debug);
-	fscanf(file, "%s\t",next);
-	if(strcmp(next, "NULL")==0){
+	
+	int option = 0;
+	if(fscanf(file, "%d\t", &option) == EOF){
+		printf("Error reading Expr 2\n");
+		exit(1);
+	}
+	
+	if(option == 1){
 		expr->op = NULL;
 		expr->term2 = NULL;
-	}else{
+	}else if (option == 0){
 		expr->op = readOp(file, debug);
 		expr->term2 = readTerm(file, debug);
 	}
@@ -229,14 +234,12 @@ struct Op* readOp(FILE* file, bool debug){
 	}
 	
 	struct Op* op = smalloc(sizeof(struct Op));
-	char next[10];
-	fscanf(file, "%s\t",next);
-	if(strcmp(next,"Op") == EOF){ 
+	
+	if(fscanf(file, "Op\t%s\t", op->op) == EOF){ 
 		printf("Error reading Op\n");
 		exit(1);
 	}
 
-	fscanf(file, "%s\t", op->op);
 	return op;
 }
 struct IntConst* readIntConst(FILE* file, bool debug){
@@ -247,12 +250,11 @@ struct IntConst* readIntConst(FILE* file, bool debug){
 	
 	struct IntConst* ic = smalloc(sizeof(struct IntConst));
 	
-	if(fscanf(file, "IntConst\t") == EOF){
+	if(fscanf(file, "IntConst\t%d\t", &(ic->value)) == EOF){
 		printf("Error reading IntConst\n");
 		exit(1);
 	}
 
-	fscanf(file, "%d\t", &(ic->value));
 	return ic;
 }
 struct BoolConst* readBoolConst(FILE* file, bool debug){
@@ -263,12 +265,11 @@ struct BoolConst* readBoolConst(FILE* file, bool debug){
 	
 	struct BoolConst* b = smalloc(sizeof(struct BoolConst));
 	
-	if(fscanf(file, "BoolConst\t") == EOF){
+	if(fscanf(file, "BoolConst\t%d\t", (int*)(b->value)) == EOF){
 		printf("Error reading BoolConst\n");
 		exit(1);
 	}
-
-	fscanf(file, "%d\t", (int*)(b->value));
+	
 	return b;
 }
 struct CharConst* readCharConst(FILE* file, bool debug){
@@ -279,12 +280,11 @@ struct CharConst* readCharConst(FILE* file, bool debug){
 	
 	struct CharConst* b = smalloc(sizeof(struct CharConst));
 	
-	if(fscanf(file, "CharConst\t") == EOF){
+	if(fscanf(file, "CharConst\t%c\t", &(b->value)) == EOF){
 		printf("Error reading CharConst\n");
 		exit(1);
 	}
-
-	fscanf(file, "%c\t", &(b->value));
+	
 	return b;
 }
 struct FloatConst* readFloatConst(FILE* file, bool debug){
@@ -295,12 +295,11 @@ struct FloatConst* readFloatConst(FILE* file, bool debug){
 	
 	struct FloatConst* ic = smalloc(sizeof(struct FloatConst));
 	
-	if(fscanf(file, "FloatConst\t") == EOF){
+	if(fscanf(file, "FloatConst\t%f\t", &(ic->value)) == EOF){
 		printf("Error reading FloatConst\n");
 		exit(1);
 	}
-
-	fscanf(file, "%f\t", &(ic->value));
+	
 	return ic;
 }
 struct Variable* readVariable(FILE* file, bool debug){
@@ -357,6 +356,7 @@ struct Term* readTerm(FILE* file, bool debug){
 	}
 	
 	struct Term* b = smalloc(sizeof(struct Term));
+	
 	b->m1 = NULL;
 	b->m2 = NULL;
 	b->m3 = NULL;
@@ -364,17 +364,13 @@ struct Term* readTerm(FILE* file, bool debug){
 	b->m5 = NULL;
 	b->m6 = NULL;
 	b->m7 = NULL;
-
-	char next[10];
 	
-	if(fscanf(file, "Term\t") == EOF){
+	int kind;
+	
+	if(fscanf(file, "Term\t%d\t", &kind) == EOF){
 		printf("Error reading Term\n");
 		exit(1);
 	}
-	
-	int kind;
-	fscanf(file, "%d\t", &kind);
-	kind = atoi(next);
 
 	switch(kind){
 		case 1: b->m1 = readBoolConst(file, debug); break;
@@ -406,7 +402,10 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	}
 	
 	int kind;
-	fscanf(file, "%d\t", &kind);
+	if(fscanf(file, "%d\t", &kind) == EOF){
+		printf("Error reading Stmt 2\n");
+		exit(1);
+	}
 
 	switch(kind){
 		case 1: b->m1 = readMethodCall(file, debug); break;
