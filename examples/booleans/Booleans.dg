@@ -1,6 +1,6 @@
 fn main() ~> PInt {
-	a = true;
+	//a = true;
 	
-	return 0;
+	//return 0;
 }
 

@@ -7,23 +7,36 @@
 void writeNamespace(struct Namespace* nsn, FILE* file){
 	
 	fprintf(file,
-		"%s\t%s\t%d\t",
+		"%s\t%s\t",
 		nsn->srcPath,
-		nsn->name,
-		nsn->count_methods
+		nsn->name
 	);
+	
+	//make a newline for easier reading
+	fprintf(file, "\n");
+	
+	fprintf(file, "%d\t", nsn->count_methods);
+	fprintf(file, "\n");
 	
 	//write methods
 	for(int i=0;i < nsn->count_methods;i++){ 
 		struct Method* m = nsn->methods[i];
 		writeMethod(m,file);
+		
+		//make a newline for easier reading
+		fprintf(file, "\n");
 	}
 	
 	fprintf(file, "%d\t", nsn->count_structs);
+	fprintf(file, "\n");
+	
 	//write structs
 	for(int i=0;i < nsn->count_structs;i++){ 
 		struct StructDecl* m = nsn->structs[i];
 		writeStructDecl(m,file);
+		
+		//make a newline for easier reading
+		fprintf(file, "\n");
 	}
 	
 }
@@ -31,15 +44,25 @@ void writeMethod(struct Method* m, FILE* file){
 	
 	fprintf(file, "Method\t");
 
-	fprintf(file,"%d\t%d\t%s\t",m->isPublic,m->hasSideEffects,m->name);
+	fprintf(file,
+		"%d\t%d\t%s\t",
+		m->isPublic,
+		m->hasSideEffects,
+		m->name
+	);
+	fprintf(file, "\n");
 	writeType(m->returnType,file);
 
+	//write arguments
+	fprintf(file, "\n");
+	
 	fprintf(file,"%d\t",m->count_args);
 	for(int i = 0;i < m->count_args;i++){ 
 		struct DeclArg* arg = m->args[i];
 		writeDeclArg(arg, file); 
 	}
 
+	fprintf(file, "\n");
 	writeStmtBlock(m->block, file);
 }
 void writeStructDecl(struct StructDecl* m, FILE* file){
