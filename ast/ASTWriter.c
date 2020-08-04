@@ -316,7 +316,10 @@ void writeSubrType(struct SubrType* m, FILE* file){
 }
 // --------- OTHER ----------
 void write_ast(char* filename, struct Namespace* namespaceNode){
-	printf("write_ast\n");
+	
+	//DEBUG
+	//printf("write_ast\n");
+	
 	FILE* file;
 	file = fopen(filename, "w");
 	

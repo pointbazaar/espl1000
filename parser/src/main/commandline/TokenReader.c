@@ -29,7 +29,9 @@ struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
 	}
 
 	if(space_index == -1){
-		printf("could not read 2 parts of token\n");
+		if(debug){
+			printf("could not read 2 parts of token\n");
+		}
 		return NULL;
 	}
 

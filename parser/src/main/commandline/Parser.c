@@ -93,8 +93,10 @@ void build_ast_file(char* tokensFile, char* astJsonFile, bool debug) {
 
 	struct TokenList* tokens = readTokensFromTokensFile(tokensFile,debug);
 
-	printf("Tokens as Source Code Fragment : \n");
-	printf("%s\n", list_code(tokens, debug));
+	if(debug){
+		printf("Tokens as Source Code Fragment : \n");
+		printf("%s\n", list_code(tokens, debug));
+	}
 
 	//get just the namespace name from .FILENAME.dg.tokens
 	int l = strlen(".dg.tokens");

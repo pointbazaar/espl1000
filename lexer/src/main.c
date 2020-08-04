@@ -136,23 +136,31 @@ int main(int argc, char** argv) {
     stat(filename,&file_meta);
 
 	if( access(tkn_filename,F_OK) == -1){
-		printf("could not find corresponding .tokens file \n");
+		if(DEBUG){
+			printf("could not find corresponding .tokens file \n");
+		}
         tokenize_file(filename,tkn_filename);
 	}else{
 		//tokenized file already exists
 		stat(tkn_filename,&tkn_file_meta);
 		
-        printf("tokenized file already exists, comparing modified times.\n");
+		if(DEBUG){
+			printf("tokenized file already exists, comparing modified times.\n");
+		}
         
         time_t mod_file = file_meta.st_mtime;
         time_t mod_tkns = tkn_file_meta.st_mtime;
         
         if( mod_file > mod_tkns ){
             //the file was modified. the .tokens file is outdate
-            printf("the file was modified. the tokens file is outdated.\n");
+            if(DEBUG){
+				printf("the file was modified. the tokens file is outdated.\n");
+			}
             tokenize_file(filename,tkn_filename);
         }else{
-            printf(".tokens file for this file is up to date. exiting.\n");
+			if(DEBUG){
+				printf(".tokens file for this file is up to date. exiting.\n");
+			}
             return 0;
         }
 	}
@@ -172,7 +180,9 @@ int tokenize_file(char* filename, char* tkn_filename){
 			tkn_filename
 	*/
 	
-	printf("opening %s to determine file length \n",filename);
+	if(DEBUG){
+		printf("opening %s to determine file length \n",filename);
+	}
 
 	FILE* file1 = fopen(filename,"r");
 	
