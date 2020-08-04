@@ -116,13 +116,12 @@ void writeVariable(struct Variable* m, FILE* file){
 }
 void writeSimpleVar(struct SimpleVar* m, FILE* file){
 
-	fprintf(file, "SimpleVariable\t");
-
-	fprintf(file,"%s\t",m->name);
+	fprintf(file, "SimpleVar\t%s\t",m->name);
+	
+	fprintf(file, "%d\t", (m->optIndex != NULL)?1:0);
+	
 	if(m->optIndex != NULL){
 		writeExpr(m->optIndex, file);
-	}else{
-		fprintf(file,"NULL\t");
 	}
 }
 void writeExpr(struct Expr* m, FILE* file){
@@ -130,7 +129,6 @@ void writeExpr(struct Expr* m, FILE* file){
 	fprintf(file, "Expr\t");
 
 	writeTerm(m->term1, file);
-	
 	
 	if(m->op != NULL){
 		fprintf(file, "0\t");
@@ -168,25 +166,19 @@ void writeTerm(struct Term* m, FILE* file){
 	}
 }
 void writeBoolConst(struct BoolConst* m, FILE* file){
-	fprintf(file, "BoolConst\t");
-	fprintf(file,"%d\t",m->value);
+	fprintf(file, "BoolConst\t%d\t", m->value);
 }
 void writeIntConst(struct IntConst* m, FILE* file){
-	fprintf(file, "IntConst\t");
-	fprintf(file,"%d\t",m->value);
+	fprintf(file, "IntConst\t%d\t", m->value);
 }
 void writeCharConst(struct CharConst* m, FILE* file){
-	fprintf(file, "CharConst\t");
-	fprintf(file,"%c\t",m->value);
+	fprintf(file, "CharConst\t%c\t", m->value);
 }
 void writeFloatConst(struct FloatConst* m, 	FILE* file){
-	fprintf(file, "FloatConst\t");
-	fprintf(file,"%f\t",m->value);
+	fprintf(file, "FloatConst\t%f\t", m->value);
 }
 void writeOp(struct Op* m, FILE* file){
-	fprintf(file, "Op\t");
-
-	fprintf(file,"%s\t",m->op);
+	fprintf(file, "Op\t%s\t", m->op);
 }
 // ---------------- STATEMENTNODES ---------------------
 void writeStmt(struct Stmt* m, FILE* file){

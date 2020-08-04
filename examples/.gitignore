@@ -4,3 +4,6 @@ main
 *.dracovm
 *.dg.json
 *.java
+
+#the transpiled .c files
+*.c
