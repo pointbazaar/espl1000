@@ -205,7 +205,7 @@ struct Expr* readExpr(FILE* file, bool debug){
 	struct Expr* expr = smalloc(sizeof(struct Expr));
 	char next[10];
 	fscanf(file, "%s\t",next);
-	if(strcmp(next,"Expr") != 0){ 
+	if(strcmp(next,"Expr") == EOF){ 
 		printf("Error reading Expr\n");
 		exit(1);
 	}
@@ -231,7 +231,7 @@ struct Op* readOp(FILE* file, bool debug){
 	struct Op* op = smalloc(sizeof(struct Op));
 	char next[10];
 	fscanf(file, "%s\t",next);
-	if(strcmp(next,"Op") != 0){ 
+	if(strcmp(next,"Op") == EOF){ 
 		printf("Error reading Op\n");
 		exit(1);
 	}
@@ -399,8 +399,6 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	b->m3 = NULL;
 	b->m4 = NULL;
 	b->m5 = NULL;
-
-	char next[10];
 	
 	if(fscanf(file, "Stmt\t") == EOF){
 		printf("Error reading Stmt\n");
@@ -409,7 +407,6 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	
 	int kind;
 	fscanf(file, "%d\t", &kind);
-	kind = atoi(next);
 
 	switch(kind){
 		case 1: b->m1 = readMethodCall(file, debug); break;

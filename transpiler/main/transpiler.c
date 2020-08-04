@@ -63,7 +63,9 @@ int main(int argc, char* argv[]){
 	fname_out[strlen(fname_out)-3] = '\0';
 	strcat(fname_out, ".c");
 
-	//TODO
+	//transpile to C code 
+	//and write to file 
+	transpileAndWrite(fname_out, ast);
 
 	exit(0);
 }
