@@ -34,7 +34,10 @@ void list_add(struct TokenList* list, struct Token* token) {
 	//printf("list_add\n");
 
 	if((list->indexHead + list->tokensc + 1) > list->capacity){
-		printf("resize TokenList instance\n");
+		
+		//DEBUG
+		//printf("resize TokenList instance\n");
+		
 		//we don't have enough capacity
 		//double the capacity		
 		list->capacity = list->capacity * 2;
