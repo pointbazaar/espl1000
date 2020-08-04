@@ -27,7 +27,9 @@ void free_dfa(short** dfa,int n_states){
 
 	
 void init_if_else(short** dfa){
-	printf("creating states for 'if' , 'else' \n");
+	if(DEBUG){
+		printf("creating states for 'if' , 'else' \n");
+	}
 
 	// -------------- IF ------------------
 
@@ -63,7 +65,9 @@ void init_if_else(short** dfa){
 }
 
 void init_while(short** dfa){
-	printf("creating states for 'while' \n");
+	if(DEBUG){
+		printf("creating states for 'while' \n");
+	}
 	//all other chars should get us back to S_IDENTIFIER,
 	//to parse an identifier instead
 
@@ -88,7 +92,9 @@ void init_while(short** dfa){
 }
 
 void init_identifier(short**	 dfa){
-	printf("creating states for identifier token \n");
+	if(DEBUG){
+		printf("creating states for identifier token \n");
+	}
 
 	set_transitions_letters(dfa,S_IDENTIFIER,S_IDENTIFIER);
 	set_transitions_braces(dfa,S_IDENTIFIER,S_IDENTIFIER_FINAL);
@@ -108,7 +114,9 @@ void init_identifier(short**	 dfa){
 
 
 void init_typeidentifier(short** dfa){
-	printf("creating states for typeidentifier token \n");
+	if(DEBUG){
+		printf("creating states for typeidentifier token \n");
+	}
 
 	set_transitions_letters(dfa,S_TYPEIDENTIFIER,S_TYPEIDENTIFIER);
 	set_transitions_braces(dfa,S_TYPEIDENTIFIER,S_TYPEIDENTIFIER_FINAL);
@@ -130,7 +138,9 @@ void init_typeidentifier(short** dfa){
 }
 
 void init_single_line_comment(short** dfa){
-	printf("creating states for single line comment \n");
+	if(DEBUG){
+		printf("creating states for single line comment \n");
+	}
 
 	set_transitions_printable(dfa,S_SINGLE_LINE_COMMENT,S_SINGLE_LINE_COMMENT);
 
@@ -150,7 +160,9 @@ void init_single_line_comment(short** dfa){
 
 
 void init_multi_line_comment(short** dfa){
-	printf("creating states for multi line comment \n");
+	if(DEBUG){
+		printf("creating states for multi line comment \n");
+	}
 	
 	set_transitions_printable(dfa,S_MULTI_LINE_COMMENT,S_MULTI_LINE_COMMENT);
 
@@ -170,7 +182,9 @@ void init_multi_line_comment(short** dfa){
 }
 
 void init_eq(short** dfa){
-	printf("creating states for '=','==' \n");
+	if(DEBUG){
+		printf("creating states for '=','==' \n");
+	}
 	dfa[S_EQ]['=']=S_EQ_FINAL;
 
 	set_transitions_letters(dfa,S_EQ,S_EQ_FINAL);
@@ -183,7 +197,9 @@ void init_eq(short** dfa){
 }
 
 void init_numbers(short** dfa){
-	printf("creating states for intgerers and floats \n");
+	if(DEBUG){
+		printf("creating states for intgerers and floats \n");
+	}
 
 	dfa[S_DIGITS]['.']=S_FLOAT;
 
@@ -207,7 +223,9 @@ void init_numbers(short** dfa){
 }
 
 void init_operator(short** dfa){
-	printf("creating states for operators \n");
+	if(DEBUG){
+		printf("creating states for operators \n");
+	}
 	dfa[S_START]['+']=S_OPERATOR_FINAL;
 	dfa[S_START]['-']=S_MINUS;
 	dfa[S_START]['*']=S_OPERATOR_FINAL;
@@ -243,7 +261,9 @@ void init_operator(short** dfa){
 }
 
 void init_return(short** dfa){
-	printf("creating states for 'return' \n");
+	if(DEBUG){
+		printf("creating states for 'return' \n");
+	}
 	//all other chars should get us back to S_IDENTIFIER,
 	//to parse an identifier instead
 
@@ -274,7 +294,9 @@ void init_return(short** dfa){
 }
 
 void init_loop(short** dfa){
-	printf("creating states for 'loop' \n");
+	if(DEBUG){
+		printf("creating states for 'loop' \n");
+	}
 	//all other chars should get us back to S_IDENTIFIER,
 	//to parse an identifier instead
 
@@ -296,7 +318,9 @@ void init_loop(short** dfa){
 }
 
 void init_charconst(short** dfa){
-	printf("creating states for charconst \n");
+	if(DEBUG){
+		printf("creating states for charconst \n");
+	}
 
 	set_transitions_printable(dfa,S_CHARCONST_1,S_CHARCONST_READ);
 
@@ -314,7 +338,9 @@ void init_charconst(short** dfa){
 }
 
 void init_boolconst(short** dfa){
-	printf("creating states for boolconst \n");
+	if(DEBUG){
+		printf("creating states for boolconst \n");
+	}
 
 	set_transitions_letters(dfa,S_t,S_IDENTIFIER);
 	set_transitions_letters(dfa,S_tr,S_IDENTIFIER);
@@ -372,7 +398,9 @@ void init_boolconst(short** dfa){
 
 void init_struct(short** dfa){
 
-	printf("creating states for struct \n");
+	if(DEBUG){
+		printf("creating states for struct \n");
+	}
 
 	set_transitions_letters(dfa,S_s,S_IDENTIFIER);
 	set_transitions_letters(dfa,S_st,S_IDENTIFIER);
@@ -401,8 +429,10 @@ void init_struct(short** dfa){
 
 
 void init_stringconst(short** dfa){
-
-	printf("creating states for stringconst \n");
+	
+	if(DEBUG){
+		printf("creating states for stringconst \n");
+	}
 
 	set_transitions_printable(dfa,S_STRING,S_STRING);
 
@@ -426,7 +456,10 @@ void init_stringconst(short** dfa){
 
 
 void init_typeparam(short** dfa){
-	printf("creating states for stringconst \n");
+	
+	if(DEBUG){
+		printf("creating states for stringconst \n");
+	}
 
 	dfa[S_START]['?']=S_TPARAM_1;	//read '?'
 	dfa[S_TPARAM_1]['T']=S_TPARAM_2;	//read 'T'
@@ -436,7 +469,10 @@ void init_typeparam(short** dfa){
 }
 
 void init_arrow(short** dfa){
-	printf("creating states for arrow \n");
+	
+	if(DEBUG){
+		printf("creating states for arrow \n");
+	}
 
 	set_transitions_letters(dfa,S_MINUS,S_MINUS_FINAL);
 	set_transitions_digits(dfa,S_MINUS,S_MINUS_FINAL);
@@ -455,7 +491,10 @@ void init_arrow(short** dfa){
 
 
 void init_fn(short** dfa){
-	printf("creating states for 'fn' \n");
+	
+	if(DEBUG){
+		printf("creating states for 'fn' \n");
+	}
 
 	set_transitions_letters(dfa,S_fn,S_IDENTIFIER);
 
