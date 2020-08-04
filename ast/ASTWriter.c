@@ -5,7 +5,6 @@
 #include "../util/util.h"
 
 void writeNamespace(struct Namespace* nsn, FILE* file){
-	printf("writeNamespace\n");
 	
 	fprintf(file,
 		"%s\t%s\t%d\t",
@@ -29,7 +28,6 @@ void writeNamespace(struct Namespace* nsn, FILE* file){
 	
 }
 void writeMethod(struct Method* m, FILE* file){
-	printf("writeMethod\n");
 	
 	fprintf(file, "Method\t");
 
@@ -45,7 +43,6 @@ void writeMethod(struct Method* m, FILE* file){
 	writeStmtBlock(m->block, file);
 }
 void writeStructDecl(struct StructDecl* m, FILE* file){
-	printf("writeStructDecl\n");
 	
 	fprintf(file, "StructDecl\t");
 	fprintf(file, "%s\t%d\t", m->name, m->count_members);
@@ -54,7 +51,6 @@ void writeStructDecl(struct StructDecl* m, FILE* file){
 	}
 }
 void writeStructMember(struct StructMember* m, FILE* file){
-	printf("writeStructMember\n");
 	
 	fprintf(file, "StructMember\t");
 	writeType(m->type, file);
@@ -62,7 +58,6 @@ void writeStructMember(struct StructMember* m, FILE* file){
 }
 
 void writeStmtBlock(struct StmtBlock* block, FILE* file){
-	printf("writeStmtBlock\n");
 	
 	fprintf(file, "StmtBlock\t");
 	fprintf(file, "%d\t", block->count);
@@ -74,7 +69,6 @@ void writeStmtBlock(struct StmtBlock* block, FILE* file){
 // ----------------------------
 
 void writeDeclArg(struct DeclArg* m, FILE* file){
-	printf("writeDeclArg\n");
 	
 	fprintf(file, "DeclaredArg\t");
 
