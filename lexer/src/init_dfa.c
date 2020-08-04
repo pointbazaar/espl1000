@@ -87,15 +87,17 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	dfa[S_START]['.']=S_STRUCTMEMBERACCESS_FINAL;
 	dfa[S_START][',']=S_COMMA_FINAL;
 
-
-	printf("marking eos transitions\n");
+	if(DEBUG){
+		printf("marking eos transitions\n");
+	}
 	//all states on encountering '\0' should go to eos state
 	for(short i=0;i<n_states;i++){
 		dfa[i]['\0']=S_EOS;
 	}
 
-
-	printf("marking final states\n");
+	if(DEBUG){
+		printf("marking final states\n");
+	}
 
 	//set all states to be non-final states
 	memset(final_state,false,n_states*sizeof(bool));

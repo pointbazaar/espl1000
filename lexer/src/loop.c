@@ -413,10 +413,14 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 	//if any errors were encountered anywhere or
 	//malloc could not allocate or anything
 
-	printf("free state machine\n");
+	if(DEBUG){
+		printf("free state machine\n");
+	}
 	free_dfa(dfa,n_states);
 
-	printf("free final_state array\n");
+	if(DEBUG){
+		printf("free final_state array\n");
+	}
 	free(final_state);
 
 	return tokens;
