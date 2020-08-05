@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "c_code_gen.h"
+#include "code_gen_util.h"
 
 //methods delcared in .c file, as they should be private
 //to this file.
@@ -10,15 +11,16 @@
 void transpileAST(struct AST_Whole_Program* ast, FILE* file);
 void transpileNamespace(struct Namespace* ns, FILE* file);
 void transpileMethod(struct Method* m, FILE* file);
-void transpileStmtBlock(struct StmtBlock* block, FILE* file);
-void transpileStmt(struct Stmt* s, FILE* file);
+
+void transpileStmtBlock(struct StmtBlock* block, FILE* file, int indent);
+void transpileStmt(struct Stmt* s, FILE* file, int indentLevel);
 
 //stmt related
-void transpileMethodCall(struct MethodCall* mc, FILE* file);
-void transpileWhileStmt(struct WhileStmt* ws, FILE* file);
-void transpileIfStmt(struct IfStmt* is, FILE* file);
-void transpileRetStmt(struct RetStmt* rs, FILE* file);
-void transpileAssignStmt(struct AssignStmt* as, FILE* file);
+void transpileMethodCall(struct MethodCall* mc, FILE* file, int indentLevel);
+void transpileWhileStmt(struct WhileStmt* ws, FILE* file, int indentLevel);
+void transpileIfStmt(struct IfStmt* is, FILE* file, int indentLevel);
+void transpileRetStmt(struct RetStmt* rs, FILE* file, int indentLevel);
+void transpileAssignStmt(struct AssignStmt* as, FILE* file, int indentLevel);
 
 void transpileType(struct Type* t, FILE* file);
 void transpileVariable(struct Variable* var, FILE* file);
@@ -100,34 +102,35 @@ void transpileMethod(struct Method* m, FILE* file){
 
 	fprintf(file, ")");
 
-	transpileStmtBlock(m->block, file);
+	transpileStmtBlock(m->block, file, 0);
 }
 
-void transpileStmtBlock(struct StmtBlock* block, FILE* file){
+void transpileStmtBlock(struct StmtBlock* block, FILE* file, int indentLevel){
 
 	fprintf(file, "{\n");
 
 	for(int i=0; i < block->count; i++){
-		transpileStmt(block->stmts[i], file);
+		transpileStmt(block->stmts[i], file, indentLevel+1);
 	}
 
+	indent(file, indentLevel);
 	fprintf(file, "}\n");
 }
 
-void transpileStmt(struct Stmt* s, FILE* file){
+void transpileStmt(struct Stmt* s, FILE* file, int indentLevel){
 
 	if(s->m1 != NULL){
-		transpileMethodCall(s->m1, file);
+		transpileMethodCall(s->m1, file, indentLevel);
 		fprintf(file, ";");
 	}else if(s->m2 != NULL){
-		transpileWhileStmt(s->m2, file);
+		transpileWhileStmt(s->m2, file, indentLevel);
 	}else if(s->m3 != NULL){
-		transpileIfStmt(s->m3, file);
+		transpileIfStmt(s->m3, file, indentLevel);
 	}else if(s->m4 != NULL){
-		transpileRetStmt(s->m4, file);
+		transpileRetStmt(s->m4, file, indentLevel);
 		fprintf(file, ";");
 	}else if(s->m5 != NULL){
-		transpileAssignStmt(s->m5, file);
+		transpileAssignStmt(s->m5, file, indentLevel);
 		fprintf(file, ";");
 	}else{
 		printf("Error in transpileStmt\n");
@@ -138,8 +141,9 @@ void transpileStmt(struct Stmt* s, FILE* file){
 
 //stmt related
 
-void transpileMethodCall(struct MethodCall* mc, FILE* file){
+void transpileMethodCall(struct MethodCall* mc, FILE* file, int indentLevel){
 	
+	indent(file, indentLevel);
 	fprintf(file, "%s(", mc->methodName);
 
 	for(int i=0;i < mc->count_args; i++){
@@ -149,32 +153,42 @@ void transpileMethodCall(struct MethodCall* mc, FILE* file){
 	fprintf(file, ")");
 }
 
-void transpileWhileStmt(struct WhileStmt* ws, FILE* file){
+void transpileWhileStmt(struct WhileStmt* ws, FILE* file, int indentLevel){
+	
+	indent(file, indentLevel);
 	
 	fprintf(file, "while (");
 	transpileExpr(ws->condition, file);
 	fprintf(file, ")");
 
-	transpileStmtBlock(ws->block, file);
+	transpileStmtBlock(ws->block, file, indentLevel);
 }
 
-void transpileIfStmt(struct IfStmt* is, FILE* file){
+void transpileIfStmt(struct IfStmt* is, FILE* file, int indentLevel){
+	
+	indent(file, indentLevel);
 	
 	fprintf(file, "if (");
 	transpileExpr(is->condition, file);
 	fprintf(file, ")");
-		transpileStmtBlock(is->block, file);
+		transpileStmtBlock(is->block, file, indentLevel);
+		
+	indent(file, indentLevel);
 	fprintf(file, "else");
-		transpileStmtBlock(is->elseBlock, file);
+		transpileStmtBlock(is->elseBlock, file, indentLevel);
 }
 
-void transpileRetStmt(struct RetStmt* rs, FILE* file){
+void transpileRetStmt(struct RetStmt* rs, FILE* file, int indentLevel){
+	
+	indent(file, indentLevel);
 	
 	fprintf(file, "return ");
 	transpileExpr(rs->returnValue, file);
 }
 
-void transpileAssignStmt(struct AssignStmt* as, FILE* file){
+void transpileAssignStmt(struct AssignStmt* as, FILE* file, int indentLevel){
+
+	indent(file, indentLevel);
 
 	if(as->optType != NULL){
 		transpileType(as->optType, file);
@@ -214,7 +228,7 @@ void transpileTerm(struct Term* t, FILE* file){
 	}else if(t->m3 != NULL){
 		transpileCharConst(t->m3, file);
 	}else if(t->m4 != NULL){
-		transpileMethodCall(t->m4, file);
+		transpileMethodCall(t->m4, file, 0);
 	}else if(t->m5 != NULL){
 		transpileExpr(t->m5, file);
 	}else if(t->m6 != NULL){
