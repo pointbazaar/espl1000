@@ -1,5 +1,5 @@
 fn main() ~> PInt {
-	a = true;
+	PInt a = true;
 	
 	return 0;
 }

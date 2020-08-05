@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-void main(){
-a = true;
+int main(){
+int a = true;
 return 0;
 }

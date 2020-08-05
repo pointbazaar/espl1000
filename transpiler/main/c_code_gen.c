@@ -89,7 +89,9 @@ void transpileNamespace(struct Namespace* ns, FILE* file){
 
 void transpileMethod(struct Method* m, FILE* file){
 
-	fprintf(file, "void %s(", m->name);
+	transpileType(m->returnType, file);
+
+	fprintf(file, " %s(", m->name);
 
 	for(int i=0; i < m->count_args; i++){
 		transpileDeclArg(m->args[i], file);
@@ -168,9 +170,9 @@ void transpileRetStmt(struct RetStmt* rs, FILE* file){
 void transpileAssignStmt(struct AssignStmt* as, FILE* file){
 
 	if(as->optType != NULL){
-
 		transpileType(as->optType, file);
 	}
+	fprintf(file, " ");
 	transpileVariable(as->var, file);
 	fprintf(file, " = ");
 	transpileExpr(as->expr, file);

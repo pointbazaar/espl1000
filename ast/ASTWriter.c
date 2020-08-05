@@ -230,12 +230,15 @@ void writeRetStmt(struct RetStmt* m, FILE* file){
 void writeAssignStmt(struct AssignStmt* m, FILE* file){
 
 	fprintf(file, "AssignStmt\t");
+	
+	int option = (m->optType != NULL)?1:0;
+	
+	fprintf(file, "%d\t", option);
 
 	if(m->optType != NULL){
 		writeType(m->optType, file);
-	}else{
-		fprintf(file,"NULL\t");
 	}
+	
 	writeVariable(m->var, file);
 	writeExpr(m->expr, file);
 }

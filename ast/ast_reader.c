@@ -499,17 +499,17 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 			printf("readAssignStmt(...)\n");
 	}
 	struct AssignStmt* v = smalloc(sizeof(struct AssignStmt));
-	char next[10];
 	
-	if(fscanf(file, "AssignStmt\t") == EOF){
+	int option;
+	
+	if(fscanf(file, "AssignStmt\t%d\t", &option) != 1){
 		printf("Error reading AssignStmt\n");
 		exit(1);
 	}
 
-	fscanf(file, "%s\t", next);
-	if(strcmp(next, "NULL") == 0){
+	if(option == 0){
 		v->optType = NULL;
-	}else{
+	}else if(option ==1){
 		v->optType = readType(file, debug);
 	}
 
@@ -545,10 +545,11 @@ struct MethodCall* readMethodCall(FILE* file, bool debug){
 
 //typenodes
 struct Type* readType(FILE* file, bool debug){
-	if(debug){
-			printf("readType(...)\n");
-	}
+	
+	if(debug){ printf("readType(...)\n"); }
+	
 	struct Type* b = smalloc(sizeof(struct Type));
+	
 	b->m1 = NULL;
 	b->m2 = NULL;
 	b->m3 = NULL;
