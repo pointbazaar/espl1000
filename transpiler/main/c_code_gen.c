@@ -118,16 +118,22 @@ void transpileStmt(struct Stmt* s, FILE* file){
 
 	if(s->m1 != NULL){
 		transpileMethodCall(s->m1, file);
+		fprintf(file, ";");
 	}else if(s->m2 != NULL){
 		transpileWhileStmt(s->m2, file);
 	}else if(s->m3 != NULL){
 		transpileIfStmt(s->m3, file);
 	}else if(s->m4 != NULL){
 		transpileRetStmt(s->m4, file);
+		fprintf(file, ";");
 	}else if(s->m5 != NULL){
 		transpileAssignStmt(s->m5, file);
+		fprintf(file, ";");
+	}else{
+		printf("Error in transpileStmt\n");
+		exit(1);
 	}
-	fprintf(file, ";\n");
+	fprintf(file, "\n");
 }
 
 //stmt related
@@ -215,6 +221,11 @@ void transpileTerm(struct Term* t, FILE* file){
 		transpileVariable(t->m6, file);
 	}else if(t->m7 != NULL){
 		transpileFloatConst(t->m7, file);
+	}else if(t->m8 != NULL){
+		transpileStringConst(t->m8, file);
+	}else{
+		printf("Error in transpileTerm\n");
+		exit(1);
 	}
 }
 
@@ -260,7 +271,10 @@ void transpileFloatConst(struct FloatConst* fc, FILE* file){
 }
 
 void transpileStringConst	(struct StringConst* s, FILE* file){
-	fprintf(file, "\"%s\"", s->value);
+	//fprintf(file, "\"%s\"", s->value);
+	
+	//quotation seems to already be present
+	fprintf(file, "%s", s->value);
 }
 
 void transpileOp(struct Op* op, FILE* file){
