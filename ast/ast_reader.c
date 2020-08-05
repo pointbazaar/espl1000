@@ -330,6 +330,19 @@ struct FloatConst* readFloatConst(FILE* file, bool debug){
 	
 	return ic;
 }
+struct StringConst* readStringConst(FILE* file, bool debug){
+	
+	if(debug){ printf("readStringConst(...)\n"); }
+	
+	struct StringConst* s = smalloc(sizeof(struct StringConst));
+	
+	if(fscanf(file, "StringConst\t%s\t", s->value) != 1){
+		printf("Error reading StringConst\n");
+		exit(1);
+	}
+	
+	return s;
+}
 struct Variable* readVariable(FILE* file, bool debug){
 	
 	if(debug){
@@ -395,6 +408,7 @@ struct Term* readTerm(FILE* file, bool debug){
 	b->m5 = NULL;
 	b->m6 = NULL;
 	b->m7 = NULL;
+	b->m8 = NULL;
 	
 	int kind;
 	
@@ -404,6 +418,7 @@ struct Term* readTerm(FILE* file, bool debug){
 	}
 
 	switch(kind){
+		
 		case 1: b->m1 = readBoolConst(file, debug); break;
 		case 2: b->m2 = readIntConst(file, debug); break;
 		case 3: b->m3 = readCharConst(file, debug); break;
@@ -411,6 +426,12 @@ struct Term* readTerm(FILE* file, bool debug){
 		case 5: b->m5 = readExpr(file, debug); break;
 		case 6: b->m6 = readVariable(file, debug); break;
 		case 7: b->m7 = readFloatConst(file, debug); break;
+		case 8: b->m8 = readStringConst(file, debug); break;
+		
+		default:
+			printf("Error in readTerm\n");
+			exit(1);
+			break;
 	}
 	return b;
 }

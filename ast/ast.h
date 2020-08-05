@@ -24,6 +24,7 @@ struct BoolConst;
 struct CharConst;
 struct IntConst;
 struct FloatConst;
+struct StringConst;
 
 //statements
 struct AssignStmt;
@@ -74,6 +75,9 @@ struct Identifier  {
 };
 struct IntConst {
 	int value;
+};
+struct StringConst {
+	char value[100];
 };
 struct Method {
 
@@ -135,6 +139,7 @@ struct Term{
 	struct Expr* m5;
 	struct Variable* m6;
 	struct FloatConst* m7;
+	struct StringConst* m8;
 };
 struct Variable {
 	struct SimpleVar* simpleVar;

@@ -148,24 +148,23 @@ void writeTerm(struct Term* m, FILE* file){
 
 	if(m->m1 != NULL){ 
 		fprintf(file,"1\t"); writeBoolConst(m->m1,file);
-	}
-	if(m->m2 != NULL){ 
+	}else if(m->m2 != NULL){ 
 		fprintf(file,"2\t"); writeIntConst(m->m2,file); 
-	}
-	if(m->m3 != NULL){ 
+	}else if(m->m3 != NULL){ 
 		fprintf(file,"3\t"); writeCharConst(m->m3,file); 
-	}
-	if(m->m4 != NULL){ 
+	}else if(m->m4 != NULL){ 
 		fprintf(file,"4\t"); writeMethodCall(m->m4,file); 
-	}
-	if(m->m5 != NULL){ 
+	}else if(m->m5 != NULL){ 
 		fprintf(file,"5\t"); writeExpr(m->m5,file); 
-	}
-	if(m->m6 != NULL){ 
+	}else if(m->m6 != NULL){ 
 		fprintf(file,"6\t"); writeVariable(m->m6,file); 
-	}
-	if(m->m7 != NULL){
+	}else if(m->m7 != NULL){
 		fprintf(file,"7\t"); writeFloatConst(m->m7,file); 
+	}else if(m->m8 != NULL){
+		fprintf(file, "8\t"); writeStringConst(m->m8, file);
+	}else{
+		printf("Error in writeTerm(...)\n");
+		exit(1);
 	}
 }
 void writeBoolConst(struct BoolConst* m, FILE* file){
@@ -179,6 +178,9 @@ void writeCharConst(struct CharConst* m, FILE* file){
 }
 void writeFloatConst(struct FloatConst* m, 	FILE* file){
 	fprintf(file, "FloatConst\t%f\t", m->value);
+}
+void writeStringConst(struct StringConst* m, FILE* file){
+	fprintf(file, "StringConst\t%s\t", m->value);
 }
 void writeOp(struct Op* m, FILE* file){
 	fprintf(file, "Op\t%s\t", m->op);

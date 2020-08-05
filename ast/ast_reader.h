@@ -19,10 +19,13 @@ struct StmtBlock* readStmtBlock(FILE* file, bool debug);
 struct DeclArg* readDeclArg(FILE* file, bool debug);
 struct Expr* readExpr(FILE* file, bool debug);
 struct Op* readOp(FILE* file, bool debug);
-struct IntConst* readIntConst(FILE* file, bool debug);
-struct BoolConst* readBoolConst(FILE* file, bool debug);
-struct CharConst* readCharConst(FILE* file, bool debug);
-struct FloatConst* readFloatConst(FILE* file, bool debug);
+
+struct IntConst* 	readIntConst(	FILE* file, bool debug);
+struct BoolConst* 	readBoolConst(	FILE* file, bool debug);
+struct CharConst* 	readCharConst(	FILE* file, bool debug);
+struct FloatConst* 	readFloatConst(	FILE* file, bool debug);
+struct StringConst* readStringConst(FILE* file, bool debug);
+
 struct Variable* readVariable(FILE* file, bool debug);
 struct SimpleVar* readSimpleVar(FILE* file, bool debug);
 struct Term* readTerm(FILE* file, bool debug);

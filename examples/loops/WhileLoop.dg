@@ -1,17 +1,14 @@
-
-	fn main ()~>PInt {
-
-		i=0;
+fn main ()~>PInt {
+	i=0;
+	j=0;
+        while (i < 3){
 		j=0;
-
-	        while (i < 3){
-			j=0;
-			while(j<2){
-				putchar('i');
-				j=j+1;
-			}
-			putchar('o');
-			i=i+1;
+		while(j<2){
+			printf("i");
+			j=j+1;
 		}
-		return 0;
+		printf("o");
+		i=i+1;
 	}
+	return 0;
+}

@@ -27,10 +27,11 @@ void transpileExpr(struct Expr* expr, FILE* file);
 
 void transpileSimpleVar(struct SimpleVar* svar, FILE* file);
 
-void transpileBoolConst(struct BoolConst* bc, FILE* file);
-void transpileIntConst(struct IntConst* ic, FILE* file);
-void transpileCharConst(struct CharConst* cc, FILE* file);
-void transpileFloatConst(struct FloatConst* fc, FILE* file);
+void transpileBoolConst		(struct BoolConst* bc, 	FILE* file);
+void transpileIntConst		(struct IntConst* ic, 	FILE* file);
+void transpileCharConst		(struct CharConst* cc, 	FILE* file);
+void transpileFloatConst	(struct FloatConst* fc, FILE* file);
+void transpileStringConst	(struct StringConst* s, FILE* file);
 
 void transpileOp(struct Op* op, FILE* file);
 
@@ -251,15 +252,19 @@ void transpileIntConst(struct IntConst* ic, FILE* file){
 }
 
 void transpileCharConst(struct CharConst* cc, FILE* file){
-	fprintf(file, "%c", cc->value);
+	fprintf(file, "'%c'", cc->value);
 }
 
 void transpileFloatConst(struct FloatConst* fc, FILE* file){
 	fprintf(file, "%f", fc->value);
 }
 
+void transpileStringConst	(struct StringConst* s, FILE* file){
+	fprintf(file, "\"%s\"", s->value);
+}
+
 void transpileOp(struct Op* op, FILE* file){
-	fprintf(file, "%s", op->op);
+	fprintf(file, " %s ", op->op);
 }
 
 void transpileBasicTypeWrapped(struct BasicTypeWrapped* btw, FILE* file){

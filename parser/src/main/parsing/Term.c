@@ -11,6 +11,7 @@
 #include "IntConst.h"
 #include "BoolConst.h"
 #include "FloatConst.h"
+#include "StringConst.h"
 #include "Expr.h"
 #include "Variable.h"
 #include "statements/MethodCall.h"
@@ -26,6 +27,7 @@ struct Term* makeTerm_other(struct Expr* expr){
 	res->m5 = NULL;
 	res->m6 = NULL;
 	res->m7 = NULL;
+	res->m8 = NULL;
 
 	res->m5 = expr;
 	return res;
@@ -49,6 +51,7 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 	res->m5 = NULL;
 	res->m6 = NULL;
 	res->m7 = NULL;
+	res->m8 = NULL;
 
 	struct TokenList* copy = list_copy(tokens);
 
@@ -75,7 +78,15 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 			list_print(copy);
 			exit(1);
 		}
-
+	}else if(list_head(copy)->kind == STRINGCONST){
+		
+		res->m8 = makeStringConst(copy, debug);
+		if(res->m8 == NULL){
+			free(res);
+			freeTokenListShallow(copy);
+			return NULL;
+		}
+		
 	}else{
 
 		if(debug){
@@ -137,6 +148,11 @@ void freeTerm(struct Term* t){
 		freeVariable(t->m6);
 	}else if(t->m7 != NULL){
 		freeFloatConst(t->m7);
+	}else if(t->m8 != NULL){
+		freeStringConst(t->m8);
+	}else{
+		printf("Error in freeTerm(...)\n");
+		exit(1);
 	}
 	free(t);
 }

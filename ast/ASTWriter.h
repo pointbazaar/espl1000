@@ -25,10 +25,13 @@ void writeStmtBlock(struct StmtBlock* block, FILE* file);
 void writeDeclArg(struct DeclArg* m, 		FILE* file);
 void writeExpr(struct Expr* m, 			FILE* file);
 void writeOp(struct Op* m, 			FILE* file);
-void writeIntConst(struct IntConst* m, 		FILE* file);
-void writeBoolConst(struct BoolConst* m, 	FILE* file);
-void writeCharConst(struct CharConst* m, 	FILE* file);
-void writeFloatConst(struct FloatConst* m, 	FILE* file);
+
+void writeIntConst(struct IntConst* m, 		 FILE* file);
+void writeBoolConst(struct BoolConst* m, 	 FILE* file);
+void writeCharConst(struct CharConst* m, 	 FILE* file);
+void writeFloatConst(struct FloatConst* m, 	 FILE* file);
+void writeStringConst(struct StringConst* m, FILE* file);
+
 void writeVariable(struct Variable* m, 		FILE* file);
 void writeSimpleVar(struct SimpleVar* m, 	FILE* file);
 void writeTerm(struct Term* m, 			FILE* file);

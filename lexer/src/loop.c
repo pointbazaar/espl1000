@@ -234,55 +234,55 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 			//SECTION: BRACKETS,BRACES,PARENS
 			case S_LCURLY_FINAL:
 				tkn->kind=LCURLY;
-				tkn->value="LCURLY";
+				tkn->value="{";
 
 				break;
 
 			case S_RCURLY_FINAL:
 				tkn->kind=RCURLY;
-				tkn->value="RCURLY";
+				tkn->value="}";
 				break;
 
 			case S_LPARENS_FINAL:
 				tkn->kind=LPARENS;
-				tkn->value="LPARENS";
+				tkn->value="(";
 				break;
 
 			case S_RPARENS_FINAL:
 				tkn->kind=RPARENS;
-				tkn->value="RPARENS";
+				tkn->value=")";
 				break;
 
 			case S_LBRACKET_FINAL:
 				tkn->kind=LBRACKET;
-				tkn->value="LBRACKET";
+				tkn->value="[";
 
 				break;
 
 			case S_RBRACKET_FINAL:
 				tkn->kind=RBRACKET;
-				tkn->value="RBRACKET";
+				tkn->value="]";
 				break;
 
 			//SECTION: OTHER SYMBOLS
 			case S_LESSER_FINAL:
 				tkn->kind=LESSER;
-				tkn->value="LESSER";
+				tkn->value="<";
 				break;
 
 			case S_GREATER_FINAL:
 				tkn->kind=GREATER;
-				tkn->value="GREATER";
+				tkn->value=">";
 				break;
 
 			case S_WAVE_FINAL:
 				tkn->kind=WAVE;
-				tkn->value="WAVE";
+				tkn->value="~";
 				break;
 
 			case S_SEMICOLON_FINAL:
 				tkn->kind=SEMICOLON;
-				tkn->value="SEMICOLON";
+				tkn->value=";";
 				break;
 
 			case S_EQ_FINAL:
