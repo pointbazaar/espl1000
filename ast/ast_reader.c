@@ -205,13 +205,21 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 
 	da->type = readType(file, debug);
 
-	char next[10];
-	fscanf(file, "%s\t", next);
-	if(strcmp(next, "NULL")==0){
+	int option;
+	if(fscanf(file, "%d\t", &option) != 1){
+		printf("Error reading DeclaredArg 2\n");
+		exit(1);
+	}
+	
+	if(option == 0){
 		da->has_name = false;
-	}else{
-		strcpy(da->name, next);
+	}else if(option == 1){
 		da->has_name = true;
+		
+		if(fscanf(file, "%s\t", da->name) != 1){
+			printf("Error reading DeclaredArg 3\n");
+			exit(1);
+		}
 	}
 
 	return da;

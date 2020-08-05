@@ -96,10 +96,13 @@ void writeDeclArg(struct DeclArg* m, FILE* file){
 	fprintf(file, "DeclaredArg\t");
 
 	writeType(m->type,file);
+	
+	int option = (m->name != NULL)?1:0;
+	
+	fprintf(file, "%d\t", option);
+	
 	if(m->name != NULL){
 		fprintf(file,"%s\t",m->name);
-	}else{
-		fprintf(file,"NULL\t");
 	}
 }
 void writeVariable(struct Variable* m, FILE* file){
@@ -288,9 +291,7 @@ void writeBasicTypeWrapped(struct BasicTypeWrapped* m, FILE* file){
 	if(m->simpleType != NULL){ 
 		fprintf(file,"1\t"); 
 		writeSimpleType(m->simpleType,file); 
-	}
-
-	if(m->subrType != NULL){ 
+	}else if(m->subrType != NULL){ 
 		fprintf(file,"2\t"); 
 		writeSubrType(m->subrType,file); 
 	}
