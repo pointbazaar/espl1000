@@ -157,6 +157,8 @@ struct IfStmt{
 	struct Expr* condition;
 
 	struct StmtBlock* block;
+	
+	//may be NULL
 	struct StmtBlock* elseBlock;
 };
 struct MethodCall {

@@ -51,11 +51,6 @@ int main(int argc, char* argv[]){
 	//parse AST
 	struct AST_Whole_Program* ast = readAST(ast_filename, debug);
 
-	if(ast == NULL){
-		printf("Error parsing from %s\n", ast_filename);
-		exit(1);
-	}
-
 	char fname_out[32]; //new output filename
 
 	strcpy(fname_out, filename);

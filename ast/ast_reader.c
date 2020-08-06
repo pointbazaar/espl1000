@@ -13,25 +13,30 @@ struct AST_Whole_Program* readAST(char* filename, bool debug){
 	}
 	
 	FILE* file = fopen(filename,"r");
-	if(file == NULL){return NULL;}
+	if(file == NULL){
+		printf("could not open file: readAST(...)\n");
+		exit(1);
+	}
 
 	struct AST_Whole_Program* ast = smalloc(sizeof(struct AST_Whole_Program));
 
 	struct Namespace* ns = readNamespace(file, debug);
-	if(ns == NULL){return NULL;}
+	
 	ast->count_namespaces = 1;
-
 	ast->namespaces = smalloc(sizeof(struct Namespace*));
 	ast->namespaces[0] = ns;
 
 	fclose(file);
+	
+	if(debug){ printf("readAST ~ done\n"); }
+	
 	return ast;
 }
 
 struct Namespace* readNamespace(FILE* file, bool debug){
-	if(debug){
-			printf("readNamespace(...)\n");
-	}
+	
+	if(debug){ printf("readNamespace(...)\n"); }
+	
 	struct Namespace* ns = smalloc(sizeof(struct Namespace));
 
 	int count = fscanf(file,
@@ -53,35 +58,32 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 		printf("reading %d Methods\n", ns->count_methods);
 	}
 	for(int i=0; i < ns->count_methods; i++){
+		
 		struct Method* m =  readMethod(file, debug);
-		if(m == NULL){
-			fclose(file);
-			printf("error in readNamespace 2\n");
-			exit(1);
-		}
 		ns->methods[i] = m;
 	}
 	
 	//read structs
 	count = fscanf(file, "%d\t", &(ns->count_structs));
-	if(debug){
-		printf("reading %d Structs\n", ns->count_structs);
-	}
+	
 	if(count != 1){
 		fclose(file);
 		printf("error in readNamespace 3 ,%d\n",count);
 		exit(1);
 	}
+	
+	if(debug){
+		printf("reading %d Structs\n", ns->count_structs);
+	}
+	
 	ns->structs = smalloc(sizeof(struct StructDecl*)*(ns->count_structs));
 	for(int i=0;i < ns->count_structs; i++){
+		
 		struct StructDecl* s = readStructDecl(file, debug);
-		if(s == NULL){
-			fclose(file);
-			printf("error in readNamespace 4\n");
-			exit(1);
-		}
 		ns->structs[i] = s;
 	}
+	
+	if(debug){ printf("done\n"); }
 	
 	return ns;
 }
@@ -110,12 +112,16 @@ struct Method* readMethod(FILE* file, bool debug){
 		printf("Error reading Method 2\n");
 		exit(1);
 	}
+	
+	m->args = smalloc(sizeof(struct DeclArg*)*(m->count_args));
 
 	for(int i = 0;i < m->count_args;i++){
 		m->args[i] = readDeclArg(file, debug);
 	}
 
 	m->block = readStmtBlock(file, debug);
+	
+	if(debug){ printf("done\n"); }
 	
 	return m;
 }
@@ -143,6 +149,9 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 	for(int i=0;i < res->count_members;i++){
 		res->members[i] = readStructMember(file, debug);
 	}
+	
+	if(debug){ printf("done\n"); }
+	
 	return res;
 }
 struct StructMember* readStructMember(FILE* file, bool debug){
@@ -164,6 +173,8 @@ struct StructMember* readStructMember(FILE* file, bool debug){
 		printf("Error reading StructMember2\n");
 		exit(1);
 	}
+	
+	if(debug){ printf("done\n"); }
 	
 	return res;
 }
@@ -216,11 +227,17 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 	}else if(option == 1){
 		da->has_name = true;
 		
-		if(fscanf(file, "%s\t", da->name) != 1){
+		//do not read more than 19 chars
+		if(fscanf(file, "%19s\t", da->name) != 1){
 			printf("Error reading DeclaredArg 3\n");
 			exit(1);
 		}
+	}else{
+		printf("Error in readDeclArg\n");
+		exit(1);
 	}
+	
+	if(debug){ printf("done\n"); }
 
 	return da;
 }
@@ -507,6 +524,8 @@ struct WhileStmt* readWhileStmt(FILE* file, bool debug){
 	v->condition = readExpr(file, debug);
 	v->block = readStmtBlock(file, debug);
 	
+	if(debug){ printf("done\n"); }
+	
 	return v;
 }
 struct RetStmt* readRetStmt(FILE* file, bool debug){
@@ -594,14 +613,19 @@ struct Type* readType(FILE* file, bool debug){
 		case 1: b->m1 = readBasicTypeWrapped(file, debug); break;
 		case 2: b->m2 = readTypeParam(file, debug); break;
 		case 3: b->m3 = readArrayType(file, debug); break;
+		default:
+			printf("Error in readType\n");
+			exit(1);
 	}
+	
+	if(debug){ printf("done\n"); }
 	
 	return b;
 }
 struct SubrType* readSubrType(FILE* file, bool debug){
-	if(debug){
-			printf("readSubrType(...)\n");
-	}
+	
+	if(debug){ printf("readSubrType(...)\n"); }
+	
 	struct SubrType* v = smalloc(sizeof(struct SubrType));
 	
 	if(fscanf(file, "SubrType\t") == EOF){
@@ -612,7 +636,7 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 	v->returnType = readType(file, debug);
 	
 	if(
-		fscanf(file, "%d\t%d\t", (int*)(v->hasSideEffects), &(v->count_argTypes))
+		fscanf(file, "%d\t%d\t", (int*)(&(v->hasSideEffects)), &(v->count_argTypes))
 		!= 2
 	){
 		printf("Error reading SubrType 2\n");
@@ -623,6 +647,9 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 	for(int i=0;i < (v->count_argTypes); i++){
 		v->argTypes[i] = readType(file, debug);
 	}
+	
+	if(debug){ printf("done\n"); }
+	
 	return v;
 }
 struct SimpleType* readSimpleType(FILE* file, bool debug){
@@ -631,10 +658,13 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 	
 	struct SimpleType* v = smalloc(sizeof(struct SimpleType));
 	
-	if(fscanf(file, "SimpleType\t%s\t", v->typeName) != 1){
+	//%30s ensures it does not read more than 30 chars
+	if(fscanf(file, "SimpleType\t%30s\t", v->typeName) != 1){
 		printf("Error reading SimpleType\n");
 		exit(1);
 	}
+	
+	if(debug){ printf("done\n"); }
 	
 	return v;
 }
@@ -653,6 +683,8 @@ struct ArrayType* readArrayType(FILE* file, bool debug){
 	
 	v->element_type = readType(file, debug);
 	
+	if(debug){ printf("done\n"); }
+	
 	return v;
 }
 struct TypeParam* readTypeParam(FILE* file, bool debug){
@@ -667,6 +699,8 @@ struct TypeParam* readTypeParam(FILE* file, bool debug){
 		printf("Error reading TypeParam\n");
 		exit(1);
 	}
+	
+	if(debug){ printf("done\n"); }
 	
 	return v;
 }
@@ -694,7 +728,13 @@ struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug){
 			v->simpleType = NULL;
 			v->subrType = readSubrType(file, debug);
 			break;
+		default:
+			printf("Error in readBasicTypeWrapped\n");
+			exit(1);
 	}
+	
+	if(debug){ printf("done\n"); }
+	
 	return v;
 }
 

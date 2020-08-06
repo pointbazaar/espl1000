@@ -47,6 +47,9 @@ void transpileSubrType(struct SubrType* subrType, FILE* file);
 void transpileDeclArg(struct DeclArg* da, FILE* file);
 
 void transpileAndWrite(char* filename, struct AST_Whole_Program* ast){
+	
+	//TODO: use debug param
+	printf("transpileAndWrite(...)\n");
 
 	FILE* fout = fopen(filename, "w");
 
@@ -62,6 +65,8 @@ void transpileAndWrite(char* filename, struct AST_Whole_Program* ast){
 }
 
 void transpileAST(struct AST_Whole_Program* ast, FILE* file){
+	
+	printf("transpileAST(...)\n");
 	
 	//write some standard stdlib includes
 	fprintf(file, "#include <stdlib.h>\n");
@@ -81,6 +86,8 @@ void transpileAST(struct AST_Whole_Program* ast, FILE* file){
 }
 
 void transpileNamespace(struct Namespace* ns, FILE* file){
+	
+	printf("transpileNamespace(...)\n");
 
 	//TODO: transpile struct definitions
 
@@ -91,6 +98,8 @@ void transpileNamespace(struct Namespace* ns, FILE* file){
 }
 
 void transpileMethod(struct Method* m, FILE* file){
+	
+	printf("transpileMethod(...)\n");
 
 	transpileType(m->returnType, file);
 
@@ -98,6 +107,9 @@ void transpileMethod(struct Method* m, FILE* file){
 
 	for(int i=0; i < m->count_args; i++){
 		transpileDeclArg(m->args[i], file);
+		if(i < (m->count_args)-1){
+			fprintf(file, ", ");
+		}
 	}
 
 	fprintf(file, ")");
@@ -106,6 +118,8 @@ void transpileMethod(struct Method* m, FILE* file){
 }
 
 void transpileStmtBlock(struct StmtBlock* block, FILE* file, int indentLevel){
+	
+	printf("transpileStmtBlock(...)\n");
 
 	fprintf(file, "{\n");
 
@@ -118,6 +132,8 @@ void transpileStmtBlock(struct StmtBlock* block, FILE* file, int indentLevel){
 }
 
 void transpileStmt(struct Stmt* s, FILE* file, int indentLevel){
+	
+	printf("transpileStmt(...)\n");
 
 	if(s->m1 != NULL){
 		transpileMethodCall(s->m1, file, indentLevel);
@@ -143,17 +159,24 @@ void transpileStmt(struct Stmt* s, FILE* file, int indentLevel){
 
 void transpileMethodCall(struct MethodCall* mc, FILE* file, int indentLevel){
 	
+	printf("transpileMethodCall(...)\n");
+	
 	indent(file, indentLevel);
 	fprintf(file, "%s(", mc->methodName);
 
 	for(int i=0;i < mc->count_args; i++){
 		transpileExpr(mc->args[i], file);
+		if(i < (mc->count_args)-1){
+			fprintf(file, ", ");
+		}
 	}
 
 	fprintf(file, ")");
 }
 
 void transpileWhileStmt(struct WhileStmt* ws, FILE* file, int indentLevel){
+	
+	printf("transpileWhileStmt(...)\n");
 	
 	indent(file, indentLevel);
 	
@@ -166,19 +189,26 @@ void transpileWhileStmt(struct WhileStmt* ws, FILE* file, int indentLevel){
 
 void transpileIfStmt(struct IfStmt* is, FILE* file, int indentLevel){
 	
+	printf("transpileIfStmt(...)\n");
+	
 	indent(file, indentLevel);
 	
 	fprintf(file, "if (");
 	transpileExpr(is->condition, file);
 	fprintf(file, ")");
 		transpileStmtBlock(is->block, file, indentLevel);
+	
+	if(is->elseBlock != NULL){
 		
-	indent(file, indentLevel);
-	fprintf(file, "else");
-		transpileStmtBlock(is->elseBlock, file, indentLevel);
+		indent(file, indentLevel);
+		fprintf(file, "else");
+			transpileStmtBlock(is->elseBlock, file, indentLevel);
+	}
 }
 
 void transpileRetStmt(struct RetStmt* rs, FILE* file, int indentLevel){
+	
+	printf("transpileRetStmt(...)\n");
 	
 	indent(file, indentLevel);
 	
@@ -187,19 +217,25 @@ void transpileRetStmt(struct RetStmt* rs, FILE* file, int indentLevel){
 }
 
 void transpileAssignStmt(struct AssignStmt* as, FILE* file, int indentLevel){
+	
+	printf("transpileAssignStmt(...)\n");
 
 	indent(file, indentLevel);
 
 	if(as->optType != NULL){
 		transpileType(as->optType, file);
+		
+		fprintf(file, " ");
 	}
-	fprintf(file, " ");
+	
 	transpileVariable(as->var, file);
 	fprintf(file, " = ");
 	transpileExpr(as->expr, file);
 }
 
 void transpileType(struct Type* t, FILE* file){
+	
+	printf("transpileType(...)\n");
 	
 	if(t->m1 != NULL){
 		transpileBasicTypeWrapped(t->m1, file);
@@ -212,6 +248,8 @@ void transpileType(struct Type* t, FILE* file){
 
 void transpileVariable(struct Variable* var, FILE* file){
 	
+	printf("transpileVariable(...)\n");
+	
 	transpileSimpleVar(var->simpleVar, file);
 	for(int i=0; i < var->count_memberAccessList; i++){
 		fprintf(file, ".");
@@ -220,6 +258,8 @@ void transpileVariable(struct Variable* var, FILE* file){
 }
 
 void transpileTerm(struct Term* t, FILE* file){
+	
+	printf("transpileTerm(...)\n");
 	
 	if(t->m1 != NULL){
 		transpileBoolConst(t->m1, file);
@@ -244,6 +284,8 @@ void transpileTerm(struct Term* t, FILE* file){
 }
 
 void transpileExpr(struct Expr* expr, FILE* file){
+	
+	printf("transpileExpr(...)\n");
 
 	transpileTerm(expr->term1, file);
 
@@ -255,6 +297,8 @@ void transpileExpr(struct Expr* expr, FILE* file){
 
 void transpileSimpleVar(struct SimpleVar* svar, FILE* file){
 	
+	printf("transpileSimpleVar(...)\n");
+	
 	fprintf(file, "%s", svar->name);
 	if(svar->optIndex != NULL){
 		fprintf(file, "[");
@@ -264,6 +308,8 @@ void transpileSimpleVar(struct SimpleVar* svar, FILE* file){
 }
 
 void transpileBoolConst(struct BoolConst* bc, FILE* file){
+	
+	printf("transpileBoolConst(...)\n");
 	
 	if(bc->value){
 		fprintf(file, "true");
@@ -297,6 +343,8 @@ void transpileOp(struct Op* op, FILE* file){
 
 void transpileBasicTypeWrapped(struct BasicTypeWrapped* btw, FILE* file){
 	
+	printf("transpileBasicTypeWrapped(...)\n");
+	
 	if(btw->simpleType != NULL){
 		transpileSimpleType(btw->simpleType, file);
 	}else if(btw->subrType != NULL){
@@ -312,11 +360,15 @@ void transpileTypeParam(struct TypeParam* tp, FILE* file){
 
 void transpileArrayType(struct ArrayType* atype, FILE* file){
 	
+	printf("transpileArrayType(...)\n");
+	
 	transpileType(atype->element_type, file);
 	fprintf(file, "*");
 }
 
 void transpileSimpleType(struct SimpleType* simpleType, FILE* file){
+	
+	printf("transpileSimpleType(...)\n");
 	
 	char* tname = simpleType->typeName;
 	char res[20];
@@ -334,6 +386,10 @@ void transpileSimpleType(struct SimpleType* simpleType, FILE* file){
 		|| strcmp(tname, "Float") == 0
 	){
 		strcpy(res, "float");
+	}else if(
+		strcmp(tname, "Bool") == 0
+	){
+		strcpy(res, "bool");
 	}else{
 		strcpy(res, tname);
 	}
@@ -342,6 +398,8 @@ void transpileSimpleType(struct SimpleType* simpleType, FILE* file){
 }
 
 void transpileSubrType(struct SubrType* subrType, FILE* file){
+	
+	printf("transpileSubrType(...)\n");
 
 	//return type
 	transpileType(subrType->returnType, file);
@@ -359,6 +417,8 @@ void transpileSubrType(struct SubrType* subrType, FILE* file){
 }
 
 void transpileDeclArg(struct DeclArg* da, FILE* file){
+	
+	printf("transpileDeclArg(...)\n");
 	
 	transpileType(da->type, file);
 

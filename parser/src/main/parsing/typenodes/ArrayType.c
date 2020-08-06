@@ -27,7 +27,7 @@ struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug) {
 
 	struct TokenList* copy1 = list_copy(tokens);
 
-	if(!list_startsWith(copy1, makeToken2(LBRACKET,"["))){
+	if(!list_expect(copy1, LBRACKET)){
 		freeTokenListShallow(copy1);
 		free(res);
 		return NULL;
