@@ -10,7 +10,9 @@
 
 void transpileAST(struct AST_Whole_Program* ast, FILE* file);
 void transpileNamespace(struct Namespace* ns, FILE* file);
+
 void transpileMethod(struct Method* m, FILE* file);
+void transpileMethodSignature(struct Method* m, FILE* file);
 
 void transpileStmtBlock(struct StmtBlock* block, FILE* file, int indent);
 void transpileStmt(struct Stmt* s, FILE* file, int indentLevel);
@@ -75,10 +77,6 @@ void transpileAST(struct AST_Whole_Program* ast, FILE* file){
 
 	//TODO: write struct declarations
 
-	//TODO: write struct definitions
-
-	//TODO: write subroutine declarations
-
 	for(int i=0; i < ast->count_namespaces; i++){
 
 		transpileNamespace(ast->namespaces[i], file);
@@ -90,9 +88,14 @@ void transpileNamespace(struct Namespace* ns, FILE* file){
 	printf("transpileNamespace(...)\n");
 
 	//TODO: transpile struct definitions
+	
+	//write subroutine declarations
+	for(int i=0; i < ns->count_methods; i++){
+		transpileMethodSignature(ns->methods[i], file);
+		fprintf(file, ";\n");
+	}
 
 	for(int i=0; i < ns->count_methods; i++){
-
 		transpileMethod(ns->methods[i], file);
 	}
 }
@@ -101,6 +104,15 @@ void transpileMethod(struct Method* m, FILE* file){
 	
 	printf("transpileMethod(...)\n");
 
+	transpileMethodSignature(m, file);
+
+	transpileStmtBlock(m->block, file, 0);
+}
+
+void transpileMethodSignature(struct Method* m, FILE* file){
+	
+	printf("transpileMethodSignature(...)\n");
+	
 	transpileType(m->returnType, file);
 
 	fprintf(file, " %s(", m->name);
@@ -113,8 +125,6 @@ void transpileMethod(struct Method* m, FILE* file){
 	}
 
 	fprintf(file, ")");
-
-	transpileStmtBlock(m->block, file, 0);
 }
 
 void transpileStmtBlock(struct StmtBlock* block, FILE* file, int indentLevel){
