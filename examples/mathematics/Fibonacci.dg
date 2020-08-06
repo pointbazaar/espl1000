@@ -1,5 +1,6 @@
-
-
+fn main () ~> PInt{
+	return fibonacci(140);
+}
 fn fibonacci (PInt n) -> PInt{
 	
 	if(n<2){
