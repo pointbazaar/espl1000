@@ -409,6 +409,8 @@ void transpileSimpleType(struct SimpleType* simpleType, FILE* file){
 
 void transpileSubrType(struct SubrType* subrType, FILE* file){
 	
+	//https://www.zentut.com/c-tutorial/c-function-pointer/
+	
 	printf("transpileSubrType(...)\n");
 
 	//return type
@@ -417,13 +419,17 @@ void transpileSubrType(struct SubrType* subrType, FILE* file){
 	//TODO: i do not really understand how
 	//this is written in C. 
 	//maybe trying some examples in C would help.
-	fprintf(file, "(*function_ptr(");
+	fprintf(file, "(*function_ptr) (");
 
 	//arguments
 	for(int i=0; i < subrType->count_argTypes; i++){
 		transpileType(subrType->argTypes[i], file);
+		
+		if(i < (subrType->count_argTypes)-1){
+			fprintf(file, ", ");
+		}
 	}
-	fprintf(file, "))");
+	fprintf(file, ")");
 }
 
 void transpileDeclArg(struct DeclArg* da, FILE* file){
