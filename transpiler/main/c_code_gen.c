@@ -11,6 +11,9 @@
 void transpileAST(struct AST_Whole_Program* ast, FILE* file);
 void transpileNamespace(struct Namespace* ns, FILE* file);
 
+void transpileStructDecl(struct StructDecl* s, FILE* file);
+void transpileStructMember(struct StructMember* m, FILE* file);
+
 void transpileMethod(struct Method* m, FILE* file);
 void transpileMethodSignature(struct Method* m, FILE* file);
 
@@ -74,8 +77,7 @@ void transpileAST(struct AST_Whole_Program* ast, FILE* file){
 	fprintf(file, "#include <stdlib.h>\n");
 	fprintf(file, "#include <stdio.h>\n");
 	fprintf(file, "#include <stdbool.h>\n");
-
-	//TODO: write struct declarations
+	fprintf(file, "#include <string.h>\n");
 
 	for(int i=0; i < ast->count_namespaces; i++){
 
@@ -86,10 +88,18 @@ void transpileAST(struct AST_Whole_Program* ast, FILE* file){
 void transpileNamespace(struct Namespace* ns, FILE* file){
 	
 	printf("transpileNamespace(...)\n");
-
-	//TODO: transpile struct definitions
 	
-	//write subroutine declarations
+	//write struct forward declarations
+	for(int i=0;i < ns->count_structs; i++){
+		fprintf(file, "struct %s;\n", ns->structs[i]->name);
+	}
+
+	//transpile struct definitions
+	for(int i=0;i < ns->count_structs; i++){
+		transpileStructDecl(ns->structs[i], file);
+	}
+	
+	//write subroutine forward declarations
 	for(int i=0; i < ns->count_methods; i++){
 		transpileMethodSignature(ns->methods[i], file);
 		fprintf(file, ";\n");
@@ -98,6 +108,29 @@ void transpileNamespace(struct Namespace* ns, FILE* file){
 	for(int i=0; i < ns->count_methods; i++){
 		transpileMethod(ns->methods[i], file);
 	}
+}
+
+void transpileStructDecl(struct StructDecl* s, FILE* file){
+	
+	printf("transpileStructDecl(...)\n");
+	fprintf(file ,"struct %s {\n", s->name);
+	
+	for(int i=0;i < s->count_members;i++){
+		transpileStructMember(s->members[i], file);
+	}
+	
+	fprintf(file, "}\n");
+}
+
+void transpileStructMember(struct StructMember* m, FILE* file){
+	
+	printf("transpileStructMember(...)\n");
+	
+	fprintf(file, "\t");
+	
+	transpileType(m->type, file);
+	
+	fprintf(file, " %s;\n", m->name);
 }
 
 void transpileMethod(struct Method* m, FILE* file){
