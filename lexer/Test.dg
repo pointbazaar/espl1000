@@ -1,10 +1,8 @@
-fn main ()~>PInt{
 
-	Int x = 3 + (3*2) - 4;
-	while(x<50){
-		while(x>50){
-			x = x + (x*x);
-		}
-		x++;
-	}
+struct Simple {
+	PInt a
+}
+
+fn main () ~> PInt {
+	return 0;
 }
