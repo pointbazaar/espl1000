@@ -12,15 +12,25 @@ COMMON_DEBUG := build/debug/strutils.o build/debug/lexer.o build/debug/loop.o bu
 
 COMMON_RELEASE := build/release/strutils.o build/release/lexer.o build/release/loop.o build/release/init_dfa.o 
 
+all: directories dragon-lexer dragon-lexer-debug test 
+
+directories: build/release build/debug
+
+build/release:
+	mkdir -p build/release
+
+build/debug:
+	mkdir -p build/debug
+
 #the performance, release build.
 #i guess we have to compile everything together here so
 #it can perform optimizations for the whole program
-main: build/release/main.o $(COMMON_RELEASE)
-	$(CALL_RELEASE) -o main  build/release/main.o $(COMMON_RELEASE)
+dragon-lexer: build/release/main.o $(COMMON_RELEASE)
+	$(CALL_RELEASE) -o dragon-lexer  build/release/main.o $(COMMON_RELEASE)
 
 #build the lexer for debugging (includes debug statements)
-main-debug: build/debug/main.o $(COMMON_DEBUG)
-	$(CALL_DEBUG) -o main-debug build/debug/main.o $(COMMON_DEBUG)
+dragon-lexer-debug: build/debug/main.o $(COMMON_DEBUG)
+	$(CALL_DEBUG) -o dragon-lexer-debug build/debug/main.o $(COMMON_DEBUG)
 
 #build the tests
 test: build/debug/test.o $(COMMON_DEBUG)

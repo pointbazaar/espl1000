@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #STEP 1: build everything
-./build.sh
+make
 
 #STEP 2: test dragon-lexer
 cd lexer
@@ -10,10 +10,10 @@ cd ..
 
 #STEP 3: test dragon-parser
 cd parser
-./buildandtest.sh
+./dragon-parser -test
 cd ..
 
 #STEP 4: test the transpiler
 cd transpiler
-./buildandtest.sh
+./sd -test
 cd ..

@@ -12,11 +12,14 @@ int main(int argc, char* argv[]){
 
 	char* filename = NULL;
 	bool debug = false;
+	bool test  = false;
 	
 	for(int i=1; i < argc; i++){
 		char* arg = argv[i];
 		if(strcmp(arg, "-debug") == 0){
 			debug = true;
+		}else if(strcmp(arg, "-test") == 0){
+			test = true;
 		}else{
 			filename = arg;
 		}
@@ -24,6 +27,11 @@ int main(int argc, char* argv[]){
 	
 	if(debug){
 		printf("smalldragon v0.01\n");
+	}
+	
+	if(test){
+		printf("smalldragon/transpiler currently has no tests.\n");
+		exit(0);
 	}
 	
 	if(filename == NULL){
