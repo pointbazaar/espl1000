@@ -2,9 +2,9 @@
 
 #include "code_gen_util.h"
 
-void indent(FILE* file, int indentLevel){
+void indent(struct Ctx* ctx){
 	
-	for(int i=0;i < indentLevel; i++){
-		fprintf(file, "\t");
+	for(int i=0;i < ctx->indentLevel; i++){
+		fprintf(ctx->file, "\t");
 	}
 }

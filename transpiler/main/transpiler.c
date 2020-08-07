@@ -60,7 +60,7 @@ int main(int argc, char* argv[]){
 
 	//transpile to C code 
 	//and write to file 
-	transpileAndWrite(fname_out, ast);
+	transpileAndWrite(fname_out, ast, debug);
 	
 	char cmd_gcc[100];
 	strcpy(cmd_gcc, "gcc -o main ");

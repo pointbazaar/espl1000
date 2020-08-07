@@ -4,57 +4,57 @@
 
 #include "c_code_gen.h"
 #include "code_gen_util.h"
+#include "../../util/util.h"
 
 //methods delcared in .c file, as they should be private
 //to this file.
 
-void transpileAST(struct AST_Whole_Program* ast, FILE* file);
-void transpileNamespace(struct Namespace* ns, FILE* file);
+void transpileAST(struct AST_Whole_Program* ast, struct Ctx* ctx);
+void transpileNamespace(struct Namespace* ns, struct Ctx* ctx);
 
-void transpileStructDecl(struct StructDecl* s, FILE* file);
-void transpileStructMember(struct StructMember* m, FILE* file);
+void transpileStructDecl(struct StructDecl* s, struct Ctx* ctx);
+void transpileStructMember(struct StructMember* m, struct Ctx* ctx);
 
-void transpileMethod(struct Method* m, FILE* file);
-void transpileMethodSignature(struct Method* m, FILE* file);
+void transpileMethod(struct Method* m, struct Ctx* ctx);
+void transpileMethodSignature(struct Method* m, struct Ctx* ctx);
 
-void transpileStmtBlock(struct StmtBlock* block, FILE* file, int indent);
-void transpileStmt(struct Stmt* s, FILE* file, int indentLevel);
+void transpileStmtBlock(struct StmtBlock* block, struct Ctx* ctx);
+void transpileStmt(struct Stmt* s, struct Ctx* ctx);
 
 //stmt related
-void transpileMethodCall(struct MethodCall* mc, FILE* file, int indentLevel);
-void transpileWhileStmt(struct WhileStmt* ws, FILE* file, int indentLevel);
-void transpileIfStmt(struct IfStmt* is, FILE* file, int indentLevel);
-void transpileRetStmt(struct RetStmt* rs, FILE* file, int indentLevel);
-void transpileAssignStmt(struct AssignStmt* as, FILE* file, int indentLevel);
+void transpileMethodCall(struct MethodCall* mc, struct Ctx* ctx);
+void transpileWhileStmt(struct WhileStmt* ws, struct Ctx* ctx);
+void transpileIfStmt(struct IfStmt* is, struct Ctx* ctx);
+void transpileRetStmt(struct RetStmt* rs, struct Ctx* ctx);
+void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx);
 
-void transpileType(struct Type* t, FILE* file);
-void transpileVariable(struct Variable* var, FILE* file);
-void transpileTerm(struct Term* expr, FILE* file);
-void transpileExpr(struct Expr* expr, FILE* file);
+void transpileType(struct Type* t, struct Ctx* ctx);
+void transpileVariable(struct Variable* var, struct Ctx* ctx);
+void transpileTerm(struct Term* expr, struct Ctx* ctx);
+void transpileExpr(struct Expr* expr, struct Ctx* ctx);
 
-void transpileSimpleVar(struct SimpleVar* svar, FILE* file);
+void transpileSimpleVar(struct SimpleVar* svar, struct Ctx* ctx);
 
-void transpileBoolConst		(struct BoolConst* bc, 	FILE* file);
-void transpileIntConst		(struct IntConst* ic, 	FILE* file);
-void transpileCharConst		(struct CharConst* cc, 	FILE* file);
-void transpileFloatConst	(struct FloatConst* fc, FILE* file);
-void transpileStringConst	(struct StringConst* s, FILE* file);
+void transpileBoolConst		(struct BoolConst* bc, 	struct Ctx* ctx);
+void transpileIntConst		(struct IntConst* ic, 	struct Ctx* ctx);
+void transpileCharConst		(struct CharConst* cc, 	struct Ctx* ctx);
+void transpileFloatConst	(struct FloatConst* fc, struct Ctx* ctx);
+void transpileStringConst	(struct StringConst* s, struct Ctx* ctx);
 
-void transpileOp(struct Op* op, FILE* file);
+void transpileOp(struct Op* op, struct Ctx* ctx);
 
-void transpileBasicTypeWrapped(struct BasicTypeWrapped* btw, FILE* file);
-void transpileTypeParam(struct TypeParam* tp, FILE* file);
-void transpileArrayType(struct ArrayType* atype, FILE* file);
+void transpileBasicTypeWrapped(struct BasicTypeWrapped* btw, struct Ctx* ctx);
+void transpileTypeParam(struct TypeParam* tp, struct Ctx* ctx);
+void transpileArrayType(struct ArrayType* atype, struct Ctx* ctx);
 
-void transpileSimpleType(struct SimpleType* simpleType, FILE* file);
-void transpileSubrType(struct SubrType* subrType, FILE* file);
+void transpileSimpleType(struct SimpleType* simpleType, struct Ctx* ctx);
+void transpileSubrType(struct SubrType* subrType, struct Ctx* ctx);
 
-void transpileDeclArg(struct DeclArg* da, FILE* file);
+void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx);
 
-void transpileAndWrite(char* filename, struct AST_Whole_Program* ast){
+void transpileAndWrite(char* filename, struct AST_Whole_Program* ast, bool debug){
 	
-	//TODO: use debug param
-	printf("transpileAndWrite(...)\n");
+	if(debug){ printf("transpileAndWrite(...)\n"); }
 
 	FILE* fout = fopen(filename, "w");
 
@@ -62,18 +62,24 @@ void transpileAndWrite(char* filename, struct AST_Whole_Program* ast){
 		printf("could not open output file\n");
 		exit(1);
 	}
+	
+	struct Ctx* ctx = smalloc(sizeof(struct Ctx));
+	ctx->debug = debug;
+	ctx->file = fout;
+	ctx->indentLevel = 0;
 
-	transpileAST(ast, fout);
-
+	transpileAST(ast, ctx);
 
 	fclose(fout);
 }
 
-void transpileAST(struct AST_Whole_Program* ast, FILE* file){
+void transpileAST(struct AST_Whole_Program* ast, struct Ctx* ctx){
 	
-	printf("transpileAST(...)\n");
+	if(ctx->debug){ printf("transpileAST(...)\n"); }
 	
 	//write some standard stdlib includes
+	FILE* file = ctx->file;
+	
 	fprintf(file, "#include <stdlib.h>\n");
 	fprintf(file, "#include <stdio.h>\n");
 	fprintf(file, "#include <stdbool.h>\n");
@@ -82,13 +88,15 @@ void transpileAST(struct AST_Whole_Program* ast, FILE* file){
 
 	for(int i=0; i < ast->count_namespaces; i++){
 
-		transpileNamespace(ast->namespaces[i], file);
+		transpileNamespace(ast->namespaces[i], ctx);
 	}
 }
 
-void transpileNamespace(struct Namespace* ns, FILE* file){
+void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	
-	printf("transpileNamespace(...)\n");
+	if(ctx->debug){ printf("transpileNamespace(...)\n"); }
+	
+	FILE* file = ctx->file;
 	
 	//write struct forward declarations
 	for(int i=0;i < ns->count_structs; i++){
@@ -97,322 +105,329 @@ void transpileNamespace(struct Namespace* ns, FILE* file){
 
 	//transpile struct definitions
 	for(int i=0;i < ns->count_structs; i++){
-		transpileStructDecl(ns->structs[i], file);
+		transpileStructDecl(ns->structs[i], ctx);
 	}
 	
 	//write subroutine forward declarations
 	for(int i=0; i < ns->count_methods; i++){
-		transpileMethodSignature(ns->methods[i], file);
+		transpileMethodSignature(ns->methods[i], ctx);
 		fprintf(file, ";\n");
 	}
 
 	for(int i=0; i < ns->count_methods; i++){
-		transpileMethod(ns->methods[i], file);
+		transpileMethod(ns->methods[i], ctx);
 	}
 }
 
-void transpileStructDecl(struct StructDecl* s, FILE* file){
+void transpileStructDecl(struct StructDecl* s, struct Ctx* ctx){
 	
-	printf("transpileStructDecl(...)\n");
-	fprintf(file ,"struct %s {\n", s->name);
+	if(ctx->debug){ printf("transpileStructDecl(...)\n"); }
+	
+	fprintf(ctx->file ,"struct %s {\n", s->name);
 	
 	for(int i=0;i < s->count_members;i++){
-		transpileStructMember(s->members[i], file);
+		transpileStructMember(s->members[i], ctx);
 	}
 	
-	fprintf(file, "};\n");
+	fprintf(ctx->file, "};\n");
 }
 
-void transpileStructMember(struct StructMember* m, FILE* file){
+void transpileStructMember(struct StructMember* m, struct Ctx* ctx){
 	
-	printf("transpileStructMember(...)\n");
+	if(ctx->debug){ printf("transpileStructMember(...)\n"); }
 	
-	fprintf(file, "\t");
+	fprintf(ctx->file, "\t");
 	
-	transpileType(m->type, file);
+	transpileType(m->type, ctx);
 	
-	fprintf(file, " %s;\n", m->name);
+	fprintf(ctx->file, " %s;\n", m->name);
 }
 
-void transpileMethod(struct Method* m, FILE* file){
+void transpileMethod(struct Method* m, struct Ctx* ctx){
 	
-	printf("transpileMethod(...)\n");
+	if(ctx->debug){ printf("transpileMethod(...)\n"); }
 
-	transpileMethodSignature(m, file);
+	transpileMethodSignature(m, ctx);
 
-	transpileStmtBlock(m->block, file, 0);
+	transpileStmtBlock(m->block, ctx);
 }
 
-void transpileMethodSignature(struct Method* m, FILE* file){
+void transpileMethodSignature(struct Method* m, struct Ctx* ctx){
 	
-	printf("transpileMethodSignature(...)\n");
+	if(ctx->debug){ printf("transpileMethodSignature(...)\n"); }
 	
-	transpileType(m->returnType, file);
+	transpileType(m->returnType, ctx);
 
-	fprintf(file, " %s(", m->name);
+	fprintf(ctx->file, " %s(", m->name);
 
 	for(int i=0; i < m->count_args; i++){
-		transpileDeclArg(m->args[i], file);
+		transpileDeclArg(m->args[i], ctx);
 		if(i < (m->count_args)-1){
-			fprintf(file, ", ");
+			fprintf(ctx->file, ", ");
 		}
 	}
 
-	fprintf(file, ")");
+	fprintf(ctx->file, ")");
 }
 
-void transpileStmtBlock(struct StmtBlock* block, FILE* file, int indentLevel){
+void transpileStmtBlock(struct StmtBlock* block, struct Ctx* ctx){
 	
-	printf("transpileStmtBlock(...)\n");
+	if(ctx->debug){ printf("transpileStmtBlock(...)\n"); }
 
-	fprintf(file, "{\n");
+	fprintf(ctx->file, "{\n");
 
 	for(int i=0; i < block->count; i++){
-		transpileStmt(block->stmts[i], file, indentLevel+1);
+		(ctx->indentLevel) += 1;
+		transpileStmt(block->stmts[i], ctx);
+		(ctx->indentLevel) -= 1;
 	}
 
-	indent(file, indentLevel);
-	fprintf(file, "}\n");
+	indent(ctx);
+	fprintf(ctx->file, "}\n");
 }
 
-void transpileStmt(struct Stmt* s, FILE* file, int indentLevel){
+void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 	
-	printf("transpileStmt(...)\n");
+	if(ctx->debug){ printf("transpileStmt(...)\n"); }
 
 	if(s->m1 != NULL){
-		transpileMethodCall(s->m1, file, indentLevel);
-		fprintf(file, ";");
+		transpileMethodCall(s->m1, ctx);
+		fprintf(ctx->file, ";");
 	}else if(s->m2 != NULL){
-		transpileWhileStmt(s->m2, file, indentLevel);
+		transpileWhileStmt(s->m2, ctx);
 	}else if(s->m3 != NULL){
-		transpileIfStmt(s->m3, file, indentLevel);
+		transpileIfStmt(s->m3, ctx);
 	}else if(s->m4 != NULL){
-		transpileRetStmt(s->m4, file, indentLevel);
-		fprintf(file, ";");
+		transpileRetStmt(s->m4, ctx);
+		fprintf(ctx->file, ";");
 	}else if(s->m5 != NULL){
-		transpileAssignStmt(s->m5, file, indentLevel);
-		fprintf(file, ";");
+		transpileAssignStmt(s->m5, ctx);
+		fprintf(ctx->file, ";");
 	}else{
 		printf("Error in transpileStmt\n");
 		exit(1);
 	}
-	fprintf(file, "\n");
+	fprintf(ctx->file, "\n");
 }
 
 //stmt related
 
-void transpileMethodCall(struct MethodCall* mc, FILE* file, int indentLevel){
+void transpileMethodCall(struct MethodCall* mc, struct Ctx* ctx){
 	
-	printf("transpileMethodCall(...)\n");
+	if(ctx->debug){ printf("transpileMethodCall(...)\n"); }
 	
-	indent(file, indentLevel);
-	fprintf(file, "%s(", mc->methodName);
+	indent(ctx);
+	fprintf(ctx->file, "%s(", mc->methodName);
 
 	for(int i=0;i < mc->count_args; i++){
-		transpileExpr(mc->args[i], file);
+		transpileExpr(mc->args[i], ctx);
 		if(i < (mc->count_args)-1){
-			fprintf(file, ", ");
+			fprintf(ctx->file, ", ");
 		}
 	}
 
-	fprintf(file, ")");
+	fprintf(ctx->file, ")");
 }
 
-void transpileWhileStmt(struct WhileStmt* ws, FILE* file, int indentLevel){
+void transpileWhileStmt(struct WhileStmt* ws, struct Ctx* ctx){
 	
-	printf("transpileWhileStmt(...)\n");
+	if(ctx->debug){ printf("transpileWhileStmt(...)\n"); }
 	
-	indent(file, indentLevel);
+	indent(ctx);
 	
-	fprintf(file, "while (");
-	transpileExpr(ws->condition, file);
-	fprintf(file, ")");
+	fprintf(ctx->file, "while (");
+	
+	transpileExpr(ws->condition, ctx);
+	
+	fprintf(ctx->file, ")");
 
-	transpileStmtBlock(ws->block, file, indentLevel);
+	transpileStmtBlock(ws->block, ctx);
 }
 
-void transpileIfStmt(struct IfStmt* is, FILE* file, int indentLevel){
+void transpileIfStmt(struct IfStmt* is, struct Ctx* ctx){
 	
-	printf("transpileIfStmt(...)\n");
+	if(ctx->debug){ printf("transpileIfStmt(...)\n"); }
 	
-	indent(file, indentLevel);
+	indent(ctx);
 	
-	fprintf(file, "if (");
-	transpileExpr(is->condition, file);
-	fprintf(file, ")");
-		transpileStmtBlock(is->block, file, indentLevel);
+	fprintf(ctx->file, "if (");
+	transpileExpr(is->condition, ctx);
+	
+	fprintf(ctx->file, ")");
+		transpileStmtBlock(is->block, ctx);
 	
 	if(is->elseBlock != NULL){
 		
-		indent(file, indentLevel);
-		fprintf(file, "else");
-			transpileStmtBlock(is->elseBlock, file, indentLevel);
+		indent(ctx);
+		fprintf(ctx->file, "else");
+			transpileStmtBlock(is->elseBlock, ctx);
 	}
 }
 
-void transpileRetStmt(struct RetStmt* rs, FILE* file, int indentLevel){
+void transpileRetStmt(struct RetStmt* rs, struct Ctx* ctx){
 	
-	printf("transpileRetStmt(...)\n");
+	if(ctx->debug){ printf("transpileRetStmt(...)\n"); }
 	
-	indent(file, indentLevel);
+	indent(ctx);
 	
-	fprintf(file, "return ");
-	transpileExpr(rs->returnValue, file);
+	fprintf(ctx->file, "return ");
+	transpileExpr(rs->returnValue, ctx);
 }
 
-void transpileAssignStmt(struct AssignStmt* as, FILE* file, int indentLevel){
+void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 	
-	printf("transpileAssignStmt(...)\n");
+	if(ctx->debug){ printf("transpileAssignStmt(...)\n"); }
 
-	indent(file, indentLevel);
+	indent(ctx);
 
 	if(as->optType != NULL){
-		transpileType(as->optType, file);
+		transpileType(as->optType, ctx);
 		
-		fprintf(file, " ");
+		fprintf(ctx->file, " ");
 	}
 	
-	transpileVariable(as->var, file);
-	fprintf(file, " = ");
-	transpileExpr(as->expr, file);
+	transpileVariable(as->var, ctx);
+	fprintf(ctx->file, " = ");
+	transpileExpr(as->expr, ctx);
 }
 
-void transpileType(struct Type* t, FILE* file){
+void transpileType(struct Type* t, struct Ctx* ctx){
 	
-	printf("transpileType(...)\n");
+	if(ctx->debug){ printf("transpileType(...)\n"); }
 	
 	if(t->m1 != NULL){
-		transpileBasicTypeWrapped(t->m1, file);
+		transpileBasicTypeWrapped(t->m1, ctx);
 	}else if(t->m2 != NULL){
-		transpileTypeParam(t->m2, file);
+		transpileTypeParam(t->m2, ctx);
 	}else if(t->m3 != NULL){
-		transpileArrayType(t->m3, file);
+		transpileArrayType(t->m3, ctx);
 	}
 }
 
-void transpileVariable(struct Variable* var, FILE* file){
+void transpileVariable(struct Variable* var, struct Ctx* ctx){
 	
-	printf("transpileVariable(...)\n");
+	if(ctx->debug){ printf("transpileVariable(...)\n"); }
 	
-	transpileSimpleVar(var->simpleVar, file);
+	transpileSimpleVar(var->simpleVar, ctx);
+	
 	for(int i=0; i < var->count_memberAccessList; i++){
-		fprintf(file, ".");
-		transpileVariable(var->memberAccessList[i], file);
+		fprintf(ctx->file, ".");
+		transpileVariable(var->memberAccessList[i], ctx);
 	}
 }
 
-void transpileTerm(struct Term* t, FILE* file){
+void transpileTerm(struct Term* t, struct Ctx* ctx){
 	
-	printf("transpileTerm(...)\n");
+	if(ctx->debug){ printf("transpileTerm(...)\n"); }
 	
 	if(t->m1 != NULL){
-		transpileBoolConst(t->m1, file);
+		transpileBoolConst(t->m1, ctx);
 	}else if(t->m2 != NULL){
-		transpileIntConst(t->m2, file);
+		transpileIntConst(t->m2, ctx);
 	}else if(t->m3 != NULL){
-		transpileCharConst(t->m3, file);
+		transpileCharConst(t->m3, ctx);
 	}else if(t->m4 != NULL){
-		transpileMethodCall(t->m4, file, 0);
+		transpileMethodCall(t->m4, ctx);
 	}else if(t->m5 != NULL){
-		transpileExpr(t->m5, file);
+		transpileExpr(t->m5, ctx);
 	}else if(t->m6 != NULL){
-		transpileVariable(t->m6, file);
+		transpileVariable(t->m6, ctx);
 	}else if(t->m7 != NULL){
-		transpileFloatConst(t->m7, file);
+		transpileFloatConst(t->m7, ctx);
 	}else if(t->m8 != NULL){
-		transpileStringConst(t->m8, file);
+		transpileStringConst(t->m8, ctx);
 	}else{
 		printf("Error in transpileTerm\n");
 		exit(1);
 	}
 }
 
-void transpileExpr(struct Expr* expr, FILE* file){
+void transpileExpr(struct Expr* expr, struct Ctx* ctx){
 	
-	printf("transpileExpr(...)\n");
+	if(ctx->debug){ printf("transpileExpr(...)\n"); }
 
-	transpileTerm(expr->term1, file);
+	transpileTerm(expr->term1, ctx);
 
 	if(expr->op != NULL){
-		transpileOp(expr->op, file);
-		transpileTerm(expr->term2, file);
+		transpileOp(expr->op, ctx);
+		transpileTerm(expr->term2, ctx);
 	}
 }
 
-void transpileSimpleVar(struct SimpleVar* svar, FILE* file){
+void transpileSimpleVar(struct SimpleVar* svar, struct Ctx* ctx){
 	
-	printf("transpileSimpleVar(...)\n");
+	if(ctx->debug){ printf("transpileSimpleVar(...)\n"); }
 	
-	fprintf(file, "%s", svar->name);
+	fprintf(ctx->file, "%s", svar->name);
 	if(svar->optIndex != NULL){
-		fprintf(file, "[");
-		transpileExpr(svar->optIndex, file);
-		fprintf(file, "]");
+		fprintf(ctx->file, "[");
+		transpileExpr(svar->optIndex, ctx);
+		fprintf(ctx->file, "]");
 	}
 }
 
-void transpileBoolConst(struct BoolConst* bc, FILE* file){
+void transpileBoolConst(struct BoolConst* bc, struct Ctx* ctx){
 	
-	printf("transpileBoolConst(...)\n");
+	if(ctx->debug){ printf("transpileBoolConst(...)\n"); }
 	
 	if(bc->value){
-		fprintf(file, "true");
+		fprintf(ctx->file, "true");
 	}else{
-		fprintf(file, "false");
+		fprintf(ctx->file, "false");
 	}
 }
 
-void transpileIntConst(struct IntConst* ic, FILE* file){
-	fprintf(file, "%d", ic->value);
+void transpileIntConst(struct IntConst* ic, struct Ctx* ctx){
+	fprintf(ctx->file, "%d", ic->value);
 }
 
-void transpileCharConst(struct CharConst* cc, FILE* file){
-	fprintf(file, "'%c'", cc->value);
+void transpileCharConst(struct CharConst* cc, struct Ctx* ctx){
+	fprintf(ctx->file, "'%c'", cc->value);
 }
 
-void transpileFloatConst(struct FloatConst* fc, FILE* file){
-	fprintf(file, "%f", fc->value);
+void transpileFloatConst(struct FloatConst* fc, struct Ctx* ctx){
+	fprintf(ctx->file, "%f", fc->value);
 }
 
-void transpileStringConst	(struct StringConst* s, FILE* file){
-	//fprintf(file, "\"%s\"", s->value);
+void transpileStringConst(struct StringConst* s, struct Ctx* ctx){
+	//fprintf(ctx->file, "\"%s\"", s->value);
 	
 	//quotation seems to already be present
-	fprintf(file, "%s", s->value);
+	fprintf(ctx->file, "%s", s->value);
 }
 
-void transpileOp(struct Op* op, FILE* file){
-	fprintf(file, " %s ", op->op);
+void transpileOp(struct Op* op, struct Ctx* ctx){
+	fprintf(ctx->file, " %s ", op->op);
 }
 
-void transpileBasicTypeWrapped(struct BasicTypeWrapped* btw, FILE* file){
+void transpileBasicTypeWrapped(struct BasicTypeWrapped* btw, struct Ctx* ctx){
 	
-	printf("transpileBasicTypeWrapped(...)\n");
+	if(ctx->debug){ printf("transpileBasicTypeWrapped(...)\n"); }
 	
 	if(btw->simpleType != NULL){
-		transpileSimpleType(btw->simpleType, file);
+		transpileSimpleType(btw->simpleType, ctx);
 	}else if(btw->subrType != NULL){
-		transpileSubrType(btw->subrType, file);
+		transpileSubrType(btw->subrType, ctx);
 	}
 }
 
-void transpileTypeParam(struct TypeParam* tp, FILE* file){
+void transpileTypeParam(struct TypeParam* tp, struct Ctx* ctx){
 	//TODO
 	printf("transpileTypeParam not yet implemented!\n");
 	exit(1);
 }
 
-void transpileArrayType(struct ArrayType* atype, FILE* file){
+void transpileArrayType(struct ArrayType* atype, struct Ctx* ctx){
 	
-	printf("transpileArrayType(...)\n");
+	if(ctx->debug){ printf("transpileArrayType(...)\n"); }
 	
-	transpileType(atype->element_type, file);
-	fprintf(file, "*");
+	transpileType(atype->element_type, ctx);
+	fprintf(ctx->file, "*");
 }
 
-void transpileSimpleType(struct SimpleType* simpleType, FILE* file){
+void transpileSimpleType(struct SimpleType* simpleType, struct Ctx* ctx){
 	
-	printf("transpileSimpleType(...)\n");
+	if(ctx->debug){ printf("transpileSimpleType(...)\n"); }
 	
 	//type name
 	char* t = simpleType->typeName;
@@ -438,41 +453,41 @@ void transpileSimpleType(struct SimpleType* simpleType, FILE* file){
 		sprintf(res, "struct %s*", t);
 	}
 
-	fprintf(file, "%s", res);
+	fprintf(ctx->file, "%s", res);
 }
 
-void transpileSubrType(struct SubrType* subrType, FILE* file){
+void transpileSubrType(struct SubrType* subrType, struct Ctx* ctx){
 	
 	//https://www.zentut.com/c-tutorial/c-function-pointer/
 	
-	printf("transpileSubrType(...)\n");
+	if(ctx->debug){ printf("transpileSubrType(...)\n"); }
 
 	//return type
-	transpileType(subrType->returnType, file);
+	transpileType(subrType->returnType, ctx);
 
 	//TODO: i do not really understand how
 	//this is written in C. 
 	//maybe trying some examples in C would help.
-	fprintf(file, "(*function_ptr) (");
+	fprintf(ctx->file, "(*function_ptr) (");
 
 	//arguments
 	for(int i=0; i < subrType->count_argTypes; i++){
-		transpileType(subrType->argTypes[i], file);
+		transpileType(subrType->argTypes[i], ctx);
 		
 		if(i < (subrType->count_argTypes)-1){
-			fprintf(file, ", ");
+			fprintf(ctx->file, ", ");
 		}
 	}
-	fprintf(file, ")");
+	fprintf(ctx->file, ")");
 }
 
-void transpileDeclArg(struct DeclArg* da, FILE* file){
+void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx){
 	
-	printf("transpileDeclArg(...)\n");
+	if(ctx->debug){ printf("transpileDeclArg(...)\n"); }
 	
-	transpileType(da->type, file);
+	transpileType(da->type, ctx);
 
 	if(da->has_name){
-		fprintf(file, " %s", da->name);
+		fprintf(ctx->file, " %s", da->name);
 	}
 }
