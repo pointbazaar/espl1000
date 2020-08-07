@@ -60,6 +60,7 @@ int main(int argc, char** argv){
 		}
 		if(strcmp(FLAG_DEBUG, flags[i])==0){
 			debug = true;
+			printf("DEBUG ENABLED\n");
 		}
 	}
 	
