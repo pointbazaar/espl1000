@@ -5,9 +5,8 @@ rm main
 rm main-debug
 rm test
 
-mkdir build
-mkdir build/release
-mkdir build/debug
+mkdir -p build/release
+mkdir -p build/debug
 
 make main
 make main-debug
