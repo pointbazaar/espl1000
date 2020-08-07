@@ -1,4 +1,5 @@
-FLAGS := -O0 -march=native -g -Wall
+#it had -O0 before
+FLAGS := -march=native -g -Wall
 CALL := gcc $(FLAGS)
 
 all: dragon-parser

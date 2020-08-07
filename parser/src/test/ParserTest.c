@@ -144,16 +144,23 @@ bool test_all_inner(bool debug){
 	tests[k++] = subrtype_test_typename;
 	tests[k++] = subrtype_test_typename_subroutine_return_type;
 	
-	//TODO: 
+	const bool mydebug = debug;
+	
+	//TODO:
+	//these strings do strangely not end up in the program output
+	printf("signature\n");
+	printf("Ldebug=%d\n", debug?1:0);
+	
 	for(int i=0; i < k;i++){
-	//for(int i=0; i < 25;i++){
-		passed += tests[i](debug);
+		passed += tests[i](mydebug);
 		count++;
 		if(passed < count){
 			printf("last test did not pass!\n");
 			printf("Isolating the failing Test:\n");
 			printf("------------------------------\n");
-			tests[i](true);
+			
+			//disabled for DEBUG reasons
+			//tests[i](true);
 			break;
 		}
 	}	

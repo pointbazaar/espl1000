@@ -170,6 +170,8 @@ int assignstmt_test_can_assign_to_struct_member(bool debug) {
 	freeAssignStmt(a);
 	freeTokenList(tokens);
 	
+	
+	
 	return (a1)?1:0;
 
 }
