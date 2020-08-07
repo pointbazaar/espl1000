@@ -1,8 +1,0 @@
-
-struct Simple {
-	PInt a
-}
-
-fn main () ~> PInt {
-	return 0;
-}

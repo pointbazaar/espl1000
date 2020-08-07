@@ -1,9 +1,7 @@
 #!/bin/bash
 
 #run this script with root privileges
-rm main
-rm main-debug
-rm test
+rm main main-debug test
 
 mkdir -p build/release
 mkdir -p build/debug
