@@ -1,6 +1,5 @@
-
-
 fn main ()~>PInt {
-	printi(sqrt(9.0));		
+
+	printf("%f\n", sqrt(9.0));		
 	return 0;
 }

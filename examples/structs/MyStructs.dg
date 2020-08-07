@@ -1,18 +1,15 @@
+struct MyStruct{
+	PInt a,
+	PInt b
+}
 
-	
-	struct MyStruct{
-		PInt a,
-		PInt b
-	}
+fn main ()~>PInt {
+	MyStruct s = malloc(4*2); 
 
+	s.a = 1; 
 
-	fn main ()~>PInt {
-		MyStruct s = new(2); 
+	//printf("%d\n", len(s));
+	printf("%d\n", s.a); 
 
-		s.a=1; 
-
-		putdigit(len(s));
-		putdigit(s.a); 
-	
-		return 0;
-	}
+	return 0;
+}

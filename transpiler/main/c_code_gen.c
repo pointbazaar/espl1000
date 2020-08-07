@@ -78,6 +78,7 @@ void transpileAST(struct AST_Whole_Program* ast, FILE* file){
 	fprintf(file, "#include <stdio.h>\n");
 	fprintf(file, "#include <stdbool.h>\n");
 	fprintf(file, "#include <string.h>\n");
+	fprintf(file, "#include <math.h>\n");
 
 	for(int i=0; i < ast->count_namespaces; i++){
 
@@ -119,7 +120,7 @@ void transpileStructDecl(struct StructDecl* s, FILE* file){
 		transpileStructMember(s->members[i], file);
 	}
 	
-	fprintf(file, "}\n");
+	fprintf(file, "};\n");
 }
 
 void transpileStructMember(struct StructMember* m, FILE* file){
@@ -413,28 +414,28 @@ void transpileSimpleType(struct SimpleType* simpleType, FILE* file){
 	
 	printf("transpileSimpleType(...)\n");
 	
-	char* tname = simpleType->typeName;
+	//type name
+	char* t = simpleType->typeName;
 	char res[20];
 
-	if(
-		strcmp(tname, "PInt") == 0
-		|| strcmp(tname, "NInt") == 0
-		|| strcmp(tname, "Int") == 0
-		|| strcmp(tname, "NZInt") == 0
-	){
+	if(    strcmp(t, "PInt") == 0
+		|| strcmp(t, "NInt") == 0
+		|| strcmp(t, "Int") == 0
+		|| strcmp(t, "NZInt") == 0  ){
 		strcpy(res, "int");
 	}else if(
-		strcmp(tname, "PFloat") == 0
-		|| strcmp(tname, "NFloat") == 0
-		|| strcmp(tname, "Float") == 0
+		   strcmp(t, "PFloat") == 0
+		|| strcmp(t, "NFloat") == 0
+		|| strcmp(t, "Float") == 0
 	){
 		strcpy(res, "float");
-	}else if(
-		strcmp(tname, "Bool") == 0
-	){
+	}else if( strcmp(t, "Bool") == 0 ){
 		strcpy(res, "bool");
+	}else if( strcmp(t, "String") == 0){
+		strcpy(res, "char*");
 	}else{
-		strcpy(res, tname);
+		//if we do not recognize it, treat it as struct pointer
+		sprintf(res, "struct %s*", t);
 	}
 
 	fprintf(file, "%s", res);

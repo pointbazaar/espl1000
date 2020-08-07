@@ -61,6 +61,13 @@ int main(int argc, char* argv[]){
 	//transpile to C code 
 	//and write to file 
 	transpileAndWrite(fname_out, ast);
+	
+	char cmd_gcc[100];
+	strcpy(cmd_gcc, "gcc -o main ");
+	strcat(cmd_gcc, fname_out);
+	
+	//compile with gcc
+	system(cmd_gcc);
 
 	exit(0);
 }

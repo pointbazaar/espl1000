@@ -34,8 +34,6 @@ sd other/Other2.dg
 sd other/Simple.dg
 
 sd structs/MyStructs.dg
-sd structs/struct1.dg
-sd structs/Struct2.dg
 
 sd use/Use.dg
 
