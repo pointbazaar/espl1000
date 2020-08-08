@@ -14,12 +14,31 @@ int main(int argc, char* argv[]){
 	bool debug = false;
 	bool test  = false;
 	
+	//if there are more than 100, it can exit
+	const int gcc_flags_max = 100;
+	char** gcc_flags = malloc(sizeof(char*)*gcc_flags_max);
+	int gcc_flags_count = 0;
+	
 	for(int i=1; i < argc; i++){
 		char* arg = argv[i];
-		if(strcmp(arg, "-debug") == 0){
-			debug = true;
-		}else if(strcmp(arg, "-test") == 0){
-			test = true;
+		if(arg[0] == '-'){
+			//arg is a flag
+			if(strcmp(arg, "-debug") == 0){
+				debug = true;
+			}else if(strcmp(arg, "-test") == 0){
+				test = true;
+			}else{
+				//pass this flag when calling gcc
+				gcc_flags[gcc_flags_count] = arg;
+				gcc_flags_count++;
+				
+				if(gcc_flags_count > gcc_flags_max){
+					printf("Exceeded max amount");
+					printf(" of gcc flags to pass through.\n");
+					exit(1);
+				}
+				
+			}
 		}else{
 			filename = arg;
 		}
@@ -70,9 +89,16 @@ int main(int argc, char* argv[]){
 	//and write to file 
 	transpileAndWrite(fname_out, ast, debug);
 	
-	char cmd_gcc[100];
+	char cmd_gcc[500];
 	strcpy(cmd_gcc, "gcc -o main ");
 	strcat(cmd_gcc, fname_out);
+	
+	//we assume here cmd_gcc will never exceed it's allocated size.
+	//Warning. this is a stupid assumption.
+	for(int i=0; i < gcc_flags_count; i++){
+		strcat(cmd_gcc, " ");
+		strcat(cmd_gcc, gcc_flags[i]);
+	}
 	
 	//compile with gcc
 	system(cmd_gcc);
