@@ -98,7 +98,7 @@ int main(int argc, char* argv[]){
 	}else{
 		strcpy(cmd_gcc, "gcc");
 	}
-	strcpy(cmd_gcc, " -o main ");
+	strcat(cmd_gcc, " -o main ");
 	strcat(cmd_gcc, fname_out);
 	
 	//we assume here cmd_gcc will never exceed it's allocated size.
