@@ -1,11 +1,7 @@
 //standard headers
 #include <stdio.h>
-#include <math.h>
-#include <time.h>
-#include <sys/stat.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <stdbool.h>
 
 //user headers
@@ -504,14 +500,14 @@ void init_fn(short** dfa){
 }
 
 
-void set_transitions_lowercase(short** dfa, int state, int state_result){
+void set_transitions_lowercase(short** dfa, int state, short state_result){
 	for(char i='a';i<='z';i++){
-		dfa[state][i]=state_result;
+		dfa[state][(short)i]=state_result;
 	}
 }
-void set_transitions_uppercase(short** dfa, int state, int state_result){
+void set_transitions_uppercase(short** dfa, int state, short state_result){
 	for(char i='A';i<='Z' ; i++){
-		dfa[state][i]=state_result;
+		dfa[state][(short)i]=state_result;
 	}
 }
 
@@ -525,7 +521,7 @@ void set_transitions_letters(short** dfa, int state, int state_result){
 
 void set_transitions_digits(short** dfa, int state, int state_result){
 	for(char i='0';i<='9' ; i++){
-		dfa[state][i]=state_result;
+		dfa[state][(short)i]=state_result;
 	}
 }
 
@@ -572,6 +568,6 @@ void set_transitions_breaking(short** dfa, int state, int state_result){
 
 void set_transitions_printable(short** dfa, int state, int state_result){
 	for(char i=32;i<=126;i++){
-		dfa[state][i] = state_result;
+		dfa[state][(short)i] = state_result;
 	}
 }

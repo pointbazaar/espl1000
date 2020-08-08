@@ -1,19 +1,14 @@
-//standard headers
-#include <stdio.h>
-#include <math.h>
-#include <time.h>
-#include <sys/stat.h>
+//stdlib headers
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 //user headers
 #include "tokens.h"
 #include "lexer.h"
 #include "strutils.h"
 #include "states.h"
-#include "loop.h"
 #include "init_dfa.h"
 
 

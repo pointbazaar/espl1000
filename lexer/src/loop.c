@@ -1,13 +1,7 @@
 //standard headers
 #include <stdio.h>
-#include <math.h>
-#include <time.h>
-#include <sys/stat.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <stdbool.h>
-#include <stdint.h>
 
 //user headers
 #include "tokens.h"
@@ -118,7 +112,7 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 			//off unused sections of characters 
 			//(from the about 256 ascii ones)
 			line_no += (ch=='\n')?1:0;
-			state = dfa[state][ch];
+			state = dfa[state][(short)ch];
 
 			if(DEBUG){
 				//debug: which state we got into

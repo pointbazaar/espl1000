@@ -1,5 +1,3 @@
-#include <stdbool.h>
-
 #ifndef STRUTILS
 #define STRUTILS
 

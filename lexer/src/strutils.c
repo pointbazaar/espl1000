@@ -1,7 +1,8 @@
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
+//stdlib includes
+#include <stdlib.h> //for malloc
+#include <string.h> //for memcpy
 
+//project includes
 #include "strutils.h"
 
 char* substr(char* str, int len){

@@ -1,12 +1,7 @@
 
 //standard headers
 #include <stdio.h>
-#include <math.h>
-#include <time.h>
-#include <sys/stat.h>
 #include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <stdbool.h>
 
 //user headers
@@ -41,8 +36,8 @@ void init_fn(short** dfa);
 
 //to set transitions for a state to another state in bulk
 //(for some classes of chars)
-void set_transitions_lowercase(short** dfa, int state, int state_result);
-void set_transitions_uppercase(short** dfa, int state, int state_result);
+void set_transitions_lowercase(short** dfa, int state, short state_result);
+void set_transitions_uppercase(short** dfa, int state, short state_result);
 void set_transitions_letters(short** dfa, int state, int state_result);
 
 void set_transitions_digits(short** dfa, int state, int state_result);
