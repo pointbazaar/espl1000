@@ -101,6 +101,9 @@ int main(int argc, char* argv[]){
 	}
 	
 	//compile with gcc
+	if(debug){
+		printf("%s\n", cmd_gcc);
+	}
 	system(cmd_gcc);
 
 	exit(0);

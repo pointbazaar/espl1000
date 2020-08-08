@@ -1,6 +1,6 @@
 fn main ()~>PInt {
-	i=0;
-	j=0;
+	PInt i=0;
+	PInt j=0;
         while (i < 3){
 		j=0;
 		while(j<2){
