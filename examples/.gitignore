@@ -7,3 +7,6 @@ main
 
 #the transpiled .c files
 *.c
+*.o
+*.elf
+*.hex

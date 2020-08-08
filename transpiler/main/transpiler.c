@@ -93,12 +93,16 @@ int main(int argc, char* argv[]){
 	transpileAndWrite(fname_out, ast, flags);
 	
 	char cmd_gcc[500];
+	strcpy(cmd_gcc, "");
+	
 	if(flags->avr){
-		strcpy(cmd_gcc, "avr-gcc -I /usr/share/avra");
+		//choose -mmcu=attiny25, but you can replace with
+		//whatever you like
+		strcat(cmd_gcc, "avr-gcc -o main.o -I /usr/share/avra -mmcu=attiny25");
 	}else{
-		strcpy(cmd_gcc, "gcc");
+		strcat(cmd_gcc, "gcc -o main");
 	}
-	strcat(cmd_gcc, " -o main ");
+	
 	strcat(cmd_gcc, fname_out);
 	
 	//we assume here cmd_gcc will never exceed it's allocated size.
@@ -113,6 +117,18 @@ int main(int argc, char* argv[]){
 		printf("%s\n", cmd_gcc);
 	}
 	system(cmd_gcc);
+	
+	if(flags->avr){
+		//use various tools to compile a .hex file
+		//which can be read by e.g. mdx
+		
+		system("avr-gcc main.o -o main.elf");
+		system("avr-objcopy -O ihex -j .text -j .data main.elf main.hex");
+		
+		//use 
+		//avr-objdump -D -m avr main.hex
+		//to view contents
+	}
 	
 	free(flags);
 
