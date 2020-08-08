@@ -4,4 +4,4 @@ before_install:
 - pwd
 - cd .
 install: pwd
-script: ./install.sh 
+script: make 
