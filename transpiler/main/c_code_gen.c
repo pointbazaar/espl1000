@@ -52,7 +52,9 @@ void transpileSubrType(struct SubrType* subrType, struct Ctx* ctx);
 
 void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx);
 
-void transpileAndWrite(char* filename, struct AST_Whole_Program* ast, bool debug){
+void transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Flags* flags){
+	
+	bool debug = flags->debug;
 	
 	if(debug){ printf("transpileAndWrite(...)\n"); }
 
@@ -64,7 +66,7 @@ void transpileAndWrite(char* filename, struct AST_Whole_Program* ast, bool debug
 	}
 	
 	struct Ctx* ctx = smalloc(sizeof(struct Ctx));
-	ctx->debug = debug;
+	ctx->flags = flags;
 	ctx->file = fout;
 	ctx->indentLevel = 0;
 
@@ -75,16 +77,21 @@ void transpileAndWrite(char* filename, struct AST_Whole_Program* ast, bool debug
 
 void transpileAST(struct AST_Whole_Program* ast, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileAST(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileAST(...)\n"); }
 	
 	//write some standard stdlib includes
 	FILE* file = ctx->file;
 	
-	fprintf(file, "#include <stdlib.h>\n");
-	fprintf(file, "#include <stdio.h>\n");
-	fprintf(file, "#include <stdbool.h>\n");
-	fprintf(file, "#include <string.h>\n");
-	fprintf(file, "#include <math.h>\n");
+	if(!(ctx->flags->avr)){
+		//in microcontrollers, we cannot assume there will
+		//be stdlib 
+		
+		fprintf(file, "#include <stdlib.h>\n");
+		fprintf(file, "#include <stdio.h>\n");
+		fprintf(file, "#include <stdbool.h>\n");
+		fprintf(file, "#include <string.h>\n");
+		fprintf(file, "#include <math.h>\n");
+	}
 
 	for(int i=0; i < ast->count_namespaces; i++){
 
@@ -94,7 +101,7 @@ void transpileAST(struct AST_Whole_Program* ast, struct Ctx* ctx){
 
 void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileNamespace(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileNamespace(...)\n"); }
 	
 	FILE* file = ctx->file;
 	
@@ -121,7 +128,7 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 
 void transpileStructDecl(struct StructDecl* s, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileStructDecl(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileStructDecl(...)\n"); }
 	
 	fprintf(ctx->file ,"struct %s {\n", s->name);
 	
@@ -134,7 +141,7 @@ void transpileStructDecl(struct StructDecl* s, struct Ctx* ctx){
 
 void transpileStructMember(struct StructMember* m, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileStructMember(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileStructMember(...)\n"); }
 	
 	fprintf(ctx->file, "\t");
 	
@@ -145,7 +152,7 @@ void transpileStructMember(struct StructMember* m, struct Ctx* ctx){
 
 void transpileMethod(struct Method* m, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileMethod(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileMethod(...)\n"); }
 
 	transpileMethodSignature(m, ctx);
 
@@ -154,7 +161,7 @@ void transpileMethod(struct Method* m, struct Ctx* ctx){
 
 void transpileMethodSignature(struct Method* m, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileMethodSignature(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileMethodSignature(...)\n"); }
 	
 	transpileType(m->returnType, ctx);
 
@@ -172,7 +179,7 @@ void transpileMethodSignature(struct Method* m, struct Ctx* ctx){
 
 void transpileStmtBlock(struct StmtBlock* block, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileStmtBlock(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileStmtBlock(...)\n"); }
 
 	fprintf(ctx->file, "{\n");
 
@@ -188,7 +195,7 @@ void transpileStmtBlock(struct StmtBlock* block, struct Ctx* ctx){
 
 void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileStmt(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileStmt(...)\n"); }
 
 	if(s->m1 != NULL){
 		transpileMethodCall(s->m1, ctx);
@@ -214,7 +221,7 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 
 void transpileMethodCall(struct MethodCall* mc, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileMethodCall(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileMethodCall(...)\n"); }
 	
 	indent(ctx);
 	fprintf(ctx->file, "%s(", mc->methodName);
@@ -231,7 +238,7 @@ void transpileMethodCall(struct MethodCall* mc, struct Ctx* ctx){
 
 void transpileWhileStmt(struct WhileStmt* ws, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileWhileStmt(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileWhileStmt(...)\n"); }
 	
 	indent(ctx);
 	
@@ -246,7 +253,7 @@ void transpileWhileStmt(struct WhileStmt* ws, struct Ctx* ctx){
 
 void transpileIfStmt(struct IfStmt* is, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileIfStmt(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileIfStmt(...)\n"); }
 	
 	indent(ctx);
 	
@@ -266,7 +273,7 @@ void transpileIfStmt(struct IfStmt* is, struct Ctx* ctx){
 
 void transpileRetStmt(struct RetStmt* rs, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileRetStmt(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileRetStmt(...)\n"); }
 	
 	indent(ctx);
 	
@@ -276,7 +283,7 @@ void transpileRetStmt(struct RetStmt* rs, struct Ctx* ctx){
 
 void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileAssignStmt(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileAssignStmt(...)\n"); }
 
 	indent(ctx);
 
@@ -293,7 +300,7 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 
 void transpileType(struct Type* t, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileType(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileType(...)\n"); }
 	
 	if(t->m1 != NULL){
 		transpileBasicTypeWrapped(t->m1, ctx);
@@ -306,7 +313,7 @@ void transpileType(struct Type* t, struct Ctx* ctx){
 
 void transpileVariable(struct Variable* var, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileVariable(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileVariable(...)\n"); }
 	
 	transpileSimpleVar(var->simpleVar, ctx);
 	
@@ -318,7 +325,7 @@ void transpileVariable(struct Variable* var, struct Ctx* ctx){
 
 void transpileTerm(struct Term* t, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileTerm(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileTerm(...)\n"); }
 	
 	if(t->m1 != NULL){
 		transpileBoolConst(t->m1, ctx);
@@ -344,7 +351,7 @@ void transpileTerm(struct Term* t, struct Ctx* ctx){
 
 void transpileExpr(struct Expr* expr, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileExpr(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileExpr(...)\n"); }
 
 	transpileTerm(expr->term1, ctx);
 
@@ -356,7 +363,7 @@ void transpileExpr(struct Expr* expr, struct Ctx* ctx){
 
 void transpileSimpleVar(struct SimpleVar* svar, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileSimpleVar(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileSimpleVar(...)\n"); }
 	
 	fprintf(ctx->file, "%s", svar->name);
 	if(svar->optIndex != NULL){
@@ -368,7 +375,7 @@ void transpileSimpleVar(struct SimpleVar* svar, struct Ctx* ctx){
 
 void transpileBoolConst(struct BoolConst* bc, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileBoolConst(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileBoolConst(...)\n"); }
 	
 	if(bc->value){
 		fprintf(ctx->file, "true");
@@ -402,7 +409,7 @@ void transpileOp(struct Op* op, struct Ctx* ctx){
 
 void transpileBasicTypeWrapped(struct BasicTypeWrapped* btw, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileBasicTypeWrapped(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileBasicTypeWrapped(...)\n"); }
 	
 	if(btw->simpleType != NULL){
 		transpileSimpleType(btw->simpleType, ctx);
@@ -419,7 +426,7 @@ void transpileTypeParam(struct TypeParam* tp, struct Ctx* ctx){
 
 void transpileArrayType(struct ArrayType* atype, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileArrayType(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileArrayType(...)\n"); }
 	
 	transpileType(atype->element_type, ctx);
 	fprintf(ctx->file, "*");
@@ -427,7 +434,7 @@ void transpileArrayType(struct ArrayType* atype, struct Ctx* ctx){
 
 void transpileSimpleType(struct SimpleType* simpleType, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileSimpleType(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileSimpleType(...)\n"); }
 	
 	//type name
 	char* t = simpleType->typeName;
@@ -460,7 +467,7 @@ void transpileSubrType(struct SubrType* subrType, struct Ctx* ctx){
 	
 	//https://www.zentut.com/c-tutorial/c-function-pointer/
 	
-	if(ctx->debug){ printf("transpileSubrType(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileSubrType(...)\n"); }
 
 	//return type
 	transpileType(subrType->returnType, ctx);
@@ -483,7 +490,7 @@ void transpileSubrType(struct SubrType* subrType, struct Ctx* ctx){
 
 void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx){
 	
-	if(ctx->debug){ printf("transpileDeclArg(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileDeclArg(...)\n"); }
 	
 	transpileType(da->type, ctx);
 

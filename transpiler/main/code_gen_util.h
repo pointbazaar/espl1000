@@ -13,8 +13,10 @@
 struct Ctx {
 	
 	FILE* file;
-	bool debug;
 	int indentLevel;
+	
+	//the transpiler flags 
+	struct Flags* flags;
 };
 
 void indent(struct Ctx* ctx);

@@ -7,12 +7,16 @@
 #include "../../ast/ast_reader.h"
 #include "../../ast/ast.h"
 #include "c_code_gen.h"
+#include "flags.h"
 
 int main(int argc, char* argv[]){
 
 	char* filename = NULL;
-	bool debug = false;
-	bool test  = false;
+	
+	struct Flags* flags = malloc(sizeof(struct Flags));
+	flags->debug = false;
+	flags->test = false;
+	flags->avr = false;
 	
 	//if there are more than 100, it can exit
 	const int gcc_flags_max = 100;
@@ -23,10 +27,9 @@ int main(int argc, char* argv[]){
 		char* arg = argv[i];
 		if(arg[0] == '-'){
 			//arg is a flag
-			if(strcmp(arg, "-debug") == 0){
-				debug = true;
-			}else if(strcmp(arg, "-test") == 0){
-				test = true;
+			      if(strcmp(arg, FDEBUG) == 0){ flags->debug = true;
+			}else if(strcmp(arg, FTEST)  == 0){ flags->test = true;
+			}else if(strcmp(arg, FAVR )  == 0){ flags->avr = true;
 			}else{
 				//pass this flag when calling gcc
 				gcc_flags[gcc_flags_count] = arg;
@@ -44,11 +47,11 @@ int main(int argc, char* argv[]){
 		}
 	}
 	
-	if(debug){
+	if(flags->debug){
 		printf("smalldragon v0.01\n");
 	}
 	
-	if(test){
+	if(flags->test){
 		printf("smalldragon/transpiler currently has no tests.\n");
 		exit(0);
 	}
@@ -61,7 +64,7 @@ int main(int argc, char* argv[]){
 	check_dg_extension(filename);
 	
 	//invoke lexer, parser to generate .dg.ast file
-	invoke_lexer_parser(filename, debug);
+	invoke_lexer_parser(filename, flags->debug);
 
 	char ast_filename[100];
 	char fnamecpy[100];
@@ -71,12 +74,12 @@ int main(int argc, char* argv[]){
 	char* dir_name = dirname(fnamecpy);
 	sprintf(ast_filename, "%s/.%s.ast", dir_name, base_name);
 	
-	if(debug){
+	if(flags->debug){
 		printf("try to open file %s\n", ast_filename);
 	}
 
 	//parse AST
-	struct AST_Whole_Program* ast = readAST(ast_filename, debug);
+	struct AST_Whole_Program* ast = readAST(ast_filename, flags->debug);
 
 	char fname_out[32]; //new output filename
 
@@ -87,10 +90,15 @@ int main(int argc, char* argv[]){
 
 	//transpile to C code 
 	//and write to file 
-	transpileAndWrite(fname_out, ast, debug);
+	transpileAndWrite(fname_out, ast, flags);
 	
 	char cmd_gcc[500];
-	strcpy(cmd_gcc, "gcc -o main ");
+	if(flags->avr){
+		strcpy(cmd_gcc, "avr-gcc -I /usr/share/avra");
+	}else{
+		strcpy(cmd_gcc, "gcc");
+	}
+	strcpy(cmd_gcc, " -o main ");
 	strcat(cmd_gcc, fname_out);
 	
 	//we assume here cmd_gcc will never exceed it's allocated size.
@@ -101,10 +109,12 @@ int main(int argc, char* argv[]){
 	}
 	
 	//compile with gcc
-	if(debug){
+	if(flags->debug){
 		printf("%s\n", cmd_gcc);
 	}
 	system(cmd_gcc);
+	
+	free(flags);
 
 	exit(0);
 }
