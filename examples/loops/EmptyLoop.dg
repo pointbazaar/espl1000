@@ -1,0 +1,8 @@
+fn main ()~>PInt { 
+	subr();
+	return 0;
+} 
+
+fn subr ()~> PInt {
+	return 21;
+}

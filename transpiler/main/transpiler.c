@@ -98,7 +98,8 @@ int main(int argc, char* argv[]){
 	if(flags->avr){
 		//choose -mmcu=attiny25, but you can replace with
 		//whatever you like
-		strcat(cmd_gcc, "avr-gcc -o main.o -I /usr/share/avra -mmcu=attiny25 ");
+		//we chase attiny25 to have it generate less complex instructions
+		strcat(cmd_gcc, "avr-gcc -o main.o -I /usr/share/avra -mmcu=attiny45 ");
 	}else{
 		strcat(cmd_gcc, "gcc -o main ");
 	}
