@@ -11,3 +11,4 @@ crend
 .**.asm
 *.tokens
 *.ast
+main

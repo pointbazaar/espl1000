@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <inttypes.h>
+#include <stdlib.h>
 
 #include "test.h"
+#include "../main/transpiler.h"
+#include "../main/flags.h"
 
 bool test_statuscode(bool debug);
 
@@ -40,6 +43,33 @@ void test_all(bool debug){
 // TESTS START
 
 bool test_statuscode(bool debug){
+	
+	char* src = "fn main () ~> PInt { printf(\"test_statuscode\"); return 3; }";
+	
+	//write this to a file
+	FILE* file = fopen("test.dg","w");
+	fprintf(file, "%s", src);
+	fclose(file);
+	
+	//TODO: transpile it
+	struct Flags* flags = malloc(sizeof(struct Flags));
+	flags->debug = false;
+	flags->avr = false;
+	flags->test = false;
+	char** gcc_flags = NULL;
+	int gcc_flags_count = 0;
+	
+	transpileAndCompile("test.dg", flags, gcc_flags, gcc_flags_count);
+	
+	
+	
+	//TODO: delete that file
+	
+	//TODO: test that the code, when transpiled,
+	//returns a status code of 3
+	system("./main");
+	
+	free(flags);
 	
 	return true;
 }

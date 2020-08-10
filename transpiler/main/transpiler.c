@@ -62,6 +62,66 @@ int main(int argc, char* argv[]){
 		exit(1);
 	}
 	
+	transpileAndCompile(filename, flags, gcc_flags, gcc_flags_count);
+	
+	free(flags);
+	free(gcc_flags);
+
+	exit(0);
+}
+
+void check_dg_extension(char* filename){
+	const int ext_index = strlen(filename)-3;
+	if(strcmp(filename+ext_index, ".dg") != 0){
+			printf("filename has to have .dg extension\n");
+			exit(1);
+	}
+}
+
+void invoke_lexer_parser(char* filename, bool debug){
+	
+	char cmd1[100];
+	
+	if(debug){
+		strcpy(cmd1, "dragon-lexer-debug ");
+	}else{
+		strcpy(cmd1, "dragon-lexer ");
+	}
+	strcat(cmd1, filename);
+	
+	if(debug){
+		printf("DEBUG: executing: %s\n", cmd1);
+	}
+	system(cmd1);
+	
+	char fnamecpy[100];
+	strcpy(fnamecpy, filename);
+	
+	char* base_name = basename(fnamecpy);
+	char* dir_name = dirname(fnamecpy);
+	
+	char cmd2[100];
+	sprintf(
+		cmd2, 
+		"dragon-parser %s %s/.%s.tokens", 
+		(debug)?"-debug":"",
+		dir_name,
+		base_name
+	);
+	
+	if(debug){
+		printf("DEBUG: executing: %s\n", cmd2);
+	}
+	system(cmd2);
+}
+
+void transpileAndCompile(
+	char* filename, 
+	struct Flags* flags, 
+	char** gcc_flags, 
+	int gcc_flags_count
+){
+	
 	check_dg_extension(filename);
 	
 	//invoke lexer, parser to generate .dg.ast file
@@ -131,53 +191,4 @@ int main(int argc, char* argv[]){
 		//avr-objdump -D -m avr main.hex
 		//to view contents
 	}
-	
-	free(flags);
-
-	exit(0);
-}
-
-void check_dg_extension(char* filename){
-	const int ext_index = strlen(filename)-3;
-	if(strcmp(filename+ext_index, ".dg") != 0){
-			printf("filename has to have .dg extension\n");
-			exit(1);
-	}
-}
-
-void invoke_lexer_parser(char* filename, bool debug){
-	
-	char cmd1[100];
-	
-	if(debug){
-		strcpy(cmd1, "dragon-lexer-debug ");
-	}else{
-		strcpy(cmd1, "dragon-lexer ");
-	}
-	strcat(cmd1, filename);
-	
-	if(debug){
-		printf("DEBUG: executing: %s\n", cmd1);
-	}
-	system(cmd1);
-	
-	char fnamecpy[100];
-	strcpy(fnamecpy, filename);
-	
-	char* base_name = basename(fnamecpy);
-	char* dir_name = dirname(fnamecpy);
-	
-	char cmd2[100];
-	sprintf(
-		cmd2, 
-		"dragon-parser %s %s/.%s.tokens", 
-		(debug)?"-debug":"",
-		dir_name,
-		base_name
-	);
-	
-	if(debug){
-		printf("DEBUG: executing: %s\n", cmd2);
-	}
-	system(cmd2);
 }
