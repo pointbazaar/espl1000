@@ -1,7 +1,10 @@
 #ifndef AST_H
 #define AST_H
 
+#define DEFAULT_STR_SIZE 20
+
 #include <stdbool.h>
+#include <inttypes.h>
 
 struct AST_Whole_Program;
 
@@ -46,7 +49,7 @@ struct AST_Whole_Program  {
 	//this contains all namespace nodes for the whole program
 
 	struct Namespace** namespaces;
-	int count_namespaces;
+	uint16_t count_namespaces;
 };
 struct BoolConst{
 	bool value;
@@ -58,7 +61,7 @@ struct DeclArg  {
 	struct Type* type;
 
 	bool has_name;
-	char name[20];
+	char name[DEFAULT_STR_SIZE];
 };
 struct Expr {
 	struct Term* term1;
@@ -71,7 +74,7 @@ struct FloatConst{
 	float value;
 };
 struct Identifier  {
-	char identifier[20];
+	char identifier[DEFAULT_STR_SIZE];
 };
 struct IntConst {
 	int value;
@@ -85,9 +88,9 @@ struct Method {
 	bool hasSideEffects;
 
 	struct Type* returnType;
-	char name[20];
+	char name[DEFAULT_STR_SIZE];
 
-	int count_args;
+	uint8_t count_args;
 	struct DeclArg** args;
 
 	struct StmtBlock* block;
@@ -96,39 +99,40 @@ struct Namespace {
 	//a namespace is represented by a filename.
 	//the contents of a namespace are the contents of the file
 
-	char srcPath[20];
-	char name[20];
+	char srcPath[DEFAULT_STR_SIZE];
+	char name[DEFAULT_STR_SIZE];
 
 	//structs must be declared before the subroutines
 	struct Method** methods;
-	int count_methods;
+	uint16_t count_methods;
 
 	struct StructDecl** structs;
-	int count_structs;
+	uint16_t count_structs;
 };
 struct StmtBlock {
-	int count;
+	uint16_t count;
 	struct Stmt** stmts;
 };
 struct Op {
-	char op[20];
+	//6 chars, as operators are mostly small
+	char op[6];
 };
 struct SimpleVar {
-	char name[20];
+	char name[DEFAULT_STR_SIZE];
 	
 	//may be NULL
 	struct Expr* optIndex;
 };
 struct StructDecl{
 	//the name of the struct
-	char name[20];
+	char name[DEFAULT_STR_SIZE];
 	
 	struct StructMember** members;
-	int count_members;
+	uint16_t count_members;
 };
 struct StructMember{
 	struct Type* type;
-	char name[20];
+	char name[DEFAULT_STR_SIZE];
 };
 struct Term{
 	//only one of these may be != NULL
@@ -145,7 +149,7 @@ struct Variable {
 	struct SimpleVar* simpleVar;
 
 	struct Variable** memberAccessList;
-	int count_memberAccessList;
+	uint8_t count_memberAccessList;
 };
 struct AssignStmt {
 	struct Type* optType;	//may be NULL (optional)
@@ -162,10 +166,10 @@ struct IfStmt{
 	struct StmtBlock* elseBlock;
 };
 struct MethodCall {
-	char methodName[20];
+	char methodName[DEFAULT_STR_SIZE];
 
 	//arguments to the subroutine call
-	int count_args;
+	uint8_t count_args;
 	struct Expr** args;
 };
 struct RetStmt{
@@ -201,14 +205,14 @@ struct SimpleType {
 
 	//can have at most 31 characters,
 	//but this limit is arbitrary
-	char typeName[32];
+	char typeName[DEFAULT_STR_SIZE];
 };
 struct SubrType {
 	struct Type* returnType;
 	bool hasSideEffects;
 
 	struct Type** argTypes;
-	int count_argTypes;
+	uint8_t count_argTypes;
 };
 struct Type {
 	//only one of these is != NULL
@@ -218,6 +222,6 @@ struct Type {
 };
 struct TypeParam {
 	//the type parameter index
-	int index;
+	uint8_t index;
 };
 #endif

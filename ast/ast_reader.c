@@ -40,7 +40,7 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	struct Namespace* ns = smalloc(sizeof(struct Namespace));
 
 	int count = fscanf(file,
-		"%s\t%s\t%d\t", 
+		"%s\t%s\t%hd\t", 
 		ns->srcPath, 
 		ns->name, 
 		&(ns->count_methods)
@@ -64,7 +64,7 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	}
 	
 	//read structs
-	count = fscanf(file, "%d\t", &(ns->count_structs));
+	count = fscanf(file, "%hd\t", &(ns->count_structs));
 	
 	if(count != 1){
 		fclose(file);
@@ -73,7 +73,7 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	}
 	
 	if(debug){
-		printf("reading %d Structs\n", ns->count_structs);
+		printf("reading %hd Structs\n", ns->count_structs);
 	}
 	
 	ns->structs = smalloc(sizeof(struct StructDecl*)*(ns->count_structs));
@@ -108,7 +108,7 @@ struct Method* readMethod(FILE* file, bool debug){
 
 	m->returnType = readType(file, debug);
 
-	if(fscanf(file,"%d\t",&(m->count_args)) != 1){
+	if(fscanf(file,"%hhd\t",&(m->count_args)) != 1){
 		printf("Error reading Method 2\n");
 		exit(1);
 	}
@@ -136,7 +136,7 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 	if(
 		fscanf(
 			file, 
-			"StructDecl\t%s\t%d\t", 
+			"StructDecl\t%s\t%hd\t", 
 			res->name, 
 			&(res->count_members)
 		) != 2
@@ -187,7 +187,7 @@ struct StmtBlock* readStmtBlock(FILE* file, bool debug){
 	
 	struct StmtBlock* block = smalloc(sizeof(struct StmtBlock));
 	
-	if(fscanf(file, "StmtBlock\t%d\t", &(block->count)) != 1){
+	if(fscanf(file, "StmtBlock\t%hd\t", &(block->count)) != 1){
 		printf("Error reading StmtBlock\n");
 		exit(1);
 	}
@@ -575,7 +575,7 @@ struct MethodCall* readMethodCall(FILE* file, bool debug){
 	if(
 		fscanf(
 			file, 
-			"MethodCall\t%s\t%d\t", 
+			"MethodCall\t%s\t%hhd\t", 
 			v->methodName, 
 			&(v->count_args)
 		) != 2
@@ -636,7 +636,7 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 	v->returnType = readType(file, debug);
 	
 	if(
-		fscanf(file, "%d\t%d\t", (int*)(&(v->hasSideEffects)), &(v->count_argTypes))
+		fscanf(file, "%d\t%hhd\t", (int*)(&(v->hasSideEffects)), &(v->count_argTypes))
 		!= 2
 	){
 		printf("Error reading SubrType 2\n");
@@ -695,7 +695,7 @@ struct TypeParam* readTypeParam(FILE* file, bool debug){
 	
 	struct TypeParam* v = smalloc(sizeof(struct TypeParam));
 	
-	if(fscanf(file, "TypeParam\t%d\t", &(v->index)) != 1){
+	if(fscanf(file, "TypeParam\t%hhd\t", &(v->index)) != 1){
 		printf("Error reading TypeParam\n");
 		exit(1);
 	}
