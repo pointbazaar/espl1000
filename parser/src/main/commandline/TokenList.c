@@ -126,8 +126,6 @@ bool list_expect_internal(struct TokenList* list, struct Token* token) {
 	
 	strcat(str,"\n");
 	
-	printf("%s",str);
-	
 	free(code);
 	
 	return false;
