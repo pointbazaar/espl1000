@@ -8,6 +8,7 @@
 #include "../../ast/ast.h"
 #include "c_code_gen.h"
 #include "flags.h"
+#include "../test/test.h"
 
 int main(int argc, char* argv[]){
 
@@ -52,7 +53,7 @@ int main(int argc, char* argv[]){
 	}
 	
 	if(flags->test){
-		printf("smalldragon/transpiler currently has no tests.\n");
+		test_all(flags->debug);
 		exit(0);
 	}
 	
