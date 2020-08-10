@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <inttypes.h>
 
 /* this struct represents the context of transpilation.
  * it provides information about symbol tables, debug parameters,
@@ -13,7 +14,7 @@
 struct Ctx {
 	
 	FILE* file;
-	int indentLevel;
+	uint8_t indentLevel;
 	
 	//the transpiler flags 
 	struct Flags* flags;

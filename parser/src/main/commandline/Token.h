@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <stdbool.h>
+#include <inttypes.h>
 
 struct Token {
 
@@ -11,8 +12,8 @@ struct Token {
 	 - Kind 	(the kind of token, for example RPARENS)
 	 - Value	(for example "subr" for an identifier)
 	*/
-	int kind;
-	int lineNumber;
+	uint16_t kind;
+	uint32_t lineNumber;
 
 	//this is intentionally not a 'char*'
 	//in an effort to make the program simple.

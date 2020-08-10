@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <stdbool.h>
+#include <inttypes.h>
 
 #include "Token.h"
 
@@ -22,18 +23,18 @@ struct TokenList {
 	struct Token** tokens; //private
 	//how many pointers we can store
 	//with the currently allocated memory
-	int capacity; //private
+	uint16_t capacity; //private
 	
 	//the index of the first token that was
 	//not already consumed
-	int indexHead;
+	uint16_t indexHead;
 	
 	//the amount of tokens stored,
 	//even if they have already been consumed
-	int tokensStored;
+	uint16_t tokensStored;
 
 	//token count
-	int tokensc; //private
+	uint16_t tokensc; //private
 
 };
 
