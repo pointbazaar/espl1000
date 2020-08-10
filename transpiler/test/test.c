@@ -64,6 +64,8 @@ bool test_statuscode(bool debug){
 	
 	
 	//TODO: delete that file
+	remove("test.dg");
+	remove("test.c");
 	
 	//TODO: test that the code, when transpiled,
 	//returns a status code of 3
