@@ -61,7 +61,7 @@ void transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 	FILE* fout = fopen(filename, "w");
 
 	if(fout == NULL){
-		printf("could not open output file\n");
+		printf("could not open output file: %s\n", filename);
 		exit(1);
 	}
 	

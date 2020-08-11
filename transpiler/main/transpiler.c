@@ -121,6 +121,7 @@ void transpileAndCompile(
 	char** gcc_flags, 
 	int gcc_flags_count
 ){
+	if(flags->debug){ printf("transpileAndCompile(...)\n"); }
 	
 	check_dg_extension(filename);
 	
