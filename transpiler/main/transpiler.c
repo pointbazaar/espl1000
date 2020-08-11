@@ -162,7 +162,7 @@ void transpileAndCompile(
 		//we chase attiny25 to have it generate less complex instructions
 		strcat(cmd_gcc, "avr-gcc -o main.o -I /usr/share/avra -mmcu=attiny45 ");
 	}else{
-		strcat(cmd_gcc, "gcc -o main ");
+		strcat(cmd_gcc, "gcc -o a.out ");
 	}
 	
 	strcat(cmd_gcc, fname_out);

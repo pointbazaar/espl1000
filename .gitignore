@@ -12,3 +12,4 @@ crend
 *.tokens
 *.ast
 main
+a.out

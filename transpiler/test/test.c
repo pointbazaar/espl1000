@@ -69,7 +69,8 @@ bool test_statuscode(bool debug){
 	
 	//TODO: test that the code, when transpiled,
 	//returns a status code of 3
-	system("./main");
+	system("./a.out");
+	remove("a.out");
 	
 	free(flags);
 	
