@@ -79,12 +79,16 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 }
 
 void freeAssignStmt(struct AssignStmt* as){
-	printf("DEBUG: freeAssignStmt\n");
+	
+	//printf("DEBUG: freeAssignStmt\n");
+	
 	if(as->optType != NULL){
 		freeType(as->optType);
 	}
 	freeVariable(as->var);
 	freeExpr(as->expr);
-	printf("DEBUG: freeAssignStmt 2\n");
+	
+	//printf("DEBUG: freeAssignStmt 2\n");
+	
 	free(as);
 }

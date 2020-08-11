@@ -123,7 +123,7 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 
 void freeMethod(struct Method* m){
 	
-	printf("DEBUG: freeMethod\n");
+	//printf("DEBUG: freeMethod\n");
 	
 	freeType(m->returnType);
 	for(int i=0;i < m->count_args; i++){

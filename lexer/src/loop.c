@@ -116,14 +116,14 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 
 			if(DEBUG){
 				//debug: which state we got into
-				printf("looking at '%c' -> %i \n",ch,state);
-				printf("line_no : %d\n",line_no);
+				//printf("looking at '%c' -> %i \n",ch,state);
+				//printf("line_no : %d\n",line_no);
 			}
 
 		}while(  !final_state[state] );
 
 		if(DEBUG){
-			printf("recognized a token or error\n\n");
+			printf("recognized a token or error\n");
 		}
 
 		unsigned int end=i;
@@ -382,10 +382,6 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 				break;
 		}
 
-		if(DEBUG){
-			printf("i = %ld \n",i);
-		}
-
 		tokens[tokens_index++] = tkn;
 
 		if(tokens_index >= tokens_capacity){
@@ -509,7 +505,7 @@ void writeToFile(
 
 		//debug
 		if(DEBUG){
-			printf("writing   %s",buffer);
+			//printf("writing   %s",buffer);
 		}
 
 		//free our token

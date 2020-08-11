@@ -54,118 +54,95 @@ bool test_all_inner(bool debug){
 
 	//the tests should start with the easy tests first
 
-	int count=0;
+	
 	int passed=0;
 
-	int num_tests_max = 55;
+	int num_tests_max = 58;
+	int count=num_tests_max;
 
-	//https://stackoverflow.com/questions/252748/how-can-i-use-an-array-of-function-pointers
-	//function pointer array for the tests
-	int (*tests[num_tests_max]) (bool debug);
+	passed +=  test_tokenlist1(debug);
+	passed +=  test_tokenlist_consume(debug);
+	passed +=  test_tokenlist_get(debug);
+	passed +=  test_tokenlist_startswith(debug);
+	passed +=  test_tokenlist_code(debug);
+	passed +=  test_tokenlist_stresstest(debug);
+	
+	passed +=  boolconst_test_parse_bool_constant_node(debug);
 
-	int k = 0; //our index counter
+	passed +=  charconst_test_parse_char_constant_node(debug);
+	passed +=  charconst_test_parse_char_constant_node_newline(debug);
 
-	tests[k++] = test_tokenlist1;
-	tests[k++] = test_tokenlist_consume;
-	tests[k++] = test_tokenlist_get;
-	tests[k++] = test_tokenlist_startswith;
-	tests[k++] = test_tokenlist_code;
-	tests[k++] = test_tokenlist_stresstest;
+	passed +=  floatconst_test1(debug);
+	passed +=  floatconst_test2(debug);
 
-	tests[k++] = boolconst_test_parse_bool_constant_node;
+	passed +=  term_test_simple_term(debug);
+	passed +=  term_test_variable_term(debug);
+	passed +=  term_test_parentheses(debug);
 
-	tests[k++] = charconst_test_parse_char_constant_node;
-	tests[k++] = charconst_test_parse_char_constant_node_newline;
+	passed +=  expr_recognize_2_op_expr(debug);
+	passed +=  expr_test_simple_expression(debug);
+	passed +=  expr_test_variable_name_expression(debug);
+	passed +=  expr_test_comparison(debug);
 
-	tests[k++] = floatconst_test1;
-	tests[k++] = floatconst_test2;
+	passed +=  simplevar_test_parse_simple_indexed_variable(debug);
+	passed +=  simplevar_test_parse_simple_variable(debug);
 
-	tests[k++] = term_test_simple_term;
-	tests[k++] = term_test_variable_term;
-	tests[k++] = term_test_parentheses;
+	passed +=  variable_test_parse_index_access(debug);
+	passed +=  variable_test_parse_struct_member_access(debug);
+	passed +=  variable_test_parse_struct_member_access_and_index_access(debug);
 
-	tests[k++] = expr_recognize_2_op_expr;
-	tests[k++] = expr_test_simple_expression;
-	tests[k++] = expr_test_variable_name_expression;
-	tests[k++] = expr_test_comparison;
+	passed +=  retstmt_test1(debug);
+	passed +=  retstmt_test2(debug);
+	passed +=  retstmt_test3(debug);
+	
+	passed +=  methodcall_test1(debug);
+	passed +=  methodcall_test2(debug);
+	passed +=  methodcall_test3(debug);
+	passed +=  methodcall_test_can_parse_subroutine_call(debug);
+	passed +=  methodcall_test_can_parse_subroutine_call2(debug);
+	
+	passed +=  stmt_test_assignment_statement_with_method_call(debug);
+	passed +=  stmt_test_assignment_statement_with_struct_access(debug);
+	
+	passed +=  assignstmt_test1(debug);
+	passed +=  assignstmt_test_assign_char(debug);
+	passed +=  assignstmt_test_assign_method_call_result(debug);
+	passed +=  assignstmt_test_assign_method_call_result_2(debug);
+	passed +=  assignstmt_test_assign_variable_with_array_index(debug);
+	passed +=  assignstmt_test_can_assign_to_struct_member(debug);
+	passed +=  assignstmt_test_type_declaration_for_variable(debug);
+	
+	passed +=  test_stmtblock_1(debug);
+	
+	passed +=  if_test1(debug);
+	passed +=  if_test2(debug);
 
-	tests[k++] = simplevar_test_parse_simple_indexed_variable;
-	tests[k++] = simplevar_test_parse_simple_variable;
+	passed +=  whilestmt_test1(debug);
+	passed +=  whilestmt_test2(debug);
 
-	tests[k++] = variable_test_parse_index_access;
-	tests[k++] = variable_test_parse_struct_member_access;
-	tests[k++] = variable_test_parse_struct_member_access_and_index_access;
-
-	tests[k++] = retstmt_test1;
-	tests[k++] = retstmt_test2;
-	tests[k++] = retstmt_test3;
+	passed +=  method_test_can_parse_method_with_arguments(debug);
+	passed +=  method_test_can_parse_method_without_arguments(debug);
+	passed +=  method_test_can_parse_subroutine(debug);
 	
-	tests[k++] = methodcall_test1;
-	tests[k++] = methodcall_test2;
-	tests[k++] = methodcall_test3;
-	tests[k++] = methodcall_test_can_parse_subroutine_call;
-	tests[k++] = methodcall_test_can_parse_subroutine_call2;
+	passed +=  declarg_test_parse_declared_argument(debug);
 	
-	tests[k++] = stmt_test_assignment_statement_with_method_call;
-	tests[k++] = stmt_test_assignment_statement_with_struct_access;
+	passed +=  structmember_test_can_parse_struct_member(debug);
 	
-	tests[k++] = assignstmt_test1;
-	tests[k++] = assignstmt_test_assign_char;
-	tests[k++] = assignstmt_test_assign_method_call_result;
-	tests[k++] = assignstmt_test_assign_method_call_result_2;
-	tests[k++] = assignstmt_test_assign_variable_with_array_index;
-	tests[k++] = assignstmt_test_can_assign_to_struct_member;
-	tests[k++] = assignstmt_test_type_declaration_for_variable;
+	passed +=  basictypewrapped_test_type_parsing_simple_type(debug);
 	
-	tests[k++] = test_stmtblock_1;
 	
-	tests[k++] = if_test1;
-	tests[k++] = if_test2;
-
-	tests[k++] = whilestmt_test1;
-	tests[k++] = whilestmt_test2;
-
-	tests[k++] = method_test_can_parse_method_with_arguments;
-	tests[k++] = method_test_can_parse_method_without_arguments;
-	tests[k++] = method_test_can_parse_subroutine;
+	passed +=  simpletype_test_typenode_parsing(debug);
+	passed +=  simpletype_test_typenode_parsing_anytype(debug);
+	passed +=  simpletype_test_typenode_parsing_fails(debug);
 	
-	tests[k++] = declarg_test_parse_declared_argument;
 	
-	tests[k++] = structmember_test_can_parse_struct_member;
 	
-	tests[k++] = basictypewrapped_test_type_parsing_simple_type;
+	passed +=  subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(debug);
+	passed +=  subrtype_test_subroutine_type_parsing_subroutine_without_side_effects(debug);
+	passed +=  subrtype_test_typename(debug);
+	passed +=  subrtype_test_typename_subroutine_return_type(debug);
 	
-	tests[k++] = simpletype_test_typenode_parsing;
-	tests[k++] = simpletype_test_typenode_parsing_anytype;
-	tests[k++] = simpletype_test_typenode_parsing_fails;
-	
-	tests[k++] = subrtype_test_subroutine_type_parsing_subroutine_with_side_effects;
-	tests[k++] = subrtype_test_subroutine_type_parsing_subroutine_without_side_effects;
-	tests[k++] = subrtype_test_typename;
-	tests[k++] = subrtype_test_typename_subroutine_return_type;
-	
-	const bool mydebug = debug;
-	
-	//TODO:
-	//these strings do strangely not end up in the program output
-	printf("signature\n");
-	printf("Ldebug=%d\n", debug?1:0);
-	
-	for(int i=0; i < k;i++){
-		passed += tests[i](mydebug);
-		count++;
-		if(passed < count){
-			printf("last test did not pass!\n");
-			printf("Isolating the failing Test:\n");
-			printf("------------------------------\n");
-			
-			//disabled for DEBUG reasons
-			//tests[i](true);
-			break;
-		}
-	}	
-	
-	printf("passed %d of %d(this run) of %d(total test suite) \n",passed,count, k);
+	printf("passed %d of %d\n",passed,count);
 
 	return passed == count;
 }

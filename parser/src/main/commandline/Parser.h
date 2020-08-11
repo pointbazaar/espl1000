@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "TokenList.h"
 #include "../parsing/Namespace.h"
