@@ -39,6 +39,8 @@
 #include "lexer.h"
 #include "loop.h"
 
+int DEBUG = false;
+
 int tokenize_file(char* filename, char* tkn_filename);
 
 int main(int argc, char** argv) {
@@ -53,17 +55,31 @@ int main(int argc, char** argv) {
 		and not use too many keywords.
 	*/
     
-    if(DEBUG){
-    	printf("starting Dragon Lexer\n");
+    
+	
+	//filenames
+    char* filename = NULL;
+	
+	for(int i=1; i < argc; i++){
+		
+		char* arg = argv[i];
+		if(arg[0] == '-'){
+			if(strcmp(arg, "-debug") == 0){
+				DEBUG = true;
+			}
+		}else{
+			filename = arg;
+		}
 	}
 
-    if( argc != 2 ){
-    	printf("expected one argument, a filename of the file to tokenize\n");
+    if( filename == NULL ){
+    	printf("expecte a filename of the file to tokenize\n");
     	return 1;
     }
 
-    //filenames
-    char* filename = argv[1];
+    if(DEBUG){
+    	printf("starting Dragon Lexer\n");
+	}
 
     if(strcmp(filename,"--version")==0){
     	printf("dragon-lexer 0.8 \n");

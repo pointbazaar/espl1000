@@ -3,9 +3,9 @@
 CALL_COMMON := gcc -march=native -Wall
 
 #the gcc call for debugging and test builds
-CALL_DEBUG :=         $(CALL_COMMON) -O0 -D DEBUG=true -g 
+CALL_DEBUG :=         $(CALL_COMMON) -O0 -g 
 
-CALL_RELEASE := $(CALL_COMMON) -O3 -D DEBUG=false 
+CALL_RELEASE := $(CALL_COMMON) -O3 
 
 #the common .o files
 COMMON_DEBUG := build/debug/strutils.o build/debug/lexer.o build/debug/loop.o build/debug/init_dfa.o 
