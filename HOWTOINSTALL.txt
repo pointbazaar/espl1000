@@ -1,0 +1,6 @@
+#!/bin/bash
+
+#add 
+#PATH=~/smalldragon/transpiler:~/smalldragon/lexer:~/smalldragon/parser:$PATH
+# to your ~/.bashrc
+
