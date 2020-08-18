@@ -4,7 +4,11 @@ FLAGS := -march=native -g -Wall
 
 CALL := gcc $(FLAGS)
 
-OBJS := build/transpiler.o build/util.o build/ast_reader.o build/c_code_gen.o build/code_gen_util.o build/test.o build/teststatuscode.o
+OBJS := build/transpiler.o build/util.o build/ast_reader.o \
+		build/c_code_gen.o build/code_gen_util.o build/test.o \
+		build/teststatuscode.o \
+		build/test_other.o \
+		build/test_op.o \
 
 all: smalldragon
 
@@ -34,3 +38,9 @@ build/test.o: test/test.c test/test.h main/transpiler.h main/flags.h test/testst
 
 build/teststatuscode.o: test/teststatuscode.h test/teststatuscode.c main/flags.h main/transpiler.h
 	$(CALL) -c test/teststatuscode.c -o $@
+	
+build/test_other.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_other.h test/suite/test_other.c
+	$(CALL) -c test/suite/test_other.c -o $@
+	
+build/test_op.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_op.h test/suite/test_op.c
+	$(CALL) -c test/suite/test_op.c -o $@
