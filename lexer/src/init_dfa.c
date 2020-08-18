@@ -14,6 +14,7 @@
 
 void init_dfa(short** dfa, bool* final_state, int n_states){
 
+	bool debug = false;
 
 	//for the identifiers
 	set_transitions_lowercase(dfa,S_START,S_IDENTIFIER);
@@ -82,7 +83,7 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	dfa[S_START]['.']=S_STRUCTMEMBERACCESS_FINAL;
 	dfa[S_START][',']=S_COMMA_FINAL;
 
-	if(DEBUG){
+	if(debug){
 		printf("marking eos transitions\n");
 	}
 	//all states on encountering '\0' should go to eos state
@@ -90,7 +91,7 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 		dfa[i]['\0']=S_EOS;
 	}
 
-	if(DEBUG){
+	if(debug){
 		printf("marking final states\n");
 	}
 

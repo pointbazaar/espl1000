@@ -26,7 +26,9 @@ const uint64_t tokens_capacity = 5000;	//should be 5000
 struct Token* tokens[5000];
 
 struct Token** lex(char* clean_source, char* tkn_filename){
-	if(DEBUG){
+	
+	bool debug = false;
+	if(debug){
 		printf("lex(...)\n");
 	}
 
@@ -52,7 +54,8 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 
 	uint64_t input_index = 0;	//our index in the input file
 
-	if(DEBUG){
+	bool debug = false;
+	if(debug){
 		printf("lex_main(...)\n");
 	}
 
@@ -60,14 +63,14 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 
 	uint64_t tokens_index = 0;
 
-	if(DEBUG){
+	if(debug){
 		printf("initializing deterministic finite automaton (a kind of state machine) \n");
 	}
 
 	const uint64_t n_states = 150;		//number of states in our state machine
 	const uint64_t n_transitions = 256; //possible ascii chars
 
-	if(DEBUG){
+	if(debug){
 		printf("allocating memory for state machine \n");
 	}
 
@@ -84,7 +87,7 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 
 	init_dfa(dfa,final_state, n_states);
 	
-	if(DEBUG){
+	if(debug){
 		printf("starting lexer loop\n");
 	}
 
@@ -97,7 +100,7 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 
 		char ch = input[i];
 
-		if(DEBUG){
+		if(debug){
 			printf("start inner loop\n");
 		}
 
@@ -114,7 +117,7 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 			line_no += (ch=='\n')?1:0;
 			state = dfa[state][(short)ch];
 
-			if(DEBUG){
+			if(debug){
 				//debug: which state we got into
 				//printf("looking at '%c' -> %i \n",ch,state);
 				//printf("line_no : %d\n",line_no);
@@ -122,7 +125,7 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 
 		}while(  !final_state[state] );
 
-		if(DEBUG){
+		if(debug){
 			printf("recognized a token or error\n");
 		}
 
@@ -403,12 +406,12 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 	//if any errors were encountered anywhere or
 	//malloc could not allocate or anything
 
-	if(DEBUG){
+	if(debug){
 		printf("free state machine\n");
 	}
 	free_dfa(dfa,n_states);
 
-	if(DEBUG){
+	if(debug){
 		printf("free final_state array\n");
 	}
 	free(final_state);
@@ -424,8 +427,9 @@ void readFromFile(
 	uint64_t input_file_length,
 	uint64_t* input_index
 ){
+	bool debug = false;
 	
-	if(DEBUG){
+	if(debug){
 		printf("readFromFile(...)\n");
 	}
 
@@ -434,7 +438,7 @@ void readFromFile(
 	//to our index in the file
 	*input_index	+=	amount_read;
 
-	if(DEBUG){
+	if(debug){
 		printf("amount_read: %ld , new input_index is : %ld \n",amount_read,*input_index);
 	}
 
@@ -479,8 +483,9 @@ void writeToFile(
 	int len,
 	bool free_tokens
 ){
-
-	if(DEBUG){
+	bool debug = false;
+	
+	if(debug){
 		printf("writeToFile(...) : write to %s\n",tkn_filename);
 	}
 
@@ -504,7 +509,7 @@ void writeToFile(
 		sprintf(buffer,"%i %s\n",id,value);
 
 		//debug
-		if(DEBUG){
+		if(debug){
 			//printf("writing   %s",buffer);
 		}
 
@@ -519,7 +524,7 @@ void writeToFile(
 		fputs(buffer,file2);
 	}
 
-	if(DEBUG){
+	if(debug){
 		printf("close  %s\n",tkn_filename);
 	}
 	

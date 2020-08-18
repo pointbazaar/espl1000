@@ -12,9 +12,12 @@ OBJS := build/transpiler.o build/util.o build/ast_reader.o \
 
 all: smalldragon
 
-smalldragon: $(OBJS)
+smalldragon: dir $(OBJS)
 	$(CALL) -o sd build/*.o
 	
+dir:
+	mkdir -p build
+
 clean: 
 	rm -f build/*
 

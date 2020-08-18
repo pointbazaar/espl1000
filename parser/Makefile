@@ -5,6 +5,7 @@ CALL := gcc $(FLAGS)
 all: dragon-parser
 
 dragon-parser: commandline parsing typenodes statements build/util.o build/ASTWriter.o tests
+	mkdir -p build/
 	mv *.o build/
 	$(CALL) -o dragon-parser build/*.o
 
