@@ -9,7 +9,7 @@ bool test_statuscode(bool debug){
 	
 	char* src = "fn main () ~> PInt { return 3; }";
 	
-	const int status = sourceToStatus(src);
+	const int status = sourceToStatus(src, debug);
 	
 	return status == 3;
 }
@@ -20,7 +20,7 @@ bool test_simplevar(bool debug){
 	
 	char* src = "fn main () ~> PInt { PInt x = 2; return x; }";
 	
-	return sourceToStatus(src) == 2;
+	return sourceToStatus(src, debug) == 2;
 }
 
 bool test_ifstmt(bool debug){
@@ -29,7 +29,7 @@ bool test_ifstmt(bool debug){
 	
 	char* src = "fn main () ~> PInt { PInt x = 2; if x == 2 { return 3;} else { return 4; } }";
 	
-	return sourceToStatus(src) == 3;
+	return sourceToStatus(src, debug) == 3;
 }
 
 bool test_whilestmt(bool debug){
@@ -38,7 +38,7 @@ bool test_whilestmt(bool debug){
 	
 	char* src = "fn main () ~> PInt { PInt x = 0; while x < 3 { x = x + 1; } return x; }";
 	
-	return sourceToStatus(src) == 3;
+	return sourceToStatus(src, debug) == 3;
 }
 
 bool test_subrcall(bool debug){
@@ -47,7 +47,7 @@ bool test_subrcall(bool debug){
 	
 	char* src = "fn main () ~> PInt { return subr(); } fn subr () ~> PInt { return 9; }";
 	
-	return sourceToStatus(src) == 9;
+	return sourceToStatus(src, debug) == 9;
 }
 
 bool test_recursive(bool debug){
@@ -56,6 +56,6 @@ bool test_recursive(bool debug){
 	
 	char* src = "fn main () ~> PInt { return subr(8); } fn subr (PInt n) ~> PInt { if n > 0 { return subr(n-1); } return n; }";
 	
-	return sourceToStatus(src) == 0;
+	return sourceToStatus(src, debug) == 0;
 }
 

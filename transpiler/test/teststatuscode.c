@@ -8,7 +8,9 @@
 
 void clean();
 
-int sourceToStatus(char* src){
+int sourceToStatus(char* src, bool debug){
+	
+	if(debug){ printf("sourceToStatus(...)\n"); }
 	
 	clean();
 	
@@ -37,10 +39,6 @@ int sourceToStatus(char* src){
 	//returns a status code of 3
 	int status = WEXITSTATUS(system("./a.out"));
 	
-	//CLEANUP
-	//remove("test.dg");
-	//remove("test.c");
-	//remove("a.out");
 	clean();
 	
 	free(flags);

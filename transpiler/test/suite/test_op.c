@@ -9,7 +9,7 @@ bool test_add(bool debug){
 	
 	char* src = "fn main () ~> PInt { return 3+4; }";
 	
-	const int status = sourceToStatus(src);
+	const int status = sourceToStatus(src, debug);
 	
 	return status == 7;
 }
@@ -20,7 +20,7 @@ bool test_sub(bool debug){
 	
 	char* src = "fn main () ~> PInt { return 6-4; }";
 	
-	const int status = sourceToStatus(src);
+	const int status = sourceToStatus(src, debug);
 	
 	return status == 2;
 }
@@ -31,7 +31,7 @@ bool test_mul(bool debug){
 	
 	char* src = "fn main () ~> PInt { return 2 * 4; }";
 	
-	const int status = sourceToStatus(src);
+	const int status = sourceToStatus(src, debug);
 	
 	return status == 8;
 }
@@ -42,7 +42,7 @@ bool test_div(bool debug){
 	
 	char* src = "fn main () ~> PInt { return 4 / 2; }";
 	
-	const int status = sourceToStatus(src);
+	const int status = sourceToStatus(src, debug);
 	
 	return status == 2;
 }
@@ -53,7 +53,7 @@ bool test_precedence(bool debug){
 	
 	char* src = "fn main () ~> PInt { return 3 + 4 / 2; }";
 	
-	const int status = sourceToStatus(src);
+	const int status = sourceToStatus(src, debug);
 	
 	return status == 5;
 }
@@ -64,7 +64,7 @@ bool test_or(bool debug){
 	
 	char* src = "fn main () ~> PInt { if true or false { return 3; } return 2; }";
 	
-	const int status = sourceToStatus(src);
+	const int status = sourceToStatus(src, debug);
 	
 	return status == 3;
 }
@@ -75,7 +75,7 @@ bool test_and(bool debug){
 	
 	char* src = "fn main () ~> PInt { return true && false; }";
 	
-	const int status = sourceToStatus(src);
+	const int status = sourceToStatus(src, debug);
 	
 	return status == 0;
 }
@@ -86,7 +86,7 @@ bool test_not(bool debug){
 	
 	char* src = "fn main () ~> PInt { return !false; }";
 	
-	const int status = sourceToStatus(src);
+	const int status = sourceToStatus(src, debug);
 	
 	return status == 1;
 }
