@@ -1,4 +1,4 @@
-#!/bin/bash
+
 
 #STEP 1: build everything
 make

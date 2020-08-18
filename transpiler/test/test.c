@@ -21,6 +21,23 @@ void test_all(bool debug){
 		
 	uint16_t testsPassed 	= 0;
 	
+	bool (*tests[TEST_COUNT_OP + TEST_COUNT_OTHER])(bool debug);
+	
+	tests[0] = test_statuscode;
+	tests[1] = test_simplevar;
+	
+	//TODO: insert the other tests
+	
+	for(int i=0; i < 2; i++){
+		testsPassed += (*tests[i])(debug);
+		
+		if(testsPassed != i+1){
+			printf("Test Failure\n");
+			break;
+		}
+	}
+	
+	/*
 	//6 regular tests
 	
 	testsPassed += test_statuscode(debug);
@@ -37,6 +54,7 @@ void test_all(bool debug){
 	testsPassed += test_mul(debug);
 	testsPassed += test_div(debug);
 	testsPassed += test_precedence(debug);
+	*/
 	
 	printf("\nPassed %d of %d Tests\n",testsPassed,testsRun);
 }
