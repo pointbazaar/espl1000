@@ -48,7 +48,9 @@ int sourceToStatus(char* src, bool debug){
 
 void clean(){
 	
-	system("rm test.dg");
-	system("rm test.c");
-	system("rm a.out");
+	// '-f ' option so that it will not give a warning
+	
+	system("rm -f test.dg");
+	system("rm -f test.c");
+	system("rm -f a.out");
 }
