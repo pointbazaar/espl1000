@@ -2,11 +2,15 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "../../util/util.h"
+
 #include "teststatuscode.h"
 #include "../main/flags.h"
 #include "../main/transpiler.h"
 
 void clean();
+
+char* FNAME_DEFAULT = "test.dg";
 
 int sourceToStatus(char* src, bool debug){
 	
@@ -15,7 +19,7 @@ int sourceToStatus(char* src, bool debug){
 	clean();
 	
 	//write this to a file
-	FILE* file = fopen("test.dg","w");
+	FILE* file = fopen(FNAME_DEFAULT,"w");
 	
 	if(file == NULL){
 		printf("could not open output file\n");
@@ -26,14 +30,14 @@ int sourceToStatus(char* src, bool debug){
 	fclose(file);
 	
 	//transpile it
-	struct Flags* flags = malloc(sizeof(struct Flags));
+	struct Flags* flags = smalloc(sizeof(struct Flags));
 	flags->debug = false;
 	flags->avr = false;
 	flags->test = false;
 	char** gcc_flags = NULL;
 	int gcc_flags_count = 0;
 	
-	transpileAndCompile("test.dg", flags, gcc_flags, gcc_flags_count);
+	transpileAndCompile(FNAME_DEFAULT, flags, gcc_flags, gcc_flags_count);
 	
 	//test that the code, when transpiled,
 	//returns a status code of 3

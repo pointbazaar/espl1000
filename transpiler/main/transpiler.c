@@ -53,8 +53,8 @@ int main(int argc, char* argv[]){
 	}
 	
 	if(flags->test){
-		test_all(flags->debug);
-		exit(0);
+		int status = test_all(flags->debug);
+		exit(status);
 	}
 	
 	if(filename == NULL){

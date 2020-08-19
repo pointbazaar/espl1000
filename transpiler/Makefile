@@ -39,7 +39,7 @@ build/code_gen_util.o: main/code_gen_util.c main/code_gen_util.h
 build/test.o: test/test.c test/test.h main/transpiler.h main/flags.h test/teststatuscode.h 
 	$(CALL) -c test/test.c -o $@
 
-build/teststatuscode.o: test/teststatuscode.h test/teststatuscode.c main/flags.h main/transpiler.h
+build/teststatuscode.o: test/teststatuscode.h test/teststatuscode.c main/flags.h main/transpiler.h ../util/util.c ../util/util.h
 	$(CALL) -c test/teststatuscode.c -o $@
 	
 build/test_other.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_other.h test/suite/test_other.c

@@ -12,7 +12,7 @@
 #include "suite/test_op.h"
 #include "suite/test_other.h"
 
-void test_all(bool debug){
+int test_all(bool debug){
 	
 	printf("Running tests for smalldragon/transpiler:\n");
 	
@@ -57,4 +57,8 @@ void test_all(bool debug){
 	*/
 	
 	printf("\nPassed %d of %d Tests\n",testsPassed,testsRun);
+	
+	if(testsPassed != testsRun){ return 1; }
+	
+	return 0;
 }
