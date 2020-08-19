@@ -8,9 +8,15 @@ OBJS := build/transpiler.o build/util.o build/ast_reader.o \
 		build/c_code_gen.o build/code_gen_util.o build/test.o \
 		build/teststatuscode.o \
 		build/test_other.o \
-		build/test_op.o \
+		build/test_op.o 
 
-all: smalldragon
+all: smalldragon test
+
+clean: 
+	rm build/*.o
+
+test: sd
+	./sd -test
 
 smalldragon: dir $(OBJS)
 	$(CALL) -o sd build/*.o
@@ -18,8 +24,6 @@ smalldragon: dir $(OBJS)
 dir:
 	mkdir -p build
 
-clean: 
-	rm -f build/*
 
 build/ast_reader.o: ../ast/ast_reader.c
 	$(CALL) -c ../ast/ast_reader.c -o $@

@@ -2,7 +2,10 @@
 FLAGS := -march=native -g -Wall
 CALL := gcc $(FLAGS)
 
-all: dragon-parser
+all: dragon-parser test
+
+test: dragon-parser
+	./dragon-parser -test
 
 dragon-parser: commandline parsing typenodes statements build/util.o build/ASTWriter.o tests
 	mkdir -p build/

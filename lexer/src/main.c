@@ -65,6 +65,7 @@ int main(int argc, char** argv) {
 				DEBUG = true;
 			}else if(strcmp(arg, "-test") == 0){
 				test_all(DEBUG);
+				return 0;
 			}
 		}else{
 			filename = arg;

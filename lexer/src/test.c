@@ -124,7 +124,7 @@ int test_all(bool debug1){
 
 	printf("%i of %i tests passed\n",pass,count);
 
-	return 0;
+	return (pass == count)?0:1;
 }
 
 
