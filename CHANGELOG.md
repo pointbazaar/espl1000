@@ -4,6 +4,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 - Added integration tests in transpiler/test/suite/
+- "make" now also runs the tests after it builds.
+- Removed test.sh
 
 ## [0.0.1] - 2020-08-19
 - started using CHANGELOG.md
