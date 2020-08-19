@@ -23,10 +23,30 @@ int test_all(bool debug){
 	
 	bool (*tests[TEST_COUNT_OP + TEST_COUNT_OTHER])(bool debug);
 	
-	tests[0] = test_statuscode;
-	tests[1] = test_simplevar;
+	//first the ones from test_op.h
+	tests[0] = test_add;
+	tests[1] = test_sub;
+	tests[2] = test_mul;
+	tests[3] = test_div;
+	tests[4] = test_mod;
+	tests[5] = test_precedence;
+	tests[6] = test_or;
+	tests[7] = test_and;
+	tests[8] = test_not;
+	tests[9] = test_greater;
+	tests[10] = test_lesser;
+	tests[11] = test_geq;
+	tests[12] = test_leq;
+	tests[13] = test_eq;
+	tests[14] = test_neq;
 	
-	//TODO: insert the other tests
+	// then the ones from test_other.h
+	tests[15] = test_statuscode;
+	tests[16] = test_simplevar;
+	tests[17] = test_ifstmt;
+	tests[18] = test_whilestmt;
+	tests[19] = test_subrcall;
+	tests[20] = test_recursive;
 	
 	for(int i=0; i < 2; i++){
 		testsPassed += (*tests[i])(debug);

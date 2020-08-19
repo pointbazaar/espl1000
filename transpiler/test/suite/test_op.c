@@ -47,6 +47,17 @@ bool test_div(bool debug){
 	return status == 2;
 }
 
+bool test_mod(bool debug){
+	
+	if(debug){ printf("test_mod\n"); }
+	
+	char* src = "fn main () ~> PInt { return 4 % 3; }";
+	
+	const int status = sourceToStatus(src, debug);
+	
+	return status == 1;
+}
+
 bool test_precedence(bool debug){
 	
 	if(debug){ printf("test_precedence\n"); }
@@ -89,4 +100,72 @@ bool test_not(bool debug){
 	const int status = sourceToStatus(src, debug);
 	
 	return status == 1;
+}
+
+//comparison tests
+
+bool test_greater(bool debug){
+	
+	if(debug){ printf("test_greater\n"); }
+	
+	char* src = "fn main () ~> PInt { return 4 > 3; }";
+	
+	const int status = sourceToStatus(src, debug);
+	
+	return status != 0;
+}
+
+bool test_lesser(bool debug){
+	
+	if(debug){ printf("test_lesser\n"); }
+	
+	char* src = "fn main () ~> PInt { return 4 < 3; }";
+	
+	const int status = sourceToStatus(src, debug);
+	
+	return status == 0;
+}
+
+bool test_geq(bool debug){
+	
+	if(debug){ printf("test_geq\n"); }
+	
+	char* src = "fn main () ~> PInt { return 3 >= 3; }";
+	
+	const int status = sourceToStatus(src, debug);
+	
+	return status == 0;
+}
+
+bool test_leq(bool debug){
+	
+	if(debug){ printf("test_leq\n"); }
+	
+	char* src = "fn main () ~> PInt { return 2 <= 3; }";
+	
+	const int status = sourceToStatus(src, debug);
+	
+	return status == 0;
+}
+
+bool test_eq(bool debug){
+	
+	if(debug){ printf("test_eq\n"); }
+	
+	char* src = "fn main () ~> PInt { return 8 == 8; }";
+	
+	const int status = sourceToStatus(src, debug);
+	
+	return status == 1;
+}
+
+bool test_neq(bool debug){
+	
+	if(debug){ printf("test_neq\n"); }
+	
+	char* src = "fn main () ~> PInt { return 4 != 4; }";
+	
+	const int status = sourceToStatus(src, debug);
+	
+	return status != 0;
 }
