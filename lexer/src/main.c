@@ -1,5 +1,3 @@
-
-
 // https://nothings.org/computer/lexing.html
 //
 // this is supposed to be a lexer project for the dragon programming language
@@ -38,10 +36,11 @@
 #include "tokens.h"
 #include "lexer.h"
 #include "loop.h"
+#include "test.h"
 
 int DEBUG = false;
 
-int tokenize_file(char* filename, char* tkn_filename);
+int tokenize_file(char* filename, char* tkn_filename, bool debug);
 
 int main(int argc, char** argv) {
 
@@ -55,8 +54,6 @@ int main(int argc, char** argv) {
 		and not use too many keywords.
 	*/
     
-    
-	
 	//filenames
     char* filename = NULL;
 	
@@ -66,6 +63,8 @@ int main(int argc, char** argv) {
 		if(arg[0] == '-'){
 			if(strcmp(arg, "-debug") == 0){
 				DEBUG = true;
+			}else if(strcmp(arg, "-test") == 0){
+				test_all(DEBUG);
 			}
 		}else{
 			filename = arg;
@@ -153,7 +152,7 @@ int main(int argc, char** argv) {
 		if(DEBUG){
 			printf("could not find corresponding .tokens file \n");
 		}
-        tokenize_file(filename,tkn_filename);
+        tokenize_file(filename, tkn_filename, DEBUG);
 	}else{
 		//tokenized file already exists
 		stat(tkn_filename,&tkn_file_meta);
@@ -170,7 +169,7 @@ int main(int argc, char** argv) {
             if(DEBUG){
 				printf("the file was modified. the tokens file is outdated.\n");
 			}
-            tokenize_file(filename,tkn_filename);
+            tokenize_file(filename, tkn_filename, DEBUG);
         }else{
 			if(DEBUG){
 				printf(".tokens file for this file is up to date. exiting.\n");
@@ -186,15 +185,12 @@ int main(int argc, char** argv) {
 	return 0;
 }
 
-int tokenize_file(char* filename, char* tkn_filename){
-	/*
-		should tokenize  
-			filename     
-		and write those tokens to
-			tkn_filename
-	*/
+int tokenize_file(char* filename, char* tkn_filename, bool debug){
 	
-	if(DEBUG){
+	//should tokenize  filename     
+	//and write those tokens to	tkn_filename
+	
+	if(debug){
 		printf("opening %s to determine file length \n",filename);
 	}
 

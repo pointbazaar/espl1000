@@ -43,7 +43,11 @@ int sourceToStatus(char* src, bool debug){
 	//returns a status code of 3
 	int status = WEXITSTATUS(system("./a.out"));
 	
-	clean();
+	if(!debug){
+		//in debug mode, leave the artifacts
+		//so we can look at them
+		clean();
+	}
 	
 	free(flags);
 	
