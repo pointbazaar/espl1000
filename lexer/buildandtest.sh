@@ -1,3 +1,2 @@
 #!/bin/bash
-
-./build.sh && ./test
+make && ./dragon-lexer -test

@@ -25,9 +25,13 @@ for the java version of this lexer
 bool assert(bool condition){
 	//to make it clear to the reader
 	//that this is the assertion of the test
+	
+	bool debug = false;
 
 	if(condition){
-		printf("assertion passed\n");
+		if(debug){
+			printf("assertion passed\n");
+		}
 	}else{
 		printf("assertion failed\n");
 		exit(1);
