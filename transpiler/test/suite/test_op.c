@@ -169,3 +169,14 @@ bool test_neq(bool debug){
 	
 	return status != 0;
 }
+
+bool test_chained_cmp(bool debug){
+	
+	if(debug){ printf("test_chained_cmp\n"); }
+	
+	char* src = "fn main () ~> PInt { return 3 < 4 < 5; }";
+	
+	const int status = sourceToStatus(src, debug);
+	
+	return status != 0;
+}
