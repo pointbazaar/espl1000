@@ -16,6 +16,12 @@ struct Flags {
 	bool debug;
 	bool test;
 	bool avr;
+	char** gcc_flags;
+	int gcc_flags_count;
 };
+
+struct Flags* makeFlags();
+
+void freeFlags(struct Flags* flags);
 
 #endif

@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>
+#include <errno.h>
 
 #include "../../util/util.h"
 
@@ -18,29 +20,24 @@ int sourceToStatus(char* src, bool debug){
 	
 	clean();
 	
-	//write this to a file
+	
 	FILE* file = fopen(FNAME_DEFAULT,"w");
 	
 	if(file == NULL){
-		printf("could not open output file\n");
-		exit(1);
+		printf("could not open output file %s\n", FNAME_DEFAULT);
+		
+		return -1;
 	}
 	
 	fprintf(file, "%s", src);
 	fclose(file);
 	
 	//transpile it
-	struct Flags* flags = smalloc(sizeof(struct Flags));
-	flags->debug = false;
-	flags->avr = false;
-	flags->test = false;
-	char** gcc_flags = NULL;
-	int gcc_flags_count = 0;
+	struct Flags* flags = makeFlags();
+	flags->debug = debug;
 	
-	transpileAndCompile(FNAME_DEFAULT, flags, gcc_flags, gcc_flags_count);
+	transpileAndCompile(FNAME_DEFAULT, flags);
 	
-	//test that the code, when transpiled,
-	//returns a status code of 3
 	int status = WEXITSTATUS(system("./a.out"));
 	
 	if(!debug){
@@ -57,8 +54,9 @@ int sourceToStatus(char* src, bool debug){
 void clean(){
 	
 	// '-f ' option so that it will not give a warning
-	
 	system("rm -f test.dg");
+	system("rm -f .test.dg.tokens");
+	system("rm -f .test.dg.ast");
 	system("rm -f test.c");
 	system("rm -f a.out");
 }

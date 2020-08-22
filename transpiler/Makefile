@@ -8,7 +8,8 @@ OBJS := build/transpiler.o build/util.o build/ast_reader.o \
 		build/c_code_gen.o build/code_gen_util.o build/test.o \
 		build/teststatuscode.o \
 		build/test_other.o \
-		build/test_op.o 
+		build/test_op.o \
+		build/flags.o
 
 all: smalldragon test
 
@@ -24,6 +25,8 @@ smalldragon: dir $(OBJS)
 dir:
 	mkdir -p build
 
+build/flags.o: main/flags.c
+	$(CALL) -c main/flags.c -o $@
 
 build/ast_reader.o: ../ast/ast_reader.c
 	$(CALL) -c ../ast/ast_reader.c -o $@

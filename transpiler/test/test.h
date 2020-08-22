@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-int test_all(bool debug);
+int transpiler_test_all(bool debug);
 
 #endif

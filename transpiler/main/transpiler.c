@@ -21,8 +21,8 @@ int main(int argc, char* argv[]){
 	
 	//if there are more than 100, it can exit
 	const int gcc_flags_max = 100;
-	char** gcc_flags = malloc(sizeof(char*)*gcc_flags_max);
-	int gcc_flags_count = 0;
+	flags->gcc_flags = malloc(sizeof(char*)*gcc_flags_max);
+	flags->gcc_flags_count = 0;
 	
 	for(int i=1; i < argc; i++){
 		char* arg = argv[i];
@@ -33,10 +33,10 @@ int main(int argc, char* argv[]){
 			}else if(strcmp(arg, FAVR )  == 0){ flags->avr = true;
 			}else{
 				//pass this flag when calling gcc
-				gcc_flags[gcc_flags_count] = arg;
-				gcc_flags_count++;
+				flags->gcc_flags[flags->gcc_flags_count] = arg;
+				flags->gcc_flags_count++;
 				
-				if(gcc_flags_count > gcc_flags_max){
+				if(flags->gcc_flags_count > gcc_flags_max){
 					printf("Exceeded max amount");
 					printf(" of gcc flags to pass through.\n");
 					exit(1);
@@ -53,8 +53,8 @@ int main(int argc, char* argv[]){
 	}
 	
 	if(flags->test){
-		int status = test_all(flags->debug);
-		exit(status);
+		int status = transpiler_test_all(flags->debug);
+		return status;
 	}
 	
 	if(filename == NULL){
@@ -62,12 +62,11 @@ int main(int argc, char* argv[]){
 		exit(1);
 	}
 	
-	transpileAndCompile(filename, flags, gcc_flags, gcc_flags_count);
+	transpileAndCompile(filename, flags);
 	
-	free(flags);
-	free(gcc_flags);
+	freeFlags(flags);
 
-	exit(0);
+	return 0;
 }
 
 void check_dg_extension(char* filename){
@@ -82,10 +81,10 @@ void invoke_lexer_parser(char* filename, bool debug){
 	
 	char cmd1[100];
 	
+	strcpy(cmd1, "dragon-lexer ");
+	
 	if(debug){
-		strcpy(cmd1, "dragon-lexer-debug ");
-	}else{
-		strcpy(cmd1, "dragon-lexer ");
+		strcat(cmd1, "-debug ");
 	}
 	strcat(cmd1, filename);
 	
@@ -117,9 +116,7 @@ void invoke_lexer_parser(char* filename, bool debug){
 
 void transpileAndCompile(
 	char* filename, 
-	struct Flags* flags, 
-	char** gcc_flags, 
-	int gcc_flags_count
+	struct Flags* flags
 ){
 	if(flags->debug){ printf("transpileAndCompile(...)\n"); }
 	
@@ -170,9 +167,9 @@ void transpileAndCompile(
 	
 	//we assume here cmd_gcc will never exceed it's allocated size.
 	//Warning. this is a stupid assumption.
-	for(int i=0; i < gcc_flags_count; i++){
+	for(int i=0; i < flags->gcc_flags_count; i++){
 		strcat(cmd_gcc, " ");
-		strcat(cmd_gcc, gcc_flags[i]);
+		strcat(cmd_gcc, flags->gcc_flags[i]);
 	}
 	
 	//compile with gcc

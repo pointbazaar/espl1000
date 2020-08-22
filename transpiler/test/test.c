@@ -12,7 +12,7 @@
 #include "suite/test_op.h"
 #include "suite/test_other.h"
 
-int test_all(bool debug){
+int transpiler_test_all(bool debug){
 	
 	printf("Running tests for smalldragon/transpiler:\n");
 	
@@ -20,6 +20,7 @@ int test_all(bool debug){
 		TEST_COUNT_OP + TEST_COUNT_OTHER;
 		
 	uint16_t testsPassed 	= 0;
+	
 	
 	bool (*tests[TEST_COUNT_OP + TEST_COUNT_OTHER])(bool debug);
 	
@@ -39,42 +40,26 @@ int test_all(bool debug){
 	tests[12] = test_leq;
 	tests[13] = test_eq;
 	tests[14] = test_neq;
+	tests[15] = test_chained_cmp;
 	
 	// then the ones from test_other.h
-	tests[15] = test_statuscode;
-	tests[16] = test_simplevar;
-	tests[17] = test_ifstmt;
-	tests[18] = test_whilestmt;
-	tests[19] = test_subrcall;
-	tests[20] = test_recursive;
+	tests[16] = test_statuscode;
+	tests[17] = test_simplevar;
+	tests[18] = test_ifstmt;
+	tests[19] = test_whilestmt;
+	tests[20] = test_subrcall;
+	tests[21] = test_recursive;
 	
-	for(int i=0; i < 2; i++){
+	for(int i=0; i < testsRun; i++){
 		testsPassed += (*tests[i])(debug);
 		
 		if(testsPassed != i+1){
-			printf("Test Failure\n");
+			printf("\nTest Failure\n");
 			break;
 		}
 	}
 	
-	/*
-	//6 regular tests
-	
-	testsPassed += test_statuscode(debug);
-	testsPassed += test_simplevar(debug);
-	testsPassed += test_ifstmt(debug);
-	testsPassed += test_whilestmt(debug);
-	testsPassed += test_subrcall(debug);
-	testsPassed += test_recursive(debug);
-	
-	//5 operator related tests
-	
-	testsPassed += test_add(debug);
-	testsPassed += test_sub(debug);
-	testsPassed += test_mul(debug);
-	testsPassed += test_div(debug);
-	testsPassed += test_precedence(debug);
-	*/
+	//testsPassed += test_add(debug);
 	
 	printf("\nPassed %d of %d Tests\n",testsPassed,testsRun);
 	

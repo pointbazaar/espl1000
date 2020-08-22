@@ -73,7 +73,7 @@ bool test_or(bool debug){
 	
 	if(debug){ printf("test_or\n"); }
 	
-	char* src = "fn main () ~> PInt { if true or false { return 3; } return 2; }";
+	char* src = "fn main () ~> PInt { if true || false { return 3; } return 2; }";
 	
 	const int status = sourceToStatus(src, debug);
 	
@@ -95,7 +95,7 @@ bool test_not(bool debug){
 	
 	if(debug){ printf("test_not\n"); }
 	
-	char* src = "fn main () ~> PInt { return !false; }";
+	char* src = "fn main () ~> PInt { return ! false; }";
 	
 	const int status = sourceToStatus(src, debug);
 	

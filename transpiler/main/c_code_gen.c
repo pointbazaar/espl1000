@@ -73,6 +73,8 @@ void transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 	transpileAST(ast, ctx);
 
 	fclose(fout);
+	
+	if(debug){ printf("transpileAndWrite(...) DONE\n"); }
 }
 
 void transpileAST(struct AST_Whole_Program* ast, struct Ctx* ctx){
