@@ -134,7 +134,7 @@ bool test_geq(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 0;
+	return status == 1;
 }
 
 bool test_leq(bool debug){
@@ -145,7 +145,7 @@ bool test_leq(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 0;
+	return status == 1;
 }
 
 bool test_eq(bool debug){
@@ -167,7 +167,7 @@ bool test_neq(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status != 0;
+	return status == 0;
 }
 
 bool test_chained_cmp(bool debug){
