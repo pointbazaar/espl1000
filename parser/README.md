@@ -68,6 +68,8 @@ returnStatement ::= 'return' expression? ';'
 
 assignmentStatement ::= Type? variable '=' expression ';'
 
+UnOpTerm ::= op Term //op must be a unary operator like '!', '~'
+
 Term ::= ArrayConstant 
 		| boolConstant 
 		| integerConstant 
@@ -76,7 +78,7 @@ Term ::= ArrayConstant
 		| '(' expression ')' 
 		| variable
 
-expression ::= Term (op Term)*
+expression ::= UnOpTerm (op UnOpTerm)*
 
 ```
 
@@ -84,11 +86,11 @@ expression ::= Term (op Term)*
 - it transforms a string constant into an array
 
 ```
-expression ::= Term (op Term)*
+expression ::= UnOpTerm (op UnOpTerm)*
 
 //is transformed into:
 
-expression ::= Term (op Term)+
+expression ::= UnOpTerm (op UnOpTerm)+
 
 //with operator precedence recognized
 ```

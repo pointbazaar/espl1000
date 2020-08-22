@@ -5,10 +5,11 @@
 #include "../commandline/TokenList.h"
 #include "Expr.h"
 #include "Term.h"
+#include "UnOpTerm.h"
 #include "Op.h"
 #include "../../../../util/util.h"
 
-struct Expr* makeExpr_1(struct Term* term) {
+struct Expr* makeExpr_1(struct UnOpTerm* term) {
 	struct Expr* res = smalloc(sizeof(struct Expr));
 	res->term1 = term;
 	res->op    = NULL;
@@ -28,12 +29,12 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 	struct Op** ops = smalloc(sizeof(struct Op*)*200);
 	int opsc = 0;
 
-	struct Term** terms = smalloc(sizeof(struct Term*)*200);;
+	struct UnOpTerm** terms = smalloc(sizeof(struct UnOpTerm*)*200);;
 	int termsc = 0;
 
 	struct TokenList* copy = list_copy(tokens);
 	
-	struct Term* myterm2 = makeTerm(copy,debug);
+	struct UnOpTerm* myterm2 = makeUnOpTerm(copy,debug);
 	if(myterm2 == NULL){
 		free(ops);
 		free(terms);
@@ -53,7 +54,7 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 			break;
 		}
 
-		struct Term* myterm = makeTerm(copy2,debug);
+		struct UnOpTerm* myterm = makeUnOpTerm(copy2,debug);
 		if(myterm == NULL){
 			freeTokenListShallow(copy2);
 			break;
@@ -76,7 +77,7 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 	return performTreeTransformation(ops,opsc, terms,termsc, debug);
 }
 
-struct Expr* makeExpr_3(struct Term* leftTerm, struct Op* op, struct Term* rightTerm) {
+struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, struct Op* op, struct UnOpTerm* rightTerm) {
 
 	struct Expr* res = smalloc(sizeof(struct Expr));
 	res->term1 = leftTerm;
@@ -130,7 +131,7 @@ int find(void** arr, int size, void* element){
 struct Expr* performTreeTransformation(
 		struct Op** ops, 
 		int opsc,
-		struct Term** terms, 
+		struct UnOpTerm** terms, 
 		int termsc,
 		bool debug
 ){
@@ -171,8 +172,8 @@ struct Expr* performTreeTransformation(
 		int indexOfOp = find((void**)ops,opsc,opWithLargestPrecedence);
 
 
-		struct Term* leftTerm = terms[indexOfOp];
-		struct Term* rightTerm = terms[indexOfOp+1];
+		struct UnOpTerm* leftTerm = terms[indexOfOp];
+		struct UnOpTerm* rightTerm = terms[indexOfOp+1];
 
 		struct Expr* expr = makeExpr_3(leftTerm,opWithLargestPrecedence,rightTerm);
 		if(expr == NULL){return NULL;}
@@ -181,12 +182,12 @@ struct Expr* performTreeTransformation(
 		int i1;
 		i1 = find((void**)terms,termsc,leftTerm);
 		
-		terms = (struct Term**)erase((void**)terms,i1, termsc);
+		terms = (struct UnOpTerm**)erase((void**)terms,i1, termsc);
 		termsc--;
 
 		i1 = find((void**)terms,termsc,rightTerm);
 		
-		terms = (struct Term**)erase((void**)terms,i1, termsc);
+		terms = (struct UnOpTerm**)erase((void**)terms,i1, termsc);
 		termsc--;
 
 		const int i2 = find((void**)ops,opsc,opWithLargestPrecedence);
@@ -194,13 +195,16 @@ struct Expr* performTreeTransformation(
 		opsc--;
 
 		//insert newly created expression
-		struct Term* ttmp = makeTerm_other(expr);
+		struct UnOpTerm* ttmp = smalloc(sizeof(struct UnOpTerm));
+		ttmp->op = NULL;
+		ttmp->term = makeTerm_other(expr);
+		
 		if(ttmp == NULL){ return NULL; }
 
 		//list_insert occurs here only once,
 		//so i do not implement special function
 		//list_insert(terms, indexOfOp, ttmp);
-		terms = (struct Term**)insert((void**)terms, indexOfOp, (void*)ttmp, termsc);
+		terms = (struct UnOpTerm**)insert((void**)terms, indexOfOp, (void*)ttmp, termsc);
 		termsc++; //because we inserted
 	}
 
@@ -255,10 +259,10 @@ void** erase(void** arr, int index, int size_before){
 }
 
 void freeExpr(struct Expr* expr){
-	freeTerm(expr->term1);
+	freeUnOpTerm(expr->term1);
 	if(expr->op != NULL){
 		freeOp(expr->op);
-		freeTerm(expr->term2);
+		freeUnOpTerm(expr->term2);
 	}
 	free(expr);
 }

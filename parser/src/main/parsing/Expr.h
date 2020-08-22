@@ -13,12 +13,12 @@
 //an expression should be anything that returns a value or computes to a value
 
 struct Expr* makeExpr(struct TokenList* tkl, bool debug);
-struct Expr* makeExpr_1(struct Term* myterm);
-struct Expr* makeExpr_3(struct Term* leftTerm, struct Op* op, struct Term* rightTerm);
+struct Expr* makeExpr_1(struct UnOpTerm* myterm);
+struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, struct Op* op, struct UnOpTerm* rightTerm);
 
 struct Expr* performTreeTransformation(
 	struct Op** ops, int opsc,
-	struct Term** terms, int termsc,
+	struct UnOpTerm** terms, int termsc,
 	bool debug
 );
 

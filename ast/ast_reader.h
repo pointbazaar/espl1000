@@ -29,6 +29,7 @@ struct StringConst* readStringConst(FILE* file, bool debug);
 struct Variable* readVariable(FILE* file, bool debug);
 struct SimpleVar* readSimpleVar(FILE* file, bool debug);
 struct Term* readTerm(FILE* file, bool debug);
+struct UnOpTerm* readUnOpTerm(FILE* file, bool debug);
 
 //statementnodes
 struct Stmt* readStmt(FILE* file, bool debug);

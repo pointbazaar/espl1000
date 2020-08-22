@@ -55,11 +55,11 @@ int simplevar_test_parse_simple_indexed_variable(bool debug) {
 
 	if(!assert2){ return 0;}
 	if(node->optIndex->term1 == NULL){return 0;}
-	if(node->optIndex->term1->m2 == NULL){return 0;}
+	if(node->optIndex->term1->term->m2 == NULL){return 0;}
 
 	bool assert3 = (
 			1 == 
-			(node->optIndex->term1->m2)	//IntConst
+			(node->optIndex->term1->term->m2)	//IntConst
 			->value
 	);
 	

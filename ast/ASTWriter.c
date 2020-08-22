@@ -131,13 +131,13 @@ void writeExpr(struct Expr* m, FILE* file){
 
 	fprintf(file, "Expr\t");
 
-	writeTerm(m->term1, file);
+	writeUnOpTerm(m->term1, file);
 	
 	if(m->op != NULL){
 		fprintf(file, "0\t");
 		
 		writeOp(m->op,file);
-		writeTerm(m->term2,file);
+		writeUnOpTerm(m->term2,file);
 	}else{
 		fprintf(file,"1\t");
 	}
@@ -166,6 +166,17 @@ void writeTerm(struct Term* m, FILE* file){
 		printf("Error in writeTerm(...)\n");
 		exit(1);
 	}
+}
+void writeUnOpTerm(struct UnOpTerm* t,  	FILE* file){
+	fprintf(file, "UnOpTerm\t");
+	
+	fprintf(file, "%d\t", (t->op == NULL)?0:1);
+	
+	if(t->op != NULL){
+		writeOp(t->op, file);
+	}
+	
+	writeTerm(t->term, file);
 }
 void writeBoolConst(struct BoolConst* m, FILE* file){
 	fprintf(file, "BoolConst\t%d\t", m->value);

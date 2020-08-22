@@ -17,6 +17,7 @@ struct StmtBlock;
 struct TokenList;
 struct Op;
 struct Term;
+struct UnOpTerm;
 struct Identifier;
 struct Expr;
 struct Variable;
@@ -64,11 +65,11 @@ struct DeclArg  {
 	char name[DEFAULT_STR_SIZE];
 };
 struct Expr {
-	struct Term* term1;
+	struct UnOpTerm* term1;
 
 	//these 2 may be NULL
 	struct Op* op;
-	struct Term* term2;
+	struct UnOpTerm* term2;
 };
 struct FloatConst{
 	float value;
@@ -133,6 +134,17 @@ struct StructDecl{
 struct StructMember{
 	struct Type* type;
 	char name[DEFAULT_STR_SIZE];
+};
+struct UnOpTerm{
+	//'UnaryOpTerm'
+	//a term preceded by an unary operator
+	
+	//can only be an unary operator,
+	//may be NULL, if the term does not have a 
+	//unary operator preceding it
+	struct Op* op; 
+	
+	struct Term* term;
 };
 struct Term{
 	//only one of these may be != NULL

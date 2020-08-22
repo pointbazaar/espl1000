@@ -30,6 +30,7 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx);
 
 void transpileType(struct Type* t, struct Ctx* ctx);
 void transpileVariable(struct Variable* var, struct Ctx* ctx);
+void transpileUnOpTerm(struct UnOpTerm* t, struct Ctx* ctx);
 void transpileTerm(struct Term* expr, struct Ctx* ctx);
 void transpileExpr(struct Expr* expr, struct Ctx* ctx);
 
@@ -325,6 +326,16 @@ void transpileVariable(struct Variable* var, struct Ctx* ctx){
 	}
 }
 
+void transpileUnOpTerm(struct UnOpTerm* t, struct Ctx* ctx){
+	
+	if(ctx->flags->debug){ printf("transpileUnOpTerm(...)\n"); }
+	
+	if(t->op != NULL){
+		transpileOp(t->op, ctx);
+	}
+	transpileTerm(t->term, ctx);
+}
+
 void transpileTerm(struct Term* t, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileTerm(...)\n"); }
@@ -355,11 +366,11 @@ void transpileExpr(struct Expr* expr, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileExpr(...)\n"); }
 
-	transpileTerm(expr->term1, ctx);
+	transpileUnOpTerm(expr->term1, ctx);
 
 	if(expr->op != NULL){
 		transpileOp(expr->op, ctx);
-		transpileTerm(expr->term2, ctx);
+		transpileUnOpTerm(expr->term2, ctx);
 	}
 }
 

@@ -34,7 +34,8 @@ void writeStringConst(struct StringConst* m, FILE* file);
 
 void writeVariable(struct Variable* m, 		FILE* file);
 void writeSimpleVar(struct SimpleVar* m, 	FILE* file);
-void writeTerm(struct Term* m, 			FILE* file);
+void writeTerm(struct Term* m, 				FILE* file);
+void writeUnOpTerm(struct UnOpTerm* t,  	FILE* file);
 
 //statementnodes
 void writeStmt(struct Stmt* m, 			FILE* file);

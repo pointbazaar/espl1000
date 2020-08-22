@@ -254,7 +254,7 @@ struct Expr* readExpr(FILE* file, bool debug){
 		exit(1);
 	}
 
-	expr->term1 = readTerm(file, debug);
+	expr->term1 = readUnOpTerm(file, debug);
 	
 	int option = 0;
 	if(fscanf(file, "%d\t", &option) != 1){
@@ -267,7 +267,7 @@ struct Expr* readExpr(FILE* file, bool debug){
 		expr->term2 = NULL;
 	}else if (option == 0){
 		expr->op = readOp(file, debug);
-		expr->term2 = readTerm(file, debug);
+		expr->term2 = readUnOpTerm(file, debug);
 	}
 
 	return expr;
@@ -453,11 +453,32 @@ struct Term* readTerm(FILE* file, bool debug){
 	return b;
 }
 
+struct UnOpTerm* readUnOpTerm(FILE* file, bool debug){
+	
+	if(debug){ printf("readUnOpTerm(...)\n"); }
+	
+	struct UnOpTerm* t = smalloc(sizeof(struct UnOpTerm));
+	
+	int kind;
+	if(fscanf(file, "UnOpTerm\t%d\t", &kind) != 1){
+		printf("Error reading UnOpTerm\n");
+		exit(1);
+	}
+	
+	if(kind == 1){
+		t->op = readOp(file, debug);
+	}else{
+		t->op = NULL;
+	}
+	
+	t->term = readTerm(file, debug);
+	
+	return t;
+}
+
 //statementnodes
 struct Stmt* readStmt(FILE* file, bool debug){
-	if(debug){
-			printf("readStmt(...)\n");
-	}
+	if(debug){ printf("readStmt(...)\n"); }
 	struct Stmt* b = smalloc(sizeof(struct Stmt));
 	
 	b->m1 = NULL;

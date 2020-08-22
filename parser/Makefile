@@ -38,7 +38,8 @@ OBJS_MAIN := build/ASTWriter.o \
 		build/SubrType.o \
 		build/Type.o \
 		build/TypeParam.o \
-		build/Variable.o
+		build/Variable.o \
+		build/UnOpTerm.o
 		
 OBJS_TEST := build/AssignStmtTest.o \
 		build/BasicTypeWrappedTest.o \
@@ -63,7 +64,8 @@ OBJS_TEST := build/AssignStmtTest.o \
 		build/VariableTest.o \
 		build/WhileStmtTest.o \
 		build/TokenListTest.o \
-		build/ParserTest.o 
+		build/ParserTest.o \
+		build/UnOpTermTest.o
 		
 OBJS := $(OBJS_MAIN) $(OBJS_TEST) build/util.o
 

@@ -230,6 +230,9 @@ void init_operator(short** dfa){
 	set_transitions_letters(dfa,S_SLASH,S_OPERATOR_FINAL);
 	set_transitions_braces(dfa,S_SLASH,S_OPERATOR_FINAL);
 	set_transitions_digits(dfa,S_SLASH,S_OPERATOR_FINAL);
+	
+	dfa[S_NOT][' '] = S_OPERATOR_FINAL;
+	set_transitions_letters(dfa, S_NOT, S_OPERATOR_FINAL);
 }
 
 void init_return(short** dfa){

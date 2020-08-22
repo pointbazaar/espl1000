@@ -73,7 +73,7 @@ int term_test_parentheses(bool debug){
 
 	const bool a1 = list_size(list) == 0;
 
-	struct Variable* v = expr->term1->m6;
+	struct Variable* v = expr->term1->term->m6;
 	if(v == NULL){return 0;}
 
 	struct SimpleVar* sv = v->simpleVar;
