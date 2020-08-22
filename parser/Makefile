@@ -3,9 +3,11 @@ FLAGS := -march=native -g -Wall
 CALL := gcc $(FLAGS)
 CALL2 := $(CALL) -c 
 
-OBJS_MAIN := build/ASTWriter.o \
-		build/ast_reader.o \
-		build/Parser.o \
+OBJS_UTIL := build/ASTWriter.o \
+	build/ast_reader.o \
+	build/util.o
+
+OBJS_MAIN := build/Parser.o \
 		build/Token.o \
 		build/TokenList.o \
 		build/TokenReader.o \
@@ -39,7 +41,7 @@ OBJS_MAIN := build/ASTWriter.o \
 		build/Type.o \
 		build/TypeParam.o \
 		build/Variable.o \
-		build/UnOpTerm.o
+		build/UnOpTerm.o \
 		
 OBJS_TEST := build/AssignStmtTest.o \
 		build/BasicTypeWrappedTest.o \
@@ -67,7 +69,7 @@ OBJS_TEST := build/AssignStmtTest.o \
 		build/ParserTest.o \
 		build/UnOpTermTest.o
 		
-OBJS := $(OBJS_MAIN) $(OBJS_TEST) build/util.o
+OBJS := $(OBJS_MAIN) $(OBJS_TEST) $(OBJS_UTIL) 
 
 AST_DEPS := ../ast/ast.h \
 	../util/util.h \
@@ -114,7 +116,7 @@ build/%.o: src/main/parsing/typenodes/%.c $(MAIN_DEPS)
 	$(CALL2) -o $@ $<
 
 build/util.o: ../util/util.c ../util/util.h
-	$(CALL2) ../util/util.c
+	$(CALL2)  -o $@ ../util/util.c
 
 build/%.o: ../ast/%.c $(AST_DEPS)
 	@echo Compiling file: $(notdir $<)
