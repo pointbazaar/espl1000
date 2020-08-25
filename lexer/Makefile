@@ -10,7 +10,10 @@ COMMON_RELEASE := build/release/strutils.o \
 	build/release/init_dfa.o \
 	build/release/test.o
 
-all: directories dragon-lexer test
+all: directories dragon-lexer test export
+
+export:
+	PATH=$PATH:./
 
 test: dragon-lexer
 	./dragon-lexer -test
