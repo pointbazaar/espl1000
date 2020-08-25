@@ -6,4 +6,4 @@ before_install:
 install: pwd
 script: make 
 env:
-- export PATH=$PATH:$(pwd)
+- export PATH=$PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser
