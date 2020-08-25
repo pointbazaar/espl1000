@@ -59,3 +59,12 @@ bool test_recursive(bool debug){
 	return sourceToStatus(src, debug) == 0;
 }
 
+bool test_charconst_cmp(bool debug){
+
+	if(debug){ printf("test_charconst_cmp\n"); }
+	
+	char* src = "fn main () ~> PInt { return ('h' == 'h'); } ";
+	
+	return sourceToStatus(src, debug) == 1;
+}
+
