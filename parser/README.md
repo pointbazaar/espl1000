@@ -1,8 +1,6 @@
 <img src="https://raw.githubusercontent.com/pointbazaar/smalldragon/master/dragon-lexer/img/dragon-logo.svg" width="100" height="100"/>
 
 # Dragon-Parser
-[![Build Status](https://travis-ci.org/pointbazaar/dragon-parser.svg?branch=master)](https://travis-ci.org/pointbazaar/dragon-parser)
-[![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/dragon-parser/badge)](https://www.codefactor.io/repository/github/pointbazaar/dragon-parser)
 
 This is the parser for [smalldragon](https://github.com/pointbazaar/smalldragon), 
 a simple, statically typed, compiled programming language.
