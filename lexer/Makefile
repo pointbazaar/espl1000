@@ -14,7 +14,8 @@ all: directories dragon-lexer test export
 
 #for travis to recognize the command
 export:
-	PATH=$$PATH:./
+	echo $$PATH
+	export PATH=$$PATH:./
 
 test: dragon-lexer
 	./dragon-lexer -test
