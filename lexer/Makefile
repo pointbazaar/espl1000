@@ -10,12 +10,7 @@ COMMON_RELEASE := build/release/strutils.o \
 	build/release/init_dfa.o \
 	build/release/test.o
 
-all: directories dragon-lexer test export
-
-#for travis to recognize the command
-export:
-	echo $$PATH
-	export PATH=$$PATH:./
+all: directories dragon-lexer test 
 
 test: dragon-lexer
 	./dragon-lexer -test

@@ -85,11 +85,6 @@ MAIN_DEPS := src/main/commandline/TokenList.h \
 
 all: DIRS dragon-parser test export
 
-#for travis to recognize the command
-export:
-	echo $$PATH
-	export PATH=$$PATH:./
-
 DIRS:
 	mkdir -p build/
 
