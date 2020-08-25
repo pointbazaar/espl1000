@@ -14,7 +14,7 @@ OBJS := build/transpiler.o build/util.o build/ast_reader.o \
 all: smalldragon test
 
 clean: 
-	rm build/*.o
+	rm -f build/*.o
 
 test: sd
 	./sd -test

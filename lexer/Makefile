@@ -12,6 +12,9 @@ COMMON_RELEASE := build/release/strutils.o \
 
 all: directories dragon-lexer test 
 
+clean:
+	rm -f build/release/*.o
+
 test: dragon-lexer
 	./dragon-lexer -test
 
