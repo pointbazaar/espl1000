@@ -5,3 +5,5 @@ before_install:
 - cd .
 install: pwd
 script: make 
+env:
+- export PATH=$PATH:$(pwd)
