@@ -12,8 +12,9 @@ COMMON_RELEASE := build/release/strutils.o \
 
 all: directories dragon-lexer test export
 
+#for travis to recognize the command
 export:
-	PATH=$PATH:./
+	PATH=$$PATH:./
 
 test: dragon-lexer
 	./dragon-lexer -test
