@@ -1,8 +1,12 @@
 fn main ()~>PInt { 
-	subr();
+
+	PInt x = 0;
+	
+	while x < 10 {
+
+		x = x+1;
+	}
+
 	return 0;
 } 
 
-fn subr ()~> PInt {
-	return 21;
-}

@@ -1,6 +1,6 @@
 fn main ()~> PInt {
-	x=55;
+	PInt x = 55;
 
-	println("Hii");
+	printf("Hii\n");
 	return 0;
 }

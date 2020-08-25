@@ -1,7 +1,0 @@
-
-
-	fn main ()~>PInt{
-		
-		println("Hello World!");
-		return 0;
-	}

@@ -1,8 +1,8 @@
 
 fn main ()~>PInt {
-	putdigit(subr(id));
-	putchar(' ');
-	putdigit(subr(twice));
+	printf("%d\n",subr(id));
+	printf(" ");
+	printf("%d\n",subr(twice));
 
 	return 0;
 }

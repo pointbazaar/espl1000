@@ -1,5 +1,5 @@
 fn main(PInt argc, [String] argv) ~> PInt{
 	
-	printf("%s\n", args[1]);
+	printf("%s\n", argv[1]);
 	return 0;
 }

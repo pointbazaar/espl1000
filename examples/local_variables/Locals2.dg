@@ -1,9 +1,10 @@
 fn main ()~> PInt {
-		x=55;
+	PInt x = 55;
 
-		x=x*2;
+	x = x*2;
 
-		printi(x);
-		println(" ");
-		return 0;
+	printf("%d\n", x);
+	printf("\n");
+
+	return 0;
 }

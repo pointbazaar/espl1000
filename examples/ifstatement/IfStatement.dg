@@ -1,12 +1,12 @@
 
 fn main () ~> PInt {
 
-	x = 3 ;
+	PInt x = 3 ;
 
-	if( x < 5 ){
-		putchar('x');
-		putchar('<');
-		putchar('5');
+	if x < 5 {
+		printf("x\n");
+		printf("<\n");
+		printf("5\n");
 	}
 
 	return 0;

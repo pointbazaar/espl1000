@@ -1,19 +1,19 @@
 
-	fn main ()~>PInt {
-		println("PI/2");
-		printfl(subr(3.14159,2.0));
+fn main ()~>PInt {
+	printf("PI/2");
+	printf("%f\n", subr(3.14159,2.0));
 
-		println("3.5*2");
-		printfl(3.5*2.0);
+	printf("3.5*2");
+	printf("%f\n", 3.5*2.0);
 
-		println("6.0+2.0");
-		printfl(6.0+2.0);
+	printf("6.0+2.0");
+	printf("%f\n", 6.0+2.0);
 
-		println("2.0-4.0");
-		printfl(2.0-4.0);
-		return 0;
-	}
+	printf("2.0-4.0");
+	printf("%f\n", 2.0-4.0);
+	return 0;
+}
 	
-	fn subr (Float a,Float b)~>Float {
-		return a / b;
-	}
+fn subr (Float a,Float b)~>Float {
+	return a / b;
+}
