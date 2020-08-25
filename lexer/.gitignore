@@ -3,9 +3,4 @@ build/*
 build/
 *.o
 
-main
-main-debug
-test
-
 dragon-lexer
-dragon-lexer-debug
