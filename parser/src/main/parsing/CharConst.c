@@ -23,7 +23,14 @@ struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 	}
 
 	if (token->kind == CCONST) {
-		res->value = token->value[0];
+		
+		//e.g. in .$FILE.tokens
+		//9 'h'
+		
+		//index needs to be 1, as charconst
+		//is surrounded by single quotes
+		res->value = token->value[1];
+		
 		list_consume(tokens, 1);
 	} else {
 		//"Error: could not read charConstant node";
