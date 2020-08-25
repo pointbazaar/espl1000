@@ -83,7 +83,7 @@ MAIN_DEPS := src/main/commandline/TokenList.h \
 	src/main/commandline/Token.h \
 	$(AST_DEPS)
 
-all: DIRS dragon-parser test export
+all: DIRS dragon-parser test 
 
 DIRS:
 	mkdir -p build/
