@@ -1,13 +1,6 @@
 target/
-draco
 dracovm.info
-.idea/
-.idea/*
-*.iml
-.gradle/
 *.out
-crend
-*.class
 .**.asm
 *.tokens
 *.ast
