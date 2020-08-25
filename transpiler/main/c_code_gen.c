@@ -458,16 +458,23 @@ void transpileSimpleType(struct SimpleType* simpleType, struct Ctx* ctx){
 		|| strcmp(t, "Int") == 0
 		|| strcmp(t, "NZInt") == 0  ){
 		strcpy(res, "int");
+		
 	}else if(
 		   strcmp(t, "PFloat") == 0
 		|| strcmp(t, "NFloat") == 0
 		|| strcmp(t, "Float") == 0
 	){
 		strcpy(res, "float");
+		
 	}else if( strcmp(t, "Bool") == 0 ){
 		strcpy(res, "bool");
+		
 	}else if( strcmp(t, "String") == 0){
 		strcpy(res, "char*");
+		
+	}else if( strcmp(t, "Char") == 0){
+		strcpy(res, "char");
+		
 	}else{
 		//if we do not recognize it, treat it as struct pointer
 		sprintf(res, "struct %s*", t);
