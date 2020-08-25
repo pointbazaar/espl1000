@@ -1,8 +1,5 @@
-target/
-dracovm.info
 *.out
-.**.asm
 *.tokens
 *.ast
-main
+./main
 a.out
