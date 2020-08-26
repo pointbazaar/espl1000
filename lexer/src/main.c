@@ -57,34 +57,34 @@ int main(int argc, char** argv) {
 	//filenames
 	char* filename = NULL;
 
-	for(int i=1; i < argc; i++){
+	for(int i=1; i < argc; i++) {
 
 		char* arg = argv[i];
-		if(arg[0] == '-'){
-			if(strcmp(arg, "-debug") == 0){
+		if(arg[0] == '-') {
+			if(strcmp(arg, "-debug") == 0) {
 				DEBUG = true;
-			}else if(strcmp(arg, "-test") == 0){
+			} else if(strcmp(arg, "-test") == 0) {
 				test_all(DEBUG);
 				return 0;
 			}
-		}else{
+		} else {
 			filename = arg;
 		}
 	}
 
-	if( filename == NULL ){
+	if( filename == NULL ) {
 		printf("expecte a filename of the file to tokenize\n");
 		return 1;
 	}
 
-	if(DEBUG){
+	if(DEBUG) {
 		printf("starting Dragon Lexer\n");
 	}
 
-	if(strcmp(filename,"--version")==0){
+	if(strcmp(filename,"--version")==0) {
 		printf("dragon-lexer 0.8 \n");
 		exit(0);
-	}else if(strcmp(filename,"--help")==0){
+	} else if(strcmp(filename,"--help")==0) {
 		printf("Usage: dragon-lexer FILE \n");
 		printf("\n");
 		printf("Converts a .dg Source File into a .tokens file, \ncontaining the Tokens contained in the Source. \n");
@@ -106,7 +106,7 @@ int main(int argc, char** argv) {
 	char* correct_extension = ".dg";
 
 	//enforce correct filename extension
-	if(strcmp(filename + strlen(filename) - 3,correct_extension)!=0){
+	if(strcmp(filename + strlen(filename) - 3,correct_extension)!=0) {
 		printf("%s did not have correct '.dg' extension. Exiting \n",filename);
 		exit(1);
 	}
@@ -117,12 +117,12 @@ int main(int argc, char** argv) {
 	strcpy(cpy_filename_1,filename);
 	strcpy(cpy_filename_2,filename);
 
-	if(DEBUG){
+	if(DEBUG) {
 		printf("argument file to lex: %s\n",filename);
 	}
 
 	char* dir = dirname(cpy_filename_1);
-	if(DEBUG){
+	if(DEBUG) {
 		printf("in directory: %s\n",dir);
 	}
 
@@ -134,12 +134,12 @@ int main(int argc, char** argv) {
 	strcat(tkn_filename,basename(cpy_filename_2));
 	strcat(tkn_filename,".tokens");
 
-	if(DEBUG){
+	if(DEBUG) {
 		printf("token filename should be: %s\n",tkn_filename);
 	}
 
-	if( access(filename,F_OK) == -1){
-		printf("could not access file \n");    
+	if( access(filename,F_OK) == -1) {
+		printf("could not access file \n");
 		exit(1);
 	}
 
@@ -149,55 +149,55 @@ int main(int argc, char** argv) {
 
 	stat(filename,&file_meta);
 
-	if( access(tkn_filename,F_OK) == -1){
-		if(DEBUG){
+	if( access(tkn_filename,F_OK) == -1) {
+		if(DEBUG) {
 			printf("could not find corresponding .tokens file \n");
 		}
 		tokenize_file(filename, tkn_filename, DEBUG);
-	}else{
+	} else {
 		//tokenized file already exists
 		stat(tkn_filename,&tkn_file_meta);
 
-		if(DEBUG){
+		if(DEBUG) {
 			printf("tokenized file already exists, comparing modified times.\n");
 		}
 
 		time_t mod_file = file_meta.st_mtime;
 		time_t mod_tkns = tkn_file_meta.st_mtime;
 
-		if( mod_file > mod_tkns ){
+		if( mod_file > mod_tkns ) {
 			//the file was modified. the .tokens file is outdate
-			if(DEBUG){
+			if(DEBUG) {
 				printf("the file was modified. the tokens file is outdated.\n");
 			}
 			tokenize_file(filename, tkn_filename, DEBUG);
-		}else{
-			if(DEBUG){
+		} else {
+			if(DEBUG) {
 				printf(".tokens file for this file is up to date. exiting.\n");
 			}
 			return 0;
 		}
 	}
 
-	if(DEBUG){
+	if(DEBUG) {
 		printf("SUCCESS\n");
 	}
 
 	return 0;
 }
 
-int tokenize_file(char* filename, char* tkn_filename, bool debug){
+int tokenize_file(char* filename, char* tkn_filename, bool debug) {
 
-	//should tokenize  filename     
+	//should tokenize  filename
 	//and write those tokens to	tkn_filename
 
-	if(debug){
+	if(debug) {
 		printf("opening %s to determine file length \n",filename);
 	}
 
 	FILE* file1 = fopen(filename,"r");
 
-	if(file1 == NULL){
+	if(file1 == NULL) {
 		printf("could not open file \n");
 		exit(1);
 	}
