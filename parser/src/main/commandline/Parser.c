@@ -71,7 +71,11 @@ int main(int argc, char** argv){
 	if(help) {
 		printHelp();
 	}else if(test){
-		test_all(debug);
+		
+		free(flags);
+		free(filenames);
+		
+		return test_all(debug);
 	}else{
 		if(filenamescount != 1){
 			printf("expected exactly 1 filename argument.\n");

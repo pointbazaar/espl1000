@@ -29,7 +29,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-void test_all(bool debug){
+int test_all(bool debug){
 	
 	bool res = test_all_inner(debug);
 	if(res){
@@ -37,7 +37,7 @@ void test_all(bool debug){
 	}else{
 		printf("Failed some Tests.\n");
 	}
-	
+	return (res == true)?0:1;
 }
 
 bool test_all_inner(bool debug){
