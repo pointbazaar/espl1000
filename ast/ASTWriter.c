@@ -333,8 +333,12 @@ void write_ast(char* filename, struct Namespace* namespaceNode){
 	//DEBUG
 	//printf("write_ast\n");
 	
-	FILE* file;
-	file = fopen(filename, "w");
+	FILE* file = fopen(filename, "w");
+
+	if(file == NULL){
+		printf("could not open file: %s (in write_ast)\n", filename);
+		exit(1);
+	}
 	
 	writeNamespace(namespaceNode, file);
 	
