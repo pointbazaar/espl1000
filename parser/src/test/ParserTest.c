@@ -29,6 +29,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#define FAILRET if(!passed){ printf("FAILED\n"); return false;}
+
 //there are multiple test suites which test multiple aspects
 //of the parser.
 
@@ -37,7 +39,10 @@
 bool test_suite_tokenlist(bool debug);
 bool test_suite_constnodes(bool debug);
 bool test_suite_term_expr_simplevar_var(bool debug);
+
 bool test_suite_stmts(bool debug);
+bool test_suite_assignstmt(bool debug);
+
 bool test_suite_method(bool debug);
 bool test_suite_struct(bool debug);
 bool test_suite_types(bool debug);
@@ -86,6 +91,10 @@ bool test_all_inner(bool debug) {
         printf("suite_stmts failed\n");
         return false;
     }
+    if(!test_suite_assignstmt(debug)){
+		printf("suite_assignstmt failed\n");
+		return false;
+	}
     if(!test_suite_method(debug)) {
         printf("suite_method failed\n");
         return false;
@@ -99,7 +108,6 @@ bool test_all_inner(bool debug) {
         return false;
     }
 
-
     printf("Parser: passed all Test Suites\n");
 
     return true;
@@ -108,39 +116,52 @@ bool test_all_inner(bool debug) {
 // --- TEST SUITE IMPLEMENTATIONS ---
 
 bool test_suite_tokenlist(bool debug) {
+	
+	if(debug){ printf("test_suite_tokenlist\n"); }
 
-    int count  = 6;
-    int passed = 0;
+    bool passed = true;
 
-    passed +=  test_tokenlist1(debug);
-    passed +=  test_tokenlist_consume(debug);
+    passed &=  test_tokenlist1(debug);
+    FAILRET
+    passed &=  test_tokenlist_consume(debug);
+    FAILRET
 
-    passed +=  test_tokenlist_get(debug);
-    passed +=  test_tokenlist_startswith(debug);
+    passed &=  test_tokenlist_get(debug);
+    FAILRET
+    passed &=  test_tokenlist_startswith(debug);
+    FAILRET
 
-    passed +=  test_tokenlist_code(debug);
-    passed +=  test_tokenlist_stresstest(debug);
+    passed &=  test_tokenlist_code(debug);
+    FAILRET
+    passed &=  test_tokenlist_stresstest(debug);
+    FAILRET
 
-    return passed == count;
+    return passed;
 }
 
 bool test_suite_constnodes(bool debug) {
+	
+	if(debug){ printf("test_suite_constnodes\n"); }
 
-    int count  = 5;
-    int passed = 0;
+    bool passed = true;
 
-    passed +=  boolconst_test_parse_bool_constant_node(debug);
+    passed &=  boolconst_test_parse_bool_constant_node(debug);
+	FAILRET
+    passed &=  charconst_test_parse_char_constant_node(debug);
+    FAILRET
+    passed &=  charconst_test_parse_char_constant_node_newline(debug);
+    FAILRET
 
-    passed +=  charconst_test_parse_char_constant_node(debug);
-    passed +=  charconst_test_parse_char_constant_node_newline(debug);
-
-    passed +=  floatconst_test1(debug);
-    passed +=  floatconst_test2(debug);
-
-    return passed == count;
+    passed &=  floatconst_test1(debug);
+    FAILRET
+    passed &=  floatconst_test2(debug);
+	FAILRET
+    return passed;
 }
 
 bool test_suite_term_expr_simplevar_var(bool debug) {
+	
+	if(debug){ printf("test_suite_term_expr_simplevar_var\n"); }
 
     int count  = 12;
     int passed = 0;
@@ -167,9 +188,9 @@ bool test_suite_term_expr_simplevar_var(bool debug) {
 
 bool test_suite_stmts(bool debug) {
 
-    //TODO: decompose this method
+	if(debug){ printf("test_suite_stmts\n"); }
 
-    int count  = 22;
+    int count  = 15;
     int passed = 0;
 
     //3
@@ -188,15 +209,6 @@ bool test_suite_stmts(bool debug) {
     passed +=  stmt_test_assignment_statement_with_method_call(debug);
     passed +=  stmt_test_assignment_statement_with_struct_access(debug);
 
-    //7
-    passed +=  assignstmt_test1(debug);
-    passed +=  assignstmt_test_assign_char(debug);
-    passed +=  assignstmt_test_assign_method_call_result(debug);
-    passed +=  assignstmt_test_assign_method_call_result_2(debug);
-    passed +=  assignstmt_test_assign_variable_with_array_index(debug);
-    passed +=  assignstmt_test_can_assign_to_struct_member(debug);
-    passed +=  assignstmt_test_type_declaration_for_variable(debug);
-
     //1
     passed +=  test_stmtblock_1(debug);
 
@@ -211,7 +223,28 @@ bool test_suite_stmts(bool debug) {
     return passed == count;
 }
 
+bool test_suite_assignstmt(bool debug){
+	
+	if(debug){ printf("test_suite_assignstmt\n"); }
+	
+	int count  = 7;
+    int passed = 0;
+    
+    //7
+    passed +=  assignstmt_test1(debug);
+    passed +=  assignstmt_test_assign_char(debug);
+    passed +=  assignstmt_test_assign_method_call_result(debug);
+    passed +=  assignstmt_test_assign_method_call_result_2(debug);
+    passed +=  assignstmt_test_assign_variable_with_array_index(debug);
+    passed +=  assignstmt_test_can_assign_to_struct_member(debug);
+    passed +=  assignstmt_test_type_declaration_for_variable(debug);
+
+    return passed == count;
+}
+
 bool test_suite_method(bool debug) {
+	
+	if(debug){ printf("test_suite_method\n"); }
 
     int count  = 4;
     int passed = 0;
@@ -227,6 +260,8 @@ bool test_suite_method(bool debug) {
 
 bool test_suite_struct(bool debug) {
 
+	if(debug){ printf("test_suite_struct\n"); }
+
     int count  = 1;
     int passed = 0;
 
@@ -236,6 +271,8 @@ bool test_suite_struct(bool debug) {
 }
 
 bool test_suite_types(bool debug) {
+	
+	if(debug){ printf("test_suite_types\n"); }
 
     int count  = 8;
     int passed = 0;

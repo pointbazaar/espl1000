@@ -15,10 +15,14 @@ int charconst_test_parse_char_constant_node(bool debug) {
 	}
 
 	struct TokenList* list = makeTokenList();
-	list_add(list, makeToken2(CCONST,"h"));
+	list_add(list, makeToken2(CCONST,"'h'"));
 
-	struct CharConst* node = makeCharConst(list,false);
+	struct CharConst* node = makeCharConst(list, debug);
 	bool assert1 = ('h'== node->value);
+	
+	if(debug){
+		printf("node->value == %c\n", node->value);
+	}
 	
 	freeTokenList(list);
 	freeCharConst(node);
@@ -33,9 +37,9 @@ int charconst_test_parse_char_constant_node_newline(bool debug) {
 	}
 
 	struct TokenList* list = makeTokenList();
-	list_add(list, makeToken2(CCONST,"\n"));
+	list_add(list, makeToken2(CCONST,"'\n'"));
 
-	struct CharConst* node = makeCharConst(list,false);
+	struct CharConst* node = makeCharConst(list, debug);
 	bool assert1 = ('\n' == node->value);
 	
 	freeTokenList(list);
