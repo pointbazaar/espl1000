@@ -184,6 +184,12 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 				tkn->value="WHILE";
 				i--;
 				break;
+				
+			case S_break_FINAL:
+				tkn->kind=BREAK;
+				tkn->value="BREAK";
+				i--;
+				break;
 
 			case S_RETURN_FINAL:
 				tkn->kind=RETURN;

@@ -448,6 +448,26 @@ void init_fn(short** dfa){
 	set_transitions_breaking(dfa,S_fn,S_fn_FINAL);
 }
 
+void init_break(short** dfa){
+	
+	set_transitions_letters(dfa, S_b, S_IDENTIFIER);
+	dfa[S_b]['r'] = S_br;
+	
+	set_transitions_letters(dfa, S_br, S_IDENTIFIER);
+	dfa[S_br]['e'] = S_bre;
+	
+	set_transitions_letters(dfa, S_bre, S_IDENTIFIER);
+	dfa[S_bre]['a'] = S_brea;
+	
+	set_transitions_letters(dfa, S_brea, S_IDENTIFIER);
+	dfa[S_brea]['k'] = S_break;
+	
+	set_transitions_letters(dfa, S_break, S_IDENTIFIER);
+	dfa[S_break][';'] = S_break_FINAL;
+	dfa[S_break][' '] = S_break_FINAL;
+}
+
+// ---------------------------------------------------------
 
 void set_transitions_lowercase(short** dfa, int state, short state_result){
 	for(char i='a';i<='z';i++){

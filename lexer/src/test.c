@@ -121,6 +121,9 @@ int test_all(bool debug1){
 	pass+=test_loop();
 	pass+=test_if_else();
 	count+=2;
+	
+	pass+=test_break();
+	count+=1;
 
 	printf("%i of %i tests passed\n",pass,count);
 
@@ -988,6 +991,24 @@ bool test_if_else(){
 	res &= assert(tokens[2]->kind==LCURLY);
 
 	//res &= assert(get(tokens,3)->kind==IDENTIFIER);
+
+	return res;
+}
+
+bool test_break(){
+	
+	if(debug){ printf("test break\n"); }
+	
+	char* str = "break; Int x";
+	struct Token** tokens = lex(str,".test.tokens");
+	
+	bool res = true;
+
+	res &= assert(tokens[0]->kind==BREAK);
+
+	res &= assert(tokens[1]->kind==SEMICOLON);
+
+	res &= assert(tokens[2]->kind==TYPEIDENTIFIER);
 
 	return res;
 }

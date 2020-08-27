@@ -1,0 +1,13 @@
+
+fn main () ~> Int {
+
+	loop 3 {
+		break;
+
+		printf("inloop\n");
+	}
+
+	printf("break\n");
+
+	return 0;
+}

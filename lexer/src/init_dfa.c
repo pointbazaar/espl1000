@@ -45,6 +45,7 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	init_arrow(dfa);
 
 	init_fn(dfa);
+	init_break(dfa);
 
 	//SOME STARTING TRANSITIONS
 
@@ -55,6 +56,7 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	//tabs between tokens should be skipped
 	dfa[S_START]['\t']=S_START;
 
+	dfa[S_START]['b']=S_b;
 	dfa[S_START]['i']=S_I;
 	dfa[S_START]['w']=S_W;
 	dfa[S_START]['r']=S_R;
@@ -152,4 +154,6 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	//when we do not get into any state, 
 	//that should reset start, so identifiers can be parsed correctly
 	final_state[S_START]=true;
+	
+	final_state[S_break_FINAL]=true;
 }

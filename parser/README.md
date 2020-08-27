@@ -51,10 +51,13 @@ statement ::=   ( methodCall ';' )
                 | ifStatement 
                 | returnStatement 
                 | assignmentStatement
+		| loopStatement
+		| breakStatement
 
 methodCall ::= identifier '(' (expression (, expression)*)?  ')'
 
-//currently not in use
+breakStatement ::= 'break' ';'
+
 loopStatement ::= 'loop' expression stmtblock
 
 whileStatement ::= 'while' expression stmtblock

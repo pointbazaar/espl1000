@@ -487,6 +487,7 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	b->m3 = NULL;
 	b->m4 = NULL;
 	b->m5 = NULL;
+	b->m6 = NULL;
 	
 	int kind;
 	
@@ -502,6 +503,7 @@ struct Stmt* readStmt(FILE* file, bool debug){
 		case 3: b->m3 = readIfStmt(file, debug);     break;
 		case 4: b->m4 = readRetStmt(file, debug);    break;
 		case 5: b->m5 = readAssignStmt(file, debug); break;
+		case 6: b->m6 = readBreakStmt(file, debug);  break;
 	}
 	return b;
 }
@@ -628,6 +630,18 @@ struct LoopStmt* readLoopStmt(FILE* file, bool debug){
 	v->block = readStmtBlock(file, debug);
 	
 	if(debug){ printf("done\n"); }
+	
+	return v;
+}
+struct BreakStmt* readBreakStmt(FILE* file, bool debug){
+	
+	if(debug){ printf("readBreakStmt(...)\n"); }
+	struct BreakStmt* v = smalloc(sizeof(struct BreakStmt));
+	
+	if(fscanf(file, "BreakStmt\t") == EOF){
+		printf("Error reading BreakStmt\n");
+		exit(1);
+	}
 	
 	return v;
 }

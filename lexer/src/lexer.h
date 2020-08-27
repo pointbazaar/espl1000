@@ -33,6 +33,7 @@ void init_stringconst(short** dfa);
 void init_typeparam(short** dfa);
 void init_arrow(short** dfa);
 void init_fn(short** dfa);
+void init_break(short** dfa);
 
 //to set transitions for a state to another state in bulk
 //(for some classes of chars)
@@ -116,6 +117,7 @@ static const int IF=16;
 static const int LOOP 	= 36;
 static const int FN 	= 37;
 static const int ELSE 	= 38;
+static const int BREAK	= 39;
 
 /*
 

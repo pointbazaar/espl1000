@@ -182,6 +182,14 @@
 #define S_else 			141
 #define S_else_FINAL 	142
 
+//TOKEN: break
+#define S_b				143
+#define S_br			144
+#define S_bre			145
+#define S_brea			146
+#define S_break			147
+#define S_break_FINAL	148
+
 //so we set n_states to be 150 or similar, to
 //have space for future states also
 
