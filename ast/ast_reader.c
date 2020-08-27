@@ -481,6 +481,7 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	if(debug){ printf("readStmt(...)\n"); }
 	struct Stmt* b = smalloc(sizeof(struct Stmt));
 	
+	b->m0 = NULL;
 	b->m1 = NULL;
 	b->m2 = NULL;
 	b->m3 = NULL;
@@ -495,10 +496,11 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	}
 
 	switch(kind){
+		case 0: b->m0 = readLoopStmt(file, debug);   break;
 		case 1: b->m1 = readMethodCall(file, debug); break;
-		case 2: b->m2 = readWhileStmt(file, debug); break;
-		case 3: b->m3 = readIfStmt(file, debug); break;
-		case 4: b->m4 = readRetStmt(file, debug); break;
+		case 2: b->m2 = readWhileStmt(file, debug);  break;
+		case 3: b->m3 = readIfStmt(file, debug);     break;
+		case 4: b->m4 = readRetStmt(file, debug);    break;
 		case 5: b->m5 = readAssignStmt(file, debug); break;
 	}
 	return b;
@@ -609,6 +611,24 @@ struct MethodCall* readMethodCall(FILE* file, bool debug){
 	for(int i=0;i < (v->count_args);i++){
 		v->args[i] = readExpr(file, debug);
 	}
+	return v;
+}
+struct LoopStmt* readLoopStmt(FILE* file, bool debug){
+	if(debug){
+			printf("readLoopStmt(...)\n");
+	}
+	struct LoopStmt* v = smalloc(sizeof(struct LoopStmt));
+	
+	if(fscanf(file, "LoopStmt\t") == EOF){
+		printf("Error reading LoopStmt\n");
+		exit(1);
+	}
+
+	v->count = readExpr(file, debug);
+	v->block = readStmtBlock(file, debug);
+	
+	if(debug){ printf("done\n"); }
+	
 	return v;
 }
 

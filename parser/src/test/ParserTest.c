@@ -9,6 +9,7 @@
 #include "astnodes/AssignStmtTest.h"
 #include "astnodes/CharConstTest.h"
 #include "astnodes/FloatConstTest.h"
+#include "astnodes/LoopStmtTest.h"
 #include "astnodes/MethodCallTest.h"
 #include "astnodes/RetStmtTest.h"
 #include "astnodes/StmtTest.h"
@@ -190,8 +191,11 @@ bool test_suite_stmts(bool debug) {
 
 	if(debug){ printf("test_suite_stmts\n"); }
 
-    int count  = 15;
+    int count  = 16;
     int passed = 0;
+    
+    //1
+    passed +=  loop_test1(debug);
 
     //3
     passed +=  retstmt_test1(debug);

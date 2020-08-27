@@ -29,6 +29,7 @@ OBJS_MAIN := build/Parser.o \
 		build/RetStmt.o \
 		build/Stmt.o \
 		build/WhileStmt.o \
+		build/LoopStmt.o \
 		build/StmtBlock.o \
 		build/StringConst.o \
 		build/StructDecl.o \
@@ -51,6 +52,7 @@ OBJS_TEST := build/AssignStmtTest.o \
 		build/ExprTest.o \
 		build/FloatConstTest.o \
 		build/IfStmtTest.o \
+		build/LoopStmtTest.o \
 		build/MethodCallTest.o \
 		build/MethodTest.o \
 		build/NamespaceTest.o \

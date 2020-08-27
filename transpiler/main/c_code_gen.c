@@ -6,6 +6,11 @@
 #include "code_gen_util.h"
 #include "../../util/util.h"
 
+// -------------------------------
+
+//counter for generating labels
+unsigned int label_count = 0;
+
 //methods delcared in .c file, as they should be private
 //to this file.
 
@@ -27,6 +32,7 @@ void transpileWhileStmt(struct WhileStmt* ws, struct Ctx* ctx);
 void transpileIfStmt(struct IfStmt* is, struct Ctx* ctx);
 void transpileRetStmt(struct RetStmt* rs, struct Ctx* ctx);
 void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx);
+void transpileLoopStmt(struct LoopStmt* ls, struct Ctx* ctx);
 
 void transpileType(struct Type* t, struct Ctx* ctx);
 void transpileVariable(struct Variable* var, struct Ctx* ctx);
@@ -52,6 +58,9 @@ void transpileSimpleType(struct SimpleType* simpleType, struct Ctx* ctx);
 void transpileSubrType(struct SubrType* subrType, struct Ctx* ctx);
 
 void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx);
+
+// --------------------------------------------------------
+// --------------------------------------------------------
 
 void transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Flags* flags){
 	
@@ -200,19 +209,27 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileStmt(...)\n"); }
 
-	if(s->m1 != NULL){
+	if(s->m0 != NULL){
+		transpileLoopStmt(s->m0, ctx);
+		
+	}else if(s->m1 != NULL){
 		transpileMethodCall(s->m1, ctx);
 		fprintf(ctx->file, ";");
+		
 	}else if(s->m2 != NULL){
 		transpileWhileStmt(s->m2, ctx);
+		
 	}else if(s->m3 != NULL){
 		transpileIfStmt(s->m3, ctx);
+		
 	}else if(s->m4 != NULL){
 		transpileRetStmt(s->m4, ctx);
 		fprintf(ctx->file, ";");
+		
 	}else if(s->m5 != NULL){
 		transpileAssignStmt(s->m5, ctx);
 		fprintf(ctx->file, ";");
+		
 	}else{
 		printf("Error in transpileStmt\n");
 		exit(1);
@@ -299,6 +316,30 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 	transpileVariable(as->var, ctx);
 	fprintf(ctx->file, " = ");
 	transpileExpr(as->expr, ctx);
+}
+
+void transpileLoopStmt(struct LoopStmt* ls, struct Ctx* ctx){
+	
+	if(ctx->flags->debug){ printf("transpileLoopStmt(...)\n"); }
+	
+	indent(ctx);
+	
+	unsigned int i = label_count++;
+	fprintf(ctx->file, "int count%d = ", i);
+	
+	transpileExpr(ls->count, ctx);
+	
+	fprintf(ctx->file, ";\n");
+	
+	indent(ctx);
+	
+	fprintf(ctx->file, "while (");
+	
+	fprintf(ctx->file, "count%d-- > 0", i);
+	
+	fprintf(ctx->file, ")");
+
+	transpileStmtBlock(ls->block, ctx);
 }
 
 void transpileType(struct Type* t, struct Ctx* ctx){

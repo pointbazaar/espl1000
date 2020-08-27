@@ -44,6 +44,7 @@ void writeWhileStmt(struct WhileStmt* m, 	FILE* file);
 void writeRetStmt(struct RetStmt* m, 		FILE* file);
 void writeAssignStmt(struct AssignStmt* m, 	FILE* file);
 void writeMethodCall(struct MethodCall* m, 	FILE* file);
+void writeLoopStmt(struct LoopStmt* m, 		FILE* file);
 
 //typenodes
 void writeType(struct Type* m, 				FILE* file);

@@ -6,6 +6,7 @@
 #include "../../commandline/TokenKeys.h"
 #include "../../commandline/Token.h"
 #include "WhileStmt.h"
+#include "LoopStmt.h"
 #include "IfStmt.h"
 #include "RetStmt.h"
 #include "MethodCall.h"
@@ -23,6 +24,7 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	struct Stmt* res = smalloc(sizeof(struct Stmt));
 
 	//init
+	res->m0 = NULL;
 	res->m1 = NULL;
 	res->m2 = NULL;
 	res->m3 = NULL;
@@ -34,18 +36,22 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	struct Token* first = list_head(copy);
 
 	if (first->kind == LOOP) {
-		//this->statementNode = LoopStatementNode(copy);
-		printf("currently unsupported : 'LOOP'\n");
+		res->m0 = makeLoopStmt(copy, debug);
 		
-		freeTokenListShallow(copy);
-		free(res);
-		
-		exit(1);
+		if(res->m0 == NULL){
+			//Parsing is deterministic here, so this is an Error.
+			printf("expected loop stmt, but was:\n");
+			list_print(copy);
+			
+			freeTokenListShallow(copy);
+			free(res);
+			
+			exit(1);
+		}
 	} else if (first->kind == WHILE) {
 		res->m2 = makeWhileStmt		(copy,debug);
 		if(res->m2 == NULL){
-			//parsing is deterministic here. 
-			//so this is a fatal error
+			//Parsing is deterministic here, so this is an Error.
 			printf("expected while stmt, but was:\n");
 			list_print(copy);
 			
@@ -126,7 +132,10 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 
 void freeStmt(struct Stmt* s){
 	
-	if(s->m1 != NULL){
+	if(s->m0 != NULL){
+		freeLoopStmt(s->m0);
+		
+	}else if(s->m1 != NULL){
 		freeMethodCall(s->m1);
 		
 	}else if(s->m2 != NULL){

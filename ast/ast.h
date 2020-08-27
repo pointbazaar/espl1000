@@ -37,6 +37,7 @@ struct MethodCall;
 struct RetStmt;
 struct Stmt;
 struct WhileStmt;
+struct LoopStmt;
 
 //typenodes
 struct Type;
@@ -189,6 +190,7 @@ struct RetStmt{
 };
 struct Stmt {
 	//only one of those will be != NULL
+	struct LoopStmt* m0;
 	struct MethodCall* m1;
 	struct WhileStmt* m2;
 	struct IfStmt* m3;
@@ -197,6 +199,10 @@ struct Stmt {
 };
 struct WhileStmt  {
 	struct Expr* condition;
+	struct StmtBlock* block;
+};
+struct LoopStmt {
+	struct Expr* count;
 	struct StmtBlock* block;
 };
 struct ArrayType {

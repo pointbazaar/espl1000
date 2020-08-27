@@ -1,0 +1,8 @@
+fn main () ~> Int {
+
+	loop 3 {
+		
+		printf("hi\n");
+	}
+	return 0;
+}
