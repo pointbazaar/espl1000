@@ -1,5 +1,8 @@
-fn main ()~>PInt {
-    x=readchar();
-    putchar(x);
+fn main () ~> PInt {
+	
+	Int x = getchar();
+	
+	printf("%d \n", x);
+	
 	return 0;
 }

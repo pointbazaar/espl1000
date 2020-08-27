@@ -1,9 +1,9 @@
 
-fn main ()~>PInt {
-	subr(2,1);
+fn main () ~> PInt {
+	subr ( 2, 1 );
 	return 0;
 }
 	
 fn subr (PInt a,PInt b) ~> PInt{
-	return (a+b);
+	return ( a + b ) ;
 }

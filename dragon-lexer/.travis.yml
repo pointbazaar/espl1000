@@ -1,3 +1,0 @@
-language: c
-before_install:
-- cd src

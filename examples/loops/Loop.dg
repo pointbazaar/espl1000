@@ -1,12 +1,8 @@
-struct Example {
-	
-}
+fn main () ~> Int {
 
-fn main ()~>PInt { 
-	
-	loop 3{
-		putchar('x');
+	loop 3 {
+		
+		printf("hi\n");
 	}
 	return 0;
-
 }

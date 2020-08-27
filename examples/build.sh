@@ -1,3 +1,37 @@
-source ~/dragon/.dragon.sh
-draco input/ loops/ floats/ local_variables/ output/ methodCalls/ chars/ 
+sd booleans/Booleans.dg
+
+sd chars/Chars.dg
+
+sd cmd-args/CmdArgs.dg
+
+sd floats/Floats.dg
+
+sd for_atmel/LoopAdd1.dg
+sd for_atmel/Main.dg
+
+sd functional/Filter.dg
+sd functional/Twice.dg
+
+sd ifstatement/IfStatement.dg
+
+sd input/Input.dg
+
+sd local_variables/Locals.dg
+sd local_variables/Locals2.dg
+
+sd loops/EmptyLoop.dg
+sd loops/WhileLoop.dg
+
+sd mathematics/Faculty.dg
+sd mathematics/Fibonacci.dg
+
+sd methodCalls/MethodCall.dg
+
+sd multiline_strings/MultiLineStrings.dg
+
+sd other/Simple.dg
+
+sd structs/MyStructs.dg
+
+
 

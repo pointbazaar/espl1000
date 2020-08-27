@@ -1,7 +1,7 @@
 	
-	fn main ()~>PInt{
-		c='h';
+fn main ()~>PInt{
+	Char c = 'h';
 		
-		putchar(c);
-		return 0;
-	}
+	printf("%c\n",c);
+	return 0;
+}

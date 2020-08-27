@@ -1,19 +1,13 @@
-
-	fn main () ~> PInt{
-		x=10;
-		printi(fibonacci(x));
-
-		println(" ");
-		return 0;
+fn main () ~> PInt{
+	return fibonacci(140);
+}
+fn fibonacci (PInt n) -> PInt{
+	
+	if(n<2){
+		return 1;
+	}else{
+		return (fibonacci(n-1)+fibonacci(n-2));
 	}
-
-	fn fibonacci (PInt n) -> PInt{
-		
-		if(n<2){
-			return 1;
-		}else{
-			return (fibonacci(n-1)+fibonacci(n-2));
-		}
-		return 0;
-	}
+	return 0;
+}
 

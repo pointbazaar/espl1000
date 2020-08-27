@@ -1,15 +1,9 @@
-language: java
+language: c
+os: linux
 before_install:
-- git clone https://github.com/pointbazaar/dragon-lexer
-- cd dragon-lexer/src
-- sudo ./build.sh
-- cd ../..
-- git clone https://github.com/pointbazaar/dragon-parser
-- cd dragon-parser
-- mvn install -DskipTests
-- cd ..
-- git clone https://github.com/pointbazaar/dracovm-compiler
-- cd dracovm-compiler/src
-- sudo ./build.sh
-- cd ..
-install: mvn install
+- pwd
+- cd .
+install: pwd
+script: make 
+env:
+- export PATH=$PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser

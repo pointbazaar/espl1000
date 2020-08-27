@@ -1,20 +1,15 @@
+struct MyStruct{
+	PInt a,
+	PInt b
+}
 
-	
-	struct MyStruct{
-		PInt a,
-		PInt b
-	}
+fn main ()~>PInt {
+	MyStruct s = malloc(4*2); 
 
+	s.a = 1; 
 
-	fn main ()~>PInt {
-		MyStruct s = new(2); //as MyStruct has 2 members
+	//printf("%d\n", len(s));
+	printf("%d\n", s.a); 
 
-		s.a=1; //struct member store
-
-		putdigit(len(s));
-		putdigit(s.a); //struct member load
-	
-		//putdigit(len(s));
-
-		return 0;
-	}
+	return 0;
+}

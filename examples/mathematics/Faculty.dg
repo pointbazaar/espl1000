@@ -1,17 +1,16 @@
 
-	fn main ()~>PInt {
-		
-		printi(faculty(3));
-		println(" ");
-		return 0;
+fn main ()~>PInt {
+	
+	printf("%d\n", faculty(3));
+	return 0;
+}
+
+fn faculty (PInt n) -> PInt{
+
+	if n != 1 {
+		return (n*faculty(n-1));
 	}
 	
-	fn faculty (PInt n) -> PInt{
-	
-		if(n != 1){
-			return (n*faculty(n-1));
-		}
-		
-		return 1;
-	}
+	return 1;
+}
 

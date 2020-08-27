@@ -1,7 +1,0 @@
-
-
-	fn main ()~>PInt {
-		printi(sqrt(9.0));		
-		println(" ");
-		return 0;
-	}

@@ -1,0 +1,19 @@
+
+fn main ()~>PInt {
+	printf("%d\n",subr(id));
+	printf(" ");
+	printf("%d\n",subr(twice));
+
+	return 0;
+}
+
+fn id (PInt n)->PInt {
+	return n;
+}
+
+fn twice (PInt n)->PInt {return 2*n;}
+
+fn subr (((PInt)->PInt) subr1)->PInt {
+	return subr1(2);
+}
+

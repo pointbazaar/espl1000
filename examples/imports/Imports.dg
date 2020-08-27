@@ -1,6 +1,0 @@
-fn main ()~>PInt {
-	//tests that we can use the standard library
-	x=sqrt(9.0);
-	println(x);
-	return 0;
-}
