@@ -33,6 +33,7 @@ void transpileIfStmt(struct IfStmt* is, struct Ctx* ctx);
 void transpileRetStmt(struct RetStmt* rs, struct Ctx* ctx);
 void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx);
 void transpileLoopStmt(struct LoopStmt* ls, struct Ctx* ctx);
+void transpileBreakStmt(struct BreakStmt* ls, struct Ctx* ctx);
 
 void transpileType(struct Type* t, struct Ctx* ctx);
 void transpileVariable(struct Variable* var, struct Ctx* ctx);
@@ -230,8 +231,15 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 		transpileAssignStmt(s->m5, ctx);
 		fprintf(ctx->file, ";");
 		
+	}else if(s->m6 != NULL){
+		transpileBreakStmt(s->m6, ctx);
+		
 	}else{
 		printf("Error in transpileStmt\n");
+		//still leaking memory, but less than before.
+		//Due to includes lacking, not everything is freed here
+		free(s);
+		free(ctx);
 		exit(1);
 	}
 	fprintf(ctx->file, "\n");
@@ -340,6 +348,14 @@ void transpileLoopStmt(struct LoopStmt* ls, struct Ctx* ctx){
 	fprintf(ctx->file, ")");
 
 	transpileStmtBlock(ls->block, ctx);
+}
+
+void transpileBreakStmt(struct BreakStmt* ls, struct Ctx* ctx){
+	
+	if(ctx->flags->debug){ printf("transpileBreakStmt(...)\n"); }
+	indent(ctx);
+	
+	fprintf(ctx->file, "break;");
 }
 
 void transpileType(struct Type* t, struct Ctx* ctx){

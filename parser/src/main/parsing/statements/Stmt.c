@@ -11,6 +11,7 @@
 #include "RetStmt.h"
 #include "MethodCall.h"
 #include "AssignStmt.h"
+#include "BreakStmt.h"
 #include "../../../../../util/util.h"
 
 struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
@@ -30,16 +31,27 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	res->m3 = NULL;
 	res->m4 = NULL;
 	res->m5 = NULL;
+	res->m6 = NULL;
 
 	struct TokenList* copy = list_copy(tokens);
 
 	struct Token* first = list_head(copy);
 
-	if (first->kind == LOOP) {
+	if (first->kind == BREAK){
+		res->m6 = makeBreakStmt(copy, debug);
+	
+		if(res->m6 == NULL){
+			printf("expected break stmt, but was:\n");
+			list_print(copy);
+			freeTokenListShallow(copy);
+			free(res);
+			exit(1);
+		}
+	
+	}else if (first->kind == LOOP) {
 		res->m0 = makeLoopStmt(copy, debug);
 		
 		if(res->m0 == NULL){
-			//Parsing is deterministic here, so this is an Error.
 			printf("expected loop stmt, but was:\n");
 			list_print(copy);
 			
@@ -51,7 +63,6 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	} else if (first->kind == WHILE) {
 		res->m2 = makeWhileStmt		(copy,debug);
 		if(res->m2 == NULL){
-			//Parsing is deterministic here, so this is an Error.
 			printf("expected while stmt, but was:\n");
 			list_print(copy);
 			
@@ -64,8 +75,6 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	} else if (first->kind == IF) {
 		res->m3 = makeIfStmt		(copy,debug);
 		if(res->m3 == NULL){
-			//parsing is deterministic here. 
-			//so this is a fatal error
 			printf("expected if stmt, but was:\n");
 			list_print(copy);
 			
@@ -77,8 +86,6 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	} else if (first->kind == RETURN) {
 		res->m4 = makeRetStmt		(copy,debug);
 		if(res->m4 == NULL){
-			//parsing is deterministic here. 
-			//so this is a fatal error
 			printf("expected return stmt, but was:\n");
 			list_print(copy);
 			
@@ -112,7 +119,11 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 				exit(1);
 			}
 			if(!list_expect(copy, SEMICOLON)){
+				printf("expected ';', but was:\n");
+				list_print(copy);
+				
 				freeTokenListShallow(copy);
+				freeMethodCall(res->m1);
 				free(res);
 				
 				exit(1);

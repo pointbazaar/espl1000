@@ -50,6 +50,7 @@ int transpiler_test_all(bool debug){
 	tests[20] = test_subrcall;
 	tests[21] = test_recursive;
 	tests[22] = test_charconst_cmp;
+	tests[23] = test_break;
 	
 	for(int i=0; i < testsRun; i++){
 		testsPassed += (*tests[i])(debug);

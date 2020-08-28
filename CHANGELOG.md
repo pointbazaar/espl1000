@@ -2,8 +2,15 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-## [Unreleased]
+## Unreleased
+- 
+
+## [0.0.3] - 2020-08-27
+- Added 'break' Statement
+
+## [0.0.2] - 2020-08-27
 - Added integration tests in transpiler/test/suite/
+- Added 'loop' Statement back in again
 - "make" now also runs the tests after it builds.
 - Removed test.sh
 

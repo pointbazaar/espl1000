@@ -38,6 +38,7 @@ struct RetStmt;
 struct Stmt;
 struct WhileStmt;
 struct LoopStmt;
+struct BreakStmt;
 
 //typenodes
 struct Type;
@@ -196,6 +197,7 @@ struct Stmt {
 	struct IfStmt* m3;
 	struct RetStmt* m4;
 	struct AssignStmt* m5;
+	struct BreakStmt* m6;
 };
 struct WhileStmt  {
 	struct Expr* condition;
@@ -204,6 +206,9 @@ struct WhileStmt  {
 struct LoopStmt {
 	struct Expr* count;
 	struct StmtBlock* block;
+};
+struct BreakStmt {
+	//empty
 };
 struct ArrayType {
 	struct Type* element_type;

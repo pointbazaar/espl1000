@@ -1,6 +1,9 @@
 #ifndef TOKENKEYS
 #define TOKENKEYS
 
+
+#define EMPTY 1
+
 #define BCONST 2
 
 //identifier
@@ -43,5 +46,6 @@
 #define LOOP 36
 #define FN 37
 #define ELSE 38
+#define BREAK 39
 
 #endif

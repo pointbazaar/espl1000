@@ -68,3 +68,12 @@ bool test_charconst_cmp(bool debug){
 	return sourceToStatus(src, debug) == 1;
 }
 
+bool test_break(bool debug){
+	
+	if(debug){ printf("test_break\n"); }
+	
+	char* src = "fn main () ~> PInt { while true { break; return 3; } return 9; } ";
+	
+	return sourceToStatus(src, debug) == 9;
+}
+

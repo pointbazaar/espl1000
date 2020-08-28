@@ -90,4 +90,6 @@ bool test_operators();
 bool test_loop();
 bool test_if_else();
 
+bool test_break();
+
 #endif

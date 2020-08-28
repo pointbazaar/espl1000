@@ -12,6 +12,7 @@
 #include "astnodes/LoopStmtTest.h"
 #include "astnodes/MethodCallTest.h"
 #include "astnodes/RetStmtTest.h"
+#include "astnodes/BreakStmtTest.h"
 #include "astnodes/StmtTest.h"
 #include "astnodes/StmtBlockTest.h"
 #include "astnodes/SubrTypeTest.h"
@@ -191,7 +192,7 @@ bool test_suite_stmts(bool debug) {
 
 	if(debug){ printf("test_suite_stmts\n"); }
 
-    int count  = 16;
+    int count  = 17;
     int passed = 0;
     
     //1
@@ -223,6 +224,9 @@ bool test_suite_stmts(bool debug) {
     //2
     passed +=  whilestmt_test1(debug);
     passed +=  whilestmt_test2(debug);
+    
+    //1
+    passed += break_test1(debug);
 
     return passed == count;
 }

@@ -210,6 +210,7 @@ void writeStmt(struct Stmt* m, FILE* file){
 	if(m->m3 != NULL){ fprintf(file,"3\t"); writeIfStmt(m->m3,file);     }
 	if(m->m4 != NULL){ fprintf(file,"4\t"); writeRetStmt(m->m4,file);    }
 	if(m->m5 != NULL){ fprintf(file,"5\t"); writeAssignStmt(m->m5,file); }
+	if(m->m6 != NULL){ fprintf(file,"6\t"); writeBreakStmt(m->m6,file); }
 }
 
 void writeIfStmt(struct IfStmt* m, FILE* file){
@@ -277,6 +278,10 @@ void writeLoopStmt(struct LoopStmt* m, FILE* file){
 	writeExpr(m->count, file);
 
 	writeStmtBlock(m->block, file);
+}
+void writeBreakStmt(struct BreakStmt* m, FILE* file){
+	
+	fprintf(file, "BreakStmt\t");
 }
 // --------- TYPENODES --------------
 void writeType(struct Type* m, FILE* file){

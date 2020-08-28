@@ -168,6 +168,9 @@ struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
 		case LOOP : 
 			r = makeToken2(LOOP,"loop");
 			break;
+		case BREAK:
+			r = makeToken2(BREAK, "break");
+			break;
 
 		default : 
 			//("unreconized token id : " + tkn_id);
