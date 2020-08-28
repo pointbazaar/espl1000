@@ -17,17 +17,15 @@ struct BreakStmt* makeBreakStmt(struct TokenList* tokens, bool debug) {
 	
 	if(list_size(tokens) < 3){ return NULL; }
 
-	struct BreakStmt* res = smalloc(sizeof(struct BreakStmt));
-
 	struct TokenList* copy = list_copy(tokens);
 
 	if(!list_expect(copy, BREAK)){
-		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 
 	if(!list_expect(copy, SEMICOLON)){
-		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 	
@@ -37,6 +35,8 @@ struct BreakStmt* makeBreakStmt(struct TokenList* tokens, bool debug) {
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
+	
+	struct BreakStmt* res = smalloc(sizeof(struct BreakStmt));
 
 	return res;
 }
