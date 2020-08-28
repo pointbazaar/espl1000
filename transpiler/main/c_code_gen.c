@@ -236,6 +236,10 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 		
 	}else{
 		printf("Error in transpileStmt\n");
+		//still leaking memory, but less than before.
+		//Due to includes lacking, not everything is freed here
+		free(s);
+		free(ctx);
 		exit(1);
 	}
 	fprintf(ctx->file, "\n");
