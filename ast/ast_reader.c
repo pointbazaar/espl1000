@@ -8,9 +8,7 @@
 
 struct AST_Whole_Program* readAST(char* filename, bool debug){
 	
-	if(debug){
-			printf("readAST(...)\n");
-	}
+	if(debug){ printf("readAST(...)\n"); }
 	
 	FILE* file = fopen(filename,"r");
 	if(file == NULL){
@@ -49,6 +47,7 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	if(count != 3){
 		fclose(file);
 		printf("error in readNamespace ,%d\n",count);
+		free(ns);
 		exit(1);
 	}
 
@@ -69,6 +68,7 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	if(count != 1){
 		fclose(file);
 		printf("error in readNamespace 3 ,%d\n",count);
+		free(ns);
 		exit(1);
 	}
 	
@@ -89,9 +89,7 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 }
 struct Method* readMethod(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readMethod(...)\n");
-	}
+	if(debug){ printf("readMethod(...)\n"); }
 	
 	struct Method* m = smalloc(sizeof(struct Method));
 
@@ -103,6 +101,7 @@ struct Method* readMethod(FILE* file, bool debug){
 		m->name) != 3
 	){
 		printf("Error reading Method \n");
+		free(m);
 		exit(1);
 	}
 
@@ -110,6 +109,7 @@ struct Method* readMethod(FILE* file, bool debug){
 
 	if(fscanf(file,"%hhd\t",&(m->count_args)) != 1){
 		printf("Error reading Method 2\n");
+		free(m);
 		exit(1);
 	}
 	
@@ -127,9 +127,7 @@ struct Method* readMethod(FILE* file, bool debug){
 }
 struct StructDecl* readStructDecl(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readStructDecl(...)\n");
-	}
+	if(debug){ printf("readStructDecl(...)\n"); }
 	
 	struct StructDecl* res = smalloc(sizeof(struct StructDecl));
 	
@@ -142,6 +140,7 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 		) != 2
 	){
 		printf("Error reading StructDecl\n");
+		free(res);
 		exit(1);
 	}
 	
@@ -156,14 +155,13 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 }
 struct StructMember* readStructMember(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readStructMember(...)\n");
-	}
+	if(debug){ printf("readStructMember(...)\n"); }
 	
 	struct StructMember* res = smalloc(sizeof(struct StructMember));
 	
 	if(fscanf(file, "StructMember\t") == EOF){
 		printf("Error reading StructMember\n");
+		free(res);
 		exit(1);
 	}
 	
@@ -171,6 +169,9 @@ struct StructMember* readStructMember(FILE* file, bool debug){
 	
 	if(fscanf(file, "%s\t", res->name) != 1){
 		printf("Error reading StructMember2\n");
+		//freeType(res->type) 
+		//but this subroutine is not included here
+		free(res);
 		exit(1);
 	}
 	
@@ -181,14 +182,13 @@ struct StructMember* readStructMember(FILE* file, bool debug){
 
 struct StmtBlock* readStmtBlock(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readStmtBlock(...)\n");
-	}
+	if(debug){ printf("readStmtBlock(...)\n"); }
 	
 	struct StmtBlock* block = smalloc(sizeof(struct StmtBlock));
 	
 	if(fscanf(file, "StmtBlock\t%hd\t", &(block->count)) != 1){
 		printf("Error reading StmtBlock\n");
+		free(block);
 		exit(1);
 	}
 	
@@ -211,6 +211,7 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 
 	if(fscanf(file, "DeclaredArg\t") == EOF){
 		printf("Error reading DeclaredArg\n");
+		free(da);
 		exit(1);
 	}
 
@@ -219,6 +220,8 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 	int option;
 	if(fscanf(file, "%d\t", &option) != 1){
 		printf("Error reading DeclaredArg 2\n");
+		//freeType(da->type); //not included
+		free(da);
 		exit(1);
 	}
 	
@@ -234,6 +237,7 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 		}
 	}else{
 		printf("Error in readDeclArg\n");
+		free(da);
 		exit(1);
 	}
 	
@@ -243,16 +247,14 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 }
 struct Expr* readExpr(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readExpr(...)\n");
-	}
-	
-	struct Expr* expr = smalloc(sizeof(struct Expr));
+	if(debug){ printf("readExpr(...)\n"); }
 	
 	if(fscanf(file,"Expr\t") == EOF){ 
 		printf("Error reading Expr\n");
 		exit(1);
 	}
+	
+	struct Expr* expr = smalloc(sizeof(struct Expr));
 
 	expr->term1 = readUnOpTerm(file, debug);
 	
@@ -274,14 +276,13 @@ struct Expr* readExpr(FILE* file, bool debug){
 }
 struct Op* readOp(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readOp(...)\n");
-	}
+	if(debug){ printf("readOp(...)\n"); }
 	
 	struct Op* op = smalloc(sizeof(struct Op));
 	
 	if(fscanf(file, "Op\t%s\t", op->op) != 1){ 
 		printf("Error reading Op\n");
+		free(op);
 		exit(1);
 	}
 
@@ -289,14 +290,13 @@ struct Op* readOp(FILE* file, bool debug){
 }
 struct IntConst* readIntConst(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readIntConst(...)\n");
-	}
+	if(debug){printf("readIntConst(...)\n");}
 	
 	struct IntConst* ic = smalloc(sizeof(struct IntConst));
 	
 	if(fscanf(file, "IntConst\t%d\t", &(ic->value)) != 1){
 		printf("Error reading IntConst\n");
+		free(ic);
 		exit(1);
 	}
 
@@ -304,14 +304,13 @@ struct IntConst* readIntConst(FILE* file, bool debug){
 }
 struct BoolConst* readBoolConst(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readBoolConst(...)\n");
-	}
+	if(debug){ printf("readBoolConst(...)\n"); }
 	
 	struct BoolConst* b = smalloc(sizeof(struct BoolConst));
 	
 	if(fscanf(file, "BoolConst\t%d\t", (int*)&(b->value)) != 1){
 		printf("Error reading BoolConst\n");
+		free(b);
 		exit(1);
 	}
 	
@@ -319,14 +318,13 @@ struct BoolConst* readBoolConst(FILE* file, bool debug){
 }
 struct CharConst* readCharConst(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readCharConst(...)\n");
-	}
+	if(debug){ printf("readCharConst(...)\n"); }
 	
 	struct CharConst* b = smalloc(sizeof(struct CharConst));
 	
 	if(fscanf(file, "CharConst\t%c\t", &(b->value)) != 1){
 		printf("Error reading CharConst\n");
+		free(b);
 		exit(1);
 	}
 	
@@ -334,14 +332,13 @@ struct CharConst* readCharConst(FILE* file, bool debug){
 }
 struct FloatConst* readFloatConst(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readFloatConst(...)\n");
-	}
+	if(debug){ printf("readFloatConst(...)\n"); }
 	
 	struct FloatConst* ic = smalloc(sizeof(struct FloatConst));
 	
 	if(fscanf(file, "FloatConst\t%f\t", &(ic->value)) != 1){
 		printf("Error reading FloatConst\n");
+		free(ic);
 		exit(1);
 	}
 	
@@ -355,6 +352,7 @@ struct StringConst* readStringConst(FILE* file, bool debug){
 	
 	if(fscanf(file, "StringConst\t%s\t", s->value) != 1){
 		printf("Error reading StringConst\n");
+		free(s);
 		exit(1);
 	}
 	
@@ -362,22 +360,22 @@ struct StringConst* readStringConst(FILE* file, bool debug){
 }
 struct Variable* readVariable(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readVariable(...)\n");
-	}
-	
-	struct Variable* v = smalloc(sizeof(struct Variable));
+	if(debug){ printf("readVariable(...)\n"); }
 	
 	if(fscanf(file, "Variable\t") == EOF){
 		printf("Error reading Variable\n");
 		exit(1);
 	}
+	
+	struct Variable* v = smalloc(sizeof(struct Variable));
 
 	v->simpleVar = readSimpleVar(file, debug);
 	int memberAccessCount = 0;
 	
 	if(fscanf(file, "%d\t", &memberAccessCount) != 1){
 		printf("Error reading Variable 2\n");
+		
+		free(v);
 		exit(1);
 	}
 
@@ -389,9 +387,7 @@ struct Variable* readVariable(FILE* file, bool debug){
 }
 struct SimpleVar* readSimpleVar(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readSimpleVar(...)\n");
-	}
+	if(debug){ printf("readSimpleVar(...)\n"); }
 	
 	struct SimpleVar* b = smalloc(sizeof(struct SimpleVar));
 	
@@ -399,6 +395,7 @@ struct SimpleVar* readSimpleVar(FILE* file, bool debug){
 	
 	if(fscanf(file, "SimpleVar\t%s\t%d\t", b->name, &option) != 2){
 		printf("Error reading SimpleVar\n");
+		free(b);
 		exit(1);
 	}
 
@@ -412,8 +409,14 @@ struct SimpleVar* readSimpleVar(FILE* file, bool debug){
 }
 struct Term* readTerm(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readTerm(...)\n");
+	if(debug){ printf("readTerm(...)\n"); }
+	
+	int kind;
+	
+	if(fscanf(file, "Term\t%d\t", &kind) != 1){
+		printf("Error reading Term\n");
+		fclose(file);
+		exit(1);
 	}
 	
 	struct Term* b = smalloc(sizeof(struct Term));
@@ -426,13 +429,6 @@ struct Term* readTerm(FILE* file, bool debug){
 	b->m6 = NULL;
 	b->m7 = NULL;
 	b->m8 = NULL;
-	
-	int kind;
-	
-	if(fscanf(file, "Term\t%d\t", &kind) != 1){
-		printf("Error reading Term\n");
-		exit(1);
-	}
 
 	switch(kind){
 		
@@ -447,6 +443,7 @@ struct Term* readTerm(FILE* file, bool debug){
 		
 		default:
 			printf("Error in readTerm\n");
+			free(b);
 			exit(1);
 			break;
 	}
@@ -457,13 +454,14 @@ struct UnOpTerm* readUnOpTerm(FILE* file, bool debug){
 	
 	if(debug){ printf("readUnOpTerm(...)\n"); }
 	
-	struct UnOpTerm* t = smalloc(sizeof(struct UnOpTerm));
-	
 	int kind;
 	if(fscanf(file, "UnOpTerm\t%d\t", &kind) != 1){
 		printf("Error reading UnOpTerm\n");
+		fclose(file);
 		exit(1);
 	}
+	
+	struct UnOpTerm* t = smalloc(sizeof(struct UnOpTerm));
 	
 	if(kind == 1){
 		t->op = readOp(file, debug);
@@ -478,7 +476,16 @@ struct UnOpTerm* readUnOpTerm(FILE* file, bool debug){
 
 //statementnodes
 struct Stmt* readStmt(FILE* file, bool debug){
+	
 	if(debug){ printf("readStmt(...)\n"); }
+	
+	int kind;
+	
+	if(fscanf(file, "Stmt\t%d\t", &kind) != 1){
+		printf("Error reading Stmt\n");
+		exit(1);
+	}
+	
 	struct Stmt* b = smalloc(sizeof(struct Stmt));
 	
 	b->m0 = NULL;
@@ -488,13 +495,6 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	b->m4 = NULL;
 	b->m5 = NULL;
 	b->m6 = NULL;
-	
-	int kind;
-	
-	if(fscanf(file, "Stmt\t%d\t", &kind) != 1){
-		printf("Error reading Stmt\n");
-		exit(1);
-	}
 
 	switch(kind){
 		case 0: b->m0 = readLoopStmt(file, debug);   break;
@@ -504,13 +504,23 @@ struct Stmt* readStmt(FILE* file, bool debug){
 		case 4: b->m4 = readRetStmt(file, debug);    break;
 		case 5: b->m5 = readAssignStmt(file, debug); break;
 		case 6: b->m6 = readBreakStmt(file, debug);  break;
+		default:
+			printf("Error in readStmt\n");
+			free(b);
+			fclose(file);
+			exit(1);
+			break;
 	}
 	return b;
 }
 struct IfStmt* readIfStmt(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readIfStmt(...)\n");
+	if(debug){ printf("readIfStmt(...)\n"); }
+	
+	if(fscanf(file, "IfStmt\t") == EOF){
+		printf("Error reading IfStmt\n");
+		fclose(file);
+		exit(1);
 	}
 	
 	struct IfStmt* v = smalloc(sizeof(struct IfStmt));
@@ -518,11 +528,6 @@ struct IfStmt* readIfStmt(FILE* file, bool debug){
 	v->condition = NULL;
 	v->block = NULL;
 	v->elseBlock = NULL;
-	
-	if(fscanf(file, "IfStmt\t") == EOF){
-		printf("Error reading IfStmt\n");
-		exit(1);
-	}
 
 	v->condition = readExpr(file, debug);
 
@@ -536,15 +541,16 @@ struct IfStmt* readIfStmt(FILE* file, bool debug){
 	return v;
 }
 struct WhileStmt* readWhileStmt(FILE* file, bool debug){
-	if(debug){
-			printf("readWhileStmt(...)\n");
-	}
-	struct WhileStmt* v = smalloc(sizeof(struct WhileStmt));
+	
+	if(debug){ printf("readWhileStmt(...)\n"); }
 	
 	if(fscanf(file, "WhileStmt\t") == EOF){
 		printf("Error reading WhileStmt\n");
+		fclose(file);
 		exit(1);
 	}
+	
+	struct WhileStmt* v = smalloc(sizeof(struct WhileStmt));
 
 	v->condition = readExpr(file, debug);
 	v->block = readStmtBlock(file, debug);
@@ -554,31 +560,33 @@ struct WhileStmt* readWhileStmt(FILE* file, bool debug){
 	return v;
 }
 struct RetStmt* readRetStmt(FILE* file, bool debug){
-	if(debug){
-			printf("readRetStmt(...)\n");
-	}
-	struct RetStmt* v = smalloc(sizeof(struct RetStmt));
+	
+	if(debug){ printf("readRetStmt(...)\n"); }
 	
 	if(fscanf(file, "RetStmt\t") == EOF){
 		printf("Error reading RetStmt\n");
+		fclose(file);
 		exit(1);
 	}
+	
+	struct RetStmt* v = smalloc(sizeof(struct RetStmt));
 
 	v->returnValue = readExpr(file, debug);
 	return v;
 }
 struct AssignStmt* readAssignStmt(FILE* file, bool debug){
-	if(debug){
-			printf("readAssignStmt(...)\n");
-	}
-	struct AssignStmt* v = smalloc(sizeof(struct AssignStmt));
+	
+	if(debug){ printf("readAssignStmt(...)\n"); }
 	
 	int option;
 	
 	if(fscanf(file, "AssignStmt\t%d\t", &option) != 1){
 		printf("Error reading AssignStmt\n");
+		fclose(file);
 		exit(1);
 	}
+	
+	struct AssignStmt* v = smalloc(sizeof(struct AssignStmt));
 
 	if(option == 0){
 		v->optType = NULL;
@@ -592,9 +600,9 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 	return v;
 }
 struct MethodCall* readMethodCall(FILE* file, bool debug){
-	if(debug){
-			printf("readMethodCall(...)\n");
-	}
+	
+	if(debug){ printf("readMethodCall(...)\n"); }
+	
 	struct MethodCall* v = smalloc(sizeof(struct MethodCall));
 
 	if(
@@ -606,6 +614,8 @@ struct MethodCall* readMethodCall(FILE* file, bool debug){
 		) != 2
 	){
 		printf("Error reading MethodCall\n");
+		free(v);
+		fclose(file);
 		exit(1);
 	}
 
@@ -616,15 +626,16 @@ struct MethodCall* readMethodCall(FILE* file, bool debug){
 	return v;
 }
 struct LoopStmt* readLoopStmt(FILE* file, bool debug){
-	if(debug){
-			printf("readLoopStmt(...)\n");
-	}
-	struct LoopStmt* v = smalloc(sizeof(struct LoopStmt));
+	
+	if(debug){ printf("readLoopStmt(...)\n"); }
 	
 	if(fscanf(file, "LoopStmt\t") == EOF){
 		printf("Error reading LoopStmt\n");
+		fclose(file);
 		exit(1);
 	}
+	
+	struct LoopStmt* v = smalloc(sizeof(struct LoopStmt));
 
 	v->count = readExpr(file, debug);
 	v->block = readStmtBlock(file, debug);
@@ -636,12 +647,14 @@ struct LoopStmt* readLoopStmt(FILE* file, bool debug){
 struct BreakStmt* readBreakStmt(FILE* file, bool debug){
 	
 	if(debug){ printf("readBreakStmt(...)\n"); }
-	struct BreakStmt* v = smalloc(sizeof(struct BreakStmt));
 	
 	if(fscanf(file, "BreakStmt\t") == EOF){
 		printf("Error reading BreakStmt\n");
+		fclose(file);
 		exit(1);
 	}
+	
+	struct BreakStmt* v = smalloc(sizeof(struct BreakStmt));
 	
 	return v;
 }
@@ -651,18 +664,19 @@ struct Type* readType(FILE* file, bool debug){
 	
 	if(debug){ printf("readType(...)\n"); }
 	
+	int kind;
+	
+	if(fscanf(file, "Type\t%d\t", &kind) != 1){
+		printf("Error reading Type\n");
+		fclose(file);
+		exit(1);
+	}
+	
 	struct Type* b = smalloc(sizeof(struct Type));
 	
 	b->m1 = NULL;
 	b->m2 = NULL;
 	b->m3 = NULL;
-	
-	int kind;
-	
-	if(fscanf(file, "Type\t%d\t", &kind) != 1){
-		printf("Error reading Type\n");
-		exit(1);
-	}
 
 	switch(kind){
 		case 1: b->m1 = readBasicTypeWrapped(file, debug); break;
@@ -670,6 +684,8 @@ struct Type* readType(FILE* file, bool debug){
 		case 3: b->m3 = readArrayType(file, debug); break;
 		default:
 			printf("Error in readType\n");
+			free(b);
+			fclose(file);
 			exit(1);
 	}
 	
@@ -681,12 +697,13 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 	
 	if(debug){ printf("readSubrType(...)\n"); }
 	
-	struct SubrType* v = smalloc(sizeof(struct SubrType));
-	
 	if(fscanf(file, "SubrType\t") == EOF){
 		printf("Error reading SubrType\n");
+		fclose(file);
 		exit(1);
 	}
+	
+	struct SubrType* v = smalloc(sizeof(struct SubrType));
 
 	v->returnType = readType(file, debug);
 	
@@ -695,6 +712,8 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 		!= 2
 	){
 		printf("Error reading SubrType 2\n");
+		free(v);
+		fclose(file);
 		exit(1);
 	}
 	
@@ -716,6 +735,8 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 	//%30s ensures it does not read more than 30 chars
 	if(fscanf(file, "SimpleType\t%30s\t", v->typeName) != 1){
 		printf("Error reading SimpleType\n");
+		free(v);
+		fclose(file);
 		exit(1);
 	}
 	
@@ -725,16 +746,15 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 }
 struct ArrayType* readArrayType(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readArrayType(...)\n");
-	}
-	
-	struct ArrayType* v = smalloc(sizeof(struct ArrayType));
+	if(debug){ printf("readArrayType(...)\n"); }
 	
 	if(fscanf(file, "ArrayType\t") == EOF){
 		printf("Error reading ArrayType\n");
+		fclose(file);
 		exit(1);
 	}
+	
+	struct ArrayType* v = smalloc(sizeof(struct ArrayType));
 	
 	v->element_type = readType(file, debug);
 	
@@ -744,14 +764,14 @@ struct ArrayType* readArrayType(FILE* file, bool debug){
 }
 struct TypeParam* readTypeParam(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readTypeParam(...)\n");
-	}
+	if(debug){ printf("readTypeParam(...)\n"); }
 	
 	struct TypeParam* v = smalloc(sizeof(struct TypeParam));
 	
 	if(fscanf(file, "TypeParam\t%hhd\t", &(v->index)) != 1){
 		printf("Error reading TypeParam\n");
+		free(v);
+		fclose(file);
 		exit(1);
 	}
 	
@@ -761,18 +781,17 @@ struct TypeParam* readTypeParam(FILE* file, bool debug){
 }
 struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug){
 	
-	if(debug){
-			printf("readBasicTypeWrapped(...)\n");
-	}
-	
-	struct BasicTypeWrapped* v = smalloc(sizeof(struct BasicTypeWrapped));
+	if(debug){ printf("readBasicTypeWrapped(...)\n"); }
 	
 	int kind = 0;
 	
 	if(fscanf(file, "BasicTypeWrapped\t%d\t", &kind) != 1){
 		printf("Error reading BasicTypeWrapped\n");
+		fclose(file);
 		exit(1);
 	}
+	
+	struct BasicTypeWrapped* v = smalloc(sizeof(struct BasicTypeWrapped));
 	
 	switch(kind){
 		case 1: 
@@ -785,6 +804,8 @@ struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug){
 			break;
 		default:
 			printf("Error in readBasicTypeWrapped\n");
+			free(v);
+			fclose(file);
 			exit(1);
 	}
 	
