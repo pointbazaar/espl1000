@@ -18,6 +18,10 @@ struct Ctx {
 	
 	//the transpiler flags 
 	struct Flags* flags;
+	
+	//local variable symbol table 
+	// (for the results of local variable type inference)
+	struct LocalVarSymTable* lvst;
 };
 
 void indent(struct Ctx* ctx);

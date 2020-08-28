@@ -9,7 +9,8 @@ OBJS := build/transpiler.o build/util.o build/ast_reader.o \
 		build/teststatuscode.o \
 		build/test_other.o \
 		build/test_op.o \
-		build/flags.o
+		build/flags.o \
+		build/localvarsymtable.o
 
 all: smalldragon test
 
@@ -54,3 +55,6 @@ build/test_other.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_
 	
 build/test_op.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_op.h test/suite/test_op.c
 	$(CALL) -c test/suite/test_op.c -o $@
+
+build/localvarsymtable.o: main/localvarsymtable.c main/localvarsymtable.h
+	$(CALL) -c main/localvarsymtable.c

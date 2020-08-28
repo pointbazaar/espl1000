@@ -6,6 +6,8 @@
 #include "code_gen_util.h"
 #include "../../util/util.h"
 
+#include "localvarsymtable.h"
+
 // -------------------------------
 
 //counter for generating labels
@@ -319,6 +321,16 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 		transpileType(as->optType, ctx);
 		
 		fprintf(ctx->file, " ");
+	}else{
+		//TODO: find type via local variable symbol table
+		//TODO: find out if this is the first assignment
+		//to this local variable, via FIRST pointer
+		//in local variable symbol table 
+		// (FIRST pointer identifies the first assignstmt
+		// where a local variable was assigned)
+		
+		
+		//TODO: implement
 	}
 	
 	transpileVariable(as->var, ctx);

@@ -3,12 +3,14 @@
 #include <string.h>
 #include <libgen.h>
 
-#include "transpiler.h"
 #include "../../ast/ast_reader.h"
 #include "../../ast/ast.h"
+#include "../test/test.h"
+
 #include "c_code_gen.h"
 #include "flags.h"
-#include "../test/test.h"
+
+#include "transpiler.h"
 
 int main(int argc, char* argv[]){
 
