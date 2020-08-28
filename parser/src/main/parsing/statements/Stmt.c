@@ -119,7 +119,11 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 				exit(1);
 			}
 			if(!list_expect(copy, SEMICOLON)){
+				printf("expected ';', but was:\n");
+				list_print(copy);
+				
 				freeTokenListShallow(copy);
+				freeMethodCall(res->m1);
 				free(res);
 				
 				exit(1);
