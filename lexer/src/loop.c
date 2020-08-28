@@ -11,6 +11,9 @@
 #include "loop.h"
 #include "init_dfa.h"
 
+//token types
+#include "../../parser/src/main/commandline/TokenKeys.h"
+
 //TODO: when following the approach of writing to the '.tokens' file every x tokens,
 //we should instead write to a '.tokens.temp' file, and rename it to a '.tokens' file
 //when we are finished, so that this and other tools are not confused
@@ -214,7 +217,7 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 
 			//SECTION: IDENTIFIERS
 			case S_IDENTIFIER_FINAL:
-				tkn->kind=IDENTIFIER;
+				tkn->kind=ID;
 				tkn->value=substr(input+start,end-start-1);
 				tkn->statically_allocated=false;
 				i--;
@@ -228,7 +231,7 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 				break;
 
 			case S_TPARAM_FINAL:
-				tkn->kind=TYPEPARAM;
+				tkn->kind=TPARAM;
 				tkn->value=substr(input+start+2,1);
 				tkn->statically_allocated=false;
 				i--;
@@ -295,7 +298,7 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 				break;
 
 			case S_BOOLCONST_FINAL:
-				tkn->kind=BOOLCONST;
+				tkn->kind=BCONST;
 				tkn->value=substr(input+start,end-start-1);
 				tkn->statically_allocated=false;
 				i--;
@@ -357,14 +360,14 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 
 			//SECTION: OPERATORS
 			case S_OPERATOR_FINAL:
-				tkn->kind=OPERATOR;
+				tkn->kind=OPKEY;
 				tkn->value=substr(input+start,end-start);
 				tkn->statically_allocated=false;
 				//TODO: recognize /2 and do i--
 				break;
 
 			case S_MINUS_FINAL:
-				tkn->kind=OPERATOR;
+				tkn->kind=OPKEY;
 				tkn->value=substr(input+start,end-start-1);
 				tkn->statically_allocated=false;
 				i--;
@@ -372,7 +375,7 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 
 			//SECTION: CHARCONST, STRINGCONST
 			case S_CHARCONST_FINAL:
-				tkn->kind=CHARCONST;
+				tkn->kind=CCONST;
 				tkn->value=substr(input+start,end-start);
 				tkn->statically_allocated=false;
 				break;

@@ -56,68 +56,22 @@ instead, the type of the token is encoded as a number
 this might be harder to debug but it saves space in the file.
 */
 
-//the empty token gets removed at the end of lexing
+//the EMPTY token gets removed at the end of lexing
 // it is simply for providing a starting point 
 //to the linked list, to simplify a loop
-static const int EMPTY = 1;
 
-#define BOOLCONST 2
-
-#define IDENTIFIER 4
-#define TYPEIDENTIFIER 5
-
-#define TYPEPARAM 6
-#define FLOATING 7
-#define INTEGER 8
-#define CHARCONST 9
-#define STRINGCONST 10
 
 //this token provides the line number 
 //for all tokens until the next
 //LINE_NO token. could be off by several lines,
 //but it's a first step.
-static const int LINE_NO = 11;
 
-#define ARROW 12
-
-#define ANYTYPE 13
-#define OPERATOR 14	//'+','-','/','*' ,'&&', '||','&','|'
-#define STRUCTMEMBERACCESS 15
 
 //keywords have their own seperate ID's
 //to make the parser even faster.
 //the parser should not have to look at the 
 //keyword content
 
-//#define IF 16
-//can get rid of the macros :)
-static const int IF=16;
-
-#define WHILE 17
-#define RETURN 21
-
-//braces,parentheses,brackets
-#define LPARENS 22
-#define RPARENS 23
-#define LBRACKET 24
-#define RBRACKET 25
-#define LCURLY 26
-#define RCURLY 27
-
-#define GREATER 28
-#define LESSER 29
-#define WAVE 30
-#define SEMICOLON 31
-#define EQ 32
-
-#define STRUCT 34
-
-#define COMMA 35 //','
-
-static const int LOOP 	= 36;
-static const int FN 	= 37;
-static const int ELSE 	= 38;
-static const int BREAK	= 39;
 
 /*
 

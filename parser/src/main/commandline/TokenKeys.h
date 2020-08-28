@@ -1,6 +1,9 @@
 #ifndef TOKENKEYS
 #define TOKENKEYS
 
+
+#define EMPTY 1
+
 #define BCONST 2
 
 //identifier
