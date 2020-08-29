@@ -21,7 +21,7 @@ struct Ctx {
 	
 	//local variable symbol table 
 	// (for the results of local variable type inference)
-	struct LocalVarSymTable* lvst;
+	struct LVST* lvst;
 };
 
 void indent(struct Ctx* ctx);

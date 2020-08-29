@@ -4,9 +4,9 @@
 
 #include "localvarsymtable.h"
 
-struct LocalVarSymTable* makeLocalVarSymTable(struct Method* subr){
+struct LVST* makeLocalVarSymTable(struct Method* subr){
 	
-	struct LocalVarSymTable* lvst = malloc(sizeof(struct LocalVarSymTable));
+	struct LVST* lvst = malloc(sizeof(struct LVST));
 	
 	lvst->count = 0;
 	lvst->capacity = 10;
@@ -25,7 +25,7 @@ void freeLVSTLine(struct LVSTLine* l){
 	free(l);
 }
 
-void lvst_add(struct LocalVarSymTable* lvst, struct LVSTLine* line){
+void lvst_add(struct LVST* lvst, struct LVSTLine* line){
 	
 	//the local var symbol table works as a set
 	//with 'name' as the key
@@ -58,7 +58,7 @@ void lvst_add(struct LocalVarSymTable* lvst, struct LVSTLine* line){
 	lvst->count += 1;
 }
 
-struct LVSTLine* lvst_get(struct LocalVarSymTable* lvst, char* name){
+struct LVSTLine* lvst_get(struct LVST* lvst, char* name){
 	
 	for(int i = 0; i < lvst->count; i++){
 		

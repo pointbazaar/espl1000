@@ -10,7 +10,8 @@ OBJS := build/transpiler.o build/util.o build/ast_reader.o \
 		build/test_other.o \
 		build/test_op.o \
 		build/flags.o \
-		build/localvarsymtable.o
+		build/localvarsymtable.o \
+		build/typeinference.o
 
 all: smalldragon test
 
@@ -58,3 +59,6 @@ build/test_op.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_op.
 
 build/localvarsymtable.o: main/localvarsymtable.c main/localvarsymtable.h
 	$(CALL) -c main/localvarsymtable.c
+
+build/typeinference.o: main/typeinference.c main/typeinference.h
+	$(CALL) -c main/typeinference.c
