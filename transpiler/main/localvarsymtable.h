@@ -3,7 +3,7 @@
 
 #include "../../ast/ast.h"
 
-struct LocalVarSymTable;
+struct LVST;
 struct LVSTLine;
 
 struct LVST {
