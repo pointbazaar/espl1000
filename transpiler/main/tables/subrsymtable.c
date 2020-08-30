@@ -4,13 +4,15 @@
 
 #include "subrsymtable.h"
 
-struct SST* makeSubrSymTable(struct Namespace* ns){
+struct SST* makeSubrSymTable(struct Namespace* ns, bool debug){
+	
+	if(debug){ printf("makeSubrSymTable(%p, ...)\n", ns); }
 	
 	struct SST* sst = malloc(sizeof(struct SST));
 	
 	sst->count = 0;
 	sst->capacity = 10;
-	sst->lines = malloc(sizeof(struct SST*)*sst->capacity);
+	sst->lines = malloc(sizeof(struct SSTLine*)*sst->capacity);
 	
 	//add all the subroutines from the namespace
 	for(int i = 0; i < ns->count_methods; i++){
@@ -19,13 +21,11 @@ struct SST* makeSubrSymTable(struct Namespace* ns){
 		
 		struct SSTLine* line = malloc(sizeof(struct SSTLine));
 		
-		strncpy(line->name, m->name, 32);
+		strncpy(line->name, m->name, DEFAULT_STR_SIZE);
 		line->isLibC = false;
+		line->returnType = m->returnType;
 		
-		//TODO: remove this dummy later
-		//and replace with the actual return type name
-		strncpy(line->returnType, "Int", 32); 
-		
+		printf("\tadding '%s' to subroutine symbol table\n", line->name);
 		sst_add(sst, line);
 	}
 	

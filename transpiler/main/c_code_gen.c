@@ -4,9 +4,14 @@
 
 #include "c_code_gen.h"
 #include "ctx.h"
+#include "code_gen_util.h"
 #include "../../util/util.h"
+#include "typeinference.h"
 
 #include "tables/localvarsymtable.h"
+#include "tables/subrsymtable.h"
+#include "tables/structsymtable.h"
+#include "tables/symtable.h"
 
 // -------------------------------
 
@@ -71,21 +76,31 @@ void transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 	
 	if(debug){ printf("transpileAndWrite(...)\n"); }
 
-	FILE* fout = fopen(filename, "w");
+	struct Ctx* ctx = smalloc(sizeof(struct Ctx));
+	ctx->tables = smalloc(sizeof(struct ST));
 
-	if(fout == NULL){
+	if(debug){
+		printf("SET ctx->file\n");
+	}
+
+	ctx->file = fopen(filename, "w");
+
+	if(ctx->file == NULL){
 		printf("could not open output file: %s\n", filename);
 		exit(1);
 	}
 	
-	struct Ctx* ctx = smalloc(sizeof(struct Ctx));
+	if(debug){
+		printf("SET ctx->flags\n");
+		printf("SET ctx->indentLevel\n");
+	}
+	
 	ctx->flags = flags;
-	ctx->file = fout;
 	ctx->indentLevel = 0;
 
 	transpileAST(ast, ctx);
 
-	fclose(fout);
+	fclose(ctx->file);
 	
 	if(debug){ printf("transpileAndWrite(...) DONE\n"); }
 }
@@ -95,17 +110,16 @@ void transpileAST(struct AST_Whole_Program* ast, struct Ctx* ctx){
 	if(ctx->flags->debug){ printf("transpileAST(...)\n"); }
 	
 	//write some standard stdlib includes
-	FILE* file = ctx->file;
 	
 	if(!(ctx->flags->avr)){
 		//in microcontrollers, we cannot assume there will
 		//be stdlib 
 		
-		fprintf(file, "#include <stdlib.h>\n");
-		fprintf(file, "#include <stdio.h>\n");
-		fprintf(file, "#include <stdbool.h>\n");
-		fprintf(file, "#include <string.h>\n");
-		fprintf(file, "#include <math.h>\n");
+		fprintf(ctx->file, "#include <stdlib.h>\n");
+		fprintf(ctx->file, "#include <stdio.h>\n");
+		fprintf(ctx->file, "#include <stdbool.h>\n");
+		fprintf(ctx->file, "#include <string.h>\n");
+		fprintf(ctx->file, "#include <math.h>\n");
 	}
 
 	for(int i=0; i < ast->count_namespaces; i++){
@@ -118,11 +132,22 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileNamespace(...)\n"); }
 	
-	FILE* file = ctx->file;
+	//populate ctx->tables->sst
+	if(ctx->flags->debug){
+		printf("SET ctx->tables->sst\n");
+	}
+	ctx->tables->sst = makeSubrSymTable(ns, ctx->flags->debug);
+	
+	//populate ctx->tables->stst
+	//TODO:
+	ctx->tables->stst = NULL;
+	
+	//lvst gets populated later
+	ctx->tables->lvst = NULL;
 	
 	//write struct forward declarations
 	for(int i=0;i < ns->count_structs; i++){
-		fprintf(file, "struct %s;\n", ns->structs[i]->name);
+		fprintf(ctx->file, "struct %s;\n", ns->structs[i]->name);
 	}
 
 	//transpile struct definitions
@@ -133,7 +158,7 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	//write subroutine forward declarations
 	for(int i=0; i < ns->count_methods; i++){
 		transpileMethodSignature(ns->methods[i], ctx);
-		fprintf(file, ";\n");
+		fprintf(ctx->file, ";\n");
 	}
 
 	for(int i=0; i < ns->count_methods; i++){
@@ -143,7 +168,7 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 
 void transpileStructDecl(struct StructDecl* s, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileStructDecl(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileStructDecl(%p,%p)\n", s, ctx); }
 	
 	fprintf(ctx->file ,"struct %s {\n", s->name);
 	
@@ -167,7 +192,10 @@ void transpileStructMember(struct StructMember* m, struct Ctx* ctx){
 
 void transpileMethod(struct Method* m, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileMethod(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileMethod(%p, %p)\n", m, ctx); }
+	
+	//create the local variable symbol table
+	ctx->tables->lvst = makeLocalVarSymTable(m, ctx->flags->debug);
 
 	transpileMethodSignature(m, ctx);
 
@@ -176,7 +204,7 @@ void transpileMethod(struct Method* m, struct Ctx* ctx){
 
 void transpileMethodSignature(struct Method* m, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileMethodSignature(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileMethodSignature(%p, %p)\n", m, ctx); }
 	
 	transpileType(m->returnType, ctx);
 
@@ -318,20 +346,23 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 	indent(ctx);
 
 	if(as->optType != NULL){
+		
 		transpileType(as->optType, ctx);
 		
-		fprintf(ctx->file, " ");
 	}else{
-		//TODO: find type via local variable symbol table
-		//TODO: find out if this is the first assignment
-		//to this local variable, via FIRST pointer
-		//in local variable symbol table 
-		// (FIRST pointer identifies the first assignstmt
-		// where a local variable was assigned)
+		//find type via local variable symbol table
 		
+		struct LVSTLine* line = lvst_get(ctx->tables->lvst, as->var->simpleVar->name);
 		
-		//TODO: implement
+		if(line->firstOccur == as){
+			
+			//an assignment to this local variable first occurs in
+			//this assignment statement
+			transpileType(line->type, ctx);
+		}
 	}
+	
+	fprintf(ctx->file, " ");
 	
 	transpileVariable(as->var, ctx);
 	fprintf(ctx->file, " = ");
@@ -372,7 +403,7 @@ void transpileBreakStmt(struct BreakStmt* ls, struct Ctx* ctx){
 
 void transpileType(struct Type* t, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileType(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileType(%p, %p)\n", t, ctx); }
 	
 	if(t->m1 != NULL){
 		transpileBasicTypeWrapped(t->m1, ctx);
@@ -491,7 +522,7 @@ void transpileOp(struct Op* op, struct Ctx* ctx){
 
 void transpileBasicTypeWrapped(struct BasicTypeWrapped* btw, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileBasicTypeWrapped(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileBasicTypeWrapped(%p, %p)\n", btw, ctx); }
 	
 	if(btw->simpleType != NULL){
 		transpileSimpleType(btw->simpleType, ctx);
@@ -516,11 +547,12 @@ void transpileArrayType(struct ArrayType* atype, struct Ctx* ctx){
 
 void transpileSimpleType(struct SimpleType* simpleType, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileSimpleType(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileSimpleType(%p,%p)\n", simpleType, ctx); }
 	
 	//type name
 	char* t = simpleType->typeName;
-	char res[20];
+	char* res = malloc(sizeof(char)*DEFAULT_STR_SIZE*3);
+	strcpy(res, "");
 
 	if(    strcmp(t, "PInt") == 0
 		|| strcmp(t, "NInt") == 0
@@ -548,8 +580,9 @@ void transpileSimpleType(struct SimpleType* simpleType, struct Ctx* ctx){
 		//if we do not recognize it, treat it as struct pointer
 		sprintf(res, "struct %s*", t);
 	}
-
+	
 	fprintf(ctx->file, "%s", res);
+	free(res);
 }
 
 void transpileSubrType(struct SubrType* subrType, struct Ctx* ctx){

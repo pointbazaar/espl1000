@@ -2,8 +2,9 @@
 #define CTX
 
 #include <stdio.h>
-//#include <stdbool.h>
 #include <inttypes.h>
+
+#include "tables/symtable.h"
 
 /* this struct represents the context of transpilation.
  * it provides information about symbol tables, debug parameters,
@@ -19,9 +20,8 @@ struct Ctx {
 	//the transpiler flags 
 	struct Flags* flags;
 	
-	//local variable symbol table 
-	// (for the results of local variable type inference)
-	struct LVST* lvst;
+	//symbol tables
+	struct ST* tables;
 };
 
 

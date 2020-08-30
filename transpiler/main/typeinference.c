@@ -15,14 +15,18 @@
 
 // -- subroutine declarations (private to this compile unit) --
 
-char* inferTypeTerm			(struct ST* st, struct Term* term);
-char* inferTypeUnOpTerm		(struct ST* st, struct UnOpTerm* t);
-char* inferTypeMethodCall	(struct ST* st, struct MethodCall* m);
-char* inferTypeVariable		(struct ST* st, struct Variable* v);
-char* inferTypeSimpleVar	(struct ST* st, struct SimpleVar* v);
+struct Type* inferTypeTerm			(struct ST* st, struct Term* term);
+struct Type* inferTypeUnOpTerm		(struct ST* st, struct UnOpTerm* t);
+struct Type* inferTypeMethodCall	(struct ST* st, struct MethodCall* m);
+struct Type* inferTypeVariable		(struct ST* st, struct Variable* v);
+struct Type* inferTypeSimpleVar	(struct ST* st, struct SimpleVar* v);
+// ------------------------------------------------------------
+struct Type* typeFromStr(char* typeName);
+char* typeToStr(struct Type* t);
+char* typeToStrBasicTypeWrapped(struct BasicTypeWrapped* b);
 // ------------------------------------------------------------
 
-char* inferTypeExpr(struct ST* st, struct Expr* expr){
+struct Type* inferTypeExpr(struct ST* st, struct Expr* expr){
 	
 	if(expr->op == NULL){
 		
@@ -31,8 +35,12 @@ char* inferTypeExpr(struct ST* st, struct Expr* expr){
 		
 	}else{
 		
-		char* type1 = inferTypeUnOpTerm(st, expr->term1);
-		char* type2 = inferTypeUnOpTerm(st, expr->term2);
+		struct Type* type1Orig = inferTypeUnOpTerm(st, expr->term1);
+		struct Type* type2Orig = inferTypeUnOpTerm(st, expr->term2);
+		
+		//string representations
+		char* type1 = typeToStr(type1Orig);
+		char* type2 = typeToStr(type2Orig);
 		
 		if(strcmp(type1, type2) == 0){
 			//both have the same type, 
@@ -42,7 +50,7 @@ char* inferTypeExpr(struct ST* st, struct Expr* expr){
 			//the resulting type if both are the same type
 			//is exactly that type
 			
-			return type1;
+			return type1Orig;
 		}else{
 			
 			//the types are different,
@@ -56,7 +64,7 @@ char* inferTypeExpr(struct ST* st, struct Expr* expr){
 				(strcmp(type1, "Int") == 0
 				&& strcmp(type2, "Float") == 0)
 			){
-				return "Float";
+				return typeFromStr("Float");
 			}else{
 				
 				printf("Fatal Error in inferTypeExpr: could not infer type\n");
@@ -67,13 +75,13 @@ char* inferTypeExpr(struct ST* st, struct Expr* expr){
 	}
 }
 
-char* inferTypeTerm(struct ST* st, struct Term* t){
+struct Type* inferTypeTerm(struct ST* st, struct Term* t){
 	
-	if(t->m1 != NULL){ return "Bool"; }
+	if(t->m1 != NULL){ return typeFromStr("Bool"); }
 	
-	if(t->m2 != NULL){ return "Int"; }
+	if(t->m2 != NULL){ return typeFromStr("Int"); }
 	
-	if(t->m3 != NULL){ return "Char"; }
+	if(t->m3 != NULL){ return typeFromStr("Char"); }
 	
 	if(t->m4 != NULL){ return inferTypeMethodCall(st, t->m4); }
 	
@@ -81,16 +89,16 @@ char* inferTypeTerm(struct ST* st, struct Term* t){
 	
 	if(t->m6 != NULL){ return inferTypeVariable(st, t->m6); }
 	
-	if(t->m7 != NULL){ return "Float"; }
+	if(t->m7 != NULL){ return typeFromStr("Float"); }
 	
-	if(t->m8 != NULL){ return "String"; }
+	if(t->m8 != NULL){ return typeFromStr("String"); }
 	
 	printf("Fatal Error in inferTypeTerm\n");
 	exit(1);
 	return NULL;
 }
 
-char* inferTypeUnOpTerm(struct ST* st, struct UnOpTerm* t){
+struct Type* inferTypeUnOpTerm(struct ST* st, struct UnOpTerm* t){
 	
 	// UnOpTerm means a term prefixed by an unary operator.
 	// currently, such terms retain their original type,
@@ -99,7 +107,7 @@ char* inferTypeUnOpTerm(struct ST* st, struct UnOpTerm* t){
 	return inferTypeTerm(st, t->term);
 }
 
-char* inferTypeMethodCall(struct ST* st, struct MethodCall* m){
+struct Type* inferTypeMethodCall(struct ST* st, struct MethodCall* m){
 
 	//Subroutine Symbol Table
 	struct SST* sst = st->sst;
@@ -109,9 +117,9 @@ char* inferTypeMethodCall(struct ST* st, struct MethodCall* m){
 	return line->returnType;
 }
 
-char* inferTypeVariable(struct ST* st, struct Variable* v){
+struct Type* inferTypeVariable(struct ST* st, struct Variable* v){
 	
-	char* typeOfVar = inferTypeSimpleVar(st, v->simpleVar);
+	struct Type* typeOfVar = inferTypeSimpleVar(st, v->simpleVar);
 	
 	if(v->count_memberAccessList == 0){
 		
@@ -130,7 +138,7 @@ char* inferTypeVariable(struct ST* st, struct Variable* v){
 	}
 }
 
-char* inferTypeSimpleVar(struct ST* st, struct SimpleVar* v){
+struct Type* inferTypeSimpleVar(struct ST* st, struct SimpleVar* v){
 	
 	//as this variable is needed to infer the type
 	//of another variable, it should have been initialized
@@ -141,9 +149,52 @@ char* inferTypeSimpleVar(struct ST* st, struct SimpleVar* v){
 	//if it has an index, we unwrap the type
 	if(v->optIndex != NULL){
 		
-		char* res = malloc(sizeof(char)*32);
-		strncpy(res, (line->type)+1, strlen(line->type)-2);
-		return res;
+		//we get the element type of the type
+		return line->type->m3->element_type;
 	}
 	return line->type;
+}
+
+struct Type* typeFromStr(char* typeName){
+	//this method will only work for simple types
+	struct Type* res = malloc(sizeof(struct Type));
+	
+	struct BasicTypeWrapped* btw = malloc(sizeof(struct BasicTypeWrapped));
+	
+	res->m1 = btw;
+	res->m2 = NULL;
+	res->m2 = NULL;
+	
+	struct SimpleType* st = malloc(sizeof(struct SimpleType));
+	
+	strncpy(st->typeName, typeName, DEFAULT_STR_SIZE);
+	
+	btw->subrType = NULL;
+	btw->simpleType = st;
+	
+	return res;
+}
+
+char* typeToStr(struct Type* t){
+	
+	if(t->m1 != NULL){
+		return typeToStrBasicTypeWrapped(t->m1);
+	}else{
+		printf("(1)currently not implemented (in typeinference.c)\n");
+		exit(1);
+		return NULL;
+	}
+}
+
+char* typeToStrBasicTypeWrapped(struct BasicTypeWrapped* b){
+	
+	if(b->simpleType != NULL){
+		
+		return b->simpleType->typeName;
+		
+	}else{
+		printf("(2)currently not implemented (in typeinference.c)\n");
+		exit(1);
+		return NULL;
+	}
 }

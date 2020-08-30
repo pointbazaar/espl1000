@@ -4,16 +4,20 @@ FLAGS := -march=native -g -Wall
 
 CALL := gcc $(FLAGS)
 
-OBJS := build/transpiler.o build/util.o build/ast_reader.o \
-		build/c_code_gen.o build/code_gen_util.o build/test.o \
-		build/teststatuscode.o \
-		build/test_other.o \
-		build/test_op.o \
-		build/flags.o \
-		build/localvarsymtable.o \
-		build/subrsymtable.o \
-		build/structsymtable.o \
-		build/typeinference.o
+OBJS := build/transpiler.o \
+	build/util.o \
+	build/ast_reader.o \
+	build/c_code_gen.o \
+	build/code_gen_util.o \
+	build/test.o \
+	build/teststatuscode.o \
+	build/test_other.o \
+	build/test_op.o \
+	build/flags.o \
+	build/localvarsymtable.o \
+	build/subrsymtable.o \
+	build/structsymtable.o \
+	build/typeinference.o
 
 all: smalldragon test
 
@@ -41,7 +45,8 @@ build/util.o: ../util/util.c
 build/transpiler.o: main/transpiler.c main/transpiler.h main/c_code_gen.h main/flags.h test/test.h
 	$(CALL) -c main/transpiler.c -o $@
 
-build/c_code_gen.o: main/c_code_gen.c main/ctx.h main/code_gen_util.h main/flags.h
+build/c_code_gen.o: main/c_code_gen.c main/ctx.h \
+		main/code_gen_util.h main/flags.h main/tables/localvarsymtable.h
 	$(CALL) -c main/c_code_gen.c -o $@
 
 build/code_gen_util.o: main/code_gen_util.c main/code_gen_util.h main/ctx.h
@@ -62,16 +67,16 @@ build/test_op.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_op.
 build/typeinference.o: main/typeinference.c main/typeinference.h \
 			main/tables/symtable.h main/tables/subrsymtable.h \
 			main/tables/localvarsymtable.h main/tables/structsymtable.h
-	$(CALL) -c main/typeinference.c
+	$(CALL) -c main/typeinference.c -o $@
 
 
 # ----------- the symbol tables --------------
 
 build/subrsymtable.o: main/tables/subrsymtable.c main/tables/subrsymtable.h
-	$(CALL) -c main/tables/subrsymtable.c
+	$(CALL) -c main/tables/subrsymtable.c -o $@
 
 build/localvarsymtable.o: main/tables/localvarsymtable.c main/tables/localvarsymtable.h
-	$(CALL) -c main/tables/localvarsymtable.c
+	$(CALL) -c main/tables/localvarsymtable.c -o $@
 
 build/structsymtable.o: main/tables/structsymtable.c main/tables/structsymtable.h
-	$(CALL) -c main/tables/structsymtable.c
+	$(CALL) -c main/tables/structsymtable.c -o $@

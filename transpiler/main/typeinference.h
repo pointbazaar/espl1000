@@ -1,9 +1,9 @@
 #ifndef TYPEINFERENCE
 #define TYPEINFERENCE
 
-struct ST;
-struct Expr;
+#include "tables/symtable.h"
+#include "../../ast/ast.h"
 
-char* inferTypeExpr(struct ST* st, struct Expr* expr);
+struct Type* inferTypeExpr(struct ST* st, struct Expr* expr);
 
 #endif

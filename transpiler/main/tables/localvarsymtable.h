@@ -3,7 +3,6 @@
 
 #include "../../../ast/ast.h"
 
-struct LVST;
 struct LVSTLine;
 
 struct LVST {
@@ -23,14 +22,14 @@ struct LVSTLine {
 	//max 32 chars for a local variable identifier
 	char name[32]; 
 	
-	//the literal name of the type, 
-	//e.g. 'PInt', 'MyStruct'
-	char type[32]; 
+	//a reference to the type of the variable
+	struct Type* type; 
 	
 	//the first occurence
 	//in the subroutine
 	//where this local variable was 
-	//assigned
+	//assigned.
+	//can be NULL and is not relevant if isArg == true
 	struct AssignStmt* firstOccur;
 	
 	
@@ -47,7 +46,7 @@ struct LVSTLine {
 
 void freeLVSTLine(struct LVSTLine* l);
 
-struct LVST* makeLocalVarSymTable(struct Method* subr);
+struct LVST* makeLocalVarSymTable(struct Method* subr, bool debug);
 
 //to add a row to the local variable symbol table
 //the lvst works as a set regarding the 'name' of the local variable
