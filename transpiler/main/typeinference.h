@@ -1,10 +1,9 @@
 #ifndef TYPEINFERENCE
 #define TYPEINFERENCE
 
-#include "localvarsymtable.h"
-
+struct ST;
 struct Expr;
 
-char* inferTypeExpr(struct LVST* lsvt, struct Expr* expr);
+char* inferTypeExpr(struct ST* st, struct Expr* expr);
 
 #endif

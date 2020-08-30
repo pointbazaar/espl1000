@@ -1,7 +1,7 @@
-#ifndef LOCALVARSYMTABLE
-#define LOCALVARSYMTABLE
+#ifndef SUBRSYMTABLE
+#define SUBRSYMTABLE
 
-#include "../../ast/ast.h"
+#include "../../../ast/ast.h"
 
 struct SST;
 struct SSTLine;
@@ -29,5 +29,16 @@ struct SSTLine {
 	//comes from the C Standard Library
 	bool isLibC;
 };
+
+// -----------------------
+
+
+struct SST* makeSubrSymTable(struct Namespace* ns);
+
+void freeSSTLine(struct SSTLine* l);
+
+void sst_add(struct SST* sst, struct SSTLine* line);
+
+struct SSTLine* sst_get(struct SST* sst, char* name);
 
 #endif

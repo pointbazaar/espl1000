@@ -12,6 +12,7 @@ OBJS := build/transpiler.o build/util.o build/ast_reader.o \
 		build/flags.o \
 		build/localvarsymtable.o \
 		build/subrsymtable.o \
+		build/structsymtable.o \
 		build/typeinference.o
 
 all: smalldragon test
@@ -40,10 +41,10 @@ build/util.o: ../util/util.c
 build/transpiler.o: main/transpiler.c main/transpiler.h main/c_code_gen.h main/flags.h test/test.h
 	$(CALL) -c main/transpiler.c -o $@
 
-build/c_code_gen.o: main/c_code_gen.c main/code_gen_util.h main/flags.h
+build/c_code_gen.o: main/c_code_gen.c main/ctx.h main/code_gen_util.h main/flags.h
 	$(CALL) -c main/c_code_gen.c -o $@
 
-build/code_gen_util.o: main/code_gen_util.c main/code_gen_util.h
+build/code_gen_util.o: main/code_gen_util.c main/code_gen_util.h main/ctx.h
 	$(CALL) -c main/code_gen_util.c -o $@
 
 build/test.o: test/test.c test/test.h main/transpiler.h main/flags.h test/teststatuscode.h 
@@ -58,11 +59,19 @@ build/test_other.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_
 build/test_op.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_op.h test/suite/test_op.c
 	$(CALL) -c test/suite/test_op.c -o $@
 
-build/localvarsymtable.o: main/localvarsymtable.c main/localvarsymtable.h
-	$(CALL) -c main/localvarsymtable.c
-
-build/typeinference.o: main/typeinference.c main/typeinference.h
+build/typeinference.o: main/typeinference.c main/typeinference.h \
+			main/tables/symtable.h main/tables/subrsymtable.h \
+			main/tables/localvarsymtable.h main/tables/structsymtable.h
 	$(CALL) -c main/typeinference.c
 
-build/subrsymtable.o: main/subrsymtable.c main/subrsymtable.h
-	$(CALL) -c main/subrsymtable.c
+
+# ----------- the symbol tables --------------
+
+build/subrsymtable.o: main/tables/subrsymtable.c main/tables/subrsymtable.h
+	$(CALL) -c main/tables/subrsymtable.c
+
+build/localvarsymtable.o: main/tables/localvarsymtable.c main/tables/localvarsymtable.h
+	$(CALL) -c main/tables/localvarsymtable.c
+
+build/structsymtable.o: main/tables/structsymtable.c main/tables/structsymtable.h
+	$(CALL) -c main/tables/structsymtable.c

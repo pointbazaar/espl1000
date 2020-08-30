@@ -3,10 +3,10 @@
 #include <string.h>
 
 #include "c_code_gen.h"
-#include "code_gen_util.h"
+#include "ctx.h"
 #include "../../util/util.h"
 
-#include "localvarsymtable.h"
+#include "tables/localvarsymtable.h"
 
 // -------------------------------
 

@@ -55,4 +55,8 @@ TODO:
     - http://beza1e1.tuxen.de/articles/faster_than_C.html
     - http://beza1e1.tuxen.de/articles/proglang_mistakes.html
 
-[ ] add C as the primary target language for the smalldragon transpiler.
+[x] add C as the primary target language for the smalldragon transpiler.
+
+[ ] write a test that valgrinds finds no memory leaks when executing all 3 test suites
+
+[ ] write a test that all files in examples/ transpile and compile

@@ -1,7 +1,7 @@
 #ifndef LOCALVARSYMTABLE
 #define LOCALVARSYMTABLE
 
-#include "../../ast/ast.h"
+#include "../../../ast/ast.h"
 
 struct LVST;
 struct LVSTLine;

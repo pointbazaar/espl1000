@@ -162,7 +162,13 @@ void transpileAndCompile(
 		//we chase attiny25 to have it generate less complex instructions
 		strcat(cmd_gcc, "avr-gcc -o main.o -I /usr/share/avra -mmcu=attiny45 ");
 	}else{
-		strcat(cmd_gcc, "gcc -o a.out ");
+		//-Wall enabled so we catch
+		//our transpiler if it generates code
+		//that could cause trouble.
+		//Also serves as feedback for users,
+		//as they smalldragon code could transpile
+		//to C code that causes warnings.
+		strcat(cmd_gcc, "gcc -Wall -o a.out ");
 	}
 	
 	strcat(cmd_gcc, fname_out);

@@ -7,29 +7,32 @@
 
 #include "typeinference.h"
 
-//subroutine declarations
+//include the various symbol tables
+#include "tables/symtable.h"
+#include "tables/localvarsymtable.h"
+#include "tables/subrsymtable.h"
+#include "tables/structsymtable.h"
 
-//TODO: declare the utility subroutines
-//private to this file
+// -- subroutine declarations (private to this compile unit) --
 
-char* inferTypeTerm(struct LVST* lvst, struct Term* term);
-char* inferTypeUnOpTerm(struct LVST* lvst, struct UnOpTerm* t);
-char* inferTypeMethodCall(struct LVST* lvst, struct MethodCall* m);
-char* inferTypeVariable(struct LVST* lvst, struct Variable* v);
-char* inferTypeSimpleVar(struct LVST* lvst, struct SimpleVar* v);
-// -----------------------
+char* inferTypeTerm			(struct ST* st, struct Term* term);
+char* inferTypeUnOpTerm		(struct ST* st, struct UnOpTerm* t);
+char* inferTypeMethodCall	(struct ST* st, struct MethodCall* m);
+char* inferTypeVariable		(struct ST* st, struct Variable* v);
+char* inferTypeSimpleVar	(struct ST* st, struct SimpleVar* v);
+// ------------------------------------------------------------
 
-char* inferTypeExpr(struct LVST* lvst, struct Expr* expr){
+char* inferTypeExpr(struct ST* st, struct Expr* expr){
 	
 	if(expr->op == NULL){
 		
 		//only one term present
-		return inferTypeUnOpTerm(lvst, expr->term1);
+		return inferTypeUnOpTerm(st, expr->term1);
 		
 	}else{
 		
-		char* type1 = inferTypeUnOpTerm(lvst, expr->term1);
-		char* type2 = inferTypeUnOpTerm(lvst, expr->term2);
+		char* type1 = inferTypeUnOpTerm(st, expr->term1);
+		char* type2 = inferTypeUnOpTerm(st, expr->term2);
 		
 		if(strcmp(type1, type2) == 0){
 			//both have the same type, 
@@ -64,7 +67,7 @@ char* inferTypeExpr(struct LVST* lvst, struct Expr* expr){
 	}
 }
 
-char* inferTypeTerm(struct LVST* lvst, struct Term* t){
+char* inferTypeTerm(struct ST* st, struct Term* t){
 	
 	if(t->m1 != NULL){ return "Bool"; }
 	
@@ -72,11 +75,11 @@ char* inferTypeTerm(struct LVST* lvst, struct Term* t){
 	
 	if(t->m3 != NULL){ return "Char"; }
 	
-	if(t->m4 != NULL){ return inferTypeMethodCall(lvst, t->m4); }
+	if(t->m4 != NULL){ return inferTypeMethodCall(st, t->m4); }
 	
-	if(t->m5 != NULL){ return inferTypeExpr(lvst, t->m5); }
+	if(t->m5 != NULL){ return inferTypeExpr(st, t->m5); }
 	
-	if(t->m6 != NULL){ return inferTypeVariable(lvst, t->m6); }
+	if(t->m6 != NULL){ return inferTypeVariable(st, t->m6); }
 	
 	if(t->m7 != NULL){ return "Float"; }
 	
@@ -87,38 +90,39 @@ char* inferTypeTerm(struct LVST* lvst, struct Term* t){
 	return NULL;
 }
 
-char* inferTypeUnOpTerm(struct LVST* lvst, struct UnOpTerm* t){
+char* inferTypeUnOpTerm(struct ST* st, struct UnOpTerm* t){
 	
 	// UnOpTerm means a term prefixed by an unary operator.
 	// currently, such terms retain their original type,
 	// so we can defer to that type
 	
-	return inferTypeTerm(lvst, t->term);
+	return inferTypeTerm(st, t->term);
 }
 
-char* inferTypeMethodCall(struct LVST* lvst, struct MethodCall* m){
+char* inferTypeMethodCall(struct ST* st, struct MethodCall* m){
 
-	//TODO
+	//Subroutine Symbol Table
+	struct SST* sst = st->sst;
 	
-	//MethodCall
-	//TODO: subroutine symbol table is needed
-	//here to determine the type of value
-	//returned by the method
-	//SubrSymTable
+	struct SSTLine* line = sst_get(sst, m->methodName);
 	
-	printf("local variable inference for method calls not yet implemented\n");
-	exit(1);
-	return NULL;
+	return line->returnType;
 }
 
-char* inferTypeVariable(struct LVST* lvst, struct Variable* v){
+char* inferTypeVariable(struct ST* st, struct Variable* v){
+	
+	char* typeOfVar = inferTypeSimpleVar(st, v->simpleVar);
 	
 	if(v->count_memberAccessList == 0){
 		
 		//no member accesses
-		return inferTypeSimpleVar(lvst, v->simpleVar);
+		return typeOfVar;
 		
 	}else{
+		//struct STST* structSymTable = st->stst;
+		
+		//struct STSTLine* line = stst_get(structSymTable, typeOfVar);
+		
 		//TODO
 		printf("local variable inference for variables with member access not yet implemented\n");
 		exit(1);
@@ -126,13 +130,13 @@ char* inferTypeVariable(struct LVST* lvst, struct Variable* v){
 	}
 }
 
-char* inferTypeSimpleVar(struct LVST* lvst, struct SimpleVar* v){
+char* inferTypeSimpleVar(struct ST* st, struct SimpleVar* v){
 	
 	//as this variable is needed to infer the type
 	//of another variable, it should have been initialized
 	//before. so we can pull it's type from the LSVT
 	
-	struct LVSTLine* line = lvst_get(lvst, v->name);
+	struct LVSTLine* line = lvst_get(st->lvst, v->name);
 	
 	//if it has an index, we unwrap the type
 	if(v->optIndex != NULL){
