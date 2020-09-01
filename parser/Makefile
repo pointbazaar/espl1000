@@ -87,7 +87,7 @@ MAIN_DEPS := src/main/commandline/TokenList.h \
 	src/main/commandline/Token.h \
 	$(AST_DEPS)
 
-all: DIRS dragon-parser test 
+all: DIRS dragon-parser test valgrind
 
 DIRS:
 	mkdir -p build/
@@ -97,6 +97,14 @@ clean: DIRS
 
 test: dragon-parser
 	./dragon-parser -test
+
+VALGRIND_OPS := --leak-check=yes --error-exitcode=1 --log-file="/dev/null"
+
+valgrind: dragon-parser
+	rm -f ../examples/loops/.WhileLoop.dg.tokens
+	rm -f ../examples/loops/.WhileLoop.dg.ast
+	dragon-lexer ../examples/loops/WhileLoop.dg
+	valgrind $(VALGRIND_OPS) ./dragon-parser ../examples/loops/WhileLoop.dg
 
 dragon-parser: $(OBJS)
 	$(CALL) -o dragon-parser build/*.o
