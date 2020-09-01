@@ -13,6 +13,10 @@ void sd_print_help(){
 	printf(" -avr		transpile for AVR MCU's (experimental)\n");
 	printf(" -test		run the tests for smalldragon\n");
 	printf(" -debug		print debug statements\n");
+	printf(" -clean		remove intermediary files used for incremental compilation (not yet implemented)\n");
+	printf(" -dumpdot	create a .dot file with the call graph (not yet implemented)\n");
+	printf(" -astdot	create a .dot file with the AST tree (not yet implemented)\n");
+	printf(" -version	print Version Information (not yet implemented)\n");
 	
 	printf("\n");
 	
