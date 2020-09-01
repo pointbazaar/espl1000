@@ -38,7 +38,7 @@ int main(int argc, char* argv[]){
 	if(flags->version){
 		printf("smalldragon v0.0.3\n");
 		printf("built on %s\n", ctime);
-		
+		printf("with gcc %s\n", gccversion);
 		freeFlags(flags);
 		return 0;
 	}

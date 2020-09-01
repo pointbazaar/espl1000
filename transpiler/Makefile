@@ -1,6 +1,6 @@
 #it had -O0 before, but i dont think we need it
 #unless debugging becomes hard when omitting it.
-FLAGS := -march=native -g -Wall -Dctime="\"$$(date)\""
+FLAGS := -march=native -g -Wall -Dctime="\"$$(date)\"" -Dgccversion="\"$$(gcc -dumpfullversion)\""
 
 CALL := gcc $(FLAGS)
 
