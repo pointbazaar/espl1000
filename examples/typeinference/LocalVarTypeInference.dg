@@ -1,0 +1,8 @@
+
+fn main () ~> Int {
+
+
+	a12 = 3;
+
+	printf("%d\n", a12);
+}

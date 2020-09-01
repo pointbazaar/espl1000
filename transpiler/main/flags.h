@@ -24,7 +24,7 @@ struct Flags {
 	int gcc_flags_count;
 };
 
-struct Flags* makeFlags();
+struct Flags* makeFlags(int argc, char** argv);
 
 void freeFlags(struct Flags* flags);
 
