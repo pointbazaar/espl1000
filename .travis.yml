@@ -3,6 +3,7 @@ os: linux
 before_install:
 - pwd
 - cd .
+- sudo apt-get install -y valgrind
 install: pwd
 script: make 
 env:
