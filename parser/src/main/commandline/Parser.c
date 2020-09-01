@@ -170,7 +170,9 @@ void printHelp() {
 	printf("   https://github.com/pointbazaar/dragon-parser/\n\n");
 
 	printf("AUTHOR\n");
-	printf("	alex23667@gmail.com\n\n");
+	printf("	alex23667@gmail.com\n");
+	printf("	David.Milosevic@web.de\n");
+	printf("\n");
 
 	printf("REPORTING BUGS\n");
 	printf("   https://github.com/pointbazaar/dragon/issues\n\n");
