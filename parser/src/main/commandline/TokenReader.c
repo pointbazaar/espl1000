@@ -55,7 +55,7 @@ struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
 		return NULL;
 		//break;
 	}
-	struct Token* r = makeToken2(CCONST,"c");
+	struct Token* r = NULL;
 
 	switch (tkn_id) {
 

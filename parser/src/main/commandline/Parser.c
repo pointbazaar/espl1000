@@ -190,7 +190,10 @@ struct TokenList* readTokensFromTokensFile(char* tokensFile, bool debug){
 		
 		bool isLineNo = false;
 		struct Token* tkn = recognizeToken(line, &isLineNo, debug);
-    	if(isLineNo){ continue; }
+    	if(isLineNo){ 
+			freeToken(tkn);
+			continue; 
+		}
     	
     	if(tkn != NULL){
 			list_add(tks, tkn);
@@ -203,6 +206,8 @@ struct TokenList* readTokensFromTokensFile(char* tokensFile, bool debug){
 		printf("read was successful\n");
 		printf("done recognizing %d tokens\n", list_size(tks));
 	}
+	
+	free(line);
 	return tks;
 }
 
