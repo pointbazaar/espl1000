@@ -101,8 +101,13 @@ void freeNamespace(struct Namespace* ns){
 	for(int i=0;i < ns->count_methods; i++){
 		freeMethod(ns->methods[i]);
 	}
+	
 	for(int i=0;i < ns->count_structs; i++){
 		freeStructDecl(ns->structs[i]);
 	}
+
+	free(ns->methods);
+	free(ns->structs);
+
 	free(ns);
 }

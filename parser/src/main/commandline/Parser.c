@@ -116,6 +116,9 @@ void build_ast_file(char* tokensFile, char* astJsonFile, bool debug) {
 	}
 
 	write_ast(astJsonFile,mynamespace);
+
+	freeNamespace(mynamespace);
+	freeTokenList(tokens);
 }
 
 
@@ -145,6 +148,8 @@ void main_inner(char* tokensFile, bool debug) {
 		strcat(AST_filename, ".ast");
 
 		build_ast_file(tokensFile,AST_filename,debug);
+		free(AST_filename);
+
 	}else {
 		printf("argument file %s does not exist.", tokensFile);
 		exit(1);
@@ -208,6 +213,8 @@ struct TokenList* readTokensFromTokensFile(char* tokensFile, bool debug){
 	}
 	
 	free(line);
+	fclose(file);
+
 	return tks;
 }
 
