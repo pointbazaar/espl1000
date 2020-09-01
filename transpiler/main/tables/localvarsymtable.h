@@ -48,9 +48,6 @@ void freeLVSTLine(struct LVSTLine* l);
 
 struct LVST* makeLocalVarSymTable(struct Method* subr, bool debug);
 
-//to add a row to the local variable symbol table
-//the lvst works as a set regarding the 'name' of the local variable
-void lvst_add(struct LVST* lvst, struct LVSTLine* line);
 
 //obtain a reference to the line for that identifier
 struct LVSTLine* lvst_get(struct LVST* lvst, char* name);

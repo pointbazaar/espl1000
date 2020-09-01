@@ -4,6 +4,8 @@
 
 #include "subrsymtable.h"
 
+// ----------------------------------------
+
 struct SST* makeSubrSymTable(struct Namespace* ns, bool debug){
 	
 	if(debug){ printf("makeSubrSymTable(%p, ...)\n", ns); }
@@ -27,6 +29,20 @@ struct SST* makeSubrSymTable(struct Namespace* ns, bool debug){
 		
 		printf("\tadding '%s' to subroutine symbol table\n", line->name);
 		sst_add(sst, line);
+	}
+	
+	if(debug){
+		//print SST
+		
+		printf("Subroutine Symbol Table (SST)\n");
+		printf("%8s|%8s\n", "name", "isLibC");
+		printf("--------|--------\n");
+		for(int i = 0; i < sst->count; i++){
+			struct SSTLine* line = sst->lines[i];
+			
+			printf("%8s|%8s\n", line->name, (line->isLibC)?"yes":"no");
+		}
+		
 	}
 	
 	return sst;
