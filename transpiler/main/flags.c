@@ -1,10 +1,10 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 
 #include "flags.h"
 
 struct Flags* makeFlags(int argc, char** argv){
+	
 	struct Flags* flags = malloc(sizeof(struct Flags));
 	
 	flags->debug = false;
@@ -12,9 +12,9 @@ struct Flags* makeFlags(int argc, char** argv){
 	flags->test = false;
 	flags->help = false;
 	
-	//if there are more than 100, it can exit
-	const int gcc_flags_max = 100;
-	flags->gcc_flags = malloc(sizeof(char*)*gcc_flags_max);
+	
+	int gcc_flags_capacity = 100;
+	flags->gcc_flags = malloc(sizeof(char*)*gcc_flags_capacity);
 	flags->gcc_flags_count = 0;
 	
 	for(int i=1; i < argc; i++){
@@ -33,10 +33,14 @@ struct Flags* makeFlags(int argc, char** argv){
 			flags->gcc_flags[flags->gcc_flags_count] = arg;
 			flags->gcc_flags_count++;
 			
-			if(flags->gcc_flags_count > gcc_flags_max){
-				printf("Exceeded max amount");
-				printf(" of gcc flags to pass through.\n");
-				exit(1);
+			if(flags->gcc_flags_count >= gcc_flags_capacity){
+				
+				gcc_flags_capacity *= 2;
+				
+				flags->gcc_flags = realloc(
+					flags->gcc_flags, 
+					sizeof(char*) * gcc_flags_capacity
+				);
 			}	
 		}
 	}
