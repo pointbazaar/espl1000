@@ -24,10 +24,10 @@ struct Flags* makeFlags(int argc, char** argv){
 			continue;
 		}
 		
-			  if(strcmp(arg, FDEBUG) == 0){ flags->debug = true;
-		}else if(strcmp(arg, FTEST)  == 0){ flags->test = true;
-		}else if(strcmp(arg, FAVR )  == 0){ flags->avr = true;
-		}else if(strcmp(arg, FHELP )  == 0){ flags->help = true;
+			  if(strcmp(arg, "-debug") == 0){ flags->debug = true;
+		}else if(strcmp(arg, "-test" )  == 0){ flags->test = true;
+		}else if(strcmp(arg, "-avr"  )  == 0){ flags->avr = true;
+		}else if(strcmp(arg, "-help" )  == 0){ flags->help = true;
 		}else{
 			//pass this flag when calling gcc
 			flags->gcc_flags[flags->gcc_flags_count] = arg;
