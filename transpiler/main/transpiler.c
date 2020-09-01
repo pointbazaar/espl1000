@@ -9,6 +9,7 @@
 
 #include "c_code_gen.h"
 #include "flags.h"
+#include "help.h"
 
 #include "transpiler.h"
 
@@ -33,6 +34,7 @@ int main(int argc, char* argv[]){
 			      if(strcmp(arg, FDEBUG) == 0){ flags->debug = true;
 			}else if(strcmp(arg, FTEST)  == 0){ flags->test = true;
 			}else if(strcmp(arg, FAVR )  == 0){ flags->avr = true;
+			}else if(strcmp(arg, FHELP )  == 0){ flags->help = true;
 			}else{
 				//pass this flag when calling gcc
 				flags->gcc_flags[flags->gcc_flags_count] = arg;
@@ -50,12 +52,21 @@ int main(int argc, char* argv[]){
 		}
 	}
 	
+	if(flags->help){
+		sd_print_help();
+		return 0;
+		freeFlags(flags);
+	}
+	
 	if(flags->debug){
+		//TODO: pull the version from some variable
+		//in the Makefile or something
 		printf("smalldragon v0.01\n");
 	}
 	
 	if(flags->test){
 		int status = transpiler_test_all(flags->debug);
+		freeFlags(flags);
 		return status;
 	}
 	

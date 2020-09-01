@@ -7,8 +7,8 @@ struct Flags* makeFlags(){
 	flags->debug = false;
 	flags->avr = false;
 	flags->test = false;
+	flags->help = false;
 	
-	//flags->gcc_flags = 
 	flags->gcc_flags_count = 0;
 	
 	return flags;
@@ -16,7 +16,6 @@ struct Flags* makeFlags(){
 
 void freeFlags(struct Flags* flags){
 	
-	//flags->gcc_flags_count;
 	free(flags->gcc_flags);
 	free(flags);
 }

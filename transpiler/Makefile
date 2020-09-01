@@ -17,7 +17,8 @@ OBJS := build/transpiler.o \
 	build/localvarsymtable.o \
 	build/subrsymtable.o \
 	build/structsymtable.o \
-	build/typeinference.o
+	build/typeinference.o \
+	build/help.o
 
 all: smalldragon test
 
@@ -42,7 +43,7 @@ build/ast_reader.o: ../ast/ast_reader.c
 build/util.o: ../util/util.c
 	$(CALL) -c ../util/util.c -o $@
 
-build/transpiler.o: main/transpiler.c main/transpiler.h main/c_code_gen.h main/flags.h test/test.h
+build/transpiler.o: main/transpiler.c main/transpiler.h main/c_code_gen.h main/flags.h test/test.h main/help.h
 	$(CALL) -c main/transpiler.c -o $@
 
 build/c_code_gen.o: main/c_code_gen.c main/ctx.h \
@@ -69,6 +70,8 @@ build/typeinference.o: main/typeinference.c main/typeinference.h \
 			main/tables/localvarsymtable.h main/tables/structsymtable.h
 	$(CALL) -c main/typeinference.c -o $@
 
+build/help.o: main/help.c main/help.h
+	$(CALL) -c main/help.c -o $@
 
 # ----------- the symbol tables --------------
 
