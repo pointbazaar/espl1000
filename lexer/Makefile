@@ -10,13 +10,18 @@ COMMON_RELEASE := build/release/strutils.o \
 	build/release/init_dfa.o \
 	build/release/test.o
 
-all: directories dragon-lexer test 
+all: directories dragon-lexer test valgrind
 
 clean:
 	rm -f build/release/*.o
 
 test: dragon-lexer
 	./dragon-lexer -test
+
+valgrind: dragon-lexer
+	rm -f ../examples/loops/.WhileLoop.dg.tokens
+	valgrind --log-file="/dev/null" ./dragon-lexer ../examples/loops/WhileLoop.dg
+	rm -f ../examples/loops/.WhileLoop.dg.tokens
 
 directories: build/release
 
