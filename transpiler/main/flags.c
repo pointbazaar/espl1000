@@ -7,10 +7,11 @@ struct Flags* makeFlags(int argc, char** argv){
 	
 	struct Flags* flags = malloc(sizeof(struct Flags));
 	
-	flags->debug = false;
-	flags->avr = false;
-	flags->test = false;
-	flags->help = false;
+	flags->debug 	= false;
+	flags->avr		= false;
+	flags->test 	= false;
+	flags->help 	= false;
+	flags->version 	= false;
 	
 	
 	int gcc_flags_capacity = 100;
@@ -24,10 +25,11 @@ struct Flags* makeFlags(int argc, char** argv){
 			continue;
 		}
 		
-			  if(strcmp(arg, "-debug") == 0){ flags->debug = true;
-		}else if(strcmp(arg, "-test" )  == 0){ flags->test = true;
-		}else if(strcmp(arg, "-avr"  )  == 0){ flags->avr = true;
-		}else if(strcmp(arg, "-help" )  == 0){ flags->help = true;
+			  if(strcmp(arg, "-debug"  ) == 0){ flags->debug = true;
+		}else if(strcmp(arg, "-test"   ) == 0){ flags->test = true;
+		}else if(strcmp(arg, "-avr"    ) == 0){ flags->avr = true;
+		}else if(strcmp(arg, "-help"   ) == 0){ flags->help = true;
+		}else if(strcmp(arg, "-version") == 0){ flags->version = true;
 		}else{
 			//pass this flag when calling gcc
 			flags->gcc_flags[flags->gcc_flags_count] = arg;

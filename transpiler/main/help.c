@@ -16,7 +16,7 @@ void sd_print_help(){
 	printf(" -clean		remove intermediary files used for incremental compilation (not yet implemented)\n");
 	printf(" -dumpdot	create a .dot file with the call graph (not yet implemented)\n");
 	printf(" -astdot	create a .dot file with the AST tree (not yet implemented)\n");
-	printf(" -version	print Version Information (not yet implemented)\n");
+	printf(" -version	print Version Information\n");
 	
 	printf("\n");
 	

@@ -20,25 +20,27 @@ int main(int argc, char* argv[]){
 	struct Flags* flags = makeFlags(argc, argv);
 	
 	for(int i=1; i < argc; i++){
-		char* arg = argv[i];
-		if(arg[0] == '-'){
-			//arg is a flag
-			//do nothing
-		}else{
-			filename = arg;
+		
+		if(argv[i][0] != '-'){
+			
+			filename = argv[i];
 		}
 	}
 	
+	
+	
 	if(flags->help){
 		sd_print_help();
-		return 0;
 		freeFlags(flags);
+		return 0;
 	}
 	
-	if(flags->debug){
-		//TODO: pull the version from some variable
-		//in the Makefile or something
-		printf("smalldragon v0.01\n");
+	if(flags->version){
+		printf("smalldragon v0.0.3\n");
+		printf("built on %s\n", ctime);
+		
+		freeFlags(flags);
+		return 0;
 	}
 	
 	if(flags->test){
@@ -49,6 +51,7 @@ int main(int argc, char* argv[]){
 	
 	if(filename == NULL){
 		printf("expected at least 1 filename\n");
+		freeFlags(flags);
 		exit(1);
 	}
 	

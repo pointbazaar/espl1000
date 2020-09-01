@@ -8,6 +8,7 @@ struct Flags {
 	bool test;
 	bool avr;
 	bool help;
+	bool version;
 	//----------
 	char** gcc_flags;
 	int gcc_flags_count;
