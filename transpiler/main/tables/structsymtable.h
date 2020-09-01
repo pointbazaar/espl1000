@@ -22,4 +22,6 @@ struct STST {
 	unsigned int capacity;
 };
 
+struct STST* makeStructSymTable(struct Namespace* ns, bool debug);
+
 #endif

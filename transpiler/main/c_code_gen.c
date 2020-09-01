@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <assert.h> //for runtime assertions
+
 #include "c_code_gen.h"
 #include "ctx.h"
 #include "code_gen_util.h"
@@ -72,14 +74,16 @@ void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx);
 
 void transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Flags* flags){
 	
-	bool debug = flags->debug;
+	assert(filename != NULL);
+	assert(ast != NULL);
+	assert(flags != NULL);
 	
-	if(debug){ printf("transpileAndWrite(...)\n"); }
+	if(flags->debug){ printf("transpileAndWrite(...)\n"); }
 
 	struct Ctx* ctx = smalloc(sizeof(struct Ctx));
 	ctx->tables = smalloc(sizeof(struct ST));
 
-	if(debug){
+	if(flags->debug){
 		printf("SET ctx->file\n");
 	}
 
@@ -87,10 +91,12 @@ void transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 
 	if(ctx->file == NULL){
 		printf("could not open output file: %s\n", filename);
+		free(ctx->tables);
+		free(ctx);
 		exit(1);
 	}
 	
-	if(debug){
+	if(flags->debug){
 		printf("SET ctx->flags\n");
 		printf("SET ctx->indentLevel\n");
 	}
@@ -102,7 +108,7 @@ void transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 
 	fclose(ctx->file);
 	
-	if(debug){ printf("transpileAndWrite(...) DONE\n"); }
+	if(flags->debug){ printf("transpileAndWrite(...) DONE\n"); }
 }
 
 void transpileAST(struct AST_Whole_Program* ast, struct Ctx* ctx){
@@ -132,15 +138,11 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileNamespace(...)\n"); }
 	
-	//populate ctx->tables->sst
-	if(ctx->flags->debug){
-		printf("SET ctx->tables->sst\n");
-	}
+	if(ctx->flags->debug){ printf("SET ctx->tables->sst\n"); }
 	ctx->tables->sst = makeSubrSymTable(ns, ctx->flags->debug);
 	
-	//populate ctx->tables->stst
-	//TODO:
-	ctx->tables->stst = NULL;
+	if(ctx->flags->debug){ printf("SET ctx->tables->stst\n"); }
+	ctx->tables->stst = makeStructSymTable(ns, ctx->flags->debug);
 	
 	//lvst gets populated later
 	ctx->tables->lvst = NULL;
@@ -351,8 +353,11 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 		
 	}else{
 		//find type via local variable symbol table
+		assert(ctx->tables->lvst != NULL);
 		
 		struct LVSTLine* line = lvst_get(ctx->tables->lvst, as->var->simpleVar->name);
+		
+		assert(line != NULL);
 		
 		if(line->firstOccur == as){
 			
