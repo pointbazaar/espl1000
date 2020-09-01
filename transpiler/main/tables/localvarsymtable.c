@@ -46,7 +46,7 @@ struct LVST* makeLocalVarSymTable(struct Method* subr, bool debug){
 		
 		struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
 		
-		strncpy(line->name, name, 32);
+		strncpy(line->name, name, DEFAULT_STR_SIZE);
 		line->type = type;
 		line->isArg = true;
 		line->firstOccur = NULL;
@@ -60,6 +60,10 @@ struct LVST* makeLocalVarSymTable(struct Method* subr, bool debug){
 	//fill lvst with the local variables
 	//in the function body
 	discoverLVStmtBlock(lvst, subr->block);
+	
+	if(debug){
+		printf("done constructing LVST\n");
+	}
 	
 	return lvst;
 }

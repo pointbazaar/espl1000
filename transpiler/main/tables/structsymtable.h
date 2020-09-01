@@ -1,11 +1,14 @@
 #ifndef STRUCTSYMTABLE
 #define STRUCTSYMTABLE
 
+//to include DEFAULT_STR_SIZE
+#include "../../../ast/ast.h"
+
 //TODO: finish the implementation 
 
 struct STSTLine {
 	
-	char name[32];
+	char name[DEFAULT_STR_SIZE];
 	
 };
 

@@ -19,8 +19,8 @@ struct LVSTLine {
 	//a line in the 'local variable symbol table'
 	//name, type, struct AssignStmt* firstOccur
 	
-	//max 32 chars for a local variable identifier
-	char name[32]; 
+	//local variable identifier
+	char name[DEFAULT_STR_SIZE]; 
 	
 	//a reference to the type of the variable
 	struct Type* type; 

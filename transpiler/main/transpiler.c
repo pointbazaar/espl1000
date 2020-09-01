@@ -142,7 +142,7 @@ void transpileAndCompile(
 	//parse AST
 	struct AST_Whole_Program* ast = readAST(ast_filename, flags->debug);
 
-	char fname_out[32]; //new output filename
+	char fname_out[DEFAULT_STR_SIZE]; //new output filename
 
 	strcpy(fname_out, filename);
 	//remove the '.dg'

@@ -9,7 +9,7 @@ struct SSTLine {
 	//Subroutine Symbol Table Line
 	
 	//the name of the subroutine
-	char name[32]; 
+	char name[DEFAULT_STR_SIZE]; 
 	
 	//a reference to the type being returned
 	struct Type* returnType; 
