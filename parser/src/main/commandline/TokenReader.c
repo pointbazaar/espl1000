@@ -7,6 +7,8 @@
 #include "TokenKeys.h"
 #include "Token.h"
 
+struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2);
+
 struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
 	//parses the token, as encoded by the lexer
 	//everything being seperated by a space, and the whole line not
@@ -53,10 +55,20 @@ struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
 		line_no += line_no_change;
 		*isLineNo = true;
 		return NULL;
-		//break;
 	}
-	struct Token* r = NULL;
+	
 
+	struct Token* r = recognizeTokenInner(tkn_id, tkn, part2);
+
+	r->lineNumber = line_no;
+
+	return r;
+}
+
+struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
+	
+	struct Token* r = NULL;
+	
 	switch (tkn_id) {
 
 		case STRINGCONST : 
@@ -176,8 +188,5 @@ struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
 			//("unreconized token id : " + tkn_id);
 			return NULL;
 	};
-
-	r->lineNumber = line_no;
-
 	return r;
 }
