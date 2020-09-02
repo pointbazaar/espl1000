@@ -20,13 +20,18 @@ OBJS := build/transpiler.o \
 	build/typeinference.o \
 	build/help.o
 
-all: smalldragon test
+all: smalldragon test valgrind
 
 clean: 
 	rm -f build/*.o
 
 test: sd
 	./sd -test
+
+VALGRIND_OPS := --leak-check=yes --error-exitcode=1 --log-file="/dev/null"
+
+valgrind: sd
+	valgrind $(VALGRIND_OPS) ./sd ../examples/loops/WhileLoop.dg
 
 smalldragon: dir $(OBJS)
 	$(CALL) -o sd build/*.o
