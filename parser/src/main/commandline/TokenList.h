@@ -7,11 +7,7 @@
 
 #include "Token.h"
 
-//the TokenList should only ever be
-//accessed by the methods provided
-
 struct TokenList {
-
 	//relative path of the source file
 	//this is part of the struct and not a 'char*'
 	//on purpose. to reduce indirection
@@ -35,7 +31,6 @@ struct TokenList {
 
 	//token count
 	uint16_t tokensc; //private
-
 };
 
 struct TokenList* makeTokenList();

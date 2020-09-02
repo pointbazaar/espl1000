@@ -7,13 +7,11 @@
 //TODO: finish the implementation 
 
 struct STSTLine {
-	
 	char name[DEFAULT_STR_SIZE];
 	
 };
 
 struct STST {
-	
 	//STruct Symbol Table
 	
 	struct STSTLine** lines;

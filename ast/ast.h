@@ -86,7 +86,6 @@ struct StringConst {
 	char value[100];
 };
 struct Method {
-
 	bool isPublic;
 	bool hasSideEffects;
 

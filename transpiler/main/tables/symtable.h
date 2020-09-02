@@ -2,7 +2,6 @@
 #define SYMTABLE
 
 struct ST {
-	
 	//struct SymTable
 	//this structure is an indirection and abstraction
 	//for the 3 main symbol tables:

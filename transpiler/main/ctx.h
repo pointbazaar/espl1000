@@ -13,7 +13,6 @@
  * tasked with transpiling an AST node.
  */
 struct Ctx {
-	
 	FILE* file;
 	uint8_t indentLevel;
 	
