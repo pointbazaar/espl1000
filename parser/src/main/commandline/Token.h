@@ -6,13 +6,10 @@
 #include <inttypes.h>
 
 struct Token {
-
-	/*
-	 -- FIELDS --
-	 - Kind 	(the kind of token, for example RPARENS)
-	 - Value	(for example "subr" for an identifier)
-	*/
+	//Kind 	(the kind of token, for example RPARENS)
 	uint16_t kind;
+	
+	//Value	(for example "subr" for an identifier)
 	uint32_t lineNumber;
 
 	//this is intentionally not a 'char*'

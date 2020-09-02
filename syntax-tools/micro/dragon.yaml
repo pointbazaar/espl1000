@@ -8,7 +8,7 @@ rules:
 
     - statement: "\\b(return)\\b"
     - statement.control: "\\b(if|else|while|loop)\\b"
-    
+
     - special: "\\b(fn|struct)\\b"
 
     - identifier: "\\b[a-z][A-Za-z0-9]*\\b"
@@ -22,7 +22,7 @@ rules:
     - symbol.operator: "\\b(\\<|\\>|\\<=|\\>=)\\b"
     #arrows
     - symbol.operator: "\\b(->|-->|~>|~~>|=>|==>)\\b"
-    
+ 
     - constant.bool: "\\b(true|false)\\b"
     - constant.number: "\\b[0-9]+\\b"
     - constant.string:
@@ -31,10 +31,10 @@ rules:
             skip: "\\\\."
             rules:
                 - constant.specialChar: "\\\\."
-                
+ 
     - comment.line: "//.*"
 
-    - comment: 
+    - comment:
         start: "/\\*"
         end: "\\*/"
         rules: []
