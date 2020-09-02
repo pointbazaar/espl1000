@@ -84,22 +84,19 @@ struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 
 		//CONSTANTS
 		case BCONST : 
-			r = makeToken2(BCONST, part2);
-			break;
 		case FLOATING : 
-			;
-			r = makeToken2(FLOATING, part2);
-			break;
 		case INTEGER : 
-			r = makeToken2(INTEGER, part2);
-			break;
-
+		//BRACKETS, BRACES, PARENTHESES
+		case LBRACKET : 
+		case RBRACKET : 
+		case LPARENS : 
+		case RPARENS : 
+		case LCURLY : 
+		case RCURLY : 
 		//IDENTIFIERS
 		case ID : 
-			r = makeToken2(ID,part2);
-			break;
 		case TYPEIDENTIFIER : 
-			r = makeToken2(TYPEIDENTIFIER,part2);
+			r = makeToken2(tkn_id,part2);
 			break;
 
 		//SECTION: OPERATORNS
@@ -110,52 +107,25 @@ struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 			break;
 
 		case EQ : 
-			r = makeToken2(EQ,"=");
+			r = makeToken2(tkn_id,"=");
 			break;
 
 		case STRUCTMEMBERACCESS : 
-			r = makeToken2(STRUCTMEMBERACCESS,".");
+			r = makeToken2(tkn_id,".");
 			break;
 
 		case TPARAM : 
-			r = makeToken2(TPARAM, part2);
-			break;
-
-		//BRACKETS, BRACES, PARENTHESES
-		case LBRACKET : 
-			r = makeToken2(LBRACKET,"[");
-			break;
-		case RBRACKET : 
-			r = makeToken2(RBRACKET,"]");
-			break;
-
-		case LPARENS : 
-			r = makeToken2(LPARENS,"(");
-			break;
-		case RPARENS : 
-			r = makeToken2(RPARENS,")");
-			break;
-
-		case LCURLY : 
-			r = makeToken2(LCURLY,"{");
-			break;
-		case RCURLY : 
-			r = makeToken2(RCURLY,"}");
+			r = makeToken2(tkn_id, part2);
 			break;
 
 		case WAVE : 
-			r = makeToken2(WAVE,"~");
+			r = makeToken2(tkn_id,"~");
 			break;
 
 		case SEMICOLON : 
-			r = makeToken2(SEMICOLON,";");
-			break;
-
 		case COMMA : 
-			r = makeToken2(COMMA,",");
-			break;
 		case ARROW : 
-			r = makeToken2(ARROW,part2);
+			r = makeToken2(tkn_id, part2);
 			break;
 
 		//KEYWORDS
