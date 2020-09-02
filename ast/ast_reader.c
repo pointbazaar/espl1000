@@ -110,7 +110,8 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	}
 	
 	//read structs
-	count = fscanf(file, "%hd\t", &(ns->count_structs));
+	int count_structs = 0;
+	count = fscanf(file, "%d\t", &count_structs);
 	
 	if(count != 1){
 		fclose(file);
@@ -119,6 +120,8 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 		exit(1);
 	}
 	
+	ns->count_structs = count_structs;
+	
 	if(debug){
 		printf("reading %hd Structs\n", ns->count_structs);
 	}
@@ -126,8 +129,7 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	ns->structs = smalloc(sizeof(struct StructDecl*)*(ns->count_structs));
 	for(int i=0;i < ns->count_structs; i++){
 		
-		struct StructDecl* s = readStructDecl(file, debug);
-		ns->structs[i] = s;
+		ns->structs[i] = readStructDecl(file, debug);
 	}
 	
 	if(debug){ printf("done\n"); }
@@ -178,18 +180,22 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 	
 	struct StructDecl* res = smalloc(sizeof(struct StructDecl));
 	
+	int count_members = 0;
+	
 	if(
 		fscanf(
 			file, 
-			"StructDecl\t%s\t%hd\t", 
+			"StructDecl\t%s\t%d\t", 
 			res->name, 
-			&(res->count_members)
+			&(count_members)
 		) != 2
 	){
 		printf("Error reading StructDecl\n");
 		free(res);
 		exit(1);
 	}
+	
+	res->count_members = count_members;
 	
 	res->members = smalloc(sizeof(struct StructMember*)*res->count_members);
 	for(int i=0;i < res->count_members;i++){
@@ -417,19 +423,21 @@ struct Variable* readVariable(FILE* file, bool debug){
 	struct Variable* v = smalloc(sizeof(struct Variable));
 
 	v->simpleVar = readSimpleVar(file, debug);
-	int memberAccessCount = 0;
 	
-	if(fscanf(file, "%d\t", &memberAccessCount) != 1){
+	int count = 0;
+	if(fscanf(file, "%d\t", &count) != 1){
 		printf("Error reading Variable 2\n");
-		
 		free(v);
 		exit(1);
 	}
+	
 
-	v->memberAccessList = smalloc(sizeof(struct SimpleVar*)*memberAccessCount);
-	for(int i=0;i<memberAccessCount;i++){
+	v->memberAccessList = smalloc(sizeof(struct SimpleVar*)  * count);
+	for(int i = 0;i < count; i++){
 		v->memberAccessList[i] = readVariable(file, debug);
 	}
+	
+	v->count_memberAccessList = count;
 	return v;
 }
 struct SimpleVar* readSimpleVar(FILE* file, bool debug){

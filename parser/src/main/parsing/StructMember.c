@@ -9,6 +9,7 @@
 #include "typenodes/Type.h"
 #include "Identifier.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 
@@ -44,7 +45,3 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 	return res;
 }
 
-void freeStructMember(struct StructMember* sm){
-	freeType(sm->type);
-	free(sm);
-}

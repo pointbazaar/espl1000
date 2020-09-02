@@ -48,6 +48,7 @@ void freeLVSTLine(struct LVSTLine* l);
 
 struct LVST* makeLocalVarSymTable(struct Method* subr, bool debug);
 
+void freeLocalVarSymTable(struct LVST* lvst);
 
 //obtain a reference to the line for that identifier
 struct LVSTLine* lvst_get(struct LVST* lvst, char* name);

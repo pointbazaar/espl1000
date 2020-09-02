@@ -9,6 +9,7 @@
 #include "../commandline/TokenKeys.h"
 #include "../commandline/TokenList.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 
@@ -78,12 +79,3 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
-void freeVariable(struct Variable* var){
-	
-	freeSimpleVar(var->simpleVar);
-	for(int i=0;i < var->count_memberAccessList; i++){
-		freeVariable(var->memberAccessList[i]);
-	}
-	free(var->memberAccessList);
-	free(var);
-}

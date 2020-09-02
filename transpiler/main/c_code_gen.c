@@ -111,6 +111,10 @@ bool transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 
 	fclose(ctx->file);
 	
+	//free ctx struct
+	free(ctx->tables);
+	free(ctx);
+	
 	if(flags->debug){ printf("transpileAndWrite(...) DONE\n"); }
 	return true;
 }
@@ -152,7 +156,12 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	ctx->tables->lvst = NULL;
 	
 	//write struct forward declarations
+	assert(ns->structs != NULL);
+	assert(ns->count_structs >= 0);
+	
 	for(int i=0;i < ns->count_structs; i++){
+		assert(ns->structs[i] != NULL);
+		
 		fprintf(ctx->file, "struct %s;\n", ns->structs[i]->name);
 	}
 
@@ -170,6 +179,11 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	for(int i=0; i < ns->count_methods; i++){
 		transpileMethod(ns->methods[i], ctx);
 	}
+	
+	freeSubrSymTable(ctx->tables->sst);
+	ctx->tables->sst = NULL;
+	freeStructSymTable(ctx->tables->stst);
+	ctx->tables->stst = NULL;
 }
 
 void transpileStructDecl(struct StructDecl* s, struct Ctx* ctx){
@@ -206,6 +220,9 @@ void transpileMethod(struct Method* m, struct Ctx* ctx){
 	transpileMethodSignature(m, ctx);
 
 	transpileStmtBlock(m->block, ctx);
+	
+	freeLocalVarSymTable(ctx->tables->lvst);
+	ctx->tables->lvst = NULL;
 }
 
 void transpileMethodSignature(struct Method* m, struct Ctx* ctx){

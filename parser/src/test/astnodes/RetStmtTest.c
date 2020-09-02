@@ -3,6 +3,7 @@
 #include "../../main/commandline/TokenKeys.h"
 #include "../../main/commandline/Token.h"
 #include "../../main/parsing/statements/RetStmt.h"
+#include "../../../../ast/free_ast.h"
 
 #include <stdio.h>
 #include <stdbool.h>

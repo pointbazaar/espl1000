@@ -6,6 +6,7 @@
 #include "Namespace.h"
 #include "../commandline/TokenList.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct AST_Whole_Program* makeAST_Whole_Program(struct Namespace* myNamespace) {
 	//utility method, to facilitate creating AST_Whole_Program from a single namespace node
@@ -40,13 +41,4 @@ struct AST_Whole_Program* makeAST_Whole_Program3(struct TokenList* tokens, char*
 	}
 
 	return res;
-}
-
-void freeAST_Whole_Program(struct AST_Whole_Program* ast){
-	
-	for(int i=0;i < ast->count_namespaces;i++){
-		freeNamespace(ast->namespaces[i]);
-	}
-	free(ast->namespaces);
-	free(ast);
 }

@@ -8,6 +8,7 @@
 #include "../commandline/TokenKeys.h"
 #include "../commandline/Token.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct StmtBlock* makeStmtBlock(struct TokenList* tokens, bool debug){
 	
@@ -72,11 +73,4 @@ struct StmtBlock* makeStmtBlock(struct TokenList* tokens, bool debug){
 	return res;
 }
 
-void freeStmtBlock(struct StmtBlock* block){
-	
-	for(int i=0;i < block->count;i++){
-		freeStmt(block->stmts[i]);
-	}
-	free(block->stmts);
-	free(block);
-}
+

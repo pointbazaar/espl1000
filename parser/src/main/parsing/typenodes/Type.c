@@ -8,6 +8,7 @@
 #include "TypeParam.h"
 #include "BasicTypeWrapped.h"
 #include "../../../../../util/util.h"
+#include "../../../../../ast/free_ast.h"
 
 struct Type* makeType_1(struct BasicTypeWrapped* typeNode){
 
@@ -79,14 +80,4 @@ struct Type* makeType2(struct TokenList* tokens, bool debug){
 	return res;
 }
 
-void freeType(struct Type* t){
-	
-	if(t->m1 != NULL){
-		freeBasicTypeWrapped(t->m1);
-	}else if(t->m2 != NULL){
-		freeTypeParam(t->m2);
-	}else if(t->m3 != NULL){
-		freeArrayType(t->m3);
-	}
-	free(t);
-}
+

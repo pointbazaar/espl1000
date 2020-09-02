@@ -3,6 +3,7 @@
 #include "../../main/commandline/TokenKeys.h"
 #include "../../main/commandline/Token.h"
 #include "../../main/parsing/StructMember.h"
+#include "../../../../ast/free_ast.h"
 
 #include <string.h>
 #include <stdio.h>

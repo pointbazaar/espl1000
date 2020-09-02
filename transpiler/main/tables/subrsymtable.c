@@ -48,6 +48,15 @@ struct SST* makeSubrSymTable(struct Namespace* ns, bool debug){
 	return sst;
 }
 
+void freeSubrSymTable(struct SST* sst){
+	
+	for(int i = 0; i < sst->count; i++){
+		freeSSTLine(sst->lines[i]);
+	}
+	free(sst->lines);
+	free(sst);
+}
+
 void freeSSTLine(struct SSTLine* l){
 	
 	free(l);

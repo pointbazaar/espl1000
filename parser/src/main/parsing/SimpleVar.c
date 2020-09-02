@@ -9,6 +9,7 @@
 #include "../commandline/TokenList.h"
 #include "Expr.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 
@@ -82,12 +83,3 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 
 	return res;
 }
-
-void freeSimpleVar(struct SimpleVar* sv){
-	
-	if(sv->optIndex != NULL){
-		freeExpr(sv->optIndex);
-	}
-	free(sv);
-}
-

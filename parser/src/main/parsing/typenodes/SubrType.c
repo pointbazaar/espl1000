@@ -8,6 +8,7 @@
 #include "../../commandline/Token.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../../../../util/util.h"
+#include "../../../../../ast/free_ast.h"
 
 struct SubrType* makeSubrType2(struct Type* return_type, bool hasSideEffects){
 	
@@ -109,11 +110,3 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 	return res;
 }
 
-void freeSubrType(struct SubrType* st){
-	freeType(st->returnType);
-	for(int i=0;i < st->count_argTypes; i++){
-		freeType(st->argTypes[i]);
-	}
-	free(st->argTypes);
-	free(st);
-}

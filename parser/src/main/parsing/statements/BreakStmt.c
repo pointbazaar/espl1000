@@ -7,6 +7,7 @@
 #include "../../commandline/TokenList.h"
 #include "Stmt.h"
 #include "../../../../../util/util.h"
+#include "../../../../../ast/free_ast.h"
 
 struct BreakStmt* makeBreakStmt(struct TokenList* tokens, bool debug) {
 
@@ -41,8 +42,4 @@ struct BreakStmt* makeBreakStmt(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
-void freeBreakStmt(struct BreakStmt* b){
-	
-	free(b);
-}
 

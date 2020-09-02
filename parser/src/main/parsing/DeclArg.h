@@ -7,6 +7,5 @@
 
 struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug);
 
-void freeDeclArg(struct DeclArg* da);
 
 #endif

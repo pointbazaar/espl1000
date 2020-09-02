@@ -6,6 +6,4 @@ struct TokenList;
 
 struct StructMember* makeStructMember(struct TokenList* tokens, bool debug);
 
-void freeStructMember(struct StructMember* sm);
-
 #endif

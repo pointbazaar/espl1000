@@ -10,9 +10,9 @@ struct ST {
 	// - SST (subroutine symbol table)
 	// - STST (struct symbol table)
 	
-	struct LVST* lvst;
-	struct SST* sst;
-	struct STST* stst;
+	struct LVST* lvst; //may be NULL
+	struct SST* sst; //may be NULL
+	struct STST* stst; //may be NULL
 };
 
 #endif

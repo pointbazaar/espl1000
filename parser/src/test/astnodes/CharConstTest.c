@@ -5,6 +5,7 @@
 #include "../../main/commandline/Token.h"
 
 #include "../../main/parsing/CharConst.h"
+#include "../../../../ast/free_ast.h"
 
 #include <stdio.h>
 

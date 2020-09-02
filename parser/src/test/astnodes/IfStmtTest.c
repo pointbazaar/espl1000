@@ -4,6 +4,7 @@
 #include "../../main/commandline/Token.h"
 #include "../../main/parsing/statements/IfStmt.h"
 #include "../../main/parsing/Expr.h"
+#include "../../../../ast/free_ast.h"
 
 #include <stdio.h>
 #include <stdbool.h>

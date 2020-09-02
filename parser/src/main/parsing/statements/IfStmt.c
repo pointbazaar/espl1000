@@ -8,6 +8,7 @@
 #include "../Expr.h"
 #include "Stmt.h"
 #include "../../../../../util/util.h"
+#include "../../../../../ast/free_ast.h"
 
 struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 
@@ -72,15 +73,4 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
-void freeIfStmt(struct IfStmt* is){
-	
-	freeExpr(is->condition);
-	
-	freeStmtBlock(is->block);
-	if(is->elseBlock != NULL){
-		freeStmtBlock(is->elseBlock);
-	}
-	
-	free(is);
-}
 

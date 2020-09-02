@@ -7,6 +7,5 @@
 
 struct CharConst* makeCharConst(struct TokenList* tokens,bool debug);
 
-void freeCharConst(struct CharConst* cc);
 
 #endif

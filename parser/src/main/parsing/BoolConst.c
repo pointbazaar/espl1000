@@ -6,6 +6,7 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 
@@ -46,8 +47,4 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 	}
 
 	return res;
-}
-
-void freeBoolConst(struct BoolConst* bc){
-	free(bc);
 }

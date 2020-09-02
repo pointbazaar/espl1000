@@ -9,6 +9,4 @@ struct TokenList;
 struct Term* makeTerm_other(struct Expr* myexpr);	
 struct Term* makeTerm(struct TokenList* tokens, bool debug);
 
-void freeTerm(struct Term* t);
-
 #endif

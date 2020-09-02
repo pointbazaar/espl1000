@@ -11,6 +11,7 @@
 #include "../commandline/TokenKeys.h"
 #include "../commandline/TokenList.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens, bool debug){
 	
@@ -70,9 +71,4 @@ struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens, bool debug){
 	return res;
 }
 
-void freeUnOpTerm(struct UnOpTerm* t){
-	
-	freeOp(t->op);
-	freeTerm(t->term);
-	free(t);
-}
+

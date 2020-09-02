@@ -9,6 +9,4 @@ struct TokenList;
 
 struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens, bool debug);
 
-void freeUnOpTerm(struct UnOpTerm* t);
-
 #endif

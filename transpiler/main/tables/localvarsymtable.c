@@ -28,11 +28,11 @@ struct LVST* makeLocalVarSymTable(struct Method* subr, bool debug){
 	
 	if(debug){ printf("makeLocalVarSymTable(...)\n"); }
 	
-	struct LVST* lvst = malloc(sizeof(struct LVST));
+	struct LVST* lvst = smalloc(sizeof(struct LVST));
 	
 	lvst->count = 0;
 	lvst->capacity = 10;
-	lvst->lines = malloc(sizeof(struct LVSTLine*)*lvst->capacity);
+	lvst->lines = smalloc(sizeof(struct LVSTLine*)*lvst->capacity);
 	
 	//fill the local var symbol table
 	
@@ -48,7 +48,7 @@ struct LVST* makeLocalVarSymTable(struct Method* subr, bool debug){
 		char* name = da->name; 
 		struct Type* type = da->type;
 		
-		struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
+		struct LVSTLine* line = smalloc(sizeof(struct LVSTLine));
 		
 		strncpy(line->name, name, DEFAULT_STR_SIZE);
 		line->type = type;
@@ -86,6 +86,14 @@ struct LVST* makeLocalVarSymTable(struct Method* subr, bool debug){
 	return lvst;
 }
 
+void freeLocalVarSymTable(struct LVST* lvst){
+	for(int i = 0; i < lvst->count; i++){
+		freeLVSTLine(lvst->lines[i]);
+	}
+	free(lvst->lines);
+	free(lvst);
+}
+
 void freeLVSTLine(struct LVSTLine* l){
 	
 	//the struct AssignStmt* l->firstOccur
@@ -113,6 +121,8 @@ void lvst_add(struct LVST* lvst, struct LVSTLine* line){
 		if(strcmp(current_line->name, line->name) == 0){
 			
 			//this local var is already present
+			//free the line
+			freeLVSTLine(line);
 			return;
 		}
 	}

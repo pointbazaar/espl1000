@@ -18,7 +18,8 @@ OBJS := build/transpiler.o \
 	build/subrsymtable.o \
 	build/structsymtable.o \
 	build/typeinference.o \
-	build/help.o
+	build/help.o \
+	build/free_ast.o
 
 all: smalldragon test valgrind
 
@@ -28,7 +29,7 @@ clean:
 test: sd
 	./sd -test
 
-VALGRIND_OPS := --leak-check=yes --error-exitcode=1 --log-file="/dev/null"
+VALGRIND_OPS := --leak-check=full --show-leak-kinds=all --error-exitcode=1 --log-file="/dev/null"
 
 valgrind: sd
 	valgrind $(VALGRIND_OPS) ./sd ../examples/loops/WhileLoop.dg
@@ -44,6 +45,9 @@ build/flags.o: main/flags.c
 
 build/ast_reader.o: ../ast/ast_reader.c
 	$(CALL) -c ../ast/ast_reader.c -o $@
+
+build/free_ast.o: ../ast/free_ast.c ../ast/free_ast.h
+	$(CALL) -c ../ast/free_ast.c -o $@
 
 build/util.o: ../util/util.c
 	$(CALL) -c ../util/util.c -o $@

@@ -1,4 +1,4 @@
-
+#include <stdlib.h>
 #include <stdio.h>
 
 #include "../../../ast/ast.h"
@@ -19,4 +19,11 @@ struct STST* makeStructSymTable(struct Namespace* ns, bool debug){
 	//TODO: implement
 	
 	return stst;
+}
+
+void freeStructSymTable(struct STST* stst){
+	
+	//TODO: implement
+	
+	free(stst);
 }

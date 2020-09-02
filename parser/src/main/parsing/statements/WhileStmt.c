@@ -9,6 +9,7 @@
 #include "../Expr.h"
 #include "Stmt.h"
 #include "../../../../../util/util.h"
+#include "../../../../../ast/free_ast.h"
 
 struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 
@@ -53,8 +54,3 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 	return res;
 }
 
-void freeWhileStmt(struct WhileStmt* ws){
-	freeExpr(ws->condition);
-	freeStmtBlock(ws->block);
-	free(ws);
-}

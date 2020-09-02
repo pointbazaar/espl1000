@@ -7,6 +7,7 @@
 #include "../../commandline/Token.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../../../../util/util.h"
+#include "../../../../../ast/free_ast.h"
 
 struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 
@@ -53,7 +54,3 @@ struct SimpleType* makeSimpleType(char* typeName) {
 	return res;
 }
 
-void freeSimpleType(struct SimpleType* st){
-	
-	free(st);
-}

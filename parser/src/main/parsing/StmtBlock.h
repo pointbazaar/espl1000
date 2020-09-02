@@ -6,6 +6,4 @@ struct TokenList;
 
 struct StmtBlock* makeStmtBlock(struct TokenList* tokens, bool debug);
 
-void freeStmtBlock(struct StmtBlock* block);
-
 #endif

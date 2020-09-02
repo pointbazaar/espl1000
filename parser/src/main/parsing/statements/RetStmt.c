@@ -7,6 +7,7 @@
 #include "../../commandline/Token.h"
 #include "../Expr.h"
 #include "../../../../../util/util.h"
+#include "../../../../../ast/free_ast.h"
 
 struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
 
@@ -44,10 +45,4 @@ struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
 	return res;
 }
 
-void freeRetStmt(struct RetStmt* rs){
-	
-	if(rs->returnValue != NULL){
-		freeExpr(rs->returnValue);
-	}
-	free(rs);
-}
+

@@ -8,6 +8,7 @@
 #include "../../commandline/Token.h"
 #include "../Expr.h"
 #include "../../../../../util/util.h"
+#include "../../../../../ast/free_ast.h"
 
 struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 
@@ -114,13 +115,4 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 	return res;
 }
 
-void freeMethodCall(struct MethodCall* mc){
-	//printf("DEBUG: freeMethodCall\n");
-	
-	for(int i=0;i < mc->count_args; i++){
-		freeExpr(mc->args[i]);
-	}
-	free(mc->args);
-	//printf("DEBUG: freeMethodCall 2\n");
-	free(mc);
-}
+

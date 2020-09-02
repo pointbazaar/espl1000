@@ -8,6 +8,7 @@
 #include "UnOpTerm.h"
 #include "Op.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct Expr* makeExpr_1(struct UnOpTerm* term) {
 	struct Expr* res = smalloc(sizeof(struct Expr));
@@ -256,13 +257,4 @@ void** erase(void** arr, int index, int size_before){
 		res[i] = arr[i1++];
 	}
 	return res;
-}
-
-void freeExpr(struct Expr* expr){
-	freeUnOpTerm(expr->term1);
-	if(expr->op != NULL){
-		freeOp(expr->op);
-		freeUnOpTerm(expr->term2);
-	}
-	free(expr);
 }

@@ -4,6 +4,7 @@
 #include "../../main/commandline/Token.h"
 #include "../../main/parsing/StructDecl.h"
 #include "../../main/parsing/StructMember.h"
+#include "../../../../ast/free_ast.h"
 
 #include <stdbool.h>
 #include <stdio.h>

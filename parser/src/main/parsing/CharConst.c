@@ -6,6 +6,7 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 
@@ -39,8 +40,4 @@ struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 	}
 
 	return res;
-}
-
-void freeCharConst(struct CharConst* cc){
-	free(cc);
 }

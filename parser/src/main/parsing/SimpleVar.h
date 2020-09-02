@@ -6,6 +6,5 @@ struct TokenList;
 
 struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug);
 
-void freeSimpleVar(struct SimpleVar* sv);
 
 #endif

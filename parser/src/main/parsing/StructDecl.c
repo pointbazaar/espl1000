@@ -8,6 +8,7 @@
 #include "../commandline/TokenKeys.h"
 #include "../commandline/Token.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 
@@ -82,10 +83,3 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 	return res;
 }
 
-void freeStructDecl(struct StructDecl* sd){
-	
-	for(int i=0;i < sd->count_members; i++){
-		freeStructMember(sd->members[i]);
-	}
-	free(sd);
-}

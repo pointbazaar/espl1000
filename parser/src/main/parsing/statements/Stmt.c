@@ -13,6 +13,7 @@
 #include "AssignStmt.h"
 #include "BreakStmt.h"
 #include "../../../../../util/util.h"
+#include "../../../../../ast/free_ast.h"
 
 struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 
@@ -141,27 +142,5 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
-void freeStmt(struct Stmt* s){
-	
-	if(s->m0 != NULL){
-		freeLoopStmt(s->m0);
-		
-	}else if(s->m1 != NULL){
-		freeMethodCall(s->m1);
-		
-	}else if(s->m2 != NULL){
-		freeWhileStmt(s->m2);
-		
-	}else if(s->m3 != NULL){
-		freeIfStmt(s->m3);
-		
-	}else if(s->m4 != NULL){
-		freeRetStmt(s->m4);
-		
-	}else if(s->m5 != NULL){
-		freeAssignStmt(s->m5);
-	}
-	
-	free(s);
-}
+
 

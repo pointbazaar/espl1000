@@ -8,6 +8,7 @@
 #include "../../commandline/Token.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../../../../util/util.h"
+#include "../../../../../ast/free_ast.h"
 
 struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
 
@@ -38,7 +39,3 @@ struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
 	return res;
 }
 
-void freeTypeParam(struct TypeParam* tp){
-	
-	free(tp);
-}

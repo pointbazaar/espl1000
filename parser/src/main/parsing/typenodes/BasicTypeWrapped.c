@@ -8,6 +8,7 @@
 #include "SubrType.h"
 #include "SimpleType.h"
 #include "../../../../../util/util.h"
+#include "../../../../../ast/free_ast.h"
 
 struct BasicTypeWrapped* makeBasicTypeWrappedSimple(struct SimpleType* typeNode) {
 
@@ -100,14 +101,4 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 	return res;
 }
 
-void freeBasicTypeWrapped(struct BasicTypeWrapped* btw){
-	
-	if(btw->simpleType != NULL){
-		freeSimpleType(btw->simpleType);
-		
-	}else if(btw->subrType != NULL){
-		freeSubrType(btw->subrType);
-	}
-	
-	free(btw);
-}
+

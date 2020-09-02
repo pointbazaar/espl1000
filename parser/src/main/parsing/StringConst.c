@@ -8,6 +8,7 @@
 #include "../commandline/Token.h"
 #include "../commandline/TokenKeys.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct StringConst* makeStringConst(struct TokenList* tokens, bool debug){
 	
@@ -31,8 +32,4 @@ struct StringConst* makeStringConst(struct TokenList* tokens, bool debug){
 	}
 	
 	return res;
-}
-
-void freeStringConst(struct StringConst* s){
-	free(s);
 }

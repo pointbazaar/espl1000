@@ -9,6 +9,4 @@ struct TokenList;
 
 struct Variable* makeVariable(struct TokenList* tokens, bool debug);
 
-void freeVariable(struct Variable* var);
-
 #endif

@@ -5,6 +5,7 @@
 #include "../../main/parsing/Term.h"
 #include "../../main/parsing/Variable.h"
 #include "../../main/parsing/SimpleVar.h"
+#include "../../../../ast/free_ast.h"
 
 #include <stdio.h>
 #include <stdbool.h>

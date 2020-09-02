@@ -7,6 +7,4 @@ struct TokenList;
 
 struct StringConst* makeStringConst(struct TokenList* tokens, bool debug);
 
-void freeStringConst(struct StringConst* s);
-
 #endif

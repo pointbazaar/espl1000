@@ -6,6 +6,7 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 
@@ -71,6 +72,4 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
-void freeIntConst(struct IntConst* ic){
-	free(ic);
-}
+

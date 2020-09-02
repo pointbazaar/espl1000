@@ -7,6 +7,7 @@
 #include "typenodes/Type.h"
 #include "Identifier.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 
@@ -41,9 +42,3 @@ struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 
 	return res;
 }
-
-void freeDeclArg(struct DeclArg* da){
-	freeType(da->type);
-	free(da);
-}
-

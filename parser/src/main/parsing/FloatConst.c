@@ -7,6 +7,7 @@
 #include "../commandline/TokenKeys.h"
 #include "../commandline/Token.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
@@ -55,6 +56,3 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 	return res;
 }
 
-void freeFloatConst(struct FloatConst* fc){
-	free(fc);
-}

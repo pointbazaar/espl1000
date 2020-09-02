@@ -35,6 +35,8 @@ struct SST {
 
 struct SST* makeSubrSymTable(struct Namespace* ns, bool debug);
 
+void freeSubrSymTable(struct SST* sst);
+
 void freeSSTLine(struct SSTLine* l);
 
 void sst_add(struct SST* sst, struct SSTLine* line);

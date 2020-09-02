@@ -7,6 +7,7 @@
 #include "../commandline/Token.h"
 #include "../commandline/TokenKeys.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 
@@ -32,6 +33,3 @@ struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
-void freeIdentifier(struct Identifier* id){
-	free(id);
-}

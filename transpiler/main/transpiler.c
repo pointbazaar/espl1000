@@ -6,6 +6,7 @@
 
 #include "../../ast/ast_reader.h"
 #include "../../ast/ast.h"
+#include "../../ast/free_ast.h"
 #include "../test/test.h"
 
 #include "c_code_gen.h"
@@ -145,7 +146,7 @@ bool transpileAndCompile(
 	
 	if(ast == NULL){
 		//reading from file has failed
-		return 0;
+		return false;
 	}
 
 	char fname_out[DEFAULT_STR_SIZE]; //new output filename
@@ -159,8 +160,10 @@ bool transpileAndCompile(
 	//and write to file 
 	bool success = transpileAndWrite(fname_out, ast, flags);
 	
+	freeAST_Whole_Program(ast);
+	
 	if(!success){
-		return 0;
+		return false;
 	}
 	
 	char cmd_gcc[500];
@@ -207,4 +210,5 @@ bool transpileAndCompile(
 		//avr-objdump -D -m avr main.hex
 		//to view contents
 	}
+	return true;
 }

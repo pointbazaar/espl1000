@@ -5,6 +5,7 @@
 #include "../../main/commandline/Token.h"
 
 #include "../../main/parsing/statements/BreakStmt.h"
+#include "../../../../ast/free_ast.h"
 
 #include <stdio.h>
 

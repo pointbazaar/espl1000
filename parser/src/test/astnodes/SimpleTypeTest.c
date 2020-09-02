@@ -4,6 +4,7 @@
 #include "../../main/commandline/Token.h"
 #include "../../main/parsing/typenodes/SimpleType.h"
 #include "../../main/parsing/typenodes/BasicTypeWrapped.h"
+#include "../../../../ast/free_ast.h"
 
 #include <stdbool.h>
 #include <stdio.h>

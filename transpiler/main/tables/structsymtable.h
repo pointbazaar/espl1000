@@ -24,4 +24,6 @@ struct STST {
 
 struct STST* makeStructSymTable(struct Namespace* ns, bool debug);
 
+void freeStructSymTable(struct STST* stst);
+
 #endif

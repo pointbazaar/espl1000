@@ -7,6 +7,4 @@
 
 struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug);
 
-
-void freeFloatConst(struct FloatConst* fc);
 #endif

@@ -13,6 +13,7 @@
 #include "statements/Stmt.h"
 #include "DeclArg.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 
@@ -121,17 +122,4 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
-void freeMethod(struct Method* m){
-	
-	//printf("DEBUG: freeMethod\n");
-	
-	freeType(m->returnType);
-	for(int i=0;i < m->count_args; i++){
-		freeDeclArg(m->args[i]);
-	}
-	free(m->args);
-	
-	freeStmtBlock(m->block);
-	free(m);
-}
 

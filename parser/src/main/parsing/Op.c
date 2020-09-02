@@ -8,6 +8,7 @@
 #include "../commandline/Token.h"
 #include "../commandline/TokenKeys.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct Op* makeOp(struct TokenList* tokens, bool debug){
 
@@ -88,6 +89,3 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 	return res;
 }
 
-void freeOp(struct Op* op){
-	free(op);
-}

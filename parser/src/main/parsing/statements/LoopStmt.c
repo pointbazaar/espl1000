@@ -8,6 +8,7 @@
 #include "../Expr.h"
 #include "Stmt.h"
 #include "../../../../../util/util.h"
+#include "../../../../../ast/free_ast.h"
 
 struct LoopStmt* makeLoopStmt(struct TokenList* tokens, bool debug) {
 
@@ -53,12 +54,5 @@ struct LoopStmt* makeLoopStmt(struct TokenList* tokens, bool debug) {
 	freeTokenListShallow(copy);
 
 	return res;
-}
-
-void freeLoopStmt(struct LoopStmt* ls){
-	
-	freeExpr(ls->count);
-	freeStmtBlock(ls->block);
-	free(ls);
 }
 

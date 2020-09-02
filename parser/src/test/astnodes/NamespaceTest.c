@@ -5,6 +5,8 @@
 #include "../../main/parsing/Namespace.h"
 #include "../../main/parsing/StructDecl.h"
 
+#include "../../../../ast/free_ast.h"
+
 #include <stdbool.h>
 #include <stdio.h>
 

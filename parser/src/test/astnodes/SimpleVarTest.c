@@ -6,6 +6,7 @@
 #include "../../main/parsing/IntConst.h"
 #include "../../main/parsing/Expr.h"
 #include "../../main/parsing/Term.h"
+#include "../../../../ast/free_ast.h"
 
 #include <stdio.h>
 #include <stdbool.h>

@@ -10,6 +10,7 @@
 #include "../commandline/Token.h"
 #include "../commandline/TokenKeys.h"
 #include "../../../../util/util.h"
+#include "../../../../ast/free_ast.h"
 
 struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug) {
 
@@ -107,18 +108,4 @@ void ns_parse_structs(struct Namespace* res, struct TokenList* copy, bool debug)
 	}
 }
 
-void freeNamespace(struct Namespace* ns){
-	
-	for(int i=0;i < ns->count_methods; i++){
-		freeMethod(ns->methods[i]);
-	}
-	
-	for(int i=0;i < ns->count_structs; i++){
-		freeStructDecl(ns->structs[i]);
-	}
 
-	free(ns->methods);
-	free(ns->structs);
-
-	free(ns);
-}

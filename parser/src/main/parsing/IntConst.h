@@ -7,6 +7,4 @@
 
 struct IntConst* makeIntConst(struct TokenList* tokens, bool debug);
 
-void freeIntConst(struct IntConst* ic);
-
 #endif

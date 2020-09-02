@@ -4,6 +4,7 @@
 #include "../../main/commandline/TokenKeys.h"
 #include "../../main/commandline/Token.h"
 #include "../../main/parsing/BoolConst.h"
+#include "../../../../ast/free_ast.h"
 
 #include <stdbool.h>
 #include <stdio.h>
