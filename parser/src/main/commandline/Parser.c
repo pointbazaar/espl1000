@@ -17,29 +17,32 @@
 #include "../../../../util/util.h"
 
 int main(int argc, char** argv){
+	
 	//this project is to parse a Dragon AST
 	//from Tokens written into .tokens files by Dragon-Lexer,
-	//and store it in a .json file to be retrieved by the Dragon Compiler
+	//and store it in a .ast file to be retrieved by the smalldragon transpiler
 	//for simplicity, we invoke with just one filename as argument.
 	//such we can easily have
 	//multiple parallel invocations of the parser in the compiler.
 
 	//setbuf(stdout,NULL);
 
-	char** filenames = smalloc(sizeof(char*)*100);
-	int filenamescount = 0;
+	char* filename = NULL;
 	
-	char** flags = smalloc(sizeof(char*)*100);
+	int flags_capacity = 5;
 	int flagscount = 0;
-	
-	//read flags, filenames
+	char** flags = smalloc(sizeof(char*) * flags_capacity);
 
 	for(int i=1;i<argc;i++){
 		char* arg = argv[i];
 		if(argv[i][0] == '-'){
 			flags[flagscount++] = arg;
+			if(flagscount >= flags_capacity){
+				flags_capacity *= 2;
+				flags = realloc(flags, sizeof(char*) * flags_capacity);
+			}
 		}else{
-			filenames[filenamescount++] = arg;
+			filename = arg;
 		}
 	}
 
@@ -47,21 +50,10 @@ int main(int argc, char** argv){
 	bool help = false;
 	bool test = false;
 
-	
-	//apply flags
-	
-	
 	for(int i=0;i<flagscount;i++){
-		if(strcmp(FLAG_HELP, flags[i])==0){
-			help = true;
-		}
-		if(strcmp(FLAG_TEST, flags[i])==0){
-			test = true;
-		}
-		if(strcmp(FLAG_DEBUG, flags[i])==0){
-			debug = true;
-			printf("DEBUG ENABLED\n");
-		}
+		if(strcmp(FLAG_HELP, flags[i])==0){ help = true; }
+		if(strcmp(FLAG_TEST, flags[i])==0){ test = true; }
+		if(strcmp(FLAG_DEBUG, flags[i])==0){ debug = true; }
 	}
 	
 	if(debug){
@@ -73,21 +65,19 @@ int main(int argc, char** argv){
 	}else if(test){
 		
 		free(flags);
-		free(filenames);
 		
 		return test_all(debug);
 	}else{
-		if(filenamescount != 1){
+		if(filename == NULL){
 			printf("expected exactly 1 filename argument.\n");
 			exit(1);
 		}
-		main_inner(filenames[0],debug);
+		main_inner(filename, debug);
 	}
 	
 	free(flags);
-	free(filenames);
 
-	exit(0);
+	return 0;
 }
 
 void build_ast_file(char* tokensFile, char* astJsonFile, bool debug) {
@@ -128,14 +118,17 @@ void main_inner(char* tokensFile, bool debug) {
 		printf("Parser::main_inner\n");
 		printf("Tokens File to parse: %s\n",tokensFile);
 	}
+	
+	char fname1[32];
+	strcpy(fname1, tokensFile);
+	char* fname2 = fname1 + (strlen(fname1)-strlen(".tokens")) * sizeof(char);
+	
 
-	//TODO: re-enable this check later
-	/*
-	if(!tokensFile.endsWith(".tokens")){
-		printf(tokensFile+" does not have .tokens extension. Exiting.");
+	if(strcmp(fname2, ".tokens") != 0){
+		printf("%s does not have .tokens extension. Exiting.\n", tokensFile);
+		printf("actual extension: %s\n", fname2);
 		exit(1);
 	}
-	*/
 
 	FILE* f = fopen(tokensFile, "rw");
 

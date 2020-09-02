@@ -104,7 +104,7 @@ valgrind: dragon-parser
 	rm -f ../examples/loops/.WhileLoop.dg.tokens
 	rm -f ../examples/loops/.WhileLoop.dg.ast
 	dragon-lexer ../examples/loops/WhileLoop.dg
-	valgrind $(VALGRIND_OPS) ./dragon-parser ../examples/loops/WhileLoop.dg
+	valgrind $(VALGRIND_OPS) ./dragon-parser ../examples/loops/.WhileLoop.dg.tokens
 
 dragon-parser: $(OBJS)
 	$(CALL) -o dragon-parser build/*.o
