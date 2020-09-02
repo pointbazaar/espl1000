@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <libgen.h>
+#include <stdbool.h>
 
 #include "../../ast/ast_reader.h"
 #include "../../ast/ast.h"
@@ -12,6 +13,11 @@
 #include "help.h"
 
 #include "transpiler.h"
+
+// ----------------
+bool check_dg_extension(char* filename);
+void invoke_lexer_parser(char* filename, bool debug);
+// ----------------
 
 int main(int argc, char* argv[]){
 
@@ -26,8 +32,6 @@ int main(int argc, char* argv[]){
 			filename = argv[i];
 		}
 	}
-	
-	
 	
 	if(flags->help){
 		sd_print_help();
@@ -55,19 +59,20 @@ int main(int argc, char* argv[]){
 		exit(1);
 	}
 	
-	transpileAndCompile(filename, flags);
+	bool success = transpileAndCompile(filename, flags);
 	
 	freeFlags(flags);
 
-	return 0;
+	return (success == true)?0:1;
 }
 
-void check_dg_extension(char* filename){
+bool check_dg_extension(char* filename){
 	const int ext_index = strlen(filename)-3;
 	if(strcmp(filename+ext_index, ".dg") != 0){
 			printf("filename has to have .dg extension\n");
-			exit(1);
+			return false;
 	}
+	return true;
 }
 
 void invoke_lexer_parser(char* filename, bool debug){
@@ -107,13 +112,18 @@ void invoke_lexer_parser(char* filename, bool debug){
 	system(cmd2);
 }
 
-void transpileAndCompile(
+bool transpileAndCompile(
 	char* filename, 
 	struct Flags* flags
 ){
+	//returns false if it was unsuccessful
+	
 	if(flags->debug){ printf("transpileAndCompile(...)\n"); }
 	
-	check_dg_extension(filename);
+	if(!check_dg_extension(filename)){
+		freeFlags(flags);
+		exit(1);
+	}
 	
 	//invoke lexer, parser to generate .dg.ast file
 	invoke_lexer_parser(filename, flags->debug);
@@ -132,6 +142,11 @@ void transpileAndCompile(
 
 	//parse AST
 	struct AST_Whole_Program* ast = readAST(ast_filename, flags->debug);
+	
+	if(ast == NULL){
+		//reading from file has failed
+		return 0;
+	}
 
 	char fname_out[DEFAULT_STR_SIZE]; //new output filename
 
@@ -142,7 +157,11 @@ void transpileAndCompile(
 
 	//transpile to C code 
 	//and write to file 
-	transpileAndWrite(fname_out, ast, flags);
+	bool success = transpileAndWrite(fname_out, ast, flags);
+	
+	if(!success){
+		return 0;
+	}
 	
 	char cmd_gcc[500];
 	strcpy(cmd_gcc, "");

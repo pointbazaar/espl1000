@@ -14,7 +14,10 @@ struct Flags* makeFlags(int argc, char** argv){
 	flags->version 	= false;
 	
 	
-	int gcc_flags_capacity = 100;
+	//we assume 5 gcc arguments would be 
+	//a good starting value for most users
+	int gcc_flags_capacity = 5; 
+	
 	flags->gcc_flags = malloc(sizeof(char*)*gcc_flags_capacity);
 	flags->gcc_flags_count = 0;
 	

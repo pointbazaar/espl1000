@@ -72,7 +72,8 @@ void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx);
 // --------------------------------------------------------
 // --------------------------------------------------------
 
-void transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Flags* flags){
+bool transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Flags* flags){
+	//returns false if it was unsuccessful
 	
 	assert(filename != NULL);
 	assert(ast != NULL);
@@ -91,9 +92,11 @@ void transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 
 	if(ctx->file == NULL){
 		printf("could not open output file: %s\n", filename);
+		
 		free(ctx->tables);
 		free(ctx);
-		exit(1);
+		
+		return false;
 	}
 	
 	if(flags->debug){
@@ -109,6 +112,7 @@ void transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 	fclose(ctx->file);
 	
 	if(flags->debug){ printf("transpileAndWrite(...) DONE\n"); }
+	return true;
 }
 
 void transpileAST(struct AST_Whole_Program* ast, struct Ctx* ctx){
