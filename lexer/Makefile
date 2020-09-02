@@ -8,7 +8,8 @@ COMMON_RELEASE := build/release/strutils.o \
 	build/release/lexer.o \
 	build/release/loop.o \
 	build/release/init_dfa.o \
-	build/release/test.o
+	build/release/test.o \
+	build/release/loop_io.o
 
 all: directories dragon-lexer test valgrind
 

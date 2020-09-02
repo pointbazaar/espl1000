@@ -10,6 +10,7 @@
 #include "states.h"
 #include "loop.h"
 #include "init_dfa.h"
+#include "loop_io.h"
 
 //token types
 #include "../../parser/src/main/commandline/TokenKeys.h"
@@ -18,11 +19,6 @@
 //we should instead write to a '.tokens.temp' file, and rename it to a '.tokens' file
 //when we are finished, so that this and other tools are not confused
 //when dragon-lexer crashes
-
-//statically allocate a char array to store the contents of
-//our input file
-const uint64_t input_capacity = 5000;	//should be 5000
-char input[5000];
 
 //statically allocate a Token* array to store our Tokens
 const uint64_t tokens_capacity = 5000;	//should be 5000
@@ -54,6 +50,7 @@ struct Token** lex(char* clean_source, char* tkn_filename){
 struct Token** lex_main(char* tkn_filename, char* input_filename, long input_file_length, bool free_tokens){
 	//https://www.youtube.com/watch?v=G4g-du1MIas
 	//https://nothings.org/computer/lexing.html
+	const uint64_t input_capacity = 5000;
 
 	uint64_t input_index = 0;	//our index in the input file
 
@@ -62,7 +59,7 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 		printf("lex_main(...)\n");
 	}
 
-	readFromFile(input_filename,input_capacity,0,input_file_length,&input_index);
+	readFromFile(input_filename,0,input_file_length,&input_index);
 
 	uint64_t tokens_index = 0;
 
@@ -404,7 +401,7 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 		//maybe we should read again from the file
 		//starting from the position we stopped reading last time
 		if(i > (input_capacity * 0.5)){
-			readFromFile(input_filename,input_capacity,i,input_file_length,&input_index);
+			readFromFile(input_filename,i,input_file_length,&input_index);
 			i = 0;	//reset index into input array
 		}
 	}
@@ -426,117 +423,5 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 	free(final_state);
 
 	return tokens;
-
-}
-
-void readFromFile(
-	char* input_filename, 
-	uint64_t input_capacity, 
-	uint64_t amount_read, 
-	uint64_t input_file_length,
-	uint64_t* input_index
-){
-	bool debug = false;
-	
-	if(debug){
-		printf("readFromFile(...)\n");
-	}
-
-
-	//add how many items we already read 
-	//to our index in the file
-	*input_index	+=	amount_read;
-
-	if(debug){
-		printf("amount_read: %ld , new input_index is : %ld \n",amount_read,*input_index);
-	}
-
-	if(*input_index >= input_file_length){
-		printf("new input index would be after the file. meaning the file is probably fully read.\n");
-		//we set input_index to be higher than input_file_length to break out
-		*input_index = input_file_length + 1;
-		return;
-	}
-
-	//read a part from our file
-	FILE* file = fopen(input_filename,"r");
-	if(file == NULL){
-		printf("could not open input file \n");
-		exit(1);
-	}
-
-	//skip to our position of last read
-	fseek ( file , *input_index , SEEK_SET );
-
-	//how many could we possibly read?
-	uint64_t max_read = input_file_length - *input_index;
-
-	//minimum of our capacity and how many we can read
-	uint64_t read_length = (max_read < input_capacity)?max_read:input_capacity;
-
-	size_t length_read = fread(input,sizeof(char),read_length,file);
-
-	if(length_read < read_length){
-		printf("error with fread(...)\n");
-		printf("tried to read %ld bytes but only read %ld bytes\n",read_length,length_read);
-		exit(1);
-	}
-
-	fclose(file);
-}
-
-void writeToFile(
-	char* tkn_filename, 
-	struct Token** tokens, 
-	int tokens_capacity, 
-	int len,
-	bool free_tokens
-){
-	bool debug = false;
-	
-	if(debug){
-		printf("writeToFile(...) : write to %s\n",tkn_filename);
-	}
-
-	FILE* file2 = fopen(tkn_filename,"w");
-	
-
-	if(file2 == NULL){
-		printf("could not open output file \n");
-		exit(1);
-	}
-
-	//should be big enough
-	char buffer[500];
-
-	for(uint64_t j=0;j<len;j++){
-
-		struct Token* tkn = tokens[j];
-		int id = tkn->kind;
-		char* value = tkn->value;
-
-		sprintf(buffer,"%i %s\n",id,value);
-
-		//debug
-		if(debug){
-			//printf("writing   %s",buffer);
-		}
-
-		//free our token
-		if(free_tokens){
-			if( !tkn->statically_allocated ){
-				free(tkn->value);
-			}
-			free(tkn);
-		}
-		
-		fputs(buffer,file2);
-	}
-
-	if(debug){
-		printf("close  %s\n",tkn_filename);
-	}
-	
-	fclose(file2);
 
 }
