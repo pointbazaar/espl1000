@@ -68,7 +68,6 @@ struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
 struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 	
 	struct Token* r = NULL;
-	
 	switch (tkn_id) {
 		case STRINGCONST : 
 			r = makeToken2(STRINGCONST, tkn+3);
@@ -116,7 +115,5 @@ struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 			//("unreconized token id : " + tkn_id);
 			return NULL;
 	};
-	//DEBUG
-	printf("read: tkn_id: %d part2: '%s'\n", tkn_id, part2);
 	return r;
 }
