@@ -812,7 +812,7 @@ bool test_mixed_7() {
 
 	assert(tokens[1]->kind==INTEGER);
 
-	assert(tokens[2]->kind==LESSER);
+	assert(tokens[2]->kind==OPKEY);
 
 	assert(tokens[3]->kind==INTEGER);
 
@@ -928,7 +928,7 @@ bool test_mixed_12() {
 
 	assert(tokens[1]->kind==ID);
 
-	assert(tokens[2]->kind==LESSER);
+	assert(tokens[2]->kind==OPKEY);
 
 	assert(tokens[3]->kind==FLOATING);
 

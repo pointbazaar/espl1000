@@ -172,46 +172,46 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 			//SECTION: KEYWORDS
 			case S_loop_FINAL:
 				tkn->kind=LOOP;
-				tkn->value="LOOP";
+				tkn->value="loop";
 				i--;
 				break;
 
 			case S_IF_FINAL:
 				tkn->kind=IF;
-				tkn->value="IF";
+				tkn->value="if";
 				i--;
 				break;
 
 			case S_WHILE_FINAL:
 				tkn->kind=WHILE;
-				tkn->value="WHILE";
+				tkn->value="while";
 				i--;
 				break;
 				
 			case S_break_FINAL:
 				tkn->kind=BREAK;
-				tkn->value="BREAK";
+				tkn->value="break";
 				i--;
 				break;
 
 			case S_RETURN_FINAL:
 				tkn->kind=RETURN;
-				tkn->value="RETURN";
+				tkn->value="return";
 				break;
 
 			case S_struct_FINAL:
 				tkn->kind=STRUCT;
-				tkn->value="STRUCT";
+				tkn->value="struct";
 				break;
 
 			case S_fn_FINAL:
 				tkn->kind=FN;
-				tkn->value="FN";
+				tkn->value="fn";
 				break;
 
 			case S_else_FINAL:
 				tkn->kind=ELSE;
-				tkn->value="ELSE";
+				tkn->value="else";
 				i--;
 				break;
 
@@ -272,12 +272,12 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 
 			//SECTION: OTHER SYMBOLS
 			case S_LESSER_FINAL:
-				tkn->kind=LESSER;
+				tkn->kind=OPKEY;
 				tkn->value="<";
 				break;
 
 			case S_GREATER_FINAL:
-				tkn->kind=GREATER;
+				tkn->kind=OPKEY;
 				tkn->value=">";
 				break;
 

@@ -35,8 +35,6 @@
 #define LCURLY 26
 #define RCURLY 27
 
-#define GREATER 28 //only used in the lexer, is 'OPKEY' in parser
-#define LESSER 29  //only used in the lexer, is 'OPKEY' in parser
 #define WAVE 30
 #define SEMICOLON 31
 #define EQ 32

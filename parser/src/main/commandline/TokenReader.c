@@ -70,18 +70,13 @@ struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 	struct Token* r = NULL;
 	
 	switch (tkn_id) {
-
 		case STRINGCONST : 
 			r = makeToken2(STRINGCONST, tkn+3);
 			break;
-		
 		case CCONST : 
 			r = makeToken2(CCONST, tkn+2);
 			break;
 		case ANYTYPE : 
-			r = makeToken2(ANYTYPE,"#");
-			break;
-
 		//CONSTANTS
 		case BCONST : 
 		case FLOATING : 
@@ -96,67 +91,32 @@ struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		//IDENTIFIERS
 		case ID : 
 		case TYPEIDENTIFIER : 
-			r = makeToken2(tkn_id,part2);
-			break;
-
 		//SECTION: OPERATORNS
 		case OPKEY : 
-		case GREATER:
-		case LESSER:
-			r = makeToken2(OPKEY,part2);
-			break;
-
 		case EQ : 
-			r = makeToken2(tkn_id,"=");
-			break;
-
-		case STRUCTMEMBERACCESS : 
-			r = makeToken2(tkn_id,".");
-			break;
-
+		//SECTION: OTHER
 		case TPARAM : 
-			r = makeToken2(tkn_id, part2);
-			break;
-
-		case WAVE : 
-			r = makeToken2(tkn_id,"~");
-			break;
-
 		case SEMICOLON : 
 		case COMMA : 
 		case ARROW : 
-			r = makeToken2(tkn_id, part2);
-			break;
-
+		case STRUCTMEMBERACCESS : 
 		//KEYWORDS
 		case RETURN : 
-			r = makeToken2(RETURN,"return");
-			break;
 		case FN : 
-			r = makeToken2(FN,"fn");
-			break;
 		case STRUCT : 
-			r = makeToken2(STRUCT,"struct");
-			break;
 		case IF : 
-			r = makeToken2(IF,"if");
-			break;
 		case ELSE : 
-			r = makeToken2(ELSE,"else");
-			break;
 		case WHILE : 
-			r = makeToken2(WHILE,"while");
-			break;
 		case LOOP : 
-			r = makeToken2(LOOP,"loop");
-			break;
 		case BREAK:
-			r = makeToken2(BREAK, "break");
+		case WAVE : 
+			r = makeToken2(tkn_id, part2);
 			break;
-
 		default : 
 			//("unreconized token id : " + tkn_id);
 			return NULL;
 	};
+	//DEBUG
+	printf("read: tkn_id: %d part2: '%s'\n", tkn_id, part2);
 	return r;
 }
