@@ -5,11 +5,8 @@
 
 int test_all(bool debug);
 
-//bool assert(bool condition);
-
 //test subroutines 
 //(returning true if the test was passed, false otherwise)
-
 
 //Tests from CharacterListTest.java are omitted 
 //(they do not test stuff thats in this program)
