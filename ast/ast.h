@@ -108,9 +108,11 @@ struct Namespace {
 	//structs must be declared before the subroutines
 	struct Method** methods;
 	uint16_t count_methods;
+	size_t capacity_methods;
 
 	struct StructDecl** structs;
 	uint16_t count_structs;
+	size_t capacity_structs;
 };
 struct StmtBlock {
 	uint16_t count;

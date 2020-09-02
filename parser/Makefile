@@ -98,7 +98,7 @@ clean: DIRS
 test: dragon-parser
 	./dragon-parser -test
 
-VALGRIND_OPS := --leak-check=yes --error-exitcode=1 --log-file="/dev/null"
+VALGRIND_OPS := --leak-check=full --show-reachable=yes  --error-exitcode=1 --log-file="/dev/null"
 
 valgrind: dragon-parser
 	rm -f ../examples/loops/.WhileLoop.dg.tokens

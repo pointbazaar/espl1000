@@ -22,12 +22,15 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 
 	res->count_methods = 0;
 	res->count_structs = 0;
+	
+	res->capacity_methods = 5;
+	res->capacity_structs = 5;
 
-	res->methods = smalloc(sizeof(struct Method*)*1);
-	res->structs = smalloc(sizeof(struct StructDecl*)*1);
+	res->methods = smalloc(sizeof(struct Method*) * res->capacity_methods);
+	res->structs = smalloc(sizeof(struct StructDecl*) * res->capacity_structs);
 
-	strcpy(res->srcPath, "/dev/null");
-	strcpy(res->name, name);
+	strncpy(res->srcPath, tokens->relPath, DEFAULT_STR_SIZE);
+	strncpy(res->name, name, DEFAULT_STR_SIZE);
 	
 	struct TokenList* copy = list_copy(tokens);
 	
@@ -54,12 +57,20 @@ void ns_parse_methods(struct Namespace* res, struct TokenList* copy, bool debug)
 		while (next->kind == FN) {
 			struct Method* m = makeMethod(copy,debug);
 			if(m == NULL){
-				printf("parsing error, expected a method, but got %s\n", list_code(copy,debug));
+				printf("parsing error, expected a method, but got:\n");
+				list_print(copy);
+				
+				freeNamespace(res);
 				exit(1);
 			}
 
-			res->methods[res->count_methods++] = m;
-			res->methods = realloc(res->methods,sizeof(struct Method*)*(res->count_methods+1));
+			res->methods[res->count_methods] = m;
+			res->count_methods++;
+			
+			if(res->count_methods >= res->capacity_methods){
+				res->capacity_methods *= 2;
+				res->methods = realloc(res->methods,sizeof(struct Method*)*(res->capacity_methods));
+			}
 
 			if (list_size(copy) > 0) {
 				next = list_head(copy);

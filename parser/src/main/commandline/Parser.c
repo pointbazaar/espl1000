@@ -3,8 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
+#include <assert.h>
 
-#include "Parser.h"
 #include "TokenReader.h"
 #include "../parsing/Namespace.h"
 #include "../parsing/Method.h"
@@ -15,6 +15,23 @@
 #include "../../test/ParserTest.h"
 
 #include "../../../../util/util.h"
+
+const char* FLAG_DEBUG = "-debug";
+const char* FLAG_HELP = "-help";
+const char* FLAG_TEST = "-test";
+
+// --- private subroutines ---
+
+bool main_inner(char* tokensFile, bool debug);
+
+struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool debug);
+
+void printHelp();
+
+void build_ast_file(char* tokensFile, char* astJsonFile, bool debug);
+
+
+// --------------------------------
 
 int main(int argc, char** argv){
 	
@@ -61,32 +78,50 @@ int main(int argc, char** argv){
 	}
 
 	if(help) {
+		
 		printHelp();
+		free(flags);
+		
+		return 0;
+		
 	}else if(test){
 		
 		free(flags);
 		
 		return test_all(debug);
+		
 	}else{
+		
 		if(filename == NULL){
 			printf("expected exactly 1 filename argument.\n");
+			free(flags);
 			exit(1);
 		}
-		main_inner(filename, debug);
+		
+		bool success = main_inner(filename, debug);
+		
+		free(flags);
+		
+		return (success)?0:1;
 	}
-	
-	free(flags);
-
-	return 0;
 }
 
-void build_ast_file(char* tokensFile, char* astJsonFile, bool debug) {
+void build_ast_file(char* tokensFile, char* astFile, bool debug) {
 
 	if(debug){
-		printf("Parser::build_ast_file(%s, %s, %d)\n", tokensFile, astJsonFile, debug);
+		printf("Parser::build_ast_file(%s, %s, %d)\n", tokensFile, astFile, debug);
 	}
 
-	struct TokenList* tokens = readTokensFromTokensFile(tokensFile,debug);
+	FILE* file = fopen(tokensFile, "r");
+	
+	if(file == NULL){
+		printf("Parser.c:build_ast_file: could not open file: %s\n", tokensFile);
+		exit(1);
+	}
+	
+	struct TokenList* tokens = readTokensFromTokensFile(file, tokensFile, debug);
+	
+	fclose(file);
 
 	if(debug){
 		printf("Tokens as Source Code Fragment : \n");
@@ -102,17 +137,19 @@ void build_ast_file(char* tokensFile, char* astJsonFile, bool debug) {
 	struct Namespace* mynamespace = makeNamespace(tokens,namespaceName,debug);
 
 	if(debug){
-		printf("write to %s\n",astJsonFile);
+		printf("write to %s\n", astFile);
 	}
 
-	write_ast(astJsonFile,mynamespace);
+	write_ast(astFile,mynamespace);
 
 	freeNamespace(mynamespace);
 	freeTokenList(tokens);
 }
 
 
-void main_inner(char* tokensFile, bool debug) {
+bool main_inner(char* tokensFile, bool debug) {
+	
+	//returns false if it was unsuccessful
 
 	if(debug){
 		printf("Parser::main_inner\n");
@@ -127,27 +164,27 @@ void main_inner(char* tokensFile, bool debug) {
 	if(strcmp(fname2, ".tokens") != 0){
 		printf("%s does not have .tokens extension. Exiting.\n", tokensFile);
 		printf("actual extension: %s\n", fname2);
-		exit(1);
+		return false;
 	}
 
 	FILE* f = fopen(tokensFile, "rw");
-
-	if(f != NULL) {
-		fclose(f);
-		char* AST_filename = smalloc(sizeof(char)*100);
-		strcpy(AST_filename, tokensFile);
-		int l = strlen(tokensFile) - strlen(".tokens");
-		AST_filename[l] = '\0';
-		strcat(AST_filename, ".ast");
-
-		build_ast_file(tokensFile,AST_filename,debug);
-		free(AST_filename);
-
-	}else {
+	
+	if(f == NULL){
 		printf("argument file %s does not exist.", tokensFile);
-		exit(1);
+		return false;
 	}
 
+	fclose(f);
+	char* AST_filename = smalloc(sizeof(char)*100);
+	strcpy(AST_filename, tokensFile);
+	int l = strlen(tokensFile) - strlen(".tokens");
+	AST_filename[l] = '\0';
+	strcat(AST_filename, ".ast");
+
+	build_ast_file(tokensFile,AST_filename,debug);
+	free(AST_filename);
+	
+	return true;
 }
 
 void printHelp() {
@@ -172,7 +209,7 @@ void printHelp() {
 		
 }
 
-struct TokenList* readTokensFromTokensFile(char* tokensFile, bool debug){
+struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool debug){
 
 	if(debug){
 		printf("readTokensFromTokensFile(%s, %d)\n", tokensFile, debug);
@@ -180,7 +217,7 @@ struct TokenList* readTokensFromTokensFile(char* tokensFile, bool debug){
 	
 	struct TokenList* tks = makeTokenList();
 	strcpy(tks->relPath, tokensFile);
-	FILE* file = fopen(tokensFile,"r");
+	
 	size_t size = 50;
     char* line = smalloc(sizeof(char)*size);
     
@@ -208,7 +245,6 @@ struct TokenList* readTokensFromTokensFile(char* tokensFile, bool debug){
 	}
 	
 	free(line);
-	fclose(file);
 
 	return tks;
 }
