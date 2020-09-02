@@ -15,6 +15,11 @@
 #include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 
+// --- private subroutines ---
+struct Method* initMethod();
+bool tryParseArgList(struct Method* res, struct TokenList* copy, bool debug);
+// ---------------------------
+
 struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 
 	if (debug) {
@@ -22,14 +27,7 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 		list_print(tokens);
 	}
 
-	struct Method* res = smalloc(sizeof(struct Method));
-
-	//init
-	res->isPublic = true;
-	res->hasSideEffects = true;
-	res->count_args = 0;
-	res->args = smalloc(sizeof(struct DeclArg*)*1);
-	res->block = NULL;
+	struct Method* res = initMethod();
 
 	struct TokenList* copy = list_copy(tokens);
 
@@ -51,44 +49,8 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 	strcpy(res->name, id->identifier);
 	freeIdentifier(id);
 
-	if(!list_expect(copy, LPARENS)){
+	if(!tryParseArgList(res, copy, debug)){
 		free(res);
-		return NULL;
-	}
-
-	//while there is no ')' up, continue parsing arguments
-	struct Token* next = list_head(copy);
-	if(next == NULL){
-		free(res);
-		return NULL;
-	}
-
-	while (next->kind != RPARENS) {
-		if (res->count_args > 0) {
-			if(!list_expect(copy, COMMA)){return NULL;}
-		}
-		
-		struct DeclArg* da = makeDeclArg(copy, debug);
-		if(da == NULL){
-			free(res);
-			return NULL;
-		}
-		res->args[res->count_args] = da;
-		res->count_args++;
-		
-		res->args = realloc(res->args,sizeof(struct DeclArg*)*(res->count_args+1));
-
-		next = list_head(copy);
-		if(next == NULL){
-			free(res);
-			freeTokenListShallow(copy);
-			return NULL;
-		}
-	}
-
-	if(!list_expect(copy, RPARENS)){
-		free(res);
-		freeTokenListShallow(copy);
 		return NULL;
 	}
 
@@ -122,4 +84,59 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
+struct Method* initMethod(){
+	
+	struct Method* res = smalloc(sizeof(struct Method));
 
+	res->isPublic = true;
+	res->hasSideEffects = true;
+	res->count_args = 0;
+	res->args = smalloc(sizeof(struct DeclArg*)*1);
+	res->block = NULL;
+	
+	return res;
+}
+
+bool tryParseArgList(struct Method* res, struct TokenList* copy, bool debug){
+	
+	if(!list_expect(copy, LPARENS)){
+		return false;
+	}
+
+	//while there is no ')' up, continue parsing arguments
+	struct Token* next = list_head(copy);
+	
+	if(next == NULL){
+		return false;
+	}
+
+	while (next->kind != RPARENS) {
+		if (res->count_args > 0) {
+			if(!list_expect(copy, COMMA)){
+				return false;
+			}
+		}
+		
+		struct DeclArg* da = makeDeclArg(copy, debug);
+		if(da == NULL){
+			return false;
+		}
+		res->args[res->count_args] = da;
+		res->count_args++;
+		
+		res->args = realloc(res->args,sizeof(struct DeclArg*)*(res->count_args+1));
+
+		next = list_head(copy);
+		if(next == NULL){
+			freeTokenListShallow(copy);
+			return false;
+		}
+	}
+
+	if(!list_expect(copy, RPARENS)){
+		freeTokenListShallow(copy);
+		return false;
+	}
+	
+	return true;
+}
