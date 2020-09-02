@@ -16,11 +16,10 @@
 // lexing multiple files in parallel would be supported by starting multiple instances of this
 // lexer.
 
-//the entire program never properly deallocates memory,
-//since we assume it will not run for long, as typical source files
-//are less than 1000 lines
-
 //https://www.youtube.com/watch?v=GUQx72j9Q3Y
+
+//writing a table based lexer has taught me to keep 
+//the language simple, and not use too many keywords.
 
 //standard headers
 #include <stdio.h>
@@ -42,97 +41,32 @@ int DEBUG = false;
 
 int tokenize_file(char* filename, char* tkn_filename, bool debug);
 
+void lexer_print_help();
+
+char* handleArguments(int argc, char** argv);
+
+int lexer_main_inner(char* filename, char* tkn_filename);
+
+void lexer_check_extension(char* filename);
+
+char* lexer_make_tkn_filename(char* filename);
+
 int main(int argc, char** argv) {
 
 	//set malloc parameters
 	//https://stackoverflow.com/questions/27451220/how-can-i-correctly-handle-malloc-failure-in-c-especially-when-there-is-more-th
 	mallopt(M_CHECK_ACTION,3);
 
-	/*
-		writing a table based lexer
-		has taught me to keep the language simple,
-		and not use too many keywords.
-	*/
+	char* filename = handleArguments(argc, argv);
 
-	//filenames
-	char* filename = NULL;
-
-	for(int i=1; i < argc; i++) {
-
-		char* arg = argv[i];
-		if(arg[0] == '-') {
-			if(strcmp(arg, "-debug") == 0) {
-				DEBUG = true;
-			} else if(strcmp(arg, "-test") == 0) {
-				test_all(DEBUG);
-				return 0;
-			}
-		} else {
-			filename = arg;
-		}
+	if(DEBUG) { 
+		printf("--- dragon-lexer ---\n"); 
+		printf("file to tokenize: %s\n",filename);
 	}
 
-	if( filename == NULL ) {
-		printf("expecte a filename of the file to tokenize\n");
-		return 1;
-	}
+	lexer_check_extension(filename);
 
-	if(DEBUG) {
-		printf("starting Dragon Lexer\n");
-	}
-
-	if(strcmp(filename,"--version")==0) {
-		printf("dragon-lexer 0.8 \n");
-		exit(0);
-	} else if(strcmp(filename,"--help")==0) {
-		printf("Usage: dragon-lexer FILE \n");
-		printf("\n");
-		printf("Converts a .dg Source File into a .tokens file, \ncontaining the Tokens contained in the Source. \n");
-		printf("\n");
-
-		printf("Possible Arguments:\n");
-		printf(" --version\n");
-		printf(" --help\n\n");
-
-		printf("Author: \n");
-		printf("alex23667@gmail.com\n");
-		printf("\n");
-
-		printf("Bug Reports:\n");
-		printf("https://github.com/pointbazaar/dragon-lexer\n");
-		exit(0);
-	}
-
-	char* correct_extension = ".dg";
-
-	//enforce correct filename extension
-	if(strcmp(filename + strlen(filename) - 3,correct_extension)!=0) {
-		printf("%s did not have correct '.dg' extension. Exiting \n",filename);
-		exit(1);
-	}
-
-	//because basename,dirname may modify their args
-	char cpy_filename_1[50];
-	char cpy_filename_2[50];
-	strcpy(cpy_filename_1,filename);
-	strcpy(cpy_filename_2,filename);
-
-	if(DEBUG) {
-		printf("argument file to lex: %s\n",filename);
-	}
-
-	char* dir = dirname(cpy_filename_1);
-	if(DEBUG) {
-		printf("in directory: %s\n",dir);
-	}
-
-
-	char tkn_filename[150];
-	tkn_filename[0]='\0';
-	strcat(tkn_filename,dir);
-	strcat(tkn_filename,"/.");
-	strcat(tkn_filename,basename(cpy_filename_2));
-	strcat(tkn_filename,".tokens");
+	char* tkn_filename = lexer_make_tkn_filename(filename);
 
 	if(DEBUG) {
 		printf("token filename should be: %s\n",tkn_filename);
@@ -140,9 +74,19 @@ int main(int argc, char** argv) {
 
 	if( access(filename,F_OK) == -1) {
 		printf("could not access file \n");
+		free(tkn_filename);
 		exit(1);
 	}
 
+	int status = lexer_main_inner(filename, tkn_filename);
+	
+	free(tkn_filename);
+	
+	return status;
+}
+
+int lexer_main_inner(char* filename, char* tkn_filename){
+	
 	//file metadata
 	struct stat file_meta;
 	struct stat tkn_file_meta;
@@ -182,13 +126,13 @@ int main(int argc, char** argv) {
 	if(DEBUG) {
 		printf("SUCCESS\n");
 	}
-
+	
 	return 0;
 }
 
 int tokenize_file(char* filename, char* tkn_filename, bool debug) {
 
-	//should tokenize  filename
+	//should tokenize filename
 	//and write those tokens to	tkn_filename
 
 	if(debug) {
@@ -211,4 +155,99 @@ int tokenize_file(char* filename, char* tkn_filename, bool debug) {
 	lex_main(tkn_filename,filename,length,true);
 
 	return 0;
+}
+
+void lexer_print_help(){
+	printf("Usage: dragon-lexer FILE \n");
+	printf("\n");
+	printf("Converts a .dg Source File into a .tokens file, \ncontaining the Tokens contained in the Source. \n");
+	printf("\n");
+
+	printf("Possible Arguments:\n");
+	printf(" -version\n");
+	printf(" -debug\n");
+	printf(" -test\n");
+	printf(" -help\n\n");
+
+	printf("Author: \n");
+	printf("alex23667@gmail.com\n");
+	printf("\n");
+
+	printf("Bug Reports: alex23667@gmail.com\n");
+}
+
+char* handleArguments(int argc, char** argv){
+	//this subroutine may perform an exit(...)
+	//this is ok because it is called in main(...)
+	//before anything is allocated on the heap
+	
+	char* filename = NULL;
+	for(int i=1; i < argc; i++) {
+
+		char* arg = argv[i];
+		if(arg[0] == '-') {
+			if(strcmp(arg, "-debug") == 0) {
+				
+				DEBUG = true;
+				
+			} else if(strcmp(arg, "-test") == 0) {
+				
+				exit(test_all(DEBUG));
+				
+			} else if(strcmp(arg, "-version") == 0) {
+				
+				printf("dragon-lexer 0.8 \n");
+				exit(0);
+				
+			} else if(strcmp(arg, "-help") == 0) {
+				
+				lexer_print_help();
+				exit(0);
+			}
+		} else {
+			filename = arg;
+		}
+	}
+	
+	if(filename == NULL) {
+		printf("expecte a filename of the file to tokenize\n");
+		exit(1);
+	}
+	
+	return filename;
+}
+
+void lexer_check_extension(char* filename){
+	
+	char* correct_extension = ".dg";
+
+	//enforce correct filename extension
+	if(strcmp(filename + strlen(filename) - 3,correct_extension)!=0) {
+		printf("%s did not have correct '.dg' extension. Exiting \n",filename);
+		exit(1);
+	}
+}
+
+char* lexer_make_tkn_filename(char* filename){
+	
+	//because basename,dirname may modify their args
+	char cpy_filename_1[50];
+	char cpy_filename_2[50];
+	strcpy(cpy_filename_1,filename);
+	strcpy(cpy_filename_2,filename);
+
+	char* dir = dirname(cpy_filename_1);
+	if(DEBUG) {
+		printf("in directory: %s\n",dir);
+	}
+
+	char* tkn_filename = malloc(sizeof(char)* 150);
+	
+	tkn_filename[0]='\0';
+	strcat(tkn_filename,dir);
+	strcat(tkn_filename,"/.");
+	strcat(tkn_filename,basename(cpy_filename_2));
+	strcat(tkn_filename,".tokens");
+	
+	return tkn_filename;
 }
