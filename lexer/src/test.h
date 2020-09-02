@@ -5,7 +5,7 @@
 
 int test_all(bool debug);
 
-bool assert(bool condition);
+//bool assert(bool condition);
 
 //test subroutines 
 //(returning true if the test was passed, false otherwise)

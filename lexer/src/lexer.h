@@ -13,7 +13,8 @@
 
 void free_dfa(short** dfa,int n_states);
 	
-void init_if_else(short** dfa);
+void init_if(short** dfa);
+void init_else(short** dfa);
 void init_while(short** dfa);
 void init_identifier(short** dfa);
 void init_typeidentifier(short** dfa);
@@ -46,6 +47,8 @@ void set_transitions_braces(short** dfa, int state, int state_result);
 void set_transitions_operators(short** dfa, int state, int state_result);
 void set_transitions_breaking(short** dfa, int state, int state_result);
 void set_transitions_printable(short** dfa, int state, int state_result);
+
+void set_transitions_abort_keyword(short** dfa, int state);
 /*
 
 Token kinds are there to avoid storing so much text about the tokens

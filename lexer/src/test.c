@@ -15,6 +15,7 @@ for the java version of this lexer
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <assert.h>
 
 //Project Headers
 #include "tokens.h"
@@ -34,6 +35,7 @@ void freeTokens(struct Token** tokens, unsigned int count){
 	//free(tokens);
 }
 
+/*
 bool assert(bool condition){
 	//to make it clear to the reader
 	//that this is the assertion of the test
@@ -51,6 +53,7 @@ bool assert(bool condition){
 
 	return condition;
 }
+*/
 
 bool debug;
 
@@ -155,11 +158,11 @@ bool test_can_see_line_with_semicolon(){
 	
 	bool res = true;
 	
-	res &= assert(tokens[0]->kind == TYPEIDENTIFIER);
-	res &= assert(tokens[1]->kind == ID);
-	res &= assert(tokens[2]->kind == SEMICOLON);
+	assert(tokens[0]->kind == TYPEIDENTIFIER);
+	assert(tokens[1]->kind == ID);
+	assert(tokens[2]->kind == SEMICOLON);
 
-	res &= assert(strcmp(tokens[1]->value,"x")==0);
+	assert(strcmp(tokens[1]->value,"x")==0);
 	
 	freeTokens(tokens, 3);
 
@@ -167,6 +170,7 @@ bool test_can_see_line_with_semicolon(){
 }
 
 bool test_can_see_line_with_operators(){
+	
 	if(debug){
 		printf("test can see line with operators\n");
 	}
@@ -178,11 +182,11 @@ bool test_can_see_line_with_operators(){
 
 	bool res = true;
 
-	res &= assert(tokens[0]->kind == ID);
-	res &= assert(tokens[1]->kind == EQ);
-	res &= assert(tokens[2]->kind == ID);
-	res &= assert(tokens[3]->kind == OPKEY);
-	res &= assert(tokens[4]->kind == ID);
+	assert(tokens[0]->kind == ID);
+	assert(tokens[1]->kind == EQ);
+	assert(tokens[2]->kind == ID);
+	assert(tokens[3]->kind == OPKEY);
+	assert(tokens[4]->kind == ID);
 	
 	freeTokens(tokens, 5);
 
@@ -199,16 +203,16 @@ bool test_lexes_return_statement_favorably(){
 
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==RETURN);
+	assert(tokens[0]->kind==RETURN);
 
-	res &= assert(tokens[1]->kind==LPARENS);
-	res &= assert(tokens[2]->kind==OPKEY);
-	res &= assert(tokens[3]->kind==INTEGER);
-	res &= assert(tokens[4]->kind==RPARENS);
+	assert(tokens[1]->kind==LPARENS);
+	assert(tokens[2]->kind==OPKEY);
+	assert(tokens[3]->kind==INTEGER);
+	assert(tokens[4]->kind==RPARENS);
 
-	res &= assert(tokens[5]->kind==OPKEY);
-	res &= assert(tokens[6]->kind==ID);
-	res &= assert(tokens[7]->kind==SEMICOLON);
+	assert(tokens[5]->kind==OPKEY);
+	assert(tokens[6]->kind==ID);
+	assert(tokens[7]->kind==SEMICOLON);
 	
 	freeTokens(tokens, 8);
 
@@ -224,54 +228,52 @@ bool test_lexes_other_return_statement(){
 
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==RETURN);
+	assert(tokens[0]->kind==RETURN);
 	
-	res &= assert(tokens[1]->kind==LPARENS);
-	res &= assert(tokens[2]->kind==ID);
-	res &= assert(tokens[3]->kind==OPKEY);
-	res &= assert(tokens[4]->kind==ID);
+	assert(tokens[1]->kind==LPARENS);
+	assert(tokens[2]->kind==ID);
+	assert(tokens[3]->kind==OPKEY);
+	assert(tokens[4]->kind==ID);
 
-	res &= assert(tokens[5]->kind==LPARENS);
-	res &= assert(tokens[6]->kind==ID);
-	res &= assert(tokens[7]->kind==OPKEY);
-	res &= assert(tokens[8]->kind==INTEGER);
-	res &= assert(tokens[9]->kind==RPARENS);
-	res &= assert(tokens[10]->kind==RPARENS);
+	assert(tokens[5]->kind==LPARENS);
+	assert(tokens[6]->kind==ID);
+	assert(tokens[7]->kind==OPKEY);
+	assert(tokens[8]->kind==INTEGER);
+	assert(tokens[9]->kind==RPARENS);
+	assert(tokens[10]->kind==RPARENS);
 	
 	freeTokens(tokens, 11);
 
 	return res;
 }
 bool test_lexes_float_constant(){
-	if(debug){
-		printf("test lexes float constant\n");
-	}
+	
+	if(debug){ printf("test lexes float constant\n");}
 	
 	char* str = "1.44 ";
 	struct Token** tokens = lex(str,".test.tokens");
 
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==FLOATING);
-	res &= assert(strcmp(tokens[0]->value,"1.44")==0);
+	assert(tokens[0]->kind==FLOATING);
+	assert(strcmp(tokens[0]->value,"1.44")==0);
 	
 	freeTokens(tokens, 1);
 
 	return res;
 }
 bool test_lexes_escaped_char(){
-	if(debug){
-		printf("test lexes escaped char\n");
-	}
+	
+	if(debug){ printf("test lexes escaped char\n");}
 	
 	char* str = "return '\\n'";
 	struct Token** tokens = lex(str,".test.tokens");
 
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==RETURN);
-	res &= assert(tokens[1]->kind==CCONST);
-	res &= assert(strcmp(tokens[1]->value,"'\\n'")==0);
+	assert(tokens[0]->kind==RETURN);
+	assert(tokens[1]->kind==CCONST);
+	assert(strcmp(tokens[1]->value,"'\\n'")==0);
 	
 	freeTokens(tokens, 2);
 
@@ -289,7 +291,7 @@ bool test_anytypetoken(){
 
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==ANYTYPE);
+	assert(tokens[0]->kind==ANYTYPE);
 	
 	freeTokens(tokens, 1);
 
@@ -305,7 +307,7 @@ bool test_true(){
 
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==BCONST);
+	assert(tokens[0]->kind==BCONST);
 	
 	freeTokens(tokens, 1);
 
@@ -323,7 +325,7 @@ bool test_false(){
 
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==BCONST);
+	assert(tokens[0]->kind==BCONST);
 	
 	freeTokens(tokens, 1);
 
@@ -340,14 +342,14 @@ bool test_char(){
 
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==CCONST);
-	res &= assert(tokens[1]->kind==LPARENS);
-	res &= assert(tokens[2]->kind==CCONST);
-	res &= assert(tokens[3]->kind==RPARENS);
+	assert(tokens[0]->kind==CCONST);
+	assert(tokens[1]->kind==LPARENS);
+	assert(tokens[2]->kind==CCONST);
+	assert(tokens[3]->kind==RPARENS);
 
-	res &= assert(strcmp(tokens[0]->value,"'x'")==0 );
+	assert(strcmp(tokens[0]->value,"'x'")==0 );
 
-	res &= assert(strcmp(tokens[2]->value,"'\\n'")==0 );
+	assert(strcmp(tokens[2]->value,"'\\n'")==0 );
 	
 	freeTokens(tokens, 4);
 	
@@ -365,8 +367,8 @@ bool test_float_1(){
 
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==FLOATING);
-	res &= assert(
+	assert(tokens[0]->kind==FLOATING);
+	assert(
 		strcmp(tokens[0]->value,"2038.4")==0
 	);
 	
@@ -385,8 +387,8 @@ bool test_float_2(){
 
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==FLOATING);
-	res &= assert(
+	assert(tokens[0]->kind==FLOATING);
+	assert(
 		strcmp(tokens[0]->value,"0.0")==0
 	);
 	
@@ -409,8 +411,8 @@ bool test_float_3(){
 	//are lexed seperately, for simplicity reasons.
 	//perhaps we may change it later on 
 
-	res &= assert(tokens[1]->kind==FLOATING);
-	res &= assert(
+	assert(tokens[1]->kind==FLOATING);
+	assert(
 		strcmp(tokens[1]->value,"5.0")==0
 	);
 	
@@ -429,8 +431,8 @@ bool test_identifier_1(){
 
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==ID);
-	res &= assert(
+	assert(tokens[0]->kind==ID);
+	assert(
 		strcmp(tokens[0]->value,"main")==0
 	);
 	
@@ -449,8 +451,8 @@ bool test_identifier_2(){
 
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==ID);
-	res &= assert(
+	assert(tokens[0]->kind==ID);
+	assert(
 		strcmp(tokens[0]->value,"arg_ls")==0
 	);
 	
@@ -468,8 +470,8 @@ bool test_int_1(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==INTEGER);
-	res &= assert(
+	assert(tokens[0]->kind==INTEGER);
+	assert(
 		strcmp(tokens[0]->value,"2038")==0
 	);
 	
@@ -487,8 +489,8 @@ bool test_int_2(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==INTEGER);
-	res &= assert(
+	assert(tokens[0]->kind==INTEGER);
+	assert(
 		strcmp(tokens[0]->value,"0")==0
 	);
 	
@@ -506,8 +508,8 @@ bool test_int_3(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[1]->kind==INTEGER);
-	res &= assert(
+	assert(tokens[1]->kind==INTEGER);
+	assert(
 		strcmp(tokens[1]->value,"5")==0
 	);
 	
@@ -526,7 +528,7 @@ bool test_struct(){
 
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==STRUCT);
+	assert(tokens[0]->kind==STRUCT);
 	
 	freeTokens(tokens, 1);
 	
@@ -543,7 +545,7 @@ bool test_return(){
 
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==RETURN);
+	assert(tokens[0]->kind==RETURN);
 	
 	freeTokens(tokens, 1);
 	
@@ -559,9 +561,9 @@ bool test_string_1(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==STRINGCONST);
+	assert(tokens[0]->kind==STRINGCONST);
 	//printf("%s\n",get(tokens,0)->value);
-	res &= assert(
+	assert(
 		strcmp(tokens[0]->value,"\"hi\"")==0
 	);
 	
@@ -579,8 +581,8 @@ bool test_string_2(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==STRINGCONST);
-	res &= assert(
+	assert(tokens[0]->kind==STRINGCONST);
+	assert(
 		strcmp(tokens[0]->value,"\"hi\n\nhi\"")==0
 	);
 	
@@ -599,8 +601,8 @@ bool test_typeidentifier_simple(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==TYPEIDENTIFIER);
-	res &= assert(
+	assert(tokens[0]->kind==TYPEIDENTIFIER);
+	assert(
 		strcmp(tokens[0]->value,"PInt")==0
 	);
 	
@@ -618,8 +620,8 @@ bool test_typeidentifier_other(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==TYPEIDENTIFIER);
-	res &= assert(
+	assert(tokens[0]->kind==TYPEIDENTIFIER);
+	assert(
 		strcmp(tokens[0]->value,"Point")==0
 	);
 	
@@ -637,8 +639,8 @@ bool test_typeidentifier_token(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==TYPEIDENTIFIER);
-	res &= assert(
+	assert(tokens[0]->kind==TYPEIDENTIFIER);
+	assert(
 		strcmp(tokens[0]->value,"Char")==0
 	);
 	
@@ -656,8 +658,8 @@ bool test_typeparameter_1(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==TPARAM);
-	res &= assert(
+	assert(tokens[0]->kind==TPARAM);
+	assert(
 		strcmp(tokens[0]->value,"0")==0
 	);
 	
@@ -675,8 +677,8 @@ bool test_comma(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[1]->kind==COMMA);
-	res &= assert(
+	assert(tokens[1]->kind==COMMA);
+	assert(
 		strcmp(tokens[1]->value,",")==0
 	);
 	
@@ -694,13 +696,13 @@ bool test_arrow(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==ARROW);
-	res &= assert(
+	assert(tokens[0]->kind==ARROW);
+	assert(
 		strcmp(tokens[0]->value,"->")==0
 	);
 
-	res &= assert(tokens[1]->kind==ARROW);
-	res &= assert(
+	assert(tokens[1]->kind==ARROW);
+	assert(
 		strcmp(tokens[1]->value,"~>")==0
 	);
 	
@@ -719,19 +721,19 @@ bool test_mixed_1(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[2]->kind==LCURLY);
+	assert(tokens[2]->kind==LCURLY);
 
-	res &= assert(tokens[3]->kind==TYPEIDENTIFIER);
-	res &= assert(
+	assert(tokens[3]->kind==TYPEIDENTIFIER);
+	assert(
 		strcmp(tokens[3]->value,"PInt")==0
 	);
 
-	res &= assert(tokens[4]->kind==ID);
-	res &= assert(
+	assert(tokens[4]->kind==ID);
+	assert(
 		strcmp(tokens[4]->value,"a")==0
 	);
 
-	res &= assert(tokens[5]->kind==COMMA);
+	assert(tokens[5]->kind==COMMA);
 	
 	freeTokens(tokens, 6);
 
@@ -748,16 +750,16 @@ bool test_mixed_2(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==RPARENS);
+	assert(tokens[0]->kind==RPARENS);
 
-	res &= assert(tokens[1]->kind==ID);
-	res &= assert(
+	assert(tokens[1]->kind==ID);
+	assert(
 		strcmp(tokens[1]->value,"f")==0
 	);
 
-	res &= assert(tokens[2]->kind==RPARENS);
+	assert(tokens[2]->kind==RPARENS);
 
-	res &= assert(tokens[3]->kind==ARROW);
+	assert(tokens[3]->kind==ARROW);
 	
 	freeTokens(tokens, 4);
 
@@ -774,11 +776,11 @@ bool test_mixed_3(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==IF);
+	assert(tokens[0]->kind==IF);
 
-	res &= assert(tokens[1]->kind==LPARENS);
+	assert(tokens[1]->kind==LPARENS);
 
-	res &= assert(tokens[2]->kind==ID);
+	assert(tokens[2]->kind==ID);
 	
 	freeTokens(tokens, 3);
 
@@ -795,17 +797,17 @@ bool test_mixed_4(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==WHILE);
+	assert(tokens[0]->kind==WHILE);
 
-	res &= assert(tokens[1]->kind==LPARENS);
+	assert(tokens[1]->kind==LPARENS);
 
-	res &= assert(tokens[2]->kind==ID);
+	assert(tokens[2]->kind==ID);
 
 	//PInt
-	res &= assert(tokens[3]->kind==TYPEIDENTIFIER);
+	assert(tokens[3]->kind==TYPEIDENTIFIER);
 
 	//id
-	res &= assert(tokens[4]->kind==ID);
+	assert(tokens[4]->kind==ID);
 	
 	freeTokens(tokens, 5);
 
@@ -824,13 +826,13 @@ bool test_mixed_5(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==RBRACKET);
+	assert(tokens[0]->kind==RBRACKET);
 
-	res &= assert(tokens[1]->kind==EQ);
+	assert(tokens[1]->kind==EQ);
 
-	res &= assert(tokens[2]->kind==CCONST);
+	assert(tokens[2]->kind==CCONST);
 
-	res &= assert(tokens[3]->kind==SEMICOLON);
+	assert(tokens[3]->kind==SEMICOLON);
 	
 	freeTokens(tokens, 4);
 
@@ -848,11 +850,11 @@ bool test_mixed_6(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==TYPEIDENTIFIER);
+	assert(tokens[0]->kind==TYPEIDENTIFIER);
 
-	res &= assert(tokens[1]->kind==ID);
+	assert(tokens[1]->kind==ID);
 
-	res &= assert(tokens[2]->kind==RCURLY);
+	assert(tokens[2]->kind==RCURLY);
 	
 	freeTokens(tokens, 3);
 
@@ -870,15 +872,15 @@ bool test_mixed_7(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==LPARENS);
+	assert(tokens[0]->kind==LPARENS);
 
-	res &= assert(tokens[1]->kind==INTEGER);
+	assert(tokens[1]->kind==INTEGER);
 
-	res &= assert(tokens[2]->kind==LESSER);
+	assert(tokens[2]->kind==LESSER);
 
-	res &= assert(tokens[3]->kind==INTEGER);
+	assert(tokens[3]->kind==INTEGER);
 
-	res &= assert(tokens[4]->kind==RPARENS);
+	assert(tokens[4]->kind==RPARENS);
 	
 	freeTokens(tokens, 5);
 
@@ -896,13 +898,13 @@ bool test_mixed_8(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==ID);
+	assert(tokens[0]->kind==ID);
 
-	res &= assert(tokens[1]->kind==LPARENS);
+	assert(tokens[1]->kind==LPARENS);
 
-	res &= assert(tokens[2]->kind==CCONST);
+	assert(tokens[2]->kind==CCONST);
 
-	res &= assert(tokens[3]->kind==RPARENS);
+	assert(tokens[3]->kind==RPARENS);
 	
 	freeTokens(tokens, 4);
 
@@ -920,13 +922,13 @@ bool test_mixed_9(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==ID);
+	assert(tokens[0]->kind==ID);
 
-	res &= assert(tokens[1]->kind==LPARENS);
+	assert(tokens[1]->kind==LPARENS);
 
-	res &= assert(tokens[2]->kind==CCONST);
+	assert(tokens[2]->kind==CCONST);
 
-	res &= assert(tokens[3]->kind==RPARENS);
+	assert(tokens[3]->kind==RPARENS);
 	
 	freeTokens(tokens, 4);
 
@@ -946,15 +948,15 @@ bool test_mixed_10(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==SEMICOLON);
+	assert(tokens[0]->kind==SEMICOLON);
 
-	res &= assert(tokens[1]->kind==LINE_NO);
+	assert(tokens[1]->kind==LINE_NO);
 
-	res &= assert(tokens[2]->kind==ID);
+	assert(tokens[2]->kind==ID);
 
-	res &= assert(tokens[3]->kind==EQ);
+	assert(tokens[3]->kind==EQ);
 
-	res &= assert(tokens[4]->kind==INTEGER);
+	assert(tokens[4]->kind==INTEGER);
 	
 	freeTokens(tokens, 5);
 
@@ -973,15 +975,15 @@ bool test_mixed_11(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==TYPEIDENTIFIER);
+	assert(tokens[0]->kind==TYPEIDENTIFIER);
 
-	res &= assert(tokens[1]->kind==ID);
+	assert(tokens[1]->kind==ID);
 
-	res &= assert(tokens[2]->kind==COMMA);
+	assert(tokens[2]->kind==COMMA);
 
-	res &= assert(tokens[3]->kind==TYPEIDENTIFIER);
+	assert(tokens[3]->kind==TYPEIDENTIFIER);
 
-	res &= assert(tokens[4]->kind==ID);
+	assert(tokens[4]->kind==ID);
 	
 	freeTokens(tokens, 5);
 
@@ -999,15 +1001,15 @@ bool test_mixed_12(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==LPARENS);
+	assert(tokens[0]->kind==LPARENS);
 
-	res &= assert(tokens[1]->kind==ID);
+	assert(tokens[1]->kind==ID);
 
-	res &= assert(tokens[2]->kind==LESSER);
+	assert(tokens[2]->kind==LESSER);
 
-	res &= assert(tokens[3]->kind==FLOATING);
+	assert(tokens[3]->kind==FLOATING);
 
-	res &= assert(tokens[4]->kind==RPARENS);
+	assert(tokens[4]->kind==RPARENS);
 
 	freeTokens(tokens, 5);
 
@@ -1026,13 +1028,13 @@ bool test_mixed_13(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==ID);
-	res &= assert(tokens[1]->kind==LPARENS);
+	assert(tokens[0]->kind==ID);
+	assert(tokens[1]->kind==LPARENS);
 
-	res &= assert(tokens[2]->kind==STRINGCONST);
+	assert(tokens[2]->kind==STRINGCONST);
 
-	res &= assert(tokens[3]->kind==RPARENS);
-	res &= assert(tokens[4]->kind==SEMICOLON);
+	assert(tokens[3]->kind==RPARENS);
+	assert(tokens[4]->kind==SEMICOLON);
 	
 	freeTokens(tokens, 5);
 
@@ -1049,17 +1051,17 @@ bool test_operators(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==OPKEY);
+	assert(tokens[0]->kind==OPKEY);
 
-	res &= assert(tokens[1]->kind==OPKEY);
+	assert(tokens[1]->kind==OPKEY);
 
-	res &= assert(tokens[2]->kind==OPKEY);
+	assert(tokens[2]->kind==OPKEY);
 
-	res &= assert(tokens[3]->kind==OPKEY);
+	assert(tokens[3]->kind==OPKEY);
 
-	res &= assert(tokens[4]->kind==OPKEY);
+	assert(tokens[4]->kind==OPKEY);
 
-	res &= assert(tokens[5]->kind==OPKEY);
+	assert(tokens[5]->kind==OPKEY);
 	
 	freeTokens(tokens, 6);
 
@@ -1076,13 +1078,13 @@ bool test_loop(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==LOOP);
+	assert(tokens[0]->kind==LOOP);
 
-	res &= assert(tokens[1]->kind==LOOP);
+	assert(tokens[1]->kind==LOOP);
 
-	res &= assert(tokens[2]->kind==LCURLY);
+	assert(tokens[2]->kind==LCURLY);
 
-	res &= assert(tokens[3]->kind==ID);
+	assert(tokens[3]->kind==ID);
 	
 	freeTokens(tokens, 4);
 
@@ -1099,11 +1101,11 @@ bool test_if_else(){
 	struct Token** tokens = lex(str,".test.tokens");
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==IF);
+	assert(tokens[0]->kind==IF);
 
-	res &= assert(tokens[1]->kind==ELSE);
+	assert(tokens[1]->kind==ELSE);
 
-	res &= assert(tokens[2]->kind==LCURLY);
+	assert(tokens[2]->kind==LCURLY);
 
 	freeTokens(tokens, 3);
 
@@ -1119,11 +1121,11 @@ bool test_break(){
 	
 	bool res = true;
 
-	res &= assert(tokens[0]->kind==BREAK);
+	assert(tokens[0]->kind==BREAK);
 
-	res &= assert(tokens[1]->kind==SEMICOLON);
+	assert(tokens[1]->kind==SEMICOLON);
 
-	res &= assert(tokens[2]->kind==TYPEIDENTIFIER);
+	assert(tokens[2]->kind==TYPEIDENTIFIER);
 	
 	freeTokens(tokens, 3);
 

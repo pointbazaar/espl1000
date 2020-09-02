@@ -25,7 +25,8 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	//for the numbers
 	set_transitions_digits(dfa,S_START,S_DIGITS);
 
-	init_if_else(dfa);
+	init_if(dfa);
+	init_else(dfa);
 	init_while(dfa);
 	init_identifier(dfa);
 	init_typeidentifier( dfa);
