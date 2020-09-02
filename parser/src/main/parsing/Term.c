@@ -18,17 +18,16 @@
 #include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 
-struct Term* makeTerm_other(struct Expr* expr){
-	struct Term* res = smalloc(sizeof(struct Term));
+// --- private subroutines ---
 
-	res->m1 = NULL;
-	res->m2 = NULL;
-	res->m3 = NULL;
-	res->m4 = NULL;
-	res->m5 = NULL;
-	res->m6 = NULL;
-	res->m7 = NULL;
-	res->m8 = NULL;
+struct Term* initTerm();
+void tryInitExpr(struct Term* res, struct TokenList* copy, bool debug);
+void tryInitStringConst(struct Term* res, struct TokenList* copy, bool debug);
+// ---------------------------
+
+struct Term* makeTerm_other(struct Expr* expr){
+	
+	struct Term* res = initTerm();
 
 	res->m5 = expr;
 	return res;
@@ -43,74 +42,26 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 	
 	if(list_size(tokens) == 0){return NULL;}
 
-	struct Term* res = smalloc(sizeof(struct Term));
-	
-	res->m1 = NULL;
-	res->m2 = NULL;
-	res->m3 = NULL;
-	res->m4 = NULL;
-	res->m5 = NULL;
-	res->m6 = NULL;
-	res->m7 = NULL;
-	res->m8 = NULL;
+	struct Term* res = initTerm();
 
 	struct TokenList* copy = list_copy(tokens);
 
 	if(list_head(copy)->kind == LPARENS){
 		
-		if(debug){
-			printf("try to parse Expr in Term\n");
-		}
+		tryInitExpr(res, copy, debug);
 		
-		list_consume(copy, 1);
-
-		res->m5 = makeExpr(copy,debug);
-		if(res->m5 == NULL){
-			free(res);
-			freeTokenListShallow(copy);
-			printf("expected an Expression, but got :");
-			list_print(copy);
-			exit(1);
-		}
-		
-		if(!list_expect(copy, RPARENS)){
-			//this part can be parsed deterministically
-			printf("expected ')', but was: ");
-			list_print(copy);
-			exit(1);
-		}
 	}else if(list_head(copy)->kind == STRINGCONST){
 		
-		res->m8 = makeStringConst(copy, debug);
-		if(res->m8 == NULL){
-			free(res);
-			freeTokenListShallow(copy);
-			return NULL;
-		}
+		tryInitStringConst(res, copy, debug);
 		
 	}else{
-
-		if(debug){
-			printf("try to parse ordinary Term\n");
-		}
 		
-		   res->m2 = makeIntConst(copy,debug);
-		if(res->m2 == NULL){
-			
-			   res->m7 = makeFloatConst(copy,debug);
-			if(res->m7 == NULL){
-				
-				   res->m4 = makeMethodCall(copy,debug);
-				if(res->m4 == NULL){
-					
-					   res->m1 = makeBoolConst(copy,debug);
-					if(res->m1 == NULL){
-						
-						   res->m6 = makeVariable(copy,debug);
-						if(res->m6 == NULL){
-							
-							   res->m3 = makeCharConst(copy,debug);
-							if(res->m3 == NULL){
+		if( (res->m2 = makeIntConst(copy,debug)) == NULL){
+			if( (res->m7 = makeFloatConst(copy,debug)) == NULL){
+				if( (res->m4 = makeMethodCall(copy,debug)) == NULL){
+					if( (res->m1 = makeBoolConst(copy,debug)) == NULL){
+						if( (res->m6 = makeVariable(copy,debug)) == NULL){
+							if( (res->m3 = makeCharConst(copy,debug)) == NULL){
 								
 								free(res);
 								freeTokenListShallow(copy);
@@ -133,5 +84,54 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
+struct Term* initTerm(){
+	
+	struct Term* res = smalloc(sizeof(struct Term));
+	
+	res->m1 = NULL;
+	res->m2 = NULL;
+	res->m3 = NULL;
+	res->m4 = NULL;
+	res->m5 = NULL;
+	res->m6 = NULL;
+	res->m7 = NULL;
+	res->m8 = NULL;
+	
+	return res;
+}
 
+void tryInitExpr(struct Term* res, struct TokenList* copy, bool debug){
+	
+	list_consume(copy, 1);
 
+	res->m5 = makeExpr(copy,debug);
+	if(res->m5 == NULL){
+		free(res);
+		freeTokenListShallow(copy);
+		printf("expected an Expression, but got :");
+		list_print(copy);
+		exit(1);
+	}
+	
+	if(!list_expect(copy, RPARENS)){
+		//this part can be parsed deterministically
+		printf("expected ')', but was: ");
+		list_print(copy);
+		exit(1);
+	}
+}
+
+void tryInitStringConst(struct Term* res, struct TokenList* copy, bool debug){
+	
+	res->m8 = makeStringConst(copy, debug);
+	if(res->m8 == NULL){
+		
+		printf("expected an String, but got :");
+		list_print(copy);
+		
+		free(res);
+		freeTokenListShallow(copy);
+		
+		exit(1);
+	}
+}
