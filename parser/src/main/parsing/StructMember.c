@@ -10,7 +10,10 @@
 #include "Identifier.h"
 #include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
-
+//-------------
+struct StructMember* initStructMember();
+void beforeAbort(struct StructMember* m, struct TokenList* copy);
+//-------------
 struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 
 	if(debug){
@@ -18,25 +21,24 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 		list_print(tokens);
 	}
 
-	struct StructMember* res = smalloc(sizeof(struct StructMember));
+	struct StructMember* res = initStructMember();
 
 	struct TokenList* copy = list_copy(tokens);
 
-	res->type = makeType2(copy, debug);
-	if(res->type == NULL){
-		free(res);
-		freeTokenListShallow(copy);
+	if((res->type = makeType2(copy, debug)) == NULL){
+		
+		beforeAbort(res, copy);
 		return NULL;
 	}
 
 	struct Identifier* id = makeIdentifier(copy, debug);
+	
 	if(id == NULL){
-		free(res);
-		freeType(res->type);
-		freeTokenListShallow(copy);
+		beforeAbort(res, copy);
 		return NULL;
 	}
-	strncpy(res->name, id->identifier, 19);
+	
+	strncpy(res->name, id->identifier, DEFAULT_STR_SIZE);
 	freeIdentifier(id);
 
 	list_set(tokens, copy);
@@ -45,3 +47,20 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 	return res;
 }
 
+struct StructMember* initStructMember(){
+	
+	struct StructMember* res = smalloc(sizeof(struct StructMember));
+	res->type = NULL;
+	
+	return res;
+}
+
+void beforeAbort(struct StructMember* m, struct TokenList* copy){
+	
+	if(m->type != NULL){
+		freeType(m->type);
+	}
+	free(m);
+	
+	freeTokenListShallow(copy);
+}
