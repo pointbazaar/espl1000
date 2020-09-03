@@ -4,11 +4,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## Unreleased
 - Added 'sd -help' Option
-- Added Local Variable Type Inference
 - Added 'sd -version' Option
-- Added Valgrind Tests to detect Memory Leaks
 - Added '-clean' Flag to dragon-lexer
 - Added '-clean' Flag to sd (in transpiler/)
+- Added Valgrind Tests to detect Memory Leaks
+- Added Local Variable Type Inference
 
 ## [0.0.3] - 2020-08-27
 - Added 'break' Statement
