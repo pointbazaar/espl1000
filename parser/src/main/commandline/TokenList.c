@@ -5,6 +5,7 @@
 #include "TokenList.h"
 #include "TokenKeys.h"
 #include "../../../../util/util.h"
+#include "../../../../token/token.h"
 
 struct TokenList* makeTokenList() {
 	

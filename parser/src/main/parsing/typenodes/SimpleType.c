@@ -4,10 +4,10 @@
 
 #include "SimpleType.h"
 #include "../../commandline/TokenList.h"
-#include "../../commandline/Token.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../../../../util/util.h"
 #include "../../../../../ast/free_ast.h"
+#include "../../../../../token/token.h"
 
 struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 

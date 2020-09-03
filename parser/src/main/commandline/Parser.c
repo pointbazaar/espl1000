@@ -15,6 +15,7 @@
 #include "../../test/ParserTest.h"
 
 #include "../../../../util/util.h"
+#include "../../../../token/token.h"
 
 const char* FLAG_DEBUG = "-debug";
 const char* FLAG_HELP = "-help";

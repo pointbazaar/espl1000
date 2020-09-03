@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "tokens.h"
+#include "../../token/token.h"
 #include "loop_io.h"
 
 void readFromFile(
@@ -90,7 +90,7 @@ void writeToFile(
 
 		struct Token* tkn = tokens[j];
 		int id = tkn->kind;
-		char* value = tkn->value;
+		char* value = tkn->value_ptr;
 
 		sprintf(buffer,"%i %s\n",id,value);
 
@@ -102,7 +102,7 @@ void writeToFile(
 		//free our token
 		if(free_tokens){
 			if( !tkn->statically_allocated ){
-				free(tkn->value);
+				free(tkn->value_ptr);
 			}
 			free(tkn);
 		}

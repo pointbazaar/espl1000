@@ -2,7 +2,9 @@
 #define LOOPIO
 
 #include <stdbool.h>
-#include "tokens.h"
+#include <inttypes.h>
+
+struct Token;
 
 //this must be in the header so loop.c
 //can see 'input' variable

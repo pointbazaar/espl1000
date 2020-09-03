@@ -14,7 +14,16 @@ struct Token {
 
 	//this is intentionally not a 'char*'
 	//in an effort to make the program simple.
-	char value[20];
+	//------
+	//however in the lexer it is a pointer
+	//so be careful
+	char value[32];
+	
+	//for the lexer,
+	//where a pointer is desired
+	char* value_ptr;
+	
+	bool statically_allocated;
 };
 
 bool tokenEquals(struct Token* a, struct Token* b);

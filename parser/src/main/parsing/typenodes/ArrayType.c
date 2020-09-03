@@ -7,6 +7,7 @@
 #include "../../commandline/TokenKeys.h"
 #include "../../../../../util/util.h"
 #include "../../../../../ast/free_ast.h"
+#include "../../../../../token/token.h"
 
 struct ArrayType* makeArrayType(struct Type* element_type){
 	

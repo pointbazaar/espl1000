@@ -8,6 +8,7 @@
 #include "Stmt.h"
 #include "../../../../../util/util.h"
 #include "../../../../../ast/free_ast.h"
+#include "../../../../../token/token.h"
 
 struct BreakStmt* makeBreakStmt(struct TokenList* tokens, bool debug) {
 

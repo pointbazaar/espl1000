@@ -1,7 +1,7 @@
 #include "TermTest.h"
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
-#include "../../main/commandline/Token.h"
+#include "../../../../token/token.h"
 #include "../../main/parsing/Term.h"
 #include "../../main/parsing/Variable.h"
 #include "../../main/parsing/SimpleVar.h"

@@ -6,7 +6,7 @@
 #include "TokenListTest.h"
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
-#include "../../main/commandline/Token.h"
+#include "../../../../token/token.h"
 
 int test_tokenlist1(bool debug){
 

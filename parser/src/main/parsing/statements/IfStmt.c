@@ -9,6 +9,7 @@
 #include "Stmt.h"
 #include "../../../../../util/util.h"
 #include "../../../../../ast/free_ast.h"
+#include "../../../../../token/token.h"
 
 struct IfStmt* initIfStmt();
 void freeIncomplete(struct IfStmt* ifstmt);

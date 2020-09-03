@@ -8,7 +8,7 @@
 #include "typenodes/Type.h"
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
-#include "../commandline/Token.h"
+#include "../../../../token/token.h"
 #include "Identifier.h"
 #include "statements/Stmt.h"
 #include "DeclArg.h"

@@ -1,7 +1,7 @@
 #include "StructDeclTest.h"
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
-#include "../../main/commandline/Token.h"
+#include "../../../../token/token.h"
 #include "../../main/parsing/StructDecl.h"
 #include "../../main/parsing/StructMember.h"
 #include "../../../../ast/free_ast.h"

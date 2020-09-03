@@ -3,7 +3,7 @@
 
 #include "AssignStmt.h"
 #include "../../commandline/TokenList.h"
-#include "../../commandline/Token.h"
+#include "../../../../../token/token.h"
 #include "../../commandline/TokenKeys.h"
 #include "../typenodes/Type.h"
 #include "../Variable.h"

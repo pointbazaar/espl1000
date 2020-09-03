@@ -4,13 +4,15 @@
 #include <stdlib.h>
 
 //user headers
-#include "tokens.h"
+
 #include "lexer.h"
 #include "strutils.h"
 #include "states.h"
 #include "loop.h"
 #include "init_dfa.h"
 #include "loop_io.h"
+
+#include "../../token/token.h"
 
 //token types
 #include "../../parser/src/main/commandline/TokenKeys.h"
@@ -185,7 +187,7 @@ void lex_main_inner(
 		struct Token* tkn = (struct Token*)malloc(sizeof(struct Token));
 
 		tkn->kind=-1;
-		tkn->value="";
+		tkn->value_ptr="";
 		tkn->statically_allocated=true;
 
 		switch(state){
@@ -204,74 +206,74 @@ void lex_main_inner(
 				char* str = (char*)malloc(sizeof(char)*20);
 				sprintf(str, "%d", line_no);
 				tkn->kind=LINE_NO;
-				tkn->value=str;
+				tkn->value_ptr=str;
 				tkn->statically_allocated=false;
 				break;
 
 			//SECTION: KEYWORDS
 			case S_loop_FINAL:
 				tkn->kind=LOOP;
-				tkn->value="loop";
+				tkn->value_ptr="loop";
 				i--;
 				break;
 
 			case S_IF_FINAL:
 				tkn->kind=IF;
-				tkn->value="if";
+				tkn->value_ptr="if";
 				i--;
 				break;
 
 			case S_WHILE_FINAL:
 				tkn->kind=WHILE;
-				tkn->value="while";
+				tkn->value_ptr="while";
 				i--;
 				break;
 				
 			case S_break_FINAL:
 				tkn->kind=BREAK;
-				tkn->value="break";
+				tkn->value_ptr="break";
 				i--;
 				break;
 
 			case S_RETURN_FINAL:
 				tkn->kind=RETURN;
-				tkn->value="return";
+				tkn->value_ptr="return";
 				break;
 
 			case S_struct_FINAL:
 				tkn->kind=STRUCT;
-				tkn->value="struct";
+				tkn->value_ptr="struct";
 				break;
 
 			case S_fn_FINAL:
 				tkn->kind=FN;
-				tkn->value="fn";
+				tkn->value_ptr="fn";
 				break;
 
 			case S_else_FINAL:
 				tkn->kind=ELSE;
-				tkn->value="else";
+				tkn->value_ptr="else";
 				i--;
 				break;
 
 			//SECTION: IDENTIFIERS
 			case S_IDENTIFIER_FINAL:
 				tkn->kind=ID;
-				tkn->value=substr(input+start,end-start-1);
+				tkn->value_ptr=substr(input+start,end-start-1);
 				tkn->statically_allocated=false;
 				i--;
 				break;
 
 			case S_TYPEIDENTIFIER_FINAL:
 				tkn->kind=TYPEIDENTIFIER;
-				tkn->value=substr(input+start,end-start-1);
+				tkn->value_ptr=substr(input+start,end-start-1);
 				tkn->statically_allocated=false;
 				i--;
 				break;
 
 			case S_TPARAM_FINAL:
 				tkn->kind=TPARAM;
-				tkn->value=substr(input+start+2,1);
+				tkn->value_ptr=substr(input+start+2,1);
 				tkn->statically_allocated=false;
 				i--;
 				break;
@@ -279,88 +281,86 @@ void lex_main_inner(
 			//SECTION: BRACKETS,BRACES,PARENS
 			case S_LCURLY_FINAL:
 				tkn->kind=LCURLY;
-				tkn->value="{";
-
+				tkn->value_ptr="{";
 				break;
 
 			case S_RCURLY_FINAL:
 				tkn->kind=RCURLY;
-				tkn->value="}";
+				tkn->value_ptr="}";
 				break;
 
 			case S_LPARENS_FINAL:
 				tkn->kind=LPARENS;
-				tkn->value="(";
+				tkn->value_ptr="(";
 				break;
 
 			case S_RPARENS_FINAL:
 				tkn->kind=RPARENS;
-				tkn->value=")";
+				tkn->value_ptr=")";
 				break;
 
 			case S_LBRACKET_FINAL:
 				tkn->kind=LBRACKET;
-				tkn->value="[";
-
+				tkn->value_ptr="[";
 				break;
 
 			case S_RBRACKET_FINAL:
 				tkn->kind=RBRACKET;
-				tkn->value="]";
+				tkn->value_ptr="]";
 				break;
 
 			//SECTION: OTHER SYMBOLS
 			case S_LESSER_FINAL:
 				tkn->kind=OPKEY;
-				tkn->value="<";
+				tkn->value_ptr="<";
 				break;
 
 			case S_GREATER_FINAL:
 				tkn->kind=OPKEY;
-				tkn->value=">";
+				tkn->value_ptr=">";
 				break;
 
 			case S_WAVE_FINAL:
 				tkn->kind=WAVE;
-				tkn->value="~";
+				tkn->value_ptr="~";
 				break;
 
 			case S_SEMICOLON_FINAL:
 				tkn->kind=SEMICOLON;
-				tkn->value=";";
+				tkn->value_ptr=";";
 				break;
 
 			case S_EQ_FINAL:
 				tkn->kind=EQ;
-				tkn->value="=";
+				tkn->value_ptr="=";
 				i--;
 				break;
 
 			case S_BOOLCONST_FINAL:
 				tkn->kind=BCONST;
-				tkn->value=substr(input+start,end-start-1);
+				tkn->value_ptr=substr(input+start,end-start-1);
 				tkn->statically_allocated=false;
 				i--;
 				break;
 
 			case S_ANYTYPE_FINAL:
 				tkn->kind=ANYTYPE;
-				tkn->value="#";
+				tkn->value_ptr="#";
 				break;
 
 			case S_STRUCTMEMBERACCESS_FINAL:
 				tkn->kind=STRUCTMEMBERACCESS;
-				tkn->value=".";
+				tkn->value_ptr=".";
 				break;
 
 			case S_COMMA_FINAL:
 				tkn->kind=COMMA;
-				tkn->value=",";
+				tkn->value_ptr=",";
 				break;
 
 			case S_ARROW_FINAL:
 				tkn->kind=ARROW;
-				tkn->value=substr(input+start,end-start);
+				tkn->value_ptr=substr(input+start,end-start);
 				tkn->statically_allocated=false;
 				break;
 
@@ -385,14 +385,14 @@ void lex_main_inner(
 			//SECTION: NUMBERS
 			case S_INTEGER_FINAL:
 				tkn->kind=INTEGER;
-				tkn->value=substr(input+start,end-start-1);;
+				tkn->value_ptr=substr(input+start,end-start-1);;
 				tkn->statically_allocated=false;
 				i--;
 				break;
 
 			case S_FLOAT_FINAL:
 				tkn->kind=FLOATING;
-				tkn->value=substr(input+start,end-start-1);
+				tkn->value_ptr=substr(input+start,end-start-1);
 				tkn->statically_allocated=false;
 				i--;
 				break;
@@ -400,14 +400,14 @@ void lex_main_inner(
 			//SECTION: OPERATORS
 			case S_OPERATOR_FINAL:
 				tkn->kind=OPKEY;
-				tkn->value=substr(input+start,end-start);
+				tkn->value_ptr=substr(input+start,end-start);
 				tkn->statically_allocated=false;
 				//TODO: recognize /2 and do i--
 				break;
 
 			case S_MINUS_FINAL:
 				tkn->kind=OPKEY;
-				tkn->value=substr(input+start,end-start-1);
+				tkn->value_ptr=substr(input+start,end-start-1);
 				tkn->statically_allocated=false;
 				i--;
 				break;
@@ -415,13 +415,13 @@ void lex_main_inner(
 			//SECTION: CHARCONST, STRINGCONST
 			case S_CHARCONST_FINAL:
 				tkn->kind=CCONST;
-				tkn->value=substr(input+start,end-start);
+				tkn->value_ptr=substr(input+start,end-start);
 				tkn->statically_allocated=false;
 				break;
 
 			case S_STRING_FINAL:
 				tkn->kind=STRINGCONST;
-				tkn->value=substr(input+start,end-start);
+				tkn->value_ptr=substr(input+start,end-start);
 				tkn->statically_allocated=false;
 				break;
 

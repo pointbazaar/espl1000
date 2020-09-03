@@ -32,7 +32,7 @@
 #include <malloc.h>
 
 //user headers
-#include "tokens.h"
+#include "../../token/token.h"
 #include "lexer.h"
 #include "loop.h"
 #include "test.h"

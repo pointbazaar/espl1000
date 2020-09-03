@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "Token.h"
-#include "../../../../util/util.h"
+#include "token.h"
+#include "../util/util.h"
 
 struct Token* makeToken(int kind){
 	return makeToken2(kind,"");

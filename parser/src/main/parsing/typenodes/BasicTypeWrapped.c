@@ -9,6 +9,7 @@
 #include "SimpleType.h"
 #include "../../../../../util/util.h"
 #include "../../../../../ast/free_ast.h"
+#include "../../../../../token/token.h"
 
 struct BasicTypeWrapped* makeBasicTypeWrappedSimple(struct SimpleType* typeNode) {
 

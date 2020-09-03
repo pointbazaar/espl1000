@@ -4,9 +4,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-//user headers
-#include "tokens.h"
-
 #ifndef LEXER
 #define LEXER
 

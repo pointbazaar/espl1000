@@ -1,7 +1,7 @@
 #include "SimpleVarTest.h"
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
-#include "../../main/commandline/Token.h"
+#include "../../../../token/token.h"
 #include "../../main/parsing/SimpleVar.h"
 #include "../../main/parsing/IntConst.h"
 #include "../../main/parsing/Expr.h"

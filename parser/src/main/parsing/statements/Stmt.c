@@ -4,7 +4,7 @@
 #include "Stmt.h"
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
-#include "../../commandline/Token.h"
+#include "../../../../../token/token.h"
 #include "WhileStmt.h"
 #include "LoopStmt.h"
 #include "IfStmt.h"

@@ -5,7 +5,7 @@
 #include "StructMember.h"
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
-#include "../commandline/Token.h"
+#include "../../../../token/token.h"
 #include "typenodes/Type.h"
 #include "Identifier.h"
 #include "../../../../util/util.h"

@@ -5,7 +5,8 @@
 
 #include "TokenReader.h"
 #include "TokenKeys.h"
-#include "Token.h"
+
+#include "../../../../token/token.h"
 
 struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2);
 

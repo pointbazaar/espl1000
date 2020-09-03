@@ -5,7 +5,7 @@
 
 #include "Variable.h"
 #include "SimpleVar.h"
-#include "../commandline/Token.h"
+#include "../../../../token/token.h"
 #include "../commandline/TokenKeys.h"
 #include "../commandline/TokenList.h"
 #include "../../../../util/util.h"

@@ -18,10 +18,10 @@ for the java version of this lexer
 #include <assert.h>
 
 //Project Headers
-#include "tokens.h"
 #include "lexer.h"
 #include "loop.h"
 #include "test.h"
+#include "../../token/token.h"
 
 #include "../../parser/src/main/commandline/TokenKeys.h"
 
@@ -138,7 +138,7 @@ bool test_can_see_line_with_semicolon() {
 	assert(tokens[1]->kind == ID);
 	assert(tokens[2]->kind == SEMICOLON);
 
-	assert(strcmp(tokens[1]->value,"x")==0);
+	assert(strcmp(tokens[1]->value_ptr,"x")==0);
 
 	freeTokens(tokens, 3);
 
@@ -226,7 +226,7 @@ bool test_lexes_float_constant() {
 	struct Token** tokens = lex(str,".test.tokens");
 
 	assert(tokens[0]->kind==FLOATING);
-	assert(strcmp(tokens[0]->value,"1.44")==0);
+	assert(strcmp(tokens[0]->value_ptr,"1.44")==0);
 
 	freeTokens(tokens, 1);
 
@@ -243,7 +243,7 @@ bool test_lexes_escaped_char() {
 
 	assert(tokens[0]->kind==RETURN);
 	assert(tokens[1]->kind==CCONST);
-	assert(strcmp(tokens[1]->value,"'\\n'")==0);
+	assert(strcmp(tokens[1]->value_ptr,"'\\n'")==0);
 
 	freeTokens(tokens, 2);
 
@@ -313,9 +313,9 @@ bool test_char() {
 	assert(tokens[2]->kind==CCONST);
 	assert(tokens[3]->kind==RPARENS);
 
-	assert(strcmp(tokens[0]->value,"'x'")==0 );
+	assert(strcmp(tokens[0]->value_ptr,"'x'")==0 );
 
-	assert(strcmp(tokens[2]->value,"'\\n'")==0 );
+	assert(strcmp(tokens[2]->value_ptr,"'\\n'")==0 );
 
 	freeTokens(tokens, 4);
 
@@ -334,7 +334,7 @@ bool test_float_1() {
 
 	assert(tokens[0]->kind==FLOATING);
 	assert(
-	    strcmp(tokens[0]->value,"2038.4")==0
+	    strcmp(tokens[0]->value_ptr,"2038.4")==0
 	);
 
 	freeTokens(tokens, 1);
@@ -354,7 +354,7 @@ bool test_float_2() {
 
 	assert(tokens[0]->kind==FLOATING);
 	assert(
-	    strcmp(tokens[0]->value,"0.0")==0
+	    strcmp(tokens[0]->value_ptr,"0.0")==0
 	);
 
 	freeTokens(tokens, 1);
@@ -376,7 +376,7 @@ bool test_float_3() {
 
 	assert(tokens[1]->kind==FLOATING);
 	assert(
-	    strcmp(tokens[1]->value,"5.0")==0
+	    strcmp(tokens[1]->value_ptr,"5.0")==0
 	);
 
 	freeTokens(tokens, 2);
@@ -394,7 +394,7 @@ bool test_identifier_1() {
 
 	assert(tokens[0]->kind==ID);
 	assert(
-	    strcmp(tokens[0]->value,"main")==0
+	    strcmp(tokens[0]->value_ptr,"main")==0
 	);
 
 	freeTokens(tokens, 1);
@@ -412,7 +412,7 @@ bool test_identifier_2() {
 
 	assert(tokens[0]->kind==ID);
 	assert(
-	    strcmp(tokens[0]->value,"arg_ls")==0
+	    strcmp(tokens[0]->value_ptr,"arg_ls")==0
 	);
 
 	freeTokens(tokens, 1);
@@ -430,7 +430,7 @@ bool test_int_1() {
 
 	assert(tokens[0]->kind==INTEGER);
 	assert(
-	    strcmp(tokens[0]->value,"2038")==0
+	    strcmp(tokens[0]->value_ptr,"2038")==0
 	);
 
 	freeTokens(tokens, 1);
@@ -448,7 +448,7 @@ bool test_int_2() {
 
 	assert(tokens[0]->kind==INTEGER);
 	assert(
-	    strcmp(tokens[0]->value,"0")==0
+	    strcmp(tokens[0]->value_ptr,"0")==0
 	);
 
 	freeTokens(tokens, 1);
@@ -466,7 +466,7 @@ bool test_int_3() {
 
 	assert(tokens[1]->kind==INTEGER);
 	assert(
-	    strcmp(tokens[1]->value,"5")==0
+	    strcmp(tokens[1]->value_ptr,"5")==0
 	);
 
 	freeTokens(tokens, 2);
@@ -515,7 +515,7 @@ bool test_string_1() {
 	assert(tokens[0]->kind==STRINGCONST);
 	
 	assert(
-	    strcmp(tokens[0]->value,"\"hi\"")==0
+	    strcmp(tokens[0]->value_ptr,"\"hi\"")==0
 	);
 
 	freeTokens(tokens, 1);
@@ -533,7 +533,7 @@ bool test_string_2() {
 
 	assert(tokens[0]->kind==STRINGCONST);
 	assert(
-	    strcmp(tokens[0]->value,"\"hi\n\nhi\"")==0
+	    strcmp(tokens[0]->value_ptr,"\"hi\n\nhi\"")==0
 	);
 
 	freeTokens(tokens, 1);
@@ -552,7 +552,7 @@ bool test_typeidentifier_simple() {
 
 	assert(tokens[0]->kind==TYPEIDENTIFIER);
 	assert(
-	    strcmp(tokens[0]->value,"PInt")==0
+	    strcmp(tokens[0]->value_ptr,"PInt")==0
 	);
 
 	freeTokens(tokens, 1);
@@ -570,7 +570,7 @@ bool test_typeidentifier_other() {
 
 	assert(tokens[0]->kind==TYPEIDENTIFIER);
 	assert(
-	    strcmp(tokens[0]->value,"Point")==0
+	    strcmp(tokens[0]->value_ptr,"Point")==0
 	);
 
 	freeTokens(tokens, 1);
@@ -588,7 +588,7 @@ bool test_typeidentifier_token() {
 
 	assert(tokens[0]->kind==TYPEIDENTIFIER);
 	assert(
-	    strcmp(tokens[0]->value,"Char")==0
+	    strcmp(tokens[0]->value_ptr,"Char")==0
 	);
 
 	freeTokens(tokens, 1);
@@ -606,7 +606,7 @@ bool test_typeparameter_1() {
 
 	assert(tokens[0]->kind==TPARAM);
 	assert(
-	    strcmp(tokens[0]->value,"0")==0
+	    strcmp(tokens[0]->value_ptr,"0")==0
 	);
 
 	freeTokens(tokens, 1);
@@ -624,7 +624,7 @@ bool test_comma() {
 
 	assert(tokens[1]->kind==COMMA);
 	assert(
-	    strcmp(tokens[1]->value,",")==0
+	    strcmp(tokens[1]->value_ptr,",")==0
 	);
 
 	freeTokens(tokens, 2);
@@ -642,12 +642,12 @@ bool test_arrow() {
 
 	assert(tokens[0]->kind==ARROW);
 	assert(
-	    strcmp(tokens[0]->value,"->")==0
+	    strcmp(tokens[0]->value_ptr,"->")==0
 	);
 
 	assert(tokens[1]->kind==ARROW);
 	assert(
-	    strcmp(tokens[1]->value,"~>")==0
+	    strcmp(tokens[1]->value_ptr,"~>")==0
 	);
 
 	freeTokens(tokens, 2);
@@ -669,12 +669,12 @@ bool test_mixed_1() {
 
 	assert(tokens[3]->kind==TYPEIDENTIFIER);
 	assert(
-	    strcmp(tokens[3]->value,"PInt")==0
+	    strcmp(tokens[3]->value_ptr,"PInt")==0
 	);
 
 	assert(tokens[4]->kind==ID);
 	assert(
-	    strcmp(tokens[4]->value,"a")==0
+	    strcmp(tokens[4]->value_ptr,"a")==0
 	);
 
 	assert(tokens[5]->kind==COMMA);
@@ -698,7 +698,7 @@ bool test_mixed_2() {
 
 	assert(tokens[1]->kind==ID);
 	assert(
-	    strcmp(tokens[1]->value,"f")==0
+	    strcmp(tokens[1]->value_ptr,"f")==0
 	);
 
 	assert(tokens[2]->kind==RPARENS);

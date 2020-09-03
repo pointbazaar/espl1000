@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <inttypes.h>
 
-#include "Token.h"
+struct Token;
 
 struct TokenList {
 	//relative path of the source file

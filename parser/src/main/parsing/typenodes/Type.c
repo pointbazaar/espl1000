@@ -4,6 +4,7 @@
 
 #include "Type.h"
 #include "../../commandline/TokenList.h"
+#include "../../../../../token/token.h"
 #include "ArrayType.h"
 #include "TypeParam.h"
 #include "BasicTypeWrapped.h"

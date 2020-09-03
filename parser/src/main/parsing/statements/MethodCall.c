@@ -5,7 +5,7 @@
 #include "../Identifier.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../commandline/TokenList.h"
-#include "../../commandline/Token.h"
+#include "../../../../../token/token.h"
 #include "../Expr.h"
 #include "../../../../../util/util.h"
 #include "../../../../../ast/free_ast.h"

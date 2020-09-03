@@ -9,7 +9,7 @@ OBJS_UTIL := build/ASTWriter.o \
 	build/free_ast.o
 
 OBJS_MAIN := build/Parser.o \
-		build/Token.o \
+		build/token.o \
 		build/TokenList.o \
 		build/TokenReader.o \
 		build/AST_Whole_Program.o \
@@ -86,7 +86,7 @@ AST_DEPS := ../ast/ast.h \
 #source files
 MAIN_DEPS := src/main/commandline/TokenList.h \
 	src/main/commandline/TokenKeys.h \
-	src/main/commandline/Token.h \
+	../token/token.h \
 	$(AST_DEPS)
 
 all: DIRS dragon-parser test valgrind
@@ -133,6 +133,10 @@ build/util.o: ../util/util.c ../util/util.h
 	$(CALL2)  -o $@ ../util/util.c
 
 build/%.o: ../ast/%.c $(AST_DEPS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL2) -o $@ $<
+
+build/%.o: ../token/%.c ../token/%.h
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 
