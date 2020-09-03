@@ -283,6 +283,7 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 		transpileLoopStmt(s->m0, ctx);
 		
 	}else if(s->m1 != NULL){
+		indent(ctx);
 		transpileMethodCall(s->m1, ctx);
 		fprintf(ctx->file, ";");
 		
@@ -320,7 +321,6 @@ void transpileMethodCall(struct MethodCall* mc, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileMethodCall(...)\n"); }
 	
-	indent(ctx);
 	fprintf(ctx->file, "%s(", mc->methodName);
 
 	for(int i=0;i < mc->count_args; i++){
