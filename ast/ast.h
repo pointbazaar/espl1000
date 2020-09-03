@@ -72,6 +72,7 @@ struct Expr {
 	//these 2 may be NULL
 	struct Op* op;
 	struct UnOpTerm* term2;
+	
 };
 struct FloatConst{
 	float value;
@@ -243,6 +244,10 @@ struct Type {
 	struct BasicTypeWrapped* m1;
 	struct TypeParam* m2;
 	struct ArrayType* m3;
+	
+	// --- members unrelated to parse tree ---
+	
+	bool isInAST;
 };
 struct TypeParam {
 	//the type parameter index

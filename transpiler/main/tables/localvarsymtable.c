@@ -4,27 +4,31 @@
 #include <stdbool.h>
 
 #include "../../../ast/ast.h"
+#include "../../../ast/free_ast.h"
 #include "../../../util/util.h"
 
 #include "localvarsymtable.h"
+#include "symtable.h"
+
+#include "../typeinference.h"
 
 // --- declare subroutines private to this compile unit ---
 //discover Local Variables
-void discoverLVStmtBlock(struct LVST* lvst, struct StmtBlock* block);
+void discoverLVStmtBlock(struct ST* st, struct StmtBlock* block);
 
-void discoverLVStmt(struct LVST* lvst, struct Stmt* stmt);
+void discoverLVStmt(struct ST* st, struct Stmt* stmt);
 
-void discoverLVIfStmt(struct LVST* lvst, struct IfStmt* i);
-void discoverLVWhileStmt(struct LVST* lvst, struct WhileStmt* w);
-void discoverLVLoopStmt(struct LVST* lvst, struct LoopStmt* l);
-void discoverLVAssignStmt(struct LVST* lvst, struct AssignStmt* a);
+void discoverLVIfStmt(struct ST* st, struct IfStmt* i);
+void discoverLVWhileStmt(struct ST* st, struct WhileStmt* w);
+void discoverLVLoopStmt(struct ST* st, struct LoopStmt* l);
+void discoverLVAssignStmt(struct ST* st, struct AssignStmt* a);
 // --------------------------------------------------------
 //to add a row to the local variable symbol table
 //the lvst works as a set regarding the 'name' of the local variable
 void lvst_add(struct LVST* lvst, struct LVSTLine* line);
 // --------------------------------------------------------
 
-struct LVST* makeLocalVarSymTable(struct Method* subr, bool debug){
+struct LVST* makeLocalVarSymTable(bool debug){
 	
 	if(debug){ printf("makeLocalVarSymTable(...)\n"); }
 	
@@ -34,8 +38,14 @@ struct LVST* makeLocalVarSymTable(struct Method* subr, bool debug){
 	lvst->capacity = 10;
 	lvst->lines = smalloc(sizeof(struct LVSTLine*)*lvst->capacity);
 	
-	//fill the local var symbol table
-	
+	return lvst;
+}
+
+void fillLocalVarSymTable(
+	struct Method* subr, struct ST* st, bool debug
+){
+	if(debug){ printf("fillLocalVarSymTable(...)\n"); }
+	//fill the local var symbol table	
 	//fill lvst with the arguments
 	
 	if(debug){
@@ -55,7 +65,7 @@ struct LVST* makeLocalVarSymTable(struct Method* subr, bool debug){
 		line->isArg = true;
 		line->firstOccur = NULL;
 		
-		lvst_add(lvst, line);
+		lvst_add(st->lvst, line);
 	}
 	
 	if(debug){
@@ -63,7 +73,7 @@ struct LVST* makeLocalVarSymTable(struct Method* subr, bool debug){
 	}
 	//fill lvst with the local variables
 	//in the function body
-	discoverLVStmtBlock(lvst, subr->block);
+	discoverLVStmtBlock(st, subr->block);
 	
 	if(debug){
 		//print LVST
@@ -71,8 +81,8 @@ struct LVST* makeLocalVarSymTable(struct Method* subr, bool debug){
 		printf("Local Variable Symbol Table (LVST)\n");
 		printf("%8s|%8s\n", "name", "isArg");
 		printf("--------|--------\n");
-		for(int i = 0; i < lvst->count; i++){
-			struct LVSTLine* line = lvst->lines[i];
+		for(int i = 0; i < st->lvst->count; i++){
+			struct LVSTLine* line = st->lvst->lines[i];
 			
 			printf("%8s|%8s\n", line->name, (line->isArg)?"yes":"no");
 		}
@@ -82,8 +92,6 @@ struct LVST* makeLocalVarSymTable(struct Method* subr, bool debug){
 	if(debug){
 		printf("done constructing LVST\n");
 	}
-	
-	return lvst;
 }
 
 void freeLocalVarSymTable(struct LVST* lvst){
@@ -102,6 +110,9 @@ void freeLVSTLine(struct LVSTLine* l){
 	//context of the local variable symbol table
 	
 	//l->type is also not freed, for the same reasons
+	if(!(l->type->isInAST)){
+		freeType(l->type);
+	}
 	
 	free(l);
 }
@@ -109,7 +120,7 @@ void freeLVSTLine(struct LVSTLine* l){
 void lvst_add(struct LVST* lvst, struct LVSTLine* line){
 	
 	//no debug param, so we print
-	printf("lvst_add(...)\n");
+	printf("lvst_add(%p, %p)\n", lvst, line);
 	
 	//the local var symbol table works as a set
 	//with 'name' as the key
@@ -147,7 +158,7 @@ void lvst_add(struct LVST* lvst, struct LVSTLine* line){
 struct LVSTLine* lvst_get(struct LVST* lvst, char* name){
 	
 	//no debug param, so we print
-	printf("lvst_get(..., %s)\n", name);
+	printf("lvst_get(%p, %s)\n", lvst, name);
 	
 	for(int i = 0; i < lvst->count; i++){
 		
@@ -166,50 +177,54 @@ struct LVSTLine* lvst_get(struct LVST* lvst, char* name){
 
 // --------------------------------------------------------
 
-void discoverLVStmtBlock(struct LVST* lvst, struct StmtBlock* block){
+void discoverLVStmtBlock(struct ST* st, struct StmtBlock* block){
 	printf("discoverLVStmtBlock\n");
 	for(int i = 0; i < block->count; i++){
-		discoverLVStmt(lvst, block->stmts[i]);
+		discoverLVStmt(st, block->stmts[i]);
 	}
 }
-void discoverLVStmt(struct LVST* lvst, struct Stmt* stmt){
+void discoverLVStmt(struct ST* st, struct Stmt* stmt){
 	printf("discoverLVStmt\n");
 	if(stmt->m0 != NULL){
-		discoverLVLoopStmt(lvst, stmt->m0);
+		discoverLVLoopStmt(st, stmt->m0);
 	}else if(stmt->m2 != NULL){
-		discoverLVWhileStmt(lvst, stmt->m2);
+		discoverLVWhileStmt(st, stmt->m2);
 	}else if(stmt->m3 != NULL){
-		discoverLVIfStmt(lvst, stmt->m3);
+		discoverLVIfStmt(st, stmt->m3);
 	}else if(stmt->m5 != NULL){
-		discoverLVAssignStmt(lvst, stmt->m5);
+		discoverLVAssignStmt(st, stmt->m5);
 	}
 }
-void discoverLVIfStmt(struct LVST* lvst, struct IfStmt* i){
+void discoverLVIfStmt(struct ST* st, struct IfStmt* i){
 	printf("discoverLVIfStmt\n");
-	discoverLVStmtBlock(lvst, i->block);
+	discoverLVStmtBlock(st, i->block);
 	if(i->elseBlock != NULL){
-		discoverLVStmtBlock(lvst, i->elseBlock);
+		discoverLVStmtBlock(st, i->elseBlock);
 	}
 }
-void discoverLVWhileStmt(struct LVST* lvst, struct WhileStmt* w){
+void discoverLVWhileStmt(struct ST* st, struct WhileStmt* w){
 	printf("discoverLVWhileStmt\n");
-	discoverLVStmtBlock(lvst, w->block);
+	discoverLVStmtBlock(st, w->block);
 }
-void discoverLVLoopStmt(struct LVST* lvst, struct LoopStmt* l){
+void discoverLVLoopStmt(struct ST* st, struct LoopStmt* l){
 	printf("discoverLVLoopStmt\n");
-	discoverLVStmtBlock(lvst, l->block);
+	discoverLVStmtBlock(st, l->block);
 }
-void discoverLVAssignStmt(struct LVST* lvst, struct AssignStmt* a){
+void discoverLVAssignStmt(struct ST* st, struct AssignStmt* a){
 	printf("discoverLVAssignStmt\n");
 	struct LVSTLine* line = smalloc(sizeof(struct LVSTLine));
 	
 	strncpy(line->name, a->var->simpleVar->name, DEFAULT_STR_SIZE);
 	
 	//a->optType may be NULL, so be careful here
-	line->type = a->optType;
+	if(a->optType != NULL){
+		line->type = a->optType;
+	}else{
+		line->type = inferTypeExpr(st, a->expr);
+	}
 	
 	line->firstOccur = a;
 	line->isArg = false;;
 	
-	lvst_add(lvst, line);
+	lvst_add(st->lvst, line);
 }

@@ -215,7 +215,8 @@ void transpileMethod(struct Method* m, struct Ctx* ctx){
 	if(ctx->flags->debug){ printf("transpileMethod(%p, %p)\n", m, ctx); }
 	
 	//create the local variable symbol table
-	ctx->tables->lvst = makeLocalVarSymTable(m, ctx->flags->debug);
+	ctx->tables->lvst = makeLocalVarSymTable(ctx->flags->debug);
+	fillLocalVarSymTable(m, ctx->tables, ctx->flags->debug);
 
 	transpileMethodSignature(m, ctx);
 
@@ -364,7 +365,9 @@ void transpileRetStmt(struct RetStmt* rs, struct Ctx* ctx){
 
 void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileAssignStmt(...)\n"); }
+	if(ctx->flags->debug){ 
+		printf("transpileAssignStmt(%p, %p)\n", as, ctx); 
+	}
 
 	indent(ctx);
 

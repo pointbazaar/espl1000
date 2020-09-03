@@ -32,6 +32,7 @@ void freeExpr(struct Expr* expr) {
 		freeOp(expr->op);
 		freeUnOpTerm(expr->term2);
 	}
+	
 	free(expr);
 }
 

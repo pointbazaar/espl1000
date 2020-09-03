@@ -3,6 +3,7 @@
 
 #include "../../../ast/ast.h"
 
+struct ST;
 struct LVSTLine;
 
 struct LVST {
@@ -46,7 +47,11 @@ struct LVSTLine {
 
 void freeLVSTLine(struct LVSTLine* l);
 
-struct LVST* makeLocalVarSymTable(struct Method* subr, bool debug);
+struct LVST* makeLocalVarSymTable(bool debug);
+
+void fillLocalVarSymTable(
+	struct Method* subr, struct ST* st, bool debug
+);
 
 void freeLocalVarSymTable(struct LVST* lvst);
 

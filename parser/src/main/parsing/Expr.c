@@ -15,6 +15,7 @@ struct Expr* makeExpr_1(struct UnOpTerm* term) {
 	res->term1 = term;
 	res->op    = NULL;
 	res->term2 = NULL;
+	
 	return res;
 }
 

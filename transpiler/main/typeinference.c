@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "../../ast/ast.h"
+#include "../../ast/free_ast.h"
 
 #include "typeinference.h"
 
@@ -28,6 +29,8 @@ char* typeToStrBasicTypeWrapped(struct BasicTypeWrapped* b);
 
 struct Type* inferTypeExpr(struct ST* st, struct Expr* expr){
 	
+	printf("inferTypeExpr(...)\n");
+	
 	if(expr->op == NULL){
 		
 		//only one term present
@@ -42,6 +45,8 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr){
 		char* type1 = typeToStr(type1Orig);
 		char* type2 = typeToStr(type2Orig);
 		
+		printf("type1: %s, type2: %s\n", type1, type2);
+		
 		if(strcmp(type1, type2) == 0){
 			//both have the same type, 
 			//and for most types i know
@@ -50,6 +55,9 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr){
 			//the resulting type if both are the same type
 			//is exactly that type
 			
+			if(!(type2Orig->isInAST)){
+				freeType(type2Orig);
+			}
 			return type1Orig;
 		}else{
 			
@@ -64,6 +72,12 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr){
 				(strcmp(type1, "Int") == 0
 				&& strcmp(type2, "Float") == 0)
 			){
+				if(!(type1Orig->isInAST)){
+					freeType(type1Orig);
+				}
+				if(!(type2Orig->isInAST)){
+					freeType(type2Orig);
+				}
 				return typeFromStr("Float");
 			}else{
 				
@@ -164,6 +178,7 @@ struct Type* typeFromStr(char* typeName){
 	res->m1 = btw;
 	res->m2 = NULL;
 	res->m2 = NULL;
+	res->isInAST = false;
 	
 	struct SimpleType* st = malloc(sizeof(struct SimpleType));
 	
@@ -190,7 +205,17 @@ char* typeToStrBasicTypeWrapped(struct BasicTypeWrapped* b){
 	
 	if(b->simpleType != NULL){
 		
-		return b->simpleType->typeName;
+		//convert NInt, PInt to Int
+		char* typeName = b->simpleType->typeName;
+		
+		if(
+			strcmp(typeName, "PInt") == 0
+			|| strcmp(typeName, "NInt") == 0
+		){
+			return "Int";
+		}
+		
+		return typeName;
 		
 	}else{
 		printf("(2)currently not implemented (in typeinference.c)\n");
