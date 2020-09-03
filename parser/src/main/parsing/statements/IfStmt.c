@@ -10,6 +10,10 @@
 #include "../../../../../util/util.h"
 #include "../../../../../ast/free_ast.h"
 
+struct IfStmt* initIfStmt();
+void freeIncomplete(struct IfStmt* ifstmt);
+//--------------------------
+
 struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 
 	if(debug){
@@ -19,49 +23,31 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 	
 	if(list_size(tokens) < 3){ return NULL; }
 
-	struct IfStmt* res = smalloc(sizeof(struct IfStmt));
-	
-	res->condition = NULL;
-	res->block     = NULL;
-	res->elseBlock = NULL;
-
 	struct TokenList* copy = list_copy(tokens);
 
 	if(!list_expect(copy, IF)){
-		free(res);
+		return NULL;
+	}
+	
+	struct IfStmt* res = initIfStmt();
+
+	if((res->condition = makeExpr(copy,debug)) == NULL){
+		freeIncomplete(res);
 		return NULL;
 	}
 
-	res->condition = makeExpr(copy,debug);
-	if(res->condition == NULL){
-		free(res);
+	if((res->block = makeStmtBlock(copy, debug)) == NULL){
+		freeIncomplete(res);
 		return NULL;
 	}
 
-	res->block = makeStmtBlock(copy, debug);
-	if(res->block == NULL){
-		freeExpr(res->condition);
-		free(res);
-		return NULL;
-	}
+	if (list_expect(copy, ELSE)) {
 
-	//maybe there is an else
-	struct Token* tkelse = makeToken(ELSE);
-	if (list_startsWith(copy, tkelse)) {
-		
-		list_consume(copy, 1);
-
-		res->elseBlock = makeStmtBlock(copy, debug);
-		
-		if(res->elseBlock == NULL){
-			freeExpr(res->condition);
-			freeStmtBlock(res->block);
-			free(res);
-			freeToken(tkelse);
+		if((res->elseBlock = makeStmtBlock(copy, debug)) == NULL){
+			freeIncomplete(res);
 			return NULL;
 		}
 	}
-	freeToken(tkelse);
 	
 	if(debug){
 		printf("sucess parsing IfStmt\n");
@@ -73,4 +59,28 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 	return res;
 }
 
+struct IfStmt* initIfStmt(){
+	
+	struct IfStmt* res = smalloc(sizeof(struct IfStmt));
+	
+	res->condition = NULL;
+	res->block     = NULL;
+	res->elseBlock = NULL;
+	
+	return res;
+}
 
+void freeIncomplete(struct IfStmt* is){
+	//free an IfStmt, even if it has not been
+	//completely initialized
+	if(is->condition != NULL){
+		freeExpr(is->condition);
+	}
+	if(is->block != NULL){
+		freeStmtBlock(is->block);
+	}
+	if(is->elseBlock != NULL){
+		freeStmtBlock(is->elseBlock);
+	}
+	free(is);
+}
