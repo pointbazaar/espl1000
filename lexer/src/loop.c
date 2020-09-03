@@ -24,6 +24,31 @@
 const uint64_t tokens_capacity = 5000;	//should be 5000
 struct Token* tokens[5000];
 
+const uint64_t n_states = 150;		//number of states in our state machine
+const uint64_t n_transitions = 256; //possible ascii chars
+
+short state;
+int line_no;
+
+uint64_t tokens_index;
+
+uint64_t input_index;	//our index in the input file
+
+//deterministic finite automaton
+//int dfa[n_states][n_transitions];
+short** dfa;
+bool* final_state;
+uint64_t i;
+//------------
+void lex_main_inner(
+	int input_capacity, 
+	char* input_filename, 
+	char* tkn_filename,
+	int input_file_length,
+	bool free_tokens,
+	bool debug
+);
+//------------
 struct Token** lex(char* clean_source, char* tkn_filename){
 	
 	bool debug = false;
@@ -51,8 +76,9 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 	//https://www.youtube.com/watch?v=G4g-du1MIas
 	//https://nothings.org/computer/lexing.html
 	const uint64_t input_capacity = 5000;
-
-	uint64_t input_index = 0;	//our index in the input file
+	line_no = 1;
+	tokens_index = 0;
+	input_index = 0;
 
 	bool debug = false;
 	if(debug){
@@ -61,29 +87,18 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 
 	readFromFile(input_filename,0,input_file_length,&input_index);
 
-	uint64_t tokens_index = 0;
-
 	if(debug){
 		printf("initializing deterministic finite automaton (a kind of state machine) \n");
-	}
-
-	const uint64_t n_states = 150;		//number of states in our state machine
-	const uint64_t n_transitions = 256; //possible ascii chars
-
-	if(debug){
 		printf("allocating memory for state machine \n");
 	}
 
-	//deterministic finite automaton
-	//int dfa[n_states][n_transitions];
-	short** dfa = (short**)malloc(sizeof(short*)*n_states);
-	//init the memory
-	for(uint64_t i = 0;i < n_states;i++){
-		dfa[i] = (short*)malloc(sizeof(short)*n_transitions);
+	dfa = malloc(sizeof(short*)*n_states);
+	
+	for(uint64_t k = 0;k < n_states;k++){
+		dfa[k] = malloc(sizeof(short)*n_transitions);
 	}
 
-	//if a state is final
-	bool* final_state = malloc(sizeof(bool)*n_states);
+	final_state = malloc(sizeof(bool)*n_states);
 
 	init_dfa(dfa,final_state, n_states);
 	
@@ -91,10 +106,37 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 		printf("starting lexer loop\n");
 	}
 
-	short state;
+	lex_main_inner(
+		input_capacity, 
+		input_filename, 
+		tkn_filename,
+		input_file_length,
+		free_tokens,
+		debug
+	);
 
-	uint64_t i = 0;
-	int line_no = 1;
+	writeToFile(tkn_filename, tokens,tokens_capacity,tokens_index,free_tokens);
+
+	if(debug){ printf("free state machine\n"); }
+	free_dfa(dfa,n_states);
+
+	if(debug){ printf("free final_state array\n"); }
+	free(final_state);
+
+	return tokens;
+
+}
+
+void lex_main_inner(
+	int input_capacity, 
+	char* input_filename, 
+	char* tkn_filename,
+	int input_file_length,
+	bool free_tokens,
+	bool debug
+){
+	
+	i = 0;	
 	
 	while( input_index+i < input_file_length){
 
@@ -405,23 +447,4 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 			i = 0;	//reset index into input array
 		}
 	}
-
-	writeToFile(tkn_filename, tokens,tokens_capacity,tokens_index,free_tokens);
-
-	//TODO: handle the deletion of the .tokens file
-	//if any errors were encountered anywhere or
-	//malloc could not allocate or anything
-
-	if(debug){
-		printf("free state machine\n");
-	}
-	free_dfa(dfa,n_states);
-
-	if(debug){
-		printf("free final_state array\n");
-	}
-	free(final_state);
-
-	return tokens;
-
 }
