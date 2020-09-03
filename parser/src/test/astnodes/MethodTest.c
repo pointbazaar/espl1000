@@ -15,7 +15,7 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 		printf("TEST: method_test_can_parse_method_with_arguments\n");
 	}
 
-	struct TokenList* l = makeTokenList(); //ParserPhases.makeTokenList("fn main (String hello)~>PInt { main(); }", false);
+	struct TokenList* l = makeTokenList(); 
 
 	list_add(l, makeToken(FN));
 	list_add(l, makeToken2(ID,"main"));
@@ -29,20 +29,15 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt"));
 	
 	list_add(l, makeToken(LCURLY));
-		list_add(l, makeToken2(ID,"main"));
-		list_add(l, makeToken(LPARENS));
-		list_add(l, makeToken(RPARENS));
-		list_add(l, makeToken(SEMICOLON));
 	list_add(l, makeToken(RCURLY));
 
 	struct Method* m = makeMethod(l, debug);
 	if(
 		m == NULL
 		|| m->count_args != 1
-		|| m->block->count != 1
+		|| m->block->count != 0
 		|| m->block == NULL
 		|| m->args == NULL
-		|| m->block->stmts[0] == NULL
 		|| m->args[0] == NULL
 	){ 
 		printf("method not complete \n");
@@ -121,8 +116,6 @@ int method_test_can_parse_method_without_arguments(bool debug) {
 	list_add(l, makeToken2(ID,"main"));
 
 	list_add(l, makeToken2(LPARENS,"("));
-	list_add(l, makeToken2(TYPEIDENTIFIER,"String"));
-	list_add(l, makeToken2(ID,"hello"));
 	list_add(l, makeToken2(RPARENS,")"));
 
 	list_add(l, makeToken2(ARROW,"->"));
@@ -131,17 +124,12 @@ int method_test_can_parse_method_without_arguments(bool debug) {
 
 	list_add(l, makeToken2(LCURLY,"{"));
 
-		list_add(l, makeToken2(ID,"main"));
-		list_add(l, makeToken2(LPARENS,"("));
-		list_add(l, makeToken2(RPARENS,")"));
-		list_add(l, makeToken2(SEMICOLON,";"));
-
 	list_add(l, makeToken2(RCURLY,"}"));
 
 	struct Method* m = makeMethod(l, debug);
 	if(m == NULL){return 0;}
 
-	bool assert1 = (1 == m->count_args);
+	bool assert1 = (0 == m->count_args);
 	
 	freeTokenList(l);
 	freeMethod(m);
