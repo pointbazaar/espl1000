@@ -37,7 +37,10 @@
 #include "loop.h"
 #include "test.h"
 
+// --- FLAGS ---
 int DEBUG = false;
+bool clean = false; //to build clean (not incremental)
+// -------------
 
 int tokenize_file(char* filename, char* tkn_filename, bool debug);
 
@@ -87,6 +90,12 @@ int main(int argc, char** argv) {
 
 int lexer_main_inner(char* filename, char* tkn_filename){
 	
+	if(clean){
+		
+		tokenize_file(filename, tkn_filename, DEBUG);
+		return 0;
+	}
+	
 	//file metadata
 	struct stat file_meta;
 	struct stat tkn_file_meta;
@@ -121,10 +130,6 @@ int lexer_main_inner(char* filename, char* tkn_filename){
 			}
 			return 0;
 		}
-	}
-
-	if(DEBUG) {
-		printf("SUCCESS\n");
 	}
 	
 	return 0;
@@ -193,6 +198,10 @@ char* handleArguments(int argc, char** argv){
 			} else if(strcmp(arg, "-test") == 0) {
 				
 				exit(test_all(DEBUG));
+				
+			} else if(strcmp(arg, "-clean") == 0) {
+				
+				clean = true;
 				
 			} else if(strcmp(arg, "-version") == 0) {
 				
