@@ -23,7 +23,7 @@ for the java version of this lexer
 #include "test.h"
 #include "../../token/token.h"
 
-#include "../../parser/src/main/commandline/TokenKeys.h"
+#include "../../parser/main/commandline/TokenKeys.h"
 
 void freeTokens(struct Token** tokens, unsigned int count) {
 	for(int i = 0; i < count; i++) {

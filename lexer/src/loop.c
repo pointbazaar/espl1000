@@ -15,7 +15,7 @@
 #include "../../token/token.h"
 
 //token types
-#include "../../parser/src/main/commandline/TokenKeys.h"
+#include "../../parser/main/commandline/TokenKeys.h"
 
 //TODO: when following the approach of writing to the '.tokens' file every x tokens,
 //we should instead write to a '.tokens.temp' file, and rename it to a '.tokens' file

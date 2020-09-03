@@ -84,8 +84,8 @@ AST_DEPS := ../ast/ast.h \
 
 #dependencies usually found in all AST-related parsing
 #source files
-MAIN_DEPS := src/main/commandline/TokenList.h \
-	src/main/commandline/TokenKeys.h \
+MAIN_DEPS := main/commandline/TokenList.h \
+	main/commandline/TokenKeys.h \
 	../token/token.h \
 	$(AST_DEPS)
 
@@ -113,19 +113,19 @@ dragon-parser: $(OBJS)
 	
 #generic rules
 
-build/%.o: src/main/commandline/%.c $(MAIN_DEPS)
+build/%.o: main/commandline/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	
-build/%.o: src/main/parsing/%.c $(MAIN_DEPS)
+build/%.o: main/parsing/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	
-build/%.o: src/main/parsing/statements/%.c $(MAIN_DEPS)
+build/%.o: main/parsing/statements/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	
-build/%.o: src/main/parsing/typenodes/%.c $(MAIN_DEPS)
+build/%.o: main/parsing/typenodes/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 
@@ -140,14 +140,14 @@ build/%.o: ../token/%.c ../token/%.h
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 
-build/%.o: src/test/astnodes/%.c $(MAIN_DEPS)
+build/%.o: test/astnodes/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	
-build/%.o: src/test/commandline/%.c $(MAIN_DEPS)
+build/%.o: test/commandline/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	
-build/%.o: src/test/%.c $(MAIN_DEPS)
+build/%.o: test/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
