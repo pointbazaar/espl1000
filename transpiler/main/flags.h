@@ -9,6 +9,7 @@ struct Flags {
 	bool avr;
 	bool help;
 	bool version;
+	bool clean;
 	//----------
 	char** gcc_flags;
 	int gcc_flags_count;

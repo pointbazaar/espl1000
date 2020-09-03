@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <assert.h>
 
 #include "../../../ast/ast.h"
 #include "../../../ast/free_ast.h"
@@ -76,17 +77,7 @@ void fillLocalVarSymTable(
 	discoverLVStmtBlock(st, subr->block);
 	
 	if(debug){
-		//print LVST
-		
-		printf("Local Variable Symbol Table (LVST)\n");
-		printf("%8s|%8s\n", "name", "isArg");
-		printf("--------|--------\n");
-		for(int i = 0; i < st->lvst->count; i++){
-			struct LVSTLine* line = st->lvst->lines[i];
-			
-			printf("%8s|%8s\n", line->name, (line->isArg)?"yes":"no");
-		}
-		
+		lvst_print(st->lvst);
 	}
 	
 	if(debug){
@@ -227,4 +218,22 @@ void discoverLVAssignStmt(struct ST* st, struct AssignStmt* a){
 	line->isArg = false;;
 	
 	lvst_add(st->lvst, line);
+}
+void lvst_print(struct LVST* lvst){
+	//print LVST
+	printf("Local Variable Symbol Table (LVST)\n");
+	printf("%8s|%8s|%8s\n", "name", "isArg", "Type");
+	printf("--------|--------|--------\n");
+	for(int i = 0; i < lvst->count; i++){
+		struct LVSTLine* line = lvst->lines[i];
+		
+		assert(line != NULL);
+		assert(line->type != NULL);
+		
+		printf("%8s|%8s|%8s\n", 
+			line->name, 
+			(line->isArg)?"yes":"no",
+			typeToStr(line->type)
+		);
+	}
 }

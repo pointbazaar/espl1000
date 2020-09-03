@@ -23,7 +23,6 @@ struct Type* inferTypeVariable		(struct ST* st, struct Variable* v);
 struct Type* inferTypeSimpleVar	(struct ST* st, struct SimpleVar* v);
 // ------------------------------------------------------------
 struct Type* typeFromStr(char* typeName);
-char* typeToStr(struct Type* t);
 char* typeToStrBasicTypeWrapped(struct BasicTypeWrapped* b);
 // ------------------------------------------------------------
 

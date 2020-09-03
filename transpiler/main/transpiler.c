@@ -17,7 +17,7 @@
 
 // ----------------
 bool check_dg_extension(char* filename);
-void invoke_lexer_parser(char* filename, bool debug);
+void invoke_lexer_parser(char* filename, struct Flags* flags);
 // ----------------
 
 int main(int argc, char* argv[]){
@@ -76,18 +76,21 @@ bool check_dg_extension(char* filename){
 	return true;
 }
 
-void invoke_lexer_parser(char* filename, bool debug){
+void invoke_lexer_parser(char* filename, struct Flags* flags){
 	
 	char cmd1[100];
 	
 	strcpy(cmd1, "dragon-lexer ");
 	
-	if(debug){
+	if(flags->debug){
 		strcat(cmd1, "-debug ");
+	}
+	if(flags->clean){
+		strcat(cmd1, "-clean ");
 	}
 	strcat(cmd1, filename);
 	
-	if(debug){
+	if(flags->debug){
 		printf("DEBUG: executing: %s\n", cmd1);
 	}
 	system(cmd1);
@@ -102,12 +105,12 @@ void invoke_lexer_parser(char* filename, bool debug){
 	sprintf(
 		cmd2, 
 		"dragon-parser %s %s/.%s.tokens", 
-		(debug)?"-debug":"",
+		(flags->debug)?"-debug":"",
 		dir_name,
 		base_name
 	);
 	
-	if(debug){
+	if(flags->debug){
 		printf("DEBUG: executing: %s\n", cmd2);
 	}
 	system(cmd2);
@@ -127,7 +130,7 @@ bool transpileAndCompile(
 	}
 	
 	//invoke lexer, parser to generate .dg.ast file
-	invoke_lexer_parser(filename, flags->debug);
+	invoke_lexer_parser(filename, flags);
 
 	char ast_filename[100];
 	char fnamecpy[100];

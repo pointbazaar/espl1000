@@ -172,6 +172,7 @@ void lexer_print_help(){
 	printf(" -version\n");
 	printf(" -debug\n");
 	printf(" -test\n");
+	printf(" -clean\n");
 	printf(" -help\n\n");
 
 	printf("Author: \n");

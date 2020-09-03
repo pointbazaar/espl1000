@@ -33,6 +33,7 @@ struct Flags* makeFlags(int argc, char** argv){
 		}else if(strcmp(arg, "-avr"    ) == 0){ flags->avr = true;
 		}else if(strcmp(arg, "-help"   ) == 0){ flags->help = true;
 		}else if(strcmp(arg, "-version") == 0){ flags->version = true;
+		}else if(strcmp(arg, "-clean"  ) == 0){ flags->clean = true;
 		}else{
 			//pass this flag when calling gcc
 			flags->gcc_flags[flags->gcc_flags_count] = arg;

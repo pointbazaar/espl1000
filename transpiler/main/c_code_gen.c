@@ -505,7 +505,9 @@ void transpileExpr(struct Expr* expr, struct Ctx* ctx){
 
 void transpileSimpleVar(struct SimpleVar* svar, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileSimpleVar(...)\n"); }
+	if(ctx->flags->debug){ printf("transpileSimpleVar(%p, %p)\n", svar, ctx); }
+	
+	assert(svar->name != NULL);
 	
 	fprintf(ctx->file, "%s", svar->name);
 	if(svar->optIndex != NULL){
