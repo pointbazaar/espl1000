@@ -18,8 +18,6 @@ struct Type* makeType_1(struct BasicTypeWrapped* typeNode){
 	res->m1 = typeNode;
 	res->m2 = NULL;
 	res->m3 = NULL;
-	
-	res->isInAST = true;
 
 	return res;
 }
@@ -31,8 +29,6 @@ struct Type* makeType_2(struct TypeParam* typeNode){
 	res->m1 = NULL;
 	res->m2 = typeNode;
 	res->m3 = NULL;
-	
-	res->isInAST = true;
 
 	return res;
 }
@@ -44,8 +40,6 @@ struct Type* makeType_3(struct ArrayType* typeNode){
 	res->m1 = NULL;
 	res->m2 = NULL;
 	res->m3 = typeNode;
-	
-	res->isInAST = true;
 
 	return res;
 }
@@ -61,8 +55,6 @@ struct Type* makeType2(struct TokenList* tokens, bool debug){
 	res->m1 = NULL;
 	res->m2 = NULL;
 	res->m3 = NULL;
-	
-	res->isInAST = true;
 
 	struct TokenList* copy = list_copy(tokens);
 

@@ -8,6 +8,7 @@
 #include "ctx.h"
 #include "code_gen_util.h"
 #include "../../util/util.h"
+#include "../../ast/free_ast.h"
 #include "typeinference.h"
 
 #include "tables/localvarsymtable.h"
@@ -83,6 +84,16 @@ bool transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 
 	struct Ctx* ctx = smalloc(sizeof(struct Ctx));
 	ctx->tables = smalloc(sizeof(struct ST));
+	
+	//100 should be enough for now,
+	//if it is more, it will exit and print error.
+	ctx->tables->inferredTypesCapacity = 100;
+	ctx->tables->inferredTypesCount = 0;
+	ctx->tables->inferredTypes = 
+		smalloc(
+			sizeof(struct Type*) 
+			* ctx->tables->inferredTypesCapacity
+		);
 
 	if(flags->debug){
 		printf("SET ctx->file\n");
@@ -112,6 +123,10 @@ bool transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 	fclose(ctx->file);
 	
 	//free ctx struct
+	for(int i = 0; i < ctx->tables->inferredTypesCount; i++){
+		freeType(ctx->tables->inferredTypes[i]);
+	}
+	free(ctx->tables->inferredTypes);
 	free(ctx->tables);
 	free(ctx);
 	

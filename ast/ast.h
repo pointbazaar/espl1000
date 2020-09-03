@@ -244,10 +244,6 @@ struct Type {
 	struct BasicTypeWrapped* m1;
 	struct TypeParam* m2;
 	struct ArrayType* m3;
-	
-	// --- members unrelated to parse tree ---
-	
-	bool isInAST;
 };
 struct TypeParam {
 	//the type parameter index

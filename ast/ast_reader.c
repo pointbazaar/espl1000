@@ -732,7 +732,6 @@ struct Type* readType(FILE* file, bool debug){
 	b->m1 = NULL;
 	b->m2 = NULL;
 	b->m3 = NULL;
-	b->isInAST = true;
 
 	switch(kind){
 		case 1: b->m1 = readBasicTypeWrapped(file, debug); break;

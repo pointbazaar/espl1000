@@ -12,6 +12,18 @@ struct ST {
 	struct LVST* lvst; //may be NULL
 	struct SST* sst; //may be NULL
 	struct STST* stst; //may be NULL
+	
+	// -----------------------------
+	
+	//all the type nodes that were additionally
+	//constructed via type inference
+	//and are not memory-managed as part of the 
+	//AST Tree.
+	
+	//TODO: [ ] allocate , [ ] free
+	struct Type** inferredTypes;
+	unsigned int inferredTypesCount;
+	unsigned int inferredTypesCapacity;
 };
 
 #endif

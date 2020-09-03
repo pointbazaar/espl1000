@@ -100,10 +100,8 @@ void freeLVSTLine(struct LVSTLine* l){
 	//as it's memory is not managed in the 
 	//context of the local variable symbol table
 	
-	//l->type is also not freed, for the same reasons
-	if(!(l->type->isInAST)){
-		freeType(l->type);
-	}
+	//l->type is also not freed, 
+	//for the same reasons
 	
 	free(l);
 }

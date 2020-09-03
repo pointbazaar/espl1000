@@ -5,6 +5,7 @@
 
 #include "../../ast/ast.h"
 #include "../../ast/free_ast.h"
+#include "../../util/util.h"
 
 #include "typeinference.h"
 
@@ -22,7 +23,7 @@ struct Type* inferTypeMethodCall	(struct ST* st, struct MethodCall* m);
 struct Type* inferTypeVariable		(struct ST* st, struct Variable* v);
 struct Type* inferTypeSimpleVar	(struct ST* st, struct SimpleVar* v);
 // ------------------------------------------------------------
-struct Type* typeFromStr(char* typeName);
+struct Type* typeFromStr(struct ST* st, char* typeName);
 char* typeToStrBasicTypeWrapped(struct BasicTypeWrapped* b);
 // ------------------------------------------------------------
 
@@ -54,9 +55,6 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr){
 			//the resulting type if both are the same type
 			//is exactly that type
 			
-			if(!(type2Orig->isInAST)){
-				freeType(type2Orig);
-			}
 			return type1Orig;
 		}else{
 			
@@ -71,13 +69,7 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr){
 				(strcmp(type1, "Int") == 0
 				&& strcmp(type2, "Float") == 0)
 			){
-				if(!(type1Orig->isInAST)){
-					freeType(type1Orig);
-				}
-				if(!(type2Orig->isInAST)){
-					freeType(type2Orig);
-				}
-				return typeFromStr("Float");
+				return typeFromStr(st, "Float");
 			}else{
 				
 				printf("Fatal Error in inferTypeExpr: could not infer type\n");
@@ -90,11 +82,11 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr){
 
 struct Type* inferTypeTerm(struct ST* st, struct Term* t){
 	
-	if(t->m1 != NULL){ return typeFromStr("Bool"); }
+	if(t->m1 != NULL){ return typeFromStr(st, "Bool"); }
 	
-	if(t->m2 != NULL){ return typeFromStr("Int"); }
+	if(t->m2 != NULL){ return typeFromStr(st, "Int"); }
 	
-	if(t->m3 != NULL){ return typeFromStr("Char"); }
+	if(t->m3 != NULL){ return typeFromStr(st, "Char"); }
 	
 	if(t->m4 != NULL){ return inferTypeMethodCall(st, t->m4); }
 	
@@ -102,9 +94,9 @@ struct Type* inferTypeTerm(struct ST* st, struct Term* t){
 	
 	if(t->m6 != NULL){ return inferTypeVariable(st, t->m6); }
 	
-	if(t->m7 != NULL){ return typeFromStr("Float"); }
+	if(t->m7 != NULL){ return typeFromStr(st, "Float"); }
 	
-	if(t->m8 != NULL){ return typeFromStr("String"); }
+	if(t->m8 != NULL){ return typeFromStr(st, "String"); }
 	
 	printf("Fatal Error in inferTypeTerm\n");
 	exit(1);
@@ -168,23 +160,36 @@ struct Type* inferTypeSimpleVar(struct ST* st, struct SimpleVar* v){
 	return line->type;
 }
 
-struct Type* typeFromStr(char* typeName){
+struct Type* typeFromStr(struct ST* st, char* typeName){
 	//this method will only work for simple types
 	struct Type* res = malloc(sizeof(struct Type));
 	
-	struct BasicTypeWrapped* btw = malloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* btw = 
+		smalloc(sizeof(struct BasicTypeWrapped));
 	
 	res->m1 = btw;
 	res->m2 = NULL;
 	res->m2 = NULL;
-	res->isInAST = false;
 	
-	struct SimpleType* st = malloc(sizeof(struct SimpleType));
+	struct SimpleType* simpleType = 
+		smalloc(sizeof(struct SimpleType));
 	
-	strncpy(st->typeName, typeName, DEFAULT_STR_SIZE);
+	strncpy(simpleType->typeName, typeName, DEFAULT_STR_SIZE);
 	
 	btw->subrType = NULL;
-	btw->simpleType = st;
+	btw->simpleType = simpleType;
+	
+	//register the pointer in SymbolTable 'st'
+	//so it can manage that memory,
+	//as this pointer is not part of the AST Tree
+	
+	if(st->inferredTypesCount >= st->inferredTypesCapacity){
+		printf("Fatal Error (in typeinference.c)\n");
+		exit(1);
+	}else{
+		st->inferredTypes[st->inferredTypesCount] = res;
+		st->inferredTypesCount += 1;
+	}
 	
 	return res;
 }
