@@ -8,6 +8,7 @@ OBJS := build/transpiler.o \
 	build/util.o \
 	build/ast_reader.o \
 	build/c_code_gen.o \
+	build/structs_code_gen.o \
 	build/code_gen_util.o \
 	build/test.o \
 	build/teststatuscode.o \
@@ -56,11 +57,15 @@ build/transpiler.o: main/transpiler.c main/transpiler.h main/c_code_gen.h main/f
 	$(CALL) -c main/transpiler.c -o $@
 
 build/c_code_gen.o: main/c_code_gen.c main/ctx.h \
-		main/code_gen_util.h main/flags.h main/tables/localvarsymtable.h
+		main/code_gen_util.h main/flags.h main/tables/localvarsymtable.h \
+		main/structs_code_gen.h
 	$(CALL) -c main/c_code_gen.c -o $@
 
 build/code_gen_util.o: main/code_gen_util.c main/code_gen_util.h main/ctx.h
 	$(CALL) -c main/code_gen_util.c -o $@
+
+build/structs_code_gen.o: main/structs_code_gen.c main/structs_code_gen.h main/ctx.h main/flags.h
+	$(CALL) -c main/structs_code_gen.c -o $@
 
 build/test.o: test/test.c test/test.h main/transpiler.h main/flags.h test/teststatuscode.h 
 	$(CALL) -c test/test.c -o $@

@@ -10,6 +10,7 @@
 #include "../../util/util.h"
 #include "../../ast/free_ast.h"
 #include "typeinference.h"
+#include "structs_code_gen.h"
 
 #include "tables/localvarsymtable.h"
 #include "tables/subrsymtable.h"
@@ -184,6 +185,12 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	for(int i=0;i < ns->count_structs; i++){
 		transpileStructDecl(ns->structs[i], ctx);
 	}
+	
+	//generate the struct specific
+	//constructors, destructors,
+	//copy-constructors
+	gen_struct_subr_signatures(ns, ctx);
+	gen_struct_subrs(ns, ctx);
 	
 	//write subroutine forward declarations
 	for(int i=0; i < ns->count_methods; i++){

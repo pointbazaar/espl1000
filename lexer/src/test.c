@@ -107,7 +107,8 @@ int test_all(bool debug1) {
 	pass+=test_mixed_11();
 	pass+=test_mixed_12();
 	pass+=test_mixed_13();
-	count+=15;
+	pass+=test_mixed_14();
+	count+=16;
 
 	pass+=test_operators();
 	count+=1;
@@ -957,6 +958,35 @@ bool test_mixed_13() {
 	assert(tokens[4]->kind==SEMICOLON);
 
 	freeTokens(tokens, 5);
+
+	return true;
+}
+
+bool test_mixed_14(){
+	
+	if(debug) {
+		printf("test mixed 13\n");
+	}
+
+	char* str = "struct MyStruct{ PInt a, PInt b}";
+	struct Token** tokens = lex(str,".test.tokens");
+
+	assert(tokens[0]->kind==STRUCT);
+	assert(tokens[1]->kind==TYPEIDENTIFIER);
+
+	assert(tokens[2]->kind==LCURLY);
+
+	assert(tokens[3]->kind==TYPEIDENTIFIER);
+	assert(tokens[4]->kind==ID);
+	
+	assert(tokens[5]->kind==COMMA);
+	
+	assert(tokens[6]->kind==TYPEIDENTIFIER);
+	assert(tokens[7]->kind==ID);
+	
+	assert(tokens[8]->kind==RCURLY);
+
+	freeTokens(tokens, 9);
 
 	return true;
 }
