@@ -401,7 +401,11 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 		//find type via local variable symbol table
 		assert(ctx->tables->lvst != NULL);
 		
-		struct LVSTLine* line = lvst_get(ctx->tables->lvst, as->var->simpleVar->name);
+		struct LVSTLine* line = lvst_get(
+			ctx->tables->lvst, 
+			as->var->simpleVar->name, 
+			ctx->flags->debug
+		);
 		
 		assert(line != NULL);
 		

@@ -56,7 +56,9 @@ void fillLocalVarSymTable(
 void freeLocalVarSymTable(struct LVST* lvst);
 
 //obtain a reference to the line for that identifier
-struct LVSTLine* lvst_get(struct LVST* lvst, char* name);
+struct LVSTLine* lvst_get(
+	struct LVST* lvst, char* name, bool debug
+);
 
 void lvst_print(struct LVST* lvst);
 #endif

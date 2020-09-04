@@ -149,7 +149,9 @@ struct Type* inferTypeSimpleVar(struct ST* st, struct SimpleVar* v){
 	//of another variable, it should have been initialized
 	//before. so we can pull it's type from the LSVT
 	
-	struct LVSTLine* line = lvst_get(st->lvst, v->name);
+	//debug=true as param because
+	//we do not get debug param here
+	struct LVSTLine* line = lvst_get(st->lvst, v->name, true);
 	
 	//if it has an index, we unwrap the type
 	if(v->optIndex != NULL){

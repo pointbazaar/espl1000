@@ -50,7 +50,7 @@ void discoverLVAssignStmt(
 // --------------------------------------------------------
 //to add a row to the local variable symbol table
 //the lvst works as a set regarding the 'name' of the local variable
-void lvst_add(struct LVST* lvst, struct LVSTLine* line);
+void lvst_add(struct LVST* lvst, struct LVSTLine* line, bool debug);
 // --------------------------------------------------------
 
 struct LVST* makeLocalVarSymTable(bool debug){
@@ -90,7 +90,7 @@ void fillLocalVarSymTable(
 		line->isArg = true;
 		line->firstOccur = NULL;
 		
-		lvst_add(st->lvst, line);
+		lvst_add(st->lvst, line, debug);
 	}
 	
 	if(debug){
@@ -130,10 +130,14 @@ void freeLVSTLine(struct LVSTLine* l){
 	free(l);
 }
 
-void lvst_add(struct LVST* lvst, struct LVSTLine* line){
-	
-	//no debug param, so we print
-	printf("lvst_add(%p, %p)\n", lvst, line);
+void lvst_add(
+	struct LVST* lvst, 
+	struct LVSTLine* line,
+	bool debug
+){
+	if(debug){
+		printf("lvst_add(%p, %p)\n", lvst, line);
+	}
 	
 	//the local var symbol table works as a set
 	//with 'name' as the key
@@ -168,10 +172,15 @@ void lvst_add(struct LVST* lvst, struct LVSTLine* line){
 	lvst->count += 1;
 }
 
-struct LVSTLine* lvst_get(struct LVST* lvst, char* name){
+struct LVSTLine* lvst_get(
+	struct LVST* lvst, 
+	char* name,
+	bool debug
+){
 	
-	//no debug param, so we print
-	printf("lvst_get(%p, %s)\n", lvst, name);
+	if(debug){
+		printf("lvst_get(%p, %s)\n", lvst, name);
+	}
 	
 	for(int i = 0; i < lvst->count; i++){
 		
@@ -273,7 +282,7 @@ void discoverLVAssignStmt(
 	line->firstOccur = a;
 	line->isArg = false;;
 	
-	lvst_add(st->lvst, line);
+	lvst_add(st->lvst, line, debug);
 }
 
 void lvst_print(struct LVST* lvst){

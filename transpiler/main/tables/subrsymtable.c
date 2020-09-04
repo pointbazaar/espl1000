@@ -27,7 +27,9 @@ struct SST* makeSubrSymTable(struct Namespace* ns, bool debug){
 		line->isLibC = false;
 		line->returnType = m->returnType;
 		
-		printf("\tadding '%s' to subroutine symbol table\n", line->name);
+		if(debug){
+			printf("\tadding '%s' to subroutine symbol table\n", line->name);
+		}
 		sst_add(sst, line);
 	}
 	
