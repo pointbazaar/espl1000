@@ -14,28 +14,19 @@ sd for_atmel/Main.dg
 #currently not functional
 #sd functional/Twice.dg
 
-sd ifstatement/IfStatement.dg
-
-sd input/Input.dg
-
-sd local_variables/Locals.dg
-sd local_variables/Locals2.dg
-
-sd loops/EmptyLoop.dg
-sd loops/WhileLoop.dg
-sd loops/Loop.dg
-
-sd mathematics/Faculty.dg
-sd mathematics/Fibonacci.dg
-
-sd methodCalls/MethodCall.dg
-
-sd multiline_strings/MultiLineStrings.dg
-
-sd other/Simple.dg
-
-#currently not working
-#sd structs/MyStructs.dg
-
-sd break/Break.dg
+sd ifstatement/IfStatement.dg \
+&& sd input/Input.dg
+&& sd local_variables/Locals.dg \
+&& sd local_variables/Locals2.dg \
+&& sd loops/EmptyLoop.dg \
+&& sd loops/WhileLoop.dg \
+&& sd loops/Loop.dg \
+&& sd mathematics/Faculty.dg \
+&& sd mathematics/Fibonacci.dg \
+&& sd methodCalls/MethodCall.dg \
+&& sd multiline_strings/MultiLineStrings.dg \
+&& sd other/Simple.dg \
+&& sd structs/MyStructs.dg \
+&& sd structs/Node.dg \
+&& sd break/Break.dg
 

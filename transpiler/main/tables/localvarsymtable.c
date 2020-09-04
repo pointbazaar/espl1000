@@ -15,14 +15,38 @@
 
 // --- declare subroutines private to this compile unit ---
 //discover Local Variables
-void discoverLVStmtBlock(struct ST* st, struct StmtBlock* block);
+void discoverLVStmtBlock(
+	struct ST* st, 
+	struct StmtBlock* block,
+	bool debug
+);
 
-void discoverLVStmt(struct ST* st, struct Stmt* stmt);
+void discoverLVStmt(
+	struct ST* st, 
+	struct Stmt* stmt,
+	bool debug
+);
 
-void discoverLVIfStmt(struct ST* st, struct IfStmt* i);
-void discoverLVWhileStmt(struct ST* st, struct WhileStmt* w);
-void discoverLVLoopStmt(struct ST* st, struct LoopStmt* l);
-void discoverLVAssignStmt(struct ST* st, struct AssignStmt* a);
+void discoverLVIfStmt(
+	struct ST* st, 
+	struct IfStmt* i,
+	bool debug
+);
+void discoverLVWhileStmt(
+	struct ST* st, 
+	struct WhileStmt* w,
+	bool debug
+);
+void discoverLVLoopStmt(
+	struct ST* st, 
+	struct LoopStmt* l,
+	bool debug
+);
+void discoverLVAssignStmt(
+	struct ST* st, 
+	struct AssignStmt* a,
+	bool debug
+);
 // --------------------------------------------------------
 //to add a row to the local variable symbol table
 //the lvst works as a set regarding the 'name' of the local variable
@@ -74,7 +98,7 @@ void fillLocalVarSymTable(
 	}
 	//fill lvst with the local variables
 	//in the function body
-	discoverLVStmtBlock(st, subr->block);
+	discoverLVStmtBlock(st, subr->block, debug);
 	
 	if(debug){
 		lvst_print(st->lvst);
@@ -166,41 +190,75 @@ struct LVSTLine* lvst_get(struct LVST* lvst, char* name){
 
 // --------------------------------------------------------
 
-void discoverLVStmtBlock(struct ST* st, struct StmtBlock* block){
-	printf("discoverLVStmtBlock\n");
+void discoverLVStmtBlock(
+	struct ST* st, 
+	struct StmtBlock* block,
+	bool debug
+){
+	if(debug){ printf("discoverLVStmtBlock\n"); }
 	for(int i = 0; i < block->count; i++){
-		discoverLVStmt(st, block->stmts[i]);
+		discoverLVStmt(st, block->stmts[i], debug);
 	}
 }
-void discoverLVStmt(struct ST* st, struct Stmt* stmt){
-	printf("discoverLVStmt\n");
+
+void discoverLVStmt(
+	struct ST* st, 
+	struct Stmt* stmt,
+	bool debug
+){
+	if(debug){ printf("discoverLVStmt\n"); }
+	
 	if(stmt->m0 != NULL){
-		discoverLVLoopStmt(st, stmt->m0);
+		discoverLVLoopStmt(st, stmt->m0, debug);
 	}else if(stmt->m2 != NULL){
-		discoverLVWhileStmt(st, stmt->m2);
+		discoverLVWhileStmt(st, stmt->m2, debug);
 	}else if(stmt->m3 != NULL){
-		discoverLVIfStmt(st, stmt->m3);
+		discoverLVIfStmt(st, stmt->m3, debug);
 	}else if(stmt->m5 != NULL){
-		discoverLVAssignStmt(st, stmt->m5);
+		discoverLVAssignStmt(st, stmt->m5, debug);
 	}
 }
-void discoverLVIfStmt(struct ST* st, struct IfStmt* i){
-	printf("discoverLVIfStmt\n");
-	discoverLVStmtBlock(st, i->block);
+
+void discoverLVIfStmt(
+	struct ST* st, 
+	struct IfStmt* i,
+	bool debug
+){
+	if(debug){ printf("discoverLVIfStmt\n"); }
+	
+	discoverLVStmtBlock(st, i->block, debug);
 	if(i->elseBlock != NULL){
-		discoverLVStmtBlock(st, i->elseBlock);
+		discoverLVStmtBlock(st, i->elseBlock, debug);
 	}
 }
-void discoverLVWhileStmt(struct ST* st, struct WhileStmt* w){
-	printf("discoverLVWhileStmt\n");
-	discoverLVStmtBlock(st, w->block);
+
+void discoverLVWhileStmt(
+	struct ST* st, 
+	struct WhileStmt* w,
+	bool debug
+){
+	if(debug){ printf("discoverLVWhileStmt\n"); }
+	
+	discoverLVStmtBlock(st, w->block, debug);
 }
-void discoverLVLoopStmt(struct ST* st, struct LoopStmt* l){
-	printf("discoverLVLoopStmt\n");
-	discoverLVStmtBlock(st, l->block);
+
+void discoverLVLoopStmt(
+	struct ST* st, 
+	struct LoopStmt* l,
+	bool debug
+){
+	if(debug){ printf("discoverLVLoopStmt\n"); }
+	
+	discoverLVStmtBlock(st, l->block, debug);
 }
-void discoverLVAssignStmt(struct ST* st, struct AssignStmt* a){
-	printf("discoverLVAssignStmt\n");
+
+void discoverLVAssignStmt(
+	struct ST* st, 
+	struct AssignStmt* a,
+	bool debug
+){
+	if(debug){ printf("discoverLVAssignStmt\n"); }
+	
 	struct LVSTLine* line = smalloc(sizeof(struct LVSTLine));
 	
 	strncpy(line->name, a->var->simpleVar->name, DEFAULT_STR_SIZE);
@@ -217,6 +275,7 @@ void discoverLVAssignStmt(struct ST* st, struct AssignStmt* a){
 	
 	lvst_add(st->lvst, line);
 }
+
 void lvst_print(struct LVST* lvst){
 	//print LVST
 	printf("Local Variable Symbol Table (LVST)\n");
