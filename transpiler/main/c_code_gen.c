@@ -472,7 +472,7 @@ void transpileVariable(struct Variable* var, struct Ctx* ctx){
 	transpileSimpleVar(var->simpleVar, ctx);
 	
 	for(int i=0; i < var->count_memberAccessList; i++){
-		fprintf(ctx->file, ".");
+		fprintf(ctx->file, "->");
 		transpileVariable(var->memberAccessList[i], ctx);
 	}
 }
