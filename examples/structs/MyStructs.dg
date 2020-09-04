@@ -1,6 +1,6 @@
-struct MyStruct {
-	PInt a1,
-	PInt a2
+struct MyStruct { 
+	Int a, 
+	Int b 
 
 }
 

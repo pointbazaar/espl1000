@@ -156,7 +156,7 @@ int tokenize_file(char* filename, char* tkn_filename, bool debug) {
 	fclose(file1);
 
 	//lex source code into tokens
-	lex_main(tkn_filename,filename,length,true);
+	lex_main(tkn_filename,filename,length,true, debug);
 
 	return 0;
 }

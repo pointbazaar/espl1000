@@ -82,6 +82,7 @@ bool test_mixed_11();
 bool test_mixed_12();
 bool test_mixed_13();
 bool test_mixed_14();
+bool test_mixed_15();
 
 bool test_operators();
 

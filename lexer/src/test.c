@@ -108,7 +108,8 @@ int test_all(bool debug1) {
 	pass+=test_mixed_12();
 	pass+=test_mixed_13();
 	pass+=test_mixed_14();
-	count+=16;
+	pass+=test_mixed_15();
+	count+=17;
 
 	pass+=test_operators();
 	count+=1;
@@ -133,7 +134,7 @@ bool test_can_see_line_with_semicolon() {
 	}
 
 	char* str = "Char x; ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind == TYPEIDENTIFIER);
 	assert(tokens[1]->kind == ID);
@@ -153,7 +154,8 @@ bool test_can_see_line_with_operators() {
 	}
 
 	char* str = "x = x+x; ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind == ID);
 	assert(tokens[1]->kind == EQ);
@@ -173,7 +175,8 @@ bool test_lexes_return_statement_favorably() {
 	}
 
 	char* str = "return (-5)*n; ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==RETURN);
 
@@ -197,7 +200,8 @@ bool test_lexes_other_return_statement() {
 	}
 
 	char* str = "return (n*faculty(n-1)); ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==RETURN);
 
@@ -224,7 +228,8 @@ bool test_lexes_float_constant() {
 	}
 
 	char* str = "1.44 ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==FLOATING);
 	assert(strcmp(tokens[0]->value_ptr,"1.44")==0);
@@ -240,7 +245,8 @@ bool test_lexes_escaped_char() {
 	}
 
 	char* str = "return '\\n'";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==RETURN);
 	assert(tokens[1]->kind==CCONST);
@@ -259,7 +265,8 @@ bool test_anytypetoken() {
 	}
 
 	char* str = "# ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==ANYTYPE);
 
@@ -275,7 +282,8 @@ bool test_true() {
 	}
 
 	char* str = "true ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==BCONST);
 
@@ -291,7 +299,8 @@ bool test_false() {
 	}
 
 	char* str = "false ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==BCONST);
 
@@ -307,7 +316,8 @@ bool test_char() {
 	}
 
 	char* str = "'x' ('\\n') ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==CCONST);
 	assert(tokens[1]->kind==LPARENS);
@@ -331,7 +341,8 @@ bool test_float_1() {
 	}
 
 	char* str = "2038.4 ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==FLOATING);
 	assert(
@@ -349,7 +360,8 @@ bool test_float_2() {
 	}
 
 	char* str = "0.0 ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 
 
@@ -369,7 +381,8 @@ bool test_float_3() {
 	}
 
 	char* str = "-5.0 ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	//looking at index 1 because '-' and float
 	//are lexed seperately, for simplicity reasons.
@@ -391,7 +404,8 @@ bool test_identifier_1() {
 	}
 
 	char* str = "main ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==ID);
 	assert(
@@ -409,7 +423,8 @@ bool test_identifier_2() {
 	}
 
 	char* str = "arg_ls ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==ID);
 	assert(
@@ -427,7 +442,8 @@ bool test_int_1() {
 	}
 
 	char* str = "2038 ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==INTEGER);
 	assert(
@@ -445,7 +461,8 @@ bool test_int_2() {
 	}
 
 	char* str = "0 ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==INTEGER);
 	assert(
@@ -463,7 +480,8 @@ bool test_int_3() {
 	}
 
 	char* str = "-5 ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[1]->kind==INTEGER);
 	assert(
@@ -481,7 +499,8 @@ bool test_struct() {
 	}
 
 	char* str = "struct ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==STRUCT);
 
@@ -496,7 +515,8 @@ bool test_return() {
 	}
 
 	char* str = "return ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==RETURN);
 
@@ -511,7 +531,8 @@ bool test_string_1() {
 	}
 
 	char* str = "\"hi\" ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==STRINGCONST);
 	
@@ -530,7 +551,8 @@ bool test_string_2() {
 	}
 
 	char* str = "\"hi\n\nhi\" ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==STRINGCONST);
 	assert(
@@ -549,7 +571,8 @@ bool test_typeidentifier_simple() {
 	}
 
 	char* str = "PInt ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==TYPEIDENTIFIER);
 	assert(
@@ -567,7 +590,8 @@ bool test_typeidentifier_other() {
 	}
 
 	char* str = "Point ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==TYPEIDENTIFIER);
 	assert(
@@ -585,7 +609,8 @@ bool test_typeidentifier_token() {
 	}
 
 	char* str = "Char ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==TYPEIDENTIFIER);
 	assert(
@@ -603,7 +628,8 @@ bool test_typeparameter_1() {
 	}
 
 	char* str = "?T0 ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==TPARAM);
 	assert(
@@ -621,7 +647,8 @@ bool test_comma() {
 	}
 
 	char* str = ",, ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[1]->kind==COMMA);
 	assert(
@@ -639,7 +666,8 @@ bool test_arrow() {
 	}
 
 	char* str = "-> ~> ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==ARROW);
 	assert(
@@ -663,7 +691,8 @@ bool test_mixed_1() {
 	}
 
 	char* str = "struct MyStruct{PInt a,MyStruct b} ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 
 	assert(tokens[2]->kind==LCURLY);
@@ -692,7 +721,8 @@ bool test_mixed_2() {
 	}
 
 	char* str = ") f)~> ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 
 	assert(tokens[0]->kind==RPARENS);
@@ -718,7 +748,8 @@ bool test_mixed_3() {
 	}
 
 	char* str = "if(x ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 
 	assert(tokens[0]->kind==IF);
@@ -739,7 +770,8 @@ bool test_mixed_4() {
 	}
 
 	char* str = "while(x PInt n ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 
 	assert(tokens[0]->kind==WHILE);
@@ -764,7 +796,8 @@ bool test_mixed_5() {
 	}
 	
 	char* str = "]='d'; ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==RBRACKET);
 
@@ -786,7 +819,8 @@ bool test_mixed_6() {
 	}
 
 	char* str = "MyStruct s} ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==TYPEIDENTIFIER);
 
@@ -806,7 +840,8 @@ bool test_mixed_7() {
 	}
 
 	char* str = "(1<2) ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 
 	assert(tokens[0]->kind==LPARENS);
@@ -831,7 +866,8 @@ bool test_mixed_8() {
 	}
 
 	char* str = "putchar('1') ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==ID);
 
@@ -853,7 +889,8 @@ bool test_mixed_9() {
 	}
 
 	char* str = "putchar('-') ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==ID);
 
@@ -875,7 +912,8 @@ bool test_mixed_10() {
 	}
 
 	char* str = ";\n 	i=0; ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==SEMICOLON);
 
@@ -899,7 +937,8 @@ bool test_mixed_11() {
 	}
 
 	char* str = "PInt i, PInt j ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==TYPEIDENTIFIER);
 
@@ -923,7 +962,8 @@ bool test_mixed_12() {
 	}
 
 	char* str = "( x < 3.1) ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==LPARENS);
 
@@ -947,7 +987,8 @@ bool test_mixed_13() {
 	}
 
 	char* str = "println(\"vector sum:\"); ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==ID);
 	assert(tokens[1]->kind==LPARENS);
@@ -965,11 +1006,12 @@ bool test_mixed_13() {
 bool test_mixed_14(){
 	
 	if(debug) {
-		printf("test mixed 13\n");
+		printf("test mixed 14\n");
 	}
 
-	char* str = "struct MyStruct{ PInt a, PInt b}";
-	struct Token** tokens = lex(str,".test.tokens");
+	char* str = "struct MyStruct{ Int a, Int b}";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==STRUCT);
 	assert(tokens[1]->kind==TYPEIDENTIFIER);
@@ -991,6 +1033,36 @@ bool test_mixed_14(){
 	return true;
 }
 
+bool test_mixed_15(){
+	
+	if(debug) {
+		printf("test mixed 15\n");
+	}
+
+	char* str = "struct MyStruct{\n\tInt a,\n\tInt b\n}";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==STRUCT);
+	assert(tokens[1]->kind==TYPEIDENTIFIER);
+
+	assert(tokens[2]->kind==LCURLY);
+	//tokens[3] is LINE_NO
+	assert(tokens[4]->kind==TYPEIDENTIFIER);
+	assert(tokens[5]->kind==ID);
+	
+	assert(tokens[6]->kind==COMMA);
+	//tokens[7] is LINE_NO
+	assert(tokens[8]->kind==TYPEIDENTIFIER);
+	assert(tokens[9]->kind==ID);
+	//tokens[10] is LINE_NO
+	assert(tokens[11]->kind==RCURLY);
+
+	freeTokens(tokens, 12);
+
+	return true;
+}
+
 bool test_operators() {
 
 	if(debug) {
@@ -998,7 +1070,8 @@ bool test_operators() {
 	}
 
 	char* str = "+ - * / && || ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==OPKEY);
 
@@ -1024,7 +1097,8 @@ bool test_loop() {
 	}
 
 	char* str = "loop loop{ lo ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==LOOP);
 
@@ -1046,7 +1120,8 @@ bool test_if_else() {
 	}
 
 	char* str = "if else{ ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind==IF);
 
@@ -1066,7 +1141,8 @@ bool test_break() {
 	}
 
 	char* str = "break; Int x";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 
 	assert(tokens[0]->kind==BREAK);

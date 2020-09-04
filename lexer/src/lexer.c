@@ -466,12 +466,15 @@ void set_transitions_breaking(short** dfa, int state, int state_result){
 	set_transitions_braces(dfa,state,state_result);
 	set_transitions_operators(dfa,state,state_result);
 	
+	//punctuation
 	dfa[state][';']=state_result;
-	dfa[state][' ']=state_result;
 	dfa[state][',']=state_result;
-	
 	dfa[state][':']=state_result;
+	
+	//whitespace
+	dfa[state][' ']=state_result;
 	dfa[state]['\n']=state_result;
+	dfa[state]['\t']=state_result;
 }
 
 void set_transitions_printable(short** dfa, int state, int state_result){

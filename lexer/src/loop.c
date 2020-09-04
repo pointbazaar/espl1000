@@ -51,9 +51,12 @@ void lex_main_inner(
 	bool debug
 );
 //------------
-struct Token** lex(char* clean_source, char* tkn_filename){
+struct Token** lex(
+	char* clean_source, 
+	char* tkn_filename,
+	bool debug
+){
 	
-	bool debug = false;
 	if(debug){
 		printf("lex(...)\n");
 	}
@@ -65,7 +68,13 @@ struct Token** lex(char* clean_source, char* tkn_filename){
 	fwrite(clean_source,sizeof(char),strlen(clean_source),temp_file);
 	fclose(temp_file);
 
-	struct Token** res = lex_main(tkn_filename,"temp.dg",strlen(clean_source),false);
+	struct Token** res = lex_main(
+		tkn_filename,
+		"temp.dg",
+		strlen(clean_source),
+		false,
+		debug
+	);
 
 	//delete the file afterwards
 	remove("temp.dg");
@@ -74,7 +83,13 @@ struct Token** lex(char* clean_source, char* tkn_filename){
 }
 
 
-struct Token** lex_main(char* tkn_filename, char* input_filename, long input_file_length, bool free_tokens){
+struct Token** lex_main(
+	char* tkn_filename, 
+	char* input_filename, 
+	long input_file_length, 
+	bool free_tokens,
+	bool debug
+){
 	//https://www.youtube.com/watch?v=G4g-du1MIas
 	//https://nothings.org/computer/lexing.html
 	const uint64_t input_capacity = 5000;
@@ -82,7 +97,6 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 	tokens_index = 0;
 	input_index = 0;
 
-	bool debug = false;
 	if(debug){
 		printf("lex_main(...)\n");
 	}
@@ -163,8 +177,8 @@ void lex_main_inner(
 
 			if(debug){
 				//debug: which state we got into
-				//printf("looking at '%c' -> %i \n",ch,state);
-				//printf("line_no : %d\n",line_no);
+				printf("looking at '%c' -> %i \n",ch,state);
+				printf("line_no : %d\n",line_no);
 			}
 
 		}while(  !final_state[state] );
