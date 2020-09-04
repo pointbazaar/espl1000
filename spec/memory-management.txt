@@ -1,0 +1,13 @@
+
+Allocation/Freeing of Memory in SmallDragon 
+should happen with 'malloc' and 'free'.
+
+Memory will not be allocated on the stack.
+This simplifies the implementation and allows
+for more consistent C code to be generated.
+
+There would be no extra branches
+for various accesses to memory, as every 
+non-primitive variable would be a pointer.
+
+So it would always be 'myvar->' or 'myvar[...]'
