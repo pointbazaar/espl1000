@@ -1,0 +1,52 @@
+I wanted a statement to iterate over stuff.
+
+The "for(int i=0; i<10; i++){...}" syntax is
+not what I want for smalldragon though.
+
+The "for(T t : collection){...}" in Java is nice,
+but it requires a bunch of extra stuff, like 
+Collections and the ability to know the length
+of any array. This is possible with length-prefix arrays
+but we do not have them since we are transpiling to C.
+
+Also, when iterating over Arrays or Lists,
+java-style-for construct does not provide an Index.
+
+Ranges are a very useful concept when iterating.
+I learned to appreciate the "1..10" style from Haskell.
+
+The for statement i want to implement in smalldragon looks like this 
+(with extracts from smalldragon systax):
+
+ENBF Notation: 
+
+StmtBlock ::= '{' Stmt* '}'
+Range ::= Expr '..' Expr
+
+forStmt ::= 'for' Identifier 'in' Range StmtBlock
+
+-----------------------------
+
+Examples would be:
+
+for i in 1 .. n-1 {
+	//i can only be read from, not written to
+	//inside this block
+}
+
+for j in a .. b {
+
+	arr[j] = 1;
+	println("%d\n", j);
+}
+
+for row in 0 .. rows-1 { 
+	for col in 0 .. cols-1 {
+		arr[row][col] = row+col;
+	}
+}
+
+---------------------------
+Ranges would be useful in general.
+
+
