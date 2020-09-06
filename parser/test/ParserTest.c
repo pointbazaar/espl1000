@@ -24,6 +24,7 @@
 #include "astnodes/SimpleTypeTest.h"
 #include "astnodes/StructDeclTest.h"
 #include "astnodes/TermTest.h"
+#include "astnodes/RangeTest.h"
 
 #include "commandline/TokenListTest.h"
 
@@ -48,6 +49,7 @@ bool test_suite_assignstmt(bool debug);
 bool test_suite_method(bool debug);
 bool test_suite_struct(bool debug);
 bool test_suite_types(bool debug);
+bool test_suite_range(bool debug);
 
 // --- END OF TEST SUITES ---
 
@@ -109,6 +111,10 @@ bool test_all_inner(bool debug) {
         printf("suite_types failed\n");
         return false;
     }
+    if(!test_suite_range(debug)){
+		printf("suit_range failed\n");
+		return false;
+	}
 
     printf("Parser: passed all Test Suites\n");
 
@@ -299,3 +305,13 @@ bool test_suite_types(bool debug) {
     return passed == count;
 }
 
+bool test_suite_range(bool debug){
+	
+	if(debug){ printf("test_suite_range\n"); }
+	
+	//test contains its own asserts,
+	//so it will exit on failure
+	range_test1(debug);
+	
+	return true;
+}

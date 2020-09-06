@@ -378,6 +378,11 @@ void lex_main_inner(
 				tkn->kind=STRUCTMEMBERACCESS;
 				tkn->value_ptr=".";
 				break;
+				
+			case S_RANGE_OP_FINAL:
+				tkn->kind=RANGEOP;
+				tkn->value_ptr="..";
+				break;
 
 			case S_COMMA_FINAL:
 				tkn->kind=COMMA;

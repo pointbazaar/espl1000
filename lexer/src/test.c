@@ -121,7 +121,8 @@ int test_all(bool debug1) {
 	pass+=test_break();
 	pass+=test_for();
 	pass+=test_in();
-	count+=3;
+	pass+=test_rangeop();
+	count+=4;
 
 	printf("%i of %i tests passed\n",pass,count);
 
@@ -1197,6 +1198,31 @@ bool test_in(){
 	assert(tokens[2]->kind==IN);
 	
 	assert(tokens[3]->kind==LCURLY);
+
+	freeTokens(tokens, 4);
+
+	return true;
+}
+
+bool test_rangeop(){
+	
+	if(debug) {
+		printf("test_rangeop\n");
+	}
+
+	char* str = ".. a.... ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	printf("%d %s\n", tokens[1]->kind, tokens[1]->value_ptr);
+	
+	assert(tokens[0]->kind==RANGEOP);
+
+	assert(tokens[1]->kind==ID);
+
+	assert(tokens[2]->kind==RANGEOP);
+	
+	assert(tokens[3]->kind==RANGEOP);
 
 	freeTokens(tokens, 4);
 

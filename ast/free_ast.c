@@ -284,3 +284,9 @@ void freeOp(struct Op* op){
 void freeStringConst(struct StringConst* s){
 	free(s);
 }
+
+void freeRange(struct Range* range){
+	freeExpr(range->start);
+	freeExpr(range->end);
+	free(range);
+}

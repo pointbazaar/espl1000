@@ -34,6 +34,7 @@ void init_fn(short** dfa);
 void init_break(short** dfa);
 void init_for(short** dfa);
 void init_in(short** dfa);
+void init_range_op(short** dfa);
 
 //to set transitions for a state to another state in bulk
 //(for some classes of chars)

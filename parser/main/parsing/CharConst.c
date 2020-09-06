@@ -12,7 +12,8 @@
 struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 
 	if(debug){
-		printf("CharConst(...)\n");
+		printf("CharConst(...) from ");
+		list_print(tokens);
 	}
 
 	struct CharConst* res = smalloc(sizeof(struct CharConst));

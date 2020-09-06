@@ -39,13 +39,14 @@
 #define SEMICOLON 31
 #define EQ 32
 
-#define STRUCT 34
-#define COMMA 35
-#define LOOP 36
-#define FN 37
-#define ELSE 38
-#define BREAK 39
-#define FOR 40
-#define IN 41
+#define STRUCT 	34
+#define COMMA 	35
+#define LOOP 	36
+#define FN 		37
+#define ELSE 	38
+#define BREAK 	39
+#define FOR 	40
+#define IN 		41
+#define RANGEOP 42
 
 #endif

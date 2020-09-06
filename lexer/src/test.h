@@ -93,5 +93,6 @@ bool test_break();
 
 bool test_for();
 bool test_in();
+bool test_rangeop();
 
 #endif

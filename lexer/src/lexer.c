@@ -422,6 +422,15 @@ void init_in(short** dfa){
 	set_transitions_breaking(dfa, S_in, S_in_FINAL);
 }
 
+void init_range_op(short** dfa){
+	
+	//also initializes the structmemberaccess OP
+	//because it does not have it's own method
+	set_transitions_breaking(dfa, S_dot, S_STRUCTMEMBERACCESS_FINAL);
+	
+	dfa[S_dot]['.'] = S_RANGE_OP_FINAL;
+}
+
 // ---------------------------------------------------------
 
 void set_transitions_lowercase(short** dfa, int state, short state_result){

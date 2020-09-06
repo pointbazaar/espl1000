@@ -69,6 +69,10 @@ returnStatement ::= 'return' expression? ';'
 
 assignmentStatement ::= Type? variable '=' expression ';'
 
+// -----------------------------------------
+
+Range ::= Expr '..' Expr
+
 UnOpTerm ::= op Term //op must be a unary operator like '!', '~'
 
 Term ::= ArrayConstant 

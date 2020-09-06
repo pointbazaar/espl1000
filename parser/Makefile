@@ -45,6 +45,7 @@ OBJS_MAIN := build/Parser.o \
 		build/TypeParam.o \
 		build/Variable.o \
 		build/UnOpTerm.o \
+		build/Range.o 
 		
 OBJS_TEST := build/AssignStmtTest.o \
 		build/BasicTypeWrappedTest.o \
@@ -72,7 +73,8 @@ OBJS_TEST := build/AssignStmtTest.o \
 		build/WhileStmtTest.o \
 		build/TokenListTest.o \
 		build/ParserTest.o \
-		build/UnOpTermTest.o
+		build/UnOpTermTest.o \
+		build/RangeTest.o
 		
 OBJS := $(OBJS_MAIN) $(OBJS_TEST) $(OBJS_UTIL) 
 

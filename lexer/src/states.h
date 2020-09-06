@@ -133,9 +133,6 @@
 #define S_TPARAM_2 111
 #define S_TPARAM_FINAL 112
 
-//'.'
-#define S_STRUCTMEMBERACCESS_FINAL 113
-
 //TOKEN COMMA
 #define S_COMMA_FINAL 114
 
@@ -195,6 +192,13 @@
 //S_I already exists
 #define S_in			152
 #define S_in_FINAL		153
+
+//'.'
+#define S_dot			154
+#define S_STRUCTMEMBERACCESS_FINAL 155
+
+//'..'
+#define S_RANGE_OP_FINAL	156
 
 //so we set n_states to be 150 or similar, to
 //have space for future states also

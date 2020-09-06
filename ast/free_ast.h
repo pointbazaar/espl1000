@@ -78,4 +78,6 @@ void freeOp(struct Op* op);
 
 void freeStringConst(struct StringConst* s);
 
+void freeRange(struct Range* range);
+
 #endif

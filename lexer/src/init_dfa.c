@@ -48,6 +48,7 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	init_break(dfa);
 	init_for(dfa);
 	init_in(dfa);
+	init_range_op(dfa);
 
 	//SOME STARTING TRANSITIONS
 
@@ -84,7 +85,7 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	dfa[S_START]['=']=S_EQ;
 	dfa[S_START]['#']=S_ANYTYPE_FINAL;
 
-	dfa[S_START]['.']=S_STRUCTMEMBERACCESS_FINAL;
+	dfa[S_START]['.']=S_dot;
 	dfa[S_START][',']=S_COMMA_FINAL;
 
 	if(debug){
@@ -160,4 +161,5 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	final_state[S_break_FINAL]=true;
 	final_state[S_for_FINAL]=true;
 	final_state[S_in_FINAL]=true;
+	final_state[S_RANGE_OP_FINAL]=true;
 }

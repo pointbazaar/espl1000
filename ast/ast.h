@@ -17,11 +17,12 @@ struct StmtBlock;
 struct TokenList;
 struct Op;
 struct Term;
+struct Expr;
 struct UnOpTerm;
 struct Identifier;
-struct Expr;
 struct Variable;
 struct SimpleVar;
+struct Range;
 
 //const
 struct BoolConst;
@@ -74,6 +75,11 @@ struct Expr {
 	struct UnOpTerm* term2;
 	
 };
+struct Range {
+	struct Expr* start;
+	struct Expr* end;
+};
+//--------------
 struct FloatConst{
 	float value;
 };
