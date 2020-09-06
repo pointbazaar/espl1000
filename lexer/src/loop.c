@@ -27,7 +27,11 @@ const uint64_t tokens_capacity = 5000;	//should be 5000
 struct Token* tokens[5000];
 
 const uint64_t n_states = 160;		//number of states in our state machine
-const uint64_t n_transitions = 256; //possible ascii chars
+
+//possible ascii chars, without the 
+//Extended Ascii codes
+//source: http://www.asciitable.com/
+const uint64_t n_transitions = 128; 
 
 short state;
 int line_no;
