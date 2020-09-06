@@ -121,8 +121,12 @@ int test_all(bool debug1) {
 	pass+=test_break();
 	pass+=test_for();
 	pass+=test_in();
-	pass+=test_rangeop();
-	count+=4;
+	count+=3;
+	
+	//these use assert
+	pass+=test_rangeop_1();
+	pass+=test_rangeop_2();
+	count+=2;
 
 	printf("%i of %i tests passed\n",pass,count);
 
@@ -1204,17 +1208,15 @@ bool test_in(){
 	return true;
 }
 
-bool test_rangeop(){
+bool test_rangeop_1(){
 	
 	if(debug) {
-		printf("test_rangeop\n");
+		printf("test_rangeop_1\n");
 	}
 
 	char* str = ".. a.... ";
 	struct Token** tokens = 
 		lex(str,".test.tokens", debug);
-
-	printf("%d %s\n", tokens[1]->kind, tokens[1]->value_ptr);
 	
 	assert(tokens[0]->kind==RANGEOP);
 
@@ -1225,6 +1227,31 @@ bool test_rangeop(){
 	assert(tokens[3]->kind==RANGEOP);
 
 	freeTokens(tokens, 4);
+
+	return true;
+}
+
+bool test_rangeop_2(){
+	
+	if(debug) {
+		printf("test_rangeop_1\n");
+	}
+
+	char* str = "0 .. 3 a .. b ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	printf("%d %s\n", tokens[1]->kind, tokens[1]->value_ptr);
+	
+	assert(tokens[0]->kind==INTEGER);
+	assert(tokens[1]->kind==RANGEOP);
+	assert(tokens[2]->kind==INTEGER);
+	
+	assert(tokens[3]->kind==ID);
+	assert(tokens[4]->kind==RANGEOP);
+	assert(tokens[5]->kind==ID);
+
+	freeTokens(tokens, 6);
 
 	return true;
 }
