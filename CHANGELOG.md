@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 - Added '..' (the Range Operator) which can be used to interpolate between Integers
+- Added a For-style Statement for iterating, e.g. 'for i in 0..10 { /*do stuff*/ }'
 
 ## [0.0.4] - 2020-09-6
 - Added 'sd -help' Option
