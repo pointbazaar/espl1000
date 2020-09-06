@@ -46,6 +46,8 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 
 	init_fn(dfa);
 	init_break(dfa);
+	init_for(dfa);
+	init_in(dfa);
 
 	//SOME STARTING TRANSITIONS
 
@@ -156,4 +158,6 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	final_state[S_START]=true;
 	
 	final_state[S_break_FINAL]=true;
+	final_state[S_for_FINAL]=true;
+	final_state[S_in_FINAL]=true;
 }

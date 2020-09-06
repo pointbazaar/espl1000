@@ -119,7 +119,9 @@ int test_all(bool debug1) {
 	count+=2;
 
 	pass+=test_break();
-	count+=1;
+	pass+=test_for();
+	pass+=test_in();
+	count+=3;
 
 	printf("%i of %i tests passed\n",pass,count);
 
@@ -1152,6 +1154,51 @@ bool test_break() {
 	assert(tokens[2]->kind==TYPEIDENTIFIER);
 
 	freeTokens(tokens, 3);
+
+	return true;
+}
+
+bool test_for(){
+	
+	if(debug) {
+		printf("test_for\n");
+	}
+
+	char* str = "for for{ ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==FOR);
+
+	assert(tokens[1]->kind==FOR);
+
+	assert(tokens[2]->kind==LCURLY);
+
+	freeTokens(tokens, 3);
+
+	return true;
+}
+
+bool test_in(){
+	
+	if(debug) {
+		printf("test_in\n");
+	}
+
+	char* str = "in; in{ ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+
+	assert(tokens[0]->kind==IN);
+
+	assert(tokens[1]->kind==SEMICOLON);
+
+	assert(tokens[2]->kind==IN);
+	
+	assert(tokens[3]->kind==LCURLY);
+
+	freeTokens(tokens, 4);
 
 	return true;
 }

@@ -405,6 +405,23 @@ void init_break(short** dfa){
 	dfa[S_break][' '] = S_break_FINAL;
 }
 
+void init_for(short** dfa){
+	
+	set_transitions_abort_keyword(dfa, S_fo);
+	set_transitions_abort_keyword(dfa, S_for);
+	
+	dfa[S_f]['o'] = S_fo;
+	dfa[S_fo]['r'] = S_for;
+	
+	set_transitions_breaking(dfa, S_for, S_for_FINAL);
+}
+
+void init_in(short** dfa){
+
+	dfa[S_I]['n'] = S_in;
+	set_transitions_breaking(dfa, S_in, S_in_FINAL);
+}
+
 // ---------------------------------------------------------
 
 void set_transitions_lowercase(short** dfa, int state, short state_result){

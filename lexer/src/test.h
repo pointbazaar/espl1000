@@ -91,4 +91,7 @@ bool test_if_else();
 
 bool test_break();
 
+bool test_for();
+bool test_in();
+
 #endif

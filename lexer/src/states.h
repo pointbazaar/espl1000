@@ -69,8 +69,6 @@
 #define S_FLOAT 58 //when we have seen a '.' 
 #define S_FLOAT_FINAL 59
 
-
-
 //TOKEN {
 #define S_LCURLY_FINAL 70
 //TOKEN }
@@ -135,11 +133,11 @@
 #define S_TPARAM_2 111
 #define S_TPARAM_FINAL 112
 
+//'.'
 #define S_STRUCTMEMBERACCESS_FINAL 113
 
 //TOKEN COMMA
 #define S_COMMA_FINAL 114
-
 
 //TOKEN ~
 #define S_WAVE 			115
@@ -150,9 +148,6 @@
 
 #define S_MINUS 		118
 #define S_MINUS_FINAL 	119
-
-
-
 
 //TOKEN LOOP
 #define S_loop_FINAL 125
@@ -189,6 +184,17 @@
 #define S_brea			146
 #define S_break			147
 #define S_break_FINAL	148
+
+//TOKEN: for
+//S_f already exists
+#define S_fo			149
+#define S_for			150
+#define S_for_FINAL		151
+
+//TOKEN: in
+//S_I already exists
+#define S_in			152
+#define S_in_FINAL		153
 
 //so we set n_states to be 150 or similar, to
 //have space for future states also

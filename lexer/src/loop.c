@@ -26,7 +26,7 @@
 const uint64_t tokens_capacity = 5000;	//should be 5000
 struct Token* tokens[5000];
 
-const uint64_t n_states = 150;		//number of states in our state machine
+const uint64_t n_states = 160;		//number of states in our state machine
 const uint64_t n_transitions = 256; //possible ascii chars
 
 short state;
@@ -246,6 +246,18 @@ void lex_main_inner(
 			case S_break_FINAL:
 				tkn->kind=BREAK;
 				tkn->value_ptr="break";
+				i--;
+				break;
+				
+			case S_for_FINAL:
+				tkn->kind=FOR;
+				tkn->value_ptr="for";
+				i--;
+				break;
+				
+			case S_in_FINAL:
+				tkn->kind=IN;
+				tkn->value_ptr="in";
 				i--;
 				break;
 

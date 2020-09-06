@@ -45,5 +45,7 @@
 #define FN 37
 #define ELSE 38
 #define BREAK 39
+#define FOR 40
+#define IN 41
 
 #endif
