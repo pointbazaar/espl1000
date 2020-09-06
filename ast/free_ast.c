@@ -217,6 +217,12 @@ void freeStmt(struct Stmt* s) {
 
 	} else if(s->m5 != NULL) {
 		freeAssignStmt(s->m5);
+		
+	} else if(s->m6 != NULL) {
+		freeBreakStmt(s->m6);
+		
+	} else if(s->m7 != NULL) {
+		freeForStmt(s->m7);
 	}
 
 	free(s);

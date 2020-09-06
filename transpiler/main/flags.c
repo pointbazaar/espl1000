@@ -12,7 +12,7 @@ struct Flags* makeFlags(int argc, char** argv){
 	flags->test 	= false;
 	flags->help 	= false;
 	flags->version 	= false;
-	
+	flags->clean 	= false;
 	
 	//we assume 5 gcc arguments would be 
 	//a good starting value for most users
