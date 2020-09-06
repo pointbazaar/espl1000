@@ -45,7 +45,8 @@ void transpileRetStmt(struct RetStmt* rs, struct Ctx* ctx);
 void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx);
 void transpileLoopStmt(struct LoopStmt* ls, struct Ctx* ctx);
 void transpileBreakStmt(struct BreakStmt* ls, struct Ctx* ctx);
-
+void transpileForStmt(struct ForStmt* f, struct Ctx* ctx);
+// --------------------
 void transpileType(struct Type* t, struct Ctx* ctx);
 void transpileVariable(struct Variable* var, struct Ctx* ctx);
 void transpileUnOpTerm(struct UnOpTerm* t, struct Ctx* ctx);
@@ -54,6 +55,7 @@ void transpileExpr(struct Expr* expr, struct Ctx* ctx);
 
 void transpileSimpleVar(struct SimpleVar* svar, struct Ctx* ctx);
 
+//const nodes related
 void transpileBoolConst		(struct BoolConst* bc, 	struct Ctx* ctx);
 void transpileIntConst		(struct IntConst* ic, 	struct Ctx* ctx);
 void transpileCharConst		(struct CharConst* cc, 	struct Ctx* ctx);
@@ -311,6 +313,9 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 	}else if(s->m6 != NULL){
 		transpileBreakStmt(s->m6, ctx);
 		
+	}else if(s->m7 != NULL){
+		transpileForStmt(s->m7, ctx);
+		
 	}else{
 		printf("Error in transpileStmt\n");
 		//still leaking memory, but less than before.
@@ -396,6 +401,7 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 	if(as->optType != NULL){
 		
 		transpileType(as->optType, ctx);
+		fprintf(ctx->file, " ");
 		
 	}else{
 		//find type via local variable symbol table
@@ -414,10 +420,9 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 			//an assignment to this local variable first occurs in
 			//this assignment statement
 			transpileType(line->type, ctx);
+			fprintf(ctx->file, " ");
 		}
 	}
-	
-	fprintf(ctx->file, " ");
 	
 	transpileVariable(as->var, ctx);
 	fprintf(ctx->file, " = ");
@@ -456,6 +461,30 @@ void transpileBreakStmt(struct BreakStmt* ls, struct Ctx* ctx){
 	fprintf(ctx->file, "break;");
 }
 
+void transpileForStmt(struct ForStmt* f, struct Ctx* ctx){
+	
+	if(ctx->flags->debug){ printf("transpileForStmt(...)\n"); }
+	
+	indent(ctx);
+	
+	fprintf(ctx->file, "for (");
+	
+	fprintf(ctx->file, "int %s = ", f->indexName);
+	
+	transpileExpr(f->range->start, ctx);
+	
+	fprintf(ctx->file, ";");
+	
+	fprintf(ctx->file, "%s <= ", f->indexName);
+	
+	transpileExpr(f->range->end, ctx);
+	
+	fprintf(ctx->file, "; %s++)", f->indexName);
+
+	transpileStmtBlock(f->block, ctx);
+}
+
+//-----------------------------------------------
 void transpileType(struct Type* t, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileType(%p, %p)\n", t, ctx); }

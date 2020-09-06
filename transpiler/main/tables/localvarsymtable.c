@@ -42,6 +42,11 @@ void discoverLVLoopStmt(
 	struct LoopStmt* l,
 	bool debug
 );
+void discoverLVForStmt(
+	struct ST* st, 
+	struct ForStmt* l,
+	bool debug
+);
 void discoverLVAssignStmt(
 	struct ST* st, 
 	struct AssignStmt* a,
@@ -225,6 +230,8 @@ void discoverLVStmt(
 		discoverLVIfStmt(st, stmt->m3, debug);
 	}else if(stmt->m5 != NULL){
 		discoverLVAssignStmt(st, stmt->m5, debug);
+	}else if(stmt->m7 != NULL){
+		discoverLVForStmt(st, stmt->m7, debug);
 	}
 }
 
@@ -260,7 +267,27 @@ void discoverLVLoopStmt(
 	
 	discoverLVStmtBlock(st, l->block, debug);
 }
-
+void discoverLVForStmt(
+	struct ST* st, 
+	struct ForStmt* l,
+	bool debug
+){
+	if(debug){ printf("discoverLVForStmt\n"); }
+	
+	//take the index variable as a local variable
+	struct LVSTLine* line = smalloc(sizeof(struct LVSTLine));
+	
+	strncpy(line->name, l->indexName, DEFAULT_STR_SIZE);
+	
+	line->type = typeFromStr(st, "Int");
+	//we have no assignstmt here
+	line->firstOccur = NULL; 
+	line->isArg = false;;
+	
+	lvst_add(st->lvst, line, debug);
+	
+	discoverLVStmtBlock(st, l->block, debug);
+}
 void discoverLVAssignStmt(
 	struct ST* st, 
 	struct AssignStmt* a,
