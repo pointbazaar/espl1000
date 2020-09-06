@@ -290,3 +290,9 @@ void freeRange(struct Range* range){
 	freeExpr(range->end);
 	free(range);
 }
+
+void freeForStmt(struct ForStmt* fstmt){
+	freeRange(fstmt->range);
+	freeStmtBlock(fstmt->block);
+	free(fstmt);
+}

@@ -80,4 +80,6 @@ void freeStringConst(struct StringConst* s);
 
 void freeRange(struct Range* range);
 
+void freeForStmt(struct ForStmt* fstmt);
+
 #endif

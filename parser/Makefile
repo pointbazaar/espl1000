@@ -45,7 +45,8 @@ OBJS_MAIN := build/Parser.o \
 		build/TypeParam.o \
 		build/Variable.o \
 		build/UnOpTerm.o \
-		build/Range.o 
+		build/Range.o \
+		build/ForStmt.o
 		
 OBJS_TEST := build/AssignStmtTest.o \
 		build/BasicTypeWrappedTest.o \

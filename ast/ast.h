@@ -40,6 +40,7 @@ struct Stmt;
 struct WhileStmt;
 struct LoopStmt;
 struct BreakStmt;
+struct ForStmt;
 
 //typenodes
 struct Type;
@@ -213,6 +214,11 @@ struct WhileStmt  {
 };
 struct LoopStmt {
 	struct Expr* count;
+	struct StmtBlock* block;
+};
+struct ForStmt {
+	char indexName[DEFAULT_STR_SIZE];
+	struct Range* range;
 	struct StmtBlock* block;
 };
 struct BreakStmt {

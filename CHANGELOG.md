@@ -2,8 +2,8 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-## Unreleased
-- ...
+## [Unreleased]
+- Added '..' (the Range Operator) which can be used to interpolate between Integers
 
 ## [0.0.4] - 2020-09-6
 - Added 'sd -help' Option

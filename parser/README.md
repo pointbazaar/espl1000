@@ -53,6 +53,10 @@ statement ::=   ( methodCall ';' )
                 | assignmentStatement
 		| loopStatement
 		| breakStatement
+		| forStatement
+
+
+// -------- STATEMENTS --------------------
 
 methodCall ::= identifier '(' (expression (, expression)*)?  ')'
 
@@ -62,6 +66,8 @@ loopStatement ::= 'loop' expression stmtblock
 
 whileStatement ::= 'while' expression stmtblock
 
+forStatement ::= 'for' identifier 'in' Range stmtblock
+
 ifStatement ::= 'if' expression stmtblock
 				( 'else' stmtblock )?
 				
@@ -69,7 +75,7 @@ returnStatement ::= 'return' expression? ';'
 
 assignmentStatement ::= Type? variable '=' expression ';'
 
-// -----------------------------------------
+// --- END STATEMENTS ----------------------
 
 Range ::= Expr '..' Expr
 
