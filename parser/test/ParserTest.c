@@ -25,6 +25,7 @@
 #include "astnodes/StructDeclTest.h"
 #include "astnodes/TermTest.h"
 #include "astnodes/RangeTest.h"
+#include "astnodes/ForStmtTest.h"
 
 #include "commandline/TokenListTest.h"
 
@@ -233,6 +234,10 @@ bool test_suite_stmts(bool debug) {
     
     //1
     passed += break_test1(debug);
+    
+    //this test uses assert
+    //so it needs no counting
+    for_test1(debug);
 
     return passed == count;
 }

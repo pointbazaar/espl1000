@@ -23,6 +23,7 @@ void writeDeclArg(struct DeclArg* m, 		FILE* file);
 void writeExpr(struct Expr* m, 			FILE* file);
 void writeOp(struct Op* m, 			FILE* file);
 
+//const nodes
 void writeIntConst(struct IntConst* m, 		 FILE* file);
 void writeBoolConst(struct BoolConst* m, 	 FILE* file);
 void writeCharConst(struct CharConst* m, 	 FILE* file);
@@ -33,6 +34,7 @@ void writeVariable(struct Variable* m, 		FILE* file);
 void writeSimpleVar(struct SimpleVar* m, 	FILE* file);
 void writeTerm(struct Term* m, 				FILE* file);
 void writeUnOpTerm(struct UnOpTerm* t,  	FILE* file);
+void writeRange(struct Range* r, 			FILE* file);
 
 //statementnodes
 void writeStmt(struct Stmt* m, 			FILE* file);
@@ -43,6 +45,7 @@ void writeAssignStmt(struct AssignStmt* m, 	FILE* file);
 void writeMethodCall(struct MethodCall* m, 	FILE* file);
 void writeLoopStmt(struct LoopStmt* m, 		FILE* file);
 void writeBreakStmt(struct BreakStmt* m, 	FILE* file);
+void writeForStmt(struct ForStmt* m,	 	FILE* file);
 
 //typenodes
 void writeType(struct Type* m, 				FILE* file);
@@ -229,6 +232,14 @@ void writeUnOpTerm(struct UnOpTerm* t,  	FILE* file){
 	
 	writeTerm(t->term, file);
 }
+void writeRange(struct Range* r, FILE* file){
+	
+	fprintf(file, "Range\t");
+	
+	writeExpr(r->start, file);
+	writeExpr(r->end, file);
+}
+// --------- CONST NODES ----------------
 void writeBoolConst(struct BoolConst* m, FILE* file){
 	fprintf(file, "BoolConst\t%d\t", m->value);
 }
@@ -262,6 +273,7 @@ void writeStmt(struct Stmt* m, FILE* file){
 	if(m->m4 != NULL){ fprintf(file,"4\t"); writeRetStmt(m->m4,file);    }
 	if(m->m5 != NULL){ fprintf(file,"5\t"); writeAssignStmt(m->m5,file); }
 	if(m->m6 != NULL){ fprintf(file,"6\t"); writeBreakStmt(m->m6,file); }
+	if(m->m7 != NULL){ fprintf(file,"7\t"); writeForStmt(m->m7,file); }
 }
 
 void writeIfStmt(struct IfStmt* m, FILE* file){
@@ -333,6 +345,14 @@ void writeLoopStmt(struct LoopStmt* m, FILE* file){
 void writeBreakStmt(struct BreakStmt* m, FILE* file){
 	
 	fprintf(file, "BreakStmt\t");
+}
+void writeForStmt(struct ForStmt* m, FILE* file){
+	
+	fprintf(file, "ForStmt\t%s\t", m->indexName);
+
+	writeRange(m->range, file);
+
+	writeStmtBlock(m->block, file);
 }
 // --------- TYPENODES --------------
 void writeType(struct Type* m, FILE* file){

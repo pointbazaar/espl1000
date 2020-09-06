@@ -3,6 +3,7 @@
 
 #include "Stmt.h"
 #include "WhileStmt.h"
+#include "ForStmt.h"
 #include "LoopStmt.h"
 #include "IfStmt.h"
 #include "RetStmt.h"
@@ -24,6 +25,7 @@ void stmt_make_loop(struct Stmt* res, struct TokenList* copy, bool debug);
 void stmt_make_while(struct Stmt* res, struct TokenList* copy, bool debug);
 void stmt_make_if(struct Stmt* res, struct TokenList* copy, bool debug);
 void stmt_make_return(struct Stmt* res, struct TokenList* copy, bool debug);
+void stmt_make_for(struct Stmt* res, struct TokenList* copy, bool debug);
 void stmt_make_other(struct Stmt* res, struct TokenList* copy, bool debug);
 // ---------------------------
 
@@ -44,6 +46,9 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	switch(first->kind){
 		case BREAK:
 			stmt_make_break(res, copy, debug);
+			break;
+		case FOR:
+			stmt_make_for(res, copy, debug);
 			break;
 		case LOOP:
 			stmt_make_loop(res, copy, debug);
@@ -84,6 +89,7 @@ struct Stmt* initStmt(){
 	res->m4 = NULL;
 	res->m5 = NULL;
 	res->m6 = NULL;
+	res->m7 = NULL;
 	
 	return res;
 }
@@ -145,9 +151,22 @@ void stmt_make_if(struct Stmt* res, struct TokenList* copy, bool debug){
 
 void stmt_make_return(struct Stmt* res, struct TokenList* copy, bool debug){
 	
-	res->m4 = makeRetStmt		(copy,debug);
+	res->m4 = makeRetStmt(copy,debug);
 	if(res->m4 == NULL){
 		printf("expected return stmt, but was:\n");
+		list_print(copy);
+		
+		freeTokenListShallow(copy);
+		free(res);
+		exit(1);
+	}
+}
+
+void stmt_make_for(struct Stmt* res, struct TokenList* copy, bool debug){
+	
+	res->m7 = makeForStmt(copy,debug);
+	if(res->m7 == NULL){
+		printf("expected for stmt, but was:\n");
 		list_print(copy);
 		
 		freeTokenListShallow(copy);

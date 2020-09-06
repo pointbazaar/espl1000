@@ -75,7 +75,8 @@ OBJS_TEST := build/AssignStmtTest.o \
 		build/TokenListTest.o \
 		build/ParserTest.o \
 		build/UnOpTermTest.o \
-		build/RangeTest.o
+		build/RangeTest.o \
+		build/ForStmtTest.o
 		
 OBJS := $(OBJS_MAIN) $(OBJS_TEST) $(OBJS_UTIL) 
 

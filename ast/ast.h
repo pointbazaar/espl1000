@@ -207,6 +207,7 @@ struct Stmt {
 	struct RetStmt* m4;
 	struct AssignStmt* m5;
 	struct BreakStmt* m6;
+	struct ForStmt* m7;
 };
 struct WhileStmt  {
 	struct Expr* condition;
@@ -224,6 +225,7 @@ struct ForStmt {
 struct BreakStmt {
 	//empty
 };
+//-------------------------
 struct ArrayType {
 	struct Type* element_type;
 };

@@ -20,6 +20,7 @@ struct DeclArg* readDeclArg(FILE* file, bool debug);
 struct Expr* readExpr(FILE* file, bool debug);
 struct Op* readOp(FILE* file, bool debug);
 
+//const nodes
 struct IntConst* 	readIntConst(	FILE* file, bool debug);
 struct BoolConst* 	readBoolConst(	FILE* file, bool debug);
 struct CharConst* 	readCharConst(	FILE* file, bool debug);
@@ -30,6 +31,7 @@ struct Variable* readVariable(FILE* file, bool debug);
 struct SimpleVar* readSimpleVar(FILE* file, bool debug);
 struct Term* readTerm(FILE* file, bool debug);
 struct UnOpTerm* readUnOpTerm(FILE* file, bool debug);
+struct Range* readRange(FILE* file, bool debug);
 
 //statementnodes
 struct Stmt* readStmt(FILE* file, bool debug);
@@ -40,6 +42,7 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug);
 struct MethodCall* readMethodCall(FILE* file, bool debug);
 struct LoopStmt* readLoopStmt(FILE* file, bool debug);
 struct BreakStmt* readBreakStmt(FILE* file, bool debug);
+struct ForStmt* readForStmt(FILE* file, bool debug);
 
 //typenodes
 struct Type* readType(FILE* file, bool debug);
@@ -529,6 +532,24 @@ struct UnOpTerm* readUnOpTerm(FILE* file, bool debug){
 	return t;
 }
 
+struct Range* readRange(FILE* file, bool debug){
+	
+	if(debug){ printf("readRange(...)\n"); }
+	
+	if(fscanf(file, "Range\t") == EOF){
+		printf("Error reading Range\n");
+		fclose(file);
+		exit(1);
+	}
+	
+	struct Range* r = smalloc(sizeof(struct Range));
+	
+	r->start = readExpr(file, debug);
+	r->end = readExpr(file, debug);
+	
+	return r;
+}
+
 //statementnodes
 struct Stmt* readStmt(FILE* file, bool debug){
 	
@@ -550,6 +571,7 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	b->m4 = NULL;
 	b->m5 = NULL;
 	b->m6 = NULL;
+	b->m7 = NULL;
 
 	switch(kind){
 		case 0: b->m0 = readLoopStmt(file, debug);   break;
@@ -559,6 +581,7 @@ struct Stmt* readStmt(FILE* file, bool debug){
 		case 4: b->m4 = readRetStmt(file, debug);    break;
 		case 5: b->m5 = readAssignStmt(file, debug); break;
 		case 6: b->m6 = readBreakStmt(file, debug);  break;
+		case 7: b->m7 = readForStmt(file, debug);  	 break;
 		default:
 			printf("Error in readStmt\n");
 			free(b);
@@ -713,8 +736,27 @@ struct BreakStmt* readBreakStmt(FILE* file, bool debug){
 	
 	return v;
 }
-
-//typenodes
+struct ForStmt* readForStmt(FILE* file, bool debug){
+	
+	if(debug){ printf("readForStmt(...)\n"); }
+	
+	char indexName[DEFAULT_STR_SIZE];
+	
+	if(fscanf(file, "ForStmt\t%s\t", indexName) != 1){
+		printf("Error reading ForStmt\n");
+		fclose(file);
+		exit(1);
+	}
+	
+	struct ForStmt* res = smalloc(sizeof(struct ForStmt));
+	
+	strncpy(res->indexName, indexName, DEFAULT_STR_SIZE);
+	res->range = readRange(file, debug);
+	res->block = readStmtBlock(file, debug);
+	
+	return res;
+}
+// --- typenodes -------------------------
 struct Type* readType(FILE* file, bool debug){
 	
 	if(debug){ printf("readType(...)\n"); }
