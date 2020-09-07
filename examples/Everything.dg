@@ -1,0 +1,58 @@
+
+//The goal of this example is to 
+//contain all Statement types
+//and use as many features of smalldragon
+//as possible
+//so that transpiling it will
+//be useful to detect memory leaks with Valgrind
+
+/*
+//Statements
+[x] ForStmt
+[x] LoopStmt
+[x] WhileStmt
+[x] BreakStmt
+[x] ReturnStmt
+[x] AssignStmt
+[x] IfStmt
+
+[x] Local Variable Type Inference
+*/
+
+fn main () ~> Int {
+
+	[Int] arr = malloc(4*4);
+	arr[0] = 1;
+
+	for i in 0 .. 1 {
+		
+		printf("%d", i);
+	}
+
+	loop 2 {
+		printf("hi\n");
+		break;
+	}
+
+	a = 0;
+	b = 3.14159; //...
+	c = "hi";
+
+	while a < 4 {
+
+		a = a + 1;
+		b = b - 0.1;
+		printf("%s\n", c);
+	}
+
+	if a == 4 {
+		
+		return -3;
+	}
+
+	return subr();
+}
+
+fn subr () -> Int {
+	return 0;
+}
