@@ -27,9 +27,9 @@
      inkscape:window-height="1016"
      id="namedview929"
      showgrid="false"
-     inkscape:zoom="0.53924603"
-     inkscape:cx="29.211235"
-     inkscape:cy="747.33921"
+     inkscape:zoom="0.76260905"
+     inkscape:cx="110.76674"
+     inkscape:cy="517.57261"
      inkscape:window-x="72"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -706,19 +706,19 @@
      style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.26499999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="rect931"
      width="197.75861"
-     height="191.5136"
+     height="205.73836"
      x="8.3266783"
-     y="223.28223" />
+     y="209.05748" />
   <text
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
      x="10.755292"
-     y="234.73143"
+     y="221.20058"
      id="text935"><tspan
        sodipodi:role="line"
        id="tspan933"
        x="10.755292"
-       y="234.73143"
+       y="221.20058"
        style="stroke-width:0.26458332">Transpiler Architecture</tspan></text>
   <path
      style="fill:none;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -757,14 +757,14 @@
        style="stroke-width:0.13943261">Subroutine </tspan><tspan
        sodipodi:role="line"
        x="143.79172"
-       y="249.00185"
+       y="249.00186"
        style="stroke-width:0.13943261"
        id="tspan951">Symbol Table</tspan><tspan
        sodipodi:role="line"
        x="143.79172"
        y="255.9735"
        style="stroke-width:0.13943261"
-       id="tspan991">(SST)</tspan></text>
+       id="tspan991">(struct SST)</tspan></text>
   <rect
      style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.26499999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="rect945-3"
@@ -792,7 +792,7 @@
        x="143.72649"
        y="280.23221"
        style="stroke-width:0.13943261"
-       id="tspan989">(STST)</tspan></text>
+       id="tspan989">(struct STST)</tspan></text>
   <rect
      style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.26499999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="rect945-35"
@@ -820,7 +820,7 @@
        x="143.79836"
        y="307.40701"
        style="stroke-width:0.13943261"
-       id="tspan993">(LVST)</tspan></text>
+       id="tspan993">(struct LVST)</tspan></text>
   <path
      style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
      d="m 65.683695,254.3073 76.910665,-5.36538"
@@ -885,16 +885,48 @@
        x="135.29614"
        y="346.64725"
        style="stroke-width:0.1589874"
-       id="tspan1403">(typeinference.c)</tspan></text>
+       id="tspan1403">- typeinference.c</tspan></text>
   <text
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:4.20266724px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10506668"
-     x="142.25874"
-     y="230.96634"
+     x="143.81999"
+     y="229.23161"
      id="text949-0"><tspan
        sodipodi:role="line"
-       x="142.25874"
-       y="230.96634"
+       x="143.81999"
+       y="229.23161"
        style="stroke-width:0.10506668"
-       id="tspan1399">Symbol Tables (ST)</tspan></text>
+       id="tspan1399">Symbol Tables </tspan><tspan
+       sodipodi:role="line"
+       x="143.81999"
+       y="234.48494"
+       style="stroke-width:0.10506668"
+       id="tspan1427">(struct ST)</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:4.20266724px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10506668"
+     x="64.400352"
+     y="275.78949"
+     id="text949-0-1"><tspan
+       sodipodi:role="line"
+       x="64.400352"
+       y="275.78949"
+       style="stroke-width:0.10506668"
+       id="tspan1399-8">- c_code_gen.c</tspan><tspan
+       sodipodi:role="line"
+       x="64.400352"
+       y="281.04282"
+       style="stroke-width:0.10506668"
+       id="tspan1425">- structs_code_gen.c</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:4.20266724px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10506668"
+     x="139.88388"
+     y="221.44983"
+     id="text949-0-7"><tspan
+       sodipodi:role="line"
+       x="139.88388"
+       y="221.44983"
+       style="stroke-width:0.10506668"
+       id="tspan1427-2">transpiler/main/tables</tspan></text>
 </svg>
