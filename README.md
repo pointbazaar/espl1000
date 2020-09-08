@@ -31,28 +31,7 @@ There is currently no plan to have a library for SmallDragon, besides some small
 The editor of choice for smalldragon currently is [micro](https://micro-editor.github.io/), because there is a basic syntax highlighting for it.
 
 ## Examples
-
-Basic Program:
-
-```dragon
-struct Point{
-  PInt x,
-  PInt y
-}
-
-fn main () ~> PInt {
-
-  //every variable is always initialized
-  Point p = (1,2);  //structs can also be interpreted as tuples
-  return subr(1,p.y);
-}
-
-fn subr  (PInt a, PInt a) -> PInt{
-
-  z=b+1;  //local variable type inference
-  return a+z;
-}
-```
+Have a look at [Examples](https://github.com/pointbazaar/smalldragon/tree/dev/examples)
 
 ```console
 You@Terminal:~$ sd Main.dg
