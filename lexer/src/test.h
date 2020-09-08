@@ -83,6 +83,7 @@ bool test_mixed_12();
 bool test_mixed_13();
 bool test_mixed_14();
 bool test_mixed_15();
+bool test_mixed_16();
 
 bool test_operators();
 
@@ -96,5 +97,7 @@ bool test_in();
 
 bool test_rangeop_1();
 bool test_rangeop_2();
+
+bool test_member_access();
 
 #endif

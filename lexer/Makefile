@@ -22,7 +22,7 @@ test: dragon-lexer
 VALGRIND_OPS := --leak-check=full --show-reachable=yes --error-exitcode=1 --log-file="/dev/null"
 
 valgrind: dragon-lexer
-	valgrind $(VALGRIND_OPS) ./dragon-lexer -clean ../examples/loops/WhileLoop.dg
+	valgrind $(VALGRIND_OPS) ./dragon-lexer -clean ../examples/Everything.dg
 
 directories: build/release
 

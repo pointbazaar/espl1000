@@ -109,7 +109,8 @@ int test_all(bool debug1) {
 	pass+=test_mixed_13();
 	pass+=test_mixed_14();
 	pass+=test_mixed_15();
-	count+=17;
+	pass+=test_mixed_16();
+	count+=18;
 
 	pass+=test_operators();
 	count+=1;
@@ -127,6 +128,9 @@ int test_all(bool debug1) {
 	pass+=test_rangeop_1();
 	pass+=test_rangeop_2();
 	count+=2;
+	
+	pass+=test_member_access();
+	count+=1;
 
 	printf("%i of %i tests passed\n",pass,count);
 
@@ -1070,6 +1074,31 @@ bool test_mixed_15(){
 	return true;
 }
 
+bool test_mixed_16(){
+	
+	if(debug) { printf("test mixed 16\n"); }
+
+	char* str = "((PInt) -> PInt) member ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==LPARENS);
+	assert(tokens[1]->kind==LPARENS);
+	assert(tokens[2]->kind==TYPEIDENTIFIER);
+	
+	printf("%d %s\n", tokens[3]->kind, tokens[3]->value_ptr);
+	
+	assert(tokens[3]->kind==RPARENS);
+	assert(tokens[4]->kind==ARROW);
+	assert(tokens[5]->kind==TYPEIDENTIFIER);
+	assert(tokens[6]->kind==RPARENS);
+	assert(tokens[7]->kind==ID);
+
+	freeTokens(tokens, 8);
+
+	return true;
+}
+
 bool test_operators() {
 
 	if(debug) {
@@ -1241,8 +1270,6 @@ bool test_rangeop_2(){
 	struct Token** tokens = 
 		lex(str,".test.tokens", debug);
 
-	printf("%d %s\n", tokens[1]->kind, tokens[1]->value_ptr);
-	
 	assert(tokens[0]->kind==INTEGER);
 	assert(tokens[1]->kind==RANGEOP);
 	assert(tokens[2]->kind==INTEGER);
@@ -1252,6 +1279,25 @@ bool test_rangeop_2(){
 	assert(tokens[5]->kind==ID);
 
 	freeTokens(tokens, 6);
+
+	return true;
+}
+
+bool test_member_access(){
+	
+	if(debug) { printf("test_member_access\n"); }
+
+	char* str = "s.member= ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+	
+	assert(tokens[0]->kind==ID);
+	assert(tokens[1]->kind==STRUCTMEMBERACCESS);
+	assert(tokens[2]->kind==ID);
+	
+	assert(tokens[3]->kind==EQ);
+
+	freeTokens(tokens, 4);
 
 	return true;
 }

@@ -5,6 +5,7 @@
 #include <inttypes.h>
 
 #include "tables/symtable.h"
+#include "../../ast/ast.h"
 
 /* this struct represents the context of transpilation.
  * it provides information about symbol tables, debug parameters,
@@ -21,6 +22,12 @@ struct Ctx {
 	
 	//symbol tables
 	struct ST* tables;
+	
+	//it is ugly, but this is the name
+	//of the current function pointer variable/arg
+	//to transpile the subroutine type in 
+	//C subroutine signatures
+	char currentFunctionPointerVarOrArgName[DEFAULT_STR_SIZE];
 };
 
 

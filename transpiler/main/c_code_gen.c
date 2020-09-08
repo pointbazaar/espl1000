@@ -4,8 +4,10 @@
 
 #include <assert.h> //for runtime assertions
 
+#include "../../ast/ast.h"
 #include "c_code_gen.h"
 #include "ctx.h"
+#include "flags.h"
 #include "code_gen_util.h"
 #include "../../util/util.h"
 #include "../../ast/free_ast.h"
@@ -229,9 +231,29 @@ void transpileStructMember(struct StructMember* m, struct Ctx* ctx){
 	
 	fprintf(ctx->file, "\t");
 	
+	bool isSubrType = false;
+	//is it a function pointer?
+	if(m->type->m1 != NULL){
+		if(m->type->m1->subrType != NULL){
+			isSubrType = true;
+			strncpy(
+				ctx->currentFunctionPointerVarOrArgName,
+				m->name,
+				DEFAULT_STR_SIZE
+			);
+		}
+	}
+	
 	transpileType(m->type, ctx);
 	
-	fprintf(ctx->file, " %s;\n", m->name);
+	if(!isSubrType){
+		//with C function pointers, the identifier of the 
+		//function pointer is between the types
+		//describing it
+		fprintf(ctx->file, " %s", m->name);
+	}
+	
+	fprintf(ctx->file, ";\n");
 }
 
 void transpileMethod(struct Method* m, struct Ctx* ctx){
@@ -397,13 +419,40 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 	}
 
 	indent(ctx);
+	
+	//if we assign a function pointer
+	bool isSubrType = false;
 
 	if(as->optType != NULL){
+		
+		//is it a function pointer?
+		if(as->optType->m1 != NULL){
+			
+			if(as->optType->m1->subrType != NULL){
+				
+				isSubrType = true;
+				
+				assert(as->var->simpleVar != NULL);
+				
+				strncpy(
+					ctx->currentFunctionPointerVarOrArgName,
+					
+					//we know that it is a simple
+					//variable (without index)because 
+					//structures and arrays, 
+					//would have no type
+					//definition in front,
+					//as they already have a known type
+					as->var->simpleVar->name,
+					DEFAULT_STR_SIZE
+				);
+			}
+		}
 		
 		transpileType(as->optType, ctx);
 		fprintf(ctx->file, " ");
 		
-	}else{
+	}else if(as->optType == NULL && as->var->count_memberAccessList == 0){
 		//find type via local variable symbol table
 		assert(ctx->tables->lvst != NULL);
 		
@@ -424,7 +473,14 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 		}
 	}
 	
-	transpileVariable(as->var, ctx);
+	if(!isSubrType){
+		//if it is a subroutine type,
+		//in C unfortunately
+		//the name of the variable is inbetween
+		//the types
+		transpileVariable(as->var, ctx);
+	}
+	
 	fprintf(ctx->file, " = ");
 	transpileExpr(as->expr, ctx);
 }
@@ -680,10 +736,13 @@ void transpileSubrType(struct SubrType* subrType, struct Ctx* ctx){
 	//return type
 	transpileType(subrType->returnType, ctx);
 
-	//TODO: i do not really understand how
+	//i do not really understand how
 	//this is written in C. 
 	//maybe trying some examples in C would help.
-	fprintf(ctx->file, "(*function_ptr) (");
+	
+	//function_ptr should be the name of the
+	//variable/argument that holds the function pointer
+	fprintf(ctx->file, "(*%s) (", ctx->currentFunctionPointerVarOrArgName);
 
 	//arguments
 	for(int i=0; i < subrType->count_argTypes; i++){
@@ -700,9 +759,25 @@ void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileDeclArg(...)\n"); }
 	
+	bool isSubrType = false;
+	//is it a function pointer?
+	if(da->type->m1 != NULL){
+		if(da->type->m1->subrType != NULL){
+			isSubrType = true;
+			strncpy(
+				ctx->currentFunctionPointerVarOrArgName,
+				da->name,
+				DEFAULT_STR_SIZE
+			);
+		}
+	}
+	
 	transpileType(da->type, ctx);
 
-	if(da->has_name){
+	if(da->has_name && !isSubrType){
+		//if it has a name, and is a subroutine type
+		//(function pointer), then the name
+		//is transpiled by transpileSubrType
 		fprintf(ctx->file, " %s", da->name);
 	}
 }

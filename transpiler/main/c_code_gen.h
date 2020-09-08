@@ -1,8 +1,8 @@
 #ifndef CCODEGEN
 #define CCODEGEN
 
-#include "../../ast/ast.h"
-#include "flags.h"
+struct AST_Whole_Program;
+struct Flags;
 
 bool transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Flags* flags);
 

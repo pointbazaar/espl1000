@@ -188,7 +188,7 @@ void lex_main_inner(
 		}while(  !final_state[state] );
 
 		if(debug){
-			printf("recognized a token or error\n");
+			printf("recognized a token\n");
 		}
 
 		unsigned int end=i;
@@ -202,7 +202,7 @@ void lex_main_inner(
 			break;
 		}
 
-		struct Token* tkn = (struct Token*)malloc(sizeof(struct Token));
+		struct Token* tkn = malloc(sizeof(struct Token));
 
 		tkn->kind=-1;
 		tkn->value_ptr="";
@@ -221,7 +221,7 @@ void lex_main_inner(
 			//NEWLINE
 			case S_NEWLINE_FINAL:
 				;
-				char* str = (char*)malloc(sizeof(char)*20);
+				char* str = malloc(sizeof(char)*20);
 				sprintf(str, "%d", line_no);
 				tkn->kind=LINE_NO;
 				tkn->value_ptr=str;
@@ -381,6 +381,7 @@ void lex_main_inner(
 			case S_STRUCTMEMBERACCESS_FINAL:
 				tkn->kind=STRUCTMEMBERACCESS;
 				tkn->value_ptr=".";
+				i--;
 				break;
 				
 			case S_RANGE_OP_FINAL:
@@ -466,6 +467,10 @@ void lex_main_inner(
 				free(final_state);
 				exit(1);
 				break;
+		}
+		
+		if(debug){
+			printf("recognized Token: (%d, '%s')\n", tkn->kind, tkn->value_ptr);
 		}
 
 		tokens[tokens_index++] = tkn;

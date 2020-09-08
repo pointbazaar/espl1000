@@ -428,6 +428,8 @@ void init_range_op(short** dfa){
 	//because it does not have it's own method
 	set_transitions_breaking(dfa, S_dot, S_STRUCTMEMBERACCESS_FINAL);
 	
+	set_transitions_letters(dfa, S_dot, S_STRUCTMEMBERACCESS_FINAL);
+	set_transitions_digits(dfa, S_dot, S_STRUCTMEMBERACCESS_FINAL);
 	dfa[S_dot]['.'] = S_RANGE_OP_FINAL;
 }
 
@@ -501,6 +503,9 @@ void set_transitions_breaking(short** dfa, int state, int state_result){
 	dfa[state][' ']=state_result;
 	dfa[state]['\n']=state_result;
 	dfa[state]['\t']=state_result;
+	
+	//carriage return
+	dfa[state]['\r']=state_result; 
 }
 
 void set_transitions_printable(short** dfa, int state, int state_result){
@@ -519,4 +524,7 @@ void set_transitions_abort_keyword(short** dfa, int state){
 	set_transitions_letters(dfa, state, S_IDENTIFIER);
 	set_transitions_digits(dfa, state, S_IDENTIFIER);
 	set_transitions_breaking(dfa, state, S_IDENTIFIER_FINAL);
+	
+	//not breaking for numbers, therefore separate
+	dfa[state]['.'] = S_IDENTIFIER_FINAL;
 }

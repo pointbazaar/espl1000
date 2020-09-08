@@ -1,24 +1,32 @@
 fn main ()~>PInt {
-	[PInt] arr = malloc(4*2);
+	len = 4;
+	[PInt] arr = malloc(4*len);
 
-	[PInt] arr2 = filter(arr,myfilter);	
+	arr[0] = 1;
+	arr[1] = 2;
+	arr[2] = 2;
+	arr[3] = 1;
 
-	printf("%d\n", arr2[0]);
-	printf("%d\n", arr2[1]);
+	[PInt] arr2 = filter(arr, len, myfilter);	
+	
+	for i in 0 .. len-1 {
+		printf("%d\n", arr2[i]);
+	}	
 
 	return 0;
 }
 fn myfilter (PInt item)->Bool {
 	return (item==2);	
 }
-fn filter ([PInt] arr, ( (PInt)->Bool ) myfilterr)->[PInt] {
-	[PInt] arr2 = malloc(4*2);
+fn filter ([PInt] arr, Int arrlen,  ( (PInt)->Bool ) myfilterr)->[PInt] {
+	[PInt] arr2 = malloc(4*arrlen);
 
 	PInt i=0;
-	while(i<2){
+	while(i < arrlen){
+		arr2[i] = 0;
 		if(myfilterr(arr[i])){
 			arr2[i]=arr[i];
-		}
+		} 
 		i=i+1;
 	}
 	return arr2;

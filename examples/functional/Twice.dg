@@ -1,8 +1,22 @@
 
+struct Simple {
+	((PInt) -> PInt)  member
+}
+
 fn main ()~>PInt {
+
 	printf("%d\n",subr(id));
-	printf(" ");
 	printf("%d\n",subr(twice));
+
+	((PInt) -> PInt) myfunction = id;
+
+	myfunction(3);
+
+	Simple s = newSimple();
+
+	s.member = myfunction;
+
+	delSimple(s);
 
 	return 0;
 }
