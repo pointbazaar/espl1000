@@ -28,12 +28,12 @@
      id="namedview929"
      showgrid="false"
      inkscape:zoom="0.53924603"
-     inkscape:cx="233.84696"
-     inkscape:cy="591.57086"
+     inkscape:cx="29.211235"
+     inkscape:cy="747.33921"
      inkscape:window-x="72"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
+     inkscape:current-layer="svg8" />
   <defs
      id="defs2">
     <marker
@@ -694,6 +694,13 @@
          y="482.46542"
          style="stroke-width:0.13009566"
          id="tspan1351">- transpiled Subroutines</tspan></text>
+    <rect
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.59999996;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect1368"
+       width="46.121506"
+       height="89.299034"
+       x="139.83644"
+       y="309.88657" />
   </g>
   <rect
      style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.26499999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -833,29 +840,29 @@
   <text
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:2.48652482px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.06216312"
-     x="113.31323"
+     x="111.71861"
      y="255.12169"
      id="text1005"><tspan
        sodipodi:role="line"
        id="tspan1003"
-       x="113.31323"
+       x="111.71861"
        y="255.12169"
        style="stroke-width:0.06216312">these 2 Tables</tspan><tspan
        sodipodi:role="line"
-       x="113.31323"
-       y="258.22983"
+       x="111.71861"
+       y="258.22986"
        style="stroke-width:0.06216312"
        id="tspan1007">can be created </tspan><tspan
        sodipodi:role="line"
-       x="113.31323"
-       y="261.33798"
+       x="111.71861"
+       y="261.33801"
        style="stroke-width:0.06216312"
        id="tspan1009">directly from the AST</tspan></text>
   <rect
      style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.26499999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      id="rect1011"
-     width="56.205074"
-     height="19.08197"
+     width="58.980637"
+     height="30.878103"
      x="133.22685"
      y="323.20236" />
   <text
@@ -873,5 +880,21 @@
        x="135.29614"
        y="338.69788"
        style="stroke-width:0.1589874"
-       id="tspan1017">Type Inference</tspan></text>
+       id="tspan1017">Type Inference</tspan><tspan
+       sodipodi:role="line"
+       x="135.29614"
+       y="346.64725"
+       style="stroke-width:0.1589874"
+       id="tspan1403">(typeinference.c)</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:4.20266724px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10506668"
+     x="142.25874"
+     y="230.96634"
+     id="text949-0"><tspan
+       sodipodi:role="line"
+       x="142.25874"
+       y="230.96634"
+       style="stroke-width:0.10506668"
+       id="tspan1399">Symbol Tables (ST)</tspan></text>
 </svg>
