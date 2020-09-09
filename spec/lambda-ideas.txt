@@ -1,0 +1,54 @@
+Now that there are function pointers (Variables with Subroutine Type)
+in SmallDragon, it would be very convenient to have Lambdas also.
+Below is a small use-case for lambdas. 
+Wanting to increment each element of an Array by 1,
+and storing the result in a different Array.
+It would consume multiple lines and be error-prone to do with a loop.
+//--------------------------------------------------
+
+fn map ([Int] arr, (Int) -> Int subr) -> [Int] {
+	
+	int l = 4;
+	[Int] res = malloc(4 *l);
+	
+	for i in 0 .. l-1 {
+		res[i] = subr(arr[i]);
+	}
+	
+	return res;
+}
+
+fn main () ~> Int {
+	
+	arr = map([1,2,3,4], (x) -> x+1);
+	
+	return 0;
+}
+
+//--------------------------------------------------
+
+Term ::= ... | Lambda
+
+Lambda ::= '(' Identifier* ')' '->' ( Expr | StmtBlock ) 
+
+//--------------------------------------------------
+
+SmallDragon would then have to give each lambda a name,
+and generate a C subroutine for it. 
+Then we can pass that lambda as a function pointer.
+
+With this approach however, we will not be able to use
+values from the scope the lambda is being used in.
+
+Later in a more advanced implementation, 
+these values could be stored in a struct, and be passed
+to the Lambda as an 'Environment'.
+
+However these values should be constants and read-only
+within the Lambda, so that the lambda retains some
+purity atleast.
+
+In SmallDragon it would not even be a "real" lambda
+due to there being the ability to have a StmtBlock
+as the implementation, or calling a function with 
+side effects.
