@@ -82,4 +82,8 @@ void freeRange(struct Range* range);
 
 void freeForStmt(struct ForStmt* fstmt);
 
+void freeSwitchStmt(struct SwitchStmt* sstmt);
+
+void freeCaseStmt(struct CaseStmt* cstmt);
+
 #endif

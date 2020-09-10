@@ -223,6 +223,9 @@ void freeStmt(struct Stmt* s) {
 		
 	} else if(s->m7 != NULL) {
 		freeForStmt(s->m7);
+		
+	} else if(s->m8 != NULL) {
+		freeSwitchStmt(s->m8);
 	}
 
 	free(s);
@@ -301,4 +304,23 @@ void freeForStmt(struct ForStmt* fstmt){
 	freeRange(fstmt->range);
 	freeStmtBlock(fstmt->block);
 	free(fstmt);
+}
+
+void freeSwitchStmt(struct SwitchStmt* s){
+	freeVariable(s->var);
+	for(int i=0; i < s->count_cases; i++){
+		freeCase(s->cases[i]);
+	}
+}
+
+void freeCaseStmt(struct CaseStmt* c){
+	freeStmtBlock(c->block);
+	
+	if(c->m1 != NULL){
+		freeBoolConst(c->m1);
+	}else if(c->m2 != NULL){
+		freeCharConst(c->m2);
+	}else if(c->m3 != NULL){
+		freeIntConst(c->m3);
+	}
 }

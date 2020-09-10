@@ -211,6 +211,7 @@ struct Stmt {
 	struct AssignStmt* m5;
 	struct BreakStmt* m6;
 	struct ForStmt* m7;
+	struct SwitchStmt* m8;
 };
 struct WhileStmt  {
 	struct Expr* condition;
