@@ -41,6 +41,8 @@ struct WhileStmt;
 struct LoopStmt;
 struct BreakStmt;
 struct ForStmt;
+struct SwitchStmt;
+struct CaseStmt;
 
 //typenodes
 struct Type;
@@ -174,6 +176,7 @@ struct Variable {
 	struct Variable** memberAccessList;
 	uint8_t count_memberAccessList;
 };
+//--------------------------------------
 struct AssignStmt {
 	struct Type* optType;	//may be NULL (optional)
 
@@ -224,6 +227,26 @@ struct ForStmt {
 };
 struct BreakStmt {
 	//empty
+};
+struct SwitchStmt{
+	struct Variable* var;
+	
+	unsigned int count_cases;
+	struct CaseStmt* cases;
+};
+struct CaseStmt{
+	
+	//cases must have constant values
+	//known at compile time
+	//(to build the jump table)
+	
+	//one of these will be != NULL
+	struct BoolConst* m1;
+	struct CharConst* m2;
+	struct IntConst* m3;
+	
+	//may be NULL
+	struct StmtBlock* block;
 };
 //-------------------------
 struct ArrayType {
