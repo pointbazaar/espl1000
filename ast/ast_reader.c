@@ -43,6 +43,8 @@ struct MethodCall* readMethodCall(FILE* file, bool debug);
 struct LoopStmt* readLoopStmt(FILE* file, bool debug);
 struct BreakStmt* readBreakStmt(FILE* file, bool debug);
 struct ForStmt* readForStmt(FILE* file, bool debug);
+struct SwitchStmt* readSwitchStmt(FILE* file, bool debug);
+struct CaseStmt* readCaseStmt(FILE* file, bool debug);
 
 //typenodes
 struct Type* readType(FILE* file, bool debug);
@@ -572,6 +574,7 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	b->m5 = NULL;
 	b->m6 = NULL;
 	b->m7 = NULL;
+	b->m8 = NULL;
 
 	switch(kind){
 		case 0: b->m0 = readLoopStmt(file, debug);   break;
@@ -582,6 +585,7 @@ struct Stmt* readStmt(FILE* file, bool debug){
 		case 5: b->m5 = readAssignStmt(file, debug); break;
 		case 6: b->m6 = readBreakStmt(file, debug);  break;
 		case 7: b->m7 = readForStmt(file, debug);  	 break;
+		case 8: b->m8 = readSwitchStmt(file, debug); break;
 		default:
 			printf("Error in readStmt\n");
 			free(b);
@@ -753,6 +757,68 @@ struct ForStmt* readForStmt(FILE* file, bool debug){
 	strncpy(res->indexName, indexName, DEFAULT_STR_SIZE);
 	res->range = readRange(file, debug);
 	res->block = readStmtBlock(file, debug);
+	
+	return res;
+}
+struct SwitchStmt* readSwitchStmt(FILE* file, bool debug){
+	
+	if(debug){ printf("readSwitchStmt(...)\n"); }
+	
+	struct SwitchStmt* res = smalloc(sizeof(struct SwitchStmt));
+	
+	res->var = readVariable(file, debug);
+	
+	int count;
+	fscanf(file, "%d\t", &count);
+	res->count_cases = count;
+	
+	res->cases = smalloc(sizeof(struct CaseStmt*)* (res->count_cases));
+	
+	for(int i=0; i < res->count_cases; i++){
+		
+		res->cases[i] = readCaseStmt(file, debug);
+	}
+	
+	return res;
+}
+struct CaseStmt* readCaseStmt(FILE* file, bool debug){
+	
+	if(debug){ printf("readCaseStmt(...)\n"); }
+	
+	int kind;
+	
+	if(fscanf(file, "Case\t%d\t", &kind) != 1){
+		printf("Error reading Case\n");
+		fclose(file);
+		exit(1);
+	}
+	
+	struct CaseStmt* res = smalloc(sizeof(struct CaseStmt));
+	
+	res->m1 = NULL;
+	res->m2 = NULL;
+	res->m3 = NULL;
+	res->block = NULL;
+	
+	switch(kind){
+		case 1: res->m1 = readBoolConst(file, debug); break;
+		case 2: res->m2 = readCharConst(file, debug); break;
+		case 3: res->m3 = readIntConst(file, debug); break;
+		default:
+			printf("Error in readCase\n");
+			free(res);
+			fclose(file);
+			exit(1);
+	}
+	
+	int hasBlock = 0;
+	
+	fscanf(file, "%d\t", &hasBlock);
+	
+	if(hasBlock == 1){
+		
+		res->block = readStmtBlock(file, debug);
+	}
 	
 	return res;
 }

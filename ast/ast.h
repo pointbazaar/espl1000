@@ -233,7 +233,7 @@ struct SwitchStmt{
 	struct Variable* var;
 	
 	unsigned int count_cases;
-	struct CaseStmt* cases;
+	struct CaseStmt** cases;
 };
 struct CaseStmt{
 	

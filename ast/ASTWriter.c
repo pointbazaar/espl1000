@@ -46,6 +46,8 @@ void writeMethodCall(struct MethodCall* m, 	FILE* file);
 void writeLoopStmt(struct LoopStmt* m, 		FILE* file);
 void writeBreakStmt(struct BreakStmt* m, 	FILE* file);
 void writeForStmt(struct ForStmt* m,	 	FILE* file);
+void writeSwitchStmt(struct SwitchStmt* m,	FILE* file);
+void writeCaseStmt(struct CaseStmt* m,		FILE* file);
 
 //typenodes
 void writeType(struct Type* m, 				FILE* file);
@@ -272,8 +274,9 @@ void writeStmt(struct Stmt* m, FILE* file){
 	if(m->m3 != NULL){ fprintf(file,"3\t"); writeIfStmt(m->m3,file);     }
 	if(m->m4 != NULL){ fprintf(file,"4\t"); writeRetStmt(m->m4,file);    }
 	if(m->m5 != NULL){ fprintf(file,"5\t"); writeAssignStmt(m->m5,file); }
-	if(m->m6 != NULL){ fprintf(file,"6\t"); writeBreakStmt(m->m6,file); }
-	if(m->m7 != NULL){ fprintf(file,"7\t"); writeForStmt(m->m7,file); }
+	if(m->m6 != NULL){ fprintf(file,"6\t"); writeBreakStmt(m->m6,file);  }
+	if(m->m7 != NULL){ fprintf(file,"7\t"); writeForStmt(m->m7,file);    }
+	if(m->m8 != NULL){ fprintf(file,"8\t"); writeSwitchStmt(m->m8,file); }
 }
 
 void writeIfStmt(struct IfStmt* m, FILE* file){
@@ -353,6 +356,47 @@ void writeForStmt(struct ForStmt* m, FILE* file){
 	writeRange(m->range, file);
 
 	writeStmtBlock(m->block, file);
+}
+void writeSwitchStmt(struct SwitchStmt* m,	FILE* file){
+	
+	fprintf(file, "SwitchStmt\t");
+	
+	writeVariable(m->var, file);
+	
+	fprintf(file, "%d\t", m->count_cases);
+	
+	for(int i=0; i < m->count_cases; i++){
+		
+		writeCaseStmt(m->cases[i], file);
+	}
+}
+void writeCaseStmt(struct CaseStmt* m,		FILE* file){
+	
+	int kind = 0;
+	if(m->m1 != NULL){ kind = 1; }
+	if(m->m2 != NULL){ kind = 2; }
+	if(m->m3 != NULL){ kind = 3; }
+	
+	fprintf(file, "CaseStmt\t%d\t", kind);
+	
+	switch(kind){
+		case 1:
+			writeBoolConst(m->m1, file);
+			break;
+		case 2:
+			writeCharConst(m->m2, file);
+			break;
+		case 3:
+			writeIntConst(m->m3, file);
+			break;
+	}
+	
+	fprintf(file, "%d\t", (m->block == NULL)?0:1);
+	
+	if(m->block != NULL){
+		
+		writeStmtBlock(m->block, file);
+	}
 }
 // --------- TYPENODES --------------
 void writeType(struct Type* m, FILE* file){

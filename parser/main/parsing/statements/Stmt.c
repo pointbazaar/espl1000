@@ -90,6 +90,7 @@ struct Stmt* initStmt(){
 	res->m5 = NULL;
 	res->m6 = NULL;
 	res->m7 = NULL;
+	res->m8 = NULL;
 	
 	return res;
 }

@@ -309,7 +309,7 @@ void freeForStmt(struct ForStmt* fstmt){
 void freeSwitchStmt(struct SwitchStmt* s){
 	freeVariable(s->var);
 	for(int i=0; i < s->count_cases; i++){
-		freeCase(s->cases[i]);
+		freeCaseStmt(s->cases[i]);
 	}
 }
 
