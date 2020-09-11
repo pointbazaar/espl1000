@@ -314,7 +314,9 @@ void freeSwitchStmt(struct SwitchStmt* s){
 }
 
 void freeCaseStmt(struct CaseStmt* c){
-	freeStmtBlock(c->block);
+	if(c->block != NULL){
+		freeStmtBlock(c->block);
+	}
 	
 	if(c->m1 != NULL){
 		freeBoolConst(c->m1);

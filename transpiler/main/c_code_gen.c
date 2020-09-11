@@ -546,8 +546,6 @@ void transpileForStmt(struct ForStmt* f, struct Ctx* ctx){
 }
 void transpileSwitchStmt(struct SwitchStmt* s, struct Ctx* ctx){
 	
-	//TODO: look at correct indentation
-	
 	indent(ctx);
 	fprintf(ctx->file, "switch (");
 	transpileVariable(s->var, ctx);
@@ -563,7 +561,6 @@ void transpileSwitchStmt(struct SwitchStmt* s, struct Ctx* ctx){
 	fprintf(ctx->file, "}\n");
 }
 void transpileCaseStmt(struct CaseStmt* s, struct Ctx* ctx){
-	//TODO: look at correct indentation
 	
 	indent(ctx);
 	fprintf(ctx->file, "case ");

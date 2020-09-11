@@ -778,6 +778,7 @@ struct SwitchStmt* readSwitchStmt(FILE* file, bool debug){
 	fscanf(file, "%d\t", &count);
 	res->count_cases = count;
 	
+	res->cases = NULL;
 	res->cases = smalloc(sizeof(struct CaseStmt*)* (res->count_cases));
 	
 	for(int i=0; i < res->count_cases; i++){
