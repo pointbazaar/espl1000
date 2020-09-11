@@ -10,6 +10,7 @@
 #include "MethodCall.h"
 #include "AssignStmt.h"
 #include "BreakStmt.h"
+#include "SwitchStmt.h"
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../../../token/token.h"
@@ -27,6 +28,7 @@ void stmt_make_if(struct Stmt* res, struct TokenList* copy, bool debug);
 void stmt_make_return(struct Stmt* res, struct TokenList* copy, bool debug);
 void stmt_make_for(struct Stmt* res, struct TokenList* copy, bool debug);
 void stmt_make_other(struct Stmt* res, struct TokenList* copy, bool debug);
+void stmt_make_switch(struct Stmt* res, struct TokenList* copy, bool debug);
 // ---------------------------
 
 struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
@@ -61,6 +63,9 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 			break;
 		case RETURN:
 			stmt_make_return(res, copy, debug);
+			break;
+		case SWITCH:
+			stmt_make_switch(res, copy, debug);
 			break;
 		default:
 			stmt_make_other(res, copy, debug);
@@ -211,5 +216,18 @@ void stmt_make_other(struct Stmt* res, struct TokenList* copy, bool debug){
 			
 			exit(1);
 		}
+	}
+}
+
+void stmt_make_switch(struct Stmt* res, struct TokenList* copy, bool debug){
+	
+	res->m8 = makeSwitchStmt(copy,debug);
+	if(res->m8 == NULL){
+		printf("expected switch stmt, but was:\n");
+		list_print(copy);
+		
+		freeTokenListShallow(copy);
+		free(res);
+		exit(1);
 	}
 }

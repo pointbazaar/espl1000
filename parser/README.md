@@ -54,6 +54,7 @@ statement ::=   ( methodCall ';' )
 		| loopStatement
 		| breakStatement
 		| forStatement
+		| switchStmt
 
 
 // -------- STATEMENTS --------------------
@@ -74,6 +75,9 @@ ifStatement ::= 'if' expression stmtblock
 returnStatement ::= 'return' expression? ';'
 
 assignmentStatement ::= Type? variable '=' expression ';'
+
+switchStmt ::= 'switch' variable '{' CaseStmt* '}'
+CaseStmt ::= 'case' (BoolConst | IntConst | CharConst) StmtBlock?
 
 // --- END STATEMENTS ----------------------
 
