@@ -50,6 +50,16 @@ fn main () ~> Int {
 		return -3;
 	}
 
+	switch a {
+		
+		case -1 {}
+
+		case 0
+		case 1 {
+			a = 2;
+		}
+	}
+
 	return subr();
 }
 

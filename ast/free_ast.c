@@ -311,6 +311,8 @@ void freeSwitchStmt(struct SwitchStmt* s){
 	for(int i=0; i < s->count_cases; i++){
 		freeCaseStmt(s->cases[i]);
 	}
+	free(s->cases);
+	free(s);
 }
 
 void freeCaseStmt(struct CaseStmt* c){
@@ -325,4 +327,5 @@ void freeCaseStmt(struct CaseStmt* c){
 	}else if(c->m3 != NULL){
 		freeIntConst(c->m3);
 	}
+	free(c);
 }
