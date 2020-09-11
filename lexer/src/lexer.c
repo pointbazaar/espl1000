@@ -433,6 +433,36 @@ void init_range_op(short** dfa){
 	dfa[S_dot]['.'] = S_RANGE_OP_FINAL;
 }
 
+void init_switch(short** dfa){
+	
+	
+	set_transitions_abort_keyword(dfa, S_sw);
+	set_transitions_abort_keyword(dfa, S_swi);
+	set_transitions_abort_keyword(dfa, S_swit);
+	set_transitions_abort_keyword(dfa, S_switc);
+	set_transitions_abort_keyword(dfa, S_switch);
+	
+	dfa[S_s]['w']=S_sw;
+	dfa[S_sw]['i']=S_swi;
+	dfa[S_swi]['t']=S_swit;
+	dfa[S_swit]['c']=S_switc;
+	dfa[S_switc]['h']=S_switch;
+	dfa[S_switch][' ']=S_switch_FINAL;
+}
+
+void init_case(short** dfa){
+	
+	set_transitions_abort_keyword(dfa, S_c);
+	set_transitions_abort_keyword(dfa, S_ca);
+	set_transitions_abort_keyword(dfa, S_cas);
+	set_transitions_abort_keyword(dfa, S_case);
+	
+	dfa[S_c]['a']=S_ca;
+	dfa[S_ca]['s']=S_cas;
+	dfa[S_cas]['e']=S_case;
+	dfa[S_case][' ']=S_case_FINAL;
+}
+
 // ---------------------------------------------------------
 
 void set_transitions_lowercase(short** dfa, int state, short state_result){

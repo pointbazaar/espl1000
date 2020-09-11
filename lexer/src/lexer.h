@@ -36,6 +36,9 @@ void init_for(short** dfa);
 void init_in(short** dfa);
 void init_range_op(short** dfa);
 
+void init_switch(short** dfa);
+void init_case(short** dfa);
+
 //to set transitions for a state to another state in bulk
 //(for some classes of chars)
 void set_transitions_lowercase(short** dfa, int state, short state_result);

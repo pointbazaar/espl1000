@@ -200,7 +200,23 @@
 //'..'
 #define S_RANGE_OP_FINAL	156
 
-//so we set n_states to be 150 or similar, to
+//TOKEN: switch
+//S_s is already defined somewhere
+#define S_sw			157
+#define S_swi			158
+#define S_swit			159
+#define S_switc			160
+#define S_switch		161
+#define S_switch_FINAL	162
+
+//TOKEN: case
+#define S_c				163
+#define S_ca			164
+#define S_cas			165
+#define S_case			166
+#define S_case_FINAL	167
+
+//so we set n_states to be sufficient, to
 //have space for future states also
 
 #endif

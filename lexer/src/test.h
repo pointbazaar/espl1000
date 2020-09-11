@@ -100,4 +100,6 @@ bool test_rangeop_2();
 
 bool test_member_access();
 
+bool test_switch_case();
+
 #endif

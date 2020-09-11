@@ -48,5 +48,7 @@
 #define FOR 	40
 #define IN 		41
 #define RANGEOP 42
+#define SWITCH	43
+#define CASE	44
 
 #endif

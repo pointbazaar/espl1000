@@ -131,6 +131,9 @@ int test_all(bool debug1) {
 	
 	pass+=test_member_access();
 	count+=1;
+	
+	pass+=test_switch_case();
+	count+=1;
 
 	printf("%i of %i tests passed\n",pass,count);
 
@@ -1298,6 +1301,26 @@ bool test_member_access(){
 	assert(tokens[3]->kind==EQ);
 
 	freeTokens(tokens, 4);
+
+	return true;
+}
+
+bool test_switch_case(){
+	
+	if(debug) { printf("test_switch_case\n"); }
+
+	char* str = "switch x { case 3  ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+	
+	assert(tokens[0]->kind==SWITCH);
+	assert(tokens[1]->kind==ID);
+	assert(tokens[2]->kind==LCURLY);
+	
+	assert(tokens[3]->kind==CASE);
+	assert(tokens[4]->kind==INTEGER);
+
+	freeTokens(tokens, 5);
 
 	return true;
 }

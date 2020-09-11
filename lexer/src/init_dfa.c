@@ -49,6 +49,9 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	init_for(dfa);
 	init_in(dfa);
 	init_range_op(dfa);
+	
+	init_switch(dfa);
+	init_case(dfa);
 
 	//SOME STARTING TRANSITIONS
 
@@ -65,6 +68,8 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	dfa[S_START]['r']=S_R;
 	dfa[S_START]['l']=S_l;
 	dfa[S_START]['e']=S_e;
+	dfa[S_START]['c']=S_c;
+	dfa[S_START]['s']=S_s;
 
 	dfa[S_START]['{']=S_LCURLY_FINAL;
 	dfa[S_START]['}']=S_RCURLY_FINAL;
@@ -162,4 +167,7 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	final_state[S_for_FINAL]=true;
 	final_state[S_in_FINAL]=true;
 	final_state[S_RANGE_OP_FINAL]=true;
+	
+	final_state[S_switch_FINAL]=true;
+	final_state[S_case_FINAL]=true;
 }
