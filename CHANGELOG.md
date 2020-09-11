@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
+
+## [0.0.5] - 2020-09-12
 - Added '..' (the Range Operator) which can be used to interpolate between Integers
 - Added a For-style Statement for iterating, e.g. 'for i in 0..10 { /*do stuff*/ }'
 - Added Support for "functional style" Programming by transpiling to C function pointers 
