@@ -565,27 +565,18 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	}
 	
 	struct Stmt* b = smalloc(sizeof(struct Stmt));
-	
-	b->m0 = NULL;
-	b->m1 = NULL;
-	b->m2 = NULL;
-	b->m3 = NULL;
-	b->m4 = NULL;
-	b->m5 = NULL;
-	b->m6 = NULL;
-	b->m7 = NULL;
-	b->m8 = NULL;
+	b->kind = kind;
 
 	switch(kind){
-		case 0: b->m0 = readLoopStmt(file, debug);   break;
-		case 1: b->m1 = readMethodCall(file, debug); break;
-		case 2: b->m2 = readWhileStmt(file, debug);  break;
-		case 3: b->m3 = readIfStmt(file, debug);     break;
-		case 4: b->m4 = readRetStmt(file, debug);    break;
-		case 5: b->m5 = readAssignStmt(file, debug); break;
-		case 6: b->m6 = readBreakStmt(file, debug);  break;
-		case 7: b->m7 = readForStmt(file, debug);  	 break;
-		case 8: b->m8 = readSwitchStmt(file, debug); break;
+		case 0: b->ptr.m0 = readLoopStmt(file, debug);   break;
+		case 1: b->ptr.m1 = readMethodCall(file, debug); break;
+		case 2: b->ptr.m2 = readWhileStmt(file, debug);  break;
+		case 3: b->ptr.m3 = readIfStmt(file, debug);     break;
+		case 4: b->ptr.m4 = readRetStmt(file, debug);    break;
+		case 5: b->ptr.m5 = readAssignStmt(file, debug); break;
+		case 6: b->ptr.m6 = readBreakStmt(file, debug);  break;
+		case 7: b->ptr.m7 = readForStmt(file, debug);  	 break;
+		case 8: b->ptr.m8 = readSwitchStmt(file, debug); break;
 		default:
 			printf("Error in readStmt\n");
 			free(b);

@@ -268,15 +268,19 @@ void writeStmt(struct Stmt* m, FILE* file){
 
 	//the reader has to know which type it is,
 	//we can print a small number
-	if(m->m0 != NULL){ fprintf(file,"0\t"); writeLoopStmt(m->m0, file);  }
-	if(m->m1 != NULL){ fprintf(file,"1\t"); writeMethodCall(m->m1,file); }
-	if(m->m2 != NULL){ fprintf(file,"2\t"); writeWhileStmt(m->m2,file);  }
-	if(m->m3 != NULL){ fprintf(file,"3\t"); writeIfStmt(m->m3,file);     }
-	if(m->m4 != NULL){ fprintf(file,"4\t"); writeRetStmt(m->m4,file);    }
-	if(m->m5 != NULL){ fprintf(file,"5\t"); writeAssignStmt(m->m5,file); }
-	if(m->m6 != NULL){ fprintf(file,"6\t"); writeBreakStmt(m->m6,file);  }
-	if(m->m7 != NULL){ fprintf(file,"7\t"); writeForStmt(m->m7,file);    }
-	if(m->m8 != NULL){ fprintf(file,"8\t"); writeSwitchStmt(m->m8,file); }
+	fprintf(file,"%d\t", m->kind);
+	
+	switch(m->kind){
+		case 0: { writeLoopStmt(m->ptr.m0, file);  } break;
+		case 1: { writeMethodCall(m->ptr.m1,file); } break;
+		case 2: { writeWhileStmt(m->ptr.m2,file);  } break;
+		case 3: { writeIfStmt(m->ptr.m3,file);     } break;
+		case 4: { writeRetStmt(m->ptr.m4,file);    } break;
+		case 5: { writeAssignStmt(m->ptr.m5,file); } break;
+		case 6: { writeBreakStmt(m->ptr.m6,file);  } break;
+		case 7: { writeForStmt(m->ptr.m7,file);    } break;
+		case 8: { writeSwitchStmt(m->ptr.m8,file); } break;
+	}
 }
 
 void writeIfStmt(struct IfStmt* m, FILE* file){

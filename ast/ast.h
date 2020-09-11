@@ -202,16 +202,22 @@ struct RetStmt{
 	struct Expr* returnValue;
 };
 struct Stmt {
-	//only one of those will be != NULL
-	struct LoopStmt* m0;
-	struct MethodCall* m1;
-	struct WhileStmt* m2;
-	struct IfStmt* m3;
-	struct RetStmt* m4;
-	struct AssignStmt* m5;
-	struct BreakStmt* m6;
-	struct ForStmt* m7;
-	struct SwitchStmt* m8;
+	//0-based
+	uint8_t kind;
+	
+	//only one of those will be present,
+	//'kind' tells us which
+	union myptr {
+		struct LoopStmt* m0;
+		struct MethodCall* m1;
+		struct WhileStmt* m2;
+		struct IfStmt* m3;
+		struct RetStmt* m4;
+		struct AssignStmt* m5;
+		struct BreakStmt* m6;
+		struct ForStmt* m7;
+		struct SwitchStmt* m8;
+	} ptr;
 };
 struct WhileStmt  {
 	struct Expr* condition;

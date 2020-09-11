@@ -200,32 +200,42 @@ void freeRetStmt(struct RetStmt* rs) {
 
 void freeStmt(struct Stmt* s) {
 
-	if(s->m0 != NULL) {
-		freeLoopStmt(s->m0);
-
-	} else if(s->m1 != NULL) {
-		freeMethodCall(s->m1);
-
-	} else if(s->m2 != NULL) {
-		freeWhileStmt(s->m2);
-
-	} else if(s->m3 != NULL) {
-		freeIfStmt(s->m3);
-
-	} else if(s->m4 != NULL) {
-		freeRetStmt(s->m4);
-
-	} else if(s->m5 != NULL) {
-		freeAssignStmt(s->m5);
+	switch(s->kind){
 		
-	} else if(s->m6 != NULL) {
-		freeBreakStmt(s->m6);
+		case 0:
+			freeLoopStmt(s->ptr.m0);
+			break;
+		case 1:
+			freeMethodCall(s->ptr.m1);
+			break;
+
+		case 2:
+			freeWhileStmt(s->ptr.m2);
+			break;
+
+		case 3:
+			freeIfStmt(s->ptr.m3);
+			break;
+
+		case 4:
+			freeRetStmt(s->ptr.m4);
+			break;
+
+		case 5:
+			freeAssignStmt(s->ptr.m5);
+			break;
 		
-	} else if(s->m7 != NULL) {
-		freeForStmt(s->m7);
+		case 6:
+			freeBreakStmt(s->ptr.m6);
+			break;
 		
-	} else if(s->m8 != NULL) {
-		freeSwitchStmt(s->m8);
+		case 7:
+			freeForStmt(s->ptr.m7);
+			break;
+		
+		case 8:
+			freeSwitchStmt(s->ptr.m8);
+			break;
 	}
 
 	free(s);

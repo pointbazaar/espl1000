@@ -52,6 +52,16 @@ void discoverLVAssignStmt(
 	struct AssignStmt* a,
 	bool debug
 );
+void discoverLVSwitchStmt(
+	struct ST* st, 
+	struct SwitchStmt* a,
+	bool debug
+);
+void discoverLVCaseStmt(
+	struct ST* st, 
+	struct CaseStmt* c, 
+	bool debug
+);
 // --------------------------------------------------------
 //to add a row to the local variable symbol table
 //the lvst works as a set regarding the 'name' of the local variable
@@ -222,16 +232,31 @@ void discoverLVStmt(
 ){
 	if(debug){ printf("discoverLVStmt\n"); }
 	
-	if(stmt->m0 != NULL){
-		discoverLVLoopStmt(st, stmt->m0, debug);
-	}else if(stmt->m2 != NULL){
-		discoverLVWhileStmt(st, stmt->m2, debug);
-	}else if(stmt->m3 != NULL){
-		discoverLVIfStmt(st, stmt->m3, debug);
-	}else if(stmt->m5 != NULL){
-		discoverLVAssignStmt(st, stmt->m5, debug);
-	}else if(stmt->m7 != NULL){
-		discoverLVForStmt(st, stmt->m7, debug);
+	switch(stmt->kind){
+		
+		case 0:
+			discoverLVLoopStmt(st, stmt->ptr.m0, debug);
+			break;
+		case 2:
+			discoverLVWhileStmt(st, stmt->ptr.m2, debug);
+			break;
+		case 3:
+			discoverLVIfStmt(st, stmt->ptr.m3, debug);
+			break;
+		case 5:
+			discoverLVAssignStmt(st, stmt->ptr.m5, debug);
+			break;
+		case 7:
+			discoverLVForStmt(st, stmt->ptr.m7, debug);
+			break;
+		case 8:
+			discoverLVSwitchStmt(st, stmt->ptr.m8, debug);
+			break;
+		default:
+			//it is one of the stmt types
+			//where there are no declarations inside
+			//or simply unconsidered
+			break;
 	}
 }
 
@@ -311,7 +336,29 @@ void discoverLVAssignStmt(
 	
 	lvst_add(st->lvst, line, debug);
 }
-
+void discoverLVSwitchStmt(
+	struct ST* st, 
+	struct SwitchStmt* s,
+	bool debug
+){
+	if(debug){ printf("discoverLVSwitchStmt\n"); }
+	
+	for(int i=0; i < s->count_cases; i++){
+		discoverLVCaseStmt(st, s->cases[i], debug);
+	}
+}
+void discoverLVCaseStmt(
+	struct ST* st, 
+	struct CaseStmt* c, 
+	bool debug
+){
+	if(debug){ printf("discoverLVCaseStmt\n"); }
+	
+	if(c->block != NULL){
+			discoverLVStmtBlock(st, c->block, debug);
+	}
+}
+//----------------------------------
 void lvst_print(struct LVST* lvst){
 	//print LVST
 	printf("Local Variable Symbol Table (LVST)\n");

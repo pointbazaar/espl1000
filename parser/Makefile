@@ -4,7 +4,6 @@ CALL := gcc $(FLAGS)
 CALL2 := $(CALL) -c 
 
 OBJS_UTIL := build/ASTWriter.o \
-	build/ast_reader.o \
 	build/util.o \
 	build/free_ast.o
 
@@ -87,7 +86,6 @@ OBJS := $(OBJS_MAIN) $(OBJS_TEST) $(OBJS_UTIL)
 AST_DEPS := ../ast/ast.h \
 	../util/util.h \
 	../ast/ASTWriter.h \
-	../ast/ast_reader.h \
 	../ast/free_ast.h
 
 #dependencies usually found in all AST-related parsing

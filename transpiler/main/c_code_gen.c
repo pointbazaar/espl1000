@@ -312,44 +312,56 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileStmt(...)\n"); }
 
-	if(s->m0 != NULL){
-		transpileLoopStmt(s->m0, ctx);
+	switch(s->kind){
 		
-	}else if(s->m1 != NULL){
-		indent(ctx);
-		transpileMethodCall(s->m1, ctx);
-		fprintf(ctx->file, ";");
+		case 0:
+			transpileLoopStmt(s->ptr.m0, ctx);
+			break;
 		
-	}else if(s->m2 != NULL){
-		transpileWhileStmt(s->m2, ctx);
+		case 1:
+			indent(ctx);
+			transpileMethodCall(s->ptr.m1, ctx);
+			fprintf(ctx->file, ";");
+			break;
 		
-	}else if(s->m3 != NULL){
-		transpileIfStmt(s->m3, ctx);
+		case 2:
+			transpileWhileStmt(s->ptr.m2, ctx);
+			break;
 		
-	}else if(s->m4 != NULL){
-		transpileRetStmt(s->m4, ctx);
-		fprintf(ctx->file, ";");
+		case 3:
+			transpileIfStmt(s->ptr.m3, ctx);
+			break;
 		
-	}else if(s->m5 != NULL){
-		transpileAssignStmt(s->m5, ctx);
-		fprintf(ctx->file, ";");
+		case 4:
+			transpileRetStmt(s->ptr.m4, ctx);
+			fprintf(ctx->file, ";");
+			break;
 		
-	}else if(s->m6 != NULL){
-		transpileBreakStmt(s->m6, ctx);
+		case 5:
+			transpileAssignStmt(s->ptr.m5, ctx);
+			fprintf(ctx->file, ";");
+			break;
 		
-	}else if(s->m7 != NULL){
-		transpileForStmt(s->m7, ctx);
+		case 6:
+			transpileBreakStmt(s->ptr.m6, ctx);
+			break;
 		
-	}else if(s->m8 != NULL){
-		transpileSwitchStmt(s->m8, ctx);	
+		case 7:
+			transpileForStmt(s->ptr.m7, ctx);
+			break;
 		
-	}else{
-		printf("Error in transpileStmt\n");
-		//still leaking memory, but less than before.
-		//Due to includes lacking, not everything is freed here
-		free(s);
-		free(ctx);
-		exit(1);
+		case 8:
+			transpileSwitchStmt(s->ptr.m8, ctx);	
+			break;
+		
+		default:
+			printf("Error in transpileStmt\n");
+			//still leaking memory, but less than before.
+			//Due to includes lacking, not everything is freed here
+			free(s);
+			free(ctx);
+			exit(1);
+			break;
 	}
 	fprintf(ctx->file, "\n");
 }
