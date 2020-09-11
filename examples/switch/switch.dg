@@ -1,0 +1,19 @@
+
+fn main () ~> Int {
+
+
+	x = 3;
+
+	switch x {
+
+		case 0 { return 3; }
+
+		case 1
+		case 2
+		case 3 {
+			return 2;
+		}
+	}
+
+	return 0;
+}

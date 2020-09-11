@@ -764,6 +764,12 @@ struct SwitchStmt* readSwitchStmt(FILE* file, bool debug){
 	
 	if(debug){ printf("readSwitchStmt(...)\n"); }
 	
+	if(fscanf(file, "SwitchStmt\t") == EOF){
+		printf("Error reading SwitchStmt\n");
+		fclose(file);
+		exit(1);
+	}
+	
 	struct SwitchStmt* res = smalloc(sizeof(struct SwitchStmt));
 	
 	res->var = readVariable(file, debug);
@@ -787,7 +793,7 @@ struct CaseStmt* readCaseStmt(FILE* file, bool debug){
 	
 	int kind;
 	
-	if(fscanf(file, "Case\t%d\t", &kind) != 1){
+	if(fscanf(file, "CaseStmt\t%d\t", &kind) != 1){
 		printf("Error reading Case\n");
 		fclose(file);
 		exit(1);

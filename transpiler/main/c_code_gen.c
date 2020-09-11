@@ -48,6 +48,8 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx);
 void transpileLoopStmt(struct LoopStmt* ls, struct Ctx* ctx);
 void transpileBreakStmt(struct BreakStmt* ls, struct Ctx* ctx);
 void transpileForStmt(struct ForStmt* f, struct Ctx* ctx);
+void transpileSwitchStmt(struct SwitchStmt* s, struct Ctx* ctx);
+void transpileCaseStmt(struct CaseStmt* s, struct Ctx* ctx);
 // --------------------
 void transpileType(struct Type* t, struct Ctx* ctx);
 void transpileVariable(struct Variable* var, struct Ctx* ctx);
@@ -338,6 +340,9 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 	}else if(s->m7 != NULL){
 		transpileForStmt(s->m7, ctx);
 		
+	}else if(s->m8 != NULL){
+		transpileSwitchStmt(s->m8, ctx);	
+		
 	}else{
 		printf("Error in transpileStmt\n");
 		//still leaking memory, but less than before.
@@ -539,7 +544,48 @@ void transpileForStmt(struct ForStmt* f, struct Ctx* ctx){
 
 	transpileStmtBlock(f->block, ctx);
 }
-
+void transpileSwitchStmt(struct SwitchStmt* s, struct Ctx* ctx){
+	
+	//TODO: look at correct indentation
+	
+	indent(ctx);
+	fprintf(ctx->file, "switch (");
+	transpileVariable(s->var, ctx);
+	fprintf(ctx->file, ") {\n");
+	
+	(ctx->indentLevel) += 1;
+	for(int i=0; i < s->count_cases; i++){
+		transpileCaseStmt(s->cases[i], ctx);
+	}
+	(ctx->indentLevel) -= 1;
+	
+	indent(ctx);
+	fprintf(ctx->file, "}\n");
+}
+void transpileCaseStmt(struct CaseStmt* s, struct Ctx* ctx){
+	//TODO: look at correct indentation
+	
+	indent(ctx);
+	fprintf(ctx->file, "case ");
+	if(s->m1 != NULL){
+		fprintf(ctx->file, "%s", (s->m1->value)?"true":"false");
+	}else if(s->m2 != NULL){
+		fprintf(ctx->file, "'%c'", s->m2->value);
+	}else if(s->m3 != NULL){
+		fprintf(ctx->file, "%d", s->m3->value);
+	}else{
+		printf("ERROR\n");
+		exit(1);
+	}
+	fprintf(ctx->file, ":\n");
+	
+	if(s->block != NULL){
+		indent(ctx);
+		transpileStmtBlock(s->block, ctx);
+		indent(ctx);
+		fprintf(ctx->file, "break;\n");
+	}
+}
 //-----------------------------------------------
 void transpileType(struct Type* t, struct Ctx* ctx){
 	
