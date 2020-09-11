@@ -26,6 +26,8 @@
 #include "astnodes/TermTest.h"
 #include "astnodes/RangeTest.h"
 #include "astnodes/ForStmtTest.h"
+#include "astnodes/SwitchStmtTest.h"
+#include "astnodes/CaseStmtTest.h"
 
 #include "commandline/TokenListTest.h"
 
@@ -116,6 +118,9 @@ bool test_all_inner(bool debug) {
 		printf("suit_range failed\n");
 		return false;
 	}
+	
+	test_switch(debug);
+	test_parser_case_stmt(debug);
 
     printf("Parser: passed all Test Suites\n");
 
