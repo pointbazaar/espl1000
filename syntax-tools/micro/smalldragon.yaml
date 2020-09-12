@@ -1,17 +1,16 @@
-filetype: dragon
+filetype: smalldragon
 detect:
     filename: "\\.dg$"
 
 rules:
+    - identifier: "\\b[a-z][A-Za-z0-9]*\\b"
+
     #types identifiers. all types start with an uppercase letter
     - type: "\\b[A-Z][A-Za-z0-9]*\\b"
 
-    - statement: "\\b(return)\\b"
-    - statement.control: "\\b(if|else|while|loop)\\b"
-
-    - special: "\\b(fn|struct)\\b"
-
-    - identifier: "\\b[a-z][A-Za-z0-9]*\\b"
+    - statement: "\\b(return|break|case)\\b"
+    - statement: "\\b(if|else|while|loop|for|switch)\\b"
+    - statement: "\\b(fn|struct)\\b"
 
     - symbol.brackets: "(\\{|\\})"
     - symbol.brackets: "(\\(|\\))"
