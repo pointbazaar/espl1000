@@ -16,7 +16,7 @@ hi def link basicBool Boolean
 hi def link Braces Delimiter
 hi def link Parens Delimiter
 
-"hi def link basicIdentifier Identifier
+hi def link basicIdentifier Identifier
 hi def link basicType Type
 hi def link basicType2 Type
 
