@@ -8,7 +8,6 @@ hi def link multilineComment Comment
 
 hi def link basicLanguageKeywords Statement
 
-hi def link basicType Type
 
 hi def link basicNumber Constant
 hi def link basicString Constant
@@ -17,6 +16,8 @@ hi def link basicBool Boolean
 hi def link Braces Delimiter
 hi def link Parens Delimiter
 
-hi def link basicIdentifier Identifier
+"hi def link basicIdentifier Identifier
+hi def link basicType Type
+hi def link basicType2 Type
 
 hi def link basicOperator Operator
