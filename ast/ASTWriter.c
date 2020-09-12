@@ -202,25 +202,36 @@ void writeTerm(struct Term* m, FILE* file){
 
 	fprintf(file, "Term\t");
 
-	if(m->m1 != NULL){ 
-		fprintf(file,"1\t"); writeBoolConst(m->m1,file);
-	}else if(m->m2 != NULL){ 
-		fprintf(file,"2\t"); writeIntConst(m->m2,file); 
-	}else if(m->m3 != NULL){ 
-		fprintf(file,"3\t"); writeCharConst(m->m3,file); 
-	}else if(m->m4 != NULL){ 
-		fprintf(file,"4\t"); writeMethodCall(m->m4,file); 
-	}else if(m->m5 != NULL){ 
-		fprintf(file,"5\t"); writeExpr(m->m5,file); 
-	}else if(m->m6 != NULL){ 
-		fprintf(file,"6\t"); writeVariable(m->m6,file); 
-	}else if(m->m7 != NULL){
-		fprintf(file,"7\t"); writeFloatConst(m->m7,file); 
-	}else if(m->m8 != NULL){
-		fprintf(file, "8\t"); writeStringConst(m->m8, file);
-	}else{
-		printf("Error in writeTerm(...)\n");
-		exit(1);
+	fprintf(file,"%d\t", m->kind);
+
+	switch(m->kind){
+		case 1:
+			writeBoolConst(m->ptr.m1,file);
+			break;
+		case 2:
+			writeIntConst(m->ptr.m2,file); 
+			break;
+		case 3:
+			writeCharConst(m->ptr.m3,file); 
+			break;
+		case 4:
+			writeMethodCall(m->ptr.m4,file); 
+			break;
+		case 5:
+			writeExpr(m->ptr.m5,file); 
+			break;
+		case 6:
+			writeVariable(m->ptr.m6,file); 
+			break;
+		case 7:
+			writeFloatConst(m->ptr.m7,file); 
+			break;
+		case 8:
+			writeStringConst(m->ptr.m8, file);
+			break;
+		default:
+			printf("Error in writeTerm(...)\n");
+			exit(1);
 	}
 }
 void writeUnOpTerm(struct UnOpTerm* t,  	FILE* file){

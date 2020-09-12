@@ -26,7 +26,7 @@ int expr_test_simple_expression(bool debug) {
 
 	if(expr->term1 == NULL){return 0;}
 
-	bool a1 = expr->term1->term->m2->value == 4;
+	bool a1 = expr->term1->term->ptr.m2->value == 4;
 	
 	freeTokenList(list);
 	freeExpr(expr);
@@ -47,11 +47,11 @@ int expr_test_variable_name_expression(bool debug) {
 
 	if(expr == NULL){return 0;}
 
-	if(expr->term1->term->m6 == NULL){return 0;}
+	if(expr->term1->term->ptr.m6 == NULL){return 0;}
 
-	if(expr->term1->term->m6->simpleVar == NULL){return 0;}
+	if(expr->term1->term->ptr.m6->simpleVar == NULL){return 0;}
 
-	bool a1 = strcmp(expr->term1->term->m6->simpleVar->name, "x") == 0;
+	bool a1 = strcmp(expr->term1->term->ptr.m6->simpleVar->name, "x") == 0;
 	
 	freeTokenList(list);
 	freeExpr(expr);
@@ -114,10 +114,10 @@ int expr_test_comparison(bool debug){
 
 	//assert about the terms
 
-	struct Variable* v = term1->m6;
+	struct Variable* v = term1->ptr.m6;
 	if(v == NULL){return 0;}
 
-	struct IntConst* ic = term2->m2;
+	struct IntConst* ic = term2->ptr.m2;
 	if(ic == NULL){return 0;}
 
 	bool a2 = ic->value == 5;

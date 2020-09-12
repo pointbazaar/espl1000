@@ -160,15 +160,21 @@ struct UnOpTerm{
 	struct Term* term;
 };
 struct Term{
-	//only one of these may be != NULL
-	struct BoolConst* m1;
-	struct IntConst* m2;
-	struct CharConst* m3;
-	struct MethodCall* m4;
-	struct Expr* m5;
-	struct Variable* m6;
-	struct FloatConst* m7;
-	struct StringConst* m8;
+	
+	// = mX where x is from m1 ... m8 or such
+	uint8_t kind;
+	//only one of these is present,
+	//check 'kind' for which it is.
+	union myptr2 {
+		struct BoolConst* m1;
+		struct IntConst* m2;
+		struct CharConst* m3;
+		struct MethodCall* m4;
+		struct Expr* m5;
+		struct Variable* m6;
+		struct FloatConst* m7;
+		struct StringConst* m8;
+	} ptr;
 };
 struct Variable {
 	struct SimpleVar* simpleVar;

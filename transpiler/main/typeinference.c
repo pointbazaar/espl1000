@@ -81,24 +81,28 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr){
 
 struct Type* inferTypeTerm(struct ST* st, struct Term* t){
 	
-	if(t->m1 != NULL){ return typeFromStr(st, "Bool"); }
+	switch(t->kind){
+		case 1: return typeFromStr(st, "Bool"); 
 	
-	if(t->m2 != NULL){ return typeFromStr(st, "Int"); }
+		case 2: return typeFromStr(st, "Int"); 
+		
+		case 3: return typeFromStr(st, "Char"); 
+		
+		case 4: return inferTypeMethodCall(st, t->ptr.m4); 
+		
+		case 5: return inferTypeExpr(st, t->ptr.m5); 
+		
+		case 6: return inferTypeVariable(st, t->ptr.m6); 
+		
+		case 7: return typeFromStr(st, "Float"); 
+		
+		case 8: return typeFromStr(st, "String"); 
+		
+		default:
+			printf("Fatal Error in inferTypeTerm\n");
+			exit(1);
+	}
 	
-	if(t->m3 != NULL){ return typeFromStr(st, "Char"); }
-	
-	if(t->m4 != NULL){ return inferTypeMethodCall(st, t->m4); }
-	
-	if(t->m5 != NULL){ return inferTypeExpr(st, t->m5); }
-	
-	if(t->m6 != NULL){ return inferTypeVariable(st, t->m6); }
-	
-	if(t->m7 != NULL){ return typeFromStr(st, "Float"); }
-	
-	if(t->m8 != NULL){ return typeFromStr(st, "String"); }
-	
-	printf("Fatal Error in inferTypeTerm\n");
-	exit(1);
 	return NULL;
 }
 

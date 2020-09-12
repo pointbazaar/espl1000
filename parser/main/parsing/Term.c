@@ -29,7 +29,8 @@ struct Term* makeTerm_other(struct Expr* expr){
 	
 	struct Term* res = initTerm();
 
-	res->m5 = expr;
+	res->kind = 5;
+	res->ptr.m5 = expr;
 	return res;
 }
 
@@ -56,12 +57,18 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 		
 	}else{
 		
-		if( (res->m2 = makeIntConst(copy,debug)) == NULL){
-			if( (res->m7 = makeFloatConst(copy,debug)) == NULL){
-				if( (res->m4 = makeMethodCall(copy,debug)) == NULL){
-					if( (res->m1 = makeBoolConst(copy,debug)) == NULL){
-						if( (res->m6 = makeVariable(copy,debug)) == NULL){
-							if( (res->m3 = makeCharConst(copy,debug)) == NULL){
+		res->kind = 2;
+		if( (res->ptr.m2 = makeIntConst(copy,debug)) == NULL){
+			res->kind = 7;
+			if( (res->ptr.m7 = makeFloatConst(copy,debug)) == NULL){
+				res->kind = 4;
+				if( (res->ptr.m4 = makeMethodCall(copy,debug)) == NULL){
+					res->kind = 1;
+					if( (res->ptr.m1 = makeBoolConst(copy,debug)) == NULL){
+						res->kind = 6;
+						if( (res->ptr.m6 = makeVariable(copy,debug)) == NULL){
+							res->kind = 3;
+							if( (res->ptr.m3 = makeCharConst(copy,debug)) == NULL){
 								
 								free(res);
 								freeTokenListShallow(copy);
@@ -88,14 +95,8 @@ struct Term* initTerm(){
 	
 	struct Term* res = smalloc(sizeof(struct Term));
 	
-	res->m1 = NULL;
-	res->m2 = NULL;
-	res->m3 = NULL;
-	res->m4 = NULL;
-	res->m5 = NULL;
-	res->m6 = NULL;
-	res->m7 = NULL;
-	res->m8 = NULL;
+	res->kind = 0;
+	res->ptr.m1 = NULL;
 	
 	return res;
 }
@@ -104,8 +105,9 @@ void tryInitExpr(struct Term* res, struct TokenList* copy, bool debug){
 	
 	list_consume(copy, 1);
 
-	res->m5 = makeExpr(copy,debug);
-	if(res->m5 == NULL){
+	res->kind = 5;
+	res->ptr.m5 = makeExpr(copy,debug);
+	if(res->ptr.m5 == NULL){
 		free(res);
 		freeTokenListShallow(copy);
 		printf("expected an Expression, but got :");
@@ -123,8 +125,9 @@ void tryInitExpr(struct Term* res, struct TokenList* copy, bool debug){
 
 void tryInitStringConst(struct Term* res, struct TokenList* copy, bool debug){
 	
-	res->m8 = makeStringConst(copy, debug);
-	if(res->m8 == NULL){
+	res->kind = 8;
+	res->ptr.m8 = makeStringConst(copy, debug);
+	if(res->ptr.m8 == NULL){
 		
 		printf("expected an String, but got :");
 		list_print(copy);

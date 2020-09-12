@@ -106,23 +106,32 @@ void freeStructMember(struct StructMember* sm) {
 }
 void freeTerm(struct Term* t) {
 
-	if(t->m1 != NULL) {
-		freeBoolConst(t->m1);
-	} else if(t->m2 != NULL) {
-		freeIntConst(t->m2);
-	} else if(t->m3 != NULL) {
-		freeCharConst(t->m3);
-	} else if(t->m4 != NULL) {
-		freeMethodCall(t->m4);
-	} else if(t->m5 != NULL) {
-		freeExpr(t->m5);
-	} else if(t->m6 != NULL) {
-		freeVariable(t->m6);
-	} else if(t->m7 != NULL) {
-		freeFloatConst(t->m7);
-	} else if(t->m8 != NULL) {
-		freeStringConst(t->m8);
-	} else {
+	switch(t->kind){
+		case 1:
+			freeBoolConst(t->ptr.m1);
+			break;
+		case 2:
+			freeIntConst(t->ptr.m2);
+			break;
+		case 3:
+			freeCharConst(t->ptr.m3);
+			break;
+		case 4:
+			freeMethodCall(t->ptr.m4);
+			break;
+		case 5:
+			freeExpr(t->ptr.m5);
+			break;
+		case 6:
+			freeVariable(t->ptr.m6);
+			break;
+		case 7:
+			freeFloatConst(t->ptr.m7);
+			break;
+		case 8:
+			freeStringConst(t->ptr.m8);
+			break;
+		default:
 		printf("Error in freeTerm(...)\n");
 		exit(1);
 	}

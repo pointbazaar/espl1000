@@ -40,7 +40,7 @@ int term_test_variable_term(bool debug) {
 
 	bool a1 = list_size(list) == 0;
 
-	struct Variable* v = t->m6;
+	struct Variable* v = t->ptr.m6;
 	if(v == NULL){return 0;}
 
 	struct SimpleVar* sv = v->simpleVar;
@@ -69,12 +69,12 @@ int term_test_parentheses(bool debug){
 	struct Term* t = makeTerm(list, debug);
 	if(t == NULL){return 0;}
 	
-	struct Expr* expr = t->m5;
+	struct Expr* expr = t->ptr.m5;
 	if(expr == NULL){ return 0;}
 
 	const bool a1 = list_size(list) == 0;
 
-	struct Variable* v = expr->term1->term->m6;
+	struct Variable* v = expr->term1->term->ptr.m6;
 	if(v == NULL){return 0;}
 
 	struct SimpleVar* sv = v->simpleVar;

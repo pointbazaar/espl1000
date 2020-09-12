@@ -635,23 +635,32 @@ void transpileTerm(struct Term* t, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileTerm(...)\n"); }
 	
-	if(t->m1 != NULL){
-		transpileBoolConst(t->m1, ctx);
-	}else if(t->m2 != NULL){
-		transpileIntConst(t->m2, ctx);
-	}else if(t->m3 != NULL){
-		transpileCharConst(t->m3, ctx);
-	}else if(t->m4 != NULL){
-		transpileMethodCall(t->m4, ctx);
-	}else if(t->m5 != NULL){
-		transpileExpr(t->m5, ctx);
-	}else if(t->m6 != NULL){
-		transpileVariable(t->m6, ctx);
-	}else if(t->m7 != NULL){
-		transpileFloatConst(t->m7, ctx);
-	}else if(t->m8 != NULL){
-		transpileStringConst(t->m8, ctx);
-	}else{
+	switch(t->kind){
+		case 1:
+			transpileBoolConst(t->ptr.m1, ctx);
+			break;
+		case 2:
+			transpileIntConst(t->ptr.m2, ctx);
+			break;
+		case 3:
+			transpileCharConst(t->ptr.m3, ctx);
+			break;
+		case 4:
+			transpileMethodCall(t->ptr.m4, ctx);
+			break;
+		case 5:
+			transpileExpr(t->ptr.m5, ctx);
+			break;
+		case 6:
+			transpileVariable(t->ptr.m6, ctx);
+			break;
+		case 7:
+			transpileFloatConst(t->ptr.m7, ctx);
+			break;
+		case 8:
+			transpileStringConst(t->ptr.m8, ctx);
+			break;
+		default:
 		printf("Error in transpileTerm\n");
 		exit(1);
 	}
