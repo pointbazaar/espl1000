@@ -3,17 +3,20 @@
 "You can also use 'source $PATH_TO_THIS_FILE' in your ~/.vimrc
 "in order to avoid manually appending
 
-"Keywords
-hi def link basicLanguageKeywords Statement
-
 hi def link singlelineComment Comment
-"hi def link multilineComment Comment
+hi def link multilineComment Comment
+
+hi def link basicLanguageKeywords Statement
 
 hi def link basicType Type
 
 hi def link basicNumber Constant
 hi def link basicString Constant
+hi def link basicBool Boolean
 
-highlight identifier ctermfg=white guifg=#0000ff
-highlight Braces ctermfg=yellow guifg=#0f0f0f
+hi def link Braces Delimiter
+hi def link Parens Delimiter
 
+hi def link basicIdentifier Identifier
+
+hi def link basicOperator Operator
