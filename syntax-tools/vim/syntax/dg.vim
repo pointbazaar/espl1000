@@ -19,7 +19,7 @@ syntax match basicType /[A-Z][A-Za-z0-9]*/
 syntax match basicType2 /(\[)*[A-Z][A-Za-z0-9]*(\])*/  
 syntax match basicIdentifier /[a-z][a-zA-Z0-9]*/ 
 
-syntax keyword basicLanguageKeywords fn if else struct switch case for while loop return break
+syntax keyword basicLanguageKeywords fn if else struct switch case for while loop return break in
 
 syn keyword basicBool true false
 
