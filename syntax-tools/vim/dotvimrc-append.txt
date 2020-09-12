@@ -1,5 +1,20 @@
+
+"this file is to be appended to ~/.vimrc
+"You can also use 'source $PATH_TO_THIS_FILE' in your ~/.vimrc
+"in order to avoid manually appending
+
+"Keywords
 highlight fn ctermfg=cyan guifg=#00ffff
+highlight if ctermfg=cyan 
+highlight else ctermfg=cyan
+highlight switch ctermfg=cyan
+highlight case ctermfg=cyan
+highlight loop ctermfg=cyan
+highlight for ctermfg=cyan
+highlight while ctermfg=cyan
 highlight struct ctermfg=green guifg=#00ff00
+
 highlight Type ctermfg=blue guifg=#0000ff
 highlight identifier ctermfg=white guifg=#0000ff
 highlight Braces ctermfg=yellow guifg=#0f0f0f
+
