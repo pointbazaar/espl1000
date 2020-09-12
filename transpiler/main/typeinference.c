@@ -157,10 +157,18 @@ struct Type* inferTypeSimpleVar(struct ST* st, struct SimpleVar* v){
 	struct LVSTLine* line = lvst_get(st->lvst, v->name, true);
 	
 	//if it has an index, we unwrap the type
-	if(v->optIndex != NULL){
-		
+	if(v->count_indices != 0){
 		//we get the element type of the type
-		return line->type->m3->element_type;
+		//and repeat that as many times as there
+		//are indices
+		
+		struct Type* elem_type = line->type->m3->element_type;
+		
+		for(int i=1;i < v->count_indices; i++){
+			elem_type = elem_type->m3->element_type;
+		}
+		
+		return elem_type;
 	}
 	return line->type;
 }

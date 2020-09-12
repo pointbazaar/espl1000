@@ -685,9 +685,10 @@ void transpileSimpleVar(struct SimpleVar* svar, struct Ctx* ctx){
 	assert(svar->name != NULL);
 	
 	fprintf(ctx->file, "%s", svar->name);
-	if(svar->optIndex != NULL){
+	
+	for(int i=0;i < svar->count_indices; i++){
 		fprintf(ctx->file, "[");
-		transpileExpr(svar->optIndex, ctx);
+		transpileExpr(svar->indices[i], ctx);
 		fprintf(ctx->file, "]");
 	}
 }

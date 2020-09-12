@@ -134,8 +134,9 @@ struct Op {
 struct SimpleVar {
 	char name[DEFAULT_STR_SIZE];
 	
-	//may be NULL
-	struct Expr* optIndex;
+	//indices
+	uint8_t count_indices;
+	struct Expr** indices;
 };
 struct StructDecl{
 	//the name of the struct

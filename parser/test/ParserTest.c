@@ -177,7 +177,7 @@ bool test_suite_term_expr_simplevar_var(bool debug) {
 	
 	if(debug){ printf("test_suite_term_expr_simplevar_var\n"); }
 
-    int count  = 12;
+    int count  = 13;
     int passed = 0;
 
     passed +=  term_test_simple_term(debug);
@@ -192,6 +192,7 @@ bool test_suite_term_expr_simplevar_var(bool debug) {
 
     passed +=  simplevar_test_parse_simple_indexed_variable(debug);
     passed +=  simplevar_test_parse_simple_variable(debug);
+    passed +=  simplevar_test_2_indices(debug);
 
     passed +=  variable_test_parse_index_access(debug);
     passed +=  variable_test_parse_struct_member_access(debug);

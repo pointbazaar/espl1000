@@ -366,11 +366,14 @@ struct BoolConst* readBoolConst(FILE* file, bool debug){
 	
 	struct BoolConst* b = smalloc(sizeof(struct BoolConst));
 	
-	if(fscanf(file, "BoolConst\t%d\t", (int*)&(b->value)) != 1){
+	int val;
+	if(fscanf(file, "BoolConst\t%d\t", &val) != 1){
 		printf("Error reading BoolConst\n");
 		free(b);
 		exit(1);
 	}
+	
+	b->value = (val==1)?true:false;
 	
 	return b;
 }
@@ -451,18 +454,18 @@ struct SimpleVar* readSimpleVar(FILE* file, bool debug){
 	
 	struct SimpleVar* b = smalloc(sizeof(struct SimpleVar));
 	
-	int option;
+	int count;
 	
-	if(fscanf(file, "SimpleVar\t%s\t%d\t", b->name, &option) != 2){
+	if(fscanf(file, "SimpleVar\t%s\t%d\t", b->name, &count) != 2){
 		printf("Error reading SimpleVar\n");
 		free(b);
 		exit(1);
 	}
 
-	if(option == 1){
-		b->optIndex = readExpr(file, debug);
-	}else{
-		b->optIndex = NULL;
+	b->count_indices = count;
+	b->indices = smalloc(sizeof(struct Expr*)* (b->count_indices+1));
+	for(int i=0; i < b->count_indices; i++){
+		b->indices[i] = readExpr(file, debug);
 	}
 	
 	return b;

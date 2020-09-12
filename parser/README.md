@@ -33,7 +33,7 @@ ArrayType :: = '[' Type ']'
 
 Type ::= BasicTypeWrapped | TypeParameter | ArrayType
 
-simplevariable ::= identifier ('[' expression ']')?
+simplevariable ::= identifier ('[' expression ']')*
 variable ::= simplevariable ('.' variable)*
 
 stmtblock ::= '{' statement* '}'

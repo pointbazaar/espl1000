@@ -77,9 +77,10 @@ void freeNamespace(struct Namespace* ns) {
 
 void freeSimpleVar(struct SimpleVar* sv) {
 
-	if(sv->optIndex != NULL) {
-		freeExpr(sv->optIndex);
+	for(int i=0;i < sv->count_indices; i++){
+		freeExpr(sv->indices[i]);
 	}
+	free(sv->indices);
 	free(sv);
 }
 

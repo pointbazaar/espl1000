@@ -177,10 +177,10 @@ void writeSimpleVar(struct SimpleVar* m, FILE* file){
 
 	fprintf(file, "SimpleVar\t%s\t",m->name);
 	
-	fprintf(file, "%d\t", (m->optIndex != NULL)?1:0);
+	fprintf(file, "%d\t", m->count_indices);
 	
-	if(m->optIndex != NULL){
-		writeExpr(m->optIndex, file);
+	for(int i=0;i < m->count_indices; i++){
+		writeExpr(m->indices[i], file);
 	}
 }
 void writeExpr(struct Expr* m, FILE* file){

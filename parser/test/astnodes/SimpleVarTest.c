@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <assert.h>
+
 #include "SimpleVarTest.h"
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
@@ -7,9 +11,6 @@
 #include "../../main/parsing/Term.h"
 #include "../../../token/token.h"
 #include "../../../ast/free_ast.h"
-
-#include <stdio.h>
-#include <stdbool.h>
 
 int simplevar_test_parse_simple_variable(bool debug) {
 
@@ -47,25 +48,59 @@ int simplevar_test_parse_simple_indexed_variable(bool debug) {
 
 
 	struct SimpleVar* node = makeSimpleVar(list,debug);
-	if(node==NULL){
-		return 0;
-	}
+	assert(node != NULL);
 
-	bool assert1 = strcmp("x", node->name) == 0;
-	bool assert2 = (node->optIndex != NULL);
+	assert(strcmp("x", node->name) == 0);
+	assert(node->count_indices == 1);
 
-	if(!assert2){ return 0;}
-	if(node->optIndex->term1 == NULL){return 0;}
-	if(node->optIndex->term1->term->ptr.m2 == NULL){return 0;}
+	assert(node->indices[0]->term1 != NULL);
+	assert(node->indices[0]->term1->term->ptr.m2 != NULL);
 
-	bool assert3 = (
+	assert(
 			1 == 
-			(node->optIndex->term1->term->ptr.m2)	//IntConst
+			(node->indices[0]->term1->term->ptr.m2)	//IntConst
 			->value
 	);
 	
 	freeTokenList(list);
 	freeSimpleVar(node);
 
-	return (assert1&&assert2&&assert3)?1:0;
+	return 1;
+}
+
+int simplevar_test_2_indices(bool debug){
+	
+	if(debug){
+		printf("TEST: simplevar_test_2_indices()\n");
+	}
+
+	struct TokenList* list = makeTokenList();
+
+	list_add(list, makeToken2(ID,"x")) ;
+	list_add(list, makeToken2(LBRACKET,"["));
+	list_add(list, makeToken2(INTEGER,"1"));
+	list_add(list, makeToken2(RBRACKET,"]"));
+	list_add(list, makeToken2(LBRACKET,"["));
+	list_add(list, makeToken2(INTEGER,"2"));
+	list_add(list, makeToken2(RBRACKET,"]"));
+
+
+	struct SimpleVar* node = makeSimpleVar(list,debug);
+	
+	assert(node != NULL);
+	assert(node->count_indices == 2);
+	assert(node->indices[0] != NULL);
+	assert(node->indices[1] != NULL);
+	
+	assert(node->indices[0]->term1 != NULL);
+	assert(node->indices[0]->op == NULL);
+	assert(node->indices[0]->term2 == NULL);
+	
+	assert(node->indices[1]->term1 != NULL);
+	assert(node->indices[1]->op == NULL);
+	assert(node->indices[1]->term2 == NULL);
+	
+	freeSimpleVar(node);
+
+	return 1;
 }

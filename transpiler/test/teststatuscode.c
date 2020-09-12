@@ -46,7 +46,7 @@ int sourceToStatus(char* src, bool debug){
 		clean();
 	}
 	
-	free(flags);
+	freeFlags(flags);
 	
 	return status;
 }

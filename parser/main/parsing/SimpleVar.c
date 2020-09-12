@@ -24,7 +24,8 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 
 	struct SimpleVar* res = smalloc(sizeof(struct SimpleVar));
 
-	res->optIndex = NULL;
+	res->count_indices = 0;
+	res->indices = smalloc(sizeof(struct Expr*)*1);
 
 	struct TokenList* copy = list_copy(tokens);
 
@@ -35,7 +36,7 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 		list_consume(copy,1);
 
 		//it could have an index
-		if (list_size(copy) > 0 
+		while (list_size(copy) > 0 
 			&& list_head(copy)->kind == LBRACKET
 		){
 
@@ -44,8 +45,16 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 				freeTokenListShallow(copy);
 				return NULL;
 			}
-			res->optIndex = makeExpr(copy,debug);
-			if(res->optIndex == NULL){
+			res->indices[res->count_indices] = makeExpr(copy,debug);
+			res->count_indices += 1;
+			res->indices = 
+				realloc(
+					res->indices, 
+					sizeof(struct Expr*) 
+					* (res->count_indices+1)
+				);
+			
+			if(res->indices[res->count_indices-1] == NULL){
 				free(res);
 				freeTokenListShallow(copy);
 				return NULL;
@@ -57,9 +66,6 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 				return NULL;
 			}
 
-		} else {
-			res->optIndex = NULL;
-			//pass, this assignment has no index to it
 		}
 
 	} else {
