@@ -1,0 +1,9 @@
+#how to profile the various programs?
+
+https://stackoverflow.com/questions/375913/how-can-i-profile-c-code-running-on-linux/378024#378024
+
+gives an answer: e.g.:
+
+valgrind --tool=callgrind dragon-parser .Everything.dg.tokens
+
+kcachegrind callgrind.out.x
