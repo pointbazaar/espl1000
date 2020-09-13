@@ -92,42 +92,6 @@ bool list_expect_internal(struct TokenList* list, struct Token* token) {
 		list_consume(list, 1);
 		return true;
 	}
-
-	char str[1000];
-	str[0]='\0';
-	strcat(str,"Syntax Error in ");
-	strcat(str,list->relPath);
-	strcat(str,":");
-
-	char buf[20];
-	sprintf(buf, "%d", list_head(list)->lineNumber);
-	strcat(str, buf);
-	strcat(str, ": expected: ");
-	
-	strcat(str,token->value);
-	
-	strcat(str," (");
-	sprintf(buf, "%d", token->kind);
-	strcat(str, buf);
-	strcat(str,")");
-
-	strcat(str,"\t actual: ");
-	
-	strcat(str,list_head(list)->value);
-	
-	strcat(str, " (");
-
-	sprintf(buf, "%d", list_head(list)->kind);
-	strcat(str, buf);
-
-	strcat(str,")");
-	strcat(str,"     ");
-	char* code = list_code(list, false);
-	strcat(str, code);
-	
-	strcat(str,"\n");
-	
-	free(code);
 	
 	return false;
 }
@@ -172,14 +136,8 @@ void list_set(struct TokenList* list, struct TokenList* copy) {
 
 struct Token* list_get(struct TokenList* list, int i) {
 	
-	//this is to give an indication to what went wrong
-	if( i >= list_size(list)){
-		printf(
-			"access at index %d, but list is only %d long\n",
-			i,
-			list_size(list)
-		);
-	}
+	//no bounds checking!
+	//for performance
 	
 	return list->tokens[list->indexHead + i];
 }

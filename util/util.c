@@ -3,10 +3,12 @@
 
 void* smalloc(size_t size){
 
-	void* res = malloc(size);
+	return malloc(size);
+	//no branching, for performance reasons
+	/*
 	if(res == NULL){
 		printf("malloc failed\n");
 		exit(1);
 	}
-	return res;
+	*/
 }
