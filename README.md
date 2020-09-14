@@ -84,7 +84,6 @@ This Project will probably only work with Linux.
     - [ ] Int (can be any integer)
     - [ ] NZInt (Integer =/= 0) (will be required as the type of any divisor later on, to avoid division by 0)
 
-- [x] simple local variable type inference 
 - [ ] lambda expressions
 - [x] syntax highlighting available in micro
 
