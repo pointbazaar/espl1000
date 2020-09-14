@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/pointbazaar/smalldragon/master/dragon-lexer/img/dragon-logo.svg" width="100" height="100"/>
+<img src="https://raw.githubusercontent.com/pointbazaar/smalldragon/dev/lexer/img/dragon-logo.svg" width="100" height="100"/>
 
 # Dragon-Lexer
 this is the lexer for [smalldragon](https://github.com/pointbazaar/smalldragon/)
