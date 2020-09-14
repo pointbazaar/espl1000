@@ -755,7 +755,7 @@ void transpileSimpleType(struct SimpleType* simpleType, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileSimpleType(%p,%p)\n", simpleType, ctx); }
 	
-	char* res = simpleType2CType(simpleType, ctx);
+	char* res = simpleType2CType(simpleType);
 	fprintf(ctx->file, "%s", res);
 	free(res);
 }

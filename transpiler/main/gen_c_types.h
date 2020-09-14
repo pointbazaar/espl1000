@@ -10,7 +10,7 @@ struct BasicTypeWrapped;
 
 struct Ctx;
 
-char* simpleType2CType(struct SimpleType* simpleType, struct Ctx* ctx);
+char* simpleType2CType(struct SimpleType* simpleType);
 
 char* type2CType(struct Type* type, struct Ctx* ctx);
 

@@ -6,7 +6,7 @@
 
 #include "gen_c_types.h"
 
-char* simpleType2CType(struct SimpleType* simpleType, struct Ctx* ctx){
+char* simpleType2CType(struct SimpleType* simpleType){
 	
 	//type name
 	char* t = simpleType->typeName;
@@ -112,7 +112,7 @@ char* typeParam2CType(struct TypeParam* typeParam, struct Ctx* ctx){
 char* basicTypeWrapped2CType(struct BasicTypeWrapped* btw, struct Ctx* ctx){
 	
 	if(btw->simpleType != NULL){
-		return simpleType2CType(btw->simpleType, ctx);
+		return simpleType2CType(btw->simpleType);
 	}else if(btw->subrType != NULL){
 		return subrType2CType(btw->subrType, ctx);
 	}else{
