@@ -196,8 +196,8 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	//generate the struct specific
 	//constructors, destructors,
 	//copy-constructors
-	gen_struct_subr_signatures(ns, ctx);
-	gen_struct_subrs(ns, ctx);
+	//and update the symbol table
+	gen_struct_subrs_all(ns, ctx);
 	
 	//write subroutine forward declarations
 	for(int i=0; i < ns->count_methods; i++){

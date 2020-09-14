@@ -8,6 +8,8 @@
 #include "../../util/util.h"
 #include "../../ast/free_ast.h"
 #include "gen_c_types.h"
+#include "typeinference.h"
+#include "tables/subrsymtable.h"
 
 #include "structs_code_gen.h"
 
@@ -20,7 +22,19 @@ void gen_struct_subr_del(struct StructDecl* sd, struct Ctx* ctx);
 void gen_struct_subr_copy(struct StructDecl* sd, struct Ctx* ctx);
 void gen_struct_subr_make(struct StructDecl* sd, struct Ctx* ctx);
 // ------------------------------------------------
-
+//                   TOP LEVEL
+void gen_struct_subrs(struct Namespace* ns, struct Ctx* ctx);
+void gen_struct_subr_signatures(struct Namespace* ns, struct Ctx* ctx);
+// -------------------------------------------------
+void gen_struct_subrs_all(struct Namespace* ns, struct Ctx* ctx){
+	
+	//TODO: Also update the subroutines symbol table
+	//for type inference
+	gen_struct_subr_signatures(ns, ctx);
+	
+	gen_struct_subrs(ns, ctx);
+}
+// ------------------------------------------------
 void gen_struct_subrs(struct Namespace* ns, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ 
@@ -61,6 +75,33 @@ void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx){
 	gen_struct_subr_del(sd, ctx);
 	gen_struct_subr_copy(sd, ctx);
 	gen_struct_subr_make(sd, ctx);
+	
+	struct Type* retTypeStruct = typeFromStr(ctx->tables, sd->name);
+	
+	struct SSTLine* line;
+	line = malloc(sizeof(struct SSTLine));
+	line->isLibC = false;
+	line->returnType = retTypeStruct;
+	sprintf(line->name, "new%s", sd->name);
+	sst_add(ctx->tables->sst, line);
+	
+	line = malloc(sizeof(struct SSTLine));
+	line->isLibC = false;
+	line->returnType = retTypeStruct;
+	sprintf(line->name, "copy%s", sd->name);
+	sst_add(ctx->tables->sst, line);
+	
+	line = malloc(sizeof(struct SSTLine));
+	line->isLibC = false;
+	line->returnType = retTypeStruct;
+	sprintf(line->name, "make%s", sd->name);
+	sst_add(ctx->tables->sst, line);
+	
+	line = malloc(sizeof(struct SSTLine));
+	line->isLibC = false;
+	line->returnType = typeFromStr(ctx->tables, "Int");
+	sprintf(line->name, "free%s", sd->name);
+	sst_add(ctx->tables->sst, line);
 }
 
 void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx){
@@ -77,7 +118,7 @@ void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx){
 	char* name = sd->name;
 	
 	fprintf(ctx->file, "struct %s* new%s();\n", name, name);
-	fprintf(ctx->file, "void del%s();\n", name);
+	fprintf(ctx->file, "int del%s();\n", name);
 	fprintf(ctx->file, "struct %s* copy%s();\n", name, name);
 	
 	//constructor with all members of the struct
@@ -118,9 +159,10 @@ void gen_struct_subr_del(struct StructDecl* sd, struct Ctx* ctx){
 	
 	char* name = sd->name;
 	
-	fprintf(ctx->file, "void del%s(struct %s* instance){\n", name, name);
+	fprintf(ctx->file, "int del%s(struct %s* instance){\n", name, name);
 	
 	fprintf(ctx->file, "\tfree(instance);\n");
+	fprintf(ctx->file, "\treturn 0;\n");
 	
 	fprintf(ctx->file, "}\n");
 	
