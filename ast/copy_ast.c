@@ -51,8 +51,15 @@ struct IntConst* copyIntConst(struct IntConst* ic){
 
 struct SimpleVar* copySimpleVar(struct SimpleVar* sv){
 	struct SimpleVar* res = malloc(sizeof(struct SimpleVar));
-	printf("Error in copy_ast.c (not yet implemented)\n");
-	exit(1);
+	
+	strcpy(res->name, sv->name);
+	res->count_indices = sv->count_indices;
+	res->indices = malloc(sizeof(struct Expr*)*res->count_indices);
+	
+	for(int i=0;i < res->count_indices; i++){
+		res->indices[i] = copyExpr(sv->indices[i]);
+	}
+	
 	return res;
 }
 
@@ -95,15 +102,28 @@ struct Term* copyTerm(struct Term* t){
 
 struct UnOpTerm* copyUnOpTerm(struct UnOpTerm* t){
 	struct UnOpTerm* res = malloc(sizeof(struct UnOpTerm));
-	res->op = copyOp(t->op);
+	if(t->op != NULL){
+		res->op = copyOp(t->op);
+	}else{
+		res->op = NULL;
+	}
 	res->term = copyTerm(t->term);
 	return res;
 }
 
 struct Variable* copyVariable(struct Variable* var){
 	struct Variable* res = malloc(sizeof(struct Variable));
-	printf("Error in copy_ast.c (not yet implemented)\n");
-	exit(1);
+	
+	res->simpleVar = copySimpleVar(var->simpleVar);
+	
+	res->count_memberAccessList = var->count_memberAccessList;
+	res->memberAccessList = 
+		malloc(sizeof(struct Variable*)*res->count_memberAccessList);
+		
+	for(int i=0;i < res->count_memberAccessList;i++){
+		res->memberAccessList[i] = copyVariable(var->memberAccessList[i]);
+	}
+	
 	return res;
 }
 
