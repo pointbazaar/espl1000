@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>SmallDragon - Composite Data Types</title>
+  <meta name="description" content="SmallDragon Composite Data Types">
+  <meta name="author" content="SmallDragon">
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<h1>SmallDragon Composite Data Types</h1>
+
+<p>
+SmallDragon uses 'struct' to define a Composite Data Type.<br>
+SmallDragon structs like C structs semantically, but different
+syntactically. 
+</p>
+
+<h3> Example </h3>
+
+<code>
+struct MyStruct {
+	Int a,
+	MyStruct b
+}
+</code>
+
+<h3> Automatically Generated Subroutines </h3>
+
+<p>
+For each declared struct X, sd generates:
+</p>
+<ul>
+	<li> newX()     - allocates memory for an instance of struct X</li>
+	<li> makeX(...) - like newX, but also accepts all members as arguments</li>
+	<li> copyX(X x) - returns a shallow copy </li>
+	<li> delX(X x)  - frees (shallow) the instance x </li>
+</ul>
+
+<p>
+These subroutines are for convenience, 
+so you don't have to write them.
+</p>
+
+</body>
+</html>
