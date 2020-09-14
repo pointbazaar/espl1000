@@ -5,6 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 - Added '-stdout' flag to print transpiled C code to stdout
 - Updated SmallDragon Syntax Highlighting for Vim 
+- Added Comparison Operator Chaining
 
 ## [0.0.5] - 2020-09-12
 - Added '..' (the Range Operator) which can be used to interpolate between Integers

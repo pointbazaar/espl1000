@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "../commandline/TokenList.h"
 #include "Expr.h"
@@ -9,6 +10,7 @@
 #include "Op.h"
 #include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
+#include "../../../ast/copy_ast.h"
 
 //how many operators there are
 #define nops 15
@@ -25,6 +27,12 @@ void performTreeTransformation(
 	bool debug,
 	int max_op_index
 );
+void insertOperatorChaining(
+	struct Op*** ops, int* opsc,
+	struct UnOpTerm*** terms, int* termsc,
+	bool debug
+);
+bool isComparisonOp(struct Op* op);
 //-----------------------------
 
 struct Expr* makeExpr_1(struct UnOpTerm* term) {
@@ -135,7 +143,9 @@ struct Expr* fullTreeTransformation(
 		&myops, &opsc, &myterms, &termsc, debug, 6
 	);
 	
-	//TODO: do comparison operator chaining
+	//do comparison operator chaining
+	insertOperatorChaining
+	(&myops, &opsc, &myterms, &termsc, debug);
 	
 	//now group the rest
 	performTreeTransformation(
@@ -191,6 +201,12 @@ int prec_index(char* op){
 	}
 
 	return -1;
+}
+
+bool isComparisonOp(struct Op* op){
+	
+	const int p = prec_index(op->op);
+	return p >= 7 && p <= 12;
 }
 
 int find(void** arr, int size, void* element){
@@ -297,7 +313,8 @@ void performTreeTransformation(
 		(*opsc)-=1;
 		//------------------------------------------
 
-		//insert newly created expression
+		//create term from our expression
+		//(must create a term because it's a list of terms)
 		struct UnOpTerm* ttmp = smalloc(sizeof(struct UnOpTerm));
 		ttmp->op = NULL;
 		ttmp->term = makeTerm_other(expr);
@@ -308,9 +325,7 @@ void performTreeTransformation(
 			return;
 		}
 
-		//list_insert occurs here only once,
-		//so i do not implement special function
-		//list_insert(terms, indexOfOp, ttmp);
+		//insert newly created expression
 		*terms = (struct UnOpTerm**)insert((void**)(*terms), indexOfOp, (void*)ttmp, *termsc);
 		(*termsc)+=1; //because we inserted
 	}
@@ -320,6 +335,65 @@ void performTreeTransformation(
 	}
 }
 
+void insertOperatorChaining(
+	struct Op*** ops, int* opsc,
+	struct UnOpTerm*** terms, int* termsc,
+	bool debug
+){
+	/*
+	Algorithm:
+	look for pattern:  OP1 TERM OP2
+	where OP1 and OP2 are comparison operators
+		if found:
+			generate OP1 TERM && TERM OP2
+			
+	*/
+	//pattern length is 3,
+	//so i+1 should also be accessible
+	//(for the second operator)
+	for(int i=0;i < (*opsc)-1; i++){
+		
+		const int lOpIndex    = i;
+		const int termIndex   = i+1;
+		const int rOpIndex    = i+1;
+		
+		//compare to pattern
+		
+		struct Op* lOp    = (*ops)[lOpIndex];
+		struct UnOpTerm* term = (*terms)[termIndex];
+		struct Op* rOp    = (*ops)[rOpIndex];
+		
+		if(isComparisonOp(lOp) && isComparisonOp(rOp)){
+			//they are comparison operators
+			
+			if(debug){ 
+				printf("chaining comparison operators\n"); 
+			}
+			
+			//generate the pattern
+			struct Op* andOp = malloc(sizeof(struct Op));
+			strcpy(andOp->op, "&&");
+			
+			//insert &&
+			(*ops) = (struct Op**)insert((void**)(*ops), lOpIndex+1, (void*)andOp, *opsc);
+			(*opsc) += 1;
+			
+			//deep copy the term
+			//so that later freeing the AST
+			//causes no double free
+			struct UnOpTerm* termCopy = 
+				copyUnOpTerm(term);
+			
+			//insert EXPR
+			(*terms) = (struct UnOpTerm**)insert((void**)(*terms), termIndex, (void*)termCopy, *termsc);
+			(*termsc) += 1;
+			
+			break;
+		}
+	}
+}
+
+// ------------------- UTILITY SUBROUTINES -----------
 void** insert(void** arr, int index, void* element, int size_before){
 	//insert 'element' into 'arr' at index 'index'
 	void** res = smalloc(sizeof(void*)*(size_before+1));
@@ -349,3 +423,4 @@ void** erase(void** arr, int index, int size_before){
 	}
 	return res;
 }
+
