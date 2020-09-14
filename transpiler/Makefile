@@ -20,7 +20,8 @@ OBJS := build/transpiler.o \
 	build/structsymtable.o \
 	build/typeinference.o \
 	build/help.o \
-	build/free_ast.o
+	build/free_ast.o \
+	build/gen_c_types.o
 
 all: smalldragon test valgrind
 
@@ -86,6 +87,9 @@ build/typeinference.o: main/typeinference.c main/typeinference.h \
 
 build/help.o: main/help.c main/help.h
 	$(CALL) -c main/help.c -o $@
+
+build/gen_c_types.o: main/gen_c_types.h main/gen_c_types.c 
+	$(CALL) -c main/gen_c_types.c -o $@
 
 # ----------- the symbol tables --------------
 

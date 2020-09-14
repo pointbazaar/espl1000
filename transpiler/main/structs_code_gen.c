@@ -1,11 +1,13 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "ctx.h"
 #include "flags.h"
 
 #include "../../util/util.h"
 #include "../../ast/free_ast.h"
+#include "gen_c_types.h"
 
 #include "structs_code_gen.h"
 
@@ -16,6 +18,7 @@ void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx);
 void gen_struct_subr_new(struct StructDecl* sd, struct Ctx* ctx);
 void gen_struct_subr_del(struct StructDecl* sd, struct Ctx* ctx);
 void gen_struct_subr_copy(struct StructDecl* sd, struct Ctx* ctx);
+void gen_struct_subr_make(struct StructDecl* sd, struct Ctx* ctx);
 // ------------------------------------------------
 
 void gen_struct_subrs(struct Namespace* ns, struct Ctx* ctx){
@@ -57,6 +60,7 @@ void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx){
 	gen_struct_subr_new(sd, ctx);
 	gen_struct_subr_del(sd, ctx);
 	gen_struct_subr_copy(sd, ctx);
+	gen_struct_subr_make(sd, ctx);
 }
 
 void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx){
@@ -75,6 +79,21 @@ void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx){
 	fprintf(ctx->file, "struct %s* new%s();\n", name, name);
 	fprintf(ctx->file, "void del%s();\n", name);
 	fprintf(ctx->file, "struct %s* copy%s();\n", name, name);
+	
+	//constructor with all members of the struct
+	fprintf(ctx->file, "struct %s* make%s(", name, name);
+	for(int i=0;i < sd->count_members;i++){
+		struct StructMember* member = sd->members[i];
+		
+		char* typeName = type2CType(member->type, ctx);
+		fprintf(ctx->file, "%s %s", typeName, member->name);
+		free(typeName);
+		
+		if(i < sd->count_members-1){
+			fprintf(ctx->file, ", ");
+		}
+	}
+	fprintf(ctx->file, ");\n");
 }
 
 // ----------------------------------------------
@@ -123,6 +142,45 @@ void gen_struct_subr_copy(struct StructDecl* sd, struct Ctx* ctx){
 		fprintf(
 			ctx->file, 
 			"\tres->%s = instance->%s;\n",
+			sm->name,
+			sm->name
+		);
+	}
+	
+	fprintf(ctx->file, "\treturn res;\n");
+	
+	fprintf(ctx->file, "}\n");
+}
+
+void gen_struct_subr_make(struct StructDecl* sd, struct Ctx* ctx){
+	
+	char* name = sd->name;
+	
+	//constructor with all members of the struct
+	fprintf(ctx->file, "struct %s* make%s(", name, name);
+	for(int i=0;i < sd->count_members;i++){
+		struct StructMember* member = sd->members[i];
+		
+		char* typeName = type2CType(member->type, ctx);
+		fprintf(ctx->file, "%s %s", typeName, member->name);
+		free(typeName);
+		
+		if(i < sd->count_members-1){
+			fprintf(ctx->file, ", ");
+		}
+	}
+	fprintf(ctx->file, ") {\n");
+	
+	//malloc
+	fprintf(ctx->file, "\tstruct %s* res = malloc(sizeof(struct %s));\n", name, name);
+
+	//copy all the members
+	for(int i = 0; i < sd->count_members; i++){
+		struct StructMember* sm = sd->members[i];
+		
+		fprintf(
+			ctx->file, 
+			"\tres->%s = %s;\n",
 			sm->name,
 			sm->name
 		);

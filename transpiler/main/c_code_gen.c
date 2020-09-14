@@ -9,6 +9,7 @@
 #include "ctx.h"
 #include "flags.h"
 #include "code_gen_util.h"
+#include "gen_c_types.h"
 #include "../../util/util.h"
 #include "../../ast/free_ast.h"
 #include "typeinference.h"
@@ -65,7 +66,7 @@ void transpileIntConst		(struct IntConst* ic, 	struct Ctx* ctx);
 void transpileCharConst		(struct CharConst* cc, 	struct Ctx* ctx);
 void transpileFloatConst	(struct FloatConst* fc, struct Ctx* ctx);
 void transpileStringConst	(struct StringConst* s, struct Ctx* ctx);
-
+//-----------------------------
 void transpileOp(struct Op* op, struct Ctx* ctx);
 
 void transpileBasicTypeWrapped(struct BasicTypeWrapped* btw, struct Ctx* ctx);
@@ -600,13 +601,9 @@ void transpileType(struct Type* t, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileType(%p, %p)\n", t, ctx); }
 	
-	if(t->m1 != NULL){
-		transpileBasicTypeWrapped(t->m1, ctx);
-	}else if(t->m2 != NULL){
-		transpileTypeParam(t->m2, ctx);
-	}else if(t->m3 != NULL){
-		transpileArrayType(t->m3, ctx);
-	}
+	char* res = type2CType(t, ctx);
+	fprintf(ctx->file, "%s", res);
+	free(res);
 }
 
 void transpileVariable(struct Variable* var, struct Ctx* ctx){
@@ -731,93 +728,45 @@ void transpileBasicTypeWrapped(struct BasicTypeWrapped* btw, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileBasicTypeWrapped(%p, %p)\n", btw, ctx); }
 	
-	if(btw->simpleType != NULL){
-		transpileSimpleType(btw->simpleType, ctx);
-	}else if(btw->subrType != NULL){
-		transpileSubrType(btw->subrType, ctx);
-	}
+	char* res = basicTypeWrapped2CType(btw, ctx);
+	fprintf(ctx->file, "%s", res);
+	free(res);
 }
 
 void transpileTypeParam(struct TypeParam* tp, struct Ctx* ctx){
-	//TODO
-	printf("transpileTypeParam not yet implemented!\n");
-	exit(1);
+	
+	if(ctx->flags->debug) { printf("transpileTypeParam(...)\n"); }
+	
+	char* res = typeParam2CType(tp, ctx);
+	fprintf(ctx->file, "%s", res);
+	free(res);
 }
 
 void transpileArrayType(struct ArrayType* atype, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileArrayType(...)\n"); }
 	
-	transpileType(atype->element_type, ctx);
-	fprintf(ctx->file, "*");
+	char* res = arrayType2CType(atype, ctx);
+	fprintf(ctx->file, "%s", res);
+	free(res);
 }
 
 void transpileSimpleType(struct SimpleType* simpleType, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileSimpleType(%p,%p)\n", simpleType, ctx); }
 	
-	//type name
-	char* t = simpleType->typeName;
-	char* res = malloc(sizeof(char)*DEFAULT_STR_SIZE*3);
-	strcpy(res, "");
-
-	if(    strcmp(t, "PInt") == 0
-		|| strcmp(t, "NInt") == 0
-		|| strcmp(t, "Int") == 0
-		|| strcmp(t, "NZInt") == 0  ){
-		strcpy(res, "int");
-		
-	}else if(
-		   strcmp(t, "PFloat") == 0
-		|| strcmp(t, "NFloat") == 0
-		|| strcmp(t, "Float") == 0
-	){
-		strcpy(res, "float");
-		
-	}else if( strcmp(t, "Bool") == 0 ){
-		strcpy(res, "bool");
-		
-	}else if( strcmp(t, "String") == 0){
-		strcpy(res, "char*");
-		
-	}else if( strcmp(t, "Char") == 0){
-		strcpy(res, "char");
-		
-	}else{
-		//if we do not recognize it, treat it as struct pointer
-		sprintf(res, "struct %s*", t);
-	}
-	
+	char* res = simpleType2CType(simpleType, ctx);
 	fprintf(ctx->file, "%s", res);
 	free(res);
 }
 
 void transpileSubrType(struct SubrType* subrType, struct Ctx* ctx){
 	
-	//https://www.zentut.com/c-tutorial/c-function-pointer/
-	
 	if(ctx->flags->debug){ printf("transpileSubrType(...)\n"); }
 
-	//return type
-	transpileType(subrType->returnType, ctx);
-
-	//i do not really understand how
-	//this is written in C. 
-	//maybe trying some examples in C would help.
-	
-	//function_ptr should be the name of the
-	//variable/argument that holds the function pointer
-	fprintf(ctx->file, "(*%s) (", ctx->currentFunctionPointerVarOrArgName);
-
-	//arguments
-	for(int i=0; i < subrType->count_argTypes; i++){
-		transpileType(subrType->argTypes[i], ctx);
-		
-		if(i < (subrType->count_argTypes)-1){
-			fprintf(ctx->file, ", ");
-		}
-	}
-	fprintf(ctx->file, ")");
+	char* res = subrType2CType(subrType, ctx);
+	fprintf(ctx->file, "%s", res);
+	free(res);
 }
 
 void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx){

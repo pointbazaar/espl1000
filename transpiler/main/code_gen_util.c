@@ -8,3 +8,4 @@ void indent(struct Ctx* ctx){
 		fprintf(ctx->file, "\t");
 	}
 }
+
