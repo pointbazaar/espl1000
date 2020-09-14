@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/pointbazaar/smalldragon/master/lexer/img/dragon-logo.svg" width="100" height="100"/>
+<img src="https://raw.githubusercontent.com/pointbazaar/smalldragon/dev/lexer/img/dragon-logo.svg" width="100" height="100"/>
 
 # SmallDragon, a simple Programming Language (Work in Progress) 
 master: [![Build Status](https://travis-ci.org/pointbazaar/smalldragon.svg?branch=master)](https://travis-ci.org/pointbazaar/smalldragon)
