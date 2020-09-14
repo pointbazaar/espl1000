@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "ASTWriter.h"
 #include "../util/util.h"
@@ -266,7 +267,21 @@ void writeFloatConst(struct FloatConst* m, 	FILE* file){
 	fprintf(file, "FloatConst\t%f\t", m->value);
 }
 void writeStringConst(struct StringConst* m, FILE* file){
-	fprintf(file, "StringConst\t%s\t", m->value);
+	fprintf(file, "StringConst\t");
+	
+	//print the length
+	int l = strlen(m->value);
+	fprintf(file, "%d\t", l);
+	
+	//doing this to avoid problems
+	//with whitespace or any characters at all really
+	for(int i=0;i < l; i++){
+		//0-padded on the left, 3 chars wide,
+		//casted to unsigned integer
+		fprintf(file, "%03d_", (unsigned int)m->value[i]);
+	}
+	//separator
+	fprintf(file, "\t");
 }
 void writeOp(struct Op* m, FILE* file){
 	fprintf(file, "Op\t%s\t", m->op);

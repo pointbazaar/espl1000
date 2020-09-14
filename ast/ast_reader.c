@@ -409,13 +409,26 @@ struct StringConst* readStringConst(FILE* file, bool debug){
 	
 	if(debug){ printf("readStringConst(...)\n"); }
 	
-	struct StringConst* s = smalloc(sizeof(struct StringConst));
-	
-	if(fscanf(file, "StringConst\t%s\t", s->value) != 1){
+	int length;
+	if(fscanf(file, "StringConst\t%d\t", &length) != 1){
 		printf("Error reading StringConst\n");
-		free(s);
 		exit(1);
 	}
+	
+	struct StringConst* s = smalloc(sizeof(struct StringConst));
+	
+	//doing this to avoid problems
+	//with whitespace or any characters at all really
+	char val[length+1];
+	val[length]='\0';
+	for(int i=0;i < length; i++){
+		//0-padded on the left, 3 chars wide,
+		//casted to unsigned integer
+		int v;
+		fscanf(file, "%03d_", &v);
+		val[i]=v;
+	}
+	strcpy(s->value, val);
 	
 	return s;
 }
