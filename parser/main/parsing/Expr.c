@@ -340,6 +340,7 @@ void insertOperatorChaining(
 	struct UnOpTerm*** terms, int* termsc,
 	bool debug
 ){
+	if(debug){ printf("insertOperatorChaining(...)\n"); }
 	/*
 	Algorithm:
 	look for pattern:  OP1 TERM OP2
@@ -362,6 +363,10 @@ void insertOperatorChaining(
 		struct Op* lOp    = (*ops)[lOpIndex];
 		struct UnOpTerm* term = (*terms)[termIndex];
 		struct Op* rOp    = (*ops)[rOpIndex];
+		
+		if(debug){
+			printf("looking at %s %s %s\n", lOp->op, "EXPR", rOp->op);
+		}
 		
 		if(isComparisonOp(lOp) && isComparisonOp(rOp)){
 			//they are comparison operators
@@ -387,8 +392,6 @@ void insertOperatorChaining(
 			//insert EXPR
 			(*terms) = (struct UnOpTerm**)insert((void**)(*terms), termIndex, (void*)termCopy, *termsc);
 			(*termsc) += 1;
-			
-			break;
 		}
 	}
 }
