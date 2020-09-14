@@ -10,12 +10,38 @@
 #include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 
+//how many operators there are
+#define nops 15
+struct Expr* fullTreeTransformation(
+	struct Op** ops, 
+	int opsc,
+	struct UnOpTerm** terms, 
+	int termsc,
+	bool debug
+);
+void performTreeTransformation(
+	struct Op*** ops, int* opsc,
+	struct UnOpTerm*** terms, int* termsc,
+	bool debug,
+	int max_op_index
+);
+//-----------------------------
+
 struct Expr* makeExpr_1(struct UnOpTerm* term) {
 	struct Expr* res = smalloc(sizeof(struct Expr));
 	res->term1 = term;
 	res->op    = NULL;
 	res->term2 = NULL;
 	
+	return res;
+}
+
+struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, struct Op* op, struct UnOpTerm* rightTerm) {
+
+	struct Expr* res = smalloc(sizeof(struct Expr));
+	res->term1 = leftTerm;
+	res->op    = op;
+	res->term2 = rightTerm;
 	return res;
 }
 
@@ -75,16 +101,55 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
-
-	return performTreeTransformation(ops,opsc, terms,termsc, debug);
+	
+	//----------------------------------
+	
+	struct Expr* res = fullTreeTransformation
+	(ops, opsc, terms, termsc, debug);
+	
+	free(terms);
+	free(ops);
+	
+	return res;
 }
 
-struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, struct Op* op, struct UnOpTerm* rightTerm) {
-
+struct Expr* fullTreeTransformation(
+	struct Op** ops, 
+	int opsc,
+	struct UnOpTerm** terms, 
+	int termsc,
+	bool debug
+){
+	
 	struct Expr* res = smalloc(sizeof(struct Expr));
-	res->term1 = leftTerm;
-	res->op    = op;
-	res->term2 = rightTerm;
+	res->term1 = NULL;
+	res->op    = NULL;
+	res->term2 = NULL;
+	
+	struct Op** myops = ops;
+	struct UnOpTerm** myterms = terms;
+
+	//only group up to index 6, because the 
+	//comparison operators need to be chained later on
+	performTreeTransformation(
+		&myops, &opsc, &myterms, &termsc, debug, 6
+	);
+	
+	//TODO: do comparison operator chaining
+	
+	//now group the rest
+	performTreeTransformation(
+		&myops, &opsc, &myterms, &termsc, debug, nops-1
+	);
+	
+	//now only 2 terms left
+	res->term1 = myterms[0];
+	//in case of more than one term
+	if(opsc > 0) {
+		res->op = myops[0];
+		res->term2 = myterms[1];
+	}
+	
 	return res;
 }
 
@@ -100,6 +165,7 @@ int prec_index(char* op){
 	 */
 	const char* a[nops];
 
+	//arithmetic
 	a[0] = "*";
 	a[1] = "/";
 	a[2] = "%";
@@ -107,10 +173,18 @@ int prec_index(char* op){
 	a[4] = "-";
 	a[5] = "<<";
 	a[6] = ">>";
+	
+	//comparison
 	a[7] = "!=";
 	a[8] = "==";
-	a[9] = "&&";
-	a[10] = "||";
+	a[9] = ">=";
+	a[10] = "<=";
+	a[11] = ">";
+	a[12] = "<";
+	
+	//logic
+	a[13] = "&&";
+	a[14] = "||";
 
 	for(int i=0;i<nops;i++){
 		if(strcmp(op,a[i])==0){ return i; }
@@ -130,25 +204,25 @@ int find(void** arr, int size, void* element){
 	return -1;
 }
 
-struct Expr* performTreeTransformation(
-		struct Op** ops, 
-		int opsc,
-		struct UnOpTerm** terms, 
-		int termsc,
-		bool debug
+void performTreeTransformation(
+		struct Op*** ops, 
+		int* opsc,
+		struct UnOpTerm*** terms, 
+		int* termsc,
+		bool debug,
+		
+		//the index of the last operator
+		//that will still be grouped in this iteration
+		int max_op_index 
 ){
 
 	if(debug){
-		printf("performTreeTransformation(..., %d, ..., %d, %d)\n", opsc, termsc, debug);
+		printf("performTreeTransformation(..., %d, ..., %d, %d)\n", *opsc, *termsc, debug);
 	}
 
-	//transform the list into a tree, respecting operator precedence
-
-	struct Expr* res = smalloc(sizeof(struct Expr));
-	res->term1 = NULL;
-	res->op    = NULL;
-	res->term2 = NULL;
-
+	//transform the list into a tree, 
+	//respecting operator precedence
+	
 	/*
 	Algorithm:
 
@@ -158,76 +232,92 @@ struct Expr* performTreeTransformation(
 
 	assign the 2 terms to this node
 	 */
+	 
+	while ((*termsc) > 2){
+		struct Op* opWithLargestPrecedence = (*ops)[0];
+		
+		//last index into the operators 
+		//(lowest precedence)
+		int lowest = nops-1;	
+		int indexOfFoundOp = (*opsc)-1;
 
-	while (termsc > 2){
-		struct Op* opWithLargestPrecedence = ops[0];
-		int lowest = nops-1;	//last index into the operators (lowest precedence)
-
-		for(int i = 0;i < opsc;i++){
-			struct Op* o1 = ops[i];
+		for(int i = 0;i < (*opsc);i++){
+			struct Op* o1 = (*ops)[i];
 			if(prec_index(o1->op) < lowest){
 				lowest = prec_index(o1->op);
 				opWithLargestPrecedence = o1;
+				indexOfFoundOp = i;
 			}
 		}
-
-		int indexOfOp = find((void**)ops,opsc,opWithLargestPrecedence);
-
-
-		struct UnOpTerm* leftTerm = terms[indexOfOp];
-		struct UnOpTerm* rightTerm = terms[indexOfOp+1];
-
-		struct Expr* expr = makeExpr_3(leftTerm,opWithLargestPrecedence,rightTerm);
-		if(expr == NULL){return NULL;}
-
-		//simplify
-		int i1;
-		i1 = find((void**)terms,termsc,leftTerm);
 		
-		terms = (struct UnOpTerm**)erase((void**)terms,i1, termsc);
-		termsc--;
+		if(lowest > max_op_index){
+			//not enough precedence,
+			//is comparison operator or higher
+			break;
+		}
 
-		i1 = find((void**)terms,termsc,rightTerm);
+		const int indexOfOp = indexOfFoundOp;
 		
-		terms = (struct UnOpTerm**)erase((void**)terms,i1, termsc);
-		termsc--;
+		//index of left and right term
+		const int leftTermIndex = indexOfOp;
+		const int rightTermIndex = indexOfOp+1;
 
-		const int i2 = find((void**)ops,opsc,opWithLargestPrecedence);
-		ops = (struct Op**)erase((void**)ops,i2,opsc);
-		opsc--;
+		struct UnOpTerm* leftTerm = (*terms)[leftTermIndex];
+		struct UnOpTerm* rightTerm = (*terms)[rightTermIndex];
+
+		struct Expr* expr = 
+			makeExpr_3(
+				leftTerm,
+				opWithLargestPrecedence,
+				rightTerm
+			);
+			
+		if(expr == NULL){
+			printf("idk\n");
+			exit(1);
+			return;
+		}
+
+		//simplify ------------------------------
+		*terms = (struct UnOpTerm**)
+		erase((void**)(*terms),leftTermIndex, *termsc);
+		(*termsc)-=1;
+		//---------------------------------------
+		//because elements have shifted 1 to the left
+		//and the terms were adjacent
+		const int i2 = leftTermIndex;
+		
+		*terms = (struct UnOpTerm**)
+		erase((void**)(*terms),i2, *termsc);
+		(*termsc)-=1;
+		//---------------------------------------
+		
+		*ops = (struct Op**)
+		erase((void**)(*ops),indexOfOp, *opsc);
+		(*opsc)-=1;
+		//------------------------------------------
 
 		//insert newly created expression
 		struct UnOpTerm* ttmp = smalloc(sizeof(struct UnOpTerm));
 		ttmp->op = NULL;
 		ttmp->term = makeTerm_other(expr);
 		
-		if(ttmp == NULL){ return NULL; }
+		if(ttmp == NULL){ 
+			printf("idk\n");
+			exit(1);
+			return;
+		}
 
 		//list_insert occurs here only once,
 		//so i do not implement special function
 		//list_insert(terms, indexOfOp, ttmp);
-		terms = (struct UnOpTerm**)insert((void**)terms, indexOfOp, (void*)ttmp, termsc);
-		termsc++; //because we inserted
-	}
-
-	//now only 2 terms left
-	res->term1 = terms[0];
-
-	//in case of only one term
-	if(opsc > 0) {
-		res->op = ops[0];
-		res->term2 = terms[1];
+		*terms = (struct UnOpTerm**)insert((void**)(*terms), indexOfOp, (void*)ttmp, *termsc);
+		(*termsc)+=1; //because we inserted
 	}
 
 	if(debug){
 		printf("return from performTreeTransformation(...)\n");
 	}
-	
-	//we do not need them anymore
-	free(terms);
-	free(ops);
-
-	return res;
 }
 
 void** insert(void** arr, int index, void* element, int size_before){
