@@ -328,7 +328,7 @@ void discoverLVAssignStmt(
 	if(a->optType != NULL){
 		line->type = a->optType;
 	}else{
-		line->type = inferTypeExpr(st, a->expr);
+		line->type = inferTypeExpr(st, a->expr, debug);
 	}
 	
 	line->firstOccur = a;

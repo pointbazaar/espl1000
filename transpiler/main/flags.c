@@ -13,6 +13,7 @@ struct Flags* makeFlags(int argc, char** argv){
 	flags->help 	= false;
 	flags->version 	= false;
 	flags->clean 	= false;
+	flags->stdout   = false;
 	
 	//we assume 5 gcc arguments would be 
 	//a good starting value for most users
@@ -34,6 +35,7 @@ struct Flags* makeFlags(int argc, char** argv){
 		}else if(strcmp(arg, "-help"   ) == 0){ flags->help = true;
 		}else if(strcmp(arg, "-version") == 0){ flags->version = true;
 		}else if(strcmp(arg, "-clean"  ) == 0){ flags->clean = true;
+		}else if(strcmp(arg, "-stdout" ) == 0){ flags->stdout = true;
 		}else{
 			//pass this flag when calling gcc
 			flags->gcc_flags[flags->gcc_flags_count] = arg;

@@ -92,6 +92,8 @@ bool transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 
 	struct Ctx* ctx = smalloc(sizeof(struct Ctx));
 	ctx->tables = smalloc(sizeof(struct ST));
+	ctx->flags = flags;
+	ctx->indentLevel = 0;
 	
 	//100 should be enough for now,
 	//if it is more, it will exit and print error.
@@ -107,7 +109,11 @@ bool transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 		printf("SET ctx->file\n");
 	}
 
-	ctx->file = fopen(filename, "w");
+	if(ctx->flags->stdout){
+		ctx->file = stdout;
+	}else{
+		ctx->file = fopen(filename, "w");
+	}
 
 	if(ctx->file == NULL){
 		printf("could not open output file: %s\n", filename);
@@ -123,12 +129,11 @@ bool transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 		printf("SET ctx->indentLevel\n");
 	}
 	
-	ctx->flags = flags;
-	ctx->indentLevel = 0;
-
 	transpileAST(ast, ctx);
 
-	fclose(ctx->file);
+	if(!(ctx->flags->stdout)){
+		fclose(ctx->file);
+	}
 	
 	//free ctx struct
 	for(int i = 0; i < ctx->tables->inferredTypesCount; i++){

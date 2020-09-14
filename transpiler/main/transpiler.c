@@ -196,22 +196,25 @@ bool transpileAndCompile(
 		strcat(cmd_gcc, flags->gcc_flags[i]);
 	}
 	
-	//compile with gcc
-	if(flags->debug){
-		printf("%s\n", cmd_gcc);
+	if(!(flags->stdout)){
+		//compile with gcc
+		if(flags->debug){
+			printf("%s\n", cmd_gcc);
+		}
+		system(cmd_gcc);
+		
+		if(flags->avr){
+			//use various tools to compile a .hex file
+			//which can be read by e.g. mdx
+			
+			system("avr-gcc main.o -o main.elf");
+			system("avr-objcopy -O ihex -j .text -j .data main.elf main.hex");
+			
+			//use 
+			//avr-objdump -D -m avr main.hex
+			//to view contents
+		}
 	}
-	system(cmd_gcc);
 	
-	if(flags->avr){
-		//use various tools to compile a .hex file
-		//which can be read by e.g. mdx
-		
-		system("avr-gcc main.o -o main.elf");
-		system("avr-objcopy -O ihex -j .text -j .data main.elf main.hex");
-		
-		//use 
-		//avr-objdump -D -m avr main.hex
-		//to view contents
-	}
 	return true;
 }

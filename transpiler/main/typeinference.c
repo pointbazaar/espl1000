@@ -17,34 +17,36 @@
 
 // -- subroutine declarations (private to this compile unit) --
 
-struct Type* inferTypeTerm			(struct ST* st, struct Term* term);
-struct Type* inferTypeUnOpTerm		(struct ST* st, struct UnOpTerm* t);
-struct Type* inferTypeMethodCall	(struct ST* st, struct MethodCall* m);
-struct Type* inferTypeVariable		(struct ST* st, struct Variable* v);
-struct Type* inferTypeSimpleVar	(struct ST* st, struct SimpleVar* v);
+struct Type* inferTypeTerm			(struct ST* st, struct Term* term, bool debug);
+struct Type* inferTypeUnOpTerm		(struct ST* st, struct UnOpTerm* t, bool debug);
+struct Type* inferTypeMethodCall	(struct ST* st, struct MethodCall* m, bool debug);
+struct Type* inferTypeVariable		(struct ST* st, struct Variable* v, bool debug);
+struct Type* inferTypeSimpleVar	(struct ST* st, struct SimpleVar* v, bool debug);
 // ------------------------------------------------------------
 char* typeToStrBasicTypeWrapped(struct BasicTypeWrapped* b);
 // ------------------------------------------------------------
 
-struct Type* inferTypeExpr(struct ST* st, struct Expr* expr){
+struct Type* inferTypeExpr(struct ST* st, struct Expr* expr, bool debug){
 	
-	printf("inferTypeExpr(...)\n");
+	if(debug){ printf("inferTypeExpr(...)\n"); }
 	
 	if(expr->op == NULL){
 		
 		//only one term present
-		return inferTypeUnOpTerm(st, expr->term1);
+		return inferTypeUnOpTerm(st, expr->term1, debug);
 		
 	}else{
 		
-		struct Type* type1Orig = inferTypeUnOpTerm(st, expr->term1);
-		struct Type* type2Orig = inferTypeUnOpTerm(st, expr->term2);
+		struct Type* type1Orig = inferTypeUnOpTerm(st, expr->term1, debug);
+		struct Type* type2Orig = inferTypeUnOpTerm(st, expr->term2, debug);
 		
 		//string representations
 		char* type1 = typeToStr(type1Orig);
 		char* type2 = typeToStr(type2Orig);
 		
-		printf("type1: %s, type2: %s\n", type1, type2);
+		if(debug){
+			printf("type1: %s, type2: %s\n", type1, type2);
+		}
 		
 		if(strcmp(type1, type2) == 0){
 			//both have the same type, 
@@ -79,7 +81,7 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr){
 	}
 }
 
-struct Type* inferTypeTerm(struct ST* st, struct Term* t){
+struct Type* inferTypeTerm(struct ST* st, struct Term* t, bool debug){
 	
 	switch(t->kind){
 		case 1: return typeFromStr(st, "Bool"); 
@@ -88,11 +90,11 @@ struct Type* inferTypeTerm(struct ST* st, struct Term* t){
 		
 		case 3: return typeFromStr(st, "Char"); 
 		
-		case 4: return inferTypeMethodCall(st, t->ptr.m4); 
+		case 4: return inferTypeMethodCall(st, t->ptr.m4, debug); 
 		
-		case 5: return inferTypeExpr(st, t->ptr.m5); 
+		case 5: return inferTypeExpr(st, t->ptr.m5, debug); 
 		
-		case 6: return inferTypeVariable(st, t->ptr.m6); 
+		case 6: return inferTypeVariable(st, t->ptr.m6, debug); 
 		
 		case 7: return typeFromStr(st, "Float"); 
 		
@@ -106,16 +108,16 @@ struct Type* inferTypeTerm(struct ST* st, struct Term* t){
 	return NULL;
 }
 
-struct Type* inferTypeUnOpTerm(struct ST* st, struct UnOpTerm* t){
+struct Type* inferTypeUnOpTerm(struct ST* st, struct UnOpTerm* t, bool debug){
 	
 	// UnOpTerm means a term prefixed by an unary operator.
 	// currently, such terms retain their original type,
 	// so we can defer to that type
 	
-	return inferTypeTerm(st, t->term);
+	return inferTypeTerm(st, t->term, debug);
 }
 
-struct Type* inferTypeMethodCall(struct ST* st, struct MethodCall* m){
+struct Type* inferTypeMethodCall(struct ST* st, struct MethodCall* m, bool debug){
 
 	//Subroutine Symbol Table
 	struct SST* sst = st->sst;
@@ -125,9 +127,9 @@ struct Type* inferTypeMethodCall(struct ST* st, struct MethodCall* m){
 	return line->returnType;
 }
 
-struct Type* inferTypeVariable(struct ST* st, struct Variable* v){
+struct Type* inferTypeVariable(struct ST* st, struct Variable* v, bool debug){
 	
-	struct Type* typeOfVar = inferTypeSimpleVar(st, v->simpleVar);
+	struct Type* typeOfVar = inferTypeSimpleVar(st, v->simpleVar, debug);
 	
 	if(v->count_memberAccessList == 0){
 		
@@ -146,7 +148,7 @@ struct Type* inferTypeVariable(struct ST* st, struct Variable* v){
 	}
 }
 
-struct Type* inferTypeSimpleVar(struct ST* st, struct SimpleVar* v){
+struct Type* inferTypeSimpleVar(struct ST* st, struct SimpleVar* v, bool debug){
 	
 	//as this variable is needed to infer the type
 	//of another variable, it should have been initialized
@@ -154,7 +156,7 @@ struct Type* inferTypeSimpleVar(struct ST* st, struct SimpleVar* v){
 	
 	//debug=true as param because
 	//we do not get debug param here
-	struct LVSTLine* line = lvst_get(st->lvst, v->name, true);
+	struct LVSTLine* line = lvst_get(st->lvst, v->name, debug);
 	
 	//if it has an index, we unwrap the type
 	if(v->count_indices != 0){
