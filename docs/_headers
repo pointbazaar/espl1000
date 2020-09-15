@@ -1,0 +1,10 @@
+#https://docs.netlify.com/routing/headers/#syntax-for-the-headers-file
+#https://developer.mozilla.org/de/docs/Web/HTTP/Headers/Cache-Control
+
+#cache for 30 minutes
+#and accept expired resources if they are
+#max 30 minutes expired
+/*
+  cache-control: max-age=1200
+  cache-control: public
+  cache-control: max-stale=1200
