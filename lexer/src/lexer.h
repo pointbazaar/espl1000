@@ -19,7 +19,7 @@ void init_typeidentifier(short** dfa);
 void init_single_line_comment(short** dfa);
 void init_multi_line_comment(short** dfa);
 
-void init_eq(short** dfa);
+void init_assign(short** dfa);
 void init_numbers(short** dfa);
 void init_operator(short** dfa);
 void init_return(short** dfa);

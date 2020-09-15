@@ -131,17 +131,34 @@ void init_multi_line_comment(short** dfa){
 	dfa[S_MULTI_LINE_COMMENT]['\n']=S_MULTI_LINE_COMMENT;
 }
 
-void init_eq(short** dfa){
+void init_assign(short** dfa){
 	
-	dfa[S_EQ]['=']=S_EQ_FINAL;
+	/*
+	S_ASSIGN_EQ_FINAL 		
+	S_ASSIGN_PLUS_EQ_FINAL	
+	S_ASSIGN_MINUS_EQ_FINAL	
+	S_ASSIGN_TIMES_EQ_FINAL	
+	S_ASSIGN_DIV_EQ_FINAL	
+	*/
+	
+	// +=
+	dfa[S_PLUS]['=']=S_ASSIGN_PLUS_EQ_FINAL;
+	
+	// -=
+	dfa[S_MINUS]['=']=S_ASSIGN_MINUS_EQ_FINAL;
+	
+	// *=
+	dfa[S_TIMES]['=']=S_ASSIGN_TIMES_EQ_FINAL;
+	
+	// /=
+	dfa[S_SLASH]['=']=S_ASSIGN_DIV_EQ_FINAL;
 
-	set_transitions_letters(dfa,S_EQ,S_EQ_FINAL);
-	set_transitions_braces(dfa,S_EQ,S_EQ_FINAL);
-	set_transitions_digits(dfa,S_EQ,S_EQ_FINAL);
-
-	dfa[S_EQ][' ']=S_EQ_FINAL;
-
-	dfa[S_EQ]['\'']=S_EQ_FINAL;
+	// = 
+	set_transitions_letters(dfa,S_EQ,S_ASSIGN_EQ_FINAL);
+	set_transitions_braces(dfa,S_EQ,S_ASSIGN_EQ_FINAL);
+	set_transitions_digits(dfa,S_EQ,S_ASSIGN_EQ_FINAL);
+	dfa[S_EQ][' ']=S_ASSIGN_EQ_FINAL;
+	dfa[S_EQ]['\'']=S_ASSIGN_EQ_FINAL;
 }
 
 void init_numbers(short** dfa){
@@ -172,20 +189,39 @@ void init_operator(short** dfa){
 	dfa[S_START]['<']=S_LESSER;
 	dfa[S_START]['>']=S_GREATER;
 	
-	dfa[S_START]['+']=S_OPERATOR_FINAL;
-	dfa[S_START]['-']=S_MINUS;
-	dfa[S_START]['*']=S_OPERATOR_FINAL;
-	dfa[S_START]['/']=S_SLASH;
 	dfa[S_START]['%']=S_OPERATOR_FINAL;
 	dfa[S_START]['^']=S_OPERATOR_FINAL;
 	dfa[S_START]['!']=S_NOT;
 
 	dfa[S_NOT]['=']=S_OPERATOR_FINAL;
+	dfa[S_EQ]['=']=S_OPERATOR_FINAL;
+	
+	//Arithmetic Operators
+	dfa[S_PLUS][' ']=S_OPERATOR_FINAL_2; //i--
+	dfa[S_MINUS][' ']=S_OPERATOR_FINAL_2; //i--
+	dfa[S_TIMES][' ']=S_OPERATOR_FINAL_2; //i--
+	dfa[S_SLASH][' ']=S_OPERATOR_FINAL_2; //i--
+	
+	set_transitions_letters(dfa, S_PLUS, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_PLUS, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa, S_PLUS, S_OPERATOR_FINAL_2);
+	
+	set_transitions_letters(dfa, S_MINUS, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_MINUS, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa, S_MINUS, S_OPERATOR_FINAL_2);
+	
+	set_transitions_letters(dfa, S_TIMES, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_TIMES, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa, S_TIMES, S_OPERATOR_FINAL_2);
+	
+	set_transitions_letters(dfa, S_SLASH, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_SLASH, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa, S_SLASH, S_OPERATOR_FINAL_2);
+	//-----------------------------------------
 
-	//logical operators
+	//Logical Operators
 	dfa[S_START]['&']=S_OPERATOR_AND_1;
 	dfa[S_OPERATOR_AND_1]['&']=S_OPERATOR_FINAL;
-
 	dfa[S_START]['|']=S_OPERATOR_OR_1;
 	dfa[S_OPERATOR_OR_1]['|']=S_OPERATOR_FINAL;
 	
@@ -232,7 +268,6 @@ void init_operator(short** dfa){
 
 	dfa[S_OPERATOR][' ']=S_OPERATOR_FINAL_2;
 
-	dfa[S_SLASH][' ']=S_OPERATOR_FINAL_2;
 	set_transitions_letters(dfa,S_SLASH,S_OPERATOR_FINAL_2);
 	set_transitions_braces(dfa,S_SLASH,S_OPERATOR_FINAL_2);
 	set_transitions_digits(dfa,S_SLASH,S_OPERATOR_FINAL_2);
@@ -396,12 +431,6 @@ void init_typeparam(short** dfa){
 }
 
 void init_arrow(short** dfa){
-	
-	set_transitions_letters(dfa,S_MINUS,S_MINUS_FINAL);
-	set_transitions_digits(dfa,S_MINUS,S_MINUS_FINAL);
-	set_transitions_operators(dfa,S_MINUS,S_MINUS_FINAL);
-
-	dfa[S_MINUS][' ']=S_MINUS_FINAL;
 
 	dfa[S_WAVE]['>']=S_ARROW_FINAL;	
 	dfa[S_MINUS]['>']=S_ARROW_FINAL;	

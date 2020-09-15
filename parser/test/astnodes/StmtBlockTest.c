@@ -19,7 +19,7 @@ int test_stmtblock_1(bool debug){
 	list_add(tokens, makeToken2(LCURLY,"{"));
 	
 	list_add(tokens, makeToken2(ID,"a") );
-	list_add(tokens, makeToken2(EQ,"=") );
+	list_add(tokens, makeToken2(ASSIGNOP,"=") );
 	list_add(tokens, makeToken2(INTEGER,"3") );
 	list_add(tokens, makeToken(SEMICOLON) );
 	

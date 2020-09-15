@@ -95,7 +95,7 @@ struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		case TYPEIDENTIFIER : 
 		//SECTION: OPERATORNS
 		case OPKEY : 
-		case EQ : 
+		case ASSIGNOP : 
 		//SECTION: OTHER
 		case TPARAM : 
 		case SEMICOLON : 

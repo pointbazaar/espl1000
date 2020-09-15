@@ -1,54 +1,57 @@
 #ifndef TOKENKEYS
 #define TOKENKEYS
 
+//Special
+#define EMPTY 	1
+#define LINE_NO 2
 
-#define EMPTY 1
-
-#define BCONST 2
-
-//identifier
-#define ID 4	
-#define TYPEIDENTIFIER 5
+//Identifier
+#define ID 				4	
+#define TYPEIDENTIFIER 	5
 
 //Type Parameter Token
-#define TPARAM 6
-#define FLOATING 7
+#define TPARAM 		6
 
-#define INTEGER 8
-#define CCONST 9
+//Constants
+#define FLOATING 	7
+#define INTEGER 	8
+#define CCONST 		9
 #define STRINGCONST 10
+#define BCONST 		11
 
-#define LINE_NO 11
+//()[]{}
+#define LPARENS 	12
+#define RPARENS 	13
+#define LBRACKET 	14
+#define RBRACKET 	15
+#define LCURLY 		16
+#define RCURLY 		17
 
-#define ARROW 12
-#define ANYTYPE 13
-#define OPKEY 14
-#define STRUCTMEMBERACCESS 15
-#define IF 16
-#define WHILE 17
-//#define NAMESPACE 18
-#define RETURN 21
-#define LPARENS 22
-#define RPARENS 23
-#define LBRACKET 24
-#define RBRACKET 25
-#define LCURLY 26
-#define RCURLY 27
+//Other
+#define ARROW 		18
+#define ANYTYPE 	19
+#define OPKEY 		20
+#define WAVE 		21
+#define SEMICOLON 	22
+//#define EQ 			23
+#define RANGEOP 	24
+#define STRUCTMEMBERACCESS 25
+#define ASSIGNOP	26 //NEW
 
-#define WAVE 30
-#define SEMICOLON 31
-#define EQ 32
-
-#define STRUCT 	34
-#define COMMA 	35
-#define LOOP 	36
-#define FN 		37
-#define ELSE 	38
-#define BREAK 	39
-#define FOR 	40
-#define IN 		41
-#define RANGEOP 42
-#define SWITCH	43
-#define CASE	44
+//Keywords
+#define IF 		33
+#define WHILE 	34
+//#define NAMESPACE 35
+#define RETURN 	36
+#define STRUCT 	37
+#define COMMA 	38
+#define LOOP 	39
+#define FN 		40
+#define ELSE 	41
+#define BREAK 	42
+#define FOR 	43
+#define IN 		44
+#define SWITCH	45
+#define CASE	46
 
 #endif

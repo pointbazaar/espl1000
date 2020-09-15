@@ -43,15 +43,12 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 
-	struct Token* tkeq = makeToken2(EQ,"=");
-	if(!list_expect_2(copy, tkeq)){ 
-		freeToken(tkeq);
+	if(!list_expect(copy, ASSIGNOP)){ 
 		freeVariable(res->var);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
 	}
-	freeToken(tkeq);
 
 	res->expr = makeExpr(copy,debug);
 	if(res->expr == NULL){

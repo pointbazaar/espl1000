@@ -102,4 +102,6 @@ bool test_member_access();
 
 bool test_switch_case();
 
+bool test_assign_operators();
+
 #endif

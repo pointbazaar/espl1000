@@ -27,7 +27,7 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 		return NULL;
 	}
 
-	if(tkn->kind == OPKEY || tkn->kind == EQ){
+	if(tkn->kind == OPKEY){
 
 		struct Token* snd = list_get(copy,1);
 		if(snd == NULL){
@@ -35,7 +35,7 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 			return NULL;
 		}
 
-		if(snd->kind == OPKEY || snd->kind == EQ){
+		if(snd->kind == OPKEY){
 			struct Token* opl = tkn;
 			struct Token* opr = snd;
 

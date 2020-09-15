@@ -27,6 +27,15 @@
 
 #define S_NEWLINE_FINAL 12
 
+//Assignment: =, +=, -=, *=, /=
+#define S_ASSIGN_EQ_FINAL 		13
+
+#define S_ASSIGN_PLUS_EQ_FINAL	14
+#define S_ASSIGN_MINUS_EQ_FINAL	15
+#define S_ASSIGN_TIMES_EQ_FINAL	16
+#define S_ASSIGN_DIV_EQ_FINAL	17
+//-----------------------------
+
 //TOKEN identifier
 #define S_IDENTIFIER 34
 #define S_IDENTIFIER_FINAL 35
@@ -45,10 +54,6 @@
 
 //TOKEN ;
 #define S_SEMICOLON_FINAL 51
-
-//TOKEN =
-#define S_EQ 52
-#define S_EQ_FINAL 53
 
 //Numbers:
 #define S_DIGITS 56	//is entered when we first see a digit
@@ -133,18 +138,21 @@
 //TOKEN ARROW
 #define S_ARROW_FINAL	117
 
-#define S_MINUS 		118
-#define S_MINUS_FINAL 	119
-
 //TOKEN LOOP
-#define S_loop_FINAL 125
+#define S_loop_FINAL 118
 
-#define S_l 126
-#define S_lo 127
-#define S_loo 128
-#define S_loop 129
+#define S_l 119
+#define S_lo 120
+#define S_loo 121
+#define S_loop 122
+
+
 
 //TOKEN OPERATOR
+#define S_TIMES				126 // *
+#define S_PLUS				127	// +
+#define S_MINUS 			128 // -
+
 #define S_OPERATOR 			130
 #define S_SLASH 			131	// '/'
 #define S_OPERATOR_AND_1 	132	// '&'
@@ -152,10 +160,12 @@
 #define S_NOT 				134	// '!'
 #define S_GREATER 			135 // '>' 
 #define S_LESSER 			136 // '<'
+
+#define S_EQ 				137 // =
 //-----
-#define S_OPERATOR_FINAL 	137 //no i--
+#define S_OPERATOR_FINAL 	138 //no i--
 //for when one token too much was read
-#define S_OPERATOR_FINAL_2	138 //i--
+#define S_OPERATOR_FINAL_2	139 //i--
 //---------------------------
 
 //TOKEN: break

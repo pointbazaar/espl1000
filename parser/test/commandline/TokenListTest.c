@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <inttypes.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "TokenListTest.h"
 #include "../../main/commandline/TokenList.h"
@@ -20,15 +21,15 @@ int test_tokenlist1(bool debug){
 	list_add(list, makeToken2(OPKEY,"="));
 	list_add(list, makeToken2(INTEGER,"4"));
 
-	bool assert1 = list_size(list) == 3;
+	assert(list_size(list) == 3);
 
 	list_add(list, makeToken(SEMICOLON));
 
-	bool assert2 = list_size(list) == 4;
+	assert(list_size(list) == 4);
 	
 	freeTokenList(list);
 
-	return (assert1 && assert2)?1:0;
+	return 1;
 
 }
 
@@ -42,18 +43,18 @@ int test_tokenlist_consume(bool debug){
 
 	list_add(list, makeToken2(ID,"x"));
 	
-	bool a1 = list_size(list) == 1;
+	assert(list_size(list) == 1);
 
 	list_consume(list, 1);
 
-	bool a2 = list_size(list) == 0;
+	assert(list_size(list) == 0);
 	
 	//introspection
-	bool a3 = list->indexHead == 1;
+	assert(list->indexHead == 1);
 	
 	freeTokenList(list);
 
-	return (a1 && a2 && a3)?1:0;
+	return 1;
 }
 
 int test_tokenlist_get(bool debug){
@@ -101,11 +102,11 @@ int test_tokenlist_startswith(bool debug){
 	struct Token* tk = makeToken2(ID,"x");
 	list_add(list, tk);
 
-	bool assert1 = list_startsWith(list, tk);
+	assert(list_startsWith(list, tk));
 	
 	freeTokenList(list);
 
-	return (assert1)?1:0;
+	return 1;
 }
 
 int test_tokenlist_code(bool debug){
@@ -122,19 +123,20 @@ int test_tokenlist_code(bool debug){
 	list_add(list, makeToken2(RBRACKET,"]"));
 
 	char* str = list_code(list, debug);
-	char* expect = "x z y ]     [4,4,4,25,]";
+	char* expect = "x z y ]     [4,4,4,15,]";
 	if(debug){
 		printf("expected:\n");
 		printf("%s\n", expect);
 		printf("actual:\n");
 		printf("%s\n", str);
 	}
-	bool assert1 = strcmp(str, expect) == 0;
+	
+	assert(strcmp(str, expect) == 0);
 	
 	free(str);
 	freeTokenList(list);
 
-	return (assert1)?1:0;
+	return 1;
 }
 
 int test_tokenlist_stresstest(bool debug){

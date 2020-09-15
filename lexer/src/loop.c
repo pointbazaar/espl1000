@@ -357,12 +357,33 @@ void lex_main_inner(
 				tkn->value_ptr=";";
 				break;
 
-			case S_EQ_FINAL:
-				tkn->kind=EQ;
+			//SECTION: ASSIGNMENT ------
+			//sometimes reading single operators
+			//into their own state for 
+			//performance reasons (atleast i think so)
+			case S_ASSIGN_PLUS_EQ_FINAL:
+				tkn->kind = ASSIGNOP;
+				tkn->value_ptr="+=";
+				break;
+			case S_ASSIGN_MINUS_EQ_FINAL:
+				tkn->kind = ASSIGNOP;
+				tkn->value_ptr="-=";
+				break;
+			case S_ASSIGN_TIMES_EQ_FINAL:
+				tkn->kind = ASSIGNOP;
+				tkn->value_ptr="*=";
+				break;
+			case S_ASSIGN_DIV_EQ_FINAL:
+				tkn->kind = ASSIGNOP;
+				tkn->value_ptr="/=";
+				break;
+				
+			case S_ASSIGN_EQ_FINAL:
+				tkn->kind=ASSIGNOP;
 				tkn->value_ptr="=";
 				i--;
 				break;
-
+			//--------------------------
 			case S_BOOLCONST_FINAL:
 				tkn->kind=BCONST;
 				tkn->value_ptr=substr(input+start,end-start-1);
@@ -438,13 +459,6 @@ void lex_main_inner(
 				tkn->kind=OPKEY;
 				tkn->value_ptr=substr(input+start,end-start);
 				tkn->statically_allocated=false;
-				break;
-
-			case S_MINUS_FINAL:
-				tkn->kind=OPKEY;
-				tkn->value_ptr=substr(input+start,end-start-1);
-				tkn->statically_allocated=false;
-				i--;
 				break;
 
 			//SECTION: CHARCONST, STRINGCONST

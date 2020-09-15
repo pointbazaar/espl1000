@@ -18,7 +18,7 @@ int stmt_test_assignment_statement_with_struct_access(bool debug) {
 	list_add(tokens, makeToken2(ID,"x") );
 	list_add(tokens, makeToken(STRUCTMEMBERACCESS) );
 	list_add(tokens, makeToken2(ID,"a") );
-	list_add(tokens, makeToken2(EQ,"=") );
+	list_add(tokens, makeToken2(ASSIGNOP,"=") );
 	list_add(tokens, makeToken2(INTEGER,"3") );
 	list_add(tokens, makeToken(SEMICOLON) );
 

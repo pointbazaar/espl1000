@@ -134,6 +134,9 @@ int test_all(bool debug1) {
 	
 	pass+=test_switch_case();
 	count+=1;
+	
+	pass+=test_assign_operators();
+	count+=1;
 
 	printf("%i of %i tests passed\n",pass,count);
 
@@ -172,7 +175,7 @@ bool test_can_see_line_with_operators() {
 		lex(str,".test.tokens", debug);
 
 	assert(tokens[0]->kind == ID);
-	assert(tokens[1]->kind == EQ);
+	assert(tokens[1]->kind == ASSIGNOP);
 	assert(tokens[2]->kind == ID);
 	assert(tokens[3]->kind == OPKEY);
 	assert(tokens[4]->kind == ID);
@@ -815,7 +818,7 @@ bool test_mixed_5() {
 
 	assert(tokens[0]->kind==RBRACKET);
 
-	assert(tokens[1]->kind==EQ);
+	assert(tokens[1]->kind==ASSIGNOP);
 
 	assert(tokens[2]->kind==CCONST);
 
@@ -935,7 +938,7 @@ bool test_mixed_10() {
 
 	assert(tokens[2]->kind==ID);
 
-	assert(tokens[3]->kind==EQ);
+	assert(tokens[3]->kind==ASSIGNOP);
 
 	assert(tokens[4]->kind==INTEGER);
 
@@ -1088,8 +1091,6 @@ bool test_mixed_16(){
 	assert(tokens[0]->kind==LPARENS);
 	assert(tokens[1]->kind==LPARENS);
 	assert(tokens[2]->kind==TYPEIDENTIFIER);
-	
-	printf("%d %s\n", tokens[3]->kind, tokens[3]->value_ptr);
 	
 	assert(tokens[3]->kind==RPARENS);
 	assert(tokens[4]->kind==ARROW);
@@ -1310,7 +1311,7 @@ bool test_member_access(){
 	assert(tokens[1]->kind==STRUCTMEMBERACCESS);
 	assert(tokens[2]->kind==ID);
 	
-	assert(tokens[3]->kind==EQ);
+	assert(tokens[3]->kind==ASSIGNOP);
 
 	freeTokens(tokens, 4);
 
@@ -1331,6 +1332,26 @@ bool test_switch_case(){
 	
 	assert(tokens[3]->kind==CASE);
 	assert(tokens[4]->kind==INTEGER);
+
+	freeTokens(tokens, 5);
+
+	return true;
+}
+
+bool test_assign_operators(){
+	
+	if(debug) { printf("test_assign_operators\n"); }
+
+	char* str = "= += -= *= /=  ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+	
+	assert(tokens[0]->kind==ASSIGNOP);
+	
+	assert(tokens[1]->kind==ASSIGNOP);
+	assert(tokens[2]->kind==ASSIGNOP);
+	assert(tokens[3]->kind==ASSIGNOP);
+	assert(tokens[4]->kind==ASSIGNOP);
 
 	freeTokens(tokens, 5);
 
