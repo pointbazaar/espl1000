@@ -119,8 +119,6 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	final_state[S_LBRACKET_FINAL]=true;
 	final_state[S_RBRACKET_FINAL]=true;
 
-	final_state[S_WAVE_FINAL]=true;
-
 	final_state[S_SINGLE_LINE_COMMENT_FINAL]=true;
 	final_state[S_MULTI_LINE_COMMENT_FINAL]=true;
 

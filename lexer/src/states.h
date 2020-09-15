@@ -129,7 +129,6 @@
 
 //TOKEN ~
 #define S_WAVE 			115
-#define S_WAVE_FINAL 	116
 
 //TOKEN ARROW
 #define S_ARROW_FINAL	117

@@ -214,3 +214,17 @@ bool test_bitwise_rightshift(bool debug){
 	const int status = sourceToStatus(src, debug);
 	return status == 1;
 }
+
+bool test_bitwise_xor(bool debug){
+	if(debug){ printf("test_bitwise_xor\n"); }
+	char* src = "fn main () ~> PInt { return 8 ^ 5; }";
+	const int status = sourceToStatus(src, debug);
+	return status == 13;
+}
+
+bool test_bitwise_neg(bool debug){
+	if(debug){ printf("test_bitwise_neg\n"); }
+	char* src = "fn main () ~> PInt { return ~4 + 5; }";
+	const int status = sourceToStatus(src, debug);
+	return status == 0;
+}

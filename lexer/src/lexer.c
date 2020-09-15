@@ -205,6 +205,11 @@ void init_operator(short** dfa){
 	//<<, >>
 	dfa[S_LESSER]['<']=S_OPERATOR_FINAL;
 	dfa[S_GREATER]['>']=S_OPERATOR_FINAL;
+	//'~'
+	dfa[S_WAVE][' ']=S_OPERATOR_FINAL_2;
+	set_transitions_letters(dfa, S_WAVE, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_WAVE, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa, S_WAVE, S_OPERATOR_FINAL_2);
 	//---------------------------------
 	
 	//comparison operators ---------------
@@ -396,11 +401,6 @@ void init_arrow(short** dfa){
 	set_transitions_digits(dfa,S_MINUS,S_MINUS_FINAL);
 	set_transitions_operators(dfa,S_MINUS,S_MINUS_FINAL);
 
-	set_transitions_letters(dfa,S_WAVE,S_WAVE_FINAL);
-	set_transitions_digits(dfa,S_WAVE,S_WAVE_FINAL);
-	set_transitions_operators(dfa,S_WAVE,S_WAVE_FINAL);
-
-	dfa[S_WAVE][' ']=S_WAVE_FINAL;
 	dfa[S_MINUS][' ']=S_MINUS_FINAL;
 
 	dfa[S_WAVE]['>']=S_ARROW_FINAL;	

@@ -45,16 +45,18 @@ int transpiler_test_all(bool debug){
 	tests[17] = test_bitwise_or;
 	tests[18] = test_bitwise_leftshift;
 	tests[19] = test_bitwise_rightshift;
+	tests[20] = test_bitwise_xor;
+	tests[21] = test_bitwise_neg;
 	
 	// then the ones from test_other.h
-	tests[20] = test_statuscode;
-	tests[21] = test_simplevar;
-	tests[22] = test_ifstmt;
-	tests[23] = test_whilestmt;
-	tests[24] = test_subrcall;
-	tests[25] = test_recursive;
-	tests[26] = test_charconst_cmp;
-	tests[27] = test_break;
+	tests[22] = test_statuscode;
+	tests[23] = test_simplevar;
+	tests[24] = test_ifstmt;
+	tests[25] = test_whilestmt;
+	tests[26] = test_subrcall;
+	tests[27] = test_recursive;
+	tests[28] = test_charconst_cmp;
+	tests[29] = test_break;
 	
 	for(int i=0; i < testsRun; i++){
 		testsPassed += (*tests[i])(debug);

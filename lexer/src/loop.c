@@ -352,11 +352,6 @@ void lex_main_inner(
 				break;
 
 			//SECTION: OTHER SYMBOLS
-			case S_WAVE_FINAL:
-				tkn->kind=WAVE;
-				tkn->value_ptr="~";
-				break;
-
 			case S_SEMICOLON_FINAL:
 				tkn->kind=SEMICOLON;
 				tkn->value_ptr=";";
