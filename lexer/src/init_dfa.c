@@ -80,9 +80,6 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	dfa[S_START]['[']=S_LBRACKET_FINAL;
 	dfa[S_START][']']=S_RBRACKET_FINAL;
 
-	dfa[S_START]['<']=S_LESSER_FINAL;
-	dfa[S_START]['>']=S_GREATER_FINAL;
-
 	dfa[S_START]['~']=S_WAVE;
 	dfa[S_START]['/']=S_SLASH;
 
@@ -122,8 +119,6 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	final_state[S_LBRACKET_FINAL]=true;
 	final_state[S_RBRACKET_FINAL]=true;
 
-	final_state[S_LESSER_FINAL]=true;
-	final_state[S_GREATER_FINAL]=true;
 	final_state[S_WAVE_FINAL]=true;
 
 	final_state[S_SINGLE_LINE_COMMENT_FINAL]=true;

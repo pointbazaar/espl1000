@@ -31,18 +31,9 @@
 #define S_IDENTIFIER 34
 #define S_IDENTIFIER_FINAL 35
 
-
-//TOKEN >
-#define S_GREATER_FINAL 37
-
-//TOKEN <
-#define S_LESSER_FINAL 38
-
-
 //TOKEN typeidentifier
 #define S_TYPEIDENTIFIER 40
 #define S_TYPEIDENTIFIER_FINAL 41
-
 
 //COMMENTS
 #define S_SINGLE_LINE_COMMENT 46
@@ -156,22 +147,17 @@
 
 //TOKEN OPERATOR
 #define S_OPERATOR 			130
-#define S_SLASH 			131	//'/'
-#define S_OPERATOR_AND_1 	132	//'&'
-#define S_OPERATOR_OR_1  	133	//'|'
-#define S_NOT 				134	//'!'
+#define S_SLASH 			131	// '/'
+#define S_OPERATOR_AND_1 	132	// '&'
+#define S_OPERATOR_OR_1  	133	// '|'
+#define S_NOT 				134	// '!'
+#define S_GREATER 			135 // '>' 
+#define S_LESSER 			136 // '<'
 //-----
-#define S_OPERATOR_FINAL 	135 //no i--
+#define S_OPERATOR_FINAL 	137 //no i--
 //for when one token too much was read
-#define S_OPERATOR_FINAL_2	136 //i--
+#define S_OPERATOR_FINAL_2	138 //i--
 //---------------------------
-
-//TOKEN: else
-#define S_e 			138
-#define S_el 			139
-#define S_els 			140
-#define S_else 			141
-#define S_else_FINAL 	142
 
 //TOKEN: break
 #define S_b				143
@@ -218,6 +204,13 @@
 //TOKEN fn
 #define S_fn 			168
 #define S_fn_FINAL 		169
+
+//TOKEN: else
+#define S_e 			170
+#define S_el 			171
+#define S_els 			172
+#define S_else 			173
+#define S_else_FINAL 	174
 
 //so we set n_states to be sufficient, to
 //have space for future states also

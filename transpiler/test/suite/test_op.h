@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-#define TEST_COUNT_OP 18
+#define TEST_COUNT_OP 20
 
 /* This test suite should test that smalldragon correctly transpiles
  * all the basic arithmetic and logical operations.
@@ -34,8 +34,10 @@ bool test_eq(bool debug);
 bool test_neq(bool debug);
 bool test_chained_cmp(bool debug);
 
-//bitwise tests (2)
+//bitwise tests (4)
 bool test_bitwise_and(bool debug);
 bool test_bitwise_or(bool debug);
+bool test_bitwise_leftshift(bool debug);
+bool test_bitwise_rightshift(bool debug);
 
 #endif

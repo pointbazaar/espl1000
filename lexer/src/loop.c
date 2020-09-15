@@ -26,7 +26,7 @@
 const uint64_t tokens_capacity = 5000;	//should be 5000
 struct Token* tokens[5000];
 
-const uint64_t n_states = 170;		//number of states in our state machine
+const uint64_t n_states = 180;		//number of states in our state machine
 
 //possible ascii chars, without the 
 //Extended Ascii codes
@@ -352,16 +352,6 @@ void lex_main_inner(
 				break;
 
 			//SECTION: OTHER SYMBOLS
-			case S_LESSER_FINAL:
-				tkn->kind=OPKEY;
-				tkn->value_ptr="<";
-				break;
-
-			case S_GREATER_FINAL:
-				tkn->kind=OPKEY;
-				tkn->value_ptr=">";
-				break;
-
 			case S_WAVE_FINAL:
 				tkn->kind=WAVE;
 				tkn->value_ptr="~";

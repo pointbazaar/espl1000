@@ -1108,7 +1108,7 @@ bool test_operators() {
 		printf("test operators\n");
 	}
 
-	char* str = "+ - * / && || | & ";
+	char* str = "+ - * / && || | & << >> <= >=";
 	struct Token** tokens = 
 		lex(str,".test.tokens", debug);
 
@@ -1127,8 +1127,16 @@ bool test_operators() {
 	assert(tokens[6]->kind==OPKEY);
 	
 	assert(tokens[7]->kind==OPKEY);
+	
+	assert(tokens[8]->kind==OPKEY);
+	
+	assert(tokens[9]->kind==OPKEY);
+	
+	assert(tokens[10]->kind==OPKEY);
+	
+	assert(tokens[11]->kind==OPKEY);
 
-	freeTokens(tokens, 8);
+	freeTokens(tokens, 12);
 
 	return true;
 }

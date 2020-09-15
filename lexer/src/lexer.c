@@ -169,6 +169,9 @@ void init_numbers(short** dfa){
 
 void init_operator(short** dfa){
 	
+	dfa[S_START]['<']=S_LESSER;
+	dfa[S_START]['>']=S_GREATER;
+	
 	dfa[S_START]['+']=S_OPERATOR_FINAL;
 	dfa[S_START]['-']=S_MINUS;
 	dfa[S_START]['*']=S_OPERATOR_FINAL;
@@ -199,7 +202,25 @@ void init_operator(short** dfa){
 	set_transitions_letters(dfa, S_OPERATOR_OR_1, S_OPERATOR_FINAL_2);
 	set_transitions_digits(dfa, S_OPERATOR_OR_1, S_OPERATOR_FINAL_2);
 	set_transitions_braces(dfa,S_OPERATOR_OR_1,S_OPERATOR_FINAL_2);
+	//<<, >>
+	dfa[S_LESSER]['<']=S_OPERATOR_FINAL;
+	dfa[S_GREATER]['>']=S_OPERATOR_FINAL;
 	//---------------------------------
+	
+	//comparison operators ---------------
+	//<,>
+	dfa[S_LESSER][' ']=S_OPERATOR_FINAL_2;
+	dfa[S_GREATER][' ']=S_OPERATOR_FINAL_2;
+	set_transitions_letters(dfa, S_LESSER, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_LESSER, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa, S_LESSER, S_OPERATOR_FINAL_2);
+	set_transitions_letters(dfa, S_GREATER, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_GREATER, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa, S_GREATER, S_OPERATOR_FINAL_2);
+	//>=, <=
+	dfa[S_LESSER]['=']=S_OPERATOR_FINAL;
+	dfa[S_GREATER]['=']=S_OPERATOR_FINAL;
+	//------------------------------------
 
 	set_transitions_letters(dfa,S_OPERATOR,S_OPERATOR_FINAL_2);
 	set_transitions_braces(dfa,S_OPERATOR,S_OPERATOR_FINAL_2);

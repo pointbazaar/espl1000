@@ -200,3 +200,17 @@ bool test_bitwise_or(bool debug){
 	
 	return status == 3;
 }
+
+bool test_bitwise_leftshift(bool debug){
+	if(debug){ printf("test_bitwise_leftshift\n"); }
+	char* src = "fn main () ~> PInt { return 1 << 1; }";
+	const int status = sourceToStatus(src, debug);
+	return status == 2;
+}
+
+bool test_bitwise_rightshift(bool debug){
+	if(debug){ printf("test_bitwise_rightshift\n"); }
+	char* src = "fn main () ~> PInt { return 2 >> 1; }";
+	const int status = sourceToStatus(src, debug);
+	return status == 1;
+}
