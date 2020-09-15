@@ -180,3 +180,23 @@ bool test_chained_cmp(bool debug){
 	
 	return status == 0;
 }
+
+bool test_bitwise_and(bool debug){
+	if(debug){ printf("test_bitwise_and\n"); }
+	
+	char* src = "fn main () ~> PInt { return 3 & 1; }";
+	
+	const int status = sourceToStatus(src, debug);
+	
+	return status == 1;
+}
+
+bool test_bitwise_or(bool debug){
+	if(debug){ printf("test_bitwise_or\n"); }
+	
+	char* src = "fn main () ~> PInt { return 1 | 2; }";
+	
+	const int status = sourceToStatus(src, debug);
+	
+	return status == 3;
+}

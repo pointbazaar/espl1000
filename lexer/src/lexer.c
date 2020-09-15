@@ -179,31 +179,40 @@ void init_operator(short** dfa){
 
 	dfa[S_NOT]['=']=S_OPERATOR_FINAL;
 
+	//logical operators
 	dfa[S_START]['&']=S_OPERATOR_AND_1;
 	dfa[S_OPERATOR_AND_1]['&']=S_OPERATOR_FINAL;
 
 	dfa[S_START]['|']=S_OPERATOR_OR_1;
 	dfa[S_OPERATOR_OR_1]['|']=S_OPERATOR_FINAL;
-
-	set_transitions_letters(dfa,S_OPERATOR_AND_1,S_OPERATOR_FINAL);
-	set_transitions_braces(dfa,S_OPERATOR_AND_1,S_OPERATOR_FINAL);
-
-
-	set_transitions_letters(dfa,S_OPERATOR_OR_1,S_OPERATOR_FINAL);
-	set_transitions_braces(dfa,S_OPERATOR_OR_1,S_OPERATOR_FINAL);
-
-	set_transitions_letters(dfa,S_OPERATOR,S_OPERATOR_FINAL);
-	set_transitions_braces(dfa,S_OPERATOR,S_OPERATOR_FINAL);
-
-	dfa[S_OPERATOR][' ']=S_OPERATOR_FINAL;
-
-	dfa[S_SLASH][' ']=S_OPERATOR_FINAL;
-	set_transitions_letters(dfa,S_SLASH,S_OPERATOR_FINAL);
-	set_transitions_braces(dfa,S_SLASH,S_OPERATOR_FINAL);
-	set_transitions_digits(dfa,S_SLASH,S_OPERATOR_FINAL);
 	
-	dfa[S_NOT][' '] = S_OPERATOR_FINAL;
-	set_transitions_letters(dfa, S_NOT, S_OPERATOR_FINAL);
+	//bitwise operators --------------------------
+	//bitwise and
+	dfa[S_OPERATOR_AND_1][' ']=S_OPERATOR_FINAL_2;
+	dfa[S_OPERATOR_AND_1]['-']=S_OPERATOR_FINAL_2;
+	set_transitions_letters(dfa, S_OPERATOR_AND_1, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_OPERATOR_AND_1, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa,S_OPERATOR_AND_1,S_OPERATOR_FINAL_2);
+	//bitwise or
+	dfa[S_OPERATOR_OR_1][' ']=S_OPERATOR_FINAL_2;
+	dfa[S_OPERATOR_OR_1]['-']=S_OPERATOR_FINAL_2;
+	set_transitions_letters(dfa, S_OPERATOR_OR_1, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_OPERATOR_OR_1, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa,S_OPERATOR_OR_1,S_OPERATOR_FINAL_2);
+	//---------------------------------
+
+	set_transitions_letters(dfa,S_OPERATOR,S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa,S_OPERATOR,S_OPERATOR_FINAL_2);
+
+	dfa[S_OPERATOR][' ']=S_OPERATOR_FINAL_2;
+
+	dfa[S_SLASH][' ']=S_OPERATOR_FINAL_2;
+	set_transitions_letters(dfa,S_SLASH,S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa,S_SLASH,S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa,S_SLASH,S_OPERATOR_FINAL_2);
+	
+	dfa[S_NOT][' '] = S_OPERATOR_FINAL_2;
+	set_transitions_letters(dfa, S_NOT, S_OPERATOR_FINAL_2);
 }
 
 void init_return(short** dfa){

@@ -446,11 +446,13 @@ void lex_main_inner(
 				break;
 
 			//SECTION: OPERATORS
+			case S_OPERATOR_FINAL_2:
+				end--;
+				i--;
 			case S_OPERATOR_FINAL:
 				tkn->kind=OPKEY;
 				tkn->value_ptr=substr(input+start,end-start);
 				tkn->statically_allocated=false;
-				//TODO: recognize /2 and do i--
 				break;
 
 			case S_MINUS_FINAL:

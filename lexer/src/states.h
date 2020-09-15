@@ -159,13 +159,12 @@
 #define S_SLASH 			131	//'/'
 #define S_OPERATOR_AND_1 	132	//'&'
 #define S_OPERATOR_OR_1  	133	//'|'
-#define S_OPERATOR_FINAL 	134
-#define S_NOT 				135	//'!'
-
-//TOKEN fn
-#define S_fn 136
-#define S_fn_FINAL 137
-
+#define S_NOT 				134	//'!'
+//-----
+#define S_OPERATOR_FINAL 	135 //no i--
+//for when one token too much was read
+#define S_OPERATOR_FINAL_2	136 //i--
+//---------------------------
 
 //TOKEN: else
 #define S_e 			138
@@ -215,6 +214,10 @@
 #define S_cas			165
 #define S_case			166
 #define S_case_FINAL	167
+
+//TOKEN fn
+#define S_fn 			168
+#define S_fn_FINAL 		169
 
 //so we set n_states to be sufficient, to
 //have space for future states also

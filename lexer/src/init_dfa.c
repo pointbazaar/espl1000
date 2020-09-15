@@ -136,6 +136,7 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	final_state[S_FLOAT_FINAL]=true;
 
 	final_state[S_OPERATOR_FINAL]=true;
+	final_state[S_OPERATOR_FINAL_2]=true;
 	final_state[S_RETURN_FINAL]=true;
 	final_state[S_loop_FINAL]=true;
 

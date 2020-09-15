@@ -40,21 +40,19 @@ int transpiler_test_all(bool debug){
 	tests[12] = test_leq;
 	tests[13] = test_eq;
 	tests[14] = test_neq;
-	
-	//Test disabled, as the feature
-	//being tested is not yet implemented
-	//tests[15] = test_chained_cmp;
-	tests[15] = test_neq;  //duplicate test
+	tests[15] = test_chained_cmp;
+	tests[16] = test_bitwise_and;
+	tests[17] = test_bitwise_or;
 	
 	// then the ones from test_other.h
-	tests[16] = test_statuscode;
-	tests[17] = test_simplevar;
-	tests[18] = test_ifstmt;
-	tests[19] = test_whilestmt;
-	tests[20] = test_subrcall;
-	tests[21] = test_recursive;
-	tests[22] = test_charconst_cmp;
-	tests[23] = test_break;
+	tests[18] = test_statuscode;
+	tests[19] = test_simplevar;
+	tests[20] = test_ifstmt;
+	tests[21] = test_whilestmt;
+	tests[22] = test_subrcall;
+	tests[23] = test_recursive;
+	tests[24] = test_charconst_cmp;
+	tests[25] = test_break;
 	
 	for(int i=0; i < testsRun; i++){
 		testsPassed += (*tests[i])(debug);
@@ -64,8 +62,6 @@ int transpiler_test_all(bool debug){
 			break;
 		}
 	}
-	
-	//testsPassed += test_add(debug);
 	
 	printf("\nPassed %d of %d Tests\n",testsPassed,testsRun);
 	
