@@ -24,7 +24,7 @@ struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
 	struct TypeParam* res = smalloc(sizeof(struct TypeParam));
 
 	if (token->kind == TPARAM) {
-		res->index = atoi(token->value);
+		res->index = atoi(token->value_ptr);
 		if(list_size(tokens) == 0){
 			free(res);
 			return NULL;

@@ -24,7 +24,7 @@ struct StringConst* makeStringConst(struct TokenList* tokens, bool debug){
 	struct Token* head = list_head(tokens);
 	
 	if(head->kind == STRINGCONST){
-		strncpy(res->value, head->value, 99);
+		strncpy(res->value, head->value_ptr, 99);
 		list_consume(tokens, 1);
 	}else{
 		freeStringConst(res);

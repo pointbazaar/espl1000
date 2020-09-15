@@ -28,9 +28,9 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 	
 	if (tk->kind == BCONST) {
 		
-		if(strcmp(tk->value,"true") == 0) {
+		if(strcmp(tk->value_ptr,"true") == 0) {
 			res->value = true;
-		}else if(strcmp(tk->value,"false") == 0){
+		}else if(strcmp(tk->value_ptr,"false") == 0){
 			res->value = false;
 		}else{
 			printf("tk->value was not satisfactory.\n");

@@ -354,6 +354,9 @@ void writeAssignStmt(struct AssignStmt* m, FILE* file){
 	}
 	
 	writeVariable(m->var, file);
+	
+	fprintf(file, "%s\t", m->assign_op);
+	
 	writeExpr(m->expr, file);
 }
 void writeMethodCall(struct MethodCall* m, FILE* file){

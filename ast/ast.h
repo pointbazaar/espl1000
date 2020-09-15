@@ -188,6 +188,10 @@ struct AssignStmt {
 	struct Type* optType;	//may be NULL (optional)
 
 	struct Variable* var;
+	
+	//the assignment operator [=,+=,-=, ...]
+	char assign_op[3];
+	
 	struct Expr* expr;
 };
 struct IfStmt{

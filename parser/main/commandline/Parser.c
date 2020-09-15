@@ -229,8 +229,10 @@ struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool de
 		
 		bool isLineNo = false;
 		struct Token* tkn = recognizeToken(line, &isLineNo, debug);
-    	if(isLineNo){ 
-			freeToken(tkn);
+    	if(isLineNo){
+			if(tkn != NULL){ 
+				freeToken(tkn);
+			}
 			continue; 
 		}
     	

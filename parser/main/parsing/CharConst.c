@@ -32,7 +32,7 @@ struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 		
 		//index needs to be 1, as charconst
 		//is surrounded by single quotes
-		res->value = token->value[1];
+		res->value = token->value_ptr[1];
 		
 		list_consume(tokens, 1);
 	} else {

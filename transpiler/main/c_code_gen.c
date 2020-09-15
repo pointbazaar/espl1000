@@ -504,7 +504,7 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 		transpileVariable(as->var, ctx);
 	}
 	
-	fprintf(ctx->file, " = ");
+	fprintf(ctx->file, " %s ", as->assign_op);
 	transpileExpr(as->expr, ctx);
 }
 

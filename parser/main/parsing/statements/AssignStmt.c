@@ -43,12 +43,17 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 
-	if(!list_expect(copy, ASSIGNOP)){ 
+	struct Token* tkn_assign = list_head(copy);
+	if(tkn_assign->kind != ASSIGNOP){ 
 		freeVariable(res->var);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
 	}
+	list_consume(copy, 1);
+	
+	//save the assignment operator
+	strncpy(res->assign_op, tkn_assign->value_ptr, 2);
 
 	res->expr = makeExpr(copy,debug);
 	if(res->expr == NULL){

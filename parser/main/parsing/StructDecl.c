@@ -36,7 +36,7 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 		
 		
 		//read name
-		strcpy(res->name, list_head(copy)->value);
+		strcpy(res->name, list_head(copy)->value_ptr);
 		list_consume(copy, 1);
 			
 		next = list_head(copy);

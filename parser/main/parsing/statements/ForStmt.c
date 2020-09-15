@@ -39,7 +39,7 @@ struct ForStmt* makeForStmt(struct TokenList* tokens, bool debug) {
 	struct ForStmt* res = smalloc(sizeof(struct ForStmt));
 	
 	//copy the index Name
-	strncpy(res->indexName,	head->value, DEFAULT_STR_SIZE);
+	strncpy(res->indexName,	head->value_ptr, DEFAULT_STR_SIZE);
 	
 	if(!list_expect(copy, IN)){
 		freeTokenListShallow(copy);

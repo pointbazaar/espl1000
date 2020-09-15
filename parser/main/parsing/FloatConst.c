@@ -25,7 +25,7 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
 	res->value = 1.0;
 	
-	if(tk->kind == OPKEY && strcmp(tk->value, "-") == 0){
+	if(tk->kind == OPKEY && strcmp(tk->value_ptr, "-") == 0){
 		
 		res->value = -1.0;
 		
@@ -46,7 +46,7 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 		return NULL;
 	}
 
-	res->value *= atof(list_head(copy)->value);
+	res->value *= atof(list_head(copy)->value_ptr);
 	list_consume(copy, 1);
 
 

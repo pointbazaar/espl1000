@@ -12,15 +12,12 @@ struct Token {
 	//Value	(for example "subr" for an identifier)
 	uint32_t lineNumber;
 
-	//this is intentionally not a 'char*'
-	//in an effort to make the program simple.
-	//------
-	//however in the lexer it is a pointer
-	//so be careful
-	char value[32];
-	
-	//for the lexer,
-	//where a pointer is desired
+	//it is a pointer, because we do not know
+	//how long the token is going to get,
+	//and some long identifiers
+	//could require more bytes.
+	//It is not justified to have emtpy bytes in here
+	//in the cases where it is just a small token
 	char* value_ptr;
 	
 	bool statically_allocated;

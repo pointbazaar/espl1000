@@ -41,18 +41,18 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 
 			if(
 				(
-					( strcmp(opl->value,"<")==0) 
-					|| strcmp(opl->value,">")==0 
-				) && strcmp(opr->value,"=")==0
+					( strcmp(opl->value_ptr,"<")==0) 
+					|| strcmp(opl->value_ptr,">")==0 
+				) && strcmp(opr->value_ptr,"=")==0
 
 			){
 				
-				strcpy(res->op,opl->value);
-				strcat(res->op,opr->value);
+				strcpy(res->op,opl->value_ptr);
+				strcat(res->op,opr->value_ptr);
 				
 			}else if( 
-				strcmp(opl->value,"=") == 0 
-				&& strcmp(opr->value,"=") == 0
+				strcmp(opl->value_ptr,"=") == 0 
+				&& strcmp(opr->value_ptr,"=") == 0
 			){
 				strcpy(res->op, "==");
 			}else{
@@ -68,7 +68,7 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 			}
 			list_consume(copy, 2);
 		}else{
-			strcpy(res->op, tkn->value);
+			strcpy(res->op, tkn->value_ptr);
 			
 			list_consume(copy, 1);
 		}

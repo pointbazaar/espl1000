@@ -32,7 +32,7 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 	struct Token* token = list_head(copy);
 
 	if (token->kind == ID) {
-		strcpy(res->name, token->value);
+		strcpy(res->name, token->value_ptr);
 		list_consume(copy,1);
 
 		//it could have an index

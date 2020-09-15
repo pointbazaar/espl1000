@@ -203,10 +203,8 @@ void lex_main_inner(
 		}
 
 		struct Token* tkn = malloc(sizeof(struct Token));
-
 		tkn->kind=-1;
-		tkn->value_ptr="";
-		tkn->statically_allocated=true;
+		tkn->statically_allocated = true;
 
 		switch(state){
 

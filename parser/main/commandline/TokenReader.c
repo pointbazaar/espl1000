@@ -120,8 +120,10 @@ struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 			r = makeToken2(tkn_id, part2);
 			break;
 		default : 
-			//("unreconized token id : " + tkn_id);
+			printf("unreconized token id : %d\n", tkn_id);
+			exit(1);
 			return NULL;
 	};
+	r->statically_allocated = false;
 	return r;
 }

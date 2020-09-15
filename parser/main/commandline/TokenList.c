@@ -160,7 +160,7 @@ char* list_code(struct TokenList* list, bool debug) {
 	for(int i=0;i < list_size(list) && (i < 10);i++){
 		struct Token* tk = list_get(list,i);
 
-		strcat(str, tk->value);
+		strcat(str, tk->value_ptr);
 		strcat(str, " ");
 	}
 	strcat(str,"    ");

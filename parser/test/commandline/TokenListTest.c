@@ -72,19 +72,19 @@ int test_tokenlist_get(bool debug){
 	
 	struct Token* tk = list_get(list, 0);
 	bool a1 = tk->kind == ID;
-	bool a2 = strcmp(tk->value, "x") == 0;
+	bool a2 = strcmp(tk->value_ptr, "x") == 0;
 
 	struct Token* tk2 = list_get(list,1);
 	bool a3 = tk2->kind == INTEGER;
-	bool a4 = strcmp(tk2->value,"0") == 0;
+	bool a4 = strcmp(tk2->value_ptr,"0") == 0;
 
 	struct Token* tk3 = list_get(list,2);
 	bool a5 = tk3->kind == RBRACKET;
-	bool a6 = strcmp(tk3->value,"]") == 0;
+	bool a6 = strcmp(tk3->value_ptr,"]") == 0;
 
 	struct Token* tk4 = list_get(list,3);
 	bool a7 = tk4->kind == ID;
-	bool a8 = strcmp(tk4->value,"z") == 0;
+	bool a8 = strcmp(tk4->value_ptr,"z") == 0;
 	
 	freeTokenList(list);
 

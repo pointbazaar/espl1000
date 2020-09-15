@@ -676,6 +676,15 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 	}
 
 	v->var = readVariable(file, debug);
+	
+	char assign_op[3];
+	if(fscanf(file, "%s\t", assign_op) != 1){
+		fclose(file);
+		printf("Error in readAssignStmt\n");
+		exit(1);
+	}
+	strncpy(v->assign_op, assign_op, 2);
+	
 	v->expr = readExpr(file, debug);
 
 	return v;

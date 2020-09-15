@@ -14,6 +14,8 @@ OBJS := build/transpiler.o \
 	build/teststatuscode.o \
 	build/test_other.o \
 	build/test_op.o \
+	build/test_other.o \
+	build/test_assign.o \
 	build/flags.o \
 	build/localvarsymtable.o \
 	build/subrsymtable.o \
@@ -68,12 +70,21 @@ build/code_gen_util.o: main/code_gen_util.c main/code_gen_util.h main/ctx.h
 build/structs_code_gen.o: main/structs_code_gen.c main/structs_code_gen.h main/ctx.h main/flags.h
 	$(CALL) -c main/structs_code_gen.c -o $@
 
-build/test.o: test/test.c test/test.h main/transpiler.h main/flags.h test/teststatuscode.h 
+build/test.o: test/test.c test/test.h \
+		main/transpiler.h main/flags.h \
+		test/teststatuscode.h \
+		test/suite/test_op.h \
+		test/suite/test_other.h \
+		test/suite/test_assign.h \
+		test/suite/test_typeinference.h
 	$(CALL) -c test/test.c -o $@
 
 build/teststatuscode.o: test/teststatuscode.h test/teststatuscode.c main/flags.h main/transpiler.h ../util/util.c ../util/util.h
 	$(CALL) -c test/teststatuscode.c -o $@
 	
+build/test_assign.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_assign.h test/suite/test_assign.c
+	$(CALL) -c test/suite/test_assign.c -o $@
+
 build/test_other.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_other.h test/suite/test_other.c
 	$(CALL) -c test/suite/test_other.c -o $@
 	

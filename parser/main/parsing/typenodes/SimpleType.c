@@ -29,7 +29,7 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 	}
 	
 	if (token->kind == TYPEIDENTIFIER) {
-		strcpy(res->typeName, token->value);
+		strcpy(res->typeName, token->value_ptr);
 	} else if (token->kind == ANYTYPE) {
 		strcpy(res->typeName, "#");
 	} else {

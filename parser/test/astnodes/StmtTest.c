@@ -1,12 +1,13 @@
+#include <stdbool.h>
+#include <stdio.h>
+#include <assert.h>
+
 #include "StmtTest.h"
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
 #include "../../main/parsing/statements/Stmt.h"
 #include "../../../token/token.h"
 #include "../../../ast/free_ast.h"
-
-#include <stdbool.h>
-#include <stdio.h>
 
 int stmt_test_assignment_statement_with_struct_access(bool debug) {
 
@@ -16,21 +17,22 @@ int stmt_test_assignment_statement_with_struct_access(bool debug) {
 
 	struct TokenList* tokens = makeTokenList();
 	list_add(tokens, makeToken2(ID,"x") );
-	list_add(tokens, makeToken(STRUCTMEMBERACCESS) );
+	list_add(tokens, makeToken2(STRUCTMEMBERACCESS,"."));
 	list_add(tokens, makeToken2(ID,"a") );
 	list_add(tokens, makeToken2(ASSIGNOP,"=") );
 	list_add(tokens, makeToken2(INTEGER,"3") );
-	list_add(tokens, makeToken(SEMICOLON) );
+	list_add(tokens, makeToken2(SEMICOLON, ";"));
 
 	struct Stmt* node = makeStmt(tokens,debug);
 
-	bool assert1 = (0 == list_size(tokens)); //all tokens should have been consumed
-	bool assert2 = node != NULL;
+	//all tokens should have been consumed
+	assert(0 == list_size(tokens)); 
+	assert(node != NULL);
 	
 	freeTokenList(tokens);
 	freeStmt(node);
 
-	return (assert1 && assert2)?1:0;
+	return 1;
 }
 
 int stmt_test_assignment_statement_with_method_call(bool debug) {

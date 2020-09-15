@@ -15,7 +15,12 @@ struct Token* makeToken2(int kind, char* value){
 	struct Token* res = smalloc(sizeof(struct Token));
 
 	res->kind = kind;
-	strncpy(res->value, value, 20);
+	//res->value_ptr = value;
+	//res->statically_allocated = true; 
+	res->value_ptr = smalloc(sizeof(char)*(strlen(value)+1));
+	strcpy(res->value_ptr, value);
+	res->statically_allocated = false;
+	
 	res->lineNumber = -1;
 
 	return res;
@@ -25,11 +30,11 @@ bool tokenEquals(struct Token* a, struct Token* b){
 	const bool kindEq = a->kind == b->kind;
 	if(kindEq){
 
-		if(a->value != NULL && b->value != NULL){
-			if(strlen(a->value)==0 || strlen(b->value)==0){
+		if(a->value_ptr != NULL && b->value_ptr != NULL){
+			if(strlen(a->value_ptr)==0 || strlen(b->value_ptr)==0){
 				return true;
 			}else{
-				return strcmp(a->value,b->value) == 0;
+				return strcmp(a->value_ptr,b->value_ptr) == 0;
 			}
 		}
 		return true;
@@ -39,5 +44,8 @@ bool tokenEquals(struct Token* a, struct Token* b){
 
 void freeToken(struct Token* token){
 	
+	if(!token->statically_allocated){
+		free(token->value_ptr);
+	}
 	free(token);
 }
