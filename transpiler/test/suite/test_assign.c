@@ -31,7 +31,7 @@ bool test_assign_minus(bool debug){
 bool test_assign_times(bool debug){
 	
 	if(debug){ printf("test_assign_times\n"); }
-	char* src = "fn main () ~> PInt { Int x = 3; x = 2; return x; }";
+	char* src = "fn main () ~> PInt { Int x = 3; x *= 2; return x; }";
 	const int status = sourceToStatus(src, debug);
 	return status == 6;
 }
@@ -39,7 +39,7 @@ bool test_assign_times(bool debug){
 bool test_assign_div(bool debug){
 	
 	if(debug){ printf("test_assign_div\n"); }
-	char* src = "fn main () ~> PInt { Int x = 4; x = 2; return x; }";
+	char* src = "fn main () ~> PInt { Int x = 4; x /= 2; return x; }";
 	const int status = sourceToStatus(src, debug);
 	return status == 2;
 }
