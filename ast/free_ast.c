@@ -274,6 +274,7 @@ void freeOp(struct Op* op){
 }
 
 void freeStringConst(struct StringConst* s){
+	free(s->value);
 	free(s);
 }
 

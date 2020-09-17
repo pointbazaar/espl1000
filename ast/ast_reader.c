@@ -436,8 +436,9 @@ struct StringConst* readStringConst(FILE* file, bool debug){
 	
 	//doing this to avoid problems
 	//with whitespace or any characters at all really
-	char val[length+1];
+	char* val = smalloc(sizeof(char)*(length+1));
 	val[length]='\0';
+	
 	for(int i=0;i < length; i++){
 		//0-padded on the left, 3 chars wide,
 		//casted to unsigned integer
@@ -445,7 +446,7 @@ struct StringConst* readStringConst(FILE* file, bool debug){
 		fscanf(file, "%03d_", &v);
 		val[i]=v;
 	}
-	strcpy(s->value, val);
+	s->value = val;
 	
 	return s;
 }

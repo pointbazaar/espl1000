@@ -93,7 +93,10 @@ struct IntConst {
 	int value;
 };
 struct StringConst {
-	char value[100];
+	//string constants
+	//should not have limited size
+	//therefore it is a pointer
+	char* value;
 };
 struct Method {
 	bool isPublic;

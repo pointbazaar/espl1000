@@ -135,6 +135,7 @@ struct Op* copyOp(struct Op* op){
 
 struct StringConst* copyStringConst(struct StringConst* s){
 	struct StringConst* res = malloc(sizeof(struct StringConst));
+	res->value = malloc(sizeof(char)*(strlen(s->value)+1));
 	strcpy(res->value, s->value);
 	return res;
 }

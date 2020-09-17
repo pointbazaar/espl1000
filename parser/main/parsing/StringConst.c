@@ -19,15 +19,20 @@ struct StringConst* makeStringConst(struct TokenList* tokens, bool debug){
 	
 	if(list_size(tokens) == 0){return NULL;}
 	
-	struct StringConst* res = smalloc(sizeof(struct StringConst));
+	struct StringConst* res = 
+		smalloc(sizeof(struct StringConst));
 	
 	struct Token* head = list_head(tokens);
 	
 	if(head->kind == STRINGCONST){
-		strncpy(res->value, head->value_ptr, 99);
+		res->value = smalloc
+			(sizeof(char)*(strlen(head->value_ptr)+1));
+			
+		strcpy(res->value, head->value_ptr);
+		
 		list_consume(tokens, 1);
 	}else{
-		freeStringConst(res);
+		free(res);
 		return NULL;
 	}
 	
