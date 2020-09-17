@@ -20,18 +20,26 @@ and are a subset of those.
 
 <table>
 <tr>
-	<td>Type</td><td>Width (in bytes)</td>
+	<td>Type</td><td>Width (in bytes)</td><td>transpiles to:</td>
 </tr>
-<tr> <td>Int8</td>  <td>8</td>  </tr>
-<tr> <td>Int16</td> <td>16</td>  </tr>
-<tr> <td>Int32</td> <td>32</td>  </tr>
-<tr> <td>Int64</td> <td>64</td>  </tr>
+<tr> <td>Int8</td>  <td>8</td>  <td>int8_t</td>   </tr>
+<tr> <td>Int16</td> <td>16</td> <td>int16_t</td>  </tr>
+<tr> <td>Int32</td> <td>32</td> <td>int32_t</td>  </tr>
+<tr> <td>Int64</td> <td>64</td> <td>int64_t</td>  </tr>
 </table>
 
 <p>
 There is also Int, which transpiles directly to 'int' in C.
 It should not be used if you want a specific size.
 </p>
+
+<h3> Other Types </h3>
+<ul>
+	<li>Bool</li>
+	<li>Char</li>
+	<li>Float</li>
+	<li>String</li>
+</ul>
 
 </body>
 </html>
