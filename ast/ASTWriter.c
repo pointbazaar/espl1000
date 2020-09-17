@@ -405,23 +405,16 @@ void writeSwitchStmt(struct SwitchStmt* m,	FILE* file){
 }
 void writeCaseStmt(struct CaseStmt* m,		FILE* file){
 	
-	int kind = 0;
-	if(m->m1 != NULL){ kind = 1; }
-	if(m->m2 != NULL){ kind = 2; }
-	if(m->m3 != NULL){ kind = 3; }
+	fprintf(file, "CaseStmt\t%d\t", m->kind);
 	
-	fprintf(file, "CaseStmt\t%d\t", kind);
-	
-	switch(kind){
-		case 1:
-			writeBoolConst(m->m1, file);
-			break;
-		case 2:
-			writeCharConst(m->m2, file);
-			break;
-		case 3:
-			writeIntConst(m->m3, file);
-			break;
+	switch(m->kind){
+		case 0: writeBoolConst(m->ptr.m1, file); break;
+		case 1: writeCharConst(m->ptr.m2, file); break;
+		case 2: writeIntConst(m->ptr.m3, file); break;
+		default: 
+			printf("Error\n");
+			fclose(file);
+			exit(1);
 	}
 	
 	fprintf(file, "%d\t", (m->block == NULL)?0:1);

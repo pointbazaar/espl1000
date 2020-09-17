@@ -809,16 +809,15 @@ struct CaseStmt* readCaseStmt(FILE* file, bool debug){
 	}
 	
 	struct CaseStmt* res = smalloc(sizeof(struct CaseStmt));
+	res->kind = kind;
 	
-	res->m1 = NULL;
-	res->m2 = NULL;
-	res->m3 = NULL;
+	res->ptr.m1 = NULL;
 	res->block = NULL;
 	
 	switch(kind){
-		case 1: res->m1 = readBoolConst(file, debug); break;
-		case 2: res->m2 = readCharConst(file, debug); break;
-		case 3: res->m3 = readIntConst(file, debug); break;
+		case 0: res->ptr.m1 = readBoolConst(file, debug); break;
+		case 1: res->ptr.m2 = readCharConst(file, debug); break;
+		case 2: res->ptr.m3 = readIntConst(file, debug); break;
 		default:
 			printf("Error in readCase\n");
 			free(res);

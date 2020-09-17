@@ -339,13 +339,13 @@ void freeCaseStmt(struct CaseStmt* c){
 	if(c->block != NULL){
 		freeStmtBlock(c->block);
 	}
-	
-	if(c->m1 != NULL){
-		freeBoolConst(c->m1);
-	}else if(c->m2 != NULL){
-		freeCharConst(c->m2);
-	}else if(c->m3 != NULL){
-		freeIntConst(c->m3);
+	switch(c->kind){
+		case 0: freeBoolConst(c->ptr.m1); break;
+		case 1: freeCharConst(c->ptr.m2); break;
+		case 2: freeIntConst(c->ptr.m3); break;
+		default:
+			printf("Error in freeCaseStmt\n");
+			exit(1);
 	}
 	free(c);
 }

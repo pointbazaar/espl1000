@@ -33,6 +33,8 @@ int test_switch(bool debug){
 	struct SwitchStmt* t = makeSwitchStmt(list,debug);
 	
 	assert(t != NULL);
+	assert(t->count_cases == 1);
+	assert(t->var != NULL);
 	
 	freeTokenList(list);
 	freeSwitchStmt(t);

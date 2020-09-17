@@ -30,15 +30,16 @@ struct CaseStmt* makeCaseStmt(struct TokenList* tokens, bool debug) {
 	
 	struct CaseStmt* res = smalloc(sizeof(struct CaseStmt));
 	
-	res->m1 = NULL;
-	res->m2 = NULL;
-	res->m3 = NULL;
-	
+	res->kind = 0;
+	res->ptr.m1 = NULL;
 	res->block = NULL;
 
-	if((res->m1 = makeBoolConst(copy,debug)) == NULL){
-		if((res->m2 = makeCharConst(copy,debug)) == NULL){
-			if((res->m3 = makeIntConst(copy,debug)) == NULL){
+	res->kind = 0;
+	if((res->ptr.m1 = makeBoolConst(copy,debug)) == NULL){
+		res->kind = 1;
+		if((res->ptr.m2 = makeCharConst(copy,debug)) == NULL){
+			res->kind = 2;
+			if((res->ptr.m3 = makeIntConst(copy,debug)) == NULL){
 				free(res);
 				
 				//parsing is deterministic here, 

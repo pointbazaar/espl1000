@@ -582,15 +582,14 @@ void transpileCaseStmt(struct CaseStmt* s, struct Ctx* ctx){
 	
 	indent(ctx);
 	fprintf(ctx->file, "case ");
-	if(s->m1 != NULL){
-		fprintf(ctx->file, "%s", (s->m1->value)?"true":"false");
-	}else if(s->m2 != NULL){
-		fprintf(ctx->file, "'%c'", s->m2->value);
-	}else if(s->m3 != NULL){
-		fprintf(ctx->file, "%d", s->m3->value);
-	}else{
-		printf("ERROR\n");
-		exit(1);
+	
+	switch(s->kind){
+		case 0: fprintf(ctx->file, "%s", (s->ptr.m1->value)?"true":"false"); break;
+		case 1: fprintf(ctx->file, "'%c'", s->ptr.m2->value); break;
+		case 2: fprintf(ctx->file, "%d", s->ptr.m3->value); break;
+		default:
+			printf("ERROR\n");
+			exit(1);
 	}
 	fprintf(ctx->file, ":\n");
 	

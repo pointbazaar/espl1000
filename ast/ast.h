@@ -258,10 +258,15 @@ struct CaseStmt{
 	//known at compile time
 	//(to build the jump table)
 	
-	//one of these will be != NULL
-	struct BoolConst* m1;
-	struct CharConst* m2;
-	struct IntConst* m3;
+	
+	//kind says which pointer is present
+	//from the alternatives
+	uint8_t kind; // \in {0,1,2}
+	union my_ptr {
+		struct BoolConst* m1;
+		struct CharConst* m2;
+		struct IntConst* m3;
+	} ptr;
 	
 	//may be NULL
 	struct StmtBlock* block;
