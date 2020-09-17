@@ -162,6 +162,7 @@ void transpileAST(struct AST_Whole_Program* ast, struct Ctx* ctx){
 		fprintf(ctx->file, "#include <stdbool.h>\n");
 		fprintf(ctx->file, "#include <string.h>\n");
 		fprintf(ctx->file, "#include <math.h>\n");
+		fprintf(ctx->file, "#include <inttypes.h>\n");
 	}
 
 	for(int i=0; i < ast->count_namespaces; i++){

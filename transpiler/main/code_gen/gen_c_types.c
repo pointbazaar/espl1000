@@ -128,21 +128,24 @@ bool isIntType(char* t){
 	{
 		"PInt","NInt","Int","NZInt",
 		"Int8","Int16","Int32","Int64",
+		"UInt8","UInt16","UInt32","UInt64",
 	};
 	
-	for(int i=0;i < 8; i++){
+	for(int i=0;i < 12; i++){
 		if(strcmp(t, types[i]) == 0){ return true; }
 	}
 	return false;
 }
 char* translateIntType(char* type){
 	char* types_def_width[] = 
-	{"Int8","Int16","Int32","Int64"};
+	{"Int8","Int16","Int32","Int64",
+	"UInt8","UInt16","UInt32","UInt64"};
 	
 	char* map[] = 
-	{"int8_t","int16_t","int32_t","int64_t"};
+	{"int8_t","int16_t","int32_t","int64_t",
+	"uint8_t","uint16_t","uint32_t","uint64_t"};
 	
-	for(int i=0;i < 4; i++){
+	for(int i=0;i < 8; i++){
 		if(strcmp(type, types_def_width[i]) == 0){ 
 			return map[i]; 
 		}
