@@ -202,36 +202,20 @@ void writeExpr(struct Expr* m, FILE* file){
 void writeTerm(struct Term* m, FILE* file){
 
 	fprintf(file, "Term\t");
-
 	fprintf(file,"%d\t", m->kind);
 
 	switch(m->kind){
-		case 1:
-			writeBoolConst(m->ptr.m1,file);
-			break;
-		case 2:
-			writeIntConst(m->ptr.m2,file); 
-			break;
-		case 3:
-			writeCharConst(m->ptr.m3,file); 
-			break;
-		case 4:
-			writeMethodCall(m->ptr.m4,file); 
-			break;
-		case 5:
-			writeExpr(m->ptr.m5,file); 
-			break;
-		case 6:
-			writeVariable(m->ptr.m6,file); 
-			break;
-		case 7:
-			writeFloatConst(m->ptr.m7,file); 
-			break;
-		case 8:
-			writeStringConst(m->ptr.m8, file);
-			break;
+		case 1: writeBoolConst(m->ptr.m1,file); break;
+		case 2: writeIntConst(m->ptr.m2,file); break;
+		case 3: writeCharConst(m->ptr.m3,file); break;
+		case 4: writeMethodCall(m->ptr.m4,file); break;
+		case 5: writeExpr(m->ptr.m5,file); break;
+		case 6: writeVariable(m->ptr.m6,file); break;
+		case 7: writeFloatConst(m->ptr.m7,file); break;
+		case 8: writeStringConst(m->ptr.m8, file); break;
 		default:
 			printf("Error in writeTerm(...)\n");
+			fclose(file);
 			exit(1);
 	}
 }
@@ -306,6 +290,11 @@ void writeStmt(struct Stmt* m, FILE* file){
 		case 6: { writeBreakStmt(m->ptr.m6,file);  } break;
 		case 7: { writeForStmt(m->ptr.m7,file);    } break;
 		case 8: { writeSwitchStmt(m->ptr.m8,file); } break;
+		default: 
+			printf("Error in writeStmt\n");
+			fclose(file);
+			exit(1);
+			break;
 	}
 }
 
