@@ -1,5 +1,23 @@
-highlight fn ctermfg=cyan guifg=#00ffff
-highlight struct ctermfg=green guifg=#00ff00
-highlight Type ctermfg=blue guifg=#0000ff
-highlight identifier ctermfg=white guifg=#0000ff
-highlight Braces ctermfg=yellow guifg=#0f0f0f
+
+"this file is to be appended to ~/.vimrc
+"You can also use 'source $PATH_TO_THIS_FILE' in your ~/.vimrc
+"in order to avoid manually appending
+
+hi def link singlelineComment Comment
+hi def link multilineComment Comment
+
+hi def link basicLanguageKeywords Statement
+
+
+hi def link basicNumber Constant
+hi def link basicString Constant
+hi def link basicBool Boolean
+
+hi def link Braces Delimiter
+hi def link Parens Delimiter
+
+hi def link basicIdentifier Identifier
+hi def link basicType Type
+hi def link basicType2 Type
+
+hi def link basicOperator Operator

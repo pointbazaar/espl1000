@@ -33,7 +33,7 @@ int sourceToStatus(char* src, bool debug){
 	fclose(file);
 	
 	//transpile it
-	struct Flags* flags = makeFlags();
+	struct Flags* flags = makeFlags(0, NULL);
 	flags->debug = debug;
 	
 	transpileAndCompile(FNAME_DEFAULT, flags);
@@ -46,7 +46,7 @@ int sourceToStatus(char* src, bool debug){
 		clean();
 	}
 	
-	free(flags);
+	freeFlags(flags);
 	
 	return status;
 }

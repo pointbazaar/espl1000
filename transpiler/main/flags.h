@@ -3,24 +3,20 @@
 
 #include <stdbool.h>
 
-//enabel debug output
-#define FDEBUG "-debug"
-
-//for testing smalldragon
-#define FTEST  "-test"
-
-//for compiling for avr (using 'avr-gcc', without stdlib #includes)
-#define FAVR   "-avr"
-
 struct Flags {
 	bool debug;
 	bool test;
 	bool avr;
+	bool help;
+	bool version;
+	bool clean;
+	bool stdout;
+	//----------
 	char** gcc_flags;
 	int gcc_flags_count;
 };
 
-struct Flags* makeFlags();
+struct Flags* makeFlags(int argc, char** argv);
 
 void freeFlags(struct Flags* flags);
 

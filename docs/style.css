@@ -1,0 +1,12 @@
+
+h1,h2,h3,h4,h5 {
+	color: #D14F42; 
+}
+
+a {
+	color: #006C11;
+}
+
+a, p, pre, code, li {
+	font-size: 1em;
+}

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>SmallDragon - Flags</title>
+  <meta name="description" content="SmallDragon Flags">
+  <meta name="author" content="SmallDragon">
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<h1>SmallDragon Flags</h1>
+
+<p>
+sd -help will show a short Explanation, but here is the detailed Explanation.<br>
+Maybe this Page will be a bit behind '-help', but more detailed.
+</p>
+
+<h3> -help </h3>
+<p> Nothing to say here </p>
+
+<h3> -avr </h3>
+<p>
+Uses 'avr-gcc' and 'avr-objcopy' to generate a 'main.hex' file 
+which can be flashed onto some Microcontrollers or debugged/executed
+by AVR Simulators and Debuggers like 
+<a href="https://github.com/Milo-D/MDX-Assembly-Debugger">mdx</a>.
+</p>
+
+<h3> -debug </h3>
+<p>
+Prints Debug Statements during the execution of 'sd'. 
+
+This flag is also propagated to 'dragon-lexer' and 'dragon-parser'
+which are called using 'system(...)' by 'sd'.
+</p>
+
+<h3> -clean </h3>
+<p>
+Re-generates all Artifacts used for incremental compilation, e.g. '.X.tokens', '.X.ast' .<br>
+This is useful if you changed the transpiler / gcc flags or are developing SmallDragon.
+Or, if you are paranoid of incremental compilation.
+</p>
+
+<h3> -dumpdot, -astdot </h3>
+<p>
+These flags are not yet implemented. They are intended to produce .dot files of the call graph
+and the AST respectively, so they can be easily inspected with the graphviz package.
+</p>
+
+<h3> -stdout </h3>
+<p>
+Prints the transpiled C Code to stdout, instead of writing it to a file.<br>
+This flag is incompatible with -debug. <br>
+Usage Example: "sd -stdout Test.dg | astyle"
+</p>
+
+<h3> -version </h3>
+<p>
+Prints SmallDragon version aswell as gcc version used to build it and 
+the date on which it was built.
+</p>
+
+</body>
+</html>

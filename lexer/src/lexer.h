@@ -4,16 +4,14 @@
 #include <string.h>
 #include <stdbool.h>
 
-//user headers
-#include "tokens.h"
-
 #ifndef LEXER
 #define LEXER
 
 
 void free_dfa(short** dfa,int n_states);
 	
-void init_if_else(short** dfa);
+void init_if(short** dfa);
+void init_else(short** dfa);
 void init_while(short** dfa);
 void init_identifier(short** dfa);
 void init_typeidentifier(short** dfa);
@@ -21,7 +19,7 @@ void init_typeidentifier(short** dfa);
 void init_single_line_comment(short** dfa);
 void init_multi_line_comment(short** dfa);
 
-void init_eq(short** dfa);
+void init_assign(short** dfa);
 void init_numbers(short** dfa);
 void init_operator(short** dfa);
 void init_return(short** dfa);
@@ -34,6 +32,12 @@ void init_typeparam(short** dfa);
 void init_arrow(short** dfa);
 void init_fn(short** dfa);
 void init_break(short** dfa);
+void init_for(short** dfa);
+void init_in(short** dfa);
+void init_range_op(short** dfa);
+
+void init_switch(short** dfa);
+void init_case(short** dfa);
 
 //to set transitions for a state to another state in bulk
 //(for some classes of chars)
@@ -46,6 +50,8 @@ void set_transitions_braces(short** dfa, int state, int state_result);
 void set_transitions_operators(short** dfa, int state, int state_result);
 void set_transitions_breaking(short** dfa, int state, int state_result);
 void set_transitions_printable(short** dfa, int state, int state_result);
+
+void set_transitions_abort_keyword(short** dfa, int state);
 /*
 
 Token kinds are there to avoid storing so much text about the tokens

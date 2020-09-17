@@ -4,33 +4,63 @@
 #include <stdlib.h>
 
 //user headers
-#include "tokens.h"
+
 #include "lexer.h"
 #include "strutils.h"
 #include "states.h"
 #include "loop.h"
 #include "init_dfa.h"
+#include "loop_io.h"
+
+#include "../../token/token.h"
 
 //token types
-#include "../../parser/src/main/commandline/TokenKeys.h"
+#include "../../parser/main/commandline/TokenKeys.h"
 
 //TODO: when following the approach of writing to the '.tokens' file every x tokens,
 //we should instead write to a '.tokens.temp' file, and rename it to a '.tokens' file
 //when we are finished, so that this and other tools are not confused
 //when dragon-lexer crashes
 
-//statically allocate a char array to store the contents of
-//our input file
-const uint64_t input_capacity = 5000;	//should be 5000
-char input[5000];
-
 //statically allocate a Token* array to store our Tokens
 const uint64_t tokens_capacity = 5000;	//should be 5000
 struct Token* tokens[5000];
 
-struct Token** lex(char* clean_source, char* tkn_filename){
+const uint64_t n_states = 180;		//number of states in our state machine
+
+//possible ascii chars, without the 
+//Extended Ascii codes
+//source: http://www.asciitable.com/
+const uint64_t n_transitions = 128; 
+
+short state;
+int line_no;
+
+uint64_t tokens_index;
+
+uint64_t input_index;	//our index in the input file
+
+//deterministic finite automaton
+//int dfa[n_states][n_transitions];
+short** dfa;
+bool* final_state;
+uint64_t i;
+//------------
+void lex_main_inner(
+	int input_capacity, 
+	char* input_filename, 
+	char* tkn_filename,
+	int input_file_length,
+	bool free_tokens,
+	bool debug
+);
+//------------
+struct Token** lex(
+	char* clean_source, 
+	char* tkn_filename,
+	bool debug
+){
 	
-	bool debug = false;
 	if(debug){
 		printf("lex(...)\n");
 	}
@@ -42,7 +72,13 @@ struct Token** lex(char* clean_source, char* tkn_filename){
 	fwrite(clean_source,sizeof(char),strlen(clean_source),temp_file);
 	fclose(temp_file);
 
-	struct Token** res = lex_main(tkn_filename,"temp.dg",strlen(clean_source),false);
+	struct Token** res = lex_main(
+		tkn_filename,
+		"temp.dg",
+		strlen(clean_source),
+		false,
+		debug
+	);
 
 	//delete the file afterwards
 	remove("temp.dg");
@@ -51,42 +87,38 @@ struct Token** lex(char* clean_source, char* tkn_filename){
 }
 
 
-struct Token** lex_main(char* tkn_filename, char* input_filename, long input_file_length, bool free_tokens){
+struct Token** lex_main(
+	char* tkn_filename, 
+	char* input_filename, 
+	long input_file_length, 
+	bool free_tokens,
+	bool debug
+){
 	//https://www.youtube.com/watch?v=G4g-du1MIas
 	//https://nothings.org/computer/lexing.html
+	const uint64_t input_capacity = 5000;
+	line_no = 1;
+	tokens_index = 0;
+	input_index = 0;
 
-	uint64_t input_index = 0;	//our index in the input file
-
-	bool debug = false;
 	if(debug){
 		printf("lex_main(...)\n");
 	}
 
-	readFromFile(input_filename,input_capacity,0,input_file_length,&input_index);
-
-	uint64_t tokens_index = 0;
+	readFromFile(input_filename,0,input_file_length,&input_index);
 
 	if(debug){
 		printf("initializing deterministic finite automaton (a kind of state machine) \n");
-	}
-
-	const uint64_t n_states = 150;		//number of states in our state machine
-	const uint64_t n_transitions = 256; //possible ascii chars
-
-	if(debug){
 		printf("allocating memory for state machine \n");
 	}
 
-	//deterministic finite automaton
-	//int dfa[n_states][n_transitions];
-	short** dfa = (short**)malloc(sizeof(short*)*n_states);
-	//init the memory
-	for(uint64_t i = 0;i < n_states;i++){
-		dfa[i] = (short*)malloc(sizeof(short)*n_transitions);
+	dfa = malloc(sizeof(short*)*n_states);
+	
+	for(uint64_t k = 0;k < n_states;k++){
+		dfa[k] = malloc(sizeof(short)*n_transitions);
 	}
 
-	//if a state is final
-	bool* final_state = malloc(sizeof(bool)*n_states);
+	final_state = malloc(sizeof(bool)*n_states);
 
 	init_dfa(dfa,final_state, n_states);
 	
@@ -94,10 +126,37 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 		printf("starting lexer loop\n");
 	}
 
-	short state;
+	lex_main_inner(
+		input_capacity, 
+		input_filename, 
+		tkn_filename,
+		input_file_length,
+		free_tokens,
+		debug
+	);
 
-	uint64_t i = 0;
-	int line_no = 1;
+	writeToFile(tkn_filename, tokens,tokens_capacity,tokens_index,free_tokens);
+
+	if(debug){ printf("free state machine\n"); }
+	free_dfa(dfa,n_states);
+
+	if(debug){ printf("free final_state array\n"); }
+	free(final_state);
+
+	return tokens;
+
+}
+
+void lex_main_inner(
+	int input_capacity, 
+	char* input_filename, 
+	char* tkn_filename,
+	int input_file_length,
+	bool free_tokens,
+	bool debug
+){
+	
+	i = 0;	
 	
 	while( input_index+i < input_file_length){
 
@@ -122,14 +181,14 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 
 			if(debug){
 				//debug: which state we got into
-				//printf("looking at '%c' -> %i \n",ch,state);
-				//printf("line_no : %d\n",line_no);
+				printf("looking at '%c' -> %i \n",ch,state);
+				printf("line_no : %d\n",line_no);
 			}
 
 		}while(  !final_state[state] );
 
 		if(debug){
-			printf("recognized a token or error\n");
+			printf("recognized a token\n");
 		}
 
 		unsigned int end=i;
@@ -143,11 +202,9 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 			break;
 		}
 
-		struct Token* tkn = (struct Token*)malloc(sizeof(struct Token));
-
+		struct Token* tkn = malloc(sizeof(struct Token));
 		tkn->kind=-1;
-		tkn->value="";
-		tkn->statically_allocated=true;
+		tkn->statically_allocated = true;
 
 		switch(state){
 
@@ -162,77 +219,101 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 			//NEWLINE
 			case S_NEWLINE_FINAL:
 				;
-				char* str = (char*)malloc(sizeof(char)*20);
+				char* str = malloc(sizeof(char)*20);
 				sprintf(str, "%d", line_no);
 				tkn->kind=LINE_NO;
-				tkn->value=str;
+				tkn->value_ptr=str;
 				tkn->statically_allocated=false;
 				break;
 
 			//SECTION: KEYWORDS
 			case S_loop_FINAL:
 				tkn->kind=LOOP;
-				tkn->value="LOOP";
+				tkn->value_ptr="loop";
 				i--;
 				break;
 
 			case S_IF_FINAL:
 				tkn->kind=IF;
-				tkn->value="IF";
+				tkn->value_ptr="if";
 				i--;
 				break;
 
 			case S_WHILE_FINAL:
 				tkn->kind=WHILE;
-				tkn->value="WHILE";
+				tkn->value_ptr="while";
 				i--;
 				break;
 				
 			case S_break_FINAL:
 				tkn->kind=BREAK;
-				tkn->value="BREAK";
+				tkn->value_ptr="break";
+				i--;
+				break;
+				
+			case S_for_FINAL:
+				tkn->kind=FOR;
+				tkn->value_ptr="for";
+				i--;
+				break;
+				
+			case S_in_FINAL:
+				tkn->kind=IN;
+				tkn->value_ptr="in";
 				i--;
 				break;
 
 			case S_RETURN_FINAL:
 				tkn->kind=RETURN;
-				tkn->value="RETURN";
+				tkn->value_ptr="return";
 				break;
 
 			case S_struct_FINAL:
 				tkn->kind=STRUCT;
-				tkn->value="STRUCT";
+				tkn->value_ptr="struct";
 				break;
 
 			case S_fn_FINAL:
 				tkn->kind=FN;
-				tkn->value="FN";
+				tkn->value_ptr="fn";
 				break;
 
 			case S_else_FINAL:
 				tkn->kind=ELSE;
-				tkn->value="ELSE";
+				tkn->value_ptr="else";
+				i--;
+				break;
+				
+			case S_switch_FINAL:
+				tkn->kind=SWITCH;
+				tkn->value_ptr="switch";
+				i--;
+				break;
+			
+			case S_case_FINAL:
+				tkn->kind=CASE;
+				tkn->value_ptr="case";
 				i--;
 				break;
 
 			//SECTION: IDENTIFIERS
 			case S_IDENTIFIER_FINAL:
 				tkn->kind=ID;
-				tkn->value=substr(input+start,end-start-1);
+				tkn->value_ptr=substr(input+start,end-start-1);
 				tkn->statically_allocated=false;
 				i--;
 				break;
 
 			case S_TYPEIDENTIFIER_FINAL:
 				tkn->kind=TYPEIDENTIFIER;
-				tkn->value=substr(input+start,end-start-1);
+				tkn->value_ptr=substr(input+start,end-start-1);
 				tkn->statically_allocated=false;
 				i--;
 				break;
 
 			case S_TPARAM_FINAL:
 				tkn->kind=TPARAM;
-				tkn->value=substr(input+start+2,1);
+				tkn->value_ptr=substr(input+start+2,1);
 				tkn->statically_allocated=false;
 				i--;
 				break;
@@ -240,88 +321,98 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 			//SECTION: BRACKETS,BRACES,PARENS
 			case S_LCURLY_FINAL:
 				tkn->kind=LCURLY;
-				tkn->value="{";
-
+				tkn->value_ptr="{";
 				break;
 
 			case S_RCURLY_FINAL:
 				tkn->kind=RCURLY;
-				tkn->value="}";
+				tkn->value_ptr="}";
 				break;
 
 			case S_LPARENS_FINAL:
 				tkn->kind=LPARENS;
-				tkn->value="(";
+				tkn->value_ptr="(";
 				break;
 
 			case S_RPARENS_FINAL:
 				tkn->kind=RPARENS;
-				tkn->value=")";
+				tkn->value_ptr=")";
 				break;
 
 			case S_LBRACKET_FINAL:
 				tkn->kind=LBRACKET;
-				tkn->value="[";
-
+				tkn->value_ptr="[";
 				break;
 
 			case S_RBRACKET_FINAL:
 				tkn->kind=RBRACKET;
-				tkn->value="]";
+				tkn->value_ptr="]";
 				break;
 
 			//SECTION: OTHER SYMBOLS
-			case S_LESSER_FINAL:
-				tkn->kind=LESSER;
-				tkn->value="<";
-				break;
-
-			case S_GREATER_FINAL:
-				tkn->kind=GREATER;
-				tkn->value=">";
-				break;
-
-			case S_WAVE_FINAL:
-				tkn->kind=WAVE;
-				tkn->value="~";
-				break;
-
 			case S_SEMICOLON_FINAL:
 				tkn->kind=SEMICOLON;
-				tkn->value=";";
+				tkn->value_ptr=";";
 				break;
 
-			case S_EQ_FINAL:
-				tkn->kind=EQ;
-				tkn->value="=";
+			//SECTION: ASSIGNMENT ------
+			//sometimes reading single operators
+			//into their own state for 
+			//performance reasons (atleast i think so)
+			case S_ASSIGN_PLUS_EQ_FINAL:
+				tkn->kind = ASSIGNOP;
+				tkn->value_ptr="+=";
+				break;
+			case S_ASSIGN_MINUS_EQ_FINAL:
+				tkn->kind = ASSIGNOP;
+				tkn->value_ptr="-=";
+				break;
+			case S_ASSIGN_TIMES_EQ_FINAL:
+				tkn->kind = ASSIGNOP;
+				tkn->value_ptr="*=";
+				break;
+			case S_ASSIGN_DIV_EQ_FINAL:
+				tkn->kind = ASSIGNOP;
+				tkn->value_ptr="/=";
+				break;
+				
+			case S_ASSIGN_EQ_FINAL:
+				tkn->kind=ASSIGNOP;
+				tkn->value_ptr="=";
 				i--;
 				break;
-
+			//--------------------------
 			case S_BOOLCONST_FINAL:
 				tkn->kind=BCONST;
-				tkn->value=substr(input+start,end-start-1);
+				tkn->value_ptr=substr(input+start,end-start-1);
 				tkn->statically_allocated=false;
 				i--;
 				break;
 
 			case S_ANYTYPE_FINAL:
 				tkn->kind=ANYTYPE;
-				tkn->value="#";
+				tkn->value_ptr="#";
 				break;
 
 			case S_STRUCTMEMBERACCESS_FINAL:
 				tkn->kind=STRUCTMEMBERACCESS;
-				tkn->value=".";
+				tkn->value_ptr=".";
+				i--;
+				break;
+				
+			case S_RANGE_OP_FINAL:
+				tkn->kind=RANGEOP;
+				tkn->value_ptr="..";
 				break;
 
 			case S_COMMA_FINAL:
 				tkn->kind=COMMA;
-				tkn->value=",";
+				tkn->value_ptr=",";
 				break;
 
 			case S_ARROW_FINAL:
 				tkn->kind=ARROW;
-				tkn->value=substr(input+start,end-start);
+				tkn->value_ptr=substr(input+start,end-start);
 				tkn->statically_allocated=false;
 				break;
 
@@ -346,43 +437,38 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 			//SECTION: NUMBERS
 			case S_INTEGER_FINAL:
 				tkn->kind=INTEGER;
-				tkn->value=substr(input+start,end-start-1);;
+				tkn->value_ptr=substr(input+start,end-start-1);;
 				tkn->statically_allocated=false;
 				i--;
 				break;
 
 			case S_FLOAT_FINAL:
 				tkn->kind=FLOATING;
-				tkn->value=substr(input+start,end-start-1);
+				tkn->value_ptr=substr(input+start,end-start-1);
 				tkn->statically_allocated=false;
 				i--;
 				break;
 
 			//SECTION: OPERATORS
+			case S_OPERATOR_FINAL_2:
+				end--;
+				i--;
 			case S_OPERATOR_FINAL:
 				tkn->kind=OPKEY;
-				tkn->value=substr(input+start,end-start);
+				tkn->value_ptr=substr(input+start,end-start);
 				tkn->statically_allocated=false;
-				//TODO: recognize /2 and do i--
-				break;
-
-			case S_MINUS_FINAL:
-				tkn->kind=OPKEY;
-				tkn->value=substr(input+start,end-start-1);
-				tkn->statically_allocated=false;
-				i--;
 				break;
 
 			//SECTION: CHARCONST, STRINGCONST
 			case S_CHARCONST_FINAL:
 				tkn->kind=CCONST;
-				tkn->value=substr(input+start,end-start);
+				tkn->value_ptr=substr(input+start,end-start);
 				tkn->statically_allocated=false;
 				break;
 
 			case S_STRING_FINAL:
 				tkn->kind=STRINGCONST;
-				tkn->value=substr(input+start,end-start);
+				tkn->value_ptr=substr(input+start,end-start);
 				tkn->statically_allocated=false;
 				break;
 
@@ -392,6 +478,10 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 				free(final_state);
 				exit(1);
 				break;
+		}
+		
+		if(debug){
+			printf("recognized Token: (%d, '%s')\n", tkn->kind, tkn->value_ptr);
 		}
 
 		tokens[tokens_index++] = tkn;
@@ -404,139 +494,8 @@ struct Token** lex_main(char* tkn_filename, char* input_filename, long input_fil
 		//maybe we should read again from the file
 		//starting from the position we stopped reading last time
 		if(i > (input_capacity * 0.5)){
-			readFromFile(input_filename,input_capacity,i,input_file_length,&input_index);
+			readFromFile(input_filename,i,input_file_length,&input_index);
 			i = 0;	//reset index into input array
 		}
 	}
-
-	writeToFile(tkn_filename, tokens,tokens_capacity,tokens_index,free_tokens);
-
-	//TODO: handle the deletion of the .tokens file
-	//if any errors were encountered anywhere or
-	//malloc could not allocate or anything
-
-	if(debug){
-		printf("free state machine\n");
-	}
-	free_dfa(dfa,n_states);
-
-	if(debug){
-		printf("free final_state array\n");
-	}
-	free(final_state);
-
-	return tokens;
-
-}
-
-void readFromFile(
-	char* input_filename, 
-	uint64_t input_capacity, 
-	uint64_t amount_read, 
-	uint64_t input_file_length,
-	uint64_t* input_index
-){
-	bool debug = false;
-	
-	if(debug){
-		printf("readFromFile(...)\n");
-	}
-
-
-	//add how many items we already read 
-	//to our index in the file
-	*input_index	+=	amount_read;
-
-	if(debug){
-		printf("amount_read: %ld , new input_index is : %ld \n",amount_read,*input_index);
-	}
-
-	if(*input_index >= input_file_length){
-		printf("new input index would be after the file. meaning the file is probably fully read.\n");
-		//we set input_index to be higher than input_file_length to break out
-		*input_index = input_file_length + 1;
-		return;
-	}
-
-	//read a part from our file
-	FILE* file = fopen(input_filename,"r");
-	if(file == NULL){
-		printf("could not open input file \n");
-		exit(1);
-	}
-
-	//skip to our position of last read
-	fseek ( file , *input_index , SEEK_SET );
-
-	//how many could we possibly read?
-	uint64_t max_read = input_file_length - *input_index;
-
-	//minimum of our capacity and how many we can read
-	uint64_t read_length = (max_read < input_capacity)?max_read:input_capacity;
-
-	size_t length_read = fread(input,sizeof(char),read_length,file);
-
-	if(length_read < read_length){
-		printf("error with fread(...)\n");
-		printf("tried to read %ld bytes but only read %ld bytes\n",read_length,length_read);
-		exit(1);
-	}
-
-	fclose(file);
-}
-
-void writeToFile(
-	char* tkn_filename, 
-	struct Token** tokens, 
-	int tokens_capacity, 
-	int len,
-	bool free_tokens
-){
-	bool debug = false;
-	
-	if(debug){
-		printf("writeToFile(...) : write to %s\n",tkn_filename);
-	}
-
-	FILE* file2 = fopen(tkn_filename,"w");
-	
-
-	if(file2 == NULL){
-		printf("could not open output file \n");
-		exit(1);
-	}
-
-	//should be big enough
-	char buffer[500];
-
-	for(uint64_t j=0;j<len;j++){
-
-		struct Token* tkn = tokens[j];
-		int id = tkn->kind;
-		char* value = tkn->value;
-
-		sprintf(buffer,"%i %s\n",id,value);
-
-		//debug
-		if(debug){
-			//printf("writing   %s",buffer);
-		}
-
-		//free our token
-		if(free_tokens){
-			if( !tkn->statically_allocated ){
-				free(tkn->value);
-			}
-			free(tkn);
-		}
-		
-		fputs(buffer,file2);
-	}
-
-	if(debug){
-		printf("close  %s\n",tkn_filename);
-	}
-	
-	fclose(file2);
-
 }

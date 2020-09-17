@@ -11,18 +11,20 @@
 
 #include "suite/test_op.h"
 #include "suite/test_other.h"
+#include "suite/test_assign.h"
 
 int transpiler_test_all(bool debug){
 	
 	printf("Running tests for smalldragon/transpiler:\n");
 	
 	const uint16_t testsRun = 
-		TEST_COUNT_OP + TEST_COUNT_OTHER;
+		TEST_COUNT_OP 
+		+ TEST_COUNT_OTHER
+		+ TEST_COUNT_ASSIGN;
 		
 	uint16_t testsPassed 	= 0;
 	
-	
-	bool (*tests[TEST_COUNT_OP + TEST_COUNT_OTHER])(bool debug);
+	bool (*tests[testsRun])(bool debug);
 	
 	//first the ones from test_op.h
 	tests[0] = test_add;
@@ -41,16 +43,29 @@ int transpiler_test_all(bool debug){
 	tests[13] = test_eq;
 	tests[14] = test_neq;
 	tests[15] = test_chained_cmp;
+	tests[16] = test_bitwise_and;
+	tests[17] = test_bitwise_or;
+	tests[18] = test_bitwise_leftshift;
+	tests[19] = test_bitwise_rightshift;
+	tests[20] = test_bitwise_xor;
+	tests[21] = test_bitwise_neg;
 	
 	// then the ones from test_other.h
-	tests[16] = test_statuscode;
-	tests[17] = test_simplevar;
-	tests[18] = test_ifstmt;
-	tests[19] = test_whilestmt;
-	tests[20] = test_subrcall;
-	tests[21] = test_recursive;
-	tests[22] = test_charconst_cmp;
-	tests[23] = test_break;
+	tests[22] = test_statuscode;
+	tests[23] = test_simplevar;
+	tests[24] = test_ifstmt;
+	tests[25] = test_whilestmt;
+	tests[26] = test_subrcall;
+	tests[27] = test_recursive;
+	tests[28] = test_charconst_cmp;
+	tests[29] = test_break;
+	
+	//from test_assign.h
+	tests[30]=test_assign;
+	tests[31]=test_assign_plus;
+	tests[32]=test_assign_minus;
+	tests[33]=test_assign_times;
+	tests[34]=test_assign_div;
 	
 	for(int i=0; i < testsRun; i++){
 		testsPassed += (*tests[i])(debug);
@@ -60,8 +75,6 @@ int transpiler_test_all(bool debug){
 			break;
 		}
 	}
-	
-	//testsPassed += test_add(debug);
 	
 	printf("\nPassed %d of %d Tests\n",testsPassed,testsRun);
 	

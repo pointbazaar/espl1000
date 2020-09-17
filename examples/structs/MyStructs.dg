@@ -1,15 +1,15 @@
-struct MyStruct{
-	PInt a,
-	PInt b
+struct MyStruct { 
+	Int a, 
+	Int b 
+
 }
 
-fn main ()~>PInt {
-	MyStruct s = malloc(4*2); 
+fn main () ~> PInt {
+	MyStruct s = newMyStruct(); 
 
-	s.a = 1; 
+	//s.a = 1; 
 
-	//printf("%d\n", len(s));
-	printf("%d\n", s.a); 
+	delMyStruct(s);
 
 	return 0;
 }

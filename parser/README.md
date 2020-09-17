@@ -33,7 +33,7 @@ ArrayType :: = '[' Type ']'
 
 Type ::= BasicTypeWrapped | TypeParameter | ArrayType
 
-simplevariable ::= identifier ('[' expression ']')?
+simplevariable ::= identifier ('[' expression ']')*
 variable ::= simplevariable ('.' variable)*
 
 stmtblock ::= '{' statement* '}'
@@ -53,6 +53,11 @@ statement ::=   ( methodCall ';' )
                 | assignmentStatement
 		| loopStatement
 		| breakStatement
+		| forStatement
+		| switchStmt
+
+
+// -------- STATEMENTS --------------------
 
 methodCall ::= identifier '(' (expression (, expression)*)?  ')'
 
@@ -62,12 +67,21 @@ loopStatement ::= 'loop' expression stmtblock
 
 whileStatement ::= 'while' expression stmtblock
 
+forStatement ::= 'for' identifier 'in' Range stmtblock
+
 ifStatement ::= 'if' expression stmtblock
 				( 'else' stmtblock )?
 				
 returnStatement ::= 'return' expression? ';'
 
 assignmentStatement ::= Type? variable '=' expression ';'
+
+switchStmt ::= 'switch' variable '{' CaseStmt* '}'
+CaseStmt ::= 'case' (BoolConst | IntConst | CharConst) StmtBlock?
+
+// --- END STATEMENTS ----------------------
+
+Range ::= Expr '..' Expr
 
 UnOpTerm ::= op Term //op must be a unary operator like '!', '~'
 

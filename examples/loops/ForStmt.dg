@@ -1,0 +1,14 @@
+fn main () ~> Int {
+	
+	Int n = 4;
+	
+	for row in 0 .. n {
+		for col in 0 .. n {
+			Int x = rand()%10;
+			printf("%d_", x);
+		}
+		printf("\n");
+	}
+
+	return 0;
+}

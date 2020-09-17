@@ -1,14 +1,17 @@
 #it had -O0 before
+#use -pg to generate profiling information for gprof
 FLAGS := -march=native -g -Wall
+
 CALL := gcc $(FLAGS)
 CALL2 := $(CALL) -c 
 
 OBJS_UTIL := build/ASTWriter.o \
-	build/ast_reader.o \
-	build/util.o
+	build/util.o \
+	build/free_ast.o \
+	build/copy_ast.o
 
 OBJS_MAIN := build/Parser.o \
-		build/Token.o \
+		build/token.o \
 		build/TokenList.o \
 		build/TokenReader.o \
 		build/AST_Whole_Program.o \
@@ -44,6 +47,10 @@ OBJS_MAIN := build/Parser.o \
 		build/TypeParam.o \
 		build/Variable.o \
 		build/UnOpTerm.o \
+		build/Range.o \
+		build/ForStmt.o \
+		build/SwitchStmt.o \
+		build/CaseStmt.o 
 		
 OBJS_TEST := build/AssignStmtTest.o \
 		build/BasicTypeWrappedTest.o \
@@ -71,23 +78,28 @@ OBJS_TEST := build/AssignStmtTest.o \
 		build/WhileStmtTest.o \
 		build/TokenListTest.o \
 		build/ParserTest.o \
-		build/UnOpTermTest.o
+		build/UnOpTermTest.o \
+		build/RangeTest.o \
+		build/ForStmtTest.o \
+		build/SwitchStmtTest.o \
+	       	build/CaseStmtTest.o	
 		
 OBJS := $(OBJS_MAIN) $(OBJS_TEST) $(OBJS_UTIL) 
 
 AST_DEPS := ../ast/ast.h \
 	../util/util.h \
 	../ast/ASTWriter.h \
-	../ast/ast_reader.h
+	../ast/free_ast.h \
+	../ast/copy_ast.h
 
 #dependencies usually found in all AST-related parsing
 #source files
-MAIN_DEPS := src/main/commandline/TokenList.h \
-	src/main/commandline/TokenKeys.h \
-	src/main/commandline/Token.h \
+MAIN_DEPS := main/commandline/TokenList.h \
+	main/commandline/TokenKeys.h \
+	../token/token.h \
 	$(AST_DEPS)
 
-all: DIRS dragon-parser test 
+all: DIRS dragon-parser test valgrind
 
 DIRS:
 	mkdir -p build/
@@ -98,24 +110,32 @@ clean: DIRS
 test: dragon-parser
 	./dragon-parser -test
 
+VALGRIND_OPS := --leak-check=full --show-reachable=yes  --error-exitcode=1 --log-file="/dev/null"
+
+valgrind: dragon-parser
+	rm -f ../examples/loops/.WhileLoop.dg.tokens
+	rm -f ../examples/loops/.WhileLoop.dg.ast
+	dragon-lexer ../examples/loops/WhileLoop.dg
+	valgrind $(VALGRIND_OPS) ./dragon-parser ../examples/loops/.WhileLoop.dg.tokens
+
 dragon-parser: $(OBJS)
 	$(CALL) -o dragon-parser build/*.o
 	
 #generic rules
 
-build/%.o: src/main/commandline/%.c $(MAIN_DEPS)
+build/%.o: main/commandline/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	
-build/%.o: src/main/parsing/%.c $(MAIN_DEPS)
+build/%.o: main/parsing/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	
-build/%.o: src/main/parsing/statements/%.c $(MAIN_DEPS)
+build/%.o: main/parsing/statements/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	
-build/%.o: src/main/parsing/typenodes/%.c $(MAIN_DEPS)
+build/%.o: main/parsing/typenodes/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 
@@ -126,14 +146,18 @@ build/%.o: ../ast/%.c $(AST_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 
-build/%.o: src/test/astnodes/%.c $(MAIN_DEPS)
+build/%.o: ../token/%.c ../token/%.h
+	@echo Compiling file: $(notdir $<)
+	$(CALL2) -o $@ $<
+
+build/%.o: test/astnodes/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	
-build/%.o: src/test/commandline/%.c $(MAIN_DEPS)
+build/%.o: test/commandline/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	
-build/%.o: src/test/%.c $(MAIN_DEPS)
+build/%.o: test/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<

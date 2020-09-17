@@ -5,12 +5,11 @@
 #include <stdbool.h>
 
 //user headers
-#include "tokens.h"
+
 #include "lexer.h"
 #include "strutils.h"
 #include "states.h"
 #include "loop.h"
-
 
 void free_dfa(short** dfa,int n_states){
 
@@ -20,41 +19,30 @@ void free_dfa(short** dfa,int n_states){
 	free(dfa);
 }
 
-
+void init_if(short** dfa){
 	
-void init_if_else(short** dfa){
-
-	// -------------- IF ------------------
-
-	//all other chars should get us back to S_IDENTIFIER
-	set_transitions_letters(dfa,S_I,S_IDENTIFIER);
+	set_transitions_abort_keyword(dfa,S_I);
+	
 	set_transitions_letters(dfa,S_IF,S_IDENTIFIER);
 
-	//TODO: all other non alphanumeric chars should get us 
-	//into final state
-
 	dfa[S_I]['f']=S_IF;
-	//now for many tokens it would go into a final state
-
-	set_transitions_breaking(dfa,S_I,S_IDENTIFIER_FINAL);
+	
 	set_transitions_breaking(dfa,S_IF,S_IF_FINAL);
+}
 
-	// -------------- ELSE ------------------
+void init_else(short** dfa){
 
-	set_transitions_letters(dfa,S_e,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_el,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_els,S_IDENTIFIER);
+	set_transitions_abort_keyword(dfa,S_e);
+	set_transitions_abort_keyword(dfa,S_el);
+	set_transitions_abort_keyword(dfa,S_els);
+	
 	set_transitions_letters(dfa,S_else,S_IDENTIFIER);
-
-	set_transitions_breaking(dfa,S_e,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_el,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_els,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_else,S_else_FINAL);
 
 	dfa[S_e]['l']=S_el;
 	dfa[S_el]['s']=S_els;
 	dfa[S_els]['e']=S_else;
 	
+	set_transitions_breaking(dfa,S_else,S_else_FINAL);
 }
 
 void init_while(short** dfa){
@@ -62,16 +50,12 @@ void init_while(short** dfa){
 	//all other chars should get us back to S_IDENTIFIER,
 	//to parse an identifier instead
 
-	set_transitions_letters(dfa,S_W,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_WH,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_WHI,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_WHIL,S_IDENTIFIER);
+	set_transitions_abort_keyword(dfa,S_W);
+	set_transitions_abort_keyword(dfa,S_WH);
+	set_transitions_abort_keyword(dfa,S_WHI);
+	set_transitions_abort_keyword(dfa,S_WHIL);
+	
 	set_transitions_letters(dfa,S_WHILE,S_IDENTIFIER);
-
-	set_transitions_breaking(dfa,S_W,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_WH,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_WHI,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_WHIL,S_IDENTIFIER_FINAL);
 	
 	set_transitions_breaking(dfa,S_WHILE,S_WHILE_FINAL);
 
@@ -82,44 +66,32 @@ void init_while(short** dfa){
 	dfa[S_WHILE][' ']=S_WHILE_FINAL;
 }
 
-void init_identifier(short**	 dfa){
+void init_identifier(short** dfa){
 	
 	set_transitions_letters(dfa,S_IDENTIFIER,S_IDENTIFIER);
-	set_transitions_braces(dfa,S_IDENTIFIER,S_IDENTIFIER_FINAL);
 	set_transitions_digits(dfa,S_IDENTIFIER,S_IDENTIFIER);
 
 	dfa[S_IDENTIFIER]['_']=S_IDENTIFIER;
 
-	dfa[S_IDENTIFIER][' ']=S_IDENTIFIER_FINAL;
-
 	dfa[S_IDENTIFIER]['=']=S_IDENTIFIER_FINAL;
-	dfa[S_IDENTIFIER][',']=S_IDENTIFIER_FINAL;
 	
 	dfa[S_IDENTIFIER]['.']=S_IDENTIFIER_FINAL;
 
 	set_transitions_breaking(dfa,S_IDENTIFIER,S_IDENTIFIER_FINAL);
 }
 
-
 void init_typeidentifier(short** dfa){
 	
 	set_transitions_letters(dfa,S_TYPEIDENTIFIER,S_TYPEIDENTIFIER);
-	set_transitions_braces(dfa,S_TYPEIDENTIFIER,S_TYPEIDENTIFIER_FINAL);
 	set_transitions_digits(dfa,S_TYPEIDENTIFIER,S_TYPEIDENTIFIER);
 
 	dfa[S_TYPEIDENTIFIER]['_']=S_TYPEIDENTIFIER;
-
-	dfa[S_TYPEIDENTIFIER][' ']=S_TYPEIDENTIFIER_FINAL;
-
+	
 	dfa[S_TYPEIDENTIFIER]['=']=S_TYPEIDENTIFIER_FINAL;
-	dfa[S_TYPEIDENTIFIER][',']=S_TYPEIDENTIFIER_FINAL;
-
-	dfa[S_TYPEIDENTIFIER]['-']=S_TYPEIDENTIFIER_FINAL;
-	dfa[S_TYPEIDENTIFIER]['+']=S_TYPEIDENTIFIER_FINAL;
-	dfa[S_TYPEIDENTIFIER]['*']=S_TYPEIDENTIFIER_FINAL;
-	dfa[S_TYPEIDENTIFIER]['/']=S_TYPEIDENTIFIER_FINAL;
-
-	dfa[S_TYPEIDENTIFIER][';']=S_TYPEIDENTIFIER_FINAL;
+	
+	dfa[S_TYPEIDENTIFIER]['.']=S_TYPEIDENTIFIER_FINAL;
+	
+	set_transitions_breaking(dfa,S_TYPEIDENTIFIER,S_TYPEIDENTIFIER_FINAL);
 }
 
 void init_single_line_comment(short** dfa){
@@ -140,7 +112,6 @@ void init_single_line_comment(short** dfa){
 	dfa[S_SINGLE_LINE_COMMENT]['\n']=S_SINGLE_LINE_COMMENT_FINAL;
 }
 
-
 void init_multi_line_comment(short** dfa){
 	
 	set_transitions_printable(dfa,S_MULTI_LINE_COMMENT,S_MULTI_LINE_COMMENT);
@@ -160,17 +131,34 @@ void init_multi_line_comment(short** dfa){
 	dfa[S_MULTI_LINE_COMMENT]['\n']=S_MULTI_LINE_COMMENT;
 }
 
-void init_eq(short** dfa){
+void init_assign(short** dfa){
 	
-	dfa[S_EQ]['=']=S_EQ_FINAL;
+	/*
+	S_ASSIGN_EQ_FINAL 		
+	S_ASSIGN_PLUS_EQ_FINAL	
+	S_ASSIGN_MINUS_EQ_FINAL	
+	S_ASSIGN_TIMES_EQ_FINAL	
+	S_ASSIGN_DIV_EQ_FINAL	
+	*/
+	
+	// +=
+	dfa[S_PLUS]['=']=S_ASSIGN_PLUS_EQ_FINAL;
+	
+	// -=
+	dfa[S_MINUS]['=']=S_ASSIGN_MINUS_EQ_FINAL;
+	
+	// *=
+	dfa[S_TIMES]['=']=S_ASSIGN_TIMES_EQ_FINAL;
+	
+	// /=
+	dfa[S_SLASH]['=']=S_ASSIGN_DIV_EQ_FINAL;
 
-	set_transitions_letters(dfa,S_EQ,S_EQ_FINAL);
-	set_transitions_braces(dfa,S_EQ,S_EQ_FINAL);
-	set_transitions_digits(dfa,S_EQ,S_EQ_FINAL);
-
-	dfa[S_EQ][' ']=S_EQ_FINAL;
-
-	dfa[S_EQ]['\'']=S_EQ_FINAL;
+	// = 
+	set_transitions_letters(dfa,S_EQ,S_ASSIGN_EQ_FINAL);
+	set_transitions_braces(dfa,S_EQ,S_ASSIGN_EQ_FINAL);
+	set_transitions_digits(dfa,S_EQ,S_ASSIGN_EQ_FINAL);
+	dfa[S_EQ][' ']=S_ASSIGN_EQ_FINAL;
+	dfa[S_EQ]['\'']=S_ASSIGN_EQ_FINAL;
 }
 
 void init_numbers(short** dfa){
@@ -198,41 +186,94 @@ void init_numbers(short** dfa){
 
 void init_operator(short** dfa){
 	
-	dfa[S_START]['+']=S_OPERATOR_FINAL;
-	dfa[S_START]['-']=S_MINUS;
-	dfa[S_START]['*']=S_OPERATOR_FINAL;
-	dfa[S_START]['/']=S_SLASH;
+	dfa[S_START]['<']=S_LESSER;
+	dfa[S_START]['>']=S_GREATER;
+	
 	dfa[S_START]['%']=S_OPERATOR_FINAL;
 	dfa[S_START]['^']=S_OPERATOR_FINAL;
 	dfa[S_START]['!']=S_NOT;
 
 	dfa[S_NOT]['=']=S_OPERATOR_FINAL;
+	dfa[S_EQ]['=']=S_OPERATOR_FINAL;
+	
+	//Arithmetic Operators
+	dfa[S_PLUS][' ']=S_OPERATOR_FINAL_2; //i--
+	dfa[S_MINUS][' ']=S_OPERATOR_FINAL_2; //i--
+	dfa[S_TIMES][' ']=S_OPERATOR_FINAL_2; //i--
+	dfa[S_SLASH][' ']=S_OPERATOR_FINAL_2; //i--
+	
+	set_transitions_letters(dfa, S_PLUS, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_PLUS, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa, S_PLUS, S_OPERATOR_FINAL_2);
+	
+	set_transitions_letters(dfa, S_MINUS, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_MINUS, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa, S_MINUS, S_OPERATOR_FINAL_2);
+	
+	set_transitions_letters(dfa, S_TIMES, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_TIMES, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa, S_TIMES, S_OPERATOR_FINAL_2);
+	
+	set_transitions_letters(dfa, S_SLASH, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_SLASH, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa, S_SLASH, S_OPERATOR_FINAL_2);
+	//-----------------------------------------
 
+	//Logical Operators
 	dfa[S_START]['&']=S_OPERATOR_AND_1;
 	dfa[S_OPERATOR_AND_1]['&']=S_OPERATOR_FINAL;
-
 	dfa[S_START]['|']=S_OPERATOR_OR_1;
 	dfa[S_OPERATOR_OR_1]['|']=S_OPERATOR_FINAL;
-
-	set_transitions_letters(dfa,S_OPERATOR_AND_1,S_OPERATOR_FINAL);
-	set_transitions_braces(dfa,S_OPERATOR_AND_1,S_OPERATOR_FINAL);
-
-
-	set_transitions_letters(dfa,S_OPERATOR_OR_1,S_OPERATOR_FINAL);
-	set_transitions_braces(dfa,S_OPERATOR_OR_1,S_OPERATOR_FINAL);
-
-	set_transitions_letters(dfa,S_OPERATOR,S_OPERATOR_FINAL);
-	set_transitions_braces(dfa,S_OPERATOR,S_OPERATOR_FINAL);
-
-	dfa[S_OPERATOR][' ']=S_OPERATOR_FINAL;
-
-	dfa[S_SLASH][' ']=S_OPERATOR_FINAL;
-	set_transitions_letters(dfa,S_SLASH,S_OPERATOR_FINAL);
-	set_transitions_braces(dfa,S_SLASH,S_OPERATOR_FINAL);
-	set_transitions_digits(dfa,S_SLASH,S_OPERATOR_FINAL);
 	
-	dfa[S_NOT][' '] = S_OPERATOR_FINAL;
-	set_transitions_letters(dfa, S_NOT, S_OPERATOR_FINAL);
+	//bitwise operators --------------------------
+	//bitwise and
+	dfa[S_OPERATOR_AND_1][' ']=S_OPERATOR_FINAL_2;
+	dfa[S_OPERATOR_AND_1]['-']=S_OPERATOR_FINAL_2;
+	set_transitions_letters(dfa, S_OPERATOR_AND_1, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_OPERATOR_AND_1, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa,S_OPERATOR_AND_1,S_OPERATOR_FINAL_2);
+	//bitwise or
+	dfa[S_OPERATOR_OR_1][' ']=S_OPERATOR_FINAL_2;
+	dfa[S_OPERATOR_OR_1]['-']=S_OPERATOR_FINAL_2;
+	set_transitions_letters(dfa, S_OPERATOR_OR_1, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_OPERATOR_OR_1, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa,S_OPERATOR_OR_1,S_OPERATOR_FINAL_2);
+	//<<, >>
+	dfa[S_LESSER]['<']=S_OPERATOR_FINAL;
+	dfa[S_GREATER]['>']=S_OPERATOR_FINAL;
+	//'~'
+	dfa[S_WAVE][' ']=S_OPERATOR_FINAL_2;
+	set_transitions_letters(dfa, S_WAVE, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_WAVE, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa, S_WAVE, S_OPERATOR_FINAL_2);
+	//---------------------------------
+	
+	//comparison operators ---------------
+	//<,>
+	dfa[S_LESSER][' ']=S_OPERATOR_FINAL_2;
+	dfa[S_GREATER][' ']=S_OPERATOR_FINAL_2;
+	set_transitions_letters(dfa, S_LESSER, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_LESSER, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa, S_LESSER, S_OPERATOR_FINAL_2);
+	set_transitions_letters(dfa, S_GREATER, S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa, S_GREATER, S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa, S_GREATER, S_OPERATOR_FINAL_2);
+	//>=, <=
+	dfa[S_LESSER]['=']=S_OPERATOR_FINAL;
+	dfa[S_GREATER]['=']=S_OPERATOR_FINAL;
+	//------------------------------------
+
+	set_transitions_letters(dfa,S_OPERATOR,S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa,S_OPERATOR,S_OPERATOR_FINAL_2);
+
+	dfa[S_OPERATOR][' ']=S_OPERATOR_FINAL_2;
+
+	set_transitions_letters(dfa,S_SLASH,S_OPERATOR_FINAL_2);
+	set_transitions_braces(dfa,S_SLASH,S_OPERATOR_FINAL_2);
+	set_transitions_digits(dfa,S_SLASH,S_OPERATOR_FINAL_2);
+	
+	dfa[S_NOT][' '] = S_OPERATOR_FINAL_2;
+	set_transitions_letters(dfa, S_NOT, S_OPERATOR_FINAL_2);
 }
 
 void init_return(short** dfa){
@@ -240,18 +281,14 @@ void init_return(short** dfa){
 	//all other chars should get us back to S_IDENTIFIER,
 	//to parse an identifier instead
 
-	set_transitions_letters(dfa,S_R,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_RE,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_RET,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_RETU,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_RETUR,S_IDENTIFIER);
+	set_transitions_abort_keyword(dfa,S_R);
+	set_transitions_abort_keyword(dfa,S_RE);
+	set_transitions_abort_keyword(dfa,S_RET);
+	set_transitions_abort_keyword(dfa,S_RETU);
+	set_transitions_abort_keyword(dfa,S_RETUR);
+	
 	set_transitions_letters(dfa,S_RETURN,S_IDENTIFIER);
 
-	set_transitions_breaking(dfa,S_R,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_RE,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_RET,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_RETU,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_RETUR,S_IDENTIFIER_FINAL);
 	set_transitions_breaking(dfa,S_RETURN,S_IDENTIFIER_FINAL);
 
 	dfa[S_R]['e']=S_RE;
@@ -271,14 +308,12 @@ void init_loop(short** dfa){
 	//all other chars should get us back to S_IDENTIFIER,
 	//to parse an identifier instead
 
-	set_transitions_letters(dfa,S_l,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_lo,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_loo,S_IDENTIFIER);
+	set_transitions_abort_keyword(dfa,S_l);
+	set_transitions_abort_keyword(dfa,S_lo);
+	set_transitions_abort_keyword(dfa,S_loo);
+	
 	set_transitions_letters(dfa,S_loop,S_IDENTIFIER);
 
-	set_transitions_breaking(dfa,S_l,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_lo,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_loo,S_IDENTIFIER_FINAL);
 	set_transitions_breaking(dfa,S_loop,S_loop_FINAL);
 
 	dfa[S_l]['o']=S_lo;
@@ -307,36 +342,20 @@ void init_charconst(short** dfa){
 
 void init_boolconst(short** dfa){
 	
-	set_transitions_letters(dfa,S_t,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_tr,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_tru,S_IDENTIFIER);
+	set_transitions_abort_keyword(dfa,S_t);
+	set_transitions_abort_keyword(dfa,S_tr);
+	set_transitions_abort_keyword(dfa,S_tru);
+	
 	set_transitions_letters(dfa,S_true,S_IDENTIFIER);
+	set_transitions_braces(dfa,S_true,S_BOOLCONST_FINAL);
 
-	set_transitions_braces(dfa,S_t,S_IDENTIFIER_FINAL);
-	set_transitions_braces(dfa,S_tr,S_IDENTIFIER_FINAL);
-	set_transitions_braces(dfa,S_tru,S_IDENTIFIER_FINAL);
-	set_transitions_braces(dfa,S_true,S_IDENTIFIER_FINAL);
-
-	set_transitions_letters(dfa,S_f,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_fa,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_fal,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_fals,S_IDENTIFIER);
+	set_transitions_abort_keyword(dfa,S_f);
+	set_transitions_abort_keyword(dfa,S_fa);
+	set_transitions_abort_keyword(dfa,S_fal);
+	set_transitions_abort_keyword(dfa,S_fals);
+	
 	set_transitions_letters(dfa,S_false,S_IDENTIFIER);
-
-	set_transitions_braces(dfa,S_f,S_IDENTIFIER_FINAL);
-	set_transitions_braces(dfa,S_fa,S_IDENTIFIER_FINAL);
-	set_transitions_braces(dfa,S_fal,S_IDENTIFIER_FINAL);
-	set_transitions_braces(dfa,S_fals,S_IDENTIFIER_FINAL);
 	set_transitions_braces(dfa,S_false,S_IDENTIFIER_FINAL);
-
-	set_transitions_breaking(dfa,S_f,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_fa,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_fal,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_fals,S_IDENTIFIER_FINAL);
-
-	set_transitions_breaking(dfa,S_t,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_tr,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_tru,S_IDENTIFIER_FINAL);
 
 	dfa[S_START]['t']=S_t;
 	dfa[S_t]['r']=S_tr;
@@ -356,17 +375,16 @@ void init_boolconst(short** dfa){
 	dfa[S_false][';']=S_BOOLCONST_FINAL;
 
 	set_transitions_braces(dfa,S_true,S_BOOLCONST_FINAL);
-	set_transitions_braces(dfa,S_false,S_BOOLCONST_FINAL);
-
-	
+	set_transitions_braces(dfa,S_false,S_BOOLCONST_FINAL);	
 }
 
 void init_struct(short** dfa){
 
-	set_transitions_letters(dfa,S_s,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_st,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_stru,S_IDENTIFIER);
-	set_transitions_letters(dfa,S_struc,S_IDENTIFIER);
+	set_transitions_abort_keyword(dfa,S_s);
+	set_transitions_abort_keyword(dfa,S_st);
+	set_transitions_abort_keyword(dfa,S_stru);
+	set_transitions_abort_keyword(dfa,S_struc);
+	
 	set_transitions_letters(dfa,S_struct,S_IDENTIFIER);
 
 	dfa[S_START]['s']=S_s;
@@ -380,14 +398,7 @@ void init_struct(short** dfa){
 	set_transitions_breaking(dfa,S_struct,S_struct_FINAL);
 
 	set_transitions_braces(dfa,S_struct,S_BOOLCONST_FINAL);
-
-	set_transitions_breaking(dfa,S_s,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_st,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_str,S_IDENTIFIER_FINAL);
-	set_transitions_breaking(dfa,S_stru,S_IDENTIFIER_FINAL);
-
 }
-
 
 void init_stringconst(short** dfa){
 
@@ -401,8 +412,7 @@ void init_stringconst(short** dfa){
 	dfa[S_STRING]['~']=S_STRING;
 	dfa[S_STRING]['=']=S_STRING;
 
-	//TODO:
-	//...
+	//TODO: ...
 
 	set_transitions_letters(dfa,S_STRING,S_STRING);
 	set_transitions_digits(dfa,S_STRING,S_STRING);
@@ -418,26 +428,13 @@ void init_typeparam(short** dfa){
 	dfa[S_TPARAM_1]['T']=S_TPARAM_2;	//read 'T'
 
 	set_transitions_digits(dfa,S_TPARAM_2,S_TPARAM_FINAL);
-
 }
 
 void init_arrow(short** dfa){
-	
-	set_transitions_letters(dfa,S_MINUS,S_MINUS_FINAL);
-	set_transitions_digits(dfa,S_MINUS,S_MINUS_FINAL);
-	set_transitions_operators(dfa,S_MINUS,S_MINUS_FINAL);
-
-	set_transitions_letters(dfa,S_WAVE,S_WAVE_FINAL);
-	set_transitions_digits(dfa,S_WAVE,S_WAVE_FINAL);
-	set_transitions_operators(dfa,S_WAVE,S_WAVE_FINAL);
-
-	dfa[S_WAVE][' ']=S_WAVE_FINAL;
-	dfa[S_MINUS][' ']=S_MINUS_FINAL;
 
 	dfa[S_WAVE]['>']=S_ARROW_FINAL;	
 	dfa[S_MINUS]['>']=S_ARROW_FINAL;	
 }
-
 
 void init_fn(short** dfa){
 	
@@ -450,21 +447,79 @@ void init_fn(short** dfa){
 
 void init_break(short** dfa){
 	
-	set_transitions_letters(dfa, S_b, S_IDENTIFIER);
+	set_transitions_abort_keyword(dfa, S_b);
 	dfa[S_b]['r'] = S_br;
 	
-	set_transitions_letters(dfa, S_br, S_IDENTIFIER);
+	set_transitions_abort_keyword(dfa, S_br);
 	dfa[S_br]['e'] = S_bre;
 	
-	set_transitions_letters(dfa, S_bre, S_IDENTIFIER);
+	set_transitions_abort_keyword(dfa, S_bre);
 	dfa[S_bre]['a'] = S_brea;
 	
-	set_transitions_letters(dfa, S_brea, S_IDENTIFIER);
+	set_transitions_abort_keyword(dfa, S_brea);
 	dfa[S_brea]['k'] = S_break;
 	
 	set_transitions_letters(dfa, S_break, S_IDENTIFIER);
 	dfa[S_break][';'] = S_break_FINAL;
 	dfa[S_break][' '] = S_break_FINAL;
+}
+
+void init_for(short** dfa){
+	
+	set_transitions_abort_keyword(dfa, S_fo);
+	set_transitions_abort_keyword(dfa, S_for);
+	
+	dfa[S_f]['o'] = S_fo;
+	dfa[S_fo]['r'] = S_for;
+	
+	set_transitions_breaking(dfa, S_for, S_for_FINAL);
+}
+
+void init_in(short** dfa){
+
+	dfa[S_I]['n'] = S_in;
+	set_transitions_breaking(dfa, S_in, S_in_FINAL);
+}
+
+void init_range_op(short** dfa){
+	
+	//also initializes the structmemberaccess OP
+	//because it does not have it's own method
+	set_transitions_breaking(dfa, S_dot, S_STRUCTMEMBERACCESS_FINAL);
+	
+	set_transitions_letters(dfa, S_dot, S_STRUCTMEMBERACCESS_FINAL);
+	set_transitions_digits(dfa, S_dot, S_STRUCTMEMBERACCESS_FINAL);
+	dfa[S_dot]['.'] = S_RANGE_OP_FINAL;
+}
+
+void init_switch(short** dfa){
+	
+	
+	set_transitions_abort_keyword(dfa, S_sw);
+	set_transitions_abort_keyword(dfa, S_swi);
+	set_transitions_abort_keyword(dfa, S_swit);
+	set_transitions_abort_keyword(dfa, S_switc);
+	set_transitions_abort_keyword(dfa, S_switch);
+	
+	dfa[S_s]['w']=S_sw;
+	dfa[S_sw]['i']=S_swi;
+	dfa[S_swi]['t']=S_swit;
+	dfa[S_swit]['c']=S_switc;
+	dfa[S_switc]['h']=S_switch;
+	dfa[S_switch][' ']=S_switch_FINAL;
+}
+
+void init_case(short** dfa){
+	
+	set_transitions_abort_keyword(dfa, S_c);
+	set_transitions_abort_keyword(dfa, S_ca);
+	set_transitions_abort_keyword(dfa, S_cas);
+	set_transitions_abort_keyword(dfa, S_case);
+	
+	dfa[S_c]['a']=S_ca;
+	dfa[S_ca]['s']=S_cas;
+	dfa[S_cas]['e']=S_case;
+	dfa[S_case][' ']=S_case_FINAL;
 }
 
 // ---------------------------------------------------------
@@ -479,7 +534,6 @@ void set_transitions_uppercase(short** dfa, int state, short state_result){
 		dfa[state][(short)i]=state_result;
 	}
 }
-
 
 void set_transitions_letters(short** dfa, int state, int state_result){
 	
@@ -522,20 +576,51 @@ void set_transitions_operators(short** dfa, int state, int state_result){
 }
 
 void set_transitions_breaking(short** dfa, int state, int state_result){
-	//anything that might abort parsing of identifiers
-	//and keywords
+	//anything that might abort parsing of:
+	// identifiers, typeidentifiers, keywords and numbers
+	//and put them into the final state
 	
 	set_transitions_braces(dfa,state,state_result);
 	set_transitions_operators(dfa,state,state_result);
+	
+	//punctuation
 	dfa[state][';']=state_result;
-	dfa[state][' ']=state_result;
 	dfa[state][',']=state_result;
-
+	dfa[state][':']=state_result;
+	
+	//whitespace
+	dfa[state][' ']=state_result;
 	dfa[state]['\n']=state_result;
+	dfa[state]['\t']=state_result;
+	
+	//carriage return
+	dfa[state]['\r']=state_result; 
 }
 
 void set_transitions_printable(short** dfa, int state, int state_result){
-	for(char i=32;i<=126;i++){
+	const short ASCII_START_PRINTABLE = 32;
+	const short ASCII_END_PRINTABLE = 126;
+	
+	for(char 
+		i=ASCII_START_PRINTABLE;
+		i<=ASCII_END_PRINTABLE;
+		i++
+	){
 		dfa[state][(short)i] = state_result;
 	}
+}
+
+void set_transitions_abort_keyword(short** dfa, int state){
+	//sets all transitions that abort 'reading' of a keyword
+	//and move into the appropriate states.
+	
+	//this is not appropriate for the state before the final 
+	//state of the keyword.
+	
+	set_transitions_letters(dfa, state, S_IDENTIFIER);
+	set_transitions_digits(dfa, state, S_IDENTIFIER);
+	set_transitions_breaking(dfa, state, S_IDENTIFIER_FINAL);
+	
+	//not breaking for numbers, therefore separate
+	dfa[state]['.'] = S_IDENTIFIER_FINAL;
 }

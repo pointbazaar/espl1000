@@ -5,12 +5,12 @@
 #include <stdio.h>
 
 //user headers
-#include "tokens.h"
 #include "lexer.h"
 #include "strutils.h"
 #include "states.h"
 #include "init_dfa.h"
 
+void set_final_states();
 
 void init_dfa(short** dfa, bool* final_state, int n_states){
 
@@ -25,13 +25,14 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	//for the numbers
 	set_transitions_digits(dfa,S_START,S_DIGITS);
 
-	init_if_else(dfa);
+	init_if(dfa);
+	init_else(dfa);
 	init_while(dfa);
 	init_identifier(dfa);
 	init_typeidentifier( dfa);
 	init_single_line_comment(dfa);
 	init_multi_line_comment( dfa);
-	init_eq( dfa);
+	init_assign( dfa);
 	init_numbers( dfa);
 	init_operator(dfa);
 	init_return(dfa);
@@ -46,6 +47,12 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 
 	init_fn(dfa);
 	init_break(dfa);
+	init_for(dfa);
+	init_in(dfa);
+	init_range_op(dfa);
+	
+	init_switch(dfa);
+	init_case(dfa);
 
 	//SOME STARTING TRANSITIONS
 
@@ -56,24 +63,25 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	//tabs between tokens should be skipped
 	dfa[S_START]['\t']=S_START;
 
+	//letters
 	dfa[S_START]['b']=S_b;
 	dfa[S_START]['i']=S_I;
 	dfa[S_START]['w']=S_W;
 	dfa[S_START]['r']=S_R;
 	dfa[S_START]['l']=S_l;
 	dfa[S_START]['e']=S_e;
+	dfa[S_START]['c']=S_c;
+	dfa[S_START]['s']=S_s;
+	//---------------------
 
+	//()[]{}
 	dfa[S_START]['{']=S_LCURLY_FINAL;
 	dfa[S_START]['}']=S_RCURLY_FINAL;
-
 	dfa[S_START]['(']=S_LPARENS_FINAL;
 	dfa[S_START][')']=S_RPARENS_FINAL;
-
 	dfa[S_START]['[']=S_LBRACKET_FINAL;
 	dfa[S_START][']']=S_RBRACKET_FINAL;
-
-	dfa[S_START]['<']=S_LESSER_FINAL;
-	dfa[S_START]['>']=S_GREATER_FINAL;
+	//---------------------------------
 
 	dfa[S_START]['~']=S_WAVE;
 	dfa[S_START]['/']=S_SLASH;
@@ -82,8 +90,15 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	dfa[S_START]['=']=S_EQ;
 	dfa[S_START]['#']=S_ANYTYPE_FINAL;
 
-	dfa[S_START]['.']=S_STRUCTMEMBERACCESS_FINAL;
+	dfa[S_START]['.']=S_dot;
 	dfa[S_START][',']=S_COMMA_FINAL;
+	
+	//OPERATORS
+	dfa[S_START]['+']=S_PLUS;
+	dfa[S_START]['-']=S_MINUS;
+	dfa[S_START]['*']=S_TIMES;
+	dfa[S_START]['/']=S_SLASH;
+	
 
 	if(debug){
 		printf("marking eos transitions\n");
@@ -97,54 +112,74 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 		printf("marking final states\n");
 	}
 
+	set_final_states(final_state, n_states);
+}
+
+void set_final_states(bool* final_state, int n_states){
 	//set all states to be non-final states
 	memset(final_state,false,n_states*sizeof(bool));
 
-	final_state[S_IF_FINAL]=true;
-	final_state[S_WHILE_FINAL]=true;
+	//Identifiers
 	final_state[S_IDENTIFIER_FINAL]=true;
 	final_state[S_TYPEIDENTIFIER_FINAL]=true;
+	//--------------------------------------
 
+	//{}()[]
 	final_state[S_LCURLY_FINAL]=true;
 	final_state[S_RCURLY_FINAL]=true;
-
 	final_state[S_LPARENS_FINAL]=true;
 	final_state[S_RPARENS_FINAL]=true;
-
 	final_state[S_LBRACKET_FINAL]=true;
 	final_state[S_RBRACKET_FINAL]=true;
+	//---------------------------------
 
-	final_state[S_LESSER_FINAL]=true;
-	final_state[S_GREATER_FINAL]=true;
-	final_state[S_WAVE_FINAL]=true;
-
+	//Comments
 	final_state[S_SINGLE_LINE_COMMENT_FINAL]=true;
 	final_state[S_MULTI_LINE_COMMENT_FINAL]=true;
+	
+	//Assignment Operators
+	final_state[S_ASSIGN_EQ_FINAL]=true;
+	final_state[S_ASSIGN_PLUS_EQ_FINAL]=true;
+	final_state[S_ASSIGN_MINUS_EQ_FINAL]=true;
+	final_state[S_ASSIGN_TIMES_EQ_FINAL]=true;
+	final_state[S_ASSIGN_DIV_EQ_FINAL]=true;
+	//---------------------------------------
+	
+	//Operators
+	final_state[S_OPERATOR_FINAL]=true;
+	final_state[S_OPERATOR_FINAL_2]=true;
+	//-----------------------------------
 
-	final_state[S_SEMICOLON_FINAL]=true;
-	final_state[S_EQ_FINAL]=true;
-
+	//Constants
 	final_state[S_INTEGER_FINAL]=true;
 	final_state[S_FLOAT_FINAL]=true;
-
-	final_state[S_OPERATOR_FINAL]=true;
+	final_state[S_CHARCONST_FINAL]=true;
+	final_state[S_BOOLCONST_FINAL]=true;
+	final_state[S_STRING_FINAL]=true;
+	//--------------------------------
+	
+	//Keywords
+	final_state[S_IF_FINAL]=true;
+	final_state[S_WHILE_FINAL]=true;
 	final_state[S_RETURN_FINAL]=true;
 	final_state[S_loop_FINAL]=true;
-
-	final_state[S_CHARCONST_FINAL]=true;
-	final_state[S_ANYTYPE_FINAL]=true;
-	final_state[S_BOOLCONST_FINAL]=true;
 	final_state[S_struct_FINAL]=true;
-	final_state[S_STRING_FINAL]=true;
+	final_state[S_fn_FINAL]=true;
+	final_state[S_else_FINAL]=true;
+	final_state[S_break_FINAL]=true;
+	final_state[S_for_FINAL]=true;
+	final_state[S_in_FINAL]=true;
+	final_state[S_switch_FINAL]=true;
+	final_state[S_case_FINAL]=true;
+	//-------------------------------
+	
+	final_state[S_SEMICOLON_FINAL]=true;
+	final_state[S_ANYTYPE_FINAL]=true;
 	final_state[S_TPARAM_FINAL]=true;
 	final_state[S_STRUCTMEMBERACCESS_FINAL]=true;
 	final_state[S_COMMA_FINAL]=true;
-
-	final_state[S_MINUS_FINAL]=true;
 	final_state[S_ARROW_FINAL]=true;
-	final_state[S_fn_FINAL]=true;
-	final_state[S_else_FINAL]=true;
-
+	
 	final_state[S_NEWLINE_FINAL]=true;
 
 	//error state should also be final. in error state we shall quit
@@ -154,6 +189,5 @@ void init_dfa(short** dfa, bool* final_state, int n_states){
 	//when we do not get into any state, 
 	//that should reset start, so identifiers can be parsed correctly
 	final_state[S_START]=true;
-	
-	final_state[S_break_FINAL]=true;
+	final_state[S_RANGE_OP_FINAL]=true;
 }

@@ -3,7 +3,7 @@ this file is supposed to test dragon-lexer
 
 the testing shall be conducted via unit tests.
 
-there is not much going on with the files so 
+there is not much going on with the files so
 we probably do not need integration tests here.
 
 the tests shall be the same (or more) than there were
@@ -15,18 +15,18 @@ for the java version of this lexer
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <assert.h>
 
 //Project Headers
-#include "tokens.h"
 #include "lexer.h"
 #include "loop.h"
 #include "test.h"
+#include "../../token/token.h"
 
-//token types
-#include "../../parser/src/main/commandline/TokenKeys.h"
+#include "../../parser/main/commandline/TokenKeys.h"
 
-void freeTokens(struct Token** tokens, unsigned int count){
-	for(int i = 0; i < count; i++){
+void freeTokens(struct Token** tokens, unsigned int count) {
+	for(int i = 0; i < count; i++) {
 		//free(tokens[i]->value);
 		free(tokens[i]);
 	}
@@ -34,29 +34,11 @@ void freeTokens(struct Token** tokens, unsigned int count){
 	//free(tokens);
 }
 
-bool assert(bool condition){
-	//to make it clear to the reader
-	//that this is the assertion of the test
-	
-	bool debug = false;
-
-	if(condition){
-		if(debug){
-			printf("assertion passed\n");
-		}
-	}else{
-		printf("assertion failed\n");
-		exit(1);
-	}
-
-	return condition;
-}
-
 bool debug;
 
-int test_all(bool debug1){
+int test_all(bool debug1) {
 	printf("running tests \n");
-	
+
 	debug = debug1;
 
 	int pass  = 0;
@@ -125,7 +107,10 @@ int test_all(bool debug1){
 	pass+=test_mixed_11();
 	pass+=test_mixed_12();
 	pass+=test_mixed_13();
-	count+=15;
+	pass+=test_mixed_14();
+	pass+=test_mixed_15();
+	pass+=test_mixed_16();
+	count+=18;
 
 	pass+=test_operators();
 	count+=1;
@@ -133,8 +118,24 @@ int test_all(bool debug1){
 	pass+=test_loop();
 	pass+=test_if_else();
 	count+=2;
-	
+
 	pass+=test_break();
+	pass+=test_for();
+	pass+=test_in();
+	count+=3;
+	
+	//these use assert
+	pass+=test_rangeop_1();
+	pass+=test_rangeop_2();
+	count+=2;
+	
+	pass+=test_member_access();
+	count+=1;
+	
+	pass+=test_switch_case();
+	count+=1;
+	
+	pass+=test_assign_operators();
 	count+=1;
 
 	printf("%i of %i tests passed\n",pass,count);
@@ -143,989 +144,1216 @@ int test_all(bool debug1){
 }
 
 
-bool test_can_see_line_with_semicolon(){
-	if(debug){
+bool test_can_see_line_with_semicolon() {
+
+	if(debug) {
 		printf("test can see line with semicolon\n");
 	}
-	//this test is to see if the lexer can see
-	//an entire line
 
 	char* str = "Char x; ";
-	struct Token** tokens = lex(str,".test.tokens");
-	
-	bool res = true;
-	
-	res &= assert(tokens[0]->kind == TYPEIDENTIFIER);
-	res &= assert(tokens[1]->kind == ID);
-	res &= assert(tokens[2]->kind == SEMICOLON);
+	struct Token** tokens = lex(str,".test.tokens", debug);
 
-	res &= assert(strcmp(tokens[1]->value,"x")==0);
-	
+	assert(tokens[0]->kind == TYPEIDENTIFIER);
+	assert(tokens[1]->kind == ID);
+	assert(tokens[2]->kind == SEMICOLON);
+
+	assert(strcmp(tokens[1]->value_ptr,"x")==0);
+
 	freeTokens(tokens, 3);
 
-	return res;
+	return true;
 }
 
-bool test_can_see_line_with_operators(){
-	if(debug){
+bool test_can_see_line_with_operators() {
+
+	if(debug) {
 		printf("test can see line with operators\n");
 	}
-	//this test is to see if the lexer can see
-	//an entire line
 
 	char* str = "x = x+x; ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	bool res = true;
+	assert(tokens[0]->kind == ID);
+	assert(tokens[1]->kind == ASSIGNOP);
+	assert(tokens[2]->kind == ID);
+	assert(tokens[3]->kind == OPKEY);
+	assert(tokens[4]->kind == ID);
 
-	res &= assert(tokens[0]->kind == ID);
-	res &= assert(tokens[1]->kind == EQ);
-	res &= assert(tokens[2]->kind == ID);
-	res &= assert(tokens[3]->kind == OPKEY);
-	res &= assert(tokens[4]->kind == ID);
-	
 	freeTokens(tokens, 5);
 
-	return res;
+	return true;
 }
 
-bool test_lexes_return_statement_favorably(){
-	if(debug){
+bool test_lexes_return_statement_favorably() {
+
+	if(debug) {
 		printf("test lexes return statement favorably\n");
 	}
 
 	char* str = "return (-5)*n; ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	bool res = true;
+	assert(tokens[0]->kind==RETURN);
 
-	res &= assert(tokens[0]->kind==RETURN);
+	assert(tokens[1]->kind==LPARENS);
+	assert(tokens[2]->kind==OPKEY);
+	assert(tokens[3]->kind==INTEGER);
+	assert(tokens[4]->kind==RPARENS);
 
-	res &= assert(tokens[1]->kind==LPARENS);
-	res &= assert(tokens[2]->kind==OPKEY);
-	res &= assert(tokens[3]->kind==INTEGER);
-	res &= assert(tokens[4]->kind==RPARENS);
+	assert(tokens[5]->kind==OPKEY);
+	assert(tokens[6]->kind==ID);
+	assert(tokens[7]->kind==SEMICOLON);
 
-	res &= assert(tokens[5]->kind==OPKEY);
-	res &= assert(tokens[6]->kind==ID);
-	res &= assert(tokens[7]->kind==SEMICOLON);
-	
 	freeTokens(tokens, 8);
 
-	return res;
+	return true;
 }
-bool test_lexes_other_return_statement(){
-	if(debug){
+bool test_lexes_other_return_statement() {
+
+	if(debug) {
 		printf("test lexes other return statement\n");
 	}
-	
+
 	char* str = "return (n*faculty(n-1)); ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	bool res = true;
+	assert(tokens[0]->kind==RETURN);
 
-	res &= assert(tokens[0]->kind==RETURN);
-	
-	res &= assert(tokens[1]->kind==LPARENS);
-	res &= assert(tokens[2]->kind==ID);
-	res &= assert(tokens[3]->kind==OPKEY);
-	res &= assert(tokens[4]->kind==ID);
+	assert(tokens[1]->kind==LPARENS);
+	assert(tokens[2]->kind==ID);
+	assert(tokens[3]->kind==OPKEY);
+	assert(tokens[4]->kind==ID);
 
-	res &= assert(tokens[5]->kind==LPARENS);
-	res &= assert(tokens[6]->kind==ID);
-	res &= assert(tokens[7]->kind==OPKEY);
-	res &= assert(tokens[8]->kind==INTEGER);
-	res &= assert(tokens[9]->kind==RPARENS);
-	res &= assert(tokens[10]->kind==RPARENS);
-	
+	assert(tokens[5]->kind==LPARENS);
+	assert(tokens[6]->kind==ID);
+	assert(tokens[7]->kind==OPKEY);
+	assert(tokens[8]->kind==INTEGER);
+	assert(tokens[9]->kind==RPARENS);
+	assert(tokens[10]->kind==RPARENS);
+
 	freeTokens(tokens, 11);
 
-	return res;
+	return true;
 }
-bool test_lexes_float_constant(){
-	if(debug){
+bool test_lexes_float_constant() {
+
+	if(debug) {
 		printf("test lexes float constant\n");
 	}
-	
+
 	char* str = "1.44 ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	bool res = true;
+	assert(tokens[0]->kind==FLOATING);
+	assert(strcmp(tokens[0]->value_ptr,"1.44")==0);
 
-	res &= assert(tokens[0]->kind==FLOATING);
-	res &= assert(strcmp(tokens[0]->value,"1.44")==0);
-	
 	freeTokens(tokens, 1);
 
-	return res;
+	return true;
 }
-bool test_lexes_escaped_char(){
-	if(debug){
+bool test_lexes_escaped_char() {
+
+	if(debug) {
 		printf("test lexes escaped char\n");
 	}
-	
+
 	char* str = "return '\\n'";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	bool res = true;
+	assert(tokens[0]->kind==RETURN);
+	assert(tokens[1]->kind==CCONST);
+	assert(strcmp(tokens[1]->value_ptr,"'\\n'")==0);
 
-	res &= assert(tokens[0]->kind==RETURN);
-	res &= assert(tokens[1]->kind==CCONST);
-	res &= assert(strcmp(tokens[1]->value,"'\\n'")==0);
-	
 	freeTokens(tokens, 2);
 
-	return res;
+	return true;
 }
 
 
-bool test_anytypetoken(){
-	if(debug){
+bool test_anytypetoken() {
+
+	if(debug) {
 		printf("test anytype token\n");
 	}
-	
+
 	char* str = "# ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	bool res = true;
+	assert(tokens[0]->kind==ANYTYPE);
 
-	res &= assert(tokens[0]->kind==ANYTYPE);
-	
 	freeTokens(tokens, 1);
 
-	return res;
+	return true;
 }
 
-bool test_true(){
-	
-	if(debug){ printf("test boolconst token\n"); }
-	
-	char* str = "true ";
-	struct Token** tokens = lex(str,".test.tokens");
+bool test_true() {
 
-	bool res = true;
-
-	res &= assert(tokens[0]->kind==BCONST);
-	
-	freeTokens(tokens, 1);
-
-	return res;
-}
-
-bool test_false(){
-	
-	if(debug){
+	if(debug) {
 		printf("test boolconst token\n");
 	}
-	
-	char* str = "false ";
-	struct Token** tokens = lex(str,".test.tokens");
 
-	bool res = true;
+	char* str = "true ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==BCONST);
-	
+	assert(tokens[0]->kind==BCONST);
+
 	freeTokens(tokens, 1);
 
-	return res;
+	return true;
 }
 
-bool test_char(){
-	if(debug){
+bool test_false() {
+
+	if(debug) {
+		printf("test boolconst token\n");
+	}
+
+	char* str = "false ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==BCONST);
+
+	freeTokens(tokens, 1);
+
+	return true;
+}
+
+bool test_char() {
+
+	if(debug) {
 		printf("test charconst token\n");
 	}
-	
+
 	char* str = "'x' ('\\n') ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	bool res = true;
+	assert(tokens[0]->kind==CCONST);
+	assert(tokens[1]->kind==LPARENS);
+	assert(tokens[2]->kind==CCONST);
+	assert(tokens[3]->kind==RPARENS);
 
-	res &= assert(tokens[0]->kind==CCONST);
-	res &= assert(tokens[1]->kind==LPARENS);
-	res &= assert(tokens[2]->kind==CCONST);
-	res &= assert(tokens[3]->kind==RPARENS);
+	assert(strcmp(tokens[0]->value_ptr,"'x'")==0 );
 
-	res &= assert(strcmp(tokens[0]->value,"'x'")==0 );
+	assert(strcmp(tokens[2]->value_ptr,"'\\n'")==0 );
 
-	res &= assert(strcmp(tokens[2]->value,"'\\n'")==0 );
-	
 	freeTokens(tokens, 4);
-	
-	return res;
+
+	return true;
 }
 
 
-bool test_float_1(){
-	if(debug){
+bool test_float_1() {
+
+	if(debug) {
 		printf("test floatconst token:1\n");
 	}
-	
+
 	char* str = "2038.4 ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	bool res = true;
-
-	res &= assert(tokens[0]->kind==FLOATING);
-	res &= assert(
-		strcmp(tokens[0]->value,"2038.4")==0
+	assert(tokens[0]->kind==FLOATING);
+	assert(
+	    strcmp(tokens[0]->value_ptr,"2038.4")==0
 	);
-	
+
 	freeTokens(tokens, 1);
-	
-	return res;
+
+	return true;
 }
 
-bool test_float_2(){
-	if(debug){
+bool test_float_2() {
+	if(debug) {
 		printf("test floatconst token:2\n");
 	}
-	
+
 	char* str = "0.0 ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	bool res = true;
 
-	res &= assert(tokens[0]->kind==FLOATING);
-	res &= assert(
-		strcmp(tokens[0]->value,"0.0")==0
+
+	assert(tokens[0]->kind==FLOATING);
+	assert(
+	    strcmp(tokens[0]->value_ptr,"0.0")==0
 	);
-	
+
 	freeTokens(tokens, 1);
-	
-	return res;
+
+	return true;
 }
 
-bool test_float_3(){
-	if(debug){
+bool test_float_3() {
+	if(debug) {
 		printf("test floatconst token:3\n");
 	}
-	
-	char* str = "-5.0 ";
-	struct Token** tokens = lex(str,".test.tokens");
 
-	bool res = true;
+	char* str = "-5.0 ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
 	//looking at index 1 because '-' and float
 	//are lexed seperately, for simplicity reasons.
-	//perhaps we may change it later on 
+	//perhaps we may change it later on
 
-	res &= assert(tokens[1]->kind==FLOATING);
-	res &= assert(
-		strcmp(tokens[1]->value,"5.0")==0
+	assert(tokens[1]->kind==FLOATING);
+	assert(
+	    strcmp(tokens[1]->value_ptr,"5.0")==0
 	);
-	
+
 	freeTokens(tokens, 2);
-	
-	return res;
+
+	return true;
 }
 
-bool test_identifier_1(){
-	if(debug){
+bool test_identifier_1() {
+	if(debug) {
 		printf("test identifier token:1\n");
 	}
-	
+
 	char* str = "main ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	bool res = true;
-
-	res &= assert(tokens[0]->kind==ID);
-	res &= assert(
-		strcmp(tokens[0]->value,"main")==0
+	assert(tokens[0]->kind==ID);
+	assert(
+	    strcmp(tokens[0]->value_ptr,"main")==0
 	);
-	
+
 	freeTokens(tokens, 1);
-	
-	return res;
+
+	return true;
 }
 
-bool test_identifier_2(){
-	if(debug){
+bool test_identifier_2() {
+	if(debug) {
 		printf("test identifier token:2\n");
 	}
-	
+
 	char* str = "arg_ls ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	bool res = true;
-
-	res &= assert(tokens[0]->kind==ID);
-	res &= assert(
-		strcmp(tokens[0]->value,"arg_ls")==0
+	assert(tokens[0]->kind==ID);
+	assert(
+	    strcmp(tokens[0]->value_ptr,"arg_ls")==0
 	);
-	
+
 	freeTokens(tokens, 1);
-	
-	return res;
+
+	return true;
 }
 
-bool test_int_1(){
-	if(debug){
+bool test_int_1() {
+	if(debug) {
 		printf("test integer token:1\n");
 	}
-	
-	char* str = "2038 ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
 
-	res &= assert(tokens[0]->kind==INTEGER);
-	res &= assert(
-		strcmp(tokens[0]->value,"2038")==0
+	char* str = "2038 ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==INTEGER);
+	assert(
+	    strcmp(tokens[0]->value_ptr,"2038")==0
 	);
-	
+
 	freeTokens(tokens, 1);
-	
-	return res;
+
+	return true;
 }
 
-bool test_int_2(){
-	if(debug){
+bool test_int_2() {
+	if(debug) {
 		printf("test integer token:2\n");
 	}
-	
-	char* str = "0 ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
 
-	res &= assert(tokens[0]->kind==INTEGER);
-	res &= assert(
-		strcmp(tokens[0]->value,"0")==0
+	char* str = "0 ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==INTEGER);
+	assert(
+	    strcmp(tokens[0]->value_ptr,"0")==0
 	);
-	
+
 	freeTokens(tokens, 1);
-	
-	return res;
+
+	return true;
 }
 
-bool test_int_3(){
-	if(debug){
+bool test_int_3() {
+	if(debug) {
 		printf("test integer token:3\n");
 	}
-	
-	char* str = "-5 ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
 
-	res &= assert(tokens[1]->kind==INTEGER);
-	res &= assert(
-		strcmp(tokens[1]->value,"5")==0
+	char* str = "-5 ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[1]->kind==INTEGER);
+	assert(
+	    strcmp(tokens[1]->value_ptr,"5")==0
 	);
-	
+
 	freeTokens(tokens, 2);
-	
-	return res;
+
+	return true;
 }
 
-bool test_struct(){
-	if(debug){
+bool test_struct() {
+	if(debug) {
 		printf("test struct token\n");
 	}
-	
+
 	char* str = "struct ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	bool res = true;
+	assert(tokens[0]->kind==STRUCT);
 
-	res &= assert(tokens[0]->kind==STRUCT);
-	
 	freeTokens(tokens, 1);
-	
-	return res;
+
+	return true;
 }
 
-bool test_return(){
-	if(debug){
+bool test_return() {
+	if(debug) {
 		printf("test return token\n");
 	}
-	
+
 	char* str = "return ";
-	struct Token** tokens = lex(str,".test.tokens");
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	bool res = true;
+	assert(tokens[0]->kind==RETURN);
 
-	res &= assert(tokens[0]->kind==RETURN);
-	
 	freeTokens(tokens, 1);
-	
-	return res;
+
+	return true;
 }
 
-bool test_string_1(){
-	if(debug){
+bool test_string_1() {
+	if(debug) {
 		printf("test string token:1\n");
 	}
-	
-	char* str = "\"hi\" ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
 
-	res &= assert(tokens[0]->kind==STRINGCONST);
-	//printf("%s\n",get(tokens,0)->value);
-	res &= assert(
-		strcmp(tokens[0]->value,"\"hi\"")==0
+	char* str = "\"hi\" ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==STRINGCONST);
+	
+	assert(
+	    strcmp(tokens[0]->value_ptr,"\"hi\"")==0
 	);
-	
+
 	freeTokens(tokens, 1);
-	
-	return res;
+
+	return true;
 }
 
-bool test_string_2(){
-	if(debug){
+bool test_string_2() {
+	if(debug) {
 		printf("test string token:2\n");
 	}
-	
-	char* str = "\"hi\n\nhi\" ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
 
-	res &= assert(tokens[0]->kind==STRINGCONST);
-	res &= assert(
-		strcmp(tokens[0]->value,"\"hi\n\nhi\"")==0
+	char* str = "\"hi\n\nhi\" ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==STRINGCONST);
+	assert(
+	    strcmp(tokens[0]->value_ptr,"\"hi\n\nhi\"")==0
 	);
-	
+
 	freeTokens(tokens, 1);
-	
-	return res;
+
+	return true;
 }
 
 
-bool test_typeidentifier_simple(){
-	if(debug){
+bool test_typeidentifier_simple() {
+	if(debug) {
 		printf("test typeidentifier token:1\n");
 	}
-	
-	char* str = "PInt ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
 
-	res &= assert(tokens[0]->kind==TYPEIDENTIFIER);
-	res &= assert(
-		strcmp(tokens[0]->value,"PInt")==0
+	char* str = "PInt ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==TYPEIDENTIFIER);
+	assert(
+	    strcmp(tokens[0]->value_ptr,"PInt")==0
 	);
-	
+
 	freeTokens(tokens, 1);
-	
-	return res;
+
+	return true;
 }
 
-bool test_typeidentifier_other(){
-	if(debug){
+bool test_typeidentifier_other() {
+	if(debug) {
 		printf("test typeidentifier token:2\n");
 	}
-	
-	char* str = "Point ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
 
-	res &= assert(tokens[0]->kind==TYPEIDENTIFIER);
-	res &= assert(
-		strcmp(tokens[0]->value,"Point")==0
+	char* str = "Point ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==TYPEIDENTIFIER);
+	assert(
+	    strcmp(tokens[0]->value_ptr,"Point")==0
 	);
-	
+
 	freeTokens(tokens, 1);
-	
-	return res;
+
+	return true;
 }
 
-bool test_typeidentifier_token(){
-	if(debug){
+bool test_typeidentifier_token() {
+	if(debug) {
 		printf("test typeidentifier token:3\n");
 	}
-	
-	char* str = "Char ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
 
-	res &= assert(tokens[0]->kind==TYPEIDENTIFIER);
-	res &= assert(
-		strcmp(tokens[0]->value,"Char")==0
+	char* str = "Char ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==TYPEIDENTIFIER);
+	assert(
+	    strcmp(tokens[0]->value_ptr,"Char")==0
 	);
-	
+
 	freeTokens(tokens, 1);
-	
-	return res;
+
+	return true;
 }
 
-bool test_typeparameter_1(){
-	if(debug){
+bool test_typeparameter_1() {
+	if(debug) {
 		printf("test typeparameter token\n");
 	}
-	
-	char* str = "?T0 ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
 
-	res &= assert(tokens[0]->kind==TPARAM);
-	res &= assert(
-		strcmp(tokens[0]->value,"0")==0
+	char* str = "?T0 ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==TPARAM);
+	assert(
+	    strcmp(tokens[0]->value_ptr,"0")==0
 	);
-	
+
 	freeTokens(tokens, 1);
-	
-	return res;
+
+	return true;
 }
 
-bool test_comma(){
-	if(debug){
+bool test_comma() {
+	if(debug) {
 		printf("test comma token\n");
 	}
-	
-	char* str = ",, ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
 
-	res &= assert(tokens[1]->kind==COMMA);
-	res &= assert(
-		strcmp(tokens[1]->value,",")==0
+	char* str = ",, ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[1]->kind==COMMA);
+	assert(
+	    strcmp(tokens[1]->value_ptr,",")==0
 	);
-	
+
 	freeTokens(tokens, 2);
-	
-	return res;
+
+	return true;
 }
 
-bool test_arrow(){
-	if(debug){
+bool test_arrow() {
+	if(debug) {
 		printf("test arrow token\n");
 	}
-	
+
 	char* str = "-> ~> ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==ARROW);
-	res &= assert(
-		strcmp(tokens[0]->value,"->")==0
+	assert(tokens[0]->kind==ARROW);
+	assert(
+	    strcmp(tokens[0]->value_ptr,"->")==0
 	);
 
-	res &= assert(tokens[1]->kind==ARROW);
-	res &= assert(
-		strcmp(tokens[1]->value,"~>")==0
+	assert(tokens[1]->kind==ARROW);
+	assert(
+	    strcmp(tokens[1]->value_ptr,"~>")==0
 	);
-	
+
 	freeTokens(tokens, 2);
 
-	return res;
+	return true;
 }
 
-bool test_mixed_1(){
+bool test_mixed_1() {
 
-	if(debug){
+	if(debug) {
 		printf("test mixed 1\n");
 	}
-	
+
 	char* str = "struct MyStruct{PInt a,MyStruct b} ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[2]->kind==LCURLY);
 
-	res &= assert(tokens[3]->kind==TYPEIDENTIFIER);
-	res &= assert(
-		strcmp(tokens[3]->value,"PInt")==0
+	assert(tokens[2]->kind==LCURLY);
+
+	assert(tokens[3]->kind==TYPEIDENTIFIER);
+	assert(
+	    strcmp(tokens[3]->value_ptr,"PInt")==0
 	);
 
-	res &= assert(tokens[4]->kind==ID);
-	res &= assert(
-		strcmp(tokens[4]->value,"a")==0
+	assert(tokens[4]->kind==ID);
+	assert(
+	    strcmp(tokens[4]->value_ptr,"a")==0
 	);
 
-	res &= assert(tokens[5]->kind==COMMA);
-	
+	assert(tokens[5]->kind==COMMA);
+
 	freeTokens(tokens, 6);
 
-	return res;
+	return true;
 }
 
-bool test_mixed_2(){
+bool test_mixed_2() {
 
-	if(debug){
+	if(debug) {
 		printf("test mixed 2\n");
 	}
-	
+
 	char* str = ") f)~> ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==RPARENS);
 
-	res &= assert(tokens[1]->kind==ID);
-	res &= assert(
-		strcmp(tokens[1]->value,"f")==0
+	assert(tokens[0]->kind==RPARENS);
+
+	assert(tokens[1]->kind==ID);
+	assert(
+	    strcmp(tokens[1]->value_ptr,"f")==0
 	);
 
-	res &= assert(tokens[2]->kind==RPARENS);
+	assert(tokens[2]->kind==RPARENS);
 
-	res &= assert(tokens[3]->kind==ARROW);
-	
+	assert(tokens[3]->kind==ARROW);
+
 	freeTokens(tokens, 4);
 
-	return res;
+	return true;
 }
 
-bool test_mixed_3(){
+bool test_mixed_3() {
 
-	if(debug){
+	if(debug) {
 		printf("test mixed 3\n");
 	}
-	
+
 	char* str = "if(x ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==IF);
 
-	res &= assert(tokens[1]->kind==LPARENS);
+	assert(tokens[0]->kind==IF);
 
-	res &= assert(tokens[2]->kind==ID);
-	
+	assert(tokens[1]->kind==LPARENS);
+
+	assert(tokens[2]->kind==ID);
+
 	freeTokens(tokens, 3);
 
-	return res;
+	return true;
 }
 
-bool test_mixed_4(){
+bool test_mixed_4() {
 
-	if(debug){
+	if(debug) {
 		printf("test mixed 4\n");
 	}
-	
+
 	char* str = "while(x PInt n ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==WHILE);
 
-	res &= assert(tokens[1]->kind==LPARENS);
+	assert(tokens[0]->kind==WHILE);
 
-	res &= assert(tokens[2]->kind==ID);
+	assert(tokens[1]->kind==LPARENS);
 
-	//PInt
-	res &= assert(tokens[3]->kind==TYPEIDENTIFIER);
+	assert(tokens[2]->kind==ID);
 
-	//id
-	res &= assert(tokens[4]->kind==ID);
-	
+	assert(tokens[3]->kind==TYPEIDENTIFIER);
+
+	assert(tokens[4]->kind==ID);
+
 	freeTokens(tokens, 5);
 
-	return res;
+	return true;
 }
 
-bool test_mixed_5(){
+bool test_mixed_5() {
 
-	if(debug){
+	if(debug) {
 		printf("test mixed 5\n");
 	}
-
-	//arr[1]='d';
-
-	char* str = "]='d'; ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
-
-	res &= assert(tokens[0]->kind==RBRACKET);
-
-	res &= assert(tokens[1]->kind==EQ);
-
-	res &= assert(tokens[2]->kind==CCONST);
-
-	res &= assert(tokens[3]->kind==SEMICOLON);
 	
+	char* str = "]='d'; ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==RBRACKET);
+
+	assert(tokens[1]->kind==ASSIGNOP);
+
+	assert(tokens[2]->kind==CCONST);
+
+	assert(tokens[3]->kind==SEMICOLON);
+
 	freeTokens(tokens, 4);
 
-	return res;
+	return true;
 }
 
-bool test_mixed_6(){
-	//MyStruct s}
-
-	if(debug){
+bool test_mixed_6() {
+	
+	if(debug) {
 		printf("test mixed 6\n");
 	}
 
 	char* str = "MyStruct s} ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==TYPEIDENTIFIER);
+	assert(tokens[0]->kind==TYPEIDENTIFIER);
 
-	res &= assert(tokens[1]->kind==ID);
+	assert(tokens[1]->kind==ID);
 
-	res &= assert(tokens[2]->kind==RCURLY);
-	
+	assert(tokens[2]->kind==RCURLY);
+
 	freeTokens(tokens, 3);
 
-	return res;
+	return true;
 }
 
-bool test_mixed_7(){
-	//(1<2)
-
-	if(debug){
+bool test_mixed_7() {
+	
+	if(debug) {
 		printf("test mixed 7\n");
 	}
 
 	char* str = "(1<2) ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==LPARENS);
 
-	res &= assert(tokens[1]->kind==INTEGER);
+	assert(tokens[0]->kind==LPARENS);
 
-	res &= assert(tokens[2]->kind==LESSER);
+	assert(tokens[1]->kind==INTEGER);
 
-	res &= assert(tokens[3]->kind==INTEGER);
+	assert(tokens[2]->kind==OPKEY);
 
-	res &= assert(tokens[4]->kind==RPARENS);
-	
+	assert(tokens[3]->kind==INTEGER);
+
+	assert(tokens[4]->kind==RPARENS);
+
 	freeTokens(tokens, 5);
 
-	return res;
+	return true;
 }
 
-bool test_mixed_8(){
-	//putchar('1')
-
-	if(debug){
+bool test_mixed_8() {
+	
+	if(debug) {
 		printf("test mixed 8\n");
 	}
 
 	char* str = "putchar('1') ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==ID);
+	assert(tokens[0]->kind==ID);
 
-	res &= assert(tokens[1]->kind==LPARENS);
+	assert(tokens[1]->kind==LPARENS);
 
-	res &= assert(tokens[2]->kind==CCONST);
+	assert(tokens[2]->kind==CCONST);
 
-	res &= assert(tokens[3]->kind==RPARENS);
-	
+	assert(tokens[3]->kind==RPARENS);
+
 	freeTokens(tokens, 4);
 
-	return res;
+	return true;
 }
 
-bool test_mixed_9(){
-	//putchar('-');
+bool test_mixed_9() {
 
-	if(debug){
+	if(debug) {
 		printf("test mixed 9\n");
 	}
 
 	char* str = "putchar('-') ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==ID);
+	assert(tokens[0]->kind==ID);
 
-	res &= assert(tokens[1]->kind==LPARENS);
+	assert(tokens[1]->kind==LPARENS);
 
-	res &= assert(tokens[2]->kind==CCONST);
+	assert(tokens[2]->kind==CCONST);
 
-	res &= assert(tokens[3]->kind==RPARENS);
-	
+	assert(tokens[3]->kind==RPARENS);
+
 	freeTokens(tokens, 4);
 
-	return res;
+	return true;
 }
 
-bool test_mixed_10(){
+bool test_mixed_10() {
 
-	//;
-    //    i=0;
-
-	if(debug){
+	if(debug) {
 		printf("test mixed 10\n");
 	}
 
 	char* str = ";\n 	i=0; ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==SEMICOLON);
+	assert(tokens[0]->kind==SEMICOLON);
 
-	res &= assert(tokens[1]->kind==LINE_NO);
+	assert(tokens[1]->kind==LINE_NO);
 
-	res &= assert(tokens[2]->kind==ID);
+	assert(tokens[2]->kind==ID);
 
-	res &= assert(tokens[3]->kind==EQ);
+	assert(tokens[3]->kind==ASSIGNOP);
 
-	res &= assert(tokens[4]->kind==INTEGER);
-	
+	assert(tokens[4]->kind==INTEGER);
+
 	freeTokens(tokens, 5);
 
-	return res;
+	return true;
 }
 
-bool test_mixed_11(){
+bool test_mixed_11() {
 
-	//PInt i, PInt j
-
-	if(debug){
+	if(debug) {
 		printf("test mixed 11\n");
 	}
 
 	char* str = "PInt i, PInt j ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==TYPEIDENTIFIER);
+	assert(tokens[0]->kind==TYPEIDENTIFIER);
 
-	res &= assert(tokens[1]->kind==ID);
+	assert(tokens[1]->kind==ID);
 
-	res &= assert(tokens[2]->kind==COMMA);
+	assert(tokens[2]->kind==COMMA);
 
-	res &= assert(tokens[3]->kind==TYPEIDENTIFIER);
+	assert(tokens[3]->kind==TYPEIDENTIFIER);
 
-	res &= assert(tokens[4]->kind==ID);
-	
+	assert(tokens[4]->kind==ID);
+
 	freeTokens(tokens, 5);
 
-	return res;
+	return true;
 }
 
-bool test_mixed_12(){
-	// x < 3.1
+bool test_mixed_12() {
 
-	if(debug){
+	if(debug) {
 		printf("test mixed 12\n");
 	}
 
 	char* str = "( x < 3.1) ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==LPARENS);
+	assert(tokens[0]->kind==LPARENS);
 
-	res &= assert(tokens[1]->kind==ID);
+	assert(tokens[1]->kind==ID);
 
-	res &= assert(tokens[2]->kind==LESSER);
+	assert(tokens[2]->kind==OPKEY);
 
-	res &= assert(tokens[3]->kind==FLOATING);
+	assert(tokens[3]->kind==FLOATING);
 
-	res &= assert(tokens[4]->kind==RPARENS);
+	assert(tokens[4]->kind==RPARENS);
 
 	freeTokens(tokens, 5);
 
-	return res;
+	return true;
 }
 
-bool test_mixed_13(){
-
-	//println("vector sum:");
-
-	if(debug){
+bool test_mixed_13() {
+	
+	if(debug) {
 		printf("test mixed 13\n");
 	}
 
 	char* str = "println(\"vector sum:\"); ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==ID);
-	res &= assert(tokens[1]->kind==LPARENS);
+	assert(tokens[0]->kind==ID);
+	assert(tokens[1]->kind==LPARENS);
 
-	res &= assert(tokens[2]->kind==STRINGCONST);
+	assert(tokens[2]->kind==STRINGCONST);
 
-	res &= assert(tokens[3]->kind==RPARENS);
-	res &= assert(tokens[4]->kind==SEMICOLON);
-	
+	assert(tokens[3]->kind==RPARENS);
+	assert(tokens[4]->kind==SEMICOLON);
+
 	freeTokens(tokens, 5);
 
-	return res;
+	return true;
 }
 
-bool test_operators(){
+bool test_mixed_14(){
+	
+	if(debug) {
+		printf("test mixed 14\n");
+	}
 
-	if(debug){
+	char* str = "struct MyStruct{ Int a, Int b}";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==STRUCT);
+	assert(tokens[1]->kind==TYPEIDENTIFIER);
+
+	assert(tokens[2]->kind==LCURLY);
+
+	assert(tokens[3]->kind==TYPEIDENTIFIER);
+	assert(tokens[4]->kind==ID);
+	
+	assert(tokens[5]->kind==COMMA);
+	
+	assert(tokens[6]->kind==TYPEIDENTIFIER);
+	assert(tokens[7]->kind==ID);
+	
+	assert(tokens[8]->kind==RCURLY);
+
+	freeTokens(tokens, 9);
+
+	return true;
+}
+
+bool test_mixed_15(){
+	
+	if(debug) {
+		printf("test mixed 15\n");
+	}
+
+	char* str = "struct MyStruct{\n\tInt a,\n\tInt b\n}";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==STRUCT);
+	assert(tokens[1]->kind==TYPEIDENTIFIER);
+
+	assert(tokens[2]->kind==LCURLY);
+	//tokens[3] is LINE_NO
+	assert(tokens[4]->kind==TYPEIDENTIFIER);
+	assert(tokens[5]->kind==ID);
+	
+	assert(tokens[6]->kind==COMMA);
+	//tokens[7] is LINE_NO
+	assert(tokens[8]->kind==TYPEIDENTIFIER);
+	assert(tokens[9]->kind==ID);
+	//tokens[10] is LINE_NO
+	assert(tokens[11]->kind==RCURLY);
+
+	freeTokens(tokens, 12);
+
+	return true;
+}
+
+bool test_mixed_16(){
+	
+	if(debug) { printf("test mixed 16\n"); }
+
+	char* str = "((PInt) -> PInt) member ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==LPARENS);
+	assert(tokens[1]->kind==LPARENS);
+	assert(tokens[2]->kind==TYPEIDENTIFIER);
+	
+	assert(tokens[3]->kind==RPARENS);
+	assert(tokens[4]->kind==ARROW);
+	assert(tokens[5]->kind==TYPEIDENTIFIER);
+	assert(tokens[6]->kind==RPARENS);
+	assert(tokens[7]->kind==ID);
+
+	freeTokens(tokens, 8);
+
+	return true;
+}
+
+bool test_operators() {
+
+	if(debug) {
 		printf("test operators\n");
 	}
+
+	char* str = "+ - * / && || | & << >> <= >=";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==OPKEY);
+
+	assert(tokens[1]->kind==OPKEY);
+
+	assert(tokens[2]->kind==OPKEY);
+
+	assert(tokens[3]->kind==OPKEY);
+
+	assert(tokens[4]->kind==OPKEY);
+
+	assert(tokens[5]->kind==OPKEY);
 	
-	char* str = "+ - * / && || ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
-
-	res &= assert(tokens[0]->kind==OPKEY);
-
-	res &= assert(tokens[1]->kind==OPKEY);
-
-	res &= assert(tokens[2]->kind==OPKEY);
-
-	res &= assert(tokens[3]->kind==OPKEY);
-
-	res &= assert(tokens[4]->kind==OPKEY);
-
-	res &= assert(tokens[5]->kind==OPKEY);
+	assert(tokens[6]->kind==OPKEY);
 	
-	freeTokens(tokens, 6);
+	assert(tokens[7]->kind==OPKEY);
+	
+	assert(tokens[8]->kind==OPKEY);
+	
+	assert(tokens[9]->kind==OPKEY);
+	
+	assert(tokens[10]->kind==OPKEY);
+	
+	assert(tokens[11]->kind==OPKEY);
 
-	return res;
+	freeTokens(tokens, 12);
+
+	return true;
 }
 
-bool test_loop(){
+bool test_loop() {
 
-	if(debug){
+	if(debug) {
 		printf("test loop\n");
 	}
-	
+
 	char* str = "loop loop{ lo ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==LOOP);
+	assert(tokens[0]->kind==LOOP);
 
-	res &= assert(tokens[1]->kind==LOOP);
+	assert(tokens[1]->kind==LOOP);
 
-	res &= assert(tokens[2]->kind==LCURLY);
+	assert(tokens[2]->kind==LCURLY);
 
-	res &= assert(tokens[3]->kind==ID);
-	
+	assert(tokens[3]->kind==ID);
+
 	freeTokens(tokens, 4);
 
-	return res;
+	return true;
 }
 
-bool test_if_else(){
+bool test_if_else() {
 
-	if(debug){
+	if(debug) {
 		printf("test if else\n");
 	}
-	
+
 	char* str = "if else{ ";
-	struct Token** tokens = lex(str,".test.tokens");
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==IF);
+	assert(tokens[0]->kind==IF);
 
-	res &= assert(tokens[1]->kind==ELSE);
+	assert(tokens[1]->kind==ELSE);
 
-	res &= assert(tokens[2]->kind==LCURLY);
+	assert(tokens[2]->kind==LCURLY);
 
 	freeTokens(tokens, 3);
 
-	return res;
+	return true;
 }
 
-bool test_break(){
-	
-	if(debug){ printf("test break\n"); }
-	
+bool test_break() {
+
+	if(debug) {
+		printf("test break\n");
+	}
+
 	char* str = "break; Int x";
-	struct Token** tokens = lex(str,".test.tokens");
-	
-	bool res = true;
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
 
-	res &= assert(tokens[0]->kind==BREAK);
 
-	res &= assert(tokens[1]->kind==SEMICOLON);
+	assert(tokens[0]->kind==BREAK);
 
-	res &= assert(tokens[2]->kind==TYPEIDENTIFIER);
-	
+	assert(tokens[1]->kind==SEMICOLON);
+
+	assert(tokens[2]->kind==TYPEIDENTIFIER);
+
 	freeTokens(tokens, 3);
 
-	return res;
+	return true;
+}
+
+bool test_for(){
+	
+	if(debug) {
+		printf("test_for\n");
+	}
+
+	char* str = "for for{ ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==FOR);
+
+	assert(tokens[1]->kind==FOR);
+
+	assert(tokens[2]->kind==LCURLY);
+
+	freeTokens(tokens, 3);
+
+	return true;
+}
+
+bool test_in(){
+	
+	if(debug) {
+		printf("test_in\n");
+	}
+
+	char* str = "in; in{ ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+
+	assert(tokens[0]->kind==IN);
+
+	assert(tokens[1]->kind==SEMICOLON);
+
+	assert(tokens[2]->kind==IN);
+	
+	assert(tokens[3]->kind==LCURLY);
+
+	freeTokens(tokens, 4);
+
+	return true;
+}
+
+bool test_rangeop_1(){
+	
+	if(debug) {
+		printf("test_rangeop_1\n");
+	}
+
+	char* str = ".. a.... ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+	
+	assert(tokens[0]->kind==RANGEOP);
+
+	assert(tokens[1]->kind==ID);
+
+	assert(tokens[2]->kind==RANGEOP);
+	
+	assert(tokens[3]->kind==RANGEOP);
+
+	freeTokens(tokens, 4);
+
+	return true;
+}
+
+bool test_rangeop_2(){
+	
+	if(debug) {
+		printf("test_rangeop_1\n");
+	}
+
+	char* str = "0 .. 3 a .. b ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+
+	assert(tokens[0]->kind==INTEGER);
+	assert(tokens[1]->kind==RANGEOP);
+	assert(tokens[2]->kind==INTEGER);
+	
+	assert(tokens[3]->kind==ID);
+	assert(tokens[4]->kind==RANGEOP);
+	assert(tokens[5]->kind==ID);
+
+	freeTokens(tokens, 6);
+
+	return true;
+}
+
+bool test_member_access(){
+	
+	if(debug) { printf("test_member_access\n"); }
+
+	char* str = "s.member= ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+	
+	assert(tokens[0]->kind==ID);
+	assert(tokens[1]->kind==STRUCTMEMBERACCESS);
+	assert(tokens[2]->kind==ID);
+	
+	assert(tokens[3]->kind==ASSIGNOP);
+
+	freeTokens(tokens, 4);
+
+	return true;
+}
+
+bool test_switch_case(){
+	
+	if(debug) { printf("test_switch_case\n"); }
+
+	char* str = "switch x { case 3  ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+	
+	assert(tokens[0]->kind==SWITCH);
+	assert(tokens[1]->kind==ID);
+	assert(tokens[2]->kind==LCURLY);
+	
+	assert(tokens[3]->kind==CASE);
+	assert(tokens[4]->kind==INTEGER);
+
+	freeTokens(tokens, 5);
+
+	return true;
+}
+
+bool test_assign_operators(){
+	
+	if(debug) { printf("test_assign_operators\n"); }
+
+	char* str = "= += -= *= /=  ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+	
+	assert(tokens[0]->kind==ASSIGNOP);
+	
+	assert(tokens[1]->kind==ASSIGNOP);
+	assert(tokens[2]->kind==ASSIGNOP);
+	assert(tokens[3]->kind==ASSIGNOP);
+	assert(tokens[4]->kind==ASSIGNOP);
+
+	freeTokens(tokens, 5);
+
+	return true;
 }

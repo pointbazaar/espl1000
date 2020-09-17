@@ -174,9 +174,57 @@ bool test_chained_cmp(bool debug){
 	
 	if(debug){ printf("test_chained_cmp\n"); }
 	
-	char* src = "fn main () ~> PInt { return 3 < 4 < 5; }";
+	char* src = "fn main () ~> PInt { return 3 > 4 < 5; }";
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status != 0;
+	return status == 0;
+}
+
+bool test_bitwise_and(bool debug){
+	if(debug){ printf("test_bitwise_and\n"); }
+	
+	char* src = "fn main () ~> PInt { return 3 & 1; }";
+	
+	const int status = sourceToStatus(src, debug);
+	
+	return status == 1;
+}
+
+bool test_bitwise_or(bool debug){
+	if(debug){ printf("test_bitwise_or\n"); }
+	
+	char* src = "fn main () ~> PInt { return 1 | 2; }";
+	
+	const int status = sourceToStatus(src, debug);
+	
+	return status == 3;
+}
+
+bool test_bitwise_leftshift(bool debug){
+	if(debug){ printf("test_bitwise_leftshift\n"); }
+	char* src = "fn main () ~> PInt { return 1 << 1; }";
+	const int status = sourceToStatus(src, debug);
+	return status == 2;
+}
+
+bool test_bitwise_rightshift(bool debug){
+	if(debug){ printf("test_bitwise_rightshift\n"); }
+	char* src = "fn main () ~> PInt { return 2 >> 1; }";
+	const int status = sourceToStatus(src, debug);
+	return status == 1;
+}
+
+bool test_bitwise_xor(bool debug){
+	if(debug){ printf("test_bitwise_xor\n"); }
+	char* src = "fn main () ~> PInt { return 8 ^ 5; }";
+	const int status = sourceToStatus(src, debug);
+	return status == 13;
+}
+
+bool test_bitwise_neg(bool debug){
+	if(debug){ printf("test_bitwise_neg\n"); }
+	char* src = "fn main () ~> PInt { return ~4 + 5; }";
+	const int status = sourceToStatus(src, debug);
+	return status == 0;
 }

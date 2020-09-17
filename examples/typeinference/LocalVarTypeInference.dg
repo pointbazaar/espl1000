@@ -1,0 +1,15 @@
+
+fn main () ~> Int {
+
+
+	a12 = 3;
+
+	b = a12 + 4 + subr();
+	subr();
+
+	printf("%d\n", a12);
+}
+
+fn subr() -> Int {
+	return 3;
+}

@@ -3,7 +3,8 @@ os: linux
 before_install:
 - pwd
 - cd .
+- sudo apt-get install -y valgrind
 install: pwd
-script: make 
+script: make
 env:
 - export PATH=$PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser

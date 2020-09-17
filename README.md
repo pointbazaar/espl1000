@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/pointbazaar/smalldragon/master/lexer/img/dragon-logo.svg" width="100" height="100"/>
+<img src="https://raw.githubusercontent.com/pointbazaar/smalldragon/dev/lexer/img/dragon-logo.svg" width="100" height="100"/>
 
 # SmallDragon, a simple Programming Language (Work in Progress) 
 master: [![Build Status](https://travis-ci.org/pointbazaar/smalldragon.svg?branch=master)](https://travis-ci.org/pointbazaar/smalldragon)
@@ -31,28 +31,7 @@ There is currently no plan to have a library for SmallDragon, besides some small
 The editor of choice for smalldragon currently is [micro](https://micro-editor.github.io/), because there is a basic syntax highlighting for it.
 
 ## Examples
-
-Basic Program:
-
-```dragon
-struct Point{
-  PInt x,
-  PInt y
-}
-
-fn main () ~> PInt {
-
-  //every variable is always initialized
-  Point p = (1,2);  //structs can also be interpreted as tuples
-  return subr(1,p.y);
-}
-
-fn subr  (PInt a, PInt a) -> PInt{
-
-  z=b+1;  //local variable type inference
-  return a+z;
-}
-```
+Have a look at [Examples](https://github.com/pointbazaar/smalldragon/tree/dev/examples)
 
 ```console
 You@Terminal:~$ sd Main.dg
@@ -84,16 +63,14 @@ This Project will probably only work with Linux.
 
 ## Safety Goals 
 
-- [ ] **linear/affine types** to manage deallocations without a garbage collector and without manual memory management (like in rust) to get memory safety
-- [ ] **no null/undefined/NULL/...**
+- [x] **no null/undefined/NULL/...**
 - [ ] **termination proof for suitably written programs/functions**
   - there shall be control structures which allow stuff to execute for a long time, like for web servers, command prompt loops, game loops and such, but at some point in the future it must terminate. This property is important to me. 
   - once termination proofs for suitably written programs are in the compiler, the next interesting property in that direction would be proving that it terminates in a specified timeframe (assumed unlimited memory, a given cpu clock speed, and some details)
   - [ ] possibility to do a termination proof of your program (if it is written in a special way that uses termination proof friendly control structures)
   - [ ] several termination proof friendly control structures and features
     - [x] 'loop' construct to execute a block of code a finite number of times
-    - [ ] 'foreach' construct to execute a block of code for each member of an array (optionally utilize its index also)
-    - [ ] ...
+    - [ ] 'for in ' construct to execute a block of code for an index in some range
 - [x] **no global state**
 - [ ] **no uninitialized variables**
   - [x] no uninitialized primitives
@@ -107,23 +84,8 @@ This Project will probably only work with Linux.
     - [ ] Int (can be any integer)
     - [ ] NZInt (Integer =/= 0) (will be required as the type of any divisor later on, to avoid division by 0)
 
-## Other Goals 
-
-- [ ] simple local variable type inference 
-- [ ] functional programming (currently without closures and without some other stuff)
-  - [ ] functions can be passed as arguments to subroutines
-  - [ ] lambda expressions
-  - [ ] map, reduce, filter, sum, zip, unzip, head, tail, init
-  - [x] syntax highlighting available in micro
-- [x] **structs** (user-defined composite data types)
-- [ ] **length-prefixed arrays**
-- [ ] generics/templates (Type parameters)
-- [ ] multithreading
-- [ ] support for functional style
-- [ ] compiler functions, such as sizeof , and support for differentiating expressions (which may contain pure functions) for some variable.   
-
-functional programming, imperative programming,
-concurrency, laziness, declarative programming, constraint based programming.
+- [ ] lambda expressions
+- [x] syntax highlighting available in micro
 
 smalldragon should have an easy and simple syntax, similar to C and Haskell.
 

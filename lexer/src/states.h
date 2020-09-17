@@ -27,22 +27,22 @@
 
 #define S_NEWLINE_FINAL 12
 
+//Assignment: =, +=, -=, *=, /=
+#define S_ASSIGN_EQ_FINAL 		13
+
+#define S_ASSIGN_PLUS_EQ_FINAL	14
+#define S_ASSIGN_MINUS_EQ_FINAL	15
+#define S_ASSIGN_TIMES_EQ_FINAL	16
+#define S_ASSIGN_DIV_EQ_FINAL	17
+//-----------------------------
+
 //TOKEN identifier
 #define S_IDENTIFIER 34
 #define S_IDENTIFIER_FINAL 35
 
-
-//TOKEN >
-#define S_GREATER_FINAL 37
-
-//TOKEN <
-#define S_LESSER_FINAL 38
-
-
 //TOKEN typeidentifier
 #define S_TYPEIDENTIFIER 40
 #define S_TYPEIDENTIFIER_FINAL 41
-
 
 //COMMENTS
 #define S_SINGLE_LINE_COMMENT 46
@@ -55,10 +55,6 @@
 //TOKEN ;
 #define S_SEMICOLON_FINAL 51
 
-//TOKEN =
-#define S_EQ 52
-#define S_EQ_FINAL 53
-
 //Numbers:
 #define S_DIGITS 56	//is entered when we first see a digit
 
@@ -68,8 +64,6 @@
 //TOKEN NONNEGATIVE_FLOAT
 #define S_FLOAT 58 //when we have seen a '.' 
 #define S_FLOAT_FINAL 59
-
-
 
 //TOKEN {
 #define S_LCURLY_FINAL 70
@@ -135,52 +129,44 @@
 #define S_TPARAM_2 111
 #define S_TPARAM_FINAL 112
 
-#define S_STRUCTMEMBERACCESS_FINAL 113
-
 //TOKEN COMMA
 #define S_COMMA_FINAL 114
 
-
 //TOKEN ~
 #define S_WAVE 			115
-#define S_WAVE_FINAL 	116
 
 //TOKEN ARROW
 #define S_ARROW_FINAL	117
 
-#define S_MINUS 		118
-#define S_MINUS_FINAL 	119
-
-
-
-
 //TOKEN LOOP
-#define S_loop_FINAL 125
+#define S_loop_FINAL 118
 
-#define S_l 126
-#define S_lo 127
-#define S_loo 128
-#define S_loop 129
+#define S_l 119
+#define S_lo 120
+#define S_loo 121
+#define S_loop 122
+
+
 
 //TOKEN OPERATOR
+#define S_TIMES				126 // *
+#define S_PLUS				127	// +
+#define S_MINUS 			128 // -
+
 #define S_OPERATOR 			130
-#define S_SLASH 			131	//'/'
-#define S_OPERATOR_AND_1 	132	//'&'
-#define S_OPERATOR_OR_1  	133	//'|'
-#define S_OPERATOR_FINAL 	134
-#define S_NOT 				135	//'!'
+#define S_SLASH 			131	// '/'
+#define S_OPERATOR_AND_1 	132	// '&'
+#define S_OPERATOR_OR_1  	133	// '|'
+#define S_NOT 				134	// '!'
+#define S_GREATER 			135 // '>' 
+#define S_LESSER 			136 // '<'
 
-//TOKEN fn
-#define S_fn 136
-#define S_fn_FINAL 137
-
-
-//TOKEN: else
-#define S_e 			138
-#define S_el 			139
-#define S_els 			140
-#define S_else 			141
-#define S_else_FINAL 	142
+#define S_EQ 				137 // =
+//-----
+#define S_OPERATOR_FINAL 	138 //no i--
+//for when one token too much was read
+#define S_OPERATOR_FINAL_2	139 //i--
+//---------------------------
 
 //TOKEN: break
 #define S_b				143
@@ -190,7 +176,52 @@
 #define S_break			147
 #define S_break_FINAL	148
 
-//so we set n_states to be 150 or similar, to
+//TOKEN: for
+//S_f already exists
+#define S_fo			149
+#define S_for			150
+#define S_for_FINAL		151
+
+//TOKEN: in
+//S_I already exists
+#define S_in			152
+#define S_in_FINAL		153
+
+//'.'
+#define S_dot			154
+#define S_STRUCTMEMBERACCESS_FINAL 155
+
+//'..'
+#define S_RANGE_OP_FINAL	156
+
+//TOKEN: switch
+//S_s is already defined somewhere
+#define S_sw			157
+#define S_swi			158
+#define S_swit			159
+#define S_switc			160
+#define S_switch		161
+#define S_switch_FINAL	162
+
+//TOKEN: case
+#define S_c				163
+#define S_ca			164
+#define S_cas			165
+#define S_case			166
+#define S_case_FINAL	167
+
+//TOKEN fn
+#define S_fn 			168
+#define S_fn_FINAL 		169
+
+//TOKEN: else
+#define S_e 			170
+#define S_el 			171
+#define S_els 			172
+#define S_else 			173
+#define S_else_FINAL 	174
+
+//so we set n_states to be sufficient, to
 //have space for future states also
 
 #endif

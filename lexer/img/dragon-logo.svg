@@ -5,11 +5,35 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg8"
    version="1.1"
    viewBox="0 0 200 200"
    height="200mm"
-   width="200mm">
+   width="200mm"
+   sodipodi:docname="dragon-logo.svg"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="924"
+     inkscape:window-height="1016"
+     id="namedview885"
+     showgrid="false"
+     inkscape:zoom="0.40036975"
+     inkscape:cx="357.53683"
+     inkscape:cy="604.98793"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
   <defs
      id="defs2" />
   <metadata
@@ -20,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -41,22 +65,22 @@
     <path
        id="path4590"
        d="m 150.83023,233.02535 c -9.83583,-0.12087 -124.456628,0.44 -131.325257,0.36205 -9.9414092,0.0158 -17.9877634,8.0876 -17.9723163,18.02898 0.015393,9.94175 8.0872661,17.98862 18.0290033,17.97317 10.548523,-0.20961 123.55378,-0.31637 131.32524,-0.36206 9.94139,-0.0158 17.98775,-8.08759 17.97231,-18.02898 -0.0154,-9.94173 -8.08726,-17.9886 -18.02898,-17.97316 z"
-       style="fill:#42d159;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+       style="fill:#006c11;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
     <path
        id="path4556"
        d="m 144.65996,217.41792 c 20.66704,6.62012 20.11165,19.54725 20.11165,19.54725 l -6.76971,5.24204 c 0,0 -5.48833,-14.94934 -9.72025,-19.54524 -4.23194,-4.5959 -3.62169,-5.24405 -3.62169,-5.24405 z"
-       style="fill:#42d159;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+       style="fill:#006c11;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
     <path
        id="path4556-7"
        d="m 161.27627,212.73164 c 20.66705,6.62013 20.11165,19.54725 20.11165,19.54725 l -6.7697,5.24204 c 0,0 -5.48836,-14.94933 -9.72028,-19.54524 -4.23192,-4.59589 -3.62167,-5.24405 -3.62167,-5.24405 z"
-       style="fill:#42d159;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+       style="fill:#006c11;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
     <circle
        transform="rotate(-0.09020682)"
        r="27.382837"
        cy="251.29578"
        cx="170.02908"
        id="path4617"
-       style="display:inline;fill:#42d159;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
+       style="display:inline;fill:#006c11;fill-opacity:1;stroke:#000000;stroke-width:0.1;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none" />
   </g>
   <g
      style="display:inline"

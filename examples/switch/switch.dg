@@ -1,0 +1,29 @@
+
+fn main () ~> Int {
+
+
+	x = 3;
+	y = 0;
+
+	switch x {
+
+		case 0 { y = 10; }
+
+		case 1 {
+			y = 3;
+		}
+		case 2 {
+			y = 10;
+		}
+		case 3 {
+			y = 11;
+		}
+		case 4 { y = 8; }
+		case 5 { y = 8; }
+		case 6 { y = 8; }
+		case 7
+		case 8 { y = 8; }
+	}
+
+	return y;
+}

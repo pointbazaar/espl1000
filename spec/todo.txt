@@ -18,9 +18,6 @@ TODO:
 [ ] typecheck that there should be no assignment to arguments.
     assignment to members of arguments is ok in subroutines with side effecs
 
-[ ] remove array constants from the language, instead replace it in the examples with a subroutine which takes
-    a type parameter and length of the array, and returns an array of that type with the specified length
-
 [ ] add a foreach loop to iterate over an array
     for PInt x in arr {
 
@@ -30,8 +27,6 @@ TODO:
     be converted into newlines in the string.
 
 [ ] read https://hackernoon.com/considerations-for-programming-language-design-a-rebuttal-5fb7ef2fd4ba
-
-[ ] maybe implement the language server protocol to get some IDE support going. (if it is easy to implement)
 
 [ ] read https://doc.rust-lang.org/book/foreword.html
 
@@ -55,4 +50,8 @@ TODO:
     - http://beza1e1.tuxen.de/articles/faster_than_C.html
     - http://beza1e1.tuxen.de/articles/proglang_mistakes.html
 
-[ ] add C as the primary target language for the smalldragon transpiler.
+[ ] write a test that valgrinds finds no memory leaks when executing all 3 test suites
+
+[ ] write a test that all files in examples/ transpile and compile
+
+[ ] write tests for comparison operator chaining

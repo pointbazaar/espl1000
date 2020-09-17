@@ -2,93 +2,95 @@
 #include <stdlib.h>
 #include <string.h>
 #include <libgen.h>
+#include <stdbool.h>
 
-#include "transpiler.h"
 #include "../../ast/ast_reader.h"
 #include "../../ast/ast.h"
+#include "../../ast/free_ast.h"
+#include "../test/test.h"
+
 #include "c_code_gen.h"
 #include "flags.h"
-#include "../test/test.h"
+#include "help.h"
+
+#include "transpiler.h"
+
+// ----------------
+bool check_dg_extension(char* filename);
+void invoke_lexer_parser(char* filename, struct Flags* flags);
+// ----------------
 
 int main(int argc, char* argv[]){
 
 	char* filename = NULL;
 	
-	struct Flags* flags = malloc(sizeof(struct Flags));
-	flags->debug = false;
-	flags->test = false;
-	flags->avr = false;
-	
-	//if there are more than 100, it can exit
-	const int gcc_flags_max = 100;
-	flags->gcc_flags = malloc(sizeof(char*)*gcc_flags_max);
-	flags->gcc_flags_count = 0;
+	struct Flags* flags = makeFlags(argc, argv);
 	
 	for(int i=1; i < argc; i++){
-		char* arg = argv[i];
-		if(arg[0] == '-'){
-			//arg is a flag
-			      if(strcmp(arg, FDEBUG) == 0){ flags->debug = true;
-			}else if(strcmp(arg, FTEST)  == 0){ flags->test = true;
-			}else if(strcmp(arg, FAVR )  == 0){ flags->avr = true;
-			}else{
-				//pass this flag when calling gcc
-				flags->gcc_flags[flags->gcc_flags_count] = arg;
-				flags->gcc_flags_count++;
-				
-				if(flags->gcc_flags_count > gcc_flags_max){
-					printf("Exceeded max amount");
-					printf(" of gcc flags to pass through.\n");
-					exit(1);
-				}
-				
-			}
-		}else{
-			filename = arg;
+		
+		if(argv[i][0] != '-'){
+			
+			filename = argv[i];
 		}
 	}
 	
-	if(flags->debug){
-		printf("smalldragon v0.01\n");
+	if(flags->help){
+		sd_print_help();
+		freeFlags(flags);
+		return 0;
+	}
+	
+	if(flags->version){
+		printf("smalldragon v0.0.5\n");
+		printf("built on %s\n", ctime);
+		printf("with gcc %s\n", gccversion);
+		freeFlags(flags);
+		return 0;
 	}
 	
 	if(flags->test){
 		int status = transpiler_test_all(flags->debug);
+		freeFlags(flags);
 		return status;
 	}
 	
 	if(filename == NULL){
 		printf("expected at least 1 filename\n");
+		freeFlags(flags);
 		exit(1);
 	}
 	
-	transpileAndCompile(filename, flags);
+	bool success = transpileAndCompile(filename, flags);
 	
 	freeFlags(flags);
 
-	return 0;
+	return (success == true)?0:1;
 }
 
-void check_dg_extension(char* filename){
+bool check_dg_extension(char* filename){
 	const int ext_index = strlen(filename)-3;
 	if(strcmp(filename+ext_index, ".dg") != 0){
 			printf("filename has to have .dg extension\n");
-			exit(1);
+			return false;
 	}
+	return true;
 }
 
-void invoke_lexer_parser(char* filename, bool debug){
+void invoke_lexer_parser(char* filename, struct Flags* flags){
 	
 	char cmd1[100];
 	
 	strcpy(cmd1, "dragon-lexer ");
 	
-	if(debug){
+	if(flags->debug){
 		strcat(cmd1, "-debug ");
+	}
+	if(flags->clean){
+		strcat(cmd1, "-clean ");
 	}
 	strcat(cmd1, filename);
 	
-	if(debug){
+	if(flags->debug){
 		printf("DEBUG: executing: %s\n", cmd1);
 	}
 	system(cmd1);
@@ -103,27 +105,32 @@ void invoke_lexer_parser(char* filename, bool debug){
 	sprintf(
 		cmd2, 
 		"dragon-parser %s %s/.%s.tokens", 
-		(debug)?"-debug":"",
+		(flags->debug)?"-debug":"",
 		dir_name,
 		base_name
 	);
 	
-	if(debug){
+	if(flags->debug){
 		printf("DEBUG: executing: %s\n", cmd2);
 	}
 	system(cmd2);
 }
 
-void transpileAndCompile(
+bool transpileAndCompile(
 	char* filename, 
 	struct Flags* flags
 ){
+	//returns false if it was unsuccessful
+	
 	if(flags->debug){ printf("transpileAndCompile(...)\n"); }
 	
-	check_dg_extension(filename);
+	if(!check_dg_extension(filename)){
+		freeFlags(flags);
+		exit(1);
+	}
 	
 	//invoke lexer, parser to generate .dg.ast file
-	invoke_lexer_parser(filename, flags->debug);
+	invoke_lexer_parser(filename, flags);
 
 	char ast_filename[100];
 	char fnamecpy[100];
@@ -139,8 +146,13 @@ void transpileAndCompile(
 
 	//parse AST
 	struct AST_Whole_Program* ast = readAST(ast_filename, flags->debug);
+	
+	if(ast == NULL){
+		//reading from file has failed
+		return false;
+	}
 
-	char fname_out[32]; //new output filename
+	char fname_out[DEFAULT_STR_SIZE]; //new output filename
 
 	strcpy(fname_out, filename);
 	//remove the '.dg'
@@ -149,7 +161,13 @@ void transpileAndCompile(
 
 	//transpile to C code 
 	//and write to file 
-	transpileAndWrite(fname_out, ast, flags);
+	bool success = transpileAndWrite(fname_out, ast, flags);
+	
+	freeAST_Whole_Program(ast);
+	
+	if(!success){
+		return false;
+	}
 	
 	char cmd_gcc[500];
 	strcpy(cmd_gcc, "");
@@ -160,7 +178,13 @@ void transpileAndCompile(
 		//we chase attiny25 to have it generate less complex instructions
 		strcat(cmd_gcc, "avr-gcc -o main.o -I /usr/share/avra -mmcu=attiny45 ");
 	}else{
-		strcat(cmd_gcc, "gcc -o a.out ");
+		//-Wall enabled so we catch
+		//our transpiler if it generates code
+		//that could cause trouble.
+		//Also serves as feedback for users,
+		//as they smalldragon code could transpile
+		//to C code that causes warnings.
+		strcat(cmd_gcc, "gcc -Wall -o a.out ");
 	}
 	
 	strcat(cmd_gcc, fname_out);
@@ -172,21 +196,25 @@ void transpileAndCompile(
 		strcat(cmd_gcc, flags->gcc_flags[i]);
 	}
 	
-	//compile with gcc
-	if(flags->debug){
-		printf("%s\n", cmd_gcc);
+	if(!(flags->stdout)){
+		//compile with gcc
+		if(flags->debug){
+			printf("%s\n", cmd_gcc);
+		}
+		system(cmd_gcc);
+		
+		if(flags->avr){
+			//use various tools to compile a .hex file
+			//which can be read by e.g. mdx
+			
+			system("avr-gcc main.o -o main.elf");
+			system("avr-objcopy -O ihex -j .text -j .data main.elf main.hex");
+			
+			//use 
+			//avr-objdump -D -m avr main.hex
+			//to view contents
+		}
 	}
-	system(cmd_gcc);
 	
-	if(flags->avr){
-		//use various tools to compile a .hex file
-		//which can be read by e.g. mdx
-		
-		system("avr-gcc main.o -o main.elf");
-		system("avr-objcopy -O ihex -j .text -j .data main.elf main.hex");
-		
-		//use 
-		//avr-objdump -D -m avr main.hex
-		//to view contents
-	}
+	return true;
 }

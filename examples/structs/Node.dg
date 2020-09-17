@@ -1,0 +1,19 @@
+
+struct Node {
+	Int value,
+	Node left,
+	Node right
+}
+
+fn main () ~> Int {
+
+	Node root = newNode();
+	Node left = newNode();
+	
+	root.left = left;
+
+	delNode(root.left);
+	delNode(root);
+
+	return 0;
+}

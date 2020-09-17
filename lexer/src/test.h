@@ -5,11 +5,8 @@
 
 int test_all(bool debug);
 
-bool assert(bool condition);
-
 //test subroutines 
 //(returning true if the test was passed, false otherwise)
-
 
 //Tests from CharacterListTest.java are omitted 
 //(they do not test stuff thats in this program)
@@ -84,6 +81,9 @@ bool test_mixed_10();
 bool test_mixed_11();
 bool test_mixed_12();
 bool test_mixed_13();
+bool test_mixed_14();
+bool test_mixed_15();
+bool test_mixed_16();
 
 bool test_operators();
 
@@ -91,5 +91,17 @@ bool test_loop();
 bool test_if_else();
 
 bool test_break();
+
+bool test_for();
+bool test_in();
+
+bool test_rangeop_1();
+bool test_rangeop_2();
+
+bool test_member_access();
+
+bool test_switch_case();
+
+bool test_assign_operators();
 
 #endif
