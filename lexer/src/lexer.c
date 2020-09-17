@@ -598,7 +598,14 @@ void set_transitions_breaking(short** dfa, int state, int state_result){
 }
 
 void set_transitions_printable(short** dfa, int state, int state_result){
-	for(char i=32;i<=126;i++){
+	const short ASCII_START_PRINTABLE = 32;
+	const short ASCII_END_PRINTABLE = 126;
+	
+	for(char 
+		i=ASCII_START_PRINTABLE;
+		i<=ASCII_END_PRINTABLE;
+		i++
+	){
 		dfa[state][(short)i] = state_result;
 	}
 }
