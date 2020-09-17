@@ -6,8 +6,6 @@
 #include "../ctx.h"
 #include "gen_c_types.h"
 
-bool isIntType(char* type);
-
 char* translateIntType(char* type);
 //----------------------------------------------------
 

@@ -6,7 +6,7 @@
 #include "../../ast/ast.h"
 #include "../../ast/free_ast.h"
 #include "../../util/util.h"
-
+#include "code_gen/gen_c_types.h"
 #include "typeinference.h"
 
 //include the various symbol tables
@@ -57,6 +57,8 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr, bool debug){
 			//is exactly that type
 			
 			return type1Orig;
+		}else if(isIntType(type1)&& isIntType(type2)){
+			return typeFromStr(st, "Int");
 		}else{
 			
 			//the types are different,
@@ -65,9 +67,9 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr, bool debug){
 			
 			if(
 				(strcmp(type1, "Float") == 0
-				&& strcmp(type2, "Int") == 0)
+				&& isIntType(type2))
 				||
-				(strcmp(type1, "Int") == 0
+				(isIntType(type1)
 				&& strcmp(type2, "Float") == 0)
 			){
 				return typeFromStr(st, "Float");

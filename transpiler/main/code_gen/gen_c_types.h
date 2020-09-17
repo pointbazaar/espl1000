@@ -21,5 +21,6 @@ char* subrType2CType(struct SubrType* subrType, struct Ctx* ctx);
 char* typeParam2CType(struct TypeParam* typeParam, struct Ctx* ctx);
 
 char* basicTypeWrapped2CType(struct BasicTypeWrapped* btw, struct Ctx* ctx);
-
+//----------------------------
+bool isIntType(char* type);
 #endif
