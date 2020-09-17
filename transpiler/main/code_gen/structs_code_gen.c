@@ -2,15 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "ctx.h"
-#include "flags.h"
-
-#include "../../util/util.h"
-#include "../../ast/free_ast.h"
+#include "../ctx.h"
+#include "../flags.h"
+#include "../../../util/util.h"
+#include "../../../ast/free_ast.h"
+#include "../typeinference.h"
+#include "../tables/subrsymtable.h"
 #include "gen_c_types.h"
-#include "typeinference.h"
-#include "tables/subrsymtable.h"
-
 #include "structs_code_gen.h"
 
 // --- subroutines private to this compile unit ---

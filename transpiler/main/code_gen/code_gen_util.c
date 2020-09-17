@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "ctx.h"
+#include "../ctx.h"
 
 void indent(struct Ctx* ctx){
 	

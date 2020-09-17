@@ -4,21 +4,21 @@
 
 #include <assert.h> //for runtime assertions
 
-#include "../../ast/ast.h"
+#include "../../../ast/ast.h"
+#include "../../../util/util.h"
+#include "../../../ast/free_ast.h"
+#include "../ctx.h"
+#include "../flags.h"
+#include "../typeinference.h"
 #include "c_code_gen.h"
-#include "ctx.h"
-#include "flags.h"
 #include "code_gen_util.h"
 #include "gen_c_types.h"
-#include "../../util/util.h"
-#include "../../ast/free_ast.h"
-#include "typeinference.h"
 #include "structs_code_gen.h"
 
-#include "tables/localvarsymtable.h"
-#include "tables/subrsymtable.h"
-#include "tables/structsymtable.h"
-#include "tables/symtable.h"
+#include "../tables/localvarsymtable.h"
+#include "../tables/subrsymtable.h"
+#include "../tables/structsymtable.h"
+#include "../tables/symtable.h"
 
 // -------------------------------
 

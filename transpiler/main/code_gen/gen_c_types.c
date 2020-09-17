@@ -1,10 +1,15 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdio.h>
 
-#include "ctx.h"
-
+#include "../ctx.h"
 #include "gen_c_types.h"
+
+bool isIntType(char* type);
+
+char* translateIntType(char* type);
+//----------------------------------------------------
 
 char* simpleType2CType(struct SimpleType* simpleType){
 	
@@ -13,11 +18,9 @@ char* simpleType2CType(struct SimpleType* simpleType){
 	char* res = malloc(sizeof(char)*DEFAULT_STR_SIZE*3);
 	strcpy(res, "");
 
-	if(    strcmp(t, "PInt") == 0
-		|| strcmp(t, "NInt") == 0
-		|| strcmp(t, "Int") == 0
-		|| strcmp(t, "NZInt") == 0  ){
-		strcpy(res, "int");
+	if(isIntType(t)){
+		
+		strcpy(res, translateIntType(t));
 		
 	}else if(
 		   strcmp(t, "PFloat") == 0
@@ -120,4 +123,31 @@ char* basicTypeWrapped2CType(struct BasicTypeWrapped* btw, struct Ctx* ctx){
 		exit(1);
 		return NULL;
 	}
+}
+//-------------------------------
+bool isIntType(char* t){
+	char* types[] = 
+	{
+		"PInt","NInt","Int","NZInt",
+		"Int8","Int16","Int32","Int64",
+	};
+	
+	for(int i=0;i < 8; i++){
+		if(strcmp(t, types[i]) == 0){ return true; }
+	}
+	return false;
+}
+char* translateIntType(char* type){
+	char* types_def_width[] = 
+	{"Int8","Int16","Int32","Int64"};
+	
+	char* map[] = 
+	{"int8_t","int16_t","int32_t","int64_t"};
+	
+	for(int i=0;i < 4; i++){
+		if(strcmp(type, types_def_width[i]) == 0){ 
+			return map[i]; 
+		}
+	}
+	return "int";
 }

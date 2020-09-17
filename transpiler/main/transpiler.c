@@ -9,10 +9,9 @@
 #include "../../ast/free_ast.h"
 #include "../test/test.h"
 
-#include "c_code_gen.h"
+#include "code_gen/c_code_gen.h"
 #include "flags.h"
 #include "help.h"
-
 #include "transpiler.h"
 
 // ----------------
