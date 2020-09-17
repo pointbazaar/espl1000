@@ -155,6 +155,7 @@ struct Method* readMethod(FILE* file, bool debug){
 		m->name) != 3
 	){
 		printf("Error reading Method \n");
+		fclose(file);
 		free(m);
 		exit(1);
 	}
@@ -163,6 +164,7 @@ struct Method* readMethod(FILE* file, bool debug){
 
 	if(fscanf(file,"%hhd\t",&(m->count_args)) != 1){
 		printf("Error reading Method 2\n");
+		fclose(file);
 		free(m);
 		exit(1);
 	}
@@ -196,6 +198,7 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 		) != 2
 	){
 		printf("Error reading StructDecl\n");
+		fclose(file);
 		free(res);
 		exit(1);
 	}
@@ -219,6 +222,7 @@ struct StructMember* readStructMember(FILE* file, bool debug){
 	
 	if(fscanf(file, "StructMember\t") == EOF){
 		printf("Error reading StructMember\n");
+		fclose(file);
 		free(res);
 		exit(1);
 	}
@@ -229,6 +233,7 @@ struct StructMember* readStructMember(FILE* file, bool debug){
 		printf("Error reading StructMember2\n");
 		//freeType(res->type) 
 		//but this subroutine is not included here
+		fclose(file);
 		free(res);
 		exit(1);
 	}
@@ -246,6 +251,7 @@ struct StmtBlock* readStmtBlock(FILE* file, bool debug){
 	
 	if(fscanf(file, "StmtBlock\t%hd\t", &(block->count)) != 1){
 		printf("Error reading StmtBlock\n");
+		fclose(file);
 		free(block);
 		exit(1);
 	}
@@ -269,6 +275,7 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 
 	if(fscanf(file, "DeclaredArg\t") == EOF){
 		printf("Error reading DeclaredArg\n");
+		fclose(file);
 		free(da);
 		exit(1);
 	}
@@ -278,7 +285,7 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 	int option;
 	if(fscanf(file, "%d\t", &option) != 1){
 		printf("Error reading DeclaredArg 2\n");
-		//freeType(da->type); //not included
+		fclose(file);
 		free(da);
 		exit(1);
 	}
@@ -291,11 +298,13 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 		//do not read more than 19 chars
 		if(fscanf(file, "%19s\t", da->name) != 1){
 			printf("Error reading DeclaredArg 3\n");
+			fclose(file);
 			exit(1);
 		}
 	}else{
 		printf("Error in readDeclArg\n");
 		free(da);
+		fclose(file);
 		exit(1);
 	}
 	
@@ -309,6 +318,7 @@ struct Expr* readExpr(FILE* file, bool debug){
 	
 	if(fscanf(file,"Expr\t") == EOF){ 
 		printf("Error reading Expr\n");
+		fclose(file);
 		exit(1);
 	}
 	
@@ -319,6 +329,7 @@ struct Expr* readExpr(FILE* file, bool debug){
 	int option = 0;
 	if(fscanf(file, "%d\t", &option) != 1){
 		printf("Error reading Expr 2\n");
+		fclose(file);
 		exit(1);
 	}
 	
@@ -341,6 +352,7 @@ struct Op* readOp(FILE* file, bool debug){
 	if(fscanf(file, "Op\t%s\t", op->op) != 1){ 
 		printf("Error reading Op\n");
 		free(op);
+		fclose(file);
 		exit(1);
 	}
 
@@ -355,6 +367,7 @@ struct IntConst* readIntConst(FILE* file, bool debug){
 	if(fscanf(file, "IntConst\t%d\t", &(ic->value)) != 1){
 		printf("Error reading IntConst\n");
 		free(ic);
+		fclose(file);
 		exit(1);
 	}
 
@@ -370,6 +383,7 @@ struct BoolConst* readBoolConst(FILE* file, bool debug){
 	if(fscanf(file, "BoolConst\t%d\t", &val) != 1){
 		printf("Error reading BoolConst\n");
 		free(b);
+		fclose(file);
 		exit(1);
 	}
 	
@@ -386,6 +400,7 @@ struct CharConst* readCharConst(FILE* file, bool debug){
 	if(fscanf(file, "CharConst\t%c\t", &(b->value)) != 1){
 		printf("Error reading CharConst\n");
 		free(b);
+		fclose(file);
 		exit(1);
 	}
 	
@@ -400,6 +415,7 @@ struct FloatConst* readFloatConst(FILE* file, bool debug){
 	if(fscanf(file, "FloatConst\t%f\t", &(ic->value)) != 1){
 		printf("Error reading FloatConst\n");
 		free(ic);
+		fclose(file);
 		exit(1);
 	}
 	
@@ -412,6 +428,7 @@ struct StringConst* readStringConst(FILE* file, bool debug){
 	int length;
 	if(fscanf(file, "StringConst\t%d\t", &length) != 1){
 		printf("Error reading StringConst\n");
+		fclose(file);
 		exit(1);
 	}
 	
@@ -438,6 +455,7 @@ struct Variable* readVariable(FILE* file, bool debug){
 	
 	if(fscanf(file, "Variable\t") == EOF){
 		printf("Error reading Variable\n");
+		fclose(file);
 		exit(1);
 	}
 	
@@ -449,6 +467,7 @@ struct Variable* readVariable(FILE* file, bool debug){
 	if(fscanf(file, "%d\t", &count) != 1){
 		printf("Error reading Variable 2\n");
 		free(v);
+		fclose(file);
 		exit(1);
 	}
 	
@@ -472,6 +491,7 @@ struct SimpleVar* readSimpleVar(FILE* file, bool debug){
 	if(fscanf(file, "SimpleVar\t%s\t%d\t", b->name, &count) != 2){
 		printf("Error reading SimpleVar\n");
 		free(b);
+		fclose(file);
 		exit(1);
 	}
 
@@ -491,6 +511,7 @@ struct Term* readTerm(FILE* file, bool debug){
 	
 	if(fscanf(file, "Term\t%d\t", &kind) != 1){
 		printf("Error reading Term\n");
+		fclose(file);
 		fclose(file);
 		exit(1);
 	}
@@ -512,6 +533,7 @@ struct Term* readTerm(FILE* file, bool debug){
 		default:
 			printf("Error in readTerm\n");
 			free(b);
+			fclose(file);
 			exit(1);
 			break;
 	}
@@ -525,6 +547,7 @@ struct UnOpTerm* readUnOpTerm(FILE* file, bool debug){
 	int kind;
 	if(fscanf(file, "UnOpTerm\t%d\t", &kind) != 1){
 		printf("Error reading UnOpTerm\n");
+		fclose(file);
 		fclose(file);
 		exit(1);
 	}
@@ -569,6 +592,7 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	
 	if(fscanf(file, "Stmt\t%d\t", &kind) != 1){
 		printf("Error reading Stmt\n");
+		fclose(file);
 		exit(1);
 	}
 	
