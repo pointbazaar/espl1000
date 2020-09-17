@@ -108,33 +108,18 @@ void freeStructMember(struct StructMember* sm) {
 void freeTerm(struct Term* t) {
 
 	switch(t->kind){
-		case 1:
-			freeBoolConst(t->ptr.m1);
-			break;
-		case 2:
-			freeIntConst(t->ptr.m2);
-			break;
-		case 3:
-			freeCharConst(t->ptr.m3);
-			break;
-		case 4:
-			freeMethodCall(t->ptr.m4);
-			break;
-		case 5:
-			freeExpr(t->ptr.m5);
-			break;
-		case 6:
-			freeVariable(t->ptr.m6);
-			break;
-		case 7:
-			freeFloatConst(t->ptr.m7);
-			break;
-		case 8:
-			freeStringConst(t->ptr.m8);
-			break;
+		case 1: freeBoolConst  (t->ptr.m1); break;
+		case 2: freeIntConst   (t->ptr.m2); break;
+		case 3: freeCharConst  (t->ptr.m3); break;
+		case 4: freeMethodCall (t->ptr.m4); break;
+		case 5: freeExpr       (t->ptr.m5); break;
+		case 6: freeVariable   (t->ptr.m6); break;
+		case 7: freeFloatConst (t->ptr.m7); break;
+		case 8: freeStringConst(t->ptr.m8); break;
 		default:
-		printf("Error in freeTerm(...)\n");
-		exit(1);
+			printf("Error in freeTerm(...)\n");
+			free(t);
+			exit(1);
 	}
 	free(t);
 }
@@ -212,42 +197,20 @@ void freeStmt(struct Stmt* s) {
 
 	switch(s->kind){
 		
-		case 0:
-			freeLoopStmt(s->ptr.m0);
-			break;
-		case 1:
-			freeMethodCall(s->ptr.m1);
-			break;
-
-		case 2:
-			freeWhileStmt(s->ptr.m2);
-			break;
-
-		case 3:
-			freeIfStmt(s->ptr.m3);
-			break;
-
-		case 4:
-			freeRetStmt(s->ptr.m4);
-			break;
-
-		case 5:
-			freeAssignStmt(s->ptr.m5);
-			break;
-		
-		case 6:
-			freeBreakStmt(s->ptr.m6);
-			break;
-		
-		case 7:
-			freeForStmt(s->ptr.m7);
-			break;
-		
-		case 8:
-			freeSwitchStmt(s->ptr.m8);
-			break;
+		case 0: freeLoopStmt(s->ptr.m0); break;
+		case 1: freeMethodCall(s->ptr.m1); break;
+		case 2: freeWhileStmt(s->ptr.m2); break;
+		case 3: freeIfStmt(s->ptr.m3); break;
+		case 4: freeRetStmt(s->ptr.m4); break;
+		case 5: freeAssignStmt(s->ptr.m5); break;
+		case 6: freeBreakStmt(s->ptr.m6); break;
+		case 7: freeForStmt(s->ptr.m7); break;
+		case 8: freeSwitchStmt(s->ptr.m8); break;
+		default:
+			printf("Error in freeStmt\n");
+			free(s);
+			exit(1);
 	}
-
 	free(s);
 }
 
