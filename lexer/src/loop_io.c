@@ -53,13 +53,13 @@ void readFromFile(
 
 	size_t length_read = fread(input,sizeof(char),read_length,file);
 
+	fclose(file);
+
 	if(length_read < read_length){
 		printf("error with fread(...)\n");
 		printf("tried to read %ld bytes but only read %ld bytes\n",read_length,length_read);
 		exit(1);
 	}
-
-	fclose(file);
 }
 
 void writeToFile(
