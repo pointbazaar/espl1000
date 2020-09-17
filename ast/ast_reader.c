@@ -387,7 +387,7 @@ struct BoolConst* readBoolConst(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	b->value = (val==1)?true:false;
+	b->value = val==1;
 	
 	return b;
 }
