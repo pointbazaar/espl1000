@@ -354,9 +354,9 @@ void insertOperatorChaining(
 	//(for the second operator)
 	for(int i=0;i < (*opsc)-1; i++){
 		
-		const int lOpIndex    = i;
-		const int termIndex   = i+1;
-		const int rOpIndex    = i+1;
+		const uint16_t lOpIndex    = i;
+		const uint16_t termIndex   = i+1;
+		const uint16_t rOpIndex    = i+1;
 		
 		//compare to pattern
 		
