@@ -46,30 +46,14 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	struct Token* first = list_head(copy);
 	
 	switch(first->kind){
-		case BREAK:
-			stmt_make_break(res, copy, debug);
-			break;
-		case FOR:
-			stmt_make_for(res, copy, debug);
-			break;
-		case LOOP:
-			stmt_make_loop(res, copy, debug);
-			break;
-		case WHILE:
-			stmt_make_while(res, copy, debug);
-			break;
-		case IF:
-			stmt_make_if(res, copy, debug);
-			break;
-		case RETURN:
-			stmt_make_return(res, copy, debug);
-			break;
-		case SWITCH:
-			stmt_make_switch(res, copy, debug);
-			break;
-		default:
-			stmt_make_other(res, copy, debug);
-			break;
+		case BREAK: stmt_make_break(res, copy, debug); break;
+		case FOR: 	stmt_make_for(res, copy, debug); break;
+		case LOOP: 	stmt_make_loop(res, copy, debug); break;
+		case WHILE: stmt_make_while(res, copy, debug); break;
+		case IF: 	stmt_make_if(res, copy, debug); break;
+		case RETURN: stmt_make_return(res, copy, debug); break;
+		case SWITCH: stmt_make_switch(res, copy, debug); break;
+		default: stmt_make_other(res, copy, debug); break;
 	}
 
 	if(debug){
@@ -86,19 +70,9 @@ struct Stmt* initStmt(){
 	
 	struct Stmt* res = smalloc(sizeof(struct Stmt));
 
-	res->kind = 0;
 	//init
+	res->kind = 0;
 	res->ptr.m0 = NULL;
-	/*
-	res->m1 = NULL;
-	res->m2 = NULL;
-	res->m3 = NULL;
-	res->m4 = NULL;
-	res->m5 = NULL;
-	res->m6 = NULL;
-	res->m7 = NULL;
-	res->m8 = NULL;
-	*/
 	
 	return res;
 }
