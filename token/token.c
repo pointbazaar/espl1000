@@ -15,9 +15,9 @@ struct Token* makeToken2(int kind, char* value){
 	struct Token* res = smalloc(sizeof(struct Token));
 
 	res->kind = kind;
-	//res->value_ptr = value;
-	//res->statically_allocated = true; 
-	res->value_ptr = smalloc(sizeof(char)*(strlen(value)+1));
+	res->value_ptr = 
+		smalloc(sizeof(char)*(strlen(value)+1));
+		
 	strcpy(res->value_ptr, value);
 	res->statically_allocated = false;
 	
