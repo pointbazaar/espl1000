@@ -1,3 +1,6 @@
+#ifndef LEXER_FLAGS
+#define LEXER_FLAGS
+
 #include <stdbool.h>
 
 struct LexerFlags{
@@ -7,3 +10,6 @@ struct LexerFlags{
 	bool debug;
 	bool clean;
 };
+
+
+#endif
