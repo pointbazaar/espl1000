@@ -191,7 +191,7 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	for(int i=0;i < ns->count_structs; i++){
 		assert(ns->structs[i] != NULL);
 		
-		fprintf(ctx->file, "struct %s;\n", ns->structs[i]->name);
+		fprintf(ctx->file, "struct %s;\n", ns->structs[i]->type->typeName);
 	}
 
 	//transpile struct definitions
@@ -225,7 +225,7 @@ void transpileStructDecl(struct StructDecl* s, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileStructDecl(%p,%p)\n", s, ctx); }
 	
-	fprintf(ctx->file ,"struct %s {\n", s->name);
+	fprintf(ctx->file ,"struct %s {\n", s->type->typeName);
 	
 	for(int i=0;i < s->count_members;i++){
 		transpileStructMember(s->members[i], ctx);

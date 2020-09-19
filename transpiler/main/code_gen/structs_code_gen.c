@@ -74,31 +74,31 @@ void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx){
 	gen_struct_subr_copy(sd, ctx);
 	gen_struct_subr_make(sd, ctx);
 	
-	struct Type* retTypeStruct = typeFromStr(ctx->tables, sd->name);
+	struct Type* retTypeStruct = typeFromStr(ctx->tables, sd->type->typeName);
 	
 	struct SSTLine* line;
 	line = malloc(sizeof(struct SSTLine));
 	line->isLibC = false;
 	line->returnType = retTypeStruct;
-	sprintf(line->name, "new%s", sd->name);
+	sprintf(line->name, "new%s", sd->type->typeName);
 	sst_add(ctx->tables->sst, line);
 	
 	line = malloc(sizeof(struct SSTLine));
 	line->isLibC = false;
 	line->returnType = retTypeStruct;
-	sprintf(line->name, "copy%s", sd->name);
+	sprintf(line->name, "copy%s", sd->type->typeName);
 	sst_add(ctx->tables->sst, line);
 	
 	line = malloc(sizeof(struct SSTLine));
 	line->isLibC = false;
 	line->returnType = retTypeStruct;
-	sprintf(line->name, "make%s", sd->name);
+	sprintf(line->name, "make%s", sd->type->typeName);
 	sst_add(ctx->tables->sst, line);
 	
 	line = malloc(sizeof(struct SSTLine));
 	line->isLibC = false;
 	line->returnType = typeFromStr(ctx->tables, "Int");
-	sprintf(line->name, "free%s", sd->name);
+	sprintf(line->name, "free%s", sd->type->typeName);
 	sst_add(ctx->tables->sst, line);
 }
 
@@ -113,7 +113,7 @@ void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx){
 	 void delA();
 	 struct A* copyA();
 	 */
-	char* name = sd->name;
+	char* name = sd->type->typeName;
 	
 	fprintf(ctx->file, "struct %s* new%s();\n", name, name);
 	fprintf(ctx->file, "int del%s();\n", name);
@@ -140,7 +140,7 @@ void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx){
 void gen_struct_subr_new(struct StructDecl* sd, struct Ctx* ctx){
 	//performs a shallow allocation
 	
-	char* name = sd->name;
+	char* name = sd->type->typeName;
 	
 	fprintf(ctx->file, "struct %s* new%s(){\n", name, name);
 	
@@ -155,7 +155,7 @@ void gen_struct_subr_new(struct StructDecl* sd, struct Ctx* ctx){
 void gen_struct_subr_del(struct StructDecl* sd, struct Ctx* ctx){
 	//performs a shallow free
 	
-	char* name = sd->name;
+	char* name = sd->type->typeName;
 	
 	fprintf(ctx->file, "int del%s(struct %s* instance){\n", name, name);
 	
@@ -169,7 +169,7 @@ void gen_struct_subr_del(struct StructDecl* sd, struct Ctx* ctx){
 void gen_struct_subr_copy(struct StructDecl* sd, struct Ctx* ctx){
 	//performs a shallow copy
 	
-	char* name = sd->name;
+	char* name = sd->type->typeName;
 	
 	fprintf(ctx->file, "struct %s* copy%s(struct %s* instance){\n", name, name, name);
 	
@@ -194,7 +194,7 @@ void gen_struct_subr_copy(struct StructDecl* sd, struct Ctx* ctx){
 
 void gen_struct_subr_make(struct StructDecl* sd, struct Ctx* ctx){
 	
-	char* name = sd->name;
+	char* name = sd->type->typeName;
 	
 	//constructor with all members of the struct
 	fprintf(ctx->file, "struct %s* make%s(", name, name);
