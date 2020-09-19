@@ -457,6 +457,11 @@ void writeBasicTypeWrapped(struct BasicTypeWrapped* m, FILE* file){
 void writeSimpleType(struct SimpleType* m, FILE* file){
 	fprintf(file, "SimpleType\t");
 	fprintf(file,"%s\t",m->typeName);
+	
+	fprintf(file, "%d\t", m->typeParamCount);
+	for(int i=0;i<m->typeParamCount;i++){
+		fprintf(file, "%d\t", m->typeParams[i]);
+	}
 }
 
 void writeSubrType(struct SubrType* m, FILE* file){

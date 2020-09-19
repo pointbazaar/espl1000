@@ -136,7 +136,8 @@ int test_all(bool debug1) {
 	count+=1;
 	
 	pass+=test_assign_operators();
-	count+=1;
+	pass+=test_brackets();
+	count+=2;
 
 	printf("%i of %i tests passed\n",pass,count);
 
@@ -644,17 +645,18 @@ bool test_typeparameter_1() {
 		printf("test typeparameter token\n");
 	}
 
-	char* str = "?T0 ";
+	char* str = "?T0 ?T1 (?T2";
 	struct Token** tokens = 
 		lex(str,".test.tokens", debug);
-
+	
 	assert(tokens[0]->kind==TPARAM);
+	assert(tokens[1]->kind==TPARAM);
+	assert(tokens[2]->kind==LPARENS);
+	assert(tokens[3]->kind==TPARAM);
 	assert(
 	    strcmp(tokens[0]->value_ptr,"0")==0
 	);
-
-	freeTokens(tokens, 1);
-
+	freeTokens(tokens, 4);
 	return true;
 }
 
@@ -1354,6 +1356,29 @@ bool test_assign_operators(){
 	assert(tokens[4]->kind==ASSIGNOP);
 
 	freeTokens(tokens, 5);
+	return true;
+}
 
+bool test_brackets(){
+	
+	if(debug) { printf("test_brackets\n"); }
+
+	char* str = "[](){}< > ";
+	struct Token** tokens = 
+		lex(str,".test.tokens", debug);
+	
+	assert(tokens[0]->kind==LBRACKET);
+	assert(tokens[1]->kind==RBRACKET);
+	assert(tokens[2]->kind==LPARENS);
+	assert(tokens[3]->kind==RPARENS);
+	assert(tokens[4]->kind==LCURLY);
+	assert(tokens[5]->kind==RCURLY);
+	assert(tokens[6]->kind==OPKEY);
+	assert(tokens[7]->kind==OPKEY);
+	
+	assert( strcmp(tokens[6]->value_ptr,"<")==0 );
+	assert( strcmp(tokens[7]->value_ptr,">")==0 );
+
+	freeTokens(tokens, 8);
 	return true;
 }

@@ -239,7 +239,7 @@ void freeBasicTypeWrapped(struct BasicTypeWrapped* btw) {
 }
 
 void freeSimpleType(struct SimpleType* st) {
-
+	if(st->typeParamCount != 0){free(st->typeParams);}
 	free(st);
 }
 

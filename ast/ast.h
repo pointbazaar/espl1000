@@ -294,6 +294,10 @@ struct SimpleType {
 	//can have at most 31 characters,
 	//but this limit is arbitrary
 	char typeName[DEFAULT_STR_SIZE];
+	
+	//the number of the type parameters
+	uint8_t typeParamCount;
+	uint8_t* typeParams;
 };
 struct SubrType {
 	struct Type* returnType;

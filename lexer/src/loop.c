@@ -315,7 +315,6 @@ void lex_main_inner(
 				tkn->kind=TPARAM;
 				tkn->value_ptr=substr(input+start+2,1);
 				tkn->statically_allocated=false;
-				i--;
 				break;
 
 			//SECTION: BRACKETS,BRACES,PARENS

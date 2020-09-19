@@ -104,4 +104,5 @@ bool test_switch_case();
 
 bool test_assign_operators();
 
+bool test_brackets();
 #endif

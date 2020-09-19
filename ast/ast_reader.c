@@ -708,6 +708,7 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 		printf("Error in readAssignStmt\n");
 		exit(1);
 	}
+	v->assign_op[2]='\0';
 	strncpy(v->assign_op, assign_op, 2);
 	
 	v->expr = readExpr(file, debug);
@@ -940,6 +941,18 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 		free(v);
 		fclose(file);
 		exit(1);
+	}
+	
+	int count=0;
+	fscanf(file, "%d\t", &count);
+	v->typeParamCount = count;
+	if(v->typeParamCount > 0){
+		v->typeParams = smalloc(sizeof(uint8_t)*(v->typeParamCount));
+	}
+	for(int i=0;i<v->typeParamCount;i++){
+		int pIndex;
+		fscanf(file, "%d\t", &pIndex);
+		v->typeParams[i] = pIndex;
 	}
 	
 	if(debug){ printf("done\n"); }

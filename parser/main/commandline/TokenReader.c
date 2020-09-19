@@ -88,8 +88,8 @@ struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		case RBRACKET : 
 		case LPARENS : 
 		case RPARENS : 
-		case LCURLY : 
-		case RCURLY : 
+		case LCURLY: 
+		case RCURLY:
 		//IDENTIFIERS
 		case ID : 
 		case TYPEIDENTIFIER : 

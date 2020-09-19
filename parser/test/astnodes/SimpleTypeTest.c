@@ -8,6 +8,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <assert.h>
 
 int simpletype_test_typenode_parsing(bool debug) {
 
@@ -68,4 +69,28 @@ int simpletype_test_typenode_parsing_anytype(bool debug) {
 	freeSimpleType(node);
 
 	return (assert1 && assert2)?1:0;
+}
+
+int simpletype_test_generic(bool debug){
+
+	if(debug){
+		printf("TEST: simpletype_test_generic\n");
+	}
+
+	struct TokenList* l = makeTokenList();
+	list_add(l, makeToken2(TYPEIDENTIFIER,"Point"));
+	list_add(l, makeToken2(OPKEY,"<"));
+	list_add(l, makeToken2(TPARAM,"0"));
+	list_add(l, makeToken2(OPKEY,">"));
+
+	struct SimpleType* node = makeSimpleType2(l, debug);
+
+	assert(node != NULL);
+	assert(node->typeParamCount == 1);
+	assert(0 == list_size(l));
+	
+	freeTokenList(l);
+	freeSimpleType(node);
+
+	return 1;
 }

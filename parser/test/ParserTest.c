@@ -299,7 +299,7 @@ bool test_suite_types(bool debug) {
 	
 	if(debug){ printf("test_suite_types\n"); }
 
-    int count  = 8;
+    int count  = 9;
     int passed = 0;
 
     passed +=  basictypewrapped_test_type_parsing_simple_type(debug);
@@ -307,6 +307,7 @@ bool test_suite_types(bool debug) {
     passed +=  simpletype_test_typenode_parsing(debug);
     passed +=  simpletype_test_typenode_parsing_anytype(debug);
     passed +=  simpletype_test_typenode_parsing_fails(debug);
+    passed +=  simpletype_test_generic(debug);
 
     passed +=  subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(debug);
     passed +=  subrtype_test_subroutine_type_parsing_subroutine_without_side_effects(debug);

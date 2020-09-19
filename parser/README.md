@@ -1,13 +1,9 @@
-<img src="https://raw.githubusercontent.com/pointbazaar/smalldragon/master/dragon-lexer/img/dragon-logo.svg" width="100" height="100"/>
+<img src="https://raw.githubusercontent.com/pointbazaar/smalldragon/dev/lexer/img/dragon-logo.svg" width="100" height="100"/>
 
 # Dragon-Parser
 
-This is the parser for [smalldragon](https://github.com/pointbazaar/smalldragon), 
-a simple, statically typed, compiled programming language.
-
-You can use it to build your own
-compiler/interpreter/typechecker/static analyzer/... 
-for that language.
+This is the parser for smalldragon.
+You can use it to build your own compiler/interpreter/typechecker/static analyzer/... for that language.
 
 ## Grammar that it recognizes
 
@@ -16,35 +12,43 @@ ArrayConstant ::= '[' expression (',' expression)* ']'
 
 AST ::= namespace+
 
-//the name of the namespace is the filename.
 namespace ::=  structDecl* method*
 
 structDecl ::= 'struct' SimpleType '{' structMemberDecl (',' structMemberDecl)* '}'
 
+method ::= 'fn' identifier '(' declaredArgument* ')' arrow Type stmtblock
+
+//--------------------------------
+
 structMemberDecl ::= Type identifier
 
-SubroutineType ::= '(' Type* ')' arrow Type
-SimpleType ::= upperCaseLetter alphanumeric* | anyTypeToken
-BasicTypeWrapped ::= SimpleType | '(' SubroutineType ')'
-
-TypeParameter ::= '?T' ( 0 | 1 | ... )
-
-ArrayType :: = '[' Type ']'
-
-Type ::= BasicTypeWrapped | TypeParameter | ArrayType
-
 simplevariable ::= identifier ('[' expression ']')*
+
 variable ::= simplevariable ('.' variable)*
 
 stmtblock ::= '{' statement* '}'
-
-method ::= 'fn' identifier '(' declaredArgument* ')' arrow Type stmtblock
 
 declaredArgument ::= Type identifier? 
 
 //the optional identifier is there to support for example the 
 //" (?T0,PInt size)~>[?T0] newarray{...} " builtin subroutine.
 //in that case we receive just the type as a parameter, not an instance of it.
+
+// ----- TYPE RELATED ------------------------------------------
+
+SubroutineType ::= '(' Type* ')' arrow Type
+
+SimpleType ::= upperCaseLetter alphanumeric* ('<'TypeParameter+'>')? | anyTypeToken
+
+BasicTypeWrapped ::= SimpleType | '(' SubroutineType ')'
+
+TypeParameter ::= '?T' ( 0 | 1 | ... )
+
+ArrayType ::= '[' Type ']'
+
+Type ::= BasicTypeWrapped | TypeParameter | ArrayType
+
+// ------------------------------------------------------------
 
 statement ::=   ( methodCall ';' )
                 | whileStatement 
@@ -70,13 +74,14 @@ whileStatement ::= 'while' expression stmtblock
 forStatement ::= 'for' identifier 'in' Range stmtblock
 
 ifStatement ::= 'if' expression stmtblock
-				( 'else' stmtblock )?
+		( 'else' stmtblock )?
 				
 returnStatement ::= 'return' expression? ';'
 
 assignmentStatement ::= Type? variable '=' expression ';'
 
 switchStmt ::= 'switch' variable '{' CaseStmt* '}'
+
 CaseStmt ::= 'case' (BoolConst | IntConst | CharConst) StmtBlock?
 
 // --- END STATEMENTS ----------------------
@@ -89,17 +94,16 @@ Term ::= ArrayConstant
 		| boolConstant 
 		| integerConstant 
 		| charConstant 
+		| StringConstant
 		| methodCall 
 		| '(' expression ')' 
 		| variable
 
 expression ::= UnOpTerm (op UnOpTerm)*
 
-```
+// ---- END OF GRAMMAR DESCRIPTION -------------------------------
 
-## Simplifications performed
-- it transforms a string constant into an array
-
+Simplifications performed:
 ```
 expression ::= UnOpTerm (op UnOpTerm)*
 

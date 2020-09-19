@@ -28,15 +28,15 @@
 #define RCURLY 		17
 
 //Other
-#define ARROW 		18
-#define ANYTYPE 	19
-#define OPKEY 		20
-#define WAVE 		21
-#define SEMICOLON 	22
-//#define EQ 			23
-#define RANGEOP 	24
-#define STRUCTMEMBERACCESS 25
-#define ASSIGNOP	26 //NEW
+#define ARROW 		20
+#define ANYTYPE 	21
+#define OPKEY 		22
+#define WAVE 		23
+#define SEMICOLON 	24
+//#define EQ 			25
+#define RANGEOP 	26
+#define STRUCTMEMBERACCESS 27
+#define ASSIGNOP	28 //NEW
 
 //Keywords
 #define IF 		33

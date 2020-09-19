@@ -8,7 +8,6 @@
 
 #include "test.h"
 #include "teststatuscode.h"
-
 #include "suite/test_op.h"
 #include "suite/test_other.h"
 #include "suite/test_assign.h"

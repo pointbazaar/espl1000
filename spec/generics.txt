@@ -13,7 +13,7 @@ I want to implement Generics in smalldragon.
 Proposed Syntax Changes:
 
 -------------
-SimpleType ::= upperCaseLetter alphanumeric* '<' TypeParameter+ '>' | anyTypeToken
+SimpleType ::= upperCaseLetter alphanumeric* ('<' TypeParameter+ '>')? | anyTypeToken
 -------------
 
 This would enable (Examples):

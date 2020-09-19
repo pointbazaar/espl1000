@@ -191,6 +191,7 @@ struct Type* typeFromStr(struct ST* st, char* typeName){
 	struct SimpleType* simpleType = 
 		smalloc(sizeof(struct SimpleType));
 	
+	simpleType->typeParamCount = 0;
 	strncpy(simpleType->typeName, typeName, DEFAULT_STR_SIZE);
 	
 	btw->subrType = NULL;

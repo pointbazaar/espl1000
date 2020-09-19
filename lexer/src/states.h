@@ -65,18 +65,14 @@
 #define S_FLOAT 58 //when we have seen a '.' 
 #define S_FLOAT_FINAL 59
 
-//TOKEN {
-#define S_LCURLY_FINAL 70
-//TOKEN }
-#define S_RCURLY_FINAL 71
-//TOKEN (
-#define S_LPARENS_FINAL 72
-//TOKEN )
-#define S_RPARENS_FINAL 73
-//TOKEN [
-#define S_LBRACKET_FINAL 74
-//TOKEN ]
-#define S_RBRACKET_FINAL 75
+// {}()[]
+#define S_LCURLY_FINAL 		60 // '{'
+#define S_RCURLY_FINAL 		61 // '}'
+#define S_LPARENS_FINAL 	62 // '('
+#define S_RPARENS_FINAL 	63 // ')'
+#define S_LBRACKET_FINAL 	64 // '['
+#define S_RBRACKET_FINAL 	65 // ']'
+// ---------------------------
 
 //TOKEN return
 #define S_R 		76
