@@ -1,0 +1,30 @@
+
+Generics are a staple of modern high level languages.
+They provide a way to write a function once, for a whole
+set of types (even all types, in some cases), given
+that the implementation does not require knowing anything
+about the type.
+
+This is especially useful when writing containers 
+like Lists, Trees and such.
+
+I want to implement Generics in smalldragon.
+
+Proposed Syntax Changes:
+
+-------------
+SimpleType ::= upperCaseLetter alphanumeric* '<' TypeParameter+ '>' | anyTypeToken
+-------------
+
+This would enable (Examples):
+
+fn id (?T0 a) -> ?T0 { return a; } 
+
+struct Point<?T0> {
+	?T0 v1,
+	?T0 v2
+}
+
+fn get([?T0] arr, Int index) -> ?T0 {
+	return arr[index];
+}
