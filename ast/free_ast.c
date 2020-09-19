@@ -95,6 +95,7 @@ void freeStmtBlock(struct StmtBlock* block) {
 
 void freeStructDecl(struct StructDecl* sd) {
 
+	freeSimpleType(sd->type);
 	for(int i=0; i < sd->count_members; i++) {
 		freeStructMember(sd->members[i]);
 	}

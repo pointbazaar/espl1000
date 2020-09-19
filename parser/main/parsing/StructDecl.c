@@ -35,9 +35,16 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 		list_consume(copy, 1);
 		
 		
-		//read name
-		strcpy(res->name, list_head(copy)->value_ptr);
-		list_consume(copy, 1);
+		//read the struct type
+		struct SimpleType* st = makeSimpleType2(copy, debug);
+		if(st == NULL){
+			printf("expected SimpleType, but got: \n");
+			list_print(copy);
+			exit(1);
+		}
+		res->type = st;
+		
+		
 			
 		next = list_head(copy);
 		if(next->kind != LCURLY){

@@ -185,17 +185,25 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 	
 	if(debug){ printf("readStructDecl(...)\n"); }
 	
-	struct StructDecl* res = smalloc(sizeof(struct StructDecl));
+	struct StructDecl* res = 
+		smalloc(sizeof(struct StructDecl));
+	
+	if(fscanf(file, "StructDecl\t") == EOF){
+		printf("Error reading StructDecl\n");
+		fclose(file);
+		free(res);
+		exit(1);
+	}
+	
+	res->type = readSimpleType(file, debug);
 	
 	int count_members = 0;
 	
 	if(
 		fscanf(
-			file, 
-			"StructDecl\t%s\t%d\t", 
-			res->name, 
+			file, "%d\t", 
 			&(count_members)
-		) != 2
+		) != 1
 	){
 		printf("Error reading StructDecl\n");
 		fclose(file);

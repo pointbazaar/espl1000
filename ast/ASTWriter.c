@@ -125,7 +125,10 @@ void writeMethod(struct Method* m, FILE* file){
 void writeStructDecl(struct StructDecl* m, FILE* file){
 	
 	fprintf(file, "StructDecl\t");
-	fprintf(file, "%s\t%d\t", m->name, m->count_members);
+	
+	writeSimpleType(m->type, file);
+	
+	fprintf(file, "%d\t", m->count_members);
 	for(int i=0;i < m->count_members;i++){
 		writeStructMember(m->members[i], file);
 	}

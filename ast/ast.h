@@ -142,8 +142,8 @@ struct SimpleVar {
 	struct Expr** indices;
 };
 struct StructDecl{
-	//the name of the struct
-	char name[DEFAULT_STR_SIZE];
+	//the type(and name) of the struct
+	struct SimpleType* type;
 	
 	struct StructMember** members;
 	uint16_t count_members;
