@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>SmallDragon - Project Goals</title>
+  <meta name="description" content="SmallDragon Project Goals">
+  <meta name="author" content="SmallDragon">
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<h1>SmallDragon Project Goals</h1>
+
+<p> TODO </p>
+
+<h3> Design Decisions and Reasoning behind them</h3>
+
+<ul>
+	<li> 
+		<strong>hackable to the core </strong>
+		<p>
+		Make it your own. Everything in smalldragon
+		is created with extendability and modularity in mind.
+		The transpiler is composed of multiple small programs
+		which can be used and modified independently.
+		They communicate with easy-to-understand formats.
+		</p>
+	</li>
+	<li>
+		<strong>no macros</strong>
+		<p>
+			I made this decision to simplify the parsing of code
+			and also because it makes code easier to read,
+			as there is nothing that's 'hidden' away in some macro.
+		</p>
+	</li>
+	<li>
+		<strong>no effort for backwards compatibility </strong>
+		<p>
+			SmallDragon is a learning Project for me
+			so anything might change whenever.
+		</p>
+	</li>
+	<li>
+		<strong>no void</strong>
+		<p>
+			This simplifies the Language Grammar. 
+		</p>
+	</li>
+	<li>
+		<strong>strict evaluation</strong>
+		<p>
+			I chose strict evaluation over lazy evaluation because
+			lazy evaluation is harder to reason about as a programmer, in my opinion.
+		</p>
+	</li>
+	<li>
+		<strong>no user-defined prefix,infix or suffix operators</strong>
+		<p>
+			This greatly simplifies the parser.
+		</p>
+	</li>
+	<li>
+		<strong>not a self-hosting transpiler</strong>
+		<p>
+			This simplifies development as there are many tools
+			available for C development.
+		</p>
+	</li>
+	<li>
+		<strong> no need to declare a namespace, methods and structs are top-level </strong>
+		<p>
+			In my opinion, it does not make sense to force unneccessary indentation
+			on people. The name of the file is the namespace of a translation unit
+			in smalldragon. structs and methods can be declared and defined directly,
+			without needing a wrapper like a class or namespace construct.
+			This also makes code easier to read without context.
+		</p>
+	</li>
+	<li>
+		<strong> no unneccessary nesting of syntactic constructs </strong>
+		<p>
+			There are no nested method definitions or nested structures 
+			in smalldragon. Indentation is limited to the minimum necessary.
+			I have personally never seen a case where it was necessary or
+			'better' in any way to declare a nested function or anything like that.
+		</p>
+	</li>
+	<li> 
+		<strong> simple syntax </strong>
+		<p>
+			SmallDragon provides the basic building blocks like loops and if-statements
+			that are classics to most programming languages. Extra stuff like 
+			annotations or bloated syntax is avoided whenever possible.
+		</p>
+	</li>
+</ul>
+
+</body>
+</html>

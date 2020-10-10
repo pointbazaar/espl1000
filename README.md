@@ -47,20 +47,6 @@ This Project will probably only work with Linux.
 0. install gcc, make 
 1. try compiling some sample program
 
-## Simplicity
-
-- [x] **hackable to the core**. Make it your own. Everything in SmallDragon is created with extendability and modularity in Mind. The Transpiler is composed of many small programs, written in different language, which communicate via easy-to-understand file formats and protocols. 
-- [x] **no macros** (no preprocessor needed, easier to read and understand code)
-- [x] **no backwards compatibility** (the language will change whenever a feature gets added / removed from the language. Little consideration will be given to existing code. )
-- [x] **no void**. Every subroutine returns a value
-- [x] **strict evaluation** . SmallDragon has no laziness, for simplicity and performance reasons.
-- [x] no user defined prefix , infix or suffix operators. This simplifies the parser.
-- [x] this is **not a self hosting compiler**. this is for stability reasons. also, other languages are great too. i think it's a bit narcissitic to have a self-hosting compiler.
-- [x] no aliasing of anything in general. this improves readability. 
-- [x] no need to declare a namespace. the filename is the name of the namespace. subroutine and struct declarations are at the first level of indentation.
-- [ ] simple syntax. access modifiers (public, private, ...) and such can be defined (might be implemented later) in a .dg.json file. So don't need to build a parser for that, can just use a simple json parser. The .dg.json file can also be used to list usages of other modules "imports" and such, but also usages of 'extern' functions from assembly or c or anything really. It is meant for any bigger project which benefits from a more structured programming approach, where visibilites of subroutines, structs and moules actually makes sense.
-
-
 ## Safety Goals 
 
 - [x] **no null/undefined/NULL/...**
