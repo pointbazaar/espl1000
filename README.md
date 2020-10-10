@@ -47,37 +47,7 @@ This Project will probably only work with Linux.
 0. install gcc, make 
 1. try compiling some sample program
 
-## Safety Goals 
-
-- [x] **no null/undefined/NULL/...**
-- [ ] **termination proof for suitably written programs/functions**
-  - there shall be control structures which allow stuff to execute for a long time, like for web servers, command prompt loops, game loops and such, but at some point in the future it must terminate. This property is important to me. 
-  - once termination proofs for suitably written programs are in the compiler, the next interesting property in that direction would be proving that it terminates in a specified timeframe (assumed unlimited memory, a given cpu clock speed, and some details)
-  - [ ] possibility to do a termination proof of your program (if it is written in a special way that uses termination proof friendly control structures)
-  - [ ] several termination proof friendly control structures and features
-    - [x] 'loop' construct to execute a block of code a finite number of times
-    - [ ] 'for in ' construct to execute a block of code for an index in some range
-- [x] **no global state**
-- [ ] **no uninitialized variables**
-  - [x] no uninitialized primitives
-  - [ ] no uninitialized struct members
-- [ ] pattern matching 
-- [ ] program verification using invariants
-- [ ] strong type system (whatever that means?)
-  - [ ] Various Types of Integers
-    - [ ] PInt (Integer >=0) (required type for any array index)(basically one-way array bounds checking at compile time)
-    - [ ] NInt (Integer <=0)
-    - [ ] Int (can be any integer)
-    - [ ] NZInt (Integer =/= 0) (will be required as the type of any divisor later on, to avoid division by 0)
-
-- [ ] lambda expressions
-- [x] syntax highlighting available in micro
-
 smalldragon should have an easy and simple syntax, similar to C and Haskell.
-
-smalldragon should supports program verification.
-The language differentiates between functions(no side effects) and 
-methods(with side effects) will enforce correct annotation of these properties.
 
 It is intended to be used for (but not limited to):
 

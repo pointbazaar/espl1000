@@ -15,8 +15,6 @@
 
 <h1>SmallDragon Project Goals</h1>
 
-<p> TODO </p>
-
 <h3> Design Decisions and Reasoning behind them</h3>
 
 <ul>
@@ -98,6 +96,61 @@
 			annotations or bloated syntax is avoided whenever possible.
 		</p>
 	</li>
+</ul>
+
+<h3> Safety Goals </h3>
+
+<ul>
+	<li>
+		<strong>no null/NULL/undefined</strong>
+		<p>
+			Having 'NULL' makes it hard to understand code without 
+			context and knowledge of the code around it.
+			Good code should make sense on it's own.
+			So it should be obvious when a variable might not contain anything.
+			So NULL will not be implemented in smalldragon.
+		</p>
+	</li>
+	<li>
+		<strong>no global state</strong>
+		<p>
+			SmallDragon has no ability to declare any global variables.
+			Everything is (currently) either inside a struct or method.
+		</p>
+	</li>
+	<li>
+		<strong>no uninitialized variables</strong>
+		<p>
+			This feature is not complete yet. 
+			It would be desireable to let the transpiler figure
+			out if a given variable can be proven to have been assigned to
+			before usage. This should also be true for struct members.
+		</p>
+	</li>
+	<li>
+		<strong> dependently typed primitive variables </strong>
+		<p>
+			Properties of primitive variables should be 
+			propagated throughout the code so we can use
+			static assertions to safeguard our code against faulty 
+			values at compile-time. This exciting feature is waiting 
+			for a concept for implementation currently.
+		</p>
+	</li>
+	<li>
+		<strong> pure functions and impure methods explicit </strong>
+		<p>
+			A function declared pure should not contain calls to 
+			impure methods. Purity of a subroutine should be 
+			checked by the transpiler. 
+		</p>
+	</li>
+</ul>
+
+<h3> Tools/Ecosystem Goals</h3>
+
+<ul>
+	<li>Syntax Highlighting: [x]vim [x]micro [ ]sublime-text</li>
 </ul>
 
 </body>
