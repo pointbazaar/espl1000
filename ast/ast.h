@@ -1,7 +1,7 @@
 #ifndef AST_H
 #define AST_H
 
-#define DEFAULT_STR_SIZE 64 //64
+#define DEFAULT_STR_SIZE 32 //for variables, method names, ...
 
 #include <stdbool.h>
 #include <inttypes.h>
