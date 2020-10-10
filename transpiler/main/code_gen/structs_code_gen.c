@@ -19,6 +19,7 @@ void gen_struct_subr_new(struct StructDecl* sd, struct Ctx* ctx);
 void gen_struct_subr_del(struct StructDecl* sd, struct Ctx* ctx);
 void gen_struct_subr_copy(struct StructDecl* sd, struct Ctx* ctx);
 void gen_struct_subr_make(struct StructDecl* sd, struct Ctx* ctx);
+void gen_struct_subr_print(struct StructDecl* sd, struct Ctx* ctx);
 // ------------------------------------------------
 //                   TOP LEVEL
 void gen_struct_subrs(struct Namespace* ns, struct Ctx* ctx);
@@ -73,8 +74,11 @@ void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx){
 	gen_struct_subr_del(sd, ctx);
 	gen_struct_subr_copy(sd, ctx);
 	gen_struct_subr_make(sd, ctx);
+	gen_struct_subr_print(sd, ctx);
 	
 	struct Type* retTypeStruct = typeFromStr(ctx->tables, sd->type->typeName);
+	
+	//add subroutines to sst
 	
 	struct SSTLine* line;
 	line = malloc(sizeof(struct SSTLine));
@@ -93,6 +97,12 @@ void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx){
 	line->isLibC = false;
 	line->returnType = retTypeStruct;
 	sprintf(line->name, "make%s", sd->type->typeName);
+	sst_add(ctx->tables->sst, line);
+	
+	line = malloc(sizeof(struct SSTLine));
+	line->isLibC = false;
+	line->returnType = typeFromStr(ctx->tables, "Int");
+	sprintf(line->name, "print%s", sd->type->typeName);
 	sst_add(ctx->tables->sst, line);
 	
 	line = malloc(sizeof(struct SSTLine));
@@ -133,6 +143,8 @@ void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx){
 		}
 	}
 	fprintf(ctx->file, ");\n");
+	
+	fprintf(ctx->file, "int print%s(struct %s* ptr);\n", name, name);
 }
 
 // ----------------------------------------------
@@ -227,6 +239,45 @@ void gen_struct_subr_make(struct StructDecl* sd, struct Ctx* ctx){
 	}
 	
 	fprintf(ctx->file, "\treturn res;\n");
+	
+	fprintf(ctx->file, "}\n");
+}
+
+void gen_struct_subr_print(struct StructDecl* sd, struct Ctx* ctx){
+	
+	char* name = sd->type->typeName;
+	
+	//subroutine to print the struct contents
+	fprintf(ctx->file, "int print%s(struct %s* ptr", name, name);
+	
+	fprintf(ctx->file, ") {\n");
+	
+	fprintf(ctx->file, "\tprintf(\"{\");\n");
+	
+	//copy all the members
+	for(int i = 0; i < sd->count_members; i++){
+		struct StructMember* sm = sd->members[i];
+		
+		char buf[DEFAULT_STR_SIZE+5];
+		sprintf(buf, "ptr->%s", sm->name);
+		
+		char* format = "%s";
+		
+		//TODO: decide the format based on type
+		char* typeName = typeToStr(sm->type);
+		
+		format = typeNameToCFormatStr(typeName);
+		
+		fprintf(
+			ctx->file, 
+			"\tprintf(\"%%s=%s,\", \"%s\", %s);\n",
+			format,
+			sm->name,
+			buf
+		);
+	}
+	fprintf(ctx->file, "\tprintf(\"}\");\n");
+	fprintf(ctx->file, "\treturn 0;\n");
 	
 	fprintf(ctx->file, "}\n");
 }

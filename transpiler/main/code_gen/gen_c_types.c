@@ -152,3 +152,39 @@ char* translateIntType(char* type){
 	}
 	return "int";
 }
+//-----------------------------------
+char* typeNameToCFormatStr(char* typeName){
+	
+	int l = strlen(typeName);
+	
+	if(strcmp(typeName, "PInt") == 0
+	|| strcmp(typeName, "NInt") == 0
+	){
+		return "%d";
+	}
+	
+	if(strcmp(typeName, "Char") == 0){
+		return "%c";
+	}
+	
+	if(strcmp(typeName, "String") == 0){
+		return "%s";
+	}
+	
+	if(strcmp(typeName, "Float") == 0){
+		return "%f";
+	}
+	
+	if(l >= 3){
+		//hacky :O
+		char buf[4];
+		strncpy(buf, typeName, 3);
+		if(strcmp(buf, "Int") == 0
+		|| strcmp(buf, "UIn") == 0
+		){
+			return "%d";
+		}
+	}
+	
+	return "%p";
+}
