@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SmallDragon - Architecture</title>
+  <meta name="description" content="SmallDragon Architecture">
+  <meta name="author" content="SmallDragon">
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<h1>SmallDragon Architecture</h1>
+
+<p>
+SmallDragon consists of 3 Programs which share source code and data formats.
+</p>
+
+<ul>
+	<li> dragon-lexer</li>
+	<li> dragon-parser</li>
+	<li> sd </li>
+</ul>
+
+<p>
+"dragon-lexer" tokenizes smalldragon source files, (.tokens ending) and <br>
+"dragon-parser" parses these tokens into an AST. (.ast ending).<br>
+"sd" then transpiles the AST into C source code.
+</p>
+
+<img src="https://raw.githubusercontent.com/pointbazaar/smalldragon/dev/architecture.svg"/>
+
+</body>
+</html>
