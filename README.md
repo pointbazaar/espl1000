@@ -10,9 +10,6 @@ dev: [![Build Status](https://travis-ci.org/pointbazaar/smalldragon.svg?branch=d
  
 This repo contains a simple, work-in-progress statically typed programming language that aims to be able to be transpiled to C.
 
-The Goal is to have a language to make it easier to implement Open Source Projects in C, 
-and allow writing some parts of the Project in a higher-level language such as SmallDragon.
-
 The Goal is for the Experience to be similar to working with C and Assembly. 
 There you have more control of implementation details with Assembly, but more abstraction and productivity with C.
 
@@ -25,9 +22,6 @@ on top of it, but based on entirely different abstractions, like a VM or an Inte
 what is actually going on at runtime, even if the semantics of the language are very simple. 
 
 
-
-There is currently no plan to have a library for SmallDragon, besides some small utility files in C, to get some basic abstractions going.
-
 The editor of choice for smalldragon currently is [micro](https://micro-editor.github.io/), because there is a basic syntax highlighting for it.
 
 ## Examples
@@ -39,6 +33,8 @@ You@Terminal:~$ ./main
 ```
 
 [SmallDragon's Architecture](https://raw.githubusercontent.com/pointbazaar/smalldragon/dev/architecture.svg)
+
+[Documentation](https://smalldragon.org)
 
 ## How to install / use this Project ?
 
