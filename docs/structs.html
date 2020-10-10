@@ -38,10 +38,11 @@ struct MyStruct {
 For each declared struct X, sd generates:
 </p>
 <ul>
-	<li> newX()     - allocates memory for an instance of struct X</li>
-	<li> makeX(...) - like newX, but also accepts all members as arguments</li>
-	<li> copyX(X x) - returns a shallow copy </li>
-	<li> delX(X x)  - frees (shallow) the instance x </li>
+	<li> newX()      - allocates memory for an instance of struct X</li>
+	<li> makeX(...)  - like newX, but also accepts all members as arguments</li>
+	<li> copyX(X x)  - returns a shallow copy </li>
+	<li> delX(X x)   - frees (shallow) the instance x </li>
+	<li> printX(X x) - prints the member values </li>
 </ul>
 
 <p>
