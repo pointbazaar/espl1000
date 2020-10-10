@@ -1,7 +1,16 @@
 #ifndef AST_H
 #define AST_H
 
-#define DEFAULT_STR_SIZE 32 //for variables, method names, ...
+/*
+I determined in code experiments 
+that up to around 128 bytes there is a speed penalty
+for using the indirection of char* instead
+of having a fixed size char array in your structure.
+Having many strings inline wastes memory
+but is better for execution time.
+*/
+//for variables, method names, ...
+#define DEFAULT_STR_SIZE 32 
 
 #include <stdbool.h>
 #include <inttypes.h>
