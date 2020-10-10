@@ -99,11 +99,12 @@ struct StringConst {
 	char* value;
 };
 struct Method {
-	bool isPublic;
-	bool hasSideEffects;
-
+	
 	struct Type* returnType;
 	char name[DEFAULT_STR_SIZE];
+	
+	bool isPublic;
+	bool hasSideEffects;
 
 	uint8_t count_args;
 	struct DeclArg** args;
@@ -165,8 +166,6 @@ struct UnOpTerm{
 };
 struct Term{
 	
-	// = mX where x is from m1 ... m8 or such
-	uint8_t kind;
 	//only one of these is present,
 	//check 'kind' for which it is.
 	union myptr2 {
@@ -179,6 +178,9 @@ struct Term{
 		struct FloatConst* m7;
 		struct StringConst* m8;
 	} ptr;
+	
+	// = mX where x is from m1 ... m8 or such
+	uint8_t kind;
 };
 struct Variable {
 	struct SimpleVar* simpleVar;
@@ -216,8 +218,6 @@ struct RetStmt{
 	struct Expr* returnValue;
 };
 struct Stmt {
-	//0-based
-	uint8_t kind;
 	
 	//only one of those will be present,
 	//'kind' tells us which
@@ -232,6 +232,9 @@ struct Stmt {
 		struct ForStmt* m7;
 		struct SwitchStmt* m8;
 	} ptr;
+	
+	//0-based
+	uint8_t kind;
 };
 struct WhileStmt  {
 	struct Expr* condition;
@@ -252,7 +255,7 @@ struct BreakStmt {
 struct SwitchStmt{
 	struct Variable* var;
 	
-	unsigned int count_cases;
+	uint32_t count_cases;
 	struct CaseStmt** cases;
 };
 struct CaseStmt{
@@ -301,10 +304,11 @@ struct SimpleType {
 };
 struct SubrType {
 	struct Type* returnType;
-	bool hasSideEffects;
-
+	
 	struct Type** argTypes;
 	uint8_t count_argTypes;
+	
+	bool hasSideEffects;
 };
 struct Type {
 	//only one of these is != NULL
