@@ -44,7 +44,7 @@ This Project will probably only work with Linux.
 1. Try compiling some sample program
 2. If you want the binaries to be visible globally:
    Add 
-   PATH=~/smalldragon/transpiler:~/smalldragon/lexer:~/smalldragon/parser:$PATH
+   ```PATH=~/smalldragon/transpiler:~/smalldragon/lexer:~/smalldragon/parser:$PATH```
    to your ~/.bashrc
 
 ## Contributions
