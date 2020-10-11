@@ -43,15 +43,8 @@ This Project will probably only work with Linux.
 0. install gcc, make 
 1. try compiling some sample program
 
-smalldragon should have an easy and simple syntax, similar to C and Haskell.
-
-It is intended to be used for (but not limited to):
-
-- writing a Program in SmallDragon and transpiling it to C.
-- writing a part of your Program in C and another part in SmallDragon.
-
 ## Contributions
 
 - Feel free to fork the Project. 
-- Pull Requests are not welcome and will not be merged. 
+- Pull Requests will not be merged, as this is a learning Project.
 - Issues are always welcome (Suggestions for Improvement, Bug Reports, ...)
