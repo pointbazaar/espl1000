@@ -7,6 +7,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <assert.h>
 
 int structmember_test_can_parse_struct_member(bool debug) {
 
@@ -25,16 +26,17 @@ int structmember_test_can_parse_struct_member(bool debug) {
 	list_add(list, makeToken2(RPARENS,")"));
 
 	list_add(list, makeToken2(ID,"subr"));
+	list_add(list, makeToken(SEMICOLON));
 
 	struct StructMember* node = makeStructMember(list,debug);
 
-	if(node == NULL){return 0;}
+	assert(node != NULL);
 
-	bool assert1 = strcmp("subr", node->name) == 0;
-	bool assert2 = (0 == list_size(list));
+	assert( strcmp("subr", node->name) == 0);
+	assert(0 == list_size(list));
 	
 	freeTokenList(list);
 	freeStructMember(node);
 
-	return (assert1&&assert2)?1:0;
+	return 1;
 }

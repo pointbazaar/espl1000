@@ -38,6 +38,14 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 		return NULL;
 	}
 	
+	//expect ';'
+	struct Token* next = list_head(copy);
+	if(next->kind != SEMICOLON){
+		beforeAbort(res, copy);
+		return NULL;
+	}
+	list_consume(copy, 1);
+	
 	strncpy(res->name, id->identifier, DEFAULT_STR_SIZE);
 	freeIdentifier(id);
 

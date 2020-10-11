@@ -14,13 +14,13 @@ AST ::= namespace+
 
 namespace ::=  structDecl* method*
 
-structDecl ::= 'struct' SimpleType '{' structMemberDecl (',' structMemberDecl)* '}'
+structDecl ::= 'struct' SimpleType '{' structMemberDecl* '}'
 
 method ::= 'fn' identifier '(' declaredArgument* ')' arrow Type stmtblock
 
 //--------------------------------
 
-structMemberDecl ::= Type identifier
+structMemberDecl ::= Type identifier ';'
 
 simplevariable ::= identifier ('[' expression ']')*
 

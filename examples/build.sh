@@ -15,7 +15,7 @@ sd for_atmel/Main.dg
 #sd functional/Twice.dg
 
 sd ifstatement/IfStatement.dg \
-&& sd input/Input.dg
+&& sd input/Input.dg \
 && sd local_variables/Locals.dg \
 && sd local_variables/Locals2.dg \
 && sd loops/EmptyLoop.dg \

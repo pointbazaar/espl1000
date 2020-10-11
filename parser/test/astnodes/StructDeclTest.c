@@ -90,6 +90,7 @@ int structdecl_test_can_parse_struct_with_1_member(bool debug) {
 	list_add(list, makeToken(LCURLY) );
 	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt") );
 	list_add(list, makeToken2(ID,"a") );
+	list_add(list, makeToken(SEMICOLON) ),
 	list_add(list, makeToken(RCURLY) );
 
 	struct StructDecl* node = makeStructDecl(list, debug);
@@ -116,9 +117,10 @@ int structdecl_test_can_parse_struct_with_2_members(bool debug) {
 	list_add(list, makeToken(LCURLY) );
 	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt") );
 	list_add(list, makeToken2(ID,"a") );
-	list_add(list, makeToken(COMMA) ),
+	list_add(list, makeToken(SEMICOLON) ),
 	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt") );
 	list_add(list, makeToken2(ID,"b") );
+	list_add(list, makeToken(SEMICOLON) ),
 	list_add(list, makeToken(RCURLY) );
 
 	struct StructDecl* node = makeStructDecl(list, debug);

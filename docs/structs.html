@@ -18,7 +18,9 @@
 <p>
 SmallDragon uses 'struct' to define a Composite Data Type.<br>
 SmallDragon structs like C structs semantically, but different
-syntactically. 
+syntactically. SmallDragon uses ';' at the end of each struct member 
+declaration, same as in C, because this notation is both simple on it's own
+and also familiar to those who know C.
 </p>
 
 <h3> Example </h3>
@@ -26,8 +28,8 @@ syntactically.
 <pre>
 <code>
 struct MyStruct {
-	Int a,
-	MyStruct b
+	Int a;
+	MyStruct b;
 }
 </code>
 </pre>

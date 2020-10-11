@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <assert.h>
 
 #define FAILRET if(!passed){ printf("FAILED\n"); return false;}
 
@@ -287,12 +288,9 @@ bool test_suite_struct(bool debug) {
 
 	if(debug){ printf("test_suite_struct\n"); }
 
-    int count  = 1;
-    int passed = 0;
+    assert(1 == structmember_test_can_parse_struct_member(debug));
 
-    passed +=  structmember_test_can_parse_struct_member(debug);
-
-    return passed == count;
+    return true;
 }
 
 bool test_suite_types(bool debug) {

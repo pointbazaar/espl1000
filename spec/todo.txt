@@ -5,7 +5,7 @@ TODO:
     subroutine "arrlen" that would determine the length of any arrays (arrays should be length-prefixed in dragon).
     ...
     thinking about "Anything" Type, what if we shorten that to "*" and it looks even cooler with Type Constraints.
-    Like "public Int print((* implements IShow) item){...}".
+    Like "fn print((* implements IShow) item) ~> Int {...}".
 
 [ ] write a lot of tests to protect our functional programming features against regression!
 
@@ -17,11 +17,6 @@ TODO:
 
 [ ] typecheck that there should be no assignment to arguments.
     assignment to members of arguments is ok in subroutines with side effecs
-
-[ ] add a foreach loop to iterate over an array
-    for PInt x in arr {
-
-    }
 
 [ ] enable multi-line strings. newlines in sourcecode should then
     be converted into newlines in the string.
@@ -50,8 +45,19 @@ TODO:
     - http://beza1e1.tuxen.de/articles/faster_than_C.html
     - http://beza1e1.tuxen.de/articles/proglang_mistakes.html
 
-[ ] write a test that valgrinds finds no memory leaks when executing all 3 test suites
-
 [ ] write a test that all files in examples/ transpile and compile
 
 [ ] write tests for comparison operator chaining
+
+[ ] implement typeclasses
+
+[ ] implement '-run' option, e.g. 'sd -run' so that the transpiled
+    and compiled code is executed as soon as possible.
+
+[ ] include only the headers in transpiled code that are really needed
+
+[ ] implement passthrough '#include' directives which are directly
+    transpiled into the C code and have no effect on the smalldragon code.
+    smalldragon then should have a facility to declare external 
+    subroutines that should exist in c code that is linked later.
+    so C code can be called in smalldragon files.
