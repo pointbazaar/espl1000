@@ -40,8 +40,12 @@ You@Terminal:~$ ./main
 
 This Project will probably only work with Linux.
 
-0. install gcc, make 
-1. try compiling some sample program
+0. Install gcc, make 
+1. Try compiling some sample program
+2. If you want the binaries to be visible globally:
+   Add 
+   PATH=~/smalldragon/transpiler:~/smalldragon/lexer:~/smalldragon/parser:$PATH
+   to your ~/.bashrc
 
 ## Contributions
 
