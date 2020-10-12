@@ -1,14 +1,19 @@
-language: c
 os: linux
-dist: focal
+arch:
+  - amd64
+  - arm
+
+language: c
+jobs:
+  include: 
+    - dist: focal
+    - dist: xenial
+
 before_install:
 - pwd
 - cd .
-#- sudo apt-get install -y valgrind
 addons:
   apt:
-    sources:
-      - ubuntu-toolchain-r-test
     packages:
       - valgrind
       - gcc-10
