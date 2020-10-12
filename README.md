@@ -6,7 +6,7 @@ dev: [![Build Status](https://travis-ci.org/pointbazaar/smalldragon.svg?branch=d
 
 
 circleci:
-[![pointbazaar](https://circleci.com/gh/pointbazaar/smalldragon.svg?style=svg)](https://app.circleci.com/pipelines/github/pointbazaar/smalldragon)
+[![pointbazaar](https://circleci.com/gh/pointbazaar/smalldragon.svg?style=shield)](https://app.circleci.com/pipelines/github/pointbazaar/smalldragon)
 
 [![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/smalldragon/badge)](https://www.codefactor.io/repository/github/pointbazaar/smalldragon)
 [![GitHub license](https://img.shields.io/github/license/pointbazaar/smalldragon.svg)](https://github.com/pointbazaar/smalldragon/blob/master/LICENSE)
