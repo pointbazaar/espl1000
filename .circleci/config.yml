@@ -1,18 +1,16 @@
 version: 2.1
 
-# Use a package of configuration called an orb.
-orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.4.1
-
-
 jobs:
   build:
     #docker:
     #  - image: gcc:9.3.0
     machine:
-      #image: ubuntu-1604:201903-01 # # recommended linux image - includes Ubuntu 16.04
-      image: ubuntu-2004:202008-01 # ubuntu 20.04
+      # i want to use a machine image instead of a docker container
+      # because i need root access to install packages
+      #image: ubuntu-1604:201903-01 # Ubuntu 16.04
+      image: ubuntu-2004:202008-01 # Ubuntu 20.04
+    environment:
+      PATH: $PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser
     steps:
       - checkout
       - run: sudo apt-get update
@@ -23,10 +21,10 @@ jobs:
 workflows:
   version: 2
   # Name the workflow "welcome"
-  welcome:
+  #welcome:
     # Run the welcome/run job in its own container
-    jobs:
-      - welcome/run
+    #jobs:
+      #- welcome/run
   build_and_test:
     jobs:
       - build
