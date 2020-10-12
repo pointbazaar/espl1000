@@ -32,7 +32,7 @@ You@Terminal:~$ sd Main.dg
 You@Terminal:~$ ./main
 ```
 
-[SmallDragon's Architecture](https://raw.githubusercontent.com/pointbazaar/smalldragon/dev/architecture.svg)
+[SmallDragon's Architecture](https://raw.githubusercontent.com/pointbazaar/smalldragon/dev/docs/architecture.svg)
 
 [Documentation](https://smalldragon.org)
 
