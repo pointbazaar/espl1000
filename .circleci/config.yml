@@ -7,13 +7,13 @@ jobs:
     machine:
       # i want to use a machine image instead of a docker container
       # because i need root access to install packages
-      #image: ubuntu-1604:201903-01 # Ubuntu 16.04
-      image: ubuntu-2004:202008-01 # Ubuntu 20.04
+      image: ubuntu-1604:201903-01 # Ubuntu 16.04
+      #image: ubuntu-2004:202008-01 # Ubuntu 20.04 # this lacks even most basic utilities
     environment:
       PATH: $PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser
     steps:
       - run: sudo apt-get update
-      - run: sudo apt install -y coreutils gcc valgrind make
+      - run: sudo apt install -y gcc valgrind make
       - checkout
       - run: make 
 
