@@ -5,13 +5,17 @@
 #include "../../token/token.h"
 #include "loop_io.h"
 
+//statically allocate a char array to store the contents of
+//our input file
+char input[INPUT_CAPACITY];
+
 void readFromFile(
 	char* input_filename, 
 	uint64_t amount_read, 
 	uint64_t input_file_length,
 	uint64_t* input_index
 ){
-	const uint64_t input_capacity = 5000;
+	const uint64_t input_capacity = INPUT_CAPACITY;
 	
 	bool debug = false;
 	

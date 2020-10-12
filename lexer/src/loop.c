@@ -23,8 +23,8 @@
 //when dragon-lexer crashes
 
 //statically allocate a Token* array to store our Tokens
-const uint64_t tokens_capacity = 5000;	//should be 5000
-struct Token* tokens[5000];
+const uint64_t tokens_capacity = INPUT_CAPACITY;
+struct Token* tokens[INPUT_CAPACITY];
 
 const uint64_t n_states = 180;		//number of states in our state machine
 
@@ -96,7 +96,7 @@ struct Token** lex_main(
 ){
 	//https://www.youtube.com/watch?v=G4g-du1MIas
 	//https://nothings.org/computer/lexing.html
-	const uint64_t input_capacity = 5000;
+	const uint64_t input_capacity = INPUT_CAPACITY;
 	line_no = 1;
 	tokens_index = 0;
 	input_index = 0;

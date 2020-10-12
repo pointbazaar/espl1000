@@ -2,7 +2,7 @@
 #unless debugging becomes hard when omitting it.
 FLAGS := -march=native -g --std=c11 -Wall -Werror -Dctime="\"$$(date)\"" -Dgccversion="\"$$(gcc -dumpfullversion)\""
 
-CALL := gcc-9 $(FLAGS)
+CALL := gcc-10 $(FLAGS)
 
 OBJS := build/transpiler.o \
 	build/util.o \

@@ -10,7 +10,7 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - valgrind
-      - gcc-9
+      - gcc-10
 install: pwd
 script: make
 env:

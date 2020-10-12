@@ -39,8 +39,10 @@ You@Terminal:~$ ./main
 ## How to install / use this Project ?
 
 This Project will probably only work with Linux.
+It has been tested/is being developed on Ubuntu 20.04.
+There should be a test matrix with multiple distros soon hopefully.
 
-0. Install gcc, make 
+0. Install gcc, gcc-10, make, valgrind 
 1. Try compiling some sample program
 2. If you want the binaries to be visible globally:
    Add 

@@ -4,15 +4,12 @@
 #include <stdbool.h>
 #include <inttypes.h>
 
+#define INPUT_CAPACITY 5000
+
 struct Token;
 
-//this must be in the header so loop.c
-//can see 'input' variable
-
-//statically allocate a char array to store the contents of
-//our input file
-
-char input[5000];
+//in loop_io.c
+extern char input[INPUT_CAPACITY];
 
 void readFromFile(
 	char* input_filename, 
