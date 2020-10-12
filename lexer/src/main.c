@@ -114,8 +114,8 @@ int lexer_main_inner(struct LexerFlags* flags, char* tkn_filename){
 			printf("tokenized file already exists, comparing modified times.\n");
 		}
 
-		time_t mod_file = file_meta.st_mtime;
-		time_t mod_tkns = tkn_file_meta.st_mtime;
+		size_t mod_file = file_meta.st_mtime;
+		size_t mod_tkns = tkn_file_meta.st_mtime;
 
 		if( mod_file > mod_tkns ) {
 			//the file was modified. the .tokens file is outdate
