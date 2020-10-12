@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 # Use a package of configuration called an orb.
 orbs:
@@ -8,12 +8,14 @@ orbs:
 
 jobs:
   build:
-    docker:
-      - image: gcc:9.3.0
+    #docker:
+    #  - image: gcc:9.3.0
+    machine:
+      image: ubuntu-1604:201903-01 # # recommended linux image - includes Ubuntu 16.04, docker 18.09.3, docker-compose 1.23.1
     steps:
       - checkout
       - run: sudo apt-get update
-      - run: sudo apt install -y valgrind make
+      - run: sudo apt install -y gcc valgrind make
       - run: make 
 
 # Orchestrate or schedule a set of jobs
