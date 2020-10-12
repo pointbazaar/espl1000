@@ -1,6 +1,4 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
-version: 2.1
-
+version: 2
 
 # Use a package of configuration called an orb.
 orbs:
@@ -14,7 +12,9 @@ jobs:
       - image: gcc:9.3.0
     steps:
       - checkout
-      - run: sudo apt install -y valgrind make && make 
+      - run: sudo apt-get update
+      - run: sudo apt install -y valgrind make
+      - run: make 
 
 # Orchestrate or schedule a set of jobs
 workflows:
