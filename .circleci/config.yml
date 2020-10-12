@@ -12,8 +12,8 @@ jobs:
     environment:
       PATH: $PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser
     steps:
-      - run: apt-get update
-      - run: apt install -y gcc valgrind make
+      - run: apt update
+      - run: apt install -y grep coreutils gcc valgrind make
       - checkout
       - run: make 
 
