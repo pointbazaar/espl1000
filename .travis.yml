@@ -3,7 +3,14 @@ os: linux
 before_install:
 - pwd
 - cd .
-- sudo apt-get install -y valgrind
+#- sudo apt-get install -y valgrind
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - valgrind
+      - g++-7
 install: pwd
 script: make
 env:
