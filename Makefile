@@ -3,9 +3,9 @@
 #don't ask me why
 
 all: 
-	cd lexer && $(MAKE)
-	cd parser && $(MAKE)
-	cd transpiler && $(MAKE)
+	cd lexer      && make -j
+	cd parser     && make -j
+	cd transpiler && make -j
 
 clean:
 	cd lexer && make clean

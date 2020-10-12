@@ -1,9 +1,12 @@
 os: linux
+dist: focal #default dist, distro matrix is in 'jobs'
 arch:
   - amd64
   - arm64
-dist: focal #default dist, distro matrix is in 'jobs'
+
+compiler: gcc
 language: c
+
 jobs:
   include: 
     - dist: focal # 20.04
