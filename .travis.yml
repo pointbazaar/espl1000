@@ -1,14 +1,17 @@
 os: linux
 arch:
   - amd64
-  - arm
-
+  - arm64
+dist:
+  - focal
+  - bionic
+  - xenial
 language: c
-jobs:
-  include: 
-    - dist: focal # 20.04
-    - dist: bionic # 18.04
-    - dist: xenial # 16.04
+#jobs:
+#  include: 
+#    - dist: focal # 20.04
+#    - dist: bionic # 18.04
+#    - dist: xenial # 16.04
 
 before_install:
 - pwd
