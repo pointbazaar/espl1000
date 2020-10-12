@@ -6,8 +6,9 @@ arch:
 language: c
 jobs:
   include: 
-    - dist: focal
-    - dist: xenial
+    - dist: focal # 20.04
+    - dist: bionic # 18.04
+    - dist: xenial # 16.04
 
 before_install:
 - pwd
@@ -16,7 +17,7 @@ addons:
   apt:
     packages:
       - valgrind
-      - gcc-10
+      - gcc-9
 install: pwd
 script: make
 env:

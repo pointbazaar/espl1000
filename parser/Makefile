@@ -2,7 +2,7 @@
 #use -pg to generate profiling information for gprof
 FLAGS := -march=native -g -Wall --std=gnu11
 
-CALL := gcc-10 $(FLAGS)
+CALL := gcc-9 $(FLAGS)
 CALL2 := $(CALL) -c 
 
 OBJS_UTIL := build/ASTWriter.o \
