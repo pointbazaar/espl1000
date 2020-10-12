@@ -11,7 +11,8 @@ jobs:
     #docker:
     #  - image: gcc:9.3.0
     machine:
-      image: ubuntu-1604:201903-01 # # recommended linux image - includes Ubuntu 16.04, docker 18.09.3, docker-compose 1.23.1
+      #image: ubuntu-1604:201903-01 # # recommended linux image - includes Ubuntu 16.04
+      image: ubuntu-2004:202008-01 # ubuntu 20.04
     steps:
       - checkout
       - run: sudo apt-get update
