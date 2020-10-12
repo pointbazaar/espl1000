@@ -1,5 +1,6 @@
 language: c
 os: linux
+dist: focal
 before_install:
 - pwd
 - cd .
