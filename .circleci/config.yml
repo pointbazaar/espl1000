@@ -18,6 +18,7 @@ jobs:
 
 # Orchestrate or schedule a set of jobs
 workflows:
+  version: 2
   # Name the workflow "welcome"
   welcome:
     # Run the welcome/run job in its own container
