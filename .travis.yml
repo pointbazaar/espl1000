@@ -2,16 +2,13 @@ os: linux
 arch:
   - amd64
   - arm64
-dist:
-  - focal
-  - bionic
-  - xenial
+dist: focal #default dist, distro matrix is in 'jobs'
 language: c
-#jobs:
-#  include: 
-#    - dist: focal # 20.04
-#    - dist: bionic # 18.04
-#    - dist: xenial # 16.04
+jobs:
+  include: 
+    - dist: focal # 20.04
+    - dist: bionic # 18.04
+    - dist: xenial # 16.04
 
 before_install:
 - pwd
@@ -20,7 +17,8 @@ addons:
   apt:
     packages:
       - valgrind
-      - gcc-9
+      #- gcc-9 #people can bring their own gcc whatever version. 
+      #don't even care anymore.
 install: pwd
 script: make
 env:
