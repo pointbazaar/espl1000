@@ -14,8 +14,7 @@ jobs:
       - image: gcc:9.3.0
     steps:
       - checkout
-      - sudo apt install -y valgrind make
-      - run: make 
+      - run: sudo apt install -y valgrind make && make 
 
 # Orchestrate or schedule a set of jobs
 workflows:
