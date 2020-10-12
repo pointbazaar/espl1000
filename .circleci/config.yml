@@ -12,9 +12,9 @@ jobs:
     environment:
       PATH: $PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser
     steps:
-      - checkout
       - run: sudo apt-get update
-      - run: sudo apt install -y gcc valgrind make
+      - run: sudo apt install -y coreutils gcc valgrind make
+      - checkout
       - run: make 
 
 # Orchestrate or schedule a set of jobs
