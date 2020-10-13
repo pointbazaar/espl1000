@@ -30,11 +30,12 @@ jobs:
     - dist: trusty
       arch: arm64
     
-    - dist: precise # 12.04
-      arch: amd64
+    # their gcc does not have --std=c11
+    #- dist: precise # 12.04
+    #  arch: amd64
 
-    - dist: precise
-      arch: arm64
+    #- dist: precise
+    #  arch: arm64
 
 before_install:
 - pwd
