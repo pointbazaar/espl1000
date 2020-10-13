@@ -77,7 +77,8 @@ void freeMethod(struct Method* m) {
 		sizeof(struct Method) 
 		<= sizeof(void*) * 3
 		   + DEFAULT_STR_SIZE 
-		   + 8
+		   + 8,
+		   ""
 	);
 
 	freeType(m->returnType);
@@ -110,7 +111,8 @@ void freeSimpleVar(struct SimpleVar* sv) {
 	
 	static_assert(
 		sizeof(struct SimpleVar) 
-		<= sizeof(void*) + 8 + DEFAULT_STR_SIZE
+		<= sizeof(void*) + 8 + DEFAULT_STR_SIZE,
+		   ""
 	);
 
 	for(int i=0;i < sv->count_indices; i++){
@@ -144,7 +146,10 @@ void freeStructMember(struct StructMember* sm) {
 }
 void freeTerm(struct Term* t) {
 	
-	static_assert(sizeof(struct Term) <= 8 + sizeof(void*));
+	static_assert(
+		sizeof(struct Term) <= 8 + sizeof(void*),
+		   ""
+	);
 
 	switch(t->kind){
 		case 1: freeBoolConst  (t->ptr.m1); break;
@@ -183,7 +188,8 @@ void freeAssignStmt(struct AssignStmt* as) {
 	
 	static_assert(
 		sizeof(struct AssignStmt) 
-		<= 8 + 3 * sizeof(void*)
+		<= 8 + 3 * sizeof(void*),
+		   ""
 	);
 
 	if(as->optType != NULL) {
@@ -239,7 +245,10 @@ void freeRetStmt(struct RetStmt* rs) {
 
 void freeStmt(struct Stmt* s) {
 	
-	static_assert(sizeof(struct Stmt) <= 8 + sizeof(void*));
+	static_assert(
+		sizeof(struct Stmt) <= 8 + sizeof(void*),
+		   ""
+	);
 
 	switch(s->kind){
 		
@@ -292,7 +301,8 @@ void freeSimpleType(struct SimpleType* st) {
 void freeSubrType(struct SubrType* st) {
 	
 	static_assert(
-		sizeof(struct SubrType) <= 2 * sizeof(void*) + 8
+		sizeof(struct SubrType) <= 2 * sizeof(void*) + 8,
+		   ""
 	);
 	
 	freeType(st->returnType);
@@ -324,7 +334,8 @@ void freeOp(struct Op* op){
 	
 	static_assert(
 		sizeof(struct Op) 
-		<= sizeof(void*)
+		<= sizeof(void*),
+		   ""
 	);
 	
 	free(op);
@@ -350,7 +361,8 @@ void freeForStmt(struct ForStmt* fstmt){
 void freeSwitchStmt(struct SwitchStmt* s){
 	
 	static_assert(
-		sizeof(struct SwitchStmt) <= 3 * sizeof(void*)
+		sizeof(struct SwitchStmt) <= 3 * sizeof(void*),
+		   ""
 	);
 	
 	freeVariable(s->var);
