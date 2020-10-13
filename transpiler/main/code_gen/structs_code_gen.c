@@ -4,7 +4,6 @@
 
 #include "../ctx.h"
 #include "../flags.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 #include "../typeinference.h"
 #include "../tables/subrsymtable.h"

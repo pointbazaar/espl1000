@@ -5,7 +5,6 @@
 #include "SimpleType.h"
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
-#include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 #include "../../../../token/token.h"
 
@@ -20,7 +19,7 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 	
 	if(list_size(tokens) == 0){ return NULL; }
 
-	struct SimpleType* res = smalloc(sizeof(struct SimpleType));
+	struct SimpleType* res = malloc(sizeof(struct SimpleType));
 	res->typeParamCount = 0;
 	strcpy(res->typeName, "");
 
@@ -51,7 +50,7 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 }
 
 struct SimpleType* makeSimpleType(char* typeName) {
-	struct SimpleType* res = smalloc(sizeof(struct SimpleType));
+	struct SimpleType* res = malloc(sizeof(struct SimpleType));
 	res->typeParamCount = 0;
 	strcpy(res->typeName, typeName);
 
@@ -62,7 +61,7 @@ void parse_type_params_rest(struct SimpleType* res, struct TokenList* tokens){
 	
 	//we must allocate space for those type parameters
 	int capacity = 10;
-	res->typeParams = smalloc(sizeof(uint8_t)*capacity);
+	res->typeParams = malloc(sizeof(uint8_t)*capacity);
 	
 	//expect ?TX
 	struct Token* next = list_head(tokens);

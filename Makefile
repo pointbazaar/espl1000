@@ -1,13 +1,13 @@
 
 all: 
-	cd lexer      && make -j
-	cd parser     && make -j
-	cd transpiler && make -j
+	cd lexer      && make 
+	cd parser     && make 
+	cd transpiler && make 
 
 all_no_valgrind:
-	cd lexer && make -j all_no_valgrind
-	cd parser && make -j all_no_valgrind
-	cd transpiler && make -j all_no_valgrind
+	cd lexer && make all_no_valgrind
+	cd parser && make all_no_valgrind
+	cd transpiler && make all_no_valgrind
 
 clean:
 	cd lexer && make clean

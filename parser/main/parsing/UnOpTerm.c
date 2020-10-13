@@ -10,7 +10,6 @@
 #include "../commandline/TokenKeys.h"
 #include "../commandline/TokenList.h"
 #include "../../../token/token.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 
 struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens, bool debug){
@@ -22,7 +21,7 @@ struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens, bool debug){
 	
 	if(list_size(tokens) < 1){ return NULL; }
 	
-	struct UnOpTerm* res = smalloc(sizeof(struct UnOpTerm));
+	struct UnOpTerm* res = malloc(sizeof(struct UnOpTerm));
 	
 	struct TokenList* copy = list_copy(tokens);
 	

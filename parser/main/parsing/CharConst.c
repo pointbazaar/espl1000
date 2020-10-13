@@ -5,7 +5,6 @@
 #include "CharConst.h"
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 #include "../../../token/token.h"
 
@@ -16,7 +15,7 @@ struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 		list_print(tokens);
 	}
 
-	struct CharConst* res = smalloc(sizeof(struct CharConst));
+	struct CharConst* res = malloc(sizeof(struct CharConst));
 
 	struct Token* token = list_head(tokens);
 	

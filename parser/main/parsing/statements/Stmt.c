@@ -14,7 +14,6 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../../../token/token.h"
-#include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 
 // --- private subroutines ---
@@ -68,7 +67,7 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 
 struct Stmt* initStmt(){
 	
-	struct Stmt* res = smalloc(sizeof(struct Stmt));
+	struct Stmt* res = malloc(sizeof(struct Stmt));
 
 	//init
 	res->kind = 0;

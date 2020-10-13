@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include <assert.h> //for runtime assertions
+#include <assert.h>
 
 #include "../../../ast/ast.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 #include "../ctx.h"
 #include "../flags.h"
@@ -90,8 +88,8 @@ bool transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 	
 	if(flags->debug){ printf("transpileAndWrite(...)\n"); }
 
-	struct Ctx* ctx = smalloc(sizeof(struct Ctx));
-	ctx->tables = smalloc(sizeof(struct ST));
+	struct Ctx* ctx = malloc(sizeof(struct Ctx));
+	ctx->tables = malloc(sizeof(struct ST));
 	ctx->flags = flags;
 	ctx->indentLevel = 0;
 	
@@ -100,7 +98,7 @@ bool transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 	ctx->tables->inferredTypesCapacity = 100;
 	ctx->tables->inferredTypesCount = 0;
 	ctx->tables->inferredTypes = 
-		smalloc(
+		malloc(
 			sizeof(struct Type*) 
 			* ctx->tables->inferredTypesCapacity
 		);

@@ -8,7 +8,6 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
 #include "../../../token/token.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 //-------------
 struct StructMember* initStructMember();
@@ -57,7 +56,7 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 
 struct StructMember* initStructMember(){
 	
-	struct StructMember* res = smalloc(sizeof(struct StructMember));
+	struct StructMember* res = malloc(sizeof(struct StructMember));
 	res->type = NULL;
 	
 	return res;

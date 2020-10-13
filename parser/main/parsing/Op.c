@@ -7,7 +7,6 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
 #include "../../../token/token.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 
 struct Op* makeOp(struct TokenList* tokens, bool debug){
@@ -17,7 +16,7 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 		list_print(tokens);
 	}
 
-	struct Op* res = smalloc(sizeof(struct Op));
+	struct Op* res = malloc(sizeof(struct Op));
 
 	struct TokenList* copy = list_copy(tokens);
 

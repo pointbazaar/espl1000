@@ -7,7 +7,6 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../../../token/token.h"
-#include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 
 void parse_cases(struct SwitchStmt* s, struct TokenList* copy, bool debug);
@@ -27,11 +26,11 @@ struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens, bool debug){
 		return NULL;
 	}
 	
-	struct SwitchStmt* res = smalloc(sizeof(struct SwitchStmt));
+	struct SwitchStmt* res = malloc(sizeof(struct SwitchStmt));
 
 	res->var = NULL;
 	res->count_cases = 0;
-	res->cases = smalloc(sizeof(struct CaseStmt*)*1);
+	res->cases = malloc(sizeof(struct CaseStmt*)*1);
 
 	res->var = makeVariable(copy,debug);
 	if(res->var == NULL){

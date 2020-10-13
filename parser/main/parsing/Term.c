@@ -15,7 +15,6 @@
 #include "Variable.h"
 #include "statements/MethodCall.h"
 #include "../../../token/token.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 
 // --- private subroutines ---
@@ -93,7 +92,7 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 
 struct Term* initTerm(){
 	
-	struct Term* res = smalloc(sizeof(struct Term));
+	struct Term* res = malloc(sizeof(struct Term));
 	
 	res->kind = 0;
 	res->ptr.m1 = NULL;

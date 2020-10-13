@@ -7,7 +7,6 @@
 #include "../StmtBlock.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../commandline/TokenList.h"
-#include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 #include "../../../../token/token.h"
 
@@ -62,7 +61,7 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 
 struct IfStmt* initIfStmt(){
 	
-	struct IfStmt* res = smalloc(sizeof(struct IfStmt));
+	struct IfStmt* res = malloc(sizeof(struct IfStmt));
 	
 	res->condition = NULL;
 	res->block     = NULL;

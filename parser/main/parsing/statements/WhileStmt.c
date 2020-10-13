@@ -8,7 +8,6 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../../../token/token.h"
-#include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 
 struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
@@ -17,7 +16,7 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 		printf("WhileStmt(...)\n");
 	}
 
-	struct WhileStmt* res = smalloc(sizeof(struct WhileStmt));
+	struct WhileStmt* res = malloc(sizeof(struct WhileStmt));
 
 	res->condition = NULL;
 	res->block     = NULL;

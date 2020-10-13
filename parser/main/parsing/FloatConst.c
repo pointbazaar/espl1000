@@ -6,7 +6,6 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
 #include "../../../token/token.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 
 struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
@@ -17,7 +16,7 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
 	if(list_size(tokens) == 0){ return NULL; }
 
-	struct FloatConst* res = smalloc(sizeof(struct FloatConst));
+	struct FloatConst* res = malloc(sizeof(struct FloatConst));
 
 	struct TokenList* copy = list_copy(tokens);
 

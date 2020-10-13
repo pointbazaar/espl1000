@@ -5,7 +5,6 @@
 
 #include "../../ast/ast.h"
 #include "../../ast/free_ast.h"
-#include "../../util/util.h"
 #include "code_gen/gen_c_types.h"
 #include "typeinference.h"
 
@@ -182,14 +181,14 @@ struct Type* typeFromStr(struct ST* st, char* typeName){
 	struct Type* res = malloc(sizeof(struct Type));
 	
 	struct BasicTypeWrapped* btw = 
-		smalloc(sizeof(struct BasicTypeWrapped));
+		malloc(sizeof(struct BasicTypeWrapped));
 	
 	res->m1 = btw;
 	res->m2 = NULL;
 	res->m2 = NULL;
 	
 	struct SimpleType* simpleType = 
-		smalloc(sizeof(struct SimpleType));
+		malloc(sizeof(struct SimpleType));
 	
 	simpleType->typeParamCount = 0;
 	strncpy(simpleType->typeName, typeName, DEFAULT_STR_SIZE);

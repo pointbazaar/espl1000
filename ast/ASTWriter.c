@@ -3,7 +3,6 @@
 #include <string.h>
 
 #include "ASTWriter.h"
-#include "../util/util.h"
 
 // --- private subroutines (private to this file) ---
 

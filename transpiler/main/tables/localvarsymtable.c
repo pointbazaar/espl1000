@@ -6,11 +6,8 @@
 
 #include "../../../ast/ast.h"
 #include "../../../ast/free_ast.h"
-#include "../../../util/util.h"
-
 #include "localvarsymtable.h"
 #include "symtable.h"
-
 #include "../typeinference.h"
 
 // --- declare subroutines private to this compile unit ---
@@ -72,11 +69,11 @@ struct LVST* makeLocalVarSymTable(bool debug){
 	
 	if(debug){ printf("makeLocalVarSymTable(...)\n"); }
 	
-	struct LVST* lvst = smalloc(sizeof(struct LVST));
+	struct LVST* lvst = malloc(sizeof(struct LVST));
 	
 	lvst->count = 0;
 	lvst->capacity = 10;
-	lvst->lines = smalloc(sizeof(struct LVSTLine*)*lvst->capacity);
+	lvst->lines = malloc(sizeof(struct LVSTLine*)*lvst->capacity);
 	
 	return lvst;
 }
@@ -98,7 +95,7 @@ void fillLocalVarSymTable(
 		char* name = da->name; 
 		struct Type* type = da->type;
 		
-		struct LVSTLine* line = smalloc(sizeof(struct LVSTLine));
+		struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
 		
 		strncpy(line->name, name, DEFAULT_STR_SIZE);
 		line->type = type;
@@ -300,7 +297,7 @@ void discoverLVForStmt(
 	if(debug){ printf("discoverLVForStmt\n"); }
 	
 	//take the index variable as a local variable
-	struct LVSTLine* line = smalloc(sizeof(struct LVSTLine));
+	struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
 	
 	strncpy(line->name, l->indexName, DEFAULT_STR_SIZE);
 	
@@ -320,7 +317,7 @@ void discoverLVAssignStmt(
 ){
 	if(debug){ printf("discoverLVAssignStmt\n"); }
 	
-	struct LVSTLine* line = smalloc(sizeof(struct LVSTLine));
+	struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
 	
 	strncpy(line->name, a->var->simpleVar->name, DEFAULT_STR_SIZE);
 	

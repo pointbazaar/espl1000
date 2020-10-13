@@ -8,7 +8,6 @@
 #include "../commandline/TokenKeys.h"
 #include "../commandline/TokenList.h"
 #include "../../../token/token.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 
 struct Range* makeRange(struct TokenList* tokens, bool debug) {
@@ -22,7 +21,7 @@ struct Range* makeRange(struct TokenList* tokens, bool debug) {
 
 	struct TokenList* copy = list_copy(tokens);
 
-	struct Range* res = smalloc(sizeof(struct Range));
+	struct Range* res = malloc(sizeof(struct Range));
 
 	res->start = makeExpr(copy, debug);
 	

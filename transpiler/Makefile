@@ -5,7 +5,6 @@ FLAGS := -march=native -g --std=c11 -Wall -Werror -Dctime="\"$$(date)\"" -Dgccve
 CALL := gcc $(FLAGS)
 
 OBJS := build/transpiler.o \
-	build/util.o \
 	build/ast_reader.o \
 	build/c_code_gen.o \
 	build/structs_code_gen.o \
@@ -81,7 +80,7 @@ build/test.o: test/test.c test/test.h \
 		test/suite/test_typeinference.h
 	$(CALL) -c test/test.c -o $@
 
-build/teststatuscode.o: test/teststatuscode.h test/teststatuscode.c main/flags.h main/transpiler.h ../util/util.c ../util/util.h
+build/teststatuscode.o: test/teststatuscode.h test/teststatuscode.c main/flags.h main/transpiler.h
 	$(CALL) -c test/teststatuscode.c -o $@
 	
 build/test_assign.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_assign.h test/suite/test_assign.c

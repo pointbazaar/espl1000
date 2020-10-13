@@ -5,7 +5,6 @@
 #include "BoolConst.h"
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 #include "../../../token/token.h"
 
@@ -22,7 +21,7 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 
 	//struct TokenList* copy = list_copy(tokens);
 	
-	struct BoolConst* res = smalloc(sizeof(struct BoolConst));
+	struct BoolConst* res = malloc(sizeof(struct BoolConst));
 	
 	struct Token* tk = list_head(tokens);
 	

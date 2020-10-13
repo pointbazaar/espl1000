@@ -8,7 +8,6 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
 #include "../../../token/token.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 
 struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
@@ -18,9 +17,9 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 		list_print(tokens);
 	}
 
-	struct StructDecl* res = smalloc(sizeof(struct StructDecl));
+	struct StructDecl* res = malloc(sizeof(struct StructDecl));
 	
-	res->members = smalloc(sizeof(struct StructMember*)*1);
+	res->members = malloc(sizeof(struct StructMember*)*1);
 	res->count_members = 0;
 	
 	struct TokenList* copy = list_copy(tokens);

@@ -6,7 +6,6 @@ CALL := gcc $(FLAGS)
 CALL2 := $(CALL) -c 
 
 OBJS_UTIL := build/ASTWriter.o \
-	build/util.o \
 	build/free_ast.o \
 	build/copy_ast.o
 
@@ -87,7 +86,6 @@ OBJS_TEST := build/AssignStmtTest.o \
 OBJS := $(OBJS_MAIN) $(OBJS_TEST) $(OBJS_UTIL) 
 
 AST_DEPS := ../ast/ast.h \
-	../util/util.h \
 	../ast/ASTWriter.h \
 	../ast/free_ast.h \
 	../ast/copy_ast.h

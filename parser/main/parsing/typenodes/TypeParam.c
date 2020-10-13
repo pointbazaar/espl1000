@@ -7,7 +7,6 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../../../token/token.h"
-#include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 
 struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
@@ -21,7 +20,7 @@ struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
 		return NULL;
 	}
 	
-	struct TypeParam* res = smalloc(sizeof(struct TypeParam));
+	struct TypeParam* res = malloc(sizeof(struct TypeParam));
 
 	if (token->kind == TPARAM) {
 		res->index = atoi(token->value_ptr);

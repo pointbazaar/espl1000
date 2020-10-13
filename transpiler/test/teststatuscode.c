@@ -4,8 +4,6 @@
 #include <unistd.h>
 #include <errno.h>
 
-#include "../../util/util.h"
-
 #include "teststatuscode.h"
 #include "../main/flags.h"
 #include "../main/transpiler.h"

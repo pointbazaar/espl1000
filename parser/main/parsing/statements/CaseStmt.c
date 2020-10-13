@@ -8,7 +8,6 @@
 #include "../StmtBlock.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../commandline/TokenList.h"
-#include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 #include "../../../../token/token.h"
 
@@ -28,7 +27,7 @@ struct CaseStmt* makeCaseStmt(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 	
-	struct CaseStmt* res = smalloc(sizeof(struct CaseStmt));
+	struct CaseStmt* res = malloc(sizeof(struct CaseStmt));
 	
 	res->kind = 0;
 	res->ptr.m1 = NULL;

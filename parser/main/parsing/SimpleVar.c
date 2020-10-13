@@ -8,7 +8,6 @@
 #include "../commandline/TokenKeys.h"
 #include "../commandline/TokenList.h"
 #include "../../../token/token.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 
 struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
@@ -22,10 +21,10 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 		return NULL; 
 	}
 
-	struct SimpleVar* res = smalloc(sizeof(struct SimpleVar));
+	struct SimpleVar* res = malloc(sizeof(struct SimpleVar));
 
 	res->count_indices = 0;
-	res->indices = smalloc(sizeof(struct Expr*)*1);
+	res->indices = malloc(sizeof(struct Expr*)*1);
 
 	struct TokenList* copy = list_copy(tokens);
 

@@ -8,7 +8,6 @@
 #include "Term.h"
 #include "UnOpTerm.h"
 #include "Op.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 #include "../../../ast/copy_ast.h"
 
@@ -36,7 +35,7 @@ bool isComparisonOp(struct Op* op);
 //-----------------------------
 
 struct Expr* makeExpr_1(struct UnOpTerm* term) {
-	struct Expr* res = smalloc(sizeof(struct Expr));
+	struct Expr* res = malloc(sizeof(struct Expr));
 	res->term1 = term;
 	res->op    = NULL;
 	res->term2 = NULL;
@@ -46,7 +45,7 @@ struct Expr* makeExpr_1(struct UnOpTerm* term) {
 
 struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, struct Op* op, struct UnOpTerm* rightTerm) {
 
-	struct Expr* res = smalloc(sizeof(struct Expr));
+	struct Expr* res = malloc(sizeof(struct Expr));
 	res->term1 = leftTerm;
 	res->op    = op;
 	res->term2 = rightTerm;
@@ -62,10 +61,10 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 
 	//we assume they never have more than 200 terms
 
-	struct Op** ops = smalloc(sizeof(struct Op*)*200);
+	struct Op** ops = malloc(sizeof(struct Op*)*200);
 	int opsc = 0;
 
-	struct UnOpTerm** terms = smalloc(sizeof(struct UnOpTerm*)*200);;
+	struct UnOpTerm** terms = malloc(sizeof(struct UnOpTerm*)*200);;
 	int termsc = 0;
 
 	struct TokenList* copy = list_copy(tokens);
@@ -129,7 +128,7 @@ struct Expr* fullTreeTransformation(
 	bool debug
 ){
 	
-	struct Expr* res = smalloc(sizeof(struct Expr));
+	struct Expr* res = malloc(sizeof(struct Expr));
 	res->term1 = NULL;
 	res->op    = NULL;
 	res->term2 = NULL;
@@ -315,7 +314,7 @@ void performTreeTransformation(
 
 		//create term from our expression
 		//(must create a term because it's a list of terms)
-		struct UnOpTerm* ttmp = smalloc(sizeof(struct UnOpTerm));
+		struct UnOpTerm* ttmp = malloc(sizeof(struct UnOpTerm));
 		ttmp->op = NULL;
 		ttmp->term = makeTerm_other(expr);
 		
@@ -399,7 +398,7 @@ void insertOperatorChaining(
 // ------------------- UTILITY SUBROUTINES -----------
 void** insert(void** arr, int index, void* element, int size_before){
 	//insert 'element' into 'arr' at index 'index'
-	void** res = smalloc(sizeof(void*)*(size_before+1));
+	void** res = malloc(sizeof(void*)*(size_before+1));
 
 	for(int i=0;i<size_before+1;i++){
 		if(i < index){
@@ -415,7 +414,7 @@ void** insert(void** arr, int index, void* element, int size_before){
 
 void** erase(void** arr, int index, int size_before){
 	//erase the element at 'index'
-	void** res = smalloc(sizeof(void*)*(size_before-1));
+	void** res = malloc(sizeof(void*)*(size_before-1));
 
 	int i1 = 0;
 	for(int i=0;i<size_before-1;i++){

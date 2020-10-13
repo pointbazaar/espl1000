@@ -7,7 +7,6 @@
 #include "../Expr.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../commandline/TokenList.h"
-#include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 
 struct LoopStmt* makeLoopStmt(struct TokenList* tokens, bool debug) {
@@ -19,7 +18,7 @@ struct LoopStmt* makeLoopStmt(struct TokenList* tokens, bool debug) {
 	
 	if(list_size(tokens) < 3){ return NULL; }
 
-	struct LoopStmt* res = smalloc(sizeof(struct LoopStmt));
+	struct LoopStmt* res = malloc(sizeof(struct LoopStmt));
 	
 	res->count = NULL;
 	res->block     = NULL;
