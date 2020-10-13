@@ -223,9 +223,9 @@ struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool de
 	strcpy(tks->relPath, tokensFile);
 	
 	size_t size = 50;
-    char* line = malloc(sizeof(char)*size);
+	char* line = malloc(sizeof(char)*size);
     
-    while (getline(&line, &size, file)){
+	while (getline(&line, &size, file)){
 		
 		line[strlen(line)-1] = '\0';
 		
