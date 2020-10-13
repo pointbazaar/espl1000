@@ -41,4 +41,3 @@ install: pwd
 script: make all_no_valgrind
 env:
 - export PATH=$PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser
-- MALLOC_CHECK_=1
