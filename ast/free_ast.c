@@ -13,7 +13,8 @@ void freeAST_Whole_Program(struct AST_Whole_Program* ast) {
 	
 	static_assert(
 		sizeof(struct AST_Whole_Program)
-		<= sizeof(void*) + 8
+		<= sizeof(void*) + 8,
+		   ""
 	);
 
 	for(int i=0; i < ast->count_namespaces; i++) {
@@ -25,14 +26,20 @@ void freeAST_Whole_Program(struct AST_Whole_Program* ast) {
 
 void freeBoolConst(struct BoolConst* bc) {
 	
-	static_assert(sizeof(struct BoolConst) <= 8);
+	static_assert(
+		sizeof(struct BoolConst) <= 8,
+		   ""
+	);
 	
 	free(bc);
 }
 
 void freeCharConst(struct CharConst* cc) {
 	
-	static_assert(sizeof(struct CharConst) <= 8);
+	static_assert(
+		sizeof(struct CharConst) <= 8,
+		   ""
+    );
 	free(cc);
 }
 
@@ -40,7 +47,8 @@ void freeDeclArg(struct DeclArg* da) {
 	
 	static_assert(
 		sizeof(struct DeclArg) 
-		<= sizeof(void*) + 1 + DEFAULT_STR_SIZE + 7
+		<= sizeof(void*) + 1 + DEFAULT_STR_SIZE + 7,
+		""
 	);
 	freeType(da->type);
 	free(da);
@@ -49,7 +57,7 @@ void freeDeclArg(struct DeclArg* da) {
 
 void freeExpr(struct Expr* expr) {
 	
-	static_assert(sizeof(struct Expr) <= sizeof(void*)*3);
+	static_assert(sizeof(struct Expr) <= sizeof(void*)*3,"");
 	
 	freeUnOpTerm(expr->term1);
 	if(expr->op != NULL) {
