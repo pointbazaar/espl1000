@@ -26,6 +26,12 @@ jobs:
 
     - dist: xenial
       arch: arm64
+    
+    - dist: trusty
+      arch: amd64
+ 
+    - dist: trusty
+      arch: arm64
 
 before_install:
 - pwd
