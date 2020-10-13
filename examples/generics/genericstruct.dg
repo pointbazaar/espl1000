@@ -1,7 +1,7 @@
 
 struct Point< ?T0 > {
-	?T0 x1,
-	?T0 x2
+	?T0 x1;
+	?T0 x2;
 }
 
 fn main () ~> Int {

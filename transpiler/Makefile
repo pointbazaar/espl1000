@@ -37,7 +37,7 @@ test: sd
 VALGRIND_OPS := --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 --log-file="/dev/null"
 
 valgrind: sd
-	valgrind $(VALGRIND_OPS) ./sd -clean ../examples/Everything.dg
+	valgrind $(VALGRIND_OPS) ./sd -clean ../examples/other/Everything.dg
 
 smalldragon: dir $(OBJS)
 	$(CALL) -o sd build/*.o

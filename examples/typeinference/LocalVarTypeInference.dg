@@ -7,7 +7,7 @@ fn main () ~> Int {
 	b = a12 + 4 + subr();
 	subr();
 
-	printf("%d\n", a12);
+	printf("%d\n", b);
 }
 
 fn subr() -> Int {
