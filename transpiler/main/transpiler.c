@@ -3,6 +3,7 @@
 #include <string.h>
 #include <libgen.h>
 #include <stdbool.h>
+#include <malloc.h>
 
 #include "../../ast/ast_reader.h"
 #include "../../ast/ast.h"
@@ -20,6 +21,8 @@ void invoke_lexer_parser(char* filename, struct Flags* flags);
 // ----------------
 
 int main(int argc, char* argv[]){
+
+	mallopt(M_CHECK_ACTION, 3);
 
 	char* filename = NULL;
 	

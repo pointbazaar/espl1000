@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <assert.h>
+#include <malloc.h>
 
 #include "TokenReader.h"
 #include "../parsing/Namespace.h"
@@ -45,7 +46,7 @@ int main(int argc, char** argv){
 
 	//setbuf(stdout,NULL);
 	
-	//maybe use mallopt(...) here
+	mallopt(M_CHECK_ACTION, 3);
 
 	char* filename = NULL;
 	
