@@ -4,7 +4,7 @@ jobs:
   build:
     docker:
       #- image: gcc:9.3.0
-      - image: rikorose/gcc-cmake:latest
+      - image: pointbazaar/smalldragon-for-circleci:latest
     #machine:
       # i want to use a machine image instead of a docker container
       # because i need root access to install packages
