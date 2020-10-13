@@ -25,7 +25,9 @@ OBJS := build/transpiler.o \
 	build/free_ast.o \
 	build/gen_c_types.o
 
-all: smalldragon test valgrind
+all: all_no_valgrind valgrind
+
+all_no_valgrind: smalldragon test
 
 clean: 
 	rm -f build/*.o

@@ -2,20 +2,19 @@ version: 2.1
 
 jobs:
   build:
-    #docker:
-    #  - image: gcc:9.3.0
-    machine:
+    docker:
+      #- image: gcc:9.3.0
+      - image: rikorose/gcc-cmake:latest
+    #machine:
       # i want to use a machine image instead of a docker container
       # because i need root access to install packages
-      image: ubuntu-1604:201903-01 # Ubuntu 16.04
+      #image: ubuntu-1604:201903-01 # Ubuntu 16.04
       #image: ubuntu-2004:202008-01 # Ubuntu 20.04 # this lacks even most basic utilities
     environment:
       PATH: $PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser
     steps:
-      - run: apt update
-      - run: apt install -y grep coreutils gcc valgrind make
       - checkout
-      - run: make 
+      - run: make all_no_valgrind
 
 # Orchestrate or schedule a set of jobs
 workflows:

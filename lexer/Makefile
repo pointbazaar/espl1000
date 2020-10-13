@@ -12,7 +12,9 @@ COMMON_RELEASE := build/release/strutils.o \
 	build/release/test.o \
 	build/release/loop_io.o
 
-all: directories dragon-lexer test valgrind
+all: all_no_valgrind valgrind
+
+all_no_valgrind: directories dragon-lexer test 
 
 clean:
 	rm -f build/release/*.o
