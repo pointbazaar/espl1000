@@ -1,8 +1,8 @@
 os: linux
 dist: focal #default dist, distro matrix is in 'jobs'
-arch:
-  - amd64
-  - arm64
+#arch:
+#  - amd64
+#  - arm64
 
 compiler: gcc
 language: c
@@ -10,8 +10,22 @@ language: c
 jobs:
   include: 
     - dist: focal # 20.04
+      arch: amd64
+    
+    - dist: focal
+      arch: arm64
+
     - dist: bionic # 18.04
+      arch: amd64
+
+    - dist: bionic
+      arch: arm64
+
     - dist: xenial # 16.04
+      arch: amd64
+
+    - dist: xenial
+      arch: arm64
 
 before_install:
 - pwd
