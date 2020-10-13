@@ -24,10 +24,16 @@ jobs:
     - dist: xenial
       arch: arm64
     
-    - dist: trusty
+    - dist: trusty # 14.04
       arch: amd64
  
     - dist: trusty
+      arch: arm64
+    
+    - dist: precise # 12.04
+      arch: amd64
+
+    - dist: precise
       arch: arm64
 
 before_install:
