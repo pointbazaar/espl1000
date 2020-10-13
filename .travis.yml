@@ -1,8 +1,5 @@
 os: linux
 dist: focal #default dist, distro matrix is in 'jobs'
-#arch:
-#  - amd64
-#  - arm64
 
 compiler: gcc
 language: c
@@ -40,9 +37,8 @@ addons:
   apt:
     packages:
       - valgrind
-      #- gcc-9 #people can bring their own gcc whatever version. 
-      #don't even care anymore.
 install: pwd
 script: make all_no_valgrind
 env:
 - export PATH=$PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser
+- MALLOC_CHECK_=1
