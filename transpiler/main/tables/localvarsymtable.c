@@ -148,7 +148,7 @@ void lvst_add(
 	bool debug
 ){
 	if(debug){
-		printf("lvst_add(%p, %p)\n", lvst, line);
+		printf("lvst_add(%p, %p)\n", (void*)lvst, (void*)line);
 	}
 	
 	//the local var symbol table works as a set
@@ -191,7 +191,7 @@ struct LVSTLine* lvst_get(
 ){
 	
 	if(debug){
-		printf("lvst_get(%p, %s)\n", lvst, name);
+		printf("lvst_get(%p, %s)\n", (void*)lvst, name);
 	}
 	
 	for(int i = 0; i < lvst->count; i++){

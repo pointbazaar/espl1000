@@ -1,7 +1,7 @@
 #https://stackoverflow.com/questions/5178125/how-to-place-object-files-in-separate-subdirectory
 
 #generate profiling information with -pg flag
-CALL_RELEASE := gcc -march=native -Wall -g --std=c11
+CALL_RELEASE := gcc -march=native -Wall -g --std=c11 -pedantic
 
 #the common .o files
 

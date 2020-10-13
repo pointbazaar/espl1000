@@ -221,7 +221,7 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 
 void transpileStructDecl(struct StructDecl* s, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileStructDecl(%p,%p)\n", s, ctx); }
+	if(ctx->flags->debug){ printf("transpileStructDecl(%p,%p)\n", (void*)s, (void*)ctx); }
 	
 	fprintf(ctx->file ,"struct %s {\n", s->type->typeName);
 	
@@ -265,7 +265,7 @@ void transpileStructMember(struct StructMember* m, struct Ctx* ctx){
 
 void transpileMethod(struct Method* m, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileMethod(%p, %p)\n", m, ctx); }
+	if(ctx->flags->debug){ printf("transpileMethod(%p, %p)\n", (void*)m, (void*)ctx); }
 	
 	//create the local variable symbol table
 	ctx->tables->lvst = makeLocalVarSymTable(ctx->flags->debug);
@@ -281,7 +281,7 @@ void transpileMethod(struct Method* m, struct Ctx* ctx){
 
 void transpileMethodSignature(struct Method* m, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileMethodSignature(%p, %p)\n", m, ctx); }
+	if(ctx->flags->debug){ printf("transpileMethodSignature(%p, %p)\n", (void*)m, (void*)ctx); }
 	
 	transpileType(m->returnType, ctx);
 
@@ -437,7 +437,7 @@ void transpileRetStmt(struct RetStmt* rs, struct Ctx* ctx){
 void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ 
-		printf("transpileAssignStmt(%p, %p)\n", as, ctx); 
+		printf("transpileAssignStmt(%p, %p)\n", (void*)as, (void*)ctx); 
 	}
 
 	indent(ctx);
@@ -602,7 +602,7 @@ void transpileCaseStmt(struct CaseStmt* s, struct Ctx* ctx){
 //-----------------------------------------------
 void transpileType(struct Type* t, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileType(%p, %p)\n", t, ctx); }
+	if(ctx->flags->debug){ printf("transpileType(%p, %p)\n", (void*)t, (void*)ctx); }
 	
 	char* res = type2CType(t, ctx);
 	fprintf(ctx->file, "%s", res);
@@ -680,7 +680,7 @@ void transpileExpr(struct Expr* expr, struct Ctx* ctx){
 
 void transpileSimpleVar(struct SimpleVar* svar, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileSimpleVar(%p, %p)\n", svar, ctx); }
+	if(ctx->flags->debug){ printf("transpileSimpleVar(%p, %p)\n", (void*)svar, (void*)ctx); }
 	
 	assert(svar->name != NULL);
 	
@@ -727,7 +727,7 @@ void transpileOp(struct Op* op, struct Ctx* ctx){
 
 void transpileBasicTypeWrapped(struct BasicTypeWrapped* btw, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileBasicTypeWrapped(%p, %p)\n", btw, ctx); }
+	if(ctx->flags->debug){ printf("transpileBasicTypeWrapped(%p, %p)\n", (void*)btw, (void*)ctx); }
 	
 	char* res = basicTypeWrapped2CType(btw, ctx);
 	fprintf(ctx->file, "%s", res);
@@ -754,7 +754,7 @@ void transpileArrayType(struct ArrayType* atype, struct Ctx* ctx){
 
 void transpileSimpleType(struct SimpleType* simpleType, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileSimpleType(%p,%p)\n", simpleType, ctx); }
+	if(ctx->flags->debug){ printf("transpileSimpleType(%p,%p)\n", (void*)simpleType, (void*)ctx); }
 	
 	char* res = simpleType2CType(simpleType);
 	fprintf(ctx->file, "%s", res);

@@ -1,6 +1,6 @@
 #it had -O0 before
 #use -pg to generate profiling information for gprof
-FLAGS := -march=native -g -Wall --std=c11
+FLAGS := -march=native -g -Wall --std=c11 -pedantic
 
 CALL := gcc $(FLAGS)
 CALL2 := $(CALL) -c 

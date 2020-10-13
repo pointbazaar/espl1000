@@ -259,7 +259,9 @@ struct ForStmt {
 	struct StmtBlock* block;
 };
 struct BreakStmt {
-	//empty
+	//empty, but we need one member
+	//otherwise gcc gives warning on '-pedantic'
+	int __should_not_be_used;
 };
 struct SwitchStmt{
 	struct Variable* var;

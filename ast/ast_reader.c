@@ -90,10 +90,10 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	struct Namespace* ns = malloc(sizeof(struct Namespace));
 
 	int count = fscanf(file,
-		"%s\t%s\t%hd\t", 
+		"%s\t%s\t%u\t", 
 		ns->srcPath, 
 		ns->name, 
-		&(ns->count_methods)
+		(unsigned int*)(&(ns->count_methods))
 	);
 
 	if(count != 3){
@@ -164,7 +164,7 @@ struct Method* readMethod(FILE* file, bool debug){
 
 	m->returnType = readType(file, debug);
 
-	if(fscanf(file,"%hhd\t",&(m->count_args)) != 1){
+	if(fscanf(file,"%u\t",(unsigned int*)&(m->count_args)) != 1){
 		printf("Error reading Method 2\n");
 		fclose(file);
 		free(m);
@@ -263,7 +263,7 @@ struct StmtBlock* readStmtBlock(FILE* file, bool debug){
 	struct StmtBlock* block = 
 		malloc(sizeof(struct StmtBlock));
 	
-	if(fscanf(file, "StmtBlock\t%hd\t", &(block->count)) != 1){
+	if(fscanf(file, "StmtBlock\t%u\t", (unsigned int*)&(block->count)) != 1){
 		printf("Error reading StmtBlock\n");
 		fclose(file);
 		free(block);
@@ -759,9 +759,9 @@ struct MethodCall* readMethodCall(FILE* file, bool debug){
 	if(
 		fscanf(
 			file, 
-			"MethodCall\t%s\t%hhd\t", 
+			"MethodCall\t%s\t%u\t", 
 			v->methodName, 
-			&(v->count_args)
+			(unsigned int*)&(v->count_args)
 		) != 2
 	){
 		printf("Error reading MethodCall\n");
@@ -955,7 +955,7 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 	v->returnType = readType(file, debug);
 	
 	if(
-		fscanf(file, "%d\t%hhd\t", (int*)(&(v->hasSideEffects)), &(v->count_argTypes))
+		fscanf(file, "%d\t%u\t", (int*)(&(v->hasSideEffects)), (unsigned int*)&(v->count_argTypes))
 		!= 2
 	){
 		printf("Error reading SubrType 2\n");
@@ -1032,7 +1032,7 @@ struct TypeParam* readTypeParam(FILE* file, bool debug){
 	struct TypeParam* v = 
 		malloc(sizeof(struct TypeParam));
 	
-	if(fscanf(file, "TypeParam\t%hhd\t", &(v->index)) != 1){
+	if(fscanf(file, "TypeParam\t%u\t", (unsigned int*)&(v->index)) != 1){
 		printf("Error reading TypeParam\n");
 		free(v);
 		fclose(file);
