@@ -1,20 +1,17 @@
-sd booleans/Booleans.dg
+#this build script
+#tests that all examples transpile
 
-sd chars/Chars.dg
+echo "Transpiling Example Programs"
+echo "..."
 
-sd cmd-args/CmdArgs.dg
-
-sd floats/Floats.dg
-
-sd for_atmel/LoopAdd1.dg
-sd for_atmel/Main.dg
-
-#currently not working
-#sd functional/Filter.dg
-#currently not functional
-#sd functional/Twice.dg
-
-sd ifstatement/IfStatement.dg \
+sd booleans/Booleans.dg \
+&& sd chars/Chars.dg \
+&& sd cmd-args/CmdArgs.dg \
+&& sd floats/Floats.dg \
+&& sd for_atmel/LoopAdd1.dg \
+&& sd for_atmel/Main.dg \
+&& sd functional/Filter.dg \
+&& sd ifstatement/IfStatement.dg \
 && sd input/Input.dg \
 && sd local_variables/Locals.dg \
 && sd local_variables/Locals2.dg \
@@ -24,9 +21,11 @@ sd ifstatement/IfStatement.dg \
 && sd mathematics/Faculty.dg \
 && sd mathematics/Fibonacci.dg \
 && sd methodCalls/MethodCall.dg \
-&& sd multiline_strings/MultiLineStrings.dg \
 && sd other/Simple.dg \
 && sd structs/MyStructs.dg \
 && sd structs/Node.dg \
 && sd break/Break.dg
 
+echo "done!"
+
+# currently not working: functional/Twice.dg

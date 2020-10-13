@@ -3,6 +3,7 @@ all:
 	cd lexer      && make 
 	cd parser     && make 
 	cd transpiler && make 
+	cd examples && ./build.sh
 
 all_no_valgrind:
 	cd lexer && make all_no_valgrind

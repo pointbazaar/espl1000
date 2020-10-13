@@ -1,6 +1,6 @@
 
 struct Simple {
-	((PInt) -> PInt)  member
+	((PInt) -> PInt)  member;
 }
 
 fn main ()~>PInt {
