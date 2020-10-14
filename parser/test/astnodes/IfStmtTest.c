@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <assert.h>
 
 int if_test1(bool debug) {
 
@@ -28,23 +29,22 @@ int if_test1(bool debug) {
 
 	struct IfStmt* i = makeIfStmt(list,debug);
 
-	bool a1 = (0 == list_size(list));
-	if(i == NULL){return 0;}
-
-	bool a2 = i->block->count == 0;
-	bool a3 = i->elseBlock == NULL;
+	assert(0 == list_size(list));
+	assert(i != NULL);
+	assert(i->block->count == 0);
+	assert(i->elseBlock == NULL);
 
 	struct Expr* condition = i->condition;
-	if(condition == NULL){return 0;}
+	assert(condition != NULL);
 
-	if(condition->term1 == NULL){return 0;}
-	if(condition->op == NULL){return 0;}
-	if(condition->term2 == NULL){return 0;}
+	assert(condition->term1 != NULL);
+	assert(condition->op != NULL);
+	assert(condition->term2 != NULL);
 	
 	freeTokenList(list);
 	freeIfStmt(i);
 	
-	return  (a1 && a2 && a3)?1:0;
+	return 1;
 }
 
 int if_test2(bool debug) {
@@ -76,16 +76,16 @@ int if_test2(bool debug) {
 
 	struct IfStmt* i = makeIfStmt(l,debug);
 
-	if(i==NULL){return 0;}
+	assert(i != NULL);
 
 	struct Expr* condition = i->condition;
-	if(condition == NULL){return 0;}
+	assert(condition != NULL);
 
-	bool a1 = i->block->count == 1;
-	bool a2 = i->elseBlock == NULL;
+	assert(i->block->count == 1);
+	assert(i->elseBlock == NULL);
 	
 	freeTokenList(l);
 	freeIfStmt(i);
 
-	return (a1 && a2)?1:0;
+	return 1;
 }

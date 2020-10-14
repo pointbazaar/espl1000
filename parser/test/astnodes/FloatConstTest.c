@@ -7,6 +7,7 @@
 #include "../../../ast/free_ast.h"
 
 #include <stdio.h>
+#include <assert.h>
 
 int floatconst_test1(bool debug) {
 
@@ -19,13 +20,12 @@ int floatconst_test1(bool debug) {
 	list_add(list, makeToken2(FLOATING,"4.0"));
 
 	struct FloatConst* node = makeFloatConst(list,debug);
-	
-	const bool a1 = node != NULL;
+	assert(node != NULL);
 	
 	freeTokenList(list);
 	freeFloatConst(node);
 
-	return (a1)?1:0;
+	return 1;
 }
 
 int floatconst_test2(bool debug) {
@@ -41,10 +41,10 @@ int floatconst_test2(bool debug) {
 
 	struct FloatConst* node = makeFloatConst(list,debug);
 	
-	const bool a1 = node != NULL;
+	assert(node != NULL);
 	
 	freeTokenList(list);
 	freeFloatConst(node);
 	
-	return (a1)?1:0;
+	return 1;
 }

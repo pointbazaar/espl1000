@@ -8,6 +8,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <assert.h>
 
 int structdecl_test_can_parse_empty_struct_decl(bool debug) {
 
@@ -24,12 +25,12 @@ int structdecl_test_can_parse_empty_struct_decl(bool debug) {
 
 	struct StructDecl* s = makeStructDecl(list, debug);
 
-	bool assert1 = (0 == s->count_members);
+	assert(0 == s->count_members);
 	
 	freeTokenList(list);
 	freeStructDecl(s);
 
-	return (assert1)?1:0;
+	return 1;
 }
 
 int structdecl_test_will_not_parse_invalid_typename_for_struct(bool debug) {
@@ -46,11 +47,12 @@ int structdecl_test_will_not_parse_invalid_typename_for_struct(bool debug) {
 	list_add(list, makeToken(RCURLY));
 
 	struct StructDecl* s = makeStructDecl(list, debug);
+	assert(s != NULL);
 	
 	freeTokenList(list);
 	freeStructDecl(s);
 	
-	return (s!=NULL)?1:0;
+	return 1;
 }
 
 int structdecl_test_rejects_struct_with_subroutine_type(bool debug) {
@@ -70,11 +72,12 @@ int structdecl_test_rejects_struct_with_subroutine_type(bool debug) {
 	list_add(list, makeToken(RCURLY) );
 
 	struct StructDecl* s = makeStructDecl(list, debug);
+	assert(s != NULL);
 	
 	freeTokenList(list);
 	freeStructDecl(s);
 	
-	return (s!=NULL)?1:0;
+	return 1;
 }
 
 int structdecl_test_can_parse_struct_with_1_member(bool debug) {
@@ -95,13 +98,13 @@ int structdecl_test_can_parse_struct_with_1_member(bool debug) {
 
 	struct StructDecl* node = makeStructDecl(list, debug);
 
-	bool assert1 = (1 == node->count_members);
-	bool assert2 = strcmp("a", node->members[0]->name) == 0;
+	assert(1 == node->count_members);
+	assert(strcmp("a", node->members[0]->name) == 0);
 	
 	freeTokenList(list);
 	freeStructDecl(node);
 
-	return (assert1&&assert2)?1:0;
+	return 1;
 }
 
 int structdecl_test_can_parse_struct_with_2_members(bool debug) {
@@ -125,14 +128,14 @@ int structdecl_test_can_parse_struct_with_2_members(bool debug) {
 
 	struct StructDecl* node = makeStructDecl(list, debug);
 
-	bool assert1 = (2 == node->count_members);
+	assert(2 == node->count_members);
 
-	bool assert2 = strcmp("a", node->members[0]->name) == 0;
+	assert(strcmp("a", node->members[0]->name) == 0);
 
-	bool assert3 = strcmp("b", node->members[1]->name) == 0;
+	assert(strcmp("b", node->members[1]->name) == 0);
 	
 	freeTokenList(list);
 	freeStructDecl(node);
 
-	return (assert1&&assert2&&assert3)?1:0;
+	return 1;
 }

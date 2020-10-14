@@ -51,11 +51,11 @@ int stmt_test_assignment_statement_with_method_call(bool debug) {
 
 	struct Stmt* node = makeStmt(tokens,debug);
 
-	bool assert1 = (0 == list_size(tokens)); //all tokens should have been consumed
-	bool assert2 = node != NULL;
+	assert(0 == list_size(tokens)); //all tokens should have been consumed
+	assert(node != NULL);
 	
 	freeTokenList(tokens);
 	freeStmt(node);
 
-	return (assert1 && assert2)?1:0;
+	return 1;
 }

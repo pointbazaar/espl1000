@@ -25,12 +25,12 @@ int simplevar_test_parse_simple_variable(bool debug) {
 	if(node==NULL){
 		return 0;
 	}
-	bool assert1 = strcmp("x", node->name)==0;
+	assert(strcmp("x", node->name)==0);
 	
 	freeTokenList(list);
 	freeSimpleVar(node);
 
-	return (assert1)?1:0;
+	return 1;
 }
 
 int simplevar_test_parse_simple_indexed_variable(bool debug) {

@@ -8,6 +8,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <assert.h>
 
 int boolconst_test_parse_bool_constant_node(bool debug)  {
 
@@ -23,11 +24,11 @@ int boolconst_test_parse_bool_constant_node(bool debug)  {
 
 	if(b == NULL){ return 0;}
 
-	bool assert1 = b->value;
+	assert(b->value);
 	
 	freeBoolConst(b);
 	freeTokenList(list);
 
-	return (assert1)?1:0;
+	return 1;
 }
 

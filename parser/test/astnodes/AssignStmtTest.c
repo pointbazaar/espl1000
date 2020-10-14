@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <assert.h>
 
 int assignstmt_test1(bool debug) {
 
@@ -25,12 +26,12 @@ int assignstmt_test1(bool debug) {
 
 	struct AssignStmt* a = makeAssignStmt(tokens,debug);
 	
-	const bool a1 = a != NULL;
+	assert(a != NULL);
 	
 	freeAssignStmt(a);
 	freeTokenList(tokens);
 
-	return (a1)?1:0;
+	return 1;
 }
 
 int assignstmt_test_assign_method_call_result(bool debug) {
@@ -55,13 +56,12 @@ int assignstmt_test_assign_method_call_result(bool debug) {
 
 	struct AssignStmt* a = makeAssignStmt(tokens,debug);
 	
-	const bool a1 = a != NULL;
+	assert(a != NULL);
 	
 	freeAssignStmt(a);
 	freeTokenList(tokens);
 	
-	return (a1)?1:0;
-		
+	return 1;
 }
 
 int assignstmt_test_assign_method_call_result_2(bool debug) {
@@ -84,14 +84,12 @@ int assignstmt_test_assign_method_call_result_2(bool debug) {
 	list_add(tokens, makeToken(SEMICOLON));
 
 	struct AssignStmt* a = makeAssignStmt(tokens,debug);
-	
-	const bool a1 = a != NULL;
+	assert(a != NULL);
 	
 	freeAssignStmt(a);
 	freeTokenList(tokens);
 	
-	return (a1)?1:0;
-		
+	return 1;
 }
 
 int assignstmt_test_assign_variable_with_array_index(bool debug) {
@@ -115,12 +113,12 @@ int assignstmt_test_assign_variable_with_array_index(bool debug) {
 	list_add(tokens, makeToken(SEMICOLON));
 
 	struct AssignStmt* a = makeAssignStmt(tokens,debug);
-	const bool a1 = a != NULL;
+	assert(a != NULL);
 	
 	freeAssignStmt(a);
 	freeTokenList(tokens);
 	
-	return (a1)?1:0;
+	return 1;
 }
 
 int assignstmt_test_assign_char(bool debug) {
@@ -140,13 +138,12 @@ int assignstmt_test_assign_char(bool debug) {
 
 	struct AssignStmt* a = makeAssignStmt(tokens,debug);
 	
-	const bool a1 = a != NULL;
+	assert(a != NULL);
 	
 	freeAssignStmt(a);
 	freeTokenList(tokens);
 
-	return (a1)?1:0;
-
+	return 1;
 }
 
 int assignstmt_test_can_assign_to_struct_member(bool debug) {
@@ -166,15 +163,12 @@ int assignstmt_test_can_assign_to_struct_member(bool debug) {
 
 	struct AssignStmt* a = makeAssignStmt(tokens,debug);
 	
-	const bool a1 = a != NULL;
+	assert(a != NULL);
 	
 	freeAssignStmt(a);
 	freeTokenList(tokens);
 	
-	
-	
-	return (a1)?1:0;
-
+	return 1;
 }
 
 int assignstmt_test_type_declaration_for_variable(bool debug) {
@@ -194,14 +188,14 @@ int assignstmt_test_type_declaration_for_variable(bool debug) {
 	struct AssignStmt* a = makeAssignStmt(tokens,debug);
 	if(a == NULL){return 0;}
 
-	bool assert1 = (a->optType != NULL);
+	assert(a->optType != NULL);
 	if(a->var == NULL){return 0;}
 	
-	bool assert2 = (0 == a->var->count_memberAccessList);
-	bool assert3 = (0 == list_size(tokens));
+	assert(0 == a->var->count_memberAccessList);
+	assert(0 == list_size(tokens));
 	
 	freeAssignStmt(a);
 	freeTokenList(tokens);
 
-	return (assert1&&assert2&&assert3)?1:0;
+	return 1;
 }

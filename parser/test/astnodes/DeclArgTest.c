@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <assert.h>
 
 int declarg_test_parse_declared_argument(bool debug) {
 
@@ -30,12 +31,12 @@ int declarg_test_parse_declared_argument(bool debug) {
 
 	struct DeclArg* node = makeDeclArg(list,debug);
 
-	bool assert1 = strcmp("subr", node->name) == 0;
-	bool assert2 = (0 == list_size(list));
+	assert(strcmp("subr", node->name) == 0);
+	assert(0 == list_size(list));
 	
 	freeTokenList(list);
 	freeDeclArg(node);
 
-	return (assert1&&assert2)?1:0;
+	return 1;
 }
 

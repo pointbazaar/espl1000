@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <assert.h>
 
 int retstmt_test1(bool debug) {
 
@@ -28,11 +29,12 @@ int retstmt_test1(bool debug) {
 	list_add(list, makeToken(SEMICOLON));
 
 	struct RetStmt* r = makeRetStmt(list,debug);
+	assert(r != NULL);
 	
 	freeTokenList(list);
 	freeRetStmt(r);
 
-	return (r!=NULL)?1:0;
+	return 1;
 }
 
 int retstmt_test2(bool debug){
@@ -59,11 +61,12 @@ int retstmt_test2(bool debug){
 	list_add(list, makeToken(SEMICOLON));
 
 	struct RetStmt* r = makeRetStmt(list,debug);
+	assert(r != NULL);
 	
 	freeTokenList(list);
 	freeRetStmt(r);
 
-	return (r!=NULL)?1:0;
+	return 1;
 }
 
 int retstmt_test3(bool debug) {
@@ -86,9 +89,10 @@ int retstmt_test3(bool debug) {
 	list_add(list, makeToken(SEMICOLON));
 
 	struct RetStmt* r = makeRetStmt(list,debug);
+	assert(r != NULL);
 	
 	freeTokenList(list);
 	freeRetStmt(r);
 
-	return (r!=NULL)?1:0;
+	return 1;
 }

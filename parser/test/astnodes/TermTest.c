@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <assert.h>
 
 int term_test_simple_term(bool debug) {
 
@@ -18,12 +19,14 @@ int term_test_simple_term(bool debug) {
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(INTEGER,"4"));
+	
 	struct Term* t = makeTerm(list,debug);
+	assert(t != NULL);
 	
 	freeTokenList(list);
 	freeTerm(t);
 	
-	return (t != NULL)?1:0;
+	return 1;
 }
 
 int term_test_variable_term(bool debug) {
@@ -36,24 +39,23 @@ int term_test_variable_term(bool debug) {
 	list_add(list, makeToken2(ID,"x"));
 
 	struct Term* t = makeTerm(list,debug);
-	if(t == NULL){return 0;}
+	assert(t != NULL);
 
-	bool a1 = list_size(list) == 0;
+	assert(list_size(list) == 0);
 
 	struct Variable* v = t->ptr.m6;
-	if(v == NULL){return 0;}
+	assert(v != NULL);
 
 	struct SimpleVar* sv = v->simpleVar;
-	if(sv == NULL){return 0;}
+	assert(sv != NULL);
 
-	bool a2 = strcmp(sv->name,"x") == 0;
+	assert(strcmp(sv->name,"x") == 0);
 	
 	freeTokenList(list);
 	freeTerm(t);
 
-	return (a1 && a2)?1:0;
+	return 1;
 }
-
 
 int term_test_parentheses(bool debug){
 	
@@ -67,24 +69,23 @@ int term_test_parentheses(bool debug){
 	list_add(list, makeToken2(RPARENS, ")"));
 
 	struct Term* t = makeTerm(list, debug);
-	if(t == NULL){return 0;}
+	assert(t != NULL);
 	
 	struct Expr* expr = t->ptr.m5;
-	if(expr == NULL){ return 0;}
+	assert(expr != NULL);
 
-	const bool a1 = list_size(list) == 0;
+	assert(list_size(list) == 0);
 
 	struct Variable* v = expr->term1->term->ptr.m6;
-	if(v == NULL){return 0;}
+	assert(v != NULL);
 
 	struct SimpleVar* sv = v->simpleVar;
-	if(sv == NULL){return 0;}
+	assert(sv != NULL);
 
-	const bool a2 = strcmp(sv->name,"x") == 0;
-	
+	assert(strcmp(sv->name,"x") == 0);
 	
 	freeTokenList(list);
 	freeTerm(t);
 
-	return (a1 && a2)?1:0;
+	return 1;
 }

@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <assert.h>
 
 int subrtype_test_typename(bool debug) {
 
@@ -27,13 +28,13 @@ int subrtype_test_typename(bool debug) {
 
 	struct SubrType* sub = makeSubrType(l,debug);
 
-	bool assert1 = (0 == list_size(l));
-	bool assert2 = sub != NULL;
+	assert(0 == list_size(l));
+	assert(sub != NULL);
 	
 	freeTokenList(l);
 	freeSubrType(sub);
 
-	return (assert1 && assert2)?1:0;
+	return 1;
 }
 
 int subrtype_test_typename_subroutine_return_type(bool debug) {
@@ -64,13 +65,13 @@ int subrtype_test_typename_subroutine_return_type(bool debug) {
 
 	struct SubrType* sub = makeSubrType(l,debug);
 
-	bool assert1 = (0 == list_size(l));
-	bool assert2 = sub != NULL;
+	assert(0 == list_size(l));
+	assert(sub != NULL);
 	
 	freeTokenList(l);
 	freeSubrType(sub);
 
-	return (assert1 && assert2)?1:0;
+	return 1;
 }
 
 int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(bool debug)  {
@@ -93,14 +94,14 @@ int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(bool debu
 	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt") );
 
 	struct SubrType* node = makeSubrType(l,debug);
-	if(node == NULL){ return 0; }
+	assert(node != NULL);
 
-	bool assert1 = (0 == list_size(l));
+	assert(0 == list_size(l));
 	
 	freeTokenList(l);
 	freeSubrType(node);
 
-	return (assert1)?1:0;
+	return 1;
 }
 
 int subrtype_test_subroutine_type_parsing_subroutine_without_side_effects(bool debug) {
@@ -120,12 +121,12 @@ int subrtype_test_subroutine_type_parsing_subroutine_without_side_effects(bool d
 
 	struct SubrType* node = makeSubrType(l,debug);
 
-	bool assert1 = (0 == list_size(l));
-	bool assert2 = node != NULL;
+	assert(0 == list_size(l));
+	assert(node != NULL);
 	
 	freeTokenList(l);
 	freeSubrType(node);
 
-	return (assert1 && assert2)?1:0;
+	return 1;
 }
 

@@ -8,6 +8,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <assert.h>
 
 int test_stmtblock_1(bool debug){
 	
@@ -27,13 +28,12 @@ int test_stmtblock_1(bool debug){
 
 	struct StmtBlock* node = makeStmtBlock(tokens,debug);
 
-	bool assert1 = (0 == list_size(tokens)); 
+	assert(0 == list_size(tokens)); 
 	//all tokens should have been consumed
-	
-	bool assert2 = node != NULL;
+	assert(node != NULL);
 	
 	freeTokenList(tokens);
 	freeStmtBlock(node);
 
-	return (assert1 && assert2)?1:0;
+	return 1;
 }
