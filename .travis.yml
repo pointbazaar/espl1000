@@ -4,6 +4,9 @@ dist: focal #default dist, distro matrix is in 'jobs'
 compiler: gcc
 language: c
 
+#https://docs.travis-ci.com/user/reference/overview/
+#as per their docs, not every dist/arch combination is allowed.
+
 jobs:
   include: 
     - dist: focal # 20.04
@@ -27,15 +30,9 @@ jobs:
     - dist: trusty # 14.04
       arch: amd64
  
-    - dist: trusty
-      arch: arm64
-    
     # their gcc does not have --std=c11
     #- dist: precise # 12.04
     #  arch: amd64
-
-    #- dist: precise
-    #  arch: arm64
 
 before_install:
 - pwd
