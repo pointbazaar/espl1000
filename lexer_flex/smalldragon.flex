@@ -51,4 +51,7 @@ case	printf("%d\n", CASE);
 
 (\+|\-|\*|\/|\!|<|>|<=|>=)	printf("%d\n", OPKEY);
 
+" "*		 //blank
+"\t"*		 //tab
+
 %%
