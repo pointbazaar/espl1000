@@ -7,7 +7,20 @@
 	int line_no = 1;
 %}
 
+%x single_line_comment
+%x multi_line_comment
+
 %%
+
+\/\/	BEGIN(single_line_comment);
+\/\*	BEGIN(multi_line_comment);
+
+<multi_line_comment>[^\*\/]* 	//do nothing
+<multi_line_comment>\*\/ 	BEGIN(INITIAL);
+
+<single_line_comment>[^\n]*	//do nothing
+<single_line_comment>\n	line_no++; BEGIN(INITIAL);
+
 
 fn 	printf("%d %s\n", FN, yytext);
 if	printf("%d %s\n", IF, yytext);
