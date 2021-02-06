@@ -10,3 +10,11 @@ a {
 a, p, pre, code, li {
 	font-size: 1em;
 }
+
+.nav-bg{
+	background-color: rgb(159, 201, 167);
+}
+
+.nav-bg a {
+	color: rgb(209, 79, 66);
+}
