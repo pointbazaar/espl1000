@@ -13,10 +13,12 @@ a, p, pre, code, li {
 
 .nav-bg{
 	background-color: rgb(159, 201, 167);
+	padding: 3px;
 }
 
 .nav-bg a {
 	color: rgb(209, 79, 66);
+	font-size: 1.2em;
 }
 
 .box {
