@@ -18,3 +18,10 @@ a, p, pre, code, li {
 .nav-bg a {
 	color: rgb(209, 79, 66);
 }
+
+.box {
+	border: 1px solid rgb(209, 79, 66);
+	border-radius: 6px;
+	margin: 2px;
+	padding: 5px;
+}
