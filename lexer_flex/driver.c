@@ -5,13 +5,6 @@
 #include "driver.h"
 #include "lexer_flags.h"
 
-int driver(){
-	
-	printf("running driver program\n");
-	
-	return 0;
-}
-
 void out(int id, char* str){
 	fprintf(outFile, "%d %s\n", id, str);
 }

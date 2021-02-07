@@ -70,9 +70,9 @@ case	out(CASE, yytext);
 ,		out(COMMA, yytext);
 ".."	out(RANGEOP, yytext);
 "."		out(STRUCTMEMBERACCESS, yytext);
-"="		out(ASSIGNOP, yytext);
+=|\+=|-=|\*=|\/=		out(ASSIGNOP, yytext);
 
-(\+|\-|\*|\/|\!|<|>|<=|>=)	out(OPKEY, yytext);
+(\+|\-|\*|\/|\!|<=|>=|<|>|&&|\|\||\||\&)	out(OPKEY, yytext);
 
 " "*		 //blank
 "\t"*		 //tab
@@ -96,9 +96,10 @@ int main(int argc, char* argv[]){
 	}
 	
 	char* filename = myargs->filename;
-	printf("input file: %s\n", filename);
 	
-	driver();
+	if(myargs->debug){
+		printf("input file: %s\n", filename);
+	}
 	
 	//configure input source
 	yyin = fopen(filename, "r");
