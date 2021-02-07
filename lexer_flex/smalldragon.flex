@@ -47,13 +47,13 @@ case	out(CASE, yytext);
 "("		out(LPARENS, yytext);
 ")"		out(RPARENS, yytext);
 
-[0-9]\.[0-9]+		out(FLOATING, yytext);
+(0|[1-9][0-9]*)\.[0-9]+		out(FLOATING, yytext);
 [0-9]*			out(INTEGER, yytext);
 '\\?.'			out(CCONST, yytext);
 \".*\"			out(STRINGCONST, yytext);
 (true|false)		out(BCONST, yytext);
 
-[a-z][a-zA-Z0-9]*	out(ID, yytext);
+[a-z][a-zA-Z0-9_]*	out(ID, yytext);
 [A-Z][a-zA-Z0-9]*	out(TYPEIDENTIFIER, yytext);
 \?T[0-9]+			out(TPARAM, yytext);
 
