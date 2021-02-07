@@ -1,6 +1,8 @@
 %{
 	#include <stdio.h>
 	#include "driver.h"
+	#include "lexer_flags.h"
+	#include "test.h"
 	
 	//for the token key macros
 	#include "../parser/main/commandline/TokenKeys.h" 
@@ -72,14 +74,22 @@ case	out(CASE, yytext);
 %%
 
 int main(int argc, char* argv[]){
-	printf("running lexer...\n");
+	//printf("running lexer...\n");
 	
-	if(argc != 2){
-		printf("requiring 1 input file\n");
+	struct LexerFlags* myargs = 
+		handleArguments(argc, argv);
+		
+	if(myargs->test){
+		test_all(myargs->debug);
+		exit(0);
+	}
+	
+	if(myargs->filename == NULL) {
+		printf("expecte a filename of the file to tokenize\n");
 		exit(1);
 	}
 	
-	char* filename = argv[1];
+	char* filename = myargs->filename;
 	printf("input file: %s\n", filename);
 	
 	driver();
