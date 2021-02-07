@@ -91,6 +91,7 @@ int main(int argc, char* argv[]){
 	
 	if(myargs->version){
 		printf("dragon-lexer v0.8.1\n");
+		free(myargs);
 		exit(0);
 	}
 		
@@ -120,4 +121,7 @@ int main(int argc, char* argv[]){
 	outFile = fopen(buffer, "w");
 	
 	yylex();
+	
+	fclose(yyin);
+	free(myargs);
 }

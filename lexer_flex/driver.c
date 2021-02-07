@@ -44,6 +44,8 @@ struct LexerFlags* handleArguments(int argc, char** argv){
 	res->debug = false;
 	res->clean = false;
 	res->test  = false;
+	res->version = false;
+	res->help = false;
 	
 	for(int i=1; i < argc; i++) {
 

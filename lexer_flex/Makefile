@@ -1,15 +1,19 @@
 #Manual:
 #https://westes.github.io/flex/manual/
 
-FLAGS := -march=native -Wall -Werror --std=c11 -pedantic
+FLAGS := -g -march=native -Wall --std=c11 -pedantic
 
-all: smalldragon.flex driver.c driver.h ../token/token.c
+all: all_no_valgrind valgrind
+
+all_no_valgrind: dragon-lexer
+
+dragon-lexer: smalldragon.flex driver.c driver.h ../token/token.c
 	flex smalldragon.flex
-	gcc -o dragon-lexer driver.c ../token/token.c test.c lex.yy.c -lfl
+	gcc $(FLAGS) -o dragon-lexer driver.c ../token/token.c test.c lex.yy.c -lfl
 
 clean:
-	rm dragon-lexer
-	rm lex.yy.c
+	rm -f dragon-lexer
+	rm -f lex.yy.c
 
 test: lexer
 	./dragon-lexer -test
