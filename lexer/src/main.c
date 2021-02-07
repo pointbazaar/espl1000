@@ -36,7 +36,7 @@
 #include "lexer.h"
 #include "loop.h"
 #include "test.h"
-#include "lexer_flags.h"
+#include "../../lexer_flex/lexer_flags.h"
 // ---------------------
 
 int tokenize_file(char* filename, char* tkn_filename, bool debug);
