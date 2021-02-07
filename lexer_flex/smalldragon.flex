@@ -1,5 +1,6 @@
 %{
 	#include <stdio.h>
+	#include "driver.h"
 	
 	//for the token key macros
 	#include "../parser/main/commandline/TokenKeys.h" 
@@ -22,50 +23,75 @@
 <single_line_comment>\n	line_no++; BEGIN(INITIAL);
 
 
-fn 	printf("%d %s\n", FN, yytext);
-if	printf("%d %s\n", IF, yytext);
-else	printf("%d %s\n", ELSE, yytext);
-while	printf("%d %s\n", WHILE, yytext);
-return	printf("%d %s\n", RETURN, yytext);
-struct	printf("%d %s\n", STRUCT, yytext);
-loop	printf("%d %s\n", LOOP, yytext);
-for	printf("%d %s\n", FOR, yytext);
-break	printf("%d %s\n", BREAK, yytext);
-in	printf("%d %s\n", IN, yytext);
-switch	printf("%d %s\n", SWITCH, yytext);
-case	printf("%d %s\n", CASE, yytext);
+fn 		out(FN, yytext);
+if		out(IF, yytext);
+else	out(ELSE, yytext);
+while	out(WHILE, yytext);
+return	out(RETURN, yytext);
+struct	out(STRUCT, yytext);
+loop	out(LOOP, yytext);
+for		out(FOR, yytext);
+break	out(BREAK, yytext);
+in		out(IN, yytext);
+switch	out(SWITCH, yytext);
+case	out(CASE, yytext);
 
-"\n"	printf("%d %d\n", LINE_NO, ++line_no);
+"\n"	out2(LINE_NO, ++line_no);
 
-"{"	printf("%d %s\n", LCURLY, yytext);
-"}"	printf("%d %s\n", RCURLY, yytext);
-"["	printf("%d %s\n", LBRACKET, yytext);
-"]"	printf("%d %s\n", RBRACKET, yytext);
-"("	printf("%d %s\n", LPARENS, yytext);
-")"	printf("%d %s\n", RPARENS, yytext);
+"{"		out(LCURLY, yytext);
+"}"		out(RCURLY, yytext);
+"["		out(LBRACKET, yytext);
+"]"		out(RBRACKET, yytext);
+"("		out(LPARENS, yytext);
+")"		out(RPARENS, yytext);
 
-[0-9]\.[0-9]+		printf("%d %s\n", FLOATING, yytext);
-[0-9]*			printf("%d %s\n", INTEGER, yytext);
-'.'			printf("%d %s\n", CCONST, yytext);
-\".*\"			printf("%d %s\n", STRINGCONST, yytext);
-(true|false)		printf("%d %s\n", BCONST, yytext);
+[0-9]\.[0-9]+		out(FLOATING, yytext);
+[0-9]*			out(INTEGER, yytext);
+'.'			out(CCONST, yytext);
+\".*\"			out(STRINGCONST, yytext);
+(true|false)		out(BCONST, yytext);
 
-[a-z][a-zA-Z0-9]*	printf("%d %s\n", ID, yytext);
-[A-Z][a-zA-Z0-9]*	printf("%d %s\n", TYPEIDENTIFIER, yytext);
-\?T[0-9]+		printf("%d %s\n", TPARAM, yytext);
+[a-z][a-zA-Z0-9]*	out(ID, yytext);
+[A-Z][a-zA-Z0-9]*	out(TYPEIDENTIFIER, yytext);
+\?T[0-9]+			out(TPARAM, yytext);
 
-(->|~>)	printf("%d %s\n", ARROW, yytext);
-"#"		printf("%d %s\n", ANYTYPE, yytext);
-"~"		printf("%d %s\n", WAVE, yytext);
-;		printf("%d %s\n", SEMICOLON, yytext);
-,		printf("%d %s\n", COMMA, yytext);
-".."		printf("%d %s\n", RANGEOP, yytext);
-"."		printf("%d %s\n", STRUCTMEMBERACCESS, yytext);
-"="		printf("%d %s\n", ASSIGNOP, yytext);
+(->|~>)	out(ARROW, yytext);
+"#"		out(ANYTYPE, yytext);
+"~"		out(WAVE, yytext);
+;		out(SEMICOLON, yytext);
+,		out(COMMA, yytext);
+".."	out(RANGEOP, yytext);
+"."		out(STRUCTMEMBERACCESS, yytext);
+"="		out(ASSIGNOP, yytext);
 
-(\+|\-|\*|\/|\!|<|>|<=|>=)	printf("%d %s\n", OPKEY, yytext);
+(\+|\-|\*|\/|\!|<|>|<=|>=)	out(OPKEY, yytext);
 
 " "*		 //blank
 "\t"*		 //tab
 
 %%
+
+int main(int argc, char* argv[]){
+	printf("running lexer...\n");
+	
+	if(argc != 2){
+		printf("requiring 1 input file\n");
+		exit(1);
+	}
+	
+	char* filename = argv[1];
+	printf("input file: %s\n", filename);
+	
+	driver();
+	
+	//configure input source
+	yyin = fopen(filename, "r");
+	
+	char buffer[100];
+	sprintf(buffer, "%s.tokens", filename);
+	
+	//configure output file
+	outFile = fopen(buffer, "w");
+	
+	yylex();
+}
