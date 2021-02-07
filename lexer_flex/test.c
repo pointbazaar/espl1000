@@ -125,8 +125,7 @@ int test_all(bool debug1) {
 	count+=2;
 
 	pass+=test_string_1();
-	pass+=test_string_2();
-	count+=2;
+	count+=1;
 
 	pass+=test_typeidentifier_simple();
 	pass+= test_typeidentifier_other();
@@ -600,25 +599,6 @@ bool test_string_1() {
 	
 	assert(
 	    strcmp(tokens[0]->value_ptr,"\"hi\"")==0
-	);
-
-	freeTokens(tokens, 1);
-
-	return true;
-}
-
-bool test_string_2() {
-	if(debug) {
-		printf("test string token:2\n");
-	}
-
-	char* str = "\"hi\n\nhi\" ";
-	struct Token** tokens = 
-		lex(str, debug);
-
-	assert(tokens[0]->kind==STRINGCONST);
-	assert(
-	    strcmp(tokens[0]->value_ptr,"\"hi\n\nhi\"")==0
 	);
 
 	freeTokens(tokens, 1);

@@ -55,7 +55,13 @@ case	out(CASE, yytext);
 
 [a-z][a-zA-Z0-9_]*	out(ID, yytext);
 [A-Z][a-zA-Z0-9]*	out(TYPEIDENTIFIER, yytext);
-\?T[0-9]+			out(TPARAM, yytext);
+\?T[0-9]+			{
+						int num = 0;
+						//printf("yytext=%s\n",yytext);
+						sscanf(yytext, "?T%d", &num);
+						//printf("num=%d\n", num);
+						out2(TPARAM, num);
+					}
 
 (->|~>)	out(ARROW, yytext);
 "#"		out(ANYTYPE, yytext);
