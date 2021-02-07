@@ -84,6 +84,15 @@ int main(int argc, char* argv[]){
 	
 	struct LexerFlags* myargs = 
 		handleArguments(argc, argv);
+	
+	if(myargs->help){
+		lexer_print_help();
+	}
+	
+	if(myargs->version){
+		printf("dragon-lexer v0.8.1\n");
+		exit(0);
+	}
 		
 	if(myargs->test){
 		test_all(myargs->debug);

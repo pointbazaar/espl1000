@@ -62,9 +62,7 @@ struct LexerFlags* handleArguments(int argc, char** argv){
 				
 			} else if(strcmp(arg, "-version") == 0) {
 				
-				printf("dragon-lexer 0.8 \n");
-				free(res);
-				exit(0);
+				res->version = true;
 				
 			} else if(strcmp(arg, "-help") == 0) {
 				

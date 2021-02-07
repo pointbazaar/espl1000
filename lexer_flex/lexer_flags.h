@@ -10,6 +10,8 @@ struct LexerFlags{
 	bool debug;
 	bool clean;
 	bool test;
+	bool version;
+	bool help;
 };
 
 

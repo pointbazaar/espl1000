@@ -161,26 +161,6 @@ int tokenize_file(char* filename, char* tkn_filename, bool debug) {
 	return 0;
 }
 
-void lexer_print_help(){
-	printf("Usage: dragon-lexer FILE \n");
-	printf("\n");
-	printf("Converts a .dg Source File into a .tokens file, \ncontaining the Tokens contained in the Source. \n");
-	printf("\n");
-
-	printf("Possible Arguments:\n");
-	printf(" -version\n");
-	printf(" -debug\n");
-	printf(" -test\n");
-	printf(" -clean\n");
-	printf(" -help\n\n");
-
-	printf("Author: \n");
-	printf("alex23667@gmail.com\n");
-	printf("\n");
-
-	printf("Bug Reports: alex23667@gmail.com\n");
-}
-
 struct LexerFlags* handleArguments(int argc, char** argv){
 	//this subroutine may perform an exit(...)
 	//this is ok because it is called in main(...)
@@ -203,23 +183,7 @@ struct LexerFlags* handleArguments(int argc, char** argv){
 				
 				const int status = test_all(res->debug);
 				free(res);
-				exit(status);
-				
-			} else if(strcmp(arg, "-clean") == 0) {
-				
-				res->clean = true;
-				
-			} else if(strcmp(arg, "-version") == 0) {
-				
-				printf("dragon-lexer 0.8 \n");
-				free(res);
-				exit(0);
-				
-			} else if(strcmp(arg, "-help") == 0) {
-				
-				lexer_print_help();
-				free(res);
-				exit(0);
+				exit(status);	
 			}
 		} else {
 			res->filename = arg;
