@@ -35,7 +35,6 @@
 #include "../../token/token.h"
 #include "lexer.h"
 #include "loop.h"
-#include "test.h"
 #include "../../lexer_flex/lexer_flags.h"
 // ---------------------
 
@@ -176,14 +175,7 @@ struct LexerFlags* handleArguments(int argc, char** argv){
 		char* arg = argv[i];
 		if(arg[0] == '-') {
 			if(strcmp(arg, "-debug") == 0) {
-				
-				res->debug = true;
-				
-			} else if(strcmp(arg, "-test") == 0) {
-				
-				const int status = test_all(res->debug);
-				free(res);
-				exit(status);	
+				res->debug = true;	
 			}
 		} else {
 			res->filename = arg;
