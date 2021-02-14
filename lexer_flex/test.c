@@ -160,7 +160,10 @@ int test_all(bool debug1) {
 	count+=17;
 
 	pass+=test_operators();
-	count+=1;
+	pass+=test_operators_cmp();
+	pass+=test_operators_logical();
+	pass+=test_operators_bitwise();
+	count+=4;
 
 	pass+=test_loop();
 	pass+=test_if_else();
@@ -1140,37 +1143,102 @@ bool test_operators() {
 		printf("test operators\n");
 	}
 
-	char* str = "+ - * / && || | & << >> <= >= %";
+	char* str = "+ - * / % ";
 	struct Token** tokens = 
 		lex(str, debug);
 
 	assert(tokens[0]->kind==OPKEY);
-
+	
 	assert(tokens[1]->kind==OPKEY);
-
+	
 	assert(tokens[2]->kind==OPKEY);
-
+	
 	assert(tokens[3]->kind==OPKEY);
-
+	
 	assert(tokens[4]->kind==OPKEY);
+	assert(strcmp(tokens[4]->value_ptr, "%") == 0);
 
+	freeTokens(tokens, 5);
+
+	return true;
+}
+
+bool test_operators_cmp(){
+	
+	if(debug) {
+		printf("test operators_cmp\n");
+	}
+
+	char* str = "<= >= == != < >";
+	struct Token** tokens = lex(str, debug);
+	
+	assert(tokens[0]->kind==OPKEY);
+	assert(strcmp(tokens[0]->value_ptr, "<=") == 0);
+	
+	assert(tokens[1]->kind==OPKEY);
+	assert(strcmp(tokens[1]->value_ptr, ">=") == 0);
+	
+	assert(tokens[2]->kind==OPKEY);
+	assert(strcmp(tokens[2]->value_ptr, "==") == 0);
+	
+	assert(tokens[3]->kind==OPKEY);
+	assert(strcmp(tokens[3]->value_ptr, "!=") == 0);
+	
+	assert(tokens[4]->kind==OPKEY);
+	assert(strcmp(tokens[4]->value_ptr, "<") == 0);
+	
 	assert(tokens[5]->kind==OPKEY);
-	
-	assert(tokens[6]->kind==OPKEY);
-	
-	assert(tokens[7]->kind==OPKEY);
-	
-	assert(tokens[8]->kind==OPKEY);
-	
-	assert(tokens[9]->kind==OPKEY);
-	
-	assert(tokens[10]->kind==OPKEY);
-	
-	assert(tokens[11]->kind==OPKEY);
-	
-	assert(tokens[12]->kind==OPKEY);
+	assert(strcmp(tokens[5]->value_ptr, ">") == 0);
 
-	freeTokens(tokens, 13);
+	freeTokens(tokens, 6);
+
+	return true;
+}
+
+bool test_operators_logical(){
+	
+	if(debug) {
+		printf("test operators_logical\n");
+	}
+
+	char* str = "&& || ";
+	struct Token** tokens = 
+		lex(str, debug);
+
+	assert(tokens[0]->kind==OPKEY);
+	assert(strcmp(tokens[0]->value_ptr, "&&") == 0);
+	
+	assert(tokens[1]->kind==OPKEY);
+	assert(strcmp(tokens[1]->value_ptr, "||") == 0);
+
+	freeTokens(tokens, 2);
+
+	return true;
+}
+
+bool test_operators_bitwise(){
+	
+	if(debug) {
+		printf("test operators\n");
+	}
+
+	char* str = "| & << >> ";
+	struct Token** tokens = 
+		lex(str, debug);
+	
+	assert(tokens[0]->kind==OPKEY);
+	assert(strcmp(tokens[0]->value_ptr, "|") == 0);
+	
+	assert(tokens[1]->kind==OPKEY);
+	assert(strcmp(tokens[1]->value_ptr, "&") == 0);
+	
+	assert(tokens[2]->kind==OPKEY);
+	assert(strcmp(tokens[2]->value_ptr, "<<") == 0);
+	
+	assert(tokens[3]->kind==OPKEY);
+	assert(strcmp(tokens[3]->value_ptr, ">>") == 0);
+
+	freeTokens(tokens, 4);
 
 	return true;
 }

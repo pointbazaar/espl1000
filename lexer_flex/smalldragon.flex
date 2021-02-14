@@ -71,9 +71,15 @@ case	out(CASE, yytext);
 ,		out(COMMA, yytext);
 ".."	out(RANGEOP, yytext);
 "."		out(STRUCTMEMBERACCESS, yytext);
-=|\+=|-=|\*=|\/=		out(ASSIGNOP, yytext);
 
-(\+|\-|\*|\/|\!|<=|>=|<|>|&&|\|\||\||\&|%)	out(OPKEY, yytext);
+== 		out(OPKEY, yytext);
+=		out(ASSIGNOP, yytext);
+
+\+=|-=|\*=|\/=		out(ASSIGNOP, yytext);
+
+"<<"		out(OPKEY, yytext);
+">>"		out(OPKEY, yytext);
+(\+|\-|\*|\/|!=|\!|<=|>=|<|>|&&|\|\||\||\&|%)	out(OPKEY, yytext);
 
 " "*		 //blank
 "\t"*		 //tab
