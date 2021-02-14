@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "../../ast/ast.h"
 #include "../../ast/free_ast.h"
@@ -23,59 +24,68 @@ struct Type* inferTypeVariable		(struct ST* st, struct Variable* v, bool debug);
 struct Type* inferTypeSimpleVar		(struct ST* st, struct SimpleVar* v, bool debug);
 // ------------------------------------------------------------
 char* typeToStrBasicTypeWrapped		(struct BasicTypeWrapped* b);
+bool streq(char* str1, char* str2);
 // ------------------------------------------------------------
+
+//COMMENTS
+
+	//[1]
+	
+	/*
+		both have the same type, 
+		and for most types i know
+		(not talking dependent types right now,
+		which shall be implemented later into smalldragon)
+		the resulting type if both are the same type
+		is exactly that type	
+	*/
+
+	//[2]
+	
+	/*
+		the types are different,
+		but maybe they are a float and a char
+		which would result in a float
+	*/
+// -----------------
 
 struct Type* inferTypeExpr(struct ST* st, struct Expr* expr, bool debug){
 	
 	if(debug){ printf("inferTypeExpr(...)\n"); }
 	
-	if(expr->op == NULL){
-		//only one term present
+	//only one term present ?
+	if(expr->op == NULL) {
+		
 		return inferTypeUnOpTerm(st, expr->term1, debug);
 	}
-		
+	
 	struct Type* type1Orig = inferTypeUnOpTerm(st, expr->term1, debug);
 	struct Type* type2Orig = inferTypeUnOpTerm(st, expr->term2, debug);
 	
-	//string representations
-	char* type1 = typeToStr(type1Orig);
-	char* type2 = typeToStr(type2Orig);
+	const char* type1 = typeToStr(type1Orig);
+	const char* type2 = typeToStr(type2Orig);
 	
-	if(debug){
-		printf("type1: %s, type2: %s\n", type1, type2);
-	}
+	if(debug) { printf("type1: %s, type2: %s\n", type1, type2); }
 	
-	if(strcmp(type1, type2) == 0){
-		//both have the same type, 
-		//and for most types i know
-		//(not talking dependent types right now,
-		// which shall be implemented later into smalldragon)
-		//the resulting type if both are the same type
-		//is exactly that type	
-		return type1Orig;
-	}
+	if(streq(type1, type2)) { return type1Orig; /* [1] */ }
 	
-	if(isIntType(type1)&& isIntType(type2)){
+	if(isIntType(type1) && isIntType(type2)) {
+		
 		return typeFromStr(st, "Int");
 	}
-		
-	//the types are different,
-	//but maybe they are a float and a char
-	//which would result in a float
 	
-	if(
-		(strcmp(type1, "Float") == 0
-		&& isIntType(type2))
-		||
-		(isIntType(type1)
-		&& strcmp(type2, "Float") == 0)
-	){
+	//[2]
+	const bool types_float_int = isIntType(type2) && streq(type1, "Float");
+	const bool types_int_float = isIntType(type1) && streq(type2, "Float");
+	
+	if(types_float_int || types_int_float) {
+	
 		return typeFromStr(st, "Float");
 	}
-		
 	
 	printf("Fatal Error in inferTypeExpr: could not infer type\n");
 	exit(1);
+	
 	return NULL;	
 }
 
@@ -134,7 +144,6 @@ struct Type* inferTypeVariable(struct ST* st, struct Variable* v, bool debug){
 		
 		//no member accesses
 		return typeOfVar;
-		
 	}
 	
 	//TODO
@@ -215,6 +224,10 @@ char* typeToStr(struct Type* t){
 	printf("(1)currently not implemented (in typeinference.c)\n");
 	exit(1);
 	return NULL;
+}
+
+bool streq(char* str1, char* str2){
+	return strcmp(str1, str2) == 0;
 }
 
 char* typeToStrBasicTypeWrapped(struct BasicTypeWrapped* b){
