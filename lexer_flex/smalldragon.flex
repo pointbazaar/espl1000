@@ -52,7 +52,10 @@ case	out(CASE, yytext);
 [0-9]*			out(INTEGER, yytext);
 '\\?.'			out(CCONST, yytext);
 \".*\"			out(STRINGCONST, yytext);
-(true|false)		out(BCONST, yytext);
+
+
+true			out(BCONST_TRUE, yytext);
+false			out(BCONST_FALSE, yytext);
 
 [a-z][a-zA-Z0-9_]*	out(ID, yytext);
 [A-Z][a-zA-Z0-9]*	out(TYPEIDENTIFIER, yytext);

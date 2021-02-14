@@ -353,7 +353,7 @@ bool test_true() {
 	struct Token** tokens = 
 		lex(str, debug);
 
-	assert(tokens[0]->kind==BCONST);
+	assert(tokens[0]->kind==BCONST_TRUE);
 
 	freeTokens(tokens, 1);
 
@@ -370,7 +370,7 @@ bool test_false() {
 	struct Token** tokens = 
 		lex(str, debug);
 
-	assert(tokens[0]->kind==BCONST);
+	assert(tokens[0]->kind==BCONST_FALSE);
 
 	freeTokens(tokens, 1);
 

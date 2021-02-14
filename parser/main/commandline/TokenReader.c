@@ -80,7 +80,8 @@ struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 			break;
 		case ANYTYPE : 
 		//CONSTANTS
-		case BCONST : 
+		case BCONST_TRUE : 
+		case BCONST_FALSE : 
 		case FLOATING : 
 		case INTEGER : 
 		//BRACKETS, BRACES, PARENTHESES
