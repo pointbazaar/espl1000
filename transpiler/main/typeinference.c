@@ -20,9 +20,9 @@ struct Type* inferTypeTerm			(struct ST* st, struct Term* term, bool debug);
 struct Type* inferTypeUnOpTerm		(struct ST* st, struct UnOpTerm* t, bool debug);
 struct Type* inferTypeMethodCall	(struct ST* st, struct MethodCall* m, bool debug);
 struct Type* inferTypeVariable		(struct ST* st, struct Variable* v, bool debug);
-struct Type* inferTypeSimpleVar	(struct ST* st, struct SimpleVar* v, bool debug);
+struct Type* inferTypeSimpleVar		(struct ST* st, struct SimpleVar* v, bool debug);
 // ------------------------------------------------------------
-char* typeToStrBasicTypeWrapped(struct BasicTypeWrapped* b);
+char* typeToStrBasicTypeWrapped		(struct BasicTypeWrapped* b);
 // ------------------------------------------------------------
 
 struct Type* inferTypeExpr(struct ST* st, struct Expr* expr, bool debug){
@@ -30,61 +30,59 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr, bool debug){
 	if(debug){ printf("inferTypeExpr(...)\n"); }
 	
 	if(expr->op == NULL){
-		
 		//only one term present
 		return inferTypeUnOpTerm(st, expr->term1, debug);
-		
-	}else{
-		
-		struct Type* type1Orig = inferTypeUnOpTerm(st, expr->term1, debug);
-		struct Type* type2Orig = inferTypeUnOpTerm(st, expr->term2, debug);
-		
-		//string representations
-		char* type1 = typeToStr(type1Orig);
-		char* type2 = typeToStr(type2Orig);
-		
-		if(debug){
-			printf("type1: %s, type2: %s\n", type1, type2);
-		}
-		
-		if(strcmp(type1, type2) == 0){
-			//both have the same type, 
-			//and for most types i know
-			//(not talking dependent types right now,
-			// which shall be implemented later into smalldragon)
-			//the resulting type if both are the same type
-			//is exactly that type
-			
-			return type1Orig;
-		}else if(isIntType(type1)&& isIntType(type2)){
-			return typeFromStr(st, "Int");
-		}else{
-			
-			//the types are different,
-			//but maybe they are a float and a char
-			//which would result in a float
-			
-			if(
-				(strcmp(type1, "Float") == 0
-				&& isIntType(type2))
-				||
-				(isIntType(type1)
-				&& strcmp(type2, "Float") == 0)
-			){
-				return typeFromStr(st, "Float");
-			}else{
-				
-				printf("Fatal Error in inferTypeExpr: could not infer type\n");
-				exit(1);
-				return NULL;
-			}
-		}
 	}
+		
+	struct Type* type1Orig = inferTypeUnOpTerm(st, expr->term1, debug);
+	struct Type* type2Orig = inferTypeUnOpTerm(st, expr->term2, debug);
+	
+	//string representations
+	char* type1 = typeToStr(type1Orig);
+	char* type2 = typeToStr(type2Orig);
+	
+	if(debug){
+		printf("type1: %s, type2: %s\n", type1, type2);
+	}
+	
+	if(strcmp(type1, type2) == 0){
+		//both have the same type, 
+		//and for most types i know
+		//(not talking dependent types right now,
+		// which shall be implemented later into smalldragon)
+		//the resulting type if both are the same type
+		//is exactly that type	
+		return type1Orig;
+	}
+	
+	if(isIntType(type1)&& isIntType(type2)){
+		return typeFromStr(st, "Int");
+	}
+		
+	//the types are different,
+	//but maybe they are a float and a char
+	//which would result in a float
+	
+	if(
+		(strcmp(type1, "Float") == 0
+		&& isIntType(type2))
+		||
+		(isIntType(type1)
+		&& strcmp(type2, "Float") == 0)
+	){
+		return typeFromStr(st, "Float");
+	}
+		
+	
+	printf("Fatal Error in inferTypeExpr: could not infer type\n");
+	exit(1);
+	return NULL;	
 }
 
 struct Type* inferTypeTerm(struct ST* st, struct Term* t, bool debug){
 	
 	switch(t->kind){
+		
 		case 1: return typeFromStr(st, "Bool"); 
 	
 		case 2: return typeFromStr(st, "Int"); 
@@ -137,16 +135,13 @@ struct Type* inferTypeVariable(struct ST* st, struct Variable* v, bool debug){
 		//no member accesses
 		return typeOfVar;
 		
-	}else{
-		//struct STST* structSymTable = st->stst;
-		
-		//struct STSTLine* line = stst_get(structSymTable, typeOfVar);
-		
-		//TODO
-		printf("local variable inference for variables with member access not yet implemented\n");
-		exit(1);
-		return NULL;
 	}
+	
+	//TODO
+	printf("local variable inference for variables with member access not yet implemented\n");
+	exit(1);
+	return NULL;
+
 }
 
 struct Type* inferTypeSimpleVar(struct ST* st, struct SimpleVar* v, bool debug){
@@ -215,11 +210,11 @@ char* typeToStr(struct Type* t){
 	
 	if(t->m1 != NULL){
 		return typeToStrBasicTypeWrapped(t->m1);
-	}else{
-		printf("(1)currently not implemented (in typeinference.c)\n");
-		exit(1);
-		return NULL;
 	}
+	
+	printf("(1)currently not implemented (in typeinference.c)\n");
+	exit(1);
+	return NULL;
 }
 
 char* typeToStrBasicTypeWrapped(struct BasicTypeWrapped* b){
@@ -238,9 +233,9 @@ char* typeToStrBasicTypeWrapped(struct BasicTypeWrapped* b){
 		
 		return typeName;
 		
-	}else{
-		printf("(2)currently not implemented (in typeinference.c)\n");
-		exit(1);
-		return NULL;
 	}
+	
+	printf("(2)currently not implemented (in typeinference.c)\n");
+	exit(1);
+	return NULL;	
 }
