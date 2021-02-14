@@ -568,7 +568,7 @@ bool test_hex(){
 		printf("test hex\n");
 	}
 
-	char* str = "0x1 0x0 0x10 ";
+	char* str = "0x1 0x0 0x10 0x1f 0xA3";
 	struct Token** tokens = 
 		lex(str, debug);
 
@@ -580,8 +580,14 @@ bool test_hex(){
 	
 	assert(tokens[2]->kind==HEXCONST);
 	assert(strcmp(tokens[2]->value_ptr,"0x10")==0);
+	
+	assert(tokens[3]->kind==HEXCONST);
+	assert(strcmp(tokens[3]->value_ptr,"0x1f")==0);
+	
+	assert(tokens[4]->kind==HEXCONST);
+	assert(strcmp(tokens[4]->value_ptr,"0xA3")==0);
 
-	freeTokens(tokens, 3);
+	freeTokens(tokens, 5);
 
 	return true;
 }
