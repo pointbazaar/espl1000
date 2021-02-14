@@ -73,7 +73,7 @@ case	out(CASE, yytext);
 "."		out(STRUCTMEMBERACCESS, yytext);
 =|\+=|-=|\*=|\/=		out(ASSIGNOP, yytext);
 
-(\+|\-|\*|\/|\!|<=|>=|<|>|&&|\|\||\||\&)	out(OPKEY, yytext);
+(\+|\-|\*|\/|\!|<=|>=|<|>|&&|\|\||\||\&|%)	out(OPKEY, yytext);
 
 " "*		 //blank
 "\t"*		 //tab
