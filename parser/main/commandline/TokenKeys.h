@@ -15,11 +15,12 @@
 //Constants
 #define FLOATING 	10
 #define INTEGER 	11
-#define CCONST 		12
-#define STRINGCONST 13
+#define HEXCONST 	12
+#define CCONST 		13
+#define STRINGCONST 14
 
-#define BCONST_TRUE  14
-#define BCONST_FALSE 15
+#define BCONST_TRUE  15
+#define BCONST_FALSE 16
 
 //()[]{}
 #define LPARENS 	20

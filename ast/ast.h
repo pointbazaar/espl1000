@@ -99,7 +99,10 @@ struct Identifier  {
 	char identifier[DEFAULT_STR_SIZE];
 };
 struct IntConst {
-	int value;
+	int32_t value;
+};
+struct HexConst {
+	uint32_t value;
 };
 struct StringConst {
 	//string constants
@@ -186,9 +189,10 @@ struct Term{
 		struct Variable* m6;
 		struct FloatConst* m7;
 		struct StringConst* m8;
+		struct HexConst* m9;
 	} ptr;
 	
-	// = mX where x is from m1 ... m8 or such
+	// = mX where X is from 1 .. 9
 	uint8_t kind;
 };
 struct Variable {

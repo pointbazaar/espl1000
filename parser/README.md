@@ -93,6 +93,7 @@ UnOpTerm ::= op Term //op must be a unary operator like '!', '~'
 Term ::= ArrayConstant 
 		| boolConstant 
 		| integerConstant 
+		| hexConstant
 		| charConstant 
 		| StringConstant
 		| methodCall 

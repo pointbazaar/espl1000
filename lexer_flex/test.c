@@ -122,7 +122,8 @@ int test_all(bool debug1) {
 	pass+=test_int_1();
 	pass+=test_int_2();
 	pass+=test_int_3();
-	count+=3;
+	pass+=test_hex();
+	count+=4;
 
 	pass+=test_struct();
 	pass+=test_return();
@@ -557,6 +558,30 @@ bool test_int_3() {
 	);
 
 	freeTokens(tokens, 2);
+
+	return true;
+}
+
+bool test_hex(){
+	
+	if(debug) {
+		printf("test hex\n");
+	}
+
+	char* str = "0x1 0x0 0x10 ";
+	struct Token** tokens = 
+		lex(str, debug);
+
+	assert(tokens[0]->kind==HEXCONST);
+	assert(strcmp(tokens[0]->value_ptr,"0x1")==0);
+	
+	assert(tokens[1]->kind==HEXCONST);
+	assert(strcmp(tokens[1]->value_ptr,"0x0")==0);
+	
+	assert(tokens[2]->kind==HEXCONST);
+	assert(strcmp(tokens[2]->value_ptr,"0x10")==0);
+
+	freeTokens(tokens, 3);
 
 	return true;
 }

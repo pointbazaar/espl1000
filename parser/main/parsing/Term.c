@@ -8,6 +8,7 @@
 #include "Term.h"
 #include "CharConst.h"
 #include "IntConst.h"
+#include "HexConst.h"
 #include "BoolConst.h"
 #include "FloatConst.h"
 #include "StringConst.h"
@@ -53,7 +54,10 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 	}else if(list_head(copy)->kind == STRINGCONST){
 		
 		tryInitStringConst(res, copy, debug);
+	}else if(list_head(copy)->kind == HEXCONST){
 		
+		res->ptr.m9 = makeHexConst(copy, debug);
+		res->kind = 9;
 	}else{
 		
 		res->kind = 2;
