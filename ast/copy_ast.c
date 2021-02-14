@@ -49,6 +49,12 @@ struct IntConst* copyIntConst(struct IntConst* ic){
 	return res;
 }
 
+struct HexConst* copyHexConst(struct HexConst* hc){
+	struct HexConst* res = malloc(sizeof(struct HexConst));
+	res->value = hc->value;
+	return res;
+}
+
 struct SimpleVar* copySimpleVar(struct SimpleVar* sv){
 	struct SimpleVar* res = malloc(sizeof(struct SimpleVar));
 	
@@ -91,6 +97,9 @@ struct Term* copyTerm(struct Term* t){
 			break;
 		case 8:
 			res->ptr.m8 = copyStringConst(t->ptr.m8);
+			break;
+		case 9:
+			res->ptr.m9 = copyHexConst(t->ptr.m9);
 			break;
 		default:
 		printf("Error in copyTerm(...)\n");

@@ -61,6 +61,7 @@ void transpileSimpleVar(struct SimpleVar* svar, struct Ctx* ctx);
 //const nodes related
 void transpileBoolConst		(struct BoolConst* bc, 	struct Ctx* ctx);
 void transpileIntConst		(struct IntConst* ic, 	struct Ctx* ctx);
+void transpileHexConst		(struct HexConst* hc, 	struct Ctx* ctx);
 void transpileCharConst		(struct CharConst* cc, 	struct Ctx* ctx);
 void transpileFloatConst	(struct FloatConst* fc, struct Ctx* ctx);
 void transpileStringConst	(struct StringConst* s, struct Ctx* ctx);
@@ -660,6 +661,9 @@ void transpileTerm(struct Term* t, struct Ctx* ctx){
 		case 8:
 			transpileStringConst(t->ptr.m8, ctx);
 			break;
+		case 9:
+			transpileHexConst(t->ptr.m9, ctx);
+			break;
 		default:
 		printf("Error in transpileTerm\n");
 		exit(1);
@@ -706,6 +710,10 @@ void transpileBoolConst(struct BoolConst* bc, struct Ctx* ctx){
 
 void transpileIntConst(struct IntConst* ic, struct Ctx* ctx){
 	fprintf(ctx->file, "%d", ic->value);
+}
+
+void transpileHexConst(struct HexConst* hc, struct Ctx* ctx){
+	fprintf(ctx->file, "0x%x", hc->value);
 }
 
 void transpileCharConst(struct CharConst* cc, struct Ctx* ctx){

@@ -21,6 +21,7 @@ struct Op* readOp(FILE* file, bool debug);
 
 //const nodes
 struct IntConst* 	readIntConst(	FILE* file, bool debug);
+struct HexConst* 	readHexConst(	FILE* file, bool debug);
 struct BoolConst* 	readBoolConst(	FILE* file, bool debug);
 struct CharConst* 	readCharConst(	FILE* file, bool debug);
 struct FloatConst* 	readFloatConst(	FILE* file, bool debug);
@@ -392,6 +393,23 @@ struct IntConst* readIntConst(FILE* file, bool debug){
 
 	return ic;
 }
+
+struct HexConst* readHexConst(FILE* file, bool debug){
+	
+	if(debug){printf("readHexConst(...)\n");}
+	
+	struct HexConst* hc = malloc(sizeof(struct HexConst));
+	
+	if(fscanf(file, "HexConst\t%x\t", &(hc->value)) != 1){
+		printf("Error reading HexConst\n");
+		free(hc);
+		fclose(file);
+		exit(1);
+	}
+
+	return hc;
+}
+
 struct BoolConst* readBoolConst(FILE* file, bool debug){
 	
 	if(debug){ printf("readBoolConst(...)\n"); }
@@ -557,6 +575,7 @@ struct Term* readTerm(FILE* file, bool debug){
 		case 6: b->ptr.m6 = readVariable(file, debug); break;
 		case 7: b->ptr.m7 = readFloatConst(file, debug); break;
 		case 8: b->ptr.m8 = readStringConst(file, debug); break;
+		case 9: b->ptr.m9 = readHexConst(file, debug); break;
 		
 		default:
 			printf("Error in readTerm\n");

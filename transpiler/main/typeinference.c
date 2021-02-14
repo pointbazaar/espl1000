@@ -109,6 +109,8 @@ struct Type* inferTypeTerm(struct ST* st, struct Term* t, bool debug){
 		
 		case 8: return typeFromStr(st, "String"); 
 		
+		case 9: return typeFromStr(st, "Int");
+		
 		default:
 			printf("Fatal Error in inferTypeTerm\n");
 			exit(1);

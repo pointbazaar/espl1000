@@ -78,6 +78,9 @@ void freeIdentifier(struct Identifier* id) {
 void freeIntConst(struct IntConst* ic) {
 	free(ic);
 }
+void freeHexConst(struct HexConst* hc){
+	free(hc);
+}
 
 void freeMethod(struct Method* m) {
 	
@@ -168,6 +171,7 @@ void freeTerm(struct Term* t) {
 		case 6: freeVariable   (t->ptr.m6); break;
 		case 7: freeFloatConst (t->ptr.m7); break;
 		case 8: freeStringConst(t->ptr.m8); break;
+		case 9: freeHexConst   (t->ptr.m9); break;
 		default:
 			printf("Error in freeTerm(...)\n");
 			free(t);
