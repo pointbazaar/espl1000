@@ -66,7 +66,6 @@ case	out(CASE, yytext);
 
 (->|~>)	out(ARROW, yytext);
 "#"		out(ANYTYPE, yytext);
-"~"		out(WAVE, yytext);
 ;		out(SEMICOLON, yytext);
 ,		out(COMMA, yytext);
 ".."	out(RANGEOP, yytext);
@@ -79,7 +78,8 @@ case	out(CASE, yytext);
 
 "<<"		out(OPKEY, yytext);
 ">>"		out(OPKEY, yytext);
-(\+|\-|\*|\/|!=|\!|<=|>=|<|>|&&|\|\||\||\&|%)	out(OPKEY, yytext);
+~			out(OPKEY, yytext);
+(\+|\-|\*|\/|!=|\!|<=|>=|<|>|&&|\|\||\^|\||\&|%)	out(OPKEY, yytext);
 
 " "*		 //blank
 "\t"*		 //tab

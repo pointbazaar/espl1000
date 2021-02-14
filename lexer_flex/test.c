@@ -1219,10 +1219,10 @@ bool test_operators_logical(){
 bool test_operators_bitwise(){
 	
 	if(debug) {
-		printf("test operators\n");
+		printf("test operators_bitwise\n");
 	}
 
-	char* str = "| & << >> ";
+	char* str = "| & << >> ^ ~";
 	struct Token** tokens = 
 		lex(str, debug);
 	
@@ -1237,8 +1237,14 @@ bool test_operators_bitwise(){
 	
 	assert(tokens[3]->kind==OPKEY);
 	assert(strcmp(tokens[3]->value_ptr, ">>") == 0);
+	
+	assert(tokens[4]->kind==OPKEY);
+	assert(strcmp(tokens[4]->value_ptr, "^") == 0);
+	
+	assert(tokens[5]->kind==OPKEY);
+	assert(strcmp(tokens[5]->value_ptr, "~") == 0);
 
-	freeTokens(tokens, 4);
+	freeTokens(tokens, 6);
 
 	return true;
 }
