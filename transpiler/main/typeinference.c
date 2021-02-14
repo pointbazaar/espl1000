@@ -62,8 +62,8 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr, bool debug){
 	struct Type* type1Orig = inferTypeUnOpTerm(st, expr->term1, debug);
 	struct Type* type2Orig = inferTypeUnOpTerm(st, expr->term2, debug);
 	
-	const char* type1 = typeToStr(type1Orig);
-	const char* type2 = typeToStr(type2Orig);
+	char* type1 = typeToStr(type1Orig);
+	char* type2 = typeToStr(type2Orig);
 	
 	if(debug) { printf("type1: %s, type2: %s\n", type1, type2); }
 	

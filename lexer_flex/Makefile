@@ -5,7 +5,7 @@ FLAGS := -g -march=native -Wall --std=c11 -pedantic
 
 all: all_no_valgrind valgrind
 
-all_no_valgrind: dragon-lexer
+all_no_valgrind: dragon-lexer test
 
 dragon-lexer: smalldragon.flex driver.c driver.h ../token/token.c
 	flex smalldragon.flex
@@ -15,7 +15,7 @@ clean:
 	rm -f dragon-lexer
 	rm -f lex.yy.c
 
-test: lexer
+test: dragon-lexer
 	./dragon-lexer -test
 
 VALGRIND_OPS := --leak-check=full --show-reachable=yes --error-exitcode=1 --log-file="/dev/null"
