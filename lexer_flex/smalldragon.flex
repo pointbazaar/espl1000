@@ -118,10 +118,14 @@ int main(int argc, char* argv[]){
 	sprintf(buffer, "%s.tokens", filename);
 	
 	//configure output file
+	//NECESSARY (for FLEX)
 	outFile = fopen(buffer, "w");
 	
 	yylex();
 	
 	fclose(yyin);
 	free(myargs);
+	
+	fclose(outFile);
+	yylex_destroy();
 }
