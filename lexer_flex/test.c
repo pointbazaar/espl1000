@@ -1148,12 +1148,16 @@ bool test_operators() {
 		lex(str, debug);
 
 	assert(tokens[0]->kind==OPKEY);
+	assert(strcmp(tokens[0]->value_ptr, "+") == 0);
 	
 	assert(tokens[1]->kind==OPKEY);
+	assert(strcmp(tokens[1]->value_ptr, "-") == 0);
 	
 	assert(tokens[2]->kind==OPKEY);
+	assert(strcmp(tokens[2]->value_ptr, "*") == 0);
 	
 	assert(tokens[3]->kind==OPKEY);
+	assert(strcmp(tokens[3]->value_ptr, "/") == 0);
 	
 	assert(tokens[4]->kind==OPKEY);
 	assert(strcmp(tokens[4]->value_ptr, "%") == 0);

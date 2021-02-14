@@ -21,56 +21,18 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 	struct TokenList* copy = list_copy(tokens);
 
 	struct Token* tkn = list_head(copy);
+	
 	if(tkn == NULL){
 		free(res);
 		return NULL;
 	}
 
 	if(tkn->kind == OPKEY){
-
-		struct Token* snd = list_get(copy,1);
-		if(snd == NULL){
-			free(res);
-			return NULL;
-		}
-
-		if(snd->kind == OPKEY){
-			struct Token* opl = tkn;
-			struct Token* opr = snd;
-
-			if(
-				(
-					( strcmp(opl->value_ptr,"<")==0) 
-					|| strcmp(opl->value_ptr,">")==0 
-				) && strcmp(opr->value_ptr,"=")==0
-
-			){
-				
-				strcpy(res->op,opl->value_ptr);
-				strcat(res->op,opr->value_ptr);
-				
-			}else if( 
-				strcmp(opl->value_ptr,"=") == 0 
-				&& strcmp(opr->value_ptr,"=") == 0
-			){
-				strcpy(res->op, "==");
-			}else{
-				// "could not make operator";
-				free(res);
-				freeTokenListShallow(copy);
-				return NULL;
-			}
-			if(list_size(copy) < 2){
-				free(res);
-				freeTokenListShallow(copy);
-				return NULL;
-			}
-			list_consume(copy, 2);
-		}else{
-			strcpy(res->op, tkn->value_ptr);
-			
-			list_consume(copy, 1);
-		}
+		
+		strcpy(res->op, tkn->value_ptr);
+		
+		list_consume(copy, 1);
+	
 	}else{
 		//"could not recognize operator, got : " + tkn->value;
 		free(res);
