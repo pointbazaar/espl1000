@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+#include <sys/stat.h>
+#include <libgen.h>
+#include <unistd.h>
 
 #include "driver.h"
 #include "lexer_flags.h"
@@ -79,3 +83,28 @@ struct LexerFlags* handleArguments(int argc, char** argv){
 	
 	return res;
 }
+
+char* lexer_make_tkn_filename(char* filename, bool debug){
+	
+	//because basename,dirname may modify their args
+	char cpy_filename_1[50];
+	char cpy_filename_2[50];
+	strcpy(cpy_filename_1,filename);
+	strcpy(cpy_filename_2,filename);
+
+	char* dir = dirname(cpy_filename_1);
+	if(debug) {
+		printf("in directory: %s\n",dir);
+	}
+
+	char* tkn_filename = malloc(sizeof(char)* 150);
+	
+	tkn_filename[0]='\0';
+	strcat(tkn_filename,dir);
+	strcat(tkn_filename,"/.");
+	strcat(tkn_filename,basename(cpy_filename_2));
+	strcat(tkn_filename,".tokens");
+	
+	return tkn_filename;
+}
+

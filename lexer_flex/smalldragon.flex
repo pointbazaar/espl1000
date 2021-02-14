@@ -1,5 +1,6 @@
 %{
 	#include <stdio.h>
+	#include <stdbool.h>
 	#include "driver.h"
 	#include "lexer_flags.h"
 	#include "test.h"
@@ -114,8 +115,7 @@ int main(int argc, char* argv[]){
 	//configure input source
 	yyin = fopen(filename, "r");
 	
-	char buffer[100];
-	sprintf(buffer, "%s.tokens", filename);
+	char* buffer = lexer_make_tkn_filename(filename, myargs->debug);
 	
 	//configure output file
 	//NECESSARY (for FLEX)
@@ -128,4 +128,5 @@ int main(int argc, char* argv[]){
 	
 	fclose(outFile);
 	yylex_destroy();
+	free(buffer);
 }

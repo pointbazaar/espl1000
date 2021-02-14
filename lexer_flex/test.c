@@ -35,7 +35,7 @@ struct Token** lex(char* source, bool debug){
 	//read out the tokens
 	
 	char* fname_src = "/tmp/temporary-smalldragon.dg";
-	char* fname_tks = "/tmp/temporary-smalldragon.dg.tokens";
+	char* fname_tks = "/tmp/.temporary-smalldragon.dg.tokens";
 	
 	//make a file with the source
 	FILE* f = fopen(fname_src, "w");
