@@ -63,23 +63,27 @@ struct SimpleType* makeSimpleType(char* typeName) {
 
 void parse_type_params_rest(struct SimpleType* res, struct TokenList* tokens){
 	
-	//we must allocate space for those type parameters
-	int capacity = 10;
-	res->typeParams = malloc(sizeof(uint8_t)*capacity);
+	uint32_t cap = 10; //capacity
+	
+	res->typeParams = malloc(sizeof(uint8_t) * cap);
 	
 	//expect ?TX
 	struct Token* next = list_head(tokens);
+	
 	if(next->kind != TPARAM){
 		printf("Expected Type Parameter, got:\n");
 		list_print(tokens);
 		exit(1);
 	}
+	
 	res->typeParams[res->typeParamCount] = atoi(next->value_ptr);
 	res->typeParamCount += 1;
 	list_consume(tokens, 1);
 	
 	next = list_head(tokens);
+	
 	while(next->kind == COMMA){
+		
 		list_consume(tokens, 1);
 		
 		if(next->kind != TPARAM){
@@ -87,35 +91,42 @@ void parse_type_params_rest(struct SimpleType* res, struct TokenList* tokens){
 			list_print(tokens);
 			exit(1);
 		}
+		
 		res->typeParams[res->typeParamCount] = atoi(next->value_ptr);
 		res->typeParamCount += 1;
 		list_consume(tokens, 1);
 		
-		//realloc if necessary
-		if(res->typeParamCount >= capacity){
-			capacity *= 2;
-			res->typeParams = 
-				realloc(
-					res->typeParams, 
-					sizeof(uint8_t)*capacity
-				);
+		if(res->typeParamCount < cap){
+			
+			next = list_head(tokens);
+			continue;
 		}
+			
+		cap *= 2;
 		
+		const size_t newsize = sizeof(uint8_t) * cap;
+		res->typeParams = realloc(res->typeParams, newsize);
+
 		next = list_head(tokens);
 	}
 	
 	next = list_head(tokens);
-	//expect '>'
-	const bool condition = 
-		next->kind == OPKEY 
-		&& strcmp(next->value_ptr, ">")==0;
-		
-	if(!condition){
-		printf("Syntax Error: expected '>', but got:\n");
-		list_print(tokens);
-		free(res);
-		exit(1);
-	}
 	
-	list_consume(tokens, 1);
+	//expect '>'
+	const bool is_opkey = next->kind == OPKEY;
+	const bool next_gt = strcmp(next->value_ptr, ">") == 0;
+		
+	if(is_opkey && next_gt){
+		
+		list_consume(tokens, 1);
+		return;
+	}
+		
+	printf("Syntax Error: expected '>', but got:\n");
+	list_print(tokens);
+	
+	free(res);
+	exit(1);
+	
+	return;
 }
