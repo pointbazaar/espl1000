@@ -45,57 +45,74 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 	if(list_size(tokens) == 0){return NULL;}
 
 	struct Term* res = initTerm();
-
 	struct TokenList* copy = list_copy(tokens);
+	
+	const int tk_kind = list_head(copy)->kind;
 
-	if(list_head(copy)->kind == LPARENS){
+	if(tk_kind == LPARENS){
 		
 		tryInitExpr(res, copy, debug);
 		
-	}else if(list_head(copy)->kind == STRINGCONST){
+	}else if(tk_kind == STRINGCONST){
 		
 		tryInitStringConst(res, copy, debug);
 		
-	}else if(list_head(copy)->kind == HEXCONST){
+	}else if(tk_kind == HEXCONST){
 		
 		res->ptr.m9 = makeHexConst(copy, debug);
 		res->kind = 9;
 		
-	}else if(list_head(copy)->kind == BINCONST){
+	}else if(tk_kind == BINCONST){
 		
 		res->ptr.m10 = makeBinConst(copy, debug);
 		res->kind = 10;
 		
-	}else if(
-		list_head(copy)->kind == BCONST_TRUE
-		|| list_head(copy)->kind == BCONST_FALSE
-	){
+	}else if(tk_kind == CCONST){
+		
+		res->ptr.m3 = makeCharConst(copy,debug);
+		res->kind = 3;
+		
+	}else if(tk_kind == BCONST_TRUE || tk_kind == BCONST_FALSE ){
 		
 		res->ptr.m1 = makeBoolConst(copy, debug);
 		res->kind = 1;
 		
 	}else{
-		
-		res->kind = 2;
-		if( (res->ptr.m2 = makeIntConst(copy,debug)) == NULL){
-			res->kind = 7;
-			if( (res->ptr.m7 = makeFloatConst(copy,debug)) == NULL){
-				res->kind = 4;
-				if( (res->ptr.m4 = makeMethodCall(copy,debug)) == NULL){				
-					res->kind = 6;
-					if( (res->ptr.m6 = makeVariable(copy,debug)) == NULL){
-						res->kind = 3;
-						if( (res->ptr.m3 = makeCharConst(copy,debug)) == NULL){
-							
-							free(res);
-							freeTokenListShallow(copy);
-							return NULL;
-						}
-					}
-				}
-			}
-		}
+		goto other_term;
 	}
+	
+	//something matched
+	goto end;
+	
+other_term:
+
+	if( (res->ptr.m2 = makeIntConst(copy,debug)) != NULL){
+		res->kind = 2;
+		goto end;
+	}
+
+	if( (res->ptr.m7 = makeFloatConst(copy,debug)) != NULL){
+		res->kind = 7;
+		goto end;
+	}
+	
+	if( (res->ptr.m4 = makeMethodCall(copy,debug)) != NULL){				
+		res->kind = 4;
+		goto end;
+	}
+	
+	if( (res->ptr.m6 = makeVariable(copy,debug)) != NULL){
+		res->kind = 6;
+		goto end;
+	}
+	
+		
+	free(res);
+	freeTokenListShallow(copy);
+	return NULL;		
+
+	
+end:
 	
 	if(debug){
 		printf("sucess parsing Term\n");

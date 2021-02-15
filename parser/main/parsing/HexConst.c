@@ -5,7 +5,7 @@
 
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
-#include "../../../ast/free_ast.h"
+#include "../../../ast/ast.h"
 #include "../../../token/token.h"
 
 struct HexConst* makeHexConst(struct TokenList* tokens, bool debug){

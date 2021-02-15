@@ -5,7 +5,7 @@
 
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
-#include "../../../ast/free_ast.h"
+#include "../../../ast/ast.h"
 #include "../../../token/token.h"
 
 struct BinConst* makeBinConst(struct TokenList* tokens, bool debug){
@@ -27,7 +27,6 @@ struct BinConst* makeBinConst(struct TokenList* tokens, bool debug){
 	res->value = strtol(tk->value_ptr+2, NULL, 2);
 	
 	list_consume(tokens, 1);
-		
-		
+
 	return res;
 }
