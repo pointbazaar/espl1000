@@ -8,6 +8,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <assert.h>
 
 int namespace_test_can_parse_namespace_with_1_empty_struct(bool debug) {
 
@@ -24,13 +25,13 @@ int namespace_test_can_parse_namespace_with_1_empty_struct(bool debug) {
 
 	struct Namespace* n = makeNamespace(l,"Main", debug);
 
-	bool assert1 = (1 == n->count_structs);
-	bool assert2 = (0 == n->structs[0]->count_members);
+	assert(1 == n->count_structs);
+	assert(0 == n->structs[0]->count_members);
 	
 	freeTokenList(l);
 	freeNamespace(n);
 
-	return (assert1&&assert2)?1:0;
+	return 1;
 }
 
 int namespace_test_can_parse_namespace_with_1_empty_method(bool debug) {
@@ -52,12 +53,12 @@ int namespace_test_can_parse_namespace_with_1_empty_method(bool debug) {
 
 	struct Namespace* n = makeNamespace(l,"Main", debug);
 
-	bool assert1 = strcmp("Main", n->name) == 0;
-	bool assert2 = (1 == n->count_methods);
+	assert(strcmp("Main", n->name) == 0);
+	assert(1 == n->count_methods);
 	
 	freeTokenList(l);
 	freeNamespace(n);
 
-	return (assert1&&assert2)?1:0;
+	return 1;
 }
 

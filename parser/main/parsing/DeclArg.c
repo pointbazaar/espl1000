@@ -6,12 +6,11 @@
 #include "../commandline/TokenList.h"
 #include "typenodes/Type.h"
 #include "Identifier.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 
 struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 
-	struct DeclArg* res = smalloc(sizeof(struct DeclArg));
+	struct DeclArg* res = malloc(sizeof(struct DeclArg));
 
 	if(debug){
 		printf("DeclaredArg(...) from ");

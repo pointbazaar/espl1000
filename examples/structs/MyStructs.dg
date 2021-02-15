@@ -1,7 +1,6 @@
 struct MyStruct { 
-	Int a, 
-	Int b 
-
+	Int a;
+	Int b;
 }
 
 fn main () ~> PInt {

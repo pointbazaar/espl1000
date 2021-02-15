@@ -1,12 +1,11 @@
 #it had -O0 before
 #use -pg to generate profiling information for gprof
-FLAGS := -march=native -g -Wall
+FLAGS := -march=native -g -Wall -Werror --std=gnu11 -pedantic
 
 CALL := gcc $(FLAGS)
 CALL2 := $(CALL) -c 
 
 OBJS_UTIL := build/ASTWriter.o \
-	build/util.o \
 	build/free_ast.o \
 	build/copy_ast.o
 
@@ -22,6 +21,8 @@ OBJS_MAIN := build/Parser.o \
 		build/FloatConst.o \
 		build/Identifier.o \
 		build/IntConst.o \
+		build/HexConst.o \
+		build/BinConst.o \
 		build/Method.o \
 		build/Namespace.o \
 		build/Op.o \
@@ -87,7 +88,6 @@ OBJS_TEST := build/AssignStmtTest.o \
 OBJS := $(OBJS_MAIN) $(OBJS_TEST) $(OBJS_UTIL) 
 
 AST_DEPS := ../ast/ast.h \
-	../util/util.h \
 	../ast/ASTWriter.h \
 	../ast/free_ast.h \
 	../ast/copy_ast.h
@@ -99,7 +99,9 @@ MAIN_DEPS := main/commandline/TokenList.h \
 	../token/token.h \
 	$(AST_DEPS)
 
-all: DIRS dragon-parser test valgrind
+all: all_no_valgrind valgrind
+
+all_no_valgrind: DIRS dragon-parser test
 
 DIRS:
 	mkdir -p build/

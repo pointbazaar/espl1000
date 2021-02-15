@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <assert.h>
 
 int expr_test_simple_expression(bool debug) {
 
@@ -22,16 +23,14 @@ int expr_test_simple_expression(bool debug) {
 	list_add(list, makeToken2(INTEGER,"4"));
 	struct Expr* expr = makeExpr(list,debug);
 
-	if(expr == NULL){return 0;}
-
-	if(expr->term1 == NULL){return 0;}
-
-	bool a1 = expr->term1->term->ptr.m2->value == 4;
+	assert(expr != NULL);
+	assert(expr->term1 != NULL);
+	assert(expr->term1->term->ptr.m2->value == 4);
 	
 	freeTokenList(list);
 	freeExpr(expr);
 
-	return (a1)?1:0;
+	return 1;
 }
 
 int expr_test_variable_name_expression(bool debug) {
@@ -45,18 +44,21 @@ int expr_test_variable_name_expression(bool debug) {
 	list_add(list, makeToken2(ID,"x"));
 	struct Expr* expr = makeExpr(list,debug);
 
-	if(expr == NULL){return 0;}
-
-	if(expr->term1->term->ptr.m6 == NULL){return 0;}
-
-	if(expr->term1->term->ptr.m6->simpleVar == NULL){return 0;}
-
-	bool a1 = strcmp(expr->term1->term->ptr.m6->simpleVar->name, "x") == 0;
+	assert(expr != NULL);
+	assert(expr->term1->term->ptr.m6 != NULL);
+	assert(expr->term1->term->ptr.m6->simpleVar != NULL);
+	assert(
+		strcmp(
+			expr->term1->term->ptr.m6->simpleVar->name, 
+			"x"
+		) 
+		== 0
+	);
 	
 	freeTokenList(list);
 	freeExpr(expr);
 
-	return (a1)?1:0;
+	return 1;
 }
 
 int expr_recognize_2_op_expr(bool debug) {
@@ -74,14 +76,13 @@ int expr_recognize_2_op_expr(bool debug) {
 	list_add(tokens, makeToken2(LCURLY,"{"));
 
 	struct Expr* expr = makeExpr(tokens,debug);
-	if(expr == NULL){return 0;}
-
-	bool a1 = list_size(tokens) == 1;
+	assert(expr != NULL);
+	assert(list_size(tokens) == 1);
 	
 	freeTokenList(tokens);
 	freeExpr(expr);
 
-	return (a1)?1:0;
+	return 1;
 }
 
 int expr_test_comparison(bool debug){
@@ -99,36 +100,36 @@ int expr_test_comparison(bool debug){
 	list_add(l, makeToken2(LCURLY,"{"));
 
 	struct Expr* expr = makeExpr(l,debug);
-	if(expr == NULL){return 0;}
+	assert(expr != NULL);
 
-	bool a1 = list_size(l) == 1;
+	assert(list_size(l) == 1);
 
 	struct Term* term1 = expr->term1->term;
-	if(term1 == NULL){return 0;}
+	assert(term1 != NULL);
 
 	struct Term* term2 = expr->term2->term;
-	if(term2 == NULL){return 0;}
+	assert(term2 != NULL);
 
 	struct Op* op = expr->op;
-	if(op == NULL){return 0;}
+	assert(op != NULL);
 
 	//assert about the terms
 
 	struct Variable* v = term1->ptr.m6;
-	if(v == NULL){return 0;}
+	assert(v != NULL);
 
 	struct IntConst* ic = term2->ptr.m2;
-	if(ic == NULL){return 0;}
+	assert(ic != NULL);
 
-	bool a2 = ic->value == 5;
+	assert(ic->value == 5);
 
 	struct SimpleVar* sv = v->simpleVar;
-	if(sv == NULL){return 0;}
+	assert(sv != NULL);
 
-	bool a3 = strcmp(sv->name, "x") == 0;
+	assert(strcmp(sv->name, "x") == 0);
 	
 	freeTokenList(l);
 	freeExpr(expr);
 
-	return (a1 && a2 && a3)?1:0;
+	return 1;
 }

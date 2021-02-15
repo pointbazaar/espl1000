@@ -1,7 +1,16 @@
 #ifndef AST_H
 #define AST_H
 
-#define DEFAULT_STR_SIZE 64 //64
+/*
+I determined in code experiments 
+that up to around 128 bytes there is a speed penalty
+for using the indirection of char* instead
+of having a fixed size char array in your structure.
+Having many strings inline wastes memory
+but is better for execution time.
+*/
+//for variables, method names, ...
+#define DEFAULT_STR_SIZE 32 
 
 #include <stdbool.h>
 #include <inttypes.h>
@@ -28,6 +37,8 @@ struct Range;
 struct BoolConst;
 struct CharConst;
 struct IntConst;
+struct HexConst;
+struct BinConst;
 struct FloatConst;
 struct StringConst;
 
@@ -90,7 +101,13 @@ struct Identifier  {
 	char identifier[DEFAULT_STR_SIZE];
 };
 struct IntConst {
-	int value;
+	int32_t value;
+};
+struct HexConst {
+	uint32_t value;
+};
+struct BinConst {
+	uint32_t value;
 };
 struct StringConst {
 	//string constants
@@ -99,11 +116,12 @@ struct StringConst {
 	char* value;
 };
 struct Method {
-	bool isPublic;
-	bool hasSideEffects;
-
+	
 	struct Type* returnType;
 	char name[DEFAULT_STR_SIZE];
+	
+	bool isPublic;
+	bool hasSideEffects;
 
 	uint8_t count_args;
 	struct DeclArg** args;
@@ -142,8 +160,8 @@ struct SimpleVar {
 	struct Expr** indices;
 };
 struct StructDecl{
-	//the name of the struct
-	char name[DEFAULT_STR_SIZE];
+	//the type(and name) of the struct
+	struct SimpleType* type;
 	
 	struct StructMember** members;
 	uint16_t count_members;
@@ -165,8 +183,6 @@ struct UnOpTerm{
 };
 struct Term{
 	
-	// = mX where x is from m1 ... m8 or such
-	uint8_t kind;
 	//only one of these is present,
 	//check 'kind' for which it is.
 	union myptr2 {
@@ -178,7 +194,12 @@ struct Term{
 		struct Variable* m6;
 		struct FloatConst* m7;
 		struct StringConst* m8;
+		struct HexConst* m9;
+		struct BinConst* m10;
 	} ptr;
+	
+	// = mX where X is from 1 .. 10
+	uint8_t kind;
 };
 struct Variable {
 	struct SimpleVar* simpleVar;
@@ -216,8 +237,6 @@ struct RetStmt{
 	struct Expr* returnValue;
 };
 struct Stmt {
-	//0-based
-	uint8_t kind;
 	
 	//only one of those will be present,
 	//'kind' tells us which
@@ -232,6 +251,9 @@ struct Stmt {
 		struct ForStmt* m7;
 		struct SwitchStmt* m8;
 	} ptr;
+	
+	//0-based
+	uint8_t kind;
 };
 struct WhileStmt  {
 	struct Expr* condition;
@@ -247,12 +269,14 @@ struct ForStmt {
 	struct StmtBlock* block;
 };
 struct BreakStmt {
-	//empty
+	//empty, but we need one member
+	//otherwise gcc gives warning on '-pedantic'
+	int __should_not_be_used;
 };
 struct SwitchStmt{
 	struct Variable* var;
 	
-	unsigned int count_cases;
+	uint32_t count_cases;
 	struct CaseStmt** cases;
 };
 struct CaseStmt{
@@ -294,13 +318,18 @@ struct SimpleType {
 	//can have at most 31 characters,
 	//but this limit is arbitrary
 	char typeName[DEFAULT_STR_SIZE];
+	
+	//the number of the type parameters
+	uint8_t typeParamCount;
+	uint8_t* typeParams;
 };
 struct SubrType {
 	struct Type* returnType;
-	bool hasSideEffects;
-
+	
 	struct Type** argTypes;
 	uint8_t count_argTypes;
+	
+	bool hasSideEffects;
 };
 struct Type {
 	//only one of these is != NULL

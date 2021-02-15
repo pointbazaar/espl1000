@@ -1,6 +1,0 @@
-
-build/*
-build/
-*.o
-
-dragon-lexer

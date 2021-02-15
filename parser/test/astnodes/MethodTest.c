@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <assert.h>
 
 int method_test_can_parse_method_with_arguments(bool debug) {
 
@@ -47,12 +48,12 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 		printf("free stuff\n");
 	}
 	
-	const bool a1 = m->count_args == 1;
+	assert(m->count_args == 1);
 	
 	freeTokenList(l);
 	freeMethod(m);
 
-	return  a1;
+	return 1;
 }
 
 int method_test_can_parse_subroutine(bool debug) {
@@ -86,21 +87,13 @@ int method_test_can_parse_subroutine(bool debug) {
 	list_add(l, makeToken2(RCURLY,"}"));
 
 	struct Method* m = makeMethod(l, debug);
-	if(m == NULL){
-		printf("Method could not be parsed\n");
-		return 0;
-	}
-
-	bool a1 = m->count_args == 0;
-
-	if(!a1){
-		printf("Assertion failed: m did not have 0 arguments\n");
-	}
+	assert(m != NULL);
+	assert(m->count_args == 0);
 	
 	freeTokenList(l);
 	freeMethod(m);
 
-	return (a1)?1:0;
+	return 1;
 }
 
 int method_test_can_parse_method_without_arguments(bool debug) {
@@ -126,12 +119,11 @@ int method_test_can_parse_method_without_arguments(bool debug) {
 	list_add(l, makeToken2(RCURLY,"}"));
 
 	struct Method* m = makeMethod(l, debug);
-	if(m == NULL){return 0;}
-
-	bool assert1 = (0 == m->count_args);
+	assert(m != NULL);
+	assert(0 == m->count_args);
 	
 	freeTokenList(l);
 	freeMethod(m);
 
-	return (assert1)?1:0;
+	return 1;
 }

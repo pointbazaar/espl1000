@@ -18,6 +18,8 @@ struct Expr* copyExpr(struct Expr* expr);
 struct FloatConst* copyFloatConst(struct FloatConst* fc);
 struct Identifier* copyIdentifier(struct Identifier* id);
 struct IntConst* copyIntConst(struct IntConst* ic);
+struct HexConst* copyHexConst(struct HexConst* hc);
+struct BinConst* copyBinConst(struct BinConst* hc);
 struct SimpleVar* copySimpleVar(struct SimpleVar* sv);
 struct Term* copyTerm(struct Term* t);
 struct UnOpTerm* copyUnOpTerm(struct UnOpTerm* t);

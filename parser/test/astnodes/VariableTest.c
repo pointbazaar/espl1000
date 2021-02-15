@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <assert.h>
 
 int variable_test_parse_struct_member_access(bool debug) {
 
@@ -26,16 +27,16 @@ int variable_test_parse_struct_member_access(bool debug) {
 		return 0;
 	}
 
-	bool assert1 = (1 == v->count_memberAccessList);
+	assert(1 == v->count_memberAccessList);
 	
-	bool assert2 = strcmp("x", v->simpleVar->name) == 0;
+	assert(strcmp("x", v->simpleVar->name) == 0);
 
-	bool assert4 = strcmp("a", v->memberAccessList[0]->simpleVar->name) == 0;
+	assert(strcmp("a", v->memberAccessList[0]->simpleVar->name) == 0);
 	
 	freeTokenList(tokens);
 	freeVariable(v);
 
-	return (assert1&&assert2&&assert4)?1:0;
+	return 1;
 }
 
 int variable_test_parse_index_access(bool debug) {
@@ -51,17 +52,15 @@ int variable_test_parse_index_access(bool debug) {
 	list_add(tokens, makeToken(RBRACKET));
 
 	struct Variable* node = makeVariable(tokens,debug);
-	if(node==NULL){
-		return 0;
-	}
+	assert(node != NULL);
 
-	bool assert1 = (0 == node->count_memberAccessList);
-	bool assert2 = strcmp("x", node->simpleVar->name) == 0;
+	assert(0 == node->count_memberAccessList);
+	assert(strcmp("x", node->simpleVar->name) == 0);
 	
 	freeTokenList(tokens);
 	freeVariable(node);
 
-	return (assert1&&assert2)?1:0;
+	return 1;
 }
 
 int variable_test_parse_struct_member_access_and_index_access(bool debug) {
@@ -84,18 +83,14 @@ int variable_test_parse_struct_member_access_and_index_access(bool debug) {
 	list_add(tokens, makeToken2(ID,"b") );
 
 	struct Variable* node = makeVariable(tokens,debug);
+	assert(node != NULL);
 
-	if(node==NULL){
-		return 0;
-	}
-
-	bool assert1 = (1 == node->count_memberAccessList);
-	bool assert2 = strcmp("x", node->simpleVar->name) == 0;
-
-	bool assert3 = strcmp("a", node->memberAccessList[0]->simpleVar->name) == 0;
+	assert(1 == node->count_memberAccessList);
+	assert(strcmp("x", node->simpleVar->name) == 0);
+	assert(strcmp("a", node->memberAccessList[0]->simpleVar->name) == 0);
 	
 	freeTokenList(tokens);
 	freeVariable(node);
 
-	return (assert1&&assert2&&assert3)?1:0;
+	return 1;
 }

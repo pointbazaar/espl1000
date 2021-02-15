@@ -7,6 +7,7 @@
 #include "../../../ast/free_ast.h"
 
 #include <stdio.h>
+#include <assert.h>
 
 int break_test1(bool debug){
 	
@@ -25,10 +26,10 @@ int break_test1(bool debug){
 
 	struct BreakStmt* node = makeBreakStmt(list,debug);
 	
-	const bool a1 = node != NULL;
+	assert(node != NULL);
 	
 	freeTokenList(list);
 	freeBreakStmt(node);
 
-	return (a1)?1:0;
+	return 1;
 }

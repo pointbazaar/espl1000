@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <assert.h>
 
 int test_unop_with(bool debug){
 	if(debug){ printf("TEST: test_unop_with()\n"); }
@@ -16,12 +17,14 @@ int test_unop_with(bool debug){
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(OPKEY, "!"));
 	list_add(list, makeToken2(INTEGER,"4"));
+	
 	struct UnOpTerm* t = makeUnOpTerm(list,debug);
+	assert(t != NULL);
 	
 	freeTokenList(list);
 	freeUnOpTerm(t);
 	
-	return (t != NULL)?1:0;
+	return 1;
 }
 
 int test_unop_without(bool debug){
@@ -29,10 +32,12 @@ int test_unop_without(bool debug){
 	
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(INTEGER,"4"));
+	
 	struct UnOpTerm* t = makeUnOpTerm(list,debug);
+	assert(t != NULL);
 	
 	freeTokenList(list);
 	freeUnOpTerm(t);
 	
-	return (t != NULL)?1:0;
+	return 1;
 }

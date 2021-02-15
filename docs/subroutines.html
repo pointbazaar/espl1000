@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>SmallDragon - Subroutine Declarations</title>
+  <meta name="description" content="SmallDragon Subroutine Declarations">
+  <meta name="author" content="SmallDragon">
+
+  <link rel="icon" href="img/favicon.ico">
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<h1>SmallDragon Subroutine Declarations</h1>
+
+<p>
+SmallDragon uses 'fn' to declare and define a subroutine/function.<br> 
+</p>
+
+<h3> Example </h3>
+
+<pre>
+<code>
+fn main () ~&gt; Int {
+	return 0;
+}
+</code>
+</pre>
+
+<p>
+In this Example, 'main' is the name of the subroutine, it takes no arguments,
+and the return Type is 'Int'. The subroutine is impure, as indicated by '~&gt;',
+which means it is allowed to have observable side effects.
+</p>
+
+<h3> Example 2 </h3>
+
+<pre>
+<code>
+fn add (Int a, Int b) -&gt; Int {
+	return a+b;
+}
+</code>
+</pre>
+
+<p>
+In this case, 'add' takes 2 arguments, and produces no side effects.
+</p>
+
+</body>
+</html>

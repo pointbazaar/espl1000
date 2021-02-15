@@ -8,7 +8,7 @@
 
 struct SST* makeSubrSymTable(struct Namespace* ns, bool debug){
 	
-	if(debug){ printf("makeSubrSymTable(%p, ...)\n", ns); }
+	if(debug){ printf("makeSubrSymTable(%p, ...)\n", (void*)ns); }
 	
 	struct SST* sst = malloc(sizeof(struct SST));
 	

@@ -8,12 +8,11 @@
 #include "TypeParam.h"
 #include "BasicTypeWrapped.h"
 #include "../../../../token/token.h"
-#include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 
 struct Type* makeType_1(struct BasicTypeWrapped* typeNode){
 
-	struct Type* res = smalloc(sizeof(struct Type));
+	struct Type* res = malloc(sizeof(struct Type));
 
 	res->m1 = typeNode;
 	res->m2 = NULL;
@@ -24,7 +23,7 @@ struct Type* makeType_1(struct BasicTypeWrapped* typeNode){
 
 struct Type* makeType_2(struct TypeParam* typeNode){
 
-	struct Type* res = smalloc(sizeof(struct Type));
+	struct Type* res = malloc(sizeof(struct Type));
 
 	res->m1 = NULL;
 	res->m2 = typeNode;
@@ -35,7 +34,7 @@ struct Type* makeType_2(struct TypeParam* typeNode){
 
 struct Type* makeType_3(struct ArrayType* typeNode){
 
-	struct Type* res = smalloc(sizeof(struct Type));
+	struct Type* res = malloc(sizeof(struct Type));
 
 	res->m1 = NULL;
 	res->m2 = NULL;
@@ -51,7 +50,7 @@ struct Type* makeType2(struct TokenList* tokens, bool debug){
 		list_print(tokens);
 	}
 
-	struct Type* res = smalloc(sizeof(struct Type));
+	struct Type* res = malloc(sizeof(struct Type));
 	res->m1 = NULL;
 	res->m2 = NULL;
 	res->m3 = NULL;

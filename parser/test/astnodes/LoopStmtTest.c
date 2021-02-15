@@ -7,6 +7,7 @@
 #include "../../../ast/free_ast.h"
 
 #include <stdio.h>
+#include <assert.h>
 
 int loop_test1(bool debug){
 	
@@ -28,10 +29,10 @@ int loop_test1(bool debug){
 
 	struct LoopStmt* node = makeLoopStmt(list,debug);
 	
-	const bool a1 = node != NULL;
+	assert(node != NULL);
 	
 	freeTokenList(list);
 	freeLoopStmt(node);
 
-	return (a1)?1:0;
+	return 1;
 }

@@ -7,6 +7,7 @@
   <meta name="description" content="SmallDragon Composite Data Types">
   <meta name="author" content="SmallDragon">
 
+  <link rel="icon" href="img/favicon.ico">
   <link rel="stylesheet" href="style.css">
 
 </head>
@@ -18,7 +19,9 @@
 <p>
 SmallDragon uses 'struct' to define a Composite Data Type.<br>
 SmallDragon structs like C structs semantically, but different
-syntactically. 
+syntactically. SmallDragon uses ';' at the end of each struct member 
+declaration, same as in C, because this notation is both simple on it's own
+and also familiar to those who know C.
 </p>
 
 <h3> Example </h3>
@@ -26,8 +29,8 @@ syntactically.
 <pre>
 <code>
 struct MyStruct {
-	Int a,
-	MyStruct b
+	Int a;
+	MyStruct b;
 }
 </code>
 </pre>
@@ -38,10 +41,11 @@ struct MyStruct {
 For each declared struct X, sd generates:
 </p>
 <ul>
-	<li> newX()     - allocates memory for an instance of struct X</li>
-	<li> makeX(...) - like newX, but also accepts all members as arguments</li>
-	<li> copyX(X x) - returns a shallow copy </li>
-	<li> delX(X x)  - frees (shallow) the instance x </li>
+	<li> newX()      - allocates memory for an instance of struct X</li>
+	<li> makeX(...)  - like newX, but also accepts all members as arguments</li>
+	<li> copyX(X x)  - returns a shallow copy </li>
+	<li> delX(X x)   - frees (shallow) the instance x </li>
+	<li> printX(X x) - prints the member values </li>
 </ul>
 
 <p>

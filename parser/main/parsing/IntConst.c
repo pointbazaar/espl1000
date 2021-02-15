@@ -5,13 +5,12 @@
 #include "IntConst.h"
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 #include "../../../token/token.h"
 
 struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 
-	struct IntConst* res = smalloc(sizeof(struct IntConst));
+	struct IntConst* res = malloc(sizeof(struct IntConst));
 
 	if(debug){
 		printf("IntConst(...) from ");

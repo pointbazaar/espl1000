@@ -18,7 +18,7 @@ int test_parser_case_stmt(bool debug) {
 	
 	list_add(list, makeToken2(CASE,"case"));
 	
-	list_add(list, makeToken2(BCONST,"true"));
+	list_add(list, makeToken2(BCONST_TRUE,"true"));
 	
 	list_add(list, makeToken2(LCURLY,"{"));
 	

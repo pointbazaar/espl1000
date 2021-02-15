@@ -1,10 +1,48 @@
-language: c
 os: linux
+dist: focal #default dist, distro matrix is in 'jobs'
+
+compiler: gcc
+language: c
+
+#https://docs.travis-ci.com/user/reference/overview/
+#as per their docs, not every dist/arch combination is allowed.
+
+jobs:
+  include: 
+    - dist: focal # 20.04
+      arch: amd64
+    
+    - dist: focal
+      arch: arm64
+
+    - dist: bionic # 18.04
+      arch: amd64
+
+    - dist: bionic
+      arch: arm64
+
+    - dist: xenial # 16.04
+      arch: amd64
+
+    - dist: xenial
+      arch: arm64
+    
+    - dist: trusty # 14.04
+      arch: amd64
+ 
+    # their gcc does not have --std=c11
+    #- dist: precise # 12.04
+    #  arch: amd64
+
 before_install:
 - pwd
 - cd .
-- sudo apt-get install -y valgrind
+addons:
+  apt:
+    packages:
+      - valgrind
+      - flex
 install: pwd
-script: make
+script: make all_no_valgrind
 env:
-- export PATH=$PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser
+- export PATH=$PATH:$(pwd):$(pwd)/lexer_flex:$(pwd)/parser:$(pwd)/transpiler

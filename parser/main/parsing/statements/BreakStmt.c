@@ -6,7 +6,6 @@
 #include "../StmtBlock.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../commandline/TokenList.h"
-#include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 #include "../../../../token/token.h"
 
@@ -38,7 +37,7 @@ struct BreakStmt* makeBreakStmt(struct TokenList* tokens, bool debug) {
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
 	
-	struct BreakStmt* res = smalloc(sizeof(struct BreakStmt));
+	struct BreakStmt* res = malloc(sizeof(struct BreakStmt));
 
 	return res;
 }

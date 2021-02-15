@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <assert.h>
 
 int methodcall_test1(bool debug) {
 
@@ -22,13 +23,13 @@ int methodcall_test1(bool debug) {
 
 	struct MethodCall* call = makeMethodCall(l,debug);
 
-	bool assert1 = (0 == list_size(l));
-	bool assert2 = call != NULL;
+	assert(0 == list_size(l));
+	assert(call != NULL);
 	
 	freeTokenList(l);
 	freeMethodCall(call);
 	
-	return (assert1 && assert2)?1:0;
+	return 1;
 }
 
 int methodcall_test2(bool debug) {
@@ -46,13 +47,13 @@ int methodcall_test2(bool debug) {
 
 	struct MethodCall* call = makeMethodCall(list,debug);
 
-	bool assert1 = (0 == list_size(list));
-	bool assert2 = call != NULL;
+	assert(0 == list_size(list));
+	assert(call != NULL);
 	
 	freeTokenList(list);
 	freeMethodCall(call);
 
-	return (assert1 && assert2)?1:0;
+	return 1;
 }
 
 int methodcall_test3(bool debug) {
@@ -70,13 +71,13 @@ int methodcall_test3(bool debug) {
 
 	struct MethodCall* call = makeMethodCall(list,debug);
 
-	bool assert1 = (0 == list_size(list));
-	bool assert2 = call != NULL;
+	assert(0 == list_size(list));
+	assert(call != NULL);
 	
 	freeTokenList(list);
 	freeMethodCall(call);
 
-	return (assert1 && assert2)?1:0;
+	return 1;
 }
 
 int methodcall_test_can_parse_subroutine_call(bool debug) {
@@ -93,13 +94,13 @@ int methodcall_test_can_parse_subroutine_call(bool debug) {
 
 	struct MethodCall* call = makeMethodCall(tl,debug);
 
-	bool assert1 = (0 == list_size(tl));
-	bool assert2 = call != NULL;
+	assert(0 == list_size(tl));
+	assert(call != NULL);
 	
 	freeTokenList(tl);
 	freeMethodCall(call);
 
-	return (assert1 && assert2)?1:0;
+	return 1;
 }
 
 int methodcall_test_can_parse_subroutine_call2(bool debug) {
@@ -117,12 +118,12 @@ int methodcall_test_can_parse_subroutine_call2(bool debug) {
 
 	struct MethodCall* call = makeMethodCall(tokens,debug);
 
-	bool assert1 = (0 == list_size(tokens));
-	bool assert2 = call != NULL;
+	assert(0 == list_size(tokens));
+	assert(call != NULL);
 	
 	freeTokenList(tokens);
 	freeMethodCall(call);
 
-	return (assert1 && assert2)?1:0;
+	return 1;
 }
 

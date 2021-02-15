@@ -3,7 +3,6 @@
 #include <string.h>
 
 #include "ASTWriter.h"
-#include "../util/util.h"
 
 // --- private subroutines (private to this file) ---
 
@@ -26,6 +25,8 @@ void writeOp(struct Op* m, 			FILE* file);
 
 //const nodes
 void writeIntConst(struct IntConst* m, 		 FILE* file);
+void writeHexConst(struct HexConst* m, 		 FILE* file);
+void writeBinConst(struct BinConst* m, 		 FILE* file);
 void writeBoolConst(struct BoolConst* m, 	 FILE* file);
 void writeCharConst(struct CharConst* m, 	 FILE* file);
 void writeFloatConst(struct FloatConst* m, 	 FILE* file);
@@ -125,7 +126,10 @@ void writeMethod(struct Method* m, FILE* file){
 void writeStructDecl(struct StructDecl* m, FILE* file){
 	
 	fprintf(file, "StructDecl\t");
-	fprintf(file, "%s\t%d\t", m->name, m->count_members);
+	
+	writeSimpleType(m->type, file);
+	
+	fprintf(file, "%d\t", m->count_members);
 	for(int i=0;i < m->count_members;i++){
 		writeStructMember(m->members[i], file);
 	}
@@ -205,14 +209,16 @@ void writeTerm(struct Term* m, FILE* file){
 	fprintf(file,"%d\t", m->kind);
 
 	switch(m->kind){
-		case 1: writeBoolConst(m->ptr.m1,file); break;
-		case 2: writeIntConst(m->ptr.m2,file); break;
-		case 3: writeCharConst(m->ptr.m3,file); break;
-		case 4: writeMethodCall(m->ptr.m4,file); break;
-		case 5: writeExpr(m->ptr.m5,file); break;
-		case 6: writeVariable(m->ptr.m6,file); break;
-		case 7: writeFloatConst(m->ptr.m7,file); break;
-		case 8: writeStringConst(m->ptr.m8, file); break;
+		case  1: writeBoolConst(m->ptr.m1,file); break;
+		case  2: writeIntConst(m->ptr.m2,file); break;
+		case  3: writeCharConst(m->ptr.m3,file); break;
+		case  4: writeMethodCall(m->ptr.m4,file); break;
+		case  5: writeExpr(m->ptr.m5,file); break;
+		case  6: writeVariable(m->ptr.m6,file); break;
+		case  7: writeFloatConst(m->ptr.m7,file); break;
+		case  8: writeStringConst(m->ptr.m8, file); break;
+		case  9: writeHexConst(m->ptr.m9, file); break;
+		case 10: writeBinConst(m->ptr.m10, file); break;
 		default:
 			printf("Error in writeTerm(...)\n");
 			fclose(file);
@@ -243,6 +249,12 @@ void writeBoolConst(struct BoolConst* m, FILE* file){
 }
 void writeIntConst(struct IntConst* m, FILE* file){
 	fprintf(file, "IntConst\t%d\t", m->value);
+}
+void writeHexConst(struct HexConst* m, FILE* file){
+	fprintf(file, "HexConst\t%x\t", m->value);
+}
+void writeBinConst(struct BinConst* m, FILE* file){
+	fprintf(file, "BinConst\t%x\t", m->value);
 }
 void writeCharConst(struct CharConst* m, FILE* file){
 	fprintf(file, "CharConst\t%c\t", m->value);
@@ -457,6 +469,11 @@ void writeBasicTypeWrapped(struct BasicTypeWrapped* m, FILE* file){
 void writeSimpleType(struct SimpleType* m, FILE* file){
 	fprintf(file, "SimpleType\t");
 	fprintf(file,"%s\t",m->typeName);
+	
+	fprintf(file, "%d\t", m->typeParamCount);
+	for(int i=0;i<m->typeParamCount;i++){
+		fprintf(file, "%d\t", m->typeParams[i]);
+	}
 }
 
 void writeSubrType(struct SubrType* m, FILE* file){

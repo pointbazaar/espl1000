@@ -10,3 +10,20 @@ a {
 a, p, pre, code, li {
 	font-size: 1em;
 }
+
+.nav-bg{
+	background-color: rgb(159, 201, 167);
+	padding: 3px;
+}
+
+.nav-bg a {
+	color: rgb(209, 79, 66);
+	font-size: 1.2em;
+}
+
+.box {
+	border: 1px solid rgb(209, 79, 66);
+	border-radius: 6px;
+	margin: 2px;
+	padding: 5px;
+}

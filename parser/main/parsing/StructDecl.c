@@ -4,10 +4,10 @@
 
 #include "StructDecl.h"
 #include "StructMember.h"
+#include "typenodes/SimpleType.h"
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
 #include "../../../token/token.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 
 struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
@@ -17,9 +17,9 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 		list_print(tokens);
 	}
 
-	struct StructDecl* res = smalloc(sizeof(struct StructDecl));
+	struct StructDecl* res = malloc(sizeof(struct StructDecl));
 	
-	res->members = smalloc(sizeof(struct StructMember*)*1);
+	res->members = malloc(sizeof(struct StructMember*)*1);
 	res->count_members = 0;
 	
 	struct TokenList* copy = list_copy(tokens);
@@ -35,9 +35,16 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 		list_consume(copy, 1);
 		
 		
-		//read name
-		strcpy(res->name, list_head(copy)->value_ptr);
-		list_consume(copy, 1);
+		//read the struct type
+		struct SimpleType* st = makeSimpleType2(copy, debug);
+		if(st == NULL){
+			printf("expected SimpleType, but got: \n");
+			list_print(copy);
+			exit(1);
+		}
+		res->type = st;
+		
+		
 			
 		next = list_head(copy);
 		if(next->kind != LCURLY){
@@ -53,12 +60,6 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 			
 			res->members[res->count_members] = member;
 			res->count_members++;
-			
-			next = list_head(copy);
-			if(next->kind != COMMA){
-				break;
-			}
-			list_consume(copy, 1);
 			
 			//we just hope that the realloc will go through here
 			res->members = realloc(

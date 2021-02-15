@@ -7,6 +7,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <assert.h>
 
 int whilestmt_test1(bool debug) {
 
@@ -31,18 +32,16 @@ int whilestmt_test1(bool debug) {
 	list_add(list, makeToken(RCURLY) );
 
 	struct WhileStmt* ws = makeWhileStmt(list,debug);
-	if(ws == NULL){return 0;}
+	assert(ws != NULL);
 	
-	
-	bool a1 = ws->block->count == 0;
-	bool a2 = ws->condition != NULL;
+	assert(ws->block->count == 0);
+	assert(ws->condition != NULL);
 	
 	freeTokenList(list);
 	freeWhileStmt(ws);
 	
-	return (a1 && a2)?1:0;
+	return 1;
 }
-
 
 int whilestmt_test2(bool debug){
 	
@@ -67,19 +66,16 @@ int whilestmt_test2(bool debug){
 	list_add(list, makeToken(RCURLY) );
 
 	struct WhileStmt* ws = makeWhileStmt(list,debug);
-	if(ws == NULL){ return 0; }
+	assert(ws != NULL);
 	
-	bool a1 = ws->block->count == 0;
-	bool a2 = ws->condition != NULL;
+	assert(ws->block->count == 0);
+	assert(ws->condition != NULL);
 	
 	struct Expr* e = ws->condition;
-	
-	if(e->term1 == NULL){
-		return 0;
-	}
+	assert(e->term1 != NULL);
 	
 	freeTokenList(list);
 	freeWhileStmt(ws);
 
-	return (a1 && a2)?1:0;
+	return 1;
 }

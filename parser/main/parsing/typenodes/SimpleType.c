@@ -5,9 +5,10 @@
 #include "SimpleType.h"
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
-#include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 #include "../../../../token/token.h"
+
+void parse_type_params_rest(struct SimpleType* res, struct TokenList* tokens);
 
 struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 
@@ -18,39 +19,114 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 	
 	if(list_size(tokens) == 0){ return NULL; }
 
-	struct SimpleType* res = smalloc(sizeof(struct SimpleType));
-	
+	struct SimpleType* res = malloc(sizeof(struct SimpleType));
+	res->typeParamCount = 0;
 	strcpy(res->typeName, "");
 
-	struct Token* token = list_head(tokens);
-
-	if(debug){
-		printf("\tinspect token kind\n");
+	struct Token* next = list_head(tokens);
+	
+	if (next->kind == TYPEIDENTIFIER) {
+		
+		strcpy(res->typeName, next->value_ptr);
+		list_consume(tokens, 1);
+		
+		if(list_size(tokens) < 3){ return res; }
+		
+		next = list_head(tokens);
+		
+		if(next->kind == OPKEY && strcmp(next->value_ptr, "<")==0 ){
+			list_consume(tokens, 1);
+			parse_type_params_rest(res, tokens);
+		}	
+		
+		return res;	
 	}
 	
-	if (token->kind == TYPEIDENTIFIER) {
-		strcpy(res->typeName, token->value_ptr);
-	} else if (token->kind == ANYTYPE) {
+	if (next->kind == ANYTYPE) {
+		
 		strcpy(res->typeName, "#");
-	} else {
-		free(res);
-		return NULL;
+		list_consume(tokens, 1);
+		return res;
 	}
-
-	list_consume(tokens, 1);
-
-	if(debug){
-		printf("\tsuccess parsing SimpleType\n");
-	}
-
-	return res;
+	
+	free(res);
+	return NULL;	
 }
 
 struct SimpleType* makeSimpleType(char* typeName) {
-	struct SimpleType* res = smalloc(sizeof(struct SimpleType));
-
+	struct SimpleType* res = malloc(sizeof(struct SimpleType));
+	res->typeParamCount = 0;
 	strcpy(res->typeName, typeName);
 
 	return res;
 }
 
+void parse_type_params_rest(struct SimpleType* res, struct TokenList* tokens){
+	
+	uint32_t cap = 10; //capacity
+	
+	res->typeParams = malloc(sizeof(uint8_t) * cap);
+	
+	//expect ?TX
+	struct Token* next = list_head(tokens);
+	
+	if(next->kind != TPARAM){
+		printf("Expected Type Parameter, got:\n");
+		list_print(tokens);
+		exit(1);
+	}
+	
+	res->typeParams[res->typeParamCount] = atoi(next->value_ptr);
+	res->typeParamCount += 1;
+	list_consume(tokens, 1);
+	
+	next = list_head(tokens);
+	
+	while(next->kind == COMMA){
+		
+		list_consume(tokens, 1);
+		
+		if(next->kind != TPARAM){
+			printf("Expected Type Parameter, got:\n");
+			list_print(tokens);
+			exit(1);
+		}
+		
+		res->typeParams[res->typeParamCount] = atoi(next->value_ptr);
+		res->typeParamCount += 1;
+		list_consume(tokens, 1);
+		
+		if(res->typeParamCount < cap){
+			
+			next = list_head(tokens);
+			continue;
+		}
+			
+		cap *= 2;
+		
+		const size_t newsize = sizeof(uint8_t) * cap;
+		res->typeParams = realloc(res->typeParams, newsize);
+
+		next = list_head(tokens);
+	}
+	
+	next = list_head(tokens);
+	
+	//expect '>'
+	const bool is_opkey = next->kind == OPKEY;
+	const bool next_gt = strcmp(next->value_ptr, ">") == 0;
+		
+	if(is_opkey && next_gt){
+		
+		list_consume(tokens, 1);
+		return;
+	}
+		
+	printf("Syntax Error: expected '>', but got:\n");
+	list_print(tokens);
+	
+	free(res);
+	exit(1);
+	
+	return;
+}

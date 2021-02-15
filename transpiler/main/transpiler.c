@@ -3,16 +3,16 @@
 #include <string.h>
 #include <libgen.h>
 #include <stdbool.h>
+#include <malloc.h>
 
 #include "../../ast/ast_reader.h"
 #include "../../ast/ast.h"
 #include "../../ast/free_ast.h"
 #include "../test/test.h"
 
-#include "c_code_gen.h"
+#include "code_gen/c_code_gen.h"
 #include "flags.h"
 #include "help.h"
-
 #include "transpiler.h"
 
 // ----------------
@@ -21,6 +21,8 @@ void invoke_lexer_parser(char* filename, struct Flags* flags);
 // ----------------
 
 int main(int argc, char* argv[]){
+
+	mallopt(M_CHECK_ACTION, 3);
 
 	char* filename = NULL;
 	
@@ -90,9 +92,8 @@ void invoke_lexer_parser(char* filename, struct Flags* flags){
 	}
 	strcat(cmd1, filename);
 	
-	if(flags->debug){
-		printf("DEBUG: executing: %s\n", cmd1);
-	}
+	
+	printf("%s\n", cmd1);
 	system(cmd1);
 	
 	char fnamecpy[100];
@@ -110,9 +111,7 @@ void invoke_lexer_parser(char* filename, struct Flags* flags){
 		base_name
 	);
 	
-	if(flags->debug){
-		printf("DEBUG: executing: %s\n", cmd2);
-	}
+	printf("%s\n", cmd2);
 	system(cmd2);
 }
 
@@ -201,6 +200,8 @@ bool transpileAndCompile(
 		if(flags->debug){
 			printf("%s\n", cmd_gcc);
 		}
+		
+		printf("%s\n", cmd_gcc);
 		system(cmd_gcc);
 		
 		if(flags->avr){

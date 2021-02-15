@@ -4,8 +4,6 @@
 #include <unistd.h>
 #include <errno.h>
 
-#include "../../util/util.h"
-
 #include "teststatuscode.h"
 #include "../main/flags.h"
 #include "../main/transpiler.h"
@@ -38,7 +36,10 @@ int sourceToStatus(char* src, bool debug){
 	
 	transpileAndCompile(FNAME_DEFAULT, flags);
 	
-	int status = WEXITSTATUS(system("./a.out"));
+	//#define WEXITSTATUS(x)	(_W_INT(x) >> 8)
+	//#define	_W_INT(i)	(i)
+	//so we can simply avoid WEXITSTATUS(system(...))	
+	int status = system("./a.out") >> 8;
 	
 	if(!debug){
 		//in debug mode, leave the artifacts

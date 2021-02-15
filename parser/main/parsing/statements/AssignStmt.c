@@ -8,7 +8,6 @@
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../../../token/token.h"
-#include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 
 struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
@@ -18,8 +17,7 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 		list_print(tokens);
 	}
 
-	struct AssignStmt* res = smalloc(sizeof(struct AssignStmt));
-
+	struct AssignStmt* res = malloc(sizeof(struct AssignStmt));
 	res->optType = NULL;
 
 	struct TokenList* copy = list_copy(tokens);

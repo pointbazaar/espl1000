@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <assert.h>
 
 #define FAILRET if(!passed){ printf("FAILED\n"); return false;}
 
@@ -287,19 +288,16 @@ bool test_suite_struct(bool debug) {
 
 	if(debug){ printf("test_suite_struct\n"); }
 
-    int count  = 1;
-    int passed = 0;
+    assert(1 == structmember_test_can_parse_struct_member(debug));
 
-    passed +=  structmember_test_can_parse_struct_member(debug);
-
-    return passed == count;
+    return true;
 }
 
 bool test_suite_types(bool debug) {
 	
 	if(debug){ printf("test_suite_types\n"); }
 
-    int count  = 8;
+    int count  = 9;
     int passed = 0;
 
     passed +=  basictypewrapped_test_type_parsing_simple_type(debug);
@@ -307,6 +305,7 @@ bool test_suite_types(bool debug) {
     passed +=  simpletype_test_typenode_parsing(debug);
     passed +=  simpletype_test_typenode_parsing_anytype(debug);
     passed +=  simpletype_test_typenode_parsing_fails(debug);
+    passed +=  simpletype_test_generic(debug);
 
     passed +=  subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(debug);
     passed +=  subrtype_test_subroutine_type_parsing_subroutine_without_side_effects(debug);

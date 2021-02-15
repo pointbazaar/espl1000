@@ -5,13 +5,12 @@
 #include "Type.h"
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
-#include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 #include "../../../../token/token.h"
 
 struct ArrayType* makeArrayType(struct Type* element_type){
 	
-	struct ArrayType* res = smalloc(sizeof(struct ArrayType));
+	struct ArrayType* res = malloc(sizeof(struct ArrayType));
 
 	res->element_type = element_type;
 
@@ -25,7 +24,7 @@ struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug) {
 		list_print(tokens);
 	}
 
-	struct ArrayType* res = smalloc(sizeof(struct ArrayType));
+	struct ArrayType* res = malloc(sizeof(struct ArrayType));
 
 	struct TokenList* copy1 = list_copy(tokens);
 

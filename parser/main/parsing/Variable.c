@@ -8,7 +8,6 @@
 #include "../commandline/TokenKeys.h"
 #include "../commandline/TokenList.h"
 #include "../../../token/token.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 
 struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
@@ -20,10 +19,10 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 	
 	if(list_size(tokens) < 1){ return NULL; }
 
-	struct Variable* res = smalloc(sizeof(struct Variable));
+	struct Variable* res = malloc(sizeof(struct Variable));
 	res->simpleVar = NULL;
 
-	res->memberAccessList = smalloc(sizeof(struct Variable*)*1);
+	res->memberAccessList = malloc(sizeof(struct Variable*)*1);
 	res->count_memberAccessList = 0;
 
 	struct TokenList* copy = list_copy(tokens);

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SmallDragon - Primitives</title>
+  <meta name="description" content="SmallDragon Primitive Data Types">
+  <meta name="author" content="SmallDragon">
+  
+  <link rel="icon" href="img/favicon.ico">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+	
+<div class="row nav-bg">
+	<div class="col"><a href="index.html">Home</a></div>
+	<div class="col"><a href="flags.html">Flags</a></div>
+	<div class="col"><a href="roadmap.html">Roadmap</a></div>
+	<div class="col"><a href="operators.html">Operators</a></div>
+	<div class="col"><a href="primitives.html">Primitives</a></div>
+	<div class="col"><a href="architecture.html">Architecture</a></div>
+</div>
+
+<h1>SmallDragon Primitive Data Types</h1>
+
+<p>
+The primitive Data Types available in SmallDragon are used similar to those available in C,
+and are a subset of those.  
+</p>
+
+<h3> Integer Types </h3>
+
+<table>
+<tr>
+	<td>Type</td><td>Width (in bytes)</td><td>transpiles to:</td>
+</tr>
+<tr> <td>Int8</td>  <td>1</td>  <td>int8_t</td>   </tr>
+<tr> <td>Int16</td> <td>2</td> <td>int16_t</td>  </tr>
+<tr> <td>Int32</td> <td>4</td> <td>int32_t</td>  </tr>
+<tr> <td>Int64</td> <td>8</td> <td>int64_t</td>  </tr>
+<tr> <td>UInt8</td>  <td>1</td>  <td>uint8_t</td>   </tr>
+<tr> <td>UInt16</td> <td>2</td> <td>uint16_t</td>  </tr>
+<tr> <td>UInt32</td> <td>4</td> <td>uint32_t</td>  </tr>
+<tr> <td>UInt64</td> <td>8</td> <td>uint64_t</td>  </tr>
+</table>
+
+<p>
+There is also Int, which transpiles directly to 'int' in C.
+It should not be used if you want a specific size.
+</p>
+
+<h3> Other Types </h3>
+<ul>
+	<li>Bool</li>
+	<li>Char</li>
+	<li>Float</li>
+	<li>String</li>
+	<li>Hex Literals</li>
+</ul>
+
+</body>
+</html>

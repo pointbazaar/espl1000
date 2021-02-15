@@ -8,7 +8,6 @@
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
 #include "../../../token/token.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 //-------------
 struct StructMember* initStructMember();
@@ -38,6 +37,14 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 		return NULL;
 	}
 	
+	//expect ';'
+	struct Token* next = list_head(copy);
+	if(next->kind != SEMICOLON){
+		beforeAbort(res, copy);
+		return NULL;
+	}
+	list_consume(copy, 1);
+	
 	strncpy(res->name, id->identifier, DEFAULT_STR_SIZE);
 	freeIdentifier(id);
 
@@ -49,7 +56,7 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 
 struct StructMember* initStructMember(){
 	
-	struct StructMember* res = smalloc(sizeof(struct StructMember));
+	struct StructMember* res = malloc(sizeof(struct StructMember));
 	res->type = NULL;
 	
 	return res;

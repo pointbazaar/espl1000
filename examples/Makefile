@@ -1,0 +1,41 @@
+#this build script
+#tests that all examples transpile
+
+#the tests are in the same order as a 'tree examples/' would show them
+
+CALL := sd -clean
+
+all: 
+	echo "Transpiling Example Programs"
+	echo "..."
+	$(CALL) booleans/Booleans.dg
+	$(CALL) break/Break.dg
+	$(CALL) chars/Chars.dg
+	$(CALL) cmd-args/CmdArgs.dg
+	$(CALL) floats/Floats.dg
+	$(CALL) for_atmel/LoopAdd1.dg 
+	$(CALL) for_atmel/Main.dg 
+	$(CALL) functional/Filter.dg 
+	$(CALL) ifstatement/IfStatement.dg 
+	$(CALL) input/Input.dg 
+	$(CALL) local_variables/Locals.dg 
+	$(CALL) local_variables/Locals2.dg 
+	$(CALL) loops/EmptyLoop.dg 
+	$(CALL) loops/WhileLoop.dg 
+	$(CALL) loops/ForLoop.dg 
+	$(CALL) loops/Loop.dg 
+	$(CALL) mathematics/Faculty.dg 
+	$(CALL) mathematics/Fibonacci.dg 
+	$(CALL) methodCalls/MethodCall.dg 
+	$(CALL) other/Simple.dg 
+	$(CALL) other/Everything.dg 
+	$(CALL) other/Harshad.dg 
+	$(CALL) structs/MyStructs.dg 
+	$(CALL) structs/Node.dg 
+	$(CALL) switch/switch.dg 
+	echo "done!"
+
+# currently not working: 
+# - functional/Twice.dg
+# - generics/genericstruct.dg
+# - typeinference/LocalVarTypeInference.dg

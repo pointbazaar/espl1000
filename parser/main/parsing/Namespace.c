@@ -9,7 +9,6 @@
 #include "../commandline/TokenList.h"
 #include "../../../token/token.h"
 #include "../commandline/TokenKeys.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 
 struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug) {
@@ -19,7 +18,7 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 		list_print(tokens);
 	}
 
-	struct Namespace* res = smalloc(sizeof(struct Namespace));
+	struct Namespace* res = malloc(sizeof(struct Namespace));
 
 	res->count_methods = 0;
 	res->count_structs = 0;
@@ -27,8 +26,8 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 	res->capacity_methods = 5;
 	res->capacity_structs = 5;
 
-	res->methods = smalloc(sizeof(struct Method*) * res->capacity_methods);
-	res->structs = smalloc(sizeof(struct StructDecl*) * res->capacity_structs);
+	res->methods = malloc(sizeof(struct Method*) * res->capacity_methods);
+	res->structs = malloc(sizeof(struct StructDecl*) * res->capacity_structs);
 
 	strncpy(res->srcPath, tokens->relPath, DEFAULT_STR_SIZE);
 	strncpy(res->name, name, DEFAULT_STR_SIZE);

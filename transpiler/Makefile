@@ -1,11 +1,10 @@
 #it had -O0 before, but i dont think we need it
 #unless debugging becomes hard when omitting it.
-FLAGS := -march=native -g -Wall -Werror -Dctime="\"$$(date)\"" -Dgccversion="\"$$(gcc -dumpfullversion)\""
+FLAGS := -march=native -g --std=c11 -pedantic -Wall -Werror -Dctime="\"$$(date)\"" -Dgccversion="\"$$(gcc -dumpfullversion)\""
 
 CALL := gcc $(FLAGS)
 
 OBJS := build/transpiler.o \
-	build/util.o \
 	build/ast_reader.o \
 	build/c_code_gen.o \
 	build/structs_code_gen.o \
@@ -25,7 +24,9 @@ OBJS := build/transpiler.o \
 	build/free_ast.o \
 	build/gen_c_types.o
 
-all: smalldragon test valgrind
+all: all_no_valgrind valgrind
+
+all_no_valgrind: smalldragon test
 
 clean: 
 	rm -f build/*.o
@@ -36,7 +37,7 @@ test: sd
 VALGRIND_OPS := --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 --log-file="/dev/null"
 
 valgrind: sd
-	valgrind $(VALGRIND_OPS) ./sd -clean ../examples/Everything.dg
+	valgrind $(VALGRIND_OPS) ./sd -clean ../examples/other/Everything.dg
 
 smalldragon: dir $(OBJS)
 	$(CALL) -o sd build/*.o
@@ -56,19 +57,19 @@ build/free_ast.o: ../ast/free_ast.c ../ast/free_ast.h
 build/util.o: ../util/util.c
 	$(CALL) -c ../util/util.c -o $@
 
-build/transpiler.o: main/transpiler.c main/transpiler.h main/c_code_gen.h main/flags.h test/test.h main/help.h 
+build/transpiler.o: main/transpiler.c main/transpiler.h main/code_gen/c_code_gen.h main/flags.h test/test.h main/help.h 
 	$(CALL) -c main/transpiler.c -o $@
 
-build/c_code_gen.o: main/c_code_gen.c main/ctx.h \
-		main/code_gen_util.h main/flags.h main/tables/localvarsymtable.h \
-		main/structs_code_gen.h
-	$(CALL) -c main/c_code_gen.c -o $@
+build/c_code_gen.o: main/code_gen/c_code_gen.c main/ctx.h \
+		main/code_gen/code_gen_util.h main/flags.h main/tables/localvarsymtable.h \
+		main/code_gen/structs_code_gen.h
+	$(CALL) -c main/code_gen/c_code_gen.c -o $@
 
-build/code_gen_util.o: main/code_gen_util.c main/code_gen_util.h main/ctx.h
-	$(CALL) -c main/code_gen_util.c -o $@
+build/code_gen_util.o: main/code_gen/code_gen_util.c main/code_gen/code_gen_util.h main/ctx.h
+	$(CALL) -c main/code_gen/code_gen_util.c -o $@
 
-build/structs_code_gen.o: main/structs_code_gen.c main/structs_code_gen.h main/ctx.h main/flags.h
-	$(CALL) -c main/structs_code_gen.c -o $@
+build/structs_code_gen.o: main/code_gen/structs_code_gen.c main/code_gen/structs_code_gen.h main/ctx.h main/flags.h
+	$(CALL) -c main/code_gen/structs_code_gen.c -o $@
 
 build/test.o: test/test.c test/test.h \
 		main/transpiler.h main/flags.h \
@@ -79,7 +80,7 @@ build/test.o: test/test.c test/test.h \
 		test/suite/test_typeinference.h
 	$(CALL) -c test/test.c -o $@
 
-build/teststatuscode.o: test/teststatuscode.h test/teststatuscode.c main/flags.h main/transpiler.h ../util/util.c ../util/util.h
+build/teststatuscode.o: test/teststatuscode.h test/teststatuscode.c main/flags.h main/transpiler.h
 	$(CALL) -c test/teststatuscode.c -o $@
 	
 build/test_assign.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_assign.h test/suite/test_assign.c
@@ -99,8 +100,8 @@ build/typeinference.o: main/typeinference.c main/typeinference.h \
 build/help.o: main/help.c main/help.h
 	$(CALL) -c main/help.c -o $@
 
-build/gen_c_types.o: main/gen_c_types.h main/gen_c_types.c 
-	$(CALL) -c main/gen_c_types.c -o $@
+build/gen_c_types.o: main/code_gen/gen_c_types.h main/code_gen/gen_c_types.c 
+	$(CALL) -c main/code_gen/gen_c_types.c -o $@
 
 # ----------- the symbol tables --------------
 

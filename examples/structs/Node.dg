@@ -1,8 +1,8 @@
 
 struct Node {
-	Int value,
-	Node left,
-	Node right
+	Int value;
+	Node left;
+	Node right;
 }
 
 fn main () ~> Int {

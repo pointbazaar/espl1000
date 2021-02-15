@@ -8,7 +8,6 @@
 #include "../StmtBlock.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../commandline/TokenList.h"
-#include "../../../../util/util.h"
 #include "../../../../ast/free_ast.h"
 #include "../../../../token/token.h"
 
@@ -36,7 +35,7 @@ struct ForStmt* makeForStmt(struct TokenList* tokens, bool debug) {
 	
 	list_consume(copy, 1);
 	
-	struct ForStmt* res = smalloc(sizeof(struct ForStmt));
+	struct ForStmt* res = malloc(sizeof(struct ForStmt));
 	
 	//copy the index Name
 	strncpy(res->indexName,	head->value_ptr, DEFAULT_STR_SIZE);

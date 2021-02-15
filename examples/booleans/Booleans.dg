@@ -1,6 +1,7 @@
 fn main() ~> PInt {
 	PInt a = true;
 	a = false;
+	if a { printf("hi\n"); }
 	return 0;
 }
 

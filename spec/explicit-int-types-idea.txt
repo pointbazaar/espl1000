@@ -1,0 +1,11 @@
+
+Many programming languages
+provide an 'int' which is signed.
+this is easier to write than 'unsigned int' or 'uint32_t'.
+Rust provides i32, u32 among others.
+
+In my opinion it should be easy to write reagardless of the signed
+or unsigned variety, and i prefer the rust way of writing it.
+
+Smalldragon currently has 'UInt' and 'Int' among others.
+This makes it easy to opt into the unsigned variety.

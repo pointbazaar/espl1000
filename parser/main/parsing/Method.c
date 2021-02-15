@@ -12,7 +12,6 @@
 #include "statements/Stmt.h"
 #include "DeclArg.h"
 #include "../../../token/token.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 
 // --- private subroutines ---
@@ -86,12 +85,12 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 
 struct Method* initMethod(){
 	
-	struct Method* res = smalloc(sizeof(struct Method));
+	struct Method* res = malloc(sizeof(struct Method));
 
 	res->isPublic = true;
 	res->hasSideEffects = true;
 	res->count_args = 0;
-	res->args = smalloc(sizeof(struct DeclArg*)*1);
+	res->args = malloc(sizeof(struct DeclArg*)*1);
 	res->block = NULL;
 	
 	return res;

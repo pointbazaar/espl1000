@@ -1,0 +1,13 @@
+
+struct Point< ?T0 > {
+	?T0 x1;
+	?T0 x2;
+}
+
+fn main () ~> Int {
+	Point<Int> p = makePoint();
+
+	p.x1 = 3;
+
+	return 0;
+}

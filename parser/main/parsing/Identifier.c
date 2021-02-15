@@ -6,7 +6,6 @@
 #include "../commandline/TokenList.h"
 #include "../../../token/token.h"
 #include "../commandline/TokenKeys.h"
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 
 struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
@@ -18,7 +17,7 @@ struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 
 	if(list_size(tokens) == 0){ return NULL; }
 
-	struct Identifier* res = smalloc(sizeof(struct Identifier));
+	struct Identifier* res = malloc(sizeof(struct Identifier));
 
 	struct Token* tk = list_head(tokens);
 

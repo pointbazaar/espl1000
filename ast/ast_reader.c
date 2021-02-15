@@ -4,7 +4,6 @@
 
 #include "ast.h"
 #include "ast_reader.h"
-#include "../util/util.h"
 
 // ---- these subroutines can be private, because users
 // ---- of this module are probably only ever going to want
@@ -22,6 +21,8 @@ struct Op* readOp(FILE* file, bool debug);
 
 //const nodes
 struct IntConst* 	readIntConst(	FILE* file, bool debug);
+struct HexConst* 	readHexConst(	FILE* file, bool debug);
+struct BinConst* 	readBinConst(	FILE* file, bool debug);
 struct BoolConst* 	readBoolConst(	FILE* file, bool debug);
 struct CharConst* 	readCharConst(	FILE* file, bool debug);
 struct FloatConst* 	readFloatConst(	FILE* file, bool debug);
@@ -68,12 +69,13 @@ struct AST_Whole_Program* readAST(char* filename, bool debug){
 		return NULL;
 	}
 
-	struct AST_Whole_Program* ast = smalloc(sizeof(struct AST_Whole_Program));
+	struct AST_Whole_Program* ast = malloc(sizeof(struct AST_Whole_Program));
 
 	struct Namespace* ns = readNamespace(file, debug);
 	
 	ast->count_namespaces = 1;
-	ast->namespaces = smalloc(sizeof(struct Namespace*));
+	ast->namespaces = 
+		malloc(sizeof(struct Namespace*));
 	ast->namespaces[0] = ns;
 
 	fclose(file);
@@ -87,13 +89,13 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	
 	if(debug){ printf("readNamespace(...)\n"); }
 	
-	struct Namespace* ns = smalloc(sizeof(struct Namespace));
+	struct Namespace* ns = malloc(sizeof(struct Namespace));
 
 	int count = fscanf(file,
-		"%s\t%s\t%hd\t", 
+		"%s\t%s\t%u\t", 
 		ns->srcPath, 
 		ns->name, 
-		&(ns->count_methods)
+		(unsigned int*)(&(ns->count_methods))
 	);
 
 	if(count != 3){
@@ -104,7 +106,8 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	}
 
 	//read methods
-	ns->methods = smalloc(sizeof(struct Method*)*(ns->count_methods));
+	ns->methods = 
+		malloc(sizeof(struct Method*)*(ns->count_methods));
 	if(debug){
 		printf("reading %d Methods\n", ns->count_methods);
 	}
@@ -131,7 +134,8 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 		printf("reading %hd Structs\n", ns->count_structs);
 	}
 	
-	ns->structs = smalloc(sizeof(struct StructDecl*)*(ns->count_structs));
+	ns->structs = 
+		malloc(sizeof(struct StructDecl*)*(ns->count_structs));
 	for(int i=0;i < ns->count_structs; i++){
 		
 		ns->structs[i] = readStructDecl(file, debug);
@@ -145,7 +149,7 @@ struct Method* readMethod(FILE* file, bool debug){
 	
 	if(debug){ printf("readMethod(...)\n"); }
 	
-	struct Method* m = smalloc(sizeof(struct Method));
+	struct Method* m = malloc(sizeof(struct Method));
 
 	if(fscanf(
 		file,
@@ -162,14 +166,15 @@ struct Method* readMethod(FILE* file, bool debug){
 
 	m->returnType = readType(file, debug);
 
-	if(fscanf(file,"%hhd\t",&(m->count_args)) != 1){
+	if(fscanf(file,"%u\t",(unsigned int*)&(m->count_args)) != 1){
 		printf("Error reading Method 2\n");
 		fclose(file);
 		free(m);
 		exit(1);
 	}
 	
-	m->args = smalloc(sizeof(struct DeclArg*)*(m->count_args));
+	m->args = 
+		malloc(sizeof(struct DeclArg*)*(m->count_args));
 
 	for(int i = 0;i < m->count_args;i++){
 		m->args[i] = readDeclArg(file, debug);
@@ -185,17 +190,25 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 	
 	if(debug){ printf("readStructDecl(...)\n"); }
 	
-	struct StructDecl* res = smalloc(sizeof(struct StructDecl));
+	struct StructDecl* res = 
+		malloc(sizeof(struct StructDecl));
+	
+	if(fscanf(file, "StructDecl\t") == EOF){
+		printf("Error reading StructDecl\n");
+		fclose(file);
+		free(res);
+		exit(1);
+	}
+	
+	res->type = readSimpleType(file, debug);
 	
 	int count_members = 0;
 	
 	if(
 		fscanf(
-			file, 
-			"StructDecl\t%s\t%d\t", 
-			res->name, 
+			file, "%d\t", 
 			&(count_members)
-		) != 2
+		) != 1
 	){
 		printf("Error reading StructDecl\n");
 		fclose(file);
@@ -205,7 +218,8 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 	
 	res->count_members = count_members;
 	
-	res->members = smalloc(sizeof(struct StructMember*)*res->count_members);
+	res->members = 
+		malloc(sizeof(struct StructMember*)*res->count_members);
 	for(int i=0;i < res->count_members;i++){
 		res->members[i] = readStructMember(file, debug);
 	}
@@ -218,7 +232,8 @@ struct StructMember* readStructMember(FILE* file, bool debug){
 	
 	if(debug){ printf("readStructMember(...)\n"); }
 	
-	struct StructMember* res = smalloc(sizeof(struct StructMember));
+	struct StructMember* res = 
+		malloc(sizeof(struct StructMember));
 	
 	if(fscanf(file, "StructMember\t") == EOF){
 		printf("Error reading StructMember\n");
@@ -247,16 +262,18 @@ struct StmtBlock* readStmtBlock(FILE* file, bool debug){
 	
 	if(debug){ printf("readStmtBlock(...)\n"); }
 	
-	struct StmtBlock* block = smalloc(sizeof(struct StmtBlock));
+	struct StmtBlock* block = 
+		malloc(sizeof(struct StmtBlock));
 	
-	if(fscanf(file, "StmtBlock\t%hd\t", &(block->count)) != 1){
+	if(fscanf(file, "StmtBlock\t%u\t", (unsigned int*)&(block->count)) != 1){
 		printf("Error reading StmtBlock\n");
 		fclose(file);
 		free(block);
 		exit(1);
 	}
 	
-	block->stmts = smalloc(sizeof(struct Stmt*)* block->count);
+	block->stmts = 
+		malloc(sizeof(struct Stmt*)* block->count);
 	
 	for(int i=0;i < block->count; i++){
 		block->stmts[i] = readStmt(file, debug);
@@ -271,7 +288,8 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 	
 	if(debug){ printf("readDeclArg(...)\n"); }
 	
-	struct DeclArg* da = smalloc(sizeof(struct DeclArg));
+	struct DeclArg* da = 
+		malloc(sizeof(struct DeclArg));
 
 	if(fscanf(file, "DeclaredArg\t") == EOF){
 		printf("Error reading DeclaredArg\n");
@@ -322,7 +340,8 @@ struct Expr* readExpr(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct Expr* expr = smalloc(sizeof(struct Expr));
+	struct Expr* expr = 
+		malloc(sizeof(struct Expr));
 
 	expr->term1 = readUnOpTerm(file, debug);
 	
@@ -347,7 +366,8 @@ struct Op* readOp(FILE* file, bool debug){
 	
 	if(debug){ printf("readOp(...)\n"); }
 	
-	struct Op* op = smalloc(sizeof(struct Op));
+	struct Op* op = 
+		malloc(sizeof(struct Op));
 	
 	if(fscanf(file, "Op\t%s\t", op->op) != 1){ 
 		printf("Error reading Op\n");
@@ -362,7 +382,8 @@ struct IntConst* readIntConst(FILE* file, bool debug){
 	
 	if(debug){printf("readIntConst(...)\n");}
 	
-	struct IntConst* ic = smalloc(sizeof(struct IntConst));
+	struct IntConst* ic = 
+		malloc(sizeof(struct IntConst));
 	
 	if(fscanf(file, "IntConst\t%d\t", &(ic->value)) != 1){
 		printf("Error reading IntConst\n");
@@ -373,11 +394,45 @@ struct IntConst* readIntConst(FILE* file, bool debug){
 
 	return ic;
 }
+
+struct HexConst* readHexConst(FILE* file, bool debug){
+	
+	if(debug){printf("readHexConst(...)\n");}
+	
+	struct HexConst* hc = malloc(sizeof(struct HexConst));
+	
+	if(fscanf(file, "HexConst\t%x\t", &(hc->value)) != 1){
+		printf("Error reading HexConst\n");
+		free(hc);
+		fclose(file);
+		exit(1);
+	}
+
+	return hc;
+}
+
+struct BinConst* readBinConst(FILE* file, bool debug){
+	
+	if(debug){printf("readBinConst(...)\n");}
+	
+	struct BinConst* hc = malloc(sizeof(struct BinConst));
+	
+	if(fscanf(file, "BinConst\t%x\t", &(hc->value)) != 1){
+		printf("Error reading BinConst\n");
+		free(hc);
+		fclose(file);
+		exit(1);
+	}
+
+	return hc;
+}
+
 struct BoolConst* readBoolConst(FILE* file, bool debug){
 	
 	if(debug){ printf("readBoolConst(...)\n"); }
 	
-	struct BoolConst* b = smalloc(sizeof(struct BoolConst));
+	struct BoolConst* b = 
+		malloc(sizeof(struct BoolConst));
 	
 	int val;
 	if(fscanf(file, "BoolConst\t%d\t", &val) != 1){
@@ -395,7 +450,8 @@ struct CharConst* readCharConst(FILE* file, bool debug){
 	
 	if(debug){ printf("readCharConst(...)\n"); }
 	
-	struct CharConst* b = smalloc(sizeof(struct CharConst));
+	struct CharConst* b = 
+		malloc(sizeof(struct CharConst));
 	
 	if(fscanf(file, "CharConst\t%c\t", &(b->value)) != 1){
 		printf("Error reading CharConst\n");
@@ -410,7 +466,8 @@ struct FloatConst* readFloatConst(FILE* file, bool debug){
 	
 	if(debug){ printf("readFloatConst(...)\n"); }
 	
-	struct FloatConst* ic = smalloc(sizeof(struct FloatConst));
+	struct FloatConst* ic = 
+		malloc(sizeof(struct FloatConst));
 	
 	if(fscanf(file, "FloatConst\t%f\t", &(ic->value)) != 1){
 		printf("Error reading FloatConst\n");
@@ -432,11 +489,12 @@ struct StringConst* readStringConst(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct StringConst* s = smalloc(sizeof(struct StringConst));
+	struct StringConst* s = 
+		malloc(sizeof(struct StringConst));
 	
 	//doing this to avoid problems
 	//with whitespace or any characters at all really
-	char* val = smalloc(sizeof(char)*(length+1));
+	char* val = malloc(sizeof(char)*(length+1));
 	val[length]='\0';
 	
 	for(int i=0;i < length; i++){
@@ -460,7 +518,8 @@ struct Variable* readVariable(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct Variable* v = smalloc(sizeof(struct Variable));
+	struct Variable* v = 
+		malloc(sizeof(struct Variable));
 
 	v->simpleVar = readSimpleVar(file, debug);
 	
@@ -473,7 +532,8 @@ struct Variable* readVariable(FILE* file, bool debug){
 	}
 	
 
-	v->memberAccessList = smalloc(sizeof(struct SimpleVar*)  * count);
+	v->memberAccessList = 
+		malloc(sizeof(struct SimpleVar*)  * count);
 	for(int i = 0;i < count; i++){
 		v->memberAccessList[i] = readVariable(file, debug);
 	}
@@ -485,7 +545,8 @@ struct SimpleVar* readSimpleVar(FILE* file, bool debug){
 	
 	if(debug){ printf("readSimpleVar(...)\n"); }
 	
-	struct SimpleVar* b = smalloc(sizeof(struct SimpleVar));
+	struct SimpleVar* b = 
+		malloc(sizeof(struct SimpleVar));
 	
 	int count;
 	
@@ -497,7 +558,8 @@ struct SimpleVar* readSimpleVar(FILE* file, bool debug){
 	}
 
 	b->count_indices = count;
-	b->indices = smalloc(sizeof(struct Expr*)* (b->count_indices+1));
+	b->indices = 
+		malloc(sizeof(struct Expr*)* (b->count_indices+1));
 	for(int i=0; i < b->count_indices; i++){
 		b->indices[i] = readExpr(file, debug);
 	}
@@ -517,19 +579,21 @@ struct Term* readTerm(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct Term* b = smalloc(sizeof(struct Term));
+	struct Term* b = malloc(sizeof(struct Term));
 	b->kind = kind;
 
 	switch(b->kind){
-		
-		case 1: b->ptr.m1 = readBoolConst(file, debug); break;
-		case 2: b->ptr.m2 = readIntConst(file, debug); break;
-		case 3: b->ptr.m3 = readCharConst(file, debug); break;
-		case 4: b->ptr.m4 = readMethodCall(file, debug); break;
-		case 5: b->ptr.m5 = readExpr(file, debug); break;
-		case 6: b->ptr.m6 = readVariable(file, debug); break;
-		case 7: b->ptr.m7 = readFloatConst(file, debug); break;
-		case 8: b->ptr.m8 = readStringConst(file, debug); break;
+	
+		case  1: b->ptr.m1  = readBoolConst(file, debug); 	break;
+		case  2: b->ptr.m2  = readIntConst(file, debug); 	break;
+		case  3: b->ptr.m3  = readCharConst(file, debug); 	break;
+		case  4: b->ptr.m4  = readMethodCall(file, debug); 	break;
+		case  5: b->ptr.m5  = readExpr(file, debug); 		break;
+		case  6: b->ptr.m6  = readVariable(file, debug); 	break;
+		case  7: b->ptr.m7  = readFloatConst(file, debug); 	break;
+		case  8: b->ptr.m8  = readStringConst(file, debug); break;
+		case  9: b->ptr.m9  = readHexConst(file, debug); 	break;
+		case 10: b->ptr.m10 = readBinConst(file, debug); 	break;
 		
 		default:
 			printf("Error in readTerm\n");
@@ -553,7 +617,8 @@ struct UnOpTerm* readUnOpTerm(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct UnOpTerm* t = smalloc(sizeof(struct UnOpTerm));
+	struct UnOpTerm* t = 
+		malloc(sizeof(struct UnOpTerm));
 	
 	if(kind == 1){
 		t->op = readOp(file, debug);
@@ -576,7 +641,8 @@ struct Range* readRange(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct Range* r = smalloc(sizeof(struct Range));
+	struct Range* r = 
+		malloc(sizeof(struct Range));
 	
 	r->start = readExpr(file, debug);
 	r->end = readExpr(file, debug);
@@ -597,7 +663,8 @@ struct Stmt* readStmt(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct Stmt* b = smalloc(sizeof(struct Stmt));
+	struct Stmt* b = 
+		malloc(sizeof(struct Stmt));
 	b->kind = kind;
 
 	switch(kind){
@@ -629,7 +696,8 @@ struct IfStmt* readIfStmt(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct IfStmt* v = smalloc(sizeof(struct IfStmt));
+	struct IfStmt* v = 
+		malloc(sizeof(struct IfStmt));
 	
 	v->condition = NULL;
 	v->block = NULL;
@@ -656,7 +724,8 @@ struct WhileStmt* readWhileStmt(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct WhileStmt* v = smalloc(sizeof(struct WhileStmt));
+	struct WhileStmt* v = 
+		malloc(sizeof(struct WhileStmt));
 
 	v->condition = readExpr(file, debug);
 	v->block = readStmtBlock(file, debug);
@@ -675,7 +744,8 @@ struct RetStmt* readRetStmt(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct RetStmt* v = smalloc(sizeof(struct RetStmt));
+	struct RetStmt* v = 
+		malloc(sizeof(struct RetStmt));
 
 	v->returnValue = readExpr(file, debug);
 	return v;
@@ -692,7 +762,8 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct AssignStmt* v = smalloc(sizeof(struct AssignStmt));
+	struct AssignStmt* v = 
+		malloc(sizeof(struct AssignStmt));
 
 	if(option == 0){
 		v->optType = NULL;
@@ -708,6 +779,7 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 		printf("Error in readAssignStmt\n");
 		exit(1);
 	}
+	v->assign_op[2]='\0';
 	strncpy(v->assign_op, assign_op, 2);
 	
 	v->expr = readExpr(file, debug);
@@ -718,14 +790,15 @@ struct MethodCall* readMethodCall(FILE* file, bool debug){
 	
 	if(debug){ printf("readMethodCall(...)\n"); }
 	
-	struct MethodCall* v = smalloc(sizeof(struct MethodCall));
+	struct MethodCall* v = 
+		malloc(sizeof(struct MethodCall));
 
 	if(
 		fscanf(
 			file, 
-			"MethodCall\t%s\t%hhd\t", 
+			"MethodCall\t%s\t%u\t", 
 			v->methodName, 
-			&(v->count_args)
+			(unsigned int*)&(v->count_args)
 		) != 2
 	){
 		printf("Error reading MethodCall\n");
@@ -734,7 +807,8 @@ struct MethodCall* readMethodCall(FILE* file, bool debug){
 		exit(1);
 	}
 
-	v->args = smalloc(sizeof(struct Expr*)*(v->count_args));
+	v->args = 
+		malloc(sizeof(struct Expr*)*(v->count_args));
 	for(int i=0;i < (v->count_args);i++){
 		v->args[i] = readExpr(file, debug);
 	}
@@ -750,7 +824,8 @@ struct LoopStmt* readLoopStmt(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct LoopStmt* v = smalloc(sizeof(struct LoopStmt));
+	struct LoopStmt* v = 
+		malloc(sizeof(struct LoopStmt));
 
 	v->count = readExpr(file, debug);
 	v->block = readStmtBlock(file, debug);
@@ -769,7 +844,8 @@ struct BreakStmt* readBreakStmt(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct BreakStmt* v = smalloc(sizeof(struct BreakStmt));
+	struct BreakStmt* v = 
+		malloc(sizeof(struct BreakStmt));
 	
 	return v;
 }
@@ -785,7 +861,8 @@ struct ForStmt* readForStmt(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct ForStmt* res = smalloc(sizeof(struct ForStmt));
+	struct ForStmt* res = 
+		malloc(sizeof(struct ForStmt));
 	
 	strncpy(res->indexName, indexName, DEFAULT_STR_SIZE);
 	res->range = readRange(file, debug);
@@ -803,7 +880,8 @@ struct SwitchStmt* readSwitchStmt(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct SwitchStmt* res = smalloc(sizeof(struct SwitchStmt));
+	struct SwitchStmt* res = 
+		malloc(sizeof(struct SwitchStmt));
 	
 	res->var = readVariable(file, debug);
 	
@@ -812,7 +890,8 @@ struct SwitchStmt* readSwitchStmt(FILE* file, bool debug){
 	res->count_cases = count;
 	
 	res->cases = NULL;
-	res->cases = smalloc(sizeof(struct CaseStmt*)* (res->count_cases));
+	res->cases = 
+		malloc(sizeof(struct CaseStmt*)* (res->count_cases));
 	
 	for(int i=0; i < res->count_cases; i++){
 		
@@ -833,7 +912,8 @@ struct CaseStmt* readCaseStmt(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct CaseStmt* res = smalloc(sizeof(struct CaseStmt));
+	struct CaseStmt* res = 
+		malloc(sizeof(struct CaseStmt));
 	res->kind = kind;
 	
 	res->ptr.m1 = NULL;
@@ -874,7 +954,8 @@ struct Type* readType(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct Type* b = smalloc(sizeof(struct Type));
+	struct Type* b = 
+		malloc(sizeof(struct Type));
 	
 	b->m1 = NULL;
 	b->m2 = NULL;
@@ -905,12 +986,13 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct SubrType* v = smalloc(sizeof(struct SubrType));
+	struct SubrType* v = 
+		malloc(sizeof(struct SubrType));
 
 	v->returnType = readType(file, debug);
 	
 	if(
-		fscanf(file, "%d\t%hhd\t", (int*)(&(v->hasSideEffects)), &(v->count_argTypes))
+		fscanf(file, "%d\t%u\t", (int*)(&(v->hasSideEffects)), (unsigned int*)&(v->count_argTypes))
 		!= 2
 	){
 		printf("Error reading SubrType 2\n");
@@ -919,7 +1001,8 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	v->argTypes = smalloc(sizeof(struct Type*)*(v->count_argTypes));
+	v->argTypes = 
+		malloc(sizeof(struct Type*)*(v->count_argTypes));
 	for(int i=0;i < (v->count_argTypes); i++){
 		v->argTypes[i] = readType(file, debug);
 	}
@@ -932,7 +1015,8 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 	
 	if(debug){ printf("readSimpleType(...)\n"); }
 	
-	struct SimpleType* v = smalloc(sizeof(struct SimpleType));
+	struct SimpleType* v = 
+		malloc(sizeof(struct SimpleType));
 	
 	//%30s ensures it does not read more than 30 chars
 	if(fscanf(file, "SimpleType\t%30s\t", v->typeName) != 1){
@@ -940,6 +1024,19 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 		free(v);
 		fclose(file);
 		exit(1);
+	}
+	
+	int count=0;
+	fscanf(file, "%d\t", &count);
+	v->typeParamCount = count;
+	if(v->typeParamCount > 0){
+		v->typeParams = 
+			malloc(sizeof(uint8_t)*(v->typeParamCount));
+	}
+	for(int i=0;i<v->typeParamCount;i++){
+		int pIndex;
+		fscanf(file, "%d\t", &pIndex);
+		v->typeParams[i] = pIndex;
 	}
 	
 	if(debug){ printf("done\n"); }
@@ -956,7 +1053,8 @@ struct ArrayType* readArrayType(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct ArrayType* v = smalloc(sizeof(struct ArrayType));
+	struct ArrayType* v = 
+		malloc(sizeof(struct ArrayType));
 	
 	v->element_type = readType(file, debug);
 	
@@ -968,9 +1066,10 @@ struct TypeParam* readTypeParam(FILE* file, bool debug){
 	
 	if(debug){ printf("readTypeParam(...)\n"); }
 	
-	struct TypeParam* v = smalloc(sizeof(struct TypeParam));
+	struct TypeParam* v = 
+		malloc(sizeof(struct TypeParam));
 	
-	if(fscanf(file, "TypeParam\t%hhd\t", &(v->index)) != 1){
+	if(fscanf(file, "TypeParam\t%u\t", (unsigned int*)&(v->index)) != 1){
 		printf("Error reading TypeParam\n");
 		free(v);
 		fclose(file);
@@ -993,7 +1092,8 @@ struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct BasicTypeWrapped* v = smalloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* v = 
+		malloc(sizeof(struct BasicTypeWrapped));
 	
 	switch(kind){
 		case 1: 

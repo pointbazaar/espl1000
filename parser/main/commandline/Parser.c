@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <assert.h>
+#include <malloc.h>
 
 #include "TokenReader.h"
 #include "../parsing/Namespace.h"
@@ -14,7 +15,6 @@
 #include "../../../ast/ASTWriter.h"
 #include "../../test/ParserTest.h"
 
-#include "../../../util/util.h"
 #include "../../../ast/free_ast.h"
 #include "../../../token/token.h"
 
@@ -45,12 +45,14 @@ int main(int argc, char** argv){
 	//multiple parallel invocations of the parser in the compiler.
 
 	//setbuf(stdout,NULL);
+	
+	mallopt(M_CHECK_ACTION, 3);
 
 	char* filename = NULL;
 	
 	int flags_capacity = 5;
 	int flagscount = 0;
-	char** flags = smalloc(sizeof(char*) * flags_capacity);
+	char** flags = malloc(sizeof(char*) * flags_capacity);
 
 	for(int i=1;i<argc;i++){
 		char* arg = argv[i];
@@ -177,7 +179,7 @@ bool main_inner(char* tokensFile, bool debug) {
 	}
 
 	fclose(f);
-	char* AST_filename = smalloc(sizeof(char)*100);
+	char* AST_filename = malloc(sizeof(char)*100);
 	strcpy(AST_filename, tokensFile);
 	int l = strlen(tokensFile) - strlen(".tokens");
 	AST_filename[l] = '\0';
@@ -221,9 +223,9 @@ struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool de
 	strcpy(tks->relPath, tokensFile);
 	
 	size_t size = 50;
-    char* line = smalloc(sizeof(char)*size);
+	char* line = malloc(sizeof(char)*size);
     
-    while (getline(&line, &size, file)){
+	while (getline(&line, &size, file)){
 		
 		line[strlen(line)-1] = '\0';
 		
