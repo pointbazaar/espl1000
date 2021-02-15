@@ -41,6 +41,7 @@ addons:
   apt:
     packages:
       - valgrind
+      - flex
 install: pwd
 script: make all_no_valgrind
 env:
