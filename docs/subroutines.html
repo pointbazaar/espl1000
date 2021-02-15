@@ -8,47 +8,61 @@
   <meta name="author" content="SmallDragon">
 
   <link rel="icon" href="img/favicon.ico">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
-<h1>SmallDragon Subroutine Declarations</h1>
+<div class="container">
+	
+	<div class="row nav-bg">
+		<div class="col"><a href="index.html">Home</a></div>
+		<div class="col"><a href="flags.html">Flags</a></div>
+		<div class="col"><a href="roadmap.html">Roadmap</a></div>
+		<div class="col"><a href="operators.html">Operators</a></div>
+		<div class="col"><a href="primitives.html">Primitives</a></div>
+		<div class="col"><a href="architecture.html">Architecture</a></div>
+	</div>
+	
+	<h1>SmallDragon Subroutine Declarations</h1>
 
-<p>
-SmallDragon uses 'fn' to declare and define a subroutine/function.<br> 
-</p>
+	<p>
+	SmallDragon uses 'fn' to declare and define a subroutine/function.<br> 
+	</p>
 
-<h3> Example </h3>
+	<h3> Example </h3>
 
-<pre>
+	<pre>
 <code>
 fn main () ~&gt; Int {
 	return 0;
 }
 </code>
-</pre>
+	</pre>
 
-<p>
-In this Example, 'main' is the name of the subroutine, it takes no arguments,
-and the return Type is 'Int'. The subroutine is impure, as indicated by '~&gt;',
-which means it is allowed to have observable side effects.
-</p>
+	<p>
+	In this Example, 'main' is the name of the subroutine, it takes no arguments,
+	and the return Type is 'Int'. The subroutine is impure, as indicated by '~&gt;',
+	which means it is allowed to have observable side effects.
+	</p>
 
-<h3> Example 2 </h3>
+	<h3> Example 2 </h3>
 
-<pre>
+	<pre>
 <code>
 fn add (Int a, Int b) -&gt; Int {
 	return a+b;
 }
 </code>
-</pre>
+	</pre>
 
-<p>
-In this case, 'add' takes 2 arguments, and produces no side effects.
-</p>
+	<p>
+	In this case, 'add' takes 2 arguments, and produces no side effects.
+	</p>
+
+</div>
 
 </body>
 </html>

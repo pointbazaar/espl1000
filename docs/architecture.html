@@ -15,34 +15,38 @@
 
 <body>
 	
-<div class="row nav-bg">
-	<div class="col"><a href="index.html">Home</a></div>
-	<div class="col"><a href="flags.html">Flags</a></div>
-	<div class="col"><a href="roadmap.html">Roadmap</a></div>
-	<div class="col"><a href="operators.html">Operators</a></div>
-	<div class="col"><a href="primitives.html">Primitives</a></div>
-	<div class="col"><a href="architecture.html">Architecture</a></div>
+<div class="container">
+	
+	<div class="row nav-bg">
+		<div class="col"><a href="index.html">Home</a></div>
+		<div class="col"><a href="flags.html">Flags</a></div>
+		<div class="col"><a href="roadmap.html">Roadmap</a></div>
+		<div class="col"><a href="operators.html">Operators</a></div>
+		<div class="col"><a href="primitives.html">Primitives</a></div>
+		<div class="col"><a href="architecture.html">Architecture</a></div>
+	</div>
+
+	<h1 class="mb-3">SmallDragon Architecture</h1>
+
+	<p>
+	SmallDragon consists of 3 Programs which share source code and data formats.
+	</p>
+
+	<ul>
+		<li> dragon-lexer</li>
+		<li> dragon-parser</li>
+		<li> sd </li>
+	</ul>
+
+	<p>
+	"dragon-lexer" tokenizes smalldragon source files, (.tokens ending) and <br>
+	"dragon-parser" parses these tokens into an AST. (.ast ending).<br>
+	"sd" then transpiles the AST into C source code.
+	</p>
+
+	<img src="https://raw.githubusercontent.com/pointbazaar/smalldragon/dev/docs/architecture.svg"/>
+
 </div>
-
-<h1>SmallDragon Architecture</h1>
-
-<p>
-SmallDragon consists of 3 Programs which share source code and data formats.
-</p>
-
-<ul>
-	<li> dragon-lexer</li>
-	<li> dragon-parser</li>
-	<li> sd </li>
-</ul>
-
-<p>
-"dragon-lexer" tokenizes smalldragon source files, (.tokens ending) and <br>
-"dragon-parser" parses these tokens into an AST. (.ast ending).<br>
-"sd" then transpiles the AST into C source code.
-</p>
-
-<img src="https://raw.githubusercontent.com/pointbazaar/smalldragon/dev/docs/architecture.svg"/>
 
 </body>
 </html>

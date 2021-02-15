@@ -12,91 +12,115 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<div class="container">
 	
-<div class="row nav-bg">
-	<div class="col"><a href="index.html">Home</a></div>
-	<div class="col"><a href="flags.html">Flags</a></div>
-	<div class="col"><a href="roadmap.html">Roadmap</a></div>
-	<div class="col"><a href="operators.html">Operators</a></div>
-	<div class="col"><a href="primitives.html">Primitives</a></div>
-	<div class="col"><a href="architecture.html">Architecture</a></div>
+	<div class="row nav-bg">
+		<div class="col"><a href="index.html">Home</a></div>
+		<div class="col"><a href="flags.html">Flags</a></div>
+		<div class="col"><a href="roadmap.html">Roadmap</a></div>
+		<div class="col"><a href="operators.html">Operators</a></div>
+		<div class="col"><a href="primitives.html">Primitives</a></div>
+		<div class="col"><a href="architecture.html">Architecture</a></div>
+	</div>
+
+	<h1 class="mb-3 mt-3">SmallDragon Operators</h1>
+
+	<p>
+	The Operators available in smalldragon are currently a subset of those available in C.<br>
+	They also have mostly the same meaning and are transpiled to the exact same Operators in C in most cases.<br>
+	<br>
+	
+	<a href="comparison-chaining.html">Comparison Operator Chaining</a> is implemented in smalldragon, so that must be considered.<br>
+
+	<br>
+	Reference: <a href="https://www.tutorialspoint.com/cprogramming/c_operators.htm">Operators in C</a>
+	</p>
+
+
+
+	<div class="row mt-4">
+		
+		<div class="col">
+			<h3> Arithmetic Operators </h3>
+			<table>
+				<tr>
+					<td>Operator</td><td>Description</td><td>Example</td>
+				</tr>
+				<tr> <td>+</td><td>...</td><td>...</td> </tr>
+				<tr> <td>-</td><td>...</td><td>...</td> </tr>
+				<tr> <td>*</td><td>...</td><td>...</td> </tr>
+				<tr> <td>/</td><td>...</td><td>...</td> </tr>
+				<tr> <td>%</td><td>...</td><td>...</td> </tr>
+			</table>
+		
+		</div>
+
+		<div class="col">
+			<h3> Relational Operators </h3>
+			<table>
+				<tr>
+					<td>Operator</td><td>Description</td><td>Example</td>
+				</tr>
+				<tr> <td>==</td><td>...</td><td>...</td> </tr>
+				<tr> <td>!=</td><td>...</td><td>...</td> </tr>
+				<tr> <td>&gt;</td><td>...</td><td>...</td> </tr>
+				<tr> <td>&lt;</td><td>...</td><td>...</td> </tr>
+				<tr> <td>&gt;=</td><td>...</td><td>...</td> </tr>
+				<tr> <td>&lt;=</td><td>...</td><td>...</td> </tr>
+			</table>
+		</div>
+		
+		<div class="col">	
+			<h3> Logical Operators  </h3>
+
+			<table>
+				<tr>
+					<td>Operator</td><td>Description</td><td>Example</td>
+				</tr>
+				<tr> <td>&amp;&amp;</td><td>logical and</td><td>...</td> </tr>
+				<tr> <td>||</td><td>logical or</td><td>...</td> </tr>
+				<tr> <td>!</td><td>logical negation(unary)</td><td>...</td> </tr>
+			</table>
+		</div>
+		
+	</div>
+	<div class="row mt-4">
+		
+		<div class="col">
+			<h3> Bitwise Operators </h3>
+			<table>
+				<tr>
+					<td>Operator</td><td>Description</td><td>Example</td>
+				</tr>
+				<tr> <td>&amp;</td><td> bitwise and</td><td>...</td> </tr>
+				<tr> <td>|</td><td> bitwise or</td><td>...</td> </tr>
+				<tr> <td>^</td><td> bitwise xor</td><td>...</td> </tr>
+				<tr> <td>~</td><td> bitwise negation(unary)</td><td>...</td> </tr>
+				<tr> <td>&lt;&lt;</td> <td>bitwise left shift</td><td>...</td> </tr>
+				<tr> <td>&gt;&gt;</td> <td>bitwise right shift</td><td>...</td> </tr>
+			</table>
+		</div>
+		
+		<div class="col">
+			<h3> Assignment Operators </h3>
+			<table>
+				<tr>
+					<td>Operator</td><td>Description</td><td>Example</td>
+				</tr>
+				<tr> <td>=</td><td>...</td><td>...</td> </tr>
+				<tr> <td>+=</td><td>...</td><td>...</td> </tr>
+				<tr> <td>-=</td><td>...</td><td>...</td> </tr>
+				<tr> <td>*=</td><td>...</td><td>...</td> </tr>
+				<tr> <td>/=</td><td>...</td><td>...</td> </tr>
+			</table>
+		</div>
+		
+		<div class="col">
+		</div>
+	</div>
+
 </div>
-
-<h1>SmallDragon Operators</h1>
-
-<p>
-The Operators available in smalldragon are currently a subset of those available in C.<br>
-They also have mostly the same meaning and are transpiled to the exact same Operators in C in most cases.<br>
-Comparison Operator Chaining is implemented in smalldragon, so that must be considered.<br>
-
-<a href="https://www.tutorialspoint.com/cprogramming/c_operators.htm">Operators in C</a>
-</p>
-
-<h3> Arithmetic Operators </h3>
-
-<table>
-<tr>
-	<td>Operator</td><td>Description</td><td>Example</td>
-</tr>
-<tr> <td>+</td><td>...</td><td>...</td> </tr>
-<tr> <td>-</td><td>...</td><td>...</td> </tr>
-<tr> <td>*</td><td>...</td><td>...</td> </tr>
-<tr> <td>/</td><td>...</td><td>...</td> </tr>
-<tr> <td>%</td><td>...</td><td>...</td> </tr>
-</table>
-
-<h3> Relational Operators </h3>
-
-<table>
-<tr>
-	<td>Operator</td><td>Description</td><td>Example</td>
-</tr>
-<tr> <td>==</td><td>...</td><td>...</td> </tr>
-<tr> <td>!=</td><td>...</td><td>...</td> </tr>
-<tr> <td>&gt;</td><td>...</td><td>...</td> </tr>
-<tr> <td>&lt;</td><td>...</td><td>...</td> </tr>
-<tr> <td>&gt;=</td><td>...</td><td>...</td> </tr>
-<tr> <td>&lt;=</td><td>...</td><td>...</td> </tr>
-</table>
-
-<h3> Logical Operators  </h3>
-
-<table>
-<tr>
-	<td>Operator</td><td>Description</td><td>Example</td>
-</tr>
-<tr> <td>&amp;&amp;</td><td>...</td><td>...</td> </tr>
-<tr> <td>||</td><td>...</td><td>...</td> </tr>
-<tr> <td>!</td><td>...</td><td>...</td> </tr>
-</table>
-
-<h3> Bitwise Operators </h3>
-
-<table>
-<tr>
-	<td>Operator</td><td>Description</td><td>Example</td>
-</tr>
-<tr> <td>&amp;</td><td>...</td><td>...</td> </tr>
-<tr> <td>|</td><td>...</td><td>...</td> </tr>
-<tr> <td>^</td><td>...</td><td>...</td> </tr>
-<tr> <td>~</td><td>...</td><td>...</td> </tr>
-<tr> <td>&lt;&lt;</td><td>...</td><td>...</td> </tr>
-<tr> <td>&gt;&gt;</td><td>...</td><td>...</td> </tr>
-</table>
-
-<h3> Assignment Operators </h3>
-
-<table>
-<tr>
-	<td>Operator</td><td>Description</td><td>Example</td>
-</tr>
-<tr> <td>=</td><td>...</td><td>...</td> </tr>
-<tr> <td>+=</td><td>...</td><td>...</td> </tr>
-<tr> <td>-=</td><td>...</td><td>...</td> </tr>
-<tr> <td>*=</td><td>...</td><td>...</td> </tr>
-<tr> <td>/=</td><td>...</td><td>...</td> </tr>
-</table>
-
 
 </body>
 </html>
