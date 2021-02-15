@@ -26,27 +26,31 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 	struct Token* next = list_head(tokens);
 	
 	if (next->kind == TYPEIDENTIFIER) {
+		
 		strcpy(res->typeName, next->value_ptr);
 		list_consume(tokens, 1);
 		
-		if(list_size(tokens) >= 3){
-			next = list_head(tokens);
-			
-			if(next->kind == OPKEY && strcmp(next->value_ptr, "<")==0 ){
-				list_consume(tokens, 1);
-				parse_type_params_rest(res, tokens);
-			}
-		}
+		if(list_size(tokens) < 3){ return res; }
 		
-	} else if (next->kind == ANYTYPE) {
+		next = list_head(tokens);
+		
+		if(next->kind == OPKEY && strcmp(next->value_ptr, "<")==0 ){
+			list_consume(tokens, 1);
+			parse_type_params_rest(res, tokens);
+		}	
+		
+		return res;	
+	}
+	
+	if (next->kind == ANYTYPE) {
+		
 		strcpy(res->typeName, "#");
 		list_consume(tokens, 1);
-	} else {
-		free(res);
-		return NULL;
+		return res;
 	}
-
-	return res;
+	
+	free(res);
+	return NULL;	
 }
 
 struct SimpleType* makeSimpleType(char* typeName) {
