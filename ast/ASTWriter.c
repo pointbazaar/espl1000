@@ -26,6 +26,7 @@ void writeOp(struct Op* m, 			FILE* file);
 //const nodes
 void writeIntConst(struct IntConst* m, 		 FILE* file);
 void writeHexConst(struct HexConst* m, 		 FILE* file);
+void writeBinConst(struct BinConst* m, 		 FILE* file);
 void writeBoolConst(struct BoolConst* m, 	 FILE* file);
 void writeCharConst(struct CharConst* m, 	 FILE* file);
 void writeFloatConst(struct FloatConst* m, 	 FILE* file);
@@ -208,15 +209,16 @@ void writeTerm(struct Term* m, FILE* file){
 	fprintf(file,"%d\t", m->kind);
 
 	switch(m->kind){
-		case 1: writeBoolConst(m->ptr.m1,file); break;
-		case 2: writeIntConst(m->ptr.m2,file); break;
-		case 3: writeCharConst(m->ptr.m3,file); break;
-		case 4: writeMethodCall(m->ptr.m4,file); break;
-		case 5: writeExpr(m->ptr.m5,file); break;
-		case 6: writeVariable(m->ptr.m6,file); break;
-		case 7: writeFloatConst(m->ptr.m7,file); break;
-		case 8: writeStringConst(m->ptr.m8, file); break;
-		case 9: writeHexConst(m->ptr.m9, file); break;
+		case  1: writeBoolConst(m->ptr.m1,file); break;
+		case  2: writeIntConst(m->ptr.m2,file); break;
+		case  3: writeCharConst(m->ptr.m3,file); break;
+		case  4: writeMethodCall(m->ptr.m4,file); break;
+		case  5: writeExpr(m->ptr.m5,file); break;
+		case  6: writeVariable(m->ptr.m6,file); break;
+		case  7: writeFloatConst(m->ptr.m7,file); break;
+		case  8: writeStringConst(m->ptr.m8, file); break;
+		case  9: writeHexConst(m->ptr.m9, file); break;
+		case 10: writeBinConst(m->ptr.m10, file); break;
 		default:
 			printf("Error in writeTerm(...)\n");
 			fclose(file);
@@ -250,6 +252,9 @@ void writeIntConst(struct IntConst* m, FILE* file){
 }
 void writeHexConst(struct HexConst* m, FILE* file){
 	fprintf(file, "HexConst\t%x\t", m->value);
+}
+void writeBinConst(struct BinConst* m, FILE* file){
+	fprintf(file, "BinConst\t%x\t", m->value);
 }
 void writeCharConst(struct CharConst* m, FILE* file){
 	fprintf(file, "CharConst\t%c\t", m->value);

@@ -30,6 +30,8 @@ void freeIntConst(struct IntConst* ic);
 
 void freeHexConst(struct HexConst* hc);
 
+void freeBinConst(struct BinConst* hc);
+
 void freeMethod(struct Method* m);
 
 void freeNamespace(struct Namespace* ns);

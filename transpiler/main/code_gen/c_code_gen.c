@@ -62,6 +62,7 @@ void transpileSimpleVar(struct SimpleVar* svar, struct Ctx* ctx);
 void transpileBoolConst		(struct BoolConst* bc, 	struct Ctx* ctx);
 void transpileIntConst		(struct IntConst* ic, 	struct Ctx* ctx);
 void transpileHexConst		(struct HexConst* hc, 	struct Ctx* ctx);
+void transpileBinConst		(struct BinConst* hc, 	struct Ctx* ctx);
 void transpileCharConst		(struct CharConst* cc, 	struct Ctx* ctx);
 void transpileFloatConst	(struct FloatConst* fc, struct Ctx* ctx);
 void transpileStringConst	(struct StringConst* s, struct Ctx* ctx);
@@ -638,35 +639,28 @@ void transpileTerm(struct Term* t, struct Ctx* ctx){
 	
 	switch(t->kind){
 		case 1:
-			transpileBoolConst(t->ptr.m1, ctx);
-			break;
+			transpileBoolConst(t->ptr.m1, ctx); break;
 		case 2:
-			transpileIntConst(t->ptr.m2, ctx);
-			break;
+			transpileIntConst(t->ptr.m2, ctx); break;
 		case 3:
-			transpileCharConst(t->ptr.m3, ctx);
-			break;
+			transpileCharConst(t->ptr.m3, ctx); break;
 		case 4:
-			transpileMethodCall(t->ptr.m4, ctx);
-			break;
+			transpileMethodCall(t->ptr.m4, ctx); break;
 		case 5:
-			transpileExpr(t->ptr.m5, ctx);
-			break;
+			transpileExpr(t->ptr.m5, ctx); break;
 		case 6:
-			transpileVariable(t->ptr.m6, ctx);
-			break;
+			transpileVariable(t->ptr.m6, ctx); break;
 		case 7:
-			transpileFloatConst(t->ptr.m7, ctx);
-			break;
+			transpileFloatConst(t->ptr.m7, ctx); break;
 		case 8:
-			transpileStringConst(t->ptr.m8, ctx);
-			break;
+			transpileStringConst(t->ptr.m8, ctx); break;
 		case 9:
-			transpileHexConst(t->ptr.m9, ctx);
-			break;
+			transpileHexConst(t->ptr.m9, ctx); break;
+		case 10:
+			transpileBinConst(t->ptr.m10, ctx); break;
 		default:
-		printf("Error in transpileTerm\n");
-		exit(1);
+			printf("Error in transpileTerm\n");
+			exit(1);
 	}
 }
 
@@ -714,6 +708,36 @@ void transpileIntConst(struct IntConst* ic, struct Ctx* ctx){
 
 void transpileHexConst(struct HexConst* hc, struct Ctx* ctx){
 	fprintf(ctx->file, "0x%x", hc->value);
+}
+
+void transpileBinConst(struct BinConst* hc, struct Ctx* ctx){
+	
+	fprintf(ctx->file, "0b");
+	
+	uint32_t value = hc->value;
+	
+	if(value == 0){
+		fprintf(ctx->file, "0");
+		return;
+	}
+	
+	const int size = 128;
+	
+	char buffer[size];
+	
+	int index = size - 1;
+	buffer[index--] = '\0';
+	
+	while(value > 0){
+		
+		uint8_t bit = value & 0x1;
+		
+		buffer[index--] = (bit == 0x1) ? '1' : '0';
+		
+		value >>= 1;
+	}
+	
+	fprintf(ctx->file, "%s", buffer+index+1);
 }
 
 void transpileCharConst(struct CharConst* cc, struct Ctx* ctx){

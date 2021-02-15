@@ -51,6 +51,7 @@ case	out(CASE, yytext);
 (0|[1-9][0-9]*)\.[0-9]+		out(FLOATING, yytext);
 [0-9]+			out(INTEGER, yytext);
 0x[0-9a-fA-F]+	out(HEXCONST, yytext);
+0b[0-1]+		out(BINCONST, yytext);
 '\\?.'			out(CCONST, yytext);
 \".*\"			out(STRINGCONST, yytext);
 

@@ -37,6 +37,8 @@ struct Range;
 struct BoolConst;
 struct CharConst;
 struct IntConst;
+struct HexConst;
+struct BinConst;
 struct FloatConst;
 struct StringConst;
 
@@ -102,6 +104,9 @@ struct IntConst {
 	int32_t value;
 };
 struct HexConst {
+	uint32_t value;
+};
+struct BinConst {
 	uint32_t value;
 };
 struct StringConst {
@@ -190,9 +195,10 @@ struct Term{
 		struct FloatConst* m7;
 		struct StringConst* m8;
 		struct HexConst* m9;
+		struct BinConst* m10;
 	} ptr;
 	
-	// = mX where X is from 1 .. 9
+	// = mX where X is from 1 .. 10
 	uint8_t kind;
 };
 struct Variable {

@@ -22,6 +22,7 @@ struct Op* readOp(FILE* file, bool debug);
 //const nodes
 struct IntConst* 	readIntConst(	FILE* file, bool debug);
 struct HexConst* 	readHexConst(	FILE* file, bool debug);
+struct BinConst* 	readBinConst(	FILE* file, bool debug);
 struct BoolConst* 	readBoolConst(	FILE* file, bool debug);
 struct CharConst* 	readCharConst(	FILE* file, bool debug);
 struct FloatConst* 	readFloatConst(	FILE* file, bool debug);
@@ -410,6 +411,22 @@ struct HexConst* readHexConst(FILE* file, bool debug){
 	return hc;
 }
 
+struct BinConst* readBinConst(FILE* file, bool debug){
+	
+	if(debug){printf("readBinConst(...)\n");}
+	
+	struct BinConst* hc = malloc(sizeof(struct BinConst));
+	
+	if(fscanf(file, "BinConst\t%x\t", &(hc->value)) != 1){
+		printf("Error reading BinConst\n");
+		free(hc);
+		fclose(file);
+		exit(1);
+	}
+
+	return hc;
+}
+
 struct BoolConst* readBoolConst(FILE* file, bool debug){
 	
 	if(debug){ printf("readBoolConst(...)\n"); }
@@ -566,16 +583,17 @@ struct Term* readTerm(FILE* file, bool debug){
 	b->kind = kind;
 
 	switch(b->kind){
-		
-		case 1: b->ptr.m1 = readBoolConst(file, debug); break;
-		case 2: b->ptr.m2 = readIntConst(file, debug); break;
-		case 3: b->ptr.m3 = readCharConst(file, debug); break;
-		case 4: b->ptr.m4 = readMethodCall(file, debug); break;
-		case 5: b->ptr.m5 = readExpr(file, debug); break;
-		case 6: b->ptr.m6 = readVariable(file, debug); break;
-		case 7: b->ptr.m7 = readFloatConst(file, debug); break;
-		case 8: b->ptr.m8 = readStringConst(file, debug); break;
-		case 9: b->ptr.m9 = readHexConst(file, debug); break;
+	
+		case  1: b->ptr.m1  = readBoolConst(file, debug); 	break;
+		case  2: b->ptr.m2  = readIntConst(file, debug); 	break;
+		case  3: b->ptr.m3  = readCharConst(file, debug); 	break;
+		case  4: b->ptr.m4  = readMethodCall(file, debug); 	break;
+		case  5: b->ptr.m5  = readExpr(file, debug); 		break;
+		case  6: b->ptr.m6  = readVariable(file, debug); 	break;
+		case  7: b->ptr.m7  = readFloatConst(file, debug); 	break;
+		case  8: b->ptr.m8  = readStringConst(file, debug); break;
+		case  9: b->ptr.m9  = readHexConst(file, debug); 	break;
+		case 10: b->ptr.m10 = readBinConst(file, debug); 	break;
 		
 		default:
 			printf("Error in readTerm\n");

@@ -123,7 +123,8 @@ int test_all(bool debug1) {
 	pass+=test_int_2();
 	pass+=test_int_3();
 	pass+=test_hex();
-	count+=4;
+	pass+=test_binconst();
+	count+=5;
 
 	pass+=test_struct();
 	pass+=test_return();
@@ -588,6 +589,33 @@ bool test_hex(){
 	assert(strcmp(tokens[4]->value_ptr,"0xA3")==0);
 
 	freeTokens(tokens, 5);
+
+	return true;
+}
+
+bool test_binconst(){
+	
+	if(debug) {
+		printf("test binconst\n");
+	}
+
+	char* str = "0b0 0b1 0b10 0b101";
+	struct Token** tokens = 
+		lex(str, debug);
+
+	assert(tokens[0]->kind==BINCONST);
+	assert(strcmp(tokens[0]->value_ptr,"0b0")==0);
+	
+	assert(tokens[1]->kind==BINCONST);
+	assert(strcmp(tokens[1]->value_ptr,"0b1")==0);
+	
+	assert(tokens[2]->kind==BINCONST);
+	assert(strcmp(tokens[2]->value_ptr,"0b10")==0);
+	
+	assert(tokens[3]->kind==BINCONST);
+	assert(strcmp(tokens[3]->value_ptr,"0b101")==0);
+
+	freeTokens(tokens, 4);
 
 	return true;
 }

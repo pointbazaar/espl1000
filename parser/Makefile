@@ -22,6 +22,7 @@ OBJS_MAIN := build/Parser.o \
 		build/Identifier.o \
 		build/IntConst.o \
 		build/HexConst.o \
+		build/BinConst.o \
 		build/Method.o \
 		build/Namespace.o \
 		build/Op.o \

@@ -69,18 +69,11 @@ void freeExpr(struct Expr* expr) {
 }
 
 
-void freeFloatConst(struct FloatConst* fc) {
-	free(fc);
-}
-void freeIdentifier(struct Identifier* id) {
-	free(id);
-}
-void freeIntConst(struct IntConst* ic) {
-	free(ic);
-}
-void freeHexConst(struct HexConst* hc){
-	free(hc);
-}
+void freeFloatConst(struct FloatConst* fc) { free(fc); }
+void freeIdentifier(struct Identifier* id) { free(id); }
+void freeIntConst(struct IntConst* ic) { free(ic); }
+void freeHexConst(struct HexConst* hc){ free(hc); }
+void freeBinConst(struct BinConst* hc){ free(hc); }
 
 void freeMethod(struct Method* m) {
 	
@@ -163,15 +156,16 @@ void freeTerm(struct Term* t) {
 	);
 
 	switch(t->kind){
-		case 1: freeBoolConst  (t->ptr.m1); break;
-		case 2: freeIntConst   (t->ptr.m2); break;
-		case 3: freeCharConst  (t->ptr.m3); break;
-		case 4: freeMethodCall (t->ptr.m4); break;
-		case 5: freeExpr       (t->ptr.m5); break;
-		case 6: freeVariable   (t->ptr.m6); break;
-		case 7: freeFloatConst (t->ptr.m7); break;
-		case 8: freeStringConst(t->ptr.m8); break;
-		case 9: freeHexConst   (t->ptr.m9); break;
+		case  1: freeBoolConst  (t->ptr.m1); 	break;
+		case  2: freeIntConst   (t->ptr.m2); 	break;
+		case  3: freeCharConst  (t->ptr.m3); 	break;
+		case  4: freeMethodCall (t->ptr.m4); 	break;
+		case  5: freeExpr       (t->ptr.m5); 	break;
+		case  6: freeVariable   (t->ptr.m6); 	break;
+		case  7: freeFloatConst (t->ptr.m7); 	break;
+		case  8: freeStringConst(t->ptr.m8); 	break;
+		case  9: freeHexConst   (t->ptr.m9); 	break;
+		case 10: freeBinConst   (t->ptr.m10); 	break;
 		default:
 			printf("Error in freeTerm(...)\n");
 			free(t);

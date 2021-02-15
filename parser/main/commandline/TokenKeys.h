@@ -16,11 +16,12 @@
 #define FLOATING 	10
 #define INTEGER 	11
 #define HEXCONST 	12
-#define CCONST 		13
-#define STRINGCONST 14
+#define BINCONST 	13
+#define CCONST 		14
+#define STRINGCONST 15
 
-#define BCONST_TRUE  15
-#define BCONST_FALSE 16
+#define BCONST_TRUE  16
+#define BCONST_FALSE 17
 
 //()[]{}
 #define LPARENS 	20

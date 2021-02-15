@@ -93,23 +93,16 @@ struct Type* inferTypeTerm(struct ST* st, struct Term* t, bool debug){
 	
 	switch(t->kind){
 		
-		case 1: return typeFromStr(st, "Bool"); 
-	
-		case 2: return typeFromStr(st, "Int"); 
-		
-		case 3: return typeFromStr(st, "Char"); 
-		
-		case 4: return inferTypeMethodCall(st, t->ptr.m4, debug); 
-		
-		case 5: return inferTypeExpr(st, t->ptr.m5, debug); 
-		
-		case 6: return inferTypeVariable(st, t->ptr.m6, debug); 
-		
-		case 7: return typeFromStr(st, "Float"); 
-		
-		case 8: return typeFromStr(st, "String"); 
-		
-		case 9: return typeFromStr(st, "Int");
+		case  1: return typeFromStr(st, "Bool"); 
+		case  2: return typeFromStr(st, "Int"); 
+		case  3: return typeFromStr(st, "Char"); 
+		case  4: return inferTypeMethodCall(st, t->ptr.m4, debug); 
+		case  5: return inferTypeExpr(st, t->ptr.m5, debug); 
+		case  6: return inferTypeVariable(st, t->ptr.m6, debug); 
+		case  7: return typeFromStr(st, "Float"); 
+		case  8: return typeFromStr(st, "String"); 
+		case  9: return typeFromStr(st, "Int");
+		case 10: return typeFromStr(st, "Int");
 		
 		default:
 			printf("Fatal Error in inferTypeTerm\n");

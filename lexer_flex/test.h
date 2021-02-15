@@ -53,6 +53,7 @@ bool test_int_1();
 bool test_int_2();
 bool test_int_3();
 bool test_hex();
+bool test_binconst();
 
 bool test_struct();
 bool test_return();

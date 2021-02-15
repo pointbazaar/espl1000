@@ -9,6 +9,7 @@
 #include "CharConst.h"
 #include "IntConst.h"
 #include "HexConst.h"
+#include "BinConst.h"
 #include "BoolConst.h"
 #include "FloatConst.h"
 #include "StringConst.h"
@@ -54,10 +55,25 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 	}else if(list_head(copy)->kind == STRINGCONST){
 		
 		tryInitStringConst(res, copy, debug);
+		
 	}else if(list_head(copy)->kind == HEXCONST){
 		
 		res->ptr.m9 = makeHexConst(copy, debug);
 		res->kind = 9;
+		
+	}else if(list_head(copy)->kind == BINCONST){
+		
+		res->ptr.m10 = makeBinConst(copy, debug);
+		res->kind = 10;
+		
+	}else if(
+		list_head(copy)->kind == BCONST_TRUE
+		|| list_head(copy)->kind == BCONST_FALSE
+	){
+		
+		res->ptr.m1 = makeBoolConst(copy, debug);
+		res->kind = 1;
+		
 	}else{
 		
 		res->kind = 2;
@@ -65,18 +81,15 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 			res->kind = 7;
 			if( (res->ptr.m7 = makeFloatConst(copy,debug)) == NULL){
 				res->kind = 4;
-				if( (res->ptr.m4 = makeMethodCall(copy,debug)) == NULL){
-					res->kind = 1;
-					if( (res->ptr.m1 = makeBoolConst(copy,debug)) == NULL){
-						res->kind = 6;
-						if( (res->ptr.m6 = makeVariable(copy,debug)) == NULL){
-							res->kind = 3;
-							if( (res->ptr.m3 = makeCharConst(copy,debug)) == NULL){
-								
-								free(res);
-								freeTokenListShallow(copy);
-								return NULL;
-							}
+				if( (res->ptr.m4 = makeMethodCall(copy,debug)) == NULL){				
+					res->kind = 6;
+					if( (res->ptr.m6 = makeVariable(copy,debug)) == NULL){
+						res->kind = 3;
+						if( (res->ptr.m3 = makeCharConst(copy,debug)) == NULL){
+							
+							free(res);
+							freeTokenListShallow(copy);
+							return NULL;
 						}
 					}
 				}
