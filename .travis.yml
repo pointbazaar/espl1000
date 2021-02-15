@@ -45,4 +45,4 @@ addons:
 install: pwd
 script: make all_no_valgrind
 env:
-- export PATH=$PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser:$(pwd)/transpiler
+- export PATH=$PATH:$(pwd):$(pwd)/lexer_flex:$(pwd)/parser:$(pwd)/transpiler
