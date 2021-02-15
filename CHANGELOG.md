@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased] 
+- Use a GNU Flex based Lexer implementation instead of a handwritten Lexer
+- Add support for Hex Literals in smalldragon code
 
 ## [0.0.6] - 2020-09-16
 - Added '-stdout' flag to print transpiled C code to stdout

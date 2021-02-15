@@ -27,13 +27,13 @@
      inkscape:window-height="1016"
      id="namedview929"
      showgrid="false"
-     inkscape:zoom="0.76260905"
-     inkscape:cx="110.76674"
-     inkscape:cy="517.57261"
+     inkscape:zoom="1.0784921"
+     inkscape:cx="176.03185"
+     inkscape:cy="1098.626"
      inkscape:window-x="72"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg8" />
+     inkscape:current-layer="layer1" />
   <defs
      id="defs2">
     <marker
@@ -151,7 +151,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -412,36 +412,7 @@
        y="155.39734"
        x="49.586113"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.18096203"
-       xml:space="preserve"><tspan
-         style="stroke-width:0.18096203"
-         id="tspan1095"
-         y="155.39734"
-         x="49.586113"><tspan
-           style="stroke-width:0.18096203"
-           id="tspan1091"
-           y="155.39734"
-           x="49.586113">implementation is based on</tspan><tspan
-           style="stroke-width:0.18096203"
-           id="tspan1093"
-           y="155.39734"
-           x="98.76313"
-           dx="0" /></tspan><tspan
-         style="stroke-width:0.18096203"
-         id="tspan1099"
-         y="159.80707"
-         x="49.586113"><tspan
-           style="stroke-width:0.18096203"
-           id="tspan1097"
-           y="159.80707"
-           x="49.586113">a dfa implemented as a 2D </tspan></tspan><tspan
-         style="stroke-width:0.18096203"
-         id="tspan1103"
-         y="164.2168"
-         x="49.586113"><tspan
-           style="stroke-width:0.18096203"
-           id="tspan1101"
-           y="164.2168"
-           x="49.586113">array.</tspan></tspan></text>
+       xml:space="preserve">implemented with GNU Flex</text>
     <text
        id="text1235"
        y="114.49294"
@@ -701,6 +672,24 @@
        height="89.299034"
        x="139.83644"
        y="309.88657" />
+    <text
+       id="text1105-3"
+       y="184.27823"
+       x="49.745472"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.18096203"
+       xml:space="preserve">handwritten recursive-descent parser</text>
+    <text
+       y="184.27823"
+       x="49.745472"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.18096203"
+       xml:space="preserve"
+       id="text1565"> </text>
+    <text
+       y="188.44157"
+       x="49.745468"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.18096203"
+       xml:space="preserve"
+       id="text1563">mostly LL(1)</text>
   </g>
   <rect
      style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.26499999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
