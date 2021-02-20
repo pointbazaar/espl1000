@@ -12,8 +12,8 @@ void writeNamespace(struct Namespace* nsn, FILE* file){
 	
 	magic_num_serialize(MAGIC_NAMESPACE, file);
 	
-	fprintf(file,"%s\t", nsn->srcPath);
-	fprintf(file,"%s\t", nsn->name);
+	serialize_string(nsn->srcPath, file);
+	serialize_string(nsn->name, file);
 	
 	serialize_int(nsn->count_methods, file);
 	
@@ -41,7 +41,7 @@ void writeMethod(struct Method* m, FILE* file){
 	serialize_int(m->isPublic, file);
 	serialize_int(m->hasSideEffects, file);
 	
-	fprintf(file,"%s\t", m->name);
+	serialize_string(m->name, file);
 	
 	writeType(m->returnType,file);
 
@@ -62,7 +62,8 @@ void writeStructDecl(struct StructDecl* m, FILE* file){
 	
 	writeSimpleType(m->type, file);
 	
-	fprintf(file, "%d\t", m->count_members);
+	serialize_int(m->count_members, file);
+	
 	for(int i=0;i < m->count_members;i++){
 		writeStructMember(m->members[i], file);
 	}
@@ -74,7 +75,8 @@ void writeStructMember(struct StructMember* m, FILE* file){
 	magic_num_serialize(MAGIC_STRUCTMEMBER, file);
 	
 	writeType(m->type, file);
-	fprintf(file, "%s\t", m->name);
+	
+	serialize_string(m->name, file);
 	
 	magic_num_serialize(MAGIC_END_STRUCTMEMBER, file);
 }
@@ -83,7 +85,8 @@ void writeStmtBlock(struct StmtBlock* block, FILE* file){
 	
 	magic_num_serialize(MAGIC_STMTBLOCK, file);
 	
-	fprintf(file, "%d\t", block->count);
+	serialize_int(block->count, file);
+	
 	for(int i=0;i < block->count; i++){
 		writeStmt(block->stmts[i], file);
 	}
@@ -101,10 +104,10 @@ void writeDeclArg(struct DeclArg* m, FILE* file){
 	
 	int option = (m->name != NULL)?1:0;
 	
-	fprintf(file, "%d\t", option);
+	serialize_int(option, file);
 	
 	if(m->name != NULL){
-		fprintf(file,"%s\t",m->name);
+		serialize_string(m->name, file);
 	}
 	
 	magic_num_serialize(MAGIC_END_DECLARG, file);
@@ -115,7 +118,7 @@ void writeVariable(struct Variable* m, FILE* file){
 
 	writeSimpleVar(m->simpleVar,file);
 
-	fprintf(file, "%d\n", m->count_memberAccessList);
+	serialize_int(m->count_memberAccessList, file);
 	
 	for(int i = 0;i < m->count_memberAccessList;i++){ 
 		struct Variable* v = m->memberAccessList[i];
@@ -128,7 +131,7 @@ void writeSimpleVar(struct SimpleVar* m, FILE* file){
 
 	magic_num_serialize(MAGIC_SIMPLEVAR, file);
 
-	fprintf(file, "%s\t", m->name);
+	serialize_string(m->name, file);
 
 	serialize_int(m->count_indices, file);
 	
@@ -238,17 +241,7 @@ void writeStringConst(struct StringConst* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_STRINGCONST, file);
 	
-	//print the length
-	int l = strlen(m->value);
-	serialize_int(strlen(m->value), file);
-	
-	//doing this to avoid problems
-	//with whitespace or any characters at all really
-	for(int i=0;i < l; i++){
-		//0-padded on the left, 3 chars wide,
-		//casted to unsigned integer
-		fprintf(file, "%03d_", (unsigned int)m->value[i]);
-	}
+	serialize_string(m->value, file);
 	
 	magic_num_serialize(MAGIC_END_STRINGCONST, file);
 }
@@ -298,7 +291,7 @@ void writeIfStmt(struct IfStmt* m, FILE* file){
 	writeStmtBlock(m->block, file);
 	
 	//indicate if there is an else block
-	fprintf(file, "%d\t", (m->elseBlock != NULL)?1:0);
+	serialize_int((m->elseBlock != NULL)?1:0, file);
 	
 	if(m->elseBlock != NULL){
 		writeStmtBlock(m->elseBlock, file);
@@ -331,9 +324,8 @@ void writeAssignStmt(struct AssignStmt* m, FILE* file){
 
 	magic_num_serialize(MAGIC_ASSIGNSTMT, file);
 
-	int option = (m->optType != NULL)?1:0;
-	
-	fprintf(file, "%d\t", option);
+	const int option = (m->optType != NULL)?1:0;
+	serialize_int(option, file);
 
 	if(m->optType != NULL){
 		writeType(m->optType, file);
@@ -341,7 +333,7 @@ void writeAssignStmt(struct AssignStmt* m, FILE* file){
 	
 	writeVariable(m->var, file);
 	
-	fprintf(file, "%s\t", m->assign_op);
+	serialize_string(m->assign_op, file);
 	
 	writeExpr(m->expr, file);
 	
@@ -351,7 +343,7 @@ void writeMethodCall(struct MethodCall* m, FILE* file){
 
 	magic_num_serialize(MAGIC_METHODCALL, file);
 
-	fprintf(file, "%s\t", m->methodName);
+	serialize_string(m->methodName, file);
 	
 	serialize_int(m->count_args, file);
 	
@@ -382,7 +374,7 @@ void writeForStmt(struct ForStmt* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_FORSTMT, file);
 	
-	fprintf(file, "%s\t", m->indexName);
+	serialize_string(m->indexName, file);
 
 	writeRange(m->range, file);
 
@@ -421,7 +413,7 @@ void writeCaseStmt(struct CaseStmt* m, FILE* file){
 			exit(1);
 	}
 	
-	fprintf(file, "%d\t", (m->block == NULL)?0:1);
+	serialize_int((m->block == NULL)?0:1, file);
 	
 	if(m->block != NULL){
 		
@@ -494,11 +486,11 @@ void writeSimpleType(struct SimpleType* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_SIMPLETYPE, file);
 	
-	fprintf(file,"%s\t",m->typeName);
+	serialize_string(m->typeName, file);
 	
-	fprintf(file, "%d\t", m->typeParamCount);
+	serialize_int(m->typeParamCount, file);
 	for(int i=0;i<m->typeParamCount;i++){
-		fprintf(file, "%d\t", m->typeParams[i]);
+		serialize_int(m->typeParams[i], file);
 	}
 	
 	magic_num_serialize(MAGIC_END_SIMPLETYPE, file);
@@ -509,9 +501,9 @@ void writeSubrType(struct SubrType* m, FILE* file){
 	magic_num_serialize(MAGIC_SUBRTYPE, file);
 
 	writeType(m->returnType,file);
-	fprintf(file,"%d\t",m->hasSideEffects);
+	serialize_int(m->hasSideEffects, file);
 
-	fprintf(file,"%d\t",m->count_argTypes);
+	serialize_int(m->count_argTypes, file);
 	for(int i = 0;i < m->count_argTypes;i++){
 		struct Type* t = m->argTypes[i];
 		writeType(t,file); 

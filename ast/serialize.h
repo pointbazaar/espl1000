@@ -3,10 +3,11 @@
 
 
 int deserialize_int(FILE* file);
-char* deserialize_string(FILE* file);
-
 void serialize_int(uint32_t x, FILE* file);
 
+
+char* deserialize_string(FILE* file);
+void serialize_string(char* str, FILE* file);
 
 // --- magic number related methods
 

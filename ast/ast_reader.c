@@ -45,18 +45,13 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	
 	struct Namespace* ns = malloc(sizeof(struct Namespace));
 
-	int count = fscanf(file,
-		"%s\t%s\t", 
-		ns->srcPath, 
-		ns->name
-	);
-
-	if(count != 2){
-		fclose(file);
-		printf("error in readNamespace ,%d\n",count);
-		free(ns);
-		exit(1);
-	}
+	char* tmpSrcPath = deserialize_string(file);
+	strcpy(ns->srcPath, tmpSrcPath);
+	free(tmpSrcPath);
+	
+	tmpSrcPath = deserialize_string(file);
+	strcpy(ns->name, tmpSrcPath);
+	free(tmpSrcPath);
 	
 	ns->count_methods = deserialize_int(file);
 
@@ -94,12 +89,10 @@ struct Method* readMethod(FILE* file, bool debug){
 	m->isPublic = deserialize_int(file);
 	m->hasSideEffects = deserialize_int(file);
 
-	if(fscanf(file, "%s\t", m->name) != 1){
-		printf("Error reading Method \n");
-		fclose(file);
-		free(m);
-		exit(1);
-	}
+	char* tmp = deserialize_string(file);
+	strcpy(m->name, tmp);
+	
+	free(tmp);
 
 	m->returnType = readType(file, debug);
 	
@@ -127,21 +120,7 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 	
 	res->type = readSimpleType(file, debug);
 	
-	int count_members = 0;
-	
-	if(
-		fscanf(
-			file, "%d\t", 
-			&(count_members)
-		) != 1
-	){
-		printf("Error reading StructDecl\n");
-		fclose(file);
-		free(res);
-		exit(1);
-	}
-	
-	res->count_members = count_members;
+	res->count_members = deserialize_int(file);
 	
 	res->members = 
 		malloc(sizeof(struct StructMember*)*res->count_members);
@@ -164,14 +143,10 @@ struct StructMember* readStructMember(FILE* file, bool debug){
 	
 	res->type = readType(file, debug);
 	
-	if(fscanf(file, "%s\t", res->name) != 1){
-		printf("Error reading StructMember2\n");
-		//freeType(res->type) 
-		//but this subroutine is not included here
-		fclose(file);
-		free(res);
-		exit(1);
-	}
+	char* tmp = deserialize_string(file);
+	
+	strcpy(res->name, tmp);
+	free(tmp);
 	
 	magic_num_require(MAGIC_END_STRUCTMEMBER, file);
 	
@@ -186,12 +161,7 @@ struct StmtBlock* readStmtBlock(FILE* file, bool debug){
 	
 	struct StmtBlock* block = malloc(sizeof(struct StmtBlock));
 	
-	if(fscanf(file, "%u\t", (unsigned int*)&(block->count)) != 1){
-		printf("Error reading StmtBlock\n");
-		fclose(file);
-		free(block);
-		exit(1);
-	}
+	block->count = deserialize_int(file);
 	
 	block->stmts = 
 		malloc(sizeof(struct Stmt*)* block->count);
@@ -217,25 +187,15 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 
 	da->type = readType(file, debug);
 
-	int option;
-	if(fscanf(file, "%d\t", &option) != 1){
-		printf("Error reading DeclaredArg 2\n");
-		fclose(file);
-		free(da);
-		exit(1);
-	}
+	int option = deserialize_int(file);
 	
 	if(option == 0){
 		da->has_name = false;
 	}else if(option == 1){
 		da->has_name = true;
-		
-		//do not read more than 19 chars
-		if(fscanf(file, "%19s\t", da->name) != 1){
-			printf("Error reading DeclaredArg 3\n");
-			fclose(file);
-			exit(1);
-		}
+		char* tmp = deserialize_string(file);
+		strcpy(da->name, tmp);
+		free(tmp);
 	}else{
 		printf("Error in readDeclArg\n");
 		free(da);
@@ -378,23 +338,11 @@ struct StringConst* readStringConst(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_STRINGCONST, file);
 	
-	const int length = deserialize_int(file);
-	
 	struct StringConst* s = malloc(sizeof(struct StringConst));
 	
 	//doing this to avoid problems
 	//with whitespace or any characters at all really
-	char* val = malloc(sizeof(char)*(length+1));
-	val[length]='\0';
-	
-	for(int i=0;i < length; i++){
-		//0-padded on the left, 3 chars wide,
-		//casted to unsigned integer
-		int v;
-		fscanf(file, "%03d_", &v);
-		val[i]=v;
-	}
-	s->value = val;
+	s->value = deserialize_string(file);
 	
 	magic_num_require(MAGIC_END_STRINGCONST, file);
 	
@@ -411,21 +359,15 @@ struct Variable* readVariable(FILE* file, bool debug){
 
 	v->simpleVar = readSimpleVar(file, debug);
 	
-	int count = 0;
-	if(fscanf(file, "%d\t", &count) != 1){
-		printf("Error reading Variable 2\n");
-		free(v);
-		fclose(file);
-		exit(1);
-	}
+	
+	v->count_memberAccessList = deserialize_int(file);
 
 	v->memberAccessList = 
-		malloc(sizeof(struct SimpleVar*)  * count);
-	for(int i = 0;i < count; i++){
+		malloc(sizeof(struct SimpleVar*)  * v->count_memberAccessList);
+	
+	for(int i = 0;i < v->count_memberAccessList; i++){
 		v->memberAccessList[i] = readVariable(file, debug);
 	}
-	
-	v->count_memberAccessList = count;
 	
 	magic_num_require(MAGIC_END_VARIABLE, file);
 	
@@ -439,12 +381,9 @@ struct SimpleVar* readSimpleVar(FILE* file, bool debug){
 	
 	struct SimpleVar* b = malloc(sizeof(struct SimpleVar));
 	
-	if(fscanf(file, "%s\t", b->name) != 1){
-		printf("Error reading SimpleVar\n");
-		free(b);
-		fclose(file);
-		exit(1);
-	}
+	char* tmp = deserialize_string(file);
+	strcpy(b->name, tmp);
+	free(tmp);
 
 	b->count_indices = deserialize_int(file);
 	
@@ -578,8 +517,8 @@ struct IfStmt* readIfStmt(FILE* file, bool debug){
 
 	v->block = readStmtBlock(file, debug);
 
-	int hasElse=0;
-	fscanf(file, "%d\t", &hasElse);
+	const int hasElse = deserialize_int(file);
+	
 	if(hasElse != 0){
 		v->elseBlock = readStmtBlock(file, debug);
 	}
@@ -623,13 +562,7 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_ASSIGNSTMT, file);
 	
-	int option;
-	
-	if(fscanf(file, "%d\t", &option) != 1){
-		printf("Error reading AssignStmt\n");
-		fclose(file);
-		exit(1);
-	}
+	const int option = deserialize_int(file);
 	
 	struct AssignStmt* v = malloc(sizeof(struct AssignStmt));
 
@@ -641,14 +574,11 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 
 	v->var = readVariable(file, debug);
 	
-	char assign_op[3];
-	if(fscanf(file, "%s\t", assign_op) != 1){
-		fclose(file);
-		printf("Error in readAssignStmt\n");
-		exit(1);
-	}
-	v->assign_op[2]='\0';
+	char* assign_op = deserialize_string(file);
+	
 	strncpy(v->assign_op, assign_op, 2);
+	
+	free(assign_op);
 	
 	v->expr = readExpr(file, debug);
 	
@@ -665,12 +595,9 @@ struct MethodCall* readMethodCall(FILE* file, bool debug){
 	struct MethodCall* v = 
 		malloc(sizeof(struct MethodCall));
 
-	if(fscanf(file, "%s\t", v->methodName) != 1){
-		printf("Error reading MethodCall\n");
-		free(v);
-		fclose(file);
-		exit(1);
-	}
+	char* tmp = deserialize_string(file);
+	strcpy(v->methodName, tmp);
+	free(tmp);
 	
 	v->count_args = deserialize_int(file);
 
@@ -717,17 +644,13 @@ struct ForStmt* readForStmt(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_FORSTMT, file);
 	
-	char indexName[DEFAULT_STR_SIZE];
-	
-	if(fscanf(file, "%s\t", indexName) != 1){
-		printf("Error reading ForStmt\n");
-		fclose(file);
-		exit(1);
-	}
+	char* indexName = deserialize_string(file);
 	
 	struct ForStmt* res = malloc(sizeof(struct ForStmt));
 	
 	strncpy(res->indexName, indexName, DEFAULT_STR_SIZE);
+	free(indexName);
+	
 	res->range = readRange(file, debug);
 	res->block = readStmtBlock(file, debug);
 	
@@ -782,9 +705,7 @@ struct CaseStmt* readCaseStmt(FILE* file, bool debug){
 			exit(1);
 	}
 	
-	int hasBlock = 0;
-	
-	fscanf(file, "%d\t", &hasBlock);
+	const int hasBlock = deserialize_int(file);
 	
 	if(hasBlock == 1){
 		
@@ -836,15 +757,8 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 
 	v->returnType = readType(file, debug);
 	
-	if(
-		fscanf(file, "%d\t%u\t", (int*)(&(v->hasSideEffects)), (unsigned int*)&(v->count_argTypes))
-		!= 2
-	){
-		printf("Error reading SubrType 2\n");
-		free(v);
-		fclose(file);
-		exit(1);
-	}
+	v->hasSideEffects = deserialize_int(file);
+	v->count_argTypes = deserialize_int(file);
 	
 	v->argTypes = 
 		malloc(sizeof(struct Type*)*(v->count_argTypes));
@@ -865,25 +779,20 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 	struct SimpleType* v = 
 		malloc(sizeof(struct SimpleType));
 	
-	//%30s ensures it does not read more than 30 chars
-	if(fscanf(file, "%30s\t", v->typeName) != 1){
-		printf("Error reading SimpleType\n");
-		free(v);
-		fclose(file);
-		exit(1);
-	}
+	char* tmp = deserialize_string(file);
+	strcpy(v->typeName, tmp);
+	free(tmp);
 	
-	int count=0;
-	fscanf(file, "%d\t", &count);
-	v->typeParamCount = count;
+	v->typeParamCount = deserialize_int(file);
+	
 	if(v->typeParamCount > 0){
 		v->typeParams = 
 			malloc(sizeof(uint8_t)*(v->typeParamCount));
 	}
+	
 	for(int i=0;i<v->typeParamCount;i++){
-		int pIndex;
-		fscanf(file, "%d\t", &pIndex);
-		v->typeParams[i] = pIndex;
+		
+		v->typeParams[i] = deserialize_int(file);
 	}
 	
 	magic_num_require(MAGIC_END_SIMPLETYPE, file);
