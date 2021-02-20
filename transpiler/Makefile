@@ -22,6 +22,7 @@ OBJS := build/transpiler.o \
 	build/typeinference.o \
 	build/help.o \
 	build/free_ast.o \
+	build/serialize.o \
 	build/gen_c_types.o
 
 all: all_no_valgrind valgrind
@@ -53,6 +54,9 @@ build/ast_reader.o: ../ast/ast_reader.c
 
 build/free_ast.o: ../ast/free_ast.c ../ast/free_ast.h
 	$(CALL) -c ../ast/free_ast.c -o $@
+
+build/serialize.o: ../ast/serialize.c ../ast/serialize.h
+	$(CALL) -c ../ast/serialize.c -o $@
 
 build/util.o: ../util/util.c
 	$(CALL) -c ../util/util.c -o $@

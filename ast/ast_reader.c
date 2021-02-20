@@ -5,29 +5,7 @@
 #include "ast.h"
 #include "ast_reader.h"
 #include "magic_num.h"
-
-// --- private deserialization functions ---
-int deserialize_int(FILE* file);
-int deserialize_int(FILE* file){
-	int res;
-	fread(&res, sizeof(int), 1, file);
-	return res;
-}
-
-void magic_num_require(uint32_t expected, FILE* file);
-void magic_num_require(uint32_t expected, FILE* file){
-	//paired with magic_num_serialize in ASTWriter.h
-	//this routine requires to read a magic number from 'file'
-	//in order to early-detect a corrupted .ast file
-	const int actual = deserialize_int(file);
-	if(actual != expected){
-		printf("magic_num_require failed.\n");
-		printf("required was: %d\n", expected);
-		fclose(file);
-		exit(1);
-	}
-}
-// -----------------------------------------
+#include "serialize.h"
 
 struct AST_Whole_Program* readAST(char* filename, bool debug){
 	//returns NULL if it is unable to open the file
@@ -47,8 +25,7 @@ struct AST_Whole_Program* readAST(char* filename, bool debug){
 	struct Namespace* ns = readNamespace(file, debug);
 	
 	ast->count_namespaces = 1;
-	ast->namespaces = 
-		malloc(sizeof(struct Namespace*));
+	ast->namespaces = malloc(sizeof(struct Namespace*));
 	ast->namespaces[0] = ns;
 	
 	magic_num_require(MAGIC_END_AST_WHOLE_PROGRAM, file);
@@ -86,11 +63,9 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	//read methods
 	ns->methods = malloc(sizeof(struct Method*)*(ns->count_methods));
 	
-	
 	for(int i=0; i < ns->count_methods; i++){
 		
-		struct Method* m =  readMethod(file, debug);
-		ns->methods[i] = m;
+		ns->methods[i] = readMethod(file, debug);
 	}
 	
 	//read structs
@@ -98,6 +73,7 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	
 	ns->structs = 
 		malloc(sizeof(struct StructDecl*)*(ns->count_structs));
+	
 	for(int i=0;i < ns->count_structs; i++){
 		
 		ns->structs[i] = readStructDecl(file, debug);

@@ -5,22 +5,8 @@
 
 #include "ASTWriter.h"
 #include "magic_num.h"
+#include "serialize.h"
 
-//--- private serialization functions ---
-void serialize_int(uint32_t x, FILE* file);
-void serialize_int(uint32_t x, FILE* file){
-	fwrite(&x, sizeof(uint32_t), 1, file);
-}
-
-void magic_num_serialize(uint32_t num, FILE* file);
-void magic_num_serialize(uint32_t num, FILE* file){
-	//paired with magic_num_require in 
-	//ast_reader.h
-	//this routine writes a given magic number to 'file'
-	//in order to early-detect a corrupted .ast file
-	serialize_int(num, file);
-}
-//---------------------------------------
 
 void writeNamespace(struct Namespace* nsn, FILE* file){
 	

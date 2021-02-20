@@ -10,9 +10,20 @@
 
 CFLAGS := -march=native -g
 
-SOURCES := ast-tests.c ast_reader.c ASTWriter.c free_ast.c copy_ast.c
+SOURCES := ast-tests.c \
+		ast_reader.c \
+		ASTWriter.c \
+		free_ast.c \
+		copy_ast.c \
+		serialize.c
 
-HEADERS := ast_reader.h ASTWriter.h free_ast.h ast.h copy_ast.h magic_num.h
+HEADERS := ast_reader.h \
+		ASTWriter.h \
+		free_ast.h \
+		ast.h \
+		copy_ast.h \
+		magic_num.h \
+		serialize.h
 
 all: $(SOURCES) $(HEADERS)
 	gcc $(CFLAGS) -o tests $(SOURCES)

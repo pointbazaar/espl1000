@@ -7,7 +7,8 @@ CALL2 := $(CALL) -c
 
 OBJS_UTIL := build/ASTWriter.o \
 	build/free_ast.o \
-	build/copy_ast.o
+	build/copy_ast.o \
+	build/serialize.o
 
 OBJS_MAIN := build/Parser.o \
 		build/token.o \
