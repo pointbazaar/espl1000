@@ -4,59 +4,30 @@
 
 #include "ast.h"
 #include "ast_reader.h"
+#include "magic_num.h"
 
-// ---- these subroutines can be private, because users
-// ---- of this module are probably only ever going to want
-// ---- to read a full '.ast' file
+// --- private deserialization functions ---
+int deserialize_int(FILE* file);
+int deserialize_int(FILE* file){
+	int res;
+	fread(&res, sizeof(int), 1, file);
+	return res;
+}
 
-struct Namespace* readNamespace(FILE* file, bool debug);
-struct Method* readMethod(FILE* file, bool debug);
-struct StructDecl* readStructDecl(FILE* file, bool debug);
-struct StructMember* readStructMember(FILE* file, bool debug);
-struct StmtBlock* readStmtBlock(FILE* file, bool debug);
-
-struct DeclArg* readDeclArg(FILE* file, bool debug);
-struct Expr* readExpr(FILE* file, bool debug);
-struct Op* readOp(FILE* file, bool debug);
-
-//const nodes
-struct IntConst* 	readIntConst(	FILE* file, bool debug);
-struct HexConst* 	readHexConst(	FILE* file, bool debug);
-struct BinConst* 	readBinConst(	FILE* file, bool debug);
-struct BoolConst* 	readBoolConst(	FILE* file, bool debug);
-struct CharConst* 	readCharConst(	FILE* file, bool debug);
-struct FloatConst* 	readFloatConst(	FILE* file, bool debug);
-struct StringConst* readStringConst(FILE* file, bool debug);
-
-struct Variable* readVariable(FILE* file, bool debug);
-struct SimpleVar* readSimpleVar(FILE* file, bool debug);
-struct Term* readTerm(FILE* file, bool debug);
-struct UnOpTerm* readUnOpTerm(FILE* file, bool debug);
-struct Range* readRange(FILE* file, bool debug);
-
-//statementnodes
-struct Stmt* readStmt(FILE* file, bool debug);
-struct IfStmt* readIfStmt(FILE* file, bool debug);
-struct WhileStmt* readWhileStmt(FILE* file, bool debug);
-struct RetStmt* readRetStmt(FILE* file, bool debug);
-struct AssignStmt* readAssignStmt(FILE* file, bool debug);
-struct MethodCall* readMethodCall(FILE* file, bool debug);
-struct LoopStmt* readLoopStmt(FILE* file, bool debug);
-struct BreakStmt* readBreakStmt(FILE* file, bool debug);
-struct ForStmt* readForStmt(FILE* file, bool debug);
-struct SwitchStmt* readSwitchStmt(FILE* file, bool debug);
-struct CaseStmt* readCaseStmt(FILE* file, bool debug);
-
-//typenodes
-struct Type* readType(FILE* file, bool debug);
-struct SubrType* readSubrType(FILE* file, bool debug);
-struct SimpleType* readSimpleType(FILE* file, bool debug);
-struct ArrayType* readArrayType(FILE* file, bool debug);
-struct TypeParam* readTypeParam(FILE* file, bool debug);
-struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug);
-
-
-// ----
+void magic_num_require(uint32_t expected, FILE* file);
+void magic_num_require(uint32_t expected, FILE* file){
+	//paired with magic_num_serialize in ASTWriter.h
+	//this routine requires to read a magic number from 'file'
+	//in order to early-detect a corrupted .ast file
+	const int actual = deserialize_int(file);
+	if(actual != expected){
+		printf("magic_num_require failed.\n");
+		printf("required was: %d\n", expected);
+		fclose(file);
+		exit(1);
+	}
+}
+// -----------------------------------------
 
 struct AST_Whole_Program* readAST(char* filename, bool debug){
 	//returns NULL if it is unable to open the file
@@ -71,12 +42,16 @@ struct AST_Whole_Program* readAST(char* filename, bool debug){
 
 	struct AST_Whole_Program* ast = malloc(sizeof(struct AST_Whole_Program));
 
+	magic_num_require(MAGIC_AST_WHOLE_PROGRAM, file);
+
 	struct Namespace* ns = readNamespace(file, debug);
 	
 	ast->count_namespaces = 1;
 	ast->namespaces = 
 		malloc(sizeof(struct Namespace*));
 	ast->namespaces[0] = ns;
+	
+	magic_num_require(MAGIC_END_AST_WHOLE_PROGRAM, file);
 
 	fclose(file);
 	
@@ -89,28 +64,29 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	
 	if(debug){ printf("readNamespace(...)\n"); }
 	
+	magic_num_require(MAGIC_NAMESPACE, file);
+	
 	struct Namespace* ns = malloc(sizeof(struct Namespace));
 
 	int count = fscanf(file,
-		"%s\t%s\t%u\t", 
+		"%s\t%s\t", 
 		ns->srcPath, 
-		ns->name, 
-		(unsigned int*)(&(ns->count_methods))
+		ns->name
 	);
 
-	if(count != 3){
+	if(count != 2){
 		fclose(file);
 		printf("error in readNamespace ,%d\n",count);
 		free(ns);
 		exit(1);
 	}
+	
+	ns->count_methods = deserialize_int(file);
 
 	//read methods
-	ns->methods = 
-		malloc(sizeof(struct Method*)*(ns->count_methods));
-	if(debug){
-		printf("reading %d Methods\n", ns->count_methods);
-	}
+	ns->methods = malloc(sizeof(struct Method*)*(ns->count_methods));
+	
+	
 	for(int i=0; i < ns->count_methods; i++){
 		
 		struct Method* m =  readMethod(file, debug);
@@ -118,21 +94,7 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	}
 	
 	//read structs
-	int count_structs = 0;
-	count = fscanf(file, "%d\t", &count_structs);
-	
-	if(count != 1){
-		fclose(file);
-		printf("error in readNamespace 3 ,%d\n",count);
-		free(ns);
-		exit(1);
-	}
-	
-	ns->count_structs = count_structs;
-	
-	if(debug){
-		printf("reading %hd Structs\n", ns->count_structs);
-	}
+	ns->count_structs = deserialize_int(file);
 	
 	ns->structs = 
 		malloc(sizeof(struct StructDecl*)*(ns->count_structs));
@@ -141,7 +103,7 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 		ns->structs[i] = readStructDecl(file, debug);
 	}
 	
-	if(debug){ printf("done\n"); }
+	magic_num_require(MAGIC_END_NAMESPACE, file);
 	
 	return ns;
 }
@@ -149,15 +111,14 @@ struct Method* readMethod(FILE* file, bool debug){
 	
 	if(debug){ printf("readMethod(...)\n"); }
 	
+	magic_num_require(MAGIC_METHOD, file);
+	
 	struct Method* m = malloc(sizeof(struct Method));
 
-	if(fscanf(
-		file,
-		"Method\t%d\t%d\t%s\t",
-		(int*)&(m->isPublic),
-		(int*)&(m->hasSideEffects), 
-		m->name) != 3
-	){
+	m->isPublic = deserialize_int(file);
+	m->hasSideEffects = deserialize_int(file);
+
+	if(fscanf(file, "%s\t", m->name) != 1){
 		printf("Error reading Method \n");
 		fclose(file);
 		free(m);
@@ -165,16 +126,10 @@ struct Method* readMethod(FILE* file, bool debug){
 	}
 
 	m->returnType = readType(file, debug);
-
-	if(fscanf(file,"%u\t",(unsigned int*)&(m->count_args)) != 1){
-		printf("Error reading Method 2\n");
-		fclose(file);
-		free(m);
-		exit(1);
-	}
 	
-	m->args = 
-		malloc(sizeof(struct DeclArg*)*(m->count_args));
+	m->count_args = deserialize_int(file);
+	
+	m->args = malloc(sizeof(struct DeclArg*)*(m->count_args));
 
 	for(int i = 0;i < m->count_args;i++){
 		m->args[i] = readDeclArg(file, debug);
@@ -182,7 +137,7 @@ struct Method* readMethod(FILE* file, bool debug){
 
 	m->block = readStmtBlock(file, debug);
 	
-	if(debug){ printf("done\n"); }
+	magic_num_require(MAGIC_END_METHOD, file);
 	
 	return m;
 }
@@ -190,15 +145,9 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 	
 	if(debug){ printf("readStructDecl(...)\n"); }
 	
-	struct StructDecl* res = 
-		malloc(sizeof(struct StructDecl));
+	magic_num_require(MAGIC_STRUCTDECL, file);
 	
-	if(fscanf(file, "StructDecl\t") == EOF){
-		printf("Error reading StructDecl\n");
-		fclose(file);
-		free(res);
-		exit(1);
-	}
+	struct StructDecl* res = malloc(sizeof(struct StructDecl));
 	
 	res->type = readSimpleType(file, debug);
 	
@@ -224,7 +173,7 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 		res->members[i] = readStructMember(file, debug);
 	}
 	
-	if(debug){ printf("done\n"); }
+	magic_num_require(MAGIC_END_STRUCTDECL, file);
 	
 	return res;
 }
@@ -232,15 +181,10 @@ struct StructMember* readStructMember(FILE* file, bool debug){
 	
 	if(debug){ printf("readStructMember(...)\n"); }
 	
+	magic_num_require(MAGIC_STRUCTMEMBER, file);
+	
 	struct StructMember* res = 
 		malloc(sizeof(struct StructMember));
-	
-	if(fscanf(file, "StructMember\t") == EOF){
-		printf("Error reading StructMember\n");
-		fclose(file);
-		free(res);
-		exit(1);
-	}
 	
 	res->type = readType(file, debug);
 	
@@ -253,7 +197,7 @@ struct StructMember* readStructMember(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	if(debug){ printf("done\n"); }
+	magic_num_require(MAGIC_END_STRUCTMEMBER, file);
 	
 	return res;
 }
@@ -262,10 +206,11 @@ struct StmtBlock* readStmtBlock(FILE* file, bool debug){
 	
 	if(debug){ printf("readStmtBlock(...)\n"); }
 	
-	struct StmtBlock* block = 
-		malloc(sizeof(struct StmtBlock));
+	magic_num_require(MAGIC_STMTBLOCK, file);
 	
-	if(fscanf(file, "StmtBlock\t%u\t", (unsigned int*)&(block->count)) != 1){
+	struct StmtBlock* block = malloc(sizeof(struct StmtBlock));
+	
+	if(fscanf(file, "%u\t", (unsigned int*)&(block->count)) != 1){
 		printf("Error reading StmtBlock\n");
 		fclose(file);
 		free(block);
@@ -279,6 +224,8 @@ struct StmtBlock* readStmtBlock(FILE* file, bool debug){
 		block->stmts[i] = readStmt(file, debug);
 	}
 	
+	magic_num_require(MAGIC_END_STMTBLOCK, file);
+	
 	return block;
 }
 
@@ -288,15 +235,9 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 	
 	if(debug){ printf("readDeclArg(...)\n"); }
 	
-	struct DeclArg* da = 
-		malloc(sizeof(struct DeclArg));
-
-	if(fscanf(file, "DeclaredArg\t") == EOF){
-		printf("Error reading DeclaredArg\n");
-		fclose(file);
-		free(da);
-		exit(1);
-	}
+	magic_num_require(MAGIC_DECLARG, file);
+	
+	struct DeclArg* da = malloc(sizeof(struct DeclArg));
 
 	da->type = readType(file, debug);
 
@@ -326,7 +267,7 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	if(debug){ printf("done\n"); }
+	magic_num_require(MAGIC_END_DECLARG, file);
 
 	return da;
 }
@@ -334,23 +275,13 @@ struct Expr* readExpr(FILE* file, bool debug){
 	
 	if(debug){ printf("readExpr(...)\n"); }
 	
-	if(fscanf(file,"Expr\t") == EOF){ 
-		printf("Error reading Expr\n");
-		fclose(file);
-		exit(1);
-	}
+	magic_num_require(MAGIC_EXPR, file);
 	
-	struct Expr* expr = 
-		malloc(sizeof(struct Expr));
+	struct Expr* expr = malloc(sizeof(struct Expr));
 
 	expr->term1 = readUnOpTerm(file, debug);
 	
-	int option = 0;
-	if(fscanf(file, "%d\t", &option) != 1){
-		printf("Error reading Expr 2\n");
-		fclose(file);
-		exit(1);
-	}
+	const int option = deserialize_int(file);
 	
 	if(option == 1){
 		expr->op = NULL;
@@ -359,6 +290,8 @@ struct Expr* readExpr(FILE* file, bool debug){
 		expr->op = readOp(file, debug);
 		expr->term2 = readUnOpTerm(file, debug);
 	}
+	
+	magic_num_require(MAGIC_END_EXPR, file);
 
 	return expr;
 }
@@ -366,15 +299,13 @@ struct Op* readOp(FILE* file, bool debug){
 	
 	if(debug){ printf("readOp(...)\n"); }
 	
-	struct Op* op = 
-		malloc(sizeof(struct Op));
+	magic_num_require(MAGIC_OP, file);
 	
-	if(fscanf(file, "Op\t%s\t", op->op) != 1){ 
-		printf("Error reading Op\n");
-		free(op);
-		fclose(file);
-		exit(1);
-	}
+	struct Op* op = malloc(sizeof(struct Op));
+	
+	fread(op, sizeof(struct Op), 1, file);
+	
+	magic_num_require(MAGIC_END_OP, file);
 
 	return op;
 }
@@ -382,15 +313,13 @@ struct IntConst* readIntConst(FILE* file, bool debug){
 	
 	if(debug){printf("readIntConst(...)\n");}
 	
-	struct IntConst* ic = 
-		malloc(sizeof(struct IntConst));
+	magic_num_require(MAGIC_INTCONST, file);
 	
-	if(fscanf(file, "IntConst\t%d\t", &(ic->value)) != 1){
-		printf("Error reading IntConst\n");
-		free(ic);
-		fclose(file);
-		exit(1);
-	}
+	struct IntConst* ic = malloc(sizeof(struct IntConst));
+		
+	fread(ic, sizeof(struct IntConst), 1, file);
+	
+	magic_num_require(MAGIC_END_INTCONST, file);
 
 	return ic;
 }
@@ -399,14 +328,13 @@ struct HexConst* readHexConst(FILE* file, bool debug){
 	
 	if(debug){printf("readHexConst(...)\n");}
 	
+	magic_num_require(MAGIC_HEXCONST, file);
+	
 	struct HexConst* hc = malloc(sizeof(struct HexConst));
 	
-	if(fscanf(file, "HexConst\t%x\t", &(hc->value)) != 1){
-		printf("Error reading HexConst\n");
-		free(hc);
-		fclose(file);
-		exit(1);
-	}
+	fread(hc, sizeof(struct HexConst), 1, file);
+	
+	magic_num_require(MAGIC_END_HEXCONST, file);
 
 	return hc;
 }
@@ -415,14 +343,13 @@ struct BinConst* readBinConst(FILE* file, bool debug){
 	
 	if(debug){printf("readBinConst(...)\n");}
 	
+	magic_num_require(MAGIC_BINCONST, file);
+	
 	struct BinConst* hc = malloc(sizeof(struct BinConst));
 	
-	if(fscanf(file, "BinConst\t%x\t", &(hc->value)) != 1){
-		printf("Error reading BinConst\n");
-		free(hc);
-		fclose(file);
-		exit(1);
-	}
+	fread(hc, sizeof(struct BinConst), 1, file);
+	
+	magic_num_require(MAGIC_END_BINCONST, file);
 
 	return hc;
 }
@@ -431,18 +358,13 @@ struct BoolConst* readBoolConst(FILE* file, bool debug){
 	
 	if(debug){ printf("readBoolConst(...)\n"); }
 	
-	struct BoolConst* b = 
-		malloc(sizeof(struct BoolConst));
+	magic_num_require(MAGIC_BOOLCONST, file);
 	
-	int val;
-	if(fscanf(file, "BoolConst\t%d\t", &val) != 1){
-		printf("Error reading BoolConst\n");
-		free(b);
-		fclose(file);
-		exit(1);
-	}
+	struct BoolConst* b = malloc(sizeof(struct BoolConst));
 	
-	b->value = val==1;
+	fread(b, sizeof(struct BoolConst), 1, file);
+	
+	magic_num_require(MAGIC_END_BOOLCONST, file);
 	
 	return b;
 }
@@ -450,15 +372,13 @@ struct CharConst* readCharConst(FILE* file, bool debug){
 	
 	if(debug){ printf("readCharConst(...)\n"); }
 	
-	struct CharConst* b = 
-		malloc(sizeof(struct CharConst));
+	magic_num_require(MAGIC_CHARCONST, file);
 	
-	if(fscanf(file, "CharConst\t%c\t", &(b->value)) != 1){
-		printf("Error reading CharConst\n");
-		free(b);
-		fclose(file);
-		exit(1);
-	}
+	struct CharConst* b = malloc(sizeof(struct CharConst));
+	
+	fread(b, sizeof(struct CharConst), 1, file);
+	
+	magic_num_require(MAGIC_END_CHARCONST, file);
 	
 	return b;
 }
@@ -466,15 +386,13 @@ struct FloatConst* readFloatConst(FILE* file, bool debug){
 	
 	if(debug){ printf("readFloatConst(...)\n"); }
 	
-	struct FloatConst* ic = 
-		malloc(sizeof(struct FloatConst));
+	magic_num_require(MAGIC_FLOATCONST, file);
 	
-	if(fscanf(file, "FloatConst\t%f\t", &(ic->value)) != 1){
-		printf("Error reading FloatConst\n");
-		free(ic);
-		fclose(file);
-		exit(1);
-	}
+	struct FloatConst* ic = malloc(sizeof(struct FloatConst));
+		
+	fread(ic, sizeof(struct FloatConst), 1, file);
+	
+	magic_num_require(MAGIC_END_FLOATCONST, file);
 	
 	return ic;
 }
@@ -482,15 +400,11 @@ struct StringConst* readStringConst(FILE* file, bool debug){
 	
 	if(debug){ printf("readStringConst(...)\n"); }
 	
-	int length;
-	if(fscanf(file, "StringConst\t%d\t", &length) != 1){
-		printf("Error reading StringConst\n");
-		fclose(file);
-		exit(1);
-	}
+	magic_num_require(MAGIC_STRINGCONST, file);
 	
-	struct StringConst* s = 
-		malloc(sizeof(struct StringConst));
+	const int length = deserialize_int(file);
+	
+	struct StringConst* s = malloc(sizeof(struct StringConst));
 	
 	//doing this to avoid problems
 	//with whitespace or any characters at all really
@@ -506,17 +420,15 @@ struct StringConst* readStringConst(FILE* file, bool debug){
 	}
 	s->value = val;
 	
+	magic_num_require(MAGIC_END_STRINGCONST, file);
+	
 	return s;
 }
 struct Variable* readVariable(FILE* file, bool debug){
 	
 	if(debug){ printf("readVariable(...)\n"); }
 	
-	if(fscanf(file, "Variable\t") == EOF){
-		printf("Error reading Variable\n");
-		fclose(file);
-		exit(1);
-	}
+	magic_num_require(MAGIC_VARIABLE, file);
 	
 	struct Variable* v = 
 		malloc(sizeof(struct Variable));
@@ -530,7 +442,6 @@ struct Variable* readVariable(FILE* file, bool debug){
 		fclose(file);
 		exit(1);
 	}
-	
 
 	v->memberAccessList = 
 		malloc(sizeof(struct SimpleVar*)  * count);
@@ -539,30 +450,35 @@ struct Variable* readVariable(FILE* file, bool debug){
 	}
 	
 	v->count_memberAccessList = count;
+	
+	magic_num_require(MAGIC_END_VARIABLE, file);
+	
 	return v;
 }
 struct SimpleVar* readSimpleVar(FILE* file, bool debug){
 	
 	if(debug){ printf("readSimpleVar(...)\n"); }
 	
-	struct SimpleVar* b = 
-		malloc(sizeof(struct SimpleVar));
+	magic_num_require(MAGIC_SIMPLEVAR, file);
 	
-	int count;
+	struct SimpleVar* b = malloc(sizeof(struct SimpleVar));
 	
-	if(fscanf(file, "SimpleVar\t%s\t%d\t", b->name, &count) != 2){
+	if(fscanf(file, "%s\t", b->name) != 1){
 		printf("Error reading SimpleVar\n");
 		free(b);
 		fclose(file);
 		exit(1);
 	}
 
-	b->count_indices = count;
-	b->indices = 
-		malloc(sizeof(struct Expr*)* (b->count_indices+1));
+	b->count_indices = deserialize_int(file);
+	
+	b->indices = malloc(sizeof(struct Expr*)* (b->count_indices+1));
+	
 	for(int i=0; i < b->count_indices; i++){
 		b->indices[i] = readExpr(file, debug);
 	}
+	
+	magic_num_require(MAGIC_END_SIMPLEVAR, file);
 	
 	return b;
 }
@@ -570,17 +486,11 @@ struct Term* readTerm(FILE* file, bool debug){
 	
 	if(debug){ printf("readTerm(...)\n"); }
 	
-	int kind;
-	
-	if(fscanf(file, "Term\t%d\t", &kind) != 1){
-		printf("Error reading Term\n");
-		fclose(file);
-		fclose(file);
-		exit(1);
-	}
+	magic_num_require(MAGIC_TERM, file);
 	
 	struct Term* b = malloc(sizeof(struct Term));
-	b->kind = kind;
+	
+	b->kind = deserialize_int(file);
 
 	switch(b->kind){
 	
@@ -602,6 +512,9 @@ struct Term* readTerm(FILE* file, bool debug){
 			exit(1);
 			break;
 	}
+	
+	magic_num_require(MAGIC_END_TERM, file);
+	
 	return b;
 }
 
@@ -609,24 +522,17 @@ struct UnOpTerm* readUnOpTerm(FILE* file, bool debug){
 	
 	if(debug){ printf("readUnOpTerm(...)\n"); }
 	
-	int kind;
-	if(fscanf(file, "UnOpTerm\t%d\t", &kind) != 1){
-		printf("Error reading UnOpTerm\n");
-		fclose(file);
-		fclose(file);
-		exit(1);
-	}
+	magic_num_require(MAGIC_UNOPTERM, file);
 	
-	struct UnOpTerm* t = 
-		malloc(sizeof(struct UnOpTerm));
+	const int kind = deserialize_int(file);
 	
-	if(kind == 1){
-		t->op = readOp(file, debug);
-	}else{
-		t->op = NULL;
-	}
+	struct UnOpTerm* t = malloc(sizeof(struct UnOpTerm));
+	
+	t->op = (kind == 1)? readOp(file, debug): NULL;
 	
 	t->term = readTerm(file, debug);
+	
+	magic_num_require(MAGIC_END_UNOPTERM, file);
 	
 	return t;
 }
@@ -635,17 +541,14 @@ struct Range* readRange(FILE* file, bool debug){
 	
 	if(debug){ printf("readRange(...)\n"); }
 	
-	if(fscanf(file, "Range\t") == EOF){
-		printf("Error reading Range\n");
-		fclose(file);
-		exit(1);
-	}
+	magic_num_require(MAGIC_RANGE, file);
 	
-	struct Range* r = 
-		malloc(sizeof(struct Range));
+	struct Range* r = malloc(sizeof(struct Range));
 	
 	r->start = readExpr(file, debug);
 	r->end = readExpr(file, debug);
+	
+	magic_num_require(MAGIC_END_RANGE, file);
 	
 	return r;
 }
@@ -655,19 +558,13 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	
 	if(debug){ printf("readStmt(...)\n"); }
 	
-	int kind;
+	magic_num_require(MAGIC_STMT, file);
 	
-	if(fscanf(file, "Stmt\t%d\t", &kind) != 1){
-		printf("Error reading Stmt\n");
-		fclose(file);
-		exit(1);
-	}
+	struct Stmt* b = malloc(sizeof(struct Stmt));
 	
-	struct Stmt* b = 
-		malloc(sizeof(struct Stmt));
-	b->kind = kind;
+	b->kind = deserialize_int(file);
 
-	switch(kind){
+	switch(b->kind){
 		case 0: b->ptr.m0 = readLoopStmt(file, debug);   break;
 		case 1: b->ptr.m1 = readMethodCall(file, debug); break;
 		case 2: b->ptr.m2 = readWhileStmt(file, debug);  break;
@@ -684,20 +581,18 @@ struct Stmt* readStmt(FILE* file, bool debug){
 			exit(1);
 			break;
 	}
+	
+	magic_num_require(MAGIC_END_STMT, file);
+	
 	return b;
 }
 struct IfStmt* readIfStmt(FILE* file, bool debug){
 	
 	if(debug){ printf("readIfStmt(...)\n"); }
 	
-	if(fscanf(file, "IfStmt\t") == EOF){
-		printf("Error reading IfStmt\n");
-		fclose(file);
-		exit(1);
-	}
+	magic_num_require(MAGIC_IFSTMT, file);
 	
-	struct IfStmt* v = 
-		malloc(sizeof(struct IfStmt));
+	struct IfStmt* v = malloc(sizeof(struct IfStmt));
 	
 	v->condition = NULL;
 	v->block = NULL;
@@ -712,25 +607,23 @@ struct IfStmt* readIfStmt(FILE* file, bool debug){
 	if(hasElse != 0){
 		v->elseBlock = readStmtBlock(file, debug);
 	}
+	
+	magic_num_require(MAGIC_END_IFSTMT, file);
+	
 	return v;
 }
 struct WhileStmt* readWhileStmt(FILE* file, bool debug){
 	
 	if(debug){ printf("readWhileStmt(...)\n"); }
 	
-	if(fscanf(file, "WhileStmt\t") == EOF){
-		printf("Error reading WhileStmt\n");
-		fclose(file);
-		exit(1);
-	}
+	magic_num_require(MAGIC_WHILESTMT, file);
 	
-	struct WhileStmt* v = 
-		malloc(sizeof(struct WhileStmt));
+	struct WhileStmt* v = malloc(sizeof(struct WhileStmt));
 
 	v->condition = readExpr(file, debug);
 	v->block = readStmtBlock(file, debug);
 	
-	if(debug){ printf("done\n"); }
+	magic_num_require(MAGIC_END_WHILESTMT, file);
 	
 	return v;
 }
@@ -738,32 +631,31 @@ struct RetStmt* readRetStmt(FILE* file, bool debug){
 	
 	if(debug){ printf("readRetStmt(...)\n"); }
 	
-	if(fscanf(file, "RetStmt\t") == EOF){
-		printf("Error reading RetStmt\n");
-		fclose(file);
-		exit(1);
-	}
+	magic_num_require(MAGIC_RETSTMT, file);
 	
-	struct RetStmt* v = 
-		malloc(sizeof(struct RetStmt));
+	struct RetStmt* v = malloc(sizeof(struct RetStmt));
 
 	v->returnValue = readExpr(file, debug);
+	
+	magic_num_require(MAGIC_END_RETSTMT, file);
+	
 	return v;
 }
 struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 	
 	if(debug){ printf("readAssignStmt(...)\n"); }
 	
+	magic_num_require(MAGIC_ASSIGNSTMT, file);
+	
 	int option;
 	
-	if(fscanf(file, "AssignStmt\t%d\t", &option) != 1){
+	if(fscanf(file, "%d\t", &option) != 1){
 		printf("Error reading AssignStmt\n");
 		fclose(file);
 		exit(1);
 	}
 	
-	struct AssignStmt* v = 
-		malloc(sizeof(struct AssignStmt));
+	struct AssignStmt* v = malloc(sizeof(struct AssignStmt));
 
 	if(option == 0){
 		v->optType = NULL;
@@ -783,6 +675,8 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 	strncpy(v->assign_op, assign_op, 2);
 	
 	v->expr = readExpr(file, debug);
+	
+	magic_num_require(MAGIC_END_ASSIGNSTMT, file);
 
 	return v;
 }
@@ -790,47 +684,42 @@ struct MethodCall* readMethodCall(FILE* file, bool debug){
 	
 	if(debug){ printf("readMethodCall(...)\n"); }
 	
+	magic_num_require(MAGIC_METHODCALL, file);
+	
 	struct MethodCall* v = 
 		malloc(sizeof(struct MethodCall));
 
-	if(
-		fscanf(
-			file, 
-			"MethodCall\t%s\t%u\t", 
-			v->methodName, 
-			(unsigned int*)&(v->count_args)
-		) != 2
-	){
+	if(fscanf(file, "%s\t", v->methodName) != 1){
 		printf("Error reading MethodCall\n");
 		free(v);
 		fclose(file);
 		exit(1);
 	}
+	
+	v->count_args = deserialize_int(file);
 
 	v->args = 
 		malloc(sizeof(struct Expr*)*(v->count_args));
 	for(int i=0;i < (v->count_args);i++){
 		v->args[i] = readExpr(file, debug);
 	}
+	
+	magic_num_require(MAGIC_END_METHODCALL, file);
+	
 	return v;
 }
 struct LoopStmt* readLoopStmt(FILE* file, bool debug){
 	
 	if(debug){ printf("readLoopStmt(...)\n"); }
 	
-	if(fscanf(file, "LoopStmt\t") == EOF){
-		printf("Error reading LoopStmt\n");
-		fclose(file);
-		exit(1);
-	}
+	magic_num_require(MAGIC_LOOPSTMT, file);
 	
-	struct LoopStmt* v = 
-		malloc(sizeof(struct LoopStmt));
+	struct LoopStmt* v = malloc(sizeof(struct LoopStmt));
 
 	v->count = readExpr(file, debug);
 	v->block = readStmtBlock(file, debug);
 	
-	if(debug){ printf("done\n"); }
+	magic_num_require(MAGIC_END_LOOPSTMT, file);
 	
 	return v;
 }
@@ -838,14 +727,11 @@ struct BreakStmt* readBreakStmt(FILE* file, bool debug){
 	
 	if(debug){ printf("readBreakStmt(...)\n"); }
 	
-	if(fscanf(file, "BreakStmt\t") == EOF){
-		printf("Error reading BreakStmt\n");
-		fclose(file);
-		exit(1);
-	}
+	magic_num_require(MAGIC_BREAKSTMT, file);
 	
-	struct BreakStmt* v = 
-		malloc(sizeof(struct BreakStmt));
+	struct BreakStmt* v = malloc(sizeof(struct BreakStmt));
+	
+	magic_num_require(MAGIC_END_BREAKSTMT, file);
 	
 	return v;
 }
@@ -853,20 +739,23 @@ struct ForStmt* readForStmt(FILE* file, bool debug){
 	
 	if(debug){ printf("readForStmt(...)\n"); }
 	
+	magic_num_require(MAGIC_FORSTMT, file);
+	
 	char indexName[DEFAULT_STR_SIZE];
 	
-	if(fscanf(file, "ForStmt\t%s\t", indexName) != 1){
+	if(fscanf(file, "%s\t", indexName) != 1){
 		printf("Error reading ForStmt\n");
 		fclose(file);
 		exit(1);
 	}
 	
-	struct ForStmt* res = 
-		malloc(sizeof(struct ForStmt));
+	struct ForStmt* res = malloc(sizeof(struct ForStmt));
 	
 	strncpy(res->indexName, indexName, DEFAULT_STR_SIZE);
 	res->range = readRange(file, debug);
 	res->block = readStmtBlock(file, debug);
+	
+	magic_num_require(MAGIC_END_FORSTMT, file);
 	
 	return res;
 }
@@ -874,29 +763,22 @@ struct SwitchStmt* readSwitchStmt(FILE* file, bool debug){
 	
 	if(debug){ printf("readSwitchStmt(...)\n"); }
 	
-	if(fscanf(file, "SwitchStmt\t") == EOF){
-		printf("Error reading SwitchStmt\n");
-		fclose(file);
-		exit(1);
-	}
+	magic_num_require(MAGIC_SWITCHSTMT, file);
 	
-	struct SwitchStmt* res = 
-		malloc(sizeof(struct SwitchStmt));
+	struct SwitchStmt* res = malloc(sizeof(struct SwitchStmt));
 	
 	res->var = readVariable(file, debug);
 	
-	int count;
-	fscanf(file, "%d\t", &count);
-	res->count_cases = count;
-	
-	res->cases = NULL;
-	res->cases = 
-		malloc(sizeof(struct CaseStmt*)* (res->count_cases));
+	res->count_cases = deserialize_int(file);
+
+	res->cases = malloc(sizeof(struct CaseStmt*)* (res->count_cases));
 	
 	for(int i=0; i < res->count_cases; i++){
 		
 		res->cases[i] = readCaseStmt(file, debug);
 	}
+	
+	magic_num_require(MAGIC_END_SWITCHSTMT, file);
 	
 	return res;
 }
@@ -904,22 +786,16 @@ struct CaseStmt* readCaseStmt(FILE* file, bool debug){
 	
 	if(debug){ printf("readCaseStmt(...)\n"); }
 	
-	int kind;
+	magic_num_require(MAGIC_CASESTMT, file);
 	
-	if(fscanf(file, "CaseStmt\t%d\t", &kind) != 1){
-		printf("Error reading Case\n");
-		fclose(file);
-		exit(1);
-	}
+	struct CaseStmt* res = malloc(sizeof(struct CaseStmt));
 	
-	struct CaseStmt* res = 
-		malloc(sizeof(struct CaseStmt));
-	res->kind = kind;
+	res->kind = deserialize_int(file);
 	
 	res->ptr.m1 = NULL;
 	res->block = NULL;
 	
-	switch(kind){
+	switch(res->kind){
 		case 0: res->ptr.m1 = readBoolConst(file, debug); break;
 		case 1: res->ptr.m2 = readCharConst(file, debug); break;
 		case 2: res->ptr.m3 = readIntConst(file, debug); break;
@@ -939,6 +815,8 @@ struct CaseStmt* readCaseStmt(FILE* file, bool debug){
 		res->block = readStmtBlock(file, debug);
 	}
 	
+	magic_num_require(MAGIC_END_CASESTMT, file);
+	
 	return res;
 }
 // --- typenodes -------------------------
@@ -946,16 +824,11 @@ struct Type* readType(FILE* file, bool debug){
 	
 	if(debug){ printf("readType(...)\n"); }
 	
-	int kind;
+	magic_num_require(MAGIC_TYPE, file);
 	
-	if(fscanf(file, "Type\t%d\t", &kind) != 1){
-		printf("Error reading Type\n");
-		fclose(file);
-		exit(1);
-	}
+	const int kind = deserialize_int(file);;
 	
-	struct Type* b = 
-		malloc(sizeof(struct Type));
+	struct Type* b = malloc(sizeof(struct Type));
 	
 	b->m1 = NULL;
 	b->m2 = NULL;
@@ -972,7 +845,7 @@ struct Type* readType(FILE* file, bool debug){
 			exit(1);
 	}
 	
-	if(debug){ printf("done\n"); }
+	magic_num_require(MAGIC_END_TYPE, file);
 	
 	return b;
 }
@@ -980,11 +853,7 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 	
 	if(debug){ printf("readSubrType(...)\n"); }
 	
-	if(fscanf(file, "SubrType\t") == EOF){
-		printf("Error reading SubrType\n");
-		fclose(file);
-		exit(1);
-	}
+	magic_num_require(MAGIC_SUBRTYPE, file);
 	
 	struct SubrType* v = 
 		malloc(sizeof(struct SubrType));
@@ -1007,7 +876,7 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 		v->argTypes[i] = readType(file, debug);
 	}
 	
-	if(debug){ printf("done\n"); }
+	magic_num_require(MAGIC_END_SUBRTYPE, file);
 	
 	return v;
 }
@@ -1015,11 +884,13 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 	
 	if(debug){ printf("readSimpleType(...)\n"); }
 	
+	magic_num_require(MAGIC_SIMPLETYPE, file);
+	
 	struct SimpleType* v = 
 		malloc(sizeof(struct SimpleType));
 	
 	//%30s ensures it does not read more than 30 chars
-	if(fscanf(file, "SimpleType\t%30s\t", v->typeName) != 1){
+	if(fscanf(file, "%30s\t", v->typeName) != 1){
 		printf("Error reading SimpleType\n");
 		free(v);
 		fclose(file);
@@ -1039,7 +910,7 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 		v->typeParams[i] = pIndex;
 	}
 	
-	if(debug){ printf("done\n"); }
+	magic_num_require(MAGIC_END_SIMPLETYPE, file);
 	
 	return v;
 }
@@ -1047,18 +918,13 @@ struct ArrayType* readArrayType(FILE* file, bool debug){
 	
 	if(debug){ printf("readArrayType(...)\n"); }
 	
-	if(fscanf(file, "ArrayType\t") == EOF){
-		printf("Error reading ArrayType\n");
-		fclose(file);
-		exit(1);
-	}
+	magic_num_require(MAGIC_ARRAYTYPE, file);
 	
-	struct ArrayType* v = 
-		malloc(sizeof(struct ArrayType));
+	struct ArrayType* v = malloc(sizeof(struct ArrayType));
 	
 	v->element_type = readType(file, debug);
 	
-	if(debug){ printf("done\n"); }
+	magic_num_require(MAGIC_END_ARRAYTYPE, file);
 	
 	return v;
 }
@@ -1066,17 +932,13 @@ struct TypeParam* readTypeParam(FILE* file, bool debug){
 	
 	if(debug){ printf("readTypeParam(...)\n"); }
 	
-	struct TypeParam* v = 
-		malloc(sizeof(struct TypeParam));
+	magic_num_require(MAGIC_TYPEPARAM, file);
 	
-	if(fscanf(file, "TypeParam\t%u\t", (unsigned int*)&(v->index)) != 1){
-		printf("Error reading TypeParam\n");
-		free(v);
-		fclose(file);
-		exit(1);
-	}
+	struct TypeParam* v = malloc(sizeof(struct TypeParam));
+		
+	fread(v, sizeof(struct TypeParam), 1, file);
 	
-	if(debug){ printf("done\n"); }
+	magic_num_require(MAGIC_END_TYPEPARAM, file);
 	
 	return v;
 }
@@ -1084,16 +946,11 @@ struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug){
 	
 	if(debug){ printf("readBasicTypeWrapped(...)\n"); }
 	
-	int kind = 0;
+	magic_num_require(MAGIC_BASICTYPEWRAPPED, file);
 	
-	if(fscanf(file, "BasicTypeWrapped\t%d\t", &kind) != 1){
-		printf("Error reading BasicTypeWrapped\n");
-		fclose(file);
-		exit(1);
-	}
+	const int kind = deserialize_int(file);
 	
-	struct BasicTypeWrapped* v = 
-		malloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* v = malloc(sizeof(struct BasicTypeWrapped));
 	
 	switch(kind){
 		case 1: 
@@ -1111,7 +968,7 @@ struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug){
 			exit(1);
 	}
 	
-	if(debug){ printf("done\n"); }
+	magic_num_require(MAGIC_END_BASICTYPEWRAPPED, file);
 	
 	return v;
 }

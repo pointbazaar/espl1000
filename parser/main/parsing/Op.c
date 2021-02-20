@@ -17,6 +17,7 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 	}
 
 	struct Op* res = malloc(sizeof(struct Op));
+	memset(res, 0, sizeof(struct Op));
 
 	struct TokenList* copy = list_copy(tokens);
 

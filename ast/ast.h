@@ -13,6 +13,7 @@ but is better for execution time.
 #define DEFAULT_STR_SIZE 32 
 
 #include <stdbool.h>
+#include <stddef.h>
 #include <inttypes.h>
 
 struct AST_Whole_Program;
@@ -32,6 +33,7 @@ struct Identifier;
 struct Variable;
 struct SimpleVar;
 struct Range;
+struct DeclArg;
 
 //const
 struct BoolConst;

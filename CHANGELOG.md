@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
+- [ ] (half done, need to get rid of the last fprintf/fscanf statements)use a binary format (use fread, fwrite) for the .ast files.
+  this should increase performance, as struct members can be directly
+  initialized from file contents
 
 ## [0.1.0] - 2021-02-15
 - Use a GNU Flex based Lexer implementation instead of a handwritten Lexer
