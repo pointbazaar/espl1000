@@ -24,42 +24,89 @@
 		<div class="col"><a href="architecture.html">Architecture</a></div>
 	</div>
 
-	<h1 class="mb-3">SmallDragon Primitive Data Types</h1>
+	<h1 class="mb-3 mt-3">SmallDragon Primitive Data Types</h1>
 
 	<p>
 	The primitive Data Types available in SmallDragon are used similar to those available in C,
 	and are a subset of those.  
 	</p>
 
-	<h3> Integer Types </h3>
+	<div class="row">
 
-	<table>
-	<tr>
-		<td>Type</td><td>Width (in bytes)</td><td>transpiles to:</td>
-	</tr>
-	<tr> <td>Int8</td>  <td>1</td>  <td>int8_t</td>   </tr>
-	<tr> <td>Int16</td> <td>2</td> <td>int16_t</td>  </tr>
-	<tr> <td>Int32</td> <td>4</td> <td>int32_t</td>  </tr>
-	<tr> <td>Int64</td> <td>8</td> <td>int64_t</td>  </tr>
-	<tr> <td>UInt8</td>  <td>1</td>  <td>uint8_t</td>   </tr>
-	<tr> <td>UInt16</td> <td>2</td> <td>uint16_t</td>  </tr>
-	<tr> <td>UInt32</td> <td>4</td> <td>uint32_t</td>  </tr>
-	<tr> <td>UInt64</td> <td>8</td> <td>uint64_t</td>  </tr>
-	</table>
+		<div class="col">
+			<h3> Signed Integer Types </h3>
+			<table class="table box">
+			<thead>
+				<tr>
+					<th>Type</th>
+					<th>Width</th>
+					<th>transpiles to:</th>
+				</tr>
+			</thead>
+			<tr> <td>Int8</td>  <td>1 byte</td>  <td>int8_t</td>   </tr>
+			<tr> <td>Int16</td> <td>2 bytes</td> <td>int16_t</td>  </tr>
+			<tr> <td>Int32</td> <td>4 bytes</td> <td>int32_t</td>  </tr>
+			<tr> <td>Int64</td> <td>8 bytes</td> <td>int64_t</td>  </tr>
+			</table>
+		</div>
+		
+		<div class="col">
+			<h3> Unsigned Integer Types </h3>
+			<table class="table box">
+			<thead>
+				<tr>
+					<th>Type</th>
+					<th>Width</th>
+					<th>transpiles to:</th>
+				</tr>
+			</thead>
+			<tr> <td>UInt8</td>  <td>1 byte</td>  <td>uint8_t</td>   </tr>
+			<tr> <td>UInt16</td> <td>2 bytes</td> <td>uint16_t</td>  </tr>
+			<tr> <td>UInt32</td> <td>4 bytes</td> <td>uint32_t</td>  </tr>
+			<tr> <td>UInt64</td> <td>8 bytes</td> <td>uint64_t</td>  </tr>
+			</table>
+		</div>
+		
+	</div>
 
-	<p>
-	There is also Int, which transpiles directly to 'int' in C.
+	<p class="mt-3">
+	There is also Int, which transpiles directly to 'int' in C.<br>
 	It should not be used if you want a specific size.
 	</p>
 
-	<h3> Other Types </h3>
-	<ul>
-		<li>Bool</li>
-		<li>Char</li>
-		<li>Float</li>
-		<li>String</li>
-		<li>Hex Literals</li>
-	</ul>
+	<div class="row">
+		
+		<div class="col">
+			<h3>Float</h3>
+			<pre>
+Float f = 3.14159;
+			</pre>
+		</div>
+
+		<div class="col">
+			<h3>Char</h3>
+			<pre>
+Char c = 'k';
+			</pre>
+		</div>
+
+		<div class="col">		
+			<h3>Bool</h3>
+			<pre>
+Bool x = true;
+			</pre>
+		</div>
+
+		<div class="col">		
+			<h3>Hex and Binary Literals</h3>
+			<pre>
+Int x;
+x = 0x0ffb
+x = 0b01000101
+			</pre>
+		</div>
+		
+	</div>
 
 </div>
 
