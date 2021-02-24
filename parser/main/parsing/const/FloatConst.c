@@ -3,10 +3,10 @@
 #include <stdlib.h>
 
 #include "FloatConst.h"
-#include "../commandline/TokenList.h"
-#include "../commandline/TokenKeys.h"
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
+#include "../../commandline/TokenList.h"
+#include "../../commandline/TokenKeys.h"
+#include "../../../../token/token.h"
+#include "../../../../ast/free_ast.h"
 
 struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 

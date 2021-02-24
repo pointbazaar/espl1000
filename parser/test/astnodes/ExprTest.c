@@ -3,7 +3,7 @@
 #include "../../main/commandline/TokenKeys.h"
 #include "../../main/parsing/Expr.h"
 #include "../../main/parsing/Term.h"
-#include "../../main/parsing/IntConst.h"
+#include "../../main/parsing/const/IntConst.h"
 #include "../../main/parsing/Variable.h"
 #include "../../main/parsing/SimpleVar.h"
 #include "../../../token/token.h"

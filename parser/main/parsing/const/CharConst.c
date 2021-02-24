@@ -3,10 +3,10 @@
 #include <stdlib.h>
 
 #include "CharConst.h"
-#include "../commandline/TokenList.h"
-#include "../commandline/TokenKeys.h"
-#include "../../../ast/free_ast.h"
-#include "../../../token/token.h"
+#include "../../commandline/TokenList.h"
+#include "../../commandline/TokenKeys.h"
+#include "../../../../ast/free_ast.h"
+#include "../../../../token/token.h"
 
 struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 

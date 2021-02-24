@@ -2,9 +2,11 @@
 #include <stdlib.h>
 
 #include "CaseStmt.h"
-#include "../IntConst.h"
-#include "../CharConst.h"
-#include "../BoolConst.h"
+
+#include "../const/IntConst.h"
+#include "../const/CharConst.h"
+#include "../const/BoolConst.h"
+
 #include "../StmtBlock.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../commandline/TokenList.h"

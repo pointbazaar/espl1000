@@ -6,7 +6,7 @@
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
 #include "../../main/parsing/SimpleVar.h"
-#include "../../main/parsing/IntConst.h"
+#include "../../main/parsing/const/IntConst.h"
 #include "../../main/parsing/Expr.h"
 #include "../../main/parsing/Term.h"
 #include "../../../token/token.h"

@@ -2,7 +2,7 @@
 
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
-#include "../../main/parsing/FloatConst.h"
+#include "../../main/parsing/const/FloatConst.h"
 #include "../../../token/token.h"
 #include "../../../ast/free_ast.h"
 

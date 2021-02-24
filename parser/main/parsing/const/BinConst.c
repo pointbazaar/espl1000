@@ -3,10 +3,10 @@
 
 #include "BinConst.h"
 
-#include "../commandline/TokenList.h"
-#include "../commandline/TokenKeys.h"
-#include "../../../ast/ast.h"
-#include "../../../token/token.h"
+#include "../../commandline/TokenList.h"
+#include "../../commandline/TokenKeys.h"
+#include "../../../../ast/ast.h"
+#include "../../../../token/token.h"
 
 struct BinConst* makeBinConst(struct TokenList* tokens, bool debug){
 	

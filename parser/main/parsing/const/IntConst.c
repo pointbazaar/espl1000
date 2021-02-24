@@ -3,10 +3,10 @@
 #include <stdlib.h>
 
 #include "IntConst.h"
-#include "../commandline/TokenList.h"
-#include "../commandline/TokenKeys.h"
-#include "../../../ast/free_ast.h"
-#include "../../../token/token.h"
+#include "../../commandline/TokenList.h"
+#include "../../commandline/TokenKeys.h"
+#include "../../../../ast/free_ast.h"
+#include "../../../../token/token.h"
 
 struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 
