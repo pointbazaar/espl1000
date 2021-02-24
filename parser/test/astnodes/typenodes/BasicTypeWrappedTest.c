@@ -3,7 +3,7 @@
 #include "../../../main/commandline/TokenList.h"
 #include "../../../main/commandline/TokenKeys.h"
 #include "../../../../token/token.h"
-#include "../../../main/parsing/typenodes/BasicTypeWrapped.h"
+#include "../../../main/astnodes/typenodes/BasicTypeWrapped.h"
 #include "../../../../ast/free_ast.h"
 
 #include <stdio.h>

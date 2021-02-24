@@ -1,8 +1,8 @@
 #include "StructDeclTest.h"
 #include "../../../main/commandline/TokenList.h"
 #include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/parsing/struct/StructDecl.h"
-#include "../../../main/parsing/struct/StructMember.h"
+#include "../../../main/astnodes/struct/StructDecl.h"
+#include "../../../main/astnodes/struct/StructMember.h"
 #include "../../../../token/token.h"
 #include "../../../../ast/free_ast.h"
 

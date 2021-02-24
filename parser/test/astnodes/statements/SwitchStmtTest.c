@@ -5,7 +5,7 @@
 #include "SwitchStmtTest.h"
 #include "../../../main/commandline/TokenList.h"
 #include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/parsing/statements/SwitchStmt.h"
+#include "../../../main/astnodes/statements/SwitchStmt.h"
 #include "../../../../token/token.h"
 #include "../../../../ast/free_ast.h"
 

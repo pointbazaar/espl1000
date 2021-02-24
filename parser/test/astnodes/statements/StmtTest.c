@@ -5,7 +5,7 @@
 #include "StmtTest.h"
 #include "../../../main/commandline/TokenList.h"
 #include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/parsing/statements/Stmt.h"
+#include "../../../main/astnodes/statements/Stmt.h"
 #include "../../../../token/token.h"
 #include "../../../../ast/free_ast.h"
 

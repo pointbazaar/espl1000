@@ -131,23 +131,23 @@ build/%.o: main/commandline/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	
-build/%.o: main/parsing/%.c $(MAIN_DEPS)
+build/%.o: main/astnodes/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	
-build/%.o: main/parsing/statements/%.c $(MAIN_DEPS)
+build/%.o: main/astnodes/statements/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	
-build/%.o: main/parsing/const/%.c $(MAIN_DEPS)
+build/%.o: main/astnodes/const/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 
-build/%.o: main/parsing/struct/%.c $(MAIN_DEPS)
+build/%.o: main/astnodes/struct/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 
-build/%.o: main/parsing/typenodes/%.c $(MAIN_DEPS)
+build/%.o: main/astnodes/typenodes/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 

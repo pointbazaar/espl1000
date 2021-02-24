@@ -3,7 +3,7 @@
 #include "../../../main/commandline/TokenList.h"
 #include "../../../main/commandline/TokenKeys.h"
 #include "../../../../token/token.h"
-#include "../../../main/parsing/const/BoolConst.h"
+#include "../../../main/astnodes/const/BoolConst.h"
 #include "../../../../ast/free_ast.h"
 
 #include <stdbool.h>

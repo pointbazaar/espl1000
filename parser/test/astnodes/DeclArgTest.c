@@ -1,7 +1,7 @@
 #include "DeclArgTest.h"
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
-#include "../../main/parsing/DeclArg.h"
+#include "../../main/astnodes/DeclArg.h"
 #include "../../../token/token.h"
 #include "../../../ast/free_ast.h"
 

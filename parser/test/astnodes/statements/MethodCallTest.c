@@ -1,7 +1,7 @@
 #include "MethodCallTest.h"
 #include "../../../main/commandline/TokenList.h"
 #include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/parsing/statements/MethodCall.h"
+#include "../../../main/astnodes/statements/MethodCall.h"
 #include "../../../../token/token.h"
 #include "../../../../ast/free_ast.h"
 

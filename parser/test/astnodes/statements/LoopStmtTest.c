@@ -2,7 +2,7 @@
 
 #include "../../../main/commandline/TokenList.h"
 #include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/parsing/statements/LoopStmt.h"
+#include "../../../main/astnodes/statements/LoopStmt.h"
 #include "../../../../token/token.h"
 #include "../../../../ast/free_ast.h"
 

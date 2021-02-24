@@ -7,11 +7,11 @@
 #include <malloc.h>
 
 #include "TokenReader.h"
-#include "../parsing/Namespace.h"
-#include "../parsing/Method.h"
-#include "../parsing/DeclArg.h"
-#include "../parsing/statements/Stmt.h"
-#include "../parsing/typenodes/Type.h"
+#include "../astnodes/Namespace.h"
+#include "../astnodes/Method.h"
+#include "../astnodes/DeclArg.h"
+#include "../astnodes/statements/Stmt.h"
+#include "../astnodes/typenodes/Type.h"
 #include "../../../ast/ast_writer.h"
 #include "../../test/commandline/ParserTest.h"
 
