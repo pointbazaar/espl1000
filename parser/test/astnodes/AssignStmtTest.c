@@ -179,7 +179,7 @@ int assignstmt_test_type_declaration_for_variable(bool debug) {
 
 	struct TokenList* tokens = makeTokenList();
 	
-	list_add(tokens, makeToken2(TYPEIDENTIFIER,"PInt"));
+	list_add(tokens, makeToken2(TYPEID,"Carrot"));
 	list_add(tokens, makeToken2(ID,"x"));
 	list_add(tokens, makeToken2(ASSIGNOP,"="));
 	list_add(tokens, makeToken2(INTEGER,"3"));

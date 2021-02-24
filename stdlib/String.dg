@@ -1,8 +1,8 @@
 
-fn substr ([Char] s, PInt i, PInt j)->[Char] {
-	PInt l=abs(j-i);
-	[Char] res=new(l);
-	PInt k=0;
+fn substr ([char] s, uint i, uint j)->[char] {
+	uint l=abs(j-i);
+	[char] res=new(l);
+	uint k=0;
 	while(k<l){
 		res[k]=s[i+k];
 		k=k+1;
@@ -10,7 +10,7 @@ fn substr ([Char] s, PInt i, PInt j)->[Char] {
 	return res;
 }
 
-fn trimleft ([Char] s)->[Char] {
+fn trimleft ([char] s)->[char] {
 	
 	i=0;
 	blank=true;
@@ -22,7 +22,7 @@ fn trimleft ([Char] s)->[Char] {
 		}
 	}
 
-	[Char] r = new(len(s)-i);
+	[char] r = new(len(s)-i);
 	k=0;
 	while(i<len(s)){
 		r[k]=s[i];

@@ -4,6 +4,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [0.1.2]
+- Change the names of primitive integer types. (e.g. use int32 now instead of Int32)
+  which is easier to write. New Names: [char, float, bool, int, uint, ... (various int types)] 
+
 ## [0.1.1] - 2021-02-20
 - [x] Use a binary format (utilizing fread, fwrite) for the .ast files.
   This should increase performance, as struct members can be directly

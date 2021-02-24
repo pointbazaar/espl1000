@@ -60,7 +60,7 @@ contexts:
           pop: true
 
   primitives:
-    - match: '\b(PInt|NInt|NZInt|Int)\b'
+    - match: '\b(int|uint|char|float|bool)\b'
       scope: keyword.control.dg
 
   types:

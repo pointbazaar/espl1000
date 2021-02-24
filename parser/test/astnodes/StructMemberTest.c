@@ -19,10 +19,10 @@ int structmember_test_can_parse_struct_member(bool debug) {
 
 	list_add(list, makeToken2(LPARENS,"("));
 		list_add(list, makeToken2(LPARENS,"("));
-		list_add(list, makeToken2(TYPEIDENTIFIER,"PInt") );
+		list_add(list, makeToken2(TYPEID,"MyStruct") );
 		list_add(list, makeToken2(RPARENS,")"));
 		list_add(list, makeToken2(ARROW,"->"));
-		list_add(list, makeToken2(TYPEIDENTIFIER,"PInt") );
+		list_add(list, makeToken2(TYPEID,"Carrot") );
 	list_add(list, makeToken2(RPARENS,")"));
 
 	list_add(list, makeToken2(ID,"subr"));

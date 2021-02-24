@@ -6,22 +6,16 @@
 #define LINE_NO 2
 
 //Identifier
-#define ID 				4	
-#define TYPEIDENTIFIER 	5
+#define ID 				4
+#define TYPEID		 	5
+#define TYPEID_PRIMITIVE_INT 	6
+#define TYPEID_PRIMITIVE_BOOL 	7
+#define TYPEID_PRIMITIVE_CHAR 	8
+#define TYPEID_PRIMITIVE_FLOAT 	9
 
 //Type Parameter Token
-#define TPARAM 		6
+#define TPARAM 		10
 
-//Constants
-#define FLOATING 	10
-#define INTEGER 	11
-#define HEXCONST 	12
-#define BINCONST 	13
-#define CCONST 		14
-#define STRINGCONST 15
-
-#define BCONST_TRUE  16
-#define BCONST_FALSE 17
 
 //()[]{}
 #define LPARENS 	20
@@ -41,6 +35,17 @@
 #define RANGEOP 	36
 #define STRUCTMEMBERACCESS 37
 #define ASSIGNOP	38
+
+//Constants
+#define FLOATING 	40
+#define INTEGER 	41
+#define HEXCONST 	42
+#define BINCONST 	43
+#define CCONST 		44
+#define STRINGCONST 45
+
+#define BCONST_TRUE  46
+#define BCONST_FALSE 47
 
 //Keywords
 #define IF 		50

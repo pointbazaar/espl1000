@@ -1,5 +1,5 @@
 
-fn main () ~> Int {
+fn main () ~> int {
 
 	loop 3 {
 		break;

@@ -1,8 +1,8 @@
-fn main () ~> PInt {
+fn main () ~> uint {
 	
-	Int x = getchar();
+	char x = getchar();
 	
-	printf("%d \n", x);
+	printf("%c \n", x);
 	
 	return 0;
 }

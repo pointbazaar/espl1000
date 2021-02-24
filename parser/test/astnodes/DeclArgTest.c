@@ -14,17 +14,15 @@ int declarg_test_parse_declared_argument(bool debug) {
 	if(debug){
 		printf("TEST: declarg_test_parse_declared_argument\n");
 	}
-	
-	//  ((PInt)~>PInt) subr
 
 	struct TokenList* list = makeTokenList();
 
 	list_add(list, makeToken2(LPARENS,"("));
 		list_add(list, makeToken2(LPARENS,"("));
-		list_add(list, makeToken2(TYPEIDENTIFIER,"PInt"));
+		list_add(list, makeToken2(TYPEID,"Car"));
 		list_add(list, makeToken2(RPARENS,")"));
 		list_add(list, makeToken2(ARROW,"->"));
-		list_add(list, makeToken2(TYPEIDENTIFIER,"PInt"));
+		list_add(list, makeToken2(TYPEID,"Carrot"));
 	list_add(list, makeToken2(RPARENS,")"));
 
 	list_add(list, makeToken2(ID,"subr"));

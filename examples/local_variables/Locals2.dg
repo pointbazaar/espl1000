@@ -1,5 +1,5 @@
-fn main ()~> PInt {
-	PInt x = 55;
+fn main ()~> uint {
+	uint x = 55;
 
 	x = x*2;
 

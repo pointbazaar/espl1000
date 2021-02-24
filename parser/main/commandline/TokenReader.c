@@ -76,7 +76,7 @@ struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 			r = makeToken2(STRINGCONST, tkn+3);
 			break;
 		case CCONST : 
-			r = makeToken2(CCONST, tkn+2);
+			r = makeToken2(CCONST, tkn+3);
 			break;
 		case ANYTYPE: 
 		//CONSTANTS
@@ -95,7 +95,11 @@ struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		case RCURLY:
 		//IDENTIFIERS
 		case ID : 
-		case TYPEIDENTIFIER : 
+		case TYPEID:
+		case TYPEID_PRIMITIVE_INT:
+		case TYPEID_PRIMITIVE_BOOL:
+		case TYPEID_PRIMITIVE_CHAR:
+		case TYPEID_PRIMITIVE_FLOAT:
 		//SECTION: OPERATORNS
 		case OPKEY : 
 		case ASSIGNOP : 
@@ -127,6 +131,6 @@ struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 			exit(1);
 			return NULL;
 	};
-	r->statically_allocated = false;
+	
 	return r;
 }

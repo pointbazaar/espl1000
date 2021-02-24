@@ -1,9 +1,9 @@
 
-fn main () ~> PInt {
+fn main () ~> uint {
 	subr ( 2, 1 );
 	return 0;
 }
 	
-fn subr (PInt a,PInt b) ~> PInt{
+fn subr (uint a,uint b) ~> uint{
 	return ( a + b ) ;
 }

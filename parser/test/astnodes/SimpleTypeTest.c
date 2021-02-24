@@ -17,7 +17,7 @@ int simpletype_test_typenode_parsing(bool debug) {
 	}
 
 	struct TokenList* list = makeTokenList();
-	list_add(list, makeToken2(TYPEIDENTIFIER,"MyType") );
+	list_add(list, makeToken2(TYPEID,"MyType") );
 
 	struct BasicTypeWrapped* node = makeBasicTypeWrapped2(list, debug);
 
@@ -77,7 +77,7 @@ int simpletype_test_generic(bool debug){
 	}
 
 	struct TokenList* l = makeTokenList();
-	list_add(l, makeToken2(TYPEIDENTIFIER,"Point"));
+	list_add(l, makeToken2(TYPEID,"Point"));
 	list_add(l, makeToken2(OPKEY,"<"));
 	list_add(l, makeToken2(TPARAM,"0"));
 	list_add(l, makeToken2(OPKEY,">"));

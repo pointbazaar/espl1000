@@ -18,3 +18,4 @@ clean:
 	cd lexer_flex && make clean
 	cd parser     && make clean
 	cd transpiler && make clean
+	cd examples   && make clean

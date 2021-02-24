@@ -21,12 +21,12 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 	list_add(l, makeToken2(ID,"main"));
 	
 	list_add(l, makeToken(LPARENS));
-	list_add(l, makeToken2(TYPEIDENTIFIER,"String"));
+	list_add(l, makeToken2(TYPEID,"String"));
 	list_add(l, makeToken2(ID,"hello"));
 	list_add(l, makeToken(RPARENS));
 	
 	list_add(l, makeToken(ARROW));
-	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt"));
+	list_add(l, makeToken2(TYPEID,"Car"));
 	
 	list_add(l, makeToken(LCURLY));
 	list_add(l, makeToken(RCURLY));
@@ -71,7 +71,7 @@ int method_test_can_parse_subroutine(bool debug) {
 	list_add(l, makeToken2(RPARENS,")"));
 
 	list_add(l, makeToken2(ARROW,"->"));
-	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt"));
+	list_add(l, makeToken2(TYPEID,"Apple"));
 
 	list_add(l, makeToken2(LCURLY,"{"));
 
@@ -112,7 +112,7 @@ int method_test_can_parse_method_without_arguments(bool debug) {
 
 	list_add(l, makeToken2(ARROW,"->"));
 
-	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt"));
+	list_add(l, makeToken2(TYPEID,"MyType"));
 
 	list_add(l, makeToken2(LCURLY,"{"));
 

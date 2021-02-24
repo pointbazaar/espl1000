@@ -19,6 +19,8 @@ int charconst_test_parse_char_constant_node(bool debug) {
 	list_add(list, makeToken2(CCONST,"'h'"));
 
 	struct CharConst* node = makeCharConst(list, debug);
+	
+	assert(node != NULL);
 	assert('h'== node->value);
 	
 	if(debug){

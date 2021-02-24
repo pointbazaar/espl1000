@@ -1,14 +1,14 @@
 
 struct Simple {
-	((PInt) -> PInt)  member;
+	((uint) -> uint)  member;
 }
 
-fn main ()~>PInt {
+fn main ()~> uint {
 
 	printf("%d\n",subr(id));
 	printf("%d\n",subr(twice));
 
-	((PInt) -> PInt) myfunction = id;
+	((uint) -> uint) myfunction = id;
 
 	myfunction(3);
 
@@ -21,13 +21,13 @@ fn main ()~>PInt {
 	return 0;
 }
 
-fn id (PInt n)->PInt {
+fn id (uint n)->uint {
 	return n;
 }
 
-fn twice (PInt n)->PInt {return 2*n;}
+fn twice (uint n)-> uint {return 2*n;}
 
-fn subr (((PInt)->PInt) subr1)->PInt {
+fn subr (((uint)->uint) subr1)->uint {
 	return subr1(2);
 }
 

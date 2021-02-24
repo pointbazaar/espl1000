@@ -6,10 +6,10 @@ and storing the result in a different Array.
 It would consume multiple lines and be error-prone to do with a loop.
 //--------------------------------------------------
 
-fn map ([Int] arr, (Int) -> Int subr) -> [Int] {
+fn map ([int] arr, (int) -> int subr) -> [int] {
 	
 	int l = 4;
-	[Int] res = malloc(4 *l);
+	[int] res = malloc(4 *l);
 	
 	for i in 0 .. l-1 {
 		res[i] = subr(arr[i]);
@@ -18,7 +18,7 @@ fn map ([Int] arr, (Int) -> Int subr) -> [Int] {
 	return res;
 }
 
-fn main () ~> Int {
+fn main () ~> int {
 	
 	arr = map([1,2,3,4], (x) -> x+1);
 	

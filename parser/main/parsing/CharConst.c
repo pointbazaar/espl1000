@@ -17,9 +17,7 @@ struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 
 	struct Token* token = list_head(tokens);
 	
-	if(token == NULL){
-		return NULL;
-	}
+	if(token == NULL){ return NULL; }
 
 	if (token->kind != CCONST) {
 		//"Error: could not read charConstant node";
@@ -27,8 +25,6 @@ struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 	}
 	
 	struct CharConst* res = malloc(sizeof(struct CharConst));	
-	//e.g. in .$FILE.tokens
-	//9 'h'
 	
 	//index needs to be 1, as charconst
 	//is surrounded by single quotes

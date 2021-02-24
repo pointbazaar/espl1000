@@ -19,8 +19,6 @@ struct Token {
 	//It is not justified to have emtpy bytes in here
 	//in the cases where it is just a small token
 	char* value_ptr;
-	
-	bool statically_allocated;
 };
 
 bool tokenEquals(struct Token* a, struct Token* b);

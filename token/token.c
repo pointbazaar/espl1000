@@ -14,11 +14,10 @@ struct Token* makeToken2(int kind, char* value){
 	struct Token* res = malloc(sizeof(struct Token));
 
 	res->kind = kind;
-	res->value_ptr = 
-		malloc(sizeof(char)*(strlen(value)+1));
+	
+	res->value_ptr = malloc(sizeof(char)*(strlen(value)+1));
 		
 	strcpy(res->value_ptr, value);
-	res->statically_allocated = false;
 	
 	res->lineNumber = -1;
 
@@ -43,8 +42,6 @@ bool tokenEquals(struct Token* a, struct Token* b){
 
 void freeToken(struct Token* token){
 	
-	if(!token->statically_allocated){
-		free(token->value_ptr);
-	}
+	free(token->value_ptr);
 	free(token);
 }

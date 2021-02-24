@@ -20,33 +20,56 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 	if(list_size(tokens) == 0){ return NULL; }
 
 	struct SimpleType* res = malloc(sizeof(struct SimpleType));
+	
 	res->typeParamCount = 0;
+	res->isPrimitive    = false;
+	
 	strcpy(res->typeName, "");
 
 	struct Token* next = list_head(tokens);
 	
-	if (next->kind == TYPEIDENTIFIER) {
-		
-		strcpy(res->typeName, next->value_ptr);
-		list_consume(tokens, 1);
-		
-		if(list_size(tokens) < 3){ return res; }
-		
-		next = list_head(tokens);
-		
-		if(next->kind == OPKEY && strcmp(next->value_ptr, "<")==0 ){
-			list_consume(tokens, 1);
-			parse_type_params_rest(res, tokens);
-		}	
-		
-		return res;	
-	}
+	res->isIntType = next->kind == TYPEID_PRIMITIVE_INT;
 	
-	if (next->kind == ANYTYPE) {
+	switch(next->kind){
 		
-		strcpy(res->typeName, "#");
-		list_consume(tokens, 1);
-		return res;
+		case TYPEID_PRIMITIVE_INT:
+		case TYPEID_PRIMITIVE_BOOL:
+		case TYPEID_PRIMITIVE_CHAR:
+		case TYPEID_PRIMITIVE_FLOAT:
+		
+			res->isPrimitive = true;
+			
+			strcpy(res->typeName, next->value_ptr);		
+			list_consume(tokens, 1);
+			return res;
+			
+		case TYPEID:
+			res->isPrimitive = false;
+			
+			strcpy(res->typeName, next->value_ptr);
+			list_consume(tokens, 1);
+			
+			if(list_size(tokens) < 3){ return res; }
+			
+			next = list_head(tokens);
+			
+			if(next->kind == OPKEY && strcmp(next->value_ptr, "<")==0 ){
+				list_consume(tokens, 1);
+				parse_type_params_rest(res, tokens);
+			}	
+			
+			return res;	
+			
+		case ANYTYPE:
+			
+			//TODO: figure out what to do with 
+			//res->isPrimitive
+			//printf("dont know how to set res->isPrimitive\n");
+			//exit(1);
+			
+			strcpy(res->typeName, "#");
+			list_consume(tokens, 1);
+			return res;
 	}
 	
 	free(res);

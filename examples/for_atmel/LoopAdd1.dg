@@ -1,7 +1,7 @@
 
-fn main ()~> PInt{
+fn main ()~> uint {
 
-	PInt x = 0;
+	uint x = 0;
 	while x < 4 {
 	
 		x = x+1;

@@ -301,7 +301,7 @@ void discoverLVForStmt(
 	
 	strncpy(line->name, l->indexName, DEFAULT_STR_SIZE);
 	
-	line->type = typeFromStr(st, "Int");
+	line->type = typeFromStr(st, "int", true, true);
 	//we have no assignstmt here
 	line->firstOccur = NULL; 
 	line->isArg = false;;

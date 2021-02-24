@@ -19,7 +19,7 @@ int structdecl_test_can_parse_empty_struct_decl(bool debug) {
 	struct TokenList* list = makeTokenList(); 
 
 	list_add(list, makeToken(STRUCT) );
-	list_add(list, makeToken2(TYPEIDENTIFIER,"MyStruct") );
+	list_add(list, makeToken2(TYPEID,"MyStruct") );
 	list_add(list, makeToken(LCURLY) );
 	list_add(list, makeToken(RCURLY) );
 
@@ -67,7 +67,7 @@ int structdecl_test_rejects_struct_with_subroutine_type(bool debug) {
 	list_add(list, makeToken(LPARENS) );
 	list_add(list, makeToken(RPARENS) );
 	list_add(list, makeToken(ARROW) );
-	list_add(list, makeToken2(TYPEIDENTIFIER,"MyStruct") );
+	list_add(list, makeToken2(TYPEID,"MyStruct") );
 	list_add(list, makeToken(LCURLY) );
 	list_add(list, makeToken(RCURLY) );
 
@@ -89,9 +89,9 @@ int structdecl_test_can_parse_struct_with_1_member(bool debug) {
 	struct TokenList* list = makeTokenList();
 
 	list_add(list, makeToken(STRUCT) );
-	list_add(list, makeToken2(TYPEIDENTIFIER,"MyStruct") );
+	list_add(list, makeToken2(TYPEID,"MyStruct") );
 	list_add(list, makeToken(LCURLY) );
-	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt") );
+	list_add(list, makeToken2(TYPEID,"uint") );
 	list_add(list, makeToken2(ID,"a") );
 	list_add(list, makeToken(SEMICOLON) ),
 	list_add(list, makeToken(RCURLY) );
@@ -116,12 +116,12 @@ int structdecl_test_can_parse_struct_with_2_members(bool debug) {
 	struct TokenList* list = makeTokenList(); 
 
 	list_add(list, makeToken(STRUCT) );
-	list_add(list, makeToken2(TYPEIDENTIFIER,"MyStruct") );
+	list_add(list, makeToken2(TYPEID,"MyStruct") );
 	list_add(list, makeToken(LCURLY) );
-	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt") );
+	list_add(list, makeToken2(TYPEID,"uint") );
 	list_add(list, makeToken2(ID,"a") );
 	list_add(list, makeToken(SEMICOLON) ),
-	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt") );
+	list_add(list, makeToken2(TYPEID,"uint") );
 	list_add(list, makeToken2(ID,"b") );
 	list_add(list, makeToken(SEMICOLON) ),
 	list_add(list, makeToken(RCURLY) );

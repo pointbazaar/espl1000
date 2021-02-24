@@ -1,9 +1,9 @@
-fn main () ~> PInt {
+fn main () ~> uint {
 	
 	//A Harshad Number is a number that is divisible
 	//by the sum of its digits
 
-	Int i = 1;
+	i = 1;
 	loop 20 {
 		
 		testharshad(i);
@@ -14,10 +14,10 @@ fn main () ~> PInt {
 	return 0;
 }
 
-fn testharshad (Int n) ~> Int {
+fn testharshad (int n) ~> int {
 
-	Int norig = n;
-	Int sum = 0;
+	norig = n;
+	sum = 0;
 	
 	while n != 0 {
 
@@ -25,8 +25,7 @@ fn testharshad (Int n) ~> Int {
 		n = n / 10;
 	}
 
-	Bool res = norig % sum == 0;
-	//Int r = 0;
+	bool res = norig % sum == 0;
 
 	if res { 
 		printf("%d-is-harshad", norig);

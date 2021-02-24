@@ -39,6 +39,14 @@ in		out(IN, yytext);
 switch	out(SWITCH, yytext);
 case	out(CASE, yytext);
 
+int|int8|int16|int32|int64	out(TYPEID_PRIMITIVE_INT, yytext);
+
+uint|uint8|uint16|uint32|uint64	out(TYPEID_PRIMITIVE_INT, yytext);
+
+bool 	out(TYPEID_PRIMITIVE_BOOL, yytext);
+char	out(TYPEID_PRIMITIVE_CHAR, yytext);
+float	out(TYPEID_PRIMITIVE_FLOAT, yytext);
+
 "\n"	out2(LINE_NO, ++line_no);
 
 "{"		out(LCURLY, yytext);
@@ -60,7 +68,7 @@ true			out(BCONST_TRUE, yytext);
 false			out(BCONST_FALSE, yytext);
 
 [a-z][a-zA-Z0-9_]*	out(ID, yytext);
-[A-Z][a-zA-Z0-9]*	out(TYPEIDENTIFIER, yytext);
+[A-Z][a-zA-Z0-9]*	out(TYPEID, yytext);
 \?T[0-9]+			{
 						int num = 0;
 						//printf("yytext=%s\n",yytext);

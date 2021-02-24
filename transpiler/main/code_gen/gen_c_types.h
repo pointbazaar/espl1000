@@ -22,7 +22,7 @@ char* typeParam2CType(struct TypeParam* typeParam, struct Ctx* ctx);
 
 char* basicTypeWrapped2CType(struct BasicTypeWrapped* btw, struct Ctx* ctx);
 //----------------------------
-bool isIntType(char* type);
+bool isIntType(struct Type* t);
 //----------------------------
 char* typeNameToCFormatStr(char* typeName);
 #endif

@@ -16,7 +16,7 @@ int basictypewrapped_test_type_parsing_simple_type(bool debug) {
 	}
 
 	struct TokenList* list = makeTokenList();
-	list_add(list, makeToken2(TYPEIDENTIFIER,"PInt"));
+	list_add(list, makeToken2(TYPEID,"Carrot"));
 
 	struct BasicTypeWrapped* b = makeBasicTypeWrapped2(list,false);
 

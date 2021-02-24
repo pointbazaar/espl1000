@@ -776,18 +776,19 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_SIMPLETYPE, file);
 	
-	struct SimpleType* v = 
-		malloc(sizeof(struct SimpleType));
+	struct SimpleType* v = malloc(sizeof(struct SimpleType));
 	
 	char* tmp = deserialize_string(file);
 	strcpy(v->typeName, tmp);
 	free(tmp);
 	
+	v->isPrimitive = deserialize_int(file);
+	v->isIntType   = deserialize_int(file);
+	
 	v->typeParamCount = deserialize_int(file);
 	
 	if(v->typeParamCount > 0){
-		v->typeParams = 
-			malloc(sizeof(uint8_t)*(v->typeParamCount));
+		v->typeParams = malloc(sizeof(uint8_t)*(v->typeParamCount));
 	}
 	
 	for(int i=0;i<v->typeParamCount;i++){

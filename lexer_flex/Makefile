@@ -3,11 +3,20 @@
 
 FLAGS := -g -march=native -Wall --std=c11 -pedantic
 
+SOURCES := smalldragon.flex \
+			driver.c \
+			driver.h \
+			../token/token.c \
+			test.c \
+			test.h \
+			lexer_flags.h \
+			Makefile
+
 all: all_no_valgrind valgrind
 
 all_no_valgrind: dragon-lexer test
 
-dragon-lexer: smalldragon.flex driver.c driver.h ../token/token.c
+dragon-lexer: $(SOURCES)
 	flex smalldragon.flex
 	gcc $(FLAGS) -o dragon-lexer driver.c ../token/token.c test.c lex.yy.c -lfl
 

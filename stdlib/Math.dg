@@ -10,7 +10,7 @@
 	lcm(i1,i2) //least common multiple
 */
 
-fn sign (Int n)->Int {
+fn sign (int n) -> int {
 	if(n>0){
 		return 1;
 	}
@@ -20,8 +20,8 @@ fn sign (Int n)->Int {
 	return -1;
 }
 
-fn pow (Int base,PInt power)->Int {
-	Int result=1;
+fn pow (int base, uint power) -> int {
+	int result=1;
 	i=0;
 	while(i<power){
 		result=result*base;
@@ -30,29 +30,29 @@ fn pow (Int base,PInt power)->Int {
 	return result;
 }
 
-fn faculty (PInt n)->PInt {
+fn faculty (uint n) -> uint {
 	if( n <= 1 ){ 
 		return 1; 
 	}
 	return (n*faculty(n-1));
 }
 
-fn max (Int a,Int b)->Int {
+fn max (int a, int b) -> int {
 	if(a>b){return a;}
 	return b;
 }
 
-fn min (Int a,Int b)->Int {
+fn min (int a,int b) -> int {
 	if(a<b){return a;}
 	return b;
 }
 
-fn gcd (Int a, Int b)->Int {
+fn gcd (int a, int b) -> int {
 	if(a==0){return b;}
 	return gcd(b%a,a);
 }
 
-fn lcm (Int a, Int b)->Int {
+fn lcm (int a, int b) -> int {
 
 	return (a*b)/gcd(a,b);
 }

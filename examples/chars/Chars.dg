@@ -1,6 +1,6 @@
 	
-fn main ()~>PInt{
-	Char c = 'h';
+fn main ()~> uint {
+	char c = 'h';
 		
 	printf("%c\n",c);
 	return 0;

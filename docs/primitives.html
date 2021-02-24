@@ -30,6 +30,14 @@
 	The primitive Data Types available in SmallDragon are used similar to those available in C,
 	and are a subset of those.  
 	</p>
+	
+	<p>
+	Writing the types like 'int' / 'int32' / 'uint' / ... <br>
+	was chosen because, opposed to 'i32' / 'u8' like in Rust, it could be more familiar
+	to people knowing C / C++ / Java.<br> It omits the '_t' at the end of 
+	the fixed-size types in C, because these '_t' are IMO simply unneccessary characters
+	added to the type.
+	</p>
 
 	<div class="row">
 
@@ -40,13 +48,14 @@
 				<tr>
 					<th>Type</th>
 					<th>Width</th>
-					<th>transpiles to:</th>
+					<th>transpiles to</th>
 				</tr>
 			</thead>
-			<tr> <td>Int8</td>  <td>1 byte</td>  <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int8_t</a></td>   </tr>
-			<tr> <td>Int16</td> <td>2 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int16_t</a></td>  </tr>
-			<tr> <td>Int32</td> <td>4 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int32_t</a></td>  </tr>
-			<tr> <td>Int64</td> <td>8 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int64_t</a></td>  </tr>
+			<tr> <td>int8</td>  <td>1 byte</td>  <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int8_t</a></td>   </tr>
+			<tr> <td>int16</td> <td>2 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int16_t</a></td>  </tr>
+			<tr> <td>int32</td> <td>4 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int32_t</a></td>  </tr>
+			<tr> <td>int64</td> <td>8 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int64_t</a></td>  </tr>
+			<tr> <td>int</td> <td> </td> <td>int (for C compatibility reasons)</td>  </tr>
 			</table>
 		</div>
 		
@@ -57,50 +66,46 @@
 				<tr>
 					<th>Type</th>
 					<th>Width</th>
-					<th>transpiles to:</th>
+					<th>transpiles to</th>
 				</tr>
 			</thead>
-			<tr> <td>UInt8</td>  <td>1 byte</td>  <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint8_t</a></td>   </tr>
-			<tr> <td>UInt16</td> <td>2 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint16_t</a></td>  </tr>
-			<tr> <td>UInt32</td> <td>4 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint32_t</a></td>  </tr>
-			<tr> <td>UInt64</td> <td>8 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint64_t</a></td>  </tr>
+			<tr> <td>uint8</td>  <td>1 byte</td>  <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint8_t</a></td>   </tr>
+			<tr> <td>uint16</td> <td>2 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint16_t</a></td>  </tr>
+			<tr> <td>uint32</td> <td>4 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint32_t</a></td>  </tr>
+			<tr> <td>uint64</td> <td>8 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint64_t</a></td>  </tr>
+			<tr> <td>uint</td> <td> 4 bytes</td> <td> uint32 </td>  </tr>
 			</table>
 		</div>
 		
 	</div>
 
-	<p class="mt-3">
-	There is also Int, which transpiles directly to 'int' in C.<br>
-	It should not be used if you want a specific size.
-	</p>
-
-	<div class="row">
+	<div class="row mt-3">
 		
 		<div class="col">
-			<h3>Float</h3>
+			<h3>float</h3>
 			<pre>
-Float f = 3.14159;
+float f = 3.14159;
 			</pre>
 		</div>
 
 		<div class="col">
-			<h3>Char</h3>
+			<h3>char</h3>
 			<pre>
-Char c = 'k';
+char c = 'k';
 			</pre>
 		</div>
 
 		<div class="col">		
-			<h3>Bool</h3>
+			<h3>bool</h3>
 			<pre>
-Bool x = true;
+bool x = true;
 			</pre>
 		</div>
 
 		<div class="col">		
 			<h3>Hex and Binary Literals</h3>
 			<pre>
-Int x;
+uint16 x;
 x = 0x0ffb
 x = 0b01000101
 			</pre>

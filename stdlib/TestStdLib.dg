@@ -1,4 +1,4 @@
-fn main ()~>PInt {
+fn main() ~> uint {
 
 	println("sign(4)==1");
 	assert(sign(4) == 1);

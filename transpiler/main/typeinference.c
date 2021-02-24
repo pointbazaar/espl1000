@@ -69,18 +69,18 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr, bool debug){
 	
 	if(streq(type1, type2)) { return type1Orig; /* [1] */ }
 	
-	if(isIntType(type1) && isIntType(type2)) {
+	if(isIntType(type1Orig) && isIntType(type2Orig)) {
 		
-		return typeFromStr(st, "Int");
+		return typeFromStr(st, "int", true, true);
 	}
 	
 	//[2]
-	const bool types_float_int = isIntType(type2) && streq(type1, "Float");
-	const bool types_int_float = isIntType(type1) && streq(type2, "Float");
+	const bool types_float_int = isIntType(type2Orig) && streq(type1, "float");
+	const bool types_int_float = isIntType(type1Orig) && streq(type2, "float");
 	
 	if(types_float_int || types_int_float) {
 	
-		return typeFromStr(st, "Float");
+		return typeFromStr(st, "float", true, false);
 	}
 	
 	printf("Fatal Error in inferTypeExpr: could not infer type\n");
@@ -93,16 +93,16 @@ struct Type* inferTypeTerm(struct ST* st, struct Term* t, bool debug){
 	
 	switch(t->kind){
 		
-		case  1: return typeFromStr(st, "Bool"); 
-		case  2: return typeFromStr(st, "Int"); 
-		case  3: return typeFromStr(st, "Char"); 
+		case  1: return typeFromStr(st, "bool", true, false); 
+		case  2: return typeFromStr(st, "int", true, true); 
+		case  3: return typeFromStr(st, "char", true, false); 
 		case  4: return inferTypeMethodCall(st, t->ptr.m4, debug); 
 		case  5: return inferTypeExpr(st, t->ptr.m5, debug); 
 		case  6: return inferTypeVariable(st, t->ptr.m6, debug); 
-		case  7: return typeFromStr(st, "Float"); 
-		case  8: return typeFromStr(st, "String"); 
-		case  9: return typeFromStr(st, "Int");
-		case 10: return typeFromStr(st, "Int");
+		case  7: return typeFromStr(st, "float", true, false); 
+		case  8: return typeFromStr(st, "String", false, false); 
+		case  9: return typeFromStr(st, "int", true, true);
+		case 10: return typeFromStr(st, "int", true, true);
 		
 		default:
 			printf("Fatal Error in inferTypeTerm\n");
@@ -175,20 +175,22 @@ struct Type* inferTypeSimpleVar(struct ST* st, struct SimpleVar* v, bool debug){
 	return line->type;
 }
 
-struct Type* typeFromStr(struct ST* st, char* typeName){
+struct Type* typeFromStr(struct ST* st, char* typeName, bool isPrimitive, bool isIntType){
+	
 	//this method will only work for simple types
 	struct Type* res = malloc(sizeof(struct Type));
 	
-	struct BasicTypeWrapped* btw = 
-		malloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* btw = malloc(sizeof(struct BasicTypeWrapped));
 	
 	res->m1 = btw;
 	res->m2 = NULL;
 	res->m2 = NULL;
 	
-	struct SimpleType* simpleType = 
-		malloc(sizeof(struct SimpleType));
+	struct SimpleType* simpleType = malloc(sizeof(struct SimpleType));
 	
+	simpleType->isPrimitive = isPrimitive;
+	simpleType->isIntType = isIntType;
+
 	simpleType->typeParamCount = 0;
 	strncpy(simpleType->typeName, typeName, DEFAULT_STR_SIZE);
 	
@@ -229,18 +231,7 @@ char* typeToStrBasicTypeWrapped(struct BasicTypeWrapped* b){
 	
 	if(b->simpleType != NULL){
 		
-		//convert NInt, PInt to Int
-		char* typeName = b->simpleType->typeName;
-		
-		if(
-			strcmp(typeName, "PInt") == 0
-			|| strcmp(typeName, "NInt") == 0
-		){
-			return "Int";
-		}
-		
-		return typeName;
-		
+		return b->simpleType->typeName;
 	}
 	
 	printf("(2)currently not implemented (in typeinference.c)\n");
