@@ -1,9 +1,12 @@
 #include "AssignStmtTest.h"
+
 #include "../../../main/commandline/TokenList.h"
 #include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/astnodes/statements/AssignStmt.h"
-#include "../../../main/astnodes/Expr.h"
-#include "../../../main/astnodes/Variable.h"
+
+#include "statements/AssignStmt.h"
+#include "Expr.h"
+#include "var/Variable.h"
+
 #include "../../../../token/token.h"
 #include "../../../../ast/free_ast.h"
 

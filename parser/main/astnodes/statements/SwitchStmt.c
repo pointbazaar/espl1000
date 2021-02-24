@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "SwitchStmt.h"
-#include "CaseStmt.h"
-#include "../Variable.h"
+#include "statements/SwitchStmt.h"
+#include "statements/CaseStmt.h"
+#include "var/Variable.h"
+
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../../../token/token.h"

@@ -5,6 +5,7 @@
 
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
+
 #include "Term.h"
 #include "const/CharConst.h"
 #include "const/IntConst.h"
@@ -14,8 +15,9 @@
 #include "const/FloatConst.h"
 #include "const/StringConst.h"
 #include "Expr.h"
-#include "Variable.h"
+#include "var/Variable.h"
 #include "statements/MethodCall.h"
+
 #include "../../../token/token.h"
 #include "../../../ast/free_ast.h"
 

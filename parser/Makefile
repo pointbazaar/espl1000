@@ -1,8 +1,10 @@
 #it had -O0 before
 #use -pg to generate profiling information for gprof
-FLAGS := -march=native -g -Wall -Werror --std=gnu11 -pedantic
+FLAGS := -march=native -g -Wall -Werror --std=gnu11 
 
-CALL := gcc $(FLAGS)
+INCLUDE := -Imain/astnodes -Imain/commandline 
+
+CALL := gcc $(FLAGS) $(INCLUDE)
 CALL2 := $(CALL) -c 
 
 OBJS_UTIL := build/ast_writer.o \
@@ -135,6 +137,10 @@ build/%.o: main/astnodes/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	
+build/%.o: main/astnodes/var/%.c $(MAIN_DEPS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL2) -o $@ $<
+
 build/%.o: main/astnodes/statements/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
@@ -178,6 +184,10 @@ build/%.o: test/astnodes/const/%.c $(MAIN_DEPS)
 	$(CALL2) -o $@ $<
 
 build/%.o: test/astnodes/statements/%.c $(MAIN_DEPS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL2) -o $@ $<
+
+build/%.o: test/astnodes/var/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 

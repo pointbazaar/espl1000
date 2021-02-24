@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "AssignStmt.h"
-#include "../Expr.h"
-#include "../Variable.h"
-#include "../typenodes/Type.h"
+#include "statements/AssignStmt.h"
+#include "Expr.h"
+#include "var/Variable.h"
+#include "typenodes/Type.h"
+
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../../../token/token.h"

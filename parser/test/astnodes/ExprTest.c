@@ -1,11 +1,14 @@
 #include "ExprTest.h"
+
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
-#include "../../main/astnodes/Expr.h"
-#include "../../main/astnodes/Term.h"
-#include "../../main/astnodes/const/IntConst.h"
-#include "../../main/astnodes/Variable.h"
-#include "../../main/astnodes/SimpleVar.h"
+
+#include "Expr.h"
+#include "Term.h"
+#include "const/IntConst.h"
+#include "var/Variable.h"
+#include "var/SimpleVar.h"
+
 #include "../../../token/token.h"
 #include "../../../ast/free_ast.h"
 
