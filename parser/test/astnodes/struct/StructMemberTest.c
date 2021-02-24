@@ -1,9 +1,9 @@
 #include "StructMemberTest.h"
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-#include "../../main/parsing/struct/StructMember.h"
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
+#include "../../../main/commandline/TokenList.h"
+#include "../../../main/commandline/TokenKeys.h"
+#include "../../../main/parsing/struct/StructMember.h"
+#include "../../../../token/token.h"
+#include "../../../../ast/free_ast.h"
 
 #include <string.h>
 #include <stdio.h>

@@ -1,11 +1,11 @@
 #include "AssignStmtTest.h"
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-#include "../../main/parsing/statements/AssignStmt.h"
-#include "../../main/parsing/Expr.h"
-#include "../../main/parsing/Variable.h"
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
+#include "../../../main/commandline/TokenList.h"
+#include "../../../main/commandline/TokenKeys.h"
+#include "../../../main/parsing/statements/AssignStmt.h"
+#include "../../../main/parsing/Expr.h"
+#include "../../../main/parsing/Variable.h"
+#include "../../../../token/token.h"
+#include "../../../../ast/free_ast.h"
 
 #include <stdio.h>
 #include <stdbool.h>

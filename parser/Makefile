@@ -162,6 +162,30 @@ build/%.o: ../token/%.c ../token/%.h
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 
+
+
+
+
+## ------------- TEST RULES ------------- ##
+
+
+build/%.o: test/astnodes/struct/%.c $(MAIN_DEPS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL2) -o $@ $<
+
+build/%.o: test/astnodes/const/%.c $(MAIN_DEPS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL2) -o $@ $<
+
+build/%.o: test/astnodes/statements/%.c $(MAIN_DEPS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL2) -o $@ $<
+
+build/%.o: test/astnodes/typenodes/%.c $(MAIN_DEPS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL2) -o $@ $<
+
+
 build/%.o: test/astnodes/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<

@@ -1,10 +1,10 @@
 #include "SimpleTypeTest.h"
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-#include "../../main/parsing/typenodes/SimpleType.h"
-#include "../../main/parsing/typenodes/BasicTypeWrapped.h"
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
+#include "../../../main/commandline/TokenList.h"
+#include "../../../main/commandline/TokenKeys.h"
+#include "../../../main/parsing/typenodes/SimpleType.h"
+#include "../../../main/parsing/typenodes/BasicTypeWrapped.h"
+#include "../../../../token/token.h"
+#include "../../../../ast/free_ast.h"
 
 #include <stdbool.h>
 #include <stdio.h>

@@ -1,9 +1,9 @@
 #include "RetStmtTest.h"
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-#include "../../main/parsing/statements/RetStmt.h"
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
+#include "../../../main/commandline/TokenList.h"
+#include "../../../main/commandline/TokenKeys.h"
+#include "../../../main/parsing/statements/RetStmt.h"
+#include "../../../../token/token.h"
+#include "../../../../ast/free_ast.h"
 
 #include <stdio.h>
 #include <stdbool.h>

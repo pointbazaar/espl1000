@@ -1,10 +1,10 @@
 #include "BasicTypeWrappedTest.h"
 
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-#include "../../../token/token.h"
-#include "../../main/parsing/typenodes/BasicTypeWrapped.h"
-#include "../../../ast/free_ast.h"
+#include "../../../main/commandline/TokenList.h"
+#include "../../../main/commandline/TokenKeys.h"
+#include "../../../../token/token.h"
+#include "../../../main/parsing/typenodes/BasicTypeWrapped.h"
+#include "../../../../ast/free_ast.h"
 
 #include <stdio.h>
 #include <assert.h>

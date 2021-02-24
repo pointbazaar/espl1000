@@ -3,11 +3,11 @@
 #include <assert.h>
 
 #include "SwitchStmtTest.h"
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-#include "../../main/parsing/statements/SwitchStmt.h"
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
+#include "../../../main/commandline/TokenList.h"
+#include "../../../main/commandline/TokenKeys.h"
+#include "../../../main/parsing/statements/SwitchStmt.h"
+#include "../../../../token/token.h"
+#include "../../../../ast/free_ast.h"
 
 int test_switch(bool debug){
 

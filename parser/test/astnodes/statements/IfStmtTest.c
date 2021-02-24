@@ -1,10 +1,10 @@
 #include "IfStmtTest.h"
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-#include "../../main/parsing/statements/IfStmt.h"
-#include "../../main/parsing/Expr.h"
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
+#include "../../../main/commandline/TokenList.h"
+#include "../../../main/commandline/TokenKeys.h"
+#include "../../../main/parsing/statements/IfStmt.h"
+#include "../../../main/parsing/Expr.h"
+#include "../../../../token/token.h"
+#include "../../../../ast/free_ast.h"
 
 #include <stdio.h>
 #include <stdbool.h>
