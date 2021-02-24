@@ -12,13 +12,13 @@ CFLAGS := -march=native -g
 
 SOURCES := ast-tests.c \
 		ast_reader.c \
-		ASTWriter.c \
+		ast_writer.c \
 		free_ast.c \
 		copy_ast.c \
 		serialize.c
 
 HEADERS := ast_reader.h \
-		ASTWriter.h \
+		ast_writer.h \
 		free_ast.h \
 		ast.h \
 		copy_ast.h \

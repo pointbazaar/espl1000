@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include "ASTWriter.h"
+#include "ast_writer.h"
 #include "free_ast.h"
 #include "copy_ast.h"
 #include "ast_reader.h"

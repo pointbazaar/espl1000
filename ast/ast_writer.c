@@ -3,7 +3,7 @@
 #include <string.h>
 #include <inttypes.h>
 
-#include "ASTWriter.h"
+#include "ast_writer.h"
 #include "magic_num.h"
 #include "serialize.h"
 

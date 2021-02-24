@@ -5,7 +5,7 @@ FLAGS := -march=native -g -Wall -Werror --std=gnu11 -pedantic
 CALL := gcc $(FLAGS)
 CALL2 := $(CALL) -c 
 
-OBJS_UTIL := build/ASTWriter.o \
+OBJS_UTIL := build/ast_writer.o \
 	build/free_ast.o \
 	build/copy_ast.o \
 	build/serialize.o
@@ -89,7 +89,7 @@ OBJS_TEST := build/AssignStmtTest.o \
 OBJS := $(OBJS_MAIN) $(OBJS_TEST) $(OBJS_UTIL) 
 
 AST_DEPS := ../ast/ast.h \
-	../ast/ASTWriter.h \
+	../ast/ast_writer.h \
 	../ast/free_ast.h \
 	../ast/copy_ast.h
 

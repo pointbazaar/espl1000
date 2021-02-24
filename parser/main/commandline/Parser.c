@@ -12,7 +12,7 @@
 #include "../parsing/DeclArg.h"
 #include "../parsing/statements/Stmt.h"
 #include "../parsing/typenodes/Type.h"
-#include "../../../ast/ASTWriter.h"
+#include "../../../ast/ast_writer.h"
 #include "../../test/ParserTest.h"
 
 #include "../../../ast/free_ast.h"
