@@ -13,7 +13,7 @@
 #include "../parsing/statements/Stmt.h"
 #include "../parsing/typenodes/Type.h"
 #include "../../../ast/ast_writer.h"
-#include "../../test/ParserTest.h"
+#include "../../test/commandline/ParserTest.h"
 
 #include "../../../ast/free_ast.h"
 #include "../../../token/token.h"
