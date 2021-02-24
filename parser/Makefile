@@ -143,6 +143,10 @@ build/%.o: main/parsing/const/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 
+build/%.o: main/parsing/struct/%.c $(MAIN_DEPS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL2) -o $@ $<
+
 build/%.o: main/parsing/typenodes/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<

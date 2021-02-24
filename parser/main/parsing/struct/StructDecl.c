@@ -4,11 +4,11 @@
 
 #include "StructDecl.h"
 #include "StructMember.h"
-#include "typenodes/SimpleType.h"
-#include "../commandline/TokenList.h"
-#include "../commandline/TokenKeys.h"
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
+#include "../typenodes/SimpleType.h"
+#include "../../commandline/TokenList.h"
+#include "../../commandline/TokenKeys.h"
+#include "../../../../token/token.h"
+#include "../../../../ast/free_ast.h"
 
 struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 

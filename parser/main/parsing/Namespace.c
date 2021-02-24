@@ -5,7 +5,7 @@
 
 #include "Namespace.h"
 #include "Method.h"
-#include "StructDecl.h"
+#include "struct/StructDecl.h"
 #include "../commandline/TokenList.h"
 #include "../../../token/token.h"
 #include "../commandline/TokenKeys.h"

@@ -3,12 +3,12 @@
 #include <stdbool.h>
 
 #include "StructMember.h"
-#include "Identifier.h"
-#include "typenodes/Type.h"
-#include "../commandline/TokenList.h"
-#include "../commandline/TokenKeys.h"
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
+#include "../Identifier.h"
+#include "../typenodes/Type.h"
+#include "../../commandline/TokenList.h"
+#include "../../commandline/TokenKeys.h"
+#include "../../../../token/token.h"
+#include "../../../../ast/free_ast.h"
 //-------------
 struct StructMember* initStructMember();
 void beforeAbort(struct StructMember* m, struct TokenList* copy);
