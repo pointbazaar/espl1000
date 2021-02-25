@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-FILE* outFile;
+extern FILE* outFile;
 
 void out(int id, char* str);
 
