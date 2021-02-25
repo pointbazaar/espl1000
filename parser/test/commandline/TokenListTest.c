@@ -123,7 +123,7 @@ int test_tokenlist_code(bool debug){
 	list_add(list, makeToken2(RBRACKET,"]"));
 
 	char* str = list_code(list, debug);
-	char* expect = "x z y ]     [4,4,4,23,]";
+	char* expect = "  -1|x z y ]     [4,4,4,23,]";
 	if(debug){
 		printf("expected:\n");
 		printf("%s\n", expect);

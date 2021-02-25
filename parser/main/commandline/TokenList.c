@@ -135,8 +135,7 @@ void list_set(struct TokenList* list, struct TokenList* copy) {
 
 struct Token* list_get(struct TokenList* list, int i) {
 	
-	//no bounds checking!
-	//for performance
+	//no bounds checking! for performance.
 	
 	return list->tokens[list->indexHead + i];
 }
@@ -148,13 +147,15 @@ struct Token* list_head(struct TokenList* list) {
 char* list_code(struct TokenList* list, bool debug) {
 	//it should be a limited fragment 
 
-	if(debug){
-		printf("list_code(...)\n");
-	}
+	if(debug){ printf("list_code(...)\n"); }
 
 	char* str = malloc(sizeof(char)*100);
 	strcpy(str, "");
 
+	if(list_size(list) > 0){
+		int line_num = list_get(list, 0)->lineNumber;
+		sprintf(str, "% 4d|", line_num);
+	}
 	
 	for(int i=0;i < list_size(list) && (i < 10);i++){
 		struct Token* tk = list_get(list,i);
