@@ -10,7 +10,7 @@
 
 CFLAGS := -march=native -g
 
-SOURCES := ast-tests.c \
+SOURCES := test_ast.c \
 		ast_reader.c \
 		ast_writer.c \
 		free_ast.c \
