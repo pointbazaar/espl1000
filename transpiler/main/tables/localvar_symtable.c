@@ -6,9 +6,11 @@
 
 #include "../../../ast/ast.h"
 #include "../../../ast/free_ast.h"
-#include "localvarsymtable.h"
-#include "symtable.h"
-#include "../typeinference.h"
+
+#include "tables/localvar_symtable.h"
+#include "tables/symtable.h"
+
+#include "typeinference/typeinference.h"
 
 // --- declare subroutines private to this compile unit ---
 //discover Local Variables

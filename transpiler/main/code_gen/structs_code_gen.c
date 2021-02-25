@@ -2,11 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../ctx.h"
-#include "../flags.h"
+#include "util/ctx.h"
+#include "util/flags.h"
+
 #include "../../../ast/free_ast.h"
-#include "../typeinference.h"
-#include "../tables/subrsymtable.h"
+
+#include "typeinference/typeinference.h"
+#include "tables/subr_symtable.h"
+
 #include "gen_c_types.h"
 #include "structs_code_gen.h"
 

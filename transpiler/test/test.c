@@ -3,14 +3,16 @@
 #include <inttypes.h>
 #include <stdlib.h>
 
-#include "../main/transpiler.h"
-#include "../main/flags.h"
+#include "transpiler.h"
+
+#include "util/flags.h"
 
 #include "test.h"
-#include "teststatuscode.h"
-#include "suite/test_op.h"
-#include "suite/test_other.h"
-#include "suite/test_assign.h"
+#include "util/test_statuscode.h"
+
+#include "code_gen/test_op.h"
+#include "code_gen/test_other.h"
+#include "code_gen/test_assign.h"
 
 int transpiler_test_all(bool debug){
 	

@@ -2,7 +2,8 @@
 #include <stdbool.h>
 
 #include "test_assign.h"
-#include "../teststatuscode.h"
+
+#include "util/test_statuscode.h"
 
 bool test_assign(bool debug){
 	

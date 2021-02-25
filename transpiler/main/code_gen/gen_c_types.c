@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <stdio.h>
 
-#include "../ctx.h"
+#include "util/ctx.h"
+
 #include "gen_c_types.h"
 
 char* translateIntType(char* type);

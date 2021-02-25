@@ -4,9 +4,10 @@
 #include <unistd.h>
 #include <errno.h>
 
-#include "teststatuscode.h"
-#include "../main/flags.h"
-#include "../main/transpiler.h"
+#include "test_statuscode.h"
+
+#include "util/flags.h"
+#include "transpiler.h"
 
 void clean();
 

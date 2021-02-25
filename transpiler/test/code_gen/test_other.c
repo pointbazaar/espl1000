@@ -1,7 +1,8 @@
 #include <stdio.h>
 
 #include "test_other.h"
-#include "../teststatuscode.h"
+
+#include "../util/test_statuscode.h"
 
 bool test_statuscode(bool debug){
 	

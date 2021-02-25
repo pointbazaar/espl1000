@@ -3,7 +3,7 @@
 
 #include "../../../ast/ast.h"
 
-#include "structsymtable.h"
+#include "tables/struct_symtable.h"
 
 struct STST* makeStructSymTable(struct Namespace* ns, bool debug){
 	

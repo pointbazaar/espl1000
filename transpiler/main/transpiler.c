@@ -11,8 +11,8 @@
 #include "../test/test.h"
 
 #include "code_gen/c_code_gen.h"
-#include "flags.h"
-#include "help.h"
+#include "util/flags.h"
+#include "util/help.h"
 #include "transpiler.h"
 
 // ----------------

@@ -6,14 +6,15 @@
 
 #include "../../ast/ast.h"
 #include "../../ast/free_ast.h"
+
 #include "code_gen/gen_c_types.h"
-#include "typeinference.h"
+#include "typeinference/typeinference.h"
 
 //include the various symbol tables
 #include "tables/symtable.h"
-#include "tables/localvarsymtable.h"
-#include "tables/subrsymtable.h"
-#include "tables/structsymtable.h"
+#include "tables/localvar_symtable.h"
+#include "tables/subr_symtable.h"
+#include "tables/struct_symtable.h"
 
 // -- subroutine declarations (private to this compile unit) --
 

@@ -5,18 +5,20 @@
 
 #include "../../../ast/ast.h"
 #include "../../../ast/free_ast.h"
-#include "../ctx.h"
-#include "../flags.h"
-#include "../typeinference.h"
+
+#include "util/ctx.h"
+#include "util/flags.h"
+
+#include "typeinference/typeinference.h"
 #include "c_code_gen.h"
 #include "code_gen_util.h"
 #include "gen_c_types.h"
 #include "structs_code_gen.h"
 
-#include "../tables/localvarsymtable.h"
-#include "../tables/subrsymtable.h"
-#include "../tables/structsymtable.h"
-#include "../tables/symtable.h"
+#include "tables/localvar_symtable.h"
+#include "tables/subr_symtable.h"
+#include "tables/struct_symtable.h"
+#include "tables/symtable.h"
 
 // -------------------------------
 

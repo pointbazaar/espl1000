@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "subrsymtable.h"
+#include "tables/subr_symtable.h"
 
 // ----------------------------------------
 
