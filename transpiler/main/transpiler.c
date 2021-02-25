@@ -5,6 +5,11 @@
 #include <stdbool.h>
 #include <malloc.h>
 
+//#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/sysmacros.h>
+
 #include "../../ast/ast_reader.h"
 #include "../../ast/ast.h"
 #include "../../ast/free_ast.h"
@@ -64,7 +69,7 @@ int main(int argc, char* argv[]){
 	
 	freeFlags(flags);
 
-	return (success == true)?0:1;
+	return (success)?0:1;
 }
 
 bool check_dg_extension(char* filename){
@@ -122,6 +127,21 @@ bool transpileAndCompile(
 	if(flags->debug){ printf("transpileAndCompile(...)\n"); }
 	
 	if(!check_dg_extension(filename)){
+		freeFlags(flags);
+		exit(1);
+	}
+
+	//check if the file actually exists
+	struct stat mystat;
+	if(stat(filename, &mystat) == -1){
+		perror("Error: ");
+		freeFlags(flags);
+		exit(1);
+	}
+	mode_t mode = mystat.st_mode;
+	if(!S_ISREG(mode)){
+		//not a regular file
+		printf("Error: %s is not a regular file.\n", filename);
 		freeFlags(flags);
 		exit(1);
 	}

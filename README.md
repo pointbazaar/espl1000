@@ -41,12 +41,12 @@ This Project will probably only work with Linux.
 It has been tested/is being developed on Ubuntu 20.04.
 There should be a test matrix with multiple distros soon hopefully.
 
-0. Install gcc, gcc-10, make, valgrind , flex
-1. Try compiling some sample program
-2. If you want the binaries to be visible globally:
+0. Install gcc, make, valgrind, flex
+1. If you want the binaries to be visible globally:
    Add 
    ```PATH=~/smalldragon/transpiler:~/smalldragon/lexer:~/smalldragon/parser:$PATH```
    to your ~/.bashrc
+2. run make
 
 ## Contributions
 
