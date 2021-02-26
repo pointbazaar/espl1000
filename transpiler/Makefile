@@ -28,7 +28,8 @@ OBJS := build/transpiler.o \
 	build/help.o \
 	build/free_ast.o \
 	build/serialize.o \
-	build/gen_c_types.o
+	build/gen_c_types.o \
+	build/type_str.o
 
 all: all_no_valgrind valgrind
 
@@ -101,10 +102,14 @@ build/test_other.o: test/util/test_statuscode.h test/util/test_statuscode.c test
 build/test_op.o: test/util/test_statuscode.h test/util/test_statuscode.c test/code_gen/test_op.h test/code_gen/test_op.c
 	$(CALLTEST) -c test/code_gen/test_op.c -o $@
 
-build/typeinference.o: main/typeinference/typeinference.c main/typeinference/typeinference.h \
-			main/tables/symtable.h main/tables/subr_symtable.h \
+SYMTABLES_H := main/tables/symtable.h main/tables/subr_symtable.h \
 			main/tables/localvar_symtable.h main/tables/struct_symtable.h
+
+build/typeinference.o: $(SYMTABLES_H) main/typeinference/typeinference.c main/typeinference/typeinference.h 
 	$(CALL) -c main/typeinference/typeinference.c -o $@
+	
+build/type_str.o: $(SYMTABLES_H) main/typeinference/type_str.c main/typeinference/type_str.h
+	$(CALL) -c main/typeinference/type_str.c -o $@
 
 build/help.o: main/util/help.c main/util/help.h
 	$(CALL) -c main/util/help.c -o $@

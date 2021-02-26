@@ -8,6 +8,9 @@
 
 struct STSTLine {
 	char name[DEFAULT_STR_SIZE];
+	struct SimpleType* type;
+
+	struct StructDecl* decl;
 };
 
 struct STST {
@@ -22,5 +25,9 @@ struct STST {
 struct STST* makeStructSymTable(struct Namespace* ns, bool debug);
 
 void freeStructSymTable(struct STST* stst);
+
+void stst_add(struct STST* stst, struct StructDecl* s);
+
+struct Type* stst_get_member_type(struct STST* stst, char* struct_name, char* member_name);
 
 #endif

@@ -9,6 +9,7 @@
 
 #include "code_gen/gen_c_types.h"
 #include "typeinference/typeinference.h"
+#include "typeinference/type_str.h"
 
 //include the various symbol tables
 #include "tables/symtable.h"
@@ -23,9 +24,6 @@ struct Type* inferTypeUnOpTerm		(struct ST* st, struct UnOpTerm* t, bool debug);
 struct Type* inferTypeMethodCall	(struct ST* st, struct MethodCall* m, bool debug);
 struct Type* inferTypeVariable		(struct ST* st, struct Variable* v, bool debug);
 struct Type* inferTypeSimpleVar		(struct ST* st, struct SimpleVar* v, bool debug);
-// ------------------------------------------------------------
-char* typeToStrBasicTypeWrapped		(struct BasicTypeWrapped* b);
-bool streq(char* str1, char* str2);
 // ------------------------------------------------------------
 
 //COMMENTS
@@ -68,7 +66,7 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr, bool debug){
 	
 	if(debug) { printf("type1: %s, type2: %s\n", type1, type2); }
 	
-	if(streq(type1, type2)) { return type1Orig; /* [1] */ }
+	if(strcmp(type1, type2) == 0) { return type1Orig; /* [1] */ }
 	
 	if(isIntType(type1Orig) && isIntType(type2Orig)) {
 		
@@ -76,8 +74,8 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr, bool debug){
 	}
 	
 	//[2]
-	const bool types_float_int = isIntType(type2Orig) && streq(type1, "float");
-	const bool types_int_float = isIntType(type1Orig) && streq(type2, "float");
+	const bool types_float_int = isIntType(type2Orig) && strcmp(type1, "float") == 0;
+	const bool types_int_float = isIntType(type1Orig) && strcmp(type2, "float") == 0;
 	
 	if(types_float_int || types_int_float) {
 	
@@ -141,11 +139,24 @@ struct Type* inferTypeVariable(struct ST* st, struct Variable* v, bool debug){
 		//no member accesses
 		return typeOfVar;
 	}
+
+	char* typeName = typeToStr(typeOfVar);
+
+	char* memberName = v->memberAccess->simpleVar->name;
+
+	struct Type* type = stst_get_member_type(st->stst, typeName, memberName);
+
+
+	//TODO: implement for the recursive case(further member access)
+	//TODO: implement for the case of indices on the members
+	if(v->memberAccess->simpleVar->count_indices != 0){
+
+		printf("struct member access, then access with indices not implemented yet\n");
+		printf("(typeinference.c)\n");
+		exit(1);
+	}
 	
-	//TODO
-	printf("local variable inference for variables with member access not yet implemented\n");
-	exit(1);
-	return NULL;
+	return type;
 
 }
 
@@ -176,66 +187,4 @@ struct Type* inferTypeSimpleVar(struct ST* st, struct SimpleVar* v, bool debug){
 	return line->type;
 }
 
-struct Type* typeFromStr(struct ST* st, char* typeName, bool isPrimitive, bool isIntType){
-	
-	//this method will only work for simple types
-	struct Type* res = malloc(sizeof(struct Type));
-	
-	struct BasicTypeWrapped* btw = malloc(sizeof(struct BasicTypeWrapped));
-	
-	res->m1 = btw;
-	res->m2 = NULL;
-	res->m2 = NULL;
-	
-	struct SimpleType* simpleType = malloc(sizeof(struct SimpleType));
-	
-	simpleType->isPrimitive = isPrimitive;
-	simpleType->isIntType = isIntType;
 
-	simpleType->typeParamCount = 0;
-	strncpy(simpleType->typeName, typeName, DEFAULT_STR_SIZE);
-	
-	btw->subrType = NULL;
-	btw->simpleType = simpleType;
-	
-	//register the pointer in SymbolTable 'st'
-	//so it can manage that memory,
-	//as this pointer is not part of the AST Tree
-	
-	if(st->inferredTypesCount >= st->inferredTypesCapacity){
-		printf("Fatal Error (in typeinference.c)\n");
-		exit(1);
-	}else{
-		st->inferredTypes[st->inferredTypesCount] = res;
-		st->inferredTypesCount += 1;
-	}
-	
-	return res;
-}
-
-char* typeToStr(struct Type* t){
-	
-	if(t->m1 != NULL){
-		return typeToStrBasicTypeWrapped(t->m1);
-	}
-	
-	printf("(1)currently not implemented (in typeinference.c)\n");
-	exit(1);
-	return NULL;
-}
-
-bool streq(char* str1, char* str2){
-	return strcmp(str1, str2) == 0;
-}
-
-char* typeToStrBasicTypeWrapped(struct BasicTypeWrapped* b){
-	
-	if(b->simpleType != NULL){
-		
-		return b->simpleType->typeName;
-	}
-	
-	printf("(2)currently not implemented (in typeinference.c)\n");
-	exit(1);
-	return NULL;	
-}
