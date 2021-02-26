@@ -8,6 +8,7 @@
 #include "../../../ast/free_ast.h"
 
 #include "typeinference/typeinference.h"
+#include "typeinference/type_str.h"
 #include "tables/subr_symtable.h"
 
 #include "gen_c_types.h"

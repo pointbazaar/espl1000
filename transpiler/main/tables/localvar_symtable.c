@@ -11,6 +11,7 @@
 #include "tables/symtable.h"
 
 #include "typeinference/typeinference.h"
+#include "typeinference/type_str.h"
 
 // --- declare subroutines private to this compile unit ---
 //discover Local Variables
