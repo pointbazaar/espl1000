@@ -478,7 +478,7 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 		transpileType(as->optType, ctx);
 		fprintf(ctx->file, " ");
 		
-	}else if(as->optType == NULL && as->var->count_memberAccessList == 0){
+	}else if(as->optType == NULL && as->var->memberAccess == NULL){
 		//find type via local variable symbol table
 		assert(ctx->tables->lvst != NULL);
 		
@@ -619,9 +619,9 @@ void transpileVariable(struct Variable* var, struct Ctx* ctx){
 	
 	transpileSimpleVar(var->simpleVar, ctx);
 	
-	for(int i=0; i < var->count_memberAccessList; i++){
+	if(var->memberAccess != NULL){
 		fprintf(ctx->file, "->");
-		transpileVariable(var->memberAccessList[i], ctx);
+		transpileVariable(var->memberAccess, ctx);
 	}
 }
 

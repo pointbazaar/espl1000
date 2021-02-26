@@ -130,16 +130,16 @@ struct UnOpTerm* copyUnOpTerm(struct UnOpTerm* t){
 }
 
 struct Variable* copyVariable(struct Variable* var){
+
 	struct Variable* res = malloc(sizeof(struct Variable));
 	
 	res->simpleVar = copySimpleVar(var->simpleVar);
-	
-	res->count_memberAccessList = var->count_memberAccessList;
-	res->memberAccessList = 
-		malloc(sizeof(struct Variable*)*res->count_memberAccessList);
-		
-	for(int i=0;i < res->count_memberAccessList;i++){
-		res->memberAccessList[i] = copyVariable(var->memberAccessList[i]);
+
+	res->memberAccess = NULL;
+
+	if(var->memberAccess != NULL){
+
+		res->memberAccess = copyVariable(var->memberAccess);
 	}
 	
 	return res;

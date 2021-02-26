@@ -24,7 +24,7 @@ structMemberDecl ::= Type identifier ';'
 
 simplevariable ::= identifier ('[' expression ']')*
 
-variable ::= simplevariable ('.' variable)*
+variable ::= simplevariable ('.' variable)?
 
 stmtblock ::= '{' statement* '}'
 

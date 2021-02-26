@@ -3,9 +3,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
+
+## [v0.1.3]
 - Create more directories to have a better Structure in the Project
 - Typedef some Structures
 - Adjust most .c files to have a lowercase filename
+- Refactor struct Variable 
 
 ## [0.1.2]
 - Change the names of primitive integer types. (e.g. use int32 now instead of Int32)

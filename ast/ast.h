@@ -206,8 +206,9 @@ struct Term{
 struct Variable {
 	struct SimpleVar* simpleVar;
 
-	struct Variable** memberAccessList;
-	uint8_t count_memberAccessList;
+	//default NULL, or valid pointer
+	//to a struct member access
+	struct Variable* memberAccess;
 };
 //--------------------------------------
 struct AssignStmt {

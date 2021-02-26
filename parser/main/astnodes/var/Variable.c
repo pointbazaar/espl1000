@@ -22,48 +22,32 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 	struct Variable* res = malloc(sizeof(struct Variable));
 	res->simpleVar = NULL;
 
-	res->memberAccessList = malloc(sizeof(struct Variable*)*1);
-	res->count_memberAccessList = 0;
+	res->memberAccess = NULL;
 
 	struct TokenList* copy = list_copy(tokens);
 
 	res->simpleVar = makeSimpleVar(copy,debug);
 	if(res->simpleVar == NULL){
 		freeTokenListShallow(copy);
-		free(res->memberAccessList);
 		free(res);
 		return NULL;
 	}
 
 	if (list_size(copy) >= 2) {
 		struct Token* next = list_head(copy);
-		while (next->kind == STRUCTMEMBERACCESS) {
 
-			if(!list_expect(copy, STRUCTMEMBERACCESS)){return NULL;}
+		if(next->kind == STRUCTMEMBERACCESS){
 
-			struct Variable* myvar = makeVariable(copy,debug);
-			if(myvar == NULL){
-				free(res->memberAccessList);
+			list_expect(copy, STRUCTMEMBERACCESS);
+
+			res->memberAccess = makeVariable(copy, debug);
+			if(res->memberAccess == NULL){
+
+				printf("Error parsing struct member access!\n");
+				printf("%s\n", list_code(copy, debug));
 				free(res);
 				freeTokenListShallow(copy);
-				return NULL;
-			}
-
-			res->memberAccessList[res->count_memberAccessList] = myvar;
-			res->count_memberAccessList += 1;
-			size_t newsize = sizeof(struct Variable*)*(res->count_memberAccessList+1);
-			res->memberAccessList = (struct Variable**)realloc(res->memberAccessList, newsize);
-
-			if (list_size(copy) > 0) {
-				next = list_head(copy);
-				if(next == NULL){
-					free(res->memberAccessList);
-					free(res);
-					freeTokenListShallow(copy);
-					return NULL;
-				}
-			} else {
-				break;
+				exit(1);
 			}
 		}
 	}

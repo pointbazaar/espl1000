@@ -194,7 +194,7 @@ int assignstmt_test_type_declaration_for_variable(bool debug) {
 	assert(a->optType != NULL);
 	if(a->var == NULL){return 0;}
 	
-	assert(0 == a->var->count_memberAccessList);
+	assert(NULL == a->var->memberAccess);
 	assert(0 == list_size(tokens));
 	
 	freeAssignStmt(a);

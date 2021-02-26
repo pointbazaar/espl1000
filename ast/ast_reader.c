@@ -354,21 +354,16 @@ struct Variable* readVariable(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_VARIABLE, file);
 	
-	struct Variable* v = 
-		malloc(sizeof(struct Variable));
-
+	struct Variable* v = malloc(sizeof(struct Variable));
+	v->memberAccess = NULL;
 	v->simpleVar = readSimpleVar(file, debug);
-	
-	
-	v->count_memberAccessList = deserialize_int(file);
 
-	v->memberAccessList = 
-		malloc(sizeof(struct SimpleVar*)  * v->count_memberAccessList);
+	const bool hasMemberAccess = deserialize_int(file) == 1;
 	
-	for(int i = 0;i < v->count_memberAccessList; i++){
-		v->memberAccessList[i] = readVariable(file, debug);
+	if(hasMemberAccess){
+		v->memberAccess = readVariable(file, debug);
 	}
-	
+
 	magic_num_require(MAGIC_END_VARIABLE, file);
 	
 	return v;

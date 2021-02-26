@@ -183,10 +183,12 @@ void freeUnOpTerm(struct UnOpTerm* t) {
 void freeVariable(struct Variable* var) {
 
 	freeSimpleVar(var->simpleVar);
-	for(int i=0; i < var->count_memberAccessList; i++) {
-		freeVariable(var->memberAccessList[i]);
+
+	if(var->memberAccess != NULL){
+
+		freeVariable(var->memberAccess);
 	}
-	free(var->memberAccessList);
+
 	free(var);
 }
 

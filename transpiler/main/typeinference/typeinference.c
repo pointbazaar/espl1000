@@ -136,7 +136,7 @@ struct Type* inferTypeVariable(struct ST* st, struct Variable* v, bool debug){
 	
 	struct Type* typeOfVar = inferTypeSimpleVar(st, v->simpleVar, debug);
 	
-	if(v->count_memberAccessList == 0){
+	if(v->memberAccess == NULL){
 		
 		//no member accesses
 		return typeOfVar;

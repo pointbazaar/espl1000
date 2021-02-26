@@ -118,13 +118,15 @@ void writeVariable(struct Variable* m, FILE* file){
 
 	writeSimpleVar(m->simpleVar,file);
 
-	serialize_int(m->count_memberAccessList, file);
+	int hasMemberAccess = (m->memberAccess == NULL)?0:1;
+
+	serialize_int(hasMemberAccess, file);
 	
-	for(int i = 0;i < m->count_memberAccessList;i++){ 
-		struct Variable* v = m->memberAccessList[i];
-		writeVariable(v, file); 
+	if(hasMemberAccess == 1){
+
+		writeVariable(m->memberAccess, file);
 	}
-	
+
 	magic_num_serialize(MAGIC_END_VARIABLE, file);
 }
 void writeSimpleVar(struct SimpleVar* m, FILE* file){
