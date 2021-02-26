@@ -3,13 +3,14 @@
 #include <assert.h>
 
 #include "SimpleVarTest.h"
+
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
 
 #include "var/SimpleVar.h"
 #include "const/IntConst.h"
-#include "Expr.h"
-#include "Term.h"
+#include "expr/Expr.h"
+#include "expr/Term.h"
 
 #include "../../../token/token.h"
 #include "../../../ast/free_ast.h"

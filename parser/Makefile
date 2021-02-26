@@ -153,7 +153,15 @@ build/%.o: main/astnodes/struct/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 
-build/%.o: main/astnodes/typenodes/%.c $(MAIN_DEPS)
+build/%.o: main/astnodes/types/%.c $(MAIN_DEPS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL2) -o $@ $<
+
+build/%.o: main/astnodes/subr/%.c $(MAIN_DEPS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL2) -o $@ $<
+
+build/%.o: main/astnodes/expr/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 
@@ -191,10 +199,17 @@ build/%.o: test/astnodes/var/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 
-build/%.o: test/astnodes/typenodes/%.c $(MAIN_DEPS)
+build/%.o: test/astnodes/types/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 
+build/%.o: test/astnodes/subr/%.c $(MAIN_DEPS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL2) -o $@ $<
+
+build/%.o: test/astnodes/expr/%.c $(MAIN_DEPS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL2) -o $@ $<
 
 build/%.o: test/astnodes/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)

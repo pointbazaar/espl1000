@@ -3,8 +3,8 @@
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
 
-#include "Expr.h"
-#include "Term.h"
+#include "expr/Expr.h"
+#include "expr/Term.h"
 #include "const/IntConst.h"
 #include "var/Variable.h"
 #include "var/SimpleVar.h"

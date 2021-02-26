@@ -1,7 +1,10 @@
 #include "MethodTest.h"
+
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
-#include "../../main/astnodes/Method.h"
+
+#include "subr/Method.h"
+
 #include "../../../token/token.h"
 #include "../../../ast/free_ast.h"
 

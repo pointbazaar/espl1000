@@ -3,7 +3,7 @@
 #include "../../main/commandline/TokenList.h"
 #include "../../main/commandline/TokenKeys.h"
 
-#include "UnOpTerm.h"
+#include "expr/UnOpTerm.h"
 #include "var/Variable.h"
 #include "var/SimpleVar.h"
 

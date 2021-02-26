@@ -5,10 +5,10 @@
 
 #include "Method.h"
 #include "StmtBlock.h"
-#include "typenodes/Type.h"
+#include "types/Type.h"
 #include "../commandline/TokenList.h"
 #include "../commandline/TokenKeys.h"
-#include "Identifier.h"
+#include "../Identifier.h"
 #include "statements/Stmt.h"
 #include "DeclArg.h"
 #include "../../../token/token.h"

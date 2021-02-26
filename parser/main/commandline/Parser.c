@@ -8,10 +8,10 @@
 
 #include "TokenReader.h"
 #include "../astnodes/Namespace.h"
-#include "../astnodes/Method.h"
-#include "../astnodes/DeclArg.h"
+#include "../astnodes/subr/Method.h"
+#include "../astnodes/subr/DeclArg.h"
 #include "../astnodes/statements/Stmt.h"
-#include "../astnodes/typenodes/Type.h"
+#include "../astnodes/types/Type.h"
 #include "../../../ast/ast_writer.h"
 #include "../../test/commandline/ParserTest.h"
 

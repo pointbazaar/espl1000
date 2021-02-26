@@ -4,8 +4,8 @@
 
 #include "DeclArg.h"
 #include "../commandline/TokenList.h"
-#include "typenodes/Type.h"
-#include "Identifier.h"
+#include "types/Type.h"
+#include "../Identifier.h"
 #include "../../../ast/free_ast.h"
 
 struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {

@@ -4,10 +4,11 @@
 #include "ForStmt.h"
 #include "../Range.h"
 #include "../StmtBlock.h"
-#include "../Expr.h"
-#include "../StmtBlock.h"
+#include "expr/Expr.h"
+
 #include "../../commandline/TokenKeys.h"
 #include "../../commandline/TokenList.h"
+
 #include "../../../../ast/free_ast.h"
 #include "../../../../token/token.h"
 

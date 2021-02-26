@@ -13,32 +13,13 @@
 #include "ast_struct.h"
 #include "ast_var.h"
 #include "ast_expr.h"
+#include "ast_subr.h"
 
 struct AST_Whole_Program  {
 	struct Namespace** namespaces;
 	uint16_t count_namespaces;
 };
-struct DeclArg  {
-	struct Type* type;
-	bool has_name;
-	char name[DEFAULT_STR_SIZE];
-};
-struct Range { struct Expr* start; struct Expr* end; };
-//--------------
-struct Identifier  { char identifier[DEFAULT_STR_SIZE]; };
 
-struct Method {
-	struct Type* returnType;
-	char name[DEFAULT_STR_SIZE];
-	
-	bool isPublic;
-	bool hasSideEffects;
-
-	uint8_t count_args;
-	struct DeclArg** args;
-
-	struct StmtBlock* block;
-};
 struct Namespace {
 	//a namespace is represented by a filename.
 	//the contents of a namespace are the contents of the file
@@ -55,6 +36,11 @@ struct Namespace {
 	uint16_t count_structs;
 	size_t capacity_structs;
 };
+
+struct Range { struct Expr* start; struct Expr* end; };
+
+struct Identifier  { char identifier[DEFAULT_STR_SIZE]; };
+
 struct StmtBlock {
 	uint16_t count;
 	struct Stmt** stmts;

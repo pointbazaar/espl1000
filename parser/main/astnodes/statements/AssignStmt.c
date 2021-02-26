@@ -2,9 +2,9 @@
 #include <stdlib.h>
 
 #include "statements/AssignStmt.h"
-#include "Expr.h"
+#include "expr/Expr.h"
 #include "var/Variable.h"
-#include "typenodes/Type.h"
+#include "types/Type.h"
 
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"

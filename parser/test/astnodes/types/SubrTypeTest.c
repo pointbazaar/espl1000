@@ -1,7 +1,10 @@
 #include "SubrTypeTest.h"
+
 #include "../../../main/commandline/TokenList.h"
 #include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/astnodes/typenodes/SubrType.h"
+
+#include "types/SubrType.h"
+
 #include "../../../../token/token.h"
 #include "../../../../ast/free_ast.h"
 

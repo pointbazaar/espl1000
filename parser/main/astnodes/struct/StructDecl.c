@@ -4,7 +4,7 @@
 
 #include "StructDecl.h"
 #include "StructMember.h"
-#include "../typenodes/SimpleType.h"
+#include "types/SimpleType.h"
 #include "../../commandline/TokenList.h"
 #include "../../commandline/TokenKeys.h"
 #include "../../../../token/token.h"

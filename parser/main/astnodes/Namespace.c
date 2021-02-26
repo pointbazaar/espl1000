@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 #include "Namespace.h"
-#include "Method.h"
+#include "subr/Method.h"
 #include "struct/StructDecl.h"
 #include "../commandline/TokenList.h"
 #include "../../../token/token.h"

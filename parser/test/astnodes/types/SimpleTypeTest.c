@@ -1,8 +1,11 @@
 #include "SimpleTypeTest.h"
+
 #include "../../../main/commandline/TokenList.h"
 #include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/astnodes/typenodes/SimpleType.h"
-#include "../../../main/astnodes/typenodes/BasicTypeWrapped.h"
+
+#include "types/SimpleType.h"
+#include "types/BasicTypeWrapped.h"
+
 #include "../../../../token/token.h"
 #include "../../../../ast/free_ast.h"
 
