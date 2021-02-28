@@ -23,16 +23,6 @@ what is actually going on at runtime, even if the semantics of the language are 
 
 The editor of choice for smalldragon currently is [micro](https://micro-editor.github.io/), because there is a basic syntax highlighting for it.
 
-## Examples
-Have a look at [Examples](https://github.com/pointbazaar/smalldragon/tree/dev/examples)
-
-```console
-You@Terminal:~$ sd Main.dg
-You@Terminal:~$ ./main
-```
-
-[SmallDragon's Architecture](https://raw.githubusercontent.com/pointbazaar/smalldragon/dev/docs/img/architecture.svg)
-
 [Documentation](https://smalldragon.org)
 
 ## How to install / use this Project ?
