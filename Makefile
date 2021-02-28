@@ -8,7 +8,7 @@ all:
 	cd examples   && make
 
 all_no_valgrind:
-	cm token      && make
+	cd token      && make
 	cd ast        && make
 	cd lexer      && make 
 	cd parser     && make all_no_valgrind
