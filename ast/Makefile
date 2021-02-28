@@ -30,9 +30,12 @@ HEADERS := io/ast_reader.h \
 OBJS := build/test_ast.o build/ast_reader.o build/ast_writer.o \
 	build/free_ast.o build/copy_ast.o build/serialize.o
 
-all: $(OBJS)
+all: dirs $(OBJS)
 	gcc $(CFLAGS) -o tests $(OBJS)
 	./tests
+
+dirs:
+	mkdir -p build
 	
 build/%.o: util/%.c $(HEADERS)
 	@echo Compiling file: $(notdir $<)
