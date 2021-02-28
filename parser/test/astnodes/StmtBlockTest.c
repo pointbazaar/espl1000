@@ -1,14 +1,18 @@
-#include "StmtBlockTest.h"
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-#include "../../main/astnodes/statements/Stmt.h"
-#include "../../main/astnodes/StmtBlock.h"
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+
+#include "StmtBlockTest.h"
+
+#include "statements/Stmt.h"
+#include "StmtBlock.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
+
 
 int test_stmtblock_1(bool debug){
 	

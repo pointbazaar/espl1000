@@ -4,10 +4,30 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "TokenListTest.h"
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-#include "../../../token/token.h"
+#include "TokenList.h"
+#include "TokenKeys.h"
+#include "token.h"
+
+int test_tokenlist1(bool debug);
+int test_tokenlist_consume(bool debug);
+int test_tokenlist_get(bool debug);
+int test_tokenlist_startswith(bool debug);
+int test_tokenlist_code(bool debug);
+int test_tokenlist_stresstest(bool debug);
+
+int main(){
+	
+	bool debug = false;
+	
+	test_tokenlist1(debug);
+	test_tokenlist_consume(debug);
+	test_tokenlist_get(debug);
+	test_tokenlist_startswith(debug);
+	test_tokenlist_code(debug);
+	test_tokenlist_stresstest(debug);
+	
+	printf("[Token Module] PASSED ALL TESTS\n");
+}
 
 int test_tokenlist1(bool debug){
 

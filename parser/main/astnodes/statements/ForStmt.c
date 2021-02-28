@@ -2,15 +2,15 @@
 #include <stdlib.h>
 
 #include "ForStmt.h"
-#include "../Range.h"
-#include "../StmtBlock.h"
+#include "Range.h"
+#include "StmtBlock.h"
 #include "expr/Expr.h"
 
-#include "../../commandline/TokenKeys.h"
-#include "../../commandline/TokenList.h"
+#include "ast/util/free_ast.h"
 
-#include "../../../../ast/free_ast.h"
-#include "../../../../token/token.h"
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
 struct ForStmt* makeForStmt(struct TokenList* tokens, bool debug) {
 

@@ -1,13 +1,16 @@
-#include "WhileStmtTest.h"
-#include "../../../main/commandline/TokenList.h"
-#include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/astnodes/statements/WhileStmt.h"
-#include "../../../../token/token.h"
-#include "../../../../ast/free_ast.h"
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+
+#include "WhileStmtTest.h"
+
+#include "statements/WhileStmt.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int whilestmt_test1(bool debug) {
 

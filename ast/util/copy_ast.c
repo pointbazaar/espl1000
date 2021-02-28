@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "ast.h"
+#include "../ast.h"
 #include "copy_ast.h"
 
 struct BoolConst* copyBoolConst(struct BoolConst* bc){

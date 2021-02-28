@@ -1,7 +1,7 @@
 #ifndef AST_STRUCT_H
 #define AST_STRUCT_H
 
-#include "ast_declare.h"
+#include "../ast_declare.h"
 
 struct StructDecl{
 	

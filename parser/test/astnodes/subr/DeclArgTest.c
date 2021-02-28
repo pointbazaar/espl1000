@@ -1,16 +1,16 @@
-#include "DeclArgTest.h"
-
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-
-#include "subr/DeclArg.h"
-
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+
+#include "DeclArgTest.h"
+
+#include "subr/DeclArg.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int declarg_test_parse_declared_argument(bool debug) {
 

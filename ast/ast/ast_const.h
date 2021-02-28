@@ -1,7 +1,7 @@
 #ifndef AST_CONST_H
 #define AST_CONST_H
 
-#include "ast_declare.h"
+#include "../ast_declare.h"
 
 struct BoolConst   { bool     value; };
 

@@ -1,7 +1,7 @@
 #Manual:
 #https://westes.github.io/flex/manual/
 
-FLAGS := -g -march=native -Wall --std=c11 -pedantic
+FLAGS := -g -march=native -Wall --std=c11 
 
 INCLUDE_DIR := include/
 

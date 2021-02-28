@@ -3,12 +3,14 @@
 #include <stdlib.h>
 
 #include "BasicTypeWrapped.h"
-#include "../../commandline/TokenList.h"
-#include "../../commandline/TokenKeys.h"
 #include "SubrType.h"
 #include "SimpleType.h"
-#include "../../../../ast/free_ast.h"
-#include "../../../../token/token.h"
+
+#include "ast/ast.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
 struct BasicTypeWrapped* makeBasicTypeWrappedSimple(struct SimpleType* typeNode) {
 

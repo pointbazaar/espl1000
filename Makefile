@@ -1,5 +1,6 @@
 
 all: 
+	cd token      && make
 	cd ast        && make
 	cd lexer      && make
 	cd parser     && make 
@@ -7,6 +8,7 @@ all:
 	cd examples   && make
 
 all_no_valgrind:
+	cm token      && make
 	cd ast        && make
 	cd lexer      && make 
 	cd parser     && make all_no_valgrind
@@ -14,6 +16,7 @@ all_no_valgrind:
 	cd examples   && make
 
 clean:
+	cd token      && make clean
 	cd ast        && make clean
 	cd lexer      && make clean
 	cd parser     && make clean

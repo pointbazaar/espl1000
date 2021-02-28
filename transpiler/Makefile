@@ -1,16 +1,19 @@
 #it had -O0 before, but i dont think we need it
 #unless debugging becomes hard when omitting it.
 
-INCLUDE := -Imain
+INCLUDE := -Imain -I..
 
-FLAGS := -march=native -g --std=c11 -Wall -Werror $(INCLUDE)
+FLAGS := -march=native -g --std=c11 -Wall $(INCLUDE)
 
 CALL := gcc $(FLAGS)
 
 CALLTEST := $(CALL) -Itest
 
-OBJS := build/transpiler.o \
-	build/ast_reader.o \
+AST_OBJS := ../ast/build/ast_reader.o \
+		../ast/build/free_ast.o \
+		../ast/build/serialize.o 
+
+TRANSPILER_OBJS := build/transpiler.o \
 	build/c_code_gen.o \
 	build/structs_code_gen.o \
 	build/code_gen_util.o \
@@ -18,7 +21,6 @@ OBJS := build/transpiler.o \
 	build/test_statuscode.o \
 	build/test_other.o \
 	build/test_op.o \
-	build/test_other.o \
 	build/test_assign.o \
 	build/flags.o \
 	build/localvar_symtable.o \
@@ -26,10 +28,10 @@ OBJS := build/transpiler.o \
 	build/struct_symtable.o \
 	build/typeinference.o \
 	build/help.o \
-	build/free_ast.o \
-	build/serialize.o \
 	build/gen_c_types.o \
 	build/type_str.o
+
+OBJS := $(AST_OBJS) $(TRANSPILER_OBJS);
 
 all: all_no_valgrind valgrind
 
@@ -47,7 +49,7 @@ valgrind: sd
 	valgrind $(VALGRIND_OPS) ./sd -clean ../examples/other/Everything.dg
 
 smalldragon: dir $(OBJS)
-	$(CALL) -o sd build/*.o
+	$(CALL) -o sd $(OBJS)
 	
 dir:
 	mkdir -p build

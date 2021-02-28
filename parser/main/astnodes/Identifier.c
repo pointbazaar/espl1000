@@ -3,10 +3,12 @@
 #include <stdlib.h>
 
 #include "Identifier.h"
-#include "../commandline/TokenList.h"
-#include "../../../token/token.h"
-#include "../commandline/TokenKeys.h"
-#include "../../../ast/free_ast.h"
+
+#include "ast/util/free_ast.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
 struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 

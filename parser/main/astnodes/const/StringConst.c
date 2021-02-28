@@ -4,10 +4,12 @@
 #include <stdbool.h>
 
 #include "StringConst.h"
-#include "../../commandline/TokenList.h"
-#include "../../commandline/TokenKeys.h"
-#include "../../../../token/token.h"
-#include "../../../../ast/free_ast.h"
+
+#include "ast/util/free_ast.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
 struct StringConst* makeStringConst(struct TokenList* tokens, bool debug){
 	

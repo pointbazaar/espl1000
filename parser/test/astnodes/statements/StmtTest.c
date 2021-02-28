@@ -3,11 +3,14 @@
 #include <assert.h>
 
 #include "StmtTest.h"
-#include "../../../main/commandline/TokenList.h"
-#include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/astnodes/statements/Stmt.h"
-#include "../../../../token/token.h"
-#include "../../../../ast/free_ast.h"
+
+#include "statements/Stmt.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int stmt_test_assignment_statement_with_struct_access(bool debug) {
 

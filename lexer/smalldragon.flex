@@ -6,7 +6,7 @@
 	#include "test.h"
 	
 	//for the token key macros
-	#include "../parser/main/commandline/TokenKeys.h" 
+	#include "../token/TokenKeys.h" 
 
 	int line_no = 1;
 %}

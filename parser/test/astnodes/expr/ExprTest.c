@@ -1,7 +1,8 @@
-#include "ExprTest.h"
+#include <stdio.h>
+#include <stdbool.h>
+#include <assert.h>
 
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
+#include "ExprTest.h"
 
 #include "expr/Expr.h"
 #include "expr/Term.h"
@@ -9,12 +10,11 @@
 #include "var/Variable.h"
 #include "var/SimpleVar.h"
 
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
+#include "ast/util/free_ast.h"
 
-#include <stdio.h>
-#include <stdbool.h>
-#include <assert.h>
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
 int expr_test_simple_expression(bool debug) {
 

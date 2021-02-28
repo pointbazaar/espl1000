@@ -1,13 +1,16 @@
-#include "RetStmtTest.h"
-#include "../../../main/commandline/TokenList.h"
-#include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/astnodes/statements/RetStmt.h"
-#include "../../../../token/token.h"
-#include "../../../../ast/free_ast.h"
-
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
+
+#include "RetStmtTest.h"
+
+#include "statements/RetStmt.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int retstmt_test1(bool debug) {
 

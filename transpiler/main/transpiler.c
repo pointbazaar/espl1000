@@ -7,14 +7,14 @@
 #include <stdbool.h>
 #include <malloc.h>
 
-//#include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/sysmacros.h>
 
-#include "../../ast/ast_reader.h"
-#include "../../ast/ast.h"
-#include "../../ast/free_ast.h"
+#include "ast/io/ast_reader.h"
+#include "ast/ast.h"
+#include "ast/util/free_ast.h"
+
 #include "../test/test.h"
 
 #include "code_gen/c_code_gen.h"

@@ -3,13 +3,19 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "../commandline/TokenList.h"
+#include "token/TokenList.h"
+
 #include "Expr.h"
 #include "Term.h"
 #include "UnOpTerm.h"
 #include "Op.h"
-#include "../../../ast/free_ast.h"
-#include "../../../ast/copy_ast.h"
+
+#include "ast/util/free_ast.h"
+#include "ast/util/copy_ast.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
 //how many operators there are
 #define nops 15

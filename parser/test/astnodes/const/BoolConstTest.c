@@ -1,14 +1,16 @@
-#include "BoolConstTest.h"
-
-#include "../../../main/commandline/TokenList.h"
-#include "../../../main/commandline/TokenKeys.h"
-#include "../../../../token/token.h"
-#include "../../../main/astnodes/const/BoolConst.h"
-#include "../../../../ast/free_ast.h"
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+
+#include "BoolConstTest.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "const/BoolConst.h"
+
+#include "ast/util/free_ast.h"
 
 int boolconst_test_parse_bool_constant_node(bool debug)  {
 

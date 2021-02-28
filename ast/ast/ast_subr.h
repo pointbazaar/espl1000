@@ -1,7 +1,7 @@
 #ifndef AST_SUBR_H
 #define AST_SUBR_H
 
-#include "ast_declare.h"
+#include "../ast_declare.h"
 
 struct DeclArg  {
 	struct Type* type;

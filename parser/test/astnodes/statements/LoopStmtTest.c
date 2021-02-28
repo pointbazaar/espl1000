@@ -1,13 +1,15 @@
-#include "LoopStmtTest.h"
-
-#include "../../../main/commandline/TokenList.h"
-#include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/astnodes/statements/LoopStmt.h"
-#include "../../../../token/token.h"
-#include "../../../../ast/free_ast.h"
-
 #include <stdio.h>
 #include <assert.h>
+
+#include "LoopStmtTest.h"
+
+#include "statements/LoopStmt.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int loop_test1(bool debug){
 	

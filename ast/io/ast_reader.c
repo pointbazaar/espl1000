@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "ast.h"
+#include "../ast.h"
 #include "ast_reader.h"
 #include "magic_num.h"
 #include "serialize.h"

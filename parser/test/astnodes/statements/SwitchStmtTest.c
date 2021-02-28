@@ -3,11 +3,14 @@
 #include <assert.h>
 
 #include "SwitchStmtTest.h"
-#include "../../../main/commandline/TokenList.h"
-#include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/astnodes/statements/SwitchStmt.h"
-#include "../../../../token/token.h"
-#include "../../../../ast/free_ast.h"
+
+#include "statements/SwitchStmt.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int test_switch(bool debug){
 

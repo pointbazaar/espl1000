@@ -2,11 +2,14 @@
 #include <assert.h>
 
 #include "CaseStmtTest.h"
-#include "../../../main/commandline/TokenList.h"
-#include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/astnodes/statements/CaseStmt.h"
-#include "../../../../token/token.h"
-#include "../../../../ast/free_ast.h"
+
+#include "statements/CaseStmt.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int test_parser_case_stmt(bool debug) {
 

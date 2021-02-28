@@ -1,14 +1,17 @@
-#include "StructDeclTest.h"
-#include "../../../main/commandline/TokenList.h"
-#include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/astnodes/struct/StructDecl.h"
-#include "../../../main/astnodes/struct/StructMember.h"
-#include "../../../../token/token.h"
-#include "../../../../ast/free_ast.h"
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+
+#include "StructDeclTest.h"
+
+#include "struct/StructDecl.h"
+#include "struct/StructMember.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int structdecl_test_can_parse_empty_struct_decl(bool debug) {
 

@@ -3,10 +3,14 @@
 #include <stdlib.h>
 
 #include "DeclArg.h"
-#include "../commandline/TokenList.h"
 #include "types/Type.h"
 #include "../Identifier.h"
-#include "../../../ast/free_ast.h"
+
+#include "ast/util/free_ast.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
 struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 

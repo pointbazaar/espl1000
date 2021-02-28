@@ -1,18 +1,18 @@
-#include "TermTest.h"
+#include <stdio.h>
+#include <stdbool.h>
+#include <assert.h>
 
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
+#include "TermTest.h"
 
 #include "expr/Term.h"
 #include "var/Variable.h"
 #include "var/SimpleVar.h"
 
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
-#include <stdio.h>
-#include <stdbool.h>
-#include <assert.h>
+#include "ast/util/free_ast.h"
 
 int term_test_simple_term(bool debug) {
 

@@ -1,13 +1,14 @@
-#include "FloatConstTest.h"
-
-#include "../../../main/commandline/TokenList.h"
-#include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/astnodes/const/FloatConst.h"
-#include "../../../../token/token.h"
-#include "../../../../ast/free_ast.h"
-
 #include <stdio.h>
 #include <assert.h>
+
+#include "FloatConstTest.h"
+#include "const/FloatConst.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int floatconst_test1(bool debug) {
 

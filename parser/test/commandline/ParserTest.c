@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <assert.h>
+
 #include "ParserTest.h"
 
 #include "../astnodes/const/BoolConstTest.h"
@@ -29,13 +34,6 @@
 #include "../astnodes/statements/SwitchStmtTest.h"
 #include "../astnodes/statements/CaseStmtTest.h"
 
-#include "../commandline/TokenListTest.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <assert.h>
-
 #define FAILRET if(!passed){ printf("FAILED\n"); return false;}
 
 //there are multiple test suites which test multiple aspects
@@ -43,7 +41,6 @@
 
 // --- START OF TEST SUITES ---
 
-bool test_suite_tokenlist(bool debug);
 bool test_suite_constnodes(bool debug);
 bool test_suite_term_expr_simplevar_var(bool debug);
 
@@ -82,11 +79,6 @@ bool test_all_inner(bool debug) {
 
     //the tests should start with the easy tests first
 
-
-    if(!test_suite_tokenlist(debug)) {
-        printf("suite_tokenlist failed\n");
-        return false;
-    }
     if(!test_suite_constnodes(debug)) {
         printf("suite_constnodes failed\n");
         return false;
@@ -123,36 +115,13 @@ bool test_all_inner(bool debug) {
 	test_switch(debug);
 	test_parser_case_stmt(debug);
 
-    printf("Parser: passed all Test Suites\n");
+    printf("[Parser Module] PASSED ALL TESTS\n");
 
     return true;
 }
 
 // --- TEST SUITE IMPLEMENTATIONS ---
 
-bool test_suite_tokenlist(bool debug) {
-	
-	if(debug){ printf("test_suite_tokenlist\n"); }
-
-    bool passed = true;
-
-    passed &=  test_tokenlist1(debug);
-    FAILRET
-    passed &=  test_tokenlist_consume(debug);
-    FAILRET
-
-    passed &=  test_tokenlist_get(debug);
-    FAILRET
-    passed &=  test_tokenlist_startswith(debug);
-    FAILRET
-
-    passed &=  test_tokenlist_code(debug);
-    FAILRET
-    passed &=  test_tokenlist_stresstest(debug);
-    FAILRET
-
-    return passed;
-}
 
 bool test_suite_constnodes(bool debug) {
 	

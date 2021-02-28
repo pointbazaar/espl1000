@@ -1,18 +1,18 @@
-#include "VariableTest.h"
-
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-
-#include "var/Variable.h"
-#include "var/SimpleVar.h"
-
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
-
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
 #include <assert.h>
+
+#include "VariableTest.h"
+
+#include "var/Variable.h"
+#include "var/SimpleVar.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int variable_test_parse_struct_member_access(bool debug) {
 

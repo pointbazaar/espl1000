@@ -4,8 +4,8 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "../../ast/ast.h"
-#include "../../ast/free_ast.h"
+#include "ast/ast.h"
+#include "ast/util/free_ast.h"
 
 #include "code_gen/gen_c_types.h"
 #include "typeinference/typeinference.h"

@@ -10,25 +10,42 @@
 
 CFLAGS := -march=native -g
 
-SOURCES := test_ast.c \
-		ast_reader.c \
-		ast_writer.c \
-		free_ast.c \
-		copy_ast.c \
-		serialize.c
+CALL := gcc $(CFLAGS) -c
 
-HEADERS := ast_reader.h \
-		ast_writer.h \
-		free_ast.h \
+SOURCES := test/test_ast.c \
+		io/ast_reader.c \
+		io/ast_writer.c \
+		util/free_ast.c \
+		util/copy_ast.c \
+		io/serialize.c
+
+HEADERS := io/ast_reader.h \
+		io/ast_writer.h \
+		util/free_ast.h \
 		ast.h \
-		copy_ast.h \
-		magic_num.h \
-		serialize.h
+		util/copy_ast.h \
+		io/magic_num.h \
+		io/serialize.h
 
-all: $(SOURCES) $(HEADERS)
-	gcc $(CFLAGS) -o tests $(SOURCES)
+OBJS := build/test_ast.o build/ast_reader.o build/ast_writer.o \
+	build/free_ast.o build/copy_ast.o build/serialize.o
+
+all: $(OBJS)
+	gcc $(CFLAGS) -o tests $(OBJS)
 	./tests
+	
+build/%.o: util/%.c $(HEADERS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL) -o $@ $<
+	
+build/%.o: io/%.c $(HEADERS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL) -o $@ $<
+	
+build/%.o: test/%.c $(HEADERS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL) -o $@ $<
 
 clean:
-	rm -f *.o
+	rm -f build/*.o
 	rm -f tests

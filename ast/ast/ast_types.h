@@ -1,7 +1,7 @@
 #ifndef AST_TYPES_H
 #define AST_TYPES_H
 
-#include "ast_declare.h"
+#include "../ast_declare.h"
 
 struct ArrayType { 
 	

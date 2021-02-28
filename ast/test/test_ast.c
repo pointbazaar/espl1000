@@ -4,11 +4,11 @@
 #include <assert.h>
 #include <string.h>
 
-#include "ast_writer.h"
-#include "free_ast.h"
-#include "copy_ast.h"
-#include "ast_reader.h"
-#include "ast.h"
+#include "../io/ast_writer.h"
+#include "../util/free_ast.h"
+#include "../util/copy_ast.h"
+#include "../io/ast_reader.h"
+#include "../ast.h"
 
 //constants
 void test_serialize_IntConst(bool debug);

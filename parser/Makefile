@@ -2,20 +2,25 @@
 #use -pg to generate profiling information for gprof
 FLAGS := -march=native -g -Wall -Werror --std=gnu11 
 
-INCLUDE := -Imain/astnodes -Imain/commandline 
+INCLUDE := -Imain/astnodes -I..
 
 CALL := gcc $(FLAGS) $(INCLUDE)
 CALL2 := $(CALL) -c 
 
-OBJS_UTIL := build/ast_writer.o \
-	build/free_ast.o \
-	build/copy_ast.o \
-	build/serialize.o
+AST_BUILD := ../ast/build
+
+OBJS_AST := $(AST_BUILD)/ast_writer.o \
+	$(AST_BUILD)/free_ast.o \
+	$(AST_BUILD)/copy_ast.o \
+	$(AST_BUILD)/serialize.o
+
+TOKEN_BUILD := ../token/build
+
+OBJS_TOKEN := $(TOKEN_BUILD)/token.o \
+		$(TOKEN_BUILD)/TokenList.o \
+		$(TOKEN_BUILD)/TokenReader.o
 
 OBJS_MAIN := build/Parser.o \
-		build/token.o \
-		build/TokenList.o \
-		build/TokenReader.o \
 		build/AST_Whole_Program.o \
 		build/BoolConst.o \
 		build/CharConst.o \
@@ -80,27 +85,26 @@ OBJS_TEST := build/AssignStmtTest.o \
 		build/TermTest.o \
 		build/VariableTest.o \
 		build/WhileStmtTest.o \
-		build/TokenListTest.o \
 		build/ParserTest.o \
 		build/UnOpTermTest.o \
 		build/RangeTest.o \
 		build/ForStmtTest.o \
 		build/SwitchStmtTest.o \
-	       	build/CaseStmtTest.o	
+	    build/CaseStmtTest.o	
 		
-OBJS := $(OBJS_MAIN) $(OBJS_TEST) $(OBJS_UTIL) 
+OBJS := $(OBJS_MAIN) $(OBJS_TEST) $(OBJS_AST) $(OBJS_TOKEN)
 
 AST_DEPS := ../ast/ast.h \
-	../ast/ast_writer.h \
-	../ast/free_ast.h \
-	../ast/copy_ast.h
+	../ast/io/ast_writer.h \
+	../ast/util/free_ast.h \
+	../ast/util/copy_ast.h
 
-#dependencies usually found in all AST-related parsing
-#source files
-MAIN_DEPS := main/commandline/TokenList.h \
-	main/commandline/TokenKeys.h \
-	../token/token.h \
-	$(AST_DEPS)
+
+TOKEN_DEPS := ../token/TokenList.h \
+	../token/TokenKeys.h \
+	../token/token.h 
+
+MAIN_DEPS := $(AST_DEPS) $(TOKEN_DEPS)
 
 all: all_no_valgrind valgrind
 
@@ -125,7 +129,7 @@ valgrind: dragon-parser
 	valgrind $(VALGRIND_OPS) ./dragon-parser ../examples/loops/.WhileLoop.dg.tokens
 
 dragon-parser: $(OBJS)
-	$(CALL) -o dragon-parser build/*.o
+	$(CALL) -o dragon-parser $(OBJS)
 	
 #generic rules
 
@@ -164,21 +168,6 @@ build/%.o: main/astnodes/subr/%.c $(MAIN_DEPS)
 build/%.o: main/astnodes/expr/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
-
-build/util.o: ../util/util.c ../util/util.h
-	$(CALL2)  -o $@ ../util/util.c
-
-build/%.o: ../ast/%.c $(AST_DEPS)
-	@echo Compiling file: $(notdir $<)
-	$(CALL2) -o $@ $<
-
-build/%.o: ../token/%.c ../token/%.h
-	@echo Compiling file: $(notdir $<)
-	$(CALL2) -o $@ $<
-
-
-
-
 
 ## ------------- TEST RULES ------------- ##
 

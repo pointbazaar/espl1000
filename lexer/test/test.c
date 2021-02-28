@@ -22,7 +22,7 @@ for the java version of this lexer
 #include "test.h"
 #include "../../token/token.h"
 
-#include "../../parser/main/commandline/TokenKeys.h"
+#include "../../token/TokenKeys.h"
 
 struct Token** lex(char* source, bool debug){
 	
@@ -712,7 +712,7 @@ bool test_typeidentifier_primitive(){
 	
 	//------------------------------
 	char* str2 = "float char bool ";
-	char* expect2[] = {"float","char","bool"};
+	
 	struct Token** tokens2 = lex(str2, debug);
 	
 	assert(tokens2[0]->kind == TYPEID_PRIMITIVE_FLOAT);

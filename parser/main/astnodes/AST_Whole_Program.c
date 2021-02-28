@@ -4,8 +4,12 @@
 
 #include "AST_Whole_Program.h"
 #include "Namespace.h"
-#include "../commandline/TokenList.h"
-#include "../../../ast/free_ast.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 struct AST_Whole_Program* makeAST_Whole_Program(struct Namespace* myNamespace) {
 	//utility method, to facilitate creating AST_Whole_Program from a single namespace node

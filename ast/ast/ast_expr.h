@@ -1,7 +1,7 @@
 #ifndef AST_EXPR_H
 #define AST_EXPR_H
 
-#include "ast_declare.h"
+#include "../ast_declare.h"
 
 struct Expr {
 	struct UnOpTerm* term1;

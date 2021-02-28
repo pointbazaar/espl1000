@@ -5,10 +5,12 @@
 
 #include "Range.h"
 #include "expr/Expr.h"
-#include "../commandline/TokenKeys.h"
-#include "../commandline/TokenList.h"
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
+
+#include "ast/util/free_ast.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
 struct Range* makeRange(struct TokenList* tokens, bool debug) {
 

@@ -1,17 +1,17 @@
-#include "IfStmtTest.h"
+#include <stdio.h>
+#include <stdbool.h>
+#include <assert.h>
 
-#include "../../../main/commandline/TokenList.h"
-#include "../../../main/commandline/TokenKeys.h"
+#include "IfStmtTest.h"
 
 #include "statements/IfStmt.h"
 #include "expr/Expr.h"
 
-#include "../../../../token/token.h"
-#include "../../../../ast/free_ast.h"
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
-#include <stdio.h>
-#include <stdbool.h>
-#include <assert.h>
+#include "ast/util/free_ast.h"
 
 int if_test1(bool debug) {
 

@@ -1,16 +1,16 @@
-#include "SubrTypeTest.h"
-
-#include "../../../main/commandline/TokenList.h"
-#include "../../../main/commandline/TokenKeys.h"
-
-#include "types/SubrType.h"
-
-#include "../../../../token/token.h"
-#include "../../../../ast/free_ast.h"
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+
+#include "SubrTypeTest.h"
+
+#include "types/SubrType.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int subrtype_test_typename(bool debug) {
 

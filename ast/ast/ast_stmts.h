@@ -1,7 +1,7 @@
 #ifndef AST_STMTS_H
 #define AST_STMTS_H
 
-#include "ast_declare.h"
+#include "../ast_declare.h"
 
 struct AssignStmt {
 	struct Type* optType;	//may be NULL

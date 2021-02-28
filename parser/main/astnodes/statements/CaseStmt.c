@@ -3,16 +3,17 @@
 
 #include "CaseStmt.h"
 
-#include "../const/IntConst.h"
-#include "../const/CharConst.h"
-#include "../const/BoolConst.h"
+#include "const/IntConst.h"
+#include "const/CharConst.h"
+#include "const/BoolConst.h"
 
-#include "../StmtBlock.h"
-#include "../../commandline/TokenKeys.h"
-#include "../../commandline/TokenList.h"
-#include "../../../../ast/free_ast.h"
-#include "../../../../token/token.h"
+#include "StmtBlock.h"
 
+#include "ast/util/free_ast.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
 struct CaseStmt* makeCaseStmt(struct TokenList* tokens, bool debug) {
 

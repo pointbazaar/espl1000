@@ -3,10 +3,12 @@
 #include <stdlib.h>
 
 #include "SimpleType.h"
-#include "../../commandline/TokenList.h"
-#include "../../commandline/TokenKeys.h"
-#include "../../../../ast/free_ast.h"
-#include "../../../../token/token.h"
+
+#include "ast/ast.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
 void parse_type_params_rest(struct SimpleType* res, struct TokenList* tokens);
 

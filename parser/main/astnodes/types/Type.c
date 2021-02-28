@@ -3,12 +3,15 @@
 #include <stdlib.h>
 
 #include "Type.h"
-#include "../../commandline/TokenList.h"
 #include "ArrayType.h"
 #include "TypeParam.h"
 #include "BasicTypeWrapped.h"
-#include "../../../../token/token.h"
-#include "../../../../ast/free_ast.h"
+
+#include "ast/util/free_ast.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
 struct Type* makeType_1(struct BasicTypeWrapped* typeNode){
 

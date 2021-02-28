@@ -8,7 +8,7 @@
 #include "tables/subr_symtable.h"
 #include "tables/struct_symtable.h"
 
-#include "../../ast/ast.h"
+#include "ast/ast.h"
 
 #include "typeinference/type_str.h"
 

@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include <assert.h>
 
-#include "../../../ast/ast.h"
-#include "../../../ast/free_ast.h"
+#include "ast/ast.h"
+#include "ast/util/free_ast.h"
 
 #include "tables/localvar_symtable.h"
 #include "tables/symtable.h"

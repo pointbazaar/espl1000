@@ -1,7 +1,7 @@
 #ifndef AST_VAR_H
 #define AST_VAR_H
 
-#include "ast_declare.h"
+#include "../ast_declare.h"
 
 struct Variable {
 	

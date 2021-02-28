@@ -79,6 +79,11 @@ int transpiler_test_all(bool debug){
 	
 	printf("\nPassed %d of %d Tests\n",testsPassed,testsRun);
 	
+	if(testsPassed == testsRun){
+		
+			printf("[Transpiler Module] PASSED ALL TESTS\n");
+	}
+	
 	if(testsPassed != testsRun){ return 1; }
 	
 	return 0;

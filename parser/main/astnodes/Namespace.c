@@ -6,10 +6,12 @@
 #include "Namespace.h"
 #include "subr/Method.h"
 #include "struct/StructDecl.h"
-#include "../commandline/TokenList.h"
-#include "../../../token/token.h"
-#include "../commandline/TokenKeys.h"
-#include "../../../ast/free_ast.h"
+
+#include "ast/util/free_ast.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
 struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug) {
 

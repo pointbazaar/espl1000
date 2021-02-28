@@ -1,14 +1,17 @@
-#include "NamespaceTest.h"
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-#include "../../main/astnodes/Namespace.h"
-#include "../../main/astnodes/struct/StructDecl.h"
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+
+#include "NamespaceTest.h"
+
+#include "Namespace.h"
+#include "struct/StructDecl.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int namespace_test_can_parse_namespace_with_1_empty_struct(bool debug) {
 

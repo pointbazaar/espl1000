@@ -3,9 +3,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "../commandline/TokenList.h"
-#include "../commandline/TokenKeys.h"
-
 #include "Term.h"
 #include "const/CharConst.h"
 #include "const/IntConst.h"
@@ -18,8 +15,11 @@
 #include "var/Variable.h"
 #include "statements/MethodCall.h"
 
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
+#include "ast/util/free_ast.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
 // --- private subroutines ---
 

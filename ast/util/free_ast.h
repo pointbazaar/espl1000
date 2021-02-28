@@ -1,7 +1,7 @@
 #ifndef FREEAST
 #define FREEAST
 
-#include "ast.h"
+#include "../ast.h"
 
 //this header file declares all subroutines
 //for freeing the memory allocated for AST Nodes.

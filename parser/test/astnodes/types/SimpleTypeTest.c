@@ -1,17 +1,17 @@
-#include "SimpleTypeTest.h"
+#include <stdbool.h>
+#include <stdio.h>
+#include <assert.h>
 
-#include "../../../main/commandline/TokenList.h"
-#include "../../../main/commandline/TokenKeys.h"
+#include "SimpleTypeTest.h"
 
 #include "types/SimpleType.h"
 #include "types/BasicTypeWrapped.h"
 
-#include "../../../../token/token.h"
-#include "../../../../ast/free_ast.h"
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
-#include <stdbool.h>
-#include <stdio.h>
-#include <assert.h>
+#include "ast/util/free_ast.h"
 
 int simpletype_test_typenode_parsing(bool debug) {
 

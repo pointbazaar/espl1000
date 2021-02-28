@@ -4,7 +4,11 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "../../../ast/ast.h"
+#include "ast/ast.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
 //DragonExpressionNode should be similar to jack expression
 //an expression should be anything that returns a value or computes to a value

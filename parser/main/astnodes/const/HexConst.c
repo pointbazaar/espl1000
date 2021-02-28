@@ -3,10 +3,11 @@
 
 #include "HexConst.h"
 
-#include "../../commandline/TokenList.h"
-#include "../../commandline/TokenKeys.h"
-#include "../../../../ast/ast.h"
-#include "../../../../token/token.h"
+#include "ast/util/free_ast.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
 
 struct HexConst* makeHexConst(struct TokenList* tokens, bool debug){
 	

@@ -1,7 +1,7 @@
 #ifndef ASTREADER
 #define ASTREADER
 
-#include "ast.h"
+#include "../ast.h"
 #include <stdbool.h>
 
 struct AST_Whole_Program* readAST(char* filename, bool debug);

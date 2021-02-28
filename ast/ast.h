@@ -7,13 +7,13 @@
 
 #include "ast_declare.h"
 
-#include "ast_types.h"
-#include "ast_stmts.h"
-#include "ast_const.h"
-#include "ast_struct.h"
-#include "ast_var.h"
-#include "ast_expr.h"
-#include "ast_subr.h"
+#include "ast/ast_types.h"
+#include "ast/ast_stmts.h"
+#include "ast/ast_const.h"
+#include "ast/ast_struct.h"
+#include "ast/ast_var.h"
+#include "ast/ast_expr.h"
+#include "ast/ast_subr.h"
 
 struct AST_Whole_Program  {
 	struct Namespace** namespaces;

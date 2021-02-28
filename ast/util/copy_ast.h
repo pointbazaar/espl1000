@@ -1,7 +1,7 @@
 #ifndef COPYAST
 #define COPYAST
 
-#include "ast.h"
+#include "../ast.h"
 
 //this header file declares all subroutines
 //for copying the memory allocated for AST Nodes.

@@ -1,16 +1,16 @@
-#include "MethodTest.h"
-
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-
-#include "subr/Method.h"
-
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+
+#include "MethodTest.h"
+
+#include "subr/Method.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int method_test_can_parse_method_with_arguments(bool debug) {
 

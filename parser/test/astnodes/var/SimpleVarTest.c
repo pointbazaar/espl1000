@@ -4,16 +4,16 @@
 
 #include "SimpleVarTest.h"
 
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-
 #include "var/SimpleVar.h"
 #include "const/IntConst.h"
 #include "expr/Expr.h"
 #include "expr/Term.h"
 
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int simplevar_test_parse_simple_variable(bool debug) {
 

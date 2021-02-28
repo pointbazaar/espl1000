@@ -1,13 +1,16 @@
-#include "StructMemberTest.h"
-#include "../../../main/commandline/TokenList.h"
-#include "../../../main/commandline/TokenKeys.h"
-#include "../../../main/astnodes/struct/StructMember.h"
-#include "../../../../token/token.h"
-#include "../../../../ast/free_ast.h"
-
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
+
+#include "StructMemberTest.h"
+
+#include "struct/StructMember.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int structmember_test_can_parse_struct_member(bool debug) {
 

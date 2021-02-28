@@ -3,8 +3,8 @@
 #include <string.h>
 #include <assert.h>
 
-#include "../../../ast/ast.h"
-#include "../../../ast/free_ast.h"
+#include "ast/ast.h"
+#include "ast/util/free_ast.h"
 
 #include "util/ctx.h"
 #include "util/flags.h"
