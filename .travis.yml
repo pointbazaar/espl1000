@@ -43,6 +43,6 @@ addons:
       - valgrind
       - flex
 install: pwd
-script: make all_no_valgrind
+script: make all
 env:
 - export PATH=$PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser:$(pwd)/transpiler

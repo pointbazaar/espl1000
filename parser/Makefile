@@ -106,9 +106,7 @@ TOKEN_DEPS := ../token/TokenList.h \
 
 MAIN_DEPS := $(AST_DEPS) $(TOKEN_DEPS)
 
-all: all_no_valgrind valgrind
-
-all_no_valgrind: DIRS dragon-parser test
+all: DIRS dragon-parser test valgrind
 
 DIRS:
 	mkdir -p build/

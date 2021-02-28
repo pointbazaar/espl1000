@@ -7,14 +7,6 @@ all:
 	cd transpiler && make 
 	cd examples   && make
 
-all_no_valgrind:
-	cd token      && make
-	cd ast        && make
-	cd lexer      && make 
-	cd parser     && make all_no_valgrind
-	cd transpiler && make all_no_valgrind
-	cd examples   && make
-
 clean:
 	cd token      && make clean
 	cd ast        && make clean

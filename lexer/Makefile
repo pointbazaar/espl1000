@@ -13,9 +13,7 @@ SOURCES := smalldragon.flex Makefile $(C_SOURCES)
 
 INCLUDE := -I$(INCLUDE_DIR)
 
-all: all_no_valgrind valgrind
-
-all_no_valgrind: dragon-lexer test
+all: dragon-lexer test valgrind
 
 dragon-lexer: $(SOURCES) $(C_HEADERS)
 	flex smalldragon.flex

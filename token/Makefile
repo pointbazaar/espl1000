@@ -31,4 +31,4 @@ build/TokenReader.o: $(HEADERS) TokenReader.c
 	
 clean:
 	rm -f build/*.o
-	rm test
+	rm -f test
