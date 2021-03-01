@@ -188,19 +188,21 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 	da->type = readType(file, debug);
 
 	int option = deserialize_int(file);
-	
-	if(option == 0){
-		da->has_name = false;
-	}else if(option == 1){
-		da->has_name = true;
-		char* tmp = deserialize_string(file);
-		strcpy(da->name, tmp);
-		free(tmp);
-	}else{
+
+	da->has_name = option == 1;
+
+	if(option != 0 && option != 1){
+
 		printf("Error in readDeclArg\n");
 		free(da);
 		fclose(file);
 		exit(1);
+	}
+
+	if(da->has_name){
+		char* tmp = deserialize_string(file);
+		strcpy(da->name, tmp);
+		free(tmp);
 	}
 	
 	magic_num_require(MAGIC_END_DECLARG, file);
@@ -216,13 +218,18 @@ struct Expr* readExpr(FILE* file, bool debug){
 	struct Expr* expr = malloc(sizeof(struct Expr));
 
 	expr->term1 = readUnOpTerm(file, debug);
+	expr->op = NULL;
+	expr->term2 = NULL;
 	
 	const int option = deserialize_int(file);
+
+	if(option != 0 && option != 1){
+		printf("Error in readExpr!\n");
+		fclose(file);
+		exit(1);
+	}
 	
-	if(option == 1){
-		expr->op = NULL;
-		expr->term2 = NULL;
-	}else if (option == 0){
+	if (option == 0){
 		expr->op = readOp(file, debug);
 		expr->term2 = readUnOpTerm(file, debug);
 	}
@@ -504,8 +511,6 @@ struct IfStmt* readIfStmt(FILE* file, bool debug){
 	
 	struct IfStmt* v = malloc(sizeof(struct IfStmt));
 	
-	v->condition = NULL;
-	v->block = NULL;
 	v->elseBlock = NULL;
 
 	v->condition = readExpr(file, debug);
@@ -558,12 +563,19 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 	magic_num_require(MAGIC_ASSIGNSTMT, file);
 	
 	const int option = deserialize_int(file);
+
+	if(option != 0 && option != 1){
+		
+		printf("Error in readAssignStmt\n");
+		fclose(file);
+		exit(1);
+	}
 	
 	struct AssignStmt* v = malloc(sizeof(struct AssignStmt));
 
-	if(option == 0){
-		v->optType = NULL;
-	}else if(option ==1){
+	v->optType = NULL;
+
+	if(option == 1){
 		v->optType = readType(file, debug);
 	}
 
@@ -832,16 +844,15 @@ struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug){
 	const int kind = deserialize_int(file);
 	
 	struct BasicTypeWrapped* v = malloc(sizeof(struct BasicTypeWrapped));
+
+	v->simpleType = NULL;
+	v->subrType = NULL;
 	
 	switch(kind){
-		case 1: 
-			v->simpleType = readSimpleType(file, debug);
-			v->subrType = NULL;
-			break;
-		case 2: 
-			v->simpleType = NULL;
-			v->subrType = readSubrType(file, debug);
-			break;
+
+		case 1: v->simpleType = readSimpleType(file, debug); break;
+		case 2: v->subrType   = readSubrType(file, debug);   break;
+
 		default:
 			printf("Error in readBasicTypeWrapped\n");
 			free(v);
