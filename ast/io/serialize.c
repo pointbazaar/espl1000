@@ -31,9 +31,9 @@ void magic_num_require(uint32_t expected, FILE* file){
 void serialize_int(uint32_t x, FILE* file){
 	fwrite(&x, sizeof(uint32_t), 1, file);
 }
-int deserialize_int(FILE* file){
-	int res;
-	fread(&res, sizeof(int), 1, file);
+uint32_t deserialize_int(FILE* file){
+	uint32_t res;
+	fread(&res, sizeof(uint32_t), 1, file);
 	return res;
 }
 //-------------------------------------------

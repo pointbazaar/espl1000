@@ -2,7 +2,7 @@
 #define SERIALIZE_H
 
 
-int deserialize_int(FILE* file);
+uint32_t deserialize_int(FILE* file);
 void serialize_int(uint32_t x, FILE* file);
 
 
