@@ -3,11 +3,14 @@
 #include <assert.h>
 
 #include "RangeTest.h"
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-#include "../../main/parsing/Range.h"
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
+
+#include "Range.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 void range_test1(bool debug){
 	

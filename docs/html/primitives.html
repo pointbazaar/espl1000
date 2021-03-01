@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SmallDragon - Primitives</title>
+  <meta name="description" content="SmallDragon Primitive Data Types">
+  <meta name="author" content="SmallDragon">
+  
+  <link rel="icon" href="../img/favicon.ico">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<div class="container">
+	
+	<div class="row nav-bg">
+		<div class="col"><a href="../index.html">Home</a></div>
+		<div class="col"><a href="flags.html">Flags</a></div>
+		<div class="col"><a href="roadmap.html">Roadmap</a></div>
+		<div class="col"><a href="operators.html">Operators</a></div>
+		<div class="col"><a href="primitives.html">Primitives</a></div>
+		<div class="col"><a href="architecture.html">Architecture</a></div>
+	</div>
+
+	<h1 class="mb-3 mt-3">SmallDragon Primitive Data Types</h1>
+
+	<p>
+	The primitive Data Types available in SmallDragon are used similar to those available in C,
+	and are a subset of those.  
+	</p>
+	
+	<p>
+	Writing the types like 'int' / 'int32' / 'uint' / ... <br>
+	was chosen because, opposed to 'i32' / 'u8' like in Rust, it could be more familiar
+	to people knowing C / C++ / Java.<br> It omits the '_t' at the end of 
+	the fixed-size types in C, because these '_t' are IMO simply unneccessary characters
+	added to the type.
+	</p>
+
+	<div class="row">
+
+		<div class="col">
+			<h3> Signed Integer Types </h3>
+			<table class="table box">
+			<thead>
+				<tr>
+					<th>Type</th>
+					<th>Width</th>
+					<th>transpiles to</th>
+				</tr>
+			</thead>
+			<tr> <td>int8</td>  <td>1 byte</td>  <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int8_t</a></td>   </tr>
+			<tr> <td>int16</td> <td>2 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int16_t</a></td>  </tr>
+			<tr> <td>int32</td> <td>4 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int32_t</a></td>  </tr>
+			<tr> <td>int64</td> <td>8 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int64_t</a></td>  </tr>
+			<tr> <td>int</td> <td> </td> <td>int (for C compatibility reasons)</td>  </tr>
+			</table>
+		</div>
+		
+		<div class="col">
+			<h3> Unsigned Integer Types </h3>
+			<table class="table box">
+			<thead>
+				<tr>
+					<th>Type</th>
+					<th>Width</th>
+					<th>transpiles to</th>
+				</tr>
+			</thead>
+			<tr> <td>uint8</td>  <td>1 byte</td>  <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint8_t</a></td>   </tr>
+			<tr> <td>uint16</td> <td>2 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint16_t</a></td>  </tr>
+			<tr> <td>uint32</td> <td>4 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint32_t</a></td>  </tr>
+			<tr> <td>uint64</td> <td>8 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint64_t</a></td>  </tr>
+			<tr> <td>uint</td> <td> 4 bytes</td> <td> uint32 </td>  </tr>
+			</table>
+		</div>
+		
+	</div>
+
+	<div class="row mt-3">
+		
+		<div class="col">
+			<h3>float</h3>
+			<pre>
+float f = 3.14159;
+			</pre>
+		</div>
+
+		<div class="col">
+			<h3>char</h3>
+			<pre>
+char c = 'k';
+			</pre>
+		</div>
+
+		<div class="col">		
+			<h3>bool</h3>
+			<pre>
+bool x = true;
+			</pre>
+		</div>
+
+		<div class="col">		
+			<h3>Hex and Binary Literals</h3>
+			<pre>
+uint16 x;
+x = 0x0ffb
+x = 0b01000101
+			</pre>
+		</div>
+		
+	</div>
+
+</div>
+
+</body>
+</html>

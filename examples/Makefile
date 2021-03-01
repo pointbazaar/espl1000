@@ -3,7 +3,7 @@
 
 #the tests are in the same order as a 'tree examples/' would show them
 
-CALL := sd -clean
+CALL := sd -clean -Werror
 
 all: 
 	echo "Transpiling Example Programs"
@@ -20,14 +20,12 @@ all:
 	$(CALL) input/Input.dg 
 	$(CALL) local_variables/Locals.dg 
 	$(CALL) local_variables/Locals2.dg 
-	$(CALL) loops/EmptyLoop.dg 
 	$(CALL) loops/WhileLoop.dg 
 	$(CALL) loops/ForLoop.dg 
 	$(CALL) loops/Loop.dg 
 	$(CALL) mathematics/Faculty.dg 
 	$(CALL) mathematics/Fibonacci.dg 
 	$(CALL) methodCalls/MethodCall.dg 
-	$(CALL) other/Simple.dg 
 	$(CALL) other/Everything.dg 
 	$(CALL) other/Harshad.dg 
 	$(CALL) structs/MyStructs.dg 
@@ -39,3 +37,9 @@ all:
 # - functional/Twice.dg
 # - generics/genericstruct.dg
 # - typeinference/LocalVarTypeInference.dg
+
+clean:
+	rm -f */*.tokens
+	rm -f */*.ast
+	rm -f */*.c
+	rm -f */*.out

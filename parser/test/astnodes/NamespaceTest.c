@@ -1,14 +1,17 @@
-#include "NamespaceTest.h"
-#include "../../main/commandline/TokenList.h"
-#include "../../main/commandline/TokenKeys.h"
-#include "../../main/parsing/Namespace.h"
-#include "../../main/parsing/StructDecl.h"
-#include "../../../token/token.h"
-#include "../../../ast/free_ast.h"
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+
+#include "NamespaceTest.h"
+
+#include "Namespace.h"
+#include "struct/StructDecl.h"
+
+#include "token/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token.h"
+
+#include "ast/util/free_ast.h"
 
 int namespace_test_can_parse_namespace_with_1_empty_struct(bool debug) {
 
@@ -19,7 +22,7 @@ int namespace_test_can_parse_namespace_with_1_empty_struct(bool debug) {
 	struct TokenList* l = makeTokenList();
 
 	list_add(l, makeToken(STRUCT));
-	list_add(l, makeToken2(TYPEIDENTIFIER,"MyStruct"));
+	list_add(l, makeToken2(TYPEID,"MyStruct"));
 	list_add(l, makeToken(LCURLY));
 	list_add(l, makeToken(RCURLY));
 
@@ -47,7 +50,7 @@ int namespace_test_can_parse_namespace_with_1_empty_method(bool debug) {
 	list_add(l, makeToken(LPARENS));
 	list_add(l, makeToken(RPARENS));
 	list_add(l, makeToken(ARROW));
-	list_add(l, makeToken2(TYPEIDENTIFIER,"PInt"));
+	list_add(l, makeToken2(TYPEID,"uint"));
 	list_add(l, makeToken(LCURLY));
 	list_add(l, makeToken(RCURLY));
 

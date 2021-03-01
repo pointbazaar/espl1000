@@ -1,7 +1,7 @@
-fn main () ~> PInt{
+fn main () ~> uint{
 	return fibonacci(140);
 }
-fn fibonacci (PInt n) -> PInt{
+fn fibonacci (uint n) -> uint{
 	
 	if(n<2){
 		return 1;

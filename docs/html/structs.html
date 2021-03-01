@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>SmallDragon - Composite Data Types</title>
+  <meta name="description" content="SmallDragon Composite Data Types">
+  <meta name="author" content="SmallDragon">
+
+  <link rel="icon" href="../img/favicon.ico">
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<div class="container">
+	
+	<div class="row nav-bg">
+		<div class="col"><a href="../index.html">Home</a></div>
+		<div class="col"><a href="flags.html">Flags</a></div>
+		<div class="col"><a href="roadmap.html">Roadmap</a></div>
+		<div class="col"><a href="operators.html">Operators</a></div>
+		<div class="col"><a href="primitives.html">Primitives</a></div>
+		<div class="col"><a href="architecture.html">Architecture</a></div>
+	</div>
+	
+	<h1>SmallDragon Composite Data Types</h1>
+
+	<p>
+	SmallDragon uses 'struct' to define a Composite Data Type.<br>
+	SmallDragon structs like C structs semantically, but different
+	syntactically. SmallDragon uses ';' at the end of each struct member 
+	declaration, same as in C, because this notation is both simple on it's own
+	and also familiar to those who know C.
+	</p>
+
+	<h3> Example </h3>
+
+	<pre>
+	<code>
+	struct MyStruct {
+		int a;
+		MyStruct b;
+	}
+	</code>
+	</pre>
+
+	<h3> Automatically Generated Subroutines </h3>
+
+	<p>
+	For each declared struct X, sd generates:
+	</p>
+	<ul>
+		<li> newX()      - allocates memory for an instance of struct X</li>
+		<li> makeX(...)  - like newX, but also accepts all members as arguments</li>
+		<li> copyX(X x)  - returns a shallow copy </li>
+		<li> delX(X x)   - frees (shallow) the instance x </li>
+		<li> printX(X x) - prints the member values </li>
+	</ul>
+
+	<p>
+	These subroutines are for convenience, 
+	so you don't have to write them.
+	</p>
+
+</div>
+
+</body>
+</html>

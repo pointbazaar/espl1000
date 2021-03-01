@@ -1,28 +1,37 @@
 #it had -O0 before, but i dont think we need it
 #unless debugging becomes hard when omitting it.
-FLAGS := -march=native -g --std=c11 -pedantic -Wall -Werror -Dctime="\"$$(date)\"" -Dgccversion="\"$$(gcc -dumpfullversion)\""
+
+INCLUDE := -Imain -I..
+
+FLAGS := -march=native -g --std=c11 -Wall $(INCLUDE)
 
 CALL := gcc $(FLAGS)
 
-OBJS := build/transpiler.o \
-	build/ast_reader.o \
+CALLTEST := $(CALL) -Itest
+
+AST_OBJS := ../ast/build/ast_reader.o \
+		../ast/build/free_ast.o \
+		../ast/build/serialize.o 
+
+TRANSPILER_OBJS := build/transpiler.o \
 	build/c_code_gen.o \
 	build/structs_code_gen.o \
 	build/code_gen_util.o \
 	build/test.o \
-	build/teststatuscode.o \
+	build/test_statuscode.o \
 	build/test_other.o \
 	build/test_op.o \
-	build/test_other.o \
 	build/test_assign.o \
 	build/flags.o \
-	build/localvarsymtable.o \
-	build/subrsymtable.o \
-	build/structsymtable.o \
+	build/localvar_symtable.o \
+	build/subr_symtable.o \
+	build/struct_symtable.o \
 	build/typeinference.o \
 	build/help.o \
-	build/free_ast.o \
-	build/gen_c_types.o
+	build/gen_c_types.o \
+	build/type_str.o
+
+OBJS := $(AST_OBJS) $(TRANSPILER_OBJS);
 
 all: all_no_valgrind valgrind
 
@@ -40,13 +49,13 @@ valgrind: sd
 	valgrind $(VALGRIND_OPS) ./sd -clean ../examples/other/Everything.dg
 
 smalldragon: dir $(OBJS)
-	$(CALL) -o sd build/*.o
+	$(CALL) -o sd $(OBJS)
 	
 dir:
 	mkdir -p build
 
-build/flags.o: main/flags.c
-	$(CALL) -c main/flags.c -o $@
+build/flags.o: main/util/flags.c
+	$(CALL) -c main/util/flags.c -o $@
 
 build/ast_reader.o: ../ast/ast_reader.c
 	$(CALL) -c ../ast/ast_reader.c -o $@
@@ -54,62 +63,69 @@ build/ast_reader.o: ../ast/ast_reader.c
 build/free_ast.o: ../ast/free_ast.c ../ast/free_ast.h
 	$(CALL) -c ../ast/free_ast.c -o $@
 
+build/serialize.o: ../ast/serialize.c ../ast/serialize.h
+	$(CALL) -c ../ast/serialize.c -o $@
+
 build/util.o: ../util/util.c
 	$(CALL) -c ../util/util.c -o $@
 
-build/transpiler.o: main/transpiler.c main/transpiler.h main/code_gen/c_code_gen.h main/flags.h test/test.h main/help.h 
+build/transpiler.o: main/transpiler.c main/transpiler.h main/code_gen/c_code_gen.h main/util/flags.h test/test.h main/util/help.h 
 	$(CALL) -c main/transpiler.c -o $@
 
-build/c_code_gen.o: main/code_gen/c_code_gen.c main/ctx.h \
-		main/code_gen/code_gen_util.h main/flags.h main/tables/localvarsymtable.h \
+build/c_code_gen.o: main/code_gen/c_code_gen.c main/util/ctx.h \
+		main/code_gen/code_gen_util.h main/util/flags.h main/tables/localvar_symtable.h \
 		main/code_gen/structs_code_gen.h
 	$(CALL) -c main/code_gen/c_code_gen.c -o $@
 
-build/code_gen_util.o: main/code_gen/code_gen_util.c main/code_gen/code_gen_util.h main/ctx.h
+build/code_gen_util.o: main/code_gen/code_gen_util.c main/code_gen/code_gen_util.h main/util/ctx.h
 	$(CALL) -c main/code_gen/code_gen_util.c -o $@
 
-build/structs_code_gen.o: main/code_gen/structs_code_gen.c main/code_gen/structs_code_gen.h main/ctx.h main/flags.h
+build/structs_code_gen.o: main/code_gen/structs_code_gen.c main/code_gen/structs_code_gen.h main/util/ctx.h main/util/flags.h
 	$(CALL) -c main/code_gen/structs_code_gen.c -o $@
 
 build/test.o: test/test.c test/test.h \
-		main/transpiler.h main/flags.h \
-		test/teststatuscode.h \
-		test/suite/test_op.h \
-		test/suite/test_other.h \
-		test/suite/test_assign.h \
-		test/suite/test_typeinference.h
-	$(CALL) -c test/test.c -o $@
+		main/transpiler.h main/util/flags.h \
+		test/util/test_statuscode.h \
+		test/code_gen/test_op.h \
+		test/code_gen/test_other.h \
+		test/code_gen/test_assign.h \
+		test/typeinference/test_typeinference.h
+	$(CALLTEST) -c test/test.c -o $@
 
-build/teststatuscode.o: test/teststatuscode.h test/teststatuscode.c main/flags.h main/transpiler.h
-	$(CALL) -c test/teststatuscode.c -o $@
+build/test_statuscode.o: test/util/test_statuscode.h test/util/test_statuscode.c main/util/flags.h main/transpiler.h
+	$(CALLTEST) -c test/util/test_statuscode.c -o $@
 	
-build/test_assign.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_assign.h test/suite/test_assign.c
-	$(CALL) -c test/suite/test_assign.c -o $@
+build/test_assign.o: test/util/test_statuscode.h test/util/test_statuscode.c test/code_gen/test_assign.h test/code_gen/test_assign.c
+	$(CALLTEST) -c test/code_gen/test_assign.c -o $@
 
-build/test_other.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_other.h test/suite/test_other.c
-	$(CALL) -c test/suite/test_other.c -o $@
+build/test_other.o: test/util/test_statuscode.h test/util/test_statuscode.c test/code_gen/test_other.h test/code_gen/test_other.c
+	$(CALLTEST) -c test/code_gen/test_other.c -o $@
 	
-build/test_op.o: test/teststatuscode.h test/teststatuscode.c test/suite/test_op.h test/suite/test_op.c
-	$(CALL) -c test/suite/test_op.c -o $@
+build/test_op.o: test/util/test_statuscode.h test/util/test_statuscode.c test/code_gen/test_op.h test/code_gen/test_op.c
+	$(CALLTEST) -c test/code_gen/test_op.c -o $@
 
-build/typeinference.o: main/typeinference.c main/typeinference.h \
-			main/tables/symtable.h main/tables/subrsymtable.h \
-			main/tables/localvarsymtable.h main/tables/structsymtable.h
-	$(CALL) -c main/typeinference.c -o $@
+SYMTABLES_H := main/tables/symtable.h main/tables/subr_symtable.h \
+			main/tables/localvar_symtable.h main/tables/struct_symtable.h
 
-build/help.o: main/help.c main/help.h
-	$(CALL) -c main/help.c -o $@
+build/typeinference.o: $(SYMTABLES_H) main/typeinference/typeinference.c main/typeinference/typeinference.h 
+	$(CALL) -c main/typeinference/typeinference.c -o $@
+	
+build/type_str.o: $(SYMTABLES_H) main/typeinference/type_str.c main/typeinference/type_str.h
+	$(CALL) -c main/typeinference/type_str.c -o $@
+
+build/help.o: main/util/help.c main/util/help.h
+	$(CALL) -c main/util/help.c -o $@
 
 build/gen_c_types.o: main/code_gen/gen_c_types.h main/code_gen/gen_c_types.c 
 	$(CALL) -c main/code_gen/gen_c_types.c -o $@
 
 # ----------- the symbol tables --------------
 
-build/subrsymtable.o: main/tables/subrsymtable.c main/tables/subrsymtable.h
-	$(CALL) -c main/tables/subrsymtable.c -o $@
+build/subr_symtable.o: main/tables/subr_symtable.c main/tables/subr_symtable.h
+	$(CALL) -c main/tables/subr_symtable.c -o $@
 
-build/localvarsymtable.o: main/tables/localvarsymtable.c main/tables/localvarsymtable.h
-	$(CALL) -c main/tables/localvarsymtable.c -o $@
+build/localvar_symtable.o: main/tables/localvar_symtable.c main/tables/localvar_symtable.h
+	$(CALL) -c main/tables/localvar_symtable.c -o $@
 
-build/structsymtable.o: main/tables/structsymtable.c main/tables/structsymtable.h
-	$(CALL) -c main/tables/structsymtable.c -o $@
+build/struct_symtable.o: main/tables/struct_symtable.c main/tables/struct_symtable.h
+	$(CALL) -c main/tables/struct_symtable.c -o $@

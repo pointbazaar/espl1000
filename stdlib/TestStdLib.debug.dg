@@ -1,7 +1,6 @@
 
 
-fn main ()~>PInt {
-
+fn main () ~> uint {
 
 	println("substr('hello',1,3)");
         println(substr("hello",1,3));

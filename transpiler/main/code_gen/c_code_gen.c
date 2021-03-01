@@ -3,20 +3,22 @@
 #include <string.h>
 #include <assert.h>
 
-#include "../../../ast/ast.h"
-#include "../../../ast/free_ast.h"
-#include "../ctx.h"
-#include "../flags.h"
-#include "../typeinference.h"
+#include "ast/ast.h"
+#include "ast/util/free_ast.h"
+
+#include "util/ctx.h"
+#include "util/flags.h"
+
+#include "typeinference/typeinference.h"
 #include "c_code_gen.h"
 #include "code_gen_util.h"
 #include "gen_c_types.h"
 #include "structs_code_gen.h"
 
-#include "../tables/localvarsymtable.h"
-#include "../tables/subrsymtable.h"
-#include "../tables/structsymtable.h"
-#include "../tables/symtable.h"
+#include "tables/localvar_symtable.h"
+#include "tables/subr_symtable.h"
+#include "tables/struct_symtable.h"
+#include "tables/symtable.h"
 
 // -------------------------------
 
@@ -476,7 +478,7 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 		transpileType(as->optType, ctx);
 		fprintf(ctx->file, " ");
 		
-	}else if(as->optType == NULL && as->var->count_memberAccessList == 0){
+	}else if(as->optType == NULL && as->var->memberAccess == NULL){
 		//find type via local variable symbol table
 		assert(ctx->tables->lvst != NULL);
 		
@@ -617,9 +619,9 @@ void transpileVariable(struct Variable* var, struct Ctx* ctx){
 	
 	transpileSimpleVar(var->simpleVar, ctx);
 	
-	for(int i=0; i < var->count_memberAccessList; i++){
+	if(var->memberAccess != NULL){
 		fprintf(ctx->file, "->");
-		transpileVariable(var->memberAccessList[i], ctx);
+		transpileVariable(var->memberAccess, ctx);
 	}
 }
 
@@ -638,26 +640,18 @@ void transpileTerm(struct Term* t, struct Ctx* ctx){
 	if(ctx->flags->debug){ printf("transpileTerm(...)\n"); }
 	
 	switch(t->kind){
-		case 1:
-			transpileBoolConst(t->ptr.m1, ctx); break;
-		case 2:
-			transpileIntConst(t->ptr.m2, ctx); break;
-		case 3:
-			transpileCharConst(t->ptr.m3, ctx); break;
-		case 4:
-			transpileMethodCall(t->ptr.m4, ctx); break;
-		case 5:
-			transpileExpr(t->ptr.m5, ctx); break;
-		case 6:
-			transpileVariable(t->ptr.m6, ctx); break;
-		case 7:
-			transpileFloatConst(t->ptr.m7, ctx); break;
-		case 8:
-			transpileStringConst(t->ptr.m8, ctx); break;
-		case 9:
-			transpileHexConst(t->ptr.m9, ctx); break;
-		case 10:
-			transpileBinConst(t->ptr.m10, ctx); break;
+		
+		case 1: transpileBoolConst(t->ptr.m1, ctx); break;
+		case 2: transpileIntConst(t->ptr.m2, ctx); break;
+		case 3: transpileCharConst(t->ptr.m3, ctx); break;
+		case 4: transpileMethodCall(t->ptr.m4, ctx); break;
+		case 5: transpileExpr(t->ptr.m5, ctx); break;
+		case 6: transpileVariable(t->ptr.m6, ctx); break;
+		case 7: transpileFloatConst(t->ptr.m7, ctx); break;
+		case 8: transpileStringConst(t->ptr.m8, ctx); break;
+		case 9: transpileHexConst(t->ptr.m9, ctx); break;
+		case 10:transpileBinConst(t->ptr.m10, ctx); break;
+		
 		default:
 			printf("Error in transpileTerm\n");
 			exit(1);
@@ -741,6 +735,7 @@ void transpileBinConst(struct BinConst* hc, struct Ctx* ctx){
 }
 
 void transpileCharConst(struct CharConst* cc, struct Ctx* ctx){
+	if(ctx->flags->debug){ printf("transpileCharConst(...)\n"); }
 	fprintf(ctx->file, "'%c'", cc->value);
 }
 

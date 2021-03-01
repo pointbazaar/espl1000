@@ -1,0 +1,14 @@
+fn main () ~> int {
+
+	c = 4;
+	
+	x = match c {
+		
+		c > 30	-> 5;
+		_ 	-> 8;
+	};
+	
+	x = match c { c > 30 -> 5; _ -> 8; }
+
+	return 0;
+}

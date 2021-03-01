@@ -2,11 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../ctx.h"
-#include "../flags.h"
-#include "../../../ast/free_ast.h"
-#include "../typeinference.h"
-#include "../tables/subrsymtable.h"
+#include "util/ctx.h"
+#include "util/flags.h"
+
+#include "ast/util/free_ast.h"
+
+#include "typeinference/typeinference.h"
+#include "typeinference/type_str.h"
+#include "tables/subr_symtable.h"
+
 #include "gen_c_types.h"
 #include "structs_code_gen.h"
 
@@ -75,7 +79,7 @@ void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx){
 	gen_struct_subr_make(sd, ctx);
 	gen_struct_subr_print(sd, ctx);
 	
-	struct Type* retTypeStruct = typeFromStr(ctx->tables, sd->type->typeName);
+	struct Type* retTypeStruct = typeFromStr(ctx->tables, sd->type->typeName, false, false);
 	
 	//add subroutines to sst
 	
@@ -100,13 +104,13 @@ void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx){
 	
 	line = malloc(sizeof(struct SSTLine));
 	line->isLibC = false;
-	line->returnType = typeFromStr(ctx->tables, "Int");
+	line->returnType = typeFromStr(ctx->tables, "int", true, true);
 	sprintf(line->name, "print%s", sd->type->typeName);
 	sst_add(ctx->tables->sst, line);
 	
 	line = malloc(sizeof(struct SSTLine));
 	line->isLibC = false;
-	line->returnType = typeFromStr(ctx->tables, "Int");
+	line->returnType = typeFromStr(ctx->tables, "int", true, true);
 	sprintf(line->name, "free%s", sd->type->typeName);
 	sst_add(ctx->tables->sst, line);
 }

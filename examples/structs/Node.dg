@@ -1,11 +1,11 @@
 
 struct Node {
-	Int value;
+	int value;
 	Node left;
 	Node right;
 }
 
-fn main () ~> Int {
+fn main () ~> int {
 
 	Node root = newNode();
 	Node left = newNode();

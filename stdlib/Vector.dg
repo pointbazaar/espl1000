@@ -1,10 +1,10 @@
 
 struct V2{
-	Int a,
-	Int b
+	int a,
+	int b
 }
 
-fn v2 (Int a,Int b)->V2 {
+fn v2 (int a, int b)->V2 {
 	V2 r = new(2);
 
 	r.a=a;

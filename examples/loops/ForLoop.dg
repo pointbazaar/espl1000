@@ -1,10 +1,10 @@
-fn main () ~> Int {
+fn main () ~> int {
 	
-	Int n = 4;
+	int n = 4;
 	
 	for row in 0 .. n {
 		for col in 0 .. n {
-			Int x = rand()%10;
+			int x = rand()%10;
 			printf("%d_", x);
 		}
 		printf("\n");

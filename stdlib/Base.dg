@@ -1,6 +1,6 @@
 
 
-fn print ( [ Char ] str ) ~> PInt {
+fn print ( [ char ] str ) ~> uint {
 	i = 0 ;
 	while( i < len(str) ){
 		putchar(str[i]);
@@ -9,14 +9,14 @@ fn print ( [ Char ] str ) ~> PInt {
 	return 0;
 }
 
-fn println ( [ Char ] str)~>PInt {
+fn println ( [ char ] str) ~> uint {
 
 	print(str);
 	putchar('\n');
 	return 0;
 }	
 
-fn printi (Int x)~>PInt {
+fn printi (int x) ~> uint {
 
 	if( x < 0 ){
 	
@@ -39,7 +39,7 @@ fn printi (Int x)~>PInt {
 }
 
 /*
-fn printfl (Float f) ~> PInt {
+fn printfl (float f) ~> uint {
 	//to print a float (without newline)
 	if(f < 0.0 ){
 		putchar('-');
@@ -50,7 +50,7 @@ fn printfl (Float f) ~> PInt {
 	return printfl_positive(f);
 }
 
-fn fl_floordigit (Float f)~> PInt{
+fn fl_floordigit (float f)~> uint {
 	//floors a single float digit which must be positive
 	if(f < 1.0){
 		return 0;
@@ -59,12 +59,12 @@ fn fl_floordigit (Float f)~> PInt{
 	return 1 + fl_floordigit(f - 1.0);
 }
 
-fn fl_floor(Float f) ~> PInt {
+fn fl_floor(float f) ~> uint {
 	//floors a positive float
 	if(f < 10.0){
 		return fl_floordigit(f);
 	}
-	Int accumulator = 0;
+	int accumulator = 0;
 	
 	lastdigit = f % 10.0;
 	accumulator = fl_floordigit(lastdigit);
@@ -76,7 +76,7 @@ fn fl_floor(Float f) ~> PInt {
 	return accumulator;
 }
 
-fn printfl_positive (Float f) ~> PInt {
+fn printfl_positive (float f) ~> uint {
 
 	//print the integer part
 	printi(fn_floor(f));
@@ -84,9 +84,9 @@ fn printfl_positive (Float f) ~> PInt {
 	
 	// print the decimals, with 2 decimal places
 
-	Float decimal = f % 1.0;
+	float decimal = f % 1.0;
 	
-	Int decimals = fl_floor( (decimal * 100.0)  );
+	int decimals = fl_floor( (decimal * 100.0)  );
 
 	printi(decimals);
 	
@@ -95,7 +95,7 @@ fn printfl_positive (Float f) ~> PInt {
 }
 
 */
-fn delay (PInt seconds)~>PInt {
+fn delay (uint seconds) ~> uint {
 
 	start=time();
 	while(
@@ -106,7 +106,7 @@ fn delay (PInt seconds)~>PInt {
 	return 0;
 }
 
-fn assert (Bool condition)~>Bool {
+fn assert (bool condition) ~> bool {
 	if(condition){
 		println("PASS");
 	}else{

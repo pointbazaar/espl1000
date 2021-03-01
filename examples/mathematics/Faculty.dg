@@ -1,11 +1,11 @@
 
-fn main ()~>PInt {
+fn main ()~> uint {
 	
 	printf("%d\n", faculty(3));
 	return 0;
 }
 
-fn faculty (PInt n) -> PInt{
+fn faculty (uint n) -> uint {
 
 	if n != 1 {
 		return (n*faculty(n-1));

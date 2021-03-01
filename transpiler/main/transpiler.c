@@ -1,3 +1,5 @@
+#define _XOPEN_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,19 +7,24 @@
 #include <stdbool.h>
 #include <malloc.h>
 
-#include "../../ast/ast_reader.h"
-#include "../../ast/ast.h"
-#include "../../ast/free_ast.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/sysmacros.h>
+
+#include "ast/io/ast_reader.h"
+#include "ast/ast.h"
+#include "ast/util/free_ast.h"
+
 #include "../test/test.h"
 
 #include "code_gen/c_code_gen.h"
-#include "flags.h"
-#include "help.h"
+#include "util/flags.h"
+#include "util/help.h"
 #include "transpiler.h"
 
 // ----------------
 bool check_dg_extension(char* filename);
-void invoke_lexer_parser(char* filename, struct Flags* flags);
+bool invoke_lexer_parser(char* filename, struct Flags* flags);
 // ----------------
 
 int main(int argc, char* argv[]){
@@ -44,8 +51,6 @@ int main(int argc, char* argv[]){
 	
 	if(flags->version){
 		printf("smalldragon v0.0.5\n");
-		printf("built on %s\n", ctime);
-		printf("with gcc %s\n", gccversion);
 		freeFlags(flags);
 		return 0;
 	}
@@ -66,7 +71,7 @@ int main(int argc, char* argv[]){
 	
 	freeFlags(flags);
 
-	return (success == true)?0:1;
+	return (success)?0:1;
 }
 
 bool check_dg_extension(char* filename){
@@ -78,23 +83,25 @@ bool check_dg_extension(char* filename){
 	return true;
 }
 
-void invoke_lexer_parser(char* filename, struct Flags* flags){
+bool invoke_lexer_parser(char* filename, struct Flags* flags){
 	
 	char cmd1[100];
 	
 	strcpy(cmd1, "dragon-lexer ");
 	
-	if(flags->debug){
-		strcat(cmd1, "-debug ");
-	}
-	if(flags->clean){
-		strcat(cmd1, "-clean ");
-	}
+	if(flags->debug){ strcat(cmd1, "-debug "); }
+
+	if(flags->clean){ strcat(cmd1, "-clean "); }
+
 	strcat(cmd1, filename);
-	
-	
+
 	printf("%s\n", cmd1);
-	system(cmd1);
+
+	int status = system(cmd1);
+	if(WEXITSTATUS(status) != 0){
+		printf("Error: lexer exited with nonzero exit code\n");
+		return false;
+	}
 	
 	char fnamecpy[100];
 	strcpy(fnamecpy, filename);
@@ -109,10 +116,16 @@ void invoke_lexer_parser(char* filename, struct Flags* flags){
 		(flags->debug)?"-debug":"",
 		dir_name,
 		base_name
-	);
-	
+	);	
 	printf("%s\n", cmd2);
-	system(cmd2);
+
+	status = system(cmd2);
+	if(WEXITSTATUS(status) != 0){
+		printf("Error: parser exited with nonzero exit code\n");
+		return false;
+	}
+
+	return true;
 }
 
 bool transpileAndCompile(
@@ -127,9 +140,29 @@ bool transpileAndCompile(
 		freeFlags(flags);
 		exit(1);
 	}
+
+	//check if the file actually exists
+	struct stat mystat;
+	if(stat(filename, &mystat) == -1){
+		perror("Error: ");
+		freeFlags(flags);
+		exit(1);
+	}
+	mode_t mode = mystat.st_mode;
+	if(!S_ISREG(mode)){
+		//not a regular file
+		printf("Error: %s is not a regular file.\n", filename);
+		freeFlags(flags);
+		exit(1);
+	}
 	
 	//invoke lexer, parser to generate .dg.ast file
-	invoke_lexer_parser(filename, flags);
+	bool success = invoke_lexer_parser(filename, flags);
+	if(!success){
+		printf("Error: could not lex/parse %s.\n", filename);
+		freeFlags(flags);
+		exit(1);
+	}
 
 	char ast_filename[100];
 	char fnamecpy[100];
@@ -158,9 +191,8 @@ bool transpileAndCompile(
 	fname_out[strlen(fname_out)-3] = '\0';
 	strcat(fname_out, ".c");
 
-	//transpile to C code 
-	//and write to file 
-	bool success = transpileAndWrite(fname_out, ast, flags);
+	//transpile to C code and write to file 
+	success = transpileAndWrite(fname_out, ast, flags);
 	
 	freeAST_Whole_Program(ast);
 	

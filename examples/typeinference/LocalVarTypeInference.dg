@@ -1,5 +1,5 @@
 
-fn main () ~> Int {
+fn main () ~> int {
 
 
 	a12 = 3;
@@ -10,6 +10,6 @@ fn main () ~> Int {
 	printf("%d\n", b);
 }
 
-fn subr() -> Int {
+fn subr() -> int {
 	return 3;
 }

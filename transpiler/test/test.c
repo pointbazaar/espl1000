@@ -3,14 +3,16 @@
 #include <inttypes.h>
 #include <stdlib.h>
 
-#include "../main/transpiler.h"
-#include "../main/flags.h"
+#include "transpiler.h"
+
+#include "util/flags.h"
 
 #include "test.h"
-#include "teststatuscode.h"
-#include "suite/test_op.h"
-#include "suite/test_other.h"
-#include "suite/test_assign.h"
+#include "util/test_statuscode.h"
+
+#include "code_gen/test_op.h"
+#include "code_gen/test_other.h"
+#include "code_gen/test_assign.h"
 
 int transpiler_test_all(bool debug){
 	
@@ -76,6 +78,11 @@ int transpiler_test_all(bool debug){
 	}
 	
 	printf("\nPassed %d of %d Tests\n",testsPassed,testsRun);
+	
+	if(testsPassed == testsRun){
+		
+			printf("[Transpiler Module] PASSED ALL TESTS\n");
+	}
 	
 	if(testsPassed != testsRun){ return 1; }
 	

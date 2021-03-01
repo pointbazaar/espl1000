@@ -19,9 +19,9 @@
 [x] Local Variable Type Inference
 */
 
-fn main () ~> Int {
+fn main () ~> uint {
 
-	[Int] arr = malloc(4*4);
+	[int] arr = malloc(4*4);
 	arr[0] = 1;
 
 	for i in 0 .. 1 {
@@ -63,6 +63,6 @@ fn main () ~> Int {
 	return subr();
 }
 
-fn subr () -> Int {
+fn subr () -> int {
 	return 0;
 }

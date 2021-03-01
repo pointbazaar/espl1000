@@ -4,8 +4,8 @@ struct Point< ?T0 > {
 	?T0 x2;
 }
 
-fn main () ~> Int {
-	Point<Int> p = makePoint();
+fn main () ~> int {
+	Point<int> p = makePoint();
 
 	p.x1 = 3;
 

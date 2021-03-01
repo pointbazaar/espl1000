@@ -6,17 +6,21 @@
 #include <assert.h>
 #include <malloc.h>
 
-#include "TokenReader.h"
-#include "../parsing/Namespace.h"
-#include "../parsing/Method.h"
-#include "../parsing/DeclArg.h"
-#include "../parsing/statements/Stmt.h"
-#include "../parsing/typenodes/Type.h"
-#include "../../../ast/ASTWriter.h"
-#include "../../test/ParserTest.h"
 
-#include "../../../ast/free_ast.h"
-#include "../../../token/token.h"
+#include "Namespace.h"
+#include "subr/Method.h"
+#include "subr/DeclArg.h"
+#include "statements/Stmt.h"
+#include "types/Type.h"
+
+#include "../../test/commandline/ParserTest.h"
+
+#include "ast/io/ast_writer.h"
+
+#include "ast/util/free_ast.h"
+
+#include "token/TokenReader.h"
+#include "token/token.h"
 
 const char* FLAG_DEBUG = "-debug";
 const char* FLAG_HELP = "-help";

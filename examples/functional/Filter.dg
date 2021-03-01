@@ -1,13 +1,13 @@
-fn main ()~>PInt {
+fn main ()~> uint {
 	len = 4;
-	[PInt] arr = malloc(4*len);
+	[uint] arr = malloc(4*len);
 
 	arr[0] = 1;
 	arr[1] = 2;
 	arr[2] = 2;
 	arr[3] = 1;
 
-	[PInt] arr2 = filter(arr, len, myfilter);	
+	[uint] arr2 = filter(arr, len, myfilter);	
 	
 	for i in 0 .. len-1 {
 		printf("%d\n", arr2[i]);
@@ -15,13 +15,13 @@ fn main ()~>PInt {
 
 	return 0;
 }
-fn myfilter (PInt item)->Bool {
+fn myfilter (uint item)-> bool {
 	return (item==2);	
 }
-fn filter ([PInt] arr, Int arrlen,  ( (PInt)->Bool ) myfilterr)->[PInt] {
-	[PInt] arr2 = malloc(4*arrlen);
+fn filter ([uint] arr, int arrlen,  ( (uint)->bool ) myfilterr)->[uint] {
+	[uint] arr2 = malloc(4*arrlen);
 
-	PInt i=0;
+	i=0;
 	while(i < arrlen){
 		arr2[i] = 0;
 		if(myfilterr(arr[i])){

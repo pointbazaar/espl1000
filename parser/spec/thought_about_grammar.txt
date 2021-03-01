@@ -1,7 +1,7 @@
 //i want to split it into Void method and Value Method
 //and ... wait ... what if we eliminate Void from the language? that would
 //make so many things easier since every method and every function would return a value
-//and a programmer could simply make the method as Int and return 0;
+//and a programmer could simply make the method as int and return 0;
 //maybe that could be integrated into the Void method/function
 
 
@@ -39,7 +39,7 @@ There has to be a better way to express it.
 
 
 subr :: @{terminates, public}
-subr :: (PInt a,PInt b) -> PInt
+subr :: (uint a, uint b) -> uint
 subr :: {
         return a+b;
 }

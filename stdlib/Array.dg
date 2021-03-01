@@ -1,6 +1,6 @@
 
 
-fn arreq ([PInt] arr1,[PInt] arr2)->Bool {
+fn arreq ([uint] arr1,[uint] arr2) -> bool {
 	
 	if(len(arr1)!=len(arr2)){
 		return false;
@@ -15,7 +15,7 @@ fn arreq ([PInt] arr1,[PInt] arr2)->Bool {
 	return true;
 }
 
-fn printarr ([PInt] arr)->PInt {
+fn printarr ([uint] arr) -> uint {
 	
 	i=0;
 	putchar('[');

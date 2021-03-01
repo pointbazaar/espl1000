@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <stdio.h>
 
-#include "../ctx.h"
+#include "util/ctx.h"
+
 #include "gen_c_types.h"
 
 char* translateIntType(char* type);
@@ -11,36 +12,42 @@ char* translateIntType(char* type);
 
 char* simpleType2CType(struct SimpleType* simpleType){
 	
-	//type name
-	char* t = simpleType->typeName;
+	char* tname = simpleType->typeName;
+	
 	char* res = malloc(sizeof(char)*DEFAULT_STR_SIZE*3);
 	strcpy(res, "");
-
-	if(isIntType(t)){
-		
-		strcpy(res, translateIntType(t));
-		
-	}else if(
-		   strcmp(t, "PFloat") == 0
-		|| strcmp(t, "NFloat") == 0
-		|| strcmp(t, "Float") == 0
-	){
-		strcpy(res, "float");
-		
-	}else if( strcmp(t, "Bool") == 0 ){
-		strcpy(res, "bool");
-		
-	}else if( strcmp(t, "String") == 0){
-		strcpy(res, "char*");
-		
-	}else if( strcmp(t, "Char") == 0){
-		strcpy(res, "char");
+	
+	if(simpleType->isPrimitive){
+		if(simpleType->isIntType){
+				
+			strcpy(res, translateIntType(tname));
+			
+		}else if(strcmp(tname, "float") == 0){
+			strcpy(res, "float");
+			
+		}else if( strcmp(tname, "bool") == 0 ){
+			strcpy(res, "bool");
+			
+		}else if( strcmp(tname, "char") == 0){
+			strcpy(res, "char");	
+		}else{
+			
+			printf("Error in gen_c_types.c (simpleType2CType):\n");
+			printf("primitive type %s could not be transpiled\n", tname);
+			exit(1);
+		}
 		
 	}else{
-		//if we do not recognize it, treat it as struct pointer
-		sprintf(res, "struct %s*", t);
+		
+		if( strcmp(tname, "String") == 0){
+			strcpy(res, "char*");
+			
+		}else{
+		
+			sprintf(res, "struct %s*", tname);
+		}
 	}
-	
+
 	return res;
 }
 
@@ -123,23 +130,21 @@ char* basicTypeWrapped2CType(struct BasicTypeWrapped* btw, struct Ctx* ctx){
 	}
 }
 //-------------------------------
-bool isIntType(char* t){
-	char* types[] = 
-	{
-		"PInt","NInt","Int","NZInt",
-		"Int8","Int16","Int32","Int64",
-		"UInt8","UInt16","UInt32","UInt64",
-	};
+bool isIntType(struct Type* t){
 	
-	for(int i=0;i < 12; i++){
-		if(strcmp(t, types[i]) == 0){ return true; }
-	}
-	return false;
+	if(t->m1 == NULL){ return false; }
+	
+	struct BasicTypeWrapped* m1 = t->m1;
+	if(m1->simpleType == NULL){ return false; }
+	
+	struct SimpleType* s = m1->simpleType;
+	
+	return s->isIntType;
 }
 char* translateIntType(char* type){
 	char* types_def_width[] = 
-	{"Int8","Int16","Int32","Int64",
-	"UInt8","UInt16","UInt32","UInt64"};
+	{"int8","int16","int32","int64",
+	"uint8","uint16","uint32","uint64"};
 	
 	char* map[] = 
 	{"int8_t","int16_t","int32_t","int64_t",
@@ -155,35 +160,26 @@ char* translateIntType(char* type){
 //-----------------------------------
 char* typeNameToCFormatStr(char* typeName){
 	
-	int l = strlen(typeName);
+	//int l = strlen(typeName);
 	
-	if(strcmp(typeName, "PInt") == 0
-	|| strcmp(typeName, "NInt") == 0
+	if(strcmp(typeName, "int") == 0
+	|| strcmp(typeName, "uint") == 0
+	|| strcmp(typeName, "int8") == 0
+	|| strcmp(typeName, "uint8") == 0
+	|| strcmp(typeName, "int16") == 0
+	|| strcmp(typeName, "uint16") == 0
+	|| strcmp(typeName, "int32") == 0
+	|| strcmp(typeName, "uint32") == 0
+	|| strcmp(typeName, "int64") == 0
+	|| strcmp(typeName, "uint64") == 0
 	){
 		return "%d";
-	}
-	
-	if(strcmp(typeName, "Char") == 0){
+	}else if(strcmp(typeName, "char") == 0){
 		return "%c";
-	}
-	
-	if(strcmp(typeName, "String") == 0){
+	}else if(strcmp(typeName, "String") == 0){
 		return "%s";
-	}
-	
-	if(strcmp(typeName, "Float") == 0){
+	}else if(strcmp(typeName, "float") == 0){
 		return "%f";
-	}
-	
-	if(l >= 3){
-		//hacky :O
-		char buf[4];
-		strncpy(buf, typeName, 3);
-		if(strcmp(buf, "Int") == 0
-		|| strcmp(buf, "UIn") == 0
-		){
-			return "%d";
-		}
 	}
 	
 	return "%p";

@@ -1,7 +1,7 @@
 
-fn main () ~> PInt {
+fn main () ~> uint {
 
-	PInt x = 3 ;
+	uint x = 3 ;
 
 	if x < 5 {
 		printf("x\n");

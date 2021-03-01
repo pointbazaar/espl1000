@@ -24,14 +24,14 @@ structMemberDecl ::= Type identifier ';'
 
 simplevariable ::= identifier ('[' expression ']')*
 
-variable ::= simplevariable ('.' variable)*
+variable ::= simplevariable ('.' variable)?
 
 stmtblock ::= '{' statement* '}'
 
 declaredArgument ::= Type identifier? 
 
 //the optional identifier is there to support for example the 
-//" (?T0,PInt size)~>[?T0] newarray{...} " builtin subroutine.
+//" (?T0,uint size)~>[?T0] newarray{...} " builtin subroutine.
 //in that case we receive just the type as a parameter, not an instance of it.
 
 // ----- TYPE RELATED ------------------------------------------

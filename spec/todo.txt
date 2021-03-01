@@ -5,7 +5,7 @@ TODO:
     subroutine "arrlen" that would determine the length of any arrays (arrays should be length-prefixed in dragon).
     ...
     thinking about "Anything" Type, what if we shorten that to "*" and it looks even cooler with Type Constraints.
-    Like "fn print((* implements IShow) item) ~> Int {...}".
+    Like "fn print((* implements IShow) item) ~> int {...}".
 
 [ ] write a lot of tests to protect our functional programming features against regression!
 
