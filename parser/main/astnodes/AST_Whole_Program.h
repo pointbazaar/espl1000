@@ -2,7 +2,7 @@
 #define AST_WHOLE_PROGRAM_PARSE
 
 #include <stdbool.h>
-#include "../../../ast/ast.h"
+#include "ast/ast.h"
 
 struct TokenList;
 

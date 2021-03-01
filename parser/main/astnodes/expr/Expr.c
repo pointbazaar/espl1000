@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "token/TokenList.h"
-
 #include "Expr.h"
 #include "Term.h"
 #include "UnOpTerm.h"
