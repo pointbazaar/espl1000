@@ -28,16 +28,17 @@
 
 fn 		out(FN, yytext);
 if		out(IF, yytext);
-else	out(ELSE, yytext);
-while	out(WHILE, yytext);
-return	out(RETURN, yytext);
-struct	out(STRUCT, yytext);
-loop	out(LOOP, yytext);
+else		out(ELSE, yytext);
+while		out(WHILE, yytext);
+return		out(RETURN, yytext);
+struct		out(STRUCT, yytext);
+loop		out(LOOP, yytext);
 for		out(FOR, yytext);
-break	out(BREAK, yytext);
+break		out(BREAK, yytext);
+continue 	out(CONTINUE, yytext);
 in		out(IN, yytext);
-switch	out(SWITCH, yytext);
-case	out(CASE, yytext);
+switch		out(SWITCH, yytext);
+case		out(CASE, yytext);
 
 int|int8|int16|int32|int64	out(TYPEID_PRIMITIVE_INT, yytext);
 

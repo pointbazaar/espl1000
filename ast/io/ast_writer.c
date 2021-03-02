@@ -265,13 +265,18 @@ void writeStmt(struct Stmt* m, FILE* file){
 	serialize_int(m->kind, file);
 	
 	switch(m->kind){
+		case 99: 
+			{
+				serialize_int( m->isBreak ? OPT_PRESENT : OPT_EMPTY, file);
+				serialize_int( m->isContinue ? OPT_PRESENT : OPT_EMPTY, file);
+			}
+			break;
 		case 0: { writeLoopStmt(m->ptr.m0, file);  } break;
 		case 1: { writeMethodCall(m->ptr.m1,file); } break;
 		case 2: { writeWhileStmt(m->ptr.m2,file);  } break;
 		case 3: { writeIfStmt(m->ptr.m3,file);     } break;
 		case 4: { writeRetStmt(m->ptr.m4,file);    } break;
 		case 5: { writeAssignStmt(m->ptr.m5,file); } break;
-		case 6: { writeBreakStmt(m->ptr.m6,file);  } break;
 		case 7: { writeForStmt(m->ptr.m7,file);    } break;
 		case 8: { writeSwitchStmt(m->ptr.m8,file); } break;
 		default: 
@@ -365,12 +370,6 @@ void writeLoopStmt(struct LoopStmt* m, FILE* file){
 	writeStmtBlock(m->block, file);
 	
 	magic_num_serialize(MAGIC_END_LOOPSTMT, file);
-}
-void writeBreakStmt(struct BreakStmt* m, FILE* file){
-	
-	magic_num_serialize(MAGIC_BREAKSTMT, file);
-	//nothing for now
-	magic_num_serialize(MAGIC_END_BREAKSTMT, file);
 }
 void writeForStmt(struct ForStmt* m, FILE* file){
 	

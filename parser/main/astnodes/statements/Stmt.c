@@ -9,7 +9,6 @@
 #include "RetStmt.h"
 #include "MethodCall.h"
 #include "AssignStmt.h"
-#include "BreakStmt.h"
 #include "SwitchStmt.h"
 
 #include "ast/util/free_ast.h"
@@ -22,7 +21,6 @@
 
 struct Stmt* initStmt();
 
-void stmt_make_break(struct Stmt* res, struct TokenList* copy, bool debug);
 void stmt_make_loop(struct Stmt* res, struct TokenList* copy, bool debug);
 void stmt_make_while(struct Stmt* res, struct TokenList* copy, bool debug);
 void stmt_make_if(struct Stmt* res, struct TokenList* copy, bool debug);
@@ -42,19 +40,36 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 
 	struct Stmt* res = initStmt();
 
+	res->kind 	= -1;
+	res->isBreak 	= false;
+	res->isContinue = false;
+
 	struct TokenList* copy = list_copy(tokens);
 
 	struct Token* first = list_head(copy);
 	
 	switch(first->kind){
-		case BREAK: stmt_make_break(res, copy, debug); break;
-		case FOR: 	stmt_make_for(res, copy, debug); break;
-		case LOOP: 	stmt_make_loop(res, copy, debug); break;
-		case WHILE: stmt_make_while(res, copy, debug); break;
-		case IF: 	stmt_make_if(res, copy, debug); break;
-		case RETURN: stmt_make_return(res, copy, debug); break;
-		case SWITCH: stmt_make_switch(res, copy, debug); break;
-		default: stmt_make_other(res, copy, debug); break;
+
+		case BREAK:	
+			res->kind = 99; 
+			res->isBreak = true;	
+			list_consume(copy, 2); 
+			break;
+
+		case CONTINUE:	
+			res->kind = 99; 
+			res->isContinue = true; 
+			list_consume(copy, 2); 
+			break;
+
+		case FOR: 	stmt_make_for(res, copy, debug); 	break;
+		case LOOP: 	stmt_make_loop(res, copy, debug); 	break;
+		case WHILE: 	stmt_make_while(res, copy, debug); 	break;
+		case IF: 	stmt_make_if(res, copy, debug); 	break;
+		case RETURN: 	stmt_make_return(res, copy, debug); 	break;
+		case SWITCH: 	stmt_make_switch(res, copy, debug); 	break;
+
+		default: 	stmt_make_other(res, copy, debug); 	break;
 	}
 
 	if(debug){
@@ -76,20 +91,6 @@ struct Stmt* initStmt(){
 	res->ptr.m0 = NULL;
 	
 	return res;
-}
-
-void stmt_make_break(struct Stmt* res, struct TokenList* copy, bool debug){
-	
-	res->kind = 6;
-	res->ptr.m6 = makeBreakStmt(copy, debug);
-	
-	if(res->ptr.m6 == NULL){
-		printf("expected break stmt, but was:\n");
-		list_print(copy);
-		freeTokenListShallow(copy);
-		free(res);
-		exit(1);
-	}
 }
 
 void stmt_make_loop(struct Stmt* res, struct TokenList* copy, bool debug){

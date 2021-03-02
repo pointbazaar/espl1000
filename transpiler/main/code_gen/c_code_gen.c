@@ -47,7 +47,8 @@ void transpileIfStmt(struct IfStmt* is, struct Ctx* ctx);
 void transpileRetStmt(struct RetStmt* rs, struct Ctx* ctx);
 void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx);
 void transpileLoopStmt(struct LoopStmt* ls, struct Ctx* ctx);
-void transpileBreakStmt(struct BreakStmt* ls, struct Ctx* ctx);
+void transpileBreakStmt(struct Ctx* ctx);
+void transpileContinueStmt(struct Ctx* ctx);
 void transpileForStmt(struct ForStmt* f, struct Ctx* ctx);
 void transpileSwitchStmt(struct SwitchStmt* s, struct Ctx* ctx);
 void transpileCaseStmt(struct CaseStmt* s, struct Ctx* ctx);
@@ -351,16 +352,17 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 			fprintf(ctx->file, ";");
 			break;
 		
-		case 6:
-			transpileBreakStmt(s->ptr.m6, ctx);
-			break;
-		
 		case 7:
 			transpileForStmt(s->ptr.m7, ctx);
 			break;
 		
 		case 8:
 			transpileSwitchStmt(s->ptr.m8, ctx);	
+			break;
+
+		case 99:
+			if(s->isBreak){ transpileBreakStmt(ctx);  }
+			if(s->isContinue){ transpileContinueStmt(ctx); }
 			break;
 		
 		default:
@@ -535,12 +537,20 @@ void transpileLoopStmt(struct LoopStmt* ls, struct Ctx* ctx){
 	transpileStmtBlock(ls->block, ctx);
 }
 
-void transpileBreakStmt(struct BreakStmt* ls, struct Ctx* ctx){
+void transpileBreakStmt(struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileBreakStmt(...)\n"); }
 	indent(ctx);
 	
 	fprintf(ctx->file, "break;");
+}
+
+void transpileContinueStmt(struct Ctx* ctx){
+	
+	if(ctx->flags->debug){ printf("transpileContinueStmt(...)\n"); }
+	indent(ctx);
+	
+	fprintf(ctx->file, "continue;");
 }
 
 void transpileForStmt(struct ForStmt* f, struct Ctx* ctx){

@@ -482,13 +482,18 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	b->kind = deserialize_int(file);
 
 	switch(b->kind){
+		case 99: 
+			{
+				b->isBreak    = deserialize_int(file) == OPT_PRESENT;
+				b->isContinue = deserialize_int(file) == OPT_PRESENT;
+			}
+			break;
 		case 0: b->ptr.m0 = readLoopStmt(file, debug);   break;
 		case 1: b->ptr.m1 = readMethodCall(file, debug); break;
 		case 2: b->ptr.m2 = readWhileStmt(file, debug);  break;
 		case 3: b->ptr.m3 = readIfStmt(file, debug);     break;
 		case 4: b->ptr.m4 = readRetStmt(file, debug);    break;
 		case 5: b->ptr.m5 = readAssignStmt(file, debug); break;
-		case 6: b->ptr.m6 = readBreakStmt(file, debug);  break;
 		case 7: b->ptr.m7 = readForStmt(file, debug);  	 break;
 		case 8: b->ptr.m8 = readSwitchStmt(file, debug); break;
 		default:
@@ -630,18 +635,6 @@ struct LoopStmt* readLoopStmt(FILE* file, bool debug){
 	v->block = readStmtBlock(file, debug);
 	
 	magic_num_require(MAGIC_END_LOOPSTMT, file);
-	
-	return v;
-}
-struct BreakStmt* readBreakStmt(FILE* file, bool debug){
-	
-	if(debug){ printf("readBreakStmt(...)\n"); }
-	
-	magic_num_require(MAGIC_BREAKSTMT, file);
-	
-	struct BreakStmt* v = malloc(sizeof(struct BreakStmt));
-	
-	magic_num_require(MAGIC_END_BREAKSTMT, file);
 	
 	return v;
 }

@@ -52,8 +52,6 @@ void freeVariable(struct Variable* var);
 
 void freeAssignStmt(struct AssignStmt* as);
 
-void freeBreakStmt(struct BreakStmt* b);
-
 void freeIfStmt(struct IfStmt* is);
 
 void freeLoopStmt(struct LoopStmt* is);

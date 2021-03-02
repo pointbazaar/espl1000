@@ -208,10 +208,6 @@ void freeAssignStmt(struct AssignStmt* as) {
 
 	free(as);
 }
-void freeBreakStmt(struct BreakStmt* b) {
-
-	free(b);
-}
 
 
 void freeIfStmt(struct IfStmt* is) {
@@ -260,13 +256,13 @@ void freeStmt(struct Stmt* s) {
 
 	switch(s->kind){
 		
+		case 99: /* nothing to do here */ break;
 		case 0: freeLoopStmt(s->ptr.m0); break;
 		case 1: freeMethodCall(s->ptr.m1); break;
 		case 2: freeWhileStmt(s->ptr.m2); break;
 		case 3: freeIfStmt(s->ptr.m3); break;
 		case 4: freeRetStmt(s->ptr.m4); break;
 		case 5: freeAssignStmt(s->ptr.m5); break;
-		case 6: freeBreakStmt(s->ptr.m6); break;
 		case 7: freeForStmt(s->ptr.m7); break;
 		case 8: freeSwitchStmt(s->ptr.m8); break;
 		default:

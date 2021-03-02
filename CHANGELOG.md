@@ -4,6 +4,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 
+## [v0.1.4]
+- Added Support for 'continue' Statement.
+
 ## [v0.1.3]
 - Create more directories to have a better Structure in the Project
 - Typedef some Structures

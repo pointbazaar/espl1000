@@ -34,11 +34,15 @@ struct Stmt {
 		struct IfStmt* m3;
 		struct RetStmt* m4;
 		struct AssignStmt* m5;
-		struct BreakStmt* m6;
 		struct ForStmt* m7;
 		struct SwitchStmt* m8;
 	} ptr;
 	uint8_t kind; //0-based
+
+	//if one of these is true,
+	//=> kind == -1
+	bool isContinue;
+	bool isBreak;
 };
 struct WhileStmt  {
 	struct Expr* condition;
@@ -52,10 +56,6 @@ struct ForStmt {
 	char indexName[DEFAULT_STR_SIZE];
 	struct Range* range;
 	struct StmtBlock* block;
-};
-struct BreakStmt {
-	/* >= 1 member needed (-pedantic) */
-	char __should_not_be_used; 
 };
 struct SwitchStmt{
 	struct Variable* var;
