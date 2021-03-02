@@ -9,10 +9,10 @@
 //this is because any program which uses these
 //AST structs has to also free them.
 
-void freeAST_Whole_Program(struct AST_Whole_Program* ast) {
+void freeAST(struct AST* ast) {
 	
 	static_assert(
-		sizeof(struct AST_Whole_Program)
+		sizeof(struct AST)
 		<= sizeof(void*) + 8,
 		   ""
 	);

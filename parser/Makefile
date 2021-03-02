@@ -21,7 +21,7 @@ OBJS_TOKEN := $(TOKEN_BUILD)/token.o \
 		$(TOKEN_BUILD)/TokenReader.o
 
 OBJS_MAIN := build/Parser.o \
-		build/AST_Whole_Program.o \
+		build/AST.o \
 		build/BoolConst.o \
 		build/CharConst.o \
 		build/DeclArg.o \

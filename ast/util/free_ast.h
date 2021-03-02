@@ -12,7 +12,7 @@
 //must also be able to free AST Nodes,
 //as they could obtain such via ast_reader.c
 
-void freeAST_Whole_Program(struct AST_Whole_Program* ast);
+void freeAST(struct AST* ast);
 
 void freeBoolConst(struct BoolConst* bc);	
 

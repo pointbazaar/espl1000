@@ -9,10 +9,7 @@
 
 void write_ast(char* filename, struct Namespace* namespaceNode);
 
-// ---------------------------------------------
-
-
-// --- high level structures ---------
+// --- toplevel structures ---------
 
 void writeNamespace(struct Namespace* m, 	FILE* file);
 

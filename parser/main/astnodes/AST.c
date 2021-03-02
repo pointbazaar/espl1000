@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "AST_Whole_Program.h"
+#include "AST.h"
 #include "Namespace.h"
 
 #include "token/TokenList.h"
@@ -11,10 +11,10 @@
 
 #include "ast/util/free_ast.h"
 
-struct AST_Whole_Program* makeAST_Whole_Program(struct Namespace* myNamespace) {
+struct AST* makeAST(struct Namespace* myNamespace) {
 	//utility method, to facilitate creating AST_Whole_Program from a single namespace node
 
-	struct AST_Whole_Program* res = malloc(sizeof(struct AST_Whole_Program));
+	struct AST* res = malloc(sizeof(struct AST));
 
 	res->namespaces = malloc(sizeof(struct Namespace*)*1);
 
@@ -23,7 +23,7 @@ struct AST_Whole_Program* makeAST_Whole_Program(struct Namespace* myNamespace) {
 	return res;
 }
 
-struct AST_Whole_Program* makeAST_Whole_Program3(struct TokenList* tokens, char* myNamespace, bool debug) {
+struct AST* makeAST3(struct TokenList* tokens, char* myNamespace, bool debug) {
 
 	//use this constructor as a shortcut to create an AST
 	//if there is just a single namespace
@@ -32,7 +32,7 @@ struct AST_Whole_Program* makeAST_Whole_Program3(struct TokenList* tokens, char*
 		printf("makeAST_Whole_Program(...)\n");
 	}
 
-	struct AST_Whole_Program* res = malloc(sizeof(struct AST_Whole_Program));
+	struct AST* res = malloc(sizeof(struct AST));
 
 	res->namespaces = malloc(sizeof(struct Namespace*)*1);
 

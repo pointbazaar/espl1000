@@ -4,6 +4,6 @@
 struct AST_Whole_Program;
 struct Flags;
 
-bool transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Flags* flags);
+bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags);
 
 #endif

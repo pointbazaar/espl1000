@@ -28,7 +28,7 @@ unsigned int label_count = 0;
 //methods delcared in .c file, as they should be private
 //to this file.
 
-void transpileAST(struct AST_Whole_Program* ast, struct Ctx* ctx);
+void transpileAST(struct AST* ast, struct Ctx* ctx);
 void transpileNamespace(struct Namespace* ns, struct Ctx* ctx);
 
 void transpileStructDecl(struct StructDecl* s, struct Ctx* ctx);
@@ -83,7 +83,7 @@ void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx);
 // --------------------------------------------------------
 // --------------------------------------------------------
 
-bool transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Flags* flags){
+bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags){
 	//returns false if it was unsuccessful
 	
 	assert(filename != NULL);
@@ -149,7 +149,7 @@ bool transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 	return true;
 }
 
-void transpileAST(struct AST_Whole_Program* ast, struct Ctx* ctx){
+void transpileAST(struct AST* ast, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileAST(...)\n"); }
 	

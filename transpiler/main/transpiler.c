@@ -177,7 +177,7 @@ bool transpileAndCompile(
 	}
 
 	//parse AST
-	struct AST_Whole_Program* ast = readAST(ast_filename, flags->debug);
+	struct AST* ast = readAST(ast_filename, flags->debug);
 	
 	if(ast == NULL){
 		//reading from file has failed
@@ -194,7 +194,7 @@ bool transpileAndCompile(
 	//transpile to C code and write to file 
 	success = transpileAndWrite(fname_out, ast, flags);
 	
-	freeAST_Whole_Program(ast);
+	freeAST(ast);
 	
 	if(!success){
 		return false;

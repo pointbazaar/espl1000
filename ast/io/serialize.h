@@ -1,6 +1,8 @@
 #ifndef SERIALIZE_H
 #define SERIALIZE_H
 
+#define OPT_PRESENT 1
+#define OPT_EMPTY   0
 
 uint32_t deserialize_int(FILE* file);
 void serialize_int(uint32_t x, FILE* file);

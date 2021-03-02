@@ -102,7 +102,7 @@ void writeDeclArg(struct DeclArg* m, FILE* file){
 
 	writeType(m->type,file);
 	
-	int option = (m->name != NULL)?1:0;
+	int option = (m->name != NULL)?OPT_PRESENT:OPT_EMPTY;
 	
 	serialize_int(option, file);
 	
@@ -118,11 +118,11 @@ void writeVariable(struct Variable* m, FILE* file){
 
 	writeSimpleVar(m->simpleVar,file);
 
-	int hasMemberAccess = (m->memberAccess == NULL)?0:1;
+	int hasMemberAccess = (m->memberAccess == NULL)?OPT_EMPTY:OPT_PRESENT;
 
 	serialize_int(hasMemberAccess, file);
 	
-	if(hasMemberAccess == 1){
+	if(hasMemberAccess == OPT_PRESENT){
 
 		writeVariable(m->memberAccess, file);
 	}
@@ -150,12 +150,12 @@ void writeExpr(struct Expr* m, FILE* file){
 	writeUnOpTerm(m->term1, file);
 	
 	if(m->op != NULL){
-		serialize_int(0, file);
+		serialize_int(OPT_PRESENT, file);
 		
 		writeOp(m->op,file);
 		writeUnOpTerm(m->term2,file);
 	}else{
-		serialize_int(1, file);
+		serialize_int(OPT_EMPTY, file);
 	}
 	
 	magic_num_serialize(MAGIC_END_EXPR, file);
@@ -189,7 +189,7 @@ void writeUnOpTerm(struct UnOpTerm* t, FILE* file){
 	
 	magic_num_serialize(MAGIC_UNOPTERM, file);
 	
-	serialize_int((t->op == NULL)?0:1, file);
+	serialize_int((t->op == NULL)?OPT_EMPTY:OPT_PRESENT, file);
 	
 	if(t->op != NULL){
 		writeOp(t->op, file);
@@ -293,7 +293,7 @@ void writeIfStmt(struct IfStmt* m, FILE* file){
 	writeStmtBlock(m->block, file);
 	
 	//indicate if there is an else block
-	serialize_int((m->elseBlock != NULL)?1:0, file);
+	serialize_int((m->elseBlock != NULL)?OPT_PRESENT:OPT_EMPTY, file);
 	
 	if(m->elseBlock != NULL){
 		writeStmtBlock(m->elseBlock, file);
@@ -326,7 +326,7 @@ void writeAssignStmt(struct AssignStmt* m, FILE* file){
 
 	magic_num_serialize(MAGIC_ASSIGNSTMT, file);
 
-	const int option = (m->optType != NULL)?1:0;
+	const int option = (m->optType != NULL)?OPT_PRESENT:OPT_EMPTY;
 	serialize_int(option, file);
 
 	if(m->optType != NULL){
@@ -527,11 +527,11 @@ void write_ast(char* filename, struct Namespace* namespaceNode){
 		exit(1);
 	}
 	
-	magic_num_serialize(MAGIC_AST_WHOLE_PROGRAM, file);
+	magic_num_serialize(MAGIC_AST, file);
 	
 	writeNamespace(namespaceNode, file);
 	
-	magic_num_serialize(MAGIC_END_AST_WHOLE_PROGRAM, file);
+	magic_num_serialize(MAGIC_END_AST, file);
 	
 	fclose(file);
 }
