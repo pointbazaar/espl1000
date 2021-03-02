@@ -16,7 +16,7 @@
 
 int transpiler_test_all(bool debug){
 	
-	printf("Running tests for smalldragon/transpiler:\n");
+	printf("[Transpiler Module] Running tests for smalldragon/transpiler:\n");
 	
 	const uint16_t testsRun = 
 		TEST_COUNT_OP 
@@ -77,7 +77,8 @@ int transpiler_test_all(bool debug){
 		}
 	}
 	
-	printf("\nPassed %d of %d Tests\n",testsPassed,testsRun);
+	printf("\n");
+	printf("[Transpiler Module] Passed %d of %d Tests\n",testsPassed,testsRun);
 	
 	if(testsPassed == testsRun){
 		

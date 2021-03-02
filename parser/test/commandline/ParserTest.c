@@ -56,18 +56,7 @@ bool test_suite_range(bool debug);
 
 int test_all(bool debug) {
 
-    bool res = test_all_inner(debug);
-    if(res) {
-        printf("Passed all Tests.\n");
-    } else {
-        printf("Failed some Tests.\n");
-    }
-    return (res == true)?0:1;
-}
-
-bool test_all_inner(bool debug) {
-
-    printf("running Dragon-Parser Tests...\n");
+    printf("[Parser Module] running Parser Tests...\n");
 
     //if some tests fail, the test suit should be
     //stopped right there. no use running other tests
@@ -117,7 +106,7 @@ bool test_all_inner(bool debug) {
 
     printf("[Parser Module] PASSED ALL TESTS\n");
 
-    return true;
+    return 0;
 }
 
 // --- TEST SUITE IMPLEMENTATIONS ---

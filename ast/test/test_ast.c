@@ -10,11 +10,15 @@
 #include "../io/ast_reader.h"
 #include "../ast.h"
 
-//constants
+//const
 void test_serialize_IntConst(bool debug);
+void test_serialize_HexConst(bool debug);
+void test_serialize_BinConst(bool debug);
 void test_serialize_BoolConst(bool debug);
+void test_serialize_CharConst(bool debug);
 void test_serialize_TypeParam(bool debug);
 void test_serialize_FloatConst(bool debug);
+void test_serialize_StringConst(bool debug);
 
 void test_serialize_Op(bool debug);
 void test_serialize_Term(bool debug);
@@ -25,22 +29,31 @@ FILE* file;
 int main(){
 	
 	bool debug = false;
+	int count = 0;
 	
 	file = fopen("/tmp/test", "w+");
 	
-	printf("[AST] running AST Reader/Writer Tests...\n");
+	printf("[AST Module] running AST Reader/Writer Tests...\n");
 	
-	//test primitive serialization/deserialization
-	test_serialize_IntConst(debug);
+	//const
 	test_serialize_BoolConst(debug);
-	test_serialize_TypeParam(debug);
+	test_serialize_CharConst(debug);
 	test_serialize_FloatConst(debug);
+	test_serialize_IntConst(debug);
+	test_serialize_HexConst(debug);
+	test_serialize_BinConst(debug);
+	test_serialize_StringConst(debug);
+	count += 7;
+	
+	test_serialize_TypeParam(debug);
+	count += 1;
 	
 	test_serialize_Op(debug);
 	test_serialize_Term(debug);
 	test_serialize_Expr(debug);
+	count += 3;
 	
-	printf("[AST] Passed All Tests\n");
+	printf("[AST Module] Passed All (%d) Tests\n", count);
 	
 	fclose(file);
 	
@@ -66,6 +79,43 @@ void test_serialize_IntConst(bool debug){
 	freeIntConst(m2);
 }
 
+void test_serialize_HexConst(bool debug){
+	
+	rewind(file);
+	
+	struct HexConst* m = malloc(sizeof(struct HexConst));
+	m->value = 0x48;
+	
+	writeHexConst(m, file);
+	
+	rewind(file);
+	
+	struct HexConst* m2 = readHexConst(file, debug);
+	
+	assert(m->value == m2->value);
+	
+	freeHexConst(m);
+	freeHexConst(m2);
+}
+
+void test_serialize_BinConst(bool debug){
+	
+	rewind(file);
+	
+	struct BinConst* m = malloc(sizeof(struct BinConst));
+	m->value = 0b00011101;
+	
+	writeBinConst(m, file);
+	
+	rewind(file);
+	
+	struct BinConst* m2 = readBinConst(file, debug);
+	
+	assert(m->value == m2->value);
+	
+	freeBinConst(m);
+	freeBinConst(m2);
+}
 
 void test_serialize_BoolConst(bool debug){
 	
@@ -84,6 +134,25 @@ void test_serialize_BoolConst(bool debug){
 	
 	freeBoolConst(m);
 	freeBoolConst(m2);
+}
+
+void test_serialize_CharConst(bool debug){
+	
+	rewind(file);
+	
+	struct CharConst* m = malloc(sizeof(struct CharConst));
+	m->value = true;
+	
+	writeCharConst(m, file);
+	
+	rewind(file);
+	
+	struct CharConst* m2 = readCharConst(file, debug);
+	
+	assert(m->value == m2->value);
+	
+	freeCharConst(m);
+	freeCharConst(m2);
 }
 
 void test_serialize_TypeParam(bool debug){
@@ -122,6 +191,27 @@ void test_serialize_FloatConst(bool debug){
 	
 	freeFloatConst(m);
 	freeFloatConst(m2);
+}
+
+void test_serialize_StringConst(bool debug){
+	
+	rewind(file);
+	
+	struct StringConst* m = malloc(sizeof(struct StringConst));
+	char* str = malloc(sizeof(char)*100);
+	strcpy(str, "hello");
+	m->value = str;
+	
+	writeStringConst(m, file);
+	
+	rewind(file);
+	
+	struct StringConst* m2 = readStringConst(file, debug);
+	
+	assert(strcmp(m->value, m2->value) == 0);
+	
+	freeStringConst(m);
+	freeStringConst(m2);
 }
 
 void test_serialize_Op(bool debug){

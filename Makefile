@@ -7,6 +7,14 @@ all:
 	cd transpiler && make 
 	cd examples   && make
 
+test:
+	cd token      && make test
+	cd ast        && make test
+	cd lexer      && make test
+	cd parser     && make test
+	cd transpiler && make test
+	cd examples   && make test
+
 clean:
 	cd token      && make clean
 	cd ast        && make clean

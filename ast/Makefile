@@ -30,8 +30,13 @@ HEADERS := io/ast_reader.h \
 OBJS := build/test_ast.o build/ast_reader.o build/ast_writer.o \
 	build/free_ast.o build/copy_ast.o build/serialize.o
 
-all: dirs $(OBJS)
+all: dirs $(OBJS) tests
+	./tests
+
+tests: dirs $(OBJS)
 	gcc $(CFLAGS) -o tests $(OBJS)
+
+test: tests
 	./tests
 
 dirs:

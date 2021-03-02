@@ -85,7 +85,8 @@ void freeTokens(struct Token** tokens, unsigned int count) {
 bool debug;
 
 int test_all(bool debug1) {
-	printf("running tests \n");
+	
+	printf("[Lexer Module] running tests \n");
 
 	debug = debug1;
 
@@ -190,7 +191,7 @@ int test_all(bool debug1) {
 	pass+=test_brackets();
 	count+=2;
 
-	printf("%i of %i tests passed\n",pass,count);
+	printf("[Lexer Module] %i of %i tests passed\n",pass,count);
 
 	return (pass == count)?0:1;
 }
