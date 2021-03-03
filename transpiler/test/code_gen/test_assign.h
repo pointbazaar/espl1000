@@ -10,11 +10,10 @@
  * all the basic assignments
  */
 
-//tests (5)
-bool test_assign(bool debug);
-bool test_assign_plus(bool debug);
-bool test_assign_minus(bool debug);
-bool test_assign_times(bool debug);
-bool test_assign_div(bool debug);
+void test_assign(bool debug);
+void test_assign_plus(bool debug);
+void test_assign_minus(bool debug);
+void test_assign_times(bool debug);
+void test_assign_div(bool debug);
 
 #endif

@@ -13,79 +13,58 @@
 #include "code_gen/test_op.h"
 #include "code_gen/test_other.h"
 #include "code_gen/test_assign.h"
+#include "code_gen/test_stmt.h"
 
 int transpiler_test_all(bool debug){
 	
 	printf("[Transpiler Module] Running tests for smalldragon/transpiler:\n");
 	
-	const uint16_t testsRun = 
-		TEST_COUNT_OP 
-		+ TEST_COUNT_OTHER
-		+ TEST_COUNT_ASSIGN;
-		
-	uint16_t testsPassed 	= 0;
-	
-	bool (*tests[testsRun])(bool debug);
+	//from test_assign.h
+	test_assign(debug);
+	test_assign_plus(debug);
+	test_assign_minus(debug);
+	test_assign_times(debug);
+	test_assign_div(debug);
 	
 	//first the ones from test_op.h
-	tests[0] = test_add;
-	tests[1] = test_sub;
-	tests[2] = test_mul;
-	tests[3] = test_div;
-	tests[4] = test_mod;
-	tests[5] = test_precedence;
-	tests[6] = test_or;
-	tests[7] = test_and;
-	tests[8] = test_not;
-	tests[9] = test_greater;
-	tests[10] = test_lesser;
-	tests[11] = test_geq;
-	tests[12] = test_leq;
-	tests[13] = test_eq;
-	tests[14] = test_neq;
-	tests[15] = test_chained_cmp;
-	tests[16] = test_bitwise_and;
-	tests[17] = test_bitwise_or;
-	tests[18] = test_bitwise_leftshift;
-	tests[19] = test_bitwise_rightshift;
-	tests[20] = test_bitwise_xor;
-	tests[21] = test_bitwise_neg;
+	test_add(debug);
+	test_sub(debug);
+	test_mul(debug);
+	test_div(debug);
+	test_mod(debug);
+	test_precedence(debug);
+	test_or(debug);
+	test_and(debug);
+	test_not(debug);
+	test_greater(debug);
+	test_lesser(debug);
+	test_geq(debug);
+	test_leq(debug);
+	test_eq(debug);
+	test_neq(debug);
+	test_chained_cmp(debug);
+	test_bitwise_and(debug);
+	test_bitwise_or(debug);
+	test_bitwise_leftshift(debug);
+	test_bitwise_rightshift(debug);
+	test_bitwise_xor(debug);
+	test_bitwise_neg(debug);
 	
-	// then the ones from test_other.h
-	tests[22] = test_statuscode;
-	tests[23] = test_simplevar;
-	tests[24] = test_ifstmt;
-	tests[25] = test_whilestmt;
-	tests[26] = test_subrcall;
-	tests[27] = test_recursive;
-	tests[28] = test_charconst_cmp;
-	tests[29] = test_break;
+	//from test_other.h
+	test_statuscode(debug);
+	test_simplevar(debug);
+	test_recursive(debug);
+	test_charconst_cmp(debug);
+	test_wrapped_expr(debug);
 	
-	//from test_assign.h
-	tests[30]=test_assign;
-	tests[31]=test_assign_plus;
-	tests[32]=test_assign_minus;
-	tests[33]=test_assign_times;
-	tests[34]=test_assign_div;
-	
-	for(int i=0; i < testsRun; i++){
-		testsPassed += (*tests[i])(debug);
+	//from test_stmt.h
+	test_ifstmt(debug);
+	test_whilestmt(debug);
+	test_subrcall(debug);
+	test_break(debug);
+	test_continue(debug);
 		
-		if(testsPassed != i+1){
-			printf("\nTest Failure\n");
-			break;
-		}
-	}
-	
-	printf("\n");
-	printf("[Transpiler Module] Passed %d of %d Tests\n",testsPassed,testsRun);
-	
-	if(testsPassed == testsRun){
-		
-			printf("[Transpiler Module] PASSED ALL TESTS\n");
-	}
-	
-	if(testsPassed != testsRun){ return 1; }
+	printf("[Transpiler Module] PASSED ALL TESTS\n");
 	
 	return 0;
 }

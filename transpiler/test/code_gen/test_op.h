@@ -10,34 +10,34 @@
  * all the basic operations on primitives
  */
 
-//arithmetic tests (6)
-bool test_add(bool debug);
-bool test_sub(bool debug);
-bool test_mul(bool debug);
-bool test_div(bool debug);
-bool test_mod(bool debug);
+//arithmetic tests 
+void test_add(bool debug);
+void test_sub(bool debug);
+void test_mul(bool debug);
+void test_div(bool debug);
+void test_mod(bool debug);
 
-bool test_precedence(bool debug);
+void test_precedence(bool debug);
 
-//logical tests (3)
-bool test_or(bool debug);
-bool test_and(bool debug);
-bool test_not(bool debug);
+//logical tests 
+void test_or(bool debug);
+void test_and(bool debug);
+void test_not(bool debug);
 
-//comparison tests (7)
-bool test_greater(bool debug);
-bool test_lesser(bool debug);
-bool test_geq(bool debug);
-bool test_leq(bool debug);
-bool test_eq(bool debug);
-bool test_neq(bool debug);
-bool test_chained_cmp(bool debug);
+//comparison tests 
+void test_greater(bool debug);
+void test_lesser(bool debug);
+void test_geq(bool debug);
+void test_leq(bool debug);
+void test_eq(bool debug);
+void test_neq(bool debug);
+void test_chained_cmp(bool debug);
 
-//bitwise tests (6)
-bool test_bitwise_and(bool debug);
-bool test_bitwise_or(bool debug);
-bool test_bitwise_leftshift(bool debug);
-bool test_bitwise_rightshift(bool debug);
-bool test_bitwise_xor(bool debug);
-bool test_bitwise_neg(bool debug);
+//bitwise tests
+void test_bitwise_and(bool debug);
+void test_bitwise_or(bool debug);
+void test_bitwise_leftshift(bool debug);
+void test_bitwise_rightshift(bool debug);
+void test_bitwise_xor(bool debug);
+void test_bitwise_neg(bool debug);
 #endif

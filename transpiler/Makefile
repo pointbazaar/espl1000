@@ -22,6 +22,7 @@ TRANSPILER_OBJS := build/transpiler.o \
 	build/test_other.o \
 	build/test_op.o \
 	build/test_assign.o \
+	build/test_stmt.o \
 	build/flags.o \
 	build/localvar_symtable.o \
 	build/subr_symtable.o \
@@ -103,6 +104,9 @@ build/test_other.o: test/util/test_statuscode.h test/util/test_statuscode.c test
 	
 build/test_op.o: test/util/test_statuscode.h test/util/test_statuscode.c test/code_gen/test_op.h test/code_gen/test_op.c
 	$(CALLTEST) -c test/code_gen/test_op.c -o $@
+	
+build/test_stmt.o: test/util/test_statuscode.h test/util/test_statuscode.c test/code_gen/test_stmt.h test/code_gen/test_stmt.c
+	$(CALLTEST) -c test/code_gen/test_stmt.c -o $@
 
 SYMTABLES_H := main/tables/symtable.h main/tables/subr_symtable.h \
 			main/tables/localvar_symtable.h main/tables/struct_symtable.h
