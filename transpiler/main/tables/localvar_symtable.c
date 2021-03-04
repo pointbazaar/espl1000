@@ -212,6 +212,17 @@ struct LVSTLine* lvst_get(
 	return NULL;
 }
 
+bool lvst_contains(struct LVST* lvst, char* name){
+	
+	for(int i = 0; i < lvst->count; i++){
+		
+		if(strcmp(lvst->lines[i]->name, name) == 0){ 
+			return true;
+		}
+	}
+	return false;
+}
+
 // --------------------------------------------------------
 
 void discoverLVStmtBlock(
@@ -322,13 +333,22 @@ void discoverLVAssignStmt(
 	
 	struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
 	
-	strncpy(line->name, a->var->simpleVar->name, DEFAULT_STR_SIZE);
+	char* varName = a->var->simpleVar->name;
+	
+	strncpy(line->name, varName, DEFAULT_STR_SIZE);
 	
 	//a->optType may be NULL, so be careful here
 	if(a->optType != NULL){
 		line->type = a->optType;
 	}else{
-		line->type = inferTypeExpr(st, a->expr, debug);
+		//type of variable maybe annotated
+		const bool present = lvst_contains(st->lvst, varName);
+		
+		if(present){
+			line->type = lvst_get(st->lvst, varName, debug)->type;
+		}else{
+			line->type = inferTypeExpr(st, a->expr, debug);
+		}
 	}
 	
 	line->firstOccur = a;
