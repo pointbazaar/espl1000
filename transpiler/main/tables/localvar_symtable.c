@@ -381,16 +381,21 @@ void discoverLVCaseStmt(
 //----------------------------------
 void lvst_print(struct LVST* lvst){
 	//print LVST
+	
+	char* fmt = " |% -24s|%-5s| %-24s |\n";
+	char* linebig = "------------------------";
+	char* line5  = "-----";
+	
 	printf("Local Variable Symbol Table (LVST)\n");
-	printf("%8s|%8s|%8s\n", "name", "isArg", "Type");
-	printf("--------|--------|--------\n");
+	printf(fmt, "name", "isArg", "Type");
+	printf(fmt, linebig, line5, linebig);
 	for(int i = 0; i < lvst->count; i++){
 		struct LVSTLine* line = lvst->lines[i];
 		
 		assert(line != NULL);
 		assert(line->type != NULL);
 		
-		printf("%8s|%8s|%8s\n", 
+		printf(fmt, 
 			line->name, 
 			(line->isArg)?"yes":"no",
 			typeToStr(line->type)
