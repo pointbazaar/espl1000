@@ -118,3 +118,11 @@ struct SSTLine* sst_get(struct SST* sst, char* name){
 	exit(1);
 	return NULL;
 }
+
+bool sst_contains(struct SST* sst, char* name){
+	
+	for(int i = 0; i < sst->count; i++){
+		if(strcmp(sst->lines[i]->name, name) == 0){return true;}
+	}
+	return false;
+}

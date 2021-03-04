@@ -128,10 +128,7 @@ bool invoke_lexer_parser(char* filename, struct Flags* flags){
 	return true;
 }
 
-bool transpileAndCompile(
-	char* filename, 
-	struct Flags* flags
-){
+bool transpileAndCompile(char* filename,  struct Flags* flags){
 	//returns false if it was unsuccessful
 	
 	if(flags->debug){ printf("transpileAndCompile(...)\n"); }
@@ -227,7 +224,7 @@ bool transpileAndCompile(
 		strcat(cmd_gcc, flags->gcc_flags[i]);
 	}
 	
-	if(!(flags->stdout)){
+	if(!(flags->stdout) && flags->has_main_fn){
 		//compile with gcc
 		if(flags->debug){
 			printf("%s\n", cmd_gcc);

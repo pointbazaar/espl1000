@@ -43,4 +43,6 @@ void sst_add(struct SST* sst, struct SSTLine* line);
 
 struct SSTLine* sst_get(struct SST* sst, char* name);
 
+bool sst_contains(struct SST* sst, char* name);
+
 #endif

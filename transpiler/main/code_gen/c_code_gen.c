@@ -187,6 +187,8 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	//lvst gets populated later
 	ctx->tables->lvst = NULL;
 	
+	ctx->flags->has_main_fn = sst_contains(ctx->tables->sst, "main");
+	
 	//write struct forward declarations
 	assert(ns->structs != NULL);
 	assert(ns->count_structs >= 0);
