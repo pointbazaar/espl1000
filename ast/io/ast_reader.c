@@ -588,7 +588,7 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 	
 	char* assign_op = deserialize_string(file);
 	
-	strncpy(v->assign_op, assign_op, 2);
+	strncpy(v->assign_op, assign_op, ASSIGNOP_LENGTH);
 	
 	free(assign_op);
 	

@@ -89,6 +89,9 @@ false			out(BCONST_FALSE, yytext);
 =		out(ASSIGNOP, yytext);
 
 \+=|-=|\*=|\/=		out(ASSIGNOP, yytext);
+&=|\|=				out(ASSIGNOP, yytext);
+"<<="				out(ASSIGNOP, yytext);
+">>="				out(ASSIGNOP, yytext);
 
 "<<"		out(OPKEY, yytext);
 ">>"		out(OPKEY, yytext);

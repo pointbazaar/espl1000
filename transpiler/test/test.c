@@ -25,6 +25,10 @@ int transpiler_test_all(bool debug){
 	test_assign_minus(debug);
 	test_assign_times(debug);
 	test_assign_div(debug);
+	test_assign_bitwise_and(debug);
+	test_assign_bitwise_or(debug);
+	test_assign_bitwise_shift_left(debug);
+	test_assign_bitwise_shift_right(debug);
 	
 	//first the ones from test_op.h
 	test_add(debug);

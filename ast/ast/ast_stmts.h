@@ -3,12 +3,14 @@
 
 #include "../ast_declare.h"
 
+#define ASSIGNOP_LENGTH 4
+
 struct AssignStmt {
 	struct Type* optType;	//may be NULL
 
 	struct Variable* var;
 	
-	char assign_op[3]; //[=,+=,-=, ...]
+	char assign_op[ASSIGNOP_LENGTH]; //[=,+=,-=, ...]
 	
 	struct Expr* expr;
 };
