@@ -121,13 +121,15 @@ char* basicTypeWrapped2CType(struct BasicTypeWrapped* btw, struct Ctx* ctx){
 	
 	if(btw->simpleType != NULL){
 		return simpleType2CType(btw->simpleType);
-	}else if(btw->subrType != NULL){
-		return subrType2CType(btw->subrType, ctx);
-	}else{
-		printf("FATAL ERROR\n");
-		exit(1);
-		return NULL;
 	}
+	
+	if(btw->subrType != NULL){
+		return subrType2CType(btw->subrType, ctx);
+	}
+	
+	printf("FATAL ERROR\n");
+	exit(1);
+	return NULL;	
 }
 //-------------------------------
 bool isIntType(struct Type* t){
