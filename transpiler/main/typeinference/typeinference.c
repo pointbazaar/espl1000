@@ -18,15 +18,6 @@
 #include "tables/sst.h"
 #include "tables/stst.h"
 
-// -- subroutine declarations (private to this compile unit) --
-
-struct Type* inferTypeTerm			(struct ST* st, struct Term* term, bool debug);
-struct Type* inferTypeUnOpTerm		(struct ST* st, struct UnOpTerm* t, bool debug);
-struct Type* inferTypeMethodCall	(struct ST* st, struct MethodCall* m, bool debug);
-struct Type* inferTypeVariable		(struct ST* st, struct Variable* v, bool debug);
-struct Type* inferTypeSimpleVar		(struct ST* st, struct SimpleVar* v, bool debug);
-// ------------------------------------------------------------
-
 //COMMENTS
 
 	//[1]

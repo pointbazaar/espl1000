@@ -70,6 +70,8 @@ int transpiler_test_all(bool debug){
 	test_continue(debug);
 	
 	//from test_typeinference.h
+	test_infer_type_term(debug);
+	test_infer_type_unopterm(debug);
 	test_infer_type_expr(debug);
 		
 	printf("[Transpiler Module] PASSED ALL TESTS\n");
