@@ -101,12 +101,8 @@ bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags){
 	
 	ctx->indentLevel = 0;
 
-	if(ctx->flags->stdout){
-		ctx->file = stdout;
-	}else{
-		ctx->file = fopen(filename, "w");
-	}
-
+	ctx->file = fopen(filename, "w");
+	
 	if(ctx->file == NULL){
 		printf("could not open output file: %s\n", filename);
 		
@@ -118,9 +114,7 @@ bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags){
 	
 	transpileAST(ast, ctx);
 
-	if(!(ctx->flags->stdout)){
-		fclose(ctx->file);
-	}
+	fclose(ctx->file);
 	
 	freeST(ctx->tables);
 	free(ctx);

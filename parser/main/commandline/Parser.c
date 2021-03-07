@@ -58,8 +58,6 @@ int main(int argc, char** argv){
 	//such we can easily have
 	//multiple parallel invocations of the parser in the compiler.
 
-	//setbuf(stdout,NULL);
-	
 	mallopt(M_CHECK_ACTION, 3);
 
 	

@@ -16,7 +16,6 @@ void sd_print_help(){
 	printf(" -clean		re-generate all artifacts used for incremental compilation\n");
 	printf(" -dumpdot	create a .dot file with the call graph (not yet implemented)\n");
 	printf(" -astdot	create a .dot file with the AST tree (not yet implemented)\n");
-	printf(" -stdout	print transpiled file to stdout (incompatible with -debug)\n");
 	printf(" -version	print Version Information\n");
 	
 	printf("\n");

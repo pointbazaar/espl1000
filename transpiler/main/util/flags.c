@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "flags.h"
 
@@ -13,17 +14,16 @@ struct Flags* makeFlags(int argc, char** argv){
 	flags->help 	= false;
 	flags->version 	= false;
 	flags->clean 	= false;
-	flags->stdout   = false;
 	
-	//we assume 5 gcc arguments would be 
-	//a good starting value for most users
-	int gcc_flags_capacity = 5; 
+	int gcc_flags_capacity = 30; 
 	
 	flags->gcc_flags = malloc(sizeof(char*)*gcc_flags_capacity);
 	flags->gcc_flags_count = 0;
 	
 	for(int i=1; i < argc; i++){
+		
 		char* arg = argv[i];
+		
 		if(arg[0] != '-'){
 			//arg is not a flag
 			continue;
@@ -35,20 +35,15 @@ struct Flags* makeFlags(int argc, char** argv){
 		}else if(strcmp(arg, "-help"   ) == 0){ flags->help = true;
 		}else if(strcmp(arg, "-version") == 0){ flags->version = true;
 		}else if(strcmp(arg, "-clean"  ) == 0){ flags->clean = true;
-		}else if(strcmp(arg, "-stdout" ) == 0){ flags->stdout = true;
 		}else{
-			//pass this flag when calling gcc
+			
 			flags->gcc_flags[flags->gcc_flags_count] = arg;
 			flags->gcc_flags_count++;
 			
 			if(flags->gcc_flags_count >= gcc_flags_capacity){
 				
-				gcc_flags_capacity *= 2;
-				
-				flags->gcc_flags = realloc(
-					flags->gcc_flags, 
-					sizeof(char*) * gcc_flags_capacity
-				);
+				printf("Exceeded gcc_flags_capacity!. Exiting.\n");
+				exit(1);
 			}	
 		}
 	}

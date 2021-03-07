@@ -40,7 +40,6 @@
 		<li><a href="#debug">-debug</a></li>
 		<li><a href="#clean">-clean</a></li>
 		<li><a href="#dumpdot">-dumpdot</a></li>
-		<li><a href="#stdout">-stdout</a></li>
 		<li><a href="#version">-version</a></li>
 	</ul>
 
@@ -74,13 +73,6 @@
 	<p>
 	These flags are not yet implemented. They are intended to produce .dot files of the call graph
 	and the AST respectively, so they can be easily inspected with the graphviz package.
-	</p>
-
-	<h3 id="stdout"> -stdout </h3>
-	<p>
-	Prints the transpiled C Code to stdout, instead of writing it to a file.<br>
-	This flag is incompatible with -debug. <br>
-	Usage Example: "sd -stdout Test.dg | astyle"
 	</p>
 
 	<h3 id="version"> -version </h3>

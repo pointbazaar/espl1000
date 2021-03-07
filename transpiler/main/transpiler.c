@@ -224,7 +224,7 @@ bool transpileAndCompile(char* filename,  struct Flags* flags){
 		strcat(cmd_gcc, flags->gcc_flags[i]);
 	}
 	
-	if(!(flags->stdout) && flags->has_main_fn){
+	if(flags->has_main_fn){
 		//compile with gcc
 		if(flags->debug){
 			printf("%s\n", cmd_gcc);
