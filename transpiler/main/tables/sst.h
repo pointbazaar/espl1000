@@ -20,7 +20,7 @@ struct SSTLine {
 };
 
 struct SST {
-	//Subroutine Symbol Table
+	//Subroutine Symbol Table (SST)
 	
 	unsigned int count;
 	size_t capacity;
@@ -34,6 +34,8 @@ struct SST {
 
 
 struct SST* makeSubrSymTable(struct Namespace* ns, bool debug);
+
+struct SST* makeSubrSymTable2(bool debug);
 
 void freeSubrSymTable(struct SST* sst);
 

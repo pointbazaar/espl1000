@@ -24,10 +24,11 @@ TRANSPILER_OBJS := build/transpiler.o \
 	build/test_op.o \
 	build/test_assign.o \
 	build/test_stmt.o \
+	build/test_typeinference.o \
 	build/flags.o \
-	build/localvar_symtable.o \
-	build/subr_symtable.o \
-	build/struct_symtable.o \
+	build/lvst.o \
+	build/sst.o \
+	build/stst.o \
 	build/typeinference.o \
 	build/help.o \
 	build/gen_c_types.o \
@@ -75,7 +76,7 @@ build/transpiler.o: main/transpiler.c main/transpiler.h main/code_gen/c_code_gen
 	$(CALL) -c main/transpiler.c -o $@
 
 build/c_code_gen.o: main/code_gen/c_code_gen.c main/util/ctx.h \
-		main/code_gen/code_gen_util.h main/util/flags.h main/tables/localvar_symtable.h \
+		main/code_gen/code_gen_util.h main/util/flags.h main/tables/lvst.h \
 		main/code_gen/structs_code_gen.h
 	$(CALL) -c main/code_gen/c_code_gen.c -o $@
 
@@ -108,9 +109,12 @@ build/test_op.o: test/util/test_statuscode.h test/util/test_statuscode.c test/co
 	
 build/test_stmt.o: test/util/test_statuscode.h test/util/test_statuscode.c test/code_gen/test_stmt.h test/code_gen/test_stmt.c
 	$(CALLTEST) -c test/code_gen/test_stmt.c -o $@
+	
+build/test_typeinference.o: test/typeinference/test_typeinference.h test/typeinference/test_typeinference.c
+	$(CALLTEST) -c test/typeinference/test_typeinference.c -o $@
 
-SYMTABLES_H := main/tables/symtable.h main/tables/subr_symtable.h \
-			main/tables/localvar_symtable.h main/tables/struct_symtable.h
+SYMTABLES_H := main/tables/symtable.h main/tables/sst.h \
+			main/tables/lvst.h main/tables/stst.h
 
 build/typeinference.o: $(SYMTABLES_H) main/typeinference/typeinference.c main/typeinference/typeinference.h 
 	$(CALL) -c main/typeinference/typeinference.c -o $@
@@ -126,11 +130,11 @@ build/gen_c_types.o: main/code_gen/gen_c_types.h main/code_gen/gen_c_types.c
 
 # ----------- the symbol tables --------------
 
-build/subr_symtable.o: main/tables/subr_symtable.c main/tables/subr_symtable.h
-	$(CALL) -c main/tables/subr_symtable.c -o $@
+build/sst.o: main/tables/sst.c main/tables/sst.h
+	$(CALL) -c main/tables/sst.c -o $@
 
-build/localvar_symtable.o: main/tables/localvar_symtable.c main/tables/localvar_symtable.h
-	$(CALL) -c main/tables/localvar_symtable.c -o $@
+build/lvst.o: main/tables/lvst.c main/tables/lvst.h
+	$(CALL) -c main/tables/lvst.c -o $@
 
-build/struct_symtable.o: main/tables/struct_symtable.c main/tables/struct_symtable.h
-	$(CALL) -c main/tables/struct_symtable.c -o $@
+build/stst.o: main/tables/stst.c main/tables/stst.h
+	$(CALL) -c main/tables/stst.c -o $@

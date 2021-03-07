@@ -4,17 +4,27 @@
 
 #include "../../../ast/ast.h"
 
-#include "tables/struct_symtable.h"
+#include "tables/stst.h"
 
-struct STST* makeStructSymTable(struct Namespace* ns, bool debug){
+
+struct STST* makeStructSymTable2(bool debug){
 	
-	if(debug){ printf("makeStructSymTable(...)\n"); }
+	if(debug){ printf("makeStructSymTable2(...)\n"); }
 	
 	struct STST* stst = malloc(sizeof(struct STST));
 	
 	stst->capacity = 10;
 	stst->lines = malloc(sizeof(struct STSTLine*) * stst->capacity);
 	stst->count = 0;
+	
+	return stst;
+}
+
+struct STST* makeStructSymTable(struct Namespace* ns, bool debug){
+	
+	if(debug){ printf("makeStructSymTable(...)\n"); }
+	
+	struct STST* stst = makeStructSymTable2(debug);
 	
 	for(int i=0;i < ns->count_structs; i++){
 

@@ -9,6 +9,7 @@
 
 #include "test.h"
 #include "util/test_statuscode.h"
+#include "typeinference/test_typeinference.h"
 
 #include "code_gen/test_op.h"
 #include "code_gen/test_other.h"
@@ -30,7 +31,7 @@ int transpiler_test_all(bool debug){
 	test_assign_bitwise_shift_left(debug);
 	test_assign_bitwise_shift_right(debug);
 	
-	//first the ones from test_op.h
+	//from test_op.h
 	test_add(debug);
 	test_sub(debug);
 	test_mul(debug);
@@ -67,6 +68,9 @@ int transpiler_test_all(bool debug){
 	test_subrcall(debug);
 	test_break(debug);
 	test_continue(debug);
+	
+	//from test_typeinference.h
+	test_infer_type_expr(debug);
 		
 	printf("[Transpiler Module] PASSED ALL TESTS\n");
 	

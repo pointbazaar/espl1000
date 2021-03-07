@@ -1,10 +1,7 @@
 #ifndef STRUCTSYMTABLE
 #define STRUCTSYMTABLE
 
-//to include DEFAULT_STR_SIZE
 #include "../../../ast/ast.h"
-
-//TODO: finish the implementation 
 
 struct STSTLine {
 	char name[DEFAULT_STR_SIZE];
@@ -14,7 +11,7 @@ struct STSTLine {
 };
 
 struct STST {
-	//STruct Symbol Table
+	//STruct Symbol Table (STST)
 	
 	struct STSTLine** lines;
 	
@@ -23,6 +20,8 @@ struct STST {
 };
 
 struct STST* makeStructSymTable(struct Namespace* ns, bool debug);
+
+struct STST* makeStructSymTable2(bool debug);
 
 void freeStructSymTable(struct STST* stst);
 

@@ -4,9 +4,9 @@
 #include <stdio.h>
 
 #include "tables/symtable.h"
-#include "tables/localvar_symtable.h"
-#include "tables/subr_symtable.h"
-#include "tables/struct_symtable.h"
+#include "tables/lvst.h"
+#include "tables/sst.h"
+#include "tables/stst.h"
 
 #include "ast/ast.h"
 #include "ast/util/str_ast.h"

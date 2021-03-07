@@ -15,9 +15,9 @@
 #include "gen_c_types.h"
 #include "structs_code_gen.h"
 
-#include "tables/localvar_symtable.h"
-#include "tables/subr_symtable.h"
-#include "tables/struct_symtable.h"
+#include "tables/lvst.h"
+#include "tables/sst.h"
+#include "tables/stst.h"
 #include "tables/symtable.h"
 
 // -------------------------------

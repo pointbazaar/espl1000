@@ -3,7 +3,6 @@
 
 #include <stdbool.h>
 
-
-bool test_make_lvst(bool debug);
+void test_infer_type_expr(bool debug);
 
 #endif

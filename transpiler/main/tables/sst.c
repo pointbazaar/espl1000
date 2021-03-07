@@ -2,19 +2,27 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "tables/subr_symtable.h"
+#include "tables/sst.h"
 
-// ----------------------------------------
+struct SST* makeSubrSymTable2(bool debug){
+	
+	if(debug){ printf("makeSubrSymTable2(...)\n"); }
 
-struct SST* makeSubrSymTable(struct Namespace* ns, bool debug){
-	
-	if(debug){ printf("makeSubrSymTable(%p, ...)\n", (void*)ns); }
-	
 	struct SST* sst = malloc(sizeof(struct SST));
 	
 	sst->count = 0;
 	sst->capacity = 10;
 	sst->lines = malloc(sizeof(struct SSTLine*)*sst->capacity);
+	
+	return sst;
+}
+
+
+struct SST* makeSubrSymTable(struct Namespace* ns, bool debug){
+	
+	if(debug){ printf("makeSubrSymTable(%p, ...)\n", (void*)ns); }
+	
+	struct SST* sst = makeSubrSymTable2(debug);
 	
 	//add all the subroutines from the namespace
 	for(int i = 0; i < ns->count_methods; i++){

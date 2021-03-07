@@ -8,7 +8,7 @@
 #include "ast/util/free_ast.h"
 #include "ast/util/str_ast.h"
 
-#include "tables/localvar_symtable.h"
+#include "tables/lvst.h"
 #include "tables/symtable.h"
 
 #include "typeinference/typeinference.h"

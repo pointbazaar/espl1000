@@ -10,7 +10,7 @@
 
 #include "typeinference/typeinference.h"
 #include "typeinference/type_str.h"
-#include "tables/subr_symtable.h"
+#include "tables/sst.h"
 
 #include "gen_c_types.h"
 #include "structs_code_gen.h"

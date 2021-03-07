@@ -14,9 +14,9 @@
 
 //include the various symbol tables
 #include "tables/symtable.h"
-#include "tables/localvar_symtable.h"
-#include "tables/subr_symtable.h"
-#include "tables/struct_symtable.h"
+#include "tables/lvst.h"
+#include "tables/sst.h"
+#include "tables/stst.h"
 
 // -- subroutine declarations (private to this compile unit) --
 
