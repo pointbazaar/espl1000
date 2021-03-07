@@ -23,7 +23,7 @@ struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens, bool debug){
 	
 	if(list_size(tokens) < 1){ return NULL; }
 	
-	struct UnOpTerm* res = malloc(sizeof(struct UnOpTerm));
+	struct UnOpTerm* res = make(UnOpTerm);
 	
 	struct TokenList* copy = list_copy(tokens);
 	

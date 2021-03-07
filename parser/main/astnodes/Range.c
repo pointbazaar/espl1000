@@ -23,7 +23,7 @@ struct Range* makeRange(struct TokenList* tokens, bool debug) {
 
 	struct TokenList* copy = list_copy(tokens);
 
-	struct Range* res = malloc(sizeof(struct Range));
+	struct Range* res = make(Range);
 
 	res->start = makeExpr(copy, debug);
 	

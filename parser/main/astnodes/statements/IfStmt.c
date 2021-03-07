@@ -63,7 +63,7 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 
 struct IfStmt* initIfStmt(){
 	
-	struct IfStmt* res = malloc(sizeof(struct IfStmt));
+	struct IfStmt* res = make(IfStmt);
 	
 	res->condition = NULL;
 	res->block     = NULL;

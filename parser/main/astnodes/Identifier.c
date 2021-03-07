@@ -19,7 +19,7 @@ struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 
 	if(list_size(tokens) == 0){ return NULL; }
 
-	struct Identifier* res = malloc(sizeof(struct Identifier));
+	struct Identifier* res = make(Identifier);
 
 	struct Token* tk = list_head(tokens);
 

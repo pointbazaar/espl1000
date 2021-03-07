@@ -14,7 +14,7 @@
 
 struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 
-	struct DeclArg* res = malloc(sizeof(struct DeclArg));
+	struct DeclArg* res = make(DeclArg);
 
 	if(debug){
 		printf("DeclaredArg(...) from ");

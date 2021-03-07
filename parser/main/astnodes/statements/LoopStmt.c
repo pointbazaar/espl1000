@@ -21,7 +21,7 @@ struct LoopStmt* makeLoopStmt(struct TokenList* tokens, bool debug) {
 	
 	if(list_size(tokens) < 3){ return NULL; }
 
-	struct LoopStmt* res = malloc(sizeof(struct LoopStmt));
+	struct LoopStmt* res = make(LoopStmt);
 	
 	res->count = NULL;
 	res->block     = NULL;

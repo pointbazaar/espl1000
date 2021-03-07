@@ -20,8 +20,7 @@ struct StringConst* makeStringConst(struct TokenList* tokens, bool debug){
 	
 	if(list_size(tokens) == 0){return NULL;}
 	
-	struct StringConst* res = 
-		malloc(sizeof(struct StringConst));
+	struct StringConst* res = make(StringConst);
 	
 	struct Token* head = list_head(tokens);
 	

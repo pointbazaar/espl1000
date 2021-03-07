@@ -87,7 +87,7 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 
 struct Method* initMethod(){
 	
-	struct Method* res = malloc(sizeof(struct Method));
+	struct Method* res = make(Method);
 
 	res->isPublic = true;
 	res->hasSideEffects = true;

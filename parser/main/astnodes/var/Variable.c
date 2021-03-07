@@ -21,7 +21,7 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 	
 	if(list_size(tokens) < 1){ return NULL; }
 
-	struct Variable* res = malloc(sizeof(struct Variable));
+	struct Variable* res = make(Variable);
 
 	res->simpleVar = NULL;
 	res->memberAccess = NULL;

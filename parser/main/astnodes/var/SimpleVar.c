@@ -23,7 +23,7 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 		return NULL; 
 	}
 
-	struct SimpleVar* res = malloc(sizeof(struct SimpleVar));
+	struct SimpleVar* res = make(SimpleVar);
 
 	res->count_indices = 0;
 	res->indices = malloc(sizeof(struct Expr*)*1);

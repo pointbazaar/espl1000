@@ -20,7 +20,7 @@ struct StmtBlock* makeStmtBlock(struct TokenList* tokens, bool debug){
 	
 	if(list_size(tokens) < 2){ return NULL; }
 	
-	struct StmtBlock* res = malloc(sizeof(struct StmtBlock));
+	struct StmtBlock* res = make(StmtBlock);
 	
 	res->count = 0;
 	res->stmts = malloc(sizeof(struct Stmt*)*1);

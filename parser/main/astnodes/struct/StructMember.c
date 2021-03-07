@@ -58,7 +58,7 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 
 struct StructMember* initStructMember(){
 	
-	struct StructMember* res = malloc(sizeof(struct StructMember));
+	struct StructMember* res = make(StructMember);
 	res->type = NULL;
 	
 	return res;

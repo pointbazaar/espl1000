@@ -30,7 +30,7 @@ struct CaseStmt* makeCaseStmt(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 	
-	struct CaseStmt* res = malloc(sizeof(struct CaseStmt));
+	struct CaseStmt* res = make(CaseStmt);
 	
 	res->kind = 0;
 	res->ptr.m1 = NULL;

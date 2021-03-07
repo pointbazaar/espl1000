@@ -28,7 +28,7 @@ struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens, bool debug){
 		return NULL;
 	}
 	
-	struct SwitchStmt* res = malloc(sizeof(struct SwitchStmt));
+	struct SwitchStmt* res = make(SwitchStmt);
 
 	res->var = NULL;
 	res->count_cases = 0;

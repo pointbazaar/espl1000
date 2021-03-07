@@ -21,7 +21,7 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 	
-	struct BoolConst* res = malloc(sizeof(struct BoolConst));
+	struct BoolConst* res = make(BoolConst);
 	
 	struct Token* tk = list_head(tokens);
 	

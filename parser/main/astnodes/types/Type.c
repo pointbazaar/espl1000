@@ -15,7 +15,7 @@
 
 struct Type* makeType_1(struct BasicTypeWrapped* typeNode){
 
-	struct Type* res = malloc(sizeof(struct Type));
+	struct Type* res = make(Type);
 
 	res->m1 = typeNode;
 	res->m2 = NULL;
@@ -26,7 +26,7 @@ struct Type* makeType_1(struct BasicTypeWrapped* typeNode){
 
 struct Type* makeType_2(struct TypeParam* typeNode){
 
-	struct Type* res = malloc(sizeof(struct Type));
+	struct Type* res = make(Type);
 
 	res->m1 = NULL;
 	res->m2 = typeNode;
@@ -37,7 +37,7 @@ struct Type* makeType_2(struct TypeParam* typeNode){
 
 struct Type* makeType_3(struct ArrayType* typeNode){
 
-	struct Type* res = malloc(sizeof(struct Type));
+	struct Type* res = make(Type);
 
 	res->m1 = NULL;
 	res->m2 = NULL;
@@ -53,7 +53,7 @@ struct Type* makeType2(struct TokenList* tokens, bool debug){
 		list_print(tokens);
 	}
 
-	struct Type* res = malloc(sizeof(struct Type));
+	struct Type* res = make(Type);
 	res->m1 = NULL;
 	res->m2 = NULL;
 	res->m3 = NULL;

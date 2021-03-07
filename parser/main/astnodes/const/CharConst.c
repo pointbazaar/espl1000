@@ -26,7 +26,7 @@ struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 	
-	struct CharConst* res = malloc(sizeof(struct CharConst));	
+	struct CharConst* res = make(CharConst);	
 	
 	//index needs to be 1, as charconst
 	//is surrounded by single quotes

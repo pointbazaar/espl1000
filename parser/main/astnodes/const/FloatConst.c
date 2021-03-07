@@ -18,7 +18,7 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
 	if(list_size(tokens) == 0){ return NULL; }
 
-	struct FloatConst* res = malloc(sizeof(struct FloatConst));
+	struct FloatConst* res = make(FloatConst);
 
 	struct TokenList* copy = list_copy(tokens);
 

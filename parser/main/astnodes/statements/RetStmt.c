@@ -16,7 +16,7 @@ struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
 		printf("RetStmt(...)\n");
 	}
 
-	struct RetStmt* res = malloc(sizeof(struct RetStmt));
+	struct RetStmt* res = make(RetStmt);
 
 	struct TokenList* copy = list_copy(tokens);
 

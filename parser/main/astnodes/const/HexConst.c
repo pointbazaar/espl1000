@@ -21,7 +21,7 @@ struct HexConst* makeHexConst(struct TokenList* tokens, bool debug){
 	if(tk->kind != HEXCONST){ return NULL; }
 
 
-	struct HexConst* res = malloc(sizeof(struct HexConst));
+	struct HexConst* res = make(HexConst);
 	
 	//"0x10" -> 16, ...
 	//use strtol to convert hex string -> int

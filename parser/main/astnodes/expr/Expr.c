@@ -39,7 +39,7 @@ bool isComparisonOp(struct Op* op);
 //-----------------------------
 
 struct Expr* makeExpr_1(struct UnOpTerm* term) {
-	struct Expr* res = malloc(sizeof(struct Expr));
+	struct Expr* res = make(Expr);
 	res->term1 = term;
 	res->op    = NULL;
 	res->term2 = NULL;
@@ -49,7 +49,7 @@ struct Expr* makeExpr_1(struct UnOpTerm* term) {
 
 struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, struct Op* op, struct UnOpTerm* rightTerm) {
 
-	struct Expr* res = malloc(sizeof(struct Expr));
+	struct Expr* res = make(Expr);
 	res->term1 = leftTerm;
 	res->op    = op;
 	res->term2 = rightTerm;
@@ -132,7 +132,7 @@ struct Expr* fullTreeTransformation(
 	bool debug
 ){
 	
-	struct Expr* res = malloc(sizeof(struct Expr));
+	struct Expr* res = make(Expr);
 	res->term1 = NULL;
 	res->op    = NULL;
 	res->term2 = NULL;
@@ -318,7 +318,7 @@ void performTreeTransformation(
 
 		//create term from our expression
 		//(must create a term because it's a list of terms)
-		struct UnOpTerm* ttmp = malloc(sizeof(struct UnOpTerm));
+		struct UnOpTerm* ttmp = make(UnOpTerm);
 		ttmp->op = NULL;
 		ttmp->term = makeTerm_other(expr);
 		
@@ -379,7 +379,7 @@ void insertOperatorChaining(
 			}
 			
 			//generate the pattern
-			struct Op* andOp = malloc(sizeof(struct Op));
+			struct Op* andOp = make(Op);
 			strcpy(andOp->op, "&&");
 			
 			//insert &&
@@ -389,8 +389,7 @@ void insertOperatorChaining(
 			//deep copy the term
 			//so that later freeing the AST
 			//causes no double free
-			struct UnOpTerm* termCopy = 
-				copyUnOpTerm(term);
+			struct UnOpTerm* termCopy = copyUnOpTerm(term);
 			
 			//insert EXPR
 			(*terms) = (struct UnOpTerm**)insert((void**)(*terms), termIndex, (void*)termCopy, *termsc);

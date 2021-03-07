@@ -18,7 +18,7 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 		printf("WhileStmt(...)\n");
 	}
 
-	struct WhileStmt* res = malloc(sizeof(struct WhileStmt));
+	struct WhileStmt* res = make(WhileStmt);
 
 	res->condition = NULL;
 	res->block     = NULL;

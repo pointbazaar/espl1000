@@ -20,7 +20,7 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 		list_print(tokens);
 	}
 
-	struct Namespace* res = malloc(sizeof(struct Namespace));
+	struct Namespace* res = make(Namespace);
 
 	//because of valgrind
 	//it will complain about uninitialized bytes otherwise

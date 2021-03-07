@@ -19,7 +19,7 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 		list_print(tokens);
 	}
 
-	struct AssignStmt* res = malloc(sizeof(struct AssignStmt));
+	struct AssignStmt* res = make(AssignStmt);
 	res->optType = NULL;
 
 	struct TokenList* copy = list_copy(tokens);

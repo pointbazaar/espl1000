@@ -21,7 +21,7 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 	
 	if(list_size(tokens) == 0){ return NULL; }
 
-	struct SimpleType* res = malloc(sizeof(struct SimpleType));
+	struct SimpleType* res = make(SimpleType);
 	
 	res->typeParamCount = 0;
 	res->isPrimitive    = false;
@@ -79,7 +79,8 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 }
 
 struct SimpleType* makeSimpleType(char* typeName) {
-	struct SimpleType* res = malloc(sizeof(struct SimpleType));
+	
+	struct SimpleType* res = make(SimpleType);
 	res->typeParamCount = 0;
 	strcpy(res->typeName, typeName);
 

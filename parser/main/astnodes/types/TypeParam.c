@@ -22,7 +22,7 @@ struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
 		return NULL;
 	}
 	
-	struct TypeParam* res = malloc(sizeof(struct TypeParam));
+	struct TypeParam* res = make(TypeParam);
 
 	if (token->kind == TPARAM) {
 		res->index = atoi(token->value_ptr);

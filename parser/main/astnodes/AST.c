@@ -14,7 +14,7 @@
 struct AST* makeAST(struct Namespace* myNamespace) {
 	//utility method, to facilitate creating AST_Whole_Program from a single namespace node
 
-	struct AST* res = malloc(sizeof(struct AST));
+	struct AST* res = make(AST);
 
 	res->namespaces = malloc(sizeof(struct Namespace*)*1);
 
@@ -32,7 +32,7 @@ struct AST* makeAST3(struct TokenList* tokens, char* myNamespace, bool debug) {
 		printf("makeAST_Whole_Program(...)\n");
 	}
 
-	struct AST* res = malloc(sizeof(struct AST));
+	struct AST* res = make(AST);
 
 	res->namespaces = malloc(sizeof(struct Namespace*)*1);
 

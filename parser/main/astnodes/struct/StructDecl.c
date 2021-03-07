@@ -19,7 +19,7 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 		list_print(tokens);
 	}
 
-	struct StructDecl* res = malloc(sizeof(struct StructDecl));
+	struct StructDecl* res = make(StructDecl);
 	
 	res->members = malloc(sizeof(struct StructMember*)*1);
 	res->count_members = 0;

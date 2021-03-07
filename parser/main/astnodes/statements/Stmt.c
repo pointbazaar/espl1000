@@ -62,14 +62,14 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 			list_consume(copy, 2); 
 			break;
 
-		case FOR: 	stmt_make_for(res, copy, debug); 	break;
-		case LOOP: 	stmt_make_loop(res, copy, debug); 	break;
+		case FOR: 		stmt_make_for(res, copy, debug); 	break;
+		case LOOP: 		stmt_make_loop(res, copy, debug); 	break;
 		case WHILE: 	stmt_make_while(res, copy, debug); 	break;
-		case IF: 	stmt_make_if(res, copy, debug); 	break;
-		case RETURN: 	stmt_make_return(res, copy, debug); 	break;
-		case SWITCH: 	stmt_make_switch(res, copy, debug); 	break;
+		case IF: 		stmt_make_if(res, copy, debug); 	break;
+		case RETURN: 	stmt_make_return(res, copy, debug); break;
+		case SWITCH: 	stmt_make_switch(res, copy, debug); break;
 
-		default: 	stmt_make_other(res, copy, debug); 	break;
+		default: 		stmt_make_other(res, copy, debug); 	break;
 	}
 
 	if(debug){
@@ -84,7 +84,7 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 
 struct Stmt* initStmt(){
 	
-	struct Stmt* res = malloc(sizeof(struct Stmt));
+	struct Stmt* res = make(Stmt);
 
 	//init
 	res->kind = 0;

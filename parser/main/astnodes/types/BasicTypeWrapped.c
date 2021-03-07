@@ -14,7 +14,7 @@
 
 struct BasicTypeWrapped* makeBasicTypeWrappedSimple(struct SimpleType* typeNode) {
 
-	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
 
 	res->simpleType = typeNode;
 	res->subrType = NULL;
@@ -24,7 +24,7 @@ struct BasicTypeWrapped* makeBasicTypeWrappedSimple(struct SimpleType* typeNode)
 
 struct BasicTypeWrapped* makeBasicTypeWrappedSubr(struct SubrType* typeNode) {
 
-	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
 
 	res->simpleType = NULL;
 	res->subrType = typeNode;
@@ -39,7 +39,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 		list_print(tokens);
 	}
 
-	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
 	
 	res->simpleType = NULL;
 	res->subrType = NULL;

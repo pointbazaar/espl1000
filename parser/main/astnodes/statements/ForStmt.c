@@ -36,7 +36,7 @@ struct ForStmt* makeForStmt(struct TokenList* tokens, bool debug) {
 	
 	list_consume(copy, 1);
 	
-	struct ForStmt* res = malloc(sizeof(struct ForStmt));
+	struct ForStmt* res = make(ForStmt);
 	
 	//copy the index Name
 	strncpy(res->indexName,	head->value_ptr, DEFAULT_STR_SIZE);

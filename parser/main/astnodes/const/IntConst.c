@@ -12,7 +12,7 @@
 
 struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 
-	struct IntConst* res = malloc(sizeof(struct IntConst));
+	struct IntConst* res = make(IntConst);
 
 	if(debug){
 		printf("IntConst(...) from ");
