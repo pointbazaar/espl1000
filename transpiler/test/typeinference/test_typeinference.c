@@ -19,8 +19,8 @@ void test_infer_type_term(bool debug){
 	
 	struct ST* st = makeST(debug);
 	
-	struct Term* term = malloc(sizeof(struct Term));
-	struct FloatConst* c = malloc(sizeof(struct FloatConst));
+	struct Term* term = make(Term);
+	struct FloatConst* c = make(FloatConst);
 	
 	c->value = 83.0;
 	
@@ -45,9 +45,9 @@ void test_infer_type_unopterm(bool debug){
 	
 	struct ST* st = makeST(debug);
 	
-	struct Term* term = malloc(sizeof(struct Term));
-	struct BoolConst* c = malloc(sizeof(struct BoolConst));
-	struct UnOpTerm* uopt = malloc(sizeof(struct UnOpTerm));
+	struct Term* term = make(Term);
+	struct BoolConst* c = make(BoolConst);
+	struct UnOpTerm* uopt = make(UnOpTerm);
 	
 	c->value = false;
 	
@@ -76,10 +76,10 @@ void test_infer_type_expr(bool debug){
 
 	struct ST* st = makeST(debug);
 	
-	struct Expr* expr = malloc(sizeof(struct Expr));
-	struct Term* term = malloc(sizeof(struct Term));
-	struct IntConst* ic = malloc(sizeof(struct IntConst));
-	struct UnOpTerm* uopt = malloc(sizeof(struct UnOpTerm));
+	struct Expr* expr = make(Expr);
+	struct Term* term = make(Term);
+	struct IntConst* ic = make(IntConst);
+	struct UnOpTerm* uopt = make(UnOpTerm);
 	
 	ic->value = 3;
 	
@@ -112,18 +112,18 @@ void test_infer_type_expr_multiple_terms(bool debug){
 
 	struct ST* st = makeST(debug);
 	
-	struct Expr* expr = malloc(sizeof(struct Expr));
+	struct Expr* expr = make(Expr);
 	
-	struct Term* term1 = malloc(sizeof(struct Term));
-	struct Term* term2 = malloc(sizeof(struct Term));
+	struct Term* term1 = make(Term);
+	struct Term* term2 = make(Term);
 	
-	struct IntConst* c1 = malloc(sizeof(struct IntConst));
-	struct FloatConst* c2 = malloc(sizeof(struct IntConst));
+	struct IntConst* c1 = make(IntConst);
+	struct FloatConst* c2 = make(FloatConst);
 
-	struct UnOpTerm* uopt1 = malloc(sizeof(struct UnOpTerm));
-	struct UnOpTerm* uopt2 = malloc(sizeof(struct UnOpTerm));
+	struct UnOpTerm* uopt1 = make(UnOpTerm);
+	struct UnOpTerm* uopt2 = make(UnOpTerm);
 
-	struct Op* myop = malloc(sizeof(struct Op));
+	struct Op* myop = make(Op);
 	strcpy(myop->op, "+");
 
 	c1->value = 3;

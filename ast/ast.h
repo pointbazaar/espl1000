@@ -15,6 +15,15 @@
 #include "ast/ast_expr.h"
 #include "ast/ast_subr.h"
 
+/* To quickly allocate Instances. Instead of 
+ * x = malloc(sizeof(struct IntConst));
+ * we have:
+ * x = make(IntConst);
+ * which is way shorter
+ */
+#define make(X) malloc(sizeof(struct X))
+
+
 struct AST {
 	struct Namespace** namespaces;
 	uint16_t count_namespaces;
