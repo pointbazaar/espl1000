@@ -73,6 +73,7 @@ int transpiler_test_all(bool debug){
 	test_infer_type_term(debug);
 	test_infer_type_unopterm(debug);
 	test_infer_type_expr(debug);
+	test_infer_type_expr_multiple_terms(debug);
 		
 	printf("[Transpiler Module] PASSED ALL TESTS\n");
 	

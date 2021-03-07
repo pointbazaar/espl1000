@@ -107,3 +107,56 @@ void test_infer_type_expr(bool debug){
 	
 	assert(strcmp(t->m1->simpleType->typeName, "int") == 0);
 }
+
+void test_infer_type_expr_multiple_terms(bool debug){
+
+	struct ST* st = makeST(debug);
+	
+	struct Expr* expr = malloc(sizeof(struct Expr));
+	
+	struct Term* term1 = malloc(sizeof(struct Term));
+	struct Term* term2 = malloc(sizeof(struct Term));
+	
+	struct IntConst* c1 = malloc(sizeof(struct IntConst));
+	struct FloatConst* c2 = malloc(sizeof(struct IntConst));
+
+	struct UnOpTerm* uopt1 = malloc(sizeof(struct UnOpTerm));
+	struct UnOpTerm* uopt2 = malloc(sizeof(struct UnOpTerm));
+
+	struct Op* myop = malloc(sizeof(struct Op));
+	strcpy(myop->op, "+");
+
+	c1->value = 3;
+	c2->value = 3.0;
+	
+	term1->kind = 2;
+	term2->ptr.m2 = c1;
+	
+	term2->kind = 7;
+	term2->ptr.m7 = c2;
+	
+	uopt1->op = NULL;
+	uopt1->term = term1;
+	
+	uopt2->op = NULL;
+	uopt2->term = term2;
+	
+	expr->term1 = uopt1;
+	expr->op    = myop;
+	expr->term2 = uopt2;
+
+	struct Type* t = inferTypeExpr(st, expr, debug);
+
+	assert(t != NULL);
+	
+	assert(t->m1 != NULL);
+	assert(t->m1->simpleType != NULL);
+	
+	assert(t->m1->simpleType->isPrimitive);
+	assert(t->m1->simpleType->isIntType == false);
+	
+	assert(t->m1->simpleType->typeParamCount == 0);
+	
+	//float + int -> float
+	assert(strcmp(t->m1->simpleType->typeName, "float") == 0);
+}
