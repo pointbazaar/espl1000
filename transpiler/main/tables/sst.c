@@ -4,27 +4,36 @@
 
 #include "tables/sst.h"
 
-struct SST* makeSubrSymTable2(bool debug){
-	
-	if(debug){ printf("makeSubrSymTable2(...)\n"); }
+#define SST_INITIAL_CAPACITY 10
+
+struct SST* makeSST(){
 
 	struct SST* sst = malloc(sizeof(struct SST));
 	
 	sst->count = 0;
-	sst->capacity = 10;
+	sst->capacity = SST_INITIAL_CAPACITY;
 	sst->lines = malloc(sizeof(struct SSTLine*)*sst->capacity);
 	
 	return sst;
 }
 
+void sst_clear(struct SST* sst){
 
-struct SST* makeSubrSymTable(struct Namespace* ns, bool debug){
+	for(int i = 0; i < sst->count; i++){
+		freeSSTLine(sst->lines[i]);
+	}
+	free(sst->lines);
 	
-	if(debug){ printf("makeSubrSymTable(%p, ...)\n", (void*)ns); }
+	sst->count = 0;
+	sst->capacity = SST_INITIAL_CAPACITY;
 	
-	struct SST* sst = makeSubrSymTable2(debug);
+	sst->lines = malloc(sizeof(struct SSTLine*)*sst->capacity);
+}
+
+void sst_fill(struct SST* sst, struct Namespace* ns, bool debug){
 	
-	//add all the subroutines from the namespace
+	if(debug){ printf("sst_fill(...)\n"); }
+	
 	for(int i = 0; i < ns->count_methods; i++){
 		
 		struct Method* m = ns->methods[i];
@@ -38,27 +47,27 @@ struct SST* makeSubrSymTable(struct Namespace* ns, bool debug){
 		if(debug){
 			printf("\tadding '%s' to subroutine symbol table\n", line->name);
 		}
+		
 		sst_add(sst, line);
 	}
 	
-	if(debug){
-		//print SST
-		
-		printf("Subroutine Symbol Table (SST)\n");
-		printf("%8s|%8s\n", "name", "isLibC");
-		printf("--------|--------\n");
-		for(int i = 0; i < sst->count; i++){
-			struct SSTLine* line = sst->lines[i];
-			
-			printf("%8s|%8s\n", line->name, (line->isLibC)?"yes":"no");
-		}
-		
-	}
-	
-	return sst;
+	if(debug){ sst_print(sst); }
 }
 
-void freeSubrSymTable(struct SST* sst){
+void sst_print(struct SST* sst){
+	
+	printf("Subroutine Symbol Table (SST)\n");
+	printf("%8s|%8s\n", "name", "isLibC");
+	printf("--------|--------\n");
+	
+	for(int i = 0; i < sst->count; i++){
+		struct SSTLine* line = sst->lines[i];
+		
+		printf("%8s|%8s\n", line->name, (line->isLibC)?"yes":"no");
+	}
+}
+
+void freeSST(struct SST* sst){
 	
 	for(int i = 0; i < sst->count; i++){
 		freeSSTLine(sst->lines[i]);

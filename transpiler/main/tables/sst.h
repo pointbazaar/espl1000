@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-#include "../../../ast/ast.h"
+#include "ast/ast.h"
 
 struct SSTLine {
 	//Subroutine Symbol Table Line
@@ -28,23 +28,25 @@ struct SST {
 	struct SSTLine** lines;
 };
 
-
-
-// -----------------------
-
-
-struct SST* makeSubrSymTable(struct Namespace* ns, bool debug);
-
-struct SST* makeSubrSymTable2(bool debug);
-
-void freeSubrSymTable(struct SST* sst);
-
-void freeSSTLine(struct SSTLine* l);
+//-------------
+struct SST* makeSST();
+void freeSST(struct SST* sst);
+//-------------
+void sst_clear(struct SST* sst);
+void sst_fill(struct SST* sst, struct Namespace* ns, bool debug);
 
 void sst_add(struct SST* sst, struct SSTLine* line);
+
+void sst_print(struct SST* sst);
 
 struct SSTLine* sst_get(struct SST* sst, char* name);
 
 bool sst_contains(struct SST* sst, char* name);
+
+//-----------
+
+void freeSSTLine(struct SSTLine* l);
+
+
 
 #endif

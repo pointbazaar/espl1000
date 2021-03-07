@@ -18,23 +18,26 @@ TRANSPILER_OBJS := build/transpiler.o \
 	build/c_code_gen.o \
 	build/structs_code_gen.o \
 	build/code_gen_util.o \
-	build/test.o \
+	build/flags.o \
+	build/typeinference.o \
+	build/help.o \
+	build/gen_c_types.o \
+	build/type_str.o
+	
+OBJS_TEST := build/test.o \
 	build/test_statuscode.o \
 	build/test_other.o \
 	build/test_op.o \
 	build/test_assign.o \
 	build/test_stmt.o \
-	build/test_typeinference.o \
-	build/flags.o \
-	build/lvst.o \
+	build/test_typeinference.o
+	
+OBJS_TABLE := build/lvst.o \
 	build/sst.o \
 	build/stst.o \
-	build/typeinference.o \
-	build/help.o \
-	build/gen_c_types.o \
-	build/type_str.o
+	build/symtable.o
 
-OBJS := $(AST_OBJS) $(TRANSPILER_OBJS);
+OBJS := $(AST_OBJS) $(TRANSPILER_OBJS) $(OBJS_TABLE) $(OBJS_TEST)
 
 all: all_no_valgrind valgrind
 
@@ -42,6 +45,7 @@ all_no_valgrind: smalldragon test
 
 clean: 
 	rm -f build/*.o
+	rm -f a.out
 
 test: sd
 	./sd -test
@@ -138,3 +142,6 @@ build/lvst.o: main/tables/lvst.c main/tables/lvst.h
 
 build/stst.o: main/tables/stst.c main/tables/stst.h
 	$(CALL) -c main/tables/stst.c -o $@
+	
+build/symtable.o: main/tables/symtable.c main/tables/symtable.h
+	$(CALL) -c main/tables/symtable.c -o $@

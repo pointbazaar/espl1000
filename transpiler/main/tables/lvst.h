@@ -47,16 +47,16 @@ struct LVSTLine {
 
 void freeLVSTLine(struct LVSTLine* l);
 
-struct LVST* makeLocalVarSymTable(bool debug);
+struct LVST* makeLVST();
 
-void fillLocalVarSymTable(
-	struct Method* subr, struct ST* st, bool debug
-);
+void lvst_clear(struct LVST* lvst);
 
-void freeLocalVarSymTable(struct LVST* lvst);
+void lvst_fill(struct Method* subr, struct ST* st, bool debug);
+
+void freeLVST(struct LVST* lvst);
 
 //obtain a reference to the line for that identifier
-struct LVSTLine* lvst_get(struct LVST* lvst, char* name, bool debug);
+struct LVSTLine* lvst_get(struct LVST* lvst, char* name);
 bool lvst_contains(struct LVST* lvst, char* name);
 
 void lvst_print(struct LVST* lvst);

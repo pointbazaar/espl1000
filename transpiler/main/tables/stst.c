@@ -6,25 +6,35 @@
 
 #include "tables/stst.h"
 
+#define STST_INITIAL_CAPACITY 10;
 
-struct STST* makeStructSymTable2(bool debug){
-	
-	if(debug){ printf("makeStructSymTable2(...)\n"); }
+struct STST* makeSTST(){
 	
 	struct STST* stst = malloc(sizeof(struct STST));
 	
-	stst->capacity = 10;
+	stst->capacity = STST_INITIAL_CAPACITY;
 	stst->lines = malloc(sizeof(struct STSTLine*) * stst->capacity);
 	stst->count = 0;
 	
 	return stst;
 }
 
-struct STST* makeStructSymTable(struct Namespace* ns, bool debug){
+void stst_clear(struct STST* stst){
+
+	for(int i=0;i < stst->count; i++){
+
+		free(stst->lines[i]);
+	}
+	free(stst->lines);
+	
+	stst->capacity = STST_INITIAL_CAPACITY;
+	stst->lines = malloc(sizeof(struct STSTLine*) * stst->capacity);
+	stst->count = 0;
+}
+
+void stst_fill(struct STST* stst, struct Namespace* ns, bool debug){
 	
 	if(debug){ printf("makeStructSymTable(...)\n"); }
-	
-	struct STST* stst = makeStructSymTable2(debug);
 	
 	for(int i=0;i < ns->count_structs; i++){
 
@@ -33,24 +43,22 @@ struct STST* makeStructSymTable(struct Namespace* ns, bool debug){
 		stst_add(stst, mystruct);
 	}
 
-	if(debug){
-		
-		printf("Struct Symbol Table (STST)\n");
-		printf("%8s|\n", "name");
-		printf("--------|--------\n");
-		for(int i = 0; i < stst->count; i++){
-			struct STSTLine* line = stst->lines[i];
-			
-			printf("%8s|\n", line->name);
-		}
-		
-	}
-
-	
-	return stst;
+	if(debug){ stst_print(stst); }
 }
 
-void freeStructSymTable(struct STST* stst){
+void stst_print(struct STST* stst){
+	
+	printf("Struct Symbol Table (STST)\n");
+	printf("%8s|\n", "name");
+	printf("--------|--------\n");
+	for(int i = 0; i < stst->count; i++){
+		struct STSTLine* line = stst->lines[i];
+		
+		printf("%8s|\n", line->name);
+	}
+}
+
+void freeSTST(struct STST* stst){
 	
 	for(int i=0;i < stst->count; i++){
 

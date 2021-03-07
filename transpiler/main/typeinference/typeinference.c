@@ -169,7 +169,7 @@ struct Type* inferTypeSimpleVar(struct ST* st, struct SimpleVar* v, bool debug){
 	
 	//debug=true as param because
 	//we do not get debug param here
-	struct LVSTLine* line = lvst_get(st->lvst, v->name, debug);
+	struct LVSTLine* line = lvst_get(st->lvst, v->name);
 	
 	//if it has an index, we unwrap the type
 	if(v->count_indices != 0){

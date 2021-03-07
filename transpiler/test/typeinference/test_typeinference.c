@@ -9,6 +9,7 @@
 #include "transpiler/main/tables/lvst.h"
 #include "transpiler/main/tables/sst.h"
 #include "transpiler/main/tables/stst.h"
+#include "transpiler/main/tables/symtable.h"
 
 #include "transpiler/main/typeinference/typeinference.h"
 
@@ -16,16 +17,7 @@
 
 void test_infer_type_expr(bool debug){
 
-	struct ST* st = malloc(sizeof(struct ST));
-	
-	st->inferredTypesCapacity = 100;
-	st->inferredTypesCount = 0;
-	st->inferredTypes = 
-		malloc(sizeof(struct Type*) * st->inferredTypesCapacity);
-	
-	st->sst = makeSubrSymTable2(debug);
-	st->stst = makeStructSymTable2(debug);
-	st->lvst = makeLocalVarSymTable(debug);
+	struct ST* st = makeST(debug);
 	
 	struct Expr* expr = malloc(sizeof(struct Expr));
 	struct Term* term = malloc(sizeof(struct Term));

@@ -1,0 +1,40 @@
+#include <stdlib.h>
+
+#include "ast/ast.h"
+#include "ast/util/free_ast.h"
+
+#include "lvst.h"
+#include "sst.h"
+#include "stst.h"
+#include "symtable.h"
+
+struct ST* makeST(){
+
+	struct ST* st = malloc(sizeof(struct ST));
+	
+	st->inferredTypesCapacity = 100;
+	st->inferredTypesCount = 0;
+	
+	st->inferredTypes = 
+		malloc(sizeof(struct Type*) * st->inferredTypesCapacity);
+	
+	st->sst  = makeSST();
+	st->stst = makeSTST();
+	st->lvst = makeLVST();
+	
+	return st;
+}
+
+void freeST(struct ST* st){
+
+	if(st->sst  != NULL){ freeSST(st->sst);   }
+	if(st->lvst != NULL){ freeLVST(st->lvst); }
+	if(st->stst != NULL){ freeSTST(st->stst); }
+
+	for(int i = 0; i < st->inferredTypesCount; i++){
+		freeType(st->inferredTypes[i]);
+	}
+	free(st->inferredTypes);
+	
+	free(st);
+}

@@ -1,6 +1,8 @@
 #ifndef SYMTABLE
 #define SYMTABLE
 
+#include <stdbool.h>
+
 struct ST {
 	//struct SymTable
 	//this structure is an indirection and abstraction
@@ -25,5 +27,8 @@ struct ST {
 	unsigned int inferredTypesCount;
 	unsigned int inferredTypesCapacity;
 };
+
+struct ST* makeST();
+void freeST(struct ST* st);
 
 #endif

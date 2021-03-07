@@ -14,6 +14,8 @@
 #include "typeinference/typeinference.h"
 #include "typeinference/type_str.h"
 
+#define LVST_INITIAL_CAPACITY 10
+
 // --- declare subroutines private to this compile unit ---
 //discover Local Variables
 void discoverLVStmtBlock(
@@ -69,22 +71,31 @@ void discoverLVCaseStmt(
 void lvst_add(struct LVST* lvst, struct LVSTLine* line, bool debug);
 // --------------------------------------------------------
 
-struct LVST* makeLocalVarSymTable(bool debug){
-	
-	if(debug){ printf("makeLocalVarSymTable(...)\n"); }
+struct LVST* makeLVST(){
 	
 	struct LVST* lvst = malloc(sizeof(struct LVST));
 	
 	lvst->count = 0;
-	lvst->capacity = 10;
+	lvst->capacity = LVST_INITIAL_CAPACITY;
 	lvst->lines = malloc(sizeof(struct LVSTLine*)*lvst->capacity);
 	
 	return lvst;
 }
 
-void fillLocalVarSymTable(
-	struct Method* subr, struct ST* st, bool debug
-){
+void lvst_clear(struct LVST* lvst){
+
+	for(int i = 0; i < lvst->count; i++){
+		freeLVSTLine(lvst->lines[i]);
+	}
+	free(lvst->lines);
+	
+	lvst->count = 0;
+	lvst->capacity = LVST_INITIAL_CAPACITY;
+	lvst->lines = malloc(sizeof(struct LVSTLine*)*lvst->capacity);
+	
+}
+
+void lvst_fill(struct Method* subr, struct ST* st, bool debug){
 	if(debug){ printf("fillLocalVarSymTable(...)\n"); }
 	//fill the local var symbol table	
 	//fill lvst with the arguments
@@ -125,7 +136,8 @@ void fillLocalVarSymTable(
 	}
 }
 
-void freeLocalVarSymTable(struct LVST* lvst){
+void freeLVST(struct LVST* lvst){
+	
 	for(int i = 0; i < lvst->count; i++){
 		freeLVSTLine(lvst->lines[i]);
 	}
@@ -188,15 +200,7 @@ void lvst_add(
 	lvst->count += 1;
 }
 
-struct LVSTLine* lvst_get(
-	struct LVST* lvst, 
-	char* name,
-	bool debug
-){
-	
-	if(debug){
-		printf("lvst_get(%p, %s)\n", (void*)lvst, name);
-	}
+struct LVSTLine* lvst_get(struct LVST* lvst, char* name){
 	
 	for(int i = 0; i < lvst->count; i++){
 		
@@ -346,7 +350,7 @@ void discoverLVAssignStmt(
 		const bool present = lvst_contains(st->lvst, varName);
 		
 		if(present){
-			line->type = lvst_get(st->lvst, varName, debug)->type;
+			line->type = lvst_get(st->lvst, varName)->type;
 		}else{
 			line->type = inferTypeExpr(st, a->expr, debug);
 		}

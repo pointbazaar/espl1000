@@ -94,23 +94,12 @@ bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags){
 	if(flags->debug){ printf("transpileAndWrite(...)\n"); }
 
 	struct Ctx* ctx = malloc(sizeof(struct Ctx));
-	ctx->tables = malloc(sizeof(struct ST));
-	ctx->flags = flags;
-	ctx->indentLevel = 0;
 	
-	//100 should be enough for now,
-	//if it is more, it will exit and print error.
-	ctx->tables->inferredTypesCapacity = 100;
-	ctx->tables->inferredTypesCount = 0;
-	ctx->tables->inferredTypes = 
-		malloc(
-			sizeof(struct Type*) 
-			* ctx->tables->inferredTypesCapacity
-		);
-
-	if(flags->debug){
-		printf("SET ctx->file\n");
-	}
+	ctx->tables = makeST(flags->debug);
+	
+	ctx->flags = flags;
+	
+	ctx->indentLevel = 0;
 
 	if(ctx->flags->stdout){
 		ctx->file = stdout;
@@ -121,15 +110,10 @@ bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags){
 	if(ctx->file == NULL){
 		printf("could not open output file: %s\n", filename);
 		
-		free(ctx->tables);
+		freeST(ctx->tables);
 		free(ctx);
 		
 		return false;
-	}
-	
-	if(flags->debug){
-		printf("SET ctx->flags\n");
-		printf("SET ctx->indentLevel\n");
 	}
 	
 	transpileAST(ast, ctx);
@@ -138,15 +122,9 @@ bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags){
 		fclose(ctx->file);
 	}
 	
-	//free ctx struct
-	for(int i = 0; i < ctx->tables->inferredTypesCount; i++){
-		freeType(ctx->tables->inferredTypes[i]);
-	}
-	free(ctx->tables->inferredTypes);
-	free(ctx->tables);
+	freeST(ctx->tables);
 	free(ctx);
 	
-	if(flags->debug){ printf("transpileAndWrite(...) DONE\n"); }
 	return true;
 }
 
@@ -178,14 +156,11 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileNamespace(...)\n"); }
 	
-	if(ctx->flags->debug){ printf("SET ctx->tables->sst\n"); }
-	ctx->tables->sst = makeSubrSymTable(ns, ctx->flags->debug);
+	sst_clear(ctx->tables->sst);
+	sst_fill(ctx->tables->sst, ns, ctx->flags->debug);
 	
-	if(ctx->flags->debug){ printf("SET ctx->tables->stst\n"); }
-	ctx->tables->stst = makeStructSymTable(ns, ctx->flags->debug);
-	
-	//lvst gets populated later
-	ctx->tables->lvst = NULL;
+	stst_clear(ctx->tables->stst);
+	stst_fill(ctx->tables->stst, ns, ctx->flags->debug);
 	
 	ctx->flags->has_main_fn = sst_contains(ctx->tables->sst, "main");
 	
@@ -199,7 +174,6 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 		fprintf(ctx->file, "struct %s;\n", ns->structs[i]->type->typeName);
 	}
 
-	//transpile struct definitions
 	for(int i=0;i < ns->count_structs; i++){
 		transpileStructDecl(ns->structs[i], ctx);
 	}
@@ -219,11 +193,6 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	for(int i=0; i < ns->count_methods; i++){
 		transpileMethod(ns->methods[i], ctx);
 	}
-	
-	freeSubrSymTable(ctx->tables->sst);
-	ctx->tables->sst = NULL;
-	freeStructSymTable(ctx->tables->stst);
-	ctx->tables->stst = NULL;
 }
 
 void transpileStructDecl(struct StructDecl* s, struct Ctx* ctx){
@@ -275,15 +244,12 @@ void transpileMethod(struct Method* m, struct Ctx* ctx){
 	if(ctx->flags->debug){ printf("transpileMethod(%p, %p)\n", (void*)m, (void*)ctx); }
 	
 	//create the local variable symbol table
-	ctx->tables->lvst = makeLocalVarSymTable(ctx->flags->debug);
-	fillLocalVarSymTable(m, ctx->tables, ctx->flags->debug);
+	lvst_clear(ctx->tables->lvst);
+	lvst_fill(m, ctx->tables, ctx->flags->debug);
 
 	transpileMethodSignature(m, ctx);
 
 	transpileStmtBlock(m->block, ctx);
-	
-	freeLocalVarSymTable(ctx->tables->lvst);
-	ctx->tables->lvst = NULL;
 }
 
 void transpileMethodSignature(struct Method* m, struct Ctx* ctx){
@@ -487,9 +453,7 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 		assert(ctx->tables->lvst != NULL);
 		
 		struct LVSTLine* line = lvst_get(
-			ctx->tables->lvst, 
-			as->var->simpleVar->name, 
-			ctx->flags->debug
+			ctx->tables->lvst, as->var->simpleVar->name
 		);
 		
 		assert(line != NULL);
