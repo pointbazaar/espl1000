@@ -28,7 +28,7 @@ unsigned int label_count = 0;
 //methods delcared in .c file, as they should be private
 //to this file.
 
-void transpileAST(struct AST_Whole_Program* ast, struct Ctx* ctx);
+void transpileAST(struct AST* ast, struct Ctx* ctx);
 void transpileNamespace(struct Namespace* ns, struct Ctx* ctx);
 
 void transpileStructDecl(struct StructDecl* s, struct Ctx* ctx);
@@ -47,7 +47,8 @@ void transpileIfStmt(struct IfStmt* is, struct Ctx* ctx);
 void transpileRetStmt(struct RetStmt* rs, struct Ctx* ctx);
 void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx);
 void transpileLoopStmt(struct LoopStmt* ls, struct Ctx* ctx);
-void transpileBreakStmt(struct BreakStmt* ls, struct Ctx* ctx);
+void transpileBreakStmt(struct Ctx* ctx);
+void transpileContinueStmt(struct Ctx* ctx);
 void transpileForStmt(struct ForStmt* f, struct Ctx* ctx);
 void transpileSwitchStmt(struct SwitchStmt* s, struct Ctx* ctx);
 void transpileCaseStmt(struct CaseStmt* s, struct Ctx* ctx);
@@ -83,7 +84,7 @@ void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx);
 // --------------------------------------------------------
 // --------------------------------------------------------
 
-bool transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Flags* flags){
+bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags){
 	//returns false if it was unsuccessful
 	
 	assert(filename != NULL);
@@ -149,7 +150,7 @@ bool transpileAndWrite(char* filename, struct AST_Whole_Program* ast, struct Fla
 	return true;
 }
 
-void transpileAST(struct AST_Whole_Program* ast, struct Ctx* ctx){
+void transpileAST(struct AST* ast, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileAST(...)\n"); }
 	
@@ -185,6 +186,8 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	
 	//lvst gets populated later
 	ctx->tables->lvst = NULL;
+	
+	ctx->flags->has_main_fn = sst_contains(ctx->tables->sst, "main");
 	
 	//write struct forward declarations
 	assert(ns->structs != NULL);
@@ -351,16 +354,17 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 			fprintf(ctx->file, ";");
 			break;
 		
-		case 6:
-			transpileBreakStmt(s->ptr.m6, ctx);
-			break;
-		
 		case 7:
 			transpileForStmt(s->ptr.m7, ctx);
 			break;
 		
 		case 8:
 			transpileSwitchStmt(s->ptr.m8, ctx);	
+			break;
+
+		case 99:
+			if(s->isBreak){ transpileBreakStmt(ctx);  }
+			if(s->isContinue){ transpileContinueStmt(ctx); }
 			break;
 		
 		default:
@@ -535,12 +539,20 @@ void transpileLoopStmt(struct LoopStmt* ls, struct Ctx* ctx){
 	transpileStmtBlock(ls->block, ctx);
 }
 
-void transpileBreakStmt(struct BreakStmt* ls, struct Ctx* ctx){
+void transpileBreakStmt(struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ printf("transpileBreakStmt(...)\n"); }
 	indent(ctx);
 	
 	fprintf(ctx->file, "break;");
+}
+
+void transpileContinueStmt(struct Ctx* ctx){
+	
+	if(ctx->flags->debug){ printf("transpileContinueStmt(...)\n"); }
+	indent(ctx);
+	
+	fprintf(ctx->file, "continue;");
 }
 
 void transpileForStmt(struct ForStmt* f, struct Ctx* ctx){
@@ -645,7 +657,11 @@ void transpileTerm(struct Term* t, struct Ctx* ctx){
 		case 2: transpileIntConst(t->ptr.m2, ctx); break;
 		case 3: transpileCharConst(t->ptr.m3, ctx); break;
 		case 4: transpileMethodCall(t->ptr.m4, ctx); break;
-		case 5: transpileExpr(t->ptr.m5, ctx); break;
+		case 5: 
+			fprintf(ctx->file, "(");
+			transpileExpr(t->ptr.m5, ctx); 
+			fprintf(ctx->file, ")");
+			break;
 		case 6: transpileVariable(t->ptr.m6, ctx); break;
 		case 7: transpileFloatConst(t->ptr.m7, ctx); break;
 		case 8: transpileStringConst(t->ptr.m8, ctx); break;

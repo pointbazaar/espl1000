@@ -1,10 +1,11 @@
 #include <stdio.h>
+#include <assert.h>
 
 #include "test_op.h"
 
 #include "util/test_statuscode.h"
 
-bool test_add(bool debug){
+void test_add(bool debug){
 	
 	if(debug){ printf("test_add\n"); }
 	
@@ -12,10 +13,10 @@ bool test_add(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 7;
+	assert(status == 7);
 }
 
-bool test_sub(bool debug){
+void test_sub(bool debug){
 	
 	if(debug){ printf("test_sub\n"); }
 	
@@ -23,10 +24,10 @@ bool test_sub(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 2;
+	assert(status == 2);
 }
 
-bool test_mul(bool debug){
+void test_mul(bool debug){
 	
 	if(debug){ printf("test_mul\n"); }
 	
@@ -34,10 +35,10 @@ bool test_mul(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 8;
+	assert(status == 8);
 }
 
-bool test_div(bool debug){
+void test_div(bool debug){
 	
 	if(debug){ printf("test_div\n"); }
 	
@@ -45,10 +46,10 @@ bool test_div(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 2;
+	assert(status == 2);
 }
 
-bool test_mod(bool debug){
+void test_mod(bool debug){
 	
 	if(debug){ printf("test_mod\n"); }
 	
@@ -56,10 +57,10 @@ bool test_mod(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 1;
+	assert(status == 1);
 }
 
-bool test_precedence(bool debug){
+void test_precedence(bool debug){
 	
 	if(debug){ printf("test_precedence\n"); }
 	
@@ -67,10 +68,10 @@ bool test_precedence(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 5;
+	assert(status == 5);
 }
 
-bool test_or(bool debug){
+void test_or(bool debug){
 	
 	if(debug){ printf("test_or\n"); }
 	
@@ -78,10 +79,10 @@ bool test_or(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 3;
+	assert(status == 3);
 }
 
-bool test_and(bool debug){
+void test_and(bool debug){
 	
 	if(debug){ printf("test_and\n"); }
 	
@@ -89,10 +90,10 @@ bool test_and(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 0;
+	assert(status == 0);
 }
 
-bool test_not(bool debug){
+void test_not(bool debug){
 	
 	if(debug){ printf("test_not\n"); }
 	
@@ -100,12 +101,12 @@ bool test_not(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 1;
+	assert(status == 1);
 }
 
 //comparison tests
 
-bool test_greater(bool debug){
+void test_greater(bool debug){
 	
 	if(debug){ printf("test_greater\n"); }
 	
@@ -113,10 +114,10 @@ bool test_greater(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status != 0;
+	assert(status != 0);
 }
 
-bool test_lesser(bool debug){
+void test_lesser(bool debug){
 	
 	if(debug){ printf("test_lesser\n"); }
 	
@@ -124,10 +125,10 @@ bool test_lesser(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 0;
+	assert(status == 0);
 }
 
-bool test_geq(bool debug){
+void test_geq(bool debug){
 	
 	if(debug){ printf("test_geq\n"); }
 	
@@ -135,10 +136,10 @@ bool test_geq(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 1;
+	assert(status == 1);
 }
 
-bool test_leq(bool debug){
+void test_leq(bool debug){
 	
 	if(debug){ printf("test_leq\n"); }
 	
@@ -146,10 +147,10 @@ bool test_leq(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 1;
+	assert(status == 1);
 }
 
-bool test_eq(bool debug){
+void test_eq(bool debug){
 	
 	if(debug){ printf("test_eq\n"); }
 	
@@ -157,10 +158,10 @@ bool test_eq(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 1;
+	assert(status == 1);
 }
 
-bool test_neq(bool debug){
+void test_neq(bool debug){
 	
 	if(debug){ printf("test_neq\n"); }
 	
@@ -168,10 +169,10 @@ bool test_neq(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 0;
+	assert(status == 0);
 }
 
-bool test_chained_cmp(bool debug){
+void test_chained_cmp(bool debug){
 	
 	if(debug){ printf("test_chained_cmp\n"); }
 	
@@ -179,53 +180,57 @@ bool test_chained_cmp(bool debug){
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 0;
+	assert(status == 0);
 }
 
-bool test_bitwise_and(bool debug){
+void test_bitwise_and(bool debug){
 	if(debug){ printf("test_bitwise_and\n"); }
 	
 	char* src = "fn main () ~> uint { return 3 & 1; }";
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 1;
+	assert(status == 1);
 }
 
-bool test_bitwise_or(bool debug){
+void test_bitwise_or(bool debug){
 	if(debug){ printf("test_bitwise_or\n"); }
 	
 	char* src = "fn main () ~> uint { return 1 | 2; }";
 	
 	const int status = sourceToStatus(src, debug);
 	
-	return status == 3;
+	assert(status == 3);
 }
 
-bool test_bitwise_leftshift(bool debug){
+void test_bitwise_leftshift(bool debug){
 	if(debug){ printf("test_bitwise_leftshift\n"); }
 	char* src = "fn main () ~> uint { return 1 << 1; }";
 	const int status = sourceToStatus(src, debug);
-	return status == 2;
+	
+	assert(status == 2);
 }
 
-bool test_bitwise_rightshift(bool debug){
+void test_bitwise_rightshift(bool debug){
 	if(debug){ printf("test_bitwise_rightshift\n"); }
 	char* src = "fn main () ~> uint { return 2 >> 1; }";
 	const int status = sourceToStatus(src, debug);
-	return status == 1;
+	
+	assert(status == 1);
 }
 
-bool test_bitwise_xor(bool debug){
+void test_bitwise_xor(bool debug){
 	if(debug){ printf("test_bitwise_xor\n"); }
 	char* src = "fn main () ~> uint { return 8 ^ 5; }";
 	const int status = sourceToStatus(src, debug);
-	return status == 13;
+	
+	assert(status == 13);
 }
 
-bool test_bitwise_neg(bool debug){
+void test_bitwise_neg(bool debug){
 	if(debug){ printf("test_bitwise_neg\n"); }
 	char* src = "fn main () ~> uint { return ~4 + 5; }";
 	const int status = sourceToStatus(src, debug);
-	return status == 0;
+	
+	assert(status == 0);
 }

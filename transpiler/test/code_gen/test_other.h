@@ -3,19 +3,14 @@
 
 #include <stdbool.h>
 
-#define TEST_COUNT_OTHER 8
+void test_statuscode(bool debug);
 
-bool test_statuscode(bool debug);
-bool test_simplevar(bool debug);
+void test_simplevar(bool debug);
 
-bool test_ifstmt(bool debug);
-bool test_whilestmt(bool debug);
+void test_recursive(bool debug);
 
-bool test_subrcall(bool debug);
-bool test_recursive(bool debug);
+void test_charconst_cmp(bool debug);
 
-bool test_charconst_cmp(bool debug);
-
-bool test_break(bool debug);
+void test_wrapped_expr(bool debug);
 
 #endif

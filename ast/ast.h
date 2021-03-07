@@ -15,7 +15,7 @@
 #include "ast/ast_expr.h"
 #include "ast/ast_subr.h"
 
-struct AST_Whole_Program  {
+struct AST {
 	struct Namespace** namespaces;
 	uint16_t count_namespaces;
 };

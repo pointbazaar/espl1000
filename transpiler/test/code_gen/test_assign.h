@@ -3,18 +3,21 @@
 
 #include <stdbool.h>
 
-#define TEST_COUNT_ASSIGN 5
-
 /* This test suite should test that smalldragon 
  * correctly transpiles
  * all the basic assignments
  */
 
-//tests (5)
-bool test_assign(bool debug);
-bool test_assign_plus(bool debug);
-bool test_assign_minus(bool debug);
-bool test_assign_times(bool debug);
-bool test_assign_div(bool debug);
+void test_assign(bool debug);
+void test_assign_plus(bool debug);
+void test_assign_minus(bool debug);
+void test_assign_times(bool debug);
+void test_assign_div(bool debug);
+
+//bitwise assignments
+void test_assign_bitwise_and(bool debug);
+void test_assign_bitwise_or(bool debug);
+void test_assign_bitwise_shift_left(bool debug);
+void test_assign_bitwise_shift_right(bool debug);
 
 #endif

@@ -102,22 +102,24 @@ struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		case TYPEID_PRIMITIVE_FLOAT:
 		//SECTION: OPERATORNS
 		case OPKEY : 
-		case ASSIGNOP : 
+		case ASSIGNOP: 
 		//SECTION: OTHER
 		case TPARAM : 
 		case SEMICOLON : 
 		case COMMA : 
 		case ARROW : 
 		case STRUCTMEMBERACCESS : 
+
 		//KEYWORDS
-		case RETURN : 
-		case FN : 
-		case STRUCT : 
-		case IF : 
-		case ELSE : 
-		case WHILE : 
-		case LOOP : 
+		case RETURN: 
+		case FN: 
+		case STRUCT: 
+		case IF: 
+		case ELSE: 
+		case WHILE: 
+		case LOOP: 
 		case BREAK:
+		case CONTINUE: 
 		case FOR:
 		case IN:
 		case SWITCH:

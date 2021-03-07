@@ -31,11 +31,6 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 	}
 	freeTokenListShallow(copy2);
 
-	if(debug){
-		printf("%s\n", list_code(copy, debug));
-		printf("DEBUG\n");
-	}
-
 	res->var = makeVariable(copy,debug);
 	if(res->var == NULL){
 		free(res);
@@ -53,7 +48,7 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 	list_consume(copy, 1);
 	
 	//save the assignment operator
-	strncpy(res->assign_op, tkn_assign->value_ptr, 2);
+	strncpy(res->assign_op, tkn_assign->value_ptr, ASSIGNOP_LENGTH);
 
 	res->expr = makeExpr(copy,debug);
 	if(res->expr == NULL){

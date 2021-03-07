@@ -9,35 +9,14 @@
 #include "tables/struct_symtable.h"
 
 #include "ast/ast.h"
+#include "ast/util/str_ast.h"
 
 #include "typeinference/type_str.h"
 
-
-char* typeToStr(struct Type* t){
-	
-	if(t->m1 != NULL){
-		return typeToStrBasicTypeWrapped(t->m1);
-	}
-	
-	printf("(1)currently not implemented (in typeinference.c)\n");
-	exit(1);
-	return NULL;
-}
-
-char* typeToStrBasicTypeWrapped(struct BasicTypeWrapped* b){
-	
-	if(b->simpleType != NULL){
-		
-		return b->simpleType->typeName;
-	}
-	
-	printf("(2)currently not implemented (in typeinference.c)\n");
-	exit(1);
-	return NULL;	
-}
-
-
 struct Type* typeFromStr(struct ST* st, char* typeName, bool isPrimitive, bool isIntType){
+	
+	//TODO: we should really be using
+	//the lexer and parser here
 	
 	//this method will only work for simple types
 	struct Type* res = malloc(sizeof(struct Type));
@@ -64,7 +43,7 @@ struct Type* typeFromStr(struct ST* st, char* typeName, bool isPrimitive, bool i
 	//as this pointer is not part of the AST Tree
 	
 	if(st->inferredTypesCount >= st->inferredTypesCapacity){
-		printf("Fatal Error (in typeinference.c)\n");
+		printf("Fatal Error (in type_str.c)\n");
 		exit(1);
 	}else{
 		st->inferredTypes[st->inferredTypesCount] = res;

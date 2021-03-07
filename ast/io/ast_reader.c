@@ -7,7 +7,7 @@
 #include "magic_num.h"
 #include "serialize.h"
 
-struct AST_Whole_Program* readAST(char* filename, bool debug){
+struct AST* readAST(char* filename, bool debug){
 	//returns NULL if it is unable to open the file
 	
 	if(debug){ printf("readAST(...)\n"); }
@@ -18,9 +18,9 @@ struct AST_Whole_Program* readAST(char* filename, bool debug){
 		return NULL;
 	}
 
-	struct AST_Whole_Program* ast = malloc(sizeof(struct AST_Whole_Program));
+	struct AST* ast = malloc(sizeof(struct AST));
 
-	magic_num_require(MAGIC_AST_WHOLE_PROGRAM, file);
+	magic_num_require(MAGIC_AST, file);
 
 	struct Namespace* ns = readNamespace(file, debug);
 	
@@ -28,7 +28,7 @@ struct AST_Whole_Program* readAST(char* filename, bool debug){
 	ast->namespaces = malloc(sizeof(struct Namespace*));
 	ast->namespaces[0] = ns;
 	
-	magic_num_require(MAGIC_END_AST_WHOLE_PROGRAM, file);
+	magic_num_require(MAGIC_END_AST, file);
 
 	fclose(file);
 	
@@ -189,7 +189,7 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 
 	int option = deserialize_int(file);
 
-	da->has_name = option == 1;
+	da->has_name = option == OPT_PRESENT;
 
 	if(option != 0 && option != 1){
 
@@ -223,13 +223,13 @@ struct Expr* readExpr(FILE* file, bool debug){
 	
 	const int option = deserialize_int(file);
 
-	if(option != 0 && option != 1){
+	if(option != OPT_EMPTY && option != OPT_PRESENT){
 		printf("Error in readExpr!\n");
 		fclose(file);
 		exit(1);
 	}
 	
-	if (option == 0){
+	if (option == OPT_PRESENT){
 		expr->op = readOp(file, debug);
 		expr->term2 = readUnOpTerm(file, debug);
 	}
@@ -365,7 +365,7 @@ struct Variable* readVariable(FILE* file, bool debug){
 	v->memberAccess = NULL;
 	v->simpleVar = readSimpleVar(file, debug);
 
-	const bool hasMemberAccess = deserialize_int(file) == 1;
+	const bool hasMemberAccess = deserialize_int(file) == OPT_PRESENT;
 	
 	if(hasMemberAccess){
 		v->memberAccess = readVariable(file, debug);
@@ -441,11 +441,11 @@ struct UnOpTerm* readUnOpTerm(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_UNOPTERM, file);
 	
-	const int kind = deserialize_int(file);
+	const int opt = deserialize_int(file);
 	
 	struct UnOpTerm* t = malloc(sizeof(struct UnOpTerm));
 	
-	t->op = (kind == 1)? readOp(file, debug): NULL;
+	t->op = (opt == OPT_PRESENT)? readOp(file, debug): NULL;
 	
 	t->term = readTerm(file, debug);
 	
@@ -482,13 +482,18 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	b->kind = deserialize_int(file);
 
 	switch(b->kind){
+		case 99: 
+			{
+				b->isBreak    = deserialize_int(file) == OPT_PRESENT;
+				b->isContinue = deserialize_int(file) == OPT_PRESENT;
+			}
+			break;
 		case 0: b->ptr.m0 = readLoopStmt(file, debug);   break;
 		case 1: b->ptr.m1 = readMethodCall(file, debug); break;
 		case 2: b->ptr.m2 = readWhileStmt(file, debug);  break;
 		case 3: b->ptr.m3 = readIfStmt(file, debug);     break;
 		case 4: b->ptr.m4 = readRetStmt(file, debug);    break;
 		case 5: b->ptr.m5 = readAssignStmt(file, debug); break;
-		case 6: b->ptr.m6 = readBreakStmt(file, debug);  break;
 		case 7: b->ptr.m7 = readForStmt(file, debug);  	 break;
 		case 8: b->ptr.m8 = readSwitchStmt(file, debug); break;
 		default:
@@ -519,7 +524,7 @@ struct IfStmt* readIfStmt(FILE* file, bool debug){
 
 	const int hasElse = deserialize_int(file);
 	
-	if(hasElse != 0){
+	if(hasElse == OPT_PRESENT){
 		v->elseBlock = readStmtBlock(file, debug);
 	}
 	
@@ -564,7 +569,7 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 	
 	const int option = deserialize_int(file);
 
-	if(option != 0 && option != 1){
+	if(option != OPT_EMPTY && option != OPT_PRESENT){
 		
 		printf("Error in readAssignStmt\n");
 		fclose(file);
@@ -575,7 +580,7 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 
 	v->optType = NULL;
 
-	if(option == 1){
+	if(option == OPT_PRESENT){
 		v->optType = readType(file, debug);
 	}
 
@@ -583,7 +588,7 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 	
 	char* assign_op = deserialize_string(file);
 	
-	strncpy(v->assign_op, assign_op, 2);
+	strncpy(v->assign_op, assign_op, ASSIGNOP_LENGTH);
 	
 	free(assign_op);
 	
@@ -630,18 +635,6 @@ struct LoopStmt* readLoopStmt(FILE* file, bool debug){
 	v->block = readStmtBlock(file, debug);
 	
 	magic_num_require(MAGIC_END_LOOPSTMT, file);
-	
-	return v;
-}
-struct BreakStmt* readBreakStmt(FILE* file, bool debug){
-	
-	if(debug){ printf("readBreakStmt(...)\n"); }
-	
-	magic_num_require(MAGIC_BREAKSTMT, file);
-	
-	struct BreakStmt* v = malloc(sizeof(struct BreakStmt));
-	
-	magic_num_require(MAGIC_END_BREAKSTMT, file);
 	
 	return v;
 }
@@ -714,7 +707,7 @@ struct CaseStmt* readCaseStmt(FILE* file, bool debug){
 	
 	const int hasBlock = deserialize_int(file);
 	
-	if(hasBlock == 1){
+	if(hasBlock == OPT_PRESENT){
 		
 		res->block = readStmtBlock(file, debug);
 	}
@@ -767,8 +760,8 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 	v->hasSideEffects = deserialize_int(file);
 	v->count_argTypes = deserialize_int(file);
 	
-	v->argTypes = 
-		malloc(sizeof(struct Type*)*(v->count_argTypes));
+	v->argTypes = malloc(sizeof(struct Type*)*(v->count_argTypes));
+	
 	for(int i=0;i < (v->count_argTypes); i++){
 		v->argTypes[i] = readType(file, debug);
 	}

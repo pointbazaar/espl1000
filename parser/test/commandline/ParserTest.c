@@ -17,7 +17,6 @@
 #include "../astnodes/statements/LoopStmtTest.h"
 #include "../astnodes/statements/MethodCallTest.h"
 #include "../astnodes/statements/RetStmtTest.h"
-#include "../astnodes/statements/BreakStmtTest.h"
 #include "../astnodes/statements/StmtTest.h"
 #include "../astnodes/StmtBlockTest.h"
 #include "../astnodes/types/SubrTypeTest.h"
@@ -56,18 +55,7 @@ bool test_suite_range(bool debug);
 
 int test_all(bool debug) {
 
-    bool res = test_all_inner(debug);
-    if(res) {
-        printf("Passed all Tests.\n");
-    } else {
-        printf("Failed some Tests.\n");
-    }
-    return (res == true)?0:1;
-}
-
-bool test_all_inner(bool debug) {
-
-    printf("running Dragon-Parser Tests...\n");
+    printf("[Parser Module] running Parser Tests...\n");
 
     //if some tests fail, the test suit should be
     //stopped right there. no use running other tests
@@ -117,7 +105,7 @@ bool test_all_inner(bool debug) {
 
     printf("[Parser Module] PASSED ALL TESTS\n");
 
-    return true;
+    return 0;
 }
 
 // --- TEST SUITE IMPLEMENTATIONS ---
@@ -175,7 +163,7 @@ bool test_suite_stmts(bool debug) {
 
 	if(debug){ printf("test_suite_stmts\n"); }
 
-    int count  = 17;
+    int count  = 16;
     int passed = 0;
     
     //1
@@ -207,9 +195,6 @@ bool test_suite_stmts(bool debug) {
     //2
     passed +=  whilestmt_test1(debug);
     passed +=  whilestmt_test2(debug);
-    
-    //1
-    passed += break_test1(debug);
     
     //this test uses assert
     //so it needs no counting

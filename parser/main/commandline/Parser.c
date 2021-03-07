@@ -26,6 +26,15 @@ const char* FLAG_DEBUG = "-debug";
 const char* FLAG_HELP = "-help";
 const char* FLAG_TEST = "-test";
 
+struct ParserFlags {
+
+	bool debug;
+	bool help;
+	bool test;
+
+	char* filename;
+};
+
 // --- private subroutines ---
 
 bool main_inner(char* tokensFile, bool debug);
@@ -36,6 +45,7 @@ void printHelp();
 
 void build_ast_file(char* tokensFile, char* astJsonFile, bool debug);
 
+struct ParserFlags* parseFlags(int argc, char** argv);
 
 // --------------------------------
 
@@ -52,66 +62,59 @@ int main(int argc, char** argv){
 	
 	mallopt(M_CHECK_ACTION, 3);
 
-	char* filename = NULL;
 	
-	int flags_capacity = 5;
-	int flagscount = 0;
-	char** flags = malloc(sizeof(char*) * flags_capacity);
+	struct ParserFlags* flags = parseFlags(argc, argv);
 
-	for(int i=1;i<argc;i++){
-		char* arg = argv[i];
-		if(argv[i][0] == '-'){
-			flags[flagscount++] = arg;
-			if(flagscount >= flags_capacity){
-				flags_capacity *= 2;
-				flags = realloc(flags, sizeof(char*) * flags_capacity);
-			}
-		}else{
-			filename = arg;
-		}
-	}
-
-	bool debug = false;
-	bool help = false;
-	bool test = false;
-
-	for(int i=0;i<flagscount;i++){
-		if(strcmp(FLAG_HELP, flags[i])==0){ help = true; }
-		if(strcmp(FLAG_TEST, flags[i])==0){ test = true; }
-		if(strcmp(FLAG_DEBUG, flags[i])==0){ debug = true; }
-	}
-	
-	if(debug){
-		printf("--- dragon-parser ---\n");
-	}
-
-	if(help) {
+	if(flags->help) {
 		
 		printHelp();
 		free(flags);
-		
 		return 0;
-		
-	}else if(test){
-		
-		free(flags);
-		
-		return test_all(debug);
-		
-	}else{
-		
-		if(filename == NULL){
-			printf("expected exactly 1 filename argument.\n");
-			free(flags);
-			exit(1);
-		}
-		
-		bool success = main_inner(filename, debug);
-		
-		free(flags);
-		
-		return (success)?0:1;
 	}
+	
+	if(flags->test){
+	
+		free(flags);	
+		return test_all(flags->debug);
+	}
+		
+	if(flags->filename == NULL){
+	
+		printf("expected exactly 1 filename argument.\n");
+		free(flags);
+		exit(1);
+	}
+	
+	bool success = main_inner(flags->filename, flags->debug);
+	
+	free(flags);
+	
+	return (success)?0:1;
+}
+
+struct ParserFlags* parseFlags(int argc, char** argv){
+
+	struct ParserFlags* flags = malloc(sizeof(struct ParserFlags));
+
+	flags->help = false;
+	flags->test = false;
+	flags->debug = false;
+
+	for(int i = 1; i < argc; i++){
+
+		char* arg = argv[i];
+
+		if(strcmp(FLAG_HELP,  arg) == 0){ flags->help  = true; }
+		if(strcmp(FLAG_TEST,  arg) == 0){ flags->test  = true; }
+		if(strcmp(FLAG_DEBUG, arg) == 0){ flags->debug = true; }
+
+		if(arg[0] != '-'){
+		
+			flags->filename = arg;
+		}
+	}
+	
+	return flags;
 }
 
 void build_ast_file(char* tokensFile, char* astFile, bool debug) {
@@ -143,10 +146,21 @@ void build_ast_file(char* tokensFile, char* astFile, bool debug) {
 	namespaceName[end] = '\0';
 
 	struct Namespace* mynamespace = makeNamespace(tokens,namespaceName,debug);
+	
+	if(list_size(tokens) > 0){
+	
+		freeNamespace(mynamespace);
+		
+		printf("there were tokens left when parsing.\n");
+		list_print(tokens);
+		printf("exiting.\n");
 
-	if(debug){
-		printf("write to %s\n", astFile);
+		freeTokenList(tokens);
+		
+		exit(1);
 	}
+
+	if(debug){ printf("write to %s\n", astFile); }
 
 	write_ast(astFile,mynamespace);
 

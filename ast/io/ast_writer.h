@@ -9,10 +9,7 @@
 
 void write_ast(char* filename, struct Namespace* namespaceNode);
 
-// ---------------------------------------------
-
-
-// --- high level structures ---------
+// --- toplevel structures ---------
 
 void writeNamespace(struct Namespace* m, 	FILE* file);
 
@@ -52,7 +49,6 @@ void writeRetStmt(struct RetStmt* m, 		FILE* file);
 void writeAssignStmt(struct AssignStmt* m, 	FILE* file);
 void writeMethodCall(struct MethodCall* m, 	FILE* file);
 void writeLoopStmt(struct LoopStmt* m, 		FILE* file);
-void writeBreakStmt(struct BreakStmt* m, 	FILE* file);
 void writeForStmt(struct ForStmt* m,	 	FILE* file);
 void writeSwitchStmt(struct SwitchStmt* m,	FILE* file);
 void writeCaseStmt(struct CaseStmt* m,		FILE* file);

@@ -48,19 +48,26 @@
 #define BCONST_FALSE 47
 
 //Keywords
-#define IF 		50
+#define IF 	50
 #define WHILE 	51
+
+//currently unused
 //#define NAMESPACE 52
+
 #define RETURN 	53
 #define STRUCT 	54
 #define COMMA 	55
 #define LOOP 	56
-#define FN 		57
+#define FN 	57
 #define ELSE 	58
+
 #define BREAK 	59
-#define FOR 	60
-#define IN 		61
-#define SWITCH	62
-#define CASE	63
+#define CONTINUE 60
+
+#define FOR 	61
+#define IN 	62
+
+#define SWITCH	63
+#define CASE	64
 
 #endif

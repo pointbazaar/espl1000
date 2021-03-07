@@ -4,7 +4,7 @@
 #define DEFAULT_STR_SIZE 32 
 
 //--- TOPLEVEL ---
-struct AST_Whole_Program;
+struct AST;
 struct Namespace;
 struct Method;
 struct StructDecl;

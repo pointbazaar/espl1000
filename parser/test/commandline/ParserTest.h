@@ -5,6 +5,4 @@
 
 int test_all(bool debug);
 
-bool test_all_inner(bool debug);
-
 #endif

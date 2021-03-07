@@ -5,9 +5,10 @@
 
 CALL := sd -clean -Werror
 
-all: 
-	echo "Transpiling Example Programs"
-	echo "..."
+all: test
+
+test: 
+	@echo "[Examples] Transpiling Example Programs..."
 	$(CALL) booleans/Booleans.dg
 	$(CALL) break/Break.dg
 	$(CALL) chars/Chars.dg
@@ -31,7 +32,7 @@ all:
 	$(CALL) structs/MyStructs.dg 
 	$(CALL) structs/Node.dg 
 	$(CALL) switch/switch.dg 
-	echo "done!"
+	@echo "[Examples] done"
 
 # currently not working: 
 # - functional/Twice.dg

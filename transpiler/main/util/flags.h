@@ -14,6 +14,9 @@ struct Flags {
 	//----------
 	char** gcc_flags;
 	int gcc_flags_count;
+	
+	//used to tell if we should run gcc
+	bool has_main_fn;
 };
 
 struct Flags* makeFlags(int argc, char** argv);

@@ -6,6 +6,7 @@
 
 #include "ast/ast.h"
 #include "ast/util/free_ast.h"
+#include "ast/util/str_ast.h"
 
 #include "tables/localvar_symtable.h"
 #include "tables/symtable.h"
@@ -212,6 +213,17 @@ struct LVSTLine* lvst_get(
 	return NULL;
 }
 
+bool lvst_contains(struct LVST* lvst, char* name){
+	
+	for(int i = 0; i < lvst->count; i++){
+		
+		if(strcmp(lvst->lines[i]->name, name) == 0){ 
+			return true;
+		}
+	}
+	return false;
+}
+
 // --------------------------------------------------------
 
 void discoverLVStmtBlock(
@@ -322,13 +334,22 @@ void discoverLVAssignStmt(
 	
 	struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
 	
-	strncpy(line->name, a->var->simpleVar->name, DEFAULT_STR_SIZE);
+	char* varName = a->var->simpleVar->name;
+	
+	strncpy(line->name, varName, DEFAULT_STR_SIZE);
 	
 	//a->optType may be NULL, so be careful here
 	if(a->optType != NULL){
 		line->type = a->optType;
 	}else{
-		line->type = inferTypeExpr(st, a->expr, debug);
+		//type of variable maybe annotated
+		const bool present = lvst_contains(st->lvst, varName);
+		
+		if(present){
+			line->type = lvst_get(st->lvst, varName, debug)->type;
+		}else{
+			line->type = inferTypeExpr(st, a->expr, debug);
+		}
 	}
 	
 	line->firstOccur = a;
@@ -361,19 +382,24 @@ void discoverLVCaseStmt(
 //----------------------------------
 void lvst_print(struct LVST* lvst){
 	//print LVST
+	
+	char* fmt = " |% -24s|%-5s| %-24s |\n";
+	char* linebig = "------------------------";
+	char* line5  = "-----";
+	
 	printf("Local Variable Symbol Table (LVST)\n");
-	printf("%8s|%8s|%8s\n", "name", "isArg", "Type");
-	printf("--------|--------|--------\n");
+	printf(fmt, "name", "isArg", "Type");
+	printf(fmt, linebig, line5, linebig);
 	for(int i = 0; i < lvst->count; i++){
 		struct LVSTLine* line = lvst->lines[i];
 		
 		assert(line != NULL);
 		assert(line->type != NULL);
 		
-		printf("%8s|%8s|%8s\n", 
+		printf(fmt, 
 			line->name, 
 			(line->isArg)?"yes":"no",
-			typeToStr(line->type)
+			strType(line->type)
 		);
 	}
 }

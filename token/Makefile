@@ -13,9 +13,11 @@ all: dirs $(OBJS) test
 dirs:
 	mkdir -p build
 
-test: $(OBJS)
-	gcc $(FLAGS) -o test $(OBJS)
-	./test
+tests: $(OBJS)
+	gcc $(FLAGS) -o tests $(OBJS)
+
+test: tests
+	./tests
 
 build/token.o: $(HEADERS) token.c
 	$(CALL) token.c -o $@

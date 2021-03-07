@@ -51,13 +51,14 @@ Type ::= BasicTypeWrapped | TypeParameter | ArrayType
 // ------------------------------------------------------------
 
 statement ::=   ( methodCall ';' )
-                | whileStatement 
-                | ifStatement 
-                | returnStatement 
-                | assignmentStatement
-		| loopStatement
-		| breakStatement
-		| forStatement
+                | whileStmt 
+                | ifStmt
+                | returnStmt
+                | assignmentStmt
+		| loopStmt
+		| breakStmt
+		| continueStmt
+		| forStmt
 		| switchStmt
 
 
@@ -65,20 +66,22 @@ statement ::=   ( methodCall ';' )
 
 methodCall ::= identifier '(' (expression (, expression)*)?  ')'
 
-breakStatement ::= 'break' ';'
+breakStmt ::= 'break' ';'
 
-loopStatement ::= 'loop' expression stmtblock
+continueStmt ::= 'continue' ';'
 
-whileStatement ::= 'while' expression stmtblock
+loopStmt ::= 'loop' expression stmtblock
 
-forStatement ::= 'for' identifier 'in' Range stmtblock
+whileStmt ::= 'while' expression stmtblock
 
-ifStatement ::= 'if' expression stmtblock
+forStmt ::= 'for' identifier 'in' Range stmtblock
+
+ifStmt ::= 'if' expression stmtblock
 		( 'else' stmtblock )?
 				
-returnStatement ::= 'return' expression? ';'
+returnStmt ::= 'return' expression? ';'
 
-assignmentStatement ::= Type? variable '=' expression ';'
+assignmentStmt ::= Type? variable '=' expression ';'
 
 switchStmt ::= 'switch' variable '{' CaseStmt* '}'
 

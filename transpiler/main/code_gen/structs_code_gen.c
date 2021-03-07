@@ -6,6 +6,7 @@
 #include "util/flags.h"
 
 #include "ast/util/free_ast.h"
+#include "ast/util/str_ast.h"
 
 #include "typeinference/typeinference.h"
 #include "typeinference/type_str.h"
@@ -267,7 +268,7 @@ void gen_struct_subr_print(struct StructDecl* sd, struct Ctx* ctx){
 		char* format = "%s";
 		
 		//TODO: decide the format based on type
-		char* typeName = typeToStr(sm->type);
+		char* typeName = strType(sm->type);
 		
 		format = typeNameToCFormatStr(typeName);
 		

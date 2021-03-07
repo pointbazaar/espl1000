@@ -19,5 +19,6 @@ hi def link Parens Delimiter
 hi def link basicIdentifier Identifier
 hi def link basicType Type
 hi def link basicType2 Type
+hi def link primitiveType Type
 
 hi def link basicOperator Operator
