@@ -50,7 +50,7 @@ int main(int argc, char* argv[]){
 	}
 	
 	if(flags->version){
-		printf("smalldragon v0.0.5\n");
+		printf("smalldragon v0.1.4\n");
 		freeFlags(flags);
 		return 0;
 	}

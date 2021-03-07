@@ -1,0 +1,50 @@
+This file contains the coding style for smalldragon.
+
+It specifies:
+----------------------------------------
+ -  (1) Naming of structs
+ -  (2) Naming of functions
+ -  (3) Headers
+ -  (4) Function arguments
+ -  (5) Error Handling
+ -  (6) Indentation
+ -  (7) Braces
+ -  (8) Macros
+ -  (9) Global Variables
+ - (10) Typedef
+----------------------------------------
+(1) Naming of structs
+
+    struct names should start with an uppercase Letter, e.g. "struct MyStruct".
+
+(2) Naming of functions
+
+    functions should use snake case for names.
+    functions that primarily operate on a struct should have the
+    name of the struct as prefix, e.g. mystruct_add(...).
+
+(3) Headers
+
+    Header Guards should be used for all headers. Format: $(FILENAME)_H
+
+(4) Function arguments
+
+    functions should have no more than 2 pointer arguments or 4 primitive arguments.
+
+(5) Error Handling
+
+    smalldragon aims to follow the GNU Coding Style for Error Messages.
+    https://www.gnu.org/prep/standards/html_node/Errors.html#Errors
+
+(6) Indentation: Indent with one tab.
+
+(7) Braces: Opening Braces should be on the same line as the function signature.
+
+(8) Macros
+
+    Do not use Macros with Parameters, except in cases where they 
+    provide a benefit that cannot be achieved by using a function.
+    
+(9) Global Variables: Global Variables are strongly discouraged. 
+
+(10) Typedef: do not use 'typedef'
