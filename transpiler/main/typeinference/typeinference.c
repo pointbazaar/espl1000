@@ -6,6 +6,7 @@
 
 #include "ast/ast.h"
 #include "ast/util/free_ast.h"
+#include "ast/util/str_ast.h"
 
 #include "code_gen/gen_c_types.h"
 #include "typeinference/typeinference.h"
@@ -61,8 +62,8 @@ struct Type* inferTypeExpr(struct ST* st, struct Expr* expr, bool debug){
 	struct Type* type1Orig = inferTypeUnOpTerm(st, expr->term1, debug);
 	struct Type* type2Orig = inferTypeUnOpTerm(st, expr->term2, debug);
 	
-	char* type1 = typeToStr(type1Orig);
-	char* type2 = typeToStr(type2Orig);
+	char* type1 = strType(type1Orig);
+	char* type2 = strType(type2Orig);
 	
 	if(debug) { printf("type1: %s, type2: %s\n", type1, type2); }
 	
@@ -140,7 +141,7 @@ struct Type* inferTypeVariable(struct ST* st, struct Variable* v, bool debug){
 		return typeOfVar;
 	}
 
-	char* typeName = typeToStr(typeOfVar);
+	char* typeName = strType(typeOfVar);
 
 	char* memberName = v->memberAccess->simpleVar->name;
 

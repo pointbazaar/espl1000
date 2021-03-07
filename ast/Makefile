@@ -17,18 +17,23 @@ SOURCES := test/test_ast.c \
 		io/ast_writer.c \
 		util/free_ast.c \
 		util/copy_ast.c \
+		util/str_ast.c \
 		io/serialize.c
 
 HEADERS := io/ast_reader.h \
 		io/ast_writer.h \
 		util/free_ast.h \
-		ast.h \
 		util/copy_ast.h \
+		util/str_ast.h \
+		ast.h \
 		io/magic_num.h \
 		io/serialize.h
 
-OBJS := build/test_ast.o build/ast_reader.o build/ast_writer.o \
-	build/free_ast.o build/copy_ast.o build/serialize.o
+OBJS := build/test_ast.o \
+	build/ast_reader.o build/ast_writer.o \
+	build/free_ast.o build/copy_ast.o \
+	build/str_ast.o \
+	build/serialize.o
 
 all: dirs $(OBJS) tests
 	./tests

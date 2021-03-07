@@ -11,6 +11,7 @@ CALLTEST := $(CALL) -Itest
 
 AST_OBJS := ../ast/build/ast_reader.o \
 		../ast/build/free_ast.o \
+		../ast/build/str_ast.o \
 		../ast/build/serialize.o 
 
 TRANSPILER_OBJS := build/transpiler.o \

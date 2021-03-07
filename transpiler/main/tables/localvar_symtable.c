@@ -6,6 +6,7 @@
 
 #include "ast/ast.h"
 #include "ast/util/free_ast.h"
+#include "ast/util/str_ast.h"
 
 #include "tables/localvar_symtable.h"
 #include "tables/symtable.h"
@@ -398,7 +399,7 @@ void lvst_print(struct LVST* lvst){
 		printf(fmt, 
 			line->name, 
 			(line->isArg)?"yes":"no",
-			typeToStr(line->type)
+			strType(line->type)
 		);
 	}
 }
