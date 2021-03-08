@@ -23,15 +23,23 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 	struct Token* tkn = list_head(copy);
 	
 	if(tkn == NULL){ return NULL; }
-
-	if(tkn->kind != OPKEY){
-		
-		freeTokenListShallow(copy);
-		return NULL;
-	}
 	
 	struct Op* res = make(Op);
 	memset(res, 0, sizeof(struct Op));
+	
+
+	switch(tkn->kind){
+		
+		case OPKEY_ARITHMETIC: res->isArithmetic = true; break;
+		case OPKEY_RELATIONAL: res->isRelational = true; break;
+		case OPKEY_LOGICAL:    res->isLogical    = true; break;
+		case OPKEY_BITWISE:    res->isBitwise    = true; break;
+		
+		default:
+			freeTokenListShallow(copy);
+			free(res);
+			return NULL;
+	}
 		
 	strcpy(res->op, tkn->value_ptr);
 	

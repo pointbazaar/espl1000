@@ -11,7 +11,8 @@
 #include "ast/ast.h"
 #include "ast/util/str_ast.h"
 
-#include "typeinference/type_str.h"
+#include "typeinference/typeinfer.h"
+#include "typeinference/util/type_str.h"
 
 struct Type* typeFromStr(struct ST* st, char* typeName, bool isPrimitive, bool isIntType){
 	
@@ -19,18 +20,22 @@ struct Type* typeFromStr(struct ST* st, char* typeName, bool isPrimitive, bool i
 	//the lexer and parser here
 	
 	//this method will only work for simple types
-	struct Type* res = malloc(sizeof(struct Type));
+	struct Type* res = make(Type);
 	
-	struct BasicTypeWrapped* btw = malloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* btw = make(BasicTypeWrapped);
 	
 	res->m1 = btw;
 	res->m2 = NULL;
 	res->m2 = NULL;
 	
-	struct SimpleType* simpleType = malloc(sizeof(struct SimpleType));
+	struct SimpleType* simpleType = make(SimpleType);
 	
 	simpleType->isPrimitive = isPrimitive;
+	
 	simpleType->isIntType = isIntType;
+	
+	simpleType->isFloatType = strcmp(typeName, "float") == 0;
+	simpleType->isCharType  = strcmp(typeName, "char") == 0;
 
 	simpleType->typeParamCount = 0;
 	strncpy(simpleType->typeName, typeName, DEFAULT_STR_SIZE);
@@ -43,8 +48,7 @@ struct Type* typeFromStr(struct ST* st, char* typeName, bool isPrimitive, bool i
 	//as this pointer is not part of the AST Tree
 	
 	if(st->inferredTypesCount >= st->inferredTypesCapacity){
-		printf("Fatal Error (in type_str.c)\n");
-		exit(1);
+		print_exit("Fatal Error (in type_str.c)\n");
 	}else{
 		st->inferredTypes[st->inferredTypesCount] = res;
 		st->inferredTypesCount += 1;

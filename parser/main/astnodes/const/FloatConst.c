@@ -26,7 +26,7 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
 	res->value = 1.0;
 	
-	if(tk->kind == OPKEY && strcmp(tk->value_ptr, "-") == 0){
+	if(tk->kind == OPKEY_ARITHMETIC && strcmp(tk->value_ptr, "-") == 0){
 		
 		res->value = -1.0;
 		

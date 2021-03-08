@@ -9,7 +9,7 @@
 #include "util/ctx.h"
 #include "util/flags.h"
 
-#include "typeinference/typeinference.h"
+#include "typeinference/typeinfer.h"
 #include "c_code_gen.h"
 #include "code_gen_util.h"
 #include "gen_c_types.h"

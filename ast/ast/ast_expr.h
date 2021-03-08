@@ -8,7 +8,15 @@ struct Expr {
 	struct Op* op;          //may be NULL
 	struct UnOpTerm* term2; //may be NULL
 };
-struct Op { char op[6]; };
+struct Op { 
+	char op[6]; 
+	
+	//the different operator groups
+	bool isArithmetic;
+	bool isRelational;
+	bool isLogical;
+	bool isBitwise;
+};
 struct UnOpTerm{
 	//'UnaryOpTerm', a term preceded by an unary operator.
 	//can only be an unary operator

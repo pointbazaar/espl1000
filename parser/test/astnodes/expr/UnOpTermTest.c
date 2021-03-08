@@ -19,7 +19,7 @@ int test_unop_with(bool debug){
 	if(debug){ printf("TEST: test_unop_with()\n"); }
 	
 	struct TokenList* list = makeTokenList();
-	list_add(list, makeToken2(OPKEY, "!"));
+	list_add(list, makeToken2(OPKEY_LOGICAL, "!"));
 	list_add(list, makeToken2(INTEGER,"4"));
 	
 	struct UnOpTerm* t = makeUnOpTerm(list,debug);

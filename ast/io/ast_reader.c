@@ -782,8 +782,11 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 	strcpy(v->typeName, tmp);
 	free(tmp);
 	
-	v->isPrimitive = deserialize_int(file);
-	v->isIntType   = deserialize_int(file);
+	v->isPrimitive = deserialize_int(file) == OPT_PRESENT;
+	
+	v->isIntType   = deserialize_int(file) == OPT_PRESENT;
+	v->isFloatType = deserialize_int(file) == OPT_PRESENT;
+	v->isCharType  = deserialize_int(file) == OPT_PRESENT;
 	
 	v->typeParamCount = deserialize_int(file);
 	

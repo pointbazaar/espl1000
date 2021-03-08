@@ -81,9 +81,9 @@ int simpletype_test_generic(bool debug){
 
 	struct TokenList* l = makeTokenList();
 	list_add(l, makeToken2(TYPEID,"Point"));
-	list_add(l, makeToken2(OPKEY,"<"));
+	list_add(l, makeToken2(OPKEY_RELATIONAL,"<"));
 	list_add(l, makeToken2(TPARAM,"0"));
-	list_add(l, makeToken2(OPKEY,">"));
+	list_add(l, makeToken2(OPKEY_RELATIONAL,">"));
 
 	struct SimpleType* node = makeSimpleType2(l, debug);
 

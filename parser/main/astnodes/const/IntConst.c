@@ -30,7 +30,7 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 
 	switch (tk->kind){
 
-		case OPKEY: 
+		case OPKEY_ARITHMETIC: 
 			;
 			if (
 				strcmp(tk->value_ptr,"-") == 0 

@@ -11,8 +11,8 @@
 #include "tables/lvst.h"
 #include "tables/symtable.h"
 
-#include "typeinference/typeinference.h"
-#include "typeinference/type_str.h"
+#include "typeinference/typeinfer.h"
+#include "typeinference/util/type_str.h"
 
 #define LVST_INITIAL_CAPACITY 10
 
@@ -352,7 +352,7 @@ void discoverLVAssignStmt(
 		if(present){
 			line->type = lvst_get(st->lvst, varName)->type;
 		}else{
-			line->type = inferTypeExpr(st, a->expr, debug);
+			line->type = infer_type_expr(st, a->expr);
 		}
 	}
 	

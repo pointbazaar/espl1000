@@ -11,7 +11,7 @@
 #include "transpiler/main/tables/stst.h"
 #include "transpiler/main/tables/symtable.h"
 
-#include "transpiler/main/typeinference/typeinference.h"
+#include "transpiler/main/typeinference/typeinfer.h"
 
 #include "test_typeinference.h"
 
@@ -28,7 +28,7 @@ void test_infer_type_term(bool debug){
 	term->ptr.m7 = c;
 	
 	
-	struct Type* t = inferTypeTerm(st, term, debug);
+	struct Type* t = infer_type_term(st, term);
 
 	assert(t != NULL);
 	
@@ -57,7 +57,7 @@ void test_infer_type_unopterm(bool debug){
 	uopt->op = NULL;
 	uopt->term = term;
 
-	struct Type* t = inferTypeUnOpTerm(st, uopt, debug);
+	struct Type* t = infer_type_unopterm(st, uopt);
 
 	assert(t != NULL);
 	
@@ -93,7 +93,7 @@ void test_infer_type_expr(bool debug){
 	expr->op    = NULL;
 	expr->term2 = NULL;
 
-	struct Type* t = inferTypeExpr(st, expr, debug);
+	struct Type* t = infer_type_expr(st, expr);
 
 	assert(t != NULL);
 	
@@ -125,6 +125,7 @@ void test_infer_type_expr_multiple_terms(bool debug){
 
 	struct Op* myop = make(Op);
 	strcpy(myop->op, "+");
+	myop->isArithmetic = true;
 
 	c1->value = 3;
 	c2->value = 3.0;
@@ -145,7 +146,7 @@ void test_infer_type_expr_multiple_terms(bool debug){
 	expr->op    = myop;
 	expr->term2 = uopt2;
 
-	struct Type* t = inferTypeExpr(st, expr, debug);
+	struct Type* t = infer_type_expr(st, expr);
 
 	assert(t != NULL);
 	

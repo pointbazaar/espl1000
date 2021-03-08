@@ -38,7 +38,7 @@ int test_tokenlist1(bool debug){
 	struct TokenList* list = makeTokenList();
 
 	list_add(list, makeToken2(ID,"x"));
-	list_add(list, makeToken2(OPKEY,"="));
+	list_add(list, makeToken2(ASSIGNOP,"="));
 	list_add(list, makeToken2(INTEGER,"4"));
 
 	assert(list_size(list) == 3);

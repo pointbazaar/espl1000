@@ -26,11 +26,15 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 	res->typeParamCount = 0;
 	res->isPrimitive    = false;
 	
+	
+	
 	strcpy(res->typeName, "");
 
 	struct Token* next = list_head(tokens);
 	
-	res->isIntType = next->kind == TYPEID_PRIMITIVE_INT;
+	res->isIntType   = next->kind == TYPEID_PRIMITIVE_INT;
+	res->isFloatType = next->kind == TYPEID_PRIMITIVE_FLOAT;
+	res->isCharType  = next->kind == TYPEID_PRIMITIVE_CHAR;
 	
 	switch(next->kind){
 		
@@ -55,7 +59,7 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 			
 			next = list_head(tokens);
 			
-			if(next->kind == OPKEY && strcmp(next->value_ptr, "<")==0 ){
+			if(next->kind == OPKEY_RELATIONAL && strcmp(next->value_ptr, "<")==0 ){
 				list_consume(tokens, 1);
 				parse_type_params_rest(res, tokens);
 			}	
@@ -139,7 +143,7 @@ void parse_type_params_rest(struct SimpleType* res, struct TokenList* tokens){
 	next = list_head(tokens);
 	
 	//expect '>'
-	const bool is_opkey = next->kind == OPKEY;
+	const bool is_opkey = next->kind == OPKEY_RELATIONAL;
 	const bool next_gt = strcmp(next->value_ptr, ">") == 0;
 		
 	if(is_opkey && next_gt){

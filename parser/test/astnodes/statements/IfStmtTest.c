@@ -23,7 +23,7 @@ int if_test1(bool debug) {
 	list_add(list, makeToken2(IF,"if"));
 
 	list_add(list, makeToken2(INTEGER, "5"));
-	list_add(list, makeToken2(OPKEY, "<"));
+	list_add(list, makeToken2(OPKEY_RELATIONAL, "<"));
 	list_add(list, makeToken2(INTEGER, "3"));
 
 	list_add(list, makeToken2(LCURLY,"{"));
@@ -61,7 +61,7 @@ int if_test2(bool debug) {
 	list_add(l, makeToken2(IF,"if"));
 
 	list_add(l, makeToken2(ID,"x"));
-	list_add(l, makeToken2(OPKEY,"<"));
+	list_add(l, makeToken2(OPKEY_RELATIONAL,"<"));
 	list_add(l, makeToken2(INTEGER,"5"));
 
 	list_add(l, makeToken2(LCURLY,"{"));

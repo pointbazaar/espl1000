@@ -8,8 +8,8 @@
 #include "ast/util/free_ast.h"
 #include "ast/util/str_ast.h"
 
-#include "typeinference/typeinference.h"
-#include "typeinference/type_str.h"
+#include "typeinference/typeinfer.h"
+#include "typeinference/util/type_str.h"
 #include "tables/sst.h"
 
 #include "gen_c_types.h"

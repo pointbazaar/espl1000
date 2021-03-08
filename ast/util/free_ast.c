@@ -329,21 +329,9 @@ void freeType(struct Type* t) {
 	free(t);
 }
 
-void freeTypeParam(struct TypeParam* tp) {
+void freeTypeParam(struct TypeParam* tp) { free(tp); }
 
-	free(tp);
-}
-
-void freeOp(struct Op* op){
-	
-	static_assert(
-		sizeof(struct Op) 
-		<= sizeof(void*),
-		   ""
-	);
-	
-	free(op);
-}
+void freeOp(struct Op* op){ free(op); }
 
 void freeStringConst(struct StringConst* s){
 	free(s->value);

@@ -490,7 +490,10 @@ void writeSimpleType(struct SimpleType* m, FILE* file){
 	serialize_string(m->typeName, file);
 	
 	serialize_int(m->isPrimitive, file);
+	
 	serialize_int(m->isIntType, file);
+	serialize_int(m->isFloatType, file);
+	serialize_int(m->isCharType, file);
 	
 	serialize_int(m->typeParamCount, file);
 	for(int i=0;i<m->typeParamCount;i++){
@@ -517,7 +520,6 @@ void writeSubrType(struct SubrType* m, FILE* file){
 }
 // --------- OTHER ----------
 void write_ast(char* filename, struct Namespace* namespaceNode){
-	
 	
 	FILE* file = fopen(filename, "w");
 

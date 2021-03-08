@@ -28,7 +28,6 @@
 //Other
 #define ARROW 		30
 #define ANYTYPE 	31
-#define OPKEY 		32
 #define WAVE 		33
 #define SEMICOLON 	34
 //#define EQ 		35
@@ -69,5 +68,11 @@
 
 #define SWITCH	63
 #define CASE	64
+
+//operator groups
+#define OPKEY_ARITHMETIC 	80
+#define OPKEY_RELATIONAL	81
+#define OPKEY_LOGICAL		82
+#define OPKEY_BITWISE		83
 
 #endif

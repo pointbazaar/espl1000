@@ -3,7 +3,7 @@
 
 INCLUDE := -Imain -I..
 
-FLAGS := -march=native -g --std=c11 -Wall $(INCLUDE)
+FLAGS := -march=native -g --std=c11 -Wall -Werror $(INCLUDE)
 
 CALL := gcc $(FLAGS)
 
@@ -19,9 +19,15 @@ TRANSPILER_OBJS := build/transpiler.o \
 	build/structs_code_gen.o \
 	build/code_gen_util.o \
 	build/flags.o \
-	build/typeinference.o \
 	build/help.o \
-	build/gen_c_types.o \
+	build/gen_c_types.o 
+	
+OBJS_TYPEINFERENCE := build/typeinfer.o \
+	build/typeinfer_expr.o \
+	build/typeinfer_simplevar.o \
+	build/typeinfer_term.o \
+	build/typeinfer_var.o \
+	build/typeinfer_methodcall.o \
 	build/type_str.o
 	
 OBJS_TEST := build/test.o \
@@ -37,7 +43,9 @@ OBJS_TABLE := build/lvst.o \
 	build/stst.o \
 	build/symtable.o
 
-OBJS := $(AST_OBJS) $(TRANSPILER_OBJS) $(OBJS_TABLE) $(OBJS_TEST)
+OBJS := $(AST_OBJS) $(TRANSPILER_OBJS) \
+	$(OBJS_TABLE) $(OBJS_TEST) \
+	$(OBJS_TYPEINFERENCE)
 
 all: all_no_valgrind valgrind
 
@@ -117,20 +125,39 @@ build/test_stmt.o: test/util/test_statuscode.h test/util/test_statuscode.c test/
 build/test_typeinference.o: test/typeinference/test_typeinference.h test/typeinference/test_typeinference.c
 	$(CALLTEST) -c test/typeinference/test_typeinference.c -o $@
 
-SYMTABLES_H := main/tables/symtable.h main/tables/sst.h \
-			main/tables/lvst.h main/tables/stst.h
-
-build/typeinference.o: $(SYMTABLES_H) main/typeinference/typeinference.c main/typeinference/typeinference.h 
-	$(CALL) -c main/typeinference/typeinference.c -o $@
-	
-build/type_str.o: $(SYMTABLES_H) main/typeinference/type_str.c main/typeinference/type_str.h
-	$(CALL) -c main/typeinference/type_str.c -o $@
 
 build/help.o: main/util/help.c main/util/help.h
 	$(CALL) -c main/util/help.c -o $@
 
 build/gen_c_types.o: main/code_gen/gen_c_types.h main/code_gen/gen_c_types.c 
 	$(CALL) -c main/code_gen/gen_c_types.c -o $@
+
+# ----------- typeinference --------------
+
+SYMTABLES_H := main/tables/symtable.h main/tables/sst.h \
+			main/tables/lvst.h main/tables/stst.h
+
+build/typeinfer.o: $(SYMTABLES_H) main/typeinference/typeinfer.c main/typeinference/typeinfer.h 
+	$(CALL) -c main/typeinference/typeinfer.c -o $@
+	
+build/typeinfer_expr.o: $(SYMTABLES_H) main/typeinference/typeinfer_expr.c
+	$(CALL) -c main/typeinference/typeinfer_expr.c -o $@
+	
+build/typeinfer_var.o: $(SYMTABLES_H) main/typeinference/typeinfer_var.c
+	$(CALL) -c main/typeinference/typeinfer_var.c -o $@
+	
+build/typeinfer_simplevar.o: $(SYMTABLES_H) main/typeinference/typeinfer_simplevar.c
+	$(CALL) -c main/typeinference/typeinfer_simplevar.c -o $@
+	
+build/typeinfer_term.o: $(SYMTABLES_H) main/typeinference/typeinfer_term.c
+	$(CALL) -c main/typeinference/typeinfer_term.c -o $@
+
+build/typeinfer_methodcall.o: $(SYMTABLES_H) main/typeinference/typeinfer_methodcall.c
+	$(CALL) -c main/typeinference/typeinfer_methodcall.c -o $@
+	
+	
+build/type_str.o: $(SYMTABLES_H) main/typeinference/util/type_str.c main/typeinference/util/type_str.h
+	$(CALL) -c main/typeinference/util/type_str.c -o $@
 
 # ----------- the symbol tables --------------
 

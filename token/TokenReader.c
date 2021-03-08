@@ -100,8 +100,13 @@ struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		case TYPEID_PRIMITIVE_BOOL:
 		case TYPEID_PRIMITIVE_CHAR:
 		case TYPEID_PRIMITIVE_FLOAT:
+		
 		//SECTION: OPERATORNS
-		case OPKEY : 
+		case OPKEY_ARITHMETIC:
+		case OPKEY_RELATIONAL:
+		case OPKEY_LOGICAL:
+		case OPKEY_BITWISE:
+		
 		case ASSIGNOP: 
 		//SECTION: OTHER
 		case TPARAM : 

@@ -21,6 +21,8 @@ struct SimpleType {
 	
 	bool isPrimitive; //is it a primitive data type?
 	bool isIntType;
+	bool isFloatType;
+	bool isCharType;
 	
 	//the number of the type parameters
 	uint8_t typeParamCount;
