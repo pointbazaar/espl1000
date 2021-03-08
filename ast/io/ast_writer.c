@@ -494,6 +494,7 @@ void writeSimpleType(struct SimpleType* m, FILE* file){
 	serialize_int(m->isIntType, file);
 	serialize_int(m->isFloatType, file);
 	serialize_int(m->isCharType, file);
+	serialize_int(m->isBoolType, file);
 	
 	serialize_int(m->typeParamCount, file);
 	for(int i=0;i<m->typeParamCount;i++){

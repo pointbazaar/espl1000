@@ -119,12 +119,8 @@ static struct Type* infer_type_expr_primitive(struct ST* st, struct Expr2Types* 
 	
 	printf("Types: \n");
 	printf("%s, %s\n", st1->typeName, st2->typeName);
-	
-	printf("isIntType(1) = %d, isFloatType(2) = %d\n",
-		i1?1:0, f2?1:0
-	);
 	printf("op=%s\n", op->op);
-	printf("op-isArithmetic=%d\n", op->isArithmetic?1:0);
+	
 	print_exit(ERR_COULD_NOT_INFER);
 	return NULL;
 }

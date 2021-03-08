@@ -35,6 +35,7 @@ struct SimpleType* makeSimpleType2(struct TokenList* tokens, bool debug) {
 	res->isIntType   = next->kind == TYPEID_PRIMITIVE_INT;
 	res->isFloatType = next->kind == TYPEID_PRIMITIVE_FLOAT;
 	res->isCharType  = next->kind == TYPEID_PRIMITIVE_CHAR;
+	res->isBoolType  = next->kind == TYPEID_PRIMITIVE_BOOL;
 	
 	switch(next->kind){
 		

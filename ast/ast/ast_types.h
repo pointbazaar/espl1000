@@ -23,6 +23,7 @@ struct SimpleType {
 	bool isIntType;
 	bool isFloatType;
 	bool isCharType;
+	bool isBoolType;
 	
 	//the number of the type parameters
 	uint8_t typeParamCount;
