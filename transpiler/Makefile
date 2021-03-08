@@ -22,6 +22,8 @@ TRANSPILER_OBJS := build/transpiler.o \
 	build/help.o \
 	build/gen_c_types.o 
 	
+OBJS_ANALYZER := build/lv_analyzer.o
+	
 OBJS_TYPEINFERENCE := build/typeinfer.o \
 	build/typeinfer_expr.o \
 	build/typeinfer_simplevar.o \
@@ -45,7 +47,7 @@ OBJS_TABLE := build/lvst.o \
 
 OBJS := $(AST_OBJS) $(TRANSPILER_OBJS) \
 	$(OBJS_TABLE) $(OBJS_TEST) \
-	$(OBJS_TYPEINFERENCE)
+	$(OBJS_TYPEINFERENCE) $(OBJS_ANALYZER)
 
 all: all_no_valgrind valgrind
 
@@ -155,6 +157,12 @@ build/typeinfer_term.o: $(SYMTABLES_H) main/typeinference/typeinfer_term.c
 build/typeinfer_methodcall.o: $(SYMTABLES_H) main/typeinference/typeinfer_methodcall.c
 	$(CALL) -c main/typeinference/typeinfer_methodcall.c -o $@
 	
+# ----------- Analyzer ----------------
+
+build/lv_analyzer.o: $(SYMTABLES_H) main/analyzer/lv_analyzer.c
+	$(CALL) -c main/analyzer/lv_analyzer.c -o $@
+	
+# ----------- utility -----------------
 	
 build/type_str.o: $(SYMTABLES_H) main/typeinference/util/type_str.c main/typeinference/util/type_str.h
 	$(CALL) -c main/typeinference/util/type_str.c -o $@

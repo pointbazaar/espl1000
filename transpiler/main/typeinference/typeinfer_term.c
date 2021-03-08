@@ -22,16 +22,16 @@ struct Type* infer_type_term(struct ST* st, struct Term* t){
 	
 	switch(t->kind){
 		
-		case  1: return typeFromStr(st, "bool", true, false); 
-		case  2: return typeFromStr(st, "int", true, true); 
-		case  3: return typeFromStr(st, "char", true, false); 
+		case  1: return typeFromStrPrimitive(st, "bool"); 
+		case  2: return typeFromStrPrimitive(st, "int"); 
+		case  3: return typeFromStrPrimitive(st, "char"); 
 		case  4: return infer_type_methodcall(st, t->ptr.m4); 
 		case  5: return infer_type_expr(st, t->ptr.m5); 
 		case  6: return infer_type_variable(st, t->ptr.m6); 
-		case  7: return typeFromStr(st, "float", true, false); 
-		case  8: return typeFromStr(st, "String", false, false); 
-		case  9: return typeFromStr(st, "int", true, true);
-		case 10: return typeFromStr(st, "int", true, true);
+		case  7: return typeFromStrPrimitive(st, "float"); 
+		case  8: return typeFromStr(st, "String"); 
+		case  9: return typeFromStrPrimitive(st, "int");
+		case 10: return typeFromStrPrimitive(st, "int");
 		
 		default: print_exit(ERR_FATAL);
 	}

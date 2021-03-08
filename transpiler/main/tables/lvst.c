@@ -11,65 +11,12 @@
 #include "tables/lvst.h"
 #include "tables/symtable.h"
 
+#include "analyzer/lv_analyzer.h"
+
 #include "typeinference/typeinfer.h"
 #include "typeinference/util/type_str.h"
 
 #define LVST_INITIAL_CAPACITY 10
-
-// --- declare subroutines private to this compile unit ---
-//discover Local Variables
-void discoverLVStmtBlock(
-	struct ST* st, 
-	struct StmtBlock* block,
-	bool debug
-);
-
-void discoverLVStmt(
-	struct ST* st, 
-	struct Stmt* stmt,
-	bool debug
-);
-
-void discoverLVIfStmt(
-	struct ST* st, 
-	struct IfStmt* i,
-	bool debug
-);
-void discoverLVWhileStmt(
-	struct ST* st, 
-	struct WhileStmt* w,
-	bool debug
-);
-void discoverLVLoopStmt(
-	struct ST* st, 
-	struct LoopStmt* l,
-	bool debug
-);
-void discoverLVForStmt(
-	struct ST* st, 
-	struct ForStmt* l,
-	bool debug
-);
-void discoverLVAssignStmt(
-	struct ST* st, 
-	struct AssignStmt* a,
-	bool debug
-);
-void discoverLVSwitchStmt(
-	struct ST* st, 
-	struct SwitchStmt* a,
-	bool debug
-);
-void discoverLVCaseStmt(
-	struct ST* st, 
-	struct CaseStmt* c, 
-	bool debug
-);
-// --------------------------------------------------------
-//to add a row to the local variable symbol table
-//the lvst works as a set regarding the 'name' of the local variable
-void lvst_add(struct LVST* lvst, struct LVSTLine* line, bool debug);
-// --------------------------------------------------------
 
 struct LVST* makeLVST(){
 	
@@ -117,22 +64,15 @@ void lvst_fill(struct Method* subr, struct ST* st, bool debug){
 		line->isArg = true;
 		line->firstOccur = NULL;
 		
-		lvst_add(st->lvst, line, debug);
+		lvst_add(st->lvst, line);
 	}
 	
-	if(debug){
-		printf("add local variables to LVST\n");
-	}
 	//fill lvst with the local variables
 	//in the function body
-	discoverLVStmtBlock(st, subr->block, debug);
+	discoverLVStmtBlock(st, subr->block);
 	
 	if(debug){
 		lvst_print(st->lvst);
-	}
-	
-	if(debug){
-		printf("done constructing LVST\n");
 	}
 }
 
@@ -158,14 +98,7 @@ void freeLVSTLine(struct LVSTLine* l){
 	free(l);
 }
 
-void lvst_add(
-	struct LVST* lvst, 
-	struct LVSTLine* line,
-	bool debug
-){
-	if(debug){
-		printf("lvst_add(%p, %p)\n", (void*)lvst, (void*)line);
-	}
+void lvst_add(struct LVST* lvst, struct LVSTLine* line){
 	
 	//the local var symbol table works as a set
 	//with 'name' as the key
@@ -189,11 +122,10 @@ void lvst_add(
 		//resize the lvst
 		lvst->capacity *= 2;
 		
-		lvst->lines = 
-			realloc(
-				lvst->lines, 
-				sizeof(struct LVSTLine*) * (lvst->capacity)
-			);
+		const int nbytes = 
+			sizeof(struct LVSTLine*) * (lvst->capacity);
+		
+		lvst->lines = realloc(lvst->lines, nbytes);
 	}
 	
 	lvst->lines[lvst->count] = line;
@@ -206,14 +138,12 @@ struct LVSTLine* lvst_get(struct LVST* lvst, char* name){
 		
 		struct LVSTLine* line = lvst->lines[i];
 		
-		if(strcmp(line->name, name) == 0){
-			
-			return line;
-		}
+		if(strcmp(line->name, name) == 0)
+			{ return line; }
 	}
 	
-	printf("Fatal Error: %s not found in localvarsymtable\n", name);
-	exit(1);
+	printf("%s not found in localvarsymtable\n", name);
+	print_exit("Fatal Error");
 	return NULL;
 }
 
@@ -221,171 +151,15 @@ bool lvst_contains(struct LVST* lvst, char* name){
 	
 	for(int i = 0; i < lvst->count; i++){
 		
-		if(strcmp(lvst->lines[i]->name, name) == 0){ 
-			return true;
-		}
+		char* lv_name = lvst->lines[i]->name;
+		
+		if(strcmp(lv_name, name) == 0)
+			{ return true; }
 	}
 	return false;
 }
 
-// --------------------------------------------------------
-
-void discoverLVStmtBlock(
-	struct ST* st, 
-	struct StmtBlock* block,
-	bool debug
-){
-	if(debug){ printf("discoverLVStmtBlock\n"); }
-	for(int i = 0; i < block->count; i++){
-		discoverLVStmt(st, block->stmts[i], debug);
-	}
-}
-
-void discoverLVStmt(
-	struct ST* st, 
-	struct Stmt* stmt,
-	bool debug
-){
-	if(debug){ printf("discoverLVStmt\n"); }
-	
-	switch(stmt->kind){
-		
-		case 0:
-			discoverLVLoopStmt(st, stmt->ptr.m0, debug);
-			break;
-		case 2:
-			discoverLVWhileStmt(st, stmt->ptr.m2, debug);
-			break;
-		case 3:
-			discoverLVIfStmt(st, stmt->ptr.m3, debug);
-			break;
-		case 5:
-			discoverLVAssignStmt(st, stmt->ptr.m5, debug);
-			break;
-		case 7:
-			discoverLVForStmt(st, stmt->ptr.m7, debug);
-			break;
-		case 8:
-			discoverLVSwitchStmt(st, stmt->ptr.m8, debug);
-			break;
-		default:
-			//it is one of the stmt types
-			//where there are no declarations inside
-			//or simply unconsidered
-			break;
-	}
-}
-
-void discoverLVIfStmt(
-	struct ST* st, 
-	struct IfStmt* i,
-	bool debug
-){
-	if(debug){ printf("discoverLVIfStmt\n"); }
-	
-	discoverLVStmtBlock(st, i->block, debug);
-	if(i->elseBlock != NULL){
-		discoverLVStmtBlock(st, i->elseBlock, debug);
-	}
-}
-
-void discoverLVWhileStmt(
-	struct ST* st, 
-	struct WhileStmt* w,
-	bool debug
-){
-	if(debug){ printf("discoverLVWhileStmt\n"); }
-	
-	discoverLVStmtBlock(st, w->block, debug);
-}
-
-void discoverLVLoopStmt(
-	struct ST* st, 
-	struct LoopStmt* l,
-	bool debug
-){
-	if(debug){ printf("discoverLVLoopStmt\n"); }
-	
-	discoverLVStmtBlock(st, l->block, debug);
-}
-void discoverLVForStmt(
-	struct ST* st, 
-	struct ForStmt* l,
-	bool debug
-){
-	if(debug){ printf("discoverLVForStmt\n"); }
-	
-	//take the index variable as a local variable
-	struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
-	
-	strncpy(line->name, l->indexName, DEFAULT_STR_SIZE);
-	
-	line->type = typeFromStr(st, "int", true, true);
-	//we have no assignstmt here
-	line->firstOccur = NULL; 
-	line->isArg = false;;
-	
-	lvst_add(st->lvst, line, debug);
-	
-	discoverLVStmtBlock(st, l->block, debug);
-}
-void discoverLVAssignStmt(
-	struct ST* st, 
-	struct AssignStmt* a,
-	bool debug
-){
-	if(debug){ printf("discoverLVAssignStmt\n"); }
-	
-	struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
-	
-	char* varName = a->var->simpleVar->name;
-	
-	strncpy(line->name, varName, DEFAULT_STR_SIZE);
-	
-	//a->optType may be NULL, so be careful here
-	if(a->optType != NULL){
-		line->type = a->optType;
-	}else{
-		//type of variable maybe annotated
-		const bool present = lvst_contains(st->lvst, varName);
-		
-		if(present){
-			line->type = lvst_get(st->lvst, varName)->type;
-		}else{
-			line->type = infer_type_expr(st, a->expr);
-		}
-	}
-	
-	line->firstOccur = a;
-	line->isArg = false;;
-	
-	lvst_add(st->lvst, line, debug);
-}
-void discoverLVSwitchStmt(
-	struct ST* st, 
-	struct SwitchStmt* s,
-	bool debug
-){
-	if(debug){ printf("discoverLVSwitchStmt\n"); }
-	
-	for(int i=0; i < s->count_cases; i++){
-		discoverLVCaseStmt(st, s->cases[i], debug);
-	}
-}
-void discoverLVCaseStmt(
-	struct ST* st, 
-	struct CaseStmt* c, 
-	bool debug
-){
-	if(debug){ printf("discoverLVCaseStmt\n"); }
-	
-	if(c->block != NULL){
-			discoverLVStmtBlock(st, c->block, debug);
-	}
-}
-//----------------------------------
 void lvst_print(struct LVST* lvst){
-	//print LVST
 	
 	char* fmt = " |% -24s|%-5s| %-24s |\n";
 	char* linebig = "------------------------";

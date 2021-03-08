@@ -80,7 +80,7 @@ void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx){
 	gen_struct_subr_make(sd, ctx);
 	gen_struct_subr_print(sd, ctx);
 	
-	struct Type* retTypeStruct = typeFromStr(ctx->tables, sd->type->typeName, false, false);
+	struct Type* retTypeStruct = typeFromStr(ctx->tables, sd->type->typeName);
 	
 	//add subroutines to sst
 	
@@ -105,13 +105,13 @@ void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx){
 	
 	line = malloc(sizeof(struct SSTLine));
 	line->isLibC = false;
-	line->returnType = typeFromStr(ctx->tables, "int", true, true);
+	line->returnType = typeFromStrPrimitive(ctx->tables, "int");
 	sprintf(line->name, "print%s", sd->type->typeName);
 	sst_add(ctx->tables->sst, line);
 	
 	line = malloc(sizeof(struct SSTLine));
 	line->isLibC = false;
-	line->returnType = typeFromStr(ctx->tables, "int", true, true);
+	line->returnType = typeFromStrPrimitive(ctx->tables, "int");
 	sprintf(line->name, "free%s", sd->type->typeName);
 	sst_add(ctx->tables->sst, line);
 }

@@ -3,6 +3,8 @@
 
 #include "ast/ast.h"
 
-struct Type* typeFromStr(struct ST* st, char* typeName, bool isPrimitive, bool isIntType);
+struct Type* typeFromStrPrimitive(struct ST* st, char* typeName);
+
+struct Type* typeFromStr(struct ST* st, char* typeName);
 
 #endif

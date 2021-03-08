@@ -81,10 +81,10 @@ static struct Type* infer_type_expr_primitive(struct ST* st, struct Expr2Types* 
 	struct Op* op = e2t->op;
 	
 	if(op->isRelational)
-		{ return typeFromStr(st, "bool", true, false); }
+		{ return typeFromStrPrimitive(st, "bool"); }
 	
 	if(op->isLogical)
-		{ return typeFromStr(st, "bool", true, false); }
+		{ return typeFromStrPrimitive(st, "bool"); }
 		
 	const bool i1 = st1->isIntType;
 	const bool i2 = st2->isIntType;
@@ -98,23 +98,23 @@ static struct Type* infer_type_expr_primitive(struct ST* st, struct Expr2Types* 
 	if(op->isArithmetic){
 		
 		if(i1 && i2)
-			{ return typeFromStr(st, "int", true, true); }
+			{ return typeFromStrPrimitive(st, "int"); }
 	
 		if(f1 && f2)
-			{ return typeFromStr(st, "float", true, false); }
+			{ return typeFromStrPrimitive(st, "float"); }
 			
 		if((i1 && f2) || (f1 && i2))
-			{ return typeFromStr(st, "float", true, false); }
+			{ return typeFromStrPrimitive(st, "float"); }
 			
 		if(c1 && c2)
-			{ return typeFromStr(st, "char", true, false); }
+			{ return typeFromStrPrimitive(st, "char"); }
 
 		if((c1 && i2) || (i1 && c2))
-			{ return typeFromStr(st, "char", true, false); }
+			{ return typeFromStrPrimitive(st, "char"); }
 	}
 	
 	if(op->isBitwise)
-		{ return typeFromStr(st, "int", true, true); }
+		{ return typeFromStrPrimitive(st, "int"); }
 	
 	
 	printf("Types: \n");

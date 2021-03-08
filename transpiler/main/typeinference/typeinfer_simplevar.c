@@ -14,7 +14,5 @@ struct Type* infer_type_simplevar(struct ST* st, struct SimpleVar* v){
 	
 	struct LVSTLine* line = lvst_get(st->lvst, v->name);
 	
-	//if it has an index, we unwrap the type
-	
 	return unwrap_indices(line->type, v->count_indices);
 }

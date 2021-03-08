@@ -55,9 +55,12 @@ void lvst_fill(struct Method* subr, struct ST* st, bool debug);
 
 void freeLVST(struct LVST* lvst);
 
-//obtain a reference to the line for that identifier
+void lvst_add(struct LVST* lvst, struct LVSTLine* line);
+
 struct LVSTLine* lvst_get(struct LVST* lvst, char* name);
+
 bool lvst_contains(struct LVST* lvst, char* name);
 
 void lvst_print(struct LVST* lvst);
+
 #endif
