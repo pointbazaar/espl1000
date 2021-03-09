@@ -19,6 +19,10 @@ TODO (OTHER):
  
  - [ ] enable void functions, also [void] which would transpile to void* which is often used.
 
+TODO (libsmall)
+ - [ ] libsmall should be a large (haha) standard library for smalldragon
+       containing various functions, algorithms and data structures.
+
 TODO (MODULES/INCLUDE/IMPORT):
 
  - [ ] include only the headers in transpiled code that are really needed
@@ -29,9 +33,6 @@ TODO (MODULES/INCLUDE/IMPORT):
     subroutines that should exist in c code that is linked later.
     so C code can be called in smalldragon files.
     
- - [ ] smalldragon should 'know' some basic C functions, so they can be used for 
-       type inference (e.g. those in <math.h>)
-       
  - [ ] provide a facility to include other .dg files directly into the .c output
     
 
