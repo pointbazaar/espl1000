@@ -3,8 +3,13 @@
 #include <string.h>
 
 #include "tables/sst.h"
+#include "tables/symtable.h"
+
+#include "typeinference/util/type_str.h"
 
 #define SST_INITIAL_CAPACITY 10
+
+static void sst_resize(struct SST* sst);
 
 struct SST* makeSST(){
 
@@ -20,6 +25,7 @@ struct SST* makeSST(){
 void sst_clear(struct SST* sst){
 
 	for(int i = 0; i < sst->count; i++){
+		
 		freeSSTLine(sst->lines[i]);
 	}
 	free(sst->lines);
@@ -44,14 +50,53 @@ void sst_fill(struct SST* sst, struct Namespace* ns, bool debug){
 		line->isLibC = false;
 		line->returnType = m->returnType;
 		
-		if(debug){
-			printf("\tadding '%s' to subroutine symbol table\n", line->name);
-		}
+		//DEBUG
+		//printf("\tadding '%s' to subroutine symbol table\n", line->name);
 		
 		sst_add(sst, line);
 	}
 	
 	if(debug){ sst_print(sst); }
+}
+
+void sst_prefill(struct ST* st, struct SST* sst){
+
+	//TODO: 
+	
+	//fills the SST with some basic
+	//function signatures from LibC,
+	//such that those functions can be used
+	//with type inference
+	
+	struct Type* mf = typeFromStrPrimitive(st, "float");
+	//struct Type* mi = typeFromStrPrimitive(st, "int");
+	
+	sst_add(sst, makeSSTLine("sin", mf, true));
+	sst_add(sst, makeSSTLine("cos", mf, true));
+	sst_add(sst, makeSSTLine("tan", mf, true));
+	
+	sst_add(sst, makeSSTLine("asin", mf, true));
+	sst_add(sst, makeSSTLine("acos", mf, true));
+	sst_add(sst, makeSSTLine("atan", mf, true));
+	
+	sst_add(sst, makeSSTLine("sinh", mf, true));
+	sst_add(sst, makeSSTLine("cosh", mf, true));
+	sst_add(sst, makeSSTLine("tanh", mf, true));
+	
+	sst_add(sst, makeSSTLine("exp", mf, true));
+	sst_add(sst, makeSSTLine("log", mf, true));
+	sst_add(sst, makeSSTLine("log10", mf, true));
+	
+	sst_add(sst, makeSSTLine("pow", mf, true));
+	sst_add(sst, makeSSTLine("sqrt", mf, true));
+	
+	sst_add(sst, makeSSTLine("ceil", mf, true));
+	sst_add(sst, makeSSTLine("floor", mf, true));
+	
+	sst_add(sst, makeSSTLine("fabs", mf, true));
+	
+	sst_add(sst, makeSSTLine("fmax", mf, true));
+	sst_add(sst, makeSSTLine("fmin", mf, true));
 }
 
 void sst_print(struct SST* sst){
@@ -76,6 +121,18 @@ void freeSST(struct SST* sst){
 	free(sst);
 }
 
+struct SSTLine* makeSSTLine(char* name, struct Type* type, bool isLibC){
+
+	struct SSTLine* line = make(SSTLine);
+	
+	strncpy(line->name, name, DEFAULT_STR_SIZE);
+	
+	line->returnType   = type;
+	line->isLibC       = isLibC;
+	
+	return line;
+}
+
 void freeSSTLine(struct SSTLine* l){
 	
 	free(l);
@@ -83,37 +140,17 @@ void freeSSTLine(struct SSTLine* l){
 
 void sst_add(struct SST* sst, struct SSTLine* line){
 	
-	//the subroutine symbol table works as a set
-	//with 'name' as the key
-	
-	for(int i = 0; i < sst->count; i++){
+	if(sst_contains(sst, line->name)){
 		
-		struct SSTLine* current_line = sst->lines[i];
+		char* ERR_SAME_NAME = 
+			"Error: 2 subroutines with same name %s\n";
 		
-		if(strcmp(current_line->name, line->name) == 0){
-			
-			//this subroutine is already present.
-			//This is not supposed to happen and means
-			//that 2 subroutines exist with the same name.
-			//This is a fatal error
-			printf("Error: 2 subroutines with name %s\n", line->name);
-			exit(1);
-			return;
-		}
+		printf(ERR_SAME_NAME, line->name);
+		exit(1);
+		return;
 	}
 	
-	//add the line
-	if(sst->count >= sst->capacity){
-		
-		//resize
-		sst->capacity *= 2;
-		
-		sst->lines = 
-			realloc(
-				sst->lines, 
-				sizeof(struct SSTLine*) * (sst->capacity)
-			);
-	}
+	sst_resize(sst);
 	
 	sst->lines[sst->count] = line;
 	sst->count += 1;
@@ -131,7 +168,7 @@ struct SSTLine* sst_get(struct SST* sst, char* name){
 		}
 	}
 	
-	printf("Fatal Error: %s not found in subroutine symbol table\n", name);
+	printf("Fatal Error: '%s' not found in subroutine symbol table\n", name);
 	exit(1);
 	return NULL;
 }
@@ -142,4 +179,17 @@ bool sst_contains(struct SST* sst, char* name){
 		if(strcmp(sst->lines[i]->name, name) == 0){return true;}
 	}
 	return false;
+}
+
+static void sst_resize(struct SST* sst){
+	
+	if(sst->count >= sst->capacity){
+		
+		sst->capacity *= 2;
+		
+		const int nbytes = 
+			sizeof(struct SSTLine*) * (sst->capacity);
+		
+		sst->lines = realloc(sst->lines, nbytes);
+	}
 }

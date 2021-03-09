@@ -10,17 +10,21 @@
 
 struct ST* makeST(){
 
-	struct ST* st = malloc(sizeof(struct ST));
+	struct ST* st = make(ST);
 	
 	st->inferredTypesCapacity = 100;
 	st->inferredTypesCount = 0;
 	
-	st->inferredTypes = 
-		malloc(sizeof(struct Type*) * st->inferredTypesCapacity);
+	const int nbytes = 
+		sizeof(struct Type*) * st->inferredTypesCapacity;
+	
+	st->inferredTypes = malloc(nbytes);
 	
 	st->sst  = makeSST();
 	st->stst = makeSTST();
 	st->lvst = makeLVST();
+	
+	sst_prefill(st, st->sst);
 	
 	return st;
 }

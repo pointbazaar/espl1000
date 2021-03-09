@@ -147,6 +147,7 @@ void transpileAST(struct AST* ast, struct Ctx* ctx){
 void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	
 	sst_clear(ctx->tables->sst);
+	sst_prefill(ctx->tables, ctx->tables->sst);
 	sst_fill(ctx->tables->sst, ns, ctx->flags->debug);
 	
 	stst_clear(ctx->tables->stst);
