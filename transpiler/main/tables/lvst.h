@@ -17,10 +17,8 @@ struct LVST {
 };
 
 struct LVSTLine {
-	//a line in the 'local variable symbol table'
-	//name, type, struct AssignStmt* firstOccur
+	//a line in the LVST
 	
-	//local variable identifier
 	char name[DEFAULT_STR_SIZE]; 
 	
 	//a reference to the type of the variable
@@ -39,7 +37,6 @@ struct LVSTLine {
 	//or not.
 	//because arguments already have a type declared
 	//(for the c code generation)
-	
 	
 	//is it an argument
 	bool isArg;

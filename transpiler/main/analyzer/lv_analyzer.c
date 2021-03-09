@@ -49,25 +49,23 @@ static void discoverLVIfStmt(struct ST* st, struct IfStmt* i){
 		{ discoverLVStmtBlock(st, i->elseBlock); }
 }
 
-void discoverLVWhileStmt(struct ST* st, struct WhileStmt* w){
+static void discoverLVWhileStmt(struct ST* st, struct WhileStmt* w){
 	
 	discoverLVStmtBlock(st, w->block);
 }
 
-void discoverLVLoopStmt(struct ST* st, struct LoopStmt* l){
+static void discoverLVLoopStmt(struct ST* st, struct LoopStmt* l){
 	
 	discoverLVStmtBlock(st, l->block);
 }
 
-void discoverLVForStmt(struct ST* st, struct ForStmt* l){
+static void discoverLVForStmt(struct ST* st, struct ForStmt* l){
 	
-	//take the index variable as a local variable
-	struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
+	struct LVSTLine* line = make(LVSTLine);
 	
 	strncpy(line->name, l->indexName, DEFAULT_STR_SIZE);
 	
 	line->type = typeFromStrPrimitive(st, "int");
-	
 	
 	line->firstOccur = NULL; 
 	line->isArg = false;
@@ -76,38 +74,39 @@ void discoverLVForStmt(struct ST* st, struct ForStmt* l){
 	
 	discoverLVStmtBlock(st, l->block);
 }
-void discoverLVAssignStmt(struct ST* st, struct AssignStmt* a){
-	
-	struct LVSTLine* line = make(LVSTLine);
+
+static void discoverLVAssignStmt(struct ST* st, struct AssignStmt* a){
 	
 	char* varName = a->var->simpleVar->name;
 	
+	if(lvst_contains(st->lvst, varName)){ return; }
+	
+	struct LVSTLine* line = make(LVSTLine);
+	
+	line->isArg = false;
+	line->firstOccur = a;
+	
 	strncpy(line->name, varName, DEFAULT_STR_SIZE);
 	
-	if(a->optType != NULL){
-		line->type = a->optType;
+	if(a->optType != NULL){ 
+		
+		line->type = a->optType; 
+		
 	}else{
 		
-		const bool present = lvst_contains(st->lvst, varName);
-		
-		if(present){
-			line->type = lvst_get(st->lvst, varName)->type;
-		}else{
-			line->type = infer_type_expr(st, a->expr);
-		}
+		line->type = infer_type_expr(st, a->expr);
 	}
-	
-	line->firstOccur = a;
-	line->isArg = false;;
 	
 	lvst_add(st->lvst, line);
 }
-void discoverLVSwitchStmt(struct ST* st, struct SwitchStmt* s){
+
+static void discoverLVSwitchStmt(struct ST* st, struct SwitchStmt* s){
 	
 	for(int i=0; i < s->count_cases; i++)
 		{ discoverLVCaseStmt(st, s->cases[i]); }
 }
-void discoverLVCaseStmt(struct ST* st, struct CaseStmt* c){
+
+static void discoverLVCaseStmt(struct ST* st, struct CaseStmt* c){
 	
 	if(c->block != NULL)
 		{ discoverLVStmtBlock(st, c->block); }
