@@ -15,6 +15,8 @@
 #include "gen_c_types.h"
 #include "structs_code_gen.h"
 
+#include "analyzer/fn_analyzer.h"
+
 #include "tables/lvst.h"
 #include "tables/sst.h"
 #include "tables/sst_prefill.h"
@@ -138,6 +140,11 @@ void transpileAST(struct AST* ast, struct Ctx* ctx){
 		fprintf(ctx->file, "#include <math.h>\n");
 		fprintf(ctx->file, "#include <inttypes.h>\n");
 	}
+	
+	sst_clear(ctx->tables->sst);
+	sst_prefill(ctx->tables, ctx->tables->sst);
+	
+	analyze_functions(ctx->tables, ast);
 
 	for(int i=0; i < ast->count_namespaces; i++){
 
@@ -147,11 +154,8 @@ void transpileAST(struct AST* ast, struct Ctx* ctx){
 
 void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	
-	sst_clear(ctx->tables->sst);
-	sst_prefill(ctx->tables, ctx->tables->sst);
-	sst_fill(ctx->tables->sst, ns, ctx->flags->debug);
 	
-	stst_clear(ctx->tables->stst);
+	sst_fill(ctx->tables->sst, ns, ctx->flags->debug);
 	stst_fill(ctx->tables->stst, ns, ctx->flags->debug);
 	
 	ctx->flags->has_main_fn = sst_contains(ctx->tables->sst, "main");

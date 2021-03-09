@@ -20,9 +20,11 @@ TRANSPILER_OBJS := build/transpiler.o \
 	build/code_gen_util.o \
 	build/flags.o \
 	build/help.o \
-	build/gen_c_types.o 
+	build/gen_c_types.o \
+	build/visitor.o
 	
-OBJS_ANALYZER := build/lv_analyzer.o
+OBJS_ANALYZER := build/lv_analyzer.o \
+	build/fn_analyzer.o
 	
 OBJS_TYPEINFERENCE := build/typeinfer.o \
 	build/typeinfer_expr.o \
@@ -162,6 +164,14 @@ build/typeinfer_methodcall.o: $(SYMTABLES_H) main/typeinference/typeinfer_method
 
 build/lv_analyzer.o: $(SYMTABLES_H) main/analyzer/lv_analyzer.c
 	$(CALL) -c main/analyzer/lv_analyzer.c -o $@
+	
+build/fn_analyzer.o: $(SYMTABLES_H) main/analyzer/fn_analyzer.c
+	$(CALL) -c main/analyzer/fn_analyzer.c -o $@
+	
+# ----------- Visitor -----------------
+
+build/visitor.o: $(SYMTABLES_H) main/visitor/visitor.c
+	$(CALL) -c main/visitor/visitor.c -o $@
 	
 # ----------- utility -----------------
 	
