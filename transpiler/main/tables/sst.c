@@ -59,46 +59,6 @@ void sst_fill(struct SST* sst, struct Namespace* ns, bool debug){
 	if(debug){ sst_print(sst); }
 }
 
-void sst_prefill(struct ST* st, struct SST* sst){
-
-	//TODO: 
-	
-	//fills the SST with some basic
-	//function signatures from LibC,
-	//such that those functions can be used
-	//with type inference
-	
-	struct Type* mf = typeFromStrPrimitive(st, "float");
-	//struct Type* mi = typeFromStrPrimitive(st, "int");
-	
-	sst_add(sst, makeSSTLine("sin", mf, true));
-	sst_add(sst, makeSSTLine("cos", mf, true));
-	sst_add(sst, makeSSTLine("tan", mf, true));
-	
-	sst_add(sst, makeSSTLine("asin", mf, true));
-	sst_add(sst, makeSSTLine("acos", mf, true));
-	sst_add(sst, makeSSTLine("atan", mf, true));
-	
-	sst_add(sst, makeSSTLine("sinh", mf, true));
-	sst_add(sst, makeSSTLine("cosh", mf, true));
-	sst_add(sst, makeSSTLine("tanh", mf, true));
-	
-	sst_add(sst, makeSSTLine("exp", mf, true));
-	sst_add(sst, makeSSTLine("log", mf, true));
-	sst_add(sst, makeSSTLine("log10", mf, true));
-	
-	sst_add(sst, makeSSTLine("pow", mf, true));
-	sst_add(sst, makeSSTLine("sqrt", mf, true));
-	
-	sst_add(sst, makeSSTLine("ceil", mf, true));
-	sst_add(sst, makeSSTLine("floor", mf, true));
-	
-	sst_add(sst, makeSSTLine("fabs", mf, true));
-	
-	sst_add(sst, makeSSTLine("fmax", mf, true));
-	sst_add(sst, makeSSTLine("fmin", mf, true));
-}
-
 void sst_print(struct SST* sst){
 	
 	printf("Subroutine Symbol Table (SST)\n");

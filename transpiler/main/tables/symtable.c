@@ -7,6 +7,7 @@
 #include "sst.h"
 #include "stst.h"
 #include "symtable.h"
+#include "sst_prefill.h"
 
 struct ST* makeST(){
 

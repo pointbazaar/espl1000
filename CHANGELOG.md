@@ -3,9 +3,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
+
+## [v0.1.5]
 - Added new Assignment Operators: &=, |=, >>=, <<=
 - remove '-stdout' flag
 - separate the local variable analyzer from the LVST into lv_analyzer.c
+- make several libC function signatures available for smalldragon type inference. 
 
 ## [v0.1.4]
 - Added Support for 'continue' Statement.

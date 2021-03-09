@@ -42,6 +42,7 @@ OBJS_TEST := build/test.o \
 	
 OBJS_TABLE := build/lvst.o \
 	build/sst.o \
+	build/sst_prefill.o \
 	build/stst.o \
 	build/symtable.o
 
@@ -171,6 +172,10 @@ build/type_str.o: $(SYMTABLES_H) main/typeinference/util/type_str.c main/typeinf
 
 build/sst.o: main/tables/sst.c main/tables/sst.h
 	$(CALL) -c main/tables/sst.c -o $@
+
+build/sst_prefill.o: main/tables/sst_prefill.c main/tables/sst_prefill.h
+	$(CALL) -c main/tables/sst_prefill.c -o $@
+
 
 build/lvst.o: main/tables/lvst.c main/tables/lvst.h
 	$(CALL) -c main/tables/lvst.c -o $@

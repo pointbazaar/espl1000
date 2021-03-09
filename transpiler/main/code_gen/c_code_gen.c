@@ -17,6 +17,7 @@
 
 #include "tables/lvst.h"
 #include "tables/sst.h"
+#include "tables/sst_prefill.h"
 #include "tables/stst.h"
 #include "tables/symtable.h"
 
