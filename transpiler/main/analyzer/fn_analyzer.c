@@ -9,7 +9,7 @@
 #include "tables/lvst.h"
 #include "tables/symtable.h"
 
-#include "visitor/visitor.h"
+#include "ast/visitor/visitor.h"
 
 #include "fn_analyzer.h"
 

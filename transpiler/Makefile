@@ -12,7 +12,8 @@ CALLTEST := $(CALL) -Itest
 AST_OBJS := ../ast/build/ast_reader.o \
 		../ast/build/free_ast.o \
 		../ast/build/str_ast.o \
-		../ast/build/serialize.o 
+		../ast/build/serialize.o \
+		../ast/build/visitor.o
 
 TRANSPILER_OBJS := build/transpiler.o \
 	build/c_code_gen.o \
@@ -20,8 +21,7 @@ TRANSPILER_OBJS := build/transpiler.o \
 	build/code_gen_util.o \
 	build/flags.o \
 	build/help.o \
-	build/gen_c_types.o \
-	build/visitor.o
+	build/gen_c_types.o 
 	
 OBJS_ANALYZER := build/lv_analyzer.o \
 	build/fn_analyzer.o
@@ -168,11 +168,6 @@ build/lv_analyzer.o: $(SYMTABLES_H) main/analyzer/lv_analyzer.c
 	
 build/fn_analyzer.o: $(SYMTABLES_H) main/analyzer/fn_analyzer.c
 	$(CALL) -c main/analyzer/fn_analyzer.c -o $@
-	
-# ----------- Visitor -----------------
-
-build/visitor.o: $(SYMTABLES_H) main/visitor/visitor.c
-	$(CALL) -c main/visitor/visitor.c -o $@
 	
 # ----------- utility -----------------
 	

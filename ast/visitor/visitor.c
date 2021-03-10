@@ -1,6 +1,5 @@
 
-#include "ast/ast.h"
-#include "tables/symtable.h"
+#include "../ast.h"
 #include "visitor.h"
 
 static void visitStructMember(struct StructMember* s, VISITOR);

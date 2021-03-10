@@ -11,7 +11,7 @@
 
 #include "analyzer/lv_analyzer.h"
 
-#include "visitor/visitor.h"
+#include "ast/visitor/visitor.h"
 
 static void lv_for_stmt   (struct ST* st, struct ForStmt* l);
 static void lv_assign_stmt(struct ST* st, struct AssignStmt* a);
