@@ -3,16 +3,8 @@
 #include "tables/symtable.h"
 #include "visitor.h"
 
-#define VISITOR void(*visitor)(void*, enum NODE_TYPE)
-
-static void visitNamespace   (struct Namespace* n,  VISITOR);
-
-static void visitMethod      (struct Method* m,     VISITOR);
-static void visitStructDecl  (struct StructDecl* s, VISITOR);
 static void visitStructMember(struct StructMember* s, VISITOR);
 
-
-static void visitStmtBlock   (struct StmtBlock* s,  VISITOR);
 static void visitStmt        (struct Stmt* s,       VISITOR);
 
 static void visitIfStmt      (struct IfStmt* i,     VISITOR);
@@ -23,7 +15,7 @@ static void visitAssignStmt  (struct AssignStmt* a, VISITOR);
 static void visitSwitchStmt  (struct SwitchStmt* s, VISITOR);
 static void visitCaseStmt    (struct CaseStmt* c,   VISITOR);
 
-void visit_ast(struct AST* ast, VISITOR){
+void visitAST(struct AST* ast, VISITOR){
 
 	for(int i = 0; i < ast->count_namespaces; i++){
 	
@@ -31,9 +23,7 @@ void visit_ast(struct AST* ast, VISITOR){
 	}
 }
 
-//----------- static functions ---------------
-
-static void visitNamespace(struct Namespace* n, VISITOR){
+void visitNamespace(struct Namespace* n, VISITOR){
 
 	visitor(n, NODE_NAMESPACE);
 	
@@ -44,7 +34,7 @@ static void visitNamespace(struct Namespace* n, VISITOR){
 		{ visitMethod(n->methods[i], visitor); }
 }
 
-static void visitStructDecl(struct StructDecl* s, VISITOR){
+void visitStructDecl(struct StructDecl* s, VISITOR){
 	
 	visitor(s, NODE_STRUCTDECL);
 	
@@ -52,24 +42,26 @@ static void visitStructDecl(struct StructDecl* s, VISITOR){
 		{ visitStructMember(s->members[i], visitor); }
 }
 
-static void visitStructMember(struct StructMember* s, VISITOR){
-	
-	visitor(s, NODE_STRUCTMEMBER);
-}
-
-static void visitMethod(struct Method* m, VISITOR){
+void visitMethod(struct Method* m, VISITOR){
 	
 	visitor(m, NODE_METHOD);
 
 	visitStmtBlock(m->block, visitor);
 }
 
-static void visitStmtBlock(struct StmtBlock* b, VISITOR){
+void visitStmtBlock(struct StmtBlock* b, VISITOR){
 	
 	visitor(b, NODE_STMTBLOCK);
 	
 	for(int i = 0; i < b->count; i++)
 		{ visitStmt(b->stmts[i], visitor); }
+}
+
+//----------- static functions ---------------
+
+static void visitStructMember(struct StructMember* s, VISITOR){
+	
+	visitor(s, NODE_STRUCTMEMBER);
 }
 
 static void visitStmt(struct Stmt* s, VISITOR){

@@ -29,7 +29,7 @@ static void analyze_callees(struct ST* st, struct AST* ast){
 	//DEBUG
 	printf("analyze_callees\n");
 	
-	visit_ast(ast, myvisitor_callees);
+	visitAST(ast, myvisitor_callees);
 }
 
 static void analyze_callers(struct ST* st, struct AST* ast){

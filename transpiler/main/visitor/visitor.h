@@ -13,6 +13,8 @@
 //an enum so that the handler can find out which
 //node type it was called on
 
+#define VISITOR void(*visitor)(void*, enum NODE_TYPE)
+
 enum NODE_TYPE {
 	NODE_AST,
 	NODE_NAMESPACE,
@@ -45,6 +47,13 @@ enum NODE_TYPE {
 	NODE_STRINGCONST,
 };
 
-void visit_ast(struct AST* ast,  void(*visitor)(void*, enum NODE_TYPE));
+void visitAST         (struct AST* ast,      VISITOR);
+
+void visitNamespace   (struct Namespace* n,  VISITOR);
+
+void visitMethod      (struct Method* m,     VISITOR);
+void visitStructDecl  (struct StructDecl* s, VISITOR);
+
+void visitStmtBlock   (struct StmtBlock* s,  VISITOR);
 
 #endif
