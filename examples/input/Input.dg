@@ -1,4 +1,4 @@
-fn main () ~> uint {
+fn main () ~> int {
 	
 	char x = getchar();
 	

@@ -3,7 +3,7 @@ struct MyStruct {
 	int b;
 }
 
-fn main () ~> uint {
+fn main () ~> int {
 	MyStruct s = newMyStruct(); 
 
 	//s.a = 1; 

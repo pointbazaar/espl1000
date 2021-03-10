@@ -1,5 +1,5 @@
 
-fn main ()~> uint {
+fn main ()~> int {
 
 	uint x = 0;
 	while x < 4 {

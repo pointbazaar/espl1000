@@ -1,4 +1,4 @@
-fn main ()~> uint {
+fn main ()~> int {
 	uint x = 55;
 
 	printf("Hii %d\n", x);

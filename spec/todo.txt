@@ -1,5 +1,4 @@
 TODO (BUGS):
- - [ ] fix: 'uint' transpiles to 'int'
  - [ ] struct 'CaseStmt' is missing options for HexConst, BinConst
 
 TODO (OTHER):

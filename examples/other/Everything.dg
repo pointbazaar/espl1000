@@ -19,7 +19,7 @@
 [x] Local Variable Type Inference
 */
 
-fn main () ~> uint {
+fn main () ~> int {
 
 	[int] arr = malloc(4*4);
 	arr[0] = 1;

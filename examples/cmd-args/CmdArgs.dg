@@ -1,4 +1,4 @@
-fn main(uint argc, [String] argv) ~> uint{
+fn main(int argc, [String] argv) ~> int {
 	
 	printf("%s\n", argv[1]);
 	return 0;

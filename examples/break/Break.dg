@@ -1,4 +1,3 @@
-
 fn main () ~> int {
 
 	loop 3 {

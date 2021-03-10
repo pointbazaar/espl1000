@@ -144,20 +144,29 @@ bool isIntType(struct Type* t){
 	return s->isIntType;
 }
 char* translateIntType(char* type){
-	char* types_def_width[] = 
+	
+	char* types[] = 
 	{"int8","int16","int32","int64",
-	"uint8","uint16","uint32","uint64"};
+	"uint8","uint16","uint32","uint64",
+	"int","uint"
+	};
 	
 	char* map[] = 
 	{"int8_t","int16_t","int32_t","int64_t",
-	"uint8_t","uint16_t","uint32_t","uint64_t"};
+	"uint8_t","uint16_t","uint32_t","uint64_t",
+	"int", "uint32_t"
+	};
 	
-	for(int i=0;i < 8; i++){
-		if(strcmp(type, types_def_width[i]) == 0){ 
+	for(int i=0;i < 10; i++){
+		if(strcmp(type, types[i]) == 0){ 
 			return map[i]; 
 		}
 	}
-	return "int";
+	
+	printf("[Transpiler Module][Error]\n");
+	printf(" in translateIntType\n");
+	printf("%s\n", type);
+	exit(1);
 }
 //-----------------------------------
 char* typeNameToCFormatStr(char* typeName){

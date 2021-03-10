@@ -1,4 +1,4 @@
-fn main() ~> uint {
+fn main() ~> int {
 
 	a = true;
 	a = false;
