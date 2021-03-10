@@ -46,7 +46,8 @@ OBJS_TABLE := build/lvst.o \
 	build/sst.o \
 	build/sst_prefill.o \
 	build/stst.o \
-	build/symtable.o
+	build/symtable.o \
+	build/cc.o
 
 OBJS := $(AST_OBJS) $(TRANSPILER_OBJS) \
 	$(OBJS_TABLE) $(OBJS_TEST) \
@@ -186,7 +187,6 @@ build/sst.o: main/tables/sst.c main/tables/sst.h
 build/sst_prefill.o: main/tables/sst_prefill.c main/tables/sst_prefill.h
 	$(CALL) -c main/tables/sst_prefill.c -o $@
 
-
 build/lvst.o: main/tables/lvst.c main/tables/lvst.h
 	$(CALL) -c main/tables/lvst.c -o $@
 
@@ -195,3 +195,6 @@ build/stst.o: main/tables/stst.c main/tables/stst.h
 	
 build/symtable.o: main/tables/symtable.c main/tables/symtable.h
 	$(CALL) -c main/tables/symtable.c -o $@
+
+build/cc.o: main/tables/cc.c main/tables/cc.h
+	$(CALL) -c main/tables/cc.c -o $@

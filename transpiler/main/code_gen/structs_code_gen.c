@@ -84,34 +84,23 @@ void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx){
 	
 	//add subroutines to sst
 	
-	struct SSTLine* line;
-	line = malloc(sizeof(struct SSTLine));
-	line->isLibC = false;
-	line->returnType = retTypeStruct;
+	struct SSTLine* line = makeSSTLine("_", retTypeStruct, false);
 	sprintf(line->name, "new%s", sd->type->typeName);
 	sst_add(ctx->tables->sst, line);
 	
-	line = malloc(sizeof(struct SSTLine));
-	line->isLibC = false;
-	line->returnType = retTypeStruct;
+	line = makeSSTLine("_", retTypeStruct, false);
 	sprintf(line->name, "copy%s", sd->type->typeName);
 	sst_add(ctx->tables->sst, line);
 	
-	line = malloc(sizeof(struct SSTLine));
-	line->isLibC = false;
-	line->returnType = retTypeStruct;
+	line = makeSSTLine("_", retTypeStruct, false);
 	sprintf(line->name, "make%s", sd->type->typeName);
 	sst_add(ctx->tables->sst, line);
 	
-	line = malloc(sizeof(struct SSTLine));
-	line->isLibC = false;
-	line->returnType = typeFromStrPrimitive(ctx->tables, "int");
+	line = makeSSTLine("_", typeFromStrPrimitive(ctx->tables, "int"), false);
 	sprintf(line->name, "print%s", sd->type->typeName);
 	sst_add(ctx->tables->sst, line);
 	
-	line = malloc(sizeof(struct SSTLine));
-	line->isLibC = false;
-	line->returnType = typeFromStrPrimitive(ctx->tables, "int");
+	line = makeSSTLine("_", typeFromStrPrimitive(ctx->tables, "int"), false);
 	sprintf(line->name, "free%s", sd->type->typeName);
 	sst_add(ctx->tables->sst, line);
 }

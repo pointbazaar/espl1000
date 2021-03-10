@@ -13,7 +13,7 @@ static void sst_resize(struct SST* sst);
 
 struct SST* makeSST(){
 
-	struct SST* sst = malloc(sizeof(struct SST));
+	struct SST* sst = make(SST);
 	
 	sst->count = 0;
 	sst->capacity = SST_INITIAL_CAPACITY;
@@ -44,11 +44,7 @@ void sst_fill(struct SST* sst, struct Namespace* ns, bool debug){
 		
 		struct Method* m = ns->methods[i];
 		
-		struct SSTLine* line = malloc(sizeof(struct SSTLine));
-		
-		strncpy(line->name, m->name, DEFAULT_STR_SIZE);
-		line->isLibC = false;
-		line->returnType = m->returnType;
+		struct SSTLine* line = makeSSTLine(m->name, m->returnType, false);
 		
 		//DEBUG
 		//printf("\tadding '%s' to subroutine symbol table\n", line->name);
@@ -89,12 +85,16 @@ struct SSTLine* makeSSTLine(char* name, struct Type* type, bool isLibC){
 	
 	line->returnType   = type;
 	line->isLibC       = isLibC;
+	line->cc           = make_cc();
 	
 	return line;
 }
 
 void freeSSTLine(struct SSTLine* l){
 	
+	if(l->cc != NULL)
+		{ free_cc(l->cc); }
+		
 	free(l);
 }
 

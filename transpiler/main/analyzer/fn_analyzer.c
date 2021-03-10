@@ -13,47 +13,39 @@
 
 #include "fn_analyzer.h"
 
-static void analyze_callees(struct ST* st, struct AST* ast);
-static void analyze_callers(struct ST* st, struct AST* ast);
+void myvisitor(void* node, enum NODE_TYPE type);
 
-void myvisitor_callees(void* node, enum NODE_TYPE type);
+static struct ST* myst;
 
 void analyze_functions(struct ST* st, struct AST* ast){
 
-	analyze_callees(st, ast);
-	analyze_callers(st, ast);
-}
+	myst = st;
 
-static void analyze_callees(struct ST* st, struct AST* ast){
+	printf("analyze_callees and callers\n");
 
-	//DEBUG
-	printf("analyze_callees\n");
-	
-	visitAST(ast, myvisitor_callees);
-}
-
-static void analyze_callers(struct ST* st, struct AST* ast){
-	
-	//TODO
-	//DEBUG
-	printf("analyze_callers\n");
+	visitAST(ast, myvisitor);
 }
 
 //---------------------------------------------------------
 
 static struct Method* currentFn = NULL;
 
-void myvisitor_callees(void* node, enum NODE_TYPE type){
+void myvisitor(void* node, enum NODE_TYPE type){
 	
 	if(type == NODE_METHOD){ 
 		currentFn = (struct Method*) node;
 	}
 	
-	//calls occur in struct MethodCall
-	if(type == NODE_METHODCALL){ return; }
+	if(type != NODE_METHODCALL){ return; }
 	
-	//struct MethodCall* m = (struct MethodCall*) node;
+	struct MethodCall* m = (struct MethodCall*) node;
 	
-	//TODO: extract the callee
+	struct SSTLine* line;
 	
+	line = sst_get(myst->sst, currentFn->name);
+	cc_add_callee(line->cc, m->methodName);
+	
+	
+	line = sst_get(myst->sst, m->methodName);
+	cc_add_caller(line->cc, currentFn->name);
 }

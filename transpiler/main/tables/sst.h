@@ -5,6 +5,7 @@
 
 #include "ast/ast.h"
 
+#include "tables/cc.h"
 #include "tables/symtable.h"
 
 struct SSTLine {
@@ -16,9 +17,11 @@ struct SSTLine {
 	//a reference to the type being returned
 	struct Type* returnType; 
 	
-	//if this function
-	//comes from the C Standard Library
+	//if it is from libC
 	bool isLibC;
+	
+	//callees and callers
+	struct CC* cc; //may be NULL
 };
 
 struct SST {
