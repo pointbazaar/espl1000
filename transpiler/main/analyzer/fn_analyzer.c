@@ -16,7 +16,7 @@
 static void analyze_callees(struct ST* st, struct AST* ast);
 static void analyze_callers(struct ST* st, struct AST* ast);
 
-void myvisitor_callees(void* node, char* name);
+void myvisitor_callees(void* node, enum NODE_TYPE type);
 
 void analyze_functions(struct ST* st, struct AST* ast){
 
@@ -43,14 +43,14 @@ static void analyze_callers(struct ST* st, struct AST* ast){
 
 static struct Method* currentFn = NULL;
 
-void myvisitor_callees(void* node, char* name){
+void myvisitor_callees(void* node, enum NODE_TYPE type){
 	
-	if(strcmp(name, "Method") == 0){ 
+	if(type == NODE_METHOD){ 
 		currentFn = (struct Method*) node;
 	}
 	
 	//calls occur in struct MethodCall
-	if(strcmp(name, "MethodCall") != 0){ return; }
+	if(type == NODE_METHODCALL){ return; }
 	
 	//struct MethodCall* m = (struct MethodCall*) node;
 	

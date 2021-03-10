@@ -9,7 +9,42 @@
  * as a string and can then only handle the cases 
  * of interest.
  */
+ 
+//an enum so that the handler can find out which
+//node type it was called on
 
-void visit_ast(struct AST* ast,  void(*visitor)(void*, char*));
+enum NODE_TYPE {
+	NODE_AST,
+	NODE_NAMESPACE,
+	
+	NODE_STRUCTDECL,
+	NODE_STRUCTMEMBER,
+	NODE_METHOD,
+	
+	NODE_STMTBLOCK,
+	NODE_STMT,
+	
+	NODE_ASSIGNSTMT,
+	NODE_IFSTMT,
+	NODE_WHILESTMT,
+	NODE_FORSTMT,
+	NODE_LOOPSTMT,
+	NODE_SWITCHSTMT,
+	NODE_CASESTMT,
+	NODE_BREAKSTMT,
+	NODE_CONTINUESTMT,
+	
+	NODE_METHODCALL,
+	NODE_EXPR,
+	NODE_TERM,
+	
+	NODE_INTCONST,
+	NODE_FLOATCONST,
+	NODE_BINCONST,
+	NODE_HEXCONST,
+	NODE_STRINGCONST,
+};
+
+void visit_ast(struct AST* ast,  void(*visitor)(void*, enum NODE_TYPE));
 
 #endif

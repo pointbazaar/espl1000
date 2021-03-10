@@ -3,7 +3,7 @@
 #include "tables/symtable.h"
 #include "visitor.h"
 
-#define VISITOR void(*visitor)(void*, char*)
+#define VISITOR void(*visitor)(void*, enum NODE_TYPE)
 
 static void visitNamespace   (struct Namespace* n,  VISITOR);
 
@@ -35,7 +35,7 @@ void visit_ast(struct AST* ast, VISITOR){
 
 static void visitNamespace(struct Namespace* n, VISITOR){
 
-	visitor(n, "Namespace");
+	visitor(n, NODE_NAMESPACE);
 	
 	for(int i = 0; i < n->count_structs; i++)
 		{ visitStructDecl(n->structs[i], visitor); }
@@ -46,7 +46,7 @@ static void visitNamespace(struct Namespace* n, VISITOR){
 
 static void visitStructDecl(struct StructDecl* s, VISITOR){
 	
-	visitor(s, "StructDecl");
+	visitor(s, NODE_STRUCTDECL);
 	
 	for(int i = 0; i < s->count_members; i++)
 		{ visitStructMember(s->members[i], visitor); }
@@ -54,19 +54,19 @@ static void visitStructDecl(struct StructDecl* s, VISITOR){
 
 static void visitStructMember(struct StructMember* s, VISITOR){
 	
-	visitor(s, "StructMember");
+	visitor(s, NODE_STRUCTMEMBER);
 }
 
 static void visitMethod(struct Method* m, VISITOR){
 	
-	visitor(m, "Method");
+	visitor(m, NODE_METHOD);
 
 	visitStmtBlock(m->block, visitor);
 }
 
 static void visitStmtBlock(struct StmtBlock* b, VISITOR){
 	
-	visitor(b, "StmtBlock");
+	visitor(b, NODE_STMTBLOCK);
 	
 	for(int i = 0; i < b->count; i++)
 		{ visitStmt(b->stmts[i], visitor); }
@@ -74,7 +74,7 @@ static void visitStmtBlock(struct StmtBlock* b, VISITOR){
 
 static void visitStmt(struct Stmt* s, VISITOR){
 	
-	visitor(s, "Stmt");
+	visitor(s, NODE_STMT);
 	
 	switch(s->kind){
 		
@@ -94,7 +94,7 @@ static void visitStmt(struct Stmt* s, VISITOR){
 
 static void visitIfStmt(struct IfStmt* i, VISITOR){
 	
-	visitor(i, "IfStmt");
+	visitor(i, NODE_IFSTMT);
 	
 	visitStmtBlock(i->block, visitor);
 	
@@ -104,33 +104,33 @@ static void visitIfStmt(struct IfStmt* i, VISITOR){
 
 static void visitWhileStmt(struct WhileStmt* w, VISITOR){
 	
-	visitor(w, "WhileStmt");
+	visitor(w, NODE_WHILESTMT);
 	
 	visitStmtBlock(w->block, visitor);
 }
 
 static void visitLoopStmt(struct LoopStmt* l, VISITOR){
 	
-	visitor(l, "LoopStmt");
+	visitor(l, NODE_LOOPSTMT);
 	
 	visitStmtBlock(l->block, visitor);
 }
 
 static void visitForStmt(struct ForStmt* l, VISITOR){
 	
-	visitor(l, "ForStmt");
+	visitor(l, NODE_FORSTMT);
 	
 	visitStmtBlock(l->block, visitor);
 }
 
 static void visitAssignStmt(struct AssignStmt* a, VISITOR){
 	
-	visitor(a, "AssignStmt");
+	visitor(a, NODE_ASSIGNSTMT);
 }
 
 static void visitSwitchStmt(struct SwitchStmt* s, VISITOR){
 	
-	visitor(s, "SwitchStmt");
+	visitor(s, NODE_SWITCHSTMT);
 	
 	for(int i=0; i < s->count_cases; i++)
 		{ visitCaseStmt(s->cases[i], visitor); }
@@ -138,7 +138,7 @@ static void visitSwitchStmt(struct SwitchStmt* s, VISITOR){
 
 static void visitCaseStmt(struct CaseStmt* c, VISITOR){
 	
-	visitor(c, "CaseStmt");
+	visitor(c, NODE_CASESTMT);
 	
 	if(c->block != NULL)
 		{ visitStmtBlock(c->block, visitor); }
