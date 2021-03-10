@@ -35,10 +35,10 @@ void test_infer_type_term(bool debug){
 	assert(t->m1 != NULL);
 	assert(t->m1->simpleType != NULL);
 	
-	assert(t->m1->simpleType->isPrimitive);
-	assert(t->m1->simpleType->isIntType == false);
+	assert(t->m1->simpleType->primitiveType != NULL);
+	assert(t->m1->simpleType->primitiveType->isIntType == false);
 	
-	assert(strcmp(t->m1->simpleType->typeName, "float") == 0);
+	assert(t->m1->simpleType->primitiveType->isFloatType);
 }
 
 void test_infer_type_unopterm(bool debug){
@@ -64,12 +64,12 @@ void test_infer_type_unopterm(bool debug){
 	assert(t->m1 != NULL);
 	assert(t->m1->simpleType != NULL);
 	
-	assert(t->m1->simpleType->isPrimitive);
-	assert(t->m1->simpleType->isIntType == false);
+	assert(t->m1->simpleType->primitiveType != NULL);
+	assert(t->m1->simpleType->primitiveType->isIntType == false);
 	
-	assert(t->m1->simpleType->typeParamCount == 0);
+	assert(t->m1->simpleType->structType == NULL);
 	
-	assert(strcmp(t->m1->simpleType->typeName, "bool") == 0);
+	assert(t->m1->simpleType->primitiveType->isBoolType);
 }
 
 void test_infer_type_expr(bool debug){
@@ -100,12 +100,12 @@ void test_infer_type_expr(bool debug){
 	assert(t->m1 != NULL);
 	assert(t->m1->simpleType != NULL);
 	
-	assert(t->m1->simpleType->isPrimitive);
-	assert(t->m1->simpleType->isIntType);
+	assert(t->m1->simpleType->primitiveType != NULL);
+	assert(t->m1->simpleType->primitiveType->isIntType);
 	
-	assert(t->m1->simpleType->typeParamCount == 0);
+	assert(t->m1->simpleType->structType == NULL);
 	
-	assert(strcmp(t->m1->simpleType->typeName, "int") == 0);
+	assert(t->m1->simpleType->primitiveType->isIntType);
 }
 
 void test_infer_type_expr_multiple_terms(bool debug){
@@ -153,11 +153,11 @@ void test_infer_type_expr_multiple_terms(bool debug){
 	assert(t->m1 != NULL);
 	assert(t->m1->simpleType != NULL);
 	
-	assert(t->m1->simpleType->isPrimitive);
-	assert(t->m1->simpleType->isIntType == false);
+	assert(t->m1->simpleType->primitiveType != NULL);
+	assert(t->m1->simpleType->primitiveType->isIntType == false);
 	
-	assert(t->m1->simpleType->typeParamCount == 0);
+	assert(t->m1->simpleType->structType == NULL);
 	
 	//float + int -> float
-	assert(strcmp(t->m1->simpleType->typeName, "float") == 0);
+	assert(t->m1->simpleType->primitiveType->isFloatType);
 }

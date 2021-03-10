@@ -2,67 +2,92 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdio.h>
+#include <assert.h>
 
 #include "util/ctx.h"
 
 #include "gen_c_types.h"
 
-char* translateIntType(char* type);
+char* translateIntType(enum INTTYPE type);
 //----------------------------------------------------
 
-char* simpleType2CType(struct SimpleType* simpleType){
+char* simpleType2CType(struct SimpleType* s){
 	
-	char* tname = simpleType->typeName;
+	assert(s != NULL);
 	
-	char* res = malloc(sizeof(char)*DEFAULT_STR_SIZE*3);
-	strcpy(res, "");
+	if(s->primitiveType != NULL){
+		
+		return primitiveType2CType(s->primitiveType);
+	}
 	
-	if(simpleType->isPrimitive){
-		if(simpleType->isIntType){
-				
-			strcpy(res, translateIntType(tname));
-			
-		}else if(strcmp(tname, "float") == 0){
-			strcpy(res, "float");
-			
-		}else if( strcmp(tname, "bool") == 0 ){
-			strcpy(res, "bool");
-			
-		}else if( strcmp(tname, "char") == 0){
-			strcpy(res, "char");	
-		}else{
-			
-			printf("Error in gen_c_types.c (simpleType2CType):\n");
-			printf("primitive type %s could not be transpiled\n", tname);
-			exit(1);
-		}
+	if(s->structType != NULL){
 		
-	}else{
-		
-		if( strcmp(tname, "String") == 0){
-			strcpy(res, "char*");
-			
-		}else{
-		
-			sprintf(res, "struct %s*", tname);
-		}
+		return structType2CType(s->structType);
 	}
 
+	printf("[Transpiler][Error]\n");
+	exit(1);
+}
+
+char* structType2CType(struct StructType* s){
+	
+	assert(s != NULL);
+	
+	char* res = malloc(DEFAULT_STR_SIZE);
+	
+	if( strcmp(s->typeName, "String") == 0){
+		strcpy(res, "char*");
+		return res;
+	}
+	
+	sprintf(res, "struct %s*", s->typeName);
 	return res;
+}
+
+char* primitiveType2CType(struct PrimitiveType* p){
+
+	assert(p != NULL);
+
+	char* res = malloc(DEFAULT_STR_SIZE);
+		
+	if(p->isIntType){
+		strcpy(res, translateIntType(p->intType));
+		return res;
+	}
+	
+	if(p->isFloatType){
+		strcpy(res, "float"); return res;
+	}
+	
+	if(p->isBoolType){
+		strcpy(res, "bool"); return res;
+	}
+	
+	if(p->isCharType){
+		strcpy(res, "char"); return res;	
+	}
+	
+	printf("[Transpiler][Error] in primitiveType2CType\n");
+	exit(1);
+	return NULL;
 }
 
 char* type2CType(struct Type* t, struct Ctx* ctx){
 	
 	if(t->m1 != NULL){
 		return basicTypeWrapped2CType(t->m1, ctx);
-	}else if(t->m2 != NULL){
-		return typeParam2CType(t->m2, ctx);
-	}else if(t->m3 != NULL){
-		return arrayType2CType(t->m3, ctx);
-	}else{
-		printf("FATAL ERROR\n");
-		exit(1);
 	}
+	
+	if(t->m2 != NULL){
+		return typeParam2CType(t->m2, ctx);
+	}
+	
+	if(t->m3 != NULL){
+		return arrayType2CType(t->m3, ctx);
+	}
+
+	printf("[Transpiler][Error] in type2CType\n");
+	exit(1);
 	return NULL;
 }
 
@@ -112,12 +137,14 @@ char* subrType2CType(struct SubrType* subrType, struct Ctx* ctx){
 char* typeParam2CType(struct TypeParam* typeParam, struct Ctx* ctx){
 	
 	//TODO
-	printf("transpileTypeParam not yet implemented!\n");
+	printf("[Transpiler][Error] transpileTypeParam not yet implemented!\n");
 	exit(1);
 	return NULL;
 }
 
 char* basicTypeWrapped2CType(struct BasicTypeWrapped* btw, struct Ctx* ctx){
+	
+	assert(btw != NULL);
 	
 	if(btw->simpleType != NULL){
 		return simpleType2CType(btw->simpleType);
@@ -127,7 +154,7 @@ char* basicTypeWrapped2CType(struct BasicTypeWrapped* btw, struct Ctx* ctx){
 		return subrType2CType(btw->subrType, ctx);
 	}
 	
-	printf("FATAL ERROR\n");
+	printf("[Transpiler][Error]\n");
 	exit(1);
 	return NULL;	
 }
@@ -137,19 +164,19 @@ bool isIntType(struct Type* t){
 	if(t->m1 == NULL){ return false; }
 	
 	struct BasicTypeWrapped* m1 = t->m1;
+	
 	if(m1->simpleType == NULL){ return false; }
 	
 	struct SimpleType* s = m1->simpleType;
 	
-	return s->isIntType;
-}
-char* translateIntType(char* type){
+	if(s->primitiveType == NULL){ return false; }
 	
-	char* types[] = 
-	{"int8","int16","int32","int64",
-	"uint8","uint16","uint32","uint64",
-	"int","uint"
-	};
+	return s->primitiveType->isIntType;
+}
+char* translateIntType(enum INTTYPE type){
+	
+	assert(type > NONE);
+	assert(type < INTTYPE_END);
 	
 	char* map[] = 
 	{"int8_t","int16_t","int32_t","int64_t",
@@ -157,21 +184,10 @@ char* translateIntType(char* type){
 	"int", "uint32_t"
 	};
 	
-	for(int i=0;i < 10; i++){
-		if(strcmp(type, types[i]) == 0){ 
-			return map[i]; 
-		}
-	}
-	
-	printf("[Transpiler Module][Error]\n");
-	printf(" in translateIntType\n");
-	printf("%s\n", type);
-	exit(1);
+	return map[type];
 }
 //-----------------------------------
 char* typeNameToCFormatStr(char* typeName){
-	
-	//int l = strlen(typeName);
 	
 	if(strcmp(typeName, "int") == 0
 	|| strcmp(typeName, "uint") == 0

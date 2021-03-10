@@ -8,7 +8,7 @@
 #so tests are needed to see that every serialization/deserialization
 #works
 
-CFLAGS := -march=native -g
+CFLAGS := -march=native -g -Wall
 
 CALL := gcc $(CFLAGS) -c
 

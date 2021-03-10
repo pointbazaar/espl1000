@@ -1,16 +1,15 @@
 #ifndef GENCTYPES
 #define GENCTYPES
 
-struct SimpleType;
-struct Type;
-struct ArrayType;
-struct SubrType;
-struct TypeParam;
-struct BasicTypeWrapped;
+#include "ast/ast.h"
 
 struct Ctx;
 
 char* simpleType2CType(struct SimpleType* simpleType);
+
+char* structType2CType(struct StructType* s);
+
+char* primitiveType2CType(struct PrimitiveType* p);
 
 char* type2CType(struct Type* type, struct Ctx* ctx);
 

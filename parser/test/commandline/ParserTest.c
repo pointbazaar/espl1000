@@ -53,6 +53,11 @@ bool test_suite_range(bool debug);
 
 // --- END OF TEST SUITES ---
 
+static void status(char* msg){
+
+	printf("[PARSER][TEST-SUITE] %s\n", msg);
+}
+
 int test_all(bool debug) {
 
     printf("[Parser Module] running Parser Tests...\n");
@@ -113,7 +118,7 @@ int test_all(bool debug) {
 
 bool test_suite_constnodes(bool debug) {
 	
-	if(debug){ printf("test_suite_constnodes\n"); }
+	status("test_suite_constnodes"); 
 
     bool passed = true;
 
@@ -133,7 +138,7 @@ bool test_suite_constnodes(bool debug) {
 
 bool test_suite_term_expr_simplevar_var(bool debug) {
 	
-	if(debug){ printf("test_suite_term_expr_simplevar_var\n"); }
+	status("test_suite_term_expr_simplevar_var");
 
     int count  = 13;
     int passed = 0;
@@ -161,7 +166,7 @@ bool test_suite_term_expr_simplevar_var(bool debug) {
 
 bool test_suite_stmts(bool debug) {
 
-	if(debug){ printf("test_suite_stmts\n"); }
+	status("test_suite_stmts");
 
     int count  = 16;
     int passed = 0;
@@ -205,7 +210,7 @@ bool test_suite_stmts(bool debug) {
 
 bool test_suite_assignstmt(bool debug){
 	
-	if(debug){ printf("test_suite_assignstmt\n"); }
+	status("test_suite_assignstmt");
 	
 	int count  = 7;
     int passed = 0;
@@ -224,7 +229,7 @@ bool test_suite_assignstmt(bool debug){
 
 bool test_suite_method(bool debug) {
 	
-	if(debug){ printf("test_suite_method\n"); }
+	status("test_suite_method");
 
     int count  = 4;
     int passed = 0;
@@ -240,7 +245,7 @@ bool test_suite_method(bool debug) {
 
 bool test_suite_struct(bool debug) {
 
-	if(debug){ printf("test_suite_struct\n"); }
+	status("test_suite_struct");
 
     assert(1 == structmember_test_can_parse_struct_member(debug));
 
@@ -249,7 +254,7 @@ bool test_suite_struct(bool debug) {
 
 bool test_suite_types(bool debug) {
 	
-	if(debug){ printf("test_suite_types\n"); }
+	status("test_suite_types");
 
     int count  = 9;
     int passed = 0;
@@ -271,7 +276,7 @@ bool test_suite_types(bool debug) {
 
 bool test_suite_range(bool debug){
 	
-	if(debug){ printf("test_suite_range\n"); }
+	status("test_suite_range");
 	
 	//test contains its own asserts,
 	//so it will exit on failure

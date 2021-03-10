@@ -38,7 +38,11 @@ declaredArgument ::= Type identifier?
 
 SubroutineType ::= '(' Type* ')' arrow Type
 
-SimpleType ::= upperCaseLetter alphanumeric* ('<'TypeParameter+'>')? | anyTypeToken
+StructType ::= upperCaseLetter alphanumeric* ('<'TypeParameter+'>')? | anyTypeToken
+
+PrimitiveType ::= int | float | uint | char | bool | uint8 | ...
+
+SimpleType ::= PrimitiveType | StructType 
 
 BasicTypeWrapped ::= SimpleType | '(' SubroutineType ')'
 
@@ -55,11 +59,11 @@ statement ::=   ( methodCall ';' )
                 | ifStmt
                 | returnStmt
                 | assignmentStmt
-		| loopStmt
-		| breakStmt
-		| continueStmt
-		| forStmt
-		| switchStmt
+				| loopStmt
+				| breakStmt
+				| continueStmt
+				| forStmt
+				| switchStmt
 
 
 // -------- STATEMENTS --------------------

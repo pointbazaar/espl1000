@@ -52,5 +52,7 @@ struct SimpleType* 	readSimpleType(	FILE* file, bool debug);
 struct ArrayType* 	readArrayType(	FILE* file, bool debug);
 struct TypeParam* 	readTypeParam(	FILE* file, bool debug);
 struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug);
+struct StructType*  readStructType( FILE* file, bool debug);
+struct PrimitiveType* readPrimitiveType(FILE* file, bool debug);
 
 #endif

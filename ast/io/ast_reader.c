@@ -18,7 +18,7 @@ struct AST* readAST(char* filename, bool debug){
 		return NULL;
 	}
 
-	struct AST* ast = malloc(sizeof(struct AST));
+	struct AST* ast = make(AST);
 
 	magic_num_require(MAGIC_AST, file);
 
@@ -43,7 +43,7 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_NAMESPACE, file);
 	
-	struct Namespace* ns = malloc(sizeof(struct Namespace));
+	struct Namespace* ns = make(Namespace);
 
 	char* tmpSrcPath = deserialize_string(file);
 	strcpy(ns->srcPath, tmpSrcPath);
@@ -84,7 +84,7 @@ struct Method* readMethod(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_METHOD, file);
 	
-	struct Method* m = malloc(sizeof(struct Method));
+	struct Method* m = make(Method);
 
 	m->isPublic = deserialize_int(file);
 	m->hasSideEffects = deserialize_int(file);
@@ -116,7 +116,7 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_STRUCTDECL, file);
 	
-	struct StructDecl* res = malloc(sizeof(struct StructDecl));
+	struct StructDecl* res = make(StructDecl);
 	
 	res->type = readSimpleType(file, debug);
 	
@@ -138,8 +138,7 @@ struct StructMember* readStructMember(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_STRUCTMEMBER, file);
 	
-	struct StructMember* res = 
-		malloc(sizeof(struct StructMember));
+	struct StructMember* res = make(StructMember);
 	
 	res->type = readType(file, debug);
 	
@@ -159,7 +158,7 @@ struct StmtBlock* readStmtBlock(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_STMTBLOCK, file);
 	
-	struct StmtBlock* block = malloc(sizeof(struct StmtBlock));
+	struct StmtBlock* block = make(StmtBlock);
 	
 	block->count = deserialize_int(file);
 	
@@ -183,7 +182,7 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_DECLARG, file);
 	
-	struct DeclArg* da = malloc(sizeof(struct DeclArg));
+	struct DeclArg* da = make(DeclArg);
 
 	da->type = readType(file, debug);
 
@@ -215,7 +214,7 @@ struct Expr* readExpr(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_EXPR, file);
 	
-	struct Expr* expr = malloc(sizeof(struct Expr));
+	struct Expr* expr = make(Expr);
 
 	expr->term1 = readUnOpTerm(file, debug);
 	expr->op = NULL;
@@ -244,7 +243,7 @@ struct Op* readOp(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_OP, file);
 	
-	struct Op* op = malloc(sizeof(struct Op));
+	struct Op* op = make(Op);
 	
 	fread(op, sizeof(struct Op), 1, file);
 	
@@ -258,7 +257,7 @@ struct IntConst* readIntConst(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_INTCONST, file);
 	
-	struct IntConst* ic = malloc(sizeof(struct IntConst));
+	struct IntConst* ic = make(IntConst);
 		
 	fread(ic, sizeof(struct IntConst), 1, file);
 	
@@ -273,7 +272,7 @@ struct HexConst* readHexConst(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_HEXCONST, file);
 	
-	struct HexConst* hc = malloc(sizeof(struct HexConst));
+	struct HexConst* hc = make(HexConst);
 	
 	fread(hc, sizeof(struct HexConst), 1, file);
 	
@@ -288,7 +287,7 @@ struct BinConst* readBinConst(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_BINCONST, file);
 	
-	struct BinConst* hc = malloc(sizeof(struct BinConst));
+	struct BinConst* hc = make(BinConst);
 	
 	fread(hc, sizeof(struct BinConst), 1, file);
 	
@@ -303,7 +302,7 @@ struct BoolConst* readBoolConst(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_BOOLCONST, file);
 	
-	struct BoolConst* b = malloc(sizeof(struct BoolConst));
+	struct BoolConst* b = make(BoolConst);
 	
 	fread(b, sizeof(struct BoolConst), 1, file);
 	
@@ -317,7 +316,7 @@ struct CharConst* readCharConst(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_CHARCONST, file);
 	
-	struct CharConst* b = malloc(sizeof(struct CharConst));
+	struct CharConst* b = make(CharConst);
 	
 	fread(b, sizeof(struct CharConst), 1, file);
 	
@@ -331,7 +330,7 @@ struct FloatConst* readFloatConst(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_FLOATCONST, file);
 	
-	struct FloatConst* ic = malloc(sizeof(struct FloatConst));
+	struct FloatConst* ic = make(FloatConst);
 		
 	fread(ic, sizeof(struct FloatConst), 1, file);
 	
@@ -345,7 +344,7 @@ struct StringConst* readStringConst(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_STRINGCONST, file);
 	
-	struct StringConst* s = malloc(sizeof(struct StringConst));
+	struct StringConst* s = make(StringConst);
 	
 	//doing this to avoid problems
 	//with whitespace or any characters at all really
@@ -361,7 +360,7 @@ struct Variable* readVariable(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_VARIABLE, file);
 	
-	struct Variable* v = malloc(sizeof(struct Variable));
+	struct Variable* v = make(Variable);
 	v->memberAccess = NULL;
 	v->simpleVar = readSimpleVar(file, debug);
 
@@ -381,7 +380,7 @@ struct SimpleVar* readSimpleVar(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_SIMPLEVAR, file);
 	
-	struct SimpleVar* b = malloc(sizeof(struct SimpleVar));
+	struct SimpleVar* b = make(SimpleVar);
 	
 	char* tmp = deserialize_string(file);
 	strcpy(b->name, tmp);
@@ -405,7 +404,7 @@ struct Term* readTerm(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_TERM, file);
 	
-	struct Term* b = malloc(sizeof(struct Term));
+	struct Term* b = make(Term);
 	
 	b->kind = deserialize_int(file);
 
@@ -443,7 +442,7 @@ struct UnOpTerm* readUnOpTerm(FILE* file, bool debug){
 	
 	const int opt = deserialize_int(file);
 	
-	struct UnOpTerm* t = malloc(sizeof(struct UnOpTerm));
+	struct UnOpTerm* t = make(UnOpTerm);
 	
 	t->op = (opt == OPT_PRESENT)? readOp(file, debug): NULL;
 	
@@ -460,7 +459,7 @@ struct Range* readRange(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_RANGE, file);
 	
-	struct Range* r = malloc(sizeof(struct Range));
+	struct Range* r = make(Range);
 	
 	r->start = readExpr(file, debug);
 	r->end = readExpr(file, debug);
@@ -477,7 +476,7 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_STMT, file);
 	
-	struct Stmt* b = malloc(sizeof(struct Stmt));
+	struct Stmt* b = make(Stmt);
 	
 	b->kind = deserialize_int(file);
 
@@ -514,7 +513,7 @@ struct IfStmt* readIfStmt(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_IFSTMT, file);
 	
-	struct IfStmt* v = malloc(sizeof(struct IfStmt));
+	struct IfStmt* v = make(IfStmt);
 	
 	v->elseBlock = NULL;
 
@@ -538,7 +537,7 @@ struct WhileStmt* readWhileStmt(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_WHILESTMT, file);
 	
-	struct WhileStmt* v = malloc(sizeof(struct WhileStmt));
+	struct WhileStmt* v = make(WhileStmt);
 
 	v->condition = readExpr(file, debug);
 	v->block = readStmtBlock(file, debug);
@@ -553,7 +552,7 @@ struct RetStmt* readRetStmt(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_RETSTMT, file);
 	
-	struct RetStmt* v = malloc(sizeof(struct RetStmt));
+	struct RetStmt* v = make(RetStmt);
 
 	v->returnValue = readExpr(file, debug);
 	
@@ -576,7 +575,7 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 		exit(1);
 	}
 	
-	struct AssignStmt* v = malloc(sizeof(struct AssignStmt));
+	struct AssignStmt* v = make(AssignStmt);
 
 	v->optType = NULL;
 
@@ -604,8 +603,7 @@ struct MethodCall* readMethodCall(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_METHODCALL, file);
 	
-	struct MethodCall* v = 
-		malloc(sizeof(struct MethodCall));
+	struct MethodCall* v = make(MethodCall);
 
 	char* tmp = deserialize_string(file);
 	strcpy(v->methodName, tmp);
@@ -629,7 +627,7 @@ struct LoopStmt* readLoopStmt(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_LOOPSTMT, file);
 	
-	struct LoopStmt* v = malloc(sizeof(struct LoopStmt));
+	struct LoopStmt* v = make(LoopStmt);
 
 	v->count = readExpr(file, debug);
 	v->block = readStmtBlock(file, debug);
@@ -646,7 +644,7 @@ struct ForStmt* readForStmt(FILE* file, bool debug){
 	
 	char* indexName = deserialize_string(file);
 	
-	struct ForStmt* res = malloc(sizeof(struct ForStmt));
+	struct ForStmt* res = make(ForStmt);
 	
 	strncpy(res->indexName, indexName, DEFAULT_STR_SIZE);
 	free(indexName);
@@ -664,7 +662,7 @@ struct SwitchStmt* readSwitchStmt(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_SWITCHSTMT, file);
 	
-	struct SwitchStmt* res = malloc(sizeof(struct SwitchStmt));
+	struct SwitchStmt* res = make(SwitchStmt);
 	
 	res->var = readVariable(file, debug);
 	
@@ -687,7 +685,7 @@ struct CaseStmt* readCaseStmt(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_CASESTMT, file);
 	
-	struct CaseStmt* res = malloc(sizeof(struct CaseStmt));
+	struct CaseStmt* res = make(CaseStmt);
 	
 	res->kind = deserialize_int(file);
 	
@@ -725,7 +723,7 @@ struct Type* readType(FILE* file, bool debug){
 	
 	const int kind = deserialize_int(file);;
 	
-	struct Type* b = malloc(sizeof(struct Type));
+	struct Type* b = make(Type);
 	
 	b->m1 = NULL;
 	b->m2 = NULL;
@@ -752,8 +750,7 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_SUBRTYPE, file);
 	
-	struct SubrType* v = 
-		malloc(sizeof(struct SubrType));
+	struct SubrType* v = make(SubrType);
 
 	v->returnType = readType(file, debug);
 	
@@ -776,28 +773,26 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_SIMPLETYPE, file);
 	
-	struct SimpleType* v = malloc(sizeof(struct SimpleType));
+	struct SimpleType* v = make(SimpleType);
 	
-	char* tmp = deserialize_string(file);
-	strcpy(v->typeName, tmp);
-	free(tmp);
+	v->primitiveType = NULL;
+	v->structType    = NULL;
 	
-	v->isPrimitive = deserialize_int(file) == OPT_PRESENT;
+	const int kind = deserialize_int(file);
 	
-	v->isIntType   = deserialize_int(file) == OPT_PRESENT;
-	v->isFloatType = deserialize_int(file) == OPT_PRESENT;
-	v->isCharType  = deserialize_int(file) == OPT_PRESENT;
-	v->isBoolType  = deserialize_int(file) == OPT_PRESENT;
-
-	v->typeParamCount = deserialize_int(file);
-	
-	if(v->typeParamCount > 0){
-		v->typeParams = malloc(sizeof(uint8_t)*(v->typeParamCount));
-	}
-	
-	for(int i=0;i<v->typeParamCount;i++){
+	switch(kind){
 		
-		v->typeParams[i] = deserialize_int(file);
+		case 0: 
+			v->primitiveType = readPrimitiveType(file, debug);
+			break;
+			
+		case 1: 
+			v->structType = readStructType(file, debug);
+			break;
+			
+		default:
+			printf("[AST][Error]");
+			exit(1);
 	}
 	
 	magic_num_require(MAGIC_END_SIMPLETYPE, file);
@@ -810,7 +805,7 @@ struct ArrayType* readArrayType(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_ARRAYTYPE, file);
 	
-	struct ArrayType* v = malloc(sizeof(struct ArrayType));
+	struct ArrayType* v = make(ArrayType);
 	
 	v->element_type = readType(file, debug);
 	
@@ -824,7 +819,7 @@ struct TypeParam* readTypeParam(FILE* file, bool debug){
 	
 	magic_num_require(MAGIC_TYPEPARAM, file);
 	
-	struct TypeParam* v = malloc(sizeof(struct TypeParam));
+	struct TypeParam* v = make(TypeParam);
 		
 	fread(v, sizeof(struct TypeParam), 1, file);
 	
@@ -840,7 +835,7 @@ struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug){
 	
 	const int kind = deserialize_int(file);
 	
-	struct BasicTypeWrapped* v = malloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* v = make(BasicTypeWrapped);
 
 	v->simpleType = NULL;
 	v->subrType = NULL;
@@ -860,5 +855,49 @@ struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug){
 	magic_num_require(MAGIC_END_BASICTYPEWRAPPED, file);
 	
 	return v;
+}
+
+struct StructType* readStructType(FILE* file, bool debug){
+	
+	magic_num_require(MAGIC_STRUCTTYPE, file);
+	
+	struct StructType* res = make(StructType);
+	
+	char* tmp = deserialize_string(file);
+	strcpy(res->typeName, tmp);
+	free(tmp);
+	
+	res->typeParamCount = deserialize_int(file);
+	
+	if(res->typeParamCount > 0){
+		res->typeParams = malloc(sizeof(uint8_t)*(res->typeParamCount));
+	}
+	
+	for(int i = 0; i < res->typeParamCount; i++){
+		
+		res->typeParams[i] = deserialize_int(file);
+	}
+
+	magic_num_require(MAGIC_END_STRUCTTYPE, file);
+	
+	return res;
+}
+
+struct PrimitiveType* readPrimitiveType(FILE* file, bool debug){
+	
+	magic_num_require(MAGIC_PRIMITIVETYPE, file);
+	
+	struct PrimitiveType* res = make(PrimitiveType);
+	
+	res->isIntType   = deserialize_int(file);
+	res->isFloatType = deserialize_int(file);
+	res->isCharType  = deserialize_int(file);
+	res->isBoolType  = deserialize_int(file);
+	
+	res->intType = deserialize_int(file);
+	
+	magic_num_require(MAGIC_END_PRIMITIVETYPE, file);
+	
+	return res;
 }
 

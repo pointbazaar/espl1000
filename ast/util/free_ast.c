@@ -298,7 +298,13 @@ void freeBasicTypeWrapped(struct BasicTypeWrapped* btw) {
 }
 
 void freeSimpleType(struct SimpleType* st) {
-	if(st->typeParamCount != 0){free(st->typeParams);}
+	
+	if(st->primitiveType != NULL)
+		{ freePrimitiveType(st->primitiveType); }
+		
+	if(st->structType != NULL)
+		{ freeStructType(st->structType); }
+	
 	free(st);
 }
 
@@ -330,6 +336,16 @@ void freeType(struct Type* t) {
 }
 
 void freeTypeParam(struct TypeParam* tp) { free(tp); }
+
+void freePrimitiveType(struct PrimitiveType* p){ free(p); }
+
+void freeStructType(struct StructType* s){
+
+	if(s->typeParamCount != 0)
+		{ free(s->typeParams); }
+		
+	free(s);
+}
 
 void freeOp(struct Op* op){ free(op); }
 

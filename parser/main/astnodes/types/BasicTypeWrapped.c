@@ -82,7 +82,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 		freeTokenListShallow(copy2);
 
 	} else {
-		res->simpleType = makeSimpleType2(copy,debug);
+		res->simpleType = makeSimpleType(copy,debug);
 		if(res->simpleType == NULL){
 			free(res);
 			freeTokenListShallow(copy);

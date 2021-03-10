@@ -483,22 +483,48 @@ void writeBasicTypeWrapped(struct BasicTypeWrapped* m, FILE* file){
 	magic_num_serialize(MAGIC_END_BASICTYPEWRAPPED, file);
 }
 
+void writeStructType(struct StructType* m, FILE* file){
+	
+	magic_num_serialize(MAGIC_STRUCTTYPE, file);
+
+	serialize_string(m->typeName, file);
+
+	serialize_int(m->typeParamCount, file);
+	for(int i=0;i<m->typeParamCount;i++){
+		serialize_int(m->typeParams[i], file);
+	}
+	
+	magic_num_serialize(MAGIC_END_STRUCTTYPE, file);
+}
+
+void writePrimitiveType(struct PrimitiveType* m, FILE* file){
+	
+	magic_num_serialize(MAGIC_PRIMITIVETYPE, file);
+	
+	serialize_int(m->isIntType ? OPT_PRESENT: OPT_EMPTY, file);
+	serialize_int(m->isFloatType ? OPT_PRESENT: OPT_EMPTY, file);
+	serialize_int(m->isCharType ? OPT_PRESENT: OPT_EMPTY, file);
+	serialize_int(m->isBoolType ? OPT_PRESENT: OPT_EMPTY, file);
+
+	serialize_int(m->intType, file);
+
+	magic_num_serialize(MAGIC_END_PRIMITIVETYPE, file);
+}
+
 void writeSimpleType(struct SimpleType* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_SIMPLETYPE, file);
 	
-	serialize_string(m->typeName, file);
+	int kind = (m->primitiveType != NULL)?0:1;
 	
-	serialize_int(m->isPrimitive, file);
+	serialize_int(kind, file);
 	
-	serialize_int(m->isIntType, file);
-	serialize_int(m->isFloatType, file);
-	serialize_int(m->isCharType, file);
-	serialize_int(m->isBoolType, file);
+	if(m->primitiveType != NULL){
+		writePrimitiveType(m->primitiveType, file);
+	}
 	
-	serialize_int(m->typeParamCount, file);
-	for(int i=0;i<m->typeParamCount;i++){
-		serialize_int(m->typeParams[i], file);
+	if(m->structType != NULL){
+		writeStructType(m->structType, file);
 	}
 	
 	magic_num_serialize(MAGIC_END_SIMPLETYPE, file);

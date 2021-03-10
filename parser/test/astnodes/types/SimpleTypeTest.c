@@ -13,11 +13,14 @@
 
 #include "ast/util/free_ast.h"
 
+static void status(char* msg){
+	
+	printf(" - [TEST] %s\n", msg);
+}
+
 int simpletype_test_typenode_parsing(bool debug) {
 
-	if(debug){
-		printf("TEST: simpletype_test_typenode_parsing\n");
-	}
+	status("simpletype_test_typenode_parsing");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(TYPEID,"MyType") );
@@ -36,9 +39,7 @@ int simpletype_test_typenode_parsing(bool debug) {
 
 int simpletype_test_typenode_parsing_fails(bool debug) {
 
-	if(debug){
-		printf("TEST: simpletype_test_typenode_parsing_fails\n");
-	}
+	status("simpletype_test_typenode_parsing_fails");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ID,"myIllegalType") );
@@ -55,14 +56,12 @@ int simpletype_test_typenode_parsing_fails(bool debug) {
 
 int simpletype_test_typenode_parsing_anytype(bool debug) {
 
-	if(debug){
-		printf("TEST: simpletype_test_typenode_parsing_anytype\n");
-	}
+	status("simpletype_test_typenode_parsing_anytype");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ANYTYPE,"#"));
 
-	struct SimpleType* node = makeSimpleType2(list, debug);
+	struct SimpleType* node = makeSimpleType(list, debug);
 
 	assert(0 == list_size(list));
 	assert(node != NULL);
@@ -75,20 +74,22 @@ int simpletype_test_typenode_parsing_anytype(bool debug) {
 
 int simpletype_test_generic(bool debug){
 
-	if(debug){
-		printf("TEST: simpletype_test_generic\n");
-	}
+	status("simpletype_test_generic");
 
 	struct TokenList* l = makeTokenList();
+	
 	list_add(l, makeToken2(TYPEID,"Point"));
 	list_add(l, makeToken2(OPKEY_RELATIONAL,"<"));
 	list_add(l, makeToken2(TPARAM,"0"));
 	list_add(l, makeToken2(OPKEY_RELATIONAL,">"));
 
-	struct SimpleType* node = makeSimpleType2(l, debug);
+	struct SimpleType* node = makeSimpleType(l, debug);
 
-	assert(node != NULL);
-	assert(node->typeParamCount == 1);
+	assert(node                != NULL);
+	assert(node->structType    != NULL);
+	assert(node->primitiveType == NULL);
+	
+	assert(node->structType->typeParamCount == 1);
 	assert(0 == list_size(l));
 	
 	freeTokenList(l);

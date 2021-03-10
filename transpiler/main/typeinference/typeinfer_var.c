@@ -37,7 +37,7 @@ static struct Type* infer_in_context(struct ST* st, struct MemberAccess* ma){
 	struct Type* structType = ma->structType;
 	struct Variable* member = ma->member;
 	
-	char* structName = structType->m1->simpleType->typeName;
+	char* structName = structType->m1->simpleType->structType->typeName;
 	char* memberName = member->simpleVar->name;
 	
 	struct Type* memberType = stst_get_member_type(st->stst, structName, memberName);

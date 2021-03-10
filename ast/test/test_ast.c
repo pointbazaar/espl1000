@@ -16,24 +16,32 @@ void test_serialize_HexConst(bool debug);
 void test_serialize_BinConst(bool debug);
 void test_serialize_BoolConst(bool debug);
 void test_serialize_CharConst(bool debug);
-void test_serialize_TypeParam(bool debug);
 void test_serialize_FloatConst(bool debug);
 void test_serialize_StringConst(bool debug);
 
+//types
+void test_serialize_TypeParam(bool debug);
+void test_serialize_PrimitiveType(bool debug);
+
+//expr
 void test_serialize_Op(bool debug);
 void test_serialize_Term(bool debug);
 void test_serialize_Expr(bool debug);
 
 FILE* file;
 
+static void status(char* msg){
+
+	printf(" - [TEST] %s\n", msg);
+}
+
 int main(){
 	
 	bool debug = false;
-	int count = 0;
 	
 	file = fopen("/tmp/test", "w+");
 	
-	printf("[AST Module] running AST Reader/Writer Tests...\n");
+	printf("[AST][TEST] running AST Reader/Writer Tests...\n");
 	
 	//const
 	test_serialize_BoolConst(debug);
@@ -43,17 +51,18 @@ int main(){
 	test_serialize_HexConst(debug);
 	test_serialize_BinConst(debug);
 	test_serialize_StringConst(debug);
-	count += 7;
 	
+	//types
 	test_serialize_TypeParam(debug);
-	count += 1;
+	test_serialize_PrimitiveType(debug);
 	
+	//expr
 	test_serialize_Op(debug);
 	test_serialize_Term(debug);
 	test_serialize_Expr(debug);
-	count += 3;
 	
-	printf("[AST Module] Passed All (%d) Tests\n", count);
+	
+	printf("[AST Module] Passed All Tests\n");
 	
 	fclose(file);
 	
@@ -61,6 +70,8 @@ int main(){
 }
 
 void test_serialize_IntConst(bool debug){
+	
+	status("IntConst");
 	
 	rewind(file);
 	
@@ -81,6 +92,8 @@ void test_serialize_IntConst(bool debug){
 
 void test_serialize_HexConst(bool debug){
 	
+	status("HexConst");
+	
 	rewind(file);
 	
 	struct HexConst* m = malloc(sizeof(struct HexConst));
@@ -99,6 +112,8 @@ void test_serialize_HexConst(bool debug){
 }
 
 void test_serialize_BinConst(bool debug){
+	
+	status("BinConst");
 	
 	rewind(file);
 	
@@ -119,6 +134,8 @@ void test_serialize_BinConst(bool debug){
 
 void test_serialize_BoolConst(bool debug){
 	
+	status("BoolConst");
+	
 	rewind(file);
 	
 	struct BoolConst* m = malloc(sizeof(struct BoolConst));
@@ -137,6 +154,8 @@ void test_serialize_BoolConst(bool debug){
 }
 
 void test_serialize_CharConst(bool debug){
+	
+	status("CharConst");
 	
 	rewind(file);
 	
@@ -157,6 +176,8 @@ void test_serialize_CharConst(bool debug){
 
 void test_serialize_TypeParam(bool debug){
 	
+	status("TypeParam");
+	
 	rewind(file);
 	
 	struct TypeParam* m = malloc(sizeof(struct TypeParam));
@@ -174,11 +195,44 @@ void test_serialize_TypeParam(bool debug){
 	freeTypeParam(m2);
 }
 
-void test_serialize_FloatConst(bool debug){
+void test_serialize_PrimitiveType(bool debug){
+
+	status("PrimitiveType");
+
+	rewind(file);
+	
+	struct PrimitiveType* p = make(PrimitiveType);
+	p->isIntType   = true;
+	p->isFloatType = false;
+	p->isCharType  = false;
+	p->isBoolType  = false;
+	p->intType = INT;
+	
+	writePrimitiveType(p, file);
 	
 	rewind(file);
 	
-	struct FloatConst* m = malloc(sizeof(struct FloatConst));
+	struct PrimitiveType* p2 = readPrimitiveType(file, debug);
+	
+	assert(p2 != NULL);
+	
+	assert(p2->isIntType == true);
+	assert(p2->isFloatType == false);
+	assert(p2->isCharType == false);
+	assert(p2->isBoolType == false);
+	assert(p2->intType == INT);
+	
+	freePrimitiveType(p);
+	freePrimitiveType(p2);
+}
+
+void test_serialize_FloatConst(bool debug){
+	
+	status("FloatConst");
+	
+	rewind(file);
+	
+	struct FloatConst* m = make(FloatConst);
 	m->value = 3.54;
 	
 	writeFloatConst(m, file);
@@ -195,9 +249,11 @@ void test_serialize_FloatConst(bool debug){
 
 void test_serialize_StringConst(bool debug){
 	
+	status("StringConst");
+	
 	rewind(file);
 	
-	struct StringConst* m = malloc(sizeof(struct StringConst));
+	struct StringConst* m = make(StringConst);
 	char* str = malloc(sizeof(char)*100);
 	strcpy(str, "hello");
 	m->value = str;
@@ -215,6 +271,8 @@ void test_serialize_StringConst(bool debug){
 }
 
 void test_serialize_Op(bool debug){
+	
+	status("Op");
 	
 	rewind(file);
 	
@@ -240,6 +298,8 @@ void test_serialize_Op(bool debug){
 
 void test_serialize_Term(bool debug){
 	
+	status("Term");
+	
 	rewind(file);
 	
 	struct IntConst* myIntConst = malloc(sizeof(struct IntConst));
@@ -263,6 +323,8 @@ void test_serialize_Term(bool debug){
 
 
 void test_serialize_Expr(bool debug){
+	
+	status("Expr");
 	
 	rewind(file);
 	

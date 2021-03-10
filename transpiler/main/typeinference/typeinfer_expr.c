@@ -19,8 +19,8 @@
 #include "tables/stst.h"
 
 struct Expr2Types {
-	struct SimpleType* st1;
-	struct SimpleType* st2;
+	struct PrimitiveType* p1;
+	struct PrimitiveType* p2;
 	struct Op* op;
 };
 
@@ -60,14 +60,14 @@ struct Type* infer_type_expr(struct ST* st, struct Expr* expr){
 	
 	if(st1 == NULL || st2 == NULL){ print_exit(ERR_ST);}
 	
-	bool p1 = st1->isPrimitive;
-	bool p2 = st2->isPrimitive;
+	bool p1 = st1->primitiveType != NULL;
+	bool p2 = st2->primitiveType != NULL;
 	
 	if(!p1 || !p2){ print_exit(ERR_PRIMITIVE); }
 	
 	struct Expr2Types e2t = {
-		.st1 = st1,
-		.st2 = st2,
+		.p1 = st1->primitiveType,
+		.p2 = st2->primitiveType,
 		.op = op
 	};
 	
@@ -76,8 +76,8 @@ struct Type* infer_type_expr(struct ST* st, struct Expr* expr){
 
 static struct Type* infer_type_expr_primitive(struct ST* st, struct Expr2Types* e2t){
 	
-	struct SimpleType* st1 = e2t->st1;
-	struct SimpleType* st2 = e2t->st2;
+	struct PrimitiveType* p1 = e2t->p1;
+	struct PrimitiveType* p2 = e2t->p2;
 	struct Op* op = e2t->op;
 	
 	if(op->isRelational)
@@ -86,14 +86,14 @@ static struct Type* infer_type_expr_primitive(struct ST* st, struct Expr2Types* 
 	if(op->isLogical)
 		{ return typeFromStrPrimitive(st, "bool"); }
 		
-	const bool i1 = st1->isIntType;
-	const bool i2 = st2->isIntType;
+	const bool i1 = p1->isIntType;
+	const bool i2 = p2->isIntType;
 	
-	const bool f1 = st1->isFloatType;
-	const bool f2 = st2->isFloatType;
+	const bool f1 = p1->isFloatType;
+	const bool f2 = p2->isFloatType;
 	
-	const bool c1 = st1->isCharType;
-	const bool c2 = st2->isCharType;
+	const bool c1 = p1->isCharType;
+	const bool c2 = p2->isCharType;
 	
 	if(op->isArithmetic){
 		
@@ -117,10 +117,7 @@ static struct Type* infer_type_expr_primitive(struct ST* st, struct Expr2Types* 
 		{ return typeFromStrPrimitive(st, "int"); }
 	
 	
-	printf("Types: \n");
-	printf("%s, %s\n", st1->typeName, st2->typeName);
 	printf("op=%s\n", op->op);
-	
 	print_exit(ERR_COULD_NOT_INFER);
 	return NULL;
 }

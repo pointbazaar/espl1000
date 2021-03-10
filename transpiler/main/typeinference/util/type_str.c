@@ -27,21 +27,22 @@ struct Type* typeFromStrPrimitive(struct ST* st, char* typeName){
 	struct Type* res             = make(Type);
 	struct BasicTypeWrapped* btw = make(BasicTypeWrapped);
 	struct SimpleType* s         = make(SimpleType);
+	struct PrimitiveType* p      = make(PrimitiveType);
 	
 	res->m1 = btw;
 	res->m2 = NULL;
-	res->m2 = NULL;
+	res->m3 = NULL;
 	
-	s->isPrimitive = true;
+	p->isIntType   = strcmp(typeName, "int")   == 0;
+	p->isFloatType = strcmp(typeName, "float") == 0;
+	p->isCharType  = strcmp(typeName, "char")  == 0;
+	p->isBoolType  = strcmp(typeName, "bool")  == 0;
 	
-	s->isIntType   = strcmp(typeName, "int")   == 0;
-	s->isFloatType = strcmp(typeName, "float") == 0;
-	s->isCharType  = strcmp(typeName, "char")  == 0;
-	s->isBoolType  = strcmp(typeName, "bool")  == 0;
+	p->intType = INT;
 
-	s->typeParamCount = 0;
-	strncpy(s->typeName, typeName, DEFAULT_STR_SIZE);
-	
+	s->primitiveType = p;
+	s->structType    = NULL;
+
 	btw->subrType = NULL;
 	btw->simpleType = s;
 	
@@ -61,20 +62,16 @@ struct Type* typeFromStr(struct ST* st, char* typeName){
 	
 	res->m1 = btw;
 	res->m2 = NULL;
-	res->m2 = NULL;
+	res->m3 = NULL;
 	
 	struct SimpleType* simpleType = make(SimpleType);
+	struct StructType* structType = make(StructType);
 	
-	simpleType->isPrimitive = false;
-	
-	simpleType->isIntType   = false;
-	simpleType->isFloatType = false;
-	simpleType->isCharType  = false;
-	simpleType->isBoolType  = false;
+	simpleType->primitiveType = NULL;
+	simpleType->structType    = structType;
 
-
-	simpleType->typeParamCount = 0;
-	strncpy(simpleType->typeName, typeName, DEFAULT_STR_SIZE);
+	structType->typeParamCount = 0;
+	strncpy(structType->typeName, typeName, DEFAULT_STR_SIZE);
 	
 	btw->subrType = NULL;
 	btw->simpleType = simpleType;

@@ -38,7 +38,7 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 		
 		
 		//read the struct type
-		struct SimpleType* st = makeSimpleType2(copy, debug);
+		struct SimpleType* st = makeSimpleType(copy, debug);
 		if(st == NULL){
 			printf("expected SimpleType, but got: \n");
 			list_print(copy);

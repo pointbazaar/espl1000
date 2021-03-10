@@ -75,7 +75,7 @@ void stst_add(struct STST* stst, struct StructDecl* s){
 
 	line->decl = s;
 	line->type = s->type;
-	strcpy(line->name, s->type->typeName);
+	strcpy(line->name, s->type->structType->typeName);
 	
 	if(stst->capacity <= stst->count){
 		

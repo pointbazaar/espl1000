@@ -60,6 +60,7 @@ void writeSimpleType(struct SimpleType* m, 		FILE* file);
 void writeArrayType(struct ArrayType* m, 		FILE* file);
 void writeTypeParam(struct TypeParam* m, 		FILE* file);
 void writeBasicTypeWrapped(struct BasicTypeWrapped* m, 	FILE* file);
-
+void writeStructType(struct StructType* m,      FILE* file);
+void writePrimitiveType(struct PrimitiveType* m,FILE* file);
 
 #endif

@@ -75,9 +75,10 @@ char* strBasicTypeWrapped(struct BasicTypeWrapped* btw){
 
 char* strSimpleType(struct SimpleType* st){
 	
-	char* res =  malloc(sizeof(char)*10);
-	sprintf(res, "%s", st->typeName);
-	return res;
+	if(st->primitiveType != NULL)
+		{ return strPrimitiveType(st->primitiveType); }
+		
+	return strStructType(st->structType);
 }
 
 char* strSubrType(struct SubrType* st){
@@ -129,5 +130,40 @@ char* strTypeParam(struct TypeParam* t){
 	
 	char* res =  malloc(sizeof(char)*10);
 	sprintf(res, "?T%d", t->index);
+	return res;
+}
+
+
+char* strPrimitiveType(struct PrimitiveType* p){
+	
+	char* res = malloc(DEFAULT_STR_SIZE);
+	
+	if(p->isIntType){
+		//TODO: convert the enum to string,
+		//for now just return 'int'
+		sprintf(res, "int");
+		exit(1);
+	}
+	
+	if(p->isFloatType){ sprintf(res, "float"); }
+	if(p->isCharType){  sprintf(res, "char"); }
+	if(p->isBoolType){ sprintf(res, "bool"); }
+	
+	return res;
+}
+
+char* strStructType(struct StructType* s){
+	
+	//TODO: add the generic part
+	if(s->typeParamCount != 0){
+	
+		printf("[AST][Error] strStructType\n");
+		exit(1);
+	}
+	
+	char* res = malloc(DEFAULT_STR_SIZE);
+	
+	sprintf(res, "%s", s->typeName);
+	
 	return res;
 }

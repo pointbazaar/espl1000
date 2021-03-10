@@ -144,7 +144,8 @@ void transpileAST(struct AST* ast, struct Ctx* ctx){
 	sst_clear(ctx->tables->sst);
 	sst_prefill(ctx->tables, ctx->tables->sst);
 	
-	analyze_functions(ctx->tables, ast);
+	//TODO: re-enable
+	//analyze_functions(ctx->tables, ast);
 
 	for(int i=0; i < ast->count_namespaces; i++){
 
@@ -154,6 +155,7 @@ void transpileAST(struct AST* ast, struct Ctx* ctx){
 
 void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	
+	if(ctx->flags->debug){ printf("transpileNamespace\n"); }
 	
 	sst_fill(ctx->tables->sst, ns, ctx->flags->debug);
 	stst_fill(ctx->tables->stst, ns, ctx->flags->debug);
@@ -167,7 +169,7 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	for(int i=0;i < ns->count_structs; i++){
 		assert(ns->structs[i] != NULL);
 		
-		fprintf(ctx->file, "struct %s;\n", ns->structs[i]->type->typeName);
+		fprintf(ctx->file, "struct %s;\n", ns->structs[i]->type->structType->typeName);
 	}
 
 	for(int i=0;i < ns->count_structs; i++){
@@ -193,7 +195,7 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 
 void transpileStructDecl(struct StructDecl* s, struct Ctx* ctx){
 	
-	fprintf(ctx->file ,"struct %s {\n", s->type->typeName);
+	fprintf(ctx->file ,"struct %s {\n", s->type->structType->typeName);
 	
 	for(int i=0;i < s->count_members;i++){
 		transpileStructMember(s->members[i], ctx);
@@ -521,10 +523,17 @@ void transpileCaseStmt(struct CaseStmt* s, struct Ctx* ctx){
 }
 //-----------------------------------------------
 void transpileType(struct Type* t, struct Ctx* ctx){
-		
-	char* res = type2CType(t, ctx);
-	fprintf(ctx->file, "%s", res);
-	free(res);
+	
+	assert(t != NULL);
+	
+	if(t->m1 != NULL)
+		{ transpileBasicTypeWrapped(t->m1, ctx); }
+	
+	if(t->m2 != NULL)
+		{ transpileTypeParam(t->m2, ctx); }
+	
+	if(t->m3 != NULL)
+		{ transpileArrayType(t->m3, ctx); }
 }
 
 void transpileVariable(struct Variable* var, struct Ctx* ctx){
@@ -564,11 +573,13 @@ void transpileTerm(struct Term* t, struct Ctx* ctx){
 		case 10:transpileBinConst(t->ptr.m10, ctx); break;
 		
 		default:
-			printf("Error in transpileTerm\n"); exit(1);
+			printf("[Transpiler][Error] in transpileTerm\n"); exit(1);
 	}
 }
 
 void transpileExpr(struct Expr* expr, struct Ctx* ctx){
+	
+	assert(expr != NULL);
 	
 	transpileUnOpTerm(expr->term1, ctx);
 
@@ -642,7 +653,6 @@ void transpileFloatConst(struct FloatConst* fc, struct Ctx* ctx){
 }
 
 void transpileStringConst(struct StringConst* s, struct Ctx* ctx){
-	//quotation seems to already be present
 	fprintf(ctx->file, "%s", s->value);
 }
 
@@ -651,6 +661,8 @@ void transpileOp(struct Op* op, struct Ctx* ctx){
 }
 
 void transpileBasicTypeWrapped(struct BasicTypeWrapped* btw, struct Ctx* ctx){
+		
+	assert(btw != NULL);
 		
 	char* res = basicTypeWrapped2CType(btw, ctx);
 	fprintf(ctx->file, "%s", res);
@@ -686,6 +698,8 @@ void transpileSubrType(struct SubrType* subrType, struct Ctx* ctx){
 }
 
 void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx){
+		
+	assert(da != NULL);
 		
 	bool isSubrType = false;
 	//is it a function pointer?

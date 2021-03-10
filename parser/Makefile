@@ -53,6 +53,8 @@ OBJS_MAIN := build/Parser.o \
 		build/SubrType.o \
 		build/Type.o \
 		build/TypeParam.o \
+		build/StructType.o \
+		build/PrimitiveType.o \
 		build/Variable.o \
 		build/UnOpTerm.o \
 		build/Range.o \
