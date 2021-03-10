@@ -2,10 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "tables/sst.h"
-#include "tables/symtable.h"
-
-#include "typeinference/util/type_str.h"
+#include "tables/sst/sst.h"
+#include "tables/symtable/symtable.h"
 
 #define SST_INITIAL_CAPACITY 10
 

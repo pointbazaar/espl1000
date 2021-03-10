@@ -2,8 +2,8 @@
 
 #include "typeinference/typeinfer.h"
 
-#include "tables/symtable.h"
-#include "tables/sst.h"
+#include "tables/symtable/symtable.h"
+#include "tables/sst/sst.h"
 
 struct Type* infer_type_methodcall(struct ST* st, struct MethodCall* m){
 	

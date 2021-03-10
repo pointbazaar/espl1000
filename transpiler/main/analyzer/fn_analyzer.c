@@ -4,10 +4,10 @@
 
 #include "ast/ast.h"
 
-#include "tables/sst.h"
-#include "tables/stst.h"
-#include "tables/lvst.h"
-#include "tables/symtable.h"
+#include "tables/sst/sst.h"
+#include "tables/stst/stst.h"
+#include "tables/lvst/lvst.h"
+#include "tables/symtable/symtable.h"
 
 #include "ast/visitor/visitor.h"
 

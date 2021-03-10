@@ -1,7 +1,7 @@
 #ifndef STRUCTSYMTABLE
 #define STRUCTSYMTABLE
 
-#include "../../../ast/ast.h"
+#include "ast/ast.h"
 
 struct STSTLine {
 	char name[DEFAULT_STR_SIZE];

@@ -7,8 +7,8 @@
 #include "code_gen/gen_c_types.h"
 #include "typeinference/typeinfer.h"
 
-#include "tables/symtable.h"
-#include "tables/lvst.h"
+#include "tables/symtable/symtable.h"
+#include "tables/lvst/lvst.h"
 
 struct Type* infer_type_simplevar(struct ST* st, struct SimpleVar* v){
 	

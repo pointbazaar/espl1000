@@ -2,15 +2,15 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../../../ast/ast.h"
+#include "ast/ast.h"
 
-#include "tables/stst.h"
+#include "stst.h"
 
 #define STST_INITIAL_CAPACITY 10;
 
 struct STST* makeSTST(){
 	
-	struct STST* stst = malloc(sizeof(struct STST));
+	struct STST* stst = make(STST);
 	
 	stst->capacity = STST_INITIAL_CAPACITY;
 	stst->lines = malloc(sizeof(struct STSTLine*) * stst->capacity);
@@ -34,7 +34,7 @@ void stst_clear(struct STST* stst){
 
 void stst_fill(struct STST* stst, struct Namespace* ns, bool debug){
 	
-	if(debug){ printf("makeStructSymTable(...)\n"); }
+	if(debug){ printf("stst_fill(...)\n"); }
 	
 	for(int i=0;i < ns->count_structs; i++){
 
@@ -71,7 +71,7 @@ void freeSTST(struct STST* stst){
 
 void stst_add(struct STST* stst, struct StructDecl* s){
 
-	struct STSTLine* line = malloc(sizeof(struct STSTLine));
+	struct STSTLine* line = make(STSTLine);
 
 	line->decl = s;
 	line->type = s->type;

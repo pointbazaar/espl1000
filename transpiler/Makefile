@@ -42,12 +42,12 @@ OBJS_TEST := build/test.o \
 	build/test_stmt.o \
 	build/test_typeinference.o
 	
-OBJS_TABLE := build/lvst.o \
-	build/sst.o \
-	build/sst_prefill.o \
-	build/stst.o \
-	build/symtable.o \
-	build/cc.o
+OBJS_TABLE := ../tables/build/lvst.o \
+	../tables/build/sst.o \
+	../tables/build/sst_prefill.o \
+	../tables/build/stst.o \
+	../tables/build/symtable.o \
+	../tables/build/cc.o
 
 OBJS := $(AST_OBJS) $(TRANSPILER_OBJS) \
 	$(OBJS_TABLE) $(OBJS_TEST) \
@@ -94,7 +94,7 @@ build/transpiler.o: main/transpiler.c main/transpiler.h main/code_gen/c_code_gen
 	$(CALL) -c main/transpiler.c -o $@
 
 build/c_code_gen.o: main/code_gen/c_code_gen.c main/util/ctx.h \
-		main/code_gen/code_gen_util.h main/util/flags.h main/tables/lvst.h \
+		main/code_gen/code_gen_util.h main/util/flags.h  \
 		main/code_gen/structs_code_gen.h
 	$(CALL) -c main/code_gen/c_code_gen.c -o $@
 
@@ -140,25 +140,22 @@ build/gen_c_types.o: main/code_gen/gen_c_types.h main/code_gen/gen_c_types.c
 
 # ----------- typeinference --------------
 
-SYMTABLES_H := main/tables/symtable.h main/tables/sst.h \
-			main/tables/lvst.h main/tables/stst.h
-
-build/typeinfer.o: $(SYMTABLES_H) main/typeinference/typeinfer.c main/typeinference/typeinfer.h 
+build/typeinfer.o: main/typeinference/typeinfer.c main/typeinference/typeinfer.h 
 	$(CALL) -c main/typeinference/typeinfer.c -o $@
 	
-build/typeinfer_expr.o: $(SYMTABLES_H) main/typeinference/typeinfer_expr.c
+build/typeinfer_expr.o: main/typeinference/typeinfer_expr.c
 	$(CALL) -c main/typeinference/typeinfer_expr.c -o $@
 	
-build/typeinfer_var.o: $(SYMTABLES_H) main/typeinference/typeinfer_var.c
+build/typeinfer_var.o: main/typeinference/typeinfer_var.c
 	$(CALL) -c main/typeinference/typeinfer_var.c -o $@
 	
-build/typeinfer_simplevar.o: $(SYMTABLES_H) main/typeinference/typeinfer_simplevar.c
+build/typeinfer_simplevar.o: main/typeinference/typeinfer_simplevar.c
 	$(CALL) -c main/typeinference/typeinfer_simplevar.c -o $@
 	
-build/typeinfer_term.o: $(SYMTABLES_H) main/typeinference/typeinfer_term.c
+build/typeinfer_term.o: main/typeinference/typeinfer_term.c
 	$(CALL) -c main/typeinference/typeinfer_term.c -o $@
 
-build/typeinfer_methodcall.o: $(SYMTABLES_H) main/typeinference/typeinfer_methodcall.c
+build/typeinfer_methodcall.o: main/typeinference/typeinfer_methodcall.c
 	$(CALL) -c main/typeinference/typeinfer_methodcall.c -o $@
 	
 # ----------- Analyzer ----------------
@@ -174,22 +171,4 @@ build/fn_analyzer.o: $(SYMTABLES_H) main/analyzer/fn_analyzer.c
 build/type_str.o: $(SYMTABLES_H) main/typeinference/util/type_str.c main/typeinference/util/type_str.h
 	$(CALL) -c main/typeinference/util/type_str.c -o $@
 
-# ----------- the symbol tables --------------
 
-build/sst.o: main/tables/sst.c main/tables/sst.h
-	$(CALL) -c main/tables/sst.c -o $@
-
-build/sst_prefill.o: main/tables/sst_prefill.c main/tables/sst_prefill.h
-	$(CALL) -c main/tables/sst_prefill.c -o $@
-
-build/lvst.o: main/tables/lvst.c main/tables/lvst.h
-	$(CALL) -c main/tables/lvst.c -o $@
-
-build/stst.o: main/tables/stst.c main/tables/stst.h
-	$(CALL) -c main/tables/stst.c -o $@
-	
-build/symtable.o: main/tables/symtable.c main/tables/symtable.h
-	$(CALL) -c main/tables/symtable.c -o $@
-
-build/cc.o: main/tables/cc.c main/tables/cc.h
-	$(CALL) -c main/tables/cc.c -o $@

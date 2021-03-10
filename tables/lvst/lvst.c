@@ -2,25 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <assert.h>
 
 #include "ast/ast.h"
 #include "ast/util/free_ast.h"
 #include "ast/util/str_ast.h"
 
-#include "tables/lvst.h"
-#include "tables/symtable.h"
-
-#include "analyzer/lv_analyzer.h"
-
-#include "typeinference/typeinfer.h"
-#include "typeinference/util/type_str.h"
+#include "tables/lvst/lvst.h"
+#include "tables/symtable/symtable.h"
 
 #define LVST_INITIAL_CAPACITY 10
 
 struct LVST* makeLVST(){
 	
-	struct LVST* lvst = malloc(sizeof(struct LVST));
+	struct LVST* lvst = make(LVST);
 	
 	lvst->count = 0;
 	lvst->capacity = LVST_INITIAL_CAPACITY;
@@ -40,40 +34,6 @@ void lvst_clear(struct LVST* lvst){
 	lvst->capacity = LVST_INITIAL_CAPACITY;
 	lvst->lines = malloc(sizeof(struct LVSTLine*)*lvst->capacity);
 	
-}
-
-void lvst_fill(struct Method* subr, struct ST* st, bool debug){
-	if(debug){ printf("fillLocalVarSymTable(...)\n"); }
-	//fill the local var symbol table	
-	//fill lvst with the arguments
-	
-	if(debug){
-		printf("add arguments to LVST\n");
-	}
-	for(int i = 0; i < subr->count_args; i++){
-		
-		struct DeclArg* da = subr->args[i];
-		
-		char* name = da->name; 
-		struct Type* type = da->type;
-		
-		struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
-		
-		strncpy(line->name, name, DEFAULT_STR_SIZE);
-		line->type = type;
-		line->isArg = true;
-		line->firstOccur = NULL;
-		
-		lvst_add(st->lvst, line);
-	}
-	
-	//fill lvst with the local variables
-	//in the function body
-	discoverLVStmtBlock(st, subr->block);
-	
-	if(debug){
-		lvst_print(st->lvst);
-	}
 }
 
 void freeLVST(struct LVST* lvst){
@@ -143,7 +103,8 @@ struct LVSTLine* lvst_get(struct LVST* lvst, char* name){
 	}
 	
 	printf("%s not found in localvarsymtable\n", name);
-	print_exit("Fatal Error");
+	printf("[Tables][Error]");
+	exit(1);
 	return NULL;
 }
 
@@ -170,9 +131,6 @@ void lvst_print(struct LVST* lvst){
 	printf(fmt, linebig, line5, linebig);
 	for(int i = 0; i < lvst->count; i++){
 		struct LVSTLine* line = lvst->lines[i];
-		
-		assert(line != NULL);
-		assert(line->type != NULL);
 		
 		printf(fmt, 
 			line->name, 

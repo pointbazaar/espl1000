@@ -3,6 +3,10 @@
 
 #include <stdbool.h>
 
+#include "tables/lvst/lvst.h"
+#include "tables/sst/sst.h"
+#include "tables/stst/stst.h"
+
 struct ST {
 	//struct SymTable
 	//this structure is an indirection and abstraction

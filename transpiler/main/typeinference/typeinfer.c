@@ -6,7 +6,7 @@
 
 #include "typeinference/typeinfer.h"
 
-#include "tables/symtable.h"
+#include "tables/symtable/symtable.h"
 
 static char* ERR_NO_ARRAYTYPE = 
 	"Expected an ArrayType\n";

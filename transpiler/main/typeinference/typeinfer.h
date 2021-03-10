@@ -3,8 +3,8 @@
 
 #include <stdbool.h>
 
-#include "tables/symtable.h"
-#include "../../ast/ast.h"
+#include "tables/symtable/symtable.h"
+#include "ast/ast.h"
 
 struct Type* infer_type_expr		(struct ST* st, struct Expr* expr);
 

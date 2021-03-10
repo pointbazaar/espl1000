@@ -10,12 +10,13 @@
 
 #include "typeinference/typeinfer.h"
 #include "typeinference/util/type_str.h"
-#include "tables/sst.h"
+#include "tables/sst/sst.h"
 
 #include "gen_c_types.h"
 #include "structs_code_gen.h"
 
 // --- subroutines private to this compile unit ---
+
 void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx);
 void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx);
 // ----
@@ -30,6 +31,8 @@ void gen_struct_subrs(struct Namespace* ns, struct Ctx* ctx);
 void gen_struct_subr_signatures(struct Namespace* ns, struct Ctx* ctx);
 // -------------------------------------------------
 void gen_struct_subrs_all(struct Namespace* ns, struct Ctx* ctx){
+	
+	if(ctx->flags->debug){ printf("gen_struct_subrs_all(...)\n"); }
 	
 	//TODO: Also update the subroutines symbol table
 	//for type inference
@@ -64,6 +67,10 @@ void gen_struct_subr_signatures(struct Namespace* ns, struct Ctx* ctx){
 // -------------------------------
 void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx){
 	
+	if(ctx->flags->debug){ 
+		printf("gen_struct_subr(...)\n"); 
+	}
+	
 	//generates the various subroutines 
 	//for one structure, e.g. newX, delX, copyX
 	
@@ -79,6 +86,8 @@ void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx){
 	gen_struct_subr_copy(sd, ctx);
 	gen_struct_subr_make(sd, ctx);
 	gen_struct_subr_print(sd, ctx);
+	
+	if(ctx->flags->debug){ printf("--------\n"); }
 	
 	struct Type* retTypeStruct = typeFromStr(ctx->tables, sd->type->structType->typeName);
 	
@@ -145,6 +154,10 @@ void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx){
 void gen_struct_subr_new(struct StructDecl* sd, struct Ctx* ctx){
 	//performs a shallow allocation
 	
+	if(ctx->flags->debug){ 
+		printf("gen_struct_subr_new(...)\n"); 
+	}
+	
 	char* name = sd->type->structType->typeName;
 	
 	fprintf(ctx->file, "struct %s* new%s(){\n", name, name);
@@ -160,6 +173,10 @@ void gen_struct_subr_new(struct StructDecl* sd, struct Ctx* ctx){
 void gen_struct_subr_del(struct StructDecl* sd, struct Ctx* ctx){
 	//performs a shallow free
 	
+	if(ctx->flags->debug){ 
+		printf("gen_struct_subr_del(...)\n"); 
+	}
+	
 	char* name = sd->type->structType->typeName;
 	
 	fprintf(ctx->file, "int del%s(struct %s* instance){\n", name, name);
@@ -173,6 +190,10 @@ void gen_struct_subr_del(struct StructDecl* sd, struct Ctx* ctx){
 
 void gen_struct_subr_copy(struct StructDecl* sd, struct Ctx* ctx){
 	//performs a shallow copy
+	
+	if(ctx->flags->debug){ 
+		printf("gen_struct_subr_copy(...)\n"); 
+	}
 	
 	char* name = sd->type->structType->typeName;
 	
@@ -198,6 +219,10 @@ void gen_struct_subr_copy(struct StructDecl* sd, struct Ctx* ctx){
 }
 
 void gen_struct_subr_make(struct StructDecl* sd, struct Ctx* ctx){
+	
+	if(ctx->flags->debug){ 
+		printf("gen_struct_subr_make(...)\n"); 
+	}
 	
 	char* name = sd->type->structType->typeName;
 	
@@ -237,6 +262,10 @@ void gen_struct_subr_make(struct StructDecl* sd, struct Ctx* ctx){
 }
 
 void gen_struct_subr_print(struct StructDecl* sd, struct Ctx* ctx){
+	
+	if(ctx->flags->debug){ 
+		printf("gen_struct_subr_print(...)\n"); 
+	}
 	
 	char* name = sd->type->structType->typeName;
 	

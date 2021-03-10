@@ -3,11 +3,11 @@
 #include "ast/ast.h"
 #include "ast/util/free_ast.h"
 
-#include "lvst.h"
-#include "sst.h"
-#include "stst.h"
+#include "tables/lvst/lvst.h"
+#include "tables/sst/sst.h"
+#include "tables/stst/stst.h"
 #include "symtable.h"
-#include "sst_prefill.h"
+#include "tables/sst/sst_prefill.h"
 
 struct ST* makeST(){
 

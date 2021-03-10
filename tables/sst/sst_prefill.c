@@ -2,11 +2,15 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "symtable.h"
+#include "tables/symtable/symtable.h"
 #include "ast/ast.h"
-#include "typeinference/util/type_str.h"
 
-#include "tables/sst.h"
+//TODO: get rid of this include,
+//as sst_prefill should not depend on type
+//type_str
+#include "transpiler/main/typeinference/util/type_str.h"
+
+#include "tables/sst/sst.h"
 #include "sst_prefill.h"
 
 struct Proto {

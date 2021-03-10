@@ -4,8 +4,9 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-#include "tables/symtable.h"
-#include "../../ast/ast.h"
+#include "ast/ast.h"
+
+struct ST;
 
 /* this struct represents the context of transpilation.
  * it provides information about symbol tables, debug parameters,

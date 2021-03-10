@@ -9,7 +9,7 @@
 #include "typeinference/typeinfer.h"
 #include "typeinference/util/type_str.h"
 
-#include "tables/symtable.h"
+#include "tables/symtable/symtable.h"
 
 static char* ERR_FATAL = "Fatal\n";
 

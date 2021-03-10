@@ -5,8 +5,8 @@
 
 #include "ast/ast.h"
 
-#include "tables/cc.h"
-#include "tables/symtable.h"
+#include "tables/cc/cc.h"
+#include "tables/symtable/symtable.h"
 
 struct SSTLine {
 	//Subroutine Symbol Table Line

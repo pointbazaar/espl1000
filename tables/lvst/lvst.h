@@ -1,14 +1,13 @@
 #ifndef LOCALVARSYMTABLE
 #define LOCALVARSYMTABLE
 
-#include "../../../ast/ast.h"
+#include "ast/ast.h"
 
 struct ST;
 struct LVSTLine;
 
 struct LVST {
 	//Local Variable Symbol Table (LVST)
-	//local variable symbol table
 	
 	unsigned int count;
 	size_t capacity;
@@ -17,11 +16,9 @@ struct LVST {
 };
 
 struct LVSTLine {
-	//a line in the LVST
 	
 	char name[DEFAULT_STR_SIZE]; 
 	
-	//a reference to the type of the variable
 	struct Type* type; 
 	
 	//the first occurence
@@ -38,7 +35,6 @@ struct LVSTLine {
 	//because arguments already have a type declared
 	//(for the c code generation)
 	
-	//is it an argument
 	bool isArg;
 };
 
@@ -47,8 +43,6 @@ void freeLVSTLine(struct LVSTLine* l);
 struct LVST* makeLVST();
 
 void lvst_clear(struct LVST* lvst);
-
-void lvst_fill(struct Method* subr, struct ST* st, bool debug);
 
 void freeLVST(struct LVST* lvst);
 

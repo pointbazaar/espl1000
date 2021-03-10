@@ -139,15 +139,20 @@ char* strPrimitiveType(struct PrimitiveType* p){
 	char* res = malloc(DEFAULT_STR_SIZE);
 	
 	if(p->isIntType){
-		//TODO: convert the enum to string,
-		//for now just return 'int'
-		sprintf(res, "int");
-		exit(1);
+		
+		char* types[] = 
+		{"int8","int16","int32","int64",
+		"uint8","uint16","uint32","uint64",
+		"int","uint"
+		};
+		
+		
+		sprintf(res, "%s", types[p->intType]);
 	}
 	
 	if(p->isFloatType){ sprintf(res, "float"); }
-	if(p->isCharType){  sprintf(res, "char"); }
-	if(p->isBoolType){ sprintf(res, "bool"); }
+	if(p->isCharType) { sprintf(res, "char"); }
+	if(p->isBoolType) { sprintf(res, "bool"); }
 	
 	return res;
 }

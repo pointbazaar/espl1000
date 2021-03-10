@@ -16,12 +16,13 @@
 #include "structs_code_gen.h"
 
 #include "analyzer/fn_analyzer.h"
+#include "analyzer/lv_analyzer.h"
 
-#include "tables/lvst.h"
-#include "tables/sst.h"
-#include "tables/sst_prefill.h"
-#include "tables/stst.h"
-#include "tables/symtable.h"
+#include "tables/sst/sst.h"
+#include "tables/sst/sst_prefill.h"
+#include "tables/stst/stst.h"
+#include "tables/lvst/lvst.h"
+#include "tables/symtable/symtable.h"
 
 // -------------------------------
 
@@ -234,6 +235,8 @@ void transpileStructMember(struct StructMember* m, struct Ctx* ctx){
 }
 
 void transpileMethod(struct Method* m, struct Ctx* ctx){
+	
+	if(ctx->flags->debug){ printf("transpileMethod\n"); }
 	
 	//create the local variable symbol table
 	lvst_clear(ctx->tables->lvst);

@@ -4,12 +4,12 @@
 #include <string.h>
 
 #include "ast/ast.h"
-#include "transpiler/main/tables/symtable.h"
 
-#include "transpiler/main/tables/lvst.h"
-#include "transpiler/main/tables/sst.h"
-#include "transpiler/main/tables/stst.h"
-#include "transpiler/main/tables/symtable.h"
+
+#include "tables/sst/sst.h"
+#include "tables/stst/stst.h"
+#include "tables/lvst/lvst.h"
+#include "tables/symtable/symtable.h"
 
 #include "transpiler/main/typeinference/typeinfer.h"
 
