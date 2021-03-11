@@ -4,7 +4,7 @@
 #include "../ast.h"
 #include <stdbool.h>
 
-struct AST* 		readAST(char* filename, bool debug);
+struct AST* 		readAST(char** filenames, int count_filenames, bool debug);
 
 //toplevel
 struct Namespace* 	readNamespace(	FILE* file, bool debug);

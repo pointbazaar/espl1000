@@ -7,31 +7,46 @@
 #include "magic_num.h"
 #include "serialize.h"
 
+void writeAST(struct AST* ast){
+	
+	for(int i = 0; i < ast->count_namespaces; i++){
+	
+		writeNamespace(ast->namespaces[i]);
+	}
+}
 
-void writeNamespace(struct Namespace* nsn, FILE* file){
+void writeNamespace(struct Namespace* n){
+	
+	FILE* file = fopen(n->ast_filename, "w");
+
+	if(file == NULL){
+		printf("could not open file:");
+		printf(" %s (in write_ast)\n", n->ast_filename);
+		exit(1);
+	}
 	
 	magic_num_serialize(MAGIC_NAMESPACE, file);
 	
-	serialize_string(nsn->srcPath, file);
-	serialize_string(nsn->name, file);
+	serialize_string(n->srcPath, file);
+	serialize_string(n->ast_filename, file);
+	serialize_string(n->name, file);
 	
-	serialize_int(nsn->count_methods, file);
 	
-	//write methods
-	for(int i=0;i < nsn->count_methods;i++){ 
-		struct Method* m = nsn->methods[i];
-		writeMethod(m,file);
+	serialize_int(n->count_methods, file);
+	for(int i=0;i < n->count_methods;i++){ 
+		
+		writeMethod(n->methods[i], file);
 	}
 	
-	serialize_int(nsn->count_structs, file);
-	
-	//write structs
-	for(int i=0;i < nsn->count_structs;i++){ 
-		struct StructDecl* m = nsn->structs[i];
-		writeStructDecl(m,file);
+	serialize_int(n->count_structs, file);
+	for(int i=0;i < n->count_structs;i++){ 
+		
+		writeStructDecl(n->structs[i], file);
 	}
 	
 	magic_num_serialize(MAGIC_END_NAMESPACE, file);
+	
+	fclose(file);
 	
 }
 void writeMethod(struct Method* m, FILE* file){
@@ -544,22 +559,4 @@ void writeSubrType(struct SubrType* m, FILE* file){
 	}
 	
 	magic_num_serialize(MAGIC_END_SUBRTYPE, file);
-}
-// --------- OTHER ----------
-void write_ast(char* filename, struct Namespace* namespaceNode){
-	
-	FILE* file = fopen(filename, "w");
-
-	if(file == NULL){
-		printf("could not open file: %s (in write_ast)\n", filename);
-		exit(1);
-	}
-	
-	magic_num_serialize(MAGIC_AST, file);
-	
-	writeNamespace(namespaceNode, file);
-	
-	magic_num_serialize(MAGIC_END_AST, file);
-	
-	fclose(file);
 }

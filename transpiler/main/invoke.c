@@ -4,15 +4,13 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <libgen.h>
-
-
 #include <sys/types.h>
 #include <sys/stat.h>
-
 #include <sys/sysmacros.h>
 
+#include "ast/io/ast_reader.h"
+#include "util/fileutils/fileutils.h"
 #include "invoke.h"
 
 bool invoke_lexer_parser(char* filename, struct Flags* flags){
@@ -55,4 +53,24 @@ bool invoke_lexer_parser(char* filename, struct Flags* flags){
 	}
 
 	return true;
+}
+
+struct AST* invoke_ast_reader(struct Flags* flags){
+	
+	char* ast_filenames[flags->count_filenames];
+	
+	for(int i = 0; i < flags->count_filenames; i++){
+		
+		ast_filenames[i] = 
+			make_ast_filename(flags->filenames[i]);
+	}
+
+	struct AST* ast = readAST(ast_filenames, flags->count_filenames, flags->debug);
+	
+	for(int i = 0; i < flags->count_filenames; i++){
+	
+		free(ast_filenames[i]);
+	}
+	
+	return ast;
 }

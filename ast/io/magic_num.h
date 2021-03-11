@@ -8,7 +8,6 @@
 //can be changend when their contents change,
 //so old .ast files can be detected and re-generated
 
-#define MAGIC_AST				32
 #define MAGIC_NAMESPACE 		33
 
 #define MAGIC_STRUCTDECL 		34

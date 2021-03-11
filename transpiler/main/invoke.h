@@ -6,4 +6,6 @@
 
 bool invoke_lexer_parser(char* filename, struct Flags* flags);
 
+struct AST* invoke_ast_reader(struct Flags* flags);
+
 #endif

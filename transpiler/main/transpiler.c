@@ -9,7 +9,6 @@
 #include <sys/stat.h>
 #include <sys/sysmacros.h>
 
-#include "ast/io/ast_reader.h"
 #include "ast/ast.h"
 #include "ast/util/free_ast.h"
 
@@ -73,24 +72,11 @@ bool transpileAndCompile(struct Flags* flags){
 		}
 	}
 	
-	char* filename = flags->filenames[0];
-	
-	//TODO: make it possible to transpile multiple .dg
-	//files together into a single .c
-
-	char* ast_filename = make_ast_filename(filename);
-	
-	if(flags->debug){
-		printf("try to open file %s\n", ast_filename);
-	}
-
-	struct AST* ast = readAST(ast_filename, flags->debug);
-	
-	free(ast_filename);
+	struct AST* ast = invoke_ast_reader(flags);
 	
 	if(ast == NULL){ return false; }
 
-	char* fname_out = make_c_filename(filename);
+	char* fname_out = make_c_filename(flags->filenames[0]);
 
 	bool success = transpileAndWrite(fname_out, ast, flags);
 	

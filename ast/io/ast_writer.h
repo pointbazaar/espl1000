@@ -1,17 +1,16 @@
 #ifndef ASTWRITER
 #define ASTWRITER
 
-
 #include "../ast.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 
-void write_ast(char* filename, struct Namespace* namespaceNode);
+void writeAST(struct AST* ast);
 
 // --- toplevel structures ---------
 
-void writeNamespace(struct Namespace* m, 	FILE* file);
+void writeNamespace(struct Namespace* m);
 
 void writeMethod(struct Method* m, 			FILE* file);
 

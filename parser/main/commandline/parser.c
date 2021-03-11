@@ -115,9 +115,17 @@ void build_ast_file(char* tokensFile, char* astFile, bool debug) {
 
 	if(debug){ printf("[Parser] write to %s\n", astFile); }
 
-	write_ast(astFile,mynamespace);
+	strcpy(mynamespace->ast_filename, astFile);
 
-	freeNamespace(mynamespace);
+	struct AST* ast = make(AST);
+	
+	ast->count_namespaces = 1;
+	ast->namespaces = malloc(sizeof(struct Namespace*)*1);
+	ast->namespaces[0] = mynamespace;
+
+	writeAST(ast);
+
+	freeAST(ast);
 	freeTokenList(tokens);
 }
 

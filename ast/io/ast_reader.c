@@ -7,30 +7,34 @@
 #include "magic_num.h"
 #include "serialize.h"
 
-struct AST* readAST(char* filename, bool debug){
-	//returns NULL if it is unable to open the file
+struct AST* readAST(char** filenames, int count_filenames, bool debug){
 	
 	if(debug){ printf("readAST(...)\n"); }
-	
-	FILE* file = fopen(filename,"r");
-	if(file == NULL){
-		printf("could not open file: %s, in ast_reader.c:readAST\n", filename);
-		return NULL;
-	}
 
 	struct AST* ast = make(AST);
-
-	magic_num_require(MAGIC_AST, file);
-
-	struct Namespace* ns = readNamespace(file, debug);
 	
-	ast->count_namespaces = 1;
-	ast->namespaces = malloc(sizeof(struct Namespace*));
-	ast->namespaces[0] = ns;
-	
-	magic_num_require(MAGIC_END_AST, file);
+	ast->count_namespaces = count_filenames;
+	ast->namespaces = malloc(sizeof(struct Namespace*)* ast->count_namespaces);
 
-	fclose(file);
+	for(int i=0;i < count_filenames; i++){
+		
+		char* filename = filenames[i];
+
+		FILE* file = fopen(filename, "r");
+		
+		if(file == NULL){
+			printf("could not open file: %s, in ast_reader.c:readAST\n", filename);
+			return NULL;
+		}
+
+		struct Namespace* ns = readNamespace(file, debug);
+		
+		if(ns == NULL){ return NULL; }
+		
+		ast->namespaces[i] = ns;
+
+		fclose(file);
+	}
 	
 	if(debug){ printf("readAST ~ done\n"); }
 	
@@ -48,6 +52,10 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	char* tmpSrcPath = deserialize_string(file);
 	strcpy(ns->srcPath, tmpSrcPath);
 	free(tmpSrcPath);
+	
+	char* tmpASTFilename = deserialize_string(file);
+	strcpy(ns->ast_filename, tmpASTFilename);
+	free(tmpASTFilename);
 	
 	tmpSrcPath = deserialize_string(file);
 	strcpy(ns->name, tmpSrcPath);
