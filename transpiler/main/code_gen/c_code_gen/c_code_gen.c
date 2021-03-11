@@ -124,6 +124,9 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx){
 	{ ns_transpile_fwd(ast->namespaces[i], ctx); }
 	
 	for(int i=0; i < ast->count_namespaces; i++)
+	{ ns_transpile_struct_decls(ast->namespaces[i], ctx); }
+	
+	for(int i=0; i < ast->count_namespaces; i++)
 	{ ns_transpile_rest(ast->namespaces[i], ctx); }
 }
 
@@ -167,6 +170,8 @@ static void ns_transpile_fwd(struct Namespace* ns, struct Ctx* ctx){
 
 	ns_transpile_struct_fwd_decls(ns, ctx);
 	
+	gen_struct_subr_signatures(ns, ctx);
+	
 	ns_transpile_subr_fwd_decls(ns, ctx);
 	
 	//TODO: transpile the fwd declarations
@@ -175,13 +180,11 @@ static void ns_transpile_fwd(struct Namespace* ns, struct Ctx* ctx){
 
 static void ns_transpile_rest(struct Namespace* ns, struct Ctx* ctx){
 
-	ns_transpile_struct_decls(ns, ctx);
-	
 	//generate the struct specific
 	//constructors, destructors,
 	//copy-constructors
 	//and update the symbol table
-	gen_struct_subrs_all(ns, ctx);
+	gen_struct_subrs(ns, ctx);
 	
 	ns_transpile_subrs(ns, ctx);
 }

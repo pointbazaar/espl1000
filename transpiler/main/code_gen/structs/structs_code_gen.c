@@ -27,20 +27,13 @@ void gen_struct_subr_make(struct StructDecl* sd, struct Ctx* ctx);
 void gen_struct_subr_print(struct StructDecl* sd, struct Ctx* ctx);
 // ------------------------------------------------
 //                   TOP LEVEL
-void gen_struct_subrs(struct Namespace* ns, struct Ctx* ctx);
-void gen_struct_subr_signatures(struct Namespace* ns, struct Ctx* ctx);
-// -------------------------------------------------
-void gen_struct_subrs_all(struct Namespace* ns, struct Ctx* ctx){
-	
-	if(ctx->flags->debug){ printf("gen_struct_subrs_all(...)\n"); }
-	
+
 	//TODO: Also update the subroutines symbol table
 	//for type inference
-	gen_struct_subr_signatures(ns, ctx);
+	//gen_struct_subr_signatures(ns, ctx);
 	
-	gen_struct_subrs(ns, ctx);
-}
-// ------------------------------------------------
+	//gen_struct_subrs(ns, ctx);
+
 void gen_struct_subrs(struct Namespace* ns, struct Ctx* ctx){
 	
 	if(ctx->flags->debug){ 
@@ -128,8 +121,8 @@ void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx){
 	char* name = sd->type->structType->typeName;
 	
 	fprintf(ctx->file, "struct %s* new%s();\n", name, name);
-	fprintf(ctx->file, "int del%s();\n", name);
-	fprintf(ctx->file, "struct %s* copy%s();\n", name, name);
+	fprintf(ctx->file, "int del%s(struct %s* ptr);\n", name, name);
+	fprintf(ctx->file, "struct %s* copy%s(struct %s* ptr);\n", name, name, name);
 	
 	//constructor with all members of the struct
 	fprintf(ctx->file, "struct %s* make%s(", name, name);
