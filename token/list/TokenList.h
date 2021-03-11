@@ -62,4 +62,5 @@ void list_print(struct TokenList* list);
 
 void freeTokenList(struct TokenList* list);
 void freeTokenListShallow(struct TokenList* list);
+
 #endif

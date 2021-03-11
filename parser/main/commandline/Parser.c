@@ -6,7 +6,6 @@
 #include <assert.h>
 #include <malloc.h>
 
-
 #include "Namespace.h"
 #include "subr/Method.h"
 #include "subr/DeclArg.h"
@@ -39,15 +38,11 @@ struct ParserFlags {
 
 bool main_inner(char* tokensFile, bool debug);
 
-struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool debug);
-
 void printHelp();
 
 void build_ast_file(char* tokensFile, char* astJsonFile, bool debug);
 
 struct ParserFlags* parseFlags(int argc, char** argv);
-
-// --------------------------------
 
 int main(int argc, char** argv){
 	
@@ -210,14 +205,14 @@ bool main_inner(char* tokensFile, bool debug) {
 void printHelp() {
 
 	printf("dragon-parser FILE\n");
-	printf("	dragon-parser - a parser for the dragon programming language\n\n");
+	printf("	dragon-parser - a parser for the smalldragon language\n\n");
 
 	printf("EXAMPLES\n");
 	printf("   dragon-parser .Main.dg.tokens\n");
 	printf("   dragon-parser -debug .Main.dg.tokens\n\n");
 
 	printf("GITHUB\n");
-	printf("   https://github.com/pointbazaar/dragon-parser/\n\n");
+	printf("   https://github.com/pointbazaar/smalldragon/\n\n");
 
 	printf("AUTHOR\n");
 	printf("	alex23667@gmail.com\n");
@@ -225,49 +220,6 @@ void printHelp() {
 	printf("\n");
 
 	printf("REPORTING BUGS\n");
-	printf("   https://github.com/pointbazaar/dragon/issues\n\n");
+	printf("   https://github.com/pointbazaar/smalldragon/issues\n\n");
 		
 }
-
-struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool debug){
-
-	if(debug){
-		printf("readTokensFromTokensFile(%s, %d)\n", tokensFile, debug);
-	}
-	
-	struct TokenList* tks = makeTokenList();
-	strcpy(tks->relPath, tokensFile);
-	
-	size_t size = 50;
-	char* line = malloc(sizeof(char)*size);
-    
-	while (getline(&line, &size, file)){
-		
-		line[strlen(line)-1] = '\0';
-		
-		bool isLineNo = false;
-		struct Token* tkn = recognizeToken(line, &isLineNo, debug);
-    	if(isLineNo){
-			if(tkn != NULL){ 
-				freeToken(tkn);
-			}
-			continue; 
-		}
-    	
-    	if(tkn != NULL){
-			list_add(tks, tkn);
-    	}else{
-    		break;
-    	}
-    }
-
-	if(debug) {
-		printf("read was successful\n");
-		printf("done recognizing %d tokens\n", list_size(tks));
-	}
-	
-	free(line);
-
-	return tks;
-}
-

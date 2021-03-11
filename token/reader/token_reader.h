@@ -8,7 +8,7 @@
 
 struct Token;
 
-//may return NULL if no token was recognized
-struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug);
+struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool debug);
+
 
 #endif

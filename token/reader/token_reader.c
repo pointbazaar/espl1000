@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -8,57 +10,84 @@
 
 #include "token/token/token.h"
 
-struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2);
+static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2);
 
-struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
-	//parses the token, as encoded by the lexer
-	//everything being seperated by a space, and the whole line not
-	//having any spaces in front or at the back is important to keep parsing simple.
+static struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug);
+
+struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool debug){
+
+	if(debug){
+		printf("readTokensFromTokensFile(%s, %d)\n", tokensFile, debug);
+	}
+	
+	struct TokenList* tks = makeTokenList();
+	strcpy(tks->relPath, tokensFile);
+	
+	size_t size = 50;
+	char* line = malloc(size);
+    
+	while (getline(&line, &size, file)){
+		
+		line[strlen(line)-1] = '\0';
+		
+		bool isLineNo = false;
+		struct Token* tkn = recognizeToken(line, &isLineNo, debug);
+    	if(isLineNo){
+			if(tkn != NULL){ 
+				freeToken(tkn);
+			}
+			continue; 
+		}
+    	
+    	if(tkn != NULL){
+			list_add(tks, tkn);
+    	}else{
+    		break;
+    	}
+    }
+
+	if(debug) {
+		printf("read was successful\n");
+		printf("done recognizing %d tokens\n", list_size(tks));
+	}
+	
+	free(line);
+
+	return tks;
+}
+
+static struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
+	
 	if (debug) {
 		printf("recognizeToken('%s', %d)\n", tkn, debug);
 	}
 
-	
 	char part1[10];
 	char part2[30];
-
-	//find first space
-	int space_index = -1;
-	for(int i=0;i<strlen(tkn);i++){
-		if(tkn[i] == ' '){
-			space_index = i;
-			break;
-		}
-	}
-
-	if(space_index == -1){
-		if(debug){
-			printf("could not read 2 parts of token\n");
-		}
-		return NULL;
-	}
+	
+	char* space_ptr = strchr(tkn, ' ');
+	
+	if(space_ptr == NULL){ return NULL; }
+	
+	const int space_index = space_ptr - tkn;
 
 	tkn[space_index] = '\0';
 	
 	strcpy(part1, tkn);
-	strcpy(part2, tkn+space_index+1);
-	
-	if(debug){
-			printf("part 1: %s\n", part1);
-			printf("part 2: %s\n", part2);
-	}
+	strcpy(part2, tkn + space_index + 1);
 
-	int tkn_id = atoi(part1);
+	const int tkn_id = atoi(part1);
+	
 	int line_no = 1;
 
 	if (tkn_id == LINE_NO) {
-		int line_no_change = atoi(part2);
-		line_no += line_no_change;
+		
+		line_no += atoi(part2);
 		*isLineNo = true;
+		
 		return NULL;
 	}
 	
-
 	struct Token* r = recognizeTokenInner(tkn_id, tkn, part2);
 
 	if(r != NULL){
@@ -68,9 +97,10 @@ struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
 	return r;
 }
 
-struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
+static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 	
 	struct Token* r = NULL;
+	
 	switch (tkn_id) {
 		case STRINGCONST : 
 			r = makeToken2(STRINGCONST, tkn+3);
