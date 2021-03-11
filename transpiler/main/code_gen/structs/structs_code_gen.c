@@ -12,7 +12,7 @@
 #include "typeinference/util/type_str.h"
 #include "tables/sst/sst.h"
 
-#include "gen_c_types.h"
+#include "code_gen/types/gen_c_types.h"
 #include "structs_code_gen.h"
 
 // --- subroutines private to this compile unit ---

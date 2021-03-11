@@ -14,13 +14,13 @@
 
 #include "../test/test.h"
 
-#include "code_gen/c_code_gen.h"
+#include "code_gen/c_code_gen/c_code_gen.h"
 #include "flags/flags.h"
 #include "util/help.h"
 
 #include "util/fileutils/fileutils.h"
 
-#include "invoke.h"
+#include "invoke/invoke.h"
 
 #include "transpiler.h"
 

@@ -17,14 +17,22 @@ AST_OBJS := ../ast/build/ast_reader.o \
 
 TRANSPILER_OBJS := build/transpiler.o \
 	build/invoke.o \
-	build/c_code_gen.o \
-	build/structs_code_gen.o \
-	build/code_gen_util.o \
 	build/flags.o \
 	build/validate_flags.o \
 	build/help.o \
-	build/gen_c_types.o \
 	build/fileutils.o 
+	
+OBJS_CODEGEN := build/c_code_gen.o \
+	build/structs_code_gen.o \
+	build/code_gen_util.o \
+	build/c_code_gen_const.o \
+	build/c_code_gen_expr.o \
+	build/c_code_gen_stmts.o \
+	build/c_code_gen_struct.o \
+	build/c_code_gen_subr.o \
+	build/c_code_gen_types.o \
+	build/c_code_gen_var.o \
+	build/gen_c_types.o 
 	
 OBJS_ANALYZER := build/lv_analyzer.o \
 	build/fn_analyzer.o
@@ -54,7 +62,8 @@ OBJS_TABLE := ../tables/build/lvst.o \
 
 OBJS := $(AST_OBJS) $(TRANSPILER_OBJS) \
 	$(OBJS_TABLE) $(OBJS_TEST) \
-	$(OBJS_TYPEINFERENCE) $(OBJS_ANALYZER)
+	$(OBJS_TYPEINFERENCE) $(OBJS_ANALYZER) \
+	$(OBJS_CODEGEN)
 
 all: all_no_valgrind valgrind
 
@@ -96,22 +105,46 @@ build/serialize.o: ../ast/serialize.c ../ast/serialize.h
 build/util.o: ../util/util.c
 	$(CALL) -c ../util/util.c -o $@
 
-build/transpiler.o: main/transpiler.c main/transpiler.h main/code_gen/c_code_gen.h main/flags/flags.h test/test.h main/util/help.h 
+build/transpiler.o: main/transpiler.c main/transpiler.h test/test.h main/util/help.h 
 	$(CALL) -c main/transpiler.c -o $@
 
-build/invoke.o: main/invoke.c main/invoke.h 
-	$(CALL) -c main/invoke.c -o $@
+build/invoke.o: main/invoke/invoke.c main/invoke/invoke.h 
+	$(CALL) -c main/invoke/invoke.c -o $@
+	
+# --- code_gen ---
+build/c_code_gen.o: main/code_gen/c_code_gen/c_code_gen.c 
+	$(CALL) -c main/code_gen/c_code_gen/c_code_gen.c -o $@
 
-build/c_code_gen.o: main/code_gen/c_code_gen.c main/util/ctx.h \
-		main/code_gen/code_gen_util.h main/flags/flags.h  \
-		main/code_gen/structs_code_gen.h
-	$(CALL) -c main/code_gen/c_code_gen.c -o $@
+DIR_CG := main/code_gen/c_code_gen/
 
-build/code_gen_util.o: main/code_gen/code_gen_util.c main/code_gen/code_gen_util.h main/util/ctx.h
-	$(CALL) -c main/code_gen/code_gen_util.c -o $@
+build/c_code_gen_const.o: $(DIR_CG)/const/c_code_gen_const.c 
+	$(CALL) -c $(DIR_CG)/const/c_code_gen_const.c -o $@
 
-build/structs_code_gen.o: main/code_gen/structs_code_gen.c main/code_gen/structs_code_gen.h
-	$(CALL) -c main/code_gen/structs_code_gen.c -o $@
+build/c_code_gen_expr.o: $(DIR_CG)/expr/c_code_gen_expr.c 
+	$(CALL) -c $(DIR_CG)/expr/c_code_gen_expr.c -o $@
+
+build/c_code_gen_stmts.o: $(DIR_CG)/stmts/c_code_gen_stmts.c 
+	$(CALL) -c $(DIR_CG)/stmts/c_code_gen_stmts.c -o $@
+
+build/c_code_gen_struct.o: $(DIR_CG)/struct/c_code_gen_struct.c 
+	$(CALL) -c $(DIR_CG)/struct/c_code_gen_struct.c -o $@
+	
+build/c_code_gen_subr.o: $(DIR_CG)/subr/c_code_gen_subr.c 
+	$(CALL) -c $(DIR_CG)/subr/c_code_gen_subr.c -o $@
+
+build/c_code_gen_types.o: $(DIR_CG)/types/c_code_gen_types.c 
+	$(CALL) -c $(DIR_CG)/types/c_code_gen_types.c -o $@
+
+build/c_code_gen_var.o: $(DIR_CG)/var/c_code_gen_var.c 
+	$(CALL) -c $(DIR_CG)/var/c_code_gen_var.c -o $@
+
+# --------------
+
+build/code_gen_util.o: main/code_gen/util/code_gen_util.c 
+	$(CALL) -c main/code_gen/util/code_gen_util.c -o $@
+
+build/structs_code_gen.o: main/code_gen/structs/structs_code_gen.c
+	$(CALL) -c main/code_gen/structs/structs_code_gen.c -o $@
 
 build/test.o: test/test.c test/test.h \
 		main/transpiler.h main/flags/flags.h \
@@ -147,8 +180,8 @@ build/help.o: main/util/help.c main/util/help.h
 build/fileutils.o: main/util/fileutils/fileutils.c
 	$(CALL) -c main/util/fileutils/fileutils.c -o $@
 
-build/gen_c_types.o: main/code_gen/gen_c_types.h main/code_gen/gen_c_types.c 
-	$(CALL) -c main/code_gen/gen_c_types.c -o $@
+build/gen_c_types.o: main/code_gen/types/gen_c_types.h
+	$(CALL) -c main/code_gen/types/gen_c_types.c -o $@
 
 # ----------- typeinference --------------
 

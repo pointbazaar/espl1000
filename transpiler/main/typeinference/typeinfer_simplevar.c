@@ -4,7 +4,6 @@
 #include "ast/util/free_ast.h"
 #include "ast/util/str_ast.h"
 
-#include "code_gen/gen_c_types.h"
 #include "typeinference/typeinfer.h"
 
 #include "tables/symtable/symtable.h"

@@ -5,7 +5,6 @@
 #include "ast/util/free_ast.h"
 #include "ast/util/str_ast.h"
 
-#include "code_gen/gen_c_types.h"
 #include "typeinference/typeinfer.h"
 #include "typeinference/util/type_str.h"
 
