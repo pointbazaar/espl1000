@@ -21,41 +21,26 @@
 #include "token/reader/token_reader.h"
 #include "token/token/token.h"
 
-const char* FLAG_DEBUG = "-debug";
-const char* FLAG_HELP = "-help";
-const char* FLAG_TEST = "-test";
-
-struct ParserFlags {
-
-	bool debug;
-	bool help;
-	bool test;
-
-	char* filename;
-};
+#include "parser_help.h"
+#include "parser_flags.h"
 
 // --- private subroutines ---
 
-bool main_inner(char* tokensFile, bool debug);
+bool main_inner(struct ParserFlags* flags);
 
 void printHelp();
 
 void build_ast_file(char* tokensFile, char* astJsonFile, bool debug);
 
-struct ParserFlags* parseFlags(int argc, char** argv);
+//this project is to parse a Dragon AST
+//from Tokens written into .tokens files by Dragon-Lexer,
+//and store it in a .ast file 
+//to be retrieved by the smalldragon transpiler
 
 int main(int argc, char** argv){
 	
-	//this project is to parse a Dragon AST
-	//from Tokens written into .tokens files by Dragon-Lexer,
-	//and store it in a .ast file to be retrieved by the smalldragon transpiler
-	//for simplicity, we invoke with just one filename as argument.
-	//such we can easily have
-	//multiple parallel invocations of the parser in the compiler.
-
 	mallopt(M_CHECK_ACTION, 3);
 
-	
 	struct ParserFlags* flags = parseFlags(argc, argv);
 
 	if(flags->help) {
@@ -66,7 +51,7 @@ int main(int argc, char** argv){
 	}
 	
 	if(flags->test){
-	
+		
 		free(flags);	
 		return test_all(flags->debug);
 	}
@@ -78,48 +63,23 @@ int main(int argc, char** argv){
 		exit(1);
 	}
 	
-	bool success = main_inner(flags->filename, flags->debug);
+	bool success = main_inner(flags);
 	
 	free(flags);
 	
 	return (success)?0:1;
 }
 
-struct ParserFlags* parseFlags(int argc, char** argv){
-
-	struct ParserFlags* flags = malloc(sizeof(struct ParserFlags));
-
-	flags->help = false;
-	flags->test = false;
-	flags->debug = false;
-
-	for(int i = 1; i < argc; i++){
-
-		char* arg = argv[i];
-
-		if(strcmp(FLAG_HELP,  arg) == 0){ flags->help  = true; }
-		if(strcmp(FLAG_TEST,  arg) == 0){ flags->test  = true; }
-		if(strcmp(FLAG_DEBUG, arg) == 0){ flags->debug = true; }
-
-		if(arg[0] != '-'){
-		
-			flags->filename = arg;
-		}
-	}
-	
-	return flags;
-}
-
 void build_ast_file(char* tokensFile, char* astFile, bool debug) {
 
 	if(debug){
-		printf("Parser::build_ast_file(%s, %s, %d)\n", tokensFile, astFile, debug);
+		printf("[Parser] build_ast_file(%s, %s, %d)\n", tokensFile, astFile, debug);
 	}
 
 	FILE* file = fopen(tokensFile, "r");
 	
 	if(file == NULL){
-		printf("Parser.c:build_ast_file: could not open file: %s\n", tokensFile);
+		printf("[Parser] build_ast_file: could not open file: %s\n", tokensFile);
 		exit(1);
 	}
 	
@@ -128,7 +88,7 @@ void build_ast_file(char* tokensFile, char* astFile, bool debug) {
 	fclose(file);
 
 	if(debug){
-		printf("Tokens as Source Code Fragment : \n");
+		printf("[Parser] Tokens as Source Code Fragment : \n");
 		printf("%s\n", list_code(tokens, debug));
 	}
 
@@ -144,16 +104,16 @@ void build_ast_file(char* tokensFile, char* astFile, bool debug) {
 	
 		freeNamespace(mynamespace);
 		
-		printf("there were tokens left when parsing.\n");
+		printf("[Parser] there were tokens left when parsing.\n");
 		list_print(tokens);
-		printf("exiting.\n");
+		printf("[Parser] exiting.\n");
 
 		freeTokenList(tokens);
 		
 		exit(1);
 	}
 
-	if(debug){ printf("write to %s\n", astFile); }
+	if(debug){ printf("[Parser] write to %s\n", astFile); }
 
 	write_ast(astFile,mynamespace);
 
@@ -162,13 +122,13 @@ void build_ast_file(char* tokensFile, char* astFile, bool debug) {
 }
 
 
-bool main_inner(char* tokensFile, bool debug) {
+bool main_inner(struct ParserFlags* flags) {
 	
-	//returns false if it was unsuccessful
+	char* tokensFile = flags->filename;
 
-	if(debug){
-		printf("Parser::main_inner\n");
-		printf("Tokens File to parse: %s\n",tokensFile);
+	if(flags->debug){
+		printf("[Parser] main_inner\n");
+		printf("[Parser] Tokens File to parse: %s\n",tokensFile);
 	}
 	
 	char fname1[32];
@@ -177,49 +137,28 @@ bool main_inner(char* tokensFile, bool debug) {
 	
 
 	if(strcmp(fname2, ".tokens") != 0){
-		printf("%s does not have .tokens extension. Exiting.\n", tokensFile);
-		printf("actual extension: %s\n", fname2);
+		printf("[Parser] %s does not have .tokens extension. Exiting.\n", tokensFile);
+		printf("[Parser] actual extension: %s\n", fname2);
 		return false;
 	}
 
 	FILE* f = fopen(tokensFile, "rw");
 	
 	if(f == NULL){
-		printf("argument file %s does not exist.", tokensFile);
+		printf("[Parser] argument file %s does not exist.", tokensFile);
 		return false;
 	}
 
 	fclose(f);
 	char* AST_filename = malloc(sizeof(char)*100);
+	
 	strcpy(AST_filename, tokensFile);
 	int l = strlen(tokensFile) - strlen(".tokens");
 	AST_filename[l] = '\0';
 	strcat(AST_filename, ".ast");
 
-	build_ast_file(tokensFile,AST_filename,debug);
+	build_ast_file(tokensFile,AST_filename, flags->debug);
 	free(AST_filename);
 	
 	return true;
-}
-
-void printHelp() {
-
-	printf("dragon-parser FILE\n");
-	printf("	dragon-parser - a parser for the smalldragon language\n\n");
-
-	printf("EXAMPLES\n");
-	printf("   dragon-parser .Main.dg.tokens\n");
-	printf("   dragon-parser -debug .Main.dg.tokens\n\n");
-
-	printf("GITHUB\n");
-	printf("   https://github.com/pointbazaar/smalldragon/\n\n");
-
-	printf("AUTHOR\n");
-	printf("	alex23667@gmail.com\n");
-	printf("	David.Milosevic@web.de\n");
-	printf("\n");
-
-	printf("REPORTING BUGS\n");
-	printf("   https://github.com/pointbazaar/smalldragon/issues\n\n");
-		
 }
