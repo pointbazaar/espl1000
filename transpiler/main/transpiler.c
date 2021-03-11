@@ -1,5 +1,3 @@
-#define _XOPEN_SOURCE
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,12 +18,12 @@
 #include "code_gen/c_code_gen.h"
 #include "util/flags.h"
 #include "util/help.h"
+
+#include "invoke.h"
+
 #include "transpiler.h"
 
-// ----------------
 bool check_dg_extension(char* filename);
-bool invoke_lexer_parser(char* filename, struct Flags* flags);
-// ----------------
 
 int main(int argc, char* argv[]){
 
@@ -83,51 +81,6 @@ bool check_dg_extension(char* filename){
 	return true;
 }
 
-bool invoke_lexer_parser(char* filename, struct Flags* flags){
-	
-	char cmd1[100];
-	
-	strcpy(cmd1, "dragon-lexer ");
-	
-	if(flags->debug){ strcat(cmd1, "-debug "); }
-
-	if(flags->clean){ strcat(cmd1, "-clean "); }
-
-	strcat(cmd1, filename);
-
-	printf("%s\n", cmd1);
-
-	int status = system(cmd1);
-	if(WEXITSTATUS(status) != 0){
-		printf("Error: lexer exited with nonzero exit code\n");
-		return false;
-	}
-	
-	char fnamecpy[100];
-	strcpy(fnamecpy, filename);
-	
-	char* base_name = basename(fnamecpy);
-	char* dir_name = dirname(fnamecpy);
-	
-	char cmd2[100];
-	sprintf(
-		cmd2, 
-		"dragon-parser %s %s/.%s.tokens", 
-		(flags->debug)?"-debug":"",
-		dir_name,
-		base_name
-	);	
-	printf("%s\n", cmd2);
-
-	status = system(cmd2);
-	if(WEXITSTATUS(status) != 0){
-		printf("Error: parser exited with nonzero exit code\n");
-		return false;
-	}
-
-	return true;
-}
-
 bool transpileAndCompile(char* filename,  struct Flags* flags){
 	//returns false if it was unsuccessful
 	
@@ -173,13 +126,9 @@ bool transpileAndCompile(char* filename,  struct Flags* flags){
 		printf("try to open file %s\n", ast_filename);
 	}
 
-	//parse AST
 	struct AST* ast = readAST(ast_filename, flags->debug);
 	
-	if(ast == NULL){
-		//reading from file has failed
-		return false;
-	}
+	if(ast == NULL){ return false; }
 
 	char fname_out[DEFAULT_STR_SIZE]; //new output filename
 
@@ -193,9 +142,7 @@ bool transpileAndCompile(char* filename,  struct Flags* flags){
 	
 	freeAST(ast);
 	
-	if(!success){
-		return false;
-	}
+	if(!success){ return false; }
 	
 	char cmd_gcc[500];
 	strcpy(cmd_gcc, "");
@@ -206,12 +153,7 @@ bool transpileAndCompile(char* filename,  struct Flags* flags){
 		//we chase attiny25 to have it generate less complex instructions
 		strcat(cmd_gcc, "avr-gcc -o main.o -I /usr/share/avra -mmcu=attiny45 ");
 	}else{
-		//-Wall enabled so we catch
-		//our transpiler if it generates code
-		//that could cause trouble.
-		//Also serves as feedback for users,
-		//as they smalldragon code could transpile
-		//to C code that causes warnings.
+		
 		strcat(cmd_gcc, "gcc -Wall -o a.out ");
 	}
 	
@@ -225,22 +167,15 @@ bool transpileAndCompile(char* filename,  struct Flags* flags){
 	}
 	
 	if(flags->has_main_fn){
-		//compile with gcc
-		if(flags->debug){
-			printf("%s\n", cmd_gcc);
-		}
 		
 		printf("%s\n", cmd_gcc);
 		system(cmd_gcc);
 		
 		if(flags->avr){
-			//use various tools to compile a .hex file
-			//which can be read by e.g. mdx
 			
 			system("avr-gcc main.o -o main.elf");
 			system("avr-objcopy -O ihex -j .text -j .data main.elf main.hex");
 			
-			//use 
 			//avr-objdump -D -m avr main.hex
 			//to view contents
 		}

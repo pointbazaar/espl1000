@@ -16,6 +16,7 @@ AST_OBJS := ../ast/build/ast_reader.o \
 		../ast/build/visitor.o
 
 TRANSPILER_OBJS := build/transpiler.o \
+	build/invoke.o \
 	build/c_code_gen.o \
 	build/structs_code_gen.o \
 	build/code_gen_util.o \
@@ -92,6 +93,9 @@ build/util.o: ../util/util.c
 
 build/transpiler.o: main/transpiler.c main/transpiler.h main/code_gen/c_code_gen.h main/util/flags.h test/test.h main/util/help.h 
 	$(CALL) -c main/transpiler.c -o $@
+
+build/invoke.o: main/invoke.c main/invoke.h 
+	$(CALL) -c main/invoke.c -o $@
 
 build/c_code_gen.o: main/code_gen/c_code_gen.c main/util/ctx.h \
 		main/code_gen/code_gen_util.h main/util/flags.h  \
