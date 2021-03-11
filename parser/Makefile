@@ -20,7 +20,7 @@ OBJS_TOKEN := $(TOKEN_BUILD)/token.o \
 		$(TOKEN_BUILD)/TokenList.o \
 		$(TOKEN_BUILD)/token_reader.o
 
-OBJS_MAIN := build/Parser.o \
+OBJS_MAIN := build/parser.o \
 		build/parser_help.o \
 		build/parser_flags.o \
 		build/AST.o \
