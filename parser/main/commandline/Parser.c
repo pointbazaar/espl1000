@@ -19,7 +19,7 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/reader/TokenReader.h"
+#include "token/reader/token_reader.h"
 #include "token/token/token.h"
 
 const char* FLAG_DEBUG = "-debug";

@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "token/reader/TokenReader.h"
+#include "token/reader/token_reader.h"
 #include "token/TokenKeys.h"
 
 #include "token/token/token.h"

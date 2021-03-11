@@ -5,12 +5,12 @@ FLAGS := -march=native -g --std=c11 -Wall -Werror $(INCLUDE)
 
 CALL := gcc $(FLAGS) -c 
 
-OBJS := build/token.o build/TokenReader.o \
+OBJS := build/token.o build/token_reader.o \
 		build/TokenList.o build/TokenListTest.o
 
 HEADERS := token/token.h \
 	list/TokenList.h \
-	reader/TokenReader.h \
+	reader/token_reader.h \
 	TokenKeys.h
 
 all: dirs $(OBJS) test
@@ -33,8 +33,8 @@ build/TokenList.o: $(HEADERS) list/TokenList.c
 build/TokenListTest.o: $(HEADERS) test/TokenListTest.c 
 		$(CALL) test/TokenListTest.c -o $@
 
-build/TokenReader.o: $(HEADERS) reader/TokenReader.c 
-	$(CALL) reader/TokenReader.c -o $@
+build/token_reader.o: $(HEADERS) reader/token_reader.c 
+	$(CALL) reader/token_reader.c -o $@
 	
 clean:
 	rm -f build/*.o

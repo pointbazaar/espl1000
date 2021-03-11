@@ -18,7 +18,7 @@ TOKEN_BUILD := ../token/build
 
 OBJS_TOKEN := $(TOKEN_BUILD)/token.o \
 		$(TOKEN_BUILD)/TokenList.o \
-		$(TOKEN_BUILD)/TokenReader.o
+		$(TOKEN_BUILD)/token_reader.o
 
 OBJS_MAIN := build/Parser.o \
 		build/AST.o \
