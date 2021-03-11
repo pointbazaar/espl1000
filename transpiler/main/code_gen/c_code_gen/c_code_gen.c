@@ -30,10 +30,19 @@
 //counter for generating labels
 unsigned int label_count = 0;
 
-void transpileAST(struct AST* ast, struct Ctx* ctx);
+static void transpileAST(struct AST* ast, struct Ctx* ctx);
 
-void transpileNamespace(struct Namespace* ns, struct Ctx* ctx);
+static void fill_tables(struct AST* ast, struct Ctx* ctx);
 
+// --- ns - X ---
+
+static void ns_transpile_struct_fwd_decls(struct Namespace* ns, struct Ctx* ctx);
+static void ns_transpile_struct_decls(struct Namespace* ns, struct Ctx* ctx);
+static void ns_transpile_subr_fwd_decls(struct Namespace* ns, struct Ctx* ctx);
+static void ns_transpile_subrs(struct Namespace* ns, struct Ctx* ctx);
+
+static void ns_transpile_fwd(struct Namespace* ns, struct Ctx* ctx);
+static void ns_transpile_rest(struct Namespace* ns, struct Ctx* ctx);
 // --------------------------------------------------------
 
 bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags){
@@ -69,7 +78,22 @@ bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags){
 	return true;
 }
 
-void transpileAST(struct AST* ast, struct Ctx* ctx){
+static void fill_tables(struct AST* ast, struct Ctx* ctx){
+	
+	sst_clear(ctx->tables->sst);
+	sst_prefill(ctx->tables, ctx->tables->sst);
+	
+	for(int i = 0; i < ast->count_namespaces; i++){
+		
+		struct Namespace* ns = ast->namespaces[i];
+		
+		sst_fill(ctx->tables->sst, ns, ctx->flags->debug);
+		stst_fill(ctx->tables->stst, ns, ctx->flags->debug);
+	
+	}
+}
+
+static void transpileAST(struct AST* ast, struct Ctx* ctx){
 	
 	if(!(ctx->flags->avr)){
 		//in microcontrollers, we cannot assume there will
@@ -83,8 +107,9 @@ void transpileAST(struct AST* ast, struct Ctx* ctx){
 		fprintf(ctx->file, "#include <inttypes.h>\n");
 	}
 	
-	sst_clear(ctx->tables->sst);
-	sst_prefill(ctx->tables, ctx->tables->sst);
+	fill_tables(ast, ctx);
+	
+	ctx->flags->has_main_fn = sst_contains(ctx->tables->sst, "main");
 	
 	//TODO: re-enable
 	//analyze_functions(ctx->tables, ast);
@@ -94,35 +119,63 @@ void transpileAST(struct AST* ast, struct Ctx* ctx){
 	//namespaces should be transpiled
 	//before any functions/structures
 	//are defined
+	
+	for(int i=0; i < ast->count_namespaces; i++)
+	{ ns_transpile_fwd(ast->namespaces[i], ctx); }
+	
+	for(int i=0; i < ast->count_namespaces; i++)
+	{ ns_transpile_rest(ast->namespaces[i], ctx); }
+}
 
-	for(int i=0; i < ast->count_namespaces; i++){
-
-		transpileNamespace(ast->namespaces[i], ctx);
+static void ns_transpile_struct_fwd_decls(struct Namespace* ns, struct Ctx* ctx){
+	
+	//write struct fwd. declarations
+	for(int i=0;i < ns->count_structs; i++){
+		
+		char* name = ns->structs[i]
+					   ->type
+			           ->structType
+					   ->typeName;
+		
+		fprintf(ctx->file, "struct %s;\n", name);
 	}
 }
 
-void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
+static void ns_transpile_struct_decls(struct Namespace* ns, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileNamespace\n"); }
-	
-	sst_fill(ctx->tables->sst, ns, ctx->flags->debug);
-	stst_fill(ctx->tables->stst, ns, ctx->flags->debug);
-	
-	ctx->flags->has_main_fn = sst_contains(ctx->tables->sst, "main");
-	
-	//write struct forward declarations
-	assert(ns->structs != NULL);
-	assert(ns->count_structs >= 0);
-	
-	for(int i=0;i < ns->count_structs; i++){
-		assert(ns->structs[i] != NULL);
-		
-		fprintf(ctx->file, "struct %s;\n", ns->structs[i]->type->structType->typeName);
-	}
-
 	for(int i=0;i < ns->count_structs; i++){
 		transpileStructDecl(ns->structs[i], ctx);
 	}
+}
+
+static void ns_transpile_subr_fwd_decls(struct Namespace* ns, struct Ctx* ctx){
+
+	for(int i=0; i < ns->count_methods; i++){
+		transpileMethodSignature(ns->methods[i], ctx);
+		fprintf(ctx->file, ";\n");
+	}
+}
+
+static void ns_transpile_subrs(struct Namespace* ns, struct Ctx* ctx){
+
+	for(int i=0; i < ns->count_methods; i++){
+		transpileMethod(ns->methods[i], ctx);
+	}
+}
+
+static void ns_transpile_fwd(struct Namespace* ns, struct Ctx* ctx){
+
+	ns_transpile_struct_fwd_decls(ns, ctx);
+	
+	ns_transpile_subr_fwd_decls(ns, ctx);
+	
+	//TODO: transpile the fwd declarations
+	//of the generated subroutines for the structures
+}
+
+static void ns_transpile_rest(struct Namespace* ns, struct Ctx* ctx){
+
+	ns_transpile_struct_decls(ns, ctx);
 	
 	//generate the struct specific
 	//constructors, destructors,
@@ -130,17 +183,8 @@ void transpileNamespace(struct Namespace* ns, struct Ctx* ctx){
 	//and update the symbol table
 	gen_struct_subrs_all(ns, ctx);
 	
-	//write subroutine forward declarations
-	for(int i=0; i < ns->count_methods; i++){
-		transpileMethodSignature(ns->methods[i], ctx);
-		fprintf(ctx->file, ";\n");
-	}
-
-	for(int i=0; i < ns->count_methods; i++){
-		transpileMethod(ns->methods[i], ctx);
-	}
+	ns_transpile_subrs(ns, ctx);
 }
-
 
 void transpileStmtBlock(struct StmtBlock* block, struct Ctx* ctx){
 	
