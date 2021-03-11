@@ -5,9 +5,9 @@ FLAGS := -g -march=native -Wall --std=c11
 
 INCLUDE_DIR := include/
 
-C_HEADERS := $(INCLUDE_DIR)/driver.h $(INCLUDE_DIR)/test.h $(INCLUDE_DIR)/lexer_flags.h
+C_HEADERS := $(INCLUDE_DIR)/driver.h $(INCLUDE_DIR)/test.h ../token/token/token.h $(INCLUDE_DIR)/lexer_flags.h
 
-C_SOURCES := src/driver.c ../token/token.c test/test.c 
+C_SOURCES := src/driver.c test/test.c ../token/token/token.c
 
 SOURCES := smalldragon.flex Makefile $(C_SOURCES)
 

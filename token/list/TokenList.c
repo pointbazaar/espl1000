@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "TokenList.h"
-#include "TokenKeys.h"
-#include "token.h"
+#include "token/list/TokenList.h"
+#include "token/TokenKeys.h"
+#include "token/token/token.h"
 
 struct TokenList* makeTokenList() {
 	

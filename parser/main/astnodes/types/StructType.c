@@ -6,9 +6,9 @@
 
 #include "ast/ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 static void parse_type_params_rest(struct StructType* res, struct TokenList* tokens);
 

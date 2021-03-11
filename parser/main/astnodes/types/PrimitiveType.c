@@ -7,10 +7,9 @@
 #include "ast/ast.h"
 #include "ast/sd_inttype.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
-
+#include "token/token/token.h"
 
 struct PrimitiveType* makePrimitiveType(struct TokenList* tokens, bool debug){
 

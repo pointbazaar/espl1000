@@ -19,8 +19,8 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenReader.h"
-#include "token/token.h"
+#include "token/reader/TokenReader.h"
+#include "token/token/token.h"
 
 const char* FLAG_DEBUG = "-debug";
 const char* FLAG_HELP = "-help";

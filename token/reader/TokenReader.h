@@ -1,11 +1,10 @@
 #ifndef TOKENREADER
 #define TOKENREADER
 
-#include <string.h>
 #include <stdbool.h>
 
-#include "TokenList.h"
-#include "TokenKeys.h"
+#include "token/list/TokenList.h"
+#include "token/TokenKeys.h"
 
 struct Token;
 

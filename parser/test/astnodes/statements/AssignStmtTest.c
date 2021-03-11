@@ -8,9 +8,9 @@
 #include "expr/Expr.h"
 #include "var/Variable.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 #include "ast/util/free_ast.h"
 

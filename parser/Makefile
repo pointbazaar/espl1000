@@ -100,9 +100,9 @@ AST_DEPS := ../ast/ast.h \
 	../ast/util/copy_ast.h
 
 
-TOKEN_DEPS := ../token/TokenList.h \
+TOKEN_DEPS := ../token/list/TokenList.h \
 	../token/TokenKeys.h \
-	../token/token.h 
+	../token/token/token.h 
 
 MAIN_DEPS := $(AST_DEPS) $(TOKEN_DEPS)
 

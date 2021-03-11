@@ -20,7 +20,7 @@ for the java version of this lexer
 //Project Headers
 #include "driver.h"
 #include "test.h"
-#include "../../token/token.h"
+#include "../../token/token/token.h"
 
 #include "../../token/TokenKeys.h"
 
