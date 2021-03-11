@@ -5,7 +5,7 @@ void sd_print_help(){
 	
 	printf("NAME:     sd - smalldragon transpiler\n\n");
 	
-	printf("SYNOPSIS: sd [OPTION] FILE\n\n");
+	printf("SYNOPSIS: sd [OPTION] FILE...\n\n");
 	
 	printf("OPTIONS:\n\n");
 	

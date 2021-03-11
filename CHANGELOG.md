@@ -3,9 +3,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
+
+## [v0.2.0]
 - Analyze Callers and Callees of subroutines
 - Introduce AST Nodes 'PrimitiveType', 'StructType' as members of
   'SimpleType'
+- smalldragon now supports transpiling multiple .dg files into one .c file.
+  This is the first step in the foundation for building larger programs
+  in smalldragon.
 
 ## [v0.1.5]
 - Added new Assignment Operators: &=, |=, >>=, <<=

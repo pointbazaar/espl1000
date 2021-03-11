@@ -31,10 +31,10 @@ TODO (MODULES/INCLUDE/IMPORT):
     smalldragon then should have a facility to declare external 
     subroutines that should exist in c code that is linked later.
     so C code can be called in smalldragon files.
-    
- - [ ] provide a facility to include other .dg files directly into the .c output
-    
 
+ - [ ] only transpile the subroutines which are actually called
+       (dead code analysis)
+    
 TODO (TYPECHECKING):
 
  - [ ] check in typechecking that the correct type signature
