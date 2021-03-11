@@ -7,7 +7,7 @@
 #include "ast/util/free_ast.h"
 
 #include "util/ctx.h"
-#include "util/flags.h"
+#include "flags/flags.h"
 
 #include "typeinference/typeinfer.h"
 #include "c_code_gen.h"

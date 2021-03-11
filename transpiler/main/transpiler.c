@@ -16,30 +16,20 @@
 #include "../test/test.h"
 
 #include "code_gen/c_code_gen.h"
-#include "util/flags.h"
+#include "flags/flags.h"
 #include "util/help.h"
+
+#include "util/fileutils/fileutils.h"
 
 #include "invoke.h"
 
 #include "transpiler.h"
 
-bool check_dg_extension(char* filename);
-
 int main(int argc, char* argv[]){
 
 	mallopt(M_CHECK_ACTION, 3);
-
-	char* filename = NULL;
 	
 	struct Flags* flags = makeFlags(argc, argv);
-	
-	for(int i=1; i < argc; i++){
-		
-		if(argv[i][0] != '-'){
-			
-			filename = argv[i];
-		}
-	}
 	
 	if(flags->help){
 		sd_print_help();
@@ -59,68 +49,36 @@ int main(int argc, char* argv[]){
 		return status;
 	}
 	
-	if(filename == NULL){
-		printf("expected at least 1 filename\n");
-		freeFlags(flags);
-		exit(1);
-	}
-	
-	bool success = transpileAndCompile(filename, flags);
+	bool success = transpileAndCompile(flags);
 	
 	freeFlags(flags);
 
 	return (success)?0:1;
 }
 
-bool check_dg_extension(char* filename){
-	const int ext_index = strlen(filename)-3;
-	if(strcmp(filename+ext_index, ".dg") != 0){
-			printf("filename has to have .dg extension\n");
-			return false;
-	}
-	return true;
-}
-
-bool transpileAndCompile(char* filename,  struct Flags* flags){
-	//returns false if it was unsuccessful
+bool transpileAndCompile(struct Flags* flags){
 	
 	if(flags->debug){ printf("transpileAndCompile(...)\n"); }
 	
-	if(!check_dg_extension(filename)){
-		freeFlags(flags);
-		exit(1);
-	}
-
-	//check if the file actually exists
-	struct stat mystat;
-	if(stat(filename, &mystat) == -1){
-		perror("Error: ");
-		freeFlags(flags);
-		exit(1);
-	}
-	mode_t mode = mystat.st_mode;
-	if(!S_ISREG(mode)){
-		//not a regular file
-		printf("Error: %s is not a regular file.\n", filename);
-		freeFlags(flags);
-		exit(1);
+	for(int i=0;i < flags->count_filenames; i++){
+	
+		char* filename = flags->filenames[i];
+	
+		//invoke lexer, parser to generate .dg.ast file
+		bool success = invoke_lexer_parser(filename, flags);
+		if(!success){
+			printf("Error: could not lex/parse %s.\n", filename);
+			freeFlags(flags);
+			exit(1);
+		}
 	}
 	
-	//invoke lexer, parser to generate .dg.ast file
-	bool success = invoke_lexer_parser(filename, flags);
-	if(!success){
-		printf("Error: could not lex/parse %s.\n", filename);
-		freeFlags(flags);
-		exit(1);
-	}
-
-	char ast_filename[100];
-	char fnamecpy[100];
-	strcpy(fnamecpy, filename);
+	char* filename = flags->filenames[0];
 	
-	char* base_name = basename(fnamecpy);
-	char* dir_name = dirname(fnamecpy);
-	sprintf(ast_filename, "%s/.%s.ast", dir_name, base_name);
+	//TODO: make it possible to transpile multiple .dg
+	//files together into a single .c
+
+	char* ast_filename = make_ast_filename(filename);
 	
 	if(flags->debug){
 		printf("try to open file %s\n", ast_filename);
@@ -128,43 +86,19 @@ bool transpileAndCompile(char* filename,  struct Flags* flags){
 
 	struct AST* ast = readAST(ast_filename, flags->debug);
 	
+	free(ast_filename);
+	
 	if(ast == NULL){ return false; }
 
-	char fname_out[DEFAULT_STR_SIZE]; //new output filename
+	char* fname_out = make_c_filename(filename);
 
-	strcpy(fname_out, filename);
-	//remove the '.dg'
-	fname_out[strlen(fname_out)-3] = '\0';
-	strcat(fname_out, ".c");
-
-	//transpile to C code and write to file 
-	success = transpileAndWrite(fname_out, ast, flags);
+	bool success = transpileAndWrite(fname_out, ast, flags);
 	
 	freeAST(ast);
 	
 	if(!success){ return false; }
 	
-	char cmd_gcc[500];
-	strcpy(cmd_gcc, "");
-	
-	if(flags->avr){
-		//choose -mmcu=attiny25, but you can replace with
-		//whatever you like
-		//we chase attiny25 to have it generate less complex instructions
-		strcat(cmd_gcc, "avr-gcc -o main.o -I /usr/share/avra -mmcu=attiny45 ");
-	}else{
-		
-		strcat(cmd_gcc, "gcc -Wall -o a.out ");
-	}
-	
-	strcat(cmd_gcc, fname_out);
-	
-	//we assume here cmd_gcc will never exceed it's allocated size.
-	//Warning. this is a stupid assumption.
-	for(int i=0; i < flags->gcc_flags_count; i++){
-		strcat(cmd_gcc, " ");
-		strcat(cmd_gcc, flags->gcc_flags[i]);
-	}
+	char* cmd_gcc = make_gcc_cmd(flags, fname_out);
 	
 	if(flags->has_main_fn){
 		
@@ -176,10 +110,12 @@ bool transpileAndCompile(char* filename,  struct Flags* flags){
 			system("avr-gcc main.o -o main.elf");
 			system("avr-objcopy -O ihex -j .text -j .data main.elf main.hex");
 			
-			//avr-objdump -D -m avr main.hex
-			//to view contents
+			//avr-objdump -D -m avr main.hex //to view contents
 		}
 	}
+	
+	free(cmd_gcc);
+	free(fname_out);
 	
 	return true;
 }

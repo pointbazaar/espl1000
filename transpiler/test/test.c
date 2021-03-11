@@ -5,7 +5,7 @@
 
 #include "transpiler.h"
 
-#include "util/flags.h"
+#include "flags/flags.h"
 
 #include "test.h"
 #include "util/test_statuscode.h"

@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #include "util/ctx.h"
-#include "util/flags.h"
+#include "flags/flags.h"
 
 #include "ast/util/free_ast.h"
 #include "ast/util/str_ast.h"

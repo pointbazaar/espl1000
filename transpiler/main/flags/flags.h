@@ -2,20 +2,27 @@
 #define FLAGS
 
 #include <stdbool.h>
+#include <inttypes.h>
 
 struct Flags {
-	bool debug:1;
-	bool test:1;
-	bool avr:1;
-	bool help:1;
-	bool version:1;
-	bool clean:1;
+	
+	bool debug;
+	bool test;
+	bool avr;
+	bool help;
+	bool version;
+	bool clean;
 	//----------
+	
 	char** gcc_flags;
 	int gcc_flags_count;
 	
 	//used to tell if we should run gcc
 	bool has_main_fn;
+	
+	uint8_t count_filenames;
+	uint8_t capacity_filenames;
+	char** filenames;
 };
 
 struct Flags* makeFlags(int argc, char** argv);

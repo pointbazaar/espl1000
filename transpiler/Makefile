@@ -21,8 +21,10 @@ TRANSPILER_OBJS := build/transpiler.o \
 	build/structs_code_gen.o \
 	build/code_gen_util.o \
 	build/flags.o \
+	build/validate_flags.o \
 	build/help.o \
-	build/gen_c_types.o 
+	build/gen_c_types.o \
+	build/fileutils.o 
 	
 OBJS_ANALYZER := build/lv_analyzer.o \
 	build/fn_analyzer.o
@@ -76,8 +78,11 @@ smalldragon: dir $(OBJS)
 dir:
 	mkdir -p build
 
-build/flags.o: main/util/flags.c
-	$(CALL) -c main/util/flags.c -o $@
+build/flags.o: main/flags/flags.c
+	$(CALL) -c main/flags/flags.c -o $@
+
+build/validate_flags.o: main/flags/validate_flags.c
+	$(CALL) -c main/flags/validate_flags.c -o $@
 
 build/ast_reader.o: ../ast/ast_reader.c
 	$(CALL) -c ../ast/ast_reader.c -o $@
@@ -91,25 +96,25 @@ build/serialize.o: ../ast/serialize.c ../ast/serialize.h
 build/util.o: ../util/util.c
 	$(CALL) -c ../util/util.c -o $@
 
-build/transpiler.o: main/transpiler.c main/transpiler.h main/code_gen/c_code_gen.h main/util/flags.h test/test.h main/util/help.h 
+build/transpiler.o: main/transpiler.c main/transpiler.h main/code_gen/c_code_gen.h main/flags/flags.h test/test.h main/util/help.h 
 	$(CALL) -c main/transpiler.c -o $@
 
 build/invoke.o: main/invoke.c main/invoke.h 
 	$(CALL) -c main/invoke.c -o $@
 
 build/c_code_gen.o: main/code_gen/c_code_gen.c main/util/ctx.h \
-		main/code_gen/code_gen_util.h main/util/flags.h  \
+		main/code_gen/code_gen_util.h main/flags/flags.h  \
 		main/code_gen/structs_code_gen.h
 	$(CALL) -c main/code_gen/c_code_gen.c -o $@
 
 build/code_gen_util.o: main/code_gen/code_gen_util.c main/code_gen/code_gen_util.h main/util/ctx.h
 	$(CALL) -c main/code_gen/code_gen_util.c -o $@
 
-build/structs_code_gen.o: main/code_gen/structs_code_gen.c main/code_gen/structs_code_gen.h main/util/ctx.h main/util/flags.h
+build/structs_code_gen.o: main/code_gen/structs_code_gen.c main/code_gen/structs_code_gen.h
 	$(CALL) -c main/code_gen/structs_code_gen.c -o $@
 
 build/test.o: test/test.c test/test.h \
-		main/transpiler.h main/util/flags.h \
+		main/transpiler.h main/flags/flags.h \
 		test/util/test_statuscode.h \
 		test/code_gen/test_op.h \
 		test/code_gen/test_other.h \
@@ -117,7 +122,7 @@ build/test.o: test/test.c test/test.h \
 		test/typeinference/test_typeinference.h
 	$(CALLTEST) -c test/test.c -o $@
 
-build/test_statuscode.o: test/util/test_statuscode.h test/util/test_statuscode.c main/util/flags.h main/transpiler.h
+build/test_statuscode.o: test/util/test_statuscode.h test/util/test_statuscode.c main/transpiler.h
 	$(CALLTEST) -c test/util/test_statuscode.c -o $@
 	
 build/test_assign.o: test/util/test_statuscode.h test/util/test_statuscode.c test/code_gen/test_assign.h test/code_gen/test_assign.c
@@ -138,6 +143,9 @@ build/test_typeinference.o: test/typeinference/test_typeinference.h test/typeinf
 
 build/help.o: main/util/help.c main/util/help.h
 	$(CALL) -c main/util/help.c -o $@
+	
+build/fileutils.o: main/util/fileutils/fileutils.c
+	$(CALL) -c main/util/fileutils/fileutils.c -o $@
 
 build/gen_c_types.o: main/code_gen/gen_c_types.h main/code_gen/gen_c_types.c 
 	$(CALL) -c main/code_gen/gen_c_types.c -o $@
