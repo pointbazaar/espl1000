@@ -14,13 +14,6 @@
 #include "typeinference/typeinfer.h"
 #include "typeinference/util/type_str.h"
 
-//  [1]
-/*  register the pointer in SymbolTable 'st'
- *	so it can manage that memory,
- *	as this pointer is not part of the AST Tree
- */
- 
-static void registerInferredType(struct ST* st, struct Type* t);
 
 struct Type* typeFromStrPrimitive(struct ST* st, char* typeName){
 	
@@ -81,7 +74,7 @@ struct Type* typeFromStr(struct ST* st, char* typeName){
 	return res;
 }
 
-static void registerInferredType(struct ST* st, struct Type* t){
+void registerInferredType(struct ST* st, struct Type* t){
 	
 	//[1]
 	if(st->inferredTypesCount >= st->inferredTypesCapacity){

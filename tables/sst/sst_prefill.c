@@ -59,7 +59,7 @@ struct Proto protos_stdio[] = {
 	{ "sprintf", "int" },
 	
 	{ "fgetc", "int" },
-	//{ "fgets",  "int" },
+	{ "fgets",  "[char]" },
 	{ "fputc", "int" },
 	{ "fputs", "int" },
 	{ "getc", "int" },
@@ -76,7 +76,7 @@ struct Proto protos_stdio[] = {
 	{ "fseek", "int" },
 	{ "fsetpos", "int" },
 	{ "ftell", "int" },
-	//{ "rewind", "void" },
+	{ "rewind", "int" }, //TODO: wrong return type
 };
 
 struct Proto protos_stdlib[] = {
@@ -89,7 +89,7 @@ struct Proto protos_stdlib[] = {
 	{ "free", "int" }, //TODO: wrong return type
 	{ "atexit", "int" },
 	{ "exit", "int" }, //TODO: wrong return type
-	//getenv
+	{ "getenv", "[char]" },
 	{ "system", "int" },
 	//bsearch
 	//qsort
@@ -99,7 +99,31 @@ struct Proto protos_stdlib[] = {
 
 struct Proto protos_string[] = {
 	{ "strcmp", "int" },
+	{ "strncmp", "int" },
+	
 	{ "strlen", "int" },
+	{ "strnlen", "int" },
+	
+	{ "strcpy", "[char]" },
+	{ "strncpy", "[char]" },
+	
+	{ "strcat", "[char]" },
+	{ "strncat", "[char]" },
+	
+	{ "strchr", "[char]" },
+	{ "strrchr", "[char]" },
+	
+	{ "strspn", "int" },
+	{ "strcspn", "int" },
+	
+	{ "strpbrk", "[char]" },
+	{ "strstr", "[char]" },
+	
+	{ "basename", "[char]" },
+	
+	{ "strerror", "[char]" },
+	
+	{ "strtok", "[char]" },
 };
 
 struct Proto protos_ctype[] = {
@@ -152,7 +176,37 @@ static void fill_protos(struct ST* st, struct Proto* protos, int n){
 
 	struct Type* mf = typeFromStrPrimitive(st, "float");
 	struct Type* mi = typeFromStrPrimitive(st, "int");
+	struct Type* mc = typeFromStrPrimitive(st, "char");
 	
+	struct PrimitiveType* pt = make(PrimitiveType);
+	
+	pt->isIntType  = false;
+	pt->isCharType = true;
+	pt->isFloatType= false;
+	pt->isBoolType = false;
+	
+	struct SimpleType* myst = make(SimpleType);
+	myst->primitiveType = pt;
+	myst->structType    = NULL;
+	
+	struct BasicTypeWrapped* btw = make(BasicTypeWrapped);
+	btw->simpleType = myst;
+	btw->subrType = NULL;
+	
+	struct Type* mychar = make(Type);
+		mychar->m1 = btw;
+		mychar->m2 = NULL;
+		mychar->m3 = NULL;
+		
+	struct ArrayType* at = make(ArrayType);
+		at->element_type = mychar;
+		
+	struct Type* cp = make(Type);
+		cp->m1 = NULL;
+		cp->m2 = NULL;
+		cp->m3 = at;
+		
+	registerInferredType(st, cp);
 
 	for(int i=0;i < n; i++){
 	
@@ -163,6 +217,8 @@ static void fill_protos(struct ST* st, struct Proto* protos, int n){
 		
 		if(strcmp(type, "int")   == 0){ t = mi; }
 		if(strcmp(type, "float") == 0){ t = mf; }
+		if(strcmp(type, "char") == 0) { t = mc; }
+		if(strcmp(type, "[char]") == 0){ t = cp; }
 		
 		if(t == NULL){
 			printf("[Transpiler] Error in fill_proto\n");
