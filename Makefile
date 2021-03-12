@@ -7,6 +7,7 @@ all:
 	cd tables     && make
 	cd transpiler && make 
 	cd examples   && make
+	cd stdlib     && make
 
 test:
 	cd token      && make test
@@ -16,6 +17,7 @@ test:
 	cd tables     && make test
 	cd transpiler && make test
 	cd examples   && make test
+	cd stdlib     && make test
 
 clean:
 	cd token      && make clean
@@ -25,3 +27,4 @@ clean:
 	cd tables     && make clean
 	cd transpiler && make clean
 	cd examples   && make clean
+	cd stdlib     && make clean
