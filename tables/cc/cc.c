@@ -46,9 +46,6 @@ void free_cc(struct CC* cc){
 
 static void free_cc_node(struct CCNode* node){
 
-	//DEBUG
-	printf("freeCCNode\n");
-
 	if(node->next != NULL)
 		{free_cc_node(node->next); }
 		
@@ -105,4 +102,16 @@ static struct CCNode* make_cc_node(char* name, struct CCNode* next){
 	res->next = next;
 	
 	return res;
+}
+
+//--------------------------------------------
+
+struct CCNode* cc_next(struct CCNode* node){
+	
+	return node->next;
+}
+
+char* cc_name(struct CCNode* node){
+
+	return node->name;
 }

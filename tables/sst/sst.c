@@ -85,6 +85,9 @@ struct SSTLine* makeSSTLine(char* name, struct Type* type, bool isLibC){
 	line->isLibC       = isLibC;
 	line->cc           = make_cc();
 	
+	line->is_dead      = false;
+	line->dead_visited = false;
+	
 	return line;
 }
 

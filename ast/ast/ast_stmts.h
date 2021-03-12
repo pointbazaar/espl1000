@@ -42,7 +42,7 @@ struct Stmt {
 	uint8_t kind; //0-based
 
 	//if one of these is true,
-	//=> kind == -1
+	//=> kind == 99
 	bool isContinue;
 	bool isBreak;
 };

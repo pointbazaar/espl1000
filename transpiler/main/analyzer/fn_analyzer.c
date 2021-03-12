@@ -17,11 +17,19 @@ void myvisitor(void* node, enum NODE_TYPE type);
 
 static struct ST* myst;
 
-void analyze_functions(struct ST* st, struct AST* ast){
+static bool mydebug = false;
+
+static void status(char* msg){
+	
+	if(mydebug){ printf("[Analyzer] %s\n", msg); }
+}
+
+void analyze_functions(struct ST* st, struct AST* ast, bool debug){
 
 	myst = st;
+	mydebug = debug;
 
-	printf("analyze_callees and callers\n");
+	status("analyze callees and callers");
 
 	visitAST(ast, myvisitor);
 }
@@ -41,6 +49,10 @@ void myvisitor(void* node, enum NODE_TYPE type){
 	struct MethodCall* m = (struct MethodCall*) node;
 	
 	struct SSTLine* line;
+	
+	if(mydebug){
+		printf("[Analyzer] add callee %s->%s\n", currentFn->name, m->methodName);
+	}
 	
 	line = sst_get(myst->sst, currentFn->name);
 	cc_add_callee(line->cc, m->methodName);

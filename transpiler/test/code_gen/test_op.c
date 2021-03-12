@@ -5,9 +5,13 @@
 
 #include "util/test_statuscode.h"
 
+static void status(char* msg){
+	printf(" - [TEST] %s\n", msg);
+}
+
 void test_add(bool debug){
 	
-	if(debug){ printf("test_add\n"); }
+	status("test_add");
 	
 	char* src = "fn main () ~> int { return 3+4; }";
 	
@@ -18,7 +22,7 @@ void test_add(bool debug){
 
 void test_sub(bool debug){
 	
-	if(debug){ printf("test_sub\n"); }
+	status("test_sub");
 	
 	char* src = "fn main () ~> int { return 6-4; }";
 	
@@ -29,7 +33,7 @@ void test_sub(bool debug){
 
 void test_mul(bool debug){
 	
-	if(debug){ printf("test_mul\n"); }
+	status("test_mul");
 	
 	char* src = "fn main () ~> int { return 2 * 4; }";
 	
@@ -40,7 +44,7 @@ void test_mul(bool debug){
 
 void test_div(bool debug){
 	
-	if(debug){ printf("test_div\n"); }
+	status("test_div");
 	
 	char* src = "fn main () ~> int { return 4 / 2; }";
 	
@@ -51,7 +55,7 @@ void test_div(bool debug){
 
 void test_mod(bool debug){
 	
-	if(debug){ printf("test_mod\n"); }
+	status("test_mod");
 	
 	char* src = "fn main () ~> int { return 4 % 3; }";
 	
@@ -62,7 +66,7 @@ void test_mod(bool debug){
 
 void test_precedence(bool debug){
 	
-	if(debug){ printf("test_precedence\n"); }
+	status("test_precedence");
 	
 	char* src = "fn main () ~> int { return 3 + 4 / 2; }";
 	
@@ -73,7 +77,7 @@ void test_precedence(bool debug){
 
 void test_or(bool debug){
 	
-	if(debug){ printf("test_or\n"); }
+	status("test_or");
 	
 	char* src = "fn main () ~> int { if true || false { return 3; } return 2; }";
 	
@@ -84,7 +88,7 @@ void test_or(bool debug){
 
 void test_and(bool debug){
 	
-	if(debug){ printf("test_and\n"); }
+	status("test_and");
 	
 	char* src = "fn main () ~> int { return true && false; }";
 	
@@ -95,7 +99,7 @@ void test_and(bool debug){
 
 void test_not(bool debug){
 	
-	if(debug){ printf("test_not\n"); }
+	status("test_not");
 	
 	char* src = "fn main () ~> int { return ! false; }";
 	
@@ -108,7 +112,7 @@ void test_not(bool debug){
 
 void test_greater(bool debug){
 	
-	if(debug){ printf("test_greater\n"); }
+	status("test_greater");
 	
 	char* src = "fn main () ~> int { return 4 > 3; }";
 	
@@ -119,7 +123,7 @@ void test_greater(bool debug){
 
 void test_lesser(bool debug){
 	
-	if(debug){ printf("test_lesser\n"); }
+	status("test_lesser");
 	
 	char* src = "fn main () ~> int { return 4 < 3; }";
 	
@@ -130,7 +134,7 @@ void test_lesser(bool debug){
 
 void test_geq(bool debug){
 	
-	if(debug){ printf("test_geq\n"); }
+	status("test_geq");
 	
 	char* src = "fn main () ~> int { return 3 >= 3; }";
 	
@@ -141,7 +145,7 @@ void test_geq(bool debug){
 
 void test_leq(bool debug){
 	
-	if(debug){ printf("test_leq\n"); }
+	status("test_leq");
 	
 	char* src = "fn main () ~> int { return 2 <= 3; }";
 	
@@ -152,7 +156,7 @@ void test_leq(bool debug){
 
 void test_eq(bool debug){
 	
-	if(debug){ printf("test_eq\n"); }
+	status("test_eq");
 	
 	char* src = "fn main () ~> int { return 8 == 8; }";
 	
@@ -163,7 +167,7 @@ void test_eq(bool debug){
 
 void test_neq(bool debug){
 	
-	if(debug){ printf("test_neq\n"); }
+	status("test_neq");
 	
 	char* src = "fn main () ~> int { return 4 != 4; }";
 	
@@ -174,7 +178,7 @@ void test_neq(bool debug){
 
 void test_chained_cmp(bool debug){
 	
-	if(debug){ printf("test_chained_cmp\n"); }
+	status("test_chained_cmp");
 	
 	char* src = "fn main () ~> int { return 3 > 4 < 5; }";
 	
@@ -184,7 +188,8 @@ void test_chained_cmp(bool debug){
 }
 
 void test_bitwise_and(bool debug){
-	if(debug){ printf("test_bitwise_and\n"); }
+	
+	status("test_bitwise_and");
 	
 	char* src = "fn main () ~> int { return 3 & 1; }";
 	
@@ -194,7 +199,8 @@ void test_bitwise_and(bool debug){
 }
 
 void test_bitwise_or(bool debug){
-	if(debug){ printf("test_bitwise_or\n"); }
+	
+	status("test_bitwise_or");
 	
 	char* src = "fn main () ~> int { return 1 | 2; }";
 	
@@ -204,7 +210,9 @@ void test_bitwise_or(bool debug){
 }
 
 void test_bitwise_leftshift(bool debug){
-	if(debug){ printf("test_bitwise_leftshift\n"); }
+	
+	status("test_bitwise_leftshift");
+	
 	char* src = "fn main () ~> int { return 1 << 1; }";
 	const int status = sourceToStatus(src, debug);
 	
@@ -212,7 +220,9 @@ void test_bitwise_leftshift(bool debug){
 }
 
 void test_bitwise_rightshift(bool debug){
-	if(debug){ printf("test_bitwise_rightshift\n"); }
+	
+	status("test_bitwise_rightshift");
+	
 	char* src = "fn main () ~> int { return 2 >> 1; }";
 	const int status = sourceToStatus(src, debug);
 	
@@ -220,7 +230,9 @@ void test_bitwise_rightshift(bool debug){
 }
 
 void test_bitwise_xor(bool debug){
-	if(debug){ printf("test_bitwise_xor\n"); }
+	
+	status("test_bitwise_xor");
+	
 	char* src = "fn main () ~> int { return 8 ^ 5; }";
 	const int status = sourceToStatus(src, debug);
 	
@@ -228,7 +240,9 @@ void test_bitwise_xor(bool debug){
 }
 
 void test_bitwise_neg(bool debug){
-	if(debug){ printf("test_bitwise_neg\n"); }
+	
+	status("test_bitwise_neg");
+	
 	char* src = "fn main () ~> int { return ~4 + 5; }";
 	const int status = sourceToStatus(src, debug);
 	

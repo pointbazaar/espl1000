@@ -17,6 +17,6 @@
  * in the SSTLine for a given function.
  */
  
-void analyze_functions(struct ST* st, struct AST* ast);
+void analyze_functions(struct ST* st, struct AST* ast, bool debug);
 
 #endif

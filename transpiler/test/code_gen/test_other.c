@@ -4,9 +4,14 @@
 #include "test_other.h"
 #include "../util/test_statuscode.h"
 
+
+static void status(char* msg){
+	printf(" - [TEST] %s\n", msg);
+}
+
 void test_statuscode(bool debug){
 	
-	if(debug){ printf("test_statuscode\n"); }
+	status("statuscode");
 	
 	char* src = "fn main () ~> int { return 3; }";
 	
@@ -17,7 +22,7 @@ void test_statuscode(bool debug){
 
 void test_simplevar(bool debug){
 	
-	if(debug){ printf("test_simplevar\n"); }
+	status("simplevar");
 	
 	char* src = "fn main () ~> int { uint x = 2; return x; }";
 	
@@ -26,7 +31,7 @@ void test_simplevar(bool debug){
 
 void test_recursive(bool debug){
 	
-	if(debug){ printf("test_recursive\n"); }
+	status("recursive");
 	
 	char* src = "fn main () ~> int { return subr(8); } fn subr (uint n) ~> uint { if n > 0 { return subr(n-1); } return n; }";
 	
@@ -35,7 +40,7 @@ void test_recursive(bool debug){
 
 void test_charconst_cmp(bool debug){
 
-	if(debug){ printf("test_charconst_cmp\n"); }
+	status("charconst_cmp");
 	
 	char* src = "fn main () ~> int { return ('h' == 'h'); } ";
 	
@@ -44,7 +49,7 @@ void test_charconst_cmp(bool debug){
 
 void test_wrapped_expr(bool debug){
 	
-	if(debug){ printf("test_wrapped_expr\n"); }
+	status("wrapped_expr");
 	
 	char* src = "fn main () ~> int { return (8 + 8) / 2; } ";
 	

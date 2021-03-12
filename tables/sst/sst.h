@@ -22,6 +22,11 @@ struct SSTLine {
 	
 	//callees and callers
 	struct CC* cc; //may be NULL
+	
+	//--- dead code analysis ---
+	bool is_dead;
+	bool dead_visited;
+	//--------------------------
 };
 
 struct SST {

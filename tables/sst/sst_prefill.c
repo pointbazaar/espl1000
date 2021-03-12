@@ -83,10 +83,12 @@ struct Proto protos_stdlib[] = {
 	{ "atof", "float" },
 	{ "atoi", "int" },
 	{ "rand", "int" },
-	//{ "srand", "void" },
-	//calloc, malloc, free
+	{ "srand", "int" }, //TODO: wrong return type
+	{ "calloc", "int" }, //TODO: wrong return type
+	{ "malloc", "int" }, //TODO: wrong return type
+	{ "free", "int" }, //TODO: wrong return type
 	{ "atexit", "int" },
-	//exit
+	{ "exit", "int" }, //TODO: wrong return type
 	//getenv
 	{ "system", "int" },
 	//bsearch
@@ -118,6 +120,10 @@ struct Proto protos_ctype[] = {
 	{ "toupper", "int" },
 };
 
+struct Proto protos_assert[] = {
+	{ "assert", "int" }, //TODO: wrong return type
+};
+
 void sst_prefill(struct ST* st, struct SST* sst){
 	
 	//fills the SST with some basic
@@ -132,12 +138,14 @@ void sst_prefill(struct ST* st, struct SST* sst){
 	int l3 = sizeof(protos_stdlib)/s;
 	int l4 = sizeof(protos_string)/s;
 	int l5 = sizeof(protos_ctype)/s;
+	int l6 = sizeof(protos_assert)/s;
 	
 	fill_protos(st, protos_math, l1);
 	fill_protos(st, protos_stdio, l2);
 	fill_protos(st, protos_stdlib, l3);
 	fill_protos(st, protos_string, l4);
 	fill_protos(st, protos_ctype, l5);
+	fill_protos(st, protos_assert, l6);
 }
 
 static void fill_protos(struct ST* st, struct Proto* protos, int n){
