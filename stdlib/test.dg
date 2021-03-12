@@ -24,6 +24,14 @@ fn main() ~> int {
 	assert(gcd(10,15) == 5);
 
 	assert(lcm(15,20) == 60);
+	
+	[int] arr = malloc(4*2);
+
+	arr[0] = 3;
+	arr[1] = 5;
+
+	assert(sum(arr, 2) == 8);
+	assert(average(arr, 2) == 4);
 
 	printf("[stdlib] PASSED ALL TESTS\n");
 

@@ -1,6 +1,7 @@
-
 /*
-	
+	This file contains various functions
+	to perform mathematical operations.
+
 	sign(i)
 	ipow(i,n)
 	faculty(n)
@@ -8,6 +9,8 @@
 	max(i1,i2)
 	gcd(i1,i2) //greatest common divisor
 	lcm(i1,i2) //least common multiple
+	sum(arr, size);
+	average(arr, size) //average 
 */
 
 fn sign (int n) -> int {
@@ -56,4 +59,14 @@ fn lcm (int a, int b) -> int {
 
 	return (a*b)/gcd(a,b);
 }
+fn sum([int] arr, int size) -> int {
+	int res = 0;
+	for i in 0 .. size-1 {
+		res += arr[i];
+	}
+	return res;
+}
+fn average([int] arr, int size) -> int {
 
+	return sum(arr, size) / size;
+}
