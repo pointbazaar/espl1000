@@ -139,34 +139,37 @@ bool main_inner(struct ParserFlags* flags) {
 		printf("[Parser] Tokens File to parse: %s\n",tokensFile);
 	}
 	
-	char fname1[32];
-	strcpy(fname1, tokensFile);
-	char* fname2 = fname1 + (strlen(fname1)-strlen(".tokens")) * sizeof(char);
+	char* extension = tokensFile + (strlen(tokensFile)-strlen(".tokens")) * sizeof(char);
 	
-
-	if(strcmp(fname2, ".tokens") != 0){
+	if(strcmp(extension, ".tokens") != 0){
 		printf("[Parser] %s does not have .tokens extension. Exiting.\n", tokensFile);
-		printf("[Parser] actual extension: %s\n", fname2);
+		printf("[Parser] actual extension: %s\n", extension);
 		return false;
 	}
 
 	FILE* f = fopen(tokensFile, "rw");
 	
 	if(f == NULL){
-		printf("[Parser] argument file %s does not exist.", tokensFile);
+		char* ERR_FILE_NOT_EXIST = 
+			"[Parser] file %s does not exist.\n";
+			
+		printf(ERR_FILE_NOT_EXIST, tokensFile);
 		return false;
 	}
 
 	fclose(f);
-	char* AST_filename = malloc(sizeof(char)*100);
 	
-	strcpy(AST_filename, tokensFile);
-	int l = strlen(tokensFile) - strlen(".tokens");
-	AST_filename[l] = '\0';
-	strcat(AST_filename, ".ast");
+	char* ast_filename = malloc(strlen(tokensFile)+1);
+	
+	strcpy(ast_filename, tokensFile);
+	
+	ast_filename[extension - tokensFile] = '\0';
+	
+	strcat(ast_filename, ".ast");
 
-	build_ast_file(tokensFile,AST_filename, flags->debug);
-	free(AST_filename);
+	build_ast_file(tokensFile, ast_filename, flags->debug);
+	
+	free(ast_filename);
 	
 	return true;
 }
