@@ -2,7 +2,7 @@
 /*
 	
 	sign(i)
-	pow(i,n)
+	ipow(i,n)
 	faculty(n)
 	min(i1,i2)
 	max(i1,i2)
@@ -20,7 +20,7 @@ fn sign (int n) -> int {
 	return -1;
 }
 
-fn pow (int base, uint power) -> int {
+fn ipow (int base, uint power) -> int {
 	int result=1;
 	i=0;
 	while(i<power){

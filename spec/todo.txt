@@ -1,5 +1,6 @@
-TODO (BUGS):
+BUGS:
  - [ ] struct 'CaseStmt' is missing options for HexConst, BinConst
+ - [ ] dragon-lexer sometimes passes '//' through from input to output.
 
 TODO (OTHER):
 

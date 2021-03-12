@@ -1,0 +1,33 @@
+fn main() ~> int {
+
+	assert(sign(4) == 1);
+	assert(sign(-8) == -1);
+
+	assert( pow(2,3) == 8 );
+
+	assert( faculty(3) == 6 );
+
+	assert( min(4,5) == 4 );
+
+	assert( max(2,6) == 6 );
+
+	//make 2 vectors, add them
+
+	V2 a = makeV2(1,2);
+	V2 b = makeV2(0,1);
+
+	V2 res = add(a,b);
+
+	assert(res.a == 1);
+	assert(res.b == 3);
+
+	assert(gcd(10,15) == 5);
+
+	assert(lcm(15,20) == 60);
+
+	printf("[stdlib] PASSED ALL TESTS\n");
+
+	return 0;
+}
+
+

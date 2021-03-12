@@ -1,4 +1,4 @@
 #!/bin/bash
 
-draco -debug TestStdLib.dg Math.dg String.dg Vector.dg Array.dg Base.dg
+sd -clean test.dg math.dg string.dg vector.dg base.dg
 

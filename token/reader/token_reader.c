@@ -63,7 +63,7 @@ static struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
 	}
 
 	char part1[10];
-	char part2[30];
+	char part2[50];
 	
 	char* space_ptr = strchr(tkn, ' ');
 	
