@@ -7,10 +7,11 @@
 	faculty(n)
 	min(i1,i2)
 	max(i1,i2)
-	gcd(i1,i2) //greatest common divisor
-	lcm(i1,i2) //least common multiple
+	gcd(i1,i2)          //greatest common divisor
+	lcm(i1,i2)          //least common multiple
 	sum(arr, size);
-	average(arr, size) //average 
+	average(arr, size); //average (mean)
+	fib(n);             //fibonacci
 */
 
 fn sign (int n) -> int {
@@ -59,6 +60,7 @@ fn lcm (int a, int b) -> int {
 
 	return (a*b)/gcd(a,b);
 }
+
 fn sum([int] arr, int size) -> int {
 	int res = 0;
 	for i in 0 .. size-1 {
@@ -66,7 +68,23 @@ fn sum([int] arr, int size) -> int {
 	}
 	return res;
 }
+
 fn average([int] arr, int size) -> int {
 
 	return sum(arr, size) / size;
+}
+
+fn fib(uint64 n) -> uint64 {
+
+	uint64 a = 0;
+	uint64 b = 1;
+	
+	loop n-1 {
+		
+		uint64 k = a+b;
+		a = b;
+		b = k;
+	}
+	
+	return a;
 }
