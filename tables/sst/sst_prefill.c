@@ -47,6 +47,8 @@ struct Proto protos_math[] = {
 	
 	{ "fmin", "float" },
 	{ "fmax", "float" },
+
+	{ "round", "int" },
 };
 
 struct Proto protos_stdio[] = {

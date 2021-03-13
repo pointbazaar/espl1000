@@ -1,0 +1,36 @@
+//this file provides subroutines for dealing with
+//prime numbers. 
+
+fn isprime(uint64 n) -> bool {
+	
+	uint count = 0;
+
+	for k in 1 .. n {
+	
+		if n % k == 0
+		{ count += 1; }
+	}
+	return count == 2;
+}
+
+//calculates an array 
+//of the first n primes
+fn nprimes(uint n) -> [uint32] {
+
+	//TODO: replace with a 
+	//better implementation, e.g. sieve
+	[int] res = malloc(4*n);
+
+	uint count = 0;	
+	uint k = 2;
+
+	while count < n {
+
+		if isprime(k) {	
+			res[count] = k;
+			count += 1;
+		}
+		k += 1;
+	}
+	return res;
+}

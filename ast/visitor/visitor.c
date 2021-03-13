@@ -130,6 +130,8 @@ static void visitIfStmt(struct IfStmt* i, VISITOR){
 	
 	visitor(i, NODE_IFSTMT);
 	
+	visitExpr(i->condition, visitor);
+	
 	visitStmtBlock(i->block, visitor);
 	
 	if(i->elseBlock != NULL)

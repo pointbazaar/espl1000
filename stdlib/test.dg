@@ -33,6 +33,17 @@ fn main() ~> int {
 	assert(sum(arr, 2) == 8);
 	assert(average(arr, 2) == 4);
 
+	//testing bit.dg
+	assert(bit(0b10, 1) == 1);
+	assert(bit(0b10, 0) == 0);
+	assert(bit(0b10001000, 7) == 1);
+
+	//testing primes.dg
+	assert(isprime(2));
+	assert(isprime(3));
+	assert(!isprime(4));
+	assert(isprime(5));
+
 	printf("[stdlib] PASSED ALL TESTS\n");
 
 	return 0;
