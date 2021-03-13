@@ -1,5 +1,7 @@
 
-SOURCES :=  test.dg bit.dg primes.dg math.dg string.dg vector.dg base.dg
+SOURCES :=  test.dg \
+	bit.dg primes.dg math.dg \
+	string.dg vector.dg base.dg 
 
 test: $(SOURCES)
 	sd -clean $(SOURCES)

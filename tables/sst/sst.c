@@ -104,7 +104,7 @@ void sst_add(struct SST* sst, struct SSTLine* line){
 	if(sst_contains(sst, line->name)){
 		
 		char* ERR_SAME_NAME = 
-			"Error: 2 subroutines with same name %s\n";
+			"[SST] Error: 2 subroutines with same name %s\n";
 		
 		printf(ERR_SAME_NAME, line->name);
 		exit(1);
@@ -129,7 +129,7 @@ struct SSTLine* sst_get(struct SST* sst, char* name){
 		}
 	}
 	
-	printf("Fatal Error: '%s' not found in subroutine symbol table\n", name);
+	printf("[SST] Fatal Error: '%s' not found in subroutine symbol table\n", name);
 	exit(1);
 	return NULL;
 }

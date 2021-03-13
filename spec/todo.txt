@@ -1,6 +1,8 @@
 BUGS:
  - [ ] struct 'CaseStmt' is missing options for HexConst, BinConst
  - [ ] dragon-lexer sometimes passes '//' through from input to output.
+ - [ ] dead code elemination does not work with the subroutines 
+       generated for structs
 
 TODO (OTHER):
 

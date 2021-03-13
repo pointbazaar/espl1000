@@ -54,6 +54,18 @@ void myvisitor(void* node, enum NODE_TYPE type){
 		printf("[Analyzer] add callee %s->%s\n", currentFn->name, m->methodName);
 	}
 	
+	//calling a function pointer?
+	//unfortunately, the LVST currently 
+	//only gets created during code generation, 
+	//and only for one method at a time.
+	//so we have to abort if we cannot find the method
+	
+	//if(lvst_contains(myst->lvst, m->methodName))
+	//	{ return; }
+	
+	if(!sst_contains(myst->sst, m->methodName))
+		{ return; }
+	
 	line = sst_get(myst->sst, currentFn->name);
 	cc_add_callee(line->cc, m->methodName);
 	
