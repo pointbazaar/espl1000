@@ -4,58 +4,56 @@
 #include "../ast.h"
 #include "visitor.h"
 
-static void visitStructMember(struct StructMember* s, VISITOR);
+static void visitStructMember	(struct StructMember* s, VISITOR);
 
-static void visitStmt        (struct Stmt* s,       VISITOR);
+static void visitStmt        	(struct Stmt* s,       VISITOR);
 
 //stmts
-static void visitIfStmt      (struct IfStmt* i,     VISITOR);
-static void visitWhileStmt   (struct WhileStmt* w,  VISITOR);
-static void visitLoopStmt    (struct LoopStmt* l,   VISITOR);
-static void visitForStmt     (struct ForStmt* f,    VISITOR);
-static void visitAssignStmt  (struct AssignStmt* a, VISITOR);
-static void visitSwitchStmt  (struct SwitchStmt* s, VISITOR);
-static void visitCaseStmt    (struct CaseStmt* c,   VISITOR);
-static void visitMethodCall  (struct MethodCall* m, VISITOR);
-static void visitRetStmt     (struct RetStmt* r,    VISITOR);
-static void visitBreakStmt   (VISITOR);
-static void visitContinueStmt(VISITOR);
+static void visitIfStmt      	(struct IfStmt* i,     VISITOR);
+static void visitWhileStmt   	(struct WhileStmt* w,  VISITOR);
+static void visitLoopStmt    	(struct LoopStmt* l,   VISITOR);
+static void visitForStmt     	(struct ForStmt* f,    VISITOR);
+static void visitAssignStmt  	(struct AssignStmt* a, VISITOR);
+static void visitSwitchStmt  	(struct SwitchStmt* s, VISITOR);
+static void visitCaseStmt    	(struct CaseStmt* c,   VISITOR);
+static void visitMethodCall  	(struct MethodCall* m, VISITOR);
+static void visitRetStmt     	(struct RetStmt* r,    VISITOR);
+static void visitBreakStmt   	(VISITOR);
+static void visitContinueStmt	(VISITOR);
 
 //expr
-static void visitExpr        (struct Expr* e,       VISITOR);
-static void visitOp          (struct Op* o,         VISITOR);
-static void visitUnOpTerm    (struct UnOpTerm* u,   VISITOR);
-static void visitTerm        (struct Term* t,       VISITOR);
+static void visitExpr        	(struct Expr* e,       VISITOR);
+static void visitOp          	(struct Op* o,         VISITOR);
+static void visitUnOpTerm    	(struct UnOpTerm* u,   VISITOR);
+static void visitTerm       	(struct Term* t,       VISITOR);
 
 //const
-static void visitBoolConst   (struct BoolConst* b,  VISITOR);
-static void visitIntConst    (struct IntConst* i,   VISITOR);
-static void visitCharConst   (struct CharConst* c,  VISITOR);
-static void visitFloatConst  (struct FloatConst* f, VISITOR);
-static void visitHexConst    (struct HexConst* h,   VISITOR);
-static void visitBinConst    (struct BinConst* b,   VISITOR);
-static void visitStringConst (struct StringConst* s,VISITOR);
+static void visitBoolConst   	(struct BoolConst* b,  VISITOR);
+static void visitIntConst    	(struct IntConst* i,   VISITOR);
+static void visitCharConst   	(struct CharConst* c,  VISITOR);
+static void visitFloatConst  	(struct FloatConst* f, VISITOR);
+static void visitHexConst    	(struct HexConst* h,   VISITOR);
+static void visitBinConst    	(struct BinConst* b,   VISITOR);
+static void visitStringConst 	(struct StringConst* s,VISITOR);
 
 //var
-static void visitVariable    (struct Variable* v,   VISITOR);
-static void visitSimpleVar   (struct SimpleVar* v,  VISITOR);
+static void visitVariable    	(struct Variable* v,   VISITOR);
+static void visitSimpleVar   	(struct SimpleVar* v,  VISITOR);
 
 //types
-static void visitType        (struct Type* t,       VISITOR);
-static void visitArrayType   (struct ArrayType* a,  VISITOR);
-static void visitSubrType    (struct SubrType* s,   VISITOR);
+static void visitType        	(struct Type* t,       VISITOR);
+static void visitArrayType   	(struct ArrayType* a,  VISITOR);
+static void visitSubrType    	(struct SubrType* s,   VISITOR);
 static void visitBasicTypeWrapped(struct BasicTypeWrapped* b, VISITOR);
-static void visitSimpleType  (struct SimpleType* s, VISITOR);
-static void visitPrimitiveType(struct PrimitiveType* p, VISITOR);
-static void visitStructType(struct StructType* s,   VISITOR);
-static void visitTypeParam   (struct TypeParam* t,  VISITOR);
+static void visitSimpleType  	(struct SimpleType* s, VISITOR);
+static void visitPrimitiveType	(struct PrimitiveType* p, VISITOR);
+static void visitStructType		(struct StructType* s,   VISITOR);
+static void visitTypeParam   	(struct TypeParam* t,  VISITOR);
 
 void visitAST(struct AST* ast, VISITOR){
 
-	for(int i = 0; i < ast->count_namespaces; i++){
-	
-		visitNamespace(ast->namespaces[i], visitor);
-	}
+	for(int i = 0; i < ast->count_namespaces; i++)
+		{ visitNamespace(ast->namespaces[i], visitor); }
 }
 
 void visitNamespace(struct Namespace* n, VISITOR){
@@ -111,7 +109,7 @@ static void visitStmt(struct Stmt* s, VISITOR){
 		case 3: visitIfStmt    (s->ptr.m3, visitor); break;
 		case 4: visitRetStmt   (s->ptr.m4, visitor); break; 
 		case 5: visitAssignStmt(s->ptr.m5, visitor); break;
-		case 6: break; 
+		case 6: 									 break; 
 		case 7: visitForStmt   (s->ptr.m7, visitor); break;
 		case 8: visitSwitchStmt(s->ptr.m8, visitor); break;
 		
@@ -131,7 +129,6 @@ static void visitIfStmt(struct IfStmt* i, VISITOR){
 	visitor(i, NODE_IFSTMT);
 	
 	visitExpr(i->condition, visitor);
-	
 	visitStmtBlock(i->block, visitor);
 	
 	if(i->elseBlock != NULL)
@@ -175,7 +172,7 @@ static void visitSwitchStmt(struct SwitchStmt* s, VISITOR){
 	
 	visitor(s, NODE_SWITCHSTMT);
 	
-	for(int i=0; i < s->count_cases; i++)
+	for(int i = 0; i < s->count_cases; i++)
 		{ visitCaseStmt(s->cases[i], visitor); }
 }
 
@@ -192,7 +189,7 @@ static void visitMethodCall(struct MethodCall* m, VISITOR){
 	
 	visitor(m, NODE_METHODCALL);
 	
-	for(int i=0; i < m->count_args; i++)
+	for(int i = 0; i < m->count_args; i++)
 		{ visitExpr(m->args[i], visitor); }
 }
 
@@ -219,11 +216,11 @@ static void visitExpr(struct Expr* e, VISITOR){
 	
 	visitUnOpTerm(e->term1, visitor);
 	
-	if(e->op != NULL){
+	if(e->op == NULL)
+		{ return; }
 	
-		visitOp(e->op, visitor);
-		visitUnOpTerm(e->term2, visitor);
-	}
+	visitOp(e->op, visitor);
+	visitUnOpTerm(e->term2, visitor);
 }
 
 static void visitOp(struct Op* o, VISITOR){
@@ -263,17 +260,17 @@ static void visitTerm(struct Term* t, VISITOR){
 	}
 }
 
-static void visitBoolConst(struct BoolConst* b,  VISITOR){
+static void visitBoolConst(struct BoolConst* b, VISITOR){
 	
 	visitor(b, NODE_BOOLCONST);
 }
 
-static void visitIntConst(struct IntConst* i,   VISITOR){
+static void visitIntConst(struct IntConst* i, VISITOR){
 	
 	visitor(i, NODE_INTCONST);
 }
 
-static void visitCharConst(struct CharConst* c,  VISITOR){
+static void visitCharConst(struct CharConst* c, VISITOR){
 	
 	visitor(c, NODE_CHARCONST);
 }
@@ -283,23 +280,22 @@ static void visitFloatConst(struct FloatConst* f, VISITOR){
 	visitor(f, NODE_FLOATCONST);
 }
 
-static void visitHexConst(struct HexConst* h,   VISITOR){
+static void visitHexConst(struct HexConst* h, VISITOR){
 	
 	visitor(h, NODE_HEXCONST);
 }
 
-static void visitBinConst(struct BinConst* b,   VISITOR){
+static void visitBinConst(struct BinConst* b, VISITOR){
 	
 	visitor(b, NODE_BINCONST);
 }
 
-static void visitStringConst(struct StringConst* s,VISITOR){
+static void visitStringConst(struct StringConst* s, VISITOR){
 	
 	visitor(s, NODE_STRINGCONST);
 }
 
-
-static void visitVariable(struct Variable* v,   VISITOR){
+static void visitVariable(struct Variable* v, VISITOR){
 	
 	visitor(v, NODE_VARIABLE);
 	
@@ -309,11 +305,11 @@ static void visitVariable(struct Variable* v,   VISITOR){
 		{ visitVariable(v->memberAccess, visitor); }
 }
 
-static void visitSimpleVar(struct SimpleVar* v,  VISITOR){
+static void visitSimpleVar(struct SimpleVar* v, VISITOR){
 	
 	visitor(v, NODE_SIMPLEVAR);
 	
-	for(int i=0; i < v->count_indices; i++)
+	for(int i = 0; i < v->count_indices; i++)
 		{ visitExpr(v->indices[i], visitor); }
 }
 
@@ -345,7 +341,7 @@ static void visitSubrType(struct SubrType* s, VISITOR){
 	
 	visitType(s->returnType, visitor);
 	
-	for(int i=0; i < s->count_argTypes; i++)
+	for(int i = 0; i < s->count_argTypes; i++)
 		{ visitType(s->argTypes[i], visitor); }
 }
 

@@ -23,10 +23,8 @@ static struct CCNode* make_cc_node(char* name, struct CCNode* next);
 
 struct CC* make_cc(){
 	
-	//DEBUG
-	//printf("makeCC\n");
-	
 	struct CC* res = make(CC);
+	
 	res->callers = NULL;
 	res->callees = NULL;
 	
@@ -34,9 +32,6 @@ struct CC* make_cc(){
 }
 
 void free_cc(struct CC* cc){
-	
-	//DEBUG
-	//printf("freeCC\n");
 
 	if(cc->callers != NULL){ free_cc_node(cc->callers); }
 	if(cc->callees != NULL){ free_cc_node(cc->callees); }
@@ -47,7 +42,7 @@ void free_cc(struct CC* cc){
 static void free_cc_node(struct CCNode* node){
 
 	if(node->next != NULL)
-		{free_cc_node(node->next); }
+		{ free_cc_node(node->next); }
 		
 	free(node);
 }

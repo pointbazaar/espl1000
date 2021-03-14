@@ -13,8 +13,8 @@ struct STST* makeSTST(){
 	struct STST* stst = make(STST);
 	
 	stst->capacity = STST_INITIAL_CAPACITY;
-	stst->lines = malloc(sizeof(struct STSTLine*) * stst->capacity);
-	stst->count = 0;
+	stst->lines    = malloc(sizeof(struct STSTLine*) * stst->capacity);
+	stst->count    = 0;
 	
 	return stst;
 }
@@ -28,13 +28,13 @@ void stst_clear(struct STST* stst){
 	free(stst->lines);
 	
 	stst->capacity = STST_INITIAL_CAPACITY;
-	stst->lines = malloc(sizeof(struct STSTLine*) * stst->capacity);
-	stst->count = 0;
+	stst->lines    = malloc(sizeof(struct STSTLine*) * stst->capacity);
+	stst->count    = 0;
 }
 
 void stst_fill(struct STST* stst, struct Namespace* ns, bool debug){
 	
-	if(debug){ printf("stst_fill(...)\n"); }
+	if(debug){ printf("[STST] stst_fill(...)\n"); }
 	
 	for(int i=0;i < ns->count_structs; i++){
 
@@ -48,7 +48,7 @@ void stst_fill(struct STST* stst, struct Namespace* ns, bool debug){
 
 void stst_print(struct STST* stst){
 	
-	printf("Struct Symbol Table (STST)\n");
+	printf("[STST] Struct Symbol Table\n");
 	printf("%8s|\n", "name");
 	printf("--------|--------\n");
 	for(int i = 0; i < stst->count; i++){
@@ -60,10 +60,9 @@ void stst_print(struct STST* stst){
 
 void freeSTST(struct STST* stst){
 	
-	for(int i=0;i < stst->count; i++){
-
-		free(stst->lines[i]);
-	}
+	for(int i=0;i < stst->count; i++)
+		{ free(stst->lines[i]); }
+	
 	free(stst->lines);
 	
 	free(stst);
@@ -93,9 +92,8 @@ struct Type* stst_get_member_type(struct STST* stst, char* struct_name, char* me
 		
 		struct STSTLine* line = stst->lines[i];
 
-		if(strcmp(line->name, struct_name) != 0){
-			continue;
-		}
+		if(strcmp(line->name, struct_name) != 0)
+			{ continue; }
 
 		for(int j=0; j < line->decl->count_members; j++){
 
@@ -108,7 +106,7 @@ struct Type* stst_get_member_type(struct STST* stst, char* struct_name, char* me
 		}
 	}
 	
-	char* msg = "Error: stst_get_member_type : could not find type of member %s of %s\n";
+	char* msg = "[STST] could not find type of member %s of %s\n";
 	printf(msg, struct_name, member_name);
 
 	exit(1);

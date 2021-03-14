@@ -21,9 +21,8 @@ struct StructType* makeStructType(struct TokenList* tokens, bool debug){
 
 	struct Token* next = list_head(tokens);
 	
-	if(next->kind != TYPEID 
-		&& next->kind != ANYTYPE)
-	{ 
+	if(next->kind != TYPEID && next->kind != ANYTYPE){ 
+		
 		printf("Could not parse StructType\n");
 		exit(1);
 		return NULL; 
@@ -55,6 +54,7 @@ static void parse_type_params_rest(struct StructType* res, struct TokenList* tok
 	struct Token* next = list_head(tokens);
 	
 	if(next->kind != TPARAM){
+		
 		printf("Expected Type Parameter, got:\n");
 		list_print(tokens);
 		exit(1);

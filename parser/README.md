@@ -55,10 +55,10 @@ Type ::= BasicTypeWrapped | TypeParameter | ArrayType
 // ------------------------------------------------------------
 
 statement ::=   ( methodCall ';' )
-                | whileStmt 
-                | ifStmt
-                | returnStmt
-                | assignmentStmt
+				| whileStmt 
+				| ifStmt
+				| returnStmt
+				| assignmentStmt
 				| loopStmt
 				| breakStmt
 				| continueStmt

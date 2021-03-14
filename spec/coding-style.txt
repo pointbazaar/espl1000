@@ -38,7 +38,11 @@ It specifies:
 
 (6) Indentation: Indent with one tab.
 
-(7) Braces: Opening Braces should be on the same line as the function signature.
+(7) Braces: 
+	
+	Braces '{' , '}' should be used wherever applicable. 
+	
+	Opening Braces should be on the same line as the function signature.
 
 (8) Macros
 

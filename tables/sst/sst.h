@@ -1,5 +1,5 @@
-#ifndef SUBRSYMTABLE
-#define SUBRSYMTABLE
+#ifndef SST_H
+#define SST_H
 
 #include <stdbool.h>
 

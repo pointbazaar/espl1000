@@ -146,13 +146,12 @@ char* strPrimitiveType(struct PrimitiveType* p){
 		"int","uint"
 		};
 		
-		
 		sprintf(res, "%s", types[p->intType]);
 	}
 	
-	if(p->isFloatType){ sprintf(res, "float"); }
-	if(p->isCharType) { sprintf(res, "char"); }
-	if(p->isBoolType) { sprintf(res, "bool"); }
+	if(p->isFloatType) { sprintf(res, "float"); }
+	if(p->isCharType)  { sprintf(res, "char"); }
+	if(p->isBoolType)  { sprintf(res, "bool"); }
 	
 	return res;
 }

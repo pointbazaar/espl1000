@@ -30,23 +30,26 @@ struct PrimitiveType* makePrimitiveType(struct TokenList* tokens, bool debug){
 	"int","uint"
 	};
 	
-	if(res->isIntType){
+	if(!(res->isIntType)){
 		
-		for(int i = 0; i < 10; i++){
-			
-			if(strcmp(next->value_ptr, types[i]) == 0){
-				res->intType = i;
-				break;
-			}
-		}
+		list_consume(tokens, 1);
+		return res;
+	}
 		
-		if(res->intType == NONE){
-			printf("[Parser][Error]");
-			printf("could not find the inttype\n");
-			exit(1);
+	for(int i = 0; i < 10; i++){
+		
+		if(strcmp(next->value_ptr, types[i]) == 0){
+			res->intType = i;
+			break;
 		}
 	}
 	
+	if(res->intType == NONE){
+		printf("[Parser][Error]");
+		printf("could not find the inttype\n");
+		exit(1);
+	}
+
 	list_consume(tokens, 1);
 	
 	return res;

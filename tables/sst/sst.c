@@ -68,9 +68,9 @@ void sst_print(struct SST* sst){
 
 void freeSST(struct SST* sst){
 	
-	for(int i = 0; i < sst->count; i++){
-		freeSSTLine(sst->lines[i]);
-	}
+	for(int i = 0; i < sst->count; i++)
+		{ freeSSTLine(sst->lines[i]); }
+		
 	free(sst->lines);
 	free(sst);
 }
@@ -123,10 +123,8 @@ struct SSTLine* sst_get(struct SST* sst, char* name){
 		
 		struct SSTLine* line = sst->lines[i];
 		
-		if(strcmp(line->name, name) == 0){
-			
-			return line;
-		}
+		if(strcmp(line->name, name) == 0)
+			{ return line; }
 	}
 	
 	printf("[SST] Fatal Error: '%s' not found in subroutine symbol table\n", name);

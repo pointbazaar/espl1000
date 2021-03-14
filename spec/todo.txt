@@ -47,7 +47,7 @@ TODO (TYPECHECKING):
 
  - [ ] typecheck that there should be no assignment to arguments.
     assignment to members of arguments is ok in subroutines with side effecs
-
+ - [ ] (general) implement a typechecker 
 
 TODO (READ):
  - http://beza1e1.tuxen.de/federation_future.html
