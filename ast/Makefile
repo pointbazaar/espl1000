@@ -8,17 +8,18 @@
 #so tests are needed to see that every serialization/deserialization
 #works
 
-CFLAGS := -march=native -g
+CFLAGS := -march=native -g -Wall
 
 CALL := gcc $(CFLAGS) -c
 
 SOURCES := test/test_ast.c \
 		io/ast_reader.c \
 		io/ast_writer.c \
+		io/serialize.c \
 		util/free_ast.c \
 		util/copy_ast.c \
 		util/str_ast.c \
-		io/serialize.c
+		visitor/vistior.c
 
 HEADERS := io/ast_reader.h \
 		io/ast_writer.h \
@@ -27,13 +28,17 @@ HEADERS := io/ast_reader.h \
 		util/str_ast.h \
 		ast.h \
 		io/magic_num.h \
-		io/serialize.h
+		io/serialize.h \
+		visitor/visitor.h
 
 OBJS := build/test_ast.o \
-	build/ast_reader.o build/ast_writer.o \
-	build/free_ast.o build/copy_ast.o \
+	build/ast_reader.o \
+	build/ast_writer.o \
+	build/free_ast.o \
+	build/copy_ast.o \
 	build/str_ast.o \
-	build/serialize.o
+	build/serialize.o \
+	build/visitor.o
 
 all: dirs $(OBJS) tests
 	./tests
@@ -50,6 +55,11 @@ dirs:
 build/%.o: util/%.c $(HEADERS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL) -o $@ $<
+	
+
+build/visitor.o: visitor/visitor.c $(HEADERS)
+	$(CALL) -c visitor/visitor.c -o $@
+	
 	
 build/%.o: io/%.c $(HEADERS)
 	@echo Compiling file: $(notdir $<)

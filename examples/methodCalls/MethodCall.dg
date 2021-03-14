@@ -1,5 +1,5 @@
 
-fn main () ~> uint {
+fn main () ~> int {
 	subr ( 2, 1 );
 	return 0;
 }

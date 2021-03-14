@@ -1,5 +1,5 @@
 
-fn main ()~> uint {
+fn main ()~> int {
 	
 	printf("%d\n", faculty(3));
 	return 0;

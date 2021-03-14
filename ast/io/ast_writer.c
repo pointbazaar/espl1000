@@ -7,31 +7,46 @@
 #include "magic_num.h"
 #include "serialize.h"
 
+void writeAST(struct AST* ast){
+	
+	for(int i = 0; i < ast->count_namespaces; i++){
+	
+		writeNamespace(ast->namespaces[i]);
+	}
+}
 
-void writeNamespace(struct Namespace* nsn, FILE* file){
+void writeNamespace(struct Namespace* n){
+	
+	FILE* file = fopen(n->ast_filename, "w");
+
+	if(file == NULL){
+		printf("could not open file:");
+		printf(" %s (in write_ast)\n", n->ast_filename);
+		exit(1);
+	}
 	
 	magic_num_serialize(MAGIC_NAMESPACE, file);
 	
-	serialize_string(nsn->srcPath, file);
-	serialize_string(nsn->name, file);
+	serialize_string(n->srcPath, file);
+	serialize_string(n->ast_filename, file);
+	serialize_string(n->name, file);
 	
-	serialize_int(nsn->count_methods, file);
 	
-	//write methods
-	for(int i=0;i < nsn->count_methods;i++){ 
-		struct Method* m = nsn->methods[i];
-		writeMethod(m,file);
+	serialize_int(n->count_methods, file);
+	for(int i=0;i < n->count_methods;i++){ 
+		
+		writeMethod(n->methods[i], file);
 	}
 	
-	serialize_int(nsn->count_structs, file);
-	
-	//write structs
-	for(int i=0;i < nsn->count_structs;i++){ 
-		struct StructDecl* m = nsn->structs[i];
-		writeStructDecl(m,file);
+	serialize_int(n->count_structs, file);
+	for(int i=0;i < n->count_structs;i++){ 
+		
+		writeStructDecl(n->structs[i], file);
 	}
 	
 	magic_num_serialize(MAGIC_END_NAMESPACE, file);
+	
+	fclose(file);
 	
 }
 void writeMethod(struct Method* m, FILE* file){
@@ -483,18 +498,48 @@ void writeBasicTypeWrapped(struct BasicTypeWrapped* m, FILE* file){
 	magic_num_serialize(MAGIC_END_BASICTYPEWRAPPED, file);
 }
 
+void writeStructType(struct StructType* m, FILE* file){
+	
+	magic_num_serialize(MAGIC_STRUCTTYPE, file);
+
+	serialize_string(m->typeName, file);
+
+	serialize_int(m->typeParamCount, file);
+	for(int i=0;i<m->typeParamCount;i++){
+		serialize_int(m->typeParams[i], file);
+	}
+	
+	magic_num_serialize(MAGIC_END_STRUCTTYPE, file);
+}
+
+void writePrimitiveType(struct PrimitiveType* m, FILE* file){
+	
+	magic_num_serialize(MAGIC_PRIMITIVETYPE, file);
+	
+	serialize_int(m->isIntType ? OPT_PRESENT: OPT_EMPTY, file);
+	serialize_int(m->isFloatType ? OPT_PRESENT: OPT_EMPTY, file);
+	serialize_int(m->isCharType ? OPT_PRESENT: OPT_EMPTY, file);
+	serialize_int(m->isBoolType ? OPT_PRESENT: OPT_EMPTY, file);
+
+	serialize_int(m->intType, file);
+
+	magic_num_serialize(MAGIC_END_PRIMITIVETYPE, file);
+}
+
 void writeSimpleType(struct SimpleType* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_SIMPLETYPE, file);
 	
-	serialize_string(m->typeName, file);
+	int kind = (m->primitiveType != NULL)?0:1;
 	
-	serialize_int(m->isPrimitive, file);
-	serialize_int(m->isIntType, file);
+	serialize_int(kind, file);
 	
-	serialize_int(m->typeParamCount, file);
-	for(int i=0;i<m->typeParamCount;i++){
-		serialize_int(m->typeParams[i], file);
+	if(m->primitiveType != NULL){
+		writePrimitiveType(m->primitiveType, file);
+	}
+	
+	if(m->structType != NULL){
+		writeStructType(m->structType, file);
 	}
 	
 	magic_num_serialize(MAGIC_END_SIMPLETYPE, file);
@@ -514,23 +559,4 @@ void writeSubrType(struct SubrType* m, FILE* file){
 	}
 	
 	magic_num_serialize(MAGIC_END_SUBRTYPE, file);
-}
-// --------- OTHER ----------
-void write_ast(char* filename, struct Namespace* namespaceNode){
-	
-	
-	FILE* file = fopen(filename, "w");
-
-	if(file == NULL){
-		printf("could not open file: %s (in write_ast)\n", filename);
-		exit(1);
-	}
-	
-	magic_num_serialize(MAGIC_AST, file);
-	
-	writeNamespace(namespaceNode, file);
-	
-	magic_num_serialize(MAGIC_END_AST, file);
-	
-	fclose(file);
 }

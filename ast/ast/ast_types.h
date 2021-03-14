@@ -3,6 +3,8 @@
 
 #include "../ast_declare.h"
 
+#include "../sd_inttype.h"
+
 struct ArrayType { 
 	
 	struct Type* element_type; 
@@ -15,16 +17,31 @@ struct BasicTypeWrapped {
 	struct SubrType* subrType; //may be NULL
 };
 
-struct SimpleType {
+struct PrimitiveType {
+
+	//PType means 'Primitive Type'
+	bool isIntType;
+	bool isFloatType;
+	bool isCharType;
+	bool isBoolType;
+
+	enum INTTYPE intType;
+};
+
+struct StructType {
 	
 	char typeName[DEFAULT_STR_SIZE];
-	
-	bool isPrimitive; //is it a primitive data type?
-	bool isIntType;
 	
 	//the number of the type parameters
 	uint8_t typeParamCount;
 	uint8_t* typeParams;
+};
+
+struct SimpleType {
+
+	struct PrimitiveType* primitiveType; //may be NULL
+
+	struct StructType* structType; //may be NULL
 };
 
 struct SubrType {

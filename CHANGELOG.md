@@ -3,7 +3,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
+- Dead Code Analysis is now supported. For now, this does not 
+  include structures.
+
+## [v0.2.0]
+- Analyze Callers and Callees of subroutines
+- Introduce AST Nodes 'PrimitiveType', 'StructType' as members of
+  'SimpleType'
+- smalldragon now supports transpiling multiple .dg files into one .c file.
+  This is the first step in the foundation for building larger programs
+  in smalldragon.
+
+## [v0.1.5]
 - Added new Assignment Operators: &=, |=, >>=, <<=
+- remove '-stdout' flag
+- separate the local variable analyzer from the LVST into lv_analyzer.c
+- make several libC function signatures available for smalldragon type inference. 
 
 ## [v0.1.4]
 - Added Support for 'continue' Statement.

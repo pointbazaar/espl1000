@@ -1,4 +1,4 @@
-fn main () ~> uint{
+fn main () ~> int {
 	return fibonacci(140);
 }
 fn fibonacci (uint n) -> uint{

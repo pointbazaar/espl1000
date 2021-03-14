@@ -8,9 +8,9 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 
@@ -18,7 +18,7 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 		printf("WhileStmt(...)\n");
 	}
 
-	struct WhileStmt* res = malloc(sizeof(struct WhileStmt));
+	struct WhileStmt* res = make(WhileStmt);
 
 	res->condition = NULL;
 	res->block     = NULL;

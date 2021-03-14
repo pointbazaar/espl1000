@@ -5,16 +5,16 @@
 #include "AST.h"
 #include "Namespace.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 #include "ast/util/free_ast.h"
 
 struct AST* makeAST(struct Namespace* myNamespace) {
 	//utility method, to facilitate creating AST_Whole_Program from a single namespace node
 
-	struct AST* res = malloc(sizeof(struct AST));
+	struct AST* res = make(AST);
 
 	res->namespaces = malloc(sizeof(struct Namespace*)*1);
 
@@ -32,7 +32,7 @@ struct AST* makeAST3(struct TokenList* tokens, char* myNamespace, bool debug) {
 		printf("makeAST_Whole_Program(...)\n");
 	}
 
-	struct AST* res = malloc(sizeof(struct AST));
+	struct AST* res = make(AST);
 
 	res->namespaces = malloc(sizeof(struct Namespace*)*1);
 

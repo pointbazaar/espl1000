@@ -1,0 +1,15 @@
+
+struct V2 {
+	int a;
+	int b;
+}
+
+fn v2 (int a, int b) -> V2 {
+
+	return makeV2(a,b);
+}
+
+fn add (V2 a, V2 b) -> V2 {
+
+	return makeV2(a.a + b.a, a.b + b.b);
+}

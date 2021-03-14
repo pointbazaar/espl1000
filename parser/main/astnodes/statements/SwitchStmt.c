@@ -7,9 +7,9 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 void parse_cases(struct SwitchStmt* s, struct TokenList* copy, bool debug);
 
@@ -28,7 +28,7 @@ struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens, bool debug){
 		return NULL;
 	}
 	
-	struct SwitchStmt* res = malloc(sizeof(struct SwitchStmt));
+	struct SwitchStmt* res = make(SwitchStmt);
 
 	res->var = NULL;
 	res->count_cases = 0;

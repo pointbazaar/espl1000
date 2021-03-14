@@ -6,9 +6,9 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
@@ -18,7 +18,7 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
 	if(list_size(tokens) == 0){ return NULL; }
 
-	struct FloatConst* res = malloc(sizeof(struct FloatConst));
+	struct FloatConst* res = make(FloatConst);
 
 	struct TokenList* copy = list_copy(tokens);
 
@@ -26,7 +26,7 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
 	res->value = 1.0;
 	
-	if(tk->kind == OPKEY && strcmp(tk->value_ptr, "-") == 0){
+	if(tk->kind == OPKEY_ARITHMETIC && strcmp(tk->value_ptr, "-") == 0){
 		
 		res->value = -1.0;
 		

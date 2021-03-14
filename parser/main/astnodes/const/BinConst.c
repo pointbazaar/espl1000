@@ -5,9 +5,9 @@
 
 #include "ast/ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct BinConst* makeBinConst(struct TokenList* tokens, bool debug){
 	
@@ -20,8 +20,7 @@ struct BinConst* makeBinConst(struct TokenList* tokens, bool debug){
 
 	if(tk->kind != BINCONST){ return NULL; }
 
-
-	struct BinConst* res = malloc(sizeof(struct BinConst));
+	struct BinConst* res = make(BinConst);
 	
 	//"0b10" -> 2, ...
 	//use strtol to convert bin string -> int

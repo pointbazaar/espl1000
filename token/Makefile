@@ -1,12 +1,17 @@
 
-FLAGS := -march=native -g --std=c11 -Wall -Werror
+INCLUDE := -I..
+
+FLAGS := -march=native -g --std=c11 -Wall -Werror $(INCLUDE)
 
 CALL := gcc $(FLAGS) -c 
 
-OBJS := build/token.o build/TokenReader.o \
+OBJS := build/token.o build/token_reader.o \
 		build/TokenList.o build/TokenListTest.o
 
-HEADERS := token.h TokenList.h TokenReader.h TokenKeys.h
+HEADERS := token/token.h \
+	list/TokenList.h \
+	reader/token_reader.h \
+	TokenKeys.h
 
 all: dirs $(OBJS) test
 
@@ -19,18 +24,18 @@ tests: $(OBJS)
 test: tests
 	./tests
 
-build/token.o: $(HEADERS) token.c
-	$(CALL) token.c -o $@
+build/token.o: $(HEADERS) token/token.c
+	$(CALL) token/token.c -o $@
 	
-build/TokenList.o: $(HEADERS) TokenList.c 
-	$(CALL) TokenList.c -o $@
+build/TokenList.o: $(HEADERS) list/TokenList.c 
+	$(CALL) list/TokenList.c -o $@
 
-build/TokenListTest.o: $(HEADERS) TokenListTest.c 
-		$(CALL) TokenListTest.c -o $@
+build/TokenListTest.o: $(HEADERS) test/TokenListTest.c 
+		$(CALL) test/TokenListTest.c -o $@
 
-build/TokenReader.o: $(HEADERS) TokenReader.c 
-	$(CALL) TokenReader.c -o $@
+build/token_reader.o: $(HEADERS) reader/token_reader.c 
+	$(CALL) reader/token_reader.c -o $@
 	
 clean:
 	rm -f build/*.o
-	rm -f test
+	rm -f tests

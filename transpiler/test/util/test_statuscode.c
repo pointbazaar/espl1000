@@ -6,7 +6,7 @@
 
 #include "test_statuscode.h"
 
-#include "util/flags.h"
+#include "flags/flags.h"
 #include "transpiler.h"
 
 void clean();
@@ -35,7 +35,11 @@ int sourceToStatus(char* src, bool debug){
 	struct Flags* flags = makeFlags(0, NULL);
 	flags->debug = debug;
 	
-	transpileAndCompile(FNAME_DEFAULT, flags);
+	flags->count_filenames = 1;
+	flags->filenames = malloc(sizeof(char*)*1);
+	flags->filenames[0] = FNAME_DEFAULT;
+	
+	transpileAndCompile(flags);
 	
 	//#define WEXITSTATUS(x)	(_W_INT(x) >> 8)
 	//#define	_W_INT(i)	(i)

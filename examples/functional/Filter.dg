@@ -1,4 +1,4 @@
-fn main ()~> uint {
+fn main ()~> int {
 	len = 4;
 	[uint] arr = malloc(4*len);
 

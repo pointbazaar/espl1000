@@ -8,9 +8,9 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 
@@ -23,7 +23,7 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 		return NULL; 
 	}
 
-	struct SimpleVar* res = malloc(sizeof(struct SimpleVar));
+	struct SimpleVar* res = make(SimpleVar);
 
 	res->count_indices = 0;
 	res->indices = malloc(sizeof(struct Expr*)*1);

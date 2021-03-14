@@ -6,13 +6,13 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 
-	struct IntConst* res = malloc(sizeof(struct IntConst));
+	struct IntConst* res = make(IntConst);
 
 	if(debug){
 		printf("IntConst(...) from ");
@@ -30,7 +30,7 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 
 	switch (tk->kind){
 
-		case OPKEY: 
+		case OPKEY_ARITHMETIC: 
 			;
 			if (
 				strcmp(tk->value_ptr,"-") == 0 

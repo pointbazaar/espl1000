@@ -7,9 +7,9 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct StringConst* makeStringConst(struct TokenList* tokens, bool debug){
 	
@@ -20,8 +20,7 @@ struct StringConst* makeStringConst(struct TokenList* tokens, bool debug){
 	
 	if(list_size(tokens) == 0){return NULL;}
 	
-	struct StringConst* res = 
-		malloc(sizeof(struct StringConst));
+	struct StringConst* res = make(StringConst);
 	
 	struct Token* head = list_head(tokens);
 	

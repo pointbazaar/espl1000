@@ -17,9 +17,9 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 // --- private subroutines ---
 
@@ -128,7 +128,7 @@ end:
 
 struct Term* initTerm(){
 	
-	struct Term* res = malloc(sizeof(struct Term));
+	struct Term* res = make(Term);
 	
 	res->kind = 0;
 	res->ptr.m1 = NULL;

@@ -4,7 +4,7 @@
 #include "../ast.h"
 #include <stdbool.h>
 
-struct AST* 		readAST(char* filename, bool debug);
+struct AST* 		readAST(char** filenames, int count_filenames, bool debug);
 
 //toplevel
 struct Namespace* 	readNamespace(	FILE* file, bool debug);
@@ -52,5 +52,7 @@ struct SimpleType* 	readSimpleType(	FILE* file, bool debug);
 struct ArrayType* 	readArrayType(	FILE* file, bool debug);
 struct TypeParam* 	readTypeParam(	FILE* file, bool debug);
 struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug);
+struct StructType*  readStructType( FILE* file, bool debug);
+struct PrimitiveType* readPrimitiveType(FILE* file, bool debug);
 
 #endif

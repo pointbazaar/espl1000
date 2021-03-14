@@ -6,13 +6,13 @@
 
 #include "ast/ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct ArrayType* makeArrayType(struct Type* element_type){
 	
-	struct ArrayType* res = malloc(sizeof(struct ArrayType));
+	struct ArrayType* res = make(ArrayType);
 
 	res->element_type = element_type;
 
@@ -26,7 +26,7 @@ struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug) {
 		list_print(tokens);
 	}
 
-	struct ArrayType* res = malloc(sizeof(struct ArrayType));
+	struct ArrayType* res = make(ArrayType);
 
 	struct TokenList* copy1 = list_copy(tokens);
 

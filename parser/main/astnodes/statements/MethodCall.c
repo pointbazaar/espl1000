@@ -7,9 +7,9 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 
@@ -20,7 +20,7 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 	
 	if(list_size(tokens) < 3){ return NULL;}
 
-	struct MethodCall* res = malloc(sizeof(struct MethodCall));
+	struct MethodCall* res = make(MethodCall);
 
 	res->args = malloc(sizeof(struct Expr*)*1);
 	res->count_args = 0;
@@ -28,6 +28,7 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 	struct TokenList* copy = list_copy(tokens);
 
 	struct Identifier* id = makeIdentifier(copy,debug);
+	
 	if(id == NULL){
 		free(res->args);
 		free(res);

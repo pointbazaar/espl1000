@@ -1,4 +1,4 @@
-fn main () ~> uint {
+fn main () ~> int {
 	
 	//A Harshad Number is a number that is divisible
 	//by the sum of its digits

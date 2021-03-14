@@ -1,0 +1,90 @@
+/*
+	This file contains various functions
+	to perform mathematical operations.
+
+	sign(i)
+	ipow(i,n)
+	faculty(n)
+	min(i1,i2)
+	max(i1,i2)
+	gcd(i1,i2)          //greatest common divisor
+	lcm(i1,i2)          //least common multiple
+	sum(arr, size);
+	average(arr, size); //average (mean)
+	fib(n);             //fibonacci
+*/
+
+fn sign (int n) -> int {
+	if(n>0){
+		return 1;
+	}
+	if(n==0){
+		return 0;
+	}
+	return -1;
+}
+
+fn ipow (int base, uint power) -> int {
+	int result=1;
+	i=0;
+	while(i<power){
+		result=result*base;
+		i=i+1;
+	}
+	return result;
+}
+
+fn faculty (uint n) -> uint {
+	if( n <= 1 ){ 
+		return 1; 
+	}
+	return (n*faculty(n-1));
+}
+
+fn max (int a, int b) -> int {
+	if(a>b){return a;}
+	return b;
+}
+
+fn min (int a,int b) -> int {
+	if(a<b){return a;}
+	return b;
+}
+
+fn gcd (int a, int b) -> int {
+	if(a==0){return b;}
+	return gcd(b%a,a);
+}
+
+fn lcm (int a, int b) -> int {
+
+	return (a*b)/gcd(a,b);
+}
+
+fn sum([int] arr, int size) -> int {
+	int res = 0;
+	for i in 0 .. size-1 {
+		res += arr[i];
+	}
+	return res;
+}
+
+fn average([int] arr, int size) -> int {
+
+	return sum(arr, size) / size;
+}
+
+fn fib(uint64 n) -> uint64 {
+
+	uint64 a = 0;
+	uint64 b = 1;
+	
+	loop n-1 {
+		
+		uint64 k = a+b;
+		a = b;
+		b = k;
+	}
+	
+	return a;
+}

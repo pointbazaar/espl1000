@@ -1,8 +1,8 @@
 #ifndef TRANSPILER
 #define TRANSPILER
 
-#include "util/flags.h"
+struct Flags;
 
-bool transpileAndCompile(char* filename, struct Flags* flags);
+bool transpileAndCompile(struct Flags* flags);
 
 #endif

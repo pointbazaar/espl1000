@@ -5,21 +5,27 @@
 
 #include "transpiler.h"
 
-#include "util/flags.h"
+#include "flags/flags.h"
 
 #include "test.h"
 #include "util/test_statuscode.h"
+#include "typeinference/test_typeinference.h"
 
 #include "code_gen/test_op.h"
 #include "code_gen/test_other.h"
 #include "code_gen/test_assign.h"
 #include "code_gen/test_stmt.h"
 
+static void status(char* msg){
+	printf("[TRANSPILER][TEST-SUITE] %s\n", msg);
+}
+
 int transpiler_test_all(bool debug){
 	
-	printf("[Transpiler Module] Running tests for smalldragon/transpiler:\n");
+	status("Running tests for smalldragon/transpiler:");
 	
 	//from test_assign.h
+	status("transpiling of assignments");
 	test_assign(debug);
 	test_assign_plus(debug);
 	test_assign_minus(debug);
@@ -30,7 +36,8 @@ int transpiler_test_all(bool debug){
 	test_assign_bitwise_shift_left(debug);
 	test_assign_bitwise_shift_right(debug);
 	
-	//first the ones from test_op.h
+	//from test_op.h
+	status("transpiling of operators");
 	test_add(debug);
 	test_sub(debug);
 	test_mul(debug);
@@ -55,6 +62,7 @@ int transpiler_test_all(bool debug){
 	test_bitwise_neg(debug);
 	
 	//from test_other.h
+	status("other");
 	test_statuscode(debug);
 	test_simplevar(debug);
 	test_recursive(debug);
@@ -62,13 +70,21 @@ int transpiler_test_all(bool debug){
 	test_wrapped_expr(debug);
 	
 	//from test_stmt.h
+	status("stmts");	
 	test_ifstmt(debug);
 	test_whilestmt(debug);
 	test_subrcall(debug);
 	test_break(debug);
 	test_continue(debug);
+	
+	//from test_typeinference.h
+	status("typeinference");
+	test_infer_type_term(debug);
+	test_infer_type_unopterm(debug);
+	test_infer_type_expr(debug);
+	test_infer_type_expr_multiple_terms(debug);
 		
-	printf("[Transpiler Module] PASSED ALL TESTS\n");
+	status("PASSED ALL TESTS\n");
 	
 	return 0;
 }

@@ -1,4 +1,4 @@
-fn main ()~> uint {
+fn main ()~> int {
 	uint i=0;
 	uint j=0;
         while (i < 3){

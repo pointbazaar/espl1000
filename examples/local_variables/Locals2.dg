@@ -1,4 +1,4 @@
-fn main ()~> uint {
+fn main ()~> int {
 	uint x = 55;
 
 	x = x*2;

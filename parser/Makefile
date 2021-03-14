@@ -18,9 +18,11 @@ TOKEN_BUILD := ../token/build
 
 OBJS_TOKEN := $(TOKEN_BUILD)/token.o \
 		$(TOKEN_BUILD)/TokenList.o \
-		$(TOKEN_BUILD)/TokenReader.o
+		$(TOKEN_BUILD)/token_reader.o
 
-OBJS_MAIN := build/Parser.o \
+OBJS_MAIN := build/parser.o \
+		build/parser_help.o \
+		build/parser_flags.o \
 		build/AST.o \
 		build/BoolConst.o \
 		build/CharConst.o \
@@ -53,6 +55,8 @@ OBJS_MAIN := build/Parser.o \
 		build/SubrType.o \
 		build/Type.o \
 		build/TypeParam.o \
+		build/StructType.o \
+		build/PrimitiveType.o \
 		build/Variable.o \
 		build/UnOpTerm.o \
 		build/Range.o \
@@ -98,9 +102,9 @@ AST_DEPS := ../ast/ast.h \
 	../ast/util/copy_ast.h
 
 
-TOKEN_DEPS := ../token/TokenList.h \
+TOKEN_DEPS := ../token/list/TokenList.h \
 	../token/TokenKeys.h \
-	../token/token.h 
+	../token/token/token.h 
 
 MAIN_DEPS := $(AST_DEPS) $(TOKEN_DEPS)
 

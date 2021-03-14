@@ -1,5 +1,5 @@
 	
-fn main ()~> uint {
+fn main ()~> int {
 	char c = 'h';
 		
 	printf("%c\n",c);

@@ -1,0 +1,78 @@
+fn main() ~> int {
+
+	test_math();
+	
+	test_vector();
+	
+	test_bit();
+
+	test_primes();
+
+	printf("[stdlib] PASSED ALL TESTS\n");
+
+	return 0;
+}
+
+fn test_bit() -> int {
+
+	assert(bit(0b10, 1) == 1);
+	assert(bit(0b10, 0) == 0);
+	assert(bit(0b10001000, 7) == 1);
+
+	return 0;
+}
+
+fn test_math() -> int {
+
+	assert(sign(4) == 1);
+	assert(sign(-8) == -1);
+
+	assert( pow(2,3) == 8 );
+
+	assert( faculty(3) == 6 );
+
+	assert( min(4,5) == 4 );
+
+	assert( max(2,6) == 6 );
+
+	assert(gcd(10,15) == 5);
+	assert(lcm(15,20) == 60);
+	
+	[int] arr = malloc(4*2);
+	arr[0] = 3;
+	arr[1] = 5;
+
+	assert(sum(arr, 2) == 8);
+	assert(average(arr, 2) == 4);
+	
+	assert(fib(1) == 0);
+	assert(fib(2) == 1);
+	assert(fib(3) == 1);
+	assert(fib(4) == 2);
+	assert(fib(5) == 3);
+
+	return 0;
+}
+
+fn test_primes() -> int {
+
+	assert(isprime(2));
+	assert(isprime(3));
+	assert(!isprime(4));
+	assert(isprime(5));
+
+	return 0;
+}
+
+fn test_vector() -> int {
+
+	V2 a = makeV2(1,2);
+	V2 b = makeV2(0,1);
+
+	V2 res = add(a,b);
+
+	assert(res.a == 1);
+	assert(res.b == 3);
+
+	return 0;
+}

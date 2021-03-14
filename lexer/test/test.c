@@ -20,7 +20,7 @@ for the java version of this lexer
 //Project Headers
 #include "driver.h"
 #include "test.h"
-#include "../../token/token.h"
+#include "../../token/token/token.h"
 
 #include "../../token/TokenKeys.h"
 
@@ -230,7 +230,7 @@ bool test_can_see_line_with_operators() {
 	assert(tokens[0]->kind == ID);
 	assert(tokens[1]->kind == ASSIGNOP);
 	assert(tokens[2]->kind == ID);
-	assert(tokens[3]->kind == OPKEY);
+	assert(tokens[3]->kind == OPKEY_ARITHMETIC);
 	assert(tokens[4]->kind == ID);
 
 	freeTokens(tokens, 5);
@@ -251,11 +251,11 @@ bool test_lexes_return_statement_favorably() {
 	assert(tokens[0]->kind==RETURN);
 
 	assert(tokens[1]->kind==LPARENS);
-	assert(tokens[2]->kind==OPKEY);
+	assert(tokens[2]->kind==OPKEY_ARITHMETIC);
 	assert(tokens[3]->kind==INTEGER);
 	assert(tokens[4]->kind==RPARENS);
 
-	assert(tokens[5]->kind==OPKEY);
+	assert(tokens[5]->kind==OPKEY_ARITHMETIC);
 	assert(tokens[6]->kind==ID);
 	assert(tokens[7]->kind==SEMICOLON);
 
@@ -277,12 +277,12 @@ bool test_lexes_other_return_statement() {
 
 	assert(tokens[1]->kind==LPARENS);
 	assert(tokens[2]->kind==ID);
-	assert(tokens[3]->kind==OPKEY);
+	assert(tokens[3]->kind==OPKEY_ARITHMETIC);
 	assert(tokens[4]->kind==ID);
 
 	assert(tokens[5]->kind==LPARENS);
 	assert(tokens[6]->kind==ID);
-	assert(tokens[7]->kind==OPKEY);
+	assert(tokens[7]->kind==OPKEY_ARITHMETIC);
 	assert(tokens[8]->kind==INTEGER);
 	assert(tokens[9]->kind==RPARENS);
 	assert(tokens[10]->kind==RPARENS);
@@ -952,7 +952,7 @@ bool test_mixed_7() {
 
 	assert(tokens[1]->kind==INTEGER);
 
-	assert(tokens[2]->kind==OPKEY);
+	assert(tokens[2]->kind==OPKEY_RELATIONAL);
 
 	assert(tokens[3]->kind==INTEGER);
 
@@ -1073,7 +1073,7 @@ bool test_mixed_12() {
 
 	assert(tokens[1]->kind==ID);
 
-	assert(tokens[2]->kind==OPKEY);
+	assert(tokens[2]->kind==OPKEY_RELATIONAL);
 
 	assert(tokens[3]->kind==FLOATING);
 
@@ -1201,19 +1201,19 @@ bool test_operators() {
 	struct Token** tokens = 
 		lex(str, debug);
 
-	assert(tokens[0]->kind==OPKEY);
+	assert(tokens[0]->kind==OPKEY_ARITHMETIC);
 	assert(strcmp(tokens[0]->value_ptr, "+") == 0);
 	
-	assert(tokens[1]->kind==OPKEY);
+	assert(tokens[1]->kind==OPKEY_ARITHMETIC);
 	assert(strcmp(tokens[1]->value_ptr, "-") == 0);
 	
-	assert(tokens[2]->kind==OPKEY);
+	assert(tokens[2]->kind==OPKEY_ARITHMETIC);
 	assert(strcmp(tokens[2]->value_ptr, "*") == 0);
 	
-	assert(tokens[3]->kind==OPKEY);
+	assert(tokens[3]->kind==OPKEY_ARITHMETIC);
 	assert(strcmp(tokens[3]->value_ptr, "/") == 0);
 	
-	assert(tokens[4]->kind==OPKEY);
+	assert(tokens[4]->kind==OPKEY_ARITHMETIC);
 	assert(strcmp(tokens[4]->value_ptr, "%") == 0);
 
 	freeTokens(tokens, 5);
@@ -1230,22 +1230,22 @@ bool test_operators_cmp(){
 	char* str = "<= >= == != < >";
 	struct Token** tokens = lex(str, debug);
 	
-	assert(tokens[0]->kind==OPKEY);
+	assert(tokens[0]->kind==OPKEY_RELATIONAL);
 	assert(strcmp(tokens[0]->value_ptr, "<=") == 0);
 	
-	assert(tokens[1]->kind==OPKEY);
+	assert(tokens[1]->kind==OPKEY_RELATIONAL);
 	assert(strcmp(tokens[1]->value_ptr, ">=") == 0);
 	
-	assert(tokens[2]->kind==OPKEY);
+	assert(tokens[2]->kind==OPKEY_RELATIONAL);
 	assert(strcmp(tokens[2]->value_ptr, "==") == 0);
 	
-	assert(tokens[3]->kind==OPKEY);
+	assert(tokens[3]->kind==OPKEY_RELATIONAL);
 	assert(strcmp(tokens[3]->value_ptr, "!=") == 0);
 	
-	assert(tokens[4]->kind==OPKEY);
+	assert(tokens[4]->kind==OPKEY_RELATIONAL);
 	assert(strcmp(tokens[4]->value_ptr, "<") == 0);
 	
-	assert(tokens[5]->kind==OPKEY);
+	assert(tokens[5]->kind==OPKEY_RELATIONAL);
 	assert(strcmp(tokens[5]->value_ptr, ">") == 0);
 
 	freeTokens(tokens, 6);
@@ -1263,10 +1263,10 @@ bool test_operators_logical(){
 	struct Token** tokens = 
 		lex(str, debug);
 
-	assert(tokens[0]->kind==OPKEY);
+	assert(tokens[0]->kind==OPKEY_LOGICAL);
 	assert(strcmp(tokens[0]->value_ptr, "&&") == 0);
 	
-	assert(tokens[1]->kind==OPKEY);
+	assert(tokens[1]->kind==OPKEY_LOGICAL);
 	assert(strcmp(tokens[1]->value_ptr, "||") == 0);
 
 	freeTokens(tokens, 2);
@@ -1284,22 +1284,22 @@ bool test_operators_bitwise(){
 	struct Token** tokens = 
 		lex(str, debug);
 	
-	assert(tokens[0]->kind==OPKEY);
+	assert(tokens[0]->kind==OPKEY_BITWISE);
 	assert(strcmp(tokens[0]->value_ptr, "|") == 0);
 	
-	assert(tokens[1]->kind==OPKEY);
+	assert(tokens[1]->kind==OPKEY_BITWISE);
 	assert(strcmp(tokens[1]->value_ptr, "&") == 0);
 	
-	assert(tokens[2]->kind==OPKEY);
+	assert(tokens[2]->kind==OPKEY_BITWISE);
 	assert(strcmp(tokens[2]->value_ptr, "<<") == 0);
 	
-	assert(tokens[3]->kind==OPKEY);
+	assert(tokens[3]->kind==OPKEY_BITWISE);
 	assert(strcmp(tokens[3]->value_ptr, ">>") == 0);
 	
-	assert(tokens[4]->kind==OPKEY);
+	assert(tokens[4]->kind==OPKEY_BITWISE);
 	assert(strcmp(tokens[4]->value_ptr, "^") == 0);
 	
-	assert(tokens[5]->kind==OPKEY);
+	assert(tokens[5]->kind==OPKEY_BITWISE);
 	assert(strcmp(tokens[5]->value_ptr, "~") == 0);
 
 	freeTokens(tokens, 6);
@@ -1559,8 +1559,8 @@ bool test_brackets(){
 	assert(tokens[3]->kind==RPARENS);
 	assert(tokens[4]->kind==LCURLY);
 	assert(tokens[5]->kind==RCURLY);
-	assert(tokens[6]->kind==OPKEY);
-	assert(tokens[7]->kind==OPKEY);
+	assert(tokens[6]->kind==OPKEY_RELATIONAL);
+	assert(tokens[7]->kind==OPKEY_RELATIONAL);
 	
 	assert( strcmp(tokens[6]->value_ptr,"<")==0 );
 	assert( strcmp(tokens[7]->value_ptr,">")==0 );

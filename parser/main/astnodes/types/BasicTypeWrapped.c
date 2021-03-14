@@ -8,13 +8,13 @@
 
 #include "ast/ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct BasicTypeWrapped* makeBasicTypeWrappedSimple(struct SimpleType* typeNode) {
 
-	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
 
 	res->simpleType = typeNode;
 	res->subrType = NULL;
@@ -24,7 +24,7 @@ struct BasicTypeWrapped* makeBasicTypeWrappedSimple(struct SimpleType* typeNode)
 
 struct BasicTypeWrapped* makeBasicTypeWrappedSubr(struct SubrType* typeNode) {
 
-	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
 
 	res->simpleType = NULL;
 	res->subrType = typeNode;
@@ -39,7 +39,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 		list_print(tokens);
 	}
 
-	struct BasicTypeWrapped* res = malloc(sizeof(struct BasicTypeWrapped));
+	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
 	
 	res->simpleType = NULL;
 	res->subrType = NULL;
@@ -82,7 +82,7 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 		freeTokenListShallow(copy2);
 
 	} else {
-		res->simpleType = makeSimpleType2(copy,debug);
+		res->simpleType = makeSimpleType(copy,debug);
 		if(res->simpleType == NULL){
 			free(res);
 			freeTokenListShallow(copy);

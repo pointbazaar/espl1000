@@ -6,9 +6,9 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
 
@@ -16,7 +16,7 @@ struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
 		printf("RetStmt(...)\n");
 	}
 
-	struct RetStmt* res = malloc(sizeof(struct RetStmt));
+	struct RetStmt* res = make(RetStmt);
 
 	struct TokenList* copy = list_copy(tokens);
 

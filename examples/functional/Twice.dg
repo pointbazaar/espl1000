@@ -3,7 +3,7 @@ struct Simple {
 	((uint) -> uint)  member;
 }
 
-fn main ()~> uint {
+fn main ()~> int {
 
 	printf("%d\n",subr(id));
 	printf("%d\n",subr(twice));

@@ -85,18 +85,21 @@ false			out(BCONST_FALSE, yytext);
 ".."	out(RANGEOP, yytext);
 "."		out(STRUCTMEMBERACCESS, yytext);
 
-== 		out(OPKEY, yytext);
-=		out(ASSIGNOP, yytext);
-
+=					out(ASSIGNOP, yytext);
 \+=|-=|\*=|\/=		out(ASSIGNOP, yytext);
 &=|\|=				out(ASSIGNOP, yytext);
 "<<="				out(ASSIGNOP, yytext);
 ">>="				out(ASSIGNOP, yytext);
 
-"<<"		out(OPKEY, yytext);
-">>"		out(OPKEY, yytext);
-~			out(OPKEY, yytext);
-(\+|\-|\*|\/|!=|\!|<=|>=|<|>|&&|\|\||\^|\||\&|%)	out(OPKEY, yytext);
+"<<"				out(OPKEY_BITWISE, yytext);
+">>"				out(OPKEY_BITWISE, yytext);
+(~|\^|\||\&)		out(OPKEY_BITWISE, yytext);
+
+(\+|\-|\*|\/|%)		out(OPKEY_ARITHMETIC, yytext);
+
+(==|!=|<=|>=|<|>)	out(OPKEY_RELATIONAL, yytext);
+
+(&&|\|\||\!)		out(OPKEY_LOGICAL, yytext);
 
 " "*		 //blank
 "\t"*		 //tab

@@ -6,9 +6,9 @@
 
 #include "statements/RetStmt.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 #include "ast/util/free_ast.h"
 
@@ -24,7 +24,7 @@ int retstmt_test1(bool debug) {
 
 	list_add(list, makeToken(LPARENS));
 
-	list_add(list, makeToken2(OPKEY,"-"));
+	list_add(list, makeToken2(OPKEY_ARITHMETIC,"-"));
 	list_add(list, makeToken2(INTEGER,"5"));
 
 	list_add(list, makeToken(RPARENS));
@@ -51,13 +51,13 @@ int retstmt_test2(bool debug){
 
 	list_add(list, makeToken(LPARENS));
 
-	list_add(list, makeToken2(OPKEY,"-"));
+	list_add(list, makeToken2(OPKEY_ARITHMETIC,"-"));
 
 	list_add(list, makeToken2(INTEGER,"5"));
 
 	list_add(list, makeToken(RPARENS));
 
-	list_add(list, makeToken2(OPKEY,"*"));
+	list_add(list, makeToken2(OPKEY_ARITHMETIC,"*"));
 
 	list_add(list, makeToken2(ID,"n"));
 

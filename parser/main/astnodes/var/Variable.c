@@ -8,9 +8,9 @@
 
 #include "ast/ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 
@@ -21,7 +21,7 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 	
 	if(list_size(tokens) < 1){ return NULL; }
 
-	struct Variable* res = malloc(sizeof(struct Variable));
+	struct Variable* res = make(Variable);
 
 	res->simpleVar = NULL;
 	res->memberAccess = NULL;

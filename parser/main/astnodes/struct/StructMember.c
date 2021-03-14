@@ -8,9 +8,9 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct StructMember* initStructMember();
 void beforeAbort(struct StructMember* m, struct TokenList* copy);
@@ -58,7 +58,7 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 
 struct StructMember* initStructMember(){
 	
-	struct StructMember* res = malloc(sizeof(struct StructMember));
+	struct StructMember* res = make(StructMember);
 	res->type = NULL;
 	
 	return res;

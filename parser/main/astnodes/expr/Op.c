@@ -7,9 +7,9 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct Op* makeOp(struct TokenList* tokens, bool debug){
 
@@ -18,35 +18,33 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 		list_print(tokens);
 	}
 
-	struct Op* res = malloc(sizeof(struct Op));
-	memset(res, 0, sizeof(struct Op));
-
 	struct TokenList* copy = list_copy(tokens);
 
 	struct Token* tkn = list_head(copy);
 	
-	if(tkn == NULL){
-		free(res);
-		return NULL;
-	}
-
-	if(tkn->kind == OPKEY){
-		
-		strcpy(res->op, tkn->value_ptr);
-		
-		list_consume(copy, 1);
+	if(tkn == NULL){ return NULL; }
 	
-	}else{
-		//"could not recognize operator, got : " + tkn->value;
-		free(res);
-		freeTokenListShallow(copy);
-		return NULL;
-	}
+	struct Op* res = make(Op);
+	memset(res, 0, sizeof(struct Op));
 	
-	if(debug){
-		printf("sucess parsing Op\n");
-	}
 
+	switch(tkn->kind){
+		
+		case OPKEY_ARITHMETIC: res->isArithmetic = true; break;
+		case OPKEY_RELATIONAL: res->isRelational = true; break;
+		case OPKEY_LOGICAL:    res->isLogical    = true; break;
+		case OPKEY_BITWISE:    res->isBitwise    = true; break;
+		
+		default:
+			freeTokenListShallow(copy);
+			free(res);
+			return NULL;
+	}
+		
+	strcpy(res->op, tkn->value_ptr);
+	
+	list_consume(copy, 1);
+	
 	list_set(tokens,copy);
 	freeTokenListShallow(copy);
 

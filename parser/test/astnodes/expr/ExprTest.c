@@ -12,9 +12,9 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 int expr_test_simple_expression(bool debug) {
 
@@ -73,7 +73,7 @@ int expr_recognize_2_op_expr(bool debug) {
 	struct TokenList* tokens = makeTokenList();
 
 	list_add(tokens, makeToken2(INTEGER,"1"));
-	list_add(tokens, makeToken2(OPKEY,"+"));
+	list_add(tokens, makeToken2(OPKEY_ARITHMETIC,"+"));
 	list_add(tokens, makeToken2(INTEGER,"2"));
 
 	list_add(tokens, makeToken2(LCURLY,"{"));
@@ -97,7 +97,7 @@ int expr_test_comparison(bool debug){
 	struct TokenList* l = makeTokenList();
 
 	list_add(l, makeToken2(ID,"x"));
-	list_add(l, makeToken2(OPKEY,"<"));
+	list_add(l, makeToken2(OPKEY_RELATIONAL,"<"));
 	list_add(l, makeToken2(INTEGER,"5"));
 
 	list_add(l, makeToken2(LCURLY,"{"));

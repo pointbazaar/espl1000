@@ -8,9 +8,9 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 
@@ -19,7 +19,7 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 		list_print(tokens);
 	}
 
-	struct StructDecl* res = malloc(sizeof(struct StructDecl));
+	struct StructDecl* res = make(StructDecl);
 	
 	res->members = malloc(sizeof(struct StructMember*)*1);
 	res->count_members = 0;
@@ -38,7 +38,7 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 		
 		
 		//read the struct type
-		struct SimpleType* st = makeSimpleType2(copy, debug);
+		struct SimpleType* st = makeSimpleType(copy, debug);
 		if(st == NULL){
 			printf("expected SimpleType, but got: \n");
 			list_print(copy);

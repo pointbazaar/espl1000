@@ -8,9 +8,9 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 
@@ -19,7 +19,7 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 		list_print(tokens);
 	}
 
-	struct AssignStmt* res = malloc(sizeof(struct AssignStmt));
+	struct AssignStmt* res = make(AssignStmt);
 	res->optType = NULL;
 
 	struct TokenList* copy = list_copy(tokens);

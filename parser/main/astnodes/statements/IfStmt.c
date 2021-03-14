@@ -8,9 +8,9 @@
 
 #include "ast/util/free_ast.h"
 
-#include "token/TokenList.h"
+#include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
-#include "token/token.h"
+#include "token/token/token.h"
 
 struct IfStmt* initIfStmt();
 void freeIncomplete(struct IfStmt* ifstmt);
@@ -63,7 +63,7 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 
 struct IfStmt* initIfStmt(){
 	
-	struct IfStmt* res = malloc(sizeof(struct IfStmt));
+	struct IfStmt* res = make(IfStmt);
 	
 	res->condition = NULL;
 	res->block     = NULL;
