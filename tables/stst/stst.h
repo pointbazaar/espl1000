@@ -3,20 +3,13 @@
 
 #include "ast/ast.h"
 
+struct STST;
+
 struct STSTLine {
 	char name[DEFAULT_STR_SIZE];
 	struct SimpleType* type;
 
 	struct StructDecl* decl;
-};
-
-struct STST {
-	//STruct Symbol Table (STST)
-	
-	struct STSTLine** lines;
-	
-	unsigned int count;
-	unsigned int capacity;
 };
 
 void stst_fill(struct STST* stst, struct Namespace* ns, bool debug);

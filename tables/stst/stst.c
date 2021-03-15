@@ -8,6 +8,19 @@
 
 #define STST_INITIAL_CAPACITY 10;
 
+
+struct STST {
+	//STruct Symbol Table (STST)
+	
+	//struct STST should be opaque,
+	//except in this file, for better encapsulation
+	
+	struct STSTLine** lines;
+	
+	unsigned int count;
+	unsigned int capacity;
+};
+
 struct STST* makeSTST(){
 	
 	struct STST* stst = make(STST);
