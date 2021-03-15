@@ -21,6 +21,7 @@ void magic_num_require(uint32_t expected, FILE* file){
 	if(actual != expected){
 		printf("magic_num_require failed.\n");
 		printf("required was: %d\n", expected);
+		printf("actual: %d\n", actual);
 		fclose(file);
 		exit(1);
 	}
