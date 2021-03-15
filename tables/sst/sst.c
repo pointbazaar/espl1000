@@ -7,6 +7,17 @@
 
 #define SST_INITIAL_CAPACITY 10
 
+struct SST {
+	//Subroutine Symbol Table (SST)
+	//this struct should be opaque
+	//outside this file
+	
+	unsigned int count;
+	size_t capacity;
+	
+	struct SSTLine** lines;
+};
+
 static void sst_resize(struct SST* sst);
 
 struct SST* makeSST(){
@@ -130,6 +141,15 @@ struct SSTLine* sst_get(struct SST* sst, char* name){
 	printf("[SST] Fatal Error: '%s' not found in subroutine symbol table\n", name);
 	exit(1);
 	return NULL;
+}
+
+uint32_t sst_size(struct SST* sst){
+	return sst->count;
+}
+
+struct SSTLine* sst_at(struct SST* sst, uint32_t index){
+
+	return sst->lines[index];
 }
 
 bool sst_contains(struct SST* sst, char* name){

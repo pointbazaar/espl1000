@@ -69,9 +69,12 @@ static void mark_live(struct SST* sst, char* name){
 
 static void set_all(struct SST* sst, bool is_dead, bool dead_visited){
 
-	for(int i = 0; i < sst->count; i++){
-		sst->lines[i]->is_dead      = is_dead;
-		sst->lines[i]->dead_visited = dead_visited;
+	for(int i = 0; i < sst_size(sst); i++){
+		
+		struct SSTLine* line = sst_at(sst, i);
+		
+		line->is_dead      = is_dead;
+		line->dead_visited = dead_visited;
 	}
 }
 

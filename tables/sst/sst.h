@@ -27,16 +27,14 @@ struct SSTLine {
 	bool is_dead;
 	bool dead_visited;
 	//--------------------------
+	
+	//-- termination analysis --
+	//TODO: these members may be used later
+	bool halts_known; //do we know if it will halt?
+	bool halts;       //does it halt?
+	//--------------------------
 };
 
-struct SST {
-	//Subroutine Symbol Table (SST)
-	
-	unsigned int count;
-	size_t capacity;
-	
-	struct SSTLine** lines;
-};
 
 //-------------
 struct SST* makeSST();
@@ -53,6 +51,10 @@ void sst_print(struct SST* sst);
 struct SSTLine* sst_get(struct SST* sst, char* name);
 
 bool sst_contains(struct SST* sst, char* name);
+
+
+uint32_t sst_size(struct SST* sst);
+struct SSTLine* sst_at(struct SST* sst, uint32_t index);
 
 //-----------
 struct SSTLine* makeSSTLine(char* name, struct Type* type, bool isLibC);
