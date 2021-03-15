@@ -485,10 +485,10 @@ void writePrimitiveType(struct PrimitiveType* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_PRIMITIVETYPE, file);
 	
-	serialize_int(m->isIntType   ? OPT_PRESENT: OPT_EMPTY, file);
-	serialize_int(m->isFloatType ? OPT_PRESENT: OPT_EMPTY, file);
-	serialize_int(m->isCharType  ? OPT_PRESENT: OPT_EMPTY, file);
-	serialize_int(m->isBoolType  ? OPT_PRESENT: OPT_EMPTY, file);
+	serialize_int(m->isIntType,   file);
+	serialize_int(m->isFloatType, file);
+	serialize_int(m->isCharType,  file);
+	serialize_int(m->isBoolType,  file);
 
 	serialize_int(m->intType, file);
 
