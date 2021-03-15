@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
 #include <string.h>
@@ -15,7 +16,13 @@
 
 #include "test_typeinference.h"
 
+static void status(char* msg){
+	printf(" - [TEST] %s\n", msg);
+}
+
 void test_infer_type_term(bool debug){
+	
+	status("infer_type_term");
 	
 	struct ST* st = makeST(debug);
 	
@@ -42,6 +49,8 @@ void test_infer_type_term(bool debug){
 }
 
 void test_infer_type_unopterm(bool debug){
+	
+	status("infer_type_unopterm");
 	
 	struct ST* st = makeST(debug);
 	
@@ -73,6 +82,8 @@ void test_infer_type_unopterm(bool debug){
 }
 
 void test_infer_type_expr(bool debug){
+
+	status("infer_type_expr");
 
 	struct ST* st = makeST(debug);
 	
@@ -109,6 +120,8 @@ void test_infer_type_expr(bool debug){
 }
 
 void test_infer_type_expr_multiple_terms(bool debug){
+
+	status("infer_type_expr_multiple_terms");
 
 	struct ST* st = makeST(debug);
 	

@@ -35,7 +35,7 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx);
 
 static void fill_tables(struct AST* ast, struct Ctx* ctx);
 
-// --- ns - X ---
+// --- ns_transpile - X ---
 
 static void ns_transpile_struct_fwd_decls(struct Namespace* ns, struct Ctx* ctx);
 static void ns_transpile_struct_decls(struct Namespace* ns, struct Ctx* ctx);
@@ -48,7 +48,7 @@ static void ns_transpile_rest(struct Namespace* ns, struct Ctx* ctx);
 
 bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags){
 	
-	if(flags->debug){ printf("transpileAndWrite(...)\n"); }
+	if(flags->debug){ printf("[Transpiler] transpileAndWrite\n"); }
 
 	struct Ctx* ctx = make(Ctx);
 	
@@ -84,24 +84,26 @@ static void fill_tables(struct AST* ast, struct Ctx* ctx){
 	sst_clear(ctx->tables->sst);
 	sst_prefill(ctx->tables, ctx->tables->sst);
 	
-	
 	for(int i = 0; i < ast->count_namespaces; i++){
 		
 		struct Namespace* ns = ast->namespaces[i];
 		
 		add_gen_struct_subrs_sst(ctx, ns);
 		
-		sst_fill(ctx->tables->sst, ns, ctx->flags->debug);
-		stst_fill(ctx->tables->stst, ns, ctx->flags->debug);
+		sst_fill(ctx->tables->sst, ns);
+		stst_fill(ctx->tables->stst, ns);
 	
+	}
+	
+	if(ctx->flags->debug){
+		sst_print(ctx->tables->sst);
+		stst_print(ctx->tables->stst);
 	}
 }
 
 static void transpileAST(struct AST* ast, struct Ctx* ctx){
 	
 	if(!(ctx->flags->avr)){
-		//in microcontrollers, we cannot assume there will
-		//be stdlib 
 		
 		fprintf(ctx->file, "#include <stdlib.h>\n");
 		fprintf(ctx->file, "#include <stdio.h>\n");
@@ -117,7 +119,7 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx){
 	ctx->flags->has_main_fn = sst_contains(ctx->tables->sst, "main");
 	
 	
-	analyze_functions(ctx->tables, ast, ctx->flags->debug);
+	analyze_functions(ctx->tables, ast);
 	analyze_dead_code(ctx->tables, ast);
 	
 	

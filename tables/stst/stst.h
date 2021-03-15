@@ -6,19 +6,20 @@
 struct STST;
 
 struct STSTLine {
+	
 	char name[DEFAULT_STR_SIZE];
 	struct SimpleType* type;
 
 	struct StructDecl* decl;
 };
 
-void stst_fill(struct STST* stst, struct Namespace* ns, bool debug);
-
-void stst_clear(struct STST* stst);
 
 struct STST* makeSTST();
-
 void freeSTST(struct STST* stst);
+
+void stst_fill(struct STST* stst, struct Namespace* ns);
+
+void stst_clear(struct STST* stst);
 
 void stst_add(struct STST* stst, struct StructDecl* s);
 

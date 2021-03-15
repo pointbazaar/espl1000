@@ -45,9 +45,7 @@ void stst_clear(struct STST* stst){
 	stst->count    = 0;
 }
 
-void stst_fill(struct STST* stst, struct Namespace* ns, bool debug){
-	
-	if(debug){ printf("[STST] stst_fill(...)\n"); }
+void stst_fill(struct STST* stst, struct Namespace* ns){
 	
 	for(int i=0;i < ns->count_structs; i++){
 
@@ -55,8 +53,6 @@ void stst_fill(struct STST* stst, struct Namespace* ns, bool debug){
 
 		stst_add(stst, mystruct);
 	}
-
-	if(debug){ stst_print(stst); }
 }
 
 void stst_print(struct STST* stst){

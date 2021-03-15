@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "ast/ast.h"
 
 #include "tables/sst/sst.h"
@@ -16,27 +12,14 @@
 void myvisitor(void* node, enum NODE_TYPE type);
 
 static struct ST* myst;
+static struct Method* currentFn = NULL;
 
-static bool mydebug = false;
-
-static void status(char* msg){
-	
-	if(mydebug){ printf("[Analyzer] %s\n", msg); }
-}
-
-void analyze_functions(struct ST* st, struct AST* ast, bool debug){
+void analyze_functions(struct ST* st, struct AST* ast){
 
 	myst = st;
-	mydebug = debug;
-
-	status("analyze callees and callers");
-
+	
 	visitAST(ast, myvisitor);
 }
-
-//---------------------------------------------------------
-
-static struct Method* currentFn = NULL;
 
 void myvisitor(void* node, enum NODE_TYPE type){
 	
@@ -49,10 +32,6 @@ void myvisitor(void* node, enum NODE_TYPE type){
 	struct MethodCall* m = (struct MethodCall*) node;
 	
 	struct SSTLine* line;
-	
-	if(mydebug){
-		printf("[Analyzer] add callee %s->%s\n", currentFn->name, m->methodName);
-	}
 	
 	//calling a function pointer?
 	//unfortunately, the LVST currently 

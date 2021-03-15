@@ -42,7 +42,7 @@ void freeSST(struct SST* sst);
 //-------------
 void sst_clear(struct SST* sst);
 
-void sst_fill(struct SST* sst, struct Namespace* ns, bool debug);
+void sst_fill(struct SST* sst, struct Namespace* ns);
 
 void sst_add(struct SST* sst, struct SSTLine* line);
 
