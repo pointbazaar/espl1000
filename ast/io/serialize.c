@@ -6,29 +6,29 @@
 #include "serialize.h"
 
 void magic_num_serialize(uint32_t num, FILE* file){
-	//paired with magic_num_require in 
-	//ast_reader.h
+	
 	//this routine writes a given magic number to 'file'
 	//in order to early-detect a corrupted .ast file
+	
 	serialize_int(num, file);
 }
-
 void magic_num_require(uint32_t expected, FILE* file){
-	//paired with magic_num_serialize in ASTWriter.h
+	
 	//this routine requires to read a magic number from 'file'
 	//in order to early-detect a corrupted .ast file
+	
 	const int actual = deserialize_int(file);
 	if(actual != expected){
-		printf("magic_num_require failed.\n");
-		printf("required was: %d\n", expected);
-		printf("actual: %d\n", actual);
+		
+		printf("[AST] magic_num_require failed.\n");
+		printf("[AST] required was: %d\n", expected);
+		printf("[AST] actual: %d\n", actual);
+		
 		fclose(file);
 		exit(1);
 	}
 }
-
 //---------------------------------------------------
-
 void serialize_int(uint32_t x, FILE* file){
 	fwrite(&x, sizeof(uint32_t), 1, file);
 }

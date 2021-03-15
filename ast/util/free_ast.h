@@ -23,37 +23,31 @@ void freeHexConst(struct HexConst* hc);
 void freeBinConst(struct BinConst* hc);
 void freeStringConst(struct StringConst* s);
 
-//other
+//subr
 void freeDeclArg(struct DeclArg* da);
-
-void freeExpr(struct Expr* expr);
-
-void freeIdentifier(struct Identifier* id);
-
 void freeMethod(struct Method* m);
 
+//other
+void freeIdentifier(struct Identifier* id);
 void freeNamespace(struct Namespace* ns);
-
 void freeStmtBlock(struct StmtBlock* block);
+void freeRange(struct Range* range);
 
+//struct
 void freeStructDecl(struct StructDecl* sd);
-
 void freeStructMember(struct StructMember* sm);
 
+//expr
+void freeExpr(struct Expr* expr);
 void freeTerm(struct Term* t);
-
 void freeUnOpTerm(struct UnOpTerm* t);
-
-
 void freeOp(struct Op* op);
-
-void freeRange(struct Range* range);
 
 //var
 void freeVariable(struct Variable* var);
 void freeSimpleVar(struct SimpleVar* sv);
 
-//statements
+//stmts
 void freeAssignStmt(struct AssignStmt* as);
 void freeIfStmt(struct IfStmt* is);
 void freeLoopStmt(struct LoopStmt* is);

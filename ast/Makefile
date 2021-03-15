@@ -53,20 +53,15 @@ dirs:
 	mkdir -p build
 	
 build/%.o: util/%.c $(HEADERS)
-	@echo Compiling file: $(notdir $<)
 	$(CALL) -o $@ $<
 	
-
 build/visitor.o: visitor/visitor.c $(HEADERS)
 	$(CALL) -c visitor/visitor.c -o $@
 	
-	
 build/%.o: io/%.c $(HEADERS)
-	@echo Compiling file: $(notdir $<)
 	$(CALL) -o $@ $<
 	
 build/%.o: test/%.c $(HEADERS)
-	@echo Compiling file: $(notdir $<)
 	$(CALL) -o $@ $<
 
 clean:
