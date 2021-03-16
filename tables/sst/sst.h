@@ -15,7 +15,9 @@ struct SSTLine {
 	char name[DEFAULT_STR_SIZE]; 
 	
 	//a reference to the type being returned
-	struct Type* returnType; 
+	struct Type* returnType;
+	
+	struct Method* method; //may be NULL 
 	
 	//if it is from libC
 	bool isLibC;
@@ -25,7 +27,7 @@ struct SSTLine {
 	
 	//--- dead code analysis ---
 	bool is_dead;
-	bool dead_visited;
+	bool dead_known;
 	//--------------------------
 	
 	//-- termination analysis --
@@ -57,7 +59,14 @@ uint32_t sst_size(struct SST* sst);
 struct SSTLine* sst_at(struct SST* sst, uint32_t index);
 
 //-----------
-struct SSTLine* makeSSTLine(char* name, struct Type* type, bool isLibC);
+struct SSTLine* makeSSTLine(
+	char* name, 
+	struct Type* type, 
+	bool isLibC,
+	bool halts_known,
+	bool halts
+);
+struct SSTLine* makeSSTLine2(struct Method* m);
 void freeSSTLine(struct SSTLine* l);
 
 

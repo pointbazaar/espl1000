@@ -52,9 +52,9 @@ static void mark_live(struct SST* sst, char* name){
 	
 	struct SSTLine* line = sst_get(sst, name);
 	
-	if(line->dead_visited){ return; }
+	if(line->dead_known){ return; }
 	
-	line->dead_visited = true;
+	line->dead_known   = true;
 	line->is_dead      = false;
 	
 	struct CCNode* callee = line->cc->callees;
@@ -74,7 +74,7 @@ static void set_all(struct SST* sst, bool is_dead, bool dead_visited){
 		struct SSTLine* line = sst_at(sst, i);
 		
 		line->is_dead      = is_dead;
-		line->dead_visited = dead_visited;
+		line->dead_known   = dead_visited;
 	}
 }
 

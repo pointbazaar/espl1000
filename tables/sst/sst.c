@@ -58,9 +58,7 @@ void sst_fill(struct SST* sst, struct Namespace* ns){
 	
 	for(int i = 0; i < ns->count_methods; i++){
 		
-		struct Method* m = ns->methods[i];
-		
-		struct SSTLine* line = makeSSTLine(m->name, m->returnType, false);
+		struct SSTLine* line = makeSSTLine2(ns->methods[i]);
 		
 		sst_add(sst, line);
 	}
@@ -100,18 +98,47 @@ void freeSST(struct SST* sst){
 	free(sst);
 }
 
-struct SSTLine* makeSSTLine(char* name, struct Type* type, bool isLibC){
+struct SSTLine* makeSSTLine(
+	char* name, 
+	struct Type* type, 
+	bool isLibC,
+	bool halts_known,
+	bool halts
+){
 
 	struct SSTLine* line = make(SSTLine);
 	
 	strncpy(line->name, name, DEFAULT_STR_SIZE);
+	
+	line->method       = NULL;
 	
 	line->returnType   = type;
 	line->isLibC       = isLibC;
 	line->cc           = make_cc();
 	
 	line->is_dead      = false;
-	line->dead_visited = false;
+	line->dead_known   = false;
+	
+	line->halts_known  = halts_known;
+	line->halts        = halts;
+	
+	return line;
+}
+
+struct SSTLine* makeSSTLine2(struct Method* m){
+
+	struct SSTLine* line = make(SSTLine);
+	
+	strncpy(line->name, m->name, DEFAULT_STR_SIZE);
+	
+	line->method       = m;
+	
+	line->returnType   = m->returnType;
+	line->isLibC       = false;
+	line->cc           = make_cc();
+	
+	line->is_dead      = false;
+	line->dead_known   = false;
 	
 	line->halts_known  = false;
 	

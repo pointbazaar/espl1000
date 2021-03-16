@@ -20,9 +20,12 @@
 #include "code_gen/types/gen_c_types.h"
 #include "code_gen/structs/structs_code_gen.h"
 
+//Analyzer Includes
 #include "analyzer/fn_analyzer.h"
 #include "analyzer/dead_analyzer.h"
+#include "analyzer/halt_analyzer.h"
 
+//Table Includes
 #include "tables/sst/sst.h"
 #include "tables/sst/sst_prefill.h"
 #include "tables/stst/stst.h"
@@ -121,7 +124,11 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx){
 	
 	analyze_functions(ctx->tables, ast);
 	analyze_dead_code(ctx->tables, ast);
+	analyze_termination(ctx->tables, ast);
 	
+	if(ctx->flags->debug){
+		sst_print(ctx->tables->sst);
+	}
 	
 	for(int i=0; i < ast->count_namespaces; i++)
 	{ ns_transpile_fwd(ast->namespaces[i], ctx); }

@@ -9,7 +9,7 @@
 
 #include "fn_analyzer.h"
 
-void myvisitor(void* node, enum NODE_TYPE type);
+static void myvisitor(void* node, enum NODE_TYPE type);
 
 static struct ST* myst;
 static struct Method* currentFn = NULL;
@@ -21,7 +21,7 @@ void analyze_functions(struct ST* st, struct AST* ast){
 	visitAST(ast, myvisitor);
 }
 
-void myvisitor(void* node, enum NODE_TYPE type){
+static void myvisitor(void* node, enum NODE_TYPE type){
 	
 	if(type == NODE_METHOD){ 
 		currentFn = (struct Method*) node;

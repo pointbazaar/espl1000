@@ -3,8 +3,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
+
+## [v0.2.1]
 - Dead Code Analysis is now supported. For now, this does not 
   include structures.
+- A very simple Termination Analysis is now possible. 
 
 ## [v0.2.0]
 - Analyze Callers and Callees of subroutines

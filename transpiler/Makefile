@@ -36,7 +36,8 @@ OBJS_CODEGEN := build/c_code_gen.o \
 	
 OBJS_ANALYZER := build/lv_analyzer.o \
 	build/fn_analyzer.o \
-	build/dead_analyzer.o
+	build/dead_analyzer.o \
+	build/halt_analyzer.o
 	
 OBJS_TYPEINFERENCE := build/typeinfer.o \
 	build/typeinfer_expr.o \
@@ -214,6 +215,9 @@ build/fn_analyzer.o: $(SYMTABLES_H) main/analyzer/fn_analyzer.c
 	
 build/dead_analyzer.o: $(SYMTABLES_H) main/analyzer/dead_analyzer.c
 	$(CALL) -c main/analyzer/dead_analyzer.c -o $@
+	
+build/halt_analyzer.o: $(SYMTABLES_H) main/analyzer/halt_analyzer.c
+	$(CALL) -c main/analyzer/halt_analyzer.c -o $@
 	
 # ----------- utility -----------------
 	
