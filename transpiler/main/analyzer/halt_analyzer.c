@@ -12,6 +12,7 @@
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
 
+#include "halts.h"
 #include "halt_analyzer.h"
 
 static void myvisitor(void* node, enum NODE_TYPE type);
@@ -42,7 +43,7 @@ static bool inner(struct SST* sst, struct AST* ast){
 			
 		struct SSTLine* line = sst_at(sst, i);
 		
-		if(line->halts_known){ continue; }
+		if(line->halts != HALTS_UNKNOWN){ continue; }
 		
 		//we will not find out anything
 		//new about libC functions
@@ -60,8 +61,7 @@ static bool inner(struct SST* sst, struct AST* ast){
 		
 		if(terminates_by_construction(sst, line->method->block)){
 		
-			line->halts_known = true;
-			line->halts       = true;
+			line->halts = HALTS_ALWAYS;
 			changed = true;
 			break;
 		}
@@ -87,8 +87,8 @@ static bool all_callees_terminate(struct SST* sst, struct CC* cc){
 		
 		struct SSTLine* callee = sst_get(sst, callee_name);
 		
-		if( !callee->halts_known ){ return false; }
-		if( !callee->halts )      { return false; }
+		if(callee->halts != HALTS_ALWAYS)
+			{ return false; }
 	
 		node = cc_next(node);
 	}

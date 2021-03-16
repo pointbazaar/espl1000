@@ -3,10 +3,14 @@
 
 #include <stdbool.h>
 
+//AST Includes
 #include "ast/ast.h"
 
+//Table Includes
 #include "tables/cc/cc.h"
 #include "tables/symtable/symtable.h"
+
+#include "transpiler/main/analyzer/halts.h"
 
 struct SSTLine {
 	//Subroutine Symbol Table Line
@@ -31,9 +35,9 @@ struct SSTLine {
 	//--------------------------
 	
 	//-- termination analysis --
-	//TODO: these members may be used later
-	bool halts_known; //do we know if it will halt?
-	bool halts;       //does it halt?
+	enum HALTS halts;
+	//bool halts_known; //do we know if it will halt?
+	//bool halts;       //does it halt?
 	//--------------------------
 };
 
@@ -63,8 +67,7 @@ struct SSTLine* makeSSTLine(
 	char* name, 
 	struct Type* type, 
 	bool isLibC,
-	bool halts_known,
-	bool halts
+	enum HALTS halts
 );
 struct SSTLine* makeSSTLine2(struct Method* m);
 void freeSSTLine(struct SSTLine* l);

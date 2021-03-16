@@ -80,9 +80,9 @@ void sst_print(struct SST* sst){
 		
 		char* halt_info = "-";
 		
-		if(line->halts_known){
+		if(line->halts != HALTS_UNKNOWN){
 				
-			halt_info = (line->halts)?"halts":"inf-loop";
+			halt_info = (line->halts == HALTS_ALWAYS)?"halts":"inf-loop";
 		}
 		
 		printf(fmt, line->name, isLibC, halt_info);
@@ -102,8 +102,7 @@ struct SSTLine* makeSSTLine(
 	char* name, 
 	struct Type* type, 
 	bool isLibC,
-	bool halts_known,
-	bool halts
+	enum HALTS halts
 ){
 
 	struct SSTLine* line = make(SSTLine);
@@ -119,8 +118,7 @@ struct SSTLine* makeSSTLine(
 	line->is_dead      = false;
 	line->dead_known   = false;
 	
-	line->halts_known  = halts_known;
-	line->halts        = halts;
+	line->halts = halts;
 	
 	return line;
 }
@@ -140,7 +138,7 @@ struct SSTLine* makeSSTLine2(struct Method* m){
 	line->is_dead      = false;
 	line->dead_known   = false;
 	
-	line->halts_known  = false;
+	line->halts = HALTS_UNKNOWN;
 	
 	return line;
 }
