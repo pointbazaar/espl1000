@@ -28,6 +28,8 @@ struct CC* make_cc(){
 	res->callers = NULL;
 	res->callees = NULL;
 	
+	res->calls_fn_ptrs = true; //we don't know
+	
 	return res;
 }
 
@@ -109,4 +111,9 @@ struct CCNode* cc_next(struct CCNode* node){
 char* cc_name(struct CCNode* node){
 
 	return node->name;
+}
+
+void cc_set_calls_fn_ptrs(struct CC* cc, bool value){
+
+	cc->calls_fn_ptrs = value;
 }

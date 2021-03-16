@@ -74,6 +74,13 @@ static bool all_callees_terminate(struct SST* sst, struct CC* cc){
 	
 	struct CCNode* node = cc->callees;
 	
+	//at this point, halting information
+	//is not contained in the type of a subroutine,
+	//so it would be possible that the called
+	//function does not halt.
+	if(cc->calls_fn_ptrs)
+		{ return false; }
+	
 	while(node != NULL){
 		
 		char* callee_name = cc_name(node);

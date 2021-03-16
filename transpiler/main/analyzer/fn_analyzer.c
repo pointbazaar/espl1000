@@ -12,11 +12,13 @@
 static void myvisitor(void* node, enum NODE_TYPE type);
 
 static struct ST* myst;
+static struct SST* mysst;
 static struct Method* currentFn = NULL;
 
 void analyze_functions(struct ST* st, struct AST* ast){
 
-	myst = st;
+	myst  = st;
+	mysst = st->sst;
 	
 	visitAST(ast, myvisitor);
 }
@@ -25,6 +27,9 @@ static void myvisitor(void* node, enum NODE_TYPE type){
 	
 	if(type == NODE_METHOD){ 
 		currentFn = (struct Method*) node;
+		
+		struct SSTLine* myline = sst_get(mysst, currentFn->name);
+		cc_set_calls_fn_ptrs(myline->cc, false);
 	}
 	
 	if(type != NODE_METHODCALL){ return; }
@@ -42,13 +47,17 @@ static void myvisitor(void* node, enum NODE_TYPE type){
 	//if(lvst_contains(myst->lvst, m->methodName))
 	//	{ return; }
 	
-	if(!sst_contains(myst->sst, m->methodName))
-		{ return; }
+	if(!sst_contains(mysst, m->methodName)){
+		//maybe it is a function ptr
+		struct SSTLine* myline = sst_get(mysst, currentFn->name);
+		cc_set_calls_fn_ptrs(myline->cc, true);
+		return; 
+	}
 	
-	line = sst_get(myst->sst, currentFn->name);
+	line = sst_get(mysst, currentFn->name);
 	cc_add_callee(line->cc, m->methodName);
 	
 	
-	line = sst_get(myst->sst, m->methodName);
+	line = sst_get(mysst, m->methodName);
 	cc_add_caller(line->cc, currentFn->name);
 }
