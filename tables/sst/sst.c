@@ -115,10 +115,8 @@ struct SSTLine* makeSSTLine(
 	line->isLibC       = isLibC;
 	line->cc           = make_cc();
 	
-	line->is_dead      = false;
-	line->dead_known   = false;
-	
-	line->halts = halts;
+	line->dead         = DEAD_UNKNOWN;
+	line->halts        = halts;
 	
 	return line;
 }
@@ -135,10 +133,8 @@ struct SSTLine* makeSSTLine2(struct Method* m){
 	line->isLibC       = false;
 	line->cc           = make_cc();
 	
-	line->is_dead      = false;
-	line->dead_known   = false;
-	
-	line->halts = HALTS_UNKNOWN;
+	line->dead         = DEAD_UNKNOWN;
+	line->halts        = HALTS_UNKNOWN;
 	
 	return line;
 }

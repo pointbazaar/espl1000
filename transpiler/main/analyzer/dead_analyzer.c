@@ -9,13 +9,14 @@
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
 
+#include "dead.h"
 #include "dead_analyzer.h"
 
 static struct SST* mysst;
 
 static void mark_live(struct SST* sst, char* name);
 
-static void set_all(struct SST* sst, bool is_dead, bool dead_visited);
+static void set_all(struct SST* sst, enum DEAD dead);
 
 /* BUG: when passing a function pointer
  * to another function, the function pointed to
@@ -37,11 +38,11 @@ void analyze_dead_code(struct ST* st, struct AST* ast){
 	mysst = sst;
 	
 	//set all functions to live
-	set_all(sst, false, true);
+	set_all(sst, DEAD_ISLIVE);
 	
 	if(!sst_contains(sst, "main")){ return; }
 	
-	set_all(sst, true, false);
+	set_all(sst, DEAD_UNKNOWN);
 	
 	visitAST(ast, myvisitor_dead);
 	
@@ -52,10 +53,9 @@ static void mark_live(struct SST* sst, char* name){
 	
 	struct SSTLine* line = sst_get(sst, name);
 	
-	if(line->dead_known){ return; }
+	if(line->dead != DEAD_UNKNOWN){ return; }
 	
-	line->dead_known   = true;
-	line->is_dead      = false;
+	line->dead = DEAD_ISLIVE;
 	
 	struct CCNode* callee = line->cc->callees;
 	
@@ -67,14 +67,13 @@ static void mark_live(struct SST* sst, char* name){
 	}
 }
 
-static void set_all(struct SST* sst, bool is_dead, bool dead_visited){
+static void set_all(struct SST* sst, enum DEAD dead){
 
 	for(int i = 0; i < sst_size(sst); i++){
 		
 		struct SSTLine* line = sst_at(sst, i);
 		
-		line->is_dead      = is_dead;
-		line->dead_known   = dead_visited;
+		line->dead = dead;
 	}
 }
 

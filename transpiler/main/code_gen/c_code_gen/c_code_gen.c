@@ -169,7 +169,7 @@ static void ns_transpile_subr_fwd_decls(struct Namespace* ns, struct Ctx* ctx){
 		
 		struct Method* m = ns->methods[i];
 		
-		if(sst_get(ctx->tables->sst, m->name)->is_dead)
+		if(sst_get(ctx->tables->sst, m->name)->dead == DEAD_ISDEAD)
 			{continue; }
 		
 		transpileMethodSignature(m, ctx);
@@ -183,7 +183,7 @@ static void ns_transpile_subrs(struct Namespace* ns, struct Ctx* ctx){
 		
 		struct Method* m = ns->methods[i];
 		
-		if(sst_get(ctx->tables->sst, m->name)->is_dead)
+		if(sst_get(ctx->tables->sst, m->name)->dead == DEAD_ISDEAD)
 			{continue; }
 		
 		transpileMethod(m, ctx);

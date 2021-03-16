@@ -11,6 +11,7 @@
 #include "tables/symtable/symtable.h"
 
 #include "transpiler/main/analyzer/halts.h"
+#include "transpiler/main/analyzer/dead.h"
 
 struct SSTLine {
 	//Subroutine Symbol Table Line
@@ -30,14 +31,13 @@ struct SSTLine {
 	struct CC* cc; //may be NULL
 	
 	//--- dead code analysis ---
-	bool is_dead;
-	bool dead_known;
+	//bool is_dead;
+	//bool dead_known;
+	enum DEAD dead;
 	//--------------------------
 	
 	//-- termination analysis --
 	enum HALTS halts;
-	//bool halts_known; //do we know if it will halt?
-	//bool halts;       //does it halt?
 	//--------------------------
 };
 
