@@ -12,8 +12,6 @@
 #include "dead.h"
 #include "dead_analyzer.h"
 
-static struct SST* mysst;
-
 static void mark_live(struct SST* sst, char* name);
 
 static void set_all(struct SST* sst, enum DEAD dead);
@@ -29,13 +27,11 @@ static void set_all(struct SST* sst, enum DEAD dead);
  * as live, as it could be live.
  */
  
-static void myvisitor_dead(void* node, enum NODE_TYPE type);
+static void myvisitor_dead(void* node, enum NODE_TYPE type, void* arg);
 
 void analyze_dead_code(struct ST* st, struct AST* ast){
 	
 	struct SST* sst = st->sst;
-	
-	mysst = sst;
 	
 	//set all functions to live
 	set_all(sst, DEAD_ISLIVE);
@@ -44,7 +40,7 @@ void analyze_dead_code(struct ST* st, struct AST* ast){
 	
 	set_all(sst, DEAD_UNKNOWN);
 	
-	visitAST(ast, myvisitor_dead);
+	visitAST(ast, myvisitor_dead, sst);
 	
 	mark_live(sst, "main");
 }
@@ -77,12 +73,14 @@ static void set_all(struct SST* sst, enum DEAD dead){
 	}
 }
 
-static void myvisitor_dead(void* node, enum NODE_TYPE type){
+static void myvisitor_dead(void* node, enum NODE_TYPE type, void* arg){
 	
 	/* if we are dealing with a variable that
 	 * is a function pointer, the function
 	 * pointed to is assumed to be live.
 	 */
+	 
+	struct SST* mysst = (struct SST*) arg;
 	
 	if(type == NODE_SIMPLEVAR){ 
 		

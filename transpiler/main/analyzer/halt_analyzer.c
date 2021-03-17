@@ -15,15 +15,13 @@
 #include "halts.h"
 #include "halt_analyzer.h"
 
-static void myvisitor(void* node, enum NODE_TYPE type);
+static void myvisitor(void* node, enum NODE_TYPE type, void* arg);
 
 static bool all_callees_terminate(struct SST* sst, struct CC* cc);
 
 static bool terminates_by_construction(struct SST* sst, struct StmtBlock* block);
 
 static bool inner(struct SST* sst, struct AST* ast);
-
-static bool hasWhile = false;
 
 void analyze_termination(struct ST* st, struct AST* ast){
 	
@@ -102,14 +100,16 @@ static bool terminates_by_construction(struct SST* sst, struct StmtBlock* block)
 	//potentially non-terminating statements are used
 	//such as: WhileStmt
 	
-	hasWhile = false;
+	bool hasWhile = false;
 	
-	visitStmtBlock(block, myvisitor);
+	visitStmtBlock(block, myvisitor, &hasWhile);
 	
 	return !hasWhile;
 }
 
-static void myvisitor(void* node, enum NODE_TYPE type){
+static void myvisitor(void* node, enum NODE_TYPE type, void* arg){
 	
-	if(type == NODE_WHILESTMT){ hasWhile = true; }
+	bool* hasWhile = (bool*) arg;
+	
+	if(type == NODE_WHILESTMT){ *hasWhile = true; }
 }

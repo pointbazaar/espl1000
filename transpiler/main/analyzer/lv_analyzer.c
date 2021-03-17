@@ -17,17 +17,11 @@
 static void lv_for_stmt   (struct ST* st, struct ForStmt* l);
 static void lv_assign_stmt(struct ST* st, struct AssignStmt* a);
 
-static void lv_visitor(void* node, enum NODE_TYPE type);
-
-static struct ST* myst = NULL;
+static void lv_visitor(void* node, enum NODE_TYPE type, void* arg);
 
 void lvst_fill(struct Method* subr, struct ST* st, bool debug){
 	
 	if(debug){ printf("lvst_fill(...)\n"); }
-	//fill the local var symbol table	
-	//fill lvst with the arguments
-	
-	if(debug){ printf("add arguments to LVST\n"); }
 	
 	for(int i = 0; i < subr->count_args; i++){
 		
@@ -46,25 +40,19 @@ void lvst_fill(struct Method* subr, struct ST* st, bool debug){
 		lvst_add(st->lvst, line);
 	}
 	
-	//fill lvst with the local variables
-	//in the function body
 	discoverLVStmtBlock(st, subr->block);
 	
 	if(debug){ lvst_print(st->lvst); }
 }
 
-// --- interface implementation ---
-
 void discoverLVStmtBlock(struct ST* st, struct StmtBlock* b){
 	
-	myst = st;
-	
-	visitStmtBlock(b, lv_visitor);
+	visitStmtBlock(b, lv_visitor, st);
 }
 
-// --- static functions ---
-
-static void lv_visitor(void* node, enum NODE_TYPE type){
+static void lv_visitor(void* node, enum NODE_TYPE type, void* arg){
+	
+	struct ST* myst = (struct ST*) arg;
 
 	if(type == NODE_ASSIGNSTMT)
 		{ lv_assign_stmt(myst, (struct AssignStmt*) node); }
@@ -82,7 +70,7 @@ static void lv_for_stmt(struct ST* st, struct ForStmt* l){
 	line->type = typeFromStrPrimitive(st, "int");
 	
 	line->firstOccur = NULL; 
-	line->isArg = false;
+	line->isArg      = false;
 	
 	lvst_add(st->lvst, line);
 	
@@ -97,8 +85,8 @@ static void lv_assign_stmt(struct ST* st, struct AssignStmt* a){
 	
 	struct LVSTLine* line = make(LVSTLine);
 	
-	line->isArg = false;
 	line->firstOccur = a;
+	line->isArg      = false;
 	
 	strncpy(line->name, varName, DEFAULT_STR_SIZE);
 	
