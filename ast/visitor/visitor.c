@@ -172,6 +172,8 @@ static void visitSwitchStmt(struct SwitchStmt* s, VISITOR){
 	
 	visitor(s, NODE_SWITCHSTMT);
 	
+	visitExpr(s->expr, visitor);
+	
 	for(int i = 0; i < s->count_cases; i++)
 		{ visitCaseStmt(s->cases[i], visitor); }
 }

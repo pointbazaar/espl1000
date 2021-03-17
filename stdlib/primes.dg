@@ -19,7 +19,7 @@ fn nprimes(uint n) -> [uint32] {
 
 	//TODO: replace with a 
 	//better implementation, e.g. sieve
-	[int] res = malloc(4*n);
+	[uint32] res = malloc(4*n);
 
 	uint count = 0;	
 	uint k = 2;

@@ -45,6 +45,21 @@ char* strHexConst(struct HexConst* hc){
 	return res;
 }
 
+char* strStringConst(struct StringConst* s){
+	
+	char* res =  malloc(sizeof(char)*(3+strlen(s->value)));
+	sprintf(res, "\"%s\"", s->value);
+	return res;
+}
+
+char* strBinConst(struct BinConst* b){
+	
+	//TODO: implement
+	char* res = malloc(sizeof(char)*10);
+	strcpy(res, "TODO");
+	return res;
+}
+
 char* strArrayType(struct ArrayType* at){
 
 	char* inner = strType(at->element_type);
@@ -68,7 +83,7 @@ char* strBasicTypeWrapped(struct BasicTypeWrapped* btw){
 		return strSubrType(btw->subrType);
 	}
 	
-	printf("(45)fatal Error (in str_ast.c)\n");
+	printf("[AST][Error] (45)fatal (in str_ast.c)\n");
 	exit(1);
 	return NULL;
 }
@@ -168,6 +183,202 @@ char* strStructType(struct StructType* s){
 	char* res = malloc(DEFAULT_STR_SIZE);
 	
 	sprintf(res, "%s", s->typeName);
+	
+	return res;
+}
+
+char* strVariable(struct Variable* v){
+	
+	char* s1 = strSimpleVar(v->simpleVar);
+	
+	char* s2 = (v->memberAccess != NULL)?strVariable(v->memberAccess):"";
+	
+	uint16_t l = strlen(s1) + strlen(s2);
+	
+	char* res = malloc(sizeof(char)*(l+1));
+	
+	sprintf(res, "%s%s", s1, s2);
+	
+	free(s1);
+	if(v->memberAccess != NULL){ free(s2); }
+	
+	return res;
+}
+
+char* strSimpleVar(struct SimpleVar* s){
+	
+	//we approximate here, and could be wrong.
+	//this is definitely not bulletproof.
+	
+	uint16_t l = DEFAULT_STR_SIZE+1;
+	
+	l += s->count_indices * (20+2);
+	
+	char* res = malloc(sizeof(char)*l);
+	
+	strcpy(res, s->name);
+	
+	for(uint16_t i = 0; i < s->count_indices; i++){
+		
+		char* s1 = strExpr(s->indices[i]);
+		
+		strcat(res, s1);
+		
+		free(s1);
+	}
+	
+	return res;
+}
+
+char* strExpr(struct Expr* e){
+
+	char* strTerm1 = strUnOpTerm(e->term1);
+	
+	char* strO = (e->op != NULL)?strOp(e->op):"";
+	
+	char* strTerm2 = (e->term2 != NULL)?strUnOpTerm(e->term2):"";
+	
+	uint16_t l1 = strlen(strTerm1);
+	uint16_t l2 = strlen(strO);
+	uint16_t l3 = strlen(strTerm2);
+	
+	uint16_t l = l1+l2+l3+1;
+	
+	char* res = malloc(sizeof(char)*l);
+	
+	sprintf(res, "%s%s%s", strTerm1, strO, strTerm2);
+	
+	free(strTerm1);
+	if(e->op != NULL){ free(strO); }
+	if(e->term2 != NULL){ free(strTerm2); }
+	
+	return res;
+}
+
+char* strOp(struct Op* o){
+	
+	char* res = malloc(sizeof(char)*6);
+	
+	sprintf(res, "%s", o->op);
+	
+	return res;
+}
+
+char* strUnOpTerm(struct UnOpTerm* u){
+
+	char* strO = (u->op != NULL)?strOp(u->op):"";
+	
+	char* strT = strTerm(u->term);
+	
+	uint16_t l = strlen(strO) + strlen(strT)+3;
+	
+	char* res = malloc(sizeof(char)*l);
+	
+	sprintf(res, "%s%s", strO, strT);
+	
+	if(u->op != NULL){ free(strO); }
+	free(strT);
+	
+	return res;
+}
+
+char* strTerm(struct Term* t){
+	
+	switch(t->kind){
+		
+		case 1: return strBoolConst(t->ptr.m1); 
+		case 2: return strIntConst(t->ptr.m2);
+		case 3: return strCharConst(t->ptr.m3);
+		
+		case 4: return strMethodCall(t->ptr.m4);
+		
+		case 5: return strExpr(t->ptr.m5);
+		case 6: return strVariable(t->ptr.m6);
+		case 7: return strFloatConst(t->ptr.m7);
+		case 8: return strStringConst(t->ptr.m8);
+		case 9: return strHexConst(t->ptr.m9);
+		
+		case 10: return strBinConst(t->ptr.m10);
+	}
+	
+	printf("[AST][Error] kind = %d\n", t->kind);
+	exit(1);
+	return NULL;
+}
+
+char* strAssignStmt(struct AssignStmt* a){
+	
+	char* strOptType = "";
+	
+	if(a->optType != NULL){
+			
+		strOptType = strType(a->optType);
+	}
+	
+	char* strVar = strVariable(a->var);
+	
+	char* strE = strExpr(a->expr);
+	
+	uint16_t l1 = strlen(strOptType);
+	uint16_t l2 = strlen(strVar);
+	uint16_t l3 = strlen(strE);
+	
+	uint16_t l = l1+l2+l3+1+4;
+	
+	char* res = malloc(sizeof(char)*l);
+	
+	sprintf(res, "%s %s = %s", strOptType, strVar, strE);
+	
+	if(a->optType != NULL){ free(strOptType); }
+	free(strVar);
+	free(strE);
+	
+	return res;
+}
+
+char* strMethodCall(struct MethodCall* m){
+
+	//we approximate here, and could be wrong.
+	//this is definitely not bulletproof.
+	
+	uint16_t l = DEFAULT_STR_SIZE+1+2;
+	
+	l += m->count_args * (20+1);
+	
+	char* res = malloc(sizeof(char)*l);
+	
+	strcpy(res, m->methodName);
+	strcat(res, "(");
+	
+	for(uint16_t i = 0; i < m->count_args; i++){
+		
+		char* s1 = strExpr(m->args[i]);
+		
+		strcat(res, s1);
+		
+		if(i != (m->count_args - 1)){
+			strcat(res, ",");
+		}
+		
+		free(s1);
+	}
+	
+	strcat(res, ")");
+	
+	return res;
+}
+
+char* strRetStmt(struct RetStmt* r){
+	
+	char* s = strExpr(r->returnValue);
+	
+	uint16_t l = 10 + strlen(s);
+	
+	char* res =  malloc(sizeof(char)*l);
+	
+	sprintf(res, "return %s;", s);
+	
+	free(s);
 	
 	return res;
 }

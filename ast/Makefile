@@ -8,7 +8,7 @@
 #so tests are needed to see that every serialization/deserialization
 #works
 
-CFLAGS := -march=native -g -Wall
+CFLAGS := -march=native -g -Wall -Werror
 
 CALL := gcc $(CFLAGS) -c
 
@@ -19,6 +19,7 @@ SOURCES := test/test_ast.c \
 		util/free_ast.c \
 		util/copy_ast.c \
 		util/str_ast.c \
+		util/equals_ast.c \
 		visitor/vistior.c
 
 HEADERS := io/ast_reader.h \
@@ -26,10 +27,11 @@ HEADERS := io/ast_reader.h \
 		util/free_ast.h \
 		util/copy_ast.h \
 		util/str_ast.h \
+		util/equals_ast.h \
 		ast.h \
 		io/magic_num.h \
 		io/serialize.h \
-		visitor/visitor.h
+		visitor/visitor.h 
 
 OBJS := build/test_ast.o \
 	build/ast_reader.o \
@@ -38,7 +40,8 @@ OBJS := build/test_ast.o \
 	build/copy_ast.o \
 	build/str_ast.o \
 	build/serialize.o \
-	build/visitor.o
+	build/visitor.o \
+	build/equals_ast.o 
 
 all: dirs $(OBJS) tests
 	./tests

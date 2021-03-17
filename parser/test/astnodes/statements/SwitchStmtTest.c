@@ -37,7 +37,7 @@ int test_switch(bool debug){
 	
 	assert(t != NULL);
 	assert(t->count_cases == 1);
-	assert(t->var != NULL);
+	assert(t->expr != NULL);
 	
 	freeTokenList(list);
 	freeSwitchStmt(t);

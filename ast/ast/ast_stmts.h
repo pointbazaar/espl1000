@@ -60,7 +60,7 @@ struct ForStmt {
 	struct StmtBlock* block;
 };
 struct SwitchStmt{
-	struct Variable* var;
+	struct Expr* expr;
 	
 	uint32_t count_cases;
 	struct CaseStmt** cases;

@@ -17,6 +17,7 @@ char* strFloatConst(struct FloatConst* fc);
 char* strIntConst(struct IntConst* ic);
 char* strHexConst(struct HexConst* hc);
 char* strStringConst(struct StringConst* s);
+char* strBinConst(struct BinConst* b);
 
 //types
 char* strArrayType(struct ArrayType* at);
@@ -44,12 +45,15 @@ char* strTerm(struct Term* t);
 
 //stmts
 char* strStmt(struct Stmt* stmt);
+
 char* strAssignStmt(struct AssignStmt* a);
 char* strForStmt(struct ForStmt* f);
 char* strIfStmt(struct IfStmt* i);
 char* strLoopStmt(struct LoopStmt* l);
 char* strWhileStmt(struct WhileStmt* w);
 char* strSwitchStmt(struct SwitchStmt* s);
+char* strMethodCall(struct MethodCall* m);
+char* strRetStmt(struct RetStmt* r);
 
 //other
 char* strIdentifier(struct Identifier* id);

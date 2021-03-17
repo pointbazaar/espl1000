@@ -24,7 +24,7 @@ void test_simplevar(bool debug){
 	
 	status("simplevar");
 	
-	char* src = "fn main () ~> int { uint x = 2; return x; }";
+	char* src = "fn main () ~> int { int x = 2; return x; }";
 	
 	assert(sourceToStatus(src, debug) == 2);
 }
@@ -33,7 +33,7 @@ void test_recursive(bool debug){
 	
 	status("recursive");
 	
-	char* src = "fn main () ~> int { return subr(8); } fn subr (uint n) ~> uint { if n > 0 { return subr(n-1); } return n; }";
+	char* src = "fn main () ~> int { return subr(8); } fn subr (int n) ~> int { if n > 0 { return subr(n-1); } return n; }";
 	
 	assert(sourceToStatus(src, debug) == 0);
 }
@@ -42,7 +42,7 @@ void test_charconst_cmp(bool debug){
 
 	status("charconst_cmp");
 	
-	char* src = "fn main () ~> int { return ('h' == 'h'); } ";
+	char* src = "fn main () ~> int { if ('h' == 'h') {return 1;} return 0; } ";
 	
 	assert(sourceToStatus(src, debug));
 }

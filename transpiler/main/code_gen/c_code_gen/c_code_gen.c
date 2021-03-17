@@ -20,6 +20,8 @@
 #include "code_gen/types/gen_c_types.h"
 #include "code_gen/structs/structs_code_gen.h"
 
+#include "typechecker/typecheck.h"
+
 //Analyzer Includes
 #include "analyzer/fn_analyzer.h"
 #include "analyzer/dead_analyzer.h"
@@ -119,8 +121,13 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx){
 	
 	fill_tables(ast, ctx);
 	
-	ctx->flags->has_main_fn = sst_contains(ctx->tables->sst, "main");
+	if(ctx->flags->no_typecheck){
+		printf("skipping typechecking\n");
+	}else{
+		typecheck_ast(ast, ctx->tables);
+	}
 	
+	ctx->flags->has_main_fn = sst_contains(ctx->tables->sst, "main");
 	
 	analyze_functions(ctx->tables, ast);
 	analyze_dead_code(ctx->tables, ast);
@@ -142,7 +149,6 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx){
 
 static void ns_transpile_struct_fwd_decls(struct Namespace* ns, struct Ctx* ctx){
 	
-	//write struct fwd. declarations
 	for(int i=0;i < ns->count_structs; i++){
 		
 		struct StructDecl* decl = ns->structs[i];
@@ -197,17 +203,10 @@ static void ns_transpile_fwd(struct Namespace* ns, struct Ctx* ctx){
 	gen_struct_subr_signatures(ns, ctx);
 	
 	ns_transpile_subr_fwd_decls(ns, ctx);
-	
-	//TODO: transpile the fwd declarations
-	//of the generated subroutines for the structures
 }
 
 static void ns_transpile_rest(struct Namespace* ns, struct Ctx* ctx){
 
-	//generate the struct specific
-	//constructors, destructors,
-	//copy-constructors
-	//and update the symbol table
 	gen_struct_subrs(ns, ctx);
 	
 	ns_transpile_subrs(ns, ctx);

@@ -8,7 +8,6 @@ struct STST;
 struct STSTLine {
 	
 	char name[DEFAULT_STR_SIZE];
-	struct SimpleType* type;
 
 	struct StructDecl* decl;
 };

@@ -13,7 +13,8 @@ AST_OBJS := ../ast/build/ast_reader.o \
 		../ast/build/free_ast.o \
 		../ast/build/str_ast.o \
 		../ast/build/serialize.o \
-		../ast/build/visitor.o
+		../ast/build/visitor.o \
+		../ast/build/equals_ast.o 
 
 TRANSPILER_OBJS := build/transpiler.o \
 	build/invoke.o \
@@ -47,6 +48,11 @@ OBJS_TYPEINFERENCE := build/typeinfer.o \
 	build/typeinfer_methodcall.o \
 	build/type_str.o
 	
+OBJS_TYPECHECK := build/typecheck.o \
+	build/typecheck_stmts.o \
+	build/typecheck_utils.o \
+	build/typecheck_errors.o
+	
 OBJS_TEST := build/test.o \
 	build/test_statuscode.o \
 	build/test_other.o \
@@ -65,7 +71,7 @@ OBJS_TABLE := ../tables/build/lvst.o \
 OBJS := $(AST_OBJS) $(TRANSPILER_OBJS) \
 	$(OBJS_TABLE) $(OBJS_TEST) \
 	$(OBJS_TYPEINFERENCE) $(OBJS_ANALYZER) \
-	$(OBJS_CODEGEN)
+	$(OBJS_CODEGEN) $(OBJS_TYPECHECK);
 
 all: all_no_valgrind valgrind
 
@@ -204,6 +210,20 @@ build/typeinfer_term.o: main/typeinference/typeinfer_term.c
 
 build/typeinfer_methodcall.o: main/typeinference/typeinfer_methodcall.c
 	$(CALL) -c main/typeinference/typeinfer_methodcall.c -o $@
+	
+# ----------- Typechecker -------------
+
+build/typecheck.o: main/typechecker/typecheck.c
+	$(CALL) -c main/typechecker/typecheck.c -o $@
+
+build/typecheck_stmts.o: main/typechecker/typecheck_stmts.c
+	$(CALL) -c main/typechecker/typecheck_stmts.c -o $@
+
+build/typecheck_utils.o: main/typechecker/typecheck_utils.c
+	$(CALL) -c main/typechecker/typecheck_utils.c -o $@
+	
+build/typecheck_errors.o: main/typechecker/typecheck_errors.c
+	$(CALL) -c main/typechecker/typecheck_errors.c -o $@
 	
 # ----------- Analyzer ----------------
 

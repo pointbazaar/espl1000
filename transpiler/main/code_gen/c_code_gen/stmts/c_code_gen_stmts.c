@@ -246,7 +246,7 @@ void transpileSwitchStmt(struct SwitchStmt* s, struct Ctx* ctx){
 	
 	indent(ctx);
 	fprintf(ctx->file, "switch (");
-	transpileVariable(s->var, ctx);
+	transpileExpr(s->expr, ctx);
 	fprintf(ctx->file, ") {\n");
 	
 	(ctx->indentLevel) += 1;

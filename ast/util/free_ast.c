@@ -373,7 +373,7 @@ void freeSwitchStmt(struct SwitchStmt* s){
 		   ""
 	);
 	
-	freeVariable(s->var);
+	freeExpr(s->expr);
 	for(int i=0; i < s->count_cases; i++){
 		freeCaseStmt(s->cases[i]);
 	}

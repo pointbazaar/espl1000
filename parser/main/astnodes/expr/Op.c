@@ -26,7 +26,6 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 	
 	struct Op* res = make(Op);
 	memset(res, 0, sizeof(struct Op));
-	
 
 	switch(tkn->kind){
 		

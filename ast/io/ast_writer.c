@@ -381,7 +381,7 @@ void writeSwitchStmt(struct SwitchStmt* m,	FILE* file){
 	
 	magic_num_serialize(MAGIC_SWITCHSTMT, file);
 	
-	writeVariable(m->var, file);
+	writeExpr(m->expr, file);
 	
 	serialize_int(m->count_cases, file);
 	

@@ -1,6 +1,6 @@
 fn main () ~> int {
 	
-	char x = getchar();
+	int x = getchar();
 	
 	printf("%c \n", x);
 	

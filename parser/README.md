@@ -87,7 +87,7 @@ returnStmt ::= 'return' expression? ';'
 
 assignmentStmt ::= Type? variable '=' expression ';'
 
-switchStmt ::= 'switch' variable '{' CaseStmt* '}'
+switchStmt ::= 'switch' expression '{' CaseStmt* '}'
 
 CaseStmt ::= 'case' (BoolConst | IntConst | CharConst) StmtBlock?
 

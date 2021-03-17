@@ -232,15 +232,10 @@ struct Expr* readExpr(FILE* file, bool debug){
 	expr->term2 = NULL;
 	
 	const int option = deserialize_int(file);
-
-	if(option != OPT_EMPTY && option != OPT_PRESENT){
-		
-		error(file, "Error in readExpr");
-	}
 	
 	if (option == OPT_PRESENT){
 		
-		expr->op = readOp(file, debug);
+		expr->op    = readOp(file, debug);
 		expr->term2 = readUnOpTerm(file, debug);
 	}
 	
@@ -662,7 +657,7 @@ struct SwitchStmt* readSwitchStmt(FILE* file, bool debug){
 	
 	struct SwitchStmt* res = make(SwitchStmt);
 	
-	res->var = readVariable(file, debug);
+	res->expr = readExpr(file, debug);
 	
 	res->count_cases = deserialize_int(file);
 

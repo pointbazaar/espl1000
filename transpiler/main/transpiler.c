@@ -76,6 +76,7 @@ bool transpileAndCompile(struct Flags* flags){
 	
 	if(ast == NULL){ return false; }
 
+	
 	char* fname_out = make_c_filename(flags->filenames[0]);
 
 	bool success = transpileAndWrite(fname_out, ast, flags);
