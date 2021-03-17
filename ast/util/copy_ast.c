@@ -93,7 +93,7 @@ struct Term* copyTerm(struct Term* t){
 		case  1: res->ptr.m1 = copyBoolConst(t->ptr.m1);   break;
 		case  2: res->ptr.m2 = copyIntConst(t->ptr.m2);    break;
 		case  3: res->ptr.m3 = copyCharConst(t->ptr.m3);   break;
-		case  4: res->ptr.m4 = copyMethodCall(t->ptr.m4);  break;
+		case  4: res->ptr.m4 = copyCall(t->ptr.m4);        break;
 		case  5: res->ptr.m5 = copyExpr(t->ptr.m5);        break;
 		case  6: res->ptr.m6 = copyVariable(t->ptr.m6);    break;
 		case  7: res->ptr.m7 = copyFloatConst(t->ptr.m7);  break;
@@ -152,10 +152,10 @@ struct StringConst* copyStringConst(struct StringConst* s){
 	return res;
 }
 
-struct MethodCall* copyMethodCall(struct MethodCall* c){
+struct Call* copyCall(struct Call* c){
 	
-	struct MethodCall* res = make(MethodCall);
-	strcpy(res->methodName, c->methodName);
+	struct Call* res = make(Call);
+	strcpy(res->name, c->name);
 	
 	res->args = malloc(sizeof(struct Expr*)*c->count_args);
 	res->count_args = c->count_args;

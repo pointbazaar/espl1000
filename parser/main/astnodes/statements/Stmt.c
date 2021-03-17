@@ -7,7 +7,7 @@
 #include "LoopStmt.h"
 #include "IfStmt.h"
 #include "RetStmt.h"
-#include "MethodCall.h"
+#include "Call.h"
 #include "AssignStmt.h"
 #include "SwitchStmt.h"
 
@@ -183,7 +183,7 @@ void stmt_make_other(struct Stmt* res, struct TokenList* copy, bool debug){
 	if(res->ptr.m5 == NULL){
 		
 		res->kind = 1;
-		res->ptr.m1 = makeMethodCall(copy,debug);
+		res->ptr.m1 = makeCall(copy,debug);
 		if(res->ptr.m1 == NULL){
 			printf("expected method call, but was:\n");
 			list_print(copy);
@@ -198,7 +198,7 @@ void stmt_make_other(struct Stmt* res, struct TokenList* copy, bool debug){
 			list_print(copy);
 			
 			freeTokenListShallow(copy);
-			freeMethodCall(res->ptr.m1);
+			freeCall(res->ptr.m1);
 			free(res);
 			
 			exit(1);

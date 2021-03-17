@@ -290,7 +290,7 @@ char* strTerm(struct Term* t){
 		case 2: return strIntConst(t->ptr.m2);
 		case 3: return strCharConst(t->ptr.m3);
 		
-		case 4: return strMethodCall(t->ptr.m4);
+		case 4: return strCall(t->ptr.m4);
 		
 		case 5: return strExpr(t->ptr.m5);
 		case 6: return strVariable(t->ptr.m6);
@@ -336,7 +336,7 @@ char* strAssignStmt(struct AssignStmt* a){
 	return res;
 }
 
-char* strMethodCall(struct MethodCall* m){
+char* strCall(struct Call* m){
 
 	//we approximate here, and could be wrong.
 	//this is definitely not bulletproof.
@@ -347,7 +347,7 @@ char* strMethodCall(struct MethodCall* m){
 	
 	char* res = malloc(sizeof(char)*l);
 	
-	strcpy(res, m->methodName);
+	strcpy(res, m->name);
 	strcat(res, "(");
 	
 	for(uint16_t i = 0; i < m->count_args; i++){

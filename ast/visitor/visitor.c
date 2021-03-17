@@ -16,7 +16,7 @@ static void visitForStmt     	(struct ForStmt* f,    VISITOR, void* arg);
 static void visitAssignStmt  	(struct AssignStmt* a, VISITOR, void* arg);
 static void visitSwitchStmt  	(struct SwitchStmt* s, VISITOR, void* arg);
 static void visitCaseStmt    	(struct CaseStmt* c,   VISITOR, void* arg);
-static void visitMethodCall  	(struct MethodCall* m, VISITOR, void* arg);
+static void visitCall           (struct Call* m,       VISITOR, void* arg);
 static void visitRetStmt     	(struct RetStmt* r,    VISITOR, void* arg);
 static void visitBreakStmt   	(VISITOR, void* arg);
 static void visitContinueStmt	(VISITOR, void* arg);
@@ -104,7 +104,7 @@ static void visitStmt(struct Stmt* s, VISITOR, void* arg){
 	switch(s->kind){
 		
 		case 0: visitLoopStmt  (s->ptr.m0, visitor, arg); break;
-		case 1: visitMethodCall(s->ptr.m1, visitor, arg); break;
+		case 1: visitCall      (s->ptr.m1, visitor, arg); break;
 		case 2: visitWhileStmt (s->ptr.m2, visitor, arg); break;
 		case 3: visitIfStmt    (s->ptr.m3, visitor, arg); break;
 		case 4: visitRetStmt   (s->ptr.m4, visitor, arg); break; 
@@ -186,9 +186,9 @@ static void visitCaseStmt(struct CaseStmt* c, VISITOR, void* arg){
 		{ visitStmtBlock(c->block, visitor, arg); }
 }
 
-static void visitMethodCall(struct MethodCall* m, VISITOR, void* arg){
+static void visitCall(struct Call* m, VISITOR, void* arg){
 	
-	visitor(m, NODE_METHODCALL, arg);
+	visitor(m, NODE_CALL, arg);
 	
 	for(int i = 0; i < m->count_args; i++)
 		{ visitExpr(m->args[i], visitor, arg); }
@@ -246,7 +246,7 @@ static void visitTerm(struct Term* t, VISITOR, void* arg){
 		case 1: visitBoolConst(t->ptr.m1, visitor, arg);  break;
 		case 2: visitIntConst(t->ptr.m2, visitor, arg);   break;
 		case 3: visitCharConst(t->ptr.m3, visitor, arg);  break;
-		case 4: visitMethodCall(t->ptr.m4, visitor, arg); break;
+		case 4: visitCall(t->ptr.m4, visitor, arg);       break;
 		case 5: visitExpr(t->ptr.m5, visitor, arg);       break;
 		case 6: visitVariable(t->ptr.m6, visitor, arg);   break;
 		case 7: visitFloatConst(t->ptr.m7, visitor, arg); break;

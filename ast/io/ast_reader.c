@@ -419,7 +419,7 @@ struct Term* readTerm(FILE* file, bool debug){
 		case  1: b->ptr.m1  = readBoolConst(file, debug); 	break;
 		case  2: b->ptr.m2  = readIntConst(file, debug); 	break;
 		case  3: b->ptr.m3  = readCharConst(file, debug); 	break;
-		case  4: b->ptr.m4  = readMethodCall(file, debug); 	break;
+		case  4: b->ptr.m4  = readCall(file, debug); 	    break;
 		case  5: b->ptr.m5  = readExpr(file, debug); 		break;
 		case  6: b->ptr.m6  = readVariable(file, debug); 	break;
 		case  7: b->ptr.m7  = readFloatConst(file, debug); 	break;
@@ -489,7 +489,7 @@ struct Stmt* readStmt(FILE* file, bool debug){
 			}
 			break;
 		case 0: b->ptr.m0 = readLoopStmt(file, debug);   break;
-		case 1: b->ptr.m1 = readMethodCall(file, debug); break;
+		case 1: b->ptr.m1 = readCall(file, debug);       break;
 		case 2: b->ptr.m2 = readWhileStmt(file, debug);  break;
 		case 3: b->ptr.m3 = readIfStmt(file, debug);     break;
 		case 4: b->ptr.m4 = readRetStmt(file, debug);    break;
@@ -590,16 +590,16 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 
 	return v;
 }
-struct MethodCall* readMethodCall(FILE* file, bool debug){
+struct Call* readCall(FILE* file, bool debug){
 	
-	status(debug, "readMethodCall");
+	status(debug, "readCall");
 	
-	magic_num_require(MAGIC_METHODCALL, file);
+	magic_num_require(MAGIC_CALL, file);
 	
-	struct MethodCall* v = make(MethodCall);
+	struct Call* v = make(Call);
 
 	char* tmp = deserialize_string(file);
-	strcpy(v->methodName, tmp);
+	strcpy(v->name, tmp);
 	free(tmp);
 	
 	v->count_args = deserialize_int(file);
@@ -610,7 +610,7 @@ struct MethodCall* readMethodCall(FILE* file, bool debug){
 		v->args[i] = readExpr(file, debug);
 	}
 	
-	magic_num_require(MAGIC_END_METHODCALL, file);
+	magic_num_require(MAGIC_END_CALL, file);
 	
 	return v;
 }

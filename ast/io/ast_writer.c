@@ -179,7 +179,7 @@ void writeTerm(struct Term* m, FILE* file){
 		case  1: writeBoolConst(m->ptr.m1,file);  break;
 		case  2: writeIntConst(m->ptr.m2,file);   break;
 		case  3: writeCharConst(m->ptr.m3,file);  break;
-		case  4: writeMethodCall(m->ptr.m4,file); break;
+		case  4: writeCall(m->ptr.m4,file); break;
 		case  5: writeExpr(m->ptr.m5,file);       break;
 		case  6: writeVariable(m->ptr.m6,file);   break;
 		case  7: writeFloatConst(m->ptr.m7,file); break;
@@ -280,7 +280,7 @@ void writeStmt(struct Stmt* m, FILE* file){
 			}
 			break;
 		case 0: { writeLoopStmt(m->ptr.m0, file);  } break;
-		case 1: { writeMethodCall(m->ptr.m1,file); } break;
+		case 1: { writeCall(m->ptr.m1,file); } break;
 		case 2: { writeWhileStmt(m->ptr.m2,file);  } break;
 		case 3: { writeIfStmt(m->ptr.m3,file);     } break;
 		case 4: { writeRetStmt(m->ptr.m4,file);    } break;
@@ -345,17 +345,17 @@ void writeAssignStmt(struct AssignStmt* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_END_ASSIGNSTMT, file);
 }
-void writeMethodCall(struct MethodCall* m, FILE* file){
+void writeCall(struct Call* m, FILE* file){
 
-	magic_num_serialize(MAGIC_METHODCALL, file);
+	magic_num_serialize(MAGIC_CALL, file);
 
-	serialize_string(m->methodName, file);
+	serialize_string(m->name, file);
 	serialize_int(m->count_args, file);
 	
 	for(int i=0;i < m->count_args;i++)
 		{ writeExpr(m->args[i],file); }
 	
-	magic_num_serialize(MAGIC_END_METHODCALL, file);
+	magic_num_serialize(MAGIC_END_CALL, file);
 }
 void writeLoopStmt(struct LoopStmt* m, FILE* file){
 	

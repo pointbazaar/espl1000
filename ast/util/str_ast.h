@@ -52,7 +52,7 @@ char* strIfStmt(struct IfStmt* i);
 char* strLoopStmt(struct LoopStmt* l);
 char* strWhileStmt(struct WhileStmt* w);
 char* strSwitchStmt(struct SwitchStmt* s);
-char* strMethodCall(struct MethodCall* m);
+char* strCall(struct Call* m);
 char* strRetStmt(struct RetStmt* r);
 
 //other

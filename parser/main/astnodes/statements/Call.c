@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "MethodCall.h"
+#include "Call.h"
 #include "../Identifier.h"
 #include "expr/Expr.h"
 
@@ -11,16 +11,11 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
-
-	if(debug){
-		printf("MethodCall(...) from: ");
-		list_print(tokens);
-	}
+struct Call* makeCall(struct TokenList* tokens,bool debug) {
 	
 	if(list_size(tokens) < 3){ return NULL;}
 
-	struct MethodCall* res = make(MethodCall);
+	struct Call* res = make(Call);
 
 	res->args = malloc(sizeof(struct Expr*)*1);
 	res->count_args = 0;
@@ -36,7 +31,7 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 		return NULL;
 	}
 
-	strcpy(res->methodName, id->identifier);
+	strcpy(res->name, id->identifier);
 	freeIdentifier(id);
 
 	if(list_size(copy) == 0){
@@ -104,10 +99,6 @@ struct MethodCall* makeMethodCall(struct TokenList* tokens,bool debug) {
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
-	}
-	
-	if(debug){
-		printf("sucess parsing MethodCall\n");
 	}
 
 	list_set(tokens, copy);

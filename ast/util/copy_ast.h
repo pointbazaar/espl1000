@@ -20,7 +20,7 @@ struct BinConst*    copyBinConst(struct BinConst* hc);
 struct StringConst* copyStringConst(struct StringConst* s);
 
 //stmt
-struct MethodCall*  copyMethodCall(struct MethodCall* c);
+struct Call*  		copyCall(struct Call* c);
 struct IfStmt*      copyIfStmt(struct IfStmt* i);
 struct AssignStmt*  copyAssignStmt(struct AssignStmt* a);
 struct RetStmt*     copyRetStmt(struct RetStmt* r);

@@ -51,7 +51,7 @@ void freeSimpleVar(struct SimpleVar* sv);
 void freeAssignStmt(struct AssignStmt* as);
 void freeIfStmt(struct IfStmt* is);
 void freeLoopStmt(struct LoopStmt* is);
-void freeMethodCall(struct MethodCall* mc);
+void freeCall(struct Call* mc);
 void freeRetStmt(struct RetStmt* rs);
 void freeStmt(struct Stmt* s);
 void freeWhileStmt(struct WhileStmt* ws);

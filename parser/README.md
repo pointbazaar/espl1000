@@ -54,7 +54,7 @@ Type ::= BasicTypeWrapped | TypeParameter | ArrayType
 
 // ------------------------------------------------------------
 
-statement ::=   ( methodCall ';' )
+statement ::=   ( Call ';' )
 				| whileStmt 
 				| ifStmt
 				| returnStmt
@@ -68,7 +68,7 @@ statement ::=   ( methodCall ';' )
 
 // -------- STATEMENTS --------------------
 
-methodCall ::= identifier '(' (expression (, expression)*)?  ')'
+Call ::= identifier '(' (expression (, expression)*)?  ')'
 
 breakStmt ::= 'break' ';'
 
@@ -103,7 +103,7 @@ Term ::= ArrayConstant
 		| hexConstant
 		| charConstant 
 		| StringConstant
-		| methodCall 
+		| Call 
 		| '(' expression ')' 
 		| variable
 

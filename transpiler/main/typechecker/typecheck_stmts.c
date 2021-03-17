@@ -76,10 +76,9 @@ void tc_assignstmt(struct AssignStmt* a){
 	}
 }
 
-void tc_methodcall(struct MethodCall* m){
+void tc_methodcall(struct Call* m){
 
-	struct SSTLine* line = 
-		sst_get(myst->sst, m->methodName);
+	struct SSTLine* line = sst_get(myst->sst, m->name);
 	
 	if(line->method == NULL){
 		printf("[Typechecker][TODO]\n");

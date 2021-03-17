@@ -49,7 +49,7 @@ bool is_malloc(struct Expr* expr){
 	//TODO: use enum or constant not hardcoded magic num
 	if(expr->term1->term->kind != 4){ return false; }
 	
-	char* name = expr->term1->term->ptr.m4->methodName;
+	char* name = expr->term1->term->ptr.m4->name;
 	
 	return strcmp(name, "malloc") == 0;
 }

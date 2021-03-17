@@ -39,7 +39,7 @@ struct IfStmt* 		readIfStmt(		FILE* file, bool debug);
 struct WhileStmt* 	readWhileStmt(	FILE* file, bool debug);
 struct RetStmt* 	readRetStmt(	FILE* file, bool debug);
 struct AssignStmt* 	readAssignStmt(	FILE* file, bool debug);
-struct MethodCall* 	readMethodCall(	FILE* file, bool debug);
+struct Call* 	    readCall(	    FILE* file, bool debug);
 struct LoopStmt* 	readLoopStmt(	FILE* file, bool debug);
 struct ForStmt* 	readForStmt(	FILE* file, bool debug);
 struct SwitchStmt* 	readSwitchStmt(	FILE* file, bool debug);

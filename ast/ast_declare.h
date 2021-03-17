@@ -30,7 +30,7 @@ struct StringConst;
 //statements
 struct AssignStmt;
 struct IfStmt;
-struct MethodCall;
+struct Call;
 struct RetStmt;
 struct Stmt;
 struct WhileStmt;

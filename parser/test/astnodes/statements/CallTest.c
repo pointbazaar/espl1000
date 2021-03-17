@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "MethodCallTest.h"
+#include "CallTest.h"
 
-#include "statements/MethodCall.h"
+#include "statements/Call.h"
 
 #include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
@@ -12,11 +12,14 @@
 
 #include "ast/util/free_ast.h"
 
+static void status(char* msg){
+
+	printf("[Parser][Test] %s\n", msg);
+}
+
 int methodcall_test1(bool debug) {
 
-	if(debug){
-		printf("TEST: methodcall_test1\n");
-	}
+	status("call test 1");
 
 	struct TokenList* l = makeTokenList();
 
@@ -24,22 +27,20 @@ int methodcall_test1(bool debug) {
 	list_add(l, makeToken(LPARENS));
 	list_add(l, makeToken(RPARENS));
 
-	struct MethodCall* call = makeMethodCall(l,debug);
+	struct Call* call = makeCall(l,debug);
 
 	assert(0 == list_size(l));
 	assert(call != NULL);
 	
 	freeTokenList(l);
-	freeMethodCall(call);
+	freeCall(call);
 	
 	return 1;
 }
 
 int methodcall_test2(bool debug) {
 
-	if(debug){
-		printf("TEST: methodcall_test2\n");
-	}
+	status("call test 2");
 
 	struct TokenList* list = makeTokenList();
 
@@ -48,22 +49,20 @@ int methodcall_test2(bool debug) {
 	list_add(list, makeToken2(INTEGER,"4"));
 	list_add(list, makeToken(RPARENS));
 
-	struct MethodCall* call = makeMethodCall(list,debug);
+	struct Call* call = makeCall(list,debug);
 
 	assert(0 == list_size(list));
 	assert(call != NULL);
 	
 	freeTokenList(list);
-	freeMethodCall(call);
+	freeCall(call);
 
 	return 1;
 }
 
 int methodcall_test3(bool debug) {
 
-	if(debug){
-		printf("TEST: methodcall_test3\n");
-	}
+	status("call test 3");
 
 	struct TokenList* list = makeTokenList();
 
@@ -72,22 +71,20 @@ int methodcall_test3(bool debug) {
 	list_add(list, makeToken2(ID,"x"));
 	list_add(list, makeToken(RPARENS));
 
-	struct MethodCall* call = makeMethodCall(list,debug);
+	struct Call* call = makeCall(list,debug);
 
 	assert(0 == list_size(list));
 	assert(call != NULL);
 	
 	freeTokenList(list);
-	freeMethodCall(call);
+	freeCall(call);
 
 	return 1;
 }
 
 int methodcall_test_can_parse_subroutine_call(bool debug) {
 
-	if(debug){
-		printf("TEST: methodcall_test_can_parse_subroutine_call\n");
-	}
+	status("call test can parse subroutine call");
 
 	struct TokenList* tl = makeTokenList();
 	list_add(tl, makeToken2(ID,"println"));
@@ -95,23 +92,20 @@ int methodcall_test_can_parse_subroutine_call(bool debug) {
 	list_add(tl, makeToken2(INTEGER,"1"));
 	list_add(tl, makeToken(RPARENS));
 
-	struct MethodCall* call = makeMethodCall(tl,debug);
+	struct Call* call = makeCall(tl,debug);
 
 	assert(0 == list_size(tl));
 	assert(call != NULL);
 	
 	freeTokenList(tl);
-	freeMethodCall(call);
+	freeCall(call);
 
 	return 1;
 }
 
 int methodcall_test_can_parse_subroutine_call2(bool debug) {
-	//println("x<5")
-
-	if(debug){
-		printf("TEST: methodcall_test_can_parse_subroutine_call2\n");
-	}
+	
+	status("call test can parse subroutine call 2");
 
 	struct TokenList* tokens = makeTokenList();
 	list_add(tokens, makeToken2(ID,"println"));
@@ -119,13 +113,13 @@ int methodcall_test_can_parse_subroutine_call2(bool debug) {
 	list_add(tokens, makeToken2(INTEGER,"5"));
 	list_add(tokens, makeToken2(RPARENS,")"));
 
-	struct MethodCall* call = makeMethodCall(tokens,debug);
+	struct Call* call = makeCall(tokens,debug);
 
 	assert(0 == list_size(tokens));
 	assert(call != NULL);
 	
 	freeTokenList(tokens);
-	freeMethodCall(call);
+	freeCall(call);
 
 	return 1;
 }
