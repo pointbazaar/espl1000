@@ -19,45 +19,56 @@
 #include "typecheck_stmts.h"
 #include "typecheck_utils.h"
 #include "typecheck_errors.h"
-
-struct ST*     myst      = NULL;
-struct Method* currentFn = NULL;
+#include "tcctx.h"
 
 //-----------------------------------------------------
 
 void typecheck_ast(struct AST* ast, struct ST* st){
 
-	myst = st;
+	struct TCCtx tcctx;
+	
+	tcctx.tcErrCount = 0;
+	tcctx.st         = st;
+	tcctx.currentFn  = NULL;
 	
 	for(uint16_t i = 0; i < ast->count_namespaces; i++)
-		{ tc_namespace(ast->namespaces[i]); }
+		{ tc_namespace(ast->namespaces[i], &tcctx); }
+	
+	const uint32_t errCount = tcctx.tcErrCount;
+	
+	if(errCount > 0){
+		
+		printf("[Typecheck] %d Errors\n", errCount);
+		exit(1);
+	}
 }
 
-void tc_namespace(struct Namespace* n){
+void tc_namespace(struct Namespace* n, struct TCCtx* tcctx){
 	
 	for(uint16_t i = 0; i < n->count_methods; i++)
-		{ tc_method(n->methods[i]); }
+		{ tc_method(n->methods[i], tcctx); }
 }
 
-void tc_method(struct Method* m){
+void tc_method(struct Method* m, struct TCCtx* tcctx){
 
-	currentFn = m;
-	lvst_fill(m, myst, false);
-	tc_stmtblock(m->block);
+	tcctx->currentFn = m;
+	
+	lvst_fill(m, tcctx->st, false);
+	tc_stmtblock(m->block, tcctx);
 }
 
-void tc_stmtblock(struct StmtBlock* s){
+void tc_stmtblock(struct StmtBlock* s, struct TCCtx* tcctx){
 
 	for(uint16_t i = 0; i < s->count; i++)
-		{ tc_stmt(s->stmts[i]); }
+		{ tc_stmt(s->stmts[i], tcctx); }
 }
 
-void tc_range(struct Range* r){
+void tc_range(struct Range* r, struct TCCtx* tcctx){
 
-	struct Type* t1 = infer_type_expr(myst, r->start);
-	struct Type* t2 = infer_type_expr(myst, r->end);
+	struct Type* t1 = infer_type_expr(tcctx->st, r->start);
+	struct Type* t2 = infer_type_expr(tcctx->st, r->end);
 
 	if(!is_integer_type(t1) || !is_integer_type(t2)){
-		error(ERR_RANGE_REQUIRES_INT);
+		error(tcctx, ERR_RANGE_REQUIRES_INT);
 	}
 }

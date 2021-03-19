@@ -1,6 +1,7 @@
 #ifndef TYPECHECKING_ERRORS_H
 #define TYPECHECKING_ERRORS_H
 
+#include "tcctx.h"
 
 #define ERR_NUM_ARGS "number of arguments does not match"
 
@@ -20,7 +21,7 @@
 
 #define ERR_CASE_TYPE_MISMATCH "A Case must have the same type as the value being switched on"
 
-void error(char* msg);
+void error(struct TCCtx* tcctx, char* msg);
 
 struct Method* currentFn;
 

@@ -21,12 +21,14 @@
  * because the type inference would have problems
  * inferring the type of '3 + myfunction'
  */
+ 
+#include "tcctx.h"
 
 void typecheck_ast(struct AST* ast, struct ST* st);
 
-void tc_namespace(struct Namespace* n);
-void tc_method(struct Method* m);
-void tc_stmtblock(struct StmtBlock* s);
-void tc_range(struct Range* r);
+void tc_namespace  (struct Namespace* n, struct TCCtx* tcctx);
+void tc_method     (struct Method* m,    struct TCCtx* tcctx);
+void tc_stmtblock  (struct StmtBlock* s, struct TCCtx* tcctx);
+void tc_range      (struct Range* r,     struct TCCtx* tcctx);
 
 #endif

@@ -19,24 +19,25 @@
 #include "typecheck_utils.h"
 #include "typecheck_stmts.h"
 #include "typecheck.h"
+#include "tcctx.h"
 
-void tc_stmt(struct Stmt* s){
+void tc_stmt(struct Stmt* s, struct TCCtx* tcctx){
 
 	switch(s->kind){
 	
-		case 0: tc_loopstmt(s->ptr.m0);   break;
-		case 1: tc_methodcall(s->ptr.m1); break;
-		case 2: tc_whilestmt(s->ptr.m2);  break;
-		case 3: tc_ifstmt(s->ptr.m3);     break;
-		case 4: tc_retstmt(s->ptr.m4);    break;
-		case 5: tc_assignstmt(s->ptr.m5); break;
+		case 0: tc_loopstmt(s->ptr.m0,   tcctx); break;
+		case 1: tc_methodcall(s->ptr.m1, tcctx); break;
+		case 2: tc_whilestmt(s->ptr.m2,  tcctx); break;
+		case 3: tc_ifstmt(s->ptr.m3,     tcctx); break;
+		case 4: tc_retstmt(s->ptr.m4,    tcctx); break;
+		case 5: tc_assignstmt(s->ptr.m5, tcctx); break;
 		
-		case 7: tc_forstmt(s->ptr.m7);    break;
-		case 8: tc_switchstmt(s->ptr.m8); break;
+		case 7: tc_forstmt(s->ptr.m7,    tcctx); break;
+		case 8: tc_switchstmt(s->ptr.m8, tcctx); break;
 	}
 }
 
-void tc_assignstmt(struct AssignStmt* a){
+void tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx){
 
 	//we make an exception
 	//TODO: only make exception for array types
@@ -45,12 +46,12 @@ void tc_assignstmt(struct AssignStmt* a){
 		{ return; }
 
 	struct Type* rightType = 
-		infer_type_expr(myst, a->expr);
+		infer_type_expr(tcctx->st, a->expr);
 	
 	struct Type* leftType = a->optType;
 	
 	if(a->optType == NULL){
-		leftType  = infer_type_variable(myst, a->var);
+		leftType  = infer_type_variable(tcctx->st, a->var);
 	}
 	
 	if(is_integer_type(leftType) 
@@ -72,13 +73,13 @@ void tc_assignstmt(struct AssignStmt* a){
 		free(str_t2);
 		free(str_a);
 	
-		error(ERR_ASSIGN_TYPES_MISMATCH);
+		error(tcctx, ERR_ASSIGN_TYPES_MISMATCH);
 	}
 }
 
-void tc_methodcall(struct Call* m){
+void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 
-	struct SSTLine* line = sst_get(myst->sst, m->name);
+	struct SSTLine* line = sst_get(tcctx->st->sst, m->name);
 	
 	if(line->method == NULL){
 		printf("[Typechecker][TODO]\n");
@@ -93,7 +94,7 @@ void tc_methodcall(struct Call* m){
 	const uint8_t actual_args = m->count_args;
 	
 	if(actual_args != expect_args){
-		error(ERR_NUM_ARGS);
+		error(tcctx, ERR_NUM_ARGS);
 	}
 	
 	for(uint8_t i = 0; i < expect_args; i++){
@@ -101,54 +102,54 @@ void tc_methodcall(struct Call* m){
 		struct Type* expect_type = method->args[i]->type;
 		
 		struct Type* actual_type = 
-			infer_type_expr(myst, m->args[i]);
+			infer_type_expr(tcctx->st, m->args[i]);
 			
 		if(is_integer_type(expect_type) 
 		&& is_integer_type(actual_type))
 			{ continue; }
 		
 		if(!eq_type(expect_type, actual_type)){
-			error(ERR_ARG_TYPES);
+			error(tcctx, ERR_ARG_TYPES);
 		}
 	}
 }
 
-void tc_ifstmt(struct IfStmt* i){
+void tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx){
 	
 	struct Type* type = 
-		infer_type_expr(myst, i->condition);
+		infer_type_expr(tcctx->st, i->condition);
 	
 	if(!is_bool_type(type)){
-		error(ERR_CONDITION_REQUIRES_BOOL);
+		error(tcctx, ERR_CONDITION_REQUIRES_BOOL);
 	}
 }
 
-void tc_whilestmt(struct WhileStmt* w){
+void tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx){
 
 	struct Type* type = 
-		infer_type_expr(myst, w->condition);
+		infer_type_expr(tcctx->st, w->condition);
 	
 	if(!is_bool_type(type)){
-		error(ERR_CONDITION_REQUIRES_BOOL);
+		error(tcctx, ERR_CONDITION_REQUIRES_BOOL);
 	}
 }
 
-void tc_loopstmt(struct LoopStmt* l){
+void tc_loopstmt(struct LoopStmt* l, struct TCCtx* tcctx){
 
 	struct Type* type = 
-		infer_type_expr(myst, l->count);
+		infer_type_expr(tcctx->st, l->count);
 	
 	if(!is_integer_type(type)){
-		error(ERR_LOOP_REQUIRES_INT);
+		error(tcctx, ERR_LOOP_REQUIRES_INT);
 	}
 }
 
-void tc_retstmt(struct RetStmt* r){
+void tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx){
 
-	struct Type* returnType = currentFn->returnType;
+	struct Type* returnType = tcctx->currentFn->returnType;
 	
 	struct Type* returnedType = 
-		infer_type_expr(myst, r->returnValue);
+		infer_type_expr(tcctx->st, r->returnValue);
 	
 	if(is_integer_type(returnType) 
 	&& is_integer_type(returnedType))
@@ -169,18 +170,18 @@ void tc_retstmt(struct RetStmt* r){
 		free(s2);
 		free(s3);
 		
-		error(ERR_RETURN_TYPE_MISMATCH);
+		error(tcctx, ERR_RETURN_TYPE_MISMATCH);
 	}
 }
 
-void tc_switchstmt(struct SwitchStmt* s){
+void tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx){
 
 	struct Type* type = 
-		infer_type_expr(myst, s->expr);
+		infer_type_expr(tcctx->st, s->expr);
 	
 	if(!is_primitive_type(type)){
 	
-		error(ERR_SWITCH_REQUIRES_PRIMITIVE_TYPE);
+		error(tcctx, ERR_SWITCH_REQUIRES_PRIMITIVE_TYPE);
 	}
 	
 	for(uint16_t i = 0; i < s->count_cases; i++){
@@ -193,23 +194,23 @@ void tc_switchstmt(struct SwitchStmt* s){
 		
 		if(isBool && !is_bool_type(type)){
 			
-			error(ERR_CASE_TYPE_MISMATCH);
+			error(tcctx, ERR_CASE_TYPE_MISMATCH);
 		}
 	
 		if(isChar && !is_char_type(type)){
 			
-			error(ERR_CASE_TYPE_MISMATCH);
+			error(tcctx, ERR_CASE_TYPE_MISMATCH);
 		}
 		
 		if(isInt && !is_integer_type(type)){
 			
-			error(ERR_CASE_TYPE_MISMATCH);
+			error(tcctx, ERR_CASE_TYPE_MISMATCH);
 		}
 	}
 }
 
-void tc_forstmt(struct ForStmt* f){
+void tc_forstmt(struct ForStmt* f, struct TCCtx* tcctx){
 	
-	tc_range(f->range);
-	tc_stmtblock(f->block);
+	tc_range(f->range, tcctx);
+	tc_stmtblock(f->block, tcctx);
 }
