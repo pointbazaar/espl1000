@@ -31,6 +31,53 @@ char* strIdentifier(struct Identifier* id){
 	return res;
 }
 
+char* strRange(struct Range* r){
+	
+	char* s1 = strExpr(r->start);
+	char* s2 = strExpr(r->end);
+	
+	uint16_t l = strlen(s1) + strlen(s2) + 4+1;
+	
+	char* res = malloc(sizeof(char)*l);
+	
+	sprintf(res, "%s .. %s", s1, s2);
+	
+	return res;
+}
+
+char* strStmtBlock(struct StmtBlock* block){
+	
+	uint16_t l = 0;
+
+	for(uint16_t i = 0; i < block->count; i++){
+		
+		char* s = strStmt(block->stmts[i]);
+		
+		l += strlen(s) + 1;
+		
+		free(s);
+	}
+	
+	l += 1 + 2 + 2;
+	
+	char* res = malloc(sizeof(char)*l);
+	
+	strcpy(res, "");
+	strcat(res, "{\n");
+	
+	for(uint16_t i = 0; i < block->count; i++){
+		
+		char* s = strStmt(block->stmts[i]);
+		
+		strcat(res, s);
+		strcat(res, "\n");
+		
+		free(s);
+	}
+	strcat(res, "}\n");
+	return res;
+}
+
 char* strIntConst(struct IntConst* ic){
 
 	char* res =  malloc(sizeof(char)*10);
@@ -48,7 +95,7 @@ char* strHexConst(struct HexConst* hc){
 char* strStringConst(struct StringConst* s){
 	
 	char* res =  malloc(sizeof(char)*(3+strlen(s->value)));
-	sprintf(res, "\"%s\"", s->value);
+	sprintf(res, "%s", s->value);
 	return res;
 }
 
@@ -306,6 +353,43 @@ char* strTerm(struct Term* t){
 	return NULL;
 }
 
+char* strStmt(struct Stmt* stmt){
+	
+	//TODO: fill out the others
+	
+	switch(stmt->kind){
+		
+		//case 0: return strLoopStmt(stmt->ptr.m0);
+		case 1: return strCall(stmt->ptr.m1);
+		//case 2: return strWhileStmt(stmt->ptr.m2);
+		//case 3: return strIfStmt(stmt->ptr.m3);
+		case 4: return strRetStmt(stmt->ptr.m4);
+		case 5: return strAssignStmt(stmt->ptr.m5);
+		
+		//case 6: return strForStmt(stmt->ptr.m7);
+		//case 7: return strSwitchStmt(stmt->ptr.m8);
+		
+		case 99: {
+			//break,continue,...
+			char* res = malloc(sizeof(char)*30);
+			strcpy(res, "");
+			
+			if(stmt->isBreak){
+				sprintf(res, "break");
+			}
+			if(stmt->isContinue){
+				sprintf(res, "continue");
+			}
+			return res;
+		}
+			
+		default:
+			printf("[AST][Error] str_ast Error in strStmt\n");
+			exit(1);
+			return NULL;
+	}
+}
+
 char* strAssignStmt(struct AssignStmt* a){
 	
 	char* strOptType = "";
@@ -379,6 +463,30 @@ char* strRetStmt(struct RetStmt* r){
 	sprintf(res, "return %s;", s);
 	
 	free(s);
+	
+	return res;
+}
+
+char* strCaseStmt(struct CaseStmt* c){
+	
+	char* s = NULL;
+	
+	switch(c->kind){
+	
+		case 0: s = strBoolConst(c->ptr.m1); break;
+		case 1: s = strCharConst(c->ptr.m2); break;
+		case 2: s = strIntConst(c->ptr.m3);  break;
+	}
+	
+	char* s2 = strStmtBlock(c->block);
+	
+	uint16_t l = strlen(s) + strlen(s2);
+
+	char* res = malloc(sizeof(char)*(l+1+6));
+	
+	sprintf(res, "case %s %s", s, s2);
+	
+	free(s); free(s2);
 	
 	return res;
 }

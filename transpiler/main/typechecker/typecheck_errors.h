@@ -3,9 +3,9 @@
 
 #include "tcctx.h"
 
-#define ERR_NUM_ARGS "number of arguments does not match"
+#define ERR_NUM_ARGS "number of args does not match"
 
-#define ERR_ARG_TYPES "type of argument does not match"
+#define ERR_ARG_TYPES "type of arg does not match"
 
 #define ERR_CONDITION_REQUIRES_BOOL "condition must be of type bool"
 
@@ -17,9 +17,9 @@
 
 #define ERR_SWITCH_REQUIRES_PRIMITIVE_TYPE "switch requires a primitive type"
 
-#define ERR_ASSIGN_TYPES_MISMATCH "Type mismatch in assignment"
+#define ERR_ASSIGN_TYPES_MISMATCH "type mismatch in assignment"
 
-#define ERR_CASE_TYPE_MISMATCH "A Case must have the same type as the value being switched on"
+#define ERR_CASE_TYPE_MISMATCH "case must have same type as in switch"
 
 void error(struct TCCtx* tcctx, char* msg);
 

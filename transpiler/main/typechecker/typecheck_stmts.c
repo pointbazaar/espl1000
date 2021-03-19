@@ -65,9 +65,9 @@ void tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx){
 		
 		char* str_a  = strAssignStmt(a);
 		
-		printf("    %s\n", str_a);
+		printf("\t%s\n", str_a);
 		
-		printf("type1=%s, type2=%s\n", str_t1, str_t2);
+		printf("expected type: %s, actual type: %s\n", str_t1, str_t2);
 		
 		free(str_t1);
 		free(str_t2);
@@ -94,6 +94,14 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 	const uint8_t actual_args = m->count_args;
 	
 	if(actual_args != expect_args){
+		
+		char* s1 = strCall(m);
+		
+		printf("\t%s\n", s1);
+		printf("expected: %d args\n", expect_args);
+		
+		free(s1);
+		
 		error(tcctx, ERR_NUM_ARGS);
 	}
 	
@@ -109,6 +117,22 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 			{ continue; }
 		
 		if(!eq_type(expect_type, actual_type)){
+			
+			char* s1 = strCall(m);
+			char* s2 = strExpr(m->args[i]);
+			
+			char* sTypeActual   = strType(actual_type);
+			char* sTypeExpected = strType(expect_type);
+			
+			printf("\t%s\n", s1);
+			
+			printf("%s, (of type %s), but expected type %s\n", s2, sTypeActual, sTypeExpected);
+			
+			free(s1);
+			free(s2);
+			free(sTypeActual);
+			free(sTypeExpected);
+			
 			error(tcctx, ERR_ARG_TYPES);
 		}
 	}
@@ -120,6 +144,11 @@ void tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx){
 		infer_type_expr(tcctx->st, i->condition);
 	
 	if(!is_bool_type(type)){
+		
+		char* s1 = strExpr(i->condition);
+		printf("\t%s\n", s1);
+		free(s1);
+		
 		error(tcctx, ERR_CONDITION_REQUIRES_BOOL);
 	}
 }
@@ -130,6 +159,11 @@ void tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx){
 		infer_type_expr(tcctx->st, w->condition);
 	
 	if(!is_bool_type(type)){
+		
+		char* s1 = strExpr(w->condition);
+		printf("\t%s\n", s1);
+		free(s1);
+		
 		error(tcctx, ERR_CONDITION_REQUIRES_BOOL);
 	}
 }
@@ -140,6 +174,11 @@ void tc_loopstmt(struct LoopStmt* l, struct TCCtx* tcctx){
 		infer_type_expr(tcctx->st, l->count);
 	
 	if(!is_integer_type(type)){
+		
+		char* s1 = strExpr(l->count);
+		printf("\tloop %s\n", s1);
+		free(s1);
+		
 		error(tcctx, ERR_LOOP_REQUIRES_INT);
 	}
 }
@@ -162,10 +201,9 @@ void tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx){
 		
 		char* s3 = strRetStmt(r);
 		
-		printf("type1=%s, type2=%s\n", s1, s2);
-		
-		printf("	%s\n", s3);
-		
+		printf("\t%s\n", s3);
+		printf("expected type: %s, actual type: %s\n", s1, s2);
+
 		free(s1);
 		free(s2);
 		free(s3);
@@ -180,6 +218,10 @@ void tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx){
 		infer_type_expr(tcctx->st, s->expr);
 	
 	if(!is_primitive_type(type)){
+		
+		char* s1 = strExpr(s->expr);
+		printf("\tswitch %s\n", s1);
+		free(s1);
 	
 		error(tcctx, ERR_SWITCH_REQUIRES_PRIMITIVE_TYPE);
 	}
@@ -192,17 +234,19 @@ void tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx){
 		const bool isChar = c->kind == 1;
 		const bool isInt  = c->kind == 2;
 		
-		if(isBool && !is_bool_type(type)){
-			
-			error(tcctx, ERR_CASE_TYPE_MISMATCH);
-		}
-	
-		if(isChar && !is_char_type(type)){
-			
-			error(tcctx, ERR_CASE_TYPE_MISMATCH);
-		}
+		bool isErr = false;
 		
-		if(isInt && !is_integer_type(type)){
+		if(isBool && !is_bool_type(type)){ isErr = true; }
+	
+		if(isChar && !is_char_type(type)){ isErr = true; }
+		
+		if(isInt && !is_integer_type(type)){ isErr = true; }
+		
+		if(isErr){
+			
+			char* s1 = strCaseStmt(c);
+			printf("\t%s\n", s1);
+			free(s1);
 			
 			error(tcctx, ERR_CASE_TYPE_MISMATCH);
 		}

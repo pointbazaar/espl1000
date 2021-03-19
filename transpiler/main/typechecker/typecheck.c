@@ -3,6 +3,7 @@
 
 //AST Includes
 #include "ast/ast.h"
+#include "ast/util/str_ast.h"
 
 //Table Includes
 #include "tables/sst/sst.h"
@@ -69,6 +70,12 @@ void tc_range(struct Range* r, struct TCCtx* tcctx){
 	struct Type* t2 = infer_type_expr(tcctx->st, r->end);
 
 	if(!is_integer_type(t1) || !is_integer_type(t2)){
+		
+		char* sRange = strRange(r);
+		
+		printf("\t%s\n", sRange);
+		free(sRange);
+		
 		error(tcctx, ERR_RANGE_REQUIRES_INT);
 	}
 }

@@ -54,9 +54,11 @@ char* strWhileStmt(struct WhileStmt* w);
 char* strSwitchStmt(struct SwitchStmt* s);
 char* strCall(struct Call* m);
 char* strRetStmt(struct RetStmt* r);
+char* strCaseStmt(struct CaseStmt* c);
 
 //other
 char* strIdentifier(struct Identifier* id);
-
+char* strRange(struct Range* r);
+char* strStmtBlock(struct StmtBlock* block);
 
 #endif
