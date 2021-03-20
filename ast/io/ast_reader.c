@@ -9,11 +9,6 @@
 
 #define structsize(X) sizeof(struct X)
 
-static void status(bool debug, char* msg){
-	
-	if(debug){ printf("[AST] %s\n", msg); }
-}
-
 static void error(FILE* file, char* msg){
 	
 	if(file != NULL){ fclose(file); }
@@ -24,8 +19,6 @@ static void error(FILE* file, char* msg){
 
 struct AST* readAST(char** filenames, int count_filenames, bool debug){
 	
-	status(debug, "readAST");
-
 	struct AST* ast = make(AST);
 	
 	ast->count_namespaces = count_filenames;
@@ -52,8 +45,6 @@ struct AST* readAST(char** filenames, int count_filenames, bool debug){
 }
 
 struct Namespace* readNamespace(FILE* file, bool debug){
-	
-	status(debug, "readNamespace");
 	
 	magic_num_require(MAGIC_NAMESPACE, file);
 	
@@ -97,8 +88,6 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 }
 struct Method* readMethod(FILE* file, bool debug){
 	
-	status(debug, "readMethod");
-	
 	magic_num_require(MAGIC_METHOD, file);
 	
 	struct Method* m  = make(Method);
@@ -129,8 +118,6 @@ struct Method* readMethod(FILE* file, bool debug){
 }
 struct StructDecl* readStructDecl(FILE* file, bool debug){
 	
-	status(debug, "readStructDecl");
-	
 	magic_num_require(MAGIC_STRUCTDECL, file);
 	
 	struct StructDecl* res = make(StructDecl);
@@ -151,8 +138,6 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 }
 struct StructMember* readStructMember(FILE* file, bool debug){
 	
-	status(debug, "readStructMember");
-	
 	magic_num_require(MAGIC_STRUCTMEMBER, file);
 	
 	struct StructMember* res = make(StructMember);
@@ -170,8 +155,6 @@ struct StructMember* readStructMember(FILE* file, bool debug){
 }
 
 struct StmtBlock* readStmtBlock(FILE* file, bool debug){
-	
-	status(debug, "readStmtBlock");
 	
 	magic_num_require(MAGIC_STMTBLOCK, file);
 	
@@ -191,8 +174,6 @@ struct StmtBlock* readStmtBlock(FILE* file, bool debug){
 }
 
 struct DeclArg* readDeclArg(FILE* file, bool debug){
-	
-	status(debug, "readDeclArg");
 	
 	magic_num_require(MAGIC_DECLARG, file);
 	
@@ -221,8 +202,6 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 }
 struct Expr* readExpr(FILE* file, bool debug){
 	
-	status(debug, "readExpr");
-	
 	magic_num_require(MAGIC_EXPR, file);
 	
 	struct Expr* expr = make(Expr);
@@ -245,8 +224,6 @@ struct Expr* readExpr(FILE* file, bool debug){
 }
 struct Op* readOp(FILE* file, bool debug){
 	
-	status(debug, "readOp");
-	
 	magic_num_require(MAGIC_OP, file);
 	
 	struct Op* op = make(Op);
@@ -258,8 +235,6 @@ struct Op* readOp(FILE* file, bool debug){
 	return op;
 }
 struct IntConst* readIntConst(FILE* file, bool debug){
-	
-	status(debug, "readIntConst");
 	
 	magic_num_require(MAGIC_INTCONST, file);
 	
@@ -274,8 +249,6 @@ struct IntConst* readIntConst(FILE* file, bool debug){
 
 struct HexConst* readHexConst(FILE* file, bool debug){
 	
-	status(debug, "readHexConst");
-	
 	magic_num_require(MAGIC_HEXCONST, file);
 	
 	struct HexConst* hc = make(HexConst);
@@ -288,8 +261,6 @@ struct HexConst* readHexConst(FILE* file, bool debug){
 }
 
 struct BinConst* readBinConst(FILE* file, bool debug){
-	
-	status(debug, "readBinConst");
 	
 	magic_num_require(MAGIC_BINCONST, file);
 	
@@ -304,8 +275,6 @@ struct BinConst* readBinConst(FILE* file, bool debug){
 
 struct BoolConst* readBoolConst(FILE* file, bool debug){
 	
-	status(debug, "readBoolConst");
-	
 	magic_num_require(MAGIC_BOOLCONST, file);
 	
 	struct BoolConst* b = make(BoolConst);
@@ -317,8 +286,6 @@ struct BoolConst* readBoolConst(FILE* file, bool debug){
 	return b;
 }
 struct CharConst* readCharConst(FILE* file, bool debug){
-	
-	status(debug, "readCharConst");
 	
 	magic_num_require(MAGIC_CHARCONST, file);
 	
@@ -332,8 +299,6 @@ struct CharConst* readCharConst(FILE* file, bool debug){
 }
 struct FloatConst* readFloatConst(FILE* file, bool debug){
 	
-	status(debug, "readFloatConst");
-	
 	magic_num_require(MAGIC_FLOATCONST, file);
 	
 	struct FloatConst* ic = make(FloatConst);
@@ -345,8 +310,6 @@ struct FloatConst* readFloatConst(FILE* file, bool debug){
 	return ic;
 }
 struct StringConst* readStringConst(FILE* file, bool debug){
-	
-	status(debug, "readStringConst");
 	
 	magic_num_require(MAGIC_STRINGCONST, file);
 	
@@ -361,8 +324,6 @@ struct StringConst* readStringConst(FILE* file, bool debug){
 	return s;
 }
 struct Variable* readVariable(FILE* file, bool debug){
-	
-	status(debug, "readVariable");
 	
 	magic_num_require(MAGIC_VARIABLE, file);
 	
@@ -381,8 +342,6 @@ struct Variable* readVariable(FILE* file, bool debug){
 	return v;
 }
 struct SimpleVar* readSimpleVar(FILE* file, bool debug){
-	
-	status(debug, "readSimpleVar");
 	
 	magic_num_require(MAGIC_SIMPLEVAR, file);
 	
@@ -405,8 +364,6 @@ struct SimpleVar* readSimpleVar(FILE* file, bool debug){
 	return b;
 }
 struct Term* readTerm(FILE* file, bool debug){
-	
-	status(debug, "readTerm");
 	
 	magic_num_require(MAGIC_TERM, file);
 	
@@ -438,8 +395,6 @@ struct Term* readTerm(FILE* file, bool debug){
 
 struct UnOpTerm* readUnOpTerm(FILE* file, bool debug){
 	
-	status(debug, "readUnOpTerm");
-	
 	magic_num_require(MAGIC_UNOPTERM, file);
 	
 	const int opt      = deserialize_int(file);
@@ -456,8 +411,6 @@ struct UnOpTerm* readUnOpTerm(FILE* file, bool debug){
 
 struct Range* readRange(FILE* file, bool debug){
 	
-	status(debug, "readRange");
-	
 	magic_num_require(MAGIC_RANGE, file);
 	
 	struct Range* r = make(Range);
@@ -472,8 +425,6 @@ struct Range* readRange(FILE* file, bool debug){
 
 //statementnodes
 struct Stmt* readStmt(FILE* file, bool debug){
-	
-	status(debug, "readStmt");
 	
 	magic_num_require(MAGIC_STMT, file);
 	
@@ -506,8 +457,6 @@ struct Stmt* readStmt(FILE* file, bool debug){
 }
 struct IfStmt* readIfStmt(FILE* file, bool debug){
 	
-	status(debug, "readIfStmt");
-	
 	magic_num_require(MAGIC_IFSTMT, file);
 	
 	struct IfStmt* v = make(IfStmt);
@@ -528,8 +477,6 @@ struct IfStmt* readIfStmt(FILE* file, bool debug){
 }
 struct WhileStmt* readWhileStmt(FILE* file, bool debug){
 	
-	status(debug, "readWhileStmt");
-	
 	magic_num_require(MAGIC_WHILESTMT, file);
 	
 	struct WhileStmt* v = make(WhileStmt);
@@ -543,8 +490,6 @@ struct WhileStmt* readWhileStmt(FILE* file, bool debug){
 }
 struct RetStmt* readRetStmt(FILE* file, bool debug){
 	
-	status(debug, "readRetStmt");
-	
 	magic_num_require(MAGIC_RETSTMT, file);
 	
 	struct RetStmt* v = make(RetStmt);
@@ -556,8 +501,6 @@ struct RetStmt* readRetStmt(FILE* file, bool debug){
 	return v;
 }
 struct AssignStmt* readAssignStmt(FILE* file, bool debug){
-	
-	status(debug, "readAssignStmt");
 	
 	magic_num_require(MAGIC_ASSIGNSTMT, file);
 	
@@ -592,8 +535,6 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 }
 struct Call* readCall(FILE* file, bool debug){
 	
-	status(debug, "readCall");
-	
 	magic_num_require(MAGIC_CALL, file);
 	
 	struct Call* v = make(Call);
@@ -616,8 +557,6 @@ struct Call* readCall(FILE* file, bool debug){
 }
 struct LoopStmt* readLoopStmt(FILE* file, bool debug){
 	
-	status(debug, "readLoopStmt");
-	
 	magic_num_require(MAGIC_LOOPSTMT, file);
 	
 	struct LoopStmt* v = make(LoopStmt);
@@ -630,8 +569,6 @@ struct LoopStmt* readLoopStmt(FILE* file, bool debug){
 	return v;
 }
 struct ForStmt* readForStmt(FILE* file, bool debug){
-	
-	status(debug, "readForStmt");
 	
 	magic_num_require(MAGIC_FORSTMT, file);
 	
@@ -650,8 +587,6 @@ struct ForStmt* readForStmt(FILE* file, bool debug){
 	return res;
 }
 struct SwitchStmt* readSwitchStmt(FILE* file, bool debug){
-	
-	status(debug, "readSwitchStmt");
 	
 	magic_num_require(MAGIC_SWITCHSTMT, file);
 	
@@ -673,8 +608,6 @@ struct SwitchStmt* readSwitchStmt(FILE* file, bool debug){
 	return res;
 }
 struct CaseStmt* readCaseStmt(FILE* file, bool debug){
-	
-	status(debug, "readCaseStmt");
 	
 	magic_num_require(MAGIC_CASESTMT, file);
 	
@@ -707,8 +640,6 @@ struct CaseStmt* readCaseStmt(FILE* file, bool debug){
 // --- typenodes -------------------------
 struct Type* readType(FILE* file, bool debug){
 	
-	status(debug, "readType");
-	
 	magic_num_require(MAGIC_TYPE, file);
 	
 	const int kind = deserialize_int(file);;
@@ -733,8 +664,6 @@ struct Type* readType(FILE* file, bool debug){
 }
 struct SubrType* readSubrType(FILE* file, bool debug){
 	
-	status(debug, "readSubrType");
-	
 	magic_num_require(MAGIC_SUBRTYPE, file);
 	
 	struct SubrType* v = make(SubrType);
@@ -755,8 +684,6 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 	return v;
 }
 struct SimpleType* readSimpleType(FILE* file, bool debug){
-	
-	status(debug, "readSimpleType");
 	
 	magic_num_require(MAGIC_SIMPLETYPE, file);
 	
@@ -785,8 +712,6 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 }
 struct ArrayType* readArrayType(FILE* file, bool debug){
 	
-	status(debug, "readArrayType");
-	
 	magic_num_require(MAGIC_ARRAYTYPE, file);
 	
 	struct ArrayType* v = make(ArrayType);
@@ -799,8 +724,6 @@ struct ArrayType* readArrayType(FILE* file, bool debug){
 }
 struct TypeParam* readTypeParam(FILE* file, bool debug){
 	
-	status(debug, "readTypeParam");
-	
 	magic_num_require(MAGIC_TYPEPARAM, file);
 	
 	struct TypeParam* v = make(TypeParam);
@@ -812,8 +735,6 @@ struct TypeParam* readTypeParam(FILE* file, bool debug){
 	return v;
 }
 struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug){
-	
-	status(debug, "readBasicTypeWrapped");
 	
 	magic_num_require(MAGIC_BASICTYPEWRAPPED, file);
 	
@@ -840,8 +761,6 @@ struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug){
 
 struct StructType* readStructType(FILE* file, bool debug){
 	
-	status(debug, "readStructType");
-	
 	magic_num_require(MAGIC_STRUCTTYPE, file);
 	
 	struct StructType* res = make(StructType);
@@ -867,8 +786,6 @@ struct StructType* readStructType(FILE* file, bool debug){
 }
 
 struct PrimitiveType* readPrimitiveType(FILE* file, bool debug){
-	
-	status(debug, "readPrimitiveType");
 	
 	magic_num_require(MAGIC_PRIMITIVETYPE, file);
 	
