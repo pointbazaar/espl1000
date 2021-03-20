@@ -83,14 +83,20 @@ bool transpileAndCompile(struct Flags* flags){
 	
 	freeAST(ast);
 	
-	if(!success){ return false; }
-	
-	char* cmd_gcc = make_gcc_cmd(flags, fname_out);
+	if(!success){ 
+		
+		free(fname_out);
+		return false; 
+	}
 	
 	if(flags->has_main_fn){
 		
+		char* cmd_gcc = make_gcc_cmd(flags, fname_out);
+		
 		printf("%s\n", cmd_gcc);
 		system(cmd_gcc);
+		
+		free(cmd_gcc);
 		
 		if(flags->avr){
 			
@@ -101,7 +107,6 @@ bool transpileAndCompile(struct Flags* flags){
 		}
 	}
 	
-	free(cmd_gcc);
 	free(fname_out);
 	
 	return true;

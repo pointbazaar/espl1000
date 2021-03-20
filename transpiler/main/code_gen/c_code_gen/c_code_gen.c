@@ -59,6 +59,7 @@ bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags){
 	
 	ctx->tables = makeST(flags->debug);
 	
+	ctx->error = false;
 	ctx->flags = flags;
 	
 	ctx->indentLevel = 0;
@@ -79,9 +80,12 @@ bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags){
 	fclose(ctx->file);
 	
 	freeST(ctx->tables);
+	
+	const bool status = !(ctx->error);
+	
 	free(ctx);
 	
-	return true;
+	return status;
 }
 
 static void fill_tables(struct AST* ast, struct Ctx* ctx){
@@ -124,7 +128,12 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx){
 	if(ctx->flags->no_typecheck){
 		printf("skipping typechecking\n");
 	}else{
-		typecheck_ast(ast, ctx->tables);
+		const bool checks = typecheck_ast(ast, ctx->tables);
+		
+		if(!checks){
+			ctx->error = true;
+			return;
+		}
 	}
 	
 	ctx->flags->has_main_fn = sst_contains(ctx->tables->sst, "main");

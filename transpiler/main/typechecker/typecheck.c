@@ -24,7 +24,7 @@
 
 //-----------------------------------------------------
 
-void typecheck_ast(struct AST* ast, struct ST* st){
+bool typecheck_ast(struct AST* ast, struct ST* st){
 
 	struct TCCtx tcctx;
 	
@@ -38,10 +38,10 @@ void typecheck_ast(struct AST* ast, struct ST* st){
 	const uint32_t errCount = tcctx.tcErrCount;
 	
 	if(errCount > 0){
-		
 		printf("[Typecheck] %d Errors\n", errCount);
-		exit(1);
 	}
+	
+	return errCount == 0;
 }
 
 void tc_namespace(struct Namespace* n, struct TCCtx* tcctx){

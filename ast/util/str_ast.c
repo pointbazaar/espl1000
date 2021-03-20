@@ -42,6 +42,8 @@ char* strRange(struct Range* r){
 	
 	sprintf(res, "%s .. %s", s1, s2);
 	
+	free(s1); free(s2);
+	
 	return res;
 }
 

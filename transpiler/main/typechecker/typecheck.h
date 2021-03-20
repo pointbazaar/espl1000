@@ -1,7 +1,10 @@
 #ifndef TYPECHECK_H
 #define TYPECHECK_H
 
+#include <stdio.h>
+
 #include "ast/ast.h"
+#include "tcctx.h"
 
 /* This Module provides Facilities
  * for typechecking smalldragon Programs.
@@ -21,10 +24,8 @@
  * because the type inference would have problems
  * inferring the type of '3 + myfunction'
  */
- 
-#include "tcctx.h"
 
-void typecheck_ast(struct AST* ast, struct ST* st);
+bool typecheck_ast(struct AST* ast, struct ST* st);
 
 void tc_namespace  (struct Namespace* n, struct TCCtx* tcctx);
 void tc_method     (struct Method* m,    struct TCCtx* tcctx);
