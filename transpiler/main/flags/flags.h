@@ -12,6 +12,7 @@ struct Flags {
 	bool help;
 	bool version;
 	bool clean;
+	bool no_typecheck;
 	//----------
 	
 	char** gcc_flags;

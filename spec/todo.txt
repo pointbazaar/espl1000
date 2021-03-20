@@ -4,6 +4,11 @@ BUGS:
  - [ ] dead code elemination does not work with the subroutines 
        generated for structs
 
+TODO (ARCHITECTURE):
+ - [ ] only create instances of structures via their constructors,
+       which should reside in the same module as the struct itself.
+       This may prevent bugs due to wrong/incomplete initialization.
+
 TODO (OTHER):
 
  - [ ] enable setting dependent types for primitive variables.

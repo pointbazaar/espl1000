@@ -10,144 +10,152 @@
 //type_str
 #include "transpiler/main/typeinference/util/type_str.h"
 
+#include "transpiler/main/analyzer/halts.h"
+
 #include "tables/sst/sst.h"
 #include "sst_prefill.h"
 
 struct Proto {
 	char name[DEFAULT_STR_SIZE];
 	char type[DEFAULT_STR_SIZE];
+	
+	enum HALTS halts;
 };
 
 static void fill_protos(struct ST* st, struct Proto* protos, int n);
 
-struct Proto protos_math[] = {
-	{ "sin", "float" },
-	{ "cos", "float" },
-	{ "tan", "float" },
-	
-	{ "asin", "float" },
-	{ "acos", "float" },
-	{ "atan", "float" },
-	
-	{ "sinh", "float" },
-	{ "cosh", "float" },
-	{ "tanh", "float" },
-	
-	{ "exp", "float" },
-	{ "log", "float" },
-	{ "log10", "float" },
-	
-	{ "pow", "float" },
-	{ "sqrt", "float" },
-	
-	{ "ceil", "float" },
-	{ "floor", "float" },
-	
-	{ "fabs", "float" },
-	
-	{ "fmin", "float" },
-	{ "fmax", "float" },
+//TODO: find trustworthy sources
+//to see which of these functions 
+//are guaranteed to terminate
 
-	{ "round", "int" },
+struct Proto protos_math[] = {
+	{ "sin", "float",   HALTS_ALWAYS },
+	{ "cos", "float",   HALTS_ALWAYS },
+	{ "tan", "float",   HALTS_ALWAYS },
+	
+	{ "asin", "float",  HALTS_ALWAYS },
+	{ "acos", "float",  HALTS_ALWAYS },
+	{ "atan", "float",  HALTS_ALWAYS },
+	
+	{ "sinh", "float",  HALTS_ALWAYS },
+	{ "cosh", "float",  HALTS_ALWAYS },
+	{ "tanh", "float",  HALTS_ALWAYS },
+	
+	{ "exp", "float",   HALTS_ALWAYS },
+	{ "log", "float",   HALTS_ALWAYS },
+	{ "log10", "float", HALTS_ALWAYS },
+	
+	{ "pow", "float",   HALTS_ALWAYS },
+	{ "sqrt", "float",  HALTS_ALWAYS },
+	
+	{ "ceil", "float",  HALTS_ALWAYS },
+	{ "floor", "float", HALTS_ALWAYS },
+	
+	{ "fabs", "float",  HALTS_ALWAYS },
+	
+	{ "fmin", "float",  HALTS_ALWAYS },
+	{ "fmax", "float",  HALTS_ALWAYS },
+
+	{ "round", "int",   HALTS_ALWAYS },
 };
 
 struct Proto protos_stdio[] = {
-	{ "fscanf", "int" },
-	{ "scanf",  "int" },
-	{ "sscanf", "int" },
+	{ "fscanf",  "int",    HALTS_UNKNOWN },
+	{ "scanf",   "int",    HALTS_UNKNOWN },
+	{ "sscanf",  "int",    HALTS_ALWAYS },
 	
-	{ "fprintf", "int" },
-	{ "printf",  "int" },
-	{ "sprintf", "int" },
+	{ "fprintf", "int",    HALTS_UNKNOWN },
+	{ "printf",  "int",    HALTS_UNKNOWN },
+	{ "sprintf", "int",    HALTS_ALWAYS },
 	
-	{ "fgetc", "int" },
-	{ "fgets",  "[char]" },
-	{ "fputc", "int" },
-	{ "fputs", "int" },
-	{ "getc", "int" },
-	{ "getchar", "int" },
-	{ "putc", "int" },
-	{ "putchar", "int" },
-	{ "puts", "int" },
-	{ "ungetc", "int" },
+	{ "fgetc",   "int",    HALTS_UNKNOWN },
+	{ "fgets",   "[char]", HALTS_UNKNOWN },
+	{ "fputc",   "int",    HALTS_UNKNOWN },
+	{ "fputs",   "int",    HALTS_UNKNOWN },
+	{ "getc",    "int",    HALTS_UNKNOWN },
+	{ "getchar", "int",    HALTS_UNKNOWN },
+	{ "putc",    "int",    HALTS_UNKNOWN },
+	{ "putchar", "int",    HALTS_UNKNOWN },
+	{ "puts",    "int",    HALTS_UNKNOWN },
+	{ "ungetc",  "int",    HALTS_UNKNOWN },
 	
-	{ "fread", "int" },
-	{ "fwrite", "int" },
+	{ "fread",   "int",    HALTS_UNKNOWN },
+	{ "fwrite",  "int",    HALTS_UNKNOWN },
 	
-	{ "fgetpos", "int" },
-	{ "fseek", "int" },
-	{ "fsetpos", "int" },
-	{ "ftell", "int" },
-	{ "rewind", "int" }, //TODO: wrong return type
+	{ "fgetpos", "int",    HALTS_UNKNOWN },
+	{ "fseek",   "int",    HALTS_UNKNOWN },
+	{ "fsetpos", "int",    HALTS_UNKNOWN },
+	{ "ftell",   "int",    HALTS_UNKNOWN },
+	{ "rewind",  "int",    HALTS_UNKNOWN }, //TODO: wrong return type
 };
 
 struct Proto protos_stdlib[] = {
-	{ "atof", "float" },
-	{ "atoi", "int" },
-	{ "rand", "int" },
-	{ "srand", "int" }, //TODO: wrong return type
-	{ "calloc", "int" }, //TODO: wrong return type
-	{ "malloc", "int" }, //TODO: wrong return type
-	{ "free", "int" }, //TODO: wrong return type
-	{ "atexit", "int" },
-	{ "exit", "int" }, //TODO: wrong return type
-	{ "getenv", "[char]" },
-	{ "system", "int" },
+	{ "atof",   "float",  HALTS_ALWAYS },
+	{ "atoi",   "int",    HALTS_ALWAYS },
+	{ "rand",   "int",    HALTS_ALWAYS },
+	{ "srand",  "int",    HALTS_ALWAYS }, //TODO: wrong return type
+	{ "calloc", "int",    HALTS_ALWAYS }, //TODO: wrong return type
+	{ "malloc", "int",    HALTS_ALWAYS }, //TODO: wrong return type
+	{ "free",   "int",    HALTS_ALWAYS }, //TODO: wrong return type
+	{ "atexit", "int",    HALTS_ALWAYS },
+	{ "exit",   "int",    HALTS_ALWAYS }, //TODO: wrong return type
+	{ "getenv", "[char]", HALTS_UNKNOWN },
+	{ "system", "int",    HALTS_UNKNOWN },
 	//bsearch
 	//qsort
-	{ "abs", "int" },
+	{ "abs",    "int",    HALTS_ALWAYS },
 	//div
 };
 
 struct Proto protos_string[] = {
-	{ "strcmp", "int" },
-	{ "strncmp", "int" },
+	{ "strcmp",   "int",    HALTS_UNKNOWN },
+	{ "strncmp",  "int",    HALTS_ALWAYS },
 	
-	{ "strlen", "int" },
-	{ "strnlen", "int" },
+	{ "strlen",   "int",    HALTS_UNKNOWN },
+	{ "strnlen",  "int",    HALTS_ALWAYS },
 	
-	{ "strcpy", "[char]" },
-	{ "strncpy", "[char]" },
+	{ "strcpy",   "[char]", HALTS_UNKNOWN },
+	{ "strncpy",  "[char]", HALTS_ALWAYS },
 	
-	{ "strcat", "[char]" },
-	{ "strncat", "[char]" },
+	{ "strcat",   "[char]", HALTS_UNKNOWN },
+	{ "strncat",  "[char]", HALTS_ALWAYS },
 	
-	{ "strchr", "[char]" },
-	{ "strrchr", "[char]" },
+	{ "strchr",   "[char]", HALTS_UNKNOWN },
+	{ "strrchr",  "[char]", HALTS_UNKNOWN },
 	
-	{ "strspn", "int" },
-	{ "strcspn", "int" },
+	{ "strspn",   "int",    HALTS_UNKNOWN },
+	{ "strcspn",  "int",    HALTS_UNKNOWN },
 	
-	{ "strpbrk", "[char]" },
-	{ "strstr", "[char]" },
+	{ "strpbrk",  "[char]", HALTS_UNKNOWN },
+	{ "strstr",   "[char]", HALTS_UNKNOWN },
 	
-	{ "basename", "[char]" },
+	{ "basename", "[char]", HALTS_UNKNOWN },
 	
-	{ "strerror", "[char]" },
+	{ "strerror", "[char]", HALTS_UNKNOWN },
 	
-	{ "strtok", "[char]" },
+	{ "strtok",   "[char]", HALTS_UNKNOWN },
 };
 
 struct Proto protos_ctype[] = {
-	{ "isalnum", "int" },
-	{ "isalpha", "int" },
-	{ "isblank", "int" },
-	{ "iscntrl", "int" },
-	{ "isdigit", "int" },
-	{ "isgraph", "int" },
-	{ "islower", "int" },
-	{ "isprint", "int" },
-	{ "ispunct", "int" },
-	{ "isspace", "int" },
-	{ "isupper", "int" },
-	{ "isxdigit", "int" },
+	{ "isalnum",  "int", HALTS_ALWAYS },
+	{ "isalpha",  "int", HALTS_ALWAYS },
+	{ "isblank",  "int", HALTS_ALWAYS },
+	{ "iscntrl",  "int", HALTS_ALWAYS },
+	{ "isdigit",  "int", HALTS_ALWAYS },
+	{ "isgraph",  "int", HALTS_ALWAYS },
+	{ "islower",  "int", HALTS_ALWAYS },
+	{ "isprint",  "int", HALTS_ALWAYS },
+	{ "ispunct",  "int", HALTS_ALWAYS },
+	{ "isspace",  "int", HALTS_ALWAYS },
+	{ "isupper",  "int", HALTS_ALWAYS },
+	{ "isxdigit", "int", HALTS_ALWAYS },
 	
-	{ "tolower", "int" },
-	{ "toupper", "int" },
+	{ "tolower",  "int", HALTS_ALWAYS },
+	{ "toupper",  "int", HALTS_ALWAYS },
 };
 
 struct Proto protos_assert[] = {
-	{ "assert", "int" }, //TODO: wrong return type
+	{ "assert", "int", HALTS_ALWAYS }, //TODO: wrong return type
 };
 
 void sst_prefill(struct ST* st, struct SST* sst){
@@ -174,7 +182,11 @@ void sst_prefill(struct ST* st, struct SST* sst){
 	fill_protos(st, protos_assert, l6);
 }
 
-static void fill_protos(struct ST* st, struct Proto* protos, int n){
+static void fill_protos(
+	struct ST* st, 
+	struct Proto* protos, 
+	int n
+){
 
 	struct Type* mf = typeFromStrPrimitive(st, "float");
 	struct Type* mi = typeFromStrPrimitive(st, "int");
@@ -211,9 +223,11 @@ static void fill_protos(struct ST* st, struct Proto* protos, int n){
 	registerInferredType(st, cp);
 
 	for(int i=0;i < n; i++){
+		
+		struct Proto proto = protos[i];
 	
-		char* name = protos[i].name;
-		char* type = protos[i].type;
+		char* name = proto.name;
+		char* type = proto.type;
 		
 		struct Type* t = NULL;
 		
@@ -223,10 +237,13 @@ static void fill_protos(struct ST* st, struct Proto* protos, int n){
 		if(strcmp(type, "[char]") == 0){ t = cp; }
 		
 		if(t == NULL){
-			printf("[Transpiler] Error in fill_proto\n");
+			printf("[SST][Error] fill_proto\n");
 			exit(1);
 		}
 		
-		sst_add(st->sst, makeSSTLine(name, t, true));
+		struct SSTLine* line = 
+			makeSSTLine(name, t, true, proto.halts);
+		
+		sst_add(st->sst, line);
 	}
 }

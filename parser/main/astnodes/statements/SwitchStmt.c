@@ -3,7 +3,7 @@
 
 #include "statements/SwitchStmt.h"
 #include "statements/CaseStmt.h"
-#include "var/Variable.h"
+#include "expr/Expr.h"
 
 #include "ast/util/free_ast.h"
 
@@ -30,12 +30,12 @@ struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens, bool debug){
 	
 	struct SwitchStmt* res = make(SwitchStmt);
 
-	res->var = NULL;
+	res->expr = NULL;
 	res->count_cases = 0;
 	res->cases = malloc(sizeof(struct CaseStmt*)*1);
 
-	res->var = makeVariable(copy,debug);
-	if(res->var == NULL){
+	res->expr = makeExpr(copy,debug);
+	if(res->expr == NULL){
 		free(res);
 		return NULL;
 	}

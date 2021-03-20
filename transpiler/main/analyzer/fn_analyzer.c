@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "ast/ast.h"
 
 #include "tables/sst/sst.h"
@@ -13,46 +9,40 @@
 
 #include "fn_analyzer.h"
 
-void myvisitor(void* node, enum NODE_TYPE type);
+static void myvisitor(void* node, enum NODE_TYPE type, void* arg);
 
-static struct ST* myst;
-
-static bool mydebug = false;
-
-static void status(char* msg){
+struct FnAnalyzerArg {
 	
-	if(mydebug){ printf("[Analyzer] %s\n", msg); }
+	struct ST* myst;
+	struct Method* currentFn;
+};
+
+void analyze_functions(struct ST* st, struct AST* ast){
+
+	struct FnAnalyzerArg arg;
+	arg.myst      = st;
+	arg.currentFn = NULL;
+
+	visitAST(ast, myvisitor, &arg);
 }
 
-void analyze_functions(struct ST* st, struct AST* ast, bool debug){
-
-	myst = st;
-	mydebug = debug;
-
-	status("analyze callees and callers");
-
-	visitAST(ast, myvisitor);
-}
-
-//---------------------------------------------------------
-
-static struct Method* currentFn = NULL;
-
-void myvisitor(void* node, enum NODE_TYPE type){
+static void myvisitor(void* node, enum NODE_TYPE type, void* arg){
+	
+	struct FnAnalyzerArg* farg = (struct FnAnalyzerArg*)arg;
+	struct ST* myst = farg->myst;
 	
 	if(type == NODE_METHOD){ 
-		currentFn = (struct Method*) node;
+		farg->currentFn = (struct Method*) node;
+		
+		struct SSTLine* myline = sst_get(myst->sst, farg->currentFn->name);
+		cc_set_calls_fn_ptrs(myline->cc, false);
 	}
 	
-	if(type != NODE_METHODCALL){ return; }
+	if(type != NODE_CALL){ return; }
 	
-	struct MethodCall* m = (struct MethodCall*) node;
+	struct Call* call = (struct Call*) node;
 	
 	struct SSTLine* line;
-	
-	if(mydebug){
-		printf("[Analyzer] add callee %s->%s\n", currentFn->name, m->methodName);
-	}
 	
 	//calling a function pointer?
 	//unfortunately, the LVST currently 
@@ -63,13 +53,17 @@ void myvisitor(void* node, enum NODE_TYPE type){
 	//if(lvst_contains(myst->lvst, m->methodName))
 	//	{ return; }
 	
-	if(!sst_contains(myst->sst, m->methodName))
-		{ return; }
+	if(!sst_contains(myst->sst, call->name)){
+		//maybe it is a function ptr
+		struct SSTLine* myline = sst_get(myst->sst, farg->currentFn->name);
+		cc_set_calls_fn_ptrs(myline->cc, true);
+		return; 
+	}
 	
-	line = sst_get(myst->sst, currentFn->name);
-	cc_add_callee(line->cc, m->methodName);
+	line = sst_get(myst->sst, farg->currentFn->name);
+	cc_add_callee(line->cc, call->name);
 	
 	
-	line = sst_get(myst->sst, m->methodName);
-	cc_add_caller(line->cc, currentFn->name);
+	line = sst_get(myst->sst, call->name);
+	cc_add_caller(line->cc, farg->currentFn->name);
 }

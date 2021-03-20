@@ -13,7 +13,7 @@
 //an enum so that the handler can find out which
 //node type it was called on
 
-#define VISITOR void(*visitor)(void*, enum NODE_TYPE)
+#define VISITOR void(*visitor)(void*, enum NODE_TYPE, void* arg)
 
 enum NODE_TYPE {
 	NODE_AST,
@@ -37,7 +37,7 @@ enum NODE_TYPE {
 	NODE_RETSTMT,
 	NODE_CONTINUESTMT,
 	
-	NODE_METHODCALL,
+	NODE_CALL,
 	NODE_EXPR,
 	NODE_OP,
 	NODE_UNOPTERM,
@@ -64,13 +64,13 @@ enum NODE_TYPE {
 	NODE_TYPEPARAM,
 };
 
-void visitAST         (struct AST* ast,      VISITOR);
+void visitAST         (struct AST* ast,      VISITOR, void* arg);
 
-void visitNamespace   (struct Namespace* n,  VISITOR);
+void visitNamespace   (struct Namespace* n,  VISITOR, void* arg);
 
-void visitMethod      (struct Method* m,     VISITOR);
-void visitStructDecl  (struct StructDecl* s, VISITOR);
+void visitMethod      (struct Method* m,     VISITOR, void* arg);
+void visitStructDecl  (struct StructDecl* s, VISITOR, void* arg);
 
-void visitStmtBlock   (struct StmtBlock* s,  VISITOR);
+void visitStmtBlock   (struct StmtBlock* s,  VISITOR, void* arg);
 
 #endif

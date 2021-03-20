@@ -12,6 +12,18 @@
 
 #define LVST_INITIAL_CAPACITY 10
 
+struct LVST {
+	//Local Variable Symbol Table (LVST)
+	
+	//struct LVST should be opaque,
+	//except in this file, for better encapsulation
+	
+	unsigned int count;
+	size_t capacity;
+	
+	struct LVSTLine** lines;
+};
+
 struct LVST* makeLVST(){
 	
 	struct LVST* lvst = make(LVST);

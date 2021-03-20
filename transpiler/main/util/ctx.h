@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <inttypes.h>
+#include <stdbool.h>
 
 #include "ast/ast.h"
 
@@ -20,6 +21,8 @@ struct Ctx {
 	
 	//the transpiler flags 
 	struct Flags* flags;
+	
+	bool error;
 	
 	//symbol tables
 	struct ST* tables;

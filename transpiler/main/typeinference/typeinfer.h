@@ -10,7 +10,7 @@ struct Type* infer_type_expr		(struct ST* st, struct Expr* expr);
 
 struct Type* infer_type_term		(struct ST* st, struct Term* term);
 struct Type* infer_type_unopterm	(struct ST* st, struct UnOpTerm* t);
-struct Type* infer_type_methodcall	(struct ST* st, struct MethodCall* m);
+struct Type* infer_type_methodcall	(struct ST* st, struct Call* m);
 struct Type* infer_type_variable	(struct ST* st, struct Variable* v);
 struct Type* infer_type_simplevar	(struct ST* st, struct SimpleVar* v);
 

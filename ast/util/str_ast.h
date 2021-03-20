@@ -16,6 +16,8 @@ char* strCharConst(struct CharConst* cc);
 char* strFloatConst(struct FloatConst* fc);
 char* strIntConst(struct IntConst* ic);
 char* strHexConst(struct HexConst* hc);
+char* strStringConst(struct StringConst* s);
+char* strBinConst(struct BinConst* b);
 
 //types
 char* strArrayType(struct ArrayType* at);
@@ -27,8 +29,36 @@ char* strTypeParam(struct TypeParam* t);
 char* strPrimitiveType(struct PrimitiveType* p);
 char* strStructType(struct StructType* s);
 
+//struct
+char* strStructDecl(struct StructDecl* s);
+char* strStructMember(struct StructMember* s);
+
+//var
+char* strVariable(struct Variable* v);
+char* strSimpleVar(struct SimpleVar* s);
+
+//expr
+char* strExpr(struct Expr* e);
+char* strOp(struct Op* o);
+char* strUnOpTerm(struct UnOpTerm* u);
+char* strTerm(struct Term* t);
+
+//stmts
+char* strStmt(struct Stmt* stmt);
+
+char* strAssignStmt(struct AssignStmt* a);
+char* strForStmt(struct ForStmt* f);
+char* strIfStmt(struct IfStmt* i);
+char* strLoopStmt(struct LoopStmt* l);
+char* strWhileStmt(struct WhileStmt* w);
+char* strSwitchStmt(struct SwitchStmt* s);
+char* strCall(struct Call* m);
+char* strRetStmt(struct RetStmt* r);
+char* strCaseStmt(struct CaseStmt* c);
+
 //other
 char* strIdentifier(struct Identifier* id);
-
+char* strRange(struct Range* r);
+char* strStmtBlock(struct StmtBlock* block);
 
 #endif

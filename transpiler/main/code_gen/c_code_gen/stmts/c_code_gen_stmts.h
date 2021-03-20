@@ -6,7 +6,7 @@
 void transpileStmt(struct Stmt* s, struct Ctx* ctx);
 
 
-void transpileMethodCall(struct MethodCall* mc, struct Ctx* ctx);
+void transpileCall(struct Call* mc, struct Ctx* ctx);
 void transpileWhileStmt(struct WhileStmt* ws, struct Ctx* ctx);
 void transpileIfStmt(struct IfStmt* is, struct Ctx* ctx);
 void transpileRetStmt(struct RetStmt* rs, struct Ctx* ctx);

@@ -6,15 +6,6 @@
 struct ST;
 struct LVSTLine;
 
-struct LVST {
-	//Local Variable Symbol Table (LVST)
-	
-	unsigned int count;
-	size_t capacity;
-	
-	struct LVSTLine** lines;
-};
-
 struct LVSTLine {
 	
 	char name[DEFAULT_STR_SIZE]; 

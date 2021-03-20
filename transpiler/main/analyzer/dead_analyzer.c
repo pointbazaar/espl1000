@@ -9,13 +9,12 @@
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
 
+#include "dead.h"
 #include "dead_analyzer.h"
-
-static struct SST* mysst;
 
 static void mark_live(struct SST* sst, char* name);
 
-static void set_all(struct SST* sst, bool is_dead, bool dead_visited);
+static void set_all(struct SST* sst, enum DEAD dead);
 
 /* BUG: when passing a function pointer
  * to another function, the function pointed to
@@ -28,22 +27,20 @@ static void set_all(struct SST* sst, bool is_dead, bool dead_visited);
  * as live, as it could be live.
  */
  
-static void myvisitor_dead(void* node, enum NODE_TYPE type);
+static void myvisitor_dead(void* node, enum NODE_TYPE type, void* arg);
 
 void analyze_dead_code(struct ST* st, struct AST* ast){
 	
 	struct SST* sst = st->sst;
 	
-	mysst = sst;
-	
 	//set all functions to live
-	set_all(sst, false, true);
+	set_all(sst, DEAD_ISLIVE);
 	
 	if(!sst_contains(sst, "main")){ return; }
 	
-	set_all(sst, true, false);
+	set_all(sst, DEAD_UNKNOWN);
 	
-	visitAST(ast, myvisitor_dead);
+	visitAST(ast, myvisitor_dead, sst);
 	
 	mark_live(sst, "main");
 }
@@ -52,10 +49,9 @@ static void mark_live(struct SST* sst, char* name){
 	
 	struct SSTLine* line = sst_get(sst, name);
 	
-	if(line->dead_visited){ return; }
+	if(line->dead != DEAD_UNKNOWN){ return; }
 	
-	line->dead_visited = true;
-	line->is_dead      = false;
+	line->dead = DEAD_ISLIVE;
 	
 	struct CCNode* callee = line->cc->callees;
 	
@@ -67,20 +63,24 @@ static void mark_live(struct SST* sst, char* name){
 	}
 }
 
-static void set_all(struct SST* sst, bool is_dead, bool dead_visited){
+static void set_all(struct SST* sst, enum DEAD dead){
 
-	for(int i = 0; i < sst->count; i++){
-		sst->lines[i]->is_dead      = is_dead;
-		sst->lines[i]->dead_visited = dead_visited;
+	for(int i = 0; i < sst_size(sst); i++){
+		
+		struct SSTLine* line = sst_at(sst, i);
+		
+		line->dead = dead;
 	}
 }
 
-static void myvisitor_dead(void* node, enum NODE_TYPE type){
+static void myvisitor_dead(void* node, enum NODE_TYPE type, void* arg){
 	
 	/* if we are dealing with a variable that
 	 * is a function pointer, the function
 	 * pointed to is assumed to be live.
 	 */
+	 
+	struct SST* mysst = (struct SST*) arg;
 	
 	if(type == NODE_SIMPLEVAR){ 
 		

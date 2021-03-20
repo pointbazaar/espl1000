@@ -13,7 +13,7 @@
 #include "const/StringConst.h"
 #include "Expr.h"
 #include "var/Variable.h"
-#include "statements/MethodCall.h"
+#include "statements/Call.h"
 
 #include "ast/util/free_ast.h"
 
@@ -98,7 +98,7 @@ other_term:
 		goto end;
 	}
 	
-	if( (res->ptr.m4 = makeMethodCall(copy,debug)) != NULL){				
+	if( (res->ptr.m4 = makeCall(copy,debug)) != NULL){				
 		res->kind = 4;
 		goto end;
 	}

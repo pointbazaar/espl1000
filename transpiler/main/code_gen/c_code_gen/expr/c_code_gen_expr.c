@@ -41,7 +41,7 @@ void transpileTerm(struct Term* t, struct Ctx* ctx){
 		case 1: transpileBoolConst(t->ptr.m1, ctx); break;
 		case 2: transpileIntConst(t->ptr.m2, ctx); break;
 		case 3: transpileCharConst(t->ptr.m3, ctx); break;
-		case 4: transpileMethodCall(t->ptr.m4, ctx); break;
+		case 4: transpileCall(t->ptr.m4, ctx); break;
 		case 5: 
 			fprintf(ctx->file, "(");
 			transpileExpr(t->ptr.m5, ctx); 

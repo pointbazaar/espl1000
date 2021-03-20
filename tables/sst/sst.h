@@ -3,10 +3,15 @@
 
 #include <stdbool.h>
 
+//AST Includes
 #include "ast/ast.h"
 
+//Table Includes
 #include "tables/cc/cc.h"
 #include "tables/symtable/symtable.h"
+
+#include "transpiler/main/analyzer/halts.h"
+#include "transpiler/main/analyzer/dead.h"
 
 struct SSTLine {
 	//Subroutine Symbol Table Line
@@ -15,7 +20,9 @@ struct SSTLine {
 	char name[DEFAULT_STR_SIZE]; 
 	
 	//a reference to the type being returned
-	struct Type* returnType; 
+	struct Type* returnType;
+	
+	struct Method* method; //may be NULL 
 	
 	//if it is from libC
 	bool isLibC;
@@ -24,19 +31,16 @@ struct SSTLine {
 	struct CC* cc; //may be NULL
 	
 	//--- dead code analysis ---
-	bool is_dead;
-	bool dead_visited;
+	//bool is_dead;
+	//bool dead_known;
+	enum DEAD dead;
+	//--------------------------
+	
+	//-- termination analysis --
+	enum HALTS halts;
 	//--------------------------
 };
 
-struct SST {
-	//Subroutine Symbol Table (SST)
-	
-	unsigned int count;
-	size_t capacity;
-	
-	struct SSTLine** lines;
-};
 
 //-------------
 struct SST* makeSST();
@@ -44,7 +48,7 @@ void freeSST(struct SST* sst);
 //-------------
 void sst_clear(struct SST* sst);
 
-void sst_fill(struct SST* sst, struct Namespace* ns, bool debug);
+void sst_fill(struct SST* sst, struct Namespace* ns);
 
 void sst_add(struct SST* sst, struct SSTLine* line);
 
@@ -54,8 +58,18 @@ struct SSTLine* sst_get(struct SST* sst, char* name);
 
 bool sst_contains(struct SST* sst, char* name);
 
+
+uint32_t sst_size(struct SST* sst);
+struct SSTLine* sst_at(struct SST* sst, uint32_t index);
+
 //-----------
-struct SSTLine* makeSSTLine(char* name, struct Type* type, bool isLibC);
+struct SSTLine* makeSSTLine(
+	char* name, 
+	struct Type* type, 
+	bool isLibC,
+	enum HALTS halts
+);
+struct SSTLine* makeSSTLine2(struct Method* m);
 void freeSSTLine(struct SSTLine* l);
 
 

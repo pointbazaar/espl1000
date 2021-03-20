@@ -1,6 +1,8 @@
 #ifndef CC_H
 #define CC_H
 
+#include <stdbool.h>
+
 struct CCNode;
 
 struct CC {
@@ -8,6 +10,8 @@ struct CC {
 	
 	struct CCNode* callees;
 	struct CCNode* callers;
+	
+	bool calls_fn_ptrs;
 };
 
 //--------------------------------------------
@@ -22,4 +26,6 @@ void cc_add_caller(struct CC* cc, char* name);
 //--------------------------------------------
 struct CCNode* cc_next(struct CCNode* node); //may return NULL
 char* cc_name(struct CCNode* node);
+
+void cc_set_calls_fn_ptrs(struct CC* cc, bool value);
 #endif

@@ -76,20 +76,27 @@ bool transpileAndCompile(struct Flags* flags){
 	
 	if(ast == NULL){ return false; }
 
+	
 	char* fname_out = make_c_filename(flags->filenames[0]);
 
 	bool success = transpileAndWrite(fname_out, ast, flags);
 	
 	freeAST(ast);
 	
-	if(!success){ return false; }
-	
-	char* cmd_gcc = make_gcc_cmd(flags, fname_out);
+	if(!success){ 
+		
+		free(fname_out);
+		return false; 
+	}
 	
 	if(flags->has_main_fn){
 		
+		char* cmd_gcc = make_gcc_cmd(flags, fname_out);
+		
 		printf("%s\n", cmd_gcc);
 		system(cmd_gcc);
+		
+		free(cmd_gcc);
 		
 		if(flags->avr){
 			
@@ -100,7 +107,6 @@ bool transpileAndCompile(struct Flags* flags){
 		}
 	}
 	
-	free(cmd_gcc);
 	free(fname_out);
 	
 	return true;

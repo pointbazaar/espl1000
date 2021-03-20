@@ -12,6 +12,8 @@
 #include "typeinference/util/type_str.h"
 #include "tables/sst/sst.h"
 
+#include "transpiler/main/analyzer/halts.h"
+
 #include "code_gen/types/gen_c_types.h"
 #include "structs_code_gen.h"
 
@@ -89,27 +91,27 @@ static void add_gen_struct_subrs_sst_single(struct Ctx* ctx, struct StructDecl* 
 	
 	//add subroutines to sst
 	
-	struct SSTLine* line = makeSSTLine("_", retTypeStruct, false);
+	struct SSTLine* line = makeSSTLine("_", retTypeStruct, false, HALTS_ALWAYS);
 	sprintf(line->name, "new%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 	
-	line = makeSSTLine("_", retTypeStruct, false);
+	line = makeSSTLine("_", retTypeStruct, false, HALTS_ALWAYS);
 	sprintf(line->name, "copy%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 	
-	line = makeSSTLine("_", retTypeStruct, false);
+	line = makeSSTLine("_", retTypeStruct, false, HALTS_ALWAYS);
 	sprintf(line->name, "make%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 	
-	line = makeSSTLine("_", typeFromStrPrimitive(ctx->tables, "int"), false);
+	line = makeSSTLine("_", typeFromStrPrimitive(ctx->tables, "int"), false, HALTS_ALWAYS);
 	sprintf(line->name, "print%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 	
-	line = makeSSTLine("_", typeFromStrPrimitive(ctx->tables, "int"), false);
+	line = makeSSTLine("_", typeFromStrPrimitive(ctx->tables, "int"), false, HALTS_ALWAYS);
 	sprintf(line->name, "free%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 	
-	line = makeSSTLine("_", typeFromStrPrimitive(ctx->tables, "int"), false);
+	line = makeSSTLine("_", typeFromStrPrimitive(ctx->tables, "int"), false, HALTS_ALWAYS);
 	sprintf(line->name, "del%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 }

@@ -40,7 +40,7 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 		
 		case 1:
 			indent(ctx);
-			transpileMethodCall(s->ptr.m1, ctx);
+			transpileCall(s->ptr.m1, ctx);
 			fprintf(ctx->file, ";");
 			break;
 		
@@ -77,9 +77,9 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 
 //stmt related
 
-void transpileMethodCall(struct MethodCall* mc, struct Ctx* ctx){
+void transpileCall(struct Call* mc, struct Ctx* ctx){
 	
-	fprintf(ctx->file, "%s(", mc->methodName);
+	fprintf(ctx->file, "%s(", mc->name);
 
 	for(int i=0;i < mc->count_args; i++){
 		
@@ -246,7 +246,7 @@ void transpileSwitchStmt(struct SwitchStmt* s, struct Ctx* ctx){
 	
 	indent(ctx);
 	fprintf(ctx->file, "switch (");
-	transpileVariable(s->var, ctx);
+	transpileExpr(s->expr, ctx);
 	fprintf(ctx->file, ") {\n");
 	
 	(ctx->indentLevel) += 1;

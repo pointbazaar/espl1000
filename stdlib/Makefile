@@ -1,10 +1,10 @@
 
 SOURCES :=  test.dg \
 	bit.dg primes.dg math.dg \
-	string.dg vector.dg base.dg 
+	string.dg vector.dg 
 
 test: $(SOURCES)
-	sd -clean $(SOURCES)
+	sd -clean -no_typecheck $(SOURCES)
 	./a.out
 
 clean:

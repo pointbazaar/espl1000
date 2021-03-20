@@ -39,7 +39,7 @@ OBJS_MAIN := build/parser.o \
 		build/SimpleVar.o \
 		build/AssignStmt.o \
 		build/IfStmt.o \
-		build/MethodCall.o \
+		build/Call.o \
 		build/RetStmt.o \
 		build/Stmt.o \
 		build/WhileStmt.o \
@@ -73,7 +73,7 @@ OBJS_TEST := build/AssignStmtTest.o \
 		build/FloatConstTest.o \
 		build/IfStmtTest.o \
 		build/LoopStmtTest.o \
-		build/MethodCallTest.o \
+		build/CallTest.o \
 		build/MethodTest.o \
 		build/NamespaceTest.o \
 		build/RetStmtTest.o \

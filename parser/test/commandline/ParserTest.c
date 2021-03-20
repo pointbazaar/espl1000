@@ -15,7 +15,7 @@
 #include "../astnodes/const/CharConstTest.h"
 #include "../astnodes/const/FloatConstTest.h"
 #include "../astnodes/statements/LoopStmtTest.h"
-#include "../astnodes/statements/MethodCallTest.h"
+#include "../astnodes/statements/CallTest.h"
 #include "../astnodes/statements/RetStmtTest.h"
 #include "../astnodes/statements/StmtTest.h"
 #include "../astnodes/StmtBlockTest.h"

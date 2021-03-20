@@ -90,7 +90,7 @@ void test_and(bool debug){
 	
 	status("test_and");
 	
-	char* src = "fn main () ~> int { return true && false; }";
+	char* src = "fn main () ~> int { if true && false { return 1; } return 0;  }";
 	
 	const int status = sourceToStatus(src, debug);
 	
@@ -101,7 +101,7 @@ void test_not(bool debug){
 	
 	status("test_not");
 	
-	char* src = "fn main () ~> int { return ! false; }";
+	char* src = "fn main () ~> int { if !false { return 1; } return 0; }";
 	
 	const int status = sourceToStatus(src, debug);
 	
@@ -114,7 +114,7 @@ void test_greater(bool debug){
 	
 	status("test_greater");
 	
-	char* src = "fn main () ~> int { return 4 > 3; }";
+	char* src = "fn main () ~> int { if 4 > 3 { return 1; } return 0; }";
 	
 	const int status = sourceToStatus(src, debug);
 	
@@ -125,7 +125,7 @@ void test_lesser(bool debug){
 	
 	status("test_lesser");
 	
-	char* src = "fn main () ~> int { return 4 < 3; }";
+	char* src = "fn main () ~> int { if 4 < 3 { return 1; } return 0; }";
 	
 	const int status = sourceToStatus(src, debug);
 	
@@ -136,7 +136,7 @@ void test_geq(bool debug){
 	
 	status("test_geq");
 	
-	char* src = "fn main () ~> int { return 3 >= 3; }";
+	char* src = "fn main () ~> int { if 3 >= 3 { return 1; } return 0; }";
 	
 	const int status = sourceToStatus(src, debug);
 	
@@ -147,7 +147,7 @@ void test_leq(bool debug){
 	
 	status("test_leq");
 	
-	char* src = "fn main () ~> int { return 2 <= 3; }";
+	char* src = "fn main () ~> int { if 2 <= 3 { return 1; } return 0; }";
 	
 	const int status = sourceToStatus(src, debug);
 	
@@ -158,7 +158,7 @@ void test_eq(bool debug){
 	
 	status("test_eq");
 	
-	char* src = "fn main () ~> int { return 8 == 8; }";
+	char* src = "fn main () ~> int { if 8 == 8 { return 1; } return 0; }";
 	
 	const int status = sourceToStatus(src, debug);
 	
@@ -169,7 +169,7 @@ void test_neq(bool debug){
 	
 	status("test_neq");
 	
-	char* src = "fn main () ~> int { return 4 != 4; }";
+	char* src = "fn main () ~> int { if 4 != 4 { return 1; } return 0; }";
 	
 	const int status = sourceToStatus(src, debug);
 	
@@ -180,7 +180,7 @@ void test_chained_cmp(bool debug){
 	
 	status("test_chained_cmp");
 	
-	char* src = "fn main () ~> int { return 3 > 4 < 5; }";
+	char* src = "fn main () ~> int { if 3 > 4 < 5 { return 1; } return 0; }";
 	
 	const int status = sourceToStatus(src, debug);
 	

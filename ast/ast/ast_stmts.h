@@ -19,24 +19,24 @@ struct IfStmt{
 	struct StmtBlock* block;
 	struct StmtBlock* elseBlock; //may be NULL
 };
-struct MethodCall {
-	char methodName[DEFAULT_STR_SIZE];
+struct Call {
+	char name[DEFAULT_STR_SIZE];
 
 	uint8_t count_args;
 	struct Expr** args;
 };
 struct RetStmt{ struct Expr* returnValue; };
 struct Stmt {
-	//only one of those will be present,
-	//'kind' tells us which
+	//only one of those will be present, 'kind' tells us
 	union myptr {
-		struct LoopStmt* m0;
-		struct MethodCall* m1;
-		struct WhileStmt* m2;
-		struct IfStmt* m3;
-		struct RetStmt* m4;
+		struct LoopStmt*   m0;
+		struct Call*       m1;
+		struct WhileStmt*  m2;
+		struct IfStmt*     m3;
+		struct RetStmt*    m4;
 		struct AssignStmt* m5;
-		struct ForStmt* m7;
+		
+		struct ForStmt*    m7;
 		struct SwitchStmt* m8;
 	} ptr;
 	uint8_t kind; //0-based
@@ -60,7 +60,7 @@ struct ForStmt {
 	struct StmtBlock* block;
 };
 struct SwitchStmt{
-	struct Variable* var;
+	struct Expr* expr;
 	
 	uint32_t count_cases;
 	struct CaseStmt** cases;

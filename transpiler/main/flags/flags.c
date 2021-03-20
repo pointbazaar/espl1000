@@ -20,6 +20,7 @@ struct Flags* makeFlags(int argc, char** argv){
 	flags->help 	= false;
 	flags->version 	= false;
 	flags->clean 	= false;
+	flags->no_typecheck = false;
 	
 	flags->count_filenames = 0;
 	flags->capacity_filenames = 100;
@@ -79,6 +80,11 @@ static void make_flags_inner(struct Flags* flags, char* arg){
 	
 	if(strcmp(arg, "-clean") == 0){ 
 		flags->clean = true;
+		return;
+	}
+	
+	if(strcmp(arg, "-no_typecheck") == 0){
+		flags->no_typecheck = true;
 		return;
 	}
 		

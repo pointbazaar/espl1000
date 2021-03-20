@@ -33,7 +33,7 @@
 //statements
 #define MAGIC_ASSIGNSTMT 		51
 #define MAGIC_IFSTMT 			52
-#define MAGIC_METHODCALL 		53
+#define MAGIC_CALL				53
 #define MAGIC_RETSTMT 			54
 #define MAGIC_STMT 				55
 #define MAGIC_WHILESTMT 		56
@@ -91,7 +91,7 @@
 //statements
 #define MAGIC_END_ASSIGNSTMT 	219
 #define MAGIC_END_IFSTMT 		220
-#define MAGIC_END_METHODCALL 	221
+#define MAGIC_END_CALL			221
 #define MAGIC_END_RETSTMT 		222
 #define MAGIC_END_STMT 			223
 #define MAGIC_END_WHILESTMT 	224
