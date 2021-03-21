@@ -202,3 +202,13 @@ void test_str_term(){
 	
 	freeTerm(b); free(s);
 }
+
+void test_str_structdecl(){
+	
+	//TODO
+}
+
+void test_str_structmember(){
+	
+	//TODO
+}

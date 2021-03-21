@@ -15,12 +15,16 @@ void test_str_unopterm();
 void test_str_term();
 
 //struct
-//TODO
+void test_str_structdecl();
+void test_str_structmember();
 
 //subr
 //TODO
 
 //stmts
+//TODO
+
+//types
 //TODO
 
 #endif

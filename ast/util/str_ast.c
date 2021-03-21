@@ -265,10 +265,35 @@ char* strStructType(struct StructType* s){
 }
 
 char* strStructDecl(struct StructDecl* s){
+	
+	char* name = strSimpleType(s->type);
 
-	//TODO
-	error("not implemented");
-	return NULL;
+	uint16_t l = strlen("struct   { } ")+strlen(name);
+	
+	char* memberStrs[s->count_members];
+	
+	for(uint16_t i = 0; i < s->count_members; i++){
+		
+		char* s2 = strStructMember(s->members[i]);
+		l += strlen(s2);
+		
+		memberStrs[i] = s2;
+	}
+	
+	char* res = malloc(sizeof(char)*l);
+	
+	sprintf(res, "struct %s {", name);
+	
+	for(uint16_t i = 0; i < s->count_members; i++){
+		
+		char* s = memberStrs[i];
+		strcat(res, s);
+		free(s);
+	}
+	
+	strcat(res, "}");
+	
+	return res;
 }
 
 char* strStructMember(struct StructMember* s){
@@ -542,9 +567,33 @@ char* strWhileStmt(struct WhileStmt* w){
 
 char* strSwitchStmt(struct SwitchStmt* s){
 
-	//TODO
-	error("not implemented");
-	return NULL;
+	uint16_t l = strlen("switch { } ");
+	
+	char* s1 = strExpr(s->expr);
+	l += strlen(s1);
+	
+	char* strCases[s->count_cases];
+	
+	for(uint16_t i = 0; i < s->count_cases; i++){
+		
+		strCases[i] = strCaseStmt(s->cases[i]);
+		l += strlen(strCases[i]);
+	}
+	
+	char* res = malloc(sizeof(char)*l);
+	
+	sprintf(res, "switch %s {", s1);
+	
+	free(s1);
+	
+	for(uint16_t i = 0; i < s->count_cases; i++){
+		
+		strcat(res, strCases[i]);
+	}
+	
+	strcat(res, "}");
+	
+	return res;
 }
 
 char* strCall(struct Call* m){

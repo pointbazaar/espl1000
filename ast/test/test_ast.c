@@ -77,6 +77,8 @@ int main(){
 	test_str_unopterm();
 	test_str_term();
 	
+	test_str_structdecl();
+	test_str_structmember();
 	
 	printf("[AST Module] Passed All Tests\n");
 	
