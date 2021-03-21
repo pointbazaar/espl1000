@@ -93,18 +93,17 @@ void test_serialize_IntConst(bool debug){
 	
 	rewind(file);
 	
-	struct IntConst* m = malloc(sizeof(struct IntConst));
-	m->value = 384;
+	struct IntConst m;
+	m.value = 384;
 	
-	writeIntConst(m, file);
+	writeIntConst(&m, file);
 	
 	rewind(file);
 	
 	struct IntConst* m2 = readIntConst(file, debug);
 	
-	assert(m->value == m2->value);
+	assert(m.value == m2->value);
 	
-	freeIntConst(m);
 	freeIntConst(m2);
 }
 
@@ -114,18 +113,17 @@ void test_serialize_HexConst(bool debug){
 	
 	rewind(file);
 	
-	struct HexConst* m = malloc(sizeof(struct HexConst));
-	m->value = 0x48;
+	struct HexConst m;
+	m.value = 0x48;
 	
-	writeHexConst(m, file);
+	writeHexConst(&m, file);
 	
 	rewind(file);
 	
 	struct HexConst* m2 = readHexConst(file, debug);
 	
-	assert(m->value == m2->value);
+	assert(m.value == m2->value);
 	
-	freeHexConst(m);
 	freeHexConst(m2);
 }
 
@@ -135,18 +133,17 @@ void test_serialize_BinConst(bool debug){
 	
 	rewind(file);
 	
-	struct BinConst* m = malloc(sizeof(struct BinConst));
-	m->value = 0b00011101;
+	struct BinConst m;
+	m.value = 0b00011101;
 	
-	writeBinConst(m, file);
+	writeBinConst(&m, file);
 	
 	rewind(file);
 	
 	struct BinConst* m2 = readBinConst(file, debug);
 	
-	assert(m->value == m2->value);
+	assert(m.value == m2->value);
 	
-	freeBinConst(m);
 	freeBinConst(m2);
 }
 
@@ -156,18 +153,17 @@ void test_serialize_BoolConst(bool debug){
 	
 	rewind(file);
 	
-	struct BoolConst* m = malloc(sizeof(struct BoolConst));
-	m->value = true;
+	struct BoolConst m;
+	m.value = true;
 	
-	writeBoolConst(m, file);
+	writeBoolConst(&m, file);
 	
 	rewind(file);
 	
 	struct BoolConst* m2 = readBoolConst(file, debug);
 	
-	assert(m->value == m2->value);
+	assert(m.value == m2->value);
 	
-	freeBoolConst(m);
 	freeBoolConst(m2);
 }
 
@@ -177,18 +173,17 @@ void test_serialize_CharConst(bool debug){
 	
 	rewind(file);
 	
-	struct CharConst* m = malloc(sizeof(struct CharConst));
-	m->value = true;
+	struct CharConst m;
+	m.value = true;
 	
-	writeCharConst(m, file);
+	writeCharConst(&m, file);
 	
 	rewind(file);
 	
 	struct CharConst* m2 = readCharConst(file, debug);
 	
-	assert(m->value == m2->value);
+	assert(m.value == m2->value);
 	
-	freeCharConst(m);
 	freeCharConst(m2);
 }
 
@@ -198,18 +193,17 @@ void test_serialize_TypeParam(bool debug){
 	
 	rewind(file);
 	
-	struct TypeParam* m = malloc(sizeof(struct TypeParam));
-	m->index = 5;
+	struct TypeParam m;
+	m.index = 5;
 	
-	writeTypeParam(m, file);
+	writeTypeParam(&m, file);
 	
 	rewind(file);
 	
 	struct TypeParam* m2 = readTypeParam(file, debug);
 	
-	assert(m->index == m2->index);
+	assert(m.index == m2->index);
 	
-	freeTypeParam(m);
 	freeTypeParam(m2);
 }
 
@@ -219,14 +213,15 @@ void test_serialize_PrimitiveType(bool debug){
 
 	rewind(file);
 	
-	struct PrimitiveType* p = make(PrimitiveType);
-	p->isIntType   = true;
-	p->isFloatType = false;
-	p->isCharType  = false;
-	p->isBoolType  = false;
-	p->intType = INT;
+	struct PrimitiveType p = {
+		.isIntType   = true,
+		.isFloatType = false,
+		.isCharType  = false,
+		.isBoolType  = false,
+		.intType = INT
+	};
 	
-	writePrimitiveType(p, file);
+	writePrimitiveType(&p, file);
 	
 	rewind(file);
 	
@@ -240,7 +235,6 @@ void test_serialize_PrimitiveType(bool debug){
 	assert(p2->isBoolType == false);
 	assert(p2->intType == INT);
 	
-	freePrimitiveType(p);
 	freePrimitiveType(p2);
 }
 
@@ -250,18 +244,16 @@ void test_serialize_FloatConst(bool debug){
 	
 	rewind(file);
 	
-	struct FloatConst* m = make(FloatConst);
-	m->value = 3.54;
+	struct FloatConst m = { .value = 3.54 };
 	
-	writeFloatConst(m, file);
+	writeFloatConst(&m, file);
 	
 	rewind(file);
 	
 	struct FloatConst* m2 = readFloatConst(file, debug);
 	
-	assert(m->value == m2->value);
+	assert(m.value == m2->value);
 	
-	freeFloatConst(m);
 	freeFloatConst(m2);
 }
 
@@ -271,20 +263,20 @@ void test_serialize_StringConst(bool debug){
 	
 	rewind(file);
 	
-	struct StringConst* m = make(StringConst);
+	struct StringConst m;
+	
 	char* str = malloc(sizeof(char)*100);
 	strcpy(str, "hello");
-	m->value = str;
+	m.value = str;
 	
-	writeStringConst(m, file);
+	writeStringConst(&m, file);
 	
 	rewind(file);
 	
 	struct StringConst* m2 = readStringConst(file, debug);
 	
-	assert(strcmp(m->value, m2->value) == 0);
+	assert(strcmp(m.value, m2->value) == 0);
 	
-	freeStringConst(m);
 	freeStringConst(m2);
 }
 
@@ -294,23 +286,22 @@ void test_serialize_Op(bool debug){
 	
 	rewind(file);
 	
-	struct Op* m = malloc(sizeof(struct Op));
+	struct Op m;
 	
 	//otherwise valgrind will complain
 	//about uninitialized bytes
-	memset(m, 0, sizeof(struct Op));
+	memset(&m, 0, sizeof(struct Op));
 	
-	strcpy(m->op, "hi");
+	strcpy(m.op, "hi");
 	
-	writeOp(m, file);
+	writeOp(&m, file);
 	
 	rewind(file);
 	
 	struct Op* m2 = readOp(file, debug);
 	
-	assert(strcmp(m->op, m2->op)==0);
+	assert(strcmp(m.op, m2->op)==0);
 	
-	freeOp(m);
 	freeOp(m2);
 }
 
@@ -320,25 +311,23 @@ void test_serialize_Term(bool debug){
 	
 	rewind(file);
 	
-	struct IntConst* myIntConst = malloc(sizeof(struct IntConst));
-	myIntConst->value = 48;
+	struct IntConst myIntConst = { .value = 48 };
 	
-	struct Term* m = malloc(sizeof(struct Term));
-	m->kind = 2;
-	m->ptr.m2 = myIntConst;
+	struct Term m = {
+		.kind = 2,
+		.ptr.m2 = &myIntConst
+	};
 	
-	writeTerm(m, file);
+	writeTerm(&m, file);
 	
 	rewind(file);
 	
 	struct Term* m2 = readTerm(file, debug);
 	
-	assert(m->ptr.m2->value == m2->ptr.m2->value);
+	assert(m.ptr.m2->value == m2->ptr.m2->value);
 	
-	freeTerm(m);
 	freeTerm(m2);
 }
-
 
 void test_serialize_Expr(bool debug){
 	
@@ -346,41 +335,43 @@ void test_serialize_Expr(bool debug){
 	
 	rewind(file);
 	
-	struct IntConst* myIntConst = malloc(sizeof(struct IntConst));
-	myIntConst->value = 4549;
+	struct IntConst myIntConst = {
+		myIntConst.value = 4549
+	};
 	
-	struct Term* m = malloc(sizeof(struct Term));
-	m->kind = 2;
-	m->ptr.m2 = myIntConst;
+	struct Term m = {
+		.kind = 2,
+		.ptr.m2 = &myIntConst
+	};	
 	
-	struct Op* myop = malloc(sizeof(struct Op));
+	struct Op myop;
 	
 	//otherwise valgrind will complain
 	//about uninitialized bytes
-	memset(myop, 0, sizeof(struct Op));
+	memset(&myop, 0, sizeof(struct Op));
 	
-	strcpy(myop->op, "hi");
+	strcpy(myop.op, "hi");
 	
-	struct UnOpTerm* uop = malloc(sizeof(struct UnOpTerm));
-	uop->term = m;
-	uop->op = myop;
+	struct UnOpTerm uop = {
+		.term = &m,
+		.op   = &myop
+	};
 	
-	struct Expr* expr = malloc(sizeof(struct Expr));
+	struct Expr expr = {
+		.term1 = copyUnOpTerm(&uop),
+		.term2 = copyUnOpTerm(&uop),
+		.op    = copyOp(&myop)
+	};
 	
-	expr->term1 = copyUnOpTerm(uop);
-	expr->term2 = copyUnOpTerm(uop);
-	expr->op = copyOp(myop);
-	
-	writeExpr(expr, file);
+	writeExpr(&expr, file);
 	
 	rewind(file);
 	
 	struct Expr* expr2 = readExpr(file, debug);
 	
-	assert(expr->term1->term->ptr.m2->value == expr2->term1->term->ptr.m2->value);
+	assert(expr.term1->term->ptr.m2->value == expr2->term1->term->ptr.m2->value);
 	
-	assert(strcmp(expr->op->op, expr2->op->op) == 0);
+	assert(strcmp(expr.op->op, expr2->op->op) == 0);
 	
-	freeExpr(expr);
 	freeExpr(expr2);
 }
