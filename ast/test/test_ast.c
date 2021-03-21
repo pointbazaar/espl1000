@@ -10,6 +10,8 @@
 #include "../io/ast_reader.h"
 #include "../ast.h"
 
+#include "test_str_ast.h"
+
 //const
 void test_serialize_IntConst(bool debug);
 void test_serialize_HexConst(bool debug);
@@ -60,6 +62,14 @@ int main(){
 	test_serialize_Op(debug);
 	test_serialize_Term(debug);
 	test_serialize_Expr(debug);
+	
+	printf("[AST][TEST] running AST str Tests...\n");
+	
+	//--- from test_str_ast.c ---
+	test_str_binconst();
+	test_str_intconst();
+	test_str_charconst();
+	test_str_floatconst();
 	
 	
 	printf("[AST Module] Passed All Tests\n");
