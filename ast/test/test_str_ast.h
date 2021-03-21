@@ -6,9 +6,13 @@ void test_str_binconst();
 void test_str_intconst();
 void test_str_charconst();
 void test_str_floatconst();
+void test_str_hexconst();
 
 //expr
-//TODO
+void test_str_expr();
+void test_str_op();
+void test_str_unopterm();
+void test_str_term();
 
 //struct
 //TODO
