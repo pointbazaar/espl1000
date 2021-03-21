@@ -18,189 +18,170 @@ void test_str_binconst(){
 	
 	status("strBinConst");
 	
-	struct BinConst* b = make(BinConst);
+	struct BinConst b = {.value = 0b1010};
 	
-	b->value = 0b1010;
-	
-	char* s = strBinConst(b);
+	char* s = strBinConst(&b);
 	
 	assert(strcmp(s, "0b1010")==0);
 	
-	freeBinConst(b); free(s);
+	free(s);
 }
 
 void test_str_intconst(){
 	
 	status("strIntConst");
 	
-	struct IntConst* b = make(IntConst);
+	struct IntConst b = {.value=101};
 	
-	b->value = 101;
-	
-	char* s = strIntConst(b);
+	char* s = strIntConst(&b);
 	
 	assert(strcmp(s, "101")==0);
 	
-	freeIntConst(b); free(s);
+	free(s);
 }
 
 void test_str_charconst(){
 	
 	status("strCharConst");
 	
-	struct CharConst* b = make(CharConst);
+	struct CharConst b = {.value='h'};
 	
-	b->value = 'h';
-	
-	char* s = strCharConst(b);
+	char* s = strCharConst(&b);
 	
 	assert(strcmp(s, "'h'")==0);
 	
-	freeCharConst(b); free(s);
+	free(s);
 }
 
 void test_str_floatconst(){
 	
 	status("strFloatConst");
 	
-	struct FloatConst* b = make(FloatConst);
+	struct FloatConst b = {.value=1.483533};
 	
-	b->value = 1.483533;
-	
-	char* s = strFloatConst(b);
+	char* s = strFloatConst(&b);
 	
 	assert(strcmp(s, "1.483533")==0);
 	
-	freeFloatConst(b); free(s);
+	free(s);
 }
 
 void test_str_hexconst(){
 	
 	status("strHexConst");
 	
-	struct HexConst* b = make(HexConst);
+	struct HexConst b = {.value = 0x572af};
 	
-	b->value = 0x572af;
-	
-	char* s = strHexConst(b);
+	char* s = strHexConst(&b);
 	
 	assert(strcmp(s, "0x572af")==0);
 	
-	freeHexConst(b); free(s);
+	free(s);
 }
-
 
 void test_str_expr(){
 	
 	status("strExpr");
 	
-	struct Op* op = make(Op);
-	*op = (struct Op){
+	struct Op o1 = {
 		.isArithmetic = true,
 		.isRelational = false,
 		.isLogical    = false,
 		.isBitwise    = false
 	};
-	strcpy(op->op, "-");
+	strcpy(o1.op, "-");
 	
-	struct Term* b = make(Term);
-	b->kind = 2;
+	struct IntConst ic = { .value = 45 };
 	
-	struct IntConst* ic = make(IntConst);
-	ic->value = 45;
-	
-	b->ptr.m2 = ic;
-	
-	struct UnOpTerm* u = make(UnOpTerm);
-	
-	*u = (struct UnOpTerm) {
-		.op   = op,
-		.term = b
+	struct Term b = {
+		.kind = 2,
+		.ptr.m2 = &ic
 	};
 	
-	struct UnOpTerm* u2 = copyUnOpTerm(u);
-	struct Op* o2       = copyOp(op);
+	struct UnOpTerm u = {
+		.op   = &o1,
+		.term = &b
+	};
+	
+	struct UnOpTerm* u2 = copyUnOpTerm(&u);
+	
+	struct Op* o2       = copyOp(&o1);
 	strcpy(o2->op, "*");
 	
-	struct Expr* e = make(Expr);
-	
-	*e = (struct Expr){
-		.term1 = u,
+	struct Expr e = {
+		.term1 = &u,
 		.op    = o2,
 		.term2 = u2
 	};
 	
-	char* s = strExpr(e);
+	char* s = strExpr(&e);
 	
 	assert(strcmp(s, "-45*-45")==0);
 	
+	free(u2);
+	free(o2);
 	free(s);
-	freeExpr(e);
 }
 void test_str_op(){
 	
 	status("strOp");
 	
-	struct Op* b = make(Op);
+	struct Op b;
 	
-	strcpy(b->op, "&&");
+	strcpy(b.op, "&&");
 	
-	char* s = strOp(b);
+	char* s = strOp(&b);
 	
 	assert(strcmp(s, "&&")==0);
 	
-	freeOp(b); free(s);
+	free(s);
 }
 void test_str_unopterm(){
 	
 	status("strUnOpTerm");
 	
-	struct Op* op = make(Op);
-	*op = (struct Op){
+	struct Op op = {
 		.isArithmetic = true,
 		.isRelational = false,
 		.isLogical    = false,
 		.isBitwise    = false
 	};
-	strcpy(op->op, "-");
+	strcpy(op.op, "-");
 	
-	struct Term* b = make(Term);
-	b->kind = 2;
+	struct IntConst ic = { .value = 3489 };
 	
-	struct IntConst* ic = make(IntConst);
-	ic->value = 3489;
+	struct Term b = { 
+		.kind = 2,
+		.ptr.m2 = &ic
+	};
 	
-	b->ptr.m2 = ic;
+	struct UnOpTerm u = {
+		.op   = &op,
+		.term = &b
+	};
 	
-	struct UnOpTerm* u = make(UnOpTerm);
-	
-	u->op   = op;
-	u->term = b;
-	
-	char* s = strUnOpTerm(u);
+	char* s = strUnOpTerm(&u);
 	
 	assert(strcmp(s, "-3489")==0);
 	
 	free(s);
-	freeUnOpTerm(u);
 }
 void test_str_term(){
 	
 	status("strTerm");
 	
-	struct Term* b = make(Term);
-	b->kind = 2;
+	struct IntConst ic = { .value = 3489 };
 	
-	struct IntConst* ic = make(IntConst);
-	ic->value = 3489;
+	struct Term b = { 
+		.kind = 2,
+		.ptr.m2 = &ic
+	};
 	
-	b->ptr.m2 = ic;
-	
-	char* s = strTerm(b);
+	char* s = strTerm(&b);
 	
 	assert(strcmp(s, "3489")==0);
 	
-	freeTerm(b); free(s);
+	free(s);
 }
 
 void test_str_structdecl(){
