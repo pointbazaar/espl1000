@@ -20,14 +20,14 @@ struct Flags* makeFlags(int argc, char** argv){
 	flags->help 	= false;
 	flags->version 	= false;
 	flags->clean 	= false;
-	flags->no_typecheck = false;
+	flags->no_typecheck  = false;
 	
-	flags->count_filenames = 0;
+	flags->debug_symbols = false;
+	flags->werror = false;
+	
+	flags->count_filenames    = 0;
 	flags->capacity_filenames = 100;
 	flags->filenames = malloc(sizeof(char*)*100);
-	
-	flags->gcc_flags = malloc(sizeof(char*)*gcc_flags_capacity);
-	flags->gcc_flags_count = 0;
 	
 	for(int i=1; i < argc; i++){
 		
@@ -35,6 +35,8 @@ struct Flags* makeFlags(int argc, char** argv){
 		
 		make_flags_inner(flags, arg);
 	}
+	
+	if(flags->help || flags->version){ return flags; }
 	
 	if(argc == 0){ return flags; }
 	
@@ -49,7 +51,6 @@ static void make_flags_inner(struct Flags* flags, char* arg){
 		
 		flags->filenames[flags->count_filenames] = arg;
 		flags->count_filenames += 1;
-		
 		return;
 	}
 	
@@ -87,21 +88,23 @@ static void make_flags_inner(struct Flags* flags, char* arg){
 		flags->no_typecheck = true;
 		return;
 	}
-		
-	flags->gcc_flags[flags->gcc_flags_count] = arg;
-	flags->gcc_flags_count++;
 	
-	if(flags->gcc_flags_count >= gcc_flags_capacity){
-		
-		printf("Exceeded gcc_flags_capacity!. Exiting.\n");
-		exit(1);
-	}	
-
+	if(strcmp(arg, "-g") == 0){
+		flags->debug_symbols = true;
+		return;
+	}
+	
+	if(strcmp(arg, "-Werror") == 0){
+		flags->werror = true;
+		return;
+	}
+	
+	printf("unrecognized flag: %s. Exiting.\n", arg);
+	exit(1);
 }
 
 void freeFlags(struct Flags* flags){
 	
 	free(flags->filenames);
-	free(flags->gcc_flags);
 	free(flags);
 }

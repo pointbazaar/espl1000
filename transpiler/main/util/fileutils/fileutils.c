@@ -56,14 +56,10 @@ char* make_gcc_cmd(struct Flags* flags, char* fname_out){
 		strcat(cmd_gcc, "gcc -Wall -o a.out ");
 	}
 	
-	strcat(cmd_gcc, fname_out);
+	if(flags->debug_symbols){ strcat(cmd_gcc, "-g "); }
+	if(flags->werror){ strcat(cmd_gcc, "-Werror "); }
 	
-	//we assume here cmd_gcc will never exceed it's allocated size.
-	//Warning. this is a stupid assumption.
-	for(int i=0; i < flags->gcc_flags_count; i++){
-		strcat(cmd_gcc, " ");
-		strcat(cmd_gcc, flags->gcc_flags[i]);
-	}
+	strcat(cmd_gcc, fname_out);
 	
 	return cmd_gcc;
 }

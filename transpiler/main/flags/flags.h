@@ -13,10 +13,9 @@ struct Flags {
 	bool version;
 	bool clean;
 	bool no_typecheck;
-	//----------
 	
-	char** gcc_flags;
-	int gcc_flags_count;
+	bool debug_symbols; //-g
+	bool werror; //-Werror
 	
 	//used to tell if we should run gcc
 	bool has_main_fn;
