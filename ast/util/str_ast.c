@@ -4,6 +4,14 @@
 
 #include "str_ast.h"
 
+static void error(char* msg){
+
+	printf("[AST][Error] %s\n", msg);
+	exit(1);
+}
+
+//---------------------------------------
+
 char* strBoolConst(struct BoolConst* bc){
 	char* res =  malloc(sizeof(char)*10);
 	strcpy(res, bc->value ? "true": "false");
@@ -103,9 +111,32 @@ char* strStringConst(struct StringConst* s){
 
 char* strBinConst(struct BinConst* b){
 	
-	//TODO: implement
-	char* res = malloc(sizeof(char)*10);
-	strcpy(res, "TODO");
+	char* res = malloc(sizeof(char)*129);
+	
+	uint32_t value = b->value;
+	
+	if(value == 0){
+		sprintf(res, "0b0");
+		return res;
+	}
+	
+	const int size = 128;
+	
+	char buffer[size];
+	
+	int index = size - 1;
+	buffer[index--] = '\0';
+	
+	while(value > 0){
+		
+		uint8_t bit = value & 0x1;
+		
+		buffer[index--] = (bit == 0x1) ? '1' : '0';
+		
+		value >>= 1;
+	}
+
+	sprintf(res, "0b%s", buffer+index+1);
 	return res;
 }
 
@@ -132,8 +163,7 @@ char* strBasicTypeWrapped(struct BasicTypeWrapped* btw){
 		return strSubrType(btw->subrType);
 	}
 	
-	printf("[AST][Error] (45)fatal (in str_ast.c)\n");
-	exit(1);
+	error("strBasicTypeWrapped");
 	return NULL;
 }
 
@@ -185,8 +215,7 @@ char* strType(struct Type* t){
 	
 	if(t->m3 != NULL){ return strArrayType(t->m3); }
 	
-	printf("fatal Error (in str_ast.c)\n");
-	exit(1);
+	error("strType");
 	return NULL;
 }
 
@@ -225,13 +254,56 @@ char* strStructType(struct StructType* s){
 	//TODO: add the generic part
 	if(s->typeParamCount != 0){
 	
-		printf("[AST][Error] strStructType\n");
-		exit(1);
+		error("strStructType");
 	}
 	
 	char* res = malloc(DEFAULT_STR_SIZE);
 	
 	sprintf(res, "%s", s->typeName);
+	
+	return res;
+}
+
+char* strStructDecl(struct StructDecl* s){
+	
+	char* name = strSimpleType(s->type);
+
+	uint16_t l = strlen("struct   { } ")+strlen(name);
+	
+	char* memberStrs[s->count_members];
+	
+	for(uint16_t i = 0; i < s->count_members; i++){
+		
+		char* s2 = strStructMember(s->members[i]);
+		l += strlen(s2);
+		
+		memberStrs[i] = s2;
+	}
+	
+	char* res = malloc(sizeof(char)*l);
+	
+	sprintf(res, "struct %s {", name);
+	
+	for(uint16_t i = 0; i < s->count_members; i++){
+		
+		char* s = memberStrs[i];
+		strcat(res, s);
+		free(s);
+	}
+	
+	strcat(res, "}");
+	
+	return res;
+}
+
+char* strStructMember(struct StructMember* s){
+
+	char* s1 = strType(s->type);
+	const int l = strlen(s1);
+	
+	char* res = malloc(sizeof(char)*(l+DEFAULT_STR_SIZE+3));
+	
+	sprintf(res, "%s %s;", s1, s->name);
 	
 	return res;
 }
@@ -258,6 +330,7 @@ char* strSimpleVar(struct SimpleVar* s){
 	
 	//we approximate here, and could be wrong.
 	//this is definitely not bulletproof.
+	//TODO: replace with a robust implementation
 	
 	uint16_t l = DEFAULT_STR_SIZE+1;
 	
@@ -335,41 +408,36 @@ char* strTerm(struct Term* t){
 	
 	switch(t->kind){
 		
-		case 1: return strBoolConst(t->ptr.m1); 
-		case 2: return strIntConst(t->ptr.m2);
-		case 3: return strCharConst(t->ptr.m3);
-		
-		case 4: return strCall(t->ptr.m4);
-		
-		case 5: return strExpr(t->ptr.m5);
-		case 6: return strVariable(t->ptr.m6);
-		case 7: return strFloatConst(t->ptr.m7);
+		case 1: return strBoolConst  (t->ptr.m1); 
+		case 2: return strIntConst   (t->ptr.m2);
+		case 3: return strCharConst  (t->ptr.m3);
+		case 4: return strCall       (t->ptr.m4);
+		case 5: return strExpr       (t->ptr.m5);
+		case 6: return strVariable   (t->ptr.m6);
+		case 7: return strFloatConst (t->ptr.m7);
 		case 8: return strStringConst(t->ptr.m8);
-		case 9: return strHexConst(t->ptr.m9);
+		case 9: return strHexConst   (t->ptr.m9);
 		
-		case 10: return strBinConst(t->ptr.m10);
+		case 10: return strBinConst  (t->ptr.m10);
 	}
 	
-	printf("[AST][Error] kind = %d\n", t->kind);
-	exit(1);
+	error("strTerm");
 	return NULL;
 }
 
 char* strStmt(struct Stmt* stmt){
 	
-	//TODO: fill out the others
-	
 	switch(stmt->kind){
 		
-		//case 0: return strLoopStmt(stmt->ptr.m0);
-		case 1: return strCall(stmt->ptr.m1);
-		//case 2: return strWhileStmt(stmt->ptr.m2);
-		//case 3: return strIfStmt(stmt->ptr.m3);
-		case 4: return strRetStmt(stmt->ptr.m4);
+		case 0: return strLoopStmt  (stmt->ptr.m0);
+		case 1: return strCall      (stmt->ptr.m1);
+		case 2: return strWhileStmt (stmt->ptr.m2);
+		case 3: return strIfStmt    (stmt->ptr.m3);
+		case 4: return strRetStmt   (stmt->ptr.m4);
 		case 5: return strAssignStmt(stmt->ptr.m5);
 		
-		//case 6: return strForStmt(stmt->ptr.m7);
-		//case 7: return strSwitchStmt(stmt->ptr.m8);
+		case 6: return strForStmt   (stmt->ptr.m7);
+		case 7: return strSwitchStmt(stmt->ptr.m8);
 		
 		case 99: {
 			//break,continue,...
@@ -386,8 +454,7 @@ char* strStmt(struct Stmt* stmt){
 		}
 			
 		default:
-			printf("[AST][Error] str_ast Error in strStmt\n");
-			exit(1);
+			error("strStmt");
 			return NULL;
 	}
 }
@@ -422,10 +489,118 @@ char* strAssignStmt(struct AssignStmt* a){
 	return res;
 }
 
+char* strForStmt(struct ForStmt* f){
+	
+	char* s1 = strRange(f->range);
+	char* s2 = strStmtBlock(f->block);
+	
+	const uint32_t l = strlen(s1)+strlen(s2)
+				+3+4+1+DEFAULT_STR_SIZE;
+	
+	char* res = malloc(sizeof(char)*l);
+	
+	sprintf(res, "for %s in %s %s", f->indexName, s1, s2);
+	
+	free(s1); free(s2);
+	return res;
+}
+
+char* strIfStmt(struct IfStmt* i){
+
+	char* s1 = strExpr(i->condition);
+	char* s2 = strStmtBlock(i->block);
+	
+	char* s3 = "";
+	
+	if(i->elseBlock != NULL){
+		s3 = strStmtBlock(i->elseBlock);
+	}
+	
+	const uint32_t l = strlen(s1)+strlen(s2)+strlen(s3)
+		+1+10;
+		
+	char* res = malloc(sizeof(char)*l);
+	
+	sprintf(res, "if %s %s", s1, s2);
+	
+	free(s1); free(s2);
+	
+	if(i->elseBlock != NULL){
+		
+		strcat(res, " else ");
+		strcat(res, s3);
+		free(s3);
+	}
+	
+	return res;
+}
+
+char* strLoopStmt(struct LoopStmt* l){
+	
+	char* s1 = strExpr(l->count);
+	char* s2 = strStmtBlock(l->block);
+	
+	const uint32_t l1 = strlen(s1)+strlen(s2)+4+2+1;
+	
+	char* res = malloc(sizeof(char)*l1);
+	
+	sprintf(res, "loop %s %s", s1, s2);
+	
+	free(s1); free(s2);
+	return res;
+}
+
+char* strWhileStmt(struct WhileStmt* w){
+
+	char* s1 = strExpr(w->condition);
+	char* s2 = strStmtBlock(w->block);
+	
+	const uint32_t l = strlen(s1)+strlen(s2)+5+2+1;
+	
+	char* res = malloc(sizeof(char)*l);
+	
+	sprintf(res, "while %s %s", s1, s2);
+	
+	free(s1); free(s2);
+	return res;
+}
+
+char* strSwitchStmt(struct SwitchStmt* s){
+
+	uint16_t l = strlen("switch { } ");
+	
+	char* s1 = strExpr(s->expr);
+	l += strlen(s1);
+	
+	char* strCases[s->count_cases];
+	
+	for(uint16_t i = 0; i < s->count_cases; i++){
+		
+		strCases[i] = strCaseStmt(s->cases[i]);
+		l += strlen(strCases[i]);
+	}
+	
+	char* res = malloc(sizeof(char)*l);
+	
+	sprintf(res, "switch %s {", s1);
+	
+	free(s1);
+	
+	for(uint16_t i = 0; i < s->count_cases; i++){
+		
+		strcat(res, strCases[i]);
+	}
+	
+	strcat(res, "}");
+	
+	return res;
+}
+
 char* strCall(struct Call* m){
 
 	//we approximate here, and could be wrong.
 	//this is definitely not bulletproof.
+	//TODO: replace with more robust implementation
 	
 	uint16_t l = DEFAULT_STR_SIZE+1+2;
 	
@@ -475,9 +650,9 @@ char* strCaseStmt(struct CaseStmt* c){
 	
 	switch(c->kind){
 	
-		case 0: s = strBoolConst(c->ptr.m1); break;
-		case 1: s = strCharConst(c->ptr.m2); break;
-		case 2: s = strIntConst(c->ptr.m3);  break;
+		case 0: s = strBoolConst (c->ptr.m1); break;
+		case 1: s = strCharConst (c->ptr.m2); break;
+		case 2: s = strIntConst  (c->ptr.m3); break;
 	}
 	
 	char* s2 = strStmtBlock(c->block);

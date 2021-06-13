@@ -1,13 +1,2 @@
 
-fn substr ([char] s, uint i, uint j)->[char] {
-	uint l=abs(j-i);
-	[char] res = malloc(l);
-	uint k=0;
-	while(k<l){
-		res[k]=s[i+k];
-		k=k+1;
-	}
-	return res;
-}
-
-
+//TODO

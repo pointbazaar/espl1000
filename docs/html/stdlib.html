@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>SmallDragon - Standard Library</title>
+  <meta name="description" content="SmallDragon Standard Library">
+  <meta name="author" content="SmallDragon">
+
+  <link rel="icon" href="../img/favicon.ico">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+<div class="container">
+	
+	<div class="row nav-bg">
+		<div class="col"><a href="../index.html">Home</a></div>
+		<div class="col"><a href="flags.html">Flags</a></div>
+		<div class="col"><a href="roadmap.html">Roadmap</a></div>
+		<div class="col"><a href="operators.html">Operators</a></div>
+		<div class="col"><a href="primitives.html">Primitives</a></div>
+		<div class="col"><a href="architecture.html">Architecture</a></div>
+	</div>
+
+	<h1>SmallDragon Standard Library</h1>
+
+	<p>smalldragon's Standard Library aims to extend the one 
+	already present in C, meaning that most of the functions known from the
+	C Standard Library should be available in smalldragon aswell, 
+	with their original implementation.</p>
+
+	<h2> Contents </h2>
+	<a href="#math">math.dg</a><br>
+	<a href="#primes">primes.dg</a><br>
+	
+	<a href="#intset">intset.dg</a><br>
+	<a href="#intstack">intstack.dg</a><br>
+	<a href="#intarray">intarray.dg</a><br>
+	
+	<a href="#bit">bit.dg</a><br>
+	<a href="#string">string.dg</a><br>
+
+	<hr>
+	<h3 id="math">math.dg (extends <a href="https://www2.hs-fulda.de/~klingebiel/c-stdlib/math.htm">math.h</a>)</h3>
+	<table class="table-bordered table">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td> sign </td><td> (int n) -> int </td><td> O(1) </td>
+		</tr>
+		<tr>
+			<td> ipow </td><td>(int base, uint power) -> int</td><td> O(power) </td>
+		</tr>
+		<tr>
+			<td> faculty </td><td> (uint n) -> uint </td><td> O(n) </td>
+		</tr>
+		<tr>
+			<td>max </td><td> (int a, int b) -> int </td><td> O(1) </td>
+		</tr>
+		<tr>
+			<td> min </td><td> (int a, int b) -> int </td><td> O(1) </td>
+		</tr>
+		<tr>
+			<td> gcd </td><td> (int a, int b) -> int </td><td> ? </td>
+		</tr>
+		<tr>
+			<td> lcm </td><td> (int a, int b) -> int </td><td> ? </td>
+		</tr>
+		<tr>
+			<td> fib </td><td> (uint64 n) -> uint64 </td><td> O(n) </td>
+		</tr>
+		<tr>
+			<td> iseven </td><td> (int n) -> bool </td><td> O(1) </td>
+		</tr>
+		<tr>
+			<td> isodd </td><td> (int n) -> bool </td><td> O(1) </td>
+		</tr>
+	</tbody>
+	</table>
+	
+	
+	<h3 id="primes">primes.dg</h3>
+	<table class="table-bordered table">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td> isprime </td><td> (uint64 n) -> bool </td><td> O(n) </td>
+		</tr>
+		<tr>
+			<td> nprimes </td><td> (uint n) -> [unit32] </td><td> O(n^2) </td>
+		</tr>
+	</tbody>
+	</table>
+	
+	<h3 id="intset">intset.dg</h3>
+	
+	<table class="table-bordered table">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td> intset_ctor </td><td> (uint capacity) -> IntSet </td><td> O(1) </td>
+		</tr>
+		<tr>
+			<td> intset_dtor </td><td> (IntSet s) -> bool </td><td> O(1) </td>
+		</tr>
+		<tr>
+			<td> intset_size </td><td> (IntSet s) -> uint </td><td> O(1) </td>
+		</tr>
+		<tr>
+			<td> intset_contains </td><td> (IntSet s, int x) -> bool </td><td> O(s.size) </td>
+		</tr>
+		<tr>
+			<td> intset_insert </td><td> (IntSet s, int x) -> int </td><td> O(s.size) </td>
+		</tr>
+		<tr>
+			<td> intset_remove </td><td> (IntSet s, int x) -> int </td><td> O(s.size) </td>
+		</tr>
+		<tr>
+			<td> intset_union </td><td> (IntSet a, IntSet b) -> IntSet </td><td> O(a.size^2 + b.size^2) </td>
+		</tr>
+		<tr>
+			<td> intset_cut </td><td> (IntSet a, IntSet b) -> IntSet </td><td> O(max(a.size, b.size)^2) </td>
+		</tr>
+	</tbody>
+	</table>
+	
+	<h3 id="intstack">intstack.dg</h3>
+	<table class="table-bordered table">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td> intstack_ctor </td><td> (uint capacity) -> IntStack </td><td> O(1) </td>
+		</tr>
+		<tr>
+			<td> intstack_dtor </td><td> (IntStack s) -> bool </td><td> O(1) </td>
+		</tr>
+		<tr>
+			<td> intstack_size </td><td> (IntStack s) -> uint </td><td> O(1) </td>
+		</tr>
+		<tr>
+			<td> intstack_push </td><td> (IntStack s, int x) -> int </td><td> O(1) </td>
+		</tr>
+		<tr>
+			<td> intstack_peek </td><td> (IntStack s) -> int </td><td> O(1) </td>
+		</tr>
+		<tr>
+			<td> intstack_pop </td><td> (IntStack s) -> int </td><td> O(1) </td>
+		</tr>
+	</tbody>
+	</table>
+	
+	<h3 id="intarray">intarray.dg</h3>
+	<table class="table-bordered table">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td> intarray_sum </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td>
+		</tr>
+		<tr>
+			<td> intarray_average </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td>
+		</tr>
+		<tr>
+			<td> intarray_min </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td>
+		</tr>
+		<tr>
+			<td> intarray_max </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td>
+		</tr>
+	</tbody>
+	</table>
+	
+	<h3 id="bit">bit.dg</h3>
+	
+	<table class="table-bordered table">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td> bit </td><td> (uint8 byte, uint8 place) -> uint8 </td><td> O(1) </td>
+		</td>
+	</tbody>
+	</table>
+	
+	<h3 id="string">string.dg (extends <a href="https://www2.hs-fulda.de/~klingebiel/c-stdlib/string.htm">string.h</a>)</h3>
+	
+	<p> TODO </p>
+
+</div>
+
+</body>
+</html>

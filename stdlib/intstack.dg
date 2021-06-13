@@ -1,0 +1,53 @@
+//A naive implementation of a stack of Integers
+//This Stack is not growable.
+
+struct IntStack {
+	int size;
+	uint capacity;
+	[int] arr;
+}
+
+fn intstack_ctor(uint capacity) -> IntStack {
+
+	IntStack s = makeIntStack(0,0,0);
+	
+	s.size = 0;
+	s.capacity = capacity;
+	
+	s.arr = malloc(4*s.capacity);
+	
+	return s;
+}
+
+fn intstack_dtor(IntStack s) -> bool {
+
+	free(s.arr);
+	free(s);
+
+	return true;
+}
+
+fn intstack_size(IntStack s) -> uint {
+	return s.size;
+}
+
+fn intstack_push(IntStack s, int x) -> int {
+	
+	s.arr[s.size] = x;
+	s.size += 1;
+	
+	return x;
+}
+
+fn intstack_peek(IntStack s) -> int {
+
+	return s.arr[s.size - 1];
+}
+
+fn intstack_pop(IntStack s) -> int {
+
+	res = intstack_peek(s);
+	s.size -= 1;
+	
+	return res;
+}

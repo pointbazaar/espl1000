@@ -13,6 +13,7 @@ CFLAGS := -march=native -g -Wall -Werror
 CALL := gcc $(CFLAGS) -c
 
 SOURCES := test/test_ast.c \
+		test/test_str_ast.c \
 		io/ast_reader.c \
 		io/ast_writer.c \
 		io/serialize.c \
@@ -31,9 +32,11 @@ HEADERS := io/ast_reader.h \
 		ast.h \
 		io/magic_num.h \
 		io/serialize.h \
-		visitor/visitor.h 
+		visitor/visitor.h \
+		test/test_str_ast.h
 
 OBJS := build/test_ast.o \
+	build/test_str_ast.o \
 	build/ast_reader.o \
 	build/ast_writer.o \
 	build/free_ast.o \
