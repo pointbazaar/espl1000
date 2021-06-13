@@ -10,9 +10,9 @@ fn intarray_sum([int] arr, int size) -> int {
 	return res;
 }
 
-fn intarray_average([int] arr, int size) -> int {
+fn intarray_average([int] arr, int size) -> float {
 
-	return intarray_sum(arr, size) / size;
+	return intarray_sum(arr, size) / (size*1.0);
 }
 
 fn intarray_min([int] arr, int size) -> int {

@@ -95,14 +95,15 @@
 			<th> Name </th>
 			<th> Type </th>
 			<th> Runtime </th>
+			<th> Stack Used </th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td> isprime </td><td> (uint64 n) -> bool </td><td> O(n) </td>
+			<td> isprime </td><td> (uint64 n) -> bool </td><td> O(n) </td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> nprimes </td><td> (uint n) -> [unit32] </td><td> O(n^2) </td>
+			<td> nprimes </td><td> (uint n) -> [unit32] </td><td> O(n^2) </td><td>O(1)</td>
 		</tr>
 	</tbody>
 	</table>
@@ -115,32 +116,33 @@
 			<th> Name </th>
 			<th> Type </th>
 			<th> Runtime </th>
+			<th> Stack Used</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td> intset_ctor </td><td> (uint capacity) -> IntSet </td><td> O(1) </td>
+			<td> intset_ctor </td><td> (uint capacity) -> IntSet </td><td>O(1)</td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> intset_dtor </td><td> (IntSet s) -> bool </td><td> O(1) </td>
+			<td> intset_dtor </td><td> (IntSet s) -> bool </td><td>O(1)</td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> intset_size </td><td> (IntSet s) -> uint </td><td> O(1) </td>
+			<td> intset_size </td><td> (IntSet s) -> uint </td><td>O(1)</td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> intset_contains </td><td> (IntSet s, int x) -> bool </td><td> O(s.size) </td>
+			<td> intset_contains </td><td> (IntSet s, int x) -> bool </td><td>O(s.size)</td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> intset_insert </td><td> (IntSet s, int x) -> int </td><td> O(s.size) </td>
+			<td> intset_insert </td><td> (IntSet s, int x) -> int </td><td>O(s.size)</td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> intset_remove </td><td> (IntSet s, int x) -> int </td><td> O(s.size) </td>
+			<td> intset_remove </td><td> (IntSet s, int x) -> int </td><td>O(s.size)</td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> intset_union </td><td> (IntSet a, IntSet b) -> IntSet </td><td> O(a.size^2 + b.size^2) </td>
+			<td> intset_union </td><td> (IntSet a, IntSet b) -> IntSet </td><td> O(a.size^2 + b.size^2) </td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> intset_cut </td><td> (IntSet a, IntSet b) -> IntSet </td><td> O(max(a.size, b.size)^2) </td>
+			<td> intset_cut </td><td> (IntSet a, IntSet b) -> IntSet </td><td> O(max(a.size, b.size)^2) </td><td>O(1)</td>
 		</tr>
 	</tbody>
 	</table>
@@ -190,7 +192,7 @@
 			<td> intarray_sum </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td>
 		</tr>
 		<tr>
-			<td> intarray_average </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td>
+			<td> intarray_average </td><td> ([int] arr, uint size) -> float </td><td> O(size) </td>
 		</tr>
 		<tr>
 			<td> intarray_min </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td>
