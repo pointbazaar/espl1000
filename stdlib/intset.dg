@@ -1,0 +1,89 @@
+
+// An naive implementation of a Set of Integers
+
+struct IntSet {
+	uint size;
+	uint capacity;
+	[int] arr;
+}
+
+fn intset_ctor(uint capacity) -> IntSet {
+
+	IntSet s = makeIntSet(0,0,0);
+
+	s.size = 0;
+	s.capacity = capacity;
+	s.arr = malloc(4*capacity);
+
+	return s;
+}
+
+fn intset_dtor(IntSet s) -> bool {
+
+	free(s.arr);
+	free(s);
+
+	return true;
+}
+
+fn intset_size(IntSet s) -> uint {
+	
+	return s.size;
+}
+
+fn intset_contains(IntSet s, int x) -> bool {
+
+	for i in 1 .. s.size {
+
+		if s.arr[i-1] == x { return true; }
+	}
+	
+	return false;
+}
+
+fn intset_insert(IntSet s, int x) -> int {
+	
+	if intset_contains(s, x) { return x; }
+
+	if s.size >= s.capacity {
+
+		uint oldcap  = s.capacity;
+		s.capacity   = s.capacity * 2;
+		[int] newarr = malloc(4*s.capacity);
+		
+		memcpy(newarr, s.arr, oldcap);
+
+		free(s.arr);
+		s.arr = newarr;
+	}
+	
+	s.arr[s.size] = x;
+	s.size += 1;
+
+	return x;
+}
+
+fn intset_remove(IntSet s, int x) -> int {
+
+	if !intset_contains(s, x) { return x; }
+
+	//find the index of the element
+	uint index = 0;
+	for i in 0 .. s.size - 1 {
+		if s.arr[i] == x { 
+			
+			index = i;
+			break;
+		}
+	}
+
+	//shift all elements left
+	for j in index .. s.size - 1 {
+
+		s.arr[j] = s.arr[j+1];
+	}
+
+	s.size -= 1;
+
+	return x;
+}

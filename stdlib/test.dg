@@ -2,13 +2,59 @@ fn main() ~> int {
 
 	test_math();
 	
-	test_vector();
-	
 	test_bit();
 
 	test_primes();
 
+	test_intset();
+	
+	test_intstack();
+
 	printf("[stdlib] PASSED ALL TESTS\n");
+
+	return 0;
+}
+
+fn test_intstack() -> int {
+	
+	IntStack s = intstack_ctor(10);
+	
+	intstack_push(s, 3);
+	assert(intstack_size(s) == 1);
+	assert(intstack_peek(s) == 3);
+	assert(intstack_pop(s) == 3);
+	
+	assert(intstack_size(s) == 0);
+	
+	intstack_dtor(s);
+	
+	return 0;
+}
+
+fn test_intset() -> int {
+
+	IntSet s = intset_ctor(10);
+
+	assert(intset_size(s) == 0);
+	
+	assert(!intset_contains(s,3));
+
+	intset_insert(s,3);
+	
+	assert(intset_contains(s,3));
+	assert(intset_size(s) == 1);
+
+	intset_remove(s,3);
+	assert(!intset_contains(s,3));
+
+	intset_insert(s,0);
+	for i in 1 .. 9 {
+		
+		intset_insert(s,i);
+		assert(intset_contains(s,i-1));
+	}
+
+	intset_dtor(s);
 
 	return 0;
 }
@@ -37,6 +83,12 @@ fn test_math() -> int {
 
 	assert(gcd(10,15) == 5);
 	assert(lcm(15,20) == 60);
+
+	assert(round(3.5) == 4);
+	assert(round(3.2) == 3);
+
+	assert(ceil(3.2) == 4);
+	assert(floor(3.7) == 3);
 	
 	[int] arr = malloc(4*2);
 	arr[0] = 3;
@@ -64,15 +116,3 @@ fn test_primes() -> int {
 	return 0;
 }
 
-fn test_vector() -> int {
-
-	V2 a = makeV2(1,2);
-	V2 b = makeV2(0,1);
-
-	V2 res = add(a,b);
-
-	assert(res.a == 1);
-	assert(res.b == 3);
-
-	return 0;
-}
