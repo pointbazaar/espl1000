@@ -87,3 +87,31 @@ fn intset_remove(IntSet s, int x) -> int {
 
 	return x;
 }
+
+fn intset_union(IntSet a, IntSet b) -> IntSet {
+
+	IntSet res = intset_ctor(a.capacity + b.capacity);
+	
+	for i in 0 .. a.size - 1 {
+		intset_insert(res, a.arr[i]);
+	}
+	
+	for i in 0 .. b.size - 1 {
+		intset_insert(res, b.arr[i]);
+	}
+	
+	return res;
+}
+
+fn intset_cut(IntSet a, IntSet b) -> IntSet {
+
+	IntSet res = intset_ctor(min(a.capacity, b.capacity));
+	
+	for i in 0 .. a.size - 1 {
+		if intset_contains(b, a.arr[i]) {
+			intset_insert(res, a.arr[i]);
+		}
+	}
+	
+	return res;
+}

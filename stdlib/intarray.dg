@@ -1,0 +1,41 @@
+
+//simple functions dealing with arrays of integers
+
+
+fn intarray_sum([int] arr, int size) -> int {
+	int res = 0;
+	for i in 0 .. size-1 {
+		res += arr[i];
+	}
+	return res;
+}
+
+fn intarray_average([int] arr, int size) -> int {
+
+	return intarray_sum(arr, size) / size;
+}
+
+fn intarray_min([int] arr, int size) -> int {
+
+	min = arr[0];
+	
+	for i in 0 .. size - 1 {
+	
+		if arr[i] < min { min = arr[i]; }
+	}
+	
+	return min;
+}
+
+
+fn intarray_max([int] arr, int size) -> int {
+
+	max = arr[0];
+	
+	for i in 0 .. size - 1 {
+	
+		if arr[i] > max { max = arr[i]; }
+	}
+	
+	return max;
+}

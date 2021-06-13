@@ -9,8 +9,26 @@ fn main() ~> int {
 	test_intset();
 	
 	test_intstack();
+	
+	test_intarray();
 
 	printf("[stdlib] PASSED ALL TESTS\n");
+
+	return 0;
+}
+
+fn test_intarray() -> int {
+
+	
+	[int] arr = malloc(4*2);
+	arr[0] = 3;
+	arr[1] = 5;
+
+	assert(intarray_sum(arr, 2) == 8);
+	assert(intarray_average(arr, 2) == 4);
+	
+	assert(intarray_min(arr, 2) == 3);
+	assert(intarray_max(arr, 2) == 5);
 
 	return 0;
 }
@@ -89,13 +107,6 @@ fn test_math() -> int {
 
 	assert(ceil(3.2) == 4);
 	assert(floor(3.7) == 3);
-	
-	[int] arr = malloc(4*2);
-	arr[0] = 3;
-	arr[1] = 5;
-
-	assert(sum(arr, 2) == 8);
-	assert(average(arr, 2) == 4);
 	
 	assert(fib(1) == 0);
 	assert(fib(2) == 1);
