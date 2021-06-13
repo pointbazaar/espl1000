@@ -38,6 +38,7 @@
 	<a href="#intset">intset.dg</a><br>
 	<a href="#intstack">intstack.dg</a><br>
 	<a href="#intarray">intarray.dg</a><br>
+	<a href="#intbintree">intbintree.dg</a><br>
 	
 	<a href="#bit">bit.dg</a><br>
 	<a href="#string">string.dg</a><br>
@@ -196,6 +197,41 @@
 		</tr>
 		<tr>
 			<td> intarray_max </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td>
+		</tr>
+	</tbody>
+	</table>
+	
+	<h3 id="intbintree">intbintree.dg</h3>
+	<table class="table-bordered table">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+			<th> Stack Used</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td> intbintree_ctor </td><td> () -> IntBinTree </td><td>O(1)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td> intbintree_dtor </td><td> (IntBinTree t) -> bool </td><td>O(size)</td><td>O(size) worst case</td>
+		</tr>
+		<tr>
+			<td> intbintree_insert </td><td> (IntBinTree t, int key) -> int </td><td>O(size) worst case</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td> intbintree_contains </td><td>(IntBinTree t, int key) -> bool</td><td>O(size) worst case</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>intbintree_remove</td><td>(IntBinTree t, int key) -> bool</td><td>O(size) worst case</td><td>O(size) worst case</td>
+		</tr>
+		<tr>
+			<td>intbintree_size</td><td>(IntBinTree t) -> bool</td><td>O(size)</td><td>O(size) worst case</td>
+		</tr>
+		<tr>
+			<td>intbintree_visit</td><td>(IntBinTree t, ((int)->bool) visitor) -> bool</td><td>O(size) worst case</td><td>O(size) worst case</td>
 		</tr>
 	</tbody>
 	</table>

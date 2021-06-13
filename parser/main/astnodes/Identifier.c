@@ -24,8 +24,10 @@ struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 	struct Token* tk = list_head(tokens);
 
 	if (tk->kind == ID) {
-		strncpy(res->identifier, tk->value_ptr, 19);
+		strncpy(res->identifier, tk->value_ptr, DEFAULT_STR_SIZE-1);
 		list_consume(tokens, 1);
+		
+		res->identifier[DEFAULT_STR_SIZE-1] = '\0';
 	} else {
 		free(res);
 		return NULL;

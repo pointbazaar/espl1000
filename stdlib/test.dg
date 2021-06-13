@@ -11,9 +11,28 @@ fn main() ~> int {
 	test_intstack();
 	
 	test_intarray();
+	
+	test_intbintree();
 
 	printf("[stdlib] PASSED ALL TESTS\n");
 
+	return 0;
+}
+
+fn test_intbintree() -> int {
+
+	IntBinTree t = intbintree_ctor();
+	
+	intbintree_insert(t, 3);
+	
+	assert(intbintree_contains(t, 3));
+	assert(intbintree_size(t) == 1);
+	
+	intbintree_remove(t, 3);
+	
+	assert(!intbintree_contains(t, 3));
+	assert(intbintree_size(t) == 0);
+	
 	return 0;
 }
 
