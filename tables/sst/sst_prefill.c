@@ -24,6 +24,9 @@ struct Proto {
 
 static void fill_protos(struct ST* st, struct Proto* protos, int n);
 
+static struct Type* makeCharPtrTypeC();
+static struct Type* makeFileTypeC();
+
 //TODO: find trustworthy sources
 //to see which of these functions 
 //are guaranteed to terminate
@@ -87,6 +90,14 @@ struct Proto protos_stdio[] = {
 	{ "fsetpos", "int",    HALTS_UNKNOWN },
 	{ "ftell",   "int",    HALTS_UNKNOWN },
 	{ "rewind",  "int",    HALTS_UNKNOWN }, //TODO: wrong return type
+	
+	{ "fopen",   "FILE", HALTS_UNKNOWN },
+	{ "freopen", "FILE", HALTS_UNKNOWN },
+	{ "fflush",  "int",    HALTS_UNKNOWN },
+	{ "fclose",  "int",    HALTS_UNKNOWN },
+	
+	{ "remove",  "int",    HALTS_UNKNOWN },
+	{ "rename",  "int",    HALTS_UNKNOWN },
 };
 
 struct Proto protos_stdlib[] = {
@@ -192,6 +203,41 @@ static void fill_protos(
 	struct Type* mi = typeFromStrPrimitive(st, "int");
 	struct Type* mc = typeFromStrPrimitive(st, "char");
 	
+	struct Type* cp = makeCharPtrTypeC();
+	struct Type* fp = makeFileTypeC();
+	
+	registerInferredType(st, fp);	
+	registerInferredType(st, cp);
+
+	for(int i=0;i < n; i++){
+		
+		struct Proto proto = protos[i];
+	
+		char* name = proto.name;
+		char* type = proto.type;
+		
+		struct Type* t = NULL;
+		
+		if(strcmp(type, "int")   == 0) { t = mi; }
+		if(strcmp(type, "float") == 0) { t = mf; }
+		if(strcmp(type, "char") == 0)  { t = mc; }
+		if(strcmp(type, "[char]") == 0){ t = cp; }
+		if(strcmp(type, "FILE") == 0)  { t = fp; }
+		
+		if(t == NULL){
+			printf("[SST][Error] fill_proto\n");
+			exit(1);
+		}
+		
+		struct SSTLine* line = 
+			makeSSTLine(name, t, true, proto.halts);
+		
+		sst_add(st->sst, line);
+	}
+}
+
+static struct Type* makeCharPtrTypeC(){
+	
 	struct PrimitiveType* pt = make(PrimitiveType);
 	
 	pt->isIntType  = false;
@@ -220,30 +266,29 @@ static void fill_protos(
 		cp->m2 = NULL;
 		cp->m3 = at;
 		
-	registerInferredType(st, cp);
+	return cp;
+}
 
-	for(int i=0;i < n; i++){
-		
-		struct Proto proto = protos[i];
+static struct Type* makeFileTypeC(){
 	
-		char* name = proto.name;
-		char* type = proto.type;
+	struct StructType* s = make(StructType);
+	
+	strcpy(s->typeName, "_IO_FILE");
+	s->typeParamCount = 0;
+	s->typeParams     = NULL;
+	
+	struct SimpleType* myst = make(SimpleType);
+	myst->primitiveType = NULL;
+	myst->structType    = s;
+	
+	struct BasicTypeWrapped* btw = make(BasicTypeWrapped);
+	btw->simpleType = myst;
+	btw->subrType = NULL;
+	
+	struct Type* m = make(Type);
+		m->m1 = btw;
+		m->m2 = NULL;
+		m->m3 = NULL;
 		
-		struct Type* t = NULL;
-		
-		if(strcmp(type, "int")   == 0){ t = mi; }
-		if(strcmp(type, "float") == 0){ t = mf; }
-		if(strcmp(type, "char") == 0) { t = mc; }
-		if(strcmp(type, "[char]") == 0){ t = cp; }
-		
-		if(t == NULL){
-			printf("[SST][Error] fill_proto\n");
-			exit(1);
-		}
-		
-		struct SSTLine* line = 
-			makeSSTLine(name, t, true, proto.halts);
-		
-		sst_add(st->sst, line);
-	}
+	return m;
 }
