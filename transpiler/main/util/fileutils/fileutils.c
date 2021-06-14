@@ -61,5 +61,7 @@ char* make_gcc_cmd(struct Flags* flags, char* fname_out){
 	
 	strcat(cmd_gcc, fname_out);
 	
+	strcat(cmd_gcc, " -lpthread -lm ");
+	
 	return cmd_gcc;
 }

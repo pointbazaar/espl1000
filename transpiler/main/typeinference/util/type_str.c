@@ -78,7 +78,7 @@ void registerInferredType(struct ST* st, struct Type* t){
 	
 	//[1]
 	if(st->inferredTypesCount >= st->inferredTypesCapacity){
-		print_exit("Fatal Error (in type_str.c)\n");
+		print_exit("Fatal Error (in type_str.c). too many inferred types\n");
 	}else{
 		st->inferredTypes[st->inferredTypesCount] = t;
 		st->inferredTypesCount += 1;

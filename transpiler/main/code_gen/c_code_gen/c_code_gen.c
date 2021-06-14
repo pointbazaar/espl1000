@@ -121,6 +121,7 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx){
 		fprintf(ctx->file, "#include <math.h>\n");
 		fprintf(ctx->file, "#include <inttypes.h>\n");
 		fprintf(ctx->file, "#include <assert.h>\n");
+		fprintf(ctx->file, "#include <pthread.h>\n");
 	}
 	
 	fill_tables(ast, ctx);

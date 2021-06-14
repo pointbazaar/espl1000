@@ -169,6 +169,11 @@ struct Proto protos_assert[] = {
 	{ "assert", "int", HALTS_ALWAYS }, //TODO: wrong return type
 };
 
+struct Proto protos_pthread[] = {
+	{ "pthread_create",  "int", HALTS_UNKNOWN },
+	{ "pthread_join",    "int", HALTS_UNKNOWN },
+};
+
 void sst_prefill(struct ST* st, struct SST* sst){
 	
 	//fills the SST with some basic
@@ -184,6 +189,7 @@ void sst_prefill(struct ST* st, struct SST* sst){
 	int l4 = sizeof(protos_string)/s;
 	int l5 = sizeof(protos_ctype)/s;
 	int l6 = sizeof(protos_assert)/s;
+	int l7 = sizeof(protos_pthread)/s;
 	
 	fill_protos(st, protos_math, l1);
 	fill_protos(st, protos_stdio, l2);
@@ -191,6 +197,7 @@ void sst_prefill(struct ST* st, struct SST* sst){
 	fill_protos(st, protos_string, l4);
 	fill_protos(st, protos_ctype, l5);
 	fill_protos(st, protos_assert, l6);
+	fill_protos(st, protos_pthread, l7);
 }
 
 static void fill_protos(

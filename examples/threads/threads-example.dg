@@ -1,0 +1,41 @@
+
+//basic example of using linux pthreads
+//in smalldragon
+
+//the program should try to print a bunch of numbers,
+//concurrently. 
+
+fn f (int i) -> int {
+
+	printf("%d\n", i);
+	return 0;
+}
+
+fn main () -> int {
+	
+	[uint64] tids = malloc(8*10);
+
+	for i in 0 .. 10 {
+	
+		//smalldragon does not know the full signature
+		//of pthread_create so the 'tids + i' 
+		//is compiled by gcc only
+		
+		int status = pthread_create(tids + i, 0, f, i);
+		
+		if status != 0 {
+		
+			printf("error creating pthread\n");
+			perror("error:");
+		}
+	}
+	
+	for i in 0 .. 10 {
+	
+		pthread_join(tids[i], 0);
+	}
+	
+	free(tids);
+
+	return 0;
+}
