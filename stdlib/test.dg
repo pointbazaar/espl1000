@@ -13,8 +13,38 @@ fn main() ~> int {
 	test_intarray();
 	
 	test_intbintree();
+	
+	test_intll();
 
 	printf("[stdlib] PASSED ALL TESTS\n");
+
+	return 0;
+}
+
+fn test_intll() -> int {
+
+	IntLL ll = intll_ctor();
+	
+	intll_push_back(ll, 3); //[3]
+	
+	assert(ll.size == 1);
+	
+	assert(intll_peek_front(ll) == 3);
+	assert(intll_peek_back(ll) == 3);
+	
+	intll_push_front(ll, 5); //[5,3]
+	
+	assert(intll_index_of(ll, 3) == 1);
+	
+	assert(intll_pop_front(ll) == 5); //[3]
+	
+	assert(ll.size == 1);
+	
+	intll_pop_back(ll); //[]
+	
+	assert(ll.size == 0);
+	
+	intll_dtor(ll);
 
 	return 0;
 }

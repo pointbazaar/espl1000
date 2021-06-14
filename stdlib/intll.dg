@@ -1,0 +1,160 @@
+
+//A simple double-linked list of integers
+
+struct IntLL {
+	
+	uint size;
+	IntLLNode head;
+	IntLLNode tail;
+}
+
+struct IntLLNode {
+
+	int value;
+	IntLLNode prev;
+	IntLLNode next;
+}
+
+fn intll_ctor() -> IntLL {
+
+	return makeIntLL(0,0,0);
+}
+
+fn intll_dtor(IntLL l) -> bool {
+	
+	current = l.head;
+	
+	while current != 0 {
+		
+		old = current;
+		free(old);
+		
+		current = current.next;
+	}
+	
+	free(l);
+	return true;
+}
+
+fn intll_push_front(IntLL l, int value) -> bool {
+
+	x = makeIntLLNode(value, 0, 0);
+	
+	if l.size == 0 {
+		
+		l.head = x;
+		l.tail = x;
+	} else {
+	
+		oldhead = l.head;
+		
+		oldhead.prev = x;
+		x.next = oldhead;
+		l.head = x;
+	}
+	l.size += 1;
+	return true;
+}
+
+fn intll_push_back(IntLL l, int value) -> bool {
+
+	x = makeIntLLNode(value, 0, 0);
+	
+	if l.size == 0 {
+		
+		l.head = x;
+		l.tail = x;
+	} else {
+	
+		oldtail = l.tail;
+		
+		oldtail.next = x;
+		x.prev = oldtail;
+		l.tail = x;
+	}
+	l.size += 1;
+	return true;
+}
+
+fn intll_pop_front(IntLL l) -> int {
+	
+	if l.size == 0 { exit(1); return -1; }
+	
+	val = l.head.value;
+	oldhead = l.head;
+	
+	if l.size == 1 {
+	
+		l.head = 0;
+		l.tail = 0;
+		
+	} else {
+		l.head = oldhead.next;
+	}
+	
+	free(oldhead);
+	l.size -= 1;
+	
+	return val;
+}
+
+fn intll_pop_back(IntLL l) -> int {
+
+	if l.size == 0 { exit(1); return -1; }
+	
+	val = l.tail.value;
+	oldtail = l.tail;
+	
+	if l.size == 1 {
+	
+		l.head = 0;
+		l.tail = 0;
+		
+	} else {
+		l.tail = oldtail.prev;
+	}
+	
+	free(oldtail);
+	l.size -= 1;
+	
+	return val;
+}
+
+
+fn intll_peek_front(IntLL l) -> int {
+	
+	if l.size == 0 { exit(1); return -1; }
+	
+	return l.head.value;
+}
+
+fn intll_peek_back(IntLL l) -> int {
+
+	if l.size == 0 { exit(1); return -1; }
+	
+	return l.tail.value;
+}
+
+fn intll_contains(IntLL l, int value) -> bool {
+	
+	return intll_index_of(l, value) >= 0;
+}
+
+fn intll_index_of(IntLL l, int value) -> int {
+	
+	current = l.head;
+	index = 0;
+	
+	while current != 0 {
+	
+		if current.value == value { 
+		
+			return index;
+		}
+		
+		current = current.next;
+		index += 1;
+	}
+	
+	return -1;
+}

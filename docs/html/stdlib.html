@@ -39,6 +39,7 @@
 	<a href="#intstack">intstack.dg</a><br>
 	<a href="#intarray">intarray.dg</a><br>
 	<a href="#intbintree">intbintree.dg</a><br>
+	<a href="#intll">intll.dg</a><br>
 	
 	<a href="#bit">bit.dg</a><br>
 	<a href="#string">string.dg</a><br>
@@ -120,10 +121,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
+		<tr style="color:green;">
 			<td> intset_ctor </td><td> (uint capacity) -> IntSet </td><td>O(1)</td><td>O(1)</td>
 		</tr>
-		<tr>
+		<tr style="color:red;">
 			<td> intset_dtor </td><td> (IntSet s) -> bool </td><td>O(1)</td><td>O(1)</td>
 		</tr>
 		<tr>
@@ -157,10 +158,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
+		<tr style="color:green;">
 			<td> intstack_ctor </td><td> (uint capacity) -> IntStack </td><td> O(1) </td>
 		</tr>
-		<tr>
+		<tr style="color:red;">
 			<td> intstack_dtor </td><td> (IntStack s) -> bool </td><td> O(1) </td>
 		</tr>
 		<tr>
@@ -214,10 +215,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
+		<tr style="color:green;">
 			<td> intbintree_ctor </td><td> () -> IntBinTree </td><td>O(1)</td><td>O(1)</td>
 		</tr>
-		<tr>
+		<tr style="color:red;">
 			<td> intbintree_dtor </td><td> (IntBinTree t) -> bool </td><td>O(size)</td><td>O(size) worst case</td>
 		</tr>
 		<tr>
@@ -235,6 +236,51 @@
 		<tr>
 			<td>intbintree_visit</td><td>(IntBinTree t, ((int)->bool) visitor) -> bool</td><td>O(size) worst case</td><td>O(size) worst case</td>
 		</tr>
+	</tbody>
+	</table>
+	
+	<h3 id="intll">intll.dg</h3>
+	<table class="table-bordered table">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+			<th> Stack Used</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="color:green;">
+			<td>intll_ctor</td><td>() -> IntLL</td><td>O(1)</td><td>O(1)</td>
+		</tr>
+		<tr style="color:red;">
+			<td>intll_dtor</td><td>(IntLL l) -> bool</td><td>O(size)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>intll_push_front</td><td>(IntLL l, int value) -> bool</td><td>O(1)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>intll_push_back</td><td>(IntLL l, int value) -> bool</td><td>O(1)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>intll_pop_front</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>intll_pop_back</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>intll_peek_front</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>intll_peek_back</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>intll_contains</td><td>(IntLL l, int value) -> bool</td><td>O(size)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>intll_index_of</td><td>(IntLL l, int value) -> int</td><td>O(size)</td><td>O(1)</td>
+		</tr>
+		
 	</tbody>
 	</table>
 	
