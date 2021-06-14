@@ -32,6 +32,8 @@ test:
 	$(CALL) structs/MyStructs.dg 
 	$(CALL) structs/Node.dg 
 	$(CALL) switch/switch.dg 
+	$(CALL) file_io/file_io.dg
+	$(CALL) plotting/plotting.dg
 	@echo "[Examples] done"
 
 # currently not working: 

@@ -1,0 +1,28 @@
+
+//this example makes use of gnuplot.
+//http://gnuplot.sourceforge.net/
+
+fn main () -> int {
+
+	f1 = fopen("/tmp/gnuplot-data", "w");
+	
+	float x = 0.0;
+	while x < 6 {
+		float y = (x-3)*(x-2)*(x+3)*(x-4)*(x-8);
+		fprintf(f1, "%f %f\n", x, y);
+		x += 0.02;
+	}
+
+	fclose(f1);
+
+	f = fopen("/tmp/gnuplot-example","w");
+
+	fprintf(f, "set title \"my plot\";");
+	fprintf(f, "plot \"/tmp/gnuplot-data\";");
+
+	fclose(f);
+
+	system("gnuplot -persist /tmp/gnuplot-example");
+
+	return 0;
+}
