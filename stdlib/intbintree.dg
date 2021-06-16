@@ -46,24 +46,8 @@ fn intbintree_contains(IntBinTree t, int key) -> bool {
 
 fn intbintree_remove(IntBinTree t, int key) -> bool {
 
-	if t.root == 0 { return true; }
-	if t.root.key == key {
-		
-		left  = t.root.left;
-		right = t.root.right;
-		
-		t.root.left  = 0;
-		t.root.right = 0;
-		free(t.root);
-		
-		t.root = left;
-		if left == 0 { t.root = right; return true; }
-		IntBinTreeNode r = intbintreenode_findrightmost(left);
-		if r != 0 { r.right = right; }
-		
-		return true;
-	}
-	return intbintreenode_remove(t.root, key);
+	//TODO: implement
+	return true;
 }
 
 fn intbintree_size(IntBinTree t) -> uint {
@@ -123,44 +107,6 @@ fn intbintreenode_contains(IntBinTreeNode t, int key) -> bool {
 	}
 	
 	return false;
-}
-
-fn intbintreenode_remove(IntBinTreeNode t, int key) -> bool {
-
-	if t.left != 0 && t.left.key == key {
-		
-		leftleft  = t.left.left;
-		leftright = t.left.right;
-		
-		t.left.left  = 0;
-		t.left.right = 0;
-		free(t.left);
-		
-		t.left = leftleft;
-		IntBinTreeNode r = intbintreenode_findrightmost(t.left);
-		r.right = leftright;
-	}
-	
-	if t.right != 0 && t.right.key == key {
-		
-		rightleft  = t.right.left;
-		rightright = t.right.right;
-		
-		t.right.left  = 0;
-		t.right.right = 0;
-		free(t.right);
-		
-		t.right = rightright;
-		IntBinTreeNode r = intbintreenode_findleftmost(t.right);
-		r.left = rightleft;
-	}
-	
-	switch compare(key, t.key) {
-		case -1 { intbintreenode_remove(t.left, key); }
-		case  1 { intbintreenode_remove(t.right, key); }
-	}
-	
-	return true;
 }
 
 fn intbintreenode_size(IntBinTreeNode t) -> uint {
