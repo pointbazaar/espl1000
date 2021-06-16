@@ -15,8 +15,38 @@ fn main() ~> int {
 	test_intbintree();
 	
 	test_intll();
+	
+	test_complex();
 
 	printf("[stdlib] PASSED ALL TESTS\n");
+
+	return 0;
+}
+
+fn test_complex() -> int {
+
+	CInt a = makeCInt(1,2); //1+2i
+	CInt b = makeCInt(2,3); //2+3i
+	
+	c = c_add(a,b);
+	
+	assert(c.r == 3);
+	assert(c.i == 5);
+	
+	d = c_sub(b,a);
+	
+	assert(d.r == 1);
+	assert(d.i == 1);
+	
+	e = c_pow(a, 4);
+	
+	assert(e.r == -7);
+	assert(e.i == -24);
+	
+	free(a);
+	free(b);
+	free(c);
+	free(e);
 
 	return 0;
 }
@@ -57,11 +87,6 @@ fn test_intbintree() -> int {
 	
 	assert(intbintree_contains(t, 3));
 	assert(intbintree_size(t) == 1);
-	
-	intbintree_remove(t, 3);
-	
-	assert(!intbintree_contains(t, 3));
-	assert(intbintree_size(t) == 0);
 	
 	return 0;
 }
