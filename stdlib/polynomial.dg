@@ -111,7 +111,7 @@ fn poly_print(Poly p) -> bool {
 	return true;
 }
 
-fn poly_eval(Poly p, int x) -> float {
+fn poly_eval(Poly p, float x) -> float {
 
 	float res = 0;
 	for i in 0 .. p.n - 1 {
