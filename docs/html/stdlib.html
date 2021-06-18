@@ -40,6 +40,7 @@
 	<a href="#intarray">intarray.dg</a><br>
 	<a href="#intbintree">intbintree.dg</a><br>
 	<a href="#intll">intll.dg</a><br>
+	<a href="#polynomial">polynomial.dg</a><br>
 	
 	<a href="#bit">bit.dg</a><br>
 	<a href="#string">string.dg</a><br>
@@ -280,7 +281,50 @@
 		<tr>
 			<td>intll_index_of</td><td>(IntLL l, int value) -> int</td><td>O(size)</td><td>O(1)</td>
 		</tr>
-		
+	</tbody>
+	</table>
+	
+	<h3 id="polynomial">polynomial.dg</h3>
+	<table class="table-bordered table">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+			<th> Stack Used</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="color:green;">
+			<td>poly_ctor</td><td>(uint count) -> Poly</td><td>O(1)</td><td>O(1)</td>
+		</tr>
+		<tr style="color:red;">
+			<td>poly_dtor</td><td>(Poly p) -> bool</td><td>O(1)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>poly_add</td><td>(Poly a, Poly b) -> Poly</td><td>O(n)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>poly_sub</td><td>(Poly a, Poly b) -> Poly</td><td>O(n)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>poly_mul</td><td>(Poly a, Poly b) -> Poly</td><td>O(n^2)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>poly_deg</td><td>(Poly p) -> uint</td><td>O(n)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>poly_print</td><td>(Poly p) -> bool</td><td>O(n)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>poly_eval</td><td>(Poly p, int x) -> float</td><td>O(n)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>poly_derivative</td><td>(Poly p) -> Poly</td><td>O(n)</td><td>O(1)</td>
+		</tr>
+		<tr>
+			<td>poly_integral</td><td>(Poly p) -> Poly</td><td>O(n)</td><td>O(1)</td>
+		</tr>
 	</tbody>
 	</table>
 	
