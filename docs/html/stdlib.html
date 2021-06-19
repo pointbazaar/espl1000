@@ -44,7 +44,6 @@
 	<a href="#matrix">matrix.dg</a><br>
 	
 	<a href="#bit">bit.dg</a><br>
-	<a href="#string">string.dg</a><br>
 
 	<hr>
 	<h3 id="math">math.dg (extends <a href="https://www2.hs-fulda.de/~klingebiel/c-stdlib/math.htm">math.h</a>)</h3>
@@ -55,38 +54,40 @@
 			<th> Type </th>
 			<th> Runtime </th>
 			<th> Stack Used </th>
+			<th> Heap Use </th>
+			<th> Exceptions </th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td> sign </td><td> (int n) -> int </td><td> O(1) </td><td>O(1)</td>
+			<td> sign </td><td> (int n) -> int </td><td> O(1) </td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> ipow </td><td>(int base, uint power) -> int</td><td> O(power) </td><td>O(1)</td>
+			<td> ipow </td><td>(int base, uint power) -> int</td><td> O(power) </td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> faculty </td><td> (uint n) -> uint </td><td> O(n) </td><td>O(1)</td>
+			<td> faculty </td><td> (uint n) -> uint </td><td> O(n) </td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td>max </td><td> (int a, int b) -> int </td><td> O(1) </td><td>O(1)</td>
+			<td>max </td><td> (int a, int b) -> int </td><td> O(1) </td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> min </td><td> (int a, int b) -> int </td><td> O(1) </td><td>O(1)</td>
+			<td> min </td><td> (int a, int b) -> int </td><td> O(1) </td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> gcd </td><td> (int a, int b) -> int </td><td> ? </td><td>?</td>
+			<td> gcd </td><td> (int a, int b) -> int </td><td> ? </td><td>?</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> lcm </td><td> (int a, int b) -> int </td><td> ? </td><td>?</td>
+			<td> lcm </td><td> (int a, int b) -> int </td><td> ? </td><td>?</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> fib </td><td> (uint64 n) -> uint64 </td><td> O(n) </td><td>O(1)</td>
+			<td> fib </td><td> (uint64 n) -> uint64 </td><td> O(n) </td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> iseven </td><td> (int n) -> bool </td><td> O(1) </td><td>O(1)</td>
+			<td> iseven </td><td> (int n) -> bool </td><td> O(1) </td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> isodd </td><td> (int n) -> bool </td><td> O(1) </td><td>O(1)</td>
+			<td> isodd </td><td> (int n) -> bool </td><td> O(1) </td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 	</tbody>
 	</table>
@@ -198,20 +199,22 @@
 			<th> Type </th>
 			<th> Runtime </th>
 			<th> Stack Used </th>
+			<th> Heap Used </th>
+			<th> Exceptions </th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td> intarray_sum </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>O(1)</td>
+			<td> intarray_sum </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> intarray_average </td><td> ([int] arr, uint size) -> float </td><td> O(size) </td><td>O(1)</td>
+			<td> intarray_average </td><td> ([int] arr, uint size) -> float </td><td> O(size) </td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> intarray_min </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>O(1)</td>
+			<td> intarray_min </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> intarray_max </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>O(1)</td>
+			<td> intarray_max </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 	</tbody>
 	</table>
@@ -224,29 +227,28 @@
 			<th> Type </th>
 			<th> Runtime </th>
 			<th> Stack Used</th>
+			<th> Heap Use</th>
+			<th> Exceptions </th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr style="color:green;">
-			<td> intbintree_ctor </td><td> () -> IntBinTree </td><td>O(1)</td><td>O(1)</td>
+			<td> intbintree_ctor </td><td> () -> IntBinTree </td><td>O(1)</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
 		</tr>
 		<tr style="color:red;">
-			<td> intbintree_dtor </td><td> (IntBinTree t) -> bool </td><td>O(size)</td><td>O(size) worst case</td>
+			<td> intbintree_dtor </td><td> (IntBinTree t) -> bool </td><td>O(size)</td><td>O(size) worst case</td><td>-O(size)</td><td>Double Free</td>
 		</tr>
 		<tr>
-			<td> intbintree_insert </td><td> (IntBinTree t, int key) -> int </td><td>O(size) worst case</td><td>O(1)</td>
+			<td> intbintree_insert </td><td> (IntBinTree t, int key) -> int </td><td>O(size) worst case</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td> intbintree_contains </td><td>(IntBinTree t, int key) -> bool</td><td>O(size) worst case</td><td>O(1)</td>
+			<td> intbintree_contains </td><td>(IntBinTree t, int key) -> bool</td><td>O(size) worst case</td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td>intbintree_remove</td><td>(IntBinTree t, int key) -> bool</td><td>O(size) worst case</td><td>O(size) worst case</td>
+			<td>intbintree_size</td><td>(IntBinTree t) -> bool</td><td>O(size)</td><td>O(size) worst case</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td>intbintree_size</td><td>(IntBinTree t) -> bool</td><td>O(size)</td><td>O(size) worst case</td>
-		</tr>
-		<tr>
-			<td>intbintree_visit</td><td>(IntBinTree t, ((int)->bool) visitor) -> bool</td><td>O(size) worst case</td><td>O(size) worst case</td>
+			<td>intbintree_visit</td><td>(IntBinTree t, ((int)->bool) visitor) -> bool</td><td>O(size) worst case</td><td>O(size) worst case</td><td>-</td><td>-</td>
 		</tr>
 	</tbody>
 	</table>
@@ -399,12 +401,7 @@
 		</td>
 	</tbody>
 	</table>
-	
-	<h3 id="string">string.dg (extends <a href="https://www2.hs-fulda.de/~klingebiel/c-stdlib/string.htm">string.h</a>)</h3>
-	
-	<p> TODO </p>
 
 </div>
-
 </body>
 </html>

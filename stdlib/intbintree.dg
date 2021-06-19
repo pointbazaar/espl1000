@@ -44,12 +44,6 @@ fn intbintree_contains(IntBinTree t, int key) -> bool {
 	return intbintreenode_contains(t.root, key);
 }
 
-fn intbintree_remove(IntBinTree t, int key) -> bool {
-
-	//TODO: implement
-	return true;
-}
-
 fn intbintree_size(IntBinTree t) -> uint {
 
 	if t.root == 0 { return 0; }
