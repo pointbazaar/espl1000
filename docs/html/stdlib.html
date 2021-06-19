@@ -41,6 +41,7 @@
 	<a href="#intbintree">intbintree.dg</a><br>
 	<a href="#intll">intll.dg</a><br>
 	<a href="#polynomial">polynomial.dg</a><br>
+	<a href="#matrix">matrix.dg</a><br>
 	
 	<a href="#bit">bit.dg</a><br>
 	<a href="#string">string.dg</a><br>
@@ -53,38 +54,39 @@
 			<th> Name </th>
 			<th> Type </th>
 			<th> Runtime </th>
+			<th> Stack Used </th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td> sign </td><td> (int n) -> int </td><td> O(1) </td>
+			<td> sign </td><td> (int n) -> int </td><td> O(1) </td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> ipow </td><td>(int base, uint power) -> int</td><td> O(power) </td>
+			<td> ipow </td><td>(int base, uint power) -> int</td><td> O(power) </td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> faculty </td><td> (uint n) -> uint </td><td> O(n) </td>
+			<td> faculty </td><td> (uint n) -> uint </td><td> O(n) </td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td>max </td><td> (int a, int b) -> int </td><td> O(1) </td>
+			<td>max </td><td> (int a, int b) -> int </td><td> O(1) </td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> min </td><td> (int a, int b) -> int </td><td> O(1) </td>
+			<td> min </td><td> (int a, int b) -> int </td><td> O(1) </td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> gcd </td><td> (int a, int b) -> int </td><td> ? </td>
+			<td> gcd </td><td> (int a, int b) -> int </td><td> ? </td><td>?</td>
 		</tr>
 		<tr>
-			<td> lcm </td><td> (int a, int b) -> int </td><td> ? </td>
+			<td> lcm </td><td> (int a, int b) -> int </td><td> ? </td><td>?</td>
 		</tr>
 		<tr>
-			<td> fib </td><td> (uint64 n) -> uint64 </td><td> O(n) </td>
+			<td> fib </td><td> (uint64 n) -> uint64 </td><td> O(n) </td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> iseven </td><td> (int n) -> bool </td><td> O(1) </td>
+			<td> iseven </td><td> (int n) -> bool </td><td> O(1) </td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> isodd </td><td> (int n) -> bool </td><td> O(1) </td>
+			<td> isodd </td><td> (int n) -> bool </td><td> O(1) </td><td>O(1)</td>
 		</tr>
 	</tbody>
 	</table>
@@ -156,26 +158,28 @@
 			<th> Name </th>
 			<th> Type </th>
 			<th> Runtime </th>
+			<th> Heap Use </th>
+			<th> Exceptions </th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr style="color:green;">
-			<td> intstack_ctor </td><td> (uint capacity) -> IntStack </td><td> O(1) </td>
+			<td> intstack_ctor </td><td> (uint capacity) -> IntStack </td><td> O(1) </td><td>+O(capacity)</td><td>OOM</td>
 		</tr>
 		<tr style="color:red;">
-			<td> intstack_dtor </td><td> (IntStack s) -> bool </td><td> O(1) </td>
+			<td> intstack_dtor </td><td> (IntStack s) -> bool </td><td> O(1) </td><td>-O(capacity)</td><td>Double Free</td>
 		</tr>
 		<tr>
-			<td> intstack_size </td><td> (IntStack s) -> uint </td><td> O(1) </td>
+			<td> intstack_size </td><td> (IntStack s) -> uint </td><td> O(1) </td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> intstack_push </td><td> (IntStack s, int x) -> int </td><td> O(1) </td>
+			<td> intstack_push </td><td> (IntStack s, int x) -> int </td><td>O(1)</td><td>-</td><td>stack overflow</td>
 		</tr>
 		<tr>
-			<td> intstack_peek </td><td> (IntStack s) -> int </td><td> O(1) </td>
+			<td> intstack_peek </td><td> (IntStack s) -> int </td><td> O(1) </td><td>-</td><td>stack empty</td>
 		</tr>
 		<tr>
-			<td> intstack_pop </td><td> (IntStack s) -> int </td><td> O(1) </td>
+			<td> intstack_pop </td><td> (IntStack s) -> int </td><td> O(1) </td><td>-</td><td>stack empty</td>
 		</tr>
 	</tbody>
 	</table>
@@ -248,38 +252,40 @@
 			<th> Type </th>
 			<th> Runtime </th>
 			<th> Stack Used</th>
+			<th> Heap Use </th>
+			<th> Exceptions </th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr style="color:green;">
-			<td>intll_ctor</td><td>() -> IntLL</td><td>O(1)</td><td>O(1)</td>
+			<td>intll_ctor</td><td>() -> IntLL</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
 		</tr>
 		<tr style="color:red;">
-			<td>intll_dtor</td><td>(IntLL l) -> bool</td><td>O(size)</td><td>O(1)</td>
+			<td>intll_dtor</td><td>(IntLL l) -> bool</td><td>O(size)</td><td>O(1)</td><td>-O(l.size)</td><td>Double Free</td>
 		</tr>
 		<tr>
-			<td>intll_push_front</td><td>(IntLL l, int value) -> bool</td><td>O(1)</td><td>O(1)</td>
+			<td>intll_push_front</td><td>(IntLL l, int value) -> bool</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>intll_push_back</td><td>(IntLL l, int value) -> bool</td><td>O(1)</td><td>O(1)</td>
+			<td>intll_push_back</td><td>(IntLL l, int value) -> bool</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>intll_pop_front</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td>
+			<td>intll_pop_front</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td><td>-O(1)</td><td>l empty</td>
 		</tr>
 		<tr>
-			<td>intll_pop_back</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td>
+			<td>intll_pop_back</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td><td>-O(1)</td><td>l empty</td>
 		</tr>
 		<tr>
-			<td>intll_peek_front</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td>
+			<td>intll_peek_front</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td><td>-</td><td>l empty</td>
 		</tr>
 		<tr>
-			<td>intll_peek_back</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td>
+			<td>intll_peek_back</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td><td>-</td><td>l empty</td>
 		</tr>
 		<tr>
-			<td>intll_contains</td><td>(IntLL l, int value) -> bool</td><td>O(size)</td><td>O(1)</td>
+			<td>intll_contains</td><td>(IntLL l, int value) -> bool</td><td>O(size)</td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td>intll_index_of</td><td>(IntLL l, int value) -> int</td><td>O(size)</td><td>O(1)</td>
+			<td>intll_index_of</td><td>(IntLL l, int value) -> int</td><td>O(size)</td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 	</tbody>
 	</table>
@@ -292,38 +298,80 @@
 			<th> Type </th>
 			<th> Runtime </th>
 			<th> Stack Used</th>
+			<th> Heap Use </th>
+			<th> Exceptions </th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr style="color:green;">
-			<td>poly_ctor</td><td>(uint count) -> Poly</td><td>O(1)</td><td>O(1)</td>
+			<td>poly_ctor</td><td>(uint n) -> Poly</td><td>O(1)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 		<tr style="color:red;">
-			<td>poly_dtor</td><td>(Poly p) -> bool</td><td>O(1)</td><td>O(1)</td>
+			<td>poly_dtor</td><td>(Poly p) -> bool</td><td>O(1)</td><td>O(1)</td><td>-O(p.n)</td><td>Double Free</td>
 		</tr>
 		<tr>
-			<td>poly_add</td><td>(Poly a, Poly b) -> Poly</td><td>O(n)</td><td>O(1)</td>
+			<td>poly_add</td><td>(Poly a, Poly b) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(p.n)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>poly_sub</td><td>(Poly a, Poly b) -> Poly</td><td>O(n)</td><td>O(1)</td>
+			<td>poly_sub</td><td>(Poly a, Poly b) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(p.n)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>poly_mul</td><td>(Poly a, Poly b) -> Poly</td><td>O(n^2)</td><td>O(1)</td>
+			<td>poly_mul</td><td>(Poly a, Poly b) -> Poly</td><td>O(n^2)</td><td>O(1)</td><td>+O(p.n)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>poly_deg</td><td>(Poly p) -> uint</td><td>O(n)</td><td>O(1)</td>
+			<td>poly_deg</td><td>(Poly p) -> uint</td><td>O(n)</td><td>O(1)</td><td> - </td><td> - </td>
 		</tr>
 		<tr>
-			<td>poly_print</td><td>(Poly p) -> bool</td><td>O(n)</td><td>O(1)</td>
+			<td>poly_print</td><td>(Poly p) -> bool</td><td>O(n)</td><td>O(1)</td><td> - </td><td> - </td>
 		</tr>
 		<tr>
-			<td>poly_eval</td><td>(Poly p, float x) -> float</td><td>O(n)</td><td>O(1)</td>
+			<td>poly_eval</td><td>(Poly p, float x) -> float</td><td>O(n)</td><td>O(1)</td><td> - </td><td> - </td>
 		</tr>
 		<tr>
-			<td>poly_derivative</td><td>(Poly p) -> Poly</td><td>O(n)</td><td>O(1)</td>
+			<td>poly_derivative</td><td>(Poly p) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(p.n)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>poly_integral</td><td>(Poly p) -> Poly</td><td>O(n)</td><td>O(1)</td>
+			<td>poly_integral</td><td>(Poly p) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(p.n)</td><td>OOM</td>
+		</tr>
+	</tbody>
+	</table>
+	
+	<h3 id="matrix">matrix.dg</h3>
+	<table class="table-bordered table">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+			<th> Stack Used</th>
+			<th> Heap Use</th>
+			<th> Exceptions </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="color:green;">
+			<td>matrix_ctor</td><td>(uint nrows, uint ncols) -> Matrix</td><td>O(nrows)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td>OOM</td>
+		</tr>
+		<tr style="color:red;">
+			<td>matrix_dtor</td><td>(Matrix a) -> bool</td><td>O(a.nrows)</td><td>O(1)</td><td>-O(a.nrows*a.ncols)</td><td>Double Free</td>
+		</tr>
+		<tr>
+			<td>matrix_add</td><td>(Matrix a, Matrix b) -> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(a.nrows*a.ncols)</td><td>OOM, dim mismatch</td>
+		</tr>
+		<tr>
+			<td>matrix_sub</td><td>(Matrix a, Matrix b) -> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(a.nrows*a.ncols)</td><td>OOM, dim mismatch</td>
+		</tr>
+		<tr>
+			<td>matrix_scale</td><td>(Matrix a, float r) -> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(a.nrows*a.ncols)</td><td>OOM</td>
+		</tr>
+		<tr>
+			<td>matrix_mul</td><td>(Matrix a, Matrix b) -> Matrix</td><td>O(a.nrows*b.ncols*a.ncols)</td><td>O(1)</td><td>+O(a.nrows*a.ncols)</td><td>OOM, dim mismatch</td>
+		</tr>
+		<tr>
+			<td>matrix_submatrix</td><td>(Matrix a, uint row, uint col) -> Matrix</td><td>O(a.nrows*a.ncols)</td><td>O(1)</td><td>+O((a.nrows-1)*(a.ncols-1))</td><td>OOM</td>
+		</tr>
+		<tr>
+			<td>matrix_det</td><td>(Matrix a) -> float</td><td>TODO</td><td>O(max(a.nrows, a.ncols))</td><td> - </td><td>OOM</td>
 		</tr>
 	</tbody>
 	</table>

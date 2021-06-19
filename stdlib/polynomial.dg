@@ -7,10 +7,10 @@ struct Poly {
 	uint16 n;
 }
 
-fn poly_ctor(uint count) -> Poly{
+fn poly_ctor(uint n) -> Poly{
 	res = makePoly(0,0);
-	res.n = count;
-	res.coeff = malloc(8*count);
+	res.n = n;
+	res.coeff = malloc(8*n);
 	return res;
 }
 

@@ -4,7 +4,8 @@ SOURCES :=  test.dg \
 	string.dg \
 	intset.dg intstack.dg intarray.dg intbintree.dg intll.dg \
 	complex.dg \
-	polynomial.dg
+	polynomial.dg \
+	matrix.dg
 
 test: $(SOURCES)
 	sd -clean -no_typecheck -g $(SOURCES)

@@ -27,7 +27,12 @@ fn faculty (uint n) -> uint {
 	if( n <= 1 ){ 
 		return 1; 
 	}
-	return (n*faculty(n-1));
+	uint res = 1;
+	
+	for k in 1 .. n {
+		res *= k;
+	}
+	return res;
 }
 
 fn max (int a, int b) -> int {
