@@ -100,20 +100,22 @@
 			<th> Type </th>
 			<th> Runtime </th>
 			<th> Stack Used </th>
+			<th> Heap Use </th>
+			<th> Exceptions </th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td> isprime </td><td> (uint64 n) -> bool </td><td> O(n) </td><td>O(1)</td>
+			<td> isprime </td><td> (uint64 n) -> bool </td><td> O(n) </td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> nprimes </td><td> (uint n) -> [unit32] </td><td> O(n^2) </td><td>O(1)</td>
+			<td> nprimes </td><td> (uint n) -> [unit32] </td><td> O(n^2) </td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 	</tbody>
 	</table>
 	
 	<h3 id="intset">intset.dg</h3>
-	
+	<span>(growing capacity)</span>
 	<table class="table-bordered table">
 	<thead>
 		<tr>
@@ -121,65 +123,69 @@
 			<th> Type </th>
 			<th> Runtime </th>
 			<th> Stack Used</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr style="color:green;">
-			<td> intset_ctor </td><td> (uint capacity) -> IntSet </td><td>O(1)</td><td>O(1)</td>
-		</tr>
-		<tr style="color:red;">
-			<td> intset_dtor </td><td> (IntSet s) -> bool </td><td>O(1)</td><td>O(1)</td>
-		</tr>
-		<tr>
-			<td> intset_size </td><td> (IntSet s) -> uint </td><td>O(1)</td><td>O(1)</td>
-		</tr>
-		<tr>
-			<td> intset_contains </td><td> (IntSet s, int x) -> bool </td><td>O(s.size)</td><td>O(1)</td>
-		</tr>
-		<tr>
-			<td> intset_insert </td><td> (IntSet s, int x) -> int </td><td>O(s.size)</td><td>O(1)</td>
-		</tr>
-		<tr>
-			<td> intset_remove </td><td> (IntSet s, int x) -> int </td><td>O(s.size)</td><td>O(1)</td>
-		</tr>
-		<tr>
-			<td> intset_union </td><td> (IntSet a, IntSet b) -> IntSet </td><td> O(a.size^2 + b.size^2) </td><td>O(1)</td>
-		</tr>
-		<tr>
-			<td> intset_cut </td><td> (IntSet a, IntSet b) -> IntSet </td><td> O(max(a.size, b.size)^2) </td><td>O(1)</td>
-		</tr>
-	</tbody>
-	</table>
-	
-	<h3 id="intstack">intstack.dg</h3>
-	<table class="table-bordered table">
-	<thead>
-		<tr>
-			<th> Name </th>
-			<th> Type </th>
-			<th> Runtime </th>
 			<th> Heap Use </th>
 			<th> Exceptions </th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr style="color:green;">
-			<td> intstack_ctor </td><td> (uint capacity) -> IntStack </td><td> O(1) </td><td>+O(capacity)</td><td>OOM</td>
+			<td> intset_ctor </td><td> (uint capacity) -> IntSet </td><td>O(1)</td><td>O(1)</td><td>+O(capacity)</td><td>OOM</td>
 		</tr>
 		<tr style="color:red;">
-			<td> intstack_dtor </td><td> (IntStack s) -> bool </td><td> O(1) </td><td>-O(capacity)</td><td>Double Free</td>
+			<td> intset_dtor </td><td> (IntSet s) -> bool </td><td>O(1)</td><td>O(1)</td><td>-O(s.capacity)</td><td>Double Free</td>
 		</tr>
 		<tr>
-			<td> intstack_size </td><td> (IntStack s) -> uint </td><td> O(1) </td><td>-</td><td>-</td>
+			<td> intset_size </td><td> (IntSet s) -> uint </td><td>O(1)</td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> intstack_push </td><td> (IntStack s, int x) -> int </td><td>O(1)</td><td>-</td><td>stack overflow</td>
+			<td> intset_contains </td><td> (IntSet s, int x) -> bool </td><td>O(s.size)</td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> intstack_peek </td><td> (IntStack s) -> int </td><td> O(1) </td><td>-</td><td>stack empty</td>
+			<td> intset_insert </td><td> (IntSet s, int x) -> int </td><td>O(s.size)</td><td>O(1)</td><td>+O(s.capacity)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td> intstack_pop </td><td> (IntStack s) -> int </td><td> O(1) </td><td>-</td><td>stack empty</td>
+			<td> intset_remove </td><td> (IntSet s, int x) -> int </td><td>O(s.size)</td><td>O(1)</td><td>-</td><td>-</td>
+		</tr>
+		<tr>
+			<td> intset_union </td><td> (IntSet a, IntSet b) -> IntSet </td><td> O(a.size^2 + b.size^2) </td><td>O(1)</td><td>+O(a.capacity + b.capacity)</td><td>OOM</td>
+		</tr>
+		<tr>
+			<td> intset_cut </td><td> (IntSet a, IntSet b) -> IntSet </td><td> O(max(a.size, b.size)^2) </td><td>O(1)</td><td>+O(min(a.capacity, b.capacity))</td><td>OOM</td>
+		</tr>
+	</tbody>
+	</table>
+	
+	<h3 id="intstack">intstack.dg</h3>
+	<span>(fixed capacity)</span>
+	<table class="table-bordered table">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+			<th> Stack Used </th>
+			<th> Heap Use </th>
+			<th> Exceptions </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="color:green;">
+			<td> intstack_ctor </td><td> (uint capacity) -> IntStack </td><td> O(1) </td><td>O(1)</td><td>+O(capacity)</td><td>OOM</td>
+		</tr>
+		<tr style="color:red;">
+			<td> intstack_dtor </td><td> (IntStack s) -> bool </td><td> O(1) </td><td>O(1)</td><td>-O(capacity)</td><td>Double Free</td>
+		</tr>
+		<tr>
+			<td> intstack_size </td><td> (IntStack s) -> uint </td><td> O(1) </td><td>O(1)</td><td>-</td><td>-</td>
+		</tr>
+		<tr>
+			<td> intstack_push </td><td> (IntStack s, int x) -> int </td><td>O(1)</td><td>O(1)</td><td>-</td><td>stack overflow</td>
+		</tr>
+		<tr>
+			<td> intstack_peek </td><td> (IntStack s) -> int </td><td> O(1) </td><td>O(1)</td><td>-</td><td>stack empty</td>
+		</tr>
+		<tr>
+			<td> intstack_pop </td><td> (IntStack s) -> int </td><td> O(1) </td><td>O(1)</td><td>-</td><td>stack empty</td>
 		</tr>
 	</tbody>
 	</table>
@@ -191,20 +197,21 @@
 			<th> Name </th>
 			<th> Type </th>
 			<th> Runtime </th>
+			<th> Stack Used </th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td> intarray_sum </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td>
+			<td> intarray_sum </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> intarray_average </td><td> ([int] arr, uint size) -> float </td><td> O(size) </td>
+			<td> intarray_average </td><td> ([int] arr, uint size) -> float </td><td> O(size) </td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> intarray_min </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td>
+			<td> intarray_min </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>O(1)</td>
 		</tr>
 		<tr>
-			<td> intarray_max </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td>
+			<td> intarray_max </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>O(1)</td>
 		</tr>
 	</tbody>
 	</table>
