@@ -36,7 +36,7 @@
 //counter for generating labels
 unsigned int label_count = 0;
 
-static void transpileAST(struct AST* ast, struct Ctx* ctx);
+static void transpileAST(struct AST* ast, struct Ctx* ctx, char* c_filename, char* h_filename);
 
 static void fill_tables(struct AST* ast, struct Ctx* ctx);
 
@@ -51,7 +51,7 @@ static void ns_transpile_fwd(struct Namespace* ns, struct Ctx* ctx);
 static void ns_transpile_rest(struct Namespace* ns, struct Ctx* ctx);
 // --------------------------------------------------------
 
-bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags){
+bool transpileAndWrite(char* c_filename, char* h_filename, struct AST* ast, struct Flags* flags){
 	
 	if(flags->debug){ printf("[Transpiler] transpileAndWrite\n"); }
 
@@ -63,11 +63,20 @@ bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags){
 	ctx->flags = flags;
 	
 	ctx->indentLevel = 0;
+	ctx->file = NULL;
+	ctx->c_file = NULL;
+	ctx->header_file = NULL;
 
-	ctx->file = fopen(filename, "w");
+	ctx->c_file      = fopen(c_filename, "w");
+	if(flags->emit_headers){
+		ctx->header_file = fopen(h_filename, "w");
+	}
 	
-	if(ctx->file == NULL){
-		printf("could not open output file: %s\n", filename);
+	if(ctx->c_file == NULL || (ctx->header_file == NULL && flags->emit_headers)){
+		
+		printf("could not open output file: ");
+		
+		printf("%s\n", (ctx->c_file == NULL)?c_filename:h_filename);
 		
 		freeST(ctx->tables);
 		free(ctx);
@@ -75,9 +84,10 @@ bool transpileAndWrite(char* filename, struct AST* ast, struct Flags* flags){
 		return false;
 	}
 	
-	transpileAST(ast, ctx);
+	transpileAST(ast, ctx, c_filename, h_filename);
 
-	fclose(ctx->file);
+	fclose(ctx->c_file);
+	if(flags->emit_headers){ fclose(ctx->header_file); }
 	
 	freeST(ctx->tables);
 	
@@ -110,18 +120,24 @@ static void fill_tables(struct AST* ast, struct Ctx* ctx){
 	}
 }
 
-static void transpileAST(struct AST* ast, struct Ctx* ctx){
+static void transpileAST(struct AST* ast, struct Ctx* ctx, char* c_filename, char* h_filename){
+	
+	ctx->file = ctx->c_file; //direct output to c file
 	
 	if(!(ctx->flags->avr)){
 		
-		fprintf(ctx->file, "#include <stdlib.h>\n");
-		fprintf(ctx->file, "#include <stdio.h>\n");
-		fprintf(ctx->file, "#include <stdbool.h>\n");
-		fprintf(ctx->file, "#include <string.h>\n");
-		fprintf(ctx->file, "#include <math.h>\n");
-		fprintf(ctx->file, "#include <inttypes.h>\n");
-		fprintf(ctx->file, "#include <assert.h>\n");
-		fprintf(ctx->file, "#include <pthread.h>\n");
+		fprintf(ctx->c_file, "#include <stdlib.h>\n");
+		fprintf(ctx->c_file, "#include <stdio.h>\n");
+		fprintf(ctx->c_file, "#include <stdbool.h>\n");
+		fprintf(ctx->c_file, "#include <string.h>\n");
+		fprintf(ctx->c_file, "#include <math.h>\n");
+		fprintf(ctx->c_file, "#include <inttypes.h>\n");
+		fprintf(ctx->c_file, "#include <assert.h>\n");
+		fprintf(ctx->c_file, "#include <pthread.h>\n");
+	}
+	
+	if(ctx->flags->emit_headers){
+		fprintf(ctx->c_file, "#include \"%s\"\n", h_filename);
 	}
 	
 	fill_tables(ast, ctx);
@@ -147,11 +163,15 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx){
 		sst_print(ctx->tables->sst);
 	}
 	
+	if(ctx->flags->emit_headers){ ctx->file = ctx->header_file; }
+	
 	for(int i=0; i < ast->count_namespaces; i++)
 	{ ns_transpile_fwd(ast->namespaces[i], ctx); }
 	
 	for(int i=0; i < ast->count_namespaces; i++)
 	{ ns_transpile_struct_decls(ast->namespaces[i], ctx); }
+	
+	ctx->file = ctx->c_file;
 	
 	for(int i=0; i < ast->count_namespaces; i++)
 	{ ns_transpile_rest(ast->namespaces[i], ctx); }

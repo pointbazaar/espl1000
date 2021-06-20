@@ -15,28 +15,21 @@ char* FNAME_DEFAULT = "test.dg";
 
 int sourceToStatus(char* src, bool debug){
 	
-	if(debug){ printf("sourceToStatus(...)\n"); }
-	
 	clean();
-	
 	
 	FILE* file = fopen(FNAME_DEFAULT,"w");
 	
 	if(file == NULL){
 		printf("could not open output file %s\n", FNAME_DEFAULT);
-		
 		return -1;
 	}
 	
 	fprintf(file, "%s", src);
 	fclose(file);
 	
-	//transpile it
-	struct Flags* flags = makeFlags(0, NULL);
+	struct Flags* flags = makeFlags2();
 	flags->debug = debug;
-	
 	flags->count_filenames = 1;
-	flags->filenames = malloc(sizeof(char*)*1);
 	flags->filenames[0] = FNAME_DEFAULT;
 	
 	transpileAndCompile(flags);
@@ -64,5 +57,6 @@ void clean(){
 	system("rm -f .test.dg.tokens");
 	system("rm -f .test.dg.ast");
 	system("rm -f test.c");
+	system("rm -f test.h");
 	system("rm -f a.out");
 }

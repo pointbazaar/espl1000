@@ -41,6 +41,21 @@ char* make_c_filename(char* filename){
 	return fname_out;
 }
 
+
+char* make_h_filename(char* filename){
+
+	char* fname_out = malloc(100);
+
+	strcpy(fname_out, filename);
+	
+	//remove the '.dg'
+	fname_out[strlen(fname_out)-3] = '\0';
+	
+	strcat(fname_out, ".h");
+	
+	return fname_out;
+}
+
 char* make_gcc_cmd(struct Flags* flags, char* fname_out){
 	
 	char* cmd_gcc = malloc(500);

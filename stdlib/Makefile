@@ -11,4 +11,4 @@ test: $(SOURCES)
 	./a.out
 
 clean:
-	rm -f a.out test.c
+	rm -f a.out test.c test.h

@@ -13,6 +13,7 @@ struct Flags {
 	bool version;
 	bool clean;
 	bool no_typecheck;
+	bool emit_headers; //-h
 	
 	bool debug_symbols; //-g
 	bool werror; //-Werror
@@ -26,6 +27,7 @@ struct Flags {
 };
 
 struct Flags* makeFlags(int argc, char** argv);
+struct Flags* makeFlags2();
 
 void freeFlags(struct Flags* flags);
 

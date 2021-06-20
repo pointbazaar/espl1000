@@ -12,6 +12,21 @@ static void make_flags_inner(struct Flags* flags, char* arg);
 
 struct Flags* makeFlags(int argc, char** argv){
 	
+	struct Flags* flags = makeFlags2();
+	
+	for(int i=1; i < argc; i++){
+		make_flags_inner(flags, argv[i]);
+	}
+	
+	if(flags->help || flags->version){ return flags; }
+	
+	validate_flags(flags);
+	
+	return flags;
+}
+
+struct Flags* makeFlags2(){
+	
 	struct Flags* flags = malloc(sizeof(struct Flags));
 	
 	flags->debug 	= false;
@@ -21,26 +36,14 @@ struct Flags* makeFlags(int argc, char** argv){
 	flags->version 	= false;
 	flags->clean 	= false;
 	flags->no_typecheck  = false;
+	flags->emit_headers  = false;
 	
 	flags->debug_symbols = false;
-	flags->werror = false;
+	flags->werror        = false;
 	
 	flags->count_filenames    = 0;
 	flags->capacity_filenames = 100;
 	flags->filenames = malloc(sizeof(char*)*100);
-	
-	for(int i=1; i < argc; i++){
-		
-		char* arg = argv[i];
-		
-		make_flags_inner(flags, arg);
-	}
-	
-	if(flags->help || flags->version){ return flags; }
-	
-	if(argc == 0){ return flags; }
-	
-	validate_flags(flags);
 	
 	return flags;
 }
@@ -87,6 +90,10 @@ static void make_flags_inner(struct Flags* flags, char* arg){
 	if(strcmp(arg, "-no_typecheck") == 0){
 		flags->no_typecheck = true;
 		return;
+	}
+	
+	if(strcmp(arg, "-h") == 0){
+		flags->emit_headers = true; return;
 	}
 	
 	if(strcmp(arg, "-g") == 0){

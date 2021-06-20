@@ -4,6 +4,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 - implement a simple Typechecker
+- implement '-h' flag to emit a .h (header) file
 
 ## [v0.2.1]
 - Dead Code Analysis is now supported. For now, this does not 

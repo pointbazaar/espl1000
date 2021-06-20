@@ -17,6 +17,7 @@ void sd_print_help(){
 	printf(" -dumpdot   create a .dot file with the call graph (not yet implemented)\n");
 	printf(" -astdot    create a .dot file with the AST tree (not yet implemented)\n");
 	printf(" -version   print Version Information\n");
+	printf(" -h         emit .h (header) file\n");
 	
 	printf(" -g         pass to gcc\n");
 	printf(" -Werror    pass to gcc\n");
