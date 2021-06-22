@@ -44,5 +44,9 @@ There should be a test matrix with multiple distros soon hopefully.
 ## Contributions
 
 - Feel free to fork the Project. 
-- Pull Requests will not be merged, as this is a learning Project.
-- Issues are always welcome (Suggestions for Improvement, Bug Reports, ...)
+- Pull Requests are welcome in the areas of 
+  - Standard Library ```stdlib/```
+  - Code Examples ```examples/```
+  you can get Swag such as Stickers and also other Benefits
+- Issues are always welcome (Suggestions for Improvement, Bug Reports, ...).
+  Just send an Email.
