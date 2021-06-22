@@ -62,7 +62,8 @@ OBJS_MAIN := build/parser.o \
 		build/Range.o \
 		build/ForStmt.o \
 		build/SwitchStmt.o \
-		build/CaseStmt.o 
+		build/CaseStmt.o \
+		build/Lambda.o
 		
 OBJS_TEST := build/AssignStmtTest.o \
 		build/BasicTypeWrappedTest.o \
@@ -92,7 +93,8 @@ OBJS_TEST := build/AssignStmtTest.o \
 		build/RangeTest.o \
 		build/ForStmtTest.o \
 		build/SwitchStmtTest.o \
-	    build/CaseStmtTest.o	
+	    build/CaseStmtTest.o \
+	    build/LambdaTest.o
 		
 OBJS := $(OBJS_MAIN) $(OBJS_TEST) $(OBJS_AST) $(OBJS_TOKEN)
 

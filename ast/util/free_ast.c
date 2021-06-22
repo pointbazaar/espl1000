@@ -166,6 +166,7 @@ void freeTerm(struct Term* t) {
 		case  8: freeStringConst(t->ptr.m8); 	break;
 		case  9: freeHexConst   (t->ptr.m9); 	break;
 		case 10: freeBinConst   (t->ptr.m10); 	break;
+		case 11: freeLambda     (t->ptr.m11);   break;
 		default:
 			printf("Error in freeTerm(...)\n");
 			free(t);
@@ -358,6 +359,14 @@ void freeRange(struct Range* range){
 	freeExpr(range->start);
 	freeExpr(range->end);
 	free(range);
+}
+
+void freeLambda(struct Lambda* l){
+	for(uint8_t i = 0; i < l->count_params; i++){
+		freeIdentifier(l->params[i]);
+	}
+	freeExpr(l->expr);
+	free(l);
 }
 
 void freeForStmt(struct ForStmt* fstmt){

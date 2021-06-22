@@ -4,9 +4,12 @@
 #include "../ast.h"
 #include "visitor.h"
 
+//struct
 static void visitStructMember	(struct StructMember* s, VISITOR, void* arg);
 
+//other
 static void visitStmt        	(struct Stmt* s,       VISITOR, void* arg);
+static void visitLambda			(struct Lambda* l,     VISITOR, void* arg);
 
 //stmts
 static void visitIfStmt      	(struct IfStmt* i,     VISITOR, void* arg);
@@ -122,6 +125,13 @@ static void visitStmt(struct Stmt* s, VISITOR, void* arg){
 			printf("[Visitor] Fatal (1)\n"); exit(1);
 			break;
 	}
+}
+
+static void visitLambda (struct Lambda* l, VISITOR, void* arg){
+
+	visitor(l, NODE_LAMBDA, arg);
+	
+	visitExpr(l->expr, visitor, arg);
 }
 
 static void visitIfStmt(struct IfStmt* i, VISITOR, void* arg){
@@ -253,6 +263,7 @@ static void visitTerm(struct Term* t, VISITOR, void* arg){
 		case 8: visitStringConst(t->ptr.m8, visitor, arg);break;
 		case 9: visitHexConst(t->ptr.m9, visitor, arg);   break;
 		case 10: visitBinConst(t->ptr.m10, visitor, arg); break;
+		case 11: visitLambda(t->ptr.m11, visitor, arg);   break;
 		
 		default:
 			printf("[Visitor] Fatal(2)\n"); 

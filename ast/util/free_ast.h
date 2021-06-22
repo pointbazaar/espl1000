@@ -32,6 +32,7 @@ void freeIdentifier(struct Identifier* id);
 void freeNamespace(struct Namespace* ns);
 void freeStmtBlock(struct StmtBlock* block);
 void freeRange(struct Range* range);
+void freeLambda(struct Lambda* l);
 
 //struct
 void freeStructDecl(struct StructDecl* sd);

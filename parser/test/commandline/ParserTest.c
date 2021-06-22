@@ -32,6 +32,7 @@
 #include "../astnodes/statements/ForStmtTest.h"
 #include "../astnodes/statements/SwitchStmtTest.h"
 #include "../astnodes/statements/CaseStmtTest.h"
+#include "../astnodes/LambdaTest.h"
 
 #define FAILRET if(!passed){ printf("FAILED\n"); return false;}
 
@@ -107,6 +108,8 @@ int test_all(bool debug) {
 	
 	test_switch(debug);
 	test_parser_case_stmt(debug);
+
+	test_lambda(debug);
 
     printf("[Parser Module] PASSED ALL TESTS\n");
 

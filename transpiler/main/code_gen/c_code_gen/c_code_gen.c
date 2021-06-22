@@ -22,6 +22,8 @@
 
 #include "typechecker/typecheck.h"
 
+#include "transpile_lambdas.h"
+
 //Analyzer Includes
 #include "analyzer/fn_analyzer.h"
 #include "analyzer/dead_analyzer.h"
@@ -49,6 +51,9 @@ static void ns_transpile_subrs(struct Namespace* ns, struct Ctx* ctx);
 
 static void ns_transpile_fwd(struct Namespace* ns, struct Ctx* ctx);
 static void ns_transpile_rest(struct Namespace* ns, struct Ctx* ctx);
+
+
+static void backfill_lambdas_into_sst(struct AST* ast, struct SST* sst);
 // --------------------------------------------------------
 
 bool transpileAndWrite(char* c_filename, char* h_filename, struct AST* ast, struct Flags* flags){
@@ -63,8 +68,8 @@ bool transpileAndWrite(char* c_filename, char* h_filename, struct AST* ast, stru
 	ctx->flags = flags;
 	
 	ctx->indentLevel = 0;
-	ctx->file = NULL;
-	ctx->c_file = NULL;
+	ctx->file        = NULL;
+	ctx->c_file      = NULL;
 	ctx->header_file = NULL;
 
 	ctx->c_file      = fopen(c_filename, "w");
@@ -142,6 +147,12 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* c_filename, cha
 	
 	fill_tables(ast, ctx);
 	
+	//transpile the LAMBDA parameters
+	transpileLambdas(ast, ctx->tables->sst);
+	
+	//RE-FILL the newly created lambda functions
+	backfill_lambdas_into_sst(ast, ctx->tables->sst);
+	
 	if(ctx->flags->no_typecheck){
 		printf("skipping typechecking\n");
 	}else{
@@ -175,6 +186,27 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* c_filename, cha
 	
 	for(int i=0; i < ast->count_namespaces; i++)
 	{ ns_transpile_rest(ast->namespaces[i], ctx); }
+}
+
+static void backfill_lambdas_into_sst(struct AST* ast, struct SST* sst){
+	
+	for(int i=0; i < ast->count_namespaces; i++){
+		
+		struct Namespace* ns = ast->namespaces[i];
+		
+		for(int j = 0; j < ns->count_methods; j++){
+			
+			struct Method* m = ns->methods[j];
+			
+			//name starts with lambda_
+			if(strncmp(m->name, "lambda_", strlen("lambda_")) != 0){
+				continue;
+			}
+			
+			struct SSTLine* line = makeSSTLine2(m);
+			sst_add(sst, line);
+		}
+	}
 }
 
 static void ns_transpile_struct_fwd_decls(struct Namespace* ns, struct Ctx* ctx){

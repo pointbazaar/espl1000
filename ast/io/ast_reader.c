@@ -383,6 +383,7 @@ struct Term* readTerm(FILE* file, bool debug){
 		case  8: b->ptr.m8  = readStringConst(file, debug); break;
 		case  9: b->ptr.m9  = readHexConst(file, debug); 	break;
 		case 10: b->ptr.m10 = readBinConst(file, debug); 	break;
+		case 11: b->ptr.m11 = readLambda(file, debug);      break;
 		
 		default:
 			error(file, "Error in readTerm");
@@ -421,6 +422,29 @@ struct Range* readRange(FILE* file, bool debug){
 	magic_num_require(MAGIC_END_RANGE, file);
 	
 	return r;
+}
+
+struct Lambda* readLambda(FILE* file, bool debug){
+	
+	magic_num_require(MAGIC_LAMBDA, file);
+	
+	struct Lambda* l = make(Lambda);
+	
+	l->count_params = deserialize_int(file);
+	
+	for(uint8_t i = 0; i < l->count_params; i++){
+		
+		struct Identifier* k = make(Identifier);
+		strcpy(k->identifier, deserialize_string(file));
+		
+		l->params[i] = k;
+	}
+	
+	l->expr = readExpr(file, debug);
+	
+	magic_num_require(MAGIC_END_LAMBDA, file);
+	
+	return l;
 }
 
 //statementnodes

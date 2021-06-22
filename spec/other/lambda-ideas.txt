@@ -3,10 +3,10 @@ in SmallDragon, it would be very convenient to have Lambdas also.
 Below is a small use-case for lambdas. 
 Wanting to increment each element of an Array by 1,
 and storing the result in a different Array.
-It would consume multiple lines and be error-prone to do with a loop.
+It would consume multiple lines to do with a loop.
 //--------------------------------------------------
 
-fn map ([int] arr, (int) -> int subr) -> [int] {
+fn mapintarr ([int] arr, (int) -> int subr) -> [int] {
 	
 	int l = 4;
 	[int] res = malloc(4 *l);
@@ -20,7 +20,7 @@ fn map ([int] arr, (int) -> int subr) -> [int] {
 
 fn main () ~> int {
 	
-	arr = map([1,2,3,4], (x) -> x+1);
+	arr = mapintarr([1,2,3,4], (x) -> x+1);
 	
 	return 0;
 }
@@ -29,7 +29,7 @@ fn main () ~> int {
 
 Term ::= ... | Lambda
 
-Lambda ::= '(' Identifier* ')' '->' ( Expr | StmtBlock ) 
+Lambda ::= '(' Identifier* ')' '->' Expr
 
 //--------------------------------------------------
 
@@ -49,6 +49,5 @@ within the Lambda, so that the lambda retains some
 purity atleast.
 
 In SmallDragon it would not even be a "real" lambda
-due to there being the ability to have a StmtBlock
-as the implementation, or calling a function with 
+due to there being the ability of calling a function with 
 side effects.

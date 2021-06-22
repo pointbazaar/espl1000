@@ -64,6 +64,7 @@ struct Identifier* copyIdentifier(struct Identifier* id);
 struct Range*      copyRange(struct Range* r);
 struct StmtBlock*  copyStmtBlock(struct StmtBlock* s);
 struct Namespace*  copyNamespace(struct Namespace* n);
+struct Lambda*     copyLambda(struct Lambda* l);
 
 struct AST* copyAST(struct AST* ast);
 #endif

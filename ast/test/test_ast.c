@@ -80,6 +80,8 @@ int main(){
 	test_str_structdecl();
 	test_str_structmember();
 	
+	test_str_lambda();
+	
 	printf("[AST Module] Passed All Tests\n");
 	
 	fclose(file);

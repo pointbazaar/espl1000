@@ -38,9 +38,10 @@ struct Term{
 		struct StringConst* m8;
 		struct HexConst*    m9;
 		struct BinConst*    m10;
+		struct Lambda*      m11;
 	} ptr;
 	
-	uint8_t kind; // 1 .. 10
+	uint8_t kind; // 1 .. 11
 };
 
 #endif

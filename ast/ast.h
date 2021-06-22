@@ -14,6 +14,7 @@
 #include "ast/ast_var.h"
 #include "ast/ast_expr.h"
 #include "ast/ast_subr.h"
+#include "ast/ast_lambda.h"
 
 /* To quickly allocate Instances. Instead of 
  * x = malloc(sizeof(struct IntConst));

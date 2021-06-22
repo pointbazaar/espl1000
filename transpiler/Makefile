@@ -12,6 +12,7 @@ CALLTEST := $(CALL) -Itest
 AST_OBJS := ../ast/build/ast_reader.o \
 		../ast/build/free_ast.o \
 		../ast/build/str_ast.o \
+		../ast/build/copy_ast.o \
 		../ast/build/serialize.o \
 		../ast/build/visitor.o \
 		../ast/build/equals_ast.o 
@@ -21,7 +22,8 @@ TRANSPILER_OBJS := build/transpiler.o \
 	build/flags.o \
 	build/validate_flags.o \
 	build/help.o \
-	build/fileutils.o 
+	build/fileutils.o \
+	build/transpile_lambdas.o
 	
 OBJS_CODEGEN := build/c_code_gen.o \
 	build/structs_code_gen.o \
@@ -115,6 +117,9 @@ build/util.o: ../util/util.c
 
 build/transpiler.o: main/transpiler.c main/transpiler.h test/test.h main/util/help.h 
 	$(CALL) -c main/transpiler.c -o $@
+	
+build/transpile_lambdas.o: main/transpile_lambdas.c main/transpile_lambdas.h 
+	$(CALL) -c main/transpile_lambdas.c -o $@
 
 build/invoke.o: main/invoke/invoke.c main/invoke/invoke.h 
 	$(CALL) -c main/invoke/invoke.c -o $@

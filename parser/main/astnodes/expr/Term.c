@@ -14,6 +14,7 @@
 #include "Expr.h"
 #include "var/Variable.h"
 #include "statements/Call.h"
+#include "Lambda.h"
 
 #include "ast/util/free_ast.h"
 
@@ -53,7 +54,13 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 
 	if(tk_kind == LPARENS){
 		
-		tryInitExpr(res, copy, debug);
+		if( (res->ptr.m11 = makeLambda(copy, debug)) != NULL){
+			
+			res->kind = 11;
+		}else{
+			
+			tryInitExpr(res, copy, debug);
+		}
 		
 	}else if(tk_kind == STRINGCONST){
 		

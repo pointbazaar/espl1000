@@ -186,6 +186,7 @@ void writeTerm(struct Term* m, FILE* file){
 		case  8: writeStringConst(m->ptr.m8, file); break;
 		case  9: writeHexConst(m->ptr.m9, file);  break;
 		case 10: writeBinConst(m->ptr.m10, file); break;
+		case 11: writeLambda(m->ptr.m11, file);	  break;
 		default: error(file, "Error in writeTerm(...)");
 	}
 	
@@ -211,6 +212,20 @@ void writeRange(struct Range* r, FILE* file){
 	writeExpr(r->end, file);
 	
 	magic_num_serialize(MAGIC_END_RANGE, file);
+}
+void writeLambda(struct Lambda* l, FILE* file){
+	
+	magic_num_serialize(MAGIC_LAMBDA, file);
+	
+	serialize_int(l->count_params, file);
+	
+	for(uint8_t i = 0; i < l->count_params; i++){
+		serialize_string(l->params[i]->identifier, file);
+	}
+	
+	writeExpr(l->expr, file);
+	
+	magic_num_serialize(MAGIC_END_LAMBDA, file);
 }
 // --------- CONST NODES ----------------
 void writeBoolConst(struct BoolConst* m, FILE* file){

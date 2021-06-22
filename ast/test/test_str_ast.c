@@ -193,3 +193,55 @@ void test_str_structmember(){
 	
 	//TODO
 }
+
+void test_str_lambda(){
+	
+	status("strLambda");
+	
+	struct Identifier i = {
+		.identifier = "a"
+	};
+	
+	struct Op o1 = {
+		.isArithmetic = true,
+		.isRelational = false,
+		.isLogical    = false,
+		.isBitwise    = false
+	};
+	strcpy(o1.op, "-");
+	
+	struct IntConst ic = { .value = 2 };
+	
+	struct Term b = {
+		.kind = 2,
+		.ptr.m2 = &ic
+	};
+	
+	struct UnOpTerm u = {
+		.op   = &o1,
+		.term = &b
+	};
+	
+	struct UnOpTerm* u2 = copyUnOpTerm(&u);
+	
+	struct Op* o2       = copyOp(&o1);
+	strcpy(o2->op, "*");
+	
+	struct Expr e = {
+		.term1 = &u,
+		.op    = o2,
+		.term2 = u2
+	};
+	
+	struct Lambda l = { 
+		.params[0] = &i,
+		.count_params = 1,
+		.expr = &e 
+	};
+	
+	char* s = strLambda(&l);
+	
+	assert(strcmp(s, "(a) -> -2*-2") == 0);
+	
+	free(s);
+}

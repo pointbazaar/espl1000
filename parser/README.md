@@ -106,8 +106,11 @@ Term ::= ArrayConstant
 		| Call 
 		| '(' expression ')' 
 		| variable
+		| Lambda
 
 expression ::= UnOpTerm (op UnOpTerm)*
+
+Lambda ::= '(' identifier (,identifier)* ')' arrow Expr
 
 // ---- END OF GRAMMAR DESCRIPTION -------------------------------
 

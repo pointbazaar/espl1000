@@ -88,6 +88,45 @@ char* strStmtBlock(struct StmtBlock* block){
 	return res;
 }
 
+char* strLambda(struct Lambda* lambda){
+	
+	uint16_t l = 0;
+
+	for(uint16_t i = 0; i < lambda->count_params; i++){
+		
+		char* s = strIdentifier(lambda->params[i]);
+		l += strlen(s) + 1;
+		free(s);
+	}
+	
+	char* s2 = strExpr(lambda->expr);
+	l += strlen(s2);
+	
+	l += 2 + 4;
+	
+	char* res = malloc(sizeof(char)*l);
+	
+	strcpy(res, "");
+	strcat(res, "(");
+	
+	for(uint16_t i = 0; i < lambda->count_params; i++){
+		
+		char* s = strIdentifier(lambda->params[i]);
+		strcat(res, s);
+		
+		if(i < (lambda->count_params - 1)){
+			strcat(res, ",");
+		}
+		
+		free(s);
+	}
+	strcat(res, ") -> ");
+	strcat(res, s2);
+	free(s2);
+	
+	return res;
+}
+
 char* strIntConst(struct IntConst* ic){
 
 	char* res =  malloc(sizeof(char)*10);
