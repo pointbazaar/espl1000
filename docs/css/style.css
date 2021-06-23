@@ -3,12 +3,12 @@ h1,h2,h3,h4,h5 {
 	color: #D14F42; 
 }
 
-a {
-	color: #006C11;
+body {
+	font-family: monospace;
 }
 
-a, p, pre, code, li {
-	font-size: 1em;
+a {
+	color: #006C11;
 }
 
 .nav-bg{
