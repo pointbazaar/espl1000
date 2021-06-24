@@ -311,16 +311,16 @@
 			<td>poly_ctor</td><td>(uint n) -> Poly</td><td>O(1)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 		<tr style="color:red;">
-			<td>poly_dtor</td><td>(Poly p) -> bool</td><td>O(1)</td><td>O(1)</td><td>-O(p.n)</td><td>Double Free</td>
+			<td>poly_dtor</td><td>(Poly p) -> bool</td><td>O(1)</td><td>O(1)</td><td>-O(n)</td><td>Double Free</td>
 		</tr>
 		<tr>
-			<td>poly_add</td><td>(Poly a, Poly b) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(p.n)</td><td>OOM</td>
+			<td>poly_add</td><td>(Poly a, Poly b) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>poly_sub</td><td>(Poly a, Poly b) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(p.n)</td><td>OOM</td>
+			<td>poly_sub</td><td>(Poly a, Poly b) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>poly_mul</td><td>(Poly a, Poly b) -> Poly</td><td>O(n^2)</td><td>O(1)</td><td>+O(p.n)</td><td>OOM</td>
+			<td>poly_mul</td><td>(Poly a, Poly b) -> Poly</td><td>O(n^2)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 		<tr>
 			<td>poly_deg</td><td>(Poly p) -> uint</td><td>O(n)</td><td>O(1)</td><td> - </td><td> - </td>
@@ -332,10 +332,10 @@
 			<td>poly_eval</td><td>(Poly p, float x) -> float</td><td>O(n)</td><td>O(1)</td><td> - </td><td> - </td>
 		</tr>
 		<tr>
-			<td>poly_derivative</td><td>(Poly p) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(p.n)</td><td>OOM</td>
+			<td>poly_derivative</td><td>(Poly p) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>poly_integral</td><td>(Poly p) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(p.n)</td><td>OOM</td>
+			<td>poly_integral</td><td>(Poly p) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 	</tbody>
 	</table>
@@ -357,16 +357,16 @@
 			<td>matrix_ctor</td><td>(uint nrows, uint ncols) -> Matrix</td><td>O(nrows)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td>OOM</td>
 		</tr>
 		<tr style="color:red;">
-			<td>matrix_dtor</td><td>(Matrix a) -> bool</td><td>O(a.nrows)</td><td>O(1)</td><td>-O(a.nrows*a.ncols)</td><td>Double Free</td>
+			<td>matrix_dtor</td><td>(Matrix a) -> bool</td><td>O(nrows)</td><td>O(1)</td><td>-O(nrows*ncols)</td><td>Double Free</td>
 		</tr>
 		<tr>
-			<td>matrix_add</td><td>(Matrix a, Matrix b) -> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(a.nrows*a.ncols)</td><td>OOM, dim mismatch</td>
+			<td>matrix_add</td><td>(Matrix a, Matrix b) -> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td>OOM, dim mismatch</td>
 		</tr>
 		<tr>
-			<td>matrix_sub</td><td>(Matrix a, Matrix b) -> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(a.nrows*a.ncols)</td><td>OOM, dim mismatch</td>
+			<td>matrix_sub</td><td>(Matrix a, Matrix b) -> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td>OOM, dim mismatch</td>
 		</tr>
 		<tr>
-			<td>matrix_scale</td><td>(Matrix a, float r) -> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(a.nrows*a.ncols)</td><td>OOM</td>
+			<td>matrix_scale</td><td>(Matrix a, float r) -> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td>OOM</td>
 		</tr>
 		<tr>
 			<td>matrix_mul</td><td>(Matrix a, Matrix b) -> Matrix</td><td>O(a.nrows*b.ncols*a.ncols)</td><td>O(1)</td><td>+O(a.nrows*a.ncols)</td><td>OOM, dim mismatch</td>
@@ -375,7 +375,16 @@
 			<td>matrix_submatrix</td><td>(Matrix a, uint row, uint col) -> Matrix</td><td>O(a.nrows*a.ncols)</td><td>O(1)</td><td>+O((a.nrows-1)*(a.ncols-1))</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>matrix_det</td><td>(Matrix a) -> float</td><td>TODO</td><td>O(max(a.nrows, a.ncols))</td><td> - </td><td>OOM</td>
+			<td>matrix_det</td><td>(Matrix a) -> float</td><td>TODO</td><td>O(max(nrows, ncols))</td><td> - </td><td>OOM</td>
+		</tr>
+		<tr>
+			<td>matrix_transpose</td><td>(Matrix a) -> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td> - </td>
+		</tr>
+		<tr>
+			<td>matrix_pow</td><td>(Matrix a, uint power) -> Matrix</td><td>O(a.nrows*b.ncols*a.ncols*power)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td> - </td>
+		</tr>
+		<tr>
+			<td>matrix_identity</td><td>(uint n) -> Matrix</td><td>O(n)</td><td>O(1)</td><td>+O(n*n)</td><td> - </td>
 		</tr>
 	</tbody>
 	</table>
