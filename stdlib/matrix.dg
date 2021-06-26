@@ -170,4 +170,6 @@ fn matrix_identity(uint n) -> Matrix {
 fn matrix_inverse(Matrix a) -> Matrix {
 
 	//TODO
+	exit(1);
+	return a;
 }

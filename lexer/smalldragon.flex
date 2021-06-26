@@ -69,7 +69,7 @@ true			out(BCONST_TRUE, yytext);
 false			out(BCONST_FALSE, yytext);
 
 [a-z][a-zA-Z0-9_]*	out(ID, yytext);
-[A-Z][a-zA-Z0-9]*	out(TYPEID, yytext);
+[A-Z_][a-zA-Z0-9_]*	out(TYPEID, yytext);
 \?T[0-9]+			{
 						int num = 0;
 						//printf("yytext=%s\n",yytext);

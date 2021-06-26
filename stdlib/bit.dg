@@ -1,7 +1,0 @@
-//this file contains subroutines
-//to facilitate the handling of binary data
-
-fn bit(uint8 byte, uint8 place) -> uint8 {
-
-	return (byte & (1 << place)) >> place;
-}

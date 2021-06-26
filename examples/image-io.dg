@@ -1,0 +1,22 @@
+
+//uses ppm.dg
+
+fn main () ~> int {
+
+	ImagePPM image = ppm_ctor(10,10);
+
+	for i in 0 .. 9 {
+	
+		ppm_pixel_write(image, i, i, 0,    0, i*10); //blue
+		ppm_pixel_write(image, 9-i,  i,    0, i*10, 0); //green
+		ppm_pixel_write(image, 3, i, i*10, 0, 0); //red
+		
+		ppm_pixel_write(image, i, 5, 255, 255, 255); //while
+	}
+
+	ppm_write("myimage.ppm", image);
+	
+	ppm_dtor(image);
+
+	return 0;
+}

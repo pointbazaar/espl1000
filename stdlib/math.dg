@@ -72,10 +72,10 @@ fn fib(uint64 n) -> uint64 {
 
 fn iseven(int x) -> bool {
 
-	return x % 2 == 0;
+	return x & 0x01 == 0;
 }
 
 fn isodd(int x) -> bool {
 
-	return x % 2 == 1;
+	return x & 0x01 == 1;
 }

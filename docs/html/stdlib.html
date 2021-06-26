@@ -25,6 +25,14 @@
 	already present in C, meaning that most of the functions known from the
 	C Standard Library should be available in smalldragon aswell, 
 	with their original implementation.</p>
+	
+	<h2>Behavior in Exceptional Cases</h2>
+	<p>
+		Generally, most subroutines here will just
+		<strong>exit(1)</strong> in exceptional cases.
+		<br>
+		For the future, a more flexible mechanism is intended.
+	</p>
 
 	<h2> Contents </h2>
 	<a href="#math">math.dg</a><br>
@@ -37,8 +45,8 @@
 	<a href="#intll">intll.dg</a><br>
 	<a href="#polynomial">polynomial.dg</a><br>
 	<a href="#matrix">matrix.dg</a><br>
+	<a href="#ppm">ppm.dg</a><br>
 	
-	<a href="#bit">bit.dg</a><br>
 
 	<hr>
 	<h3 id="math">math.dg (extends <a href="https://www2.hs-fulda.de/~klingebiel/c-stdlib/math.htm">math.h</a>)</h3>
@@ -389,23 +397,47 @@
 	</tbody>
 	</table>
 	
-	<h3 id="bit">bit.dg</h3>
-	
+	<h3 id="ppm">ppm.dg (simple i/o for PPM Image Format)</h3>
 	<table class="table-bordered table">
 	<thead>
 		<tr>
 			<th> Name </th>
 			<th> Type </th>
 			<th> Runtime </th>
+			<th> Stack Used</th>
+			<th> Heap Use</th>
+			<th> Exceptions </th>
 		</tr>
 	</thead>
 	<tbody>
+		<tr style="color:green;">
+			<td>ppm_ctor</td><td>(uint width, uint height) ~> ImagePPM</td><td>O(width*height)</td><td>O(1)</td><td>+O(width*height)</td><td>OOM</td>
+		</tr>
+		<tr style="color:red;">
+			<td>ppm_dtor</td><td>(ImagePPM image) ~> bool</td><td>O(1)</td><td>O(1)</td><td>-O(width*height)</td><td>Double Free</td>
+		</tr>
 		<tr>
-			<td> bit </td><td> (uint8 byte, uint8 place) -> uint8 </td><td> O(1) </td>
-		</td>
+			<td>ppm_pixel_write</td><td>(ImagePPM image, uint row, uint col, uint8 red, uint8 green, uint8 blue) ~> bool</td><td>O(1)</td><td>O(1)</td><td> - </td><td>out of bounds</td>
+		</tr>
+		<tr>
+			<td>ppm_pixel_read_red</td><td>(ImagePPM image, uint row, uint col) -> uint8</td><td>O(1)</td><td>O(1)</td><td> - </td><td>out of bounds</td>
+		</tr>
+		<tr>
+			<td>ppm_pixel_read_green</td><td>(ImagePPM image, uint row, uint col) -> uint8</td><td>O(1)</td><td>O(1)</td><td> - </td><td>out of bounds</td>
+		</tr>
+		<tr>
+			<td>ppm_pixel_read_blue</td><td>(ImagePPM image, uint row, uint col) -> uint8</td><td>O(1)</td><td>O(1)</td><td> - </td><td>out of bounds</td>
+		</tr>
+		<tr>
+			<td>ppm_write</td><td>(String filename, ImagePPM image) ~> bool</td><td>O(width*height)</td><td>O(1)</td><td> - </td><td>File not found</td>
+		</tr>
+		<tr>
+			<td>ppm_read</td><td>(String filename) ~> ImagePPM</td><td>O(width*height)</td><td>O(1)</td><td>+O(width*height)</td><td>File not found, corrupted</td>
+		</tr>
 	</tbody>
 	</table>
-
+	
+	
 </div>
 </body>
 </html>

@@ -1,8 +1,6 @@
 fn main() ~> int {
 
 	test_math();
-	
-	test_bit();
 
 	test_primes();
 
@@ -255,15 +253,6 @@ fn test_intset() -> int {
 	}
 
 	intset_dtor(s);
-
-	return 0;
-}
-
-fn test_bit() -> int {
-
-	assert(bit(0b10, 1) == 1);
-	assert(bit(0b10, 0) == 0);
-	assert(bit(0b10001000, 7) == 1);
 
 	return 0;
 }
