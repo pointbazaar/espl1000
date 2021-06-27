@@ -27,6 +27,9 @@ struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens, bool debug){
 	
 	struct TokenList* copy = list_copy(tokens);
 	
+	res->super.line_num    = list_head(copy)->line_num;
+	res->super.annotations = 0;
+	
 	res->op = makeOp(copy, debug);
 	//res->op may be NULL, it is not a problem,
 	//as the unary operator is optional

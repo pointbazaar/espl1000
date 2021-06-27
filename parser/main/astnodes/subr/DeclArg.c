@@ -15,6 +15,9 @@
 struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 
 	struct DeclArg* res = make(DeclArg);
+	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
 
 	if(debug){
 		printf("DeclaredArg(...) from ");

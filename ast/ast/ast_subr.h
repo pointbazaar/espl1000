@@ -4,12 +4,16 @@
 #include "../ast_declare.h"
 
 struct DeclArg  {
+	struct ASTNode super; 
+	
 	struct Type* type;
 	bool has_name;
 	char name[DEFAULT_STR_SIZE];
 };
 
 struct Method {
+	struct ASTNode super; 
+	
 	struct Type* returnType;
 	char name[DEFAULT_STR_SIZE];
 	

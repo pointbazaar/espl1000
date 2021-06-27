@@ -15,6 +15,9 @@
 struct BasicTypeWrapped* makeBasicTypeWrappedSimple(struct SimpleType* typeNode) {
 
 	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
+	
+	res->super.line_num    = typeNode->super.line_num;
+	res->super.annotations = 0;
 
 	res->simpleType = typeNode;
 	res->subrType = NULL;
@@ -26,6 +29,9 @@ struct BasicTypeWrapped* makeBasicTypeWrappedSubr(struct SubrType* typeNode) {
 
 	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
 
+	res->super.line_num    = typeNode->super.line_num;
+	res->super.annotations = 0;
+	
 	res->simpleType = NULL;
 	res->subrType = typeNode;
 
@@ -40,6 +46,9 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 	}
 
 	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
+	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
 	
 	res->simpleType = NULL;
 	res->subrType = NULL;

@@ -9,6 +9,9 @@ struct TCCtx {
 	struct Method* currentFn;
 	
 	uint32_t tcErrCount;
+	
+	char*    current_filename;
+	uint32_t current_line_num;
 };
 
 #endif

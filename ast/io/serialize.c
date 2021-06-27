@@ -56,4 +56,12 @@ char* deserialize_string(FILE* file){
 	
 	return res;
 }
-
+//-----------------------------------------
+void serialize_astnode(struct ASTNode* node, FILE* file){
+	serialize_int(node->line_num, file);
+	serialize_int(node->annotations, file);
+}
+void deserialize_astnode(struct ASTNode* node, FILE* file){
+	node->line_num    = deserialize_int(file);
+	node->annotations = deserialize_int(file);
+}

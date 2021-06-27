@@ -25,7 +25,7 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 	//because of valgrind
 	//it will complain about uninitialized bytes otherwise
 	memset(res, 0, sizeof(struct Namespace));
-
+	
 	res->count_methods = 0;
 	res->count_structs = 0;
 	

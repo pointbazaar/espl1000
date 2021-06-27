@@ -156,7 +156,7 @@ char* list_code(struct TokenList* list, bool debug) {
 	strcpy(str, "");
 
 	if(list_size(list) > 0){
-		int line_num = list_get(list, 0)->lineNumber;
+		int line_num = list_get(list, 0)->line_num;
 		sprintf(str, "% 4d|", line_num);
 	}
 	

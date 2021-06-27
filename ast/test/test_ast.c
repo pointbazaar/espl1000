@@ -97,6 +97,7 @@ void test_serialize_IntConst(bool debug){
 	
 	struct IntConst m;
 	m.value = 384;
+	m.super.line_num = 33;
 	
 	writeIntConst(&m, file);
 	
@@ -105,6 +106,7 @@ void test_serialize_IntConst(bool debug){
 	struct IntConst* m2 = readIntConst(file, debug);
 	
 	assert(m.value == m2->value);
+	assert(m.super.line_num == m2->super.line_num);
 	
 	freeIntConst(m2);
 }
@@ -117,6 +119,7 @@ void test_serialize_HexConst(bool debug){
 	
 	struct HexConst m;
 	m.value = 0x48;
+	m.super.line_num = 34;
 	
 	writeHexConst(&m, file);
 	
@@ -125,6 +128,7 @@ void test_serialize_HexConst(bool debug){
 	struct HexConst* m2 = readHexConst(file, debug);
 	
 	assert(m.value == m2->value);
+	assert(m.super.line_num == m2->super.line_num);
 	
 	freeHexConst(m2);
 }
@@ -137,6 +141,7 @@ void test_serialize_BinConst(bool debug){
 	
 	struct BinConst m;
 	m.value = 0b00011101;
+	m.super.line_num = 78;
 	
 	writeBinConst(&m, file);
 	
@@ -145,6 +150,7 @@ void test_serialize_BinConst(bool debug){
 	struct BinConst* m2 = readBinConst(file, debug);
 	
 	assert(m.value == m2->value);
+	assert(m.super.line_num == m2->super.line_num);
 	
 	freeBinConst(m2);
 }
@@ -338,7 +344,11 @@ void test_serialize_Expr(bool debug){
 	rewind(file);
 	
 	struct IntConst myIntConst = {
-		myIntConst.value = 4549
+		.super = {
+			.line_num = 33,
+			.annotations = 0
+		},
+		.value = 4549
 	};
 	
 	struct Term m = {

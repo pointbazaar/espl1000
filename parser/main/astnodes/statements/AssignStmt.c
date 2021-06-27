@@ -20,6 +20,10 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 	}
 
 	struct AssignStmt* res = make(AssignStmt);
+	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
+	
 	res->optType = NULL;
 
 	struct TokenList* copy = list_copy(tokens);

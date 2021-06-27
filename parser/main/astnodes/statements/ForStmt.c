@@ -38,6 +38,9 @@ struct ForStmt* makeForStmt(struct TokenList* tokens, bool debug) {
 	
 	struct ForStmt* res = make(ForStmt);
 	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
+	
 	//copy the index Name
 	strncpy(res->indexName,	head->value_ptr, DEFAULT_STR_SIZE);
 	

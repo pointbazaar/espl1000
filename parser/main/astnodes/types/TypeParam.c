@@ -13,16 +13,15 @@
 
 struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
 
-	if(debug){
-		printf("TypeParam(...)\n");
-	}
+	if(debug){ printf("TypeParam(...)\n"); }
 
 	struct Token* token = list_head(tokens);
-	if(token == NULL){
-		return NULL;
-	}
+	if(token == NULL){ return NULL; }
 	
 	struct TypeParam* res = make(TypeParam);
+	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
 
 	if (token->kind == TPARAM) {
 		res->index = atoi(token->value_ptr);

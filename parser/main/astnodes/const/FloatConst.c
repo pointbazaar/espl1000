@@ -23,6 +23,9 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 	struct TokenList* copy = list_copy(tokens);
 
 	struct Token* tk = list_head(copy);
+	
+	res->super.line_num    = tk->line_num;
+	res->super.annotations = 0;
 
 	res->value = 1.0;
 	

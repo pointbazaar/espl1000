@@ -22,13 +22,16 @@ struct StringConst* makeStringConst(struct TokenList* tokens, bool debug){
 	
 	struct StringConst* res = make(StringConst);
 	
-	struct Token* head = list_head(tokens);
+	struct Token* tk = list_head(tokens);
 	
-	if(head->kind == STRINGCONST){
+	res->super.line_num    = tk->line_num;
+	res->super.annotations = 0;
+	
+	if(tk->kind == STRINGCONST){
 		res->value = malloc
-			(sizeof(char)*(strlen(head->value_ptr)+1));
+			(sizeof(char)*(strlen(tk->value_ptr)+1));
 			
-		strcpy(res->value, head->value_ptr);
+		strcpy(res->value, tk->value_ptr);
 		
 		list_consume(tokens, 1);
 	}else{

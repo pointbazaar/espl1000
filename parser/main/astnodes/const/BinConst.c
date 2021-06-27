@@ -22,6 +22,9 @@ struct BinConst* makeBinConst(struct TokenList* tokens, bool debug){
 
 	struct BinConst* res = make(BinConst);
 	
+	res->super.line_num    = tk->line_num;
+	res->super.annotations = 0;
+	
 	//"0b10" -> 2, ...
 	//use strtol to convert bin string -> int
 	res->value = strtol(tk->value_ptr+2, NULL, 2);

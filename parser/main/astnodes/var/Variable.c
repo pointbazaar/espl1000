@@ -22,6 +22,9 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 	if(list_size(tokens) < 1){ return NULL; }
 
 	struct Variable* res = make(Variable);
+	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
 
 	res->simpleVar = NULL;
 	res->memberAccess = NULL;

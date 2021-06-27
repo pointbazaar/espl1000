@@ -4,6 +4,8 @@
 #define DEFAULT_STR_SIZE 32 
 
 //--- TOPLEVEL ---
+struct ASTNode;
+
 struct AST;
 struct Namespace;
 struct Method;
@@ -47,5 +49,24 @@ struct BasicTypeWrapped;
 struct SimpleType;
 struct SubrType;
 struct TypeParam;
+
+//-----------
+struct ASTNode {
+	//Base Type from which all ASTNodes inherit
+	//except {AST, Namespace}
+	
+	uint32_t line_num;
+	
+	uint32_t annotations;
+	//examples for (maybe) future annotations:
+	// @liveroot   // for dead-analyzer
+	// @halts      // for subroutines
+	// @noalloc    // for subroutines
+	// @nobranch   // for subroutines
+	// @atleast(x) // for variables
+	// @atmost(x)  // for variables
+	// @condition(...) 
+	// @packed     // for structs 
+};
 
 #endif

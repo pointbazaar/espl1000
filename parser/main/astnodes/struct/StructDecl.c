@@ -21,6 +21,9 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 
 	struct StructDecl* res = make(StructDecl);
 	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
+	
 	res->members = malloc(sizeof(struct StructMember*)*1);
 	res->count_members = 0;
 	

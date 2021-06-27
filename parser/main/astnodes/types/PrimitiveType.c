@@ -15,6 +15,9 @@ struct PrimitiveType* makePrimitiveType(struct TokenList* tokens, bool debug){
 
 	struct PrimitiveType* res = make(PrimitiveType);
 	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
+	
 	struct Token* next = list_head(tokens);
 	
 	res->intType = NONE;

@@ -29,6 +29,9 @@ struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens, bool debug){
 	}
 	
 	struct SwitchStmt* res = make(SwitchStmt);
+	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
 
 	res->expr = NULL;
 	res->count_cases = 0;

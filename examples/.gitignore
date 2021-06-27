@@ -13,3 +13,5 @@ main
 *.hex
 
 *.ppm 
+
+gtk/

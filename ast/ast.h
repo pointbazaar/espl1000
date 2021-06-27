@@ -24,7 +24,6 @@
  */
 #define make(X) malloc(sizeof(struct X))
 
-
 struct AST {
 	struct Namespace** namespaces;
 	uint16_t count_namespaces;
@@ -50,11 +49,12 @@ struct Namespace {
 	size_t capacity_structs;
 };
 
-struct Range { struct Expr* start; struct Expr* end; };
+struct Range { struct ASTNode super; struct Expr* start; struct Expr* end; };
 
-struct Identifier  { char identifier[DEFAULT_STR_SIZE]; };
+struct Identifier  { struct ASTNode super; char identifier[DEFAULT_STR_SIZE]; };
 
 struct StmtBlock {
+	struct ASTNode super; 
 	uint16_t count;
 	struct Stmt** stmts;
 };

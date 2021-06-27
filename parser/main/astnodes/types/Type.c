@@ -16,6 +16,9 @@
 struct Type* makeType_1(struct BasicTypeWrapped* typeNode){
 
 	struct Type* res = make(Type);
+	
+	res->super.line_num    = typeNode->super.line_num;
+	res->super.annotations = 0;
 
 	res->m1 = typeNode;
 	res->m2 = NULL;
@@ -27,6 +30,9 @@ struct Type* makeType_1(struct BasicTypeWrapped* typeNode){
 struct Type* makeType_2(struct TypeParam* typeNode){
 
 	struct Type* res = make(Type);
+	
+	res->super.line_num    = typeNode->super.line_num;
+	res->super.annotations = 0;
 
 	res->m1 = NULL;
 	res->m2 = typeNode;
@@ -38,6 +44,9 @@ struct Type* makeType_2(struct TypeParam* typeNode){
 struct Type* makeType_3(struct ArrayType* typeNode){
 
 	struct Type* res = make(Type);
+	
+	res->super.line_num    = typeNode->super.line_num;
+	res->super.annotations = 0;
 
 	res->m1 = NULL;
 	res->m2 = NULL;
@@ -54,6 +63,10 @@ struct Type* makeType2(struct TokenList* tokens, bool debug){
 	}
 
 	struct Type* res = make(Type);
+	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
+	
 	res->m1 = NULL;
 	res->m2 = NULL;
 	res->m3 = NULL;

@@ -20,6 +20,9 @@ struct Lambda* makeLambda(struct TokenList* tokens, bool debug) {
 	
 	struct Lambda* res = make(Lambda);
 	
+	res->super.line_num    = list_head(copy)->line_num;
+	res->super.annotations = 0;
+	
 	res->count_params = 0;
 	
 	if(!list_expect(copy, LPARENS)){

@@ -22,6 +22,9 @@ struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 	struct Identifier* res = make(Identifier);
 
 	struct Token* tk = list_head(tokens);
+	
+	res->super.line_num    = tk->line_num;
+	res->super.annotations = 0;
 
 	if (tk->kind == ID) {
 		strncpy(res->identifier, tk->value_ptr, DEFAULT_STR_SIZE-1);

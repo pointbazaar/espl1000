@@ -10,7 +10,7 @@ struct Token {
 	uint16_t kind;
 	
 	//Value	(for example "subr" for an identifier)
-	uint32_t lineNumber;
+	uint32_t line_num;
 
 	//it is a pointer, because we do not know
 	//how long the token is going to get,

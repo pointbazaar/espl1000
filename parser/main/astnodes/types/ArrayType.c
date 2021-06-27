@@ -13,6 +13,9 @@
 struct ArrayType* makeArrayType(struct Type* element_type){
 	
 	struct ArrayType* res = make(ArrayType);
+	
+	res->super.line_num    = element_type->super.line_num;
+	res->super.annotations = 0;
 
 	res->element_type = element_type;
 
@@ -27,6 +30,9 @@ struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug) {
 	}
 
 	struct ArrayType* res = make(ArrayType);
+	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
 
 	struct TokenList* copy1 = list_copy(tokens);
 

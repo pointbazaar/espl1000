@@ -23,6 +23,9 @@ struct LoopStmt* makeLoopStmt(struct TokenList* tokens, bool debug) {
 
 	struct LoopStmt* res = make(LoopStmt);
 	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
+	
 	res->count = NULL;
 	res->block     = NULL;
 

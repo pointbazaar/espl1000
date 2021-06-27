@@ -6,6 +6,7 @@
 #define LAMBDA_MAX_PARAMS 10
 
 struct Lambda {
+	struct ASTNode super; 
 	
 	//identifier list length is bounded
 	struct Identifier* params[LAMBDA_MAX_PARAMS];

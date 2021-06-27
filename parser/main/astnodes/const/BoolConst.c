@@ -25,6 +25,9 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 	
 	struct Token* tk = list_head(tokens);
 	
+	res->super.line_num    = tk->line_num;
+	res->super.annotations = 0;
+	
 	if (tk->kind == BCONST_TRUE) {
 		
 		res->value = true;

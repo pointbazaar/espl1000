@@ -23,6 +23,9 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 	}
 
 	struct StructMember* res = initStructMember();
+	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
 
 	struct TokenList* copy = list_copy(tokens);
 

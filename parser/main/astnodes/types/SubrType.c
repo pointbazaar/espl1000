@@ -14,6 +14,9 @@
 struct SubrType* makeSubrType2(struct Type* return_type, bool hasSideEffects){
 	
 	struct SubrType* res = make(SubrType);
+	
+	res->super.line_num    = return_type->super.line_num;
+	res->super.annotations = 0;
 
 	res->returnType = return_type;
 	res->hasSideEffects = hasSideEffects;
@@ -24,11 +27,12 @@ struct SubrType* makeSubrType2(struct Type* return_type, bool hasSideEffects){
 
 struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 
-	if(debug){
-		printf("SubrType(...)\n");
-	}
+	if(debug){ printf("SubrType(...)\n"); }
 
 	struct SubrType* res = make(SubrType);
+	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
 
 	res->argTypes = malloc(sizeof(struct Type*)*1);
 	res->count_argTypes = 0;

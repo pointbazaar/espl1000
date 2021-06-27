@@ -32,6 +32,9 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 	}
 	
 	struct IfStmt* res = initIfStmt();
+	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
 
 	if((res->condition = makeExpr(copy,debug)) == NULL){
 		freeIncomplete(res);

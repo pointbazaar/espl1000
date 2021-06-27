@@ -32,6 +32,9 @@ void tryInitStringConst(struct Term* res, struct TokenList* copy, bool debug);
 struct Term* makeTerm_other(struct Expr* expr){
 	
 	struct Term* res = initTerm();
+	
+	res->super.line_num    = 0;
+	res->super.annotations = 0;
 
 	res->kind = 5;
 	res->ptr.m5 = expr;
@@ -48,7 +51,11 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 	if(list_size(tokens) == 0){return NULL;}
 
 	struct Term* res = initTerm();
+	
 	struct TokenList* copy = list_copy(tokens);
+	
+	res->super.line_num    = list_head(copy)->line_num;
+	res->super.annotations = 0;
 	
 	const int tk_kind = list_head(copy)->kind;
 

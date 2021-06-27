@@ -20,8 +20,10 @@ struct HexConst* makeHexConst(struct TokenList* tokens, bool debug){
 
 	if(tk->kind != HEXCONST){ return NULL; }
 
-
 	struct HexConst* res = make(HexConst);
+	
+	res->super.line_num    = tk->line_num;
+	res->super.annotations = 0;
 	
 	//"0x10" -> 16, ...
 	//use strtol to convert hex string -> int

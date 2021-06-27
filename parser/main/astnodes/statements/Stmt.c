@@ -39,6 +39,9 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	if (list_size(tokens) == 0) { return NULL; }
 
 	struct Stmt* res = initStmt();
+	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
 
 	res->kind 	= -1;
 	res->isBreak 	= false;

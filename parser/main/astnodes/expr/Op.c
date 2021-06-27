@@ -20,14 +20,15 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 
 	struct TokenList* copy = list_copy(tokens);
 
-	struct Token* tkn = list_head(copy);
-	
-	if(tkn == NULL){ return NULL; }
+	struct Token* tk = list_head(copy);
+	if(tk == NULL){ return NULL; }
 	
 	struct Op* res = make(Op);
 	memset(res, 0, sizeof(struct Op));
+	res->super.line_num    = tk->line_num;
+	res->super.annotations = 0;
 
-	switch(tkn->kind){
+	switch(tk->kind){
 		
 		case OPKEY_ARITHMETIC: res->isArithmetic = true; break;
 		case OPKEY_RELATIONAL: res->isRelational = true; break;
@@ -40,7 +41,7 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 			return NULL;
 	}
 		
-	strcpy(res->op, tkn->value_ptr);
+	strcpy(res->op, tk->value_ptr);
 	
 	list_consume(copy, 1);
 	

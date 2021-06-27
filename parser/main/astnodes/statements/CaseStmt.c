@@ -32,6 +32,9 @@ struct CaseStmt* makeCaseStmt(struct TokenList* tokens, bool debug) {
 	
 	struct CaseStmt* res = make(CaseStmt);
 	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
+	
 	res->kind = 0;
 	res->ptr.m1 = NULL;
 	res->block = NULL;

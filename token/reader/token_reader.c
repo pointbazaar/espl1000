@@ -91,7 +91,7 @@ static struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
 	struct Token* r = recognizeTokenInner(tkn_id, tkn, part2);
 
 	if(r != NULL){
-		r->lineNumber = line_no;
+		r->line_num = line_no;
 	}
 
 	return r;

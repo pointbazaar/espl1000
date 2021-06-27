@@ -19,6 +19,9 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 	}
 
 	struct WhileStmt* res = make(WhileStmt);
+	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
 
 	res->condition = NULL;
 	res->block     = NULL;

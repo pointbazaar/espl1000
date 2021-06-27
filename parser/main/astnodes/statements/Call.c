@@ -16,6 +16,9 @@ struct Call* makeCall(struct TokenList* tokens,bool debug) {
 	if(list_size(tokens) < 3){ return NULL;}
 
 	struct Call* res = make(Call);
+	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
 
 	res->args = malloc(sizeof(struct Expr*)*1);
 	res->count_args = 0;

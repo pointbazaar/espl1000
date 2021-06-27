@@ -19,11 +19,12 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 		list_print(tokens);
 	}
 	
-	if(list_size(tokens) == 0){ 
-		return NULL; 
-	}
+	if(list_size(tokens) == 0){  return NULL;  }
 
 	struct SimpleVar* res = make(SimpleVar);
+	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
 
 	res->count_indices = 0;
 	res->indices = malloc(sizeof(struct Expr*)*1);

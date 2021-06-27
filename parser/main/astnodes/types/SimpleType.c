@@ -24,6 +24,9 @@ struct SimpleType* makeSimpleType(struct TokenList* tokens, bool debug) {
 
 	struct SimpleType* res = make(SimpleType);
 	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
+	
 	res->primitiveType = NULL;
 	res->structType    = NULL;
 	

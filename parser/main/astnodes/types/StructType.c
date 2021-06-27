@@ -16,6 +16,9 @@ struct StructType* makeStructType(struct TokenList* tokens, bool debug){
 	
 	struct StructType* res = make(StructType);
 	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
+	
 	res->typeParamCount = 0;
 	res->typeParams     = NULL;
 
