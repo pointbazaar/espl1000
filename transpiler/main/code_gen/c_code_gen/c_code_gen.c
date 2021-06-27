@@ -148,20 +148,16 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* c_filename, cha
 	fill_tables(ast, ctx);
 	
 	//transpile the LAMBDA parameters
-	transpileLambdas(ast, ctx->tables->sst);
+	transpileLambdas(ast, ctx->tables);
 	
 	//RE-FILL the newly created lambda functions
 	backfill_lambdas_into_sst(ast, ctx->tables->sst);
-	
-	if(ctx->flags->no_typecheck){
-		printf("skipping typechecking\n");
-	}else{
-		const bool checks = typecheck_ast(ast, ctx->tables);
 		
-		if(!checks){
-			ctx->error = true;
-			return;
-		}
+	const bool checks = typecheck_ast(ast, ctx->tables);
+	
+	if(!checks){
+		ctx->error = true;
+		return;
 	}
 	
 	ctx->flags->has_main_fn = sst_contains(ctx->tables->sst, "main");

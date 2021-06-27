@@ -41,8 +41,8 @@ bool isComparisonOp(struct Op* op);
 struct Expr* makeExpr_1(struct UnOpTerm* term) {
 	struct Expr* res = make(Expr);
 	
-	res->super.line_num    = 0;
-	res->super.annotations = 0;
+	res->super.line_num    = term->super.line_num;
+	res->super.annotations = term->super.annotations;
 	
 	res->term1 = term;
 	res->op    = NULL;
@@ -55,8 +55,8 @@ struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, struct Op* op, struct UnOpTer
 
 	struct Expr* res = make(Expr);
 	
-	res->super.line_num    = 0;
-	res->super.annotations = 0;
+	res->super.line_num    = leftTerm->super.line_num;
+	res->super.annotations = leftTerm->super.annotations;
 	
 	res->term1 = leftTerm;
 	res->op    = op;

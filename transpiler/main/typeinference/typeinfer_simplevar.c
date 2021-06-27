@@ -9,9 +9,9 @@
 #include "tables/symtable/symtable.h"
 #include "tables/lvst/lvst.h"
 
-struct Type* infer_type_simplevar(struct ST* st, struct SimpleVar* v){
+struct Type* infer_type_simplevar(char* filename, struct ST* st, struct SimpleVar* v){
 	
 	struct LVSTLine* line = lvst_get(st->lvst, v->name);
 	
-	return unwrap_indices(line->type, v->count_indices);
+	return unwrap_indices(filename, line->type, v->count_indices);
 }

@@ -4,6 +4,8 @@
 struct IntLL {
 	
 	uint size;
+	
+	bool is_empty;
 	IntLLNode head;
 	IntLLNode tail;
 }
@@ -11,20 +13,27 @@ struct IntLL {
 struct IntLLNode {
 
 	int value;
+	
+	bool has_next;
+	
 	IntLLNode prev;
 	IntLLNode next;
 }
 
 fn intll_ctor() -> IntLL {
 
-	return makeIntLL(0,0,0);
+	return makeIntLL(0,true, 0,0);
 }
 
 fn intll_dtor(IntLL l) -> bool {
+
+	if l.is_empty { 
+		free(l); return true;
+	}
 	
 	IntLLNode current = l.head;
 	
-	while current != 0 {
+	while current.has_next {
 		
 		old = current;
 		free(old);
@@ -32,13 +41,14 @@ fn intll_dtor(IntLL l) -> bool {
 		current = current.next;
 	}
 	
+	free(current);
 	free(l);
 	return true;
 }
 
 fn intll_push_front(IntLL l, int value) -> bool {
 
-	IntLLNode x = makeIntLLNode(value, 0, 0);
+	IntLLNode x = makeIntLLNode(value, false, 0, 0);
 	
 	if l.size == 0 {
 		
@@ -50,6 +60,7 @@ fn intll_push_front(IntLL l, int value) -> bool {
 		
 		oldhead.prev = x;
 		x.next = oldhead;
+		x.has_next = true;
 		l.head = x;
 	}
 	l.size += 1;
@@ -58,7 +69,7 @@ fn intll_push_front(IntLL l, int value) -> bool {
 
 fn intll_push_back(IntLL l, int value) -> bool {
 
-	IntLLNode x = makeIntLLNode(value, 0, 0);
+	IntLLNode x = makeIntLLNode(value, false, 0, 0);
 	
 	if l.size == 0 {
 		
@@ -69,6 +80,7 @@ fn intll_push_back(IntLL l, int value) -> bool {
 		oldtail = l.tail;
 		
 		oldtail.next = x;
+		oldtail.has_next = true;
 		x.prev = oldtail;
 		l.tail = x;
 	}
@@ -87,6 +99,7 @@ fn intll_pop_front(IntLL l) -> int {
 	
 		l.head = 0;
 		l.tail = 0;
+		l.is_empty = true;
 		
 	} else {
 		l.head = oldhead.next;
@@ -145,15 +158,18 @@ fn intll_index_of(IntLL l, int value) -> int {
 	IntLLNode current = l.head;
 	int index = 0;
 	
-	while current != 0 {
+	while current.has_next {
 	
 		if current.value == value { 
-		
 			return index;
 		}
 		
 		current = current.next;
 		index += 1;
+	}
+	
+	if current.value == value { 
+		return index;
 	}
 	
 	return -1;

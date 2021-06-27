@@ -96,7 +96,7 @@ static void lv_assign_stmt(struct ST* st, struct AssignStmt* a){
 		
 	}else{
 		
-		line->type = infer_type_expr(st, a->expr);
+		line->type = infer_type_expr("NO FILENAME", st, a->expr);
 	}
 	
 	lvst_add(st->lvst, line);

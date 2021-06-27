@@ -1,38 +1,47 @@
 //an implementation of a binary tree for integers
 
-struct IntBinTree { IntBinTreeNode root; }
+struct IntBinTree { 
+
+	bool has_root;
+	IntBinTreeNode root; 
+}
 
 struct IntBinTreeNode {
 
 	int key;
+	
+	bool has_left;
 	IntBinTreeNode left;
+	
+	bool has_right;
 	IntBinTreeNode right;
 }
 
 fn intbintree_ctor() -> IntBinTree {
 
-	return makeIntBinTree(0);
+	return makeIntBinTree(false, 0);
 }
 
 fn intbintree_dtor(IntBinTree t) -> bool {
 
-	if t.root != 0 { intbintreenode_dtor(t.root); }
+	if t.has_root { intbintreenode_dtor(t.root); }
 	free(t);
 	return true;
 }
 
 fn intbintreenode_dtor(IntBinTreeNode t) -> bool {
 
-	if t.left  != 0 { intbintreenode_dtor(t.left);  }
-	if t.right != 0 { intbintreenode_dtor(t.right); }
+	if t.has_left { intbintreenode_dtor(t.left);  }
+	if t.has_right { intbintreenode_dtor(t.right); }
 	free(t);
 	return true;
 }
 
 fn intbintree_insert(IntBinTree t, int key) -> int {
 
-	if t.root == 0 {
-		t.root = makeIntBinTreeNode(key,0,0);
+	if !t.has_root {
+		t.root = makeIntBinTreeNode(key,false,0,false,0);
+		t.has_root = true;
 		return key;
 	}
 	
@@ -46,7 +55,7 @@ fn intbintree_contains(IntBinTree t, int key) -> bool {
 
 fn intbintree_size(IntBinTree t) -> uint {
 
-	if t.root == 0 { return 0; }
+	if !t.has_root { return 0; }
 	
 	return intbintreenode_size(t.root);
 }
@@ -68,14 +77,16 @@ fn intbintreenode_insert(IntBinTreeNode t, int key) -> int {
 		
 			case -1 {
 				if c.left == 0 { 
-					c.left = makeIntBinTreeNode(key, 0, 0); 
+					c.left = makeIntBinTreeNode(key, false,0,false,0); 
+					c.has_left = true;
 					return key;
 				}
 				else { c = c.left; }
 			}
 			case  1 {
 				if c.right == 0 { 
-					c.right = makeIntBinTreeNode(key, 0, 0); 
+					c.right = makeIntBinTreeNode(key, false,0,false,0); 
+					c.has_right = true;
 					return key;
 				}
 				else { c = c.right; }
@@ -91,12 +102,18 @@ fn intbintreenode_contains(IntBinTreeNode t, int key) -> bool {
 
 	current = t;
 	
-	while current != 0 {
+	while true {
 
 		switch compare(key, current.key) {
 			case  0 { return true; }
-			case -1 { current = current.left; }
-			case  1 { current = current.right; }
+			case -1 { 
+				if !current.has_left { return false; }
+				current = current.left; 
+			}
+			case  1 { 
+				if !current.has_right { return false; }
+				current = current.right; 
+			}
 		}
 	}
 	
@@ -105,17 +122,27 @@ fn intbintreenode_contains(IntBinTreeNode t, int key) -> bool {
 
 fn intbintreenode_size(IntBinTreeNode t) -> uint {
 
-	if t == 0 { return 0; }
-	return 1+intbintreenode_size(t.left)+intbintreenode_size(t.right);
+	res = 1;
+	
+	if t.has_left {
+		res += intbintreenode_size(t.left);
+	}	
+	if t.has_right {
+		res += intbintreenode_size(t.right);
+	}
+	
+	return res;
 }
 
 fn intbintreenode_visit(IntBinTreeNode t, ((int)->bool) visitor) -> bool {
-
-	if t == 0 { return true; }
 	
-	intbintreenode_visit(t.left, visitor);
+	if t.has_left {
+		intbintreenode_visit(t.left, visitor);
+	}
 	visitor(t.key);
-	intbintreenode_visit(t.right, visitor);
+	if t.has_right {
+		intbintreenode_visit(t.right, visitor);
+	}
 	
 	return true;
 }
@@ -123,7 +150,7 @@ fn intbintreenode_visit(IntBinTreeNode t, ((int)->bool) visitor) -> bool {
 fn intbintreenode_findleftmost(IntBinTreeNode t) -> IntBinTreeNode {
 
 	current = t;
-	while current.left != 0 {
+	while current.has_left {
 		current = current.left;
 	}
 	return current;
@@ -132,7 +159,7 @@ fn intbintreenode_findleftmost(IntBinTreeNode t) -> IntBinTreeNode {
 fn intbintreenode_findrightmost(IntBinTreeNode t) -> IntBinTreeNode{
 
 	current = t;
-	while current.right != 0 {
+	while current.has_right {
 		current = current.right;
 	}
 	return current;

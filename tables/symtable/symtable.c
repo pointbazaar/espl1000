@@ -13,7 +13,7 @@ struct ST* makeST(){
 
 	struct ST* st = make(ST);
 	
-	st->inferredTypesCapacity = 200;
+	st->inferredTypesCapacity = 500;
 	st->inferredTypesCount    = 0;
 	
 	const int nbytes = 

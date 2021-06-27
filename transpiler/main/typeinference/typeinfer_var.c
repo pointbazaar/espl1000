@@ -16,11 +16,11 @@ struct MemberAccess {
 	struct Variable* member;
 };
 
-static struct Type* infer_in_context(struct ST* st, struct MemberAccess* ma);
+static struct Type* infer_in_context(char* filename, struct ST* st, struct MemberAccess* ma);
 
-struct Type* infer_type_variable(struct ST* st, struct Variable* v){
+struct Type* infer_type_variable(char* filename, struct ST* st, struct Variable* v){
 	
-	struct Type* typeOfVar = infer_type_simplevar(st, v->simpleVar);
+	struct Type* typeOfVar = infer_type_simplevar(filename, st, v->simpleVar);
 	
 	if(v->memberAccess == NULL){ return typeOfVar; }
 
@@ -29,10 +29,10 @@ struct Type* infer_type_variable(struct ST* st, struct Variable* v){
 		.member = v->memberAccess
 	};
 
-	return infer_in_context(st, &ma);
+	return infer_in_context(filename, st, &ma);
 }
 
-static struct Type* infer_in_context(struct ST* st, struct MemberAccess* ma){
+static struct Type* infer_in_context(char* filename, struct ST* st, struct MemberAccess* ma){
 	
 	struct Type* structType = ma->structType;
 	struct Variable* member = ma->member;
@@ -42,7 +42,7 @@ static struct Type* infer_in_context(struct ST* st, struct MemberAccess* ma){
 	
 	struct Type* memberType = stst_get_member_type(st->stst, structName, memberName);
 	
-	memberType = unwrap_indices(memberType, member->simpleVar->count_indices);
+	memberType = unwrap_indices(filename, memberType, member->simpleVar->count_indices);
 	
 	if(member->memberAccess == NULL)
 		{ return memberType; }
@@ -52,6 +52,6 @@ static struct Type* infer_in_context(struct ST* st, struct MemberAccess* ma){
 		.member = member->memberAccess
 	};
 	
-	return infer_in_context(st, &ma2);
+	return infer_in_context(filename, st, &ma2);
 }
 

@@ -50,12 +50,12 @@ void tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx){
 		{ return; }
 
 	struct Type* rightType = 
-		infer_type_expr(tcctx->st, a->expr);
+		infer_type_expr(tcctx->current_filename, tcctx->st, a->expr);
 	
 	struct Type* leftType = a->optType;
 	
 	if(a->optType == NULL){
-		leftType  = infer_type_variable(tcctx->st, a->var);
+		leftType  = infer_type_variable(tcctx->current_filename, tcctx->st, a->var);
 	}
 	
 	if(is_integer_type(leftType) 
@@ -86,27 +86,50 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 
 	tcctx->current_line_num = m->super.line_num;
 
-	struct SSTLine* line = sst_get(tcctx->st->sst, m->name);
+	struct Type** expect_types = NULL;
+	uint8_t expect_args        = 0;
 	
-	if(line->method == NULL){
+	if(sst_contains(tcctx->st->sst, m->name)){
+		//look into SST
+		struct SSTLine* line = sst_get(tcctx->st->sst, m->name);
 		
-		if(line->isLibC){
-			//we do not have the AST for libC 
-			//subroutines, so we cannot typecheck the call
-			return;
+		if(line->method == NULL){
+			if(line->isLibC){
+				//we do not have the AST for libC 
+				//subroutines, so we cannot typecheck the call
+				return;
+			}			
+			char msg[150];
+			sprintf(msg, "SUBR NOT FOUND IN SST: %s\n", m->name);
+			strcat(msg, ERR_SUBR_NOT_FOUND);
+			error(tcctx, msg);
 		}
+		assert(line->method != NULL);
+		struct Method* method = line->method;
+		expect_args = method->count_args;
 		
+		expect_types = malloc(sizeof(struct Type*)*expect_args);
+		for(uint8_t i=0; i < expect_args; i++){
+			expect_types[i] = method->args[i]->type;
+		}
+	}else if(lvst_contains(tcctx->st->lvst, m->name)){
+		//look into LVST
 		
-		char msg[150];
-		sprintf(msg, "SUBR NOT FOUND IN SST: %s\n", m->name);
-		strcat(msg, ERR_SUBR_NOT_FOUND);
-		error(tcctx, msg);
+		struct LVSTLine* line2 = lvst_get(tcctx->st->lvst, m->name);
+		
+		struct Type* type = line2->type;
+		if(type->m1 == NULL || type->m1->subrType == NULL){ 
+			error(tcctx, "SUBR HAD WRONG TYPE IN LVST");
+		}
+		struct SubrType* stype = type->m1->subrType;
+		
+		expect_args  = stype->count_argTypes;
+		expect_types = malloc(sizeof(struct Type*)*expect_args);
+		for(uint8_t i=0; i < expect_args; i++){
+			expect_types[i] = stype->argTypes[i];
+		}
 	}
-	assert(line->method != NULL);
 	
-	struct Method* method = line->method;
-	
-	const uint8_t expect_args = method->count_args;
 	const uint8_t actual_args = m->count_args;
 	
 	if(actual_args != expect_args){
@@ -118,16 +141,17 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		strcat(msg, ERR_NUM_ARGS);
 		
 		free(s1);
+		free(expect_types);
 		
 		error(tcctx, msg);
 	}
 	
 	for(uint8_t i = 0; i < expect_args; i++){
 	
-		struct Type* expect_type = method->args[i]->type;
+		struct Type* expect_type = expect_types[i];
 		
 		struct Type* actual_type = 
-			infer_type_expr(tcctx->st, m->args[i]);
+			infer_type_expr(tcctx->current_filename, tcctx->st, m->args[i]);
 			
 		if(is_integer_type(expect_type) 
 		&& is_integer_type(actual_type))
@@ -150,9 +174,12 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 			free(sTypeActual);
 			free(sTypeExpected);
 			
+			free(expect_types);
 			error(tcctx, msg);
 		}
 	}
+	
+	free(expect_types);
 }
 
 void tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx){
@@ -160,7 +187,7 @@ void tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx){
 	tcctx->current_line_num = i->super.line_num;
 	
 	struct Type* type = 
-		infer_type_expr(tcctx->st, i->condition);
+		infer_type_expr(tcctx->current_filename, tcctx->st, i->condition);
 	
 	if(!is_bool_type(type)){
 		
@@ -181,7 +208,7 @@ void tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx){
 	tcctx->current_line_num = w->super.line_num;
 
 	struct Type* type = 
-		infer_type_expr(tcctx->st, w->condition);
+		infer_type_expr(tcctx->current_filename, tcctx->st, w->condition);
 	
 	if(!is_bool_type(type)){
 		
@@ -202,7 +229,7 @@ void tc_loopstmt(struct LoopStmt* l, struct TCCtx* tcctx){
 	tcctx->current_line_num = l->super.line_num;
 
 	struct Type* type = 
-		infer_type_expr(tcctx->st, l->count);
+		infer_type_expr(tcctx->current_filename, tcctx->st, l->count);
 	
 	if(!is_integer_type(type)){
 		
@@ -225,7 +252,7 @@ void tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx){
 	struct Type* returnType = tcctx->currentFn->returnType;
 	
 	struct Type* returnedType = 
-		infer_type_expr(tcctx->st, r->returnValue);
+		infer_type_expr(tcctx->current_filename, tcctx->st, r->returnValue);
 	
 	if(is_integer_type(returnType) 
 	&& is_integer_type(returnedType))
@@ -254,7 +281,7 @@ void tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx){
 	tcctx->current_line_num = s->super.line_num;
 
 	struct Type* type = 
-		infer_type_expr(tcctx->st, s->expr);
+		infer_type_expr(tcctx->current_filename, tcctx->st, s->expr);
 	
 	if(!is_primitive_type(type)){
 		

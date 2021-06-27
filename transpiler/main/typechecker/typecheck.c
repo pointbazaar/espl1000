@@ -58,7 +58,9 @@ void tc_method(struct Method* m, struct TCCtx* tcctx){
 
 	tcctx->currentFn = m;
 	
+	lvst_clear(tcctx->st->lvst);
 	lvst_fill(m, tcctx->st, false);
+	
 	tc_stmtblock(m->block, tcctx);
 }
 
@@ -74,8 +76,8 @@ void tc_range(struct Range* r, struct TCCtx* tcctx){
 	
 	tcctx->current_line_num = r->super.line_num;
 
-	struct Type* t1 = infer_type_expr(tcctx->st, r->start);
-	struct Type* t2 = infer_type_expr(tcctx->st, r->end);
+	struct Type* t1 = infer_type_expr(tcctx->current_filename, tcctx->st, r->start);
+	struct Type* t2 = infer_type_expr(tcctx->current_filename, tcctx->st, r->end);
 
 	if(!is_integer_type(t1) || !is_integer_type(t2)){
 		

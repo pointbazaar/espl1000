@@ -34,7 +34,7 @@ test:
 	$(CALL) switch/switch.dg 
 	$(CALL) file_io/file_io.dg
 	$(CALL) plotting/plotting.dg
-	sd -clean -Werror -no_typecheck lambda.dg
+	$(CALL) lambda.dg
 	@echo "[Examples] done"
 
 # currently not working: 

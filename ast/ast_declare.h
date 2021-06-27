@@ -55,6 +55,14 @@ struct ASTNode {
 	//Base Type from which all ASTNodes inherit
 	//except {AST, Namespace}
 	
+	/*
+	 Example:
+	 struct Method {
+		struct ASTNode super;
+		...
+	 }
+	 */
+	
 	uint32_t line_num;
 	
 	uint32_t annotations;

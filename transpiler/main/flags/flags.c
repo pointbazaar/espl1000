@@ -35,7 +35,6 @@ struct Flags* makeFlags2(){
 	flags->help 	= false;
 	flags->version 	= false;
 	flags->clean 	= false;
-	flags->no_typecheck  = false;
 	flags->emit_headers  = false;
 	
 	flags->debug_symbols = false;
@@ -84,11 +83,6 @@ static void make_flags_inner(struct Flags* flags, char* arg){
 	
 	if(strcmp(arg, "-clean") == 0){ 
 		flags->clean = true;
-		return;
-	}
-	
-	if(strcmp(arg, "-no_typecheck") == 0){
-		flags->no_typecheck = true;
 		return;
 	}
 	

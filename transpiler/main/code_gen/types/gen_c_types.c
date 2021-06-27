@@ -199,6 +199,7 @@ char* typeNameToCFormatStr(char* typeName){
 	|| strcmp(typeName, "uint32") == 0
 	|| strcmp(typeName, "int64") == 0
 	|| strcmp(typeName, "uint64") == 0
+	|| strcmp(typeName, "bool") == 0
 	){
 		return "%d";
 	}else if(strcmp(typeName, "char") == 0){

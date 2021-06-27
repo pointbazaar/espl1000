@@ -33,8 +33,8 @@ struct Term* makeTerm_other(struct Expr* expr){
 	
 	struct Term* res = initTerm();
 	
-	res->super.line_num    = 0;
-	res->super.annotations = 0;
+	res->super.line_num    = expr->super.line_num;
+	res->super.annotations = expr->super.annotations;
 
 	res->kind = 5;
 	res->ptr.m5 = expr;

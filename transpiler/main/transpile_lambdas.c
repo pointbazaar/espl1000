@@ -8,6 +8,7 @@
 #include "ast/visitor/visitor.h"
 
 #include "tables/sst/sst.h"
+#include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
 
 #include "transpile_lambdas.h"
@@ -32,13 +33,23 @@ static struct Method* gen_subr_from_lambda(
 	uint8_t orig_count_arg
 );
 
-void transpileLambdas(struct AST* ast, struct SST* sst){
+static void myvisitor_transpile_lambdas_inner(
+	struct Call* call, 
+	struct Lambda* lambda, 
+	struct ST* st,
+	struct Term* term,
+	uint8_t i
+);
+
+void transpileLambdas(struct AST* ast, struct ST* st){
 	
 	//we need a visitor to obtain lambda locations
 	//in the appropriate contexts (AST Node Patters)
 	
-	visitAST(ast, myvisitor_transpile_lambdas, sst);
+	visitAST(ast, myvisitor_transpile_lambdas, st);
 }
+
+static struct Namespace* current_ns = NULL;
 
 static void myvisitor_transpile_lambdas(void* node, enum NODE_TYPE type, void* arg){
 
@@ -49,9 +60,7 @@ static void myvisitor_transpile_lambdas(void* node, enum NODE_TYPE type, void* a
 	//in case (1): find out the subroutine type signature
 	//and insert the lambda subroutine at toplevel
 	//in the Namespace
-	struct SST* sst = (struct SST*) arg;
-	
-	static struct Namespace* current_ns = NULL;
+	struct ST* st = (struct ST*) arg;
 	
 	if(type == NODE_NAMESPACE){
 		
@@ -68,34 +77,78 @@ static void myvisitor_transpile_lambdas(void* node, enum NODE_TYPE type, void* a
 			
 			if(term->kind == 11){
 				
-				//we have a lambda ^^ 
-				struct Lambda* l = term->ptr.m11;
+				//we have a lambda ^^
+				struct Lambda* lambda = term->ptr.m11;
 				
-				//use SST
-				struct SSTLine* line = sst_get(sst, call->name);
-				
-				struct Method* container = line->method;
-				
-				struct DeclArg* lambdaArg = container->args[i];
-				
-				//get the subrtype from the argument
-				struct Type* pre_lambdaType = lambdaArg->type;
-				struct SubrType* lambdaType = pre_lambdaType->m1->subrType;
-				
-				//replace the lambda with function reference
-				transpile_lambda(
-					current_ns, 
-					term, 
-					l,
-					lambdaType->returnType,
-					lambdaType->argTypes,
-					lambdaType->count_argTypes
-				);
+				myvisitor_transpile_lambdas_inner(call, lambda, st, term, i);
 			}
 		}
 	}
 	
 	//in case (2): ignore, deal with later (TODO)
+}
+
+static void myvisitor_transpile_lambdas_inner(
+	struct Call* call, 
+	struct Lambda* lambda, 
+	struct ST* st,
+	struct Term* term,
+	uint8_t i
+){
+	
+	struct SubrType* lambdaType = NULL;
+	
+	if(lvst_contains(st->lvst, call->name)){
+		
+		struct LVSTLine* line2 = lvst_get(st->lvst, call->name);
+		
+		struct Type* type = line2->type;
+		
+		if(type->m1 == NULL){ 
+			printf("Error\n");
+			exit(1);
+		}
+		if(type->m1->subrType == NULL){ 
+			printf("Error\n");
+			exit(1);
+		}
+		
+		struct SubrType* stype = type->m1->subrType;
+		
+		struct Type* pre_lambdaType = stype->argTypes[i];
+		
+		lambdaType = pre_lambdaType->m1->subrType;
+		
+	}else if(sst_contains(st->sst, call->name)){
+		
+		struct SSTLine* line = sst_get(st->sst, call->name);
+	
+		struct Method* container = line->method;
+		
+		struct DeclArg* lambdaArg = container->args[i];
+		
+		//get the subrtype from the argument
+		struct Type* pre_lambdaType = lambdaArg->type;
+		
+		lambdaType = pre_lambdaType->m1->subrType;
+		
+	}else{
+		
+		printf("[Transpiler][Transpile-Lambdas][Error]");
+		printf(" Could not find subroutine: %s\n", call->name);
+		printf("Exiting.\n");
+		exit(1);
+	}
+	
+	//replace the lambda with function reference
+	transpile_lambda(
+		current_ns, 
+		term, 
+		lambda,
+		lambdaType->returnType,
+		lambdaType->argTypes,
+		lambdaType->count_argTypes
+	);
 }
 
 static uint32_t lambda_num = 0;

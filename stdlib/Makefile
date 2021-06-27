@@ -7,7 +7,7 @@ SOURCES :=  test.dg \
 	matrix.dg
 
 test: $(SOURCES)
-	sd -clean -no_typecheck -g $(SOURCES)
+	sd -clean -g $(SOURCES)
 	./a.out
 
 clean:

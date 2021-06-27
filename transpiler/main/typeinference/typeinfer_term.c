@@ -12,27 +12,27 @@
 
 static char* ERR_FATAL = "Fatal\n";
 
-struct Type* infer_type_unopterm(struct ST* st, struct UnOpTerm* t){
+struct Type* infer_type_unopterm(char* filename, struct ST* st, struct UnOpTerm* t){
 	
-	return infer_type_term(st, t->term);
+	return infer_type_term(filename, st, t->term);
 }
 
-struct Type* infer_type_term(struct ST* st, struct Term* t){
+struct Type* infer_type_term(char* filename, struct ST* st, struct Term* t){
 	
 	switch(t->kind){
 		
 		case  1: return typeFromStrPrimitive(st, "bool"); 
 		case  2: return typeFromStrPrimitive(st, "int"); 
 		case  3: return typeFromStrPrimitive(st, "char"); 
-		case  4: return infer_type_methodcall(st, t->ptr.m4); 
-		case  5: return infer_type_expr(st, t->ptr.m5); 
-		case  6: return infer_type_variable(st, t->ptr.m6); 
+		case  4: return infer_type_methodcall(filename, st, t->ptr.m4); 
+		case  5: return infer_type_expr(filename, st, t->ptr.m5); 
+		case  6: return infer_type_variable(filename, st, t->ptr.m6); 
 		case  7: return typeFromStrPrimitive(st, "float"); 
 		case  8: return typeFromStr(st, "String"); 
 		case  9: return typeFromStrPrimitive(st, "int");
 		case 10: return typeFromStrPrimitive(st, "int");
 		
-		default: print_exit(ERR_FATAL);
+		default: print_exit(filename, &(t->super), ERR_FATAL);
 	}
 	
 	return NULL;

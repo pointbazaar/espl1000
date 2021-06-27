@@ -113,7 +113,7 @@ fn poly_print(Poly p) -> bool {
 
 fn poly_eval(Poly p, float x) -> float {
 
-	float res = 0;
+	float res = 0.0;
 	for i in 0 .. p.n - 1 {
 		res += p.coeff[i] * pow(x, i);
 	}
