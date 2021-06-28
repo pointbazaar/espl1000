@@ -180,8 +180,11 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* c_filename, cha
 	
 	ctx->file = ctx->c_file;
 	
-	for(int i=0; i < ast->count_namespaces; i++)
-	{ ns_transpile_rest(ast->namespaces[i], ctx); }
+	for(int i=0; i < ast->count_namespaces; i++){ 
+		
+		gen_struct_subrs(ast->namespaces[i], ctx);
+		ns_transpile_subrs(ast->namespaces[i], ctx);
+	}
 }
 
 static void backfill_lambdas_into_sst(struct AST* ast, struct SST* sst){
@@ -265,9 +268,7 @@ static void ns_transpile_fwd(struct Namespace* ns, struct Ctx* ctx){
 
 static void ns_transpile_rest(struct Namespace* ns, struct Ctx* ctx){
 
-	gen_struct_subrs(ns, ctx);
 	
-	ns_transpile_subrs(ns, ctx);
 }
 
 void transpileStmtBlock(struct StmtBlock* block, struct Ctx* ctx){
