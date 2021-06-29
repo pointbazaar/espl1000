@@ -6,6 +6,8 @@
 #include "tables/sst/sst.h"
 #include "tables/symtable/symtable.h"
 
+#include "token/TokenKeys.h"
+
 #define SST_INITIAL_CAPACITY 10
 
 #define ERR_SAME_NAME "[SST][Error] 2 subroutines with same name\n"
@@ -58,7 +60,7 @@ void sst_fill(struct SST* sst, struct Namespace* ns){
 	
 	for(int i = 0; i < ns->count_methods; i++){
 		
-		struct SSTLine* line = makeSSTLine2(ns->methods[i]);
+		struct SSTLine* line = makeSSTLine2(ns->methods[i], ns->name);
 		
 		sst_add(sst, line);
 	}
@@ -100,6 +102,7 @@ void freeSST(struct SST* sst){
 
 struct SSTLine* makeSSTLine(
 	char* name, 
+	char* _namespace,
 	struct Type* type, 
 	bool isLibC,
 	enum HALTS halts
@@ -108,6 +111,7 @@ struct SSTLine* makeSSTLine(
 	struct SSTLine* line = make(SSTLine);
 	
 	strncpy(line->name, name, DEFAULT_STR_SIZE);
+	strncpy(line->_namespace, _namespace, DEFAULT_STR_SIZE);
 	
 	line->method       = NULL;
 	
@@ -118,14 +122,17 @@ struct SSTLine* makeSSTLine(
 	line->dead         = DEAD_UNKNOWN;
 	line->halts        = halts;
 	
+	line->is_private   = false;
+	
 	return line;
 }
 
-struct SSTLine* makeSSTLine2(struct Method* m){
+struct SSTLine* makeSSTLine2(struct Method* m, char* _namespace){
 
 	struct SSTLine* line = make(SSTLine);
 	
 	strncpy(line->name, m->name, DEFAULT_STR_SIZE);
+	strncpy(line->_namespace, _namespace, DEFAULT_STR_SIZE);
 	
 	line->method       = m;
 	
@@ -135,6 +142,8 @@ struct SSTLine* makeSSTLine2(struct Method* m){
 	
 	line->dead         = DEAD_UNKNOWN;
 	line->halts        = HALTS_UNKNOWN;
+	
+	line->is_private   = has_annotation(m->super.annotations, ANNOT_PRIVATE);
 	
 	return line;
 }

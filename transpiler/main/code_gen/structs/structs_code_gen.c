@@ -83,35 +83,36 @@ void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx){
 	gen_struct_subr_print(sd, ctx);
 }
 
-static void add_gen_struct_subrs_sst_single(struct Ctx* ctx, struct StructDecl* sd){
+static void add_gen_struct_subrs_sst_single(struct Ctx* ctx, struct Namespace* ns, struct StructDecl* sd){
 	
 	struct SST* sst = ctx->tables->sst;
 	
 	struct Type* retTypeStruct = typeFromStr(ctx->tables, sd->type->structType->typeName);
 	
 	//add subroutines to sst
+	char* nsname = ns->name;
 	
-	struct SSTLine* line = makeSSTLine("_", retTypeStruct, false, HALTS_ALWAYS);
+	struct SSTLine* line = makeSSTLine("_", nsname, retTypeStruct, false, HALTS_ALWAYS);
 	sprintf(line->name, "new%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 	
-	line = makeSSTLine("_", retTypeStruct, false, HALTS_ALWAYS);
+	line = makeSSTLine("_", nsname, retTypeStruct, false, HALTS_ALWAYS);
 	sprintf(line->name, "copy%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 	
-	line = makeSSTLine("_", retTypeStruct, false, HALTS_ALWAYS);
+	line = makeSSTLine("_", nsname, retTypeStruct, false, HALTS_ALWAYS);
 	sprintf(line->name, "make%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 	
-	line = makeSSTLine("_", typeFromStrPrimitive(ctx->tables, "int"), false, HALTS_ALWAYS);
+	line = makeSSTLine("_", nsname, typeFromStrPrimitive(ctx->tables, "int"), false, HALTS_ALWAYS);
 	sprintf(line->name, "print%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 	
-	line = makeSSTLine("_", typeFromStrPrimitive(ctx->tables, "int"), false, HALTS_ALWAYS);
+	line = makeSSTLine("_", nsname, typeFromStrPrimitive(ctx->tables, "int"), false, HALTS_ALWAYS);
 	sprintf(line->name, "free%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 	
-	line = makeSSTLine("_", typeFromStrPrimitive(ctx->tables, "int"), false, HALTS_ALWAYS);
+	line = makeSSTLine("_", nsname, typeFromStrPrimitive(ctx->tables, "int"), false, HALTS_ALWAYS);
 	sprintf(line->name, "del%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 }
@@ -122,7 +123,7 @@ void add_gen_struct_subrs_sst(struct Ctx* ctx, struct Namespace* ns){
 		{ printf("add_gen_struct_subrs_sst\n"); }
 	
 	for(int i=0; i < ns->count_structs; i++)
-		{ add_gen_struct_subrs_sst_single(ctx, ns->structs[i]); }
+		{ add_gen_struct_subrs_sst_single(ctx, ns, ns->structs[i]); }
 }
 
 void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx){

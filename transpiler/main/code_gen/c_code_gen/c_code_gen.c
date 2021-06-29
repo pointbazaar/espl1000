@@ -217,7 +217,7 @@ static void backfill_lambdas_into_sst(struct AST* ast, struct SST* sst){
 				continue;
 			}
 			
-			struct SSTLine* line = makeSSTLine2(m);
+			struct SSTLine* line = makeSSTLine2(m, ns->name);
 			sst_add(sst, line);
 		}
 	}

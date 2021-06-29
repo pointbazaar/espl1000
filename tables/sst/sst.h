@@ -19,6 +19,9 @@ struct SSTLine {
 	//the name of the subroutine
 	char name[DEFAULT_STR_SIZE]; 
 	
+	//where the subroutine was defined
+	char _namespace[DEFAULT_STR_SIZE];
+	
 	//a reference to the type being returned
 	struct Type* returnType;
 	
@@ -39,6 +42,9 @@ struct SSTLine {
 	//-- termination analysis --
 	enum HALTS halts;
 	//--------------------------
+	
+	//-- encapsulation
+	bool is_private;
 };
 
 
@@ -65,11 +71,12 @@ struct SSTLine* sst_at(struct SST* sst, uint32_t index);
 //-----------
 struct SSTLine* makeSSTLine(
 	char* name, 
+	char* _namespace,
 	struct Type* type, 
 	bool isLibC,
 	enum HALTS halts
 );
-struct SSTLine* makeSSTLine2(struct Method* m);
+struct SSTLine* makeSSTLine2(struct Method* m, char* _namespace);
 void freeSSTLine(struct SSTLine* l);
 
 

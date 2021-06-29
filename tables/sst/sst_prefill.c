@@ -237,7 +237,7 @@ static void fill_protos(
 		}
 		
 		struct SSTLine* line = 
-			makeSSTLine(name, t, true, proto.halts);
+			makeSSTLine(name, "_C_", t, true, proto.halts);
 		
 		sst_add(st->sst, line);
 	}
