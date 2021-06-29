@@ -167,6 +167,7 @@ fn matrix_identity(uint n) -> Matrix {
 	return res;
 }
 
+@private
 fn matrix_inverse(Matrix a) -> Matrix {
 
 	//TODO

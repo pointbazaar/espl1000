@@ -122,6 +122,7 @@ fn ppm_write(String filename, ImagePPM image) ~> bool {
 	return true;
 }
 
+@private
 fn readuint8(_IO_FILE file) ~> uint8 {
 	
 	int c = 0;

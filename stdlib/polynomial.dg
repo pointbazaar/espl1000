@@ -144,6 +144,7 @@ fn poly_integral(Poly p) -> Poly {
 	return res;
 }
 
+@private
 fn safeIndex([float] arr, uint size, uint index) -> float {
 
 	if index >= size { return 0.0; }

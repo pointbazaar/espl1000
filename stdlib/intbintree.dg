@@ -147,6 +147,7 @@ fn intbintreenode_visit(IntBinTreeNode t, ((int)->bool) visitor) -> bool {
 	return true;
 }
 
+@private
 fn intbintreenode_findleftmost(IntBinTreeNode t) -> IntBinTreeNode {
 
 	current = t;
@@ -156,6 +157,7 @@ fn intbintreenode_findleftmost(IntBinTreeNode t) -> IntBinTreeNode {
 	return current;
 }
 
+@private
 fn intbintreenode_findrightmost(IntBinTreeNode t) -> IntBinTreeNode{
 
 	current = t;
@@ -165,6 +167,7 @@ fn intbintreenode_findrightmost(IntBinTreeNode t) -> IntBinTreeNode{
 	return current;
 }
 
+@private
 fn compare(int a, int b) -> int{
 
 	if a < b { return -1; }
