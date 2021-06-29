@@ -10,7 +10,9 @@ rules:
 
     - statement: "\\b(return|break|case)\\b"
     - statement: "\\b(if|else|while|loop|for|switch)\\b"
-    - statement: "\\b(fn|struct)\\b"
+    - special: "\\b(fn|struct)\\b"
+    
+    - preproc: "\\b@[a-z]+\\b"
 
     - symbol.brackets: "(\\{|\\})"
     - symbol.brackets: "(\\(|\\))"

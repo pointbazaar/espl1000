@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "Op.h"
 
 #include "ast/util/free_ast.h"
@@ -25,8 +27,8 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 	
 	struct Op* res = make(Op);
 	memset(res, 0, sizeof(struct Op));
-	res->super.line_num    = tk->line_num;
-	res->super.annotations = 0;
+	
+	parse_astnode(copy, &(res->super));
 
 	switch(tk->kind){
 		

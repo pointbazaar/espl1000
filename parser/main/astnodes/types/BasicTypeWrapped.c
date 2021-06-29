@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "BasicTypeWrapped.h"
 #include "SubrType.h"
 #include "SimpleType.h"
@@ -46,20 +48,22 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 	}
 
 	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
+	struct TokenList* copy = list_copy(tokens);
 	
-	res->super.line_num    = list_head(tokens)->line_num;
-	res->super.annotations = 0;
+	parse_astnode(copy, &(res->super));
 	
 	res->simpleType = NULL;
-	res->subrType = NULL;
-
-	struct TokenList* copy = list_copy(tokens);
+	res->subrType   = NULL;
+	
+	if(list_size(copy) == 0){
+		freeTokenListShallow(copy);
+		free(res);
+		return NULL;
+	}
+	
 	struct Token* lparens = makeToken(LPARENS);
 
-	if (
-		list_size(copy) > 1 
-		&& list_startsWith(copy, lparens)
-	){
+	if(list_startsWith(copy, lparens)){
 		struct TokenList* copy2 = list_copy(copy);
 
 		if(!list_expect(copy2, LPARENS)){
@@ -89,25 +93,24 @@ struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool de
 
 		list_set(copy, copy2);
 		freeTokenListShallow(copy2);
-
-	} else {
-		res->simpleType = makeSimpleType(copy,debug);
-		if(res->simpleType == NULL){
-			free(res);
-			freeTokenListShallow(copy);
-			freeToken(lparens);
-			return NULL;
-		}
+		
+		goto end;
+	} 
+	
+	res->simpleType = makeSimpleType(copy,debug);
+	if(res->simpleType == NULL){
+		free(res);
+		freeTokenListShallow(copy);
+		freeToken(lparens);
+		return NULL;
 	}
+	
+	end:
 	
 	freeToken(lparens);
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
-
-	if(debug){
-		printf("\tsuccess parsing BasicTypeWrapped\n");
-	}
 
 	return res;
 }

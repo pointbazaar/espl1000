@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "Stmt.h"
 #include "WhileStmt.h"
 #include "ForStmt.h"
@@ -39,15 +41,13 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	if (list_size(tokens) == 0) { return NULL; }
 
 	struct Stmt* res = initStmt();
+	struct TokenList* copy = list_copy(tokens);
 	
-	res->super.line_num    = list_head(tokens)->line_num;
-	res->super.annotations = 0;
+	parse_astnode(copy, &(res->super));
 
 	res->kind 	= -1;
 	res->isBreak 	= false;
 	res->isContinue = false;
-
-	struct TokenList* copy = list_copy(tokens);
 
 	struct Token* first = list_head(copy);
 	

@@ -2,6 +2,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "SubrType.h"
 #include "Type.h"
 
@@ -30,14 +32,12 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 	if(debug){ printf("SubrType(...)\n"); }
 
 	struct SubrType* res = make(SubrType);
+	struct TokenList* copy = list_copy(tokens);
 	
-	res->super.line_num    = list_head(tokens)->line_num;
-	res->super.annotations = 0;
+	parse_astnode(copy, &(res->super));
 
 	res->argTypes = malloc(sizeof(struct Type*)*1);
 	res->count_argTypes = 0;
-
-	struct TokenList* copy = list_copy(tokens);
 
 	if(!list_expect(copy, LPARENS)){
 		freeTokenListShallow(copy);

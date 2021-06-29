@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "Method.h"
 #include "StmtBlock.h"
 #include "types/Type.h"
@@ -29,11 +31,9 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 	}
 
 	struct Method* res = initMethod();
-	
-	res->super.line_num    = list_head(tokens)->line_num;
-	res->super.annotations = 0;
-
 	struct TokenList* copy = list_copy(tokens);
+	
+	parse_astnode(copy, &(res->super));
 
 	if(!list_expect(copy, FN)){
 		//as a subroutine is parsed deterministically (we know to parse a subroutine by the 'fn' keyword),

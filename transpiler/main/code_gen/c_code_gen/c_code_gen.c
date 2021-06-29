@@ -28,6 +28,7 @@
 #include "analyzer/fn_analyzer.h"
 #include "analyzer/dead_analyzer.h"
 #include "analyzer/halt_analyzer.h"
+#include "analyzer/annotation_analyzer.h"
 
 //Table Includes
 #include "tables/sst/sst.h"
@@ -50,10 +51,9 @@ static void ns_transpile_subr_fwd_decls(struct Namespace* ns, struct Ctx* ctx);
 static void ns_transpile_subrs(struct Namespace* ns, struct Ctx* ctx);
 
 static void ns_transpile_fwd(struct Namespace* ns, struct Ctx* ctx);
-static void ns_transpile_rest(struct Namespace* ns, struct Ctx* ctx);
-
 
 static void backfill_lambdas_into_sst(struct AST* ast, struct SST* sst);
+
 // --------------------------------------------------------
 
 bool transpileAndWrite(char* c_filename, char* h_filename, struct AST* ast, struct Flags* flags){
@@ -165,6 +165,7 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* c_filename, cha
 	analyze_functions(ctx->tables, ast);
 	analyze_dead_code(ctx->tables, ast);
 	analyze_termination(ctx->tables, ast);
+	analyze_annotations(ctx->tables, ast);
 	
 	if(ctx->flags->debug){
 		sst_print(ctx->tables->sst);
@@ -264,11 +265,6 @@ static void ns_transpile_fwd(struct Namespace* ns, struct Ctx* ctx){
 	gen_struct_subr_signatures(ns, ctx);
 	
 	ns_transpile_subr_fwd_decls(ns, ctx);
-}
-
-static void ns_transpile_rest(struct Namespace* ns, struct Ctx* ctx){
-
-	
 }
 
 void transpileStmtBlock(struct StmtBlock* block, struct Ctx* ctx){

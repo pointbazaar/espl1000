@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "PrimitiveType.h"
 
 #include "ast/ast.h"
@@ -14,11 +16,11 @@
 struct PrimitiveType* makePrimitiveType(struct TokenList* tokens, bool debug){
 
 	struct PrimitiveType* res = make(PrimitiveType);
+	struct TokenList* copy = list_copy(tokens);
 	
-	res->super.line_num    = list_head(tokens)->line_num;
-	res->super.annotations = 0;
+	parse_astnode(copy, &(res->super));
 	
-	struct Token* next = list_head(tokens);
+	struct Token* next = list_head(copy);
 	
 	res->intType = NONE;
 	
@@ -35,7 +37,11 @@ struct PrimitiveType* makePrimitiveType(struct TokenList* tokens, bool debug){
 	
 	if(!(res->isIntType)){
 		
-		list_consume(tokens, 1);
+		list_consume(copy, 1);
+		
+		list_set(tokens, copy);
+		freeTokenListShallow(copy);
+		
 		return res;
 	}
 		
@@ -53,7 +59,10 @@ struct PrimitiveType* makePrimitiveType(struct TokenList* tokens, bool debug){
 		exit(1);
 	}
 
-	list_consume(tokens, 1);
+	list_consume(copy, 1);
+	
+	list_set(tokens, copy);
+	freeTokenListShallow(copy);
 	
 	return res;
 }

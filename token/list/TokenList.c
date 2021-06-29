@@ -112,9 +112,6 @@ bool list_expect_2(struct TokenList* list, struct Token* tk){
 
 struct TokenList* list_copy(struct TokenList* other) {
 
-	//DEBUG
-	//printf("list_copy(...)\n");
-
 	struct TokenList* list = makeTokenList();
 	list_set(list, other);
 	

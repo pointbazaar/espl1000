@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "StructDecl.h"
 #include "StructMember.h"
 #include "types/SimpleType.h"
@@ -20,15 +22,13 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 	}
 
 	struct StructDecl* res = make(StructDecl);
+	struct TokenList* copy = list_copy(tokens);
 	
-	res->super.line_num    = list_head(tokens)->line_num;
-	res->super.annotations = 0;
+	parse_astnode(copy, &(res->super));
 	
 	res->members = malloc(sizeof(struct StructMember*)*1);
 	res->count_members = 0;
 	
-	struct TokenList* copy = list_copy(tokens);
-
 	if(list_size(copy) > 0){
 	
 		struct Token* next = list_head(copy);

@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "IfStmt.h"
 #include "Stmt.h"
 #include "expr/Expr.h"
@@ -27,11 +29,12 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 
 	struct TokenList* copy = list_copy(tokens);
 
+	struct IfStmt* res = initIfStmt();
+	parse_astnode(copy, &(res->super));
+	
 	if(!list_expect(copy, IF)){
 		return NULL;
 	}
-	
-	struct IfStmt* res = initIfStmt();
 	
 	res->super.line_num    = list_head(tokens)->line_num;
 	res->super.annotations = 0;

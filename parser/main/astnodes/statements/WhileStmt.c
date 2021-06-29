@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "WhileStmt.h"
 #include "Stmt.h"
 #include "expr/Expr.h"
@@ -19,14 +21,12 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 	}
 
 	struct WhileStmt* res = make(WhileStmt);
+	struct TokenList* copy = list_copy(tokens);
 	
-	res->super.line_num    = list_head(tokens)->line_num;
-	res->super.annotations = 0;
+	parse_astnode(copy, &(res->super));
 
 	res->condition = NULL;
 	res->block     = NULL;
-
-	struct TokenList* copy = list_copy(tokens);
 
 	if(!list_expect(copy, WHILE)){
 		//this part can be parsed deterministically

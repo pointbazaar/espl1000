@@ -139,13 +139,19 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		
 		case ASSIGNOP: 
 		//SECTION: OTHER
-		case TPARAM : 
-		case SEMICOLON : 
-		case COMMA : 
-		case ARROW : 
-		case STRUCTMEMBERACCESS : 
+		case TPARAM: 
+		case SEMICOLON: 
+		case COMMA: 
+		case ARROW: 
+		case STRUCTMEMBERACCESS: 
+		
+		//SECTION: ANNOTATIONS
+		case ANNOT_HALTS:
+		case ANNOT_PRIVATE:
+		case ANNOT_PUBLIC:
+		case ANNOT_DEPRECATED:
 
-		//KEYWORDS
+		//SECTION: KEYWORDS
 		case RETURN: 
 		case FN: 
 		case STRUCT: 

@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "UnOpTerm.h"
 
 #include "Op.h"
@@ -27,8 +29,7 @@ struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens, bool debug){
 	
 	struct TokenList* copy = list_copy(tokens);
 	
-	res->super.line_num    = list_head(copy)->line_num;
-	res->super.annotations = 0;
+	parse_astnode(copy, &(res->super));
 	
 	res->op = makeOp(copy, debug);
 	//res->op may be NULL, it is not a problem,

@@ -63,7 +63,8 @@ OBJS_MAIN := build/parser.o \
 		build/ForStmt.o \
 		build/SwitchStmt.o \
 		build/CaseStmt.o \
-		build/Lambda.o
+		build/Lambda.o \
+		build/parse_astnode.o
 		
 OBJS_TEST := build/AssignStmtTest.o \
 		build/BasicTypeWrappedTest.o \
@@ -136,6 +137,10 @@ dragon-parser: $(OBJS)
 #generic rules
 
 build/%.o: main/commandline/%.c $(MAIN_DEPS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL2) -o $@ $<
+	
+build/%.o: main/util/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	

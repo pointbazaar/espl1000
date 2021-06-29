@@ -1,0 +1,23 @@
+
+//this file demonstrates various annotations
+
+//@deprecated should cause an error here, as main will never get old :)
+fn main () ~> int {
+
+	subr();
+	subr_should_halt();
+	return 0;
+}
+
+@private     //no effect here 
+@deprecated  //should cause warning (usage in main)
+fn subr() ~> bool {
+
+	return true;
+}
+
+@halts 
+fn subr_should_halt() -> bool {
+	while(true){ }
+	return true;
+}

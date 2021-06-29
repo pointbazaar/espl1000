@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "Term.h"
 #include "const/CharConst.h"
 #include "const/IntConst.h"
@@ -54,8 +56,7 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 	
 	struct TokenList* copy = list_copy(tokens);
 	
-	res->super.line_num    = list_head(copy)->line_num;
-	res->super.annotations = 0;
+	parse_astnode(copy, &(res->super));
 	
 	const int tk_kind = list_head(copy)->kind;
 

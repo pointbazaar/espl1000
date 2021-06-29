@@ -60,7 +60,13 @@ void ns_parse_methods(struct Namespace* res, struct TokenList* copy, bool debug)
 
 		struct Token* next = list_head(copy);
 
-		while (next->kind == FN) {
+		while (
+			next->kind == FN
+			|| (
+				next->kind > _ANNOT_START_
+				&& next->kind < _ANNOT_END_
+			)
+		) {
 			struct Method* m = makeMethod(copy,debug);
 			if(m == NULL){
 				printf("parsing error, expected a method, but got:\n");

@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "statements/SwitchStmt.h"
 #include "statements/CaseStmt.h"
 #include "expr/Expr.h"
@@ -20,18 +22,17 @@ struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens, bool debug){
 	}
 
 	struct TokenList* copy = list_copy(tokens);
-
+	
+	struct SwitchStmt* res = make(SwitchStmt);
+	
+	parse_astnode(copy, &(res->super));
+	
 	if(!list_expect(copy, SWITCH)){
 		
 		printf("expected 'switch', but was: %s\n", list_code(copy, debug));
 		exit(1);
 		return NULL;
 	}
-	
-	struct SwitchStmt* res = make(SwitchStmt);
-	
-	res->super.line_num    = list_head(tokens)->line_num;
-	res->super.annotations = 0;
 
 	res->expr = NULL;
 	res->count_cases = 0;

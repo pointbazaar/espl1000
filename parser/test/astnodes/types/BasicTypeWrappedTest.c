@@ -20,9 +20,12 @@ int basictypewrapped_test_type_parsing_simple_type(bool debug) {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(TYPEID,"Carrot"));
 
-	struct BasicTypeWrapped* b = makeBasicTypeWrapped2(list,false);
+	struct BasicTypeWrapped* b = makeBasicTypeWrapped2(list, debug);
 
-	assert(b->simpleType != NULL && b->subrType == NULL);	//it is SimpleType
+	//it is SimpleType
+	assert(b->simpleType != NULL && b->subrType == NULL);	
+	
+	list_print(list);
 	assert(0 == list_size(list));
 	
 	freeTokenList(list);

@@ -68,6 +68,12 @@ float	out(TYPEID_PRIMITIVE_FLOAT, yytext);
 true			out(BCONST_TRUE, yytext);
 false			out(BCONST_FALSE, yytext);
 
+
+@halts			out(ANNOT_HALTS, yytext);
+@private		out(ANNOT_PRIVATE, yytext);
+@public			out(ANNOT_PUBLIC, yytext);
+@deprecated		out(ANNOT_DEPRECATED, yytext);
+
 [a-z][a-zA-Z0-9_]*	out(ID, yytext);
 [A-Z_][a-zA-Z0-9_]*	out(TYPEID, yytext);
 \?T[0-9]+			{

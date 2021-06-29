@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>SmallDragon - Flags</title>
+  <meta name="description" content="SmallDragon Annotations">
+  <meta name="author" content="SmallDragon">
+
+  <link rel="icon" href="../img/favicon.ico">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/style.css">
+
+</head>
+<body>
+<div class="container">
+	
+	<div class="row nav-bg">
+		<div class="col"><a href="../index.html">Home</a></div>
+	</div>
+
+	<h1>SmallDragon Annotations</h1>
+
+	<p>
+	SmallDragon currently supports a few simple Annotations 
+	which allow for additional Errors, Warnings and Notes
+	to be issued
+	without adding syntax bloat.<br>
+	<br>
+	
+	New Annotations can easily be added and existing 
+	ones can be disabled with minimal code changes in the
+	transpiler.
+	</p>
+	
+	<h3>Supported Annotations</h3>
+	
+	<ul>
+		<li><strong>@halts</strong> - issues warning if subroutine could not be proven to terminate</li>
+		<li><strong>@deprecated</strong> - issues warning for calls to this subroutine</li>
+	</ul>
+	
+	<h3>Annotations Planned for later</h3>
+	
+	<ul>
+		<li>@public</li>
+		<li>@private</li>
+		<li>@noalloc</li>
+		<li>@constructor</li>
+		<li>@packed</li>
+	</ul>
+	
+	<h3>Example</h3>
+	
+<pre>
+	<code>
+fn main () ~> int {
+	subr1();
+	subr2();
+	return 0;
+}
+
+@deprecated  //should cause warning (usage in main)
+fn subr1() ~> bool {
+	return true;
+}
+
+@halts  //should cause warning (infinite loop)
+fn subr2() -> bool {
+	while(true){ }
+	return true;
+}
+
+	</code>
+</pre>
+
+</div>
+
+</body>
+</html>

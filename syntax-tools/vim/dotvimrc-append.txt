@@ -22,3 +22,5 @@ hi def link basicType2 Type
 hi def link primitiveType Type
 
 hi def link basicOperator Operator
+
+hi def link annotation PreProc

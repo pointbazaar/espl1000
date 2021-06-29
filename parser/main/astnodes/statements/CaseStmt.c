@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "CaseStmt.h"
 
 #include "const/IntConst.h"
@@ -32,8 +34,7 @@ struct CaseStmt* makeCaseStmt(struct TokenList* tokens, bool debug) {
 	
 	struct CaseStmt* res = make(CaseStmt);
 	
-	res->super.line_num    = list_head(tokens)->line_num;
-	res->super.annotations = 0;
+	parse_astnode(copy, &(res->super));
 	
 	res->kind = 0;
 	res->ptr.m1 = NULL;
