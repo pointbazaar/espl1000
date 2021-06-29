@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <libgen.h>
 
 #include "ast/ast.h"
 
@@ -171,10 +172,23 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* c_filename, cha
 		sst_print(ctx->tables->sst);
 	}
 	
-	if(ctx->flags->emit_headers){ ctx->file = ctx->header_file; }
+	if(ctx->flags->emit_headers){ 
+		ctx->file = ctx->header_file; 
+		
+		//header guards
+		char* sym_name = basename(ast->namespaces[0]->name);
+		while(*sym_name == '.'){ sym_name++; }
+		fprintf(ctx->file, "#ifndef %s_H\n", sym_name);
+		fprintf(ctx->file, "#define %s_H\n\n", sym_name);
+	}
 	
 	for(int i=0; i < ast->count_namespaces; i++)
 	{ ns_transpile_fwd(ast->namespaces[i], ctx); }
+	
+	if(ctx->flags->emit_headers){
+		//header guards
+		fprintf(ctx->file, "\n#endif\n");
+	}
 	
 	for(int i=0; i < ast->count_namespaces; i++)
 	{ ns_transpile_struct_decls(ast->namespaces[i], ctx); }
