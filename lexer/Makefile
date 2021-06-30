@@ -15,9 +15,11 @@ INCLUDE := -I$(INCLUDE_DIR)
 
 all: dragon-lexer test
 
+LINKARGS := -L/usr/lib/x86_64-linux-gnu -lfl
+
 dragon-lexer: $(SOURCES) $(C_HEADERS)
 	flex smalldragon.flex
-	gcc $(FLAGS) -o dragon-lexer $(INCLUDE) $(C_SOURCES) lex.yy.c -ll
+	gcc $(FLAGS) -o dragon-lexer $(INCLUDE) $(C_SOURCES) lex.yy.c $(LINKARGS)
 
 clean:
 	rm -f dragon-lexer
