@@ -17,7 +17,7 @@ all: dragon-lexer test
 
 dragon-lexer: $(SOURCES) $(C_HEADERS)
 	flex smalldragon.flex
-	gcc $(FLAGS) -o dragon-lexer $(INCLUDE) $(C_SOURCES) lex.yy.c -lfl
+	gcc $(FLAGS) -o dragon-lexer $(INCLUDE) $(C_SOURCES) lex.yy.c -ll
 
 clean:
 	rm -f dragon-lexer
