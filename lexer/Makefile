@@ -13,7 +13,7 @@ SOURCES := smalldragon.flex Makefile $(C_SOURCES)
 
 INCLUDE := -I$(INCLUDE_DIR)
 
-all: dragon-lexer test valgrind
+all: dragon-lexer test
 
 dragon-lexer: $(SOURCES) $(C_HEADERS)
 	flex smalldragon.flex
@@ -26,7 +26,7 @@ clean:
 test: dragon-lexer
 	./dragon-lexer -test
 
-VALGRIND_OPS := --leak-check=full --show-reachable=yes --error-exitcode=1 --log-file="/dev/null"
+VALGRIND_OPS := --leak-check=full --show-reachable=yes --error-exitcode=1 
 
 valgrind: dragon-lexer
 	valgrind $(VALGRIND_OPS) ./dragon-lexer -clean ../examples/other/Everything.dg

@@ -110,7 +110,7 @@ TOKEN_DEPS := ../token/list/TokenList.h \
 
 MAIN_DEPS := $(AST_DEPS) $(TOKEN_DEPS)
 
-all: DIRS dragon-parser test valgrind
+all: DIRS dragon-parser test
 
 DIRS:
 	mkdir -p build/
@@ -123,7 +123,6 @@ test: dragon-parser
 	./dragon-parser -test
 
 VALGRIND_OPS := --leak-check=full --show-reachable=yes  --error-exitcode=1 
-#--log-file="/dev/null"
 
 valgrind: dragon-parser
 	rm -f ../examples/loops/.WhileLoop.dg.tokens

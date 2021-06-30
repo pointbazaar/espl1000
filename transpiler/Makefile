@@ -76,9 +76,7 @@ OBJS := $(AST_OBJS) $(TRANSPILER_OBJS) \
 	$(OBJS_TYPEINFERENCE) $(OBJS_ANALYZER) \
 	$(OBJS_CODEGEN) $(OBJS_TYPECHECK);
 
-all: all_no_valgrind valgrind
-
-all_no_valgrind: smalldragon test
+all: smalldragon test
 
 clean: 
 	rm -f build/*.o
@@ -88,7 +86,6 @@ test: sd
 	./sd -test
 
 VALGRIND_OPS := --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 
-#--log-file="/dev/null"
 
 valgrind: sd
 	valgrind $(VALGRIND_OPS) ./sd -clean ../examples/other/Everything.dg
