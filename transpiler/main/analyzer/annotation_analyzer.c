@@ -22,7 +22,20 @@ static void annot_deprecated(struct SST* sst, struct Method* m);
 static void annot_private(struct SST* sst, struct Call* call);
 //-------------------
 
+#define COLOR_ORANGE "\033[33m"
+
+static void setcolor(char* color){ printf("%s", color); }
+static void resetcolor(){ printf("\033[39m"); }
+static void print_analyzer_warning(){
+	printf("[Analyzer][Annotations]");
+	setcolor(COLOR_ORANGE);
+	printf("[Warning]");
+	resetcolor();
+}
+
 static struct Namespace* current_namespace = NULL;
+
+//------------------------------------------------------
 
 void analyze_annotations(struct ST* st, struct AST* ast){
 	
@@ -61,7 +74,7 @@ static void annot_halts(struct SST* sst, struct Method* m){
 		
 		if(line->halts != HALTS_ALWAYS){
 			
-			printf("[Analyzer][Annotations][Warning]");
+			print_analyzer_warning();
 			
 			printf(" subroutine %s has @halts Annotation, but could not be proven to terminate\n", m->name);
 		}
@@ -80,7 +93,8 @@ static void annot_deprecated(struct SST* sst, struct Method* m){
 			
 			//function still has callers
 			
-			printf("[Analyzer][Annotations][Warning]");
+			print_analyzer_warning();
+			
 			printf(" subroutine %s is marked as @deprecated, but still has callers:\n", m->name);
 			
 			struct CCNode* caller = line->cc->callers;
@@ -125,8 +139,8 @@ static void annot_private(struct SST* sst, struct Call* call){
 		if(strcmp(call_ns, orig_ns) != 0){
 			
 			//call occurred in different namespace
+			print_analyzer_warning();
 			
-			printf("[Analyzer][Annotations][Warning]");
 			printf(" subroutine %s is @private in namespace %s, but was called in namespace %s\n", call->name, orig_ns, call_ns);
 		}
 	}
