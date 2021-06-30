@@ -14,22 +14,27 @@
 
 char* make_ast_filename(char* filename){
 	
-	char* ast_filename = malloc(100);
+	char* ast_filename = malloc(strlen(filename)+10);
 	
-	char fnamecpy[100];
+	char* fnamecpy = malloc(strlen(filename)+1);
 	strcpy(fnamecpy, filename);
-	
 	char* base_name = basename(fnamecpy);
-	char* dir_name = dirname(fnamecpy);
+	
+	char* fnamecpy2 = malloc(strlen(filename)+1);
+	strcpy(fnamecpy2, filename);
+	char* dir_name = dirname(fnamecpy2);
 	
 	sprintf(ast_filename, "%s/.%s.ast", dir_name, base_name);
+	
+	free(fnamecpy);
+	free(fnamecpy2);
 	
 	return ast_filename;
 }
 
 char* make_c_filename(char* filename){
 
-	char* fname_out = malloc(100);
+	char* fname_out = malloc(strlen(filename)+1);
 
 	strcpy(fname_out, filename);
 	
@@ -44,7 +49,7 @@ char* make_c_filename(char* filename){
 
 char* make_h_filename(char* filename){
 
-	char* fname_out = malloc(100);
+	char* fname_out = malloc(strlen(filename)+1);
 
 	strcpy(fname_out, filename);
 	
@@ -58,7 +63,7 @@ char* make_h_filename(char* filename){
 
 char* make_gcc_cmd(struct Flags* flags, char* fname_out){
 	
-	char* cmd_gcc = malloc(500);
+	char* cmd_gcc = malloc(100+strlen(fname_out));
 	strcpy(cmd_gcc, "");
 	
 	if(flags->avr){
