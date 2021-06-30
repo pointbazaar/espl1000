@@ -33,9 +33,9 @@ struct Namespace {
 	//a namespace is represented by a filename.
 	//the contents of a namespace are the contents of the file
 
-	char srcPath[DEFAULT_STR_SIZE]; //the .dg filename
+	char* src_path; //the .dg filename
 	
-	char ast_filename[DEFAULT_STR_SIZE]; //the .ast filename
+	char* ast_path; //the .ast filename
 	
 	char name[DEFAULT_STR_SIZE];
 

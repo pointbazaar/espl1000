@@ -68,11 +68,11 @@ void sst_fill(struct SST* sst, struct Namespace* ns){
 
 void sst_print(struct SST* sst){
 	
-	char* fmt = "%20s|%8s|%16s\n";
+	char* fmt = "%20s|%20s|%8s|%16s\n";
 	
 	printf("[SST] Subroutine Symbol Table\n");
-	printf(fmt, "name", "isLibC", "halts?");
-	printf("--------------------|--------|----------------\n");
+	printf(fmt, "namespace", "name", "isLibC", "halts?");
+	printf("--------------------|--------------------|--------|----------------\n");
 	
 	for(int i = 0; i < sst->count; i++){
 		
@@ -87,7 +87,7 @@ void sst_print(struct SST* sst){
 			halt_info = (line->halts == HALTS_ALWAYS)?"halts":"inf-loop";
 		}
 		
-		printf(fmt, line->name, isLibC, halt_info);
+		printf(fmt, line->_namespace, line->name, isLibC, halt_info);
 	}
 }
 
@@ -110,7 +110,7 @@ struct SSTLine* makeSSTLine(
 
 	struct SSTLine* line = make(SSTLine);
 	
-	strncpy(line->name, name, DEFAULT_STR_SIZE);
+	strncpy(line->name,       name,       DEFAULT_STR_SIZE);
 	strncpy(line->_namespace, _namespace, DEFAULT_STR_SIZE);
 	
 	line->method       = NULL;
@@ -131,7 +131,7 @@ struct SSTLine* makeSSTLine2(struct Method* m, char* _namespace){
 
 	struct SSTLine* line = make(SSTLine);
 	
-	strncpy(line->name, m->name, DEFAULT_STR_SIZE);
+	strncpy(line->name,       m->name,    DEFAULT_STR_SIZE);
 	strncpy(line->_namespace, _namespace, DEFAULT_STR_SIZE);
 	
 	line->method       = m;
@@ -208,13 +208,11 @@ bool sst_contains(struct SST* sst, char* name){
 
 static void sst_resize(struct SST* sst){
 	
-	if(sst->count >= sst->capacity){
-		
-		sst->capacity *= 2;
-		
-		const int nbytes = 
-			sizeof(struct SSTLine*) * (sst->capacity);
-		
-		sst->lines = realloc(sst->lines, nbytes);
-	}
+	if(sst->count < sst->capacity){ return; }
+			
+	sst->capacity *= 2;
+	
+	const int nbytes = sizeof(struct SSTLine*) * (sst->capacity);
+	
+	sst->lines = realloc(sst->lines, nbytes);
 }

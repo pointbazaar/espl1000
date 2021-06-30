@@ -52,17 +52,20 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	
 	struct Namespace* ns = make(Namespace);
 
-	char* tmpSrcPath = deserialize_string(file);
-	strcpy(ns->srcPath, tmpSrcPath);
-	free(tmpSrcPath);
+	char* tmp1 = deserialize_string(file);
+	char* tmp2 = deserialize_string(file);
+	char* tmp3 = deserialize_string(file);
 	
-	char* tmpASTFilename = deserialize_string(file);
-	strcpy(ns->ast_filename, tmpASTFilename);
-	free(tmpASTFilename);
+	ns->src_path = malloc(sizeof(char)*(strlen(tmp1)+1));
+	ns->ast_path = malloc(sizeof(char)*(strlen(tmp2)+1));
 	
-	tmpSrcPath = deserialize_string(file);
-	strcpy(ns->name, tmpSrcPath);
-	free(tmpSrcPath);
+	strcpy (ns->src_path, tmp1);
+	strcpy (ns->ast_path, tmp2);
+	strncpy(ns->name,     tmp3, DEFAULT_STR_SIZE);
+	
+	free(tmp1);
+	free(tmp2);
+	free(tmp3);
 	
 	ns->count_methods = deserialize_int(file);
 

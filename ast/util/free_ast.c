@@ -77,6 +77,9 @@ void freeNamespace(struct Namespace* ns) {
 
 	free(ns->methods);
 	free(ns->structs);
+	
+	free(ns->src_path);
+	free(ns->ast_path);
 
 	free(ns);
 }

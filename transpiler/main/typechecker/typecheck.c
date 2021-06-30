@@ -46,7 +46,7 @@ bool typecheck_ast(struct AST* ast, struct ST* st){
 
 void tc_namespace(struct Namespace* n, struct TCCtx* tcctx){
 	
-	tcctx->current_filename = n->srcPath;
+	tcctx->current_filename = n->src_path;
 	
 	for(uint16_t i = 0; i < n->count_methods; i++)
 		{ tc_method(n->methods[i], tcctx); }

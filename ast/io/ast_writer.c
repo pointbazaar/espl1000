@@ -31,19 +31,19 @@ void writeAST(struct AST* ast){
 
 void writeNamespace(struct Namespace* n){
 	
-	FILE* file = fopen(n->ast_filename, "w");
+	FILE* file = fopen(n->ast_path, "w");
 
 	if(file == NULL){
 		
-		printf("%s\n", n->ast_filename);
+		printf("%s\n", n->ast_path);
 		error(NULL, "could not open file");
 	}
 	
 	magic_num_serialize(MAGIC_NAMESPACE, file);
 	
-	serialize_string(n->srcPath, file);
-	serialize_string(n->ast_filename, file);
-	serialize_string(n->name, file);
+	serialize_string(n->src_path, file);
+	serialize_string(n->ast_path, file);
+	serialize_string(n->name,     file);
 	
 	serialize_int(n->count_methods, file);
 	

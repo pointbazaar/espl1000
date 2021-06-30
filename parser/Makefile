@@ -23,7 +23,6 @@ OBJS_TOKEN := $(TOKEN_BUILD)/token.o \
 OBJS_MAIN := build/parser.o \
 		build/parser_help.o \
 		build/parser_flags.o \
-		build/AST.o \
 		build/BoolConst.o \
 		build/CharConst.o \
 		build/DeclArg.o \

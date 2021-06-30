@@ -13,7 +13,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug) {
+struct Namespace* makeNamespace(struct TokenList* tokens, char* ast_filename, char* name, bool debug) {
 
 	if (debug) {
 		printf("Namespace(...) from: ");
@@ -22,8 +22,7 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 
 	struct Namespace* res = make(Namespace);
 
-	//because of valgrind
-	//it will complain about uninitialized bytes otherwise
+	//valgrind will complain about uninitialized bytes otherwise
 	memset(res, 0, sizeof(struct Namespace));
 	
 	res->count_methods = 0;
@@ -32,21 +31,20 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name, bool debug
 	res->capacity_methods = 5;
 	res->capacity_structs = 5;
 
-	res->methods = malloc(sizeof(struct Method*) * res->capacity_methods);
+	res->methods = malloc(sizeof(struct Method*)     * res->capacity_methods);
 	res->structs = malloc(sizeof(struct StructDecl*) * res->capacity_structs);
 
-	strncpy(res->srcPath, tokens->relPath, DEFAULT_STR_SIZE);
-	strncpy(res->name, name, DEFAULT_STR_SIZE);
+	res->src_path = malloc(sizeof(char)*(strlen(tokens->relPath)+1));
+	res->ast_path = malloc(sizeof(char)*(strlen(ast_filename)+1));
+
+	strcpy (res->src_path, tokens->relPath);
+	strcpy (res->ast_path, ast_filename);
+	strncpy(res->name,     name, DEFAULT_STR_SIZE);
 	
 	struct TokenList* copy = list_copy(tokens);
 	
 	ns_parse_structs(res, copy, debug);
-	
 	ns_parse_methods(res, copy, debug);
-
-	if(debug){
-		printf("done parsing Namespace Node\n");
-	}
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);

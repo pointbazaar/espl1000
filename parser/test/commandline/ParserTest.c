@@ -55,8 +55,7 @@ bool test_suite_range(bool debug);
 // --- END OF TEST SUITES ---
 
 static void status(char* msg){
-
-	printf("[PARSER][TEST-SUITE] %s\n", msg);
+	printf("[Parser][TEST-SUITE] %s\n", msg);
 }
 
 int test_all(bool debug) {
