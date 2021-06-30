@@ -13,9 +13,31 @@
 #include "util/fileutils/fileutils.h"
 #include "invoke.h"
 
+static int invoke_lexer (char* filename, struct Flags* flags);
+static int invoke_parser(char* filename);
+
 bool invoke_lexer_parser(char* filename, struct Flags* flags){
 	
-	char cmd1[100];
+	int status = invoke_lexer(filename, flags);
+	
+	if(WEXITSTATUS(status) != 0){
+		printf("[Transpiler][Error] lexer exited with nonzero exit code\n");
+		return false;
+	}
+	
+	status = invoke_parser(filename);
+
+	if(WEXITSTATUS(status) != 0){
+		printf("[Transpiler][Error] parser exited with nonzero exit code\n");
+		return false;
+	}
+
+	return true;
+}
+
+static int invoke_lexer(char* filename, struct Flags* flags){
+	
+	char* cmd1 = malloc(strlen(filename)+100);
 	
 	strcpy(cmd1, "dragon-lexer ");
 	
@@ -23,36 +45,33 @@ bool invoke_lexer_parser(char* filename, struct Flags* flags){
 
 	strcat(cmd1, filename);
 
-	printf("%s\n", cmd1);
+	printf("[Transpiler] %s\n", cmd1);
 
 	int status = system(cmd1);
-	if(WEXITSTATUS(status) != 0){
-		printf("Error: lexer exited with nonzero exit code\n");
-		return false;
-	}
+	free(cmd1);
+	return status;
+}
+
+static int invoke_parser(char* filename){
 	
-	char fnamecpy[100];
+	char* fnamecpy = malloc(strlen(filename)+1);
 	strcpy(fnamecpy, filename);
 	
 	char* base_name = basename(fnamecpy);
-	char* dir_name = dirname(fnamecpy);
+	char* dir_name  = dirname(fnamecpy);
 	
-	char cmd2[100];
-	sprintf(
-		cmd2, 
-		"dragon-parser %s/.%s.tokens", 
-		dir_name,
-		base_name
-	);	
-	printf("%s\n", cmd2);
-
-	status = system(cmd2);
-	if(WEXITSTATUS(status) != 0){
-		printf("Error: parser exited with nonzero exit code\n");
-		return false;
-	}
-
-	return true;
+	char* cmd2 = malloc(strlen(filename)+100);
+	
+	sprintf(cmd2, "dragon-parser %s/.%s.tokens", dir_name, base_name);	
+	
+	printf("[Transpiler] %s\n", cmd2);
+	
+	int status = system(cmd2);
+	
+	free(cmd2);
+	free(fnamecpy);
+	
+	return status;
 }
 
 struct AST* invoke_ast_reader(struct Flags* flags){
