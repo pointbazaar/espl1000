@@ -68,7 +68,7 @@ char* make_gcc_cmd(struct Flags* flags, char* fname_out){
 		strcat(cmd_gcc, "avr-gcc -o main.o -I /usr/share/avra -mmcu=attiny45 ");
 	}else{
 		
-		strcat(cmd_gcc, "gcc -Wall -o a.out ");
+		strcat(cmd_gcc, "gcc -Wall --std=c11 -o a.out ");
 	}
 	
 	if(flags->debug_symbols){ strcat(cmd_gcc, "-g "); }
