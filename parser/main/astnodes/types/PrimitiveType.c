@@ -14,6 +14,11 @@
 #include "token/token/token.h"
 
 struct PrimitiveType* makePrimitiveType(struct TokenList* tokens, bool debug){
+	
+	if(debug){
+		printf("PrimitiveType(...) from: ");
+		list_print(tokens);
+	}
 
 	struct PrimitiveType* res = make(PrimitiveType);
 	struct TokenList* copy = list_copy(tokens);

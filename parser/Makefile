@@ -1,6 +1,6 @@
 #it had -O0 before
 #use -pg to generate profiling information for gprof
-FLAGS := -march=native -g -Wall -Werror --std=gnu11 
+FLAGS := -march=native -g -Wall -Wextra -Werror --std=gnu11 
 
 INCLUDE := -Imain/astnodes -I..
 

@@ -136,6 +136,8 @@ char* subrType2CType(struct SubrType* subrType, struct Ctx* ctx){
 
 char* typeParam2CType(struct TypeParam* typeParam, struct Ctx* ctx){
 	
+	if(typeParam == NULL){}
+	if(ctx       == NULL){}
 	//TODO
 	printf("[Transpiler][Error] transpileTypeParam not yet implemented!\n");
 	exit(1);

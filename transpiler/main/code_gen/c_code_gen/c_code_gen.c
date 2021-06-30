@@ -40,7 +40,7 @@
 //counter for generating labels
 unsigned int label_count = 0;
 
-static void transpileAST(struct AST* ast, struct Ctx* ctx, char* c_filename, char* h_filename);
+static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename);
 
 static void fill_tables(struct AST* ast, struct Ctx* ctx);
 
@@ -90,7 +90,7 @@ bool transpileAndWrite(char* c_filename, char* h_filename, struct AST* ast, stru
 		return false;
 	}
 	
-	transpileAST(ast, ctx, c_filename, h_filename);
+	transpileAST(ast, ctx, h_filename);
 
 	fclose(ctx->c_file);
 	if(flags->emit_headers){ fclose(ctx->header_file); }
@@ -126,7 +126,7 @@ static void fill_tables(struct AST* ast, struct Ctx* ctx){
 	}
 }
 
-static void transpileAST(struct AST* ast, struct Ctx* ctx, char* c_filename, char* h_filename){
+static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename){
 	
 	ctx->file = ctx->c_file; //direct output to c file
 	
@@ -165,7 +165,7 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* c_filename, cha
 	
 	analyze_functions(ctx->tables, ast);
 	analyze_dead_code(ctx->tables, ast);
-	analyze_termination(ctx->tables, ast);
+	analyze_termination(ctx->tables);
 	analyze_annotations(ctx->tables, ast);
 	
 	if(ctx->flags->debug){

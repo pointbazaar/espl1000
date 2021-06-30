@@ -65,7 +65,7 @@ static void mark_live(struct SST* sst, char* name){
 
 static void set_all(struct SST* sst, enum DEAD dead){
 
-	for(int i = 0; i < sst_size(sst); i++){
+	for(uint32_t i = 0; i < sst_size(sst); i++){
 		
 		struct SSTLine* line = sst_at(sst, i);
 		

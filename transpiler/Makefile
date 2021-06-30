@@ -3,7 +3,7 @@
 
 INCLUDE := -Imain -I..
 
-FLAGS := -march=native -g --std=c11 -Wall -Werror $(INCLUDE)
+FLAGS := -march=native -g --std=c11 -Wall -Wextra -Werror $(INCLUDE)
 
 CALL := gcc $(FLAGS)
 

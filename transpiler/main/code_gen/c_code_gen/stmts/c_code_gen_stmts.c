@@ -250,7 +250,7 @@ void transpileSwitchStmt(struct SwitchStmt* s, struct Ctx* ctx){
 	fprintf(ctx->file, ") {\n");
 	
 	(ctx->indentLevel) += 1;
-	for(int i=0; i < s->count_cases; i++){
+	for(uint32_t i=0; i < s->count_cases; i++){
 		transpileCaseStmt(s->cases[i], ctx);
 	}
 	(ctx->indentLevel) -= 1;

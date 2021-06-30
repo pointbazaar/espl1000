@@ -24,7 +24,7 @@ struct Type* infer_type_term(char* filename, struct ST* st, struct Term* t){
 		case  1: return typeFromStrPrimitive(st, "bool"); 
 		case  2: return typeFromStrPrimitive(st, "int"); 
 		case  3: return typeFromStrPrimitive(st, "char"); 
-		case  4: return infer_type_methodcall(filename, st, t->ptr.m4); 
+		case  4: return infer_type_methodcall(st, t->ptr.m4); 
 		case  5: return infer_type_expr(filename, st, t->ptr.m5); 
 		case  6: return infer_type_variable(filename, st, t->ptr.m6); 
 		case  7: return typeFromStrPrimitive(st, "float"); 
