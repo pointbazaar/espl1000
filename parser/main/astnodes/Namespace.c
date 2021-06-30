@@ -54,65 +54,59 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* ast_filename, ch
 
 void ns_parse_methods(struct Namespace* res, struct TokenList* copy, bool debug){
 	
-	if (list_size(copy) > 0) {
+	if (list_size(copy) == 0) { return; }
 
-		struct Token* next = list_head(copy);
+	struct Token* next = list_head_without_annotations(copy);
 
-		while (
-			next->kind == FN
-			|| (
-				next->kind > _ANNOT_START_
-				&& next->kind < _ANNOT_END_
-			)
-		) {
-			struct Method* m = makeMethod(copy,debug);
-			if(m == NULL){
-				printf("parsing error, expected a method, but got:\n");
-				list_print(copy);
-				
-				freeNamespace(res);
-				exit(1);
-			}
-
-			res->methods[res->count_methods] = m;
-			res->count_methods++;
+	while (next->kind == FN) {
+		struct Method* m = makeMethod(copy,debug);
+		if(m == NULL){
+			printf("parsing error, expected a method, but got:\n");
+			list_print(copy);
 			
-			if(res->count_methods >= res->capacity_methods){
-				res->capacity_methods *= 2;
-				res->methods = realloc(res->methods,sizeof(struct Method*)*(res->capacity_methods));
-			}
+			freeNamespace(res);
+			exit(1);
+		}
 
-			if (list_size(copy) > 0) {
-				next = list_head(copy);
-			} else {
-				break;
-			}
+		res->methods[res->count_methods] = m;
+		res->count_methods++;
+		
+		if(res->count_methods >= res->capacity_methods){
+			res->capacity_methods *= 2;
+			res->methods = realloc(res->methods,sizeof(struct Method*)*(res->capacity_methods));
+		}
+
+		if (list_size(copy) > 0) {
+			next = list_head_without_annotations(copy);
+		} else {
+			break;
 		}
 	}
+
 }
 void ns_parse_structs(struct Namespace* res, struct TokenList* copy, bool debug){
 	
-	if(list_size(copy)>0) {
+	if(list_size(copy) == 0) { return; }
 
-		struct Token* next = list_head(copy);
+	struct Token* next = list_head_without_annotations(copy);
 
-		while (next->kind == STRUCT) {
-			struct StructDecl* sd = makeStructDecl(copy,debug);
-			if(sd == NULL){
-				printf("parsing error, expected a struct, but got %s\n", list_code(copy,debug));
-				exit(1);
-			}
+	while (next->kind == STRUCT) {
+		
+		struct StructDecl* sd = makeStructDecl(copy,debug);
+		if(sd == NULL){
+			printf("parsing error, expected a struct, but got %s\n", list_code(copy,debug));
+			exit(1);
+		}
 
-			res->structs[res->count_structs] = sd;
-			res->count_structs++;
-			
-			res->structs = realloc(res->structs,sizeof(struct StructDecl*)*(res->count_structs+1));
+		res->structs[res->count_structs] = sd;
+		res->count_structs++;
+		
+		res->structs = realloc(res->structs,sizeof(struct StructDecl*)*(res->count_structs+1));
 
-			if (list_size(copy) > 0) {
-				next = list_head(copy);
-			} else {
-				break;
-			}
+		if (list_size(copy) > 0) {
+			next = list_head_without_annotations(copy);
+		} else {
+			break;
 		}
 	}
 }

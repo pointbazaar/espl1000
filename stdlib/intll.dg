@@ -10,6 +10,7 @@ struct IntLL {
 	IntLLNode tail;
 }
 
+@private
 struct IntLLNode {
 
 	int value;

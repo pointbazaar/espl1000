@@ -8,6 +8,7 @@
 
 #include "tables/symtable/symtable.h"
 #include "tables/sst/sst.h"
+#include "tables/stst/stst.h"
 
 #include "analyzer/annotation_analyzer.h"
 #include "analyzer/halts.h"
@@ -20,6 +21,7 @@ static void myvisitor_annotations(void* node, enum NODE_TYPE type, void* arg);
 static void annot_halts(struct SST* sst, struct Method* m);
 static void annot_deprecated(struct SST* sst, struct Method* m);
 static void annot_private(struct SST* sst, struct Call* call);
+static void annot_private_struct(struct STST* stst, struct StructType* t);
 //-------------------
 
 #define COLOR_ORANGE "\033[33m"
@@ -39,14 +41,13 @@ static struct Namespace* current_namespace = NULL;
 
 void analyze_annotations(struct ST* st, struct AST* ast){
 	
-	struct SST* sst = st->sst;
-	
-	visitAST(ast, myvisitor_annotations, sst);
+	visitAST(ast, myvisitor_annotations, st);
 }
 
 static void myvisitor_annotations(void* node, enum NODE_TYPE type, void* arg){
 	 
-	struct SST* mysst = (struct SST*) arg;
+	struct ST* st = (struct ST*) arg;
+	struct SST* mysst = st->sst;
 	
 	if(type == NODE_NAMESPACE){
 		current_namespace = (struct Namespace*) node;
@@ -60,8 +61,33 @@ static void myvisitor_annotations(void* node, enum NODE_TYPE type, void* arg){
 		annot_deprecated(mysst, m);
 	}
 	
+	if(type == NODE_STRUCTTYPE){
+		
+		annot_private_struct(st->stst, (struct StructType*) node);
+	}
+	
 	if(type == NODE_CALL){
 		annot_private(mysst, (struct Call*) node);
+	}
+}
+
+static void annot_private_struct(struct STST* stst, struct StructType* t){
+	
+	char* tname = t->typeName;
+	
+	struct STSTLine* line = stst_get(stst, tname);
+	
+	if(line->is_private){
+		
+		if(strcmp(current_namespace->name, line->_namespace) != 0){
+			
+			//struct type is referenced outside of it's own
+			//namespace
+			
+			print_analyzer_warning();
+			
+			printf(" struct %s has @private Annotation in %s, but was referenced in %s\n", tname, line->_namespace, current_namespace->name);
+		}
 	}
 }
 

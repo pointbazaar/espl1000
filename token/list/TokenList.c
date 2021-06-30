@@ -144,6 +144,23 @@ struct Token* list_head(struct TokenList* list) {
 	return list_get(list, 0);
 }
 
+struct Token* list_head_without_annotations(struct TokenList* tknList){
+	
+	uint32_t i = 0;
+	struct Token* h;
+	
+	do{
+		h = list_get(tknList, i);
+		i++;
+	
+	} while(
+		(h->kind > _ANNOT_START_ && h->kind < _ANNOT_END_)
+		&& i < list_size(tknList)
+	);
+	
+	return h;
+}
+
 char* list_code(struct TokenList* list, bool debug) {
 	//it should be a limited fragment 
 

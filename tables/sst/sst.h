@@ -52,20 +52,21 @@ struct SSTLine {
 struct SST* makeSST();
 void freeSST(struct SST* sst);
 //-------------
-void sst_clear(struct SST* sst);
 
-void sst_fill(struct SST* sst, struct Namespace* ns);
+void            sst_clear(struct SST* sst);
 
-void sst_add(struct SST* sst, struct SSTLine* line);
+void            sst_fill(struct SST* sst, struct Namespace* ns);
 
-void sst_print(struct SST* sst);
+void            sst_add(struct SST* sst, struct SSTLine* line);
+
+void            sst_print(struct SST* sst);
 
 struct SSTLine* sst_get(struct SST* sst, char* name);
 
-bool sst_contains(struct SST* sst, char* name);
+bool            sst_contains(struct SST* sst, char* name);
 
+uint32_t        sst_size(struct SST* sst);
 
-uint32_t sst_size(struct SST* sst);
 struct SSTLine* sst_at(struct SST* sst, uint32_t index);
 
 //-----------
