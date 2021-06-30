@@ -35,10 +35,10 @@
 
 	<pre>
 	<code>
-	struct MyStruct {
-		int a;
-		MyStruct b;
-	}
+struct MyStruct {
+	int a;
+	MyStruct b;
+}
 	</code>
 	</pre>
 
@@ -58,6 +58,19 @@
 	<p>
 	These subroutines are for convenience, 
 	so you don't have to write them.
+	</p>
+	
+	<h3>Struct Field Reordering</h3>
+	<p>
+	SmallDragon practises Field Reordering in Structs, to 
+	remove unnecessary padding inside a struct. <br>
+	Read more: <a href="http://www.catb.org/esr/structure-packing/">The Lost Art of Structure Packing</a>
+	<br>
+	<br>
+	There is also <i>structure packing</i>, which 
+	is the practise of removing padding while preserving
+	the relative order of struct members. 
+	Such feature is currently not available in SmallDragon.
 	</p>
 
 </div>
