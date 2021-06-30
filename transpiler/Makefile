@@ -87,7 +87,8 @@ clean:
 test: sd
 	./sd -test
 
-VALGRIND_OPS := --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 --log-file="/dev/null"
+VALGRIND_OPS := --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 
+#--log-file="/dev/null"
 
 valgrind: sd
 	valgrind $(VALGRIND_OPS) ./sd -clean ../examples/other/Everything.dg
