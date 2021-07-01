@@ -1,10 +1,12 @@
 
 all: build test
 
+#https://cliutils.gitlab.io/modern-cmake/chapters/intro/running.html
 
 build: DIRS
-	cmake -S . -B build/ -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
-	make -C build/
+	cmake -S . -B build
+	cmake --build build
+	#make -C build/
 	cp build/dragon-parser .
 
 DIRS:
