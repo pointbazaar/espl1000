@@ -4,7 +4,7 @@ all: build test
 #https://cliutils.gitlab.io/modern-cmake/chapters/intro/running.html
 
 build: DIRS
-	cmake -S . -B build
+	cmake -S . -B build -H.
 	cmake --build build --parallel
 	cp build/dragon-parser .
 

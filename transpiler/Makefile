@@ -3,7 +3,7 @@ all: build test
 
 
 build: DIRS
-	cmake -S . -B build
+	cmake -S . -B build -H.
 	cmake --build build --parallel
 	cp build/sd .
 
