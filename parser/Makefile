@@ -16,7 +16,7 @@ test: dragon-parser
 
 clean: DIRS
 	rm -rf build/*
-	rm -rf dragon-parser
+	rm -f dragon-parser
 
 VALGRIND_OPS := --leak-check=full --show-reachable=yes  --error-exitcode=1 
 
