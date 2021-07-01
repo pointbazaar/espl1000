@@ -13,11 +13,6 @@
 
 struct StringConst* makeStringConst(struct TokenList* tokens, bool debug){
 	
-	if(debug){
-		printf("StringConst(...) from ");
-		list_print(tokens);
-	}
-	
 	if(list_size(tokens) == 0){return NULL;}
 	
 	struct StringConst* res = make(StringConst);

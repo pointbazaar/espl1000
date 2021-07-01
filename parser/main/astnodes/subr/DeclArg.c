@@ -16,11 +16,6 @@
 
 struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 
-	if(debug){
-		printf("DeclaredArg(...) from ");
-		list_print(tokens);
-	}
-
 	struct DeclArg* res = make(DeclArg);
 	struct TokenList* copy = list_copy(tokens);
 	

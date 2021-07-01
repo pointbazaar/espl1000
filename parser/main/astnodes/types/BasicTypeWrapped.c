@@ -42,11 +42,6 @@ struct BasicTypeWrapped* makeBasicTypeWrappedSubr(struct SubrType* typeNode) {
 
 struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool debug) {
 
-	if(debug){
-		printf("BasicTypeWrapped(...) from: ");
-		list_print(tokens);
-	}
-
 	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
 	struct TokenList* copy = list_copy(tokens);
 	

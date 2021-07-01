@@ -12,11 +12,6 @@
 
 struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
 
-	if(debug){
-		printf("Identifier(...) from: ");
-		list_print(tokens);
-	}
-
 	if(list_size(tokens) == 0){ return NULL; }
 
 	struct Identifier* res = make(Identifier);

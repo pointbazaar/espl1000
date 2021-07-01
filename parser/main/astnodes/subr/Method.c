@@ -24,12 +24,6 @@ bool tryParseArgList(struct Method* res, struct TokenList* copy, bool debug);
 // ---------------------------
 
 struct Method* makeMethod(struct TokenList* tokens, bool debug) {
-
-	if (debug) {
-		printf("Method(...) from: ");
-		list_print(tokens);
-	}
-
 	struct Method* res = initMethod();
 	struct TokenList* copy = list_copy(tokens);
 	
@@ -78,10 +72,6 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 	
-	if(debug){
-		printf("sucess parsing Method\n");
-	}
-
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
 

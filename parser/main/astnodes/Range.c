@@ -13,11 +13,6 @@
 #include "token/token/token.h"
 
 struct Range* makeRange(struct TokenList* tokens, bool debug) {
-
-	if(debug){
-		printf("Range(...) from ");
-		list_print(tokens);
-	}
 	
 	if(list_size(tokens) == 0){ return NULL; }
 

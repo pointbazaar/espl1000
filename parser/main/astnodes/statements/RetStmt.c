@@ -14,10 +14,6 @@
 
 struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
 
-	if(debug){
-		printf("RetStmt(...)\n");
-	}
-
 	struct RetStmt* res = make(RetStmt);
 	struct TokenList* copy = list_copy(tokens);
 	
@@ -37,10 +33,6 @@ struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
 	if(!list_expect(copy, SEMICOLON)){
 		free(res);
 		return NULL;
-	}
-	
-	if(debug){
-		printf("sucess parsing RetStmt\n");
 	}
 
 	list_set(tokens, copy);

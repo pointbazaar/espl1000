@@ -12,10 +12,6 @@
 
 struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 
-	if(debug){
-		printf("FloatConst(...)\n");
-	}
-
 	if(list_size(tokens) == 0){ return NULL; }
 
 	struct FloatConst* res = make(FloatConst);
@@ -34,8 +30,6 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 		res->value = -1.0;
 		
 		list_consume(copy, 1);
-
-		if(debug){ printf("parsed sign\n"); }
 	}
 
 	if(list_size(copy) == 0){

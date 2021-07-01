@@ -16,11 +16,6 @@
 
 struct ForStmt* makeForStmt(struct TokenList* tokens, bool debug) {
 
-	if(debug){
-		printf("ForStmt(...) from: ");
-		list_print(tokens);
-	}
-	
 	if(list_size(tokens) < 6){ return NULL; }
 
 	struct TokenList* copy = list_copy(tokens);

@@ -15,11 +15,6 @@
 
 struct Op* makeOp(struct TokenList* tokens, bool debug){
 
-	if(debug){
-		printf("Op(...) from ");
-		list_print(tokens);
-	}
-
 	struct TokenList* copy = list_copy(tokens);
 
 	struct Token* tk = list_head(copy);

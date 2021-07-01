@@ -51,10 +51,6 @@ struct Call* makeCall(struct TokenList* tokens,bool debug) {
 		return NULL;
 	}
 
-	if(debug){
-		printf("try to parse args\n");
-	}
-
 	if(list_size(copy) == 0){
 		free(res->args);
 		free(res);

@@ -10,11 +10,6 @@
 #include "token/token/token.h"
 
 struct BinConst* makeBinConst(struct TokenList* tokens, bool debug){
-	
-	if(debug){
-		printf("BinConst(...) from ");
-		list_print(tokens);
-	}
 
 	struct Token* tk = list_head(tokens);
 

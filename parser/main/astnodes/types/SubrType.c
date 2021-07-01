@@ -29,8 +29,6 @@ struct SubrType* makeSubrType2(struct Type* return_type, bool hasSideEffects){
 
 struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 
-	if(debug){ printf("SubrType(...)\n"); }
-
 	struct SubrType* res = make(SubrType);
 	struct TokenList* copy = list_copy(tokens);
 	

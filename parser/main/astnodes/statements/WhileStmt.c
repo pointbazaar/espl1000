@@ -16,10 +16,6 @@
 
 struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 
-	if(debug){
-		printf("WhileStmt(...)\n");
-	}
-
 	struct WhileStmt* res = make(WhileStmt);
 	struct TokenList* copy = list_copy(tokens);
 	
@@ -46,10 +42,6 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 		freeExpr(res->condition);
 		free(res);
 		return NULL;
-	}
-	
-	if(debug){
-		printf("sucess parsing WhileStmt\n");
 	}
 
 	list_set(tokens, copy);

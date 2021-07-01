@@ -12,11 +12,6 @@
 
 struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 
-	if(debug){
-		printf("CharConst(...) from ");
-		list_print(tokens);
-	}
-
 	struct Token* tk = list_head(tokens);
 	
 	if(tk == NULL){ return NULL; }

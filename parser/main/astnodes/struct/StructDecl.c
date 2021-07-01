@@ -16,11 +16,6 @@
 
 struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 
-	if(debug){
-		printf("makeStructDecl(...) from: ");
-		list_print(tokens);
-	}
-
 	struct StructDecl* res = make(StructDecl);
 	struct TokenList* copy = list_copy(tokens);
 	

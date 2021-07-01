@@ -17,11 +17,6 @@
 
 struct SimpleType* makeSimpleType(struct TokenList* tokens, bool debug) {
 
-	if(debug){
-		printf("SimpleType(...) from: ");
-		list_print(tokens);
-	}
-	
 	if(list_size(tokens) == 0){ return NULL; }
 
 	struct SimpleType* res = make(SimpleType);

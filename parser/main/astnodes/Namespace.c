@@ -15,11 +15,6 @@
 
 struct Namespace* makeNamespace(struct TokenList* tokens, char* ast_filename, char* name, bool debug) {
 
-	if (debug) {
-		printf("Namespace(...) from: ");
-		list_print(tokens);
-	}
-
 	struct Namespace* res = make(Namespace);
 
 	//valgrind will complain about uninitialized bytes otherwise

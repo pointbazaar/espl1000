@@ -18,11 +18,6 @@
 #include "token/token/token.h"
 
 struct CaseStmt* makeCaseStmt(struct TokenList* tokens, bool debug) {
-
-	if(debug){
-		printf("CaseStmt(...) from: ");
-		list_print(tokens);
-	}
 	
 	if(list_size(tokens) < 4){ return NULL; }
 
@@ -50,7 +45,7 @@ struct CaseStmt* makeCaseStmt(struct TokenList* tokens, bool debug) {
 				
 				//parsing is deterministic here, 
 				//so it must be one of these values
-				printf("Error: no constant case value given\n");
+				printf("[Parser][Error] no constant case value given\n");
 				list_print(copy);
 				exit(1);
 				return NULL;

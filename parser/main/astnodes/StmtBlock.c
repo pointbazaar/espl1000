@@ -13,11 +13,6 @@
 
 struct StmtBlock* makeStmtBlock(struct TokenList* tokens, bool debug){
 	
-	if(debug){
-		printf("makeStmtBlock from:");
-		list_print(tokens);
-	}
-	
 	if(list_size(tokens) < 2){ return NULL; }
 	
 	struct StmtBlock* res = make(StmtBlock);

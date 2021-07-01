@@ -11,11 +11,6 @@
 
 struct HexConst* makeHexConst(struct TokenList* tokens, bool debug){
 	
-	if(debug){
-		printf("HexConst(...) from ");
-		list_print(tokens);
-	}
-
 	struct Token* tk = list_head(tokens);
 
 	if(tk->kind != HEXCONST){ return NULL; }

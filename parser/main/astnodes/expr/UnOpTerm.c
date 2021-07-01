@@ -18,12 +18,7 @@
 
 struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens, bool debug){
 	
-	if(debug){
-		printf("UnOpTerm(...) from ");
-		list_print(tokens);
-	}
-	
-	if(list_size(tokens) < 1){ return NULL; }
+	if(list_size(tokens) == 0){ return NULL; }
 	
 	struct UnOpTerm* res = make(UnOpTerm);
 	
@@ -68,10 +63,6 @@ struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens, bool debug){
 	list_set(tokens, copy);
 	
 	freeTokenListShallow(copy);
-	
-	if(debug){
-		printf("sucess parsing UnOpTerm\n");
-	}
 	
 	return res;
 }

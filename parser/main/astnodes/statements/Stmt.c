@@ -33,10 +33,6 @@ void stmt_make_switch(struct Stmt* res, struct TokenList* copy, bool debug);
 // ---------------------------
 
 struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
-
-	if(debug){
-		printf("Stmt(...)\n");
-	}
 	
 	if (list_size(tokens) == 0) { return NULL; }
 
@@ -73,10 +69,6 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 		case SWITCH:    stmt_make_switch(res, copy, debug); break;
 
 		default: 		stmt_make_other(res, copy, debug); 	break;
-	}
-
-	if(debug){
-		printf("sucess parsing Stmt\n");
 	}
 
 	list_set(tokens, copy);

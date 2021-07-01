@@ -17,10 +17,6 @@ void parse_cases(struct SwitchStmt* s, struct TokenList* copy, bool debug);
 
 struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens, bool debug){
 
-	if(debug){
-		printf("SwitchStmt(...)\n");
-	}
-
 	struct TokenList* copy = list_copy(tokens);
 	
 	struct SwitchStmt* res = make(SwitchStmt);

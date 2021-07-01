@@ -15,8 +15,6 @@
 
 struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
 
-	if(debug){ printf("TypeParam(...)\n"); }
-	
 	if(list_size(tokens) == 0){ return NULL; }
 	
 	struct TypeParam* res = make(TypeParam);

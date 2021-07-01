@@ -20,11 +20,6 @@ void freeIncomplete(struct IfStmt* ifstmt);
 
 struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 
-	if(debug){
-		printf("IfStmt(...) from: ");
-		list_print(tokens);
-	}
-	
 	if(list_size(tokens) < 3){ return NULL; }
 
 	struct TokenList* copy = list_copy(tokens);
@@ -55,10 +50,6 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 			freeIncomplete(res);
 			return NULL;
 		}
-	}
-	
-	if(debug){
-		printf("sucess parsing IfStmt\n");
 	}
 
 	list_set(tokens, copy);

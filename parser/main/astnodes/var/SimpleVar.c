@@ -16,11 +16,6 @@
 
 struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 
-	if(debug){
-		printf("SimpleVar(...) from ");
-		list_print(tokens);
-	}
-	
 	if(list_size(tokens) == 0){  return NULL;  }
 
 	struct SimpleVar* res = make(SimpleVar);
@@ -77,10 +72,6 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 	
-	if(debug){
-		printf("sucess parsing SimpleVar\n");
-	}
-
 	list_set(tokens,copy);
 	freeTokenListShallow(copy);
 

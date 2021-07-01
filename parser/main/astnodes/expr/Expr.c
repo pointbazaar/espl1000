@@ -66,11 +66,6 @@ struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, struct Op* op, struct UnOpTer
 
 struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 
-	if(debug){
-		printf("Expr(...) from ");
-		list_print(tokens);
-	}
-
 	//we assume they never have more than 200 terms
 
 	struct Op** ops = malloc(sizeof(struct Op*)*200);
@@ -87,8 +82,6 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 		free(terms);
 		return NULL;
 	}
-
-	if(debug){printf("parsed first term\n");}
 
 	terms[termsc++] = myterm2;
 	
@@ -112,10 +105,6 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 
 		list_set(copy, copy2);
 		freeTokenListShallow(copy2);
-	}
-	
-	if(debug){
-		printf("sucess parsing Expr\n");
 	}
 
 	list_set(tokens, copy);
@@ -342,10 +331,6 @@ void performTreeTransformation(
 		//insert newly created expression
 		*terms = (struct UnOpTerm**)insert((void**)(*terms), indexOfOp, (void*)ttmp, *termsc);
 		(*termsc)+=1; //because we inserted
-	}
-
-	if(debug){
-		printf("return from performTreeTransformation(...)\n");
 	}
 }
 

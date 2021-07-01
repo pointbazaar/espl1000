@@ -16,11 +16,6 @@
 
 struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 
-	if(debug){
-		printf("AssignStmt(...) from: ");
-		list_print(tokens);
-	}
-
 	struct AssignStmt* res = make(AssignStmt);
 	struct TokenList* copy = list_copy(tokens);
 	
@@ -68,10 +63,6 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
-	}
-	
-	if(debug){
-		printf("sucess parsing AssignStmt\n");
 	}
 
 	list_set(tokens, copy);

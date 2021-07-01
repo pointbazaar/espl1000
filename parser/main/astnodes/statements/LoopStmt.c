@@ -15,11 +15,6 @@
 #include "token/token/token.h"
 
 struct LoopStmt* makeLoopStmt(struct TokenList* tokens, bool debug) {
-
-	if(debug){
-		printf("LoopStmt(...) from: ");
-		list_print(tokens);
-	}
 	
 	if(list_size(tokens) < 3){ return NULL; }
 
@@ -49,10 +44,6 @@ struct LoopStmt* makeLoopStmt(struct TokenList* tokens, bool debug) {
 		freeExpr(res->count);
 		free(res);
 		return NULL;
-	}
-	
-	if(debug){
-		printf("sucess parsing LoopStmt\n");
 	}
 
 	list_set(tokens, copy);

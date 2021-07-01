@@ -14,11 +14,6 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 
 	struct IntConst* res = make(IntConst);
 
-	if(debug){
-		printf("IntConst(...) from ");
-		list_print(tokens);
-	}
-
 	struct TokenList* copy = list_copy(tokens);
 
 	struct Token* tk = list_head(copy);

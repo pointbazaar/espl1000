@@ -26,11 +26,6 @@ struct ArrayType* makeArrayType(struct Type* element_type){
 
 struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug) {
 
-	if(debug){
-		printf("ArrayType(...) from: ");
-		list_print(tokens);
-	}
-
 	struct ArrayType* res = make(ArrayType);
 	struct TokenList* copy = list_copy(tokens);
 	

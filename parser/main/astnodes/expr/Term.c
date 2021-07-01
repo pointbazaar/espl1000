@@ -44,11 +44,6 @@ struct Term* makeTerm_other(struct Expr* expr){
 }
 
 struct Term* makeTerm(struct TokenList* tokens, bool debug) {
-
-	if(debug){
-		printf("Term(...) from ");
-		list_print(tokens);
-	}
 	
 	if(list_size(tokens) == 0){return NULL;}
 
@@ -130,10 +125,6 @@ other_term:
 
 	
 end:
-	
-	if(debug){
-		printf("sucess parsing Term\n");
-	}
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);

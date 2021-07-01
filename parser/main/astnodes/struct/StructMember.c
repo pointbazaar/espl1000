@@ -19,11 +19,6 @@ void beforeAbort(struct StructMember* m, struct TokenList* copy);
 //-------------
 struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 
-	if(debug){
-		printf("makeStructMember(...) from: ");
-		list_print(tokens);
-	}
-
 	struct StructMember* res = initStructMember();
 	struct TokenList* copy = list_copy(tokens);
 	

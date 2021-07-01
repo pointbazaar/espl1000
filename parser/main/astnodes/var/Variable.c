@@ -15,11 +15,6 @@
 #include "token/token/token.h"
 
 struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
-
-	if(debug){
-		printf("Variable(...) from ");
-		list_print(tokens);
-	}
 	
 	if(list_size(tokens) < 1){ return NULL; }
 
@@ -51,7 +46,7 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 
 	if(res->memberAccess == NULL){
 
-		printf("Error parsing struct member access!\n");
+		printf("[Parser[Error] parsing struct member access!\n");
 		printf("%s\n", list_code(copy, debug));
 		free(res);
 		freeTokenListShallow(copy);
@@ -59,8 +54,6 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 	}
 	
 	end:
-
-	if(debug){ printf("sucess parsing Variable\n"); }
 
 	list_set(tokens,copy);
 	freeTokenListShallow(copy);
