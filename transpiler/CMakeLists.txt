@@ -57,23 +57,6 @@ add_executable(${PROJECT_NAME}
 	main/util/help.c
 	main/util/fileutils/fileutils.c
 	
-	#ast dependency
-	../ast/io/ast_reader.c
-	../ast/io/serialize.c
-	../ast/util/free_ast.c
-	../ast/util/copy_ast.c
-	../ast/util/str_ast.c	
-	../ast/visitor/visitor.c
-	../ast/util/equals_ast.c
-	
-	#tables dependency
-	../tables/lvst/lvst.c 
-	../tables/sst/sst.c
-	../tables/sst/sst_prefill.c
-	../tables/stst/stst.c
-	../tables/symtable/symtable.c
-	../tables/cc/cc.c
-	
 	#tests
 	test/test.c
 	test/code_gen/test_assign.c
@@ -87,6 +70,12 @@ add_executable(${PROJECT_NAME}
 #TODO: add some kind of optimized build with -O2
 #TODO: use -Wextra
 target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Werror")
+
+#AST dependency
+target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/../ast/build/libsd-ast.a)
+
+#tables dependency
+target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/../tables/build/libsd-tables.a)
 
 target_include_directories(${PROJECT_NAME} PUBLIC "main")
 target_include_directories(${PROJECT_NAME} PUBLIC "test")

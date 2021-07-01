@@ -5,10 +5,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "token/reader/token_reader.h"
-#include "token/TokenKeys.h"
-
-#include "token/token/token.h"
+#include "token_reader.h"
+#include "../TokenKeys.h"
+#include "../list/TokenList.h"
+#include "../token/token.h"
 
 static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2);
 

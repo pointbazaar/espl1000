@@ -20,6 +20,7 @@
 
 #include "token/reader/token_reader.h"
 #include "token/token/token.h"
+#include "token/list/TokenList.h"
 
 #include "parser_help.h"
 #include "parser_flags.h"

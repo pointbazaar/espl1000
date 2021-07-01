@@ -5,9 +5,9 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "token/list/TokenList.h"
-#include "token/TokenKeys.h"
-#include "token/token/token.h"
+#include "TokenList.h"
+#include "../TokenKeys.h"
+#include "../token/token.h"
 
 struct TokenList* makeTokenList() {
 	

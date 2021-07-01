@@ -67,12 +67,6 @@ add_executable(${PROJECT_NAME}
 	../token/reader/token_reader.c
 	../token/token/token.c
 	
-	#ast dependency
-	../ast/io/ast_writer.c
-	../ast/io/serialize.c
-	../ast/util/free_ast.c
-	../ast/util/copy_ast.c
-	
 	#tests
 	test/astnodes/const/BoolConstTest.c
 	test/astnodes/const/CharConstTest.c
@@ -109,6 +103,12 @@ add_executable(${PROJECT_NAME}
 #TODO: add some kind of optimized build with -O2
 #TODO: use -Wextra
 target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Werror")
+
+#AST dependency
+target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/../ast/build/libsd-ast.a)
+
+#Token dependency
+target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a)
 
 target_include_directories(${PROJECT_NAME} PUBLIC "main/commandline")
 target_include_directories(${PROJECT_NAME} PUBLIC "main/astnodes")
