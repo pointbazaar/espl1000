@@ -10,8 +10,8 @@
 #include "tables/sst/sst.h"
 #include "tables/stst/stst.h"
 
-#include "analyzer/annotation_analyzer.h"
-#include "analyzer/halts.h"
+#include "annotation_analyzer.h"
+#include "analyzer/halts/halts.h"
 
 #include "token/TokenKeys.h"
 

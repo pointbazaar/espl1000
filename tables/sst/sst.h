@@ -10,8 +10,8 @@
 #include "tables/cc/cc.h"
 #include "tables/symtable/symtable.h"
 
-#include "transpiler/main/analyzer/halts.h"
-#include "transpiler/main/analyzer/dead.h"
+#include "transpiler/main/analyzer/halts/halts.h"
+#include "transpiler/main/analyzer/dead/dead.h"
 
 struct SSTLine {
 	//Subroutine Symbol Table Line

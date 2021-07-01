@@ -17,9 +17,6 @@
 #include "code_gen/types/gen_c_types.h"
 #include "code_gen/structs/structs_code_gen.h"
 
-#include "analyzer/fn_analyzer.h"
-#include "analyzer/lv_analyzer.h"
-
 #include "tables/sst/sst.h"
 #include "tables/sst/sst_prefill.h"
 #include "tables/stst/stst.h"

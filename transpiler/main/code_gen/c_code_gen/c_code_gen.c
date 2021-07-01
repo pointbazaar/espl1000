@@ -26,10 +26,10 @@
 #include "transpile_lambdas.h"
 
 //Analyzer Includes
-#include "analyzer/fn_analyzer.h"
-#include "analyzer/dead_analyzer.h"
-#include "analyzer/halt_analyzer.h"
-#include "analyzer/annotation_analyzer.h"
+#include "analyzer/fn/fn_analyzer.h"
+#include "analyzer/dead/dead_analyzer.h"
+#include "analyzer/halts/halt_analyzer.h"
+#include "analyzer/annotation/annotation_analyzer.h"
 
 //Table Includes
 #include "tables/sst/sst.h"

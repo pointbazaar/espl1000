@@ -12,7 +12,7 @@
 #include "typeinference/util/type_str.h"
 #include "tables/sst/sst.h"
 
-#include "transpiler/main/analyzer/halts.h"
+#include "transpiler/main/analyzer/halts/halts.h"
 
 #include "code_gen/types/gen_c_types.h"
 #include "structs_code_gen.h"

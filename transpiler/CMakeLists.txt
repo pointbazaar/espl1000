@@ -12,11 +12,11 @@ add_executable(${PROJECT_NAME}
 	main/transpile_lambdas.c
 	
 	#analyzer
-	main/analyzer/annotation_analyzer.c
-	main/analyzer/dead_analyzer.c
-	main/analyzer/fn_analyzer.c
-	main/analyzer/halt_analyzer.c
-	main/analyzer/lv_analyzer.c
+	main/analyzer/annotation/annotation_analyzer.c
+	main/analyzer/dead/dead_analyzer.c
+	main/analyzer/fn/fn_analyzer.c
+	main/analyzer/halts/halt_analyzer.c
+	main/analyzer/lv/lv_analyzer.c
 	
 	#code_gen
 	main/code_gen/c_code_gen/c_code_gen.c

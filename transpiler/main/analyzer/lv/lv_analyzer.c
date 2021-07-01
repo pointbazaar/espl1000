@@ -10,7 +10,7 @@
 #include "typeinference/util/type_str.h"
 #include "typeinference/typeinfer.h"
 
-#include "analyzer/lv_analyzer.h"
+#include "lv_analyzer.h"
 
 #include "ast/visitor/visitor.h"
 

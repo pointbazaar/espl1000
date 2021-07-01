@@ -10,7 +10,7 @@
 //type_str
 #include "transpiler/main/typeinference/util/type_str.h"
 
-#include "transpiler/main/analyzer/halts.h"
+#include "transpiler/main/analyzer/halts/halts.h"
 
 #include "tables/sst/sst.h"
 #include "sst_prefill.h"

@@ -10,7 +10,7 @@
 #include "tables/symtable/symtable.h"
 
 //Analyzer Includes
-#include "transpiler/main/analyzer/lv_analyzer.h"
+#include "transpiler/main/analyzer/lv/lv_analyzer.h"
 
 //Typeinference Includes
 #include "transpiler/main/typeinference/typeinfer.h"

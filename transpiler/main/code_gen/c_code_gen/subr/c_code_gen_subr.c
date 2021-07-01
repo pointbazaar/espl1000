@@ -18,7 +18,7 @@
 #include "tables/lvst/lvst.h"
 #include "tables/stst/stst.h"
 
-#include "analyzer/lv_analyzer.h"
+#include "analyzer/lv/lv_analyzer.h"
 
 #include "code_gen/util/code_gen_util.h"
 #include "code_gen/types/gen_c_types.h"
