@@ -3,9 +3,11 @@ all: build test
 
 #https://cliutils.gitlab.io/modern-cmake/chapters/intro/running.html
 
+#older versions of CMake sadly do not support --parallel option
+
 build: DIRS
 	cmake -S . -B build -H.
-	cmake --build build --parallel
+	cmake --build build 
 	cp build/dragon-parser .
 
 DIRS:

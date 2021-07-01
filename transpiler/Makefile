@@ -1,10 +1,12 @@
 
 all: build test
 
+#older versions of cmake sadly do not support --parallel option
+#that's why it's missing here
 
 build: DIRS
 	cmake -S . -B build -H.
-	cmake --build build --parallel
+	cmake --build build 
 	cp build/sd .
 
 clean: 
