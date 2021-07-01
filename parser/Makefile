@@ -6,7 +6,6 @@ all: build test
 build: DIRS
 	cmake -S . -B build
 	cmake --build build
-	#make -C build/
 	cp build/dragon-parser .
 
 DIRS:

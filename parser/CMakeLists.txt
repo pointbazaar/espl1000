@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.15.0)
 project(dragon-parser C)
 
 set(CMAKE_C_STANDARD 11)
