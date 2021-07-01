@@ -1,8 +1,7 @@
 <img src="https://raw.githubusercontent.com/pointbazaar/smalldragon/dev/docs/img/dragon-logo.svg" width="100" height="100"/>
 
 # SmallDragon, a simple Programming Language [WIP] 
-master: [![Build Status](https://travis-ci.com/pointbazaar/smalldragon.svg?branch=master)](https://travis-ci.com/pointbazaar/smalldragon)
-dev:    [![Build Status](https://travis-ci.com/pointbazaar/smalldragon.svg?branch=dev)](https://travis-ci.com/pointbazaar/smalldragon)
+[![Build Status](https://travis-ci.com/pointbazaar/smalldragon.svg?branch=master)](https://travis-ci.com/pointbazaar/smalldragon)
 [![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/smalldragon/badge)](https://www.codefactor.io/repository/github/pointbazaar/smalldragon)
 [![GitHub license](https://img.shields.io/github/license/pointbazaar/smalldragon.svg)](https://github.com/pointbazaar/smalldragon/blob/master/LICENSE)
 [![Open Source Love png2](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
