@@ -12,7 +12,7 @@
 
 static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2);
 
-static struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug);
+static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_num, bool debug);
 
 struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool debug){
 
@@ -25,13 +25,15 @@ struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool de
 	
 	size_t size = 50;
 	char* line = malloc(size);
+	
+	uint32_t line_num = 0;
     
 	while (getline(&line, &size, file)){
 		
 		line[strlen(line)-1] = '\0';
 		
 		bool isLineNo = false;
-		struct Token* tkn = recognizeToken(line, &isLineNo, debug);
+		struct Token* tkn = recognizeToken(line, &isLineNo, &line_num, debug);
     	if(isLineNo){
 			if(tkn != NULL){ 
 				freeToken(tkn);
@@ -56,7 +58,7 @@ struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool de
 	return tks;
 }
 
-static struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
+static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_num, bool debug) {
 	
 	if (debug) {
 		printf("recognizeToken('%s', %d)\n", tkn, debug);
@@ -77,12 +79,10 @@ static struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
 	strcpy(part2, tkn + space_index + 1);
 
 	const int tkn_id = atoi(part1);
-	
-	int line_no = 1;
 
 	if (tkn_id == LINE_NO) {
 		
-		line_no += atoi(part2);
+		*line_num = atoi(part2);
 		*isLineNo = true;
 		
 		return NULL;
@@ -91,7 +91,7 @@ static struct Token* recognizeToken(char* tkn, bool* isLineNo, bool debug) {
 	struct Token* r = recognizeTokenInner(tkn_id, tkn, part2);
 
 	if(r != NULL){
-		r->lineNumber = line_no;
+		r->line_num = *line_num;
 	}
 
 	return r;
@@ -139,13 +139,19 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		
 		case ASSIGNOP: 
 		//SECTION: OTHER
-		case TPARAM : 
-		case SEMICOLON : 
-		case COMMA : 
-		case ARROW : 
-		case STRUCTMEMBERACCESS : 
+		case TPARAM: 
+		case SEMICOLON: 
+		case COMMA: 
+		case ARROW: 
+		case STRUCTMEMBERACCESS: 
+		
+		//SECTION: ANNOTATIONS
+		case ANNOT_HALTS:
+		case ANNOT_PRIVATE:
+		case ANNOT_PUBLIC:
+		case ANNOT_DEPRECATED:
 
-		//KEYWORDS
+		//SECTION: KEYWORDS
 		case RETURN: 
 		case FN: 
 		case STRUCT: 

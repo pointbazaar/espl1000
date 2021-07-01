@@ -3,18 +3,18 @@
 
 #include "../ast_declare.h"
 
-struct BoolConst   { bool     value; };
+struct BoolConst   { struct ASTNode super; bool     value; };
 
-struct CharConst   { char     value; };
+struct CharConst   { struct ASTNode super; char     value; };
 
-struct FloatConst  { float    value; };
+struct FloatConst  { struct ASTNode super; float    value; };
 
-struct IntConst    { int32_t  value; };
+struct IntConst    { struct ASTNode super; int32_t  value; };
 
-struct HexConst    { uint32_t value; };
+struct HexConst    { struct ASTNode super; uint32_t value; };
 
-struct BinConst    { uint32_t value; };
+struct BinConst    { struct ASTNode super; uint32_t value; };
 
-struct StringConst { char*    value; };
+struct StringConst { struct ASTNode super; char*    value; };
 
 #endif

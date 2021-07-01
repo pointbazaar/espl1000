@@ -27,11 +27,13 @@ struct CharConst* 	readCharConst(	FILE* file, bool debug);
 struct FloatConst* 	readFloatConst(	FILE* file, bool debug);
 struct StringConst* 	readStringConst(FILE* file, bool debug);
 
+//other
 struct Variable* 	readVariable(	FILE* file, bool debug);
 struct SimpleVar* 	readSimpleVar(	FILE* file, bool debug);
 struct Term* 		readTerm(		FILE* file, bool debug);
 struct UnOpTerm* 	readUnOpTerm(	FILE* file, bool debug);
 struct Range* 		readRange(		FILE* file, bool debug);
+struct Lambda*		readLambda(		FILE* file, bool debug);
 
 //statementnodes
 struct Stmt* 		readStmt(		FILE* file, bool debug);

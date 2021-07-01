@@ -22,6 +22,9 @@ struct StmtBlock* makeStmtBlock(struct TokenList* tokens, bool debug){
 	
 	struct StmtBlock* res = make(StmtBlock);
 	
+	res->super.line_num    = list_head(tokens)->line_num;
+	res->super.annotations = 0;
+	
 	res->count = 0;
 	res->stmts = malloc(sizeof(struct Stmt*)*1);
 	

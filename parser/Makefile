@@ -1,6 +1,6 @@
 #it had -O0 before
 #use -pg to generate profiling information for gprof
-FLAGS := -march=native -g -Wall -Werror --std=gnu11 
+FLAGS := -march=native -g --std=gnu11 -Wall -Wextra -Werror 
 
 INCLUDE := -Imain/astnodes -I..
 
@@ -23,7 +23,6 @@ OBJS_TOKEN := $(TOKEN_BUILD)/token.o \
 OBJS_MAIN := build/parser.o \
 		build/parser_help.o \
 		build/parser_flags.o \
-		build/AST.o \
 		build/BoolConst.o \
 		build/CharConst.o \
 		build/DeclArg.o \
@@ -62,7 +61,9 @@ OBJS_MAIN := build/parser.o \
 		build/Range.o \
 		build/ForStmt.o \
 		build/SwitchStmt.o \
-		build/CaseStmt.o 
+		build/CaseStmt.o \
+		build/Lambda.o \
+		build/parse_astnode.o
 		
 OBJS_TEST := build/AssignStmtTest.o \
 		build/BasicTypeWrappedTest.o \
@@ -92,7 +93,8 @@ OBJS_TEST := build/AssignStmtTest.o \
 		build/RangeTest.o \
 		build/ForStmtTest.o \
 		build/SwitchStmtTest.o \
-	    build/CaseStmtTest.o	
+	    build/CaseStmtTest.o \
+	    build/LambdaTest.o
 		
 OBJS := $(OBJS_MAIN) $(OBJS_TEST) $(OBJS_AST) $(OBJS_TOKEN)
 
@@ -108,7 +110,7 @@ TOKEN_DEPS := ../token/list/TokenList.h \
 
 MAIN_DEPS := $(AST_DEPS) $(TOKEN_DEPS)
 
-all: DIRS dragon-parser test valgrind
+all: DIRS dragon-parser test
 
 DIRS:
 	mkdir -p build/
@@ -120,7 +122,7 @@ clean: DIRS
 test: dragon-parser
 	./dragon-parser -test
 
-VALGRIND_OPS := --leak-check=full --show-reachable=yes  --error-exitcode=1 --log-file="/dev/null"
+VALGRIND_OPS := --leak-check=full --show-reachable=yes  --error-exitcode=1 
 
 valgrind: dragon-parser
 	rm -f ../examples/loops/.WhileLoop.dg.tokens
@@ -134,6 +136,10 @@ dragon-parser: $(OBJS)
 #generic rules
 
 build/%.o: main/commandline/%.c $(MAIN_DEPS)
+	@echo Compiling file: $(notdir $<)
+	$(CALL2) -o $@ $<
+	
+build/%.o: main/util/%.c $(MAIN_DEPS)
 	@echo Compiling file: $(notdir $<)
 	$(CALL2) -o $@ $<
 	

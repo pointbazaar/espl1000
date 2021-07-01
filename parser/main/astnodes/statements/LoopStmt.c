@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "LoopStmt.h"
 #include "Stmt.h"
 #include "../StmtBlock.h"
@@ -22,11 +24,12 @@ struct LoopStmt* makeLoopStmt(struct TokenList* tokens, bool debug) {
 	if(list_size(tokens) < 3){ return NULL; }
 
 	struct LoopStmt* res = make(LoopStmt);
+	struct TokenList* copy = list_copy(tokens);
+	
+	parse_astnode(copy, &(res->super));
 	
 	res->count = NULL;
 	res->block     = NULL;
-
-	struct TokenList* copy = list_copy(tokens);
 
 	if(!list_expect(copy, LOOP)){
 		free(res);

@@ -5,8 +5,13 @@ main
 *.dg.json
 *.java
 
-#the transpiled .c files
+#the transpiled C files
 *.c
+*.h
 *.o
 *.elf
 *.hex
+
+*.ppm 
+
+gtk/

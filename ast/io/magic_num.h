@@ -57,6 +57,7 @@
 #define MAGIC_DECLARG 			70
 #define MAGIC_STRUCTMEMBER 		71
 #define MAGIC_METHOD 			72
+#define MAGIC_LAMBDA			73
 
 
 //additionally, we define MAGIC_<STR>_END constants
@@ -114,5 +115,6 @@
 #define MAGIC_END_DECLARG 		238
 #define MAGIC_END_STRUCTMEMBER 	239
 #define MAGIC_END_METHOD 		240
+#define MAGIC_END_LAMBDA		241
 
 #endif

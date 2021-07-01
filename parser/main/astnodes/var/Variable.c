@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "Variable.h"
 #include "SimpleVar.h"
 
@@ -22,11 +24,12 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 	if(list_size(tokens) < 1){ return NULL; }
 
 	struct Variable* res = make(Variable);
+	struct TokenList* copy = list_copy(tokens);
+	
+	parse_astnode(copy, &(res->super));
 
 	res->simpleVar = NULL;
 	res->memberAccess = NULL;
-
-	struct TokenList* copy = list_copy(tokens);
 
 	res->simpleVar = makeSimpleVar(copy,debug);
 

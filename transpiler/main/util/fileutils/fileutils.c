@@ -14,22 +14,27 @@
 
 char* make_ast_filename(char* filename){
 	
-	char* ast_filename = malloc(100);
+	char* ast_filename = malloc(strlen(filename)+10);
 	
-	char fnamecpy[100];
+	char* fnamecpy = malloc(strlen(filename)+1);
 	strcpy(fnamecpy, filename);
-	
 	char* base_name = basename(fnamecpy);
-	char* dir_name = dirname(fnamecpy);
+	
+	char* fnamecpy2 = malloc(strlen(filename)+1);
+	strcpy(fnamecpy2, filename);
+	char* dir_name = dirname(fnamecpy2);
 	
 	sprintf(ast_filename, "%s/.%s.ast", dir_name, base_name);
+	
+	free(fnamecpy);
+	free(fnamecpy2);
 	
 	return ast_filename;
 }
 
 char* make_c_filename(char* filename){
 
-	char* fname_out = malloc(100);
+	char* fname_out = malloc(strlen(filename)+1);
 
 	strcpy(fname_out, filename);
 	
@@ -41,9 +46,24 @@ char* make_c_filename(char* filename){
 	return fname_out;
 }
 
+
+char* make_h_filename(char* filename){
+
+	char* fname_out = malloc(strlen(filename)+1);
+
+	strcpy(fname_out, filename);
+	
+	//remove the '.dg'
+	fname_out[strlen(fname_out)-3] = '\0';
+	
+	strcat(fname_out, ".h");
+	
+	return fname_out;
+}
+
 char* make_gcc_cmd(struct Flags* flags, char* fname_out){
 	
-	char* cmd_gcc = malloc(500);
+	char* cmd_gcc = malloc(100+strlen(fname_out));
 	strcpy(cmd_gcc, "");
 	
 	if(flags->avr){
@@ -53,17 +73,15 @@ char* make_gcc_cmd(struct Flags* flags, char* fname_out){
 		strcat(cmd_gcc, "avr-gcc -o main.o -I /usr/share/avra -mmcu=attiny45 ");
 	}else{
 		
-		strcat(cmd_gcc, "gcc -Wall -o a.out ");
+		strcat(cmd_gcc, "gcc -Wall --std=c11 -o a.out ");
 	}
+	
+	if(flags->debug_symbols){ strcat(cmd_gcc, "-g "); }
+	if(flags->werror){ strcat(cmd_gcc, "-Werror "); }
 	
 	strcat(cmd_gcc, fname_out);
 	
-	//we assume here cmd_gcc will never exceed it's allocated size.
-	//Warning. this is a stupid assumption.
-	for(int i=0; i < flags->gcc_flags_count; i++){
-		strcat(cmd_gcc, " ");
-		strcat(cmd_gcc, flags->gcc_flags[i]);
-	}
+	strcat(cmd_gcc, " -lpthread -lm ");
 	
 	return cmd_gcc;
 }

@@ -27,7 +27,12 @@ fn faculty (uint n) -> uint {
 	if( n <= 1 ){ 
 		return 1; 
 	}
-	return (n*faculty(n-1));
+	uint res = 1;
+	
+	for k in 1 .. n {
+		res *= k;
+	}
+	return res;
 }
 
 fn max (int a, int b) -> int {
@@ -67,10 +72,10 @@ fn fib(uint64 n) -> uint64 {
 
 fn iseven(int x) -> bool {
 
-	return x % 2 == 0;
+	return x & 0x01 == 0;
 }
 
 fn isodd(int x) -> bool {
 
-	return x % 2 == 1;
+	return x & 0x01 == 1;
 }

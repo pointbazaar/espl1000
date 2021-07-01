@@ -19,11 +19,6 @@
 	
 	<div class="row nav-bg">
 		<div class="col"><a href="../index.html">Home</a></div>
-		<div class="col"><a href="flags.html">Flags</a></div>
-		<div class="col"><a href="roadmap.html">Roadmap</a></div>
-		<div class="col"><a href="operators.html">Operators</a></div>
-		<div class="col"><a href="primitives.html">Primitives</a></div>
-		<div class="col"><a href="architecture.html">Architecture</a></div>
 	</div>
 	
 	<h1>SmallDragon Composite Data Types</h1>
@@ -40,10 +35,10 @@
 
 	<pre>
 	<code>
-	struct MyStruct {
-		int a;
-		MyStruct b;
-	}
+struct MyStruct {
+	int a;
+	MyStruct b;
+}
 	</code>
 	</pre>
 
@@ -63,6 +58,14 @@
 	<p>
 	These subroutines are for convenience, 
 	so you don't have to write them.
+	</p>
+	
+	<h3>Struct Field Reordering</h3>
+	<p>
+	SmallDragon practises Field Reordering in Structs, to 
+	remove unnecessary padding inside a struct. <br>
+	Read more: <a href="http://www.catb.org/esr/structure-packing/">The Lost Art of Structure Packing</a>
+	<br>
 	</p>
 
 </div>

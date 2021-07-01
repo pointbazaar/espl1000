@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "ArrayType.h"
 #include "Type.h"
 
@@ -13,6 +15,9 @@
 struct ArrayType* makeArrayType(struct Type* element_type){
 	
 	struct ArrayType* res = make(ArrayType);
+	
+	res->super.line_num    = element_type->super.line_num;
+	res->super.annotations = 0;
 
 	res->element_type = element_type;
 
@@ -27,30 +32,31 @@ struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug) {
 	}
 
 	struct ArrayType* res = make(ArrayType);
+	struct TokenList* copy = list_copy(tokens);
+	
+	parse_astnode(copy, &(res->super));
 
-	struct TokenList* copy1 = list_copy(tokens);
-
-	if(!list_expect(copy1, LBRACKET)){
-		freeTokenListShallow(copy1);
+	if(!list_expect(copy, LBRACKET)){
+		freeTokenListShallow(copy);
 		free(res);
 		return NULL;
 	}
 
-	res->element_type = makeType2(copy1, debug);
+	res->element_type = makeType2(copy, debug);
 	if(res->element_type == NULL){
-		freeTokenListShallow(copy1);
+		freeTokenListShallow(copy);
 		free(res);
 		return NULL;
 	}
 
-	if(!list_expect(copy1, RBRACKET)){
-		freeTokenListShallow(copy1);
+	if(!list_expect(copy, RBRACKET)){
+		freeTokenListShallow(copy);
 		free(res);
 		return NULL;
 	}
 
-	list_set(tokens, copy1);
-	freeTokenListShallow(copy1);
+	list_set(tokens, copy);
+	freeTokenListShallow(copy);
 
 	return res;
 }

@@ -1,0 +1,176 @@
+
+//Some simple subroutines to do calculations with matrices.
+//Might be expanded in the future.
+
+//TODO: struct Matrix shoud be generic
+//once smalldragon supports it.
+struct Matrix {
+	[[float]] arr; 
+	uint nrows;
+	uint ncols;
+}
+
+fn matrix_ctor(uint nrows, uint ncols) -> Matrix {
+
+	Matrix res = makeMatrix(0,nrows,ncols);
+	
+	res.arr = malloc(8*nrows);
+	
+	for r in 0 .. nrows - 1 {
+		res.arr[r] = malloc(4*ncols);
+		for c in 0 .. ncols - 1 {
+			res.arr[r][c] = 0.0;
+		}
+	}
+	return res;
+}
+
+fn matrix_dtor(Matrix m) -> bool {
+	for r in 0 .. m.nrows - 1 { free(m.arr[r]); }
+	free(m.arr);
+	free(m);
+	return true;
+}
+
+fn matrix_add(Matrix a, Matrix b) -> Matrix {
+
+	assert(a.nrows == b.nrows);
+	assert(a.ncols == b.ncols);
+	res = matrix_ctor(a.nrows, a.ncols);
+	for r in 0 .. a.nrows - 1 {
+		for c in 0 .. a.ncols - 1 {
+			res.arr[r][c] = a.arr[r][c] + b.arr[r][c];
+		}
+	}
+	return res;
+}
+
+fn matrix_sub(Matrix a, Matrix b) -> Matrix {
+
+	assert(a.nrows == b.nrows);
+	assert(a.ncols == b.ncols);
+	res = matrix_ctor(a.nrows, a.ncols);
+	for r in 0 .. a.nrows - 1 {
+		for c in 0 .. a.ncols - 1 {
+			res.arr[r][c] = a.arr[r][c] - b.arr[r][c];
+		}
+	}
+	return res;
+}
+
+fn matrix_scale(Matrix a, float r) -> Matrix {
+	
+	//scales the matrix
+	res = matrix_ctor(a.nrows, a.ncols);
+	for r in 0 .. a.nrows - 1 {
+		for c in 0 .. a.ncols - 1 {
+			res.arr[r][c] = a.arr[r][c] * r;
+		}
+	}
+	return res;
+}
+
+fn matrix_mul(Matrix a, Matrix b) -> Matrix {
+
+	assert(a.ncols == b.nrows);
+	
+	res = matrix_ctor(a.nrows, b.ncols);
+	for r in 0 .. a.nrows - 1 {
+		for c in 0 .. b.ncols - 1 {
+			s = 0.0;
+			for i in 0 .. a.ncols - 1 {
+				s += a.arr[r][i] * b.arr[i][c];
+			}
+			res.arr[r][c] = s;
+		}
+	}
+	return res;
+}
+
+fn matrix_submatrix(Matrix a, uint row, uint col) -> Matrix {
+
+	assert(a.nrows == a.ncols); //currently only works for square matrices
+
+	//the matrix obtained by removing 'row', 'col'
+	assert(a.nrows >= 2 && a.ncols >= 2);
+	res = matrix_ctor(a.nrows-1, a.ncols-1);
+	
+	for r in 0 .. res.nrows - 1 {
+		for c in 0 .. res.ncols - 1 {
+			ir = r;
+			ic = c;
+			if ir >= row { ir += 1; }
+			if ic >= col { ic += 1; }
+			res.arr[r][c] = a.arr[ir][ic];
+		}
+	}
+	
+	return res;
+}
+
+fn matrix_det(Matrix a) -> float {
+
+	if a.nrows == 1 && a.ncols == 1 { 
+		return a.arr[0][0]; 
+	}
+
+	//Laplace expansion, row 0
+	
+	res = 0.0;
+	uint r = 0;
+	for c in 0 .. a.ncols - 1 {
+		sub_r_c = matrix_submatrix(a, r, c);
+		
+		res += ipow(-1, r+c) * a.arr[r][c] * matrix_det(sub_r_c);
+		
+		matrix_dtor(sub_r_c);
+	}
+	return res;
+}
+
+fn matrix_transpose(Matrix a) -> Matrix {
+
+	res = matrix_ctor(a.ncols, a.nrows);
+	
+	for r in 0 .. res.nrows - 1 {
+		for c in 0 .. res.ncols - 1 {
+			
+			res.arr[r][c] = a.arr[c][r];
+		}
+	}
+	
+	return res;
+}
+
+fn matrix_pow(Matrix a, uint power) -> Matrix {
+
+	res = matrix_identity(a.nrows);
+	
+	loop power {
+	
+		old = res;
+		res = matrix_mul(res, a);
+		matrix_dtor(old);
+	}
+	
+	return res;
+}
+
+fn matrix_identity(uint n) -> Matrix {
+
+	res = matrix_ctor(n,n);
+	
+	for i in 0 .. n - 1 {
+		res.arr[i][i] = 1.0;
+	}
+	
+	return res;
+}
+
+@private
+fn matrix_inverse(Matrix a) -> Matrix {
+
+	//TODO
+	exit(1);
+	return a;
+}

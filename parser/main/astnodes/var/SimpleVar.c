@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "SimpleVar.h"
 #include "expr/Expr.h"
 
@@ -19,16 +21,15 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 		list_print(tokens);
 	}
 	
-	if(list_size(tokens) == 0){ 
-		return NULL; 
-	}
+	if(list_size(tokens) == 0){  return NULL;  }
 
 	struct SimpleVar* res = make(SimpleVar);
+	struct TokenList* copy = list_copy(tokens);
+	
+	parse_astnode(copy, &(res->super));
 
 	res->count_indices = 0;
 	res->indices = malloc(sizeof(struct Expr*)*1);
-
-	struct TokenList* copy = list_copy(tokens);
 
 	struct Token* token = list_head(copy);
 

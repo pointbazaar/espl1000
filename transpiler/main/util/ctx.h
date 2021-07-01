@@ -16,7 +16,9 @@ struct ST;
  * tasked with transpiling an AST node.
  */
 struct Ctx {
-	FILE* file;
+	FILE* c_file;
+	FILE* header_file;
+	FILE* file; //where the output will be directed
 	uint8_t indentLevel;
 	
 	//the transpiler flags 

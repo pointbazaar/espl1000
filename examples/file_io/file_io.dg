@@ -1,0 +1,11 @@
+
+fn main () -> int {
+
+	f = fopen("/tmp/sd_file_io.txt", "w");
+
+	fprintf(f, "hello\n");
+
+	fclose(f);
+
+	return 0;
+}

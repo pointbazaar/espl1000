@@ -112,9 +112,6 @@ bool list_expect_2(struct TokenList* list, struct Token* tk){
 
 struct TokenList* list_copy(struct TokenList* other) {
 
-	//DEBUG
-	//printf("list_copy(...)\n");
-
 	struct TokenList* list = makeTokenList();
 	list_set(list, other);
 	
@@ -147,6 +144,23 @@ struct Token* list_head(struct TokenList* list) {
 	return list_get(list, 0);
 }
 
+struct Token* list_head_without_annotations(struct TokenList* tknList){
+	
+	uint32_t i = 0;
+	struct Token* h;
+	
+	do{
+		h = list_get(tknList, i);
+		i++;
+	
+	} while(
+		(h->kind > _ANNOT_START_ && h->kind < _ANNOT_END_)
+		&& i < list_size(tknList)
+	);
+	
+	return h;
+}
+
 char* list_code(struct TokenList* list, bool debug) {
 	//it should be a limited fragment 
 
@@ -156,7 +170,7 @@ char* list_code(struct TokenList* list, bool debug) {
 	strcpy(str, "");
 
 	if(list_size(list) > 0){
-		int line_num = list_get(list, 0)->lineNumber;
+		int line_num = list_get(list, 0)->line_num;
 		sprintf(str, "% 4d|", line_num);
 	}
 	

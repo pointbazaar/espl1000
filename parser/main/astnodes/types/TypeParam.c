@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "TypeParam.h"
 
 #include "ast/ast.h"
@@ -13,29 +15,30 @@
 
 struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
 
-	if(debug){
-		printf("TypeParam(...)\n");
-	}
-
-	struct Token* token = list_head(tokens);
-	if(token == NULL){
-		return NULL;
-	}
+	if(debug){ printf("TypeParam(...)\n"); }
+	
+	if(list_size(tokens) == 0){ return NULL; }
 	
 	struct TypeParam* res = make(TypeParam);
+	struct TokenList* copy = list_copy(tokens);
+	
+	parse_astnode(copy, &(res->super));
+	
+	struct Token* token = list_head(copy);
 
-	if (token->kind == TPARAM) {
-		res->index = atoi(token->value_ptr);
-		if(list_size(tokens) == 0){
-			free(res);
-			return NULL;
-		}
-		list_consume(tokens, 1);
-	} else {
-		//("Error: could not read type parameter node");
+	if(token->kind != TPARAM){
+		//Error: could not read type parameter node
+		freeTokenListShallow(copy);
 		free(res);
 		return NULL;
 	}
+	
+	res->index = atoi(token->value_ptr);
+	
+	list_consume(copy, 1);
+	
+	list_set(tokens, copy);
+	freeTokenListShallow(copy);
 
 	return res;
 }

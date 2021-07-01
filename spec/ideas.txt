@@ -23,4 +23,10 @@ idea:
 //language server protocol
 https://www.youtube.com/watch?v=Cw9qCsetpLU
 
-
+ - idea:
+   //for 100 > i >= k
+   //for 0 <= k < n
+   these could be a new syntax option for loops 
+   which would make it possible to loop in both directions
+   as the direction would be obvious 
+   from the direction of the comparison operators

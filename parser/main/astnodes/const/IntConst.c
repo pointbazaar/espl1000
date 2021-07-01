@@ -27,6 +27,9 @@ struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
 		freeTokenListShallow(copy);
 		return NULL;
 	}
+	
+	res->super.line_num    = tk->line_num;
+	res->super.annotations = 0;
 
 	switch (tk->kind){
 

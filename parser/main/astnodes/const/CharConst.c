@@ -17,20 +17,23 @@ struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
 		list_print(tokens);
 	}
 
-	struct Token* token = list_head(tokens);
+	struct Token* tk = list_head(tokens);
 	
-	if(token == NULL){ return NULL; }
+	if(tk == NULL){ return NULL; }
 
-	if (token->kind != CCONST) {
+	if (tk->kind != CCONST) {
 		//"Error: could not read charConstant node";
 		return NULL;
 	}
 	
 	struct CharConst* res = make(CharConst);	
 	
+	res->super.line_num    = tk->line_num;
+	res->super.annotations = 0;
+	
 	//index needs to be 1, as charconst
 	//is surrounded by single quotes
-	res->value = token->value_ptr[1];
+	res->value = tk->value_ptr[1];
 	
 	list_consume(tokens, 1);
 

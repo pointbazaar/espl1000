@@ -26,7 +26,7 @@ int namespace_test_can_parse_namespace_with_1_empty_struct(bool debug) {
 	list_add(l, makeToken(LCURLY));
 	list_add(l, makeToken(RCURLY));
 
-	struct Namespace* n = makeNamespace(l,"Main", debug);
+	struct Namespace* n = makeNamespace(l,".Main.ast", "Main", debug);
 
 	assert(1 == n->count_structs);
 	assert(0 == n->structs[0]->count_members);
@@ -54,7 +54,7 @@ int namespace_test_can_parse_namespace_with_1_empty_method(bool debug) {
 	list_add(l, makeToken(LCURLY));
 	list_add(l, makeToken(RCURLY));
 
-	struct Namespace* n = makeNamespace(l,"Main", debug);
+	struct Namespace* n = makeNamespace(l,".Main.ast", "Main", debug);
 
 	assert(strcmp("Main", n->name) == 0);
 	assert(1 == n->count_methods);

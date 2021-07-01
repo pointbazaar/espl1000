@@ -76,22 +76,29 @@ bool transpileAndCompile(struct Flags* flags){
 	
 	if(ast == NULL){ return false; }
 
-	
-	char* fname_out = make_c_filename(flags->filenames[0]);
+	if(flags->count_filenames == 0){
+		printf("[Error] expected atleast 1 filename\n");
+		exit(1);
+	}
 
-	bool success = transpileAndWrite(fname_out, ast, flags);
+	//output filenames
+	char* c_filename = make_c_filename(flags->filenames[0]);
+	char* h_filename = make_h_filename(flags->filenames[0]);
+
+	bool success = transpileAndWrite(c_filename, h_filename, ast, flags);
 	
 	freeAST(ast);
 	
 	if(!success){ 
 		
-		free(fname_out);
+		free(c_filename);
+		free(h_filename);
 		return false; 
 	}
 	
 	if(flags->has_main_fn){
 		
-		char* cmd_gcc = make_gcc_cmd(flags, fname_out);
+		char* cmd_gcc = make_gcc_cmd(flags, c_filename);
 		
 		printf("%s\n", cmd_gcc);
 		system(cmd_gcc);
@@ -107,7 +114,8 @@ bool transpileAndCompile(struct Flags* flags){
 		}
 	}
 	
-	free(fname_out);
+	free(c_filename);
+	free(h_filename);
 	
 	return true;
 }

@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "StructType.h"
 
 #include "ast/ast.h"
@@ -14,32 +16,44 @@ static void parse_type_params_rest(struct StructType* res, struct TokenList* tok
 
 struct StructType* makeStructType(struct TokenList* tokens, bool debug){
 	
+	if(debug){
+		printf("StructType(...) from: ");
+		list_print(tokens);
+	}
+	
 	struct StructType* res = make(StructType);
+	struct TokenList* copy = list_copy(tokens);
+	
+	parse_astnode(copy, &(res->super));
 	
 	res->typeParamCount = 0;
 	res->typeParams     = NULL;
 
-	struct Token* next = list_head(tokens);
+	struct Token* next  = list_head(copy);
 	
 	if(next->kind != TYPEID && next->kind != ANYTYPE){ 
 		
-		printf("Could not parse StructType\n");
+		printf("[Parser][Error] Could not parse StructType\n");
 		exit(1);
 		return NULL; 
 	}
 
 	strcpy(res->typeName, next->value_ptr);
 	
-	list_consume(tokens, 1);
+	list_consume(copy, 1);
 
-	if(list_size(tokens) < 3){ return res; }
+	if(list_size(copy) < 1){ goto end; }
 
-	next = list_head(tokens);
+	next = list_head(copy);
 
 	if(next->kind == OPKEY_RELATIONAL && strcmp(next->value_ptr, "<")==0 ){
-		list_consume(tokens, 1);
-		parse_type_params_rest(res, tokens);
+		list_consume(copy, 1);
+		parse_type_params_rest(res, copy);
 	}
+	
+	end: 
+	list_set(tokens, copy);
+	freeTokenListShallow(copy);
 	
 	return res;
 }

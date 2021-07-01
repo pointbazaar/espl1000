@@ -2,8 +2,8 @@
 //This Stack is not growable.
 
 struct IntStack {
-	int size;
-	uint capacity;
+	uint32 size;
+	uint32 capacity;
 	[int] arr;
 }
 
@@ -32,6 +32,8 @@ fn intstack_size(IntStack s) -> uint {
 }
 
 fn intstack_push(IntStack s, int x) -> int {
+
+	if s.size >= s.capacity { exit(1); return 0; }
 	
 	s.arr[s.size] = x;
 	s.size += 1;
@@ -40,7 +42,8 @@ fn intstack_push(IntStack s, int x) -> int {
 }
 
 fn intstack_peek(IntStack s) -> int {
-
+	
+	if s.size == 0 { exit(1); return 0; }
 	return s.arr[s.size - 1];
 }
 

@@ -27,4 +27,7 @@ void test_str_structmember();
 //types
 //TODO
 
+//other
+void test_str_lambda();
+
 #endif

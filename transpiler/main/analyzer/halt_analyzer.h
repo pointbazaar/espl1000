@@ -11,6 +11,6 @@
  * 
  */
  
-void analyze_termination(struct ST* st, struct AST* ast);
+void analyze_termination(struct ST* st);
 
 #endif

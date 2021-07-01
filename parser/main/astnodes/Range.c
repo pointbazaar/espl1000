@@ -24,6 +24,9 @@ struct Range* makeRange(struct TokenList* tokens, bool debug) {
 	struct TokenList* copy = list_copy(tokens);
 
 	struct Range* res = make(Range);
+	
+	res->super.line_num    = list_head(copy)->line_num;
+	res->super.annotations = 0;
 
 	res->start = makeExpr(copy, debug);
 	

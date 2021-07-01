@@ -6,6 +6,8 @@
 #include "tables/sst/sst.h"
 #include "tables/symtable/symtable.h"
 
+#include "token/TokenKeys.h"
+
 #define SST_INITIAL_CAPACITY 10
 
 #define ERR_SAME_NAME "[SST][Error] 2 subroutines with same name\n"
@@ -58,7 +60,7 @@ void sst_fill(struct SST* sst, struct Namespace* ns){
 	
 	for(int i = 0; i < ns->count_methods; i++){
 		
-		struct SSTLine* line = makeSSTLine2(ns->methods[i]);
+		struct SSTLine* line = makeSSTLine2(ns->methods[i], ns->name);
 		
 		sst_add(sst, line);
 	}
@@ -66,11 +68,11 @@ void sst_fill(struct SST* sst, struct Namespace* ns){
 
 void sst_print(struct SST* sst){
 	
-	char* fmt = "%20s|%8s|%16s\n";
+	char* fmt = "%20s|%20s|%8s|%16s\n";
 	
 	printf("[SST] Subroutine Symbol Table\n");
-	printf(fmt, "name", "isLibC", "halts?");
-	printf("--------------------|--------|----------------\n");
+	printf(fmt, "namespace", "name", "isLibC", "halts?");
+	printf("--------------------|--------------------|--------|----------------\n");
 	
 	for(int i = 0; i < sst->count; i++){
 		
@@ -85,7 +87,7 @@ void sst_print(struct SST* sst){
 			halt_info = (line->halts == HALTS_ALWAYS)?"halts":"inf-loop";
 		}
 		
-		printf(fmt, line->name, isLibC, halt_info);
+		printf(fmt, line->_namespace, line->name, isLibC, halt_info);
 	}
 }
 
@@ -100,6 +102,7 @@ void freeSST(struct SST* sst){
 
 struct SSTLine* makeSSTLine(
 	char* name, 
+	char* _namespace,
 	struct Type* type, 
 	bool isLibC,
 	enum HALTS halts
@@ -107,7 +110,8 @@ struct SSTLine* makeSSTLine(
 
 	struct SSTLine* line = make(SSTLine);
 	
-	strncpy(line->name, name, DEFAULT_STR_SIZE);
+	strncpy(line->name,       name,       DEFAULT_STR_SIZE);
+	strncpy(line->_namespace, _namespace, DEFAULT_STR_SIZE);
 	
 	line->method       = NULL;
 	
@@ -118,14 +122,17 @@ struct SSTLine* makeSSTLine(
 	line->dead         = DEAD_UNKNOWN;
 	line->halts        = halts;
 	
+	line->is_private   = false;
+	
 	return line;
 }
 
-struct SSTLine* makeSSTLine2(struct Method* m){
+struct SSTLine* makeSSTLine2(struct Method* m, char* _namespace){
 
 	struct SSTLine* line = make(SSTLine);
 	
-	strncpy(line->name, m->name, DEFAULT_STR_SIZE);
+	strncpy(line->name,       m->name,    DEFAULT_STR_SIZE);
+	strncpy(line->_namespace, _namespace, DEFAULT_STR_SIZE);
 	
 	line->method       = m;
 	
@@ -135,6 +142,8 @@ struct SSTLine* makeSSTLine2(struct Method* m){
 	
 	line->dead         = DEAD_UNKNOWN;
 	line->halts        = HALTS_UNKNOWN;
+	
+	line->is_private   = has_annotation(m->super.annotations, ANNOT_PRIVATE);
 	
 	return line;
 }
@@ -199,13 +208,11 @@ bool sst_contains(struct SST* sst, char* name){
 
 static void sst_resize(struct SST* sst){
 	
-	if(sst->count >= sst->capacity){
-		
-		sst->capacity *= 2;
-		
-		const int nbytes = 
-			sizeof(struct SSTLine*) * (sst->capacity);
-		
-		sst->lines = realloc(sst->lines, nbytes);
-	}
+	if(sst->count < sst->capacity){ return; }
+			
+	sst->capacity *= 2;
+	
+	const int nbytes = sizeof(struct SSTLine*) * (sst->capacity);
+	
+	sst->lines = realloc(sst->lines, nbytes);
 }

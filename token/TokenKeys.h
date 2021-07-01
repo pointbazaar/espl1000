@@ -75,4 +75,12 @@
 #define OPKEY_LOGICAL		82
 #define OPKEY_BITWISE		83
 
+//annotations
+#define _ANNOT_START_		90
+#define ANNOT_HALTS			91
+#define ANNOT_PRIVATE		92
+#define ANNOT_PUBLIC		93
+#define ANNOT_DEPRECATED	94
+#define _ANNOT_END_			95
+
 #endif

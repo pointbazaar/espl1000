@@ -40,6 +40,10 @@ bool isComparisonOp(struct Op* op);
 
 struct Expr* makeExpr_1(struct UnOpTerm* term) {
 	struct Expr* res = make(Expr);
+	
+	res->super.line_num    = term->super.line_num;
+	res->super.annotations = term->super.annotations;
+	
 	res->term1 = term;
 	res->op    = NULL;
 	res->term2 = NULL;
@@ -50,6 +54,10 @@ struct Expr* makeExpr_1(struct UnOpTerm* term) {
 struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, struct Op* op, struct UnOpTerm* rightTerm) {
 
 	struct Expr* res = make(Expr);
+	
+	res->super.line_num    = leftTerm->super.line_num;
+	res->super.annotations = leftTerm->super.annotations;
+	
 	res->term1 = leftTerm;
 	res->op    = op;
 	res->term2 = rightTerm;
@@ -117,6 +125,9 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 	
 	struct Expr* res = fullTreeTransformation
 	(ops, opsc, terms, termsc, debug);
+	
+	res->super.line_num    = myterm2->super.line_num;
+	res->super.annotations = 0;
 	
 	free(terms);
 	free(ops);

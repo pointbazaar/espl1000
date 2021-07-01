@@ -4,6 +4,7 @@
 #include "../ast_declare.h"
 
 struct StructDecl{
+	struct ASTNode super; 
 	
 	struct SimpleType* type; //the type(and name)
 	
@@ -12,6 +13,7 @@ struct StructDecl{
 };
 
 struct StructMember{
+	struct ASTNode super; 
 	
 	struct Type* type;
 	char name[DEFAULT_STR_SIZE];

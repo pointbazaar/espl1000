@@ -3,7 +3,7 @@
 
 INCLUDE := -Imain -I..
 
-FLAGS := -march=native -g --std=c11 -Wall -Werror $(INCLUDE)
+FLAGS := -march=native -g --std=c11 -Wall -Wextra -Werror $(INCLUDE)
 
 CALL := gcc $(FLAGS)
 
@@ -12,6 +12,7 @@ CALLTEST := $(CALL) -Itest
 AST_OBJS := ../ast/build/ast_reader.o \
 		../ast/build/free_ast.o \
 		../ast/build/str_ast.o \
+		../ast/build/copy_ast.o \
 		../ast/build/serialize.o \
 		../ast/build/visitor.o \
 		../ast/build/equals_ast.o 
@@ -21,7 +22,8 @@ TRANSPILER_OBJS := build/transpiler.o \
 	build/flags.o \
 	build/validate_flags.o \
 	build/help.o \
-	build/fileutils.o 
+	build/fileutils.o \
+	build/transpile_lambdas.o
 	
 OBJS_CODEGEN := build/c_code_gen.o \
 	build/structs_code_gen.o \
@@ -38,7 +40,8 @@ OBJS_CODEGEN := build/c_code_gen.o \
 OBJS_ANALYZER := build/lv_analyzer.o \
 	build/fn_analyzer.o \
 	build/dead_analyzer.o \
-	build/halt_analyzer.o
+	build/halt_analyzer.o \
+	build/annotation_analyzer.o
 	
 OBJS_TYPEINFERENCE := build/typeinfer.o \
 	build/typeinfer_expr.o \
@@ -73,9 +76,7 @@ OBJS := $(AST_OBJS) $(TRANSPILER_OBJS) \
 	$(OBJS_TYPEINFERENCE) $(OBJS_ANALYZER) \
 	$(OBJS_CODEGEN) $(OBJS_TYPECHECK);
 
-all: all_no_valgrind valgrind
-
-all_no_valgrind: smalldragon test
+all: smalldragon test
 
 clean: 
 	rm -f build/*.o
@@ -84,7 +85,7 @@ clean:
 test: sd
 	./sd -test
 
-VALGRIND_OPS := --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 --log-file="/dev/null"
+VALGRIND_OPS := --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 
 
 valgrind: sd
 	valgrind $(VALGRIND_OPS) ./sd -clean ../examples/other/Everything.dg
@@ -115,6 +116,9 @@ build/util.o: ../util/util.c
 
 build/transpiler.o: main/transpiler.c main/transpiler.h test/test.h main/util/help.h 
 	$(CALL) -c main/transpiler.c -o $@
+	
+build/transpile_lambdas.o: main/transpile_lambdas.c main/transpile_lambdas.h 
+	$(CALL) -c main/transpile_lambdas.c -o $@
 
 build/invoke.o: main/invoke/invoke.c main/invoke/invoke.h 
 	$(CALL) -c main/invoke/invoke.c -o $@
@@ -238,6 +242,9 @@ build/dead_analyzer.o: $(SYMTABLES_H) main/analyzer/dead_analyzer.c
 	
 build/halt_analyzer.o: $(SYMTABLES_H) main/analyzer/halt_analyzer.c
 	$(CALL) -c main/analyzer/halt_analyzer.c -o $@
+	
+build/annotation_analyzer.o: $(SYMTABLES_H) main/analyzer/annotation_analyzer.c
+	$(CALL) -c main/analyzer/annotation_analyzer.c -o $@
 	
 # ----------- utility -----------------
 	

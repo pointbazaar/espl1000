@@ -23,6 +23,7 @@ void error(struct TCCtx* tcctx, char* msg){
 	setcolor(COLOR_RED);
 	printf("[Error]");
 	resetcolor();
+	printf("[%s:%d]", tcctx->current_filename, tcctx->current_line_num);
 	printf(" %s\n", msg);
 	printf("------------------------------------------\n");
 }

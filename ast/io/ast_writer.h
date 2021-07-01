@@ -34,11 +34,13 @@ void writeCharConst(struct CharConst* m, 	 FILE* file);
 void writeFloatConst(struct FloatConst* m, 	 FILE* file);
 void writeStringConst(struct StringConst* m, FILE* file);
 
+//other 
 void writeVariable(struct Variable* m, 		FILE* file);
 void writeSimpleVar(struct SimpleVar* m, 	FILE* file);
 void writeTerm(struct Term* m, 				FILE* file);
 void writeUnOpTerm(struct UnOpTerm* t,  	FILE* file);
 void writeRange(struct Range* r, 			FILE* file);
+void writeLambda(struct Lambda* l,			FILE* file);
 
 //statementnodes
 void writeStmt(struct Stmt* m, 				FILE* file);

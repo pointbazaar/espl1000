@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "DeclArg.h"
 #include "types/Type.h"
 #include "../Identifier.h"
@@ -14,14 +16,15 @@
 
 struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
 
-	struct DeclArg* res = make(DeclArg);
-
 	if(debug){
 		printf("DeclaredArg(...) from ");
 		list_print(tokens);
 	}
 
+	struct DeclArg* res = make(DeclArg);
 	struct TokenList* copy = list_copy(tokens);
+	
+	parse_astnode(copy, &(res->super));
 
 	res->type = makeType2(copy,debug);
 	if(res->type == NULL){

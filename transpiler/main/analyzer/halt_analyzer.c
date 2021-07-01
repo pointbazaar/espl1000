@@ -19,25 +19,25 @@ static void myvisitor(void* node, enum NODE_TYPE type, void* arg);
 
 static bool all_callees_terminate(struct SST* sst, struct CC* cc);
 
-static bool terminates_by_construction(struct SST* sst, struct StmtBlock* block);
+static bool terminates_by_construction(struct StmtBlock* block);
 
-static bool inner(struct SST* sst, struct AST* ast);
+static bool inner(struct SST* sst);
 
-void analyze_termination(struct ST* st, struct AST* ast){
+void analyze_termination(struct ST* st){
 	
 	bool changed = true;
 	
 	while(changed){
 		
-		changed = inner(st->sst, ast);
+		changed = inner(st->sst);
 	}
 }
 
-static bool inner(struct SST* sst, struct AST* ast){
+static bool inner(struct SST* sst){
 	
 	bool changed = false;
 	
-	for(int i = 0; i < sst_size(sst); i++){
+	for(uint32_t i = 0; i < sst_size(sst); i++){
 			
 		struct SSTLine* line = sst_at(sst, i);
 		
@@ -57,7 +57,7 @@ static bool inner(struct SST* sst, struct AST* ast){
 		}
 		assert(line->method != NULL);
 		
-		if(terminates_by_construction(sst, line->method->block)){
+		if(terminates_by_construction(line->method->block)){
 		
 			line->halts = HALTS_ALWAYS;
 			changed = true;
@@ -94,7 +94,7 @@ static bool all_callees_terminate(struct SST* sst, struct CC* cc){
 	return true;
 }
 
-static bool terminates_by_construction(struct SST* sst, struct StmtBlock* block){
+static bool terminates_by_construction(struct StmtBlock* block){
 	
 	//we can use a visitor to see if any
 	//potentially non-terminating statements are used
@@ -108,6 +108,8 @@ static bool terminates_by_construction(struct SST* sst, struct StmtBlock* block)
 }
 
 static void myvisitor(void* node, enum NODE_TYPE type, void* arg){
+	
+	if(node == NULL){ };
 	
 	bool* hasWhile = (bool*) arg;
 	

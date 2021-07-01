@@ -35,34 +35,40 @@ static char* ERR_PRIMITIVE =
 static char* ERR_COULD_NOT_INFER = 
 	"[Expr] Could not infer Type\n";
 
-static struct Type* infer_type_expr_primitive(struct ST* st, struct Expr2Types* e2t);
+static struct Type* infer_type_expr_primitive(char* filename, struct ST* st, struct Expr2Types* e2t);
 
-struct Type* infer_type_expr(struct ST* st, struct Expr* expr){
+struct Type* infer_type_expr(char* filename, struct ST* st, struct Expr* expr){
 
 	if(expr->term2 == NULL)
-		{ return infer_type_unopterm(st, expr->term1); }
+		{ return infer_type_unopterm(filename, st, expr->term1); }
 	
 	struct UnOpTerm* t1 = expr->term1;
 	struct UnOpTerm* t2 = expr->term2;
 	struct Op* op = expr->op;
 
-	struct Type* type1 = infer_type_unopterm(st, t1);
-	struct Type* type2 = infer_type_unopterm(st, t2);
+	struct Type* type1 = infer_type_unopterm(filename, st, t1);
+	struct Type* type2 = infer_type_unopterm(filename, st, t2);
 	
 	struct BasicTypeWrapped* btw1 = type1->m1;
 	struct BasicTypeWrapped* btw2 = type2->m1;
 	
-	if(btw1 == NULL || btw2 == NULL){ print_exit(ERR_BTW); }
+	if(btw1 == NULL || btw2 == NULL){ 
+		print_exit(filename, &(expr->super), ERR_BTW); 
+	}
 	
 	struct SimpleType* st1 = btw1->simpleType;
 	struct SimpleType* st2 = btw2->simpleType;
 	
-	if(st1 == NULL || st2 == NULL){ print_exit(ERR_ST);}
+	if(st1 == NULL || st2 == NULL){ 
+		print_exit(filename, &(expr->super), ERR_ST);
+	}
 	
 	bool p1 = st1->primitiveType != NULL;
 	bool p2 = st2->primitiveType != NULL;
 	
-	if(!p1 || !p2){ print_exit(ERR_PRIMITIVE); }
+	if(!p1 || !p2){ 
+		print_exit(filename, &(expr->super), ERR_PRIMITIVE); 
+	}
 	
 	struct Expr2Types e2t = {
 		.p1 = st1->primitiveType,
@@ -70,10 +76,10 @@ struct Type* infer_type_expr(struct ST* st, struct Expr* expr){
 		.op = op
 	};
 	
-	return infer_type_expr_primitive(st, &e2t);
+	return infer_type_expr_primitive(filename, st, &e2t);
 }
 
-static struct Type* infer_type_expr_primitive(struct ST* st, struct Expr2Types* e2t){
+static struct Type* infer_type_expr_primitive(char* filename, struct ST* st, struct Expr2Types* e2t){
 	
 	struct PrimitiveType* p1 = e2t->p1;
 	struct PrimitiveType* p2 = e2t->p2;
@@ -117,6 +123,6 @@ static struct Type* infer_type_expr_primitive(struct ST* st, struct Expr2Types* 
 	
 	
 	printf("op=%s\n", op->op);
-	print_exit(ERR_COULD_NOT_INFER);
+	print_exit(filename, &(op->super), ERR_COULD_NOT_INFER);
 	return NULL;
 }

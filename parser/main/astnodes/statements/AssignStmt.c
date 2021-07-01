@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "statements/AssignStmt.h"
 #include "expr/Expr.h"
 #include "var/Variable.h"
@@ -20,9 +22,11 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 	}
 
 	struct AssignStmt* res = make(AssignStmt);
-	res->optType = NULL;
-
 	struct TokenList* copy = list_copy(tokens);
+	
+	parse_astnode(copy, &(res->super));
+	
+	res->optType = NULL;
 
 	struct TokenList* copy2 = list_copy(copy);
 	res->optType = makeType2(copy2,debug);

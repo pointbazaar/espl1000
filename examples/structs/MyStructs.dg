@@ -6,9 +6,10 @@ struct MyStruct {
 fn main () ~> int {
 	MyStruct s = newMyStruct(); 
 
-	//s.a = 1; 
+	s.a = 1;
+	s.b = -3;
 
-	delMyStruct(s);
+	free(s);
 
 	return 0;
 }

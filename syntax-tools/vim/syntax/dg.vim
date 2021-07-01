@@ -12,6 +12,7 @@ syn region multilineComment start="/\*" end="\*/" fold
 
 syn match basicOperator /[\.\[\]+\-\~!\*\/%<>=&\^|,]/
 
+syn match annotation /@[a-z]+/
 
 syn match Braces display /({|})/
 syn match Parens /(\(|\))/

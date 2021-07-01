@@ -60,5 +60,6 @@ char* strCaseStmt(struct CaseStmt* c);
 char* strIdentifier(struct Identifier* id);
 char* strRange(struct Range* r);
 char* strStmtBlock(struct StmtBlock* block);
+char* strLambda(struct Lambda* l);
 
 #endif

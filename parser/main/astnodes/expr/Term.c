@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "Term.h"
 #include "const/CharConst.h"
 #include "const/IntConst.h"
@@ -14,6 +16,7 @@
 #include "Expr.h"
 #include "var/Variable.h"
 #include "statements/Call.h"
+#include "Lambda.h"
 
 #include "ast/util/free_ast.h"
 
@@ -31,6 +34,9 @@ void tryInitStringConst(struct Term* res, struct TokenList* copy, bool debug);
 struct Term* makeTerm_other(struct Expr* expr){
 	
 	struct Term* res = initTerm();
+	
+	res->super.line_num    = expr->super.line_num;
+	res->super.annotations = expr->super.annotations;
 
 	res->kind = 5;
 	res->ptr.m5 = expr;
@@ -47,13 +53,22 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 	if(list_size(tokens) == 0){return NULL;}
 
 	struct Term* res = initTerm();
+	
 	struct TokenList* copy = list_copy(tokens);
+	
+	parse_astnode(copy, &(res->super));
 	
 	const int tk_kind = list_head(copy)->kind;
 
 	if(tk_kind == LPARENS){
 		
-		tryInitExpr(res, copy, debug);
+		if( (res->ptr.m11 = makeLambda(copy, debug)) != NULL){
+			
+			res->kind = 11;
+		}else{
+			
+			tryInitExpr(res, copy, debug);
+		}
 		
 	}else if(tk_kind == STRINGCONST){
 		

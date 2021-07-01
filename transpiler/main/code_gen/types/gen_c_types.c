@@ -136,6 +136,8 @@ char* subrType2CType(struct SubrType* subrType, struct Ctx* ctx){
 
 char* typeParam2CType(struct TypeParam* typeParam, struct Ctx* ctx){
 	
+	if(typeParam == NULL){}
+	if(ctx       == NULL){}
 	//TODO
 	printf("[Transpiler][Error] transpileTypeParam not yet implemented!\n");
 	exit(1);
@@ -199,6 +201,7 @@ char* typeNameToCFormatStr(char* typeName){
 	|| strcmp(typeName, "uint32") == 0
 	|| strcmp(typeName, "int64") == 0
 	|| strcmp(typeName, "uint64") == 0
+	|| strcmp(typeName, "bool") == 0
 	){
 		return "%d";
 	}else if(strcmp(typeName, "char") == 0){

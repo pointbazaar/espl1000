@@ -47,6 +47,18 @@ struct Identifier* copyIdentifier(struct Identifier* id){
 	return res;
 }
 
+struct Lambda* copyLambda(struct Lambda* l){
+
+	struct Lambda* res = make(Lambda);
+	res->count_params = l->count_params;
+	for(uint8_t i = 0; i < l->count_params; i++){
+		res->params[i] = copyIdentifier(l->params[i]);
+	}
+	
+	res->expr = copyExpr(l->expr);
+	return res;
+}
+
 struct IntConst* copyIntConst(struct IntConst* ic){
 	
 	struct IntConst* res = make(IntConst);
@@ -137,6 +149,17 @@ struct Variable* copyVariable(struct Variable* var){
 	return res;
 }
 
+struct DeclArg* copyDeclArg(struct DeclArg* d){
+
+	struct DeclArg* res = make(DeclArg);
+	
+	res->type = copyType(d->type);
+	res->has_name = d->has_name;
+	strcpy(res->name, d->name);
+	
+	return res;
+}
+
 struct Op* copyOp(struct Op* op){
 	
 	struct Op* res = make(Op);
@@ -149,6 +172,108 @@ struct StringConst* copyStringConst(struct StringConst* s){
 	struct StringConst* res = make(StringConst);
 	res->value = malloc(sizeof(char)*(strlen(s->value)+1));
 	strcpy(res->value, s->value);
+	return res;
+}
+
+struct Type* copyType(struct Type* t){
+	
+	struct Type* res = make(Type);
+	res->m1 = NULL;
+	res->m2 = NULL;
+	res->m3 = NULL;
+	
+	if(t->m1 != NULL){ res->m1 = copyBasicTypeWrapped(t->m1); }
+	if(t->m2 != NULL){ res->m2 = copyTypeParam(t->m2); }
+	if(t->m3 != NULL){ res->m3 = copyArrayType(t->m3); }
+	
+	return res;
+}
+
+struct TypeParam* copyTypeParam(struct TypeParam* t){
+	
+	struct TypeParam* res = make(TypeParam);
+	
+	res->index = t->index;
+	
+	return res;
+}
+
+struct SubrType* copySubrType(struct SubrType* s){
+	
+	struct SubrType* res = make(SubrType);
+	
+	res->hasSideEffects = s->hasSideEffects;
+	res->returnType = copyType(s->returnType);
+	
+	res->count_argTypes = s->count_argTypes;
+	
+	res->argTypes = malloc(sizeof(struct Type*)*(s->count_argTypes));
+	
+	for(uint8_t i = 0; i < res->count_argTypes; i++){
+	
+		res->argTypes[i] = copyType(s->argTypes[i]);
+	}
+	
+	return res;
+}
+
+struct SimpleType* copySimpleType(struct SimpleType* s){
+	
+	struct SimpleType* res = make(SimpleType);
+	
+	res->primitiveType = NULL;
+	res->structType    = NULL;
+	
+	if(s->primitiveType != NULL){ res->primitiveType = copyPrimitiveType(s->primitiveType); }
+	if(s->structType    != NULL){ res->structType    = copyStructType(s->structType); }
+	
+	return res;
+}
+
+struct StructType* copyStructType(struct StructType* s){
+	
+	struct StructType* res = make(StructType);
+	
+	strcpy(res->typeName, s->typeName);
+	
+	res->typeParamCount = s->typeParamCount;
+	
+	res->typeParams = malloc(sizeof(uint8_t)*(s->typeParamCount));
+	
+	memcpy(res->typeParams, s->typeParams, sizeof(uint8_t)*(s->typeParamCount));
+	
+	return res;
+}
+
+struct PrimitiveType* copyPrimitiveType(struct PrimitiveType* p){
+	
+	struct PrimitiveType* res = make(PrimitiveType);
+	
+	memcpy(res, p, sizeof(struct PrimitiveType));
+	
+	return res;
+	
+}
+
+struct BasicTypeWrapped* copyBasicTypeWrapped(struct BasicTypeWrapped* b){
+
+	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
+	
+	res->simpleType = NULL;
+	res->subrType   = NULL;
+	
+	if(b->simpleType != NULL){ res->simpleType = copySimpleType(b->simpleType); }
+	if(b->subrType   != NULL){ res->subrType   = copySubrType(b->subrType); }
+	
+	return res;
+}
+
+struct ArrayType* copyArrayType(struct ArrayType* a){
+	
+	struct ArrayType* res = make(ArrayType);
+	
+	res->element_type = copyType(a->element_type);
+	
 	return res;
 }
 

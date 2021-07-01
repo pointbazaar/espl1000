@@ -21,6 +21,8 @@
 
 #define ERR_CASE_TYPE_MISMATCH "case must have same type as in switch"
 
+#define ERR_SUBR_NOT_FOUND "subroutine was not found"
+
 void error(struct TCCtx* tcctx, char* msg);
 
 struct Method* currentFn;

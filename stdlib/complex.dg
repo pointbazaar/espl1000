@@ -1,0 +1,62 @@
+
+//This file contains basic data structures and subroutines
+//for calculations with complex numbers.
+
+//I'm aware of <complex.h>
+//but want the ability to also work complex numbers 
+// a+bi where a,b are integers.
+//As fas as i know, <complex.h> only provides floating-point complex values
+
+//it would be nice to provide support for writing
+//literals like 3+2i or 2.0+3.88i and having them recognized
+//by smalldragon directly. 
+
+//It would also be great 
+//to encode a complex number into a primitive data type,
+//say a int64 could contain int32 real and imaginary part. 
+
+//because allocating every time you want a number is not nice.
+
+struct CInt {
+
+	int32 r; //real
+	int32 i; //imaginary
+}
+
+struct CFloat {
+
+	float r;
+	float i;
+}
+
+fn c_add(CInt a, CInt b) -> CInt {
+
+	CInt res = makeCInt(a.r+b.r, a.i+b.i);
+	return res;
+}
+
+fn c_sub(CInt a, CInt b) -> CInt {
+
+	CInt res = makeCInt(a.r-b.r, a.i-b.i);
+	return res;
+}
+
+fn c_mul(CInt a, CInt b) -> CInt {
+
+	//(a+bi)(c+di) = ac - bd + (ad+bc)i
+	CInt res = makeCInt(a.r*b.r - a.i*b.i, a.r*b.i + a.i*b.r);
+	return res;
+}
+
+fn c_pow(CInt a, uint power) -> CInt {
+	
+	res = makeCInt(a.r, a.i);
+	loop power-1 {
+		newres = c_mul(res, a);
+		free(res);
+		res = newres;
+	}
+	return res;
+}
+
+//TODO: add other operations

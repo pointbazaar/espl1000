@@ -14,6 +14,7 @@
 #include "ast/ast_var.h"
 #include "ast/ast_expr.h"
 #include "ast/ast_subr.h"
+#include "ast/ast_lambda.h"
 
 /* To quickly allocate Instances. Instead of 
  * x = malloc(sizeof(struct IntConst));
@@ -22,7 +23,6 @@
  * which is way shorter
  */
 #define make(X) malloc(sizeof(struct X))
-
 
 struct AST {
 	struct Namespace** namespaces;
@@ -33,9 +33,9 @@ struct Namespace {
 	//a namespace is represented by a filename.
 	//the contents of a namespace are the contents of the file
 
-	char srcPath[DEFAULT_STR_SIZE]; //the .dg filename
+	char* src_path; //the .dg filename
 	
-	char ast_filename[DEFAULT_STR_SIZE]; //the .ast filename
+	char* ast_path; //the .ast filename
 	
 	char name[DEFAULT_STR_SIZE];
 
@@ -49,11 +49,12 @@ struct Namespace {
 	size_t capacity_structs;
 };
 
-struct Range { struct Expr* start; struct Expr* end; };
+struct Range { struct ASTNode super; struct Expr* start; struct Expr* end; };
 
-struct Identifier  { char identifier[DEFAULT_STR_SIZE]; };
+struct Identifier  { struct ASTNode super; char identifier[DEFAULT_STR_SIZE]; };
 
 struct StmtBlock {
+	struct ASTNode super; 
 	uint16_t count;
 	struct Stmt** stmts;
 };

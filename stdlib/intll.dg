@@ -1,0 +1,177 @@
+
+//A simple double-linked list of integers
+
+struct IntLL {
+	
+	uint size;
+	
+	bool is_empty;
+	IntLLNode head;
+	IntLLNode tail;
+}
+
+@private
+struct IntLLNode {
+
+	int value;
+	
+	bool has_next;
+	
+	IntLLNode prev;
+	IntLLNode next;
+}
+
+fn intll_ctor() -> IntLL {
+
+	return makeIntLL(0,true, 0,0);
+}
+
+fn intll_dtor(IntLL l) -> bool {
+
+	if l.is_empty { 
+		free(l); return true;
+	}
+	
+	IntLLNode current = l.head;
+	
+	while current.has_next {
+		
+		old = current;
+		free(old);
+		
+		current = current.next;
+	}
+	
+	free(current);
+	free(l);
+	return true;
+}
+
+fn intll_push_front(IntLL l, int value) -> bool {
+
+	IntLLNode x = makeIntLLNode(value, false, 0, 0);
+	
+	if l.size == 0 {
+		
+		l.head = x;
+		l.tail = x;
+	} else {
+	
+		oldhead = l.head;
+		
+		oldhead.prev = x;
+		x.next = oldhead;
+		x.has_next = true;
+		l.head = x;
+	}
+	l.size += 1;
+	return true;
+}
+
+fn intll_push_back(IntLL l, int value) -> bool {
+
+	IntLLNode x = makeIntLLNode(value, false, 0, 0);
+	
+	if l.size == 0 {
+		
+		l.head = x;
+		l.tail = x;
+	} else {
+	
+		oldtail = l.tail;
+		
+		oldtail.next = x;
+		oldtail.has_next = true;
+		x.prev = oldtail;
+		l.tail = x;
+	}
+	l.size += 1;
+	return true;
+}
+
+fn intll_pop_front(IntLL l) -> int {
+	
+	if l.size == 0 { exit(1); return -1; }
+	
+	int val = l.head.value;
+	oldhead = l.head;
+	
+	if l.size == 1 {
+	
+		l.head = 0;
+		l.tail = 0;
+		l.is_empty = true;
+		
+	} else {
+		l.head = oldhead.next;
+	}
+	
+	free(oldhead);
+	l.size -= 1;
+	
+	return val;
+}
+
+fn intll_pop_back(IntLL l) -> int {
+
+	if l.size == 0 { exit(1); return -1; }
+	
+	int val = l.tail.value;
+	oldtail = l.tail;
+	
+	if l.size == 1 {
+	
+		l.head = 0;
+		l.tail = 0;
+		
+	} else {
+		l.tail = oldtail.prev;
+	}
+	
+	free(oldtail);
+	l.size -= 1;
+	
+	return val;
+}
+
+
+fn intll_peek_front(IntLL l) -> int {
+	
+	if l.size == 0 { exit(1); return -1; }
+	
+	return l.head.value;
+}
+
+fn intll_peek_back(IntLL l) -> int {
+
+	if l.size == 0 { exit(1); return -1; }
+	
+	return l.tail.value;
+}
+
+fn intll_contains(IntLL l, int value) -> bool {
+	
+	return intll_index_of(l, value) >= 0;
+}
+
+fn intll_index_of(IntLL l, int value) -> int {
+	
+	IntLLNode current = l.head;
+	int index = 0;
+	
+	while current.has_next {
+	
+		if current.value == value { 
+			return index;
+		}
+		
+		current = current.next;
+		index += 1;
+	}
+	
+	if current.value == value { 
+		return index;
+	}
+	
+	return -1;
+}

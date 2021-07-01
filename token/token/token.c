@@ -19,7 +19,7 @@ struct Token* makeToken2(int kind, char* value){
 		
 	strcpy(res->value_ptr, value);
 	
-	res->lineNumber = -1;
+	res->line_num = -1;
 
 	return res;
 }

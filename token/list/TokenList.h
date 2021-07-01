@@ -54,6 +54,7 @@ void list_set(struct TokenList* tknList,struct TokenList* other);
 
 struct Token* list_get(struct TokenList* tknList,int i);
 struct Token* list_head(struct TokenList* tknList);
+struct Token* list_head_without_annotations(struct TokenList* tknList);
 int list_size(struct TokenList* tknList);
 
 char* list_code(struct TokenList* tknList, bool debug);

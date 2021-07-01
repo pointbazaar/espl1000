@@ -35,7 +35,7 @@ void test_infer_type_term(bool debug){
 	term->ptr.m7 = c;
 	
 	
-	struct Type* t = infer_type_term(st, term);
+	struct Type* t = infer_type_term("test", st, term);
 
 	assert(t != NULL);
 	
@@ -66,7 +66,7 @@ void test_infer_type_unopterm(bool debug){
 	uopt->op = NULL;
 	uopt->term = term;
 
-	struct Type* t = infer_type_unopterm(st, uopt);
+	struct Type* t = infer_type_unopterm("test", st, uopt);
 
 	assert(t != NULL);
 	
@@ -104,7 +104,7 @@ void test_infer_type_expr(bool debug){
 	expr->op    = NULL;
 	expr->term2 = NULL;
 
-	struct Type* t = infer_type_expr(st, expr);
+	struct Type* t = infer_type_expr("test", st, expr);
 
 	assert(t != NULL);
 	
@@ -159,7 +159,7 @@ void test_infer_type_expr_multiple_terms(bool debug){
 	expr->op    = myop;
 	expr->term2 = uopt2;
 
-	struct Type* t = infer_type_expr(st, expr);
+	struct Type* t = infer_type_expr("test", st, expr);
 
 	assert(t != NULL);
 	

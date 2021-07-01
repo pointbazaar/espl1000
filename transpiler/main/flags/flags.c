@@ -12,6 +12,21 @@ static void make_flags_inner(struct Flags* flags, char* arg);
 
 struct Flags* makeFlags(int argc, char** argv){
 	
+	struct Flags* flags = makeFlags2();
+	
+	for(int i=1; i < argc; i++){
+		make_flags_inner(flags, argv[i]);
+	}
+	
+	if(flags->help || flags->version){ return flags; }
+	
+	validate_flags(flags);
+	
+	return flags;
+}
+
+struct Flags* makeFlags2(){
+	
 	struct Flags* flags = malloc(sizeof(struct Flags));
 	
 	flags->debug 	= false;
@@ -20,25 +35,14 @@ struct Flags* makeFlags(int argc, char** argv){
 	flags->help 	= false;
 	flags->version 	= false;
 	flags->clean 	= false;
-	flags->no_typecheck = false;
+	flags->emit_headers  = false;
 	
-	flags->count_filenames = 0;
+	flags->debug_symbols = false;
+	flags->werror        = false;
+	
+	flags->count_filenames    = 0;
 	flags->capacity_filenames = 100;
 	flags->filenames = malloc(sizeof(char*)*100);
-	
-	flags->gcc_flags = malloc(sizeof(char*)*gcc_flags_capacity);
-	flags->gcc_flags_count = 0;
-	
-	for(int i=1; i < argc; i++){
-		
-		char* arg = argv[i];
-		
-		make_flags_inner(flags, arg);
-	}
-	
-	if(argc == 0){ return flags; }
-	
-	validate_flags(flags);
 	
 	return flags;
 }
@@ -49,7 +53,6 @@ static void make_flags_inner(struct Flags* flags, char* arg){
 		
 		flags->filenames[flags->count_filenames] = arg;
 		flags->count_filenames += 1;
-		
 		return;
 	}
 	
@@ -83,25 +86,26 @@ static void make_flags_inner(struct Flags* flags, char* arg){
 		return;
 	}
 	
-	if(strcmp(arg, "-no_typecheck") == 0){
-		flags->no_typecheck = true;
+	if(strcmp(arg, "-h") == 0){
+		flags->emit_headers = true; return;
+	}
+	
+	if(strcmp(arg, "-g") == 0){
+		flags->debug_symbols = true;
 		return;
 	}
-		
-	flags->gcc_flags[flags->gcc_flags_count] = arg;
-	flags->gcc_flags_count++;
 	
-	if(flags->gcc_flags_count >= gcc_flags_capacity){
-		
-		printf("Exceeded gcc_flags_capacity!. Exiting.\n");
-		exit(1);
-	}	
-
+	if(strcmp(arg, "-Werror") == 0){
+		flags->werror = true;
+		return;
+	}
+	
+	printf("unrecognized flag: %s. Exiting.\n", arg);
+	exit(1);
 }
 
 void freeFlags(struct Flags* flags){
 	
 	free(flags->filenames);
-	free(flags->gcc_flags);
 	free(flags);
 }

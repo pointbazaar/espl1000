@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "RetStmt.h"
 #include "expr/Expr.h"
 
@@ -17,8 +19,9 @@ struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
 	}
 
 	struct RetStmt* res = make(RetStmt);
-
 	struct TokenList* copy = list_copy(tokens);
+	
+	parse_astnode(copy, &(res->super));
 
 	if(!list_expect(copy, RETURN)){
 		free(res);

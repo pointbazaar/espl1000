@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "StructMember.h"
 #include "../Identifier.h"
 #include "types/Type.h"
@@ -23,8 +25,9 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 	}
 
 	struct StructMember* res = initStructMember();
-
 	struct TokenList* copy = list_copy(tokens);
+	
+	parse_astnode(copy, &(res->super));
 
 	if((res->type = makeType2(copy, debug)) == NULL){
 		

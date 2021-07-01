@@ -75,6 +75,20 @@ void cc_add_caller(struct CC* cc, char* name){
 	}
 }
 
+//---------------------------------------------
+
+uint32_t cc_size(struct CCNode* ccnode){
+	
+	struct CCNode* current = ccnode;
+	uint32_t res = 0;
+	
+	while(current != NULL){
+		res++;
+		current = current->next;
+	}
+	return res;
+}
+
 static void add_cc_node(struct CCNode* node, char* name){
 
 	char* current = node->name;

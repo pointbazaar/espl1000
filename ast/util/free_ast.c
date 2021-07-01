@@ -10,12 +10,6 @@
 //AST structs has to also free them.
 
 void freeAST(struct AST* ast) {
-	
-	static_assert(
-		sizeof(struct AST)
-		<= sizeof(void*) + 8,
-		   ""
-	);
 
 	for(int i=0; i < ast->count_namespaces; i++) {
 		freeNamespace(ast->namespaces[i]);
@@ -26,38 +20,22 @@ void freeAST(struct AST* ast) {
 
 void freeBoolConst(struct BoolConst* bc) {
 	
-	static_assert(
-		sizeof(struct BoolConst) <= 8,
-		   ""
-	);
-	
 	free(bc);
 }
 
 void freeCharConst(struct CharConst* cc) {
 	
-	static_assert(
-		sizeof(struct CharConst) <= 8,
-		   ""
-    );
 	free(cc);
 }
 
 void freeDeclArg(struct DeclArg* da) {
 	
-	static_assert(
-		sizeof(struct DeclArg) 
-		<= sizeof(void*) + 1 + DEFAULT_STR_SIZE + 7,
-		""
-	);
 	freeType(da->type);
 	free(da);
 }
 
 
 void freeExpr(struct Expr* expr) {
-	
-	static_assert(sizeof(struct Expr) <= sizeof(void*)*3,"");
 	
 	freeUnOpTerm(expr->term1);
 	if(expr->op != NULL) {
@@ -76,14 +54,6 @@ void freeHexConst(struct HexConst* hc){ free(hc); }
 void freeBinConst(struct BinConst* hc){ free(hc); }
 
 void freeMethod(struct Method* m) {
-	
-	static_assert(
-		sizeof(struct Method) 
-		<= sizeof(void*) * 3
-		   + DEFAULT_STR_SIZE 
-		   + 8,
-		   ""
-	);
 
 	freeType(m->returnType);
 	for(int i=0; i < m->count_args; i++) {
@@ -107,17 +77,14 @@ void freeNamespace(struct Namespace* ns) {
 
 	free(ns->methods);
 	free(ns->structs);
+	
+	free(ns->src_path);
+	free(ns->ast_path);
 
 	free(ns);
 }
 
 void freeSimpleVar(struct SimpleVar* sv) {
-	
-	static_assert(
-		sizeof(struct SimpleVar) 
-		<= sizeof(void*) + 8 + DEFAULT_STR_SIZE,
-		   ""
-	);
 
 	for(int i=0;i < sv->count_indices; i++){
 		freeExpr(sv->indices[i]);
@@ -149,11 +116,6 @@ void freeStructMember(struct StructMember* sm) {
 	free(sm);
 }
 void freeTerm(struct Term* t) {
-	
-	static_assert(
-		sizeof(struct Term) <= 8 + sizeof(void*),
-		   ""
-	);
 
 	switch(t->kind){
 		case  1: freeBoolConst  (t->ptr.m1); 	break;
@@ -166,6 +128,7 @@ void freeTerm(struct Term* t) {
 		case  8: freeStringConst(t->ptr.m8); 	break;
 		case  9: freeHexConst   (t->ptr.m9); 	break;
 		case 10: freeBinConst   (t->ptr.m10); 	break;
+		case 11: freeLambda     (t->ptr.m11);   break;
 		default:
 			printf("Error in freeTerm(...)\n");
 			free(t);
@@ -193,12 +156,6 @@ void freeVariable(struct Variable* var) {
 }
 
 void freeAssignStmt(struct AssignStmt* as) {
-	
-	static_assert(
-		sizeof(struct AssignStmt) 
-		<= 8 + 3 * sizeof(void*),
-		   ""
-	);
 
 	if(as->optType != NULL) {
 		freeType(as->optType);
@@ -248,11 +205,6 @@ void freeRetStmt(struct RetStmt* rs) {
 }
 
 void freeStmt(struct Stmt* s) {
-	
-	static_assert(
-		sizeof(struct Stmt) <= 8 + sizeof(void*),
-		   ""
-	);
 
 	switch(s->kind){
 		
@@ -310,11 +262,6 @@ void freeSimpleType(struct SimpleType* st) {
 
 void freeSubrType(struct SubrType* st) {
 	
-	static_assert(
-		sizeof(struct SubrType) <= 2 * sizeof(void*) + 8,
-		   ""
-	);
-	
 	freeType(st->returnType);
 	for(int i=0; i < st->count_argTypes; i++) {
 		freeType(st->argTypes[i]);
@@ -360,6 +307,14 @@ void freeRange(struct Range* range){
 	free(range);
 }
 
+void freeLambda(struct Lambda* l){
+	for(uint8_t i = 0; i < l->count_params; i++){
+		freeIdentifier(l->params[i]);
+	}
+	freeExpr(l->expr);
+	free(l);
+}
+
 void freeForStmt(struct ForStmt* fstmt){
 	freeRange(fstmt->range);
 	freeStmtBlock(fstmt->block);
@@ -367,11 +322,6 @@ void freeForStmt(struct ForStmt* fstmt){
 }
 
 void freeSwitchStmt(struct SwitchStmt* s){
-	
-	static_assert(
-		sizeof(struct SwitchStmt) <= 3 * sizeof(void*),
-		   ""
-	);
 	
 	freeExpr(s->expr);
 	for(int i=0; i < s->count_cases; i++){

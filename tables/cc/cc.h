@@ -2,6 +2,7 @@
 #define CC_H
 
 #include <stdbool.h>
+#include <inttypes.h>
 
 struct CCNode;
 
@@ -22,7 +23,8 @@ void       free_cc(struct CC* cc);
 //--------------------------------------------
 void cc_add_callee(struct CC* cc, char* name);
 void cc_add_caller(struct CC* cc, char* name);
-
+//--------------------------------------------
+uint32_t cc_size(struct CCNode* ccnode);
 //--------------------------------------------
 struct CCNode* cc_next(struct CCNode* node); //may return NULL
 char* cc_name(struct CCNode* node);

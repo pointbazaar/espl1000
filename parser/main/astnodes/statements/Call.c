@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "parser/main/util/parse_astnode.h"
+
 #include "Call.h"
 #include "../Identifier.h"
 #include "expr/Expr.h"
@@ -16,11 +18,12 @@ struct Call* makeCall(struct TokenList* tokens,bool debug) {
 	if(list_size(tokens) < 3){ return NULL;}
 
 	struct Call* res = make(Call);
+	struct TokenList* copy = list_copy(tokens);
+	
+	parse_astnode(copy, &(res->super));
 
 	res->args = malloc(sizeof(struct Expr*)*1);
 	res->count_args = 0;
-
-	struct TokenList* copy = list_copy(tokens);
 
 	struct Identifier* id = makeIdentifier(copy,debug);
 	
