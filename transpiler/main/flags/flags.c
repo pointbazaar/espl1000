@@ -34,7 +34,6 @@ struct Flags* makeFlags2(){
 	flags->test 	= false;
 	flags->help 	= false;
 	flags->version 	= false;
-	flags->clean 	= false;
 	flags->emit_headers  = false;
 	
 	flags->debug_symbols = false;
@@ -78,11 +77,6 @@ static void make_flags_inner(struct Flags* flags, char* arg){
 	
 	if(strcmp(arg, "-version") == 0){ 
 		flags->version = true;
-		return;
-	}
-	
-	if(strcmp(arg, "-clean") == 0){ 
-		flags->clean = true;
 		return;
 	}
 	

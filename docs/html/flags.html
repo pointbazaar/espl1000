@@ -30,8 +30,6 @@
 		<li>-help</li>
 		<li><a href="#avr">-avr</a></li>
 		<li><a href="#debug">-debug</a></li>
-		<li><a href="#clean">-clean</a></li>
-		<li><a href="#dumpdot">-dumpdot</a></li>
 		<li>-version</li>
 		<li><a href="#h">-h</a></li>
 		
@@ -53,19 +51,6 @@
 
 	This flag is also propagated to 'dragon-lexer' and 'dragon-parser'
 	which are called using 'system(...)' by 'sd'.
-	</p>
-
-	<h3 id="clean"> -clean </h3>
-	<p>
-	Re-generates all Artifacts used for incremental compilation, e.g. '.X.tokens', '.X.ast' .<br>
-	This is useful if you changed the transpiler / gcc flags or are developing SmallDragon.
-	Or, if you are paranoid of incremental compilation.
-	</p>
-
-	<h3 id="dumpdot"> -dumpdot, -astdot </h3>
-	<p>
-	These flags are not yet implemented. They are intended to produce .dot files of the call graph
-	and the AST respectively, so they can be easily inspected with the graphviz package.
 	</p>
 	
 	<h3 id="h"> -h </h3>

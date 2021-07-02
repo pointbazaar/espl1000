@@ -14,8 +14,6 @@ void sd_print_help(){
 	printf(" -test      run the tests for smalldragon\n");
 	printf(" -debug     print debug statements\n");
 	printf(" -clean     re-generate all artifacts used for incremental compilation\n");
-	printf(" -dumpdot   create a .dot file with the call graph (not yet implemented)\n");
-	printf(" -astdot    create a .dot file with the AST tree (not yet implemented)\n");
 	printf(" -version   print Version Information\n");
 	printf(" -h         emit .h (header) file\n");
 	

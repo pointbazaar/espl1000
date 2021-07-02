@@ -3,8 +3,8 @@
 
 #the tests are in the same order as a 'tree examples/' would show them
 
-CALL  := sd -clean -Werror
-CALL2 := sd -clean -Werror ../stdlib/intstack.dg
+CALL  := sd -Werror
+CALL2 := sd -Werror ../stdlib/intstack.dg
 
 all: test
 

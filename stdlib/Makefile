@@ -7,7 +7,7 @@ SOURCES :=  test.dg \
 	matrix.dg
 
 test: $(SOURCES)
-	sd -clean -g $(SOURCES)
+	sd -g $(SOURCES)
 	./a.out
 
 clean:

@@ -11,7 +11,6 @@ struct Flags {
 	bool avr;
 	bool help;
 	bool version;
-	bool clean;
 	bool emit_headers; //-h
 	
 	bool debug_symbols; //-g
