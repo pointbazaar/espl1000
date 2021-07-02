@@ -36,7 +36,7 @@ fn intstack_push(IntStack s, int x) -> int {
 	if s.size >= s.capacity { exit(1); return 0; }
 	
 	s.arr[s.size] = x;
-	s.size += 1;
+	s.size++;
 	
 	return x;
 }
@@ -50,7 +50,7 @@ fn intstack_peek(IntStack s) -> int {
 fn intstack_pop(IntStack s) -> int {
 
 	res = intstack_peek(s);
-	s.size -= 1;
+	s.size--;
 	
 	return res;
 }

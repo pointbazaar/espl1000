@@ -18,7 +18,7 @@ fn ipow (int base, uint power) -> int {
 	i=0;
 	while(i<power){
 		result=result*base;
-		i=i+1;
+		i++;
 	}
 	return result;
 }

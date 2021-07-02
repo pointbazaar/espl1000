@@ -55,12 +55,12 @@ fn poly_parse([char] s) ~> Poly {
 			while 
 			s[i] != '+' && 
 			s[i] != '-' &&
-			i < (l-1) { i += 1; }
+			i < (l-1) { i++; }
 
 			if s[i] == '-' { sign = -1.0; }
 			if s[i] == '+' { sign =  1.0; }
 		}
-		i += 1;
+		i++;
 	}
 
 	return res;
@@ -87,7 +87,7 @@ fn monomial_parse_i([char] s, uint i) ~> Monomial {
 
 	//   3x^2
 
-	while i < l && s[i] == ' ' { i += 1; }
+	while i < l && s[i] == ' ' { i++; }
 
 	//3x^2
 	[char] s2 = malloc(2);
@@ -96,7 +96,7 @@ fn monomial_parse_i([char] s, uint i) ~> Monomial {
 
 		sprintf(s2, "%c%c", s[i], s[i+1]);
 		res.factor = atof(s2);
-		i += 1;
+		i++;
 	} else { res.factor = 1.0; }
 
 	if i >= l || s[i] != 'x' { 
@@ -105,11 +105,11 @@ fn monomial_parse_i([char] s, uint i) ~> Monomial {
 		return res;
 	}
 
-	i += 1; //skip x
+	i++; //skip x
 
 	if s[i] == '^' { 
 
-		i += 1; //skip ^
+		i++; //skip ^
 		sprintf(s2, "%c", s[i]);
 		res.exponent = atoi(s2);
 	} else {
@@ -124,7 +124,7 @@ fn poly_deg(Poly p) -> uint {
 	uint i = p.n - 1;
 	while i >= 0 {
 		if p.coeff[i] != 0.0 { return i; }
-		i -= 1;
+		i--;
 	}
 	return 0;
 }
@@ -191,9 +191,9 @@ fn poly_print(Poly p) -> bool {
 			if i > 0 {
 				printf("x^%d", i);
 			}
-			count_printed += 1;
+			count_printed++;
 		}
-		i -= 1;
+		i--;
 	}
 	printf("\n");
 	return true;

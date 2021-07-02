@@ -58,7 +58,7 @@ fn intset_insert(IntSet s, int x) -> int {
 	}
 	
 	s.arr[s.size] = x;
-	s.size += 1;
+	s.size++;
 
 	return x;
 }
@@ -83,7 +83,7 @@ fn intset_remove(IntSet s, int x) -> int {
 		s.arr[j] = s.arr[j+1];
 	}
 
-	s.size -= 1;
+	s.size--;
 
 	return x;
 }

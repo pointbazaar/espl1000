@@ -12,3 +12,4 @@ test: $(SOURCES)
 
 clean:
 	rm -f a.out test.c test.h
+	rm -f *.c
