@@ -39,6 +39,9 @@ void writeNamespace(struct Namespace* n){
 		error(NULL, "could not open file");
 	}
 	
+	//full buffering for performance
+	setvbuf(file, NULL, _IOFBF, BUFSIZ);
+	
 	magic_num_serialize(MAGIC_NAMESPACE, file);
 	
 	serialize_string(n->src_path, file);

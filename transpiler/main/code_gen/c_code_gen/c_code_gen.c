@@ -74,8 +74,13 @@ bool transpileAndWrite(char* c_filename, char* h_filename, struct AST* ast, stru
 	ctx->header_file = NULL;
 
 	ctx->c_file      = fopen(c_filename, "w");
+	//full buffering for performance
+	setvbuf(ctx->c_file, NULL, _IOFBF, BUFSIZ);
+	
 	if(flags->emit_headers){
 		ctx->header_file = fopen(h_filename, "w");
+		//full buffering for performance
+		setvbuf(ctx->header_file, NULL, _IOFBF, BUFSIZ);
 	}
 	
 	if(ctx->c_file == NULL || (ctx->header_file == NULL && flags->emit_headers)){

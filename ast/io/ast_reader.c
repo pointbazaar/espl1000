@@ -37,6 +37,9 @@ struct AST* readAST(char** filenames, int count_filenames, bool debug){
 			printf("%s\n", filenames[i]);
 			error(NULL, "Could not open file");
 		}
+		
+		//full buffering for performance
+		setvbuf(file, NULL, _IOFBF, BUFSIZ);
 
 		ast->namespaces[i] = readNamespace(file, debug);
 

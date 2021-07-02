@@ -41,7 +41,6 @@ void lexer_print_help(){
 	printf(" -version\n");
 	printf(" -debug\n");
 	printf(" -test\n");
-	printf(" -clean\n");
 	printf(" -help\n\n");
 
 	printf("Author: \n");
@@ -59,11 +58,10 @@ struct LexerFlags* handleArguments(int argc, char** argv){
 	
 	res->filename = NULL;
 	
-	res->debug = false;
-	res->clean = false;
-	res->test  = false;
+	res->debug   = false;
+	res->test    = false;
 	res->version = false;
-	res->help = false;
+	res->help    = false;
 	
 	for(int i=1; i < argc; i++) {
 
@@ -76,10 +74,6 @@ struct LexerFlags* handleArguments(int argc, char** argv){
 			} else if(strcmp(arg, "-test") == 0) {
 				res->test = true;
 				
-			} else if(strcmp(arg, "-clean") == 0) {
-				
-				res->clean = true;
-				
 			} else if(strcmp(arg, "-version") == 0) {
 				
 				res->version = true;
@@ -89,6 +83,11 @@ struct LexerFlags* handleArguments(int argc, char** argv){
 				lexer_print_help();
 				free(res);
 				exit(0);
+			} else {
+				
+				printf("[Lexer] unrecognized flag: %s\n", arg);
+				printf("[Lexer] exiting.\n");
+				exit(1);
 			}
 		} else {
 			res->filename = arg;
@@ -107,9 +106,6 @@ char* lexer_make_tkn_filename(char* filename, bool debug){
 	strcpy(cpy_filename_2,filename);
 
 	char* dir = dirname(cpy_filename_1);
-	if(debug) {
-		printf("in directory: %s\n",dir);
-	}
 
 	char* tkn_filename = malloc(sizeof(char)* 150);
 	

@@ -14,7 +14,7 @@
 #include "invoke.h"
 
 static int invoke_lexer (char* filename, struct Flags* flags);
-static int invoke_parser(char* filename);
+static int invoke_parser(char* filename, struct Flags* flags);
 
 bool invoke_lexer_parser(char* filename, struct Flags* flags){
 	
@@ -25,7 +25,7 @@ bool invoke_lexer_parser(char* filename, struct Flags* flags){
 		return false;
 	}
 	
-	status = invoke_parser(filename);
+	status = invoke_parser(filename, flags);
 
 	if(WEXITSTATUS(status) != 0){
 		printf("[Transpiler][Error] parser exited with nonzero exit code\n");
@@ -40,19 +40,19 @@ static int invoke_lexer(char* filename, struct Flags* flags){
 	char* cmd1 = malloc(strlen(filename)+100);
 	
 	strcpy(cmd1, "dragon-lexer ");
-	
-	if(flags->clean){ strcat(cmd1, "-clean "); }
 
 	strcat(cmd1, filename);
 
-	printf("[Transpiler] %s\n", cmd1);
+	if(flags->debug){
+		printf("[Transpiler] %s\n", cmd1);
+	}
 
 	int status = system(cmd1);
 	free(cmd1);
 	return status;
 }
 
-static int invoke_parser(char* filename){
+static int invoke_parser(char* filename, struct Flags* flags){
 	
 	char* fnamecpy = malloc(strlen(filename)+1);
 	strcpy(fnamecpy, filename);
@@ -64,7 +64,9 @@ static int invoke_parser(char* filename){
 	
 	sprintf(cmd2, "dragon-parser %s/.%s.tokens", dir_name, base_name);	
 	
-	printf("[Transpiler] %s\n", cmd2);
+	if(flags->debug){
+		printf("[Transpiler] %s\n", cmd2);
+	}
 	
 	int status = system(cmd2);
 	

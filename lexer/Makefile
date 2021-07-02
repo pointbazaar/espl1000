@@ -32,4 +32,4 @@ test: dragon-lexer
 VALGRIND_OPS := --leak-check=full --show-reachable=yes --error-exitcode=1 
 
 valgrind: dragon-lexer
-	valgrind $(VALGRIND_OPS) ./dragon-lexer -clean ../examples/other/Everything.dg
+	valgrind $(VALGRIND_OPS) ./dragon-lexer ../examples/other/Everything.dg
