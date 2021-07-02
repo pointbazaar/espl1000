@@ -2,12 +2,12 @@
 //A simple double-linked list of integers
 
 struct IntLL {
+
+	@private uint size;
 	
-	uint size;
-	
-	bool is_empty;
-	IntLLNode head;
-	IntLLNode tail;
+	@private bool is_empty;
+	@private IntLLNode head;
+	@private IntLLNode tail;
 }
 
 @private
@@ -46,6 +46,8 @@ fn intll_dtor(IntLL l) -> bool {
 	free(l);
 	return true;
 }
+
+fn intll_size(IntLL l) -> uint { return l.size; }
 
 fn intll_push_front(IntLL l, int value) -> bool {
 

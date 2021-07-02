@@ -7,6 +7,13 @@ fn main () ~> int {
 
 	subr();
 	subr_should_halt();
+
+	IntStack stack = intstack_ctor(10);
+
+	uint32 size = stack.size; //warning, size is @private 
+
+	printf("%d\n", size);
+
 	return 0;
 }
 

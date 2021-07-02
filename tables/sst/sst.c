@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <inttypes.h>
 
+#include "tables/cc/cc.h"
 #include "tables/sst/sst.h"
 #include "tables/symtable/symtable.h"
 

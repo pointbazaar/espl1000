@@ -8,9 +8,9 @@ struct ImagePPM {
 	uint width;
 	uint height;
 	
-	[uint8] data_red;
-	[uint8] data_green;
-	[uint8] data_blue;
+	@private [uint8] data_red;
+	@private [uint8] data_green;
+	@private [uint8] data_blue;
 }
 
 fn ppm_ctor(uint width, uint height) ~> ImagePPM {

@@ -39,7 +39,7 @@ struct Type* typeFromStrPrimitive(struct ST* st, char* typeName){
 	btw->subrType = NULL;
 	btw->simpleType = s;
 	
-	registerInferredType(st, res);
+	st_register_inferred_type(st, res);
 	
 	return res;
 }
@@ -69,18 +69,8 @@ struct Type* typeFromStr(struct ST* st, char* typeName){
 	btw->subrType = NULL;
 	btw->simpleType = simpleType;
 	
-	registerInferredType(st, res);
+	st_register_inferred_type(st, res);
 	
 	return res;
 }
 
-void registerInferredType(struct ST* st, struct Type* t){
-	
-	//[1]
-	if(st->inferredTypesCount >= st->inferredTypesCapacity){
-		print_exit("NO FILENAME", &(t->super), "Fatal Error (in type_str.c). too many inferred types\n");
-	}else{
-		st->inferredTypes[st->inferredTypesCount] = t;
-		st->inferredTypesCount += 1;
-	}
-}

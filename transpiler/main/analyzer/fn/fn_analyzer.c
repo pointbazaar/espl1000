@@ -1,5 +1,6 @@
 #include "ast/ast.h"
 
+#include "tables/cc/cc.h"
 #include "tables/sst/sst.h"
 #include "tables/stst/stst.h"
 #include "tables/lvst/lvst.h"

@@ -213,8 +213,8 @@ static void fill_protos(
 	struct Type* cp = makeCharPtrTypeC();
 	struct Type* fp = makeFileTypeC();
 	
-	registerInferredType(st, fp);	
-	registerInferredType(st, cp);
+	st_register_inferred_type(st, fp);	
+	st_register_inferred_type(st, cp);
 
 	for(int i=0;i < n; i++){
 		

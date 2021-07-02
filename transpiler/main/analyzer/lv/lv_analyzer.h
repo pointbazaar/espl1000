@@ -7,6 +7,9 @@
  * their types. The results are then put into the LVST
  */
 
+struct ST;
+struct Method;
+struct StmtBlock;
 
 void lvst_fill(struct Method* subr, struct ST* st, bool debug);
 

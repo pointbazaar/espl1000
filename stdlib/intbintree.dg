@@ -2,10 +2,14 @@
 
 struct IntBinTree { 
 
+	@private
 	bool has_root;
+
+	@private
 	IntBinTreeNode root; 
 }
 
+@private
 struct IntBinTreeNode {
 
 	int key;
@@ -29,6 +33,7 @@ fn intbintree_dtor(IntBinTree t) -> bool {
 	return true;
 }
 
+@private
 fn intbintreenode_dtor(IntBinTreeNode t) -> bool {
 
 	if t.has_left { intbintreenode_dtor(t.left);  }
@@ -67,6 +72,7 @@ fn intbintree_visit (IntBinTree t, ( (int)->bool ) visitor) -> bool {
 
 //---------------------------------------------------------
 
+@private
 fn intbintreenode_insert(IntBinTreeNode t, int key) -> int {
 	
 	c = t; //c urrent
@@ -98,6 +104,7 @@ fn intbintreenode_insert(IntBinTreeNode t, int key) -> int {
 	return key;
 }
 
+@private
 fn intbintreenode_contains(IntBinTreeNode t, int key) -> bool {
 
 	current = t;
@@ -120,6 +127,7 @@ fn intbintreenode_contains(IntBinTreeNode t, int key) -> bool {
 	return false;
 }
 
+@private
 fn intbintreenode_size(IntBinTreeNode t) -> uint {
 
 	res = 1;
@@ -134,6 +142,7 @@ fn intbintreenode_size(IntBinTreeNode t) -> uint {
 	return res;
 }
 
+@private
 fn intbintreenode_visit(IntBinTreeNode t, ((int)->bool) visitor) -> bool {
 	
 	if t.has_left {

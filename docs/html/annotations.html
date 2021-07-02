@@ -40,7 +40,11 @@
 		<li><strong>@deprecated</strong> - issues warning for calls to this subroutine</li>
 		<li>
 			<strong>@private</strong> 
-			- issues warning if the subroutine/struct is called/referenced directly outside it's own namespace
+			<ul>
+				<li><i>subroutines</i>: issues warning if the subroutine is called directly outside it's own namespace</li>
+				<li><i>structs</i>: issues warning if the struct is referenced directly outside it's own namespace</li>
+				<li><i>struct members</i>: issues warning if the struct member is accessed outside it's own namespace</li>
+			</ul>
 		</li>
 	</ul>
 	
@@ -48,7 +52,6 @@
 	
 	<ul>
 		<li>@public</li>
-		<li>@private (for struct members)</li>
 		<li>@noalloc</li>
 		<li>@constructor</li>
 		<li>@packed (for structures)</li>
@@ -58,6 +61,14 @@
 	
 <pre>
 	<code>
+@private
+struct A {
+	@private 
+	uint32 b;
+	
+	uint32 a;
+}
+	
 fn main () ~> int {
 	subr1();
 	subr2();

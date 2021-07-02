@@ -3,12 +3,9 @@
 
 #include <stdbool.h>
 
-//AST Includes
-#include "ast/ast.h"
+struct CC;
 
-//Table Includes
-#include "tables/cc/cc.h"
-#include "tables/symtable/symtable.h"
+#include "ast/ast_declare.h"
 
 #include "transpiler/main/analyzer/halts/halts.h"
 #include "transpiler/main/analyzer/dead/dead.h"

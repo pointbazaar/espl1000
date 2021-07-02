@@ -96,6 +96,24 @@ struct STSTLine* stst_get(struct STST* stst, char* name){
 	return NULL;
 }
 
+struct StructMember* stst_get_member(struct STST* stst, char* struct_name, char* member_name){
+	
+	struct STSTLine* line = stst_get(stst, struct_name);
+
+	for(int j=0; j < line->decl->count_members; j++){
+
+		struct StructMember* member = line->decl->members[j];
+
+		if(strcmp(member->name, member_name) == 0){ return member; }
+	}
+
+	char* msg = "[STST] could not find member '%s' of '%s'\n";
+	printf(msg, member_name, struct_name);
+	
+	stst_print(stst);
+	exit(1);
+}
+
 void freeSTST(struct STST* stst){
 	
 	for(int i=0;i < stst->count; i++)
@@ -129,25 +147,4 @@ void stst_add(struct STST* stst, struct STSTLine* line){
 
 	stst->lines[stst->count] = line;
 	stst->count += 1;
-}
-
-struct Type* stst_get_member_type(struct STST* stst, char* struct_name, char* member_name){
-		
-	struct STSTLine* line = stst_get(stst, struct_name);
-
-	for(int j=0; j < line->decl->count_members; j++){
-
-		struct StructMember* member = line->decl->members[j];
-
-		if(strcmp(member->name, member_name) == 0){
-
-			return member->type;
-		}
-	}
-
-	char* msg = "[STST] could not find type of member '%s' of '%s'\n";
-	printf(msg, member_name, struct_name);
-	
-	stst_print(stst);
-	exit(1);
 }

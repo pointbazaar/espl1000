@@ -21,8 +21,6 @@ static void lv_visitor(void* node, enum NODE_TYPE type, void* arg);
 
 void lvst_fill(struct Method* subr, struct ST* st, bool debug){
 	
-	if(debug){ printf("lvst_fill(...)\n"); }
-	
 	for(int i = 0; i < subr->count_args; i++){
 		
 		struct DeclArg* da = subr->args[i];

@@ -4,6 +4,7 @@
 #include "ast/ast.h"
 #include "ast/visitor/visitor.h"
 
+#include "tables/cc/cc.h"
 #include "tables/sst/sst.h"
 #include "tables/stst/stst.h"
 #include "tables/lvst/lvst.h"

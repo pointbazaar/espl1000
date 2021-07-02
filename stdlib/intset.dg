@@ -2,9 +2,9 @@
 // An naive implementation of a Set of Integers
 
 struct IntSet {
-	uint size;
-	uint capacity;
-	[int] arr;
+	@private uint size;
+	@private uint capacity;
+	@private [int] arr;
 }
 
 fn intset_ctor(uint capacity) -> IntSet {

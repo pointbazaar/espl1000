@@ -3,15 +3,18 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#include "analyzer/lv/lv_analyzer.h"
+#include "annotation_analyzer.h"
+#include "analyzer/halts/halts.h"
+
 #include "ast/ast.h"
 #include "ast/visitor/visitor.h"
 
 #include "tables/symtable/symtable.h"
 #include "tables/sst/sst.h"
 #include "tables/stst/stst.h"
-
-#include "annotation_analyzer.h"
-#include "analyzer/halts/halts.h"
+#include "tables/lvst/lvst.h"
+#include "tables/cc/cc.h"
 
 #include "token/TokenKeys.h"
 
@@ -22,6 +25,7 @@ static void annot_halts(struct SST* sst, struct Method* m);
 static void annot_deprecated(struct SST* sst, struct Method* m);
 static void annot_private(struct SST* sst, struct Call* call);
 static void annot_private_struct(struct STST* stst, struct StructType* t);
+static void annot_private_struct_member(struct ST* st, struct Variable* var);
 //-------------------
 
 #define COLOR_ORANGE "\033[33m"
@@ -36,6 +40,7 @@ static void print_analyzer_warning(){
 }
 
 static struct Namespace* current_namespace = NULL;
+static struct Method*    current_subr      = NULL;
 
 //------------------------------------------------------
 
@@ -56,6 +61,7 @@ static void myvisitor_annotations(void* node, enum NODE_TYPE type, void* arg){
 	if(type == NODE_METHOD){ 
 		
 		struct Method* m = (struct Method*) node;
+		current_subr = m;
 		
 		annot_halts(mysst, m);
 		annot_deprecated(mysst, m);
@@ -68,6 +74,10 @@ static void myvisitor_annotations(void* node, enum NODE_TYPE type, void* arg){
 	
 	if(type == NODE_CALL){
 		annot_private(mysst, (struct Call*) node);
+	}
+	
+	if(type == NODE_VARIABLE){
+		annot_private_struct_member(st, (struct Variable*)node);
 	}
 }
 
@@ -88,6 +98,57 @@ static void annot_private_struct(struct STST* stst, struct StructType* t){
 			
 			printf(" struct %s has @private Annotation in %s, but was referenced in %s\n", tname, line->_namespace, current_namespace->name);
 		}
+	}
+}
+
+static void annot_private_struct_member(struct ST* st, struct Variable* var){
+	
+	struct STST* stst = st->stst;
+	struct LVST* lvst = st->lvst;
+	
+	//check @private struct member access
+	if(var->memberAccess == NULL){ return; }
+		
+	struct Variable* member = var->memberAccess;
+	
+	lvst_clear(st->lvst);
+	lvst_fill(current_subr, st, false);
+	
+	//is it a local variable or are we already
+	//down the member access chain? 
+	//(would cause failure to find in lvst)
+	if(!lvst_contains(lvst, var->simpleVar->name)){ return; }
+	
+	//get the type of struct being accessed
+	struct LVSTLine* line = lvst_get(lvst, var->simpleVar->name);
+	
+	if(line->type->m1 == NULL){ return; }
+	struct BasicTypeWrapped* btw = line->type->m1;
+	if(btw->simpleType == NULL){ return; }
+	if(btw->simpleType->structType == NULL){ return; }
+	
+	struct StructType* stype = btw->simpleType->structType;
+	
+	char* struct_name = stype->typeName;
+	char* member_name = member->simpleVar->name;
+	
+	//get info about the struct member
+	struct STSTLine* line2 = stst_get(stst, struct_name);
+	
+	struct StructMember* memberDecl = stst_get_member(stst, struct_name, member_name);
+	
+	if(has_annotation(memberDecl->super.annotations, ANNOT_PRIVATE)){
+		
+		if(strcmp(line2->_namespace, current_namespace->name) == 0){ return; }
+		
+		print_analyzer_warning();			
+		printf(
+			" member %s of struct %s has @private Annotation in %s, ",
+			member_name, 
+			struct_name, 
+			line2->_namespace
+		);
+		printf("but was referenced in %s\n",  current_namespace->name);
 	}
 }
 

@@ -2,9 +2,9 @@
 //This Stack is not growable.
 
 struct IntStack {
-	uint32 size;
-	uint32 capacity;
-	[int] arr;
+	@private uint32 size;
+	@private uint32 capacity;
+	@private [int] arr;
 }
 
 fn intstack_ctor(uint capacity) -> IntStack {

@@ -40,7 +40,7 @@ static struct Type* infer_in_context(char* filename, struct ST* st, struct Membe
 	char* structName = structType->m1->simpleType->structType->typeName;
 	char* memberName = member->simpleVar->name;
 	
-	struct Type* memberType = stst_get_member_type(st->stst, structName, memberName);
+	struct Type* memberType = stst_get_member(st->stst, structName, memberName)->type;
 	
 	memberType = unwrap_indices(filename, memberType, member->simpleVar->count_indices);
 	

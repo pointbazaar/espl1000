@@ -13,13 +13,13 @@ struct ST* makeST(){
 
 	struct ST* st = make(ST);
 	
-	st->inferredTypesCapacity = 500;
-	st->inferredTypesCount    = 0;
+	st->inferred_types_capacity = 100;
+	st->inferred_types_count    = 0;
 	
-	const int nbytes = 
-		sizeof(struct Type*) * st->inferredTypesCapacity;
+	const uint32_t nbytes = 
+		sizeof(struct Type*) * st->inferred_types_capacity;
 	
-	st->inferredTypes = malloc(nbytes);
+	st->inferred_types = malloc(nbytes);
 	
 	st->sst  = makeSST();
 	st->stst = makeSTST();
@@ -32,14 +32,29 @@ struct ST* makeST(){
 
 void freeST(struct ST* st){
 
-	if(st->sst  != NULL) { freeSST(st->sst);   }
+	if(st->sst  != NULL) { freeSST (st->sst);  }
 	if(st->lvst != NULL) { freeLVST(st->lvst); }
 	if(st->stst != NULL) { freeSTST(st->stst); }
 
-	for(int i = 0; i < st->inferredTypesCount; i++)
-		{ freeType(st->inferredTypes[i]); }
+	for(int i = 0; i < st->inferred_types_count; i++)
+		{ freeType(st->inferred_types[i]); }
 		
-	free(st->inferredTypes);
+	free(st->inferred_types);
 	
 	free(st);
+}
+
+void st_register_inferred_type(struct ST* st, struct Type* t){
+	
+	if(st->inferred_types_count >= st->inferred_types_capacity){
+		
+		//increase capacity
+		st->inferred_types_capacity *= 2;
+		
+		uint64_t nbytes = (st->inferred_types_capacity)*sizeof(struct Type*);
+		st->inferred_types = realloc(st->inferred_types, nbytes);
+	}
+	
+	st->inferred_types[st->inferred_types_count] = t;
+	st->inferred_types_count += 1;
 }

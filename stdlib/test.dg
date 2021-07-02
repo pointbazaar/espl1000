@@ -163,7 +163,7 @@ fn test_intll() -> int {
 	
 	intll_push_back(ll, 3); //[3]
 	
-	assert(ll.size == 1);
+	assert(intll_size(ll) == 1);
 	
 	assert(intll_peek_front(ll) == 3);
 	assert(intll_peek_back(ll) == 3);
@@ -174,11 +174,11 @@ fn test_intll() -> int {
 	
 	assert(intll_pop_front(ll) == 5); //[3]
 	
-	assert(ll.size == 1);
+	assert(intll_size(ll) == 1);
 	
 	intll_pop_back(ll); //[]
 	
-	assert(ll.size == 0);
+	assert(intll_size(ll) == 0);
 	
 	intll_dtor(ll);
 
