@@ -14,7 +14,7 @@ fn main () ~> int {
 		ppm_pixel_write(image, i, 5, 255, 255, 255); //while
 	}
 
-	ppm_write("myimage.ppm", image);
+	ppm_write(image, "myimage.ppm");
 	
 	ppm_dtor(image);
 

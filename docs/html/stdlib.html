@@ -429,7 +429,7 @@
 			<td>ppm_pixel_read_blue</td><td>(ImagePPM image, uint row, uint col) -> uint8</td><td>O(1)</td><td>O(1)</td><td> - </td><td>out of bounds</td>
 		</tr>
 		<tr>
-			<td>ppm_write</td><td>(String filename, ImagePPM image) ~> bool</td><td>O(width*height)</td><td>O(1)</td><td> - </td><td>File not found</td>
+			<td>ppm_write</td><td>(ImagePPM image, String filename) ~> bool</td><td>O(width*height)</td><td>O(1)</td><td> - </td><td>File not found</td>
 		</tr>
 		<tr>
 			<td>ppm_read</td><td>(String filename) ~> ImagePPM</td><td>O(width*height)</td><td>O(1)</td><td>+O(width*height)</td><td>File not found, corrupted</td>

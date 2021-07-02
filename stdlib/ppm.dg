@@ -96,7 +96,7 @@ fn ppm_read(String filename) ~> ImagePPM {
 	return resimg;
 }
 
-fn ppm_write(String filename, ImagePPM image) ~> bool {
+fn ppm_write(ImagePPM image, String filename) ~> bool {
 
 	uint width  = image.width;
 	uint height = image.height;
