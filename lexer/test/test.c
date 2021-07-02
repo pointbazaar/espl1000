@@ -92,6 +92,9 @@ int test_all(bool debug1) {
 
 	int pass  = 0;
 	int count = 0;
+	
+	test_plus_plus_minus_minus();
+	pass++; count++;
 
 	pass+=test_can_see_line_with_semicolon();
 	pass+=test_can_see_line_with_operators();
@@ -196,6 +199,25 @@ int test_all(bool debug1) {
 	return (pass == count)?0:1;
 }
 
+void test_plus_plus_minus_minus(){
+	
+	char* str = "Char ++ -- ";
+	//should expand: "Char += 1 -= 1"
+	struct Token** tokens = lex(str, debug);
+
+	assert(tokens[0]->kind == TYPEID);
+	assert(tokens[1]->kind == ASSIGNOP);
+	assert(tokens[2]->kind == INTEGER);
+	assert(tokens[3]->kind == ASSIGNOP);
+	assert(tokens[4]->kind == INTEGER);
+
+	assert(strcmp(tokens[1]->value_ptr,"+=")==0);
+	assert(strcmp(tokens[2]->value_ptr,"1")==0);
+	assert(strcmp(tokens[3]->value_ptr,"-=")==0);
+	assert(strcmp(tokens[4]->value_ptr,"1")==0);
+
+	freeTokens(tokens, 5);
+}
 
 bool test_can_see_line_with_semicolon() {
 
@@ -1507,7 +1529,7 @@ bool test_assign_operators(){
 	
 	if(debug) { printf("test_assign_operators\n"); }
 
-	char* str = "= += -= *= /=  >>= <<= &= |= ";
+	char* str = "= += -= *= /=  >>= <<= &= |= %=";
 	struct Token** tokens = 
 		lex(str, debug);
 	
@@ -1540,8 +1562,12 @@ bool test_assign_operators(){
 	
 	assert(tokens[8]->kind==ASSIGNOP);
 	assert(strcmp(tokens[8]->value_ptr, "|=") == 0);
+	
+	//modulo equals
+	assert(tokens[9]->kind==ASSIGNOP);
+	assert(strcmp(tokens[9]->value_ptr, "%=") == 0);
 
-	freeTokens(tokens, 9);
+	freeTokens(tokens, 10);
 	return true;
 }
 

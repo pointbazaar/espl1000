@@ -15,10 +15,6 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2);
 static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_num, bool debug);
 
 struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool debug){
-
-	if(debug){
-		printf("readTokensFromTokensFile(%s, %d)\n", tokensFile, debug);
-	}
 	
 	struct TokenList* tks = makeTokenList();
 	strcpy(tks->relPath, tokensFile);
@@ -47,11 +43,6 @@ struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool de
     		break;
     	}
     }
-
-	if(debug) {
-		printf("read was successful\n");
-		printf("done recognizing %d tokens\n", list_size(tks));
-	}
 	
 	free(line);
 

@@ -9,6 +9,8 @@
 #include "driver.h"
 #include "lexer_flags.h"
 
+#include "../../token/TokenKeys.h" 
+
 FILE* outFile;
 
 void out(int id, char* str){
@@ -17,6 +19,16 @@ void out(int id, char* str){
 
 void out2(int id, int id2){
 	fprintf(outFile, "%d %d\n", id, id2);
+}
+
+void out_plus_plus(){
+	out(ASSIGNOP, "+=");
+	out(INTEGER, "1");
+}
+
+void out_minus_minus(){
+	out(ASSIGNOP, "-=");
+	out(INTEGER, "1");
 }
 
 void lexer_print_help(){

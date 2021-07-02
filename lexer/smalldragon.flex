@@ -92,7 +92,7 @@ false			out(BCONST_FALSE, yytext);
 "."		out(STRUCTMEMBERACCESS, yytext);
 
 =					out(ASSIGNOP, yytext);
-\+=|-=|\*=|\/=		out(ASSIGNOP, yytext);
+\+=|-=|\*=|\/=|\%=	out(ASSIGNOP, yytext);
 &=|\|=				out(ASSIGNOP, yytext);
 "<<="				out(ASSIGNOP, yytext);
 ">>="				out(ASSIGNOP, yytext);
@@ -100,6 +100,9 @@ false			out(BCONST_FALSE, yytext);
 "<<"				out(OPKEY_BITWISE, yytext);
 ">>"				out(OPKEY_BITWISE, yytext);
 (~|\^|\||\&)		out(OPKEY_BITWISE, yytext);
+
+\+\+				out_plus_plus(ASSIGNOP, INTEGER);
+\-\-				out_minus_minus(ASSIGNOP, INTEGER);
 
 (\+|\-|\*|\/|%)		out(OPKEY_ARITHMETIC, yytext);
 
@@ -152,6 +155,9 @@ int main(int argc, char* argv[]){
 	//configure output file
 	//NECESSARY (for FLEX)
 	outFile = fopen(buffer, "w");
+	
+	//full buffering for better performance
+	setvbuf(outFile, NULL, _IOFBF, BUFSIZ);
 	
 	yylex();
 	

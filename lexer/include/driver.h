@@ -10,6 +10,9 @@ void out(int id, char* str);
 
 void out2(int id, int id2);
 
+void out_plus_plus();
+void out_minus_minus();
+
 void lexer_print_help();
 
 struct LexerFlags* handleArguments(int argc, char** argv);
