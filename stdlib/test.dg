@@ -86,8 +86,11 @@ fn test_matrix() -> int {
 
 fn test_polynomial() -> int {
 
-	Poly a = poly_ctor_3(3,2,1); //3x^2 + 2x + 1
-	Poly b = poly_ctor_2(4,5); //4x + 5
+	Poly a = poly_parse("3x^2 + 2x + 1");
+	Poly b = poly_parse("4x + 5");
+	
+	Poly p1 = poly_parse("33.1x^4 + 4");
+	poly_dtor(p1);
 	
 	Poly c = poly_add(a,b);
 	

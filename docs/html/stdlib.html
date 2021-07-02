@@ -322,6 +322,12 @@
 			<td>poly_dtor</td><td>(Poly p) -> bool</td><td>O(1)</td><td>O(1)</td><td>-O(n)</td><td>Double Free</td>
 		</tr>
 		<tr>
+			<td>poly_parse</td><td>([char] str) -> Poly</td><td> ? </td><td> ? </td><td>+O(n)</td><td>OOM, segfault</td>
+		</tr>
+		<tr>
+			<td>poly_scale_inplace</td><td>(Poly a, float f) -> Poly</td><td>O(n)</td><td>O(1)</td><td> - </td><td> - </td>
+		</tr>
+		<tr>
 			<td>poly_add</td><td>(Poly a, Poly b) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 		<tr>

@@ -4,39 +4,120 @@
 
 struct Poly {
 	[float] coeff;
+
+	@private
 	uint16 n;
+}
+
+@private
+struct Monomial {
+	float factor;
+	uint16 exponent;
 }
 
 fn poly_ctor(uint n) -> Poly{
 	res = makePoly(0,0);
 	res.n = n;
-	res.coeff = malloc(8*n);
+	res.coeff = malloc(2*n);
+	for i in 0 .. (n-1) { res.coeff[i] = 0.0; }
 	return res;
 }
-
-fn poly_ctor_5(float a4, float a3, float a2, float a1, float a0) -> Poly {
-
-	res = poly_ctor(5);
-	res.coeff[0] = a0;
-	res.coeff[1] = a1;
-	res.coeff[2] = a2;
-	res.coeff[3] = a3;
-	res.coeff[4] = a4;
-	return res;
-}
-fn poly_ctor_4(float a3, float a2, float a1, float a0) -> Poly {
-	return poly_ctor_5(0,a3,a2,a1,a0);
-}
-fn poly_ctor_3(float a2, float a1, float a0) -> Poly { 
-	return poly_ctor_4(0,a2,a1,a0); 
-}
-fn poly_ctor_2(float a1, float a0) -> Poly { return poly_ctor_3(0,a1,a0); }
-fn poly_ctor_1(float a0) -> Poly { return poly_ctor_2(0,a0); }
 
 fn poly_dtor(Poly p) -> bool {
 	free(p.coeff);
 	free(p);
 	return true;
+}
+
+fn poly_parse([char] s) ~> Poly {
+	//exponents must not be decreasing
+	//exponents may repeat
+	//+/- between terms is important
+	//"3x^3 +  2x -1" -> Poly instance
+	l = strlen(s);
+	Poly res = poly_ctor(1);
+
+	i = 0;
+	sign = 1.0;
+	while i < l {
+	
+		if s[i] != ' ' {
+
+			m   = monomial_parse_i(s, i);
+			p   = monomial_to_poly(m);
+			poly_scale_inplace(p, sign);
+			old = res;
+			res = poly_add(res, p);
+			poly_dtor(old);
+			poly_dtor(p);
+			free(m);
+
+			while 
+			s[i] != '+' && 
+			s[i] != '-' &&
+			i < (l-1) { i += 1; }
+
+			if s[i] == '-' { sign = -1.0; }
+			if s[i] == '+' { sign =  1.0; }
+		}
+		i += 1;
+	}
+
+	return res;
+}
+
+@private 
+fn monomial_to_poly(Monomial m) ~> Poly {
+	res = poly_ctor(m.exponent+1);
+	res.coeff[m.exponent] = m.factor;
+	return res;
+}
+
+@private
+fn monomial_parse([char] s) ~> Monomial {
+	return monomial_parse_i(s, 0);
+}
+
+@private
+fn monomial_parse_i([char] s, uint i) ~> Monomial {
+
+	Monomial res = makeMonomial(0.0,0);
+
+	l = strlen(s);
+
+	//   3x^2
+
+	while i < l && s[i] == ' ' { i += 1; }
+
+	//3x^2
+	[char] s2 = malloc(2);
+
+	if s[i] != 'x' {
+
+		sprintf(s2, "%c%c", s[i], s[i+1]);
+		res.factor = atof(s2);
+		i += 1;
+	} else { res.factor = 1.0; }
+
+	if i >= l || s[i] != 'x' { 
+		res.exponent = 0;
+		free(s2);
+		return res;
+	}
+
+	i += 1; //skip x
+
+	if s[i] == '^' { 
+
+		i += 1; //skip ^
+		sprintf(s2, "%c", s[i]);
+		res.exponent = atoi(s2);
+	} else {
+		res.exponent = 1;
+	}
+
+	free(s2);
+	return res;
 }
 
 fn poly_deg(Poly p) -> uint {
@@ -46,6 +127,12 @@ fn poly_deg(Poly p) -> uint {
 		i -= 1;
 	}
 	return 0;
+}
+
+fn poly_scale_inplace(Poly a, float f) -> Poly {
+	
+	for i in 0 .. (a.n-1) { a.coeff[i] *= f; }
+	return a;
 }
 
 fn poly_add(Poly a, Poly b) -> Poly {
@@ -97,9 +184,10 @@ fn poly_print(Poly p) -> bool {
 		
 		if c != 0 {
 			if count_printed > 0 {
-				printf(" + ");
+				if c >= 0 { printf(" + "); }
+				else { printf(" - "); }
 			}
-			printf("%f", c);
+			printf("%f", fabs(c));
 			if i > 0 {
 				printf("x^%d", i);
 			}
