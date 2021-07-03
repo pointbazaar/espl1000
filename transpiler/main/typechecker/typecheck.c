@@ -22,8 +22,6 @@
 #include "typecheck_errors.h"
 #include "tcctx.h"
 
-//-----------------------------------------------------
-
 bool typecheck_ast(struct AST* ast, struct ST* st){
 
 	struct TCCtx tcctx;

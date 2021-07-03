@@ -37,7 +37,6 @@ bool is_char_type(struct Type* type){
 	if(!is_primitive_type(type)){ return false; }
 	
 	return type->m1->simpleType->primitiveType->isCharType;
-
 }
 
 bool is_malloc(struct Expr* expr){

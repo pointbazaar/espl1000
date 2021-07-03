@@ -1,4 +1,3 @@
-#include <assert.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -44,7 +43,7 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 			strcat(msg, ERR_SUBR_NOT_FOUND);
 			error(tcctx, msg);
 		}
-		assert(line->method != NULL);
+		
 		struct Method* method = line->method;
 		expect_args = method->count_args;
 		
