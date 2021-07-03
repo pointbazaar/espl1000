@@ -3,8 +3,6 @@
 
 void tc_stmt(struct Stmt* s, struct TCCtx* tcctx);
 
-void tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx);
-void tc_methodcall(struct Call* m, struct TCCtx* tcctx);
 void tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx);
 void tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx);
 void tc_loopstmt(struct LoopStmt* l, struct TCCtx* tcctx);
