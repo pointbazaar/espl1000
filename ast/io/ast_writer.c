@@ -467,7 +467,7 @@ void writeType(struct Type* m, FILE* file){
 	write_super(m);
 	if(m->m1 != NULL){
 		serialize_int(1, file);
-		writeBasicTypeWrapped(m->m1,file);
+		writeBasicType(m->m1,file);
 
 	}else if(m->m2 != NULL){
 		serialize_int(2, file);
@@ -499,9 +499,9 @@ void writeTypeParam(struct TypeParam* m, FILE* file){
 	magic_num_serialize(MAGIC_END_TYPEPARAM, file);
 }
 
-void writeBasicTypeWrapped(struct BasicTypeWrapped* m, FILE* file){
+void writeBasicType(struct BasicType* m, FILE* file){
 
-	magic_num_serialize(MAGIC_BASICTYPEWRAPPED, file);
+	magic_num_serialize(MAGIC_BASICTYPE, file);
 	write_super(m);
 	if(m->simpleType != NULL){ 
 		
@@ -515,7 +515,7 @@ void writeBasicTypeWrapped(struct BasicTypeWrapped* m, FILE* file){
 		
 	}
 	
-	magic_num_serialize(MAGIC_END_BASICTYPEWRAPPED, file);
+	magic_num_serialize(MAGIC_END_BASICTYPE, file);
 }
 
 void writeStructType(struct StructType* m, FILE* file){

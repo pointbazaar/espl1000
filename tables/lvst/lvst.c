@@ -72,9 +72,6 @@ void freeLVSTLine(struct LVSTLine* l){
 
 void lvst_add(struct LVST* lvst, struct LVSTLine* line){
 	
-	//the local var symbol table works as a set
-	//with 'name' as the key
-	
 	for(int i = 0; i < lvst->count; i++){
 		
 		struct LVSTLine* current_line = lvst->lines[i];
@@ -88,10 +85,8 @@ void lvst_add(struct LVST* lvst, struct LVSTLine* line){
 		}
 	}
 	
-	//add the line
 	if(lvst->count >= lvst->capacity){
 		
-		//resize the lvst
 		lvst->capacity *= 2;
 		
 		const int nbytes = 
@@ -114,8 +109,7 @@ struct LVSTLine* lvst_get(struct LVST* lvst, char* name){
 			{ return line; }
 	}
 	
-	printf("%s not found in localvarsymtable\n", name);
-	printf("[Tables][Error]");
+	printf("[LVST][Error] %s not found in LVST\n", name);
 	exit(1);
 	return NULL;
 }
@@ -138,7 +132,7 @@ void lvst_print(struct LVST* lvst){
 	char* linebig = "------------------------";
 	char* line5  = "-----";
 	
-	printf("Local Variable Symbol Table (LVST)\n");
+	printf("Local Variable Symbol Table [LVST]\n");
 	printf(fmt, "name", "isArg", "Type");
 	printf(fmt, linebig, line5, linebig);
 	for(int i = 0; i < lvst->count; i++){

@@ -38,7 +38,7 @@ struct SubrType*         copySubrType(struct SubrType* s);
 struct SimpleType*       copySimpleType(struct SimpleType* s);
 struct StructType*       copyStructType(struct StructType* s);
 struct PrimitiveType*    copyPrimitiveType(struct PrimitiveType* p);
-struct BasicTypeWrapped* copyBasicTypeWrapped(struct BasicTypeWrapped* b);
+struct BasicType*        copyBasicType(struct BasicType* b);
 struct ArrayType*        copyArrayType(struct ArrayType* a);
 
 //expr

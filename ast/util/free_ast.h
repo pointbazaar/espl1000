@@ -62,7 +62,7 @@ void freeCaseStmt(struct CaseStmt* cstmt);
 
 //types
 void freeArrayType(struct ArrayType* at);
-void freeBasicTypeWrapped(struct BasicTypeWrapped* btw);
+void freeBasicType(struct BasicType* btw);
 void freeSimpleType(struct SimpleType* st);
 void freeSubrType(struct SubrType* st);
 void freeType(struct Type* t);

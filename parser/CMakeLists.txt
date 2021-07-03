@@ -50,8 +50,7 @@ add_executable(${PROJECT_NAME}
 	main/astnodes/subr/Method.c
 	
 	main/astnodes/types/ArrayType.c
-	main/astnodes/types/BasicTypeWrapped.c
-	main/astnodes/types/BasicTypeWrapped.c
+	main/astnodes/types/BasicType.c
 	main/astnodes/types/PrimitiveType.c
 	main/astnodes/types/SimpleType.c
 	main/astnodes/types/StructType.c
@@ -92,7 +91,7 @@ add_executable(${PROJECT_NAME}
 	test/astnodes/struct/StructMemberTest.c
 	test/astnodes/subr/DeclArgTest.c
 	test/astnodes/subr/MethodTest.c
-	test/astnodes/types/BasicTypeWrappedTest.c
+	test/astnodes/types/BasicTypeTest.c
 	test/astnodes/types/SimpleTypeTest.c
 	test/astnodes/types/SubrTypeTest.c
 	test/astnodes/var/SimpleVarTest.c

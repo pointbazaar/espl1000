@@ -22,7 +22,7 @@ bool eq_structtype(struct StructType* a, struct StructType* b);
 
 bool eq_primitivetype(struct PrimitiveType* a, struct PrimitiveType* b);
 
-bool eq_basictypewrapped(struct BasicTypeWrapped* a, struct BasicTypeWrapped* b);
+bool eq_basictype(struct BasicType* a, struct BasicType* b);
 
 bool eq_arraytype(struct ArrayType* a, struct ArrayType* b);
 

@@ -7,7 +7,7 @@
 #include "Type.h"
 #include "ArrayType.h"
 #include "TypeParam.h"
-#include "BasicTypeWrapped.h"
+#include "BasicType.h"
 
 #include "ast/util/free_ast.h"
 
@@ -15,7 +15,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct Type* makeType_1(struct BasicTypeWrapped* typeNode){
+struct Type* makeType_1(struct BasicType* typeNode){
 
 	struct Type* res = make(Type);
 	
@@ -75,7 +75,7 @@ struct Type* makeType2(struct TokenList* tokens, bool debug){
 	res->m2     = makeTypeParam(copy,debug);
 	if(res->m2 != NULL) { goto end; }
 	
-	res->m1     = makeBasicTypeWrapped2(copy,debug);
+	res->m1     = makeBasicType2(copy,debug);
 	if(res->m1 != NULL){ goto end; }
 	
 	//nothing matched

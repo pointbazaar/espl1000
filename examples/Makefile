@@ -15,9 +15,8 @@ test:
 	$(CALL) chars/Chars.dg
 	$(CALL) cmd-args/CmdArgs.dg
 	$(CALL) floats/Floats.dg
-	$(CALL) for_atmel/LoopAdd1.dg 
-	$(CALL) for_atmel/Main.dg 
 	$(CALL) functional/Filter.dg 
+	$(CALL) functional/Twice.dg
 	$(CALL) ifstatement/IfStatement.dg 
 	$(CALL) input/Input.dg 
 	$(CALL) local_variables/Locals.dg 
@@ -37,12 +36,11 @@ test:
 	$(CALL) plotting/plotting.dg
 	$(CALL) lambda.dg
 	$(CALL2) annotations.dg
+	$(CALL) typeinference/LocalVarTypeInference.dg
 	@echo "[Examples] done"
 
 # currently not working: 
-# - functional/Twice.dg
 # - generics/genericstruct.dg
-# - typeinference/LocalVarTypeInference.dg
 
 clean:
 	rm -f */*.tokens

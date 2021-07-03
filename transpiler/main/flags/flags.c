@@ -30,7 +30,6 @@ struct Flags* makeFlags2(){
 	struct Flags* flags = malloc(sizeof(struct Flags));
 	
 	flags->debug 	= false;
-	flags->avr		= false;
 	flags->test 	= false;
 	flags->help 	= false;
 	flags->version 	= false;
@@ -62,11 +61,6 @@ static void make_flags_inner(struct Flags* flags, char* arg){
 	
 	if(strcmp(arg, "-test") == 0){ 
 		flags->test = true;
-		return;
-	}
-	
-	if(strcmp(arg, "-avr") == 0){ 
-		flags->avr = true;
 		return;
 	}
 	

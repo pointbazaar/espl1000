@@ -4,7 +4,7 @@
 
 #include "parser/main/util/parse_astnode.h"
 
-#include "BasicTypeWrapped.h"
+#include "BasicType.h"
 #include "SubrType.h"
 #include "SimpleType.h"
 
@@ -14,9 +14,9 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct BasicTypeWrapped* makeBasicTypeWrappedSimple(struct SimpleType* typeNode) {
+struct BasicType* makeBasicTypeSimple(struct SimpleType* typeNode) {
 
-	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
+	struct BasicType* res = make(BasicType);
 	
 	res->super.line_num    = typeNode->super.line_num;
 	res->super.annotations = 0;
@@ -27,22 +27,22 @@ struct BasicTypeWrapped* makeBasicTypeWrappedSimple(struct SimpleType* typeNode)
 	return res;
 }
 
-struct BasicTypeWrapped* makeBasicTypeWrappedSubr(struct SubrType* typeNode) {
+struct BasicType* makeBasicTypeSubr(struct SubrType* typeNode) {
 
-	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
+	struct BasicType* res = make(BasicType);
 
 	res->super.line_num    = typeNode->super.line_num;
 	res->super.annotations = 0;
 	
 	res->simpleType = NULL;
-	res->subrType = typeNode;
+	res->subrType   = typeNode;
 
 	return res;
 }
 
-struct BasicTypeWrapped* makeBasicTypeWrapped2(struct TokenList* tokens, bool debug) {
+struct BasicType* makeBasicType2(struct TokenList* tokens, bool debug) {
 
-	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
+	struct BasicType* res = make(BasicType);
 	struct TokenList* copy = list_copy(tokens);
 	
 	parse_astnode(copy, &(res->super));

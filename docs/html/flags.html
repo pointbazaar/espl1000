@@ -28,7 +28,6 @@
 	
 	<ul>
 		<li>-help</li>
-		<li><a href="#avr">-avr</a></li>
 		<li><a href="#debug">-debug</a></li>
 		<li>-version</li>
 		<li><a href="#h">-h</a></li>
@@ -37,20 +36,11 @@
 		<li><a href="#werror">-Werror</a></li>
 	</ul>
 
-	<h3 id="avr"> -avr </h3>
-	<p>
-	Uses 'avr-gcc' and 'avr-objcopy' to generate a 'main.hex' file 
-	which can be flashed onto some Microcontrollers or debugged/executed
-	by AVR Simulators and Debuggers like 
-	<a href="https://github.com/Milo-D/MDX-Assembly-Debugger">mdx</a>.
-	</p>
-
 	<h3 id="debug"> -debug </h3>
 	<p>
 	Prints Debug Statements during the execution of 'sd'. 
-
-	This flag is also propagated to 'dragon-lexer' and 'dragon-parser'
-	which are called using 'system(...)' by 'sd'.
+	<br>
+	This flag is also propagated to 'dragon-lexer' and 'dragon-parser'.
 	</p>
 	
 	<h3 id="h"> -h </h3>

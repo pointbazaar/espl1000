@@ -237,7 +237,7 @@ void freeArrayType(struct ArrayType* at) {
 	free(at);
 }
 
-void freeBasicTypeWrapped(struct BasicTypeWrapped* btw) {
+void freeBasicType(struct BasicType* btw) {
 
 	if(btw->simpleType != NULL) {
 		freeSimpleType(btw->simpleType);
@@ -273,7 +273,7 @@ void freeSubrType(struct SubrType* st) {
 void freeType(struct Type* t) {
 
 	if(t->m1 != NULL) {
-		freeBasicTypeWrapped(t->m1);
+		freeBasicType(t->m1);
 	} else if(t->m2 != NULL) {
 		freeTypeParam(t->m2);
 	} else if(t->m3 != NULL) {

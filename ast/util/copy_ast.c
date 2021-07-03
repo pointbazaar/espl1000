@@ -182,7 +182,7 @@ struct Type* copyType(struct Type* t){
 	res->m2 = NULL;
 	res->m3 = NULL;
 	
-	if(t->m1 != NULL){ res->m1 = copyBasicTypeWrapped(t->m1); }
+	if(t->m1 != NULL){ res->m1 = copyBasicType(t->m1); }
 	if(t->m2 != NULL){ res->m2 = copyTypeParam(t->m2); }
 	if(t->m3 != NULL){ res->m3 = copyArrayType(t->m3); }
 	
@@ -255,9 +255,9 @@ struct PrimitiveType* copyPrimitiveType(struct PrimitiveType* p){
 	
 }
 
-struct BasicTypeWrapped* copyBasicTypeWrapped(struct BasicTypeWrapped* b){
+struct BasicType* copyBasicType(struct BasicType* b){
 
-	struct BasicTypeWrapped* res = make(BasicTypeWrapped);
+	struct BasicType* res = make(BasicType);
 	
 	res->simpleType = NULL;
 	res->subrType   = NULL;

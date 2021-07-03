@@ -104,14 +104,6 @@ bool transpileAndCompile(struct Flags* flags){
 		system(cmd_gcc);
 		
 		free(cmd_gcc);
-		
-		if(flags->avr){
-			
-			system("avr-gcc main.o -o main.elf");
-			system("avr-objcopy -O ihex -j .text -j .data main.elf main.hex");
-			
-			//avr-objdump -D -m avr main.hex //to view contents
-		}
 	}
 	
 	free(c_filename);

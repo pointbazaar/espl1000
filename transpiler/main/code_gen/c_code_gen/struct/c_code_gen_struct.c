@@ -24,7 +24,7 @@ static uint8_t sizeof_structmember(struct StructMember* m){
 	struct Type* type = m->type;
 	
 	if(type->m1 != NULL){
-		struct BasicTypeWrapped* btw = type->m1;
+		struct BasicType* btw = type->m1;
 		if(btw->simpleType != NULL){
 			struct SimpleType* stype = btw->simpleType;
 			if(stype->primitiveType != NULL){

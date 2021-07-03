@@ -4,6 +4,8 @@
 #include <string.h>
 #include <inttypes.h>
 
+#include "ast/util/str_ast.h"
+
 #include "tables/cc/cc.h"
 #include "tables/sst/sst.h"
 #include "tables/symtable/symtable.h"
@@ -15,6 +17,8 @@
 #define ERR_SAME_NAME "[SST][Error] 2 subroutines with same name\n"
 
 #define ERR_NOT_FOUND "[SST][Error] subroutine not found\n"
+
+static void sst_print_line(struct SSTLine* line, char* fmt);
 
 struct SST {
 	//Subroutine Symbol Table (SST)
@@ -58,39 +62,42 @@ void sst_clear(struct SST* sst){
 	sst->lines = malloc(sizeof(struct SSTLine*)*sst->capacity);
 }
 
-void sst_fill(struct SST* sst, struct Namespace* ns){
-	
-	for(int i = 0; i < ns->count_methods; i++){
-		
-		struct SSTLine* line = makeSSTLine2(ns->methods[i], ns->name);
-		
-		sst_add(sst, line);
-	}
-}
-
 void sst_print(struct SST* sst){
 	
-	char* fmt = "%20s|%20s|%8s|%16s\n";
+	char* fmt = "%20s|%20s|%20s|%8s|%16s\n";
 	
 	printf("[SST] Subroutine Symbol Table\n");
-	printf(fmt, "namespace", "name", "isLibC", "halts?");
-	printf("--------------------|--------------------|--------|----------------\n");
+	printf(fmt, "namespace", "name", "type", "isLibC", "halts?");
+	printf("--------------------|--------------------|--------------------|--------|----------------\n");
 	
 	for(int i = 0; i < sst->count; i++){
 		
 		struct SSTLine* line = sst->lines[i];
 		
-		char* isLibC = (line->isLibC)?"yes":"no";
-		
-		char* halt_info = "-";
-		
-		if(line->halts != HALTS_UNKNOWN){
-				
-			halt_info = (line->halts == HALTS_ALWAYS)?"halts":"inf-loop";
-		}
-		
-		printf(fmt, line->_namespace, line->name, isLibC, halt_info);
+		sst_print_line(line, fmt);
 	}
+}
+
+static void sst_print_line(struct SSTLine* line, char* fmt){
+	
+	char* isLibC = (line->isLibC)?"yes":"no";
+		
+	char* halt_info = "-";
+	
+	if(line->halts != HALTS_UNKNOWN){
+			
+		halt_info = (line->halts == HALTS_ALWAYS)?"halts":"inf-loop";
+	}
+	
+	char* typeStr = "";
+	
+	if(line->type != NULL){ 
+		typeStr = strType(line->type);
+	}
+	
+	printf(fmt, line->_namespace, line->name, typeStr, isLibC, halt_info);
+	
+	if(line->type != NULL){ free(typeStr); }
 }
 
 void freeSST(struct SST* sst){
@@ -116,6 +123,7 @@ struct SSTLine* makeSSTLine(
 	strncpy(line->_namespace, _namespace, DEFAULT_STR_SIZE);
 	
 	line->method       = NULL;
+	line->type         = NULL;
 	
 	line->returnType   = type;
 	line->isLibC       = isLibC;
@@ -129,7 +137,11 @@ struct SSTLine* makeSSTLine(
 	return line;
 }
 
-struct SSTLine* makeSSTLine2(struct Method* m, char* _namespace){
+struct SSTLine* makeSSTLine2(
+	struct Method* m, 
+	struct Type* type,
+	char* _namespace
+){
 
 	struct SSTLine* line = make(SSTLine);
 	
@@ -137,6 +149,7 @@ struct SSTLine* makeSSTLine2(struct Method* m, char* _namespace){
 	strncpy(line->_namespace, _namespace, DEFAULT_STR_SIZE);
 	
 	line->method       = m;
+	line->type         = type;
 	
 	line->returnType   = m->returnType;
 	line->isLibC       = false;

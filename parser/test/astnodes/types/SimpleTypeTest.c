@@ -5,7 +5,7 @@
 #include "SimpleTypeTest.h"
 
 #include "types/SimpleType.h"
-#include "types/BasicTypeWrapped.h"
+#include "types/BasicType.h"
 
 #include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
@@ -25,13 +25,13 @@ int simpletype_test_typenode_parsing(bool debug) {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(TYPEID,"MyType") );
 
-	struct BasicTypeWrapped* node = makeBasicTypeWrapped2(list, debug);
+	struct BasicType* node = makeBasicType2(list, debug);
 
 	assert(0 == list_size(list));
 	assert(node != NULL);
 	
 	freeTokenList(list);
-	freeBasicTypeWrapped(node);
+	freeBasicType(node);
 
 	return 1;
 }
@@ -44,7 +44,7 @@ int simpletype_test_typenode_parsing_fails(bool debug) {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ID,"myIllegalType") );
 
-	struct BasicTypeWrapped* node = makeBasicTypeWrapped2(list, debug);
+	struct BasicType* node = makeBasicType2(list, debug);
 	assert(node == NULL);
 	
 	freeTokenList(list);

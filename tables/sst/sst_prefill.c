@@ -256,7 +256,7 @@ static struct Type* makeCharPtrTypeC(){
 	myst->primitiveType = pt;
 	myst->structType    = NULL;
 	
-	struct BasicTypeWrapped* btw = make(BasicTypeWrapped);
+	struct BasicType* btw = make(BasicType);
 	btw->simpleType = myst;
 	btw->subrType = NULL;
 	
@@ -288,7 +288,7 @@ static struct Type* makeFileTypeC(){
 	myst->primitiveType = NULL;
 	myst->structType    = s;
 	
-	struct BasicTypeWrapped* btw = make(BasicTypeWrapped);
+	struct BasicType* btw = make(BasicType);
 	btw->simpleType = myst;
 	btw->subrType = NULL;
 	

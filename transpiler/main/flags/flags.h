@@ -6,15 +6,15 @@
 
 struct Flags {
 	
-	bool debug;
-	bool test;
-	bool avr;
-	bool help;
-	bool version;
-	bool emit_headers; //-h
+	bool debug;         //-debug
+	bool test;          //-test
+	bool help;          //-help
+	bool version;       //-version
+	bool emit_headers;  //-h
 	
+	//gcc passthrough flags
 	bool debug_symbols; //-g
-	bool werror; //-Werror
+	bool werror;        //-Werror
 	
 	//used to tell if we should run gcc
 	bool has_main_fn;

@@ -49,8 +49,8 @@ struct Type* infer_type_expr(char* filename, struct ST* st, struct Expr* expr){
 	struct Type* type1 = infer_type_unopterm(filename, st, t1);
 	struct Type* type2 = infer_type_unopterm(filename, st, t2);
 	
-	struct BasicTypeWrapped* btw1 = type1->m1;
-	struct BasicTypeWrapped* btw2 = type2->m1;
+	struct BasicType* btw1 = type1->m1;
+	struct BasicType* btw2 = type2->m1;
 	
 	if(btw1 == NULL || btw2 == NULL){ 
 		print_exit(filename, &(expr->super), ERR_BTW); 

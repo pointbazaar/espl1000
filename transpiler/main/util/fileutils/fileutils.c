@@ -63,25 +63,17 @@ char* make_h_filename(char* filename){
 
 char* make_gcc_cmd(struct Flags* flags, char* fname_out){
 	
-	char* cmd_gcc = malloc(100+strlen(fname_out));
-	strcpy(cmd_gcc, "");
-	
-	if(flags->avr){
-		//choose -mmcu=attiny25, but you can replace with
-		//whatever you like
-		//we chase attiny25 to have it generate less complex instructions
-		strcat(cmd_gcc, "avr-gcc -o main.o -I /usr/share/avra -mmcu=attiny45 ");
-	}else{
+	char* cmd = malloc(100+strlen(fname_out));
+	strcpy(cmd, "");
 		
-		strcat(cmd_gcc, "gcc -Wall --std=c11 -o a.out ");
-	}
+	strcat(cmd, "gcc -Wall --std=c11 -o a.out ");
 	
-	if(flags->debug_symbols){ strcat(cmd_gcc, "-g "); }
-	if(flags->werror){ strcat(cmd_gcc, "-Werror "); }
+	if(flags->debug_symbols){ strcat(cmd, "-g ");      }
+	if(flags->werror)       { strcat(cmd, "-Werror "); }
 	
-	strcat(cmd_gcc, fname_out);
+	strcat(cmd, fname_out);
 	
-	strcat(cmd_gcc, " -lpthread -lm ");
+	strcat(cmd, " -lpthread -lm ");
 	
-	return cmd_gcc;
+	return cmd;
 }

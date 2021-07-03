@@ -21,7 +21,7 @@
 #include "../astnodes/StmtBlockTest.h"
 #include "../astnodes/types/SubrTypeTest.h"
 #include "../astnodes/statements/WhileStmtTest.h"
-#include "../astnodes/types/BasicTypeWrappedTest.h"
+#include "../astnodes/types/BasicTypeTest.h"
 #include "../astnodes/subr/DeclArgTest.h"
 #include "../astnodes/statements/IfStmtTest.h"
 #include "../astnodes/subr/MethodTest.h"
@@ -261,7 +261,7 @@ bool test_suite_types(bool debug) {
     int count  = 9;
     int passed = 0;
 
-    passed +=  basictypewrapped_test_type_parsing_simple_type(debug);
+    passed +=  basictype_test_type_parsing_simple_type(debug);
 
     passed +=  simpletype_test_typenode_parsing(debug);
     passed +=  simpletype_test_typenode_parsing_anytype(debug);

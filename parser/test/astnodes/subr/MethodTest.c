@@ -28,7 +28,7 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 	list_add(l, makeToken2(ID,"hello"));
 	list_add(l, makeToken(RPARENS));
 	
-	list_add(l, makeToken(ARROW));
+	list_add(l, makeToken2(ARROW, "->"));
 	list_add(l, makeToken2(TYPEID,"Car"));
 	
 	list_add(l, makeToken(LCURLY));
@@ -47,10 +47,7 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 		return 0;
 	}
 	
-	if(debug){
-		printf("free stuff\n");
-	}
-	
+	assert(!m->hasSideEffects);
 	assert(m->count_args == 1);
 	
 	freeTokenList(l);
@@ -73,7 +70,7 @@ int method_test_can_parse_subroutine(bool debug) {
 	list_add(l, makeToken2(LPARENS,"("));
 	list_add(l, makeToken2(RPARENS,")"));
 
-	list_add(l, makeToken2(ARROW,"->"));
+	list_add(l, makeToken2(ARROW,"~>"));
 	list_add(l, makeToken2(TYPEID,"Apple"));
 
 	list_add(l, makeToken2(LCURLY,"{"));
@@ -92,6 +89,7 @@ int method_test_can_parse_subroutine(bool debug) {
 	struct Method* m = makeMethod(l, debug);
 	assert(m != NULL);
 	assert(m->count_args == 0);
+	assert(m->hasSideEffects);
 	
 	freeTokenList(l);
 	freeMethod(m);
@@ -124,6 +122,7 @@ int method_test_can_parse_method_without_arguments(bool debug) {
 	struct Method* m = makeMethod(l, debug);
 	assert(m != NULL);
 	assert(0 == m->count_args);
+	assert(!m->hasSideEffects);
 	
 	freeTokenList(l);
 	freeMethod(m);

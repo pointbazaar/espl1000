@@ -45,7 +45,7 @@ struct CaseStmt;
 //typenodes
 struct Type;
 struct ArrayType;
-struct BasicTypeWrapped;
+struct BasicType;
 struct SimpleType;
 struct SubrType;
 struct TypeParam;

@@ -33,6 +33,7 @@
 
 //Table Includes
 #include "tables/sst/sst.h"
+#include "tables/sst/sst_fill.h"
 #include "tables/sst/sst_prefill.h"
 #include "tables/stst/stst.h"
 #include "tables/symtable/symtable.h"
@@ -53,7 +54,7 @@ static void ns_transpile_subrs(struct Namespace* ns, struct Ctx* ctx);
 
 static void ns_transpile_fwd(struct Namespace* ns, struct Ctx* ctx);
 
-static void backfill_lambdas_into_sst(struct AST* ast, struct SST* sst);
+static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st);
 
 // --------------------------------------------------------
 
@@ -120,7 +121,7 @@ static void fill_tables(struct AST* ast, struct Ctx* ctx){
 		
 		add_gen_struct_subrs_sst(ctx, ns);
 		
-		sst_fill(ctx->tables->sst, ns);
+		sst_fill(ctx->tables, ctx->tables->sst, ns);
 		stst_fill(ctx->tables->stst, ns);
 	
 	}
@@ -135,7 +136,7 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename){
 	
 	ctx->file = ctx->c_file; //direct output to c file
 	
-	if(!(ctx->flags->avr)){
+	{
 		
 		fprintf(ctx->c_file, "#include <stdlib.h>\n");
 		fprintf(ctx->c_file, "#include <stdio.h>\n");
@@ -153,11 +154,10 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename){
 	
 	fill_tables(ast, ctx);
 	
-	//transpile the LAMBDA parameters
 	transpileLambdas(ast, ctx->tables);
 	
 	//RE-FILL the newly created lambda functions
-	backfill_lambdas_into_sst(ast, ctx->tables->sst);
+	backfill_lambdas_into_sst(ast, ctx->tables);
 		
 	const bool checks = typecheck_ast(ast, ctx->tables);
 	
@@ -207,7 +207,7 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename){
 	}
 }
 
-static void backfill_lambdas_into_sst(struct AST* ast, struct SST* sst){
+static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st){
 	
 	for(int i=0; i < ast->count_namespaces; i++){
 		
@@ -222,8 +222,12 @@ static void backfill_lambdas_into_sst(struct AST* ast, struct SST* sst){
 				continue;
 			}
 			
-			struct SSTLine* line = makeSSTLine2(m, ns->name);
-			sst_add(sst, line);
+			struct Type* t = method_to_subrtype(m);
+			st_register_inferred_type(st, t);
+			
+			struct SSTLine* line = makeSSTLine2(m, t, ns->name);
+			
+			sst_add(st->sst, line);
 		}
 	}
 }

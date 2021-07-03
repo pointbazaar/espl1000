@@ -22,6 +22,8 @@ struct SSTLine {
 	//a reference to the type being returned
 	struct Type* returnType;
 	
+	//type of the method (SubrType underneath)
+	struct Type* type;     //may be NULL (depends on method)
 	struct Method* method; //may be NULL 
 	
 	//if it is from libC
@@ -52,8 +54,6 @@ void freeSST(struct SST* sst);
 
 void            sst_clear(struct SST* sst);
 
-void            sst_fill(struct SST* sst, struct Namespace* ns);
-
 void            sst_add(struct SST* sst, struct SSTLine* line);
 
 void            sst_print(struct SST* sst);
@@ -74,9 +74,13 @@ struct SSTLine* makeSSTLine(
 	bool isLibC,
 	enum HALTS halts
 );
-struct SSTLine* makeSSTLine2(struct Method* m, char* _namespace);
+
+struct SSTLine* makeSSTLine2(
+	struct Method* m, 
+	struct Type* type,
+	char* _namespace
+);
+
 void freeSSTLine(struct SSTLine* l);
-
-
 
 #endif

@@ -75,7 +75,7 @@ char* primitiveType2CType(struct PrimitiveType* p){
 char* type2CType(struct Type* t, struct Ctx* ctx){
 	
 	if(t->m1 != NULL){
-		return basicTypeWrapped2CType(t->m1, ctx);
+		return basicType2CType(t->m1, ctx);
 	}
 	
 	if(t->m2 != NULL){
@@ -144,7 +144,7 @@ char* typeParam2CType(struct TypeParam* typeParam, struct Ctx* ctx){
 	return NULL;
 }
 
-char* basicTypeWrapped2CType(struct BasicTypeWrapped* btw, struct Ctx* ctx){
+char* basicType2CType(struct BasicType* btw, struct Ctx* ctx){
 	
 	assert(btw != NULL);
 	
@@ -165,7 +165,7 @@ bool isIntType(struct Type* t){
 	
 	if(t->m1 == NULL){ return false; }
 	
-	struct BasicTypeWrapped* m1 = t->m1;
+	struct BasicType* m1 = t->m1;
 	
 	if(m1->simpleType == NULL){ return false; }
 	

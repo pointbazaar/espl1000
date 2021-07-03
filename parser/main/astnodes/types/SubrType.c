@@ -91,12 +91,20 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 		free(res);
 		return NULL;
 	}
-
-	if(!list_expect(copy, ARROW)){
-		freeTokenListShallow(copy);
-		free(res->argTypes);
-		free(res);
-		return NULL;
+	
+	{
+		struct Token* tk = list_head(copy);
+		if(tk->kind != ARROW){
+			free(res->argTypes);
+			free(res);
+			freeTokenListShallow(copy);
+			return NULL;
+		}
+		     if(strcmp(tk->value_ptr, "->") == 0){ res->hasSideEffects = false; }
+		else if(strcmp(tk->value_ptr, "~>") == 0){ res->hasSideEffects = true; }
+		else { printf("Fatal\n"); exit(1); } 
+		
+		list_consume(copy, 1);
 	}
 
 	res->returnType = makeType2(copy,debug);

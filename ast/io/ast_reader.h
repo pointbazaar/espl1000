@@ -48,13 +48,13 @@ struct SwitchStmt* 	readSwitchStmt(	FILE* file, bool debug);
 struct CaseStmt* 	readCaseStmt(	FILE* file, bool debug);
 
 //typenodes
-struct Type* 		readType(		FILE* file, bool debug);
-struct SubrType* 	readSubrType(	FILE* file, bool debug);
-struct SimpleType* 	readSimpleType(	FILE* file, bool debug);
-struct ArrayType* 	readArrayType(	FILE* file, bool debug);
-struct TypeParam* 	readTypeParam(	FILE* file, bool debug);
-struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug);
-struct StructType*  readStructType( FILE* file, bool debug);
+struct Type* 		  readType(		FILE* file, bool debug);
+struct SubrType* 	  readSubrType(	FILE* file, bool debug);
+struct SimpleType* 	  readSimpleType(	FILE* file, bool debug);
+struct ArrayType* 	  readArrayType(	FILE* file, bool debug);
+struct TypeParam* 	  readTypeParam(	FILE* file, bool debug);
+struct BasicType*     readBasicType(FILE* file, bool debug);
+struct StructType*    readStructType(FILE* file, bool debug);
 struct PrimitiveType* readPrimitiveType(FILE* file, bool debug);
 
 #endif

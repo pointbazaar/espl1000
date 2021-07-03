@@ -1,34 +1,34 @@
-<img src="https://raw.githubusercontent.com/pointbazaar/smalldragon/dev/lexer/img/dragon-logo.svg" width="100" height="100"/>
-
 # Dragon-Parser
 
 This is the parser for smalldragon.
-You can use it to build your own compiler/interpreter/typechecker/static analyzer/... for that language.
+You can use it to build your own 
+compiler/interpreter/typechecker/static analyzer/... 
+for it.
 
 ## Grammar that it recognizes
 
 ```
-ArrayConstant ::= '[' expression (',' expression)* ']'
+AST ::= Namespace+
 
-AST ::= namespace+
+Namespace ::=  StructDecl* Method*
 
-namespace ::=  structDecl* method*
+StructDecl ::= 'struct' SimpleType '{' StructMember* '}'
 
-structDecl ::= 'struct' SimpleType '{' structMemberDecl* '}'
-
-method ::= 'fn' identifier '(' declaredArgument* ')' arrow Type stmtblock
+Method ::= 'fn' Identifier '(' DeclArg* ')' arrow Type StmtBlock
 
 //--------------------------------
 
-structMemberDecl ::= Type identifier ';'
+ArrayConstant ::= '[' Expr (',' Expr)* ']'
 
-simplevariable ::= identifier ('[' expression ']')*
+StructMember ::= Type Identifier ';'
 
-variable ::= simplevariable ('.' variable)?
+SimpleVar ::= Identifier ('[' Expr ']')*
 
-stmtblock ::= '{' statement* '}'
+Variable ::= SimpleVar ('.' Variable)?
 
-declaredArgument ::= Type identifier? 
+StmtBlock ::= '{' Stmt* '}'
+
+DeclArg ::= Type Identifier? 
 
 //the optional identifier is there to support for example the 
 //" (?T0,uint size)~>[?T0] newarray{...} " builtin subroutine.
@@ -36,58 +36,58 @@ declaredArgument ::= Type identifier?
 
 // ----- TYPE RELATED ------------------------------------------
 
-SubroutineType ::= '(' Type* ')' arrow Type
+SubrType ::= '(' Type* ')' arrow Type
 
-StructType ::= upperCaseLetter alphanumeric* ('<'TypeParameter+'>')? | anyTypeToken
+StructType ::= upperCaseLetter alphanumeric* ('<'TypeParam+'>')? | anyTypeToken
 
 PrimitiveType ::= int | float | uint | char | bool | uint8 | ...
 
 SimpleType ::= PrimitiveType | StructType 
 
-BasicTypeWrapped ::= SimpleType | '(' SubroutineType ')'
+BasicType ::= SimpleType | '(' SubrType ')'
 
-TypeParameter ::= '?T' ( 0 | 1 | ... )
+TypeParam ::= '?T' ( 0 | 1 | ... )
 
 ArrayType ::= '[' Type ']'
 
-Type ::= BasicTypeWrapped | TypeParameter | ArrayType
+Type ::= BasicType | TypeParam | ArrayType
 
 // ------------------------------------------------------------
 
-statement ::=   ( Call ';' )
-				| whileStmt 
-				| ifStmt
-				| returnStmt
-				| assignmentStmt
-				| loopStmt
-				| breakStmt
-				| continueStmt
-				| forStmt
-				| switchStmt
+Stmt ::=   ( Call ';' )
+			| whileStmt 
+			| ifStmt
+			| returnStmt
+			| assignmentStmt
+			| loopStmt
+			| breakStmt
+			| continueStmt
+			| forStmt
+			| switchStmt
 
 
 // -------- STATEMENTS --------------------
 
-Call ::= identifier '(' (expression (, expression)*)?  ')'
+Call ::= Identifier '(' (Expr (, Expr)*)?  ')'
 
 breakStmt ::= 'break' ';'
 
 continueStmt ::= 'continue' ';'
 
-loopStmt ::= 'loop' expression stmtblock
+loopStmt ::= 'loop' Expr StmtBlock
 
-whileStmt ::= 'while' expression stmtblock
+whileStmt ::= 'while' Expr StmtBlock
 
-forStmt ::= 'for' identifier 'in' Range stmtblock
+forStmt ::= 'for' Identifier 'in' Range StmtBlock
 
-ifStmt ::= 'if' expression stmtblock
-		( 'else' stmtblock )?
+ifStmt ::= 'if' Expr StmtBlock
+		( 'else' StmtBlock )?
 				
-returnStmt ::= 'return' expression? ';'
+returnStmt ::= 'return' Expr? ';'
 
-assignmentStmt ::= Type? variable '=' expression ';'
+assignmentStmt ::= Type? Variable '=' Expr ';'
 
-switchStmt ::= 'switch' expression '{' CaseStmt* '}'
+switchStmt ::= 'switch' Expr '{' CaseStmt* '}'
 
 CaseStmt ::= 'case' (BoolConst | IntConst | CharConst) StmtBlock?
 
@@ -95,32 +95,32 @@ CaseStmt ::= 'case' (BoolConst | IntConst | CharConst) StmtBlock?
 
 Range ::= Expr '..' Expr
 
-UnOpTerm ::= op Term //op must be a unary operator like '!', '~'
+UnOpTerm ::= Op Term //op must be a unary operator like '!', '~'
 
-Term ::= ArrayConstant 
-		| boolConstant 
-		| integerConstant 
-		| hexConstant
-		| charConstant 
-		| StringConstant
+Term ::= ArrayConst
+		| BoolConst
+		| IntConst
+		| HexConst
+		| CharConst
+		| StringConst
 		| Call 
-		| '(' expression ')' 
-		| variable
+		| '(' Expr ')' 
+		| Variable
 		| Lambda
 
-expression ::= UnOpTerm (op UnOpTerm)*
+Expr ::= UnOpTerm (Op UnOpTerm)*
 
-Lambda ::= '(' identifier (,identifier)* ')' arrow Expr
+Lambda ::= '(' Identifier (,Identifier)* ')' arrow Expr
 
 // ---- END OF GRAMMAR DESCRIPTION -------------------------------
 
 Simplifications performed:
 ```
-expression ::= UnOpTerm (op UnOpTerm)*
+Expr ::= UnOpTerm (op UnOpTerm)*
 
 //is transformed into:
 
-expression ::= UnOpTerm (op UnOpTerm)+
+Expr ::= UnOpTerm (op UnOpTerm)+
 
 //with operator precedence recognized
 ```

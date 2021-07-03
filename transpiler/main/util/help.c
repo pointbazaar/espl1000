@@ -10,10 +10,9 @@ void sd_print_help(){
 	printf("OPTIONS:\n\n");
 	
 	printf(" -help      display help\n");
-	printf(" -avr       transpile for AVR MCU's (experimental)\n");
+	
 	printf(" -test      run the tests for smalldragon\n");
 	printf(" -debug     print debug statements\n");
-	printf(" -clean     re-generate all artifacts used for incremental compilation\n");
 	printf(" -version   print Version Information\n");
 	printf(" -h         emit .h (header) file\n");
 	
@@ -23,7 +22,6 @@ void sd_print_help(){
 	printf("\n");
 	
 	printf("EXAMPLES\n\n");
-	printf("\tsd -test\n");
 	printf("\tsd main.dg\n");
 	printf("\tsd -help\n");
 	printf("\n");

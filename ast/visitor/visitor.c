@@ -44,14 +44,14 @@ static void visitVariable    	(struct Variable* v,   VISITOR, void* arg);
 static void visitSimpleVar   	(struct SimpleVar* v,  VISITOR, void* arg);
 
 //types
-static void visitType        	(struct Type* t,              VISITOR, void* arg);
-static void visitArrayType   	(struct ArrayType* a,         VISITOR, void* arg);
-static void visitSubrType    	(struct SubrType* s,          VISITOR, void* arg);
-static void visitBasicTypeWrapped(struct BasicTypeWrapped* b, VISITOR, void* arg);
-static void visitSimpleType  	(struct SimpleType* s,        VISITOR, void* arg);
-static void visitPrimitiveType	(struct PrimitiveType* p,     VISITOR, void* arg);
-static void visitStructType		(struct StructType* s,        VISITOR, void* arg);
-static void visitTypeParam   	(struct TypeParam* t,         VISITOR, void* arg);
+static void visitType        	(struct Type* t,          VISITOR, void* arg);
+static void visitArrayType   	(struct ArrayType* a,     VISITOR, void* arg);
+static void visitSubrType    	(struct SubrType* s,      VISITOR, void* arg);
+static void visitBasicType      (struct BasicType* b,     VISITOR, void* arg);
+static void visitSimpleType  	(struct SimpleType* s,    VISITOR, void* arg);
+static void visitPrimitiveType	(struct PrimitiveType* p, VISITOR, void* arg);
+static void visitStructType		(struct StructType* s,    VISITOR, void* arg);
+static void visitTypeParam   	(struct TypeParam* t,     VISITOR, void* arg);
 
 void visitAST(struct AST* ast, VISITOR, void* arg){
 
@@ -330,7 +330,7 @@ static void visitType(struct Type* t, VISITOR, void* arg){
 	visitor(t, NODE_TYPE, arg);
 	
 	if(t->m1 != NULL)
-		{ visitBasicTypeWrapped(t->m1, visitor, arg); }
+		{ visitBasicType(t->m1, visitor, arg); }
 		
 	if(t->m2 != NULL)
 		{ visitTypeParam(t->m2, visitor, arg); }
@@ -356,9 +356,9 @@ static void visitSubrType(struct SubrType* s, VISITOR, void* arg){
 		{ visitType(s->argTypes[i], visitor, arg); }
 }
 
-static void visitBasicTypeWrapped(struct BasicTypeWrapped* b, VISITOR, void* arg){
+static void visitBasicType(struct BasicType* b, VISITOR, void* arg){
 	
-	visitor(b, NODE_BASICWRAPPEDTYPE, arg);
+	visitor(b, NODE_BASICTYPE, arg);
 	
 	if(b->simpleType != NULL)
 		{ visitSimpleType(b->simpleType, visitor, arg); }

@@ -26,7 +26,7 @@ int subrtype_test_typename(bool debug) {
 	list_add(l, makeToken(COMMA) );
 	list_add(l, makeToken2(TYPEID,"Carrot") );
 	list_add(l, makeToken(RPARENS) );
-	list_add(l, makeToken(ARROW) );
+	list_add(l, makeToken2(ARROW,"->") );
 	list_add(l, makeToken2(TYPEID,"MyStruct") );
 
 	struct SubrType* sub = makeSubrType(l,debug);
@@ -55,14 +55,14 @@ int subrtype_test_typename_subroutine_return_type(bool debug) {
 		list_add(l, makeToken2(TYPEID,"uint") );
 	list_add(l, makeToken(RPARENS) );
 
-	list_add(l, makeToken(ARROW) );
+	list_add(l, makeToken2(ARROW,"->") );
 
 	list_add(l, makeToken(LPARENS) );
 		list_add(l, makeToken(LPARENS) );
 			list_add(l, makeToken2(TYPEID,"uint") );
 		list_add(l, makeToken(RPARENS) );
 
-		list_add(l, makeToken(ARROW) );
+		list_add(l, makeToken2(ARROW,"->") );
 		list_add(l, makeToken2(TYPEID,"uint") );
 	list_add(l, makeToken(RPARENS) );
 
@@ -92,7 +92,7 @@ int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(bool debu
 	list_add(l, makeToken2(TYPEID,"MyType") );
 	list_add(l, makeToken(RPARENS) );
 	
-	list_add(l, makeToken(ARROW) );
+	list_add(l, makeToken2(ARROW,"->"));
 	
 	list_add(l, makeToken2(TYPEID,"uint") );
 
@@ -118,7 +118,7 @@ int subrtype_test_subroutine_type_parsing_subroutine_without_side_effects(bool d
 	list_add(l, makeToken(LPARENS) );
 	list_add(l, makeToken2(TYPEID,"uint") );
 	list_add(l, makeToken(RPARENS) );
-	list_add(l, makeToken(ARROW) );
+	list_add(l, makeToken2(ARROW,"->") );
 	list_add(l, makeToken2(TYPEID,"uint") );
 
 	struct SubrType* node = makeSubrType(l,debug);

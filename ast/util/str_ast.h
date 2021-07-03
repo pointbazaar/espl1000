@@ -21,7 +21,7 @@ char* strBinConst(struct BinConst* b);
 
 //types
 char* strArrayType(struct ArrayType* at);
-char* strBasicTypeWrapped(struct BasicTypeWrapped* btw);
+char* strBasicType(struct BasicType* btw);
 char* strSimpleType(struct SimpleType* st);
 char* strSubrType(struct SubrType* st);
 char* strType(struct Type* t);

@@ -11,7 +11,7 @@ struct ArrayType {
 	struct Type* element_type; 
 };
 
-struct BasicTypeWrapped {
+struct BasicType {
 	struct ASTNode super; 
 	//these are alternatives,
 	//only one of these is != NULL
@@ -64,7 +64,7 @@ struct Type {
 	struct ASTNode super; 
 	
 	//only one of these is != NULL
-	struct BasicTypeWrapped* m1;
+	struct BasicType* m1;
 	struct TypeParam* m2;
 	struct ArrayType* m3;
 };

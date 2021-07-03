@@ -10,7 +10,7 @@ bool eq_type(struct Type* a, struct Type* b){
 	if(a == NULL || b == NULL){ return false; }
 
 	if(a->m1 != NULL)
-		{ return eq_basictypewrapped(a->m1, b->m1); }
+		{ return eq_basictype(a->m1, b->m1); }
 		
 	if(a->m2 != NULL)
 		{ return eq_typeparam(a->m2, b->m2); }
@@ -98,7 +98,7 @@ bool eq_primitivetype(struct PrimitiveType* a, struct PrimitiveType* b){
 	return false;
 }
 
-bool eq_basictypewrapped(struct BasicTypeWrapped* a, struct BasicTypeWrapped* b){
+bool eq_basictype(struct BasicType* a, struct BasicType* b){
 	
 	if(a == NULL || b == NULL){ return false; }
 

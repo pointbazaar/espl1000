@@ -746,9 +746,9 @@ struct Type* readType(FILE* file, bool debug){
 	b->m3 = NULL;
 
 	switch(kind){
-		case 1: b->m1 = readBasicTypeWrapped(file, debug); break;
-		case 2: b->m2 = readTypeParam(file, debug);        break;
-		case 3: b->m3 = readArrayType(file, debug);        break;
+		case 1: b->m1 = readBasicType(file, debug); break;
+		case 2: b->m2 = readTypeParam(file, debug); break;
+		case 3: b->m3 = readArrayType(file, debug); break;
 		default:
 			error(file, "Error in readType");
 	}
@@ -837,11 +837,11 @@ struct TypeParam* readTypeParam(FILE* file, bool debug){
 	
 	return v;
 }
-struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug){
+struct BasicType* readBasicType(FILE* file, bool debug){
 	
-	magic_num_require(MAGIC_BASICTYPEWRAPPED, file);
+	magic_num_require(MAGIC_BASICTYPE, file);
 	
-	struct BasicTypeWrapped* v = make(BasicTypeWrapped);
+	struct BasicType* v = make(BasicType);
 	
 	read_super(v);
 
@@ -856,10 +856,10 @@ struct BasicTypeWrapped* readBasicTypeWrapped(FILE* file, bool debug){
 		case 2: v->subrType   = readSubrType(file, debug);   break;
 
 		default:
-			error(file, "Error in readBasicTypeWrapped\n");
+			error(file, "Error in readBasicType\n");
 	}
 	
-	magic_num_require(MAGIC_END_BASICTYPEWRAPPED, file);
+	magic_num_require(MAGIC_END_BASICTYPE, file);
 	
 	return v;
 }

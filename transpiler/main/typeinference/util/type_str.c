@@ -17,10 +17,10 @@
 
 struct Type* typeFromStrPrimitive(struct ST* st, char* typeName){
 	
-	struct Type* res             = make(Type);
-	struct BasicTypeWrapped* btw = make(BasicTypeWrapped);
-	struct SimpleType* s         = make(SimpleType);
-	struct PrimitiveType* p      = make(PrimitiveType);
+	struct Type* res         = make(Type);
+	struct BasicType* btw    = make(BasicType);
+	struct SimpleType* s     = make(SimpleType);
+	struct PrimitiveType* p  = make(PrimitiveType);
 	
 	res->m1 = btw;
 	res->m2 = NULL;
@@ -51,7 +51,7 @@ struct Type* typeFromStr(struct ST* st, char* typeName){
 	
 	struct Type* res = make(Type);
 	
-	struct BasicTypeWrapped* btw = make(BasicTypeWrapped);
+	struct BasicType* btw = make(BasicType);
 	
 	res->m1 = btw;
 	res->m2 = NULL;

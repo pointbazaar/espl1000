@@ -28,21 +28,18 @@ void transpileType(struct Type* t, struct Ctx* ctx){
 	
 	assert(t != NULL);
 	
-	if(t->m1 != NULL)
-		{ transpileBasicTypeWrapped(t->m1, ctx); }
+	if(t->m1 != NULL){ transpileBasicType(t->m1, ctx); }
 	
-	if(t->m2 != NULL)
-		{ transpileTypeParam(t->m2, ctx); }
+	if(t->m2 != NULL){ transpileTypeParam(t->m2, ctx); }
 	
-	if(t->m3 != NULL)
-		{ transpileArrayType(t->m3, ctx); }
+	if(t->m3 != NULL){ transpileArrayType(t->m3, ctx); }
 }
 
-void transpileBasicTypeWrapped(struct BasicTypeWrapped* btw, struct Ctx* ctx){
+void transpileBasicType(struct BasicType* btw, struct Ctx* ctx){
 		
 	assert(btw != NULL);
 		
-	char* res = basicTypeWrapped2CType(btw, ctx);
+	char* res = basicType2CType(btw, ctx);
 	fprintf(ctx->file, "%s", res);
 	free(res);
 }

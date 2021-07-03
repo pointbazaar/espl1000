@@ -192,7 +192,7 @@ char* strArrayType(struct ArrayType* at){
 	return res;
 }
 
-char* strBasicTypeWrapped(struct BasicTypeWrapped* btw){
+char* strBasicType(struct BasicType* btw){
 	
 	if(btw->simpleType != NULL){
 		return strSimpleType(btw->simpleType);
@@ -248,7 +248,7 @@ char* strSubrType(struct SubrType* st){
 
 char* strType(struct Type* t){
 	
-	if(t->m1 != NULL){ return strBasicTypeWrapped(t->m1); }
+	if(t->m1 != NULL){ return strBasicType(t->m1); }
 	
 	if(t->m2 != NULL){ return strTypeParam(t->m2); }
 	

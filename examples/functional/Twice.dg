@@ -16,8 +16,7 @@ fn main ()~> int {
 
 	s.member = myfunction;
 
-	delSimple(s);
-
+	free(s);
 	return 0;
 }
 

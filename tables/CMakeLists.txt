@@ -11,6 +11,7 @@ add_library(${PROJECT_NAME} STATIC
 	lvst/lvst.c
 	
 	sst/sst.c
+	sst/sst_fill.c
 	sst/sst_prefill.c
 	
 	stst/stst.c

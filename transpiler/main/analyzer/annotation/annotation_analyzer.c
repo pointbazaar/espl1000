@@ -123,7 +123,7 @@ static void annot_private_struct_member(struct ST* st, struct Variable* var){
 	struct LVSTLine* line = lvst_get(lvst, var->simpleVar->name);
 	
 	if(line->type->m1 == NULL){ return; }
-	struct BasicTypeWrapped* btw = line->type->m1;
+	struct BasicType* btw = line->type->m1;
 	if(btw->simpleType == NULL){ return; }
 	if(btw->simpleType->structType == NULL){ return; }
 	
