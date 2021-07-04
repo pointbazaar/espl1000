@@ -23,7 +23,7 @@
 <multi_line_comment>\*\/ 	BEGIN(INITIAL);
 
 <single_line_comment>[^\n]*	//do nothing
-<single_line_comment>\n	line_no++; BEGIN(INITIAL);
+<single_line_comment>\n	    out2(LINE_NO, ++line_no); BEGIN(INITIAL);
 
 
 fn 		out(FN, yytext);
