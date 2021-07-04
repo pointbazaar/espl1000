@@ -35,6 +35,8 @@ struct Namespace {
 
 	char* src_path; //the .dg filename
 	
+	char* token_path; //the .dg.tokens filename
+	
 	char* ast_path; //the .ast filename
 	
 	char name[DEFAULT_STR_SIZE];

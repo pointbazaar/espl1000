@@ -58,13 +58,17 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	char* tmp1 = deserialize_string(file);
 	char* tmp2 = deserialize_string(file);
 	char* tmp3 = deserialize_string(file);
+	char* tmp4 = deserialize_string(file);
 	
-	ns->src_path = malloc(sizeof(char)*(strlen(tmp1)+1));
-	ns->ast_path = malloc(sizeof(char)*(strlen(tmp2)+1));
+	ns->src_path   = malloc(sizeof(char)*(strlen(tmp1)+1));
+	ns->token_path = malloc(sizeof(char)*(strlen(tmp2)+1));
+	ns->ast_path   = malloc(sizeof(char)*(strlen(tmp3)+1));
 	
 	strcpy (ns->src_path, tmp1);
-	strcpy (ns->ast_path, tmp2);
-	strncpy(ns->name,     tmp3, DEFAULT_STR_SIZE);
+	strcpy (ns->token_path, tmp2);
+	strcpy (ns->ast_path, tmp3);
+	
+	strncpy(ns->name,     tmp4, DEFAULT_STR_SIZE);
 	
 	free(tmp1);
 	free(tmp2);

@@ -45,6 +45,7 @@ void writeNamespace(struct Namespace* n){
 	magic_num_serialize(MAGIC_NAMESPACE, file);
 	
 	serialize_string(n->src_path, file);
+	serialize_string(n->token_path, file);
 	serialize_string(n->ast_path, file);
 	serialize_string(n->name,     file);
 	
