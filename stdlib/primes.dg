@@ -1,6 +1,7 @@
 //this file provides subroutines for dealing with
 //prime numbers. 
 
+@halts
 fn isprime(uint64 n) -> bool {
 	
 	uint count = 0;

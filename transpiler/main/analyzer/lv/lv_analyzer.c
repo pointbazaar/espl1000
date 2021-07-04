@@ -17,6 +17,7 @@
 static void lv_for_stmt   (struct ST* st, struct ForStmt* l);
 static void lv_assign_stmt(struct ST* st, struct AssignStmt* a);
 
+
 static void lv_visitor(void* node, enum NODE_TYPE type, void* arg);
 
 void lvst_fill(struct Method* subr, struct ST* st, bool debug){
@@ -34,6 +35,7 @@ void lvst_fill(struct Method* subr, struct ST* st, bool debug){
 		line->type = type;
 		line->isArg = true;
 		line->firstOccur = NULL;
+		line->read_only  = false;
 		
 		lvst_add(st->lvst, line);
 	}
@@ -69,6 +71,7 @@ static void lv_for_stmt(struct ST* st, struct ForStmt* l){
 	
 	line->firstOccur = NULL; 
 	line->isArg      = false;
+	line->read_only  = true;
 	
 	lvst_add(st->lvst, line);
 	
@@ -85,6 +88,7 @@ static void lv_assign_stmt(struct ST* st, struct AssignStmt* a){
 	
 	line->firstOccur = a;
 	line->isArg      = false;
+	line->read_only  = false;
 	
 	strncpy(line->name, varName, DEFAULT_STR_SIZE);
 	

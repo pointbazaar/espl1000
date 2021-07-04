@@ -228,7 +228,7 @@ void transpileForStmt(struct ForStmt* f, struct Ctx* ctx){
 	
 	fprintf(ctx->file, "for (");
 	
-	fprintf(ctx->file, "int %s = ", f->indexName);
+	fprintf(ctx->file, "long %s = ", f->indexName);
 	
 	transpileExpr(f->range->start, ctx);
 	

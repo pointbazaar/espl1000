@@ -25,6 +25,14 @@ void tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx){
 
 	tcctx->current_line_num = a->super.line_num;
 
+	//assigning to local variable / arg
+	
+	struct LVSTLine* line = lvst_get(tcctx->st->lvst, a->var->simpleVar->name);
+	
+	if(line->read_only){
+		error(tcctx, "variable can only be read but not written to.");
+	}
+
 	//we make an exception
 	//TODO: only make exception for array types
 	//and other applicable types

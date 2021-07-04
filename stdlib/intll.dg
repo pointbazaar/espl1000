@@ -50,8 +50,10 @@ fn intll_dtor(IntLL l) ~> bool {
 	return true;
 }
 
+@halts
 fn intll_size(IntLL l) -> uint { return l.size; }
 
+@halts
 fn intll_push_front(IntLL l, int value) -> bool {
 
 	IntLLNode x = makeIntLLNode(value, false, 0, 0);
@@ -73,6 +75,7 @@ fn intll_push_front(IntLL l, int value) -> bool {
 	return true;
 }
 
+@halts
 fn intll_push_back(IntLL l, int value) -> bool {
 
 	IntLLNode x = makeIntLLNode(value, false, 0, 0);
@@ -94,6 +97,7 @@ fn intll_push_back(IntLL l, int value) -> bool {
 	return true;
 }
 
+@halts
 fn intll_pop_front(IntLL l) ~> int {
 	
 	if l.size == 0 { exit(1); return -1; }
@@ -117,6 +121,7 @@ fn intll_pop_front(IntLL l) ~> int {
 	return val;
 }
 
+@halts
 fn intll_pop_back(IntLL l) ~> int {
 
 	if l.size == 0 { exit(1); return -1; }
@@ -139,7 +144,7 @@ fn intll_pop_back(IntLL l) ~> int {
 	return val;
 }
 
-
+@halts
 fn intll_peek_front(IntLL l) -> int {
 	
 	if l.size == 0 { exit(1); return -1; }
@@ -147,6 +152,7 @@ fn intll_peek_front(IntLL l) -> int {
 	return l.head.value;
 }
 
+@halts
 fn intll_peek_back(IntLL l) -> int {
 
 	if l.size == 0 { exit(1); return -1; }

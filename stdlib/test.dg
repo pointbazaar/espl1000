@@ -1,24 +1,24 @@
 fn main() ~> int {
+	
+	printf("test math\n"); test_math();
 
-	test_math();
+	printf("test primes\n"); test_primes();
 
-	test_primes();
-
-	test_intset();
+	printf("test intset\n"); test_intset();
 	
-	test_intstack();
+	printf("test intstack\n"); test_intstack();
 	
-	test_intarray();
+	printf("test intarray\n"); test_intarray();
 	
-	test_intbintree();
+	printf("test intbintree\n"); test_intbintree();
 	
-	test_intll();
+	printf("test intll\n"); test_intll();
 	
-	test_complex();
+	printf("test_complex\n"); test_complex();
 	
-	test_polynomial();
+	printf("test_polynomial\n"); test_polynomial();
 	
-	test_matrix();
+	printf("test_matrix\n"); test_matrix();
 
 	printf("[stdlib] PASSED ALL TESTS\n");
 

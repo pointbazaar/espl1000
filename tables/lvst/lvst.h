@@ -27,6 +27,8 @@ struct LVSTLine {
 	//(for the c code generation)
 	
 	bool isArg;
+	
+	bool read_only;
 };
 
 void freeLVSTLine(struct LVSTLine* l);

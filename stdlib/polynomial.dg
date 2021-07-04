@@ -199,6 +199,7 @@ fn poly_print(Poly p) ~> bool {
 	return true;
 }
 
+@halts
 fn poly_eval(Poly p, float x) -> float {
 
 	float res = 0.0;

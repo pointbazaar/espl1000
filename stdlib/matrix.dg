@@ -4,6 +4,7 @@
 
 //TODO: struct Matrix shoud be generic
 //once smalldragon supports it.
+
 struct Matrix {
 	[[float]] arr; 
 	uint nrows;
@@ -32,6 +33,7 @@ fn matrix_dtor(Matrix m) ~> bool {
 	return true;
 }
 
+@halts
 fn matrix_add(Matrix a, Matrix b) ~> Matrix {
 
 	assert(a.nrows == b.nrows);
@@ -45,6 +47,7 @@ fn matrix_add(Matrix a, Matrix b) ~> Matrix {
 	return res;
 }
 
+@halts
 fn matrix_sub(Matrix a, Matrix b) ~> Matrix {
 
 	assert(a.nrows == b.nrows);
@@ -58,6 +61,7 @@ fn matrix_sub(Matrix a, Matrix b) ~> Matrix {
 	return res;
 }
 
+@halts
 fn matrix_scale(Matrix a, float r) ~> Matrix {
 	
 	//scales the matrix
@@ -70,6 +74,7 @@ fn matrix_scale(Matrix a, float r) ~> Matrix {
 	return res;
 }
 
+@halts
 fn matrix_mul(Matrix a, Matrix b) ~> Matrix {
 
 	assert(a.ncols == b.nrows);
@@ -87,6 +92,7 @@ fn matrix_mul(Matrix a, Matrix b) ~> Matrix {
 	return res;
 }
 
+@halts
 fn matrix_submatrix(Matrix a, uint row, uint col) ~> Matrix {
 
 	assert(a.nrows == a.ncols); //currently only works for square matrices
@@ -128,6 +134,7 @@ fn matrix_det(Matrix a) ~> float {
 	return res;
 }
 
+@halts
 fn matrix_transpose(Matrix a) ~> Matrix {
 
 	res = matrix_ctor(a.ncols, a.nrows);
@@ -142,6 +149,7 @@ fn matrix_transpose(Matrix a) ~> Matrix {
 	return res;
 }
 
+@halts
 fn matrix_pow(Matrix a, uint power) -> Matrix {
 
 	res = matrix_identity(a.nrows);
@@ -156,6 +164,7 @@ fn matrix_pow(Matrix a, uint power) -> Matrix {
 	return res;
 }
 
+@halts
 fn matrix_identity(uint n) -> Matrix {
 
 	res = matrix_ctor(n,n);

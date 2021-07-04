@@ -3,58 +3,56 @@
 	to perform mathematical operations.
 */
 
+@halts
 fn sign (int n) -> int {
-	if(n>0){
-		return 1;
-	}
-	if(n==0){
-		return 0;
-	}
+	if n >  0 { return 1; }
+	if n == 0 { return 0; }
 	return -1;
 }
 
+@halts
 fn ipow (int base, uint power) -> int {
-	int result=1;
-	i=0;
-	while(i<power){
-		result=result*base;
-		i++;
-	}
-	return result;
-}
-
-fn faculty (uint n) -> uint {
-	if( n <= 1 ){ 
-		return 1; 
-	}
-	uint res = 1;
-	
-	for k in 1 .. n {
-		res *= k;
+	int res = 1;
+	int64 pmax = power; pmax--;
+	for i in 0 .. pmax {
+		res = res * base;
 	}
 	return res;
 }
 
+@halts
+fn faculty (uint n) -> uint {
+
+	if n <= 1 { return 1; }
+	
+	uint res = 1;
+	for k in 1 .. n { res *= k; }
+	return res;
+}
+
+@halts
 fn max (int a, int b) -> int {
-	if(a>b){return a;}
+	if a > b {return a;}
 	return b;
 }
 
+@halts
 fn min (int a,int b) -> int {
-	if(a<b){return a;}
+	if a < b {return a;}
 	return b;
 }
 
 fn gcd (int a, int b) -> int {
-	if(a==0){return b;}
-	return gcd(b%a,a);
+	if a==0 {return b;}
+	return gcd(b%a, a);
 }
 
 fn lcm (int a, int b) -> int {
 
-	return (a*b)/gcd(a,b);
+	return (a*b) / gcd(a,b);
 }
 
+@halts
 fn fib(uint64 n) -> uint64 {
 
 	uint64 a = 0;
@@ -70,12 +68,8 @@ fn fib(uint64 n) -> uint64 {
 	return a;
 }
 
-fn iseven(int x) -> bool {
+@halts
+fn iseven(int x) -> bool { return x & 0x01 == 0; }
 
-	return x & 0x01 == 0;
-}
-
-fn isodd(int x) -> bool {
-
-	return x & 0x01 == 1;
-}
+@halts
+fn isodd(int x) -> bool { return x & 0x01 == 1; }
