@@ -21,6 +21,20 @@
 #include "typecheck.h"
 #include "tcctx.h"
 
+static void tc_methodcall_args(
+	struct Call* m, 
+	struct Type** expect_types, 
+	uint8_t expect_args, 
+	struct TCCtx* tcctx
+);
+
+static void tc_methodcall_arg(
+	struct Call* m, 
+	struct Type* expect_type,
+	struct Expr* actual_expr,
+	struct TCCtx* tcctx
+);
+
 void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 
 	tcctx->current_line_num = m->super.line_num;
@@ -29,7 +43,7 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 	uint8_t expect_args        = 0;
 	
 	if(sst_contains(tcctx->st->sst, m->name)){
-		//look into SST
+		
 		struct SSTLine* line = sst_get(tcctx->st->sst, m->name);
 		
 		if(line->method == NULL){
@@ -45,14 +59,15 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		}
 		
 		struct Method* method = line->method;
-		expect_args = method->count_args;
+		expect_args           = method->count_args;
 		
 		expect_types = malloc(sizeof(struct Type*)*expect_args);
+		
 		for(uint8_t i=0; i < expect_args; i++){
 			expect_types[i] = method->args[i]->type;
 		}
+		
 	}else if(lvst_contains(tcctx->st->lvst, m->name)){
-		//look into LVST
 		
 		struct LVSTLine* line2 = lvst_get(tcctx->st->lvst, m->name);
 		
@@ -64,14 +79,28 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		
 		expect_args  = stype->count_argTypes;
 		expect_types = malloc(sizeof(struct Type*)*expect_args);
+		
 		for(uint8_t i=0; i < expect_args; i++){
 			expect_types[i] = stype->argTypes[i];
 		}
+		
 	}else{
 		
 		error(tcctx, "SUBR neither in SST nor LVST");
 	}
 	
+	tc_methodcall_args(m, expect_types, expect_args, tcctx);
+	
+	free(expect_types);
+}
+
+static void tc_methodcall_args(
+	struct Call* m, 
+	struct Type** expect_types,
+	uint8_t expect_args, 
+	struct TCCtx* tcctx
+){
+
 	const uint8_t actual_args = m->count_args;
 	
 	if(actual_args != expect_args){
@@ -92,34 +121,44 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 	
 		struct Type* expect_type = expect_types[i];
 		
-		struct Type* actual_type = 
-			infer_type_expr(tcctx->current_filename, tcctx->st, m->args[i]);
-			
-		if(is_integer_type(expect_type) 
-		&& is_integer_type(actual_type))
-			{ continue; }
+		struct Expr* actual_expr = m->args[i];
 		
-		if(!eq_type(expect_type, actual_type)){
-			
-			char* s1 = strCall(m);
-			char* s2 = strExpr(m->args[i]);
-			
-			char* sTypeActual   = strType(actual_type);
-			char* sTypeExpected = strType(expect_type);
-			
-			char msg[200];
-			sprintf(msg, "\t%s\n%s, (of type %s), but expected type %s\n", s1, s2, sTypeActual, sTypeExpected);
-			strcat(msg, ERR_ARG_TYPES);
-			
-			free(s1);
-			free(s2);
-			free(sTypeActual);
-			free(sTypeExpected);
-			
-			free(expect_types);
-			error(tcctx, msg);
-		}
+		tc_methodcall_arg(m, expect_type, actual_expr, tcctx);
 	}
+}
+
+
+static void tc_methodcall_arg(
+	struct Call* m, 
+	struct Type* expect_type,
+	struct Expr* actual_expr,
+	struct TCCtx* tcctx
+){
 	
-	free(expect_types);
+	struct Type* actual_type = 
+		infer_type_expr(tcctx->current_filename, tcctx->st, actual_expr);
+
+	if(is_integer_type(expect_type) 
+		&& is_integer_type(actual_type))
+			{ return; }
+		
+	if(!eq_type(expect_type, actual_type)){
+		
+		char* s1 = strCall(m);
+		char* s2 = strExpr(actual_expr);
+		
+		char* sTypeActual   = strType(actual_type);
+		char* sTypeExpected = strType(expect_type);
+		
+		char msg[200];
+		sprintf(msg, "\t%s\n%s, (of type %s), but expected type %s\n", s1, s2, sTypeActual, sTypeExpected);
+		strcat(msg, ERR_ARG_TYPES);
+		
+		free(s1);
+		free(s2);
+		free(sTypeActual);
+		free(sTypeExpected);
+		
+		error(tcctx, msg);
+	}
 }
