@@ -25,14 +25,14 @@ fn matrix_ctor(uint nrows, uint ncols) -> Matrix {
 	return res;
 }
 
-fn matrix_dtor(Matrix m) -> bool {
+fn matrix_dtor(Matrix m) ~> bool {
 	for r in 0 .. m.nrows - 1 { free(m.arr[r]); }
 	free(m.arr);
 	free(m);
 	return true;
 }
 
-fn matrix_add(Matrix a, Matrix b) -> Matrix {
+fn matrix_add(Matrix a, Matrix b) ~> Matrix {
 
 	assert(a.nrows == b.nrows);
 	assert(a.ncols == b.ncols);
@@ -45,7 +45,7 @@ fn matrix_add(Matrix a, Matrix b) -> Matrix {
 	return res;
 }
 
-fn matrix_sub(Matrix a, Matrix b) -> Matrix {
+fn matrix_sub(Matrix a, Matrix b) ~> Matrix {
 
 	assert(a.nrows == b.nrows);
 	assert(a.ncols == b.ncols);
@@ -58,7 +58,7 @@ fn matrix_sub(Matrix a, Matrix b) -> Matrix {
 	return res;
 }
 
-fn matrix_scale(Matrix a, float r) -> Matrix {
+fn matrix_scale(Matrix a, float r) ~> Matrix {
 	
 	//scales the matrix
 	res = matrix_ctor(a.nrows, a.ncols);
@@ -70,7 +70,7 @@ fn matrix_scale(Matrix a, float r) -> Matrix {
 	return res;
 }
 
-fn matrix_mul(Matrix a, Matrix b) -> Matrix {
+fn matrix_mul(Matrix a, Matrix b) ~> Matrix {
 
 	assert(a.ncols == b.nrows);
 	
@@ -87,7 +87,7 @@ fn matrix_mul(Matrix a, Matrix b) -> Matrix {
 	return res;
 }
 
-fn matrix_submatrix(Matrix a, uint row, uint col) -> Matrix {
+fn matrix_submatrix(Matrix a, uint row, uint col) ~> Matrix {
 
 	assert(a.nrows == a.ncols); //currently only works for square matrices
 
@@ -108,7 +108,7 @@ fn matrix_submatrix(Matrix a, uint row, uint col) -> Matrix {
 	return res;
 }
 
-fn matrix_det(Matrix a) -> float {
+fn matrix_det(Matrix a) ~> float {
 
 	if a.nrows == 1 && a.ncols == 1 { 
 		return a.arr[0][0]; 
@@ -128,7 +128,7 @@ fn matrix_det(Matrix a) -> float {
 	return res;
 }
 
-fn matrix_transpose(Matrix a) -> Matrix {
+fn matrix_transpose(Matrix a) ~> Matrix {
 
 	res = matrix_ctor(a.ncols, a.nrows);
 	
@@ -168,7 +168,7 @@ fn matrix_identity(uint n) -> Matrix {
 }
 
 @private
-fn matrix_inverse(Matrix a) -> Matrix {
+fn matrix_inverse(Matrix a) ~> Matrix {
 
 	//TODO
 	exit(1);

@@ -18,7 +18,7 @@ fn intset_ctor(uint capacity) -> IntSet {
 	return s;
 }
 
-fn intset_dtor(IntSet s) -> bool {
+fn intset_dtor(IntSet s) ~> bool {
 
 	free(s.arr);
 	free(s);

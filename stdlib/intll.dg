@@ -21,12 +21,15 @@ struct IntLLNode {
 	IntLLNode next;
 }
 
-fn intll_ctor() -> IntLL {
+fn intll_ctor() ~> IntLL {
 
-	return makeIntLL(0,true, 0,0);
+	IntLL res = malloc(3*8);
+	res.is_empty = true;
+	
+	return res;
 }
 
-fn intll_dtor(IntLL l) -> bool {
+fn intll_dtor(IntLL l) ~> bool {
 
 	if l.is_empty { 
 		free(l); return true;
@@ -91,7 +94,7 @@ fn intll_push_back(IntLL l, int value) -> bool {
 	return true;
 }
 
-fn intll_pop_front(IntLL l) -> int {
+fn intll_pop_front(IntLL l) ~> int {
 	
 	if l.size == 0 { exit(1); return -1; }
 	
@@ -114,7 +117,7 @@ fn intll_pop_front(IntLL l) -> int {
 	return val;
 }
 
-fn intll_pop_back(IntLL l) -> int {
+fn intll_pop_back(IntLL l) ~> int {
 
 	if l.size == 0 { exit(1); return -1; }
 	

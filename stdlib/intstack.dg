@@ -19,7 +19,7 @@ fn intstack_ctor(uint capacity) -> IntStack {
 	return s;
 }
 
-fn intstack_dtor(IntStack s) -> bool {
+fn intstack_dtor(IntStack s) ~> bool {
 
 	free(s.arr);
 	free(s);

@@ -23,7 +23,7 @@ fn poly_ctor(uint n) -> Poly{
 	return res;
 }
 
-fn poly_dtor(Poly p) -> bool {
+fn poly_dtor(Poly p) ~> bool {
 	free(p.coeff);
 	free(p);
 	return true;
@@ -175,7 +175,7 @@ fn poly_mul(Poly a, Poly b) -> Poly {
 	return res;
 }
 
-fn poly_print(Poly p) -> bool {
+fn poly_print(Poly p) ~> bool {
 
 	int i = p.n - 1;
 	uint count_printed = 0;

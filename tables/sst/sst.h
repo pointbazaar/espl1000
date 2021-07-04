@@ -26,6 +26,10 @@ struct SSTLine {
 	struct Type* type;     //may be NULL (depends on method)
 	struct Method* method; //may be NULL 
 	
+	//if it allocates, frees,
+	//writes to memory, opens file, ...
+	bool has_side_effect;
+	
 	//if it is from libC
 	bool isLibC;
 	
@@ -72,7 +76,8 @@ struct SSTLine* makeSSTLine(
 	char* _namespace,
 	struct Type* type, 
 	bool isLibC,
-	enum HALTS halts
+	enum HALTS halts,
+	bool has_side_effect
 );
 
 struct SSTLine* makeSSTLine2(

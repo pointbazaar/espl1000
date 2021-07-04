@@ -1,5 +1,5 @@
 
-fn main () -> int {
+fn main () ~> int {
 
 	f = fopen("/tmp/sd_file_io.txt", "w");
 

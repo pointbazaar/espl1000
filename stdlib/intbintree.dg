@@ -21,12 +21,12 @@ struct IntBinTreeNode {
 	IntBinTreeNode right;
 }
 
-fn intbintree_ctor() -> IntBinTree {
+fn intbintree_ctor() ~> IntBinTree {
 
-	return makeIntBinTree(false, 0);
+	return malloc(8+8);
 }
 
-fn intbintree_dtor(IntBinTree t) -> bool {
+fn intbintree_dtor(IntBinTree t) ~> bool {
 
 	if t.has_root { intbintreenode_dtor(t.root); }
 	free(t);
@@ -34,7 +34,7 @@ fn intbintree_dtor(IntBinTree t) -> bool {
 }
 
 @private
-fn intbintreenode_dtor(IntBinTreeNode t) -> bool {
+fn intbintreenode_dtor(IntBinTreeNode t) ~> bool {
 
 	if t.has_left { intbintreenode_dtor(t.left);  }
 	if t.has_right { intbintreenode_dtor(t.right); }

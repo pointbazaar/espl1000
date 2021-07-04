@@ -31,7 +31,7 @@ fn assertf(float actual, float expect) -> bool {
 	return delta*delta < 0.001;
 }
 
-fn test_matrix() -> int {
+fn test_matrix() ~> int {
 
 	Matrix m1 = matrix_ctor(2,2);
 	m1.arr[0][0] = 1.0;
@@ -84,7 +84,7 @@ fn test_matrix() -> int {
 	return 0;
 }
 
-fn test_polynomial() -> int {
+fn test_polynomial() ~> int {
 
 	Poly a = poly_parse("3x^2 + 2x + 1");
 	Poly b = poly_parse("4x + 5");
@@ -132,7 +132,7 @@ fn test_polynomial() -> int {
 	return 0;
 }
 
-fn test_complex() -> int {
+fn test_complex() ~> int {
 
 	CInt a = makeCInt(1,2); //1+2i
 	CInt b = makeCInt(2,3); //2+3i
@@ -160,7 +160,7 @@ fn test_complex() -> int {
 	return 0;
 }
 
-fn test_intll() -> int {
+fn test_intll() ~> int {
 
 	IntLL ll = intll_ctor();
 	
@@ -188,7 +188,7 @@ fn test_intll() -> int {
 	return 0;
 }
 
-fn test_intbintree() -> int {
+fn test_intbintree() ~> int {
 
 	IntBinTree t = intbintree_ctor();
 	
@@ -200,7 +200,7 @@ fn test_intbintree() -> int {
 	return 0;
 }
 
-fn test_intarray() -> int {
+fn test_intarray() ~> int {
 
 	
 	[int] arr = malloc(4*2);
@@ -216,7 +216,7 @@ fn test_intarray() -> int {
 	return 0;
 }
 
-fn test_intstack() -> int {
+fn test_intstack() ~> int {
 	
 	IntStack s = intstack_ctor(10);
 	
@@ -232,7 +232,7 @@ fn test_intstack() -> int {
 	return 0;
 }
 
-fn test_intset() -> int {
+fn test_intset() ~> int {
 
 	IntSet s = intset_ctor(10);
 
@@ -260,7 +260,7 @@ fn test_intset() -> int {
 	return 0;
 }
 
-fn test_math() -> int {
+fn test_math() ~> int {
 
 	assert(sign(4) == 1);
 	assert(sign(-8) == -1);
@@ -292,7 +292,7 @@ fn test_math() -> int {
 	return 0;
 }
 
-fn test_primes() -> int {
+fn test_primes() ~> int {
 
 	assert(isprime(2));
 	assert(isprime(3));

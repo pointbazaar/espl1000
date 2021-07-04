@@ -44,6 +44,10 @@ add_executable(${PROJECT_NAME}
 	main/typechecker/typecheck_stmts.c
 	main/typechecker/typecheck_methodcall.c
 	main/typechecker/typecheck_assignstmt.c
+	main/typechecker/typecheck_expr.c
+	main/typechecker/typecheck_unopterm.c
+	main/typechecker/typecheck_term.c
+	main/typechecker/typecheck_op.c
 	main/typechecker/typecheck_utils.c
 	
 	#typeinference

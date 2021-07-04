@@ -19,6 +19,7 @@
 #include "typecheck_stmts.h"
 #include "typecheck_methodcall.h"
 #include "typecheck_assignstmt.h"
+#include "typecheck_expr.h"
 #include "typecheck.h"
 #include "tcctx.h"
 
@@ -112,9 +113,15 @@ void tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx){
 	struct Type* returnedType = 
 		infer_type_expr(tcctx->current_filename, tcctx->st, r->returnValue);
 	
+	tc_expr(r->returnValue, tcctx);
+	
 	if(is_integer_type(returnType) 
 	&& is_integer_type(returnedType))
 		{ return; }
+		
+	//do not check if returned expr
+	//is a call to malloc
+	if(is_malloc(r->returnValue)){ return; }
 	
 	if(!eq_type(returnType, returnedType)){
 		

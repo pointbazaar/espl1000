@@ -18,6 +18,7 @@
 #include "typecheck_utils.h"
 #include "typecheck_stmts.h"
 #include "typecheck_methodcall.h"
+#include "typecheck_expr.h"
 #include "typecheck.h"
 #include "tcctx.h"
 
@@ -45,6 +46,14 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 	if(sst_contains(tcctx->st->sst, m->name)){
 		
 		struct SSTLine* line = sst_get(tcctx->st->sst, m->name);
+		
+		if( (!tcctx->currentFn->hasSideEffects)
+			&& line->has_side_effect
+		){
+			//method with side effects called
+			//in method marked as without side effects
+			error(tcctx, "called '~>' subr in '->' subr.");
+		}
 		
 		if(line->method == NULL){
 			if(line->isLibC){
@@ -76,6 +85,14 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 			error(tcctx, "SUBR HAD WRONG TYPE IN LVST");
 		}
 		struct SubrType* stype = type->m1->subrType;
+		
+		if( (!tcctx->currentFn->hasSideEffects)
+			&& stype->hasSideEffects
+		){
+			//method with side effects called
+			//in method marked as without side effects
+			error(tcctx, "called '~>' subr in '->' subr.");
+		}
 		
 		expect_args  = stype->count_argTypes;
 		expect_types = malloc(sizeof(struct Type*)*expect_args);

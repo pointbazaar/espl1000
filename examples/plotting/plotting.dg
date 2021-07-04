@@ -2,7 +2,7 @@
 //this example makes use of gnuplot.
 //http://gnuplot.sourceforge.net/
 
-fn main () -> int {
+fn main () ~> int {
 
 	f1 = fopen("/tmp/gnuplot-data", "w");
 	
