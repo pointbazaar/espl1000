@@ -4,6 +4,8 @@
 #include "../ast.h"
 #include "visitor.h"
 
+static void visitDeclArg        (struct DeclArg* da,   VISITOR, void* arg);
+
 //struct
 static void visitStructMember	(struct StructMember* s, VISITOR, void* arg);
 
@@ -81,6 +83,12 @@ void visitStructDecl(struct StructDecl* s, VISITOR, void* arg){
 void visitMethod(struct Method* m, VISITOR, void* arg){
 	
 	visitor(m, NODE_METHOD, arg);
+	
+	for(uint32_t i = 0; i < m->count_args; i++){
+		visitDeclArg(m->args[i], visitor, arg);
+	}
+	
+	visitType(m->returnType, visitor, arg);
 
 	visitStmtBlock(m->block, visitor, arg);
 }
@@ -94,6 +102,13 @@ void visitStmtBlock(struct StmtBlock* b, VISITOR, void* arg){
 }
 
 //----------- static functions ---------------
+
+static void visitDeclArg(struct DeclArg* da, VISITOR, void* arg){
+	
+	visitor(da, NODE_DECLARG, arg);
+	
+	visitType(da->type, visitor, arg);
+}
 
 static void visitStructMember(struct StructMember* s, VISITOR, void* arg){
 	

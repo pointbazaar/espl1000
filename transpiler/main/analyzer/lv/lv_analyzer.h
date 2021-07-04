@@ -9,10 +9,7 @@
 
 struct ST;
 struct Method;
-struct StmtBlock;
 
 void lvst_fill(struct Method* subr, struct ST* st, bool debug);
-
-void discoverLVStmtBlock(struct ST* st, struct StmtBlock* block);
 
 #endif
