@@ -57,6 +57,8 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 			transpileAssignStmt(s->ptr.m5, ctx);
 			fprintf(ctx->file, ";");
 			break;
+			
+		case 6: transpileTryCatchStmt(s->ptr.m6, ctx); break;
 		
 		case 7: transpileForStmt(s->ptr.m7, ctx); break;
 		
@@ -65,6 +67,7 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 		case 99:
 			if(s->isBreak){ transpileBreakStmt(ctx);  }
 			if(s->isContinue){ transpileContinueStmt(ctx); }
+			if(s->isThrow){ transpileThrowStmt(ctx); }
 			break;
 		
 		default:
@@ -89,6 +92,11 @@ void transpileCall(struct Call* mc, struct Ctx* ctx){
 			fprintf(ctx->file, ", ");
 		}
 	}
+	
+	//TODO: maybe sneak in a 
+	//jmp_buf* _jb
+	//argument if the relevant function throws
+	
 
 	fprintf(ctx->file, ")");
 }
@@ -278,4 +286,48 @@ void transpileCaseStmt(struct CaseStmt* s, struct Ctx* ctx){
 	transpileStmtBlock(s->block, ctx);
 	indent(ctx);
 	fprintf(ctx->file, "break;\n");
+}
+void transpileTryCatchStmt(struct TryCatchStmt* tcs, struct Ctx* ctx){
+	
+	ctx->index_try_stmt += 1;
+	uint16_t index = ctx->index_try_stmt;
+	
+	ctx->in_try_block = true;
+	
+	//declare jmp_buf _jb$NUM;
+	indent(ctx); fprintf(ctx->file, "jmp_buf _jb%d; \n", index);
+	indent(ctx); fprintf(ctx->file, "if(setjmp(_jb%d) == 0) ", index);
+	
+	//TODO: all calls in this block must
+	//have that jmp_buf pointer as argument
+	transpileStmtBlock(tcs->try_block, ctx);
+	
+	ctx->in_try_block = false;
+	
+	indent(ctx); fprintf(ctx->file, " else ");
+	
+	transpileStmtBlock(tcs->catch_block, ctx);
+}
+void transpileThrowStmt(struct Ctx* ctx){
+	
+	//the correct jmp_buf 
+	
+	//is either the one of the current try-block
+	if(ctx->in_try_block){
+		indent(ctx); 
+		fprintf(ctx->file, "longjmp(_jb%d,1);", ctx->index_try_stmt);
+		return;
+	}
+	
+	bool current_subr_throws = true;
+	
+	if(current_subr_throws){
+		//or the one given as argument to the function 
+		indent(ctx);
+		fprintf(ctx->file, "longjmp(*_jb,1);");
+		return;
+	}
+	
+	printf("error in transpileThrowStmt\n");
+	exit(1);
 }

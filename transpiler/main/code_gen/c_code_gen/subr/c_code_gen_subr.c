@@ -33,6 +33,8 @@ void transpileMethod(struct Method* m, struct Ctx* ctx){
 	lvst_fill(m, ctx->tables, ctx->flags->debug);
 
 	transpileMethodSignature(m, ctx);
+	
+	ctx->index_try_stmt = 0;
 
 	transpileStmtBlock(m->block, ctx);
 }
@@ -49,6 +51,10 @@ void transpileMethodSignature(struct Method* m, struct Ctx* ctx){
 			fprintf(ctx->file, ", ");
 		}
 	}
+	
+	//TODO: maybe sneak in a 
+	//jmp_buf* _jb
+	//argument if the relevant function throws
 
 	fprintf(ctx->file, ")");
 }

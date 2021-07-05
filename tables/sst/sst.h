@@ -48,6 +48,8 @@ struct SSTLine {
 	
 	//-- encapsulation
 	bool is_private;
+	
+	bool throws;
 };
 
 
@@ -77,7 +79,8 @@ struct SSTLine* makeSSTLine(
 	struct Type* type, 
 	bool isLibC,
 	enum HALTS halts,
-	bool has_side_effect
+	bool has_side_effect,
+	bool throws
 );
 
 struct SSTLine* makeSSTLine2(

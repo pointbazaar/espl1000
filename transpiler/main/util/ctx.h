@@ -21,6 +21,12 @@ struct Ctx {
 	FILE* file; //where the output will be directed
 	uint8_t indentLevel;
 	
+	//unique indexing of the try-statements in a subroutine
+	//during transpiling
+	uint16_t index_try_stmt; 
+	//are we transpiling inside a try-block right now?
+	bool in_try_block; 
+	
 	//the transpiler flags 
 	struct Flags* flags;
 	

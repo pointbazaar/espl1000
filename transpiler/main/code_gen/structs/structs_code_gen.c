@@ -92,27 +92,27 @@ static void add_gen_struct_subrs_sst_single(struct Ctx* ctx, struct Namespace* n
 	//add subroutines to sst
 	char* nsname = ns->name;
 	
-	struct SSTLine* line = makeSSTLine("_", nsname, retTypeStruct, false, HALTS_ALWAYS, true);
+	struct SSTLine* line = makeSSTLine("_", nsname, retTypeStruct, false, HALTS_ALWAYS, true, false);
 	sprintf(line->name, "new%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 	
-	line = makeSSTLine("_", nsname, retTypeStruct, false, HALTS_ALWAYS, true);
+	line = makeSSTLine("_", nsname, retTypeStruct, false, HALTS_ALWAYS, true, false);
 	sprintf(line->name, "copy%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 	
-	line = makeSSTLine("_", nsname, retTypeStruct, false, HALTS_ALWAYS, true);
+	line = makeSSTLine("_", nsname, retTypeStruct, false, HALTS_ALWAYS, true, false);
 	sprintf(line->name, "make%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 	
-	line = makeSSTLine("_", nsname, typeFromStrPrimitive(ctx->tables, "int"), false, HALTS_ALWAYS, true);
+	line = makeSSTLine("_", nsname, typeFromStrPrimitive(ctx->tables, "int"), false, HALTS_ALWAYS, true, false);
 	sprintf(line->name, "print%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 	
-	line = makeSSTLine("_", nsname, typeFromStrPrimitive(ctx->tables, "int"), false, HALTS_ALWAYS, true);
+	line = makeSSTLine("_", nsname, typeFromStrPrimitive(ctx->tables, "int"), false, HALTS_ALWAYS, true, false);
 	sprintf(line->name, "free%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 	
-	line = makeSSTLine("_", nsname, typeFromStrPrimitive(ctx->tables, "int"), false, HALTS_ALWAYS, true);
+	line = makeSSTLine("_", nsname, typeFromStrPrimitive(ctx->tables, "int"), false, HALTS_ALWAYS, true, false);
 	sprintf(line->name, "del%s", sd->type->structType->typeName);
 	sst_add(sst, line);
 }

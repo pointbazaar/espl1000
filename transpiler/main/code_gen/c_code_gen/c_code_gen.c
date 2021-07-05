@@ -73,6 +73,9 @@ bool transpileAndWrite(char* c_filename, char* h_filename, struct AST* ast, stru
 	ctx->file        = NULL;
 	ctx->c_file      = NULL;
 	ctx->header_file = NULL;
+	
+	ctx->in_try_block   = false;
+	ctx->index_try_stmt = 0;
 
 	ctx->c_file      = fopen(c_filename, "w");
 	//full buffering for performance
@@ -146,6 +149,9 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename){
 		fprintf(ctx->c_file, "#include <inttypes.h>\n");
 		fprintf(ctx->c_file, "#include <assert.h>\n");
 		fprintf(ctx->c_file, "#include <pthread.h>\n");
+		
+		//used for try-catch
+		fprintf(ctx->c_file, "#include <setjmp.h>\n");
 	}
 	
 	if(ctx->flags->emit_headers){

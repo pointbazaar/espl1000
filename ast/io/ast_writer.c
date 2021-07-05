@@ -469,7 +469,7 @@ void writeTryCatchStmt(struct TryCatchStmt* m, FILE* file){
 	magic_num_serialize(MAGIC_TRYCATCHSTMT, file);
 	
 	writeStmtBlock(m->try_block, file);
-	writeStmtBlock(m->try_block, file);
+	writeStmtBlock(m->catch_block, file);
 	
 	magic_num_serialize(MAGIC_END_TRYCATCHSTMT, file);
 }

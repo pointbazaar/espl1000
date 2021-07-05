@@ -243,7 +243,8 @@ static void fill_protos(
 				name, "_C_", t, 
 				true, 
 				proto.halts, 
-				proto.has_side_effect
+				proto.has_side_effect,
+				false
 			);
 		
 		sst_add(st->sst, line);
