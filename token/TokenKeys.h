@@ -57,17 +57,22 @@
 #define STRUCT 	54
 #define COMMA 	55
 #define LOOP 	56
-#define FN 	57
+#define FN		57
 #define ELSE 	58
 
 #define BREAK 	59
 #define CONTINUE 60
 
 #define FOR 	61
-#define IN 	62
+#define IN 		62
 
 #define SWITCH	63
 #define CASE	64
+
+#define TRY		65
+#define CATCH	66
+#define THROW	67
+#define THROWS	68
 
 //operator groups
 #define OPKEY_ARITHMETIC 	80

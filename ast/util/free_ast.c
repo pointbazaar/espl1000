@@ -215,6 +215,7 @@ void freeStmt(struct Stmt* s) {
 		case 3: freeIfStmt(s->ptr.m3);     break;
 		case 4: freeRetStmt(s->ptr.m4);    break;
 		case 5: freeAssignStmt(s->ptr.m5); break;
+		case 6: freeTryCatchStmt(s->ptr.m6); break;
 		case 7: freeForStmt(s->ptr.m7);    break;
 		case 8: freeSwitchStmt(s->ptr.m8); break;
 		default:
@@ -344,4 +345,11 @@ void freeCaseStmt(struct CaseStmt* c){
 			exit(1);
 	}
 	free(c);
+}
+
+void freeTryCatchStmt(struct TryCatchStmt* tcs){
+	
+	freeStmtBlock(tcs->try_block);
+	freeStmtBlock(tcs->catch_block);
+	free(tcs);
 }

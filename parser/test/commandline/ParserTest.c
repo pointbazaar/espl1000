@@ -32,6 +32,7 @@
 #include "../astnodes/statements/ForStmtTest.h"
 #include "../astnodes/statements/SwitchStmtTest.h"
 #include "../astnodes/statements/CaseStmtTest.h"
+#include "../astnodes/statements/TryCatchStmtTest.h"
 #include "../astnodes/LambdaTest.h"
 
 #define FAILRET if(!passed){ printf("FAILED\n"); return false;}
@@ -169,45 +170,35 @@ bool test_suite_term_expr_simplevar_var(bool debug) {
 bool test_suite_stmts(bool debug) {
 
 	status("test_suite_stmts");
-
-    int count  = 16;
-    int passed = 0;
     
-    //1
-    passed +=  loop_test1(debug);
+    loop_test1(debug);
 
-    //3
-    passed +=  retstmt_test1(debug);
-    passed +=  retstmt_test2(debug);
-    passed +=  retstmt_test3(debug);
+    retstmt_test1(debug);
+    retstmt_test2(debug);
+	retstmt_test3(debug);
 
-    //5
-    passed +=  methodcall_test1(debug);
-    passed +=  methodcall_test2(debug);
-    passed +=  methodcall_test3(debug);
-    passed +=  methodcall_test_can_parse_subroutine_call(debug);
-    passed +=  methodcall_test_can_parse_subroutine_call2(debug);
+    methodcall_test1(debug);
+    methodcall_test2(debug);
+    methodcall_test3(debug);
+    methodcall_test_can_parse_subroutine_call(debug);
+    methodcall_test_can_parse_subroutine_call2(debug);
 
-    //2
-    passed +=  stmt_test_assignment_statement_with_method_call(debug);
-    passed +=  stmt_test_assignment_statement_with_struct_access(debug);
+    stmt_test_assignment_statement_with_method_call(debug);
+    stmt_test_assignment_statement_with_struct_access(debug);
 
-    //1
-    passed +=  test_stmtblock_1(debug);
+    test_stmtblock_1(debug);
 
-    //2
-    passed +=  if_test1(debug);
-    passed +=  if_test2(debug);
+    if_test1(debug);
+    if_test2(debug);
 
-    //2
-    passed +=  whilestmt_test1(debug);
-    passed +=  whilestmt_test2(debug);
+    whilestmt_test1(debug);
+    whilestmt_test2(debug);
     
-    //this test uses assert
-    //so it needs no counting
+    trycatch_stmt_test(debug);
+    
     for_test1(debug);
 
-    return passed == count;
+    return true;
 }
 
 bool test_suite_assignstmt(bool debug){

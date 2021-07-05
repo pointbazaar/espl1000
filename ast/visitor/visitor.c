@@ -25,6 +25,8 @@ static void visitCall           (struct Call* m,       VISITOR, void* arg);
 static void visitRetStmt     	(struct RetStmt* r,    VISITOR, void* arg);
 static void visitBreakStmt   	(VISITOR, void* arg);
 static void visitContinueStmt	(VISITOR, void* arg);
+static void visitThrowStmt      (VISITOR, void* arg);
+static void visitTryCatchStmt   (struct TryCatchStmt* t, VISITOR, void* arg);
 
 //expr
 static void visitExpr        	(struct Expr* e,       VISITOR, void* arg);
@@ -121,19 +123,20 @@ static void visitStmt(struct Stmt* s, VISITOR, void* arg){
 	
 	switch(s->kind){
 		
-		case 0: visitLoopStmt  (s->ptr.m0, visitor, arg); break;
-		case 1: visitCall      (s->ptr.m1, visitor, arg); break;
-		case 2: visitWhileStmt (s->ptr.m2, visitor, arg); break;
-		case 3: visitIfStmt    (s->ptr.m3, visitor, arg); break;
-		case 4: visitRetStmt   (s->ptr.m4, visitor, arg); break; 
-		case 5: visitAssignStmt(s->ptr.m5, visitor, arg); break;
-		case 6: 									      break; 
-		case 7: visitForStmt   (s->ptr.m7, visitor, arg); break;
-		case 8: visitSwitchStmt(s->ptr.m8, visitor, arg); break;
+		case 0: visitLoopStmt  (s->ptr.m0, visitor, arg);   break;
+		case 1: visitCall      (s->ptr.m1, visitor, arg);   break;
+		case 2: visitWhileStmt (s->ptr.m2, visitor, arg);   break;
+		case 3: visitIfStmt    (s->ptr.m3, visitor, arg);   break;
+		case 4: visitRetStmt   (s->ptr.m4, visitor, arg);   break; 
+		case 5: visitAssignStmt(s->ptr.m5, visitor, arg);   break;
+		case 6: visitTryCatchStmt(s->ptr.m6, visitor, arg); break;
+		case 7: visitForStmt   (s->ptr.m7, visitor, arg);   break;
+		case 8: visitSwitchStmt(s->ptr.m8, visitor, arg);   break;
 		
 		case 99:
 			if(s->isBreak)   { visitBreakStmt(visitor, arg); }
 			if(s->isContinue){ visitContinueStmt(visitor, arg); }
+			if(s->isThrow)   { visitThrowStmt(visitor, arg); }
 			break;
 		
 		default: 
@@ -234,6 +237,19 @@ static void visitBreakStmt(VISITOR, void* arg){
 static void visitContinueStmt(VISITOR, void* arg){
 	
 	visitor(NULL, NODE_CONTINUESTMT, arg);
+}
+
+static void visitThrowStmt(VISITOR, void* arg){
+	
+	visitor(NULL, NODE_THROWSTMT, arg);
+}
+
+static void visitTryCatchStmt(struct TryCatchStmt* t, VISITOR, void* arg){
+	
+	visitor(t, NODE_TRYCATCHSTMT, arg);
+	
+	visitStmtBlock(t->try_block, visitor, arg);
+	visitStmtBlock(t->catch_block, visitor, arg);
 }
 
 static void visitExpr(struct Expr* e, VISITOR, void* arg){

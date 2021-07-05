@@ -59,6 +59,7 @@ void freeWhileStmt(struct WhileStmt* ws);
 void freeForStmt(struct ForStmt* fstmt);
 void freeSwitchStmt(struct SwitchStmt* sstmt);
 void freeCaseStmt(struct CaseStmt* cstmt);
+void freeTryCatchStmt(struct TryCatchStmt* tcs);
 
 //types
 void freeArrayType(struct ArrayType* at);

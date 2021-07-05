@@ -72,6 +72,7 @@ void writeMethod(struct Method* m, FILE* file){
 	
 	serialize_int(m->isPublic, file);
 	serialize_int(m->hasSideEffects, file);
+	serialize_int(m->throws, file);
 	
 	serialize_string(m->name, file);
 	
@@ -326,16 +327,18 @@ void writeStmt(struct Stmt* m, FILE* file){
 	switch(m->kind){
 		case 99: 
 			{
-				serialize_int( m->isBreak ? OPT_PRESENT : OPT_EMPTY, file);
+				serialize_int( m->isBreak    ? OPT_PRESENT : OPT_EMPTY, file);
 				serialize_int( m->isContinue ? OPT_PRESENT : OPT_EMPTY, file);
+				serialize_int( m->isThrow    ? OPT_PRESENT : OPT_EMPTY, file);
 			}
 			break;
 		case 0: { writeLoopStmt(m->ptr.m0, file);  } break;
-		case 1: { writeCall(m->ptr.m1,file); } break;
+		case 1: { writeCall(m->ptr.m1,file);       } break;
 		case 2: { writeWhileStmt(m->ptr.m2,file);  } break;
 		case 3: { writeIfStmt(m->ptr.m3,file);     } break;
 		case 4: { writeRetStmt(m->ptr.m4,file);    } break;
 		case 5: { writeAssignStmt(m->ptr.m5,file); } break;
+		case 6: { writeTryCatchStmt(m->ptr.m6, file); } break;
 		case 7: { writeForStmt(m->ptr.m7,file);    } break;
 		case 8: { writeSwitchStmt(m->ptr.m8,file); } break;
 		default: error(file, "Error in writeStmt");
@@ -461,6 +464,15 @@ void writeCaseStmt(struct CaseStmt* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_END_CASESTMT, file);
 }
+void writeTryCatchStmt(struct TryCatchStmt* m, FILE* file){
+	
+	magic_num_serialize(MAGIC_TRYCATCHSTMT, file);
+	
+	writeStmtBlock(m->try_block, file);
+	writeStmtBlock(m->try_block, file);
+	
+	magic_num_serialize(MAGIC_END_TRYCATCHSTMT, file);
+}
 // --------- TYPENODES --------------
 void writeType(struct Type* m, FILE* file){
 	
@@ -572,6 +584,7 @@ void writeSubrType(struct SubrType* m, FILE* file){
 	
 	writeType(m->returnType,file);
 	serialize_int(m->hasSideEffects, file);
+	serialize_int(m->throws, file);
 
 	serialize_int(m->count_argTypes, file);
 	

@@ -241,6 +241,9 @@ char* strSubrType(struct SubrType* st){
 	
 	char* returntype = strType(st->returnType);
 	strcat(res, returntype);
+	
+	if(st->throws){ strcat(res, " throws "); }
+	
 	free(returntype);
 	
 	return res;
@@ -474,21 +477,18 @@ char* strStmt(struct Stmt* stmt){
 		case 3: return strIfStmt    (stmt->ptr.m3);
 		case 4: return strRetStmt   (stmt->ptr.m4);
 		case 5: return strAssignStmt(stmt->ptr.m5);
-		
-		case 6: return strForStmt   (stmt->ptr.m7);
-		case 7: return strSwitchStmt(stmt->ptr.m8);
+		case 6: return strTryCatchStmt(stmt->ptr.m6);
+		case 7: return strForStmt   (stmt->ptr.m7);
+		case 8: return strSwitchStmt(stmt->ptr.m8);
 		
 		case 99: {
-			//break,continue,...
+			//break,continue,throw,...
 			char* res = malloc(sizeof(char)*30);
 			strcpy(res, "");
 			
-			if(stmt->isBreak){
-				sprintf(res, "break");
-			}
-			if(stmt->isContinue){
-				sprintf(res, "continue");
-			}
+			if(stmt->isBreak)    { sprintf(res, "break"); }
+			if(stmt->isContinue) { sprintf(res, "continue"); }
+			if(stmt->isThrow)    { sprintf(res, "throw"); }
 			return res;
 		}
 			
@@ -703,6 +703,22 @@ char* strCaseStmt(struct CaseStmt* c){
 	sprintf(res, "case %s %s", s, s2);
 	
 	free(s); free(s2);
+	
+	return res;
+}
+
+char* strTryCatchStmt(struct TryCatchStmt* tcs){
+	
+	char* s1 = strStmtBlock(tcs->try_block);
+	char* s2 = strStmtBlock(tcs->catch_block);
+	
+	uint32_t l = strlen(s1) + strlen(s2);
+	
+	char* res = malloc(sizeof(char)*(l+3+5+10));
+	
+	sprintf(res, "try %s catch %s", s1, s2);
+	
+	free(s1); free(s2);
 	
 	return res;
 }

@@ -93,6 +93,9 @@ int test_all(bool debug1) {
 	int pass  = 0;
 	int count = 0;
 	
+	test_try_catch_throw_throws();
+	pass++; count++;
+	
 	test_plus_plus_minus_minus();
 	pass++; count++;
 
@@ -197,6 +200,25 @@ int test_all(bool debug1) {
 	printf("[Lexer Module] %i of %i tests passed\n",pass,count);
 
 	return (pass == count)?0:1;
+}
+
+void test_try_catch_throw_throws(){
+	
+	char* str = "try catch throw throws ";
+	
+	struct Token** tokens = lex(str, debug);
+
+	assert(tokens[0]->kind == TRY);
+	assert(tokens[1]->kind == CATCH);
+	assert(tokens[2]->kind == THROW);
+	assert(tokens[3]->kind == THROWS);
+
+	assert(strcmp(tokens[0]->value_ptr,"try")==0);
+	assert(strcmp(tokens[1]->value_ptr,"catch")==0);
+	assert(strcmp(tokens[2]->value_ptr,"throw")==0);
+	assert(strcmp(tokens[3]->value_ptr,"throws")==0);
+
+	freeTokens(tokens, 4);
 }
 
 void test_plus_plus_minus_minus(){

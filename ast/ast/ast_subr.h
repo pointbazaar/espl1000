@@ -19,6 +19,7 @@ struct Method {
 	
 	bool isPublic;
 	bool hasSideEffects;
+	bool throws;
 
 	uint8_t count_args;
 	struct DeclArg** args;

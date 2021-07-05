@@ -10,6 +10,8 @@ int test_all(bool debug);
 //test subroutines 
 //(returning true if the test was passed, false otherwise)
 
+void test_try_catch_throw_throws();
+
 void test_plus_plus_minus_minus();
 
 bool test_can_see_line_with_semicolon();

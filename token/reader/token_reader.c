@@ -156,6 +156,10 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		case IN:
 		case SWITCH:
 		case CASE:
+		case THROW: 
+		case THROWS:
+		case TRY:
+		case CATCH:
 		case RANGEOP:
 		case WAVE : 
 			r = makeToken2(tkn_id, part2);

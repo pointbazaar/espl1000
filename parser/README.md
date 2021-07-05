@@ -14,7 +14,7 @@ Namespace ::=  StructDecl* Method*
 
 StructDecl ::= 'struct' SimpleType '{' StructMember* '}'
 
-Method ::= 'fn' Identifier '(' DeclArg* ')' arrow Type StmtBlock
+Method ::= 'fn' Identifier '(' DeclArg* ')' arrow Type ('throws')? StmtBlock
 
 //--------------------------------
 
@@ -36,7 +36,7 @@ DeclArg ::= Type Identifier?
 
 // ----- TYPE RELATED ------------------------------------------
 
-SubrType ::= '(' Type* ')' arrow Type
+SubrType ::= '(' Type* ')' arrow Type ('throws')?
 
 StructType ::= upperCaseLetter alphanumeric* ('<'TypeParam+'>')? | anyTypeToken
 
@@ -60,19 +60,17 @@ Stmt ::=   ( Call ';' )
 			| returnStmt
 			| assignmentStmt
 			| loopStmt
-			| breakStmt
-			| continueStmt
+			| 'break'    ';'
+			| 'continue' ';'
+			| 'throw'    ';'
 			| forStmt
 			| switchStmt
+			| TryCatchStmt
 
 
 // -------- STATEMENTS --------------------
 
 Call ::= Identifier '(' (Expr (, Expr)*)?  ')'
-
-breakStmt ::= 'break' ';'
-
-continueStmt ::= 'continue' ';'
 
 loopStmt ::= 'loop' Expr StmtBlock
 
@@ -90,6 +88,8 @@ assignmentStmt ::= Type? Variable '=' Expr ';'
 switchStmt ::= 'switch' Expr '{' CaseStmt* '}'
 
 CaseStmt ::= 'case' (BoolConst | IntConst | CharConst) StmtBlock?
+
+TryCatchStmt ::= 'try' StmtBlock 'catch' StmtBlock
 
 // --- END STATEMENTS ----------------------
 

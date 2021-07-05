@@ -12,6 +12,7 @@
 #include "Call.h"
 #include "AssignStmt.h"
 #include "SwitchStmt.h"
+#include "TryCatchStmt.h"
 
 #include "ast/util/free_ast.h"
 
@@ -21,15 +22,16 @@
 
 // --- private subroutines ---
 
-struct Stmt* initStmt();
+static struct Stmt* initStmt();
 
-void stmt_make_loop(struct Stmt* res, struct TokenList* copy, bool debug);
-void stmt_make_while(struct Stmt* res, struct TokenList* copy, bool debug);
-void stmt_make_if(struct Stmt* res, struct TokenList* copy, bool debug);
-void stmt_make_return(struct Stmt* res, struct TokenList* copy, bool debug);
-void stmt_make_for(struct Stmt* res, struct TokenList* copy, bool debug);
-void stmt_make_other(struct Stmt* res, struct TokenList* copy, bool debug);
-void stmt_make_switch(struct Stmt* res, struct TokenList* copy, bool debug);
+static void stmt_make_loop(struct Stmt* res, struct TokenList* copy, bool debug);
+static void stmt_make_while(struct Stmt* res, struct TokenList* copy, bool debug);
+static void stmt_make_if(struct Stmt* res, struct TokenList* copy, bool debug);
+static void stmt_make_return(struct Stmt* res, struct TokenList* copy, bool debug);
+static void stmt_make_for(struct Stmt* res, struct TokenList* copy, bool debug);
+static void stmt_make_other(struct Stmt* res, struct TokenList* copy, bool debug);
+static void stmt_make_switch(struct Stmt* res, struct TokenList* copy, bool debug);
+static void stmt_make_trycatch(struct Stmt* res, struct TokenList* copy, bool debug);
 // ---------------------------
 
 struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
@@ -41,23 +43,27 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	
 	parse_astnode(copy, &(res->super));
 
-	res->kind 	= -1;
+	res->kind 	    = -1;
 	res->isBreak 	= false;
 	res->isContinue = false;
+	res->isThrow    = false;
 
 	struct Token* first = list_head(copy);
 	
 	switch(first->kind){
 
 		case BREAK:	
-			res->kind = 99; 
-			res->isBreak = true;	
+			res->kind = 99;  res->isBreak = true;	
 			list_consume(copy, 2); 
 			break;
 
 		case CONTINUE:	
-			res->kind = 99; 
-			res->isContinue = true; 
+			res->kind = 99;  res->isContinue = true; 
+			list_consume(copy, 2); 
+			break;
+			
+		case THROW:
+			res->kind = 99;  res->isThrow = true; 
 			list_consume(copy, 2); 
 			break;
 
@@ -67,6 +73,7 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 		case IF:        stmt_make_if(res, copy, debug);     break;
 		case RETURN:    stmt_make_return(res, copy, debug); break;
 		case SWITCH:    stmt_make_switch(res, copy, debug); break;
+		case TRY:		stmt_make_trycatch(res, copy, debug); break;
 
 		default: 		stmt_make_other(res, copy, debug); 	break;
 	}
@@ -207,6 +214,20 @@ void stmt_make_switch(struct Stmt* res, struct TokenList* copy, bool debug){
 	res->ptr.m8 = makeSwitchStmt(copy,debug);
 	if(res->ptr.m8 == NULL){
 		printf("expected switch stmt, but was:\n");
+		list_print(copy);
+		
+		freeTokenListShallow(copy);
+		free(res);
+		exit(1);
+	}
+}
+
+static void stmt_make_trycatch(struct Stmt* res, struct TokenList* copy, bool debug){
+	
+	res->kind = 6;
+	res->ptr.m6 = makeTryCatchStmt(copy, debug);
+	if(res->ptr.m8 == NULL){
+		printf("expected try-catch stmt, but was:\n");
 		list_print(copy);
 		
 		freeTokenListShallow(copy);

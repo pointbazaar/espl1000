@@ -32,6 +32,7 @@ syn match basicIdentifier /[a-z][a-zA-Z0-9_]*/
 
 syn keyword basicLanguageKeywords fn if else struct switch case 
 syn keyword basicLanguageKeywords for while loop return break in continue
+syn keyword basicLanguageKeywords try catch throw throws
 
 syn keyword todo contained TODO FIXME
 

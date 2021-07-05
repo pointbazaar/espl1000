@@ -26,19 +26,25 @@
 <single_line_comment>\n	    out2(LINE_NO, ++line_no); BEGIN(INITIAL);
 
 
-fn 		out(FN, yytext);
-if		out(IF, yytext);
+fn 			out(FN, yytext);
+if			out(IF, yytext);
 else		out(ELSE, yytext);
 while		out(WHILE, yytext);
 return		out(RETURN, yytext);
 struct		out(STRUCT, yytext);
 loop		out(LOOP, yytext);
-for		out(FOR, yytext);
+for			out(FOR, yytext);
 break		out(BREAK, yytext);
 continue 	out(CONTINUE, yytext);
-in		out(IN, yytext);
+in			out(IN, yytext);
+
 switch		out(SWITCH, yytext);
 case		out(CASE, yytext);
+
+try			out(TRY, yytext);
+catch		out(CATCH, yytext);
+throws		out(THROWS, yytext);
+throw		out(THROW, yytext);
 
 int|int8|int16|int32|int64	out(TYPEID_PRIMITIVE_INT, yytext);
 

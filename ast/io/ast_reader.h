@@ -46,6 +46,7 @@ struct LoopStmt* 	readLoopStmt(	FILE* file, bool debug);
 struct ForStmt* 	readForStmt(	FILE* file, bool debug);
 struct SwitchStmt* 	readSwitchStmt(	FILE* file, bool debug);
 struct CaseStmt* 	readCaseStmt(	FILE* file, bool debug);
+struct TryCatchStmt* readTryCatchStmt(FILE* file, bool debug);
 
 //typenodes
 struct Type* 		  readType(		FILE* file, bool debug);

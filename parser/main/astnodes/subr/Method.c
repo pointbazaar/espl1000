@@ -72,6 +72,11 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 		freeTokenListShallow(copy);
 		return NULL;
 	}
+	
+	if(list_head(copy)->kind == THROWS){
+		list_consume(copy, 1);
+		res->throws = true;
+	}
 
 	res->block = makeStmtBlock(copy, debug);
 	if(res->block == NULL){
@@ -90,8 +95,10 @@ struct Method* initMethod(){
 	
 	struct Method* res = make(Method);
 
-	res->isPublic = true;
+	res->isPublic       = true;
 	res->hasSideEffects = true;
+	res->throws         = false;
+	
 	res->count_args = 0;
 	res->args = malloc(sizeof(struct DeclArg*)*1);
 	res->block = NULL;

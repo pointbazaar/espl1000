@@ -108,6 +108,7 @@ struct Method* readMethod(FILE* file, bool debug){
 
 	m->isPublic       = deserialize_int(file);
 	m->hasSideEffects = deserialize_int(file);
+	m->throws         = deserialize_int(file);
 
 	char* tmp = deserialize_string(file);
 	strcpy(m->name, tmp);
@@ -516,6 +517,7 @@ struct Stmt* readStmt(FILE* file, bool debug){
 			{
 				b->isBreak    = deserialize_int(file) == OPT_PRESENT;
 				b->isContinue = deserialize_int(file) == OPT_PRESENT;
+				b->isThrow    = deserialize_int(file) == OPT_PRESENT;
 			}
 			break;
 		case 0: b->ptr.m0 = readLoopStmt(file, debug);   break;
@@ -524,6 +526,7 @@ struct Stmt* readStmt(FILE* file, bool debug){
 		case 3: b->ptr.m3 = readIfStmt(file, debug);     break;
 		case 4: b->ptr.m4 = readRetStmt(file, debug);    break;
 		case 5: b->ptr.m5 = readAssignStmt(file, debug); break;
+		case 6: b->ptr.m6 = readTryCatchStmt(file, debug); break;
 		case 7: b->ptr.m7 = readForStmt(file, debug);  	 break;
 		case 8: b->ptr.m8 = readSwitchStmt(file, debug); break;
 		default:
@@ -734,6 +737,19 @@ struct CaseStmt* readCaseStmt(FILE* file, bool debug){
 	
 	return res;
 }
+struct TryCatchStmt* readTryCatchStmt(FILE* file, bool debug){
+	
+	magic_num_require(MAGIC_TRYCATCHSTMT, file);
+	
+	struct TryCatchStmt* res = make(TryCatchStmt);
+	
+	res->try_block   = readStmtBlock(file, debug);
+	res->catch_block = readStmtBlock(file, debug);
+	
+	magic_num_require(MAGIC_END_TRYCATCHSTMT, file);
+	
+	return res;
+}
 // --- typenodes -------------------------
 struct Type* readType(FILE* file, bool debug){
 	
@@ -772,6 +788,8 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 	v->returnType = readType(file, debug);
 	
 	v->hasSideEffects = deserialize_int(file);
+	v->throws         = deserialize_int(file);
+	
 	v->count_argTypes = deserialize_int(file);
 	
 	v->argTypes = malloc(sizeof(void*)*(v->count_argTypes));

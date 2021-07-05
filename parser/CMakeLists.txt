@@ -42,6 +42,7 @@ add_executable(${PROJECT_NAME}
 	main/astnodes/statements/Stmt.c
 	main/astnodes/statements/SwitchStmt.c
 	main/astnodes/statements/WhileStmt.c
+	main/astnodes/statements/TryCatchStmt.c
 	
 	main/astnodes/struct/StructDecl.c
 	main/astnodes/struct/StructMember.c
@@ -87,6 +88,7 @@ add_executable(${PROJECT_NAME}
 	test/astnodes/statements/StmtTest.c
 	test/astnodes/statements/SwitchStmtTest.c
 	test/astnodes/statements/WhileStmtTest.c
+	test/astnodes/statements/TryCatchStmtTest.c
 	test/astnodes/struct/StructDeclTest.c
 	test/astnodes/struct/StructMemberTest.c
 	test/astnodes/subr/DeclArgTest.c

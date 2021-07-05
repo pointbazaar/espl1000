@@ -53,6 +53,7 @@ void writeLoopStmt(struct LoopStmt* m, 		FILE* file);
 void writeForStmt(struct ForStmt* m,	 	FILE* file);
 void writeSwitchStmt(struct SwitchStmt* m,	FILE* file);
 void writeCaseStmt(struct CaseStmt* m,		FILE* file);
+void writeTryCatchStmt(struct TryCatchStmt* m, FILE* file);
 
 //typenodes
 void writeType(struct Type* m, 					FILE* file);

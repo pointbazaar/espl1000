@@ -42,6 +42,7 @@ struct BreakStmt;
 struct ForStmt;
 struct SwitchStmt;
 struct CaseStmt;
+struct TryCatchStmt;
 //typenodes
 struct Type;
 struct ArrayType;

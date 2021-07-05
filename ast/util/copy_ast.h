@@ -30,6 +30,7 @@ struct LoopStmt*    copyLoopStmt(struct LoopStmt* l);
 struct ForStmt*     copyForStmt(struct ForStmt* f);
 struct SwitchStmt*  copySwitchStmt(struct SwitchStmt* s);
 struct CaseStmt*    copyCaseStmt(struct CaseStmt* c);
+struct TryCatchStmt* copyTryCatchStmt(struct TryCatchStmt* tcs);
 
 //types
 struct Type*             copyType(struct Type* t);

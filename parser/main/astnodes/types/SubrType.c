@@ -13,15 +13,20 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct SubrType* makeSubrType2(struct Type* return_type, bool hasSideEffects){
+struct SubrType* makeSubrType2(
+	struct Type* return_type, 
+	bool hasSideEffects,
+	bool throws
+){
 	
 	struct SubrType* res = make(SubrType);
 	
 	res->super.line_num    = return_type->super.line_num;
 	res->super.annotations = 0;
 
-	res->returnType = return_type;
+	res->returnType     = return_type;
 	res->hasSideEffects = hasSideEffects;
+	res->throws         = throws;
 	res->count_argTypes = 0;
 
 	return res;
@@ -30,6 +35,8 @@ struct SubrType* makeSubrType2(struct Type* return_type, bool hasSideEffects){
 struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 
 	struct SubrType* res = make(SubrType);
+	res->throws = false;
+	
 	struct TokenList* copy = list_copy(tokens);
 	
 	parse_astnode(copy, &(res->super));
@@ -113,6 +120,11 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 		free(res->argTypes);
 		free(res);
 		return NULL;
+	}
+	
+	if(list_head(copy)->kind == THROWS){
+		list_consume(copy, 1);
+		res->throws = true;
 	}
 
 	list_set(tokens, copy);

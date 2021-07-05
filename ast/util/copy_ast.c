@@ -203,6 +203,7 @@ struct SubrType* copySubrType(struct SubrType* s){
 	struct SubrType* res = make(SubrType);
 	
 	res->hasSideEffects = s->hasSideEffects;
+	res->throws         = s->throws;
 	res->returnType = copyType(s->returnType);
 	
 	res->count_argTypes = s->count_argTypes;

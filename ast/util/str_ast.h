@@ -55,6 +55,7 @@ char* strSwitchStmt(struct SwitchStmt* s);
 char* strCall(struct Call* m);
 char* strRetStmt(struct RetStmt* r);
 char* strCaseStmt(struct CaseStmt* c);
+char* strTryCatchStmt(struct TryCatchStmt* tcs);
 
 //other
 char* strIdentifier(struct Identifier* id);

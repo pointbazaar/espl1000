@@ -23,7 +23,6 @@
 	
 	<h1 class = "mb-3 mt-3">Flow of Control Statements</h1>
 
-<div class="row">
 
 
 <div class="col box">
@@ -104,10 +103,63 @@ fn main () ~&gt; int {
 </code></pre>
 </div>
 
-</div>
+
+<h3> try / catch [! not yet implemented !]</h3>
+<h5>Rules</h5>
+<p>
+	<ul>
+		<li>subroutines can use <strong>throw;</strong></li>
+		<li>subroutine s1 must be marked with <strong>throws</strong> if and only if
+			<ul>
+				<li>s1 uses <strong>throw;</strong> outside any <strong>try</strong> block</li>
+				or
+				<li>s1 calls a subroutine s2 marked as <strong>throws</strong> outside of a <strong>try</strong> block</li>
+			</ul>
+		</li>
+	</ul>
+</p>
+<h5>Implementation</h5>
+<p>
+	The idea is to implement it with setjmp(...) / longjmp(...)
+	and passing a hidden jmp_buf* as a parameter
+	to subroutines which use <strong>throw</strong>
+	/ are marked as <strong>throws</strong>.<br>
 	
+	Each <strong>try</strong> in a subroutine would
+	then cause a separate jmp_buf to be emitted as a local
+	variable allocated on the stack. 
+	A pointer to this jmp_buf is then passed 
+	to all functions in the <strong>try { }</strong> block 
+	so they know where to longjmp(...) to.
+</p>
+<h5>Example</h5>
+<pre><code>
+fn main () ~&gt; int {
+	
+	try {
+		sub1(3);
+	} catch {
+		//handle error
+	}
+	
+	try {
+		sub1(-1);
+	} catch {
+		//handle error
+	}
+	
+	return 0;
+}
+
+//sub1 receives a hidden jmp_buf parameter
+//so it knows which jmp_buf to use with longjmp()
+fn sub1 (uint x) -&gt; int throws {
+	if x > 0 { throw; }
+	return -x;
+}
+</code></pre>
+
 
 </div>
-
 </body>
 </html>
