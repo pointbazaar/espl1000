@@ -12,7 +12,7 @@ fn main ()~> int {
 
 	myfunction(3);
 
-	Simple s = newSimple();
+	Simple s = malloc(8);
 
 	s.member = myfunction;
 

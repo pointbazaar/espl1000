@@ -9,5 +9,9 @@ void tc_loopstmt(struct LoopStmt* l, struct TCCtx* tcctx);
 void tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx);
 void tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx);
 void tc_forstmt(struct ForStmt* f, struct TCCtx* tcctx);
+void tc_trycatchstmt(struct TryCatchStmt* tcs, struct TCCtx* tcctx);
 
+void tc_throwstmt(struct Stmt* s, struct TCCtx* tcctx);
+void tc_breakstmt(struct Stmt* s, struct TCCtx* tcctx);
+void tc_continuestmt(struct Stmt* s, struct TCCtx* tcctx);
 #endif

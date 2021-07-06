@@ -16,7 +16,7 @@ struct Monomial {
 }
 
 fn poly_ctor(uint n) -> Poly{
-	res = makePoly(0,0);
+	Poly res = malloc(8+8);
 	res.n = n;
 	res.coeff = malloc(2*n);
 	for i in 0 .. (n-1) { res.coeff[i] = 0.0; }
@@ -27,6 +27,11 @@ fn poly_dtor(Poly p) ~> bool {
 	free(p.coeff);
 	free(p);
 	return true;
+}
+
+fn monomial_ctor() ~> Monomial {
+	Monomial res = malloc(4+4);
+	return res;
 }
 
 fn poly_parse([char] s) ~> Poly {
@@ -81,7 +86,9 @@ fn monomial_parse([char] s) ~> Monomial {
 @private
 fn monomial_parse_i([char] s, uint i) ~> Monomial {
 
-	Monomial res = makeMonomial(0.0,0);
+	Monomial res = monomial_ctor();
+	res.factor   = 0.0;
+	res.exponent = 0;
 
 	l = strlen(s);
 

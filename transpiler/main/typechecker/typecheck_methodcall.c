@@ -36,6 +36,8 @@ static void tc_methodcall_arg(
 	struct TCCtx* tcctx
 );
 
+static void check_throw_rules(bool callee_throws, struct TCCtx* tcctx);
+
 void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 
 	tcctx->current_line_num = m->super.line_num;
@@ -62,12 +64,15 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 				return;
 			}			
 			char msg[150];
-			sprintf(msg, "SUBR NOT FOUND IN SST: %s\n", m->name);
+			sprintf(msg, "SUBR HAS NO METHOD IN SST: %s\n", m->name);
 			strcat(msg, ERR_SUBR_NOT_FOUND);
 			error(tcctx, msg);
 		}
 		
 		struct Method* method = line->method;
+		
+		check_throw_rules(method->throws, tcctx);
+		
 		expect_args           = method->count_args;
 		
 		expect_types = malloc(sizeof(struct Type*)*expect_args);
@@ -94,6 +99,8 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 			error(tcctx, "called '~>' subr in '->' subr.");
 		}
 		
+		check_throw_rules(stype->throws, tcctx);
+		
 		expect_args  = stype->count_argTypes;
 		expect_types = malloc(sizeof(struct Type*)*expect_args);
 		
@@ -109,6 +116,16 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 	tc_methodcall_args(m, expect_types, expect_args, tcctx);
 	
 	free(expect_types);
+}
+
+static void check_throw_rules(bool callee_throws, struct TCCtx* tcctx){
+	
+	if(!callee_throws){ return; }
+	if(tcctx->currentFn->throws){ return; }
+	
+	if(tcctx->depth_inside_try_stmt > 0){ return; }
+		
+	error(tcctx, "called a throwing subroutine inside a non-throwing subroutine outside any try-block");
 }
 
 static void tc_methodcall_args(
@@ -178,4 +195,6 @@ static void tc_methodcall_arg(
 		
 		error(tcctx, msg);
 	}
+	
+	tc_expr(actual_expr, tcctx);
 }

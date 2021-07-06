@@ -29,28 +29,35 @@ struct CFloat {
 	float i;
 }
 
-fn c_add(CInt a, CInt b) -> CInt {
-
-	CInt res = makeCInt(a.r+b.r, a.i+b.i);
+fn cint_from(int32 r, int32 i) ~> CInt {
+	CInt res = malloc(8);
+	res.r = r;
+	res.i = i;
 	return res;
 }
 
-fn c_sub(CInt a, CInt b) -> CInt {
+fn c_add(CInt a, CInt b) ~> CInt {
 
-	CInt res = makeCInt(a.r-b.r, a.i-b.i);
+	CInt res = cint_from(a.r+b.r, a.i+b.i);
 	return res;
 }
 
-fn c_mul(CInt a, CInt b) -> CInt {
+fn c_sub(CInt a, CInt b) ~> CInt {
+
+	CInt res = cint_from(a.r-b.r, a.i-b.i);
+	return res;
+}
+
+fn c_mul(CInt a, CInt b) ~> CInt {
 
 	//(a+bi)(c+di) = ac - bd + (ad+bc)i
-	CInt res = makeCInt(a.r*b.r - a.i*b.i, a.r*b.i + a.i*b.r);
+	CInt res = cint_from(a.r*b.r - a.i*b.i, a.r*b.i + a.i*b.r);
 	return res;
 }
 
-fn c_pow(CInt a, uint power) -> CInt {
+fn c_pow(CInt a, uint power) ~> CInt {
 	
-	res = makeCInt(a.r, a.i);
+	res = cint_from(a.r, a.i);
 	loop power-1 {
 		newres = c_mul(res, a);
 		free(res);

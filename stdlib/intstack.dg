@@ -7,9 +7,9 @@ struct IntStack {
 	@private [int] arr;
 }
 
-fn intstack_ctor(uint capacity) -> IntStack {
+fn intstack_ctor(uint capacity) ~> IntStack {
 
-	IntStack s = makeIntStack(0,0,0);
+	IntStack s = malloc(4+4+8);
 	
 	s.size = 0;
 	s.capacity = capacity;
@@ -31,9 +31,9 @@ fn intstack_size(IntStack s) -> uint {
 	return s.size;
 }
 
-fn intstack_push(IntStack s, int x) -> int {
+fn intstack_push(IntStack s, int x) -> int throws {
 
-	if s.size >= s.capacity { exit(1); return 0; }
+	if s.size >= s.capacity { throw; }
 	
 	s.arr[s.size] = x;
 	s.size++;
@@ -41,13 +41,13 @@ fn intstack_push(IntStack s, int x) -> int {
 	return x;
 }
 
-fn intstack_peek(IntStack s) -> int {
+fn intstack_peek(IntStack s) -> int throws {
 	
-	if s.size == 0 { exit(1); return 0; }
+	if s.size == 0 { throw; }
 	return s.arr[s.size - 1];
 }
 
-fn intstack_pop(IntStack s) -> int {
+fn intstack_pop(IntStack s) -> int throws {
 
 	res = intstack_peek(s);
 	s.size--;

@@ -1,4 +1,10 @@
 fn main() ~> int {
+	try {
+		return main2();
+	} catch {}
+}
+
+fn main2() ~> int throws {
 	
 	printf("test math\n"); test_math();
 
@@ -31,7 +37,7 @@ fn assertf(float actual, float expect) -> bool {
 	return delta*delta < 0.001;
 }
 
-fn test_matrix() ~> int {
+fn test_matrix() ~> int throws {
 
 	Matrix m1 = matrix_ctor(2,2);
 	m1.arr[0][0] = 1.0;
@@ -134,8 +140,8 @@ fn test_polynomial() ~> int {
 
 fn test_complex() ~> int {
 
-	CInt a = makeCInt(1,2); //1+2i
-	CInt b = makeCInt(2,3); //2+3i
+	CInt a = cint_from(1,2); //1+2i
+	CInt b = cint_from(2,3); //2+3i
 	
 	c = c_add(a,b);
 	
@@ -160,7 +166,7 @@ fn test_complex() ~> int {
 	return 0;
 }
 
-fn test_intll() ~> int {
+fn test_intll() ~> int throws {
 
 	IntLL ll = intll_ctor();
 	
@@ -216,7 +222,7 @@ fn test_intarray() ~> int {
 	return 0;
 }
 
-fn test_intstack() ~> int {
+fn test_intstack() ~> int throws {
 	
 	IntStack s = intstack_ctor(10);
 	

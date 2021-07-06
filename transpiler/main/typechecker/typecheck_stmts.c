@@ -35,10 +35,44 @@ void tc_stmt(struct Stmt* s, struct TCCtx* tcctx){
 		case 3: tc_ifstmt(s->ptr.m3,     tcctx); break;
 		case 4: tc_retstmt(s->ptr.m4,    tcctx); break;
 		case 5: tc_assignstmt(s->ptr.m5, tcctx); break;
-		
+		case 6: tc_trycatchstmt(s->ptr.m6, tcctx); break;
 		case 7: tc_forstmt(s->ptr.m7,    tcctx); break;
 		case 8: tc_switchstmt(s->ptr.m8, tcctx); break;
+		
+		case 99:
+			if(s->isContinue){ tc_continuestmt(s, tcctx); }
+			if(s->isBreak)   { tc_breakstmt(s, tcctx); }
+			if(s->isThrow)   { tc_throwstmt(s, tcctx); }
 	}
+}
+
+void tc_throwstmt(struct Stmt* s, struct TCCtx* tcctx){
+	
+	struct Method* m = tcctx->currentFn;
+				
+	if(m->throws) { return; }
+	
+	//are we inside try-catch stmt?
+	if(tcctx->depth_inside_try_stmt > 0){ return; }
+	
+	char* s1 = strStmt(s);
+	char msg[100];
+	sprintf(msg, "\t%s\n", s1);
+	strcat(msg, ERR_NO_THROW_OUTSIDE_TRY_OR_THROWS_SUBR);
+	
+	free(s1);
+	
+	error(tcctx, msg);
+}
+
+void tc_breakstmt(struct Stmt* s, struct TCCtx* tcctx){
+	
+	//TODO: check that we are in some loop 
+}
+
+void tc_continuestmt(struct Stmt* s, struct TCCtx* tcctx){
+	
+	//TODO: check that we are in some loop 
 }
 
 void tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx){
@@ -60,6 +94,8 @@ void tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx){
 		
 		error(tcctx, msg);
 	}
+	
+	tc_stmtblock(i->block, tcctx);
 }
 
 void tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx){
@@ -81,6 +117,10 @@ void tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx){
 		
 		error(tcctx, msg);
 	}
+	
+	tcctx->depth_inside_loop++;
+	tc_stmtblock(w->block, tcctx);
+	tcctx->depth_inside_loop--;
 }
 
 void tc_loopstmt(struct LoopStmt* l, struct TCCtx* tcctx){
@@ -102,6 +142,10 @@ void tc_loopstmt(struct LoopStmt* l, struct TCCtx* tcctx){
 		
 		error(tcctx, msg);
 	}
+	
+	tcctx->depth_inside_loop++;
+	tc_stmtblock(l->block, tcctx);
+	tcctx->depth_inside_loop--;
 }
 
 void tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx){
@@ -197,5 +241,18 @@ void tc_forstmt(struct ForStmt* f, struct TCCtx* tcctx){
 	tcctx->current_line_num = f->super.line_num;
 	
 	tc_range(f->range, tcctx);
+	tcctx->depth_inside_loop++;
 	tc_stmtblock(f->block, tcctx);
+	tcctx->depth_inside_loop--;
+}
+
+void tc_trycatchstmt(struct TryCatchStmt* tcs, struct TCCtx* tcctx){
+	
+	tcctx->current_line_num = tcs->super.line_num;
+	
+	tcctx->depth_inside_try_stmt++;
+	tc_stmtblock(tcs->try_block, tcctx);
+	tcctx->depth_inside_try_stmt--;
+	
+	tc_stmtblock(tcs->catch_block, tcctx);
 }

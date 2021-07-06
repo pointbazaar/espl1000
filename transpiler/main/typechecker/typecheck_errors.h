@@ -23,6 +23,8 @@
 
 #define ERR_SUBR_NOT_FOUND "subroutine was not found"
 
+#define ERR_NO_THROW_OUTSIDE_TRY_OR_THROWS_SUBR "cannot use 'throw' outside try-block or 'throws' subroutine."
+
 void error(struct TCCtx* tcctx, char* msg);
 
 struct Method* currentFn;

@@ -7,7 +7,7 @@ struct Type* typeFromStrPrimitive(struct ST* st, char* typeName);
 
 struct Type* typeFromStr(struct ST* st, char* typeName);
 
-
+struct Type* typeFromStrArray(struct ST* st, char* typeName);
 
 
 //  [1]

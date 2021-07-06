@@ -34,6 +34,7 @@ struct Type* method_to_subrtype(struct Method* m){
 	stype->returnType     = copyType(m->returnType);
 	stype->hasSideEffects = m->hasSideEffects;
 	stype->count_argTypes = m->count_args;
+	stype->throws         = m->throws;
 	
 	stype->argTypes = malloc(sizeof(void*)*stype->count_argTypes);
 	

@@ -7,9 +7,9 @@ struct IntSet {
 	@private [int] arr;
 }
 
-fn intset_ctor(uint capacity) -> IntSet {
+fn intset_ctor(uint capacity) ~> IntSet {
 
-	IntSet s = makeIntSet(0,0,0);
+	IntSet s = malloc(4+4+8);
 
 	s.size = 0;
 	s.capacity = capacity;
@@ -41,7 +41,7 @@ fn intset_contains(IntSet s, int x) -> bool {
 	return false;
 }
 
-fn intset_insert(IntSet s, int x) -> int {
+fn intset_insert(IntSet s, int x) ~> int {
 	
 	if intset_contains(s, x) { return x; }
 
@@ -88,7 +88,7 @@ fn intset_remove(IntSet s, int x) -> int {
 	return x;
 }
 
-fn intset_union(IntSet a, IntSet b) -> IntSet {
+fn intset_union(IntSet a, IntSet b) ~> IntSet {
 
 	IntSet res = intset_ctor(a.capacity + b.capacity);
 	
@@ -103,7 +103,7 @@ fn intset_union(IntSet a, IntSet b) -> IntSet {
 	return res;
 }
 
-fn intset_cut(IntSet a, IntSet b) -> IntSet {
+fn intset_cut(IntSet a, IntSet b) ~> IntSet {
 
 	IntSet res = intset_ctor(min(a.capacity, b.capacity));
 	

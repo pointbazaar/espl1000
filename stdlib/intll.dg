@@ -25,15 +25,12 @@ fn intll_ctor() ~> IntLL {
 
 	IntLL res = malloc(3*8);
 	res.is_empty = true;
-	
 	return res;
 }
 
 fn intll_dtor(IntLL l) ~> bool {
 
-	if l.is_empty { 
-		free(l); return true;
-	}
+	if l.is_empty { free(l); return true; }
 	
 	IntLLNode current = l.head;
 	
@@ -45,18 +42,24 @@ fn intll_dtor(IntLL l) ~> bool {
 		current = current.next;
 	}
 	
-	free(current);
-	free(l);
+	free(current); free(l);
 	return true;
+}
+
+fn intllnode_ctor() ~> IntLLNode {
+	IntLLNode res = malloc(8*3);
+	res.has_next = false;
+	return res;
 }
 
 @halts
 fn intll_size(IntLL l) -> uint { return l.size; }
 
 @halts
-fn intll_push_front(IntLL l, int value) -> bool {
+fn intll_push_front(IntLL l, int value) ~> bool {
 
-	IntLLNode x = makeIntLLNode(value, false, 0, 0);
+	IntLLNode x = intllnode_ctor();
+	x.value = value;
 	
 	if l.size == 0 {
 		
@@ -76,9 +79,10 @@ fn intll_push_front(IntLL l, int value) -> bool {
 }
 
 @halts
-fn intll_push_back(IntLL l, int value) -> bool {
+fn intll_push_back(IntLL l, int value) ~> bool {
 
-	IntLLNode x = makeIntLLNode(value, false, 0, 0);
+	IntLLNode x = intllnode_ctor();
+	x.value = value;
 	
 	if l.size == 0 {
 		
@@ -106,9 +110,7 @@ fn intll_pop_front(IntLL l) ~> int {
 	oldhead = l.head;
 	
 	if l.size == 1 {
-	
-		l.head = 0;
-		l.tail = 0;
+		
 		l.is_empty = true;
 		
 	} else {
@@ -131,8 +133,7 @@ fn intll_pop_back(IntLL l) ~> int {
 	
 	if l.size == 1 {
 	
-		l.head = 0;
-		l.tail = 0;
+		l.is_empty = true;
 		
 	} else {
 		l.tail = oldtail.prev;
@@ -145,17 +146,17 @@ fn intll_pop_back(IntLL l) ~> int {
 }
 
 @halts
-fn intll_peek_front(IntLL l) -> int {
+fn intll_peek_front(IntLL l) -> int throws {
 	
-	if l.size == 0 { exit(1); return -1; }
+	if l.size == 0 { throw; }
 	
 	return l.head.value;
 }
 
 @halts
-fn intll_peek_back(IntLL l) -> int {
+fn intll_peek_back(IntLL l) -> int throws {
 
-	if l.size == 0 { exit(1); return -1; }
+	if l.size == 0 { throw; }
 	
 	return l.tail.value;
 }

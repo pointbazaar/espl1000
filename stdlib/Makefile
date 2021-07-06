@@ -6,7 +6,7 @@ SOURCES :=  test.dg \
 	polynomial.dg \
 	matrix.dg
 
-test: $(SOURCES)
+test: $(SOURCES) clean
 	sd -g $(SOURCES)
 	./a.out
 

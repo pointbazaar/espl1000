@@ -214,7 +214,8 @@ static struct Method* gen_subr_from_lambda(
 	
 	struct Method* lsubr  = make(Method);
 	lsubr->isPublic       = false;
-	lsubr->hasSideEffects = true;
+	lsubr->hasSideEffects = false;  //ASSUMPTION TODO: work on it
+	lsubr->throws         = false; //ASSUMPTION TODO: work on it
 	sprintf(lsubr->name, LAMBDA_NAME_PATTERN, lambda->lambda_num);
 	
 	struct RetStmt* rstmt = make(RetStmt);

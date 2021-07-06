@@ -34,6 +34,14 @@ fn intbintree_dtor(IntBinTree t) ~> bool {
 }
 
 @private
+fn intbintreenode_ctor() ~> IntBinTreeNode {
+	IntBinTreeNode res = malloc(8*4);
+	res.has_left  = false;
+	res.has_right = false;
+	return res;
+}
+
+@private
 fn intbintreenode_dtor(IntBinTreeNode t) ~> bool {
 
 	if t.has_left { intbintreenode_dtor(t.left);  }
@@ -42,10 +50,11 @@ fn intbintreenode_dtor(IntBinTreeNode t) ~> bool {
 	return true;
 }
 
-fn intbintree_insert(IntBinTree t, int key) -> int {
+fn intbintree_insert(IntBinTree t, int key) ~> int {
 
 	if !t.has_root {
-		t.root = makeIntBinTreeNode(key,false,0,false,0);
+		t.root = intbintreenode_ctor();
+		t.root.key = key;
 		t.has_root = true;
 		return key;
 	}

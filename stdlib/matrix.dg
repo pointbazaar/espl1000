@@ -13,9 +13,11 @@ struct Matrix {
 
 fn matrix_ctor(uint nrows, uint ncols) -> Matrix {
 
-	Matrix res = makeMatrix(0,nrows,ncols);
+	Matrix res = malloc(8+4+4);
 	
-	res.arr = malloc(8*nrows);
+	res.nrows = nrows;
+	res.ncols = ncols;
+	res.arr   = malloc(8*nrows);
 	
 	for r in 0 .. nrows - 1 {
 		res.arr[r] = malloc(4*ncols);
@@ -34,10 +36,11 @@ fn matrix_dtor(Matrix m) ~> bool {
 }
 
 @halts
-fn matrix_add(Matrix a, Matrix b) ~> Matrix {
+fn matrix_add(Matrix a, Matrix b) ~> Matrix throws {
 
-	assert(a.nrows == b.nrows);
-	assert(a.ncols == b.ncols);
+	if a.nrows != b.nrows { throw; }
+	if a.ncols != b.ncols { throw; }
+	
 	res = matrix_ctor(a.nrows, a.ncols);
 	for r in 0 .. a.nrows - 1 {
 		for c in 0 .. a.ncols - 1 {
@@ -48,10 +51,11 @@ fn matrix_add(Matrix a, Matrix b) ~> Matrix {
 }
 
 @halts
-fn matrix_sub(Matrix a, Matrix b) ~> Matrix {
+fn matrix_sub(Matrix a, Matrix b) ~> Matrix throws {
 
-	assert(a.nrows == b.nrows);
-	assert(a.ncols == b.ncols);
+	if a.nrows != b.nrows { throw; }
+	if a.ncols != b.ncols { throw; }
+	
 	res = matrix_ctor(a.nrows, a.ncols);
 	for r in 0 .. a.nrows - 1 {
 		for c in 0 .. a.ncols - 1 {
@@ -75,9 +79,9 @@ fn matrix_scale(Matrix a, float r) ~> Matrix {
 }
 
 @halts
-fn matrix_mul(Matrix a, Matrix b) ~> Matrix {
+fn matrix_mul(Matrix a, Matrix b) ~> Matrix throws {
 
-	assert(a.ncols == b.nrows);
+	if a.ncols != b.nrows { throw; }
 	
 	res = matrix_ctor(a.nrows, b.ncols);
 	for r in 0 .. a.nrows - 1 {
@@ -93,12 +97,14 @@ fn matrix_mul(Matrix a, Matrix b) ~> Matrix {
 }
 
 @halts
-fn matrix_submatrix(Matrix a, uint row, uint col) ~> Matrix {
+fn matrix_submatrix(Matrix a, uint row, uint col) ~> Matrix throws {
 
-	assert(a.nrows == a.ncols); //currently only works for square matrices
+	if a.nrows != a.ncols { throw; }
+	//currently only works for square matrices
 
 	//the matrix obtained by removing 'row', 'col'
-	assert(a.nrows >= 2 && a.ncols >= 2);
+	if a.nrows < 2 || a.ncols < 2 { throw; }
+	
 	res = matrix_ctor(a.nrows-1, a.ncols-1);
 	
 	for r in 0 .. res.nrows - 1 {
@@ -114,7 +120,7 @@ fn matrix_submatrix(Matrix a, uint row, uint col) ~> Matrix {
 	return res;
 }
 
-fn matrix_det(Matrix a) ~> float {
+fn matrix_det(Matrix a) ~> float throws {
 
 	if a.nrows == 1 && a.ncols == 1 { 
 		return a.arr[0][0]; 
@@ -150,7 +156,7 @@ fn matrix_transpose(Matrix a) ~> Matrix {
 }
 
 @halts
-fn matrix_pow(Matrix a, uint power) -> Matrix {
+fn matrix_pow(Matrix a, uint power) ~> Matrix throws {
 
 	res = matrix_identity(a.nrows);
 	
@@ -177,9 +183,9 @@ fn matrix_identity(uint n) -> Matrix {
 }
 
 @private
-fn matrix_inverse(Matrix a) ~> Matrix {
+fn matrix_inverse(Matrix a) ~> Matrix throws {
 
 	//TODO
-	exit(1);
+	throw;
 	return a;
 }

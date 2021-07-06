@@ -15,11 +15,19 @@
 
 //Typechecker Includes
 #include "typecheck_errors.h"
+#include "typecheck_expr.h"
 #include "typecheck_utils.h"
 #include "typecheck_stmts.h"
 #include "typecheck_methodcall.h"
 #include "typecheck.h"
 #include "tcctx.h"
+
+static void check_type_rules_assign(
+	struct AssignStmt* a, 
+	struct Type* left, 
+	struct Type* right,
+	struct TCCtx* tcctx
+);
 
 void tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx){
 
@@ -39,23 +47,33 @@ void tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx){
 	if(is_malloc(a->expr))
 		{ return; }
 
-	struct Type* rightType = 
-		infer_type_expr(tcctx->current_filename, tcctx->st, a->expr);
+	struct Type* right = infer_type_expr(tcctx->current_filename, tcctx->st, a->expr);
 	
-	struct Type* leftType = a->optType;
+	struct Type* left = a->optType;
 	
 	if(a->optType == NULL){
-		leftType  = infer_type_variable(tcctx->current_filename, tcctx->st, a->var);
+		left = infer_type_variable(tcctx->current_filename, tcctx->st, a->var);
 	}
 	
-	if(is_integer_type(leftType) 
-	&& is_integer_type(rightType))
+	check_type_rules_assign(a, left, right, tcctx);
+	
+	tc_expr(a->expr, tcctx);
+}
+
+static void check_type_rules_assign(
+	struct AssignStmt* a, 
+	struct Type* left, 
+	struct Type* right,
+	struct TCCtx* tcctx
+){
+	
+	if(is_integer_type(left) && is_integer_type(right))
 		{ return; }
 	
-	if(!eq_type(leftType, rightType)){
+	if(!eq_type(left, right)){
 	
-		char* str_t1 = strType(leftType);
-		char* str_t2 = strType(rightType);
+		char* str_t1 = strType(left);
+		char* str_t2 = strType(right);
 		
 		char* str_a  = strAssignStmt(a);
 		

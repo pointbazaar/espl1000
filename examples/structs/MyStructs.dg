@@ -4,7 +4,7 @@ struct MyStruct {
 }
 
 fn main () ~> int {
-	MyStruct s = newMyStruct(); 
+	MyStruct s = malloc(8); 
 
 	s.a = 1;
 	s.b = -3;

@@ -26,9 +26,12 @@ bool typecheck_ast(struct AST* ast, struct ST* st){
 
 	struct TCCtx tcctx;
 	
-	tcctx.tcErrCount = 0;
-	tcctx.st         = st;
-	tcctx.currentFn  = NULL;
+	tcctx.tcErrCount       = 0;
+	tcctx.st               = st;
+	tcctx.currentFn        = NULL;
+	
+	tcctx.depth_inside_try_stmt = 0;
+	tcctx.depth_inside_loop     = 0;
 	
 	for(uint16_t i = 0; i < ast->count_namespaces; i++)
 		{ tc_namespace(ast->namespaces[i], &tcctx); }

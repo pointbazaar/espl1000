@@ -14,8 +14,9 @@
 #include "typeinference/typeinfer.h"
 #include "typeinference/util/type_str.h"
 
+static struct Type* typeFromStrPrimitive_inner(struct ST* st, char* typeName);
 
-struct Type* typeFromStrPrimitive(struct ST* st, char* typeName){
+static struct Type* typeFromStrPrimitive_inner(struct ST* st, char* typeName){
 	
 	struct Type* res         = make(Type);
 	struct BasicType* btw    = make(BasicType);
@@ -38,6 +39,13 @@ struct Type* typeFromStrPrimitive(struct ST* st, char* typeName){
 
 	btw->subrType = NULL;
 	btw->simpleType = s;
+	
+	return res;
+}
+
+struct Type* typeFromStrPrimitive(struct ST* st, char* typeName){
+	
+	struct Type* res = typeFromStrPrimitive_inner(st, typeName);
 	
 	st_register_inferred_type(st, res);
 	
@@ -74,3 +82,18 @@ struct Type* typeFromStr(struct ST* st, char* typeName){
 	return res;
 }
 
+struct Type* typeFromStrArray(struct ST* st, char* typeName){
+	
+	struct ArrayType* at = make(ArrayType);
+	at->element_type = typeFromStrPrimitive_inner(st, typeName); 
+	
+	struct Type* t = make(Type);
+	
+	t->m1 = NULL;
+	t->m2 = NULL;
+	t->m3 = at;
+	
+	st_register_inferred_type(st, t);
+	
+	return t;
+}

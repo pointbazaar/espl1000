@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 #include "ast/ast.h"
@@ -28,7 +29,7 @@ struct Type* infer_type_term(char* filename, struct ST* st, struct Term* t){
 		case  5: return infer_type_expr(filename, st, t->ptr.m5); 
 		case  6: return infer_type_variable(filename, st, t->ptr.m6); 
 		case  7: return typeFromStrPrimitive(st, "float"); 
-		case  8: return typeFromStr(st, "String"); 
+		case  8: return typeFromStrArray(st, "char");
 		case  9: return typeFromStrPrimitive(st, "int");
 		case 10: return typeFromStrPrimitive(st, "int");
 		
