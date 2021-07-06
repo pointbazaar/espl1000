@@ -14,7 +14,7 @@
 #include "stmts/cg_stmts.h"
 #include "types/cg_types.h"
 #include "expr/cg_expr.h"
-#include "struct/cg_struct.h"
+#include "struct/cg_structdecl.h"
 #include "subr/cg_subr.h"
 
 #include "code_gen/util/indent.h"

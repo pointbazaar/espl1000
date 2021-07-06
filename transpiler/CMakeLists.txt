@@ -32,7 +32,9 @@ add_executable(${PROJECT_NAME}
 	main/code_gen/c_code_gen/stmts/cg_throwstmt.c
 	main/code_gen/c_code_gen/stmts/cg_trycatch.c
 	main/code_gen/c_code_gen/stmts/cg_whilestmt.c
-	main/code_gen/c_code_gen/struct/cg_struct.c
+	main/code_gen/c_code_gen/struct/cg_structdecl.c
+	main/code_gen/c_code_gen/struct/cg_structmember.c
+	main/code_gen/c_code_gen/struct/cg_struct_reorder.c
 	main/code_gen/c_code_gen/subr/cg_subr.c
 	main/code_gen/c_code_gen/types/cg_types.c
 	main/code_gen/c_code_gen/var/cg_var.c

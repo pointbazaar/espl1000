@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -7,14 +6,6 @@
 
 #include "util/ctx.h"
 #include "flags/flags.h"
-
-#include "cg_struct.h"
-
-#include "code_gen/c_code_gen/types/cg_types.h"
-
-#include "code_gen/util/indent.h"
-#include "code_gen/types/gen_c_types.h"
-#include "code_gen/structs/structs_code_gen.h"
 
 static uint8_t sizeof_structmember(struct StructMember* m){
 	//returns the size in bytes of that struct member
@@ -58,7 +49,6 @@ static uint8_t sizeof_structmember(struct StructMember* m){
 	
 	if(type->m2 != NULL){ /*Fatal*/ }
 	
-	printf("Fatal(in sizeof_structmember)\n"); 
 	exit(1);
 }
 
@@ -70,7 +60,7 @@ static int compare_structmembers_size(const void* m1, const void* m2){
 	return -(size1 - size2);
 }
 
-static struct StructMember** struct_reorder(struct StructDecl* s){
+struct StructMember** struct_reorder(struct StructDecl* s){
 	
 	//order struct members by size
 	//http://www.catb.org/esr/structure-packing/
@@ -101,47 +91,5 @@ static struct StructMember** struct_reorder(struct StructDecl* s){
 	return res;
 }
 
-void transpileStructDecl(struct StructDecl* s, struct Ctx* ctx){
-	
-	fprintf(ctx->file ,"struct %s {\n", s->type->structType->typeName);
-	
-	struct StructMember** reordered = struct_reorder(s);
-			
-	for(uint32_t i = 0; i < s->count_members; i++){
-		
-		transpileStructMember(reordered[i], ctx);
-	}
-	
-	free(reordered);
-	
-	fprintf(ctx->file, "};\n");
-}
 
-void transpileStructMember(struct StructMember* m, struct Ctx* ctx){
-	
-	fprintf(ctx->file, "\t");
-	
-	bool isSubrType = false;
-	//is it a function pointer?
-	if(m->type->m1 != NULL){
-		if(m->type->m1->subrType != NULL){
-			isSubrType = true;
-			strncpy(
-				ctx->currentFunctionPointerVarOrArgName,
-				m->name,
-				DEFAULT_STR_SIZE
-			);
-		}
-	}
-	
-	transpileType(m->type, ctx);
-	
-	if(!isSubrType){
-		//with C function pointers, the identifier of the 
-		//function pointer is between the types
-		//describing it
-		fprintf(ctx->file, " %s", m->name);
-	}
-	
-	fprintf(ctx->file, ";\n");
-}
+
