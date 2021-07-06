@@ -8,11 +8,9 @@
 #include "util/ctx.h"
 #include "flags/flags.h"
 
-#include "c_code_gen_subr.h"
-
-#include "../c_code_gen.h"
-
-#include "code_gen/c_code_gen/types/c_code_gen_types.h"
+#include "../cg.h"
+#include "cg_subr.h"
+#include "code_gen/c_code_gen/types/cg_types.h"
 
 #include "tables/symtable/symtable.h"
 #include "tables/lvst/lvst.h"
@@ -20,7 +18,7 @@
 
 #include "analyzer/lv/lv_analyzer.h"
 
-#include "code_gen/util/code_gen_util.h"
+#include "code_gen/util/indent.h"
 #include "code_gen/types/gen_c_types.h"
 #include "code_gen/structs/structs_code_gen.h"
 

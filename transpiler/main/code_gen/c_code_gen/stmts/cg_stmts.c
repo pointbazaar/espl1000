@@ -12,17 +12,15 @@
 
 #include "typeinference/typeinfer.h"
 
-#include "c_code_gen_stmts.h"
+#include "cg_stmts.h"
+#include "code_gen/c_code_gen/const/cg_const.h"
+#include "code_gen/c_code_gen/var/cg_var.h"
+#include "code_gen/c_code_gen/expr/cg_expr.h"
+#include "code_gen/c_code_gen/types/cg_types.h"
 
-#include "code_gen/c_code_gen/const/c_code_gen_const.h"
-#include "code_gen/c_code_gen/stmts/c_code_gen_stmts.h"
-#include "code_gen/c_code_gen/var/c_code_gen_var.h"
-#include "code_gen/c_code_gen/expr/c_code_gen_expr.h"
-#include "code_gen/c_code_gen/types/c_code_gen_types.h"
+#include "code_gen/c_code_gen/cg.h"
 
-#include "code_gen/c_code_gen/c_code_gen.h"
-
-#include "code_gen/util/code_gen_util.h"
+#include "code_gen/util/indent.h"
 #include "code_gen/types/gen_c_types.h"
 #include "code_gen/structs/structs_code_gen.h"
 

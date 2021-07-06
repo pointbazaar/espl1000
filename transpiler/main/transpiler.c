@@ -14,7 +14,7 @@
 
 #include "../test/test.h"
 
-#include "code_gen/c_code_gen/c_code_gen.h"
+#include "code_gen/c_code_gen/cg.h"
 #include "flags/flags.h"
 #include "util/help.h"
 

@@ -9,15 +9,15 @@
 #include "util/ctx.h"
 #include "flags/flags.h"
 
-#include "c_code_gen.h"
-#include "const/c_code_gen_const.h"
-#include "stmts/c_code_gen_stmts.h"
-#include "types/c_code_gen_types.h"
-#include "expr/c_code_gen_expr.h"
-#include "struct/c_code_gen_struct.h"
-#include "subr/c_code_gen_subr.h"
+#include "cg.h"
+#include "const/cg_const.h"
+#include "stmts/cg_stmts.h"
+#include "types/cg_types.h"
+#include "expr/cg_expr.h"
+#include "struct/cg_struct.h"
+#include "subr/cg_subr.h"
 
-#include "code_gen/util/code_gen_util.h"
+#include "code_gen/util/indent.h"
 #include "code_gen/types/gen_c_types.h"
 #include "code_gen/structs/structs_code_gen.h"
 

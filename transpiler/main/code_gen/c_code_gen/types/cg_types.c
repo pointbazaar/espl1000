@@ -11,9 +11,9 @@
 
 #include "typeinference/typeinfer.h"
 
-#include "c_code_gen_types.h"
+#include "cg_types.h"
 
-#include "code_gen/util/code_gen_util.h"
+#include "code_gen/util/indent.h"
 #include "code_gen/types/gen_c_types.h"
 #include "code_gen/structs/structs_code_gen.h"
 

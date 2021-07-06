@@ -8,11 +8,11 @@
 #include "util/ctx.h"
 #include "flags/flags.h"
 
-#include "c_code_gen_struct.h"
+#include "cg_struct.h"
 
-#include "code_gen/c_code_gen/types/c_code_gen_types.h"
+#include "code_gen/c_code_gen/types/cg_types.h"
 
-#include "code_gen/util/code_gen_util.h"
+#include "code_gen/util/indent.h"
 #include "code_gen/types/gen_c_types.h"
 #include "code_gen/structs/structs_code_gen.h"
 

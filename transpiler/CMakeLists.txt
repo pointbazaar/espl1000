@@ -19,17 +19,17 @@ add_executable(${PROJECT_NAME}
 	main/analyzer/lv/lv_analyzer.c
 	
 	#code_gen
-	main/code_gen/c_code_gen/c_code_gen.c
-	main/code_gen/c_code_gen/const/c_code_gen_const.c
-	main/code_gen/c_code_gen/expr/c_code_gen_expr.c
-	main/code_gen/c_code_gen/stmts/c_code_gen_stmts.c
-	main/code_gen/c_code_gen/struct/c_code_gen_struct.c
-	main/code_gen/c_code_gen/subr/c_code_gen_subr.c
-	main/code_gen/c_code_gen/types/c_code_gen_types.c
-	main/code_gen/c_code_gen/var/c_code_gen_var.c
+	main/code_gen/c_code_gen/cg.c
+	main/code_gen/c_code_gen/const/cg_const.c
+	main/code_gen/c_code_gen/expr/cg_expr.c
+	main/code_gen/c_code_gen/stmts/cg_stmts.c
+	main/code_gen/c_code_gen/struct/cg_struct.c
+	main/code_gen/c_code_gen/subr/cg_subr.c
+	main/code_gen/c_code_gen/types/cg_types.c
+	main/code_gen/c_code_gen/var/cg_var.c
 	main/code_gen/structs/structs_code_gen.c
 	main/code_gen/types/gen_c_types.c
-	main/code_gen/util/code_gen_util.c
+	main/code_gen/util/indent.c
 	
 	#flags
 	main/flags/flags.c
