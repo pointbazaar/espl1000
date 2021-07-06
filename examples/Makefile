@@ -37,6 +37,9 @@ test:
 	$(CALL) lambda.dg
 	$(CALL2) annotations.dg
 	$(CALL) typeinference/LocalVarTypeInference.dg
+
+	$(CALL) try.dg
+	$(CALL) try2.dg
 	@echo "[Examples] done"
 
 # currently not working: 

@@ -1,0 +1,30 @@
+
+fn main () ~> int {
+
+	try {} catch {}
+
+	try {
+		sub1();
+	} catch {
+		printf("catched\n");
+	}
+
+
+	try {
+		sub2();
+	} catch {
+		printf("catch 2\n");
+	}
+	return 0;
+}
+
+fn sub1 () ~> bool throws {
+
+	throw;
+	return true;
+}
+
+fn sub2 () ~> bool throws {
+	
+	return sub1();
+}

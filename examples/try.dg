@@ -1,0 +1,12 @@
+
+fn main () ~> int {
+
+	try {
+		throw;
+	} catch {
+		printf("catched\n");
+	}
+
+	return 0;
+}
+

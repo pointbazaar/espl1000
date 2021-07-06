@@ -147,6 +147,8 @@ struct Proto protos_string[] = {
 	{ "strerror", "[char]", HALTS_UNKNOWN, true },
 	
 	{ "strtok",   "[char]", HALTS_UNKNOWN, true },
+	
+	{ "memcpy",   "int", HALTS_UNKNOWN, true },
 };
 
 struct Proto protos_ctype[] = {

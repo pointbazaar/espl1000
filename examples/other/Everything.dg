@@ -26,7 +26,7 @@ fn main () ~> int {
 
 	for i in 0 .. 1 {
 		
-		printf("%d", i);
+		printf("%ld", i);
 	}
 
 	loop 2 {

@@ -52,9 +52,16 @@ void transpileMethodSignature(struct Method* m, struct Ctx* ctx){
 		}
 	}
 	
-	//TODO: maybe sneak in a 
+	
+	//maybe sneak in a 
 	//jmp_buf* _jb
 	//argument if the relevant function throws
+	if(m->throws){
+		if(m->count_args > 0){
+			fprintf(ctx->file, ", ");
+		}
+		fprintf(ctx->file, "jmp_buf* _jb");
+	}
 
 	fprintf(ctx->file, ")");
 }
