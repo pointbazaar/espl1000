@@ -22,6 +22,9 @@ add_executable(${PROJECT_NAME}
 	main/code_gen/c_code_gen/cg.c
 	main/code_gen/c_code_gen/const/cg_const.c
 	main/code_gen/c_code_gen/expr/cg_expr.c
+	main/code_gen/c_code_gen/expr/cg_op.c
+	main/code_gen/c_code_gen/expr/cg_term.c
+	main/code_gen/c_code_gen/expr/cg_unopterm.c
 	main/code_gen/c_code_gen/stmts/cg_stmts.c
 	main/code_gen/c_code_gen/stmts/cg_assignstmt.c
 	main/code_gen/c_code_gen/stmts/cg_call.c
