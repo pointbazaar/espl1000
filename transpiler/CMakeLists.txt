@@ -23,6 +23,15 @@ add_executable(${PROJECT_NAME}
 	main/code_gen/c_code_gen/const/cg_const.c
 	main/code_gen/c_code_gen/expr/cg_expr.c
 	main/code_gen/c_code_gen/stmts/cg_stmts.c
+	main/code_gen/c_code_gen/stmts/cg_assignstmt.c
+	main/code_gen/c_code_gen/stmts/cg_call.c
+	main/code_gen/c_code_gen/stmts/cg_forstmt.c
+	main/code_gen/c_code_gen/stmts/cg_ifstmt.c
+	main/code_gen/c_code_gen/stmts/cg_loopstmt.c
+	main/code_gen/c_code_gen/stmts/cg_switchcase.c
+	main/code_gen/c_code_gen/stmts/cg_throwstmt.c
+	main/code_gen/c_code_gen/stmts/cg_trycatch.c
+	main/code_gen/c_code_gen/stmts/cg_whilestmt.c
 	main/code_gen/c_code_gen/struct/cg_struct.c
 	main/code_gen/c_code_gen/subr/cg_subr.c
 	main/code_gen/c_code_gen/types/cg_types.c

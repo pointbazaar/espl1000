@@ -18,6 +18,5 @@ void transpileForStmt(struct ForStmt* f, struct Ctx* ctx);
 void transpileSwitchStmt(struct SwitchStmt* s, struct Ctx* ctx);
 void transpileCaseStmt(struct CaseStmt* s, struct Ctx* ctx);
 void transpileTryCatchStmt(struct TryCatchStmt* tcs, struct Ctx* ctx);
-void transpileThrowStmt(struct Ctx* ctx);
 
 #endif
