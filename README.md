@@ -23,7 +23,12 @@ what is actually going on at runtime, even if the semantics of the language are 
 
 ## Editor Support
 
-The editor of choice for smalldragon currently is [micro](https://micro-editor.github.io/), because there is a basic syntax highlighting for it.
+Syntax Highlighting Available (must be configured)
+- Vim
+- Micro
+- Geany
+- Sublime-Text
+- Batcat
 
 [Documentation](https://smalldragon.org)
 
