@@ -102,9 +102,9 @@ fn intll_push_back(IntLL l, int value) ~> bool {
 }
 
 @halts
-fn intll_pop_front(IntLL l) ~> int {
+fn intll_pop_front(IntLL l) ~> int throws {
 	
-	if l.size == 0 { exit(1); return -1; }
+	if l.size == 0 { throw; }
 	
 	int val = l.head.value;
 	oldhead = l.head;
@@ -124,9 +124,9 @@ fn intll_pop_front(IntLL l) ~> int {
 }
 
 @halts
-fn intll_pop_back(IntLL l) ~> int {
+fn intll_pop_back(IntLL l) ~> int throws {
 
-	if l.size == 0 { exit(1); return -1; }
+	if l.size == 0 { throw; }
 	
 	int val = l.tail.value;
 	oldtail = l.tail;

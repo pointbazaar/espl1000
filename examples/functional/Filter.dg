@@ -18,7 +18,7 @@ fn main ()~> int {
 fn myfilter (uint item)-> bool {
 	return (item==2);	
 }
-fn filter ([uint] arr, int arrlen,  ( (uint)->bool ) myfilterr)->[uint] {
+fn filter ([uint] arr, int arrlen,  ( (uint)->bool ) myfilterr) ~> [uint] {
 	[uint] arr2 = malloc(4*arrlen);
 
 	i=0;

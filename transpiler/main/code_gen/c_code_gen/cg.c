@@ -36,6 +36,7 @@
 #include "tables/sst/sst_fill.h"
 #include "tables/sst/sst_prefill.h"
 #include "tables/stst/stst.h"
+#include "tables/stst/stst_prefill.h"
 #include "tables/symtable/symtable.h"
 
 //counter for generating labels
@@ -117,6 +118,8 @@ static void fill_tables(struct AST* ast, struct Ctx* ctx){
 	
 	sst_clear(ctx->tables->sst);
 	sst_prefill(ctx->tables, ctx->tables->sst);
+	
+	stst_prefill(ctx->tables, ctx->tables->stst);
 	
 	for(int i = 0; i < ast->count_namespaces; i++){
 		

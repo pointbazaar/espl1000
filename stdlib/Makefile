@@ -4,7 +4,8 @@ SOURCES :=  test.dg \
 	intset.dg intstack.dg intarray.dg intbintree.dg intll.dg \
 	complex.dg \
 	polynomial.dg \
-	matrix.dg
+	matrix.dg \
+	ppm.dg
 
 test: $(SOURCES) clean
 	sd -g $(SOURCES)

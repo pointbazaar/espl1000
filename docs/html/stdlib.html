@@ -29,9 +29,8 @@
 	<h2>Behavior in Exceptional Cases</h2>
 	<p>
 		Generally, most subroutines here will just
-		<strong>exit(1)</strong> in exceptional cases.
-		<br>
-		For the future, a more flexible mechanism is intended.
+		<strong>throw</strong> in exceptional cases.
+		
 	</p>
 
 	<h2> Contents </h2>
@@ -113,7 +112,7 @@
 			<td> isprime </td><td> (uint64 n) -> bool </td><td> O(n) </td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> nprimes </td><td> (uint n) -> [unit32] </td><td> O(n^2) </td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
+			<td> nprimes </td><td> (uint n) ~> [unit32] </td><td> O(n^2) </td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 	</tbody>
 	</table>
@@ -174,22 +173,22 @@
 	</thead>
 	<tbody>
 		<tr style="color:green;">
-			<td> intstack_ctor </td><td> (uint capacity) -> IntStack </td><td> O(1) </td><td>O(1)</td><td>+O(capacity)</td><td>OOM</td>
+			<td> intstack_ctor </td><td> (uint capacity) ~> IntStack </td><td> O(1) </td><td>O(1)</td><td>+O(capacity)</td><td>OOM</td>
 		</tr>
 		<tr style="color:red;">
-			<td> intstack_dtor </td><td> (IntStack s) -> bool </td><td> O(1) </td><td>O(1)</td><td>-O(capacity)</td><td>Double Free</td>
+			<td> intstack_dtor </td><td> (IntStack s) ~> bool </td><td> O(1) </td><td>O(1)</td><td>-O(capacity)</td><td>Double Free</td>
 		</tr>
 		<tr>
 			<td> intstack_size </td><td> (IntStack s) -> uint </td><td> O(1) </td><td>O(1)</td><td>-</td><td>-</td>
 		</tr>
 		<tr>
-			<td> intstack_push </td><td> (IntStack s, int x) -> int </td><td>O(1)</td><td>O(1)</td><td>-</td><td>stack overflow</td>
+			<td> intstack_push </td><td> (IntStack s, int x) -> int throws</td><td>O(1)</td><td>O(1)</td><td>-</td><td>stack overflow</td>
 		</tr>
 		<tr>
-			<td> intstack_peek </td><td> (IntStack s) -> int </td><td> O(1) </td><td>O(1)</td><td>-</td><td>stack empty</td>
+			<td> intstack_peek </td><td> (IntStack s) -> int throws</td><td> O(1) </td><td>O(1)</td><td>-</td><td>stack empty</td>
 		</tr>
 		<tr>
-			<td> intstack_pop </td><td> (IntStack s) -> int </td><td> O(1) </td><td>O(1)</td><td>-</td><td>stack empty</td>
+			<td> intstack_pop </td><td> (IntStack s) -> int throws</td><td> O(1) </td><td>O(1)</td><td>-</td><td>stack empty</td>
 		</tr>
 	</tbody>
 	</table>
@@ -236,13 +235,13 @@
 	</thead>
 	<tbody>
 		<tr style="color:green;">
-			<td> intbintree_ctor </td><td> () -> IntBinTree </td><td>O(1)</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
+			<td> intbintree_ctor </td><td> () ~> IntBinTree </td><td>O(1)</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
 		</tr>
 		<tr style="color:red;">
-			<td> intbintree_dtor </td><td> (IntBinTree t) -> bool </td><td>O(size)</td><td>O(size) worst case</td><td>-O(size)</td><td>Double Free</td>
+			<td> intbintree_dtor </td><td> (IntBinTree t) ~> bool </td><td>O(size)</td><td>O(size) worst case</td><td>-O(size)</td><td>Double Free</td>
 		</tr>
 		<tr>
-			<td> intbintree_insert </td><td> (IntBinTree t, int key) -> int </td><td>O(size) worst case</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
+			<td> intbintree_insert </td><td> (IntBinTree t, int key) ~> int </td><td>O(size) worst case</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
 		</tr>
 		<tr>
 			<td> intbintree_contains </td><td>(IntBinTree t, int key) -> bool</td><td>O(size) worst case</td><td>O(1)</td><td>-</td><td>-</td>
@@ -270,28 +269,28 @@
 	</thead>
 	<tbody>
 		<tr style="color:green;">
-			<td>intll_ctor</td><td>() -> IntLL</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
+			<td>intll_ctor</td><td>() ~> IntLL</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
 		</tr>
 		<tr style="color:red;">
-			<td>intll_dtor</td><td>(IntLL l) -> bool</td><td>O(size)</td><td>O(1)</td><td>-O(l.size)</td><td>Double Free</td>
+			<td>intll_dtor</td><td>(IntLL l) ~> bool</td><td>O(size)</td><td>O(1)</td><td>-O(l.size)</td><td>Double Free</td>
 		</tr>
 		<tr>
-			<td>intll_push_front</td><td>(IntLL l, int value) -> bool</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
+			<td>intll_push_front</td><td>(IntLL l, int value) ~> bool</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>intll_push_back</td><td>(IntLL l, int value) -> bool</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
+			<td>intll_push_back</td><td>(IntLL l, int value) ~> bool</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>intll_pop_front</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td><td>-O(1)</td><td>l empty</td>
+			<td>intll_pop_front</td><td>(IntLL l) ~> int throws</td><td>O(1)</td><td>O(1)</td><td>-O(1)</td><td>l empty</td>
 		</tr>
 		<tr>
-			<td>intll_pop_back</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td><td>-O(1)</td><td>l empty</td>
+			<td>intll_pop_back</td><td>(IntLL l) ~> int throws</td><td>O(1)</td><td>O(1)</td><td>-O(1)</td><td>l empty</td>
 		</tr>
 		<tr>
-			<td>intll_peek_front</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td><td>-</td><td>l empty</td>
+			<td>intll_peek_front</td><td>(IntLL l) -> int throws</td><td>O(1)</td><td>O(1)</td><td>-</td><td>l empty</td>
 		</tr>
 		<tr>
-			<td>intll_peek_back</td><td>(IntLL l) -> int</td><td>O(1)</td><td>O(1)</td><td>-</td><td>l empty</td>
+			<td>intll_peek_back</td><td>(IntLL l) -> int throws</td><td>O(1)</td><td>O(1)</td><td>-</td><td>l empty</td>
 		</tr>
 		<tr>
 			<td>intll_contains</td><td>(IntLL l, int value) -> bool</td><td>O(size)</td><td>O(1)</td><td>-</td><td>-</td>
@@ -319,37 +318,37 @@
 			<td>poly_ctor</td><td>(uint n) -> Poly</td><td>O(1)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 		<tr style="color:red;">
-			<td>poly_dtor</td><td>(Poly p) -> bool</td><td>O(1)</td><td>O(1)</td><td>-O(n)</td><td>Double Free</td>
+			<td>poly_dtor</td><td>(Poly p) ~> bool</td><td>O(1)</td><td>O(1)</td><td>-O(n)</td><td>Double Free</td>
 		</tr>
 		<tr>
-			<td>poly_parse</td><td>([char] str) -> Poly</td><td> ? </td><td> ? </td><td>+O(n)</td><td>OOM, segfault</td>
+			<td>poly_parse</td><td>([char] str) ~> Poly</td><td> ? </td><td> ? </td><td>+O(n)</td><td>OOM, segfault</td>
 		</tr>
 		<tr>
 			<td>poly_scale_inplace</td><td>(Poly a, float f) -> Poly</td><td>O(n)</td><td>O(1)</td><td> - </td><td> - </td>
 		</tr>
 		<tr>
-			<td>poly_add</td><td>(Poly a, Poly b) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
+			<td>poly_add</td><td>(Poly a, Poly b) ~> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>poly_sub</td><td>(Poly a, Poly b) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
+			<td>poly_sub</td><td>(Poly a, Poly b) ~> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>poly_mul</td><td>(Poly a, Poly b) -> Poly</td><td>O(n^2)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
+			<td>poly_mul</td><td>(Poly a, Poly b) ~> Poly</td><td>O(n^2)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 		<tr>
 			<td>poly_deg</td><td>(Poly p) -> uint</td><td>O(n)</td><td>O(1)</td><td> - </td><td> - </td>
 		</tr>
 		<tr>
-			<td>poly_print</td><td>(Poly p) -> bool</td><td>O(n)</td><td>O(1)</td><td> - </td><td> - </td>
+			<td>poly_print</td><td>(Poly p) ~> bool</td><td>O(n)</td><td>O(1)</td><td> - </td><td> - </td>
 		</tr>
 		<tr>
 			<td>poly_eval</td><td>(Poly p, float x) -> float</td><td>O(n)</td><td>O(1)</td><td> - </td><td> - </td>
 		</tr>
 		<tr>
-			<td>poly_derivative</td><td>(Poly p) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
+			<td>poly_derivative</td><td>(Poly p) ~> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>poly_integral</td><td>(Poly p) -> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
+			<td>poly_integral</td><td>(Poly p) ~> Poly</td><td>O(n)</td><td>O(1)</td><td>+O(n)</td><td>OOM</td>
 		</tr>
 	</tbody>
 	</table>
@@ -368,37 +367,37 @@
 	</thead>
 	<tbody>
 		<tr style="color:green;">
-			<td>matrix_ctor</td><td>(uint nrows, uint ncols) -> Matrix</td><td>O(nrows)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td>OOM</td>
+			<td>matrix_ctor</td><td>(uint nrows, uint ncols) ~> Matrix</td><td>O(nrows)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td>OOM</td>
 		</tr>
 		<tr style="color:red;">
-			<td>matrix_dtor</td><td>(Matrix a) -> bool</td><td>O(nrows)</td><td>O(1)</td><td>-O(nrows*ncols)</td><td>Double Free</td>
+			<td>matrix_dtor</td><td>(Matrix a) ~> bool</td><td>O(nrows)</td><td>O(1)</td><td>-O(nrows*ncols)</td><td>Double Free</td>
 		</tr>
 		<tr>
-			<td>matrix_add</td><td>(Matrix a, Matrix b) -> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td>OOM, dim mismatch</td>
+			<td>matrix_add</td><td>(Matrix a, Matrix b) ~> Matrix throws</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td>OOM, dim mismatch</td>
 		</tr>
 		<tr>
-			<td>matrix_sub</td><td>(Matrix a, Matrix b) -> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td>OOM, dim mismatch</td>
+			<td>matrix_sub</td><td>(Matrix a, Matrix b) ~> Matrix throws</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td>OOM, dim mismatch</td>
 		</tr>
 		<tr>
-			<td>matrix_scale</td><td>(Matrix a, float r) -> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td>OOM</td>
+			<td>matrix_scale</td><td>(Matrix a, float r) ~> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>matrix_mul</td><td>(Matrix a, Matrix b) -> Matrix</td><td>O(a.nrows*b.ncols*a.ncols)</td><td>O(1)</td><td>+O(a.nrows*a.ncols)</td><td>OOM, dim mismatch</td>
+			<td>matrix_mul</td><td>(Matrix a, Matrix b) ~> Matrix throws</td><td>O(a.nrows*b.ncols*a.ncols)</td><td>O(1)</td><td>+O(a.nrows*a.ncols)</td><td>OOM, dim mismatch</td>
 		</tr>
 		<tr>
-			<td>matrix_submatrix</td><td>(Matrix a, uint row, uint col) -> Matrix</td><td>O(a.nrows*a.ncols)</td><td>O(1)</td><td>+O((a.nrows-1)*(a.ncols-1))</td><td>OOM</td>
+			<td>matrix_submatrix</td><td>(Matrix a, uint row, uint col) ~> Matrix throws</td><td>O(a.nrows*a.ncols)</td><td>O(1)</td><td>+O((a.nrows-1)*(a.ncols-1))</td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>matrix_det</td><td>(Matrix a) -> float</td><td>TODO</td><td>O(max(nrows, ncols))</td><td> - </td><td>OOM</td>
+			<td>matrix_det</td><td>(Matrix a) ~> float throws</td><td>TODO</td><td>O(max(nrows, ncols))</td><td> - </td><td>OOM</td>
 		</tr>
 		<tr>
-			<td>matrix_transpose</td><td>(Matrix a) -> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td> - </td>
+			<td>matrix_transpose</td><td>(Matrix a) ~> Matrix</td><td>O(nrows*ncols)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td> - </td>
 		</tr>
 		<tr>
-			<td>matrix_pow</td><td>(Matrix a, uint power) -> Matrix</td><td>O(a.nrows*b.ncols*a.ncols*power)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td> - </td>
+			<td>matrix_pow</td><td>(Matrix a, uint power) ~> Matrix throws</td><td>O(a.nrows*b.ncols*a.ncols*power)</td><td>O(1)</td><td>+O(nrows*ncols)</td><td> - </td>
 		</tr>
 		<tr>
-			<td>matrix_identity</td><td>(uint n) -> Matrix</td><td>O(n)</td><td>O(1)</td><td>+O(n*n)</td><td> - </td>
+			<td>matrix_identity</td><td>(uint n) ~> Matrix</td><td>O(n)</td><td>O(1)</td><td>+O(n*n)</td><td> - </td>
 		</tr>
 	</tbody>
 	</table>

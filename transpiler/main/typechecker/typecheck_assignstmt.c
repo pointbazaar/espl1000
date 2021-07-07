@@ -44,8 +44,10 @@ void tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx){
 	//we make an exception
 	//TODO: only make exception for array types
 	//and other applicable types
-	if(is_malloc(a->expr))
-		{ return; }
+	if(is_malloc(a->expr)){ 
+		tc_expr(a->expr, tcctx);
+		return; 
+	}
 
 	struct Type* right = infer_type_expr(tcctx->current_filename, tcctx->st, a->expr);
 	

@@ -16,7 +16,7 @@ fn isprime(uint64 n) -> bool {
 
 //calculates an array 
 //of the first n primes
-fn nprimes(uint n) -> [uint32] {
+fn nprimes(uint n) ~> [uint32] {
 
 	//TODO: replace with a 
 	//better implementation, e.g. sieve

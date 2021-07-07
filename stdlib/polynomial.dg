@@ -15,7 +15,7 @@ struct Monomial {
 	uint16 exponent;
 }
 
-fn poly_ctor(uint n) -> Poly{
+fn poly_ctor(uint n) ~> Poly{
 	Poly res = malloc(8+8);
 	res.n = n;
 	res.coeff = malloc(2*n);
@@ -142,7 +142,7 @@ fn poly_scale_inplace(Poly a, float f) -> Poly {
 	return a;
 }
 
-fn poly_add(Poly a, Poly b) -> Poly {
+fn poly_add(Poly a, Poly b) ~> Poly {
 	res = poly_ctor(max(a.n, b.n));
 	for i in 0 .. res.n - 1 {
 		res.coeff[i] = 0.0;
@@ -152,7 +152,7 @@ fn poly_add(Poly a, Poly b) -> Poly {
 	return res;
 }
 
-fn poly_sub(Poly a, Poly b) -> Poly {
+fn poly_sub(Poly a, Poly b) ~> Poly {
 	res = poly_ctor(max(a.n, b.n));
 	for i in 0 .. res.n - 1 {
 		res.coeff[i] = 0.0;
@@ -162,7 +162,7 @@ fn poly_sub(Poly a, Poly b) -> Poly {
 	return res;
 }
 
-fn poly_mul(Poly a, Poly b) -> Poly {
+fn poly_mul(Poly a, Poly b) ~> Poly {
 	//(a0, a1, ...)(b0, b1, ...)
 	
 	res = poly_ctor(a.n + b.n);
@@ -216,7 +216,7 @@ fn poly_eval(Poly p, float x) -> float {
 	return res;
 }
 
-fn poly_derivative(Poly p) -> Poly {
+fn poly_derivative(Poly p) ~> Poly {
 
 	// a x ^ n -> (a*n) x ^ (n-1)
 	
@@ -228,7 +228,7 @@ fn poly_derivative(Poly p) -> Poly {
 	return res;
 }
 
-fn poly_integral(Poly p) -> Poly {
+fn poly_integral(Poly p) ~> Poly {
 
 	// a x ^ n -> (a / (n+1)) x ^ (n+1)
 	

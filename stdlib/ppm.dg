@@ -15,7 +15,7 @@ struct ImagePPM {
 
 fn ppm_ctor(uint width, uint height) ~> ImagePPM {
 	
-	ImagePPM resi = makeImagePPM(0,0, 0,0,0);
+	ImagePPM resi = malloc(4+4+3*8);
 	
 	resi.data_red   = malloc(width*height);
 	resi.data_green = malloc(width*height);
@@ -68,7 +68,7 @@ fn ppm_pixel_read_blue(ImagePPM image, uint row, uint col) ~> uint8 {
 	return image.data_blue[row*image.width + col];
 }
 
-fn ppm_read(String filename) ~> ImagePPM {
+fn ppm_read([char] filename) ~> ImagePPM {
 
 	file = fopen(filename, "r");
 
@@ -96,7 +96,7 @@ fn ppm_read(String filename) ~> ImagePPM {
 	return resimg;
 }
 
-fn ppm_write(ImagePPM image, String filename) ~> bool {
+fn ppm_write(ImagePPM image, [char] filename) ~> bool {
 
 	uint width  = image.width;
 	uint height = image.height;
