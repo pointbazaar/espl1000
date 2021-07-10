@@ -35,10 +35,6 @@ void gen_struct_subr_make(struct StructDecl* sd, struct Ctx* ctx);
 
 void gen_struct_subrs(struct Namespace* ns, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ 
-		printf("gen_struct_subroutines(...)\n"); 
-	}
-	
 	for(int i = 0; i < ns->count_structs; i++){
 		struct StructDecl* sd = ns->structs[i];
 		gen_struct_subr(sd, ctx);
@@ -47,10 +43,6 @@ void gen_struct_subrs(struct Namespace* ns, struct Ctx* ctx){
 
 void gen_struct_subr_signatures(struct Namespace* ns, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ 
-		printf("gen_struct_subroutines_signatures(...)\n"); 
-	}
-	
 	for(int i = 0; i < ns->count_structs; i++){
 		struct StructDecl* sd = ns->structs[i];
 		gen_struct_subr_signature(sd, ctx);
@@ -58,10 +50,6 @@ void gen_struct_subr_signatures(struct Namespace* ns, struct Ctx* ctx){
 }
 // -------------------------------
 void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx){
-	
-	if(ctx->flags->debug){ 
-		printf("gen_struct_subr(...)\n"); 
-	}
 	
 	//generates the various subroutines for one structure
 	
@@ -96,9 +84,6 @@ static void add_gen_struct_subrs_sst_single(struct Ctx* ctx, struct Namespace* n
 }
 
 void add_gen_struct_subrs_sst(struct Ctx* ctx, struct Namespace* ns){
-	
-	if(ctx->flags->debug)
-		{ printf("add_gen_struct_subrs_sst\n"); }
 	
 	for(int i=0; i < ns->count_structs; i++)
 		{ add_gen_struct_subrs_sst_single(ctx, ns, ns->structs[i]); }
@@ -136,10 +121,6 @@ void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx){
 void gen_struct_subr_new(struct StructDecl* sd, struct Ctx* ctx){
 	//performs a shallow allocation
 	
-	if(ctx->flags->debug){ 
-		printf("gen_struct_subr_new(...)\n"); 
-	}
-	
 	char* name = sd->type->structType->typeName;
 	
 	fprintf(ctx->file, "struct %s* new%s(){\n", name, name);
@@ -153,10 +134,6 @@ void gen_struct_subr_new(struct StructDecl* sd, struct Ctx* ctx){
 }
 
 void gen_struct_subr_make(struct StructDecl* sd, struct Ctx* ctx){
-	
-	if(ctx->flags->debug){ 
-		printf("gen_struct_subr_make(...)\n"); 
-	}
 	
 	char* name = sd->type->structType->typeName;
 	

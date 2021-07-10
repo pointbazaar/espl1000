@@ -60,8 +60,6 @@ static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st);
 // --------------------------------------------------------
 
 bool transpileAndWrite(char* c_filename, char* h_filename, struct AST* ast, struct Flags* flags){
-	
-	if(flags->debug){ printf("[Transpiler] transpileAndWrite\n"); }
 
 	struct Ctx* ctx = make(Ctx);
 	
@@ -184,6 +182,7 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename){
 	
 	if(ctx->flags->debug){
 		sst_print(ctx->tables->sst);
+		stst_print(ctx->tables->stst);
 	}
 	
 	if(ctx->flags->emit_headers){ 

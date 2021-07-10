@@ -49,7 +49,10 @@ fn ppm_pixel_write(
 	ImagePPM image, 
 	uint row, uint col, 
 	uint8 red, uint8 green, uint8 blue
-) ~> bool {
+) ~> bool throws {
+	
+	if row >= image.height { throw; }
+	if col >= image.width  { throw; }
 
 	image.data_red  [row*image.width + col] = red;
 	image.data_green[row*image.width + col] = green;

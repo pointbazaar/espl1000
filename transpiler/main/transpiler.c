@@ -57,8 +57,6 @@ int main(int argc, char* argv[]){
 
 bool transpileAndCompile(struct Flags* flags){
 	
-	if(flags->debug){ printf("transpileAndCompile(...)\n"); }
-	
 	for(int i=0;i < flags->count_filenames; i++){
 	
 		char* filename = flags->filenames[i];

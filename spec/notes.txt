@@ -44,3 +44,8 @@ Also, there should be a feature to use the compiler at the command line as a sea
 This is so you are not relying on internet all the time like with many langs.
 
 Just mention the name of the namespace to the compiler and get a list of subroutine signatures.
+
+
+great web editor for .dot files
+
+http://magjac.com/graphviz-visual-editor/

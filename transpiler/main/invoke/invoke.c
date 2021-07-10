@@ -43,10 +43,6 @@ static int invoke_lexer(char* filename, struct Flags* flags){
 
 	strcat(cmd1, filename);
 
-	if(flags->debug){
-		printf("[Transpiler] %s\n", cmd1);
-	}
-
 	int status = system(cmd1);
 	free(cmd1);
 	return status;
@@ -63,10 +59,6 @@ static int invoke_parser(char* filename, struct Flags* flags){
 	char* cmd2 = malloc(strlen(filename)+100);
 	
 	sprintf(cmd2, "dragon-parser %s/.%s.tokens", dir_name, base_name);	
-	
-	if(flags->debug){
-		printf("[Transpiler] %s\n", cmd2);
-	}
 	
 	int status = system(cmd2);
 	

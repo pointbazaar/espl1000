@@ -24,8 +24,6 @@
 
 void transpileMethod(struct Method* m, struct Ctx* ctx){
 	
-	if(ctx->flags->debug){ printf("transpileMethod\n"); }
-	
 	//create the local variable symbol table
 	lvst_clear(ctx->tables->lvst);
 	lvst_fill(m, ctx->tables, ctx->flags->debug);
