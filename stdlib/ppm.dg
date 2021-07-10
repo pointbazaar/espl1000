@@ -11,6 +11,11 @@ struct ImagePPM {
 	@private [uint8] data_red;
 	@private [uint8] data_green;
 	@private [uint8] data_blue;
+	
+	//current color to write
+	uint8 red;
+	uint8 green;
+	uint8 blue;
 }
 
 fn ppm_ctor(uint width, uint height) ~> ImagePPM {
@@ -20,6 +25,10 @@ fn ppm_ctor(uint width, uint height) ~> ImagePPM {
 	resi.data_red   = malloc(width*height);
 	resi.data_green = malloc(width*height);
 	resi.data_blue  = malloc(width*height);
+	
+	resi.red   = 0;
+	resi.green = 0;
+	resi.blue  = 0;
 	
 	resi.width  = width;
 	resi.height = height;
@@ -45,21 +54,73 @@ fn ppm_dtor(ImagePPM image) ~> bool {
 	return true;
 }
 
-fn ppm_pixel_write(
-	ImagePPM image, 
-	uint row, uint col, 
-	uint8 red, uint8 green, uint8 blue
-) ~> bool throws {
-	
-	if row >= image.height { throw; }
-	if col >= image.width  { throw; }
+fn ppm_set_color(ImagePPM image, uint8 red, uint8 green, uint8 blue) ~> bool {
+	image.red   = red;
+	image.green = green;
+	image.blue  = blue;
+	return true;
+}
 
-	image.data_red  [row*image.width + col] = red;
-	image.data_green[row*image.width + col] = green;
-	image.data_blue [row*image.width + col] = blue;
+fn ppm_draw_pixel(ImagePPM image, uint row, uint col) ~> bool {
+	
+	if row >= image.height { return true; }
+	if col >= image.width  { return true; }
+
+	image.data_red  [row*image.width + col] = image.red;
+	image.data_green[row*image.width + col] = image.green;
+	image.data_blue [row*image.width + col] = image.blue;
 
 	return true;
-} 
+}
+
+fn ppm_draw_line(ImagePPM image, uint row1, uint col1, uint row2, uint col2) ~> bool {
+	
+	//figure out the delta
+	deltar = abs(row2 - row1);
+	deltac = abs(col2 - col1);
+	
+	r1 = min(row1, row2);
+	c1 = min(col1, col2);
+	
+	//r2 = max(row1, row2);
+	//c2 = max(col1, col2);
+	
+	delta = max(deltar, deltac);
+	
+	for i in 0 .. delta {
+		
+		r = r1 + (i*deltar)/delta;
+		c = c1 + (i*deltac)/delta;
+		ppm_draw_pixel(image, r, c);
+	}
+	
+	return true;
+}
+
+fn ppm_draw_rect(ImagePPM image, uint row, uint col, uint width, uint height) ~> bool {
+	
+	for r in row .. row + height {
+		for c in col .. col + width {
+			ppm_draw_pixel(image, r, c);
+		}
+	}
+	
+	return true;
+}
+
+fn ppm_draw_circle(ImagePPM image, uint row, uint col, uint radius) ~> bool {
+	
+	for r in row-radius .. row+radius {
+		for c in col-radius .. col+radius {
+			d1 = abs(row-r);
+			d2 = abs(col-c);
+			if d1*d1 + d2*d2 <= radius*radius {
+				ppm_draw_pixel(image, r, c);
+			}
+		}
+	}
+	return true;
+}
 
 fn ppm_pixel_read_red(ImagePPM image, uint row, uint col) ~> uint8 {
 	return image.data_red[row*image.width + col];

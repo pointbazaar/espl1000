@@ -30,7 +30,12 @@
 	<p>
 		Generally, most subroutines here will just
 		<strong>throw</strong> in exceptional cases.
-		
+	</p>
+	
+	<h3>Abbreviations</h3>
+	<p>
+		<strong>OOM</strong>: Out of Memory<br>
+		<strong>OOB</strong>: Out of Bounds<br>
 	</p>
 
 	<h2> Contents </h2>
@@ -403,6 +408,22 @@
 	</table>
 	
 	<h3 id="ppm">ppm.dg (simple i/o for PPM Image Format)</h3>
+	<p>
+		The Behavior in Exceptional Cases is different here.<br>
+		The Subroutines which draw on the image will 
+		do bounds checking and simply not draw pixels out of bounds.<br>
+		<br>This is for convenience,
+		So we can can also draw 'over' the edges, clipping 
+		what's outside the Image.
+	</p>
+	<h5>Still TODO:</h5>
+	<ul>
+		<li>ppm_draw_rect_outline</li>
+		<li>ppm_draw_circle_outline</li>
+		<li>ppm_draw_ngon</li>
+		<li>ppm_draw_ngon_outline</li>
+		<li>ppm_draw_image (other ImagePPM)</li>
+	</ul>
 	<table class="table-bordered table">
 	<thead>
 		<tr>
@@ -422,16 +443,28 @@
 			<td>ppm_dtor</td><td>(ImagePPM image) ~> bool</td><td>O(1)</td><td>O(1)</td><td>-O(width*height)</td><td>Double Free</td>
 		</tr>
 		<tr>
-			<td>ppm_pixel_write</td><td>(ImagePPM image, uint row, uint col, uint8 red, uint8 green, uint8 blue) ~> bool throws</td><td>O(1)</td><td>O(1)</td><td> - </td><td>out of bounds</td>
+			<td>ppm_set_color</td><td>(ImagePPM image, uint8 red, uint8 green, uint8 blue) ~> bool</td><td>O(1)</td><td>O(1)</td><td> - </td><td> - </td>
 		</tr>
 		<tr>
-			<td>ppm_pixel_read_red</td><td>(ImagePPM image, uint row, uint col) -> uint8</td><td>O(1)</td><td>O(1)</td><td> - </td><td>out of bounds</td>
+			<td>ppm_draw_pixel</td><td>(ImagePPM image, uint row, uint col) ~> bool</td><td>O(1)</td><td>O(1)</td><td> - </td><td> - </td>
 		</tr>
 		<tr>
-			<td>ppm_pixel_read_green</td><td>(ImagePPM image, uint row, uint col) -> uint8</td><td>O(1)</td><td>O(1)</td><td> - </td><td>out of bounds</td>
+			<td>ppm_draw_line</td><td>(ImagePPM image, uint row1, uint col1, uint row2, uint col2) ~> bool</td><td>O(max(abs(row2 - row1), abs(col2 - col1)))</td><td>O(1)</td><td> - </td><td> - </td>
 		</tr>
 		<tr>
-			<td>ppm_pixel_read_blue</td><td>(ImagePPM image, uint row, uint col) -> uint8</td><td>O(1)</td><td>O(1)</td><td> - </td><td>out of bounds</td>
+			<td>ppm_draw_rect</td><td>(ImagePPM image, uint row, uint col, uint width, uint height) ~> bool</td><td>O(width*height)</td><td>O(1)</td><td> - </td><td> - </td>
+		</tr>
+		<tr>
+			<td>ppm_draw_circle</td><td>(ImagePPM image, uint row, uint col, uint radius) ~> bool</td><td>O(radius*radius)</td><td>O(1)</td><td> - </td><td> - </td>
+		</tr>
+		<tr>
+			<td>ppm_pixel_read_red</td><td>(ImagePPM image, uint row, uint col) -> uint8</td><td>O(1)</td><td>O(1)</td><td> - </td><td>OOB</td>
+		</tr>
+		<tr>
+			<td>ppm_pixel_read_green</td><td>(ImagePPM image, uint row, uint col) -> uint8</td><td>O(1)</td><td>O(1)</td><td> - </td><td>OOB</td>
+		</tr>
+		<tr>
+			<td>ppm_pixel_read_blue</td><td>(ImagePPM image, uint row, uint col) -> uint8</td><td>O(1)</td><td>O(1)</td><td> - </td><td>OOB</td>
 		</tr>
 		<tr>
 			<td>ppm_write</td><td>(ImagePPM image, [char] filename) ~> bool</td><td>O(width*height)</td><td>O(1)</td><td> - </td><td>File not found</td>

@@ -3,17 +3,11 @@
 
 fn main () ~> int {
 
-	ImagePPM image = ppm_ctor(10,10);
+	uint size = 100;
+	ImagePPM image = ppm_ctor(size, size);
 
 	try {
-	for i in 0 .. 9 {
-	
-		ppm_pixel_write(image, i, i, 0,    0, i*10); //blue
-		ppm_pixel_write(image, 9-i,  i,    0, i*10, 0); //green
-		ppm_pixel_write(image, 3, i, i*10, 0, 0); //red
-		
-		ppm_pixel_write(image, i, 5, 255, 255, 255); //while
-	}
+		sub(image, size);
 	} catch {}
 
 	ppm_write(image, "myimage.ppm");
@@ -21,4 +15,35 @@ fn main () ~> int {
 	ppm_dtor(image);
 
 	return 0;
+}
+
+fn sub (ImagePPM image, uint size) ~> bool throws {
+
+	for i in 0 .. (size - 1) {
+
+		c = i;
+		ppm_set_color(image, 0,0,c);
+		ppm_draw_pixel(image, i, i); //blue
+
+		ppm_set_color(image, 0,c,0);
+		ppm_draw_pixel(image, 99-i,  i); //green
+
+		ppm_set_color(image, c,0,0);
+		ppm_draw_pixel(image, size/3, i); //red
+		
+		ppm_set_color(image, 255,255,255);
+		ppm_draw_pixel(image, i, size/2); //while
+	}
+
+	//draw rectangle
+	ppm_set_color(image, 255,255,255);
+	ppm_draw_rect(image, size/2, size/2, 20, 20);
+
+	ppm_set_color(image, 250, 240, 230);
+	ppm_draw_circle(image, size/2, size/2, size/6);
+
+	ppm_set_color(image, 100, 20, 250);
+	ppm_draw_line(image, 20, 20, 100, 50);
+	
+	return true;
 }
