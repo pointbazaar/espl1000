@@ -7,6 +7,7 @@
 #include "token/TokenKeys.h"
 
 #include "stst.h"
+#include "stst_print.h"
 
 #define STST_INITIAL_CAPACITY 10;
 
@@ -60,26 +61,6 @@ void stst_fill(struct STST* stst, struct Namespace* ns){
 	}
 }
 
-void stst_print(struct STST* stst){
-	
-	char* fmt = "%16s|%16s|\n";
-	
-	printf("[STST] Struct Symbol Table\n");
-	printf(fmt, "struct name", "member name");
-	printf("-----------------\n");
-	for(int i = 0; i < stst->count; i++){
-		struct STSTLine* line = stst->lines[i];
-		
-		for(int j = 0; j < line->decl->count_members; j++){
-			
-			struct StructMember* member = line->decl->members[j];
-			
-			
-			printf(fmt, line->name, member->name);
-		}
-	}
-}
-
 struct STSTLine* stst_get(struct STST* stst, char* name){
 	
 	for(int i = 0; i < stst->count; i++){
@@ -112,6 +93,14 @@ struct StructMember* stst_get_member(struct STST* stst, char* struct_name, char*
 	
 	stst_print(stst);
 	exit(1);
+}
+
+uint32_t stst_size(struct STST* stst){
+	return stst->count;
+}
+
+struct STSTLine* stst_at(struct STST* stst, uint32_t index){
+	return stst->lines[index];
 }
 
 void freeSTST(struct STST* stst){

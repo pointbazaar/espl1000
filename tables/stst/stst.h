@@ -30,10 +30,12 @@ void                 stst_fill(struct STST* stst, struct Namespace* ns);
 
 void                 stst_add(struct STST* stst, struct STSTLine* line);
 
-void                 stst_print(struct STST* stst);
-
 struct STSTLine*     stst_get(struct STST* stst, char* name);
 
 struct StructMember* stst_get_member(struct STST* stst, char* struct_name, char* member_name);
+
+uint32_t             stst_size(struct STST* stst);
+
+struct STSTLine*     stst_at(struct STST* stst, uint32_t index);
 
 #endif

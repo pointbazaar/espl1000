@@ -62,8 +62,6 @@ void            sst_clear(struct SST* sst);
 
 void            sst_add(struct SST* sst, struct SSTLine* line);
 
-void            sst_print(struct SST* sst);
-
 struct SSTLine* sst_get(struct SST* sst, char* name);
 
 bool            sst_contains(struct SST* sst, char* name);

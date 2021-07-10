@@ -12,9 +12,11 @@ add_library(${PROJECT_NAME} STATIC
 	
 	sst/sst.c
 	sst/sst_fill.c
+	sst/sst_print.c
 	sst/sst_prefill.c
 	
 	stst/stst.c
+	stst/stst_print.c
 	stst/stst_prefill.c
 	
 	symtable/symtable.c

@@ -4,8 +4,6 @@
 #include <string.h>
 #include <inttypes.h>
 
-#include "ast/util/str_ast.h"
-
 #include "tables/cc/cc.h"
 #include "tables/sst/sst.h"
 #include "tables/symtable/symtable.h"
@@ -17,8 +15,6 @@
 #define ERR_SAME_NAME "[SST][Error] 2 subroutines with same name\n"
 
 #define ERR_NOT_FOUND "[SST][Error] subroutine not found\n"
-
-static void sst_print_line(struct SSTLine* line, char* fmt);
 
 struct SST {
 	//Subroutine Symbol Table (SST)
@@ -60,44 +56,6 @@ void sst_clear(struct SST* sst){
 	sst->capacity = SST_INITIAL_CAPACITY;
 	
 	sst->lines = malloc(sizeof(struct SSTLine*)*sst->capacity);
-}
-
-void sst_print(struct SST* sst){
-	
-	char* fmt = "%20s|%20s|%20s|%8s|%16s\n";
-	
-	printf("[SST] Subroutine Symbol Table\n");
-	printf(fmt, "namespace", "name", "type", "isLibC", "halts?");
-	printf("--------------------|--------------------|--------------------|--------|----------------\n");
-	
-	for(int i = 0; i < sst->count; i++){
-		
-		struct SSTLine* line = sst->lines[i];
-		
-		sst_print_line(line, fmt);
-	}
-}
-
-static void sst_print_line(struct SSTLine* line, char* fmt){
-	
-	char* isLibC = (line->isLibC)?"yes":"no";
-		
-	char* halt_info = "-";
-	
-	if(line->halts != HALTS_UNKNOWN){
-			
-		halt_info = (line->halts == HALTS_ALWAYS)?"halts":"inf-loop";
-	}
-	
-	char* typeStr = "";
-	
-	if(line->type != NULL){ 
-		typeStr = strType(line->type);
-	}
-	
-	printf(fmt, line->_namespace, line->name, typeStr, isLibC, halt_info);
-	
-	if(line->type != NULL){ free(typeStr); }
 }
 
 void freeSST(struct SST* sst){
