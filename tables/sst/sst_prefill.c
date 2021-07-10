@@ -24,7 +24,12 @@ struct Proto {
 	bool has_side_effect;
 };
 
-static void fill_protos(struct ST* st, struct Proto* protos, int n);
+static void fill_protos(
+	struct ST* st, 
+	char* namespace,
+	struct Proto* protos, 
+	int n
+);
 
 static struct Type* makeCharPtrTypeC();
 static struct Type* makeFileTypeC();
@@ -195,17 +200,18 @@ void sst_prefill(struct ST* st, struct SST* sst){
 	int l6 = sizeof(protos_assert)/s;
 	int l7 = sizeof(protos_pthread)/s;
 	
-	fill_protos(st, protos_math, l1);
-	fill_protos(st, protos_stdio, l2);
-	fill_protos(st, protos_stdlib, l3);
-	fill_protos(st, protos_string, l4);
-	fill_protos(st, protos_ctype, l5);
-	fill_protos(st, protos_assert, l6);
-	fill_protos(st, protos_pthread, l7);
+	fill_protos(st, "math.h", protos_math, l1);
+	fill_protos(st, "stdio.h", protos_stdio, l2);
+	fill_protos(st, "stdlib.h", protos_stdlib, l3);
+	fill_protos(st, "string.h", protos_string, l4);
+	fill_protos(st, "ctype.h", protos_ctype, l5);
+	fill_protos(st, "assert.h", protos_assert, l6);
+	fill_protos(st, "pthread.h", protos_pthread, l7);
 }
 
 static void fill_protos(
 	struct ST* st, 
+	char* namespace,
 	struct Proto* protos, 
 	int n
 ){
@@ -242,7 +248,9 @@ static void fill_protos(
 		
 		struct SSTLine* line = 
 			makeSSTLine(
-				name, "_C_", t, 
+				name, 
+				namespace, 
+				t, 
 				true, 
 				proto.halts, 
 				proto.has_side_effect,

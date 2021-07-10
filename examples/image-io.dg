@@ -5,6 +5,7 @@ fn main () ~> int {
 
 	ImagePPM image = ppm_ctor(10,10);
 
+	try {
 	for i in 0 .. 9 {
 	
 		ppm_pixel_write(image, i, i, 0,    0, i*10); //blue
@@ -13,6 +14,7 @@ fn main () ~> int {
 		
 		ppm_pixel_write(image, i, 5, 255, 255, 255); //while
 	}
+	} catch {}
 
 	ppm_write(image, "myimage.ppm");
 	
