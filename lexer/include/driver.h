@@ -15,7 +15,7 @@ void out_minus_minus();
 
 void lexer_print_help();
 
-struct LexerFlags* handleArguments(int argc, char** argv);
+struct LexerFlags* handle_arguments(int argc, char** argv);
 
 char* lexer_make_tkn_filename(char* filename, bool debug);
 

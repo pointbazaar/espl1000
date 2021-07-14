@@ -22,7 +22,7 @@ struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool de
 	size_t size = 50;
 	char* line = malloc(size);
 	
-	uint32_t line_num = 0;
+	uint32_t line_num = 1;
     
 	while (getline(&line, &size, file)){
 		

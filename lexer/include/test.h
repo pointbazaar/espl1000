@@ -3,9 +3,7 @@
 
 #include <stdbool.h>
 
-struct Token** lex(char* source, bool debug);
-
-int test_all(bool debug);
+int lexer_test_all();
 
 //test subroutines 
 //(returning true if the test was passed, false otherwise)
@@ -47,7 +45,6 @@ bool test_struct();
 bool test_return();
 
 bool test_string_1();
-bool test_string_2();
 
 bool test_typeidentifier();
 bool test_typeidentifier_primitive();

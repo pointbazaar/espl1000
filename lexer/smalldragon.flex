@@ -125,7 +125,7 @@ int main(int argc, char* argv[]){
 	//printf("running lexer...\n");
 	
 	struct LexerFlags* myargs = 
-		handleArguments(argc, argv);
+		handle_arguments(argc, argv);
 	
 	if(myargs->help){
 		lexer_print_help();
@@ -138,7 +138,7 @@ int main(int argc, char* argv[]){
 	}
 		
 	if(myargs->test){
-		test_all(myargs->debug);
+		lexer_test_all();
 		exit(0);
 	}
 	

@@ -50,7 +50,7 @@ void lexer_print_help(){
 	printf("Bug Reports: alex23667@gmail.com\n");
 }
 
-struct LexerFlags* handleArguments(int argc, char** argv){
+struct LexerFlags* handle_arguments(int argc, char** argv){
 	//this subroutine may perform an exit(...)
 	//this is ok because it is called in main(...)
 	//before anything is allocated on the heap
