@@ -21,11 +21,11 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 	
 	parse_astnode(copy, &(res->super));
 	
-	res->optType = NULL;
+	res->opt_type = NULL;
 
 	struct TokenList* copy2 = list_copy(copy);
-	res->optType = makeType2(copy2,debug);
-	if(res->optType != NULL){
+	res->opt_type = makeType2(copy2, debug);
+	if(res->opt_type != NULL){
 		list_set(copy, copy2);
 	}
 	freeTokenListShallow(copy2);

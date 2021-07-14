@@ -24,8 +24,8 @@ struct SimpleType* makeSimpleType(struct TokenList* tokens, bool debug) {
 	
 	parse_astnode(copy, &(res->super));
 	
-	res->primitiveType = NULL;
-	res->structType    = NULL;
+	res->primitive_type = NULL;
+	res->struct_type    = NULL;
 	
 	struct Token* next = list_head(copy);
 	
@@ -36,13 +36,13 @@ struct SimpleType* makeSimpleType(struct TokenList* tokens, bool debug) {
 		case TYPEID_PRIMITIVE_CHAR:
 		case TYPEID_PRIMITIVE_FLOAT:
 		
-			res->primitiveType = makePrimitiveType(copy, debug);
+			res->primitive_type = makePrimitiveType(copy, debug);
 			break;
 			
 		case TYPEID:
 		case ANYTYPE:
 		
-			res->structType = makeStructType(copy, debug);	
+			res->struct_type = makeStructType(copy, debug);
 			break;
 			
 		default:

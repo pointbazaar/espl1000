@@ -13,10 +13,10 @@ struct Op {
 	struct ASTNode super; 
 	char op[6]; 
 	
-	bool isArithmetic;
-	bool isRelational;
-	bool isLogical;
-	bool isBitwise;
+	bool is_arithmetic;
+	bool is_relational;
+	bool is_logical;
+	bool is_bitwise;
 };
 struct UnOpTerm{
 	struct ASTNode super; 

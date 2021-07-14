@@ -49,10 +49,10 @@ int expr_test_variable_name_expression(bool debug) {
 
 	assert(expr != NULL);
 	assert(expr->term1->term->ptr.m6 != NULL);
-	assert(expr->term1->term->ptr.m6->simpleVar != NULL);
+	assert(expr->term1->term->ptr.m6->simple_var != NULL);
 	assert(
 		strcmp(
-			expr->term1->term->ptr.m6->simpleVar->name, 
+			expr->term1->term->ptr.m6->simple_var->name,
 			"x"
 		) 
 		== 0
@@ -126,7 +126,7 @@ int expr_test_comparison(bool debug){
 
 	assert(ic->value == 5);
 
-	struct SimpleVar* sv = v->simpleVar;
+	struct SimpleVar* sv = v->simple_var;
 	assert(sv != NULL);
 
 	assert(strcmp(sv->name, "x") == 0);

@@ -191,10 +191,10 @@ int assignstmt_test_type_declaration_for_variable(bool debug) {
 	struct AssignStmt* a = makeAssignStmt(tokens,debug);
 	if(a == NULL){return 0;}
 
-	assert(a->optType != NULL);
+	assert(a->opt_type != NULL);
 	if(a->var == NULL){return 0;}
 	
-	assert(NULL == a->var->memberAccess);
+	assert(NULL == a->var->member_access);
 	assert(0 == list_size(tokens));
 	
 	freeAssignStmt(a);

@@ -137,13 +137,13 @@ struct Variable* copyVariable(struct Variable* var){
 
 	struct Variable* res = make(Variable);
 	
-	res->simpleVar = copySimpleVar(var->simpleVar);
+	res->simple_var = copySimpleVar(var->simple_var);
 
-	res->memberAccess = NULL;
+	res->member_access = NULL;
 
-	if(var->memberAccess != NULL){
+	if(var->member_access != NULL){
 
-		res->memberAccess = copyVariable(var->memberAccess);
+		res->member_access = copyVariable(var->member_access);
 	}
 	
 	return res;
@@ -202,17 +202,17 @@ struct SubrType* copySubrType(struct SubrType* s){
 	
 	struct SubrType* res = make(SubrType);
 	
-	res->hasSideEffects = s->hasSideEffects;
+	res->has_side_effects = s->has_side_effects;
 	res->throws         = s->throws;
-	res->returnType = copyType(s->returnType);
+	res->return_type = copyType(s->return_type);
 	
-	res->count_argTypes = s->count_argTypes;
+	res->count_arg_types = s->count_arg_types;
 	
-	res->argTypes = malloc(sizeof(struct Type*)*(s->count_argTypes));
+	res->arg_types = malloc(sizeof(struct Type*) * (s->count_arg_types));
 	
-	for(uint8_t i = 0; i < res->count_argTypes; i++){
+	for(uint8_t i = 0; i < res->count_arg_types; i++){
 	
-		res->argTypes[i] = copyType(s->argTypes[i]);
+		res->arg_types[i] = copyType(s->arg_types[i]);
 	}
 	
 	return res;
@@ -222,11 +222,11 @@ struct SimpleType* copySimpleType(struct SimpleType* s){
 	
 	struct SimpleType* res = make(SimpleType);
 	
-	res->primitiveType = NULL;
-	res->structType    = NULL;
+	res->primitive_type = NULL;
+	res->struct_type    = NULL;
 	
-	if(s->primitiveType != NULL){ res->primitiveType = copyPrimitiveType(s->primitiveType); }
-	if(s->structType    != NULL){ res->structType    = copyStructType(s->structType); }
+	if(s->primitive_type != NULL){ res->primitive_type = copyPrimitiveType(s->primitive_type); }
+	if(s->struct_type != NULL){ res->struct_type    = copyStructType(s->struct_type); }
 	
 	return res;
 }
@@ -235,13 +235,13 @@ struct StructType* copyStructType(struct StructType* s){
 	
 	struct StructType* res = make(StructType);
 	
-	strcpy(res->typeName, s->typeName);
+	strcpy(res->type_name, s->type_name);
 	
-	res->typeParamCount = s->typeParamCount;
+	res->count_type_params = s->count_type_params;
 	
-	res->typeParams = malloc(sizeof(uint8_t)*(s->typeParamCount));
+	res->type_params = malloc(sizeof(uint8_t) * (s->count_type_params));
 	
-	memcpy(res->typeParams, s->typeParams, sizeof(uint8_t)*(s->typeParamCount));
+	memcpy(res->type_params, s->type_params, sizeof(uint8_t) * (s->count_type_params));
 	
 	return res;
 }
@@ -260,11 +260,11 @@ struct BasicType* copyBasicType(struct BasicType* b){
 
 	struct BasicType* res = make(BasicType);
 	
-	res->simpleType = NULL;
-	res->subrType   = NULL;
+	res->simple_type = NULL;
+	res->subr_type   = NULL;
 	
-	if(b->simpleType != NULL){ res->simpleType = copySimpleType(b->simpleType); }
-	if(b->subrType   != NULL){ res->subrType   = copySubrType(b->subrType); }
+	if(b->simple_type != NULL){ res->simple_type = copySimpleType(b->simple_type); }
+	if(b->subr_type != NULL){ res->subr_type   = copySubrType(b->subr_type); }
 	
 	return res;
 }

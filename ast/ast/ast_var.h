@@ -6,9 +6,8 @@
 struct Variable {
 	struct ASTNode super; 
 	
-	struct SimpleVar* simpleVar;
-	
-	struct Variable* memberAccess; //may be NULL
+	struct SimpleVar* 	simple_var;
+	struct Variable* 	member_access; //may be NULL
 };
 struct SimpleVar {
 	struct ASTNode super; 

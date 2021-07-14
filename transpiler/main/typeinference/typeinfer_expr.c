@@ -56,23 +56,23 @@ struct Type* infer_type_expr(char* filename, struct ST* st, struct Expr* expr){
 		print_exit(filename, &(expr->super), ERR_BTW); 
 	}
 	
-	struct SimpleType* st1 = btw1->simpleType;
-	struct SimpleType* st2 = btw2->simpleType;
+	struct SimpleType* st1 = btw1->simple_type;
+	struct SimpleType* st2 = btw2->simple_type;
 	
 	if(st1 == NULL || st2 == NULL){ 
 		print_exit(filename, &(expr->super), ERR_ST);
 	}
 	
-	bool p1 = st1->primitiveType != NULL;
-	bool p2 = st2->primitiveType != NULL;
+	bool p1 = st1->primitive_type != NULL;
+	bool p2 = st2->primitive_type != NULL;
 	
 	if(!p1 || !p2){ 
 		print_exit(filename, &(expr->super), ERR_PRIMITIVE); 
 	}
 	
 	struct Expr2Types e2t = {
-		.p1 = st1->primitiveType,
-		.p2 = st2->primitiveType,
+		.p1 = st1->primitive_type,
+		.p2 = st2->primitive_type,
 		.op = op
 	};
 	
@@ -85,22 +85,22 @@ static struct Type* infer_type_expr_primitive(char* filename, struct ST* st, str
 	struct PrimitiveType* p2 = e2t->p2;
 	struct Op* op = e2t->op;
 	
-	if(op->isRelational)
+	if(op->is_relational)
 		{ return typeFromStrPrimitive(st, "bool"); }
 	
-	if(op->isLogical)
+	if(op->is_logical)
 		{ return typeFromStrPrimitive(st, "bool"); }
 		
-	const bool i1 = p1->isIntType;
-	const bool i2 = p2->isIntType;
+	const bool i1 = p1->is_int_type;
+	const bool i2 = p2->is_int_type;
 	
-	const bool f1 = p1->isFloatType;
-	const bool f2 = p2->isFloatType;
+	const bool f1 = p1->is_float_type;
+	const bool f2 = p2->is_float_type;
 	
-	const bool c1 = p1->isCharType;
-	const bool c2 = p2->isCharType;
+	const bool c1 = p1->is_char_type;
+	const bool c2 = p2->is_char_type;
 	
-	if(op->isArithmetic){
+	if(op->is_arithmetic){
 		
 		if(i1 && i2)
 			{ return typeFromStrPrimitive(st, "int"); }
@@ -118,7 +118,7 @@ static struct Type* infer_type_expr_primitive(char* filename, struct ST* st, str
 			{ return typeFromStrPrimitive(st, "char"); }
 	}
 	
-	if(op->isBitwise)
+	if(op->is_bitwise)
 		{ return typeFromStrPrimitive(st, "int"); }
 	
 	

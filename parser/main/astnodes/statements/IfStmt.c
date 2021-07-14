@@ -46,7 +46,7 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 
 	if (list_expect(copy, ELSE)) {
 
-		if((res->elseBlock = makeStmtBlock(copy, debug)) == NULL){
+		if((res->else_block = makeStmtBlock(copy, debug)) == NULL){
 			freeIncomplete(res);
 			return NULL;
 		}
@@ -64,7 +64,7 @@ struct IfStmt* initIfStmt(){
 	
 	res->condition = NULL;
 	res->block     = NULL;
-	res->elseBlock = NULL;
+	res->else_block = NULL;
 	
 	return res;
 }
@@ -78,8 +78,8 @@ void freeIncomplete(struct IfStmt* is){
 	if(is->block != NULL){
 		freeStmtBlock(is->block);
 	}
-	if(is->elseBlock != NULL){
-		freeStmtBlock(is->elseBlock);
+	if(is->else_block != NULL){
+		freeStmtBlock(is->else_block);
 	}
 	free(is);
 }

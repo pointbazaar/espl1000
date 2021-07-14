@@ -83,7 +83,7 @@ static void myvisitor_annotations(void* node, enum NODE_TYPE type, void* arg){
 
 static void annot_private_struct(struct STST* stst, struct StructType* t){
 	
-	char* tname = t->typeName;
+	char* tname = t->type_name;
 	
 	struct STSTLine* line = stst_get(stst, tname);
 	
@@ -107,9 +107,9 @@ static void annot_private_struct_member(struct ST* st, struct Variable* var){
 	struct LVST* lvst = st->lvst;
 	
 	//check @private struct member access
-	if(var->memberAccess == NULL){ return; }
+	if(var->member_access == NULL){ return; }
 		
-	struct Variable* member = var->memberAccess;
+	struct Variable* member = var->member_access;
 	
 	lvst_clear(st->lvst);
 	lvst_fill(current_subr, st, false);
@@ -117,20 +117,20 @@ static void annot_private_struct_member(struct ST* st, struct Variable* var){
 	//is it a local variable or are we already
 	//down the member access chain? 
 	//(would cause failure to find in lvst)
-	if(!lvst_contains(lvst, var->simpleVar->name)){ return; }
+	if(!lvst_contains(lvst, var->simple_var->name)){ return; }
 	
 	//get the type of struct being accessed
-	struct LVSTLine* line = lvst_get(lvst, var->simpleVar->name);
+	struct LVSTLine* line = lvst_get(lvst, var->simple_var->name);
 	
 	if(line->type->m1 == NULL){ return; }
 	struct BasicType* btw = line->type->m1;
-	if(btw->simpleType == NULL){ return; }
-	if(btw->simpleType->structType == NULL){ return; }
+	if(btw->simple_type == NULL){ return; }
+	if(btw->simple_type->struct_type == NULL){ return; }
 	
-	struct StructType* stype = btw->simpleType->structType;
+	struct StructType* stype = btw->simple_type->struct_type;
 	
-	char* struct_name = stype->typeName;
-	char* member_name = member->simpleVar->name;
+	char* struct_name = stype->type_name;
+	char* member_name = member->simple_var->name;
 	
 	//get info about the struct member
 	struct STSTLine* line2 = stst_get(stst, struct_name);

@@ -40,9 +40,9 @@ void tc_stmt(struct Stmt* s, struct TCCtx* tcctx){
 		case 8: tc_switchstmt(s->ptr.m8, tcctx); break;
 		
 		case 99:
-			if(s->isContinue){ tc_continuestmt(s, tcctx); }
-			if(s->isBreak)   { tc_breakstmt(s, tcctx); }
-			if(s->isThrow)   { tc_throwstmt(s, tcctx); }
+			if(s->is_continue){ tc_continuestmt(s, tcctx); }
+			if(s->is_break)   { tc_breakstmt(s, tcctx); }
+			if(s->is_throw)   { tc_throwstmt(s, tcctx); }
 	}
 }
 
@@ -152,12 +152,12 @@ void tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx){
 
 	tcctx->current_line_num = r->super.line_num;
 
-	struct Type* returnType = tcctx->currentFn->returnType;
+	struct Type* returnType = tcctx->currentFn->return_type;
 	
 	struct Type* returnedType = 
-		infer_type_expr(tcctx->current_filename, tcctx->st, r->returnValue);
+		infer_type_expr(tcctx->current_filename, tcctx->st, r->return_value);
 	
-	tc_expr(r->returnValue, tcctx);
+	tc_expr(r->return_value, tcctx);
 	
 	if(is_integer_type(returnType) 
 	&& is_integer_type(returnedType))
@@ -165,7 +165,7 @@ void tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx){
 		
 	//do not check if returned expr
 	//is a call to malloc
-	if(is_malloc(r->returnValue)){ return; }
+	if(is_malloc(r->return_value)){ return; }
 	
 	if(!eq_type(returnType, returnedType)){
 		

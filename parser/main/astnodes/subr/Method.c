@@ -59,15 +59,15 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 			freeTokenListShallow(copy);
 			return NULL;
 		}
-		     if(strcmp(tk->value_ptr, "->") == 0){ res->hasSideEffects = false; }
-		else if(strcmp(tk->value_ptr, "~>") == 0){ res->hasSideEffects = true; }
+		     if(strcmp(tk->value_ptr, "->") == 0){ res->has_side_effects = false; }
+		else if(strcmp(tk->value_ptr, "~>") == 0){ res->has_side_effects = true; }
 		else { printf("Fatal\n"); exit(1); } 
 		
 		list_consume(copy, 1);
 	}
 	
-	res->returnType = makeType2(copy,debug);
-	if(res->returnType == NULL){
+	res->return_type = makeType2(copy, debug);
+	if(res->return_type == NULL){
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
@@ -95,8 +95,8 @@ struct Method* initMethod(){
 	
 	struct Method* res = make(Method);
 
-	res->isPublic       = true;
-	res->hasSideEffects = true;
+	res->is_public       = true;
+	res->has_side_effects = true;
 	res->throws         = false;
 	
 	res->count_args = 0;

@@ -22,12 +22,12 @@ struct PrimitiveType* makePrimitiveType(struct TokenList* tokens, bool debug){
 	
 	struct Token* next = list_head(copy);
 	
-	res->intType = NONE;
+	res->int_type = NONE;
 	
-	res->isIntType   = next->kind == TYPEID_PRIMITIVE_INT;
-	res->isFloatType = next->kind == TYPEID_PRIMITIVE_FLOAT;
-	res->isCharType  = next->kind == TYPEID_PRIMITIVE_CHAR;
-	res->isBoolType  = next->kind == TYPEID_PRIMITIVE_BOOL;
+	res->is_int_type   = next->kind == TYPEID_PRIMITIVE_INT;
+	res->is_float_type = next->kind == TYPEID_PRIMITIVE_FLOAT;
+	res->is_char_type  = next->kind == TYPEID_PRIMITIVE_CHAR;
+	res->is_bool_type  = next->kind == TYPEID_PRIMITIVE_BOOL;
 	
 	char* types[] = 
 	{"int8","int16","int32","int64",
@@ -35,7 +35,7 @@ struct PrimitiveType* makePrimitiveType(struct TokenList* tokens, bool debug){
 	"int","uint"
 	};
 	
-	if(!(res->isIntType)){
+	if(!(res->is_int_type)){
 		
 		list_consume(copy, 1);
 		
@@ -48,12 +48,12 @@ struct PrimitiveType* makePrimitiveType(struct TokenList* tokens, bool debug){
 	for(int i = 0; i < 10; i++){
 		
 		if(strcmp(next->value_ptr, types[i]) == 0){
-			res->intType = i;
+			res->int_type = i;
 			break;
 		}
 	}
 	
-	if(res->intType == NONE){
+	if(res->int_type == NONE){
 		printf("[Parser][Error]");
 		printf("could not find the inttype\n");
 		exit(1);

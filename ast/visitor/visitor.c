@@ -90,7 +90,7 @@ void visitMethod(struct Method* m, VISITOR, void* arg){
 		visitDeclArg(m->args[i], visitor, arg);
 	}
 	
-	visitType(m->returnType, visitor, arg);
+	visitType(m->return_type, visitor, arg);
 
 	visitStmtBlock(m->block, visitor, arg);
 }
@@ -134,9 +134,9 @@ static void visitStmt(struct Stmt* s, VISITOR, void* arg){
 		case 8: visitSwitchStmt(s->ptr.m8, visitor, arg);   break;
 		
 		case 99:
-			if(s->isBreak)   { visitBreakStmt(visitor, arg); }
-			if(s->isContinue){ visitContinueStmt(visitor, arg); }
-			if(s->isThrow)   { visitThrowStmt(visitor, arg); }
+			if(s->is_break)   { visitBreakStmt(visitor, arg); }
+			if(s->is_continue){ visitContinueStmt(visitor, arg); }
+			if(s->is_throw)   { visitThrowStmt(visitor, arg); }
 			break;
 		
 		default: 
@@ -159,8 +159,8 @@ static void visitIfStmt(struct IfStmt* i, VISITOR, void* arg){
 	visitExpr(i->condition, visitor, arg);
 	visitStmtBlock(i->block, visitor, arg);
 	
-	if(i->elseBlock != NULL)
-		{ visitStmtBlock(i->elseBlock, visitor, arg); }
+	if(i->else_block != NULL)
+		{ visitStmtBlock(i->else_block, visitor, arg); }
 }
 
 static void visitWhileStmt(struct WhileStmt* w, VISITOR, void* arg){
@@ -188,8 +188,8 @@ static void visitAssignStmt(struct AssignStmt* a, VISITOR, void* arg){
 	
 	visitor(a, NODE_ASSIGNSTMT, arg);
 	
-	if(a->optType != NULL)
-		{ visitType(a->optType, visitor, arg); }
+	if(a->opt_type != NULL)
+		{ visitType(a->opt_type, visitor, arg); }
 	
 	visitVariable(a->var, visitor, arg);
 	
@@ -226,7 +226,7 @@ static void visitRetStmt(struct RetStmt* r, VISITOR, void* arg){
 	
 	visitor(r, NODE_RETSTMT, arg);
 	
-	visitExpr(r->returnValue, visitor, arg);
+	visitExpr(r->return_value, visitor, arg);
 }
 
 static void visitBreakStmt(VISITOR, void* arg){
@@ -342,10 +342,10 @@ static void visitVariable(struct Variable* v, VISITOR, void* arg){
 	
 	visitor(v, NODE_VARIABLE, arg);
 	
-	visitSimpleVar(v->simpleVar, visitor, arg);
+	visitSimpleVar(v->simple_var, visitor, arg);
 	
-	if(v->memberAccess != NULL)
-		{ visitVariable(v->memberAccess, visitor, arg); }
+	if(v->member_access != NULL)
+		{ visitVariable(v->member_access, visitor, arg); }
 }
 
 static void visitSimpleVar(struct SimpleVar* v, VISITOR, void* arg){
@@ -381,32 +381,32 @@ static void visitSubrType(struct SubrType* s, VISITOR, void* arg){
 		
 	visitor(s, NODE_SUBRTYPE, arg);
 	
-	visitType(s->returnType, visitor, arg);
+	visitType(s->return_type, visitor, arg);
 	
-	for(int i = 0; i < s->count_argTypes; i++)
-		{ visitType(s->argTypes[i], visitor, arg); }
+	for(int i = 0; i < s->count_arg_types; i++)
+		{ visitType(s->arg_types[i], visitor, arg); }
 }
 
 static void visitBasicType(struct BasicType* b, VISITOR, void* arg){
 	
 	visitor(b, NODE_BASICTYPE, arg);
 	
-	if(b->simpleType != NULL)
-		{ visitSimpleType(b->simpleType, visitor, arg); }
+	if(b->simple_type != NULL)
+		{ visitSimpleType(b->simple_type, visitor, arg); }
 		
-	if(b->subrType != NULL)
-		{ visitSubrType(b->subrType, visitor, arg); }
+	if(b->subr_type != NULL)
+		{ visitSubrType(b->subr_type, visitor, arg); }
 }
 
 static void visitSimpleType(struct SimpleType* s, VISITOR, void* arg){
 		
 	visitor(s, NODE_SIMPLETYPE, arg);
 	
-	if(s->primitiveType != NULL)
-		{ visitPrimitiveType(s->primitiveType, visitor, arg); }
+	if(s->primitive_type != NULL)
+		{ visitPrimitiveType(s->primitive_type, visitor, arg); }
 		
-	if(s->structType != NULL)
-		{ visitStructType(s->structType, visitor, arg); }
+	if(s->struct_type != NULL)
+		{ visitStructType(s->struct_type, visitor, arg); }
 }
 
 static void visitPrimitiveType(struct PrimitiveType* p, VISITOR, void* arg){

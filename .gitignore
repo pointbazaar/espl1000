@@ -4,3 +4,5 @@
 *.ast
 ./main
 a.out
+.idea/
+cmake-build-debug/

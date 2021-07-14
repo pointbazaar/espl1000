@@ -20,11 +20,11 @@
 
 void transpileVariable(struct Variable* var, struct Ctx* ctx){
                
-       transpileSimpleVar(var->simpleVar, ctx);
+       transpileSimpleVar(var->simple_var, ctx);
        
-       if(var->memberAccess != NULL){
+       if(var->member_access != NULL){
                fprintf(ctx->file, "->");
-               transpileVariable(var->memberAccess, ctx);
+               transpileVariable(var->member_access, ctx);
        }
 }
 

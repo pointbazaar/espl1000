@@ -106,8 +106,8 @@ struct Method* readMethod(FILE* file, bool debug){
 	
 	read_super(m);
 
-	m->isPublic       = deserialize_int(file);
-	m->hasSideEffects = deserialize_int(file);
+	m->is_public       = deserialize_int(file);
+	m->has_side_effects = deserialize_int(file);
 	m->throws         = deserialize_int(file);
 
 	char* tmp = deserialize_string(file);
@@ -115,7 +115,7 @@ struct Method* readMethod(FILE* file, bool debug){
 	
 	free(tmp);
 
-	m->returnType = readType(file, debug);
+	m->return_type = readType(file, debug);
 	
 	m->count_args = deserialize_int(file);
 	
@@ -372,13 +372,13 @@ struct Variable* readVariable(FILE* file, bool debug){
 	
 	read_super(v);
 	
-	v->memberAccess    = NULL;
-	v->simpleVar       = readSimpleVar(file, debug);
+	v->member_access    = NULL;
+	v->simple_var       = readSimpleVar(file, debug);
 
 	const bool hasMemberAccess = deserialize_int(file) == OPT_PRESENT;
 	
 	if(hasMemberAccess){
-		v->memberAccess = readVariable(file, debug);
+		v->member_access = readVariable(file, debug);
 	}
 
 	magic_num_require(MAGIC_END_VARIABLE, file);
@@ -515,9 +515,9 @@ struct Stmt* readStmt(FILE* file, bool debug){
 	switch(b->kind){
 		case 99: 
 			{
-				b->isBreak    = deserialize_int(file) == OPT_PRESENT;
-				b->isContinue = deserialize_int(file) == OPT_PRESENT;
-				b->isThrow    = deserialize_int(file) == OPT_PRESENT;
+				b->is_break    = deserialize_int(file) == OPT_PRESENT;
+				b->is_continue = deserialize_int(file) == OPT_PRESENT;
+				b->is_throw    = deserialize_int(file) == OPT_PRESENT;
 			}
 			break;
 		case 0: b->ptr.m0 = readLoopStmt(file, debug);   break;
@@ -547,12 +547,12 @@ struct IfStmt* readIfStmt(FILE* file, bool debug){
 
 	v->condition = readExpr(file, debug);
 	v->block     = readStmtBlock(file, debug);
-	v->elseBlock = NULL;
+	v->else_block = NULL;
 
 	const int hasElse = deserialize_int(file);
 	
 	if(hasElse == OPT_PRESENT){
-		v->elseBlock = readStmtBlock(file, debug);
+		v->else_block = readStmtBlock(file, debug);
 	}
 	
 	magic_num_require(MAGIC_END_IFSTMT, file);
@@ -582,7 +582,7 @@ struct RetStmt* readRetStmt(FILE* file, bool debug){
 	
 	read_super(v);
 
-	v->returnValue = readExpr(file, debug);
+	v->return_value = readExpr(file, debug);
 	
 	magic_num_require(MAGIC_END_RETSTMT, file);
 	
@@ -603,10 +603,10 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 		error(file, "Error in readAssignStmt\n");
 	}
 
-	v->optType = NULL;
+	v->opt_type = NULL;
 
 	if(option == OPT_PRESENT){
-		v->optType = readType(file, debug);
+		v->opt_type = readType(file, debug);
 	}
 
 	v->var = readVariable(file, debug);
@@ -672,7 +672,7 @@ struct ForStmt* readForStmt(FILE* file, bool debug){
 	
 	char* indexName = deserialize_string(file);
 	
-	strncpy(res->indexName, indexName, DEFAULT_STR_SIZE);
+	strncpy(res->index_name, indexName, DEFAULT_STR_SIZE);
 	free(indexName);
 	
 	res->range = readRange(file, debug);
@@ -785,17 +785,17 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 	
 	read_super(v);
 	
-	v->returnType = readType(file, debug);
+	v->return_type = readType(file, debug);
 	
-	v->hasSideEffects = deserialize_int(file);
+	v->has_side_effects = deserialize_int(file);
 	v->throws         = deserialize_int(file);
 	
-	v->count_argTypes = deserialize_int(file);
+	v->count_arg_types = deserialize_int(file);
 	
-	v->argTypes = malloc(sizeof(void*)*(v->count_argTypes));
+	v->arg_types = malloc(sizeof(void*) * (v->count_arg_types));
 	
-	for(int i=0;i < (v->count_argTypes); i++){
-		v->argTypes[i] = readType(file, debug);
+	for(int i=0;i < (v->count_arg_types); i++){
+		v->arg_types[i] = readType(file, debug);
 	}
 	
 	magic_num_require(MAGIC_END_SUBRTYPE, file);
@@ -810,17 +810,17 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 	
 	read_super(v);
 	
-	v->primitiveType = NULL;
-	v->structType    = NULL;
+	v->primitive_type = NULL;
+	v->struct_type    = NULL;
 	
 	const int kind = deserialize_int(file);
 	
 	switch(kind){
 		
-		case 0: v->primitiveType = readPrimitiveType(file, debug);
+		case 0: v->primitive_type = readPrimitiveType(file, debug);
 			break;
 			
-		case 1: v->structType = readStructType(file, debug);
+		case 1: v->struct_type = readStructType(file, debug);
 			break;
 			
 		default:
@@ -867,15 +867,15 @@ struct BasicType* readBasicType(FILE* file, bool debug){
 	
 	read_super(v);
 
-	v->simpleType = NULL;
-	v->subrType   = NULL;
+	v->simple_type = NULL;
+	v->subr_type   = NULL;
 	
 	const int kind = deserialize_int(file);
 	
 	switch(kind){
 
-		case 1: v->simpleType = readSimpleType(file, debug); break;
-		case 2: v->subrType   = readSubrType(file, debug);   break;
+		case 1: v->simple_type = readSimpleType(file, debug); break;
+		case 2: v->subr_type   = readSubrType(file, debug);   break;
 
 		default:
 			error(file, "Error in readBasicType\n");
@@ -895,18 +895,18 @@ struct StructType* readStructType(FILE* file, bool debug){
 	read_super(res);
 	
 	char* tmp = deserialize_string(file);
-	strcpy(res->typeName, tmp);
+	strcpy(res->type_name, tmp);
 	free(tmp);
 	
-	res->typeParamCount = deserialize_int(file);
+	res->count_type_params = deserialize_int(file);
 	
-	if(res->typeParamCount > 0){
-		res->typeParams = malloc(sizeof(uint8_t)*(res->typeParamCount));
+	if(res->count_type_params > 0){
+		res->type_params = malloc(sizeof(uint8_t) * (res->count_type_params));
 	}
 	
-	for(int i = 0; i < res->typeParamCount; i++){
+	for(int i = 0; i < res->count_type_params; i++){
 		
-		res->typeParams[i] = deserialize_int(file);
+		res->type_params[i] = deserialize_int(file);
 	}
 
 	magic_num_require(MAGIC_END_STRUCTTYPE, file);
@@ -922,12 +922,12 @@ struct PrimitiveType* readPrimitiveType(FILE* file, bool debug){
 	
 	read_super(res);
 	
-	res->isIntType   = deserialize_int(file);
-	res->isFloatType = deserialize_int(file);
-	res->isCharType  = deserialize_int(file);
-	res->isBoolType  = deserialize_int(file);
+	res->is_int_type   = deserialize_int(file);
+	res->is_float_type = deserialize_int(file);
+	res->is_char_type  = deserialize_int(file);
+	res->is_bool_type  = deserialize_int(file);
 	
-	res->intType     = deserialize_int(file);
+	res->int_type     = deserialize_int(file);
 	
 	magic_num_require(MAGIC_END_PRIMITIVETYPE, file);
 	

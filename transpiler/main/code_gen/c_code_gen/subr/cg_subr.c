@@ -37,7 +37,7 @@ void transpileMethod(struct Method* m, struct Ctx* ctx){
 
 void transpileMethodSignature(struct Method* m, struct Ctx* ctx){
 	
-	transpileType(m->returnType, ctx);
+	transpileType(m->return_type, ctx);
 
 	fprintf(ctx->file, " %s(", m->name);
 
@@ -69,7 +69,7 @@ void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx){
 	bool isSubrType = false;
 	//is it a function pointer?
 	if(da->type->m1 != NULL){
-		if(da->type->m1->subrType != NULL){
+		if(da->type->m1->subr_type != NULL){
 			isSubrType = true;
 			strncpy(
 				ctx->currentFunctionPointerVarOrArgName,

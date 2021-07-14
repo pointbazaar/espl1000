@@ -15,49 +15,48 @@ struct BasicType {
 	struct ASTNode super; 
 	//these are alternatives,
 	//only one of these is != NULL
-	struct SimpleType* simpleType; //may be NULL
-	struct SubrType* subrType; //may be NULL
+	struct SimpleType* simple_type; //may be NULL
+	struct SubrType* subr_type; //may be NULL
 };
 
 struct PrimitiveType {
 	struct ASTNode super; 
 
 	//PType means 'Primitive Type'
-	bool isIntType;
-	bool isFloatType;
-	bool isCharType;
-	bool isBoolType;
+	bool is_int_type;
+	bool is_float_type;
+	bool is_char_type;
+	bool is_bool_type;
 
-	enum INTTYPE intType;
+	enum INTTYPE int_type;
 };
 
 struct StructType {
 	struct ASTNode super; 
 	
-	char typeName[DEFAULT_STR_SIZE];
+	char type_name[DEFAULT_STR_SIZE];
 	
 	//the number of the type parameters
-	uint8_t typeParamCount;
-	uint8_t* typeParams;
+	uint8_t count_type_params;
+	uint8_t* type_params;
 };
 
 struct SimpleType {
 	struct ASTNode super; 
 
-	struct PrimitiveType* primitiveType; //may be NULL
-
-	struct StructType* structType; //may be NULL
+	struct PrimitiveType* 	primitive_type; //may be NULL
+	struct StructType* 		struct_type; 	//may be NULL
 };
 
 struct SubrType {
 	struct ASTNode super; 
 	
-	struct Type* returnType;
+	struct Type* return_type;
 	
-	struct Type** argTypes;
-	uint8_t count_argTypes;
+	struct Type** arg_types;
+	uint8_t count_arg_types;
 	
-	bool hasSideEffects;
+	bool has_side_effects;
 	bool throws;
 };
 

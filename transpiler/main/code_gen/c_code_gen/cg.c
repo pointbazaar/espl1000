@@ -250,8 +250,8 @@ static void ns_transpile_struct_fwd_decls(struct Namespace* ns, struct Ctx* ctx)
 		
 		char* name = decl
 					   ->type
-			           ->structType
-					   ->typeName;
+			           ->struct_type
+					   ->type_name;
 		
 		fprintf(ctx->file, "struct %s;\n", name);
 	}

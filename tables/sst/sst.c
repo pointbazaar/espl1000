@@ -115,7 +115,7 @@ struct SSTLine* makeSSTLine2(
 	line->method       = m;
 	line->type         = type;
 	
-	line->returnType   = m->returnType;
+	line->returnType   = m->return_type;
 	line->isLibC       = false;
 	line->cc           = make_cc();
 	
@@ -124,7 +124,7 @@ struct SSTLine* makeSSTLine2(
 	
 	line->is_private   = has_annotation(m->super.annotations, ANNOT_PRIVATE);
 	
-	line->has_side_effect = m->hasSideEffects;
+	line->has_side_effect = m->has_side_effects;
 	
 	line->throws       = m->throws;
 	

@@ -86,10 +86,10 @@ int simpletype_test_generic(bool debug){
 	struct SimpleType* node = makeSimpleType(l, debug);
 
 	assert(node                != NULL);
-	assert(node->structType    != NULL);
-	assert(node->primitiveType == NULL);
+	assert(node->struct_type != NULL);
+	assert(node->primitive_type == NULL);
 	
-	assert(node->structType->typeParamCount == 1);
+	assert(node->struct_type->count_type_params == 1);
 	assert(0 == list_size(l));
 	
 	freeTokenList(l);

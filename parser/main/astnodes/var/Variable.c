@@ -23,12 +23,12 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 	
 	parse_astnode(copy, &(res->super));
 
-	res->simpleVar = NULL;
-	res->memberAccess = NULL;
+	res->simple_var = NULL;
+	res->member_access = NULL;
 
-	res->simpleVar = makeSimpleVar(copy,debug);
+	res->simple_var = makeSimpleVar(copy, debug);
 
-	if(res->simpleVar == NULL){
+	if(res->simple_var == NULL){
 		freeTokenListShallow(copy);
 		free(res);
 		return NULL;
@@ -42,9 +42,9 @@ struct Variable* makeVariable(struct TokenList* tokens, bool debug) {
 
 	list_expect(copy, STRUCTMEMBERACCESS);
 
-	res->memberAccess = makeVariable(copy, debug);
+	res->member_access = makeVariable(copy, debug);
 
-	if(res->memberAccess == NULL){
+	if(res->member_access == NULL){
 
 		printf("[Parser[Error] parsing struct member access!\n");
 		printf("%s\n", list_code(copy, debug));

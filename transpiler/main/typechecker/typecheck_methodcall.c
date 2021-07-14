@@ -49,7 +49,7 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		
 		struct SSTLine* line = sst_get(tcctx->st->sst, m->name);
 		
-		if( (!tcctx->currentFn->hasSideEffects)
+		if( (!tcctx->currentFn->has_side_effects)
 			&& line->has_side_effect
 		){
 			//method with side effects called
@@ -86,13 +86,13 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		struct LVSTLine* line2 = lvst_get(tcctx->st->lvst, m->name);
 		
 		struct Type* type = line2->type;
-		if(type->m1 == NULL || type->m1->subrType == NULL){ 
+		if(type->m1 == NULL || type->m1->subr_type == NULL){
 			error(tcctx, "SUBR HAD WRONG TYPE IN LVST");
 		}
-		struct SubrType* stype = type->m1->subrType;
+		struct SubrType* stype = type->m1->subr_type;
 		
-		if( (!tcctx->currentFn->hasSideEffects)
-			&& stype->hasSideEffects
+		if( (!tcctx->currentFn->has_side_effects)
+			&& stype->has_side_effects
 		){
 			//method with side effects called
 			//in method marked as without side effects
@@ -101,11 +101,11 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		
 		check_throw_rules(stype->throws, tcctx);
 		
-		expect_args  = stype->count_argTypes;
+		expect_args  = stype->count_arg_types;
 		expect_types = malloc(sizeof(struct Type*)*expect_args);
 		
 		for(uint8_t i=0; i < expect_args; i++){
-			expect_types[i] = stype->argTypes[i];
+			expect_types[i] = stype->arg_types[i];
 		}
 		
 	}else{

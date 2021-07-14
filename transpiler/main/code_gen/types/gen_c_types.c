@@ -15,14 +15,14 @@ char* simpleType2CType(struct SimpleType* s){
 	
 	assert(s != NULL);
 	
-	if(s->primitiveType != NULL){
+	if(s->primitive_type != NULL){
 		
-		return primitiveType2CType(s->primitiveType);
+		return primitiveType2CType(s->primitive_type);
 	}
 	
-	if(s->structType != NULL){
+	if(s->struct_type != NULL){
 		
-		return structType2CType(s->structType);
+		return structType2CType(s->struct_type);
 	}
 
 	printf("[Transpiler][Error]\n");
@@ -35,12 +35,12 @@ char* structType2CType(struct StructType* s){
 	
 	char* res = malloc(DEFAULT_STR_SIZE);
 	
-	if( strcmp(s->typeName, "String") == 0){
+	if(strcmp(s->type_name, "String") == 0){
 		strcpy(res, "char*");
 		return res;
 	}
 	
-	sprintf(res, "struct %s*", s->typeName);
+	sprintf(res, "struct %s*", s->type_name);
 	return res;
 }
 
@@ -50,20 +50,20 @@ char* primitiveType2CType(struct PrimitiveType* p){
 
 	char* res = malloc(DEFAULT_STR_SIZE);
 		
-	if(p->isIntType){
-		strcpy(res, translateIntType(p->intType));
+	if(p->is_int_type){
+		strcpy(res, translateIntType(p->int_type));
 		return res;
 	}
 	
-	if(p->isFloatType){
+	if(p->is_float_type){
 		strcpy(res, "float"); return res;
 	}
 	
-	if(p->isBoolType){
+	if(p->is_bool_type){
 		strcpy(res, "bool"); return res;
 	}
 	
-	if(p->isCharType){
+	if(p->is_char_type){
 		strcpy(res, "char"); return res;	
 	}
 	
@@ -109,7 +109,7 @@ char* subrType2CType(struct SubrType* subrType, struct Ctx* ctx){
 	
 	//https://www.zentut.com/c-tutorial/c-function-pointer/
 	//return type
-	char* res1 = type2CType(subrType->returnType, ctx);
+	char* res1 = type2CType(subrType->return_type, ctx);
 	strcpy(res, res1);
 	free(res1);
 	
@@ -120,12 +120,12 @@ char* subrType2CType(struct SubrType* subrType, struct Ctx* ctx){
 	strcat(res, temp);
 
 	//arguments
-	for(int i=0; i < subrType->count_argTypes; i++){
-		char* res2 = type2CType(subrType->argTypes[i], ctx);
+	for(int i=0; i < subrType->count_arg_types; i++){
+		char* res2 = type2CType(subrType->arg_types[i], ctx);
 		strcat(res, res2);
 		free(res2);
 		
-		if(i < (subrType->count_argTypes)-1){
+		if(i < (subrType->count_arg_types) - 1){
 			strcat(res, ", ");
 		}
 	}
@@ -148,12 +148,12 @@ char* basicType2CType(struct BasicType* btw, struct Ctx* ctx){
 	
 	assert(btw != NULL);
 	
-	if(btw->simpleType != NULL){
-		return simpleType2CType(btw->simpleType);
+	if(btw->simple_type != NULL){
+		return simpleType2CType(btw->simple_type);
 	}
 	
-	if(btw->subrType != NULL){
-		return subrType2CType(btw->subrType, ctx);
+	if(btw->subr_type != NULL){
+		return subrType2CType(btw->subr_type, ctx);
 	}
 	
 	printf("[Transpiler][Error]\n");
@@ -167,13 +167,13 @@ bool isIntType(struct Type* t){
 	
 	struct BasicType* m1 = t->m1;
 	
-	if(m1->simpleType == NULL){ return false; }
+	if(m1->simple_type == NULL){ return false; }
 	
-	struct SimpleType* s = m1->simpleType;
+	struct SimpleType* s = m1->simple_type;
 	
-	if(s->primitiveType == NULL){ return false; }
+	if(s->primitive_type == NULL){ return false; }
 	
-	return s->primitiveType->isIntType;
+	return s->primitive_type->is_int_type;
 }
 char* translateIntType(enum INTTYPE type){
 	

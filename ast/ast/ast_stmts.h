@@ -8,7 +8,7 @@
 struct AssignStmt {
 	struct ASTNode super; 
 	
-	struct Type* optType;	//may be NULL
+	struct Type* opt_type;	//may be NULL
 
 	struct Variable* var;
 	
@@ -21,7 +21,7 @@ struct IfStmt{
 	
 	struct Expr* condition;
 	struct StmtBlock* block;
-	struct StmtBlock* elseBlock; //may be NULL
+	struct StmtBlock* else_block; //may be NULL
 };
 struct Call {
 	struct ASTNode super; 
@@ -34,7 +34,7 @@ struct Call {
 struct RetStmt{ 
 	struct ASTNode super; 
 	
-	struct Expr* returnValue; 
+	struct Expr* return_value;
 };
 struct Stmt {
 	struct ASTNode super; 
@@ -55,9 +55,9 @@ struct Stmt {
 
 	//if one of these is true,
 	//=> kind == 99
-	bool isContinue;
-	bool isBreak;
-	bool isThrow;
+	bool is_continue;
+	bool is_break;
+	bool is_throw;
 };
 struct WhileStmt  {
 	struct ASTNode super; 
@@ -74,7 +74,7 @@ struct LoopStmt {
 struct ForStmt {
 	struct ASTNode super; 
 	
-	char indexName[DEFAULT_STR_SIZE];
+	char index_name[DEFAULT_STR_SIZE];
 	struct Range* range;
 	struct StmtBlock* block;
 };

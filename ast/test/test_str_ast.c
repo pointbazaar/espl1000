@@ -84,10 +84,10 @@ void test_str_expr(){
 	status("strExpr");
 	
 	struct Op o1 = {
-		.isArithmetic = true,
-		.isRelational = false,
-		.isLogical    = false,
-		.isBitwise    = false
+		.is_arithmetic = true,
+		.is_relational = false,
+		.is_logical    = false,
+		.is_bitwise    = false
 	};
 	strcpy(o1.op, "-");
 	
@@ -141,10 +141,10 @@ void test_str_unopterm(){
 	status("strUnOpTerm");
 	
 	struct Op op = {
-		.isArithmetic = true,
-		.isRelational = false,
-		.isLogical    = false,
-		.isBitwise    = false
+		.is_arithmetic = true,
+		.is_relational = false,
+		.is_logical    = false,
+		.is_bitwise    = false
 	};
 	strcpy(op.op, "-");
 	
@@ -203,10 +203,10 @@ void test_str_lambda(){
 	};
 	
 	struct Op o1 = {
-		.isArithmetic = true,
-		.isRelational = false,
-		.isLogical    = false,
-		.isBitwise    = false
+		.is_arithmetic = true,
+		.is_relational = false,
+		.is_logical    = false,
+		.is_bitwise    = false
 	};
 	strcpy(o1.op, "-");
 	

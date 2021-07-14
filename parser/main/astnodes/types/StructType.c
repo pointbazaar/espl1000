@@ -21,8 +21,8 @@ struct StructType* makeStructType(struct TokenList* tokens, bool debug){
 	
 	parse_astnode(copy, &(res->super));
 	
-	res->typeParamCount = 0;
-	res->typeParams     = NULL;
+	res->count_type_params = 0;
+	res->type_params     = NULL;
 
 	struct Token* next  = list_head(copy);
 	
@@ -33,7 +33,7 @@ struct StructType* makeStructType(struct TokenList* tokens, bool debug){
 		return NULL; 
 	}
 
-	strcpy(res->typeName, next->value_ptr);
+	strcpy(res->type_name, next->value_ptr);
 	
 	list_consume(copy, 1);
 
@@ -57,7 +57,7 @@ static void parse_type_params_rest(struct StructType* res, struct TokenList* tok
 	
 	uint32_t cap = 10;
 	
-	res->typeParams = malloc(sizeof(uint8_t) * cap);
+	res->type_params = malloc(sizeof(uint8_t) * cap);
 	
 	//expect ?TX
 	struct Token* next = list_head(tokens);
@@ -69,8 +69,8 @@ static void parse_type_params_rest(struct StructType* res, struct TokenList* tok
 		exit(1);
 	}
 	
-	res->typeParams[res->typeParamCount] = atoi(next->value_ptr);
-	res->typeParamCount += 1;
+	res->type_params[res->count_type_params] = atoi(next->value_ptr);
+	res->count_type_params += 1;
 	list_consume(tokens, 1);
 	
 	next = list_head(tokens);
@@ -85,11 +85,11 @@ static void parse_type_params_rest(struct StructType* res, struct TokenList* tok
 			exit(1);
 		}
 		
-		res->typeParams[res->typeParamCount] = atoi(next->value_ptr);
-		res->typeParamCount += 1;
+		res->type_params[res->count_type_params] = atoi(next->value_ptr);
+		res->count_type_params += 1;
 		list_consume(tokens, 1);
 		
-		if(res->typeParamCount < cap){
+		if(res->count_type_params < cap){
 			
 			next = list_head(tokens);
 			continue;
@@ -98,7 +98,7 @@ static void parse_type_params_rest(struct StructType* res, struct TokenList* tok
 		cap *= 2;
 		
 		const size_t newsize = sizeof(uint8_t) * cap;
-		res->typeParams = realloc(res->typeParams, newsize);
+		res->type_params = realloc(res->type_params, newsize);
 
 		next = list_head(tokens);
 	}

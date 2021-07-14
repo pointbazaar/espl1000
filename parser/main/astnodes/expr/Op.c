@@ -27,10 +27,10 @@ struct Op* makeOp(struct TokenList* tokens, bool debug){
 
 	switch(tk->kind){
 		
-		case OPKEY_ARITHMETIC: res->isArithmetic = true; break;
-		case OPKEY_RELATIONAL: res->isRelational = true; break;
-		case OPKEY_LOGICAL:    res->isLogical    = true; break;
-		case OPKEY_BITWISE:    res->isBitwise    = true; break;
+		case OPKEY_ARITHMETIC: res->is_arithmetic = true; break;
+		case OPKEY_RELATIONAL: res->is_relational = true; break;
+		case OPKEY_LOGICAL:    res->is_logical    = true; break;
+		case OPKEY_BITWISE:    res->is_bitwise    = true; break;
 		
 		default:
 			freeTokenListShallow(copy);

@@ -40,12 +40,12 @@ void test_infer_type_term(bool debug){
 	assert(t != NULL);
 	
 	assert(t->m1 != NULL);
-	assert(t->m1->simpleType != NULL);
+	assert(t->m1->simple_type != NULL);
 	
-	assert(t->m1->simpleType->primitiveType != NULL);
-	assert(t->m1->simpleType->primitiveType->isIntType == false);
+	assert(t->m1->simple_type->primitive_type != NULL);
+	assert(t->m1->simple_type->primitive_type->is_int_type == false);
 	
-	assert(t->m1->simpleType->primitiveType->isFloatType);
+	assert(t->m1->simple_type->primitive_type->is_float_type);
 }
 
 void test_infer_type_unopterm(bool debug){
@@ -71,14 +71,14 @@ void test_infer_type_unopterm(bool debug){
 	assert(t != NULL);
 	
 	assert(t->m1 != NULL);
-	assert(t->m1->simpleType != NULL);
+	assert(t->m1->simple_type != NULL);
 	
-	assert(t->m1->simpleType->primitiveType != NULL);
-	assert(t->m1->simpleType->primitiveType->isIntType == false);
+	assert(t->m1->simple_type->primitive_type != NULL);
+	assert(t->m1->simple_type->primitive_type->is_int_type == false);
 	
-	assert(t->m1->simpleType->structType == NULL);
+	assert(t->m1->simple_type->struct_type == NULL);
 	
-	assert(t->m1->simpleType->primitiveType->isBoolType);
+	assert(t->m1->simple_type->primitive_type->is_bool_type);
 }
 
 void test_infer_type_expr(bool debug){
@@ -109,14 +109,14 @@ void test_infer_type_expr(bool debug){
 	assert(t != NULL);
 	
 	assert(t->m1 != NULL);
-	assert(t->m1->simpleType != NULL);
+	assert(t->m1->simple_type != NULL);
 	
-	assert(t->m1->simpleType->primitiveType != NULL);
-	assert(t->m1->simpleType->primitiveType->isIntType);
+	assert(t->m1->simple_type->primitive_type != NULL);
+	assert(t->m1->simple_type->primitive_type->is_int_type);
 	
-	assert(t->m1->simpleType->structType == NULL);
+	assert(t->m1->simple_type->struct_type == NULL);
 	
-	assert(t->m1->simpleType->primitiveType->isIntType);
+	assert(t->m1->simple_type->primitive_type->is_int_type);
 }
 
 void test_infer_type_expr_multiple_terms(bool debug){
@@ -138,7 +138,7 @@ void test_infer_type_expr_multiple_terms(bool debug){
 
 	struct Op* myop = make(Op);
 	strcpy(myop->op, "+");
-	myop->isArithmetic = true;
+	myop->is_arithmetic = true;
 
 	c1->value = 3;
 	c2->value = 3.0;
@@ -164,13 +164,13 @@ void test_infer_type_expr_multiple_terms(bool debug){
 	assert(t != NULL);
 	
 	assert(t->m1 != NULL);
-	assert(t->m1->simpleType != NULL);
+	assert(t->m1->simple_type != NULL);
 	
-	assert(t->m1->simpleType->primitiveType != NULL);
-	assert(t->m1->simpleType->primitiveType->isIntType == false);
+	assert(t->m1->simple_type->primitive_type != NULL);
+	assert(t->m1->simple_type->primitive_type->is_int_type == false);
 	
-	assert(t->m1->simpleType->structType == NULL);
+	assert(t->m1->simple_type->struct_type == NULL);
 	
 	//float + int -> float
-	assert(t->m1->simpleType->primitiveType->isFloatType);
+	assert(t->m1->simple_type->primitive_type->is_float_type);
 }

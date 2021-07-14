@@ -27,18 +27,18 @@ static struct Type* typeFromStrPrimitive_inner(struct ST* st, char* typeName){
 	res->m2 = NULL;
 	res->m3 = NULL;
 	
-	p->isIntType   = strcmp(typeName, "int")   == 0;
-	p->isFloatType = strcmp(typeName, "float") == 0;
-	p->isCharType  = strcmp(typeName, "char")  == 0;
-	p->isBoolType  = strcmp(typeName, "bool")  == 0;
+	p->is_int_type   = strcmp(typeName, "int") == 0;
+	p->is_float_type = strcmp(typeName, "float") == 0;
+	p->is_char_type  = strcmp(typeName, "char") == 0;
+	p->is_bool_type  = strcmp(typeName, "bool") == 0;
 	
-	p->intType = INT;
+	p->int_type = INT;
 
-	s->primitiveType = p;
-	s->structType    = NULL;
+	s->primitive_type = p;
+	s->struct_type    = NULL;
 
-	btw->subrType = NULL;
-	btw->simpleType = s;
+	btw->subr_type = NULL;
+	btw->simple_type = s;
 	
 	return res;
 }
@@ -68,14 +68,14 @@ struct Type* typeFromStr(struct ST* st, char* typeName){
 	struct SimpleType* simpleType = make(SimpleType);
 	struct StructType* structType = make(StructType);
 	
-	simpleType->primitiveType = NULL;
-	simpleType->structType    = structType;
+	simpleType->primitive_type = NULL;
+	simpleType->struct_type    = structType;
 
-	structType->typeParamCount = 0;
-	strncpy(structType->typeName, typeName, DEFAULT_STR_SIZE);
+	structType->count_type_params = 0;
+	strncpy(structType->type_name, typeName, DEFAULT_STR_SIZE);
 	
-	btw->subrType = NULL;
-	btw->simpleType = simpleType;
+	btw->subr_type = NULL;
+	btw->simple_type = simpleType;
 	
 	st_register_inferred_type(st, res);
 	

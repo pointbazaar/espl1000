@@ -35,7 +35,7 @@ int if_test1(bool debug) {
 	assert(0 == list_size(list));
 	assert(i != NULL);
 	assert(i->block->count == 0);
-	assert(i->elseBlock == NULL);
+	assert(i->else_block == NULL);
 
 	struct Expr* condition = i->condition;
 	assert(condition != NULL);
@@ -85,7 +85,7 @@ int if_test2(bool debug) {
 	assert(condition != NULL);
 
 	assert(i->block->count == 1);
-	assert(i->elseBlock == NULL);
+	assert(i->else_block == NULL);
 	
 	freeTokenList(l);
 	freeIfStmt(i);

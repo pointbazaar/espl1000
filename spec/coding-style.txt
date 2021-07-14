@@ -5,7 +5,7 @@ It specifies:
  -  (1) Naming of structs
  -  (2) Naming of functions
  -  (3) Headers
- -  (4) Function arguments
+ -  (4) Naming of Local Variables, Struct Members, Function Arguments
  -  (5) Error Handling
  -  (6) Indentation
  -  (7) Braces
@@ -19,7 +19,7 @@ It specifies:
 
 (2) Naming of functions
 
-    functions should use snake case for names.
+    functions should use snake_case for names.
     functions that primarily operate on a struct should have the
     name of the struct as prefix, e.g. mystruct_add(...).
 
@@ -27,9 +27,9 @@ It specifies:
 
     Header Guards should be used for all headers. Format: $(FILENAME)_H
 
-(4) Function arguments
+(4) Naming of Local Variables, Struct Members, Function Arguments
 
-    functions should have no more than 2 pointer arguments or 4 primitive arguments.
+    These should all use snake_case (lowercase), e.g. uint32_t my_local_var
 
 (5) Error Handling
 

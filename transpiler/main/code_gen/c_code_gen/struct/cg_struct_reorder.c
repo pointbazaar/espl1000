@@ -16,17 +16,17 @@ static uint8_t sizeof_structmember(struct StructMember* m){
 	
 	if(type->m1 != NULL){
 		struct BasicType* btw = type->m1;
-		if(btw->simpleType != NULL){
-			struct SimpleType* stype = btw->simpleType;
-			if(stype->primitiveType != NULL){
-				struct PrimitiveType* p = stype->primitiveType;
+		if(btw->simple_type != NULL){
+			struct SimpleType* stype = btw->simple_type;
+			if(stype->primitive_type != NULL){
+				struct PrimitiveType* p = stype->primitive_type;
 				
-				if(p->isFloatType){ return 4; }
-				if(p->isCharType){ return 1; }
-				if(p->isBoolType){ return 1; }
-				if(p->isIntType){
+				if(p->is_float_type){ return 4; }
+				if(p->is_char_type){ return 1; }
+				if(p->is_bool_type){ return 1; }
+				if(p->is_int_type){
 					
-					switch(p->intType){
+					switch(p->int_type){
 						case INT8:  case UINT8:  return 1;
 						case INT16: case UINT16: return 2;
 						case INT32: case UINT32: return 4;
@@ -36,11 +36,11 @@ static uint8_t sizeof_structmember(struct StructMember* m){
 					}
 				}
 			}
-			if(stype->structType != NULL){
+			if(stype->struct_type != NULL){
 				return 8; //is pointer to struct
 			}
 		}
-		if(btw->subrType != NULL){ return 8;  }
+		if(btw->subr_type != NULL){ return 8;  }
 	}
 	
 	if(type->m3 != NULL){

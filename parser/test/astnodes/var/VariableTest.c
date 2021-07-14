@@ -30,11 +30,11 @@ int variable_test_parse_struct_member_access(bool debug) {
 		return 0;
 	}
 
-	assert(NULL != v->memberAccess);
+	assert(NULL != v->member_access);
 	
-	assert(strcmp("x", v->simpleVar->name) == 0);
+	assert(strcmp("x", v->simple_var->name) == 0);
 
-	assert(strcmp("a", v->memberAccess->simpleVar->name) == 0);
+	assert(strcmp("a", v->member_access->simple_var->name) == 0);
 	
 	freeTokenList(tokens);
 	freeVariable(v);
@@ -57,8 +57,8 @@ int variable_test_parse_index_access(bool debug) {
 	struct Variable* node = makeVariable(tokens,debug);
 	assert(node != NULL);
 
-	assert(NULL == node->memberAccess);
-	assert(strcmp("x", node->simpleVar->name) == 0);
+	assert(NULL == node->member_access);
+	assert(strcmp("x", node->simple_var->name) == 0);
 	
 	freeTokenList(tokens);
 	freeVariable(node);
@@ -88,9 +88,9 @@ int variable_test_parse_struct_member_access_and_index_access(bool debug) {
 	struct Variable* node = makeVariable(tokens,debug);
 	assert(node != NULL);
 
-	assert(NULL != node->memberAccess);
-	assert(strcmp("x", node->simpleVar->name) == 0);
-	assert(strcmp("a", node->memberAccess->simpleVar->name) == 0);
+	assert(NULL != node->member_access);
+	assert(strcmp("x", node->simple_var->name) == 0);
+	assert(strcmp("a", node->member_access->simple_var->name) == 0);
 	
 	freeTokenList(tokens);
 	freeVariable(node);

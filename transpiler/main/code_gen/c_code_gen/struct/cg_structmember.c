@@ -12,7 +12,7 @@ void transpileStructMember(struct StructMember* m, struct Ctx* ctx){
 	bool isSubrType = false;
 	//is it a function pointer?
 	if(m->type->m1 != NULL){
-		if(m->type->m1->subrType != NULL){
+		if(m->type->m1->subr_type != NULL){
 			isSubrType = true;
 			strncpy(
 				ctx->currentFunctionPointerVarOrArgName,

@@ -23,7 +23,7 @@ int basictype_test_type_parsing_simple_type(bool debug) {
 	struct BasicType* b = makeBasicType2(list, debug);
 
 	//it is SimpleType
-	assert(b->simpleType != NULL && b->subrType == NULL);	
+	assert(b->simple_type != NULL && b->subr_type == NULL);
 	
 	list_print(list);
 	assert(0 == list_size(list));

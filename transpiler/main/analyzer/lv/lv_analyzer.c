@@ -61,7 +61,7 @@ static void lv_for_stmt(struct ST* st, struct ForStmt* l){
 	
 	struct LVSTLine* line = make(LVSTLine);
 	
-	strncpy(line->name, l->indexName, DEFAULT_STR_SIZE);
+	strncpy(line->name, l->index_name, DEFAULT_STR_SIZE);
 	
 	line->type = typeFromStrPrimitive(st, "int");
 	
@@ -74,7 +74,7 @@ static void lv_for_stmt(struct ST* st, struct ForStmt* l){
 
 static void lv_assign_stmt(struct ST* st, struct AssignStmt* a){
 	
-	char* varName = a->var->simpleVar->name;
+	char* varName = a->var->simple_var->name;
 	
 	if(lvst_contains(st->lvst, varName)){ return; }
 	
@@ -86,9 +86,9 @@ static void lv_assign_stmt(struct ST* st, struct AssignStmt* a){
 	
 	strncpy(line->name, varName, DEFAULT_STR_SIZE);
 	
-	if(a->optType != NULL){ 
+	if(a->opt_type != NULL){
 		
-		line->type = a->optType; 
+		line->type = a->opt_type;
 		
 	}else{
 		

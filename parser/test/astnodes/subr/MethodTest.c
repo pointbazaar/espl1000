@@ -47,7 +47,7 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 		return 0;
 	}
 	
-	assert(!m->hasSideEffects);
+	assert(!m->has_side_effects);
 	assert(m->count_args == 1);
 	
 	freeTokenList(l);
@@ -89,7 +89,7 @@ int method_test_can_parse_subroutine(bool debug) {
 	struct Method* m = makeMethod(l, debug);
 	assert(m != NULL);
 	assert(m->count_args == 0);
-	assert(m->hasSideEffects);
+	assert(m->has_side_effects);
 	
 	freeTokenList(l);
 	freeMethod(m);
@@ -122,7 +122,7 @@ int method_test_can_parse_method_without_arguments(bool debug) {
 	struct Method* m = makeMethod(l, debug);
 	assert(m != NULL);
 	assert(0 == m->count_args);
-	assert(!m->hasSideEffects);
+	assert(!m->has_side_effects);
 	
 	freeTokenList(l);
 	freeMethod(m);

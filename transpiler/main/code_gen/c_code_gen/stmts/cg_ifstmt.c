@@ -22,9 +22,9 @@ void transpileIfStmt(struct IfStmt* is, struct Ctx* ctx){
 	fprintf(ctx->file, ")");
 	transpileStmtBlock(is->block, ctx);
 	
-	if(is->elseBlock == NULL){ return; }
+	if(is->else_block == NULL){ return; }
 	
 	indent(ctx);
 	fprintf(ctx->file, "else");
-	transpileStmtBlock(is->elseBlock, ctx);
+	transpileStmtBlock(is->else_block, ctx);
 }

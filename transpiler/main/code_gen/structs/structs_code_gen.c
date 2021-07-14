@@ -68,17 +68,17 @@ static void add_gen_struct_subrs_sst_single(struct Ctx* ctx, struct Namespace* n
 	
 	struct SST* sst = ctx->tables->sst;
 	
-	struct Type* retTypeStruct = typeFromStr(ctx->tables, sd->type->structType->typeName);
+	struct Type* retTypeStruct = typeFromStr(ctx->tables, sd->type->struct_type->type_name);
 	
 	//add subroutines to sst
 	char* nsname = ns->name;
 	
 	struct SSTLine* line = makeSSTLine("_", nsname, retTypeStruct, false, HALTS_ALWAYS, true, false);
-	sprintf(line->name, "new%s", sd->type->structType->typeName);
+	sprintf(line->name, "new%s", sd->type->struct_type->type_name);
 	sst_add(sst, line);
 	
 	line = makeSSTLine("_", nsname, retTypeStruct, false, HALTS_ALWAYS, true, false);
-	sprintf(line->name, "make%s", sd->type->structType->typeName);
+	sprintf(line->name, "make%s", sd->type->struct_type->type_name);
 	sst_add(sst, line);
 	
 }
@@ -96,7 +96,7 @@ void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx){
 	/*
 	 struct A* newA();
 	 */
-	char* name = sd->type->structType->typeName;
+	char* name = sd->type->struct_type->type_name;
 	
 	fprintf(ctx->file, "struct %s* new%s();\n", name, name);
 	
@@ -121,7 +121,7 @@ void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx){
 void gen_struct_subr_new(struct StructDecl* sd, struct Ctx* ctx){
 	//performs a shallow allocation
 	
-	char* name = sd->type->structType->typeName;
+	char* name = sd->type->struct_type->type_name;
 	
 	fprintf(ctx->file, "struct %s* new%s(){\n", name, name);
 	
@@ -135,7 +135,7 @@ void gen_struct_subr_new(struct StructDecl* sd, struct Ctx* ctx){
 
 void gen_struct_subr_make(struct StructDecl* sd, struct Ctx* ctx){
 	
-	char* name = sd->type->structType->typeName;
+	char* name = sd->type->struct_type->type_name;
 	
 	//constructor with all members of the struct
 	fprintf(ctx->file, "struct %s* make%s(", name, name);

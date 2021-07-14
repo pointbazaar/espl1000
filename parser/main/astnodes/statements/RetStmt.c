@@ -24,8 +24,8 @@ struct RetStmt* makeRetStmt(struct TokenList* tokens, bool debug){
 		return NULL;
 	}
 
-	res->returnValue = makeExpr(copy,debug);
-	if(res->returnValue == NULL){
+	res->return_value = makeExpr(copy, debug);
+	if(res->return_value == NULL){
 		free(res);
 		return NULL;
 	}

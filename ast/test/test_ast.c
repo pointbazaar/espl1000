@@ -222,11 +222,11 @@ void test_serialize_PrimitiveType(bool debug){
 	rewind(file);
 	
 	struct PrimitiveType p = {
-		.isIntType   = true,
-		.isFloatType = false,
-		.isCharType  = false,
-		.isBoolType  = false,
-		.intType = INT
+		.is_int_type   = true,
+		.is_float_type = false,
+		.is_char_type  = false,
+		.is_bool_type  = false,
+		.int_type = INT
 	};
 	
 	writePrimitiveType(&p, file);
@@ -237,11 +237,11 @@ void test_serialize_PrimitiveType(bool debug){
 	
 	assert(p2 != NULL);
 	
-	assert(p2->isIntType == true);
-	assert(p2->isFloatType == false);
-	assert(p2->isCharType == false);
-	assert(p2->isBoolType == false);
-	assert(p2->intType == INT);
+	assert(p2->is_int_type == true);
+	assert(p2->is_float_type == false);
+	assert(p2->is_char_type == false);
+	assert(p2->is_bool_type == false);
+	assert(p2->int_type == INT);
 	
 	freePrimitiveType(p2);
 }

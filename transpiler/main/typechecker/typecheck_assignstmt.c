@@ -35,7 +35,7 @@ void tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx){
 
 	//assigning to local variable / arg
 	
-	struct LVSTLine* line = lvst_get(tcctx->st->lvst, a->var->simpleVar->name);
+	struct LVSTLine* line = lvst_get(tcctx->st->lvst, a->var->simple_var->name);
 	
 	if(line->read_only){
 		error(tcctx, "variable can only be read but not written to.");
@@ -51,9 +51,9 @@ void tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx){
 
 	struct Type* right = infer_type_expr(tcctx->current_filename, tcctx->st, a->expr);
 	
-	struct Type* left = a->optType;
+	struct Type* left = a->opt_type;
 	
-	if(a->optType == NULL){
+	if(a->opt_type == NULL){
 		left = infer_type_variable(tcctx->current_filename, tcctx->st, a->var);
 	}
 	

@@ -44,26 +44,26 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 	parse_astnode(copy, &(res->super));
 
 	res->kind 	    = -1;
-	res->isBreak 	= false;
-	res->isContinue = false;
-	res->isThrow    = false;
+	res->is_break 	= false;
+	res->is_continue = false;
+	res->is_throw    = false;
 
 	struct Token* first = list_head(copy);
 	
 	switch(first->kind){
 
 		case BREAK:	
-			res->kind = 99;  res->isBreak = true;	
+			res->kind = 99;  res->is_break = true;
 			list_consume(copy, 2); 
 			break;
 
 		case CONTINUE:	
-			res->kind = 99;  res->isContinue = true; 
+			res->kind = 99;  res->is_continue = true;
 			list_consume(copy, 2); 
 			break;
 			
 		case THROW:
-			res->kind = 99;  res->isThrow = true; 
+			res->kind = 99;  res->is_throw = true;
 			list_consume(copy, 2); 
 			break;
 

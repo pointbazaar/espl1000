@@ -21,14 +21,14 @@ struct Type* infer_type_methodcall(struct ST* st, struct Call* m){
 			//ERROR
 			goto other;
 		}
-		if(type->m1->subrType == NULL){ 
+		if(type->m1->subr_type == NULL){
 			//ERROR
 			goto other;
 		}
 		
-		struct SubrType* stype = type->m1->subrType;
+		struct SubrType* stype = type->m1->subr_type;
 		
-		return stype->returnType;
+		return stype->return_type;
 	}
 	
 	other:

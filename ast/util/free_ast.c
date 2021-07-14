@@ -55,7 +55,7 @@ void freeBinConst(struct BinConst* hc){ free(hc); }
 
 void freeMethod(struct Method* m) {
 
-	freeType(m->returnType);
+	freeType(m->return_type);
 	for(int i=0; i < m->count_args; i++) {
 		freeDeclArg(m->args[i]);
 	}
@@ -145,11 +145,11 @@ void freeUnOpTerm(struct UnOpTerm* t) {
 
 void freeVariable(struct Variable* var) {
 
-	freeSimpleVar(var->simpleVar);
+	freeSimpleVar(var->simple_var);
 
-	if(var->memberAccess != NULL){
+	if(var->member_access != NULL){
 
-		freeVariable(var->memberAccess);
+		freeVariable(var->member_access);
 	}
 
 	free(var);
@@ -157,8 +157,8 @@ void freeVariable(struct Variable* var) {
 
 void freeAssignStmt(struct AssignStmt* as) {
 
-	if(as->optType != NULL) {
-		freeType(as->optType);
+	if(as->opt_type != NULL) {
+		freeType(as->opt_type);
 	}
 	freeVariable(as->var);
 	freeExpr(as->expr);
@@ -172,8 +172,8 @@ void freeIfStmt(struct IfStmt* is) {
 	freeExpr(is->condition);
 
 	freeStmtBlock(is->block);
-	if(is->elseBlock != NULL) {
-		freeStmtBlock(is->elseBlock);
+	if(is->else_block != NULL) {
+		freeStmtBlock(is->else_block);
 	}
 
 	free(is);
@@ -198,8 +198,8 @@ void freeCall(struct Call* mc) {
 
 void freeRetStmt(struct RetStmt* rs) {
 
-	if(rs->returnValue != NULL) {
-		freeExpr(rs->returnValue);
+	if(rs->return_value != NULL) {
+		freeExpr(rs->return_value);
 	}
 	free(rs);
 }
@@ -240,11 +240,11 @@ void freeArrayType(struct ArrayType* at) {
 
 void freeBasicType(struct BasicType* btw) {
 
-	if(btw->simpleType != NULL) {
-		freeSimpleType(btw->simpleType);
+	if(btw->simple_type != NULL) {
+		freeSimpleType(btw->simple_type);
 
-	} else if(btw->subrType != NULL) {
-		freeSubrType(btw->subrType);
+	} else if(btw->subr_type != NULL) {
+		freeSubrType(btw->subr_type);
 	}
 
 	free(btw);
@@ -252,22 +252,22 @@ void freeBasicType(struct BasicType* btw) {
 
 void freeSimpleType(struct SimpleType* st) {
 	
-	if(st->primitiveType != NULL)
-		{ freePrimitiveType(st->primitiveType); }
+	if(st->primitive_type != NULL)
+		{ freePrimitiveType(st->primitive_type); }
 		
-	if(st->structType != NULL)
-		{ freeStructType(st->structType); }
+	if(st->struct_type != NULL)
+		{ freeStructType(st->struct_type); }
 	
 	free(st);
 }
 
 void freeSubrType(struct SubrType* st) {
 	
-	freeType(st->returnType);
-	for(int i=0; i < st->count_argTypes; i++) {
-		freeType(st->argTypes[i]);
+	freeType(st->return_type);
+	for(int i=0; i < st->count_arg_types; i++) {
+		freeType(st->arg_types[i]);
 	}
-	free(st->argTypes);
+	free(st->arg_types);
 	free(st);
 }
 
@@ -289,8 +289,8 @@ void freePrimitiveType(struct PrimitiveType* p){ free(p); }
 
 void freeStructType(struct StructType* s){
 
-	if(s->typeParamCount != 0)
-		{ free(s->typeParams); }
+	if(s->count_type_params != 0)
+		{ free(s->type_params); }
 		
 	free(s);
 }

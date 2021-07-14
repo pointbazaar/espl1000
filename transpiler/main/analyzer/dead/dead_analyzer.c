@@ -22,7 +22,7 @@ static void set_all(struct SST* sst, enum DEAD dead);
  * is marked as dead, as there are no calls to it.
  * but it is not dead. we could assume that all 
  * functions which are referred to as function 
- * pointers could be live. so every simpleVar
+ * pointers could be live. so every simple_var
  * in the program must be analyzed, if it is the name
  * of a function. that function may then be marked
  * as live, as it could be live.

@@ -26,16 +26,16 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 	//if we assign a function pointer
 	bool isSubrType = false;
 
-	if(as->optType != NULL){
+	if(as->opt_type != NULL){
 		
 		//is it a function pointer?
-		if(as->optType->m1 != NULL){
+		if(as->opt_type->m1 != NULL){
 			
-			if(as->optType->m1->subrType != NULL){
+			if(as->opt_type->m1->subr_type != NULL){
 				
 				isSubrType = true;
 				
-				assert(as->var->simpleVar != NULL);
+				assert(as->var->simple_var != NULL);
 				
 				strncpy(
 					ctx->currentFunctionPointerVarOrArgName,
@@ -46,21 +46,21 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 					//would have no type
 					//definition in front,
 					//as they already have a known type
-					as->var->simpleVar->name,
+					as->var->simple_var->name,
 					DEFAULT_STR_SIZE
 				);
 			}
 		}
 		
-		transpileType(as->optType, ctx);
+		transpileType(as->opt_type, ctx);
 		fprintf(ctx->file, " ");
 		
-	}else if(as->optType == NULL && as->var->memberAccess == NULL){
+	}else if(as->opt_type == NULL && as->var->member_access == NULL){
 		//find type via local variable symbol table
 		assert(ctx->tables->lvst != NULL);
 		
 		struct LVSTLine* line = lvst_get(
-			ctx->tables->lvst, as->var->simpleVar->name
+			ctx->tables->lvst, as->var->simple_var->name
 		);
 		
 		assert(line != NULL);

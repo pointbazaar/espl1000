@@ -21,8 +21,8 @@ struct BasicType* makeBasicTypeSimple(struct SimpleType* typeNode) {
 	res->super.line_num    = typeNode->super.line_num;
 	res->super.annotations = 0;
 
-	res->simpleType = typeNode;
-	res->subrType = NULL;
+	res->simple_type = typeNode;
+	res->subr_type = NULL;
 
 	return res;
 }
@@ -34,8 +34,8 @@ struct BasicType* makeBasicTypeSubr(struct SubrType* typeNode) {
 	res->super.line_num    = typeNode->super.line_num;
 	res->super.annotations = 0;
 	
-	res->simpleType = NULL;
-	res->subrType   = typeNode;
+	res->simple_type = NULL;
+	res->subr_type   = typeNode;
 
 	return res;
 }
@@ -47,8 +47,8 @@ struct BasicType* makeBasicType2(struct TokenList* tokens, bool debug) {
 	
 	parse_astnode(copy, &(res->super));
 	
-	res->simpleType = NULL;
-	res->subrType   = NULL;
+	res->simple_type = NULL;
+	res->subr_type   = NULL;
 	
 	if(list_size(copy) == 0){
 		freeTokenListShallow(copy);
@@ -69,8 +69,8 @@ struct BasicType* makeBasicType2(struct TokenList* tokens, bool debug) {
 			return NULL;
 		}
 
-		res->subrType = makeSubrType(copy2,debug);
-		if(res->subrType == NULL){
+		res->subr_type = makeSubrType(copy2, debug);
+		if(res->subr_type == NULL){
 			freeTokenListShallow(copy2);
 			free(res);
 			freeTokenListShallow(copy);
@@ -92,8 +92,8 @@ struct BasicType* makeBasicType2(struct TokenList* tokens, bool debug) {
 		goto end;
 	} 
 	
-	res->simpleType = makeSimpleType(copy,debug);
-	if(res->simpleType == NULL){
+	res->simple_type = makeSimpleType(copy, debug);
+	if(res->simple_type == NULL){
 		free(res);
 		freeTokenListShallow(copy);
 		freeToken(lparens);

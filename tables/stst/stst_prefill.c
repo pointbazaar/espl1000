@@ -27,13 +27,13 @@ void stst_prefill(struct ST* st, struct STST* stst){
 	
 		struct StructType* s = make(StructType);
 		
-		strncpy(s->typeName, proto.name, DEFAULT_STR_SIZE);
-		s->typeParamCount = 0;
+		strncpy(s->type_name, proto.name, DEFAULT_STR_SIZE);
+		s->count_type_params = 0;
 		
 		struct SimpleType* stype = make(SimpleType);
 		
-		stype->structType    = s;
-		stype->primitiveType = NULL;
+		stype->struct_type    = s;
+		stype->primitive_type = NULL;
 		
 		struct StructDecl* sd = make(StructDecl);
 		

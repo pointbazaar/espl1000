@@ -31,19 +31,19 @@ struct Type* method_to_subrtype(struct Method* m){
 	stype->super.annotations = 0;
 	stype->super.line_num    = m->super.line_num;
 	
-	stype->returnType     = copyType(m->returnType);
-	stype->hasSideEffects = m->hasSideEffects;
-	stype->count_argTypes = m->count_args;
+	stype->return_type     = copyType(m->return_type);
+	stype->has_side_effects = m->has_side_effects;
+	stype->count_arg_types = m->count_args;
 	stype->throws         = m->throws;
 	
-	stype->argTypes = malloc(sizeof(void*)*stype->count_argTypes);
+	stype->arg_types = malloc(sizeof(void*) * stype->count_arg_types);
 	
-	for(uint32_t i = 0; i < stype->count_argTypes; i++){
-		stype->argTypes[i] = copyType(m->args[i]->type);
+	for(uint32_t i = 0; i < stype->count_arg_types; i++){
+		stype->arg_types[i] = copyType(m->args[i]->type);
 	}
 	
-	bt->simpleType = NULL;
-	bt->subrType   = stype;
+	bt->simple_type = NULL;
+	bt->subr_type   = stype;
 	t->m1 = bt;
 	t->m2 = NULL;
 	t->m3 = NULL;

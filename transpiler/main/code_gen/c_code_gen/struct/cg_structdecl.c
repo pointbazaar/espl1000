@@ -8,7 +8,7 @@
 
 void transpileStructDecl(struct StructDecl* s, struct Ctx* ctx){
 	
-	fprintf(ctx->file ,"struct %s {\n", s->type->structType->typeName);
+	fprintf(ctx->file ,"struct %s {\n", s->type->struct_type->type_name);
 	
 	struct StructMember** reordered = struct_reorder(s);
 			

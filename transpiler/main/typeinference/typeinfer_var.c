@@ -20,13 +20,13 @@ static struct Type* infer_in_context(char* filename, struct ST* st, struct Membe
 
 struct Type* infer_type_variable(char* filename, struct ST* st, struct Variable* v){
 	
-	struct Type* typeOfVar = infer_type_simplevar(filename, st, v->simpleVar);
+	struct Type* typeOfVar = infer_type_simplevar(filename, st, v->simple_var);
 	
-	if(v->memberAccess == NULL){ return typeOfVar; }
+	if(v->member_access == NULL){ return typeOfVar; }
 
 	struct MemberAccess ma = {
 		.structType = typeOfVar,
-		.member = v->memberAccess
+		.member = v->member_access
 	};
 
 	return infer_in_context(filename, st, &ma);
@@ -37,19 +37,19 @@ static struct Type* infer_in_context(char* filename, struct ST* st, struct Membe
 	struct Type* structType = ma->structType;
 	struct Variable* member = ma->member;
 	
-	char* structName = structType->m1->simpleType->structType->typeName;
-	char* memberName = member->simpleVar->name;
+	char* structName = structType->m1->simple_type->struct_type->type_name;
+	char* memberName = member->simple_var->name;
 	
 	struct Type* memberType = stst_get_member(st->stst, structName, memberName)->type;
 	
-	memberType = unwrap_indices(filename, memberType, member->simpleVar->count_indices);
+	memberType = unwrap_indices(filename, memberType, member->simple_var->count_indices);
 	
-	if(member->memberAccess == NULL)
+	if(member->member_access == NULL)
 		{ return memberType; }
 		
 	struct MemberAccess ma2 = {
 		.structType = memberType,
-		.member = member->memberAccess
+		.member = member->member_access
 	};
 	
 	return infer_in_context(filename, st, &ma2);

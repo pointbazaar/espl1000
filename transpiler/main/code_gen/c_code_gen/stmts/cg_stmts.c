@@ -71,9 +71,9 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 		case 8: transpileSwitchStmt(s->ptr.m8, ctx); break;
 
 		case 99:
-			if(s->isBreak){ transpileBreakStmt(ctx);  }
-			if(s->isContinue){ transpileContinueStmt(ctx); }
-			if(s->isThrow){ transpileThrowStmt(ctx); }
+			if(s->is_break){ transpileBreakStmt(ctx);  }
+			if(s->is_continue){ transpileContinueStmt(ctx); }
+			if(s->is_throw){ transpileThrowStmt(ctx); }
 			break;
 		
 		default:
@@ -91,7 +91,7 @@ void transpileRetStmt(struct RetStmt* rs, struct Ctx* ctx){
 	indent(ctx);
 	
 	fprintf(ctx->file, "return ");
-	transpileExpr(rs->returnValue, ctx);
+	transpileExpr(rs->return_value, ctx);
 }
 
 void transpileBreakStmt(struct Ctx* ctx){

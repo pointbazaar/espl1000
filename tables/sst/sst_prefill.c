@@ -265,18 +265,18 @@ static struct Type* makeCharPtrTypeC(){
 	
 	struct PrimitiveType* pt = make(PrimitiveType);
 	
-	pt->isIntType  = false;
-	pt->isCharType = true;
-	pt->isFloatType= false;
-	pt->isBoolType = false;
+	pt->is_int_type  = false;
+	pt->is_char_type = true;
+	pt->is_float_type= false;
+	pt->is_bool_type = false;
 	
 	struct SimpleType* myst = make(SimpleType);
-	myst->primitiveType = pt;
-	myst->structType    = NULL;
+	myst->primitive_type = pt;
+	myst->struct_type    = NULL;
 	
 	struct BasicType* btw = make(BasicType);
-	btw->simpleType = myst;
-	btw->subrType = NULL;
+	btw->simple_type = myst;
+	btw->subr_type = NULL;
 	
 	struct Type* mychar = make(Type);
 		mychar->m1 = btw;
@@ -298,17 +298,17 @@ static struct Type* makeFileTypeC(){
 	
 	struct StructType* s = make(StructType);
 	
-	strcpy(s->typeName, "_IO_FILE");
-	s->typeParamCount = 0;
-	s->typeParams     = NULL;
+	strcpy(s->type_name, "_IO_FILE");
+	s->count_type_params = 0;
+	s->type_params     = NULL;
 	
 	struct SimpleType* myst = make(SimpleType);
-	myst->primitiveType = NULL;
-	myst->structType    = s;
+	myst->primitive_type = NULL;
+	myst->struct_type    = s;
 	
 	struct BasicType* btw = make(BasicType);
-	btw->simpleType = myst;
-	btw->subrType = NULL;
+	btw->simple_type = myst;
+	btw->subr_type = NULL;
 	
 	struct Type* m = make(Type);
 		m->m1 = btw;

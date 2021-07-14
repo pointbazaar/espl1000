@@ -49,7 +49,7 @@ int term_test_variable_term(bool debug) {
 	struct Variable* v = t->ptr.m6;
 	assert(v != NULL);
 
-	struct SimpleVar* sv = v->simpleVar;
+	struct SimpleVar* sv = v->simple_var;
 	assert(sv != NULL);
 
 	assert(strcmp(sv->name,"x") == 0);
@@ -82,7 +82,7 @@ int term_test_parentheses(bool debug){
 	struct Variable* v = expr->term1->term->ptr.m6;
 	assert(v != NULL);
 
-	struct SimpleVar* sv = v->simpleVar;
+	struct SimpleVar* sv = v->simple_var;
 	assert(sv != NULL);
 
 	assert(strcmp(sv->name,"x") == 0);

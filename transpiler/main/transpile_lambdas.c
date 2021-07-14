@@ -108,16 +108,16 @@ static void myvisitor_transpile_lambdas_inner(
 			printf("Error\n");
 			exit(1);
 		}
-		if(type->m1->subrType == NULL){ 
+		if(type->m1->subr_type == NULL){
 			printf("Error\n");
 			exit(1);
 		}
 		
-		struct SubrType* stype = type->m1->subrType;
+		struct SubrType* stype = type->m1->subr_type;
 		
-		struct Type* pre_lambdaType = stype->argTypes[i];
+		struct Type* pre_lambdaType = stype->arg_types[i];
 		
-		lambdaType = pre_lambdaType->m1->subrType;
+		lambdaType = pre_lambdaType->m1->subr_type;
 		
 	}else if(sst_contains(st->sst, call->name)){
 		
@@ -130,7 +130,7 @@ static void myvisitor_transpile_lambdas_inner(
 		//get the subrtype from the argument
 		struct Type* pre_lambdaType = lambdaArg->type;
 		
-		lambdaType = pre_lambdaType->m1->subrType;
+		lambdaType = pre_lambdaType->m1->subr_type;
 		
 	}else{
 		
@@ -145,9 +145,9 @@ static void myvisitor_transpile_lambdas_inner(
 		current_ns, 
 		term, 
 		lambda,
-		lambdaType->returnType,
-		lambdaType->argTypes,
-		lambdaType->count_argTypes
+		lambdaType->return_type,
+		lambdaType->arg_types,
+		lambdaType->count_arg_types
 	);
 }
 
@@ -191,8 +191,8 @@ static void transpile_lambda(
 	sprintf(lambsimplevar->name, LAMBDA_NAME_PATTERN, lambda->lambda_num);
 	
 	struct Variable* lambvar = make(Variable);
-	lambvar->memberAccess = NULL;
-	lambvar->simpleVar = lambsimplevar;
+	lambvar->member_access = NULL;
+	lambvar->simple_var = lambsimplevar;
 	term->ptr.m6 = lambvar;
 	term->kind = 6;
 	
@@ -213,19 +213,19 @@ static struct Method* gen_subr_from_lambda(
 ){
 	
 	struct Method* lsubr  = make(Method);
-	lsubr->isPublic       = false;
-	lsubr->hasSideEffects = false;  //ASSUMPTION TODO: work on it
+	lsubr->is_public       = false;
+	lsubr->has_side_effects = false;  //ASSUMPTION TODO: work on it
 	lsubr->throws         = false; //ASSUMPTION TODO: work on it
 	sprintf(lsubr->name, LAMBDA_NAME_PATTERN, lambda->lambda_num);
 	
 	struct RetStmt* rstmt = make(RetStmt);
-	rstmt->returnValue    = lambda->expr;
+	rstmt->return_value    = lambda->expr;
 	
 	struct Stmt* stmt = make(Stmt);
 	stmt->kind        = 4;
 	stmt->ptr.m4      = rstmt;
-	stmt->isContinue  = false;
-	stmt->isBreak     = false;
+	stmt->is_continue  = false;
+	stmt->is_break     = false;
 	
 	lsubr->block           = make(StmtBlock);
 	lsubr->block->count    = 1;
@@ -233,7 +233,7 @@ static struct Method* gen_subr_from_lambda(
 	lsubr->block->stmts[0] = stmt;
 	
 	//copy return type
-	lsubr->returnType = copyType(orig_rtype);
+	lsubr->return_type = copyType(orig_rtype);
 	
 	//copy declarg 
 	lsubr->count_args = orig_count_arg;

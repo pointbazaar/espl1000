@@ -194,12 +194,12 @@ char* strArrayType(struct ArrayType* at){
 
 char* strBasicType(struct BasicType* btw){
 	
-	if(btw->simpleType != NULL){
-		return strSimpleType(btw->simpleType);
+	if(btw->simple_type != NULL){
+		return strSimpleType(btw->simple_type);
 	}
 	
-	if(btw->subrType != NULL){
-		return strSubrType(btw->subrType);
+	if(btw->subr_type != NULL){
+		return strSubrType(btw->subr_type);
 	}
 	
 	error("strBasicTypeWrapped");
@@ -208,10 +208,10 @@ char* strBasicType(struct BasicType* btw){
 
 char* strSimpleType(struct SimpleType* st){
 	
-	if(st->primitiveType != NULL)
-		{ return strPrimitiveType(st->primitiveType); }
+	if(st->primitive_type != NULL)
+		{ return strPrimitiveType(st->primitive_type); }
 		
-	return strStructType(st->structType);
+	return strStructType(st->struct_type);
 }
 
 char* strSubrType(struct SubrType* st){
@@ -223,13 +223,13 @@ char* strSubrType(struct SubrType* st){
 	
 	strcat(res, "(");
 	
-	for(int i=0;i < st->count_argTypes; i++){
+	for(int i=0;i < st->count_arg_types; i++){
 	
-		char* argType = strType(st->argTypes[i]);
+		char* argType = strType(st->arg_types[i]);
 		strcat(res, argType);
 		free(argType);
 		
-		if(i < (st->count_argTypes - 1)){
+		if(i < (st->count_arg_types - 1)){
 			
 			strcat(res, ", ");
 		}
@@ -237,9 +237,9 @@ char* strSubrType(struct SubrType* st){
 	
 	strcat(res, ")");
 	
-	strcat(res, (st->hasSideEffects)?"~>":"->");
+	strcat(res, (st->has_side_effects) ? "~>" : "->");
 	
-	char* returntype = strType(st->returnType);
+	char* returntype = strType(st->return_type);
 	strcat(res, returntype);
 	
 	if(st->throws){ strcat(res, " throws "); }
@@ -273,7 +273,7 @@ char* strPrimitiveType(struct PrimitiveType* p){
 	
 	char* res = malloc(DEFAULT_STR_SIZE);
 	
-	if(p->isIntType){
+	if(p->is_int_type){
 		
 		char* types[] = 
 		{"int8","int16","int32","int64",
@@ -281,12 +281,12 @@ char* strPrimitiveType(struct PrimitiveType* p){
 		"int","uint"
 		};
 		
-		sprintf(res, "%s", types[p->intType]);
+		sprintf(res, "%s", types[p->int_type]);
 	}
 	
-	if(p->isFloatType) { sprintf(res, "float"); }
-	if(p->isCharType)  { sprintf(res, "char"); }
-	if(p->isBoolType)  { sprintf(res, "bool"); }
+	if(p->is_float_type) { sprintf(res, "float"); }
+	if(p->is_char_type)  { sprintf(res, "char"); }
+	if(p->is_bool_type)  { sprintf(res, "bool"); }
 	
 	return res;
 }
@@ -294,14 +294,14 @@ char* strPrimitiveType(struct PrimitiveType* p){
 char* strStructType(struct StructType* s){
 	
 	//TODO: add the generic part
-	if(s->typeParamCount != 0){
+	if(s->count_type_params != 0){
 	
 		error("strStructType");
 	}
 	
 	char* res = malloc(DEFAULT_STR_SIZE);
 	
-	sprintf(res, "%s", s->typeName);
+	sprintf(res, "%s", s->type_name);
 	
 	return res;
 }
@@ -352,9 +352,9 @@ char* strStructMember(struct StructMember* s){
 
 char* strVariable(struct Variable* v){
 	
-	char* s1 = strSimpleVar(v->simpleVar);
+	char* s1 = strSimpleVar(v->simple_var);
 	
-	char* s2 = (v->memberAccess != NULL)?strVariable(v->memberAccess):"";
+	char* s2 = (v->member_access != NULL) ? strVariable(v->member_access) : "";
 	
 	uint16_t l = strlen(s1) + strlen(s2);
 	
@@ -363,7 +363,7 @@ char* strVariable(struct Variable* v){
 	sprintf(res, "%s%s", s1, s2);
 	
 	free(s1);
-	if(v->memberAccess != NULL){ free(s2); }
+	if(v->member_access != NULL){ free(s2); }
 	
 	return res;
 }
@@ -486,9 +486,9 @@ char* strStmt(struct Stmt* stmt){
 			char* res = malloc(sizeof(char)*30);
 			strcpy(res, "");
 			
-			if(stmt->isBreak)    { sprintf(res, "break"); }
-			if(stmt->isContinue) { sprintf(res, "continue"); }
-			if(stmt->isThrow)    { sprintf(res, "throw"); }
+			if(stmt->is_break)    { sprintf(res, "break"); }
+			if(stmt->is_continue) { sprintf(res, "continue"); }
+			if(stmt->is_throw)    { sprintf(res, "throw"); }
 			return res;
 		}
 			
@@ -502,9 +502,9 @@ char* strAssignStmt(struct AssignStmt* a){
 	
 	char* strOptType = "";
 	
-	if(a->optType != NULL){
+	if(a->opt_type != NULL){
 			
-		strOptType = strType(a->optType);
+		strOptType = strType(a->opt_type);
 	}
 	
 	char* strVar = strVariable(a->var);
@@ -521,7 +521,7 @@ char* strAssignStmt(struct AssignStmt* a){
 	
 	sprintf(res, "%s %s = %s", strOptType, strVar, strE);
 	
-	if(a->optType != NULL){ free(strOptType); }
+	if(a->opt_type != NULL){ free(strOptType); }
 	free(strVar);
 	free(strE);
 	
@@ -538,7 +538,7 @@ char* strForStmt(struct ForStmt* f){
 	
 	char* res = malloc(sizeof(char)*l);
 	
-	sprintf(res, "for %s in %s %s", f->indexName, s1, s2);
+	sprintf(res, "for %s in %s %s", f->index_name, s1, s2);
 	
 	free(s1); free(s2);
 	return res;
@@ -551,8 +551,8 @@ char* strIfStmt(struct IfStmt* i){
 	
 	char* s3 = "";
 	
-	if(i->elseBlock != NULL){
-		s3 = strStmtBlock(i->elseBlock);
+	if(i->else_block != NULL){
+		s3 = strStmtBlock(i->else_block);
 	}
 	
 	const uint32_t l = strlen(s1)+strlen(s2)+strlen(s3)
@@ -564,7 +564,7 @@ char* strIfStmt(struct IfStmt* i){
 	
 	free(s1); free(s2);
 	
-	if(i->elseBlock != NULL){
+	if(i->else_block != NULL){
 		
 		strcat(res, " else ");
 		strcat(res, s3);
@@ -670,7 +670,7 @@ char* strCall(struct Call* m){
 
 char* strRetStmt(struct RetStmt* r){
 	
-	char* s = strExpr(r->returnValue);
+	char* s = strExpr(r->return_value);
 	
 	uint16_t l = 10 + strlen(s);
 	

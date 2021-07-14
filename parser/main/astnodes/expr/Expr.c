@@ -377,10 +377,10 @@ void insertOperatorChaining(
 			//generate the pattern
 			struct Op* andOp = make(Op);
 			
-			andOp->isArithmetic = false; 
-			andOp->isRelational = false; 
-			andOp->isLogical    = true; 
-			andOp->isBitwise    = false;
+			andOp->is_arithmetic = false;
+			andOp->is_relational = false;
+			andOp->is_logical    = true;
+			andOp->is_bitwise    = false;
 			
 			strcpy(andOp->op, "&&");
 			

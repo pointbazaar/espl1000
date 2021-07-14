@@ -14,11 +14,11 @@ struct DeclArg  {
 struct Method {
 	struct ASTNode super; 
 	
-	struct Type* returnType;
+	struct Type* return_type;
 	char name[DEFAULT_STR_SIZE];
 	
-	bool isPublic;
-	bool hasSideEffects;
+	bool is_public;
+	bool has_side_effects;
 	bool throws;
 
 	uint8_t count_args;

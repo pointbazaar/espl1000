@@ -24,10 +24,10 @@ struct SubrType* makeSubrType2(
 	res->super.line_num    = return_type->super.line_num;
 	res->super.annotations = 0;
 
-	res->returnType     = return_type;
-	res->hasSideEffects = hasSideEffects;
+	res->return_type     = return_type;
+	res->has_side_effects = hasSideEffects;
 	res->throws         = throws;
-	res->count_argTypes = 0;
+	res->count_arg_types = 0;
 
 	return res;
 }
@@ -41,12 +41,12 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 	
 	parse_astnode(copy, &(res->super));
 
-	res->argTypes = malloc(sizeof(struct Type*)*1);
-	res->count_argTypes = 0;
+	res->arg_types = malloc(sizeof(struct Type*) * 1);
+	res->count_arg_types = 0;
 
 	if(!list_expect(copy, LPARENS)){
 		freeTokenListShallow(copy);
-		free(res->argTypes);
+		free(res->arg_types);
 		free(res);
 		return NULL;
 	}
@@ -58,8 +58,8 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 	if(mytype == NULL){fail=true;}
 
 	if(!fail){
-		res->argTypes[res->count_argTypes++] = mytype;
-		res->argTypes = realloc(res->argTypes,sizeof(struct Type*)*(res->count_argTypes + 1));
+		res->arg_types[res->count_arg_types++] = mytype;
+		res->arg_types = realloc(res->arg_types, sizeof(struct Type*) * (res->count_arg_types + 1));
 
 	}else{
 		sucess_argument_types = false;
@@ -77,11 +77,11 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 			if(mytype == NULL){fail2 = true;}
 
 			if(!fail2){
-				res->argTypes[res->count_argTypes] = mytype;
-				res->count_argTypes++;
+				res->arg_types[res->count_arg_types] = mytype;
+				res->count_arg_types++;
 
-				size_t newsize = sizeof(struct Type*)*(res->count_argTypes + 1);
-				res->argTypes = realloc(res->argTypes, newsize);
+				size_t newsize = sizeof(struct Type*)*(res->count_arg_types + 1);
+				res->arg_types = realloc(res->arg_types, newsize);
 
 				list_set(copy, copy2);
 			}
@@ -94,7 +94,7 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 
 	if(!list_expect(copy, RPARENS)){
 		freeTokenListShallow(copy);
-		free(res->argTypes);
+		free(res->arg_types);
 		free(res);
 		return NULL;
 	}
@@ -102,22 +102,22 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 	{
 		struct Token* tk = list_head(copy);
 		if(tk->kind != ARROW){
-			free(res->argTypes);
+			free(res->arg_types);
 			free(res);
 			freeTokenListShallow(copy);
 			return NULL;
 		}
-		     if(strcmp(tk->value_ptr, "->") == 0){ res->hasSideEffects = false; }
-		else if(strcmp(tk->value_ptr, "~>") == 0){ res->hasSideEffects = true; }
+		     if(strcmp(tk->value_ptr, "->") == 0){ res->has_side_effects = false; }
+		else if(strcmp(tk->value_ptr, "~>") == 0){ res->has_side_effects = true; }
 		else { printf("Fatal\n"); exit(1); } 
 		
 		list_consume(copy, 1);
 	}
 
-	res->returnType = makeType2(copy,debug);
-	if(res->returnType == NULL){
+	res->return_type = makeType2(copy, debug);
+	if(res->return_type == NULL){
 		freeTokenListShallow(copy);
-		free(res->argTypes);
+		free(res->arg_types);
 		free(res);
 		return NULL;
 	}

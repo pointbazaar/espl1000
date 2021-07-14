@@ -44,9 +44,9 @@ void transpileCall(struct Call* mc, struct Ctx* ctx){
 		
 		if(line2->type->m1 == NULL){ exit(1); }
 		struct BasicType* bt = line2->type->m1;
-		if(bt->subrType == NULL){ exit(1); }
+		if(bt->subr_type == NULL){ exit(1); }
 		
-		throws = bt->subrType->throws;
+		throws = bt->subr_type->throws;
 	} else {
 		printf("could not find function %s\n", mc->name);
 		exit(1);

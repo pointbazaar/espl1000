@@ -121,7 +121,7 @@ struct STSTLine* makeSTSTLine(struct StructDecl* s, char* _namespace){
 	line->is_private = has_annotation(s->super.annotations, ANNOT_PRIVATE);
 	
 	strncpy(line->_namespace, _namespace,                    DEFAULT_STR_SIZE);
-	strncpy(line->name,       s->type->structType->typeName, DEFAULT_STR_SIZE);
+	strncpy(line->name, s->type->struct_type->type_name, DEFAULT_STR_SIZE);
 	
 	return line;
 }
