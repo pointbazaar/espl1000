@@ -58,7 +58,7 @@ struct ForStmt* makeForStmt(struct TokenList* tokens, bool debug) {
 	
 	if(res->block == NULL){
 		freeTokenListShallow(copy);
-		freeRange(res->range);
+		free_range(res->range);
 		free(res);
 		return NULL;
 	}

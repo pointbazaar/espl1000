@@ -47,5 +47,5 @@ void for_test1(bool debug) {
 	assert(f->range->end != NULL);
 	
 	freeTokenList(list);
-	freeForStmt(f);
+	free_for_stmt(f);
 }

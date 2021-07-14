@@ -104,8 +104,8 @@ void test_serialize_int_const() {
 	
 	assert(m.value == m2->value);
 	assert(m.super.line_num == m2->super.line_num);
-	
-	freeIntConst(m2);
+
+	free_int_const(m2);
 }
 
 void test_serialize_hex_const() {
@@ -126,8 +126,8 @@ void test_serialize_hex_const() {
 	
 	assert(m.value == m2->value);
 	assert(m.super.line_num == m2->super.line_num);
-	
-	freeHexConst(m2);
+
+	free_hex_const(m2);
 }
 
 void test_serialize_bin_const() {
@@ -148,8 +148,8 @@ void test_serialize_bin_const() {
 	
 	assert(m.value == m2->value);
 	assert(m.super.line_num == m2->super.line_num);
-	
-	freeBinConst(m2);
+
+	free_bin_const(m2);
 }
 
 void test_serialize_bool_const() {
@@ -168,8 +168,8 @@ void test_serialize_bool_const() {
 	struct BoolConst* m2 = read_bool_const(file);
 	
 	assert(m.value == m2->value);
-	
-	freeBoolConst(m2);
+
+	free_bool_const(m2);
 }
 
 void test_serialize_char_const() {
@@ -188,8 +188,8 @@ void test_serialize_char_const() {
 	struct CharConst* m2 = read_char_const(file);
 	
 	assert(m.value == m2->value);
-	
-	freeCharConst(m2);
+
+	free_char_const(m2);
 }
 
 void test_serialize_type_param() {
@@ -208,8 +208,8 @@ void test_serialize_type_param() {
 	struct TypeParam* m2 = read_type_param(file);
 	
 	assert(m.index == m2->index);
-	
-	freeTypeParam(m2);
+
+	free_type_param(m2);
 }
 
 void test_serialize_primitive_type() {
@@ -239,8 +239,8 @@ void test_serialize_primitive_type() {
 	assert(p2->is_char_type == false);
 	assert(p2->is_bool_type == false);
 	assert(p2->int_type == INT);
-	
-	freePrimitiveType(p2);
+
+	free_primitive_type(p2);
 }
 
 void test_serialize_float_const() {
@@ -258,8 +258,8 @@ void test_serialize_float_const() {
 	struct FloatConst* m2 = read_float_const(file);
 	
 	assert(m.value == m2->value);
-	
-	freeFloatConst(m2);
+
+	free_float_const(m2);
 }
 
 void test_serialize_string_const() {
@@ -281,8 +281,8 @@ void test_serialize_string_const() {
 	struct StringConst* m2 = read_string_const(file);
 	
 	assert(strcmp(m.value, m2->value) == 0);
-	
-	freeStringConst(m2);
+
+	free_string_const(m2);
 }
 
 void test_serialize_op() {
@@ -306,8 +306,8 @@ void test_serialize_op() {
 	struct Op* m2 = read_op(file);
 	
 	assert(strcmp(m.op, m2->op)==0);
-	
-	freeOp(m2);
+
+	free_op(m2);
 }
 
 void test_serialize_term() {
@@ -330,8 +330,8 @@ void test_serialize_term() {
 	struct Term* m2 = read_term(file);
 	
 	assert(m.ptr.m2->value == m2->ptr.m2->value);
-	
-	freeTerm(m2);
+
+	free_term(m2);
 }
 
 void test_serialize_expr() {
@@ -367,9 +367,9 @@ void test_serialize_expr() {
 	};
 	
 	struct Expr expr = {
-		.term1 = copyUnOpTerm(&uop),
-		.term2 = copyUnOpTerm(&uop),
-		.op    = copyOp(&myop)
+		.term1 = copy_un_op_term(&uop),
+		.term2 = copy_un_op_term(&uop),
+		.op    = copy_op(&myop)
 	};
 
 	write_expr(&expr, file);
@@ -381,6 +381,6 @@ void test_serialize_expr() {
 	assert(expr.term1->term->ptr.m2->value == expr2->term1->term->ptr.m2->value);
 	
 	assert(strcmp(expr.op->op, expr2->op->op) == 0);
-	
-	freeExpr(expr2);
+
+	free_expr(expr2);
 }

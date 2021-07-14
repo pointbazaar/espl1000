@@ -32,7 +32,7 @@ int namespace_test_can_parse_namespace_with_1_empty_struct(bool debug) {
 	assert(0 == n->structs[0]->count_members);
 	
 	freeTokenList(l);
-	freeNamespace(n);
+	free_namespace(n);
 
 	return 1;
 }
@@ -60,7 +60,7 @@ int namespace_test_can_parse_namespace_with_1_empty_method(bool debug) {
 	assert(1 == n->count_methods);
 	
 	freeTokenList(l);
-	freeNamespace(n);
+	free_namespace(n);
 
 	return 1;
 }

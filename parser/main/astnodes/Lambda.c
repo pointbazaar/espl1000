@@ -92,6 +92,6 @@ struct Lambda* makeLambda(struct TokenList* tokens, bool debug) {
 static void freeIdentifiers(struct Lambda* l){
 	
 	for(uint8_t i = 0; i < l->count_params; i++){
-		freeIdentifier(l->params[i]);
+		free_identifier(l->params[i]);
 	}
 }

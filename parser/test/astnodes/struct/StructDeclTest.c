@@ -31,7 +31,7 @@ int structdecl_test_can_parse_empty_struct_decl(bool debug) {
 	assert(0 == s->count_members);
 	
 	freeTokenList(list);
-	freeStructDecl(s);
+	free_struct_decl(s);
 
 	return 1;
 }
@@ -53,7 +53,7 @@ int structdecl_test_will_not_parse_invalid_typename_for_struct(bool debug) {
 	assert(s != NULL);
 	
 	freeTokenList(list);
-	freeStructDecl(s);
+	free_struct_decl(s);
 	
 	return 1;
 }
@@ -78,7 +78,7 @@ int structdecl_test_rejects_struct_with_subroutine_type(bool debug) {
 	assert(s != NULL);
 	
 	freeTokenList(list);
-	freeStructDecl(s);
+	free_struct_decl(s);
 	
 	return 1;
 }
@@ -105,7 +105,7 @@ int structdecl_test_can_parse_struct_with_1_member(bool debug) {
 	assert(strcmp("a", node->members[0]->name) == 0);
 	
 	freeTokenList(list);
-	freeStructDecl(node);
+	free_struct_decl(node);
 
 	return 1;
 }
@@ -138,7 +138,7 @@ int structdecl_test_can_parse_struct_with_2_members(bool debug) {
 	assert(strcmp("b", node->members[1]->name) == 0);
 	
 	freeTokenList(list);
-	freeStructDecl(node);
+	free_struct_decl(node);
 
 	return 1;
 }

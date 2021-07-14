@@ -50,7 +50,7 @@ int trycatch_stmt_test(bool debug){
 	assert(node->catch_block->count == 0);
 	
 	freeTokenList(tokens);
-	freeTryCatchStmt(node);
+	free_try_catch_stmt(node);
 
 	return 1;
 }

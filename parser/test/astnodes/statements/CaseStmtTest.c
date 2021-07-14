@@ -36,7 +36,7 @@ int test_parser_case_stmt(bool debug) {
 	assert(node->block != NULL);
 	
 	freeTokenList(list);
-	freeCaseStmt(node);
+	free_case_stmt(node);
 
 	return 1;
 }

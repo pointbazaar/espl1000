@@ -15,11 +15,11 @@ static void status(char* msg){
 
 void test_str_binconst(){
 	
-	status("strBinConst");
+	status("str_bin_const");
 	
 	struct BinConst b = {.value = 0b1010};
 	
-	char* s = strBinConst(&b);
+	char* s = str_bin_const(&b);
 	
 	assert(strcmp(s, "0b1010")==0);
 	
@@ -28,11 +28,11 @@ void test_str_binconst(){
 
 void test_str_intconst(){
 	
-	status("strIntConst");
+	status("str_int_const");
 	
 	struct IntConst b = {.value=101};
 	
-	char* s = strIntConst(&b);
+	char* s = str_int_const(&b);
 	
 	assert(strcmp(s, "101")==0);
 	
@@ -41,11 +41,11 @@ void test_str_intconst(){
 
 void test_str_charconst(){
 	
-	status("strCharConst");
+	status("str_char_const");
 	
 	struct CharConst b = {.value='h'};
 	
-	char* s = strCharConst(&b);
+	char* s = str_char_const(&b);
 	
 	assert(strcmp(s, "'h'")==0);
 	
@@ -54,11 +54,11 @@ void test_str_charconst(){
 
 void test_str_floatconst(){
 	
-	status("strFloatConst");
+	status("str_float_const");
 	
 	struct FloatConst b = {.value=1.483533};
 	
-	char* s = strFloatConst(&b);
+	char* s = str_float_const(&b);
 	
 	assert(strcmp(s, "1.483533")==0);
 	
@@ -67,11 +67,11 @@ void test_str_floatconst(){
 
 void test_str_hexconst(){
 	
-	status("strHexConst");
+	status("str_hex_const");
 	
 	struct HexConst b = {.value = 0x572af};
 	
-	char* s = strHexConst(&b);
+	char* s = str_hex_const(&b);
 	
 	assert(strcmp(s, "0x572af")==0);
 	
@@ -80,7 +80,7 @@ void test_str_hexconst(){
 
 void test_str_expr(){
 	
-	status("strExpr");
+	status("str_expr");
 	
 	struct Op o1 = {
 		.is_arithmetic = true,
@@ -102,9 +102,9 @@ void test_str_expr(){
 		.term = &b
 	};
 	
-	struct UnOpTerm* u2 = copyUnOpTerm(&u);
+	struct UnOpTerm* u2 = copy_un_op_term(&u);
 	
-	struct Op* o2       = copyOp(&o1);
+	struct Op* o2       = copy_op(&o1);
 	strcpy(o2->op, "*");
 	
 	struct Expr e = {
@@ -113,7 +113,7 @@ void test_str_expr(){
 		.term2 = u2
 	};
 	
-	char* s = strExpr(&e);
+	char* s = str_expr(&e);
 	
 	assert(strcmp(s, "-45*-45")==0);
 	
@@ -123,13 +123,13 @@ void test_str_expr(){
 }
 void test_str_op(){
 	
-	status("strOp");
+	status("str_op");
 	
 	struct Op b;
 	
 	strcpy(b.op, "&&");
 	
-	char* s = strOp(&b);
+	char* s = str_op(&b);
 	
 	assert(strcmp(s, "&&")==0);
 	
@@ -137,7 +137,7 @@ void test_str_op(){
 }
 void test_str_unopterm(){
 	
-	status("strUnOpTerm");
+	status("str_un_op_term");
 	
 	struct Op op = {
 		.is_arithmetic = true,
@@ -159,7 +159,7 @@ void test_str_unopterm(){
 		.term = &b
 	};
 	
-	char* s = strUnOpTerm(&u);
+	char* s = str_un_op_term(&u);
 	
 	assert(strcmp(s, "-3489")==0);
 	
@@ -167,7 +167,7 @@ void test_str_unopterm(){
 }
 void test_str_term(){
 	
-	status("strTerm");
+	status("str_term");
 	
 	struct IntConst ic = { .value = 3489 };
 	
@@ -176,7 +176,7 @@ void test_str_term(){
 		.ptr.m2 = &ic
 	};
 	
-	char* s = strTerm(&b);
+	char* s = str_term(&b);
 	
 	assert(strcmp(s, "3489")==0);
 	
@@ -195,7 +195,7 @@ void test_str_structmember(){
 
 void test_str_lambda(){
 	
-	status("strLambda");
+	status("str_lambda");
 	
 	struct Identifier i = {
 		.identifier = "a"
@@ -221,9 +221,9 @@ void test_str_lambda(){
 		.term = &b
 	};
 	
-	struct UnOpTerm* u2 = copyUnOpTerm(&u);
+	struct UnOpTerm* u2 = copy_un_op_term(&u);
 	
-	struct Op* o2       = copyOp(&o1);
+	struct Op* o2       = copy_op(&o1);
 	strcpy(o2->op, "*");
 	
 	struct Expr e = {
@@ -238,7 +238,7 @@ void test_str_lambda(){
 		.expr = &e 
 	};
 	
-	char* s = strLambda(&l);
+	char* s = str_lambda(&l);
 	
 	assert(strcmp(s, "(a) -> -2*-2") == 0);
 	

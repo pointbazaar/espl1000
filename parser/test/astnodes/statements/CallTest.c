@@ -33,7 +33,7 @@ int methodcall_test1(bool debug) {
 	assert(call != NULL);
 	
 	freeTokenList(l);
-	freeCall(call);
+	free_call(call);
 	
 	return 1;
 }
@@ -55,7 +55,7 @@ int methodcall_test2(bool debug) {
 	assert(call != NULL);
 	
 	freeTokenList(list);
-	freeCall(call);
+	free_call(call);
 
 	return 1;
 }
@@ -77,7 +77,7 @@ int methodcall_test3(bool debug) {
 	assert(call != NULL);
 	
 	freeTokenList(list);
-	freeCall(call);
+	free_call(call);
 
 	return 1;
 }
@@ -98,7 +98,7 @@ int methodcall_test_can_parse_subroutine_call(bool debug) {
 	assert(call != NULL);
 	
 	freeTokenList(tl);
-	freeCall(call);
+	free_call(call);
 
 	return 1;
 }
@@ -119,7 +119,7 @@ int methodcall_test_can_parse_subroutine_call2(bool debug) {
 	assert(call != NULL);
 	
 	freeTokenList(tokens);
-	freeCall(call);
+	free_call(call);
 
 	return 1;
 }

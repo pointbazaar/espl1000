@@ -34,7 +34,7 @@ int loop_test1(bool debug){
 	assert(node != NULL);
 	
 	freeTokenList(list);
-	freeLoopStmt(node);
+	free_loop_stmt(node);
 
 	return 1;
 }

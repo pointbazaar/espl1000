@@ -27,8 +27,8 @@ int boolconst_test_parse_bool_constant_node(bool debug)  {
 	if(b == NULL){ return 0;}
 
 	assert(b->value);
-	
-	freeBoolConst(b);
+
+	free_bool_const(b);
 	freeTokenList(list);
 
 	return 1;

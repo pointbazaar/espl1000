@@ -5,82 +5,82 @@
 #include "../ast.h"
 #include "copy_ast.h"
 
-struct BoolConst* copyBoolConst(struct BoolConst* bc){
+struct BoolConst* copy_bool_const(struct BoolConst* bc){
 	
 	struct BoolConst* res = make(BoolConst);
 	res->value = bc->value;
 	return res;
 }
 
-struct CharConst* copyCharConst(struct CharConst* cc){
+struct CharConst* copy_char_const(struct CharConst* cc){
 	
 	struct CharConst* res = make(CharConst);
 	res->value = cc->value;
 	return res;
 }
 
-struct Expr* copyExpr(struct Expr* expr){
+struct Expr* copy_expr(struct Expr* expr){
 	
 	struct Expr* res = make(Expr);
 	res->op = NULL;
 	res->term2 = NULL;
 	
-	res->term1 = copyUnOpTerm(expr->term1);
+	res->term1 = copy_un_op_term(expr->term1);
 	if(res->op != NULL){
-		res->op = copyOp(expr->op);
-		res->term2 = copyUnOpTerm(expr->term2);
+		res->op = copy_op(expr->op);
+		res->term2 = copy_un_op_term(expr->term2);
 	}
 	return res;
 }
 
-struct FloatConst* copyFloatConst(struct FloatConst* fc){
+struct FloatConst* copy_float_const(struct FloatConst* fc){
 	
 	struct FloatConst* res = make(FloatConst);
 	res->value = fc->value;
 	return res;
 }
 
-struct Identifier* copyIdentifier(struct Identifier* id){
+struct Identifier* copy_identifier(struct Identifier* id){
 	
 	struct Identifier* res = make(Identifier);
 	strcpy(res->identifier, id->identifier);
 	return res;
 }
 
-struct Lambda* copyLambda(struct Lambda* l){
+struct Lambda* copy_lambda(struct Lambda* l){
 
 	struct Lambda* res = make(Lambda);
 	res->count_params = l->count_params;
 	for(uint8_t i = 0; i < l->count_params; i++){
-		res->params[i] = copyIdentifier(l->params[i]);
+		res->params[i] = copy_identifier(l->params[i]);
 	}
 	
-	res->expr = copyExpr(l->expr);
+	res->expr = copy_expr(l->expr);
 	return res;
 }
 
-struct IntConst* copyIntConst(struct IntConst* ic){
+struct IntConst* copy_int_const(struct IntConst* ic){
 	
 	struct IntConst* res = make(IntConst);
 	res->value = ic->value;
 	return res;
 }
 
-struct HexConst* copyHexConst(struct HexConst* hc){
+struct HexConst* copy_hex_const(struct HexConst* hc){
 	
 	struct HexConst* res = make(HexConst);
 	res->value = hc->value;
 	return res;
 }
 
-struct BinConst* copyBinConst(struct BinConst* hc){
+struct BinConst* copy_bin_const(struct BinConst* hc){
 	
 	struct BinConst* res = make(BinConst);
 	res->value = hc->value;
 	return res;
 }
 
-struct SimpleVar* copySimpleVar(struct SimpleVar* sv){
+struct SimpleVar* copy_simple_var(struct SimpleVar* sv){
 	
 	struct SimpleVar* res = make(SimpleVar);
 	
@@ -89,85 +89,85 @@ struct SimpleVar* copySimpleVar(struct SimpleVar* sv){
 	res->indices = malloc(sizeof(struct Expr*)*res->count_indices);
 	
 	for(int i = 0;i < res->count_indices; i++){
-		res->indices[i] = copyExpr(sv->indices[i]);
+		res->indices[i] = copy_expr(sv->indices[i]);
 	}
 	
 	return res;
 }
 
-struct Term* copyTerm(struct Term* t){
+struct Term* copy_term(struct Term* t){
 	
 	struct Term* res = make(Term);
 	res->kind = t->kind;
 	
 	switch(t->kind){
 		
-		case  1: res->ptr.m1 = copyBoolConst(t->ptr.m1);   break;
-		case  2: res->ptr.m2 = copyIntConst(t->ptr.m2);    break;
-		case  3: res->ptr.m3 = copyCharConst(t->ptr.m3);   break;
-		case  4: res->ptr.m4 = copyCall(t->ptr.m4);        break;
-		case  5: res->ptr.m5 = copyExpr(t->ptr.m5);        break;
-		case  6: res->ptr.m6 = copyVariable(t->ptr.m6);    break;
-		case  7: res->ptr.m7 = copyFloatConst(t->ptr.m7);  break;
-		case  8: res->ptr.m8 = copyStringConst(t->ptr.m8); break;
-		case  9: res->ptr.m9 = copyHexConst(t->ptr.m9);    break;
-		case 10: res->ptr.m10 = copyBinConst(t->ptr.m10);  break;
+		case  1: res->ptr.m1 = copy_bool_const(t->ptr.m1);   break;
+		case  2: res->ptr.m2 = copy_int_const(t->ptr.m2);    break;
+		case  3: res->ptr.m3 = copy_char_const(t->ptr.m3);   break;
+		case  4: res->ptr.m4 = copy_call(t->ptr.m4);        break;
+		case  5: res->ptr.m5 = copy_expr(t->ptr.m5);        break;
+		case  6: res->ptr.m6 = copy_variable(t->ptr.m6);    break;
+		case  7: res->ptr.m7 = copy_float_const(t->ptr.m7);  break;
+		case  8: res->ptr.m8 = copy_string_const(t->ptr.m8); break;
+		case  9: res->ptr.m9 = copy_hex_const(t->ptr.m9);    break;
+		case 10: res->ptr.m10 = copy_bin_const(t->ptr.m10);  break;
 		default:
-			printf("[AST][Error] copyTerm(...)\n");
+			printf("[AST][Error] copy_term(...)\n");
 			exit(1);
 	}
 	
 	return res;
 }
 
-struct UnOpTerm* copyUnOpTerm(struct UnOpTerm* t){
+struct UnOpTerm* copy_un_op_term(struct UnOpTerm* t){
 	
 	struct UnOpTerm* res = make(UnOpTerm);
 	
 	res->op = NULL;
 	
-	if(t->op != NULL){ res->op = copyOp(t->op); }
+	if(t->op != NULL){ res->op = copy_op(t->op); }
 	
-	res->term = copyTerm(t->term);
+	res->term = copy_term(t->term);
 	
 	return res;
 }
 
-struct Variable* copyVariable(struct Variable* var){
+struct Variable* copy_variable(struct Variable* var){
 
 	struct Variable* res = make(Variable);
 	
-	res->simple_var = copySimpleVar(var->simple_var);
+	res->simple_var = copy_simple_var(var->simple_var);
 
 	res->member_access = NULL;
 
 	if(var->member_access != NULL){
 
-		res->member_access = copyVariable(var->member_access);
+		res->member_access = copy_variable(var->member_access);
 	}
 	
 	return res;
 }
 
-struct DeclArg* copyDeclArg(struct DeclArg* d){
+struct DeclArg* copy_decl_arg(struct DeclArg* d){
 
 	struct DeclArg* res = make(DeclArg);
 	
-	res->type = copyType(d->type);
+	res->type = copy_type(d->type);
 	res->has_name = d->has_name;
 	strcpy(res->name, d->name);
 	
 	return res;
 }
 
-struct Op* copyOp(struct Op* op){
+struct Op* copy_op(struct Op* op){
 	
 	struct Op* res = make(Op);
 	strcpy(res->op, op->op);
 	return res;
 }
 
-struct StringConst* copyStringConst(struct StringConst* s){
+struct StringConst* copy_string_const(struct StringConst* s){
 	
 	struct StringConst* res = make(StringConst);
 	res->value = malloc(sizeof(char)*(strlen(s->value)+1));
@@ -175,21 +175,21 @@ struct StringConst* copyStringConst(struct StringConst* s){
 	return res;
 }
 
-struct Type* copyType(struct Type* t){
+struct Type* copy_type(struct Type* t){
 	
 	struct Type* res = make(Type);
 	res->m1 = NULL;
 	res->m2 = NULL;
 	res->m3 = NULL;
 	
-	if(t->m1 != NULL){ res->m1 = copyBasicType(t->m1); }
-	if(t->m2 != NULL){ res->m2 = copyTypeParam(t->m2); }
-	if(t->m3 != NULL){ res->m3 = copyArrayType(t->m3); }
+	if(t->m1 != NULL){ res->m1 = copy_basic_type(t->m1); }
+	if(t->m2 != NULL){ res->m2 = copy_type_param(t->m2); }
+	if(t->m3 != NULL){ res->m3 = copy_array_type(t->m3); }
 	
 	return res;
 }
 
-struct TypeParam* copyTypeParam(struct TypeParam* t){
+struct TypeParam* copy_type_param(struct TypeParam* t){
 	
 	struct TypeParam* res = make(TypeParam);
 	
@@ -198,13 +198,13 @@ struct TypeParam* copyTypeParam(struct TypeParam* t){
 	return res;
 }
 
-struct SubrType* copySubrType(struct SubrType* s){
+struct SubrType* copy_subr_type(struct SubrType* s){
 	
 	struct SubrType* res = make(SubrType);
 	
 	res->has_side_effects = s->has_side_effects;
 	res->throws         = s->throws;
-	res->return_type = copyType(s->return_type);
+	res->return_type = copy_type(s->return_type);
 	
 	res->count_arg_types = s->count_arg_types;
 	
@@ -212,26 +212,26 @@ struct SubrType* copySubrType(struct SubrType* s){
 	
 	for(uint8_t i = 0; i < res->count_arg_types; i++){
 	
-		res->arg_types[i] = copyType(s->arg_types[i]);
+		res->arg_types[i] = copy_type(s->arg_types[i]);
 	}
 	
 	return res;
 }
 
-struct SimpleType* copySimpleType(struct SimpleType* s){
+struct SimpleType* copy_simple_type(struct SimpleType* s){
 	
 	struct SimpleType* res = make(SimpleType);
 	
 	res->primitive_type = NULL;
 	res->struct_type    = NULL;
 	
-	if(s->primitive_type != NULL){ res->primitive_type = copyPrimitiveType(s->primitive_type); }
-	if(s->struct_type != NULL){ res->struct_type    = copyStructType(s->struct_type); }
+	if(s->primitive_type != NULL){ res->primitive_type = copy_primitive_type(s->primitive_type); }
+	if(s->struct_type != NULL){ res->struct_type    = copy_struct_type(s->struct_type); }
 	
 	return res;
 }
 
-struct StructType* copyStructType(struct StructType* s){
+struct StructType* copy_struct_type(struct StructType* s){
 	
 	struct StructType* res = make(StructType);
 	
@@ -246,7 +246,7 @@ struct StructType* copyStructType(struct StructType* s){
 	return res;
 }
 
-struct PrimitiveType* copyPrimitiveType(struct PrimitiveType* p){
+struct PrimitiveType* copy_primitive_type(struct PrimitiveType* p){
 	
 	struct PrimitiveType* res = make(PrimitiveType);
 	
@@ -256,29 +256,29 @@ struct PrimitiveType* copyPrimitiveType(struct PrimitiveType* p){
 	
 }
 
-struct BasicType* copyBasicType(struct BasicType* b){
+struct BasicType* copy_basic_type(struct BasicType* b){
 
 	struct BasicType* res = make(BasicType);
 	
 	res->simple_type = NULL;
 	res->subr_type   = NULL;
 	
-	if(b->simple_type != NULL){ res->simple_type = copySimpleType(b->simple_type); }
-	if(b->subr_type != NULL){ res->subr_type   = copySubrType(b->subr_type); }
+	if(b->simple_type != NULL){ res->simple_type = copy_simple_type(b->simple_type); }
+	if(b->subr_type != NULL){ res->subr_type   = copy_subr_type(b->subr_type); }
 	
 	return res;
 }
 
-struct ArrayType* copyArrayType(struct ArrayType* a){
+struct ArrayType* copy_array_type(struct ArrayType* a){
 	
 	struct ArrayType* res = make(ArrayType);
 	
-	res->element_type = copyType(a->element_type);
+	res->element_type = copy_type(a->element_type);
 	
 	return res;
 }
 
-struct Call* copyCall(struct Call* c){
+struct Call* copy_call(struct Call* c){
 	
 	struct Call* res = make(Call);
 	strcpy(res->name, c->name);
@@ -286,7 +286,7 @@ struct Call* copyCall(struct Call* c){
 	res->args = malloc(sizeof(struct Expr*)*c->count_args);
 	res->count_args = c->count_args;
 	for(int i = 0;i < c->count_args;i++){
-		res->args[i] = copyExpr(c->args[i]);
+		res->args[i] = copy_expr(c->args[i]);
 	}
 	
 	return res;

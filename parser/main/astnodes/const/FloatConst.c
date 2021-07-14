@@ -33,13 +33,13 @@ struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
 	}
 
 	if(list_size(copy) == 0){
-		freeFloatConst(res);
+		free_float_const(res);
 		freeTokenListShallow(copy);
 		return NULL;
 	}
 
 	if(list_head(copy)->kind != FLOATING){
-		freeFloatConst(res);
+		free_float_const(res);
 		freeTokenListShallow(copy);
 		return NULL;
 	}

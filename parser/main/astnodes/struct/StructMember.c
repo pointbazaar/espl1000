@@ -46,7 +46,7 @@ struct StructMember* makeStructMember(struct TokenList* tokens, bool debug){
 	list_consume(copy, 1);
 	
 	strncpy(res->name, id->identifier, DEFAULT_STR_SIZE);
-	freeIdentifier(id);
+	free_identifier(id);
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
@@ -65,7 +65,7 @@ struct StructMember* initStructMember(){
 void beforeAbort(struct StructMember* m, struct TokenList* copy){
 	
 	if(m->type != NULL){
-		freeType(m->type);
+		free_type(m->type);
 	}
 	free(m);
 	

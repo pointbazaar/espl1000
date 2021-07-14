@@ -33,7 +33,7 @@ int stmt_test_assignment_statement_with_struct_access(bool debug) {
 	assert(node != NULL);
 	
 	freeTokenList(tokens);
-	freeStmt(node);
+	free_stmt(node);
 
 	return 1;
 }
@@ -58,7 +58,7 @@ int stmt_test_assignment_statement_with_method_call(bool debug) {
 	assert(node != NULL);
 	
 	freeTokenList(tokens);
-	freeStmt(node);
+	free_stmt(node);
 
 	return 1;
 }

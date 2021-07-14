@@ -391,7 +391,7 @@ void insertOperatorChaining(
 			//deep copy the term
 			//so that later freeing the AST
 			//causes no double free
-			struct UnOpTerm* termCopy = copyUnOpTerm(term);
+			struct UnOpTerm* termCopy = copy_un_op_term(term);
 			
 			//insert EXPR
 			(*terms) = (struct UnOpTerm**)insert((void**)(*terms), termIndex, (void*)termCopy, *termsc);

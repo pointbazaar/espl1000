@@ -40,7 +40,7 @@ int test_switch(bool debug){
 	assert(t->expr != NULL);
 	
 	freeTokenList(list);
-	freeSwitchStmt(t);
+	free_switch_stmt(t);
 	
 	return 1;
 }

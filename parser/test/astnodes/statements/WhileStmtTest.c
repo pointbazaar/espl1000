@@ -41,7 +41,7 @@ int whilestmt_test1(bool debug) {
 	assert(ws->condition != NULL);
 	
 	freeTokenList(list);
-	freeWhileStmt(ws);
+	free_while_stmt(ws);
 	
 	return 1;
 }
@@ -78,7 +78,7 @@ int whilestmt_test2(bool debug){
 	assert(e->term1 != NULL);
 	
 	freeTokenList(list);
-	freeWhileStmt(ws);
+	free_while_stmt(ws);
 
 	return 1;
 }

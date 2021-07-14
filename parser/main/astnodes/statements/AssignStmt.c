@@ -38,8 +38,8 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 	}
 
 	struct Token* tkn_assign = list_head(copy);
-	if(tkn_assign->kind != ASSIGNOP){ 
-		freeVariable(res->var);
+	if(tkn_assign->kind != ASSIGNOP){
+		free_variable(res->var);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
@@ -51,15 +51,15 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 
 	res->expr = makeExpr(copy,debug);
 	if(res->expr == NULL){
-		freeVariable(res->var);
+		free_variable(res->var);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
 	}
 
 	if(!list_expect(copy, SEMICOLON)){
-		freeExpr(res->expr);
-		freeVariable(res->var);
+		free_expr(res->expr);
+		free_variable(res->var);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;

@@ -42,5 +42,5 @@ void test_lambda(bool debug){
 	assert(r->expr != NULL);
 
 	freeTokenList(list);
-	freeLambda(r);
+	free_lambda(r);
 }

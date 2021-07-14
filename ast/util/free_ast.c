@@ -9,70 +9,70 @@
 //this is because any program which uses these
 //AST structs has to also free them.
 
-void freeAST(struct AST* ast) {
+void free_ast(struct AST* ast) {
 
 	for(int i=0; i < ast->count_namespaces; i++) {
-		freeNamespace(ast->namespaces[i]);
+		free_namespace(ast->namespaces[i]);
 	}
 	free(ast->namespaces);
 	free(ast);
 }
 
-void freeBoolConst(struct BoolConst* bc) {
+void free_bool_const(struct BoolConst* bc) {
 	
 	free(bc);
 }
 
-void freeCharConst(struct CharConst* cc) {
+void free_char_const(struct CharConst* cc) {
 	
 	free(cc);
 }
 
-void freeDeclArg(struct DeclArg* da) {
-	
-	freeType(da->type);
+void free_decl_arg(struct DeclArg* da) {
+
+	free_type(da->type);
 	free(da);
 }
 
 
-void freeExpr(struct Expr* expr) {
-	
-	freeUnOpTerm(expr->term1);
+void free_expr(struct Expr* expr) {
+
+	free_un_op_term(expr->term1);
 	if(expr->op != NULL) {
-		freeOp(expr->op);
-		freeUnOpTerm(expr->term2);
+		free_op(expr->op);
+		free_un_op_term(expr->term2);
 	}
 	
 	free(expr);
 }
 
 
-void freeFloatConst(struct FloatConst* fc) { free(fc); }
-void freeIdentifier(struct Identifier* id) { free(id); }
-void freeIntConst(struct IntConst* ic) { free(ic); }
-void freeHexConst(struct HexConst* hc){ free(hc); }
-void freeBinConst(struct BinConst* hc){ free(hc); }
+void free_float_const(struct FloatConst* fc) { free(fc); }
+void free_identifier(struct Identifier* id) { free(id); }
+void free_int_const(struct IntConst* ic) { free(ic); }
+void free_hex_const(struct HexConst* hc){ free(hc); }
+void free_bin_const(struct BinConst* hc){ free(hc); }
 
-void freeMethod(struct Method* m) {
+void free_method(struct Method* m) {
 
-	freeType(m->return_type);
+	free_type(m->return_type);
 	for(int i=0; i < m->count_args; i++) {
-		freeDeclArg(m->args[i]);
+		free_decl_arg(m->args[i]);
 	}
 	free(m->args);
 
-	freeStmtBlock(m->block);
+	free_stmt_block(m->block);
 	free(m);
 }
 
-void freeNamespace(struct Namespace* ns) {
+void free_namespace(struct Namespace* ns) {
 
 	for(int i=0; i < ns->count_methods; i++) {
-		freeMethod(ns->methods[i]);
+		free_method(ns->methods[i]);
 	}
 
 	for(int i=0; i < ns->count_structs; i++) {
-		freeStructDecl(ns->structs[i]);
+		free_struct_decl(ns->structs[i]);
 	}
 
 	free(ns->methods);
@@ -84,142 +84,162 @@ void freeNamespace(struct Namespace* ns) {
 	free(ns);
 }
 
-void freeSimpleVar(struct SimpleVar* sv) {
+void free_simple_var(struct SimpleVar* sv) {
 
 	for(int i=0;i < sv->count_indices; i++){
-		freeExpr(sv->indices[i]);
+		free_expr(sv->indices[i]);
 	}
 	free(sv->indices);
 	free(sv);
 }
 
-void freeStmtBlock(struct StmtBlock* block) {
+void free_stmt_block(struct StmtBlock* block) {
 
 	for(int i=0; i < block->count; i++) {
-		freeStmt(block->stmts[i]);
+		free_stmt(block->stmts[i]);
 	}
 	free(block->stmts);
 	free(block);
 }
 
-void freeStructDecl(struct StructDecl* sd) {
+void free_struct_decl(struct StructDecl* sd) {
 
-	freeSimpleType(sd->type);
+	free_simple_type(sd->type);
 	for(int i=0; i < sd->count_members; i++) {
-		freeStructMember(sd->members[i]);
+		free_struct_member(sd->members[i]);
 	}
 	free(sd);
 }
 
-void freeStructMember(struct StructMember* sm) {
-	freeType(sm->type);
+void free_struct_member(struct StructMember* sm) {
+	free_type(sm->type);
 	free(sm);
 }
-void freeTerm(struct Term* t) {
+void free_term(struct Term* t) {
 
 	switch(t->kind){
-		case  1: freeBoolConst  (t->ptr.m1); 	break;
-		case  2: freeIntConst   (t->ptr.m2); 	break;
-		case  3: freeCharConst  (t->ptr.m3); 	break;
-		case  4: freeCall       (t->ptr.m4); 	break;
-		case  5: freeExpr       (t->ptr.m5); 	break;
-		case  6: freeVariable   (t->ptr.m6); 	break;
-		case  7: freeFloatConst (t->ptr.m7); 	break;
-		case  8: freeStringConst(t->ptr.m8); 	break;
-		case  9: freeHexConst   (t->ptr.m9); 	break;
-		case 10: freeBinConst   (t->ptr.m10); 	break;
-		case 11: freeLambda     (t->ptr.m11);   break;
+		case  1:
+			free_bool_const(t->ptr.m1); 	break;
+		case  2:
+			free_int_const(t->ptr.m2); 	break;
+		case  3:
+			free_char_const(t->ptr.m3); 	break;
+		case  4:
+			free_call(t->ptr.m4); 	break;
+		case  5:
+			free_expr(t->ptr.m5); 	break;
+		case  6:
+			free_variable(t->ptr.m6); 	break;
+		case  7:
+			free_float_const(t->ptr.m7); 	break;
+		case  8:
+			free_string_const(t->ptr.m8); 	break;
+		case  9:
+			free_hex_const(t->ptr.m9); 	break;
+		case 10:
+			free_bin_const(t->ptr.m10); 	break;
+		case 11:
+			free_lambda(t->ptr.m11);   break;
 		default:
-			printf("Error in freeTerm(...)\n");
+			printf("Error in free_term(...)\n");
 			free(t);
 			exit(1);
 	}
 	free(t);
 }
-void freeUnOpTerm(struct UnOpTerm* t) {
+void free_un_op_term(struct UnOpTerm* t) {
 
-	freeOp(t->op);
-	freeTerm(t->term);
+	free_op(t->op);
+	free_term(t->term);
 	free(t);
 }
 
-void freeVariable(struct Variable* var) {
+void free_variable(struct Variable* var) {
 
-	freeSimpleVar(var->simple_var);
+	free_simple_var(var->simple_var);
 
 	if(var->member_access != NULL){
 
-		freeVariable(var->member_access);
+		free_variable(var->member_access);
 	}
 
 	free(var);
 }
 
-void freeAssignStmt(struct AssignStmt* as) {
+void free_assign_stmt(struct AssignStmt* as) {
 
 	if(as->opt_type != NULL) {
-		freeType(as->opt_type);
+		free_type(as->opt_type);
 	}
-	freeVariable(as->var);
-	freeExpr(as->expr);
+	free_variable(as->var);
+	free_expr(as->expr);
 
 	free(as);
 }
 
 
-void freeIfStmt(struct IfStmt* is) {
+void free_if_stmt(struct IfStmt* is) {
 
-	freeExpr(is->condition);
+	free_expr(is->condition);
 
-	freeStmtBlock(is->block);
+	free_stmt_block(is->block);
 	if(is->else_block != NULL) {
-		freeStmtBlock(is->else_block);
+		free_stmt_block(is->else_block);
 	}
 
 	free(is);
 }
 
-void freeLoopStmt(struct LoopStmt* ls) {
+void free_loop_stmt(struct LoopStmt* is) {
 
-	freeExpr(ls->count);
-	freeStmtBlock(ls->block);
-	free(ls);
+	free_expr(is->count);
+	free_stmt_block(is->block);
+	free(is);
 }
 
-void freeCall(struct Call* mc) {
+void free_call(struct Call* mc) {
 
 	for(int i=0; i < mc->count_args; i++) {
-		freeExpr(mc->args[i]);
+		free_expr(mc->args[i]);
 	}
 	free(mc->args);
 
 	free(mc);
 }
 
-void freeRetStmt(struct RetStmt* rs) {
+void free_ret_stmt(struct RetStmt* rs) {
 
 	if(rs->return_value != NULL) {
-		freeExpr(rs->return_value);
+		free_expr(rs->return_value);
 	}
 	free(rs);
 }
 
-void freeStmt(struct Stmt* s) {
+void free_stmt(struct Stmt* s) {
 
 	switch(s->kind){
 		
 		case 99: /* nothing to do here */  break;
-		case 0: freeLoopStmt(s->ptr.m0);   break;
-		case 1: freeCall(s->ptr.m1);       break;
-		case 2: freeWhileStmt(s->ptr.m2);  break;
-		case 3: freeIfStmt(s->ptr.m3);     break;
-		case 4: freeRetStmt(s->ptr.m4);    break;
-		case 5: freeAssignStmt(s->ptr.m5); break;
-		case 6: freeTryCatchStmt(s->ptr.m6); break;
-		case 7: freeForStmt(s->ptr.m7);    break;
-		case 8: freeSwitchStmt(s->ptr.m8); break;
+		case 0:
+			free_loop_stmt(s->ptr.m0);   break;
+		case 1:
+			free_call(s->ptr.m1);       break;
+		case 2:
+			free_while_stmt(s->ptr.m2);  break;
+		case 3:
+			free_if_stmt(s->ptr.m3);     break;
+		case 4:
+			free_ret_stmt(s->ptr.m4);    break;
+		case 5:
+			free_assign_stmt(s->ptr.m5); break;
+		case 6:
+			free_try_catch_stmt(s->ptr.m6); break;
+		case 7:
+			free_for_stmt(s->ptr.m7);    break;
+		case 8:
+			free_switch_stmt(s->ptr.m8); break;
 		default:
-			printf("Error in freeStmt\n");
+			printf("Error in free_stmt\n");
 			free(s);
 			exit(1);
 	}
@@ -227,67 +247,67 @@ void freeStmt(struct Stmt* s) {
 }
 
 
-void freeWhileStmt(struct WhileStmt* ws) {
-	freeExpr(ws->condition);
-	freeStmtBlock(ws->block);
+void free_while_stmt(struct WhileStmt* ws) {
+	free_expr(ws->condition);
+	free_stmt_block(ws->block);
 	free(ws);
 }
 
-void freeArrayType(struct ArrayType* at) {
-	freeType(at->element_type);
+void free_array_type(struct ArrayType* at) {
+	free_type(at->element_type);
 	free(at);
 }
 
-void freeBasicType(struct BasicType* btw) {
+void free_basic_type(struct BasicType* btw) {
 
 	if(btw->simple_type != NULL) {
-		freeSimpleType(btw->simple_type);
+		free_simple_type(btw->simple_type);
 
 	} else if(btw->subr_type != NULL) {
-		freeSubrType(btw->subr_type);
+		free_subr_type(btw->subr_type);
 	}
 
 	free(btw);
 }
 
-void freeSimpleType(struct SimpleType* st) {
+void free_simple_type(struct SimpleType* st) {
 	
 	if(st->primitive_type != NULL)
-		{ freePrimitiveType(st->primitive_type); }
+		{ free_primitive_type(st->primitive_type); }
 		
 	if(st->struct_type != NULL)
-		{ freeStructType(st->struct_type); }
+		{ free_struct_type(st->struct_type); }
 	
 	free(st);
 }
 
-void freeSubrType(struct SubrType* st) {
-	
-	freeType(st->return_type);
+void free_subr_type(struct SubrType* st) {
+
+	free_type(st->return_type);
 	for(int i=0; i < st->count_arg_types; i++) {
-		freeType(st->arg_types[i]);
+		free_type(st->arg_types[i]);
 	}
 	free(st->arg_types);
 	free(st);
 }
 
-void freeType(struct Type* t) {
+void free_type(struct Type* t) {
 
 	if(t->m1 != NULL) {
-		freeBasicType(t->m1);
+		free_basic_type(t->m1);
 	} else if(t->m2 != NULL) {
-		freeTypeParam(t->m2);
+		free_type_param(t->m2);
 	} else if(t->m3 != NULL) {
-		freeArrayType(t->m3);
+		free_array_type(t->m3);
 	}
 	free(t);
 }
 
-void freeTypeParam(struct TypeParam* tp) { free(tp); }
+void free_type_param(struct TypeParam* tp) { free(tp); }
 
-void freePrimitiveType(struct PrimitiveType* p){ free(p); }
+void free_primitive_type(struct PrimitiveType* p){ free(p); }
 
-void freeStructType(struct StructType* s){
+void free_struct_type(struct StructType* s){
 
 	if(s->count_type_params != 0)
 		{ free(s->type_params); }
@@ -295,61 +315,64 @@ void freeStructType(struct StructType* s){
 	free(s);
 }
 
-void freeOp(struct Op* op){ free(op); }
+void free_op(struct Op* op){ free(op); }
 
-void freeStringConst(struct StringConst* s){
+void free_string_const(struct StringConst* s){
 	free(s->value);
 	free(s);
 }
 
-void freeRange(struct Range* range){
-	freeExpr(range->start);
-	freeExpr(range->end);
+void free_range(struct Range* range){
+	free_expr(range->start);
+	free_expr(range->end);
 	free(range);
 }
 
-void freeLambda(struct Lambda* l){
+void free_lambda(struct Lambda* l){
 	for(uint8_t i = 0; i < l->count_params; i++){
-		freeIdentifier(l->params[i]);
+		free_identifier(l->params[i]);
 	}
-	freeExpr(l->expr);
+	free_expr(l->expr);
 	free(l);
 }
 
-void freeForStmt(struct ForStmt* fstmt){
-	freeRange(fstmt->range);
-	freeStmtBlock(fstmt->block);
+void free_for_stmt(struct ForStmt* fstmt){
+	free_range(fstmt->range);
+	free_stmt_block(fstmt->block);
 	free(fstmt);
 }
 
-void freeSwitchStmt(struct SwitchStmt* s){
-	
-	freeExpr(s->expr);
-	for(int i=0; i < s->count_cases; i++){
-		freeCaseStmt(s->cases[i]);
+void free_switch_stmt(struct SwitchStmt* sstmt){
+
+	free_expr(sstmt->expr);
+	for(int i=0; i < sstmt->count_cases; i++){
+		free_case_stmt(sstmt->cases[i]);
 	}
-	free(s->cases);
-	free(s);
+	free(sstmt->cases);
+	free(sstmt);
 }
 
-void freeCaseStmt(struct CaseStmt* c){
-	if(c->block != NULL){
-		freeStmtBlock(c->block);
+void free_case_stmt(struct CaseStmt* cstmt){
+	if(cstmt->block != NULL){
+		free_stmt_block(cstmt->block);
 	}
-	switch(c->kind){
-		case 0: freeBoolConst(c->ptr.m1); break;
-		case 1: freeCharConst(c->ptr.m2); break;
-		case 2: freeIntConst(c->ptr.m3); break;
+	switch(cstmt->kind){
+		case 0:
+			free_bool_const(cstmt->ptr.m1); break;
+		case 1:
+			free_char_const(cstmt->ptr.m2); break;
+		case 2:
+			free_int_const(cstmt->ptr.m3); break;
 		default:
-			printf("Error in freeCaseStmt\n");
+			printf("Error in free_case_stmt\n");
 			exit(1);
 	}
-	free(c);
+	free(cstmt);
 }
 
-void freeTryCatchStmt(struct TryCatchStmt* tcs){
-	
-	freeStmtBlock(tcs->try_block);
-	freeStmtBlock(tcs->catch_block);
+void free_try_catch_stmt(struct TryCatchStmt* tcs){
+
+	free_stmt_block(tcs->try_block);
+	free_stmt_block(tcs->catch_block);
 	free(tcs);
 }

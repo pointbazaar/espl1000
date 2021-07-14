@@ -37,7 +37,7 @@ void freeST(struct ST* st){
 	if(st->stst != NULL) { freeSTST(st->stst); }
 
 	for(int i = 0; i < st->inferred_types_count; i++)
-		{ freeType(st->inferred_types[i]); }
+		{ free_type(st->inferred_types[i]); }
 		
 	free(st->inferred_types);
 	

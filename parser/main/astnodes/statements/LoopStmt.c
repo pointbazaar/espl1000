@@ -41,7 +41,7 @@ struct LoopStmt* makeLoopStmt(struct TokenList* tokens, bool debug) {
 	res->block = makeStmtBlock(copy, debug);
 	
 	if(res->block == NULL){
-		freeExpr(res->count);
+		free_expr(res->count);
 		free(res);
 		return NULL;
 	}

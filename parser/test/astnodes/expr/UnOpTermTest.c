@@ -26,7 +26,7 @@ int test_unop_with(bool debug){
 	assert(t != NULL);
 	
 	freeTokenList(list);
-	freeUnOpTerm(t);
+	free_un_op_term(t);
 	
 	return 1;
 }
@@ -41,7 +41,7 @@ int test_unop_without(bool debug){
 	assert(t != NULL);
 	
 	freeTokenList(list);
-	freeUnOpTerm(t);
+	free_un_op_term(t);
 	
 	return 1;
 }

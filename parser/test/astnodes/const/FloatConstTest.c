@@ -24,7 +24,7 @@ int floatconst_test1(bool debug) {
 	assert(node != NULL);
 	
 	freeTokenList(list);
-	freeFloatConst(node);
+	free_float_const(node);
 
 	return 1;
 }
@@ -45,7 +45,7 @@ int floatconst_test2(bool debug) {
 	assert(node != NULL);
 	
 	freeTokenList(list);
-	freeFloatConst(node);
+	free_float_const(node);
 	
 	return 1;
 }

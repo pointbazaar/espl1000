@@ -74,10 +74,10 @@ static void check_type_rules_assign(
 	
 	if(!eq_type(left, right)){
 	
-		char* str_t1 = strType(left);
-		char* str_t2 = strType(right);
+		char* str_t1 = str_type(left);
+		char* str_t2 = str_type(right);
 		
-		char* str_a  = strAssignStmt(a);
+		char* str_a  = str_assign_stmt(a);
 		
 		char msg[200];
 		

@@ -84,8 +84,8 @@ bool transpileAndCompile(struct Flags* flags){
 	char* h_filename = make_h_filename(flags->filenames[0]);
 
 	bool success = transpileAndWrite(c_filename, h_filename, ast, flags);
-	
-	freeAST(ast);
+
+	free_ast(ast);
 	
 	if(!success){ 
 		

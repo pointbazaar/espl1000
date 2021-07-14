@@ -31,7 +31,7 @@ int simpletype_test_typenode_parsing(bool debug) {
 	assert(node != NULL);
 	
 	freeTokenList(list);
-	freeBasicType(node);
+	free_basic_type(node);
 
 	return 1;
 }
@@ -67,7 +67,7 @@ int simpletype_test_typenode_parsing_anytype(bool debug) {
 	assert(node != NULL);
 	
 	freeTokenList(list);
-	freeSimpleType(node);
+	free_simple_type(node);
 
 	return 1;
 }
@@ -93,7 +93,7 @@ int simpletype_test_generic(bool debug){
 	assert(0 == list_size(l));
 	
 	freeTokenList(l);
-	freeSimpleType(node);
+	free_simple_type(node);
 
 	return 1;
 }

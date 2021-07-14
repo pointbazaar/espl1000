@@ -41,9 +41,9 @@ static void sst_print_line(struct SSTLine* line, char* fmt){
 	char* typeStr = "";
 	
 	if(line->type != NULL){ 
-		typeStr = strType(line->type);
+		typeStr = str_type(line->type);
 	}else if(line->returnType != NULL){
-		typeStr = strType(line->returnType);
+		typeStr = str_type(line->returnType);
 	}
 	
 	printf(fmt, line->_namespace, line->name, typeStr, isLibC, halt_info);

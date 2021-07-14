@@ -45,7 +45,7 @@ int if_test1(bool debug) {
 	assert(condition->term2 != NULL);
 	
 	freeTokenList(list);
-	freeIfStmt(i);
+	free_if_stmt(i);
 	
 	return 1;
 }
@@ -88,7 +88,7 @@ int if_test2(bool debug) {
 	assert(i->else_block == NULL);
 	
 	freeTokenList(l);
-	freeIfStmt(i);
+	free_if_stmt(i);
 
 	return 1;
 }

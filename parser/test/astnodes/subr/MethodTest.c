@@ -51,7 +51,7 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 	assert(m->count_args == 1);
 	
 	freeTokenList(l);
-	freeMethod(m);
+	free_method(m);
 
 	return 1;
 }
@@ -92,7 +92,7 @@ int method_test_can_parse_subroutine(bool debug) {
 	assert(m->has_side_effects);
 	
 	freeTokenList(l);
-	freeMethod(m);
+	free_method(m);
 
 	return 1;
 }
@@ -125,7 +125,7 @@ int method_test_can_parse_method_without_arguments(bool debug) {
 	assert(!m->has_side_effects);
 	
 	freeTokenList(l);
-	freeMethod(m);
+	free_method(m);
 
 	return 1;
 }

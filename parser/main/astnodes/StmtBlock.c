@@ -62,7 +62,7 @@ struct StmtBlock* makeStmtBlock(struct TokenList* tokens, bool debug){
 
 	if(!list_expect(copy, RCURLY)){
 		freeTokenListShallow(copy);
-		freeStmtBlock(res);
+		free_stmt_block(res);
 		return NULL;
 	}
 	

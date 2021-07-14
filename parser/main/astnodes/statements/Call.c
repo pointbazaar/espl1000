@@ -35,7 +35,7 @@ struct Call* makeCall(struct TokenList* tokens,bool debug) {
 	}
 
 	strcpy(res->name, id->identifier);
-	freeIdentifier(id);
+	free_identifier(id);
 
 	if(list_size(copy) == 0){
 		free(res->args);

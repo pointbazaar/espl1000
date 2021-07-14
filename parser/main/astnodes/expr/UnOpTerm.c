@@ -54,7 +54,7 @@ struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens, bool debug){
 	res->term = makeTerm(copy, debug);
 	
 	if(res->term == NULL){
-		freeOp(res->op);
+		free_op(res->op);
 		freeTokenListShallow(copy);
 		free(res);
 		return NULL;

@@ -139,7 +139,7 @@ static void tc_methodcall_args(
 	
 	if(actual_args != expect_args){
 		
-		char* s1 = strCall(m);
+		char* s1 = str_call(m);
 		
 		char msg[200];
 		sprintf(msg, "\t%s\nexpected: %d args\n", s1, expect_args);
@@ -178,11 +178,11 @@ static void tc_methodcall_arg(
 		
 	if(!eq_type(expect_type, actual_type)){
 		
-		char* s1 = strCall(m);
-		char* s2 = strExpr(actual_expr);
+		char* s1 = str_call(m);
+		char* s2 = str_expr(actual_expr);
 		
-		char* sTypeActual   = strType(actual_type);
-		char* sTypeExpected = strType(expect_type);
+		char* sTypeActual   = str_type(actual_type);
+		char* sTypeExpected = str_type(expect_type);
 		
 		char msg[200];
 		sprintf(msg, "\t%s\n%s, (of type %s), but expected type %s\n", s1, s2, sTypeActual, sTypeExpected);

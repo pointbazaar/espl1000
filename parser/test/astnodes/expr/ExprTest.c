@@ -31,7 +31,7 @@ int expr_test_simple_expression(bool debug) {
 	assert(expr->term1->term->ptr.m2->value == 4);
 	
 	freeTokenList(list);
-	freeExpr(expr);
+	free_expr(expr);
 
 	return 1;
 }
@@ -59,7 +59,7 @@ int expr_test_variable_name_expression(bool debug) {
 	);
 	
 	freeTokenList(list);
-	freeExpr(expr);
+	free_expr(expr);
 
 	return 1;
 }
@@ -83,7 +83,7 @@ int expr_recognize_2_op_expr(bool debug) {
 	assert(list_size(tokens) == 1);
 	
 	freeTokenList(tokens);
-	freeExpr(expr);
+	free_expr(expr);
 
 	return 1;
 }
@@ -132,7 +132,7 @@ int expr_test_comparison(bool debug){
 	assert(strcmp(sv->name, "x") == 0);
 	
 	freeTokenList(l);
-	freeExpr(expr);
+	free_expr(expr);
 
 	return 1;
 }

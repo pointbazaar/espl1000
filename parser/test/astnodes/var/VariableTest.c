@@ -37,7 +37,7 @@ int variable_test_parse_struct_member_access(bool debug) {
 	assert(strcmp("a", v->member_access->simple_var->name) == 0);
 	
 	freeTokenList(tokens);
-	freeVariable(v);
+	free_variable(v);
 
 	return 1;
 }
@@ -61,7 +61,7 @@ int variable_test_parse_index_access(bool debug) {
 	assert(strcmp("x", node->simple_var->name) == 0);
 	
 	freeTokenList(tokens);
-	freeVariable(node);
+	free_variable(node);
 
 	return 1;
 }
@@ -93,7 +93,7 @@ int variable_test_parse_struct_member_access_and_index_access(bool debug) {
 	assert(strcmp("a", node->member_access->simple_var->name) == 0);
 	
 	freeTokenList(tokens);
-	freeVariable(node);
+	free_variable(node);
 
 	return 1;
 }

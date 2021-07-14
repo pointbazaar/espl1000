@@ -12,37 +12,37 @@ static void error(char* msg){
 
 //---------------------------------------
 
-char* strBoolConst(struct BoolConst* bc){
+char* str_bool_const(struct BoolConst* bc){
 	char* res =  malloc(sizeof(char)*10);
 	strcpy(res, bc->value ? "true": "false");
 	return res;
 }	
 
-char* strCharConst(struct CharConst* cc){
+char* str_char_const(struct CharConst* cc){
 
 	char* res =  malloc(sizeof(char)*10);
 	sprintf(res, "'%c'", cc->value);
 	return res;
 }
 
-char* strFloatConst(struct FloatConst* fc){
+char* str_float_const(struct FloatConst* fc){
 
 	char* res =  malloc(sizeof(char)*10);
 	sprintf(res, "%f", fc->value);
 	return res;
 }
 
-char* strIdentifier(struct Identifier* id){
+char* str_identifier(struct Identifier* id){
 
 	char* res =  malloc(sizeof(char)*(strlen(id->identifier)+1));
 	sprintf(res, "%s", id->identifier);
 	return res;
 }
 
-char* strRange(struct Range* r){
+char* str_range(struct Range* r){
 	
-	char* s1 = strExpr(r->start);
-	char* s2 = strExpr(r->end);
+	char* s1 = str_expr(r->start);
+	char* s2 = str_expr(r->end);
 	
 	uint16_t l = strlen(s1) + strlen(s2) + 4+1;
 	
@@ -55,13 +55,13 @@ char* strRange(struct Range* r){
 	return res;
 }
 
-char* strStmtBlock(struct StmtBlock* block){
+char* str_stmt_block(struct StmtBlock* block){
 	
 	uint16_t l = 0;
 
 	for(uint16_t i = 0; i < block->count; i++){
 		
-		char* s = strStmt(block->stmts[i]);
+		char* s = str_stmt(block->stmts[i]);
 		
 		l += strlen(s) + 1;
 		
@@ -77,7 +77,7 @@ char* strStmtBlock(struct StmtBlock* block){
 	
 	for(uint16_t i = 0; i < block->count; i++){
 		
-		char* s = strStmt(block->stmts[i]);
+		char* s = str_stmt(block->stmts[i]);
 		
 		strcat(res, s);
 		strcat(res, "\n");
@@ -88,18 +88,18 @@ char* strStmtBlock(struct StmtBlock* block){
 	return res;
 }
 
-char* strLambda(struct Lambda* lambda){
+char* str_lambda(struct Lambda* lambda){
 	
 	uint16_t l = 0;
 
 	for(uint16_t i = 0; i < lambda->count_params; i++){
 		
-		char* s = strIdentifier(lambda->params[i]);
+		char* s = str_identifier(lambda->params[i]);
 		l += strlen(s) + 1;
 		free(s);
 	}
 	
-	char* s2 = strExpr(lambda->expr);
+	char* s2 = str_expr(lambda->expr);
 	l += strlen(s2);
 	
 	l += 2 + 4;
@@ -111,7 +111,7 @@ char* strLambda(struct Lambda* lambda){
 	
 	for(uint16_t i = 0; i < lambda->count_params; i++){
 		
-		char* s = strIdentifier(lambda->params[i]);
+		char* s = str_identifier(lambda->params[i]);
 		strcat(res, s);
 		
 		if(i < (lambda->count_params - 1)){
@@ -127,28 +127,28 @@ char* strLambda(struct Lambda* lambda){
 	return res;
 }
 
-char* strIntConst(struct IntConst* ic){
+char* str_int_const(struct IntConst* ic){
 
 	char* res =  malloc(sizeof(char)*10);
 	sprintf(res, "%d", ic->value);
 	return res;
 }
 
-char* strHexConst(struct HexConst* hc){
+char* str_hex_const(struct HexConst* hc){
 
 	char* res =  malloc(sizeof(char)*10);
 	sprintf(res, "0x%x", hc->value);
 	return res;
 }
 
-char* strStringConst(struct StringConst* s){
+char* str_string_const(struct StringConst* s){
 	
 	char* res =  malloc(sizeof(char)*(3+strlen(s->value)));
 	sprintf(res, "%s", s->value);
 	return res;
 }
 
-char* strBinConst(struct BinConst* b){
+char* str_bin_const(struct BinConst* b){
 	
 	char* res = malloc(sizeof(char)*129);
 	
@@ -179,9 +179,9 @@ char* strBinConst(struct BinConst* b){
 	return res;
 }
 
-char* strArrayType(struct ArrayType* at){
+char* str_array_type(struct ArrayType* at){
 
-	char* inner = strType(at->element_type);
+	char* inner = str_type(at->element_type);
 	
 	char* res = malloc(sizeof(char)*(strlen(inner)+2+1));
 	
@@ -192,29 +192,29 @@ char* strArrayType(struct ArrayType* at){
 	return res;
 }
 
-char* strBasicType(struct BasicType* btw){
+char* str_basic_type(struct BasicType* btw){
 	
 	if(btw->simple_type != NULL){
-		return strSimpleType(btw->simple_type);
+		return str_simple_type(btw->simple_type);
 	}
 	
 	if(btw->subr_type != NULL){
-		return strSubrType(btw->subr_type);
+		return str_subr_type(btw->subr_type);
 	}
 	
 	error("strBasicTypeWrapped");
 	return NULL;
 }
 
-char* strSimpleType(struct SimpleType* st){
+char* str_simple_type(struct SimpleType* st){
 	
 	if(st->primitive_type != NULL)
-		{ return strPrimitiveType(st->primitive_type); }
+		{ return str_primitive_type(st->primitive_type); }
 		
-	return strStructType(st->struct_type);
+	return str_struct_type(st->struct_type);
 }
 
-char* strSubrType(struct SubrType* st){
+char* str_subr_type(struct SubrType* st){
 
 	//TODO: get rid of the magic number '1000'
 	//and calculate how long exactly
@@ -225,7 +225,7 @@ char* strSubrType(struct SubrType* st){
 	
 	for(int i=0;i < st->count_arg_types; i++){
 	
-		char* argType = strType(st->arg_types[i]);
+		char* argType = str_type(st->arg_types[i]);
 		strcat(res, argType);
 		free(argType);
 		
@@ -239,7 +239,7 @@ char* strSubrType(struct SubrType* st){
 	
 	strcat(res, (st->has_side_effects) ? "~>" : "->");
 	
-	char* returntype = strType(st->return_type);
+	char* returntype = str_type(st->return_type);
 	strcat(res, returntype);
 	
 	if(st->throws){ strcat(res, " throws "); }
@@ -249,19 +249,19 @@ char* strSubrType(struct SubrType* st){
 	return res;
 }
 
-char* strType(struct Type* t){
+char* str_type(struct Type* t){
 	
-	if(t->m1 != NULL){ return strBasicType(t->m1); }
+	if(t->m1 != NULL){ return str_basic_type(t->m1); }
 	
-	if(t->m2 != NULL){ return strTypeParam(t->m2); }
+	if(t->m2 != NULL){ return str_type_param(t->m2); }
 	
-	if(t->m3 != NULL){ return strArrayType(t->m3); }
+	if(t->m3 != NULL){ return str_array_type(t->m3); }
 	
-	error("strType");
+	error("str_type");
 	return NULL;
 }
 
-char* strTypeParam(struct TypeParam* t){
+char* str_type_param(struct TypeParam* t){
 	
 	char* res =  malloc(sizeof(char)*10);
 	sprintf(res, "?T%d", t->index);
@@ -269,7 +269,7 @@ char* strTypeParam(struct TypeParam* t){
 }
 
 
-char* strPrimitiveType(struct PrimitiveType* p){
+char* str_primitive_type(struct PrimitiveType* p){
 	
 	char* res = malloc(DEFAULT_STR_SIZE);
 	
@@ -291,12 +291,12 @@ char* strPrimitiveType(struct PrimitiveType* p){
 	return res;
 }
 
-char* strStructType(struct StructType* s){
+char* str_struct_type(struct StructType* s){
 	
 	//TODO: add the generic part
 	if(s->count_type_params != 0){
 	
-		error("strStructType");
+		error("str_struct_type");
 	}
 	
 	char* res = malloc(DEFAULT_STR_SIZE);
@@ -306,17 +306,17 @@ char* strStructType(struct StructType* s){
 	return res;
 }
 
-char* strStructDecl(struct StructDecl* s){
+char* str_struct_decl(struct StructDecl* decl){
 	
-	char* name = strSimpleType(s->type);
+	char* name = str_simple_type(decl->type);
 
 	uint16_t l = strlen("struct   { } ")+strlen(name);
 	
-	char* memberStrs[s->count_members];
+	char* memberStrs[decl->count_members];
 	
-	for(uint16_t i = 0; i < s->count_members; i++){
+	for(uint16_t i = 0; i < decl->count_members; i++){
 		
-		char* s2 = strStructMember(s->members[i]);
+		char* s2 = str_struct_member(decl->members[i]);
 		l += strlen(s2);
 		
 		memberStrs[i] = s2;
@@ -324,9 +324,9 @@ char* strStructDecl(struct StructDecl* s){
 	
 	char* res = malloc(sizeof(char)*l);
 	
-	sprintf(res, "struct %s {", name);
+	sprintf(res, "struct %s {", decl->type->struct_type->type_name);
 	
-	for(uint16_t i = 0; i < s->count_members; i++){
+	for(uint16_t i = 0; i < decl->count_members; i++){
 		
 		char* s = memberStrs[i];
 		strcat(res, s);
@@ -338,9 +338,9 @@ char* strStructDecl(struct StructDecl* s){
 	return res;
 }
 
-char* strStructMember(struct StructMember* s){
+char* str_struct_member(struct StructMember* s){
 
-	char* s1 = strType(s->type);
+	char* s1 = str_type(s->type);
 	const int l = strlen(s1);
 	
 	char* res = malloc(sizeof(char)*(l+DEFAULT_STR_SIZE+3));
@@ -350,11 +350,11 @@ char* strStructMember(struct StructMember* s){
 	return res;
 }
 
-char* strVariable(struct Variable* v){
+char* str_variable(struct Variable* v){
 	
-	char* s1 = strSimpleVar(v->simple_var);
+	char* s1 = str_simple_var(v->simple_var);
 	
-	char* s2 = (v->member_access != NULL) ? strVariable(v->member_access) : "";
+	char* s2 = (v->member_access != NULL) ? str_variable(v->member_access) : "";
 	
 	uint16_t l = strlen(s1) + strlen(s2);
 	
@@ -368,7 +368,7 @@ char* strVariable(struct Variable* v){
 	return res;
 }
 
-char* strSimpleVar(struct SimpleVar* s){
+char* str_simple_var(struct SimpleVar* s){
 	
 	//we approximate here, and could be wrong.
 	//this is definitely not bulletproof.
@@ -384,7 +384,7 @@ char* strSimpleVar(struct SimpleVar* s){
 	
 	for(uint16_t i = 0; i < s->count_indices; i++){
 		
-		char* s1 = strExpr(s->indices[i]);
+		char* s1 = str_expr(s->indices[i]);
 		
 		strcat(res, s1);
 		
@@ -394,13 +394,13 @@ char* strSimpleVar(struct SimpleVar* s){
 	return res;
 }
 
-char* strExpr(struct Expr* e){
+char* str_expr(struct Expr* e){
 
-	char* strTerm1 = strUnOpTerm(e->term1);
+	char* strTerm1 = str_un_op_term(e->term1);
 	
-	char* strO = (e->op != NULL)?strOp(e->op):"";
+	char* strO = (e->op != NULL) ? str_op(e->op) : "";
 	
-	char* strTerm2 = (e->term2 != NULL)?strUnOpTerm(e->term2):"";
+	char* strTerm2 = (e->term2 != NULL) ? str_un_op_term(e->term2) : "";
 	
 	uint16_t l1 = strlen(strTerm1);
 	uint16_t l2 = strlen(strO);
@@ -419,7 +419,7 @@ char* strExpr(struct Expr* e){
 	return res;
 }
 
-char* strOp(struct Op* o){
+char* str_op(struct Op* o){
 	
 	char* res = malloc(sizeof(char)*6);
 	
@@ -428,11 +428,11 @@ char* strOp(struct Op* o){
 	return res;
 }
 
-char* strUnOpTerm(struct UnOpTerm* u){
+char* str_un_op_term(struct UnOpTerm* u){
 
-	char* strO = (u->op != NULL)?strOp(u->op):"";
+	char* strO = (u->op != NULL) ? str_op(u->op) : "";
 	
-	char* strT = strTerm(u->term);
+	char* strT = str_term(u->term);
 	
 	uint16_t l = strlen(strO) + strlen(strT)+3;
 	
@@ -446,40 +446,40 @@ char* strUnOpTerm(struct UnOpTerm* u){
 	return res;
 }
 
-char* strTerm(struct Term* t){
+char* str_term(struct Term* t){
 	
 	switch(t->kind){
 		
-		case 1: return strBoolConst  (t->ptr.m1); 
-		case 2: return strIntConst   (t->ptr.m2);
-		case 3: return strCharConst  (t->ptr.m3);
-		case 4: return strCall       (t->ptr.m4);
-		case 5: return strExpr       (t->ptr.m5);
-		case 6: return strVariable   (t->ptr.m6);
-		case 7: return strFloatConst (t->ptr.m7);
-		case 8: return strStringConst(t->ptr.m8);
-		case 9: return strHexConst   (t->ptr.m9);
+		case 1: return str_bool_const(t->ptr.m1);
+		case 2: return str_int_const(t->ptr.m2);
+		case 3: return str_char_const(t->ptr.m3);
+		case 4: return str_call(t->ptr.m4);
+		case 5: return str_expr(t->ptr.m5);
+		case 6: return str_variable(t->ptr.m6);
+		case 7: return str_float_const(t->ptr.m7);
+		case 8: return str_string_const(t->ptr.m8);
+		case 9: return str_hex_const(t->ptr.m9);
 		
-		case 10: return strBinConst  (t->ptr.m10);
+		case 10: return str_bin_const(t->ptr.m10);
 	}
 	
-	error("strTerm");
+	error("str_term");
 	return NULL;
 }
 
-char* strStmt(struct Stmt* stmt){
+char* str_stmt(struct Stmt* stmt){
 	
 	switch(stmt->kind){
 		
-		case 0: return strLoopStmt  (stmt->ptr.m0);
-		case 1: return strCall      (stmt->ptr.m1);
-		case 2: return strWhileStmt (stmt->ptr.m2);
-		case 3: return strIfStmt    (stmt->ptr.m3);
-		case 4: return strRetStmt   (stmt->ptr.m4);
-		case 5: return strAssignStmt(stmt->ptr.m5);
-		case 6: return strTryCatchStmt(stmt->ptr.m6);
-		case 7: return strForStmt   (stmt->ptr.m7);
-		case 8: return strSwitchStmt(stmt->ptr.m8);
+		case 0: return str_loop_stmt(stmt->ptr.m0);
+		case 1: return str_call(stmt->ptr.m1);
+		case 2: return str_while_stmt(stmt->ptr.m2);
+		case 3: return str_if_stmt(stmt->ptr.m3);
+		case 4: return str_ret_stmt(stmt->ptr.m4);
+		case 5: return str_assign_stmt(stmt->ptr.m5);
+		case 6: return str_try_catch_stmt(stmt->ptr.m6);
+		case 7: return str_for_stmt(stmt->ptr.m7);
+		case 8: return str_switch_stmt(stmt->ptr.m8);
 		
 		case 99: {
 			//break,continue,throw,...
@@ -493,23 +493,23 @@ char* strStmt(struct Stmt* stmt){
 		}
 			
 		default:
-			error("strStmt");
+			error("str_stmt");
 			return NULL;
 	}
 }
 
-char* strAssignStmt(struct AssignStmt* a){
+char* str_assign_stmt(struct AssignStmt* a){
 	
 	char* strOptType = "";
 	
 	if(a->opt_type != NULL){
 			
-		strOptType = strType(a->opt_type);
+		strOptType = str_type(a->opt_type);
 	}
 	
-	char* strVar = strVariable(a->var);
+	char* strVar = str_variable(a->var);
 	
-	char* strE = strExpr(a->expr);
+	char* strE = str_expr(a->expr);
 	
 	uint16_t l1 = strlen(strOptType);
 	uint16_t l2 = strlen(strVar);
@@ -528,10 +528,10 @@ char* strAssignStmt(struct AssignStmt* a){
 	return res;
 }
 
-char* strForStmt(struct ForStmt* f){
+char* str_for_stmt(struct ForStmt* f){
 	
-	char* s1 = strRange(f->range);
-	char* s2 = strStmtBlock(f->block);
+	char* s1 = str_range(f->range);
+	char* s2 = str_stmt_block(f->block);
 	
 	const uint32_t l = strlen(s1)+strlen(s2)
 				+3+4+1+DEFAULT_STR_SIZE;
@@ -544,15 +544,15 @@ char* strForStmt(struct ForStmt* f){
 	return res;
 }
 
-char* strIfStmt(struct IfStmt* i){
+char* str_if_stmt(struct IfStmt* i){
 
-	char* s1 = strExpr(i->condition);
-	char* s2 = strStmtBlock(i->block);
+	char* s1 = str_expr(i->condition);
+	char* s2 = str_stmt_block(i->block);
 	
 	char* s3 = "";
 	
 	if(i->else_block != NULL){
-		s3 = strStmtBlock(i->else_block);
+		s3 = str_stmt_block(i->else_block);
 	}
 	
 	const uint32_t l = strlen(s1)+strlen(s2)+strlen(s3)
@@ -574,10 +574,10 @@ char* strIfStmt(struct IfStmt* i){
 	return res;
 }
 
-char* strLoopStmt(struct LoopStmt* l){
+char* str_loop_stmt(struct LoopStmt* l){
 	
-	char* s1 = strExpr(l->count);
-	char* s2 = strStmtBlock(l->block);
+	char* s1 = str_expr(l->count);
+	char* s2 = str_stmt_block(l->block);
 	
 	const uint32_t l1 = strlen(s1)+strlen(s2)+4+2+1;
 	
@@ -589,10 +589,10 @@ char* strLoopStmt(struct LoopStmt* l){
 	return res;
 }
 
-char* strWhileStmt(struct WhileStmt* w){
+char* str_while_stmt(struct WhileStmt* w){
 
-	char* s1 = strExpr(w->condition);
-	char* s2 = strStmtBlock(w->block);
+	char* s1 = str_expr(w->condition);
+	char* s2 = str_stmt_block(w->block);
 	
 	const uint32_t l = strlen(s1)+strlen(s2)+5+2+1;
 	
@@ -604,18 +604,18 @@ char* strWhileStmt(struct WhileStmt* w){
 	return res;
 }
 
-char* strSwitchStmt(struct SwitchStmt* s){
+char* str_switch_stmt(struct SwitchStmt* s){
 
 	uint16_t l = strlen("switch { } ");
 	
-	char* s1 = strExpr(s->expr);
+	char* s1 = str_expr(s->expr);
 	l += strlen(s1);
 	
 	char* strCases[s->count_cases];
 	
 	for(uint16_t i = 0; i < s->count_cases; i++){
 		
-		strCases[i] = strCaseStmt(s->cases[i]);
+		strCases[i] = str_case_stmt(s->cases[i]);
 		l += strlen(strCases[i]);
 	}
 	
@@ -635,7 +635,7 @@ char* strSwitchStmt(struct SwitchStmt* s){
 	return res;
 }
 
-char* strCall(struct Call* m){
+char* str_call(struct Call* m){
 
 	//we approximate here, and could be wrong.
 	//this is definitely not bulletproof.
@@ -652,7 +652,7 @@ char* strCall(struct Call* m){
 	
 	for(uint16_t i = 0; i < m->count_args; i++){
 		
-		char* s1 = strExpr(m->args[i]);
+		char* s1 = str_expr(m->args[i]);
 		
 		strcat(res, s1);
 		
@@ -668,9 +668,9 @@ char* strCall(struct Call* m){
 	return res;
 }
 
-char* strRetStmt(struct RetStmt* r){
+char* str_ret_stmt(struct RetStmt* r){
 	
-	char* s = strExpr(r->return_value);
+	char* s = str_expr(r->return_value);
 	
 	uint16_t l = 10 + strlen(s);
 	
@@ -683,18 +683,18 @@ char* strRetStmt(struct RetStmt* r){
 	return res;
 }
 
-char* strCaseStmt(struct CaseStmt* c){
+char* str_case_stmt(struct CaseStmt* c){
 	
 	char* s = NULL;
 	
 	switch(c->kind){
 	
-		case 0: s = strBoolConst (c->ptr.m1); break;
-		case 1: s = strCharConst (c->ptr.m2); break;
-		case 2: s = strIntConst  (c->ptr.m3); break;
+		case 0: s = str_bool_const(c->ptr.m1); break;
+		case 1: s = str_char_const(c->ptr.m2); break;
+		case 2: s = str_int_const(c->ptr.m3); break;
 	}
 	
-	char* s2 = strStmtBlock(c->block);
+	char* s2 = str_stmt_block(c->block);
 	
 	uint16_t l = strlen(s) + strlen(s2);
 
@@ -707,10 +707,10 @@ char* strCaseStmt(struct CaseStmt* c){
 	return res;
 }
 
-char* strTryCatchStmt(struct TryCatchStmt* tcs){
+char* str_try_catch_stmt(struct TryCatchStmt* tcs){
 	
-	char* s1 = strStmtBlock(tcs->try_block);
-	char* s2 = strStmtBlock(tcs->catch_block);
+	char* s1 = str_stmt_block(tcs->try_block);
+	char* s2 = str_stmt_block(tcs->catch_block);
 	
 	uint32_t l = strlen(s1) + strlen(s2);
 	

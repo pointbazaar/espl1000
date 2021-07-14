@@ -199,7 +199,7 @@ static void transpile_lambda(
 	//free unused parts of the lambda
 	//return expr is USED, identifiers are not used
 	for(uint8_t i = 0; i < lambda->count_params; i++){
-		freeIdentifier(lambda->params[i]);
+		free_identifier(lambda->params[i]);
 	}
 	free(lambda);
 }
@@ -233,7 +233,7 @@ static struct Method* gen_subr_from_lambda(
 	lsubr->block->stmts[0] = stmt;
 	
 	//copy return type
-	lsubr->return_type = copyType(orig_rtype);
+	lsubr->return_type = copy_type(orig_rtype);
 	
 	//copy declarg 
 	lsubr->count_args = orig_count_arg;
@@ -243,7 +243,7 @@ static struct Method* gen_subr_from_lambda(
 		
 		struct DeclArg* newdeclarg = make(DeclArg);
 		
-		newdeclarg->type = copyType(orig_arg[i]);
+		newdeclarg->type = copy_type(orig_arg[i]);
 		newdeclarg->has_name = true;
 		strcpy(newdeclarg->name, lambda->params[i]->identifier);
 		

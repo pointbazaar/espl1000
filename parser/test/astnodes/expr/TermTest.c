@@ -27,7 +27,7 @@ int term_test_simple_term(bool debug) {
 	assert(t != NULL);
 	
 	freeTokenList(list);
-	freeTerm(t);
+	free_term(t);
 	
 	return 1;
 }
@@ -55,7 +55,7 @@ int term_test_variable_term(bool debug) {
 	assert(strcmp(sv->name,"x") == 0);
 	
 	freeTokenList(list);
-	freeTerm(t);
+	free_term(t);
 
 	return 1;
 }
@@ -88,7 +88,7 @@ int term_test_parentheses(bool debug){
 	assert(strcmp(sv->name,"x") == 0);
 	
 	freeTokenList(list);
-	freeTerm(t);
+	free_term(t);
 
 	return 1;
 }

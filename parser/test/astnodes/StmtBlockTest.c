@@ -37,7 +37,7 @@ int test_stmtblock_1(bool debug){
 	assert(node != NULL);
 	
 	freeTokenList(tokens);
-	freeStmtBlock(node);
+	free_stmt_block(node);
 
 	return 1;
 }

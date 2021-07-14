@@ -73,13 +73,13 @@ void freeIncomplete(struct IfStmt* is){
 	//free an IfStmt, even if it has not been
 	//completely initialized
 	if(is->condition != NULL){
-		freeExpr(is->condition);
+		free_expr(is->condition);
 	}
 	if(is->block != NULL){
-		freeStmtBlock(is->block);
+		free_stmt_block(is->block);
 	}
 	if(is->else_block != NULL){
-		freeStmtBlock(is->else_block);
+		free_stmt_block(is->else_block);
 	}
 	free(is);
 }

@@ -12,64 +12,63 @@
 //must also be able to free AST Nodes,
 //as they could obtain such via ast_reader.c
 
-void freeAST(struct AST* ast);
+void free_ast(struct AST* ast);
 
 //const
-void freeBoolConst(struct BoolConst* bc);	
-void freeCharConst(struct CharConst* cc);
-void freeFloatConst(struct FloatConst* fc);
-void freeIntConst(struct IntConst* ic);
-void freeHexConst(struct HexConst* hc);
-void freeBinConst(struct BinConst* hc);
-void freeStringConst(struct StringConst* s);
+void free_bool_const(struct BoolConst* bc);
+void free_char_const(struct CharConst* cc);
+void free_float_const(struct FloatConst* fc);
+void free_int_const(struct IntConst* ic);
+void free_hex_const(struct HexConst* hc);
+void free_bin_const(struct BinConst* hc);
+void free_string_const(struct StringConst* s);
 
 //subr
-void freeDeclArg(struct DeclArg* da);
-void freeMethod(struct Method* m);
+void free_decl_arg(struct DeclArg* da);
+void free_method(struct Method* m);
 
 //other
-void freeIdentifier(struct Identifier* id);
-void freeNamespace(struct Namespace* ns);
-void freeStmtBlock(struct StmtBlock* block);
-void freeRange(struct Range* range);
-void freeLambda(struct Lambda* l);
+void free_identifier(struct Identifier* id);
+void free_namespace(struct Namespace* ns);
+void free_stmt_block(struct StmtBlock* block);
+void free_range(struct Range* range);
+void free_lambda(struct Lambda* l);
 
 //struct
-void freeStructDecl(struct StructDecl* sd);
-void freeStructMember(struct StructMember* sm);
+void free_struct_decl(struct StructDecl* sd);
+void free_struct_member(struct StructMember* sm);
 
 //expr
-void freeExpr(struct Expr* expr);
-void freeTerm(struct Term* t);
-void freeUnOpTerm(struct UnOpTerm* t);
-void freeOp(struct Op* op);
+void free_expr(struct Expr* expr);
+void free_term(struct Term* t);
+void free_un_op_term(struct UnOpTerm* t);
+void free_op(struct Op* op);
 
 //var
-void freeVariable(struct Variable* var);
-void freeSimpleVar(struct SimpleVar* sv);
+void free_variable(struct Variable* var);
+void free_simple_var(struct SimpleVar* sv);
 
 //stmts
-void freeAssignStmt(struct AssignStmt* as);
-void freeIfStmt(struct IfStmt* is);
-void freeLoopStmt(struct LoopStmt* is);
-void freeCall(struct Call* mc);
-void freeRetStmt(struct RetStmt* rs);
-void freeStmt(struct Stmt* s);
-void freeWhileStmt(struct WhileStmt* ws);
-void freeForStmt(struct ForStmt* fstmt);
-void freeSwitchStmt(struct SwitchStmt* sstmt);
-void freeCaseStmt(struct CaseStmt* cstmt);
-void freeTryCatchStmt(struct TryCatchStmt* tcs);
+void free_assign_stmt(struct AssignStmt* as);
+void free_if_stmt(struct IfStmt* is);
+void free_loop_stmt(struct LoopStmt* is);
+void free_call(struct Call* mc);
+void free_ret_stmt(struct RetStmt* rs);
+void free_stmt(struct Stmt* s);
+void free_while_stmt(struct WhileStmt* ws);
+void free_for_stmt(struct ForStmt* fstmt);
+void free_switch_stmt(struct SwitchStmt* sstmt);
+void free_case_stmt(struct CaseStmt* cstmt);
+void free_try_catch_stmt(struct TryCatchStmt* tcs);
 
 //types
-void freeArrayType(struct ArrayType* at);
-void freeBasicType(struct BasicType* btw);
-void freeSimpleType(struct SimpleType* st);
-void freeSubrType(struct SubrType* st);
-void freeType(struct Type* t);
-void freeTypeParam(struct TypeParam* tp);
-void freePrimitiveType(struct PrimitiveType* p);
-void freeStructType(struct StructType* s);
-
+void free_array_type(struct ArrayType* at);
+void free_basic_type(struct BasicType* btw);
+void free_simple_type(struct SimpleType* st);
+void free_subr_type(struct SubrType* st);
+void free_type(struct Type* t);
+void free_type_param(struct TypeParam* tp);
+void free_primitive_type(struct PrimitiveType* p);
+void free_struct_type(struct StructType* s);
 
 #endif

@@ -35,7 +35,7 @@ struct Range* makeRange(struct TokenList* tokens, bool debug) {
 	
 	if(!list_expect(copy, RANGEOP)){
 		freeTokenListShallow(copy);
-		freeExpr(res->start);
+		free_expr(res->start);
 		free(res);
 	}
 	
@@ -43,7 +43,7 @@ struct Range* makeRange(struct TokenList* tokens, bool debug) {
 	
 	if(res->end == NULL){
 		freeTokenListShallow(copy);
-		freeExpr(res->start);
+		free_expr(res->start);
 		free(res);
 		return NULL;
 	}

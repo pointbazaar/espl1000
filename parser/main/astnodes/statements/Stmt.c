@@ -200,7 +200,7 @@ void stmt_make_other(struct Stmt* res, struct TokenList* copy, bool debug){
 			list_print(copy);
 			
 			freeTokenListShallow(copy);
-			freeCall(res->ptr.m1);
+			free_call(res->ptr.m1);
 			free(res);
 			
 			exit(1);

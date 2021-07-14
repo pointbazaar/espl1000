@@ -11,56 +11,56 @@
 //all char* returned are heap-allocated
 
 //const
-char* strBoolConst(struct BoolConst* bc);	
-char* strCharConst(struct CharConst* cc);
-char* strFloatConst(struct FloatConst* fc);
-char* strIntConst(struct IntConst* ic);
-char* strHexConst(struct HexConst* hc);
-char* strStringConst(struct StringConst* s);
-char* strBinConst(struct BinConst* b);
+char* str_bool_const(struct BoolConst* bc);
+char* str_char_const(struct CharConst* cc);
+char* str_float_const(struct FloatConst* fc);
+char* str_int_const(struct IntConst* ic);
+char* str_hex_const(struct HexConst* hc);
+char* str_string_const(struct StringConst* s);
+char* str_bin_const(struct BinConst* b);
 
 //types
-char* strArrayType(struct ArrayType* at);
-char* strBasicType(struct BasicType* btw);
-char* strSimpleType(struct SimpleType* st);
-char* strSubrType(struct SubrType* st);
-char* strType(struct Type* t);
-char* strTypeParam(struct TypeParam* t);
-char* strPrimitiveType(struct PrimitiveType* p);
-char* strStructType(struct StructType* s);
+char* str_array_type(struct ArrayType* at);
+char* str_basic_type(struct BasicType* btw);
+char* str_simple_type(struct SimpleType* st);
+char* str_subr_type(struct SubrType* st);
+char* str_type(struct Type* t);
+char* str_type_param(struct TypeParam* t);
+char* str_primitive_type(struct PrimitiveType* p);
+char* str_struct_type(struct StructType* s);
 
 //struct
-char* strStructDecl(struct StructDecl* s);
-char* strStructMember(struct StructMember* s);
+char* str_struct_decl(struct StructDecl* decl);
+char* str_struct_member(struct StructMember* s);
 
 //var
-char* strVariable(struct Variable* v);
-char* strSimpleVar(struct SimpleVar* s);
+char* str_variable(struct Variable* v);
+char* str_simple_var(struct SimpleVar* s);
 
 //expr
-char* strExpr(struct Expr* e);
-char* strOp(struct Op* o);
-char* strUnOpTerm(struct UnOpTerm* u);
-char* strTerm(struct Term* t);
+char* str_expr(struct Expr* e);
+char* str_op(struct Op* o);
+char* str_un_op_term(struct UnOpTerm* u);
+char* str_term(struct Term* t);
 
 //stmts
-char* strStmt(struct Stmt* stmt);
+char* str_stmt(struct Stmt* stmt);
 
-char* strAssignStmt(struct AssignStmt* a);
-char* strForStmt(struct ForStmt* f);
-char* strIfStmt(struct IfStmt* i);
-char* strLoopStmt(struct LoopStmt* l);
-char* strWhileStmt(struct WhileStmt* w);
-char* strSwitchStmt(struct SwitchStmt* s);
-char* strCall(struct Call* m);
-char* strRetStmt(struct RetStmt* r);
-char* strCaseStmt(struct CaseStmt* c);
-char* strTryCatchStmt(struct TryCatchStmt* tcs);
+char* str_assign_stmt(struct AssignStmt* a);
+char* str_for_stmt(struct ForStmt* f);
+char* str_if_stmt(struct IfStmt* i);
+char* str_loop_stmt(struct LoopStmt* l);
+char* str_while_stmt(struct WhileStmt* w);
+char* str_switch_stmt(struct SwitchStmt* s);
+char* str_call(struct Call* m);
+char* str_ret_stmt(struct RetStmt* r);
+char* str_case_stmt(struct CaseStmt* c);
+char* str_try_catch_stmt(struct TryCatchStmt* tcs);
 
 //other
-char* strIdentifier(struct Identifier* id);
-char* strRange(struct Range* r);
-char* strStmtBlock(struct StmtBlock* block);
-char* strLambda(struct Lambda* l);
+char* str_identifier(struct Identifier* id);
+char* str_range(struct Range* r);
+char* str_stmt_block(struct StmtBlock* block);
+char* str_lambda(struct Lambda* l);
 
 #endif

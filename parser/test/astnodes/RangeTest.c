@@ -36,5 +36,5 @@ void range_test1(bool debug){
 	assert(r->end != NULL);
 	
 	freeTokenList(list);
-	freeRange(r);
+	free_range(r);
 }

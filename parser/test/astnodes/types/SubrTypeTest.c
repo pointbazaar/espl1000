@@ -35,7 +35,7 @@ int subrtype_test_typename(bool debug) {
 	assert(sub != NULL);
 	
 	freeTokenList(l);
-	freeSubrType(sub);
+	free_subr_type(sub);
 
 	return 1;
 }
@@ -72,7 +72,7 @@ int subrtype_test_typename_subroutine_return_type(bool debug) {
 	assert(sub != NULL);
 	
 	freeTokenList(l);
-	freeSubrType(sub);
+	free_subr_type(sub);
 
 	return 1;
 }
@@ -102,7 +102,7 @@ int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(bool debu
 	assert(0 == list_size(l));
 	
 	freeTokenList(l);
-	freeSubrType(node);
+	free_subr_type(node);
 
 	return 1;
 }
@@ -127,7 +127,7 @@ int subrtype_test_subroutine_type_parsing_subroutine_without_side_effects(bool d
 	assert(node != NULL);
 	
 	freeTokenList(l);
-	freeSubrType(node);
+	free_subr_type(node);
 
 	return 1;
 }

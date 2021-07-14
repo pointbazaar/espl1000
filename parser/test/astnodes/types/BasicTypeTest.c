@@ -29,7 +29,7 @@ int basictype_test_type_parsing_simple_type(bool debug) {
 	assert(0 == list_size(list));
 	
 	freeTokenList(list);
-	freeBasicType(b);
+	free_basic_type(b);
 
 	return 1;
 }

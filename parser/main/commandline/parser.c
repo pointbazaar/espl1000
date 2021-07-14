@@ -118,7 +118,7 @@ void build_ast_file(char* tokensFile, bool debug) {
 
 	write_ast(ast);
 
-	freeAST(ast);
+	free_ast(ast);
 	freeTokenList(tokens);
 }
 

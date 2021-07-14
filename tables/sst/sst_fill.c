@@ -31,7 +31,7 @@ struct Type* method_to_subrtype(struct Method* m){
 	stype->super.annotations = 0;
 	stype->super.line_num    = m->super.line_num;
 	
-	stype->return_type     = copyType(m->return_type);
+	stype->return_type     = copy_type(m->return_type);
 	stype->has_side_effects = m->has_side_effects;
 	stype->count_arg_types = m->count_args;
 	stype->throws         = m->throws;
@@ -39,7 +39,7 @@ struct Type* method_to_subrtype(struct Method* m){
 	stype->arg_types = malloc(sizeof(void*) * stype->count_arg_types);
 	
 	for(uint32_t i = 0; i < stype->count_arg_types; i++){
-		stype->arg_types[i] = copyType(m->args[i]->type);
+		stype->arg_types[i] = copy_type(m->args[i]->type);
 	}
 	
 	bt->simple_type = NULL;

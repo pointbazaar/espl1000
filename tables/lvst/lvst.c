@@ -138,10 +138,10 @@ void lvst_print(struct LVST* lvst){
 	for(int i = 0; i < lvst->count; i++){
 		struct LVSTLine* line = lvst->lines[i];
 		
-		printf(fmt, 
-			line->name, 
+		printf(fmt,
+			   line->name,
 			(line->isArg)?"yes":"no",
-			strType(line->type)
+			   str_type(line->type)
 		);
 	}
 }

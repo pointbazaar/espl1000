@@ -39,7 +39,7 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 
 	res->block = makeStmtBlock(copy, debug);
 	if(res->block == NULL){
-		freeExpr(res->condition);
+		free_expr(res->condition);
 		free(res);
 		return NULL;
 	}

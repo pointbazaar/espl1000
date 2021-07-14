@@ -31,7 +31,7 @@ int simplevar_test_parse_simple_variable(bool debug) {
 	assert(strcmp("x", node->name)==0);
 	
 	freeTokenList(list);
-	freeSimpleVar(node);
+	free_simple_var(node);
 
 	return 1;
 }
@@ -66,7 +66,7 @@ int simplevar_test_parse_simple_indexed_variable(bool debug) {
 	);
 	
 	freeTokenList(list);
-	freeSimpleVar(node);
+	free_simple_var(node);
 
 	return 1;
 }
@@ -102,8 +102,8 @@ int simplevar_test_2_indices(bool debug){
 	assert(node->indices[1]->term1 != NULL);
 	assert(node->indices[1]->op == NULL);
 	assert(node->indices[1]->term2 == NULL);
-	
-	freeSimpleVar(node);
+
+	free_simple_var(node);
 
 	return 1;
 }

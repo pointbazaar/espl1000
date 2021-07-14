@@ -55,7 +55,7 @@ void tc_throwstmt(struct Stmt* s, struct TCCtx* tcctx){
 	//are we inside try-catch stmt?
 	if(tcctx->depth_inside_try_stmt > 0){ return; }
 	
-	char* s1 = strStmt(s);
+	char* s1 = str_stmt(s);
 	char msg[100];
 	sprintf(msg, "\t%s\n", s1);
 	strcat(msg, ERR_NO_THROW_OUTSIDE_TRY_OR_THROWS_SUBR);
@@ -84,7 +84,7 @@ void tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx){
 	
 	if(!is_bool_type(type)){
 		
-		char* s1 = strExpr(i->condition);
+		char* s1 = str_expr(i->condition);
 		
 		char msg[100];
 		sprintf(msg, "\t%s\n", s1);
@@ -107,7 +107,7 @@ void tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx){
 	
 	if(!is_bool_type(type)){
 		
-		char* s1 = strExpr(w->condition);
+		char* s1 = str_expr(w->condition);
 		
 		char msg[200];
 		sprintf(msg, "\t%s\n", s1);
@@ -132,7 +132,7 @@ void tc_loopstmt(struct LoopStmt* l, struct TCCtx* tcctx){
 	
 	if(!is_integer_type(type)){
 		
-		char* s1 = strExpr(l->count);
+		char* s1 = str_expr(l->count);
 		
 		char msg[200];
 		sprintf(msg, "\tloop %s\n", s1);
@@ -169,9 +169,9 @@ void tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx){
 	
 	if(!eq_type(returnType, returnedType)){
 		
-		char* s1 = strType(returnType);
-		char* s2 = strType(returnedType);
-		char* s3 = strRetStmt(r);
+		char* s1 = str_type(returnType);
+		char* s2 = str_type(returnedType);
+		char* s3 = str_ret_stmt(r);
 		
 		char msg[200];
 		sprintf(msg, "\t%s\nexpected type: %s, actual type: %s\n", s3, s1, s2);
@@ -194,7 +194,7 @@ void tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx){
 	
 	if(!is_primitive_type(type)){
 		
-		char* s1 = strExpr(s->expr);
+		char* s1 = str_expr(s->expr);
 		
 		char msg[200];
 		sprintf(msg, "\tswitch %s\n", s1);
@@ -223,7 +223,7 @@ void tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx){
 		
 		if(isErr){
 			
-			char* s1 = strCaseStmt(c);
+			char* s1 = str_case_stmt(c);
 			
 			char msg[200];
 			sprintf(msg, "\t%s\n", s1);

@@ -45,7 +45,7 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 	}
 
 	strcpy(res->name, id->identifier);
-	freeIdentifier(id);
+	free_identifier(id);
 
 	if(!tryParseArgList(res, copy, debug)){
 		free(res);

@@ -29,7 +29,7 @@ int charconst_test_parse_char_constant_node(bool debug) {
 	}
 	
 	freeTokenList(list);
-	freeCharConst(node);
+	free_char_const(node);
 
 	return 1;
 }
@@ -47,7 +47,7 @@ int charconst_test_parse_char_constant_node_newline(bool debug) {
 	assert('\n' == node->value);
 	
 	freeTokenList(list);
-	freeCharConst(node);
+	free_char_const(node);
 
 	return 1;
 }

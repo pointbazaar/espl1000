@@ -60,8 +60,8 @@ void ns_parse_methods(struct Namespace* res, struct TokenList* copy, bool debug)
 		if(m == NULL){
 			printf("parsing error, expected a method, but got:\n");
 			list_print(copy);
-			
-			freeNamespace(res);
+
+			free_namespace(res);
 			exit(1);
 		}
 
