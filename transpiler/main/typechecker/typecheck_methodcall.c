@@ -58,7 +58,7 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		}
 		
 		if(line->method == NULL){
-			if(line->isLibC){
+			if(line->is_libc){
 				//we do not have the AST for libC 
 				//subroutines, so we cannot typecheck the call
 				return;

@@ -65,7 +65,7 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 		
 		assert(line != NULL);
 		
-		if(line->firstOccur == as){
+		if(line->first_occur == as){
 			
 			//an assignment to this local variable first occurs in
 			//this assignment statement

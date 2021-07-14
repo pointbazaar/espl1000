@@ -16,8 +16,8 @@ struct LVSTLine {
 	//in the subroutine
 	//where this local variable was 
 	//assigned.
-	//can be NULL and is not relevant if isArg == true
-	struct AssignStmt* firstOccur;
+	//can be NULL and is not relevant if is_arg == true
+	struct AssignStmt* first_occur;
 	
 	
 	//TODO: we must differentiate if 
@@ -26,7 +26,7 @@ struct LVSTLine {
 	//because arguments already have a type declared
 	//(for the c code generation)
 	
-	bool isArg;
+	bool is_arg;
 	
 	bool read_only;
 };

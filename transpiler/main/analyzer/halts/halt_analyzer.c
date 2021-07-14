@@ -46,7 +46,7 @@ static bool inner(struct SST* sst){
 		
 		//we will not find out anything
 		//new about libC functions
-		if(line->isLibC){ continue; }
+		if(line->is_libc){ continue; }
 		
 		if(!all_callees_terminate(sst, line->cc))
 			{ continue; }

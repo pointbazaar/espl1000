@@ -20,7 +20,7 @@ struct SSTLine {
 	char _namespace[DEFAULT_STR_SIZE];
 	
 	//a reference to the type being returned
-	struct Type* returnType;
+	struct Type* return_type;
 	
 	//type of the method (SubrType underneath)
 	struct Type* type;     //may be NULL (depends on method)
@@ -31,7 +31,7 @@ struct SSTLine {
 	bool has_side_effect;
 	
 	//if it is from libC
-	bool isLibC;
+	bool is_libc;
 	
 	//callees and callers
 	struct CC* cc; //may be NULL

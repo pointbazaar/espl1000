@@ -85,8 +85,8 @@ struct SSTLine* makeSSTLine(
 	line->method       = NULL;
 	line->type         = NULL;
 	
-	line->returnType   = type;
-	line->isLibC       = isLibC;
+	line->return_type   = type;
+	line->is_libc       = isLibC;
 	line->cc           = make_cc();
 	
 	line->dead         = DEAD_UNKNOWN;
@@ -115,8 +115,8 @@ struct SSTLine* makeSSTLine2(
 	line->method       = m;
 	line->type         = type;
 	
-	line->returnType   = m->return_type;
-	line->isLibC       = false;
+	line->return_type   = m->return_type;
+	line->is_libc       = false;
 	line->cc           = make_cc();
 	
 	line->dead         = DEAD_UNKNOWN;

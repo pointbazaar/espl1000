@@ -59,7 +59,7 @@ void freeLVST(struct LVST* lvst){
 
 void freeLVSTLine(struct LVSTLine* l){
 	
-	//the struct AssignStmt* l->firstOccur
+	//the struct AssignStmt* l->first_occur
 	//is freed later on by other means,
 	//as it's memory is not managed in the 
 	//context of the local variable symbol table
@@ -133,14 +133,14 @@ void lvst_print(struct LVST* lvst){
 	char* line5  = "-----";
 	
 	printf("Local Variable Symbol Table [LVST]\n");
-	printf(fmt, "name", "isArg", "Type");
+	printf(fmt, "name", "is_arg", "Type");
 	printf(fmt, linebig, line5, linebig);
 	for(int i = 0; i < lvst->count; i++){
 		struct LVSTLine* line = lvst->lines[i];
 		
 		printf(fmt,
 			   line->name,
-			(line->isArg)?"yes":"no",
+			   (line->is_arg) ? "yes" : "no",
 			   str_type(line->type)
 		);
 	}

@@ -33,5 +33,5 @@ struct Type* infer_type_methodcall(struct ST* st, struct Call* m){
 	
 	other:
 	
-	return sst_get(st->sst, m->name)->returnType;
+	return sst_get(st->sst, m->name)->return_type;
 }
