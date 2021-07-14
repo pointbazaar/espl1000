@@ -8,27 +8,26 @@
 #include "../util/free_ast.h"
 #include "../util/copy_ast.h"
 #include "../io/ast_reader.h"
-#include "../ast.h"
 
 #include "test_str_ast.h"
 
 //const
-void test_serialize_IntConst(bool debug);
-void test_serialize_HexConst(bool debug);
-void test_serialize_BinConst(bool debug);
-void test_serialize_BoolConst(bool debug);
-void test_serialize_CharConst(bool debug);
-void test_serialize_FloatConst(bool debug);
-void test_serialize_StringConst(bool debug);
+void test_serialize_int_const();
+void test_serialize_hex_const();
+void test_serialize_bin_const();
+void test_serialize_bool_const();
+void test_serialize_char_const();
+void test_serialize_float_const();
+void test_serialize_string_const();
 
 //types
-void test_serialize_TypeParam(bool debug);
-void test_serialize_PrimitiveType(bool debug);
+void test_serialize_type_param();
+void test_serialize_primitive_type();
 
 //expr
-void test_serialize_Op(bool debug);
-void test_serialize_Term(bool debug);
-void test_serialize_Expr(bool debug);
+void test_serialize_op();
+void test_serialize_term();
+void test_serialize_expr();
 
 FILE* file;
 
@@ -38,30 +37,28 @@ static void status(char* msg){
 }
 
 int main(){
-	
-	bool debug = false;
-	
+
 	file = fopen("/tmp/test", "w+");
 	
 	printf("[AST][TEST] running AST Reader/Writer Tests...\n");
 	
 	//const
-	test_serialize_BoolConst(debug);
-	test_serialize_CharConst(debug);
-	test_serialize_FloatConst(debug);
-	test_serialize_IntConst(debug);
-	test_serialize_HexConst(debug);
-	test_serialize_BinConst(debug);
-	test_serialize_StringConst(debug);
+	test_serialize_bool_const();
+	test_serialize_char_const();
+	test_serialize_float_const();
+	test_serialize_int_const();
+	test_serialize_hex_const();
+	test_serialize_bin_const();
+	test_serialize_string_const();
 	
 	//types
-	test_serialize_TypeParam(debug);
-	test_serialize_PrimitiveType(debug);
+	test_serialize_type_param();
+	test_serialize_primitive_type();
 	
 	//expr
-	test_serialize_Op(debug);
-	test_serialize_Term(debug);
-	test_serialize_Expr(debug);
+	test_serialize_op();
+	test_serialize_term();
+	test_serialize_expr();
 	
 	printf("[AST][TEST] running AST str Tests...\n");
 	
@@ -89,7 +86,7 @@ int main(){
 	return 0;
 }
 
-void test_serialize_IntConst(bool debug){
+void test_serialize_int_const() {
 	
 	status("IntConst");
 	
@@ -111,7 +108,7 @@ void test_serialize_IntConst(bool debug){
 	freeIntConst(m2);
 }
 
-void test_serialize_HexConst(bool debug){
+void test_serialize_hex_const() {
 	
 	status("HexConst");
 	
@@ -133,7 +130,7 @@ void test_serialize_HexConst(bool debug){
 	freeHexConst(m2);
 }
 
-void test_serialize_BinConst(bool debug){
+void test_serialize_bin_const() {
 	
 	status("BinConst");
 	
@@ -155,7 +152,7 @@ void test_serialize_BinConst(bool debug){
 	freeBinConst(m2);
 }
 
-void test_serialize_BoolConst(bool debug){
+void test_serialize_bool_const() {
 	
 	status("BoolConst");
 	
@@ -175,7 +172,7 @@ void test_serialize_BoolConst(bool debug){
 	freeBoolConst(m2);
 }
 
-void test_serialize_CharConst(bool debug){
+void test_serialize_char_const() {
 	
 	status("CharConst");
 	
@@ -195,7 +192,7 @@ void test_serialize_CharConst(bool debug){
 	freeCharConst(m2);
 }
 
-void test_serialize_TypeParam(bool debug){
+void test_serialize_type_param() {
 	
 	status("TypeParam");
 	
@@ -215,7 +212,7 @@ void test_serialize_TypeParam(bool debug){
 	freeTypeParam(m2);
 }
 
-void test_serialize_PrimitiveType(bool debug){
+void test_serialize_primitive_type() {
 
 	status("PrimitiveType");
 
@@ -246,7 +243,7 @@ void test_serialize_PrimitiveType(bool debug){
 	freePrimitiveType(p2);
 }
 
-void test_serialize_FloatConst(bool debug){
+void test_serialize_float_const() {
 	
 	status("FloatConst");
 	
@@ -265,7 +262,7 @@ void test_serialize_FloatConst(bool debug){
 	freeFloatConst(m2);
 }
 
-void test_serialize_StringConst(bool debug){
+void test_serialize_string_const() {
 	
 	status("StringConst");
 	
@@ -288,7 +285,7 @@ void test_serialize_StringConst(bool debug){
 	freeStringConst(m2);
 }
 
-void test_serialize_Op(bool debug){
+void test_serialize_op() {
 	
 	status("Op");
 	
@@ -313,7 +310,7 @@ void test_serialize_Op(bool debug){
 	freeOp(m2);
 }
 
-void test_serialize_Term(bool debug){
+void test_serialize_term() {
 	
 	status("Term");
 	
@@ -337,7 +334,7 @@ void test_serialize_Term(bool debug){
 	freeTerm(m2);
 }
 
-void test_serialize_Expr(bool debug){
+void test_serialize_expr() {
 	
 	status("Expr");
 	

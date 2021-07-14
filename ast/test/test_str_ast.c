@@ -7,7 +7,6 @@
 #include "../util/free_ast.h"
 #include "../util/str_ast.h"
 #include "../util/copy_ast.h"
-#include "../ast.h"
 
 static void status(char* msg){
 
