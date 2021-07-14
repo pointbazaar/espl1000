@@ -78,7 +78,7 @@ struct AST* invoke_ast_reader(struct Flags* flags){
 			make_ast_filename(flags->filenames[i]);
 	}
 
-	struct AST* ast = readAST(ast_filenames, flags->count_filenames, flags->debug);
+	struct AST* ast = read_ast(ast_filenames, flags->count_filenames);
 	
 	for(int i = 0; i < flags->count_filenames; i++){
 	

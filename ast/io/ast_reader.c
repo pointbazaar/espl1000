@@ -19,13 +19,13 @@ static void error(FILE* file, char* msg){
 	exit(1);
 }
 
-struct AST* readAST(char** filenames, int count_filenames, bool debug){
+struct AST* read_ast(char** filenames, int count_filenames) {
 	
 	struct AST* ast = make(AST);
 	
 	ast->count_namespaces = count_filenames;
 	
-	int nbytes = sizeof(void*) * ast->count_namespaces;
+	uint32_t nbytes = sizeof(void*) * ast->count_namespaces;
 	
 	ast->namespaces = malloc(nbytes);
 
@@ -41,7 +41,7 @@ struct AST* readAST(char** filenames, int count_filenames, bool debug){
 		//full buffering for performance
 		setvbuf(file, NULL, _IOFBF, BUFSIZ);
 
-		ast->namespaces[i] = readNamespace(file, debug);
+		ast->namespaces[i] = read_namespace(file);
 
 		fclose(file);
 	}
@@ -49,7 +49,7 @@ struct AST* readAST(char** filenames, int count_filenames, bool debug){
 	return ast;
 }
 
-struct Namespace* readNamespace(FILE* file, bool debug){
+struct Namespace* read_namespace(FILE* file) {
 	
 	magic_num_require(MAGIC_NAMESPACE, file);
 	
@@ -81,7 +81,7 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	
 	for(int i=0; i < ns->count_methods; i++){
 		
-		ns->methods[i] = readMethod(file, debug);
+		ns->methods[i] = read_method(file);
 	}
 	
 	//read structs
@@ -91,14 +91,14 @@ struct Namespace* readNamespace(FILE* file, bool debug){
 	
 	for(int i=0;i < ns->count_structs; i++){
 		
-		ns->structs[i] = readStructDecl(file, debug);
+		ns->structs[i] = read_struct_decl(file);
 	}
 	
 	magic_num_require(MAGIC_END_NAMESPACE, file);
 	
 	return ns;
 }
-struct Method* readMethod(FILE* file, bool debug){
+struct Method* read_method(FILE* file) {
 	
 	magic_num_require(MAGIC_METHOD, file);
 	
@@ -115,23 +115,23 @@ struct Method* readMethod(FILE* file, bool debug){
 	
 	free(tmp);
 
-	m->return_type = readType(file, debug);
+	m->return_type = read_type(file);
 	
 	m->count_args = deserialize_int(file);
 	
 	m->args = malloc(sizeof(void*)*(m->count_args));
 
 	for(int i = 0;i < m->count_args;i++){
-		m->args[i] = readDeclArg(file, debug);
+		m->args[i] = read_decl_arg(file);
 	}
 
-	m->block = readStmtBlock(file, debug);
+	m->block = read_stmt_block(file);
 	
 	magic_num_require(MAGIC_END_METHOD, file);
 	
 	return m;
 }
-struct StructDecl* readStructDecl(FILE* file, bool debug){
+struct StructDecl* read_struct_decl(FILE* file) {
 	
 	magic_num_require(MAGIC_STRUCTDECL, file);
 	
@@ -139,21 +139,21 @@ struct StructDecl* readStructDecl(FILE* file, bool debug){
 	
 	read_super(res);
 	
-	res->type = readSimpleType(file, debug);
+	res->type = read_simple_type(file);
 	
 	res->count_members = deserialize_int(file);
 	
 	res->members = malloc(sizeof(void*)*res->count_members);
 	
 	for(int i=0;i < res->count_members;i++){
-		res->members[i] = readStructMember(file, debug);
+		res->members[i] = read_struct_member(file);
 	}
 	
 	magic_num_require(MAGIC_END_STRUCTDECL, file);
 	
 	return res;
 }
-struct StructMember* readStructMember(FILE* file, bool debug){
+struct StructMember* read_struct_member(FILE* file) {
 	
 	magic_num_require(MAGIC_STRUCTMEMBER, file);
 	
@@ -161,7 +161,7 @@ struct StructMember* readStructMember(FILE* file, bool debug){
 	
 	read_super(res);
 	
-	res->type = readType(file, debug);
+	res->type = read_type(file);
 	
 	char* tmp = deserialize_string(file);
 	
@@ -173,7 +173,7 @@ struct StructMember* readStructMember(FILE* file, bool debug){
 	return res;
 }
 
-struct StmtBlock* readStmtBlock(FILE* file, bool debug){
+struct StmtBlock* read_stmt_block(FILE* file) {
 	
 	magic_num_require(MAGIC_STMTBLOCK, file);
 	
@@ -186,7 +186,7 @@ struct StmtBlock* readStmtBlock(FILE* file, bool debug){
 	block->stmts = malloc(sizeof(void*)* block->count);
 	
 	for(int i = 0;i < block->count; i++){
-		block->stmts[i] = readStmt(file, debug);
+		block->stmts[i] = read_stmt(file);
 	}
 	
 	magic_num_require(MAGIC_END_STMTBLOCK, file);
@@ -194,7 +194,7 @@ struct StmtBlock* readStmtBlock(FILE* file, bool debug){
 	return block;
 }
 
-struct DeclArg* readDeclArg(FILE* file, bool debug){
+struct DeclArg* read_decl_arg(FILE* file) {
 	
 	magic_num_require(MAGIC_DECLARG, file);
 	
@@ -202,15 +202,15 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 	
 	read_super(da);
 
-	da->type = readType(file, debug);
+	da->type = read_type(file);
 
-	const int option = deserialize_int(file);
+	const uint32_t option = deserialize_int(file);
 
 	da->has_name = option == OPT_PRESENT;
 
 	if(option != 0 && option != 1){
 
-		error(file, "Error in readDeclArg");
+		error(file, "Error in read_decl_arg");
 	}
 
 	if(da->has_name){
@@ -223,7 +223,7 @@ struct DeclArg* readDeclArg(FILE* file, bool debug){
 
 	return da;
 }
-struct Expr* readExpr(FILE* file, bool debug){
+struct Expr* read_expr(FILE* file) {
 	
 	magic_num_require(MAGIC_EXPR, file);
 	
@@ -231,23 +231,23 @@ struct Expr* readExpr(FILE* file, bool debug){
 	
 	read_super(expr);
 
-	expr->term1 = readUnOpTerm(file, debug);
+	expr->term1 = read_un_op_term(file);
 	expr->op    = NULL;
 	expr->term2 = NULL;
 	
-	const int option = deserialize_int(file);
+	const uint32_t option = deserialize_int(file);
 	
 	if (option == OPT_PRESENT){
 		
-		expr->op    = readOp(file, debug);
-		expr->term2 = readUnOpTerm(file, debug);
+		expr->op    = read_op(file);
+		expr->term2 = read_un_op_term(file);
 	}
 	
 	magic_num_require(MAGIC_END_EXPR, file);
 
 	return expr;
 }
-struct Op* readOp(FILE* file, bool debug){
+struct Op* read_op(FILE* file) {
 	
 	magic_num_require(MAGIC_OP, file);
 	
@@ -261,7 +261,7 @@ struct Op* readOp(FILE* file, bool debug){
 
 	return op;
 }
-struct IntConst* readIntConst(FILE* file, bool debug){
+struct IntConst* read_int_const(FILE* file) {
 	
 	magic_num_require(MAGIC_INTCONST, file);
 	
@@ -276,7 +276,7 @@ struct IntConst* readIntConst(FILE* file, bool debug){
 	return ic;
 }
 
-struct HexConst* readHexConst(FILE* file, bool debug){
+struct HexConst* read_hex_const(FILE* file) {
 	
 	magic_num_require(MAGIC_HEXCONST, file);
 	
@@ -291,7 +291,7 @@ struct HexConst* readHexConst(FILE* file, bool debug){
 	return hc;
 }
 
-struct BinConst* readBinConst(FILE* file, bool debug){
+struct BinConst* read_bin_const(FILE* file) {
 	
 	magic_num_require(MAGIC_BINCONST, file);
 	
@@ -306,7 +306,7 @@ struct BinConst* readBinConst(FILE* file, bool debug){
 	return hc;
 }
 
-struct BoolConst* readBoolConst(FILE* file, bool debug){
+struct BoolConst* read_bool_const(FILE* file) {
 	
 	magic_num_require(MAGIC_BOOLCONST, file);
 	
@@ -320,7 +320,7 @@ struct BoolConst* readBoolConst(FILE* file, bool debug){
 	
 	return b;
 }
-struct CharConst* readCharConst(FILE* file, bool debug){
+struct CharConst* read_char_const(FILE* file) {
 	
 	magic_num_require(MAGIC_CHARCONST, file);
 	
@@ -334,7 +334,7 @@ struct CharConst* readCharConst(FILE* file, bool debug){
 	
 	return b;
 }
-struct FloatConst* readFloatConst(FILE* file, bool debug){
+struct FloatConst* read_float_const(FILE* file) {
 	
 	magic_num_require(MAGIC_FLOATCONST, file);
 	
@@ -348,7 +348,7 @@ struct FloatConst* readFloatConst(FILE* file, bool debug){
 	
 	return ic;
 }
-struct StringConst* readStringConst(FILE* file, bool debug){
+struct StringConst* read_string_const(FILE* file) {
 	
 	magic_num_require(MAGIC_STRINGCONST, file);
 	
@@ -364,7 +364,7 @@ struct StringConst* readStringConst(FILE* file, bool debug){
 	
 	return s;
 }
-struct Variable* readVariable(FILE* file, bool debug){
+struct Variable* read_variable(FILE* file) {
 	
 	magic_num_require(MAGIC_VARIABLE, file);
 	
@@ -373,19 +373,19 @@ struct Variable* readVariable(FILE* file, bool debug){
 	read_super(v);
 	
 	v->member_access    = NULL;
-	v->simple_var       = readSimpleVar(file, debug);
+	v->simple_var       = read_simple_var(file);
 
 	const bool hasMemberAccess = deserialize_int(file) == OPT_PRESENT;
 	
 	if(hasMemberAccess){
-		v->member_access = readVariable(file, debug);
+		v->member_access = read_variable(file);
 	}
 
 	magic_num_require(MAGIC_END_VARIABLE, file);
 	
 	return v;
 }
-struct SimpleVar* readSimpleVar(FILE* file, bool debug){
+struct SimpleVar* read_simple_var(FILE* file) {
 	
 	magic_num_require(MAGIC_SIMPLEVAR, file);
 	
@@ -402,14 +402,14 @@ struct SimpleVar* readSimpleVar(FILE* file, bool debug){
 	b->indices = malloc(sizeof(void*)* (b->count_indices+1));
 	
 	for(int i=0; i < b->count_indices; i++){
-		b->indices[i] = readExpr(file, debug);
+		b->indices[i] = read_expr(file);
 	}
 	
 	magic_num_require(MAGIC_END_SIMPLEVAR, file);
 	
 	return b;
 }
-struct Term* readTerm(FILE* file, bool debug){
+struct Term* read_term(FILE* file) {
 	
 	magic_num_require(MAGIC_TERM, file);
 	
@@ -421,20 +421,20 @@ struct Term* readTerm(FILE* file, bool debug){
 
 	switch(b->kind){
 	
-		case  1: b->ptr.m1  = readBoolConst(file, debug); 	break;
-		case  2: b->ptr.m2  = readIntConst(file, debug); 	break;
-		case  3: b->ptr.m3  = readCharConst(file, debug); 	break;
-		case  4: b->ptr.m4  = readCall(file, debug); 	    break;
-		case  5: b->ptr.m5  = readExpr(file, debug); 		break;
-		case  6: b->ptr.m6  = readVariable(file, debug); 	break;
-		case  7: b->ptr.m7  = readFloatConst(file, debug); 	break;
-		case  8: b->ptr.m8  = readStringConst(file, debug); break;
-		case  9: b->ptr.m9  = readHexConst(file, debug); 	break;
-		case 10: b->ptr.m10 = readBinConst(file, debug); 	break;
-		case 11: b->ptr.m11 = readLambda(file, debug);      break;
+		case  1: b->ptr.m1  = read_bool_const(file); 	break;
+		case  2: b->ptr.m2  = read_int_const(file); 	break;
+		case  3: b->ptr.m3  = read_char_const(file); 	break;
+		case  4: b->ptr.m4  = read_call(file); 	    break;
+		case  5: b->ptr.m5  = read_expr(file); 		break;
+		case  6: b->ptr.m6  = read_variable(file); 	break;
+		case  7: b->ptr.m7  = read_float_const(file); 	break;
+		case  8: b->ptr.m8  = read_string_const(file); break;
+		case  9: b->ptr.m9  = read_hex_const(file); 	break;
+		case 10: b->ptr.m10 = read_bin_const(file); 	break;
+		case 11: b->ptr.m11 = read_lambda(file);      break;
 		
 		default:
-			error(file, "Error in readTerm");
+			error(file, "Error in read_term");
 	}
 	
 	magic_num_require(MAGIC_END_TERM, file);
@@ -442,7 +442,7 @@ struct Term* readTerm(FILE* file, bool debug){
 	return b;
 }
 
-struct UnOpTerm* readUnOpTerm(FILE* file, bool debug){
+struct UnOpTerm* read_un_op_term(FILE* file) {
 	
 	magic_num_require(MAGIC_UNOPTERM, file);
 	
@@ -450,17 +450,17 @@ struct UnOpTerm* readUnOpTerm(FILE* file, bool debug){
 	
 	read_super(t);
 	
-	const int opt      = deserialize_int(file);
+	const uint32_t opt = deserialize_int(file);
 	
-	t->op   = (opt == OPT_PRESENT)? readOp(file, debug): NULL;
-	t->term = readTerm(file, debug);
+	t->op   = (opt == OPT_PRESENT) ? read_op(file) : NULL;
+	t->term = read_term(file);
 	
 	magic_num_require(MAGIC_END_UNOPTERM, file);
 	
 	return t;
 }
 
-struct Range* readRange(FILE* file, bool debug){
+struct Range* read_range(FILE* file) {
 	
 	magic_num_require(MAGIC_RANGE, file);
 	
@@ -468,15 +468,15 @@ struct Range* readRange(FILE* file, bool debug){
 	
 	read_super(r);
 	
-	r->start = readExpr(file, debug);
-	r->end   = readExpr(file, debug);
+	r->start = read_expr(file);
+	r->end   = read_expr(file);
 	
 	magic_num_require(MAGIC_END_RANGE, file);
 	
 	return r;
 }
 
-struct Lambda* readLambda(FILE* file, bool debug){
+struct Lambda* read_lambda(FILE* file) {
 	
 	magic_num_require(MAGIC_LAMBDA, file);
 	
@@ -494,7 +494,7 @@ struct Lambda* readLambda(FILE* file, bool debug){
 		l->params[i] = k;
 	}
 	
-	l->expr = readExpr(file, debug);
+	l->expr = read_expr(file);
 	
 	magic_num_require(MAGIC_END_LAMBDA, file);
 	
@@ -502,7 +502,7 @@ struct Lambda* readLambda(FILE* file, bool debug){
 }
 
 //statementnodes
-struct Stmt* readStmt(FILE* file, bool debug){
+struct Stmt* read_stmt(FILE* file) {
 	
 	magic_num_require(MAGIC_STMT, file);
 	
@@ -520,24 +520,24 @@ struct Stmt* readStmt(FILE* file, bool debug){
 				b->is_throw    = deserialize_int(file) == OPT_PRESENT;
 			}
 			break;
-		case 0: b->ptr.m0 = readLoopStmt(file, debug);   break;
-		case 1: b->ptr.m1 = readCall(file, debug);       break;
-		case 2: b->ptr.m2 = readWhileStmt(file, debug);  break;
-		case 3: b->ptr.m3 = readIfStmt(file, debug);     break;
-		case 4: b->ptr.m4 = readRetStmt(file, debug);    break;
-		case 5: b->ptr.m5 = readAssignStmt(file, debug); break;
-		case 6: b->ptr.m6 = readTryCatchStmt(file, debug); break;
-		case 7: b->ptr.m7 = readForStmt(file, debug);  	 break;
-		case 8: b->ptr.m8 = readSwitchStmt(file, debug); break;
+		case 0: b->ptr.m0 = read_loop_stmt(file);   break;
+		case 1: b->ptr.m1 = read_call(file);       break;
+		case 2: b->ptr.m2 = read_while_stmt(file);  break;
+		case 3: b->ptr.m3 = read_if_stmt(file);     break;
+		case 4: b->ptr.m4 = read_ret_stmt(file);    break;
+		case 5: b->ptr.m5 = read_assign_stmt(file); break;
+		case 6: b->ptr.m6 = read_try_catch_stmt(file); break;
+		case 7: b->ptr.m7 = read_for_stmt(file);  	 break;
+		case 8: b->ptr.m8 = read_switch_stmt(file); break;
 		default:
-			error(file, "Error in readStmt");
+			error(file, "Error in read_stmt");
 	}
 	
 	magic_num_require(MAGIC_END_STMT, file);
 	
 	return b;
 }
-struct IfStmt* readIfStmt(FILE* file, bool debug){
+struct IfStmt* read_if_stmt(FILE* file) {
 	
 	magic_num_require(MAGIC_IFSTMT, file);
 	
@@ -545,21 +545,21 @@ struct IfStmt* readIfStmt(FILE* file, bool debug){
 	
 	read_super(v);
 
-	v->condition = readExpr(file, debug);
-	v->block     = readStmtBlock(file, debug);
+	v->condition = read_expr(file);
+	v->block     = read_stmt_block(file);
 	v->else_block = NULL;
 
-	const int hasElse = deserialize_int(file);
+	const uint32_t hasElse = deserialize_int(file);
 	
 	if(hasElse == OPT_PRESENT){
-		v->else_block = readStmtBlock(file, debug);
+		v->else_block = read_stmt_block(file);
 	}
 	
 	magic_num_require(MAGIC_END_IFSTMT, file);
 	
 	return v;
 }
-struct WhileStmt* readWhileStmt(FILE* file, bool debug){
+struct WhileStmt* read_while_stmt(FILE* file) {
 	
 	magic_num_require(MAGIC_WHILESTMT, file);
 	
@@ -567,14 +567,14 @@ struct WhileStmt* readWhileStmt(FILE* file, bool debug){
 	
 	read_super(v);
 
-	v->condition = readExpr(file, debug);
-	v->block     = readStmtBlock(file, debug);
+	v->condition = read_expr(file);
+	v->block     = read_stmt_block(file);
 	
 	magic_num_require(MAGIC_END_WHILESTMT, file);
 	
 	return v;
 }
-struct RetStmt* readRetStmt(FILE* file, bool debug){
+struct RetStmt* read_ret_stmt(FILE* file) {
 	
 	magic_num_require(MAGIC_RETSTMT, file);
 	
@@ -582,13 +582,13 @@ struct RetStmt* readRetStmt(FILE* file, bool debug){
 	
 	read_super(v);
 
-	v->return_value = readExpr(file, debug);
+	v->return_value = read_expr(file);
 	
 	magic_num_require(MAGIC_END_RETSTMT, file);
 	
 	return v;
 }
-struct AssignStmt* readAssignStmt(FILE* file, bool debug){
+struct AssignStmt* read_assign_stmt(FILE* file) {
 	
 	magic_num_require(MAGIC_ASSIGNSTMT, file);
 	
@@ -596,20 +596,20 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 	
 	read_super(v);
 	
-	const int option = deserialize_int(file);
+	const uint32_t option = deserialize_int(file);
 
 	if(option != OPT_EMPTY && option != OPT_PRESENT){
 		
-		error(file, "Error in readAssignStmt\n");
+		error(file, "Error in read_assign_stmt\n");
 	}
 
 	v->opt_type = NULL;
 
 	if(option == OPT_PRESENT){
-		v->opt_type = readType(file, debug);
+		v->opt_type = read_type(file);
 	}
 
-	v->var = readVariable(file, debug);
+	v->var = read_variable(file);
 	
 	char* assign_op = deserialize_string(file);
 	
@@ -617,13 +617,13 @@ struct AssignStmt* readAssignStmt(FILE* file, bool debug){
 	
 	free(assign_op);
 	
-	v->expr = readExpr(file, debug);
+	v->expr = read_expr(file);
 	
 	magic_num_require(MAGIC_END_ASSIGNSTMT, file);
 
 	return v;
 }
-struct Call* readCall(FILE* file, bool debug){
+struct Call* read_call(FILE* file) {
 	
 	magic_num_require(MAGIC_CALL, file);
 	
@@ -640,14 +640,14 @@ struct Call* readCall(FILE* file, bool debug){
 	v->args = malloc(sizeof(void*)*(v->count_args));
 	
 	for(int i=0;i < (v->count_args);i++){
-		v->args[i] = readExpr(file, debug);
+		v->args[i] = read_expr(file);
 	}
 	
 	magic_num_require(MAGIC_END_CALL, file);
 	
 	return v;
 }
-struct LoopStmt* readLoopStmt(FILE* file, bool debug){
+struct LoopStmt* read_loop_stmt(FILE* file) {
 	
 	magic_num_require(MAGIC_LOOPSTMT, file);
 	
@@ -655,14 +655,14 @@ struct LoopStmt* readLoopStmt(FILE* file, bool debug){
 	
 	read_super(v);
 
-	v->count = readExpr(file, debug);
-	v->block = readStmtBlock(file, debug);
+	v->count = read_expr(file);
+	v->block = read_stmt_block(file);
 	
 	magic_num_require(MAGIC_END_LOOPSTMT, file);
 	
 	return v;
 }
-struct ForStmt* readForStmt(FILE* file, bool debug){
+struct ForStmt* read_for_stmt(FILE* file) {
 	
 	magic_num_require(MAGIC_FORSTMT, file);
 	
@@ -675,14 +675,14 @@ struct ForStmt* readForStmt(FILE* file, bool debug){
 	strncpy(res->index_name, indexName, DEFAULT_STR_SIZE);
 	free(indexName);
 	
-	res->range = readRange(file, debug);
-	res->block = readStmtBlock(file, debug);
+	res->range = read_range(file);
+	res->block = read_stmt_block(file);
 	
 	magic_num_require(MAGIC_END_FORSTMT, file);
 	
 	return res;
 }
-struct SwitchStmt* readSwitchStmt(FILE* file, bool debug){
+struct SwitchStmt* read_switch_stmt(FILE* file) {
 	
 	magic_num_require(MAGIC_SWITCHSTMT, file);
 	
@@ -690,7 +690,7 @@ struct SwitchStmt* readSwitchStmt(FILE* file, bool debug){
 	
 	read_super(res);
 	
-	res->expr = readExpr(file, debug);
+	res->expr = read_expr(file);
 	
 	res->count_cases = deserialize_int(file);
 
@@ -698,14 +698,14 @@ struct SwitchStmt* readSwitchStmt(FILE* file, bool debug){
 	
 	for(int i=0; i < res->count_cases; i++){
 		
-		res->cases[i] = readCaseStmt(file, debug);
+		res->cases[i] = read_case_stmt(file);
 	}
 	
 	magic_num_require(MAGIC_END_SWITCHSTMT, file);
 	
 	return res;
 }
-struct CaseStmt* readCaseStmt(FILE* file, bool debug){
+struct CaseStmt* read_case_stmt(FILE* file) {
 	
 	magic_num_require(MAGIC_CASESTMT, file);
 	
@@ -719,39 +719,39 @@ struct CaseStmt* readCaseStmt(FILE* file, bool debug){
 	res->block  = NULL;
 	
 	switch(res->kind){
-		case 0: res->ptr.m1 = readBoolConst(file, debug); break;
-		case 1: res->ptr.m2 = readCharConst(file, debug); break;
-		case 2: res->ptr.m3 = readIntConst(file, debug);  break;
+		case 0: res->ptr.m1 = read_bool_const(file); break;
+		case 1: res->ptr.m2 = read_char_const(file); break;
+		case 2: res->ptr.m3 = read_int_const(file);  break;
 		default:
-			error(file, "Error in readCaseStmt");
+			error(file, "Error in read_case_stmt");
 	}
 	
-	const int hasBlock = deserialize_int(file);
+	const uint32_t hasBlock = deserialize_int(file);
 	
 	if(hasBlock == OPT_PRESENT){
 		
-		res->block = readStmtBlock(file, debug);
+		res->block = read_stmt_block(file);
 	}
 	
 	magic_num_require(MAGIC_END_CASESTMT, file);
 	
 	return res;
 }
-struct TryCatchStmt* readTryCatchStmt(FILE* file, bool debug){
+struct TryCatchStmt* read_try_catch_stmt(FILE* file) {
 	
 	magic_num_require(MAGIC_TRYCATCHSTMT, file);
 	
 	struct TryCatchStmt* res = make(TryCatchStmt);
 	
-	res->try_block   = readStmtBlock(file, debug);
-	res->catch_block = readStmtBlock(file, debug);
+	res->try_block   = read_stmt_block(file);
+	res->catch_block = read_stmt_block(file);
 	
 	magic_num_require(MAGIC_END_TRYCATCHSTMT, file);
 	
 	return res;
 }
 // --- typenodes -------------------------
-struct Type* readType(FILE* file, bool debug){
+struct Type* read_type(FILE* file) {
 	
 	magic_num_require(MAGIC_TYPE, file);
 	
@@ -759,25 +759,25 @@ struct Type* readType(FILE* file, bool debug){
 	
 	read_super(b);
 	
-	const int kind = deserialize_int(file);;
+	const uint32_t kind = deserialize_int(file);
 	
 	b->m1 = NULL;
 	b->m2 = NULL;
 	b->m3 = NULL;
 
 	switch(kind){
-		case 1: b->m1 = readBasicType(file, debug); break;
-		case 2: b->m2 = readTypeParam(file, debug); break;
-		case 3: b->m3 = readArrayType(file, debug); break;
+		case 1: b->m1 = read_basic_type(file); break;
+		case 2: b->m2 = read_type_param(file); break;
+		case 3: b->m3 = read_array_type(file); break;
 		default:
-			error(file, "Error in readType");
+			error(file, "Error in read_type");
 	}
 	
 	magic_num_require(MAGIC_END_TYPE, file);
 	
 	return b;
 }
-struct SubrType* readSubrType(FILE* file, bool debug){
+struct SubrType* read_subr_type(FILE* file) {
 	
 	magic_num_require(MAGIC_SUBRTYPE, file);
 	
@@ -785,7 +785,7 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 	
 	read_super(v);
 	
-	v->return_type = readType(file, debug);
+	v->return_type = read_type(file);
 	
 	v->has_side_effects = deserialize_int(file);
 	v->throws         = deserialize_int(file);
@@ -795,14 +795,14 @@ struct SubrType* readSubrType(FILE* file, bool debug){
 	v->arg_types = malloc(sizeof(void*) * (v->count_arg_types));
 	
 	for(int i=0;i < (v->count_arg_types); i++){
-		v->arg_types[i] = readType(file, debug);
+		v->arg_types[i] = read_type(file);
 	}
 	
 	magic_num_require(MAGIC_END_SUBRTYPE, file);
 	
 	return v;
 }
-struct SimpleType* readSimpleType(FILE* file, bool debug){
+struct SimpleType* read_simple_type(FILE* file) {
 	
 	magic_num_require(MAGIC_SIMPLETYPE, file);
 	
@@ -813,14 +813,14 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 	v->primitive_type = NULL;
 	v->struct_type    = NULL;
 	
-	const int kind = deserialize_int(file);
+	const uint32_t kind = deserialize_int(file);
 	
 	switch(kind){
 		
-		case 0: v->primitive_type = readPrimitiveType(file, debug);
+		case 0: v->primitive_type = read_primitive_type(file);
 			break;
 			
-		case 1: v->struct_type = readStructType(file, debug);
+		case 1: v->struct_type = read_struct_type(file);
 			break;
 			
 		default:
@@ -831,7 +831,7 @@ struct SimpleType* readSimpleType(FILE* file, bool debug){
 	
 	return v;
 }
-struct ArrayType* readArrayType(FILE* file, bool debug){
+struct ArrayType* read_array_type(FILE* file) {
 	
 	magic_num_require(MAGIC_ARRAYTYPE, file);
 	
@@ -839,13 +839,13 @@ struct ArrayType* readArrayType(FILE* file, bool debug){
 	
 	read_super(v);
 	
-	v->element_type = readType(file, debug);
+	v->element_type = read_type(file);
 	
 	magic_num_require(MAGIC_END_ARRAYTYPE, file);
 	
 	return v;
 }
-struct TypeParam* readTypeParam(FILE* file, bool debug){
+struct TypeParam* read_type_param(FILE* file) {
 	
 	magic_num_require(MAGIC_TYPEPARAM, file);
 	
@@ -859,7 +859,7 @@ struct TypeParam* readTypeParam(FILE* file, bool debug){
 	
 	return v;
 }
-struct BasicType* readBasicType(FILE* file, bool debug){
+struct BasicType* read_basic_type(FILE* file) {
 	
 	magic_num_require(MAGIC_BASICTYPE, file);
 	
@@ -870,15 +870,15 @@ struct BasicType* readBasicType(FILE* file, bool debug){
 	v->simple_type = NULL;
 	v->subr_type   = NULL;
 	
-	const int kind = deserialize_int(file);
+	const uint32_t kind = deserialize_int(file);
 	
 	switch(kind){
 
-		case 1: v->simple_type = readSimpleType(file, debug); break;
-		case 2: v->subr_type   = readSubrType(file, debug);   break;
+		case 1: v->simple_type = read_simple_type(file); break;
+		case 2: v->subr_type   = read_subr_type(file);   break;
 
 		default:
-			error(file, "Error in readBasicType\n");
+			error(file, "Error in read_basic_type\n");
 	}
 	
 	magic_num_require(MAGIC_END_BASICTYPE, file);
@@ -886,7 +886,7 @@ struct BasicType* readBasicType(FILE* file, bool debug){
 	return v;
 }
 
-struct StructType* readStructType(FILE* file, bool debug){
+struct StructType* read_struct_type(FILE* file) {
 	
 	magic_num_require(MAGIC_STRUCTTYPE, file);
 	
@@ -914,7 +914,7 @@ struct StructType* readStructType(FILE* file, bool debug){
 	return res;
 }
 
-struct PrimitiveType* readPrimitiveType(FILE* file, bool debug){
+struct PrimitiveType* read_primitive_type(FILE* file) {
 	
 	magic_num_require(MAGIC_PRIMITIVETYPE, file);
 	

@@ -6,63 +6,65 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void writeAST(struct AST* ast);
+#define OUTFILE FILE* file
+
+void write_ast(struct AST* ast);
 
 // --- toplevel structures ---------
 
-void writeNamespace(struct Namespace* m);
+void write_namespace(struct Namespace* m);
 
-void writeMethod(struct Method* m, 			FILE* file);
+void write_method(struct Method* m, OUTFILE);
 
-void writeStructDecl(struct StructDecl* m, 	FILE* file);
-void writeStructMember(struct StructMember* m, FILE* file);
+void write_struct_decl(struct StructDecl* m, OUTFILE);
+void write_struct_member(struct StructMember* m, OUTFILE);
 
-void writeStmtBlock(struct StmtBlock* block, FILE* file);
+void write_stmt_block(struct StmtBlock* block, OUTFILE);
 
 // -----------------------------------
 
-void writeDeclArg(struct DeclArg* m, 		FILE* file);
-void writeExpr(struct Expr* m, 				FILE* file);
-void writeOp(struct Op* m, 					FILE* file);
+void write_decl_arg(struct DeclArg* m, OUTFILE);
+void write_expr(struct Expr* m, OUTFILE);
+void write_op(struct Op* m, OUTFILE);
 
 //const nodes
-void writeIntConst(struct IntConst* m, 		 FILE* file);
-void writeHexConst(struct HexConst* m, 		 FILE* file);
-void writeBinConst(struct BinConst* m, 		 FILE* file);
-void writeBoolConst(struct BoolConst* m, 	 FILE* file);
-void writeCharConst(struct CharConst* m, 	 FILE* file);
-void writeFloatConst(struct FloatConst* m, 	 FILE* file);
-void writeStringConst(struct StringConst* m, FILE* file);
+void write_int_const(struct IntConst* m, OUTFILE);
+void write_hex_const(struct HexConst* m, OUTFILE);
+void write_bin_const(struct BinConst* m, OUTFILE);
+void write_bool_const(struct BoolConst* m, OUTFILE);
+void write_char_const(struct CharConst* m, OUTFILE);
+void write_float_const(struct FloatConst* m, OUTFILE);
+void write_string_const(struct StringConst* m, OUTFILE);
 
 //other 
-void writeVariable(struct Variable* m, 		FILE* file);
-void writeSimpleVar(struct SimpleVar* m, 	FILE* file);
-void writeTerm(struct Term* m, 				FILE* file);
-void writeUnOpTerm(struct UnOpTerm* t,  	FILE* file);
-void writeRange(struct Range* r, 			FILE* file);
-void writeLambda(struct Lambda* l,			FILE* file);
+void write_variable(struct Variable* m, OUTFILE);
+void write_simple_var(struct SimpleVar* m, OUTFILE);
+void write_term(struct Term* m, OUTFILE);
+void write_un_op_term(struct UnOpTerm* t, OUTFILE);
+void write_range(struct Range* r, OUTFILE);
+void write_lambda(struct Lambda* l, OUTFILE);
 
 //statementnodes
-void writeStmt(struct Stmt* m, 				FILE* file);
-void writeIfStmt(struct IfStmt* m, 			FILE* file);
-void writeWhileStmt(struct WhileStmt* m, 	FILE* file);
-void writeRetStmt(struct RetStmt* m, 		FILE* file);
-void writeAssignStmt(struct AssignStmt* m, 	FILE* file);
-void writeCall(struct Call* m, 	            FILE* file);
-void writeLoopStmt(struct LoopStmt* m, 		FILE* file);
-void writeForStmt(struct ForStmt* m,	 	FILE* file);
-void writeSwitchStmt(struct SwitchStmt* m,	FILE* file);
-void writeCaseStmt(struct CaseStmt* m,		FILE* file);
-void writeTryCatchStmt(struct TryCatchStmt* m, FILE* file);
+void write_stmt(struct Stmt* m, OUTFILE);
+void write_if_stmt(struct IfStmt* m, OUTFILE);
+void write_while_stmt(struct WhileStmt* m, OUTFILE);
+void write_ret_stmt(struct RetStmt* m, OUTFILE);
+void write_assign_stmt(struct AssignStmt* m, OUTFILE);
+void write_call(struct Call* m, OUTFILE);
+void write_loop_stmt(struct LoopStmt* m, OUTFILE);
+void write_for_stmt(struct ForStmt* m, OUTFILE);
+void write_switch_stmt(struct SwitchStmt* m, OUTFILE);
+void write_case_stmt(struct CaseStmt* m, OUTFILE);
+void write_try_catch_stmt(struct TryCatchStmt* m, OUTFILE);
 
 //typenodes
-void writeType(struct Type* m, 					FILE* file);
-void writeSubrType(struct SubrType* m, 			FILE* file);
-void writeSimpleType(struct SimpleType* m, 		FILE* file);
-void writeArrayType(struct ArrayType* m, 		FILE* file);
-void writeTypeParam(struct TypeParam* m, 		FILE* file);
-void writeBasicType(struct BasicType* m, 	    FILE* file);
-void writeStructType(struct StructType* m,      FILE* file);
-void writePrimitiveType(struct PrimitiveType* m,FILE* file);
+void write_type(struct Type* m, OUTFILE);
+void write_subr_type(struct SubrType* m, OUTFILE);
+void write_simple_type(struct SimpleType* m, OUTFILE);
+void write_array_type(struct ArrayType* m, OUTFILE);
+void write_type_param(struct TypeParam* m, OUTFILE);
+void write_basic_type(struct BasicType* m, OUTFILE);
+void write_struct_type(struct StructType* m, OUTFILE);
+void write_primitive_type(struct PrimitiveType* m, OUTFILE);
 
 #endif

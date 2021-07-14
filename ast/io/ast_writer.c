@@ -23,19 +23,19 @@ static int opt2int(void* opt){
 	return (opt == NULL)?OPT_EMPTY:OPT_PRESENT;
 }
 
-void writeAST(struct AST* ast){
+void write_ast(struct AST* ast){
 	
 	for(int i = 0; i < ast->count_namespaces; i++)
-		{ writeNamespace(ast->namespaces[i]); }
+		{ write_namespace(ast->namespaces[i]); }
 }
 
-void writeNamespace(struct Namespace* n){
+void write_namespace(struct Namespace* m){
 	
-	FILE* file = fopen(n->ast_path, "w");
+	FILE* file = fopen(m->ast_path, "w");
 
 	if(file == NULL){
 		
-		printf("%s\n", n->ast_path);
+		printf("%s\n", m->ast_path);
 		error(NULL, "could not open file");
 	}
 	
@@ -44,27 +44,27 @@ void writeNamespace(struct Namespace* n){
 	
 	magic_num_serialize(MAGIC_NAMESPACE, file);
 	
-	serialize_string(n->src_path, file);
-	serialize_string(n->token_path, file);
-	serialize_string(n->ast_path, file);
-	serialize_string(n->name,     file);
+	serialize_string(m->src_path, file);
+	serialize_string(m->token_path, file);
+	serialize_string(m->ast_path, file);
+	serialize_string(m->name, file);
 	
-	serialize_int(n->count_methods, file);
+	serialize_int(m->count_methods, file);
 	
-	for(int i=0;i < n->count_methods;i++)
-		{ writeMethod(n->methods[i], file); }
+	for(int i=0; i < m->count_methods; i++)
+		{ write_method(m->methods[i], file); }
 	
-	serialize_int(n->count_structs, file);
+	serialize_int(m->count_structs, file);
 	
-	for(int i=0;i < n->count_structs;i++)
-		{ writeStructDecl(n->structs[i], file); }
+	for(int i=0; i < m->count_structs; i++)
+		{ write_struct_decl(m->structs[i], file); }
 	
 	magic_num_serialize(MAGIC_END_NAMESPACE, file);
 	
 	fclose(file);
 	
 }
-void writeMethod(struct Method* m, FILE* file){
+void write_method(struct Method* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_METHOD, file);
 	
@@ -75,47 +75,47 @@ void writeMethod(struct Method* m, FILE* file){
 	serialize_int(m->throws, file);
 	
 	serialize_string(m->name, file);
-	
-	writeType(m->return_type, file);
+
+	write_type(m->return_type, file);
 
 	serialize_int(m->count_args, file);
 	
 	for(int i = 0;i < m->count_args;i++)
-		{ writeDeclArg(m->args[i], file); }
+		{ write_decl_arg(m->args[i], file); }
 
-	writeStmtBlock(m->block, file);
+	write_stmt_block(m->block, file);
 	
 	magic_num_serialize(MAGIC_END_METHOD, file);
 }
-void writeStructDecl(struct StructDecl* m, FILE* file){
+void write_struct_decl(struct StructDecl* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_STRUCTDECL, file);
 	
 	write_super(m);
-	
-	writeSimpleType(m->type, file);
+
+	write_simple_type(m->type, file);
 	
 	serialize_int(m->count_members, file);
 	
 	for(int i = 0;i < m->count_members;i++)
-		{ writeStructMember(m->members[i], file); }
+		{ write_struct_member(m->members[i], file); }
 	
 	magic_num_serialize(MAGIC_END_STRUCTDECL, file);
 }
-void writeStructMember(struct StructMember* m, FILE* file){
+void write_struct_member(struct StructMember* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_STRUCTMEMBER, file);
 	
 	write_super(m);
-	
-	writeType(m->type, file);
+
+	write_type(m->type, file);
 	
 	serialize_string(m->name, file);
 	
 	magic_num_serialize(MAGIC_END_STRUCTMEMBER, file);
 }
 
-void writeStmtBlock(struct StmtBlock* block, FILE* file){
+void write_stmt_block(struct StmtBlock* block, FILE* file){
 	
 	magic_num_serialize(MAGIC_STMTBLOCK, file);
 	
@@ -124,18 +124,18 @@ void writeStmtBlock(struct StmtBlock* block, FILE* file){
 	serialize_int(block->count, file);
 	
 	for(int i = 0;i < block->count; i++)
-		{ writeStmt(block->stmts[i], file); }
+		{ write_stmt(block->stmts[i], file); }
 	
 	magic_num_serialize(MAGIC_END_STMTBLOCK, file);
 }
 
-void writeDeclArg(struct DeclArg* m, FILE* file){
+void write_decl_arg(struct DeclArg* m, FILE* file){
 
 	magic_num_serialize(MAGIC_DECLARG, file);
 	
 	write_super(m);
 
-	writeType(m->type,file);
+	write_type(m->type, file);
 	
 	serialize_int(opt2int(m->name), file);
 	
@@ -144,22 +144,22 @@ void writeDeclArg(struct DeclArg* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_END_DECLARG, file);
 }
-void writeVariable(struct Variable* m, FILE* file){
+void write_variable(struct Variable* m, FILE* file){
 
 	magic_num_serialize(MAGIC_VARIABLE, file);
 	
 	write_super(m);
 
-	writeSimpleVar(m->simple_var, file);
+	write_simple_var(m->simple_var, file);
 
 	serialize_int(opt2int(m->member_access), file);
 	
 	if(m->member_access != NULL)
-		{ writeVariable(m->member_access, file); }
+		{ write_variable(m->member_access, file); }
 
 	magic_num_serialize(MAGIC_END_VARIABLE, file);
 }
-void writeSimpleVar(struct SimpleVar* m, FILE* file){
+void write_simple_var(struct SimpleVar* m, FILE* file){
 
 	magic_num_serialize(MAGIC_SIMPLEVAR, file);
 	
@@ -170,29 +170,29 @@ void writeSimpleVar(struct SimpleVar* m, FILE* file){
 	serialize_int(m->count_indices, file);
 	
 	for(int i=0;i < m->count_indices; i++)
-		{ writeExpr(m->indices[i], file); }
+		{ write_expr(m->indices[i], file); }
 	
 	magic_num_serialize(MAGIC_END_SIMPLEVAR, file);
 }
-void writeExpr(struct Expr* m, FILE* file){
+void write_expr(struct Expr* m, FILE* file){
 
 	magic_num_serialize(MAGIC_EXPR, file);
 	
 	write_super(m);
 
-	writeUnOpTerm(m->term1, file);
+	write_un_op_term(m->term1, file);
 	
 	serialize_int(opt2int(m->op), file);
 	
 	if(m->op != NULL){
-		
-		writeOp(m->op,file);
-		writeUnOpTerm(m->term2,file);
+
+		write_op(m->op, file);
+		write_un_op_term(m->term2, file);
 	}
 	
 	magic_num_serialize(MAGIC_END_EXPR, file);
 }
-void writeTerm(struct Term* m, FILE* file){
+void write_term(struct Term* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_TERM, file);
 	
@@ -201,23 +201,34 @@ void writeTerm(struct Term* m, FILE* file){
 	serialize_int(m->kind, file);
 
 	switch(m->kind){
-		case  1: writeBoolConst(m->ptr.m1,file);  break;
-		case  2: writeIntConst(m->ptr.m2,file);   break;
-		case  3: writeCharConst(m->ptr.m3,file);  break;
-		case  4: writeCall(m->ptr.m4,file); break;
-		case  5: writeExpr(m->ptr.m5,file);       break;
-		case  6: writeVariable(m->ptr.m6,file);   break;
-		case  7: writeFloatConst(m->ptr.m7,file); break;
-		case  8: writeStringConst(m->ptr.m8, file); break;
-		case  9: writeHexConst(m->ptr.m9, file);  break;
-		case 10: writeBinConst(m->ptr.m10, file); break;
-		case 11: writeLambda(m->ptr.m11, file);	  break;
-		default: error(file, "Error in writeTerm(...)");
+		case  1:
+			write_bool_const(m->ptr.m1, file);  break;
+		case  2:
+			write_int_const(m->ptr.m2, file);   break;
+		case  3:
+			write_char_const(m->ptr.m3, file);  break;
+		case  4:
+			write_call(m->ptr.m4, file); break;
+		case  5:
+			write_expr(m->ptr.m5, file);       break;
+		case  6:
+			write_variable(m->ptr.m6, file);   break;
+		case  7:
+			write_float_const(m->ptr.m7, file); break;
+		case  8:
+			write_string_const(m->ptr.m8, file); break;
+		case  9:
+			write_hex_const(m->ptr.m9, file);  break;
+		case 10:
+			write_bin_const(m->ptr.m10, file); break;
+		case 11:
+			write_lambda(m->ptr.m11, file);	  break;
+		default: error(file, "Error in write_term(...)");
 	}
 	
 	magic_num_serialize(MAGIC_END_TERM, file);
 }
-void writeUnOpTerm(struct UnOpTerm* t, FILE* file){
+void write_un_op_term(struct UnOpTerm* t, FILE* file){
 	
 	magic_num_serialize(MAGIC_UNOPTERM, file);
 	
@@ -225,24 +236,24 @@ void writeUnOpTerm(struct UnOpTerm* t, FILE* file){
 	
 	serialize_int(opt2int(t->op), file);
 	
-	if(t->op != NULL){ writeOp(t->op, file); }
-	
-	writeTerm(t->term, file);
+	if(t->op != NULL){ write_op(t->op, file); }
+
+	write_term(t->term, file);
 	
 	magic_num_serialize(MAGIC_END_UNOPTERM, file);
 }
-void writeRange(struct Range* r, FILE* file){
+void write_range(struct Range* r, FILE* file){
 	
 	magic_num_serialize(MAGIC_RANGE, file);
 	
 	write_super(r);
-	
-	writeExpr(r->start, file);
-	writeExpr(r->end, file);
+
+	write_expr(r->start, file);
+	write_expr(r->end, file);
 	
 	magic_num_serialize(MAGIC_END_RANGE, file);
 }
-void writeLambda(struct Lambda* l, FILE* file){
+void write_lambda(struct Lambda* l, FILE* file){
 	
 	magic_num_serialize(MAGIC_LAMBDA, file);
 	
@@ -253,55 +264,55 @@ void writeLambda(struct Lambda* l, FILE* file){
 	for(uint8_t i = 0; i < l->count_params; i++){
 		serialize_string(l->params[i]->identifier, file);
 	}
-	
-	writeExpr(l->expr, file);
+
+	write_expr(l->expr, file);
 	
 	magic_num_serialize(MAGIC_END_LAMBDA, file);
 }
 // --------- CONST NODES ----------------
-void writeBoolConst(struct BoolConst* m, FILE* file){
+void write_bool_const(struct BoolConst* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_BOOLCONST, file);
 	write_super(m);
 	fwrite(m, structsize(BoolConst), 1, file);
 	magic_num_serialize(MAGIC_END_BOOLCONST, file);
 }
-void writeIntConst(struct IntConst* m, FILE* file){
+void write_int_const(struct IntConst* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_INTCONST, file);
 	write_super(m);
 	fwrite(m, structsize(IntConst), 1, file);
 	magic_num_serialize(MAGIC_END_INTCONST, file);
 }
-void writeHexConst(struct HexConst* m, FILE* file){
+void write_hex_const(struct HexConst* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_HEXCONST, file);
 	write_super(m);
 	fwrite(m, structsize(HexConst), 1, file);
 	magic_num_serialize(MAGIC_END_HEXCONST, file);
 }
-void writeBinConst(struct BinConst* m, FILE* file){
+void write_bin_const(struct BinConst* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_BINCONST, file);
 	write_super(m);
 	fwrite(m, structsize(BinConst), 1, file);
 	magic_num_serialize(MAGIC_END_BINCONST, file);
 }
-void writeCharConst(struct CharConst* m, FILE* file){
+void write_char_const(struct CharConst* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_CHARCONST, file);
 	write_super(m);
 	fwrite(m, structsize(CharConst), 1, file);
 	magic_num_serialize(MAGIC_END_CHARCONST, file);
 }
-void writeFloatConst(struct FloatConst* m, 	FILE* file){
+void write_float_const(struct FloatConst* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_FLOATCONST, file);
 	write_super(m);
 	fwrite(m, structsize(FloatConst), 1, file);
 	magic_num_serialize(MAGIC_END_FLOATCONST, file);
 }
-void writeStringConst(struct StringConst* m, FILE* file){
+void write_string_const(struct StringConst* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_STRINGCONST, file);
 	write_super(m);
@@ -309,7 +320,7 @@ void writeStringConst(struct StringConst* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_END_STRINGCONST, file);
 }
-void writeOp(struct Op* m, FILE* file){
+void write_op(struct Op* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_OP, file);
 	write_super(m);
@@ -318,7 +329,7 @@ void writeOp(struct Op* m, FILE* file){
 	magic_num_serialize(MAGIC_END_OP, file);
 }
 // ---------------- STATEMENTNODES ---------------------
-void writeStmt(struct Stmt* m, FILE* file){
+void write_stmt(struct Stmt* m, FILE* file){
 
 	magic_num_serialize(MAGIC_STMT, file);
 	write_super(m);
@@ -332,74 +343,83 @@ void writeStmt(struct Stmt* m, FILE* file){
 				serialize_int(m->is_throw ? OPT_PRESENT : OPT_EMPTY, file);
 			}
 			break;
-		case 0: { writeLoopStmt(m->ptr.m0, file);  } break;
-		case 1: { writeCall(m->ptr.m1,file);       } break;
-		case 2: { writeWhileStmt(m->ptr.m2,file);  } break;
-		case 3: { writeIfStmt(m->ptr.m3,file);     } break;
-		case 4: { writeRetStmt(m->ptr.m4,file);    } break;
-		case 5: { writeAssignStmt(m->ptr.m5,file); } break;
-		case 6: { writeTryCatchStmt(m->ptr.m6, file); } break;
-		case 7: { writeForStmt(m->ptr.m7,file);    } break;
-		case 8: { writeSwitchStmt(m->ptr.m8,file); } break;
-		default: error(file, "Error in writeStmt");
+		case 0: {
+			write_loop_stmt(m->ptr.m0, file);  } break;
+		case 1: {
+			write_call(m->ptr.m1, file);       } break;
+		case 2: {
+			write_while_stmt(m->ptr.m2, file);  } break;
+		case 3: {
+			write_if_stmt(m->ptr.m3, file);     } break;
+		case 4: {
+			write_ret_stmt(m->ptr.m4, file);    } break;
+		case 5: {
+			write_assign_stmt(m->ptr.m5, file); } break;
+		case 6: {
+			write_try_catch_stmt(m->ptr.m6, file); } break;
+		case 7: {
+			write_for_stmt(m->ptr.m7, file);    } break;
+		case 8: {
+			write_switch_stmt(m->ptr.m8, file); } break;
+		default: error(file, "Error in write_stmt");
 	}
 	
 	magic_num_serialize(MAGIC_END_STMT, file);
 }
 
-void writeIfStmt(struct IfStmt* m, FILE* file){
+void write_if_stmt(struct IfStmt* m, FILE* file){
 
 	magic_num_serialize(MAGIC_IFSTMT, file);
 	write_super(m);
-	writeExpr(m->condition, file);
-	writeStmtBlock(m->block, file);
+	write_expr(m->condition, file);
+	write_stmt_block(m->block, file);
 	
 	serialize_int(opt2int(m->else_block), file);
 	
 	if(m->else_block != NULL)
-		{ writeStmtBlock(m->else_block, file); }
+		{ write_stmt_block(m->else_block, file); }
 	
 	magic_num_serialize(MAGIC_END_IFSTMT, file);
 }
 
-void writeWhileStmt(struct WhileStmt* m, FILE* file){
+void write_while_stmt(struct WhileStmt* m, FILE* file){
 
 	magic_num_serialize(MAGIC_WHILESTMT, file);
 	write_super(m);
-	writeExpr(m->condition, file);
-	writeStmtBlock(m->block, file);
+	write_expr(m->condition, file);
+	write_stmt_block(m->block, file);
 	
 	magic_num_serialize(MAGIC_END_WHILESTMT, file);
 }
 
-void writeRetStmt(struct RetStmt* m, FILE* file){
+void write_ret_stmt(struct RetStmt* m, FILE* file){
 
 	magic_num_serialize(MAGIC_RETSTMT, file);
 	write_super(m);
-	writeExpr(m->return_value, file);
+	write_expr(m->return_value, file);
 	
 	magic_num_serialize(MAGIC_END_RETSTMT, file);
 }
 
-void writeAssignStmt(struct AssignStmt* m, FILE* file){
+void write_assign_stmt(struct AssignStmt* m, FILE* file){
 
 	magic_num_serialize(MAGIC_ASSIGNSTMT, file);
 	write_super(m);
 	serialize_int(opt2int(m->opt_type), file);
 
 	if(m->opt_type != NULL){
-		writeType(m->opt_type, file);
+		write_type(m->opt_type, file);
 	}
-	
-	writeVariable(m->var, file);
+
+	write_variable(m->var, file);
 	
 	serialize_string(m->assign_op, file);
-	
-	writeExpr(m->expr, file);
+
+	write_expr(m->expr, file);
 	
 	magic_num_serialize(MAGIC_END_ASSIGNSTMT, file);
 }
-void writeCall(struct Call* m, FILE* file){
+void write_call(struct Call* m, FILE* file){
 
 	magic_num_serialize(MAGIC_CALL, file);
 	write_super(m);
@@ -407,103 +427,106 @@ void writeCall(struct Call* m, FILE* file){
 	serialize_int(m->count_args, file);
 	
 	for(int i=0;i < m->count_args;i++)
-		{ writeExpr(m->args[i],file); }
+		{ write_expr(m->args[i], file); }
 	
 	magic_num_serialize(MAGIC_END_CALL, file);
 }
-void writeLoopStmt(struct LoopStmt* m, FILE* file){
+void write_loop_stmt(struct LoopStmt* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_LOOPSTMT, file);
 	write_super(m);
-	writeExpr(m->count, file);
-	writeStmtBlock(m->block, file);
+	write_expr(m->count, file);
+	write_stmt_block(m->block, file);
 	
 	magic_num_serialize(MAGIC_END_LOOPSTMT, file);
 }
-void writeForStmt(struct ForStmt* m, FILE* file){
+void write_for_stmt(struct ForStmt* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_FORSTMT, file);
 	write_super(m);
 	serialize_string(m->index_name, file);
 
-	writeRange(m->range, file);
-	writeStmtBlock(m->block, file);
+	write_range(m->range, file);
+	write_stmt_block(m->block, file);
 	
 	magic_num_serialize(MAGIC_END_FORSTMT, file);
 }
-void writeSwitchStmt(struct SwitchStmt* m,	FILE* file){
+void write_switch_stmt(struct SwitchStmt* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_SWITCHSTMT, file);
 	write_super(m);
-	writeExpr(m->expr, file);
+	write_expr(m->expr, file);
 	
 	serialize_int(m->count_cases, file);
 	
 	for(int i=0; i < m->count_cases; i++)
-		{ writeCaseStmt(m->cases[i], file); }
+		{ write_case_stmt(m->cases[i], file); }
 	
 	magic_num_serialize(MAGIC_END_SWITCHSTMT, file);
 }
-void writeCaseStmt(struct CaseStmt* m, FILE* file){
+void write_case_stmt(struct CaseStmt* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_CASESTMT, file);
 	write_super(m);
 	serialize_int(m->kind, file);
 	
 	switch(m->kind){
-		case 0: writeBoolConst(m->ptr.m1, file); break;
-		case 1: writeCharConst(m->ptr.m2, file); break;
-		case 2: writeIntConst(m->ptr.m3, file); break;
+		case 0:
+			write_bool_const(m->ptr.m1, file); break;
+		case 1:
+			write_char_const(m->ptr.m2, file); break;
+		case 2:
+			write_int_const(m->ptr.m3, file); break;
 		default: error(file, "kind has wrong value");
 	}
 	
 	serialize_int(opt2int(m->block), file);
 	
 	if(m->block != NULL)
-		{ writeStmtBlock(m->block, file); }
+		{ write_stmt_block(m->block, file); }
 	
 	magic_num_serialize(MAGIC_END_CASESTMT, file);
 }
-void writeTryCatchStmt(struct TryCatchStmt* m, FILE* file){
+void write_try_catch_stmt(struct TryCatchStmt* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_TRYCATCHSTMT, file);
-	
-	writeStmtBlock(m->try_block, file);
-	writeStmtBlock(m->catch_block, file);
+
+	write_stmt_block(m->try_block, file);
+	write_stmt_block(m->catch_block, file);
 	
 	magic_num_serialize(MAGIC_END_TRYCATCHSTMT, file);
 }
 // --------- TYPENODES --------------
-void writeType(struct Type* m, FILE* file){
+void write_type(struct Type* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_TYPE, file);
 	write_super(m);
 	if(m->m1 != NULL){
 		serialize_int(1, file);
-		writeBasicType(m->m1,file);
+		write_basic_type(m->m1, file);
 
 	}else if(m->m2 != NULL){
 		serialize_int(2, file);
-		writeTypeParam(m->m2,file);
+		write_type_param(m->m2, file);
 
 	}else if(m->m3 != NULL){
 		serialize_int(3, file);
-		writeArrayType(m->m3,file);
+		write_array_type(m->m3, file);
 	}
 	
 	magic_num_serialize(MAGIC_END_TYPE, file);
 }
 
-void writeArrayType(struct ArrayType* m, FILE* file){
+void write_array_type(struct ArrayType* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_ARRAYTYPE, file);
 	write_super(m);
-	writeType(m->element_type,file);
+	write_type(m->element_type, file);
 	
 	magic_num_serialize(MAGIC_END_ARRAYTYPE, file);
 }
 
-void writeTypeParam(struct TypeParam* m, FILE* file){
+void write_type_param(struct TypeParam* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_TYPEPARAM, file);
 	write_super(m);
@@ -512,26 +535,26 @@ void writeTypeParam(struct TypeParam* m, FILE* file){
 	magic_num_serialize(MAGIC_END_TYPEPARAM, file);
 }
 
-void writeBasicType(struct BasicType* m, FILE* file){
+void write_basic_type(struct BasicType* m, FILE* file){
 
 	magic_num_serialize(MAGIC_BASICTYPE, file);
 	write_super(m);
 	if(m->simple_type != NULL){
 		
 		serialize_int(1, file);
-		writeSimpleType(m->simple_type, file);
+		write_simple_type(m->simple_type, file);
 		
 	}else if(m->subr_type != NULL){
 		
 		serialize_int(2, file);
-		writeSubrType(m->subr_type, file);
+		write_subr_type(m->subr_type, file);
 		
 	}
 	
 	magic_num_serialize(MAGIC_END_BASICTYPE, file);
 }
 
-void writeStructType(struct StructType* m, FILE* file){
+void write_struct_type(struct StructType* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_STRUCTTYPE, file);
 	write_super(m);
@@ -544,7 +567,7 @@ void writeStructType(struct StructType* m, FILE* file){
 	magic_num_serialize(MAGIC_END_STRUCTTYPE, file);
 }
 
-void writePrimitiveType(struct PrimitiveType* m, FILE* file){
+void write_primitive_type(struct PrimitiveType* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_PRIMITIVETYPE, file);
 	write_super(m);
@@ -559,7 +582,7 @@ void writePrimitiveType(struct PrimitiveType* m, FILE* file){
 	magic_num_serialize(MAGIC_END_PRIMITIVETYPE, file);
 }
 
-void writeSimpleType(struct SimpleType* m, FILE* file){
+void write_simple_type(struct SimpleType* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_SIMPLETYPE, file);
 	write_super(m);
@@ -567,29 +590,29 @@ void writeSimpleType(struct SimpleType* m, FILE* file){
 	serialize_int(opt2int(m->struct_type), file);
 	
 	if(m->primitive_type != NULL){
-		writePrimitiveType(m->primitive_type, file);
+		write_primitive_type(m->primitive_type, file);
 	}
 	
 	if(m->struct_type != NULL){
-		writeStructType(m->struct_type, file);
+		write_struct_type(m->struct_type, file);
 	}
 	
 	magic_num_serialize(MAGIC_END_SIMPLETYPE, file);
 }
 
-void writeSubrType(struct SubrType* m, FILE* file){
+void write_subr_type(struct SubrType* m, FILE* file){
 
 	magic_num_serialize(MAGIC_SUBRTYPE, file);
 	write_super(m);
-	
-	writeType(m->return_type, file);
+
+	write_type(m->return_type, file);
 	serialize_int(m->has_side_effects, file);
 	serialize_int(m->throws, file);
 
 	serialize_int(m->count_arg_types, file);
 	
 	for(int i = 0;i < m->count_arg_types; i++)
-		{ writeType(m->arg_types[i], file); }
+		{ write_type(m->arg_types[i], file); }
 	
 	magic_num_serialize(MAGIC_END_SUBRTYPE, file);
 }

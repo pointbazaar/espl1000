@@ -98,12 +98,12 @@ void test_serialize_IntConst(bool debug){
 	struct IntConst m;
 	m.value = 384;
 	m.super.line_num = 33;
-	
-	writeIntConst(&m, file);
+
+	write_int_const(&m, file);
 	
 	rewind(file);
 	
-	struct IntConst* m2 = readIntConst(file, debug);
+	struct IntConst* m2 = read_int_const(file);
 	
 	assert(m.value == m2->value);
 	assert(m.super.line_num == m2->super.line_num);
@@ -120,12 +120,12 @@ void test_serialize_HexConst(bool debug){
 	struct HexConst m;
 	m.value = 0x48;
 	m.super.line_num = 34;
-	
-	writeHexConst(&m, file);
+
+	write_hex_const(&m, file);
 	
 	rewind(file);
 	
-	struct HexConst* m2 = readHexConst(file, debug);
+	struct HexConst* m2 = read_hex_const(file);
 	
 	assert(m.value == m2->value);
 	assert(m.super.line_num == m2->super.line_num);
@@ -142,12 +142,12 @@ void test_serialize_BinConst(bool debug){
 	struct BinConst m;
 	m.value = 0b00011101;
 	m.super.line_num = 78;
-	
-	writeBinConst(&m, file);
+
+	write_bin_const(&m, file);
 	
 	rewind(file);
 	
-	struct BinConst* m2 = readBinConst(file, debug);
+	struct BinConst* m2 = read_bin_const(file);
 	
 	assert(m.value == m2->value);
 	assert(m.super.line_num == m2->super.line_num);
@@ -163,12 +163,12 @@ void test_serialize_BoolConst(bool debug){
 	
 	struct BoolConst m;
 	m.value = true;
-	
-	writeBoolConst(&m, file);
+
+	write_bool_const(&m, file);
 	
 	rewind(file);
 	
-	struct BoolConst* m2 = readBoolConst(file, debug);
+	struct BoolConst* m2 = read_bool_const(file);
 	
 	assert(m.value == m2->value);
 	
@@ -183,12 +183,12 @@ void test_serialize_CharConst(bool debug){
 	
 	struct CharConst m;
 	m.value = true;
-	
-	writeCharConst(&m, file);
+
+	write_char_const(&m, file);
 	
 	rewind(file);
 	
-	struct CharConst* m2 = readCharConst(file, debug);
+	struct CharConst* m2 = read_char_const(file);
 	
 	assert(m.value == m2->value);
 	
@@ -203,12 +203,12 @@ void test_serialize_TypeParam(bool debug){
 	
 	struct TypeParam m;
 	m.index = 5;
-	
-	writeTypeParam(&m, file);
+
+	write_type_param(&m, file);
 	
 	rewind(file);
 	
-	struct TypeParam* m2 = readTypeParam(file, debug);
+	struct TypeParam* m2 = read_type_param(file);
 	
 	assert(m.index == m2->index);
 	
@@ -228,12 +228,12 @@ void test_serialize_PrimitiveType(bool debug){
 		.is_bool_type  = false,
 		.int_type = INT
 	};
-	
-	writePrimitiveType(&p, file);
+
+	write_primitive_type(&p, file);
 	
 	rewind(file);
 	
-	struct PrimitiveType* p2 = readPrimitiveType(file, debug);
+	struct PrimitiveType* p2 = read_primitive_type(file);
 	
 	assert(p2 != NULL);
 	
@@ -253,12 +253,12 @@ void test_serialize_FloatConst(bool debug){
 	rewind(file);
 	
 	struct FloatConst m = { .value = 3.54 };
-	
-	writeFloatConst(&m, file);
+
+	write_float_const(&m, file);
 	
 	rewind(file);
 	
-	struct FloatConst* m2 = readFloatConst(file, debug);
+	struct FloatConst* m2 = read_float_const(file);
 	
 	assert(m.value == m2->value);
 	
@@ -276,12 +276,12 @@ void test_serialize_StringConst(bool debug){
 	char* str = malloc(sizeof(char)*100);
 	strcpy(str, "hello");
 	m.value = str;
-	
-	writeStringConst(&m, file);
+
+	write_string_const(&m, file);
 	
 	rewind(file);
 	
-	struct StringConst* m2 = readStringConst(file, debug);
+	struct StringConst* m2 = read_string_const(file);
 	
 	assert(strcmp(m.value, m2->value) == 0);
 	
@@ -301,12 +301,12 @@ void test_serialize_Op(bool debug){
 	memset(&m, 0, sizeof(struct Op));
 	
 	strcpy(m.op, "hi");
-	
-	writeOp(&m, file);
+
+	write_op(&m, file);
 	
 	rewind(file);
 	
-	struct Op* m2 = readOp(file, debug);
+	struct Op* m2 = read_op(file);
 	
 	assert(strcmp(m.op, m2->op)==0);
 	
@@ -325,12 +325,12 @@ void test_serialize_Term(bool debug){
 		.kind = 2,
 		.ptr.m2 = &myIntConst
 	};
-	
-	writeTerm(&m, file);
+
+	write_term(&m, file);
 	
 	rewind(file);
 	
-	struct Term* m2 = readTerm(file, debug);
+	struct Term* m2 = read_term(file);
 	
 	assert(m.ptr.m2->value == m2->ptr.m2->value);
 	
@@ -374,12 +374,12 @@ void test_serialize_Expr(bool debug){
 		.term2 = copyUnOpTerm(&uop),
 		.op    = copyOp(&myop)
 	};
-	
-	writeExpr(&expr, file);
+
+	write_expr(&expr, file);
 	
 	rewind(file);
 	
-	struct Expr* expr2 = readExpr(file, debug);
+	struct Expr* expr2 = read_expr(file);
 	
 	assert(expr.term1->term->ptr.m2->value == expr2->term1->term->ptr.m2->value);
 	

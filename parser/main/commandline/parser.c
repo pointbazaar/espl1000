@@ -116,7 +116,7 @@ void build_ast_file(char* tokensFile, bool debug) {
 	ast->namespaces       = malloc(sizeof(struct Namespace*)*1);
 	ast->namespaces[0]    = ns;
 
-	writeAST(ast);
+	write_ast(ast);
 
 	freeAST(ast);
 	freeTokenList(tokens);

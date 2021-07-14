@@ -19,7 +19,7 @@ It specifies:
 
 (2) Naming of functions
 
-    functions should use snake_case for names.
+    functions should use snake_case (lowercase) for names.
     functions that primarily operate on a struct should have the
     name of the struct as prefix, e.g. mystruct_add(...).
 
@@ -48,6 +48,9 @@ It specifies:
 
     Do not use Macros with Parameters, except in cases where they 
     provide a benefit that cannot be achieved by using a function.
+
+    Macros for brevity (substitute multiple source code tokens) are ok.
+    e.g. #define INFILE FILE* file
     
 (9) Global Variables: Global Variables are strongly discouraged. 
 

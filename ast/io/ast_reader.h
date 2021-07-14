@@ -4,58 +4,60 @@
 #include "../ast.h"
 #include <stdbool.h>
 
-struct AST* 		readAST(char** filenames, int count_filenames, bool debug);
+#define INFILE FILE* file
+
+struct AST* read_ast(char** filenames, int count_filenames);
 
 //toplevel
-struct Namespace* 	readNamespace(	FILE* file, bool debug);
-struct Method* 		readMethod(		FILE* file, bool debug);
-struct StructDecl* 	readStructDecl(	FILE* file, bool debug);
-struct StructMember* readStructMember(FILE* file, bool debug);
+struct Namespace* 		read_namespace(INFILE);
+struct Method* 			read_method(INFILE);
+struct StructDecl* 		read_struct_decl(INFILE);
+struct StructMember* 	read_struct_member(INFILE);
 
-struct StmtBlock* 	readStmtBlock(	FILE* file, bool debug);
+struct StmtBlock* read_stmt_block(INFILE);
 
-struct DeclArg* 	readDeclArg(	FILE* file, bool debug);
-struct Expr* 		readExpr(		FILE* file, bool debug);
-struct Op* 			readOp(			FILE* file, bool debug);
+struct DeclArg* 	read_decl_arg(INFILE);
+struct Expr* 		read_expr(INFILE);
+struct Op* 			read_op(INFILE);
 
 //const nodes
-struct IntConst* 	readIntConst(	FILE* file, bool debug);
-struct HexConst* 	readHexConst(	FILE* file, bool debug);
-struct BinConst* 	readBinConst(	FILE* file, bool debug);
-struct BoolConst* 	readBoolConst(	FILE* file, bool debug);
-struct CharConst* 	readCharConst(	FILE* file, bool debug);
-struct FloatConst* 	readFloatConst(	FILE* file, bool debug);
-struct StringConst* 	readStringConst(FILE* file, bool debug);
+struct IntConst* 	read_int_const(INFILE);
+struct HexConst* 	read_hex_const(INFILE);
+struct BinConst* 	read_bin_const(INFILE);
+struct BoolConst* 	read_bool_const(INFILE);
+struct CharConst* 	read_char_const(INFILE);
+struct FloatConst* 	read_float_const(INFILE);
+struct StringConst* read_string_const(INFILE);
 
 //other
-struct Variable* 	readVariable(	FILE* file, bool debug);
-struct SimpleVar* 	readSimpleVar(	FILE* file, bool debug);
-struct Term* 		readTerm(		FILE* file, bool debug);
-struct UnOpTerm* 	readUnOpTerm(	FILE* file, bool debug);
-struct Range* 		readRange(		FILE* file, bool debug);
-struct Lambda*		readLambda(		FILE* file, bool debug);
+struct Variable* 	read_variable(INFILE);
+struct SimpleVar* 	read_simple_var(INFILE);
+struct Term* 		read_term(INFILE);
+struct UnOpTerm* 	read_un_op_term(INFILE);
+struct Range* 		read_range(INFILE);
+struct Lambda* 		read_lambda(INFILE);
 
 //statementnodes
-struct Stmt* 		readStmt(		FILE* file, bool debug);
-struct IfStmt* 		readIfStmt(		FILE* file, bool debug);
-struct WhileStmt* 	readWhileStmt(	FILE* file, bool debug);
-struct RetStmt* 	readRetStmt(	FILE* file, bool debug);
-struct AssignStmt* 	readAssignStmt(	FILE* file, bool debug);
-struct Call* 	    readCall(	    FILE* file, bool debug);
-struct LoopStmt* 	readLoopStmt(	FILE* file, bool debug);
-struct ForStmt* 	readForStmt(	FILE* file, bool debug);
-struct SwitchStmt* 	readSwitchStmt(	FILE* file, bool debug);
-struct CaseStmt* 	readCaseStmt(	FILE* file, bool debug);
-struct TryCatchStmt* readTryCatchStmt(FILE* file, bool debug);
+struct Stmt* 		read_stmt(INFILE);
+struct IfStmt* 		read_if_stmt(INFILE);
+struct WhileStmt* 	read_while_stmt(INFILE);
+struct RetStmt* 	read_ret_stmt(INFILE);
+struct AssignStmt* 	read_assign_stmt(INFILE);
+struct Call* 		read_call(INFILE);
+struct LoopStmt* 	read_loop_stmt(INFILE);
+struct ForStmt* 	read_for_stmt(INFILE);
+struct SwitchStmt* 	read_switch_stmt(INFILE);
+struct CaseStmt* 	read_case_stmt(INFILE);
+struct TryCatchStmt* read_try_catch_stmt(INFILE);
 
 //typenodes
-struct Type* 		  readType(		FILE* file, bool debug);
-struct SubrType* 	  readSubrType(	FILE* file, bool debug);
-struct SimpleType* 	  readSimpleType(	FILE* file, bool debug);
-struct ArrayType* 	  readArrayType(	FILE* file, bool debug);
-struct TypeParam* 	  readTypeParam(	FILE* file, bool debug);
-struct BasicType*     readBasicType(FILE* file, bool debug);
-struct StructType*    readStructType(FILE* file, bool debug);
-struct PrimitiveType* readPrimitiveType(FILE* file, bool debug);
+struct Type* 			read_type(INFILE);
+struct SubrType* 		read_subr_type(INFILE);
+struct SimpleType*		read_simple_type(INFILE);
+struct ArrayType* 		read_array_type(INFILE);
+struct TypeParam*		read_type_param(INFILE);
+struct BasicType* 		read_basic_type(INFILE);
+struct StructType* 		read_struct_type(INFILE);
+struct PrimitiveType* 	read_primitive_type(INFILE);
 
 #endif
