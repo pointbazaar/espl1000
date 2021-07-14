@@ -40,8 +40,8 @@ void analyze_dead_code(struct ST* st, struct AST* ast){
 	if(!sst_contains(sst, "main")){ return; }
 	
 	set_all(sst, DEAD_UNKNOWN);
-	
-	visitAST(ast, myvisitor_dead, sst);
+
+	visit_ast(ast, myvisitor_dead, sst);
 	
 	mark_live(sst, "main");
 }

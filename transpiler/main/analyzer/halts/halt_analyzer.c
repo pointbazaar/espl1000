@@ -102,8 +102,8 @@ static bool terminates_by_construction(struct StmtBlock* block){
 	//such as: WhileStmt
 	
 	bool hasWhile = false;
-	
-	visitStmtBlock(block, myvisitor, &hasWhile);
+
+	visit_stmt_block(block, myvisitor, &hasWhile);
 	
 	return !hasWhile;
 }

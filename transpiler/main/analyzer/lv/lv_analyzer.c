@@ -21,8 +21,8 @@ static void lv_declarg    (struct ST* st, struct DeclArg* da);
 static void lv_visitor(void* node, enum NODE_TYPE type, void* arg);
 
 void lvst_fill(struct Method* subr, struct ST* st, bool debug){
-	
-	visitMethod(subr, lv_visitor, st);
+
+	visit_method(subr, lv_visitor, st);
 	
 	if(debug){ lvst_print(st->lvst); }
 }

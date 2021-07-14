@@ -45,8 +45,8 @@ void transpileLambdas(struct AST* ast, struct ST* st){
 	
 	//we need a visitor to obtain lambda locations
 	//in the appropriate contexts (AST Node Patters)
-	
-	visitAST(ast, myvisitor_transpile_lambdas, st);
+
+	visit_ast(ast, myvisitor_transpile_lambdas, st);
 }
 
 static struct Namespace* current_ns = NULL;

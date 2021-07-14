@@ -45,8 +45,8 @@ static struct Method*    current_subr      = NULL;
 //------------------------------------------------------
 
 void analyze_annotations(struct ST* st, struct AST* ast){
-	
-	visitAST(ast, myvisitor_annotations, st);
+
+	visit_ast(ast, myvisitor_annotations, st);
 }
 
 static void myvisitor_annotations(void* node, enum NODE_TYPE type, void* arg){

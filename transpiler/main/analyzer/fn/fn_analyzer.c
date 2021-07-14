@@ -24,7 +24,7 @@ void analyze_functions(struct ST* st, struct AST* ast){
 	arg.myst      = st;
 	arg.currentFn = NULL;
 
-	visitAST(ast, myvisitor, &arg);
+	visit_ast(ast, myvisitor, &arg);
 }
 
 static void myvisitor(void* node, enum NODE_TYPE type, void* arg){
