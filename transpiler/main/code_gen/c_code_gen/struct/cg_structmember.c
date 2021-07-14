@@ -15,7 +15,7 @@ void transpileStructMember(struct StructMember* m, struct Ctx* ctx){
 		if(m->type->m1->subr_type != NULL){
 			isSubrType = true;
 			strncpy(
-				ctx->currentFunctionPointerVarOrArgName,
+				ctx->current_function_pointer_var_or_arg_name,
 				m->name,
 				DEFAULT_STR_SIZE
 			);

@@ -19,7 +19,7 @@ struct Ctx {
 	FILE* c_file;
 	FILE* header_file;
 	FILE* file; //where the output will be directed
-	uint8_t indentLevel;
+	uint8_t indent_level;
 	
 	//unique indexing of the try-statements in a subroutine
 	//during transpiling
@@ -39,7 +39,7 @@ struct Ctx {
 	//of the current function pointer variable/arg
 	//to transpile the subroutine type in 
 	//C subroutine signatures
-	char currentFunctionPointerVarOrArgName[DEFAULT_STR_SIZE];
+	char current_function_pointer_var_or_arg_name[DEFAULT_STR_SIZE];
 };
 
 

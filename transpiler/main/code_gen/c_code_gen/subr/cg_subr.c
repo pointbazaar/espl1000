@@ -73,7 +73,7 @@ void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx){
 		if(da->type->m1->subr_type != NULL){
 			isSubrType = true;
 			strncpy(
-				ctx->currentFunctionPointerVarOrArgName,
+				ctx->current_function_pointer_var_or_arg_name,
 				da->name,
 				DEFAULT_STR_SIZE
 			);

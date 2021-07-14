@@ -19,11 +19,11 @@ void transpileSwitchStmt(struct SwitchStmt* s, struct Ctx* ctx){
 	transpileExpr(s->expr, ctx);
 	fprintf(ctx->file, ") {\n");
 	
-	(ctx->indentLevel) += 1;
+	(ctx->indent_level) += 1;
 	for(uint32_t i=0; i < s->count_cases; i++){
 		transpileCaseStmt(s->cases[i], ctx);
 	}
-	(ctx->indentLevel) -= 1;
+	(ctx->indent_level) -= 1;
 	
 	indent(ctx);
 	fprintf(ctx->file, "}\n");

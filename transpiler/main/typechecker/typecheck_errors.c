@@ -17,7 +17,7 @@ static void resetcolor(){
 
 void error(struct TCCtx* tcctx, char* msg){
 
-	tcctx->tcErrCount += 1;
+	tcctx->tc_err_count += 1;
 
 	printf("[Typecheck]");
 	setcolor(COLOR_RED);

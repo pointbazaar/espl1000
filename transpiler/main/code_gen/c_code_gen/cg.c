@@ -70,7 +70,7 @@ bool transpileAndWrite(char* c_filename, char* h_filename, struct AST* ast, stru
 	ctx->error = false;
 	ctx->flags = flags;
 	
-	ctx->indentLevel = 0;
+	ctx->indent_level = 0;
 	ctx->file        = NULL;
 	ctx->c_file      = NULL;
 	ctx->header_file = NULL;
@@ -305,9 +305,9 @@ void transpileStmtBlock(struct StmtBlock* block, struct Ctx* ctx){
 	fprintf(ctx->file, "{\n");
 
 	for(int i=0; i < block->count; i++){
-		(ctx->indentLevel) += 1;
+		(ctx->indent_level) += 1;
 		transpileStmt(block->stmts[i], ctx);
-		(ctx->indentLevel) -= 1;
+		(ctx->indent_level) -= 1;
 	}
 
 	indent(ctx);

@@ -116,7 +116,7 @@ char* subrType2CType(struct SubrType* subrType, struct Ctx* ctx){
 	//function_ptr should be the name of the
 	//variable/argument that holds the function pointer
 	char temp[DEFAULT_STR_SIZE*3];
-	sprintf(temp, "(*%s) (", ctx->currentFunctionPointerVarOrArgName);
+	sprintf(temp, "(*%s) (", ctx->current_function_pointer_var_or_arg_name);
 	strcat(res, temp);
 
 	//arguments

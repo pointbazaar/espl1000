@@ -38,7 +38,7 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 				assert(as->var->simple_var != NULL);
 				
 				strncpy(
-					ctx->currentFunctionPointerVarOrArgName,
+					ctx->current_function_pointer_var_or_arg_name,
 					
 					//we know that it is a simple
 					//variable (without index)because 

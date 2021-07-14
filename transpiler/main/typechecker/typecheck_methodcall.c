@@ -49,7 +49,7 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		
 		struct SSTLine* line = sst_get(tcctx->st->sst, m->name);
 		
-		if( (!tcctx->currentFn->has_side_effects)
+		if( (!tcctx->current_fn->has_side_effects)
 			&& line->has_side_effect
 		){
 			//method with side effects called
@@ -91,7 +91,7 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		}
 		struct SubrType* stype = type->m1->subr_type;
 		
-		if( (!tcctx->currentFn->has_side_effects)
+		if( (!tcctx->current_fn->has_side_effects)
 			&& stype->has_side_effects
 		){
 			//method with side effects called
@@ -121,7 +121,7 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 static void check_throw_rules(bool callee_throws, struct TCCtx* tcctx){
 	
 	if(!callee_throws){ return; }
-	if(tcctx->currentFn->throws){ return; }
+	if(tcctx->current_fn->throws){ return; }
 	
 	if(tcctx->depth_inside_try_stmt > 0){ return; }
 		

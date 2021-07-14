@@ -26,9 +26,9 @@ bool typecheck_ast(struct AST* ast, struct ST* st){
 
 	struct TCCtx tcctx;
 	
-	tcctx.tcErrCount       = 0;
+	tcctx.tc_err_count       = 0;
 	tcctx.st               = st;
-	tcctx.currentFn        = NULL;
+	tcctx.current_fn        = NULL;
 	
 	tcctx.depth_inside_try_stmt = 0;
 	tcctx.depth_inside_loop     = 0;
@@ -36,7 +36,7 @@ bool typecheck_ast(struct AST* ast, struct ST* st){
 	for(uint16_t i = 0; i < ast->count_namespaces; i++)
 		{ tc_namespace(ast->namespaces[i], &tcctx); }
 	
-	const uint32_t errCount = tcctx.tcErrCount;
+	const uint32_t errCount = tcctx.tc_err_count;
 	
 	if(errCount > 0){
 		printf("[Typecheck] %d Errors\n", errCount);
@@ -57,7 +57,7 @@ void tc_method(struct Method* m, struct TCCtx* tcctx){
 	
 	tcctx->current_line_num = m->super.line_num;
 
-	tcctx->currentFn = m;
+	tcctx->current_fn = m;
 	
 	lvst_clear(tcctx->st->lvst);
 	lvst_fill(m, tcctx->st);
