@@ -21,7 +21,7 @@ struct Token {
 	char* value_ptr;
 };
 
-bool tokenEquals(struct Token* a, struct Token* b);
+bool token_equals(struct Token* a, struct Token* b);
 
 struct Token* makeToken(int kind);
 struct Token* makeToken2(int kind, char* value);

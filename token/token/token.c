@@ -24,7 +24,7 @@ struct Token* makeToken2(int kind, char* value){
 	return res;
 }
 	
-bool tokenEquals(struct Token* a, struct Token* b){
+bool token_equals(struct Token* a, struct Token* b){
 	const bool kindEq = a->kind == b->kind;
 	if(kindEq){
 

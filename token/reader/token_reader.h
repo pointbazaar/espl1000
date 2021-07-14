@@ -3,10 +3,8 @@
 
 #include <stdbool.h>
 
-struct Token;
 struct TokenList;
 
-struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool debug);
-
+struct TokenList* read_tokens_from_tokens_file(FILE* file, char* tokensFile);
 
 #endif

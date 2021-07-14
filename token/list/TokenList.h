@@ -12,7 +12,7 @@ struct TokenList {
 	//this is part of the struct and not a 'char*'
 	//on purpose. to reduce indirection
 	//and make the program simpler.
-	char relPath[100];
+	char rel_path[100];
 
 	//all the tokens, including those 
 	//already consumed
@@ -23,11 +23,11 @@ struct TokenList {
 	
 	//the index of the first token that was
 	//not already consumed
-	uint16_t indexHead;
+	uint16_t index_head;
 	
 	//the amount of tokens stored,
 	//even if they have already been consumed
-	uint16_t tokensStored;
+	uint16_t tokens_stored;
 
 	//token count
 	uint16_t tokensc; //private
@@ -39,7 +39,7 @@ void list_add(struct TokenList* list, struct Token* token);
 
 void list_consume(struct TokenList* list, int amount);
 
-bool list_startsWith(struct TokenList* list, struct Token* itk);
+bool list_starts_with(struct TokenList* list, struct Token* itk);
 
 char* wrap(char* s, char* wrap);
 

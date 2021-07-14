@@ -12,12 +12,12 @@
 
 static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2);
 
-static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_num, bool debug);
+static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_num);
 
-struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool debug){
+struct TokenList* read_tokens_from_tokens_file(FILE* file, char* tokensFile) {
 	
 	struct TokenList* tks = makeTokenList();
-	strcpy(tks->relPath, tokensFile);
+	strcpy(tks->rel_path, tokensFile);
 	
 	size_t size = 50;
 	char* line = malloc(size);
@@ -29,7 +29,7 @@ struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool de
 		line[strlen(line)-1] = '\0';
 		
 		bool isLineNo = false;
-		struct Token* tkn = recognizeToken(line, &isLineNo, &line_num, debug);
+		struct Token* tkn = recognizeToken(line, &isLineNo, &line_num);
     	if(isLineNo){
 			if(tkn != NULL){ 
 				freeToken(tkn);
@@ -49,11 +49,7 @@ struct TokenList* readTokensFromTokensFile(FILE* file, char* tokensFile, bool de
 	return tks;
 }
 
-static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_num, bool debug) {
-	
-	if (debug) {
-		printf("recognizeToken('%s', %d)\n", tkn, debug);
-	}
+static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_num) {
 
 	char part1[10];
 	char part2[50];

@@ -34,7 +34,7 @@ struct Token** lex(char* source) {
 	//read out the tokens
 	FILE* ftks = fopen(fname_tks, "r");
 
-	struct TokenList* list = readTokensFromTokensFile(ftks, fname_tks, false);
+	struct TokenList* list = read_tokens_from_tokens_file(ftks, fname_tks);
 
 	int capacity = list_size(list);
 	struct Token** tks = malloc(sizeof(struct Token*)*capacity);

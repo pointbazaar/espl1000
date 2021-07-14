@@ -19,12 +19,12 @@ struct TokenList* makeTokenList() {
 
 	struct TokenList* res = malloc(sizeof(struct TokenList));
 	
-	strcpy(res->relPath, "/dev/null");
+	strcpy(res->rel_path, "/dev/null");
 	res->tokensc = 0;
 
 	res->tokens = malloc(sizeof(struct Token*)*initial_size);
-	res->indexHead = 0;
-	res->tokensStored = 0;
+	res->index_head = 0;
+	res->tokens_stored = 0;
 
 	res->capacity = initial_size;
 
@@ -36,7 +36,7 @@ void list_add(struct TokenList* list, struct Token* token) {
 	//DEBUG
 	//printf("list_add\n");
 
-	if((list->indexHead + list->tokensc + 1) > list->capacity){
+	if((list->index_head + list->tokensc + 1) > list->capacity){
 		
 		//DEBUG
 		//printf("resize TokenList instance\n");
@@ -48,30 +48,30 @@ void list_add(struct TokenList* list, struct Token* token) {
 	}
 	
 	
-	list->tokens[list->indexHead + list->tokensc] = token;
+	list->tokens[list->index_head + list->tokensc] = token;
 	list->tokensc += 1;
-	list->tokensStored += 1;
+	list->tokens_stored += 1;
 }
 
 void list_consume(struct TokenList* list, int amount) {
 	
 	list->tokensc -= amount;
-	list->indexHead += amount;
+	list->index_head += amount;
 }
 
 int list_size(struct TokenList* list) {
 	return list->tokensc;
 }
 
-bool list_startsWith(struct TokenList* list, struct Token* token) {
+bool list_starts_with(struct TokenList* list, struct Token* itk) {
 	//we cannot rely on .equals()
 	//we should use interfaces we can rely on classes to implement
 	//the class and the content of the token should be the same for them to be the same
 
 	if (list_size(list) > 0) {
-		const bool res = tokenEquals(
-			list_head(list),
-			token
+		const bool res = token_equals(
+				list_head(list),
+				itk
 		);
 		
 		return res;
@@ -90,7 +90,7 @@ bool list_expect_internal(struct TokenList* list, struct Token* token) {
 	if (list_size(list) == 0) {
 		return false;
 	}
-	if (list_startsWith(list, token)) {
+	if (list_starts_with(list, token)) {
 		list_consume(list, 1);
 		return true;
 	}
@@ -126,8 +126,8 @@ void list_set(struct TokenList* list, struct TokenList* copy) {
 
 	list->capacity = copy->capacity;
 	list->tokensc = copy->tokensc;
-	list->indexHead = copy->indexHead;
-	list->tokensStored = copy->tokensStored;
+	list->index_head = copy->index_head;
+	list->tokens_stored = copy->tokens_stored;
 
 	size_t size = copy->capacity * sizeof(struct Token*);
 	memcpy(list->tokens, copy->tokens, size);
@@ -137,7 +137,7 @@ struct Token* list_get(struct TokenList* list, int i) {
 	
 	//no bounds checking! for performance.
 	
-	return list->tokens[list->indexHead + i];
+	return list->tokens[list->index_head + i];
 }
 
 struct Token* list_head(struct TokenList* list) {
@@ -209,7 +209,7 @@ void freeTokenList(struct TokenList* list){
 	//also frees the tokens within,
 	//even those already consumed
 	
-	for(int i=0;i < list->tokensStored; i++){
+	for(int i=0;i < list->tokens_stored; i++){
 		//DEBUG
 		//printf("free element %d\n", i);
 		freeToken(list->tokens[i]);

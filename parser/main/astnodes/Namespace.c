@@ -30,11 +30,11 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* ast_filename, ch
 	res->structs = malloc(sizeof(struct StructDecl*) * res->capacity_structs);
 
 	res->src_path   = malloc(sizeof(char)*(strlen(name)+3+1));
-	res->token_path = malloc(sizeof(char)*(strlen(tokens->relPath)+1));
+	res->token_path = malloc(sizeof(char)*(strlen(tokens->rel_path) + 1));
 	res->ast_path   = malloc(sizeof(char)*(strlen(ast_filename)+1));
 
 	sprintf(res->src_path, "%s.dg", name);
-	strcpy (res->token_path, tokens->relPath);
+	strcpy (res->token_path, tokens->rel_path);
 	strcpy (res->ast_path,   ast_filename);
 	strncpy(res->name,       name,      DEFAULT_STR_SIZE);
 	

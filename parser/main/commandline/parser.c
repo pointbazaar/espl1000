@@ -92,7 +92,7 @@ void build_ast_file(char* tokensFile, bool debug) {
 	//full buffering for performance
 	setvbuf(file, NULL, _IOFBF, BUFSIZ);
 	
-	struct TokenList* tokens = readTokensFromTokensFile(file, tokensFile, debug);
+	struct TokenList* tokens = read_tokens_from_tokens_file(file, tokensFile);
 	
 	fclose(file);
 

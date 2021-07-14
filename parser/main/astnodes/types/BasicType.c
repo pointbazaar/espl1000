@@ -58,7 +58,7 @@ struct BasicType* makeBasicType2(struct TokenList* tokens) {
 	
 	struct Token* lparens = makeToken(LPARENS);
 
-	if(list_startsWith(copy, lparens)){
+	if(list_starts_with(copy, lparens)){
 		struct TokenList* copy2 = list_copy(copy);
 
 		if(!list_expect(copy2, LPARENS)){
