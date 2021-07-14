@@ -20,10 +20,11 @@
 
 // --- private subroutines ---
 struct Method* initMethod();
-bool tryParseArgList(struct Method* res, struct TokenList* copy, bool debug);
+
+bool tryParseArgList(struct Method* res, struct TokenList* copy);
 // ---------------------------
 
-struct Method* makeMethod(struct TokenList* tokens, bool debug) {
+struct Method* makeMethod(struct TokenList* tokens) {
 	struct Method* res = initMethod();
 	struct TokenList* copy = list_copy(tokens);
 	
@@ -32,14 +33,14 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 	if(!list_expect(copy, FN)){
 		//as a subroutine is parsed deterministically (we know to parse a subroutine by the 'fn' keyword),
 		//give a little parse error message
-		printf("expected 'fn', but was: %s\n", list_code(copy,debug));
+		printf("expected 'fn', but was: %s\n", list_code(copy));
 		free(res);
 		return NULL;
 	}
 
-	struct Identifier* id = makeIdentifier(copy,debug);
+	struct Identifier* id = makeIdentifier(copy);
 	if(id == NULL){
-		printf("expected method name, but was: %s\n", list_code(copy, debug));
+		printf("expected method name, but was: %s\n", list_code(copy));
 		free(res);
 		return NULL;
 	}
@@ -47,7 +48,7 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 	strcpy(res->name, id->identifier);
 	free_identifier(id);
 
-	if(!tryParseArgList(res, copy, debug)){
+	if(!tryParseArgList(res, copy)){
 		free(res);
 		return NULL;
 	}
@@ -66,7 +67,7 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 		list_consume(copy, 1);
 	}
 	
-	res->return_type = makeType2(copy, debug);
+	res->return_type = makeType2(copy);
 	if(res->return_type == NULL){
 		free(res);
 		freeTokenListShallow(copy);
@@ -78,7 +79,7 @@ struct Method* makeMethod(struct TokenList* tokens, bool debug) {
 		res->throws = true;
 	}
 
-	res->block = makeStmtBlock(copy, debug);
+	res->block = makeStmtBlock(copy);
 	if(res->block == NULL){
 		free(res);
 		freeTokenListShallow(copy);
@@ -106,7 +107,7 @@ struct Method* initMethod(){
 	return res;
 }
 
-bool tryParseArgList(struct Method* res, struct TokenList* copy, bool debug){
+bool tryParseArgList(struct Method* res, struct TokenList* copy) {
 	
 	if(!list_expect(copy, LPARENS)){
 		return false;
@@ -126,7 +127,7 @@ bool tryParseArgList(struct Method* res, struct TokenList* copy, bool debug){
 			}
 		}
 		
-		struct DeclArg* da = makeDeclArg(copy, debug);
+		struct DeclArg* da = makeDeclArg(copy);
 		if(da == NULL){
 			return false;
 		}

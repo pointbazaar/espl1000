@@ -31,7 +31,7 @@ int retstmt_test1(bool debug) {
 
 	list_add(list, makeToken(SEMICOLON));
 
-	struct RetStmt* r = makeRetStmt(list,debug);
+	struct RetStmt* r = makeRetStmt(list);
 	assert(r != NULL);
 	
 	freeTokenList(list);
@@ -63,7 +63,7 @@ int retstmt_test2(bool debug){
 
 	list_add(list, makeToken(SEMICOLON));
 
-	struct RetStmt* r = makeRetStmt(list,debug);
+	struct RetStmt* r = makeRetStmt(list);
 	assert(r != NULL);
 	
 	freeTokenList(list);
@@ -91,7 +91,7 @@ int retstmt_test3(bool debug) {
 
 	list_add(list, makeToken(SEMICOLON));
 
-	struct RetStmt* r = makeRetStmt(list,debug);
+	struct RetStmt* r = makeRetStmt(list);
 	assert(r != NULL);
 	
 	freeTokenList(list);

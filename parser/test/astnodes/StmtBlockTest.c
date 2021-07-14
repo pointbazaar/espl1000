@@ -30,7 +30,7 @@ int test_stmtblock_1(bool debug){
 	
 	list_add(tokens, makeToken2(RCURLY,"}"));
 
-	struct StmtBlock* node = makeStmtBlock(tokens,debug);
+	struct StmtBlock* node = makeStmtBlock(tokens);
 
 	assert(0 == list_size(tokens)); 
 	//all tokens should have been consumed

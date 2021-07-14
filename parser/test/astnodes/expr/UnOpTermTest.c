@@ -22,7 +22,7 @@ int test_unop_with(bool debug){
 	list_add(list, makeToken2(OPKEY_LOGICAL, "!"));
 	list_add(list, makeToken2(INTEGER,"4"));
 	
-	struct UnOpTerm* t = makeUnOpTerm(list,debug);
+	struct UnOpTerm* t = makeUnOpTerm(list);
 	assert(t != NULL);
 	
 	freeTokenList(list);
@@ -37,7 +37,7 @@ int test_unop_without(bool debug){
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(INTEGER,"4"));
 	
-	struct UnOpTerm* t = makeUnOpTerm(list,debug);
+	struct UnOpTerm* t = makeUnOpTerm(list);
 	assert(t != NULL);
 	
 	freeTokenList(list);

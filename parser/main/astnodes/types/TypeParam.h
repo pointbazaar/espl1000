@@ -6,6 +6,6 @@
 struct TokenList;
 struct TypeParam;
 
-struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug);
+struct TypeParam* makeTypeParam(struct TokenList* tokens);
 
 #endif

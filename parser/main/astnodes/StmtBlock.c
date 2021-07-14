@@ -11,7 +11,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct StmtBlock* makeStmtBlock(struct TokenList* tokens, bool debug){
+struct StmtBlock* makeStmtBlock(struct TokenList* tokens) {
 	
 	if(list_size(tokens) < 2){ return NULL; }
 	
@@ -36,7 +36,7 @@ struct StmtBlock* makeStmtBlock(struct TokenList* tokens, bool debug){
 	
 	while (next->kind != RCURLY) {
 
-		struct Stmt* stmt = makeStmt(copy, debug);
+		struct Stmt* stmt = makeStmt(copy);
 		
 		if(stmt == NULL){
 			freeTokenListShallow(copy);

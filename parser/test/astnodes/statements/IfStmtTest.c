@@ -30,7 +30,7 @@ int if_test1(bool debug) {
 
 	list_add(list, makeToken2(RCURLY,"}"));
 
-	struct IfStmt* i = makeIfStmt(list,debug);
+	struct IfStmt* i = makeIfStmt(list);
 
 	assert(0 == list_size(list));
 	assert(i != NULL);
@@ -77,7 +77,7 @@ int if_test2(bool debug) {
 
 	list_add(l, makeToken2(RCURLY,"}"));
 
-	struct IfStmt* i = makeIfStmt(l,debug);
+	struct IfStmt* i = makeIfStmt(l);
 
 	assert(i != NULL);
 

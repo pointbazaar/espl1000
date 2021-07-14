@@ -6,6 +6,6 @@
 struct TokenList;
 struct IfStmt;
 
-struct IfStmt* makeIfStmt(struct TokenList* tokens,bool debug);
+struct IfStmt* makeIfStmt(struct TokenList* tokens);
 
 #endif

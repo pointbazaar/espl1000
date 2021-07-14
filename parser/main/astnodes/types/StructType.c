@@ -14,7 +14,7 @@
 
 static void parse_type_params_rest(struct StructType* res, struct TokenList* tokens);
 
-struct StructType* makeStructType(struct TokenList* tokens, bool debug){
+struct StructType* makeStructType(struct TokenList* tokens) {
 	
 	struct StructType* res = make(StructType);
 	struct TokenList* copy = list_copy(tokens);

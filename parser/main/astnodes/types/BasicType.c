@@ -40,7 +40,7 @@ struct BasicType* makeBasicTypeSubr(struct SubrType* typeNode) {
 	return res;
 }
 
-struct BasicType* makeBasicType2(struct TokenList* tokens, bool debug) {
+struct BasicType* makeBasicType2(struct TokenList* tokens) {
 
 	struct BasicType* res = make(BasicType);
 	struct TokenList* copy = list_copy(tokens);
@@ -69,7 +69,7 @@ struct BasicType* makeBasicType2(struct TokenList* tokens, bool debug) {
 			return NULL;
 		}
 
-		res->subr_type = makeSubrType(copy2, debug);
+		res->subr_type = makeSubrType(copy2);
 		if(res->subr_type == NULL){
 			freeTokenListShallow(copy2);
 			free(res);
@@ -92,7 +92,7 @@ struct BasicType* makeBasicType2(struct TokenList* tokens, bool debug) {
 		goto end;
 	} 
 	
-	res->simple_type = makeSimpleType(copy, debug);
+	res->simple_type = makeSimpleType(copy);
 	if(res->simple_type == NULL){
 		free(res);
 		freeTokenListShallow(copy);

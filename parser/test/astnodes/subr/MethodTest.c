@@ -34,7 +34,7 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 	list_add(l, makeToken(LCURLY));
 	list_add(l, makeToken(RCURLY));
 
-	struct Method* m = makeMethod(l, debug);
+	struct Method* m = makeMethod(l);
 	if(
 		m == NULL
 		|| m->count_args != 1
@@ -86,7 +86,7 @@ int method_test_can_parse_subroutine(bool debug) {
 		
 	list_add(l, makeToken2(RCURLY,"}"));
 
-	struct Method* m = makeMethod(l, debug);
+	struct Method* m = makeMethod(l);
 	assert(m != NULL);
 	assert(m->count_args == 0);
 	assert(m->has_side_effects);
@@ -119,7 +119,7 @@ int method_test_can_parse_method_without_arguments(bool debug) {
 
 	list_add(l, makeToken2(RCURLY,"}"));
 
-	struct Method* m = makeMethod(l, debug);
+	struct Method* m = makeMethod(l);
 	assert(m != NULL);
 	assert(0 == m->count_args);
 	assert(!m->has_side_effects);

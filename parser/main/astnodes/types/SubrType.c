@@ -32,7 +32,7 @@ struct SubrType* makeSubrType2(
 	return res;
 }
 
-struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
+struct SubrType* makeSubrType(struct TokenList* tokens) {
 
 	struct SubrType* res = make(SubrType);
 	res->throws = false;
@@ -54,7 +54,7 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 	bool sucess_argument_types = true;
 
 	bool fail = false;
-	struct Type* mytype = makeType2(copy,debug);
+	struct Type* mytype = makeType2(copy);
 	if(mytype == NULL){fail=true;}
 
 	if(!fail){
@@ -73,11 +73,11 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 		if(!list_expect(copy2, COMMA)){fail2 = true;}
 		
 		if(!fail2){
-			struct Type* mytype = makeType2(copy2,debug);
-			if(mytype == NULL){fail2 = true;}
+			struct Type* mytype2 = makeType2(copy2);
+			if(mytype2 == NULL){fail2 = true;}
 
 			if(!fail2){
-				res->arg_types[res->count_arg_types] = mytype;
+				res->arg_types[res->count_arg_types] = mytype2;
 				res->count_arg_types++;
 
 				size_t newsize = sizeof(struct Type*)*(res->count_arg_types + 1);
@@ -114,7 +114,7 @@ struct SubrType* makeSubrType(struct TokenList* tokens, bool debug){
 		list_consume(copy, 1);
 	}
 
-	res->return_type = makeType2(copy, debug);
+	res->return_type = makeType2(copy);
 	if(res->return_type == NULL){
 		freeTokenListShallow(copy);
 		free(res->arg_types);

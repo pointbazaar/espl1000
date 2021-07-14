@@ -12,7 +12,6 @@
 #include "ast/util/free_ast.h"
 
 #include "token/list/TokenList.h"
-#include "token/TokenKeys.h"
 #include "token/token/token.h"
 
 struct Type* makeType_1(struct BasicType* typeNode){
@@ -57,7 +56,7 @@ struct Type* makeType_3(struct ArrayType* typeNode){
 	return res;
 }
 
-struct Type* makeType2(struct TokenList* tokens, bool debug){
+struct Type* makeType2(struct TokenList* tokens) {
 
 	struct Type* res = make(Type);
 	struct TokenList* copy = list_copy(tokens);
@@ -68,14 +67,14 @@ struct Type* makeType2(struct TokenList* tokens, bool debug){
 	res->m2 = NULL;
 	res->m3 = NULL;
 
-	res->m3     = makeArrayType2(copy,debug);
+	res->m3     = makeArrayType2(copy);
 	if(res->m3 != NULL){ goto end; }
 		
 		
-	res->m2     = makeTypeParam(copy,debug);
+	res->m2     = makeTypeParam(copy);
 	if(res->m2 != NULL) { goto end; }
 	
-	res->m1     = makeBasicType2(copy,debug);
+	res->m1     = makeBasicType2(copy);
 	if(res->m1 != NULL){ goto end; }
 	
 	//nothing matched

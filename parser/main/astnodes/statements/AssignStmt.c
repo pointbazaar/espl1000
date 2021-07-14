@@ -14,7 +14,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
+struct AssignStmt* makeAssignStmt(struct TokenList* tokens) {
 
 	struct AssignStmt* res = make(AssignStmt);
 	struct TokenList* copy = list_copy(tokens);
@@ -24,13 +24,13 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 	res->opt_type = NULL;
 
 	struct TokenList* copy2 = list_copy(copy);
-	res->opt_type = makeType2(copy2, debug);
+	res->opt_type = makeType2(copy2);
 	if(res->opt_type != NULL){
 		list_set(copy, copy2);
 	}
 	freeTokenListShallow(copy2);
 
-	res->var = makeVariable(copy,debug);
+	res->var = makeVariable(copy);
 	if(res->var == NULL){
 		free(res);
 		freeTokenListShallow(copy);
@@ -49,7 +49,7 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens, bool debug) {
 	//save the assignment operator
 	strncpy(res->assign_op, tkn_assign->value_ptr, ASSIGNOP_LENGTH);
 
-	res->expr = makeExpr(copy,debug);
+	res->expr = makeExpr(copy);
 	if(res->expr == NULL){
 		free_variable(res->var);
 		free(res);

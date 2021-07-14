@@ -6,7 +6,7 @@
 struct DeclArg;
 struct TokenList;
 
-struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug);
+struct DeclArg* makeDeclArg(struct TokenList* tokens);
 
 
 #endif

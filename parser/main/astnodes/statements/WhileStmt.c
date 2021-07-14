@@ -14,7 +14,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
+struct WhileStmt* makeWhileStmt(struct TokenList* tokens) {
 
 	struct WhileStmt* res = make(WhileStmt);
 	struct TokenList* copy = list_copy(tokens);
@@ -26,18 +26,18 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens, bool debug){
 
 	if(!list_expect(copy, WHILE)){
 		//this part can be parsed deterministically
-		printf("expected 'while', but was: %s\n", list_code(copy, debug));
+		printf("expected 'while', but was: %s\n", list_code(copy));
 		exit(1);
 		return NULL;
 	}
 
-	res->condition = makeExpr(copy,debug);
+	res->condition = makeExpr(copy);
 	if(res->condition == NULL){
 		free(res);
 		return NULL;
 	}
 
-	res->block = makeStmtBlock(copy, debug);
+	res->block = makeStmtBlock(copy);
 	if(res->block == NULL){
 		free_expr(res->condition);
 		free(res);

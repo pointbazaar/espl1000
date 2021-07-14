@@ -4,6 +4,6 @@
 struct TokenList;
 struct StringConst;
 
-struct StringConst* makeStringConst(struct TokenList* tokens, bool debug);
+struct StringConst* makeStringConst(struct TokenList* tokens);
 
 #endif

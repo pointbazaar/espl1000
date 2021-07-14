@@ -29,7 +29,7 @@ void range_test1(bool debug){
 
 	list_add(list, makeToken(SEMICOLON));
 
-	struct Range* r = makeRange(list, debug);
+	struct Range* r = makeRange(list);
 	
 	assert(r != NULL);
 	assert(r->start != NULL);

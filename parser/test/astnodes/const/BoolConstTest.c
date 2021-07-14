@@ -22,7 +22,7 @@ int boolconst_test_parse_bool_constant_node(bool debug)  {
 	
 	list_add(list, makeToken2(BCONST_TRUE,"true"));
 
-	struct BoolConst* b = makeBoolConst(list,debug);
+	struct BoolConst* b = makeBoolConst(list);
 
 	if(b == NULL){ return 0;}
 

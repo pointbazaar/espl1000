@@ -101,7 +101,7 @@ void build_ast_file(char* tokensFile, bool debug) {
 
 	char* ast_filename = extract_filename_ast(tokensFile);
 
-	struct Namespace* ns = makeNamespace(tokens, ast_filename, ns_name,debug);
+	struct Namespace* ns = makeNamespace(tokens, ast_filename, ns_name);
 	
 	free(ns_name);
 	

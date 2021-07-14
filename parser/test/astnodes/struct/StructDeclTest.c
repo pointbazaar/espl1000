@@ -26,7 +26,7 @@ int structdecl_test_can_parse_empty_struct_decl(bool debug) {
 	list_add(list, makeToken(LCURLY) );
 	list_add(list, makeToken(RCURLY) );
 
-	struct StructDecl* s = makeStructDecl(list, debug);
+	struct StructDecl* s = makeStructDecl(list);
 
 	assert(0 == s->count_members);
 	
@@ -49,7 +49,7 @@ int structdecl_test_will_not_parse_invalid_typename_for_struct(bool debug) {
 	list_add(list, makeToken(LCURLY));
 	list_add(list, makeToken(RCURLY));
 
-	struct StructDecl* s = makeStructDecl(list, debug);
+	struct StructDecl* s = makeStructDecl(list);
 	assert(s != NULL);
 	
 	freeTokenList(list);
@@ -74,7 +74,7 @@ int structdecl_test_rejects_struct_with_subroutine_type(bool debug) {
 	list_add(list, makeToken(LCURLY) );
 	list_add(list, makeToken(RCURLY) );
 
-	struct StructDecl* s = makeStructDecl(list, debug);
+	struct StructDecl* s = makeStructDecl(list);
 	assert(s != NULL);
 	
 	freeTokenList(list);
@@ -99,7 +99,7 @@ int structdecl_test_can_parse_struct_with_1_member(bool debug) {
 	list_add(list, makeToken(SEMICOLON) ),
 	list_add(list, makeToken(RCURLY) );
 
-	struct StructDecl* node = makeStructDecl(list, debug);
+	struct StructDecl* node = makeStructDecl(list);
 
 	assert(1 == node->count_members);
 	assert(strcmp("a", node->members[0]->name) == 0);
@@ -129,7 +129,7 @@ int structdecl_test_can_parse_struct_with_2_members(bool debug) {
 	list_add(list, makeToken(SEMICOLON) ),
 	list_add(list, makeToken(RCURLY) );
 
-	struct StructDecl* node = makeStructDecl(list, debug);
+	struct StructDecl* node = makeStructDecl(list);
 
 	assert(2 == node->count_members);
 

@@ -12,7 +12,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct TryCatchStmt* makeTryCatchStmt(struct TokenList* tokens, bool debug){
+struct TryCatchStmt* makeTryCatchStmt(struct TokenList* tokens) {
 	
 	if (list_size(tokens) == 0) { return NULL; }
 
@@ -31,7 +31,7 @@ struct TryCatchStmt* makeTryCatchStmt(struct TokenList* tokens, bool debug){
 		exit(1);
 	}
 	
-	res->try_block = makeStmtBlock(copy, debug);
+	res->try_block = makeStmtBlock(copy);
 	
 	if(res->try_block == NULL){
 		list_print(copy);
@@ -44,7 +44,7 @@ struct TryCatchStmt* makeTryCatchStmt(struct TokenList* tokens, bool debug){
 		exit(1);
 	}
 	
-	res->catch_block = makeStmtBlock(copy, debug);
+	res->catch_block = makeStmtBlock(copy);
 	
 	if(res->catch_block == NULL){ 
 		list_print(copy);

@@ -6,6 +6,6 @@
 struct TokenList;
 struct UnOpTerm;
 
-struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens, bool debug);
+struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens);
 
 #endif

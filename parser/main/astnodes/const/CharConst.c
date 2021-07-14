@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdbool.h>
 #include <stdlib.h>
 
 #include "CharConst.h"
@@ -10,7 +9,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct CharConst* makeCharConst(struct TokenList* tokens, bool debug) {
+struct CharConst* makeCharConst(struct TokenList* tokens) {
 
 	struct Token* tk = list_head(tokens);
 	

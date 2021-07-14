@@ -6,6 +6,6 @@
 struct TokenList;
 struct TryCatchStmt;
 
-struct TryCatchStmt* makeTryCatchStmt(struct TokenList* tokens, bool debug);
+struct TryCatchStmt* makeTryCatchStmt(struct TokenList* tokens);
 
 #endif

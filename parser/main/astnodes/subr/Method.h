@@ -6,6 +6,6 @@
 struct TokenList;
 struct Method;
 
-struct Method* makeMethod(struct TokenList* tokens, bool debug);
+struct Method* makeMethod(struct TokenList* tokens);
 
 #endif

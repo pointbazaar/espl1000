@@ -32,7 +32,7 @@ void test_lambda(bool debug){
 
 	list_add(list, makeToken2(INTEGER,"0"));
 
-	struct Lambda* r = makeLambda(list, debug);
+	struct Lambda* r = makeLambda(list);
 	
 	assert(r != NULL);
 	assert(r->count_params == 2);

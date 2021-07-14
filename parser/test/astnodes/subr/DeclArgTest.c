@@ -30,7 +30,7 @@ int declarg_test_parse_declared_argument(bool debug) {
 
 	list_add(list, makeToken2(ID,"subr"));
 
-	struct DeclArg* node = makeDeclArg(list,debug);
+	struct DeclArg* node = makeDeclArg(list);
 
 	assert(strcmp("subr", node->name) == 0);
 	assert(0 == list_size(list));

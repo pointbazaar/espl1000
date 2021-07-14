@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdbool.h>
 #include <stdlib.h>
 
 #include "FloatConst.h"
@@ -10,7 +9,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug){
+struct FloatConst* makeFloatConst(struct TokenList* tokens) {
 
 	if(list_size(tokens) == 0){ return NULL; }
 

@@ -23,7 +23,7 @@ int term_test_simple_term(bool debug) {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(INTEGER,"4"));
 	
-	struct Term* t = makeTerm(list,debug);
+	struct Term* t = makeTerm(list);
 	assert(t != NULL);
 	
 	freeTokenList(list);
@@ -41,7 +41,7 @@ int term_test_variable_term(bool debug) {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ID,"x"));
 
-	struct Term* t = makeTerm(list,debug);
+	struct Term* t = makeTerm(list);
 	assert(t != NULL);
 
 	assert(list_size(list) == 0);
@@ -71,7 +71,7 @@ int term_test_parentheses(bool debug){
 	list_add(list, makeToken2(ID,"x"));
 	list_add(list, makeToken2(RPARENS, ")"));
 
-	struct Term* t = makeTerm(list, debug);
+	struct Term* t = makeTerm(list);
 	assert(t != NULL);
 	
 	struct Expr* expr = t->ptr.m5;

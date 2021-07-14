@@ -6,6 +6,6 @@
 struct HexConst;
 struct TokenList;
 
-struct HexConst* makeHexConst(struct TokenList* tokens, bool debug);
+struct HexConst* makeHexConst(struct TokenList* tokens);
 
 #endif

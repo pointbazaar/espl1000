@@ -14,7 +14,7 @@
 
 static void freeIdentifiers(struct Lambda* l);
 
-struct Lambda* makeLambda(struct TokenList* tokens, bool debug) {
+struct Lambda* makeLambda(struct TokenList* tokens) {
 	
 	struct TokenList* copy = list_copy(tokens);
 	
@@ -31,7 +31,7 @@ struct Lambda* makeLambda(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 	
-	res->params[0] = makeIdentifier(copy, debug);
+	res->params[0] = makeIdentifier(copy);
 	res->count_params += 1;
 	
 	if(res->params[0] == NULL){
@@ -55,7 +55,7 @@ struct Lambda* makeLambda(struct TokenList* tokens, bool debug) {
 			return NULL;
 		}
 		
-		res->params[res->count_params] = makeIdentifier(copy, debug);
+		res->params[res->count_params] = makeIdentifier(copy);
 		res->count_params += 1;
 	}
 	
@@ -73,7 +73,7 @@ struct Lambda* makeLambda(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 	
-	res->expr = makeExpr(copy, debug);
+	res->expr = makeExpr(copy);
 	
 	if(res->expr == NULL){
 		freeIdentifiers(res);

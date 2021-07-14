@@ -14,7 +14,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
+struct SimpleVar* makeSimpleVar(struct TokenList* tokens) {
 
 	if(list_size(tokens) == 0){  return NULL;  }
 
@@ -42,7 +42,7 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug) {
 				freeTokenListShallow(copy);
 				return NULL;
 			}
-			res->indices[res->count_indices] = makeExpr(copy,debug);
+			res->indices[res->count_indices] = makeExpr(copy);
 			res->count_indices += 1;
 			res->indices = 
 				realloc(

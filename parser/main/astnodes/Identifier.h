@@ -6,6 +6,6 @@
 struct Identifier;
 struct TokenList;
 
-struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug);
+struct Identifier* makeIdentifier(struct TokenList* tokens);
 
 #endif

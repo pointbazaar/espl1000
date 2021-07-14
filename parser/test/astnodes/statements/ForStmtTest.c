@@ -33,7 +33,7 @@ void for_test1(bool debug) {
 	list_add(list, makeToken2(LCURLY,"{"));
 	list_add(list, makeToken2(RCURLY,"}"));
 
-	struct ForStmt* f = makeForStmt(list,debug);
+	struct ForStmt* f = makeForStmt(list);
 
 	assert(list_size(list) == 0);
 	

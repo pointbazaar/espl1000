@@ -35,29 +35,29 @@ struct TokenList {
 
 struct TokenList* makeTokenList();
 
-void list_add(struct TokenList* tknList,struct Token* token);
+void list_add(struct TokenList* list, struct Token* token);
 
-void list_consume(struct TokenList* tknList, int amount);
+void list_consume(struct TokenList* list, int amount);
 
-bool list_startsWith(struct TokenList* tknList, struct Token* itk);
+bool list_startsWith(struct TokenList* list, struct Token* itk);
 
 char* wrap(char* s, char* wrap);
 
 //they return 'false' if the token is not present
-bool list_expect_internal(struct TokenList* tknList,struct Token* itk);
-bool list_expect(struct TokenList* tknList,int token_kind);
-bool list_expect_2(struct TokenList* tknList, struct Token* tk);
+bool list_expect_internal(struct TokenList* list, struct Token* itk);
+bool list_expect(struct TokenList* list, int token_kind);
+bool list_expect_2(struct TokenList* list, struct Token* tk);
 
-struct TokenList* list_copy(struct TokenList* tknList);
+struct TokenList* list_copy(struct TokenList* list);
 
-void list_set(struct TokenList* tknList,struct TokenList* other);
+void 			list_set(struct TokenList* list, struct TokenList* other);
 
-struct Token* list_get(struct TokenList* tknList,int i);
-struct Token* list_head(struct TokenList* tknList);
-struct Token* list_head_without_annotations(struct TokenList* tknList);
-int list_size(struct TokenList* tknList);
+struct Token* 	list_get(struct TokenList* list, int i);
+struct Token* 	list_head(struct TokenList* list);
+struct Token* 	list_head_without_annotations(struct TokenList* list);
+int 			list_size(struct TokenList* list);
 
-char* list_code(struct TokenList* tknList, bool debug);
+char* list_code(struct TokenList* list);
 
 void list_print(struct TokenList* list);
 

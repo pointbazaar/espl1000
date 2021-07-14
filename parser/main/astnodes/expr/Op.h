@@ -4,6 +4,6 @@
 struct TokenList;
 struct Op;
 
-struct Op* makeOp(struct TokenList* tokens, bool debug);
+struct Op* makeOp(struct TokenList* tokens);
 
 #endif

@@ -8,11 +8,9 @@
 #include "UnOpTerm.h"
 #include "Op.h"
 
-#include "ast/util/free_ast.h"
 #include "ast/util/copy_ast.h"
 
 #include "token/list/TokenList.h"
-#include "token/TokenKeys.h"
 #include "token/token/token.h"
 
 //how many operators there are
@@ -64,7 +62,7 @@ struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, struct Op* op, struct UnOpTer
 	return res;
 }
 
-struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
+struct Expr* makeExpr(struct TokenList* tokens) {
 
 	//we assume they never have more than 200 terms
 
@@ -76,7 +74,7 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 
 	struct TokenList* copy = list_copy(tokens);
 	
-	struct UnOpTerm* myterm2 = makeUnOpTerm(copy,debug);
+	struct UnOpTerm* myterm2 = makeUnOpTerm(copy);
 	if(myterm2 == NULL){
 		free(ops);
 		free(terms);
@@ -88,13 +86,13 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 	while (list_size(copy) >= 2) {
 		struct TokenList* copy2 = list_copy(copy);
 
-		struct Op* myop = makeOp(copy2,debug);
+		struct Op* myop = makeOp(copy2);
 		if(myop == NULL){
 			freeTokenListShallow(copy2);
 			break;
 		}
 
-		struct UnOpTerm* myterm = makeUnOpTerm(copy2,debug);
+		struct UnOpTerm* myterm = makeUnOpTerm(copy2);
 		if(myterm == NULL){
 			freeTokenListShallow(copy2);
 			break;
@@ -113,7 +111,7 @@ struct Expr* makeExpr(struct TokenList* tokens, bool debug) {
 	//----------------------------------
 	
 	struct Expr* res = fullTreeTransformation
-	(ops, opsc, terms, termsc, debug);
+	(ops, opsc, terms, termsc, false);
 	
 	res->super.line_num    = myterm2->super.line_num;
 	res->super.annotations = 0;

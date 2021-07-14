@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -10,7 +9,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct IntConst* makeIntConst(struct TokenList* tokens, bool debug) {
+struct IntConst* makeIntConst(struct TokenList* tokens) {
 
 	struct IntConst* res = make(IntConst);
 

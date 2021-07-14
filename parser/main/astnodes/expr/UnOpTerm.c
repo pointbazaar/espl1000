@@ -1,7 +1,5 @@
-#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 #include "parser/main/util/parse_astnode.h"
 
@@ -13,10 +11,9 @@
 #include "ast/util/free_ast.h"
 
 #include "token/list/TokenList.h"
-#include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens, bool debug){
+struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens) {
 	
 	if(list_size(tokens) == 0){ return NULL; }
 	
@@ -26,7 +23,7 @@ struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens, bool debug){
 	
 	parse_astnode(copy, &(res->super));
 	
-	res->op = makeOp(copy, debug);
+	res->op = makeOp(copy);
 	//res->op may be NULL, it is not a problem,
 	//as the unary operator is optional
 	
@@ -51,7 +48,7 @@ struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens, bool debug){
 		}
 	}
 	
-	res->term = makeTerm(copy, debug);
+	res->term = makeTerm(copy);
 	
 	if(res->term == NULL){
 		free_op(res->op);

@@ -27,8 +27,8 @@
 // --- private subroutines ---
 
 struct Term* initTerm();
-void tryInitExpr(struct Term* res, struct TokenList* copy, bool debug);
-void tryInitStringConst(struct Term* res, struct TokenList* copy, bool debug);
+void tryInitExpr(struct Term* res, struct TokenList* copy);
+void tryInitStringConst(struct Term* res, struct TokenList* copy);
 // ---------------------------
 
 struct Term* makeTerm_other(struct Expr* expr){
@@ -43,7 +43,7 @@ struct Term* makeTerm_other(struct Expr* expr){
 	return res;
 }
 
-struct Term* makeTerm(struct TokenList* tokens, bool debug) {
+struct Term* makeTerm(struct TokenList* tokens) {
 	
 	if(list_size(tokens) == 0){return NULL;}
 
@@ -57,36 +57,36 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 
 	if(tk_kind == LPARENS){
 		
-		if( (res->ptr.m11 = makeLambda(copy, debug)) != NULL){
+		if((res->ptr.m11 = makeLambda(copy)) != NULL){
 			
 			res->kind = 11;
 		}else{
-			
-			tryInitExpr(res, copy, debug);
+
+			tryInitExpr(res, copy);
 		}
 		
 	}else if(tk_kind == STRINGCONST){
-		
-		tryInitStringConst(res, copy, debug);
+
+		tryInitStringConst(res, copy);
 		
 	}else if(tk_kind == HEXCONST){
 		
-		res->ptr.m9 = makeHexConst(copy, debug);
+		res->ptr.m9 = makeHexConst(copy);
 		res->kind = 9;
 		
 	}else if(tk_kind == BINCONST){
 		
-		res->ptr.m10 = makeBinConst(copy, debug);
+		res->ptr.m10 = makeBinConst(copy);
 		res->kind = 10;
 		
 	}else if(tk_kind == CCONST){
 		
-		res->ptr.m3 = makeCharConst(copy,debug);
+		res->ptr.m3 = makeCharConst(copy);
 		res->kind = 3;
 		
 	}else if(tk_kind == BCONST_TRUE || tk_kind == BCONST_FALSE ){
 		
-		res->ptr.m1 = makeBoolConst(copy, debug);
+		res->ptr.m1 = makeBoolConst(copy);
 		res->kind = 1;
 		
 	}else{
@@ -98,22 +98,22 @@ struct Term* makeTerm(struct TokenList* tokens, bool debug) {
 	
 other_term:
 
-	if( (res->ptr.m2 = makeIntConst(copy,debug)) != NULL){
+	if((res->ptr.m2 = makeIntConst(copy)) != NULL){
 		res->kind = 2;
 		goto end;
 	}
 
-	if( (res->ptr.m7 = makeFloatConst(copy,debug)) != NULL){
+	if((res->ptr.m7 = makeFloatConst(copy)) != NULL){
 		res->kind = 7;
 		goto end;
 	}
 	
-	if( (res->ptr.m4 = makeCall(copy,debug)) != NULL){				
+	if((res->ptr.m4 = makeCall(copy)) != NULL){
 		res->kind = 4;
 		goto end;
 	}
 	
-	if( (res->ptr.m6 = makeVariable(copy,debug)) != NULL){
+	if((res->ptr.m6 = makeVariable(copy)) != NULL){
 		res->kind = 6;
 		goto end;
 	}
@@ -142,12 +142,12 @@ struct Term* initTerm(){
 	return res;
 }
 
-void tryInitExpr(struct Term* res, struct TokenList* copy, bool debug){
+void tryInitExpr(struct Term* res, struct TokenList* copy) {
 	
 	list_consume(copy, 1);
 
 	res->kind = 5;
-	res->ptr.m5 = makeExpr(copy,debug);
+	res->ptr.m5 = makeExpr(copy);
 	if(res->ptr.m5 == NULL){
 		free(res);
 		freeTokenListShallow(copy);
@@ -164,10 +164,10 @@ void tryInitExpr(struct Term* res, struct TokenList* copy, bool debug){
 	}
 }
 
-void tryInitStringConst(struct Term* res, struct TokenList* copy, bool debug){
+void tryInitStringConst(struct Term* res, struct TokenList* copy) {
 	
 	res->kind = 8;
-	res->ptr.m8 = makeStringConst(copy, debug);
+	res->ptr.m8 = makeStringConst(copy);
 	if(res->ptr.m8 == NULL){
 		
 		printf("expected an String, but got :");

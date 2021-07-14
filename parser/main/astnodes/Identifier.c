@@ -10,7 +10,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct Identifier* makeIdentifier(struct TokenList* tokens, bool debug) {
+struct Identifier* makeIdentifier(struct TokenList* tokens) {
 
 	if(list_size(tokens) == 0){ return NULL; }
 

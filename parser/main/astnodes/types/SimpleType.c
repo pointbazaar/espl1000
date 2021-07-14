@@ -15,7 +15,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct SimpleType* makeSimpleType(struct TokenList* tokens, bool debug) {
+struct SimpleType* makeSimpleType(struct TokenList* tokens) {
 
 	if(list_size(tokens) == 0){ return NULL; }
 
@@ -36,13 +36,13 @@ struct SimpleType* makeSimpleType(struct TokenList* tokens, bool debug) {
 		case TYPEID_PRIMITIVE_CHAR:
 		case TYPEID_PRIMITIVE_FLOAT:
 		
-			res->primitive_type = makePrimitiveType(copy, debug);
+			res->primitive_type = makePrimitiveType(copy);
 			break;
 			
 		case TYPEID:
 		case ANYTYPE:
 		
-			res->struct_type = makeStructType(copy, debug);
+			res->struct_type = makeStructType(copy);
 			break;
 			
 		default:

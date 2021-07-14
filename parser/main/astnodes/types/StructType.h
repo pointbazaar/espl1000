@@ -6,6 +6,6 @@
 struct TokenList;
 struct StructType;
 
-struct StructType* makeStructType(struct TokenList* tokens, bool debug);
+struct StructType* makeStructType(struct TokenList* tokens);
 
 #endif

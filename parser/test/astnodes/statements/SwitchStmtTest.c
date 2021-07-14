@@ -33,7 +33,7 @@ int test_switch(bool debug){
 	
 	list_add(list, makeToken2(RCURLY,"}"));
 	
-	struct SwitchStmt* t = makeSwitchStmt(list,debug);
+	struct SwitchStmt* t = makeSwitchStmt(list);
 	
 	assert(t != NULL);
 	assert(t->count_cases == 1);

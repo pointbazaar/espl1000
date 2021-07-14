@@ -27,7 +27,7 @@ int test_parser_case_stmt(bool debug) {
 	
 	list_add(list, makeToken2(RCURLY,"}"));
 
-	struct CaseStmt* node = makeCaseStmt(list, debug);
+	struct CaseStmt* node = makeCaseStmt(list);
 	
 	assert(node != NULL);
 	assert(node->kind == 0);

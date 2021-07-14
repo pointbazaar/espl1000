@@ -26,7 +26,7 @@ int stmt_test_assignment_statement_with_struct_access(bool debug) {
 	list_add(tokens, makeToken2(INTEGER,"3") );
 	list_add(tokens, makeToken2(SEMICOLON, ";"));
 
-	struct Stmt* node = makeStmt(tokens,debug);
+	struct Stmt* node = makeStmt(tokens);
 
 	//all tokens should have been consumed
 	assert(0 == list_size(tokens)); 
@@ -52,7 +52,7 @@ int stmt_test_assignment_statement_with_method_call(bool debug) {
 	list_add(tokens, makeToken(RPARENS) );
 	list_add(tokens, makeToken(SEMICOLON) );
 
-	struct Stmt* node = makeStmt(tokens,debug);
+	struct Stmt* node = makeStmt(tokens);
 
 	assert(0 == list_size(tokens)); //all tokens should have been consumed
 	assert(node != NULL);

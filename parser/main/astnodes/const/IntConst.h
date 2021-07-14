@@ -6,6 +6,6 @@
 struct IntConst;
 struct TokenList;
 
-struct IntConst* makeIntConst(struct TokenList* tokens, bool debug);
+struct IntConst* makeIntConst(struct TokenList* tokens);
 
 #endif

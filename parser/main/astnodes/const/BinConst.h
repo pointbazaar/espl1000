@@ -6,6 +6,6 @@
 struct BinConst;
 struct TokenList;
 
-struct BinConst* makeBinConst(struct TokenList* tokens, bool debug);
+struct BinConst* makeBinConst(struct TokenList* tokens);
 
 #endif

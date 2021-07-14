@@ -6,6 +6,6 @@
 struct TokenList;
 struct AssignStmt;
 
-struct AssignStmt* makeAssignStmt(struct TokenList* tokens,bool debug);
+struct AssignStmt* makeAssignStmt(struct TokenList* tokens);
 
 #endif

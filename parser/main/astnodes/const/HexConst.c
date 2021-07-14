@@ -9,7 +9,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct HexConst* makeHexConst(struct TokenList* tokens, bool debug){
+struct HexConst* makeHexConst(struct TokenList* tokens) {
 	
 	struct Token* tk = list_head(tokens);
 

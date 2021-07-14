@@ -6,6 +6,6 @@
 struct TokenList;
 struct CaseStmt;
 
-struct CaseStmt* makeCaseStmt(struct TokenList* tokens, bool debug);
+struct CaseStmt* makeCaseStmt(struct TokenList* tokens);
 
 #endif

@@ -27,7 +27,7 @@ int assignstmt_test1(bool debug) {
 	list_add(tokens, makeToken2(INTEGER,"4"));
 	list_add(tokens, makeToken(SEMICOLON));
 
-	struct AssignStmt* a = makeAssignStmt(tokens,debug);
+	struct AssignStmt* a = makeAssignStmt(tokens);
 	
 	assert(a != NULL);
 
@@ -57,7 +57,7 @@ int assignstmt_test_assign_method_call_result(bool debug) {
 
 	list_add(tokens, makeToken(SEMICOLON));
 
-	struct AssignStmt* a = makeAssignStmt(tokens,debug);
+	struct AssignStmt* a = makeAssignStmt(tokens);
 	
 	assert(a != NULL);
 
@@ -86,7 +86,7 @@ int assignstmt_test_assign_method_call_result_2(bool debug) {
 
 	list_add(tokens, makeToken(SEMICOLON));
 
-	struct AssignStmt* a = makeAssignStmt(tokens,debug);
+	struct AssignStmt* a = makeAssignStmt(tokens);
 	assert(a != NULL);
 
 	free_assign_stmt(a);
@@ -115,7 +115,7 @@ int assignstmt_test_assign_variable_with_array_index(bool debug) {
 
 	list_add(tokens, makeToken(SEMICOLON));
 
-	struct AssignStmt* a = makeAssignStmt(tokens,debug);
+	struct AssignStmt* a = makeAssignStmt(tokens);
 	assert(a != NULL);
 
 	free_assign_stmt(a);
@@ -139,7 +139,7 @@ int assignstmt_test_assign_char(bool debug) {
 
 	list_add(tokens, makeToken(SEMICOLON));
 
-	struct AssignStmt* a = makeAssignStmt(tokens,debug);
+	struct AssignStmt* a = makeAssignStmt(tokens);
 	
 	assert(a != NULL);
 
@@ -164,7 +164,7 @@ int assignstmt_test_can_assign_to_struct_member(bool debug) {
 	list_add(tokens, makeToken2(INTEGER,"3"));
 	list_add(tokens, makeToken(SEMICOLON));
 
-	struct AssignStmt* a = makeAssignStmt(tokens,debug);
+	struct AssignStmt* a = makeAssignStmt(tokens);
 	
 	assert(a != NULL);
 
@@ -188,7 +188,7 @@ int assignstmt_test_type_declaration_for_variable(bool debug) {
 	list_add(tokens, makeToken2(INTEGER,"3"));
 	list_add(tokens, makeToken(SEMICOLON));
 
-	struct AssignStmt* a = makeAssignStmt(tokens,debug);
+	struct AssignStmt* a = makeAssignStmt(tokens);
 	if(a == NULL){return 0;}
 
 	assert(a->opt_type != NULL);

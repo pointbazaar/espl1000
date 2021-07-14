@@ -14,21 +14,21 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct DeclArg* makeDeclArg(struct TokenList* tokens, bool debug) {
+struct DeclArg* makeDeclArg(struct TokenList* tokens) {
 
 	struct DeclArg* res = make(DeclArg);
 	struct TokenList* copy = list_copy(tokens);
 	
 	parse_astnode(copy, &(res->super));
 
-	res->type = makeType2(copy,debug);
+	res->type = makeType2(copy);
 	if(res->type == NULL){
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
 	}
 
-	struct Identifier* id = makeIdentifier(copy,debug);
+	struct Identifier* id = makeIdentifier(copy);
 	if(id == NULL){ 
 		free(res);
 		free_type(res->type);

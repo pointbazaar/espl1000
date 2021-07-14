@@ -24,7 +24,7 @@ struct ArrayType* makeArrayType(struct Type* element_type){
 	return res;
 }
 
-struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug) {
+struct ArrayType* makeArrayType2(struct TokenList* tokens) {
 
 	struct ArrayType* res = make(ArrayType);
 	struct TokenList* copy = list_copy(tokens);
@@ -37,7 +37,7 @@ struct ArrayType* makeArrayType2(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 
-	res->element_type = makeType2(copy, debug);
+	res->element_type = makeType2(copy);
 	if(res->element_type == NULL){
 		freeTokenListShallow(copy);
 		free(res);

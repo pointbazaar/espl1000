@@ -110,12 +110,12 @@ bool list_expect_2(struct TokenList* list, struct Token* tk){
 	return list_expect_internal(list, tk);
 }
 
-struct TokenList* list_copy(struct TokenList* other) {
+struct TokenList* list_copy(struct TokenList* list) {
 
-	struct TokenList* list = makeTokenList();
-	list_set(list, other);
+	struct TokenList* res = makeTokenList();
+	list_set(res, list);
 	
-	return list;
+	return res;
 }
 
 void list_set(struct TokenList* list, struct TokenList* copy) {
@@ -144,27 +144,25 @@ struct Token* list_head(struct TokenList* list) {
 	return list_get(list, 0);
 }
 
-struct Token* list_head_without_annotations(struct TokenList* tknList){
+struct Token* list_head_without_annotations(struct TokenList* list){
 	
 	uint32_t i = 0;
 	struct Token* h;
 	
 	do{
-		h = list_get(tknList, i);
+		h = list_get(list, i);
 		i++;
 	
 	} while(
 		(h->kind > _ANNOT_START_ && h->kind < _ANNOT_END_)
-		&& i < list_size(tknList)
+		&& i < list_size(list)
 	);
 	
 	return h;
 }
 
-char* list_code(struct TokenList* list, bool debug) {
-	//it should be a limited fragment 
-
-	if(debug){ printf("list_code(...)\n"); }
+char* list_code(struct TokenList* list) {
+	//it should be a limited fragment
 
 	char* str = malloc(sizeof(char)*100);
 	strcpy(str, "");
@@ -201,7 +199,7 @@ char* list_code(struct TokenList* list, bool debug) {
 
 void list_print(struct TokenList* list){
 	
-	char* str = list_code(list, false);
+	char* str = list_code(list);
 	printf("%s\n", str);
 	free(str);
 }

@@ -12,7 +12,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct Range* makeRange(struct TokenList* tokens, bool debug) {
+struct Range* makeRange(struct TokenList* tokens) {
 	
 	if(list_size(tokens) == 0){ return NULL; }
 
@@ -23,7 +23,7 @@ struct Range* makeRange(struct TokenList* tokens, bool debug) {
 	res->super.line_num    = list_head(copy)->line_num;
 	res->super.annotations = 0;
 
-	res->start = makeExpr(copy, debug);
+	res->start = makeExpr(copy);
 	
 	if(res->start == NULL){
 		freeTokenListShallow(copy);
@@ -39,7 +39,7 @@ struct Range* makeRange(struct TokenList* tokens, bool debug) {
 		free(res);
 	}
 	
-	res->end = makeExpr(copy, debug);
+	res->end = makeExpr(copy);
 	
 	if(res->end == NULL){
 		freeTokenListShallow(copy);

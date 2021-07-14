@@ -9,7 +9,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct BinConst* makeBinConst(struct TokenList* tokens, bool debug){
+struct BinConst* makeBinConst(struct TokenList* tokens) {
 
 	struct Token* tk = list_head(tokens);
 

@@ -25,7 +25,7 @@ int variable_test_parse_struct_member_access(bool debug) {
 	list_add(tokens, makeToken2(STRUCTMEMBERACCESS,"."));
 	list_add(tokens, makeToken2(ID,"a"));
 
-	struct Variable* v = makeVariable(tokens,debug);
+	struct Variable* v = makeVariable(tokens);
 	if(v==NULL){
 		return 0;
 	}
@@ -54,7 +54,7 @@ int variable_test_parse_index_access(bool debug) {
 	list_add(tokens, makeToken2(INTEGER,"0"));
 	list_add(tokens, makeToken(RBRACKET));
 
-	struct Variable* node = makeVariable(tokens,debug);
+	struct Variable* node = makeVariable(tokens);
 	assert(node != NULL);
 
 	assert(NULL == node->member_access);
@@ -85,7 +85,7 @@ int variable_test_parse_struct_member_access_and_index_access(bool debug) {
 	list_add(tokens, makeToken2(STRUCTMEMBERACCESS,".") );
 	list_add(tokens, makeToken2(ID,"b") );
 
-	struct Variable* node = makeVariable(tokens,debug);
+	struct Variable* node = makeVariable(tokens);
 	assert(node != NULL);
 
 	assert(NULL != node->member_access);

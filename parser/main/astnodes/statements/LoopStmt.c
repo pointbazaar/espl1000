@@ -14,7 +14,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct LoopStmt* makeLoopStmt(struct TokenList* tokens, bool debug) {
+struct LoopStmt* makeLoopStmt(struct TokenList* tokens) {
 	
 	if(list_size(tokens) < 3){ return NULL; }
 
@@ -31,14 +31,14 @@ struct LoopStmt* makeLoopStmt(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 
-	res->count = makeExpr(copy,debug);
+	res->count = makeExpr(copy);
 	
 	if(res->count == NULL){
 		free(res);
 		return NULL;
 	}
 
-	res->block = makeStmtBlock(copy, debug);
+	res->block = makeStmtBlock(copy);
 	
 	if(res->block == NULL){
 		free_expr(res->count);

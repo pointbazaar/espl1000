@@ -6,6 +6,6 @@
 struct TokenList;
 struct Variable;
 
-struct Variable* makeVariable(struct TokenList* tokens, bool debug);
+struct Variable* makeVariable(struct TokenList* tokens);
 
 #endif

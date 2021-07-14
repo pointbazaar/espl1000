@@ -24,7 +24,7 @@ int expr_test_simple_expression(bool debug) {
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(INTEGER,"4"));
-	struct Expr* expr = makeExpr(list,debug);
+	struct Expr* expr = makeExpr(list);
 
 	assert(expr != NULL);
 	assert(expr->term1 != NULL);
@@ -45,7 +45,7 @@ int expr_test_variable_name_expression(bool debug) {
 	struct TokenList* list = makeTokenList();
 
 	list_add(list, makeToken2(ID,"x"));
-	struct Expr* expr = makeExpr(list,debug);
+	struct Expr* expr = makeExpr(list);
 
 	assert(expr != NULL);
 	assert(expr->term1->term->ptr.m6 != NULL);
@@ -78,7 +78,7 @@ int expr_recognize_2_op_expr(bool debug) {
 
 	list_add(tokens, makeToken2(LCURLY,"{"));
 
-	struct Expr* expr = makeExpr(tokens,debug);
+	struct Expr* expr = makeExpr(tokens);
 	assert(expr != NULL);
 	assert(list_size(tokens) == 1);
 	
@@ -102,7 +102,7 @@ int expr_test_comparison(bool debug){
 
 	list_add(l, makeToken2(LCURLY,"{"));
 
-	struct Expr* expr = makeExpr(l,debug);
+	struct Expr* expr = makeExpr(l);
 	assert(expr != NULL);
 
 	assert(list_size(l) == 1);

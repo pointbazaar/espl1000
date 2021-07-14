@@ -17,7 +17,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct CaseStmt* makeCaseStmt(struct TokenList* tokens, bool debug) {
+struct CaseStmt* makeCaseStmt(struct TokenList* tokens) {
 	
 	if(list_size(tokens) < 4){ return NULL; }
 
@@ -36,11 +36,11 @@ struct CaseStmt* makeCaseStmt(struct TokenList* tokens, bool debug) {
 	res->block = NULL;
 
 	res->kind = 0;
-	if((res->ptr.m1 = makeBoolConst(copy,debug)) == NULL){
+	if((res->ptr.m1 = makeBoolConst(copy)) == NULL){
 		res->kind = 1;
-		if((res->ptr.m2 = makeCharConst(copy,debug)) == NULL){
+		if((res->ptr.m2 = makeCharConst(copy)) == NULL){
 			res->kind = 2;
-			if((res->ptr.m3 = makeIntConst(copy,debug)) == NULL){
+			if((res->ptr.m3 = makeIntConst(copy)) == NULL){
 				free(res);
 				
 				//parsing is deterministic here, 
@@ -55,7 +55,7 @@ struct CaseStmt* makeCaseStmt(struct TokenList* tokens, bool debug) {
 
 	//the block is optional
 	//and can be NULL
-	res->block = makeStmtBlock(copy, debug);
+	res->block = makeStmtBlock(copy);
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);

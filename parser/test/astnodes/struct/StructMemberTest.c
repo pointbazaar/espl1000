@@ -31,7 +31,7 @@ int structmember_test_can_parse_struct_member(bool debug) {
 	list_add(list, makeToken2(ID,"subr"));
 	list_add(list, makeToken(SEMICOLON));
 
-	struct StructMember* node = makeStructMember(list,debug);
+	struct StructMember* node = makeStructMember(list);
 
 	assert(node != NULL);
 

@@ -6,6 +6,6 @@
 struct BoolConst;
 struct TokenList;
 
-struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug);
+struct BoolConst* makeBoolConst(struct TokenList* tokens);
 
 #endif

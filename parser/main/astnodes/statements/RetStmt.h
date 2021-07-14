@@ -6,6 +6,6 @@
 struct TokenList;
 struct RetStmt;
 
-struct RetStmt* makeRetStmt(struct TokenList* list,bool debug);
+struct RetStmt* makeRetStmt(struct TokenList* tokens);
 
 #endif

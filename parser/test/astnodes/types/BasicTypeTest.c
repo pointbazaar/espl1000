@@ -20,7 +20,7 @@ int basictype_test_type_parsing_simple_type(bool debug) {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(TYPEID,"Carrot"));
 
-	struct BasicType* b = makeBasicType2(list, debug);
+	struct BasicType* b = makeBasicType2(list);
 
 	//it is SimpleType
 	assert(b->simple_type != NULL && b->subr_type == NULL);

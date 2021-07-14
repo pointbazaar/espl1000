@@ -1,7 +1,5 @@
 #include <string.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 #include "StringConst.h"
 
@@ -11,7 +9,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct StringConst* makeStringConst(struct TokenList* tokens, bool debug){
+struct StringConst* makeStringConst(struct TokenList* tokens) {
 	
 	if(list_size(tokens) == 0){return NULL;}
 	

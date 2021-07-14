@@ -13,7 +13,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct Call* makeCall(struct TokenList* tokens,bool debug) {
+struct Call* makeCall(struct TokenList* tokens) {
 	
 	if(list_size(tokens) < 3){ return NULL;}
 
@@ -25,7 +25,7 @@ struct Call* makeCall(struct TokenList* tokens,bool debug) {
 	res->args = malloc(sizeof(struct Expr*)*1);
 	res->count_args = 0;
 
-	struct Identifier* id = makeIdentifier(copy,debug);
+	struct Identifier* id = makeIdentifier(copy);
 	
 	if(id == NULL){
 		free(res->args);
@@ -69,7 +69,7 @@ struct Call* makeCall(struct TokenList* tokens,bool debug) {
 			}
 		}
 
-		struct Expr* expr = makeExpr(copy,debug);
+		struct Expr* expr = makeExpr(copy);
 		if(expr == NULL){
 			free(res->args);
 			free(res);

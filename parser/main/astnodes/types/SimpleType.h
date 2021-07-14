@@ -6,6 +6,6 @@
 struct TokenList;
 struct SimpleType;
 
-struct SimpleType* makeSimpleType(struct TokenList* tokens, bool debug);
+struct SimpleType* makeSimpleType(struct TokenList* tokens);
 
 #endif

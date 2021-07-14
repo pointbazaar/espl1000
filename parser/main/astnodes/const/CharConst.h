@@ -6,7 +6,7 @@
 struct CharConst;
 struct TokenList;
 
-struct CharConst* makeCharConst(struct TokenList* tokens,bool debug);
+struct CharConst* makeCharConst(struct TokenList* tokens);
 
 
 #endif

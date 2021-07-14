@@ -24,7 +24,7 @@ int simplevar_test_parse_simple_variable(bool debug) {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ID,"x") );
 
-	struct SimpleVar* node = makeSimpleVar(list,debug);
+	struct SimpleVar* node = makeSimpleVar(list);
 	if(node==NULL){
 		return 0;
 	}
@@ -50,7 +50,7 @@ int simplevar_test_parse_simple_indexed_variable(bool debug) {
 	list_add(list, makeToken2(RBRACKET,"]")) ;
 
 
-	struct SimpleVar* node = makeSimpleVar(list,debug);
+	struct SimpleVar* node = makeSimpleVar(list);
 	assert(node != NULL);
 
 	assert(strcmp("x", node->name) == 0);
@@ -88,7 +88,7 @@ int simplevar_test_2_indices(bool debug){
 	list_add(list, makeToken2(RBRACKET,"]"));
 
 
-	struct SimpleVar* node = makeSimpleVar(list,debug);
+	struct SimpleVar* node = makeSimpleVar(list);
 	
 	assert(node != NULL);
 	assert(node->count_indices == 2);

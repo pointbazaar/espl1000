@@ -10,7 +10,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
+struct BoolConst* makeBoolConst(struct TokenList* tokens) {
 
 	if(list_size(tokens) == 0){
 		return NULL;
@@ -34,9 +34,6 @@ struct BoolConst* makeBoolConst(struct TokenList* tokens, bool debug) {
 		list_consume(tokens, 1);
 		
 	} else {
-		if(debug){
-			printf("token was not the right kind.\n");
-		}
 		free(res);
 		return NULL;
 	}

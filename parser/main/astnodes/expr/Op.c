@@ -13,7 +13,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct Op* makeOp(struct TokenList* tokens, bool debug){
+struct Op* makeOp(struct TokenList* tokens) {
 
 	struct TokenList* copy = list_copy(tokens);
 

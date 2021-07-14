@@ -34,7 +34,7 @@ static void stmt_make_switch(struct Stmt* res, struct TokenList* copy, bool debu
 static void stmt_make_trycatch(struct Stmt* res, struct TokenList* copy, bool debug);
 // ---------------------------
 
-struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
+struct Stmt* makeStmt(struct TokenList* tokens) {
 	
 	if (list_size(tokens) == 0) { return NULL; }
 
@@ -67,15 +67,15 @@ struct Stmt* makeStmt(struct TokenList* tokens, bool debug) {
 			list_consume(copy, 2); 
 			break;
 
-		case FOR:       stmt_make_for(res, copy, debug);    break;
-		case LOOP:      stmt_make_loop(res, copy, debug);   break;
-		case WHILE:     stmt_make_while(res, copy, debug); 	break;
-		case IF:        stmt_make_if(res, copy, debug);     break;
-		case RETURN:    stmt_make_return(res, copy, debug); break;
-		case SWITCH:    stmt_make_switch(res, copy, debug); break;
-		case TRY:		stmt_make_trycatch(res, copy, debug); break;
+		case FOR:       stmt_make_for(res, copy, false);    break;
+		case LOOP:      stmt_make_loop(res, copy, false);   break;
+		case WHILE:     stmt_make_while(res, copy, false); 	break;
+		case IF:        stmt_make_if(res, copy, false);     break;
+		case RETURN:    stmt_make_return(res, copy, false); break;
+		case SWITCH:    stmt_make_switch(res, copy, false); break;
+		case TRY:		stmt_make_trycatch(res, copy, false); break;
 
-		default: 		stmt_make_other(res, copy, debug); 	break;
+		default: 		stmt_make_other(res, copy, false); 	break;
 	}
 
 	list_set(tokens, copy);
@@ -98,7 +98,7 @@ struct Stmt* initStmt(){
 void stmt_make_loop(struct Stmt* res, struct TokenList* copy, bool debug){
 	
 	res->kind = 0;
-	res->ptr.m0 = makeLoopStmt(copy, debug);
+	res->ptr.m0 = makeLoopStmt(copy);
 		
 	if(res->ptr.m0 == NULL){
 		printf("expected loop stmt, but was:\n");
@@ -114,7 +114,7 @@ void stmt_make_loop(struct Stmt* res, struct TokenList* copy, bool debug){
 void stmt_make_while(struct Stmt* res, struct TokenList* copy, bool debug){
 	
 	res->kind = 2;
-	res->ptr.m2 = makeWhileStmt(copy,debug);
+	res->ptr.m2 = makeWhileStmt(copy);
 	if(res->ptr.m2 == NULL){
 		printf("expected while stmt, but was:\n");
 		list_print(copy);
@@ -129,7 +129,7 @@ void stmt_make_while(struct Stmt* res, struct TokenList* copy, bool debug){
 void stmt_make_if(struct Stmt* res, struct TokenList* copy, bool debug){
 	
 	res->kind = 3;
-	res->ptr.m3 = makeIfStmt(copy,debug);
+	res->ptr.m3 = makeIfStmt(copy);
 	if(res->ptr.m3 == NULL){
 		printf("expected if stmt, but was:\n");
 		list_print(copy);
@@ -143,7 +143,7 @@ void stmt_make_if(struct Stmt* res, struct TokenList* copy, bool debug){
 void stmt_make_return(struct Stmt* res, struct TokenList* copy, bool debug){
 	
 	res->kind = 4;
-	res->ptr.m4 = makeRetStmt(copy,debug);
+	res->ptr.m4 = makeRetStmt(copy);
 	if(res->ptr.m4 == NULL){
 		printf("expected return stmt, but was:\n");
 		list_print(copy);
@@ -157,7 +157,7 @@ void stmt_make_return(struct Stmt* res, struct TokenList* copy, bool debug){
 void stmt_make_for(struct Stmt* res, struct TokenList* copy, bool debug){
 	
 	res->kind = 7;
-	res->ptr.m7 = makeForStmt(copy,debug);
+	res->ptr.m7 = makeForStmt(copy);
 	if(res->ptr.m7 == NULL){
 		printf("expected for stmt, but was:\n");
 		list_print(copy);
@@ -180,12 +180,12 @@ void stmt_make_other(struct Stmt* res, struct TokenList* copy, bool debug){
 	//to give good error messages
 	
 	res->kind = 5;
-	res->ptr.m5 = makeAssignStmt(copy,debug);
+	res->ptr.m5 = makeAssignStmt(copy);
 	
 	if(res->ptr.m5 == NULL){
 		
 		res->kind = 1;
-		res->ptr.m1 = makeCall(copy,debug);
+		res->ptr.m1 = makeCall(copy);
 		if(res->ptr.m1 == NULL){
 			printf("expected method call, but was:\n");
 			list_print(copy);
@@ -211,7 +211,7 @@ void stmt_make_other(struct Stmt* res, struct TokenList* copy, bool debug){
 void stmt_make_switch(struct Stmt* res, struct TokenList* copy, bool debug){
 	
 	res->kind = 8;
-	res->ptr.m8 = makeSwitchStmt(copy,debug);
+	res->ptr.m8 = makeSwitchStmt(copy);
 	if(res->ptr.m8 == NULL){
 		printf("expected switch stmt, but was:\n");
 		list_print(copy);
@@ -225,7 +225,7 @@ void stmt_make_switch(struct Stmt* res, struct TokenList* copy, bool debug){
 static void stmt_make_trycatch(struct Stmt* res, struct TokenList* copy, bool debug){
 	
 	res->kind = 6;
-	res->ptr.m6 = makeTryCatchStmt(copy, debug);
+	res->ptr.m6 = makeTryCatchStmt(copy);
 	if(res->ptr.m8 == NULL){
 		printf("expected try-catch stmt, but was:\n");
 		list_print(copy);

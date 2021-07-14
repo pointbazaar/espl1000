@@ -34,7 +34,7 @@ int whilestmt_test1(bool debug) {
 
 	list_add(list, makeToken(RCURLY) );
 
-	struct WhileStmt* ws = makeWhileStmt(list,debug);
+	struct WhileStmt* ws = makeWhileStmt(list);
 	assert(ws != NULL);
 	
 	assert(ws->block->count == 0);
@@ -68,7 +68,7 @@ int whilestmt_test2(bool debug){
 
 	list_add(list, makeToken(RCURLY) );
 
-	struct WhileStmt* ws = makeWhileStmt(list,debug);
+	struct WhileStmt* ws = makeWhileStmt(list);
 	assert(ws != NULL);
 	
 	assert(ws->block->count == 0);

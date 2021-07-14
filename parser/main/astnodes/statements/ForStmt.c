@@ -14,7 +14,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct ForStmt* makeForStmt(struct TokenList* tokens, bool debug) {
+struct ForStmt* makeForStmt(struct TokenList* tokens) {
 
 	if(list_size(tokens) < 6){ return NULL; }
 
@@ -46,7 +46,7 @@ struct ForStmt* makeForStmt(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 	
-	res->range = makeRange(copy, debug);
+	res->range = makeRange(copy);
 	
 	if(res->range == NULL){
 		freeTokenListShallow(copy);
@@ -54,7 +54,7 @@ struct ForStmt* makeForStmt(struct TokenList* tokens, bool debug) {
 		return NULL;
 	}
 	
-	res->block = makeStmtBlock(copy, debug);
+	res->block = makeStmtBlock(copy);
 	
 	if(res->block == NULL){
 		freeTokenListShallow(copy);

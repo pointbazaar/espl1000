@@ -10,6 +10,6 @@ struct SubrType;
 
 struct BasicType* makeBasicTypeSimple(struct SimpleType* typeNode);
 struct BasicType* makeBasicTypeSubr(struct SubrType* typeNode);
-struct BasicType* makeBasicType2(struct TokenList* tokens, bool debug);
+struct BasicType* makeBasicType2(struct TokenList* tokens);
 
 #endif

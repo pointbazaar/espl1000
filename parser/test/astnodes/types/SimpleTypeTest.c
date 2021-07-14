@@ -25,7 +25,7 @@ int simpletype_test_typenode_parsing(bool debug) {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(TYPEID,"MyType") );
 
-	struct BasicType* node = makeBasicType2(list, debug);
+	struct BasicType* node = makeBasicType2(list);
 
 	assert(0 == list_size(list));
 	assert(node != NULL);
@@ -44,7 +44,7 @@ int simpletype_test_typenode_parsing_fails(bool debug) {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ID,"myIllegalType") );
 
-	struct BasicType* node = makeBasicType2(list, debug);
+	struct BasicType* node = makeBasicType2(list);
 	assert(node == NULL);
 	
 	freeTokenList(list);
@@ -61,7 +61,7 @@ int simpletype_test_typenode_parsing_anytype(bool debug) {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ANYTYPE,"#"));
 
-	struct SimpleType* node = makeSimpleType(list, debug);
+	struct SimpleType* node = makeSimpleType(list);
 
 	assert(0 == list_size(list));
 	assert(node != NULL);
@@ -83,7 +83,7 @@ int simpletype_test_generic(bool debug){
 	list_add(l, makeToken2(TPARAM,"0"));
 	list_add(l, makeToken2(OPKEY_RELATIONAL,">"));
 
-	struct SimpleType* node = makeSimpleType(l, debug);
+	struct SimpleType* node = makeSimpleType(l);
 
 	assert(node                != NULL);
 	assert(node->struct_type != NULL);

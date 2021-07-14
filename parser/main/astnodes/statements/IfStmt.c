@@ -18,7 +18,7 @@ struct IfStmt* initIfStmt();
 void freeIncomplete(struct IfStmt* ifstmt);
 //--------------------------
 
-struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
+struct IfStmt* makeIfStmt(struct TokenList* tokens) {
 
 	if(list_size(tokens) < 3){ return NULL; }
 
@@ -34,19 +34,19 @@ struct IfStmt* makeIfStmt(struct TokenList* tokens, bool debug) {
 	res->super.line_num    = list_head(tokens)->line_num;
 	res->super.annotations = 0;
 
-	if((res->condition = makeExpr(copy,debug)) == NULL){
+	if((res->condition = makeExpr(copy)) == NULL){
 		freeIncomplete(res);
 		return NULL;
 	}
 
-	if((res->block = makeStmtBlock(copy, debug)) == NULL){
+	if((res->block = makeStmtBlock(copy)) == NULL){
 		freeIncomplete(res);
 		return NULL;
 	}
 
 	if (list_expect(copy, ELSE)) {
 
-		if((res->else_block = makeStmtBlock(copy, debug)) == NULL){
+		if((res->else_block = makeStmtBlock(copy)) == NULL){
 			freeIncomplete(res);
 			return NULL;
 		}

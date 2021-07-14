@@ -29,7 +29,7 @@ int subrtype_test_typename(bool debug) {
 	list_add(l, makeToken2(ARROW,"->") );
 	list_add(l, makeToken2(TYPEID,"MyStruct") );
 
-	struct SubrType* sub = makeSubrType(l,debug);
+	struct SubrType* sub = makeSubrType(l);
 
 	assert(0 == list_size(l));
 	assert(sub != NULL);
@@ -66,7 +66,7 @@ int subrtype_test_typename_subroutine_return_type(bool debug) {
 		list_add(l, makeToken2(TYPEID,"uint") );
 	list_add(l, makeToken(RPARENS) );
 
-	struct SubrType* sub = makeSubrType(l,debug);
+	struct SubrType* sub = makeSubrType(l);
 
 	assert(0 == list_size(l));
 	assert(sub != NULL);
@@ -96,7 +96,7 @@ int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(bool debu
 	
 	list_add(l, makeToken2(TYPEID,"uint") );
 
-	struct SubrType* node = makeSubrType(l,debug);
+	struct SubrType* node = makeSubrType(l);
 	assert(node != NULL);
 
 	assert(0 == list_size(l));
@@ -121,7 +121,7 @@ int subrtype_test_subroutine_type_parsing_subroutine_without_side_effects(bool d
 	list_add(l, makeToken2(ARROW,"->") );
 	list_add(l, makeToken2(TYPEID,"uint") );
 
-	struct SubrType* node = makeSubrType(l,debug);
+	struct SubrType* node = makeSubrType(l);
 
 	assert(0 == list_size(l));
 	assert(node != NULL);

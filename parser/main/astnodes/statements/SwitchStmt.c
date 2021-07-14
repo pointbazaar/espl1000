@@ -15,7 +15,7 @@
 
 void parse_cases(struct SwitchStmt* s, struct TokenList* copy, bool debug);
 
-struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens, bool debug){
+struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens) {
 
 	struct TokenList* copy = list_copy(tokens);
 	
@@ -25,7 +25,7 @@ struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens, bool debug){
 	
 	if(!list_expect(copy, SWITCH)){
 		
-		printf("expected 'switch', but was: %s\n", list_code(copy, debug));
+		printf("expected 'switch', but was: %s\n", list_code(copy));
 		exit(1);
 		return NULL;
 	}
@@ -34,7 +34,7 @@ struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens, bool debug){
 	res->count_cases = 0;
 	res->cases = malloc(sizeof(struct CaseStmt*)*1);
 
-	res->expr = makeExpr(copy,debug);
+	res->expr = makeExpr(copy);
 	if(res->expr == NULL){
 		free(res);
 		return NULL;
@@ -42,16 +42,16 @@ struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens, bool debug){
 
 	if(!list_expect(copy, LCURLY)){
 		
-		printf("expected '{', but was: %s\n", list_code(copy, debug));
+		printf("expected '{', but was: %s\n", list_code(copy));
 		exit(1);
 		return NULL;
 	}
 	
-	parse_cases(res, copy, debug);
+	parse_cases(res, copy, false);
 	
 	if(!list_expect(copy, RCURLY)){
 		
-		printf("expected '}', but was: %s\n", list_code(copy, debug));
+		printf("expected '}', but was: %s\n", list_code(copy));
 		exit(1);
 		return NULL;
 	}
@@ -68,7 +68,7 @@ void parse_cases(struct SwitchStmt* s, struct TokenList* copy, bool debug){
 	
 	while(head->kind == CASE){
 		
-		struct CaseStmt* stmt = makeCaseStmt(copy, debug);
+		struct CaseStmt* stmt = makeCaseStmt(copy);
 		if(stmt == NULL){
 			printf("expected 'case Stmt', but was: \n");
 			list_print(copy);

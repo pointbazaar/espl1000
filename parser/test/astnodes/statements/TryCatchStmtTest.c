@@ -37,7 +37,7 @@ int trycatch_stmt_test(bool debug){
 	
 	list_add(tokens, makeToken2(RCURLY,"}"));
 
-	struct TryCatchStmt* node = makeTryCatchStmt(tokens,debug);
+	struct TryCatchStmt* node = makeTryCatchStmt(tokens);
 
 	//all tokens should have been consumed
 	assert(0 == list_size(tokens)); 

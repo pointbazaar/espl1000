@@ -6,6 +6,6 @@
 struct TokenList;
 struct Call;
 
-struct Call* makeCall(struct TokenList* tokens,bool debug);
+struct Call* makeCall(struct TokenList* tokens);
 
 #endif

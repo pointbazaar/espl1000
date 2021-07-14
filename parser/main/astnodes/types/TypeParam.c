@@ -13,7 +13,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct TypeParam* makeTypeParam(struct TokenList* tokens, bool debug){
+struct TypeParam* makeTypeParam(struct TokenList* tokens) {
 
 	if(list_size(tokens) == 0){ return NULL; }
 	

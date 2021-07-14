@@ -6,6 +6,6 @@
 struct TokenList;
 struct PrimitiveType;
 
-struct PrimitiveType* makePrimitiveType(struct TokenList* tokens, bool debug);
+struct PrimitiveType* makePrimitiveType(struct TokenList* tokens);
 
 #endif

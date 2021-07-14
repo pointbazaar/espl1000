@@ -29,7 +29,7 @@ int loop_test1(bool debug){
 	
 	list_add(list, makeToken2(RCURLY,"}"));
 
-	struct LoopStmt* node = makeLoopStmt(list,debug);
+	struct LoopStmt* node = makeLoopStmt(list);
 	
 	assert(node != NULL);
 	

@@ -13,7 +13,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct Namespace* makeNamespace(struct TokenList* tokens, char* ast_filename, char* name, bool debug) {
+struct Namespace* makeNamespace(struct TokenList* tokens, char* ast_filename, char* name) {
 
 	struct Namespace* res = make(Namespace);
 
@@ -39,9 +39,9 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* ast_filename, ch
 	strncpy(res->name,       name,      DEFAULT_STR_SIZE);
 	
 	struct TokenList* copy = list_copy(tokens);
-	
-	ns_parse_structs(res, copy, debug);
-	ns_parse_methods(res, copy, debug);
+
+	ns_parse_structs(res, copy);
+	ns_parse_methods(res, copy);
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
@@ -49,14 +49,14 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* ast_filename, ch
 	return res;
 }
 
-void ns_parse_methods(struct Namespace* res, struct TokenList* copy, bool debug){
+void ns_parse_methods(struct Namespace* res, struct TokenList* copy) {
 	
 	if (list_size(copy) == 0) { return; }
 
 	struct Token* next = list_head_without_annotations(copy);
 
 	while (next->kind == FN) {
-		struct Method* m = makeMethod(copy,debug);
+		struct Method* m = makeMethod(copy);
 		if(m == NULL){
 			printf("parsing error, expected a method, but got:\n");
 			list_print(copy);
@@ -81,7 +81,7 @@ void ns_parse_methods(struct Namespace* res, struct TokenList* copy, bool debug)
 	}
 
 }
-void ns_parse_structs(struct Namespace* res, struct TokenList* copy, bool debug){
+void ns_parse_structs(struct Namespace* res, struct TokenList* copy) {
 	
 	if(list_size(copy) == 0) { return; }
 
@@ -89,9 +89,9 @@ void ns_parse_structs(struct Namespace* res, struct TokenList* copy, bool debug)
 
 	while (next->kind == STRUCT) {
 		
-		struct StructDecl* sd = makeStructDecl(copy,debug);
+		struct StructDecl* sd = makeStructDecl(copy);
 		if(sd == NULL){
-			printf("parsing error, expected a struct, but got %s\n", list_code(copy,debug));
+			printf("parsing error, expected a struct, but got %s\n", list_code(copy));
 			exit(1);
 		}
 

@@ -4,7 +4,7 @@
 struct TokenList;
 struct SimpleVar;
 
-struct SimpleVar* makeSimpleVar(struct TokenList* tokens, bool debug);
+struct SimpleVar* makeSimpleVar(struct TokenList* tokens);
 
 
 #endif

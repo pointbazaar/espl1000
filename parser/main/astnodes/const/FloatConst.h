@@ -6,6 +6,6 @@
 struct FloatConst;
 struct TokenList;
 
-struct FloatConst* makeFloatConst(struct TokenList* tokens, bool debug);
+struct FloatConst* makeFloatConst(struct TokenList* tokens);
 
 #endif

@@ -6,6 +6,6 @@
 struct TokenList;
 struct SwitchStmt;
 
-struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens, bool debug);
+struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens);
 
 #endif

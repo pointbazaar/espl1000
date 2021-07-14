@@ -14,7 +14,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
+struct StructDecl* makeStructDecl(struct TokenList* tokens) {
 
 	struct StructDecl* res = make(StructDecl);
 	struct TokenList* copy = list_copy(tokens);
@@ -29,14 +29,14 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 		struct Token* next = list_head(copy);
 		
 		if(next->kind != STRUCT){
-			printf("parsing error, expected 'struct' , but got: %s\n", list_code(copy,debug));
+			printf("parsing error, expected 'struct' , but got: %s\n", list_code(copy));
 			exit(1);
 		}
 		list_consume(copy, 1);
 		
 		
 		//read the struct type
-		struct SimpleType* st = makeSimpleType(copy, debug);
+		struct SimpleType* st = makeSimpleType(copy);
 		if(st == NULL){
 			printf("expected SimpleType, but got: \n");
 			list_print(copy);
@@ -48,14 +48,14 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 			
 		next = list_head(copy);
 		if(next->kind != LCURLY){
-			printf("parsing error, expected '{' , but got: %s\n", list_code(copy,debug));
+			printf("parsing error, expected '{' , but got: %s\n", list_code(copy));
 			exit(1);
 		}
 		list_consume(copy, 1);
 		
 		struct StructMember* member;
 		
-		member = makeStructMember(copy, debug);
+		member = makeStructMember(copy);
 		while(member != NULL){
 			
 			res->members[res->count_members] = member;
@@ -67,12 +67,12 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens, bool debug){
 				sizeof(struct StructMember*)*(res->count_members+1)
 			);
 			
-			member = makeStructMember(copy, debug);
+			member = makeStructMember(copy);
 		}
 		
 		next = list_head(copy);
 		if(next->kind != RCURLY){
-			printf("parsing error, expected '}' , but got: %s\n", list_code(copy,debug));
+			printf("parsing error, expected '}' , but got: %s\n", list_code(copy));
 			exit(1);
 		}
 		list_consume(copy, 1);
