@@ -10,6 +10,6 @@
 struct ST;
 struct Method;
 
-void lvst_fill(struct Method* subr, struct ST* st, bool debug);
+void lvst_fill(struct Method* subr, struct ST* st);
 
 #endif

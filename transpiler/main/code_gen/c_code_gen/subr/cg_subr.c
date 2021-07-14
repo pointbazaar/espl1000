@@ -26,7 +26,8 @@ void transpileMethod(struct Method* m, struct Ctx* ctx){
 	
 	//create the local variable symbol table
 	lvst_clear(ctx->tables->lvst);
-	lvst_fill(m, ctx->tables, ctx->flags->debug);
+	lvst_fill(m, ctx->tables);
+	if (ctx->flags->debug){ lvst_print(ctx->tables->lvst); }
 
 	transpileMethodSignature(m, ctx);
 	

@@ -60,7 +60,7 @@ void tc_method(struct Method* m, struct TCCtx* tcctx){
 	tcctx->currentFn = m;
 	
 	lvst_clear(tcctx->st->lvst);
-	lvst_fill(m, tcctx->st, false);
+	lvst_fill(m, tcctx->st);
 	
 	tc_stmtblock(m->block, tcctx);
 }

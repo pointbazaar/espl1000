@@ -112,7 +112,7 @@ static void annot_private_struct_member(struct ST* st, struct Variable* var){
 	struct Variable* member = var->member_access;
 	
 	lvst_clear(st->lvst);
-	lvst_fill(current_subr, st, false);
+	lvst_fill(current_subr, st);
 	
 	//is it a local variable or are we already
 	//down the member access chain? 
