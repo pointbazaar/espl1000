@@ -1,11 +1,23 @@
 fn main () ~> int {
 
 	c = 4;
+
+	//Match statement would be more flexible than switch,
+	//being the expression equivalent of the switch statement.
+	//A Match statement could be transpiled to a function,
+	//taking as arguments whichever variables from the surrounding function are
+	//used within it.
+	//A Match statement would be more flexible than a ternary expression
+	//and would reduce the need for if-elseif-elseif...-else chains
 	
 	x = match c {
 		
-		c > 30	-> 5;
-		_ 	-> 8;
+		case c > 30	-> 5;
+		case c < 30 {
+		    c++;
+		    return b;
+		}
+		case _ 	    -> 8;
 	};
 	
 	x = match c { c > 30 -> 5; _ -> 8; }

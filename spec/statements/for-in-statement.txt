@@ -25,28 +25,6 @@ Range ::= Expr '..' Expr
 
 forStmt ::= 'for' Identifier 'in' Range StmtBlock
 
------------------------------
-
-Examples would be:
-
-for i in 1 .. n-1 {
-	//i can only be read from, not written to
-	//inside this block
-}
-
-for j in a .. b {
-
-	arr[j] = 1;
-	println("%d\n", j);
-}
-
-for row in 0 .. rows-1 { 
-	for col in 0 .. cols-1 {
-		arr[row][col] = row+col;
-	}
-}
-
----------------------------
 Ranges would be useful in general.
 
 

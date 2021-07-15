@@ -4,7 +4,7 @@ It specifies:
 ----------------------------------------
  -  (1) Naming of structs
  -  (2) Naming of functions
- -  (3) Headers
+ -  (3) Header Guards
  -  (4) Naming of Local Variables, Struct Members, Function Arguments
  -  (5) Error Handling
  -  (6) Indentation
@@ -12,6 +12,7 @@ It specifies:
  -  (8) Macros
  -  (9) Global Variables
  - (10) Typedef
+ - (11) Filenames
 ----------------------------------------
 (1) Naming of structs
 
@@ -23,7 +24,7 @@ It specifies:
     functions that primarily operate on a struct should have the
     name of the struct as prefix, e.g. mystruct_add(...).
 
-(3) Headers
+(3) Header Guards
 
     Header Guards should be used for all headers. Format: $(FILENAME)_H
 
@@ -55,3 +56,5 @@ It specifies:
 (9) Global Variables: Global Variables are strongly discouraged. 
 
 (10) Typedef: do not use 'typedef'
+
+(11) Filenames: filenames should use snake_case, e.g. 'dead_analyzer.c', 'dead_analyzer.h'

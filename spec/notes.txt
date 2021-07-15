@@ -22,30 +22,18 @@ For simplicity, Dragon will in the near future support 3 main parts.
 
 Structs, Subroutines, Enums
 
-Enums provide a way to store a limited set of values of the same type, as a type.
-
-enum Difficulty of String{
-"Easy",
-"Hard"
-}
-
-enum A of Point {
-{1,2},
-{3,6}
-}
-
-This can also be done for structs or subroutines or enums themselves.
-With enums themselves it would basically make a subset.
-
-All members of the enum must be constant expressions.
-
 Also, there should be a feature to use the compiler at the command line as a search engine for documentation about the standard library and which functions are available in a module.
 
 This is so you are not relying on internet all the time like with many langs.
 
 Just mention the name of the namespace to the compiler and get a list of subroutine signatures.
 
+great web editor for .dot files: http://magjac.com/graphviz-visual-editor/
 
-great web editor for .dot files
 
-http://magjac.com/graphviz-visual-editor/
+# How to profile the various programs?
+https://stackoverflow.com/questions/375913/how-can-i-profile-c-code-running-on-linux/378024#378024
+gives an answer: e.g.:
+
+valgrind --tool=callgrind dragon-parser .Everything.dg.tokens
+kcachegrind callgrind.out.x
