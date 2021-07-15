@@ -10,6 +10,14 @@ This repo contains a simple, statically typed programming language that can be t
 
 ## Description
 
+smalldragon is inspired by the simplicity and power of C programming.
+
+It aims to provide a modern language which captures the unique feeling of C programming, 
+but in a slightly different way.
+
+All this is so that the programmer can focus and does not have to look at documentation all the time.
+
+
 The Goal is for the Experience to be similar to working with C and Assembly. 
 There you have more control of implementation details with Assembly, but more abstraction and productivity with C.
 
