@@ -19,6 +19,7 @@ add_executable(${PROJECT_NAME}
 	main/astnodes/const/FloatConst.c
 	main/astnodes/const/HexConst.c
 	main/astnodes/const/IntConst.c
+	main/astnodes/const/ConstValue.c
 	main/astnodes/const/StringConst.c
 	
 	main/astnodes/expr/Expr.c

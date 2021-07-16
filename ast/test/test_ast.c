@@ -317,10 +317,12 @@ void test_serialize_term() {
 	rewind(file);
 	
 	struct IntConst myIntConst = { .value = 48 };
-	
+
+	struct ConstValue mcv = {.kind = 2, .ptr.m2_int_const = &myIntConst};
+
 	struct Term m = {
-		.kind = 2,
-		.ptr.m2 = &myIntConst
+		.kind = 12,
+		.ptr.m12 = &mcv
 	};
 
 	write_term(&m, file);
@@ -329,7 +331,7 @@ void test_serialize_term() {
 	
 	struct Term* m2 = read_term(file);
 	
-	assert(m.ptr.m2->value == m2->ptr.m2->value);
+	assert(m.ptr.m12->ptr.m2_int_const->value == m2->ptr.m12->ptr.m2_int_const->value);
 
 	free_term(m2);
 }
@@ -347,10 +349,15 @@ void test_serialize_expr() {
 		},
 		.value = 4549
 	};
+
+	struct ConstValue mcv = {
+			.kind = 2,
+			.ptr.m2_int_const = &myIntConst
+	};
 	
 	struct Term m = {
-		.kind = 2,
-		.ptr.m2 = &myIntConst
+		.kind = 12,
+		.ptr.m12 = &mcv
 	};	
 	
 	struct Op myop;
@@ -378,7 +385,7 @@ void test_serialize_expr() {
 	
 	struct Expr* expr2 = read_expr(file);
 	
-	assert(expr.term1->term->ptr.m2->value == expr2->term1->term->ptr.m2->value);
+	assert(expr.term1->term->ptr.m12->ptr.m2_int_const->value == expr2->term1->term->ptr.m12->ptr.m2_int_const->value);
 	
 	assert(strcmp(expr.op->op, expr2->op->op) == 0);
 

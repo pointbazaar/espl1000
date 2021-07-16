@@ -201,28 +201,13 @@ void write_term(struct Term* m, FILE* file){
 	serialize_int(m->kind, file);
 
 	switch(m->kind){
-		case  1:
-			write_bool_const(m->ptr.m1, file);  break;
-		case  2:
-			write_int_const(m->ptr.m2, file);   break;
-		case  3:
-			write_char_const(m->ptr.m3, file);  break;
-		case  4:
-			write_call(m->ptr.m4, file); break;
-		case  5:
-			write_expr(m->ptr.m5, file);       break;
-		case  6:
-			write_variable(m->ptr.m6, file);   break;
-		case  7:
-			write_float_const(m->ptr.m7, file); break;
-		case  8:
-			write_string_const(m->ptr.m8, file); break;
-		case  9:
-			write_hex_const(m->ptr.m9, file);  break;
-		case 10:
-			write_bin_const(m->ptr.m10, file); break;
-		case 11:
-			write_lambda(m->ptr.m11, file);	  break;
+		case  4: write_call(m->ptr.m4, file); break;
+		case  5: write_expr(m->ptr.m5, file); break;
+		case  6: write_variable(m->ptr.m6, file); break;
+		case  8: write_string_const(m->ptr.m8, file); break;
+		case 11: write_lambda(m->ptr.m11, file);	break;
+		case 12: write_const_value(m->ptr.m12, file); break;
+
 		default: error(file, "Error in write_term(...)");
 	}
 	
@@ -311,6 +296,27 @@ void write_float_const(struct FloatConst* m, FILE* file){
 	write_super(m);
 	fwrite(m, structsize(FloatConst), 1, file);
 	magic_num_serialize(MAGIC_END_FLOATCONST, file);
+}
+void write_const_value(struct ConstValue* m, OUTFILE){
+
+	magic_num_serialize(MAGIC_CONSTVALUE, file);
+
+	write_super(m);
+
+	serialize_int(m->kind, file);
+
+	switch(m->kind){
+		case 1: write_bool_const(m->ptr.m1_bool_const, file); break;
+		case 2: write_int_const(m->ptr.m2_int_const, file);  break;
+		case 3: write_char_const(m->ptr.m3_char_const, file); break;
+		case 4: write_float_const(m->ptr.m4_float_const, file); break;
+		case 5: write_hex_const(m->ptr.m5_hex_const, file); break;
+		case 6: write_bin_const(m->ptr.m6_bin_const, file); break;
+		default:
+			error(file, "Error in write_const_value");
+	}
+
+	magic_num_serialize(MAGIC_END_CONSTVALUE, file);
 }
 void write_string_const(struct StringConst* m, FILE* file){
 	
@@ -468,18 +474,9 @@ void write_case_stmt(struct CaseStmt* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_CASESTMT, file);
 	write_super(m);
-	serialize_int(m->kind, file);
-	
-	switch(m->kind){
-		case 0:
-			write_bool_const(m->ptr.m1, file); break;
-		case 1:
-			write_char_const(m->ptr.m2, file); break;
-		case 2:
-			write_int_const(m->ptr.m3, file); break;
-		default: error(file, "kind has wrong value");
-	}
-	
+
+	write_const_value(m->const_value, file);
+
 	serialize_int(opt2int(m->block), file);
 	
 	if(m->block != NULL)

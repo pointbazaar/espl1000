@@ -29,6 +29,7 @@ struct IntConst;
 struct HexConst;
 struct BinConst;
 struct FloatConst;
+struct ConstValue;
 struct StringConst;
 //statements
 struct AssignStmt;

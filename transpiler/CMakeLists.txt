@@ -71,6 +71,7 @@ add_executable(${PROJECT_NAME}
 	main/typeinference/typeinfer_simplevar.c
 	main/typeinference/typeinfer_term.c
 	main/typeinference/typeinfer_var.c
+	main/typeinference/typeinfer_const.c
 	main/typeinference/util/type_str.c
 	
 	#util

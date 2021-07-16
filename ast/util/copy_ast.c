@@ -46,7 +46,20 @@ struct Identifier* copy_identifier(struct Identifier* id){
 	strcpy(res->identifier, id->identifier);
 	return res;
 }
+struct StmtBlock*  copy_stmt_block(struct StmtBlock* s){
 
+	struct StmtBlock* res = make(StmtBlock);
+
+	res->super.annotations = s->super.annotations;
+	res->super.line_num = s->super.line_num;
+
+	res->count = s->count;
+	res->stmts = malloc(sizeof (void*)*res->count);
+	for (int i = 0; i < res->count; ++i) {
+		res->stmts[i] = copy_stmt(s->stmts[i]);
+	}
+	return res;
+}
 struct Lambda* copy_lambda(struct Lambda* l){
 
 	struct Lambda* res = make(Lambda);
@@ -79,7 +92,25 @@ struct BinConst* copy_bin_const(struct BinConst* hc){
 	res->value = hc->value;
 	return res;
 }
+struct ConstValue*  copy_const_value(struct ConstValue* cv){
 
+	struct ConstValue* res = make(ConstValue);
+	res->kind = cv->kind;
+
+	switch (res->kind) {
+		case 1: res->ptr.m1_bool_const = copy_bool_const(cv->ptr.m1_bool_const); break;
+		case 2: res->ptr.m2_int_const = copy_int_const(cv->ptr.m2_int_const); break;
+		case 3: res->ptr.m3_char_const = copy_char_const(cv->ptr.m3_char_const); break;
+		case 4: res->ptr.m4_float_const = copy_float_const(cv->ptr.m4_float_const); break;
+		case 5: res->ptr.m5_hex_const= copy_hex_const(cv->ptr.m5_hex_const); break;
+		case 6: res->ptr.m6_bin_const = copy_bin_const(cv->ptr.m6_bin_const); break;
+	}
+
+	res->super.line_num = cv->super.line_num;
+	res->super.annotations = cv->super.annotations;
+
+	return res;
+}
 struct SimpleVar* copy_simple_var(struct SimpleVar* sv){
 	
 	struct SimpleVar* res = make(SimpleVar);
@@ -101,19 +132,15 @@ struct Term* copy_term(struct Term* t){
 	res->kind = t->kind;
 	
 	switch(t->kind){
-		
-		case  1: res->ptr.m1 = copy_bool_const(t->ptr.m1);   break;
-		case  2: res->ptr.m2 = copy_int_const(t->ptr.m2);    break;
-		case  3: res->ptr.m3 = copy_char_const(t->ptr.m3);   break;
+
 		case  4: res->ptr.m4 = copy_call(t->ptr.m4);        break;
 		case  5: res->ptr.m5 = copy_expr(t->ptr.m5);        break;
 		case  6: res->ptr.m6 = copy_variable(t->ptr.m6);    break;
-		case  7: res->ptr.m7 = copy_float_const(t->ptr.m7);  break;
 		case  8: res->ptr.m8 = copy_string_const(t->ptr.m8); break;
-		case  9: res->ptr.m9 = copy_hex_const(t->ptr.m9);    break;
-		case 10: res->ptr.m10 = copy_bin_const(t->ptr.m10);  break;
+		case 11: res->ptr.m11 = copy_lambda(t->ptr.m11); break;
+		case 12: res->ptr.m12 = copy_const_value(t->ptr.m12); break;
 		default:
-			printf("[AST][Error] copy_term(...)\n");
+			printf("[AST][Error] copy_term(...), kind was: %d\n", t->kind);
 			exit(1);
 	}
 	
@@ -289,5 +316,27 @@ struct Call* copy_call(struct Call* c){
 		res->args[i] = copy_expr(c->args[i]);
 	}
 	
+	return res;
+}
+struct Stmt* copy_stmt(struct Stmt* stmt){
+
+	//TODO
+	exit(1);
+	return NULL;
+}
+struct CaseStmt* copy_case_stmt(struct CaseStmt* c){
+
+	struct CaseStmt* res = make(CaseStmt);
+
+	res->super.line_num = c->super.line_num;
+	res->super.annotations = c->super.annotations;
+
+	res->const_value = copy_const_value(c->const_value);
+	res->block = NULL;
+
+	if (c->block != NULL) {
+		res->block = copy_stmt_block(c->block);
+	}
+
 	return res;
 }

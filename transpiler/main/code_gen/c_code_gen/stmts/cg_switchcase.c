@@ -8,6 +8,7 @@
 
 #include "cg_switchcase.h"
 #include "../expr/cg_expr.h"
+#include "code_gen/c_code_gen/const/cg_const.h"
 #include "../cg.h"
 
 #include "code_gen/util/indent.h"
@@ -32,14 +33,9 @@ void transpileCaseStmt(struct CaseStmt* s, struct Ctx* ctx){
 	
 	indent(ctx);
 	fprintf(ctx->file, "case ");
-	
-	switch(s->kind){
-		case 0: fprintf(ctx->file, "%s", (s->ptr.m1->value)?"true":"false"); break;
-		case 1: fprintf(ctx->file, "'%c'", s->ptr.m2->value); break;
-		case 2: fprintf(ctx->file, "%d", s->ptr.m3->value); break;
-		default:
-			printf("ERROR\n"); exit(1);
-	}
+
+	transpileConstValue(s->const_value, ctx);
+
 	fprintf(ctx->file, ":\n");
 	
 	if(s->block == NULL){ return; }

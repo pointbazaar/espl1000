@@ -87,21 +87,22 @@ assignmentStmt ::= Type? Variable '=' Expr ';'
 
 switchStmt ::= 'switch' Expr '{' CaseStmt* '}'
 
-CaseStmt ::= 'case' (BoolConst | IntConst | CharConst) StmtBlock?
+CaseStmt ::= 'case' ConstValue StmtBlock?
 
 TryCatchStmt ::= 'try' StmtBlock 'catch' StmtBlock
 
 // --- END STATEMENTS ----------------------
+
+//NEW
+ConstValue ::= BoolConst | IntConst | BinConst | HexConst 
+                        | CharConst | FloatConst
 
 Range ::= Expr '..' Expr
 
 UnOpTerm ::= Op Term //op must be a unary operator like '!', '~'
 
 Term ::= ArrayConst
-		| BoolConst
-		| IntConst
-		| HexConst
-		| CharConst
+		| ConstValue
 		| StringConst
 		| Call 
 		| '(' Expr ')' 

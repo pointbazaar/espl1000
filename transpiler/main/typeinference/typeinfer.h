@@ -13,6 +13,7 @@ struct Type* infer_type_unopterm	(char* filename, struct ST* st, struct UnOpTerm
 struct Type* infer_type_methodcall	(                struct ST* st, struct Call* m);
 struct Type* infer_type_variable	(char* filename, struct ST* st, struct Variable* v);
 struct Type* infer_type_simplevar	(char* filename, struct ST* st, struct SimpleVar* v);
+struct Type* infer_type_constvalue		(char* filename, struct ST* st, struct ConstValue* cv);
 
 void print_exit(char* filename, struct ASTNode* node, char* msg);
 

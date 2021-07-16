@@ -28,7 +28,7 @@ int expr_test_simple_expression(bool debug) {
 
 	assert(expr != NULL);
 	assert(expr->term1 != NULL);
-	assert(expr->term1->term->ptr.m2->value == 4);
+	assert(expr->term1->term->ptr.m12->ptr.m2_int_const->value == 4);
 	
 	freeTokenList(list);
 	free_expr(expr);
@@ -121,7 +121,7 @@ int expr_test_comparison(bool debug){
 	struct Variable* v = term1->ptr.m6;
 	assert(v != NULL);
 
-	struct IntConst* ic = term2->ptr.m2;
+	struct IntConst* ic = term2->ptr.m12->ptr.m2_int_const;
 	assert(ic != NULL);
 
 	assert(ic->value == 5);

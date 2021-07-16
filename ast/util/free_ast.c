@@ -52,7 +52,17 @@ void free_identifier(struct Identifier* id) { free(id); }
 void free_int_const(struct IntConst* ic) { free(ic); }
 void free_hex_const(struct HexConst* hc){ free(hc); }
 void free_bin_const(struct BinConst* hc){ free(hc); }
-
+void free_const_value(struct ConstValue* cv){
+	switch (cv->kind) {
+		case 1: free_bool_const(cv->ptr.m1_bool_const); break;
+		case 2: free_int_const(cv->ptr.m2_int_const); break;
+		case 3: free_char_const(cv->ptr.m3_char_const); break;
+		case 4: free_float_const(cv->ptr.m4_float_const); break;
+		case 5: free_hex_const(cv->ptr.m5_hex_const); break;
+		case 6: free_bin_const(cv->ptr.m6_bin_const); break;
+	}
+	free(cv);
+}
 void free_method(struct Method* m) {
 
 	free_type(m->return_type);
@@ -118,28 +128,12 @@ void free_struct_member(struct StructMember* sm) {
 void free_term(struct Term* t) {
 
 	switch(t->kind){
-		case  1:
-			free_bool_const(t->ptr.m1); 	break;
-		case  2:
-			free_int_const(t->ptr.m2); 	break;
-		case  3:
-			free_char_const(t->ptr.m3); 	break;
-		case  4:
-			free_call(t->ptr.m4); 	break;
-		case  5:
-			free_expr(t->ptr.m5); 	break;
-		case  6:
-			free_variable(t->ptr.m6); 	break;
-		case  7:
-			free_float_const(t->ptr.m7); 	break;
-		case  8:
-			free_string_const(t->ptr.m8); 	break;
-		case  9:
-			free_hex_const(t->ptr.m9); 	break;
-		case 10:
-			free_bin_const(t->ptr.m10); 	break;
-		case 11:
-			free_lambda(t->ptr.m11);   break;
+		case  4: free_call(t->ptr.m4); 	break;
+		case  5: free_expr(t->ptr.m5); 	break;
+		case  6: free_variable(t->ptr.m6); 	break;
+		case  8: free_string_const(t->ptr.m8); 	break;
+		case 11: free_lambda(t->ptr.m11);   break;
+		case 12: free_const_value(t->ptr.m12); break;
 		default:
 			printf("Error in free_term(...)\n");
 			free(t);
@@ -353,20 +347,13 @@ void free_switch_stmt(struct SwitchStmt* sstmt){
 }
 
 void free_case_stmt(struct CaseStmt* cstmt){
+
+	free_const_value(cstmt->const_value);
+
 	if(cstmt->block != NULL){
 		free_stmt_block(cstmt->block);
 	}
-	switch(cstmt->kind){
-		case 0:
-			free_bool_const(cstmt->ptr.m1); break;
-		case 1:
-			free_char_const(cstmt->ptr.m2); break;
-		case 2:
-			free_int_const(cstmt->ptr.m3); break;
-		default:
-			printf("Error in free_case_stmt\n");
-			exit(1);
-	}
+
 	free(cstmt);
 }
 

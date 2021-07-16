@@ -34,6 +34,7 @@ void write_bin_const(struct BinConst* m, OUTFILE);
 void write_bool_const(struct BoolConst* m, OUTFILE);
 void write_char_const(struct CharConst* m, OUTFILE);
 void write_float_const(struct FloatConst* m, OUTFILE);
+void write_const_value(struct ConstValue* m, OUTFILE);
 void write_string_const(struct StringConst* m, OUTFILE);
 
 //other 

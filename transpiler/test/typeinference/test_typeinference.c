@@ -28,11 +28,14 @@ void test_infer_type_term(bool debug){
 	
 	struct Term* term = make(Term);
 	struct FloatConst* c = make(FloatConst);
-	
+	struct ConstValue* cv = make(ConstValue);
+
 	c->value = 83.0;
-	
-	term->kind = 7;
-	term->ptr.m7 = c;
+	cv->ptr.m4_float_const = c;
+	cv->kind = 4;
+
+	term->kind = 12;
+	term->ptr.m12 = cv;
 	
 	
 	struct Type* t = infer_type_term("test", st, term);
@@ -55,13 +58,17 @@ void test_infer_type_unopterm(bool debug){
 	struct ST* st = makeST(debug);
 	
 	struct Term* term = make(Term);
-	struct BoolConst* c = make(BoolConst);
+	struct BoolConst* bconst = make(BoolConst);
 	struct UnOpTerm* uopt = make(UnOpTerm);
+
+	bconst->value = false;
+
+	struct ConstValue* cv = make(ConstValue);
+	cv->ptr.m1_bool_const = bconst;
+	cv->kind = 1;
 	
-	c->value = false;
-	
-	term->kind = 1;
-	term->ptr.m1 = c;
+	term->kind = 12;
+	term->ptr.m12 = cv;
 	
 	uopt->op = NULL;
 	uopt->term = term;
@@ -91,11 +98,15 @@ void test_infer_type_expr(bool debug){
 	struct Term* term = make(Term);
 	struct IntConst* ic = make(IntConst);
 	struct UnOpTerm* uopt = make(UnOpTerm);
-	
+
+	struct ConstValue* cv = make(ConstValue);
+
 	ic->value = 3;
+	cv->ptr.m2_int_const = ic;
+	cv->kind = 2;
 	
-	term->kind = 2;
-	term->ptr.m2 = ic;
+	term->kind = 12;
+	term->ptr.m12 = cv;
 	
 	uopt->op = NULL;
 	uopt->term = term;
@@ -141,13 +152,20 @@ void test_infer_type_expr_multiple_terms(bool debug){
 	myop->is_arithmetic = true;
 
 	c1->value = 3;
-	c2->value = 3.0;
+	c2->value = 3.0f;
+
+	struct ConstValue* cv1 = make(ConstValue);
+	struct ConstValue* cv2 = make(ConstValue);
+	cv1->ptr.m2_int_const = c1;
+	cv1->kind = 2;
+	cv2->ptr.m4_float_const = c2;
+	cv2->kind = 4;
 	
-	term1->kind = 2;
-	term2->ptr.m2 = c1;
+	term1->kind = 12;
+	term1->ptr.m12 = cv1;
 	
-	term2->kind = 7;
-	term2->ptr.m7 = c2;
+	term2->kind = 12;
+	term2->ptr.m12 = cv2;
 	
 	uopt1->op = NULL;
 	uopt1->term = term1;

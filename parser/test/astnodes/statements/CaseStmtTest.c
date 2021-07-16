@@ -30,9 +30,9 @@ int test_parser_case_stmt(bool debug) {
 	struct CaseStmt* node = makeCaseStmt(list);
 	
 	assert(node != NULL);
-	assert(node->kind == 0);
+	assert(node->const_value->kind == 1);
 	
-	assert(node->ptr.m1 != NULL);
+	assert(node->const_value->ptr.m1_bool_const != NULL);
 	assert(node->block != NULL);
 	
 	freeTokenList(list);

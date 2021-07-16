@@ -3,15 +3,11 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+
 #include "parser/main/util/parse_astnode.h"
 
 #include "Term.h"
-#include "const/CharConst.h"
-#include "const/IntConst.h"
-#include "const/HexConst.h"
-#include "const/BinConst.h"
-#include "const/BoolConst.h"
-#include "const/FloatConst.h"
+#include "const/ConstValue.h"
 #include "const/StringConst.h"
 #include "Expr.h"
 #include "var/Variable.h"
@@ -58,36 +54,14 @@ struct Term* makeTerm(struct TokenList* tokens) {
 	if(tk_kind == LPARENS){
 		
 		if((res->ptr.m11 = makeLambda(copy)) != NULL){
-			
 			res->kind = 11;
 		}else{
-
 			tryInitExpr(res, copy);
 		}
 		
 	}else if(tk_kind == STRINGCONST){
 
 		tryInitStringConst(res, copy);
-		
-	}else if(tk_kind == HEXCONST){
-		
-		res->ptr.m9 = makeHexConst(copy);
-		res->kind = 9;
-		
-	}else if(tk_kind == BINCONST){
-		
-		res->ptr.m10 = makeBinConst(copy);
-		res->kind = 10;
-		
-	}else if(tk_kind == CCONST){
-		
-		res->ptr.m3 = makeCharConst(copy);
-		res->kind = 3;
-		
-	}else if(tk_kind == BCONST_TRUE || tk_kind == BCONST_FALSE ){
-		
-		res->ptr.m1 = makeBoolConst(copy);
-		res->kind = 1;
 		
 	}else{
 		goto other_term;
@@ -98,13 +72,8 @@ struct Term* makeTerm(struct TokenList* tokens) {
 	
 other_term:
 
-	if((res->ptr.m2 = makeIntConst(copy)) != NULL){
-		res->kind = 2;
-		goto end;
-	}
-
-	if((res->ptr.m7 = makeFloatConst(copy)) != NULL){
-		res->kind = 7;
+	if ((res->ptr.m12 = makeConstValue(copy)) != NULL){
+		res->kind = 12;
 		goto end;
 	}
 	
@@ -117,15 +86,12 @@ other_term:
 		res->kind = 6;
 		goto end;
 	}
-	
-		
+
 	free(res);
 	freeTokenListShallow(copy);
 	return NULL;		
 
-	
 end:
-
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
 
@@ -137,7 +103,7 @@ struct Term* initTerm(){
 	struct Term* res = make(Term);
 	
 	res->kind = 0;
-	res->ptr.m1 = NULL;
+	res->ptr.m5 = NULL;
 	
 	return res;
 }

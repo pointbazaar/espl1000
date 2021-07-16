@@ -27,6 +27,7 @@ struct BinConst* 	read_bin_const(INFILE);
 struct BoolConst* 	read_bool_const(INFILE);
 struct CharConst* 	read_char_const(INFILE);
 struct FloatConst* 	read_float_const(INFILE);
+struct ConstValue*  read_const_value(INFILE);
 struct StringConst* read_string_const(INFILE);
 
 //other

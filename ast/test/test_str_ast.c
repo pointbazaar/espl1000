@@ -91,10 +91,12 @@ void test_str_expr(){
 	strcpy(o1.op, "-");
 	
 	struct IntConst ic = { .value = 45 };
-	
+
+	struct ConstValue cv = {.ptr.m2_int_const = &ic, .kind = 2};
+
 	struct Term b = {
-		.kind = 2,
-		.ptr.m2 = &ic
+		.kind = 12,
+		.ptr.m12 = &cv
 	};
 	
 	struct UnOpTerm u = {
@@ -148,10 +150,12 @@ void test_str_unopterm(){
 	strcpy(op.op, "-");
 	
 	struct IntConst ic = { .value = 3489 };
+
+	struct ConstValue cv = {.ptr.m2_int_const = &ic, .kind = 2};
 	
 	struct Term b = { 
-		.kind = 2,
-		.ptr.m2 = &ic
+		.kind = 12,
+		.ptr.m12 = &cv
 	};
 	
 	struct UnOpTerm u = {
@@ -170,10 +174,11 @@ void test_str_term(){
 	status("str_term");
 	
 	struct IntConst ic = { .value = 3489 };
-	
+	struct ConstValue cv = {.ptr.m2_int_const = &ic, .kind = 2};
+
 	struct Term b = { 
-		.kind = 2,
-		.ptr.m2 = &ic
+		.kind = 12,
+		.ptr.m12 = &cv
 	};
 	
 	char* s = str_term(&b);
@@ -210,10 +215,11 @@ void test_str_lambda(){
 	strcpy(o1.op, "-");
 	
 	struct IntConst ic = { .value = 2 };
-	
+	struct ConstValue cv = {.ptr.m2_int_const = &ic, .kind = 2};
+
 	struct Term b = {
-		.kind = 2,
-		.ptr.m2 = &ic
+		.kind = 12,
+		.ptr.m12 = &cv
 	};
 	
 	struct UnOpTerm u = {

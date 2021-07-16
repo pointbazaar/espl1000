@@ -5,9 +5,7 @@
 
 #include "CaseStmt.h"
 
-#include "const/IntConst.h"
-#include "const/CharConst.h"
-#include "const/BoolConst.h"
+#include "const/ConstValue.h"
 
 #include "StmtBlock.h"
 
@@ -30,31 +28,18 @@ struct CaseStmt* makeCaseStmt(struct TokenList* tokens) {
 	struct CaseStmt* res = make(CaseStmt);
 	
 	parse_astnode(copy, &(res->super));
-	
-	res->kind = 0;
-	res->ptr.m1 = NULL;
-	res->block = NULL;
 
-	res->kind = 0;
-	if((res->ptr.m1 = makeBoolConst(copy)) == NULL){
-		res->kind = 1;
-		if((res->ptr.m2 = makeCharConst(copy)) == NULL){
-			res->kind = 2;
-			if((res->ptr.m3 = makeIntConst(copy)) == NULL){
-				free(res);
-				
-				//parsing is deterministic here, 
-				//so it must be one of these values
-				printf("[Parser][Error] no constant case value given\n");
-				list_print(copy);
-				exit(1);
-				return NULL;
-			}
-		}
+	res->const_value = makeConstValue(copy);
+
+	if (res->const_value == NULL) {
+
+		printf("[Parser][Error] no constant case value given\n");
+		list_print(copy);
+		exit(1);
+		return NULL;
 	}
 
-	//the block is optional
-	//and can be NULL
+	//the block is optional and can be NULL
 	res->block = makeStmtBlock(copy);
 
 	list_set(tokens, copy);

@@ -140,7 +140,19 @@ char* str_hex_const(struct HexConst* hc){
 	sprintf(res, "0x%x", hc->value);
 	return res;
 }
-
+char* str_const_value(struct ConstValue* cv){
+	switch (cv->kind) {
+		case 1: return str_bool_const(cv->ptr.m1_bool_const);
+		case 2: return str_int_const(cv->ptr.m2_int_const);
+		case 3: return str_char_const(cv->ptr.m3_char_const);
+		case 4: return str_float_const(cv->ptr.m4_float_const);
+		case 5: return str_hex_const(cv->ptr.m5_hex_const);
+		case 6: return str_bin_const(cv->ptr.m6_bin_const);
+	}
+	printf("[str_ast][Error] Unhandled Case\n");
+	exit(1);
+	return NULL;
+}
 char* str_string_const(struct StringConst* s){
 	
 	char* res =  malloc(sizeof(char)*(3+strlen(s->value)));
@@ -449,18 +461,12 @@ char* str_un_op_term(struct UnOpTerm* u){
 char* str_term(struct Term* t){
 	
 	switch(t->kind){
-		
-		case 1: return str_bool_const(t->ptr.m1);
-		case 2: return str_int_const(t->ptr.m2);
-		case 3: return str_char_const(t->ptr.m3);
 		case 4: return str_call(t->ptr.m4);
 		case 5: return str_expr(t->ptr.m5);
 		case 6: return str_variable(t->ptr.m6);
-		case 7: return str_float_const(t->ptr.m7);
 		case 8: return str_string_const(t->ptr.m8);
-		case 9: return str_hex_const(t->ptr.m9);
-		
-		case 10: return str_bin_const(t->ptr.m10);
+		//lambda missing
+		case 12: return str_const_value(t->ptr.m12);
 	}
 	
 	error("str_term");
@@ -685,14 +691,7 @@ char* str_ret_stmt(struct RetStmt* r){
 
 char* str_case_stmt(struct CaseStmt* c){
 	
-	char* s = NULL;
-	
-	switch(c->kind){
-	
-		case 0: s = str_bool_const(c->ptr.m1); break;
-		case 1: s = str_char_const(c->ptr.m2); break;
-		case 2: s = str_int_const(c->ptr.m3); break;
-	}
+	char* s = str_const_value(c->const_value);
 	
 	char* s2 = str_stmt_block(c->block);
 	

@@ -1,10 +1,6 @@
 #include <string.h>
-#include <stdlib.h>
-#include <stdbool.h>
 
 #include "ast/ast.h"
-#include "ast/util/free_ast.h"
-#include "ast/util/str_ast.h"
 
 #include "typeinference/typeinfer.h"
 #include "typeinference/util/type_str.h"
@@ -21,17 +17,13 @@ struct Type* infer_type_unopterm(char* filename, struct ST* st, struct UnOpTerm*
 struct Type* infer_type_term(char* filename, struct ST* st, struct Term* t){
 	
 	switch(t->kind){
-		
-		case  1: return typeFromStrPrimitive(st, "bool"); 
-		case  2: return typeFromStrPrimitive(st, "int"); 
-		case  3: return typeFromStrPrimitive(st, "char"); 
+
 		case  4: return infer_type_methodcall(st, t->ptr.m4); 
 		case  5: return infer_type_expr(filename, st, t->ptr.m5); 
-		case  6: return infer_type_variable(filename, st, t->ptr.m6); 
-		case  7: return typeFromStrPrimitive(st, "float"); 
+		case  6: return infer_type_variable(filename, st, t->ptr.m6);
 		case  8: return typeFromStrArray(st, "char");
-		case  9: return typeFromStrPrimitive(st, "int");
-		case 10: return typeFromStrPrimitive(st, "int");
+		//do not use lambda here
+		case 12: return infer_type_constvalue(filename, st, t->ptr.m12);
 		
 		default: print_exit(filename, &(t->super), ERR_FATAL);
 	}

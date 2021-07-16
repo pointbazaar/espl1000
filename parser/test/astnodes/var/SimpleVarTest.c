@@ -57,11 +57,11 @@ int simplevar_test_parse_simple_indexed_variable(bool debug) {
 	assert(node->count_indices == 1);
 
 	assert(node->indices[0]->term1 != NULL);
-	assert(node->indices[0]->term1->term->ptr.m2 != NULL);
+	assert(node->indices[0]->term1->term->ptr.m12 != NULL);
 
 	assert(
 			1 == 
-			(node->indices[0]->term1->term->ptr.m2)	//IntConst
+			(node->indices[0]->term1->term->ptr.m12->ptr.m2_int_const)	//IntConst
 			->value
 	);
 	

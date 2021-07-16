@@ -43,6 +43,7 @@ static void visit_char_const   	(struct CharConst* c, VISITOR, ARG);
 static void visit_float_const  	(struct FloatConst* f, VISITOR, ARG);
 static void visit_hex_const    	(struct HexConst* h, VISITOR, ARG);
 static void visit_bin_const    	(struct BinConst* b, VISITOR, ARG);
+static void visit_const_value   (struct ConstValue* cv, VISITOR, ARG);
 static void visit_string_const 	(struct StringConst* s, VISITOR, ARG);
 
 //var
@@ -220,6 +221,8 @@ static void visit_switch_stmt(struct SwitchStmt* s, VISITOR, void* arg){
 static void visit_case_stmt(struct CaseStmt* c, VISITOR, void* arg){
 	
 	visitor(c, NODE_CASESTMT, arg);
+
+	visit_const_value(c->const_value, visitor, arg);
 	
 	if(c->block != NULL)
 		{ visit_stmt_block(c->block, visitor, arg); }
@@ -294,32 +297,20 @@ static void visit_term(struct Term* t, VISITOR, void* arg){
 	visitor(t, NODE_TERM, arg);
 	
 	switch(t->kind){
-	
-		case 1:
-			visit_bool_const(t->ptr.m1, visitor, arg);  break;
-		case 2:
-			visit_int_const(t->ptr.m2, visitor, arg);   break;
-		case 3:
-			visit_char_const(t->ptr.m3, visitor, arg);  break;
 		case 4:
 			visit_call(t->ptr.m4, visitor, arg);       break;
 		case 5:
 			visit_expr(t->ptr.m5, visitor, arg);       break;
 		case 6:
 			visit_variable(t->ptr.m6, visitor, arg);   break;
-		case 7:
-			visit_float_const(t->ptr.m7, visitor, arg); break;
 		case 8:
 			visit_string_const(t->ptr.m8, visitor, arg);break;
-		case 9:
-			visit_hex_const(t->ptr.m9, visitor, arg);   break;
-		case 10:
-			visit_bin_const(t->ptr.m10, visitor, arg); break;
 		case 11:
 			visit_lambda(t->ptr.m11, visitor, arg);   break;
-		
+		case 12:
+			visit_const_value(t->ptr.m12, visitor, arg); break;
 		default:
-			printf("[Visitor] Fatal(2)\n"); 
+			printf("[Visitor][Error] Fatal(2)\n");
 			exit(1);
 			break;
 	}
@@ -353,6 +344,20 @@ static void visit_hex_const(struct HexConst* h, VISITOR, void* arg){
 static void visit_bin_const(struct BinConst* b, VISITOR, void* arg){
 	
 	visitor(b, NODE_BINCONST, arg);
+}
+
+static void visit_const_value(struct ConstValue* cv, VISITOR, void* arg){
+
+	switch (cv->kind) {
+		case 1: visit_bool_const(cv->ptr.m1_bool_const, visitor, arg);
+		case 2: visit_int_const(cv->ptr.m2_int_const, visitor, arg);
+		case 3: visit_char_const(cv->ptr.m3_char_const, visitor, arg);
+		case 4: visit_float_const(cv->ptr.m4_float_const, visitor, arg);
+		case 5: visit_hex_const(cv->ptr.m5_hex_const, visitor, arg);
+		case 6: visit_bin_const(cv->ptr.m6_bin_const, visitor, arg);
+	}
+
+	visitor(cv, NODE_CONSTVALUE, arg);
 }
 
 static void visit_string_const(struct StringConst* s, VISITOR, void* arg){

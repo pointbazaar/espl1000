@@ -205,13 +205,13 @@ void tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx){
 		error(tcctx, msg);
 	}
 	
-	for(uint16_t i = 0; i < s->count_cases; i++){
+	for(uint32_t i = 0; i < s->count_cases; i++){
 	
 		struct CaseStmt* c = s->cases[i];
-		
-		const bool isBool = c->kind == 0;
-		const bool isChar = c->kind == 1;
-		const bool isInt  = c->kind == 2;
+
+		const bool isBool = c->const_value->kind == 1;
+		const bool isInt  = c->const_value->kind == 2;
+		const bool isChar = c->const_value->kind == 3;
 		
 		bool isErr = false;
 		

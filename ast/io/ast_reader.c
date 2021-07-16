@@ -348,6 +348,33 @@ struct FloatConst* read_float_const(FILE* file) {
 	
 	return ic;
 }
+struct ConstValue* read_const_value(INFILE){
+
+	magic_num_require(MAGIC_CONSTVALUE, file);
+
+	struct ConstValue* res = make(ConstValue);
+
+	read_super(res);
+
+	res->kind = deserialize_int(file);
+
+	res->ptr.m1_bool_const = NULL;
+
+	switch(res->kind){
+		case 1: res->ptr.m1_bool_const = read_bool_const(file); break;
+		case 2: res->ptr.m2_int_const = read_int_const(file);  break;
+		case 3: res->ptr.m3_char_const = read_char_const(file); break;
+		case 4: res->ptr.m4_float_const = read_float_const(file); break;
+		case 5: res->ptr.m5_hex_const = read_hex_const(file); break;
+		case 6: res->ptr.m6_bin_const = read_bin_const(file); break;
+		default:
+			error(file, "Error in read_const_value");
+	}
+
+	magic_num_require(MAGIC_END_CONSTVALUE, file);
+
+	return res;
+}
 struct StringConst* read_string_const(FILE* file) {
 	
 	magic_num_require(MAGIC_STRINGCONST, file);
@@ -420,21 +447,15 @@ struct Term* read_term(FILE* file) {
 	b->kind = deserialize_int(file);
 
 	switch(b->kind){
-	
-		case  1: b->ptr.m1  = read_bool_const(file); 	break;
-		case  2: b->ptr.m2  = read_int_const(file); 	break;
-		case  3: b->ptr.m3  = read_char_const(file); 	break;
+
 		case  4: b->ptr.m4  = read_call(file); 	    break;
 		case  5: b->ptr.m5  = read_expr(file); 		break;
 		case  6: b->ptr.m6  = read_variable(file); 	break;
-		case  7: b->ptr.m7  = read_float_const(file); 	break;
 		case  8: b->ptr.m8  = read_string_const(file); break;
-		case  9: b->ptr.m9  = read_hex_const(file); 	break;
-		case 10: b->ptr.m10 = read_bin_const(file); 	break;
 		case 11: b->ptr.m11 = read_lambda(file);      break;
+		case 12: b->ptr.m12 = read_const_value(file); break;
 		
-		default:
-			error(file, "Error in read_term");
+		default: error(file, "Error in read_term");
 	}
 	
 	magic_num_require(MAGIC_END_TERM, file);
@@ -712,20 +733,9 @@ struct CaseStmt* read_case_stmt(FILE* file) {
 	struct CaseStmt* res = make(CaseStmt);
 	
 	read_super(res);
-	
-	res->kind = deserialize_int(file);
-	
-	res->ptr.m1 = NULL;
-	res->block  = NULL;
-	
-	switch(res->kind){
-		case 0: res->ptr.m1 = read_bool_const(file); break;
-		case 1: res->ptr.m2 = read_char_const(file); break;
-		case 2: res->ptr.m3 = read_int_const(file);  break;
-		default:
-			error(file, "Error in read_case_stmt");
-	}
-	
+
+	res->const_value = read_const_value(file);
+
 	const uint32_t hasBlock = deserialize_int(file);
 	
 	if(hasBlock == OPT_PRESENT){

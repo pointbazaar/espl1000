@@ -21,6 +21,7 @@ void free_float_const(struct FloatConst* fc);
 void free_int_const(struct IntConst* ic);
 void free_hex_const(struct HexConst* hc);
 void free_bin_const(struct BinConst* hc);
+void free_const_value(struct ConstValue* cv);
 void free_string_const(struct StringConst* s);
 
 //subr

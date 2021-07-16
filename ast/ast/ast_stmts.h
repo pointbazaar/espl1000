@@ -91,15 +91,8 @@ struct CaseStmt{
 	//cases must have constant values
 	//known at compile time
 	//(to build the jump table)
-	
-	//kind says which pointer is present
-	//from the alternatives
-	uint8_t kind; // \in {0,1,2}
-	union my_ptr {
-		struct BoolConst* m1;
-		struct CharConst* m2;
-		struct IntConst* m3;
-	} ptr;
+
+	struct ConstValue* const_value;
 	
 	struct StmtBlock* block; //may be NULL
 };

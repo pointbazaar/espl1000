@@ -70,3 +70,15 @@ void transpileFloatConst(struct FloatConst* fc, struct Ctx* ctx){
 void transpileStringConst(struct StringConst* s, struct Ctx* ctx){
 	fprintf(ctx->file, "%s", s->value);
 }
+
+void transpileConstValue(struct ConstValue* c, struct Ctx* ctx){
+
+	switch (c->kind) {
+		case 1: transpileBoolConst(c->ptr.m1_bool_const, ctx); break;
+		case 2: transpileIntConst(c->ptr.m2_int_const, ctx); break;
+		case 3: transpileCharConst(c->ptr.m3_char_const, ctx); break;
+		case 4: transpileFloatConst(c->ptr.m4_float_const, ctx); break;
+		case 5: transpileHexConst(c->ptr.m5_hex_const, ctx); break;
+		case 6: transpileBinConst(c->ptr.m6_bin_const, ctx); break;
+	}
+}

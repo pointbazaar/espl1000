@@ -11,4 +11,5 @@ void transpileCharConst		(struct CharConst* cc, 	struct Ctx* ctx);
 void transpileFloatConst	(struct FloatConst* fc, struct Ctx* ctx);
 void transpileStringConst	(struct StringConst* s, struct Ctx* ctx);
 
+void transpileConstValue	(struct ConstValue* c, struct Ctx* ctx);
 #endif
