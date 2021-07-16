@@ -228,7 +228,7 @@ static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st){
 			struct Method* m = ns->methods[j];
 			
 			//name starts with lambda_
-			if(strncmp(m->name, "lambda_", strlen("lambda_")) != 0){
+			if(strncmp(m->decl->name, "lambda_", strlen("lambda_")) != 0){
 				continue;
 			}
 			
@@ -270,7 +270,7 @@ static void ns_transpile_subr_fwd_decls(struct Namespace* ns, struct Ctx* ctx){
 		
 		struct Method* m = ns->methods[i];
 		
-		if(sst_get(ctx->tables->sst, m->name)->dead == DEAD_ISDEAD)
+		if(sst_get(ctx->tables->sst, m->decl->name)->dead == DEAD_ISDEAD)
 			{continue; }
 		
 		transpileMethodSignature(m, ctx);
@@ -284,7 +284,7 @@ static void ns_transpile_subrs(struct Namespace* ns, struct Ctx* ctx){
 		
 		struct Method* m = ns->methods[i];
 		
-		if(sst_get(ctx->tables->sst, m->name)->dead == DEAD_ISDEAD)
+		if(sst_get(ctx->tables->sst, m->decl->name)->dead == DEAD_ISDEAD)
 			{continue; }
 		
 		transpileMethod(m, ctx);

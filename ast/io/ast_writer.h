@@ -15,7 +15,7 @@ void write_ast(struct AST* ast);
 void write_namespace(struct Namespace* m);
 
 void write_method(struct Method* m, OUTFILE);
-
+void write_method_decl(struct MethodDecl* m, OUTFILE);
 void write_struct_decl(struct StructDecl* m, OUTFILE);
 void write_struct_member(struct StructMember* m, OUTFILE);
 

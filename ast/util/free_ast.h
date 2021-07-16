@@ -27,6 +27,7 @@ void free_string_const(struct StringConst* s);
 //subr
 void free_decl_arg(struct DeclArg* da);
 void free_method(struct Method* m);
+void free_method_decl(struct MethodDecl* m);
 
 //other
 void free_identifier(struct Identifier* id);

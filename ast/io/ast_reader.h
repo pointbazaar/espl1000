@@ -11,6 +11,7 @@ struct AST* read_ast(char** filenames, int count_filenames);
 //toplevel
 struct Namespace* 		read_namespace(INFILE);
 struct Method* 			read_method(INFILE);
+struct MethodDecl* 		read_method_decl(INFILE);
 struct StructDecl* 		read_struct_decl(INFILE);
 struct StructMember* 	read_struct_member(INFILE);
 

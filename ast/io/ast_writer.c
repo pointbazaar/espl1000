@@ -69,23 +69,29 @@ void write_method(struct Method* m, FILE* file){
 	magic_num_serialize(MAGIC_METHOD, file);
 	
 	write_super(m);
+	write_method_decl(m->decl, file);
+	write_stmt_block(m->block, file);
 	
+	magic_num_serialize(MAGIC_END_METHOD, file);
+}
+void write_method_decl(struct MethodDecl* m, OUTFILE){
+	magic_num_serialize(MAGIC_METHOD_DECL, file);
+	write_super(m);
+
 	serialize_int(m->is_public, file);
 	serialize_int(m->has_side_effects, file);
 	serialize_int(m->throws, file);
-	
+
 	serialize_string(m->name, file);
 
 	write_type(m->return_type, file);
 
 	serialize_int(m->count_args, file);
-	
-	for(int i = 0;i < m->count_args;i++)
-		{ write_decl_arg(m->args[i], file); }
 
-	write_stmt_block(m->block, file);
-	
-	magic_num_serialize(MAGIC_END_METHOD, file);
+	for(int i = 0;i < m->count_args;i++)
+	{ write_decl_arg(m->args[i], file); }
+
+	magic_num_serialize(MAGIC_END_METHOD_DECL, file);
 }
 void write_struct_decl(struct StructDecl* m, FILE* file){
 	

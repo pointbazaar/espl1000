@@ -49,6 +49,7 @@ add_executable(${PROJECT_NAME}
 	main/astnodes/struct/StructMember.c
 	
 	main/astnodes/subr/DeclArg.c
+	main/astnodes/subr/MethodDecl.c
 	main/astnodes/subr/Method.c
 	
 	main/astnodes/types/ArrayType.c

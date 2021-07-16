@@ -157,13 +157,13 @@ static void annot_halts(struct SST* sst, struct Method* m){
 	//figure out if it has @halts annotation
 	if(has_annotation(m->super.annotations, ANNOT_HALTS)){
 		
-		struct SSTLine* line = sst_get(sst, m->name);
+		struct SSTLine* line = sst_get(sst, m->decl->name);
 		
 		if(line->halts != HALTS_ALWAYS){
 			
 			print_analyzer_warning();
 			
-			printf(" subroutine %s has @halts Annotation, but could not be proven to terminate\n", m->name);
+			printf(" subroutine %s has @halts Annotation, but could not be proven to terminate\n", m->decl->name);
 		}
 	}
 }
@@ -173,7 +173,7 @@ static void annot_deprecated(struct SST* sst, struct Method* m){
 	//figure out if it has @deprecated annotation
 	if(has_annotation(m->super.annotations, ANNOT_DEPRECATED)){
 		
-		struct SSTLine* line = sst_get(sst, m->name);
+		struct SSTLine* line = sst_get(sst, m->decl->name);
 		
 		//functions analyzer should have run before
 		if(cc_size(line->cc->callers) > 0){
@@ -182,7 +182,7 @@ static void annot_deprecated(struct SST* sst, struct Method* m){
 			
 			print_analyzer_warning();
 			
-			printf(" subroutine %s is marked as @deprecated, but still has callers:\n", m->name);
+			printf(" subroutine %s is marked as @deprecated, but still has callers:\n", m->decl->name);
 			
 			struct CCNode* caller = line->cc->callers;
 			

@@ -109,13 +109,13 @@ struct SSTLine* makeSSTLine2(
 
 	struct SSTLine* line = make(SSTLine);
 	
-	strncpy(line->name,       m->name,    DEFAULT_STR_SIZE);
+	strncpy(line->name,       m->decl->name,    DEFAULT_STR_SIZE);
 	strncpy(line->_namespace, _namespace, DEFAULT_STR_SIZE);
 	
 	line->method       = m;
 	line->type         = type;
 	
-	line->return_type   = m->return_type;
+	line->return_type   = m->decl->return_type;
 	line->is_libc       = false;
 	line->cc           = make_cc();
 	
@@ -124,9 +124,9 @@ struct SSTLine* makeSSTLine2(
 	
 	line->is_private   = has_annotation(m->super.annotations, ANNOT_PRIVATE);
 	
-	line->has_side_effect = m->has_side_effects;
+	line->has_side_effect = m->decl->has_side_effects;
 	
-	line->throws       = m->throws;
+	line->throws       = m->decl->throws;
 	
 	return line;
 }

@@ -10,6 +10,8 @@ struct AST;
 struct Namespace;
 struct Method;
 struct StructDecl;
+struct MethodDecl;
+struct ExternC;
 //---------------
 struct StmtBlock;
 struct Op;

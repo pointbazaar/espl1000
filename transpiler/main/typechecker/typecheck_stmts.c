@@ -50,7 +50,7 @@ void tc_throwstmt(struct Stmt* s, struct TCCtx* tcctx){
 	
 	struct Method* m = tcctx->current_fn;
 				
-	if(m->throws) { return; }
+	if(m->decl->throws) { return; }
 	
 	//are we inside try-catch stmt?
 	if(tcctx->depth_inside_try_stmt > 0){ return; }
@@ -152,7 +152,7 @@ void tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx){
 
 	tcctx->current_line_num = r->super.line_num;
 
-	struct Type* returnType = tcctx->current_fn->return_type;
+	struct Type* returnType = tcctx->current_fn->decl->return_type;
 	
 	struct Type* returnedType = 
 		infer_type_expr(tcctx->current_filename, tcctx->st, r->return_value);

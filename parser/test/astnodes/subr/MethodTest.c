@@ -37,18 +37,18 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 	struct Method* m = makeMethod(l);
 	if(
 		m == NULL
-		|| m->count_args != 1
+		|| m->decl->count_args != 1
 		|| m->block->count != 0
 		|| m->block == NULL
-		|| m->args == NULL
-		|| m->args[0] == NULL
+		|| m->decl->args == NULL
+		|| m->decl->args[0] == NULL
 	){ 
 		printf("method not complete \n");
 		return 0;
 	}
 	
-	assert(!m->has_side_effects);
-	assert(m->count_args == 1);
+	assert(!m->decl->has_side_effects);
+	assert(m->decl->count_args == 1);
 	
 	freeTokenList(l);
 	free_method(m);
@@ -88,8 +88,8 @@ int method_test_can_parse_subroutine(bool debug) {
 
 	struct Method* m = makeMethod(l);
 	assert(m != NULL);
-	assert(m->count_args == 0);
-	assert(m->has_side_effects);
+	assert(m->decl->count_args == 0);
+	assert(m->decl->has_side_effects);
 	
 	freeTokenList(l);
 	free_method(m);
@@ -121,8 +121,8 @@ int method_test_can_parse_method_without_arguments(bool debug) {
 
 	struct Method* m = makeMethod(l);
 	assert(m != NULL);
-	assert(0 == m->count_args);
-	assert(!m->has_side_effects);
+	assert(0 == m->decl->count_args);
+	assert(!m->decl->has_side_effects);
 	
 	freeTokenList(l);
 	free_method(m);

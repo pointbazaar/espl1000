@@ -35,7 +35,7 @@ static void myvisitor(void* node, enum NODE_TYPE type, void* arg){
 	if(type == NODE_METHOD){ 
 		farg->currentFn = (struct Method*) node;
 		
-		struct SSTLine* myline = sst_get(myst->sst, farg->currentFn->name);
+		struct SSTLine* myline = sst_get(myst->sst, farg->currentFn->decl->name);
 		cc_set_calls_fn_ptrs(myline->cc, false);
 	}
 	
@@ -56,15 +56,15 @@ static void myvisitor(void* node, enum NODE_TYPE type, void* arg){
 	
 	if(!sst_contains(myst->sst, call->name)){
 		//maybe it is a function ptr
-		struct SSTLine* myline = sst_get(myst->sst, farg->currentFn->name);
+		struct SSTLine* myline = sst_get(myst->sst, farg->currentFn->decl->name);
 		cc_set_calls_fn_ptrs(myline->cc, true);
 		return; 
 	}
 	
-	line = sst_get(myst->sst, farg->currentFn->name);
+	line = sst_get(myst->sst, farg->currentFn->decl->name);
 	cc_add_callee(line->cc, call->name);
 	
 	
 	line = sst_get(myst->sst, call->name);
-	cc_add_caller(line->cc, farg->currentFn->name);
+	cc_add_caller(line->cc, farg->currentFn->decl->name);
 }

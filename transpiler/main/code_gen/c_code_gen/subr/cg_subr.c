@@ -38,13 +38,13 @@ void transpileMethod(struct Method* m, struct Ctx* ctx){
 
 void transpileMethodSignature(struct Method* m, struct Ctx* ctx){
 	
-	transpileType(m->return_type, ctx);
+	transpileType(m->decl->return_type, ctx);
 
-	fprintf(ctx->file, " %s(", m->name);
+	fprintf(ctx->file, " %s(", m->decl->name);
 
-	for(int i=0; i < m->count_args; i++){
-		transpileDeclArg(m->args[i], ctx);
-		if(i < (m->count_args)-1){
+	for(int i=0; i < m->decl->count_args; i++){
+		transpileDeclArg(m->decl->args[i], ctx);
+		if(i < (m->decl->count_args)-1){
 			fprintf(ctx->file, ", ");
 		}
 	}
@@ -53,8 +53,8 @@ void transpileMethodSignature(struct Method* m, struct Ctx* ctx){
 	//maybe sneak in a 
 	//jmp_buf* _jb
 	//argument if the relevant function throws
-	if(m->throws){
-		if(m->count_args > 0){
+	if(m->decl->throws){
+		if(m->decl->count_args > 0){
 			fprintf(ctx->file, ", ");
 		}
 		fprintf(ctx->file, "jmp_buf* _jb");

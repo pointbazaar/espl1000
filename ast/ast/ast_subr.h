@@ -11,18 +11,29 @@ struct DeclArg  {
 	char name[DEFAULT_STR_SIZE];
 };
 
-struct Method {
-	struct ASTNode super; 
-	
+struct ExternC {
+	struct MethodDecl* decl;
+	char name_in_c[DEFAULT_STR_SIZE];
+};
+
+struct MethodDecl{
+	struct ASTNode super;
+
 	struct Type* return_type;
 	char name[DEFAULT_STR_SIZE];
-	
+
 	bool is_public;
 	bool has_side_effects;
 	bool throws;
 
 	uint8_t count_args;
 	struct DeclArg** args;
+};
+
+struct Method {
+	struct ASTNode super; 
+	
+	struct MethodDecl* decl;
 
 	struct StmtBlock* block;
 };

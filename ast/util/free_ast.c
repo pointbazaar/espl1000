@@ -64,17 +64,18 @@ void free_const_value(struct ConstValue* cv){
 	free(cv);
 }
 void free_method(struct Method* m) {
-
+	free_method_decl(m->decl);
+	free_stmt_block(m->block);
+	free(m);
+}
+void free_method_decl(struct MethodDecl* m){
 	free_type(m->return_type);
 	for(int i=0; i < m->count_args; i++) {
 		free_decl_arg(m->args[i]);
 	}
 	free(m->args);
-
-	free_stmt_block(m->block);
 	free(m);
 }
-
 void free_namespace(struct Namespace* ns) {
 
 	for(int i=0; i < ns->count_methods; i++) {

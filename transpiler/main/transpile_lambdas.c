@@ -125,7 +125,7 @@ static void myvisitor_transpile_lambdas_inner(
 	
 		struct Method* container = line->method;
 		
-		struct DeclArg* lambdaArg = container->args[i];
+		struct DeclArg* lambdaArg = container->decl->args[i];
 		
 		//get the subrtype from the argument
 		struct Type* pre_lambdaType = lambdaArg->type;
@@ -212,11 +212,14 @@ static struct Method* gen_subr_from_lambda(
 	uint8_t orig_count_arg
 ){
 	
+	struct MethodDecl* mdecl = make(MethodDecl);
+	mdecl->is_public       = false;
+	mdecl->has_side_effects = false;  //ASSUMPTION TODO: work on it
+	mdecl->throws         = false; //ASSUMPTION TODO: work on it
+	sprintf(mdecl->name, LAMBDA_NAME_PATTERN, lambda->lambda_num);
+
 	struct Method* lsubr  = make(Method);
-	lsubr->is_public       = false;
-	lsubr->has_side_effects = false;  //ASSUMPTION TODO: work on it
-	lsubr->throws         = false; //ASSUMPTION TODO: work on it
-	sprintf(lsubr->name, LAMBDA_NAME_PATTERN, lambda->lambda_num);
+	lsubr->decl = mdecl;
 	
 	struct RetStmt* rstmt = make(RetStmt);
 	rstmt->return_value    = lambda->expr;
@@ -233,11 +236,11 @@ static struct Method* gen_subr_from_lambda(
 	lsubr->block->stmts[0] = stmt;
 	
 	//copy return type
-	lsubr->return_type = copy_type(orig_rtype);
+	mdecl->return_type = copy_type(orig_rtype);
 	
 	//copy declarg 
-	lsubr->count_args = orig_count_arg;
-	lsubr->args = malloc(sizeof(struct DeclArg*)*orig_count_arg);
+	mdecl->count_args = orig_count_arg;
+	mdecl->args = malloc(sizeof(struct DeclArg*)*orig_count_arg);
 	
 	for(uint8_t i = 0; i < orig_count_arg; i++){
 		
@@ -247,7 +250,7 @@ static struct Method* gen_subr_from_lambda(
 		newdeclarg->has_name = true;
 		strcpy(newdeclarg->name, lambda->params[i]->identifier);
 		
-		lsubr->args[i] = newdeclarg;
+		mdecl->args[i] = newdeclarg;
 	}
 	
 	return lsubr;

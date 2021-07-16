@@ -106,31 +106,43 @@ struct Method* read_method(FILE* file) {
 	
 	read_super(m);
 
-	m->is_public       = deserialize_int(file);
+	m->decl = read_method_decl(file);
+	m->block = read_stmt_block(file);
+	
+	magic_num_require(MAGIC_END_METHOD, file);
+	return m;
+}
+
+struct MethodDecl* read_method_decl(INFILE){
+
+	magic_num_require(MAGIC_METHOD_DECL, file);
+
+	struct MethodDecl* m  = make(MethodDecl);
+
+	read_super(m);
+
+	m->is_public        = deserialize_int(file);
 	m->has_side_effects = deserialize_int(file);
-	m->throws         = deserialize_int(file);
+	m->throws           = deserialize_int(file);
 
 	char* tmp = deserialize_string(file);
 	strcpy(m->name, tmp);
-	
+
 	free(tmp);
 
 	m->return_type = read_type(file);
-	
+
 	m->count_args = deserialize_int(file);
-	
 	m->args = malloc(sizeof(void*)*(m->count_args));
 
 	for(int i = 0;i < m->count_args;i++){
 		m->args[i] = read_decl_arg(file);
 	}
 
-	m->block = read_stmt_block(file);
-	
-	magic_num_require(MAGIC_END_METHOD, file);
-	
+	magic_num_require(MAGIC_END_METHOD_DECL, file);
 	return m;
 }
+
 struct StructDecl* read_struct_decl(FILE* file) {
 	
 	magic_num_require(MAGIC_STRUCTDECL, file);

@@ -49,7 +49,7 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		
 		struct SSTLine* line = sst_get(tcctx->st->sst, m->name);
 		
-		if( (!tcctx->current_fn->has_side_effects)
+		if( (!tcctx->current_fn->decl->has_side_effects)
 			&& line->has_side_effect
 		){
 			//method with side effects called
@@ -71,14 +71,14 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		
 		struct Method* method = line->method;
 		
-		check_throw_rules(method->throws, tcctx);
+		check_throw_rules(method->decl->throws, tcctx);
 		
-		expect_args           = method->count_args;
+		expect_args           = method->decl->count_args;
 		
 		expect_types = malloc(sizeof(struct Type*)*expect_args);
 		
 		for(uint8_t i=0; i < expect_args; i++){
-			expect_types[i] = method->args[i]->type;
+			expect_types[i] = method->decl->args[i]->type;
 		}
 		
 	}else if(lvst_contains(tcctx->st->lvst, m->name)){
@@ -91,7 +91,7 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		}
 		struct SubrType* stype = type->m1->subr_type;
 		
-		if( (!tcctx->current_fn->has_side_effects)
+		if( (!tcctx->current_fn->decl->has_side_effects)
 			&& stype->has_side_effects
 		){
 			//method with side effects called
@@ -121,7 +121,7 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 static void check_throw_rules(bool callee_throws, struct TCCtx* tcctx){
 	
 	if(!callee_throws){ return; }
-	if(tcctx->current_fn->throws){ return; }
+	if(tcctx->current_fn->decl->throws){ return; }
 	
 	if(tcctx->depth_inside_try_stmt > 0){ return; }
 		

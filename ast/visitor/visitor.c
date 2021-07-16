@@ -5,7 +5,7 @@
 #include "visitor.h"
 
 #define ARG void* arg
-
+static void visit_method_decl	(struct MethodDecl* m, VISITOR, ARG);
 static void visit_decl_arg        (struct DeclArg* da, VISITOR, ARG);
 
 //struct
@@ -88,16 +88,20 @@ void visit_struct_decl(struct StructDecl* s, VISITOR, void* arg){
 void visit_method(struct Method* m, VISITOR, void* arg){
 	
 	visitor(m, NODE_METHOD, arg);
-	
+
+	visit_method_decl(m->decl, visitor, arg);
+	visit_stmt_block(m->block, visitor, arg);
+}
+static void visit_method_decl(struct MethodDecl* m, VISITOR, ARG){
+
+	visitor(m, NODE_METHOD_DECL, arg);
+
 	for(uint32_t i = 0; i < m->count_args; i++){
 		visit_decl_arg(m->args[i], visitor, arg);
 	}
 
 	visit_type(m->return_type, visitor, arg);
-
-	visit_stmt_block(m->block, visitor, arg);
 }
-
 void visit_stmt_block(struct StmtBlock* s, VISITOR, void* arg){
 	
 	visitor(s, NODE_STMTBLOCK, arg);

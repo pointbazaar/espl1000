@@ -10,11 +10,15 @@ for it.
 ```
 AST ::= Namespace+
 
-Namespace ::=  StructDecl* Method*
+Namespace ::=  ExternC* StructDecl* Method*
 
 StructDecl ::= 'struct' SimpleType '{' StructMember* '}'
 
-Method ::= 'fn' Identifier '(' DeclArg* ')' arrow Type ('throws')? StmtBlock
+MethodDecl ::= 'fn' Identifier '(' DeclArg* ')' arrow Type ('throws')?
+
+ExternC ::= 'externc' MethodDecl from StringConst
+
+Method ::= MethodDecl StmtBlock
 
 //--------------------------------
 
