@@ -11,7 +11,7 @@ rules:
     - statement: "\\b(return|break|case)\\b"
     - statement: "\\b(if|else|while|loop|for|switch)\\b"
     - statement: "\\b(try|catch|throw)\\b"
-    - special: "\\b(fn|struct)\\b"
+    - special: "\\b(fn|struct|externc)\\b"
     
     - preproc: "\\b@[a-z]+\\b"
 
