@@ -50,7 +50,18 @@ void stst_clear(struct STST* stst){
 }
 
 void stst_fill(struct STST* stst, struct Namespace* ns){
-	
+
+	for(int i = 0; i < ns->count_externc; i++) {
+
+		struct ExternC* ec = ns->externc[i];
+
+		if (ec->struct_decl == NULL){ continue; }
+
+		struct STSTLine* line = makeSTSTLine(ec->struct_decl, ns->name);
+
+		stst_add(stst, line);
+	}
+
 	for(int i=0;i < ns->count_structs; i++){
 
 		struct StructDecl* mystruct = ns->structs[i];

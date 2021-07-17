@@ -12,7 +12,8 @@ struct DeclArg  {
 };
 
 struct ExternC {
-	struct MethodDecl* decl;
+	struct MethodDecl* subr_decl; //may be NULL
+	struct StructDecl* struct_decl; //may be NULL
 	char name_in_c[DEFAULT_STR_SIZE];
 };
 

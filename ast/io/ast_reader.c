@@ -187,8 +187,18 @@ struct ExternC*	read_externc(INFILE){
 	magic_num_require(MAGIC_EXTERNC, file);
 
 	struct ExternC* res = make(ExternC);
+	*res = (struct ExternC) {
+			.subr_decl   = NULL,
+			.struct_decl = NULL
+	};
 
-	res->decl = read_method_decl(file);
+	const bool is_subr_decl = deserialize_int(file);
+
+	if (is_subr_decl) {
+		res->subr_decl = read_method_decl(file);
+	}else{
+		res->struct_decl = read_struct_decl(file);
+	}
 
 	char* tmp = deserialize_string(file);
 	strncpy(res->name_in_c, tmp, DEFAULT_STR_SIZE-1);

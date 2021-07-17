@@ -11,9 +11,9 @@ externc fn sdl_fill_rect(SDL_Surface s, int k, uint32 color)~>bool "SDL_FillRect
 externc fn sdl_update_window_surface(SDL_Window w)~>bool "SDL_UpdateWindowSurface"
 externc fn sdl_delay(uint ms)~>bool "SDL_Delay"
 
-struct SDL_Window {}
-struct SDL_Surface {}
-struct SDL_Rect { int x; int y; int w; int h; }
+externc struct SDL_Window {} "SDL_Window"
+externc struct SDL_Surface {} "SDL_Surface"
+externc struct SDL_Rect { int x; int y; int w; int h; } "SDL_Rect"
 
 fn main ()~>int {
 	int screen_width  = 640; int screen_height = 480;

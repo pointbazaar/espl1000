@@ -126,7 +126,13 @@ void write_externc(struct ExternC* ec, OUTFILE){
 
 	magic_num_serialize(MAGIC_EXTERNC, file);
 
-	write_method_decl(ec->decl, file);
+	serialize_int(ec->subr_decl != NULL, file);
+
+	if (ec->subr_decl != NULL) {
+		write_method_decl(ec->subr_decl, file);
+	}else{
+		write_struct_decl(ec->struct_decl, file);
+	}
 
 	serialize_string(ec->name_in_c, file);
 

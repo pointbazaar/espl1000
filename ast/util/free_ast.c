@@ -77,7 +77,8 @@ void free_method_decl(struct MethodDecl* m){
 	free(m);
 }
 void free_externc(struct ExternC* ec){
-	free_method_decl(ec->decl);
+	if (ec->subr_decl != NULL){ free_method_decl(ec->subr_decl); }
+	if (ec->struct_decl != NULL){ free_struct_decl(ec->struct_decl); }
 	free(ec);
 }
 void free_namespace(struct Namespace* ns) {

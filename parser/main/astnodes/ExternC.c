@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "struct/StructDecl.h"
 #include "subr/MethodDecl.h"
 #include "const/StringConst.h"
 
@@ -16,6 +17,10 @@
 struct ExternC* makeExternC(struct TokenList* tokens){
 
 	struct ExternC* res = make(ExternC);
+	*res = (struct ExternC){
+		.struct_decl = NULL,
+		.subr_decl = NULL
+	} ;
 
 	struct TokenList* copy = list_copy(tokens);
 
@@ -25,8 +30,29 @@ struct ExternC* makeExternC(struct TokenList* tokens){
 		return NULL;
 	}
 
-	res->decl = makeMethodDecl(copy);
-	if (res->decl == NULL){ return NULL; }
+	if (list_head(copy)->kind == FN) {
+
+		res->subr_decl = makeMethodDecl(copy);
+		if (res->subr_decl == NULL) {
+			printf("[Parser][Error] Expected subroutine declaration.\n");
+			exit(1);
+			return NULL;
+		}
+	}else if (list_head(copy)->kind == STRUCT){
+
+		res->struct_decl = makeStructDecl(copy);
+		if (res->struct_decl == NULL){
+			printf("[Parser][Error] Expected struct declaration.\n");
+			exit(1);
+			return NULL;
+		}
+	}else{
+
+		printf("[Parser][Error] Expected 'fn' or 'struct' following 'externc' \n");
+		printf("[Parser] But got: \n");
+		list_print(copy);
+		exit(1);
+	}
 
 	struct StringConst* string_const = makeStringConst(copy);
 	if (string_const == NULL){ return NULL; }

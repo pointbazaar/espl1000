@@ -1,4 +1,3 @@
-
 #include <stdlib.h>
 #include <inttypes.h>
 #include <string.h>
@@ -8,30 +7,11 @@
 #include "../symtable/symtable.h"
 #include "ast/util/copy_ast.h"
 
+static void sst_fill_externc(struct SST* sst, struct Namespace* ns);
+
 void sst_fill(struct ST* st, struct SST* sst, struct Namespace* ns){
 
-	for(int i = 0; i < ns->count_externc; i++) {
-
-		struct ExternC* ec = ns->externc[i];
-
-		struct SSTLine* line = makeSSTLine(
-				ec->decl->name,
-				"_EXTERN_C_",
-				ec->decl->return_type,
-				true, //TODO: change that, it is usually not libC
-				HALTS_UNKNOWN,
-				true,
-				false
-		);
-
-		sprintf(ec->name_in_c, "%s", ec->name_in_c+1);
-		ec->name_in_c[strlen(ec->name_in_c)-1] = '\0';
-
-		line->name_in_c = ec->name_in_c;
-		line->is_extern_c = true;
-
-		sst_add(sst, line);
-	}
+	sst_fill_externc(sst, ns);
 	
 	for(int i = 0; i < ns->count_methods; i++){
 		
@@ -92,4 +72,31 @@ struct Type* method_decl_to_type(struct MethodDecl* mdecl){
 	t->m3 = NULL;
 
 	return t;
+}
+static void sst_fill_externc(struct SST* sst, struct Namespace* ns){
+
+	for(int i = 0; i < ns->count_externc; i++) {
+
+		struct ExternC* ec = ns->externc[i];
+
+		if (ec->subr_decl == NULL){ continue; }
+
+		struct SSTLine* line = makeSSTLine(
+				ec->subr_decl->name,
+				"_EXTERN_C_",
+				ec->subr_decl->return_type,
+				true, //TODO: change that, it is usually not libC
+				HALTS_UNKNOWN,
+				true,
+				false
+		);
+
+		sprintf(ec->name_in_c, "%s", ec->name_in_c+1);
+		ec->name_in_c[strlen(ec->name_in_c)-1] = '\0';
+
+		line->name_in_c = ec->name_in_c;
+		line->is_extern_c = true;
+
+		sst_add(sst, line);
+	}
 }

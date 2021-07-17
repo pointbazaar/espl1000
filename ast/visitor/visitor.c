@@ -90,7 +90,8 @@ void visit_struct_decl(struct StructDecl* s, VISITOR, void* arg){
 void visit_externc(struct ExternC* ec,	VISITOR, ARG){
 
 	visitor(ec, NODE_EXTERNC, arg);
-	visit_method_decl(ec->decl, visitor, arg);
+	if (ec->subr_decl != NULL){ visit_method_decl(ec->subr_decl, visitor, arg); }
+	if (ec->struct_decl != NULL){ visit_struct_decl(ec->struct_decl, visitor, arg); }
 }
 void visit_method(struct Method* m, VISITOR, void* arg){
 	

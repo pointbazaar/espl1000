@@ -16,5 +16,8 @@ c: main.c
 sd: main2.dg
 	#smalldragon variant
 	sd main2.dg
-	gcc main2.c -w -lSDL2 
+	echo "#include <SDL2/SDL.h>" > .myinclude
+	cat .myinclude main2.c > main3.c
+	gcc main3.c -w -lSDL2 
+	rm -f .myinclude
 

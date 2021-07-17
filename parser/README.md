@@ -16,7 +16,7 @@ StructDecl ::= 'struct' SimpleType '{' StructMember* '}'
 
 MethodDecl ::= 'fn' Identifier '(' DeclArg* ')' arrow Type ('throws')?
 
-ExternC ::= 'externc' MethodDecl StringConst 
+ExternC ::= 'externc' (MethodDecl | StructDecl) StringConst 
 
 Method ::= MethodDecl StmtBlock
 
