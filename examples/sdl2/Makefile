@@ -7,7 +7,7 @@ SOURCES = main.c main2.dg
 #considered for the future:
 # - passthrough #include directives
 # - externc struct declarations
-#   - externc struct MyStruct { int a; ...  } "MY_STRUCT"
+#   - externc struct MyStruct "MY_STRUCT"
 
 c: main.c
 	#c variant
