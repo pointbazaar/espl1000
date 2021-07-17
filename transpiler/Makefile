@@ -6,7 +6,7 @@ all: build test
 
 build: DIRS
 	cmake -S . -B build -H.
-	cmake --build build 
+	cmake --build build --parallel
 	cp build/sd .
 
 clean: 

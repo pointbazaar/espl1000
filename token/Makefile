@@ -1,7 +1,7 @@
 
 all: dirs
 	cmake -S . -B build -H.
-	cmake --build build 
+	cmake --build build --parallel
 
 dirs:
 	mkdir -p build

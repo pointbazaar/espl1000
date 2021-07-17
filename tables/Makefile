@@ -3,7 +3,7 @@ all: build
 
 build: dirs
 	cmake -S . -B build -H.
-	cmake --build build 
+	cmake --build build --parallel 
 
 clean:
 	rm -rf build/*

@@ -3,7 +3,7 @@ all: build test
 	
 build: dirs
 	cmake -S . -B build -H.
-	cmake --build build
+	cmake --build build --parallel
 
 test: build
 	mv build/sd-ast-test .
