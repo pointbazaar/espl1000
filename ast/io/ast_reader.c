@@ -73,24 +73,22 @@ struct Namespace* read_namespace(FILE* file) {
 	free(tmp1);
 	free(tmp2);
 	free(tmp3);
-	
-	ns->count_methods = deserialize_int(file);
 
-	//read methods
+	ns->count_externc = deserialize_int(file);
+	ns->externc = malloc(sizeof(void*)*(ns->count_externc));
+	for(int i=0; i < ns->count_externc; i++){
+		ns->externc[i] = read_externc(file);
+	}
+
+	ns->count_methods = deserialize_int(file);
 	ns->methods = malloc(sizeof(void*)*(ns->count_methods));
-	
 	for(int i=0; i < ns->count_methods; i++){
-		
 		ns->methods[i] = read_method(file);
 	}
-	
-	//read structs
+
 	ns->count_structs = deserialize_int(file);
-	
 	ns->structs = malloc(sizeof(void*)*(ns->count_structs));
-	
 	for(int i=0;i < ns->count_structs; i++){
-		
 		ns->structs[i] = read_struct_decl(file);
 	}
 	
@@ -184,7 +182,22 @@ struct StructMember* read_struct_member(FILE* file) {
 	
 	return res;
 }
+struct ExternC*	read_externc(INFILE){
 
+	magic_num_require(MAGIC_EXTERNC, file);
+
+	struct ExternC* res = make(ExternC);
+
+	res->decl = read_method_decl(file);
+
+	char* tmp = deserialize_string(file);
+	strncpy(res->name_in_c, tmp, DEFAULT_STR_SIZE-1);
+	free(tmp);
+
+	magic_num_require(MAGIC_END_EXTERNC, file);
+
+	return res;
+}
 struct StmtBlock* read_stmt_block(FILE* file) {
 	
 	magic_num_require(MAGIC_STMTBLOCK, file);

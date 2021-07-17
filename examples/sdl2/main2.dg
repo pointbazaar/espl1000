@@ -1,0 +1,60 @@
+//#include <SDL2/SDL.h>
+//#include <stdio.h>
+///usr/include/SDL2/SDL.h 
+
+externc fn sdl_init(int k)~>int "SDL_Init"
+externc fn sdl_create_window([char] name, int pos1, int pos2, int width, int height, bool shown)~>SDL_Window "SDL_CreateWindow"
+externc fn sdl_get_error()~>[char] "SDL_GetError" 
+
+externc fn sdl_get_window_surface(SDL_Window w)~>SDL_Surface "SDL_GetWindowSurface"
+externc fn sdl_fill_rect(SDL_Surface s, int k, uint32 color)~>bool "SDL_FillRect"
+externc fn sdl_update_window_surface(SDL_Window w)~>bool "SDL_UpdateWindowSurface"
+externc fn sdl_delay(uint ms)~>bool "SDL_Delay"
+
+struct SDL_Window {}
+struct SDL_Surface {}
+struct SDL_Rect { int x; int y; int w; int h; }
+
+fn main ()~>int {
+	int screen_width  = 640; int screen_height = 480;
+	uint32 sdl_init_video = 0x00000020;
+	
+	if(sdl_init(sdl_init_video) < 0){
+		printf("SDL could not initialize! SDL Error: %s\n", sdl_get_error());
+		exit(1);
+	}
+	
+	uint32 sdl_windowpos_undefined = 0x1FFF0000;
+	uint32 sdl_window_shown = 0x00000004;
+	SDL_Window window = sdl_create_window("SDL Tutorial", 
+		sdl_windowpos_undefined, sdl_windowpos_undefined,
+		screen_width, screen_height, sdl_window_shown);
+	//if(window == NULL){
+	//	printf("window could not be created! SDL Error: %s\n", SDL_GetError());
+	//	exit(1);
+	//}
+
+	SDL_Surface surface = sdl_get_window_surface(window);
+
+	//SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xff, 0xff, 0xff));
+	uint32 color1 = (0xff << 16) | (0xff << 8) | (0xff);
+	sdl_fill_rect(surface, 0, color1);
+
+	for i in 0 .. (100-1) {
+
+		SDL_Rect rect = malloc(4*4);
+
+		rect.x = rand()%screen_width;
+		rect.y = rand()%screen_height;
+		rect.w = 10;
+		rect.h = 10;
+
+		uint32 color = (0xaa << 16) | (0xaa << 8) | (0xaa);
+
+		sdl_fill_rect(surface, rect, color);
+		sdl_update_window_surface(window);
+		sdl_delay(200);
+
+	}
+	return 0;
+}

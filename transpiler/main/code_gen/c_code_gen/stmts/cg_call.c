@@ -17,8 +17,16 @@
 #include "tables/symtable/symtable.h"
 
 void transpileCall(struct Call* mc, struct Ctx* ctx){
-	
-	fprintf(ctx->file, "%s(", mc->name);
+
+	char* subr_name_in_c = mc->name;
+
+	if(sst_contains(ctx->tables->sst, mc->name)) {
+
+		struct SSTLine* line = sst_get(ctx->tables->sst, mc->name);
+		if (line->name_in_c != NULL){ subr_name_in_c = line->name_in_c; }
+	}
+
+		fprintf(ctx->file, "%s(", subr_name_in_c);
 
 	for(int i=0;i < mc->count_args; i++){
 		

@@ -1,21 +1,13 @@
 #include <stddef.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <stdbool.h>
 
 #include "ast/ast.h"
-#include "ast/util/free_ast.h"
-#include "ast/util/str_ast.h"
 
 #include "typeinference/typeinfer.h"
 #include "typeinference/util/type_str.h"
 
-
 #include "tables/symtable/symtable.h"
-#include "tables/lvst/lvst.h"
-#include "tables/sst/sst.h"
-#include "tables/stst/stst.h"
 
 struct Expr2Types {
 	struct PrimitiveType* p1;

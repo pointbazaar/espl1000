@@ -5,12 +5,14 @@
 
 struct Namespace;
 struct Method;
+struct MethodDecl;
 
 struct SST;
 struct ST;
 
 void sst_fill(struct ST* st, struct SST* sst, struct Namespace* ns);
 
-struct Type* method_to_subrtype(struct Method* m);
-
+struct Type* method_to_type(struct Method* m);
+struct SubrType* method_decl_to_subrtype(struct MethodDecl* mdecl);
+struct Type* method_decl_to_type(struct MethodDecl* mdecl);
 #endif

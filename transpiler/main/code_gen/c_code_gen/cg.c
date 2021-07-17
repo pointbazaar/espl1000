@@ -232,7 +232,7 @@ static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st){
 				continue;
 			}
 			
-			struct Type* t = method_to_subrtype(m);
+			struct Type* t = method_to_type(m);
 			st_register_inferred_type(st, t);
 			
 			struct SSTLine* line = makeSSTLine2(m, t, ns->name);

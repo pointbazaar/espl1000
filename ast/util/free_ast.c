@@ -76,7 +76,15 @@ void free_method_decl(struct MethodDecl* m){
 	free(m->args);
 	free(m);
 }
+void free_externc(struct ExternC* ec){
+	free_method_decl(ec->decl);
+	free(ec);
+}
 void free_namespace(struct Namespace* ns) {
+
+	for(int i=0; i < ns->count_externc; i++) {
+		free_externc(ns->externc[i]);
+	}
 
 	for(int i=0; i < ns->count_methods; i++) {
 		free_method(ns->methods[i]);

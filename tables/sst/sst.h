@@ -32,6 +32,8 @@ struct SSTLine {
 	
 	//if it is from libC
 	bool is_libc;
+
+	bool is_extern_c;
 	
 	//callees and callers
 	struct CC* cc; //may be NULL
@@ -50,6 +52,10 @@ struct SSTLine {
 	bool is_private;
 	
 	bool throws;
+
+	//maybe NULL, this is used if the function has a different
+	//name in c source code, possibly as a result of 'externc' usage
+	char* name_in_c;
 };
 
 
@@ -74,7 +80,7 @@ struct SSTLine* sst_at(struct SST* sst, uint32_t index);
 struct SSTLine* makeSSTLine(
 	char* name, 
 	char* _namespace,
-	struct Type* type, 
+	struct Type* return_type,
 	bool isLibC,
 	enum HALTS halts,
 	bool has_side_effect,

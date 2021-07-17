@@ -48,14 +48,16 @@ void write_namespace(struct Namespace* m){
 	serialize_string(m->token_path, file);
 	serialize_string(m->ast_path, file);
 	serialize_string(m->name, file);
+
+	serialize_int(m->count_externc, file);
+	for(int i=0; i < m->count_externc; i++)
+		{ write_externc(m->externc[i], file); }
 	
 	serialize_int(m->count_methods, file);
-	
 	for(int i=0; i < m->count_methods; i++)
 		{ write_method(m->methods[i], file); }
 	
 	serialize_int(m->count_structs, file);
-	
 	for(int i=0; i < m->count_structs; i++)
 		{ write_struct_decl(m->structs[i], file); }
 	
@@ -120,7 +122,16 @@ void write_struct_member(struct StructMember* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_END_STRUCTMEMBER, file);
 }
+void write_externc(struct ExternC* ec, OUTFILE){
 
+	magic_num_serialize(MAGIC_EXTERNC, file);
+
+	write_method_decl(ec->decl, file);
+
+	serialize_string(ec->name_in_c, file);
+
+	magic_num_serialize(MAGIC_END_EXTERNC, file);
+}
 void write_stmt_block(struct StmtBlock* block, FILE* file){
 	
 	magic_num_serialize(MAGIC_STMTBLOCK, file);

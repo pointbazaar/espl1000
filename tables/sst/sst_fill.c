@@ -1,18 +1,43 @@
 
 #include <stdlib.h>
 #include <inttypes.h>
+#include <string.h>
+#include <stdio.h>
 
 #include "sst_fill.h"
 #include "../symtable/symtable.h"
 #include "ast/util/copy_ast.h"
 
 void sst_fill(struct ST* st, struct SST* sst, struct Namespace* ns){
+
+	for(int i = 0; i < ns->count_externc; i++) {
+
+		struct ExternC* ec = ns->externc[i];
+
+		struct SSTLine* line = makeSSTLine(
+				ec->decl->name,
+				"_EXTERN_C_",
+				ec->decl->return_type,
+				true, //TODO: change that, it is usually not libC
+				HALTS_UNKNOWN,
+				true,
+				false
+		);
+
+		sprintf(ec->name_in_c, "%s", ec->name_in_c+1);
+		ec->name_in_c[strlen(ec->name_in_c)-1] = '\0';
+
+		line->name_in_c = ec->name_in_c;
+		line->is_extern_c = true;
+
+		sst_add(sst, line);
+	}
 	
 	for(int i = 0; i < ns->count_methods; i++){
 		
 		struct Method* m = ns->methods[i];
 		
-		struct Type* t = method_to_subrtype(m);
+		struct Type* t = method_to_type(m);
 		
 		st_register_inferred_type(st, t);
 		
@@ -22,31 +47,49 @@ void sst_fill(struct ST* st, struct SST* sst, struct Namespace* ns){
 	}
 }
 
-struct Type* method_to_subrtype(struct Method* m){
+struct Type* method_to_type(struct Method* m){
 	
+	struct Type* t = method_decl_to_type(m->decl);
+
+	t->super.line_num = m->super.line_num;
+	t->super.annotations = m->super.annotations;
+	
+	return t;
+}
+
+struct SubrType* method_decl_to_subrtype(struct MethodDecl* mdecl){
+
+	struct SubrType* stype = make(SubrType);
+
+	stype->super.annotations = mdecl->super.annotations;
+	stype->super.line_num    = mdecl->super.line_num;
+
+	stype->return_type     = copy_type(mdecl->return_type);
+	stype->has_side_effects = mdecl->has_side_effects;
+	stype->count_arg_types = mdecl->count_args;
+	stype->throws         = mdecl->throws;
+
+	stype->arg_types = malloc(sizeof(void*) * stype->count_arg_types);
+
+	for(uint32_t i = 0; i < stype->count_arg_types; i++){
+		stype->arg_types[i] = copy_type(mdecl->args[i]->type);
+	}
+
+	return stype;
+}
+struct Type* method_decl_to_type(struct MethodDecl* mdecl){
+
 	struct Type* t         = make(Type);
 	struct BasicType* bt   = make(BasicType);
-	struct SubrType* stype = make(SubrType);
-	
-	stype->super.annotations = 0;
-	stype->super.line_num    = m->super.line_num;
-	
-	stype->return_type     = copy_type(m->decl->return_type);
-	stype->has_side_effects = m->decl->has_side_effects;
-	stype->count_arg_types = m->decl->count_args;
-	stype->throws         = m->decl->throws;
-	
-	stype->arg_types = malloc(sizeof(void*) * stype->count_arg_types);
-	
-	for(uint32_t i = 0; i < stype->count_arg_types; i++){
-		stype->arg_types[i] = copy_type(m->decl->args[i]->type);
-	}
-	
+
+	t->super.line_num = mdecl->super.line_num;
+	t->super.annotations = mdecl->super.annotations;
+
 	bt->simple_type = NULL;
-	bt->subr_type   = stype;
+	bt->subr_type   = method_decl_to_subrtype(mdecl);
 	t->m1 = bt;
 	t->m2 = NULL;
 	t->m3 = NULL;
-	
+
 	return t;
 }

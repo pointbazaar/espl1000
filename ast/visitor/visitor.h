@@ -20,6 +20,8 @@
 enum NODE_TYPE {
 	NODE_AST,
 	NODE_NAMESPACE,
+
+	NODE_EXTERNC,
 	
 	NODE_STRUCTDECL,
 	NODE_STRUCTMEMBER,
@@ -80,6 +82,7 @@ void visit_namespace   (struct Namespace* n, 	VISITOR, ARG);
 
 void visit_method      (struct Method* m, 		VISITOR, ARG);
 void visit_struct_decl  (struct StructDecl* s, 	VISITOR, ARG);
+void visit_externc		(struct ExternC* ec,	VISITOR, ARG);
 
 void visit_stmt_block   (struct StmtBlock* s, 	VISITOR, ARG);
 

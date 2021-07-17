@@ -18,6 +18,7 @@ void write_method(struct Method* m, OUTFILE);
 void write_method_decl(struct MethodDecl* m, OUTFILE);
 void write_struct_decl(struct StructDecl* m, OUTFILE);
 void write_struct_member(struct StructMember* m, OUTFILE);
+void write_externc(struct ExternC* ec, OUTFILE);
 
 void write_stmt_block(struct StmtBlock* block, OUTFILE);
 

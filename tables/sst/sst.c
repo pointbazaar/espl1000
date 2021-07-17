@@ -70,13 +70,12 @@ void freeSST(struct SST* sst){
 struct SSTLine* makeSSTLine(
 	char* name, 
 	char* _namespace,
-	struct Type* type, 
+	struct Type* return_type,
 	bool isLibC,
 	enum HALTS halts,
 	bool has_side_effect,
 	bool throws
 ){
-
 	struct SSTLine* line = make(SSTLine);
 	
 	strncpy(line->name,       name,       DEFAULT_STR_SIZE);
@@ -85,7 +84,7 @@ struct SSTLine* makeSSTLine(
 	line->method       = NULL;
 	line->type         = NULL;
 	
-	line->return_type   = type;
+	line->return_type   = return_type;
 	line->is_libc       = isLibC;
 	line->cc           = make_cc();
 	
@@ -97,7 +96,10 @@ struct SSTLine* makeSSTLine(
 	line->has_side_effect = has_side_effect;
 	
 	line->throws       = throws;
-	
+
+	line->name_in_c = NULL;
+	line->is_extern_c = false;
+
 	return line;
 }
 
@@ -127,7 +129,10 @@ struct SSTLine* makeSSTLine2(
 	line->has_side_effect = m->decl->has_side_effects;
 	
 	line->throws       = m->decl->throws;
-	
+
+	line->name_in_c = NULL;
+	line->is_extern_c = false;
+
 	return line;
 }
 

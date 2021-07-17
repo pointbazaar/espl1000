@@ -14,6 +14,7 @@ struct Method* 			read_method(INFILE);
 struct MethodDecl* 		read_method_decl(INFILE);
 struct StructDecl* 		read_struct_decl(INFILE);
 struct StructMember* 	read_struct_member(INFILE);
+struct ExternC*			read_externc(INFILE);
 
 struct StmtBlock* read_stmt_block(INFILE);
 

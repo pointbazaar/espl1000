@@ -5,11 +5,8 @@
 
 #include "parser/main/util/parse_astnode.h"
 
-#include "Method.h"
-#include "StmtBlock.h"
 #include "types/Type.h"
 #include "../Identifier.h"
-#include "statements/Stmt.h"
 #include "DeclArg.h"
 
 #include "ast/util/free_ast.h"
