@@ -548,7 +548,7 @@ bool test_string_1() {
 
 	assert(tokens[0]->kind==STRINGCONST);
 	
-	assert(strcmp(tokens[0]->value_ptr,"\"hi\"")==0);
+	assert(strcmp(tokens[0]->value_ptr,"hi")==0);
 
 	free_tokens(tokens, 1);
 

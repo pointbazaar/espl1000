@@ -64,11 +64,12 @@ void transpileCharConst(struct CharConst* cc, struct Ctx* ctx){
 }
 
 void transpileFloatConst(struct FloatConst* fc, struct Ctx* ctx){
-	fprintf(ctx->file, "%f", fc->value);
+	//.15f for 15 digits precision
+	fprintf(ctx->file, "%.15f", fc->value);
 }
 
 void transpileStringConst(struct StringConst* s, struct Ctx* ctx){
-	fprintf(ctx->file, "%s", s->value);
+	fprintf(ctx->file, "\"%s\"", s->value);
 }
 
 void transpileConstValue(struct ConstValue* c, struct Ctx* ctx){

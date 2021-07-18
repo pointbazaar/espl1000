@@ -6,18 +6,24 @@ SOURCES = main.c main2.dg
 
 #considered for the future:
 # - passthrough #include directives
-# - externc struct declarations
-#   - externc struct MyStruct "MY_STRUCT"
 
+#c variant
 c: main.c
-	#c variant
 	gcc main.c -w -lSDL2 
 
-sd: main2.dg
-	#smalldragon variant
-	sd main2.dg
+#smalldragon variant
+sd: main2.dg externc_sdl.dg
+	sd main2.dg externc_sdl.dg ../../stdlib/v2.dg ../../stdlib/math.dg
+	
 	echo "#include <SDL2/SDL.h>" > .myinclude
+	echo "#include <SDL2/SDL_rect.h>" >> .myinclude
+	echo "#include <SDL2/SDL_events.h>" >> .myinclude
 	cat .myinclude main2.c > main3.c
-	gcc main3.c -w -lSDL2 
+	gcc -g main3.c -w -lSDL2 -lm
 	rm -f .myinclude
+	
+run: sd
+	./a.out
 
+clean:
+	rm -f main2.c main3.c

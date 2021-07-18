@@ -50,7 +50,7 @@
 	<a href="#polynomial">polynomial.dg</a><br>
 	<a href="#matrix">matrix.dg</a><br>
 	<a href="#ppm">ppm.dg</a><br>
-	
+	<a href="#v2">v2.dg</a><br>
 
 	<hr>
 	<h3 id="math">math.dg (extends <a href="https://www2.hs-fulda.de/~klingebiel/c-stdlib/math.htm">math.h</a>)</h3>
@@ -475,6 +475,51 @@
 	</tbody>
 	</table>
 	
+	<h3 id="v2">v2.dg (simple 2-component float vector)</h3>
+	<p>
+		...
+	</p>
+	<table class="table-bordered table">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+			<th> Stack Used</th>
+			<th> Heap Use</th>
+			<th> Exceptions </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="color:green;">
+			<td>v2_ctor</td><td>(float x1, float x2) ~> V2</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td><td>OOM</td>
+		</tr>
+		<tr style="color:red;">
+			<td>v2_dtor</td><td>(V2 v) ~> bool</td><td>O(1)</td><td>O(1)</td><td>-O(1)</td><td>Double Free</td>
+		</tr>
+		<tr>
+			<td>v2_copy</td><td>(V2 v) ~> V2</td>
+		</tr>
+		<tr>
+			<td>v2_add</td><td>(V2 a, V2 b) ~> bool</td>
+		</tr>
+		<tr>
+			<td>v2_sub</td><td>(V2 a, V2 b) ~> bool</td>
+		</tr>
+		<tr>
+			<td>v2_scale</td><td>(V2 a, float r) ~> bool</td>
+		</tr>
+		<tr>
+			<td>v2_dist</td><td>(V2 a, V2 b) -> float</td>
+		</tr>
+		<tr>
+			<td>v2_mag</td><td>(V2 v) -> float</td>
+		</tr>
+		<tr>
+			<td>v2_normalize</td><td>(V2 v) ~> bool</td>
+		</tr>
+	</tbody>
+	</table>
 	
 </div>
 </body>

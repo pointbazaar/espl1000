@@ -55,8 +55,6 @@ static void ns_transpile_struct_decls(struct Namespace* ns, struct Ctx* ctx);
 static void ns_transpile_subr_fwd_decls(struct Namespace* ns, struct Ctx* ctx);
 static void ns_transpile_subrs(struct Namespace* ns, struct Ctx* ctx);
 
-static void ns_transpile_fwd(struct Namespace* ns, struct Ctx* ctx);
-
 static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st);
 
 // --------------------------------------------------------
@@ -197,8 +195,14 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename){
 		fprintf(ctx->file, "#define %s_H\n\n", sym_name);
 	}
 	
-	for(int i=0; i < ast->count_namespaces; i++)
-	{ ns_transpile_fwd(ast->namespaces[i], ctx); }
+	for(int i=0; i < ast->count_namespaces; i++) { 
+		ns_transpile_struct_fwd_decls(ast->namespaces[i], ctx); 
+	}
+	
+	for(int i=0; i < ast->count_namespaces; i++) { 
+		gen_struct_subr_signatures(ast->namespaces[i], ctx);
+		ns_transpile_subr_fwd_decls(ast->namespaces[i], ctx);
+	}
 	
 	if(ctx->flags->emit_headers){
 		//header guards
@@ -291,14 +295,6 @@ static void ns_transpile_subrs(struct Namespace* ns, struct Ctx* ctx){
 	}
 }
 
-static void ns_transpile_fwd(struct Namespace* ns, struct Ctx* ctx){
-
-	ns_transpile_struct_fwd_decls(ns, ctx);
-	
-	gen_struct_subr_signatures(ns, ctx);
-	
-	ns_transpile_subr_fwd_decls(ns, ctx);
-}
 
 void transpileStmtBlock(struct StmtBlock* block, struct Ctx* ctx){
 	

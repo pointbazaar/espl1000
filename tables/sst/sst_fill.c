@@ -91,9 +91,6 @@ static void sst_fill_externc(struct SST* sst, struct Namespace* ns){
 				false
 		);
 
-		sprintf(ec->name_in_c, "%s", ec->name_in_c+1);
-		ec->name_in_c[strlen(ec->name_in_c)-1] = '\0';
-
 		line->name_in_c = ec->name_in_c;
 		line->is_extern_c = true;
 

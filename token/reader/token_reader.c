@@ -90,7 +90,7 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 	
 	switch (tkn_id) {
 		case STRINGCONST : 
-			r = makeToken2(STRINGCONST, tkn+3);
+			r = makeTokenStringConst(tkn+3);
 			break;
 		case CCONST : 
 			r = makeToken2(CCONST, tkn+3);

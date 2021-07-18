@@ -78,7 +78,7 @@ struct STSTLine* stst_get(struct STST* stst, char* name){
 		
 		struct STSTLine* line = stst->lines[i];
 		
-		if(strcmp(line->name, name) == 0)
+		if(strncmp(line->name, name, DEFAULT_STR_SIZE-1) == 0)
 			{ return line; }
 	}
 	

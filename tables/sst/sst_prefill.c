@@ -183,6 +183,13 @@ struct Proto protos_pthread[] = {
 	{ "pthread_join",    "int", HALTS_UNKNOWN, true },
 };
 
+
+struct Proto protos_time[] = {
+	//TODO: it is probably not int !
+	//fix that!
+	{ "time",  "int", HALTS_ALWAYS, true }, 
+};
+
 void sst_prefill(struct ST* st, struct SST* sst){
 	
 	//fills the SST with some basic
@@ -199,6 +206,7 @@ void sst_prefill(struct ST* st, struct SST* sst){
 	int l5 = sizeof(protos_ctype)/s;
 	int l6 = sizeof(protos_assert)/s;
 	int l7 = sizeof(protos_pthread)/s;
+	int l8 = sizeof(protos_time)/s;
 	
 	fill_protos(st, "math.h", protos_math, l1);
 	fill_protos(st, "stdio.h", protos_stdio, l2);
@@ -207,6 +215,7 @@ void sst_prefill(struct ST* st, struct SST* sst){
 	fill_protos(st, "ctype.h", protos_ctype, l5);
 	fill_protos(st, "assert.h", protos_assert, l6);
 	fill_protos(st, "pthread.h", protos_pthread, l7);
+	fill_protos(st, "time.h", protos_time, l8);
 }
 
 static void fill_protos(

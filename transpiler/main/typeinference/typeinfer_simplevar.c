@@ -34,7 +34,8 @@ struct Type* infer_type_simplevar(char* filename, struct ST* st, struct SimpleVa
 	
 error:
 	printf("[Typeinference][Error]");
-	printf("[%s:%d]", filename, v->super.line_num);
+	printf("[%s:%d]\n", filename, v->super.line_num);
+	printf("%s\n", str_simple_var(v));
 	printf(" exiting.\n");
 	exit(1);
 	return NULL;
