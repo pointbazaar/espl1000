@@ -12,46 +12,33 @@ This repo contains a simple, statically typed programming language that can be t
 
 smalldragon is inspired by the simplicity and power of C programming.
 
-It aims to provide a modern language which captures the unique feeling of C programming, 
+It aims to be a modern language which captures the unique feeling of C programming, 
 but in a slightly different way.
 
-All this is so that the programmer can focus and does not have to look at documentation all the time.
-
+One of that goals is that the programmer can focus and does not have to look at documentation all the time.
 
 The Goal is for the Experience to be similar to working with C and Assembly. 
 There you have more control of implementation details with Assembly, but more abstraction and productivity with C.
 
-That's the Vision for SmallDragon, to be more abstract than C, but to be able to work closely with it by transpiling to it. 
-SmallDragon should be a clean abstraction over C.
+While also being able to step down to a lower level when it is necessary or fun to do so. 
 
-The goal is to actually **understand** what is going on, meaning that if you understand **C**, then you can easily understand 
-**smalldragon** and leverage your existing understanding of C. Many languages of a level higher than C do not work
-on top of it, but based on entirely different abstractions, like a VM or an Interpreter. It is often very difficult to understand
-what is actually going on at runtime, even if the semantics of the language are very simple. 
+That's the Vision for SmallDragon, to be more abstract than C, but to be able to work closely with it by transpiling to it.  
 
-## Editor Support
+## Documentation
+### [smalldragon.org](https://smalldragon.org) 
 
-Syntax Highlighting Available (must be configured)
-- Vim
-- Micro
-- Geany
-- Sublime-Text
-- Batcat
-
-[Documentation](https://smalldragon.org)
-
-## How to install / use this Project 
+## How to build it 
 
 This Project will probably only work with Linux.
-It has been tested/is being developed on Ubuntu 20.04.
-There should be a test matrix with multiple distros soon hopefully.
 
-0. Install gcc, make, valgrind, flex
-1. If you want the binaries to be visible globally:
-   Add 
+It has been tested/is being developed on Ubuntu 20.04.
+
+0. ```git clone git@github.com:pointbazaar/smalldragon.git```
+1. ```sudo apt-get install -y gcc cmake make valgrind flex```
+2. Add 
    ```PATH=~/smalldragon/transpiler:~/smalldragon/lexer:~/smalldragon/parser:$PATH```
-   to your ```~/.bashrc```
-2. run make
+   to your ```~/.bashrc``` so that the binaries can be found.
+3. ```make```
 
 ## Contributions
 
@@ -59,6 +46,7 @@ There should be a test matrix with multiple distros soon hopefully.
 - Pull Requests are welcome in the areas of 
   - Standard Library ```stdlib/```
   - Code Examples ```examples/```
-  you can get Swag such as Stickers and also other Benefits
+  
+you can get Swag such as Stickers and also other Benefits
 - Issues are always welcome (Suggestions for Improvement, Bug Reports, ...).
   Just send an Email.
