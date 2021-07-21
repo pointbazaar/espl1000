@@ -26,15 +26,11 @@
 
 
 <div class="col box">
-	<h3> if / else </h3>
-<pre><code>
-fn main () ~&gt; int {
+<h3> if / else </h3>
+<pre><code>fn main () ~&gt; int {
 	
-	if 0 &lt; 3 { 
-		return 8; 
-	} else { 
-		return 0; 
-	}
+	if 0 &lt; 3 { return 8; } 
+	else { return 0; }
 	return 0;
 }
 </code></pre>
@@ -42,9 +38,8 @@ fn main () ~&gt; int {
 
 
 <div class="col box">
-	<h3> for, break, continue </h3>
-<pre><code>
-fn main () ~&gt; int {
+<h3> for, break, continue </h3>
+<pre><code>fn main () ~&gt; int {
 	
 	for x in 0 .. 3 {
 		
@@ -59,12 +54,10 @@ fn main () ~&gt; int {
 </div>
 
 <div class="col box">
-	<h3> loop </h3>
-<pre><code>
-fn main () ~&gt; int {
+<h3> loop </h3>
+<pre><code>fn main () ~&gt; int {
 	
 	loop 3 { 
-		
 		printf("hello \n"); 
 	}
 	return 0;
@@ -73,12 +66,10 @@ fn main () ~&gt; int {
 </div>
 
 <div class="col box">
-	<h3> while </h3>
-<pre><code>
-fn main () ~&gt; int {
+<h3> while </h3>
+<pre><code>fn main () ~&gt; int {
 	
 	while 2 &lt; 3 { 
-		
 		printf("hello \n"); 
 	}
 	return 0;
@@ -87,14 +78,12 @@ fn main () ~&gt; int {
 </div>
 
 <div class="col box">
-	<h3> switch </h3>
-<pre><code>
-fn main () ~&gt; int {
+<h3> switch </h3>
+<pre><code>fn main () ~&gt; int {
 	
 	x = 3;
 	switch x { 
 		case 0 { return 3; }
-		
 		case 1
 		case 2 { return 4; }
 	}
@@ -103,8 +92,8 @@ fn main () ~&gt; int {
 </code></pre>
 </div>
 
-
-<h3> try / catch [! not yet implemented !]</h3>
+<div class="col box">
+<h3> try / catch</h3>
 <h5>Rules</h5>
 <p>
 	<ul>
@@ -118,32 +107,12 @@ fn main () ~&gt; int {
 		</li>
 	</ul>
 </p>
-<h5>Implementation</h5>
-<p>
-	The idea is to implement it with setjmp(...) / longjmp(...)
-	and passing a hidden jmp_buf* as a parameter
-	to subroutines which use <strong>throw</strong>
-	/ are marked as <strong>throws</strong>.<br>
-	
-	Each <strong>try</strong> in a subroutine would
-	then cause a separate jmp_buf to be emitted as a local
-	variable allocated on the stack. 
-	A pointer to this jmp_buf is then passed 
-	to all functions in the <strong>try { }</strong> block 
-	so they know where to longjmp(...) to.
-</p>
+
 <h5>Example</h5>
-<pre><code>
-fn main () ~&gt; int {
+<pre><code>fn main () ~&gt; int {
 	
 	try {
 		sub1(3);
-	} catch {
-		//handle error
-	}
-	
-	try {
-		sub1(-1);
 	} catch {
 		//handle error
 	}
@@ -158,7 +127,7 @@ fn sub1 (uint x) -&gt; int throws {
 	return -x;
 }
 </code></pre>
-
+</div>
 
 </div>
 </body>
