@@ -5,7 +5,9 @@ SOURCES :=  test.dg \
 	complex.dg \
 	polynomial.dg \
 	matrix.dg \
-	ppm.dg
+	ppm.dg \
+	v2.dg \
+	collision2d.dg
 
 test: $(SOURCES) clean
 	sd -g $(SOURCES)

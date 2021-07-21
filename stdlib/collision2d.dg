@@ -1,0 +1,47 @@
+//simple implentation of a few 2D collision algorithms
+//working with plain rectangles.
+
+//later, maybe the prune and sweep algo could be implemented here
+//to achieve better performance for larger simulations.
+
+//uses stdlib/v2.dg
+
+@public
+struct Collider2D {
+
+	V2 pos;
+	V2 size;
+}
+
+fn collider2d_ctor(V2 pos, V2 size) ~> Collider2D {
+
+	Collider2D c = malloc(8*2);
+	c.pos  = pos;
+	c.size = size;
+	return c;
+}
+
+fn collider2d_dtor(Collider2D c) ~> bool {
+	v2_dtor(c.pos);
+	v2_dtor(c.size);
+	free(c);
+	return true;
+}
+
+fn collision2d_overlap (Collider2D a, Collider2D b) -> bool {
+
+	xmin = a.pos.x1;
+	xmax = a.pos.x1 + a.size.x1;
+	
+	ymin = a.pos.x2;
+	ymax = a.pos.x2 + a.size.x2;
+
+	bool overlap_x = b.pos.x1 < xmin < (b.pos.x1 + b.size.x1)
+			|| b.pos.x1 < xmax < (b.pos.x1 + b.size.x1);
+		
+	bool overlap_y = b.pos.x2 < ymin < (b.pos.x2 + b.size.x2)
+			|| b.pos.x2 < ymax < (b.pos.x2 + b.size.x2);
+		
+	return overlap_x && overlap_y;
+}
+

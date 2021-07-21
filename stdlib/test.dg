@@ -25,6 +25,10 @@ fn main2() ~> int throws {
 	printf("test_polynomial\n"); test_polynomial();
 	
 	printf("test_matrix\n"); test_matrix();
+	
+	printf("test_v2\n"); test_v2();
+	
+	printf("test_collision2d\n"); test_collision2d();
 
 	printf("[stdlib] PASSED ALL TESTS\n");
 
@@ -35,6 +39,35 @@ fn assertf(float actual, float expect) -> bool {
 
 	delta = actual - expect;
 	return delta*delta < 0.001;
+}
+
+fn test_collision2d() ~> int throws {
+
+	Collider2D c1 = collider2d_ctor(
+		v2_ctor(0.0,0.0),
+		v2_ctor(2.0,2.0)
+	);
+	
+	Collider2D c2 = collider2d_ctor(
+		v2_ctor(1.0,1.0),
+		v2_ctor(2.0,2.0)
+	);
+	
+	Collider2D c3 = collider2d_ctor(
+		v2_ctor(4.0,1.0),
+		v2_ctor(2.0,2.0)
+	);
+	
+	assert(collision2d_overlap(c1,c2));
+	
+	assert(!collision2d_overlap(c1,c3));
+	
+	return 0;
+}
+
+fn test_v2() ~> int throws {
+	//TODO
+	return 0;
 }
 
 fn test_matrix() ~> int throws {
