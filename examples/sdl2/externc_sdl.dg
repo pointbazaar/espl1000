@@ -1,3 +1,9 @@
+//https://wiki.libsdl.org/CategoryAPI
+
+//tip: (to find symbols)
+//grep -inr "SDL_QUIT" /usr/include/SDL2/
+
+//small selection
 
 //subr declarations
 externc fn sdl_init(int k)~>int "SDL_Init"
@@ -9,10 +15,24 @@ externc fn sdl_fill_rect(SDL_Surface s, int k, uint32 color)~>bool "SDL_FillRect
 externc fn sdl_update_window_surface(SDL_Window w)~>bool "SDL_UpdateWindowSurface"
 externc fn sdl_delay(uint ms)~>bool "SDL_Delay"
 
+//this one needs an absolute path as argument
+externc fn sdl_load_bmp([char] str) ~> SDL_Surface "SDL_LoadBMP"
+
+externc fn sdl_blit_surface(
+	SDL_Surface src, SDL_Rect src_rect, 
+	SDL_Surface dest, SDL_Rect dest_rect
+) ~> int "SDL_BlitSurface"
+
+externc fn sdl_free_surface(SDL_Surface surface) ~> bool "SDL_FreeSurface"
+
 //externc fn sdl_poll_event(SDL_Event event)~>int "SDL_PollEvent"
 
 //struct declarations
 externc struct SDL_Window {} "SDL_Window"
 externc struct SDL_Surface {} "SDL_Surface"
 externc struct SDL_Rect { float x; float y; int w; int h; } "SDL_Rect"
-//externc struct SDL_Event { int type; } "SDL_Event"
+
+//Problems here as SDL_Event seems to be a union
+//externc struct SDL_Event { int type; SDL_Keyboard_Event key;} "SDL_Event"
+//externc struct SDL_Keyboard_Event { SDL_Keysym keysym; } "SDL_Keyboard_event"
+//externc struct SDL_Keysym { int sym; } "SDL_Keysym"

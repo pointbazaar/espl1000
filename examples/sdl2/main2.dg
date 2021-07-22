@@ -30,7 +30,7 @@ fn planet_dtor(Planet p) ~> bool {
 }
 fn main ()~>int {
 	
-	srand(time(0));
+	//srand(time(0));
 	
 	int screen_width  = 1800; int screen_height = 900;
 	uint32 sdl_init_video = 0x00000020;
@@ -58,7 +58,6 @@ fn main ()~>int {
 fn fillbg(SDL_Surface surface)~>bool{
 	
 	//SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xff, 0xff, 0xff));
-	
 	sdl_fill_rect(surface, 0, mycolor(0,0,0));
 	return true;
 }
@@ -118,96 +117,30 @@ fn planet_draw(SDL_Surface surface, Planet p)~>bool {
 	rect.w = p.size;
 	rect.h = p.size;
 	
-	sdl_fill_rect(surface, rect, p.color);
-	free(rect);
-	return true;
-}
-fn gravity(V2 p1, V2 p2, float mass1, float mass2) ~> float {
-
-	//around * 10^(-11)
-	g_const = 6.67430 * 0.00000000001;
-
-	//distance here should be in meters
-	//but max distance on screen would be 
-	//screen_width.
-	//so multiply generously
-	float dist = v2_dist(p1, p2);
+	//SDL_Surface mynull = sdl_load_bmp("notexist.bmp");
+	SDL_Surface img = sdl_load_bmp("/home/alex/Pictures/planet.bmp");
 	
-	//do not calculate force if planets
-	//are too close. will break calculations otherwise.
-	if dist < 40.0 { return -1.0; }
+	printf("%s\n", sdl_get_error());
 	
-	dist *= 227940000.0;
-	dist *= 1000000000.0;
-	//dist *= 100000000000000000.0;
-		
-	//force = g_const * (mass1 * mass2) / (dist*dist);
-	force = g_const * (mass1/dist)* (mass2/dist);
+	sucess = sdl_blit_surface(img, 0, surface, 0);
 	
-	return force;
-}
-fn planet_update(Planet p, [Planet] planets, uint n) ~> bool {
-	
-	if(!p.live){ return true; }
-	
-	//printf("planet velocity: %f, %f\n", p.velocity.x1, p.velocity.x2);
-	
-	v2_add(p.pos, p.velocity);
-	
-	float a_x = 0.0;
-	float a_y = 0.0;
-	
-	for i in 0 .. (n-1) {
-	
-		Planet p2 = planets[i];
-		
-		if(p.id == p2.id){ continue; }
-		if(!p2.live){ continue; }
-		
-		float force = gravity(p.pos, p2.pos, p.mass, p2.mass);
-		
-		if force < 0.0 {
-			//collision
-			if p.mass > p2.mass {
-				p.mass += p2.mass;
-				p.size += p2.size;
-				p2.live = false;
-			} else {
-				p2.mass += p.mass;
-				p2.size += p.size;
-				p.live = false;
-			}
-			return true;
-		}
-		
-		//printf("force: %f\n", force);
-		
-		//direction vector
-		V2 dir = v2_copy(p2.pos);
-		v2_sub(dir, p.pos);
-		
-		v2_normalize(dir);
-		
-		V2 force_vect = v2_copy(dir);
-		v2_scale(force_vect, force);
-		
-		v2_add(p.velocity, force_vect);
+	if sucess != 0 {
+		printf("%s\n", sdl_get_error());
 	}
 	
+	//sdl_fill_rect(surface, rect, p.color);
+	sdl_free_surface(img);
+	free(rect);
 	return true;
-}
-fn out_of_bounds(Planet p, int width, int height)-> bool{
-
-	return 0 <= p.pos.x1 <= width && 0 <= p.pos.x2 <= height;
 }
 fn inner(SDL_Window window, int width, int height)~>bool{
 	
 	SDL_Surface surface = sdl_get_window_surface(window);
 	
-	uint n = 5;
+	uint n = 2;
 	[Planet] planets = init_planets(n, width, height);
 	
-	uint seconds = 8;
+	uint seconds = 5;
 	uint millis = seconds * 1000;
 	uint n_steps = seconds * 30;
 	uint millis_per_step = millis/n_steps;
@@ -216,16 +149,36 @@ fn inner(SDL_Window window, int width, int height)~>bool{
 	while (n_steps > count_steps){
 		
 		fillbg(surface);
+
+			/*
+		SDL_Event e = malloc(100); //idk how big it is
+		//e.key = malloc(100);
+		//e.key.keysym = malloc(100);
 		
-		uint count_in_view = 0;
+		if sdl_poll_event(e) != 0 {
+			
+			sdl_quit = 0x100;
+			
+			sdl_keydown = 0x300;
+			
+			if e.type == sdl_quit { exit(0); }
+			
+			if e.type == sdl_keydown {
+				
+				uint sdlk_up = 82 | (1 << 30);
+				
+				//if e.key.keysym.sym == sdlk_up {
+					
+					//printf("up key\n");
+				//}
+			}
+		}*/
 		
 		for j in 0 .. (n-1) {
 			
 			Planet p = planets[j];
 			
 			planet_draw(surface, p);
-			planet_update(p, planets, n);
-			
 			
 			if p.pos.x1 >= width { p.pos.x1 = 0.0; }
 			if p.pos.x1 < 0.0 { p.pos.x1 = width*1.0; }
@@ -233,12 +186,7 @@ fn inner(SDL_Window window, int width, int height)~>bool{
 			if p.pos.x2 >= height { p.pos.x2 = 0.0; }
 			if p.pos.x2 < 0.0 { p.pos.x2 = height*1.0; }
 			
-			if out_of_bounds(p, width, height) {
-				count_in_view++;
-			}
 		}
-		
-		if count_in_view == 0 { return true; }
 		
 		sdl_update_window_surface(window);
 		sdl_delay(millis_per_step);
