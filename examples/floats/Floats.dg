@@ -1,3 +1,4 @@
+#include <stdio.h>
 
 fn main () ~> int {
 	printf("PI/2");

@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 fn main () ~> int {
 	
 	//A Harshad Number is a number that is divisible

@@ -4,7 +4,6 @@
 #the tests are in the same order as a 'tree examples/' would show them
 
 CALL  := sd -Werror
-CALL2 := sd -Werror ../stdlib/intstack.dg ../stdlib/ppm.dg ../stdlib/math.dg
 
 all: test
 
@@ -35,13 +34,13 @@ test:
 	$(CALL) file_io/file_io.dg
 	$(CALL) plotting/plotting.dg
 	$(CALL) lambda.dg
-	$(CALL2) annotations.dg
+	$(CALL) annotations.dg ../stdlib/intstack.dg ../stdlib/ppm.dg ../stdlib/math.dg
 	$(CALL) typeinference/LocalVarTypeInference.dg
 
 	$(CALL) try.dg
 	$(CALL) try2.dg
 
-	$(CALL2) image-io.dg
+	$(CALL) image-io.dg ../stdlib/intstack.dg ../stdlib/ppm.dg ../stdlib/math.dg
 	@echo "[Examples] done"
 
 # currently not working: 

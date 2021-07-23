@@ -1,3 +1,4 @@
+#include <stdlib.h>
 //an implementation of a binary tree for integers
 
 struct IntBinTree { 

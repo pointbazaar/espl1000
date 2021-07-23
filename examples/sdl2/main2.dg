@@ -1,6 +1,9 @@
-//#include <SDL2/SDL.h>
-//#include <stdio.h>
 ///usr/include/SDL2/SDL.h 
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_rect.h>
+#include <SDL2/SDL_events.h>
+#include <time.h>
 
 struct Planet {
 	uint id;
@@ -120,7 +123,7 @@ fn planet_draw(SDL_Surface surface, Planet p)~>bool {
 	//SDL_Surface mynull = sdl_load_bmp("notexist.bmp");
 	SDL_Surface img = sdl_load_bmp("/home/alex/Pictures/planet.bmp");
 	
-	printf("%s\n", sdl_get_error());
+	//printf("%s\n", sdl_get_error());
 	
 	sucess = sdl_blit_surface(img, 0, surface, 0);
 	

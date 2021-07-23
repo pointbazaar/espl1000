@@ -59,6 +59,8 @@ static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st);
 
 // --------------------------------------------------------
 
+static void ns_transpile_passthrough_includes(struct Namespace* ns, struct Ctx* ctx);
+
 bool transpileAndWrite(char* c_filename, char* h_filename, struct AST* ast, struct Flags* flags){
 
 	struct Ctx* ctx = make(Ctx);
@@ -141,18 +143,18 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename){
 	ctx->file = ctx->c_file; //direct output to c file
 	
 	{
-		
-		fprintf(ctx->c_file, "#include <stdlib.h>\n");
-		fprintf(ctx->c_file, "#include <stdio.h>\n");
-		fprintf(ctx->c_file, "#include <stdbool.h>\n");
-		fprintf(ctx->c_file, "#include <string.h>\n");
-		fprintf(ctx->c_file, "#include <math.h>\n");
-		fprintf(ctx->c_file, "#include <inttypes.h>\n");
-		fprintf(ctx->c_file, "#include <assert.h>\n");
-		fprintf(ctx->c_file, "#include <pthread.h>\n");
-		
+		fprintf(ctx->c_file, "#include <stdbool.h>\n"); //absolutely needed
+		fprintf(ctx->c_file, "#include <math.h>\n");  //absolutely needed
+		fprintf(ctx->c_file, "#include <inttypes.h>\n"); //absolutely needed
+
 		//used for try-catch
-		fprintf(ctx->c_file, "#include <setjmp.h>\n");
+		fprintf(ctx->c_file, "#include <setjmp.h>\n"); //absolutely needed
+
+		//fprintf(ctx->c_file, "#include <stdlib.h>\n"); //absolutely needed, malloc,free,...
+		//fprintf(ctx->c_file, "#include <stdio.h>\n");
+		//fprintf(ctx->c_file, "#include <string.h>\n");
+		//fprintf(ctx->c_file, "#include <assert.h>\n");
+		//fprintf(ctx->c_file, "#include <pthread.h>\n");
 	}
 	
 	if(ctx->flags->emit_headers){
@@ -194,6 +196,12 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename){
 		fprintf(ctx->file, "#ifndef %s_H\n", sym_name);
 		fprintf(ctx->file, "#define %s_H\n\n", sym_name);
 	}
+
+	//TODO: make sure that the .h file also receives the correct
+	//includes to even make the forward declarations (e.g. <stdbool.h>, ...
+	for(int i=0; i < ast->count_namespaces; i++) {
+		ns_transpile_passthrough_includes(ast->namespaces[i], ctx);
+	}
 	
 	for(int i=0; i < ast->count_namespaces; i++) { 
 		ns_transpile_struct_fwd_decls(ast->namespaces[i], ctx); 
@@ -218,6 +226,13 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename){
 		
 		gen_struct_subrs(ast->namespaces[i], ctx);
 		ns_transpile_subrs(ast->namespaces[i], ctx);
+	}
+}
+
+static void ns_transpile_passthrough_includes(struct Namespace* ns, struct Ctx* ctx) {
+
+	for (int i = 0; i < ns->count_includes; i++) {
+		fprintf(ctx->file, "%s\n", ns->includes[i]);
 	}
 }
 

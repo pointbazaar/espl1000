@@ -1,4 +1,4 @@
-
+#include <stdio.h>
 //this file demonstrates various annotations
 
 //@deprecated should cause an error here, as main will never get old :)

@@ -1,4 +1,4 @@
-
+#include <stdlib.h>
 //simple functions dealing with arrays of integers
 
 @halts

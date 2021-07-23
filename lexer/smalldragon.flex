@@ -37,7 +37,9 @@ for			out(FOR, yytext);
 break		out(BREAK, yytext);
 continue 	out(CONTINUE, yytext);
 in			out(IN, yytext);
+
 externc     out(EXTERNC, yytext);
+#include\ (<[a-zA-Z0-9\/_-]+\.h>|\"[a-zA-Z0-9\/_-]+\.h\")    out(INCLUDE_DECL, yytext);
 
 switch		out(SWITCH, yytext);
 case		out(CASE, yytext);

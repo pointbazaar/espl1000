@@ -49,6 +49,11 @@ void write_namespace(struct Namespace* m){
 	serialize_string(m->ast_path, file);
 	serialize_string(m->name, file);
 
+	serialize_int(m->count_includes, file);
+	for (int i = 0; i < m->count_includes; i++) {
+		serialize_string(m->includes[i], file);
+	}
+
 	serialize_int(m->count_externc, file);
 	for(int i=0; i < m->count_externc; i++)
 		{ write_externc(m->externc[i], file); }

@@ -75,6 +75,7 @@
 #define THROWS	68
 
 #define EXTERNC	69
+#define INCLUDE_DECL 70
 
 //operator groups
 #define OPKEY_ARITHMETIC 	80

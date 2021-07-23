@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 //simple implentation of a few 2D collision algorithms
 //working with plain rectangles.
 

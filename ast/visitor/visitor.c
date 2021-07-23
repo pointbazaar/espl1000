@@ -70,6 +70,9 @@ void visit_namespace(struct Namespace* n, VISITOR, void* arg){
 
 	visitor(n, NODE_NAMESPACE, arg);
 
+	//we do not visit the passthrough include declarations as they
+	//are just a workaround for now
+
 	for(int i = 0; i < n->count_externc; i++)
 	{ visit_externc(n->externc[i], visitor, arg); }
 	

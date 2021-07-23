@@ -19,7 +19,9 @@
 		<div class="col"><a href="../index.html">Home</a></div>
 	</div>
 
-	<h1>externc / C interop</h1>
+	<h1>C interop</h1>
+	<hr>
+	<h2>externc</h2>
 
 	<p>
 	<strong>externc</strong> enables the use of 
@@ -47,16 +49,42 @@ externc struct SDL_Window {} "SDL_Window"
 externc struct SDL_Surface {} "SDL_Surface"
 </pre>
 
-	<h3>Where to put it</h3>
+	<h5>Where to put it</h5>
 	<p>
 		At the top of your .dg file, before any struct/fn definitions.
 	</p>
 	
-	<h3>Does it effect the .c file generated?</h3>
+	<h5>Does it effect the .c file generated?</h5>
 	<p>
 		No, it is only used for typechecking and symbol tables.
 	</p>
+	<hr>
+	<h2>passthrough #include statements</h2>
 
+	<p>
+		Passthrough <strong>#include</strong> statements are directly put into the transpiled .c source
+		without any further processing.
+		<br>
+		The corresponding c structs and subroutines still need to be declared with an <strong>externc</strong> statement.
+		<br>
+		The passthrough #include statements are only for gcc.
+	</p>
+
+	<h3>Example</h3>
+	<pre>
+<strong>#include &lt;SDL2/SDL.h&gt;</strong>
+<strong>#include &lt;stdio.h&gt;</strong>
+
+//externc stuff
+
+//struct declarations
+
+//subroutine declarations
+	</pre>
+
+	<h5>Do i still need to #include the C headers i use, like in C?</h5>
+	<p>yes, as this reduces the size of the binary, to only include what is needed.</p>
+	<p>however there could be some exceptions to that.</p>
 </div>
 
 </body>

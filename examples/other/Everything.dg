@@ -1,4 +1,5 @@
-
+#include <stdio.h>
+#include <stdlib.h>
 //The goal of this example is to 
 //contain all Statement types
 //and use as many features of smalldragon

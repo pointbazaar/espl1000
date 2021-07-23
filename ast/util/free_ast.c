@@ -83,6 +83,10 @@ void free_externc(struct ExternC* ec){
 }
 void free_namespace(struct Namespace* ns) {
 
+	for(int i=0; i < ns->count_includes; i++) {
+		free(ns->includes[i]);
+	}
+
 	for(int i=0; i < ns->count_externc; i++) {
 		free_externc(ns->externc[i]);
 	}
@@ -94,6 +98,8 @@ void free_namespace(struct Namespace* ns) {
 	for(int i=0; i < ns->count_structs; i++) {
 		free_struct_decl(ns->structs[i]);
 	}
+
+	free(ns->includes);
 
 	free(ns->methods);
 	free(ns->structs);

@@ -1,4 +1,4 @@
-
+#include <stdio.h>
 fn main ()~> int {
 	
 	printf("%d\n", faculty(3));

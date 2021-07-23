@@ -9,18 +9,10 @@ SOURCES = main.c main2.dg
 
 #smalldragon variant
 sd: main2.dg externc_sdl.dg
+
 	sd main2.dg externc_sdl.dg ../../stdlib/v2.dg ../../stdlib/math.dg
 	
-	echo "#include <SDL2/SDL.h>" > .myinclude
-	echo "#include <SDL2/SDL_rect.h>" >> .myinclude
-	echo "#include <SDL2/SDL_events.h>" >> .myinclude
-	echo "#include <time.h>" >> .myinclude
-	cat .myinclude main2.c > main3.c
-	gcc -g main3.c -w -lSDL2 -lm
-	rm -f .myinclude
-	
-run: sd
-	./a.out
+	gcc -g main2.c -w -lSDL2 -lm
 
 clean:
-	rm -f main2.c main3.c
+	rm -f main2.c 

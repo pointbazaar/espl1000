@@ -74,6 +74,12 @@ struct Namespace* read_namespace(FILE* file) {
 	free(tmp2);
 	free(tmp3);
 
+	ns->count_includes = deserialize_int(file);
+	ns->includes = malloc(sizeof(void*) * (ns->count_includes));
+	for (int i = 0; i < ns->count_includes; i++) {
+		ns->includes[i] = deserialize_string(file);
+	}
+
 	ns->count_externc = deserialize_int(file);
 	ns->externc = malloc(sizeof(void*)*(ns->count_externc));
 	for(int i=0; i < ns->count_externc; i++){

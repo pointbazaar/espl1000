@@ -1,4 +1,4 @@
-
+#include <stdlib.h>
 //Some simple subroutines to do calculations with matrices.
 //Might be expanded in the future.
 

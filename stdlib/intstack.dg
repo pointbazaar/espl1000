@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 //A naive implementation of a stack of Integers
 //This Stack is not growable.
 

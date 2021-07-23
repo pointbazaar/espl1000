@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 fn main(int argc, [[char]] argv) ~> int {
 	
 	printf("%s\n", argv[1]);

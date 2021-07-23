@@ -17,6 +17,8 @@ static void ns_parse_externc(struct Namespace* res, struct TokenList* copy);
 static void ns_parse_methods(struct Namespace* res, struct TokenList* copy);
 static void ns_parse_structs(struct Namespace* res, struct TokenList* copy);
 
+void ns_parse_passthrough_includes(struct Namespace* p_namespace, struct TokenList* p_list);
+
 struct Namespace* makeNamespace(struct TokenList* tokens, char* ast_filename, char* name) {
 
 	struct Namespace* res = make(Namespace);
@@ -48,6 +50,7 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* ast_filename, ch
 	
 	struct TokenList* copy = list_copy(tokens);
 
+	ns_parse_passthrough_includes(res, copy);
 	ns_parse_externc(res, copy);
 	ns_parse_structs(res, copy);
 	ns_parse_methods(res, copy);
@@ -56,6 +59,28 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* ast_filename, ch
 	freeTokenListShallow(copy);
 
 	return res;
+}
+
+void ns_parse_passthrough_includes(struct Namespace* res, struct TokenList* copy) {
+
+	if (list_size(copy) == 0) { return; }
+
+	struct Token* next = list_head(copy);
+
+	//speculate that it won't be more than 100
+	uint8_t includes_cap = 100;
+	res->includes = malloc(sizeof(void*)*includes_cap);
+	res->count_includes = 0;
+
+	while (next->kind == INCLUDE_DECL) {
+		char* string = malloc(strlen(next->value_ptr)+1);
+		strcpy(string, next->value_ptr);
+
+		res->includes[res->count_includes++] = string;
+		list_consume(copy, 1);
+
+		next = list_head(copy);
+	}
 }
 
 static void ns_parse_externc(struct Namespace* res, struct TokenList* copy){

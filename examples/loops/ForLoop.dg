@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 fn main () ~> int {
 	
 	int n = 4;

@@ -1,4 +1,5 @@
-struct MyStruct { 
+#include <stdlib.h>
+struct MyStruct {
 	int a;
 	int b;
 }
