@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>externc / C interop</title>
+  <meta name="description" content="SmallDragon externc">
+  <meta name="author" content="SmallDragon">
+
+  <link rel="icon" href="../img/favicon.ico">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/style.css">
+
+</head>
+<body>
+<div class="container">
+	
+	<div class="row nav-bg">
+		<div class="col"><a href="../index.html">Home</a></div>
+	</div>
+
+	<h1>externc / C interop</h1>
+
+	<p>
+	<strong>externc</strong> enables the use of 
+	subroutines and structs which are defined/declared in C code.
+	<br>
+	So they can be used in smalldragon code.
+	</p>
+	
+	<h3>Syntax</h3>
+	<p>
+	<strong>externc smalldragon-function-signature "name-in-c"</strong>
+	<br>
+	<strong>externc smalldragon-struct-declaration "name-in-c"</strong>
+	</p>
+	
+	<h3>Example</h3>
+<pre>
+externc fn sdl_init(int k)~>int "SDL_Init"
+externc fn sdl_create_window([char] name, int pos1, int pos2, int width, int height, bool shown)~>SDL_Window "SDL_CreateWindow"
+externc fn sdl_get_error()~>[char] "SDL_GetError" 
+
+externc fn sdl_free_surface(SDL_Surface surface) ~> bool "SDL_FreeSurface"
+
+externc struct SDL_Window {} "SDL_Window"
+externc struct SDL_Surface {} "SDL_Surface"
+</pre>
+
+	<h3>Where to put it</h3>
+	<p>
+		At the top of your .dg file, before any struct/fn definitions.
+	</p>
+	
+	<h3>Does it effect the .c file generated?</h3>
+	<p>
+		No, it is only used for typechecking and symbol tables.
+	</p>
+
+</div>
+
+</body>
+</html>
