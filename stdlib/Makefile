@@ -7,7 +7,8 @@ SOURCES :=  test.dg \
 	matrix.dg \
 	ppm.dg \
 	v2.dg \
-	collision2d.dg
+	collision2d.dg \
+	externc/externc_libc.dg
 
 test: $(SOURCES) clean
 	sd -g $(SOURCES)

@@ -3,7 +3,7 @@
 
 #the tests are in the same order as a 'tree examples/' would show them
 
-CALL  := sd -Werror
+CALL  := sd -Werror ../stdlib/externc/externc_libc.dg
 
 all: test
 

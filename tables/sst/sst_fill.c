@@ -87,12 +87,14 @@ static void sst_fill_externc(struct SST* sst, struct Namespace* ns){
 				ec->subr_decl->return_type,
 				true, //TODO: change that, it is usually not libC
 				HALTS_UNKNOWN,
-				true,
-				false
+				ec->subr_decl->has_side_effects,
+				ec->subr_decl->throws
 		);
 
 		line->name_in_c = ec->name_in_c;
 		line->is_extern_c = true;
+
+		line->type = method_decl_to_type(ec->subr_decl); //correct?
 
 		sst_add(sst, line);
 	}

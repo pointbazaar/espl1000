@@ -1,0 +1,83 @@
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+#include <time.h>
+#include <assert.h>
+//math.h
+externc fn sin(float f) -> float "sin"
+externc fn cos(float f) -> float "cos"
+externc fn tan(float f) -> float "tan"
+externc fn asin(float f) -> float "asin"
+externc fn acos(float f) -> float "acos"
+externc fn atan(float f) -> float "atan"
+externc fn sinh(float f) -> float "sinh"
+externc fn cosh(float f) -> float "cosh"
+externc fn tanh(float f) -> float "tanh"
+
+externc fn exp(float f) -> float "exp"
+externc fn log(float f) -> float "log"
+externc fn log10(float f) -> float "log10"
+
+externc fn pow(float x, float y) -> float "pow"
+externc fn sqrt(float x) -> float "sqrt"
+externc fn ceil(float x) -> float "ceil"
+externc fn floor(float x) -> float "floor"
+externc fn fabs(float x) -> float "fabs"
+externc fn fmin(float x, float y) -> float "fmin"
+externc fn fmax(float x, float y) -> float "fmax"
+externc fn round(float x) -> float "round"
+
+//stdlib.h
+externc fn atof([char] str) -> float "atof"
+externc fn atoi([char] str) -> int "atoi"
+externc fn rand() ~> int "rand"
+externc fn srand(int seed) ~> int "srand"
+	
+externc fn calloc(int nbytes) ~> int "calloc"
+externc fn malloc(int nbytes) ~> int "malloc"
+externc fn free(int ptr) ~> int "free"
+
+externc fn getenv([char] env_var) ~> [char] "getenv"
+externc fn system([char] cmd) ~> int "system"
+externc fn abs(int x) -> int "abs"
+
+//ctype.h
+externc fn isalnum(int c) -> bool "isalnum"
+externc fn isalpha(int c) -> bool "isalpha"
+externc fn isblank(int c) -> bool "isblank"
+externc fn iscntrl(int c) -> bool "iscntrl"
+externc fn isdigit(int c) -> bool "isdigit"
+externc fn isgraph(int c) -> bool "isgraph"
+externc fn islower(int c) -> bool "islower"
+externc fn isprint(int c) -> bool "isprint"
+externc fn ispunct(int c) -> bool "ispunct"
+externc fn isspace(int c) -> bool "isspace"
+externc fn isupper(int c) -> bool "isupper"
+externc fn isxdigit(int c) -> bool "isxdigit"
+
+externc fn tolower(int c) -> char "tolower"
+externc fn toupper(int c) -> char "toupper"
+
+//assert.h
+externc fn assert(bool expr) ~> int "assert"
+
+//time.h
+externc fn time() ~> int "time"
+
+//string.h
+externc fn strcmp([char] s1, [char] s2) -> int "strcmp"
+externc fn strncmp([char] s1, [char] s2, int n) -> int "strncmp"
+
+externc fn strlen([char] s) -> int "strlen"
+externc fn strnlen([char] s, int n) -> int "strnlen"
+
+externc fn strcpy([char] dest, [char] src) ~> int "strcpy"
+externc fn strncpy([char] dest, [char] src, int n) ~> int "strncpy"
+
+externc fn strcat([char] dest, [char] src) ~> int "strcat"
+externc fn strncat([char] dest, [char] src, int n) ~> int "strncat"
+
+externc fn basename([char] str) ~> [char] "basename"
+externc fn memcpy([char] dest, [char] src, int n) ~> int "memcpy"

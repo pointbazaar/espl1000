@@ -74,6 +74,11 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		check_throw_rules(method->decl->throws, tcctx);
 		
 		expect_args           = method->decl->count_args;
+		if (line->type != NULL) {
+			if (line->type->m1 != NULL && line->type->m1->subr_type != NULL){
+				expect_args = line->type->m1->subr_type->count_arg_types;
+			}
+		}
 		
 		expect_types = malloc(sizeof(struct Type*)*expect_args);
 		

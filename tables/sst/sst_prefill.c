@@ -34,41 +34,6 @@ static void fill_protos(
 static struct Type* makeCharPtrTypeC();
 static struct Type* makeFileTypeC();
 
-//TODO: find trustworthy sources
-//to see which of these functions 
-//are guaranteed to terminate
-
-struct Proto protos_math[] = {
-	{ "sin", "float",   HALTS_ALWAYS, false },
-	{ "cos", "float",   HALTS_ALWAYS, false },
-	{ "tan", "float",   HALTS_ALWAYS, false },
-	
-	{ "asin", "float",  HALTS_ALWAYS, false },
-	{ "acos", "float",  HALTS_ALWAYS, false },
-	{ "atan", "float",  HALTS_ALWAYS, false },
-	
-	{ "sinh", "float",  HALTS_ALWAYS, false },
-	{ "cosh", "float",  HALTS_ALWAYS, false },
-	{ "tanh", "float",  HALTS_ALWAYS, false },
-	
-	{ "exp", "float",   HALTS_ALWAYS, false },
-	{ "log", "float",   HALTS_ALWAYS, false },
-	{ "log10", "float", HALTS_ALWAYS, false },
-	
-	{ "pow", "float",   HALTS_ALWAYS, false },
-	{ "sqrt", "float",  HALTS_ALWAYS, false },
-	
-	{ "ceil", "float",  HALTS_ALWAYS, false },
-	{ "floor", "float", HALTS_ALWAYS, false },
-	
-	{ "fabs", "float",  HALTS_ALWAYS, false },
-	
-	{ "fmin", "float",  HALTS_ALWAYS, false },
-	{ "fmax", "float",  HALTS_ALWAYS, false },
-
-	{ "round", "int",   HALTS_ALWAYS, false },
-};
-
 struct Proto protos_stdio[] = {
 	{ "fscanf",  "int",    HALTS_UNKNOWN, true },
 	{ "scanf",   "int",    HALTS_UNKNOWN, true },
@@ -107,88 +72,12 @@ struct Proto protos_stdio[] = {
 	{ "rename",  "int",    HALTS_UNKNOWN, true },
 };
 
-struct Proto protos_stdlib[] = {
-	{ "atof",   "float",  HALTS_ALWAYS, true },
-	{ "atoi",   "int",    HALTS_ALWAYS, true },
-	{ "rand",   "int",    HALTS_ALWAYS, true },
-	{ "srand",  "int",    HALTS_ALWAYS, true }, //TODO: wrong return type
-	{ "calloc", "int",    HALTS_ALWAYS, true }, //TODO: wrong return type
-	{ "malloc", "int",    HALTS_ALWAYS, true }, //TODO: wrong return type
-	{ "free",   "int",    HALTS_ALWAYS, true }, //TODO: wrong return type
-	{ "atexit", "int",    HALTS_ALWAYS, true },
-	{ "exit",   "int",    HALTS_ALWAYS, true }, //TODO: wrong return type
-	{ "getenv", "[char]", HALTS_UNKNOWN, true },
-	{ "system", "int",    HALTS_UNKNOWN, true },
-	//bsearch
-	//qsort
-	{ "abs",    "int",    HALTS_ALWAYS, true },
-	//div
-};
-
-struct Proto protos_string[] = {
-	{ "strcmp",   "int",    HALTS_UNKNOWN, false },
-	{ "strncmp",  "int",    HALTS_ALWAYS, false },
-	
-	{ "strlen",   "int",    HALTS_UNKNOWN, false },
-	{ "strnlen",  "int",    HALTS_ALWAYS, false },
-	
-	{ "strcpy",   "[char]", HALTS_UNKNOWN, true },
-	{ "strncpy",  "[char]", HALTS_ALWAYS, true },
-	
-	{ "strcat",   "[char]", HALTS_UNKNOWN, true },
-	{ "strncat",  "[char]", HALTS_ALWAYS, true },
-	
-	{ "strchr",   "[char]", HALTS_UNKNOWN, false },
-	{ "strrchr",  "[char]", HALTS_UNKNOWN, false },
-	
-	{ "strspn",   "int",    HALTS_UNKNOWN, true },
-	{ "strcspn",  "int",    HALTS_UNKNOWN, true },
-	
-	{ "strpbrk",  "[char]", HALTS_UNKNOWN, true },
-	{ "strstr",   "[char]", HALTS_UNKNOWN, true },
-	
-	{ "basename", "[char]", HALTS_UNKNOWN, true },
-	
-	{ "strerror", "[char]", HALTS_UNKNOWN, true },
-	
-	{ "strtok",   "[char]", HALTS_UNKNOWN, true },
-	
-	{ "memcpy",   "int", HALTS_UNKNOWN, true },
-};
-
-struct Proto protos_ctype[] = {
-	{ "isalnum",  "int", HALTS_ALWAYS, false },
-	{ "isalpha",  "int", HALTS_ALWAYS, false },
-	{ "isblank",  "int", HALTS_ALWAYS, false },
-	{ "iscntrl",  "int", HALTS_ALWAYS, false },
-	{ "isdigit",  "int", HALTS_ALWAYS, false },
-	{ "isgraph",  "int", HALTS_ALWAYS, false },
-	{ "islower",  "int", HALTS_ALWAYS, false },
-	{ "isprint",  "int", HALTS_ALWAYS, false },
-	{ "ispunct",  "int", HALTS_ALWAYS, false },
-	{ "isspace",  "int", HALTS_ALWAYS, false },
-	{ "isupper",  "int", HALTS_ALWAYS, false },
-	{ "isxdigit", "int", HALTS_ALWAYS, false },
-	
-	{ "tolower",  "int", HALTS_ALWAYS, false },
-	{ "toupper",  "int", HALTS_ALWAYS, false },
-};
-
-struct Proto protos_assert[] = {
-	{ "assert", "int", HALTS_ALWAYS, true }, //TODO: wrong return type
-};
 
 struct Proto protos_pthread[] = {
 	{ "pthread_create",  "int", HALTS_UNKNOWN, true },
 	{ "pthread_join",    "int", HALTS_UNKNOWN, true },
 };
 
-
-struct Proto protos_time[] = {
-	//TODO: it is probably not int !
-	//fix that!
-	{ "time",  "int", HALTS_ALWAYS, true }, 
-};
 
 void sst_prefill(struct ST* st, struct SST* sst){
 	
@@ -198,24 +87,12 @@ void sst_prefill(struct ST* st, struct SST* sst){
 	//with type inference
 	
 	const int s = sizeof(struct Proto);
-	
-	int l1 = sizeof(protos_math)/s;
+
 	int l2 = sizeof(protos_stdio)/s;
-	int l3 = sizeof(protos_stdlib)/s;
-	int l4 = sizeof(protos_string)/s;
-	int l5 = sizeof(protos_ctype)/s;
-	int l6 = sizeof(protos_assert)/s;
 	int l7 = sizeof(protos_pthread)/s;
-	int l8 = sizeof(protos_time)/s;
-	
-	fill_protos(st, "math.h", protos_math, l1);
+
 	fill_protos(st, "stdio.h", protos_stdio, l2);
-	fill_protos(st, "stdlib.h", protos_stdlib, l3);
-	fill_protos(st, "string.h", protos_string, l4);
-	fill_protos(st, "ctype.h", protos_ctype, l5);
-	fill_protos(st, "assert.h", protos_assert, l6);
 	fill_protos(st, "pthread.h", protos_pthread, l7);
-	fill_protos(st, "time.h", protos_time, l8);
 }
 
 static void fill_protos(
