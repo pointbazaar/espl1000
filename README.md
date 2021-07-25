@@ -46,6 +46,7 @@ It has been tested/is being developed on Ubuntu 20.04.
 - Pull Requests are welcome in the areas of 
   - Standard Library ```stdlib/```
   - Code Examples ```examples/```
+  - Documentation ```docs/```
   
 you can get Swag such as Stickers and also other Benefits
 - Issues are always welcome (Suggestions for Improvement, Bug Reports, ...).
