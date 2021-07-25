@@ -64,7 +64,7 @@ fn draw_ball(SDL_Surface surface, Ball ball, int ms)~>bool{
 	rect.x = 1.0*(ball.x - (ball.size/2));
 	rect.y = 1.0*(ball.y - (ball.size/2));
 	
-	color = mycolor(ms%256,(ms+50)%256,(ms+100)%256);
+	color = mycolor(200,50,100);
 	sdl_fill_rect(surface, rect, color);
 	
 	return true;
@@ -73,7 +73,7 @@ fn process_input(Paddle p, uint height)~>bool{
 	
 	char key = getkey();
 	
-	uint speed = 10;
+	uint speed = 8;
 	
 	//control paddle with arrow keys
 	switch key {
@@ -105,18 +105,27 @@ fn update_ball(Ball ball, Paddle p1, Paddle p2, int width, int height)~>bool{
 	ball.x += ftoi(ball.velocity.x1);
 	ball.y += ftoi(ball.velocity.x2);
 	
+	bool hit = false;
+	
 	if ball.x <= (p1.x+p1.width) {
 		if is_ball_on_paddle(p1, ball) {
-			ball.velocity.x1 *= -1.0; 
+			hit = true;
+			p1.size = height/2;
 			ball.velocity.x2 += 0.05*(ball.y - p1.y);
 		}
 	}
 	
 	if ball.x >= (p2.x-p2.width) {
 		if is_ball_on_paddle(p2, ball) {
-			ball.velocity.x1 *= -1.0; 
+			hit = true;
+			p2.size = height/2;
 			ball.velocity.x2 += 0.05*(ball.y - p2.y);
 		}
+	}
+	
+	if hit {
+		ball.size = 60;
+		ball.velocity.x1 *= -1.0; 
 	}
 	
 	if ball.x < 0 || ball.x > width { 
@@ -146,21 +155,28 @@ fn inner(SDL_Window window, int width, int height)~>bool{
 	Ball ball = malloc(4*3+8);
 	
 	bool in_bounds = true;
+	uint paddle_size_normal = 200;
 	
 	p1.y = height/2; p2.y = height/2;
 	p1.width = 10; p2.width = 10;
-	p1.size = 200; p2.size = 200;
+	p1.size = paddle_size_normal; 
+	p2.size = paddle_size_normal;
 	p1.x = 10;
 	p2.x = width - (p1.width+10);
 	
 	ball.x = width/2;
 	ball.y = height/2;
-	ball.size = 20;
 	ball.velocity = v2_ctor(5.0,0.0);
+	uint ball_size_normal = 20;
 	
 	int ms = 0;
 	
 	while(in_bounds){
+		
+		if ball.size > ball_size_normal { ball.size--; }
+		
+		if p1.size > paddle_size_normal { p1.size--; }
+		if p2.size > paddle_size_normal { p2.size--; }
 		
 		//draw game
 		fillbg(surface);
