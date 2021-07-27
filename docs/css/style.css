@@ -12,6 +12,11 @@ a {
 	color: #006C11;
 }
 
+pre {
+	/* highlight code snippets */
+	background-color: rgba(235, 204, 145);
+}
+
 .nav-bg{
 	background-color: rgb(159, 201, 167);
 	padding: 3px;
