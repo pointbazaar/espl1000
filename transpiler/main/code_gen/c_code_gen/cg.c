@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 #include <libgen.h>
 
 #include "ast/ast.h"
@@ -10,10 +9,7 @@
 #include "flags/flags.h"
 
 #include "cg.h"
-#include "const/cg_const.h"
 #include "stmts/cg_stmts.h"
-#include "types/cg_types.h"
-#include "expr/cg_expr.h"
 #include "struct/cg_structdecl.h"
 #include "subr/cg_subr.h"
 
@@ -37,7 +33,6 @@
 #include "tables/sst/sst_prefill.h"
 #include "tables/sst/sst_print.h"
 #include "tables/stst/stst.h"
-#include "tables/stst/stst_prefill.h"
 #include "tables/stst/stst_print.h"
 #include "tables/symtable/symtable.h"
 
@@ -118,9 +113,7 @@ static void fill_tables(struct AST* ast, struct Ctx* ctx){
 	
 	sst_clear(ctx->tables->sst);
 	sst_prefill(ctx->tables, ctx->tables->sst);
-	
-	stst_prefill(ctx->tables, ctx->tables->stst);
-	
+
 	for(int i = 0; i < ast->count_namespaces; i++){
 		
 		struct Namespace* ns = ast->namespaces[i];

@@ -17,9 +17,8 @@ add_library(${PROJECT_NAME} STATIC
 	
 	stst/stst.c
 	stst/stst_print.c
-	stst/stst_prefill.c
-	
-	symtable/symtable.c
+
+        symtable/symtable.c
 )
 
 target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Werror")

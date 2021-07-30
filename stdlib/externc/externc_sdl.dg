@@ -28,9 +28,9 @@ externc fn sdl_free_surface(SDL_Surface surface) ~> bool "SDL_FreeSurface"
 //externc fn sdl_poll_event(SDL_Event event)~>int "SDL_PollEvent"
 
 //struct declarations
-externc struct SDL_Window {} "SDL_Window"
-externc struct SDL_Surface {} "SDL_Surface"
-externc struct SDL_Rect { float x; float y; int w; int h; } "SDL_Rect"
+externc struct SDL_Window {} "struct SDL_Window"
+externc struct SDL_Surface {} "struct SDL_Surface"
+externc struct SDL_Rect { float x; float y; int w; int h; } "struct SDL_Rect"
 
 //Problems here as SDL_Event seems to be a union
 //externc struct SDL_Event { int type; SDL_Keyboard_Event key;} "SDL_Event"

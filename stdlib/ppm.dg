@@ -188,7 +188,7 @@ fn ppm_write(ImagePPM image, [char] filename) ~> bool {
 }
 
 @private
-fn readuint8(_IO_FILE file) ~> uint8 {
+fn readuint8(FILE file) ~> uint8 {
 	
 	int c = 0;
 	

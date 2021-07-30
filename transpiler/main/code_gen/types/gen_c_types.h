@@ -2,12 +2,13 @@
 #define GENCTYPES
 
 #include "ast/ast.h"
+struct STST;
 
 struct Ctx;
 
-char* simpleType2CType(struct SimpleType* simpleType);
+char *simpleType2CType(struct SimpleType *s, struct STST *stst);
 
-char* structType2CType(struct StructType* s);
+char* structType2CType(struct StructType* s, struct STST* stst);
 
 char* primitiveType2CType(struct PrimitiveType* p);
 

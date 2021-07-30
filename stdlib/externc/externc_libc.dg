@@ -81,3 +81,11 @@ externc fn strncat([char] dest, [char] src, int n) ~> int "strncat"
 
 externc fn basename([char] str) ~> [char] "basename"
 externc fn memcpy([char] dest, [char] src, int n) ~> int "memcpy"
+
+//stdio.h
+externc fn fopen([char] name, [char] mode) ~> FILE "fopen"
+externc fn fclose(FILE file) ~> int "fclose"
+externc fn fflush(FILE file) ~> int "fflush"
+
+//structs
+externc struct FILE {} "FILE" 

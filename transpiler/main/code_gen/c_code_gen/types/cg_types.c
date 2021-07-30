@@ -60,7 +60,7 @@ void transpileArrayType(struct ArrayType* atype, struct Ctx* ctx){
 
 void transpileSimpleType(struct SimpleType* simpleType, struct Ctx* ctx){
 		
-	char* res = simpleType2CType(simpleType);
+	char* res = simpleType2CType(simpleType, ctx->tables->stst);
 	fprintf(ctx->file, "%s", res);
 	free(res);
 }

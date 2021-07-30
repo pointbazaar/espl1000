@@ -1,17 +1,19 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdio.h>
 #include <assert.h>
 
 #include "util/ctx.h"
+
+#include "../../tables/stst/stst.h"
+#include "../../tables/symtable/symtable.h"
 
 #include "gen_c_types.h"
 
 char* translateIntType(enum INTTYPE type);
 //----------------------------------------------------
 
-char* simpleType2CType(struct SimpleType* s){
+char *simpleType2CType(struct SimpleType *s, struct STST *stst) {
 	
 	assert(s != NULL);
 	
@@ -22,25 +24,24 @@ char* simpleType2CType(struct SimpleType* s){
 	
 	if(s->struct_type != NULL){
 		
-		return structType2CType(s->struct_type);
+		return structType2CType(s->struct_type, stst);
 	}
 
 	printf("[Transpiler][Error]\n");
 	exit(1);
 }
 
-char* structType2CType(struct StructType* s){
-	
-	assert(s != NULL);
-	
+char* structType2CType(struct StructType* s, struct STST* stst){
+
 	char* res = malloc(DEFAULT_STR_SIZE);
+    strcpy(res, "");
+
+    if(!stst_get(stst, s->type_name)->externc_is_typedefd){
+        strcat(res, "struct ");
+    }
 	
-	if(strcmp(s->type_name, "String") == 0){
-		strcpy(res, "char*");
-		return res;
-	}
-	
-	sprintf(res, "struct %s*", s->type_name);
+	strcat(res, s->type_name);
+    strcat(res, "*");
 	return res;
 }
 
@@ -149,7 +150,7 @@ char* basicType2CType(struct BasicType* btw, struct Ctx* ctx){
 	assert(btw != NULL);
 	
 	if(btw->simple_type != NULL){
-		return simpleType2CType(btw->simple_type);
+		return simpleType2CType(btw->simple_type, ctx->tables->stst);
 	}
 	
 	if(btw->subr_type != NULL){

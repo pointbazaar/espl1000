@@ -56,20 +56,7 @@ struct Proto protos_stdio[] = {
 	
 	{ "fread",   "int",    HALTS_UNKNOWN, true },
 	{ "fwrite",  "int",    HALTS_UNKNOWN, true },
-	
-	{ "fgetpos", "int",    HALTS_UNKNOWN, true },
-	{ "fseek",   "int",    HALTS_UNKNOWN, true },
-	{ "fsetpos", "int",    HALTS_UNKNOWN, true },
-	{ "ftell",   "int",    HALTS_UNKNOWN, true },
-	{ "rewind",  "int",    HALTS_UNKNOWN, true }, //TODO: wrong return type
-	
-	{ "fopen",   "FILE", HALTS_UNKNOWN, true },
-	{ "freopen", "FILE", HALTS_UNKNOWN, true },
-	{ "fflush",  "int",    HALTS_UNKNOWN, true },
-	{ "fclose",  "int",    HALTS_UNKNOWN, true },
-	
-	{ "remove",  "int",    HALTS_UNKNOWN, true },
-	{ "rename",  "int",    HALTS_UNKNOWN, true },
+
 };
 
 
