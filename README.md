@@ -17,17 +17,10 @@ but in a slightly different way.
 
 One of that goals is that the programmer can focus and does not have to look at documentation all the time.
 
-The Goal is for the Experience to be similar to working with C and Assembly. 
-There you have more control of implementation details with Assembly, but more abstraction and productivity with C.
-
-While also being able to step down to a lower level when it is necessary or fun to do so. 
-
-That's the Vision for SmallDragon, to be more abstract than C, but to be able to work closely with it by transpiling to it.  
-
 ## Documentation
 ### [smalldragon.org](https://smalldragon.org) 
 
-## How to build it 
+## How to build it
 
 This Project will probably only work with Linux.
 
@@ -39,15 +32,3 @@ It has been tested/is being developed on Ubuntu 20.04.
    ```PATH=~/smalldragon/transpiler:~/smalldragon/lexer:~/smalldragon/parser:$PATH```
    to your ```~/.bashrc``` so that the binaries can be found.
 3. ```make```
-
-## Contributions
-
-- Feel free to fork the Project. 
-- Pull Requests are welcome in the areas of 
-  - Standard Library ```stdlib/```
-  - Code Examples ```examples/```
-  - Documentation ```docs/```
-  
-you can get Swag such as Stickers and also other Benefits
-- Issues are always welcome (Suggestions for Improvement, Bug Reports, ...).
-  Just send an Email.
