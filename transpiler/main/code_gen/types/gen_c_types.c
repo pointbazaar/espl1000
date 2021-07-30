@@ -36,11 +36,15 @@ char* structType2CType(struct StructType* s, struct STST* stst){
 	char* res = malloc(DEFAULT_STR_SIZE);
     strcpy(res, "");
 
-    if(!stst_get(stst, s->type_name)->externc_is_typedefd){
+    struct STSTLine* line = stst_get(stst, s->type_name);
+
+    if(line->type_name_in_c != NULL){
+        strcat(res, line->type_name_in_c);
+    }else{
         strcat(res, "struct ");
+        strcat(res, s->type_name);
     }
-	
-	strcat(res, s->type_name);
+
     strcat(res, "*");
 	return res;
 }

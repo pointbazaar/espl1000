@@ -59,10 +59,8 @@ void stst_fill(struct STST* stst, struct Namespace* ns){
 
 		struct STSTLine* line = makeSTSTLine(ec->struct_decl, ns->name);
 
-		bool has_struct_prefix = strncmp(
-		        ec->name_in_c, "struct", strlen("struct")) == 0;
-
-		line->externc_is_typedefd = !has_struct_prefix;
+		line->type_name_in_c = malloc(strlen(ec->name_in_c)+1);
+        strcpy(line->type_name_in_c, ec->name_in_c);
 
 		stst_add(stst, line);
 	}
@@ -135,7 +133,7 @@ struct STSTLine* makeSTSTLine(struct StructDecl* s, char* _namespace){
 
 	line->decl       = s;
 	line->is_private = has_annotation(s->super.annotations, ANNOT_PRIVATE);
-	line->externc_is_typedefd = false;
+	line->type_name_in_c = NULL;
 	
 	strncpy(line->_namespace, _namespace,                    DEFAULT_STR_SIZE);
 	strncpy(line->name, s->type->struct_type->type_name, DEFAULT_STR_SIZE);

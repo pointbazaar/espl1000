@@ -16,7 +16,7 @@ struct STSTLine {
 	
 	bool is_private;
 
-	bool externc_is_typedefd;
+	char* type_name_in_c; //may be NULL
 };
 
 

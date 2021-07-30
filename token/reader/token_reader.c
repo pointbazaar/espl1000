@@ -52,7 +52,7 @@ struct TokenList* read_tokens_from_tokens_file(FILE* file, char* tokensFile) {
 static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_num) {
 
 	char part1[10];
-	char part2[50];
+	char part2[200];
 	
 	char* space_ptr = strchr(tkn, ' ');
 	
