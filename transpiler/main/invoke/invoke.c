@@ -5,9 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <libgen.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/sysmacros.h>
 
 #include "ast/io/ast_reader.h"
 #include "util/fileutils/fileutils.h"

@@ -1,15 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <assert.h>
-
 #include "ast/ast.h"
-#include "ast/util/free_ast.h"
 
 #include "util/ctx.h"
 #include "flags/flags.h"
-
-#include "typeinference/typeinfer.h"
 
 #include "cg_stmts.h"
 #include "cg_throwstmt.h"
@@ -21,20 +15,12 @@
 #include "cg_forstmt.h"
 #include "cg_trycatch.h"
 #include "cg_switchcase.h"
-#include "code_gen/c_code_gen/const/cg_const.h"
-#include "code_gen/c_code_gen/var/cg_var.h"
 #include "code_gen/c_code_gen/expr/cg_expr.h"
-#include "code_gen/c_code_gen/types/cg_types.h"
-
-#include "code_gen/c_code_gen/cg.h"
 
 #include "code_gen/util/indent.h"
 #include "code_gen/types/gen_c_types.h"
-#include "code_gen/structs/structs_code_gen.h"
 
 #include "tables/sst/sst.h"
-#include "tables/sst/sst_prefill.h"
-#include "tables/stst/stst.h"
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
 

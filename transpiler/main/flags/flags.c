@@ -6,8 +6,6 @@
 
 #include "validate_flags.h"
 
-const int gcc_flags_capacity = 30; 
-
 static void make_flags_inner(struct Flags* flags, char* arg);
 
 struct Flags* makeFlags(int argc, char** argv){

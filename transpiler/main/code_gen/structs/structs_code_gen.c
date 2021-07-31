@@ -5,9 +5,6 @@
 #include "util/ctx.h"
 #include "flags/flags.h"
 
-#include "ast/util/free_ast.h"
-#include "ast/util/str_ast.h"
-
 #include "typeinference/typeinfer.h"
 #include "typeinference/util/type_str.h"
 #include "tables/sst/sst.h"

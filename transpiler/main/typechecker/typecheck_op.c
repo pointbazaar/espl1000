@@ -1,10 +1,6 @@
-#include <string.h>
-#include <stdlib.h>
 
 //AST Includes
 #include "ast/ast.h"
-#include "ast/util/str_ast.h"
-#include "ast/util/equals_ast.h"
 
 //Table Includes
 #include "tables/sst/sst.h"

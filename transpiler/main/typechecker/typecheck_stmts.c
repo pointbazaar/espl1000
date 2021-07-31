@@ -6,10 +6,6 @@
 #include "ast/util/str_ast.h"
 #include "ast/util/equals_ast.h"
 
-//Table Includes
-#include "tables/sst/sst.h"
-#include "tables/symtable/symtable.h"
-
 //Typeinference Includes
 #include "transpiler/main/typeinference/typeinfer.h"
 

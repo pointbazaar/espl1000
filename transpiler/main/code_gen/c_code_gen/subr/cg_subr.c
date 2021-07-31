@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
 #include <string.h>
 
@@ -17,10 +16,6 @@
 #include "tables/stst/stst.h"
 
 #include "analyzer/lv/lv_analyzer.h"
-
-#include "code_gen/util/indent.h"
-#include "code_gen/types/gen_c_types.h"
-#include "code_gen/structs/structs_code_gen.h"
 
 void transpileMethod(struct Method* m, struct Ctx* ctx){
 	

@@ -1,8 +1,10 @@
 #ifndef TC_EXPR_H
 #define TC_EXPR_H
 
+
+#include "tcctx.h"
+
 struct Expr;
-struct TCCtx;
 
 void tc_expr(struct Expr* expr, struct TCCtx* tcctx);
 

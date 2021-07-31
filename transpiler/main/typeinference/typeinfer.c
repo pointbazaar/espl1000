@@ -1,12 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 #include "ast/ast.h"
-
 #include "typeinference/typeinfer.h"
-
-#include "tables/symtable/symtable.h"
 
 static char* ERR_NO_ARRAYTYPE = 
 	"Expected an ArrayType\n";

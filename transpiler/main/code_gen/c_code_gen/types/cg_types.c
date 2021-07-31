@@ -4,22 +4,15 @@
 #include <assert.h>
 
 #include "ast/ast.h"
-#include "ast/util/free_ast.h"
 
 #include "util/ctx.h"
 #include "flags/flags.h"
 
-#include "typeinference/typeinfer.h"
-
 #include "cg_types.h"
 
-#include "code_gen/util/indent.h"
 #include "code_gen/types/gen_c_types.h"
-#include "code_gen/structs/structs_code_gen.h"
 
 #include "tables/sst/sst.h"
-#include "tables/sst/sst_prefill.h"
-#include "tables/stst/stst.h"
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
 

@@ -6,7 +6,6 @@
 #include "ast/util/str_ast.h"
 
 //Table Includes
-#include "tables/sst/sst.h"
 #include "tables/symtable/symtable.h"
 
 //Analyzer Includes

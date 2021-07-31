@@ -1,10 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <assert.h>
 
 #include "ast/ast.h"
-#include "ast/util/free_ast.h"
 
 #include "util/ctx.h"
 #include "flags/flags.h"
@@ -12,10 +8,6 @@
 #include "typeinference/typeinfer.h"
 
 #include "cg_const.h"
-
-#include "code_gen/util/indent.h"
-#include "code_gen/types/gen_c_types.h"
-#include "code_gen/structs/structs_code_gen.h"
 
 void transpileBoolConst(struct BoolConst* bc, struct Ctx* ctx){
 	fprintf(ctx->file, (bc->value)?"true":"false");

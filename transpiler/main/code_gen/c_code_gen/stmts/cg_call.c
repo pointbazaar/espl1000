@@ -3,14 +3,10 @@
 #include <string.h>
 
 #include "ast/ast.h"
-#include "ast/util/free_ast.h"
 
 #include "util/ctx.h"
 
-#include "cg_assignstmt.h"
 #include "../expr/cg_expr.h"
-
-#include "code_gen/util/indent.h"
 
 #include "tables/sst/sst.h"
 #include "tables/lvst/lvst.h"

@@ -1,59 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <libgen.h>
 #include <stdbool.h>
 #include <malloc.h>
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/sysmacros.h>
 
 #include "ast/ast.h"
 #include "ast/util/free_ast.h"
 
-#include "../test/test.h"
-
 #include "code_gen/c_code_gen/cg.h"
 #include "flags/flags.h"
-#include "util/help.h"
-
 #include "util/fileutils/fileutils.h"
-
 #include "invoke/invoke.h"
-
 #include "transpiler.h"
-
-int main(int argc, char* argv[]){
-
-	mallopt(M_CHECK_ACTION, 3);
-	
-	struct Flags* flags = makeFlags(argc, argv);
-	
-	if(flags->help){
-		sd_print_help();
-		freeFlags(flags);
-		return 0;
-	}
-	
-	if(flags->version){
-		printf("smalldragon v0.2.0\n");
-		freeFlags(flags);
-		return 0;
-	}
-	
-	if(flags->test){
-		int status = transpiler_test_all(flags->debug);
-		freeFlags(flags);
-		return status;
-	}
-	
-	bool success = transpileAndCompile(flags);
-	
-	freeFlags(flags);
-
-	return (success)?0:1;
-}
 
 bool transpileAndCompile(struct Flags* flags){
 	
@@ -63,10 +21,13 @@ bool transpileAndCompile(struct Flags* flags){
 	
 		//invoke lexer, parser to generate .dg.ast file
 		bool success = invoke_lexer_parser(filename, flags);
+
 		if(!success){
-			printf("Error: could not lex/parse %s.\n", filename);
+
+			printf("[Error]: could not lex/parse %s.\n", filename);
 			freeFlags(flags);
-			exit(1);
+
+			return false;
 		}
 	}
 	
@@ -75,8 +36,10 @@ bool transpileAndCompile(struct Flags* flags){
 	if(ast == NULL){ return false; }
 
 	if(flags->count_filenames == 0){
+
 		printf("[Error] expected atleast 1 filename\n");
-		exit(1);
+		free_ast(ast);
+        return false;
 	}
 
 	//output filenames

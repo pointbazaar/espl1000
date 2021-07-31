@@ -2,13 +2,10 @@
 #include <stdbool.h>
 
 #include "ast/ast.h"
-#include "ast/util/str_ast.h"
 
 #include "typeinference/typeinfer.h"
 
 #include "tables/symtable/symtable.h"
-#include "tables/lvst/lvst.h"
-#include "tables/sst/sst.h"
 #include "tables/stst/stst.h"
 
 struct MemberAccess {

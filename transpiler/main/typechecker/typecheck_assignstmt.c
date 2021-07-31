@@ -7,7 +7,6 @@
 #include "ast/util/equals_ast.h"
 
 //Table Includes
-#include "tables/sst/sst.h"
 #include "tables/symtable/symtable.h"
 
 //Typeinference Includes
@@ -17,8 +16,6 @@
 #include "typecheck_errors.h"
 #include "typecheck_expr.h"
 #include "typecheck_utils.h"
-#include "typecheck_stmts.h"
-#include "typecheck_methodcall.h"
 #include "typecheck.h"
 #include "tcctx.h"
 

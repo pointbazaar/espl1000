@@ -4,7 +4,6 @@
 #include "ast/ast.h"
 #include "ast/sd_inttype.h"
 
-#include "util/ctx.h"
 #include "flags/flags.h"
 
 static uint8_t sizeof_structmember(struct StructMember* m){

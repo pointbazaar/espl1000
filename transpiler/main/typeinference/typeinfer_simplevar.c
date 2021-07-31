@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 #include "ast/ast.h"
-#include "ast/util/free_ast.h"
 #include "ast/util/str_ast.h"
 
 #include "typeinference/typeinfer.h"
