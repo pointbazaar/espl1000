@@ -42,8 +42,7 @@
 	<h3>Syntax</h3>
 
 	<pre>
-(a1, ..., an) -> Expr
-	</pre>
+(arg_1, ..., arg_n) -> Expr</pre>
 	
 	<h3>Limitations</h3>
 	<ul>
@@ -75,17 +74,14 @@
 
 	<h3>Example</h3>
 
-	<pre>
-<code>
-fn main () ~> int { 
+	<pre><code>fn main () ~> int {
 	return subr( (x) -> x+1, 8 );
 }
 
 fn subr ( ((int)->int) f, k) -> int {
 	return f(k);
 }
-</code>
-	</pre>
+</code></pre>
 
 </div>
 

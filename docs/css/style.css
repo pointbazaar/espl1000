@@ -14,7 +14,9 @@ a {
 
 pre {
 	/* highlight code snippets */
-	background-color: rgba(235, 204, 145);
+	background-color: rgb(235, 204, 145);
+	border-radius: 0.3rem;
+	padding: 1rem;
 }
 
 .nav-bg{

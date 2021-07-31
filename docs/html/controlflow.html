@@ -25,7 +25,7 @@
 
 
 
-<div class="col box">
+<div class="col">
 <h3> if / else </h3>
 <pre><code>fn main () ~&gt; int {
 	
@@ -37,7 +37,7 @@
 </div>
 
 
-<div class="col box">
+<div class="col">
 <h3> for, break, continue </h3>
 <pre><code>fn main () ~&gt; int {
 	
@@ -53,7 +53,7 @@
 </code></pre>
 </div>
 
-<div class="col box">
+<div class="col">
 <h3> loop </h3>
 <pre><code>fn main () ~&gt; int {
 	
@@ -65,7 +65,7 @@
 </code></pre>
 </div>
 
-<div class="col box">
+<div class="col">
 <h3> while </h3>
 <pre><code>fn main () ~&gt; int {
 	
@@ -77,7 +77,7 @@
 </code></pre>
 </div>
 
-<div class="col box">
+<div class="col">
 <h3> switch </h3>
 <pre><code>fn main () ~&gt; int {
 	
@@ -92,7 +92,7 @@
 </code></pre>
 </div>
 
-<div class="col box">
+<div class="col">
 <h3> try / catch</h3>
 <h5>Rules</h5>
 <p>
@@ -116,12 +116,9 @@
 	} catch {
 		//handle error
 	}
-	
 	return 0;
 }
 
-//sub1 receives a hidden jmp_buf parameter
-//so it knows which jmp_buf to use with longjmp()
 fn sub1 (uint x) -&gt; int throws {
 	if x > 0 { throw; }
 	return -x;

@@ -19,8 +19,8 @@
 		<div class="col"><a href="../index.html">Home</a></div>
 	</div>
 
-	<h1>C interop</h1>
-	<hr>
+	<h1 class="text-center">C interop</h1>
+
 	<h2>externc</h2>
 
 	<p>
@@ -45,8 +45,8 @@ externc fn sdl_get_error()~>[char] "SDL_GetError"
 
 externc fn sdl_free_surface(SDL_Surface surface) ~> bool "SDL_FreeSurface"
 
-externc struct SDL_Window {} "SDL_Window"
-externc struct SDL_Surface {} "SDL_Surface"
+externc struct SDL_Window {} "struct SDL_Window"
+externc struct SDL_Surface {} "struct SDL_Surface"
 </pre>
 
 	<h5>Where to put it</h5>

@@ -29,12 +29,11 @@
 	SmallDragon can infer the type of a local variable for you, so
 	it is 
 	<strong>optional to declare the type.</strong>
-	<br><br>
+	<br>
 	</p>
 	
 	<h3> Example </h3>
-	<pre><code>
-fn main () ~> int { 
+	<pre><code>fn main () ~> int {
 	a = 3;
 	return a;
 }
@@ -49,12 +48,6 @@ fn main () ~> int {
 
 	The type of '3+4' can be quickly computed, the type of '3*(call1(3,3)*4)+7 &gt; call2()'
 	might take longer, <br>as the entire tree of the expression has to be traversed.<br>
-	</p>
-
-	<h3>Implementation</h3>
-	<p>
-	The current implementation uses memoization, so the type of a local variable
-	needs only be computed once.
 	</p>
 	
 	<h3> Design Considerations </h3>
