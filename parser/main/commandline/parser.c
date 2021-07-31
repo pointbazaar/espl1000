@@ -2,17 +2,9 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
-#include <time.h>
-#include <assert.h>
 #include <malloc.h>
 
 #include "Namespace.h"
-#include "subr/Method.h"
-#include "subr/DeclArg.h"
-#include "statements/Stmt.h"
-#include "types/Type.h"
-
-#include "../../test/commandline/ParserTest.h"
 
 #include "ast/io/ast_writer.h"
 
@@ -22,65 +14,16 @@
 #include "token/token/token.h"
 #include "token/list/TokenList.h"
 
-#include "parser_help.h"
-#include "parser_flags.h"
+#include "parser.h"
 
-#define ERR_FILE_NOT_EXIST      "[Parser] file %s does not exist.\n"
 #define ERR_COULD_NOT_OPEN_FILE "[Parser] could not open file: %s\n"
-#define ERR_EXPECT_1_FILENAME   "[Parser] expected exactly 1 filename argument.\n"
-
-//this project is to parse a Dragon AST
-//from Tokens written into .tokens files by Dragon-Lexer,
-//and store it in a .ast file 
-//to be retrieved by the smalldragon transpiler
-
-// --- private subroutines ---
-
-bool main_inner(struct ParserFlags* flags);
-
-void printHelp();
-
-void build_ast_file(char* tokensFile, bool debug);
-
-static void exit_incomplete_parse(struct TokenList* tokens);
+#define ERR_FATAL "[Parser] Fatal.\n"
+#define ERR_TOKENS_LEFT "[Parser] there were tokens left when parsing. Exiting.\n"
 
 static char* extract_namespace_name(char* filename_tokens);
 static char* extract_filename_ast(char* filename_tokens);
 
-int main(int argc, char** argv){
-	
-	mallopt(M_CHECK_ACTION, 3);
-
-	struct ParserFlags* flags = parseFlags(argc, argv);
-
-	if(flags->help) {
-		
-		printHelp();
-		free(flags);
-		return 0;
-	}
-	
-	if(flags->test){
-		
-		free(flags);	
-		return test_all(flags->debug);
-	}
-		
-	if(flags->filename == NULL){
-	
-		printf(ERR_EXPECT_1_FILENAME);
-		free(flags);
-		exit(1);
-	}
-	
-	bool success = main_inner(flags);
-	
-	free(flags);
-	
-	return (success)?0:1;
-}
-
-void build_ast_file(char* tokensFile, bool debug) {
+void build_ast_file(char *tokensFile) {
 
 	FILE* file = fopen(tokensFile, "r");
 	
@@ -105,9 +48,12 @@ void build_ast_file(char* tokensFile, bool debug) {
 	
 	free(ns_name);
 	
-	if(list_size(tokens) > 0){ exit_incomplete_parse(tokens); }
+	if(list_size(tokens) > 0){
+        printf(ERR_TOKENS_LEFT);
+        list_print(tokens);
+        exit(1);
+    }
 
-	if(debug){ printf("[Parser] write to %s\n", ast_filename); }
 	free(ast_filename);
 
 	struct AST* ast = make(AST);
@@ -120,14 +66,6 @@ void build_ast_file(char* tokensFile, bool debug) {
 
 	free_ast(ast);
 	freeTokenList(tokens);
-}
-
-static void exit_incomplete_parse(struct TokenList* tokens){
-	
-	printf("[Parser] there were tokens left when parsing.\n");
-	list_print(tokens);
-	printf("[Parser] exiting.\n");
-	exit(1);
 }
 
 static char* extract_namespace_name(char* filename_tokens){
@@ -169,7 +107,7 @@ static char* extract_filename_ast(char* filename_tokens){
 	char* index = strrchr(res, '.');
 	
 	if(index == NULL){ 
-		printf("Fatal\n");
+		printf(ERR_FATAL);
 		exit(1);
 	}
 	
@@ -179,31 +117,3 @@ static char* extract_filename_ast(char* filename_tokens){
 	return res;
 }
 
-bool main_inner(struct ParserFlags* flags) {
-	
-	char* tokensFile = flags->filename;
-	
-	char* extension = strrchr(tokensFile, '.');
-	
-	if(extension == NULL){ 
-		printf("Fatal\n");
-		exit(1);
-	}
-	
-	if(strcmp(extension, ".tokens") != 0){
-		printf("[Parser] %s does not have .tokens extension. Exiting.\n", tokensFile);
-		printf("[Parser] actual extension: %s\n", extension);
-		return false;
-	}
-
-	FILE* f = fopen(tokensFile, "r");
-	if(f == NULL){
-		printf(ERR_FILE_NOT_EXIST, tokensFile);
-		return false;
-	}
-	fclose(f);
-
-	build_ast_file(tokensFile, flags->debug);
-	
-	return true;
-}

@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 #include "ast/ast.h"
 #include "cc.h"
@@ -93,8 +92,7 @@ static void add_cc_node(struct CCNode* node, char* name){
 
 	char* current = node->name;
 	
-	if(strcmp(current, name) == 0)
-		{ return; }
+	if(strcmp(current, name) == 0){ return; }
 		
 	if(node->next == NULL){
 	

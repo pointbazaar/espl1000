@@ -6,8 +6,10 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 #use -pg to generate profiling information for gprof
 
-add_executable(${PROJECT_NAME} 
+add_executable(${PROJECT_NAME}
+	main/commandline/main.c
 	main/commandline/parser.c
+	main/commandline/parser_help.c
 	main/commandline/parser_flags.c
 	main/commandline/parser_help.c
 	
@@ -102,7 +104,7 @@ add_executable(${PROJECT_NAME}
 	test/astnodes/var/SimpleVarTest.c
 	test/astnodes/var/VariableTest.c
 	test/commandline/ParserTest.c
-)
+		)
 
 #TODO: add some kind of optimized build with -O2
 #TODO: use -Wextra

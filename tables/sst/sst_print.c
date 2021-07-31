@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <inttypes.h>
 
 #include "ast/util/str_ast.h"
 

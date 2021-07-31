@@ -1,17 +1,12 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 #include "tables/symtable/symtable.h"
-#include "tables/lvst/lvst.h"
 #include "tables/sst/sst.h"
-#include "tables/stst/stst.h"
 
 #include "ast/ast.h"
-#include "ast/util/str_ast.h"
 
-#include "typeinference/typeinfer.h"
 #include "typeinference/util/type_str.h"
 
 static struct Type* typeFromStrPrimitive_inner(struct ST* st, char* typeName);

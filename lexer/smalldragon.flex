@@ -159,7 +159,7 @@ int main(int argc, char* argv[]){
 	//configure input source
 	yyin = fopen(filename, "r");
 	
-	char* buffer = lexer_make_tkn_filename(filename, myargs->debug);
+	char* buffer = lexer_make_tkn_filename(filename);
 	
 	//configure output file
 	//NECESSARY (for FLEX)

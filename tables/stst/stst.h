@@ -25,9 +25,6 @@ void freeSTST(struct STST* stst);
 
 struct STSTLine* makeSTSTLine(struct StructDecl* s, char* _namespace);
 
-
-void                 stst_clear(struct STST* stst);
-
 void                 stst_fill(struct STST* stst, struct Namespace* ns);
 
 void                 stst_add(struct STST* stst, struct STSTLine* line);

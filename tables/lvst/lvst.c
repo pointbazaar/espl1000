@@ -4,11 +4,9 @@
 #include <stdbool.h>
 
 #include "ast/ast.h"
-#include "ast/util/free_ast.h"
 #include "ast/util/str_ast.h"
 
 #include "tables/lvst/lvst.h"
-#include "tables/symtable/symtable.h"
 
 #define LVST_INITIAL_CAPACITY 10
 
@@ -89,8 +87,7 @@ void lvst_add(struct LVST* lvst, struct LVSTLine* line){
 		
 		lvst->capacity *= 2;
 		
-		const int nbytes = 
-			sizeof(struct LVSTLine*) * (lvst->capacity);
+		const int nbytes = sizeof(struct LVSTLine*) * (lvst->capacity);
 		
 		lvst->lines = realloc(lvst->lines, nbytes);
 	}
@@ -120,8 +117,7 @@ bool lvst_contains(struct LVST* lvst, char* name){
 		
 		char* lv_name = lvst->lines[i]->name;
 		
-		if(strcmp(lv_name, name) == 0)
-			{ return true; }
+		if(strcmp(lv_name, name) == 0){ return true; }
 	}
 	return false;
 }

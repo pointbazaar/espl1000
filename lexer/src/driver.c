@@ -97,7 +97,7 @@ struct LexerFlags* handle_arguments(int argc, char** argv){
 	return res;
 }
 
-char* lexer_make_tkn_filename(char* filename, bool debug){
+char* lexer_make_tkn_filename(char* filename){
 	
 	//because basename,dirname may modify their args
 	char cpy_filename_1[50];

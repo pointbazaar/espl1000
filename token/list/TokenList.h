@@ -41,12 +41,9 @@ void list_consume(struct TokenList* list, int amount);
 
 bool list_starts_with(struct TokenList* list, struct Token* itk);
 
-char* wrap(char* s, char* wrap);
-
 //they return 'false' if the token is not present
 bool list_expect_internal(struct TokenList* list, struct Token* itk);
 bool list_expect(struct TokenList* list, int token_kind);
-bool list_expect_2(struct TokenList* list, struct Token* tk);
 
 struct TokenList* list_copy(struct TokenList* list);
 

@@ -36,19 +36,6 @@ struct STST* makeSTST(){
 	return stst;
 }
 
-void stst_clear(struct STST* stst){
-
-	for(int i=0;i < stst->count; i++){
-
-		free(stst->lines[i]);
-	}
-	free(stst->lines);
-	
-	stst->capacity = STST_INITIAL_CAPACITY;
-	stst->lines    = malloc(sizeof(struct STSTLine*) * stst->capacity);
-	stst->count    = 0;
-}
-
 void stst_fill(struct STST* stst, struct Namespace* ns){
 
 	for(int i = 0; i < ns->count_externc; i++) {

@@ -60,8 +60,7 @@ bool transpileAndCompile(struct Flags* flags){
 	if(flags->has_main_fn){
 		
 		char* cmd_gcc = make_gcc_cmd(flags, c_filename);
-		
-		printf("%s\n", cmd_gcc);
+
 		system(cmd_gcc);
 		
 		free(cmd_gcc);

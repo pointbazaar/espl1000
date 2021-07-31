@@ -1,8 +1,5 @@
-#include <unistd.h>
 #include <stdio.h>
-#include <malloc.h>
 #include <string.h>
-#include <assert.h>
 #include <stdlib.h>
 
 #include "TokenList.h"
@@ -10,12 +7,8 @@
 #include "../token/token.h"
 
 struct TokenList* makeTokenList() {
-	
-	//this is enough for most tests
-	const int initial_size = 20;
 
-	//DEBUG
-	//printf("makeTokenList()\n");
+	const int initial_size = 20;
 
 	struct TokenList* res = malloc(sizeof(struct TokenList));
 	
@@ -33,29 +26,20 @@ struct TokenList* makeTokenList() {
 
 void list_add(struct TokenList* list, struct Token* token) {
 
-	//DEBUG
-	//printf("list_add\n");
-
 	if((list->index_head + list->tokensc + 1) > list->capacity){
-		
-		//DEBUG
-		//printf("resize TokenList instance\n");
-		
 		//we don't have enough capacity
-		//double the capacity		
 		list->capacity = list->capacity * 2;
 		list->tokens = realloc(list->tokens, list->capacity * sizeof(struct Token*));
 	}
 	
-	
 	list->tokens[list->index_head + list->tokensc] = token;
-	list->tokensc += 1;
-	list->tokens_stored += 1;
+	list->tokensc++;
+	list->tokens_stored++;
 }
 
 void list_consume(struct TokenList* list, int amount) {
 	
-	list->tokensc -= amount;
+	list->tokensc    -= amount;
 	list->index_head += amount;
 }
 
@@ -68,21 +52,9 @@ bool list_starts_with(struct TokenList* list, struct Token* itk) {
 	//we should use interfaces we can rely on classes to implement
 	//the class and the content of the token should be the same for them to be the same
 
-	if (list_size(list) > 0) {
-		const bool res = token_equals(
-				list_head(list),
-				itk
-		);
-		
-		return res;
-	}
-	return false;
-}
+    if (list_size(list) == 0) { return  false; }
 
-char* wrap(char* s, char* wrap) {
-	char* res = malloc(sizeof(char)*strlen(s)+2*strlen(wrap));
-	sprintf(res,"%s%s%s",wrap,s,wrap);
-	return res;
+    return token_equals(list_head(list), itk);
 }
 
 bool list_expect_internal(struct TokenList* list, struct Token* token) {
@@ -106,15 +78,10 @@ bool list_expect(struct TokenList* list, int token_kind){
 	return res;
 }
 
-bool list_expect_2(struct TokenList* list, struct Token* tk){
-	return list_expect_internal(list, tk);
-}
-
 struct TokenList* list_copy(struct TokenList* list) {
 
 	struct TokenList* res = makeTokenList();
 	list_set(res, list);
-	
 	return res;
 }
 
@@ -134,9 +101,7 @@ void list_set(struct TokenList* list, struct TokenList* copy) {
 }
 
 struct Token* list_get(struct TokenList* list, int i) {
-	
-	//no bounds checking! for performance.
-	
+
 	return list->tokens[list->index_head + i];
 }
 
@@ -208,10 +173,7 @@ void freeTokenList(struct TokenList* list){
 	
 	//also frees the tokens within,
 	//even those already consumed
-	
 	for(int i=0;i < list->tokens_stored; i++){
-		//DEBUG
-		//printf("free element %d\n", i);
 		freeToken(list->tokens[i]);
 	}
 	freeTokenListShallow(list);

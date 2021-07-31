@@ -46,6 +46,18 @@ struct Identifier* copy_identifier(struct Identifier* id){
 	strcpy(res->identifier, id->identifier);
 	return res;
 }
+
+struct Range* copy_range(struct Range* r){
+    struct Range* res = make(Range);
+
+    res->super.annotations = r->super.annotations;
+    res->super.line_num = r->super.line_num;
+
+    res->start = copy_expr(r->start);
+    res->end = copy_expr(r->end);
+    return res;
+}
+
 struct StmtBlock*  copy_stmt_block(struct StmtBlock* s){
 
 	struct StmtBlock* res = make(StmtBlock);
@@ -320,10 +332,126 @@ struct Call* copy_call(struct Call* c){
 }
 struct Stmt* copy_stmt(struct Stmt* stmt){
 
-	//TODO
-	exit(1);
-	return NULL;
+    struct Stmt* res = make(Stmt);
+
+    res->super.line_num = stmt->super.line_num;
+    res->super.annotations = stmt->super.annotations;
+
+    res->kind = stmt->kind;
+    switch(stmt->kind){
+        case 0: res->ptr.m0 = copy_loop_stmt(stmt->ptr.m0); break;
+        case 1: res->ptr.m1 = copy_call(stmt->ptr.m1); break;
+        case 2: res->ptr.m2 = copy_while_stmt(stmt->ptr.m2); break;
+        case 3: res->ptr.m3 = copy_if_stmt(stmt->ptr.m3); break;
+        case 4: res->ptr.m4 = copy_ret_stmt(stmt->ptr.m4); break;
+        case 5: res->ptr.m5 = copy_assign_stmt(stmt->ptr.m5); break;
+        case 6: res->ptr.m6 = copy_try_catch_stmt(stmt->ptr.m6); break;
+        case 7: res->ptr.m7 = copy_for_stmt(stmt->ptr.m7); break;
+        case 8: res->ptr.m8 = copy_switch_stmt(stmt->ptr.m8); break;
+        default:
+            res->is_break = stmt->is_break;
+            res->is_continue = stmt->is_continue;
+            res->is_throw = stmt->is_throw;
+            break;
+    }
+
+    return res;
 }
+
+struct IfStmt* copy_if_stmt(struct IfStmt* i){
+
+    struct IfStmt* res = make(IfStmt);
+    res->else_block = NULL;
+
+    res->super.line_num = i->super.line_num;
+    res->super.annotations = i->super.annotations;
+
+    res->condition = copy_expr(i->condition);
+    res->block = copy_stmt_block(i->block);
+
+    if(i->else_block != NULL){
+        res->else_block = copy_stmt_block(i->else_block);
+    }
+
+    return res;
+}
+
+struct AssignStmt* copy_assign_stmt(struct AssignStmt* a){
+    struct AssignStmt* res = make(AssignStmt);
+
+    res->super.line_num = a->super.line_num;
+    res->super.annotations = a->super.annotations;
+
+    res->opt_type = NULL;
+    if(a->opt_type != NULL){
+        res->opt_type = copy_type(a->opt_type);
+    }
+    strcpy(res->assign_op, a->assign_op);
+    res->expr = copy_expr(a->expr);
+    res->var = copy_variable(a->var);
+
+    return res;
+}
+
+struct RetStmt* copy_ret_stmt(struct RetStmt* r){
+    struct RetStmt* res = make(RetStmt);
+
+    res->super.line_num = r->super.line_num;
+    res->super.annotations = r->super.annotations;
+
+    res->return_value = copy_expr(r->return_value);
+    return res;
+}
+
+struct WhileStmt* copy_while_stmt(struct WhileStmt* w){
+    struct WhileStmt* res = make(WhileStmt);
+
+    res->super.line_num = w->super.line_num;
+    res->super.annotations = w->super.annotations;
+
+    res->condition = copy_expr(w->condition);
+    res->block = copy_stmt_block(w->block);
+
+    return res;
+}
+
+struct LoopStmt* copy_loop_stmt(struct LoopStmt* l){
+
+    struct LoopStmt* res = make(LoopStmt);
+
+    res->super.line_num = l->super.line_num;
+    res->super.annotations = l->super.annotations;
+
+    res->count = copy_expr(l->count);
+    res->block = copy_stmt_block(l->block);
+
+    return res;
+}
+
+struct ForStmt* copy_for_stmt(struct ForStmt* f){
+    struct ForStmt* res = make(ForStmt);
+
+    res->super.line_num = f->super.line_num;
+    res->super.annotations = f->super.annotations;
+
+    strcpy(res->index_name, f->index_name);
+    res->range = copy_range(f->range);
+    res->block = copy_stmt_block(f->block);
+
+    return res;
+}
+
+struct SwitchStmt* copy_switch_stmt(struct SwitchStmt* s){
+    //TODO
+    exit(1);
+}
+
+struct TryCatchStmt* copy_try_catch_stmt(struct TryCatchStmt* tcs){
+
+    //TODO
+    exit(1);
+}
+
 struct CaseStmt* copy_case_stmt(struct CaseStmt* c){
 
 	struct CaseStmt* res = make(CaseStmt);

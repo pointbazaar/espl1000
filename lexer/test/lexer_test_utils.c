@@ -10,8 +10,6 @@
 
 struct Token** lex(char* source) {
 
-	//printf("lex(%s, ...)\n", source);
-
 	//make a file with the source
 	//run the lexer
 	//read out the tokens
@@ -24,14 +22,10 @@ struct Token** lex(char* source) {
 	fprintf(f, "%s",source);
 	fclose(f);
 
-
-	//run the lexer
 	char cmd[100];
 	sprintf(cmd, "./dragon-lexer %s", fname_src);
 	system(cmd);
 
-
-	//read out the tokens
 	FILE* ftks = fopen(fname_tks, "r");
 
 	struct TokenList* list = read_tokens_from_tokens_file(ftks, fname_tks);
@@ -50,7 +44,6 @@ struct Token** lex(char* source) {
 
 void free_tokens(struct Token** tokens, unsigned int count) {
 	for(int i = 0; i < count; i++) {
-		//free(tokens[i]->value);
 		free(tokens[i]);
 	}
 }

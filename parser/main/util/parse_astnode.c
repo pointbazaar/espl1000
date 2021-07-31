@@ -1,6 +1,3 @@
-#include <stdbool.h>
-#include <inttypes.h>
-
 #include "ast/ast_declare.h"
 
 #include "parse_astnode.h"

@@ -21,7 +21,7 @@ struct SST {
 	//this struct should be opaque
 	//outside this file
 	
-	unsigned int count;
+	uint32_t count;
 	size_t capacity;
 	
 	struct SSTLine** lines;
@@ -52,7 +52,7 @@ void sst_clear(struct SST* sst){
 	
 	free(sst->lines);
 	
-	sst->count = 0;
+	sst->count    = 0;
 	sst->capacity = SST_INITIAL_CAPACITY;
 	
 	sst->lines = malloc(sizeof(struct SSTLine*)*sst->capacity);
@@ -86,7 +86,7 @@ struct SSTLine* makeSSTLine(
 	
 	line->return_type   = return_type;
 	line->is_libc       = isLibC;
-	line->cc           = make_cc();
+	line->cc            = make_cc();
 	
 	line->dead         = DEAD_UNKNOWN;
 	line->halts        = halts;
@@ -97,7 +97,7 @@ struct SSTLine* makeSSTLine(
 	
 	line->throws       = throws;
 
-	line->name_in_c = NULL;
+	line->name_in_c   = NULL;
 	line->is_extern_c = false;
 
 	return line;
@@ -119,7 +119,7 @@ struct SSTLine* makeSSTLine2(
 	
 	line->return_type   = m->decl->return_type;
 	line->is_libc       = false;
-	line->cc           = make_cc();
+	line->cc            = make_cc();
 	
 	line->dead         = DEAD_UNKNOWN;
 	line->halts        = HALTS_UNKNOWN;
@@ -130,7 +130,7 @@ struct SSTLine* makeSSTLine2(
 	
 	line->throws       = m->decl->throws;
 
-	line->name_in_c = NULL;
+	line->name_in_c   = NULL;
 	line->is_extern_c = false;
 
 	return line;
@@ -149,7 +149,6 @@ void sst_add(struct SST* sst, struct SSTLine* line){
 		
 		printf(ERR_SAME_NAME);
 		printf("\t%s\n", line->name);
-		exit(1);
 		return;
 	}
 	
@@ -171,7 +170,6 @@ struct SSTLine* sst_get(struct SST* sst, char* name){
 	
 	printf(ERR_NOT_FOUND);
 	printf("\t%s\n", name);
-	exit(1);
 	return NULL;
 }
 

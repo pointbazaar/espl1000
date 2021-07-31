@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <inttypes.h>
 #include <string.h>
-#include <stdio.h>
 
 #include "sst_fill.h"
 #include "../symtable/symtable.h"

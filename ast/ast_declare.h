@@ -1,7 +1,9 @@
 #ifndef AST_DECLARE_H
 #define AST_DECLARE_H
 
-#define DEFAULT_STR_SIZE 32 
+#define DEFAULT_STR_SIZE 32
+
+#include <inttypes.h>
 
 //--- TOPLEVEL ---
 struct ASTNode;

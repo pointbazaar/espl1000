@@ -16,8 +16,7 @@ struct ST* makeST(){
 	st->inferred_types_capacity = 100;
 	st->inferred_types_count    = 0;
 	
-	const uint32_t nbytes = 
-		sizeof(struct Type*) * st->inferred_types_capacity;
+	const uint32_t nbytes = sizeof(struct Type*) * st->inferred_types_capacity;
 	
 	st->inferred_types = malloc(nbytes);
 	
@@ -56,5 +55,5 @@ void st_register_inferred_type(struct ST* st, struct Type* t){
 	}
 	
 	st->inferred_types[st->inferred_types_count] = t;
-	st->inferred_types_count += 1;
+	st->inferred_types_count++;
 }
