@@ -112,7 +112,7 @@ bool transpileAndWrite(char* c_filename, char* h_filename, struct AST* ast, stru
 static void fill_tables(struct AST* ast, struct Ctx* ctx){
 	
 	sst_clear(ctx->tables->sst);
-	sst_prefill(ctx->tables, ctx->tables->sst);
+    sst_prefill(ctx->tables);
 
 	for(int i = 0; i < ast->count_namespaces; i++){
 		

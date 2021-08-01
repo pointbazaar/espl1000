@@ -87,5 +87,8 @@ externc fn fopen([char] name, [char] mode) ~> FILE "fopen"
 externc fn fclose(FILE file) ~> int "fclose"
 externc fn fflush(FILE file) ~> int "fflush"
 
+externc fn getchar() ~> int "getchar"
+externc fn fgetc(FILE file) ~> int "fgetc"
+
 //structs
 externc struct FILE {} "FILE" 

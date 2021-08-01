@@ -63,12 +63,12 @@ void tc_throwstmt(struct Stmt* s, struct TCCtx* tcctx){
 
 void tc_breakstmt(struct Stmt* s, struct TCCtx* tcctx){
 	
-	//TODO: check that we are in some loop 
+	//nothing to check
 }
 
 void tc_continuestmt(struct Stmt* s, struct TCCtx* tcctx){
 	
-	//TODO: check that we are in some loop 
+	//nothing to check
 }
 
 void tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx){

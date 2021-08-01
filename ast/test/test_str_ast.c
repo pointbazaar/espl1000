@@ -188,16 +188,6 @@ void test_str_term(){
 	free(s);
 }
 
-void test_str_structdecl(){
-	
-	//TODO
-}
-
-void test_str_structmember(){
-	
-	//TODO
-}
-
 void test_str_lambda(){
 	
 	status("str_lambda");

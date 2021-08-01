@@ -74,9 +74,6 @@ int main(){
 	test_str_unopterm();
 	test_str_term();
 	
-	test_str_structdecl();
-	test_str_structmember();
-	
 	test_str_lambda();
 	
 	printf("[AST Module] Passed All Tests\n");
@@ -249,7 +246,7 @@ void test_serialize_float_const() {
 	
 	rewind(file);
 	
-	struct FloatConst m = { .value = 3.54 };
+	struct FloatConst m = { .value = 3.54f };
 
 	write_float_const(&m, file);
 	

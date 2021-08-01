@@ -63,6 +63,7 @@ add_executable(${PROJECT_NAME}
 	main/typechecker/typecheck_unopterm.c
 	main/typechecker/typecheck_term.c
 	main/typechecker/typecheck_op.c
+	main/typechecker/typecheck_var.c
 	main/typechecker/typecheck_utils.c
 	
 	#typeinference

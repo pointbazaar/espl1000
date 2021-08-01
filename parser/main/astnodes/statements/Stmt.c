@@ -24,14 +24,14 @@
 
 static struct Stmt* initStmt();
 
-static void stmt_make_loop(struct Stmt* res, struct TokenList* copy, bool debug);
-static void stmt_make_while(struct Stmt* res, struct TokenList* copy, bool debug);
-static void stmt_make_if(struct Stmt* res, struct TokenList* copy, bool debug);
-static void stmt_make_return(struct Stmt* res, struct TokenList* copy, bool debug);
-static void stmt_make_for(struct Stmt* res, struct TokenList* copy, bool debug);
-static void stmt_make_other(struct Stmt* res, struct TokenList* copy, bool debug);
-static void stmt_make_switch(struct Stmt* res, struct TokenList* copy, bool debug);
-static void stmt_make_trycatch(struct Stmt* res, struct TokenList* copy, bool debug);
+static void stmt_make_loop(struct Stmt *res, struct TokenList *copy);
+static void stmt_make_while(struct Stmt *res, struct TokenList *copy);
+static void stmt_make_if(struct Stmt *res, struct TokenList *copy);
+static void stmt_make_return(struct Stmt *res, struct TokenList *copy);
+static void stmt_make_for(struct Stmt *res, struct TokenList *copy);
+static void stmt_make_other(struct Stmt *res, struct TokenList *copy);
+static void stmt_make_switch(struct Stmt *res, struct TokenList *copy);
+static void stmt_make_trycatch(struct Stmt *res, struct TokenList *copy);
 // ---------------------------
 
 struct Stmt* makeStmt(struct TokenList* tokens) {
@@ -43,8 +43,8 @@ struct Stmt* makeStmt(struct TokenList* tokens) {
 	
 	parse_astnode(copy, &(res->super));
 
-	res->kind 	    = -1;
-	res->is_break 	= false;
+	res->kind 	     = -1;
+	res->is_break 	 = false;
 	res->is_continue = false;
 	res->is_throw    = false;
 
@@ -67,15 +67,23 @@ struct Stmt* makeStmt(struct TokenList* tokens) {
 			list_consume(copy, 2); 
 			break;
 
-		case FOR:       stmt_make_for(res, copy, false);    break;
-		case LOOP:      stmt_make_loop(res, copy, false);   break;
-		case WHILE:     stmt_make_while(res, copy, false); 	break;
-		case IF:        stmt_make_if(res, copy, false);     break;
-		case RETURN:    stmt_make_return(res, copy, false); break;
-		case SWITCH:    stmt_make_switch(res, copy, false); break;
-		case TRY:		stmt_make_trycatch(res, copy, false); break;
+		case FOR:
+            stmt_make_for(res, copy);    break;
+		case LOOP:
+            stmt_make_loop(res, copy);   break;
+		case WHILE:
+            stmt_make_while(res, copy); 	break;
+		case IF:
+            stmt_make_if(res, copy);     break;
+		case RETURN:
+            stmt_make_return(res, copy); break;
+		case SWITCH:
+            stmt_make_switch(res, copy); break;
+		case TRY:
+            stmt_make_trycatch(res, copy); break;
 
-		default: 		stmt_make_other(res, copy, false); 	break;
+		default:
+            stmt_make_other(res, copy); 	break;
 	}
 
 	list_set(tokens, copy);
@@ -88,14 +96,13 @@ struct Stmt* initStmt(){
 	
 	struct Stmt* res = make(Stmt);
 
-	//init
 	res->kind = 0;
 	res->ptr.m0 = NULL;
 	
 	return res;
 }
 
-void stmt_make_loop(struct Stmt* res, struct TokenList* copy, bool debug){
+void stmt_make_loop(struct Stmt *res, struct TokenList *copy) {
 	
 	res->kind = 0;
 	res->ptr.m0 = makeLoopStmt(copy);
@@ -111,7 +118,7 @@ void stmt_make_loop(struct Stmt* res, struct TokenList* copy, bool debug){
 	}
 }
 
-void stmt_make_while(struct Stmt* res, struct TokenList* copy, bool debug){
+void stmt_make_while(struct Stmt *res, struct TokenList *copy) {
 	
 	res->kind = 2;
 	res->ptr.m2 = makeWhileStmt(copy);
@@ -126,7 +133,7 @@ void stmt_make_while(struct Stmt* res, struct TokenList* copy, bool debug){
 	}
 }
 
-void stmt_make_if(struct Stmt* res, struct TokenList* copy, bool debug){
+void stmt_make_if(struct Stmt *res, struct TokenList *copy) {
 	
 	res->kind = 3;
 	res->ptr.m3 = makeIfStmt(copy);
@@ -140,7 +147,7 @@ void stmt_make_if(struct Stmt* res, struct TokenList* copy, bool debug){
 	}
 }
 
-void stmt_make_return(struct Stmt* res, struct TokenList* copy, bool debug){
+void stmt_make_return(struct Stmt *res, struct TokenList *copy) {
 	
 	res->kind = 4;
 	res->ptr.m4 = makeRetStmt(copy);
@@ -154,7 +161,7 @@ void stmt_make_return(struct Stmt* res, struct TokenList* copy, bool debug){
 	}
 }
 
-void stmt_make_for(struct Stmt* res, struct TokenList* copy, bool debug){
+void stmt_make_for(struct Stmt *res, struct TokenList *copy) {
 	
 	res->kind = 7;
 	res->ptr.m7 = makeForStmt(copy);
@@ -168,7 +175,7 @@ void stmt_make_for(struct Stmt* res, struct TokenList* copy, bool debug){
 	}
 }
 
-void stmt_make_other(struct Stmt* res, struct TokenList* copy, bool debug){
+void stmt_make_other(struct Stmt *res, struct TokenList *copy) {
 	
 	//TODO: we have to figure something out here.
 	//i don't want 'let' statements
@@ -208,7 +215,7 @@ void stmt_make_other(struct Stmt* res, struct TokenList* copy, bool debug){
 	}
 }
 
-void stmt_make_switch(struct Stmt* res, struct TokenList* copy, bool debug){
+void stmt_make_switch(struct Stmt *res, struct TokenList *copy) {
 	
 	res->kind = 8;
 	res->ptr.m8 = makeSwitchStmt(copy);
@@ -222,7 +229,7 @@ void stmt_make_switch(struct Stmt* res, struct TokenList* copy, bool debug){
 	}
 }
 
-static void stmt_make_trycatch(struct Stmt* res, struct TokenList* copy, bool debug){
+static void stmt_make_trycatch(struct Stmt *res, struct TokenList *copy) {
 	
 	res->kind = 6;
 	res->ptr.m6 = makeTryCatchStmt(copy);

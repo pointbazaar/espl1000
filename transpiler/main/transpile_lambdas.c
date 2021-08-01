@@ -213,16 +213,16 @@ static struct Method* gen_subr_from_lambda(
 ){
 	
 	struct MethodDecl* mdecl = make(MethodDecl);
-	mdecl->is_public       = false;
-	mdecl->has_side_effects = false;  //ASSUMPTION TODO: work on it
-	mdecl->throws         = false; //ASSUMPTION TODO: work on it
+	mdecl->is_public         = false;
+	mdecl->has_side_effects  = false;  //ASSUMPTION TODO: work on it
+	mdecl->throws            = false; //ASSUMPTION TODO: work on it
 	sprintf(mdecl->name, LAMBDA_NAME_PATTERN, lambda->lambda_num);
 
 	struct Method* lsubr  = make(Method);
 	lsubr->decl = mdecl;
 	
 	struct RetStmt* rstmt = make(RetStmt);
-	rstmt->return_value    = lambda->expr;
+	rstmt->return_value   = lambda->expr;
 	
 	struct Stmt* stmt = make(Stmt);
 	stmt->kind        = 4;

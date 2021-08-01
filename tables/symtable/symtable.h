@@ -16,7 +16,7 @@ struct ST {
 	// - STST (struct symbol table)
 	
 	struct LVST* lvst; //may be NULL
-	struct SST* sst; //may be NULL
+	struct SST*   sst; //may be NULL
 	struct STST* stst; //may be NULL
 	
 	// -----------------------------
@@ -25,8 +25,7 @@ struct ST {
 	//constructed via type inference
 	//and are not memory-managed as part of the 
 	//AST Tree.
-	
-	//TODO: [ ] allocate , [ ] free
+
 	struct Type** inferred_types;
 	uint32_t      inferred_types_count;
 	uint32_t      inferred_types_capacity;
@@ -35,8 +34,7 @@ struct ST {
 struct ST* makeST();
 void freeST(struct ST* st);
 
-//to memory-managed all these Types created during
-//type inference
+//to memory-managed all these Types created during type inference
 void st_register_inferred_type(struct ST* st, struct Type* type);
 
 #endif

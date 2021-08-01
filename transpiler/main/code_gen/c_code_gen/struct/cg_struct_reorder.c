@@ -8,8 +8,7 @@
 
 static uint8_t sizeof_structmember(struct StructMember* m){
 	//returns the size in bytes of that struct member
-	//(assumes a 64 bit target machine) 
-	//TODO: adjust for other target architecture?
+	//(assumes a 64 bit target machine)
 	
 	struct Type* type = m->type;
 	

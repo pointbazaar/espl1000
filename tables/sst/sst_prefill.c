@@ -5,9 +5,6 @@
 #include "tables/symtable/symtable.h"
 #include "ast/ast.h"
 
-//TODO: get rid of this include,
-//as sst_prefill should not depend on type
-//type_str
 #include "transpiler/main/typeinference/util/type_str.h"
 
 #include "transpiler/main/analyzer/halts/halts.h"
@@ -40,8 +37,8 @@ struct Proto protos_stdio[] = {
 	{ "printf",  "int",    HALTS_UNKNOWN, true },
 	{ "sprintf", "int",    HALTS_ALWAYS, true },
 
-	{ "getchar", "int",    HALTS_UNKNOWN, true },
-	{ "fgetc",   "int",    HALTS_UNKNOWN, true },
+	//{ "getchar", "int",    HALTS_UNKNOWN, true },
+	//{ "fgetc",   "int",    HALTS_UNKNOWN, true },
 };
 
 
@@ -51,7 +48,7 @@ struct Proto protos_pthread[] = {
 };
 
 
-void sst_prefill(struct ST* st, struct SST* sst){
+void sst_prefill(struct ST *st) {
 	
 	//fills the SST with some basic
 	//function signatures from LibC,

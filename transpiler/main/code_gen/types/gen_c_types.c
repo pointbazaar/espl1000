@@ -140,18 +140,13 @@ char* subrType2CType(struct SubrType* subrType, struct Ctx* ctx){
 }
 
 char* typeParam2CType(struct TypeParam* typeParam, struct Ctx* ctx){
-	
-	if(typeParam == NULL){}
-	if(ctx       == NULL){}
-	//TODO
-	printf("[Transpiler][Error] transpileTypeParam not yet implemented!\n");
-	exit(1);
-	return NULL;
+
+    char* res = malloc(DEFAULT_STR_SIZE);
+    strcpy(res, "void*");
+    return res;
 }
 
 char* basicType2CType(struct BasicType* btw, struct Ctx* ctx){
-	
-	assert(btw != NULL);
 	
 	if(btw->simple_type != NULL){
 		return simpleType2CType(btw->simple_type, ctx->tables->stst);

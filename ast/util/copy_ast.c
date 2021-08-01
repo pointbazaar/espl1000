@@ -442,14 +442,33 @@ struct ForStmt* copy_for_stmt(struct ForStmt* f){
 }
 
 struct SwitchStmt* copy_switch_stmt(struct SwitchStmt* s){
-    //TODO
-    exit(1);
+    struct SwitchStmt* res = make(SwitchStmt);
+
+    res->super.line_num = s->super.line_num;
+    res->super.annotations = s->super.annotations;
+
+    res->expr = copy_expr(s->expr);
+    res->count_cases = s->count_cases;
+
+    res->cases = malloc(sizeof(void*)*res->count_cases);
+    for(int i=0; i < res->count_cases; i++){
+        res->cases[i] = copy_case_stmt(s->cases[i]);
+    }
+
+    return res;
 }
 
 struct TryCatchStmt* copy_try_catch_stmt(struct TryCatchStmt* tcs){
 
-    //TODO
-    exit(1);
+    struct TryCatchStmt* res = make(TryCatchStmt);
+
+    res->super.line_num = tcs->super.line_num;
+    res->super.annotations = tcs->super.annotations;
+
+    res->try_block = copy_stmt_block(tcs->try_block);
+    res->catch_block = copy_stmt_block(tcs->catch_block);
+
+    return res;
 }
 
 struct CaseStmt* copy_case_stmt(struct CaseStmt* c){

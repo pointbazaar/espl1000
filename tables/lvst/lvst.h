@@ -20,12 +20,10 @@ struct LVSTLine {
 	struct AssignStmt* first_occur;
 	
 	
-	//TODO: we must differentiate if 
+	//we must differentiate if
 	//it is an argument to the function
-	//or not.
-	//because arguments already have a type declared
+	//or not. because arguments already have a type declared
 	//(for the c code generation)
-	
 	bool is_arg;
 	
 	bool read_only;

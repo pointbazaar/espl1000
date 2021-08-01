@@ -6,8 +6,7 @@
 #include "tables/sst/sst.h"
 
 struct Type* infer_type_methodcall(struct ST* st, struct Call* m){
-	
-	//TODO: use st_get_subr(sst, lvst, m->name);
+
 	//to also infer it if the subr being called
 	//was a local var or arg to the subroutine
 	

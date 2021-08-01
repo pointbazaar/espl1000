@@ -15,20 +15,12 @@
 #include "structs_code_gen.h"
 
 // --- subroutines private to this compile unit ---
-
 void gen_struct_subr(struct StructDecl* sd, struct Ctx* ctx);
 void gen_struct_subr_signature(struct StructDecl* sd, struct Ctx* ctx);
 // ----
 void gen_struct_subr_new(struct StructDecl* sd, struct Ctx* ctx);
 void gen_struct_subr_make(struct StructDecl* sd, struct Ctx* ctx);
 // ------------------------------------------------
-//                   TOP LEVEL
-
-	//TODO: Also update the subroutines symbol table
-	//for type inference
-	//gen_struct_subr_signatures(ns, ctx);
-	
-	//gen_struct_subrs(ns, ctx);
 
 void gen_struct_subrs(struct Namespace* ns, struct Ctx* ctx){
 	

@@ -23,8 +23,8 @@ struct ST* makeST(){
 	st->sst  = makeSST();
 	st->stst = makeSTST();
 	st->lvst = makeLVST();
-	
-	sst_prefill(st, st->sst);
+
+    sst_prefill(st);
 	
 	return st;
 }

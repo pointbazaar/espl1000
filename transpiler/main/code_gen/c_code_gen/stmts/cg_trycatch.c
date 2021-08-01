@@ -20,7 +20,7 @@ void transpileTryCatchStmt(struct TryCatchStmt* tcs, struct Ctx* ctx){
 	indent(ctx); fprintf(ctx->file, "jmp_buf _jb%d; \n", index);
 	indent(ctx); fprintf(ctx->file, "if(setjmp(_jb%d) == 0) ", index);
 	
-	//TODO: all calls in this block must
+	//all calls in this block must
 	//have that jmp_buf pointer as argument
 	transpileStmtBlock(tcs->try_block, ctx);
 	

@@ -13,6 +13,7 @@
 #include "typecheck_methodcall.h"
 #include "typecheck.h"
 #include "tcctx.h"
+#include "typecheck_var.h"
 
 static void tc_constvalue(struct ConstValue* cv, struct TCCtx* tcctx){
 	//const values need no typechecking
@@ -33,14 +34,14 @@ void tc_term(struct Term* term, struct TCCtx* tcctx){
 
 		case  4: tc_methodcall(term->ptr.m4, tcctx); break;
 		case  5: tc_expr(term->ptr.m5, tcctx); break;
-		case  6: break; //Variable TODO: typecheck
+		case  6: tc_var(term->ptr.m6, tcctx); break;
 
 		case  8: break; //stringconst
 
 		case 11: break; //lambdas are already handled at this point
 		case 12: tc_constvalue(term->ptr.m12, tcctx); break;
 		default:
-			error(tcctx, "unhandled");
+			error(tcctx, "[Typechecker] unhandled");
 			break;
 	}
 }

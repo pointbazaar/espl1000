@@ -18,15 +18,6 @@ void test_str_term();
 void test_str_structdecl();
 void test_str_structmember();
 
-//subr
-//TODO
-
-//stmts
-//TODO
-
-//types
-//TODO
-
 //other
 void test_str_lambda();
 
