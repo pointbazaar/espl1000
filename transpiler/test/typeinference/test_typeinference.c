@@ -6,10 +6,6 @@
 
 #include "ast/ast.h"
 
-
-#include "tables/sst/sst.h"
-#include "tables/stst/stst.h"
-#include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
 
 #include "transpiler/main/typeinference/typeinfer.h"
@@ -150,6 +146,9 @@ void test_infer_type_expr_multiple_terms(bool debug){
 	struct Op* myop = make(Op);
 	strcpy(myop->op, "+");
 	myop->is_arithmetic = true;
+	myop->is_bitwise    = false;
+	myop->is_logical    = false;
+	myop->is_relational = false;
 
 	c1->value = 3;
 	c2->value = 3.0f;

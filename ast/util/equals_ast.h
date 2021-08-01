@@ -2,6 +2,7 @@
 #define EQUALS_AST_H
 
 #include <stdbool.h>
+#include "../ast_declare.h"
 
 /* the functions in this file are currently implemented
  * on an as-needed basis

@@ -55,6 +55,8 @@ struct BasicType;
 struct SimpleType;
 struct SubrType;
 struct TypeParam;
+struct PrimitiveType;
+struct StructType;
 
 //-----------
 struct ASTNode {

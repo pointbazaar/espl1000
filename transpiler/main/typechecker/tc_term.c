@@ -6,14 +6,9 @@
 #include "tables/symtable/symtable.h"
 
 //Typechecker Includes
-#include "typecheck_errors.h"
-#include "typecheck_utils.h"
-#include "typecheck_term.h"
-#include "typecheck_expr.h"
-#include "typecheck_methodcall.h"
-#include "typecheck.h"
+#include "_tc.h"
+#include "typechecker/util/tc_errors.h"
 #include "tcctx.h"
-#include "typecheck_var.h"
 
 static void tc_constvalue(struct ConstValue* cv){
 	//const values need no typechecking

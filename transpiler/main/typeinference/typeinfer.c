@@ -4,8 +4,7 @@
 #include "ast/ast.h"
 #include "typeinference/typeinfer.h"
 
-static char* ERR_NO_ARRAYTYPE = 
-	"Expected an ArrayType\n";
+static char* ERR_NO_ARRAYTYPE = "Expected an ArrayType\n";
 
 void print_exit(char* filename, struct ASTNode* node, char* msg){
 	printf("[Typeinference]");

@@ -55,15 +55,15 @@ add_executable(${PROJECT_NAME}
 	
 	#typechecker
 	main/typechecker/typecheck.c
-	main/typechecker/typecheck_errors.c
-	main/typechecker/typecheck_stmts.c
-	main/typechecker/typecheck_methodcall.c
-	main/typechecker/typecheck_assignstmt.c
-	main/typechecker/typecheck_expr.c
-	main/typechecker/typecheck_unopterm.c
-	main/typechecker/typecheck_term.c
-		main/typechecker/typecheck_var.c
-	main/typechecker/typecheck_utils.c
+		main/typechecker/util/tc_errors.c
+		main/typechecker/tc_stmts.c
+		main/typechecker/tc_methodcall.c
+		main/typechecker/tc_assignstmt.c
+		main/typechecker/tc_expr.c
+		main/typechecker/tc_unopterm.c
+		main/typechecker/tc_term.c
+		main/typechecker/tc_var.c
+		main/typechecker/util/tc_utils.c
 	
 	#typeinference
 	main/typeinference/typeinfer.c
@@ -87,7 +87,7 @@ add_executable(${PROJECT_NAME}
 	test/code_gen/test_stmt.c
 	test/typeinference/test_typeinference.c
 	test/util/test_statuscode.c
-)
+		main/typechecker/tc_range.c main/typechecker/tc_method.c)
 
 target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
 

@@ -28,8 +28,5 @@
 bool typecheck_ast(struct AST* ast, struct ST* st);
 
 void tc_namespace  (struct Namespace* n, struct TCCtx* tcctx);
-void tc_method     (struct Method* m,    struct TCCtx* tcctx);
-void tc_stmtblock  (struct StmtBlock* s, struct TCCtx* tcctx);
-void tc_range      (struct Range* r,     struct TCCtx* tcctx);
 
 #endif

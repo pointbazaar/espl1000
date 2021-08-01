@@ -50,9 +50,7 @@ static void myvisitor(void* node, enum NODE_TYPE type, void* arg){
 	//only gets created during code generation, 
 	//and only for one method at a time.
 	//so we have to abort if we cannot find the method
-	
-	//if(lvst_contains(myst->lvst, m->methodName))
-	//	{ return; }
+
 	
 	if(!sst_contains(myst->sst, call->name)){
 		//maybe it is a function ptr

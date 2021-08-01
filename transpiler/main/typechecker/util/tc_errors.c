@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "typecheck_errors.h"
-#include "tcctx.h"
+#include "tc_errors.h"
+#include "typechecker/tcctx.h"
 
 #define COLOR_RED "\033[31m"
 

@@ -5,7 +5,7 @@
 #include "ast/ast.h"
 
 //Typechecker Includes
-#include "typecheck_utils.h"
+#include "tc_utils.h"
 
 bool is_primitive_type(struct Type* type){
 	
@@ -16,6 +16,13 @@ bool is_primitive_type(struct Type* type){
 		{ return false; }
 		
 	return true;
+}
+
+bool is_float_type(struct Type* type){
+
+    if(!is_primitive_type(type)){ return false; }
+
+    return type->m1->simple_type->primitive_type->is_float_type;
 }
 
 bool is_integer_type(struct Type* type){
@@ -51,4 +58,13 @@ bool is_malloc(struct Expr* expr){
 	char* name = expr->term1->term->ptr.m4->name;
 	
 	return strcmp(name, "malloc") == 0;
+}
+
+uint32_t max_indices_allowed(struct Type* type){
+
+    if(type->m3 != NULL){
+        return 1 + max_indices_allowed(type->m3->element_type);
+    }
+
+    return 0;
 }

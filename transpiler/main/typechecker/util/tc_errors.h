@@ -1,7 +1,7 @@
 #ifndef TYPECHECKING_ERRORS_H
 #define TYPECHECKING_ERRORS_H
 
-#include "tcctx.h"
+struct TCCtx;
 
 #define ERR_NUM_ARGS "number of args does not match"
 
@@ -26,9 +26,5 @@
 #define ERR_NO_THROW_OUTSIDE_TRY_OR_THROWS_SUBR "cannot use 'throw' outside try-block or 'throws' subroutine."
 
 void error(struct TCCtx* tcctx, char* msg);
-
-struct Method* currentFn;
-
-struct ST* myst;
 
 #endif

@@ -14,13 +14,14 @@
 #include "transpiler/main/typeinference/typeinfer.h"
 
 //Typechecker Includes
-#include "typecheck_errors.h"
-#include "typecheck_utils.h"
-#include "typecheck_stmts.h"
-#include "typecheck_methodcall.h"
-#include "typecheck_expr.h"
+#include "_tc.h"
+#include "typechecker/util/tc_errors.h"
+#include "typechecker/util/tc_utils.h"
 #include "typecheck.h"
 #include "tcctx.h"
+
+#define ERR_CALLED_SIDE_EFFECT_IN_PURE "called '~>' subr in '->' subr."
+#define ERR_SUBROUTINE_NOT_IN_SST_LVST "subroutine neither in SST nor LVST"
 
 static void tc_methodcall_args(
 	struct Call* m, 
@@ -54,17 +55,19 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		){
 			//method with side effects called
 			//in method marked as without side effects
-			error(tcctx, "called '~>' subr in '->' subr.");
+			error(tcctx, ERR_CALLED_SIDE_EFFECT_IN_PURE);
+		}
+
+		if(line->is_libc){
+		    //we do not have the AST for libC
+		    //subroutines, so we cannot typecheck the call
+		    return;
 		}
 		
 		if(line->method == NULL){
-			if(line->is_libc){
-				//we do not have the AST for libC 
-				//subroutines, so we cannot typecheck the call
-				return;
-			}			
+
 			char msg[150];
-			sprintf(msg, "SUBR HAS NO METHOD IN SST: %s\n", m->name);
+			sprintf(msg, "subroutine HAS NO METHOD IN SST: %s\n", m->name);
 			strcat(msg, ERR_SUBR_NOT_FOUND);
 			error(tcctx, msg);
 		}
@@ -73,7 +76,8 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		
 		check_throw_rules(method->decl->throws, tcctx);
 		
-		expect_args           = method->decl->count_args;
+		expect_args = method->decl->count_args;
+
 		if (line->type != NULL) {
 			if (line->type->m1 != NULL && line->type->m1->subr_type != NULL){
 				expect_args = line->type->m1->subr_type->count_arg_types;
@@ -92,7 +96,7 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		
 		struct Type* type = line2->type;
 		if(type->m1 == NULL || type->m1->subr_type == NULL){
-			error(tcctx, "SUBR HAD WRONG TYPE IN LVST");
+			error(tcctx, "subroutine had wrong type in LVST");
 		}
 		struct SubrType* stype = type->m1->subr_type;
 		
@@ -101,7 +105,7 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		){
 			//method with side effects called
 			//in method marked as without side effects
-			error(tcctx, "called '~>' subr in '->' subr.");
+			error(tcctx, ERR_CALLED_SIDE_EFFECT_IN_PURE);
 		}
 		
 		check_throw_rules(stype->throws, tcctx);
@@ -115,7 +119,7 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		
 	}else{
 		
-		error(tcctx, "SUBR neither in SST nor LVST");
+		error(tcctx, ERR_SUBROUTINE_NOT_IN_SST_LVST);
 	}
 	
 	tc_methodcall_args(m, expect_types, expect_args, tcctx);
@@ -139,7 +143,6 @@ static void tc_methodcall_args(
 	uint8_t expect_args, 
 	struct TCCtx* tcctx
 ){
-
 	const uint8_t actual_args = m->count_args;
 	
 	if(actual_args != expect_args){
@@ -174,12 +177,10 @@ static void tc_methodcall_arg(
 	struct TCCtx* tcctx
 ){
 	
-	struct Type* actual_type = 
-		infer_type_expr(tcctx->current_filename, tcctx->st, actual_expr);
+	struct Type* actual_type = infer_type_expr(tcctx->current_filename, tcctx->st, actual_expr);
 
-	if(is_integer_type(expect_type) 
-		&& is_integer_type(actual_type))
-			{ return; }
+	if(is_integer_type(expect_type) && is_integer_type(actual_type))
+        { return; }
 		
 	if(!eq_type(expect_type, actual_type)){
 		

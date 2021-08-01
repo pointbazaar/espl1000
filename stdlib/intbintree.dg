@@ -93,7 +93,9 @@ fn intbintreenode_insert(IntBinTreeNode t, int key) -> int {
 		
 			case -1 {
 				if c.left == 0 { 
-					c.left = makeIntBinTreeNode(key, false,0,false,0); 
+					c.left = intbintreenode_ctor();
+					c.left.key = key;
+
 					c.has_left = true;
 					return key;
 				}
@@ -101,7 +103,9 @@ fn intbintreenode_insert(IntBinTreeNode t, int key) -> int {
 			}
 			case  1 {
 				if c.right == 0 { 
-					c.right = makeIntBinTreeNode(key, false,0,false,0); 
+				    c.right = intbintreenode_ctor();
+					c.right.key = key;
+
 					c.has_right = true;
 					return key;
 				}

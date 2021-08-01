@@ -10,12 +10,9 @@
 #include "transpiler/main/typeinference/typeinfer.h"
 
 //Typechecker Includes
-#include "typecheck_errors.h"
-#include "typecheck_utils.h"
-#include "typecheck_stmts.h"
-#include "typecheck_methodcall.h"
-#include "typecheck_assignstmt.h"
-#include "typecheck_expr.h"
+#include "_tc.h"
+#include "typechecker/util/tc_errors.h"
+#include "typechecker/util/tc_utils.h"
 #include "typecheck.h"
 #include "tcctx.h"
 
@@ -25,15 +22,15 @@ void tc_stmt(struct Stmt* s, struct TCCtx* tcctx){
 
 	switch(s->kind){
 	
-		case 0: tc_loopstmt(s->ptr.m0,   tcctx); break;
-		case 1: tc_methodcall(s->ptr.m1, tcctx); break;
-		case 2: tc_whilestmt(s->ptr.m2,  tcctx); break;
-		case 3: tc_ifstmt(s->ptr.m3,     tcctx); break;
-		case 4: tc_retstmt(s->ptr.m4,    tcctx); break;
-		case 5: tc_assignstmt(s->ptr.m5, tcctx); break;
+		case 0: tc_loopstmt(s->ptr.m0,     tcctx); break;
+		case 1: tc_methodcall(s->ptr.m1,   tcctx); break;
+		case 2: tc_whilestmt(s->ptr.m2,    tcctx); break;
+		case 3: tc_ifstmt(s->ptr.m3,       tcctx); break;
+		case 4: tc_retstmt(s->ptr.m4,      tcctx); break;
+		case 5: tc_assignstmt(s->ptr.m5,   tcctx); break;
 		case 6: tc_trycatchstmt(s->ptr.m6, tcctx); break;
-		case 7: tc_forstmt(s->ptr.m7,    tcctx); break;
-		case 8: tc_switchstmt(s->ptr.m8, tcctx); break;
+		case 7: tc_forstmt(s->ptr.m7,      tcctx); break;
+		case 8: tc_switchstmt(s->ptr.m8,   tcctx); break;
 		
 		case 99:
 			if(s->is_continue){ }
@@ -88,8 +85,7 @@ void tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx){
 
 	tcctx->current_line_num = w->super.line_num;
 
-	struct Type* type = 
-		infer_type_expr(tcctx->current_filename, tcctx->st, w->condition);
+	struct Type* type = infer_type_expr(tcctx->current_filename, tcctx->st, w->condition);
 	
 	if(!is_bool_type(type)){
 		
@@ -113,8 +109,7 @@ void tc_loopstmt(struct LoopStmt* l, struct TCCtx* tcctx){
 
 	tcctx->current_line_num = l->super.line_num;
 
-	struct Type* type = 
-		infer_type_expr(tcctx->current_filename, tcctx->st, l->count);
+	struct Type* type = infer_type_expr(tcctx->current_filename, tcctx->st, l->count);
 	
 	if(!is_integer_type(type)){
 		
