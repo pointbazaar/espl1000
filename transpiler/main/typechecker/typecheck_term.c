@@ -15,7 +15,7 @@
 #include "tcctx.h"
 #include "typecheck_var.h"
 
-static void tc_constvalue(struct ConstValue* cv, struct TCCtx* tcctx){
+static void tc_constvalue(struct ConstValue* cv){
 	//const values need no typechecking
 	switch (cv->kind) {
 		case 1: //boolconst
@@ -39,7 +39,7 @@ void tc_term(struct Term* term, struct TCCtx* tcctx){
 		case  8: break; //stringconst
 
 		case 11: break; //lambdas are already handled at this point
-		case 12: tc_constvalue(term->ptr.m12, tcctx); break;
+		case 12: tc_constvalue(term->ptr.m12); break;
 		default:
 			error(tcctx, "[Typechecker] unhandled");
 			break;

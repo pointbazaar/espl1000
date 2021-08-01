@@ -139,7 +139,7 @@ char* subrType2CType(struct SubrType* subrType, struct Ctx* ctx){
 	return res;
 }
 
-char* typeParam2CType(struct TypeParam* typeParam, struct Ctx* ctx){
+char* typeParam2CType(){
 
     char* res = malloc(DEFAULT_STR_SIZE);
     strcpy(res, "void*");

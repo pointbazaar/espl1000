@@ -111,7 +111,7 @@ struct Token* list_head(struct TokenList* list) {
 
 struct Token* list_head_without_annotations(struct TokenList* list){
 	
-	uint32_t i = 0;
+	int32_t i = 0;
 	struct Token* h;
 	
 	do{
@@ -133,7 +133,7 @@ char* list_code(struct TokenList* list) {
 	strcpy(str, "");
 
 	if(list_size(list) > 0){
-		int line_num = list_get(list, 0)->line_num;
+		uint32_t line_num = list_get(list, 0)->line_num;
 		sprintf(str, "% 4d|", line_num);
 	}
 	

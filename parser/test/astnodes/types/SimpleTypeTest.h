@@ -3,12 +3,12 @@
 
 #include <stdbool.h>
 
-int simpletype_test_typenode_parsing(bool debug);
+int simpletype_test_typenode_parsing();
 
-int simpletype_test_typenode_parsing_fails(bool debug);
+int simpletype_test_typenode_parsing_fails();
 
-int simpletype_test_typenode_parsing_anytype(bool debug);
+int simpletype_test_typenode_parsing_anytype();
 
-int simpletype_test_generic(bool debug);
+int simpletype_test_generic();
 
 #endif

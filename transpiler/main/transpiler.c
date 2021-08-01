@@ -20,7 +20,7 @@ bool transpileAndCompile(struct Flags* flags){
 		char* filename = flags->filenames[i];
 	
 		//invoke lexer, parser to generate .dg.ast file
-		bool success = invoke_lexer_parser(filename, flags);
+		bool success = invoke_lexer_parser(filename);
 
 		if(!success){
 

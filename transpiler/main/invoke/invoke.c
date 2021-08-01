@@ -10,19 +10,19 @@
 #include "util/fileutils/fileutils.h"
 #include "invoke.h"
 
-static int invoke_lexer (char* filename, struct Flags* flags);
-static int invoke_parser(char* filename, struct Flags* flags);
+static int invoke_lexer (char* filename);
+static int invoke_parser(char* filename);
 
-bool invoke_lexer_parser(char* filename, struct Flags* flags){
+bool invoke_lexer_parser(char* filename){
 	
-	int status = invoke_lexer(filename, flags);
+	int status = invoke_lexer(filename);
 	
 	if(WEXITSTATUS(status) != 0){
 		printf("[Transpiler][Error] lexer exited with nonzero exit code\n");
 		return false;
 	}
 	
-	status = invoke_parser(filename, flags);
+	status = invoke_parser(filename);
 
 	if(WEXITSTATUS(status) != 0){
 		printf("[Transpiler][Error] parser exited with nonzero exit code\n");
@@ -32,7 +32,7 @@ bool invoke_lexer_parser(char* filename, struct Flags* flags){
 	return true;
 }
 
-static int invoke_lexer(char* filename, struct Flags* flags){
+static int invoke_lexer(char* filename){
 	
 	char* cmd1 = malloc(strlen(filename)+100);
 	
@@ -45,7 +45,7 @@ static int invoke_lexer(char* filename, struct Flags* flags){
 	return status;
 }
 
-static int invoke_parser(char* filename, struct Flags* flags){
+static int invoke_parser(char* filename){
 	
 	char* fnamecpy = malloc(strlen(filename)+1);
 	strcpy(fnamecpy, filename);

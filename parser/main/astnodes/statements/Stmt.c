@@ -176,8 +176,7 @@ void stmt_make_for(struct Stmt *res, struct TokenList *copy) {
 }
 
 void stmt_make_other(struct Stmt *res, struct TokenList *copy) {
-	
-	//TODO: we have to figure something out here.
+
 	//i don't want 'let' statements
 	//because it just messes up the code and is
 	//just bloat to write.

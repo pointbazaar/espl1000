@@ -18,7 +18,7 @@ char* arrayType2CType(struct ArrayType* arrType, struct Ctx* ctx);
 
 char* subrType2CType(struct SubrType* subrType, struct Ctx* ctx);
 
-char* typeParam2CType(struct TypeParam* typeParam, struct Ctx* ctx);
+char* typeParam2CType();
 
 char* basicType2CType(struct BasicType* btw, struct Ctx* ctx);
 //----------------------------

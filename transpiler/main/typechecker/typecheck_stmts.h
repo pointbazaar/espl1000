@@ -12,6 +12,4 @@ void tc_forstmt(struct ForStmt* f, struct TCCtx* tcctx);
 void tc_trycatchstmt(struct TryCatchStmt* tcs, struct TCCtx* tcctx);
 
 void tc_throwstmt(struct Stmt* s, struct TCCtx* tcctx);
-void tc_breakstmt(struct Stmt* s, struct TCCtx* tcctx);
-void tc_continuestmt(struct Stmt* s, struct TCCtx* tcctx);
 #endif

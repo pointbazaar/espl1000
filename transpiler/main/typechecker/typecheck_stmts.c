@@ -36,8 +36,8 @@ void tc_stmt(struct Stmt* s, struct TCCtx* tcctx){
 		case 8: tc_switchstmt(s->ptr.m8, tcctx); break;
 		
 		case 99:
-			if(s->is_continue){ tc_continuestmt(s, tcctx); }
-			if(s->is_break)   { tc_breakstmt(s, tcctx); }
+			if(s->is_continue){ }
+			if(s->is_break)   { }
 			if(s->is_throw)   { tc_throwstmt(s, tcctx); }
 	}
 }
@@ -59,16 +59,6 @@ void tc_throwstmt(struct Stmt* s, struct TCCtx* tcctx){
 	free(s1);
 	
 	error(tcctx, msg);
-}
-
-void tc_breakstmt(struct Stmt* s, struct TCCtx* tcctx){
-	
-	//nothing to check
-}
-
-void tc_continuestmt(struct Stmt* s, struct TCCtx* tcctx){
-	
-	//nothing to check
 }
 
 void tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx){

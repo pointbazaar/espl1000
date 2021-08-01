@@ -9,9 +9,9 @@
 
 #include "typeinference/util/type_str.h"
 
-static struct Type* typeFromStrPrimitive_inner(struct ST* st, char* typeName);
+static struct Type* typeFromStrPrimitive_inner(char* typeName);
 
-static struct Type* typeFromStrPrimitive_inner(struct ST* st, char* typeName){
+static struct Type* typeFromStrPrimitive_inner(char* typeName){
 	
 	struct Type* res         = make(Type);
 	struct BasicType* btw    = make(BasicType);
@@ -40,7 +40,7 @@ static struct Type* typeFromStrPrimitive_inner(struct ST* st, char* typeName){
 
 struct Type* typeFromStrPrimitive(struct ST* st, char* typeName){
 	
-	struct Type* res = typeFromStrPrimitive_inner(st, typeName);
+	struct Type* res = typeFromStrPrimitive_inner(typeName);
 	
 	st_register_inferred_type(st, res);
 	
@@ -80,7 +80,7 @@ struct Type* typeFromStr(struct ST* st, char* typeName){
 struct Type* typeFromStrArray(struct ST* st, char* typeName){
 	
 	struct ArrayType* at = make(ArrayType);
-	at->element_type = typeFromStrPrimitive_inner(st, typeName); 
+	at->element_type = typeFromStrPrimitive_inner(typeName);
 	
 	struct Type* t = make(Type);
 	

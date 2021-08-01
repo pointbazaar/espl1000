@@ -106,9 +106,7 @@ add_executable(${PROJECT_NAME}
 	test/commandline/ParserTest.c
 		)
 
-#TODO: add some kind of optimized build with -O2
-#TODO: use -Wextra
-target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Werror")
+target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
 
 #AST dependency
 target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/../ast/build/libsd-ast.a)

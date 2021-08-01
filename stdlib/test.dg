@@ -24,8 +24,6 @@ fn main2() ~> int throws {
 	
 	printf("test intll\n"); test_intll();
 	
-	printf("test_complex\n"); test_complex();
-	
 	printf("test_polynomial\n"); test_polynomial();
 	
 	printf("test_matrix\n"); test_matrix();
@@ -187,34 +185,6 @@ fn test_polynomial() ~> int {
 	poly_dtor(d);
 	poly_dtor(e);
 	poly_dtor(f);
-
-	return 0;
-}
-
-fn test_complex() ~> int {
-
-	CInt a = cint_from(1,2); //1+2i
-	CInt b = cint_from(2,3); //2+3i
-	
-	c = c_add(a,b);
-	
-	assert(c.r == 3);
-	assert(c.i == 5);
-	
-	d = c_sub(b,a);
-	
-	assert(d.r == 1);
-	assert(d.i == 1);
-	
-	e = c_pow(a, 4);
-	
-	assert(e.r == -7);
-	assert(e.i == -24);
-	
-	free(a);
-	free(b);
-	free(c);
-	free(e);
 
 	return 0;
 }

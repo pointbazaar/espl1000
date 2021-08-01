@@ -5,6 +5,6 @@
 #include "tcctx.h"
 
 
-void tc_var(struct Variable* term, struct TCCtx* tcctx);
+void tc_var();
 
 #endif

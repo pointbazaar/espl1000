@@ -62,8 +62,7 @@ add_executable(${PROJECT_NAME}
 	main/typechecker/typecheck_expr.c
 	main/typechecker/typecheck_unopterm.c
 	main/typechecker/typecheck_term.c
-	main/typechecker/typecheck_op.c
-	main/typechecker/typecheck_var.c
+		main/typechecker/typecheck_var.c
 	main/typechecker/typecheck_utils.c
 	
 	#typeinference
@@ -90,9 +89,7 @@ add_executable(${PROJECT_NAME}
 	test/util/test_statuscode.c
 )
 
-#TODO: add some kind of optimized build with -O2
-#TODO: use -Wextra
-target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Werror")
+target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
 
 #AST dependency
 target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/../ast/build/libsd-ast.a)

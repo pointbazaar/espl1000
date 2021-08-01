@@ -13,7 +13,7 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-void parse_cases(struct SwitchStmt* s, struct TokenList* copy, bool debug);
+void parse_cases(struct SwitchStmt* s, struct TokenList* copy);
 
 struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens) {
 
@@ -47,7 +47,7 @@ struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens) {
 		return NULL;
 	}
 	
-	parse_cases(res, copy, false);
+	parse_cases(res, copy);
 	
 	if(!list_expect(copy, RCURLY)){
 		
@@ -62,7 +62,7 @@ struct SwitchStmt* makeSwitchStmt(struct TokenList* tokens) {
 	return res;
 }
 
-void parse_cases(struct SwitchStmt* s, struct TokenList* copy, bool debug){
+void parse_cases(struct SwitchStmt* s, struct TokenList* copy){
 	
 	struct Token* head = list_head(copy);
 	

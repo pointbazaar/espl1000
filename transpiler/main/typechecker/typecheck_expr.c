@@ -9,7 +9,6 @@
 
 //Typechecker Includes
 #include "typecheck_unopterm.h"
-#include "typecheck_op.h"
 #include "typecheck_expr.h"
 #include "tcctx.h"
 
@@ -24,7 +23,7 @@ void tc_expr(struct Expr* expr, struct TCCtx* tcctx){
 		//check if the types match
 		//TODO
 	
-		tc_op(expr->op, tcctx);
+		//no need to typecheck the operator
 		tc_unopterm(expr->term2, tcctx);
 	}
 }

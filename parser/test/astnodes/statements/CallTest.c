@@ -17,7 +17,7 @@ static void status(char* msg){
 	printf("[Parser][Test] %s\n", msg);
 }
 
-int methodcall_test1(bool debug) {
+int methodcall_test1() {
 
 	status("call test 1");
 
@@ -38,7 +38,7 @@ int methodcall_test1(bool debug) {
 	return 1;
 }
 
-int methodcall_test2(bool debug) {
+int methodcall_test2() {
 
 	status("call test 2");
 
@@ -60,7 +60,7 @@ int methodcall_test2(bool debug) {
 	return 1;
 }
 
-int methodcall_test3(bool debug) {
+int methodcall_test3() {
 
 	status("call test 3");
 
@@ -82,7 +82,7 @@ int methodcall_test3(bool debug) {
 	return 1;
 }
 
-int methodcall_test_can_parse_subroutine_call(bool debug) {
+int methodcall_test_can_parse_subroutine_call() {
 
 	status("call test can parse subroutine call");
 
@@ -103,7 +103,7 @@ int methodcall_test_can_parse_subroutine_call(bool debug) {
 	return 1;
 }
 
-int methodcall_test_can_parse_subroutine_call2(bool debug) {
+int methodcall_test_can_parse_subroutine_call2() {
 	
 	status("call test can parse subroutine call 2");
 

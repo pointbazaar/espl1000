@@ -2,7 +2,7 @@
 //Some simple subroutines to do calculations with matrices.
 //Might be expanded in the future.
 
-//TODO: struct Matrix shoud be generic
+//struct Matrix shoud be generic
 //once smalldragon supports it.
 
 struct Matrix {
@@ -180,12 +180,4 @@ fn matrix_identity(uint n) ~> Matrix {
 	}
 	
 	return res;
-}
-
-@private
-fn matrix_inverse(Matrix a) ~> Matrix throws {
-
-	//TODO
-	throw;
-	return a;
 }
