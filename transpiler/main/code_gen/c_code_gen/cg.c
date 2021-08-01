@@ -15,7 +15,6 @@
 
 #include "code_gen/util/indent.h"
 #include "code_gen/types/gen_c_types.h"
-#include "code_gen/structs/structs_code_gen.h"
 
 #include "typechecker/typecheck.h"
 
@@ -118,8 +117,6 @@ static void fill_tables(struct AST* ast, struct Ctx* ctx){
 		
 		struct Namespace* ns = ast->namespaces[i];
 		
-		add_gen_struct_subrs_sst(ctx, ns);
-		
 		sst_fill(ctx->tables, ctx->tables->sst, ns);
 		stst_fill(ctx->tables->stst, ns);
 	
@@ -201,7 +198,7 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename){
 	}
 	
 	for(int i=0; i < ast->count_namespaces; i++) { 
-		gen_struct_subr_signatures(ast->namespaces[i], ctx);
+
 		ns_transpile_subr_fwd_decls(ast->namespaces[i], ctx);
 	}
 	
@@ -216,8 +213,7 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename){
 	ctx->file = ctx->c_file;
 	
 	for(int i=0; i < ast->count_namespaces; i++){ 
-		
-		gen_struct_subrs(ast->namespaces[i], ctx);
+
 		ns_transpile_subrs(ast->namespaces[i], ctx);
 	}
 }

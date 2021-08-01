@@ -161,20 +161,6 @@ char* basicType2CType(struct BasicType* btw, struct Ctx* ctx){
 	return NULL;	
 }
 //-------------------------------
-bool isIntType(struct Type* t){
-	
-	if(t->m1 == NULL){ return false; }
-	
-	struct BasicType* m1 = t->m1;
-	
-	if(m1->simple_type == NULL){ return false; }
-	
-	struct SimpleType* s = m1->simple_type;
-	
-	if(s->primitive_type == NULL){ return false; }
-	
-	return s->primitive_type->is_int_type;
-}
 char* translateIntType(enum INTTYPE type){
 	
 	assert(type > NONE);
@@ -187,30 +173,4 @@ char* translateIntType(enum INTTYPE type){
 	};
 	
 	return map[type];
-}
-//-----------------------------------
-char* typeNameToCFormatStr(char* typeName){
-	
-	if(strcmp(typeName, "int") == 0
-	|| strcmp(typeName, "uint") == 0
-	|| strcmp(typeName, "int8") == 0
-	|| strcmp(typeName, "uint8") == 0
-	|| strcmp(typeName, "int16") == 0
-	|| strcmp(typeName, "uint16") == 0
-	|| strcmp(typeName, "int32") == 0
-	|| strcmp(typeName, "uint32") == 0
-	|| strcmp(typeName, "int64") == 0
-	|| strcmp(typeName, "uint64") == 0
-	|| strcmp(typeName, "bool") == 0
-	){
-		return "%d";
-	}else if(strcmp(typeName, "char") == 0){
-		return "%c";
-	}else if(strcmp(typeName, "String") == 0){
-		return "%s";
-	}else if(strcmp(typeName, "float") == 0){
-		return "%f";
-	}
-	
-	return "%p";
 }

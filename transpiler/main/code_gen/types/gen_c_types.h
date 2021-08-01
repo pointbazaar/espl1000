@@ -22,7 +22,5 @@ char* typeParam2CType();
 
 char* basicType2CType(struct BasicType* btw, struct Ctx* ctx);
 //----------------------------
-bool isIntType(struct Type* t);
-//----------------------------
-char* typeNameToCFormatStr(char* typeName);
+
 #endif

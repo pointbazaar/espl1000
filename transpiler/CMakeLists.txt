@@ -42,8 +42,7 @@ add_executable(${PROJECT_NAME}
 	main/code_gen/c_code_gen/subr/cg_subr.c
 	main/code_gen/c_code_gen/types/cg_types.c
 	main/code_gen/c_code_gen/var/cg_var.c
-	main/code_gen/structs/structs_code_gen.c
-	main/code_gen/types/gen_c_types.c
+        main/code_gen/types/gen_c_types.c
 	main/code_gen/util/indent.c
 	
 	#flags
