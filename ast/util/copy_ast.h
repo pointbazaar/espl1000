@@ -53,20 +53,11 @@ struct Op*       copy_op(struct Op* op);
 struct SimpleVar* copy_simple_var(struct SimpleVar* sv);
 struct Variable*  copy_variable(struct Variable* var);
 
-//subr
-struct Method*  copy_method(struct Method* m);
-struct DeclArg* copy_decl_arg(struct DeclArg* d);
-
-//struct
-struct StructDecl*   copy_struct_decl(struct StructDecl* s);
-struct StructMember* copy_struct_member(struct StructMember* s);
-
 //other
 struct Identifier* copy_identifier(struct Identifier* id);
 struct Range*      copy_range(struct Range* r);
 struct StmtBlock*  copy_stmt_block(struct StmtBlock* s);
-struct Namespace*  copy_namespace(struct Namespace* n);
+
 struct Lambda*     copy_lambda(struct Lambda* l);
 
-struct AST* copy_ast(struct AST* ast);
 #endif

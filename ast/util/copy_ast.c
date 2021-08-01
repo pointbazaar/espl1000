@@ -188,17 +188,6 @@ struct Variable* copy_variable(struct Variable* var){
 	return res;
 }
 
-struct DeclArg* copy_decl_arg(struct DeclArg* d){
-
-	struct DeclArg* res = make(DeclArg);
-	
-	res->type = copy_type(d->type);
-	res->has_name = d->has_name;
-	strcpy(res->name, d->name);
-	
-	return res;
-}
-
 struct Op* copy_op(struct Op* op){
 	
 	struct Op* res = make(Op);
