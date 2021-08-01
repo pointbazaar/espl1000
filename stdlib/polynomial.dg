@@ -171,8 +171,8 @@ fn poly_mul(Poly a, Poly b) ~> Poly {
 		
 		k = 0.0;
 		for i in 0 .. n {
-			k1 = safeIndex(a.coeff, a.n, i);
-			k2 = safeIndex(b.coeff, b.n, n-i);
+			k1 = safe_index(a.coeff, a.n, i);
+			k2 = safe_index(b.coeff, b.n, n-i);
 			k += k1 * k2;
 		}
 		
@@ -241,7 +241,7 @@ fn poly_integral(Poly p) ~> Poly {
 }
 
 @private
-fn safeIndex([float] arr, uint size, uint index) -> float {
+fn safe_index([float] arr, uint size, uint index) -> float {
 
 	if index >= size { return 0.0; }
 	return arr[index];

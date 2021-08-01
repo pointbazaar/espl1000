@@ -83,8 +83,8 @@ false			out(BCONST_FALSE, yytext);
 @public			out(ANNOT_PUBLIC, yytext);
 @deprecated		out(ANNOT_DEPRECATED, yytext);
 
-[a-z][a-zA-Z0-9_]*	out(ID, yytext);
-[A-Z_][a-zA-Z0-9_]*	out(TYPEID, yytext);
+[a-z][a-z0-9_]*	    out(ID, yytext);
+[A-Z][a-zA-Z0-9_]*	out(TYPEID, yytext);
 \?T[0-9]+			{
 						int num = 0;
 						//printf("yytext=%s\n",yytext);
