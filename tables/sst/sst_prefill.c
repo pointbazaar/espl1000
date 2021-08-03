@@ -15,10 +15,6 @@
 struct Proto {
 	char name[DEFAULT_STR_SIZE];
 	char type[DEFAULT_STR_SIZE];
-	
-	enum HALTS halts;
-	
-	bool has_side_effect;
 };
 
 static void fill_protos(
@@ -29,24 +25,19 @@ static void fill_protos(
 );
 
 struct Proto protos_stdio[] = {
-	{ "fscanf",  "int",    HALTS_UNKNOWN, true },
-	{ "scanf",   "int",    HALTS_UNKNOWN, true },
-	{ "sscanf",  "int",    HALTS_ALWAYS, true },
+	{ "fscanf",  "int"},
+	{ "scanf",   "int"},
+	{ "sscanf",  "int"},
 	
-	{ "fprintf", "int",    HALTS_UNKNOWN, true },
-	{ "printf",  "int",    HALTS_UNKNOWN, true },
-	{ "sprintf", "int",    HALTS_ALWAYS, true },
-
-	//{ "getchar", "int",    HALTS_UNKNOWN, true },
-	//{ "fgetc",   "int",    HALTS_UNKNOWN, true },
+	{ "fprintf", "int"},
+	{ "printf",  "int"},
+	{ "sprintf", "int"},
 };
-
 
 struct Proto protos_pthread[] = {
-	{ "pthread_create",  "int", HALTS_UNKNOWN, true },
-	{ "pthread_join",    "int", HALTS_UNKNOWN, true },
+	{ "pthread_create",  "int"},
+	{ "pthread_join",    "int"},
 };
-
 
 void sst_prefill(struct ST *st) {
 	
@@ -95,8 +86,8 @@ static void fill_protos(
 				namespace, 
 				t, 
 				true, 
-				proto.halts, 
-				proto.has_side_effect,
+				HALTS_UNKNOWN,
+				true,
 				false
 			);
 		
