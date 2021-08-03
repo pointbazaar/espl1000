@@ -8,29 +8,35 @@ fn main() ~> int {
 	} catch {}
 }
 
+fn status([char] module) ~> bool {
+
+    printf("[stdlib][Test] %s\n", module);
+    return true;
+}
+
 fn main2() ~> int throws {
 	
-	printf("test math\n"); test_math();
+	status("math"); test_math();
 
-	printf("test primes\n"); test_primes();
+	status("primes"); test_primes();
 
-	printf("test intset\n"); test_intset();
+	status("intset"); test_intset();
 	
-	printf("test intstack\n"); test_intstack();
+	status("intstack"); test_intstack();
 	
-	printf("test intarray\n"); test_intarray();
+	status("intarray"); test_intarray();
 	
-	printf("test intbintree\n"); test_intbintree();
+	status("intbintree"); test_intbintree();
 	
-	printf("test intll\n"); test_intll();
+	status("intll"); test_intll();
 	
-	printf("test_polynomial\n"); test_polynomial();
+	status("polynomial"); test_polynomial();
 	
-	printf("test_matrix\n"); test_matrix();
+	status("matrix"); test_matrix();
 	
-	printf("test_v2\n"); test_v2();
+	status("v2"); test_v2();
 	
-	printf("test_collision2d\n"); test_collision2d();
+	status("collision2d"); test_collision2d();
 
 	printf("[stdlib] PASSED ALL TESTS\n");
 
