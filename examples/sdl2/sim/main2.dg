@@ -40,7 +40,7 @@ fn main ()~>int {
 	
 	if(sdl_init(sdl_init_video) < 0){
 		printf("SDL could not initialize! SDL Error: %s\n", sdl_get_error());
-		exit(1);
+		return 1;
 	}
 	
 	uint32 sdl_windowpos_undefined = 0x1FFF0000;
@@ -50,7 +50,7 @@ fn main ()~>int {
 		screen_width, screen_height, sdl_window_shown);
 	//if(window == NULL){
 	//	printf("window could not be created! SDL Error: %s\n", SDL_GetError());
-	//	exit(1);
+	//	return 1;
 	//}
 	
 	inner(window, screen_width, screen_height);

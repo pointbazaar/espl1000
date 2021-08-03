@@ -8,9 +8,9 @@ SOURCES = main.c main2.dg
 # - passthrough #include directives
 
 #smalldragon variant
-sd: main2.dg externc_sdl.dg
+sd: main2.dg 
 
-	sd main2.dg ../stdlib/externc/externc_sdl.dg ../../stdlib/v2.dg ../../stdlib/math.dg
+	sd main2.dg ../../../stdlib/externc/externc_libc.dg ../../../stdlib/externc/externc_sdl.dg ../../../stdlib/v2.dg ../../../stdlib/math.dg
 	
 	gcc -g main2.c -w -lSDL2 -lm
 
