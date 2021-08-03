@@ -10,7 +10,7 @@ add_executable(${PROJECT_NAME}
 
 	main/main.c
 	main/transpiler.c
-	main/transpile_lambdas.c
+		main/lambda/transpile_lambdas.c
 	
 	#analyzer
 	main/analyzer/annotation/annotation_analyzer.c

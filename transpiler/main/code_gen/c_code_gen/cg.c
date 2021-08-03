@@ -16,7 +16,7 @@
 
 #include "typechecker/typecheck.h"
 
-#include "transpile_lambdas.h"
+#include "lambda/transpile_lambdas.h"
 
 //Analyzer Includes
 #include "analyzer/fn/fn_analyzer.h"
