@@ -4,7 +4,11 @@
 #include <flags/flags.h>
 #include <util/help.h>
 #include <test.h>
+#include "util/fileutils/fileutils.h"
 #include "transpiler.h"
+
+#define EXIT_FAILURE 1
+#define EXIT_SUCCESS 0
 
 int main(int argc, char* argv[]){
 
@@ -12,16 +16,20 @@ int main(int argc, char* argv[]){
 
     struct Flags* flags = makeFlags(argc, argv);
 
+    if(!check_filenames_lowercase(flags)){
+        return EXIT_FAILURE;
+    }
+
     if(flags->help){
         sd_print_help();
         freeFlags(flags);
-        return 0;
+        return EXIT_SUCCESS;
     }
 
     if(flags->version){
         printf("smalldragon v0.2.0\n");
         freeFlags(flags);
-        return 0;
+        return EXIT_SUCCESS;
     }
 
     if(flags->test){
@@ -34,5 +42,5 @@ int main(int argc, char* argv[]){
 
     freeFlags(flags);
 
-    return (success)?0:1;
+    return (success)?EXIT_SUCCESS:EXIT_FAILURE;
 }

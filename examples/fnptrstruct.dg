@@ -1,0 +1,19 @@
+#include <stdlib.h>
+
+struct A {
+	(() ~> int) subr;
+	int n;
+}
+
+fn main()~> int {
+	
+	A a = malloc(8);
+
+	a.subr = main;
+
+	a.n = 3;
+
+	a.subr();
+
+	return 0;
+}
