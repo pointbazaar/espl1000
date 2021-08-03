@@ -70,8 +70,6 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 	fprintf(ctx->file, "\n");
 }
 
-//stmt related
-
 void transpileRetStmt(struct RetStmt* rs, struct Ctx* ctx){
 	
 	indent(ctx);

@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <assert.h>
 
 #include "ast/ast.h"
 
@@ -10,8 +9,6 @@
 #include "cg_unopterm.h"
 
 void transpileExpr(struct Expr* expr, struct Ctx* ctx){
-	
-	assert(expr != NULL);
 	
 	transpileUnOpTerm(expr->term1, ctx);
 

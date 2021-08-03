@@ -1,7 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <assert.h>
 
 #include "util/ctx.h"
 
@@ -14,8 +13,6 @@ char* translateIntType(enum INTTYPE type);
 //----------------------------------------------------
 
 char *simpleType2CType(struct SimpleType *s, struct STST *stst) {
-	
-	assert(s != NULL);
 	
 	if(s->primitive_type != NULL){
 		
@@ -50,8 +47,6 @@ char* structType2CType(struct StructType* s, struct STST* stst){
 }
 
 char* primitiveType2CType(struct PrimitiveType* p){
-
-	assert(p != NULL);
 
 	char* res = malloc(DEFAULT_STR_SIZE);
 		
@@ -162,9 +157,6 @@ char* basicType2CType(struct BasicType* btw, struct Ctx* ctx){
 }
 //-------------------------------
 char* translateIntType(enum INTTYPE type){
-	
-	assert(type > NONE);
-	assert(type < INTTYPE_END);
 	
 	char* map[] = 
 	{"int8_t","int16_t","int32_t","int64_t",

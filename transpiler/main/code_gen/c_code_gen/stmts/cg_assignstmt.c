@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <assert.h>
 
 #include "ast/ast.h"
 
@@ -33,8 +32,6 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 				
 				isSubrType = true;
 				
-				assert(as->var->simple_var != NULL);
-				
 				strncpy(
 					ctx->current_function_pointer_var_or_arg_name,
 					
@@ -55,14 +52,11 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 		
 	}else if(as->opt_type == NULL && as->var->member_access == NULL){
 		//find type via local variable symbol table
-		assert(ctx->tables->lvst != NULL);
 		
 		struct LVSTLine* line = lvst_get(
 			ctx->tables->lvst, as->var->simple_var->name
 		);
-		
-		assert(line != NULL);
-		
+
 		if(line->first_occur == as){
 			
 			//an assignment to this local variable first occurs in

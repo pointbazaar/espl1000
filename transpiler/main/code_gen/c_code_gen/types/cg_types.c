@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 
 #include "ast/ast.h"
 
@@ -18,9 +17,7 @@
 
 
 void transpileType(struct Type* t, struct Ctx* ctx){
-	
-	assert(t != NULL);
-	
+
 	if(t->m1 != NULL){ transpileBasicType(t->m1, ctx); }
 	
 	if(t->m2 != NULL){ transpileTypeParam(t->m2, ctx); }
@@ -29,9 +26,7 @@ void transpileType(struct Type* t, struct Ctx* ctx){
 }
 
 void transpileBasicType(struct BasicType* btw, struct Ctx* ctx){
-		
-	assert(btw != NULL);
-		
+
 	char* res = basicType2CType(btw, ctx);
 	fprintf(ctx->file, "%s", res);
 	free(res);

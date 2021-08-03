@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <assert.h>
 #include <string.h>
 
 #include "ast/ast.h"
@@ -59,9 +58,7 @@ void transpileMethodSignature(struct Method* m, struct Ctx* ctx){
 }
 
 void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx){
-		
-	assert(da != NULL);
-		
+
 	bool isSubrType = false;
 	//is it a function pointer?
 	if(da->type->m1 != NULL){

@@ -1,5 +1,4 @@
 #include <stdbool.h>
-#include <assert.h>
 #include <stdio.h>
 
 //AST Includes
@@ -56,7 +55,6 @@ static bool inner(struct SST* sst){
 		if(line->method == NULL){
 			printf("%s\n", line->name);
 		}
-		assert(line->method != NULL);
 		
 		if(terminates_by_construction(line->method->block)){
 		

@@ -42,16 +42,12 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename);
 
 static void fill_tables(struct AST* ast, struct Ctx* ctx);
 
-// --- ns_transpile - X ---
-
 static void ns_transpile_struct_fwd_decls(struct Namespace* ns, struct Ctx* ctx);
 static void ns_transpile_struct_decls(struct Namespace* ns, struct Ctx* ctx);
 static void ns_transpile_subr_fwd_decls(struct Namespace* ns, struct Ctx* ctx);
 static void ns_transpile_subrs(struct Namespace* ns, struct Ctx* ctx);
 
 static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st);
-
-// --------------------------------------------------------
 
 static void ns_transpile_passthrough_includes(struct Namespace* ns, struct Ctx* ctx);
 
@@ -65,9 +61,9 @@ bool transpileAndWrite(char* c_filename, char* h_filename, struct AST* ast, stru
 	ctx->flags = flags;
 	
 	ctx->indent_level = 0;
-	ctx->file        = NULL;
-	ctx->c_file      = NULL;
-	ctx->header_file = NULL;
+	ctx->file         = NULL;
+	ctx->c_file       = NULL;
+	ctx->header_file  = NULL;
 	
 	ctx->in_try_block   = false;
 	ctx->index_try_stmt = 0;
@@ -84,7 +80,7 @@ bool transpileAndWrite(char* c_filename, char* h_filename, struct AST* ast, stru
 	
 	if(ctx->c_file == NULL || (ctx->header_file == NULL && flags->emit_headers)){
 		
-		printf("could not open output file: ");
+		printf("[smalldragon][Error] could not open output file: ");
 		
 		printf("%s\n", (ctx->c_file == NULL)?c_filename:h_filename);
 		
@@ -139,12 +135,6 @@ static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename){
 
 		//used for try-catch
 		fprintf(ctx->c_file, "#include <setjmp.h>\n"); //absolutely needed
-
-		//fprintf(ctx->c_file, "#include <stdlib.h>\n"); //absolutely needed, malloc,free,...
-		//fprintf(ctx->c_file, "#include <stdio.h>\n");
-		//fprintf(ctx->c_file, "#include <string.h>\n");
-		//fprintf(ctx->c_file, "#include <assert.h>\n");
-		//fprintf(ctx->c_file, "#include <pthread.h>\n");
 	}
 	
 	if(ctx->flags->emit_headers){
@@ -256,10 +246,7 @@ static void ns_transpile_struct_fwd_decls(struct Namespace* ns, struct Ctx* ctx)
 		
 		struct StructDecl* decl = ns->structs[i];
 		
-		char* name = decl
-					   ->type
-			           ->struct_type
-					   ->type_name;
+		char* name = decl->type->struct_type->type_name;
 		
 		fprintf(ctx->file, "struct %s;\n", name);
 	}
@@ -279,7 +266,7 @@ static void ns_transpile_subr_fwd_decls(struct Namespace* ns, struct Ctx* ctx){
 		struct Method* m = ns->methods[i];
 		
 		if(sst_get(ctx->tables->sst, m->decl->name)->dead == DEAD_ISDEAD)
-			{continue; }
+			{ continue; }
 		
 		transpileMethodSignature(m, ctx);
 		fprintf(ctx->file, ";\n");
@@ -293,7 +280,7 @@ static void ns_transpile_subrs(struct Namespace* ns, struct Ctx* ctx){
 		struct Method* m = ns->methods[i];
 		
 		if(sst_get(ctx->tables->sst, m->decl->name)->dead == DEAD_ISDEAD)
-			{continue; }
+			{ continue; }
 		
 		transpileMethod(m, ctx);
 	}
