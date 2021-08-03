@@ -31,7 +31,7 @@ void free_method_decl(struct MethodDecl* m);
 void free_externc(struct ExternC* ec);
 
 //other
-void free_identifier(struct Identifier* id);
+void free_identifier(struct Id* id);
 void free_namespace(struct Namespace* ns);
 void free_stmt_block(struct StmtBlock* block);
 void free_range(struct Range* range);

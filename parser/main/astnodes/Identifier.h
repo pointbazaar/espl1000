@@ -3,9 +3,9 @@
 
 #include <stdbool.h>
 
-struct Identifier;
+struct Id;
 struct TokenList;
 
-struct Identifier* makeIdentifier(struct TokenList* tokens);
+struct Id* makeIdentifier(struct TokenList* tokens);
 
 #endif

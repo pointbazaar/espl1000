@@ -20,7 +20,7 @@ struct Op;
 struct Term;
 struct Expr;
 struct UnOpTerm;
-struct Identifier;
+struct Id;
 struct Variable;
 struct SimpleVar;
 struct Range;

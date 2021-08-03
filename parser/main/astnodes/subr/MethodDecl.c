@@ -33,7 +33,7 @@ struct MethodDecl* makeMethodDecl(struct TokenList* tokens) {
 		return NULL;
 	}
 
-	struct Identifier* id = makeIdentifier(copy);
+	struct Id* id = makeIdentifier(copy);
 	if(id == NULL){
 		printf("expected method name, but was: %s\n", list_code(copy));
 		free(res);

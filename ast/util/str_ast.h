@@ -59,7 +59,7 @@ char* str_case_stmt(struct CaseStmt* c);
 char* str_try_catch_stmt(struct TryCatchStmt* tcs);
 
 //other
-char* str_identifier(struct Identifier* id);
+char* str_identifier(struct Id* id);
 char* str_range(struct Range* r);
 char* str_stmt_block(struct StmtBlock* block);
 char* str_lambda(struct Lambda* l);

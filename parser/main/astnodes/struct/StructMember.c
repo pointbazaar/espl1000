@@ -30,7 +30,7 @@ struct StructMember* makeStructMember(struct TokenList* tokens) {
 		return NULL;
 	}
 
-	struct Identifier* id = makeIdentifier(copy);
+	struct Id* id = makeIdentifier(copy);
 	
 	if(id == NULL){
 		beforeAbort(res, copy);

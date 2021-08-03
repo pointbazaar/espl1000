@@ -9,7 +9,7 @@ struct Lambda {
 	struct ASTNode super; 
 	
 	//identifier list length is bounded
-	struct Identifier* params[LAMBDA_MAX_PARAMS];
+	struct Id* params[LAMBDA_MAX_PARAMS];
 	uint8_t count_params;
 	
 	struct Expr* expr;

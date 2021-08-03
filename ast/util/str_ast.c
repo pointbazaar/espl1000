@@ -32,7 +32,7 @@ char* str_float_const(struct FloatConst* fc){
 	return res;
 }
 
-char* str_identifier(struct Identifier* id){
+char* str_identifier(struct Id* id){
 
 	char* res =  malloc(sizeof(char)*(strlen(id->identifier)+1));
 	sprintf(res, "%s", id->identifier);

@@ -40,9 +40,9 @@ struct FloatConst* copy_float_const(struct FloatConst* fc){
 	return res;
 }
 
-struct Identifier* copy_identifier(struct Identifier* id){
+struct Id* copy_identifier(struct Id* id){
 	
-	struct Identifier* res = make(Identifier);
+	struct Id* res = make(Id);
 	strcpy(res->identifier, id->identifier);
 	return res;
 }

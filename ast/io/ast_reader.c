@@ -550,7 +550,7 @@ struct Lambda* read_lambda(FILE* file) {
 	
 	for(uint8_t i = 0; i < l->count_params; i++){
 		
-		struct Identifier* k = make(Identifier);
+		struct Id* k = make(Id);
 		strcpy(k->identifier, deserialize_string(file));
 		
 		l->params[i] = k;

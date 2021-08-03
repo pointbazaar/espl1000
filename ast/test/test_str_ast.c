@@ -192,7 +192,7 @@ void test_str_lambda(){
 	
 	status("str_lambda");
 	
-	struct Identifier i = {
+	struct Id i = {
 		.identifier = "a"
 	};
 	

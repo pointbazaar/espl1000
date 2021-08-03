@@ -54,7 +54,7 @@ struct SimpleVar* copy_simple_var(struct SimpleVar* sv);
 struct Variable*  copy_variable(struct Variable* var);
 
 //other
-struct Identifier* copy_identifier(struct Identifier* id);
+struct Id* copy_identifier(struct Id* id);
 struct Range*      copy_range(struct Range* r);
 struct StmtBlock*  copy_stmt_block(struct StmtBlock* s);
 

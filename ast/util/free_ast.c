@@ -47,7 +47,7 @@ void free_expr(struct Expr* expr) {
 
 
 void free_float_const(struct FloatConst* fc) { free(fc); }
-void free_identifier(struct Identifier* id) { free(id); }
+void free_identifier(struct Id* id) { free(id); }
 void free_int_const(struct IntConst* ic) { free(ic); }
 void free_hex_const(struct HexConst* hc){ free(hc); }
 void free_bin_const(struct BinConst* hc){ free(hc); }

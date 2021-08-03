@@ -10,11 +10,11 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct Identifier* makeIdentifier(struct TokenList* tokens) {
+struct Id* makeIdentifier(struct TokenList* tokens) {
 
 	if(list_size(tokens) == 0){ return NULL; }
 
-	struct Identifier* res = make(Identifier);
+	struct Id* res = make(Id);
 
 	struct Token* tk = list_head(tokens);
 	

@@ -60,7 +60,7 @@ struct Namespace {
 
 struct Range { struct ASTNode super; struct Expr* start; struct Expr* end; };
 
-struct Identifier  { struct ASTNode super; char identifier[DEFAULT_STR_SIZE]; };
+struct Id  { struct ASTNode super; char identifier[DEFAULT_STR_SIZE]; };
 
 struct StmtBlock {
 	struct ASTNode super; 

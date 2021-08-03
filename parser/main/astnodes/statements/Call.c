@@ -25,7 +25,7 @@ struct Call* makeCall(struct TokenList* tokens) {
 	res->args = malloc(sizeof(struct Expr*)*1);
 	res->count_args = 0;
 
-	struct Identifier* id = makeIdentifier(copy);
+	struct Id* id = makeIdentifier(copy);
 	
 	if(id == NULL){
 		free(res->args);
