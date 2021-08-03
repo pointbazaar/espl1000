@@ -2,8 +2,7 @@
 
 #include "util/ctx.h"
 
-#include "../types/cg_types.h"
-#include "cg_structmember.h"
+#include "../_cg.h"
 
 void transpileStructMember(struct StructMember* m, struct Ctx* ctx){
 	

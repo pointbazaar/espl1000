@@ -9,9 +9,7 @@
 #include "flags/flags.h"
 
 #include "cg.h"
-#include "stmts/cg_stmts.h"
-#include "struct/cg_structdecl.h"
-#include "subr/cg_subr.h"
+#include "_cg.h"
 
 #include "code_gen/util/indent.h"
 #include "code_gen/types/gen_c_types.h"
@@ -38,7 +36,7 @@
 //counter for generating labels
 unsigned int label_count = 0;
 
-static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename);
+static void transpile_ast(struct AST* ast, struct Ctx* ctx, char* h_filename);
 
 static void fill_tables(struct AST* ast, struct Ctx* ctx);
 
@@ -51,7 +49,7 @@ static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st);
 
 static void ns_transpile_passthrough_includes(struct Namespace* ns, struct Ctx* ctx);
 
-bool transpileAndWrite(char* c_filename, char* h_filename, struct AST* ast, struct Flags* flags){
+bool transpile_and_write(char* c_filename, char* h_filename, struct AST* ast, struct Flags* flags){
 
 	struct Ctx* ctx = make(Ctx);
 	
@@ -89,8 +87,8 @@ bool transpileAndWrite(char* c_filename, char* h_filename, struct AST* ast, stru
 		
 		return false;
 	}
-	
-	transpileAST(ast, ctx, h_filename);
+
+    transpile_ast(ast, ctx, h_filename);
 
 	fclose(ctx->c_file);
 	if(flags->emit_headers){ fclose(ctx->header_file); }
@@ -124,7 +122,7 @@ static void fill_tables(struct AST* ast, struct Ctx* ctx){
 	}
 }
 
-static void transpileAST(struct AST* ast, struct Ctx* ctx, char* h_filename){
+static void transpile_ast(struct AST* ast, struct Ctx* ctx, char* h_filename){
 	
 	ctx->file = ctx->c_file; //direct output to c file
 	
@@ -286,17 +284,3 @@ static void ns_transpile_subrs(struct Namespace* ns, struct Ctx* ctx){
 	}
 }
 
-
-void transpileStmtBlock(struct StmtBlock* block, struct Ctx* ctx){
-	
-	fprintf(ctx->file, "{\n");
-
-	for(int i=0; i < block->count; i++){
-		(ctx->indent_level) += 1;
-		transpileStmt(block->stmts[i], ctx);
-		(ctx->indent_level) -= 1;
-	}
-
-	indent(ctx);
-	fprintf(ctx->file, "}\n");
-}

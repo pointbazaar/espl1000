@@ -2,9 +2,8 @@
 
 #include "util/ctx.h"
 
-#include "cg_structdecl.h"
-#include "cg_struct_reorder.h"
-#include "cg_structmember.h"
+#include "../_cg.h"
+#include "code_gen/c_code_gen/struct_reorder/cg_struct_reorder.h"
 
 void transpileStructDecl(struct StructDecl* s, struct Ctx* ctx){
 	

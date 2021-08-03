@@ -4,9 +4,7 @@
 
 #include "util/ctx.h"
 
-#include "cg_expr.h"
-#include "cg_op.h"
-#include "cg_unopterm.h"
+#include "../_cg.h"
 
 void transpileExpr(struct Expr* expr, struct Ctx* ctx){
 	

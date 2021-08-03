@@ -4,7 +4,6 @@
 
 #include "util/ctx.h"
 
-#include "cg_trycatch.h"
 #include "../cg.h"
 
 #include "code_gen/util/indent.h"

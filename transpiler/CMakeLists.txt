@@ -38,7 +38,7 @@ add_executable(${PROJECT_NAME}
 	main/code_gen/c_code_gen/stmts/cg_whilestmt.c
 	main/code_gen/c_code_gen/struct/cg_structdecl.c
 	main/code_gen/c_code_gen/struct/cg_structmember.c
-	main/code_gen/c_code_gen/struct/cg_struct_reorder.c
+		main/code_gen/c_code_gen/struct_reorder/cg_struct_reorder.c
 	main/code_gen/c_code_gen/subr/cg_subr.c
 	main/code_gen/c_code_gen/types/cg_types.c
 	main/code_gen/c_code_gen/var/cg_var.c
@@ -86,7 +86,7 @@ add_executable(${PROJECT_NAME}
 	test/code_gen/test_stmt.c
 	test/typeinference/test_typeinference.c
 	test/util/test_statuscode.c
-		main/typechecker/tc_range.c main/typechecker/tc_method.c)
+		main/typechecker/tc_range.c main/typechecker/tc_method.c main/code_gen/c_code_gen/_cg.h main/code_gen/c_code_gen/stmts/cg_stmtblock.c)
 
 target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
 

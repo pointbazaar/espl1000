@@ -5,10 +5,8 @@
 
 #include "util/ctx.h"
 
-#include "cg_switchcase.h"
-#include "../expr/cg_expr.h"
-#include "code_gen/c_code_gen/const/cg_const.h"
 #include "../cg.h"
+#include "../_cg.h"
 
 #include "code_gen/util/indent.h"
 

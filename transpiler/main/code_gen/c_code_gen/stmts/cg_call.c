@@ -6,7 +6,7 @@
 
 #include "util/ctx.h"
 
-#include "../expr/cg_expr.h"
+#include "../_cg.h"
 
 #include "tables/sst/sst.h"
 #include "tables/lvst/lvst.h"

@@ -5,10 +5,7 @@
 
 #include "util/ctx.h"
 
-#include "../types/cg_types.h"
-#include "cg_assignstmt.h"
-#include "../var/cg_var.h"
-#include "../expr/cg_expr.h"
+#include "../_cg.h"
 
 #include "code_gen/util/indent.h"
 

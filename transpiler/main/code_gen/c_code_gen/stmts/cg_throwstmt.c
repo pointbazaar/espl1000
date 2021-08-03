@@ -5,8 +5,6 @@
 
 #include "util/ctx.h"
 
-#include "cg_throwstmt.h"
-
 #include "code_gen/util/indent.h"
 
 void transpileThrowStmt(struct Ctx* ctx){

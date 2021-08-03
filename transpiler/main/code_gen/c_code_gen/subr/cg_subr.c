@@ -7,8 +7,7 @@
 #include "flags/flags.h"
 
 #include "../cg.h"
-#include "cg_subr.h"
-#include "code_gen/c_code_gen/types/cg_types.h"
+#include "../_cg.h"
 
 #include "tables/symtable/symtable.h"
 #include "tables/lvst/lvst.h"

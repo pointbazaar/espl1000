@@ -7,7 +7,7 @@
 #include "util/ctx.h"
 #include "flags/flags.h"
 
-#include "cg_types.h"
+#include "../_cg.h"
 
 #include "code_gen/types/gen_c_types.h"
 

@@ -5,17 +5,7 @@
 #include "util/ctx.h"
 #include "flags/flags.h"
 
-#include "cg_stmts.h"
-#include "cg_throwstmt.h"
-#include "cg_assignstmt.h"
-#include "cg_call.h"
-#include "cg_ifstmt.h"
-#include "cg_whilestmt.h"
-#include "cg_loopstmt.h"
-#include "cg_forstmt.h"
-#include "cg_trycatch.h"
-#include "cg_switchcase.h"
-#include "code_gen/c_code_gen/expr/cg_expr.h"
+#include "../_cg.h"
 
 #include "code_gen/util/indent.h"
 #include "code_gen/types/gen_c_types.h"

@@ -5,9 +5,8 @@
 
 #include "util/ctx.h"
 
-#include "cg_ifstmt.h"
-#include "../expr/cg_expr.h"
 #include "../cg.h"
+#include "../_cg.h"
 
 #include "code_gen/util/indent.h"
 

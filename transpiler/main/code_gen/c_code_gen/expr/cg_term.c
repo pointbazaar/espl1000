@@ -5,10 +5,7 @@
 
 #include "util/ctx.h"
 
-#include "cg_expr.h"
-#include "../const/cg_const.h"
-#include "../stmts/cg_call.h"
-#include "../var/cg_var.h"
+#include "../_cg.h"
 
 static void transpile_expr_wrapped(struct Expr* expr, struct Ctx* ctx){
 	fprintf(ctx->file, "(");

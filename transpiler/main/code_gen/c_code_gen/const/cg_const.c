@@ -3,11 +3,6 @@
 #include "ast/ast.h"
 
 #include "util/ctx.h"
-#include "flags/flags.h"
-
-#include "typeinference/typeinfer.h"
-
-#include "cg_const.h"
 
 void transpileBoolConst(struct BoolConst* bc, struct Ctx* ctx){
 	fprintf(ctx->file, (bc->value)?"true":"false");

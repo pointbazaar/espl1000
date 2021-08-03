@@ -4,9 +4,7 @@
 
 #include "util/ctx.h"
 
-#include "cg_unopterm.h"
-#include "cg_op.h"
-#include "cg_term.h"
+#include "../_cg.h"
 
 void transpileUnOpTerm(struct UnOpTerm* t, struct Ctx* ctx){
 		

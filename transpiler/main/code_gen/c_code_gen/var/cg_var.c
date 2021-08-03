@@ -8,8 +8,7 @@
 
 #include "typeinference/typeinfer.h"
 
-#include "cg_var.h"
-#include "code_gen/c_code_gen/expr/cg_expr.h"
+#include "../_cg.h"
 
 void transpileVariable(struct Variable* var, struct Ctx* ctx){
                
