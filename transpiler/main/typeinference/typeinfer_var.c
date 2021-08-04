@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdbool.h>
+#include <ast/util/copy_ast.h>
 
 #include "ast/ast.h"
 
@@ -38,6 +39,18 @@ static struct Type* infer_in_context(char* filename, struct ST* st, struct Membe
 	char* memberName = member->simple_var->name;
 	
 	struct Type* memberType = stst_get_member(st->stst, structName, memberName)->type;
+
+	//if the struct type has a parameterization,
+	//then we can substitute that onto the member type
+	//TODO: fix this, this is broken/workaround
+	if(memberType->m2 != NULL){
+	    if(structType->m1 != NULL && structType->m1->simple_type != NULL && structType->m1->simple_type->struct_type != NULL){
+	        struct StructType* myStructType = structType->m1->simple_type->struct_type;
+	        if(myStructType->count_type_params != 0){
+	            memberType = copy_type(myStructType->type_params[0]);
+	        }
+	    }
+	}
 	
 	memberType = unwrap_indices(filename, memberType, member->simple_var->count_indices);
 	

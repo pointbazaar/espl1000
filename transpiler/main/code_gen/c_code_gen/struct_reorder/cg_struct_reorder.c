@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "ast/ast.h"
 #include "ast/sd_inttype.h"
@@ -45,8 +46,12 @@ static uint8_t sizeof_structmember(struct StructMember* m){
 		return 8; //arraytype, is pointer
 	}
 	
-	if(type->m2 != NULL){ /*Fatal*/ }
-	
+	if(type->m2 != NULL){
+	    //since it is a type param, it can be anything, so 8 bytes it is
+        return 8;
+	}
+
+	printf("[smalldragon][codegen][Error] could not find size of struct member\n");
 	exit(1);
 }
 

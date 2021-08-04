@@ -1,0 +1,19 @@
+
+struct List<?T0> {
+	[?T0] arr;
+	uint count;
+	uint cap;
+}
+
+fn main()~>int{
+	List<int> list = malloc(8*3);
+	list.cap = 10;
+	list.count = 0;
+	list.arr = malloc(8*list.cap);
+
+	list.arr[0] = 3;
+	
+	int k = list.arr[0];
+
+	return 0;
+}

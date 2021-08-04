@@ -427,8 +427,10 @@ char* str_simple_var(struct SimpleVar* s){
 	for(uint16_t i = 0; i < s->count_indices; i++){
 		
 		char* s1 = str_expr(s->indices[i]);
-		
+
+        strcat(res, "[");
 		strcat(res, s1);
+        strcat(res, "]");
 		
 		free(s1);
 	}

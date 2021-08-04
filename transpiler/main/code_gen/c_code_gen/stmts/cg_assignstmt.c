@@ -9,6 +9,8 @@
 
 #include "code_gen/util/indent.h"
 
+#include "../../../typeinference/typeinfer.h"
+
 #include "tables/stst/stst.h"
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
@@ -20,8 +22,12 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 	//if we assign a function pointer
 	bool isSubrType = false;
 
+	struct Type* left_type = NULL;
+
 	if(as->opt_type != NULL){
-		
+
+	    left_type = as->opt_type;
+
 		//is it a function pointer?
 		if(as->opt_type->m1 != NULL){
 			
@@ -54,14 +60,22 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 			ctx->tables->lvst, as->var->simple_var->name
 		);
 
+		left_type = line->type;
+
 		if(line->first_occur == as){
-			
-			//an assignment to this local variable first occurs in
-			//this assignment statement
+			//an assignment to this local variable first occurs in this assignment statement
 			transpileType(line->type, ctx);
 			fprintf(ctx->file, " ");
 		}
+	}else{
+
+	    //as->optType == NULL && as->var->memberAccess != 0
+	    //TODO: give correct filename
+        //infer the type of the left side
+        left_type = infer_type_variable("IDK",ctx->tables, as->var);
 	}
+
+	const bool assignToTypeParam = left_type->m2 != NULL;
 	
 	if(!isSubrType){
 		//if it is a subroutine type, in C unfortunately
@@ -70,5 +84,11 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 	}
 	
 	fprintf(ctx->file, " %s ", as->assign_op);
+
+	//cast to void* when assigning to a type parameter.
+    if(assignToTypeParam){
+        fprintf(ctx->file, "(void*)");
+    }
+
 	transpileExpr(as->expr, ctx);
 }
