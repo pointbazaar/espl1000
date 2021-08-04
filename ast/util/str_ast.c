@@ -396,10 +396,14 @@ char* str_variable(struct Variable* v){
 	
 	uint16_t l = strlen(s1) + strlen(s2);
 	
-	char* res = malloc(sizeof(char)*(l+1));
-	
-	sprintf(res, "%s%s", s1, s2);
-	
+	char* res = malloc(sizeof(char)*(l+1+1));
+
+    strcpy(res, s1);
+	if(v->member_access != NULL){
+        strcat(res, ".");
+        strcat(res, s2);
+    }
+
 	free(s1);
 	if(v->member_access != NULL){ free(s2); }
 	
