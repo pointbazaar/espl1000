@@ -38,7 +38,7 @@ struct StructType {
 	
 	//the number of the type parameters
 	uint8_t count_type_params;
-	uint8_t* type_params;
+	struct Type** type_params;
 };
 
 struct SimpleType {

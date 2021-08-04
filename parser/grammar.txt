@@ -33,7 +33,7 @@ DeclArg       ::= Type Id?
 
 SubrType      ::= '(' Type* ')' arrow Type ("throws")?
 
-StructType    ::= uppercase alphanumeric* ('<'TypeParam+'>')? | "#"
+StructType    ::= uppercase alphanumeric* ('<' Type (',' Type)* '>')? | "#"
 
 PrimitiveType ::= "int" | "float" | "uint" | "char" | "bool" | "uint8" | "int8" | "uint16" | "int16" | "uint32" | "int32" | "uint64" | "int64"
 

@@ -102,7 +102,7 @@ add_executable(${PROJECT_NAME}
 	test/astnodes/var/SimpleVarTest.c
 	test/astnodes/var/VariableTest.c
 	test/commandline/ParserTest.c
-		)
+        test/astnodes/types/StructTypeTest.c test/astnodes/types/StructTypeTest.h)
 
 target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
 

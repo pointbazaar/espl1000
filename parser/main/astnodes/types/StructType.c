@@ -5,6 +5,7 @@
 #include "parser/main/util/parse_astnode.h"
 
 #include "StructType.h"
+#include "Type.h"
 
 #include "ast/ast.h"
 
@@ -58,47 +59,42 @@ static void parse_type_params_rest(struct StructType* res, struct TokenList* tok
 	uint32_t cap = 10;
 	
 	res->type_params = malloc(sizeof(uint8_t) * cap);
-	
-	//expect ?TX
+
 	struct Token* next = list_head(tokens);
-	
-	if(next->kind != TPARAM){
-		
-		printf("Expected Type Parameter, got:\n");
-		list_print(tokens);
-		exit(1);
+
+	struct Type* tparam_1 = makeType2(tokens);
+
+	if(tparam_1 == NULL){
+        printf("[Parser][Error] Expected Type, but got: \n");
+        list_print(tokens);
+        exit(1);
 	}
-	
-	res->type_params[res->count_type_params] = atoi(next->value_ptr);
+
+	res->type_params[res->count_type_params] = tparam_1;
 	res->count_type_params += 1;
-	list_consume(tokens, 1);
 	
 	next = list_head(tokens);
 	
 	while(next->kind == COMMA){
 		
 		list_consume(tokens, 1);
-		
-		if(next->kind != TPARAM){
-			printf("Expected Type Parameter, got:\n");
-			list_print(tokens);
-			exit(1);
+
+		struct Type* tparam_next = makeType2(tokens);
+
+		if(tparam_next == NULL){
+		    printf("[Parser][Error] Expected Type, but got: \n");
+		    list_print(tokens);
+		    exit(1);
 		}
-		
-		res->type_params[res->count_type_params] = atoi(next->value_ptr);
+
+		res->type_params[res->count_type_params] = tparam_next;
 		res->count_type_params += 1;
-		list_consume(tokens, 1);
 		
-		if(res->count_type_params < cap){
+		if(res->count_type_params >= cap){
 			
-			next = list_head(tokens);
-			continue;
+		    printf("[Parser][Error] Exceeded max Type Parameters. Exiting\n");
+		    exit(1);
 		}
-			
-		cap *= 2;
-		
-		const size_t newsize = sizeof(uint8_t) * cap;
-		res->type_params = realloc(res->type_params, newsize);
 
 		next = list_head(tokens);
 	}
@@ -115,11 +111,9 @@ static void parse_type_params_rest(struct StructType* res, struct TokenList* tok
 		return;
 	}
 		
-	printf("Syntax Error: expected '>', but got:\n");
+	printf("[Parser][Error]Syntax Error: expected '>', but got:\n");
 	list_print(tokens);
 	
 	free(res);
 	exit(1);
-	
-	return;
 }

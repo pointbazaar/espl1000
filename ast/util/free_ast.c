@@ -309,8 +309,9 @@ void free_primitive_type(struct PrimitiveType* p){ free(p); }
 
 void free_struct_type(struct StructType* s){
 
-	if(s->count_type_params != 0)
-		{ free(s->type_params); }
+    for(int i=0; i < s->count_type_params; i++){
+        free_type(s->type_params[i]);
+    }
 		
 	free(s);
 }

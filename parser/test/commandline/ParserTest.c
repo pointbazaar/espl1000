@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <parser/test/astnodes/types/StructTypeTest.h>
 
 #include "ParserTest.h"
 
@@ -260,6 +261,10 @@ bool test_suite_types(bool debug) {
     passed +=  subrtype_test_subroutine_type_parsing_subroutine_without_side_effects(debug);
     passed +=  subrtype_test_typename(debug);
     passed +=  subrtype_test_typename_subroutine_return_type(debug);
+
+    structtype_test();
+    structtype_test_type_param();
+    structtype_test_generic();
 
     return passed == count;
 }

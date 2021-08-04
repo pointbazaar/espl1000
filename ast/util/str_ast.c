@@ -275,8 +275,9 @@ char* str_type(struct Type* t){
 
 char* str_type_param(struct TypeParam* t){
 	
-	char* res =  malloc(sizeof(char)*10);
-	sprintf(res, "?T%d", t->index);
+	char* res =  malloc(sizeof(char)*4);
+    strcpy(res, "?T");
+	sprintf(res+2, "%d", t->index);
 	return res;
 }
 
@@ -304,17 +305,42 @@ char* str_primitive_type(struct PrimitiveType* p){
 }
 
 char* str_struct_type(struct StructType* s){
-	
-	//TODO: add the generic part
-	if(s->count_type_params != 0){
-	
-		error("str_struct_type");
-	}
-	
-	char* res = malloc(DEFAULT_STR_SIZE);
-	
-	sprintf(res, "%s", s->type_name);
-	
+
+    if(s->count_type_params == 0){
+        char* res = malloc(DEFAULT_STR_SIZE);
+        sprintf(res, "%s", s->type_name);
+        return res;
+    }
+
+    //now: s->count_type_params > 0
+
+    char** type_strings = malloc(sizeof(void*)*s->count_type_params);
+
+    uint32_t str_l = 0;
+
+    for(uint32_t i = 0; i < s->count_type_params; i++){
+        type_strings[i] = str_type(s->type_params[i]);
+        str_l += strlen(type_strings[i]);
+    }
+
+    char* res = malloc(DEFAULT_STR_SIZE+str_l+(s->count_type_params)+2);
+
+    sprintf(res, "%s", s->type_name);
+
+    strcat(res, "<");
+    for(uint32_t i = 0; i < s->count_type_params; i++){
+        strcat(res, type_strings[i]);
+        if(i < (s->count_type_params - 1)){
+            strcat(res, ",");
+        }
+    }
+    strcat(res, ">");
+
+    for(uint32_t i = 0; i < s->count_type_params; i++){
+        free(type_strings[i]);
+    }
+    free(type_strings);
+
 	return res;
 }
 

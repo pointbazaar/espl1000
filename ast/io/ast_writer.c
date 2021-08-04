@@ -575,8 +575,9 @@ void write_struct_type(struct StructType* m, FILE* file){
 	serialize_string(m->type_name, file);
 	serialize_int(m->count_type_params, file);
 	
-	for(int i = 0;i < m->count_type_params; i++)
-		{ serialize_int(m->type_params[i], file); }
+	for(int i = 0;i < m->count_type_params; i++){
+        write_type(m->type_params[i], file);
+	}
 	
 	magic_num_serialize(MAGIC_END_STRUCTTYPE, file);
 }

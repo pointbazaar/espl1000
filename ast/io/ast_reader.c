@@ -936,12 +936,12 @@ struct StructType* read_struct_type(FILE* file) {
 	res->count_type_params = deserialize_int(file);
 	
 	if(res->count_type_params > 0){
-		res->type_params = malloc(sizeof(uint8_t) * (res->count_type_params));
+		res->type_params = malloc(sizeof(void*) * (res->count_type_params));
 	}
 	
 	for(int i = 0; i < res->count_type_params; i++){
 		
-		res->type_params[i] = deserialize_int(file);
+		res->type_params[i] = read_type(file);
 	}
 
 	magic_num_require(MAGIC_END_STRUCTTYPE, file);
