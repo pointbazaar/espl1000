@@ -6,7 +6,6 @@
 #include "Stmt.h"
 #include "WhileStmt.h"
 #include "ForStmt.h"
-#include "LoopStmt.h"
 #include "IfStmt.h"
 #include "RetStmt.h"
 #include "Call.h"
@@ -24,7 +23,6 @@
 
 static struct Stmt* initStmt();
 
-static void stmt_make_loop(struct Stmt *res, struct TokenList *copy);
 static void stmt_make_while(struct Stmt *res, struct TokenList *copy);
 static void stmt_make_if(struct Stmt *res, struct TokenList *copy);
 static void stmt_make_return(struct Stmt *res, struct TokenList *copy);
@@ -69,8 +67,6 @@ struct Stmt* makeStmt(struct TokenList* tokens) {
 
 		case FOR:
             stmt_make_for(res, copy);    break;
-		case LOOP:
-            stmt_make_loop(res, copy);   break;
 		case WHILE:
             stmt_make_while(res, copy); 	break;
 		case IF:
@@ -97,25 +93,9 @@ struct Stmt* initStmt(){
 	struct Stmt* res = make(Stmt);
 
 	res->kind = 0;
-	res->ptr.m0 = NULL;
+	res->ptr.m1 = NULL;
 	
 	return res;
-}
-
-void stmt_make_loop(struct Stmt *res, struct TokenList *copy) {
-	
-	res->kind = 0;
-	res->ptr.m0 = makeLoopStmt(copy);
-		
-	if(res->ptr.m0 == NULL){
-		printf("expected loop stmt, but was:\n");
-		list_print(copy);
-		
-		freeTokenListShallow(copy);
-		free(res);
-		
-		exit(1);
-	}
 }
 
 void stmt_make_while(struct Stmt *res, struct TokenList *copy) {

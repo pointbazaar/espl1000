@@ -14,7 +14,6 @@
 #include "../astnodes/statements/AssignStmtTest.h"
 #include "../astnodes/const/CharConstTest.h"
 #include "../astnodes/const/FloatConstTest.h"
-#include "../astnodes/statements/LoopStmtTest.h"
 #include "../astnodes/statements/CallTest.h"
 #include "../astnodes/statements/RetStmtTest.h"
 #include "../astnodes/statements/StmtTest.h"
@@ -170,8 +169,6 @@ bool test_suite_term_expr_simplevar_var(bool debug) {
 bool test_suite_stmts(bool debug) {
 
 	status("test_suite_stmts");
-    
-    loop_test1(debug);
 
     retstmt_test1(debug);
     retstmt_test2(debug);

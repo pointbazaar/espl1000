@@ -75,7 +75,6 @@ bool test_operators_cmp();
 bool test_operators_logical();
 bool test_operators_bitwise();
 
-bool test_loop();
 bool test_if_else();
 
 bool test_break();

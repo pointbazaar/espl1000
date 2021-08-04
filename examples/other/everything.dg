@@ -10,7 +10,6 @@
 /*
 //Statements
 [x] ForStmt
-[x] LoopStmt
 [x] WhileStmt
 [x] BreakStmt
 [x] ReturnStmt
@@ -30,11 +29,6 @@ fn main () ~> int {
 		printf("%ld", i);
 	}
 
-	loop 2 {
-		printf("hi\n");
-		break;
-	}
-
 	a = 0;
 	b = 3.14159; //...
 	c = "hi";
@@ -44,6 +38,7 @@ fn main () ~> int {
 		a = a + 1;
 		b = b - 0.1;
 		printf("%s\n", c);
+		break;
 	}
 
 	if a == 4 {

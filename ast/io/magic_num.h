@@ -38,7 +38,6 @@
 #define MAGIC_RETSTMT 			55
 #define MAGIC_STMT 				56
 #define MAGIC_WHILESTMT 		57
-#define MAGIC_LOOPSTMT 			58
 #define MAGIC_FORSTMT 			59
 #define MAGIC_SWITCHSTMT 		60
 #define MAGIC_CASESTMT 			61

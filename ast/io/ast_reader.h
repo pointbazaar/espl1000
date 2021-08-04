@@ -47,7 +47,7 @@ struct WhileStmt* 	read_while_stmt(INFILE);
 struct RetStmt* 	read_ret_stmt(INFILE);
 struct AssignStmt* 	read_assign_stmt(INFILE);
 struct Call* 		read_call(INFILE);
-struct LoopStmt* 	read_loop_stmt(INFILE);
+
 struct ForStmt* 	read_for_stmt(INFILE);
 struct SwitchStmt* 	read_switch_stmt(INFILE);
 struct CaseStmt* 	read_case_stmt(INFILE);

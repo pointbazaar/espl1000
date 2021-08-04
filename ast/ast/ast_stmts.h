@@ -41,7 +41,6 @@ struct Stmt {
 	
 	//only one of those will be present, 'kind' tells us
 	union myptr {
-		struct LoopStmt*   m0;
 		struct Call*       m1;
 		struct WhileStmt*  m2;
 		struct IfStmt*     m3;
@@ -63,12 +62,6 @@ struct WhileStmt  {
 	struct ASTNode super; 
 	
 	struct Expr* condition;
-	struct StmtBlock* block;
-};
-struct LoopStmt {
-	struct ASTNode super; 
-	
-	struct Expr* count;
 	struct StmtBlock* block;
 };
 struct ForStmt {

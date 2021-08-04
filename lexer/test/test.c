@@ -94,7 +94,6 @@ int lexer_test_all() {
 	test_operators_logical();
 	test_operators_bitwise();
 
-	test_loop();
 	test_if_else();
 
 	test_break();
@@ -1070,23 +1069,6 @@ bool test_operators_bitwise(){
 	assert(strcmp(tokens[5]->value_ptr, "~") == 0);
 
 	free_tokens(tokens, 6);
-
-	return true;
-}
-
-bool test_loop() {
-
-	printt("test loop\n");
-
-	char* str = "loop loop{ lo ";
-	struct Token** tokens = lex(str);
-
-	assert(tokens[0]->kind==LOOP);
-	assert(tokens[1]->kind==LOOP);
-	assert(tokens[2]->kind==LCURLY);
-	assert(tokens[3]->kind==ID);
-
-	free_tokens(tokens, 4);
 
 	return true;
 }

@@ -582,7 +582,6 @@ struct Stmt* read_stmt(FILE* file) {
 				b->is_throw    = deserialize_int(file) == OPT_PRESENT;
 			}
 			break;
-		case 0: b->ptr.m0 = read_loop_stmt(file);   break;
 		case 1: b->ptr.m1 = read_call(file);       break;
 		case 2: b->ptr.m2 = read_while_stmt(file);  break;
 		case 3: b->ptr.m3 = read_if_stmt(file);     break;
@@ -706,21 +705,6 @@ struct Call* read_call(FILE* file) {
 	}
 	
 	magic_num_require(MAGIC_END_CALL, file);
-	
-	return v;
-}
-struct LoopStmt* read_loop_stmt(FILE* file) {
-	
-	magic_num_require(MAGIC_LOOPSTMT, file);
-	
-	struct LoopStmt* v = make(LoopStmt);
-	
-	read_super(v);
-
-	v->count = read_expr(file);
-	v->block = read_stmt_block(file);
-	
-	magic_num_require(MAGIC_END_LOOPSTMT, file);
 	
 	return v;
 }

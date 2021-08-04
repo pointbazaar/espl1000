@@ -50,7 +50,6 @@ char* str_stmt(struct Stmt* stmt);
 char* str_assign_stmt(struct AssignStmt* a);
 char* str_for_stmt(struct ForStmt* f);
 char* str_if_stmt(struct IfStmt* i);
-char* str_loop_stmt(struct LoopStmt* l);
 char* str_while_stmt(struct WhileStmt* w);
 char* str_switch_stmt(struct SwitchStmt* s);
 char* str_call(struct Call* m);

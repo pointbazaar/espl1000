@@ -42,7 +42,6 @@ struct Call;
 struct RetStmt;
 struct Stmt;
 struct WhileStmt;
-struct LoopStmt;
 struct BreakStmt;
 struct ForStmt;
 struct SwitchStmt;

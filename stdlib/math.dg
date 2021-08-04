@@ -59,7 +59,7 @@ fn fib(uint64 n) -> uint64 {
 	uint64 a = 0;
 	uint64 b = 1;
 	
-	loop n-1 {
+	for i in 1 .. (n-1) {
 		
 		uint64 k = a+b;
 		a = b;

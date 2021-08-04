@@ -167,7 +167,7 @@ void write_decl_arg(struct DeclArg* m, FILE* file){
 	
 	serialize_int(opt2int(m->name), file);
 	
-	if(m->name != NULL)
+	//if(m->name != NULL)
 		{ serialize_string(m->name, file); }
 	
 	magic_num_serialize(MAGIC_END_DECLARG, file);
@@ -377,8 +377,6 @@ void write_stmt(struct Stmt* m, FILE* file){
 				serialize_int(m->is_throw ? OPT_PRESENT : OPT_EMPTY, file);
 			}
 			break;
-		case 0: {
-			write_loop_stmt(m->ptr.m0, file);  } break;
 		case 1: {
 			write_call(m->ptr.m1, file);       } break;
 		case 2: {
@@ -464,15 +462,6 @@ void write_call(struct Call* m, FILE* file){
 		{ write_expr(m->args[i], file); }
 	
 	magic_num_serialize(MAGIC_END_CALL, file);
-}
-void write_loop_stmt(struct LoopStmt* m, FILE* file){
-	
-	magic_num_serialize(MAGIC_LOOPSTMT, file);
-	write_super(m);
-	write_expr(m->count, file);
-	write_stmt_block(m->block, file);
-	
-	magic_num_serialize(MAGIC_END_LOOPSTMT, file);
 }
 void write_for_stmt(struct ForStmt* m, FILE* file){
 	

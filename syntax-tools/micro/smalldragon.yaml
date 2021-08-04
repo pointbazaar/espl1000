@@ -9,7 +9,7 @@ rules:
     - identifier: "\\b[a-z][A-Za-z0-9]*\\b"
 
     - statement: "\\b(return|break|case)\\b"
-    - statement: "\\b(if|else|while|loop|for|switch)\\b"
+    - statement: "\\b(if|else|while|for|switch)\\b"
     - statement: "\\b(try|catch|throw)\\b"
     - special: "\\b(fn|struct|externc|#include)\\b"
     

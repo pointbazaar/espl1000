@@ -53,7 +53,6 @@ void write_while_stmt(struct WhileStmt* m, OUTFILE);
 void write_ret_stmt(struct RetStmt* m, OUTFILE);
 void write_assign_stmt(struct AssignStmt* m, OUTFILE);
 void write_call(struct Call* m, OUTFILE);
-void write_loop_stmt(struct LoopStmt* m, OUTFILE);
 void write_for_stmt(struct ForStmt* m, OUTFILE);
 void write_switch_stmt(struct SwitchStmt* m, OUTFILE);
 void write_case_stmt(struct CaseStmt* m, OUTFILE);

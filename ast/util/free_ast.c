@@ -199,13 +199,6 @@ void free_if_stmt(struct IfStmt* is) {
 	free(is);
 }
 
-void free_loop_stmt(struct LoopStmt* is) {
-
-	free_expr(is->count);
-	free_stmt_block(is->block);
-	free(is);
-}
-
 void free_call(struct Call* mc) {
 
 	for(int i=0; i < mc->count_args; i++) {
@@ -229,8 +222,6 @@ void free_stmt(struct Stmt* s) {
 	switch(s->kind){
 		
 		case 99: /* nothing to do here */  break;
-		case 0:
-			free_loop_stmt(s->ptr.m0);   break;
 		case 1:
 			free_call(s->ptr.m1);       break;
 		case 2:

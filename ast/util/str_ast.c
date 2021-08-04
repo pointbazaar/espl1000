@@ -476,8 +476,7 @@ char* str_term(struct Term* t){
 char* str_stmt(struct Stmt* stmt){
 	
 	switch(stmt->kind){
-		
-		case 0: return str_loop_stmt(stmt->ptr.m0);
+
 		case 1: return str_call(stmt->ptr.m1);
 		case 2: return str_while_stmt(stmt->ptr.m2);
 		case 3: return str_if_stmt(stmt->ptr.m3);
@@ -577,21 +576,6 @@ char* str_if_stmt(struct IfStmt* i){
 		free(s3);
 	}
 	
-	return res;
-}
-
-char* str_loop_stmt(struct LoopStmt* l){
-	
-	char* s1 = str_expr(l->count);
-	char* s2 = str_stmt_block(l->block);
-	
-	const uint32_t l1 = strlen(s1)+strlen(s2)+4+2+1;
-	
-	char* res = malloc(sizeof(char)*l1);
-	
-	sprintf(res, "loop %s %s", s1, s2);
-	
-	free(s1); free(s2);
 	return res;
 }
 

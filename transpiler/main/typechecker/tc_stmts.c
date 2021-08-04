@@ -21,8 +21,7 @@ void tc_stmt(struct Stmt* s, struct TCCtx* tcctx){
 	tcctx->current_line_num = s->super.line_num;
 
 	switch(s->kind){
-	
-		case 0: tc_loopstmt(s->ptr.m0,     tcctx); break;
+
 		case 1: tc_methodcall(s->ptr.m1,   tcctx); break;
 		case 2: tc_whilestmt(s->ptr.m2,    tcctx); break;
 		case 3: tc_ifstmt(s->ptr.m3,       tcctx); break;
@@ -102,30 +101,6 @@ void tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx){
 	
 	tcctx->depth_inside_loop++;
 	tc_stmtblock(w->block, tcctx);
-	tcctx->depth_inside_loop--;
-}
-
-void tc_loopstmt(struct LoopStmt* l, struct TCCtx* tcctx){
-
-	tcctx->current_line_num = l->super.line_num;
-
-	struct Type* type = infer_type_expr(tcctx->current_filename, tcctx->st, l->count);
-	
-	if(!is_integer_type(type)){
-		
-		char* s1 = str_expr(l->count);
-		
-		char msg[200];
-		sprintf(msg, "\tloop %s\n", s1);
-		strcat(msg, ERR_LOOP_REQUIRES_INT);
-		
-		free(s1);
-		
-		error(tcctx, msg);
-	}
-	
-	tcctx->depth_inside_loop++;
-	tc_stmtblock(l->block, tcctx);
 	tcctx->depth_inside_loop--;
 }
 

@@ -160,7 +160,7 @@ fn matrix_pow(Matrix a, uint power) ~> Matrix throws {
 
 	res = matrix_identity(a.nrows);
 	
-	loop power {
+	for i in 1 .. power {
 	
 		old = res;
 		res = matrix_mul(res, a);

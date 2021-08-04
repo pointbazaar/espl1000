@@ -22,7 +22,6 @@ test:
 	$(CALL) local_variables/locals2.dg 
 	$(CALL) loops/whileloop.dg 
 	$(CALL) loops/forloop.dg 
-	$(CALL) loops/loop.dg 
 	$(CALL) mathematics/fibonacci.dg 
 	$(CALL) methodCalls/methodcall.dg 
 	$(CALL) other/everything.dg 

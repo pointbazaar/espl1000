@@ -41,8 +41,7 @@ add_executable(${PROJECT_NAME}
 	main/astnodes/statements/CaseStmt.c
 	main/astnodes/statements/ForStmt.c
 	main/astnodes/statements/IfStmt.c
-	main/astnodes/statements/LoopStmt.c
-	main/astnodes/statements/RetStmt.c
+        main/astnodes/statements/RetStmt.c
 	main/astnodes/statements/Stmt.c
 	main/astnodes/statements/SwitchStmt.c
 	main/astnodes/statements/WhileStmt.c
@@ -88,8 +87,7 @@ add_executable(${PROJECT_NAME}
 	test/astnodes/statements/CaseStmtTest.c
 	test/astnodes/statements/ForStmtTest.c
 	test/astnodes/statements/IfStmtTest.c
-	test/astnodes/statements/LoopStmtTest.c
-	test/astnodes/statements/RetStmtTest.c
+        test/astnodes/statements/RetStmtTest.c
 	test/astnodes/statements/StmtTest.c
 	test/astnodes/statements/SwitchStmtTest.c
 	test/astnodes/statements/WhileStmtTest.c

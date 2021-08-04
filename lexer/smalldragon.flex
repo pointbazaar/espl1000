@@ -32,7 +32,6 @@ else		out(ELSE, yytext);
 while		out(WHILE, yytext);
 return		out(RETURN, yytext);
 struct		out(STRUCT, yytext);
-loop		out(LOOP, yytext);
 for			out(FOR, yytext);
 break		out(BREAK, yytext);
 continue 	out(CONTINUE, yytext);

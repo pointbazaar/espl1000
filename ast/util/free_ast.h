@@ -54,7 +54,6 @@ void free_simple_var(struct SimpleVar* sv);
 //stmts
 void free_assign_stmt(struct AssignStmt* as);
 void free_if_stmt(struct IfStmt* is);
-void free_loop_stmt(struct LoopStmt* is);
 void free_call(struct Call* mc);
 void free_ret_stmt(struct RetStmt* rs);
 void free_stmt(struct Stmt* s);

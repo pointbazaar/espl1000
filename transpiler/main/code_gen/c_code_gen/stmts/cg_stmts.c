@@ -17,9 +17,7 @@
 void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 	
 	switch(s->kind){
-		
-		case 0: transpileLoopStmt(s->ptr.m0, ctx); break;
-		
+
 		case 1:
 			indent(ctx);
 			transpileCall(s->ptr.m1, ctx);

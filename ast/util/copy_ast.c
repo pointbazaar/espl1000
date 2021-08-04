@@ -328,7 +328,6 @@ struct Stmt* copy_stmt(struct Stmt* stmt){
 
     res->kind = stmt->kind;
     switch(stmt->kind){
-        case 0: res->ptr.m0 = copy_loop_stmt(stmt->ptr.m0); break;
         case 1: res->ptr.m1 = copy_call(stmt->ptr.m1); break;
         case 2: res->ptr.m2 = copy_while_stmt(stmt->ptr.m2); break;
         case 3: res->ptr.m3 = copy_if_stmt(stmt->ptr.m3); break;
@@ -400,19 +399,6 @@ struct WhileStmt* copy_while_stmt(struct WhileStmt* w){
 
     res->condition = copy_expr(w->condition);
     res->block = copy_stmt_block(w->block);
-
-    return res;
-}
-
-struct LoopStmt* copy_loop_stmt(struct LoopStmt* l){
-
-    struct LoopStmt* res = make(LoopStmt);
-
-    res->super.line_num = l->super.line_num;
-    res->super.annotations = l->super.annotations;
-
-    res->count = copy_expr(l->count);
-    res->block = copy_stmt_block(l->block);
 
     return res;
 }

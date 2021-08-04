@@ -144,8 +144,7 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		case STRUCT: 
 		case IF: 
 		case ELSE: 
-		case WHILE: 
-		case LOOP: 
+		case WHILE:
 		case BREAK:
 		case CONTINUE: 
 		case FOR:

@@ -2,7 +2,7 @@
 
 fn main () ~> int {
 
-	loop 3 {
+	for i in 1 .. 3 {
 		break;
 
 		printf("inloop\n");

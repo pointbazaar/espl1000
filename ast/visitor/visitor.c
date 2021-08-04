@@ -18,7 +18,6 @@ static void visit_lambda		(struct Lambda* l, VISITOR, ARG);
 //stmts
 static void visit_if_stmt      	(struct IfStmt* i, VISITOR, ARG);
 static void visit_while_stmt   	(struct WhileStmt* w, VISITOR, ARG);
-static void visit_loop_stmt    	(struct LoopStmt* l, VISITOR, ARG);
 static void visit_for_stmt     	(struct ForStmt* f, VISITOR, ARG);
 static void visit_assign_stmt  	(struct AssignStmt* a, VISITOR, ARG);
 static void visit_switch_stmt  	(struct SwitchStmt* s, VISITOR, ARG);
@@ -140,9 +139,7 @@ static void visit_stmt(struct Stmt* s, VISITOR, void* arg){
 	visitor(s, NODE_STMT, arg);
 	
 	switch(s->kind){
-		
-		case 0:
-			visit_loop_stmt(s->ptr.m0, visitor, arg);   break;
+
 		case 1:
 			visit_call(s->ptr.m1, visitor, arg);   break;
 		case 2:
@@ -195,13 +192,6 @@ static void visit_while_stmt(struct WhileStmt* w, VISITOR, void* arg){
 	visitor(w, NODE_WHILESTMT, arg);
 
 	visit_stmt_block(w->block, visitor, arg);
-}
-
-static void visit_loop_stmt(struct LoopStmt* l, VISITOR, void* arg){
-	
-	visitor(l, NODE_LOOPSTMT, arg);
-
-	visit_stmt_block(l->block, visitor, arg);
 }
 
 static void visit_for_stmt(struct ForStmt* f, VISITOR, void* arg){

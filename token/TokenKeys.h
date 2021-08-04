@@ -56,7 +56,6 @@
 #define RETURN 	53
 #define STRUCT 	54
 #define COMMA 	55
-#define LOOP 	56
 #define FN		57
 #define ELSE 	58
 

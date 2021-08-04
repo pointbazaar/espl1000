@@ -49,12 +49,11 @@ Type          ::= BasicType | TypeParam | ArrayType
 
 Stmt          ::= ( Call ';' )
 		| whileStmt | ifStmt | forStmt | switchStmt | trycatchStmt
-		| returnStmt | assignStmt | loopStmt
+		| returnStmt | assignStmt
 		| "break" ';' | "continue" ';' | "throw" ';'
 
 Call         ::= Id '(' (Expr (, Expr)*)?  ')'
 
-loopStmt     ::= "loop"  Expr        StmtBlock
 whileStmt    ::= "while" Expr        StmtBlock
 forStmt      ::= "for" Id "in" Range StmtBlock
 
