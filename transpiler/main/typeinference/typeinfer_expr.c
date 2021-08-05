@@ -25,7 +25,7 @@ static char* ERR_PRIMITIVE =
 	"Expected both Types to be primitive\n";
 
 static char* ERR_COULD_NOT_INFER = 
-	"[Expr] Could not infer Type\n";
+	"Could not infer Type of Expr\n";
 
 static struct Type* infer_type_expr_primitive(char* filename, struct ST* st, struct Expr2Types* e2t);
 

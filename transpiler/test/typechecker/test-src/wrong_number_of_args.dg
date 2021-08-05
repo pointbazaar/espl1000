@@ -1,0 +1,4 @@
+fn main() ~> int {
+    return sub(3);
+}
+fn sub() -> int { return 3; }

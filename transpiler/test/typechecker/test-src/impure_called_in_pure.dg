@@ -1,0 +1,5 @@
+fn main()~>int{
+	return sub1();
+}
+fn sub1()->int { return sub2(); }
+fn sub2()~>int { return 1; }

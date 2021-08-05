@@ -1,0 +1,5 @@
+fn main() ~> int {
+    sub(3);
+    return 0;
+}
+fn sub(char c) ~> int { return 0; }

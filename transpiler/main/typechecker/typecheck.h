@@ -1,9 +1,8 @@
 #ifndef TYPECHECK_H
 #define TYPECHECK_H
 
-#include <stdio.h>
-
-#include "ast/ast.h"
+struct AST;
+struct ST;
 #include "tcctx.h"
 
 /* This Module provides Facilities
@@ -25,8 +24,6 @@
  * inferring the type of '3 + myfunction'
  */
 
-bool typecheck_ast(struct AST* ast, struct ST* st);
-
-void tc_namespace  (struct Namespace* n, struct TCCtx* tcctx);
+struct TCError* typecheck_ast(struct AST* ast, struct ST* st, bool print_errors);
 
 #endif

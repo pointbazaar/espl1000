@@ -2,14 +2,13 @@
 #define TYPECHECKING_ERRORS_H
 
 struct TCCtx;
+enum TC_ERR_KIND;
 
 #define ERR_NUM_ARGS "number of args does not match"
 
 #define ERR_ARG_TYPES "type of arg does not match"
 
 #define ERR_CONDITION_REQUIRES_BOOL "condition must be of type bool"
-
-#define ERR_LOOP_REQUIRES_INT "loop stmt requires an integer number of iterations "
 
 #define ERR_RANGE_REQUIRES_INT "range requires 2 integer values"
 
@@ -25,6 +24,6 @@ struct TCCtx;
 
 #define ERR_NO_THROW_OUTSIDE_TRY_OR_THROWS_SUBR "cannot use 'throw' outside try-block or 'throws' subroutine."
 
-void error(struct TCCtx* tcctx, char* msg);
+void error(struct TCCtx* tcctx, char* msg, enum TC_ERR_KIND kind);
 
 #endif

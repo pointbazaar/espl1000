@@ -1,0 +1,4 @@
+fn main()~>int{
+	for i in 0 .. 'c' {}
+	return 0;
+}

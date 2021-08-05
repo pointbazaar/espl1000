@@ -1,0 +1,6 @@
+#ifndef SMALLDRAGON_TOPLEVEL_TEST_TYPECHECKER_H
+#define SMALLDRAGON_TOPLEVEL_TEST_TYPECHECKER_H
+
+void test_suite_typechecker();
+
+#endif

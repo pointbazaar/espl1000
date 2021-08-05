@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <inttypes.h>
 #include <stdlib.h>
+#include <typechecker/test_typechecker.h>
 
 #include "transpiler.h"
 
@@ -83,6 +84,9 @@ int transpiler_test_all(bool debug){
 	test_infer_type_unopterm(debug);
 	test_infer_type_expr(debug);
 	test_infer_type_expr_multiple_terms(debug);
+
+    status("Typechecker");
+    test_suite_typechecker();
 		
 	status("PASSED ALL TESTS\n");
 	

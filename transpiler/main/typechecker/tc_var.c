@@ -12,11 +12,11 @@
 #include "typechecker/util/tc_errors.h"
 #include "typechecker/util/tc_utils.h"
 
-void tc_var(struct Variable* v, struct TCCtx* tcctx){
+bool tc_var(struct Variable* v, struct TCCtx* tcctx){
 
     struct SimpleVar* sv = v->simple_var;
 
-    tc_simplevar(sv, tcctx);
+    if(!tc_simplevar(sv, tcctx)){return false;}
 
     struct Variable* member_access = v->member_access;
 
@@ -25,9 +25,10 @@ void tc_var(struct Variable* v, struct TCCtx* tcctx){
 
         //tc_var(member_access, tcctx);
     }
+    return true;
 }
 
-void tc_simplevar(struct SimpleVar* sv, struct TCCtx* tcctx){
+bool tc_simplevar(struct SimpleVar* sv, struct TCCtx* tcctx){
 
     //does it even exist in the symbol table?
     char* name = sv->name;
@@ -39,11 +40,13 @@ void tc_simplevar(struct SimpleVar* sv, struct TCCtx* tcctx){
 
         char msg[100];
         sprintf(msg,"simplevar '%s' not found in lvst/sst", name);
-        error(tcctx, msg);
+        error(tcctx, msg, TC_ERR_VAR_NOT_FOUND);
+        return false;
     }
 
     if(!in_lvst && sv->count_indices > 0){
-        error(tcctx, "cannot use indices for something thats not a local var/arg");
+        error(tcctx, "cannot use indices for something thats not a local var/arg", TC_ERR_TOO_MANY_INDICES);
+        return false;
     }
 
     //check that each index is of an integer type
@@ -54,13 +57,14 @@ void tc_simplevar(struct SimpleVar* sv, struct TCCtx* tcctx){
 
         if(!is_integer_type(type)){
 
-            error(tcctx, "index is not an integer type");
+            error(tcctx, "index is not an integer type", TC_ERR_INDEX_NOT_INTEGER_TYPE);
+            return false;
         }
 
-        tc_expr(indexExpr, tcctx);
+        if(!tc_expr(indexExpr, tcctx)){return false;}
     }
 
-    if(sv->count_indices == 0){ return; }
+    if(sv->count_indices == 0){ return true; }
 
     //check that the correct number of indices was used
     //(meaning not too many)
@@ -69,6 +73,9 @@ void tc_simplevar(struct SimpleVar* sv, struct TCCtx* tcctx){
     uint32_t max_indices = max_indices_allowed(line->type);
 
     if(sv->count_indices > max_indices){
-        error(tcctx, "used more indices than this simplevar had");
+        error(tcctx, "used more indices than this simplevar had", TC_ERR_TOO_MANY_INDICES);
+        return false;
     }
+
+    return true;
 }

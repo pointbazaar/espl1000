@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <libgen.h>
+#include <util/fill_tables.h>
 
 #include "ast/ast.h"
 
@@ -37,8 +38,6 @@
 unsigned int label_count = 0;
 
 static void transpile_ast(struct AST* ast, struct Ctx* ctx, char* h_filename);
-
-static void fill_tables(struct AST* ast, struct Ctx* ctx);
 
 static void ns_transpile_struct_fwd_decls(struct Namespace* ns, struct Ctx* ctx);
 static void ns_transpile_struct_decls(struct Namespace* ns, struct Ctx* ctx);
@@ -102,25 +101,6 @@ bool transpile_and_write(char* c_filename, char* h_filename, struct AST* ast, st
 	return status;
 }
 
-static void fill_tables(struct AST* ast, struct Ctx* ctx){
-	
-	sst_clear(ctx->tables->sst);
-    sst_prefill(ctx->tables);
-
-	for(int i = 0; i < ast->count_namespaces; i++){
-		
-		struct Namespace* ns = ast->namespaces[i];
-		
-		sst_fill(ctx->tables, ctx->tables->sst, ns);
-		stst_fill(ctx->tables->stst, ns);
-	
-	}
-	
-	if(ctx->flags->debug){
-		sst_print(ctx->tables->sst);
-		stst_print(ctx->tables->stst);
-	}
-}
 
 static void transpile_ast(struct AST* ast, struct Ctx* ctx, char* h_filename){
 	
@@ -145,9 +125,10 @@ static void transpile_ast(struct AST* ast, struct Ctx* ctx, char* h_filename){
 	
 	//RE-FILL the newly created lambda functions
 	backfill_lambdas_into_sst(ast, ctx->tables);
-		
-	const bool checks = typecheck_ast(ast, ctx->tables);
-	
+
+	struct TCError* errors = typecheck_ast(ast, ctx->tables, true);
+
+	bool checks = errors == NULL;
 	if(!checks){
 		ctx->error = true;
 		return;

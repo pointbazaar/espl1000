@@ -1,0 +1,4 @@
+fn main()~>int {
+    char c = (3+'c');
+    return 3;
+}

@@ -1,0 +1,8 @@
+fn main()~>int{
+	(()~>int) f= main;
+	switch f {
+		case 0x0 {}
+	}
+
+	return 0;
+}

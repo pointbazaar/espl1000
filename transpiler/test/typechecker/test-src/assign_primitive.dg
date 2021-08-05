@@ -1,0 +1,6 @@
+fn main()~>int {
+
+    int k = 'c';
+
+    return 0;
+}

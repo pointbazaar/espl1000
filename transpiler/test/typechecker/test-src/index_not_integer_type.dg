@@ -1,0 +1,7 @@
+externc fn arr_ctor() ~> [int] "arr_ctor"
+
+fn main()~>int {
+
+	[int] arr = arr_ctor();
+	return arr['c'];
+}

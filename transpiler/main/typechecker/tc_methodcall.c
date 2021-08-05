@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 //AST Includes
 #include "ast/ast.h"
@@ -23,23 +24,23 @@
 #define ERR_CALLED_SIDE_EFFECT_IN_PURE "called '~>' subr in '->' subr."
 #define ERR_SUBROUTINE_NOT_IN_SST_LVST "subroutine neither in SST nor LVST"
 
-static void tc_methodcall_args(
+static bool tc_methodcall_args(
 	struct Call* m, 
 	struct Type** expect_types, 
 	uint8_t expect_args, 
 	struct TCCtx* tcctx
 );
 
-static void tc_methodcall_arg(
+static bool tc_methodcall_arg(
 	struct Call* m, 
 	struct Type* expect_type,
 	struct Expr* actual_expr,
 	struct TCCtx* tcctx
 );
 
-static void check_throw_rules(bool callee_throws, struct TCCtx* tcctx);
+static bool check_throw_rules(bool callee_throws, struct TCCtx* tcctx);
 
-void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
+bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 
 	tcctx->current_line_num = m->super.line_num;
 
@@ -55,13 +56,14 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		){
 			//method with side effects called
 			//in method marked as without side effects
-			error(tcctx, ERR_CALLED_SIDE_EFFECT_IN_PURE);
+			error(tcctx, ERR_CALLED_SIDE_EFFECT_IN_PURE, TC_ERR_SIDE_EFFECT_IN_PURE_CONTEXT);
+            return false;
 		}
 
 		if(line->is_libc){
 		    //we do not have the AST for libC
 		    //subroutines, so we cannot typecheck the call
-		    return;
+		    return true;
 		}
 		
 		if(line->method == NULL){
@@ -69,12 +71,12 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 			char msg[150];
 			sprintf(msg, "subroutine HAS NO METHOD IN SST: %s\n", m->name);
 			strcat(msg, ERR_SUBR_NOT_FOUND);
-			error(tcctx, msg);
+			error(tcctx, msg, TC_ERR_SUBR_NOT_FOUND);
 		}
 		
 		struct Method* method = line->method;
 		
-		check_throw_rules(method->decl->throws, tcctx);
+        if(!check_throw_rules(method->decl->throws, tcctx)){return false;}
 		
 		expect_args = method->decl->count_args;
 
@@ -96,7 +98,8 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		
 		struct Type* type = line2->type;
 		if(type->m1 == NULL || type->m1->subr_type == NULL){
-			error(tcctx, "subroutine had wrong type in LVST");
+			error(tcctx, "local variable is not a subroutine in LVST", TC_ERR_LOCAL_VAR_NOT_A_SUBROUTINE);
+            return false;
 		}
 		struct SubrType* stype = type->m1->subr_type;
 		
@@ -105,10 +108,11 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		){
 			//method with side effects called
 			//in method marked as without side effects
-			error(tcctx, ERR_CALLED_SIDE_EFFECT_IN_PURE);
+			error(tcctx, ERR_CALLED_SIDE_EFFECT_IN_PURE, TC_ERR_SIDE_EFFECT_IN_PURE_CONTEXT);
+            return false;
 		}
 		
-		check_throw_rules(stype->throws, tcctx);
+        if(!check_throw_rules(stype->throws, tcctx)){return false;}
 		
 		expect_args  = stype->count_arg_types;
 		expect_types = malloc(sizeof(struct Type*)*expect_args);
@@ -119,25 +123,29 @@ void tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		
 	}else{
 		
-		error(tcctx, ERR_SUBROUTINE_NOT_IN_SST_LVST);
+		error(tcctx, ERR_SUBROUTINE_NOT_IN_SST_LVST, TC_ERR_SUBR_NOT_FOUND);
+        return false;
 	}
 	
-	tc_methodcall_args(m, expect_types, expect_args, tcctx);
+	bool err1 = tc_methodcall_args(m, expect_types, expect_args, tcctx);
 	
 	free(expect_types);
+
+    return err1;
 }
 
-static void check_throw_rules(bool callee_throws, struct TCCtx* tcctx){
+static bool check_throw_rules(bool callee_throws, struct TCCtx* tcctx){
 	
-	if(!callee_throws){ return; }
-	if(tcctx->current_fn->decl->throws){ return; }
+	if(!callee_throws){ return true; }
+	if(tcctx->current_fn->decl->throws){ return true; }
 	
-	if(tcctx->depth_inside_try_stmt > 0){ return; }
+	if(tcctx->depth_inside_try_stmt > 0){ return true; }
 		
-	error(tcctx, "called a throwing subroutine inside a non-throwing subroutine outside any try-block");
+	error(tcctx, "called a throwing subroutine inside a non-throwing subroutine outside any try-block", TC_ERR_CALLED_THROWING_WRONG);
+    return false;
 }
 
-static void tc_methodcall_args(
+static bool tc_methodcall_args(
 	struct Call* m, 
 	struct Type** expect_types,
 	uint8_t expect_args, 
@@ -154,9 +162,9 @@ static void tc_methodcall_args(
 		strcat(msg, ERR_NUM_ARGS);
 		
 		free(s1);
-		free(expect_types);
 		
-		error(tcctx, msg);
+		error(tcctx, msg, TC_ERR_ARG_NUM_MISMATCH);
+        return false;
 	}
 	
 	for(uint8_t i = 0; i < expect_args; i++){
@@ -165,12 +173,12 @@ static void tc_methodcall_args(
 		
 		struct Expr* actual_expr = m->args[i];
 		
-		tc_methodcall_arg(m, expect_type, actual_expr, tcctx);
+        if(!tc_methodcall_arg(m, expect_type, actual_expr, tcctx)){return false;}
 	}
+    return true;
 }
 
-
-static void tc_methodcall_arg(
+static bool tc_methodcall_arg(
 	struct Call* m, 
 	struct Type* expect_type,
 	struct Expr* actual_expr,
@@ -179,8 +187,7 @@ static void tc_methodcall_arg(
 	
 	struct Type* actual_type = infer_type_expr(tcctx->current_filename, tcctx->st, actual_expr);
 
-	if(is_integer_type(expect_type) && is_integer_type(actual_type))
-        { return; }
+	if(is_integer_type(expect_type) && is_integer_type(actual_type)){ return true; }
 		
 	if(!eq_type(expect_type, actual_type)){
 		
@@ -199,8 +206,11 @@ static void tc_methodcall_arg(
 		free(sTypeActual);
 		free(sTypeExpected);
 		
-		error(tcctx, msg);
+		error(tcctx, msg, TC_ERR_ARG_TYPE_MISMATCH);
+        return false;
 	}
 	
-	tc_expr(actual_expr, tcctx);
+    if(!tc_expr(actual_expr, tcctx)){return false;}
+
+    return true;
 }

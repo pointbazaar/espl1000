@@ -1,0 +1,4 @@
+fn main()~>int{
+	if 3 { return 3; }
+	return 0;
+}

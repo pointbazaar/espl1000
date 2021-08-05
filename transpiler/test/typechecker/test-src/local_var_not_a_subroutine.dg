@@ -1,0 +1,5 @@
+fn main()~>int {
+	
+	int k = 0;
+	return k();
+}

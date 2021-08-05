@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 //AST Includes
 #include "ast/ast.h"
@@ -17,7 +18,7 @@
 
 struct Range;
 
-void tc_range(struct Range* r, struct TCCtx* tcctx){
+bool tc_range(struct Range* r, struct TCCtx* tcctx){
 
     tcctx->current_line_num = r->super.line_num;
 
@@ -34,6 +35,9 @@ void tc_range(struct Range* r, struct TCCtx* tcctx){
 
         free(sRange);
 
-        error(tcctx, msg);
+        error(tcctx, msg, TC_ERR_RANGE_REQUIRES_INT);
+        return false;
     }
+
+    return true;
 }

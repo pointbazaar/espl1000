@@ -14,31 +14,32 @@
 #include "util/tc_utils.h"
 #include "tcctx.h"
 
-static void check_expr_well_formed(struct Type* left, struct Type* right, struct TCCtx* tcctx);
+static bool check_expr_well_formed(struct Type* left, struct Type* right, struct TCCtx* tcctx);
 
-void tc_expr(struct Expr* expr, struct TCCtx* tcctx){
+bool tc_expr(struct Expr* expr, struct TCCtx* tcctx){
 
 	tcctx->current_line_num = expr->super.line_num;
 
-	tc_unopterm(expr->term1, tcctx);
+    if(!tc_unopterm(expr->term1, tcctx)){return false;}
 	
 	if(expr->op != NULL){
 
-        tc_unopterm(expr->term2, tcctx);
+        if(!tc_unopterm(expr->term2, tcctx)){return false;}
 
         struct Type* left  = infer_type_unopterm(tcctx->current_filename, tcctx->st, expr->term1);
         struct Type* right = infer_type_unopterm(tcctx->current_filename, tcctx->st, expr->term2);
 
-        check_expr_well_formed(left, right, tcctx);
+        return check_expr_well_formed(left, right, tcctx);
 	}
+    return true;
 }
 
-static void check_expr_well_formed(struct Type* left, struct Type* right, struct TCCtx* tcctx){
+static bool check_expr_well_formed(struct Type* left, struct Type* right, struct TCCtx* tcctx){
 
-    if(is_integer_type(left) && is_integer_type(right)){ return; }
+    if(is_integer_type(left) && is_integer_type(right)){ return true; }
 
-    if(is_integer_type(left) && is_float_type(right)){ return; }
-    if(is_integer_type(right) && is_float_type(left)){ return; }
+    if(is_integer_type(left) && is_float_type(right)){ return true; }
+    if(is_integer_type(right) && is_float_type(left)){ return true; }
 
     if(!eq_type(left, right)){
 
@@ -47,6 +48,9 @@ static void check_expr_well_formed(struct Type* left, struct Type* right, struct
 
         char msg[200];
         sprintf(msg, "types not equal in expression. left: %s, right: %s\n", s_left, s_right);
-        error(tcctx,msg);
+        error(tcctx,msg, TC_ERR_BINOP_TYPE_MISMATCH);
+        return false;
     }
+
+    return true;
 }

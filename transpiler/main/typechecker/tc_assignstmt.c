@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 //AST Includes
 #include "ast/ast.h"
@@ -19,31 +20,30 @@
 #include "typecheck.h"
 #include "tcctx.h"
 
-static void check_type_rules_assign(struct AssignStmt* a, struct TCCtx* tcctx);
+static bool check_type_rules_assign(struct AssignStmt* a, struct TCCtx* tcctx);
 
-void tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx){
+bool tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx){
 
 	tcctx->current_line_num = a->super.line_num;
 	
 	struct LVSTLine* line = lvst_get(tcctx->st->lvst, a->var->simple_var->name);
 	
 	if(line->read_only){
-		error(tcctx, "variable can only be read but not written to.");
+		error(tcctx, "variable can only be read but not written to.", TC_ERR_VAR_READONLY);
 	}
 
 	if(is_malloc(a->expr)){ 
-		tc_expr(a->expr, tcctx);
-		return; 
+		return tc_expr(a->expr, tcctx);
 	}
 
-    tc_var(a->var, tcctx);
+    if(!tc_var(a->var, tcctx)){return false;}
 
-    tc_expr(a->expr, tcctx);
+    if(!tc_expr(a->expr, tcctx)){return false;}
 
-    check_type_rules_assign(a, tcctx);
+    return check_type_rules_assign(a, tcctx);
 }
 
-static void check_type_rules_assign(struct AssignStmt* a, struct TCCtx* tcctx){
+static bool check_type_rules_assign(struct AssignStmt* a, struct TCCtx* tcctx){
 
     struct Type* right = infer_type_expr(tcctx->current_filename, tcctx->st, a->expr);
 
@@ -53,7 +53,7 @@ static void check_type_rules_assign(struct AssignStmt* a, struct TCCtx* tcctx){
         left = infer_type_variable(tcctx->current_filename, tcctx->st, a->var);
     }
 	
-	if(is_integer_type(left) && is_integer_type(right)){ return; }
+	if(is_integer_type(left) && is_integer_type(right)){ return true; }
 	
 	if(!eq_type(left, right)){
 	
@@ -71,6 +71,8 @@ static void check_type_rules_assign(struct AssignStmt* a, struct TCCtx* tcctx){
 		free(str_t2);
 		free(str_a);
 	
-		error(tcctx, msg);
+		error(tcctx, msg, TC_ERR_ASSIGN_TYPE_MISMATCH);
+        return false;
 	}
+    return true;
 }
