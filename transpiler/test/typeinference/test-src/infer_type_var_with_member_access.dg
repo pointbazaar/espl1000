@@ -1,0 +1,10 @@
+externc fn mystruct_ctor() -> MyStruct "mystruct_ctor"
+
+struct MyStruct {
+	int a;
+}
+
+fn sub()~>int {
+	MyStruct x = mystruct_ctor();
+	return x.a;
+}

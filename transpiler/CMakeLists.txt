@@ -86,7 +86,7 @@ add_executable(${PROJECT_NAME}
 	test/code_gen/test_stmt.c
 	test/typeinference/test_typeinference.c
 	test/util/test_statuscode.c
-		main/typechecker/tc_range.c main/typechecker/tc_method.c main/code_gen/c_code_gen/_cg.h main/code_gen/c_code_gen/stmts/cg_stmtblock.c test/typechecker/test_typechecker.c test/typechecker/test_typechecker.h main/util/fill_tables.c main/util/fill_tables.h test/typechecker/test_typechecker_util.c test/typechecker/test_typechecker_util.h)
+		main/typechecker/tc_range.c main/typechecker/tc_method.c main/code_gen/c_code_gen/_cg.h main/code_gen/c_code_gen/stmts/cg_stmtblock.c test/typechecker/test_typechecker.c test/typechecker/test_typechecker.h main/util/fill_tables.c main/util/fill_tables.h test/typechecker/test_typechecker_util.c test/typechecker/test_typechecker_util.h test/typeinference/test_typeinference_util.c test/typeinference/test_typeinference_util.h)
 
 target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
 

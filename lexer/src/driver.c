@@ -100,14 +100,14 @@ struct LexerFlags* handle_arguments(int argc, char** argv){
 char* lexer_make_tkn_filename(char* filename){
 	
 	//because basename,dirname may modify their args
-	char cpy_filename_1[50];
-	char cpy_filename_2[50];
+	char* cpy_filename_1 = malloc(strlen(filename)+1);
+	char* cpy_filename_2 = malloc(strlen(filename)+1);
 	strcpy(cpy_filename_1,filename);
 	strcpy(cpy_filename_2,filename);
 
 	char* dir = dirname(cpy_filename_1);
 
-	char* tkn_filename = malloc(sizeof(char)* 150);
+	char* tkn_filename = malloc(strlen(filename)+1+100);
 	
 	tkn_filename[0]='\0';
 	strcat(tkn_filename,dir);

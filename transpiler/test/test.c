@@ -77,13 +77,9 @@ int transpiler_test_all(bool debug){
 	test_subrcall(debug);
 	test_break(debug);
 	test_continue(debug);
-	
-	//from test_typeinference.h
-	status("typeinference");
-	test_infer_type_term(debug);
-	test_infer_type_unopterm(debug);
-	test_infer_type_expr(debug);
-	test_infer_type_expr_multiple_terms(debug);
+
+	status("Typeinference");
+	test_suite_typeinference();
 
     status("Typechecker");
     test_suite_typechecker();
