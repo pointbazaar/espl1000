@@ -5,7 +5,16 @@ struct List<?T0> {
 	uint cap;
 }
 
+fn list_add(List<?T0> list, ?T0 elem) ~> bool {
+
+	list.arr[list.count] = elem;
+	list.count++;
+
+	return true;
+}
+
 fn main()~>int{
+
 	List<int> list = malloc(8*3);
 	list.cap = 10;
 	list.count = 0;
@@ -14,6 +23,8 @@ fn main()~>int{
 	list.arr[0] = 3;
 	
 	int k = list.arr[0];
+
+	//list_add(list, 3);
 
 	return 0;
 }

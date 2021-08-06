@@ -25,7 +25,7 @@ static void test_infer_type_var_with_member_access();
 //type parameters
 static void test_infer_type_type_param();
 static void test_infer_type_generic_struct_member();
-
+static void test_infer_type_generic_struct_member_nested();
 
 static void status(char* msg){
 	printf(" - [TEST] %s\n", msg);
@@ -45,6 +45,7 @@ void test_suite_typeinference(){
 
     test_infer_type_type_param();
     test_infer_type_generic_struct_member();
+    test_infer_type_generic_struct_member_nested();
 }
 
 static void test_infer_type_term() {
@@ -226,4 +227,26 @@ static void test_infer_type_generic_struct_member(){
     assert(!t->m1->simple_type->primitive_type->is_bool_type);
 
     assert(t->m1->simple_type->primitive_type->is_int_type);
+}
+
+static void test_infer_type_generic_struct_member_nested(){
+
+	status("infer_type_generic_struct_member_nested");
+
+	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_generic_struct_member_nested.dg");
+
+	assert(t != NULL);
+
+	assert(t->m1 != NULL);
+	assert(t->m2 == NULL);
+	assert(t->m3 == NULL);
+
+	assert(t->m1->simple_type != NULL);
+	assert(t->m1->simple_type->primitive_type != NULL);
+
+	assert(!t->m1->simple_type->primitive_type->is_float_type);
+	assert(!t->m1->simple_type->primitive_type->is_char_type);
+	assert(!t->m1->simple_type->primitive_type->is_bool_type);
+
+	assert(t->m1->simple_type->primitive_type->is_int_type);
 }

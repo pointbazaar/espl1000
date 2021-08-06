@@ -1,0 +1,17 @@
+externc fn a_ctor() ~> A<int> "a_ctor"
+
+struct B<?T0> {
+	?T0 x;
+}
+
+struct A<?T0> {
+	B<int> b;
+	?T0 k;
+}
+
+fn sub() ~> int {
+
+	A<int> a = a_ctor();
+
+	return a.b.x;
+}
