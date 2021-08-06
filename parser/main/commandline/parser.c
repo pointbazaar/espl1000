@@ -89,10 +89,8 @@ static char* extract_namespace_name(char* filename_tokens){
 	
 	int l = (int)(dot2-dot1);
 	
-	if(l > DEFAULT_STR_SIZE){ l = DEFAULT_STR_SIZE; }
-	
-	char* res = malloc(DEFAULT_STR_SIZE);
-	memset(res, 0, DEFAULT_STR_SIZE);
+	char* res = malloc(l+1);
+	memset(res, 0, l+1);
 	strncpy(res, dot1+1, l-1);
 	
 	return res;
