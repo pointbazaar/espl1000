@@ -35,7 +35,6 @@ fn matrix_dtor(Matrix m) ~> bool {
 	return true;
 }
 
-@halts
 fn matrix_add(Matrix a, Matrix b) ~> Matrix throws {
 
 	if a.nrows != b.nrows { throw; }
@@ -50,7 +49,6 @@ fn matrix_add(Matrix a, Matrix b) ~> Matrix throws {
 	return res;
 }
 
-@halts
 fn matrix_sub(Matrix a, Matrix b) ~> Matrix throws {
 
 	if a.nrows != b.nrows { throw; }
@@ -65,7 +63,6 @@ fn matrix_sub(Matrix a, Matrix b) ~> Matrix throws {
 	return res;
 }
 
-@halts
 fn matrix_scale(Matrix a, float r) ~> Matrix {
 	
 	//scales the matrix
@@ -78,7 +75,6 @@ fn matrix_scale(Matrix a, float r) ~> Matrix {
 	return res;
 }
 
-@halts
 fn matrix_mul(Matrix a, Matrix b) ~> Matrix throws {
 
 	if a.ncols != b.nrows { throw; }
@@ -96,7 +92,6 @@ fn matrix_mul(Matrix a, Matrix b) ~> Matrix throws {
 	return res;
 }
 
-@halts
 fn matrix_submatrix(Matrix a, uint row, uint col) ~> Matrix throws {
 
 	if a.nrows != a.ncols { throw; }
@@ -140,7 +135,6 @@ fn matrix_det(Matrix a) ~> float throws {
 	return res;
 }
 
-@halts
 fn matrix_transpose(Matrix a) ~> Matrix {
 
 	res = matrix_ctor(a.ncols, a.nrows);
@@ -155,7 +149,6 @@ fn matrix_transpose(Matrix a) ~> Matrix {
 	return res;
 }
 
-@halts
 fn matrix_pow(Matrix a, uint power) ~> Matrix throws {
 
 	res = matrix_identity(a.nrows);
@@ -170,7 +163,6 @@ fn matrix_pow(Matrix a, uint power) ~> Matrix throws {
 	return res;
 }
 
-@halts
 fn matrix_identity(uint n) ~> Matrix {
 
 	res = matrix_ctor(n,n);

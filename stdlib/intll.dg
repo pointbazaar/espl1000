@@ -56,7 +56,6 @@ fn intllnode_ctor() ~> IntLLNode {
 @halts
 fn intll_size(IntLL l) -> uint { return l.size; }
 
-@halts
 fn intll_push_front(IntLL l, int value) ~> bool {
 
 	IntLLNode x = intllnode_ctor();
@@ -79,7 +78,6 @@ fn intll_push_front(IntLL l, int value) ~> bool {
 	return true;
 }
 
-@halts
 fn intll_push_back(IntLL l, int value) ~> bool {
 
 	IntLLNode x = intllnode_ctor();
@@ -102,7 +100,6 @@ fn intll_push_back(IntLL l, int value) ~> bool {
 	return true;
 }
 
-@halts
 fn intll_pop_front(IntLL l) ~> int throws {
 	
 	if l.size == 0 { throw; }
@@ -124,7 +121,6 @@ fn intll_pop_front(IntLL l) ~> int throws {
 	return val;
 }
 
-@halts
 fn intll_pop_back(IntLL l) ~> int throws {
 
 	if l.size == 0 { throw; }
