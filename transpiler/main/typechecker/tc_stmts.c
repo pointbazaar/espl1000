@@ -64,7 +64,7 @@ bool tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx){
 	
 	tcctx->current_line_num = i->super.line_num;
 	
-	struct Type* type = infer_type_expr(tcctx->current_filename, tcctx->st, i->condition);
+	struct Type* type = infer_type_expr(tcctx->st, i->condition);
 	
 	if(!is_bool_type(type)){
 		
@@ -87,7 +87,7 @@ bool tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx){
 
 	tcctx->current_line_num = w->super.line_num;
 
-	struct Type* type = infer_type_expr(tcctx->current_filename, tcctx->st, w->condition);
+	struct Type* type = infer_type_expr(tcctx->st, w->condition);
 	
 	if(!is_bool_type(type)){
 		
@@ -118,7 +118,7 @@ bool tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx){
 
     if(!tc_expr(r->return_value, tcctx)){return false;}
 
-    struct Type* returnedType = infer_type_expr(tcctx->current_filename, tcctx->st, r->return_value);
+    struct Type* returnedType = infer_type_expr(tcctx->st, r->return_value);
 
 	if(is_integer_type(returnType) && is_integer_type(returnedType))
 		{ return true; }
@@ -152,7 +152,7 @@ bool tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx){
 
 	tcctx->current_line_num = s->super.line_num;
 
-	struct Type* type = infer_type_expr(tcctx->current_filename, tcctx->st, s->expr);
+	struct Type* type = infer_type_expr(tcctx->st, s->expr);
 	
 	if(!is_primitive_type(type)){
 		

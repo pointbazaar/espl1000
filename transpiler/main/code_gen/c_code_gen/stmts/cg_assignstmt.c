@@ -70,9 +70,8 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 	}else{
 
 	    //as->optType == NULL && as->var->memberAccess != 0
-	    //TODO: give correct filename
         //infer the type of the left side
-        left_type = infer_type_variable("IDK",ctx->tables, as->var);
+        left_type = infer_type_variable(ctx->tables, as->var);
 	}
 
 	const bool assignToTypeParam = left_type->m2 != NULL;

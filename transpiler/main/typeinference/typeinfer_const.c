@@ -1,4 +1,6 @@
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "ast/ast.h"
 
@@ -7,9 +9,7 @@
 
 #include "tables/symtable/symtable.h"
 
-static char* ERR_FATAL = "Fatal\n";
-
-struct Type* infer_type_constvalue(char* filename, struct ST* st, struct ConstValue* cv){
+struct Type *infer_type_constvalue(struct ST *st, struct ConstValue *cv) {
 
 	switch(cv->kind){
 
@@ -21,6 +21,7 @@ struct Type* infer_type_constvalue(char* filename, struct ST* st, struct ConstVa
 		case 6: return typeFromStrPrimitive(st, "int"); //bin
 	}
 
-	print_exit(filename, &(cv->super), ERR_FATAL);
+	printf("[Typeinference][Error] FATAL (in typeinfer_const.c). Exiting.\n");
+	exit(1);
 	return NULL;
 }

@@ -14,7 +14,7 @@ bool tc_unopterm(struct UnOpTerm* uot, struct TCCtx* tcctx){
 
     if(!tc_term(uot->term, tcctx)){return false;}
 
-    struct Type* type = infer_type_term(tcctx->current_filename, tcctx->st, uot->term);
+    struct Type* type = infer_type_term(tcctx->st, uot->term);
 
     if(uot->op == NULL){ return true; }
 

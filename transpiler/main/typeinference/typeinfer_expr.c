@@ -1,6 +1,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "ast/ast.h"
 
@@ -15,51 +16,42 @@ struct Expr2Types {
 	struct Op* op;
 };
 
-static char* ERR_BTW = 
-	"Expected BasicTypeWrapped\n";
-	
-static char* ERR_ST = 
-	"Expected SimpleType\n";
-	
-static char* ERR_PRIMITIVE = 
-	"Expected both Types to be primitive\n";
+static struct Type *infer_type_expr_primitive(struct ST *st, struct Expr2Types *e2t);
 
-static char* ERR_COULD_NOT_INFER = 
-	"Could not infer Type of Expr\n";
-
-static struct Type* infer_type_expr_primitive(char* filename, struct ST* st, struct Expr2Types* e2t);
-
-struct Type* infer_type_expr(char* filename, struct ST* st, struct Expr* expr){
+struct Type *infer_type_expr(struct ST *st, struct Expr *expr) {
 
 	if(expr->term2 == NULL)
-		{ return infer_type_unopterm(filename, st, expr->term1); }
+		{ return infer_type_unopterm(st, expr->term1); }
 	
 	struct UnOpTerm* t1 = expr->term1;
 	struct UnOpTerm* t2 = expr->term2;
 	struct Op* op = expr->op;
 
-	struct Type* type1 = infer_type_unopterm(filename, st, t1);
-	struct Type* type2 = infer_type_unopterm(filename, st, t2);
+	struct Type* type1 = infer_type_unopterm(st, t1);
+	struct Type* type2 = infer_type_unopterm(st, t2);
 	
 	struct BasicType* btw1 = type1->m1;
 	struct BasicType* btw2 = type2->m1;
 	
 	if(btw1 == NULL || btw2 == NULL){ 
-		print_exit(filename, &(expr->super), ERR_BTW); 
+	    printf("[Typeinference][Error] Fatal. (in typeinfer_expr.c). Exiting.\n");
+	    exit(1);
 	}
 	
 	struct SimpleType* st1 = btw1->simple_type;
 	struct SimpleType* st2 = btw2->simple_type;
 	
 	if(st1 == NULL || st2 == NULL){ 
-		print_exit(filename, &(expr->super), ERR_ST);
+	    printf("[Typeinference][Error] Fatal. (in typeinfer_expr.c). Exiting.\n");
+	    exit(1);
 	}
 	
 	bool p1 = st1->primitive_type != NULL;
 	bool p2 = st2->primitive_type != NULL;
 	
 	if(!p1 || !p2){ 
-		print_exit(filename, &(expr->super), ERR_PRIMITIVE); 
+	    printf("[Typeinference][Error] Fatal. (in typeinfer_expr.c). Exiting.\n");
+	    exit(1);
 	}
 	
 	struct Expr2Types e2t = {
@@ -68,10 +60,10 @@ struct Type* infer_type_expr(char* filename, struct ST* st, struct Expr* expr){
 		.op = op
 	};
 	
-	return infer_type_expr_primitive(filename, st, &e2t);
+	return infer_type_expr_primitive(st, &e2t);
 }
 
-static struct Type* infer_type_expr_primitive(char* filename, struct ST* st, struct Expr2Types* e2t){
+static struct Type *infer_type_expr_primitive(struct ST *st, struct Expr2Types *e2t) {
 	
 	struct PrimitiveType* p1 = e2t->p1;
 	struct PrimitiveType* p2 = e2t->p2;
@@ -115,6 +107,7 @@ static struct Type* infer_type_expr_primitive(char* filename, struct ST* st, str
 	
 	
 	printf("op=%s\n", op->op);
-	print_exit(filename, &(op->super), ERR_COULD_NOT_INFER);
+	printf("[Typeinference][Error] Fatal. (in typeinfer_expr.c). Exiting.\n");
+	exit(1);
 	return NULL;
 }

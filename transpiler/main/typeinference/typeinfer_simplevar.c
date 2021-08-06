@@ -11,13 +11,13 @@
 #include "tables/lvst/lvst.h"
 #include "tables/sst/sst.h"
 
-struct Type* infer_type_simplevar(char* filename, struct ST* st, struct SimpleVar* v){
+struct Type *infer_type_simplevar(struct ST *st, struct SimpleVar *v) {
 	
 	if (lvst_contains(st->lvst, v->name)) {
 		
 		struct LVSTLine* line = lvst_get(st->lvst, v->name);
 		
-		return unwrap_indices(filename, line->type, v->count_indices);
+		return unwrap_indices(line->type, v->count_indices);
 	}
 	
 	if(v->count_indices != 0){ goto error; }
@@ -33,7 +33,6 @@ struct Type* infer_type_simplevar(char* filename, struct ST* st, struct SimpleVa
 	
 error:
 	printf("[Typeinference][Error]");
-	printf("[%s:%d]\n", filename, v->super.line_num);
 	printf("%s\n", str_simple_var(v));
 	printf(" exiting.\n");
 	exit(1);

@@ -185,7 +185,7 @@ static bool tc_methodcall_arg(
 	struct TCCtx* tcctx
 ){
 	
-	struct Type* actual_type = infer_type_expr(tcctx->current_filename, tcctx->st, actual_expr);
+	struct Type* actual_type = infer_type_expr(tcctx->st, actual_expr);
 
 	if(is_integer_type(expect_type) && is_integer_type(actual_type)){ return true; }
 		

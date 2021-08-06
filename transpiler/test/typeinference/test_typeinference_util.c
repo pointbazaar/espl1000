@@ -66,7 +66,7 @@ struct Type* typeinfer_in_file(char* filename){
     assert(stmt->kind == 4);
 
     struct Expr* expr = stmt->ptr.m4->return_value;
-    struct Type* returned_type = infer_type_expr(filename,ctx->tables, expr);
+    struct Type* returned_type = infer_type_expr(ctx->tables, expr);
 
     //freeST(ctx->tables);
     //free(ctx);

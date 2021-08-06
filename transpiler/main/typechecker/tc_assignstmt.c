@@ -45,12 +45,12 @@ bool tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx){
 
 static bool check_type_rules_assign(struct AssignStmt* a, struct TCCtx* tcctx){
 
-    struct Type* right = infer_type_expr(tcctx->current_filename, tcctx->st, a->expr);
+    struct Type* right = infer_type_expr(tcctx->st, a->expr);
 
     struct Type* left = a->opt_type;
 
     if(a->opt_type == NULL){
-        left = infer_type_variable(tcctx->current_filename, tcctx->st, a->var);
+        left = infer_type_variable(tcctx->st, a->var);
     }
 	
 	if(is_integer_type(left) && is_integer_type(right)){ return true; }

@@ -53,7 +53,7 @@ bool tc_simplevar(struct SimpleVar* sv, struct TCCtx* tcctx){
     for(uint32_t  i = 0; i < sv->count_indices; i++){
 
         struct Expr* indexExpr = sv->indices[i];
-        struct Type* type = infer_type_expr(tcctx->current_filename, tcctx->st, indexExpr);
+        struct Type* type = infer_type_expr(tcctx->st, indexExpr);
 
         if(!is_integer_type(type)){
 

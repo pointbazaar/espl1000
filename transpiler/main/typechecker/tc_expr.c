@@ -26,8 +26,8 @@ bool tc_expr(struct Expr* expr, struct TCCtx* tcctx){
 
         if(!tc_unopterm(expr->term2, tcctx)){return false;}
 
-        struct Type* left  = infer_type_unopterm(tcctx->current_filename, tcctx->st, expr->term1);
-        struct Type* right = infer_type_unopterm(tcctx->current_filename, tcctx->st, expr->term2);
+        struct Type* left  = infer_type_unopterm(tcctx->st, expr->term1);
+        struct Type* right = infer_type_unopterm(tcctx->st, expr->term2);
 
         return check_expr_well_formed(left, right, tcctx);
 	}
