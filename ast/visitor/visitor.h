@@ -13,6 +13,8 @@
 //an enum so that the handler can find out which
 //node type it was called on
 
+#include "../ast_declare.h"
+
 #define ARG void* arg
 
 #define VISITOR void(*visitor)(void*, enum NODE_TYPE, ARG)
@@ -84,5 +86,16 @@ void visit_struct_decl  (struct StructDecl* s, 	VISITOR, ARG);
 void visit_externc		(struct ExternC* ec,	VISITOR, ARG);
 
 void visit_stmt_block   (struct StmtBlock* s, 	VISITOR, ARG);
+
+
+//types
+void visit_type        		(struct Type* t, VISITOR, ARG);
+void visit_array_type   	(struct ArrayType* a, VISITOR, ARG);
+void visit_subr_type    	(struct SubrType* s, VISITOR, ARG);
+void visit_basic_type      	(struct BasicType* b, VISITOR, ARG);
+void visit_simple_type  	(struct SimpleType* s, VISITOR, ARG);
+void visit_primitive_type	(struct PrimitiveType* p, VISITOR, ARG);
+void visit_struct_type		(struct StructType* s, VISITOR, ARG);
+void visit_type_param   	(struct TypeParam* t, VISITOR, ARG);
 
 #endif

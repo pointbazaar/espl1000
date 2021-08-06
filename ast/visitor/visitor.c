@@ -49,15 +49,6 @@ static void visit_string_const 	(struct StringConst* s, VISITOR, ARG);
 static void visit_variable    	(struct Variable* v, VISITOR, ARG);
 static void visit_simple_var   	(struct SimpleVar* v, VISITOR, ARG);
 
-//types
-static void visit_type        	(struct Type* t, VISITOR, ARG);
-static void visit_array_type   	(struct ArrayType* a, VISITOR, ARG);
-static void visit_subr_type    	(struct SubrType* s, VISITOR, ARG);
-static void visit_basic_type      (struct BasicType* b, VISITOR, ARG);
-static void visit_simple_type  	(struct SimpleType* s, VISITOR, ARG);
-static void visit_primitive_type	(struct PrimitiveType* p, VISITOR, ARG);
-static void visit_struct_type		(struct StructType* s, VISITOR, ARG);
-static void visit_type_param   	(struct TypeParam* t, VISITOR, ARG);
 
 void visit_ast(struct AST* ast, VISITOR, void* arg){
 
@@ -388,7 +379,7 @@ static void visit_simple_var(struct SimpleVar* v, VISITOR, void* arg){
 		{ visit_expr(v->indices[i], visitor, arg); }
 }
 
-static void visit_type(struct Type* t, VISITOR, void* arg){
+void visit_type(struct Type* t, VISITOR, void* arg){
 		
 	visitor(t, NODE_TYPE, arg);
 	
@@ -402,14 +393,14 @@ static void visit_type(struct Type* t, VISITOR, void* arg){
 		{ visit_array_type(t->m3, visitor, arg); }
 }
 
-static void visit_array_type(struct ArrayType* a, VISITOR, void* arg){
+void visit_array_type(struct ArrayType* a, VISITOR, void* arg){
 		
 	visitor(a, NODE_ARRAYTYPE, arg);
 
 	visit_type(a->element_type, visitor, arg);
 }
 
-static void visit_subr_type(struct SubrType* s, VISITOR, void* arg){
+void visit_subr_type(struct SubrType* s, VISITOR, void* arg){
 		
 	visitor(s, NODE_SUBRTYPE, arg);
 
@@ -419,7 +410,7 @@ static void visit_subr_type(struct SubrType* s, VISITOR, void* arg){
 		{ visit_type(s->arg_types[i], visitor, arg); }
 }
 
-static void visit_basic_type(struct BasicType* b, VISITOR, void* arg){
+void visit_basic_type(struct BasicType* b, VISITOR, void* arg){
 	
 	visitor(b, NODE_BASICTYPE, arg);
 	
@@ -430,7 +421,7 @@ static void visit_basic_type(struct BasicType* b, VISITOR, void* arg){
 		{ visit_subr_type(b->subr_type, visitor, arg); }
 }
 
-static void visit_simple_type(struct SimpleType* s, VISITOR, void* arg){
+void visit_simple_type(struct SimpleType* s, VISITOR, void* arg){
 		
 	visitor(s, NODE_SIMPLETYPE, arg);
 	
@@ -441,12 +432,12 @@ static void visit_simple_type(struct SimpleType* s, VISITOR, void* arg){
 		{ visit_struct_type(s->struct_type, visitor, arg); }
 }
 
-static void visit_primitive_type(struct PrimitiveType* p, VISITOR, void* arg){
+void visit_primitive_type(struct PrimitiveType* p, VISITOR, void* arg){
 		
 	visitor(p, NODE_PRIMITIVETYPE, arg);
 }
 
-static void visit_struct_type(struct StructType* s, VISITOR, void* arg){
+void visit_struct_type(struct StructType* s, VISITOR, void* arg){
 		
 	visitor(s, NODE_STRUCTTYPE, arg);
 
@@ -455,7 +446,7 @@ static void visit_struct_type(struct StructType* s, VISITOR, void* arg){
 	}
 }
 
-static void visit_type_param(struct TypeParam* t, VISITOR, void* arg){
+void visit_type_param(struct TypeParam* t, VISITOR, void* arg){
 		
 	visitor(t, NODE_TYPEPARAM, arg);
 }

@@ -1,7 +1,12 @@
+#include "ast/visitor/visitor.h"
+#include "ast/util/copy_ast.h"
+#include "ast/util/free_ast.h"
 
 #include "tables/stst/stst.h"
-#include "ast/util/copy_ast.h"
+
 #include "typeinfer.h"
+
+static struct Type* substitute_type_parameters(struct Type* struct_type, struct Type* member_type);
 
 struct Type* infer_in_context(struct ST* st, struct MemberAccess* ma){
 
@@ -15,15 +20,7 @@ struct Type* infer_in_context(struct ST* st, struct MemberAccess* ma){
 
     //if the struct type has a parameterization,
     //then we can substitute that onto the member type
-    //TODO: fix this, this is broken/workaround
-    if(memberType->m2 != NULL){
-        if(structType->m1 != NULL && structType->m1->simple_type != NULL && structType->m1->simple_type->struct_type != NULL){
-            struct StructType* myStructType = structType->m1->simple_type->struct_type;
-            if(myStructType->count_type_params != 0){
-                memberType = copy_type(myStructType->type_params[0]);
-            }
-        }
-    }
+    memberType = substitute_type_parameters(structType, memberType);
 
     memberType = unwrap_indices(memberType, member->simple_var->count_indices);
 
@@ -36,5 +33,44 @@ struct Type* infer_in_context(struct ST* st, struct MemberAccess* ma){
     };
 
     return infer_in_context(st, &ma2);
+}
+
+static void type_substitution_visitor(void* node, enum NODE_TYPE node_type, void* arg){
+
+	struct Type* type_to_substitute = (struct Type*)arg;
+
+	if (node_type == NODE_TYPE){
+		struct Type* instance = (struct Type*)node;
+		if (instance->m2 != NULL){
+
+			free_type_param(instance->m2);
+			instance->m2 = NULL;
+
+			if (type_to_substitute->m1 != NULL){
+				instance->m1 = type_to_substitute->m1;
+			}
+			if (type_to_substitute->m2 != NULL){
+				instance->m2 = type_to_substitute->m2;
+			}
+		}
+	}
+}
+
+static struct Type* substitute_type_parameters(struct Type* struct_type, struct Type* member_type) {
+
+	if (struct_type->m1 == NULL){return member_type;}
+	if (struct_type->m1->simple_type == NULL){return member_type;}
+	if (struct_type->m1->simple_type->struct_type == NULL){return member_type;}
+	if (struct_type->m1->simple_type->struct_type->count_type_params != 1){
+		return member_type;
+	}
+
+	struct Type* res = copy_type(member_type);
+
+	struct Type* type_to_substitute = struct_type->m1->simple_type->struct_type->type_params[0];
+
+	visit_type(res, type_substitution_visitor, type_to_substitute);
+
+	return res;
 }
 

@@ -6,7 +6,6 @@ struct Point< ?T0 > {
 
 fn main () ~> int {
 	Point<int> q = malloc(2*8);
-	Point<?T0> p = malloc(2*8);
 	q.x1 = 3;
 
 	return 0;

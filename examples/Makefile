@@ -4,6 +4,7 @@
 #the tests are in the same order as a 'tree examples/' would show them
 
 CALL  := sd -Werror ../stdlib/externc/externc_libc.dg
+CALL2  := sd ../stdlib/externc/externc_libc.dg
 
 all: test
 
@@ -40,6 +41,10 @@ test:
 
 	$(CALL) image_io.dg ../stdlib/intstack.dg ../stdlib/ppm.dg ../stdlib/math.dg
 	# $(CALL) fnptrstruct.dg #causing problems
+	
+	$(CALL2) generics/genericlist.dg
+	$(CALL2) generics/genericstruct.dg
+
 	@echo "[Examples] done"
 
 # currently not working: 
