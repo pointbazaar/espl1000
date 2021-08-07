@@ -2,8 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "parser/test/commandline/ParserTest.h"
-
 #include "parser_flags.h"
 #include "parser_help.h"
 #include "parser.h"
@@ -22,12 +20,6 @@ int main(int argc, char** argv){
         printHelp();
         free(flags);
         return 0;
-    }
-
-    if(flags->test){
-        int res = test_all(flags->debug);
-        free(flags);
-        return res;
     }
 
     if(flags->filename == NULL){

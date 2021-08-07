@@ -7,7 +7,6 @@ struct ParserFlags {
 
 	bool debug;
 	bool help;
-	bool test;
 
 	char* filename;
 };

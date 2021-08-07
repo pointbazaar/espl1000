@@ -14,7 +14,7 @@ DIRS:
 	mkdir -p build/
 
 test: dragon-parser
-	./dragon-parser -test
+	./build/dragon-parser-tests
 
 clean: DIRS
 	rm -rf build/*

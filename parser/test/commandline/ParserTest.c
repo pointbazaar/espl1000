@@ -4,8 +4,6 @@
 #include <assert.h>
 #include <parser/test/astnodes/types/StructTypeTest.h>
 
-#include "ParserTest.h"
-
 #include "../astnodes/const/BoolConstTest.h"
 #include "../astnodes/expr/ExprTest.h"
 #include "../astnodes/NamespaceTest.h"
@@ -37,9 +35,6 @@
 
 #define FAILRET if(!passed){ printf("FAILED\n"); return false;}
 
-//there are multiple test suites which test multiple aspects
-//of the parser.
-
 // --- START OF TEST SUITES ---
 
 bool test_suite_constnodes(bool debug);
@@ -53,71 +48,37 @@ bool test_suite_struct(bool debug);
 bool test_suite_types(bool debug);
 bool test_suite_range(bool debug);
 
-// --- END OF TEST SUITES ---
-
 static void status(char* msg){
 	printf("[Parser][TEST-SUITE] %s\n", msg);
 }
 
-int test_all(bool debug) {
+int main(){
 
-    printf("[Parser Module] running Parser Tests...\n");
+	printf("[Parser Module] running Parser Tests...\n");
 
-    //if some tests fail, the test suit should be
-    //stopped right there. no use running other tests
-    //if one test already failed. we can work
-    //on the failed test then.
+	//execute all tests and give feedback
+	//every test should stdout its name, such that failing tests can be identified easily
 
-    //execute all tests and give feedback
-    //every test should stdout its name, such that failing tests can be identified easily
+	//the tests should start with the easy tests first
 
-    //the tests should start with the easy tests first
+	test_suite_constnodes(0);
+	test_suite_term_expr_simplevar_var(0);
+	test_suite_stmts(0);
+	test_suite_assignstmt(0);
+	test_suite_method(0);
+	test_suite_struct(0);
+	test_suite_types(0);
+	test_suite_range(0);
 
-    if(!test_suite_constnodes(debug)) {
-        printf("suite_constnodes failed\n");
-        return false;
-    }
-    if(!test_suite_term_expr_simplevar_var(debug)) {
-        printf("suite_term_expr_simplevar_var failed\n");
-        return false;
-    }
-    if(!test_suite_stmts(debug)) {
-        printf("suite_stmts failed\n");
-        return false;
-    }
-    if(!test_suite_assignstmt(debug)){
-		printf("suite_assignstmt failed\n");
-		return false;
-	}
-    if(!test_suite_method(debug)) {
-        printf("suite_method failed\n");
-        return false;
-    }
-    if(!test_suite_struct(debug)) {
-        printf("suite_struct failed\n");
-        return false;
-    }
-    if(!test_suite_types(debug)) {
-        printf("suite_types failed\n");
-        return false;
-    }
-    if(!test_suite_range(debug)){
-		printf("suit_range failed\n");
-		return false;
-	}
-	
-	test_switch(debug);
-	test_parser_case_stmt(debug);
+	test_switch(0);
+	test_parser_case_stmt(0);
 
-	test_lambda(debug);
+	test_lambda(0);
 
-    printf("[Parser Module] PASSED ALL TESTS\n");
+	printf("[Parser Module] PASSED ALL TESTS\n");
 
-    return 0;
+	return 0;
 }
-
-// --- TEST SUITE IMPLEMENTATIONS ---
-
 
 bool test_suite_constnodes(bool debug) {
 	
