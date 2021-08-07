@@ -6,12 +6,31 @@
 
 #include "test_statuscode.h"
 
-#include "flags/flags.h"
+#include "flags.h"
 #include "transpiler.h"
 
 void clean();
 
 char* FNAME_DEFAULT = "test.dg";
+
+static struct Flags* makeFlags2(){
+
+	struct Flags* flags = malloc(sizeof(struct Flags));
+
+	flags->debug 	= false;
+	flags->help 	= false;
+	flags->version 	= false;
+	flags->emit_headers  = false;
+
+	flags->debug_symbols = false;
+	flags->werror        = false;
+
+	flags->count_filenames    = 0;
+	flags->capacity_filenames = 100;
+	flags->filenames = malloc(sizeof(char*)*100);
+
+	return flags;
+}
 
 int sourceToStatus(char* src, bool debug){
 	
@@ -44,8 +63,7 @@ int sourceToStatus(char* src, bool debug){
 		//so we can look at them
 		clean();
 	}
-	
-	freeFlags(flags);
+	free(flags);
 	
 	return status;
 }

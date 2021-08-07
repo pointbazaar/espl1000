@@ -9,8 +9,20 @@
 static void make_flags_inner(struct Flags* flags, char* arg);
 
 struct Flags* makeFlags(int argc, char** argv){
-	
-	struct Flags* flags = makeFlags2();
+
+	struct Flags* flags = malloc(sizeof(struct Flags));
+
+	flags->debug 	= false;
+	flags->help 	= false;
+	flags->version 	= false;
+	flags->emit_headers  = false;
+
+	flags->debug_symbols = false;
+	flags->werror        = false;
+
+	flags->count_filenames    = 0;
+	flags->capacity_filenames = 100;
+	flags->filenames = malloc(sizeof(char*)*100);
 	
 	for(int i=1; i < argc; i++){
 		make_flags_inner(flags, argv[i]);
@@ -23,25 +35,6 @@ struct Flags* makeFlags(int argc, char** argv){
 	return flags;
 }
 
-struct Flags* makeFlags2(){
-	
-	struct Flags* flags = malloc(sizeof(struct Flags));
-	
-	flags->debug 	= false;
-	flags->test 	= false;
-	flags->help 	= false;
-	flags->version 	= false;
-	flags->emit_headers  = false;
-	
-	flags->debug_symbols = false;
-	flags->werror        = false;
-	
-	flags->count_filenames    = 0;
-	flags->capacity_filenames = 100;
-	flags->filenames = malloc(sizeof(char*)*100);
-	
-	return flags;
-}
 
 static void make_flags_inner(struct Flags* flags, char* arg){
 
@@ -54,11 +47,6 @@ static void make_flags_inner(struct Flags* flags, char* arg){
 	
 	if(strcmp(arg, "-debug") == 0){ 
 		flags->debug = true;
-		return;
-	}
-	
-	if(strcmp(arg, "-test") == 0){ 
-		flags->test = true;
 		return;
 	}
 	

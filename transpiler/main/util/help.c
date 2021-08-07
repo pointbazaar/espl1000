@@ -10,8 +10,7 @@ void sd_print_help(){
 	printf("OPTIONS:\n\n");
 	
 	printf(" -help      display help\n");
-	
-	printf(" -test      run the tests for smalldragon\n");
+
 	printf(" -debug     print debug statements\n");
 	printf(" -version   print Version Information\n");
 	printf(" -h         emit .h (header) file\n");

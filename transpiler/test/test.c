@@ -1,24 +1,23 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <inttypes.h>
-#include <stdlib.h>
-#include <typechecker/test_typechecker.h>
 
-#include "transpiler.h"
-
-#include "flags/flags.h"
-
-#include "test.h"
-#include "util/test_statuscode.h"
+#include "typechecker/test_typechecker.h"
 #include "typeinference/test_typeinference.h"
-
 #include "code_gen/test_op.h"
+
 #include "code_gen/test_other.h"
 #include "code_gen/test_assign.h"
 #include "code_gen/test_stmt.h"
 
+#include "test.h"
+
 static void status(char* msg){
 	printf("[TRANSPILER][TEST-SUITE] %s\n", msg);
+}
+
+int main(){
+	transpiler_test_all(false);
+	return 0;
 }
 
 int transpiler_test_all(bool debug){

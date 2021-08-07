@@ -1,7 +1,7 @@
 #ifndef FILEUTILS_H
 #define FILEUTILS_H
 
-#include "../../flags/flags.h"
+#include "../../flags.h"
 
 char* make_ast_filename(char* filename);
 

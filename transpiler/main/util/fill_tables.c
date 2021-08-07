@@ -7,7 +7,7 @@
 #include "tables/symtable/symtable.h"
 
 #include "transpiler/main/util/ctx.h"
-#include "flags/flags.h"
+#include "flags.h"
 
 #include "fill_tables.h"
 

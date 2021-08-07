@@ -1,8 +1,4 @@
-
 all: build test
-
-#older versions of cmake sadly do not support --parallel option
-#that's why it's missing here
 
 build: DIRS
 	cmake -S . -B build -H.
@@ -13,8 +9,8 @@ clean:
 	rm -rf build/*
 	rm -f sd
 
-test: sd
-	./sd -test
+test: build/sd-tests
+	./build/sd-tests
 	
 DIRS:
 	mkdir -p build

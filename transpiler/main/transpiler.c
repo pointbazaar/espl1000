@@ -8,7 +8,7 @@
 #include "ast/util/free_ast.h"
 
 #include "code_gen/c_code_gen/cg.h"
-#include "flags/flags.h"
+#include "flags.h"
 #include "util/fileutils/fileutils.h"
 #include "invoke/invoke.h"
 #include "transpiler.h"
@@ -25,8 +25,6 @@ bool transpileAndCompile(struct Flags* flags){
 		if(!success){
 
 			printf("[Error]: could not lex/parse %s.\n", filename);
-			freeFlags(flags);
-
 			return false;
 		}
 	}

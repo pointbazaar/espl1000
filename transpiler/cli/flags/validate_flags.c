@@ -14,8 +14,6 @@ static bool check_dg_extension(char* filename);
 static void check_file_exists(char* filename);
 
 void validate_flags(struct Flags* flags){
-	
-	if(flags->test){ return; }
 
 	if(flags->count_filenames == 0){
 	

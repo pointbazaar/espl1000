@@ -7,7 +7,6 @@
 struct Flags {
 	
 	bool debug;         //-debug
-	bool test;          //-test
 	bool help;          //-help
 	bool version;       //-version
 	bool emit_headers;  //-h
@@ -25,7 +24,6 @@ struct Flags {
 };
 
 struct Flags* makeFlags(int argc, char** argv);
-struct Flags* makeFlags2();
 
 void freeFlags(struct Flags* flags);
 

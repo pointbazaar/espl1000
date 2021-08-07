@@ -5,7 +5,7 @@
 #include "ast/ast.h"
 #include "ast/sd_inttype.h"
 
-#include "flags/flags.h"
+#include "flags.h"
 
 static uint8_t sizeof_structmember(struct StructMember* m){
 	//returns the size in bytes of that struct member

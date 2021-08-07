@@ -5,7 +5,7 @@
 #include "ast/ast.h"
 
 #include "util/ctx.h"
-#include "flags/flags.h"
+#include "flags.h"
 
 #include "../_cg.h"
 

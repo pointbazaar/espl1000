@@ -7,7 +7,7 @@
 #include <regex.h>
 
 #include "fileutils.h"
-#include "../../flags/flags.h"
+#include "../../flags.h"
 
 char* make_ast_filename(char* filename){
 	

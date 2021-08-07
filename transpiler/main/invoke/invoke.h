@@ -2,7 +2,7 @@
 #define INVOKE_H
 
 #include <stdbool.h>
-#include "flags/flags.h"
+#include "flags.h"
 
 bool invoke_lexer_parser(char* filename);
 

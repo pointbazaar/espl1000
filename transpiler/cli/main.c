@@ -1,10 +1,10 @@
-
-
+#include <stdlib.h>
 #include <malloc.h>
-#include <flags/flags.h>
-#include <util/help.h>
-#include <test.h>
+
+#include "flags.h"
+#include "util/help.h"
 #include "util/fileutils/fileutils.h"
+
 #include "transpiler.h"
 
 #define EXIT_FAILURE 1
@@ -30,12 +30,6 @@ int main(int argc, char* argv[]){
         printf("smalldragon v0.2.0\n");
         freeFlags(flags);
         return EXIT_SUCCESS;
-    }
-
-    if(flags->test){
-        int status = transpiler_test_all(flags->debug);
-        freeFlags(flags);
-        return status;
     }
 
     bool success = transpileAndCompile(flags);
