@@ -97,6 +97,7 @@ int simplevar_test_2_indices() {
 	assert(node->indices[1]->term2 == NULL);
 
 	free_simple_var(node);
+	freeTokenList(list);
 
 	return 1;
 }

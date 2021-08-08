@@ -13,25 +13,6 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct SubrType* makeSubrType2(
-	struct Type* return_type, 
-	bool hasSideEffects,
-	bool throws
-){
-	
-	struct SubrType* res = make(SubrType);
-	
-	res->super.line_num    = return_type->super.line_num;
-	res->super.annotations = 0;
-
-	res->return_type     = return_type;
-	res->has_side_effects = hasSideEffects;
-	res->throws         = throws;
-	res->count_arg_types = 0;
-
-	return res;
-}
-
 struct SubrType* makeSubrType(struct TokenList* tokens) {
 
 	struct SubrType* res = make(SubrType);
@@ -122,7 +103,7 @@ struct SubrType* makeSubrType(struct TokenList* tokens) {
 		return NULL;
 	}
 	
-	if(list_head(copy)->kind == THROWS){
+	if(list_size(copy) >= 1 && list_head(copy)->kind == THROWS){
 		list_consume(copy, 1);
 		res->throws = true;
 	}
