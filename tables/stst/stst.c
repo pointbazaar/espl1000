@@ -106,8 +106,12 @@ struct STSTLine* stst_at(struct STST* stst, uint32_t index){
 
 void freeSTST(struct STST* stst){
 	
-	for(int i=0;i < stst->count; i++)
-		{ free(stst->lines[i]); }
+	for(int i=0;i < stst->count; i++){
+		if (stst->lines[i]->type_name_in_c != NULL){
+			free(stst->lines[i]->type_name_in_c);
+		}
+		free(stst->lines[i]);
+	}
 	
 	free(stst->lines);
 	

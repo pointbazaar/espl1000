@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <inttypes.h>
+#include <ast/util/free_ast.h>
 
 #include "tables/cc/cc.h"
 #include "tables/sst/sst.h"
@@ -139,6 +140,12 @@ struct SSTLine* makeSSTLine2(
 void freeSSTLine(struct SSTLine* l){
 	
 	if(l->cc != NULL){ free_cc(l->cc); }
+
+	if (l->is_extern_c){
+		//externc functions have type that is not present in methods
+		//therefore managed by this SST.
+		free_type(l->type);
+	}
 
 	free(l);
 }

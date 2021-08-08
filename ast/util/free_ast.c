@@ -135,6 +135,7 @@ void free_struct_decl(struct StructDecl* sd) {
 	for(int i=0; i < sd->count_members; i++) {
 		free_struct_member(sd->members[i]);
 	}
+	free(sd->members);
 	free(sd);
 }
 
@@ -314,7 +315,10 @@ void free_struct_type(struct StructType* s){
     for(int i=0; i < s->count_type_params; i++){
         free_type(s->type_params[i]);
     }
-		
+	if (s->count_type_params > 0){
+		free(s->type_params);
+	}
+
 	free(s);
 }
 
