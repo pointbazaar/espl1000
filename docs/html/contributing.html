@@ -41,6 +41,49 @@
         If you have a Project using smalldragon,
         send an email to get it featured :)
     </p>
+
+    <h2>Contributing to docs/</h2>
+    <ul>
+        <li>Docs should stay <strong>static html+css only</strong>, with no external dependency other than Bootstrap</li>
+        <li>There should only ever be one custom css file, namely css/style.css </li>
+        <li>Target Devices are Firefox on Desktop and Mobile, but there should be no browser-specific css.</li>
+        <li>Docs should use the full width in Mobile Browsers</li>
+        <li>Everything outside the outermost .container div should have the same structure in all html files.</li>
+        <li>Example Workflow to add a new page:
+<pre>cp html/skeleton.html html/my-file.html
+vim html/my-file.html
+vim index.html</pre>
+        </li>
+        <li> What needs to be edited from the html/skeleton.html?
+            <ul>
+                <li>title</li>
+                <li>meta name description</li>
+                <li>meta name author</li>
+                <li>h1 inside container</li>
+                <li>actual content</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>Contributing to stdlib/</h2>
+    <p>
+        There are multiple ways to contribute to stdlib:
+    </p>
+    <ul>
+        <li>implementation in stdlib/</li>
+        <li>documentation of stdlib/</li>
+        <li>c library bindings inside stdlib/externc</li>
+    </ul>
+    <p> Currently there is a need for well tested implementations of </p>
+    <ul>
+        <li>json reader/writer</li>
+        <li>generic collections</li>
+        <li>generic optional type</li>
+    </ul>
+    <p> Additionally, some C Library Bindings would be nice: </p>
+    <ul>
+        <li>SDL2 (binding currently in progress)</li>
+    </ul>
 </div>
 
 </body>
