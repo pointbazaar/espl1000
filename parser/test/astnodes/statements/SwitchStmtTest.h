@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-int test_switch(bool debug);
+int test_switch();
 
 #endif

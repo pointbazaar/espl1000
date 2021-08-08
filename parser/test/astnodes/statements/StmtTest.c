@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "StmtTest.h"
 
@@ -12,11 +13,9 @@
 
 #include "ast/util/free_ast.h"
 
-int stmt_test_assignment_statement_with_struct_access(bool debug) {
+int stmt_test_assignment_statement_with_struct_access() {
 
-	if(debug){
-		printf("TEST: stmt_test_assignment_statement_with_struct_access\n");
-	}
+	status_test("stmt_test_assignment_statement_with_struct_access");
 
 	struct TokenList* tokens = makeTokenList();
 	list_add(tokens, makeToken2(ID,"x") );
@@ -38,11 +37,9 @@ int stmt_test_assignment_statement_with_struct_access(bool debug) {
 	return 1;
 }
 
-int stmt_test_assignment_statement_with_method_call(bool debug) {
+int stmt_test_assignment_statement_with_method_call() {
 
-	if(debug){
-		printf("TEST: stmt_test_assignment_statement_with_method_call\n");
-	}
+	status_test("stmt_test_assignment_statement_with_method_call");
 
 	struct TokenList* tokens = makeTokenList();
 

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "IfStmtTest.h"
 
@@ -13,11 +14,9 @@
 
 #include "ast/util/free_ast.h"
 
-int if_test1(bool debug) {
+int if_test1() {
 
-	if(debug){
-		printf("TEST: if_test1\n");
-	}
+	status_test("if_test1");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(IF,"if"));
@@ -50,11 +49,9 @@ int if_test1(bool debug) {
 	return 1;
 }
 
-int if_test2(bool debug) {
+int if_test2() {
 
-	if(debug){
-		printf("TEST: if_test2\n");
-	}
+	status_test("if_test2");
 
 	struct TokenList* l = makeTokenList();
 

@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "SubrTypeTest.h"
 
@@ -12,11 +13,9 @@
 
 #include "ast/util/free_ast.h"
 
-int subrtype_test_typename(bool debug) {
+int subrtype_test_typename() {
 
-	if(debug){
-		printf("TEST: subrtype_test_typename\n");
-	}
+	status_test("subrtype_test_typename");
 
 	//(uint,uint)->uint
 	struct TokenList* l = makeTokenList();
@@ -40,11 +39,9 @@ int subrtype_test_typename(bool debug) {
 	return 1;
 }
 
-int subrtype_test_typename_subroutine_return_type(bool debug) {
+int subrtype_test_typename_subroutine_return_type() {
 
-	if(debug){
-		printf("TEST: subrtype_test_typename_subroutine_return_type\n");
-	}
+	status_test("subrtype_test_typename_subroutine_return_type");
 
 	//(uint,uint)->((uint)->uint) 
 	struct TokenList* l = makeTokenList();
@@ -77,11 +74,9 @@ int subrtype_test_typename_subroutine_return_type(bool debug) {
 	return 1;
 }
 
-int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(bool debug)  {
+int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects() {
 
-	if(debug){
-		printf("TEST: subrtype_test_subroutine_type_parsing_subroutine_with_side_effects\n");
-	}
+	status_test("subrtype_test_subroutine_type_parsing_subroutine_with_side_effects");
 
 	//(uint,MyType)~>uint
 	struct TokenList* l = makeTokenList();
@@ -107,11 +102,9 @@ int subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(bool debu
 	return 1;
 }
 
-int subrtype_test_subroutine_type_parsing_subroutine_without_side_effects(bool debug) {
+int subrtype_test_subroutine_type_parsing_subroutine_without_side_effects() {
 
-	if(debug){
-		printf("TEST: subrtype_test_subroutine_type_parsing_subroutine_without_side_effects\n");
-	}
+	status_test("subrtype_test_subroutine_type_parsing_subroutine_without_side_effects");
 
 	struct TokenList* l = makeTokenList(); 
 

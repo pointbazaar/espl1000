@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-int test_parser_case_stmt(bool debug);
+int test_parser_case_stmt();
 
 #endif

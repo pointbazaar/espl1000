@@ -3,8 +3,8 @@
 
 #include <stdbool.h>
 
-int floatconst_test1(bool debug);
+int test_floatconst_1();
 
-int floatconst_test2(bool debug);
+int test_floatconst_2();
 
 #endif

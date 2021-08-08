@@ -8,14 +8,14 @@
 #include "../util/str_ast.h"
 #include "../util/copy_ast.h"
 
-static void status(char* msg){
+static void test_status_str_ast(char* msg){
 
 	printf(" - [TEST] %s\n", msg);
 }
 
 void test_str_binconst(){
-	
-	status("str_bin_const");
+
+	test_status_str_ast("str_bin_const");
 	
 	struct BinConst b = {.value = 0b1010};
 	
@@ -27,8 +27,8 @@ void test_str_binconst(){
 }
 
 void test_str_intconst(){
-	
-	status("str_int_const");
+
+	test_status_str_ast("str_int_const");
 	
 	struct IntConst b = {.value=101};
 	
@@ -40,8 +40,8 @@ void test_str_intconst(){
 }
 
 void test_str_charconst(){
-	
-	status("str_char_const");
+
+	test_status_str_ast("str_char_const");
 	
 	struct CharConst b = {.value='h'};
 	
@@ -53,8 +53,8 @@ void test_str_charconst(){
 }
 
 void test_str_floatconst(){
-	
-	status("str_float_const");
+
+	test_status_str_ast("str_float_const");
 	
 	struct FloatConst b = {.value=1.483533};
 	
@@ -66,8 +66,8 @@ void test_str_floatconst(){
 }
 
 void test_str_hexconst(){
-	
-	status("str_hex_const");
+
+	test_status_str_ast("str_hex_const");
 	
 	struct HexConst b = {.value = 0x572af};
 	
@@ -79,8 +79,8 @@ void test_str_hexconst(){
 }
 
 void test_str_expr(){
-	
-	status("str_expr");
+
+	test_status_str_ast("str_expr");
 	
 	struct Op o1 = {
 		.is_arithmetic = true,
@@ -124,8 +124,8 @@ void test_str_expr(){
 	free(s);
 }
 void test_str_op(){
-	
-	status("str_op");
+
+	test_status_str_ast("str_op");
 	
 	struct Op b;
 	
@@ -138,8 +138,8 @@ void test_str_op(){
 	free(s);
 }
 void test_str_unopterm(){
-	
-	status("str_un_op_term");
+
+	test_status_str_ast("str_un_op_term");
 	
 	struct Op op = {
 		.is_arithmetic = true,
@@ -170,8 +170,8 @@ void test_str_unopterm(){
 	free(s);
 }
 void test_str_term(){
-	
-	status("str_term");
+
+	test_status_str_ast("str_term");
 	
 	struct IntConst ic = { .value = 3489 };
 	struct ConstValue cv = {.ptr.m2_int_const = &ic, .kind = 2};
@@ -189,8 +189,8 @@ void test_str_term(){
 }
 
 void test_str_lambda(){
-	
-	status("str_lambda");
+
+	test_status_str_ast("str_lambda");
 	
 	struct Id i = {
 		.identifier = "a"

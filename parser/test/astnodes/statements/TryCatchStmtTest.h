@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-int trycatch_stmt_test(bool debug);
+int trycatch_stmt_test();
 
 #endif

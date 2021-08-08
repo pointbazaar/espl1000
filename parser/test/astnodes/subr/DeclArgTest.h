@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-int declarg_test_parse_declared_argument(bool debug);
+int declarg_test_parse_declared_argument();
 
 #endif

@@ -3,8 +3,8 @@
 
 #include <stdbool.h>
 
-int charconst_test_parse_char_constant_node(bool debug);
+int test_charconst_parse_char_constant_node();
 
-int charconst_test_parse_char_constant_node_newline(bool debug);
+int test_charconst_parse_char_constant_node_newline();
 
 #endif

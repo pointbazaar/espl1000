@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "StmtBlockTest.h"
 
@@ -14,11 +15,9 @@
 #include "ast/util/free_ast.h"
 
 
-int test_stmtblock_1(bool debug){
-	
-	if(debug){
-		printf("TEST: test_stmtblock_1\n");
-	}
+int test_stmtblock_1() {
+
+	status_test("test_stmtblock_1");
 
 	struct TokenList* tokens = makeTokenList();
 	list_add(tokens, makeToken2(LCURLY,"{"));

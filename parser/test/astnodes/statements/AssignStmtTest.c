@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "AssignStmtTest.h"
 
 #include "statements/AssignStmt.h"
 #include "expr/Expr.h"
-#include "var/Variable.h"
 
 #include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
@@ -14,11 +14,9 @@
 
 #include "ast/util/free_ast.h"
 
-int assignstmt_test1(bool debug) {
+int assignstmt_test1() {
 
-	if(debug){
-		printf("TEST: assignstmt_test1\n");
-	}
+	status_test("assignstmt_test1");
 
 	struct TokenList* tokens = makeTokenList();
 
@@ -37,11 +35,9 @@ int assignstmt_test1(bool debug) {
 	return 1;
 }
 
-int assignstmt_test_assign_method_call_result(bool debug) {
+int assignstmt_test_assign_method_call_result() {
 
-	if(debug){
-		printf("TEST: assignstmt_test_assign_method_call_result\n");
-	}
+	status_test("assignstmt_test_assign_method_call_result");
 
 	struct TokenList* tokens = makeTokenList();
 
@@ -67,11 +63,9 @@ int assignstmt_test_assign_method_call_result(bool debug) {
 	return 1;
 }
 
-int assignstmt_test_assign_method_call_result_2(bool debug) {
+int assignstmt_test_assign_method_call_result_2() {
 
-	if(debug){
-		printf("TEST: assignstmt_test_assign_method_call_result_2\n");
-	}
+	status_test("assignstmt_test_assign_method_call_result_2");
 
 	struct TokenList* tokens = makeTokenList();
 
@@ -95,11 +89,9 @@ int assignstmt_test_assign_method_call_result_2(bool debug) {
 	return 1;
 }
 
-int assignstmt_test_assign_variable_with_array_index(bool debug) {
+int assignstmt_test_assign_variable_with_array_index() {
 
-	if(debug){
-		printf("TEST: assignstmt_test_assign_variable_with_array_index\n");
-	}
+	status_test("assignstmt_test_assign_variable_with_array_index");
 
 	struct TokenList* tokens = makeTokenList();
 
@@ -124,11 +116,9 @@ int assignstmt_test_assign_variable_with_array_index(bool debug) {
 	return 1;
 }
 
-int assignstmt_test_assign_char(bool debug) {
+int assignstmt_test_assign_char() {
 
-	if(debug){
-		printf("TEST: assignstmt_test_assign_char\n");
-	}
+	status_test("assignstmt_test_assign_char");
 
 	struct TokenList* tokens = makeTokenList();
 
@@ -149,11 +139,9 @@ int assignstmt_test_assign_char(bool debug) {
 	return 1;
 }
 
-int assignstmt_test_can_assign_to_struct_member(bool debug) {
+int assignstmt_test_can_assign_to_struct_member() {
 
-	if(debug){
-		printf("TEST: assignstmt_test_can_assign_to_struct_member\n");
-	}
+	status_test("assignstmt_test_can_assign_to_struct_member");
 
 	struct TokenList* tokens = makeTokenList();
 
@@ -174,11 +162,9 @@ int assignstmt_test_can_assign_to_struct_member(bool debug) {
 	return 1;
 }
 
-int assignstmt_test_type_declaration_for_variable(bool debug) {
+int assignstmt_test_type_declaration_for_variable() {
 
-	if(debug){
-		printf("TEST: assignstmt_test_type_declaration_for_variable\n");
-	}
+	status_test("assignstmt_test_type_declaration_for_variable");
 
 	struct TokenList* tokens = makeTokenList();
 	

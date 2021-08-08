@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "CharConstTest.h"
 #include "const/CharConst.h"
@@ -10,11 +11,9 @@
 
 #include "ast/util/free_ast.h"
 
-int charconst_test_parse_char_constant_node(bool debug) {
+int test_charconst_parse_char_constant_node() {
 
-	if(debug){
-		printf("TEST: charconst_test_parse_char_constant_node\n");
-	}
+	status_test("test_charconst_parse_char_constant_node");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(CCONST,"'h'"));
@@ -23,10 +22,7 @@ int charconst_test_parse_char_constant_node(bool debug) {
 	
 	assert(node != NULL);
 	assert('h'== node->value);
-	
-	if(debug){
-		printf("node->value == %c\n", node->value);
-	}
+
 	
 	freeTokenList(list);
 	free_char_const(node);
@@ -34,11 +30,10 @@ int charconst_test_parse_char_constant_node(bool debug) {
 	return 1;
 }
 
-int charconst_test_parse_char_constant_node_newline(bool debug) {
+int test_charconst_parse_char_constant_node_newline() {
 
-	if(debug){
-		printf("TEST: charconst_test_parse_char_constant_node_newline\n");
-	}
+
+	status_test("test_charconst_parse_char_constant_node_newline");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(CCONST,"'\n'"));

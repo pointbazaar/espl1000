@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "FloatConstTest.h"
 #include "const/FloatConst.h"
@@ -10,11 +11,9 @@
 
 #include "ast/util/free_ast.h"
 
-int floatconst_test1(bool debug) {
+int test_floatconst_1() {
 
-	if(debug){
-		printf("TEST: floatconst_test1\n");
-	}
+	status_test("test_floatconst_1");
 
 	struct TokenList* list = makeTokenList();
 
@@ -29,11 +28,9 @@ int floatconst_test1(bool debug) {
 	return 1;
 }
 
-int floatconst_test2(bool debug) {
+int test_floatconst_2() {
 
-	if(debug){
-		printf("TEST: floatconst_test2\n");
-	}
+	status_test("test_floatconst_2");
 
 	struct TokenList* list = makeTokenList();
 

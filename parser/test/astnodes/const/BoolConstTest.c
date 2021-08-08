@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "BoolConstTest.h"
 
@@ -12,11 +13,9 @@
 
 #include "ast/util/free_ast.h"
 
-int boolconst_test_parse_bool_constant_node(bool debug)  {
+int test_boolconst_parse_bool_constant_node() {
 
-	if(debug){
-		printf("TEST: boolconst_test_parse_bool_constant_node\n");
-	}
+	status_test("test_boolconst_parse_bool_constant_node");
 
 	struct TokenList* list = makeTokenList();
 	

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "BasicTypeTest.h"
 
@@ -11,11 +12,9 @@
 
 #include "ast/util/free_ast.h"
 
-int basictype_test_type_parsing_simple_type(bool debug) {
+int basictype_test_type_parsing_simple_type() {
 
-	if(debug){
-		printf("TEST: basictype_test_type_parsing_simple_type\n");
-	}
+	status_test("basictype_test_type_parsing_simple_type");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(TYPEID,"Carrot"));
@@ -24,8 +23,7 @@ int basictype_test_type_parsing_simple_type(bool debug) {
 
 	//it is SimpleType
 	assert(b->simple_type != NULL && b->subr_type == NULL);
-	
-	list_print(list);
+
 	assert(0 == list_size(list));
 	
 	freeTokenList(list);

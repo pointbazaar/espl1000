@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "SwitchStmtTest.h"
 
@@ -12,11 +13,9 @@
 
 #include "ast/util/free_ast.h"
 
-int test_switch(bool debug){
+int test_switch(){
 
-	if(debug){
-		printf("TEST: test_switch()\n");
-	}
+	status_test("test_switch");
 
 	struct TokenList* list = makeTokenList();
 	

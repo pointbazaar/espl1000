@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "RetStmtTest.h"
 
@@ -12,11 +13,9 @@
 
 #include "ast/util/free_ast.h"
 
-int retstmt_test1(bool debug) {
+int retstmt_test1() {
 
-	if(debug){
-		printf("TEST: retstmt_test1\n");
-	}
+	status_test("retstmt_test1");
 
 	struct TokenList* list = makeTokenList();
 
@@ -40,11 +39,9 @@ int retstmt_test1(bool debug) {
 	return 1;
 }
 
-int retstmt_test2(bool debug){
+int retstmt_test2() {
 
-	if(debug){
-		printf("TEST: retstmt_test2\n");
-	}
+	status_test("retstmt_test2");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken(RETURN));
@@ -72,11 +69,9 @@ int retstmt_test2(bool debug){
 	return 1;
 }
 
-int retstmt_test3(bool debug) {
+int retstmt_test3() {
 
-	if(debug){
-		printf("TEST: retstmt_test3\n");
-	}
+	status_test("retstmt_test3");
 
 	struct TokenList* list = makeTokenList();
 

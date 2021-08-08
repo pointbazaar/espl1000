@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "TermTest.h"
 
 #include "expr/Term.h"
-#include "var/Variable.h"
-#include "var/SimpleVar.h"
 
 #include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
@@ -14,11 +13,9 @@
 
 #include "ast/util/free_ast.h"
 
-int term_test_simple_term(bool debug) {
+int term_test_simple_term() {
 
-	if(debug){
-		printf("TEST: term_test_simple_term()\n");
-	}
+	status_test("term_test_simple_term");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(INTEGER,"4"));
@@ -32,11 +29,9 @@ int term_test_simple_term(bool debug) {
 	return 1;
 }
 
-int term_test_variable_term(bool debug) {
+int term_test_variable_term() {
 
-	if(debug){
-		printf("TEST: term_test_variable_term()\n");
-	}
+	status_test("term_test_variable_term");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ID,"x"));
@@ -60,11 +55,9 @@ int term_test_variable_term(bool debug) {
 	return 1;
 }
 
-int term_test_parentheses(bool debug){
-	
-	if(debug){
-		printf("TEST: term_test_parentheses()\n");
-	}
+int term_test_parentheses() {
+
+	status_test("term_test_parentheses");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(LPARENS, "("));

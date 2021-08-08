@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "CaseStmtTest.h"
 
@@ -11,11 +12,9 @@
 
 #include "ast/util/free_ast.h"
 
-int test_parser_case_stmt(bool debug) {
+int test_parser_case_stmt() {
 
-	if(debug){
-		printf("TEST: test_parser_case_stmt\n");
-	}
+	status_test("test_parser_case_stmt");
 
 	struct TokenList* list = makeTokenList();
 	

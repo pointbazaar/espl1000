@@ -1,14 +1,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "ExprTest.h"
 
 #include "expr/Expr.h"
-#include "expr/Term.h"
-#include "const/IntConst.h"
-#include "var/Variable.h"
-#include "var/SimpleVar.h"
 
 #include "ast/util/free_ast.h"
 
@@ -16,11 +13,9 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-int expr_test_simple_expression(bool debug) {
+int expr_test_simple_expression() {
 
-	if(debug){
-		printf("TEST: expr_test_simple_expression(...)\n");
-	}
+	status_test("expr_test_simple_expression");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(INTEGER,"4"));
@@ -36,11 +31,9 @@ int expr_test_simple_expression(bool debug) {
 	return 1;
 }
 
-int expr_test_variable_name_expression(bool debug) {
+int expr_test_variable_name_expression() {
 
-	if(debug){
-		printf("TEST: expr_test_variable_name_expression(...)\n");
-	}
+	status_test("expr_test_variable_name_expression");
 
 	struct TokenList* list = makeTokenList();
 
@@ -64,11 +57,9 @@ int expr_test_variable_name_expression(bool debug) {
 	return 1;
 }
 
-int expr_recognize_2_op_expr(bool debug) {
+int expr_recognize_2_op_expr() {
 
-	if(debug){
-		printf("TEST: expr_recognize_2_op_expr(...)\n");
-	}
+	status_test("expr_recognize_2_op_expr");
 
 	struct TokenList* tokens = makeTokenList();
 
@@ -88,11 +79,9 @@ int expr_recognize_2_op_expr(bool debug) {
 	return 1;
 }
 
-int expr_test_comparison(bool debug){
+int expr_test_comparison() {
 
-	if(debug){
-		printf("TEST: expr_test_comparison\n");
-	}
+	status_test("expr_test_comparison");
 
 	struct TokenList* l = makeTokenList();
 

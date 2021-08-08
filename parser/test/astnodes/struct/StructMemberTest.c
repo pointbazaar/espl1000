@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "StructMemberTest.h"
 
@@ -12,11 +13,9 @@
 
 #include "ast/util/free_ast.h"
 
-int structmember_test_can_parse_struct_member(bool debug) {
+int structmember_test_can_parse_struct_member() {
 
-	if(debug){
-		printf("TEST: structmember_test_can_parse_struct_member\n");
-	}
+	status_test("structmember_test_can_parse_struct_member");
 
 	struct TokenList* list = makeTokenList();
 

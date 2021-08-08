@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "LambdaTest.h"
 
@@ -12,11 +13,9 @@
 
 #include "ast/util/free_ast.h"
 
-void test_lambda(bool debug){
-	
-	if(debug){
-		printf("TEST: test_lambda\n");
-	}
+void test_lambda(){
+
+	status_test("test_lambda");
 
 	struct TokenList* list = makeTokenList();
 

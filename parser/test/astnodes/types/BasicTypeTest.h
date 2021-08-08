@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-int basictype_test_type_parsing_simple_type(bool debug);
+int basictype_test_type_parsing_simple_type();
 
 #endif

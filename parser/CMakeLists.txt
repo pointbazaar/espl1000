@@ -97,7 +97,7 @@ add_executable(dragon-parser-tests
 	test/commandline/ParserTest.c
 	test/astnodes/types/StructTypeTest.c
 	test/astnodes/types/StructTypeTest.h
-)
+		test/test_parser_util.c test/test_parser_util.h)
 
 add_executable(dragon-parser
 	main/commandline/main.c

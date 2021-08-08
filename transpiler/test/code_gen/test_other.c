@@ -5,13 +5,13 @@
 #include "../util/test_statuscode.h"
 
 
-static void status(char* msg){
+static void status_test_other(char* msg){
 	printf(" - [TEST] %s\n", msg);
 }
 
 void test_statuscode(bool debug){
-	
-	status("statuscode");
+
+	status_test_other("statuscode");
 	
 	char* src = "fn main () ~> int { return 3; }";
 	
@@ -21,8 +21,8 @@ void test_statuscode(bool debug){
 }
 
 void test_simplevar(bool debug){
-	
-	status("simplevar");
+
+	status_test_other("simplevar");
 	
 	char* src = "fn main () ~> int { int x = 2; return x; }";
 	
@@ -30,8 +30,8 @@ void test_simplevar(bool debug){
 }
 
 void test_recursive(bool debug){
-	
-	status("recursive");
+
+	status_test_other("recursive");
 	
 	char* src = "fn main () ~> int { return subr(8); } fn subr (int n) ~> int { if n > 0 { return subr(n-1); } return n; }";
 	
@@ -40,7 +40,7 @@ void test_recursive(bool debug){
 
 void test_charconst_cmp(bool debug){
 
-	status("charconst_cmp");
+	status_test_other("charconst_cmp");
 	
 	char* src = "fn main () ~> int { if ('h' == 'h') {return 1;} return 0; } ";
 	
@@ -48,8 +48,8 @@ void test_charconst_cmp(bool debug){
 }
 
 void test_wrapped_expr(bool debug){
-	
-	status("wrapped_expr");
+
+	status_test_other("wrapped_expr");
 	
 	char* src = "fn main () ~> int { return (8 + 8) / 2; } ";
 	

@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "MethodTest.h"
 
@@ -12,11 +13,9 @@
 
 #include "ast/util/free_ast.h"
 
-int method_test_can_parse_method_with_arguments(bool debug) {
+int method_test_can_parse_method_with_arguments() {
 
-	if(debug){
-		printf("TEST: method_test_can_parse_method_with_arguments\n");
-	}
+	status_test("method_test_can_parse_method_with_arguments");
 
 	struct TokenList* l = makeTokenList(); 
 
@@ -56,11 +55,9 @@ int method_test_can_parse_method_with_arguments(bool debug) {
 	return 1;
 }
 
-int method_test_can_parse_subroutine(bool debug) {
+int method_test_can_parse_subroutine() {
 
-	if(debug){
-		printf("TEST: method_test_can_parse_subroutine\n");
-	}
+	status_test("method_test_can_parse_subroutine");
 
 	struct TokenList* l = makeTokenList();
 
@@ -97,11 +94,9 @@ int method_test_can_parse_subroutine(bool debug) {
 	return 1;
 }
 
-int method_test_can_parse_method_without_arguments(bool debug) {
+int method_test_can_parse_method_without_arguments() {
 
-	if (debug) {
-		printf("TEST: method_test_can_parse_method_without_arguments\n");
-	}
+	status_test("method_test_can_parse_method_without_arguments");
 
 	struct TokenList* l = makeTokenList();
 

@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
 #include <assert.h>
-#include <parser/test/astnodes/types/StructTypeTest.h>
 
+#include "../astnodes/expr/UnOpTermTest.h"
+#include "../astnodes/types/StructTypeTest.h"
 #include "../astnodes/const/BoolConstTest.h"
 #include "../astnodes/expr/ExprTest.h"
 #include "../astnodes/NamespaceTest.h"
@@ -33,210 +33,202 @@
 #include "../astnodes/statements/TryCatchStmtTest.h"
 #include "../astnodes/LambdaTest.h"
 
-#define FAILRET if(!passed){ printf("FAILED\n"); return false;}
+void test_suite_constnodes();
+void test_suite_term_expr_simplevar_var();
 
-// --- START OF TEST SUITES ---
+void test_suite_stmts();
+void test_suite_assignstmt();
 
-bool test_suite_constnodes(bool debug);
-bool test_suite_term_expr_simplevar_var(bool debug);
+void test_suite_method();
+void test_suite_struct();
+void test_suite_types();
+void test_suite_range();
+void test_suite_switch_case();
+void test_suite_lambda();
+void test_suite_namespace();
+void test_suite_unop();
 
-bool test_suite_stmts(bool debug);
-bool test_suite_assignstmt(bool debug);
-
-bool test_suite_method(bool debug);
-bool test_suite_struct(bool debug);
-bool test_suite_types(bool debug);
-bool test_suite_range(bool debug);
-
-static void status(char* msg){
+static void status_test_suite(char* msg){
 	printf("[Parser][TEST-SUITE] %s\n", msg);
 }
 
 int main(){
 
-	printf("[Parser Module] running Parser Tests...\n");
+	printf("[Parser] running Parser Tests...\n");
 
-	//execute all tests and give feedback
-	//every test should stdout its name, such that failing tests can be identified easily
+	test_suite_constnodes();
+	test_suite_term_expr_simplevar_var();
+	test_suite_unop();
+	test_suite_assignstmt();
+	test_suite_stmts();
+	test_suite_method();
+	test_suite_struct();
+	test_suite_types();
+	test_suite_range();
+	test_suite_switch_case();
 
-	//the tests should start with the easy tests first
+	test_suite_lambda();
+	test_suite_namespace();
 
-	test_suite_constnodes(0);
-	test_suite_term_expr_simplevar_var(0);
-	test_suite_stmts(0);
-	test_suite_assignstmt(0);
-	test_suite_method(0);
-	test_suite_struct(0);
-	test_suite_types(0);
-	test_suite_range(0);
-
-	test_switch(0);
-	test_parser_case_stmt(0);
-
-	test_lambda(0);
-
-	printf("[Parser Module] PASSED ALL TESTS\n");
+	printf("[Parser] PASSED ALL TESTS\n");
 
 	return 0;
 }
 
-bool test_suite_constnodes(bool debug) {
-	
-	status("test_suite_constnodes"); 
+void test_suite_unop(){
 
-    bool passed = true;
+	status_test_suite("test_suite_unop");
 
-    passed &=  boolconst_test_parse_bool_constant_node(debug);
-	FAILRET
-    passed &=  charconst_test_parse_char_constant_node(debug);
-    FAILRET
-    passed &=  charconst_test_parse_char_constant_node_newline(debug);
-    FAILRET
-
-    passed &=  floatconst_test1(debug);
-    FAILRET
-    passed &=  floatconst_test2(debug);
-	FAILRET
-    return passed;
+	test_unop_without();
+	test_unop_with();
 }
 
-bool test_suite_term_expr_simplevar_var(bool debug) {
-	
-	status("test_suite_term_expr_simplevar_var");
+void test_suite_namespace(){
 
-    int count  = 13;
-    int passed = 0;
+	status_test_suite("test_suite_namespace");
 
-    passed +=  term_test_simple_term(debug);
-    passed +=  term_test_variable_term(debug);
-    passed +=  term_test_parentheses(debug);
-
-    passed +=  expr_recognize_2_op_expr(debug);
-    passed +=  expr_test_simple_expression(debug);
-    passed +=  expr_test_variable_name_expression(debug);
-
-    passed +=  expr_test_comparison(debug);
-
-    passed +=  simplevar_test_parse_simple_indexed_variable(debug);
-    passed +=  simplevar_test_parse_simple_variable(debug);
-    passed +=  simplevar_test_2_indices(debug);
-
-    passed +=  variable_test_parse_index_access(debug);
-    passed +=  variable_test_parse_struct_member_access(debug);
-    passed +=  variable_test_parse_struct_member_access_and_index_access(debug);
-
-    return passed == count;
+	namespace_test_can_parse_namespace_with_1_empty_struct();
+	namespace_test_can_parse_namespace_with_1_empty_method();
 }
 
-bool test_suite_stmts(bool debug) {
+void test_suite_lambda(){
 
-	status("test_suite_stmts");
+	status_test_suite("test_suite_lambda");
 
-    retstmt_test1(debug);
-    retstmt_test2(debug);
-	retstmt_test3(debug);
-
-    methodcall_test1(debug);
-    methodcall_test2(debug);
-    methodcall_test3(debug);
-    methodcall_test_can_parse_subroutine_call(debug);
-    methodcall_test_can_parse_subroutine_call2(debug);
-
-    stmt_test_assignment_statement_with_method_call(debug);
-    stmt_test_assignment_statement_with_struct_access(debug);
-
-    test_stmtblock_1(debug);
-
-    if_test1(debug);
-    if_test2(debug);
-
-    whilestmt_test1(debug);
-    whilestmt_test2(debug);
-    
-    trycatch_stmt_test(debug);
-    
-    for_test1(debug);
-
-    return true;
+	test_lambda();
 }
 
-bool test_suite_assignstmt(bool debug){
-	
-	status("test_suite_assignstmt");
-	
-	int count  = 7;
-    int passed = 0;
-    
-    //7
-    passed +=  assignstmt_test1(debug);
-    passed +=  assignstmt_test_assign_char(debug);
-    passed +=  assignstmt_test_assign_method_call_result(debug);
-    passed +=  assignstmt_test_assign_method_call_result_2(debug);
-    passed +=  assignstmt_test_assign_variable_with_array_index(debug);
-    passed +=  assignstmt_test_can_assign_to_struct_member(debug);
-    passed +=  assignstmt_test_type_declaration_for_variable(debug);
+void test_suite_switch_case(){
 
-    return passed == count;
+	status_test_suite("test_suite_switch_case");
+
+	test_switch();
+	test_parser_case_stmt();
 }
 
-bool test_suite_method(bool debug) {
-	
-	status("test_suite_method");
+void test_suite_constnodes() {
 
-    int count  = 4;
-    int passed = 0;
+	status_test_suite("test_suite_constnodes");
 
-    passed +=  method_test_can_parse_method_with_arguments(debug);
-    passed +=  method_test_can_parse_method_without_arguments(debug);
-    passed +=  method_test_can_parse_subroutine(debug);
-
-    passed +=  declarg_test_parse_declared_argument(debug);
-
-    return passed == count;
+	test_boolconst_parse_bool_constant_node();
+	test_charconst_parse_char_constant_node();
+	test_charconst_parse_char_constant_node_newline();
+	test_floatconst_1();
+	test_floatconst_2();
 }
 
-bool test_suite_struct(bool debug) {
+void test_suite_term_expr_simplevar_var() {
 
-	status("test_suite_struct");
+	status_test_suite("test_suite_term_expr_simplevar_var");
 
-    assert(1 == structmember_test_can_parse_struct_member(debug));
+	term_test_simple_term();
+	term_test_variable_term();
+	term_test_parentheses();
 
-    return true;
+	expr_recognize_2_op_expr();
+	expr_test_simple_expression();
+	expr_test_variable_name_expression();
+
+	expr_test_comparison();
+
+	simplevar_test_parse_simple_indexed_variable();
+	simplevar_test_parse_simple_variable();
+	simplevar_test_2_indices();
+
+	variable_test_parse_index_access();
+	variable_test_parse_struct_member_access();
+	variable_test_parse_struct_member_access_and_index_access();
 }
 
-bool test_suite_types(bool debug) {
-	
-	status("test_suite_types");
+void test_suite_stmts() {
 
-    int count  = 9;
-    int passed = 0;
+	status_test_suite("test_suite_stmts");
 
-    passed +=  basictype_test_type_parsing_simple_type(debug);
+	retstmt_test1();
+	retstmt_test2();
+	retstmt_test3();
 
-    passed +=  simpletype_test_typenode_parsing(debug);
-    passed +=  simpletype_test_typenode_parsing_anytype(debug);
-    passed +=  simpletype_test_typenode_parsing_fails(debug);
-    passed +=  simpletype_test_generic(debug);
+    methodcall_test1();
+    methodcall_test2();
+    methodcall_test3();
+    methodcall_test_can_parse_subroutine_call();
+    methodcall_test_can_parse_subroutine_call2();
 
-    passed +=  subrtype_test_subroutine_type_parsing_subroutine_with_side_effects(debug);
-    passed +=  subrtype_test_subroutine_type_parsing_subroutine_without_side_effects(debug);
-    passed +=  subrtype_test_typename(debug);
-    passed +=  subrtype_test_typename_subroutine_return_type(debug);
+	stmt_test_assignment_statement_with_method_call();
+	stmt_test_assignment_statement_with_struct_access();
+
+	test_stmtblock_1();
+
+	if_test1();
+	if_test2();
+
+	whilestmt_test1();
+	whilestmt_test2();
+
+	trycatch_stmt_test();
+
+	for_test1();
+}
+
+void test_suite_assignstmt(){
+
+	status_test_suite("test_suite_assignstmt");
+
+	assignstmt_test1();
+	assignstmt_test_assign_char();
+	assignstmt_test_assign_method_call_result();
+	assignstmt_test_assign_method_call_result_2();
+	assignstmt_test_assign_variable_with_array_index();
+	assignstmt_test_can_assign_to_struct_member();
+	assignstmt_test_type_declaration_for_variable();
+}
+
+void test_suite_method() {
+
+	status_test_suite("test_suite_method");
+
+	method_test_can_parse_method_with_arguments();
+	method_test_can_parse_method_without_arguments();
+	method_test_can_parse_subroutine();
+
+	declarg_test_parse_declared_argument();
+}
+
+void test_suite_struct() {
+
+	status_test_suite("test_suite_struct");
+
+	structdecl_test_can_parse_empty_struct_decl();
+	structdecl_test_can_parse_struct_with_1_member();
+	structdecl_test_can_parse_struct_with_2_members();
+
+    structmember_test_can_parse_struct_member();
+}
+
+void test_suite_types() {
+
+	status_test_suite("test_suite_types");
+
+	basictype_test_type_parsing_simple_type();
+
+    simpletype_test_typenode_parsing();
+    simpletype_test_typenode_parsing_anytype();
+    simpletype_test_typenode_parsing_fails();
+    simpletype_test_generic();
+
+	subrtype_test_subroutine_type_parsing_subroutine_with_side_effects();
+	subrtype_test_subroutine_type_parsing_subroutine_without_side_effects();
+	subrtype_test_typename();
+	subrtype_test_typename_subroutine_return_type();
 
     structtype_test();
     structtype_test_type_param();
     structtype_test_generic();
-
-    return passed == count;
 }
 
-bool test_suite_range(bool debug){
-	
-	status("test_suite_range");
-	
-	//test contains its own asserts,
-	//so it will exit on failure
-	range_test1(debug);
-	
-	return true;
+void test_suite_range(){
+
+	status_test_suite("test_suite_range");
+
+	range_test1();
 }

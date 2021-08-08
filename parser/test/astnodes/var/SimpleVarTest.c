@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "SimpleVarTest.h"
 
 #include "var/SimpleVar.h"
-#include "const/IntConst.h"
 #include "expr/Expr.h"
-#include "expr/Term.h"
 
 #include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
@@ -15,11 +14,9 @@
 
 #include "ast/util/free_ast.h"
 
-int simplevar_test_parse_simple_variable(bool debug) {
+int simplevar_test_parse_simple_variable() {
 
-	if(debug){
-		printf("TEST: simplevar_test_parse_simple_variable()\n");
-	}
+	status_test("simplevar_test_parse_simple_variable");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ID,"x") );
@@ -36,11 +33,9 @@ int simplevar_test_parse_simple_variable(bool debug) {
 	return 1;
 }
 
-int simplevar_test_parse_simple_indexed_variable(bool debug) {
+int simplevar_test_parse_simple_indexed_variable() {
 
-	if(debug){
-		printf("TEST: simplevar_test_parse_simple_indexed_variable()\n");
-	}
+	status_test("simplevar_test_parse_simple_indexed_variable");
 
 	struct TokenList* list = makeTokenList();
 
@@ -71,11 +66,9 @@ int simplevar_test_parse_simple_indexed_variable(bool debug) {
 	return 1;
 }
 
-int simplevar_test_2_indices(bool debug){
-	
-	if(debug){
-		printf("TEST: simplevar_test_2_indices()\n");
-	}
+int simplevar_test_2_indices() {
+
+	status_test("simplevar_test_2_indices");
 
 	struct TokenList* list = makeTokenList();
 

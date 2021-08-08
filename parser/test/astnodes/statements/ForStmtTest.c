@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "ForStmtTest.h"
 
@@ -12,11 +13,9 @@
 
 #include "ast/util/free_ast.h"
 
-void for_test1(bool debug) {
+void for_test1() {
 
-	if(debug){
-		printf("TEST: for_test1\n");
-	}
+	status_test("for_test1");
 
 	struct TokenList* list = makeTokenList();
 	

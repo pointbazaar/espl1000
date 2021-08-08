@@ -2,11 +2,11 @@
 #include <stdbool.h>
 #include <string.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "VariableTest.h"
 
 #include "var/Variable.h"
-#include "var/SimpleVar.h"
 
 #include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
@@ -14,11 +14,9 @@
 
 #include "ast/util/free_ast.h"
 
-int variable_test_parse_struct_member_access(bool debug) {
+int variable_test_parse_struct_member_access() {
 
-	if(debug){
-		printf("TEST: variable_test_parse_struct_member_access(...)\n");
-	}
+	status_test("variable_test_parse_struct_member_access");
 
 	struct TokenList* tokens = makeTokenList();
 	list_add(tokens, makeToken2(ID,"x"));
@@ -42,11 +40,9 @@ int variable_test_parse_struct_member_access(bool debug) {
 	return 1;
 }
 
-int variable_test_parse_index_access(bool debug) {
-	
-	if(debug){
-		printf("TEST: variable_test_parse_index_access(...)\n");
-	}
+int variable_test_parse_index_access() {
+
+	status_test("variable_test_parse_index_access");
 
 	struct TokenList* tokens = makeTokenList();
 	list_add(tokens, makeToken2(ID,"x"));
@@ -66,11 +62,9 @@ int variable_test_parse_index_access(bool debug) {
 	return 1;
 }
 
-int variable_test_parse_struct_member_access_and_index_access(bool debug) {
+int variable_test_parse_struct_member_access_and_index_access() {
 
-	if(debug){
-		printf("TEST: variable_test_parse_struct_member_access_and_index_access(...)\n");
-	}
+	status_test("variable_test_parse_struct_member_access_and_index_access");
 
 	// x.a[0].b
 	struct TokenList* tokens = makeTokenList();

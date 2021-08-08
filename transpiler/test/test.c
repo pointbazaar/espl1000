@@ -11,7 +11,7 @@
 
 #include "test.h"
 
-static void status(char* msg){
+static void status_test_transpiler(char* msg){
 	printf("[TRANSPILER][TEST-SUITE] %s\n", msg);
 }
 
@@ -21,11 +21,11 @@ int main(){
 }
 
 int transpiler_test_all(bool debug){
-	
-	status("Running tests for smalldragon/transpiler:");
+
+	status_test_transpiler("Running tests for smalldragon/transpiler:");
 	
 	//from test_assign.h
-	status("transpiling of assignments");
+	status_test_transpiler("transpiling of assignments");
 	test_assign(debug);
 	test_assign_plus(debug);
 	test_assign_minus(debug);
@@ -37,7 +37,7 @@ int transpiler_test_all(bool debug){
 	test_assign_bitwise_shift_right(debug);
 	
 	//from test_op.h
-	status("transpiling of operators");
+	status_test_transpiler("transpiling of operators");
 	test_add(debug);
 	test_sub(debug);
 	test_mul(debug);
@@ -62,7 +62,7 @@ int transpiler_test_all(bool debug){
 	test_bitwise_neg(debug);
 	
 	//from test_other.h
-	status("other");
+	status_test_transpiler("other");
 	test_statuscode(debug);
 	test_simplevar(debug);
 	test_recursive(debug);
@@ -70,20 +70,20 @@ int transpiler_test_all(bool debug){
 	test_wrapped_expr(debug);
 	
 	//from test_stmt.h
-	status("stmts");	
+	status_test_transpiler("stmts");
 	test_ifstmt(debug);
 	test_whilestmt(debug);
 	test_subrcall(debug);
 	test_break(debug);
 	test_continue(debug);
 
-	status("Typeinference");
+	status_test_transpiler("Typeinference");
 	test_suite_typeinference();
 
-    status("Typechecker");
+	status_test_transpiler("Typechecker");
     test_suite_typechecker();
-		
-	status("PASSED ALL TESTS\n");
+
+    status_test_transpiler("PASSED ALL TESTS\n");
 	
 	return 0;
 }

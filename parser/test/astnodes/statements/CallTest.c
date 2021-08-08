@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "CallTest.h"
 
@@ -12,14 +13,9 @@
 
 #include "ast/util/free_ast.h"
 
-static void status(char* msg){
-
-	printf("[Parser][Test] %s\n", msg);
-}
-
 int methodcall_test1() {
 
-	status("call test 1");
+	status_test("call test 1");
 
 	struct TokenList* l = makeTokenList();
 
@@ -40,7 +36,7 @@ int methodcall_test1() {
 
 int methodcall_test2() {
 
-	status("call test 2");
+	status_test("call test 2");
 
 	struct TokenList* list = makeTokenList();
 
@@ -62,7 +58,7 @@ int methodcall_test2() {
 
 int methodcall_test3() {
 
-	status("call test 3");
+	status_test("call test 3");
 
 	struct TokenList* list = makeTokenList();
 
@@ -84,7 +80,7 @@ int methodcall_test3() {
 
 int methodcall_test_can_parse_subroutine_call() {
 
-	status("call test can parse subroutine call");
+	status_test("call test can parse subroutine call");
 
 	struct TokenList* tl = makeTokenList();
 	list_add(tl, makeToken2(ID,"println"));
@@ -105,7 +101,7 @@ int methodcall_test_can_parse_subroutine_call() {
 
 int methodcall_test_can_parse_subroutine_call2() {
 	
-	status("call test can parse subroutine call 2");
+	status_test("call test can parse subroutine call 2");
 
 	struct TokenList* tokens = makeTokenList();
 	list_add(tokens, makeToken2(ID,"println"));

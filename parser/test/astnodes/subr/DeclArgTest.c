@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "DeclArgTest.h"
 
@@ -12,11 +13,9 @@
 
 #include "ast/util/free_ast.h"
 
-int declarg_test_parse_declared_argument(bool debug) {
+int declarg_test_parse_declared_argument() {
 
-	if(debug){
-		printf("TEST: declarg_test_parse_declared_argument\n");
-	}
+	status_test("declarg_test_parse_declared_argument");
 
 	struct TokenList* list = makeTokenList();
 

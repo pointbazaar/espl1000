@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "SimpleTypeTest.h"
 
@@ -13,14 +14,9 @@
 
 #include "ast/util/free_ast.h"
 
-static void status(char* msg){
-	
-	printf(" - [TEST] %s\n", msg);
-}
-
 int simpletype_test_typenode_parsing() {
 
-	status("simpletype_test_typenode_parsing");
+	status_test("simpletype_test_typenode_parsing");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(TYPEID,"MyType") );
@@ -39,7 +35,7 @@ int simpletype_test_typenode_parsing() {
 
 int simpletype_test_typenode_parsing_fails() {
 
-	status("simpletype_test_typenode_parsing_fails");
+	status_test("simpletype_test_typenode_parsing_fails");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ID,"myIllegalType") );
@@ -56,7 +52,7 @@ int simpletype_test_typenode_parsing_fails() {
 
 int simpletype_test_typenode_parsing_anytype() {
 
-	status("simpletype_test_typenode_parsing_anytype");
+	status_test("simpletype_test_typenode_parsing_anytype");
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ANYTYPE,"#"));
@@ -74,7 +70,7 @@ int simpletype_test_typenode_parsing_anytype() {
 
 int simpletype_test_generic(){
 
-	status("simpletype_test_generic");
+	status_test("simpletype_test_generic");
 
 	struct TokenList* l = makeTokenList();
 	

@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "TryCatchStmtTest.h"
 
@@ -12,11 +13,9 @@
 
 #include "ast/util/free_ast.h"
 
-int trycatch_stmt_test(bool debug){
-	
-	if(debug){
-		printf("TEST: trycatch_stmt_test\n");
-	}
+int trycatch_stmt_test() {
+
+	status_test("trycatch_stmt_test");
 
 	struct TokenList* tokens = makeTokenList();
 	

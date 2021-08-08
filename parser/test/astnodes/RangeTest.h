@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-void range_test1(bool debug);
+void range_test1();
 
 #endif

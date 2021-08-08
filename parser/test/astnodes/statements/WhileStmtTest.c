@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
+#include <parser/test/test_parser_util.h>
 
 #include "WhileStmtTest.h"
 
@@ -12,11 +13,9 @@
 
 #include "ast/util/free_ast.h"
 
-int whilestmt_test1(bool debug) {
+int whilestmt_test1() {
 
-	if(debug){
-		printf("TEST: whilestmt_test1\n");
-	}
+	status_test("whilestmt_test1");
 	
 	struct TokenList* list = makeTokenList();
 
@@ -46,11 +45,9 @@ int whilestmt_test1(bool debug) {
 	return 1;
 }
 
-int whilestmt_test2(bool debug){
-	
-	if(debug){
-		printf("TEST: whilestmt_test2\n");
-	}
+int whilestmt_test2() {
+
+	status_test("whilestmt_test2");
 	
 	struct TokenList* list = makeTokenList();
 

@@ -3,8 +3,8 @@
 
 #include <stdbool.h>
 
-int whilestmt_test1(bool debug);
+int whilestmt_test1();
 
-int whilestmt_test2(bool debug);
+int whilestmt_test2();
 
 #endif

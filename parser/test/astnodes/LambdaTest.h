@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-void test_lambda(bool debug);
+void test_lambda();
 
 #endif

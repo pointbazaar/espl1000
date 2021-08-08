@@ -31,7 +31,7 @@ void test_serialize_expr();
 
 FILE* file;
 
-static void status(char* msg){
+static void test_status_ast(char* msg){
 
 	printf(" - [TEST] %s\n", msg);
 }
@@ -84,8 +84,8 @@ int main(){
 }
 
 void test_serialize_int_const() {
-	
-	status("IntConst");
+
+	test_status_ast("IntConst");
 	
 	rewind(file);
 	
@@ -106,8 +106,8 @@ void test_serialize_int_const() {
 }
 
 void test_serialize_hex_const() {
-	
-	status("HexConst");
+
+	test_status_ast("HexConst");
 	
 	rewind(file);
 	
@@ -128,8 +128,8 @@ void test_serialize_hex_const() {
 }
 
 void test_serialize_bin_const() {
-	
-	status("BinConst");
+
+	test_status_ast("BinConst");
 	
 	rewind(file);
 	
@@ -150,8 +150,8 @@ void test_serialize_bin_const() {
 }
 
 void test_serialize_bool_const() {
-	
-	status("BoolConst");
+
+	test_status_ast("BoolConst");
 	
 	rewind(file);
 	
@@ -170,8 +170,8 @@ void test_serialize_bool_const() {
 }
 
 void test_serialize_char_const() {
-	
-	status("CharConst");
+
+	test_status_ast("CharConst");
 	
 	rewind(file);
 	
@@ -190,8 +190,8 @@ void test_serialize_char_const() {
 }
 
 void test_serialize_type_param() {
-	
-	status("TypeParam");
+
+	test_status_ast("TypeParam");
 	
 	rewind(file);
 	
@@ -211,7 +211,7 @@ void test_serialize_type_param() {
 
 void test_serialize_primitive_type() {
 
-	status("PrimitiveType");
+	test_status_ast("PrimitiveType");
 
 	rewind(file);
 	
@@ -241,8 +241,8 @@ void test_serialize_primitive_type() {
 }
 
 void test_serialize_float_const() {
-	
-	status("FloatConst");
+
+	test_status_ast("FloatConst");
 	
 	rewind(file);
 	
@@ -260,8 +260,8 @@ void test_serialize_float_const() {
 }
 
 void test_serialize_string_const() {
-	
-	status("StringConst");
+
+	test_status_ast("StringConst");
 	
 	rewind(file);
 	
@@ -283,8 +283,8 @@ void test_serialize_string_const() {
 }
 
 void test_serialize_op() {
-	
-	status("Op");
+
+	test_status_ast("Op");
 	
 	rewind(file);
 	
@@ -308,8 +308,8 @@ void test_serialize_op() {
 }
 
 void test_serialize_term() {
-	
-	status("Term");
+
+	test_status_ast("Term");
 	
 	rewind(file);
 	
@@ -334,8 +334,8 @@ void test_serialize_term() {
 }
 
 void test_serialize_expr() {
-	
-	status("Expr");
+
+	test_status_ast("Expr");
 	
 	rewind(file);
 	

@@ -3,6 +3,6 @@
 
 #include <stdbool.h>
 
-int test_stmtblock_1(bool debug);
+int test_stmtblock_1();
 
 #endif
