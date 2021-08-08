@@ -10,11 +10,11 @@ all:
 	cd stdlib     && make
 
 test:
-	cd token      && make test
+	#cd token      && make test
 	cd ast        && make test
 	cd lexer      && make test
 	cd parser     && make test
-	cd tables     && make test
+	#cd tables     && make test
 	cd transpiler && make test
 	cd examples   && make test
 	cd stdlib     && make test
