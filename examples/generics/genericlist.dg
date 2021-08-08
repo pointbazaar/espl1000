@@ -5,6 +5,14 @@ struct List<?T0> {
 	uint cap;
 }
 
+fn list_init(List<?T0> list) ~> bool {
+
+	list.cap   = 10;
+	list.count = 0;
+	list.arr   = malloc(8*list.cap);
+	return true;
+}
+
 fn list_add(List<?T0> list, ?T0 elem) ~> bool {
 
 	if list.count >= list.cap {
@@ -27,13 +35,10 @@ fn list_get(List<?T0> list, uint index) ~> ?T0 {
 fn main()~>int{
 
 	List<int> list = malloc(8*3);
-	list.cap = 10;
-	list.count = 0;
-	list.arr = malloc(8*list.cap);
+	list_init(list);
 
-	list.arr[0] = 3;
-	
-	int k = list.arr[0];
+	//list.arr[0] = 3;
+	//int k = list.arr[0];
 
 	for k in 1 .. 10 {
 		list_add(list, k);
@@ -43,6 +48,12 @@ fn main()~>int{
 		printf("%d,", list_get(list, k));
 	}
 	printf("\n");
+
+	List<float> list2 = malloc(8*3);
+	list_init(list2);
+
+	list_add(list2, 3.0);
+	printf("%f\n", list_get(list2, 0));
 
 	return 0;
 }
