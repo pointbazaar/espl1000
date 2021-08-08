@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <typechecker/type_contains/tc_type_contains.h>
 
 //AST Includes
 #include "ast/ast.h"
@@ -55,7 +56,7 @@ static bool check_type_rules_assign(struct AssignStmt* a, struct TCCtx* tcctx){
 	
 	if(is_integer_type(left) && is_integer_type(right)){ return true; }
 	
-	if(!eq_type(left, right)){
+	if(!tc_type_contains(left, right)){
 	
 		char* str_t1 = str_type(left);
 		char* str_t2 = str_type(right);
