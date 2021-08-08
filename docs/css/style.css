@@ -23,12 +23,12 @@ pre {
 
 .nav-bg{
 	background-color: rgb(159, 201, 167);
-	padding: 3px;
+	padding: 0.6rem;
 }
 
 .nav-bg a {
 	color: rgb(209, 79, 66);
-	font-size: 1.2em;
+	font-size: 1.2rem;
 }
 
 .box {
