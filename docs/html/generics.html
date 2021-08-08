@@ -46,9 +46,12 @@
 
 	<h3>Usage of the generic List</h3>
 	
-<pre>fn main() ~> int {
+<pre>fn main() ~&gt; int {
 
-	List&lt;int&gt; list = list_ctor(int);
+	List&lt;int&gt; list = malloc(8*3);
+	list.cap   = 10;
+	list.count = 0;
+	list.arr   = malloc(8*list.cap);
 	
 	list_add(list, 3);
 	
