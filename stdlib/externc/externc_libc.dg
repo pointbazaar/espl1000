@@ -37,6 +37,7 @@ externc fn srand(int seed) ~> int "srand"
 	
 externc fn calloc(int nbytes) ~> int "calloc"
 externc fn malloc(int nbytes) ~> int "malloc"
+externc fn realloc(int ptr, int nbytes) ~> int "realloc"
 externc fn free(int ptr) ~> int "free"
 
 externc fn getenv([char] env_var) ~> [char] "getenv"

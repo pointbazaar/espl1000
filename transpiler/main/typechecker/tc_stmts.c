@@ -125,7 +125,7 @@ bool tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx){
 		
 	//do not check if returned expr
 	//is a call to malloc
-	if(is_malloc(r->return_value)){ return true; }
+	if(is_malloc_realloc(r->return_value)){ return true; }
 	
 	if(!eq_type(returnType, returnedType)){
 		

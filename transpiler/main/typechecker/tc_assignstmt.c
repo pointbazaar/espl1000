@@ -33,7 +33,7 @@ bool tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx){
 		error(tcctx, "variable can only be read but not written to.", TC_ERR_VAR_READONLY);
 	}
 
-	if(is_malloc(a->expr)){ 
+	if(is_malloc_realloc(a->expr)){
 		return tc_expr(a->expr, tcctx);
 	}
 

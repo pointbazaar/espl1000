@@ -46,7 +46,7 @@ bool is_char_type(struct Type* type){
 	return type->m1->simple_type->primitive_type->is_char_type;
 }
 
-bool is_malloc(struct Expr* expr){
+bool is_malloc_realloc(struct Expr* expr){
 	
 	if(expr->term2 != NULL){ return false; }
 	
@@ -57,7 +57,8 @@ bool is_malloc(struct Expr* expr){
 	
 	char* name = expr->term1->term->ptr.m4->name;
 	
-	return strcmp(name, "malloc") == 0;
+	return (strcmp(name, "malloc") == 0)
+	|| (strcmp(name, "realloc") == 0);
 }
 
 uint32_t max_indices_allowed(struct Type* type){
