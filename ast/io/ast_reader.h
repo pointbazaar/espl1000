@@ -16,7 +16,7 @@ struct StructDecl* 		read_struct_decl(INFILE);
 struct StructMember* 	read_struct_member(INFILE);
 struct ExternC*			read_externc(INFILE);
 
-struct StmtBlock* read_stmt_block(INFILE);
+struct StmtBlock* 	read_stmt_block(INFILE);
 
 struct DeclArg* 	read_decl_arg(INFILE);
 struct Expr* 		read_expr(INFILE);

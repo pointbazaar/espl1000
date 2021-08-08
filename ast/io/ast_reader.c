@@ -64,15 +64,15 @@ struct Namespace* read_namespace(FILE* file) {
 	ns->token_path = malloc(sizeof(char)*(strlen(tmp2)+1));
 	ns->ast_path   = malloc(sizeof(char)*(strlen(tmp3)+1));
 	
-	strcpy (ns->src_path, tmp1);
+	strcpy (ns->src_path, 	tmp1);
 	strcpy (ns->token_path, tmp2);
-	strcpy (ns->ast_path, tmp3);
-	
-	strncpy(ns->name,     tmp4, DEFAULT_STR_SIZE);
+	strcpy (ns->ast_path, 	tmp3);
+	strncpy(ns->name,     	tmp4, DEFAULT_STR_SIZE);
 	
 	free(tmp1);
 	free(tmp2);
 	free(tmp3);
+	free(tmp4);
 
 	ns->count_includes = deserialize_int(file);
 	ns->includes = malloc(sizeof(void*) * (ns->count_includes));
@@ -554,7 +554,9 @@ struct Lambda* read_lambda(FILE* file) {
 	for(uint8_t i = 0; i < l->count_params; i++){
 		
 		struct Id* k = make(Id);
-		strcpy(k->identifier, deserialize_string(file));
+		char* tmp = deserialize_string(file);
+		strcpy(k->identifier, tmp);
+		free(tmp);
 		
 		l->params[i] = k;
 	}

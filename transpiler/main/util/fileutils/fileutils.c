@@ -7,7 +7,6 @@
 #include <regex.h>
 
 #include "fileutils.h"
-#include "../../flags.h"
 
 char* make_ast_filename(char* filename){
 	
@@ -104,5 +103,8 @@ bool check_filenames_lowercase(struct Flags* flags){
             return false;
         }
     }
+
+	regfree(&regex);
+
     return true;
 }

@@ -31,8 +31,12 @@ struct TCError* typecheck_ast(struct AST* ast, struct ST* st, bool print_errors)
     if(tcctx->tc_err_count > 0 && print_errors){
 		printf("[Typecheck] %d Errors\n", tcctx->tc_err_count);
 	}
+
+    struct TCError* err = tcctx->tc_first_err;
+
+	free(tcctx);
 	
-	return tcctx->tc_first_err;
+	return err;
 }
 
 bool tc_namespace(struct Namespace* n, struct TCCtx* tcctx){
