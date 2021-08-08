@@ -84,6 +84,6 @@ struct ASTNode {
 	// @packed     // for structs 
 };
 
-#define has_annotation(annotations, annotation) (annotations & (1 << (annotation-_ANNOT_START_)))!=0
+#define has_annotation(annotations, annotation) ((annotations) & (1 << ((annotation)-_ANNOT_START_)))!=0
 
 #endif

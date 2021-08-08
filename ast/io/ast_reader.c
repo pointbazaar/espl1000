@@ -81,18 +81,21 @@ struct Namespace* read_namespace(FILE* file) {
 	}
 
 	ns->count_externc = deserialize_int(file);
+	ns->capacity_externc = ns->count_externc;
 	ns->externc = malloc(sizeof(void*)*(ns->count_externc));
 	for(int i=0; i < ns->count_externc; i++){
 		ns->externc[i] = read_externc(file);
 	}
 
 	ns->count_methods = deserialize_int(file);
+	ns->capacity_methods = ns->count_methods;
 	ns->methods = malloc(sizeof(void*)*(ns->count_methods));
 	for(int i=0; i < ns->count_methods; i++){
 		ns->methods[i] = read_method(file);
 	}
 
 	ns->count_structs = deserialize_int(file);
+	ns->capacity_structs = ns->count_structs;
 	ns->structs = malloc(sizeof(void*)*(ns->count_structs));
 	for(int i=0;i < ns->count_structs; i++){
 		ns->structs[i] = read_struct_decl(file);

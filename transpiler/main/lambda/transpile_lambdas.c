@@ -213,6 +213,8 @@ static struct Method* gen_subr_from_lambda(
 ){
 	
 	struct MethodDecl* mdecl = make(MethodDecl);
+	mdecl->super.line_num    = -1;
+	mdecl->super.annotations = 0;
 	mdecl->is_public         = false;
 	mdecl->has_side_effects  = false;  //ASSUMPTION TODO: work on it
 	mdecl->throws            = false; //ASSUMPTION TODO: work on it
@@ -220,6 +222,8 @@ static struct Method* gen_subr_from_lambda(
 
 	struct Method* lsubr  = make(Method);
 	lsubr->decl = mdecl;
+	lsubr->super.annotations = 0;
+	lsubr->super.line_num    = -1;
 	
 	struct RetStmt* rstmt = make(RetStmt);
 	rstmt->return_value   = lambda->expr;
