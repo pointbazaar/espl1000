@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 //AST Includes
 #include "ast/ast.h"
@@ -48,6 +49,8 @@ static bool check_expr_well_formed(struct Type* left, struct Type* right, struct
 
         char msg[200];
         sprintf(msg, "types not equal in expression. left: %s, right: %s\n", s_left, s_right);
+		free(s_left);
+		free(s_right);
         error(tcctx,msg, TC_ERR_BINOP_TYPE_MISMATCH);
         return false;
     }

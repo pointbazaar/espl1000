@@ -3,87 +3,81 @@
 
 #include "typechecker/test_typechecker.h"
 #include "typeinference/test_typeinference.h"
-#include "code_gen/test_op.h"
 
+#include "code_gen/test_op.h"
 #include "code_gen/test_other.h"
 #include "code_gen/test_assign.h"
 #include "code_gen/test_stmt.h"
-
-#include "test.h"
 
 static void status_test_transpiler(char* msg){
 	printf("[TRANSPILER][TEST-SUITE] %s\n", msg);
 }
 
 int main(){
-	transpiler_test_all(false);
-	return 0;
-}
-
-int transpiler_test_all(bool debug){
 
 	status_test_transpiler("Running tests for smalldragon/transpiler:");
-	
+
 	//from test_assign.h
 	status_test_transpiler("transpiling of assignments");
-	test_assign(debug);
-	test_assign_plus(debug);
-	test_assign_minus(debug);
-	test_assign_times(debug);
-	test_assign_div(debug);
-	test_assign_bitwise_and(debug);
-	test_assign_bitwise_or(debug);
-	test_assign_bitwise_shift_left(debug);
-	test_assign_bitwise_shift_right(debug);
-	
+	test_assign(false);
+	test_assign_plus(false);
+	test_assign_minus(false);
+	test_assign_times(false);
+	test_assign_div(false);
+	test_assign_bitwise_and(false);
+	test_assign_bitwise_or(false);
+	test_assign_bitwise_shift_left(false);
+	test_assign_bitwise_shift_right(false);
+
 	//from test_op.h
 	status_test_transpiler("transpiling of operators");
-	test_add(debug);
-	test_sub(debug);
-	test_mul(debug);
-	test_div(debug);
-	test_mod(debug);
-	test_precedence(debug);
-	test_or(debug);
-	test_and(debug);
-	test_not(debug);
-	test_greater(debug);
-	test_lesser(debug);
-	test_geq(debug);
-	test_leq(debug);
-	test_eq(debug);
-	test_neq(debug);
-	test_chained_cmp(debug);
-	test_bitwise_and(debug);
-	test_bitwise_or(debug);
-	test_bitwise_leftshift(debug);
-	test_bitwise_rightshift(debug);
-	test_bitwise_xor(debug);
-	test_bitwise_neg(debug);
-	
+	test_add(false);
+	test_sub(false);
+	test_mul(false);
+	test_div(false);
+	test_mod(false);
+	test_precedence(false);
+	test_or(false);
+	test_and(false);
+	test_not(false);
+	test_greater(false);
+	test_lesser(false);
+	test_geq(false);
+	test_leq(false);
+	test_eq(false);
+	test_neq(false);
+	test_chained_cmp(false);
+	test_bitwise_and(false);
+	test_bitwise_or(false);
+	test_bitwise_leftshift(false);
+	test_bitwise_rightshift(false);
+	test_bitwise_xor(false);
+	test_bitwise_neg(false);
+
 	//from test_other.h
 	status_test_transpiler("other");
-	test_statuscode(debug);
-	test_simplevar(debug);
-	test_recursive(debug);
-	test_charconst_cmp(debug);
-	test_wrapped_expr(debug);
-	
+	test_statuscode(false);
+	test_simplevar(false);
+	test_recursive(false);
+	test_charconst_cmp(false);
+	test_wrapped_expr(false);
+
 	//from test_stmt.h
 	status_test_transpiler("stmts");
-	test_ifstmt(debug);
-	test_whilestmt(debug);
-	test_subrcall(debug);
-	test_break(debug);
-	test_continue(debug);
+	test_ifstmt(false);
+	test_whilestmt(false);
+	test_subrcall(false);
+	test_break(false);
+	test_continue(false);
 
 	status_test_transpiler("Typeinference");
 	test_suite_typeinference();
 
 	status_test_transpiler("Typechecker");
-    test_suite_typechecker();
+	test_suite_typechecker();
 
-    status_test_transpiler("PASSED ALL TESTS\n");
-	
+	status_test_transpiler("PASSED ALL TESTS\n");
+
 	return 0;
 }
+

@@ -67,6 +67,8 @@ static struct Type* substitute_type_parameters(struct Type* struct_type, struct 
 
 	struct Type* res = copy_type(member_type);
 
+	//st_register_inferred_type(sym_tables, res);
+
 	struct Type* type_to_substitute = struct_type->m1->simple_type->struct_type->type_params[0];
 
 	visit_type(res, type_substitution_visitor, type_to_substitute);

@@ -9,6 +9,7 @@
 #include <ast/util/free_ast.h>
 #include <assert.h>
 #include <analyzer/lv/lv_analyzer.h>
+#include <ast/util/copy_ast.h>
 #include "test_typeinference_util.h"
 
 #include "typeinference/typeinfer.h"
@@ -30,6 +31,8 @@ struct Type* typeinfer_in_file(char* filename){
     ast_filenames[0] = make_ast_filename(filename);
 
     struct AST* ast = read_ast(ast_filenames, 1);
+
+	free(ast_filenames[0]);
     assert(ast != NULL);
 
     struct Ctx* ctx     = malloc(sizeof(struct Ctx));
@@ -68,9 +71,13 @@ struct Type* typeinfer_in_file(char* filename){
     struct Expr* expr = stmt->ptr.m4->return_value;
     struct Type* returned_type = infer_type_expr(ctx->tables, expr);
 
-    //freeST(ctx->tables);
-    //free(ctx);
-    //free_ast(ast);
+	struct Type* copy = copy_type(returned_type);
 
-    return returned_type;
+	freeST(ctx->tables);
+	free(ctx);
+	free_ast(ast);
+
+	free(flags);
+
+    return copy;
 }

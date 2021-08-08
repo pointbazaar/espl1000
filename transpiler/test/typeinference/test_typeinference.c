@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <string.h>
+#include <ast/util/free_ast.h>
 
 #include "ast/ast.h"
 
@@ -63,6 +64,8 @@ static void test_infer_type_term() {
 	assert(t->m1->simple_type->primitive_type->is_int_type == false);
 	
 	assert(t->m1->simple_type->primitive_type->is_float_type);
+
+	free_type(t);
 }
 
 static void test_infer_type_unopterm() {
@@ -82,6 +85,8 @@ static void test_infer_type_unopterm() {
 	assert(t->m1->simple_type->struct_type == NULL);
 	
 	assert(t->m1->simple_type->primitive_type->is_bool_type);
+
+	free_type(t);
 }
 
 static void test_infer_type_expr() {
@@ -101,6 +106,8 @@ static void test_infer_type_expr() {
 	assert(t->m1->simple_type->struct_type == NULL);
 	
 	assert(t->m1->simple_type->primitive_type->is_int_type);
+
+	free_type(t);
 }
 
 static void test_infer_type_expr_multiple_terms() {
@@ -121,6 +128,8 @@ static void test_infer_type_expr_multiple_terms() {
 	
 	//float + int -> float
 	assert(t->m1->simple_type->primitive_type->is_float_type);
+
+	free_type(t);
 }
 
 static void test_infer_return_type_subroutine(){
@@ -138,6 +147,8 @@ static void test_infer_return_type_subroutine(){
 
     assert(t->m1->simple_type->primitive_type != NULL);
     assert(t->m1->simple_type->primitive_type->is_int_type == true);
+
+    free_type(t);
 }
 
 static void test_infer_type_simplevar_no_indices(){
@@ -155,6 +166,8 @@ static void test_infer_type_simplevar_no_indices(){
 
     assert(t->m1->simple_type->primitive_type != NULL);
     assert(t->m1->simple_type->primitive_type->is_char_type == true);
+
+    free_type(t);
 }
 
 static void test_infer_type_simplevar_with_indices(){
@@ -173,6 +186,7 @@ static void test_infer_type_simplevar_with_indices(){
     assert(t->m1->simple_type->primitive_type != NULL);
     assert(t->m1->simple_type->primitive_type->is_bool_type == true);
 
+    free_type(t);
 }
 
 static void test_infer_type_var_with_member_access(){
@@ -190,6 +204,8 @@ static void test_infer_type_var_with_member_access(){
 
     assert(t->m1->simple_type->primitive_type != NULL);
     assert(t->m1->simple_type->primitive_type->is_int_type == true);
+
+    free_type(t);
 }
 
 static void test_infer_type_type_param(){
@@ -205,6 +221,8 @@ static void test_infer_type_type_param(){
     assert(t->m3 == NULL);
 
     assert(t->m2->index == 0);
+
+    free_type(t);
 }
 
 static void test_infer_type_generic_struct_member(){
@@ -227,6 +245,8 @@ static void test_infer_type_generic_struct_member(){
     assert(!t->m1->simple_type->primitive_type->is_bool_type);
 
     assert(t->m1->simple_type->primitive_type->is_int_type);
+
+    free_type(t);
 }
 
 static void test_infer_type_generic_struct_member_nested(){
@@ -249,4 +269,6 @@ static void test_infer_type_generic_struct_member_nested(){
 	assert(!t->m1->simple_type->primitive_type->is_bool_type);
 
 	assert(t->m1->simple_type->primitive_type->is_int_type);
+
+	free_type(t);
 }

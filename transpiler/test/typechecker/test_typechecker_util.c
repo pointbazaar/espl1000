@@ -26,6 +26,7 @@ struct TCError* typecheck_file(char* filename){
     ast_filenames[0] = make_ast_filename(filename);
 
     struct AST* ast = read_ast(ast_filenames, 1);
+	free(ast_filenames[0]);
 
     if(ast == NULL){ return NULL;}
 
@@ -53,6 +54,8 @@ struct TCError* typecheck_file(char* filename){
     freeST(ctx->tables);
     free(ctx);
     free_ast(ast);
+
+	free(flags);
 
     return errors;
 }

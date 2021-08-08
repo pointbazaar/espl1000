@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <stdlib.h>
 #include "transpiler/main/typechecker/tcctx.h"
 
 #include "test_typechecker.h"
@@ -26,6 +27,13 @@ static void test_typecheck_var_not_found();
 
 static void status_test_typechecker(char* msg){
     printf(" - [TEST] %s\n", msg);
+}
+
+static void free_tc_errors(struct TCError* error){
+	if (error->next != NULL){
+		free_tc_errors(error->next);
+	}
+	free(error);
 }
 
 void test_suite_typechecker(){
@@ -59,6 +67,8 @@ static void test_typecheck_wrong_assign_primitive(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_ASSIGN_TYPE_MISMATCH);
     assert(errors->next == NULL);
+
+	free_tc_errors(errors);
 }
 
 static void test_typecheck_wrong_number_of_args(){
@@ -71,6 +81,8 @@ static void test_typecheck_wrong_number_of_args(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_ARG_NUM_MISMATCH);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }
 
 static void test_typecheck_wrong_type_of_arg(){
@@ -83,6 +95,8 @@ static void test_typecheck_wrong_type_of_arg(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_ARG_TYPE_MISMATCH);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }
 
 static void test_typecheck_wrong_return_type(){
@@ -95,6 +109,8 @@ static void test_typecheck_wrong_return_type(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_WRONG_RETURN_TYPE);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }
 
 static void test_typecheck_binop_type_mismatch(){
@@ -107,6 +123,8 @@ static void test_typecheck_binop_type_mismatch(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_BINOP_TYPE_MISMATCH);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }
 
 static void test_typecheck_subr_not_found(){
@@ -119,6 +137,8 @@ static void test_typecheck_subr_not_found(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_SUBR_NOT_FOUND);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }
 
 static void test_typecheck_impure_called_in_pure(){
@@ -131,6 +151,8 @@ static void test_typecheck_impure_called_in_pure(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_SIDE_EFFECT_IN_PURE_CONTEXT);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }
 
 static void test_typecheck_throw_wrong_usage(){
@@ -143,6 +165,8 @@ static void test_typecheck_throw_wrong_usage(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_THROW_WRONG_USAGE);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }
 
 static void test_typecheck_condition_requires_bool(){
@@ -155,6 +179,8 @@ static void test_typecheck_condition_requires_bool(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_CONDITION_REQUIRES_BOOL);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }
 
 static void test_typecheck_range_requires_int(){
@@ -167,6 +193,8 @@ static void test_typecheck_range_requires_int(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_RANGE_REQUIRES_INT);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }
 
 static void test_typecheck_switch_requires_primitive(){
@@ -179,6 +207,8 @@ static void test_typecheck_switch_requires_primitive(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_SWITCH_REQUIRES_PRIMITIVE_TYPE);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }
 
 static void test_typecheck_switch_case_type_mismatch(){
@@ -191,6 +221,8 @@ static void test_typecheck_switch_case_type_mismatch(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_SWITCH_CASE_TYPE_MISMATCH);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }
 
 static void test_typecheck_wrong_op_unop(){
@@ -203,6 +235,8 @@ static void test_typecheck_wrong_op_unop(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_WRONG_OP_UNOP);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }
 
 static void test_typecheck_index_not_integer_type(){
@@ -215,6 +249,8 @@ static void test_typecheck_index_not_integer_type(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_INDEX_NOT_INTEGER_TYPE);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }
 
 static void test_typecheck_too_many_indices(){
@@ -227,6 +263,8 @@ static void test_typecheck_too_many_indices(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_TOO_MANY_INDICES);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }
 
 static void test_typecheck_local_var_not_a_subroutine(){
@@ -239,6 +277,8 @@ static void test_typecheck_local_var_not_a_subroutine(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_LOCAL_VAR_NOT_A_SUBROUTINE);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }
 
 static void test_typecheck_var_not_found(){
@@ -251,4 +291,6 @@ static void test_typecheck_var_not_found(){
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_VAR_NOT_FOUND);
     assert(errors->next == NULL);
+
+    free_tc_errors(errors);
 }

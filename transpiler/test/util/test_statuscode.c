@@ -63,6 +63,7 @@ int sourceToStatus(char* src, bool debug){
 		//so we can look at them
 		clean();
 	}
+	free(flags->filenames);
 	free(flags);
 	
 	return status;
