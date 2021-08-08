@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <typechecker/type_contains/tc_type_contains.h>
 
 //AST Includes
 #include "ast/ast.h"
@@ -187,9 +188,15 @@ static bool tc_methodcall_arg(
 	
 	struct Type* actual_type = infer_type_expr(tcctx->st, actual_expr);
 
+	//TODO: we can get rid of the integer special cases maybe
+	//thansk to tc_type_contains
 	if(is_integer_type(expect_type) && is_integer_type(actual_type)){ return true; }
-		
-	if(!eq_type(expect_type, actual_type)){
+
+	//TODO: deal with the type parameter binding,
+	//meaning calling list_add(List<?T0> list, ?T0 elem)
+	//with list of type List<int> must bind ?T0 := int
+	//and typecheck elem to be of type int.
+	if(! tc_type_contains(expect_type, actual_type)){
 		
 		char* s1 = str_call(m);
 		char* s2 = str_expr(actual_expr);

@@ -77,7 +77,7 @@ add_library("sd-base"
 	main/util/fill_tables.c
 	main/util/fill_tables.h
 	main/util/fileutils/fileutils.c
-)
+        main/typechecker/type_contains/tc_type_contains.c main/typechecker/type_contains/tc_type_contains.h)
 
 add_executable("sd"
 	cli/main.c

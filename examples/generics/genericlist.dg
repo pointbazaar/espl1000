@@ -24,7 +24,7 @@ fn main()~>int{
 	
 	int k = list.arr[0];
 
-	//list_add(list, 3);
+	list_add(list, 3);
 
 	return 0;
 }
