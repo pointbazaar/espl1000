@@ -57,9 +57,6 @@ struct LexerFlags* handle_arguments(int argc, char** argv){
 	struct LexerFlags* res = malloc(sizeof(struct LexerFlags));
 	
 	res->filename = NULL;
-	
-	res->debug   = false;
-	res->test    = false;
 	res->version = false;
 	res->help    = false;
 	
@@ -67,14 +64,7 @@ struct LexerFlags* handle_arguments(int argc, char** argv){
 
 		char* arg = argv[i];
 		if(arg[0] == '-') {
-			if(strcmp(arg, "-debug") == 0) {
-				
-				res->debug = true;
-				
-			} else if(strcmp(arg, "-test") == 0) {
-				res->test = true;
-				
-			} else if(strcmp(arg, "-version") == 0) {
+			if(strcmp(arg, "-version") == 0) {
 				
 				res->version = true;
 				

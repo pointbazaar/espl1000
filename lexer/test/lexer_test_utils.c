@@ -23,14 +23,14 @@ struct Token** lex(char* source) {
 	fclose(f);
 
 	char cmd[100];
-	sprintf(cmd, "./dragon-lexer %s", fname_src);
+	sprintf(cmd, "./build/dragon-lexer %s", fname_src);
 	system(cmd);
 
 	FILE* ftks = fopen(fname_tks, "r");
 
 	struct TokenList* list = read_tokens_from_tokens_file(ftks, fname_tks);
 
-	int capacity = list_size(list);
+	uint32_t capacity = list_size(list);
 	struct Token** tks = malloc(sizeof(struct Token*)*capacity);
 
 	for (uint32_t count = 0; count < capacity ; count++) {
@@ -42,8 +42,8 @@ struct Token** lex(char* source) {
 	return tks;
 }
 
-void free_tokens(struct Token** tokens, unsigned int count) {
-	for(int i = 0; i < count; i++) {
+void free_tokens	(struct Token** tokens, unsigned int count) {
+	for(uint32_t i = 0; i < count; i++) {
 		free(tokens[i]);
 	}
 }

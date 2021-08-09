@@ -1,3 +1,7 @@
 lexer
 dragon-lexer
+
 lex.yy.c
+lex.yy.h
+
+build/*

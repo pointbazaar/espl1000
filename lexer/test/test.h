@@ -3,7 +3,6 @@
 
 #include <stdbool.h>
 
-int lexer_test_all();
 
 //test subroutines 
 //(returning true if the test was passed, false otherwise)

@@ -13,16 +13,21 @@ we probably do not need integration tests here.
 #include <assert.h>
 
 //Project Headers
-#include "driver.h"
 #include "test.h"
 #include "../../token/token/token.h"
 #include "../../token/TokenKeys.h"
 #include "lexer_test_utils.h"
 
+static int lexer_test_all();
 static uint32_t test_num = 1;
 
 static void printt(char* test_name){
 	printf("[Lexer][Test][#%02d] %s", test_num++, test_name);
+}
+
+int main(){
+	
+	lexer_test_all();
 }
 
 int lexer_test_all() {
