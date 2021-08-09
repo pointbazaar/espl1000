@@ -1,7 +1,7 @@
 #Manual:
 #https://westes.github.io/flex/manual/
 
-all: dragon-lexer test
+all: clean dragon-lexer test
 
 dragon-lexer: lex.yy.c
 	cmake -S . -B build -H.

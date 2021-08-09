@@ -20,6 +20,7 @@
 \/\/	BEGIN(single_line_comment);
 \/\*	BEGIN(multi_line_comment);
 
+<multi_line_comment>\/			//do nothing
 <multi_line_comment>[^\*\/]* 	//do nothing
 <multi_line_comment>\*\/ 	BEGIN(INITIAL);
 

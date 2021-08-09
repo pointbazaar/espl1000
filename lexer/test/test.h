@@ -92,4 +92,8 @@ void test_switch_case();
 void test_assign_operators();
 
 void test_brackets();
+
+
+void test_single_line_comment();
+void test_multi_line_comment();
 #endif

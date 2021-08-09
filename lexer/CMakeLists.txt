@@ -23,6 +23,7 @@ add_executable(dragon-lexer-tests
 	test/testcases/tests_mixed.c
 	test/testcases/tests_keywords.c
 	test/testcases/tests_const.c
+	test/testcases/tests_comments.c
 	test/testcases/tests_other.c
 )
 

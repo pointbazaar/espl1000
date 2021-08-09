@@ -93,6 +93,10 @@ int main(){
 	test_switch_case();
 	test_try_catch_throw_throws();
 	//----------------
+	
+	//tests_comments.c
+	test_single_line_comment();
+	test_multi_line_comment();
 
 	test_rangeop_1();
 	test_rangeop_2();
