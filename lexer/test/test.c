@@ -19,8 +19,6 @@ int main(){
 
 	printf("[Lexer] Running Tests... \n");
 
-	
-
 	test_plus_plus_minus_minus();
 
 	test_can_see_line_with_semicolon();

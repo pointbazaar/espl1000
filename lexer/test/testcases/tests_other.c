@@ -27,7 +27,7 @@ void test_plus_plus_minus_minus(){
 	free_tokens(tokens, 5);
 }
 
-bool test_can_see_line_with_semicolon() {
+void test_can_see_line_with_semicolon() {
 
 	printt("test can see line with semicolon\n");
 
@@ -41,11 +41,9 @@ bool test_can_see_line_with_semicolon() {
 	assert(strcmp(tokens[1]->value_ptr,"x")==0);
 
 	free_tokens(tokens, 3);
-
-	return true;
 }
 
-bool test_can_see_line_with_operators() {
+void test_can_see_line_with_operators() {
 
 	printt("can see line with operators\n");
 
@@ -59,11 +57,9 @@ bool test_can_see_line_with_operators() {
 	assert(tokens[4]->kind == ID);
 
 	free_tokens(tokens, 5);
-
-	return true;
 }
 
-bool test_lexes_return_statement_favorably() {
+void test_lexes_return_statement_favorably() {
 
 	printt("lexes return statement favorably\n");
 
@@ -82,10 +78,9 @@ bool test_lexes_return_statement_favorably() {
 	assert(tokens[7]->kind==SEMICOLON);
 
 	free_tokens(tokens, 8);
-
-	return true;
 }
-bool test_lexes_other_return_statement() {
+
+void test_lexes_other_return_statement() {
 
 	printt("lexes other return statement\n");
 
@@ -107,11 +102,9 @@ bool test_lexes_other_return_statement() {
 	assert(tokens[10]->kind==RPARENS);
 
 	free_tokens(tokens, 11);
-
-	return true;
 }
 
-bool test_identifier_1() {
+void test_identifier_1() {
 
 	printt("test identifier token:1\n");
 
@@ -122,11 +115,9 @@ bool test_identifier_1() {
 	assert(strcmp(tokens[0]->value_ptr,"main")==0);
 
 	free_tokens(tokens, 1);
-
-	return true;
 }
 
-bool test_identifier_2() {
+void test_identifier_2() {
 
 	printt("test identifier token:2\n");
 
@@ -137,12 +128,9 @@ bool test_identifier_2() {
 	assert(strcmp(tokens[0]->value_ptr,"arg_ls")==0);
 
 	free_tokens(tokens, 1);
-
-	return true;
 }
 
-
-bool test_struct() {
+void test_struct() {
 
 	printt("test struct token\n");
 
@@ -152,11 +140,9 @@ bool test_struct() {
 	assert(tokens[0]->kind==STRUCT);
 
 	free_tokens(tokens, 1);
-
-	return true;
 }
 
-bool test_return() {
+void test_return() {
 
 	printt("test return token\n");
 
@@ -166,11 +152,9 @@ bool test_return() {
 	assert(tokens[0]->kind==RETURN);
 
 	free_tokens(tokens, 1);
-
-	return true;
 }
 
-bool test_string_1() {
+void test_string_1() {
 
 	printt("test string token:1\n");
 
@@ -182,12 +166,9 @@ bool test_string_1() {
 	assert(strcmp(tokens[0]->value_ptr,"hi")==0);
 
 	free_tokens(tokens, 1);
-
-	return true;
 }
 
-
-bool test_typeidentifier() {
+void test_typeidentifier() {
 
 	printt("test typeidentifier token:1\n");
 
@@ -198,11 +179,9 @@ bool test_typeidentifier() {
 	assert(strcmp(tokens[0]->value_ptr,"Carrot")==0);
 
 	free_tokens(tokens, 1);
-
-	return true;
 }
 
-bool test_typeidentifier_primitive(){
+void test_typeidentifier_primitive(){
 
 	printt("test typeidentifier primitive\n");
 
@@ -229,11 +208,9 @@ bool test_typeidentifier_primitive(){
 	assert(tokens2[2]->kind == TYPEID_PRIMITIVE_BOOL);
 
 	free_tokens(tokens2, 3);
-
-	return true;
 }
 
-bool test_typeparameter_1() {
+void test_typeparameter_1() {
 
 	printt("test typeparameter token\n");
 
@@ -246,10 +223,9 @@ bool test_typeparameter_1() {
 	assert(tokens[3]->kind==TPARAM);
 	assert(strcmp(tokens[0]->value_ptr,"0")==0);
 	free_tokens(tokens, 4);
-	return true;
 }
 
-bool test_comma() {
+void test_comma() {
 
 	printt("test comma token\n");
 
@@ -260,11 +236,9 @@ bool test_comma() {
 	assert(strcmp(tokens[1]->value_ptr,",")==0);
 
 	free_tokens(tokens, 2);
-
-	return true;
 }
 
-bool test_arrow() {
+void test_arrow() {
 
 	printt("test arrow token\n");
 
@@ -278,13 +252,9 @@ bool test_arrow() {
 	assert(strcmp(tokens[1]->value_ptr,"~>")==0);
 
 	free_tokens(tokens, 2);
-
-	return true;
 }
 
-
-
-bool test_rangeop_1(){
+void test_rangeop_1(){
 
 	printt("test_rangeop_1\n");
 
@@ -297,11 +267,9 @@ bool test_rangeop_1(){
 	assert(tokens[3]->kind==RANGEOP);
 
 	free_tokens(tokens, 4);
-
-	return true;
 }
 
-bool test_rangeop_2(){
+void test_rangeop_2(){
 
 	printt("test_rangeop_1\n");
 
@@ -317,11 +285,9 @@ bool test_rangeop_2(){
 	assert(tokens[5]->kind==ID);
 
 	free_tokens(tokens, 6);
-
-	return true;
 }
 
-bool test_member_access(){
+void test_member_access(){
 
 	printt("test_member_access\n");
 
@@ -335,11 +301,9 @@ bool test_member_access(){
 	assert(tokens[3]->kind==ASSIGNOP);
 
 	free_tokens(tokens, 4);
-
-	return true;
 }
 
-bool test_brackets(){
+void test_brackets(){
 
 	printt("test_brackets\n");
 
@@ -359,5 +323,4 @@ bool test_brackets(){
 	assert( strcmp(tokens[7]->value_ptr,">")==0 );
 
 	free_tokens(tokens, 8);
-	return true;
 }

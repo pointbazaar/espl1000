@@ -7,7 +7,7 @@
 #include "../../token/TokenKeys.h"
 #include "../lexer_test_utils.h"
 
-bool test_lexes_float_constant() {
+void test_lexes_float_constant() {
 
 	printt("lexes float constant\n");
 
@@ -18,10 +18,9 @@ bool test_lexes_float_constant() {
 	assert(strcmp(tokens[0]->value_ptr,"1.44")==0);
 
 	free_tokens(tokens, 1);
-
-	return true;
 }
-bool test_lexes_escaped_char() {
+
+void test_lexes_escaped_char() {
 
 	printt("lexes escaped char\n");
 
@@ -33,11 +32,9 @@ bool test_lexes_escaped_char() {
 	assert(strcmp(tokens[1]->value_ptr,"'\\n'")==0);
 
 	free_tokens(tokens, 2);
-
-	return true;
 }
 
-bool test_anytypetoken() {
+void test_anytypetoken() {
 
 	printt("test anytype token\n");
 
@@ -47,11 +44,9 @@ bool test_anytypetoken() {
 	assert(tokens[0]->kind==ANYTYPE);
 
 	free_tokens(tokens, 1);
-
-	return true;
 }
 
-bool test_true() {
+void test_true() {
 
 	printt("test boolconst token\n");
 
@@ -61,11 +56,9 @@ bool test_true() {
 	assert(tokens[0]->kind==BCONST_TRUE);
 
 	free_tokens(tokens, 1);
-
-	return true;
 }
 
-bool test_false() {
+void test_false() {
 
 	printt("test boolconst token\n");
 
@@ -75,11 +68,9 @@ bool test_false() {
 	assert(tokens[0]->kind==BCONST_FALSE);
 
 	free_tokens(tokens, 1);
-
-	return true;
 }
 
-bool test_char() {
+void test_char() {
 
 	printt("test charconst token\n");
 
@@ -99,12 +90,9 @@ bool test_char() {
 	assert(strcmp(tokens[4]->value_ptr,"'h'")==0 );
 
 	free_tokens(tokens, 5);
-
-	return true;
 }
 
-
-bool test_float_1() {
+void test_float_1() {
 
 	printt("test floatconst token:1\n");
 
@@ -115,11 +103,9 @@ bool test_float_1() {
 	assert(strcmp(tokens[0]->value_ptr,"2038.4") == 0);
 
 	free_tokens(tokens, 1);
-
-	return true;
 }
 
-bool test_float_2() {
+void test_float_2() {
 
 	printt("test floatconst token:2\n");
 
@@ -130,11 +116,9 @@ bool test_float_2() {
 	assert(strcmp(tokens[0]->value_ptr, "0.0") == 0);
 
 	free_tokens(tokens, 1);
-
-	return true;
 }
 
-bool test_float_3() {
+void test_float_3() {
 
 	printt("test floatconst token:3\n");
 
@@ -149,12 +133,9 @@ bool test_float_3() {
 	assert(strcmp(tokens[1]->value_ptr,"5.0") == 0);
 
 	free_tokens(tokens, 2);
-
-	return true;
 }
 
-
-bool test_int_1() {
+void test_int_1() {
 
 	printt("test integer token:1\n");
 
@@ -165,11 +146,9 @@ bool test_int_1() {
 	assert(strcmp(tokens[0]->value_ptr,"2038")==0);
 
 	free_tokens(tokens, 1);
-
-	return true;
 }
 
-bool test_int_2() {
+void test_int_2() {
 
 	printt("test integer token:2\n");
 
@@ -180,11 +159,9 @@ bool test_int_2() {
 	assert(strcmp(tokens[0]->value_ptr,"0")==0);
 
 	free_tokens(tokens, 1);
-
-	return true;
 }
 
-bool test_int_3() {
+void test_int_3() {
 
 	printt("test integer token:3\n");
 
@@ -195,11 +172,9 @@ bool test_int_3() {
 	assert(strcmp(tokens[1]->value_ptr,"5")==0);
 
 	free_tokens(tokens, 2);
-
-	return true;
 }
 
-bool test_hex(){
+void test_hex(){
 
 	printt("test hex\n");
 
@@ -222,11 +197,9 @@ bool test_hex(){
 	assert(strcmp(tokens[4]->value_ptr,"0xA3")==0);
 
 	free_tokens(tokens, 5);
-
-	return true;
 }
 
-bool test_binconst(){
+void test_binconst(){
 
 	printt("test binconst\n");
 
@@ -246,6 +219,4 @@ bool test_binconst(){
 	assert(strcmp(tokens[3]->value_ptr,"0b101")==0);
 
 	free_tokens(tokens, 4);
-
-	return true;
 }

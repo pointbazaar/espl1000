@@ -7,7 +7,7 @@
 #include "../../token/TokenKeys.h"
 #include "../lexer_test_utils.h"
 
-bool test_if_else() {
+void test_if_else() {
 
 	printt("test if else\n");
 
@@ -19,11 +19,9 @@ bool test_if_else() {
 	assert(tokens[2]->kind==LCURLY);
 
 	free_tokens(tokens, 3);
-
-	return true;
 }
 
-bool test_break() {
+void test_break() {
 
 	printt("test break\n");
 
@@ -35,11 +33,9 @@ bool test_break() {
 	assert(tokens[2]->kind==TYPEID_PRIMITIVE_INT);
 
 	free_tokens(tokens, 3);
-
-	return true;
 }
 
-bool test_for(){
+void test_for(){
 
 	printt("test_for\n");
 
@@ -51,11 +47,9 @@ bool test_for(){
 	assert(tokens[2]->kind==LCURLY);
 
 	free_tokens(tokens, 3);
-
-	return true;
 }
 
-bool test_in(){
+void test_in(){
 
 	printt("test_in\n");
 
@@ -68,12 +62,9 @@ bool test_in(){
 	assert(tokens[3]->kind==LCURLY);
 
 	free_tokens(tokens, 4);
-
-	return true;
 }
 
-
-bool test_switch_case(){
+void test_switch_case(){
 
 	printt("test_switch_case\n");
 
@@ -88,10 +79,7 @@ bool test_switch_case(){
 	assert(tokens[4]->kind==INTEGER);
 
 	free_tokens(tokens, 5);
-
-	return true;
 }
-
 
 void test_try_catch_throw_throws(){
 	
@@ -109,5 +97,5 @@ void test_try_catch_throw_throws(){
 	assert(strcmp(tokens[2]->value_ptr,"throw")==0);
 	assert(strcmp(tokens[3]->value_ptr,"throws")==0);
 
-	//free_tokens(tokens, 4); //segfaults
+	free_tokens(tokens, 4);
 }

@@ -12,84 +12,84 @@ void test_try_catch_throw_throws();
 
 void test_plus_plus_minus_minus();
 
-bool test_can_see_line_with_semicolon();
-bool test_can_see_line_with_operators();
-bool test_lexes_return_statement_favorably();
-bool test_lexes_other_return_statement();
-bool test_lexes_float_constant();
-bool test_lexes_escaped_char();
+void test_can_see_line_with_semicolon();
+void test_can_see_line_with_operators();
+void test_lexes_return_statement_favorably();
+void test_lexes_other_return_statement();
+void test_lexes_float_constant();
+void test_lexes_escaped_char();
 
 // // SECTION: the tests from the individual token classes
 
-bool test_anytypetoken();
+void test_anytypetoken();
 
-bool test_true();
-bool test_false();
+void test_true();
+void test_false();
 
-bool test_char();
+void test_char();
 
-bool test_float_1();
-bool test_float_2();
-bool test_float_3();
+void test_float_1();
+void test_float_2();
+void test_float_3();
 
-bool test_identifier_1();
-bool test_identifier_2();
+void test_identifier_1();
+void test_identifier_2();
 
-bool test_int_1();
-bool test_int_2();
-bool test_int_3();
-bool test_hex();
-bool test_binconst();
+void test_int_1();
+void test_int_2();
+void test_int_3();
+void test_hex();
+void test_binconst();
 
-bool test_struct();
-bool test_return();
+void test_struct();
+void test_return();
 
-bool test_string_1();
+void test_string_1();
 
-bool test_typeidentifier();
-bool test_typeidentifier_primitive();
+void test_typeidentifier();
+void test_typeidentifier_primitive();
 
-bool test_typeparameter_1();
+void test_typeparameter_1();
 
-bool test_comma();
-bool test_arrow();
-bool test_mixed_1();
-bool test_mixed_2();
-bool test_mixed_3();
-bool test_mixed_4();
-bool test_mixed_5();
-bool test_mixed_6();
-bool test_mixed_7();
-bool test_mixed_8();
-bool test_mixed_9();
-bool test_mixed_10();
-bool test_mixed_11();
-bool test_mixed_12();
-bool test_mixed_13();
-bool test_mixed_14();
-bool test_mixed_15();
-bool test_mixed_16();
+void test_comma();
+void test_arrow();
+void test_mixed_1();
+void test_mixed_2();
+void test_mixed_3();
+void test_mixed_4();
+void test_mixed_5();
+void test_mixed_6();
+void test_mixed_7();
+void test_mixed_8();
+void test_mixed_9();
+void test_mixed_10();
+void test_mixed_11();
+void test_mixed_12();
+void test_mixed_13();
+void test_mixed_14();
+void test_mixed_15();
+void test_mixed_16();
 
-bool test_operators();
-bool test_operators_cmp();
-bool test_operators_logical();
-bool test_operators_bitwise();
+void test_operators();
+void test_operators_cmp();
+void test_operators_logical();
+void test_operators_bitwise();
 
-bool test_if_else();
+void test_if_else();
 
-bool test_break();
+void test_break();
 
-bool test_for();
-bool test_in();
+void test_for();
+void test_in();
 
-bool test_rangeop_1();
-bool test_rangeop_2();
+void test_rangeop_1();
+void test_rangeop_2();
 
-bool test_member_access();
+void test_member_access();
 
-bool test_switch_case();
+void test_switch_case();
 
-bool test_assign_operators();
+void test_assign_operators();
 
-bool test_brackets();
+void test_brackets();
 #endif

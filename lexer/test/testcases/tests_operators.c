@@ -7,7 +7,7 @@
 #include "../../token/TokenKeys.h"
 #include "../lexer_test_utils.h"
 
-bool test_operators() {
+void test_operators() {
 
 	printt("test operators\n");
 
@@ -30,11 +30,9 @@ bool test_operators() {
 	assert(strcmp(tokens[4]->value_ptr, "%") == 0);
 
 	free_tokens(tokens, 5);
-
-	return true;
 }
 
-bool test_operators_cmp(){
+void test_operators_cmp(){
 	
 	printt("test operators_cmp\n");
 
@@ -60,11 +58,9 @@ bool test_operators_cmp(){
 	assert(strcmp(tokens[5]->value_ptr, ">") == 0);
 
 	free_tokens(tokens, 6);
-
-	return true;
 }
 
-bool test_operators_logical(){
+void test_operators_logical(){
 	
 	printt("test operators_logical\n");
 
@@ -78,11 +74,9 @@ bool test_operators_logical(){
 	assert(strcmp(tokens[1]->value_ptr, "||") == 0);
 
 	free_tokens(tokens, 2);
-
-	return true;
 }
 
-bool test_operators_bitwise(){
+void test_operators_bitwise(){
 	
 	printt("test operators_bitwise\n");
 
@@ -108,12 +102,9 @@ bool test_operators_bitwise(){
 	assert(strcmp(tokens[5]->value_ptr, "~") == 0);
 
 	free_tokens(tokens, 6);
-
-	return true;
 }
 
-
-bool test_assign_operators(){
+void test_assign_operators(){
 
 	printt("test_assign_operators\n");
 
@@ -155,5 +146,4 @@ bool test_assign_operators(){
 	assert(strcmp(tokens[9]->value_ptr, "%=") == 0);
 
 	free_tokens(tokens, 10);
-	return true;
 }

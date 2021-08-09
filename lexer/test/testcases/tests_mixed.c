@@ -7,7 +7,7 @@
 #include "../../token/TokenKeys.h"
 #include "../lexer_test_utils.h"
 
-bool test_mixed_1() {
+void test_mixed_1() {
 
 	printt("test mixed 1\n");
 
@@ -25,11 +25,9 @@ bool test_mixed_1() {
 	assert(tokens[5]->kind == COMMA);
 
 	free_tokens(tokens, 6);
-
-	return true;
 }
 
-bool test_mixed_2() {
+void test_mixed_2() {
 
 	printt("test mixed 2\n");
 
@@ -46,11 +44,9 @@ bool test_mixed_2() {
 	assert(tokens[3]->kind==ARROW);
 
 	free_tokens(tokens, 4);
-
-	return true;
 }
 
-bool test_mixed_3() {
+void test_mixed_3() {
 
 	printt("test mixed 3\n");
 
@@ -62,11 +58,9 @@ bool test_mixed_3() {
 	assert(tokens[2]->kind==ID);
 
 	free_tokens(tokens, 3);
-
-	return true;
 }
 
-bool test_mixed_4() {
+void test_mixed_4() {
 
 	printt("test mixed 4\n");
 
@@ -80,11 +74,9 @@ bool test_mixed_4() {
 	assert(tokens[4]->kind==ID);
 
 	free_tokens(tokens, 5);
-
-	return true;
 }
 
-bool test_mixed_5() {
+void test_mixed_5() {
 
 	printt("test mixed 5\n");
 	
@@ -97,11 +89,9 @@ bool test_mixed_5() {
 	assert(tokens[3]->kind==SEMICOLON);
 
 	free_tokens(tokens, 4);
-
-	return true;
 }
 
-bool test_mixed_6() {
+void test_mixed_6() {
 
 	printt("test mixed 6\n");
 
@@ -113,11 +103,9 @@ bool test_mixed_6() {
 	assert(tokens[2]->kind==RCURLY);
 
 	free_tokens(tokens, 3);
-
-	return true;
 }
 
-bool test_mixed_7() {
+void test_mixed_7() {
 
 	printt("test mixed 7\n");
 
@@ -131,11 +119,9 @@ bool test_mixed_7() {
 	assert(tokens[4]->kind==RPARENS);
 
 	free_tokens(tokens, 5);
-
-	return true;
 }
 
-bool test_mixed_8() {
+void test_mixed_8() {
 
 	printt("test mixed 8\n");
 
@@ -148,11 +134,9 @@ bool test_mixed_8() {
 	assert(tokens[3]->kind==RPARENS);
 
 	free_tokens(tokens, 4);
-
-	return true;
 }
 
-bool test_mixed_9() {
+void test_mixed_9() {
 
 	printt("test mixed 9\n");
 
@@ -165,11 +149,9 @@ bool test_mixed_9() {
 	assert(tokens[3]->kind==RPARENS);
 
 	free_tokens(tokens, 4);
-
-	return true;
 }
 
-bool test_mixed_10() {
+void test_mixed_10() {
 
 	printt("test mixed 10\n");
 	
@@ -186,11 +168,9 @@ bool test_mixed_10() {
 	assert(tokens[3]->kind==INTEGER);
 
 	free_tokens(tokens, 4);
-
-	return true;
 }
 
-bool test_mixed_11() {
+void test_mixed_11() {
 
 	printt("test mixed 11\n");
 
@@ -204,11 +184,9 @@ bool test_mixed_11() {
 	assert(tokens[4]->kind==ID);
 
 	free_tokens(tokens, 5);
-
-	return true;
 }
 
-bool test_mixed_12() {
+void test_mixed_12() {
 
 	printt("test mixed 12\n");
 
@@ -222,11 +200,9 @@ bool test_mixed_12() {
 	assert(tokens[4]->kind==RPARENS);
 
 	free_tokens(tokens, 5);
-
-	return true;
 }
 
-bool test_mixed_13() {
+void test_mixed_13() {
 	
 	printt("test mixed 13\n");
 
@@ -242,11 +218,9 @@ bool test_mixed_13() {
 	assert(tokens[4]->kind==SEMICOLON);
 
 	free_tokens(tokens, 5);
-
-	return true;
 }
 
-bool test_mixed_14(){
+void test_mixed_14(){
 	
 	printt("test mixed 14\n");
 
@@ -269,11 +243,9 @@ bool test_mixed_14(){
 	assert(tokens[8]->kind==RCURLY);
 
 	free_tokens(tokens, 9);
-
-	return true;
 }
 
-bool test_mixed_15(){
+void test_mixed_15(){
 	
 	printt("test mixed 15\n");
 
@@ -299,11 +271,9 @@ bool test_mixed_15(){
 	assert(tokens[8]->line_num == 4);
 
 	free_tokens(tokens, 9);
-
-	return true;
 }
 
-bool test_mixed_16(){
+void test_mixed_16(){
 	
 	printt("test mixed 16\n"); 
 
@@ -321,6 +291,4 @@ bool test_mixed_16(){
 	assert(tokens[7]->kind==ID);
 
 	free_tokens(tokens, 8);
-
-	return true;
 }
