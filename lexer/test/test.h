@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 
+void printt(char* test_name);
 
 //test subroutines 
 //(returning true if the test was passed, false otherwise)

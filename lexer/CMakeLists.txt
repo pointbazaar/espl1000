@@ -18,6 +18,12 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 add_executable(dragon-lexer-tests
 	test/lexer_test_utils.c
 	test/test.c
+	
+	test/testcases/tests_operators.c
+	test/testcases/tests_mixed.c
+	test/testcases/tests_keywords.c
+	test/testcases/tests_const.c
+	test/testcases/tests_other.c
 )
 
 add_executable(dragon-lexer

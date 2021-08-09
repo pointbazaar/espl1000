@@ -8,17 +8,6 @@
 
 #include "../../token/TokenKeys.h" 
 
-/*
-extern void yylex();
-extern void yylex_destroy();
-extern FILE* yyin;
-*/
-/*
-FILE* yyin;
-void yylex();
-void yylex_destroy();
-*/
-
 int main(int argc, char* argv[]){
 	
 	struct LexerFlags* myargs = handle_arguments(argc, argv);
