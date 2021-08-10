@@ -14,17 +14,17 @@ static bool tc_primitivetype_contains(struct PrimitiveType* expect, struct Primi
 
 bool tc_type_contains(struct Type* expect, struct Type* actual){
 
-	if (expect->m1 != NULL && actual->m1 != NULL){
-		return tc_basictype_contains(expect->m1, actual->m1);
+	if (expect->basic_type != NULL && actual->basic_type != NULL){
+		return tc_basictype_contains(expect->basic_type, actual->basic_type);
 	}
 
-	if (expect->m3 != NULL && actual->m3 != NULL){
-		return tc_arraytype_contains(expect->m3, actual->m3);
+	if (expect->array_type != NULL && actual->array_type != NULL){
+		return tc_arraytype_contains(expect->array_type, actual->array_type);
 	}
 
 	//so expect->m2 should be != NULL
 	//meaning that anything on the right is ok, since it's a type parameter
-	return expect->m2 != NULL;
+	return expect->type_param != NULL;
 }
 
 static bool tc_basictype_contains(struct BasicType* expect, struct BasicType* actual){

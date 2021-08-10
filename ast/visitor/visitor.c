@@ -383,14 +383,14 @@ void visit_type(struct Type* t, VISITOR, void* arg){
 		
 	visitor(t, NODE_TYPE, arg);
 	
-	if(t->m1 != NULL)
-		{ visit_basic_type(t->m1, visitor, arg); }
+	if(t->basic_type != NULL)
+		{ visit_basic_type(t->basic_type, visitor, arg); }
 		
-	if(t->m2 != NULL)
-		{ visit_type_param(t->m2, visitor, arg); }
+	if(t->type_param != NULL)
+		{ visit_type_param(t->type_param, visitor, arg); }
 		
-	if(t->m3 != NULL)
-		{ visit_array_type(t->m3, visitor, arg); }
+	if(t->array_type != NULL)
+		{ visit_array_type(t->array_type, visitor, arg); }
 }
 
 void visit_array_type(struct ArrayType* a, VISITOR, void* arg){

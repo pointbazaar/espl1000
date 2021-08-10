@@ -60,8 +60,8 @@ void transpileDeclArg(struct DeclArg* da, struct Ctx* ctx){
 
 	bool isSubrType = false;
 	//is it a function pointer?
-	if(da->type->m1 != NULL){
-		if(da->type->m1->subr_type != NULL){
+	if(da->type->basic_type != NULL){
+		if(da->type->basic_type->subr_type != NULL){
 			isSubrType = true;
 			strncpy(
 				ctx->current_function_pointer_var_or_arg_name,

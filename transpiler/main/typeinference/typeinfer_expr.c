@@ -30,8 +30,8 @@ struct Type *infer_type_expr(struct ST *st, struct Expr *expr) {
 	struct Type* type1 = infer_type_unopterm(st, t1);
 	struct Type* type2 = infer_type_unopterm(st, t2);
 	
-	struct BasicType* btw1 = type1->m1;
-	struct BasicType* btw2 = type2->m1;
+	struct BasicType* btw1 = type1->basic_type;
+	struct BasicType* btw2 = type2->basic_type;
 	
 	if(btw1 == NULL || btw2 == NULL){ 
 	    printf("[Typeinference][Error] Fatal. (in typeinfer_expr.c). Exiting.\n");

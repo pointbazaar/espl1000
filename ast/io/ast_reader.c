@@ -801,14 +801,14 @@ struct Type* read_type(FILE* file) {
 	
 	const uint32_t kind = deserialize_int(file);
 	
-	b->m1 = NULL;
-	b->m2 = NULL;
-	b->m3 = NULL;
+	b->basic_type = NULL;
+	b->type_param = NULL;
+	b->array_type = NULL;
 
 	switch(kind){
-		case 1: b->m1 = read_basic_type(file); break;
-		case 2: b->m2 = read_type_param(file); break;
-		case 3: b->m3 = read_array_type(file); break;
+		case 1: b->basic_type = read_basic_type(file); break;
+		case 2: b->type_param = read_type_param(file); break;
+		case 3: b->array_type = read_array_type(file); break;
 		default:
 			error(file, "Error in read_type");
 	}

@@ -18,9 +18,9 @@ static struct Type* typeFromStrPrimitive_inner(char* typeName){
 	struct SimpleType* s     = make(SimpleType);
 	struct PrimitiveType* p  = make(PrimitiveType);
 	
-	res->m1 = btw;
-	res->m2 = NULL;
-	res->m3 = NULL;
+	res->basic_type = btw;
+	res->type_param = NULL;
+	res->array_type = NULL;
 	
 	p->is_int_type   = strcmp(typeName, "int") == 0;
 	p->is_float_type = strcmp(typeName, "float") == 0;
@@ -56,9 +56,9 @@ struct Type* typeFromStr(struct ST* st, char* typeName){
 	
 	struct BasicType* btw = make(BasicType);
 	
-	res->m1 = btw;
-	res->m2 = NULL;
-	res->m3 = NULL;
+	res->basic_type = btw;
+	res->type_param = NULL;
+	res->array_type = NULL;
 	
 	struct SimpleType* simpleType = make(SimpleType);
 	struct StructType* structType = make(StructType);
@@ -84,9 +84,9 @@ struct Type* typeFromStrArray(struct ST* st, char* typeName){
 	
 	struct Type* t = make(Type);
 	
-	t->m1 = NULL;
-	t->m2 = NULL;
-	t->m3 = at;
+	t->basic_type = NULL;
+	t->type_param = NULL;
+	t->array_type = at;
 	
 	st_register_inferred_type(st, t);
 	

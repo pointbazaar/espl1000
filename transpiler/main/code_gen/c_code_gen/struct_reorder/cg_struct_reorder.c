@@ -13,8 +13,8 @@ static uint8_t sizeof_structmember(struct StructMember* m){
 	
 	struct Type* type = m->type;
 	
-	if(type->m1 != NULL){
-		struct BasicType* btw = type->m1;
+	if(type->basic_type != NULL){
+		struct BasicType* btw = type->basic_type;
 		if(btw->simple_type != NULL){
 			struct SimpleType* stype = btw->simple_type;
 			if(stype->primitive_type != NULL){
@@ -42,11 +42,11 @@ static uint8_t sizeof_structmember(struct StructMember* m){
 		if(btw->subr_type != NULL){ return 8;  }
 	}
 	
-	if(type->m3 != NULL){
+	if(type->array_type != NULL){
 		return 8; //arraytype, is pointer
 	}
 	
-	if(type->m2 != NULL){
+	if(type->type_param != NULL){
 	    //since it is a type param, it can be anything, so 8 bytes it is
         return 8;
 	}

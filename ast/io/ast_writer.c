@@ -515,17 +515,17 @@ void write_type(struct Type* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_TYPE, file);
 	write_super(m);
-	if(m->m1 != NULL){
+	if(m->basic_type != NULL){
 		serialize_int(1, file);
-		write_basic_type(m->m1, file);
+		write_basic_type(m->basic_type, file);
 
-	}else if(m->m2 != NULL){
+	}else if(m->type_param != NULL){
 		serialize_int(2, file);
-		write_type_param(m->m2, file);
+		write_type_param(m->type_param, file);
 
-	}else if(m->m3 != NULL){
+	}else if(m->array_type != NULL){
 		serialize_int(3, file);
-		write_array_type(m->m3, file);
+		write_array_type(m->array_type, file);
 	}
 	
 	magic_num_serialize(MAGIC_END_TYPE, file);

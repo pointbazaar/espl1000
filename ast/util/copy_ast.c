@@ -206,13 +206,13 @@ struct StringConst* copy_string_const(struct StringConst* s){
 struct Type* copy_type(struct Type* t){
 	
 	struct Type* res = make(Type);
-	res->m1 = NULL;
-	res->m2 = NULL;
-	res->m3 = NULL;
+	res->basic_type = NULL;
+	res->type_param = NULL;
+	res->array_type = NULL;
 	
-	if(t->m1 != NULL){ res->m1 = copy_basic_type(t->m1); }
-	if(t->m2 != NULL){ res->m2 = copy_type_param(t->m2); }
-	if(t->m3 != NULL){ res->m3 = copy_array_type(t->m3); }
+	if(t->basic_type != NULL){ res->basic_type = copy_basic_type(t->basic_type); }
+	if(t->type_param != NULL){ res->type_param = copy_type_param(t->type_param); }
+	if(t->array_type != NULL){ res->array_type = copy_array_type(t->array_type); }
 	
 	return res;
 }

@@ -13,7 +13,7 @@ struct Type* infer_in_context(struct ST* st, struct MemberAccess* ma){
     struct Type* structType = ma->structType;
     struct Variable* member = ma->member;
 
-    char* structName = structType->m1->simple_type->struct_type->type_name;
+    char* structName = structType->basic_type->simple_type->struct_type->type_name;
     char* memberName = member->simple_var->name;
 
     struct Type* memberType = stst_get_member(st->stst, structName, memberName)->type;
@@ -41,16 +41,16 @@ static void type_substitution_visitor(void* node, enum NODE_TYPE node_type, void
 
 	if (node_type == NODE_TYPE){
 		struct Type* instance = (struct Type*)node;
-		if (instance->m2 != NULL){
+		if (instance->type_param != NULL){
 
-			free_type_param(instance->m2);
-			instance->m2 = NULL;
+			free_type_param(instance->type_param);
+			instance->type_param = NULL;
 
-			if (type_to_substitute->m1 != NULL){
-				instance->m1 = type_to_substitute->m1;
+			if (type_to_substitute->basic_type != NULL){
+				instance->basic_type = type_to_substitute->basic_type;
 			}
-			if (type_to_substitute->m2 != NULL){
-				instance->m2 = type_to_substitute->m2;
+			if (type_to_substitute->type_param != NULL){
+				instance->type_param = type_to_substitute->type_param;
 			}
 		}
 	}
@@ -58,10 +58,10 @@ static void type_substitution_visitor(void* node, enum NODE_TYPE node_type, void
 
 static struct Type* substitute_type_parameters(struct Type* struct_type, struct Type* member_type) {
 
-	if (struct_type->m1 == NULL){return member_type;}
-	if (struct_type->m1->simple_type == NULL){return member_type;}
-	if (struct_type->m1->simple_type->struct_type == NULL){return member_type;}
-	if (struct_type->m1->simple_type->struct_type->count_type_params != 1){
+	if (struct_type->basic_type == NULL){return member_type;}
+	if (struct_type->basic_type->simple_type == NULL){return member_type;}
+	if (struct_type->basic_type->simple_type->struct_type == NULL){return member_type;}
+	if (struct_type->basic_type->simple_type->struct_type->count_type_params != 1){
 		return member_type;
 	}
 
@@ -69,7 +69,7 @@ static struct Type* substitute_type_parameters(struct Type* struct_type, struct 
 
 	//st_register_inferred_type(sym_tables, res);
 
-	struct Type* type_to_substitute = struct_type->m1->simple_type->struct_type->type_params[0];
+	struct Type* type_to_substitute = struct_type->basic_type->simple_type->struct_type->type_params[0];
 
 	visit_type(res, type_substitution_visitor, type_to_substitute);
 

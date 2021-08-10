@@ -16,16 +16,16 @@ struct Type* infer_type_methodcall(struct ST* st, struct Call* m){
 		
 		struct Type* type = line2->type;
 		
-		if(type->m1 == NULL){ 
+		if(type->basic_type == NULL){
 			//ERROR
 			goto other;
 		}
-		if(type->m1->subr_type == NULL){
+		if(type->basic_type->subr_type == NULL){
 			//ERROR
 			goto other;
 		}
 		
-		struct SubrType* stype = type->m1->subr_type;
+		struct SubrType* stype = type->basic_type->subr_type;
 		
 		return stype->return_type;
 	}

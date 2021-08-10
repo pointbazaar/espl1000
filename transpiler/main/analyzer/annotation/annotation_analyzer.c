@@ -122,8 +122,8 @@ static void annot_private_struct_member(struct ST* st, struct Variable* var){
 	//get the type of struct being accessed
 	struct LVSTLine* line = lvst_get(lvst, var->simple_var->name);
 	
-	if(line->type->m1 == NULL){ return; }
-	struct BasicType* btw = line->type->m1;
+	if(line->type->basic_type == NULL){ return; }
+	struct BasicType* btw = line->type->basic_type;
 	if(btw->simple_type == NULL){ return; }
 	if(btw->simple_type->struct_type == NULL){ return; }
 	

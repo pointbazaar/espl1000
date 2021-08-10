@@ -18,11 +18,11 @@
 
 void transpileType(struct Type* t, struct Ctx* ctx){
 
-	if(t->m1 != NULL){ transpileBasicType(t->m1, ctx); }
+	if(t->basic_type != NULL){ transpileBasicType(t->basic_type, ctx); }
 	
-	if(t->m2 != NULL){ transpileTypeParam(t->m2, ctx); }
+	if(t->type_param != NULL){ transpileTypeParam(t->type_param, ctx); }
 	
-	if(t->m3 != NULL){ transpileArrayType(t->m3, ctx); }
+	if(t->array_type != NULL){ transpileArrayType(t->array_type, ctx); }
 }
 
 void transpileBasicType(struct BasicType* btw, struct Ctx* ctx){

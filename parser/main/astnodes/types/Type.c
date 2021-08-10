@@ -21,9 +21,9 @@ struct Type* makeType_1(struct BasicType* typeNode){
 	res->super.line_num    = typeNode->super.line_num;
 	res->super.annotations = 0;
 
-	res->m1 = typeNode;
-	res->m2 = NULL;
-	res->m3 = NULL;
+	res->basic_type = typeNode;
+	res->type_param = NULL;
+	res->array_type = NULL;
 
 	return res;
 }
@@ -35,9 +35,9 @@ struct Type* makeType_2(struct TypeParam* typeNode){
 	res->super.line_num    = typeNode->super.line_num;
 	res->super.annotations = 0;
 
-	res->m1 = NULL;
-	res->m2 = typeNode;
-	res->m3 = NULL;
+	res->basic_type = NULL;
+	res->type_param = typeNode;
+	res->array_type = NULL;
 
 	return res;
 }
@@ -49,9 +49,9 @@ struct Type* makeType_3(struct ArrayType* typeNode){
 	res->super.line_num    = typeNode->super.line_num;
 	res->super.annotations = 0;
 
-	res->m1 = NULL;
-	res->m2 = NULL;
-	res->m3 = typeNode;
+	res->basic_type = NULL;
+	res->type_param = NULL;
+	res->array_type = typeNode;
 
 	return res;
 }
@@ -63,19 +63,19 @@ struct Type* makeType2(struct TokenList* tokens) {
 	
 	parse_astnode(copy, &(res->super));
 	
-	res->m1 = NULL;
-	res->m2 = NULL;
-	res->m3 = NULL;
+	res->basic_type = NULL;
+	res->type_param = NULL;
+	res->array_type = NULL;
 
-	res->m3     = makeArrayType2(copy);
-	if(res->m3 != NULL){ goto end; }
+	res->array_type     = makeArrayType2(copy);
+	if(res->array_type != NULL){ goto end; }
 		
 		
-	res->m2     = makeTypeParam(copy);
-	if(res->m2 != NULL) { goto end; }
+	res->type_param     = makeTypeParam(copy);
+	if(res->type_param != NULL) { goto end; }
 	
-	res->m1     = makeBasicType2(copy);
-	if(res->m1 != NULL){ goto end; }
+	res->basic_type     = makeBasicType2(copy);
+	if(res->basic_type != NULL){ goto end; }
 	
 	//nothing matched
 	free(res);

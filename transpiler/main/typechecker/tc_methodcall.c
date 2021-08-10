@@ -79,8 +79,8 @@ bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		expect_args = method->decl->count_args;
 
 		if (line->type != NULL) {
-			if (line->type->m1 != NULL && line->type->m1->subr_type != NULL){
-				expect_args = line->type->m1->subr_type->count_arg_types;
+			if (line->type->basic_type != NULL && line->type->basic_type->subr_type != NULL){
+				expect_args = line->type->basic_type->subr_type->count_arg_types;
 			}
 		}
 		
@@ -95,7 +95,7 @@ bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		struct LVSTLine* line2 = lvst_get(tcctx->st->lvst, m->name);
 		
 		struct Type* type = line2->type;
-		if(type->m1 == NULL || type->m1->subr_type == NULL){
+		if(type->basic_type == NULL || type->basic_type->subr_type == NULL){
 
 		    char* snippet = str_call(m);
 			error_snippet(tcctx, snippet, TC_ERR_LOCAL_VAR_NOT_A_SUBROUTINE);
@@ -103,7 +103,7 @@ bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 
             return false;
 		}
-		struct SubrType* stype = type->m1->subr_type;
+		struct SubrType* stype = type->basic_type->subr_type;
 		
 		if( (!tcctx->current_fn->decl->has_side_effects)
 			&& stype->has_side_effects

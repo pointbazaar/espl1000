@@ -296,12 +296,12 @@ void free_subr_type(struct SubrType* st) {
 
 void free_type(struct Type* t) {
 
-	if(t->m1 != NULL) {
-		free_basic_type(t->m1);
-	} else if(t->m2 != NULL) {
-		free_type_param(t->m2);
-	} else if(t->m3 != NULL) {
-		free_array_type(t->m3);
+	if(t->basic_type != NULL) {
+		free_basic_type(t->basic_type);
+	} else if(t->type_param != NULL) {
+		free_type_param(t->type_param);
+	} else if(t->array_type != NULL) {
+		free_array_type(t->array_type);
 	}
 	free(t);
 }

@@ -66,9 +66,9 @@ struct Type* method_decl_to_type(struct MethodDecl* mdecl){
 
 	bt->simple_type = NULL;
 	bt->subr_type   = method_decl_to_subrtype(mdecl);
-	t->m1 = bt;
-	t->m2 = NULL;
-	t->m3 = NULL;
+	t->basic_type = bt;
+	t->type_param = NULL;
+	t->array_type = NULL;
 
 	return t;
 }

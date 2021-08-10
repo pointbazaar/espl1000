@@ -88,7 +88,7 @@ static void obtain_c_code_gen_info(struct Call* mc, struct Ctx* ctx, struct Call
 		if (line->name_in_c != NULL){ info->subr_name_in_c = line->name_in_c; }
 
 		info->throws = line->throws;
-		info->returns_type_param = line->return_type->m2 != NULL;
+		info->returns_type_param = line->return_type->type_param != NULL;
 
 		if (line->type != NULL){ type = line->type; }
 
@@ -96,23 +96,23 @@ static void obtain_c_code_gen_info(struct Call* mc, struct Ctx* ctx, struct Call
 
 		struct LVSTLine* line2 = lvst_get(ctx->tables->lvst, mc->name);
 
-		if(line2->type->m1 == NULL){ exit(1); }
-		struct BasicType* bt = line2->type->m1;
+		if(line2->type->basic_type == NULL){ exit(1); }
+		struct BasicType* bt = line2->type->basic_type;
 		if(bt->subr_type == NULL){ exit(1); }
 
 		info->throws = bt->subr_type->throws;
-		info->returns_type_param = line2->type->m2 != NULL;
+		info->returns_type_param = line2->type->type_param != NULL;
 
 		if (line2->type != NULL){ type = line2->type; }
 	}
 
 	if (type != NULL){
-		if (type->m1 != NULL && type->m1->subr_type != NULL){
-			struct SubrType* subr_type = type->m1->subr_type;
+		if (type->basic_type != NULL && type->basic_type->subr_type != NULL){
+			struct SubrType* subr_type = type->basic_type->subr_type;
 
 			for (int i = 0; i < subr_type->count_arg_types; ++i) {
 				struct Type* arg_type = subr_type->arg_types[i];
-				info->expects_type_param[i] = arg_type->m2 != NULL;
+				info->expects_type_param[i] = arg_type->type_param != NULL;
 			}
 		}
 	}

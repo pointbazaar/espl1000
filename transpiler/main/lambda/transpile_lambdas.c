@@ -104,20 +104,20 @@ static void myvisitor_transpile_lambdas_inner(
 		
 		struct Type* type = line2->type;
 		
-		if(type->m1 == NULL){ 
+		if(type->basic_type == NULL){
 			printf("Error\n");
 			exit(1);
 		}
-		if(type->m1->subr_type == NULL){
+		if(type->basic_type->subr_type == NULL){
 			printf("Error\n");
 			exit(1);
 		}
 		
-		struct SubrType* stype = type->m1->subr_type;
+		struct SubrType* stype = type->basic_type->subr_type;
 		
 		struct Type* pre_lambdaType = stype->arg_types[i];
 		
-		lambdaType = pre_lambdaType->m1->subr_type;
+		lambdaType = pre_lambdaType->basic_type->subr_type;
 		
 	}else if(sst_contains(st->sst, call->name)){
 		
@@ -130,7 +130,7 @@ static void myvisitor_transpile_lambdas_inner(
 		//get the subrtype from the argument
 		struct Type* pre_lambdaType = lambdaArg->type;
 		
-		lambdaType = pre_lambdaType->m1->subr_type;
+		lambdaType = pre_lambdaType->basic_type->subr_type;
 		
 	}else{
 		

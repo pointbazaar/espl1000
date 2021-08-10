@@ -9,14 +9,14 @@ bool eq_type(struct Type* a, struct Type* b){
 	
 	if(a == NULL || b == NULL){ return false; }
 
-	if(a->m1 != NULL)
-		{ return eq_basictype(a->m1, b->m1); }
+	if(a->basic_type != NULL)
+		{ return eq_basictype(a->basic_type, b->basic_type); }
 		
-	if(a->m2 != NULL)
-		{ return eq_typeparam(a->m2, b->m2); }
+	if(a->type_param != NULL)
+		{ return eq_typeparam(a->type_param, b->type_param); }
 		
-	if(a->m3 != NULL)
-		{ return eq_arraytype(a->m3, b->m3); }
+	if(a->array_type != NULL)
+		{ return eq_arraytype(a->array_type, b->array_type); }
 		
 	return false;
 }

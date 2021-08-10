@@ -29,9 +29,9 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 	    left_type = as->opt_type;
 
 		//is it a function pointer?
-		if(as->opt_type->m1 != NULL){
+		if(as->opt_type->basic_type != NULL){
 			
-			if(as->opt_type->m1->subr_type != NULL){
+			if(as->opt_type->basic_type->subr_type != NULL){
 				
 				isSubrType = true;
 				
@@ -74,7 +74,7 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
         left_type = infer_type_variable(ctx->tables, as->var);
 	}
 
-	const bool assignToTypeParam = left_type->m2 != NULL;
+	const bool assignToTypeParam = left_type->type_param != NULL;
 	
 	if(!isSubrType){
 		//if it is a subroutine type, in C unfortunately

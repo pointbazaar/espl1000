@@ -263,11 +263,11 @@ char* str_subr_type(struct SubrType* st){
 
 char* str_type(struct Type* t){
 	
-	if(t->m1 != NULL){ return str_basic_type(t->m1); }
+	if(t->basic_type != NULL){ return str_basic_type(t->basic_type); }
 	
-	if(t->m2 != NULL){ return str_type_param(t->m2); }
+	if(t->type_param != NULL){ return str_type_param(t->type_param); }
 	
-	if(t->m3 != NULL){ return str_array_type(t->m3); }
+	if(t->array_type != NULL){ return str_array_type(t->array_type); }
 	
 	error("str_type");
 	return NULL;

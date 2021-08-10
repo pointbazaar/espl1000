@@ -29,9 +29,9 @@ struct Type *unwrap_indices(struct Type *t, uint32_t count) {
 
 struct Type *unwrap(struct Type *t) {
 
-	if(t->m3 == NULL){
+	if(t->array_type == NULL){
         print_exit(ERR_NO_ARRAYTYPE);
 	}
 	
-	return t->m3->element_type;
+	return t->array_type->element_type;
 }

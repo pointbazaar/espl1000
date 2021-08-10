@@ -64,9 +64,9 @@ struct Type {
 	struct ASTNode super; 
 	
 	//only one of these is != NULL
-	struct BasicType* m1;
-	struct TypeParam* m2;
-	struct ArrayType* m3;
+	struct BasicType* basic_type;
+	struct TypeParam* type_param;
+	struct ArrayType* array_type;
 };
 
 struct TypeParam {

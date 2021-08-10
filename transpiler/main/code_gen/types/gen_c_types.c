@@ -74,16 +74,16 @@ char* primitiveType2CType(struct PrimitiveType* p){
 
 char* type2CType(struct Type* t, struct Ctx* ctx){
 	
-	if(t->m1 != NULL){
-		return basicType2CType(t->m1, ctx);
+	if(t->basic_type != NULL){
+		return basicType2CType(t->basic_type, ctx);
 	}
 	
-	if(t->m2 != NULL){
-		return typeParam2CType(t->m2, ctx);
+	if(t->type_param != NULL){
+		return typeParam2CType(t->type_param, ctx);
 	}
 	
-	if(t->m3 != NULL){
-		return arrayType2CType(t->m3, ctx);
+	if(t->array_type != NULL){
+		return arrayType2CType(t->array_type, ctx);
 	}
 
 	printf("[Transpiler][Error] in type2CType\n");
