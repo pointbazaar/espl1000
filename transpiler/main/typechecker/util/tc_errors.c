@@ -127,8 +127,9 @@ void print_tc_error(struct TCError* tc_err){
     //optionally, print a code snippet (generated from AST)
     if(tc_err->opt_snippet != NULL){
 		
-		printf(" % 3d | ... %s ...\n", tc_err->line_num, tc_err->opt_snippet);
+		printf(" % 3d |  %s  \n", tc_err->line_num, tc_err->opt_snippet);
 	}
-    
-    printf("------------------------------------------\n");
+
+    printf("\n");
+    //printf("------------------------------------------\n");
 }

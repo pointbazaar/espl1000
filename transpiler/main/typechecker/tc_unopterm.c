@@ -1,6 +1,8 @@
-//AST Includes
 #include <string.h>
+#include <stdlib.h>
+
 #include "ast/ast.h"
+#include "ast/util/str_ast.h"
 
 #include "typeinference/typeinfer.h"
 
@@ -40,6 +42,9 @@ bool tc_unopterm(struct UnOpTerm* uot, struct TCCtx* tcctx){
         }
     }
 
-    error(tcctx, "illegal combination of unary operator and term type", TC_ERR_WRONG_OP_UNOP);
+    char* snippet = str_un_op_term(uot);
+    error_snippet(tcctx, snippet, TC_ERR_WRONG_OP_UNOP);
+    free(snippet);
+
     return false;
 }

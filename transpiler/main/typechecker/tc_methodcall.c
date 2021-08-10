@@ -96,7 +96,11 @@ bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		
 		struct Type* type = line2->type;
 		if(type->m1 == NULL || type->m1->subr_type == NULL){
-			error(tcctx, "local variable is not a subroutine in LVST", TC_ERR_LOCAL_VAR_NOT_A_SUBROUTINE);
+
+		    char* snippet = str_call(m);
+			error_snippet(tcctx, snippet, TC_ERR_LOCAL_VAR_NOT_A_SUBROUTINE);
+			free(snippet);
+
             return false;
 		}
 		struct SubrType* stype = type->m1->subr_type;
@@ -158,14 +162,14 @@ static bool tc_methodcall_args(
 	
 	if(actual_args != expect_args){
 		
-		char* s1 = str_call(m);
+		char* snippet = str_call(m);
 		
 		char msg[200];
-		sprintf(msg, "\t%s\nexpected: %d args", s1, expect_args);
-		
-		free(s1);
-		
-		error(tcctx, msg, TC_ERR_ARG_NUM_MISMATCH);
+		sprintf(msg, "expected: %d args", expect_args);
+
+        error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_ARG_NUM_MISMATCH);
+
+        free(snippet);
         return false;
 	}
 	
@@ -199,21 +203,23 @@ static bool tc_methodcall_arg(
 	//and typecheck elem to be of type int.
 	if(! tc_type_contains(expect_type, actual_type)){
 		
-		char* s1 = str_call(m);
+		char* snippet = str_call(m);
 		char* s2 = str_expr(actual_expr);
 		
 		char* sTypeActual   = str_type(actual_type);
 		char* sTypeExpected = str_type(expect_type);
 		
 		char msg[200];
-		sprintf(msg, "\t%s\n%s, (of type %s), but expected type %s", s1, s2, sTypeActual, sTypeExpected);
+		sprintf(msg, "%s, (of type %s), but expected type %s", s2, sTypeActual, sTypeExpected);
 		
-		free(s1);
 		free(s2);
-		free(sTypeActual);
-		free(sTypeExpected);
-		
-		error(tcctx, msg, TC_ERR_ARG_TYPE_MISMATCH);
+        free(sTypeActual);
+        free(sTypeExpected);
+
+        error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_ARG_TYPE_MISMATCH);
+
+        free(snippet);
+
         return false;
 	}
 	

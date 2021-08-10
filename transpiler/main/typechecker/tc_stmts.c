@@ -128,16 +128,17 @@ bool tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx){
 		
 		char* s1 = str_type(returnType);
 		char* s2 = str_type(returnedType);
-		char* s3 = str_ret_stmt(r);
+		char* snippet = str_ret_stmt(r);
 		
 		char msg[200];
-		sprintf(msg, "\t%s\nexpected type: %s, actual type: %s\n", s3, s1, s2);
+		sprintf(msg, "expected type: %s, actual type: %s", s1, s2);
 
 		free(s1);
 		free(s2);
-		free(s3);
-		
-		error(tcctx, msg, TC_ERR_WRONG_RETURN_TYPE);
+
+        error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_WRONG_RETURN_TYPE);
+        free(snippet);
+
         return false;
 	}
 
@@ -154,12 +155,12 @@ bool tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx){
 		
 		char* s1 = str_expr(s->expr);
 		
-		char msg[200];
-		sprintf(msg, "\tswitch %s\n", s1);
+		char snippet[200];
+		sprintf(snippet, "switch %s {", s1);
 		
 		free(s1);
 	
-		error(tcctx, msg, TC_ERR_SWITCH_REQUIRES_PRIMITIVE_TYPE);
+		error_snippet(tcctx, snippet, TC_ERR_SWITCH_REQUIRES_PRIMITIVE_TYPE);
         return false;
 	}
 
@@ -181,14 +182,10 @@ bool tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx){
 		
 		if(isErr){
 			
-			char* s1 = str_case_stmt(c);
-			
-			char msg[200];
-			sprintf(msg, "\t%s\n", s1);
-			
-			free(s1);
-			
-			error(tcctx, msg, TC_ERR_SWITCH_CASE_TYPE_MISMATCH);
+			char* snippet = str_case_stmt(c);
+            error_snippet(tcctx, snippet, TC_ERR_SWITCH_CASE_TYPE_MISMATCH);
+            free(snippet);
+
             return false;
 		}
 	}
