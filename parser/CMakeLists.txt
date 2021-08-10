@@ -68,13 +68,19 @@ add_executable(dragon-parser-tests
 	test/astnodes/const/BoolConstTest.c
 	test/astnodes/const/CharConstTest.c
 	test/astnodes/const/FloatConstTest.c
+	
 	test/astnodes/expr/ExprTest.c
 	test/astnodes/expr/TermTest.c
 	test/astnodes/expr/UnOpTermTest.c
+	
 	test/astnodes/LambdaTest.c
+	
 	test/astnodes/NamespaceTest.c
+	
 	test/astnodes/RangeTest.c
+	
 	test/astnodes/StmtBlockTest.c
+	
 	test/astnodes/statements/AssignStmtTest.c
 	test/astnodes/statements/CallTest.c
 	test/astnodes/statements/CaseStmtTest.c
@@ -85,19 +91,32 @@ add_executable(dragon-parser-tests
 	test/astnodes/statements/SwitchStmtTest.c
 	test/astnodes/statements/WhileStmtTest.c
 	test/astnodes/statements/TryCatchStmtTest.c
+	
 	test/astnodes/struct/StructDeclTest.c
 	test/astnodes/struct/StructMemberTest.c
+	
 	test/astnodes/subr/DeclArgTest.c
 	test/astnodes/subr/MethodTest.c
+	
 	test/astnodes/types/BasicTypeTest.c
+	test/astnodes/types/BasicTypeTest.h
 	test/astnodes/types/SimpleTypeTest.c
+	test/astnodes/types/SimpleTypeTest.h
 	test/astnodes/types/SubrTypeTest.c
-	test/astnodes/var/SimpleVarTest.c
-	test/astnodes/var/VariableTest.c
-	test/commandline/ParserTest.c
+	test/astnodes/types/SubrTypeTest.h
+	test/astnodes/types/TypeTest.c
+	test/astnodes/types/TypeTest.h
 	test/astnodes/types/StructTypeTest.c
 	test/astnodes/types/StructTypeTest.h
-		test/test_parser_util.c test/test_parser_util.h)
+	
+	test/astnodes/var/SimpleVarTest.c
+	test/astnodes/var/VariableTest.c
+	
+	test/commandline/ParserTest.c
+	
+	test/test_parser_util.c 
+	test/test_parser_util.h
+)
 
 add_executable(dragon-parser
 	main/commandline/main.c
@@ -129,7 +148,7 @@ target_include_directories(dragon-parser PUBLIC "main/astnodes")
 target_include_directories(dragon-parser PUBLIC "main/util")
 target_include_directories(dragon-parser PUBLIC "..")
 
-target_include_directories(dragon-parser-tests PUBLIC "main/commandline")
+#target_include_directories(dragon-parser-tests PUBLIC "main/commandline")
 target_include_directories(dragon-parser-tests PUBLIC "main/astnodes")
 target_include_directories(dragon-parser-tests PUBLIC "main/util")
 target_include_directories(dragon-parser-tests PUBLIC "..")

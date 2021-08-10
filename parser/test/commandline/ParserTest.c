@@ -2,35 +2,46 @@
 #include <stdbool.h>
 #include <assert.h>
 
-#include "../astnodes/expr/UnOpTermTest.h"
-#include "../astnodes/types/StructTypeTest.h"
 #include "../astnodes/const/BoolConstTest.h"
-#include "../astnodes/expr/ExprTest.h"
-#include "../astnodes/NamespaceTest.h"
-#include "../astnodes/var/SimpleVarTest.h"
-#include "../astnodes/struct/StructMemberTest.h"
-#include "../astnodes/var/VariableTest.h"
-#include "../astnodes/statements/AssignStmtTest.h"
 #include "../astnodes/const/CharConstTest.h"
 #include "../astnodes/const/FloatConstTest.h"
-#include "../astnodes/statements/CallTest.h"
-#include "../astnodes/statements/RetStmtTest.h"
-#include "../astnodes/statements/StmtTest.h"
-#include "../astnodes/StmtBlockTest.h"
-#include "../astnodes/types/SubrTypeTest.h"
-#include "../astnodes/statements/WhileStmtTest.h"
-#include "../astnodes/types/BasicTypeTest.h"
-#include "../astnodes/subr/DeclArgTest.h"
-#include "../astnodes/statements/IfStmtTest.h"
-#include "../astnodes/subr/MethodTest.h"
-#include "../astnodes/types/SimpleTypeTest.h"
-#include "../astnodes/struct/StructDeclTest.h"
+
+#include "../astnodes/expr/ExprTest.h"
+#include "../astnodes/expr/UnOpTermTest.h"
 #include "../astnodes/expr/TermTest.h"
+
 #include "../astnodes/RangeTest.h"
+
+#include "../astnodes/NamespaceTest.h"
+
+#include "../astnodes/var/SimpleVarTest.h"
+#include "../astnodes/var/VariableTest.h"
+
+#include "../astnodes/StmtBlockTest.h"
+
+#include "../astnodes/types/BasicTypeTest.h"
+#include "../astnodes/types/SubrTypeTest.h"
+#include "../astnodes/types/SimpleTypeTest.h"
+#include "../astnodes/types/StructTypeTest.h"
+#include "../astnodes/types/TypeTest.h"
+
+#include "../astnodes/subr/DeclArgTest.h"
+#include "../astnodes/subr/MethodTest.h"
+
+#include "../astnodes/struct/StructDeclTest.h"
+#include "../astnodes/struct/StructMemberTest.h"
+
 #include "../astnodes/statements/ForStmtTest.h"
 #include "../astnodes/statements/SwitchStmtTest.h"
 #include "../astnodes/statements/CaseStmtTest.h"
 #include "../astnodes/statements/TryCatchStmtTest.h"
+#include "../astnodes/statements/IfStmtTest.h"
+#include "../astnodes/statements/WhileStmtTest.h"
+#include "../astnodes/statements/CallTest.h"
+#include "../astnodes/statements/RetStmtTest.h"
+#include "../astnodes/statements/StmtTest.h"
+#include "../astnodes/statements/AssignStmtTest.h"
+
 #include "../astnodes/LambdaTest.h"
 
 void test_suite_constnodes();
@@ -224,6 +235,8 @@ void test_suite_types() {
     structtype_test();
     structtype_test_type_param();
     structtype_test_generic();
+    
+    type_test_type_params();
 }
 
 void test_suite_range(){

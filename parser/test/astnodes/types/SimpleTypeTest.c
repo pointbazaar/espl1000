@@ -1,7 +1,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <assert.h>
-#include <parser/test/test_parser_util.h>
+
+#include "parser/test/test_parser_util.h"
 
 #include "SimpleTypeTest.h"
 
