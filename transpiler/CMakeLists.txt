@@ -29,7 +29,7 @@ add_library("sd-base"
 	main/code_gen/c_code_gen/stmts/cg_call.c
 	main/code_gen/c_code_gen/stmts/cg_forstmt.c
 	main/code_gen/c_code_gen/stmts/cg_ifstmt.c
-        main/code_gen/c_code_gen/stmts/cg_switchcase.c
+	main/code_gen/c_code_gen/stmts/cg_switchcase.c
 	main/code_gen/c_code_gen/stmts/cg_throwstmt.c
 	main/code_gen/c_code_gen/stmts/cg_trycatch.c
 	main/code_gen/c_code_gen/stmts/cg_whilestmt.c
@@ -60,6 +60,14 @@ add_library("sd-base"
 	main/typechecker/util/tc_utils.c
 	main/typechecker/tc_range.c
 	main/typechecker/tc_method.c
+	main/typechecker/type_contains/tc_type_contains.c
+	main/typechecker/type_contains/tc_type_contains.h
+	main/typechecker/tc_switchstmt.c
+	main/typechecker/tc_retstmt.c
+	main/typechecker/tc_ifstmt.c
+	main/typechecker/tc_whilestmt.c
+	main/typechecker/tc_forstmt.c
+	main/typechecker/tc_trycatchstmt.c
 
 	#typeinference
 	main/typeinference/typeinfer.c
@@ -77,7 +85,7 @@ add_library("sd-base"
 	main/util/fill_tables.c
 	main/util/fill_tables.h
 	main/util/fileutils/fileutils.c
-        main/typechecker/type_contains/tc_type_contains.c main/typechecker/type_contains/tc_type_contains.h)
+)
 
 add_executable("sd"
 	cli/main.c

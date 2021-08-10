@@ -1,11 +1,9 @@
 #include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 //AST Includes
 #include "ast/ast.h"
 #include "ast/util/str_ast.h"
-#include "ast/util/equals_ast.h"
 
 //Typeinference Includes
 #include "transpiler/main/typeinference/typeinfer.h"
@@ -14,7 +12,6 @@
 #include "_tc.h"
 #include "typechecker/util/tc_errors.h"
 #include "typechecker/util/tc_utils.h"
-#include "typecheck.h"
 #include "tcctx.h"
 
 bool tc_stmt(struct Stmt* s, struct TCCtx* tcctx){
@@ -56,163 +53,4 @@ bool tc_throwstmt(struct Stmt* s, struct TCCtx* tcctx){
 	free(snippet);
 	
     return false;
-}
-
-bool tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx){
-	
-	tcctx->current_line_num = i->super.line_num;
-	
-	struct Type* type = infer_type_expr(tcctx->st, i->condition);
-	
-	if(!is_bool_type(type)){
-		
-		char* s1 = str_expr(i->condition);
-		
-		char msg[100];
-		sprintf(msg, "if %s {", s1);
-		
-		free(s1);
-		
-		error_snippet(tcctx, msg, TC_ERR_CONDITION_REQUIRES_BOOL);
-		
-        return false;
-	}
-	
-    return tc_stmtblock(i->block, tcctx);
-}
-
-bool tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx){
-
-	tcctx->current_line_num = w->super.line_num;
-
-	struct Type* type = infer_type_expr(tcctx->st, w->condition);
-	
-	if(!is_bool_type(type)){
-		
-		char* s1 = str_expr(w->condition);
-		
-		char msg[200];
-		sprintf(msg, "while %s {", s1);
-		
-		free(s1);
-		
-		error_snippet(tcctx, msg, TC_ERR_CONDITION_REQUIRES_BOOL);
-        return false;
-	}
-	
-	tcctx->depth_inside_loop++;
-	bool has_err = tc_stmtblock(w->block, tcctx);
-	tcctx->depth_inside_loop--;
-
-    return has_err;
-}
-
-bool tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx){
-
-	tcctx->current_line_num = r->super.line_num;
-
-	struct Type* returnType = tcctx->current_fn->decl->return_type;
-
-    if(!tc_expr(r->return_value, tcctx)){return false;}
-
-    struct Type* returnedType = infer_type_expr(tcctx->st, r->return_value);
-
-	if(is_integer_type(returnType) && is_integer_type(returnedType))
-		{ return true; }
-		
-	//do not check if returned expr
-	//is a call to malloc
-	if(is_malloc_realloc(r->return_value)){ return true; }
-	
-	if(!eq_type(returnType, returnedType)){
-		
-		char* s1 = str_type(returnType);
-		char* s2 = str_type(returnedType);
-		char* snippet = str_ret_stmt(r);
-		
-		char msg[200];
-		sprintf(msg, "expected type: %s, actual type: %s", s1, s2);
-
-		free(s1);
-		free(s2);
-
-        error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_WRONG_RETURN_TYPE);
-        free(snippet);
-
-        return false;
-	}
-
-    return true;
-}
-
-bool tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx){
-
-	tcctx->current_line_num = s->super.line_num;
-
-	struct Type* type = infer_type_expr(tcctx->st, s->expr);
-	
-	if(!is_primitive_type(type)){
-		
-		char* s1 = str_expr(s->expr);
-		
-		char snippet[200];
-		sprintf(snippet, "switch %s {", s1);
-		
-		free(s1);
-	
-		error_snippet(tcctx, snippet, TC_ERR_SWITCH_REQUIRES_PRIMITIVE_TYPE);
-        return false;
-	}
-
-	for(uint32_t i = 0; i < s->count_cases; i++){
-	
-		struct CaseStmt* c = s->cases[i];
-
-		const bool isBool = c->const_value->kind == 1;
-		const bool isInt  = c->const_value->kind == 2;
-		const bool isChar = c->const_value->kind == 3;
-		
-		bool isErr = false;
-		
-		if(isBool && !is_bool_type(type)){ isErr = true; }
-	
-		if(isChar && !is_char_type(type)){ isErr = true; }
-		
-		if(isInt && !is_integer_type(type)){ isErr = true; }
-		
-		if(isErr){
-			
-			char* snippet = str_case_stmt(c);
-            error_snippet(tcctx, snippet, TC_ERR_SWITCH_CASE_TYPE_MISMATCH);
-            free(snippet);
-
-            return false;
-		}
-	}
-
-    return true;
-}
-
-bool tc_forstmt(struct ForStmt* f, struct TCCtx* tcctx){
-	
-	tcctx->current_line_num = f->super.line_num;
-	
-    if(!tc_range(f->range, tcctx)){return false;}
-	tcctx->depth_inside_loop++;
-	bool is_ok = tc_stmtblock(f->block, tcctx);
-	tcctx->depth_inside_loop--;
-    return is_ok;
-}
-
-bool tc_trycatchstmt(struct TryCatchStmt* tcs, struct TCCtx* tcctx){
-	
-	tcctx->current_line_num = tcs->super.line_num;
-	
-	tcctx->depth_inside_try_stmt++;
-	bool is_ok = tc_stmtblock(tcs->try_block, tcctx);
-	tcctx->depth_inside_try_stmt--;
-
-    if(!is_ok){return false;}
-	
-    return tc_stmtblock(tcs->catch_block, tcctx);
 }
