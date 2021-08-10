@@ -314,7 +314,7 @@ struct ArrayType* copy_array_type(struct ArrayType* a){
 struct Call* copy_call(struct Call* c){
 	
 	struct Call* res = make(Call);
-	strcpy(res->name, c->name);
+	res->callable = copy_variable(c->callable);
 	
 	res->args = malloc(sizeof(struct Expr*)*c->count_args);
 	res->count_args = c->count_args;

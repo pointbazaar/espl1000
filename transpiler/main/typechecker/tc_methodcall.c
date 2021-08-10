@@ -45,9 +45,9 @@ bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 	struct Type** expect_types = NULL;
 	uint8_t expect_args        = 0;
 	
-	if(sst_contains(tcctx->st->sst, m->name)){
+	if(sst_contains(tcctx->st->sst, m->callable->simple_var->name)){
 		
-		struct SSTLine* line = sst_get(tcctx->st->sst, m->name);
+		struct SSTLine* line = sst_get(tcctx->st->sst, m->callable->simple_var->name);
 		
 		if( (!tcctx->current_fn->decl->has_side_effects)
 			&& line->has_side_effect
@@ -67,7 +67,7 @@ bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		if(line->method == NULL){
 
 			char msg[150];
-			sprintf(msg, "subroutine HAS NO METHOD IN SST: %s", m->name);
+			sprintf(msg, "subroutine HAS NO METHOD IN SST: %s", m->callable->simple_var->name);
 			
 			error(tcctx, msg, TC_ERR_SUBR_NOT_FOUND);
 		}
@@ -90,9 +90,9 @@ bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 			expect_types[i] = method->decl->args[i]->type;
 		}
 		
-	}else if(lvst_contains(tcctx->st->lvst, m->name)){
+	}else if(lvst_contains(tcctx->st->lvst, m->callable->simple_var->name)){
 		
-		struct LVSTLine* line2 = lvst_get(tcctx->st->lvst, m->name);
+		struct LVSTLine* line2 = lvst_get(tcctx->st->lvst, m->callable->simple_var->name);
 		
 		struct Type* type = line2->type;
 		if(type->basic_type == NULL || type->basic_type->subr_type == NULL){

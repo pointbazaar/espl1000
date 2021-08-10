@@ -98,9 +98,9 @@ static void myvisitor_transpile_lambdas_inner(
 	
 	struct SubrType* lambdaType = NULL;
 	
-	if(lvst_contains(st->lvst, call->name)){
+	if(lvst_contains(st->lvst, call->callable->simple_var->name)){
 		
-		struct LVSTLine* line2 = lvst_get(st->lvst, call->name);
+		struct LVSTLine* line2 = lvst_get(st->lvst, call->callable->simple_var->name);
 		
 		struct Type* type = line2->type;
 		
@@ -119,9 +119,9 @@ static void myvisitor_transpile_lambdas_inner(
 		
 		lambdaType = pre_lambdaType->basic_type->subr_type;
 		
-	}else if(sst_contains(st->sst, call->name)){
+	}else if(sst_contains(st->sst, call->callable->simple_var->name)){
 		
-		struct SSTLine* line = sst_get(st->sst, call->name);
+		struct SSTLine* line = sst_get(st->sst, call->callable->simple_var->name);
 	
 		struct Method* container = line->method;
 		
@@ -135,7 +135,7 @@ static void myvisitor_transpile_lambdas_inner(
 	}else{
 		
 		printf("[Transpiler][Transpile-Lambdas][Error]");
-		printf(" Could not find subroutine: %s\n", call->name);
+		printf(" Could not find subroutine: %s\n", call->callable->simple_var->name);
 		printf("Exiting.\n");
 		exit(1);
 	}

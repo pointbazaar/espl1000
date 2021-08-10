@@ -207,9 +207,9 @@ static void annot_private(struct SST* sst, struct Call* call){
 	//at which point we cannot know which method 
 	//it is.
 	
-	if(!sst_contains(sst, call->name)){ return; }
+	if(!sst_contains(sst, call->callable->simple_var->name)){ return; }
 	
-	struct SSTLine* line = sst_get(sst, call->name);
+	struct SSTLine* line = sst_get(sst, call->callable->simple_var->name);
 	
 	if(line->is_private){
 		
@@ -228,7 +228,7 @@ static void annot_private(struct SST* sst, struct Call* call){
 			//call occurred in different namespace
 			print_analyzer_warning();
 			
-			printf(" subroutine %s is @private in namespace %s, but was called in namespace %s\n", call->name, orig_ns, call_ns);
+			printf(" subroutine %s is @private in namespace %s, but was called in namespace %s\n", call->callable->simple_var->name, orig_ns, call_ns);
 		}
 	}
 }

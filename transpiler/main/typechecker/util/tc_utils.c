@@ -55,7 +55,7 @@ bool is_malloc_realloc(struct Expr* expr){
 	//TODO: use enum or constant not hardcoded magic num
 	if(expr->term1->term->kind != 4){ return false; }
 	
-	char* name = expr->term1->term->ptr.m4->name;
+	char* name = expr->term1->term->ptr.m4->callable->simple_var->name;
 	
 	return (strcmp(name, "malloc") == 0)
 	|| (strcmp(name, "realloc") == 0);

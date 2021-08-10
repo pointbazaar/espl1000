@@ -208,6 +208,7 @@ void free_call(struct Call* mc) {
 		free_expr(mc->args[i]);
 	}
 	free(mc->args);
+    free_variable(mc->callable);
 
 	free(mc);
 }

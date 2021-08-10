@@ -26,7 +26,7 @@ struct IfStmt{
 struct Call {
 	struct ASTNode super; 
 	
-	char name[DEFAULT_STR_SIZE];
+	struct Variable* callable;
 
 	uint8_t count_args;
 	struct Expr** args;

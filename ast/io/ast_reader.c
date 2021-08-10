@@ -697,9 +697,7 @@ struct Call* read_call(FILE* file) {
 	
 	read_super(v);
 
-	char* tmp = deserialize_string(file);
-	strcpy(v->name, tmp);
-	free(tmp);
+	v->callable = read_variable(file);
 	
 	v->count_args = deserialize_int(file);
 

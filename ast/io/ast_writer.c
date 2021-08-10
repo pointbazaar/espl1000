@@ -455,9 +455,10 @@ void write_call(struct Call* m, FILE* file){
 
 	magic_num_serialize(MAGIC_CALL, file);
 	write_super(m);
-	serialize_string(m->name, file);
+
+    write_variable(m->callable, file);
+
 	serialize_int(m->count_args, file);
-	
 	for(int i=0;i < m->count_args;i++)
 		{ write_expr(m->args[i], file); }
 	

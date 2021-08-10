@@ -76,14 +76,14 @@ static void obtain_c_code_gen_info(struct Call* mc, struct Ctx* ctx, struct Call
 
 	info->expects_type_param = malloc(mc->count_args);
 	memset(info->expects_type_param, false, mc->count_args);
-	info->subr_name_in_c = mc->name;
+	info->subr_name_in_c = mc->callable->simple_var->name;
 	info->returns_type_param = false;
 
 	struct Type* type = NULL;
 
-	if(sst_contains(ctx->tables->sst, mc->name)){
+	if(sst_contains(ctx->tables->sst, mc->callable->simple_var->name)){
 
-		struct SSTLine* line = sst_get(ctx->tables->sst, mc->name);
+		struct SSTLine* line = sst_get(ctx->tables->sst, mc->callable->simple_var->name);
 
 		if (line->name_in_c != NULL){ info->subr_name_in_c = line->name_in_c; }
 
@@ -92,9 +92,9 @@ static void obtain_c_code_gen_info(struct Call* mc, struct Ctx* ctx, struct Call
 
 		if (line->type != NULL){ type = line->type; }
 
-	}else if (lvst_contains(ctx->tables->lvst, mc->name)){
+	}else if (lvst_contains(ctx->tables->lvst, mc->callable->simple_var->name)){
 
-		struct LVSTLine* line2 = lvst_get(ctx->tables->lvst, mc->name);
+		struct LVSTLine* line2 = lvst_get(ctx->tables->lvst, mc->callable->simple_var->name);
 
 		if(line2->type->basic_type == NULL){ exit(1); }
 		struct BasicType* bt = line2->type->basic_type;

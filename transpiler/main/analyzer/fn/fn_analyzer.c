@@ -52,7 +52,7 @@ static void myvisitor(void* node, enum NODE_TYPE type, void* arg){
 	//so we have to abort if we cannot find the method
 
 	
-	if(!sst_contains(myst->sst, call->name)){
+	if(!sst_contains(myst->sst, call->callable->simple_var->name)){
 		//maybe it is a function ptr
 		struct SSTLine* myline = sst_get(myst->sst, farg->currentFn->decl->name);
 		cc_set_calls_fn_ptrs(myline->cc, true);
@@ -60,9 +60,9 @@ static void myvisitor(void* node, enum NODE_TYPE type, void* arg){
 	}
 	
 	line = sst_get(myst->sst, farg->currentFn->decl->name);
-	cc_add_callee(line->cc, call->name);
+	cc_add_callee(line->cc, call->callable->simple_var->name);
 	
 	
-	line = sst_get(myst->sst, call->name);
+	line = sst_get(myst->sst, call->callable->simple_var->name);
 	cc_add_caller(line->cc, farg->currentFn->decl->name);
 }

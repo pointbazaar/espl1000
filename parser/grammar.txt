@@ -52,7 +52,7 @@ Stmt          ::= ( Call ';' )
 		| returnStmt | assignStmt
 		| "break" ';' | "continue" ';' | "throw" ';'
 
-Call         ::= Id '(' (Expr (, Expr)*)?  ')'
+Call         ::= Variable '(' (Expr (, Expr)*)?  ')'
 
 whileStmt    ::= "while" Expr        StmtBlock
 forStmt      ::= "for" Id "in" Range StmtBlock

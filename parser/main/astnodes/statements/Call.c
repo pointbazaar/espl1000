@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <var/Variable.h>
 
 #include "parser/main/util/parse_astnode.h"
 
@@ -25,17 +26,14 @@ struct Call* makeCall(struct TokenList* tokens) {
 	res->args = malloc(sizeof(struct Expr*)*1);
 	res->count_args = 0;
 
-	struct Id* id = makeIdentifier(copy);
-	
-	if(id == NULL){
+	res->callable = makeVariable(copy);
+
+	if(res->callable == NULL){
 		free(res->args);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
 	}
-
-	strcpy(res->name, id->identifier);
-	free_identifier(id);
 
 	if(list_size(copy) == 0){
 		free(res->args);

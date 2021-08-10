@@ -666,10 +666,13 @@ char* str_call(struct Call* m){
 	uint16_t l = DEFAULT_STR_SIZE+1+2;
 	
 	l += m->count_args * (20+1);
-	
-	char* res = malloc(sizeof(char)*l);
-	
-	strcpy(res, m->name);
+
+    char* str_var = str_variable(m->callable);
+
+    char* res = malloc(l+ strlen(str_var));
+
+	strcpy(res, str_var);
+	free(str_var);
 	strcat(res, "(");
 	
 	for(uint16_t i = 0; i < m->count_args; i++){

@@ -227,6 +227,8 @@ static void visit_case_stmt(struct CaseStmt* c, VISITOR, void* arg){
 static void visit_call(struct Call* m, VISITOR, void* arg){
 	
 	visitor(m, NODE_CALL, arg);
+
+    visit_variable(m->callable, visitor, arg);
 	
 	for(int i = 0; i < m->count_args; i++)
 		{ visit_expr(m->args[i], visitor, arg); }
