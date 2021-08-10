@@ -142,7 +142,7 @@ static void test_typecheck_subr_not_found(){
     struct TCError* errors = typecheck_file(filename);
 
     assert(errors != NULL);
-    assert(errors->err_kind == TC_ERR_SUBR_NOT_FOUND);
+    assert(errors->err_kind == TC_ERR_VAR_NOT_FOUND);
     assert(errors->next == NULL);
 
     free_tc_errors(errors);
@@ -324,7 +324,7 @@ static void test_typecheck_all_type_errors(){
     assert(err_count == 18);
 
     enum TC_ERR_KIND err_kind_expected[] = {
-            TC_ERR_SUBR_NOT_FOUND,
+            TC_ERR_VAR_NOT_FOUND,
             TC_ERR_VAR_NOT_FOUND,
             TC_ERR_CONDITION_REQUIRES_BOOL,
             TC_ERR_CONDITION_REQUIRES_BOOL,
@@ -332,7 +332,7 @@ static void test_typecheck_all_type_errors(){
             TC_ERR_BINOP_TYPE_MISMATCH,
             TC_ERR_ASSIGN_TYPE_MISMATCH,
             TC_ERR_THROW_WRONG_USAGE,
-            TC_ERR_SUBR_NOT_FOUND,
+            TC_ERR_VAR_NOT_FOUND,
             TC_ERR_INDEX_NOT_INTEGER_TYPE,
             TC_ERR_TOO_MANY_INDICES,
             TC_ERR_LOCAL_VAR_NOT_A_SUBROUTINE,
