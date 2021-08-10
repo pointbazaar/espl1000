@@ -1,0 +1,54 @@
+/*
+DO NOT DELETE.
+create a test from this, that checks
+that this file truly triggers all possibly typechecker errors.
+
+this file could also be used to improve the error messages
+and make them consistent, since all error messages
+can be seen at once.
+*/
+
+fn main()~>int {
+	hello();
+	int k = u;
+
+	if 3 {}
+
+	while 'c' {}
+
+	for i in 0 .. 'c' {}
+
+	int k = 3 + 'c';
+
+	int k2 = 'c';
+
+	throw;
+
+	[int] arr = malloc();
+
+	int m = arr['c'];
+
+	int n = arr[0][3];
+
+	int help = 3;
+
+	help();
+
+	sub(true);
+	sub(3,3);
+
+	int j = !3;
+
+	switch main {}
+
+	switch j {
+
+		case 'c' {}
+	}
+	
+	return 'h';
+}
+
+fn sub(int a)->int {
+	return a;
+}

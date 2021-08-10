@@ -24,6 +24,8 @@ static void test_typecheck_index_not_integer_type();
 static void test_typecheck_too_many_indices();
 static void test_typecheck_local_var_not_a_subroutine();
 static void test_typecheck_var_not_found();
+//------------
+static void test_typecheck_all_type_errors();
 
 static void status_test_typechecker(char* msg){
     printf(" - [TEST] %s\n", msg);
@@ -55,6 +57,11 @@ void test_suite_typechecker(){
     test_typecheck_too_many_indices();
     test_typecheck_local_var_not_a_subroutine();
     test_typecheck_var_not_found();
+
+    //one test to trigger all typechecker errors, in sequence,
+    //to iterate on the error messages (better dev experience)
+    //and make sure multiple errors will be found
+    test_typecheck_all_type_errors();
 }
 
 static void test_typecheck_wrong_assign_primitive(){
@@ -293,4 +300,53 @@ static void test_typecheck_var_not_found(){
     assert(errors->next == NULL);
 
     free_tc_errors(errors);
+}
+
+static void test_typecheck_all_type_errors(){
+
+    status_test_typechecker("typecheck all type errors");
+    char* filename = "test/typechecker/test-src/all_errors.dg";
+
+    struct TCError* errors_orig = typecheck_file(filename);
+
+    assert(errors_orig != NULL);
+
+    struct TCError* errors = errors_orig;
+
+    enum TC_ERR_KIND err_kinds[100];
+    uint32_t err_count = 0;
+
+    do {
+        err_kinds[err_count++] = errors->err_kind;
+        errors = errors->next;
+    } while(errors != NULL);
+
+    assert(err_count == 18);
+
+    enum TC_ERR_KIND err_kind_expected[] = {
+            TC_ERR_SUBR_NOT_FOUND,
+            TC_ERR_VAR_NOT_FOUND,
+            TC_ERR_CONDITION_REQUIRES_BOOL,
+            TC_ERR_CONDITION_REQUIRES_BOOL,
+            TC_ERR_RANGE_REQUIRES_INT,
+            TC_ERR_BINOP_TYPE_MISMATCH,
+            TC_ERR_ASSIGN_TYPE_MISMATCH,
+            TC_ERR_THROW_WRONG_USAGE,
+            TC_ERR_SUBR_NOT_FOUND,
+            TC_ERR_INDEX_NOT_INTEGER_TYPE,
+            TC_ERR_TOO_MANY_INDICES,
+            TC_ERR_LOCAL_VAR_NOT_A_SUBROUTINE,
+            TC_ERR_ARG_TYPE_MISMATCH,
+            TC_ERR_ARG_NUM_MISMATCH,
+            TC_ERR_WRONG_OP_UNOP,
+            TC_ERR_SWITCH_REQUIRES_PRIMITIVE_TYPE,
+            TC_ERR_SWITCH_CASE_TYPE_MISMATCH,
+            TC_ERR_WRONG_RETURN_TYPE
+    };
+
+    for(uint32_t i = 0; i < err_count; i++){
+        assert(err_kinds[i] == err_kind_expected[i]);
+    }
+
+    free_tc_errors(errors_orig);
 }
