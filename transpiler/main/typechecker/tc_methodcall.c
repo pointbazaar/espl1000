@@ -22,9 +22,6 @@
 #include "typecheck.h"
 #include "tcctx.h"
 
-#define ERR_CALLED_SIDE_EFFECT_IN_PURE "called '~>' subr in '->' subr."
-#define ERR_SUBROUTINE_NOT_IN_SST_LVST "subroutine neither in SST nor LVST"
-
 static bool tc_methodcall_args(
 	struct Call* m, 
 	struct Type** expect_types, 
@@ -57,7 +54,7 @@ bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		){
 			//method with side effects called
 			//in method marked as without side effects
-			error(tcctx, ERR_CALLED_SIDE_EFFECT_IN_PURE, TC_ERR_SIDE_EFFECT_IN_PURE_CONTEXT);
+			error(tcctx, "called subr with side-effects in pure subr", TC_ERR_SIDE_EFFECT_IN_PURE_CONTEXT);
             return false;
 		}
 
@@ -70,8 +67,8 @@ bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		if(line->method == NULL){
 
 			char msg[150];
-			sprintf(msg, "subroutine HAS NO METHOD IN SST: %s\n", m->name);
-			strcat(msg, ERR_SUBR_NOT_FOUND);
+			sprintf(msg, "subroutine HAS NO METHOD IN SST: %s", m->name);
+			
 			error(tcctx, msg, TC_ERR_SUBR_NOT_FOUND);
 		}
 		
@@ -109,7 +106,7 @@ bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		){
 			//method with side effects called
 			//in method marked as without side effects
-			error(tcctx, ERR_CALLED_SIDE_EFFECT_IN_PURE, TC_ERR_SIDE_EFFECT_IN_PURE_CONTEXT);
+			error(tcctx, "called subr with side effects in pure subr", TC_ERR_SIDE_EFFECT_IN_PURE_CONTEXT);
             return false;
 		}
 		
@@ -124,7 +121,12 @@ bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 		
 	}else{
 		
-		error(tcctx, ERR_SUBROUTINE_NOT_IN_SST_LVST, TC_ERR_SUBR_NOT_FOUND);
+		char* snippet = str_call(m);
+		
+		error_snippet(tcctx, snippet, TC_ERR_SUBR_NOT_FOUND);
+		
+		free(snippet);
+		
         return false;
 	}
 	
@@ -159,8 +161,7 @@ static bool tc_methodcall_args(
 		char* s1 = str_call(m);
 		
 		char msg[200];
-		sprintf(msg, "\t%s\nexpected: %d args\n", s1, expect_args);
-		strcat(msg, ERR_NUM_ARGS);
+		sprintf(msg, "\t%s\nexpected: %d args", s1, expect_args);
 		
 		free(s1);
 		
@@ -205,8 +206,7 @@ static bool tc_methodcall_arg(
 		char* sTypeExpected = str_type(expect_type);
 		
 		char msg[200];
-		sprintf(msg, "\t%s\n%s, (of type %s), but expected type %s\n", s1, s2, sTypeActual, sTypeExpected);
-		strcat(msg, ERR_ARG_TYPES);
+		sprintf(msg, "\t%s\n%s, (of type %s), but expected type %s", s1, s2, sTypeActual, sTypeExpected);
 		
 		free(s1);
 		free(s2);

@@ -61,18 +61,18 @@ static bool check_type_rules_assign(struct AssignStmt* a, struct TCCtx* tcctx){
 		char* str_t1 = str_type(left);
 		char* str_t2 = str_type(right);
 		
-		char* str_a  = str_assign_stmt(a);
+		char* snippet  = str_assign_stmt(a);
 		
 		char msg[200];
 		
-		sprintf(msg, "\t%s\nexpected type: %s, actual type: %s\n", str_a, str_t1, str_t2);
-		strcat(msg, ERR_ASSIGN_TYPES_MISMATCH);
+		sprintf(msg, "\texpected type: %s, actual type: %s", str_t1, str_t2);
 		
-		free(str_t1);
+		error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_ASSIGN_TYPE_MISMATCH);
+        
+        free(str_t1);
 		free(str_t2);
-		free(str_a);
-	
-		error(tcctx, msg, TC_ERR_ASSIGN_TYPE_MISMATCH);
+		free(snippet);
+        
         return false;
 	}
     return true;

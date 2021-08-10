@@ -49,14 +49,12 @@ bool tc_throwstmt(struct Stmt* s, struct TCCtx* tcctx){
 	//are we inside try-catch stmt?
 	if(tcctx->depth_inside_try_stmt > 0){ return true; }
 	
-	char* s1 = str_stmt(s);
-	char msg[100];
-	sprintf(msg, "\t%s\n", s1);
-	strcat(msg, ERR_NO_THROW_OUTSIDE_TRY_OR_THROWS_SUBR);
+	char* snippet = str_stmt(s);
 	
-	free(s1);
+	error_snippet(tcctx, snippet, TC_ERR_THROW_WRONG_USAGE);
 	
-	error(tcctx, msg, TC_ERR_THROW_WRONG_USAGE);
+	free(snippet);
+	
     return false;
 }
 
@@ -71,12 +69,12 @@ bool tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx){
 		char* s1 = str_expr(i->condition);
 		
 		char msg[100];
-		sprintf(msg, "\t%s\n", s1);
-		strcat(msg, ERR_CONDITION_REQUIRES_BOOL);
+		sprintf(msg, "if %s {", s1);
 		
 		free(s1);
 		
-		error(tcctx, msg, TC_ERR_CONDITION_REQUIRES_BOOL);
+		error_snippet(tcctx, msg, TC_ERR_CONDITION_REQUIRES_BOOL);
+		
         return false;
 	}
 	
@@ -94,12 +92,11 @@ bool tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx){
 		char* s1 = str_expr(w->condition);
 		
 		char msg[200];
-		sprintf(msg, "\t%s\n", s1);
-		strcat(msg, ERR_CONDITION_REQUIRES_BOOL);
+		sprintf(msg, "while %s {", s1);
 		
 		free(s1);
 		
-		error(tcctx, msg, TC_ERR_CONDITION_REQUIRES_BOOL);
+		error_snippet(tcctx, msg, TC_ERR_CONDITION_REQUIRES_BOOL);
         return false;
 	}
 	
@@ -135,7 +132,6 @@ bool tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx){
 		
 		char msg[200];
 		sprintf(msg, "\t%s\nexpected type: %s, actual type: %s\n", s3, s1, s2);
-		strcat(msg, ERR_RETURN_TYPE_MISMATCH);
 
 		free(s1);
 		free(s2);
@@ -160,7 +156,6 @@ bool tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx){
 		
 		char msg[200];
 		sprintf(msg, "\tswitch %s\n", s1);
-		strcat(msg, ERR_SWITCH_REQUIRES_PRIMITIVE_TYPE);
 		
 		free(s1);
 	
@@ -190,7 +185,6 @@ bool tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx){
 			
 			char msg[200];
 			sprintf(msg, "\t%s\n", s1);
-			strcat(msg, ERR_CASE_TYPE_MISMATCH);
 			
 			free(s1);
 			

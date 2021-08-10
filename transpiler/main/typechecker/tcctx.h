@@ -41,15 +41,19 @@ enum TC_ERR_KIND {
     TC_ERR_LOCAL_VAR_NOT_A_SUBROUTINE,
     TC_ERR_SIDE_EFFECT_IN_PURE_CONTEXT,
 
-    TC_ERR_OTHER
+    TC_ERR_OTHER,
+    
+    TC_ERR_END
 };
 
 struct TCError{
 
-    char* msg;
+    char* opt_msg; //may be NULL
     enum TC_ERR_KIND err_kind;
     char* filename;
     uint32_t line_num;
+    
+    char* opt_snippet; //may be NULL
 
     struct TCError* next;
 };

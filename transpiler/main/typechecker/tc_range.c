@@ -27,15 +27,12 @@ bool tc_range(struct Range* r, struct TCCtx* tcctx){
 
     if(!is_integer_type(t1) || !is_integer_type(t2)){
 
-        char* sRange = str_range(r);
+        char* snippet = str_range(r);
 
-        char msg[200];
-        sprintf(msg, "\t%s\n", sRange);
-        strcat(msg, ERR_RANGE_REQUIRES_INT);
-
-        free(sRange);
-
-        error(tcctx, msg, TC_ERR_RANGE_REQUIRES_INT);
+        error_snippet(tcctx, snippet, TC_ERR_RANGE_REQUIRES_INT);
+        
+        free(snippet);
+        
         return false;
     }
 

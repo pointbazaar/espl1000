@@ -1,9 +1,13 @@
 //AST Includes
 #include <stdio.h>
-#include "ast/ast.h"
-#include "tables/symtable/symtable.h"
+#include <stdlib.h>
 
+#include "ast/ast.h"
+#include "ast/util/str_ast.h"
+
+#include "tables/symtable/symtable.h"
 #include "tables/lvst/lvst.h"
+
 #include "_tc.h"
 
 #include "typeinference/typeinfer.h"
@@ -38,14 +42,17 @@ bool tc_simplevar(struct SimpleVar* sv, struct TCCtx* tcctx){
 
     if(!in_lvst && !in_sst){
 
-        char msg[100];
-        sprintf(msg,"simplevar '%s' not found in lvst/sst", name);
-        error(tcctx, msg, TC_ERR_VAR_NOT_FOUND);
+		char* snippet = str_simple_var(sv);
+
+        error_snippet(tcctx, snippet, TC_ERR_VAR_NOT_FOUND);
+        
+        free(snippet);
+        
         return false;
     }
 
     if(!in_lvst && sv->count_indices > 0){
-        error(tcctx, "cannot use indices for something thats not a local var/arg", TC_ERR_TOO_MANY_INDICES);
+        error(tcctx, "cannot use indices for something thats not a local var/arg", TC_ERR_OTHER);
         return false;
     }
 
@@ -56,8 +63,13 @@ bool tc_simplevar(struct SimpleVar* sv, struct TCCtx* tcctx){
         struct Type* type = infer_type_expr(tcctx->st, indexExpr);
 
         if(!is_integer_type(type)){
+			
+			char* snippet = str_simple_var(sv);
 
-            error(tcctx, "index is not an integer type", TC_ERR_INDEX_NOT_INTEGER_TYPE);
+            error_snippet(tcctx, snippet, TC_ERR_INDEX_NOT_INTEGER_TYPE);
+            
+            free(snippet);
+            
             return false;
         }
 
@@ -73,7 +85,13 @@ bool tc_simplevar(struct SimpleVar* sv, struct TCCtx* tcctx){
     uint32_t max_indices = max_indices_allowed(line->type);
 
     if(sv->count_indices > max_indices){
-        error(tcctx, "used more indices than this simplevar had", TC_ERR_TOO_MANY_INDICES);
+		
+		char* snippet = str_simple_var(sv); 
+		
+        error_snippet(tcctx, snippet, TC_ERR_TOO_MANY_INDICES);
+        
+        free(snippet);
+        
         return false;
     }
 

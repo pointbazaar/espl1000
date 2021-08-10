@@ -15,7 +15,7 @@
 #include "util/tc_utils.h"
 #include "tcctx.h"
 
-static bool check_expr_well_formed(struct Type* left, struct Type* right, struct TCCtx* tcctx);
+static bool check_expr_well_formed(struct Type* left, struct Type* right);
 
 bool tc_expr(struct Expr* expr, struct TCCtx* tcctx){
 
@@ -30,12 +30,31 @@ bool tc_expr(struct Expr* expr, struct TCCtx* tcctx){
         struct Type* left  = infer_type_unopterm(tcctx->st, expr->term1);
         struct Type* right = infer_type_unopterm(tcctx->st, expr->term2);
 
-        return check_expr_well_formed(left, right, tcctx);
+        bool well_formed = check_expr_well_formed(left, right);
+        
+        if(!well_formed){
+		
+			char* snippet = str_expr(expr);
+			
+			char* s_left  = str_type(left);
+			char* s_right = str_type(right);
+			
+			char msg[200];
+			sprintf(msg, "types not equal in expression. left: %s, right: %s", s_left, s_right);
+			
+			error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_BINOP_TYPE_MISMATCH);
+		
+			free(snippet);
+			free(s_left);
+			free(s_right);
+		}
+        
+        return well_formed;
 	}
     return true;
 }
 
-static bool check_expr_well_formed(struct Type* left, struct Type* right, struct TCCtx* tcctx){
+static bool check_expr_well_formed(struct Type* left, struct Type* right){
 
     if(is_integer_type(left) && is_integer_type(right)){ return true; }
 
@@ -44,14 +63,6 @@ static bool check_expr_well_formed(struct Type* left, struct Type* right, struct
 
     if(!eq_type(left, right)){
 
-        char* s_left  = str_type(left);
-        char* s_right = str_type(right);
-
-        char msg[200];
-        sprintf(msg, "types not equal in expression. left: %s, right: %s\n", s_left, s_right);
-		free(s_left);
-		free(s_right);
-        error(tcctx,msg, TC_ERR_BINOP_TYPE_MISMATCH);
         return false;
     }
 
