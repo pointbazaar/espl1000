@@ -16,7 +16,10 @@ static void test_infer_type_unopterm();
 static void test_infer_type_expr();
 static void test_infer_type_expr_multiple_terms();
 
-static void test_infer_return_type_subroutine();
+//call
+static void test_infer_type_return_type_subroutine();
+static void test_infer_type_call_with_struct_member_access();
+static void test_infer_type_call_with_array_access();
 
 //variables
 static void test_infer_type_simplevar_no_indices();
@@ -38,7 +41,10 @@ void test_suite_typeinference(){
     test_infer_type_expr();
     test_infer_type_expr_multiple_terms();
 
-    test_infer_return_type_subroutine();
+    //call
+    test_infer_type_return_type_subroutine();
+    test_infer_type_call_with_struct_member_access();
+    test_infer_type_call_with_array_access();
 
     test_infer_type_simplevar_no_indices();
     test_infer_type_simplevar_with_indices();
@@ -132,11 +138,48 @@ static void test_infer_type_expr_multiple_terms() {
 	free_type(t);
 }
 
-static void test_infer_return_type_subroutine(){
+static void test_infer_type_return_type_subroutine(){
 
-	status_test_typeinference("infer_return_type_subroutine");
+	status_test_typeinference("infer_type_return_type_subroutine");
 
-    struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_return_type_subroutine.dg");
+    struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_return_type_subroutine.dg");
+
+    assert(t != NULL);
+
+    assert(t->basic_type != NULL);
+    assert(t->basic_type->simple_type != NULL);
+
+    assert(t->basic_type->simple_type->struct_type == NULL);
+
+    assert(t->basic_type->simple_type->primitive_type != NULL);
+    assert(t->basic_type->simple_type->primitive_type->is_int_type == true);
+
+    free_type(t);
+}
+
+static void test_infer_type_call_with_struct_member_access(){
+
+    status_test_typeinference("infer_type_call_with_struct_member_access");
+
+    struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_call_with_struct_member_access.dg");
+
+    assert(t != NULL);
+
+    assert(t->basic_type != NULL);
+    assert(t->basic_type->simple_type != NULL);
+
+    assert(t->basic_type->simple_type->struct_type == NULL);
+
+    assert(t->basic_type->simple_type->primitive_type != NULL);
+    assert(t->basic_type->simple_type->primitive_type->is_int_type == true);
+
+    free_type(t);
+}
+
+static void test_infer_type_call_with_array_access(){
+    status_test_typeinference("infer_type_call_with_array_access");
+
+    struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_call_with_array_access.dg");
 
     assert(t != NULL);
 

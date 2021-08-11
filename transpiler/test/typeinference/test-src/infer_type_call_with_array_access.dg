@@ -1,0 +1,8 @@
+externc fn get()->[(()->int)] "get"
+
+fn sub()~>int {
+	
+	[(()->int)] b = get();
+
+	return b[0]();
+}

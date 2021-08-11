@@ -1,0 +1,12 @@
+externc fn get()->A "get"
+
+struct A {
+	(()->int) x;
+}
+
+fn sub()~>int {
+	
+	A b = get();
+
+	return b.x();
+}
