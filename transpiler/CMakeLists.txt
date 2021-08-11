@@ -102,6 +102,7 @@ add_executable("sd-tests"
 	test/code_gen/test_op.c
 	test/code_gen/test_other.c
 	test/code_gen/test_stmt.c
+	test/code_gen/test_call.c
 	test/typeinference/test_typeinference.c
 	test/util/test_statuscode.c
 	test/typechecker/test_typechecker_util.c

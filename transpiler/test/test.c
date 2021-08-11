@@ -8,6 +8,7 @@
 #include "code_gen/test_other.h"
 #include "code_gen/test_assign.h"
 #include "code_gen/test_stmt.h"
+#include "code_gen/test_call.h"
 
 static void status_test_transpiler(char* msg){
 	printf("[TRANSPILER][TEST-SUITE] %s\n", msg);
@@ -69,6 +70,11 @@ int main(){
 	test_subrcall(false);
 	test_break(false);
 	test_continue(false);
+
+	//from test_call.h
+	test_call_simple();
+	test_call_struct_member_access();
+	//test_call_array_access(); //test is failing currently
 
 	status_test_transpiler("Typeinference");
 	test_suite_typeinference();

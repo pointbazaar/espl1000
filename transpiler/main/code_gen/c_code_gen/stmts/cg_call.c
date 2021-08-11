@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <typeinference/typeinfer.h>
+#include <ast/util/str_ast.h>
 
 #include "ast/ast.h"
 
@@ -18,6 +20,7 @@ struct CallCCodeGenInfo{
 	char* subr_name_in_c;
 	bool* expects_type_param;
 	bool returns_type_param;
+	bool is_simple_call;
 };
 
 static void obtain_c_code_gen_info(struct Call* mc, struct Ctx* ctx, struct CallCCodeGenInfo* info);
@@ -44,12 +47,17 @@ void transpileCall(struct Call* mc, struct Ctx* ctx){
 	struct CallCCodeGenInfo info;
 	obtain_c_code_gen_info(mc, ctx, &info);
 
-	//TODO: cast to void* or uint64_t if return type is type parameter
 	if (info.returns_type_param){
 		fprintf(ctx->file, "(uint64_t)");
 	}
 
-	fprintf(ctx->file, "%s(", info.subr_name_in_c);
+	if(info.is_simple_call){
+        fprintf(ctx->file, "%s", info.subr_name_in_c);
+    }else{
+        transpileVariable(mc->callable, ctx);
+	}
+
+    fprintf(ctx->file, "(");
 
 	transpile_call_args(mc, ctx, &info);
 	
@@ -78,32 +86,39 @@ static void obtain_c_code_gen_info(struct Call* mc, struct Ctx* ctx, struct Call
 	memset(info->expects_type_param, false, mc->count_args);
 	info->subr_name_in_c = mc->callable->simple_var->name;
 	info->returns_type_param = false;
+	info->is_simple_call = false;
 
 	struct Type* type = NULL;
 
-	if(sst_contains(ctx->tables->sst, mc->callable->simple_var->name)){
+	//set:
+	/*
+	info->subr_name_in_c;
+	info->throws;
+	type;
+	info->returns_type_param;
+	 */
 
-		struct SSTLine* line = sst_get(ctx->tables->sst, mc->callable->simple_var->name);
+	//NEW CODE
+	type = infer_type_variable(ctx->tables, mc->callable);
 
-		if (line->name_in_c != NULL){ info->subr_name_in_c = line->name_in_c; }
+	if(type->basic_type == NULL || type->basic_type->subr_type == NULL){
+	    char* snippet = str_call(mc);
+        printf("[CodeGen][Error] Fatal (function call %s has wrong type\n", snippet);
+        free(snippet);
+        exit(1);
+	}
 
-		info->throws = line->throws;
-		info->returns_type_param = line->return_type->type_param != NULL;
+	info->throws = type->basic_type->subr_type->throws;
+	info->returns_type_param = type->basic_type->subr_type->return_type->type_param != NULL;
 
-		if (line->type != NULL){ type = line->type; }
-
-	}else if (lvst_contains(ctx->tables->lvst, mc->callable->simple_var->name)){
-
-		struct LVSTLine* line2 = lvst_get(ctx->tables->lvst, mc->callable->simple_var->name);
-
-		if(line2->type->basic_type == NULL){ exit(1); }
-		struct BasicType* bt = line2->type->basic_type;
-		if(bt->subr_type == NULL){ exit(1); }
-
-		info->throws = bt->subr_type->throws;
-		info->returns_type_param = line2->type->type_param != NULL;
-
-		if (line2->type != NULL){ type = line2->type; }
+	if(
+        sst_contains(ctx->tables->sst, mc->callable->simple_var->name)
+	    && mc->callable->member_access == NULL
+	    && mc->callable->simple_var->count_indices == 0
+	){
+	    info->is_simple_call = true;
+	    struct SSTLine* line = sst_get(ctx->tables->sst, mc->callable->simple_var->name);
+	    if (line->name_in_c != NULL){ info->subr_name_in_c = line->name_in_c; }
 	}
 
 	if (type != NULL){
