@@ -164,6 +164,9 @@ void test_suite_stmts() {
     methodcall_test3();
     methodcall_test_can_parse_subroutine_call();
     methodcall_test_can_parse_subroutine_call2();
+    methodcall_test_can_parse_struct_member_access();
+    methodcall_test_can_parse_array_access();
+
 
 	stmt_test_assignment_statement_with_method_call();
 	stmt_test_assignment_statement_with_struct_access();
