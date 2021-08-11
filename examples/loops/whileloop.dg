@@ -5,10 +5,10 @@ fn main ()~> int {
         while (i < 3){
 		j=0;
 		while(j<2){
-			printf("i");
+			print_int(i);
 			j=j+1;
 		}
-		printf("o");
+		puts("o");
 		i=i+1;
 	}
 	return 0;

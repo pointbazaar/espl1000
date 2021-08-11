@@ -32,7 +32,7 @@ static struct Flags* makeFlags2(){
 	return flags;
 }
 
-int sourceToStatus(char* src, bool debug){
+int sourceToStatus(char *source) {
 	
 	clean();
 	
@@ -43,11 +43,11 @@ int sourceToStatus(char* src, bool debug){
 		return -1;
 	}
 	
-	fprintf(file, "%s", src);
+	fprintf(file, "%s", source);
 	fclose(file);
 	
 	struct Flags* flags = makeFlags2();
-	flags->debug = debug;
+	flags->debug = false;
 	flags->count_filenames = 1;
 	flags->filenames[0] = FNAME_DEFAULT;
 	
@@ -57,12 +57,9 @@ int sourceToStatus(char* src, bool debug){
 	//#define	_W_INT(i)	(i)
 	//so we can simply avoid WEXITSTATUS(system(...))	
 	int status = system("./a.out") >> 8;
-	
-	if(!debug){
-		//in debug mode, leave the artifacts
-		//so we can look at them
-		clean();
-	}
+
+    clean();
+
 	free(flags->filenames);
 	free(flags);
 	

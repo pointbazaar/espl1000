@@ -12,7 +12,7 @@ fn main () ~> int {
 
 	uint32 size = stack.size; //warning, size is @private 
 
-	printf("%d\n", size);
+	println_int(size);
 
 	return 0;
 }

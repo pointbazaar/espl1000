@@ -158,7 +158,14 @@ void sst_add(struct SST* sst, struct SSTLine* line){
 		printf("\t%s\n", line->name);
 		return;
 	}
-	
+
+	if(line->type == NULL
+	|| line->return_type == NULL
+	){
+        printf("[SST_PREFILL][Error] line->type or line->return_type not set for %s\n", line->name);
+        exit(1);
+	}
+
 	sst_resize(sst);
 	
 	sst->lines[sst->count] = line;

@@ -4,4 +4,5 @@
 void test_call_simple();
 void test_call_struct_member_access();
 void test_call_array_access();
+
 #endif

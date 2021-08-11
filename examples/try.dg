@@ -5,7 +5,7 @@ fn main () ~> int {
 	try {
 		throw;
 	} catch {
-		printf("catched\n");
+		puts("catched");
 	}
 
 	return 0;

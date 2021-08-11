@@ -3,14 +3,10 @@
 
 #include <stdbool.h>
 
-void test_statuscode(bool debug);
-
-void test_simplevar(bool debug);
-
-void test_recursive(bool debug);
-
-void test_charconst_cmp(bool debug);
-
-void test_wrapped_expr(bool debug);
+void test_statuscode();
+void test_simplevar();
+void test_recursive();
+void test_charconst_cmp();
+void test_wrapped_expr();
 
 #endif

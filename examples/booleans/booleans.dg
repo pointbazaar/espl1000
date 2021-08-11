@@ -4,7 +4,7 @@ fn main() ~> int {
 	a = true;
 	a = false;
 
-	if a { printf("hi\n"); }
+	if a { puts("hi"); }
 	return 0;
 }
 

@@ -5,9 +5,9 @@ fn main () ~> int {
 	uint x = 3 ;
 
 	if x < 5 {
-		printf("x\n");
-		printf("<\n");
-		printf("5\n");
+		puts("x");
+		puts("<");
+		puts("5");
 	}
 
 	return 0;

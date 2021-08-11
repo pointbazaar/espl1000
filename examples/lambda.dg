@@ -4,7 +4,7 @@ fn main () ~> int {
 
 	k = subr((x) -> x+1, 8);
 
-	printf("%d\n", k);
+	println_int(k);
 
 	return 0;
 }

@@ -4,7 +4,7 @@
 #the tests are in the same order as a 'tree examples/' would show them
 
 CALL  := sd -Werror ../stdlib/externc/externc_libc.dg
-CALL2  := sd ../stdlib/externc/externc_libc.dg
+CALL2  := sd ../stdlib/externc/externc_libc.dg ../stdlib/base.dg
 
 all: test
 
@@ -14,33 +14,30 @@ test:
 	$(CALL) break/break.dg
 	$(CALL) chars/chars.dg
 	$(CALL) cmd-args/cmdargs.dg
-	$(CALL) floats/floats.dg
-	$(CALL) functional/filter.dg 
-	$(CALL) functional/twice.dg
-	$(CALL) ifstatement/ifstatement.dg 
-	$(CALL) input/input.dg 
-	$(CALL) local_variables/locals.dg 
-	$(CALL) local_variables/locals2.dg 
-	$(CALL) loops/whileloop.dg 
-	$(CALL) loops/forloop.dg 
-	$(CALL) mathematics/fibonacci.dg 
-	$(CALL) methodCalls/methodcall.dg 
-	$(CALL) other/everything.dg 
-	$(CALL) other/harshad.dg 
-	$(CALL) structs/mystructs.dg 
-	$(CALL) structs/node.dg 
-	$(CALL) switch/switch.dg 
-	$(CALL) file_io/file_io.dg
-	$(CALL) plotting/plotting.dg
-	$(CALL) lambda.dg
-	$(CALL) annotations.dg ../stdlib/intstack.dg ../stdlib/ppm.dg ../stdlib/math.dg
-	$(CALL) typeinference/localvartypeinference.dg
+	$(CALL2) functional/filter.dg 
+	$(CALL2) functional/twice.dg
+	$(CALL2) ifstatement/ifstatement.dg 
+	$(CALL2) local_variables/locals.dg 
+	$(CALL2) local_variables/locals2.dg 
+	$(CALL2) loops/whileloop.dg 
+	$(CALL2) loops/forloop.dg 
+	$(CALL2) mathematics/fibonacci.dg 
+	$(CALL2) methodCalls/methodcall.dg 
+	$(CALL2) other/everything.dg 
+	$(CALL2) other/harshad.dg 
+	$(CALL2) structs/mystructs.dg 
+	$(CALL2) structs/node.dg 
+	$(CALL2) switch/switch.dg 
+	$(CALL2) plotting/plotting.dg
+	$(CALL2) lambda.dg
+	$(CALL2) annotations.dg ../stdlib/intstack.dg ../stdlib/ppm.dg ../stdlib/math.dg
+	$(CALL2) typeinference/localvartypeinference.dg
 
-	$(CALL) try.dg
-	$(CALL) try2.dg
+	$(CALL2) try.dg
+	$(CALL2) try2.dg
 
-	$(CALL) image_io.dg ../stdlib/intstack.dg ../stdlib/ppm.dg ../stdlib/math.dg
-	# $(CALL) fnptrstruct.dg #causing problems
+	$(CALL2) image_io.dg ../stdlib/intstack.dg ../stdlib/ppm.dg ../stdlib/math.dg
+	# $(CALL2) fnptrstruct.dg #causing problems
 	
 	$(CALL2) generics/genericlist.dg
 	$(CALL2) generics/genericstruct.dg

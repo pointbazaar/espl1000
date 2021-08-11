@@ -8,7 +8,7 @@ fn main () ~> int {
 	for i in 1 .. 20 {
 		
 		testharshad(i);
-		printf("\n");
+		puts("");
 	}
 	
 	return 0;
@@ -27,10 +27,11 @@ fn testharshad (int n) ~> int {
 
 	bool res = norig % sum == 0;
 
+	print_int(norig);
 	if res { 
-		printf("%d-is-harshad", norig);
+		puts("-is-harshad");
 	} else {
-		printf("%d-is-not-harshad", norig);
+		puts("-is-not-harshad");
 	}
 
 

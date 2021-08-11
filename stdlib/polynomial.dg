@@ -100,8 +100,9 @@ fn monomial_parse_i([char] s, uint i) ~> Monomial {
 	[char] s2 = malloc(2);
 
 	if s[i] != 'x' {
-
-		sprintf(s2, "%c%c", s[i], s[i+1]);
+		
+		s2[0] = s[i];
+		s2[1] = s[i+1];
 		res.factor = atof(s2);
 		i++;
 	} else { res.factor = 1.0; }
@@ -117,7 +118,7 @@ fn monomial_parse_i([char] s, uint i) ~> Monomial {
 	if s[i] == '^' { 
 
 		i++; //skip ^
-		sprintf(s2, "%c", s[i]);
+		s2[0] = s[i];
 		res.exponent = atoi(s2);
 	} else {
 		res.exponent = 1;
@@ -191,18 +192,19 @@ fn poly_print(Poly p) ~> bool {
 		
 		if c != 0 {
 			if count_printed > 0 {
-				if c >= 0 { printf(" + "); }
-				else { printf(" - "); }
+				if c >= 0 { puts(" + "); }
+				else { puts(" - "); }
 			}
-			printf("%f", fabs(c));
+			print_float(fabs(c));
 			if i > 0 {
-				printf("x^%d", i);
+				puts("x^");
+				print_int(i);
 			}
 			count_printed++;
 		}
 		i--;
 	}
-	printf("\n");
+	puts("\n");
 	return true;
 }
 

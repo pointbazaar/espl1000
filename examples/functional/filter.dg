@@ -12,7 +12,7 @@ fn main ()~> int {
 	[uint] arr2 = filter(arr, len, myfilter);	
 	
 	for i in 0 .. len-1 {
-		printf("%d\n", arr2[i]);
+		println_int(arr2[i]);
 	}	
 
 	return 0;

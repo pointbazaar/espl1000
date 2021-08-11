@@ -7,7 +7,6 @@
 #include "tables/sst/sst.h"
 #include "tables/stst/stst.h"
 #include "symtable.h"
-#include "tables/sst/sst_prefill.h"
 
 struct ST* makeST(){
 
@@ -23,8 +22,6 @@ struct ST* makeST(){
 	st->sst  = makeSST();
 	st->stst = makeSTST();
 	st->lvst = makeLVST();
-
-    sst_prefill(st);
 	
 	return st;
 }

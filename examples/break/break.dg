@@ -5,10 +5,10 @@ fn main () ~> int {
 	for i in 1 .. 3 {
 		break;
 
-		printf("inloop\n");
+		puts("inloop");
 	}
 
-	printf("break\n");
+	puts("break");
 
 	return 0;
 }

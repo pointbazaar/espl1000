@@ -88,8 +88,22 @@ externc fn fopen([char] name, [char] mode) ~> FILE "fopen"
 externc fn fclose(FILE file) ~> int "fclose"
 externc fn fflush(FILE file) ~> int "fflush"
 
-externc fn getchar() ~> int "getchar"
-externc fn fgetc(FILE file) ~> int "fgetc"
+externc fn getchar() ~> int 			"getchar"
+externc fn fgetc(FILE file) ~> int 		"fgetc"
+externc fn fgets([char] s, int size, FILE stream)~>char "fgets"
+externc fn fputc(char c, FILE file) ~> int 	"fputc"
+externc fn fputs([char] str, FILE file) ~> int "fputs"
+externc fn puts([char] str) ~> int 		"puts"
+externc fn putchar(char c) ~> int 		"putchar"
+
+externc fn fread([char] ptr, uint size, uint nmemb, FILE stream)~>int "fread"
+externc fn fwrite([char] ptr, uint size, uint nmemb, FILE stream)~>int "fwrite"
+
+
+
+//pthread.h
+externc fn pthread_create(int thread, int attr, (()~>int) start_routine, int arg) ~> int "pthread_create"
+externc fn pthread_join(int thread, [int] retval) ~> int "pthread_join"
 
 //structs
 externc struct FILE {} "FILE" 

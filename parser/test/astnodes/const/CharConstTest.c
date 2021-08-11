@@ -32,7 +32,6 @@ int test_charconst_parse_char_constant_node() {
 
 int test_charconst_parse_char_constant_node_newline() {
 
-
 	status_test("test_charconst_parse_char_constant_node_newline");
 
 	struct TokenList* list = makeTokenList();

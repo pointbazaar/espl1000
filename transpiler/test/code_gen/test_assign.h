@@ -8,16 +8,16 @@
  * all the basic assignments
  */
 
-void test_assign(bool debug);
-void test_assign_plus(bool debug);
-void test_assign_minus(bool debug);
-void test_assign_times(bool debug);
-void test_assign_div(bool debug);
+void test_assign();
+void test_assign_plus();
+void test_assign_minus();
+void test_assign_times();
+void test_assign_div();
 
 //bitwise assignments
-void test_assign_bitwise_and(bool debug);
-void test_assign_bitwise_or(bool debug);
-void test_assign_bitwise_shift_left(bool debug);
-void test_assign_bitwise_shift_right(bool debug);
+void test_assign_bitwise_and();
+void test_assign_bitwise_or();
+void test_assign_bitwise_shift_left();
+void test_assign_bitwise_shift_right();
 
 #endif

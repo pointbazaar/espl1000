@@ -7,14 +7,14 @@ fn main () ~> int {
 	try {
 		sub1();
 	} catch {
-		printf("catched\n");
+		puts("catched");
 	}
 
 
 	try {
 		sub2();
 	} catch {
-		printf("catch 2\n");
+		puts("catch 2");
 	}
 	return 0;
 }

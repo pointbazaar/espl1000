@@ -2,6 +2,7 @@
 fn main ()~> int {
 	uint x = 55;
 
-	printf("Hii %d\n", x);
+	puts("Hii ");
+	println_int(x);
 	return 0;
 }

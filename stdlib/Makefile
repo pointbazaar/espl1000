@@ -1,5 +1,6 @@
 
 SOURCES :=  test.dg \
+	base.dg \
 	primes.dg math.dg \
 	intset.dg intstack.dg intarray.dg intbintree.dg intll.dg \
 	polynomial.dg \

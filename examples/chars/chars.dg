@@ -3,6 +3,6 @@
 fn main ()~> int {
 	char c = 'h';
 		
-	printf("%c\n",c);
+	putchar(c);
 	return 0;
 }

@@ -30,14 +30,6 @@ fn list_get(List<?T0> list, uint index) ~> ?T0 {
 	return list.arr[index];
 }
 
-fn list_print(List<?T0> list, [char] fmt) ~> bool {
-	for i in 0 .. (list.count-1) {
-		printf(fmt, list.arr[i]);
-	}
-	printf("\n");
-	return true;
-}
-
 fn main()~>int{
 
 	List<int> list = malloc(8*3);
@@ -49,8 +41,6 @@ fn main()~>int{
 	for k in 1 .. 10 {
 		list_add(list, k);
 	}
-
-	list_print(list, "%d,");
 
 	List<List<int> > list2 = malloc(8*3);
 	list_init(list2);
@@ -68,7 +58,6 @@ fn main()~>int{
 	//TODO: work on typechecker/typeinference here
 	//(it makes mistaks with below statements)
 	//List<int> res = list_get(list2, 0);
-	//list_print(res, "%d,");
 
 	return 0;
 }

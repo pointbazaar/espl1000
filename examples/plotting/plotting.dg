@@ -10,7 +10,10 @@ fn main () ~> int {
 	float x = 0.0;
 	while x < 6 {
 		float y = (x-3)*(x-2)*(x+3)*(x-4)*(x-8);
-		fprintf(f1, "%f %f\n", x, y);
+		fprint_float(f1, x);
+		fputs(" ", f1);
+		fprint_float(f1, y);
+		fputs("\n", f1);
 		x += 0.02;
 	}
 
@@ -18,8 +21,8 @@ fn main () ~> int {
 
 	f = fopen("/tmp/gnuplot-example","w");
 
-	fprintf(f, "set title \"my plot\";");
-	fprintf(f, "plot \"/tmp/gnuplot-data\";");
+	fputs("set title \"my plot\";", f);
+	fputs("plot \"/tmp/gnuplot-data\";", f);
 
 	fclose(f);
 

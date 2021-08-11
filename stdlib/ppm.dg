@@ -133,13 +133,14 @@ fn ppm_pixel_read_blue(ImagePPM image, uint row, uint col) ~> uint8 {
 	return image.data_blue[row*image.width + col];
 }
 
+
 fn ppm_read([char] filename) ~> ImagePPM {
 
 	file = fopen(filename, "r");
 
 	[char] s = malloc(100);
 	
-	fscanf(file, "%s\n", s);
+	fgets(s, 99, file);
 	
 	uint width  = readuint8(file);
 	uint height = readuint8(file);
@@ -168,17 +169,25 @@ fn ppm_write(ImagePPM image, [char] filename) ~> bool {
 	
 	file = fopen(filename, "w");
 	
-	fprintf(file, "P3\n");
-	fprintf(file, "%d %d\n", width, height);
-	fprintf(file, "255\n");
+	fputs("P3\n", file);
+	fprint_int(file, width);
+	fputc(' ', file);
+	fprint_int(file, height);
+	fputs("255\n", file);
 	
 	for row in 0 .. (height-1) {
 		for col in 0 .. (width-1) {
 		
-			fprintf(file, "%d ", image.data_red  [row*width + col]);
-			fprintf(file, "%d ", image.data_green[row*width + col]);
-			fprintf(file, "%d ", image.data_blue [row*width + col]);
-			fprintf(file, "\n");
+			fprint_int(file, image.data_red  [row*width + col]);
+			fputs(" ", file);
+
+			fprint_int(file, image.data_green[row*width + col]);
+			fputs(" ", file);
+
+			fprint_int(file, image.data_blue [row*width + col]);
+			fputs(" ", file);
+			
+			fputs("\n", file);
 		}
 	}
 

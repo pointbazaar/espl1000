@@ -1,5 +1,4 @@
 #include <tables/sst/sst.h>
-#include <tables/sst/sst_prefill.h>
 #include <tables/sst/sst_fill.h>
 #include <tables/sst/sst_print.h>
 #include <tables/stst/stst.h>
@@ -14,7 +13,6 @@
 void fill_tables(struct AST* ast, struct Ctx* ctx){
 
     sst_clear(ctx->tables->sst);
-    sst_prefill(ctx->tables);
 
     for(int i = 0; i < ast->count_namespaces; i++){
 

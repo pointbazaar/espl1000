@@ -1,9 +1,0 @@
-#include <stdio.h>
-fn main () ~> int {
-	
-	int x = getchar();
-	
-	printf("%c \n", x);
-	
-	return 0;
-}

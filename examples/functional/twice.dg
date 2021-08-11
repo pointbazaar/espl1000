@@ -6,8 +6,8 @@ struct Simple {
 
 fn main ()~> int {
 
-	printf("%d\n",subr(id));
-	printf("%d\n",subr(twice));
+	println_int(subr(id));
+	println_int(subr(twice));
 
 	((uint) -> uint) myfunction = id;
 

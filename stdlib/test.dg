@@ -9,9 +9,12 @@ fn main() ~> int {
 }
 
 fn status([char] module) ~> bool {
-
-    printf("[stdlib][Test] %s\n", module);
-    return true;
+	[char] str = malloc(100);
+	strcpy(str, "[stdlib][Test] ");
+	strcat(str, module);
+	puts(str);
+	free(str);
+	return true;
 }
 
 fn main2() ~> int throws {
@@ -38,7 +41,7 @@ fn main2() ~> int throws {
 	
 	status("collision2d"); test_collision2d();
 
-	printf("[stdlib] PASSED ALL TESTS\n");
+	puts("[stdlib] PASSED ALL TESTS\n");
 
 	return 0;
 }
