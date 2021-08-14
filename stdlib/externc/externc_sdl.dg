@@ -7,7 +7,11 @@
 
 //subr declarations
 externc fn sdl_init(int k)~>int "SDL_Init"
+externc fn sdl_quit()~>int "SDL_Quit"
+
 externc fn sdl_create_window([char] name, int pos1, int pos2, int width, int height, bool shown)~>SDL_Window "SDL_CreateWindow"
+externc fn sdl_destroy_window(SDL_Window window)~>int "SDL_DestroyWindow"
+
 externc fn sdl_get_error()~>[char] "SDL_GetError" 
 externc fn sdl_get_window_surface(SDL_Window w)~>SDL_Surface "SDL_GetWindowSurface"
 
@@ -22,6 +26,11 @@ externc fn sdl_blit_surface(
 	SDL_Surface src, SDL_Rect src_rect, 
 	SDL_Surface dest, SDL_Rect dest_rect
 ) ~> int "SDL_BlitSurface"
+
+externc fn sdl_blit_scaled(
+	SDL_Surface src, SDL_Rect src_rect,
+	SDL_Surface dest, SDL_Rect dest_rect
+) ~> int "SDL_BlitScaled"
 
 externc fn sdl_free_surface(SDL_Surface surface) ~> bool "SDL_FreeSurface"
 
