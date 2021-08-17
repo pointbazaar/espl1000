@@ -57,18 +57,13 @@ struct LexerFlags* handle_arguments(int argc, char** argv){
 	struct LexerFlags* res = malloc(sizeof(struct LexerFlags));
 	
 	res->filename = NULL;
-	res->version = false;
 	res->help    = false;
 	
 	for(int i=1; i < argc; i++) {
 
 		char* arg = argv[i];
 		if(arg[0] == '-') {
-			if(strcmp(arg, "-version") == 0) {
-				
-				res->version = true;
-				
-			} else if(strcmp(arg, "-help") == 0) {
+			if(strcmp(arg, "-help") == 0) {
 				
 				lexer_print_help();
 				free(res);

@@ -6,8 +6,6 @@
 struct LexerFlags{
 	
 	char* filename;
-	
-	bool version;
 	bool help;
 };
 

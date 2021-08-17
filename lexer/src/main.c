@@ -6,8 +6,6 @@
 #include "lexer_flags.h"
 #include "../lex.yy.h"
 
-#include "../../token/TokenKeys.h" 
-
 int main(int argc, char* argv[]){
 	
 	struct LexerFlags* myargs = handle_arguments(argc, argv);
@@ -16,14 +14,8 @@ int main(int argc, char* argv[]){
 		lexer_print_help();
 	}
 	
-	if(myargs->version){
-		printf("dragon-lexer v0.8.1\n");
-		free(myargs);
-		exit(0);
-	}
-	
 	if(myargs->filename == NULL) {
-		printf("expecte a filename of the file to tokenize\n");
+		printf("expected a filename of the file to tokenize\n");
 		exit(1);
 	}
 	
