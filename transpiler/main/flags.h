@@ -10,6 +10,7 @@ struct Flags {
 	bool help;          //-help
 	bool version;       //-version
 	bool emit_headers;  //-h
+	bool x86;           //-x86
 	
 	//gcc passthrough flags
 	bool debug_symbols; //-g
@@ -21,9 +22,11 @@ struct Flags {
 	uint8_t count_filenames;
 	uint8_t capacity_filenames;
 	char** filenames;
+
 };
 
 struct Flags* makeFlags(int argc, char** argv);
+struct Flags* makeFlags2();
 
 void freeFlags(struct Flags* flags);
 

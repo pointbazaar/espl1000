@@ -46,7 +46,7 @@ static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st);
 
 static void ns_transpile_passthrough_includes(struct Namespace* ns, struct Ctx* ctx);
 
-bool transpile_and_write(char* c_filename, char* h_filename, struct AST* ast, struct Flags* flags){
+bool transpile_and_write_c_code(char* c_filename, char* h_filename, struct AST* ast, struct Flags* flags){
 
 	struct Ctx* ctx = make(Ctx);
 	

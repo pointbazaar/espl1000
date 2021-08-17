@@ -17,7 +17,7 @@ add_library("sd-base"
 	main/analyzer/halts/halt_analyzer.c
 	main/analyzer/lv/lv_analyzer.c
 
-	#code_gen
+	#code_gen/c_code_gen
 	main/code_gen/c_code_gen/cg.c
 	main/code_gen/c_code_gen/const/cg_const.c
 	main/code_gen/c_code_gen/expr/cg_expr.c
@@ -41,7 +41,12 @@ add_library("sd-base"
 	main/code_gen/c_code_gen/var/cg_var.c
 	main/code_gen/c_code_gen/_cg.h
 	main/code_gen/c_code_gen/stmts/cg_stmtblock.c
-        main/code_gen/c_code_gen/c_types_util/gen_c_types.c
+	main/code_gen/c_code_gen/c_types_util/gen_c_types.c
+
+	#code_gen/x86
+	main/code_gen/x86/cg_x86.c
+
+	#code_gen/util
 	main/code_gen/util/indent.c
 
 	#invoke
@@ -85,14 +90,14 @@ add_library("sd-base"
 	main/util/fill_tables.c
 	main/util/fill_tables.h
 	main/util/fileutils/fileutils.c
-)
-
-add_executable("sd"
-	cli/main.c
 
 	#flags
 	cli/flags/flags.c
 	cli/flags/validate_flags.c
+)
+
+add_executable("sd"
+	cli/main.c
 )
 
 add_executable("sd-tests"

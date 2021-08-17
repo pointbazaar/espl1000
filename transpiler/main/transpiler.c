@@ -8,6 +8,8 @@
 #include "ast/util/free_ast.h"
 
 #include "code_gen/c_code_gen/cg.h"
+#include "code_gen/x86/cg_x86.h"
+
 #include "flags.h"
 #include "util/fileutils/fileutils.h"
 #include "invoke/invoke.h"
@@ -41,10 +43,17 @@ bool transpileAndCompile(struct Flags* flags){
 	}
 
 	//output filenames
-	char* c_filename = make_c_filename(flags->filenames[0]);
-	char* h_filename = make_h_filename(flags->filenames[0]);
+	char* c_filename   = make_c_filename(flags->filenames[0]);
+	char* h_filename   = make_h_filename(flags->filenames[0]);
+	char* asm_filename = make_asm_filename(flags->filenames[0]);
 
-	bool success = transpile_and_write(c_filename, h_filename, ast, flags);
+	bool success = false;
+
+	if(flags->x86){
+		success = transpile_and_write_x86(asm_filename, ast, flags);
+	}else{
+		success = transpile_and_write_c_code(c_filename, h_filename, ast, flags);
+	}
 
 	free_ast(ast);
 	

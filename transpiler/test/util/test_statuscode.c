@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>
-#include <errno.h>
 
 #include "test_statuscode.h"
 
@@ -12,25 +11,6 @@
 void clean();
 
 char* FNAME_DEFAULT = "test.dg";
-
-static struct Flags* makeFlags2(){
-
-	struct Flags* flags = malloc(sizeof(struct Flags));
-
-	flags->debug 	= false;
-	flags->help 	= false;
-	flags->version 	= false;
-	flags->emit_headers  = false;
-
-	flags->debug_symbols = false;
-	flags->werror        = false;
-
-	flags->count_filenames    = 0;
-	flags->capacity_filenames = 100;
-	flags->filenames = malloc(sizeof(char*)*100);
-
-	return flags;
-}
 
 int sourceToStatus(char *source) {
 	
