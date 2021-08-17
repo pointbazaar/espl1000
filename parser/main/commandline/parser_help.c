@@ -8,8 +8,7 @@ void printHelp() {
 	printf("	dragon-parser - a parser for the smalldragon language\n\n");
 
 	printf("EXAMPLES\n");
-	printf("   dragon-parser .Main.dg.tokens\n");
-	printf("   dragon-parser -debug .Main.dg.tokens\n\n");
+	printf("   dragon-parser .Main.dg.tokens\n\n");
 
 	printf("GITHUB\n");
 	printf("   https://github.com/pointbazaar/smalldragon/\n\n");

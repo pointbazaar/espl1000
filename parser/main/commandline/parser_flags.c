@@ -3,26 +3,21 @@
 
 #include "parser_flags.h"
 
-const char* FLAG_DEBUG = "-debug";
 const char* FLAG_HELP  = "-help";
-const char* FLAG_TEST  = "-test";
 
 struct ParserFlags* parseFlags(int argc, char** argv){
 
 	struct ParserFlags* flags = malloc(sizeof(struct ParserFlags));
 
 	flags->help  = false;
-	flags->debug = false;
 
 	for(int i = 1; i < argc; i++){
 
 		char* arg = argv[i];
 
-		if(strcmp(FLAG_HELP,  arg) == 0){ flags->help  = true; }
-		if(strcmp(FLAG_DEBUG, arg) == 0){ flags->debug = true; }
+		flags->help = strcmp(FLAG_HELP,  arg) == 0;
 
-		if(arg[0] != '-')
-			{ flags->filename = arg; }
+		if(arg[0] != '-'){ flags->filename = arg; }
 	}
 	
 	return flags;

@@ -4,10 +4,7 @@
 #include <stdbool.h>
 
 struct ParserFlags {
-
-	bool debug;
 	bool help;
-
 	char* filename;
 };
 
