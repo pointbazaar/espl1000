@@ -50,31 +50,41 @@ bool transpileAndCompile(struct Flags* flags){
 	bool success = false;
 
 	if(flags->x86){
-		success = transpile_and_write_x86(asm_filename, ast, flags);
+		success = compile_and_write_x86(asm_filename, ast, flags);
 	}else{
 		success = transpile_and_write_c_code(c_filename, h_filename, ast, flags);
 	}
 
 	free_ast(ast);
 	
-	if(!success){ 
-		
+	if(!success){
 		free(c_filename);
 		free(h_filename);
+		free(asm_filename);
 		return false; 
 	}
+
+	int status = 0;
 	
-	if(flags->has_main_fn){
+	if(flags->has_main_fn && !flags->x86){
 		
 		char* cmd_gcc = make_gcc_cmd(flags, c_filename);
 
-		system(cmd_gcc);
+		status = system(cmd_gcc);
 		
 		free(cmd_gcc);
+	}
+
+	if(flags->x86){
+		char cmd[200];
+		sprintf(cmd, "nasm %s", asm_filename);
+		status = system(cmd);
+
 	}
 	
 	free(c_filename);
 	free(h_filename);
+	free(asm_filename);
 	
-	return true;
+	return WEXITSTATUS(status) == 0;
 }

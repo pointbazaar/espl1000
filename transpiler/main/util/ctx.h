@@ -18,6 +18,7 @@ struct ST;
 struct Ctx {
 	FILE* c_file;
 	FILE* header_file;
+	FILE *asm_file;
 	FILE* file; //where the output will be directed
 	uint8_t indent_level;
 	
@@ -40,6 +41,7 @@ struct Ctx {
 	//to transpile the subroutine type in 
 	//C subroutine signatures
 	char current_function_pointer_var_or_arg_name[DEFAULT_STR_SIZE];
+
 };
 
 

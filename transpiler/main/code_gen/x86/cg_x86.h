@@ -4,6 +4,6 @@
 struct Flags;
 struct Ctx;
 
-bool transpile_and_write_x86(char* asm_file_filename, struct AST* ast, struct Flags* flags);
+bool compile_and_write_x86(char* asm_file_filename, struct AST* ast, struct Flags* flags);
 
 #endif
