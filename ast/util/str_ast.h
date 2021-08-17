@@ -20,7 +20,7 @@ char* str_const_value(struct ConstValue* cv);
 char* str_string_const(struct StringConst* s);
 char* str_bin_const(struct BinConst* b);
 
-//types
+//c_types_util
 char* str_array_type(struct ArrayType* at);
 char* str_basic_type(struct BasicType* btw);
 char* str_simple_type(struct SimpleType* st);

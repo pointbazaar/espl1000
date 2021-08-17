@@ -32,7 +32,7 @@ struct SwitchStmt*  copy_switch_stmt(struct SwitchStmt* s);
 struct CaseStmt*    copy_case_stmt(struct CaseStmt* c);
 struct TryCatchStmt* copy_try_catch_stmt(struct TryCatchStmt* tcs);
 
-//types
+//c_types_util
 struct Type*             copy_type(struct Type* t);
 struct TypeParam*        copy_type_param(struct TypeParam* t);
 struct SubrType*         copy_subr_type(struct SubrType* s);

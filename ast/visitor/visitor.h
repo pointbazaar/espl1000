@@ -88,7 +88,7 @@ void visit_externc		(struct ExternC* ec,	VISITOR, ARG);
 void visit_stmt_block   (struct StmtBlock* s, 	VISITOR, ARG);
 
 
-//types
+//c_types_util
 void visit_type        		(struct Type* t, VISITOR, ARG);
 void visit_array_type   	(struct ArrayType* a, VISITOR, ARG);
 void visit_subr_type    	(struct SubrType* s, VISITOR, ARG);

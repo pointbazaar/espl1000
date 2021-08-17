@@ -43,7 +43,7 @@
 #define MAGIC_CASESTMT 			61
 #define MAGIC_TRYCATCHSTMT		62
 
-//types
+//c_types_util
 #define MAGIC_TYPE 				63
 #define MAGIC_ARRAYTYPE 		64
 #define MAGIC_BASICTYPE      	65
@@ -105,7 +105,7 @@
 #define MAGIC_END_CASESTMT 		229
 #define MAGIC_END_TRYCATCHSTMT	230
 
-//types
+//c_types_util
 #define MAGIC_END_TYPE 			240
 #define MAGIC_END_ARRAYTYPE 	241
 #define MAGIC_END_BASICTYPE     242

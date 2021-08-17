@@ -63,7 +63,7 @@ void free_switch_stmt(struct SwitchStmt* sstmt);
 void free_case_stmt(struct CaseStmt* cstmt);
 void free_try_catch_stmt(struct TryCatchStmt* tcs);
 
-//types
+//c_types_util
 void free_array_type(struct ArrayType* at);
 void free_basic_type(struct BasicType* btw);
 void free_simple_type(struct SimpleType* st);

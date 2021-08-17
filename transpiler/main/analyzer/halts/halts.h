@@ -18,7 +18,7 @@
  * depends on user input.
  * 
  * This enum is designed to be able to represent those
- * types of (non-)termination behavior.
+ * c_types_util of (non-)termination behavior.
  */
 
 enum HALTS {

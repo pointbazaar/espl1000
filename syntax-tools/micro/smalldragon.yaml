@@ -3,7 +3,7 @@ detect:
     filename: "\\.dg$"
 
 rules:
-    #types identifiers. all types start with an uppercase letter
+    #c_types_util identifiers. all c_types_util start with an uppercase letter
     - type: "\\b[A-Z][A-Za-z0-9]*\\b"
 
     - identifier: "\\b[a-z][A-Za-z0-9]*\\b"

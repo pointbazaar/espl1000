@@ -4,8 +4,8 @@
 
 #include "util/ctx.h"
 
-#include "../../tables/stst/stst.h"
-#include "../../tables/symtable/symtable.h"
+#include "tables/stst/stst.h"
+#include "tables/symtable/symtable.h"
 
 #include "gen_c_types.h"
 

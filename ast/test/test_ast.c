@@ -20,7 +20,7 @@ void test_serialize_char_const();
 void test_serialize_float_const();
 void test_serialize_string_const();
 
-//types
+//c_types_util
 void test_serialize_type_param();
 void test_serialize_primitive_type();
 
@@ -51,7 +51,7 @@ int main(){
 	test_serialize_bin_const();
 	test_serialize_string_const();
 	
-	//types
+	//c_types_util
 	test_serialize_type_param();
 	test_serialize_primitive_type();
 	

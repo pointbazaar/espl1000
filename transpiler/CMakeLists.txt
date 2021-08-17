@@ -41,7 +41,7 @@ add_library("sd-base"
 	main/code_gen/c_code_gen/var/cg_var.c
 	main/code_gen/c_code_gen/_cg.h
 	main/code_gen/c_code_gen/stmts/cg_stmtblock.c
-	main/code_gen/types/gen_c_types.c
+        main/code_gen/c_code_gen/c_types_util/gen_c_types.c
 	main/code_gen/util/indent.c
 
 	#invoke

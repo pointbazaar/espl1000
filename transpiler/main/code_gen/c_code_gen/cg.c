@@ -12,8 +12,7 @@
 #include "cg.h"
 #include "_cg.h"
 
-#include "code_gen/util/indent.h"
-#include "code_gen/types/gen_c_types.h"
+#include "c_types_util/gen_c_types.h"
 
 #include "typechecker/typecheck.h"
 

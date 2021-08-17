@@ -8,7 +8,7 @@ struct Term;
 
 /*
  * the functions return true if the respective AST Node typechecks,
- * meaning that it is a valid smalldragon program regarding the types.
+ * meaning that it is a valid smalldragon program regarding the c_types_util.
  *
  * This is important, so typechecking does not continue if a part of a
  * statement or other construction is already not sound.

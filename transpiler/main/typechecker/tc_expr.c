@@ -40,7 +40,7 @@ bool tc_expr(struct Expr* expr, struct TCCtx* tcctx){
 			char* s_right = str_type(right);
 			
 			char msg[200];
-			sprintf(msg, "types not equal in expression. left: %s, right: %s", s_left, s_right);
+			sprintf(msg, "c_types_util not equal in expression. left: %s, right: %s", s_left, s_right);
 			
 			error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_BINOP_TYPE_MISMATCH);
 		

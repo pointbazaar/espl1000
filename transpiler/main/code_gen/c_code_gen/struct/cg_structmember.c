@@ -25,7 +25,7 @@ void transpileStructMember(struct StructMember* m, struct Ctx* ctx){
 	
 	if(!isSubrType){
 		//with C function pointers, the identifier of the 
-		//function pointer is between the types
+		//function pointer is between the c_types_util
 		//describing it
 		fprintf(ctx->file, " %s", m->name);
 	}

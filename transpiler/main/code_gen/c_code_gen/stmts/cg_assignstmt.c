@@ -78,7 +78,7 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 	
 	if(!isSubrType){
 		//if it is a subroutine type, in C unfortunately
-		//the name of the variable is inbetween the types.
+		//the name of the variable is inbetween the c_types_util.
 		transpileVariable(as->var, ctx);
 	}
 	

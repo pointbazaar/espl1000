@@ -49,8 +49,8 @@ struct Type* typeFromStrPrimitive(struct ST* st, char* typeName){
 
 struct Type* typeFromStr(struct ST* st, char* typeName){
 	
-	//this method will only work for simple types,
-	//not subroutine types or array types.
+	//this method will only work for simple c_types_util,
+	//not subroutine c_types_util or array c_types_util.
 	
 	struct Type* res = make(Type);
 	
