@@ -10,17 +10,26 @@
 #include "util/ctx.h"
 
 #include "cg_x86.h"
+#include "_emit_x86.h"
 
 static void compile_ast_x86(struct AST* ast, struct Ctx* ctx);
 static void compile_namespace_x86(struct Namespace* ns, struct Ctx* ctx);
 static void compile_method_x86(struct Method* m, struct Ctx* ctx);
 static void compile_stmtblock_x86(struct StmtBlock* block, struct Ctx* ctx);
 static void compile_stmt_x86(struct Stmt* stmt, struct Ctx* ctx);
-/*
 static void compile_call_x86(struct Call* call, struct Ctx* ctx);
-static void compile_while_stmt_x86(struct WhileStmt* m, struct Ctx* ctx);
-static void compile_if_stmt_x86(struct IfStmt* m, struct Ctx* ctx);
- */
+//static void compile_while_stmt_x86(struct WhileStmt* m, struct Ctx* ctx);
+//static void compile_if_stmt_x86(struct IfStmt* m, struct Ctx* ctx);
+static void compile_ret_stmt_x86(struct RetStmt* m, struct Ctx* ctx);
+//static void compile_assign_stmt_x86(struct AssignStmt* a, struct Ctx* ctx);
+//static void compile_try_catch_stmt_x86(struct TryCatchStmt* tcs, struct Ctx* ctx);
+//static void compile_for_stmt_x86(struct ForStmt* m, struct Ctx* ctx);
+//static void compile_switch_stmt_x86(struct SwitchStmt* m, struct Ctx* ctx);
+static void compile_expr_x86(struct Expr* expr, struct Ctx* ctx);
+static void compile_term_x86(struct Term* term, struct Ctx* ctx);
+static void compile_variable_x86(struct Variable* var, struct Ctx* ctx);
+static void compile_unopterm_x86(struct UnOpTerm* uop, struct Ctx* ctx);
+static void compile_simplevar_x86(struct SimpleVar* s, struct Ctx* ctx);
 
 bool compile_and_write_x86(char* asm_file_filename, struct AST* ast, struct Flags* flags){
 
@@ -87,34 +96,52 @@ static void compile_stmtblock_x86(struct StmtBlock* block, struct Ctx* ctx){
 
 static void compile_stmt_x86(struct Stmt* stmt, struct Ctx* ctx){
 
-    printf("%d\n", ctx->indent_level);
-
-    //TODO
     switch (stmt->kind) {
-        /*
         case 1: compile_call_x86(stmt->ptr.m1, ctx); break;
-        case 2: compile_while_stmt_x86(stmt->ptr.m2, ctx); break;
-        case 3: compile_if_stmt_x86(stmt->ptr.m3, ctx); break;
-         */
+        //case 2: compile_while_stmt_x86(stmt->ptr.m2, ctx); break;
+        //case 3: compile_if_stmt_x86(stmt->ptr.m3, ctx); break;
+        case 4: compile_ret_stmt_x86(stmt->ptr.m4, ctx); break;
+        //case 5: compile_assign_stmt_x86(stmt->ptr.m5, ctx); break;
+        //case 6: compile_try_catch_stmt_x86(stmt->ptr.m6, ctx); break;
+        //case 7: compile_for_stmt_x86(stmt->ptr.m7, ctx); break;
+        //case 8: compile_switch_stmt_x86(stmt->ptr.m8, ctx); break;
         default:
-            puts("[Error] not implemented");
+            if(stmt->is_break){
+                //TODO
+                puts("[Error] not implemented");
+            }else if(stmt->is_continue){
+                //TODO
+                puts("[Error] not implemented");
+            }else if(stmt->is_throw){
+                //TODO
+                puts("[Error] not implemented");
+            }
     }
 }
-/*
+
 static void compile_call_x86(struct Call* call, struct Ctx* ctx){
 
-    call->args;
-    //TODO
-    puts("[Error] not implemented");
+    if(call->callable->member_access == NULL && call->callable->simple_var->count_indices == 0){
+
+        //TODO: put the arguments in the appropriate registers / on the stack
+        puts("[Error] not implemented");
+
+        emit2("call", call->callable->simple_var->name, ctx->asm_file);
+    }else{
+        //TODO
+        puts("[Error] not implemented");
+    }
 }
 
+/*
 static void compile_while_stmt_x86(struct WhileStmt* m, struct Ctx* ctx){
 
     m->condition;
     //TODO
     puts("[Error] not implemented");
 }
-
+ */
+/*
 static void compile_if_stmt_x86(struct IfStmt* m, struct Ctx* ctx){
 
     m->block;
@@ -122,3 +149,80 @@ static void compile_if_stmt_x86(struct IfStmt* m, struct Ctx* ctx){
     puts("[Error] not implemented");
 }
  */
+
+static void compile_ret_stmt_x86(struct RetStmt* m, struct Ctx* ctx){
+
+    //TODO: follow cdecl calling convention
+    //generate code which puts the expression value on the stack,
+    //then put that into rax
+
+    compile_expr_x86(m->return_value, ctx);
+
+    emit2("pop", "rax", ctx->asm_file);
+    emit1("ret", ctx->asm_file);
+}
+
+/*
+static void compile_assign_stmt_x86(struct AssignStmt* a, struct Ctx* ctx){
+    //TODO
+    puts("[Error] not implemented");
+}
+ */
+/*
+static void compile_try_catch_stmt_x86(struct TryCatchStmt* tcs, struct Ctx* ctx){
+    //TODO
+    puts("[Error] not implemented");
+}
+ */
+/*
+static void compile_for_stmt_x86(struct ForStmt* m, struct Ctx* ctx){
+    //TODO
+    puts("[Error] not implemented");
+}
+ */
+/*
+static void compile_switch_stmt_x86(struct SwitchStmt* m, struct Ctx* ctx){
+    //TODO
+    puts("[Error] not implemented");
+}
+ */
+
+static void compile_expr_x86(struct Expr* expr, struct Ctx* ctx){
+
+    compile_unopterm_x86(expr->term1, ctx);
+    //TODO
+    puts("[Error] not implemented");
+}
+
+static void compile_unopterm_x86(struct UnOpTerm* uop, struct Ctx* ctx){
+
+    compile_term_x86(uop->term, ctx);
+    //TODO: apply the unary operator
+    puts("[Error] not implemented");
+}
+
+static void compile_term_x86(struct Term* term, struct Ctx* ctx){
+
+    switch (term->kind) {
+        case 6: compile_variable_x86(term->ptr.m6, ctx); break;
+        default:
+            //TODO
+            puts("[Error] not implemented");
+            break;
+    }
+}
+
+static void compile_variable_x86(struct Variable* var, struct Ctx* ctx){
+
+    compile_simplevar_x86(var->simple_var, ctx);
+    //TODO
+    puts("[Error] not implemented");
+}
+
+static void compile_simplevar_x86(struct SimpleVar* s, struct Ctx* ctx){
+
+    //TODO
+    puts("[Error] not implemented");
+    puts(s->name);
+    printf("%d\n",ctx->error);
+}

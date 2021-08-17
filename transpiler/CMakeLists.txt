@@ -45,6 +45,7 @@ add_library("sd-base"
 
 	#code_gen/x86
 	main/code_gen/x86/cg_x86.c
+	main/code_gen/x86/_emit_x86.c
 
 	#code_gen/util
 	main/code_gen/util/indent.c
