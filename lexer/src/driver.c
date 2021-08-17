@@ -38,9 +38,6 @@ void lexer_print_help(){
 	printf("\n");
 
 	printf("Possible Arguments:\n");
-	printf(" -version\n");
-	printf(" -debug\n");
-	printf(" -test\n");
 	printf(" -help\n\n");
 
 	printf("Author: \n");
