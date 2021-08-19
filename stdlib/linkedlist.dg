@@ -1,39 +1,47 @@
 #include <stdlib.h>
 
-//A simple double-linked list of integers
+//A simple double-linked list
 
-struct IntLL {
+struct LinkedList<?T0> {
 
 	@private uint size;
 	
 	@private bool is_empty;
-	@private IntLLNode head;
-	@private IntLLNode tail;
+	@private LLNode<?T0> head;
+	@private LLNode<?T0> tail;
 }
 
 @private
-struct IntLLNode {
+struct LLNode<?T0> {
 
-	int value;
-	
+	?T0 value;
 	bool has_next;
 	
-	IntLLNode prev;
-	IntLLNode next;
+	LLNode<?T0> prev;
+	LLNode<?T0> next;
 }
 
-fn intll_ctor() ~> IntLL {
+fn linkedlist_ctor() ~> LinkedList<?T0> {
 
-	IntLL res = malloc(3*8);
+	LinkedList<?T0> res = malloc(4*8);
+	res.size = 0;
 	res.is_empty = true;
 	return res;
 }
 
-fn intll_dtor(IntLL l) ~> bool {
+fn linkedlist_ctor_int() ~> LinkedList<int> {
+
+	LinkedList<int> res = malloc(4*8);
+	res.size = 0;
+	res.is_empty = true;
+	return res;
+}
+
+fn linkedlist_dtor(LinkedList<?T0> l) ~> bool {
 
 	if l.is_empty { free(l); return true; }
 	
-	IntLLNode current = l.head;
+	LLNode<?T0> current = l.head;
 	
 	while current.has_next {
 		
@@ -47,18 +55,18 @@ fn intll_dtor(IntLL l) ~> bool {
 	return true;
 }
 
-fn intllnode_ctor() ~> IntLLNode {
-	IntLLNode res = malloc(8*3);
+fn llnode_ctor() ~> LLNode<?T0> {
+	LLNode<?T0> res = malloc(8*4);
 	res.has_next = false;
 	return res;
 }
 
 @halts
-fn intll_size(IntLL l) -> uint { return l.size; }
+fn linkedlist_size(LinkedList<?T0> l) -> uint { return l.size; }
 
-fn intll_push_front(IntLL l, int value) ~> bool {
+fn linkedlist_push_front(LinkedList<?T0> l, ?T0 value) ~> bool {
 
-	IntLLNode x = intllnode_ctor();
+	LLNode<?T0> x = llnode_ctor();
 	x.value = value;
 	
 	if l.size == 0 {
@@ -78,9 +86,9 @@ fn intll_push_front(IntLL l, int value) ~> bool {
 	return true;
 }
 
-fn intll_push_back(IntLL l, int value) ~> bool {
+fn linkedlist_push_back(LinkedList<?T0> l, ?T0 value) ~> bool {
 
-	IntLLNode x = intllnode_ctor();
+	LLNode<?T0> x = llnode_ctor();
 	x.value = value;
 	
 	if l.size == 0 {
@@ -100,11 +108,11 @@ fn intll_push_back(IntLL l, int value) ~> bool {
 	return true;
 }
 
-fn intll_pop_front(IntLL l) ~> int throws {
+fn linkedlist_pop_front(LinkedList<?T0> l) ~> ?T0 throws {
 	
 	if l.size == 0 { throw; }
 	
-	int val = l.head.value;
+	    val = l.head.value;
 	oldhead = l.head;
 	
 	if l.size == 1 {
@@ -121,11 +129,11 @@ fn intll_pop_front(IntLL l) ~> int throws {
 	return val;
 }
 
-fn intll_pop_back(IntLL l) ~> int throws {
+fn linkedlist_pop_back(LinkedList<?T0> l) ~> ?T0 throws {
 
 	if l.size == 0 { throw; }
 	
-	int val = l.tail.value;
+	?T0 val = l.tail.value;
 	oldtail = l.tail;
 	
 	if l.size == 1 {
@@ -142,30 +150,14 @@ fn intll_pop_back(IntLL l) ~> int throws {
 	return val;
 }
 
-@halts
-fn intll_peek_front(IntLL l) -> int throws {
+fn linkedlist_contains(LinkedList<?T0> l, ?T0 value) -> bool {
 	
-	if l.size == 0 { throw; }
-	
-	return l.head.value;
+	return linkedlist_index_of(l, value) >= 0;
 }
 
-@halts
-fn intll_peek_back(IntLL l) -> int throws {
-
-	if l.size == 0 { throw; }
+fn linkedlist_index_of(LinkedList<?T0> l, ?T0 value) -> int {
 	
-	return l.tail.value;
-}
-
-fn intll_contains(IntLL l, int value) -> bool {
-	
-	return intll_index_of(l, value) >= 0;
-}
-
-fn intll_index_of(IntLL l, int value) -> int {
-	
-	IntLLNode current = l.head;
+	LLNode<?T0> current = l.head;
 	int index = 0;
 	
 	while current.has_next {

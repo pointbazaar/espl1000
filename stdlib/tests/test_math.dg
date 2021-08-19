@@ -1,0 +1,31 @@
+fn test_math() ~> int {
+
+	assert(sign(4) == 1);
+	assert(sign(-8) == -1);
+
+	assert( pow(2,3) == 8 );
+
+	assert( faculty(3) == 6 );
+	assert( faculty(4) == 24 );
+
+	assert( min(4,5) == 4 );
+
+	assert( max(2,6) == 6 );
+
+	assert(gcd(10,15) == 5);
+	assert(lcm(15,20) == 60);
+
+	assert(round(3.5) == 4);
+	assert(round(3.2) == 3);
+
+	assert(ceil(3.2) == 4);
+	assert(floor(3.7) == 3);
+	
+	assert(fib(1) == 0);
+	assert(fib(2) == 1);
+	assert(fib(3) == 1);
+	assert(fib(4) == 2);
+	assert(fib(5) == 3);
+
+	return 0;
+}

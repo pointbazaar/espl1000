@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <ast/util/str_ast.h>
 
 #include "ast/ast.h"
 
@@ -16,9 +17,17 @@ struct Expr2Types {
 	struct Op* op;
 };
 
-static struct Type *infer_type_expr_primitive(struct ST *st, struct Expr2Types *e2t);
+static struct Type* infer_type_expr_primitive(struct ST *st, struct Expr2Types *e2t);
 
-struct Type *infer_type_expr(struct ST *st, struct Expr *expr) {
+static struct Type* infer_type_expr_both_tparam(struct ST* st, struct TypeParam* tp1, struct Op* op, struct TypeParam* tp2);
+
+static void typeinfer_err_fatal(char* opt_str){
+    printf("%s\n", opt_str);
+    printf("[Typeinference][Error] Fatal. (in typeinfer_expr.c). Exiting.\n");
+    exit(1);
+}
+
+struct Type* infer_type_expr(struct ST *st, struct Expr *expr) {
 
 	if(expr->term2 == NULL)
 		{ return infer_type_unopterm(st, expr->term1); }
@@ -29,29 +38,30 @@ struct Type *infer_type_expr(struct ST *st, struct Expr *expr) {
 
 	struct Type* type1 = infer_type_unopterm(st, t1);
 	struct Type* type2 = infer_type_unopterm(st, t2);
+
+	if(type1->type_param != NULL && type2->type_param != NULL){
+        return infer_type_expr_both_tparam(st, type1->type_param, expr->op, type2->type_param);
+	}
 	
 	struct BasicType* btw1 = type1->basic_type;
 	struct BasicType* btw2 = type2->basic_type;
 	
-	if(btw1 == NULL || btw2 == NULL){ 
-	    printf("[Typeinference][Error] Fatal. (in typeinfer_expr.c). Exiting.\n");
-	    exit(1);
+	if(btw1 == NULL || btw2 == NULL){
+	    typeinfer_err_fatal(str_expr(expr));
 	}
 	
 	struct SimpleType* st1 = btw1->simple_type;
 	struct SimpleType* st2 = btw2->simple_type;
 	
 	if(st1 == NULL || st2 == NULL){ 
-	    printf("[Typeinference][Error] Fatal. (in typeinfer_expr.c). Exiting.\n");
-	    exit(1);
+	    typeinfer_err_fatal(str_expr(expr));
 	}
 	
 	bool p1 = st1->primitive_type != NULL;
 	bool p2 = st2->primitive_type != NULL;
 	
 	if(!p1 || !p2){ 
-	    printf("[Typeinference][Error] Fatal. (in typeinfer_expr.c). Exiting.\n");
-	    exit(1);
+	    typeinfer_err_fatal(str_expr(expr));
 	}
 	
 	struct Expr2Types e2t = {
@@ -61,6 +71,27 @@ struct Type *infer_type_expr(struct ST *st, struct Expr *expr) {
 	};
 	
 	return infer_type_expr_primitive(st, &e2t);
+}
+
+static struct Type* infer_type_expr_both_tparam(struct ST* st, struct TypeParam* tp1, struct Op* op, struct TypeParam* tp2){
+
+    bool same_type = tp1->index == tp2->index;
+
+    if(!same_type){
+        typeinfer_err_fatal(str_op(op));
+    }
+
+    if(op->is_relational)
+        { return typeFromStrPrimitive(st, "bool"); }
+
+    if(op->is_logical)
+        { return typeFromStrPrimitive(st, "bool"); }
+
+    if(op->is_bitwise)
+        { return typeFromStrPrimitive(st, "int"); }
+
+    typeinfer_err_fatal(str_op(op));
+    return NULL;
 }
 
 static struct Type *infer_type_expr_primitive(struct ST *st, struct Expr2Types *e2t) {
@@ -104,10 +135,7 @@ static struct Type *infer_type_expr_primitive(struct ST *st, struct Expr2Types *
 	
 	if(op->is_bitwise)
 		{ return typeFromStrPrimitive(st, "int"); }
-	
-	
-	printf("op=%s\n", op->op);
-	printf("[Typeinference][Error] Fatal. (in typeinfer_expr.c). Exiting.\n");
-	exit(1);
+
+	typeinfer_err_fatal(str_op(op));
 	return NULL;
 }

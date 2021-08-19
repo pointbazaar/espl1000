@@ -8,7 +8,7 @@ fn main () ~> int {
 	subr();
 	subr_should_halt();
 
-	IntStack stack = intstack_ctor(10);
+	Stack<int> stack = stack_ctor_int();
 
 	uint32 size = stack.size; //warning, size is @private 
 

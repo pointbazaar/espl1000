@@ -1,0 +1,15 @@
+fn test_stack() ~> int throws {
+	
+	Stack<?T0> s = stack_ctor_int();
+	
+	stack_push(s, 3);
+	assert(stack_size(s) == 1);
+	assert(stack_peek(s) == 3);
+	assert(stack_pop(s) == 3);
+	
+	assert(stack_size(s) == 0);
+	
+	stack_dtor(s);
+	
+	return 0;
+}

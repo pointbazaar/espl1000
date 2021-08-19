@@ -1,0 +1,53 @@
+
+fn test_linkedlist() ~> int throws {
+
+	_test_linkedlist_int();
+	
+	_test_linkedlist_many();
+
+	return 0;
+}
+
+fn _test_linkedlist_int() ~> int throws {
+
+	LinkedList<int> ll = linkedlist_ctor_int();
+	
+	linkedlist_push_back(ll, 3); //[3]
+	
+	assert(linkedlist_size(ll) == 1);
+	
+	linkedlist_push_front(ll, 5); //[5,3]
+	
+	assert(linkedlist_index_of(ll, 3) == 1);
+	
+	assert(linkedlist_pop_front(ll) == 5); //[3]
+	
+	assert(linkedlist_size(ll) == 1);
+	
+	linkedlist_pop_back(ll); //[]
+	
+	assert(linkedlist_size(ll) == 0);
+	
+	linkedlist_dtor(ll);
+	
+	return 0;
+}
+
+fn _test_linkedlist_many() ~> int throws {
+
+	//stress test :)
+	
+	LinkedList<int> ll = linkedlist_ctor_int();
+	
+	uint size = 1000;
+	
+	for i in 1 .. size {
+		linkedlist_push_back(ll, i);
+	}
+	
+	assert(linkedlist_size(ll) == size);
+	
+	linkedlist_dtor(ll);
+	
+	return 0;
+}

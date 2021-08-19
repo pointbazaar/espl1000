@@ -1,0 +1,9 @@
+fn test_primes() ~> int {
+
+	assert(isprime(2));
+	assert(isprime(3));
+	assert(!isprime(4));
+	assert(isprime(5));
+
+	return 0;
+}

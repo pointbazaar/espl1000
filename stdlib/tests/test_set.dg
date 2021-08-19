@@ -1,0 +1,90 @@
+fn test_set() ~> int {
+
+	_test_set_int();
+	_test_set_bool();
+	_test_set_union_cut();
+
+	return 0;
+}
+
+fn _test_set_int() ~> int {
+
+	Set<int> s = set_ctor_int();
+
+	assert(set_size(s) == 0);
+	
+	assert(!set_contains(s,3));
+
+	set_insert(s,3);
+	
+	assert(set_contains(s,3));
+	assert(set_size(s) == 1);
+
+	set_remove(s,3);
+	assert(!set_contains(s,3));
+
+	set_insert(s,0);
+	for i in 1 .. 9 {
+		
+		set_insert(s,i);
+		assert(set_contains(s,i-1));
+	}
+
+	set_dtor(s);
+
+	return 0;
+}
+
+fn _test_set_bool() ~> int {
+
+	Set<bool> s = set_ctor_bool();
+
+	assert(set_size(s) == 0);
+	
+	assert(!set_contains(s, true));
+
+	set_insert(s, true);
+	
+	assert(set_contains(s, true));
+	assert(set_size(s) == 1);
+
+	set_remove(s, true);
+	assert(!set_contains(s, true));
+	
+	for i in 1 .. 9 {
+		
+		if (i % 2) == 0 {
+			set_insert(s, true);
+		} else {
+			set_insert(s, false);
+		}
+	}
+	
+	assert(set_size(s) == 2);
+
+	set_dtor(s);
+
+	return 0;
+}
+
+fn _test_set_union_cut() ~> int {
+
+	Set<bool> s1 = set_ctor_bool();
+	Set<bool> s2 = set_ctor_bool();
+	
+	set_insert(s1, true);
+	set_insert(s2, false);
+	
+	Set<?T0> s3 = set_union(s1, s2);
+	Set<?T0> s4 = set_cut(s1, s2);
+	
+	assert(set_size(s3) == 2);
+	assert(set_size(s4) == 0);
+
+	set_dtor(s1);
+	set_dtor(s2);
+	set_dtor(s3);
+	set_dtor(s4);
+
+	return 0;
+}

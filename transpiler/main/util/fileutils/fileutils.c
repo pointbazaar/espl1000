@@ -72,8 +72,9 @@ char* make_gcc_cmd(struct Flags* flags, char* fname_out){
 	
 	char* cmd = malloc(100+strlen(fname_out));
 	strcpy(cmd, "");
-		
-	strcat(cmd, "gcc -Wall --std=c11 -o a.out ");
+
+	//no -Wall because it messes with generics
+	strcat(cmd, "gcc --std=c11 -o a.out ");
 	
 	if(flags->debug_symbols){ strcat(cmd, "-g ");      }
 	if(flags->werror)       { strcat(cmd, "-Werror "); }
