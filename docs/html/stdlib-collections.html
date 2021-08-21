@@ -35,33 +35,60 @@
 	<table class="table-bordered table box">
 	<thead>
 		<tr>
-			<th> Name </th><th> Type </th><th> Runtime </th><th> Stack Used</th><th> Heap Use </th>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+			<th> Heap Use </th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr style="color:green;">
-			<td> set_ctor </td><td> (?T0 sample) ~> Set&lt;?T0&gt; </td><td>O(1)</td><td>O(1)</td><td>+O(1)</td>
+			<td> set_ctor </td>
+			<td> (?T0 sample) ~> Set&lt;?T0&gt; </td>
+			<td>O(1)</td>
+			<td>+O(1)</td>
 		</tr>
 		<tr style="color:red;">
-			<td> set_dtor </td><td> (Set&lt;?T0&gt; s) -> bool </td><td>O(1)</td><td>O(1)</td><td>-O(s.capacity)</td>
+			<td> set_dtor </td>
+			<td> (Set&lt;?T0&gt; s) -> bool </td>
+			<td>O(1)</td>
+			<td>-O(s.capacity)</td>
 		</tr>
 		<tr>
-			<td> set_size </td><td> (Set&lt;?T0&gt; s) -> uint </td><td>O(1)</td><td>O(1)</td><td>-</td>
+			<td> set_size </td>
+			<td>(Set&lt;?T0&gt; s) -> uint</td>
+			<td>O(1)</td>
+			<td>-</td>
 		</tr>
 		<tr>
-			<td> set_contains </td><td> (Set&lt;?T0&gt; s, ?T0 x) -> bool </td><td>O(s.size)</td><td>O(1)</td><td>-</td>
+			<td> set_contains </td>
+			<td> (Set&lt;?T0&gt; s, ?T0 x) -> bool </td>
+			<td>O(s.size)</td>
+			<td>-</td>
 		</tr>
 		<tr>
-			<td> set_insert </td><td> (Set&lt;?T0&gt; s, ?T0 x) -> int </td><td>O(s.size)</td><td>O(1)</td><td>+O(1)</td>
+			<td> set_insert </td>
+			<td> (Set&lt;?T0&gt; s, ?T0 x) -> int </td>
+			<td>O(s.size)</td>
+			<td>+O(1)</td>
 		</tr>
 		<tr>
-			<td> set_remove </td><td> (Set&lt;?T0&gt; s, ?T0 x) -> int </td><td>O(s.size)</td><td>O(1)</td><td>-O(1)</td>
+			<td> set_remove </td>
+			<td> (Set&lt;?T0&gt; s, ?T0 x) -> int </td>
+			<td>O(s.size)</td>
+			<td>-O(1)</td>
 		</tr>
 		<tr>
-			<td> set_union </td><td> (Set&lt;?T0&gt; a, Set&lt;?T0&gt; b) -> Set&lt;?T0&gt; </td><td> O(a.size^2 + b.size^2) </td><td>O(1)</td><td>+O(a.capacity + b.capacity)</td>
+			<td> set_union </td>
+			<td> (Set&lt;?T0&gt; a, Set&lt;?T0&gt; b) -> Set&lt;?T0&gt; </td>
+			<td> O(a.size^2 + b.size^2) </td>
+			<td>+O(a.capacity + b.capacity)</td>
 		</tr>
 		<tr>
-			<td> set_cut </td><td> (Set&lt;?T0&gt; a, Set&lt;?T0&gt; b) -> Set&lt;?T0&gt; </td><td> O(max(a.size, b.size)^2) </td><td>O(1)</td><td>+O(min(a.capacity, b.capacity))</td>
+			<td> set_cut </td>
+			<td> (Set&lt;?T0&gt; a, Set&lt;?T0&gt; b) -> Set&lt;?T0&gt; </td>
+			<td> O(max(a.size, b.size)^2) </td>
+			<td>+O(min(a.capacity, b.capacity))</td>
 		</tr>
 	</tbody>
 	</table>
@@ -70,27 +97,27 @@
 	<table class="table-bordered table box">
 	<thead>
 		<tr>
-			<th> Name </th>      <th> Type </th>                                   <th> Runtime </th>  <th> Stack Used </th><th> Heap Use </th>
+			<th> Name </th>      <th> Type </th>                                   <th> Runtime </th> <th> Heap Use </th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr style="color:green;">
-			<td> stack_ctor </td><td> (uint capacity) ~> Stack&lt;?T0&gt; </td>      <td> O(1) </td>     <td>O(1)</td> <td>+O(1)</td>
+			<td> stack_ctor </td><td> (uint capacity) ~> Stack&lt;?T0&gt; </td>      <td> O(1) </td>     <td>+O(1)</td>
 		</tr>
 		<tr style="color:red;">
-			<td> stack_dtor </td><td> (Stack&lt;?T0&gt; s) ~> bool </td>             <td> O(1) </td>      <td>O(1)</td> <td>-O(capacity)</td>
+			<td> stack_dtor </td><td> (Stack&lt;?T0&gt; s) ~> bool </td>             <td> O(1) </td>     <td>-O(capacity)</td>
 		</tr>
 		<tr>
-			<td> stack_size </td><td> (Stack&lt;?T0&gt; s) -> uint </td>             <td> O(1) </td>      <td>O(1)</td> <td>-</td>
+			<td> stack_size </td><td> (Stack&lt;?T0&gt; s) -> uint </td>             <td> O(1) </td>      <td>-</td>
 		</tr>
 		<tr>
-			<td> stack_push </td><td> (Stack&lt;?T0&gt; s, ?T0 x) -> int throws</td> <td>O(1)</td>       <td>O(1)</td> <td>+O(1) amortized</td>
+			<td> stack_push </td><td> (Stack&lt;?T0&gt; s, ?T0 x) -> int throws</td> <td>O(1)</td>       <td>+O(1) amortized</td>
 		</tr>
 		<tr>
-			<td> stack_peek </td><td> (Stack&lt;?T0&gt; s) -> ?T0 throws</td>        <td>O(1)</td>       <td>O(1)</td> <td>-</td>
+			<td> stack_peek </td><td> (Stack&lt;?T0&gt; s) -> ?T0 throws</td>        <td>O(1)</td>     <td>-</td>
 		</tr>
 		<tr>
-			<td> stack_pop </td><td> (Stack&lt;?T0&gt; s) -> ?T0 throws</td>         <td>O(1)</td>       <td>O(1)</td> <td>-</td>
+			<td> stack_pop </td><td> (Stack&lt;?T0&gt; s) -> ?T0 throws</td>         <td>O(1)</td>       <td>-</td>
 		</tr>
 	</tbody>
 	</table>
@@ -102,22 +129,21 @@
 			<th> Name </th>
 			<th> Type </th>
 			<th> Runtime </th>
-			<th> Stack Used </th>
 			<th> Heap Used </th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td> intarray_sum </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>O(1)</td><td>-</td>
+			<td> intarray_sum </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>-</td>
 		</tr>
 		<tr>
-			<td> intarray_average </td><td> ([int] arr, uint size) -> float </td><td> O(size) </td><td>O(1)</td><td>-</td>
+			<td> intarray_average </td><td> ([int] arr, uint size) -> float </td><td> O(size) </td><td>-</td>
 		</tr>
 		<tr>
-			<td> intarray_min </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>O(1)</td><td>-</td>
+			<td> intarray_min </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>-</td>
 		</tr>
 		<tr>
-			<td> intarray_max </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>O(1)</td><td>-</td>
+			<td> intarray_max </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>-</td>
 		</tr>
 	</tbody>
 	</table>
@@ -126,27 +152,27 @@
 	<table class="table-bordered table box">
 	<thead>
 		<tr>
-			<th> Name </th><th> Type </th><th> Runtime </th><th> Stack Used</th><th> Heap Use</th>
+			<th> Name </th><th> Type </th><th> Runtime </th><th> Heap Use</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr style="color:green;">
-			<td> intbintree_ctor </td><td> () ~> IntBinTree </td><td>O(1)</td><td>O(1)</td><td>+O(1)</td>
+			<td> intbintree_ctor </td><td> () ~> IntBinTree </td><td>O(1)</td><td>+O(1)</td>
 		</tr>
 		<tr style="color:red;">
-			<td> intbintree_dtor </td><td> (IntBinTree t) ~> bool </td><td>O(size)</td><td>O(size) worst case</td><td>-O(size)</td>
+			<td> intbintree_dtor </td><td> (IntBinTree t) ~> bool </td><td>O(size)</td><td>-O(size)</td>
 		</tr>
 		<tr>
-			<td> intbintree_insert </td><td> (IntBinTree t, int key) ~> int </td><td>O(size) worst case</td><td>O(1)</td><td>+O(1)</td>
+			<td> intbintree_insert </td><td> (IntBinTree t, int key) ~> int </td><td>O(size) worst case</td><td>+O(1)</td>
 		</tr>
 		<tr>
-			<td> intbintree_contains </td><td>(IntBinTree t, int key) -> bool</td><td>O(size) worst case</td><td>O(1)</td><td>-</td>
+			<td> intbintree_contains </td><td>(IntBinTree t, int key) -> bool</td><td>O(size) worst case</td><td>-</td>
 		</tr>
 		<tr>
-			<td>intbintree_size</td><td>(IntBinTree t) -> bool</td><td>O(size)</td><td>O(size) worst case</td><td>-</td>
+			<td>intbintree_size</td><td>(IntBinTree t) -> bool</td><td>O(size)</td><td>-</td>
 		</tr>
 		<tr>
-			<td>intbintree_visit</td><td>(IntBinTree t, ((int)->bool) visitor) -> bool</td><td>O(size) worst case</td><td>O(size) worst case</td><td>-</td>
+			<td>intbintree_visit</td><td>(IntBinTree t, ((int)->bool) visitor) -> bool</td><td>O(size) worst case</td><td>-</td>
 		</tr>
 	</tbody>
 	</table>
@@ -158,34 +184,33 @@
 			<th> Name </th>
 			<th> Type </th>
 			<th> Runtime </th>
-			<th> Stack Used</th>
 			<th> Heap Use </th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr style="color:green;">
-			<td>linkedlist_ctor</td><td>() ~> LinkedList&lt;?T0&gt;</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td>
+			<td>linkedlist_ctor</td><td>() ~> LinkedList&lt;?T0&gt;</td><td>O(1)</td><td>+O(1)</td>
 		</tr>
 		<tr style="color:red;">
-			<td>linkedlist_dtor</td><td>(LinkedList&lt;?T0&gt; l) ~> bool</td><td>O(size)</td><td>O(1)</td><td>-O(l.size)</td>
+			<td>linkedlist_dtor</td><td>(LinkedList&lt;?T0&gt; l) ~> bool</td><td>O(size)</td><td>-O(l.size)</td>
 		</tr>
 		<tr>
-			<td>linkedlist_push_front</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) ~> bool</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td>
+			<td>linkedlist_push_front</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) ~> bool</td><td>O(1)</td><td>+O(1)</td>
 		</tr>
 		<tr>
-			<td>linkedlist_push_back</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) ~> bool</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td>
+			<td>linkedlist_push_back</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) ~> bool</td><td>O(1)</td><td>+O(1)</td>
 		</tr>
 		<tr>
-			<td>linkedlist_pop_front</td><td>(LinkedList&lt;?T0&gt; l) ~> ?T0 throws</td><td>O(1)</td><td>O(1)</td><td>-O(1)</td>
+			<td>linkedlist_pop_front</td><td>(LinkedList&lt;?T0&gt; l) ~> ?T0 throws</td><td>O(1)</td><td>-O(1)</td>
 		</tr>
 		<tr>
-			<td>linkedlist_pop_back</td><td>(LinkedList&lt;?T0&gt; l) ~> ?T0 throws</td><td>O(1)</td><td>O(1)</td><td>-O(1)</td>
+			<td>linkedlist_pop_back</td><td>(LinkedList&lt;?T0&gt; l) ~> ?T0 throws</td><td>O(1)</td><td>-O(1)</td>
 		</tr>
 		<tr>
-			<td>linkedlist_contains</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) -> bool</td><td>O(size)</td><td>O(1)</td><td>-</td>
+			<td>linkedlist_contains</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) -> bool</td><td>O(size)</td><td>-</td>
 		</tr>
 		<tr>
-			<td>linkedlist_index_of</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) -> int</td><td>O(size)</td><td>O(1)</td><td>-</td>
+			<td>linkedlist_index_of</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) -> int</td><td>O(size)</td><td>-</td>
 		</tr>
 	</tbody>
 	</table>
