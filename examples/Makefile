@@ -30,13 +30,13 @@ test:
 	$(CALL2) switch/switch.dg 
 	$(CALL2) plotting/plotting.dg
 	$(CALL2) lambda.dg
-	$(CALL2) annotations.dg ../stdlib/stack.dg ../stdlib/ppm.dg ../stdlib/math.dg
+	$(CALL2) annotations.dg ../stdlib/collections/stack.dg ../stdlib/ppm.dg ../stdlib/math.dg
 	$(CALL2) typeinference/localvartypeinference.dg
 
 	$(CALL2) try.dg
 	$(CALL2) try2.dg
 
-	$(CALL2) image_io.dg ../stdlib/stack.dg ../stdlib/ppm.dg ../stdlib/math.dg
+	$(CALL2) image_io.dg ../stdlib/collections/stack.dg ../stdlib/ppm.dg ../stdlib/math.dg
 	# $(CALL2) fnptrstruct.dg #causing problems
 	
 	$(CALL2) generics/genericlist.dg

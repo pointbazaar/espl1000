@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Standard Library: collections/</title>
+  <meta name="description" content="SmallDragon stdlib Collections">
+  <meta name="author" content="SmallDragon">
+
+  <link rel="icon" href="../img/favicon.ico">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+<div class="container-xl">
+	
+	<div class="row nav-bg">
+		<div class="col"><a href="../index.html">Home</a></div>
+	</div>
+
+	<h1>Standard Library Collections</h1>
+
+	<h2> Contents </h2>
+	<a href="stdlib.html">..</a><br>
+	<a href="#set">set.dg</a><br>
+	<a href="#stack">stack.dg</a><br>
+	<a href="#intarray">intarray.dg</a><br>
+	<a href="#intbintree">intbintree.dg</a><br>
+	<a href="#linkedlist">linkedlist.dg</a><br>
+
+	<hr>
+	
+	<h3 id="set">set.dg</h3>
+	<table class="table-bordered table box">
+	<thead>
+		<tr>
+			<th> Name </th><th> Type </th><th> Runtime </th><th> Stack Used</th><th> Heap Use </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="color:green;">
+			<td> set_ctor </td><td> (?T0 sample) ~> Set&lt;?T0&gt; </td><td>O(1)</td><td>O(1)</td><td>+O(1)</td>
+		</tr>
+		<tr style="color:red;">
+			<td> set_dtor </td><td> (Set&lt;?T0&gt; s) -> bool </td><td>O(1)</td><td>O(1)</td><td>-O(s.capacity)</td>
+		</tr>
+		<tr>
+			<td> set_size </td><td> (Set&lt;?T0&gt; s) -> uint </td><td>O(1)</td><td>O(1)</td><td>-</td>
+		</tr>
+		<tr>
+			<td> set_contains </td><td> (Set&lt;?T0&gt; s, ?T0 x) -> bool </td><td>O(s.size)</td><td>O(1)</td><td>-</td>
+		</tr>
+		<tr>
+			<td> set_insert </td><td> (Set&lt;?T0&gt; s, ?T0 x) -> int </td><td>O(s.size)</td><td>O(1)</td><td>+O(1)</td>
+		</tr>
+		<tr>
+			<td> set_remove </td><td> (Set&lt;?T0&gt; s, ?T0 x) -> int </td><td>O(s.size)</td><td>O(1)</td><td>-O(1)</td>
+		</tr>
+		<tr>
+			<td> set_union </td><td> (Set&lt;?T0&gt; a, Set&lt;?T0&gt; b) -> Set&lt;?T0&gt; </td><td> O(a.size^2 + b.size^2) </td><td>O(1)</td><td>+O(a.capacity + b.capacity)</td>
+		</tr>
+		<tr>
+			<td> set_cut </td><td> (Set&lt;?T0&gt; a, Set&lt;?T0&gt; b) -> Set&lt;?T0&gt; </td><td> O(max(a.size, b.size)^2) </td><td>O(1)</td><td>+O(min(a.capacity, b.capacity))</td>
+		</tr>
+	</tbody>
+	</table>
+	
+	<h3 id="stack">stack.dg</h3>
+	<table class="table-bordered table box">
+	<thead>
+		<tr>
+			<th> Name </th>      <th> Type </th>                                   <th> Runtime </th>  <th> Stack Used </th><th> Heap Use </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="color:green;">
+			<td> stack_ctor </td><td> (uint capacity) ~> Stack&lt;?T0&gt; </td>      <td> O(1) </td>     <td>O(1)</td> <td>+O(1)</td>
+		</tr>
+		<tr style="color:red;">
+			<td> stack_dtor </td><td> (Stack&lt;?T0&gt; s) ~> bool </td>             <td> O(1) </td>      <td>O(1)</td> <td>-O(capacity)</td>
+		</tr>
+		<tr>
+			<td> stack_size </td><td> (Stack&lt;?T0&gt; s) -> uint </td>             <td> O(1) </td>      <td>O(1)</td> <td>-</td>
+		</tr>
+		<tr>
+			<td> stack_push </td><td> (Stack&lt;?T0&gt; s, ?T0 x) -> int throws</td> <td>O(1)</td>       <td>O(1)</td> <td>+O(1) amortized</td>
+		</tr>
+		<tr>
+			<td> stack_peek </td><td> (Stack&lt;?T0&gt; s) -> ?T0 throws</td>        <td>O(1)</td>       <td>O(1)</td> <td>-</td>
+		</tr>
+		<tr>
+			<td> stack_pop </td><td> (Stack&lt;?T0&gt; s) -> ?T0 throws</td>         <td>O(1)</td>       <td>O(1)</td> <td>-</td>
+		</tr>
+	</tbody>
+	</table>
+	
+	<h3 id="intarray">intarray.dg</h3>
+	<table class="table-bordered table box">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+			<th> Stack Used </th>
+			<th> Heap Used </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td> intarray_sum </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>O(1)</td><td>-</td>
+		</tr>
+		<tr>
+			<td> intarray_average </td><td> ([int] arr, uint size) -> float </td><td> O(size) </td><td>O(1)</td><td>-</td>
+		</tr>
+		<tr>
+			<td> intarray_min </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>O(1)</td><td>-</td>
+		</tr>
+		<tr>
+			<td> intarray_max </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>O(1)</td><td>-</td>
+		</tr>
+	</tbody>
+	</table>
+	
+	<h3 id="intbintree">intbintree.dg</h3>
+	<table class="table-bordered table box">
+	<thead>
+		<tr>
+			<th> Name </th><th> Type </th><th> Runtime </th><th> Stack Used</th><th> Heap Use</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="color:green;">
+			<td> intbintree_ctor </td><td> () ~> IntBinTree </td><td>O(1)</td><td>O(1)</td><td>+O(1)</td>
+		</tr>
+		<tr style="color:red;">
+			<td> intbintree_dtor </td><td> (IntBinTree t) ~> bool </td><td>O(size)</td><td>O(size) worst case</td><td>-O(size)</td>
+		</tr>
+		<tr>
+			<td> intbintree_insert </td><td> (IntBinTree t, int key) ~> int </td><td>O(size) worst case</td><td>O(1)</td><td>+O(1)</td>
+		</tr>
+		<tr>
+			<td> intbintree_contains </td><td>(IntBinTree t, int key) -> bool</td><td>O(size) worst case</td><td>O(1)</td><td>-</td>
+		</tr>
+		<tr>
+			<td>intbintree_size</td><td>(IntBinTree t) -> bool</td><td>O(size)</td><td>O(size) worst case</td><td>-</td>
+		</tr>
+		<tr>
+			<td>intbintree_visit</td><td>(IntBinTree t, ((int)->bool) visitor) -> bool</td><td>O(size) worst case</td><td>O(size) worst case</td><td>-</td>
+		</tr>
+	</tbody>
+	</table>
+	
+	<h3 id="linkedlist">linkedlist.dg</h3>
+	<table class="table-bordered table box">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+			<th> Stack Used</th>
+			<th> Heap Use </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="color:green;">
+			<td>linkedlist_ctor</td><td>() ~> LinkedList&lt;?T0&gt;</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td>
+		</tr>
+		<tr style="color:red;">
+			<td>linkedlist_dtor</td><td>(LinkedList&lt;?T0&gt; l) ~> bool</td><td>O(size)</td><td>O(1)</td><td>-O(l.size)</td>
+		</tr>
+		<tr>
+			<td>linkedlist_push_front</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) ~> bool</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td>
+		</tr>
+		<tr>
+			<td>linkedlist_push_back</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) ~> bool</td><td>O(1)</td><td>O(1)</td><td>+O(1)</td>
+		</tr>
+		<tr>
+			<td>linkedlist_pop_front</td><td>(LinkedList&lt;?T0&gt; l) ~> ?T0 throws</td><td>O(1)</td><td>O(1)</td><td>-O(1)</td>
+		</tr>
+		<tr>
+			<td>linkedlist_pop_back</td><td>(LinkedList&lt;?T0&gt; l) ~> ?T0 throws</td><td>O(1)</td><td>O(1)</td><td>-O(1)</td>
+		</tr>
+		<tr>
+			<td>linkedlist_contains</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) -> bool</td><td>O(size)</td><td>O(1)</td><td>-</td>
+		</tr>
+		<tr>
+			<td>linkedlist_index_of</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) -> int</td><td>O(size)</td><td>O(1)</td><td>-</td>
+		</tr>
+	</tbody>
+	</table>
+	
+</div>
+</body>
+</html>
