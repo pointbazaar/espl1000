@@ -1,9 +1,9 @@
 
 struct ArrayList<?T0> {
 
-	[?T0] arr;
-	uint64 size;
-	uint64 capacity;
+	@private [?T0] arr;
+	@private uint64 size;
+	@private uint64 capacity;
 }
 
 fn arraylist_ctor_int() ~> ArrayList<int> {
@@ -23,6 +23,10 @@ fn arraylist_dtor(ArrayList<?T0> list) ~> bool {
 	free(list);
 
 	return true;
+}
+
+fn arraylist_size(ArrayList<?T0> list) -> uint64 {
+	return list.size;
 }
 
 fn arraylist_insert(ArrayList<?T0> list, ?T0 elem) ~> bool {

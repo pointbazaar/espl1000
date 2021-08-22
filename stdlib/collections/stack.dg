@@ -38,8 +38,16 @@ fn stack_dtor(Stack<?T0> s) ~> bool {
 	return true;
 }
 
-fn stack_size(Stack<?T0> s) -> uint {
+fn stack_size(Stack<?T0> s) -> uint64 {
 	return s.size;
+}
+
+fn stack_contains(Stack<?T0> s, ?T0 elem) -> bool {
+	
+	for i in 0 .. (s.size - 1) {
+		if s.arr[i] == elem { return true; }
+	}
+	return false;
 }
 
 fn stack_push(Stack<?T0> s, ?T0 x) -> bool throws {

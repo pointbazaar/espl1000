@@ -22,15 +22,41 @@
 	<h1>Standard Library Collections</h1>
 
 	<h2> Contents </h2>
+	<a href="#intarray">intarray.dg</a><br>
 	<a href="stdlib.html">..</a><br>
 	<a href="#set">set.dg</a><br>
 	<a href="#stack">stack.dg</a><br>
-	<a href="#intarray">intarray.dg</a><br>
 	<a href="#intbintree">intbintree.dg</a><br>
 	<a href="#linkedlist">linkedlist.dg</a><br>
 	<a href="#arraylist">arraylist.dg</a><br>
 
 	<hr>
+	
+	<h3 id="intarray">intarray.dg</h3>
+	<table class="table-bordered table box">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+			<th> Heap Used </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td> intarray_sum </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>-</td>
+		</tr>
+		<tr>
+			<td> intarray_average </td><td> ([int] arr, uint size) -> float </td><td> O(size) </td><td>-</td>
+		</tr>
+		<tr>
+			<td> intarray_min </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>-</td>
+		</tr>
+		<tr>
+			<td> intarray_max </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>-</td>
+		</tr>
+	</tbody>
+	</table>
 	
 	<h3 id="set">set.dg</h3>
 	<table class="table-bordered table box">
@@ -55,13 +81,13 @@
 			<td>O(1)</td>
 			<td>-O(s.capacity)</td>
 		</tr>
-		<tr>
+		<tr style="color: blue;">
 			<td> set_size </td>
 			<td>(Set&lt;?T0&gt; s) -> uint</td>
 			<td>O(1)</td>
 			<td>-</td>
 		</tr>
-		<tr>
+		<tr style="color: blue;">
 			<td> set_contains </td>
 			<td> (Set&lt;?T0&gt; s, ?T0 x) -> bool </td>
 			<td>O(s.size)</td>
@@ -108,8 +134,11 @@
 		<tr style="color:red;">
 			<td> stack_dtor </td><td> (Stack&lt;?T0&gt; s) ~> bool </td>             <td> O(1) </td>     <td>-O(capacity)</td>
 		</tr>
-		<tr>
-			<td> stack_size </td><td> (Stack&lt;?T0&gt; s) -> uint </td>             <td> O(1) </td>      <td>-</td>
+		<tr style="color: blue;">
+			<td> stack_size </td><td> (Stack&lt;?T0&gt; s) -> uint64 </td>             <td> O(1) </td>      <td>-</td>
+		</tr>
+		<tr style="color: blue;">
+			<td> stack_contains </td><td> (Stack&lt;?T0&gt; s, ?T0 elem) -> bool </td>  <td> O(size) </td>      <td>-</td>
 		</tr>
 		<tr>
 			<td> stack_push </td><td> (Stack&lt;?T0&gt; s, ?T0 x) -> int throws</td> <td>O(1)</td>       <td>+O(1) amortized</td>
@@ -119,32 +148,6 @@
 		</tr>
 		<tr>
 			<td> stack_pop </td><td> (Stack&lt;?T0&gt; s) -> ?T0 throws</td>         <td>O(1)</td>       <td>-</td>
-		</tr>
-	</tbody>
-	</table>
-	
-	<h3 id="intarray">intarray.dg</h3>
-	<table class="table-bordered table box">
-	<thead>
-		<tr>
-			<th> Name </th>
-			<th> Type </th>
-			<th> Runtime </th>
-			<th> Heap Used </th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td> intarray_sum </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>-</td>
-		</tr>
-		<tr>
-			<td> intarray_average </td><td> ([int] arr, uint size) -> float </td><td> O(size) </td><td>-</td>
-		</tr>
-		<tr>
-			<td> intarray_min </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>-</td>
-		</tr>
-		<tr>
-			<td> intarray_max </td><td> ([int] arr, uint size) -> int </td><td> O(size) </td><td>-</td>
 		</tr>
 	</tbody>
 	</table>
@@ -163,14 +166,14 @@
 		<tr style="color:red;">
 			<td> intbintree_dtor </td><td> (IntBinTree t) ~> bool </td><td>O(size)</td><td>-O(size)</td>
 		</tr>
-		<tr>
-			<td> intbintree_insert </td><td> (IntBinTree t, int key) ~> int </td><td>O(size) worst case</td><td>+O(1)</td>
+		<tr style="color: blue;">
+			<td>intbintree_size</td><td>(IntBinTree t) -> uint64</td><td>O(size)</td><td>-</td>
 		</tr>
-		<tr>
+		<tr style="color: blue;">
 			<td> intbintree_contains </td><td>(IntBinTree t, int key) -> bool</td><td>O(size) worst case</td><td>-</td>
 		</tr>
 		<tr>
-			<td>intbintree_size</td><td>(IntBinTree t) -> bool</td><td>O(size)</td><td>-</td>
+			<td> intbintree_insert </td><td> (IntBinTree t, int key) ~> int </td><td>O(size) worst case</td><td>+O(1)</td>
 		</tr>
 		<tr>
 			<td>intbintree_visit</td><td>(IntBinTree t, ((int)->bool) visitor) -> bool</td><td>O(size) worst case</td><td>-</td>
@@ -195,6 +198,15 @@
 		<tr style="color:red;">
 			<td>linkedlist_dtor</td><td>(LinkedList&lt;?T0&gt; l) ~> bool</td><td>O(size)</td><td>-O(l.size)</td>
 		</tr>
+		<tr style="color: blue;">
+			<td>linkedlist_size</td>
+			<td>(LinkedList&lt;?T0&gt; l) -> uint64</td>
+			<td>O(1)</td>
+			<td>-</td>
+		</tr>
+		<tr style="color: blue;">
+			<td>linkedlist_contains</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) -> bool</td><td>O(size)</td><td>-</td>
+		</tr>
 		<tr>
 			<td>linkedlist_push_front</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) ~> bool</td><td>O(1)</td><td>+O(1)</td>
 		</tr>
@@ -206,9 +218,6 @@
 		</tr>
 		<tr>
 			<td>linkedlist_pop_back</td><td>(LinkedList&lt;?T0&gt; l) ~> ?T0 throws</td><td>O(1)</td><td>-O(1)</td>
-		</tr>
-		<tr>
-			<td>linkedlist_contains</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) -> bool</td><td>O(size)</td><td>-</td>
 		</tr>
 		<tr>
 			<td>linkedlist_index_of</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) -> int</td><td>O(size)</td><td>-</td>
@@ -239,6 +248,18 @@
 			<td>O(1)</td>
 			<td>-O(l.capacity)</td>
 		</tr>
+		<tr style="color: blue;">
+			<td>arraylist_size</td>
+			<td>(ArrayList&lt;?T0&gt; l) -> uint64</td>
+			<td>O(1)</td>
+			<td>-</td>
+		</tr>
+		<tr style="color: blue;">
+			<td>arraylist_contains</td>
+			<td>(ArrayList&lt;?T0&gt; l, ?T0 value) -> bool</td>
+			<td>O(size)</td>
+			<td>-</td>
+		</tr>
 		<tr>
 			<td>arraylist_insert</td>
 			<td>(ArrayList&lt;?T0&gt; l, ?T0 value) ~> bool</td>
@@ -250,12 +271,6 @@
 			<td>(ArrayList&lt;?T0&gt; l, uint64 index) -> ?T0</td>
 			<td>O(1)</td>
 			<td> - </td>
-		</tr>
-		<tr>
-			<td>arraylist_contains</td>
-			<td>(ArrayList&lt;?T0&gt; l, ?T0 value) -> bool</td>
-			<td>O(size)</td>
-			<td>-</td>
 		</tr>
 		<tr>
 			<td>arraylist_index_of</td>

@@ -12,7 +12,7 @@ fn _test_arraylist_int() ~> bool throws {
 
 	ArrayList<int> list = arraylist_ctor_int();
 	
-	assert(list.size == 0);
+	assert(arraylist_size(list) == 0);
 	
 	arraylist_insert(list, 2);
 	
@@ -23,9 +23,9 @@ fn _test_arraylist_int() ~> bool throws {
 	
 	assert(arraylist_index_of(list, 1) < 0);
 	
-	assert(list.size == 1);
+	assert(arraylist_size(list) == 1);
 	arraylist_clear(list);
-	assert(list.size == 0);
+	assert(arraylist_size(list) == 0);
 	
 	arraylist_dtor(list);
 
