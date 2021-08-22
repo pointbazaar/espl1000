@@ -7,10 +7,10 @@ TESTS := tests/test_matrix.dg \
 	tests/test_primes.dg \
 	tests/collections/test_set.dg \
 	tests/collections/test_stack.dg \
-	tests/collections/test_intarray.dg \
 	tests/collections/test_intbintree.dg \
 	tests/collections/test_arraylist.dg \
 	tests/collections/test_linkedlist.dg 
+	#tests/collections/test_array.dg \
 
 SOURCES :=  test.dg \
 	base.dg \
@@ -23,11 +23,11 @@ SOURCES :=  test.dg \
 	collision2d.dg \
 	collections/set.dg \
 	collections/stack.dg \
-	collections/intarray.dg \
 	collections/intbintree.dg \
 	collections/linkedlist.dg \
 	collections/arraylist.dg \
 	externc/externc_libc.dg $(TESTS)
+	#collections/array.dg \
 
 test: $(SOURCES) clean
 	sd -g $(SOURCES)

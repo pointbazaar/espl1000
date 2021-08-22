@@ -27,7 +27,7 @@ fn main2() ~> int throws {
 	
 	status("stack"); test_stack();
 	
-	status("arraylist"); test_array();
+	//status("array"); test_array();
 	
 	status("bintree"); test_intbintree();
 	
