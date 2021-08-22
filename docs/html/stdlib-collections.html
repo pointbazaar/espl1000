@@ -28,6 +28,7 @@
 	<a href="#intarray">intarray.dg</a><br>
 	<a href="#intbintree">intbintree.dg</a><br>
 	<a href="#linkedlist">linkedlist.dg</a><br>
+	<a href="#arraylist">arraylist.dg</a><br>
 
 	<hr>
 	
@@ -211,6 +212,62 @@
 		</tr>
 		<tr>
 			<td>linkedlist_index_of</td><td>(LinkedList&lt;?T0&gt; l, ?T0 value) -> int</td><td>O(size)</td><td>-</td>
+		</tr>
+	</tbody>
+	</table>
+	
+	<h3 id="arraylist">arraylist.dg</h3>
+	<table class="table-bordered table box">
+	<thead>
+		<tr>
+			<th> Name </th>
+			<th> Type </th>
+			<th> Runtime </th>
+			<th> Heap Use </th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr style="color:green;">
+			<td>arraylist_ctor</td>
+			<td>() ~> ArrayList&lt;?T0&gt;</td>
+			<td>O(1)</td>
+			<td>+O(1)</td>
+		</tr>
+		<tr style="color:red;">
+			<td>arraylist_dtor</td>
+			<td>(ArrayList&lt;?T0&gt; l) ~> bool</td>
+			<td>O(1)</td>
+			<td>-O(l.capacity)</td>
+		</tr>
+		<tr>
+			<td>arraylist_insert</td>
+			<td>(ArrayList&lt;?T0&gt; l, ?T0 value) ~> bool</td>
+			<td>O(1) amortized</td>
+			<td>+O(1) amortized</td>
+		</tr>
+		<tr>
+			<td>arraylist_at</td>
+			<td>(ArrayList&lt;?T0&gt; l, uint64 index) -> ?T0</td>
+			<td>O(1)</td>
+			<td> - </td>
+		</tr>
+		<tr>
+			<td>arraylist_contains</td>
+			<td>(ArrayList&lt;?T0&gt; l, ?T0 value) -> bool</td>
+			<td>O(size)</td>
+			<td>-</td>
+		</tr>
+		<tr>
+			<td>arraylist_index_of</td>
+			<td>(ArrayList&lt;?T0&gt; l, ?T0 value) -> int</td>
+			<td>O(size)</td>
+			<td>-</td>
+		</tr>
+		<tr>
+			<td>arraylist_clear</td>
+			<td>(ArrayList&lt;?T0&gt; l) -> bool</td>
+			<td>O(1)</td>
+			<td>-</td>
 		</tr>
 	</tbody>
 	</table>

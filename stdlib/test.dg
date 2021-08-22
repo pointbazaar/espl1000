@@ -33,6 +33,8 @@ fn main2() ~> int throws {
 	
 	status("linkedlist"); test_linkedlist();
 	
+	status("arraylist"); test_arraylist();
+	
 	status("polynomial"); test_polynomial();
 	
 	status("matrix"); test_matrix();

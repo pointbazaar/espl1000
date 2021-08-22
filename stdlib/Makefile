@@ -9,6 +9,7 @@ TESTS := tests/test_matrix.dg \
 	tests/collections/test_stack.dg \
 	tests/collections/test_intarray.dg \
 	tests/collections/test_intbintree.dg \
+	tests/collections/test_arraylist.dg \
 	tests/collections/test_linkedlist.dg 
 
 SOURCES :=  test.dg \
@@ -25,6 +26,7 @@ SOURCES :=  test.dg \
 	collections/intarray.dg \
 	collections/intbintree.dg \
 	collections/linkedlist.dg \
+	collections/arraylist.dg \
 	externc/externc_libc.dg $(TESTS)
 
 test: $(SOURCES) clean
