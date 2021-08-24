@@ -178,11 +178,16 @@ static void transpile_ast(struct AST* ast, struct Ctx* ctx, char* h_filename){
 	{ ns_transpile_struct_decls(ast->namespaces[i], ctx); }
 	
 	ctx->file = ctx->c_file;
-	
-	for(int i=0; i < ast->count_namespaces; i++){ 
 
+
+    fprintf(ctx->file, "#pragma GCC diagnostic push\n");
+    fprintf(ctx->file, "#pragma GCC diagnostic ignored \"-Wint-conversion\" \n");
+
+	for(int i=0; i < ast->count_namespaces; i++){
 		ns_transpile_subrs(ast->namespaces[i], ctx);
 	}
+
+	fprintf(ctx->file, "#pragma GCC diagnostic pop\n");
 }
 
 static void ns_transpile_passthrough_includes(struct Namespace* ns, struct Ctx* ctx) {
