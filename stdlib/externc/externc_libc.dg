@@ -87,6 +87,7 @@ externc fn memcpy([char] dest, [char] src, int n) ~> int "memcpy"
 externc fn fopen([char] name, [char] mode) ~> FILE "fopen"
 externc fn fclose(FILE file) ~> int "fclose"
 externc fn fflush(FILE file) ~> int "fflush"
+externc fn fseek(FILE file, int offset, int whence) ~> int "fseek"
 
 externc fn getchar() ~> int 			"getchar"
 externc fn fgetc(FILE file) ~> int 		"fgetc"
