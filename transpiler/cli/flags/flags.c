@@ -17,6 +17,7 @@ struct Flags* makeFlags(int argc, char** argv){
 	flags->version 	= false;
 	flags->emit_headers  = false;
 	flags->x86      = false;
+    flags->avr      = false;
 
 	flags->debug_symbols = false;
 	flags->werror        = false;
@@ -45,6 +46,7 @@ struct Flags* makeFlags2(){
     flags->version       = false;
     flags->emit_headers  = false;
     flags->x86           = false;
+    flags->avr           = false;
 
     flags->debug_symbols = false;
     flags->werror        = false;
@@ -89,6 +91,11 @@ static void make_flags_inner(struct Flags* flags, char* arg){
 	    flags->x86 = true;
 	    return;
 	}
+
+    if(strcmp(arg, "-avr") == 0){
+        flags->avr = true;
+        return;
+    }
 	
 	if(strcmp(arg, "-g") == 0){
 		flags->debug_symbols = true;

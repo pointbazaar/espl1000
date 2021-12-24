@@ -11,17 +11,18 @@ struct Flags {
 	bool version;       //-version
 	bool emit_headers;  //-h
 	bool x86;           //-x86
-	
-	//gcc passthrough flags
-	bool debug_symbols; //-g
-	bool werror;        //-Werror
-	
-	//used to tell if we should run gcc
-	bool has_main_fn;
-	
-	uint8_t count_filenames;
-	uint8_t capacity_filenames;
-	char** filenames;
+    bool avr;           //-avr
+
+    //gcc passthrough flags
+    bool debug_symbols; //-g
+    bool werror;        //-Werror
+
+    //used to tell if we should run gcc
+    bool has_main_fn;
+
+    uint8_t count_filenames;
+    uint8_t capacity_filenames;
+    char** filenames;
 
 };
 

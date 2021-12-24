@@ -14,6 +14,7 @@
 #include "util/fileutils/fileutils.h"
 #include "invoke/invoke.h"
 #include "transpiler.h"
+#include "code_gen/avr/cg_avr.h"
 
 bool transpileAndCompile(struct Flags* flags){
 	
@@ -48,8 +49,9 @@ bool transpileAndCompile(struct Flags* flags){
 	char* asm_filename = make_asm_filename(flags->filenames[0]);
 
 	bool success = false;
-
-	if(flags->x86){
+    if(flags->avr){
+        success = compile_and_write_avr(asm_filename, ast, flags);
+    }else if(flags->x86){
 		success = compile_and_write_x86(asm_filename, ast, flags);
 	}else{
 		success = transpile_and_write_c_code(c_filename, h_filename, ast, flags);
