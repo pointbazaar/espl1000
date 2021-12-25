@@ -29,11 +29,7 @@ bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flag
     //use recursive descent to make TAC
     for(size_t i = 0; i < ast->count_namespaces; i++){
         struct Namespace* ns = ast->namespaces[i];
-        for(size_t j = 0; j < ns->count_methods; j++){
-            struct Method* m = ns->methods[i];
-
-            tac_method(m);
-        }
+        tac_namespace(ns);
     }
 
     //print the TAC for debug
@@ -48,12 +44,8 @@ bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flag
     //spilling will not be implemented (yet?)
 
     //TODO
-    FILE* out_file = fopen(asm_file_filename, "w");
-    if(out_file == NULL){
-        //TODO
-    }
-
-    fprintf(out_file, "%s", "TODO");
+    //we have to use the parameter, else compile error
+    printf("%s\n", asm_file_filename);
 
     return false;
 }
