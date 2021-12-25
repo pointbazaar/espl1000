@@ -39,9 +39,9 @@ struct TAC{
     uint32_t goto_index;
 };
 
-size_t cap;
-size_t count;
-struct TAC** tac;
+extern size_t cap;
+extern size_t count;
+extern struct TAC** tac;
 
 void append_tac(struct TAC* node);
 void print_tac(struct TAC* tac);
@@ -63,5 +63,7 @@ void tac_method(struct Method* m);
 void tac_stmtblock(struct StmtBlock* block);
 
 void tac_expr(struct Expr* expr);
+void tac_unopterm(struct UnOpTerm* t);
+void tac_term(struct Term* t);
 
 #endif

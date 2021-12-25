@@ -86,7 +86,6 @@ void tac_call(struct Call* call){
 }
 
 void tac_whilestmt(struct WhileStmt* w){
-    //TODO
 
     //L0:
     //t1 = expr
@@ -96,6 +95,30 @@ void tac_whilestmt(struct WhileStmt* w){
     // block
     // goto L0
     //end:
+
+    uint32_t l0 = make_label();
+    uint32_t l1 = make_label();
+    uint32_t lend = make_label();
+
+    append_tac(makeTACLabel(l0));
+
+    tac_expr(w->condition);
+
+    struct TAC* t = makeTAC();
+    t->kind = TAC_IF_GOTO;
+    strcpy(t->arg1, tac[count-1]->dest);
+    t->goto_index = l1;
+    append_tac(t);
+
+    append_tac(makeTACGoto(lend));
+
+    append_tac(makeTACLabel(l1));
+
+    tac_stmtblock(w->block);
+
+    append_tac(makeTACGoto(l0));
+
+    append_tac(makeTACLabel(lend));
 }
 
 void tac_forstmt(struct ForStmt* f){
@@ -224,6 +247,79 @@ void tac_stmtblock(struct StmtBlock* block){
     for(size_t k = 0; k < block->count; k++){
         struct Stmt* s = block->stmts[k];
         tac_stmt(s);
+    }
+}
+
+void tac_constvalue(struct ConstValue* c){
+    switch (c->kind) {
+        case 1:
+            //TODO
+            c->ptr.m1_bool_const->value;
+            break;
+        case 2:
+            //TODO
+            c->ptr.m2_int_const;
+            break;
+        case 3:
+            //TODO
+            c->ptr.m3_char_const;
+            break;
+        case 4:
+            //TODO
+            c->ptr.m4_float_const;
+            break;
+        case 5:
+            //TODO
+            c->ptr.m5_hex_const;
+            break;
+        case 6:
+            //TODO
+            c->ptr.m6_bin_const;
+            break;
+    }
+}
+
+void tac_expr(struct Expr* expr){
+
+    if(expr->term2 == NULL){
+        tac_unopterm(expr->term1);
+    }else{
+        //TODO
+    }
+}
+
+void tac_unopterm(struct UnOpTerm* u){
+
+    if(u->op == NULL){
+        tac_term(u->term);
+    }else{
+        //TODO
+    }
+}
+
+void tac_term(struct Term* t){
+    //TODO
+    switch(t->kind){
+        case 4:
+            //call
+            t->ptr.m4;
+            break;
+        case 5:
+            //expr
+            tac_expr(t->ptr.m5);
+            break;
+        case 6:
+            //variable
+            //TODO
+            t->ptr.m6;
+        case 12:
+            //const value
+            tac_constvalue(t->ptr.m12);
+            break;
+        default:
+            printf("not implemented for avr\n");
+            exit(1);
+            break;
     }
 }
 
