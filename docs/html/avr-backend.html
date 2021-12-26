@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>AVR Backend</title>
+  <meta name="description" content="SmallDragon AVR Backend">
+  <meta name="author" content="SmallDragon">
+
+  <link rel="icon" href="../img/favicon.ico">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/style.css">
+
+</head>
+<body>
+<div class="container-xl">
+	
+	<div class="row nav-bg">
+		<div class="col"><a href="../index.html">Home</a></div>
+	</div>
+
+    <h2 class="p-1 m-2" style="color:red; background-color: black;">Work In Progress</h2>
+
+    <div class="row m-3 p-1" style="background-color: white; border: 0.2rem solid black;">
+        <div class="col-md-2">
+            <img style="width: 9rem;" src="https://www.microchip.com/content/dam/mchp/mrt-dam/ic-images/spdip/28-lead-m3x/ATmega328P-M3X-Regular.jpg"/>
+        </div>
+        <div class="col-md-2">
+            <img style="width: 9rem;" src="https://www.microchip.com/content/dam/mchp/mrt-dam/ic-images/spdip/28-lead-m3x/ATmega328P-M3X-Regular.jpg"/>
+        </div>
+        <div class="col-md-4">
+            <h1 class="m-3">AVR Backend</h1>
+        </div>
+        <div class="col-md-2">
+            <img style="width: 9rem;" src="https://www.microchip.com/content/dam/mchp/mrt-dam/ic-images/spdip/28-lead-m3x/ATmega328P-M3X-Regular.jpg"/>
+        </div>
+        <div class="col-md-2">
+            <img style="width: 9rem;" src="https://www.microchip.com/content/dam/mchp/mrt-dam/ic-images/spdip/28-lead-m3x/ATmega328P-M3X-Regular.jpg"/>
+        </div>
+    </div>
+
+	<p>
+	it is planned that smalldragon should get an AVR Backend and be able to generate
+        assembly code in the AVR Instructions Set
+	</p>
+
+    <a href="ww1.microchip.com/downloads/en/devicedoc/atmel-0856-avr-instruction-set-manual.pdf">AVR Instruction Set Manual</a>
+    <br>
+    <a href="https://en.wikipedia.org/wiki/Atmel_AVR_instruction_set">AVR Instruction Set (Wikipedia)</a>
+    <br>
+    <p></p>
+
+    <h3>Motivations</h3>
+    <ul>
+        <li>
+            The AVR Instruction Set is a RISC Instruction Set.
+        </li>
+        <li>
+            The Chips (currently being produced by
+            <a href="https://www.microchip.com/en-us/products/microcontrollers-and-microprocessors/8-bit-mcus/avr-mcus">Microchip</a>)
+            are reasonably inexpensive and easy to come by.
+        </li>
+        <li>
+            Variety of good open source emulators available.
+        </li>
+    </ul>
+
+    <h5>Drawbacks</h5>
+    <p>
+        The Registers are only 8 bit wide.
+    </p>
+
+    <h3>Tooling</h3>
+    <p>
+        Developing a Compiler Backend requires some tooling to test the generated machine code.<br>
+        I have come across a variety of good Simulators for the AVR Architecture.
+    </p>
+    <ul>
+        <li>
+            <a href="http://www.avr-asm-tutorial.net/avr_sim/index_en.html">Gerd's AVR Simulator</a>(GUI based Simulator)
+        </li>
+        <li>
+            <a href="https://github.com/Milo-D/libvmcu-Virtual-MCU-Library">libvmcu</a>(C Library)
+        </li>
+        <li>
+            <a href="https://github.com/buserror/simavr">simavr</a>
+        </li>
+    </ul>
+
+    <h3>Memory Layout Used</h3>
+    <p>TODO</p>
+
+    <h3>Calling Convention</h3>
+    <p>TODO</p>
+
+    <h3>TODO List</h3>
+    <ul>
+        <li>[ ] 3-Address-Code Generation</li>
+        <li>[ ] Optimizations on the 3-Address-Code</li>
+        <li>[ ] Control Flow Graph with Basic Blocks</li>
+        <li>[ ] Register Allocation</li>
+        <li>[ ] ...</li>
+    </ul>
+</div>
+
+</body>
+</html>
