@@ -42,26 +42,9 @@ static void ns_transpile_struct_decls(struct Namespace* ns, struct Ctx* ctx);
 static void ns_transpile_subr_fwd_decls(struct Namespace* ns, struct Ctx* ctx);
 static void ns_transpile_subrs(struct Namespace* ns, struct Ctx* ctx);
 
-static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st);
-
 static void ns_transpile_passthrough_includes(struct Namespace* ns, struct Ctx* ctx);
 
-bool transpile_and_write_c_code(char* c_filename, char* h_filename, struct AST* ast, struct Flags* flags){
-
-	struct Ctx* ctx = make(Ctx);
-	
-	ctx->tables = makeST(flags->debug);
-	
-	ctx->error = false;
-	ctx->flags = flags;
-	
-	ctx->indent_level = 0;
-	ctx->file         = NULL;
-	ctx->c_file       = NULL;
-	ctx->header_file  = NULL;
-	
-	ctx->in_try_block   = false;
-	ctx->index_try_stmt = 0;
+bool transpile_and_write_c_code(char* c_filename, char* h_filename, struct AST* ast, struct Flags* flags, struct Ctx* ctx){
 
 	ctx->c_file      = fopen(c_filename, "w");
 	//full buffering for performance
@@ -99,7 +82,6 @@ bool transpile_and_write_c_code(char* c_filename, char* h_filename, struct AST* 
 	return status;
 }
 
-
 static void transpile_ast(struct AST* ast, struct Ctx* ctx, char* h_filename){
 	
 	ctx->file = ctx->c_file; //direct output to c file
@@ -116,28 +98,8 @@ static void transpile_ast(struct AST* ast, struct Ctx* ctx, char* h_filename){
 	if(ctx->flags->emit_headers){
 		fprintf(ctx->c_file, "#include \"%s\"\n", h_filename);
 	}
-	
-	fill_tables(ast, ctx);
-	
-	transpileLambdas(ast, ctx->tables);
-	
-	//RE-FILL the newly created lambda functions
-	backfill_lambdas_into_sst(ast, ctx->tables);
 
-	struct TCError* errors = typecheck_ast(ast, ctx->tables, true);
-
-	bool checks = errors == NULL;
-	if(!checks){
-		ctx->error = true;
-		return;
-	}
-	
 	ctx->flags->has_main_fn = sst_contains(ctx->tables->sst, "main");
-	
-	analyze_functions(ctx->tables, ast);
-	analyze_dead_code(ctx->tables, ast);
-	analyze_termination(ctx->tables);
-	analyze_annotations(ctx->tables, ast);
 	
 	if(ctx->flags->debug){
 		sst_print(ctx->tables->sst);
@@ -194,31 +156,6 @@ static void ns_transpile_passthrough_includes(struct Namespace* ns, struct Ctx* 
 
 	for (int i = 0; i < ns->count_includes; i++) {
 		fprintf(ctx->file, "%s\n", ns->includes[i]);
-	}
-}
-
-static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st){
-	
-	for(int i=0; i < ast->count_namespaces; i++){
-		
-		struct Namespace* ns = ast->namespaces[i];
-		
-		for(int j = 0; j < ns->count_methods; j++){
-			
-			struct Method* m = ns->methods[j];
-			
-			//name starts with lambda_
-			if(strncmp(m->decl->name, "lambda_", strlen("lambda_")) != 0){
-				continue;
-			}
-			
-			struct Type* t = method_to_type(m);
-			st_register_inferred_type(st, t);
-			
-			struct SSTLine* line = makeSSTLine2(m, t, ns->name);
-			
-			sst_add(st->sst, line);
-		}
 	}
 }
 
