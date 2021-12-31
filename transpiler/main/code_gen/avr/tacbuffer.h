@@ -15,8 +15,6 @@ struct TACBuffer* tacbuffer_ctor();
 void tacbuffer_dtor(struct TACBuffer* buffer);
 void tacbuffer_print(struct TACBuffer* buffer);
 char* tacbuffer_tostring(struct TACBuffer* buffer, bool graphviz);
-void tacbuffer_append(struct TACBuffer* buffer, struct TAC* node);
-
-uint32_t tacbuffer_indexof(struct TACBuffer* buffer, struct TAC* tac);
+void tacbuffer_append(struct TACBuffer *buffer, struct TAC *node, bool set_index);
 
 #endif

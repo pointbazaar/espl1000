@@ -6,12 +6,16 @@
 #include "tacbuffer.h"
 #include "tac.h"
 
-void tacbuffer_append(struct TACBuffer* buffer, struct TAC* node){
+void tacbuffer_append(struct TACBuffer *buffer, struct TAC *node, bool set_index) {
 
     if(buffer->count >= buffer->cap)
         buffer->buffer = realloc(buffer->buffer, sizeof(struct TAC*) * (buffer->cap *= 2));
 
     buffer->buffer[buffer->count] = node;
+
+    if(set_index)
+        node->index = buffer->count;
+
     buffer->count += 1;
 }
 
@@ -56,10 +60,3 @@ char* tacbuffer_tostring(struct TACBuffer* buffer, bool graphviz){
     return res;
 }
 
-uint32_t tacbuffer_indexof(struct TACBuffer* buffer, struct TAC* tac){
-    for(size_t i = 0; i < buffer->count; i++){
-        if(buffer->buffer[i] == tac)
-            return i;
-    }
-    return -1;
-}

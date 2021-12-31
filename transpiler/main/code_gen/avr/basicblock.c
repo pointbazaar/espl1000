@@ -91,31 +91,26 @@ static void write_dot_file_from_graph(struct BasicBlock **blocks, uint32_t count
 
 void create_edges_basic_block(struct TACBuffer *buffer, uint32_t count, struct BasicBlock **blocks,
                               struct BasicBlock *block) {
-    struct TAC* last = block->buffer->buffer[block->buffer->count - 1];
 
-    if(last->kind != TAC_IF_GOTO && last->kind != TAC_GOTO){
-        return;
-    }
+    struct TAC* last = block->buffer->buffer[block->buffer->count - 1];
 
     if(last->goto_index != TAC_NO_LABEL){
         //find out the block where the leader has that label_index
         block->branch_1 = find_block_from_label_index(blocks, count, last->goto_index);
     }
 
-    if(last->kind == TAC_IF_GOTO){
-        //the next instruction is also a possible branch
+    //the next instruction is also a possible branch, if
+    //the instruction is not a goto or return
+    if(tac_is_unconditional_jump(last))
+        return;
 
-        const uint32_t k = tacbuffer_indexof(buffer, last);
+    if(last->index >= buffer->count - 1)
+        return;
 
-        if(k >= buffer->count-1){
-            return;
-        }
+    struct TAC* next = buffer->buffer[last->index + 1];
 
-        struct TAC* next = buffer->buffer[k+1];
-
-        //find basic block of next
-        block->branch_2 = find_block_from_tac_leader(blocks, count, next);
-    }
+    //find basic block of next
+    block->branch_2 = find_block_from_tac_leader(blocks, count, next);
 }
 
 static struct BasicBlock* find_block_from_label_index(struct BasicBlock** blocks, uint32_t count_blocks, uint32_t label_index){
@@ -153,10 +148,10 @@ static struct BasicBlock** collect_basic_blocks(struct TACBuffer* buffer, uint32
         //now collect all TACs until next leader
 
         //append the leader
-        tacbuffer_append(current->buffer, buffer->buffer[index_tacbuffer++]);
+        tacbuffer_append(current->buffer, buffer->buffer[index_tacbuffer++], false);
 
         while(index_tacbuffer < buffer->count && !is_leader[index_tacbuffer]){
-            tacbuffer_append(current->buffer, buffer->buffer[index_tacbuffer++]);
+            tacbuffer_append(current->buffer, buffer->buffer[index_tacbuffer++], false);
         }
     }
     return blocks;
@@ -196,22 +191,22 @@ static bool* calculate_leaders(struct TACBuffer* buffer){
     for(size_t i = 0; i < buffer->count; i++){
 
         //any statement that is the target of a conditional or
-        //unconditional got is a leader
+        //unconditional goto is a leader
         struct TAC* current = buffer->buffer[i];
-        if(current->kind == TAC_IF_GOTO || current->kind == TAC_GOTO){
 
-            if(current->label_index != TAC_NO_LABEL)
-                is_leader[i] = true;
-        }
+        if(current->label_index != TAC_NO_LABEL)
+            is_leader[i] = true;
 
-        if(i != 0){
-            struct TAC* prev = buffer->buffer[i-1];
+        if(i==0) continue;
 
-            //any statement that immediately follows a goto or conditional
-            //got is a leader
-            if(prev->kind == TAC_IF_GOTO || prev->kind == TAC_GOTO || prev->kind == TAC_RETURN)
-                is_leader[i] = true;
-        }
+        //prev exists
+        struct TAC *prev = buffer->buffer[i - 1];
+
+        //any statement that immediately follows a goto or conditional
+        //goto is a leader
+
+        if (prev->kind == TAC_IF_GOTO || prev->kind == TAC_GOTO || prev->kind == TAC_RETURN)
+            is_leader[i] = true;
     }
 
     return is_leader;

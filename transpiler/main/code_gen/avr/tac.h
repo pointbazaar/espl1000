@@ -29,6 +29,8 @@ enum TAC_KIND{
 #define TAC_NO_LABEL 0
 
 struct TAC{
+    uint32_t index; //for when we put it in a TACBuffer
+
     //three address code
     uint32_t label_index;
     char label_name[DEFAULT_STR_SIZE]; //for labels with names, like functions
@@ -47,6 +49,7 @@ struct TAC{
 //TAC functions
 void print_tac(struct TAC* tac);
 char* tac_tostring(struct TAC* tac);
+bool tac_is_unconditional_jump(struct TAC* tac);
 
 struct TAC* makeTAC();
 uint32_t make_label();

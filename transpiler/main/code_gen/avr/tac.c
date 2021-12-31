@@ -19,12 +19,16 @@ static uint32_t label_loop_start;
 
 struct TAC* makeTAC(){
     struct TAC* res = malloc(sizeof(struct TAC));
-    res->label_index = TAC_NO_LABEL;
+    *res = (struct TAC) {
+            .index = 0,
+            .label_index = TAC_NO_LABEL,
+            .goto_index = TAC_NO_LABEL,
+            .kind = TAC_NONE
+    };
+
     strcpy(res->label_name, "");
-    res->goto_index = TAC_NO_LABEL;
 
     strcpy(res->dest, "");
-    res->kind = TAC_NONE;
     strcpy(res->arg1, "");
     strcpy(res->op, "");
     strcpy(res->arg2, "");
@@ -67,7 +71,7 @@ void tac_call(struct TACBuffer* buffer, struct Call* call){
         struct TAC* t = makeTAC();
         t->kind = TAC_PARAM;
         strcpy(t->arg1, buffer->buffer[buffer->count-1]->dest);
-        tacbuffer_append(buffer, t);
+        tacbuffer_append(buffer, t, true);
     }
 
     if(call->callable->member_access != NULL){
@@ -84,7 +88,7 @@ void tac_call(struct TACBuffer* buffer, struct Call* call){
     t2->kind = TAC_CALL;
     sprintf(t2->dest, "t%d", make_temp());
     strcpy(t2->arg1, call->callable->simple_var->name);
-    tacbuffer_append(buffer, t2);
+    tacbuffer_append(buffer, t2, true);
 }
 
 void tac_whilestmt(struct TACBuffer* buffer, struct WhileStmt* w){
@@ -102,7 +106,7 @@ void tac_whilestmt(struct TACBuffer* buffer, struct WhileStmt* w){
     uint32_t l1 = make_label();
     uint32_t lend = make_label();
 
-    tacbuffer_append(buffer, makeTACLabel(l0));
+    tacbuffer_append(buffer, makeTACLabel(l0), true);
 
     tac_expr(buffer, w->condition);
 
@@ -110,17 +114,17 @@ void tac_whilestmt(struct TACBuffer* buffer, struct WhileStmt* w){
     t->kind = TAC_IF_GOTO;
     strcpy(t->arg1, buffer->buffer[buffer->count-1]->dest);
     t->goto_index = l1;
-    tacbuffer_append(buffer, t);
+    tacbuffer_append(buffer, t, true);
 
-    tacbuffer_append(buffer, makeTACGoto(lend));
+    tacbuffer_append(buffer, makeTACGoto(lend), true);
 
-    tacbuffer_append(buffer, makeTACLabel(l1));
+    tacbuffer_append(buffer, makeTACLabel(l1), true);
 
     tac_stmtblock(buffer, w->block);
 
-    tacbuffer_append(buffer, makeTACGoto(l0));
+    tacbuffer_append(buffer, makeTACGoto(l0), true);
 
-    tacbuffer_append(buffer, makeTACLabel(lend));
+    tacbuffer_append(buffer, makeTACLabel(lend), true);
 }
 
 void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f){
@@ -151,21 +155,21 @@ void tac_ifstmt(struct TACBuffer* buffer, struct IfStmt* s){
     t->kind = TAC_IF_GOTO;
     strcpy(t->arg1, buffer->buffer[buffer->count-1]->dest);
     t->goto_index = l1;
-    tacbuffer_append(buffer, t);
+    tacbuffer_append(buffer, t, true);
 
-    tacbuffer_append(buffer, makeTACGoto(l2));
+    tacbuffer_append(buffer, makeTACGoto(l2), true);
 
-    tacbuffer_append(buffer, makeTACLabel(l1));
+    tacbuffer_append(buffer, makeTACLabel(l1), true);
 
     tac_stmtblock(buffer, s->block);
 
-    tacbuffer_append(buffer, makeTACGoto(lend));
+    tacbuffer_append(buffer, makeTACGoto(lend), true);
 
-    tacbuffer_append(buffer, makeTACLabel(l2));
+    tacbuffer_append(buffer, makeTACLabel(l2), true);
 
     tac_stmtblock(buffer, s->else_block);
 
-    tacbuffer_append(buffer, makeTACLabel(lend));
+    tacbuffer_append(buffer, makeTACLabel(lend), true);
 }
 
 void tac_retstmt(struct TACBuffer* buffer, struct RetStmt* r){
@@ -178,7 +182,7 @@ void tac_retstmt(struct TACBuffer* buffer, struct RetStmt* r){
     t->kind = TAC_RETURN;
     strcpy(t->arg1, buffer->buffer[buffer->count-1]->dest);
 
-    tacbuffer_append(buffer, t);
+    tacbuffer_append(buffer, t, true);
 }
 
 void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a){
@@ -212,14 +216,14 @@ void tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt){
         struct TAC* t = makeTAC();
         t->kind = TAC_GOTO;
         t->goto_index = label_loop_end;
-        tacbuffer_append(buffer, t);
+        tacbuffer_append(buffer, t, true);
         return;
     }
     if(stmt->is_continue){
         struct TAC* t = makeTAC();
         t->kind = TAC_GOTO;
         t->goto_index = label_loop_start;
-        tacbuffer_append(buffer, t);
+        tacbuffer_append(buffer, t, true);
         return;
     }
 
@@ -247,7 +251,7 @@ void tac_method(struct TACBuffer* buffer, struct Method* m){
     t->kind = TAC_NOP;
     t->label_index = TAC_NO_LABEL;
     strncpy(t->label_name, m->decl->name, DEFAULT_STR_SIZE);
-    tacbuffer_append(buffer, t);
+    tacbuffer_append(buffer, t, true);
 
     tac_stmtblock(buffer, m->block);
 }
@@ -284,7 +288,7 @@ void tac_constvalue(struct TACBuffer* buffer, struct ConstValue* c){
             t->const_value = (int32_t)c->ptr.m6_bin_const->value;
             break;
     }
-    tacbuffer_append(buffer, t);
+    tacbuffer_append(buffer, t, true);
 }
 
 void tac_expr(struct TACBuffer* buffer, struct Expr* expr){
@@ -308,7 +312,7 @@ void tac_expr(struct TACBuffer* buffer, struct Expr* expr){
 
         t->kind = TAC_BINARY_OP;
         strcpy(t->op, opstr);
-        tacbuffer_append(buffer, t);
+        tacbuffer_append(buffer, t, true);
     }
 }
 
@@ -323,7 +327,7 @@ void tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* u){
         strcpy(t->arg1, buffer->buffer[buffer->count - 1]->dest);
         strcpy(t->op, u->op->op);
 
-        tacbuffer_append(buffer, t);
+        tacbuffer_append(buffer, t, true);
     }
 }
 
@@ -350,7 +354,7 @@ void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* v){
     sprintf(t->dest, "t%d", make_temp());
     strcpy(t->arg1, v->name);
 
-    tacbuffer_append(buffer, t);
+    tacbuffer_append(buffer, t, true);
 }
 
 void tac_term(struct TACBuffer* buffer, struct Term* t){
@@ -379,6 +383,10 @@ void print_tac(struct TAC* t){
     char* s = tac_tostring(t);
     printf("%s", s);
     free(s);
+}
+
+bool tac_is_unconditional_jump(struct TAC* tac){
+    return tac->kind == TAC_GOTO || tac->kind == TAC_RETURN;
 }
 
 char* tac_tostring(struct TAC* t){
