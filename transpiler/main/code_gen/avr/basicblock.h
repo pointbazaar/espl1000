@@ -14,6 +14,8 @@ struct BasicBlock {
     //pointers to branch destination
     struct BasicBlock* branch_1; //may be NULL
     struct BasicBlock* branch_2; //may be NULL
+
+    bool visited_assign_registers;
 };
 
 struct BasicBlock* basicblock_ctor(uint32_t index);
@@ -22,5 +24,7 @@ void basicblock_dtor(struct BasicBlock* block);
 void basicblock_print(struct BasicBlock* block);
 
 struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer, char* function_name);
+
+void basicblock_assign_registers(struct BasicBlock* block, uint8_t* register_map, uint8_t* register_map_size, bool* registers_used);
 
 #endif

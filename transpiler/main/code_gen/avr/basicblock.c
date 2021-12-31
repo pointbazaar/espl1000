@@ -18,6 +18,8 @@ void create_edges_basic_block(struct TACBuffer *buffer, uint32_t count, struct B
 
 static void write_dot_file_from_graph(struct BasicBlock **blocks, uint32_t count, char* function_name);
 
+void tac_assign_registers(struct TAC *tac, uint8_t *map, uint8_t *size, bool *registers_used);
+
 struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer, char* function_name){
 
     //determine leaders
@@ -163,7 +165,9 @@ struct BasicBlock* basicblock_ctor(uint32_t index){
         .index = index,
         .buffer = tacbuffer_ctor(),
         .branch_1 = NULL,
-        .branch_2 = NULL
+        .branch_2 = NULL,
+
+        .visited_assign_registers = false,
     };
     return res;
 }
@@ -210,4 +214,24 @@ static bool* calculate_leaders(struct TACBuffer* buffer){
     }
 
     return is_leader;
+}
+
+void basicblock_assign_registers(struct BasicBlock* block, uint8_t* register_map, uint8_t* register_map_size, bool* registers_used){
+
+    if(block == NULL)
+        return;
+
+    if(block->visited_assign_registers)
+        return;
+
+    for(size_t i = 0; i < block->buffer->count; i++){
+        struct TAC* tac = block->buffer->buffer[i];
+
+        tac_assign_registers(tac, register_map, register_map_size, registers_used);
+    }
+
+    block->visited_assign_registers = true;
+
+    basicblock_assign_registers(block->branch_1, register_map, register_map_size, registers_used);
+    basicblock_assign_registers(block->branch_2, register_map, register_map_size, registers_used);
 }

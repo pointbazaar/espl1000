@@ -79,4 +79,8 @@ void tac_variable(struct TACBuffer* buffer, struct Variable* v);
 void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* sv);
 
 void tac_stringconst(struct TACBuffer* buffer, struct StringConst* s);
+
+//---------------
+
+void tac_assign_registers(struct TAC *tac, uint8_t *map, uint8_t *size, bool *registers_used);
 #endif

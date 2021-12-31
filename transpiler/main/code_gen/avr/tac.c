@@ -204,8 +204,10 @@ void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a){
 
     struct TAC* t = makeTAC();
     t->kind = TAC_COPY;
-    strcpy(t->arg1, a->var->simple_var->name);
-    strcpy(t->arg2, buffer->buffer[buffer->count - 1]->dest);
+    strcpy(t->dest, a->var->simple_var->name);
+    strcpy(t->arg1, buffer->buffer[buffer->count - 1]->dest);
+
+    tacbuffer_append(buffer, t, true);
 }
 
 void tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt){
@@ -454,4 +456,11 @@ char* tac_tostring(struct TAC* t){
 
     strcat(res, buffer);
     return res;
+}
+
+//--------------------
+void tac_assign_registers(struct TAC *tac, uint8_t *map, uint8_t *size, bool *registers_used) {
+
+    if(tac->kind == -1 || map == NULL || size == NULL || registers_used == NULL)
+        exit(1);
 }
