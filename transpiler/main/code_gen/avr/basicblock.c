@@ -16,9 +16,9 @@ static struct BasicBlock* find_block_from_label_index(struct BasicBlock** blocks
 void create_edges_basic_block(struct TACBuffer *buffer, uint32_t count, struct BasicBlock **blocks,
                               struct BasicBlock *block);
 
-void write_dot_file_from_graph(struct BasicBlock **blocks, uint32_t count);
+static void write_dot_file_from_graph(struct BasicBlock **blocks, uint32_t count, char* function_name);
 
-struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer){
+struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer, char* function_name){
 
     //determine leaders
     bool* is_leader = calculate_leaders(buffer);
@@ -44,16 +44,18 @@ struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer){
     //.dot file creation
     //TODO: print the basic blocks to dot file
     //TODO: check -debug flag
-    write_dot_file_from_graph(blocks, count);
+    write_dot_file_from_graph(blocks, count, function_name);
 
     free(is_leader);
 
     return blocks[0];
 }
 
-void write_dot_file_from_graph(struct BasicBlock **blocks, uint32_t count) {
+static void write_dot_file_from_graph(struct BasicBlock **blocks, uint32_t count, char* function_name) {
 
-    FILE* fout = fopen("test.dot","w");
+    char fname_buffer[100];
+    sprintf(fname_buffer, "%s.dot", function_name);
+    FILE* fout = fopen(fname_buffer,"w");
 
     fprintf(fout, "digraph G {\n");
 
@@ -81,7 +83,10 @@ void write_dot_file_from_graph(struct BasicBlock **blocks, uint32_t count) {
 
     fclose(fout);
 
-    system("dot -Tpng test.dot > test.png");
+    char cmd_buffer[100];
+
+    sprintf(cmd_buffer,"dot -Tpng %s.dot > %s.png", function_name,function_name);
+    system(cmd_buffer);
 }
 
 void create_edges_basic_block(struct TACBuffer *buffer, uint32_t count, struct BasicBlock **blocks,

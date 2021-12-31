@@ -21,6 +21,6 @@ void basicblock_dtor(struct BasicBlock* block);
 
 void basicblock_print(struct BasicBlock* block);
 
-struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer);
+struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer, char* function_name);
 
 #endif

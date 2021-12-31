@@ -45,7 +45,7 @@ bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flag
             //basic blocks from the three address code
             //for each function, create a graph of basic blocks
 
-            /*struct BasicBlock* root = */basicblock_create_graph(buffer);
+            /*struct BasicBlock* root = */basicblock_create_graph(buffer, m->decl->name);
 
             tacbuffer_dtor(buffer);
         }
