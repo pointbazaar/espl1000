@@ -16,7 +16,9 @@ enum TAC_KIND{
     TAC_DEREF,
 
     TAC_COPY,
+
     TAC_CONST_VALUE,
+    TAC_CONST_STRING,
 
     TAC_CALL,
     TAC_PARAM,
@@ -44,6 +46,7 @@ struct TAC{
     uint32_t goto_index;
 
     int32_t const_value;
+    char* const_string;
 };
 
 //TAC functions
@@ -75,4 +78,5 @@ void tac_term(struct TACBuffer* buffer, struct Term* t);
 void tac_variable(struct TACBuffer* buffer, struct Variable* v);
 void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* sv);
 
+void tac_stringconst(struct TACBuffer* buffer, struct StringConst* s);
 #endif

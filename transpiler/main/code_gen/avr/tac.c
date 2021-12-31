@@ -23,7 +23,9 @@ struct TAC* makeTAC(){
             .index = 0,
             .label_index = TAC_NO_LABEL,
             .goto_index = TAC_NO_LABEL,
-            .kind = TAC_NONE
+            .kind = TAC_NONE,
+            .const_value = 0,
+            .const_string = NULL,
     };
 
     strcpy(res->label_name, "");
@@ -357,17 +359,25 @@ void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* v){
     tacbuffer_append(buffer, t, true);
 }
 
+void tac_stringconst(struct TACBuffer* buffer, struct StringConst* s){
+
+    struct TAC* t = makeTAC();
+    t->kind = TAC_CONST_STRING;
+    t->const_string = s->value;
+
+    tacbuffer_append(buffer, t, true);
+}
+
 void tac_term(struct TACBuffer* buffer, struct Term* t){
 
     switch(t->kind){
         case 4: tac_call(buffer, t->ptr.m4); break;
         case 5: tac_expr(buffer, t->ptr.m5); break;
         case 6: tac_variable(buffer, t->ptr.m6); break;
-        case 8 :
-            //TODO :implement string const
-            //t->ptr.m8
-            break;
+        case 8: tac_stringconst(buffer, t->ptr.m8); break;
         case 11:
+            printf("Fatal Error. Lambdas should not exist at this stage.\n");
+            exit(1);
             //lambdas should not exist anymore at this stage,
             //having been converted into named functions
             //t->ptr.m11
@@ -414,8 +424,12 @@ char* tac_tostring(struct TAC* t){
             sprintf(buffer, "%s %s", "goto", goto_label_str); break;
         case TAC_IF_GOTO:
             sprintf(buffer, "%s %s %s", "if-goto", t->arg1, goto_label_str); break;
+
         case TAC_CONST_VALUE:
             sprintf(buffer,"%s = %d",t->dest, t->const_value); break;
+        case TAC_CONST_STRING:
+            sprintf(buffer,"%s = %s",t->dest, t->const_string); break;
+
         case TAC_COPY:
             sprintf(buffer,"%s = %s", t->dest, t->arg1); break;
         case TAC_NOP:
