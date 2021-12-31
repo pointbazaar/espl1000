@@ -121,7 +121,7 @@ bool transpileAndCompile(struct Flags* flags){
     analyze_annotations(ctx->tables, ast);
 
     if(flags->avr){
-        success = compile_and_write_avr(asm_filename, ast, flags);
+        success = compile_and_write_avr(asm_filename, ast, flags, ctx);
     }else if(flags->x86){
 		success = compile_and_write_x86(asm_filename, ast, flags);
 	}else{

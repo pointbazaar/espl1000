@@ -4,10 +4,13 @@
 
 #include "rat.h"
 
-struct RAT* rat_ctor(){
+struct RAT* rat_ctor(struct ST* st){
 
     struct RAT* rat = malloc(sizeof(struct RAT));
-    rat->capacity = 32;
+    *rat = (struct RAT){
+        .st = st,
+        .capacity = 32,
+    };
 
     memset(rat->occupant, RAT_OCCUPANT_NONE, sizeof(enum RAT_OCCUPANT)*rat->capacity);
     memset(rat->occupant_index, 0, sizeof(uint8_t)*rat->capacity);
@@ -40,4 +43,13 @@ void rat_print(struct RAT* rat){
         printf("\n");
     }
     printf("------------\n");
+}
+
+bool rat_has_register(struct RAT* rat, char* name){
+    //TODO
+    //rat->st
+    printf("%s",name);
+    if(rat != NULL)
+        exit(1);
+    return false;
 }

@@ -16,7 +16,7 @@
 #include "basicblock.h"
 #include "rat.h"
 
-static void emit_asm_avr(struct BasicBlock* block, struct Flags* flags){
+static void emit_asm_avr(struct BasicBlock* block, struct ST* st, struct Flags* flags){
 
     //TODO: do liveness analysis to assign registers
     //if we do not have enough registers, simply print an error and give up.
@@ -27,7 +27,7 @@ static void emit_asm_avr(struct BasicBlock* block, struct Flags* flags){
     //the mapping tx -> ry can be saved in an array
     //TODO: use better approach
 
-    struct RAT* rat = rat_ctor();
+    struct RAT* rat = rat_ctor(st);
 
     basicblock_assign_registers(block, rat);
 
@@ -37,7 +37,7 @@ static void emit_asm_avr(struct BasicBlock* block, struct Flags* flags){
     //TODO: emit
 }
 
-bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flags* flags){
+bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flags* flags, struct Ctx* ctx){
 
     //TODO
     if(flags->emit_headers){
@@ -67,7 +67,7 @@ bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flag
 
             struct BasicBlock* root = basicblock_create_graph(buffer, m->decl->name);
 
-            emit_asm_avr(root, flags);
+            emit_asm_avr(root, ctx->tables, flags);
 
             tacbuffer_dtor(buffer);
         }

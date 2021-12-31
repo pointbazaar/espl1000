@@ -1,6 +1,8 @@
 #ifndef SMALLDRAGON_TOPLEVEL_RAT_H
 #define SMALLDRAGON_TOPLEVEL_RAT_H
 
+#include "tables/symtable/symtable.h"
+
 #include <stdbool.h>
 #include <inttypes.h>
 
@@ -14,6 +16,8 @@ enum RAT_OCCUPANT {
 };
 
 struct RAT {
+    struct ST* st;
+
     //Register Allocation Table
     //allocation of the registors used inside a function
     //mapping locals, args, and temporaries to actual registers
@@ -25,9 +29,11 @@ struct RAT {
     uint8_t occupant_index[32]; //their index in their respective category
 };
 
-struct RAT* rat_ctor();
+struct RAT* rat_ctor(struct ST* st);
 void rat_dtor(struct RAT* rat);
 
 void rat_print(struct RAT* rat);
+
+bool rat_has_register(struct RAT* rat, char* name);
 
 #endif

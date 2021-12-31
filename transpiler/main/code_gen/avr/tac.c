@@ -461,6 +461,21 @@ char* tac_tostring(struct TAC* t){
 //--------------------
 void tac_assign_registers(struct TAC *tac, struct RAT* rat) {
 
+    if(strcmp(tac->dest,"") == 0)
+        return;
+
+    //we assume that the tac has a destination operand
+
+    //find out if the destination operand is a local var or arg
+
+    //if it is not, it is a temporary
+
+    //check if it has already been assigned
+    //if(rat_has_register(rat, )){
+
+    //}
+    //TODO
+
     if(tac ==NULL || rat == NULL)
         exit(1);
 }

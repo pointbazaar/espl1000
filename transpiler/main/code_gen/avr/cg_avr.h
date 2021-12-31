@@ -7,6 +7,6 @@ struct Flags;
 struct Ctx;
 struct AST;
 
-bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flags* flags);
+bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flags* flags, struct Ctx* ctx);
 
 #endif
