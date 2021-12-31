@@ -15,6 +15,7 @@
 #include "tacbuffer.h"
 #include "basicblock.h"
 #include "rat.h"
+#include "analyzer/lv/lv_analyzer.h"
 
 static void emit_asm_avr(struct BasicBlock* block, struct ST* st, struct Flags* flags){
 
@@ -66,6 +67,10 @@ bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flag
             //for each function, create a graph of basic blocks
 
             struct BasicBlock* root = basicblock_create_graph(buffer, m->decl->name);
+
+            //populate ctx->st->lvst
+            lvst_clear(ctx->tables->lvst);
+            lvst_fill(m, ctx->tables);
 
             emit_asm_avr(root, ctx->tables, flags);
 

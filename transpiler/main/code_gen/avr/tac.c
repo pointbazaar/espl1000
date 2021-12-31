@@ -465,8 +465,17 @@ void tac_assign_registers(struct TAC *tac, struct RAT* rat) {
         return;
 
     //we assume that the tac has a destination operand
+    char* dest = tac->dest;
 
     //find out if the destination operand is a local var or arg
+    if(lvst_contains(rat->st->lvst, dest)){
+
+    }else if(sst_contains(rat->st->sst, dest)){
+
+    }else{
+        //temporary
+    }
+
 
     //if it is not, it is a temporary
 
