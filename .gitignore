@@ -6,3 +6,6 @@
 a.out
 .idea/
 cmake-build-debug/
+
+*.dot
+*.png

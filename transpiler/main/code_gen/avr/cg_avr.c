@@ -12,6 +12,8 @@
 
 #include "cg_avr.h"
 #include "tac.h"
+#include "tacbuffer.h"
+#include "basicblock.h"
 
 
 bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flags* flags){
@@ -21,21 +23,31 @@ bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flag
         printf("-h not implemented for avr");
     }
 
-    //TODO: convert AST into 3 address code with temporaries
-    cap   = 10;
-    count = 0;
-    tac = malloc(sizeof(struct TAC*)*cap);
+    //convert AST into 3 address code with temporaries
 
     //use recursive descent to make TAC
     for(size_t i = 0; i < ast->count_namespaces; i++){
         struct Namespace* ns = ast->namespaces[i];
-        tac_namespace(ns);
-    }
 
-    //print the TAC for debug
-    if(flags->debug){
-        for(size_t i = 0; i < count; i++){
-            print_tac(tac[i]);
+        for(size_t j = 0; j < ns->count_methods; j++){
+            struct Method* m = ns->methods[j];
+
+            struct TACBuffer* buffer = tacbuffer_ctor();
+
+            tac_method(buffer, m);
+
+            //print the TAC for debug
+            if(flags->debug){
+                tacbuffer_print(buffer);
+            }
+
+            //TODO: create basic blocks from this TAC
+            //basic blocks from the three address code
+            //for each function, create a graph of basic blocks
+
+            /*struct BasicBlock* root = */basicblock_create_graph(buffer);
+
+            tacbuffer_dtor(buffer);
         }
     }
 
