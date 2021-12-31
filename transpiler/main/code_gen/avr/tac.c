@@ -459,8 +459,8 @@ char* tac_tostring(struct TAC* t){
 }
 
 //--------------------
-void tac_assign_registers(struct TAC *tac, uint8_t *map, uint8_t *size, bool *registers_used) {
+void tac_assign_registers(struct TAC *tac, struct RAT* rat) {
 
-    if(tac->kind == -1 || map == NULL || size == NULL || registers_used == NULL)
+    if(tac ==NULL || rat == NULL)
         exit(1);
 }

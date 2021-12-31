@@ -1,8 +1,10 @@
 #ifndef SMALLDRAGON_TOPLEVEL_TAC_H
 #define SMALLDRAGON_TOPLEVEL_TAC_H
 
-#include "tacbuffer.h"
 #include "ast/ast_declare.h"
+
+#include "tacbuffer.h"
+#include "rat.h"
 
 enum TAC_KIND{
     TAC_NONE = -1,
@@ -82,5 +84,5 @@ void tac_stringconst(struct TACBuffer* buffer, struct StringConst* s);
 
 //---------------
 
-void tac_assign_registers(struct TAC *tac, uint8_t *map, uint8_t *size, bool *registers_used);
+void tac_assign_registers(struct TAC *tac, struct RAT* rat);
 #endif

@@ -4,6 +4,7 @@
 #include <inttypes.h>
 
 #include "tac.h"
+#include "rat.h"
 
 struct BasicBlock {
 
@@ -25,6 +26,6 @@ void basicblock_print(struct BasicBlock* block);
 
 struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer, char* function_name);
 
-void basicblock_assign_registers(struct BasicBlock* block, uint8_t* register_map, uint8_t* register_map_size, bool* registers_used);
+void basicblock_assign_registers(struct BasicBlock* block, struct RAT* rat);
 
 #endif

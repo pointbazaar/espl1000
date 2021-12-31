@@ -14,8 +14,9 @@
 #include "tac.h"
 #include "tacbuffer.h"
 #include "basicblock.h"
+#include "rat.h"
 
-static void emit_asm_avr(struct BasicBlock* block){
+static void emit_asm_avr(struct BasicBlock* block, struct Flags* flags){
 
     //TODO: do liveness analysis to assign registers
     //if we do not have enough registers, simply print an error and give up.
@@ -26,13 +27,12 @@ static void emit_asm_avr(struct BasicBlock* block){
     //the mapping tx -> ry can be saved in an array
     //TODO: use better approach
 
-    bool registers_used[32];
-    memset(registers_used, false, sizeof(bool)*32);
+    struct RAT* rat = rat_ctor();
 
-    uint8_t register_map[32];
-    uint8_t register_map_size = 0;
+    basicblock_assign_registers(block, rat);
 
-    basicblock_assign_registers(block, register_map, &register_map_size, registers_used);
+    if(flags->debug)
+        rat_print(rat);
 
     //TODO: emit
 }
@@ -58,9 +58,8 @@ bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flag
             tac_method(buffer, m);
 
             //print the TAC for debug
-            if(flags->debug){
+            if(flags->debug)
                 tacbuffer_print(buffer);
-            }
 
             //create basic blocks from this TAC
             //basic blocks from the three address code
@@ -68,7 +67,7 @@ bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flag
 
             struct BasicBlock* root = basicblock_create_graph(buffer, m->decl->name);
 
-            emit_asm_avr(root);
+            emit_asm_avr(root, flags);
 
             tacbuffer_dtor(buffer);
         }
