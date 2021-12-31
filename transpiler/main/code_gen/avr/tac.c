@@ -169,7 +169,8 @@ void tac_ifstmt(struct TACBuffer* buffer, struct IfStmt* s){
 
     tacbuffer_append(buffer, makeTACLabel(l2), true);
 
-    tac_stmtblock(buffer, s->else_block);
+    if(s->else_block != NULL)
+        tac_stmtblock(buffer, s->else_block);
 
     tacbuffer_append(buffer, makeTACLabel(lend), true);
 }

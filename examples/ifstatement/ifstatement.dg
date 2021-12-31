@@ -5,9 +5,14 @@ fn main () ~> int {
 	uint x = 3 ;
 
 	if x < 5 {
-		puts("x");
-		puts("<");
-		puts("5");
+		x = 3;
+	}
+
+	if x == 3 {
+
+		main();
+	}else{
+		return 3;
 	}
 
 	return 0;
