@@ -80,22 +80,3 @@ void test_switch_case(){
 
 	free_tokens(tokens, 5);
 }
-
-void test_try_catch_throw_throws(){
-	
-	char* str = "try catch throw throws ";
-	
-	struct Token** tokens = lex(str);
-
-	assert(tokens[0]->kind == TRY);
-	assert(tokens[1]->kind == CATCH);
-	assert(tokens[2]->kind == THROW);
-	assert(tokens[3]->kind == THROWS);
-
-	assert(strcmp(tokens[0]->value_ptr,"try")==0);
-	assert(strcmp(tokens[1]->value_ptr,"catch")==0);
-	assert(strcmp(tokens[2]->value_ptr,"throw")==0);
-	assert(strcmp(tokens[3]->value_ptr,"throws")==0);
-
-	free_tokens(tokens, 4);
-}

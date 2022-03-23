@@ -1,4 +1,4 @@
-fn test_stack() ~> int throws {
+fn test_stack() ~> int {
 	
 	Stack<?T0> s = stack_ctor_int();
 	

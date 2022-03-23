@@ -236,8 +236,6 @@ void free_stmt(struct Stmt* s) {
 			free_ret_stmt(s->ptr.m4);    break;
 		case 5:
 			free_assign_stmt(s->ptr.m5); break;
-		case 6:
-			free_try_catch_stmt(s->ptr.m6); break;
 		case 7:
 			free_for_stmt(s->ptr.m7);    break;
 		case 8:
@@ -371,9 +369,3 @@ void free_case_stmt(struct CaseStmt* cstmt){
 	free(cstmt);
 }
 
-void free_try_catch_stmt(struct TryCatchStmt* tcs){
-
-	free_stmt_block(tcs->try_block);
-	free_stmt_block(tcs->catch_block);
-	free(tcs);
-}

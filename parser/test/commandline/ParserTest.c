@@ -34,7 +34,6 @@
 #include "../astnodes/statements/ForStmtTest.h"
 #include "../astnodes/statements/SwitchStmtTest.h"
 #include "../astnodes/statements/CaseStmtTest.h"
-#include "../astnodes/statements/TryCatchStmtTest.h"
 #include "../astnodes/statements/IfStmtTest.h"
 #include "../astnodes/statements/WhileStmtTest.h"
 #include "../astnodes/statements/CallTest.h"
@@ -178,8 +177,6 @@ void test_suite_stmts() {
 
 	whilestmt_test1();
 	whilestmt_test2();
-
-	trycatch_stmt_test();
 
 	for_test1();
 }

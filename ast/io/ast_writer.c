@@ -87,7 +87,6 @@ void write_method_decl(struct MethodDecl* m, OUTFILE){
 
 	serialize_int(m->is_public, file);
 	serialize_int(m->has_side_effects, file);
-	serialize_int(m->throws, file);
 
 	serialize_string(m->name, file);
 
@@ -374,7 +373,6 @@ void write_stmt(struct Stmt* m, FILE* file){
 			{
 				serialize_int(m->is_break ? OPT_PRESENT : OPT_EMPTY, file);
 				serialize_int(m->is_continue ? OPT_PRESENT : OPT_EMPTY, file);
-				serialize_int(m->is_throw ? OPT_PRESENT : OPT_EMPTY, file);
 			}
 			break;
 		case 1: {
@@ -387,8 +385,6 @@ void write_stmt(struct Stmt* m, FILE* file){
 			write_ret_stmt(m->ptr.m4, file);    } break;
 		case 5: {
 			write_assign_stmt(m->ptr.m5, file); } break;
-		case 6: {
-			write_try_catch_stmt(m->ptr.m6, file); } break;
 		case 7: {
 			write_for_stmt(m->ptr.m7, file);    } break;
 		case 8: {
@@ -502,15 +498,6 @@ void write_case_stmt(struct CaseStmt* m, FILE* file){
 	
 	magic_num_serialize(MAGIC_END_CASESTMT, file);
 }
-void write_try_catch_stmt(struct TryCatchStmt* m, FILE* file){
-	
-	magic_num_serialize(MAGIC_TRYCATCHSTMT, file);
-
-	write_stmt_block(m->try_block, file);
-	write_stmt_block(m->catch_block, file);
-	
-	magic_num_serialize(MAGIC_END_TRYCATCHSTMT, file);
-}
 // --------- TYPENODES --------------
 void write_type(struct Type* m, FILE* file){
 	
@@ -623,7 +610,6 @@ void write_subr_type(struct SubrType* m, FILE* file){
 
 	write_type(m->return_type, file);
 	serialize_int(m->has_side_effects, file);
-	serialize_int(m->throws, file);
 
 	serialize_int(m->count_arg_types, file);
 	

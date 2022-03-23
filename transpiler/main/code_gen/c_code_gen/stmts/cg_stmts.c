@@ -37,8 +37,6 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 			transpileAssignStmt(s->ptr.m5, ctx);
 			fprintf(ctx->file, ";");
 			break;
-			
-		case 6: transpileTryCatchStmt(s->ptr.m6, ctx); break;
 		
 		case 7: transpileForStmt(s->ptr.m7, ctx); break;
 		
@@ -47,7 +45,6 @@ void transpileStmt(struct Stmt* s, struct Ctx* ctx){
 		case 99:
 			if(s->is_break){ transpileBreakStmt(ctx);  }
 			if(s->is_continue){ transpileContinueStmt(ctx); }
-			if(s->is_throw){ transpileThrowStmt(ctx); }
 			break;
 		
 		default:

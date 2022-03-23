@@ -1,5 +1,5 @@
 
-fn test_linkedlist() ~> int throws {
+fn test_linkedlist() ~> int {
 
 	_test_linkedlist_int();
 	
@@ -8,7 +8,7 @@ fn test_linkedlist() ~> int throws {
 	return 0;
 }
 
-fn _test_linkedlist_int() ~> int throws {
+fn _test_linkedlist_int() ~> int {
 
 	LinkedList<int> ll = linkedlist_ctor_int();
 	
@@ -33,7 +33,7 @@ fn _test_linkedlist_int() ~> int throws {
 	return 0;
 }
 
-fn _test_linkedlist_many() ~> int throws {
+fn _test_linkedlist_many() ~> int {
 
 	//stress test :)
 	

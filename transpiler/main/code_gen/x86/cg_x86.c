@@ -102,7 +102,6 @@ static void compile_stmt_x86(struct Stmt* stmt, struct Ctx* ctx){
         //case 3: compile_if_stmt_x86(stmt->ptr.m3, ctx); break;
         case 4: compile_ret_stmt_x86(stmt->ptr.m4, ctx); break;
         //case 5: compile_assign_stmt_x86(stmt->ptr.m5, ctx); break;
-        //case 6: compile_try_catch_stmt_x86(stmt->ptr.m6, ctx); break;
         //case 7: compile_for_stmt_x86(stmt->ptr.m7, ctx); break;
         //case 8: compile_switch_stmt_x86(stmt->ptr.m8, ctx); break;
         default:
@@ -110,9 +109,6 @@ static void compile_stmt_x86(struct Stmt* stmt, struct Ctx* ctx){
                 //TODO
                 puts("[Error] not implemented");
             }else if(stmt->is_continue){
-                //TODO
-                puts("[Error] not implemented");
-            }else if(stmt->is_throw){
                 //TODO
                 puts("[Error] not implemented");
             }

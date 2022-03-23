@@ -231,7 +231,6 @@ struct SubrType* copy_subr_type(struct SubrType* s){
 	struct SubrType* res = make(SubrType);
 	
 	res->has_side_effects = s->has_side_effects;
-	res->throws         = s->throws;
 	res->return_type = copy_type(s->return_type);
 	
 	res->count_arg_types = s->count_arg_types;
@@ -338,13 +337,11 @@ struct Stmt* copy_stmt(struct Stmt* stmt){
         case 3: res->ptr.m3 = copy_if_stmt(stmt->ptr.m3); break;
         case 4: res->ptr.m4 = copy_ret_stmt(stmt->ptr.m4); break;
         case 5: res->ptr.m5 = copy_assign_stmt(stmt->ptr.m5); break;
-        case 6: res->ptr.m6 = copy_try_catch_stmt(stmt->ptr.m6); break;
         case 7: res->ptr.m7 = copy_for_stmt(stmt->ptr.m7); break;
         case 8: res->ptr.m8 = copy_switch_stmt(stmt->ptr.m8); break;
         default:
             res->is_break = stmt->is_break;
             res->is_continue = stmt->is_continue;
-            res->is_throw = stmt->is_throw;
             break;
     }
 
@@ -434,19 +431,6 @@ struct SwitchStmt* copy_switch_stmt(struct SwitchStmt* s){
     for(int i=0; i < res->count_cases; i++){
         res->cases[i] = copy_case_stmt(s->cases[i]);
     }
-
-    return res;
-}
-
-struct TryCatchStmt* copy_try_catch_stmt(struct TryCatchStmt* tcs){
-
-    struct TryCatchStmt* res = make(TryCatchStmt);
-
-    res->super.line_num = tcs->super.line_num;
-    res->super.annotations = tcs->super.annotations;
-
-    res->try_block = copy_stmt_block(tcs->try_block);
-    res->catch_block = copy_stmt_block(tcs->catch_block);
 
     return res;
 }

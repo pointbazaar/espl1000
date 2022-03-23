@@ -69,11 +69,6 @@ struct MethodDecl* makeMethodDecl(struct TokenList* tokens) {
 		return NULL;
 	}
 
-	if(list_head(copy)->kind == THROWS){
-		list_consume(copy, 1);
-		res->throws = true;
-	}
-
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
 
@@ -130,7 +125,6 @@ static struct MethodDecl* initMethodDecl(){
 
 	res->is_public       = true;
 	res->has_side_effects = true;
-	res->throws         = false;
 
 	res->count_args = 0;
 	res->args = malloc(sizeof(struct DeclArg*)*1);

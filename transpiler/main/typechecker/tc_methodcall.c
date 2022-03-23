@@ -36,7 +36,6 @@ static bool tc_methodcall_arg(
 	struct TCCtx* tcctx
 );
 
-static bool check_throw_rules(bool callee_throws, struct TCCtx* tcctx);
 static bool is_simple_libc_call(struct Call* m, struct TCCtx* tcctx);
 
 bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
@@ -69,8 +68,6 @@ bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 	    error(tcctx, "called subr with side-effects in pure subr", TC_ERR_SIDE_EFFECT_IN_PURE_CONTEXT);
 	    return false;
 	}
-
-	if(!check_throw_rules(subrtype->basic_type->subr_type->throws, tcctx)){return false;}
 	
 	bool err1 = tc_methodcall_args(m, expect_types, expect_args, tcctx);
 
@@ -91,17 +88,6 @@ static bool is_simple_libc_call(struct Call* m, struct TCCtx* tcctx){
             return true;
         }
     }
-    return false;
-}
-
-static bool check_throw_rules(bool callee_throws, struct TCCtx* tcctx){
-	
-	if(!callee_throws){ return true; }
-	if(tcctx->current_fn->decl->throws){ return true; }
-	
-	if(tcctx->depth_inside_try_stmt > 0){ return true; }
-		
-	error(tcctx, "called a throwing subroutine inside a non-throwing subroutine outside any try-block", TC_ERR_CALLED_THROWING_WRONG);
     return false;
 }
 

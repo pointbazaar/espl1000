@@ -31,9 +31,6 @@ bool eq_subrtype(struct SubrType* a, struct SubrType* b){
 	if(a->has_side_effects != b->has_side_effects)
 		{ return false; }
 		
-	if(a->throws != b->throws)
-		{ return false; }
-		
 	if(a->count_arg_types != b->count_arg_types)
 		{ return false; }
 		

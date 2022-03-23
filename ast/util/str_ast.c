@@ -254,8 +254,6 @@ char* str_subr_type(struct SubrType* st){
 	char* returntype = str_type(st->return_type);
 	strcat(res, returntype);
 	
-	if(st->throws){ strcat(res, " throws "); }
-	
 	free(returntype);
 	
 	return res;
@@ -514,7 +512,6 @@ char* str_stmt(struct Stmt* stmt){
 		case 3: return str_if_stmt(stmt->ptr.m3);
 		case 4: return str_ret_stmt(stmt->ptr.m4);
 		case 5: return str_assign_stmt(stmt->ptr.m5);
-		case 6: return str_try_catch_stmt(stmt->ptr.m6);
 		case 7: return str_for_stmt(stmt->ptr.m7);
 		case 8: return str_switch_stmt(stmt->ptr.m8);
 		
@@ -525,7 +522,6 @@ char* str_stmt(struct Stmt* stmt){
 			
 			if(stmt->is_break)    { sprintf(res, "break"); }
 			if(stmt->is_continue) { sprintf(res, "continue"); }
-			if(stmt->is_throw)    { sprintf(res, "throw"); }
 			return res;
 		}
 			

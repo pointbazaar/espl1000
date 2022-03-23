@@ -3,9 +3,8 @@
 #include <string.h>
 
 fn main() ~> int {
-	try {
-		return main2();
-	} catch {}
+
+	return main2();
 }
 
 fn status([char] module) ~> bool {
@@ -17,7 +16,7 @@ fn status([char] module) ~> bool {
 	return true;
 }
 
-fn main2() ~> int throws {
+fn main2() ~> int {
 	
 	status("math"); test_math();
 

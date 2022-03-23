@@ -20,12 +20,6 @@
 	</div>
 
 	<h1>Standard Library</h1>
-
-	<h2>Behavior in Exceptional Cases</h2>
-	<p>
-		Generally, most subroutines here will just
-		<strong>throw</strong> in exceptional cases.
-	</p>
 	
 	<h3>Abbreviations</h3>
 	<p>
@@ -248,28 +242,28 @@
 			<td>matrix_dtor</td><td>(Matrix a) ~> bool</td><td>O(nrows)</td><td>-O(nrows*ncols)</td>
 		</tr>
 		<tr>
-			<td>matrix_add</td><td>(Matrix a, Matrix b) ~> Matrix throws</td><td>O(nrows*ncols)</td><td>+O(nrows*ncols)</td>
+			<td>matrix_add</td><td>(Matrix a, Matrix b) ~> Matrix </td><td>O(nrows*ncols)</td><td>+O(nrows*ncols)</td>
 		</tr>
 		<tr>
-			<td>matrix_sub</td><td>(Matrix a, Matrix b) ~> Matrix throws</td><td>O(nrows*ncols)</td><td>+O(nrows*ncols)</td>
+			<td>matrix_sub</td><td>(Matrix a, Matrix b) ~> Matrix </td><td>O(nrows*ncols)</td><td>+O(nrows*ncols)</td>
 		</tr>
 		<tr>
 			<td>matrix_scale</td><td>(Matrix a, float r) ~> Matrix</td><td>O(nrows*ncols)</td><td>+O(nrows*ncols)</td>
 		</tr>
 		<tr>
-			<td>matrix_mul</td><td>(Matrix a, Matrix b) ~> Matrix throws</td><td>O(a.nrows*b.ncols*a.ncols)</td><td>+O(a.nrows*a.ncols)</td>
+			<td>matrix_mul</td><td>(Matrix a, Matrix b) ~> Matrix </td><td>O(a.nrows*b.ncols*a.ncols)</td><td>+O(a.nrows*a.ncols)</td>
 		</tr>
 		<tr>
-			<td>matrix_submatrix</td><td>(Matrix a, uint row, uint col) ~> Matrix throws</td><td>O(a.nrows*a.ncols)</td><td>+O((a.nrows-1)*(a.ncols-1))</td>
+			<td>matrix_submatrix</td><td>(Matrix a, uint row, uint col) ~> Matrix </td><td>O(a.nrows*a.ncols)</td><td>+O((a.nrows-1)*(a.ncols-1))</td>
 		</tr>
 		<tr>
-			<td>matrix_det</td><td>(Matrix a) ~> float throws</td><td>TODO</td><td> - </td>
+			<td>matrix_det</td><td>(Matrix a) ~> float </td><td>TODO</td><td> - </td>
 		</tr>
 		<tr>
 			<td>matrix_transpose</td><td>(Matrix a) ~> Matrix</td><td>O(nrows*ncols)</td><td>+O(nrows*ncols)</td>
 		</tr>
 		<tr>
-			<td>matrix_pow</td><td>(Matrix a, uint power) ~> Matrix throws</td><td>O(a.nrows*b.ncols*a.ncols*power)</td><td>+O(nrows*ncols)</td>
+			<td>matrix_pow</td><td>(Matrix a, uint power) ~> Matrix </td><td>O(a.nrows*b.ncols*a.ncols*power)</td><td>+O(nrows*ncols)</td>
 		</tr>
 		<tr>
 			<td>matrix_identity</td><td>(uint n) ~> Matrix</td><td>O(n)</td><td>+O(n*n)</td>

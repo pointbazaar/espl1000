@@ -1,4 +1,4 @@
-fn test_v2() ~> int throws {
+fn test_v2() ~> int {
 	
 	v = v2_ctor(1.0, 0.0);
 	w = v2_ctor(0.0, 1.0);

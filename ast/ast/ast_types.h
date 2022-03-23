@@ -57,7 +57,6 @@ struct SubrType {
 	uint8_t count_arg_types;
 	
 	bool has_side_effects;
-	bool throws;
 };
 
 struct Type {

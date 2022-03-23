@@ -26,8 +26,6 @@ static void visit_call           (struct Call* m, VISITOR, ARG);
 static void visit_ret_stmt     	(struct RetStmt* r, VISITOR, ARG);
 static void visit_break_stmt   	(VISITOR, ARG);
 static void visit_continue_stmt	(VISITOR, ARG);
-static void visit_throw_stmt      (VISITOR, ARG);
-static void visit_try_catch_stmt   (struct TryCatchStmt* t, VISITOR, ARG);
 
 //expr
 static void visit_expr        	(struct Expr* e, VISITOR, ARG);
@@ -141,8 +139,6 @@ static void visit_stmt(struct Stmt* s, VISITOR, void* arg){
 			visit_ret_stmt(s->ptr.m4, visitor, arg);   break;
 		case 5:
 			visit_assign_stmt(s->ptr.m5, visitor, arg);   break;
-		case 6:
-			visit_try_catch_stmt(s->ptr.m6, visitor, arg); break;
 		case 7:
 			visit_for_stmt(s->ptr.m7, visitor, arg);   break;
 		case 8:
@@ -151,7 +147,6 @@ static void visit_stmt(struct Stmt* s, VISITOR, void* arg){
 		case 99:
 			if(s->is_break)   { visit_break_stmt(visitor, arg); }
 			if(s->is_continue){ visit_continue_stmt(visitor, arg); }
-			if(s->is_throw)   { visit_throw_stmt(visitor, arg); }
 			break;
 		
 		default: 
@@ -249,19 +244,6 @@ static void visit_break_stmt(VISITOR, void* arg){
 static void visit_continue_stmt(VISITOR, void* arg){
 	
 	visitor(NULL, NODE_CONTINUESTMT, arg);
-}
-
-static void visit_throw_stmt(VISITOR, void* arg){
-	
-	visitor(NULL, NODE_THROWSTMT, arg);
-}
-
-static void visit_try_catch_stmt(struct TryCatchStmt* t, VISITOR, void* arg){
-	
-	visitor(t, NODE_TRYCATCHSTMT, arg);
-
-	visit_stmt_block(t->try_block, visitor, arg);
-	visit_stmt_block(t->catch_block, visitor, arg);
 }
 
 static void visit_expr(struct Expr* e, VISITOR, void* arg){

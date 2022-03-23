@@ -110,9 +110,8 @@ fn linkedlist_push_back(LinkedList<?T0> l, ?T0 value) ~> bool {
 	return true;
 }
 
-fn linkedlist_pop_front(LinkedList<?T0> l) ~> ?T0 throws {
+fn linkedlist_pop_front(LinkedList<?T0> l) ~> ?T0 {
 	
-	if l.size == 0 { throw; }
 	
 	    val = l.head.value;
 	oldhead = l.head;
@@ -131,9 +130,7 @@ fn linkedlist_pop_front(LinkedList<?T0> l) ~> ?T0 throws {
 	return val;
 }
 
-fn linkedlist_pop_back(LinkedList<?T0> l) ~> ?T0 throws {
-
-	if l.size == 0 { throw; }
+fn linkedlist_pop_back(LinkedList<?T0> l) ~> ?T0 {
 	
 	?T0 val = l.tail.value;
 	oldtail = l.tail;

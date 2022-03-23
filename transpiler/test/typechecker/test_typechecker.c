@@ -14,7 +14,6 @@ static void test_typecheck_wrong_return_type();
 static void test_typecheck_binop_type_mismatch();
 static void test_typecheck_subr_not_found();
 static void test_typecheck_impure_called_in_pure();
-static void test_typecheck_throw_wrong_usage();
 static void test_typecheck_condition_requires_bool();
 static void test_typecheck_range_requires_int();
 static void test_typecheck_switch_requires_primitive();
@@ -47,7 +46,6 @@ void test_suite_typechecker(){
     test_typecheck_binop_type_mismatch();
     test_typecheck_subr_not_found();
     test_typecheck_impure_called_in_pure();
-    test_typecheck_throw_wrong_usage();
     test_typecheck_condition_requires_bool();
     test_typecheck_range_requires_int();
     test_typecheck_switch_requires_primitive();
@@ -157,20 +155,6 @@ static void test_typecheck_impure_called_in_pure(){
 
     assert(errors != NULL);
     assert(errors->err_kind == TC_ERR_SIDE_EFFECT_IN_PURE_CONTEXT);
-    assert(errors->next == NULL);
-
-    free_tc_errors(errors);
-}
-
-static void test_typecheck_throw_wrong_usage(){
-
-	status_test_typechecker("typecheck throw wrong usage");
-    char* filename = "test/typechecker/test-src/throw_wrong_usage.dg";
-
-    struct TCError* errors = typecheck_file(filename);
-
-    assert(errors != NULL);
-    assert(errors->err_kind == TC_ERR_THROW_WRONG_USAGE);
     assert(errors->next == NULL);
 
     free_tc_errors(errors);
@@ -321,7 +305,7 @@ static void test_typecheck_all_type_errors(){
         errors = errors->next;
     } while(errors != NULL);
 
-    assert(err_count == 18);
+    assert(err_count == 17);
 
     enum TC_ERR_KIND err_kind_expected[] = {
             TC_ERR_VAR_NOT_FOUND,
@@ -331,7 +315,6 @@ static void test_typecheck_all_type_errors(){
             TC_ERR_RANGE_REQUIRES_INT,
             TC_ERR_BINOP_TYPE_MISMATCH,
             TC_ERR_ASSIGN_TYPE_MISMATCH,
-            TC_ERR_THROW_WRONG_USAGE,
             TC_ERR_VAR_NOT_FOUND,
             TC_ERR_INDEX_NOT_INTEGER_TYPE,
             TC_ERR_TOO_MANY_INDICES,

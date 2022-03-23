@@ -56,7 +56,6 @@ void write_call(struct Call* m, OUTFILE);
 void write_for_stmt(struct ForStmt* m, OUTFILE);
 void write_switch_stmt(struct SwitchStmt* m, OUTFILE);
 void write_case_stmt(struct CaseStmt* m, OUTFILE);
-void write_try_catch_stmt(struct TryCatchStmt* m, OUTFILE);
 
 //typenodes
 void write_type(struct Type* m, OUTFILE);

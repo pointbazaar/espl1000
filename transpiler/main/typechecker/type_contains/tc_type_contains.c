@@ -68,7 +68,7 @@ static bool tc_structtype_contains(struct StructType* expect, struct StructType*
 
 static bool tc_subrtype_contains(struct SubrType* expect, struct SubrType* actual){
 
-	if (expect->throws != actual->throws){return false;}
+
 	if (!tc_type_contains(expect->return_type, actual->return_type)){return false;}
 	if (actual->has_side_effects && !expect->has_side_effects){return false;}
 

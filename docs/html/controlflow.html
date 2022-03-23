@@ -78,39 +78,6 @@
 </code></pre>
 </div>
 
-<div class="col">
-<h3> try / catch</h3>
-<h5>Rules</h5>
-<p>
-	<ul>
-		<li>subroutines can use <strong>throw;</strong></li>
-		<li>subroutine s1 must be marked with <strong>throws</strong> if and only if
-			<ul>
-				<li>s1 uses <strong>throw;</strong> outside any <strong>try</strong> block</li>
-				or
-				<li>s1 calls a subroutine s2 marked as <strong>throws</strong> outside of a <strong>try</strong> block</li>
-			</ul>
-		</li>
-	</ul>
-</p>
-
-<h5>Example</h5>
-<pre><code>fn main () ~&gt; int {
-	
-	try {
-		sub1(3);
-	} catch {
-		//handle error
-	}
-	return 0;
-}
-
-fn sub1 (uint x) -&gt; int throws {
-	if x > 0 { throw; }
-	return -x;
-}
-</code></pre>
-</div>
 
 </div>
 </body>

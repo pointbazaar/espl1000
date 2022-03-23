@@ -45,11 +45,6 @@ externc     out(EXTERNC, yytext);
 switch		out(SWITCH, yytext);
 case		out(CASE, yytext);
 
-try			out(TRY, yytext);
-catch		out(CATCH, yytext);
-throws		out(THROWS, yytext);
-throw		out(THROW, yytext);
-
 int|int8|int16|int32|int64	out(TYPEID_PRIMITIVE_INT, yytext);
 
 uint|uint8|uint16|uint32|uint64	out(TYPEID_PRIMITIVE_INT, yytext);

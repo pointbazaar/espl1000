@@ -6,9 +6,7 @@ fn main () ~> int {
 	uint size = 100;
 	ImagePPM image = ppm_ctor(size, size);
 
-	try {
-		sub(image, size);
-	} catch {}
+	sub(image, size);
 
 	ppm_write(image, "myimage.ppm");
 	
@@ -17,7 +15,7 @@ fn main () ~> int {
 	return 0;
 }
 
-fn sub (ImagePPM image, uint size) ~> bool throws {
+fn sub (ImagePPM image, uint size) ~> bool {
 
 	for i in 0 .. (size - 1) {
 

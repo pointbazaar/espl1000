@@ -217,7 +217,6 @@ static struct Method* gen_subr_from_lambda(
 	mdecl->super.annotations = 0;
 	mdecl->is_public         = false;
 	mdecl->has_side_effects  = false;  //ASSUMPTION TODO: work on it
-	mdecl->throws            = false; //ASSUMPTION TODO: work on it
 	sprintf(mdecl->name, LAMBDA_NAME_PATTERN, lambda->lambda_num);
 
 	struct Method* lsubr  = make(Method);

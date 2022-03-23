@@ -1,5 +1,3 @@
-#include <string.h>
-#include <stdlib.h>
 
 //AST Includes
 #include "ast/ast.h"
@@ -25,32 +23,12 @@ bool tc_stmt(struct Stmt* s, struct TCCtx* tcctx){
         case 3: return tc_ifstmt(s->ptr.m3,       tcctx);
         case 4: return tc_retstmt(s->ptr.m4,      tcctx);
         case 5: return tc_assignstmt(s->ptr.m5,   tcctx);
-        case 6: return tc_trycatchstmt(s->ptr.m6, tcctx);
         case 7: return tc_forstmt(s->ptr.m7,      tcctx);
         case 8: return tc_switchstmt(s->ptr.m8,   tcctx);
 		
 		case 99:
 			if(s->is_continue){ }
 			if(s->is_break)   { }
-            if(s->is_throw)   { return tc_throwstmt(s, tcctx); }
 	}
     return true;
-}
-
-bool tc_throwstmt(struct Stmt* s, struct TCCtx* tcctx){
-	
-	struct Method* m = tcctx->current_fn;
-				
-	if(m->decl->throws) { return true; }
-	
-	//are we inside try-catch stmt?
-	if(tcctx->depth_inside_try_stmt > 0){ return true; }
-	
-	char* snippet = str_stmt(s);
-	
-	error_snippet(tcctx, snippet, TC_ERR_THROW_WRONG_USAGE);
-	
-	free(snippet);
-	
-    return false;
 }

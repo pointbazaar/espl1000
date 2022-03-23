@@ -16,8 +16,7 @@
 
 //private to this file
 struct CallCCodeGenInfo{
-	bool throws;
-	char* subr_name_in_c;
+    char* subr_name_in_c;
 	bool* expects_type_param;
 	bool returns_type_param;
 	bool is_simple_call;
@@ -60,20 +59,6 @@ void transpileCall(struct Call* mc, struct Ctx* ctx){
     fprintf(ctx->file, "(");
 
 	transpile_call_args(mc, ctx, &info);
-	
-	//sneak in a 
-	//jmp_buf* _jb
-	//argument if the relevant function throws
-	if(info.throws){
-		if(mc->count_args > 0){
-			fprintf(ctx->file, ", ");
-		}
-		if(ctx->in_try_block){
-			fprintf(ctx->file, "&_jb%d", ctx->index_try_stmt);
-		}else{
-			fprintf(ctx->file, "_jb");
-		}
-	}
 
 	fprintf(ctx->file, ")");
 
@@ -108,7 +93,6 @@ static void obtain_c_code_gen_info(struct Call* mc, struct Ctx* ctx, struct Call
         exit(1);
 	}
 
-	info->throws = type->basic_type->subr_type->throws;
 	info->returns_type_param = type->basic_type->subr_type->return_type->type_param != NULL;
 
 	if(

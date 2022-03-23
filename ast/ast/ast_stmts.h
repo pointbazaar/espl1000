@@ -46,7 +46,6 @@ struct Stmt {
 		struct IfStmt*     m3;
 		struct RetStmt*    m4;
 		struct AssignStmt* m5;
-		struct TryCatchStmt* m6;
 		struct ForStmt*    m7;
 		struct SwitchStmt* m8;
 	} ptr;
@@ -56,7 +55,6 @@ struct Stmt {
 	//=> kind == 99
 	bool is_continue;
 	bool is_break;
-	bool is_throw;
 };
 struct WhileStmt  {
 	struct ASTNode super; 

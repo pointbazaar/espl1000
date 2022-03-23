@@ -1,4 +1,4 @@
-fn test_collision2d() ~> int throws {
+fn test_collision2d() ~> int {
 
 	Collider2D c1 = collider2d_ctor(
 		v2_ctor(0.0,0.0),

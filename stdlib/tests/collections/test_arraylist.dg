@@ -1,5 +1,5 @@
 
-fn test_arraylist() ~> int throws {
+fn test_arraylist() ~> int {
 
 	_test_arraylist_int();
 	
@@ -8,7 +8,7 @@ fn test_arraylist() ~> int throws {
 	return 0;
 }
 
-fn _test_arraylist_int() ~> bool throws {
+fn _test_arraylist_int() ~> bool {
 
 	ArrayList<int> list = arraylist_ctor_int();
 	
@@ -32,7 +32,7 @@ fn _test_arraylist_int() ~> bool throws {
 	return true;
 }
 
-fn _test_arraylist_many() ~> bool throws {
+fn _test_arraylist_many() ~> bool {
 
 	ArrayList<int> list = arraylist_ctor_int();
 	

@@ -4,6 +4,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 - Added 'i++', 'i--', '%=' syntactic sugar
+- removed Exception ('throws') and try-catch from smalldragon. This simplifies the controlflow, 
+  as there are now no stackframes being skipped and cleanup logic inside the function 
+  can be executed. This may simplify features to be implemented later on, such as 
+  mechanisms for structured concurrency and memory safety.
 
 ## [v0.3.0]
 - implement a simple Typechecker

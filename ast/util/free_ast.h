@@ -61,7 +61,6 @@ void free_while_stmt(struct WhileStmt* ws);
 void free_for_stmt(struct ForStmt* fstmt);
 void free_switch_stmt(struct SwitchStmt* sstmt);
 void free_case_stmt(struct CaseStmt* cstmt);
-void free_try_catch_stmt(struct TryCatchStmt* tcs);
 
 //c_types_util
 void free_array_type(struct ArrayType* at);

@@ -24,8 +24,6 @@ const char* tc_err_messages[TC_ERR_END] = {
 	
 	[TC_ERR_RANGE_REQUIRES_INT]      = "range requires 2 integer values",
 	
-	[TC_ERR_THROW_WRONG_USAGE]       = "cannot use 'throw' outside try-block or 'throws' subroutine.",
-	
 	[TC_ERR_CONDITION_REQUIRES_BOOL] = "condition must be of type bool",
 	
 	[TC_ERR_SWITCH_REQUIRES_PRIMITIVE_TYPE] = "switch requires a primitive type",

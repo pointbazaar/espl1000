@@ -74,8 +74,7 @@ struct SSTLine* makeSSTLine(
 	struct Type* return_type,
 	bool isLibC,
 	enum HALTS halts,
-	bool has_side_effect,
-	bool throws
+	bool has_side_effect
 ){
 	struct SSTLine* line = make(SSTLine);
 	
@@ -95,8 +94,7 @@ struct SSTLine* makeSSTLine(
 	line->is_private   = false;
 	
 	line->has_side_effect = has_side_effect;
-	
-	line->throws       = throws;
+
 
 	line->name_in_c   = NULL;
 	line->is_extern_c = false;
@@ -128,8 +126,6 @@ struct SSTLine* makeSSTLine2(
 	line->is_private   = has_annotation(m->super.annotations, ANNOT_PRIVATE);
 	
 	line->has_side_effect = m->decl->has_side_effects;
-	
-	line->throws       = m->decl->throws;
 
 	line->name_in_c   = NULL;
 	line->is_extern_c = false;

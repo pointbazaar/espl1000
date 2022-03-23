@@ -46,7 +46,6 @@ struct SubrType* method_decl_to_subrtype(struct MethodDecl* mdecl){
 	stype->return_type     = copy_type(mdecl->return_type);
 	stype->has_side_effects = mdecl->has_side_effects;
 	stype->count_arg_types = mdecl->count_args;
-	stype->throws         = mdecl->throws;
 
 	stype->arg_types = malloc(sizeof(void*) * stype->count_arg_types);
 
@@ -86,8 +85,7 @@ static void sst_fill_externc(struct SST* sst, struct Namespace* ns){
 				ec->subr_decl->return_type,
 				true,
 				HALTS_UNKNOWN,
-				ec->subr_decl->has_side_effects,
-				ec->subr_decl->throws
+				ec->subr_decl->has_side_effects
 		);
 
 		line->name_in_c = ec->name_in_c;

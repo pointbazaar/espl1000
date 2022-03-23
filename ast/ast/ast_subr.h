@@ -25,7 +25,6 @@ struct MethodDecl{
 
 	bool is_public;
 	bool has_side_effects;
-	bool throws;
 
 	uint8_t count_args;
 	struct DeclArg** args;

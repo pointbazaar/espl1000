@@ -212,11 +212,6 @@ void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a){
 
 void tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt){
 
-    if(stmt->is_throw){
-        printf("throw not implemented for avr\n");
-        exit(1);
-    }
-
     if(stmt->is_break){
         struct TAC* t = makeTAC();
         t->kind = TAC_GOTO;

@@ -35,10 +35,7 @@ fn matrix_dtor(Matrix m) ~> bool {
 	return true;
 }
 
-fn matrix_add(Matrix a, Matrix b) ~> Matrix throws {
-
-	if a.nrows != b.nrows { throw; }
-	if a.ncols != b.ncols { throw; }
+fn matrix_add(Matrix a, Matrix b) ~> Matrix {
 	
 	res = matrix_ctor(a.nrows, a.ncols);
 	for r in 0 .. a.nrows - 1 {
@@ -49,10 +46,7 @@ fn matrix_add(Matrix a, Matrix b) ~> Matrix throws {
 	return res;
 }
 
-fn matrix_sub(Matrix a, Matrix b) ~> Matrix throws {
-
-	if a.nrows != b.nrows { throw; }
-	if a.ncols != b.ncols { throw; }
+fn matrix_sub(Matrix a, Matrix b) ~> Matrix {
 	
 	res = matrix_ctor(a.nrows, a.ncols);
 	for r in 0 .. a.nrows - 1 {
@@ -75,9 +69,7 @@ fn matrix_scale(Matrix a, float r) ~> Matrix {
 	return res;
 }
 
-fn matrix_mul(Matrix a, Matrix b) ~> Matrix throws {
-
-	if a.ncols != b.nrows { throw; }
+fn matrix_mul(Matrix a, Matrix b) ~> Matrix {
 	
 	res = matrix_ctor(a.nrows, b.ncols);
 	for r in 0 .. a.nrows - 1 {
@@ -92,13 +84,11 @@ fn matrix_mul(Matrix a, Matrix b) ~> Matrix throws {
 	return res;
 }
 
-fn matrix_submatrix(Matrix a, uint row, uint col) ~> Matrix throws {
+fn matrix_submatrix(Matrix a, uint row, uint col) ~> Matrix {
 
-	if a.nrows != a.ncols { throw; }
 	//currently only works for square matrices
 
 	//the matrix obtained by removing 'row', 'col'
-	if a.nrows < 2 || a.ncols < 2 { throw; }
 	
 	res = matrix_ctor(a.nrows-1, a.ncols-1);
 	
@@ -115,7 +105,7 @@ fn matrix_submatrix(Matrix a, uint row, uint col) ~> Matrix throws {
 	return res;
 }
 
-fn matrix_det(Matrix a) ~> float throws {
+fn matrix_det(Matrix a) ~> float {
 
 	if a.nrows == 1 && a.ncols == 1 { 
 		return a.arr[0][0]; 
@@ -149,7 +139,7 @@ fn matrix_transpose(Matrix a) ~> Matrix {
 	return res;
 }
 
-fn matrix_pow(Matrix a, uint power) ~> Matrix throws {
+fn matrix_pow(Matrix a, uint power) ~> Matrix {
 
 	res = matrix_identity(a.nrows);
 	

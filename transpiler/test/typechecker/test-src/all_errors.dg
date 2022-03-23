@@ -22,8 +22,6 @@ fn main()~>int {
 
 	int k2 = 'c';
 
-	throw;
-
 	[int] arr = malloc();
 
 	int m = arr['c'];

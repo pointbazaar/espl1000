@@ -68,11 +68,6 @@
 #define SWITCH	63
 #define CASE	64
 
-#define TRY		65
-#define CATCH	66
-#define THROW	67
-#define THROWS	68
-
 #define EXTERNC	69
 #define INCLUDE_DECL 70
 

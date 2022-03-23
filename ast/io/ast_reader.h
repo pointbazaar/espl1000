@@ -51,7 +51,6 @@ struct Call* 		read_call(INFILE);
 struct ForStmt* 	read_for_stmt(INFILE);
 struct SwitchStmt* 	read_switch_stmt(INFILE);
 struct CaseStmt* 	read_case_stmt(INFILE);
-struct TryCatchStmt* read_try_catch_stmt(INFILE);
 
 //typenodes
 struct Type* 			read_type(INFILE);

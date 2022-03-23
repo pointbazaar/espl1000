@@ -16,7 +16,6 @@
 struct SubrType* makeSubrType(struct TokenList* tokens) {
 
 	struct SubrType* res = make(SubrType);
-	res->throws = false;
 	
 	struct TokenList* copy = list_copy(tokens);
 	
@@ -101,11 +100,6 @@ struct SubrType* makeSubrType(struct TokenList* tokens) {
 		free(res->arg_types);
 		free(res);
 		return NULL;
-	}
-	
-	if(list_size(copy) >= 1 && list_head(copy)->kind == THROWS){
-		list_consume(copy, 1);
-		res->throws = true;
 	}
 
 	list_set(tokens, copy);

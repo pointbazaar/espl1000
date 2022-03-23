@@ -50,10 +50,8 @@ struct SSTLine {
 	
 	//-- encapsulation
 	bool is_private;
-	
-	bool throws;
 
-	//maybe NULL, this is used if the function has a different
+    //maybe NULL, this is used if the function has a different
 	//name in c source code, possibly as a result of 'externc' usage
 	char* name_in_c;
 };
@@ -83,8 +81,7 @@ struct SSTLine* makeSSTLine(
 	struct Type* return_type,
 	bool isLibC,
 	enum HALTS halts,
-	bool has_side_effect,
-	bool throws
+	bool has_side_effect
 );
 
 struct SSTLine* makeSSTLine2(

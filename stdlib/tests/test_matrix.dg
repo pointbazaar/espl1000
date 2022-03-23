@@ -1,4 +1,4 @@
-fn test_matrix() ~> int throws {
+fn test_matrix() ~> int {
 
 	Matrix m1 = matrix_ctor(2,2);
 	m1.arr[0][0] = 1.0;

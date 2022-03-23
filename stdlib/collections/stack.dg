@@ -50,7 +50,7 @@ fn stack_contains(Stack<?T0> s, ?T0 elem) -> bool {
 	return false;
 }
 
-fn stack_push(Stack<?T0> s, ?T0 x) -> bool throws {
+fn stack_push(Stack<?T0> s, ?T0 x) -> bool {
 
 	if s.size >= s.capacity { 
 		
@@ -64,13 +64,12 @@ fn stack_push(Stack<?T0> s, ?T0 x) -> bool throws {
 	return true;
 }
 
-fn stack_peek(Stack<?T0> s) -> ?T0 throws {
-	
-	if s.size == 0 { throw; }
+fn stack_peek(Stack<?T0> s) -> ?T0 {
+
 	return s.arr[s.size - 1];
 }
 
-fn stack_pop(Stack<?T0> s) -> ?T0 throws {
+fn stack_pop(Stack<?T0> s) -> ?T0 {
 
 	res = stack_peek(s);
 	s.size--;

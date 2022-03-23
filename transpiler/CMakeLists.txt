@@ -30,9 +30,7 @@ add_library("sd-base"
 	main/code_gen/c_code_gen/stmts/cg_forstmt.c
 	main/code_gen/c_code_gen/stmts/cg_ifstmt.c
 	main/code_gen/c_code_gen/stmts/cg_switchcase.c
-	main/code_gen/c_code_gen/stmts/cg_throwstmt.c
-	main/code_gen/c_code_gen/stmts/cg_trycatch.c
-	main/code_gen/c_code_gen/stmts/cg_whilestmt.c
+        main/code_gen/c_code_gen/stmts/cg_whilestmt.c
 	main/code_gen/c_code_gen/struct/cg_structdecl.c
 	main/code_gen/c_code_gen/struct/cg_structmember.c
 	main/code_gen/c_code_gen/struct_reorder/cg_struct_reorder.c
