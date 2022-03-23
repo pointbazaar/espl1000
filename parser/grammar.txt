@@ -13,7 +13,7 @@ Namespace     ::= ExternC* StructDecl* Method*
 
 StructDecl    ::= "struct" SimpleType '{' StructMember* '}'
 
-MethodDecl    ::= "fn" Id '(' DeclArg* ')' arrow Type ("throws")?
+MethodDecl    ::= "fn" Id '(' DeclArg* ')' arrow Type
 
 ExternC       ::= "externc" (MethodDecl | StructDecl) StringConst 
 
@@ -31,7 +31,7 @@ StmtBlock     ::= '{' Stmt* '}'
 
 DeclArg       ::= Type Id? 
 
-SubrType      ::= '(' Type* ')' arrow Type ("throws")?
+SubrType      ::= '(' Type* ')' arrow Type
 
 StructType    ::= uppercase alphanumeric* ('<' Type (',' Type)* '>')? | "#"
 
@@ -48,9 +48,9 @@ ArrayType     ::= '[' Type ']'
 Type          ::= BasicType | TypeParam | ArrayType
 
 Stmt          ::= ( Call ';' )
-		| whileStmt | ifStmt | forStmt | switchStmt | trycatchStmt
+		| whileStmt | ifStmt | forStmt | switchStmt  
 		| returnStmt | assignStmt
-		| "break" ';' | "continue" ';' | "throw" ';'
+		| "break" ';' | "continue" ';' 
 
 Call         ::= Variable '(' (Expr (, Expr)*)?  ')'
 
@@ -66,8 +66,6 @@ assignStmt   ::= Type? Variable '=' Expr ';'
 switchStmt   ::= "switch" Expr '{' caseStmt* '}'
 
 caseStmt     ::= "case" ConstValue StmtBlock?
-
-trycatchStmt ::= "try" StmtBlock "catch" StmtBlock
 
 ConstValue   ::= BoolConst | IntConst | BinConst | HexConst | CharConst | FloatConst
 
