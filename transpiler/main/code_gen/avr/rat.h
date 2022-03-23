@@ -6,14 +6,6 @@
 #include <stdbool.h>
 #include <inttypes.h>
 
-//who occupies a registers currently
-enum RAT_OCCUPANT {
-    RAT_OCCUPIED_LOCAL,
-    RAT_OCCUPIED_ARG,
-    RAT_OCCUPIED_TEMPORARY,
-
-    RAT_OCCUPANT_NONE, //no one occupies the register
-};
 
 struct RAT {
     struct ST* st;
@@ -24,9 +16,8 @@ struct RAT {
 
     uint8_t capacity; //should be 32
 
-    //map locals, args and temporaries by their index
-    enum RAT_OCCUPANT occupant[32]; //who occupies it
-    uint8_t occupant_index[32]; //their index in their respective category
+    char* occupant[32]; //who occupies it
+    bool is_occupied[32]; //is it occupied?
 };
 
 struct RAT* rat_ctor(struct ST* st);
@@ -35,5 +26,8 @@ void rat_dtor(struct RAT* rat);
 void rat_print(struct RAT* rat);
 
 bool rat_has_register(struct RAT* rat, char* name);
+int rat_get_register(struct RAT* rat, char* name);
+
+int rat_get_free_register(struct RAT* rat, int start_inclusive);
 
 #endif

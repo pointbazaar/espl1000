@@ -17,6 +17,7 @@ struct BasicBlock {
     struct BasicBlock* branch_2; //may be NULL
 
     bool visited_assign_registers;
+    bool visited_emit_asm;
 };
 
 struct BasicBlock* basicblock_ctor(uint32_t index);
@@ -26,6 +27,5 @@ void basicblock_print(struct BasicBlock* block);
 
 struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer, char* function_name);
 
-void basicblock_assign_registers(struct BasicBlock* block, struct RAT* rat);
 
 #endif

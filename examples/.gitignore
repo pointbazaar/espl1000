@@ -11,6 +11,8 @@ main
 *.o
 *.elf
 *.hex
+*.cof
+*.obj
 
 *.ppm 
 

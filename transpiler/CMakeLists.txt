@@ -30,7 +30,7 @@ add_library("sd-base"
 	main/code_gen/c_code_gen/stmts/cg_forstmt.c
 	main/code_gen/c_code_gen/stmts/cg_ifstmt.c
 	main/code_gen/c_code_gen/stmts/cg_switchcase.c
-        main/code_gen/c_code_gen/stmts/cg_whilestmt.c
+	main/code_gen/c_code_gen/stmts/cg_whilestmt.c
 	main/code_gen/c_code_gen/struct/cg_structdecl.c
 	main/code_gen/c_code_gen/struct/cg_structmember.c
 	main/code_gen/c_code_gen/struct_reorder/cg_struct_reorder.c
@@ -51,6 +51,8 @@ add_library("sd-base"
 	main/code_gen/avr/rat.c
 	main/code_gen/avr/tacbuffer.c
 	main/code_gen/avr/basicblock.c
+	main/code_gen/avr/cg_avr_basic_block.c
+	main/code_gen/avr/cg_avr_single_tac.c
 
 	#code_gen/util
 	main/code_gen/util/indent.c

@@ -138,22 +138,24 @@ bool transpileAndCompile(struct Flags* flags){
 	}
 
 	int status = 0;
-	
-	if(flags->has_main_fn && !flags->x86){
-		
-		char* cmd_gcc = make_gcc_cmd(flags, c_filename);
-
-		status = system(cmd_gcc);
-		
-		free(cmd_gcc);
-	}
 
 	if(flags->x86){
 		char cmd[200];
 		sprintf(cmd, "nasm %s", asm_filename);
 		status = system(cmd);
 
-	}
+	}else if(flags->avr){
+        char cmd[200];
+        sprintf(cmd, "avra -o out %s", asm_filename);
+        status = system(cmd);
+
+    }else if(flags->has_main_fn){
+        char* cmd_gcc = make_gcc_cmd(flags, c_filename);
+
+        status = system(cmd_gcc);
+
+        free(cmd_gcc);
+    }
 	
 	free(c_filename);
 	free(h_filename);

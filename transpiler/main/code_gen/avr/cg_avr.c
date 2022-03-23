@@ -14,36 +14,22 @@
 #include "tac.h"
 #include "tacbuffer.h"
 #include "basicblock.h"
-#include "rat.h"
 #include "analyzer/lv/lv_analyzer.h"
-
-static void emit_asm_avr(struct BasicBlock* block, struct ST* st, struct Flags* flags){
-
-    //TODO: do liveness analysis to assign registers
-    //if we do not have enough registers, simply print an error and give up.
-    //spilling will not be implemented (yet?)
-
-    //simplest naive approach (first iteration):
-    //simply get a new register for each temporary
-    //the mapping tx -> ry can be saved in an array
-    //TODO: use better approach
-
-    struct RAT* rat = rat_ctor(st);
-
-    basicblock_assign_registers(block, rat);
-
-    if(flags->debug)
-        rat_print(rat);
-
-    //TODO: emit
-}
+#include "cg_avr_basic_block.h"
 
 bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flags* flags, struct Ctx* ctx){
 
-    //TODO
     if(flags->emit_headers){
         printf("-h not implemented for avr");
     }
+
+    FILE* fout = fopen(asm_file_filename, "w");
+    if(fout == NULL){
+        printf("error opening output file\n");
+        exit(1);
+    }
+
+    fprintf(fout, ".device ATmega328P\n");
 
     //convert AST into 3 address code with temporaries
 
@@ -72,15 +58,15 @@ bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flag
             lvst_clear(ctx->tables->lvst);
             lvst_fill(m, ctx->tables);
 
-            emit_asm_avr(root, ctx->tables, flags);
+            //emit label for the function
+            fprintf(fout, "%s:\n",m->decl->name);
+            emit_asm_avr_basic_block(root, ctx->tables, flags, fout);
 
             tacbuffer_dtor(buffer);
         }
     }
 
-    //TODO
-    //we have to use the parameter, else compile error
-    printf("%s\n", asm_file_filename);
+    fclose(fout);
 
-    return false;
+    return true;
 }

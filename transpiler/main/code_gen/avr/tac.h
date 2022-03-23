@@ -12,19 +12,19 @@ enum TAC_KIND{
     TAC_BINARY_OP = 0, //e.g. t1 = t2 + t3
     TAC_UNARY_OP, //e.g. t1 = -t2;
 
-    TAC_GOTO,
-    TAC_IF_GOTO,
+    TAC_GOTO, //unconditional jump
+    TAC_IF_GOTO, //conditional jump depending on a single temporary
 
-    TAC_DEREF,
+    TAC_DEREF, //currently unused
 
     TAC_COPY,
 
     TAC_CONST_VALUE,
     TAC_CONST_STRING,
 
-    TAC_CALL,
+    TAC_CALL, //call to a label (string) without anything else
     TAC_PARAM,
-    TAC_RETURN,
+    TAC_RETURN, //return, without arguments
 
     TAC_NOP,
 };

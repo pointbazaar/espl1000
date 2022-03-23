@@ -166,6 +166,7 @@ struct BasicBlock* basicblock_ctor(uint32_t index){
         .branch_2 = NULL,
 
         .visited_assign_registers = false,
+        .visited_emit_asm = false
     };
     return res;
 }
@@ -212,24 +213,4 @@ static bool* calculate_leaders(struct TACBuffer* buffer){
     }
 
     return is_leader;
-}
-
-void basicblock_assign_registers(struct BasicBlock* block, struct RAT* rat){
-
-    if(block == NULL)
-        return;
-
-    if(block->visited_assign_registers)
-        return;
-
-    for(size_t i = 0; i < block->buffer->count; i++){
-        struct TAC* tac = block->buffer->buffer[i];
-
-        tac_assign_registers(tac, rat);
-    }
-
-    block->visited_assign_registers = true;
-
-    basicblock_assign_registers(block->branch_1, rat);
-    basicblock_assign_registers(block->branch_2, rat);
 }
