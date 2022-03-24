@@ -42,8 +42,8 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FI
     }
 
     //now load X as our base pointer for the stack frame
-    fprintf(fout, "in r26, SPL  ;X is base ptr\n");
-    fprintf(fout, "in r27, SPH  ;X is base ptr\n\n");
+    fprintf(fout, "in r28, SPL  ;Y is base ptr\n");
+    fprintf(fout, "in r29, SPH  ;Y is base ptr\n\n");
 
     emit_asm_avr_basic_block(root, ctx, fout);
 

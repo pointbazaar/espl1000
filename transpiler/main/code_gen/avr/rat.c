@@ -25,13 +25,18 @@ struct RAT* rat_ctor(struct ST* st){
     //and are used as pointer registers,
     //and should not be available for allocation
     rat->is_occupied[26] = true; //X
-    rat->is_occupied[27] = true;
+    rat->is_occupied[27] = true; //X
 
+    //Y is our base pointer for the stack frame
     rat->is_occupied[28] = true; //Y
-    rat->is_occupied[29] = true;
+    rat->is_occupied[29] = true; //Y
 
     rat->is_occupied[30] = true; //Z
-    rat->is_occupied[31] = true;
+    rat->is_occupied[31] = true; //Z
+
+    for(int i=26;i < rat->capacity;i++){
+        rat->occupant[i] = "reserved";
+    }
 
     return rat;
 }

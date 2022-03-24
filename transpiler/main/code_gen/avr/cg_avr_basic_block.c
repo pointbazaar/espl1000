@@ -29,14 +29,40 @@ void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, FILE *f
 
     for(size_t i=0;i < block->buffer->count; i++){
         struct TAC* t = block->buffer->buffer[i];
+
+        if(i == block->buffer->count - 1){
+            if(t->kind == TAC_GOTO || t->kind == TAC_IF_GOTO
+            || t->kind == TAC_RETURN || t->kind == TAC_CALL){
+                //TODO
+                //store all locals that have been written, into the stack frame before
+                //we leave this basic block
+
+                for(int k=0;k < rat->capacity; k++) {
+
+                    if(!rat->is_occupied[k]) continue;
+
+                    char* var_name = rat->occupant[k];
+
+                    if(lvst_contains(ctx->tables->lvst, var_name)){
+                        size_t offset = lvst_stack_frame_offset_avr(ctx->tables->lvst, var_name);
+
+                        if(offset == 0){
+                            fprintf(fout, "st Y, r%d\n", k);
+                        }else {
+                            fprintf(fout, "std Y+%zu, r%d\n", offset, k);
+                        }
+                    }
+                }
+            }
+        }
+
         emit_asm_avr_single_tac(rat, t, ctx, fout);
     }
 
     if(ctx->flags->debug)
         rat_print(rat);
 
-    //TODO: store all locals into the stack frame
-    //at the end of a basic block
+    rat_dtor(rat);
 
     emit_asm_avr_basic_block(block->branch_1,  ctx, fout);
     emit_asm_avr_basic_block(block->branch_2, ctx, fout);
