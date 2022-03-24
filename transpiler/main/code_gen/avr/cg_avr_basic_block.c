@@ -12,7 +12,7 @@
 #include "cg_avr_single_tac.h"
 #include "cg_avr_basic_block.h"
 
-void emit_asm_avr_basic_block(struct BasicBlock *block, struct ST *st, struct Flags *flags, FILE *fout) {
+void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, FILE *fout) {
 
     if(block == NULL || block->visited_emit_asm)
         return;
@@ -20,7 +20,7 @@ void emit_asm_avr_basic_block(struct BasicBlock *block, struct ST *st, struct Fl
     block->visited_emit_asm = true;
 
     //create register allocation table for the basic block.
-    struct RAT* rat = rat_ctor(st);
+    struct RAT* rat = rat_ctor(ctx->tables);
 
     //simplest naive approach (first iteration):
     //simply get a new register for each temporary
@@ -29,12 +29,15 @@ void emit_asm_avr_basic_block(struct BasicBlock *block, struct ST *st, struct Fl
 
     for(size_t i=0;i < block->buffer->count; i++){
         struct TAC* t = block->buffer->buffer[i];
-        emit_asm_avr_single_tac(rat, t, flags, fout);
+        emit_asm_avr_single_tac(rat, t, ctx, fout);
     }
 
-    if(flags->debug)
+    if(ctx->flags->debug)
         rat_print(rat);
 
-    emit_asm_avr_basic_block(block->branch_1, st, flags, fout);
-    emit_asm_avr_basic_block(block->branch_2, st, flags, fout);
+    //TODO: store all locals into the stack frame
+    //at the end of a basic block
+
+    emit_asm_avr_basic_block(block->branch_1,  ctx, fout);
+    emit_asm_avr_basic_block(block->branch_2, ctx, fout);
 }

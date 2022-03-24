@@ -18,6 +18,10 @@ struct RAT {
 
     char* occupant[32]; //who occupies it
     bool is_occupied[32]; //is it occupied?
+
+    //X: r26/r27
+    //Y: r28/r29
+    //Z: r30/r31
 };
 
 struct RAT* rat_ctor(struct ST* st);

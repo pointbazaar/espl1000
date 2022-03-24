@@ -12,8 +12,26 @@ struct RAT* rat_ctor(struct ST* st){
         .capacity = 32,
     };
 
-    memset(rat->occupant, 0, sizeof(char*)*rat->capacity);
+    for(int i=0;i < rat->capacity;i++){
+        rat->occupant[i] = "";
+    }
     memset(rat->is_occupied, false, sizeof(bool)*rat->capacity);
+
+    //r0 is our garbage register, for when we need to pop something off the stack
+    //to destroy our stackframe
+    rat->is_occupied[0] = true;
+
+    //r26 through r31 are X,Y,Z
+    //and are used as pointer registers,
+    //and should not be available for allocation
+    rat->is_occupied[26] = true; //X
+    rat->is_occupied[27] = true;
+
+    rat->is_occupied[28] = true; //Y
+    rat->is_occupied[29] = true;
+
+    rat->is_occupied[30] = true; //Z
+    rat->is_occupied[31] = true;
 
     return rat;
 }

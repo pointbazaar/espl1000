@@ -23,7 +23,7 @@ struct TAC* makeTAC(){
             .index = 0,
             .label_index = TAC_NO_LABEL,
             .goto_index = TAC_NO_LABEL,
-            .kind = TAC_NONE,
+            .kind = TAC_NOP,
             .const_value = 0,
             .const_string = NULL,
     };
@@ -33,7 +33,6 @@ struct TAC* makeTAC(){
     strcpy(res->dest, "");
     strcpy(res->arg1, "");
     strcpy(res->op, "");
-    strcpy(res->arg2, "");
 
     return res;
 }
@@ -233,10 +232,6 @@ void tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt){
         case 3: tac_ifstmt(buffer, stmt->ptr.m3); break;
         case 4: tac_retstmt(buffer, stmt->ptr.m4); break;
         case 5: tac_assignstmt(buffer, stmt->ptr.m5); break;
-        case 6:
-            //try-catch stmt, we can't do that for avr right now
-            printf("try-catch not implemented for avr\n");
-            exit(1);
         case 7: tac_forstmt(buffer, stmt->ptr.m7); break;
         case 8:
             //switch stmt, we can't do that for avr right now
@@ -304,14 +299,13 @@ void tac_expr(struct TACBuffer* buffer, struct Expr* expr){
         char* t2 = buffer->buffer[buffer->count - 1]->dest;
 
         struct TAC* t = makeTAC();
-        sprintf(t->dest, "t%d", make_temp());
-        strcpy(t->arg1,  t1);
-        strcpy(t->arg2,  t2);
+        sprintf(t->dest, "%s", t1);
+        strcpy(t->arg1,  t2);
 
         char* opstr = expr->op->op;
 
         t->kind = TAC_BINARY_OP;
-        strcpy(t->op, opstr);
+        sprintf(t->op,"%s=", opstr);
         tacbuffer_append(buffer, t, true);
     }
 }
@@ -378,19 +372,10 @@ void tac_term(struct TACBuffer* buffer, struct Term* t){
             exit(1);
             //lambdas should not exist anymore at this stage,
             //having been converted into named functions
-            //t->ptr.m11
-            break;
         case 12: tac_constvalue(buffer, t->ptr.m12); break;
         default:
             break;
     }
-}
-
-void print_tac(struct TAC* t){
-
-    char* s = tac_tostring(t);
-    printf("%s", s);
-    free(s);
 }
 
 bool tac_is_unconditional_jump(struct TAC* tac){
@@ -433,7 +418,7 @@ char* tac_tostring(struct TAC* t){
         case TAC_NOP:
             sprintf(buffer,"%s", "nop"); break;
         case TAC_BINARY_OP:
-            sprintf(buffer,"%s = %s %4s %s", t->dest, t->arg1, t->op, t->arg2); break;
+            sprintf(buffer,"%s %4s %s", t->dest, t->op, t->arg1); break;
         case TAC_UNARY_OP:
             sprintf(buffer,"%s = %4s %s", t->dest, t->op, t->arg1); break;
         case TAC_CALL:
@@ -445,8 +430,6 @@ char* tac_tostring(struct TAC* t){
         case TAC_DEREF:
             //TODO
             break;
-
-        case TAC_NONE: break;
     }
 
     strcat(res, buffer);

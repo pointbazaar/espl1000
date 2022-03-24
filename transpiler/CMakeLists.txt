@@ -53,6 +53,7 @@ add_library("sd-base"
 	main/code_gen/avr/basicblock.c
 	main/code_gen/avr/cg_avr_basic_block.c
 	main/code_gen/avr/cg_avr_single_tac.c
+	main/code_gen/avr/cg_avr_single_function.c
 
 	#code_gen/util
 	main/code_gen/util/indent.c

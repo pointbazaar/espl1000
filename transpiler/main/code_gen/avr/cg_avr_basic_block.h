@@ -14,6 +14,6 @@
 #include "util/ctx.h"
 #include "basicblock.h"
 
-void emit_asm_avr_basic_block(struct BasicBlock *block, struct ST *st, struct Flags *flags, FILE *fout);
+void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, FILE *fout);
 
 #endif

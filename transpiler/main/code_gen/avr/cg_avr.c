@@ -16,10 +16,21 @@
 #include "basicblock.h"
 #include "analyzer/lv/lv_analyzer.h"
 #include "cg_avr_basic_block.h"
+#include "cg_avr_single_function.h"
 
-bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flags* flags, struct Ctx* ctx){
+static void emit_setup_stack_pointer_avr(FILE* fout){
+    //initialize Stack Pointer
+    fprintf(fout, "ldi r16, high(RAMEND)\n");
+    fprintf(fout, "out SPH, r16\n");
+    fprintf(fout, "ldi r16, low(RAMEND)\n");
+    fprintf(fout, "out SPL, r16\n");
 
-    if(flags->emit_headers){
+    fprintf(fout, "\n\n");
+}
+
+bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Ctx* ctx){
+
+    if(ctx->flags->emit_headers){
         printf("-h not implemented for avr");
     }
 
@@ -29,40 +40,22 @@ bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Flag
         exit(1);
     }
 
-    fprintf(fout, ".device ATmega328P\n");
+    //in /usr/share/avra
 
-    //convert AST into 3 address code with temporaries
+    //in this file a comment must be shortened, otherwise avra will give an error
+    fprintf(fout, ".INCLUDE \"/usr/share/avra/m32def.inc\"\n");
+    //fprintf(fout, ".DEVICE ATmega328P\n");
 
-    //use recursive descent to make TAC
+    emit_setup_stack_pointer_avr(fout);
+
+    //convert AST into 3 address code with temporaries, use recursive descent to make TAC
     for(size_t i = 0; i < ast->count_namespaces; i++){
         struct Namespace* ns = ast->namespaces[i];
 
         for(size_t j = 0; j < ns->count_methods; j++){
             struct Method* m = ns->methods[j];
 
-            struct TACBuffer* buffer = tacbuffer_ctor();
-
-            tac_method(buffer, m);
-
-            //print the TAC for debug
-            if(flags->debug)
-                tacbuffer_print(buffer);
-
-            //create basic blocks from this TAC
-            //basic blocks from the three address code
-            //for each function, create a graph of basic blocks
-
-            struct BasicBlock* root = basicblock_create_graph(buffer, m->decl->name);
-
-            //populate ctx->st->lvst
-            lvst_clear(ctx->tables->lvst);
-            lvst_fill(m, ctx->tables);
-
-            //emit label for the function
-            fprintf(fout, "%s:\n",m->decl->name);
-            emit_asm_avr_basic_block(root, ctx->tables, flags, fout);
-
-            tacbuffer_dtor(buffer);
+            compile_and_write_avr_single_function(m, ctx, fout);
         }
     }
 
