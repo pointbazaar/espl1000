@@ -13,6 +13,7 @@ main
 *.hex
 *.cof
 *.obj
+*.bin
 
 *.ppm 
 

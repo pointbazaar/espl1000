@@ -48,6 +48,12 @@ bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Ctx*
 
     emit_setup_stack_pointer_avr(fout);
 
+    //create the endloop such that the mcu does
+    //not start over again after main
+    fprintf(fout, "call main\n");
+    fprintf(fout, "endloop:\n");
+    fprintf(fout, "rjmp endloop\n"); //endloop
+
     //convert AST into 3 address code with temporaries, use recursive descent to make TAC
     for(size_t i = 0; i < ast->count_namespaces; i++){
         struct Namespace* ns = ast->namespaces[i];
