@@ -86,19 +86,70 @@ static void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
 
     char* mnem = "?";
 
-    if(strcmp(tac->op, "+=") == 0) mnem = "add";
-    if(strcmp(tac->op, "-=") == 0) mnem = "sub";
-    if(strcmp(tac->op, "*=") == 0) mnem = "mul";
+    switch (tac->op) {
 
-    if(strcmp(tac->op, "|=") == 0) mnem = "or";
-    if(strcmp(tac->op, "&=") == 0) mnem = "and";
+        case TAC_OP_NONE:
+            printf("tac->op == TAC_OP_NONE\n");
+            exit(1);
+            break;
 
-    if(strcmp(mnem, "?") == 0){
-        printf("Fatal error: could not compile TAC op %s\n", tac->op);
-        exit(1);
+        case TAC_OP_ADD: mnem = "add"; break;
+        case TAC_OP_SUB: mnem = "sub"; break;
+        case TAC_OP_MUL: mnem = "mul"; break;
+        case TAC_OP_DIV:
+            printf("currently unsupported\n");
+            exit(1);
+            break;
+        case TAC_OP_AND: mnem = "and"; break;
+        case TAC_OP_OR:  mnem = "or";  break;
+
+
+        case TAC_OP_CMP_LT: mnem = "brlt"; break;
+        case TAC_OP_CMP_LE:
+            printf("currently unsupported\n");
+            exit(1);
+            break;
+        case TAC_OP_CMP_GT:
+            printf("currently unsupported\n");
+            exit(1);
+            break;
+        case TAC_OP_CMP_GE: mnem = "brge"; break;
+        case TAC_OP_CMP_EQ: mnem = "breq"; break;
+        case TAC_OP_CMP_NEQ: mnem = "brne"; break;
     }
 
-    fprintf(fout, "%s r%d, r%d\n", mnem, reg_dest, reg_src);
+    if(tac->op >= TAC_OP_CMP_LT && tac->op <= TAC_OP_CMP_NEQ){
+        char Ltrue[20];
+        char Lend[20];
+
+        static int label_counter = 0;
+        sprintf(Ltrue, "Ltrue%d", label_counter);
+        sprintf(Lend, "Lend%d", label_counter++);
+
+        fprintf(fout, "cp r%d, r%d\n", reg_dest, reg_src);
+        fprintf(fout, "%s %s\n", mnem, Ltrue);
+
+        fprintf(fout, "clr r%d\n", reg_dest);
+
+        fprintf(fout, "rjmp %s\n", Lend);
+        fprintf(fout, "%s:\n", Ltrue);
+
+        fprintf(fout, "clr r%d\n", reg_dest);
+        fprintf(fout, "inc r%d\n", reg_dest);
+
+        fprintf(fout, "%s:\n", Lend);
+
+        //cp r1,r2
+        //brlt Ltrue
+        //r1 = 0
+        //goto Lend
+        //Ltrue:
+        //r1 = 1
+        //Lend:
+
+    }else {
+        fprintf(fout, "%s r%d, r%d\n", mnem, reg_dest, reg_src);
+    }
 }
 
 static void compile_tac_goto(struct TAC* tac, FILE* fout){
@@ -117,7 +168,8 @@ static void compile_tac_if_goto(struct RAT* rat, struct TAC* tac, FILE* fout){
 
     int reg = rat_get_register(rat, tac->arg1);
 
-    fprintf(fout, "cpi r%d, 0", reg);
+    fprintf(fout, "mov r16, r%d\n", reg);
+    fprintf(fout, "cpi r16, 0\n");
 
     fprintf(fout, "brne L%d\n", tac->goto_index);
 }

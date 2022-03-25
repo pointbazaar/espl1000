@@ -32,7 +32,7 @@ struct TAC* makeTAC(){
 
     strcpy(res->dest, "");
     strcpy(res->arg1, "");
-    strcpy(res->op, "");
+    res->op = TAC_OP_NONE;
 
     return res;
 }
@@ -305,7 +305,26 @@ void tac_expr(struct TACBuffer* buffer, struct Expr* expr){
         char* opstr = expr->op->op;
 
         t->kind = TAC_BINARY_OP;
-        sprintf(t->op,"%s=", opstr);
+        t->op = TAC_OP_NONE;
+
+        if(strcmp(opstr, "+") == 0) t->op = TAC_OP_ADD;
+        if(strcmp(opstr, "-") == 0) t->op = TAC_OP_ADD;
+        if(strcmp(opstr, "*") == 0) t->op = TAC_OP_ADD;
+        if(strcmp(opstr, "/") == 0) t->op = TAC_OP_ADD;
+
+        if(strcmp(opstr, "<") == 0) t->op = TAC_OP_CMP_LT;
+        if(strcmp(opstr, "<=") == 0) t->op = TAC_OP_CMP_LE;
+        if(strcmp(opstr, ">") == 0) t->op = TAC_OP_CMP_GT;
+        if(strcmp(opstr, ">=") == 0) t->op = TAC_OP_CMP_GE;
+        if(strcmp(opstr, "==") == 0) t->op = TAC_OP_CMP_EQ;
+        if(strcmp(opstr, "!=") == 0) t->op = TAC_OP_CMP_NEQ;
+
+        if(t->op == TAC_OP_NONE){
+            printf("error, opstr was none of supported TAC_OP_... values\n");
+            printf("opstr = %s\n", opstr);
+            exit(1);
+        }
+
         tacbuffer_append(buffer, t, true);
     }
 }
@@ -319,7 +338,19 @@ void tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* u){
         t->kind = TAC_UNARY_OP;
         sprintf(t->dest,"t%d", make_temp());
         strcpy(t->arg1, buffer->buffer[buffer->count - 1]->dest);
-        strcpy(t->op, u->op->op);
+
+        t->op = TAC_OP_NONE;
+        char* opstr = u->op->op;
+
+        if(strcmp(opstr, "+") == 0) t->op = TAC_OP_ADD;
+        if(strcmp(opstr, "-") == 0) t->op = TAC_OP_ADD;
+        if(strcmp(opstr, "*") == 0) t->op = TAC_OP_ADD;
+        if(strcmp(opstr, "/") == 0) t->op = TAC_OP_ADD;
+
+        if(t->op == TAC_OP_NONE){
+            printf("error, t->op was none of supported TAC_OP_... values\n");
+            exit(1);
+        }
 
         tacbuffer_append(buffer, t, true);
     }
@@ -380,89 +411,4 @@ void tac_term(struct TACBuffer* buffer, struct Term* t){
 
 bool tac_is_unconditional_jump(struct TAC* tac){
     return tac->kind == TAC_GOTO || tac->kind == TAC_RETURN;
-}
-
-char* tac_tostring(struct TAC* t){
-    char* res = malloc(sizeof(char)*100);
-    strcpy(res, "");
-
-    //print optional label
-    if(t->label_index != TAC_NO_LABEL)
-        sprintf(res,"L%3d:%5s", t->label_index, "");
-    else if(strcmp(t->label_name, "") == 0)
-        sprintf(res,"%10s", "");
-    else
-        sprintf(res,"%-9s:", t->label_name);
-
-    char goto_label_str[5];
-    if(t->goto_index != TAC_NO_LABEL){
-        sprintf(goto_label_str, "L%d", t->goto_index);
-    }
-
-    char buffer[100];
-    strcpy(buffer, "");
-
-    switch (t->kind) {
-        case TAC_GOTO:
-            sprintf(buffer, "%s %s", "goto", goto_label_str); break;
-        case TAC_IF_GOTO:
-            sprintf(buffer, "%s %s %s", "if-goto", t->arg1, goto_label_str); break;
-
-        case TAC_CONST_VALUE:
-            sprintf(buffer,"%s = %d",t->dest, t->const_value); break;
-        case TAC_CONST_STRING:
-            sprintf(buffer,"%s = %s",t->dest, t->const_string); break;
-
-        case TAC_COPY:
-            sprintf(buffer,"%s = %s", t->dest, t->arg1); break;
-        case TAC_NOP:
-            sprintf(buffer,"%s", "nop"); break;
-        case TAC_BINARY_OP:
-            sprintf(buffer,"%s %4s %s", t->dest, t->op, t->arg1); break;
-        case TAC_UNARY_OP:
-            sprintf(buffer,"%s = %4s %s", t->dest, t->op, t->arg1); break;
-        case TAC_CALL:
-            sprintf(buffer,"%s = call %s", t->dest, t->arg1); break;
-        case TAC_PARAM:
-            sprintf(buffer,"param %s", t->arg1); break;
-        case TAC_RETURN:
-            sprintf(buffer,"return %s", t->arg1); break;
-        case TAC_DEREF:
-            //TODO
-            break;
-    }
-
-    strcat(res, buffer);
-    return res;
-}
-
-//--------------------
-void tac_assign_registers(struct TAC *tac, struct RAT* rat) {
-
-    if(strcmp(tac->dest,"") == 0)
-        return;
-
-    //we assume that the tac has a destination operand
-    char* dest = tac->dest;
-
-    //find out if the destination operand is a local var or arg
-    if(lvst_contains(rat->st->lvst, dest)){
-
-    }else if(sst_contains(rat->st->sst, dest)){
-
-    }else{
-        //temporary
-    }
-
-
-    //if it is not, it is a temporary
-
-    //check if it has already been assigned
-    //if(rat_has_register(rat, )){
-
-    //}
-    //TODO
-
-    if(tac ==NULL || rat == NULL)
-        exit(1);
 }

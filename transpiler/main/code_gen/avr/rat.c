@@ -20,6 +20,13 @@ struct RAT* rat_ctor(struct ST* st){
     //r0 is our garbage register, for when we need to pop something off the stack
     //to destroy our stackframe
     rat->is_occupied[0] = true;
+    rat->occupant[0] = "reserved";
+
+    //r16 is another reserved multi-use register,
+    //as there is a constraint that
+    //many instructions can only use registers >= r16
+    rat->is_occupied[16] = true;
+    rat->occupant[16] = "reserved";
 
     //r26 through r31 are X,Y,Z
     //and are used as pointer registers,

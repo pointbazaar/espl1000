@@ -6,6 +6,28 @@
 #include "tacbuffer.h"
 #include "rat.h"
 
+enum TAC_OP{
+    TAC_OP_NONE, //for error cases
+
+    //arithmetic operators
+    TAC_OP_ADD,
+    TAC_OP_SUB,
+    TAC_OP_MUL,
+    TAC_OP_DIV,
+
+    //logical operators
+    TAC_OP_AND,
+    TAC_OP_OR,
+
+    //comparison operators
+    TAC_OP_CMP_LT, //<
+    TAC_OP_CMP_LE, //<=
+    TAC_OP_CMP_GT, //>
+    TAC_OP_CMP_GE, //>=
+    TAC_OP_CMP_EQ, //==
+    TAC_OP_CMP_NEQ, //!=
+};
+
 enum TAC_KIND{
 
     TAC_BINARY_OP = 0, //e.g. t1 = t2 + t3
@@ -46,7 +68,8 @@ struct TAC{
     char dest[TEMP_SIZE];
     enum TAC_KIND kind;
     char arg1[TEMP_SIZE];
-    char op[TEMP_SIZE];
+
+    enum TAC_OP op;
 
     uint32_t goto_index;
 
@@ -54,11 +77,10 @@ struct TAC{
     char* const_string;
 };
 
-//TAC functions
-char* tac_tostring(struct TAC* tac);
 bool tac_is_unconditional_jump(struct TAC* tac);
 
 struct TAC* makeTAC();
+char* tac_tostring(struct TAC* tac);
 uint32_t make_label();
 uint32_t make_temp();
 struct TAC* makeTACLabel(uint32_t label);
@@ -84,7 +106,4 @@ void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* sv);
 
 void tac_stringconst(struct TACBuffer* buffer, struct StringConst* s);
 
-//---------------
-
-void tac_assign_registers(struct TAC *tac, struct RAT* rat);
 #endif
