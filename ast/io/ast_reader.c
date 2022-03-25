@@ -673,13 +673,6 @@ struct AssignStmt* read_assign_stmt(FILE* file) {
 	}
 
 	v->var = read_variable(file);
-	
-	char* assign_op = deserialize_string(file);
-	
-	strncpy(v->assign_op, assign_op, ASSIGNOP_LENGTH);
-	
-	free(assign_op);
-	
 	v->expr = read_expr(file);
 	
 	magic_num_require(MAGIC_END_ASSIGNSTMT, file);

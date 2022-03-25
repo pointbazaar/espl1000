@@ -308,9 +308,9 @@ void tac_expr(struct TACBuffer* buffer, struct Expr* expr){
         t->op = TAC_OP_NONE;
 
         if(strcmp(opstr, "+") == 0) t->op = TAC_OP_ADD;
-        if(strcmp(opstr, "-") == 0) t->op = TAC_OP_ADD;
-        if(strcmp(opstr, "*") == 0) t->op = TAC_OP_ADD;
-        if(strcmp(opstr, "/") == 0) t->op = TAC_OP_ADD;
+        if(strcmp(opstr, "-") == 0) t->op = TAC_OP_SUB;
+        if(strcmp(opstr, "*") == 0) t->op = TAC_OP_MUL;
+        if(strcmp(opstr, "/") == 0) t->op = TAC_OP_DIV;
 
         if(strcmp(opstr, "<") == 0) t->op = TAC_OP_CMP_LT;
         if(strcmp(opstr, "<=") == 0) t->op = TAC_OP_CMP_LE;

@@ -38,8 +38,9 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FI
 
     //push onto the stack to create the stack frame
     for(size_t k=0; k < lvst_stack_frame_size_avr(ctx->tables->lvst); k++){
-        fprintf(fout, "push r0  ;create frame\n\n"); //it is irrelevant what we push here
+        fprintf(fout, "push r0  ;create frame\n"); //it is irrelevant what we push here
     }
+    fprintf(fout, "\n");
 
     //now load X as our base pointer for the stack frame
     fprintf(fout, "in r28, SPL  ;Y is base ptr\n");

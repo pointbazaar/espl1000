@@ -3,16 +3,12 @@
 
 #include "../ast_declare.h"
 
-#define ASSIGNOP_LENGTH 4
-
 struct AssignStmt {
 	struct ASTNode super; 
 	
 	struct Type* opt_type;	//may be NULL
 
 	struct Variable* var;
-	
-	char assign_op[ASSIGNOP_LENGTH]; //[=,+=,-=, ...]
 	
 	struct Expr* expr;
 };

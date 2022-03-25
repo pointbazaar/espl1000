@@ -440,9 +440,6 @@ void write_assign_stmt(struct AssignStmt* m, FILE* file){
 	}
 
 	write_variable(m->var, file);
-	
-	serialize_string(m->assign_op, file);
-
 	write_expr(m->expr, file);
 	
 	magic_num_serialize(MAGIC_END_ASSIGNSTMT, file);

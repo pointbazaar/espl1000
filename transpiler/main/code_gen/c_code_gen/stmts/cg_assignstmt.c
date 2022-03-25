@@ -82,7 +82,7 @@ void transpileAssignStmt(struct AssignStmt* as, struct Ctx* ctx){
 		transpileVariable(as->var, ctx);
 	}
 	
-	fprintf(ctx->file, " %s ", as->assign_op);
+	fprintf(ctx->file, " = ");
 
 	//cast to void* when assigning to a type parameter.
     if(assignToTypeParam){

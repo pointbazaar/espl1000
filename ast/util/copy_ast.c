@@ -376,7 +376,7 @@ struct AssignStmt* copy_assign_stmt(struct AssignStmt* a){
     if(a->opt_type != NULL){
         res->opt_type = copy_type(a->opt_type);
     }
-    strcpy(res->assign_op, a->assign_op);
+
     res->expr = copy_expr(a->expr);
     res->var = copy_variable(a->var);
 

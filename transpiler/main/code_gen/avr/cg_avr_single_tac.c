@@ -12,6 +12,7 @@
 
 static void compile_tac_return(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, FILE* fout){
     //destroy the stackframe
+    fprintf(fout, "\n");
     for(size_t k=0; k < lvst_stack_frame_size_avr(ctx->tables->lvst); k++){
         fprintf(fout, "pop r0 ;destroy frame\n");
     }
