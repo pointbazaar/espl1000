@@ -24,14 +24,14 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="986"
+     inkscape:window-height="1056"
      id="namedview929"
      showgrid="false"
-     inkscape:zoom="2.1569843"
-     inkscape:cx="539.82987"
-     inkscape:cy="1466.3516"
+     inkscape:zoom="1.0784922"
+     inkscape:cx="362.81581"
+     inkscape:cy="1631.1812"
      inkscape:window-x="0"
-     inkscape:window-y="27"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer3"
      inkscape:document-rotation="0" />
@@ -649,9 +649,9 @@
        x="-2.6985984"
        y="124.93926" />
     <rect
-       style="opacity:0.96;fill:#aab81c;fill-opacity:0.516279;stroke:none;stroke-width:0.641213;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:5.1297, 5.1297;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:0.96;fill:#aab81c;fill-opacity:0.516279;stroke:none;stroke-width:0.627907;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:5.02325, 5.02325;stroke-dashoffset:0;stroke-opacity:1"
        id="rect2100-0"
-       width="131.75949"
+       width="126.34777"
        height="50.046722"
        x="-2.4532712"
        y="202.28767" />
@@ -746,11 +746,11 @@
          style="stroke-width:0.105067"
          id="tspan1427-1-9-6-9-9">uint32_t line_num</tspan></text>
     <rect
-       style="opacity:0.96;fill:#aab81c;fill-opacity:0.516279;stroke:none;stroke-width:0.444188;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:3.5535, 3.5535;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:0.96;fill:#aab81c;fill-opacity:0.516279;stroke:none;stroke-width:0.464003;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:3.71202, 3.71202;stroke-dashoffset:0;stroke-opacity:1"
        id="rect2100-0-3"
-       width="78.067909"
+       width="85.188576"
        height="40.53331"
-       x="135.83786"
+       x="128.71719"
        y="239.53864" />
     <text
        xml:space="preserve"
@@ -769,21 +769,6 @@
    id="tspan1517">R</tspan><tspan
    style="fill:#ff0000;fill-opacity:1;stroke-width:0.105067"
    id="tspan2563-5-6-1-4-5">AT</tspan></tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.94;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.105067"
-       x="140.02844"
-       y="262.93286"
-       id="text949-0-6-5-5-5-6-3"><tspan
-         sodipodi:role="line"
-         x="140.02844"
-         y="262.93286"
-         style="stroke-width:0.105067"
-         id="tspan1427-1-9-6-9-3-5"><tspan
-   style="fill:#0014ff;fill-opacity:1;stroke-width:0.105067"
-   id="tspan2549-1-4-1-8-1-6">enum</tspan> <tspan
-   style="fill:#ff0000;fill-opacity:1;stroke-width:0.105067"
-   id="tspan2563-5-6-1-4-7-2">RAT_OCCUPANT</tspan></tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.94;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.105067"
@@ -1429,7 +1414,7 @@
          id="tspan2229-2-2"
          x="143.8028"
          y="375.40854"
-         style="stroke-width:0.264583">avr-gcc</tspan></text>
+         style="stroke-width:0.264583">avra</tspan></text>
     <path
        style="opacity:0.94;fill:none;stroke:#000000;stroke-width:1.40535;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 55.955453,387.38517 -11.56826,11.56828 v 37.81269 h 40.575241 v -49.38095 z"
@@ -1487,12 +1472,12 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.94;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.105067"
-       x="140.64635"
-       y="214.7634"
+       x="140.0761"
+       y="251.1358"
        id="text949-0-6-5-5-5-3-7"><tspan
          sodipodi:role="line"
-         x="140.64635"
-         y="214.7634"
+         x="140.0761"
+         y="251.1358"
          style="stroke-width:0.105067"
          id="tspan1427-1-9-6-9-6-0"><tspan
    style="fill:#0014ff;fill-opacity:1;stroke-width:0.105067"
@@ -1504,12 +1489,12 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.94;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.105067"
-       x="140.79785"
-       y="209.71938"
+       x="140.2276"
+       y="246.09178"
        id="text949-0-6-5-5-5-3-0"><tspan
          sodipodi:role="line"
-         x="140.79785"
-         y="209.71938"
+         x="140.2276"
+         y="246.09178"
          style="stroke-width:0.105067"
          id="tspan1427-1-9-6-9-6-6"><tspan
    style="fill:#0014ff;fill-opacity:1;stroke-width:0.105067"
@@ -1519,33 +1504,18 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.94;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.105067"
-       x="140.44281"
-       y="230.29285"
+       x="140.22815"
+       y="263.31808"
        id="text949-0-6-5-5-5-3-0-2"><tspan
          sodipodi:role="line"
-         x="140.44281"
-         y="230.29285"
+         x="140.22815"
+         y="263.31808"
          style="stroke-width:0.105067"
          id="tspan1427-1-9-6-9-6-6-8"><tspan
    style="fill:#0014ff;fill-opacity:1;stroke-width:0.105067"
    id="tspan2549-1-4-1-8-7-2-9">struct</tspan> <tspan
    style="fill:#ff0000;fill-opacity:1"
    id="tspan1517-6-7">BasicBlock</tspan></tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.94;fill:#c11c86;fill-opacity:0.866667;stroke:none;stroke-width:0.105067"
-       x="138.65346"
-       y="203.37561"
-       id="text949-0-1-4-9-6-8-3"><tspan
-         sodipodi:role="line"
-         x="138.65346"
-         y="203.37561"
-         style="fill:#c11c86;fill-opacity:0.866667;stroke-width:0.105067"
-         id="tspan3290">compile_and_write_avr</tspan><tspan
-         sodipodi:role="line"
-         x="138.65346"
-         y="208.62895"
-         id="tspan1515-0-6" /></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:8.07307px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.94;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.201827"
@@ -1560,17 +1530,17 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.94;fill:#c11c86;fill-opacity:0.866667;stroke:none;stroke-width:0.105067"
-       x="138.26469"
-       y="224.78801"
+       x="141.43376"
+       y="214.85889"
        id="text949-0-1-4-9-6-8-3-2"><tspan
          sodipodi:role="line"
-         x="138.26469"
-         y="224.78801"
+         x="141.43376"
+         y="214.85889"
          style="fill:#c11c86;fill-opacity:0.866667;stroke-width:0.105067"
          id="tspan3290-9">basicblock_create_graph</tspan><tspan
          sodipodi:role="line"
-         x="138.26469"
-         y="230.04135"
+         x="141.43376"
+         y="220.11223"
          id="tspan1515-0-6-3" /></text>
     <text
        xml:space="preserve"
@@ -1586,39 +1556,74 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:7.54138px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.94;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.188534"
-       x="138.59698"
-       y="277.33652"
+       x="130.50563"
+       y="275.92636"
        id="text2054-8-6-4"><tspan
          sodipodi:role="line"
          id="tspan2052-5-7-7"
-         x="138.59698"
-         y="277.33652"
+         x="130.50563"
+         y="275.92636"
          style="fill:#1cb838;fill-opacity:0.930233;stroke-width:0.188534">Register Allocation</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.94;fill:#c11c86;fill-opacity:0.866667;stroke:none;stroke-width:0.105067"
-       x="138.73209"
-       y="246.34033"
-       id="text949-0-1-4-9-6-8-3-2-5"><tspan
+       style="opacity:0.94;font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#c11c86;fill-opacity:0.866667;stroke:none;stroke-width:0.105067"
+       x="138.65346"
+       y="203.37561"
+       id="text949-0-1-4-9-6-8-3"><tspan
          sodipodi:role="line"
-         x="138.73209"
-         y="246.34033"
+         x="138.65346"
+         y="203.37561"
          style="fill:#c11c86;fill-opacity:0.866667;stroke-width:0.105067"
-         id="tspan3290-9-0">basicblock_assign_registers</tspan><tspan
+         id="tspan3290">compile_and_write_avr</tspan><tspan
          sodipodi:role="line"
-         x="138.73209"
-         y="251.59367"
-         id="tspan1515-0-6-3-3" /></text>
+         x="138.65346"
+         y="208.62895"
+         id="tspan1515-0-6" /></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.94;fill:#c11c86;fill-opacity:0.866667;stroke:none;stroke-width:0.105067"
-       x="142.94305"
-       y="251.24197"
-       id="text949-0-1-4-9-6-8-3-2-5-6"><tspan
+       x="139.66753"
+       y="209.11661"
+       id="text949-0-1-4-9-6-8-3-5"><tspan
          sodipodi:role="line"
-         x="142.94305"
-         y="251.24197"
-         id="tspan1515-0-6-3-3-0">tac_assign_registers</tspan></text>
+         x="139.66753"
+         y="209.11661"
+         style="fill:#c11c86;fill-opacity:0.866667;stroke-width:0.105067"
+         id="tspan3290-3">compile_and_write_avr_single_function</tspan><tspan
+         sodipodi:role="line"
+         x="139.66753"
+         y="214.36995"
+         id="tspan1515-0-6-5" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.94;fill:#c11c86;fill-opacity:0.866667;stroke:none;stroke-width:0.105067"
+       x="141.51753"
+       y="220.5549"
+       id="text949-0-1-4-9-6-8-3-2-6"><tspan
+         sodipodi:role="line"
+         x="141.51753"
+         y="220.5549"
+         id="tspan1515-0-6-3-9">emit_asm_avr_basic_block</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.94;fill:#c11c86;fill-opacity:0.866667;stroke:none;stroke-width:0.105067"
+       x="141.50542"
+       y="225.67233"
+       id="text949-0-1-4-9-6-8-3-2-6-1"><tspan
+         sodipodi:role="line"
+         x="141.50542"
+         y="225.67233"
+         id="tspan1515-0-6-3-9-2">emit_asm_avr_single_tac</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;opacity:0.94;fill:#c11c86;fill-opacity:0.866667;stroke:none;stroke-width:0.105067"
+       x="145.04698"
+       y="230.21059"
+       id="text949-0-1-4-9-6-8-3-2-6-1-7"><tspan
+         sodipodi:role="line"
+         x="145.04698"
+         y="230.21059"
+         id="tspan1515-0-6-3-9-2-0">compile_tac_?</tspan></text>
   </g>
   <g
      id="layer1"

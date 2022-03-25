@@ -207,9 +207,6 @@ void emit_asm_avr_single_tac(struct RAT* rat, struct TAC *tac, struct Ctx* ctx, 
                               compile_tac_unsupported("TAC_DEREF\n"); break;
         case TAC_COPY:        compile_tac_copy(rat, tac, fout); break;
         case TAC_CONST_VALUE: compile_tac_const_value(rat, tac, fout); break;
-        case TAC_CONST_STRING:
-            //TODO
-                              compile_tac_unsupported("TAC_CONST_STRING\n"); break;
         case TAC_CALL:        compile_tac_call(tac, fout); break;
         case TAC_PARAM:
             //TODO

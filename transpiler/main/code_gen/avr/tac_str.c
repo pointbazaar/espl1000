@@ -53,9 +53,6 @@ char* tac_tostring(struct TAC* t){
 
         case TAC_CONST_VALUE:
             sprintf(buffer,"%s = %d",t->dest, t->const_value); break;
-        case TAC_CONST_STRING:
-            sprintf(buffer,"%s = %s",t->dest, t->const_string); break;
-
         case TAC_COPY:
             sprintf(buffer,"%s = %s", t->dest, t->arg1); break;
         case TAC_NOP:
