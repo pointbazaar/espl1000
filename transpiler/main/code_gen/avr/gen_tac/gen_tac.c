@@ -209,8 +209,19 @@ void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss){
         //... code for that case
         if(cs->block != NULL)
             tac_stmtblock(buffer, cs->block);
-        //goto end
-        tacbuffer_append(buffer, makeTACGoto(label_end), true);
+        
+        if(cs->block == NULL) {
+            //fallthrough to next case
+            uint32_t target_index = label_end;
+
+            if(i < ss->count_cases - 1)
+                target_index = labels_cases[i+1];
+
+            tacbuffer_append(buffer, makeTACGoto(target_index), true);
+        }else {
+            //goto end
+            tacbuffer_append(buffer, makeTACGoto(label_end), true);
+        }
     }
 
     //end:
