@@ -21,8 +21,6 @@ struct TAC* makeTAC(){
             .const_value = 0,
     };
 
-    strcpy(res->label_name, "");
-
     strcpy(res->dest, "");
     strcpy(res->arg1, "");
     res->op = TAC_OP_NONE;
@@ -44,7 +42,7 @@ struct TAC* makeTACLabel(uint32_t label){
     struct TAC* t = makeTAC();
     t->kind = TAC_LABEL;
     t->label_index = label;
-    strcpy(t->label_name, "");
+    strcpy(t->dest, "");
     return t;
 }
 
@@ -52,7 +50,7 @@ struct TAC* makeTACLabel2(char* label){
     struct TAC* t = makeTAC();
     t->kind = TAC_LABEL;
     t->label_index = TAC_NO_LABEL;
-    strncpy(t->label_name, label, DEFAULT_STR_SIZE);
+    strncpy(t->dest, label, DEFAULT_STR_SIZE);
     return t;
 }
 

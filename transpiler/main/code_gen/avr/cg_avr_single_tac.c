@@ -193,10 +193,10 @@ void emit_asm_avr_single_tac(struct RAT* rat, struct TAC *tac, struct Ctx* ctx, 
 
     switch(tac->kind){
         case TAC_LABEL:
-            if(strcmp(tac->label_name, "") == 0)
+            if(strcmp(tac->dest, "") == 0)
                 fprintf(fout, "L%d:\n", tac->label_index);
             else
-                fprintf(fout, "%s:\n", tac->label_name);
+                fprintf(fout, "%s:\n", tac->dest);
             break;
 
         case TAC_GOTO:        compile_tac_goto(tac, fout); break;

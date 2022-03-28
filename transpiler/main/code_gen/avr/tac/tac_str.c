@@ -40,10 +40,10 @@ char* tac_tostring(struct TAC* t){
 
     switch (t->kind) {
         case TAC_LABEL:
-            if (strcmp(t->label_name, "") == 0)
+            if (strcmp(t->dest, "") == 0)
                 sprintf(res,"L%3d:%5s", t->label_index, "");
             else
-                sprintf(res, "%-9s:", t->label_name);
+                sprintf(res, "%-9s:", t->dest);
             break;
         case TAC_GOTO:
             sprintf(buffer, "goto L%d", t->label_index); break;

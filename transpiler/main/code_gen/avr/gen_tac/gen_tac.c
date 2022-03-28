@@ -209,7 +209,7 @@ void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss){
         //... code for that case
         if(cs->block != NULL)
             tac_stmtblock(buffer, cs->block);
-        
+
         if(cs->block == NULL) {
             //fallthrough to next case
             uint32_t target_index = label_end;

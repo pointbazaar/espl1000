@@ -62,7 +62,6 @@ struct TAC{
 
     //three address code
     uint32_t label_index;
-    char label_name[DEFAULT_STR_SIZE]; //for labels with names, like functions
 
     char dest[DEFAULT_STR_SIZE];
     enum TAC_KIND kind;
