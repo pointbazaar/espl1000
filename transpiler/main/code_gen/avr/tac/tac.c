@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "ast/ast_declare.h"
 
@@ -52,6 +53,14 @@ struct TAC* makeTACGoto(uint32_t label){
     struct TAC* t = makeTAC();
     t->kind = TAC_GOTO;
     t->goto_index = label;
+    return t;
+}
+
+struct TAC* makeTACIfGoto(char* tmp_condition, uint32_t label_destination){
+    struct TAC* t = makeTAC();
+    t->kind = TAC_IF_GOTO;
+    sprintf(t->arg1, "%s", tmp_condition);
+    t->goto_index = label_destination;
     return t;
 }
 

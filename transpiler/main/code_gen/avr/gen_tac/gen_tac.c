@@ -54,10 +54,7 @@ void tac_whilestmt(struct TACBuffer* buffer, struct WhileStmt* w){
 
     tac_expr(buffer, w->condition);
 
-    struct TAC* t = makeTAC();
-    t->kind = TAC_IF_GOTO;
-    strcpy(t->arg1, buffer->buffer[buffer->count-1]->dest);
-    t->goto_index = l1;
+    struct TAC* t = makeTACIfGoto(buffer->buffer[buffer->count-1]->dest, l1);
     tacbuffer_append(buffer, t, true);
 
     tacbuffer_append(buffer, makeTACGoto(lend), true);
@@ -95,10 +92,7 @@ void tac_ifstmt(struct TACBuffer* buffer, struct IfStmt* s){
 
     tac_expr(buffer, s->condition);
 
-    struct TAC* t = makeTAC();
-    t->kind = TAC_IF_GOTO;
-    strcpy(t->arg1, buffer->buffer[buffer->count-1]->dest);
-    t->goto_index = l1;
+    struct TAC* t = makeTACIfGoto(buffer->buffer[buffer->count-1]->dest, l1);
     tacbuffer_append(buffer, t, true);
 
     tacbuffer_append(buffer, makeTACGoto(l2), true);
@@ -152,6 +146,79 @@ void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a){
     tacbuffer_append(buffer, t, true);
 }
 
+static int int_value_from_const(struct ConstValue* cv){
+
+    switch (cv->kind) {
+        case 1: return (int) cv->ptr.m1_bool_const->value; break;
+        case 2: return (int) cv->ptr.m2_int_const->value; break;
+        case 3: return (int) cv->ptr.m3_char_const->value; break;
+        case 4: return (int) cv->ptr.m4_float_const->value; break;
+        case 5: return (int) cv->ptr.m5_hex_const->value; break;
+        case 6: return (int) cv->ptr.m6_bin_const->value; break;
+    }
+    return -1;
+}
+
+void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss){
+
+    tac_expr(buffer, ss->expr);
+
+    //now the last temporary contains our expr
+    //generate an if for each case
+    char* tmp_expr = buffer->buffer[buffer->count-1]->dest;
+
+    uint32_t label_end = make_label();
+    uint32_t* labels_cases = malloc(sizeof(uint32_t)*ss->count_cases);
+
+    for(size_t i=0;i < ss->count_cases; i++){
+
+        struct CaseStmt* cs = ss->cases[i];
+
+        uint32_t label_case = make_label();
+        labels_cases[i] = label_case;
+
+        //t2 = cs->const_value
+        struct TAC* tc = makeTAC();
+        tc->kind = TAC_CONST_VALUE;
+        sprintf(tc->dest, "t%d", make_temp());
+        tc->const_value = int_value_from_const(cs->const_value);
+        tacbuffer_append(buffer, tc, true);
+
+        //t2 = t2 == tmp_expr
+        struct TAC* tc3 = makeTAC();
+        tc3->kind = TAC_BINARY_OP;
+        tc3->op = TAC_OP_CMP_EQ;
+        strcpy(tc3->dest, tc->dest);
+        strcpy(tc3->arg1, tmp_expr);
+        tacbuffer_append(buffer, tc3, true);
+
+        //if t1 goto LCase???
+        struct TAC* tcif = makeTACIfGoto(buffer->buffer[buffer->count-1]->dest, label_case);
+        tacbuffer_append(buffer, tcif, true);
+    }
+
+    //goto end
+    tacbuffer_append(buffer, makeTACGoto(label_end), true);
+
+    //... code and labels for the cases
+    for(size_t i=0;i < ss->count_cases; i++) {
+        struct CaseStmt *cs = ss->cases[i];
+
+        //LCase:
+        tacbuffer_append(buffer, makeTACLabel(labels_cases[i]), true);
+        //... code for that case
+        if(cs->block != NULL)
+            tac_stmtblock(buffer, cs->block);
+        //goto end
+        tacbuffer_append(buffer, makeTACGoto(label_end), true);
+    }
+
+    //end:
+    tacbuffer_append(buffer, makeTACLabel(label_end), true);
+
+    free(labels_cases);
+}
+
 void tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt){
 
     if(stmt->is_break){
@@ -176,10 +243,7 @@ void tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt){
         case 4: tac_retstmt(buffer, stmt->ptr.m4); break;
         case 5: tac_assignstmt(buffer, stmt->ptr.m5); break;
         case 7: tac_forstmt(buffer, stmt->ptr.m7); break;
-        case 8:
-            //switch stmt, we can't do that for avr right now
-            printf("switch not implemented for avr\n");
-            exit(1);
+        case 8: tac_switchstmt(buffer, stmt->ptr.m8); break;
     }
 }
 

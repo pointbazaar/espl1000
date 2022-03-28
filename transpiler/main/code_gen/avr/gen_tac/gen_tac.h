@@ -15,6 +15,8 @@ void tac_retstmt(struct TACBuffer* buffer, struct RetStmt* r);
 
 void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a);
 
+void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss);
+
 void tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt);
 
 void tac_method(struct TACBuffer* buffer, struct Method* m);

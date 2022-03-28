@@ -81,7 +81,9 @@ struct TAC* makeTAC();
 char* tac_tostring(struct TAC* tac);
 uint32_t make_label();
 uint32_t make_temp();
+
 struct TAC* makeTACLabel(uint32_t label);
 struct TAC* makeTACGoto(uint32_t label);
+struct TAC* makeTACIfGoto(char* tmp_condition, uint32_t label_destination);
 
 #endif

@@ -36,7 +36,13 @@
         <li>LOCAL: local variable, residing in stack frame</li>
         <li>ARG: argument to the function</li>
         <li>LABEL: label</li>
+        <li>CONST: compile-time known constant</li>
     </ul>
+
+    <p>
+        The table shows which fields of <strong>struct TAC</strong>
+        are defined for each TAC_KIND.
+    </p>
 
     <table class="table table-bordered border-primary">
         <thead>
@@ -45,6 +51,8 @@
                 <th>Example</th>
                 <th>ARG0/dest</th>
                 <th>ARG1/src</th>
+                <th>goto_index</th>
+                <th>const_value</th>
             </tr>
         </thead>
         <tbody>
@@ -52,56 +60,78 @@
                 <td>TAC_BINARY_OP</td> <td>t1 += t2</td>
                 <td>TMP</td>
                 <td>TMP</td>
+                <td>-</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_UNARY_OP</td> <td>t1 = -t2</td>
                 <td>TMP</td>
                 <td>TMP</td>
+                <td>-</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_GOTO</td> <td>goto L1</td>
-                <td>LABEL</td>
                 <td> - </td>
+                <td> - </td>
+                <td>LABEL</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_IF_GOTO</td> <td>if t1 goto L1</td>
+                <td> - </td>
                 <td>TMP</td>
                 <td>LABEL</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_DEREF</td> <td>t1 = *t2</td>
                 <td>TMP</td>
                 <td>TMP</td>
+                <td>-</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_COPY</td> <td>t1 = t2</td>
                 <td>TMP</td>
                 <td>TMP / LOCAL / ARG</td>
+                <td>-</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_CONST_VALUE</td> <td>t1 = 4</td>
                 <td>TMP</td>
+                <td>-</td>
+                <td>-</td>
                 <td>CONST</td>
             </tr>
             <tr>
                 <td>TAC_CALL</td> <td>call myfn</td>
                 <td>LABEL</td>
                 <td> - </td>
+                <td>-</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_PARAM</td> <td>param t1</td>
                 <td>TMP</td>
                 <td> - </td>
+                <td>-</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_RETURN</td> <td>return t1</td>
                 <td>TMP</td>
                 <td> - </td>
+                <td>-</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_NOP</td> <td>nop</td>
                 <td> - </td>
                 <td> - </td>
+                <td>-</td>
+                <td>-</td>
             </tr>
         </tbody>
     </table>
