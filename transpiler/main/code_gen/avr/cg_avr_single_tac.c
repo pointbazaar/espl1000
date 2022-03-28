@@ -154,7 +154,7 @@ static void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
 }
 
 static void compile_tac_goto(struct TAC* tac, FILE* fout){
-    fprintf(fout, "rjmp L%d\n", tac->goto_index);
+    fprintf(fout, "rjmp L%d\n", tac->label_index);
 }
 
 static void compile_tac_nop(FILE* fout){
@@ -172,7 +172,7 @@ static void compile_tac_if_goto(struct RAT* rat, struct TAC* tac, FILE* fout){
     fprintf(fout, "mov r16, r%d\n", reg);
     fprintf(fout, "cpi r16, 0\n");
 
-    fprintf(fout, "brne L%d\n", tac->goto_index);
+    fprintf(fout, "brne L%d\n", tac->label_index);
 }
 
 static void compile_tac_call(struct TAC* tac, FILE* fout){
@@ -191,10 +191,14 @@ void emit_asm_avr_single_tac(struct RAT* rat, struct TAC *tac, struct Ctx* ctx, 
         printf("emit_asm_avr_single_tac %s\n", tac_tostring(tac));
     }
 
-    if(tac->label_index != TAC_NO_LABEL)
-        fprintf(fout, "L%d:\n", tac->label_index);
-
     switch(tac->kind){
+        case TAC_LABEL:
+            if(strcmp(tac->label_name, "") == 0)
+                fprintf(fout, "L%d:\n", tac->label_index);
+            else
+                fprintf(fout, "%s:\n", tac->label_name);
+            break;
+
         case TAC_GOTO:        compile_tac_goto(tac, fout); break;
         case TAC_NOP:         compile_tac_nop(fout); break;
         case TAC_BINARY_OP:   compile_tac_binary_op(rat, tac, fout); break;

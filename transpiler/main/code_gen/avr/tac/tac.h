@@ -47,9 +47,9 @@ enum TAC_KIND{
     TAC_RETURN, //return, without arguments
 
     TAC_NOP,
+    TAC_LABEL,
 };
 
-#define TEMP_SIZE 20
 #define TAC_NO_LABEL 0
 
 //this is our 2-Address Code
@@ -64,13 +64,11 @@ struct TAC{
     uint32_t label_index;
     char label_name[DEFAULT_STR_SIZE]; //for labels with names, like functions
 
-    char dest[TEMP_SIZE];
+    char dest[DEFAULT_STR_SIZE];
     enum TAC_KIND kind;
-    char arg1[TEMP_SIZE];
+    char arg1[DEFAULT_STR_SIZE];
 
     enum TAC_OP op;
-
-    uint32_t goto_index;
 
     int32_t const_value;
 };
@@ -83,6 +81,7 @@ uint32_t make_label();
 uint32_t make_temp();
 
 struct TAC* makeTACLabel(uint32_t label);
+struct TAC* makeTACLabel2(char* label);
 struct TAC* makeTACGoto(uint32_t label);
 struct TAC* makeTACIfGoto(char* tmp_condition, uint32_t label_destination);
 

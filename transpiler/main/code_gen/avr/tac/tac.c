@@ -17,7 +17,6 @@ struct TAC* makeTAC(){
     *res = (struct TAC) {
             .index = 0,
             .label_index = TAC_NO_LABEL,
-            .goto_index = TAC_NO_LABEL,
             .kind = TAC_NOP,
             .const_value = 0,
     };
@@ -43,16 +42,24 @@ uint32_t make_temp(){
 }
 struct TAC* makeTACLabel(uint32_t label){
     struct TAC* t = makeTAC();
-    t->kind = TAC_NOP;
+    t->kind = TAC_LABEL;
     t->label_index = label;
     strcpy(t->label_name, "");
+    return t;
+}
+
+struct TAC* makeTACLabel2(char* label){
+    struct TAC* t = makeTAC();
+    t->kind = TAC_LABEL;
+    t->label_index = TAC_NO_LABEL;
+    strncpy(t->label_name, label, DEFAULT_STR_SIZE);
     return t;
 }
 
 struct TAC* makeTACGoto(uint32_t label){
     struct TAC* t = makeTAC();
     t->kind = TAC_GOTO;
-    t->goto_index = label;
+    t->label_index = label;
     return t;
 }
 
@@ -60,7 +67,7 @@ struct TAC* makeTACIfGoto(char* tmp_condition, uint32_t label_destination){
     struct TAC* t = makeTAC();
     t->kind = TAC_IF_GOTO;
     sprintf(t->arg1, "%s", tmp_condition);
-    t->goto_index = label_destination;
+    t->label_index = label_destination;
     return t;
 }
 

@@ -222,17 +222,11 @@ void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss){
 void tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt){
 
     if(stmt->is_break){
-        struct TAC* t = makeTAC();
-        t->kind = TAC_GOTO;
-        t->goto_index = label_loop_end;
-        tacbuffer_append(buffer, t, true);
+        tacbuffer_append(buffer, makeTACGoto(label_loop_end), true);
         return;
     }
     if(stmt->is_continue){
-        struct TAC* t = makeTAC();
-        t->kind = TAC_GOTO;
-        t->goto_index = label_loop_start;
-        tacbuffer_append(buffer, t, true);
+        tacbuffer_append(buffer, makeTACGoto(label_loop_start), true);
         return;
     }
 
@@ -249,11 +243,7 @@ void tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt){
 
 void tac_method(struct TACBuffer* buffer, struct Method* m){
 
-    struct TAC* t = makeTAC();
-    t->kind = TAC_NOP;
-    t->label_index = TAC_NO_LABEL;
-    strncpy(t->label_name, m->decl->name, DEFAULT_STR_SIZE);
-    tacbuffer_append(buffer, t, true);
+    //tacbuffer_append(buffer, makeTACLabel2(m->decl->name), true);
 
     tac_stmtblock(buffer, m->block);
 }

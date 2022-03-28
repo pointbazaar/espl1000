@@ -59,8 +59,8 @@ void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, FILE *f
         emit_asm_avr_single_tac(rat, t, ctx, fout);
     }
 
-    if(ctx->flags->debug)
-        rat_print(rat);
+    //if(ctx->flags->debug)
+        //rat_print(rat);
 
     rat_dtor(rat);
 

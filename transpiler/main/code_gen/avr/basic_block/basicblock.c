@@ -94,9 +94,9 @@ void create_edges_basic_block(struct TACBuffer *buffer, uint32_t count, struct B
 
     struct TAC* last = block->buffer->buffer[block->buffer->count - 1];
 
-    if(last->goto_index != TAC_NO_LABEL){
+    if(last->label_index != TAC_NO_LABEL){
         //find out the block where the leader has that label_index
-        block->branch_1 = find_block_from_label_index(blocks, count, last->goto_index);
+        block->branch_1 = find_block_from_label_index(blocks, count, last->label_index);
     }
 
     //the next instruction is also a possible branch, if
@@ -117,6 +117,10 @@ static struct BasicBlock* find_block_from_label_index(struct BasicBlock** blocks
 
     for(size_t j = 0; j < count_blocks; j++) {
         struct BasicBlock *candidate = blocks[j];
+
+        if(candidate->buffer->buffer[0]->kind != TAC_LABEL)
+            continue;
+
         if(candidate->buffer->buffer[0]->label_index == label_index)
             return candidate;
     }
@@ -197,7 +201,8 @@ static bool* calculate_leaders(struct TACBuffer* buffer){
         //unconditional goto is a leader
         struct TAC* current = buffer->buffer[i];
 
-        if(current->label_index != TAC_NO_LABEL)
+        //if(current->label_index != TAC_NO_LABEL)
+        if(current->kind == TAC_LABEL)
             is_leader[i] = true;
 
         if(i==0) continue;

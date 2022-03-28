@@ -35,7 +35,7 @@
         <li>TMP: temporary variable, e.g. t4</li>
         <li>LOCAL: local variable, residing in stack frame</li>
         <li>ARG: argument to the function</li>
-        <li>LABEL: label</li>
+        <li>LABEL: label </li>
         <li>CONST: compile-time known constant</li>
     </ul>
 
@@ -51,8 +51,8 @@
                 <th>Example</th>
                 <th>ARG0/dest</th>
                 <th>ARG1/src</th>
-                <th>goto_index</th>
                 <th>const_value</th>
+                <th>label_index (uint32_t)</th>
             </tr>
         </thead>
         <tbody>
@@ -74,15 +74,15 @@
                 <td>TAC_GOTO</td> <td>goto L1</td>
                 <td> - </td>
                 <td> - </td>
-                <td>LABEL</td>
                 <td>-</td>
+                <td>LABEL</td>
             </tr>
             <tr>
                 <td>TAC_IF_GOTO</td> <td>if t1 goto L1</td>
                 <td> - </td>
                 <td>TMP</td>
-                <td>LABEL</td>
                 <td>-</td>
+                <td>LABEL</td>
             </tr>
             <tr>
                 <td>TAC_DEREF</td> <td>t1 = *t2</td>
@@ -102,8 +102,8 @@
                 <td>TAC_CONST_VALUE</td> <td>t1 = 4</td>
                 <td>TMP</td>
                 <td>-</td>
-                <td>-</td>
                 <td>CONST</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_CALL</td> <td>call myfn</td>
@@ -132,6 +132,13 @@
                 <td> - </td>
                 <td>-</td>
                 <td>-</td>
+            </tr>
+            <tr>
+                <td>TAC_LABEL</td> <td>L3:</td>
+                <td> - </td>
+                <td> - </td>
+                <td>-</td>
+                <td>LABEL</td>
             </tr>
         </tbody>
     </table>

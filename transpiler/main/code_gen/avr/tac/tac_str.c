@@ -4,29 +4,10 @@
 
 #include "tac.h"
 
-char* tac_tostring(struct TAC* t){
-
-    char* res = malloc(sizeof(char)*100);
-    strcpy(res, "");
-
-    //print optional label
-    if(t->label_index != TAC_NO_LABEL)
-        sprintf(res,"L%3d:%5s", t->label_index, "");
-    else if(strcmp(t->label_name, "") == 0)
-        sprintf(res,"%10s", "");
-    else
-        sprintf(res,"%-9s:", t->label_name);
-
-    char goto_label_str[5];
-    if(t->goto_index != TAC_NO_LABEL){
-        sprintf(goto_label_str, "L%d", t->goto_index);
-    }
-
-    char buffer[100];
-    strcpy(buffer, "");
-
+static char* get_op_str(enum TAC_OP top){
     char* opstr = "";
-    switch (t->op) {
+    switch (top) {
+        default:
         case TAC_OP_NONE: opstr = "?ERR"; break;
 
         case TAC_OP_ADD: opstr = "+="; break;
@@ -44,13 +25,30 @@ char* tac_tostring(struct TAC* t){
         case TAC_OP_CMP_EQ: opstr = "=="; break;
         case TAC_OP_CMP_NEQ: opstr = "!="; break;
     }
+    return opstr;
+}
+
+char* tac_tostring(struct TAC* t){
+
+    char* res = malloc(sizeof(char)*120);
+    strcpy(res, "");
+
+    char buffer[110];
+    strcpy(buffer, "");
+
+    char* opstr = get_op_str(t->op);
 
     switch (t->kind) {
+        case TAC_LABEL:
+            if (strcmp(t->label_name, "") == 0)
+                sprintf(res,"L%3d:%5s", t->label_index, "");
+            else
+                sprintf(res, "%-9s:", t->label_name);
+            break;
         case TAC_GOTO:
-            sprintf(buffer, "%s %s", "goto", goto_label_str); break;
+            sprintf(buffer, "goto L%d", t->label_index); break;
         case TAC_IF_GOTO:
-            sprintf(buffer, "%s %s %s", "if-goto", t->arg1, goto_label_str); break;
-
+            sprintf(buffer, "if-goto %s L%d", t->arg1, t->label_index); break;
         case TAC_CONST_VALUE:
             sprintf(buffer,"%s = %d",t->dest, t->const_value); break;
         case TAC_COPY:
