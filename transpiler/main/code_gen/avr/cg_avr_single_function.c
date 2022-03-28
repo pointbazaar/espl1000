@@ -2,17 +2,16 @@
 
 #include "cg_avr_basic_block.h"
 #include "analyzer/lv/lv_analyzer.h"
-#include "basicblock.h"
-#include "tacbuffer.h"
-#include "tac.h"
+#include "code_gen/avr/basic_block/basicblock.h"
+#include "code_gen/avr/tacbuffer/tacbuffer.h"
 #include "util/ctx.h"
-#include "flags.h"
 #include "ast/ast.h"
 #include "ast/ast_declare.h"
 
 #include "tables/symtable/symtable.h"
 
 #include "cg_avr_single_function.h"
+#include "code_gen/avr/gen_tac/gen_tac.h"
 
 void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FILE* fout){
     struct TACBuffer* buffer = tacbuffer_ctor();

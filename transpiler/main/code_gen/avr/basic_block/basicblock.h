@@ -3,8 +3,8 @@
 
 #include <inttypes.h>
 
-#include "tac.h"
-#include "rat.h"
+#include "code_gen/avr/tac/tac.h"
+#include "code_gen/avr/rat/rat.h"
 
 struct BasicBlock {
 

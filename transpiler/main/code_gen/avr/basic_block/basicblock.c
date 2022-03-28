@@ -5,7 +5,7 @@
 
 #include "basicblock.h"
 #include "ast/ast.h"
-#include "tacbuffer.h"
+#include "code_gen/avr/tacbuffer/tacbuffer.h"
 
 static bool* calculate_leaders(struct TACBuffer* buffer);
 static struct BasicBlock** collect_basic_blocks(struct TACBuffer* buffer, uint32_t count, bool* is_leader);

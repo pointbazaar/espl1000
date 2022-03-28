@@ -12,7 +12,7 @@
 #include "ast/ast_declare.h"
 #include "flags.h"
 #include "util/ctx.h"
-#include "basicblock.h"
+#include "code_gen/avr/basic_block/basicblock.h"
 
 void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, FILE *fout);
 

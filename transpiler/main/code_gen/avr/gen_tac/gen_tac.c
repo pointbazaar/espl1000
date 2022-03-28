@@ -1,66 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-#include "ast/ast_declare.h"
-#include "ast/ast.h"
+#include "gen_tac.h"
 
-#include "flags.h"
-#include "util/ctx.h"
-
-#include "tacbuffer.h"
-#include "tac.h"
-
-static uint32_t temp_count = 0; //temporaries for TAC
-
-static uint32_t current_label_index = TAC_NO_LABEL+1;
 static uint32_t label_loop_end;
 static uint32_t label_loop_start;
-
-struct TAC* makeTAC(){
-    struct TAC* res = malloc(sizeof(struct TAC));
-    *res = (struct TAC) {
-            .index = 0,
-            .label_index = TAC_NO_LABEL,
-            .goto_index = TAC_NO_LABEL,
-            .kind = TAC_NOP,
-            .const_value = 0,
-    };
-
-    strcpy(res->label_name, "");
-
-    strcpy(res->dest, "");
-    strcpy(res->arg1, "");
-    res->op = TAC_OP_NONE;
-
-    return res;
-}
-
-uint32_t make_label(){
-    uint32_t res = current_label_index;
-    current_label_index++;
-    return res;
-}
-uint32_t make_temp(){
-    uint32_t res = temp_count;
-    temp_count++;
-    return res;
-}
-struct TAC* makeTACLabel(uint32_t label){
-    struct TAC* t = makeTAC();
-    t->kind = TAC_NOP;
-    t->label_index = label;
-    strcpy(t->label_name, "");
-    return t;
-}
-
-struct TAC* makeTACGoto(uint32_t label){
-    struct TAC* t = makeTAC();
-    t->kind = TAC_GOTO;
-    t->goto_index = label;
-    return t;
-}
-
 
 void tac_call(struct TACBuffer* buffer, struct Call* call){
 
@@ -257,34 +201,6 @@ void tac_stmtblock(struct TACBuffer* buffer, struct StmtBlock* block){
     }
 }
 
-void tac_constvalue(struct TACBuffer* buffer, struct ConstValue* c){
-    struct TAC* t = makeTAC();
-    t->kind = TAC_CONST_VALUE;
-    sprintf(t->dest, "t%d", make_temp());
-
-    switch (c->kind) {
-        case 1:
-            t->const_value = c->ptr.m1_bool_const->value;
-            break;
-        case 2:
-            t->const_value = c->ptr.m2_int_const->value;
-            break;
-        case 3:
-            t->const_value = (unsigned char)c->ptr.m3_char_const->value;
-            break;
-        case 4:
-            t->const_value = (int32_t)c->ptr.m4_float_const->value;
-            break;
-        case 5:
-            t->const_value = (int32_t)c->ptr.m5_hex_const->value;
-            break;
-        case 6:
-            t->const_value = (int32_t)c->ptr.m6_bin_const->value;
-            break;
-    }
-    tacbuffer_append(buffer, t, true);
-}
-
 void tac_expr(struct TACBuffer* buffer, struct Expr* expr){
 
     tac_unopterm(buffer, expr->term1);
@@ -402,6 +318,31 @@ void tac_term(struct TACBuffer* buffer, struct Term* t){
     }
 }
 
-bool tac_is_unconditional_jump(struct TAC* tac){
-    return tac->kind == TAC_GOTO || tac->kind == TAC_RETURN;
+
+void tac_constvalue(struct TACBuffer* buffer, struct ConstValue* c){
+    struct TAC* t = makeTAC();
+    t->kind = TAC_CONST_VALUE;
+    sprintf(t->dest, "t%d", make_temp());
+
+    switch (c->kind) {
+        case 1:
+            t->const_value = c->ptr.m1_bool_const->value;
+            break;
+        case 2:
+            t->const_value = c->ptr.m2_int_const->value;
+            break;
+        case 3:
+            t->const_value = (unsigned char)c->ptr.m3_char_const->value;
+            break;
+        case 4:
+            t->const_value = (int32_t)c->ptr.m4_float_const->value;
+            break;
+        case 5:
+            t->const_value = (int32_t)c->ptr.m5_hex_const->value;
+            break;
+        case 6:
+            t->const_value = (int32_t)c->ptr.m6_bin_const->value;
+            break;
+    }
+    tacbuffer_append(buffer, t, true);
 }

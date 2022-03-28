@@ -3,8 +3,8 @@
 
 #include "ast/ast_declare.h"
 
-#include "tacbuffer.h"
-#include "rat.h"
+#include "code_gen/avr/tacbuffer/tacbuffer.h"
+#include "code_gen/avr/rat/rat.h"
 
 enum TAC_OP{
     TAC_OP_NONE, //for error cases
@@ -83,23 +83,5 @@ uint32_t make_label();
 uint32_t make_temp();
 struct TAC* makeTACLabel(uint32_t label);
 struct TAC* makeTACGoto(uint32_t label);
-
-void tac_call(struct TACBuffer* buffer, struct Call* call);
-void tac_whilestmt(struct TACBuffer* buffer, struct WhileStmt* w);
-void tac_ifstmt(struct TACBuffer* buffer, struct IfStmt* s);
-void tac_retstmt(struct TACBuffer* buffer, struct RetStmt* r);
-void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a);
-void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f);
-
-void tac_method(struct TACBuffer* buffer, struct Method* m);
-void tac_stmtblock(struct TACBuffer* buffer, struct StmtBlock* block);
-void tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt);
-
-void tac_expr(struct TACBuffer* buffer, struct Expr* expr);
-void tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* t);
-void tac_term(struct TACBuffer* buffer, struct Term* t);
-
-void tac_variable(struct TACBuffer* buffer, struct Variable* v);
-void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* sv);
 
 #endif

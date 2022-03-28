@@ -3,10 +3,10 @@
 #include <stdbool.h>
 
 #include "cg_avr_basic_block.h"
-#include "rat.h"
+#include "code_gen/avr/rat/rat.h"
 
-#include "tacbuffer.h"
-#include "tac.h"
+#include "code_gen/avr/tacbuffer/tacbuffer.h"
+#include "code_gen/avr/tac/tac.h"
 
 #include "flags.h"
 

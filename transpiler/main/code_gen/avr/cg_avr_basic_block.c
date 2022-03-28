@@ -4,10 +4,10 @@
 #include "tables/symtable/symtable.h"
 
 #include "flags.h"
-#include "tac.h"
-#include "tacbuffer.h"
-#include "basicblock.h"
-#include "rat.h"
+#include "code_gen/avr/tac/tac.h"
+#include "code_gen/avr/tacbuffer/tacbuffer.h"
+#include "code_gen/avr/basic_block/basicblock.h"
+#include "code_gen/avr/rat/rat.h"
 
 #include "cg_avr_single_tac.h"
 #include "cg_avr_basic_block.h"

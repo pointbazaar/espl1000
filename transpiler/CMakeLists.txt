@@ -47,11 +47,18 @@ add_library("sd-base"
 
 	#code_gen/avr
 	main/code_gen/avr/cg_avr.c
-	main/code_gen/avr/tac.c
-	main/code_gen/avr/tac_str.c
-	main/code_gen/avr/rat.c
-	main/code_gen/avr/tacbuffer.c
-	main/code_gen/avr/basicblock.c
+
+	main/code_gen/avr/tac/tac.c
+	main/code_gen/avr/tac/tac_str.c
+
+	main/code_gen/avr/gen_tac/gen_tac.c
+
+	main/code_gen/avr/rat/rat.c
+
+	main/code_gen/avr/tacbuffer/tacbuffer.c
+
+	main/code_gen/avr/basic_block/basicblock.c
+
 	main/code_gen/avr/cg_avr_basic_block.c
 	main/code_gen/avr/cg_avr_single_tac.c
 	main/code_gen/avr/cg_avr_single_function.c

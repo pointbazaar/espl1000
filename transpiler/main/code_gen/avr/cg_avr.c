@@ -11,9 +11,9 @@
 #include "util/ctx.h"
 
 #include "cg_avr.h"
-#include "tac.h"
-#include "tacbuffer.h"
-#include "basicblock.h"
+#include "code_gen/avr/tac/tac.h"
+#include "code_gen/avr/tacbuffer/tacbuffer.h"
+#include "code_gen/avr/basic_block/basicblock.h"
 #include "analyzer/lv/lv_analyzer.h"
 #include "cg_avr_basic_block.h"
 #include "cg_avr_single_function.h"
