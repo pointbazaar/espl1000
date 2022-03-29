@@ -60,6 +60,13 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
         case TAC_OP_CMP_GE: mnem = "brge"; break;
         case TAC_OP_CMP_EQ: mnem = "breq"; break;
         case TAC_OP_CMP_NEQ: mnem = "brne"; break;
+
+        case TAC_OP_UNARY_MINUS:
+        case TAC_OP_UNARY_NOT:
+        case TAC_OP_UNARY_BITWISE_NEG:
+            printf("error\n");
+            exit(1);
+            break;
     }
 
     if(tac->op >= TAC_OP_CMP_LT && tac->op <= TAC_OP_CMP_NEQ){

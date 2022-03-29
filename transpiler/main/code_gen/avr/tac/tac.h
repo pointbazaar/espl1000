@@ -14,6 +14,11 @@ enum TAC_OP{
     TAC_OP_MUL,
     TAC_OP_DIV,
 
+    //unary
+    TAC_OP_UNARY_MINUS,
+    TAC_OP_UNARY_NOT,
+    TAC_OP_UNARY_BITWISE_NEG,
+
     //logical operators
     TAC_OP_AND,
     TAC_OP_OR,
