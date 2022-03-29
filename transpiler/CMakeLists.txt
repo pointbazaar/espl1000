@@ -67,6 +67,19 @@ add_library("sd-base"
 	main/code_gen/avr/gen_tac/gen_tac_variable.c
 	main/code_gen/avr/gen_tac/gen_tac_whilestmt.c
 
+	main/code_gen/avr/compile_ir/compile_tac.h
+	main/code_gen/avr/compile_ir/compile_tac_binary_op.c
+	main/code_gen/avr/compile_ir/compile_tac_call.c
+	main/code_gen/avr/compile_ir/compile_tac_const_value.c
+	main/code_gen/avr/compile_ir/compile_tac_copy.c
+	main/code_gen/avr/compile_ir/compile_tac_deref.c
+	main/code_gen/avr/compile_ir/compile_tac_goto.c
+	main/code_gen/avr/compile_ir/compile_tac_if_goto.c
+	main/code_gen/avr/compile_ir/compile_tac_label.c
+	main/code_gen/avr/compile_ir/compile_tac_nop.c
+	main/code_gen/avr/compile_ir/compile_tac_return.c
+	main/code_gen/avr/compile_ir/compile_tac_unary_op.c
+
 	main/code_gen/avr/rat/rat.c
 
 	main/code_gen/avr/tacbuffer/tacbuffer.c
