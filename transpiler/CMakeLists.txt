@@ -52,6 +52,20 @@ add_library("sd-base"
 	main/code_gen/avr/tac/tac_str.c
 
 	main/code_gen/avr/gen_tac/gen_tac.c
+	main/code_gen/avr/gen_tac/gen_tac_assignstmt.c
+	main/code_gen/avr/gen_tac/gen_tac_call.c
+	main/code_gen/avr/gen_tac/gen_tac_constvalue.c
+	main/code_gen/avr/gen_tac/gen_tac_expr.c
+	main/code_gen/avr/gen_tac/gen_tac_forstmt.c
+	main/code_gen/avr/gen_tac/gen_tac_ifstmt.c
+	main/code_gen/avr/gen_tac/gen_tac_retstmt.c
+	main/code_gen/avr/gen_tac/gen_tac_simplevar.c
+	main/code_gen/avr/gen_tac/gen_tac_stmt.c
+	main/code_gen/avr/gen_tac/gen_tac_switchstmt.c
+	main/code_gen/avr/gen_tac/gen_tac_term.c
+	main/code_gen/avr/gen_tac/gen_tac_unopterm.c
+	main/code_gen/avr/gen_tac/gen_tac_variable.c
+	main/code_gen/avr/gen_tac/gen_tac_whilestmt.c
 
 	main/code_gen/avr/rat/rat.c
 
