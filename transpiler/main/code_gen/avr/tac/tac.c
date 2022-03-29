@@ -69,6 +69,35 @@ struct TAC* makeTACIfGoto(char* tmp_condition, uint32_t label_destination){
     return t;
 }
 
+struct TAC* makeTACCopy(char* dest, char* src){
+    struct TAC* t = makeTAC();
+    t->kind = TAC_COPY;
+    sprintf(t->dest, "%s", dest);
+    sprintf(t->arg1, "%s", src);
+    return t;
+}
+
+struct TAC* makeTACConst(uint32_t tmp, int value){
+    struct TAC* t = makeTAC();
+    t->kind = TAC_CONST_VALUE;
+    sprintf(t->dest, "t%d", tmp);
+    t->const_value = value;
+    return t;
+}
+
+struct TAC* makeTACInc(uint32_t tmp){
+    struct TAC* t = makeTAC();
+    t->kind = TAC_INC;
+    sprintf(t->dest, "t%d", tmp);
+    return t;
+}
+struct TAC* makeTACDec(uint32_t tmp){
+    struct TAC* t = makeTAC();
+    t->kind = TAC_DEC;
+    sprintf(t->dest, "t%d", tmp);
+    return t;
+}
+
 bool tac_is_unconditional_jump(struct TAC* tac){
     return tac->kind == TAC_GOTO || tac->kind == TAC_RETURN;
 }

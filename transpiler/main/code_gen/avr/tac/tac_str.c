@@ -73,6 +73,10 @@ char* tac_tostring(struct TAC* t){
         case TAC_DEREF:
             //TODO
             break;
+        case TAC_INC:
+            sprintf(buffer,"%s++", t->dest); break;
+        case TAC_DEC:
+            sprintf(buffer,"%s--", t->dest); break;
     }
 
     strcat(res, buffer);

@@ -1,16 +1,12 @@
-#include <stdio.h>
-#include <stdlib.h>
 fn main () ~> int {
 	
 	int n = 4;
 	
 	for row in 0 .. n {
 		for col in 0 .. n {
-			int x = rand()%10;
-			print_int(x);
-			putchar('_');
+			int x = 10;
 		}
-		puts("");
+		n += 3;
 	}
 
 	return 0;
