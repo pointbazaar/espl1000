@@ -85,16 +85,12 @@ struct TAC* makeTACConst(uint32_t tmp, int value){
     return t;
 }
 
-struct TAC* makeTACInc(uint32_t tmp){
+struct TAC* makeTACBinOpImmediate(char* tmp, enum TAC_OP op, int32_t immediate){
     struct TAC* t = makeTAC();
-    t->kind = TAC_INC;
-    sprintf(t->dest, "t%d", tmp);
-    return t;
-}
-struct TAC* makeTACDec(uint32_t tmp){
-    struct TAC* t = makeTAC();
-    t->kind = TAC_DEC;
-    sprintf(t->dest, "t%d", tmp);
+    t->kind = TAC_BINARY_OP_IMMEDIATE;
+    sprintf(t->dest, "%s", tmp);
+    t->op = op;
+    t->const_value = immediate;
     return t;
 }
 

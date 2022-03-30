@@ -53,8 +53,7 @@ enum TAC_KIND{
     TAC_NOP,
     TAC_LABEL,
 
-    TAC_INC, //NEW TODO
-    TAC_DEC, //NEw TODO
+    TAC_BINARY_OP_IMMEDIATE, //NEW TODO
 };
 
 #define TAC_NO_LABEL 0
@@ -93,7 +92,6 @@ struct TAC* makeTACIfGoto(char* tmp_condition, uint32_t label_destination);
 struct TAC* makeTACCopy(char* dest, char* src);
 struct TAC* makeTACConst(uint32_t tmp, int value);
 
-struct TAC* makeTACInc(uint32_t tmp);
-struct TAC* makeTACDec(uint32_t tmp);
+struct TAC* makeTACBinOpImmediate(char* tmp, enum TAC_OP op, int32_t immediate);
 
 #endif

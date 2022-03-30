@@ -37,7 +37,6 @@ void emit_asm_avr_single_tac(struct RAT* rat, struct TAC *tac, struct Ctx* ctx, 
             //TODO
                               compile_tac_unsupported("TAC_PARAM\n"); break;
         case TAC_RETURN:      compile_tac_return(rat, tac, ctx, fout); break;
-        case TAC_INC:         compile_tac_inc(rat, tac, fout); break;
-        case TAC_DEC:         compile_tac_dec(rat, tac, fout); break;
+        case TAC_BINARY_OP_IMMEDIATE: compile_tac_binary_op_immediate(rat, tac, fout); break;
     }
 }

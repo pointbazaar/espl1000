@@ -79,8 +79,7 @@ add_library("sd-base"
 	main/code_gen/avr/compile_ir/compile_tac_nop.c
 	main/code_gen/avr/compile_ir/compile_tac_return.c
 	main/code_gen/avr/compile_ir/compile_tac_unary_op.c
-	main/code_gen/avr/compile_ir/compile_tac_inc.c
-	main/code_gen/avr/compile_ir/compile_tac_dec.c
+	main/code_gen/avr/compile_ir/compile_tac_binary_op_immediate.c
 
 	main/code_gen/avr/rat/rat.c
 

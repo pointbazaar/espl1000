@@ -16,7 +16,6 @@ void compile_tac_call(struct TAC* tac, FILE* fout);
 void compile_tac_label(struct TAC* tac, FILE* fout);
 void compile_tac_unary_op(struct RAT* rat, struct TAC* tac, FILE* fout);
 
-void compile_tac_inc(struct RAT* rat, struct TAC* tac, FILE* fout);
-void compile_tac_dec(struct RAT* rat, struct TAC* tac, FILE* fout);
+void compile_tac_binary_op_immediate(struct RAT* rat, struct TAC* tac, FILE* fout);
 
 #endif

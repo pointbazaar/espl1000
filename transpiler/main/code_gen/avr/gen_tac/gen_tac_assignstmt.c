@@ -19,10 +19,10 @@ void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a){
         exit(1);
     }
 
-    struct TAC* t = makeTAC();
-    t->kind = TAC_COPY;
-    strcpy(t->dest, a->var->simple_var->name);
-    strcpy(t->arg1, buffer->buffer[buffer->count - 1]->dest);
+    struct TAC* t = makeTACCopy(
+            a->var->simple_var->name,
+            buffer->buffer[buffer->count - 1]->dest
+    );
 
     tacbuffer_append(buffer, t, true);
 }

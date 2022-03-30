@@ -71,12 +71,9 @@ char* tac_tostring(struct TAC* t){
         case TAC_RETURN:
             sprintf(buffer,"return %s", t->arg1); break;
         case TAC_DEREF:
-            //TODO
-            break;
-        case TAC_INC:
-            sprintf(buffer,"%s++", t->dest); break;
-        case TAC_DEC:
-            sprintf(buffer,"%s--", t->dest); break;
+            sprintf(buffer, "%s = *%s", t->dest, t->arg1); break;
+        case TAC_BINARY_OP_IMMEDIATE:
+            sprintf(buffer, "%s %4s %d", t->dest, opstr, t->const_value); break;
     }
 
     strcat(res, buffer);

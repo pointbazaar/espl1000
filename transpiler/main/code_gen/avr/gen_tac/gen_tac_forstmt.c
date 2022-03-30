@@ -58,7 +58,7 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f){
     tac_stmtblock(buffer, f->block);
 
     // t3++
-    tacbuffer_append(buffer, makeTACInc(t3), true);
+    tacbuffer_append(buffer, makeTACBinOpImmediate(t3c, TAC_OP_ADD, 1), true);
 
     tacbuffer_append(buffer, makeTACGoto(l0), true);
 
