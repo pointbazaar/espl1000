@@ -24,14 +24,14 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1056"
+     inkscape:window-height="986"
      id="namedview929"
      showgrid="false"
-     inkscape:zoom="1.0784922"
-     inkscape:cx="541.9971"
-     inkscape:cy="1746.7602"
+     inkscape:zoom="0.76260915"
+     inkscape:cx="651.46546"
+     inkscape:cy="268.27712"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg8"
      inkscape:document-rotation="0" />
@@ -705,7 +705,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1889,7 +1889,7 @@
        id="tspan933"
        x="41.507156"
        y="13.364234"
-       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#8a0090;fill-opacity:1;stroke-width:0.264583">Smalldragon Architecture</tspan></text>
+       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.5833px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Italic';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#8a0090;fill-opacity:1;stroke-width:0.264583">ESPL1000 Architecture</tspan></text>
   <path
      style="fill:none;stroke:#000000;stroke-width:0.582083;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      d="M 63.084447,129.53005 54.90678,143.69419 H 70.610203 Z"
