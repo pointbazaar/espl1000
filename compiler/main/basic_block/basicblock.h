@@ -12,8 +12,8 @@ struct BasicBlock {
     struct TACBuffer* buffer;
 
     //pointers to branch destination
-    struct BasicBlock* branch_1; //may be NULL
-    struct BasicBlock* branch_2; //may be NULL
+    struct BasicBlock* branch_1; //may be NULL //this is the true branch for conditionals
+    struct BasicBlock* branch_2; //may be NULL //this is the false / default branch
 
     bool visited_assign_registers;
     bool visited_emit_asm;

@@ -7,6 +7,7 @@
 #include "ast/ast.h"
 
 #include "basicblock.h"
+#include "basicblock_printer.h"
 
 static bool* calculate_leaders(struct TACBuffer* buffer);
 static struct BasicBlock** collect_basic_blocks(struct TACBuffer* buffer, uint32_t count, bool* is_leader);
@@ -16,8 +17,6 @@ static struct BasicBlock* find_block_from_label_index(struct BasicBlock** blocks
 
 void create_edges_basic_block(struct TACBuffer *buffer, uint32_t count, struct BasicBlock **blocks,
                               struct BasicBlock *block);
-
-static void write_dot_file_from_graph(struct BasicBlock **blocks, uint32_t count, char* function_name);
 
 struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer, char* function_name){
 
@@ -50,44 +49,6 @@ struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer, char* funct
     free(is_leader);
 
     return blocks[0];
-}
-
-static void write_dot_file_from_graph(struct BasicBlock **blocks, uint32_t count, char* function_name) {
-
-    char fname_buffer[100];
-    sprintf(fname_buffer, "%s.dot", function_name);
-    FILE* fout = fopen(fname_buffer,"w");
-
-    fprintf(fout, "digraph G {\n");
-
-    //specify monospace font
-    const char* str_font = "[fontname = \"monospace\"];\n";
-    fprintf(fout, "graph %s node %s edge %s", str_font, str_font, str_font);
-
-    for(uint32_t i = 0; i < count; i++){
-        struct BasicBlock* block = blocks[i];
-
-        char* tacbuffer_str = tacbuffer_tostring(block->buffer, true);
-
-        fprintf(fout, "b%d [shape=box label=\"%s\"]\n", i, tacbuffer_str);
-
-        free(tacbuffer_str);
-
-        if(block->branch_1 != NULL)
-            fprintf(fout, "b%d -> b%d\n", block->index, block->branch_1->index);
-
-        if(block->branch_2 != NULL)
-            fprintf(fout, "b%d -> b%d\n", block->index, block->branch_2->index);
-    }
-
-    fprintf(fout, "}\n");
-
-    fclose(fout);
-
-    char cmd_buffer[100];
-
-    sprintf(cmd_buffer,"dot -Tpng %s.dot > %s.png", function_name,function_name);
-    system(cmd_buffer);
 }
 
 void create_edges_basic_block(struct TACBuffer *buffer, uint32_t count, struct BasicBlock **blocks,

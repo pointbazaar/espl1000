@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
+
+## [v0.3.1]
+- the arrows in the .dot file export for basic blocks now have colors {true:green, false:red}
+- removed the C backend (except the forward declarations, for C interop)
 - Added 'i++', 'i--', '%=' syntactic sugar
 - removed Exception ('throws') and try-catch from smalldragon. This simplifies the controlflow, 
   as there are now no stackframes being skipped and cleanup logic inside the function 
