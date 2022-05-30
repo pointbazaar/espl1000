@@ -28,9 +28,6 @@ add_library("sd-base"
 	#code_gen/avr_code_gen
 		main/avr_code_gen/cg_avr.c
 
-		../tac/tac.c
-		../tac/tac_str.c
-
         main/gen_tac/gen_tac.c
         main/gen_tac/gen_tac_assignstmt.c
         main/gen_tac/gen_tac_call.c
@@ -60,8 +57,6 @@ add_library("sd-base"
 		main/avr_code_gen/compile_ir/compile_tac_return.c
 		main/avr_code_gen/compile_ir/compile_tac_unary_op.c
 		main/avr_code_gen/compile_ir/compile_tac_binary_op_immediate.c
-
-		../tac/tacbuffer.c
 
         main/basic_block/basicblock.c
 
@@ -142,6 +137,8 @@ target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../ast/build/libsd-ast.a)
 target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../tables/build/libsd-tables.a)
 #RAT dependency
 target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../rat/build/libsd-rat.a)
+#TAC dependency
+target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../tac/build/libsd-tac.a)
 
 target_link_libraries("sd" sd-base)
 
