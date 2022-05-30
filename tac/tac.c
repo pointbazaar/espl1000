@@ -4,7 +4,7 @@
 
 #include "ast/ast_declare.h"
 
-#include "avr_code_gen/tacbuffer/tacbuffer.h"
+#include "tacbuffer.h"
 #include "tac.h"
 
 static uint32_t temp_count = 0; //temporaries for TAC

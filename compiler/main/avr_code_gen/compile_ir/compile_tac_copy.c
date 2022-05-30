@@ -3,7 +3,7 @@
 
 #include "rat/rat.h"
 
-#include "avr_code_gen/tac/tac.h"
+#include "tac/tac.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
 void compile_tac_copy(struct RAT* rat, struct TAC* tac, FILE* fout) {

@@ -1,7 +1,7 @@
 #ifndef SMALLDRAGON_TOPLEVEL_GEN_TAC_H
 #define SMALLDRAGON_TOPLEVEL_GEN_TAC_H
 
-#include "avr_code_gen/tac/tac.h"
+#include "tac/tac.h"
 struct TACBuffer;
 
 extern uint32_t label_loop_end;

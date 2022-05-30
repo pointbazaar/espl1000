@@ -1,10 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdbool.h>
 
 #include "rat/rat.h"
-#include "avr_code_gen/tacbuffer/tacbuffer.h"
-#include "avr_code_gen/tac/tac.h"
+#include "tac/tacbuffer.h"
+#include "tac/tac.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
 #include "util/ctx.h"

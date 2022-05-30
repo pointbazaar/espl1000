@@ -28,8 +28,8 @@ add_library("sd-base"
 	#code_gen/avr_code_gen
 		main/avr_code_gen/cg_avr.c
 
-		main/avr_code_gen/tac/tac.c
-		main/avr_code_gen/tac/tac_str.c
+		../tac/tac.c
+		../tac/tac_str.c
 
 		main/avr_code_gen/gen_tac/gen_tac.c
 		main/avr_code_gen/gen_tac/gen_tac_assignstmt.c
@@ -61,7 +61,7 @@ add_library("sd-base"
 		main/avr_code_gen/compile_ir/compile_tac_unary_op.c
 		main/avr_code_gen/compile_ir/compile_tac_binary_op_immediate.c
 
-		main/avr_code_gen/tacbuffer/tacbuffer.c
+		../tac/tacbuffer.c
 
 		main/avr_code_gen/basic_block/basicblock.c
 

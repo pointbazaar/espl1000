@@ -4,7 +4,7 @@
 #include "ast/ast.h"
 
 #include "tacbuffer.h"
-#include "avr_code_gen/tac/tac.h"
+#include "tac.h"
 
 void tacbuffer_append(struct TACBuffer *buffer, struct TAC *node, bool set_index) {
 

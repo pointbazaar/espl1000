@@ -10,7 +10,7 @@
 #include "util/ctx.h"
 
 #include "cg_avr.h"
-#include "avr_code_gen/tacbuffer/tacbuffer.h"
+#include "tac/tacbuffer.h"
 #include "cg_avr_single_function.h"
 
 static void emit_setup_stack_pointer_avr(FILE* fout){

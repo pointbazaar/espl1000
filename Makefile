@@ -6,6 +6,7 @@ all:
 	cd parser     && make 
 	cd tables     && make
 	cd rat        && make
+	cd tac        && make
 	cd compiler    && make 
 	#cd examples   && make
 	#cd stdlib     && make
@@ -27,6 +28,7 @@ clean:
 	cd parser     && make clean
 	cd tables     && make clean
 	cd rat        && make clean
+	cd tac        && make clean
 	cd compiler   && make clean
 	cd examples   && make clean
 	cd stdlib     && make clean

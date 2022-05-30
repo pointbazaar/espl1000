@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "avr_code_gen/tac/tac.h"
-#include "avr_code_gen/tacbuffer/tacbuffer.h"
+#include "tac/tac.h"
+#include "tac/tacbuffer.h"
+
 #include "gen_tac.h"
 
 static void tac_expr_part_2_constvalue(struct TACBuffer* buffer, struct Expr* expr, char* t1);

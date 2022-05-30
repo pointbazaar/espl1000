@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "avr_code_gen/tacbuffer/tacbuffer.h"
+#include "tac/tacbuffer.h"
 
 #include "basicblock.h"
 #include "ast/ast.h"

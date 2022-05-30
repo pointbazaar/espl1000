@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "avr_code_gen/tac/tac.h"
-#include "avr_code_gen/tacbuffer/tacbuffer.h"
+#include "tac/tac.h"
+#include "tac/tacbuffer.h"
 
 #include "gen_tac.h"
 

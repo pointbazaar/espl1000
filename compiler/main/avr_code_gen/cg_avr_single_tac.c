@@ -4,7 +4,7 @@
 #include "cg_avr_basic_block.h"
 
 #include "rat/rat.h"
-#include "avr_code_gen/tac/tac.h"
+#include "tac/tac.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
 static void compile_tac_unsupported(char* which){

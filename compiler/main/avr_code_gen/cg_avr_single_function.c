@@ -4,7 +4,7 @@
 #include "analyzer/lv/lv_analyzer.h"
 
 #include "avr_code_gen/basic_block/basicblock.h"
-#include "avr_code_gen/tacbuffer/tacbuffer.h"
+#include "tac/tacbuffer.h"
 #include "avr_code_gen/gen_tac/gen_tac.h"
 
 #include "util/ctx.h"

@@ -1,8 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "gen_tac.h"
-#include "avr_code_gen/tacbuffer/tacbuffer.h"
+#include "tac/tacbuffer.h"
 
 uint32_t label_loop_end;
 uint32_t label_loop_start;
