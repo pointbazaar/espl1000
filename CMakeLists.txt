@@ -10,4 +10,4 @@ add_subdirectory(ast/)
 add_subdirectory(parser/)
 
 add_subdirectory(tables/)
-add_subdirectory(transpiler/)
+add_subdirectory(compiler/)

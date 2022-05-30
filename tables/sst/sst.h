@@ -7,8 +7,8 @@ struct CC;
 
 #include "ast/ast_declare.h"
 
-#include "transpiler/main/analyzer/halts/halts.h"
-#include "transpiler/main/analyzer/dead/dead.h"
+#include "compiler/main/analyzer/halts/halts.h"
+#include "compiler/main/analyzer/dead/dead.h"
 
 struct SSTLine {
 	//Subroutine Symbol Table Line

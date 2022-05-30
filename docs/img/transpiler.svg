@@ -27,13 +27,13 @@
      inkscape:window-height="986"
      id="namedview929"
      showgrid="false"
-     inkscape:zoom="0.76260915"
-     inkscape:cx="332.65685"
-     inkscape:cy="1761.431"
+     inkscape:zoom="0.5392461"
+     inkscape:cx="275.86988"
+     inkscape:cy="2237.793"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="svg8"
      inkscape:document-rotation="0" />
   <defs
      id="defs2">
@@ -2089,7 +2089,7 @@
        x="130.9463"
        y="176.41734"
        style="stroke-width:0.105067"
-       id="tspan1427-2-4">transpiler/main/typeinference</tspan></text>
+       id="tspan1427-2-4">compiler/main/typeinference</tspan></text>
   <text
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.105067"
@@ -2128,7 +2128,7 @@
        x="2.1027243"
        y="263.84741"
        style="stroke-width:0.105067"
-       id="tspan1427-2-4-0">transpiler/main/typechecker</tspan></text>
+       id="tspan1427-2-4-0">compiler/main/typechecker</tspan></text>
   <text
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.105067"
@@ -2139,7 +2139,7 @@
        x="2.1027246"
        y="311.72583"
        style="stroke-width:0.105067"
-       id="tspan1427-2-4-6">transpiler/main/analyzer</tspan></text>
+       id="tspan1427-2-4-6">compiler/main/analyzer</tspan></text>
   <text
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.105067"
@@ -2150,7 +2150,7 @@
        x="156.81548"
        y="391.95535"
        style="stroke-width:0.105067"
-       id="tspan1427-2-4-8">transpiler/main/code_gen</tspan></text>
+       id="tspan1427-2-4-8">compiler/main/code_gen</tspan></text>
   <text
      xml:space="preserve"
      style="font-style:normal;font-weight:normal;font-size:4.20267px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.105067"
@@ -2286,7 +2286,7 @@
        id="tspan3455-9-0"
        x="237.58423"
        y="274.57114"
-       style="stroke-width:0.206322">transpiler/test/typechecker</tspan></text>
+       style="stroke-width:0.206322">compiler/test/typechecker</tspan></text>
   <rect
      style="opacity:0.96;fill:#fd7b72;fill-opacity:1;stroke:none;stroke-width:0.49068;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:3.92544, 3.92544;stroke-dashoffset:0;stroke-opacity:1"
      id="rect2100-6-4-2-6-1-4-3"
@@ -2306,7 +2306,7 @@
        id="tspan3455-9-0-1"
        x="237.58421"
        y="193.0356"
-       style="stroke-width:0.206322">transpiler/test/typeinference</tspan></text>
+       style="stroke-width:0.206322">compiler/test/typeinference</tspan></text>
   <rect
      style="opacity:0.96;fill:#fd7b72;fill-opacity:1;stroke:none;stroke-width:0.49068;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:3.92544, 3.92544;stroke-dashoffset:0;stroke-opacity:1"
      id="rect2100-6-4-2-6-1-4-06"

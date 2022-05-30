@@ -40,4 +40,4 @@ addons:
 install: pwd
 script: make all
 env:
-- export PATH=$PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser:$(pwd)/transpiler
+- export PATH=$PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser:$(pwd)/compiler

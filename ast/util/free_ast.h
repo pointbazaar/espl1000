@@ -8,7 +8,7 @@
 
 //these subroutines are separated from the
 //constructor subroutines in the parser,
-//as other modules (transpiler, etc.)
+//as other modules (compiler, etc.)
 //must also be able to free AST Nodes,
 //as they could obtain such via ast_reader.c
 

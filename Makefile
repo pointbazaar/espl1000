@@ -5,7 +5,8 @@ all:
 	cd lexer      && make
 	cd parser     && make 
 	cd tables     && make
-	cd transpiler && make 
+	cd rat        && make
+	cd compiler    && make 
 	#cd examples   && make
 	#cd stdlib     && make
 
@@ -15,7 +16,7 @@ test:
 	cd lexer      && make test
 	cd parser     && make test
 	#cd tables     && make test
-	cd transpiler && make test
+	cd compiler    && make test
 	#cd examples   && make test
 	#cd stdlib     && make test
 
@@ -25,6 +26,7 @@ clean:
 	cd lexer      && make clean
 	cd parser     && make clean
 	cd tables     && make clean
-	cd transpiler && make clean
+	cd rat        && make clean
+	cd compiler   && make clean
 	cd examples   && make clean
 	cd stdlib     && make clean
