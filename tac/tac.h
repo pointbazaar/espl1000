@@ -93,5 +93,5 @@ struct TAC* makeTACCopy(char* dest, char* src);
 struct TAC* makeTACConst(uint32_t tmp, int value);
 
 struct TAC* makeTACBinOpImmediate(char* tmp, enum TAC_OP op, int32_t immediate);
-
+struct TAC* makeTACUnaryOp(char* dest, char* src, enum TAC_OP op);
 #endif

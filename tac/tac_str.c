@@ -24,6 +24,10 @@ static char* get_op_str(enum TAC_OP top){
         case TAC_OP_CMP_GE: opstr = ">="; break;
         case TAC_OP_CMP_EQ: opstr = "=="; break;
         case TAC_OP_CMP_NEQ: opstr = "!="; break;
+
+        case TAC_OP_UNARY_NOT: opstr = "!"; break;
+        case TAC_OP_UNARY_BITWISE_NEG: opstr = "~"; break;
+        case TAC_OP_UNARY_MINUS: opstr = "-"; break;
     }
     return opstr;
 }

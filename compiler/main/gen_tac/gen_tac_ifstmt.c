@@ -3,8 +3,41 @@
 #include "tac/tacbuffer.h"
 #include "gen_tac.h"
 
+static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s);
+static void tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s);
+
 void tac_ifstmt(struct TACBuffer* buffer, struct IfStmt* s){
 
+    if(s->else_block == NULL)
+        tac_ifstmt_1_block(buffer, s);
+    else
+        tac_ifstmt_2_block(buffer, s);
+}
+
+static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s){
+    //t_neg_cond = expr
+    //t_neg_cond = !t_neg_cond
+    //if-goto t_neg_cond end
+    // if block
+    //end:
+
+    uint32_t lend = make_label();
+
+    tac_expr(buffer, s->condition);
+
+    //negate the condition
+    struct TAC* t_neg_cond = makeTACUnaryOp(buffer->buffer[buffer->count - 1]->dest, buffer->buffer[buffer->count - 1]->dest, TAC_OP_UNARY_NOT);
+    tacbuffer_append(buffer, t_neg_cond, true);
+
+    struct TAC* t_if_goto_end = makeTACIfGoto(buffer->buffer[buffer->count - 1]->dest, lend);
+    tacbuffer_append(buffer, t_if_goto_end, true);
+
+    tac_stmtblock(buffer, s->block);
+
+    tacbuffer_append(buffer, makeTACLabel(lend), true);
+}
+
+static void tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s){
     //t1 = expr
     //if-goto t1 L1
     //goto L2:
@@ -34,8 +67,7 @@ void tac_ifstmt(struct TACBuffer* buffer, struct IfStmt* s){
 
     tacbuffer_append(buffer, makeTACLabel(l2), true);
 
-    if(s->else_block != NULL)
-        tac_stmtblock(buffer, s->else_block);
+    tac_stmtblock(buffer, s->else_block);
 
     tacbuffer_append(buffer, makeTACLabel(lend), true);
 }

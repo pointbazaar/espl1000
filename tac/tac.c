@@ -94,6 +94,15 @@ struct TAC* makeTACBinOpImmediate(char* tmp, enum TAC_OP op, int32_t immediate){
     return t;
 }
 
+struct TAC* makeTACUnaryOp(char* dest, char* src, enum TAC_OP op){
+    struct TAC* t = makeTAC();
+    t->kind = TAC_UNARY_OP;
+    sprintf(t->dest, "%s", dest);
+    sprintf(t->arg1, "%s", src);
+    t->op = op;
+    return t;
+}
+
 bool tac_is_unconditional_jump(struct TAC* tac){
     return tac->kind == TAC_GOTO || tac->kind == TAC_RETURN;
 }
