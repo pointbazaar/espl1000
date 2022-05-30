@@ -4,7 +4,6 @@
 #include <inttypes.h>
 
 #include "tac/tac.h"
-#include "rat/rat.h"
 
 struct BasicBlock {
 

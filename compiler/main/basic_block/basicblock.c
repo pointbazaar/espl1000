@@ -4,9 +4,9 @@
 #include <stdio.h>
 
 #include "tac/tacbuffer.h"
+#include "ast/ast.h"
 
 #include "basicblock.h"
-#include "ast/ast.h"
 
 static bool* calculate_leaders(struct TACBuffer* buffer);
 static struct BasicBlock** collect_basic_blocks(struct TACBuffer* buffer, uint32_t count, bool* is_leader);
