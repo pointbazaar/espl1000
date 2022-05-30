@@ -3,6 +3,6 @@
 
 struct Flags;
 
-bool transpileAndCompile(struct Flags* flags);
+bool compile(struct Flags* flags);
 
 #endif

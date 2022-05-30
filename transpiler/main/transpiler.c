@@ -8,7 +8,6 @@
 #include "ast/util/free_ast.h"
 
 #include "code_gen/c_code_gen/cg.h"
-#include "code_gen/x86/cg_x86.h"
 #include "code_gen/avr/cg_avr.h"
 
 #include "flags.h"
@@ -55,7 +54,7 @@ static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st){
     }
 }
 
-bool transpileAndCompile(struct Flags* flags){
+bool compile(struct Flags* flags){
 	
 	for(int i=0;i < flags->count_filenames; i++){
 	
@@ -83,7 +82,6 @@ bool transpileAndCompile(struct Flags* flags){
 	}
 
 	//output filenames
-	char* c_filename   = make_c_filename(flags->filenames[0]);
 	char* h_filename   = make_h_filename(flags->filenames[0]);
 	char* asm_filename = make_asm_filename(flags->filenames[0]);
 
@@ -98,7 +96,6 @@ bool transpileAndCompile(struct Flags* flags){
 
     ctx->indent_level = 0;
     ctx->file         = NULL;
-    ctx->c_file       = NULL;
     ctx->header_file  = NULL;
 
     ctx->in_try_block   = false;
@@ -120,18 +117,16 @@ bool transpileAndCompile(struct Flags* flags){
     analyze_termination(ctx->tables);
     analyze_annotations(ctx->tables, ast);
 
-    if(flags->avr){
-        success = compile_and_write_avr(asm_filename, ast, ctx);
-    }else if(flags->x86){
-		success = compile_and_write_x86(asm_filename, ast, flags);
-	}else{
-		success = transpile_and_write_c_code(c_filename, h_filename, ast, flags, ctx);
+
+    success = compile_and_write_avr(asm_filename, ast, ctx);
+
+    if(flags->emit_headers){
+		success = transpile_and_write_c_headers( h_filename, ast, flags, ctx);
 	}
 
 	free_ast(ast);
 	
 	if(!success){
-		free(c_filename);
 		free(h_filename);
 		free(asm_filename);
 		return false; 
@@ -139,25 +134,11 @@ bool transpileAndCompile(struct Flags* flags){
 
 	int status = 0;
 
-	if(flags->x86){
-		char cmd[200];
-		sprintf(cmd, "nasm %s", asm_filename);
-		status = system(cmd);
+    char cmd[200];
+    sprintf(cmd, "avra -o out %s", asm_filename);
+    status = system(cmd);
 
-	}else if(flags->avr){
-        char cmd[200];
-        sprintf(cmd, "avra -o out %s", asm_filename);
-        status = system(cmd);
 
-    }else if(flags->has_main_fn){
-        char* cmd_gcc = make_gcc_cmd(flags, c_filename);
-
-        status = system(cmd_gcc);
-
-        free(cmd_gcc);
-    }
-	
-	free(c_filename);
 	free(h_filename);
 	free(asm_filename);
 	

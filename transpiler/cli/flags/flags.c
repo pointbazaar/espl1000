@@ -16,11 +16,6 @@ struct Flags* makeFlags(int argc, char** argv){
 	flags->help 	= false;
 	flags->version 	= false;
 	flags->emit_headers  = false;
-	flags->x86      = false;
-    flags->avr      = false;
-
-	flags->debug_symbols = false;
-	flags->werror        = false;
 
 	flags->count_filenames    = 0;
 	flags->capacity_filenames = 100;
@@ -45,11 +40,6 @@ struct Flags* makeFlags2(){
     flags->help          = false;
     flags->version       = false;
     flags->emit_headers  = false;
-    flags->x86           = false;
-    flags->avr           = false;
-
-    flags->debug_symbols = false;
-    flags->werror        = false;
 
     flags->count_filenames    = 0;
     flags->capacity_filenames = 100;
@@ -84,26 +74,6 @@ static void make_flags_inner(struct Flags* flags, char* arg){
 	
 	if(strcmp(arg, "-h") == 0){
 		flags->emit_headers = true;
-		return;
-	}
-
-	if(strcmp(arg, "-x86") == 0){
-	    flags->x86 = true;
-	    return;
-	}
-
-    if(strcmp(arg, "-avr") == 0){
-        flags->avr = true;
-        return;
-    }
-	
-	if(strcmp(arg, "-g") == 0){
-		flags->debug_symbols = true;
-		return;
-	}
-	
-	if(strcmp(arg, "-Werror") == 0){
-		flags->werror = true;
 		return;
 	}
 	

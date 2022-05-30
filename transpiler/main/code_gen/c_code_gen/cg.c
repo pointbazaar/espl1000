@@ -32,35 +32,27 @@
 #include "tables/stst/stst_print.h"
 #include "tables/symtable/symtable.h"
 
-//counter for generating labels
-unsigned int label_count = 0;
-
-static void transpile_ast(struct AST* ast, struct Ctx* ctx, char* h_filename);
+static void transpile_c_headers(struct AST* ast, struct Ctx* ctx);
 
 static void ns_transpile_struct_fwd_decls(struct Namespace* ns, struct Ctx* ctx);
 static void ns_transpile_struct_decls(struct Namespace* ns, struct Ctx* ctx);
 static void ns_transpile_subr_fwd_decls(struct Namespace* ns, struct Ctx* ctx);
-static void ns_transpile_subrs(struct Namespace* ns, struct Ctx* ctx);
 
 static void ns_transpile_passthrough_includes(struct Namespace* ns, struct Ctx* ctx);
 
-bool transpile_and_write_c_code(char* c_filename, char* h_filename, struct AST* ast, struct Flags* flags, struct Ctx* ctx){
+bool transpile_and_write_c_headers(char* h_filename, struct AST* ast, struct Flags* flags, struct Ctx* ctx){
 
-	ctx->c_file      = fopen(c_filename, "w");
-	//full buffering for performance
-	setvbuf(ctx->c_file, NULL, _IOFBF, BUFSIZ);
-	
 	if(flags->emit_headers){
 		ctx->header_file = fopen(h_filename, "w");
 		//full buffering for performance
 		setvbuf(ctx->header_file, NULL, _IOFBF, BUFSIZ);
 	}
 	
-	if(ctx->c_file == NULL || (ctx->header_file == NULL && flags->emit_headers)){
+	if(ctx->header_file == NULL && flags->emit_headers){
 		
 		printf("[smalldragon][Error] could not open output file: ");
 		
-		printf("%s\n", (ctx->c_file == NULL)?c_filename:h_filename);
+		printf("%s\n", h_filename);
 		
 		freeST(ctx->tables);
 		free(ctx);
@@ -68,9 +60,8 @@ bool transpile_and_write_c_code(char* c_filename, char* h_filename, struct AST* 
 		return false;
 	}
 
-    transpile_ast(ast, ctx, h_filename);
+    transpile_c_headers(ast, ctx);
 
-	fclose(ctx->c_file);
 	if(flags->emit_headers){ fclose(ctx->header_file); }
 	
 	freeST(ctx->tables);
@@ -82,22 +73,7 @@ bool transpile_and_write_c_code(char* c_filename, char* h_filename, struct AST* 
 	return status;
 }
 
-static void transpile_ast(struct AST* ast, struct Ctx* ctx, char* h_filename){
-	
-	ctx->file = ctx->c_file; //direct output to c file
-	
-	{
-		fprintf(ctx->c_file, "#include <stdbool.h>\n"); //absolutely needed
-		fprintf(ctx->c_file, "#include <math.h>\n");  //absolutely needed
-		fprintf(ctx->c_file, "#include <inttypes.h>\n"); //absolutely needed
-
-		//used for try-catch
-		fprintf(ctx->c_file, "#include <setjmp.h>\n"); //absolutely needed
-	}
-	
-	if(ctx->flags->emit_headers){
-		fprintf(ctx->c_file, "#include \"%s\"\n", h_filename);
-	}
+static void transpile_c_headers(struct AST* ast, struct Ctx* ctx){
 
 	ctx->flags->has_main_fn = sst_contains(ctx->tables->sst, "main");
 	
@@ -118,45 +94,27 @@ static void transpile_ast(struct AST* ast, struct Ctx* ctx, char* h_filename){
 
 	//TODO: make sure that the .h file also receives the correct
 	//includes to even make the forward declarations (e.g. <stdbool.h>, ...
-	for(int i=0; i < ast->count_namespaces; i++) {
+	for(int i=0; i < ast->count_namespaces; i++)
 		ns_transpile_passthrough_includes(ast->namespaces[i], ctx);
-	}
-	
-	for(int i=0; i < ast->count_namespaces; i++) { 
-		ns_transpile_struct_fwd_decls(ast->namespaces[i], ctx); 
-	}
-	
-	for(int i=0; i < ast->count_namespaces; i++) { 
-
-		ns_transpile_subr_fwd_decls(ast->namespaces[i], ctx);
-	}
-	
-	if(ctx->flags->emit_headers){
-		//header guards
-		fprintf(ctx->file, "\n#endif\n");
-	}
 	
 	for(int i=0; i < ast->count_namespaces; i++)
-	{ ns_transpile_struct_decls(ast->namespaces[i], ctx); }
+		ns_transpile_struct_fwd_decls(ast->namespaces[i], ctx);
 	
-	ctx->file = ctx->c_file;
+	for(int i=0; i < ast->count_namespaces; i++)
+		ns_transpile_subr_fwd_decls(ast->namespaces[i], ctx);
 
-
-    fprintf(ctx->file, "#pragma GCC diagnostic push\n");
-    fprintf(ctx->file, "#pragma GCC diagnostic ignored \"-Wint-conversion\" \n");
-
-	for(int i=0; i < ast->count_namespaces; i++){
-		ns_transpile_subrs(ast->namespaces[i], ctx);
-	}
-
-	fprintf(ctx->file, "#pragma GCC diagnostic pop\n");
+    //header guards
+	if(ctx->flags->emit_headers)
+		fprintf(ctx->file, "\n#endif\n");
+	
+	for(int i=0; i < ast->count_namespaces; i++)
+	    ns_transpile_struct_decls(ast->namespaces[i], ctx);
 }
 
 static void ns_transpile_passthrough_includes(struct Namespace* ns, struct Ctx* ctx) {
 
-	for (int i = 0; i < ns->count_includes; i++) {
+	for (int i = 0; i < ns->count_includes; i++)
 		fprintf(ctx->file, "%s\n", ns->includes[i]);
-	}
 }
 
 static void ns_transpile_struct_fwd_decls(struct Namespace* ns, struct Ctx* ctx){
@@ -173,9 +131,8 @@ static void ns_transpile_struct_fwd_decls(struct Namespace* ns, struct Ctx* ctx)
 
 static void ns_transpile_struct_decls(struct Namespace* ns, struct Ctx* ctx){
 	
-	for(int i=0;i < ns->count_structs; i++){
+	for(int i=0;i < ns->count_structs; i++)
 		transpileStructDecl(ns->structs[i], ctx);
-	}
 }
 
 static void ns_transpile_subr_fwd_decls(struct Namespace* ns, struct Ctx* ctx){
@@ -191,17 +148,3 @@ static void ns_transpile_subr_fwd_decls(struct Namespace* ns, struct Ctx* ctx){
 		fprintf(ctx->file, ";\n");
 	}
 }
-
-static void ns_transpile_subrs(struct Namespace* ns, struct Ctx* ctx){
-
-	for(int i=0; i < ns->count_methods; i++){
-		
-		struct Method* m = ns->methods[i];
-		
-		if(sst_get(ctx->tables->sst, m->decl->name)->dead == DEAD_ISDEAD)
-			{ continue; }
-		
-		transpileMethod(m, ctx);
-	}
-}
-

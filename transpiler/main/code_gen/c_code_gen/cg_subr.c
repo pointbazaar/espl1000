@@ -6,28 +6,11 @@
 #include "util/ctx.h"
 #include "flags.h"
 
-#include "../cg.h"
-#include "../_cg.h"
+#include "_cg.h"
 
 #include "tables/symtable/symtable.h"
 #include "tables/lvst/lvst.h"
 #include "tables/stst/stst.h"
-
-#include "analyzer/lv/lv_analyzer.h"
-
-void transpileMethod(struct Method* m, struct Ctx* ctx){
-	
-	//create the local variable symbol table
-	lvst_clear(ctx->tables->lvst);
-	lvst_fill(m, ctx->tables);
-	if (ctx->flags->debug){ lvst_print(ctx->tables->lvst); }
-
-	transpileMethodSignature(m, ctx);
-	
-	ctx->index_try_stmt = 0;
-
-	transpileStmtBlock(m->block, ctx);
-}
 
 void transpileMethodSignature(struct Method* m, struct Ctx* ctx){
 	

@@ -16,7 +16,7 @@ struct ST;
  * tasked with transpiling an AST node.
  */
 struct Ctx {
-	FILE* c_file;
+
 	FILE* header_file;
 	FILE *asm_file;
 	FILE* file; //where the output will be directed

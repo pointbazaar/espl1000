@@ -6,8 +6,8 @@ all:
 	cd parser     && make 
 	cd tables     && make
 	cd transpiler && make 
-	cd examples   && make
-	cd stdlib     && make
+	#cd examples   && make
+	#cd stdlib     && make
 
 test:
 	#cd token      && make test
@@ -16,8 +16,8 @@ test:
 	cd parser     && make test
 	#cd tables     && make test
 	cd transpiler && make test
-	cd examples   && make test
-	cd stdlib     && make test
+	#cd examples   && make test
+	#cd stdlib     && make test
 
 clean:
 	cd token      && make clean

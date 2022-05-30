@@ -10,21 +10,18 @@ all: test
 
 test: 
 	@echo "[Examples] Transpiling Example Programs..."
-	$(CALL) booleans/booleans.dg
-	$(CALL) break/break.dg
-	$(CALL) chars/chars.dg
-	$(CALL) cmd-args/cmdargs.dg
-	$(CALL2) functional/filter.dg 
-	$(CALL2) functional/twice.dg
-	$(CALL2) ifstatement/ifstatement.dg 
-	$(CALL2) local_variables/locals.dg 
-	$(CALL2) local_variables/locals2.dg 
-	$(CALL2) loops/whileloop.dg 
-	$(CALL2) loops/forloop.dg 
+	#$(CALL) chars/chars.dg
+	#$(CALL2) functional/filter.dg 
+	#$(CALL2) functional/twice.dg
+	#$(CALL2) ifstatement/ifstatement.dg 
+	#$(CALL2) local_variables/locals.dg 
+	#$(CALL2) local_variables/locals2.dg 
+	#$(CALL2) loops/whileloop.dg 
+	#$(CALL2) loops/forloop.dg 
 	$(CALL2) mathematics/fibonacci.dg 
 	$(CALL2) methodCalls/methodcall.dg 
-	$(CALL2) other/everything.dg 
-	$(CALL2) other/harshad.dg 
+	#$(CALL2) other/everything.dg 
+	#$(CALL2) other/harshad.dg 
 	$(CALL2) structs/mystructs.dg 
 	$(CALL2) structs/node.dg 
 	$(CALL2) switch/switch.dg 

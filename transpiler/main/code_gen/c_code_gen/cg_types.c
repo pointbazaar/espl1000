@@ -7,14 +7,13 @@
 #include "util/ctx.h"
 #include "flags.h"
 
-#include "../_cg.h"
+#include "_cg.h"
 
-#include "../c_types_util/gen_c_types.h"
+#include "code_gen/c_code_gen/c_types_util/gen_c_types.h"
 
 #include "tables/sst/sst.h"
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
-
 
 void transpileType(struct Type* t, struct Ctx* ctx){
 

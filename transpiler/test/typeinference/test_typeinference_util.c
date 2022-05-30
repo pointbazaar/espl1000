@@ -46,7 +46,6 @@ struct Type* typeinfer_in_file(char* filename){
 
     ctx->indent_level = 0;
     ctx->file         = NULL;
-    ctx->c_file       = NULL;
     ctx->header_file  = NULL;
 
     ctx->in_try_block   = false;

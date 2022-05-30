@@ -19,31 +19,11 @@ add_library("sd-base"
 
 	#code_gen/c_code_gen
 	main/code_gen/c_code_gen/cg.c
-	main/code_gen/c_code_gen/const/cg_const.c
-	main/code_gen/c_code_gen/expr/cg_expr.c
-	main/code_gen/c_code_gen/expr/cg_op.c
-	main/code_gen/c_code_gen/expr/cg_term.c
-	main/code_gen/c_code_gen/expr/cg_unopterm.c
-	main/code_gen/c_code_gen/stmts/cg_stmts.c
-	main/code_gen/c_code_gen/stmts/cg_assignstmt.c
-	main/code_gen/c_code_gen/stmts/cg_call.c
-	main/code_gen/c_code_gen/stmts/cg_forstmt.c
-	main/code_gen/c_code_gen/stmts/cg_ifstmt.c
-	main/code_gen/c_code_gen/stmts/cg_switchcase.c
-	main/code_gen/c_code_gen/stmts/cg_whilestmt.c
-	main/code_gen/c_code_gen/struct/cg_structdecl.c
-	main/code_gen/c_code_gen/struct/cg_structmember.c
-	main/code_gen/c_code_gen/struct_reorder/cg_struct_reorder.c
-	main/code_gen/c_code_gen/subr/cg_subr.c
-	main/code_gen/c_code_gen/types/cg_types.c
-	main/code_gen/c_code_gen/var/cg_var.c
+		main/code_gen/c_code_gen/cg_struct.c
+		main/code_gen/c_code_gen/cg_subr.c
+		main/code_gen/c_code_gen/cg_types.c
 	main/code_gen/c_code_gen/_cg.h
-	main/code_gen/c_code_gen/stmts/cg_stmtblock.c
 	main/code_gen/c_code_gen/c_types_util/gen_c_types.c
-
-	#code_gen/x86
-	main/code_gen/x86/cg_x86.c
-	main/code_gen/x86/_emit_x86.c
 
 	#code_gen/avr
 	main/code_gen/avr/cg_avr.c
@@ -90,9 +70,6 @@ add_library("sd-base"
 	main/code_gen/avr/cg_avr_basic_block.c
 	main/code_gen/avr/cg_avr_single_tac.c
 	main/code_gen/avr/cg_avr_single_function.c
-
-	#code_gen/util
-	main/code_gen/util/indent.c
 
 	#invoke
 	main/invoke/invoke.c
@@ -148,14 +125,8 @@ add_executable("sd"
 add_executable("sd-tests"
 	#tests
 	test/test.c
-	test/code_gen/test_assign.c
-	test/code_gen/test_op.c
-	test/code_gen/test_other.c
-	test/code_gen/test_stmt.c
-	test/code_gen/test_call.c
-	test/typeinference/test_typeinference.c
-	test/util/test_statuscode.c
-	test/typechecker/test_typechecker_util.c
+		test/typeinference/test_typeinference.c
+		test/typechecker/test_typechecker_util.c
 	test/typechecker/test_typechecker_util.h
 	test/typeinference/test_typeinference_util.c
 	test/typeinference/test_typeinference_util.h

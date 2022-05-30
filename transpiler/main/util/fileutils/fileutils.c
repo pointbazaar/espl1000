@@ -28,20 +28,6 @@ char* make_ast_filename(char* filename){
 	return ast_filename;
 }
 
-char* make_c_filename(char* filename){
-
-	char* fname_out = malloc(strlen(filename)+1);
-
-	strcpy(fname_out, filename);
-	
-	//remove the '.dg'
-	fname_out[strlen(fname_out)-3] = '\0';
-	
-	strcat(fname_out, ".c");
-	
-	return fname_out;
-}
-
 
 char* make_h_filename(char* filename){
 
@@ -68,23 +54,6 @@ char* make_asm_filename(char* filename){
     return fname_out;
 }
 
-char* make_gcc_cmd(struct Flags* flags, char* fname_out){
-	
-	char* cmd = malloc(100+strlen(fname_out));
-	strcpy(cmd, "");
-
-	//no -Wall because it messes with generics
-	strcat(cmd, "gcc --std=c11 -o a.out ");
-	
-	if(flags->debug_symbols){ strcat(cmd, "-g ");      }
-	if(flags->werror)       { strcat(cmd, "-Werror "); }
-	
-	strcat(cmd, fname_out);
-	
-	strcat(cmd, " -lpthread -lm ");
-	
-	return cmd;
-}
 
 bool check_filenames_lowercase(struct Flags* flags){
 
