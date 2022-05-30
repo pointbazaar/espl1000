@@ -3,9 +3,9 @@
 #include "cg_avr_basic_block.h"
 #include "analyzer/lv/lv_analyzer.h"
 
-#include "avr_code_gen/basic_block/basicblock.h"
+#include "basic_block/basicblock.h"
 #include "tac/tacbuffer.h"
-#include "avr_code_gen/gen_tac/gen_tac.h"
+#include "gen_tac/gen_tac.h"
 
 #include "util/ctx.h"
 #include "ast/ast.h"

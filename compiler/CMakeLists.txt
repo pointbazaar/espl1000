@@ -31,21 +31,21 @@ add_library("sd-base"
 		../tac/tac.c
 		../tac/tac_str.c
 
-		main/avr_code_gen/gen_tac/gen_tac.c
-		main/avr_code_gen/gen_tac/gen_tac_assignstmt.c
-		main/avr_code_gen/gen_tac/gen_tac_call.c
-		main/avr_code_gen/gen_tac/gen_tac_constvalue.c
-		main/avr_code_gen/gen_tac/gen_tac_expr.c
-		main/avr_code_gen/gen_tac/gen_tac_forstmt.c
-		main/avr_code_gen/gen_tac/gen_tac_ifstmt.c
-		main/avr_code_gen/gen_tac/gen_tac_retstmt.c
-		main/avr_code_gen/gen_tac/gen_tac_simplevar.c
-		main/avr_code_gen/gen_tac/gen_tac_stmt.c
-		main/avr_code_gen/gen_tac/gen_tac_switchstmt.c
-		main/avr_code_gen/gen_tac/gen_tac_term.c
-		main/avr_code_gen/gen_tac/gen_tac_unopterm.c
-		main/avr_code_gen/gen_tac/gen_tac_variable.c
-		main/avr_code_gen/gen_tac/gen_tac_whilestmt.c
+        main/gen_tac/gen_tac.c
+        main/gen_tac/gen_tac_assignstmt.c
+        main/gen_tac/gen_tac_call.c
+        main/gen_tac/gen_tac_constvalue.c
+        main/gen_tac/gen_tac_expr.c
+        main/gen_tac/gen_tac_forstmt.c
+        main/gen_tac/gen_tac_ifstmt.c
+        main/gen_tac/gen_tac_retstmt.c
+        main/gen_tac/gen_tac_simplevar.c
+        main/gen_tac/gen_tac_stmt.c
+        main/gen_tac/gen_tac_switchstmt.c
+        main/gen_tac/gen_tac_term.c
+        main/gen_tac/gen_tac_unopterm.c
+        main/gen_tac/gen_tac_variable.c
+        main/gen_tac/gen_tac_whilestmt.c
 
 		main/avr_code_gen/compile_ir/compile_tac.h
 		main/avr_code_gen/compile_ir/compile_tac_binary_op.c
@@ -63,7 +63,7 @@ add_library("sd-base"
 
 		../tac/tacbuffer.c
 
-		main/avr_code_gen/basic_block/basicblock.c
+        main/basic_block/basicblock.c
 
 		main/avr_code_gen/cg_avr_basic_block.c
 		main/avr_code_gen/cg_avr_single_tac.c

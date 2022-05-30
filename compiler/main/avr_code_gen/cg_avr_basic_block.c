@@ -5,7 +5,7 @@
 
 #include "tac/tac.h"
 #include "tac/tacbuffer.h"
-#include "avr_code_gen/basic_block/basicblock.h"
+#include "basic_block/basicblock.h"
 #include "rat/rat.h"
 
 #include "cg_avr_single_tac.h"
