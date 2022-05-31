@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Register Allocation Table</title>
+  <meta name="description" content="Register Allocation Table">
+  <meta name="author" content="ESPL1000">
+
+  <link rel="icon" href="../img/favicon.ico">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link rel="stylesheet" href="../css/style.css">
+
+</head>
+<body>
+<div class="container-xl">
+	
+	<div class="row nav-bg">
+		<div class="col">
+			<a href="../index.html"><h1>Home</h1></a>
+		</div>
+		<div class="col-2">
+			<a href="annotations.html"><h1>next</h1></a>
+		</div>
+	</div>
+	
+
+	<h1>Register Allocation Table - RAT</h1>
+
+	<p>
+		When targeting the ATMega328P we have 32 general-purpose Registers,
+		some of which have special restrictions on which instructions they can be used with.
+		<br><br>
+		For this Reason we maintain a Register Allocation Table, so during Assembly Code Generation,
+		we can make a good choice on which Register to use for a temporary value.
+		<br>
+		TODO
+	</p>
+
+	<h2> Properties as an Allocator </h2>
+	<p>
+		As an Allocator, the RAT manages 32 Registers. Registers can be allocated / freed
+		in any order.
+		When allocating a Register, it is important to know what it will be used for.
+		Because we only manage 32 Registers, we can keep a lot of metadata, as opposed to
+		e.g. Memory Allocators.
+	</p>
+
+	<h2>Managing the Stack Pointer - SP</h2>
+	<p>
+		The Stack Pointer needs to be setup before the start of the Program.
+		That's why i consider it part of the RAT, because it needs to be managed.
+		And maybe it could be setup in a different place.
+		Typical AVR Program:
+		<br>
+		Source: <a href="https://www.codeproject.com/Articles/712610/AVR-Assembler">https://www.codeproject.com/Articles/712610/AVR-Assembler</a>
+	</p>
+<pre>ldi    r16, LOW(RAMEND)
+out    spl, r16
+ldi    r16, HIGH(RAMEND)
+out    sph, r16</pre>
+
+	<!-- TODO: make a .svg explaining the RAT, ldi restriction, ... restrictions, ... -->
+
+	<div class="row justify-content-center">
+		<div class="col"></div>
+		<div class="col">
+			<img src="../img/rat.svg" alt="image displaying the structure of the Register Allocation Table">
+		</div>
+		<div class="col"></div>
+	</div>
+
+
+	<h2>Implementation</h2>
+	<ul>
+		<li>rat/rat.h</li>
+		<li>rat/rat.c</li>
+	</ul>
+
+</div>
+
+</body>
+</html>
