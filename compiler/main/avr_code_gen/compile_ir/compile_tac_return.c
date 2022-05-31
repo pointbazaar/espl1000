@@ -16,12 +16,14 @@ void compile_tac_return(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, FILE*
     }
 
     //TODO: put the return value in the appropriate register
-    if(!rat_has_register(rat, tac->arg1)){
+    if(!rat_has_register(rat, tac->dest)){
         printf("fatal error, value to be returned was not in a register\n");
+        printf("RAT:\n");
+        rat_print(rat);
         exit(1);
     }
 
-    int reg = rat_get_register(rat, tac->arg1);
+    int reg = rat_get_register(rat, tac->dest);
     fprintf(fout, "mov r0, r%d\n", reg);
 
     fprintf(fout, "ret\n");

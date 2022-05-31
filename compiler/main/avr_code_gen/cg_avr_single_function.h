@@ -5,5 +5,7 @@
 struct Method;
 struct Ctx;
 
+void emit_create_stack_frame(uint32_t stack_frame_size, FILE* fout);
+
 void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FILE* fout);
 #endif

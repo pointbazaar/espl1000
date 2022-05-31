@@ -1,5 +1,6 @@
 
-all: 
+all:
+	cd dependencies && make
 	cd token      && make
 	cd ast        && make
 	cd lexer      && make
@@ -12,6 +13,7 @@ all:
 	#cd stdlib     && make
 
 test:
+	# we don't test our dependencies
 	#cd token      && make test
 	cd ast        && make test
 	cd lexer      && make test
@@ -22,6 +24,7 @@ test:
 	#cd stdlib     && make test
 
 clean:
+	# we don't clean our dependencies
 	cd token      && make clean
 	cd ast        && make clean
 	cd lexer      && make clean

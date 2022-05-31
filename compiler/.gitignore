@@ -3,3 +3,4 @@ sd
 build/
 smalldragon
 *.o
+.file.*

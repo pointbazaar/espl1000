@@ -119,13 +119,23 @@ add_executable("sd"
 add_executable("sd-tests"
 	#tests
 	test/test.c
-		test/typeinference/test_typeinference.c
-		test/typechecker/test_typechecker_util.c
-	test/typechecker/test_typechecker_util.h
+
+	#typeinference
+	test/typeinference/test_typeinference.c
 	test/typeinference/test_typeinference_util.c
 	test/typeinference/test_typeinference_util.h
+
+	#typechecker
+	test/typechecker/test_typechecker_util.c
+	test/typechecker/test_typechecker_util.h
 	test/typechecker/test_typechecker.c
 	test/typechecker/test_typechecker.h
+
+	#CodeGen
+	test/avr_code_gen/test_avr_code_gen.c
+	test/avr_code_gen/test_avr_code_gen.h
+	test/avr_code_gen/test_avr_code_gen_util.c
+	test/avr_code_gen/test_avr_code_gen_util.h
 )
 
 target_compile_options("sd-base"  PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
@@ -143,6 +153,9 @@ target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../tac/build/libsd-tac.a)
 
 target_link_libraries("sd" sd-base)
 
+#libvmcu dependency for sd-tests
+target_link_libraries("sd-tests" ${CMAKE_SOURCE_DIR}/../dependencies/libvmcu-Virtual-MCU-Library/build-release/libvmcu.a)
+
 target_link_libraries("sd-tests" sd-base)
 
 target_include_directories("sd-base" PUBLIC "main")
@@ -154,6 +167,9 @@ target_include_directories("sd" PUBLIC "..")
 target_include_directories("sd-tests" PUBLIC "main")
 target_include_directories("sd-tests" PUBLIC "test")
 target_include_directories("sd-tests" PUBLIC "..")
+
+#libvmcu include dirs for sd-tests
+target_include_directories("sd-tests" PUBLIC "../dependencies/libvmcu-Virtual-MCU-Library/engine/include")
 
 
 

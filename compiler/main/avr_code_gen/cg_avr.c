@@ -13,7 +13,7 @@
 #include "tac/tacbuffer.h"
 #include "cg_avr_single_function.h"
 
-static void emit_setup_stack_pointer_avr(FILE* fout){
+void emit_setup_stack_pointer_avr(FILE* fout){
     //initialize Stack Pointer
     fprintf(fout, "ldi r16, high(RAMEND)\n");
     fprintf(fout, "out SPH, r16\n");
@@ -21,6 +21,14 @@ static void emit_setup_stack_pointer_avr(FILE* fout){
     fprintf(fout, "out SPL, r16\n");
 
     fprintf(fout, "\n\n");
+}
+
+void emit_call_main_endloop(FILE* fout){
+    //create the endloop such that the mcu does
+    //not start over again after main
+    fprintf(fout, "call main\n");
+    fprintf(fout, "endloop:\n");
+    fprintf(fout, "rjmp endloop\n"); //endloop
 }
 
 bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Ctx* ctx){
@@ -43,11 +51,7 @@ bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Ctx*
 
     emit_setup_stack_pointer_avr(fout);
 
-    //create the endloop such that the mcu does
-    //not start over again after main
-    fprintf(fout, "call main\n");
-    fprintf(fout, "endloop:\n");
-    fprintf(fout, "rjmp endloop\n"); //endloop
+    emit_call_main_endloop(fout);
 
     //convert AST into 3 address code with temporaries, use recursive descent to make TAC
     for(size_t i = 0; i < ast->count_namespaces; i++){

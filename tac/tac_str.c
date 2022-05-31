@@ -73,7 +73,7 @@ char* tac_tostring(struct TAC* t){
         case TAC_PARAM:
             sprintf(buffer,"param %s", t->arg1); break;
         case TAC_RETURN:
-            sprintf(buffer,"return %s", t->arg1); break;
+            sprintf(buffer,"return %s", t->dest); break;
         case TAC_DEREF:
             sprintf(buffer, "%s = *%s", t->dest, t->arg1); break;
         case TAC_BINARY_OP_IMMEDIATE:

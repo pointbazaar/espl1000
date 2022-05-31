@@ -106,3 +106,10 @@ struct TAC* makeTACUnaryOp(char* dest, char* src, enum TAC_OP op){
 bool tac_is_unconditional_jump(struct TAC* tac){
     return tac->kind == TAC_GOTO || tac->kind == TAC_RETURN;
 }
+
+struct TAC* makeTACReturn(char* tmp) {
+    struct TAC* t = makeTAC();
+    t->kind = TAC_RETURN;
+    sprintf(t->dest, "%s", tmp);
+    return t;
+}

@@ -13,6 +13,15 @@
 #include "tables/symtable/symtable.h"
 #include "cg_avr_single_function.h"
 
+void emit_create_stack_frame(uint32_t stack_frame_size, FILE* fout){
+
+    //push onto the stack to create the stack frame
+    for(size_t k=0; k < stack_frame_size; k++){
+        fprintf(fout, "push r0  ;create frame\n"); //it is irrelevant what we push here
+    }
+    fprintf(fout, "\n");
+}
+
 void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FILE* fout){
     struct TACBuffer* buffer = tacbuffer_ctor();
 
@@ -35,11 +44,7 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FI
     //emit label for the function
     fprintf(fout, "%s:\n",m->decl->name);
 
-    //push onto the stack to create the stack frame
-    for(size_t k=0; k < lvst_stack_frame_size_avr(ctx->tables->lvst); k++){
-        fprintf(fout, "push r0  ;create frame\n"); //it is irrelevant what we push here
-    }
-    fprintf(fout, "\n");
+    emit_create_stack_frame(lvst_stack_frame_size_avr(ctx->tables->lvst), fout);
 
     //now load X as our base pointer for the stack frame
     fprintf(fout, "in r28, SPL  ;Y is base ptr\n");

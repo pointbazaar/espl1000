@@ -36,7 +36,9 @@ struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer, char* funct
     for(size_t i = 0; i < count; i++) {
 
         //DEBUG:print the blocks
-        basicblock_print(blocks[i]);
+        bool debug = false;
+        if(debug)
+            basicblock_print(blocks[i]);
 
         create_edges_basic_block(buffer, count, blocks, blocks[i]);
     }
