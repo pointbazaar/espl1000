@@ -10,6 +10,13 @@
   <link rel="icon" href="../img/favicon.ico">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <link rel="stylesheet" href="../css/style.css">
+  
+  <!-- for readability, the links on this page are black -->
+  <style>
+	#grammar a {
+		color: black;
+	}
+  </style>
 
 </head>
 <body>
@@ -24,106 +31,156 @@
 		</div>
 	</div>
 	
+	<div id="grammar">
 
 	<h1>Grammar</h1>
+	
+	<a id="ast">AST</a>	::= <a href="#namespace">Namespace</a>+
+	<br><br>
+	
+	<a id="namespace">Namespace</a>	::= <a href="#externc">ExternC</a>* <a href="#structdecl">StructDecl</a>* <a href="#method">Method</a>*
+	
+	<br><br>
+	
+	<a id="externc">ExternC</a> ::= "externc" ( <a href="#methoddecl">MethodDecl</a> | <a href="#structdecl">StructDecl</a>) StringConst
+	<br><br>
+	
+	<h2>Struct</h2>
 
-	<h2>Helpers</h2>
+	<a id="structdecl">StructDecl</a> ::= "struct" <a href="#simpletype">SimpleType</a> '{' <a href="#structmember">StructMember</a>* '}' 
+	<br><br>
+	
+	<a id="structmember">StructMember</a>  ::= <a href="#type">Type</a> Id ';' 
+	<br><br>
+	
+	<h2>Method</h2>
 
-<pre>
-arrow         ::= "->" | "~>"
-lowercase     ::= 'a'|'b'|'c'|'d'|'e'|'f'|'g'|'h'|'i'|'j'|'k'|'l'|'m'|'n'|'o'|'p'|'q'|'r'|'s'|'t'|'u'|'v'|'w'|'x'|'y'|'z'
-uppercase     ::= 'A'|'B'|'C'|'D'|'E'|'F'|'G'|'H'|'I'|'J'|'K'|'L'|'M'|'N'|'O'|'P'|'Q'|'R'|'S'|'T'|'U'|'V'|'W'|'X'|'Y'|'Z'
-digit         ::= '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'
-alphanumeric  ::= lowercase | uppercase | digit
-Op            ::= "+" | "-" | "*" | "/" | "%" | "<<" | ">>" | "|" | "&" | "^" | "||" | "&&"
-Id            ::= lowercase (lowercase | '_' | digit)*
-</pre>
-
-	<h2>Toplevel</h2>
-<pre>
-AST           ::= Namespace+
-
-Namespace     ::= ExternC* StructDecl* Method*
-
-StructDecl    ::= "struct" SimpleType '{' StructMember* '}'
-
-StructMember  ::= Type Id ';'
-
-Method        ::= MethodDecl StmtBlock
-
-MethodDecl    ::= "fn" Id '(' DeclArg* ')' arrow Type
-
-DeclArg       ::= Type Id? 
-
-ExternC       ::= "externc" (MethodDecl | StructDecl) StringConst 
-</pre>
-
+	<a id="method">Method</a>  ::= <a href="#methoddecl">MethodDecl</a> <a href="#stmtblock">StmtBlock</a> 
+	<br><br>
+	
+	<a id="methoddecl">MethodDecl</a> ::= "fn" Id '(' <a href="#declarg">DeclArg</a>* ')' arrow <a href="#type">Type</a>
+	<br><br>
+	
+	<a id="declarg">DeclArg</a> ::= <a href="#type">Type</a> Id?
+	<br><br>
 
 	<h2>Types</h2>
-<pre>
-Type          ::= BasicType | TypeParam | ArrayType
 	
-BasicType     ::= SimpleType | '(' SubrType ')'
-
-SimpleType    ::= PrimitiveType | StructType 
-
-PrimitiveType ::= "int" | "float" | "uint" | "char" | "bool" | "uint8" | "int8" | "uint16" | "int16" | "uint32" | "int32" | "uint64" | "int64"
+	<a id="type">Type</a> ::= <a href="#basictype">BasicType</a> | <a href="#typeparam">TypeParam</a> | <a href="#arraytype">ArrayType</a>
+	<br><br>
 	
-SubrType      ::= '(' Type* ')' arrow Type
+	<a id="basictype">BasicType</a> ::= <a href="#simpletype">SimpleType</a> | '(' <a href="#subrtype">SubrType</a> ')'
+	<br><br>
 
-StructType    ::= uppercase alphanumeric* ('<' Type (',' Type)* '>')? | "#"
+	<a id="simpletype">SimpleType</a> ::= <a href="#primitivetype">PrimitiveType</a> | <a href="#structtype">StructType</a>
+	<br><br>
 
-TypeParam     ::= "?T" digit
+	<a id="primitivetype">PrimitiveType</a> ::= <a href="#inttype">IntType</a> | "float" | "char" | "bool" 
+	<br><br>
+	
+	<a id="inttype">IntType</a> ::= "int" | "uint" | "uint8" | "int8" | "uint16" | "int16" | "uint32" | "int32" | "uint64" | "int64"
+	<br><br>
+	
+	<a id="subrtype">SubrType</a> ::= '(' <a href="#type">Type</a>* ')' arrow <a href="#type">Type</a>
+	<br><br>
 
-ArrayType     ::= '[' Type ']'
-</pre>
+	<a id="structtype">StructType</a> ::= uppercase alphanumeric* ('<' <a href="#type">Type</a> (',' <a href="#type">Type</a>)* '>')? | "#"
+	<br><br>
+
+	<a id="typeparam">TypeParam</a> ::= "?T" digit
+	<br><br>
+
+	<a id="arraytype">ArrayType</a> ::= '[' <a href="#type">Type</a> ']'
+	<br><br>
 
 	<h2>Statements</h2>
-<pre>
-StmtBlock     ::= '{' Stmt* '}'
+	
+	<a id="stmtblock">StmtBlock</a> ::= '{' <a href="#stmt">Stmt</a>* '}'
+	<br><br>
 
-Stmt          ::= ( Call ';' )
-		| whileStmt | ifStmt | forStmt | switchStmt  
-		| returnStmt | assignStmt
+	<a id="stmt">Stmt</a> ::= ( <a href="#call">Call</a> ';' )
+		| <a href="#whilestmt">whileStmt</a> | <a href="#ifstmt">ifStmt</a> | <a href="#forstmt">forStmt</a> | <a href="#switchstmt">switchStmt</a>
+		| <a href="#returnstmt">returnStmt</a> | <a href="#assignstmt">assignStmt</a>
 		| "break" ';' | "continue" ';' 
-
-Call         ::= Variable '(' (Expr (, Expr)*)?  ')'
-
-whileStmt    ::= "while" Expr        StmtBlock
-forStmt      ::= "for" Id "in" Range StmtBlock
-
-ifStmt       ::= "if" Expr StmtBlock ( "else" StmtBlock )?
-				
-returnStmt   ::= "return" Expr? ';'
-
-assignStmt   ::= Type? Variable '=' Expr ';'
-
-switchStmt   ::= "switch" Expr '{' caseStmt* '}'
-
-caseStmt     ::= "case" ConstValue StmtBlock?
-</pre>
+	<br><hr>
+	
+	<a id="whilestmt">whileStmt</a> ::= "while" <a href="#expr">Expr</a> <a href="#stmtblock">StmtBlock</a>
+	<br><br>
+	
+	<a id="forstmt">forStmt</a> ::= "for" Id "in" <a href="#range">Range</a> <a href="#stmtblock">StmtBlock</a>
+	<br><hr>
+	
+	<a id="ifstmt">ifStmt</a> ::= "if" <a href="#expr">Expr</a> <a href="#stmtblock">StmtBlock</a>
+	("else" <a href="#stmtblock">StmtBlock</a>)?
+	<br><hr>
+	
+	<a id="call">Call</a> ::= <a href="#variable">Variable</a> '(' (<a href="#expr">Expr</a> (, <a href="#expr">Expr</a>)*)?  ')'
+	<br><br>
+	
+	<a id="returnstmt">returnStmt</a> ::= "return" <a href="#expr">Expr</a>? ';'
+	<br>
+	<hr>
+	
+	<a id="assignstmt">assignStmt</a> ::= <a href="#type">Type</a>? <a href="#variable">Variable</a> '=' <a href="#expr">Expr</a>? ';'
+	<br>
+	<hr>
+	<a id="switchstmt">switchStmt</a> ::= "switch" <a href="#expr">Expr</a> '{' <a href="#casestmt">caseStmt</a>* '}'
+	<br><br>
+	
+	<a id="casestmt">caseStmt</a> ::= "case" <a href="#constvalue">ConstValue</a> <a href="#stmtblock">StmtBlock</a>?
+	<br><br>
 	
 	<h2>Expressions</h2>
+	
+	<a id="expr">Expr</a> ::= <a href="#unopterm">UnOpTerm</a> (<a href="#op">Op</a> <a href="#unopterm">UnOpTerm</a>)*
+	<br><br>
+	
+	<a id="unopterm">UnOpTerm</a> ::= <a href="#op">Op</a> <a href="#term">Term</a>
+	<br><br>
+	
+	<a id="term">Term</a> ::= <a href="#constvalue">ConstValue</a> | StringConst | <a href="#call">Call</a> | '(' <a href="#expr">Expr</a> ')' | <a href="#variable">Variable</a> | <a href="#lambda">Lambda</a>
+	<br><br>
+
+	<a id="lambda">Lambda</a> ::= '(' Id (',' Id)* ')' arrow <a href="#expr">Expr</a>
+	<br><br>
+
+	<a id="range">Range</a> ::= <a href="#expr">Expr</a> ".." <a href="#expr">Expr</a>
+	<br><br>
+
+	<a id="variable">Variable</a> ::= <a href="#simplevar">SimpleVar</a> ('.' <a href="#variable">Variable</a>)?
+	<br><br>
+
+	<a id="simplevar">SimpleVar</a> ::= Id ('[' <a href="#expr">Expr</a> ']')*
+	<br><br>
+	
+	<h2>Const</h2>
+	
+	<a id="arrayconstant">ArrayConstant</a> ::= '[' <a href="#expr">Expr</a> (',' <a href="#expr">Expr</a>)* ']'
+	<br><br>
+
+	<a id="constvalue">ConstValue</a> ::= BoolConst | IntConst | BinConst | HexConst | CharConst | FloatConst
+	<br><br>
+
+	<h2>Helpers</h2>
+	<div id="id"></div>
+	<div id="op"></div>
 <pre>
-Expr         ::= UnOpTerm (Op UnOpTerm)*
+arrow         ::= "->" | "~>"
 
-UnOpTerm     ::= Op Term 
+lowercase     ::= 'a'|'b'|'c'|'d'|'e'|'f'|'g'|'h'|'i'|'j'|'k'|'l'|'m'|'n'|'o'|'p'|'q'|'r'|'s'|'t'|'u'|'v'|'w'|'x'|'y'|'z'
 
-Term         ::= ConstValue | StringConst | Call | '(' Expr ')' | Variable | Lambda
+uppercase     ::= 'A'|'B'|'C'|'D'|'E'|'F'|'G'|'H'|'I'|'J'|'K'|'L'|'M'|'N'|'O'|'P'|'Q'|'R'|'S'|'T'|'U'|'V'|'W'|'X'|'Y'|'Z'
 
-ConstValue   ::= BoolConst | IntConst | BinConst | HexConst | CharConst | FloatConst
+digit         ::= '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'
 
-Range        ::= Expr ".." Expr
+alphanumeric  ::= lowercase | uppercase | digit
 
-Lambda       ::= '(' Id (',' Id)* ')' arrow Expr
+Op            ::= "+" | "-" | "*" | "/" | "%" | "<<" | ">>" | "|" | "&" | "^" | "||" | "&&"
 
-ArrayConstant ::= '[' Expr (',' Expr)* ']'
-
-Variable      ::= SimpleVar ('.' Variable)?
-
-SimpleVar     ::= Id ('[' Expr ']')*
+Id            ::= lowercase (lowercase | '_' | digit)*
 </pre>
 	
+	</div>
 </div>
 
 </body>

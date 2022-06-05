@@ -3,6 +3,16 @@ h1,h2,h3,h4,h5 {
 	color: #D14F42; 
 }
 
+html {
+	/* padding from the top when clicking 
+	 * <a href="#my_id">...</a>
+	 * section links
+	 * https://getpublii.com/blog/one-line-css-solution-to-prevent-anchor-links-from-scrolling-behind-a-sticky-header.html
+	 */
+	scroll-margin-top: 20%;
+	scroll-padding-top: 20%;
+}
+
 body {
 	font-family: monospace;
 	font-size: 1rem;
