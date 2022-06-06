@@ -1,0 +1,7 @@
+
+fn main () ~> int {
+
+	[0x20] = 0x30;
+	int a = [0x20];
+	return 1;
+}

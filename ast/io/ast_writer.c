@@ -234,6 +234,7 @@ void write_term(struct Term* m, FILE* file){
 		case  8: write_string_const(m->ptr.m8, file); break;
 		case 11: write_lambda(m->ptr.m11, file);	break;
 		case 12: write_const_value(m->ptr.m12, file); break;
+        case 13: write_mdirect(m->ptr.m13, file); break;
 
 		default: error(file, "Error in write_term(...)");
 	}
@@ -280,6 +281,15 @@ void write_lambda(struct Lambda* l, FILE* file){
 	write_expr(l->expr, file);
 	
 	magic_num_serialize(MAGIC_END_LAMBDA, file);
+}
+void write_mdirect(struct MDirect* m, OUTFILE){
+
+    magic_num_serialize(MAGIC_MDIRECT, file);
+    write_super(m);
+
+    write_expr(m->expr, file);
+
+    magic_num_serialize(MAGIC_END_MDIRECT, file);
 }
 // --------- CONST NODES ----------------
 void write_bool_const(struct BoolConst* m, FILE* file){
@@ -389,6 +399,8 @@ void write_stmt(struct Stmt* m, FILE* file){
 			write_for_stmt(m->ptr.m7, file);    } break;
 		case 8: {
 			write_switch_stmt(m->ptr.m8, file); } break;
+        case 9: {
+            write_massign_stmt(m->ptr.m9, file); } break;
 		default: error(file, "Error in write_stmt");
 	}
 	
@@ -494,6 +506,17 @@ void write_case_stmt(struct CaseStmt* m, FILE* file){
 		{ write_stmt_block(m->block, file); }
 	
 	magic_num_serialize(MAGIC_END_CASESTMT, file);
+}
+void write_massign_stmt(struct MAssignStmt* m, OUTFILE){
+
+    magic_num_serialize(MAGIC_MASSIGNSTMT, file);
+    write_super(m);
+
+    write_mdirect(m->lhs, file);
+
+    write_expr(m->expr, file);
+
+    magic_num_serialize(MAGIC_END_MASSIGNSTMT, file);
 }
 // --------- TYPENODES --------------
 void write_type(struct Type* m, FILE* file){

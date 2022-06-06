@@ -21,6 +21,7 @@
 #define MAGIC_SIMPLEVAR 		42
 #define MAGIC_RANGE 			43
 
+
 //const
 #define MAGIC_BOOLCONST 		44
 #define MAGIC_CHARCONST 		45
@@ -41,7 +42,7 @@
 #define MAGIC_FORSTMT 			59
 #define MAGIC_SWITCHSTMT 		60
 #define MAGIC_CASESTMT 			61
-#define MAGIC_TRYCATCHSTMT		62
+#define MAGIC_MASSIGNSTMT		62
 
 //c_types_util
 #define MAGIC_TYPE 				63
@@ -60,6 +61,8 @@
 #define MAGIC_LAMBDA			83
 #define MAGIC_METHOD_DECL		84
 #define MAGIC_EXTERNC			85
+
+#define MAGIC_MDIRECT           86
 
 
 //additionally, we define MAGIC_<STR>_END constants
@@ -99,11 +102,10 @@
 #define MAGIC_END_RETSTMT 		223
 #define MAGIC_END_STMT 			224
 #define MAGIC_END_WHILESTMT 	225
-#define MAGIC_END_LOOPSTMT 		226
 #define MAGIC_END_FORSTMT 		227
 #define MAGIC_END_SWITCHSTMT 	228
 #define MAGIC_END_CASESTMT 		229
-#define MAGIC_END_TRYCATCHSTMT	230
+#define MAGIC_END_MASSIGNSTMT	230
 
 //c_types_util
 #define MAGIC_END_TYPE 			240
@@ -121,5 +123,7 @@
 #define MAGIC_END_LAMBDA		251
 #define MAGIC_END_METHOD_DECL	252
 #define MAGIC_END_EXTERNC		253
+
+#define MAGIC_END_MDIRECT       254
 
 #endif

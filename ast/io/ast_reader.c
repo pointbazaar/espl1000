@@ -497,7 +497,7 @@ struct Term* read_term(FILE* file) {
 		case  8: b->ptr.m8  = read_string_const(file); break;
 		case 11: b->ptr.m11 = read_lambda(file);      break;
 		case 12: b->ptr.m12 = read_const_value(file); break;
-		
+        case 13: b->ptr.m13 = read_mdirect(file);     break;
 		default: error(file, "Error in read_term");
 	}
 	
@@ -566,7 +566,20 @@ struct Lambda* read_lambda(FILE* file) {
 	
 	return l;
 }
+struct MDirect* read_mdirect(INFILE){
 
+    magic_num_require(MAGIC_MDIRECT, file);
+
+    struct MDirect* l = make(MDirect);
+
+    read_super(l);
+
+    l->expr = read_expr(file);
+
+    magic_num_require(MAGIC_END_MDIRECT, file);
+
+    return l;
+}
 //statementnodes
 struct Stmt* read_stmt(FILE* file) {
 	
@@ -592,6 +605,7 @@ struct Stmt* read_stmt(FILE* file) {
 		case 5: b->ptr.m5 = read_assign_stmt(file); break;
 		case 7: b->ptr.m7 = read_for_stmt(file);  	 break;
 		case 8: b->ptr.m8 = read_switch_stmt(file); break;
+        case 9: b->ptr.m9 = read_massign_stmt(file); break;
 		default:
 			error(file, "Error in read_stmt");
 	}
@@ -764,6 +778,22 @@ struct CaseStmt* read_case_stmt(FILE* file) {
 	magic_num_require(MAGIC_END_CASESTMT, file);
 	
 	return res;
+}
+struct MAssignStmt* read_massign_stmt(INFILE){
+
+    magic_num_require(MAGIC_MASSIGNSTMT, file);
+
+    struct MAssignStmt* res = make(MAssignStmt);
+
+    read_super(res);
+
+    res->lhs = read_mdirect(file);
+
+    res->expr = read_expr(file);
+
+    magic_num_require(MAGIC_END_MASSIGNSTMT, file);
+
+    return res;
 }
 // --- typenodes -------------------------
 struct Type* read_type(FILE* file) {

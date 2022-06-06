@@ -39,6 +39,7 @@ struct Term* 		read_term(INFILE);
 struct UnOpTerm* 	read_un_op_term(INFILE);
 struct Range* 		read_range(INFILE);
 struct Lambda* 		read_lambda(INFILE);
+struct MDirect*     read_mdirect(INFILE);
 
 //statementnodes
 struct Stmt* 		read_stmt(INFILE);
@@ -51,6 +52,7 @@ struct Call* 		read_call(INFILE);
 struct ForStmt* 	read_for_stmt(INFILE);
 struct SwitchStmt* 	read_switch_stmt(INFILE);
 struct CaseStmt* 	read_case_stmt(INFILE);
+struct MAssignStmt* read_massign_stmt(INFILE);
 
 //typenodes
 struct Type* 			read_type(INFILE);

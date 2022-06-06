@@ -45,6 +45,7 @@ void write_term(struct Term* m, OUTFILE);
 void write_un_op_term(struct UnOpTerm* t, OUTFILE);
 void write_range(struct Range* r, OUTFILE);
 void write_lambda(struct Lambda* l, OUTFILE);
+void write_mdirect(struct MDirect* m, OUTFILE);
 
 //statementnodes
 void write_stmt(struct Stmt* m, OUTFILE);
@@ -56,6 +57,7 @@ void write_call(struct Call* m, OUTFILE);
 void write_for_stmt(struct ForStmt* m, OUTFILE);
 void write_switch_stmt(struct SwitchStmt* m, OUTFILE);
 void write_case_stmt(struct CaseStmt* m, OUTFILE);
+void write_massign_stmt(struct MAssignStmt* m, OUTFILE);
 
 //typenodes
 void write_type(struct Type* m, OUTFILE);

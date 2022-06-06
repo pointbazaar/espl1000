@@ -25,12 +25,12 @@ struct MAssignStmt* makeMAssignStmt(struct TokenList* tokens){
     struct Token* head = list_head(copy);
 
     if(head->kind != ASSIGNOP){
-
         return NULL;
     }
 
     if(strcmp(head->value_ptr, "=") != 0){
-
+        printf("expected assign op to be '=' for MAssignStmt. Exiting\n");
+        exit(1);
         return NULL;
     }
 
@@ -41,9 +41,10 @@ struct MAssignStmt* makeMAssignStmt(struct TokenList* tokens){
     //parse ';'
     head = list_head(copy);
     if(head->kind != SEMICOLON){
-
         return NULL;
     }
+
+    list_consume(copy, 1);
 
     list_set(tokens,copy);
     freeTokenListShallow(copy);

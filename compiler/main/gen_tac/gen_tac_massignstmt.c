@@ -14,7 +14,7 @@ void tac_massignstmt(struct TACBuffer* buffer, struct MAssignStmt* m){
         exit(1);
     }
 
-    if(lhs->term1->term->ptr.m12->kind != 2){
+    if(lhs->term1->term->ptr.m12->kind == 4){
         printf("non-int-address memory assign currently unsupported. exiting\n");
         exit(1);
     }
