@@ -1,6 +1,0 @@
-
-the string is syntatic sugar for a char array in dragon.
-this is cleaner because later, in code generation, it can be treated
-as an array, and we have 1 less case to worry about
-
-"str" gets converted to ['s','t','r'] in the parsing phase

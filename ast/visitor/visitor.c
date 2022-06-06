@@ -24,6 +24,7 @@ static void visit_switch_stmt  	(struct SwitchStmt* s, VISITOR, ARG);
 static void visit_case_stmt    	(struct CaseStmt* c, VISITOR, ARG);
 static void visit_call           (struct Call* m, VISITOR, ARG);
 static void visit_ret_stmt     	(struct RetStmt* r, VISITOR, ARG);
+static void visit_massign_stmt  (struct MAssignStmt* m, VISITOR, ARG);
 static void visit_break_stmt   	(VISITOR, ARG);
 static void visit_continue_stmt	(VISITOR, ARG);
 
@@ -32,6 +33,7 @@ static void visit_expr        	(struct Expr* e, VISITOR, ARG);
 static void visit_op          	(struct Op* o, VISITOR, ARG);
 static void visit_un_op_term    (struct UnOpTerm* u, VISITOR, ARG);
 static void visit_term       	(struct Term* t, VISITOR, ARG);
+static void visit_mdirect       (struct MDirect* m, VISITOR, ARG);
 
 //const
 static void visit_bool_const   	(struct BoolConst* b, VISITOR, ARG);
@@ -143,7 +145,8 @@ static void visit_stmt(struct Stmt* s, VISITOR, void* arg){
 			visit_for_stmt(s->ptr.m7, visitor, arg);   break;
 		case 8:
 			visit_switch_stmt(s->ptr.m8, visitor, arg);   break;
-		
+        case 9:
+            visit_massign_stmt(s->ptr.m9, visitor, arg); break;
 		case 99:
 			if(s->is_break)   { visit_break_stmt(visitor, arg); }
 			if(s->is_continue){ visit_continue_stmt(visitor, arg); }
@@ -236,6 +239,14 @@ static void visit_ret_stmt(struct RetStmt* r, VISITOR, void* arg){
 	visit_expr(r->return_value, visitor, arg);
 }
 
+static void visit_massign_stmt(struct MAssignStmt* m, VISITOR, ARG){
+
+    visitor(m, NODE_MASSIGNSTMT, arg);
+
+    visit_mdirect(m->lhs, visitor, arg);
+    visit_expr(m->expr, visitor, arg);
+}
+
 static void visit_break_stmt(VISITOR, void* arg){
 	
 	visitor(NULL, NODE_BREAKSTMT, arg);
@@ -289,11 +300,20 @@ static void visit_term(struct Term* t, VISITOR, void* arg){
 			visit_lambda(t->ptr.m11, visitor, arg);   break;
 		case 12:
 			visit_const_value(t->ptr.m12, visitor, arg); break;
+        case 13:
+            visit_mdirect(t->ptr.m13, visitor, arg); break;
 		default:
 			printf("[Visitor][Error] Fatal(2)\n");
 			exit(1);
 			break;
 	}
+}
+
+static void visit_mdirect(struct MDirect* m, VISITOR, ARG){
+
+    visitor(m, NODE_MDIRECT, arg);
+
+    visit_expr(m->expr, visitor, arg);
 }
 
 static void visit_bool_const(struct BoolConst* b, VISITOR, void* arg){

@@ -23,6 +23,7 @@ add_library(dragon-parser-base
 	main/astnodes/expr/Op.c
 	main/astnodes/expr/Term.c
 	main/astnodes/expr/UnOpTerm.c
+	main/astnodes/expr/MDirect.c
 
 	main/astnodes/Identifier.c
 	main/astnodes/Lambda.c
@@ -32,6 +33,7 @@ add_library(dragon-parser-base
 	main/astnodes/ExternC.c
 
 	main/astnodes/statements/AssignStmt.c
+	main/astnodes/statements/MAssignStmt.c
 	main/astnodes/statements/Call.c
 	main/astnodes/statements/CaseStmt.c
 	main/astnodes/statements/ForStmt.c
@@ -41,7 +43,7 @@ add_library(dragon-parser-base
 	main/astnodes/statements/SwitchStmt.c
 	main/astnodes/statements/WhileStmt.c
 
-        main/astnodes/struct/StructDecl.c
+	main/astnodes/struct/StructDecl.c
 	main/astnodes/struct/StructMember.c
 
 	main/astnodes/subr/DeclArg.c
@@ -71,6 +73,7 @@ add_executable(dragon-parser-tests
 	test/astnodes/expr/ExprTest.c
 	test/astnodes/expr/TermTest.c
 	test/astnodes/expr/UnOpTermTest.c
+	test/astnodes/expr/MDirectTest.c
 	
 	test/astnodes/LambdaTest.c
 	
@@ -81,6 +84,7 @@ add_executable(dragon-parser-tests
 	test/astnodes/StmtBlockTest.c
 	
 	test/astnodes/statements/AssignStmtTest.c
+	test/astnodes/statements/MAssignStmtTest.c
 	test/astnodes/statements/CallTest.c
 	test/astnodes/statements/CaseStmtTest.c
 	test/astnodes/statements/ForStmtTest.c

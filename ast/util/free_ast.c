@@ -152,6 +152,7 @@ void free_term(struct Term* t) {
 		case  8: free_string_const(t->ptr.m8); 	break;
 		case 11: free_lambda(t->ptr.m11);   break;
 		case 12: free_const_value(t->ptr.m12); break;
+        case 13: free_mdirect(t->ptr.m13); break;
 		default:
 			printf("Error in free_term(...)\n");
 			free(t);
@@ -240,6 +241,8 @@ void free_stmt(struct Stmt* s) {
 			free_for_stmt(s->ptr.m7);    break;
 		case 8:
 			free_switch_stmt(s->ptr.m8); break;
+        case 9:
+            free_massign_stmt(s->ptr.m9); break;
 		default:
 			printf("Error in free_stmt\n");
 			free(s);
@@ -323,6 +326,11 @@ void free_struct_type(struct StructType* s){
 
 void free_op(struct Op* op){ free(op); }
 
+void free_mdirect(struct MDirect* m){
+    free_expr(m->expr);
+    free(m);
+}
+
 void free_string_const(struct StringConst* s){
 	free(s->value);
 	free(s);
@@ -369,3 +377,9 @@ void free_case_stmt(struct CaseStmt* cstmt){
 	free(cstmt);
 }
 
+void free_massign_stmt(struct MAssignStmt* m){
+
+    free_mdirect(m->lhs);
+    free_expr(m->expr);
+    free(m);
+}

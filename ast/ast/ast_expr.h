@@ -38,9 +38,14 @@ struct Term{
 		struct StringConst* m8;
 		struct Lambda*      m11;
 		struct ConstValue*  m12;
+        struct MDirect* m13;
 	} ptr;
 	
-	uint8_t kind; // 4 .. 12
+	uint8_t kind; // 4 .. 13
+};
+struct MDirect{
+    struct ASTNode super;
+    struct Expr* expr;
 };
 
 #endif

@@ -57,6 +57,10 @@ char* tac_tostring(struct TAC* t){
             sprintf(buffer,"%s = %d",t->dest, t->const_value); break;
         case TAC_COPY:
             sprintf(buffer,"%s = %s", t->dest, t->arg1); break;
+        case TAC_LOAD_CONST_ADDR:
+            sprintf(buffer,"%s = [%d]", t->dest, t->const_value); break;
+        case TAC_STORE_CONST_ADDR:
+            sprintf(buffer,"[%d] = %s", t->const_value, t->arg1); break;
         case TAC_NOP:
             sprintf(buffer,"%s", "nop"); break;
         case TAC_BINARY_OP:
@@ -74,8 +78,6 @@ char* tac_tostring(struct TAC* t){
             sprintf(buffer,"param %s", t->arg1); break;
         case TAC_RETURN:
             sprintf(buffer,"return %s", t->dest); break;
-        case TAC_DEREF:
-            sprintf(buffer, "%s = *%s", t->dest, t->arg1); break;
         case TAC_BINARY_OP_IMMEDIATE:
             sprintf(buffer, "%s %4s %d", t->dest, opstr, t->const_value); break;
     }

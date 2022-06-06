@@ -43,6 +43,7 @@ char* str_expr(struct Expr* e);
 char* str_op(struct Op* o);
 char* str_un_op_term(struct UnOpTerm* u);
 char* str_term(struct Term* t);
+char* str_mdirect(struct MDirect* m);
 
 //stmts
 char* str_stmt(struct Stmt* stmt);
@@ -55,6 +56,7 @@ char* str_switch_stmt(struct SwitchStmt* s);
 char* str_call(struct Call* m);
 char* str_ret_stmt(struct RetStmt* r);
 char* str_case_stmt(struct CaseStmt* c);
+char* str_massign_stmt(struct MAssignStmt* m);
 
 //other
 char* str_identifier(struct Id* id);

@@ -497,10 +497,21 @@ char* str_term(struct Term* t){
 		case 8: return str_string_const(t->ptr.m8);
 		//lambda missing
 		case 12: return str_const_value(t->ptr.m12);
+        case 13: return str_mdirect(t->ptr.m13);
 	}
 	
 	error("str_term");
 	return NULL;
+}
+
+char* str_mdirect(struct MDirect* m){
+
+    char* se = str_expr(m->expr);
+    char* res = malloc(3+ strlen(se));
+    sprintf(res, "[%s]", se);
+
+    free(se);
+    return res;
 }
 
 char* str_stmt(struct Stmt* stmt){
@@ -514,7 +525,7 @@ char* str_stmt(struct Stmt* stmt){
 		case 5: return str_assign_stmt(stmt->ptr.m5);
 		case 7: return str_for_stmt(stmt->ptr.m7);
 		case 8: return str_switch_stmt(stmt->ptr.m8);
-		
+        case 9: return str_massign_stmt(stmt->ptr.m9);
 		case 99: {
 			//break,continue,throw,...
 			char* res = malloc(sizeof(char)*30);
@@ -721,18 +732,14 @@ char* str_case_stmt(struct CaseStmt* c){
 	return res;
 }
 
-char* str_try_catch_stmt(struct TryCatchStmt* tcs){
-	
-	char* s1 = str_stmt_block(tcs->try_block);
-	char* s2 = str_stmt_block(tcs->catch_block);
-	
-	uint32_t l = strlen(s1) + strlen(s2);
-	
-	char* res = malloc(sizeof(char)*(l+3+5+10));
-	
-	sprintf(res, "try %s catch %s", s1, s2);
-	
-	free(s1); free(s2);
-	
-	return res;
+char* str_massign_stmt(struct MAssignStmt* m){
+
+    char* s1 = str_mdirect(m->lhs);
+    char* s2 = str_expr(m->expr);
+
+    char* res = malloc(strlen(s1)+ strlen(s2)+6);
+
+    sprintf(res, "%s = %s;", s1, s2);
+
+    return res;
 }

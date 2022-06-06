@@ -15,6 +15,8 @@ void tac_whilestmt(struct TACBuffer* buffer, struct WhileStmt* w);
 
 void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a);
 
+void tac_massignstmt(struct TACBuffer* buffer, struct MAssignStmt* m);
+
 void tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt);
 
 void tac_call(struct TACBuffer* buffer, struct Call* call);
@@ -36,6 +38,8 @@ void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* sv);
 void tac_expr(struct TACBuffer* buffer, struct Expr* expr);
 
 void tac_term(struct TACBuffer* buffer, struct Term* t);
+
+void tac_mdirect(struct TACBuffer* buffer, struct MDirect* m);
 
 void tac_constvalue(struct TACBuffer* buffer, struct ConstValue* c);
 

@@ -30,6 +30,7 @@ add_library("sd-base"
 
         main/gen_tac/gen_tac.c
         main/gen_tac/gen_tac_assignstmt.c
+		main/gen_tac/gen_tac_massignstmt.c
         main/gen_tac/gen_tac_call.c
         main/gen_tac/gen_tac_constvalue.c
         main/gen_tac/gen_tac_expr.c
@@ -41,6 +42,7 @@ add_library("sd-base"
         main/gen_tac/gen_tac_switchstmt.c
         main/gen_tac/gen_tac_term.c
         main/gen_tac/gen_tac_unopterm.c
+		main/gen_tac/gen_tac_mdirect.c
         main/gen_tac/gen_tac_variable.c
         main/gen_tac/gen_tac_whilestmt.c
 
@@ -57,6 +59,8 @@ add_library("sd-base"
 		main/avr_code_gen/compile_ir/compile_tac_return.c
 		main/avr_code_gen/compile_ir/compile_tac_unary_op.c
 		main/avr_code_gen/compile_ir/compile_tac_binary_op_immediate.c
+		main/avr_code_gen/compile_ir/compile_tac_load_const_addr.c
+		main/avr_code_gen/compile_ir/compile_tac_store_const_addr.c
 
         main/basic_block/basicblock.c
 		main/basic_block/basicblock_printer.c
@@ -88,9 +92,8 @@ add_library("sd-base"
 	main/typechecker/tc_ifstmt.c
 	main/typechecker/tc_whilestmt.c
 	main/typechecker/tc_forstmt.c
-	main/typechecker/tc_trycatchstmt.c
 
-	#typeinference
+		#typeinference
 	main/typeinference/typeinfer.c
 	main/typeinference/typeinfer_expr.c
 	main/typeinference/typeinfer_methodcall.c

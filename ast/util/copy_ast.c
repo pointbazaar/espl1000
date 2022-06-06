@@ -151,6 +151,7 @@ struct Term* copy_term(struct Term* t){
 		case  8: res->ptr.m8 = copy_string_const(t->ptr.m8); break;
 		case 11: res->ptr.m11 = copy_lambda(t->ptr.m11); break;
 		case 12: res->ptr.m12 = copy_const_value(t->ptr.m12); break;
+        case 13: res->ptr.m13 = copy_mdirect(t->ptr.m13); break;
 		default:
 			printf("[AST][Error] copy_term(...), kind was: %d\n", t->kind);
 			exit(1);
@@ -193,6 +194,12 @@ struct Op* copy_op(struct Op* op){
 	struct Op* res = make(Op);
 	strcpy(res->op, op->op);
 	return res;
+}
+
+struct MDirect*  copy_mdirect(struct MDirect* m){
+    struct MDirect* res = make(MDirect);
+    res->expr = copy_expr(m->expr);
+    return res;
 }
 
 struct StringConst* copy_string_const(struct StringConst* s){
@@ -339,6 +346,7 @@ struct Stmt* copy_stmt(struct Stmt* stmt){
         case 5: res->ptr.m5 = copy_assign_stmt(stmt->ptr.m5); break;
         case 7: res->ptr.m7 = copy_for_stmt(stmt->ptr.m7); break;
         case 8: res->ptr.m8 = copy_switch_stmt(stmt->ptr.m8); break;
+        case 9: res->ptr.m9 = copy_massign_stmt(stmt->ptr.m9); break;
         default:
             res->is_break = stmt->is_break;
             res->is_continue = stmt->is_continue;
@@ -450,4 +458,17 @@ struct CaseStmt* copy_case_stmt(struct CaseStmt* c){
 	}
 
 	return res;
+}
+
+struct MAssignStmt* copy_massign_stmt(struct MAssignStmt* m){
+
+    struct MAssignStmt* res = make(MAssignStmt);
+
+    res->super.line_num = m->super.line_num;
+    res->super.annotations = m->super.annotations;
+
+    res->lhs = copy_mdirect(m->lhs);
+    res->expr = copy_expr(m->expr);
+
+    return res;
 }

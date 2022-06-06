@@ -42,6 +42,8 @@
 #include "../astnodes/statements/AssignStmtTest.h"
 
 #include "../astnodes/LambdaTest.h"
+#include "parser/test/astnodes/statements/MAssignStmtTest.h"
+#include "parser/test/astnodes/expr/MDirectTest.h"
 
 void test_suite_constnodes();
 void test_suite_term_expr_simplevar_var();
@@ -134,6 +136,7 @@ void test_suite_term_expr_simplevar_var() {
 	term_test_simple_term();
 	term_test_variable_term();
 	term_test_parentheses();
+    term_test_mdirect();
 
 	expr_recognize_2_op_expr();
 	expr_test_simple_expression();
@@ -148,6 +151,8 @@ void test_suite_term_expr_simplevar_var() {
 	variable_test_parse_index_access();
 	variable_test_parse_struct_member_access();
 	variable_test_parse_struct_member_access_and_index_access();
+
+    mdirect_test_1();
 }
 
 void test_suite_stmts() {
@@ -179,6 +184,8 @@ void test_suite_stmts() {
 	whilestmt_test2();
 
 	for_test1();
+
+    massignstmt_test1();
 }
 
 void test_suite_assignstmt(){

@@ -36,6 +36,7 @@ struct FloatConst;
 struct ConstValue;
 struct StringConst;
 //statements
+struct MAssignStmt;
 struct AssignStmt;
 struct IfStmt;
 struct Call;

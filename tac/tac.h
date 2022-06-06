@@ -40,8 +40,6 @@ enum TAC_KIND{
     TAC_GOTO, //unconditional jump
     TAC_IF_GOTO, //conditional jump depending on a single temporary
 
-    TAC_DEREF, //currently unused
-
     TAC_COPY,
 
     TAC_CONST_VALUE,
@@ -54,6 +52,9 @@ enum TAC_KIND{
     TAC_LABEL,
 
     TAC_BINARY_OP_IMMEDIATE, //NEW TODO
+
+    TAC_STORE_CONST_ADDR, // [const_dest] = src //memory store
+    TAC_LOAD_CONST_ADDR,  // dest = [const_src] //memory load
 };
 
 #define TAC_NO_LABEL 0
@@ -95,4 +96,7 @@ struct TAC* makeTACConst(uint32_t tmp, int value);
 
 struct TAC* makeTACBinOpImmediate(char* tmp, enum TAC_OP op, int32_t immediate);
 struct TAC* makeTACUnaryOp(char* dest, char* src, enum TAC_OP op);
+
+struct TAC* makeTACStoreConstAddr(uint32_t addr, char* src);
+struct TAC* makeTACLoadConstAddr(char* dest, uint32_t addr);
 #endif

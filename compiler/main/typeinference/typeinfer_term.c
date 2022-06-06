@@ -25,7 +25,7 @@ struct Type *infer_type_term(struct ST *st, struct Term *t) {
 		case  8: return typeFromStrArray(st, "char");
 		//do not use lambda here
 		case 12: return infer_type_constvalue(st, t->ptr.m12);
-		
+        case 13: return infer_type_expr(st, t->ptr.m13->expr);
 		default:
 		    printf("[Typeinference][Error] Fatal. (in typeinfer_term.c). Exiting.\n");
 		    exit(1);

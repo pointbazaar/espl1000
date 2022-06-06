@@ -103,6 +103,23 @@ struct TAC* makeTACUnaryOp(char* dest, char* src, enum TAC_OP op){
     return t;
 }
 
+struct TAC* makeTACStoreConstAddr(uint32_t addr, char* src){
+
+    struct TAC* t = makeTAC();
+    t->kind = TAC_STORE_CONST_ADDR;
+    t->const_value = addr;
+    sprintf(t->arg1, "%s", src);
+    return t;
+}
+
+struct TAC* makeTACLoadConstAddr(char* dest, uint32_t addr){
+    struct TAC* t = makeTAC();
+    t->kind = TAC_LOAD_CONST_ADDR;
+    sprintf(t->dest, "%s", dest);
+    t->const_value = addr;
+    return t;
+}
+
 bool tac_is_unconditional_jump(struct TAC* tac){
     return tac->kind == TAC_GOTO || tac->kind == TAC_RETURN;
 }

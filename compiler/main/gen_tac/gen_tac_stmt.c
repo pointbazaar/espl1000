@@ -22,5 +22,6 @@ void tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt){
         case 5: tac_assignstmt(buffer, stmt->ptr.m5); break;
         case 7: tac_forstmt(buffer, stmt->ptr.m7); break;
         case 8: tac_switchstmt(buffer, stmt->ptr.m8); break;
+        case 9: tac_massignstmt(buffer, stmt->ptr.m9); break;
     }
 }

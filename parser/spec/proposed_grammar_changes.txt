@@ -1,27 +1,3 @@
-//PLANNED FOR NEXT GRAMMAR CHANGE
-
-//we do not want uninitialized struct instances or variables.
-//this can lead to undefined behavior. so we need a way to initialize structs as soon
-//as they are declared.
-
-//basically, we do not want the 'new' subroutine as it is currently in the language.
-//as it allows for allocating an arbitrary amount of memory (this could lead to out-of-memory-error)
-//and it has the type '#' , which can be assigned to anything, which is also dangerous.
-
-//maybe we can eliminate '#' entirely later on, if we replace len(# obj) with len(?T0 obj) , with a type
-//parameter that is not used. primitive types should be prohibited from being used as
-//an instance to a type variable
-
-arrayInitialization ::= 'new' '[' Type ']' '(' integerConstant ')'
-//the integer constant denotes the size of the array
-
-structInitialization ::= 'new' SimpleType '(' (expression (, expression)*)? ')'
-//the expressions denote the values that should be assigned to the struct fields
-
-Term ::= ArrayConstant | boolConstant | integerConstant | charConstant | methodCall | '(' expression ')' | variable | structInitialization | arrayInitialization
-
-//x = new MyStruct ();
-
 //MAYBE LATER:
 
 SimpleExpression ::= Term (op Term)*
@@ -30,7 +6,6 @@ Expression ::= SimpleExpression | SimpleType
 //through this change, we could pass simple types as Type Parameters.
 
 /*
-
     ArrayConstant is complicating stuff. maybe i should convert it to syntactic sugar?
     I converted StringConstant to syntactic sugar and that worked great.
     What would be needed to convert arrayconstantnode to syntactic sugar?
@@ -50,14 +25,12 @@ level of savagery as 'type casting' and we do not want to get dirty with savage 
 so type parameters are the way to go brothers. just need to find a way to implement them.
 */
 
-
 //MAYBE
 
 //this is a kind of expression inspired by haskell.
 //it is similar to the ternary operator
 //maybe i should implement them
 ifThenElse ::= 'if' expression 'then' expression 'else' expression
-
 
 // // functions are always public
 //functionTypeDecl ::= functionName '::' (Type '->')* Type
@@ -70,14 +43,3 @@ ifThenElse ::= 'if' expression 'then' expression 'else' expression
 //functionCall ::= functionName expression*
 //anonFunction ::= '\' declaredArgument* '->' value
 
-
-
-//there should be the 'Any' type for use by builtin functions, to get around the type system without the need for casting
-//MyStruct x = malloc(4); //MyStruct has 4 members
-
-//this is not as clean as type parameters, but easier to implement for now.
-//programmers should not be able to return 'Any' from a subroutine they wrote themselves.
-//it is just for the compiler. maybe 'Any' should have a symbol, '#'
-
-//to enable this, the compiler has to know which type 'x' is, so we have to enable declaring
-//the type of local variables in the grammar

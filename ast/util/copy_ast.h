@@ -30,7 +30,7 @@ struct WhileStmt*   copy_while_stmt(struct WhileStmt* w);
 struct ForStmt*     copy_for_stmt(struct ForStmt* f);
 struct SwitchStmt*  copy_switch_stmt(struct SwitchStmt* s);
 struct CaseStmt*    copy_case_stmt(struct CaseStmt* c);
-struct TryCatchStmt* copy_try_catch_stmt(struct TryCatchStmt* tcs);
+struct MAssignStmt* copy_massign_stmt(struct MAssignStmt* m);
 
 //c_types_util
 struct Type*             copy_type(struct Type* t);
@@ -47,6 +47,7 @@ struct Expr*     copy_expr(struct Expr* expr);
 struct Term*     copy_term(struct Term* t);
 struct UnOpTerm* copy_un_op_term(struct UnOpTerm* t);
 struct Op*       copy_op(struct Op* op);
+struct MDirect*  copy_mdirect(struct MDirect* m);
 
 //var
 struct SimpleVar* copy_simple_var(struct SimpleVar* sv);

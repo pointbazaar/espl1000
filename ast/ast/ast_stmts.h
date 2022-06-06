@@ -3,6 +3,11 @@
 
 #include "../ast_declare.h"
 
+struct MAssignStmt {
+    struct ASTNode super;
+    struct MDirect* lhs;
+    struct Expr* expr;
+};
 struct AssignStmt {
 	struct ASTNode super; 
 	
@@ -44,6 +49,7 @@ struct Stmt {
 		struct AssignStmt* m5;
 		struct ForStmt*    m7;
 		struct SwitchStmt* m8;
+        struct MAssignStmt* m9;
 	} ptr;
 	uint8_t kind; //0-based
 
@@ -82,11 +88,5 @@ struct CaseStmt{
 	struct ConstValue* const_value;
 	
 	struct StmtBlock* block; //may be NULL
-};
-struct TryCatchStmt {
-	struct ASTNode super;
-	
-	struct StmtBlock* try_block;
-	struct StmtBlock* catch_block;
 };
 #endif

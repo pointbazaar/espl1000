@@ -46,6 +46,7 @@ void free_expr(struct Expr* expr);
 void free_term(struct Term* t);
 void free_un_op_term(struct UnOpTerm* t);
 void free_op(struct Op* op);
+void free_mdirect(struct MDirect* m);
 
 //var
 void free_variable(struct Variable* var);
@@ -61,6 +62,7 @@ void free_while_stmt(struct WhileStmt* ws);
 void free_for_stmt(struct ForStmt* fstmt);
 void free_switch_stmt(struct SwitchStmt* sstmt);
 void free_case_stmt(struct CaseStmt* cstmt);
+void free_massign_stmt(struct MAssignStmt* m);
 
 //c_types_util
 void free_array_type(struct ArrayType* at);

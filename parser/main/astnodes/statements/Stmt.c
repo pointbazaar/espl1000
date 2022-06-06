@@ -11,6 +11,7 @@
 #include "Call.h"
 #include "AssignStmt.h"
 #include "SwitchStmt.h"
+#include "MAssignStmt.h"
 
 #include "ast/util/free_ast.h"
 
@@ -157,30 +158,36 @@ void stmt_make_other(struct Stmt *res, struct TokenList *copy) {
 	
 	res->kind = 5;
 	res->ptr.m5 = makeAssignStmt(copy);
-	
+
 	if(res->ptr.m5 == NULL){
-		
-		res->kind = 1;
-		res->ptr.m1 = makeCall(copy);
-		if(res->ptr.m1 == NULL){
-			printf("expected method call, but was:\n");
-			list_print(copy);
-			
-			freeTokenListShallow(copy);
-			free(res);
-			
-			exit(1);
-		}
-		if(!list_expect(copy, SEMICOLON)){
-			printf("expected ';', but was:\n");
-			list_print(copy);
-			
-			freeTokenListShallow(copy);
-			free_call(res->ptr.m1);
-			free(res);
-			
-			exit(1);
-		}
+
+        res->kind = 9;
+        res->ptr.m9 = makeMAssignStmt(copy);
+
+        if(res->ptr.m9 == NULL) {
+
+            res->kind = 1;
+            res->ptr.m1 = makeCall(copy);
+            if (res->ptr.m1 == NULL) {
+                printf("expected method call, but was:\n");
+                list_print(copy);
+
+                freeTokenListShallow(copy);
+                free(res);
+
+                exit(1);
+            }
+            if (!list_expect(copy, SEMICOLON)) {
+                printf("expected ';', but was:\n");
+                list_print(copy);
+
+                freeTokenListShallow(copy);
+                free_call(res->ptr.m1);
+                free(res);
+
+                exit(1);
+            }
+        }
 	}
 }
 
