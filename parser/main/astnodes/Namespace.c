@@ -19,7 +19,7 @@ static void ns_parse_structs(struct Namespace* res, struct TokenList* copy);
 
 void ns_parse_passthrough_includes(struct Namespace* p_namespace, struct TokenList* p_list);
 
-struct Namespace* makeNamespace(struct TokenList* tokens, char* ast_filename, char* name) {
+struct Namespace *makeNamespace(struct TokenList *tokens, char *name) {
 
 	struct Namespace* res = make(Namespace);
 
@@ -41,11 +41,9 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* ast_filename, ch
 
 	res->src_path   = malloc(sizeof(char)*(strlen(name)+3+1));
 	res->token_path = malloc(sizeof(char)*(strlen(tokens->rel_path) + 1));
-	res->ast_path   = malloc(sizeof(char)*(strlen(ast_filename)+1));
 
 	sprintf(res->src_path, "%s.dg", name);
 	strcpy (res->token_path, tokens->rel_path);
-	strcpy (res->ast_path,   ast_filename);
 	strncpy(res->name,       name,      DEFAULT_STR_SIZE);
 	
 	struct TokenList* copy = list_copy(tokens);

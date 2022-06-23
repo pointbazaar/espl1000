@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
+- remove the AST I/O feature (the .file.dg.ast file format)
+  because i did not use the feature. It was intended to have a common format
+  to interact with the AST, for multiple programs to work on it. 
+  But it is way easier to just link the lexer and parser into the programs
+  which want to interact with the AST. It is simply not adding much to the compiler 
+  in terms of functionality and because of that i'm getting rid of `ast/io`.
+  It was too much work to maintain the serialization/deserialization of every AST node, 
+  which had to be changed whenever the syntax changed or the AST representation changed.
 
 ## [v0.3.1]
 - the arrows in the .dot file export for basic blocks now have colors {true:green, false:red}

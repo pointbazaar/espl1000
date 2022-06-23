@@ -3,7 +3,6 @@
 
 #include "invoke/invoke.h"
 #include "util/fileutils/fileutils.h"
-#include "ast/io/ast_reader.h"
 #include "tables/symtable/symtable.h"
 #include "util/fill_tables.h"
 #include "typechecker/typecheck.h"
@@ -11,6 +10,7 @@
 #include "test_typechecker_util.h"
 
 #include "compiler/main/util/ctx.h"
+#include "parser/main/util/parser.h"
 
 struct TCError* typecheck_file(char* filename){
 
@@ -20,13 +20,22 @@ struct TCError* typecheck_file(char* filename){
      * without having to build up the entire AST.
      */
 
-    invoke_lexer_parser(filename);
+    int status = invoke_lexer(filename);
 
-    char* ast_filenames[1];
-    ast_filenames[0] = make_ast_filename(filename);
+    if (WEXITSTATUS(status) != 0) {
+        printf("[Error] lexer exited with nonzero exit code\n");
+        goto end;
+    }
 
-    struct AST* ast = read_ast(ast_filenames, 1);
-	free(ast_filenames[0]);
+    struct Namespace* ns = invoke_parser(filename);
+
+    if (ns == NULL) {
+        printf("[Error] parser exited with nonzero exit code\n");
+        goto end;
+    }
+    end:
+    ;
+    struct AST* ast = build_ast(make_token_filename(filename));
 
     if(ast == NULL){ return NULL;}
 

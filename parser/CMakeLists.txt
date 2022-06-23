@@ -8,6 +8,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 
 add_library(dragon-parser-base
 
+	main/util/parser.c
 	main/util/parse_astnode.c
 
 	main/astnodes/const/BinConst.c
@@ -122,7 +123,6 @@ add_executable(dragon-parser-tests
 
 add_executable(dragon-parser
 	main/commandline/main.c
-	main/commandline/parser.c
 	main/commandline/parser_help.c
 	main/commandline/parser_flags.c
 	main/commandline/parser_help.c

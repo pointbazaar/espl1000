@@ -5,6 +5,7 @@
 #include "parser_flags.h"
 #include "parser_help.h"
 #include "parser.h"
+#include "ast/util/free_ast.h"
 
 #define ERR_EXPECT_1_FILENAME   "[Parser] expected exactly 1 filename argument.\n"
 #define ERR_FILE_NOT_EXIST      "[Parser] file %s does not exist.\n"
@@ -50,7 +51,9 @@ int main(int argc, char** argv){
     }
     fclose(f);
 
-    build_ast_file(flags->filename);
+    struct AST* ast = build_ast(flags->filename);
+
+    free_ast(ast);
 
     free(flags);
 

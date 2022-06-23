@@ -5,9 +5,6 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 add_library(${PROJECT_NAME} STATIC
-	io/ast_reader.c
-	io/ast_writer.c
-	io/serialize.c
 	util/copy_ast.c
 	util/equals_ast.c
 	util/free_ast.c
@@ -19,9 +16,6 @@ add_executable(${PROJECT_NAME}-test
 	test/test_ast.c
 	test/test_str_ast.c
 
-	io/ast_reader.c
-	io/ast_writer.c
-	io/serialize.c
 	util/copy_ast.c
 	util/equals_ast.c
 	util/free_ast.c

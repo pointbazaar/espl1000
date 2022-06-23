@@ -153,6 +153,10 @@ target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../tables/build/libsd-tables
 target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../rat/build/libsd-rat.a)
 #TAC dependency
 target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../tac/build/libsd-tac.a)
+#Parser dependency
+target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../parser/build/libdragon-parser-base.a)
+#Token dependency
+target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a)
 
 target_link_libraries("sd" sd-base)
 

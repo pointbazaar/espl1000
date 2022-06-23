@@ -1,7 +1,6 @@
 *.out
 *.o
 *.tokens
-*.ast
 ./main
 a.out
 .idea/

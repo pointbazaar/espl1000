@@ -66,6 +66,11 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
 
     struct BasicBlock* root = basicblock_create_graph(buffer, "main");
 
+    if(root == NULL){
+        printf("[Error] could not create BasicBlock.Exiting.\n");
+        exit(1);
+    }
+
     //populate ctx->st->lvst
     //lvst_clear(ctx->tables->lvst);
     //lvst_fill(m, ctx->tables);
@@ -106,9 +111,25 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
     }
 
     vmcu_model_t* model = vmcu_model_ctor(VMCU_DEVICE_M328P);
+
+    if(model == NULL){
+        printf("[Error] could not prepare vmcu_model_t. Exiting.\n");
+        exit(1);
+    }
+
     vmcu_report_t* report = vmcu_analyze_file(".file.hex", model);
 
+    if(report == NULL){
+        printf("[Error] could not prepare vmcu_report_t. Exiting.\n");
+        exit(1);
+    }
+
     vmcu_system_t* system = vmcu_system_ctor(report);
+
+    if(system == NULL){
+        printf("[Error] could not prepare vmcu_system_t. Exiting.\n");
+        exit(1);
+    }
 
     return system;
 }

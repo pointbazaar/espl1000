@@ -8,9 +8,9 @@
 
 #include "fileutils.h"
 
-char* make_ast_filename(char* filename){
+char* make_token_filename(char* filename){
 	
-	char* ast_filename = malloc(strlen(filename)+10);
+	char* token_filename = malloc(strlen(filename) + 10);
 	
 	char* fnamecpy = malloc(strlen(filename)+1);
 	strcpy(fnamecpy, filename);
@@ -20,12 +20,12 @@ char* make_ast_filename(char* filename){
 	strcpy(fnamecpy2, filename);
 	char* dir_name = dirname(fnamecpy2);
 	
-	sprintf(ast_filename, "%s/.%s.ast", dir_name, base_name);
+	sprintf(token_filename, "%s/.%s.tokens", dir_name, base_name);
 	
 	free(fnamecpy);
 	free(fnamecpy2);
 	
-	return ast_filename;
+	return token_filename;
 }
 
 
@@ -80,7 +80,7 @@ bool check_filenames_lowercase(struct Flags* flags){
         int result = regexec(&regex,filename_only, 0, NULL, 0);
 
         if(result != 0){
-            printf("[smalldragon][Error] filename %s did not match the required pattern for smalldragon filenames\n", filename);
+            printf("[Error] filename %s did not match the required pattern for filenames\n", filename);
             return false;
         }
     }

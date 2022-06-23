@@ -3,7 +3,7 @@
 
 #include "../../flags.h"
 
-char* make_ast_filename(char* filename);
+char* make_token_filename(char* filename);
 
 char* make_h_filename(char* filename);
 char* make_asm_filename(char* filename);

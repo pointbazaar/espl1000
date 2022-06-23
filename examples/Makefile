@@ -44,6 +44,5 @@ test:
 
 clean:
 	rm -f */*.tokens
-	rm -f */*.ast
 	rm -f */*.c
 	rm -f */*.out

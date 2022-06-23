@@ -105,7 +105,6 @@ void free_namespace(struct Namespace* ns) {
 	free(ns->externc);
 	
 	free(ns->src_path);
-	free(ns->ast_path);
 	free(ns->token_path);
 
 	free(ns);

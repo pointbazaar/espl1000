@@ -55,30 +55,35 @@ static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st){
 }
 
 bool compile(struct Flags* flags){
+
+    if(flags->count_filenames == 0){
+        printf("[Error] expected atleast 1 filename\n");
+        return false;
+    }
+
+    struct AST* ast = make(AST);
+    ast->count_namespaces = flags->count_filenames;
+    ast->namespaces = malloc(sizeof(struct Namespace*)*flags->count_filenames);
 	
 	for(int i=0;i < flags->count_filenames; i++){
 	
 		char* filename = flags->filenames[i];
-	
-		//invoke lexer, parser to generate .dg.ast file
-		bool success = invoke_lexer_parser(filename);
 
-		if(!success){
+        int status = invoke_lexer(filename);
 
-			printf("[Error]: could not lex/parse %s.\n", filename);
-			return false;
-		}
-	}
-	
-	struct AST* ast = invoke_ast_reader(flags);
-	
-	if(ast == NULL){ return false; }
+        if (WEXITSTATUS(status) != 0) {
+            printf("[Error] lexer exited with nonzero exit code\n");
+            return false;
+        }
 
-	if(flags->count_filenames == 0){
+        struct Namespace* ns = invoke_parser(filename);
 
-		printf("[Error] expected atleast 1 filename\n");
-		free_ast(ast);
-        return false;
+        if (ns == NULL) {
+            printf("[Error] parser exited with nonzero exit code\n");
+            return false;
+        }
+
+        ast->namespaces[i] = ns;
 	}
 
 	//output filenames

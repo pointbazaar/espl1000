@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include "flags.h"
 
-bool invoke_lexer_parser(char* filename);
 
-struct AST* invoke_ast_reader(struct Flags* flags);
+int invoke_lexer (char* filename);
+struct Namespace * invoke_parser(char* filename);
 
 #endif

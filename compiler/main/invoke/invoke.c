@@ -6,33 +6,12 @@
 #include <stdlib.h>
 #include <libgen.h>
 
-#include "ast/io/ast_reader.h"
 #include "util/fileutils/fileutils.h"
 #include "invoke.h"
+#include "parser/main/util/parser.h"
 
-static int invoke_lexer (char* filename);
-static int invoke_parser(char* filename);
 
-bool invoke_lexer_parser(char* filename){
-	
-	int status = invoke_lexer(filename);
-	
-	if(WEXITSTATUS(status) != 0){
-		printf("[Transpiler][Error] lexer exited with nonzero exit code\n");
-		return false;
-	}
-	
-	status = invoke_parser(filename);
-
-	if(WEXITSTATUS(status) != 0){
-		printf("[Transpiler][Error] parser exited with nonzero exit code\n");
-		return false;
-	}
-
-	return true;
-}
-
-static int invoke_lexer(char* filename){
+int invoke_lexer(char* filename){
 	
 	char* cmd1 = malloc(strlen(filename)+100);
 	
@@ -45,7 +24,7 @@ static int invoke_lexer(char* filename){
 	return status;
 }
 
-static int invoke_parser(char* filename){
+struct Namespace * invoke_parser(char* filename){
 	
 	char* fnamecpy = malloc(strlen(filename)+1);
 	strcpy(fnamecpy, filename);
@@ -54,33 +33,13 @@ static int invoke_parser(char* filename){
 	char* dir_name  = dirname(fnamecpy);
 	
 	char* cmd2 = malloc(strlen(filename)+100);
-	
-	sprintf(cmd2, "dragon-parser %s/.%s.tokens", dir_name, base_name);	
-	
-	int status = system(cmd2);
-	
+
+    sprintf(cmd2, "%s/.%s.tokens", dir_name, base_name);
+
+    struct Namespace* ns = build_namespace(cmd2);
+
 	free(cmd2);
 	free(fnamecpy);
 	
-	return status;
-}
-
-struct AST* invoke_ast_reader(struct Flags* flags){
-	
-	char* ast_filenames[flags->count_filenames];
-	
-	for(int i = 0; i < flags->count_filenames; i++){
-		
-		ast_filenames[i] = 
-			make_ast_filename(flags->filenames[i]);
-	}
-
-	struct AST* ast = read_ast(ast_filenames, flags->count_filenames);
-	
-	for(int i = 0; i < flags->count_filenames; i++){
-	
-		free(ast_filenames[i]);
-	}
-	
-	return ast;
+	return ns;
 }

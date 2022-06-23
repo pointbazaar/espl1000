@@ -3,7 +3,6 @@
 
 #include <invoke/invoke.h>
 #include <util/fileutils/fileutils.h>
-#include <ast/io/ast_reader.h>
 #include <tables/symtable/symtable.h>
 #include <util/fill_tables.h>
 #include <ast/util/free_ast.h>
@@ -15,6 +14,7 @@
 #include "typeinference/typeinfer.h"
 
 #include "compiler/main/util/ctx.h"
+#include "parser/main/util/parser.h"
 
 struct Type* typeinfer_in_file(char* filename){
 
@@ -24,15 +24,21 @@ struct Type* typeinfer_in_file(char* filename){
      * the last return statement must be the last statement in the function.
      */
 
-    bool success = invoke_lexer_parser(filename);
+    bool s = true;
+    int status = invoke_lexer(filename);
+
+    if (WEXITSTATUS(status) != 0) {
+        printf("[Error] lexer exited with nonzero exit code\n");
+        s = false;
+        goto end;
+    }
+
+    end:;
+    bool success = s;
     assert(success);
 
-    char* ast_filenames[1];
-    ast_filenames[0] = make_ast_filename(filename);
+    struct AST* ast = build_ast(make_token_filename(filename));
 
-    struct AST* ast = read_ast(ast_filenames, 1);
-
-	free(ast_filenames[0]);
     assert(ast != NULL);
 
     struct Ctx* ctx     = malloc(sizeof(struct Ctx));
