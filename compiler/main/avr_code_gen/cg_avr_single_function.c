@@ -25,6 +25,9 @@ void emit_create_stack_frame(uint32_t stack_frame_size, FILE* fout){
 void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FILE* fout){
     struct TACBuffer* buffer = tacbuffer_ctor();
 
+    //first the label of the function
+    tacbuffer_append(buffer, makeTACLabel2(m->decl->name),false);
+
     tac_method(buffer, m);
 
     //print the TAC for debug
@@ -40,9 +43,6 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FI
     //populate ctx->st->lvst
     lvst_clear(ctx->tables->lvst);
     lvst_fill(m, ctx->tables);
-
-    //emit label for the function
-    fprintf(fout, "%s:\n",m->decl->name);
 
     emit_create_stack_frame(lvst_stack_frame_size_avr(ctx->tables->lvst), fout);
 

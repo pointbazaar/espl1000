@@ -1,7 +1,102 @@
 
 fn main () ~> int {
+	//set D13 / PB5
 
-	[0x20] = 0x30;
-	int a = [0x20];
+	//set PORTB Data Direction Register
+	[0x24] = 0b00100000;
+	
+	while(true){
+		//set PORTB Data Register
+		[0x25] = 0b00000000;
+		
+		//wait
+		delay255();
+		
+		[0x25] = 0b00100000;
+		
+		//wait
+		delay255();
+	}
 	return 1;
 }
+
+/*
+fn delay25500000()-> int {
+	delay2550000();
+	delay2550000();
+	delay2550000();
+	delay2550000();
+	delay2550000();
+	delay2550000();
+	delay2550000();
+	delay2550000();
+	delay2550000();
+	delay2550000();
+	return 1;
+}
+
+fn delay2550000()-> int {
+	delay255000();
+	delay255000();
+	delay255000();
+	delay255000();
+	delay255000();
+	delay255000();
+	delay255000();
+	delay255000();
+	delay255000();
+	delay255000();
+	return 1;
+}
+
+fn delay255000()-> int {
+	delay25500();
+	delay25500();
+	delay25500();
+	delay25500();
+	delay25500();
+	delay25500();
+	delay25500();
+	delay25500();
+	delay25500();
+	delay25500();
+	return 1;
+}
+
+fn delay25500()-> int {
+	delay2550();
+	delay2550();
+	delay2550();
+	delay2550();
+	delay2550();
+	delay2550();
+	delay2550();
+	delay2550();
+	delay2550();
+	delay2550();
+	return 1;
+}
+
+fn delay2550()-> int {
+	delay255();
+	delay255();
+	delay255();
+	delay255();
+	delay255();
+	delay255();
+	delay255();
+	delay255();
+	delay255();
+	delay255();
+	return 1;
+}*/
+
+fn delay255() -> int {
+	
+	int i = 0;
+	while(i<255){
+		i++;
+	}
+	return 1;
+}
+

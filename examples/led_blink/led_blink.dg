@@ -1,0 +1,41 @@
+
+fn main () ~> int {
+	//set D13 / PB5
+
+	//set PORTB Data Direction Register
+	[0x24] = 0b00100000;
+	
+	while(true){
+		//set PORTB Data Register
+		[0x25] = 0b00100000;
+		
+		//wait
+		delay();
+		
+		[0x25] = 0b00000000;
+		
+		//wait
+		delay();
+	}
+	return 1;
+}
+
+fn delay() -> int {
+	
+	//TODO use timer0
+	//prescaler using cpu clock divided by 1024
+	
+	//tccr0b
+	[0x45] = (0b00000101);
+	
+	int i = 0;
+	while (i < 255){
+		//tcnt0
+		while([0x46] != 255){
+		
+		}
+		i++;
+	}
+	return 1;
+}
+

@@ -5,6 +5,9 @@
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
 void compile_tac_label(struct TAC* tac, FILE* fout){
+    //newline for readability
+    fprintf(fout, "\n");
+
     if(strcmp(tac->dest, "") == 0)
         fprintf(fout, "L%d:\n", tac->label_index);
     else
