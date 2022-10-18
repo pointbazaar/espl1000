@@ -33,13 +33,10 @@
 	</p>
 
 	<h2> Contents </h2>
-	<a href="stdlib-collections.html">collections/</a><br>
 	<a href="#math">math.dg</a><br>
 	<a href="#primes">primes.dg</a><br>
 	<a href="#polynomial">polynomial.dg</a><br>
 	<a href="#matrix">matrix.dg</a><br>
-	<a href="#ppm">ppm.dg</a><br>
-	<a href="#v2">v2.dg</a><br>
 
 	<hr>
 	<h3 id="math">math.dg (extends <a href="https://www2.hs-fulda.de/~klingebiel/c-stdlib/math.htm">math.h</a>)</h3>
@@ -62,6 +59,12 @@
 		<tr>
 			<td> ipow </td>
 			<td>(int base, uint power) -> int</td>
+			<td> O(power) </td>
+			<td>-</td>
+		</tr>
+		<tr>
+			<td> fpow </td>
+			<td>(float base, uint power) -> float</td>
 			<td> O(power) </td>
 			<td>-</td>
 		</tr>
@@ -134,12 +137,6 @@
 			<td> O(n) </td>
 			<td>-</td>
 		</tr>
-		<tr>
-			<td> nprimes </td>
-			<td> (uint n) ~> [unit32] </td>
-			<td> O(n^2) </td>
-			<td>+O(n)</td>
-		</tr>
 	</tbody>
 	</table>
 	
@@ -154,78 +151,28 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr style="color:green;">
-			<td>poly_ctor</td>
-			<td>(uint n) -> Poly</td>
-			<td>O(1)</td>
-			<td>+O(n)</td>
-		</tr>
-		<tr style="color:red;">
-			<td>poly_dtor</td>
-			<td>(Poly p) ~> bool</td>
-			<td>O(1)</td>
-			<td>-O(n)</td>
-		</tr>
-		<tr>
-			<td>poly_parse</td>
-			<td>([char] str) ~> Poly</td>
-			<td> ? </td>
-			<td>+O(n)</td>
-		</tr>
+		
 		<tr>
 			<td>poly_scale_inplace</td>
 			<td>(Poly a, float f) -> Poly</td>
 			<td>O(n)</td>
 			<td> - </td>
 		</tr>
-		<tr>
-			<td>poly_add</td>
-			<td>(Poly a, Poly b) ~> Poly</td>
-			<td>O(n)</td>
-			<td>+O(n)</td>
-		</tr>
-		<tr>
-			<td>poly_sub</td>
-			<td>(Poly a, Poly b) ~> Poly</td>
-			<td>O(n)</td>
-			<td>+O(n)</td>
-		</tr>
-		<tr>
-			<td>poly_mul</td>
-			<td>(Poly a, Poly b) ~> Poly</td>
-			<td>O(n^2)</td>
-			<td>+O(n)</td>
-		</tr>
+		
 		<tr>
 			<td>poly_deg</td>
 			<td>(Poly p) -> uint</td>
 			<td>O(n)</td>
 			<td> - </td>
 		</tr>
-		<tr>
-			<td>poly_print</td>
-			<td>(Poly p) ~> bool</td>
-			<td>O(n)</td>
-			<td> - </td>
-		</tr>
+		
 		<tr>
 			<td>poly_eval</td>
 			<td>(Poly p, float x) -> float</td>
 			<td>O(n)</td>
 			<td> - </td>
 		</tr>
-		<tr>
-			<td>poly_derivative</td>
-			<td>(Poly p) ~> Poly</td>
-			<td>O(n)</td>
-			<td>+O(n)</td>
-		</tr>
-		<tr>
-			<td>poly_integral</td>
-			<td>(Poly p) ~> Poly</td>
-			<td>O(n)</td>
-			<td>+O(n)</td>
-		</tr>
+		
 	</tbody>
 	</table>
 	
@@ -240,154 +187,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr style="color:green;">
-			<td>matrix_ctor</td><td>(uint nrows, uint ncols) ~> Matrix</td><td>O(nrows)</td><td>+O(nrows*ncols)</td>
-		</tr>
-		<tr style="color:red;">
-			<td>matrix_dtor</td><td>(Matrix a) ~> bool</td><td>O(nrows)</td><td>-O(nrows*ncols)</td>
-		</tr>
-		<tr>
-			<td>matrix_add</td><td>(Matrix a, Matrix b) ~> Matrix </td><td>O(nrows*ncols)</td><td>+O(nrows*ncols)</td>
-		</tr>
-		<tr>
-			<td>matrix_sub</td><td>(Matrix a, Matrix b) ~> Matrix </td><td>O(nrows*ncols)</td><td>+O(nrows*ncols)</td>
-		</tr>
-		<tr>
-			<td>matrix_scale</td><td>(Matrix a, float r) ~> Matrix</td><td>O(nrows*ncols)</td><td>+O(nrows*ncols)</td>
-		</tr>
-		<tr>
-			<td>matrix_mul</td><td>(Matrix a, Matrix b) ~> Matrix </td><td>O(a.nrows*b.ncols*a.ncols)</td><td>+O(a.nrows*a.ncols)</td>
-		</tr>
-		<tr>
-			<td>matrix_submatrix</td><td>(Matrix a, uint row, uint col) ~> Matrix </td><td>O(a.nrows*a.ncols)</td><td>+O((a.nrows-1)*(a.ncols-1))</td>
-		</tr>
-		<tr>
-			<td>matrix_det</td><td>(Matrix a) ~> float </td><td>TODO</td><td> - </td>
-		</tr>
-		<tr>
-			<td>matrix_transpose</td><td>(Matrix a) ~> Matrix</td><td>O(nrows*ncols)</td><td>+O(nrows*ncols)</td>
-		</tr>
-		<tr>
-			<td>matrix_pow</td><td>(Matrix a, uint power) ~> Matrix </td><td>O(a.nrows*b.ncols*a.ncols*power)</td><td>+O(nrows*ncols)</td>
-		</tr>
-		<tr>
-			<td>matrix_identity</td><td>(uint n) ~> Matrix</td><td>O(n)</td><td>+O(n*n)</td>
-		</tr>
+		
 	</tbody>
 	</table>
 	
-	<h3 id="ppm">ppm.dg (simple i/o for PPM Image Format)</h3>
-	<p>
-		The Behavior in Exceptional Cases is different here.<br>
-		The Subroutines which draw on the image will 
-		do bounds checking and simply not draw pixels out of bounds.<br>
-		<br>This is for convenience,
-		So we can can also draw 'over' the edges, clipping 
-		what's outside the Image.
-	</p>
-	<h5>Still TODO:</h5>
-	<ul>
-		<li>ppm_draw_rect_outline</li>
-		<li>ppm_draw_circle_outline</li>
-		<li>ppm_draw_ngon</li>
-		<li>ppm_draw_ngon_outline</li>
-		<li>ppm_draw_image (other ImagePPM)</li>
-	</ul>
-	<table class="table-bordered table box">
-	<thead>
-		<tr>
-			<th> Name </th>
-			<th> Type </th>
-			<th> Runtime </th>
-			<th> Heap Use</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr style="color:green;">
-			<td>ppm_ctor</td><td>(uint width, uint height) ~> ImagePPM</td><td>O(width*height)</td><td>+O(width*height)</td>
-		</tr>
-		<tr style="color:red;">
-			<td>ppm_dtor</td><td>(ImagePPM image) ~> bool</td><td>O(1)</td><td>-O(width*height)</td>
-		</tr>
-		<tr>
-			<td>ppm_set_color</td><td>(ImagePPM image, uint8 red, uint8 green, uint8 blue) ~> bool</td><td>O(1)</td><td> - </td>
-		</tr>
-		<tr>
-			<td>ppm_draw_pixel</td><td>(ImagePPM image, uint row, uint col) ~> bool</td><td>O(1)</td><td> - </td>
-		</tr>
-		<tr>
-			<td>ppm_draw_line</td><td>(ImagePPM image, uint row1, uint col1, uint row2, uint col2) ~> bool</td><td>O(max(abs(row2 - row1), abs(col2 - col1)))</td><td> - </td>
-		</tr>
-		<tr>
-			<td>ppm_draw_rect</td><td>(ImagePPM image, uint row, uint col, uint width, uint height) ~> bool</td><td>O(width*height)</td><td> - </td>
-		</tr>
-		<tr>
-			<td>ppm_draw_circle</td><td>(ImagePPM image, uint row, uint col, uint radius) ~> bool</td><td>O(radius*radius)</td><td> - </td>
-		</tr>
-		<tr>
-			<td>ppm_pixel_read_red</td><td>(ImagePPM image, uint row, uint col) -> uint8</td><td>O(1)</td><td> - </td>
-		</tr>
-		<tr>
-			<td>ppm_pixel_read_green</td><td>(ImagePPM image, uint row, uint col) -> uint8</td><td>O(1)</td><td> - </td>
-		</tr>
-		<tr>
-			<td>ppm_pixel_read_blue</td><td>(ImagePPM image, uint row, uint col) -> uint8</td><td>O(1)</td><td> - </td>
-		</tr>
-		<tr>
-			<td>ppm_write</td><td>(ImagePPM image, [char] filename) ~> bool</td><td>O(width*height)</td><td> - </td>
-		</tr>
-		<tr>
-			<td>ppm_read</td><td>([char] filename) ~> ImagePPM</td><td>O(width*height)</td><td>+O(width*height)</td>
-		</tr>
-	</tbody>
-	</table>
-	
-	<h3 id="v2">v2.dg (simple 2-component float vector)</h3>
-	<p>
-		...
-	</p>
-	<table class="table-bordered table box">
-	<thead>
-		<tr>
-			<th> Name </th>
-			<th> Type </th>
-			<th> Runtime </th>
-			<th> Heap Use</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr style="color:green;">
-			<td>v2_ctor</td><td>(float x1, float x2) ~> V2</td><td>O(1)</td><td>+O(1)</td>
-		</tr>
-		<tr style="color:red;">
-			<td>v2_dtor</td><td>(V2 v) ~> bool</td><td>O(1)</td><td>-O(1)</td>
-		</tr>
-		<tr>
-			<td>v2_copy</td><td>(V2 v) ~> V2</td>
-		</tr>
-		<tr>
-			<td>v2_add</td><td>(V2 a, V2 b) ~> bool</td>
-		</tr>
-		<tr>
-			<td>v2_sub</td><td>(V2 a, V2 b) ~> bool</td>
-		</tr>
-		<tr>
-			<td>v2_scale</td><td>(V2 a, float r) ~> bool</td>
-		</tr>
-		<tr>
-			<td>v2_dist</td><td>(V2 a, V2 b) -> float</td>
-		</tr>
-		<tr>
-			<td>v2_dist_manhattan</td><td>(V2 a, V2 b) -&gt; float</td>
-		</tr>
-		<tr>
-			<td>v2_mag</td><td>(V2 v) -> float</td>
-		</tr>
-		<tr>
-			<td>v2_normalize</td><td>(V2 v) ~> bool</td>
-		</tr>
-	</tbody>
-	</table>
 	
 </div>
 </body>
