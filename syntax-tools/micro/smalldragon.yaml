@@ -10,8 +10,7 @@ rules:
 
     - statement: "\\b(return|break|case)\\b"
     - statement: "\\b(if|else|while|for|switch)\\b"
-    - statement: "\\b(try|catch|throw)\\b"
-    - special: "\\b(fn|struct|externc|#include)\\b"
+    - special: "\\b(fn|struct|#include)\\b"
     
     - preproc: "\\b@[a-z]+\\b"
 
@@ -24,8 +23,6 @@ rules:
     - symbol.operator: "\\b(\\<|\\>|\\<=|\\>=)\\b"
     #arrows
     - symbol.operator: "\\b(->|-->|~>|~~>|=>|==>)\\b"
-    
-    - symbol.operator: "\\b(throws)\\b"
  
     - constant.bool: "\\b(true|false)\\b"
     - constant.number: "\\b[0-9]+\\b"

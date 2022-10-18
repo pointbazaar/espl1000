@@ -1,4 +1,3 @@
-externc fn get()->A "get"
 
 struct A {
 	(()->int) x;

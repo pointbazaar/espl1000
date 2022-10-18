@@ -36,15 +36,11 @@ static bool tc_methodcall_arg(
 	struct TCCtx* tcctx
 );
 
-static bool is_simple_libc_call(struct Call* m, struct TCCtx* tcctx);
-
 bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
 
 	tcctx->current_line_num = m->super.line_num;
 
     if(!tc_var(m->callable, tcctx)){return false;}
-
-    if(is_simple_libc_call(m, tcctx)){return true;}
 
     struct Type* subrtype = infer_type_variable(tcctx->st, m->callable);
 
@@ -74,22 +70,6 @@ bool tc_methodcall(struct Call* m, struct TCCtx* tcctx){
     return err1;
 }
 
-static bool is_simple_libc_call(struct Call* m, struct TCCtx* tcctx){
-
-    if(     sst_contains(tcctx->st->sst, m->callable->simple_var->name)
-        && (m->callable->member_access == NULL)
-        && (m->callable->simple_var->count_indices == 0)
-    ){
-        struct SSTLine* line = sst_get(tcctx->st->sst, m->callable->simple_var->name);
-
-        if(line->is_libc){
-            //we do not have the AST for libC
-            //subroutines, so we cannot typecheck the call
-            return true;
-        }
-    }
-    return false;
-}
 
 static bool tc_methodcall_args(
 	struct Call* m, 

@@ -33,10 +33,6 @@ void emit_call_main_endloop(FILE* fout){
 
 bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Ctx* ctx){
 
-    if(ctx->flags->emit_headers){
-        printf("-h not implemented for avr_code_gen");
-    }
-
     FILE* fout = fopen(asm_file_filename, "w");
     if(fout == NULL){
         printf("error opening output file\n");

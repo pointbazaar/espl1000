@@ -30,11 +30,6 @@ struct SSTLine {
 	//writes to memory, opens file, ...
 	bool has_side_effect;
 	
-	//if it is from libC
-	bool is_libc;
-
-	bool is_extern_c;
-	
 	//callees and callers
 	struct CC* cc; //may be NULL
 	
@@ -50,10 +45,6 @@ struct SSTLine {
 	
 	//-- encapsulation
 	bool is_private;
-
-    //maybe NULL, this is used if the function has a different
-	//name in c source code, possibly as a result of 'externc' usage
-	char* name_in_c;
 };
 
 

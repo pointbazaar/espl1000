@@ -15,7 +15,6 @@ struct Flags* makeFlags(int argc, char** argv){
 	flags->debug 	= false;
 	flags->help 	= false;
 	flags->version 	= false;
-	flags->emit_headers  = false;
 
 	flags->count_filenames    = 0;
 	flags->capacity_filenames = 100;
@@ -39,7 +38,6 @@ struct Flags* makeFlags2(){
     flags->debug         = false;
     flags->help          = false;
     flags->version       = false;
-    flags->emit_headers  = false;
 
     flags->count_filenames    = 0;
     flags->capacity_filenames = 100;
@@ -69,11 +67,6 @@ static void make_flags_inner(struct Flags* flags, char* arg){
 	
 	if(strcmp(arg, "-version") == 0){ 
 		flags->version = true;
-		return;
-	}
-	
-	if(strcmp(arg, "-h") == 0){
-		flags->emit_headers = true;
 		return;
 	}
 	

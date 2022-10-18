@@ -27,7 +27,7 @@ int main(int argc, char* argv[]){
     }
 
     if(flags->version){
-        printf("ESPL1000 v0.2.0\n");
+        printf("v0.2.0\n");
         freeFlags(flags);
         return EXIT_SUCCESS;
     }

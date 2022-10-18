@@ -28,13 +28,12 @@ bool tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx);
 bool tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx);
 bool tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx);
 bool tc_forstmt(struct ForStmt* f, struct TCCtx* tcctx);
-bool tc_trycatchstmt(struct TryCatchStmt* tcs, struct TCCtx* tcctx);
-bool tc_throwstmt(struct Stmt* s, struct TCCtx* tcctx);
 
 
 bool tc_expr(struct Expr* expr, struct TCCtx* tcctx);
 bool tc_unopterm(struct UnOpTerm* uot, struct TCCtx* tcctx);
 bool tc_term(struct Term* term, struct TCCtx* tcctx);
+bool tc_mdirect(struct MDirect* mdirect, struct TCCtx* tcctx);
 
 bool tc_var(struct Variable* v, struct TCCtx* tcCtx);
 bool tc_simplevar(struct SimpleVar* v, struct TCCtx* tcctx);

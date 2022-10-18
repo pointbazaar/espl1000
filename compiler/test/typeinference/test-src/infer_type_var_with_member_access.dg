@@ -1,4 +1,3 @@
-externc fn mystruct_ctor() -> MyStruct "mystruct_ctor"
 
 struct MyStruct {
 	int a;

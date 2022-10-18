@@ -10,12 +10,12 @@ static void sst_print_line(struct SSTLine* line, char* fmt);
 
 void sst_print(struct SST* sst){
 	
-	char* fmt = "%-20s|%-20s|%30s|%6s|%8s\n";
+	char* fmt = "%-20s|%30s|%6s|%8s\n";
 	
 	printf("[SST] Subroutine Symbol Table\n");
 	printf("----------------------------------------------------------------------------------------\n");
-	printf(fmt, "namespace",             "name",            "type / return type",         "is_libc","halts?");
-	printf("--------------------+--------------------+------------------------------+------+--------\n");
+	printf(fmt, "namespace",             "name",            "type / return type",   "halts?");
+	printf("--------------------+--------------------+------------------------------+--------\n");
 	
 	for(int i = 0; i < sst_size(sst); i++){
 		
@@ -28,8 +28,6 @@ void sst_print(struct SST* sst){
 
 static void sst_print_line(struct SSTLine* line, char* fmt){
 	
-	char* isLibC = (line->is_libc) ? "yes" : "no";
-		
 	char* halt_info = "-";
 	
 	if(line->halts != HALTS_UNKNOWN){
@@ -45,7 +43,7 @@ static void sst_print_line(struct SSTLine* line, char* fmt){
 		typeStr = str_type(line->return_type);
 	}
 	
-	printf(fmt, line->_namespace, line->name, typeStr, isLibC, halt_info);
+	printf(fmt, line->_namespace, line->name, typeStr, halt_info);
 	
 	if(line->type != NULL){ 
 		free(typeStr); 

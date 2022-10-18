@@ -38,13 +38,10 @@
 	<a id="ast">AST</a>	::= <a href="#namespace">Namespace</a>+
 	<br><br>
 	
-	<a id="namespace">Namespace</a>	::= <a href="#externc">ExternC</a>* <a href="#structdecl">StructDecl</a>* <a href="#method">Method</a>*
+	<a id="namespace">Namespace</a>	::=  <a href="#structdecl">StructDecl</a>* <a href="#method">Method</a>*
 	
 	<br><br>
-	
-	<a id="externc">ExternC</a> ::= "externc" ( <a href="#methoddecl">MethodDecl</a> | <a href="#structdecl">StructDecl</a>) StringConst
-	<br><br>
-	
+
 	<h2>Struct</h2>
 
 	<a id="structdecl">StructDecl</a> ::= "struct" <a href="#structtype">StructType</a> '{' <a href="#structmember">StructMember</a>* '}' 

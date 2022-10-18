@@ -7,7 +7,6 @@
 #include "ast/ast.h"
 #include "ast/util/free_ast.h"
 
-#include "c_code_gen/cg.h"
 #include "avr_code_gen/cg_avr.h"
 
 #include "flags.h"
@@ -101,10 +100,6 @@ bool compile(struct Flags* flags){
 
     ctx->indent_level = 0;
     ctx->file         = NULL;
-    ctx->header_file  = NULL;
-
-    ctx->in_try_block   = false;
-    ctx->index_try_stmt = 0;
 
     fill_tables(ast, ctx);
     transpileLambdas(ast, ctx->tables);
@@ -124,10 +119,6 @@ bool compile(struct Flags* flags){
 
 
     success = compile_and_write_avr(asm_filename, ast, ctx);
-
-    if(flags->emit_headers){
-		success = transpile_and_write_c_headers( h_filename, ast, flags, ctx);
-	}
 
 	free_ast(ast);
 	

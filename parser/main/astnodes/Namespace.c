@@ -11,9 +11,7 @@
 #include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
-#include "ExternC.h"
 
-static void ns_parse_externc(struct Namespace* res, struct TokenList* copy);
 static void ns_parse_methods(struct Namespace* res, struct TokenList* copy);
 static void ns_parse_structs(struct Namespace* res, struct TokenList* copy);
 
@@ -26,18 +24,15 @@ struct Namespace *makeNamespace(struct TokenList *tokens, char *name) {
 	//valgrind will complain about uninitialized bytes otherwise
 	memset(res, 0, sizeof(struct Namespace));
 
-	res->count_externc = 0;
 	res->count_methods = 0;
 	res->count_structs = 0;
 
 	const uint16_t INITIAL_CAPACITY = 5;
-	res->capacity_externc = INITIAL_CAPACITY;
 	res->capacity_methods = INITIAL_CAPACITY;
 	res->capacity_structs = INITIAL_CAPACITY;
 
 	res->methods = malloc(sizeof(struct Method*)     * res->capacity_methods);
 	res->structs = malloc(sizeof(struct StructDecl*) * res->capacity_structs);
-	res->externc = malloc(sizeof(struct ExternC*) 	  * res->capacity_externc);
 
 	res->src_path   = malloc(sizeof(char)*(strlen(name)+3+1));
 	res->token_path = malloc(sizeof(char)*(strlen(tokens->rel_path) + 1));
@@ -49,7 +44,7 @@ struct Namespace *makeNamespace(struct TokenList *tokens, char *name) {
 	struct TokenList* copy = list_copy(tokens);
 
 	ns_parse_passthrough_includes(res, copy);
-	ns_parse_externc(res, copy);
+
 	ns_parse_structs(res, copy);
 	ns_parse_methods(res, copy);
 
@@ -76,37 +71,6 @@ void ns_parse_passthrough_includes(struct Namespace* res, struct TokenList* copy
 
 		res->includes[res->count_includes++] = string;
 		list_consume(copy, 1);
-
-		next = list_head(copy);
-	}
-}
-
-static void ns_parse_externc(struct Namespace* res, struct TokenList* copy){
-
-	if (list_size(copy) == 0) { return; }
-
-	struct Token* next = list_head(copy);
-
-	while (next->kind == EXTERNC) {
-
-		struct ExternC* ec = makeExternC(copy);
-
-		if(ec == NULL){
-			printf("parsing error, expected an externc, but got:\n");
-			list_print(copy);
-			free_namespace(res);
-			exit(1);
-		}
-
-		res->externc[res->count_externc] = ec;
-		res->count_externc++;
-
-		if(res->count_externc >= res->capacity_externc){
-			res->capacity_externc *= 2;
-			res->externc = realloc(res->externc,sizeof(void*)*(res->capacity_externc));
-		}
-
-		if(list_size(copy) == 0){ return; }
 
 		next = list_head(copy);
 	}

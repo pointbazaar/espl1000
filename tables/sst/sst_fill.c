@@ -6,12 +6,8 @@
 #include "../symtable/symtable.h"
 #include "ast/util/copy_ast.h"
 
-static void sst_fill_externc(struct SST* sst, struct Namespace* ns);
-
 void sst_fill(struct ST* st, struct SST* sst, struct Namespace* ns){
 
-	sst_fill_externc(sst, ns);
-	
 	for(int i = 0; i < ns->count_methods; i++){
 		
 		struct Method* m = ns->methods[i];
@@ -70,29 +66,4 @@ struct Type* method_decl_to_type(struct MethodDecl* mdecl){
 	t->array_type = NULL;
 
 	return t;
-}
-static void sst_fill_externc(struct SST* sst, struct Namespace* ns){
-
-	for(int i = 0; i < ns->count_externc; i++) {
-
-		struct ExternC* ec = ns->externc[i];
-
-		if (ec->subr_decl == NULL){ continue; }
-
-		struct SSTLine* line = makeSSTLine(
-				ec->subr_decl->name,
-				"_EXTERN_C_",
-				ec->subr_decl->return_type,
-				true,
-				HALTS_UNKNOWN,
-				ec->subr_decl->has_side_effects
-		);
-
-		line->name_in_c = ec->name_in_c;
-		line->is_extern_c = true;
-
-		line->type = method_decl_to_type(ec->subr_decl); //correct?
-
-		sst_add(sst, line);
-	}
 }

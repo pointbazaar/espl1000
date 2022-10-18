@@ -38,20 +38,6 @@ struct STST* makeSTST(){
 
 void stst_fill(struct STST* stst, struct Namespace* ns){
 
-	for(int i = 0; i < ns->count_externc; i++) {
-
-		struct ExternC* ec = ns->externc[i];
-
-		if (ec->struct_decl == NULL){ continue; }
-
-		struct STSTLine* line = makeSTSTLine(ec->struct_decl, ns->name);
-
-		line->type_name_in_c = malloc(strlen(ec->name_in_c)+1);
-        strcpy(line->type_name_in_c, ec->name_in_c);
-
-		stst_add(stst, line);
-	}
-
 	for(int i=0;i < ns->count_structs; i++){
 
 		struct StructDecl* mystruct = ns->structs[i];

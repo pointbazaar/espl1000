@@ -43,10 +43,6 @@ static bool inner(struct SST* sst){
 		
 		if(line->halts != HALTS_UNKNOWN){ continue; }
 		
-		//we will not find out anything
-		//new about libC functions
-		if(line->is_libc){ continue; }
-		
 		if(!all_callees_terminate(sst, line->cc))
 			{ continue; }
 		

@@ -1,4 +1,3 @@
-externc fn arr_ctor() -> [bool] "arr_ctor"
 
 fn sub()~>bool {
 	[bool] arr = arr_ctor();

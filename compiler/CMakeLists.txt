@@ -17,14 +17,6 @@ add_library("sd-base"
 	main/analyzer/halts/halt_analyzer.c
 	main/analyzer/lv/lv_analyzer.c
 
-	#code_gen/c_code_gen
-        main/c_code_gen/cg.c
-        main/c_code_gen/cg_struct.c
-        main/c_code_gen/cg_subr.c
-        main/c_code_gen/cg_types.c
-        main/c_code_gen/_cg.h
-        main/c_code_gen/c_types_util/gen_c_types.c
-
 	#code_gen/avr_code_gen
 		main/avr_code_gen/cg_avr.c
 
@@ -81,6 +73,7 @@ add_library("sd-base"
 	main/typechecker/tc_expr.c
 	main/typechecker/tc_unopterm.c
 	main/typechecker/tc_term.c
+	main/typechecker/tc_mdirect.c
 	main/typechecker/tc_var.c
 	main/typechecker/util/tc_utils.c
 	main/typechecker/tc_range.c

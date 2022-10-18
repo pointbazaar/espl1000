@@ -22,7 +22,19 @@ static struct Type* typeFromStrPrimitive_inner(char* typeName){
 	res->type_param = NULL;
 	res->array_type = NULL;
 	
-	p->is_int_type   = strcmp(typeName, "int") == 0;
+	p->is_int_type    = false;
+	
+	p->is_int_type   |= strcmp(typeName, "int") == 0;
+
+	p->is_int_type   |= strcmp(typeName, "int8") == 0;
+	p->is_int_type   |= strcmp(typeName, "uint8") == 0;
+	p->is_int_type   |= strcmp(typeName, "int16") == 0;
+	p->is_int_type   |= strcmp(typeName, "uint16") == 0;
+	p->is_int_type   |= strcmp(typeName, "int32") == 0;
+	p->is_int_type   |= strcmp(typeName, "uint32") == 0;
+	p->is_int_type   |= strcmp(typeName, "int64") == 0;
+	p->is_int_type   |= strcmp(typeName, "uint64") == 0;
+
 	p->is_float_type = strcmp(typeName, "float") == 0;
 	p->is_char_type  = strcmp(typeName, "char") == 0;
 	p->is_bool_type  = strcmp(typeName, "bool") == 0;
@@ -41,36 +53,6 @@ static struct Type* typeFromStrPrimitive_inner(char* typeName){
 struct Type* typeFromStrPrimitive(struct ST* st, char* typeName){
 	
 	struct Type* res = typeFromStrPrimitive_inner(typeName);
-	
-	st_register_inferred_type(st, res);
-	
-	return res;
-}
-
-struct Type* typeFromStr(struct ST* st, char* typeName){
-	
-	//this method will only work for simple c_types_util,
-	//not subroutine c_types_util or array c_types_util.
-	
-	struct Type* res = make(Type);
-	
-	struct BasicType* btw = make(BasicType);
-	
-	res->basic_type = btw;
-	res->type_param = NULL;
-	res->array_type = NULL;
-	
-	struct SimpleType* simpleType = make(SimpleType);
-	struct StructType* structType = make(StructType);
-	
-	simpleType->primitive_type = NULL;
-	simpleType->struct_type    = structType;
-
-	structType->count_type_params = 0;
-	strncpy(structType->type_name, typeName, DEFAULT_STR_SIZE);
-	
-	btw->subr_type = NULL;
-	btw->simple_type = simpleType;
 	
 	st_register_inferred_type(st, res);
 	

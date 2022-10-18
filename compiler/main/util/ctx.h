@@ -17,16 +17,9 @@ struct ST;
  */
 struct Ctx {
 
-	FILE* header_file;
 	FILE *asm_file;
 	FILE* file; //where the output will be directed
 	uint8_t indent_level;
-	
-	//unique indexing of the try-statements in a subroutine
-	//during transpiling
-	uint16_t index_try_stmt; 
-	//are we transpiling inside a try-block right now?
-	bool in_try_block; 
 	
 	//the compiler flags
 	struct Flags* flags;

@@ -31,9 +31,8 @@ add_library(dragon-parser-base
 	main/astnodes/Namespace.c
 	main/astnodes/Range.c
 	main/astnodes/StmtBlock.c
-	main/astnodes/ExternC.c
 
-	main/astnodes/statements/AssignStmt.c
+        main/astnodes/statements/AssignStmt.c
 	main/astnodes/statements/MAssignStmt.c
 	main/astnodes/statements/Call.c
 	main/astnodes/statements/CaseStmt.c

@@ -36,6 +36,8 @@ bool tc_term(struct Term* term, struct TCCtx* tcctx){
 
         case 11: return true; //lambdas are already handled at this point
 		case 12: return tc_constvalue(term->ptr.m12);
+		
+		case 13: return tc_mdirect(term->ptr.m13, tcctx);
 	}
     return true;
 }

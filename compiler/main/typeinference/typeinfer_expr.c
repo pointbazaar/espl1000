@@ -53,14 +53,14 @@ struct Type* infer_type_expr(struct ST *st, struct Expr *expr) {
 	struct SimpleType* st1 = btw1->simple_type;
 	struct SimpleType* st2 = btw2->simple_type;
 	
-	if(st1 == NULL || st2 == NULL){ 
+	if(st1 == NULL || st2 == NULL){
 	    typeinfer_err_fatal(str_expr(expr));
 	}
 	
 	bool p1 = st1->primitive_type != NULL;
 	bool p2 = st2->primitive_type != NULL;
 	
-	if(!p1 || !p2){ 
+	if(!p1 || !p2){
 	    typeinfer_err_fatal(str_expr(expr));
 	}
 	
@@ -95,7 +95,7 @@ static struct Type* infer_type_expr_both_tparam(struct ST* st, struct TypeParam*
 }
 
 static struct Type *infer_type_expr_primitive(struct ST *st, struct Expr2Types *e2t) {
-	
+
 	struct PrimitiveType* p1 = e2t->p1;
 	struct PrimitiveType* p2 = e2t->p2;
 	struct Op* op = e2t->op;
@@ -114,6 +114,7 @@ static struct Type *infer_type_expr_primitive(struct ST *st, struct Expr2Types *
 	
 	const bool c1 = p1->is_char_type;
 	const bool c2 = p2->is_char_type;
+
 	
 	if(op->is_arithmetic){
 		
@@ -136,6 +137,8 @@ static struct Type *infer_type_expr_primitive(struct ST *st, struct Expr2Types *
 	if(op->is_bitwise)
 		{ return typeFromStrPrimitive(st, "int"); }
 
-	typeinfer_err_fatal(str_op(op));
-	return NULL;
+	//if we cannot figure out this thing,
+	//we assume it is int. this is just typeinference so
+	//no need to typecheck here.
+	return typeFromStrPrimitive(st, "int");
 }

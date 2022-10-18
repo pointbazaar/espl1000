@@ -1,10 +1,4 @@
 
-//depends on stdlib/externc/externc_libc.dg
-
-//some functions do not easily fit into smalldragon's
-//type system, like printf, sprintf, fprintf, scanf, ...
-//so here a few alternatives are implemented.
-
 @public
 fn print_int(int x)~>int {
 

@@ -25,8 +25,7 @@ SOURCES :=  test.dg \
 	collections/stack.dg \
 	collections/intbintree.dg \
 	collections/linkedlist.dg \
-	collections/arraylist.dg \
-	externc/externc_libc.dg $(TESTS)
+	collections/arraylist.dg 
 	#collections/array.dg \
 
 test: $(SOURCES) clean

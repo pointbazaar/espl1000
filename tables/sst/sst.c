@@ -85,7 +85,6 @@ struct SSTLine* makeSSTLine(
 	line->type         = NULL;
 	
 	line->return_type   = return_type;
-	line->is_libc       = isLibC;
 	line->cc            = make_cc();
 	
 	line->dead         = DEAD_UNKNOWN;
@@ -94,10 +93,6 @@ struct SSTLine* makeSSTLine(
 	line->is_private   = false;
 	
 	line->has_side_effect = has_side_effect;
-
-
-	line->name_in_c   = NULL;
-	line->is_extern_c = false;
 
 	return line;
 }
@@ -117,7 +112,6 @@ struct SSTLine* makeSSTLine2(
 	line->type         = type;
 	
 	line->return_type   = m->decl->return_type;
-	line->is_libc       = false;
 	line->cc            = make_cc();
 	
 	line->dead         = DEAD_UNKNOWN;
@@ -127,21 +121,12 @@ struct SSTLine* makeSSTLine2(
 	
 	line->has_side_effect = m->decl->has_side_effects;
 
-	line->name_in_c   = NULL;
-	line->is_extern_c = false;
-
 	return line;
 }
 
 void freeSSTLine(struct SSTLine* l){
 	
 	if(l->cc != NULL){ free_cc(l->cc); }
-
-	if (l->is_extern_c){
-		//externc functions have type that is not present in methods
-		//therefore managed by this SST.
-		free_type(l->type);
-	}
 
 	free(l);
 }

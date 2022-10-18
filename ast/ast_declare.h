@@ -13,7 +13,6 @@ struct Namespace;
 struct Method;
 struct StructDecl;
 struct MethodDecl;
-struct ExternC;
 //---------------
 struct StmtBlock;
 struct Op;
@@ -47,7 +46,6 @@ struct BreakStmt;
 struct ForStmt;
 struct SwitchStmt;
 struct CaseStmt;
-struct TryCatchStmt;
 //typenodes
 struct Type;
 struct ArrayType;

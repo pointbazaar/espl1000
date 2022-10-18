@@ -1,4 +1,3 @@
-externc fn point_ctor() -> Point<int> "make_point"
 
 struct Point<?T0> {
 	?T0 x1;

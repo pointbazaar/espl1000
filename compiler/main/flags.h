@@ -9,7 +9,6 @@ struct Flags {
 	bool debug;         //-debug
 	bool help;          //-help
 	bool version;       //-version
-	bool emit_headers;  //-h
 
     bool has_main_fn;
 

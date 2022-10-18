@@ -38,14 +38,8 @@ struct Namespace {
 	
 	char name[DEFAULT_STR_SIZE];
 
-	//passthrough-includes must be declared before externc statements
 	uint16_t count_includes;
 	char** includes;
-
-	//externc subroutines must be declared before structs
-	struct ExternC** externc;
-	uint16_t count_externc;
-	size_t capacity_externc;
 
 	//structs must be declared before the subroutines
 	struct StructDecl** structs;

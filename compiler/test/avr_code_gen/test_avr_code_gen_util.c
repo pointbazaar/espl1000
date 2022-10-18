@@ -25,10 +25,6 @@ static struct Ctx* prep_ctx(){
 
     ctx->indent_level = 0;
     ctx->file         = NULL;
-    ctx->header_file  = NULL;
-
-    ctx->in_try_block   = false;
-    ctx->index_try_stmt = 0;
 
     //fill_tables(ast, ctx);
 

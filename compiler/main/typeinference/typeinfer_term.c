@@ -23,13 +23,20 @@ struct Type *infer_type_term(struct ST *st, struct Term *t) {
 		case  5: return infer_type_expr(st, t->ptr.m5);
 		case  6: return infer_type_variable(st, t->ptr.m6);
 		case  8: return typeFromStrArray(st, "char");
-		//do not use lambda here
+        case 11:
+            printf("cannot infer type of lambda");
+            printf("[Typeinference][Error] Fatal. (in typeinfer_term.c). Exiting.\n");
+            exit(1);
+            return NULL;
+
 		case 12: return infer_type_constvalue(st, t->ptr.m12);
-        case 13: return infer_type_expr(st, t->ptr.m13->expr);
+
+        //MDirect is of type uint8
+        case 13: return typeFromStrPrimitive(st, "uint8");
+
 		default:
 		    printf("[Typeinference][Error] Fatal. (in typeinfer_term.c). Exiting.\n");
 		    exit(1);
+            return NULL;
 	}
-	
-	return NULL;
 }

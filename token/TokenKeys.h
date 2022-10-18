@@ -68,7 +68,6 @@
 #define SWITCH	63
 #define CASE	64
 
-#define EXTERNC	69
 #define INCLUDE_DECL 70
 
 //operator groups

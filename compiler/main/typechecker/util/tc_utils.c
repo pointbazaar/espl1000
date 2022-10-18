@@ -46,21 +46,6 @@ bool is_char_type(struct Type* type){
 	return type->basic_type->simple_type->primitive_type->is_char_type;
 }
 
-bool is_malloc_realloc(struct Expr* expr){
-	
-	if(expr->term2 != NULL){ return false; }
-	
-	if(expr->term1->op != NULL){ return false; }
-	
-	//TODO: use enum or constant not hardcoded magic num
-	if(expr->term1->term->kind != 4){ return false; }
-	
-	char* name = expr->term1->term->ptr.m4->callable->simple_var->name;
-	
-	return (strcmp(name, "malloc") == 0)
-	|| (strcmp(name, "realloc") == 0);
-}
-
 uint32_t max_indices_allowed(struct Type* type){
 
     if(type->array_type != NULL){

@@ -63,9 +63,6 @@ void visit_namespace(struct Namespace* n, VISITOR, void* arg){
 	//we do not visit the passthrough include declarations as they
 	//are just a workaround for now
 
-	for(int i = 0; i < n->count_externc; i++)
-	{ visit_externc(n->externc[i], visitor, arg); }
-	
 	for(int i = 0; i < n->count_structs; i++)
 		{ visit_struct_decl(n->structs[i], visitor, arg); }
 	
@@ -80,12 +77,7 @@ void visit_struct_decl(struct StructDecl* s, VISITOR, void* arg){
 	for(int i = 0; i < s->count_members; i++)
 		{ visit_struct_member(s->members[i], visitor, arg); }
 }
-void visit_externc(struct ExternC* ec,	VISITOR, ARG){
 
-	visitor(ec, NODE_EXTERNC, arg);
-	if (ec->subr_decl != NULL){ visit_method_decl(ec->subr_decl, visitor, arg); }
-	if (ec->struct_decl != NULL){ visit_struct_decl(ec->struct_decl, visitor, arg); }
-}
 void visit_method(struct Method* m, VISITOR, void* arg){
 	
 	visitor(m, NODE_METHOD, arg);
