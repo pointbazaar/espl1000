@@ -25,18 +25,13 @@ void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss){
         labels_cases[i] = label_case;
 
         //t2 = cs->const_value
-        struct TAC* tc = makeTAC();
-        tc->kind = TAC_CONST_VALUE;
-        sprintf(tc->dest, "t%d", make_temp());
-        tc->const_value = int_value_from_const(cs->const_value);
+        struct TAC* tc = makeTACConst(make_temp(), int_value_from_const(cs->const_value));
+        
         tacbuffer_append(buffer, tc, true);
 
         //t2 = t2 == tmp_expr
-        struct TAC* tc3 = makeTAC();
-        tc3->kind = TAC_BINARY_OP;
-        tc3->op = TAC_OP_CMP_EQ;
-        strcpy(tc3->dest, tc->dest);
-        strcpy(tc3->arg1, tmp_expr);
+        struct TAC* tc3 = makeTACBinOp(tc->dest, TAC_OP_CMP_EQ, tmp_expr);
+        
         tacbuffer_append(buffer, tc3, true);
 
         //if t1 goto LCase???

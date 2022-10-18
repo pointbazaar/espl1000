@@ -8,12 +8,13 @@
 void tac_call(struct TACBuffer* buffer, struct Call* call){
 
     for(size_t i = 0; i < call->count_args; i++){
+		
         struct Expr* expr = call->args[i];
+        
         tac_expr(buffer, expr);
+        
+        struct TAC* t = makeTACParam(buffer->buffer[buffer->count-1]->dest);
 
-        struct TAC* t = makeTAC();
-        t->kind = TAC_PARAM;
-        strcpy(t->arg1, buffer->buffer[buffer->count-1]->dest);
         tacbuffer_append(buffer, t, true);
     }
 
@@ -26,10 +27,8 @@ void tac_call(struct TACBuffer* buffer, struct Call* call){
         printf("calls with indices currently unsupported on avr_code_gen\n");
         exit(1);
     }
+    
+    struct TAC* t2 = makeTACCall(make_temp(), call->callable->simple_var->name);
 
-    struct TAC* t2 = makeTAC();
-    t2->kind = TAC_CALL;
-    sprintf(t2->dest, "t%d", make_temp());
-    strcpy(t2->arg1, call->callable->simple_var->name);
     tacbuffer_append(buffer, t2, true);
 }

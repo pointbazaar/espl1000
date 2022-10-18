@@ -40,14 +40,11 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f){
     sprintf(t3c, "t%d", t3);
 
     tacbuffer_append(buffer, makeTACCopy(t3c, t1), true);
+    
+    char t3str[10];
+    sprintf(t3str, "t%d", t3);
 
-    struct TAC* tcmp = makeTAC();
-    tcmp->kind = TAC_BINARY_OP;
-    tcmp->op = TAC_OP_CMP_GE;
-    sprintf(tcmp->arg1, "t%d", t3);
-    sprintf(tcmp->dest, "%s", t2);
-
-    tacbuffer_append(buffer, tcmp, true);
+    tacbuffer_append(buffer, makeTACBinOp(t2, TAC_OP_CMP_GE, t3str), true);
 
     struct TAC* t = makeTACIfGoto(t3c, l1);
     tacbuffer_append(buffer, t, true);

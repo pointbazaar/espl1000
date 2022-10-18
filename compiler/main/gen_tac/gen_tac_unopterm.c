@@ -11,23 +11,24 @@ void tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* u){
     tac_term(buffer, u->term);
 
     if(u->op != NULL){
-        struct TAC* t = makeTAC();
-        t->kind = TAC_UNARY_OP;
-        sprintf(t->dest,"t%d", make_temp());
-        strcpy(t->arg1, buffer->buffer[buffer->count - 1]->dest);
+        
+        char dest_str[10];
+        sprintf(dest_str, "t%d", make_temp());
 
-        t->op = TAC_OP_NONE;
+        enum TAC_OP op = TAC_OP_NONE;
         char* opstr = u->op->op;
 
-        if(strcmp(opstr, "-") == 0) t->op = TAC_OP_UNARY_MINUS;
-        if(strcmp(opstr, "!") == 0) t->op = TAC_OP_UNARY_NOT;
-        if(strcmp(opstr, "~") == 0) t->op = TAC_OP_UNARY_BITWISE_NEG;
+        if(strcmp(opstr, "-") == 0) op = TAC_OP_UNARY_MINUS;
+        if(strcmp(opstr, "!") == 0) op = TAC_OP_UNARY_NOT;
+        if(strcmp(opstr, "~") == 0) op = TAC_OP_UNARY_BITWISE_NEG;
 
-        if(t->op == TAC_OP_NONE){
-            printf("error, t->op was none of supported TAC_OP_... values\n");
+        if(op == TAC_OP_NONE){
+            printf("error, op was none of supported TAC_OP_... values\n");
             printf("opstr is %s\n", opstr);
             exit(1);
         }
+        
+        struct TAC* t = makeTACUnaryOp(dest_str, buffer->buffer[buffer->count - 1]->dest, op);
 
         tacbuffer_append(buffer, t, true);
     }

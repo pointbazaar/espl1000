@@ -78,10 +78,12 @@ struct TAC{
 
 bool tac_is_unconditional_jump(struct TAC* tac);
 
-struct TAC* makeTAC();
 char* tac_tostring(struct TAC* tac);
 uint32_t make_label();
 uint32_t make_temp();
+
+//for most TACs, there should be a dedicated constructor,
+//which helps with avoiding invalid state and malformed TACs
 
 struct TAC* makeTACLabel(uint32_t label);
 struct TAC* makeTACLabel2(char* label);
@@ -91,9 +93,13 @@ struct TAC* makeTACIfGoto(char* tmp_condition, uint32_t label_destination);
 struct TAC* makeTACCopy(char* dest, char* src);
 struct TAC* makeTACConst(uint32_t tmp, int value);
 
+struct TAC* makeTACBinOp(char* dest, enum TAC_OP op, char* src);
 struct TAC* makeTACBinOpImmediate(char* tmp, enum TAC_OP op, int32_t immediate);
 struct TAC* makeTACUnaryOp(char* dest, char* src, enum TAC_OP op);
 
 struct TAC* makeTACStoreConstAddr(uint32_t addr, char* src);
 struct TAC* makeTACLoadConstAddr(char* dest, uint32_t addr);
+
+struct TAC* makeTACParam(char* dest);
+struct TAC* makeTACCall(uint32_t tmp, char* function_name);
 #endif

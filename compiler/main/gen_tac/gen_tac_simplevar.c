@@ -13,11 +13,9 @@ void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* v){
         printf("indices not yet implemented for avr_code_gen\n");
         exit(1);
     }
-
-    struct TAC* t = makeTAC();
-    t->kind = TAC_COPY;
-    sprintf(t->dest, "t%d", make_temp());
-    strcpy(t->arg1, v->name);
-
-    tacbuffer_append(buffer, t, true);
+    
+    char tmp[10];
+    sprintf(tmp, "t%d", make_temp());
+    
+    tacbuffer_append(buffer, makeTACCopy(tmp, v->name), true);
 }

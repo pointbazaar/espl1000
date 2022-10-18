@@ -11,6 +11,8 @@ static uint32_t temp_count = 0; //temporaries for TAC
 
 static uint32_t current_label_index = TAC_NO_LABEL+1;
 
+static struct TAC* makeTAC();
+
 
 struct TAC* makeTAC(){
     struct TAC* res = malloc(sizeof(struct TAC));
@@ -85,6 +87,18 @@ struct TAC* makeTACConst(uint32_t tmp, int value){
     return t;
 }
 
+struct TAC* makeTACBinOp(char* dest, enum TAC_OP op, char* src){
+	
+	struct TAC* t = makeTAC();
+	
+    t->kind = TAC_BINARY_OP;
+    sprintf(t->dest, "%s", dest);
+    t->op = op;
+    sprintf(t->arg1, "%s", src);
+    
+    return t;
+}
+
 struct TAC* makeTACBinOpImmediate(char* tmp, enum TAC_OP op, int32_t immediate){
     struct TAC* t = makeTAC();
     t->kind = TAC_BINARY_OP_IMMEDIATE;
@@ -117,6 +131,22 @@ struct TAC* makeTACLoadConstAddr(char* dest, uint32_t addr){
     t->kind = TAC_LOAD_CONST_ADDR;
     sprintf(t->dest, "%s", dest);
     t->const_value = addr;
+    return t;
+}
+
+
+struct TAC* makeTACParam(char* dest){
+	struct TAC* t = makeTAC();
+    t->kind = TAC_PARAM;
+    sprintf(t->dest, "%s", dest);
+    return t;
+}
+
+struct TAC* makeTACCall(uint32_t tmp, char* function_name){
+	struct TAC* t = makeTAC();
+    t->kind = TAC_CALL;
+    sprintf(t->dest, "t%d", tmp);
+    strcpy(t->arg1, function_name);
     return t;
 }
 

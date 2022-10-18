@@ -104,22 +104,19 @@ static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr*
 
     tac_unopterm(buffer, expr->term2);
     char* t2 = buffer->buffer[buffer->count - 1]->dest;
-
-    struct TAC* t = makeTAC();
-    
-    t->kind = TAC_BINARY_OP;
     
     bool reverse_operands = false;
-    t->op = op_str_to_tac_op(expr->op->op, &reverse_operands);
-
+    
+    enum TAC_OP op = op_str_to_tac_op(expr->op->op, &reverse_operands);
+    
+    struct TAC* t;
+    
 	if(reverse_operands){
 		
-		strcpy(t->dest, t2);
-		sprintf(t->arg1, "%s", t1);
+		t = makeTACBinOp(t2, op, t1);
 	}else{
 		
-		sprintf(t->dest, "%s", t1);
-		strcpy(t->arg1,  t2);
+		t = makeTACBinOp(t1, op, t2);
 	}
 
     tacbuffer_append(buffer, t, true);
