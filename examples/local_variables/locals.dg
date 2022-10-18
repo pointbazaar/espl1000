@@ -1,8 +1,0 @@
-#include <stdio.h>
-fn main ()~> int {
-	uint x = 55;
-
-	puts("Hii ");
-	println_int(x);
-	return 0;
-}

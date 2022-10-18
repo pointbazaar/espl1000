@@ -6,40 +6,11 @@ struct ArrayList<?T0> {
 	@private uint64 capacity;
 }
 
-fn arraylist_ctor_int() ~> ArrayList<int> {
-	
-	ArrayList<int> res = malloc(3*8);
-	
-	res.size     = 0;
-	res.capacity = 10;
-	res.arr      = malloc(res.capacity * 8);
-	
-	return res;
-}
-
-fn arraylist_dtor(ArrayList<?T0> list) ~> bool {
-
-	free(list.arr);
-	free(list);
-
-	return true;
-}
 
 fn arraylist_size(ArrayList<?T0> list) -> uint64 {
 	return list.size;
 }
 
-fn arraylist_insert(ArrayList<?T0> list, ?T0 elem) ~> bool {
-
-	if list.size >= list.capacity {
-		_arraylist_resize(list);
-	}
-	
-	list.arr[list.size] = elem;
-	list.size++;
-
-	return true;
-}
 
 fn arraylist_at(ArrayList<?T0> list, uint64 index) -> ?T0 {
 	
@@ -67,10 +38,4 @@ fn arraylist_clear(ArrayList<?T0> list) ~> bool {
 	return true;
 }
 
-fn _arraylist_resize(ArrayList<?T0> list) ~> bool {
-	
-	list.capacity *= 2;
-	list.arr = realloc(list.arr, list.capacity * 8);
-	
-	return true;
-}
+

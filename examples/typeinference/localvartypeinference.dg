@@ -8,7 +8,6 @@ fn main () ~> int {
 	b = a12 + 4 + subr();
 	subr();
 
-	println_int(b);
 }
 
 fn subr() -> int {

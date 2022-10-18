@@ -1,8 +1,0 @@
-#include <stdio.h>
-
-fn main ()~> int {
-	char c = 'h';
-		
-	putchar(c);
-	return 0;
-}

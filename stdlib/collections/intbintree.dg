@@ -22,47 +22,6 @@ struct IntBinTreeNode {
 	IntBinTreeNode right;
 }
 
-fn intbintree_ctor() ~> IntBinTree {
-
-	return malloc(8+8);
-}
-
-fn intbintree_dtor(IntBinTree t) ~> bool {
-
-	if t.has_root { intbintreenode_dtor(t.root); }
-	free(t);
-	return true;
-}
-
-@private
-fn intbintreenode_ctor() ~> IntBinTreeNode {
-	IntBinTreeNode res = malloc(8*4);
-	res.has_left  = false;
-	res.has_right = false;
-	return res;
-}
-
-@private
-fn intbintreenode_dtor(IntBinTreeNode t) ~> bool {
-
-	if t.has_left { intbintreenode_dtor(t.left);  }
-	if t.has_right { intbintreenode_dtor(t.right); }
-	free(t);
-	return true;
-}
-
-fn intbintree_insert(IntBinTree t, int key) ~> int {
-
-	if !t.has_root {
-		t.root = intbintreenode_ctor();
-		t.root.key = key;
-		t.has_root = true;
-		return key;
-	}
-	
-	return intbintreenode_insert(t.root, key);
-}
-
 fn intbintree_contains(IntBinTree t, int key) -> bool {
 	
 	return intbintreenode_contains(t.root, key);
@@ -82,41 +41,6 @@ fn intbintree_visit (IntBinTree t, ( (int)->bool ) visitor) -> bool {
 
 //---------------------------------------------------------
 
-@private
-fn intbintreenode_insert(IntBinTreeNode t, int key) -> int {
-	
-	c = t; //c urrent
-	
-	while c.key != key {
-
-		switch compare(key, c.key) {
-		
-			case -1 {
-				if c.left == 0 { 
-					c.left = intbintreenode_ctor();
-					c.left.key = key;
-
-					c.has_left = true;
-					return key;
-				}
-				else { c = c.left; }
-			}
-			case  1 {
-				if c.right == 0 { 
-				    c.right = intbintreenode_ctor();
-					c.right.key = key;
-
-					c.has_right = true;
-					return key;
-				}
-				else { c = c.right; }
-			}
-			case  0 { return key; }		
-		}
-	}
-	
-	return key;
-}
 
 @private
 fn intbintreenode_contains(IntBinTreeNode t, int key) -> bool {

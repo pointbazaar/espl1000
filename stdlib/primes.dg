@@ -14,24 +14,3 @@ fn isprime(uint64 n) -> bool {
 	return count == 2;
 }
 
-//calculates an array 
-//of the first n primes
-fn nprimes(uint n) ~> [uint32] {
-
-	//maybe replace with a
-	//better implementation, e.g. sieve
-	[uint32] res = malloc(4*n);
-
-	uint count = 0;	
-	uint k = 2;
-
-	while count < n {
-
-		if isprime(k) {	
-			res[count] = k;
-			count++;
-		}
-		k++;
-	}
-	return res;
-}

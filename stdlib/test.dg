@@ -8,16 +8,13 @@ fn main() ~> int {
 }
 
 fn status([char] module) ~> bool {
-	[char] str = malloc(100);
-	strcpy(str, "[stdlib][Test] ");
-	strcat(str, module);
-	puts(str);
-	free(str);
+	
 	return true;
 }
 
 fn main2() ~> int {
 	
+	/*
 	status("math"); test_math();
 
 	status("primes"); test_primes();
@@ -36,14 +33,7 @@ fn main2() ~> int {
 	
 	status("polynomial"); test_polynomial();
 	
-	status("matrix"); test_matrix();
-	
-	status("v2"); test_v2();
-	
-	status("collision2d"); test_collision2d();
-
-	puts("[stdlib] PASSED ALL TESTS\n");
-
+	*/
 	return 0;
 }
 

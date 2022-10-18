@@ -6,42 +6,6 @@ struct Set<?T0> {
 	@private [?T0] arr;
 }
 
-fn set_ctor(?T0 sample) ~> Set<?T0> {
-
-	Set<?T0> s = malloc(4+4+8);
-
-	s.size = 0;
-	s.capacity = 10;
-	s.arr = malloc(8 * (s.capacity));
-
-	return s;
-}
-
-fn set_ctor_int() ~> Set<int> {
-
-	Set<int> s = malloc(4+4+8);
-	s.size = 0;
-	s.capacity = 10;
-	s.arr = malloc(8 * s.capacity);
-	return s;
-}
-
-fn set_ctor_bool() ~> Set<bool> {
-
-	Set<bool> s = malloc(4+4+8);
-	s.size = 0;
-	s.capacity = 10;
-	s.arr = malloc(8 * s.capacity);
-	return s;
-}
-
-fn set_dtor(Set<?T0> s) ~> bool {
-
-	free(s.arr);
-	free(s);
-
-	return true;
-}
 
 fn set_size(Set<?T0> s) -> uint {
 	
@@ -58,27 +22,6 @@ fn set_contains(Set<?T0> s, ?T0 x) -> bool {
 	return false;
 }
 
-fn set_insert(Set<?T0> s, ?T0 x) ~> bool {
-	
-	if set_contains(s, x) { return true; }
-
-	if s.size >= s.capacity {
-
-		uint oldcap  = s.capacity;
-		s.capacity   = s.capacity * 2;
-		[?T0] newarr = malloc(4 * (s.capacity));
-		
-		memcpy(newarr, s.arr, oldcap);
-
-		free(s.arr);
-		s.arr = newarr;
-	}
-	
-	s.arr[s.size] = x;
-	s.size++;
-
-	return true;
-}
 
 fn set_remove(Set<?T0> s, ?T0 x) -> bool {
 
@@ -105,30 +48,3 @@ fn set_remove(Set<?T0> s, ?T0 x) -> bool {
 	return true;
 }
 
-fn set_union(Set<?T0> a, Set<?T0> b) ~> Set<?T0> {
-
-	Set<?T0> res = set_ctor(0);
-	
-	for i in 0 .. a.size - 1 {
-		set_insert(res, a.arr[i]);
-	}
-	
-	for i in 0 .. b.size - 1 {
-		set_insert(res, b.arr[i]);
-	}
-	
-	return res;
-}
-
-fn set_cut(Set<?T0> a, Set<?T0> b) ~> Set<?T0> {
-
-	Set<?T0> res = set_ctor(0);
-	
-	for i in 0 .. a.size - 1 {
-		if set_contains(b, a.arr[i]) {
-			set_insert(res, a.arr[i]);
-		}
-	}
-	
-	return res;
-}

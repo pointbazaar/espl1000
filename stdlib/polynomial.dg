@@ -1,6 +1,3 @@
-#include <stdlib.h>
-//simple implementation of some subroutines for calculations on polynomials
-//this (struct Poly) should become a generic type once smalldragon support them.
 
 struct Poly {
 	[float] coeff;
@@ -15,118 +12,6 @@ struct Monomial {
 	uint16 exponent;
 }
 
-fn poly_ctor(uint n) ~> Poly{
-	Poly res = malloc(8+8);
-	res.n = n;
-	res.coeff = malloc(2*n);
-	for i in 0 .. (n-1) { res.coeff[i] = 0.0; }
-	return res;
-}
-
-fn poly_dtor(Poly p) ~> bool {
-	free(p.coeff);
-	free(p);
-	return true;
-}
-
-fn monomial_ctor() ~> Monomial {
-	Monomial res = malloc(4+4);
-	return res;
-}
-
-fn poly_parse([char] s) ~> Poly {
-	//exponents must not be decreasing
-	//exponents may repeat
-	//+/- between terms is important
-	//"3x^3 +  2x -1" -> Poly instance
-	l = strlen(s);
-	Poly res = poly_ctor(1);
-
-	i = 0;
-	sign = 1.0;
-	while i < l {
-	
-		if s[i] != ' ' {
-
-			m   = monomial_parse_i(s, i);
-			p   = monomial_to_poly(m);
-			poly_scale_inplace(p, sign);
-			old = res;
-			res = poly_add(res, p);
-			poly_dtor(old);
-			poly_dtor(p);
-			free(m);
-
-			while 
-			s[i] != '+' && 
-			s[i] != '-' &&
-			i < (l-1) { i++; }
-
-			if s[i] == '-' { sign = -1.0; }
-			if s[i] == '+' { sign =  1.0; }
-		}
-		i++;
-	}
-
-	return res;
-}
-
-@private 
-fn monomial_to_poly(Monomial m) ~> Poly {
-	res = poly_ctor(m.exponent+1);
-	res.coeff[m.exponent] = m.factor;
-	return res;
-}
-
-@private
-fn monomial_parse([char] s) ~> Monomial {
-	return monomial_parse_i(s, 0);
-}
-
-@private
-fn monomial_parse_i([char] s, uint i) ~> Monomial {
-
-	Monomial res = monomial_ctor();
-	res.factor   = 0.0;
-	res.exponent = 0;
-
-	l = strlen(s);
-
-	//   3x^2
-
-	while i < l && s[i] == ' ' { i++; }
-
-	//3x^2
-	[char] s2 = malloc(2);
-
-	if s[i] != 'x' {
-		
-		s2[0] = s[i];
-		s2[1] = s[i+1];
-		res.factor = atof(s2);
-		i++;
-	} else { res.factor = 1.0; }
-
-	if i >= l || s[i] != 'x' { 
-		res.exponent = 0;
-		free(s2);
-		return res;
-	}
-
-	i++; //skip x
-
-	if s[i] == '^' { 
-
-		i++; //skip ^
-		s2[0] = s[i];
-		res.exponent = atoi(s2);
-	} else {
-		res.exponent = 1;
-	}
-
-	free(s2);
-	return res;
-}
 
 fn poly_deg(Poly p) -> uint {
 	uint i = p.n - 1;
@@ -143,100 +28,12 @@ fn poly_scale_inplace(Poly a, float f) -> Poly {
 	return a;
 }
 
-fn poly_add(Poly a, Poly b) ~> Poly {
-	res = poly_ctor(max(a.n, b.n));
-	for i in 0 .. res.n - 1 {
-		res.coeff[i] = 0.0;
-		if i < a.n { res.coeff[i] += a.coeff[i]; }
-		if i < b.n { res.coeff[i] += b.coeff[i]; }
-	}
-	return res;
-}
-
-fn poly_sub(Poly a, Poly b) ~> Poly {
-	res = poly_ctor(max(a.n, b.n));
-	for i in 0 .. res.n - 1 {
-		res.coeff[i] = 0.0;
-		if i < a.n { res.coeff[i] += a.coeff[i]; }
-		if i < b.n { res.coeff[i] -= b.coeff[i]; }
-	}
-	return res;
-}
-
-fn poly_mul(Poly a, Poly b) ~> Poly {
-	//(a0, a1, ...)(b0, b1, ...)
-	
-	res = poly_ctor(a.n + b.n);
-	
-	for n in 0 .. res.n - 1 {
-		
-		k = 0.0;
-		for i in 0 .. n {
-			k1 = safe_index(a.coeff, a.n, i);
-			k2 = safe_index(b.coeff, b.n, n-i);
-			k += k1 * k2;
-		}
-		
-		res.coeff[n] = k;
-	}
-	
-	return res;
-}
-
-fn poly_print(Poly p) ~> bool {
-
-	int i = p.n - 1;
-	uint count_printed = 0;
-	while i >= 0 {
-		float c = p.coeff[i];
-		
-		if c != 0 {
-			if count_printed > 0 {
-				if c >= 0 { puts(" + "); }
-				else { puts(" - "); }
-			}
-			print_float(fabs(c));
-			if i > 0 {
-				puts("x^");
-				print_int(i);
-			}
-			count_printed++;
-		}
-		i--;
-	}
-	puts("\n");
-	return true;
-}
 
 fn poly_eval(Poly p, float x) -> float {
 
 	float res = 0.0;
 	for i in 0 .. p.n - 1 {
-		res += p.coeff[i] * pow(x, i);
-	}
-	return res;
-}
-
-fn poly_derivative(Poly p) ~> Poly {
-
-	// a x ^ n -> (a*n) x ^ (n-1)
-	
-	res = poly_ctor(p.n - 1);
-	
-	for i in 0 .. res.n - 1 {
-		res.coeff[i] = p.coeff[i+1] * (i+1.0);
-	}
-	return res;
-}
-
-fn poly_integral(Poly p) ~> Poly {
-
-	// a x ^ n -> (a / (n+1)) x ^ (n+1)
-	
-	res = poly_ctor(p.n + 1);
-	
-	for i in 1 .. res.n - 1 {
-		res.coeff[i] = p.coeff[i-1] / (i * 1.0);
+		res += p.coeff[i] * fpow(x, i);
 	}
 	return res;
 }

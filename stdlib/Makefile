@@ -1,8 +1,6 @@
 
 TESTS := tests/test_matrix.dg \
 	tests/test_polynomial.dg \
-	tests/test_v2.dg \
-	tests/test_collision2d.dg \
 	tests/test_math.dg \
 	tests/test_primes.dg \
 	tests/collections/test_set.dg \
@@ -13,14 +11,10 @@ TESTS := tests/test_matrix.dg \
 	#tests/collections/test_array.dg \
 
 SOURCES :=  test.dg \
-	base.dg \
 	primes.dg \
 	math.dg \
 	polynomial.dg \
 	matrix.dg \
-	ppm.dg \
-	v2.dg \
-	collision2d.dg \
 	collections/set.dg \
 	collections/stack.dg \
 	collections/intbintree.dg \
@@ -29,7 +23,7 @@ SOURCES :=  test.dg \
 	#collections/array.dg \
 
 test: $(SOURCES) clean
-	sd -g $(SOURCES)
+	sd $(SOURCES) 
 	./a.out
 
 clean:

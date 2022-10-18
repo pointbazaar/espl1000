@@ -8,35 +8,6 @@ struct Stack<?T0> {
 	@private [?T0] arr;
 }
 
-fn stack_ctor() ~> Stack<?T0> {
-
-	Stack<?T0> s = malloc(4+4+8);
-	
-	s.size     = 0;
-	s.capacity = 10;
-	s.arr      = malloc(8 * s.capacity);
-	
-	return s;
-}
-
-fn stack_ctor_int() ~> Stack<int> {
-
-	Stack<int> s = malloc(4+4+8);
-	
-	s.size     = 0;
-	s.capacity = 10;
-	s.arr      = malloc(8 * s.capacity);
-	
-	return s;
-}
-
-fn stack_dtor(Stack<?T0> s) ~> bool {
-
-	free(s.arr);
-	free(s);
-
-	return true;
-}
 
 fn stack_size(Stack<?T0> s) -> uint64 {
 	return s.size;
@@ -50,19 +21,6 @@ fn stack_contains(Stack<?T0> s, ?T0 elem) -> bool {
 	return false;
 }
 
-fn stack_push(Stack<?T0> s, ?T0 x) -> bool {
-
-	if s.size >= s.capacity { 
-		
-		s.capacity *= 2;
-		s.arr       = realloc(s.arr, s.capacity * 8);
-	}
-	
-	s.arr[s.size] = x;
-	s.size++;
-	
-	return true;
-}
 
 fn stack_peek(Stack<?T0> s) -> ?T0 {
 

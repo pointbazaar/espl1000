@@ -22,6 +22,17 @@ fn ipow (int base, uint power) -> int {
 }
 
 @halts
+fn fpow (float base, uint power) -> float {
+
+	float res = 1.0;
+	int64 pmax = power; pmax--;
+	for i in 0 .. pmax {
+		res = res * base;
+	}
+	return res;
+}
+
+@halts
 fn faculty (uint n) -> uint {
 
 	if n <= 1 { return 1; }
