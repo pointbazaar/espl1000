@@ -12,8 +12,7 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
 
     if(!rat_has_register(rat, tac->arg1)){
         int index = rat_get_free_register(rat, 0);
-        rat->is_occupied[index] = true;
-        rat->occupant[index] = tac->arg1;
+        rat_occupy_register(rat, index, tac->arg1);
 
         //TODO: move our src into that register
     }
@@ -22,8 +21,7 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
 
     if(!rat_has_register(rat, tac->dest)){
         int index = rat_get_free_register(rat, 0);
-        rat->is_occupied[index] = true;
-        rat->occupant[index] = tac->dest;
+        rat_occupy_register(rat, index, tac->dest);
     }
 
     int reg_dest = rat_get_register(rat, tac->dest);
@@ -34,29 +32,16 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
 
         case TAC_OP_NONE:
             printf("tac->op == TAC_OP_NONE\n");
-            exit(1);
             break;
 
         case TAC_OP_ADD: mnem = "add"; break;
         case TAC_OP_SUB: mnem = "sub"; break;
         case TAC_OP_MUL: mnem = "mul"; break;
-        case TAC_OP_DIV:
-            printf("currently unsupported\n");
-            exit(1);
-            break;
         case TAC_OP_AND: mnem = "and"; break;
         case TAC_OP_OR:  mnem = "or";  break;
 
 
         case TAC_OP_CMP_LT: mnem = "brlt"; break;
-        case TAC_OP_CMP_LE:
-            printf("currently unsupported\n");
-            exit(1);
-            break;
-        case TAC_OP_CMP_GT:
-            printf("currently unsupported\n");
-            exit(1);
-            break;
         case TAC_OP_CMP_GE: mnem = "brge"; break;
         case TAC_OP_CMP_EQ: mnem = "breq"; break;
         case TAC_OP_CMP_NEQ: mnem = "brne"; break;
@@ -64,8 +49,7 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
         case TAC_OP_UNARY_MINUS:
         case TAC_OP_UNARY_NOT:
         case TAC_OP_UNARY_BITWISE_NEG:
-            printf("error\n");
-            exit(1);
+            printf("TAC_OP_... currently unsupported\n");
             break;
     }
 

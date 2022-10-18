@@ -84,6 +84,12 @@ int rat_get_register(struct RAT* rat, char* name){
     return -1;
 }
 
+void rat_occupy_register(struct RAT* rat, uint8_t reg, char* name){
+	
+	rat->is_occupied[reg] = true;
+	rat->occupant[reg] = name;
+}
+
 int rat_get_free_register(struct RAT* rat, int start_inclusive){
     //start_inclusive tells us at which register to start looking,
     //as there are some instructions such as 'ldi' which can only use a high register

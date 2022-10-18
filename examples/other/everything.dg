@@ -21,24 +21,18 @@
 
 fn main () ~> int {
 
-	[int] arr = malloc(4*4);
-	arr[0] = 1;
 
 	for i in 0 .. 1 {
 		
-		print_int(i);
 	}
 
 	a = 0;
 	b = 3.14159; //...
-	c = "hi";
 
 	while a < 4 {
 
 		a = a + 1;
 		b = b - 0.1;
-		puts(c);
-		puts("");
 		break;
 	}
 

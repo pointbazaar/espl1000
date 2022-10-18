@@ -43,9 +43,9 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f){
 
     struct TAC* tcmp = makeTAC();
     tcmp->kind = TAC_BINARY_OP;
-    tcmp->op = TAC_OP_CMP_LE;
-    sprintf(tcmp->dest, "t%d", t3);
-    sprintf(tcmp->arg1, "%s", t2);
+    tcmp->op = TAC_OP_CMP_GE;
+    sprintf(tcmp->arg1, "t%d", t3);
+    sprintf(tcmp->dest, "%s", t2);
 
     tacbuffer_append(buffer, tcmp, true);
 

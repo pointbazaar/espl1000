@@ -12,7 +12,6 @@ enum TAC_OP{
     TAC_OP_ADD,
     TAC_OP_SUB,
     TAC_OP_MUL,
-    TAC_OP_DIV,
 
     //unary
     TAC_OP_UNARY_MINUS,
@@ -24,12 +23,10 @@ enum TAC_OP{
     TAC_OP_OR,
 
     //comparison operators
-    TAC_OP_CMP_LT, //<
-    TAC_OP_CMP_LE, //<=
-    TAC_OP_CMP_GT, //>
-    TAC_OP_CMP_GE, //>=
-    TAC_OP_CMP_EQ, //==
-    TAC_OP_CMP_NEQ, //!=
+    TAC_OP_CMP_LT, //<,>    //brlt
+    TAC_OP_CMP_GE, //>=,<=  //brge
+    TAC_OP_CMP_EQ, //==,    //breq
+    TAC_OP_CMP_NEQ, //!=    //brne
 };
 
 enum TAC_KIND{

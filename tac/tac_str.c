@@ -13,14 +13,11 @@ static char* get_op_str(enum TAC_OP top){
         case TAC_OP_ADD: opstr = "+="; break;
         case TAC_OP_SUB: opstr = "-="; break;
         case TAC_OP_MUL: opstr = "*="; break;
-        case TAC_OP_DIV: opstr = "/="; break;
         case TAC_OP_AND: opstr = "&="; break;
         case TAC_OP_OR:  opstr = "|="; break;
 
 
         case TAC_OP_CMP_LT: opstr = "<"; break;
-        case TAC_OP_CMP_LE: opstr = "<="; break;
-        case TAC_OP_CMP_GT: opstr = ">"; break;
         case TAC_OP_CMP_GE: opstr = ">="; break;
         case TAC_OP_CMP_EQ: opstr = "=="; break;
         case TAC_OP_CMP_NEQ: opstr = "!="; break;

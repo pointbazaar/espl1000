@@ -9,7 +9,7 @@ all:
 	cd rat        && make
 	cd tac        && make
 	cd compiler    && make 
-	#cd examples   && make
+	cd examples   && make
 	#cd stdlib     && make
 
 test:
