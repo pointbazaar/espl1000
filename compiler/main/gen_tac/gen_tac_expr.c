@@ -18,7 +18,7 @@ void tac_expr(struct TACBuffer* buffer, struct Expr* expr){
     if(expr->term2 != NULL) {
 
         //we know dest of term1
-        char *t1 = buffer->buffer[buffer->count - 1]->dest;
+        char *t1 = tacbuffer_last_dest(buffer);
 
 		bool reverse_operands = false;
         enum TAC_OP op = op_str_to_tac_op(expr->op->op, &reverse_operands);
@@ -103,7 +103,7 @@ static void tac_expr_part_2_constvalue(struct TACBuffer* buffer, struct Expr* ex
 static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr* expr, char* t1){
 
     tac_unopterm(buffer, expr->term2);
-    char* t2 = buffer->buffer[buffer->count - 1]->dest;
+    char* t2 = tacbuffer_last_dest(buffer);
     
     bool reverse_operands = false;
     

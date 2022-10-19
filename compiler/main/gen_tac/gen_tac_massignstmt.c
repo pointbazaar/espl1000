@@ -22,9 +22,8 @@ void tac_massignstmt(struct TACBuffer* buffer, struct MAssignStmt* m){
     const uint32_t addr = lhs->term1->term->ptr.m12->ptr.m2_int_const->value;
 
     tac_expr(buffer, m->expr);
-    struct TAC* tsrc = buffer->buffer[buffer->count-1];
-
-    struct TAC* tstore = makeTACStoreConstAddr(addr, tsrc->dest);
+    
+    struct TAC* tstore = makeTACStoreConstAddr(addr, tacbuffer_last_dest(buffer));
 
     tacbuffer_append(buffer, tstore, true);
 }

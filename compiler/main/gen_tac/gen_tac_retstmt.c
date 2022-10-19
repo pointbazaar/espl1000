@@ -9,7 +9,7 @@ void tac_retstmt(struct TACBuffer* buffer, struct RetStmt* r){
         tac_expr(buffer, r->return_value);
     }
 
-    struct TAC* t = makeTACReturn(buffer->buffer[buffer->count-1]->dest);
+    struct TAC* t = makeTACReturn(tacbuffer_last_dest(buffer));
 
     tacbuffer_append(buffer, t, true);
 }

@@ -25,7 +25,7 @@ struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer, char* funct
 
     //count them
     uint32_t count = 0;
-    for(size_t i = 0; i < buffer->count; i++) {
+    for(size_t i = 0; i < tacbuffer_count(buffer); i++) {
         if(is_leader[i])
             count++;
     }
@@ -56,7 +56,7 @@ struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer, char* funct
 void create_edges_basic_block(struct TACBuffer *buffer, uint32_t count, struct BasicBlock **blocks,
                               struct BasicBlock *block) {
 
-    struct TAC* last = block->buffer->buffer[block->buffer->count - 1];
+    struct TAC* last = tacbuffer_get(block->buffer, tacbuffer_count(block->buffer) - 1);
 
     if(last->label_index != TAC_NO_LABEL){
         //find out the block where the leader has that label_index
@@ -68,10 +68,10 @@ void create_edges_basic_block(struct TACBuffer *buffer, uint32_t count, struct B
     if(tac_is_unconditional_jump(last))
         return;
 
-    if(last->index >= buffer->count - 1)
+    if(last->index >= tacbuffer_count(buffer) - 1)
         return;
 
-    struct TAC* next = buffer->buffer[last->index + 1];
+    struct TAC* next = tacbuffer_get(buffer, last->index+1);
 
     //find basic block of next
     block->branch_2 = find_block_from_tac_leader(blocks, count, next);
@@ -82,10 +82,10 @@ static struct BasicBlock* find_block_from_label_index(struct BasicBlock** blocks
     for(size_t j = 0; j < count_blocks; j++) {
         struct BasicBlock *candidate = blocks[j];
 
-        if(candidate->buffer->buffer[0]->kind != TAC_LABEL)
+        if(tacbuffer_get(candidate->buffer, 0)->kind != TAC_LABEL)
             continue;
 
-        if(candidate->buffer->buffer[0]->label_index == label_index)
+        if(tacbuffer_get(candidate->buffer, 0)->label_index == label_index)
             return candidate;
     }
     return NULL;
@@ -96,7 +96,7 @@ static struct BasicBlock* find_block_from_tac_leader(struct BasicBlock** blocks,
     for(size_t l = 0; l < count_blocks; l++) {
         struct BasicBlock *candidate = blocks[l];
 
-        if(candidate->buffer->buffer[0] == tac){
+        if(tacbuffer_get(candidate->buffer, 0) == tac){
             return candidate;
         }
     }
@@ -116,10 +116,10 @@ static struct BasicBlock** collect_basic_blocks(struct TACBuffer* buffer, uint32
         //now collect all TACs until next leader
 
         //append the leader
-        tacbuffer_append(current->buffer, buffer->buffer[index_tacbuffer++], false);
+        tacbuffer_append(current->buffer, tacbuffer_get(buffer, index_tacbuffer++), false);
 
-        while(index_tacbuffer < buffer->count && !is_leader[index_tacbuffer]){
-            tacbuffer_append(current->buffer, buffer->buffer[index_tacbuffer++], false);
+        while(index_tacbuffer < tacbuffer_count(buffer) && !is_leader[index_tacbuffer]){
+            tacbuffer_append(current->buffer, tacbuffer_get(buffer, index_tacbuffer++), false);
         }
     }
     return blocks;
@@ -154,16 +154,16 @@ void basicblock_print(struct BasicBlock* block){
 static bool* calculate_leaders(struct TACBuffer* buffer){
 
     //for each TAC, determine if it is a leader
-    bool* is_leader = malloc((sizeof(bool))*buffer->count);
+    bool* is_leader = malloc((sizeof(bool))*tacbuffer_count(buffer));
 
-    memset(is_leader, false, (sizeof(bool)*buffer->count));
+    memset(is_leader, false, (sizeof(bool)*tacbuffer_count(buffer)));
     is_leader[0] = true; //first statement is leader
 
-    for(size_t i = 0; i < buffer->count; i++){
+    for(size_t i = 0; i < tacbuffer_count(buffer); i++){
 
         //any statement that is the target of a conditional or
         //unconditional goto is a leader
-        struct TAC* current = buffer->buffer[i];
+        struct TAC* current = tacbuffer_get(buffer, i);
 
         //if(current->label_index != TAC_NO_LABEL)
         if(current->kind == TAC_LABEL)
@@ -172,7 +172,7 @@ static bool* calculate_leaders(struct TACBuffer* buffer){
         if(i==0) continue;
 
         //prev exists
-        struct TAC *prev = buffer->buffer[i - 1];
+        struct TAC *prev = tacbuffer_get(buffer, i-1);
 
         //any statement that immediately follows a goto or conditional
         //goto is a leader

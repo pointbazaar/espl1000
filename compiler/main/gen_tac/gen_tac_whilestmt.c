@@ -22,7 +22,7 @@ void tac_whilestmt(struct TACBuffer* buffer, struct WhileStmt* w){
 
     tac_expr(buffer, w->condition);
 
-    struct TAC* t = makeTACIfGoto(buffer->buffer[buffer->count-1]->dest, l1);
+    struct TAC* t = makeTACIfGoto(tacbuffer_last_dest(buffer), l1);
     tacbuffer_append(buffer, t, true);
 
     tacbuffer_append(buffer, makeTACGoto(lend), true);

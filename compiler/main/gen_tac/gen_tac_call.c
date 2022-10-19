@@ -13,7 +13,7 @@ void tac_call(struct TACBuffer* buffer, struct Call* call){
         
         tac_expr(buffer, expr);
         
-        struct TAC* t = makeTACParam(buffer->buffer[buffer->count-1]->dest);
+        struct TAC* t = makeTACParam(tacbuffer_last_dest(buffer));
 
         tacbuffer_append(buffer, t, true);
     }

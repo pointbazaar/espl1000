@@ -29,9 +29,9 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f){
     uint32_t lend = make_label();
 
     tac_expr(buffer, f->range->start);
-    char* t1 = buffer->buffer[buffer->count - 1]->dest;
+    char* t1 = tacbuffer_last_dest(buffer);
     tac_expr(buffer, f->range->end);
-    char* t2 = buffer->buffer[buffer->count - 1]->dest;
+    char* t2 = tacbuffer_last_dest(buffer);
 
     tacbuffer_append(buffer, makeTACLabel(l0), true);
 

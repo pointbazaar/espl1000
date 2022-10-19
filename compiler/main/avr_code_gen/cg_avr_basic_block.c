@@ -26,10 +26,10 @@ void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, FILE *f
     //the mapping tx -> ry can be saved in an array
     //TODO: use better approach
 
-    for(size_t i=0;i < block->buffer->count; i++){
-        struct TAC* t = block->buffer->buffer[i];
+    for(size_t i=0;i < tacbuffer_count(block->buffer); i++){
+        struct TAC* t = tacbuffer_get(block->buffer,i);
 
-        if(i == block->buffer->count - 1){
+        if(i == tacbuffer_count(block->buffer) - 1){
             if(t->kind == TAC_GOTO || t->kind == TAC_IF_GOTO
             || t->kind == TAC_RETURN || t->kind == TAC_CALL){
                 //TODO

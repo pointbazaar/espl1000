@@ -13,18 +13,16 @@ int main(){
 
 	status_test_transpiler("Running tests for smalldragon/compiler:");
 
+
 	status_test_transpiler("Typeinference");
 	test_suite_typeinference();
 
 	status_test_transpiler("Typechecker");
 	test_suite_typechecker();
 
+    status_test_transpiler("AVR CodeGen");
+    test_suite_avr_code_gen();
 
-    //currently there is a segmentation fault in the AVR CodeGen tests
-    //that should be investigated
-
-    //status_test_transpiler("AVR CodeGen");
-    //test_suite_avr_code_gen();
 
 	status_test_transpiler("PASSED ALL TESTS\n");
 

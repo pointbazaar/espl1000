@@ -4,11 +4,8 @@
 #include <string.h>
 #include <stdbool.h>
 
-struct TACBuffer{
-    size_t cap;
-    size_t count;
-    struct TAC** buffer;
-};
+struct TACBuffer;
+struct TAC;
 
 //TACBuffer functions
 struct TACBuffer* tacbuffer_ctor();
@@ -17,4 +14,9 @@ void tacbuffer_print(struct TACBuffer* buffer);
 char* tacbuffer_tostring(struct TACBuffer* buffer, bool graphviz);
 void tacbuffer_append(struct TACBuffer *buffer, struct TAC *node, bool set_index);
 
+void tacbuffer_set(struct TACBuffer* buffer, int index, struct TAC* node);
+struct TAC* tacbuffer_get(struct TACBuffer* buffer, int index);
+
+char* tacbuffer_last_dest(struct TACBuffer* buffer);
+size_t tacbuffer_count(struct TACBuffer* buffer);
 #endif

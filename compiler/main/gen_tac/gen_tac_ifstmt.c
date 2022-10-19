@@ -26,10 +26,10 @@ static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s){
     tac_expr(buffer, s->condition);
 
     //negate the condition
-    struct TAC* t_neg_cond = makeTACUnaryOp(buffer->buffer[buffer->count - 1]->dest, buffer->buffer[buffer->count - 1]->dest, TAC_OP_UNARY_NOT);
+    struct TAC* t_neg_cond = makeTACUnaryOp(tacbuffer_last_dest(buffer), tacbuffer_last_dest(buffer), TAC_OP_UNARY_NOT);
     tacbuffer_append(buffer, t_neg_cond, true);
 
-    struct TAC* t_if_goto_end = makeTACIfGoto(buffer->buffer[buffer->count - 1]->dest, lend);
+    struct TAC* t_if_goto_end = makeTACIfGoto(tacbuffer_last_dest(buffer), lend);
     tacbuffer_append(buffer, t_if_goto_end, true);
 
     tac_stmtblock(buffer, s->block);
@@ -54,7 +54,7 @@ static void tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s){
 
     tac_expr(buffer, s->condition);
 
-    struct TAC* t = makeTACIfGoto(buffer->buffer[buffer->count-1]->dest, l1);
+    struct TAC* t = makeTACIfGoto(tacbuffer_last_dest(buffer), l1);
     tacbuffer_append(buffer, t, true);
 
     tacbuffer_append(buffer, makeTACGoto(l2), true);

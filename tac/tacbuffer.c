@@ -6,6 +6,13 @@
 #include "tacbuffer.h"
 #include "tac.h"
 
+//TACBuffer should be opaque outside of this file
+struct TACBuffer{
+    size_t cap;
+    size_t count;
+    struct TAC** buffer;
+};
+
 void tacbuffer_append(struct TACBuffer *buffer, struct TAC *node, bool set_index) {
 
     if(buffer->count >= buffer->cap)
@@ -19,14 +26,40 @@ void tacbuffer_append(struct TACBuffer *buffer, struct TAC *node, bool set_index
     buffer->count += 1;
 }
 
+void tacbuffer_set(struct TACBuffer* buffer, int index, struct TAC* node){
+	
+	//TODO: do bounds checking, count checking
+	
+	if(index >= buffer->cap){
+		printf("trying to write to TACBuffer outside its bounds...");
+		fflush(stdout);
+		exit(1);
+	}
+	
+	buffer->buffer[index] = node;
+}
+
+struct TAC* tacbuffer_get(struct TACBuffer* buffer, int index){
+	
+	if(index >= buffer->count){
+		printf("TACBuffer: no value at index %d ...", index);
+		fflush(stdout);
+		exit(1);
+	}
+	
+	return buffer->buffer[index];
+}
+
 struct TACBuffer* tacbuffer_ctor(){
 
     struct TACBuffer* buffer = make(TACBuffer);
+    
+    const int initial_size = 32;
 
     *buffer = (struct TACBuffer){
-            .buffer = malloc(sizeof(struct TAC*)*10),
+            .buffer = malloc(sizeof(struct TAC*)*initial_size),
             .count = 0,
-            .cap = 10
+            .cap = initial_size
     };
     return buffer;
 }
@@ -60,3 +93,10 @@ char* tacbuffer_tostring(struct TACBuffer* buffer, bool graphviz){
     return res;
 }
 
+char* tacbuffer_last_dest(struct TACBuffer* buffer){
+	return buffer->buffer[buffer->count - 1]->dest;
+}
+
+size_t tacbuffer_count(struct TACBuffer* buffer){
+	return buffer->count;
+}

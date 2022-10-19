@@ -21,7 +21,7 @@ void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a){
 
     struct TAC* t = makeTACCopy(
             a->var->simple_var->name,
-            buffer->buffer[buffer->count - 1]->dest
+            tacbuffer_last_dest(buffer)
     );
 
     tacbuffer_append(buffer, t, true);

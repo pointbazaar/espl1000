@@ -102,4 +102,6 @@ struct TAC* makeTACLoadConstAddr(char* dest, uint32_t addr);
 
 struct TAC* makeTACParam(char* dest);
 struct TAC* makeTACCall(uint32_t tmp, char* function_name);
+
+struct TAC* makeTACNop();
 #endif

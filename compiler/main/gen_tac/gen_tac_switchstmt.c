@@ -12,7 +12,7 @@ void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss){
 
     //now the last temporary contains our expr
     //generate an if for each case
-    char* tmp_expr = buffer->buffer[buffer->count-1]->dest;
+    char* tmp_expr = tacbuffer_last_dest(buffer);
 
     uint32_t label_end = make_label();
     uint32_t* labels_cases = malloc(sizeof(uint32_t)*ss->count_cases);
@@ -35,7 +35,7 @@ void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss){
         tacbuffer_append(buffer, tc3, true);
 
         //if t1 goto LCase???
-        struct TAC* tcif = makeTACIfGoto(buffer->buffer[buffer->count-1]->dest, label_case);
+        struct TAC* tcif = makeTACIfGoto(tacbuffer_last_dest(buffer), label_case);
         tacbuffer_append(buffer, tcif, true);
     }
 
