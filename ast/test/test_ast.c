@@ -14,7 +14,6 @@ int main(){
 	test_str_binconst();
 	test_str_intconst();
 	test_str_charconst();
-	test_str_floatconst();
 	test_str_hexconst();
 
 	test_str_expr();

@@ -190,13 +190,13 @@ void test_mixed_12() {
 
 	printt("test mixed 12\n");
 
-	char* str = "( x < 3.1) ";
+	char* str = "( x < 31) ";
 	struct Token** tokens = lex(str);
 
 	assert(tokens[0]->kind==LPARENS);
 	assert(tokens[1]->kind==ID);
 	assert(tokens[2]->kind==OPKEY_RELATIONAL);
-	assert(tokens[3]->kind==FLOATING);
+	assert(tokens[3]->kind==INTEGER);
 	assert(tokens[4]->kind==RPARENS);
 
 	free_tokens(tokens, 5);
@@ -224,7 +224,7 @@ void test_mixed_14(){
 	
 	printt("test mixed 14\n");
 
-	char* str = "struct MyStruct{ int a, float b}";
+	char* str = "struct MyStruct{ int a, int b}";
 	struct Token** tokens = lex(str);
 
 	assert(tokens[0]->kind==STRUCT);
@@ -237,7 +237,7 @@ void test_mixed_14(){
 	
 	assert(tokens[5]->kind==COMMA);
 	
-	assert(tokens[6]->kind==TYPEID_PRIMITIVE_FLOAT);
+	assert(tokens[6]->kind==TYPEID_PRIMITIVE_INT);
 	assert(tokens[7]->kind==ID);
 	
 	assert(tokens[8]->kind==RCURLY);

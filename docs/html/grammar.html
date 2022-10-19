@@ -72,10 +72,10 @@
 	<a id="simpletype">SimpleType</a> ::= <a href="#primitivetype">PrimitiveType</a> | <a href="#structtype">StructType</a>
 	<br><br>
 
-	<a id="primitivetype">PrimitiveType</a> ::= <a href="#inttype">IntType</a> | "float" | "char" | "bool" 
+	<a id="primitivetype">PrimitiveType</a> ::= <a href="#inttype">IntType</a> | "char" | "bool" 
 	<br><br>
 	
-	<a id="inttype">IntType</a> ::= "int" | "uint" | "uint8" | "int8" | "uint16" | "int16" | "uint32" | "int32" | "uint64" | "int64"
+	<a id="inttype">IntType</a> ::= "int" | "uint" | "uint8" | "int8" 
 	<br><br>
 	
 	<a id="subrtype">SubrType</a> ::= '(' <a href="#type">Type</a>* ')' arrow <a href="#type">Type</a>
@@ -161,7 +161,7 @@
 	<a id="arrayconstant">ArrayConstant</a> ::= '[' <a href="#expr">Expr</a> (',' <a href="#expr">Expr</a>)* ']'
 	<br><br>
 
-	<a id="constvalue">ConstValue</a> ::= BoolConst | IntConst | BinConst | HexConst | CharConst | FloatConst
+	<a id="constvalue">ConstValue</a> ::= BoolConst | IntConst | BinConst | HexConst | CharConst 
 	<br><br>
 
 	<h2>Helpers</h2>

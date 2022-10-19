@@ -1,46 +1,24 @@
 
 struct Poly {
-	[float] coeff;
+	[int] coeff;
 
 	@private
-	uint16 n;
+	uint n;
 }
 
 @private
 struct Monomial {
-	float factor;
-	uint16 exponent;
+	int factor;
+	uint exponent;
 }
 
 
 fn poly_deg(Poly p) -> uint {
 	uint i = p.n - 1;
 	while i >= 0 {
-		if p.coeff[i] != 0.0 { return i; }
+		if p.coeff[i] != 0 { return i; }
 		i--;
 	}
 	return 0;
 }
 
-fn poly_scale_inplace(Poly a, float f) -> Poly {
-	
-	for i in 0 .. (a.n-1) { a.coeff[i] *= f; }
-	return a;
-}
-
-
-fn poly_eval(Poly p, float x) -> float {
-
-	float res = 0.0;
-	for i in 0 .. p.n - 1 {
-		res += p.coeff[i] * fpow(x, i);
-	}
-	return res;
-}
-
-@private
-fn safe_index([float] arr, uint size, uint index) -> float {
-
-	if index >= size { return 0.0; }
-	return arr[index];
-}

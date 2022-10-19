@@ -35,7 +35,6 @@ static struct Type* typeFromStrPrimitive_inner(char* typeName){
 	p->is_int_type   |= strcmp(typeName, "int64") == 0;
 	p->is_int_type   |= strcmp(typeName, "uint64") == 0;
 
-	p->is_float_type = strcmp(typeName, "float") == 0;
 	p->is_char_type  = strcmp(typeName, "char") == 0;
 	p->is_bool_type  = strcmp(typeName, "bool") == 0;
 	

@@ -4,7 +4,6 @@
 
 #include "../astnodes/const/BoolConstTest.h"
 #include "../astnodes/const/CharConstTest.h"
-#include "../astnodes/const/FloatConstTest.h"
 
 #include "../astnodes/expr/ExprTest.h"
 #include "../astnodes/expr/UnOpTermTest.h"
@@ -125,8 +124,6 @@ void test_suite_constnodes() {
 	test_boolconst_parse_bool_constant_node();
 	test_charconst_parse_char_constant_node();
 	test_charconst_parse_char_constant_node_newline();
-	test_floatconst_1();
-	test_floatconst_2();
 }
 
 void test_suite_term_expr_simplevar_var() {

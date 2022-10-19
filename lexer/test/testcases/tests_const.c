@@ -7,18 +7,6 @@
 #include "../../token/TokenKeys.h"
 #include "../lexer_test_utils.h"
 
-void test_lexes_float_constant() {
-
-	printt("lexes float constant\n");
-
-	char* str = "1.44 ";
-	struct Token** tokens = lex(str);
-
-	assert(tokens[0]->kind==FLOATING);
-	assert(strcmp(tokens[0]->value_ptr,"1.44")==0);
-
-	free_tokens(tokens, 1);
-}
 
 void test_lexes_escaped_char() {
 
@@ -92,48 +80,6 @@ void test_char() {
 	free_tokens(tokens, 5);
 }
 
-void test_float_1() {
-
-	printt("test floatconst token:1\n");
-
-	char* str = "2038.4 ";
-	struct Token** tokens = lex(str);
-
-	assert(tokens[0]->kind==FLOATING);
-	assert(strcmp(tokens[0]->value_ptr,"2038.4") == 0);
-
-	free_tokens(tokens, 1);
-}
-
-void test_float_2() {
-
-	printt("test floatconst token:2\n");
-
-	char* str = "0.0 ";
-	struct Token** tokens = lex(str);
-
-	assert(tokens[0]->kind == FLOATING);
-	assert(strcmp(tokens[0]->value_ptr, "0.0") == 0);
-
-	free_tokens(tokens, 1);
-}
-
-void test_float_3() {
-
-	printt("test floatconst token:3\n");
-
-	char* str = "-5.0 ";
-	struct Token** tokens = lex(str);
-
-	//looking at index 1 because '-' and float
-	//are lexed seperately, for simplicity reasons.
-	//perhaps we may change it later on
-
-	assert(tokens[1]->kind==FLOATING);
-	assert(strcmp(tokens[1]->value_ptr,"5.0") == 0);
-
-	free_tokens(tokens, 2);
-}
 
 void test_int_1() {
 

@@ -88,7 +88,6 @@ bool eq_primitivetype(struct PrimitiveType* a, struct PrimitiveType* b){
 	if(a == NULL || b == NULL){ return false; }
 
 	if(a->is_char_type && b->is_char_type){ return true; }
-	if(a->is_float_type && b->is_float_type){ return true; }
 	if(a->is_bool_type && b->is_bool_type){ return true; }
 	
 	if(a->is_int_type && b->is_int_type){

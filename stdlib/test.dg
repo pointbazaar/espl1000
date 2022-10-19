@@ -37,9 +37,3 @@ fn main2() ~> int {
 	return 0;
 }
 
-fn assertf(float actual, float expect) -> bool {
-
-	delta = actual - expect;
-	return delta*delta < 0.001;
-}
-

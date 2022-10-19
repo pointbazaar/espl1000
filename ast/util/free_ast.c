@@ -46,7 +46,6 @@ void free_expr(struct Expr* expr) {
 }
 
 
-void free_float_const(struct FloatConst* fc) { free(fc); }
 void free_identifier(struct Id* id) { free(id); }
 void free_int_const(struct IntConst* ic) { free(ic); }
 void free_hex_const(struct HexConst* hc){ free(hc); }
@@ -56,7 +55,6 @@ void free_const_value(struct ConstValue* cv){
 		case 1: free_bool_const(cv->ptr.m1_bool_const); break;
 		case 2: free_int_const(cv->ptr.m2_int_const); break;
 		case 3: free_char_const(cv->ptr.m3_char_const); break;
-		case 4: free_float_const(cv->ptr.m4_float_const); break;
 		case 5: free_hex_const(cv->ptr.m5_hex_const); break;
 		case 6: free_bin_const(cv->ptr.m6_bin_const); break;
 	}

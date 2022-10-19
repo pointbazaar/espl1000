@@ -16,7 +16,6 @@ static bool tc_constvalue(struct ConstValue* cv){
 		case 1: //boolconst
 		case 2: //intconst
 		case 3: //charconst
-		case 4: //floatconst
 		case 5: //hexconst
 		case 6: //binconst
 			break;

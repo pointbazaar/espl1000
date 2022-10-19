@@ -58,9 +58,6 @@ static bool check_expr_well_formed(struct Type* left, struct Type* right){
 
     if(is_integer_type(left) && is_integer_type(right)){ return true; }
 
-    if(is_integer_type(left) && is_float_type(right)){ return true; }
-    if(is_integer_type(right) && is_float_type(left)){ return true; }
-
     if(!eq_type(left, right)){
 
         return false;

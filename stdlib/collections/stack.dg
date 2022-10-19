@@ -3,13 +3,13 @@
 //A naive implementation of a stack
 
 struct Stack<?T0> {
-	@private uint32 size;
-	@private uint32 capacity;
+	@private uint size;
+	@private uint capacity;
 	@private [?T0] arr;
 }
 
 
-fn stack_size(Stack<?T0> s) -> uint64 {
+fn stack_size(Stack<?T0> s) -> uint {
 	return s.size;
 }
 

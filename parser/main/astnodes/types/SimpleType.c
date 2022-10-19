@@ -34,7 +34,6 @@ struct SimpleType* makeSimpleType(struct TokenList* tokens) {
 		case TYPEID_PRIMITIVE_INT:
 		case TYPEID_PRIMITIVE_BOOL:
 		case TYPEID_PRIMITIVE_CHAR:
-		case TYPEID_PRIMITIVE_FLOAT:
 		
 			res->primitive_type = makePrimitiveType(copy);
 			break;

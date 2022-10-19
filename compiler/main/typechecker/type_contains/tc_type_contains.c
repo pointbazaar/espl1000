@@ -85,7 +85,6 @@ static bool tc_subrtype_contains(struct SubrType* expect, struct SubrType* actua
 static bool tc_primitivetype_contains(struct PrimitiveType* expect, struct PrimitiveType* actual){
 
 	if (expect->is_bool_type && actual->is_bool_type){return true;}
-	if (expect->is_float_type && actual->is_float_type){return true;}
 	if (expect->is_char_type && actual->is_char_type){return true;}
 	if (expect->is_int_type && actual->is_int_type){
 		enum INTTYPE it_e = expect->int_type;

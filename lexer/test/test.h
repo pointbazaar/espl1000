@@ -8,15 +8,12 @@ void printt(char* test_name);
 //test subroutines 
 //(returning true if the test was passed, false otherwise)
 
-void test_try_catch_throw_throws();
-
 void test_plus_plus_minus_minus();
 
 void test_can_see_line_with_semicolon();
 void test_can_see_line_with_operators();
 void test_lexes_return_statement_favorably();
 void test_lexes_other_return_statement();
-void test_lexes_float_constant();
 void test_lexes_escaped_char();
 
 // // SECTION: the tests from the individual token classes
@@ -27,10 +24,6 @@ void test_true();
 void test_false();
 
 void test_char();
-
-void test_float_1();
-void test_float_2();
-void test_float_3();
 
 void test_identifier_1();
 void test_identifier_2();

@@ -11,7 +11,6 @@
 #define TYPEID_PRIMITIVE_INT 	6
 #define TYPEID_PRIMITIVE_BOOL 	7
 #define TYPEID_PRIMITIVE_CHAR 	8
-#define TYPEID_PRIMITIVE_FLOAT 	9
 
 //Type Parameter Token
 #define TPARAM 		10
@@ -36,7 +35,6 @@
 #define ASSIGNOP	38
 
 //Constants
-#define FLOATING 	40
 #define INTEGER 	41
 #define HEXCONST 	42
 #define BINCONST 	43

@@ -7,7 +7,6 @@
 #include "CharConst.h"
 #include "HexConst.h"
 #include "BoolConst.h"
-#include "FloatConst.h"
 #include "IntConst.h"
 
 #include "ast/ast.h"
@@ -62,11 +61,6 @@ struct ConstValue* makeConstValue(struct TokenList* tokens){
 
 	if((res->ptr.m2_int_const = makeIntConst(copy)) != NULL){
 		res->kind = 2;
-		goto end;
-	}
-
-	if((res->ptr.m4_float_const = makeFloatConst(copy)) != NULL){
-		res->kind = 4;
 		goto end;
 	}
 

@@ -30,12 +30,6 @@ bool tc_unopterm(struct UnOpTerm* uot, struct TCCtx* tcctx){
         }
     }
 
-    if(is_float_type(type)){
-        if(strcmp(op, "-") == 0 || strcmp(op, "+") == 0){
-            return true;
-        }
-    }
-
     if(is_bool_type(type)){
         if(strcmp(op, "!") == 0){
             return true;

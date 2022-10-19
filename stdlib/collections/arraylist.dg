@@ -2,17 +2,17 @@
 struct ArrayList<?T0> {
 
 	@private [?T0] arr;
-	@private uint64 size;
-	@private uint64 capacity;
+	@private uint size;
+	@private uint capacity;
 }
 
 
-fn arraylist_size(ArrayList<?T0> list) -> uint64 {
+fn arraylist_size(ArrayList<?T0> list) -> uint	 {
 	return list.size;
 }
 
 
-fn arraylist_at(ArrayList<?T0> list, uint64 index) -> ?T0 {
+fn arraylist_at(ArrayList<?T0> list, uint index) -> ?T0 {
 	
 	return list.arr[index];
 }
@@ -25,7 +25,7 @@ fn arraylist_contains(ArrayList<?T0> list, ?T0 elem) -> bool {
 	return false;
 }
 
-fn arraylist_index_of(ArrayList<?T0> list, ?T0 elem) -> int64 {
+fn arraylist_index_of(ArrayList<?T0> list, ?T0 elem) -> int {
 	
 	for i in 0 .. (list.size - 1) {
 		if list.arr[i] == elem { return i; }

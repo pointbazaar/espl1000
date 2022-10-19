@@ -8,7 +8,7 @@
 
 fn main () -> int {
 
-	float f = 1;
+	int f = 1;
 
 	subr(3,0);
 

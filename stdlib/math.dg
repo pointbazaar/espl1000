@@ -14,18 +14,7 @@ fn sign (int n) -> int {
 @halts
 fn ipow (int base, uint power) -> int {
 	int res = 1;
-	int64 pmax = power; pmax--;
-	for i in 0 .. pmax {
-		res = res * base;
-	}
-	return res;
-}
-
-@halts
-fn fpow (float base, uint power) -> float {
-
-	float res = 1.0;
-	int64 pmax = power; pmax--;
+	int pmax = power; pmax--;
 	for i in 0 .. pmax {
 		res = res * base;
 	}
@@ -65,14 +54,14 @@ fn lcm (int a, int b) -> int {
 }
 
 @halts
-fn fib(uint64 n) -> uint64 {
+fn fib(uint n) -> uint {
 
-	uint64 a = 0;
-	uint64 b = 1;
+	uint a = 0;
+	uint b = 1;
 	
 	for i in 1 .. (n-1) {
 		
-		uint64 k = a+b;
+		uint k = a+b;
 		a = b;
 		b = k;
 	}

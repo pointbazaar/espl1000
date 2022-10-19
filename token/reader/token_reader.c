@@ -99,7 +99,6 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		//CONSTANTS
 		case BCONST_TRUE:
 		case BCONST_FALSE:
-		case FLOATING:
 		case INTEGER:
 		case HEXCONST:
 		case BINCONST:
@@ -116,7 +115,6 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		case TYPEID_PRIMITIVE_INT:
 		case TYPEID_PRIMITIVE_BOOL:
 		case TYPEID_PRIMITIVE_CHAR:
-		case TYPEID_PRIMITIVE_FLOAT:
 		
 		//SECTION: OPERATORNS
 		case OPKEY_ARITHMETIC:

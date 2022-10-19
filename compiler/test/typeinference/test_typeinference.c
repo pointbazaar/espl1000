@@ -67,9 +67,7 @@ static void test_infer_type_term() {
 	assert(t->basic_type->simple_type != NULL);
 	
 	assert(t->basic_type->simple_type->primitive_type != NULL);
-	assert(t->basic_type->simple_type->primitive_type->is_int_type == false);
-	
-	assert(t->basic_type->simple_type->primitive_type->is_float_type);
+	assert(t->basic_type->simple_type->primitive_type->is_int_type == true);
 
 	free_type(t);
 }
@@ -128,12 +126,12 @@ static void test_infer_type_expr_multiple_terms() {
 	assert(t->basic_type->simple_type != NULL);
 	
 	assert(t->basic_type->simple_type->primitive_type != NULL);
-	assert(t->basic_type->simple_type->primitive_type->is_int_type == false);
+	assert(t->basic_type->simple_type->primitive_type->is_int_type == true);
 	
 	assert(t->basic_type->simple_type->struct_type == NULL);
 	
-	//float + int -> float
-	assert(t->basic_type->simple_type->primitive_type->is_float_type);
+	//int + int -> int
+	assert(t->basic_type->simple_type->primitive_type->is_int_type);
 
 	free_type(t);
 }
@@ -283,7 +281,6 @@ static void test_infer_type_generic_struct_member(){
     assert(t->basic_type->simple_type != NULL);
     assert(t->basic_type->simple_type->primitive_type != NULL);
 
-    assert(!t->basic_type->simple_type->primitive_type->is_float_type);
     assert(!t->basic_type->simple_type->primitive_type->is_char_type);
     assert(!t->basic_type->simple_type->primitive_type->is_bool_type);
 
@@ -307,7 +304,6 @@ static void test_infer_type_generic_struct_member_nested(){
 	assert(t->basic_type->simple_type != NULL);
 	assert(t->basic_type->simple_type->primitive_type != NULL);
 
-	assert(!t->basic_type->simple_type->primitive_type->is_float_type);
 	assert(!t->basic_type->simple_type->primitive_type->is_char_type);
 	assert(!t->basic_type->simple_type->primitive_type->is_bool_type);
 

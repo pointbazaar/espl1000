@@ -109,9 +109,6 @@ static struct Type *infer_type_expr_primitive(struct ST *st, struct Expr2Types *
 	const bool i1 = p1->is_int_type;
 	const bool i2 = p2->is_int_type;
 	
-	const bool f1 = p1->is_float_type;
-	const bool f2 = p2->is_float_type;
-	
 	const bool c1 = p1->is_char_type;
 	const bool c2 = p2->is_char_type;
 
@@ -121,12 +118,6 @@ static struct Type *infer_type_expr_primitive(struct ST *st, struct Expr2Types *
 		if(i1 && i2)
 			{ return typeFromStrPrimitive(st, "int"); }
 	
-		if(f1 && f2)
-			{ return typeFromStrPrimitive(st, "float"); }
-			
-		if((i1 && f2) || (f1 && i2))
-			{ return typeFromStrPrimitive(st, "float"); }
-			
 		if(c1 && c2)
 			{ return typeFromStrPrimitive(st, "char"); }
 

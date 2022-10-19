@@ -18,12 +18,6 @@ bool is_primitive_type(struct Type* type){
 	return true;
 }
 
-bool is_float_type(struct Type* type){
-
-    if(!is_primitive_type(type)){ return false; }
-
-    return type->basic_type->simple_type->primitive_type->is_float_type;
-}
 
 bool is_integer_type(struct Type* type){
 	

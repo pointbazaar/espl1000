@@ -33,13 +33,6 @@ struct Expr* copy_expr(struct Expr* expr){
 	return res;
 }
 
-struct FloatConst* copy_float_const(struct FloatConst* fc){
-	
-	struct FloatConst* res = make(FloatConst);
-	res->value = fc->value;
-	return res;
-}
-
 struct Id* copy_identifier(struct Id* id){
 	
 	struct Id* res = make(Id);
@@ -113,7 +106,6 @@ struct ConstValue*  copy_const_value(struct ConstValue* cv){
 		case 1: res->ptr.m1_bool_const = copy_bool_const(cv->ptr.m1_bool_const); break;
 		case 2: res->ptr.m2_int_const = copy_int_const(cv->ptr.m2_int_const); break;
 		case 3: res->ptr.m3_char_const = copy_char_const(cv->ptr.m3_char_const); break;
-		case 4: res->ptr.m4_float_const = copy_float_const(cv->ptr.m4_float_const); break;
 		case 5: res->ptr.m5_hex_const= copy_hex_const(cv->ptr.m5_hex_const); break;
 		case 6: res->ptr.m6_bin_const = copy_bin_const(cv->ptr.m6_bin_const); break;
 	}

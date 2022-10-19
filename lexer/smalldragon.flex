@@ -44,13 +44,12 @@ in			out(IN, yytext);
 switch		out(SWITCH, yytext);
 case		out(CASE, yytext);
 
-int|int8|int16|int32|int64	out(TYPEID_PRIMITIVE_INT, yytext);
+int|int8	out(TYPEID_PRIMITIVE_INT, yytext);
 
-uint|uint8|uint16|uint32|uint64	out(TYPEID_PRIMITIVE_INT, yytext);
+uint|uint8	out(TYPEID_PRIMITIVE_INT, yytext);
 
 bool 	out(TYPEID_PRIMITIVE_BOOL, yytext);
 char	out(TYPEID_PRIMITIVE_CHAR, yytext);
-float	out(TYPEID_PRIMITIVE_FLOAT, yytext);
 
 "\n"	out2(LINE_NO, ++line_no);
 
@@ -61,7 +60,6 @@ float	out(TYPEID_PRIMITIVE_FLOAT, yytext);
 "("		out(LPARENS, yytext);
 ")"		out(RPARENS, yytext);
 
-(0|[1-9][0-9]*)\.[0-9]+		out(FLOATING, yytext);
 [0-9]+			out(INTEGER, yytext);
 0x[0-9a-fA-F]+	out(HEXCONST, yytext);
 0b[0-1]+		out(BINCONST, yytext);

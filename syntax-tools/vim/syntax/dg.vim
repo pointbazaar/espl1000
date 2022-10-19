@@ -26,7 +26,7 @@ syn match basicType /(\[)*[A-Z][A-Za-z0-9]*(\])*/
 syn keyword primitiveType int uint 
 syn keyword primitiveType int8 int16 int32 int64 
 syn keyword primitiveType uint8 uint16 uint32 uint64
-syn keyword primitiveType char bool float
+syn keyword primitiveType char bool
 
 syn match basicIdentifier /[a-z][a-zA-Z0-9_]*/ 
 

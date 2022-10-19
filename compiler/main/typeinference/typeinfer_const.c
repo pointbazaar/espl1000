@@ -16,7 +16,6 @@ struct Type *infer_type_constvalue(struct ST *st, struct ConstValue *cv) {
 		case 1: return typeFromStrPrimitive(st, "bool");
 		case 2: return typeFromStrPrimitive(st, "int");
 		case 3: return typeFromStrPrimitive(st, "char");
-		case 4: return typeFromStrPrimitive(st, "float");
 		case 5: return typeFromStrPrimitive(st, "int"); //hex
 		case 6: return typeFromStrPrimitive(st, "int"); //bin
 

@@ -68,27 +68,7 @@
 					for generic types.
 			  </td>
 		  </tr>
-		  <tr>
-				<td>5</td>
-				<td>9.8.2021</td>
-				<td>
-					Type Inference for generics doesn't seem to work for multiple Types.<br>
-					This examle generates type errors: <br>
-					<pre>struct Point<?T0,?T1> {
-	?T0 elem1;
-	?T1 elem2;
-}
-fn main()~>int {
-
-	Point<int,float> list = malloc(3);
-
-	int k = list.elem1;
-	float f = list.elem2;
-	return 0;
-}
-</pre>
-				</td>
-		  </tr>
+		  
 	  </tbody>
 	</table>
 

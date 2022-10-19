@@ -39,7 +39,6 @@ static void visit_mdirect       (struct MDirect* m, VISITOR, ARG);
 static void visit_bool_const   	(struct BoolConst* b, VISITOR, ARG);
 static void visit_int_const    	(struct IntConst* i, VISITOR, ARG);
 static void visit_char_const   	(struct CharConst* c, VISITOR, ARG);
-static void visit_float_const  	(struct FloatConst* f, VISITOR, ARG);
 static void visit_hex_const    	(struct HexConst* h, VISITOR, ARG);
 static void visit_bin_const    	(struct BinConst* b, VISITOR, ARG);
 static void visit_const_value   (struct ConstValue* cv, VISITOR, ARG);
@@ -323,11 +322,6 @@ static void visit_char_const(struct CharConst* c, VISITOR, void* arg){
 	visitor(c, NODE_CHARCONST, arg);
 }
 
-static void visit_float_const(struct FloatConst* f, VISITOR, void* arg){
-	
-	visitor(f, NODE_FLOATCONST, arg);
-}
-
 static void visit_hex_const(struct HexConst* h, VISITOR, void* arg){
 	
 	visitor(h, NODE_HEXCONST, arg);
@@ -344,7 +338,6 @@ static void visit_const_value(struct ConstValue* cv, VISITOR, void* arg){
 		case 1: visit_bool_const(cv->ptr.m1_bool_const, visitor, arg);
 		case 2: visit_int_const(cv->ptr.m2_int_const, visitor, arg);
 		case 3: visit_char_const(cv->ptr.m3_char_const, visitor, arg);
-		case 4: visit_float_const(cv->ptr.m4_float_const, visitor, arg);
 		case 5: visit_hex_const(cv->ptr.m5_hex_const, visitor, arg);
 		case 6: visit_bin_const(cv->ptr.m6_bin_const, visitor, arg);
 	}

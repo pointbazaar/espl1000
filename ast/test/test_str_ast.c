@@ -52,19 +52,6 @@ void test_str_charconst(){
 	free(s);
 }
 
-void test_str_floatconst(){
-
-	test_status_str_ast("str_float_const");
-	
-	struct FloatConst b = {.value=1.483533};
-	
-	char* s = str_float_const(&b);
-	
-	assert(strcmp(s, "1.483533")==0);
-	
-	free(s);
-}
-
 void test_str_hexconst(){
 
 	test_status_str_ast("str_hex_const");

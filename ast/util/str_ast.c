@@ -25,12 +25,6 @@ char* str_char_const(struct CharConst* cc){
 	return res;
 }
 
-char* str_float_const(struct FloatConst* fc){
-
-	char* res =  malloc(sizeof(char)*10);
-	sprintf(res, "%f", fc->value);
-	return res;
-}
 
 char* str_identifier(struct Id* id){
 
@@ -145,7 +139,6 @@ char* str_const_value(struct ConstValue* cv){
 		case 1: return str_bool_const(cv->ptr.m1_bool_const);
 		case 2: return str_int_const(cv->ptr.m2_int_const);
 		case 3: return str_char_const(cv->ptr.m3_char_const);
-		case 4: return str_float_const(cv->ptr.m4_float_const);
 		case 5: return str_hex_const(cv->ptr.m5_hex_const);
 		case 6: return str_bin_const(cv->ptr.m6_bin_const);
 	}
@@ -295,7 +288,6 @@ char* str_primitive_type(struct PrimitiveType* p){
 		sprintf(res, "%s", types[p->int_type]);
 	}
 	
-	if(p->is_float_type) { sprintf(res, "float"); }
 	if(p->is_char_type)  { sprintf(res, "char"); }
 	if(p->is_bool_type)  { sprintf(res, "bool"); }
 	

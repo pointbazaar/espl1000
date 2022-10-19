@@ -25,14 +25,14 @@ struct PrimitiveType* makePrimitiveType(struct TokenList* tokens) {
 	res->int_type = NONE;
 	
 	res->is_int_type   = next->kind == TYPEID_PRIMITIVE_INT;
-	res->is_float_type = next->kind == TYPEID_PRIMITIVE_FLOAT;
 	res->is_char_type  = next->kind == TYPEID_PRIMITIVE_CHAR;
 	res->is_bool_type  = next->kind == TYPEID_PRIMITIVE_BOOL;
 	
 	char* types[] = 
-	{"int8","int16","int32","int64",
-	"uint8","uint16","uint32","uint64",
-	"int","uint"
+	{"int8",
+	"uint8",
+	"int",
+	"uint"
 	};
 	
 	if(!(res->is_int_type)){

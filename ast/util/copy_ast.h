@@ -13,7 +13,6 @@
 //const
 struct BoolConst*   copy_bool_const(struct BoolConst* bc);
 struct CharConst*   copy_char_const(struct CharConst* cc);
-struct FloatConst*  copy_float_const(struct FloatConst* fc);
 struct IntConst*    copy_int_const(struct IntConst* ic);
 struct HexConst*    copy_hex_const(struct HexConst* hc);
 struct BinConst*    copy_bin_const(struct BinConst* hc);

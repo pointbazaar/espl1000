@@ -199,15 +199,14 @@ void test_typeidentifier_primitive(){
 	free_tokens(tokens, 4);
 	
 	//------------------------------
-	char* str2 = "float char bool ";
+	char* str2 = "char bool ";
 	
 	struct Token** tokens2 = lex(str2);
 	
-	assert(tokens2[0]->kind == TYPEID_PRIMITIVE_FLOAT);
-	assert(tokens2[1]->kind == TYPEID_PRIMITIVE_CHAR);
-	assert(tokens2[2]->kind == TYPEID_PRIMITIVE_BOOL);
+	assert(tokens2[0]->kind == TYPEID_PRIMITIVE_CHAR);
+	assert(tokens2[1]->kind == TYPEID_PRIMITIVE_BOOL);
 
-	free_tokens(tokens2, 3);
+	free_tokens(tokens2, 2);
 }
 
 void test_typeparameter_1() {

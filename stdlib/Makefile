@@ -14,7 +14,6 @@ SOURCES :=  test.dg \
 	primes.dg \
 	math.dg \
 	polynomial.dg \
-	matrix.dg \
 	collections/set.dg \
 	collections/stack.dg \
 	collections/intbintree.dg \

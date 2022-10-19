@@ -2,7 +2,7 @@
 //prime numbers. 
 
 @halts
-fn isprime(uint64 n) -> bool {
+fn isprime(uint n) -> bool {
 	
 	uint count = 0;
 

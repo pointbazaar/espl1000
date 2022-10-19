@@ -24,7 +24,6 @@ struct PrimitiveType {
 
 	//PType means 'Primitive Type'
 	bool is_int_type;
-	bool is_float_type;
 	bool is_char_type;
 	bool is_bool_type;
 

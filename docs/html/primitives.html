@@ -34,50 +34,26 @@
 	<div class="row">
 
 		<div class="col">
-			<h3> Signed Integer Types </h3>
+			<h3> Integer Types </h3>
 			<table class="table box">
 			<thead>
 				<tr>
 					<th>Type</th>
 					<th>Width</th>
-					<th>transpiles to</th>
+					<th>Signed-ness</th>
 				</tr>
 			</thead>
-			<tr> <td>int8</td>  <td>1 byte</td>  <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int8_t</a></td>   </tr>
-			<tr> <td>int16</td> <td>2 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int16_t</a></td>  </tr>
-			<tr> <td>int32</td> <td>4 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int32_t</a></td>  </tr>
-			<tr> <td>int64</td> <td>8 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">int64_t</a></td>  </tr>
-			<tr> <td>int</td> <td> </td> <td>int (for C compatibility reasons)</td>  </tr>
+			<tr> <td>int8</td>  <td>1 byte</td> <td>signed</td>  </tr>
+			<tr> <td>int</td> <td>unspecified</td> <td>signed</td> </tr>
+			<tr> <td>uint8</td>  <td>1 byte</td>  <td>unsigned</td> </tr>
+			<tr> <td>uint</td> <td> unspecified </td> <td>unsigned</td>  </tr>
 			</table>
 		</div>
 		
-		<div class="col">
-			<h3> Unsigned Integer Types </h3>
-			<table class="table box">
-			<thead>
-				<tr>
-					<th>Type</th>
-					<th>Width</th>
-					<th>transpiles to</th>
-				</tr>
-			</thead>
-			<tr> <td>uint8</td>  <td>1 byte</td>  <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint8_t</a></td>   </tr>
-			<tr> <td>uint16</td> <td>2 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint16_t</a></td>  </tr>
-			<tr> <td>uint32</td> <td>4 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint32_t</a></td>  </tr>
-			<tr> <td>uint64</td> <td>8 bytes</td> <td><a href="https://www.gnu.org/software/libc/manual/html_node/Integers.html">uint64_t</a></td>  </tr>
-			<tr> <td>uint</td> <td> 4 bytes</td> <td> uint32 </td>  </tr>
-			</table>
-		</div>
 		
 	</div>
 
 	<div class="row mt-3">
-		
-		<div class="col">
-			<h3>float</h3>
-			<pre>
-float f = 3.14159;</pre>
-		</div>
 
 		<div class="col">
 			<h3>char</h3>
@@ -94,8 +70,8 @@ bool x = true;</pre>
 		<div class="col">		
 			<h3>Hex and Binary Literals</h3>
 			<pre>
-uint16 x;
-x = 0x0ffb
+uint8 x;
+x = 0x0f
 x = 0b01000101</pre>
 		</div>
 		

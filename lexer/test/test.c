@@ -43,15 +43,11 @@ int main(){
 	test_arrow();
 	
 	//tests_const.c
-	test_lexes_float_constant();
 	test_lexes_escaped_char();
 	test_anytypetoken();
 	test_true();
 	test_false();
 	test_char();
-	test_float_1();
-	test_float_2();
-	test_float_3();
 	test_int_1();
 	test_int_2();
 	test_int_3();

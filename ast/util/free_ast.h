@@ -17,7 +17,6 @@ void free_ast(struct AST* ast);
 //const
 void free_bool_const(struct BoolConst* bc);
 void free_char_const(struct CharConst* cc);
-void free_float_const(struct FloatConst* fc);
 void free_int_const(struct IntConst* ic);
 void free_hex_const(struct HexConst* hc);
 void free_bin_const(struct BinConst* hc);

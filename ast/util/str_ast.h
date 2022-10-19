@@ -13,7 +13,6 @@
 //const
 char* str_bool_const(struct BoolConst* bc);
 char* str_char_const(struct CharConst* cc);
-char* str_float_const(struct FloatConst* fc);
 char* str_int_const(struct IntConst* ic);
 char* str_hex_const(struct HexConst* hc);
 char* str_const_value(struct ConstValue* cv);

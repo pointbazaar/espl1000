@@ -22,7 +22,7 @@ struct LLNode<?T0> {
 }
 
 @halts
-fn linkedlist_size(LinkedList<?T0> l) -> uint64 { 
+fn linkedlist_size(LinkedList<?T0> l) -> uint { 
 	return l.size; 
 }
 
