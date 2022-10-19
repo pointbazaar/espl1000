@@ -16,6 +16,7 @@ void tacbuffer_append(struct TACBuffer *buffer, struct TAC *node, bool set_index
 
 void tacbuffer_set(struct TACBuffer* buffer, int index, struct TAC* node);
 struct TAC* tacbuffer_get(struct TACBuffer* buffer, int index);
+struct TAC* tacbuffer_get_last(struct TACBuffer* buffer);
 
 char* tacbuffer_last_dest(struct TACBuffer* buffer);
 size_t tacbuffer_count(struct TACBuffer* buffer);

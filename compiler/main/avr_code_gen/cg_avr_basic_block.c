@@ -63,6 +63,14 @@ void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, FILE *f
 
     rat_dtor(rat);
 
-    emit_asm_avr_basic_block(block->branch_1,  ctx, fout);
-    emit_asm_avr_basic_block(block->branch_2, ctx, fout);
+	//OLD:
+    //emit_asm_avr_basic_block(block->branch_1,  ctx, fout);
+    //emit_asm_avr_basic_block(block->branch_2, ctx, fout);
+    
+    //false/default branch gets emitted first,
+    //because there is no label for it in a lot of cases
+    //this way we can avoid an extra jump that's really 
+    //not necessary.
+    emit_asm_avr_basic_block(block->branch_2,  ctx, fout);
+    emit_asm_avr_basic_block(block->branch_1, ctx, fout);
 }

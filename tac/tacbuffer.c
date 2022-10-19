@@ -20,6 +20,7 @@ void tacbuffer_append(struct TACBuffer *buffer, struct TAC *node, bool set_index
 
     buffer->buffer[buffer->count] = node;
 
+	//we should really deprecate node->index
     if(set_index)
         node->index = buffer->count;
 
@@ -48,6 +49,11 @@ struct TAC* tacbuffer_get(struct TACBuffer* buffer, int index){
 	}
 	
 	return buffer->buffer[index];
+}
+
+
+struct TAC* tacbuffer_get_last(struct TACBuffer* buffer){
+	return tacbuffer_get(buffer, tacbuffer_count(buffer) - 1);
 }
 
 struct TACBuffer* tacbuffer_ctor(){

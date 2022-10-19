@@ -57,7 +57,7 @@ enum TAC_KIND{
 #define TAC_NO_LABEL 0
 
 //this is our 2-Address Code
-//it easily maps onto x86 and avr_code_gen assembly
+//it easily maps onto avr_code_gen assembly
 //which assumes 1 operation and 2 registers,
 //dest and src.
 //where dest = dest op src

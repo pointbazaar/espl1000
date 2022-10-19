@@ -56,7 +56,7 @@ struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer, char* funct
 void create_edges_basic_block(struct TACBuffer *buffer, uint32_t count, struct BasicBlock **blocks,
                               struct BasicBlock *block) {
 
-    struct TAC* last = tacbuffer_get(block->buffer, tacbuffer_count(block->buffer) - 1);
+    struct TAC* last = tacbuffer_get_last(block->buffer);
 
     if(last->label_index != TAC_NO_LABEL){
         //find out the block where the leader has that label_index

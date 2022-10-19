@@ -10,8 +10,7 @@ void compile_tac_const_value(struct RAT* rat, struct TAC* tac, FILE* fout){
 
     int reg = rat_get_free_register(rat, 16);
 
-    rat->is_occupied[reg] = true;
-    rat->occupant[reg] = tac->dest;
+	rat_occupy_register(rat, reg, tac->dest);
 
     fprintf(fout, "ldi r%d, %d\n", reg, tac->const_value);
 }

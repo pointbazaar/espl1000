@@ -23,6 +23,9 @@ static void test_tac_store_const_addr();
 static void test_tac_load_const_addr();
 static void test_tac_binary_op_immediate();
 static void test_tac_unary_op();
+static void test_tac_binary_op();
+static void test_tac_goto();
+static void test_tac_if_goto();
 
 static void status_test_codegen(char* msg){
     printf(" - [TEST] avr codegen %s\n", msg);
@@ -39,6 +42,9 @@ void test_suite_avr_code_gen(){
     test_tac_load_const_addr();
     test_tac_binary_op_immediate();
     test_tac_unary_op();
+    test_tac_binary_op();
+    test_tac_goto();
+    test_tac_if_goto();
     //TODO: add more tests to cover all TAC
 }
 
@@ -364,6 +370,150 @@ static void test_tac_unary_op(){
 	assert(has1);
 	assert(has2);
 	assert(has3);
+	
+	vmcu_system_dtor(system);
+}
+
+static void test_tac_binary_op(){
+	
+	status_test_codegen("TAC_BINARY_OP");
+	
+	//TODO: test * (multiply)
+	//we test +,-,|,& operators
+	uint8_t change = 40;
+	
+	int8_t starts[] = {rand()%100,rand()%100,rand()%100,rand()%100};
+	int8_t changes[] = {rand()%change,rand()%change,rand()%change,rand()%change};
+	int8_t expected[] = {
+		starts[0] + changes[0],
+		starts[1] - changes[1],
+		starts[2] | changes[2],
+		starts[3] & changes[3],
+	};
+	
+	char* temps[] = {"t0","t1","t2","t3","t4","t5","t6","t7"};
+	enum TAC_OP ops[] = {TAC_OP_ADD, TAC_OP_SUB, TAC_OP_OR, TAC_OP_AND};
+
+    struct TACBuffer* buffer = tacbuffer_ctor();
+    
+    //add all the operations
+    for(int i=0; i < 4; i++){
+		
+		tacbuffer_append(buffer, makeTACConst(i, starts[i]), false);
+		tacbuffer_append(buffer, makeTACConst(i+4, changes[i]), false);
+		tacbuffer_append(buffer, makeTACBinOp(temps[i], ops[i], temps[i+4]), false);
+	}
+    
+    tacbuffer_append(buffer, makeTACReturn("t0"), false);
+
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+
+	//keep track of which values have initialized and which changed
+	bool has_init[]    = {false,false,false,false};
+	bool has_changed[] = {false,false,false,false};
+
+    for(int i=0;i < 20; i++){
+		
+        vmcu_system_step(system);
+        
+        for(int k = 0; k < 32; k++){
+			
+			const int8_t value = vmcu_system_read_gpr(system, k);
+			
+			for(int j = 0; j < 4; j++){
+				
+				if(has_init[j] && value == expected[j]) 
+					has_changed[j] = true;
+			
+				if(value == starts[j]) 
+					has_init[j] = true;
+			}
+		}
+	}
+	
+	for(int j = 1; j < 2; j++){
+		
+		assert(has_init[j]);
+		assert(has_changed[j]);
+	}
+	
+	vmcu_system_dtor(system);
+}
+
+static void test_tac_goto(){
+	
+	status_test_codegen("TAC_GOTO");
+	
+    struct TACBuffer* buffer = tacbuffer_ctor();
+    
+	tacbuffer_append(buffer, makeTACLabel(43), false);
+	tacbuffer_append(buffer, makeTACGoto(43), false);
+    tacbuffer_append(buffer, makeTACReturn("t0"), false);
+
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+
+    for(int i=0;i < 7; i++){
+        vmcu_system_step(system);
+	}
+	
+	const uint32_t old_pc = vmcu_system_get_pc(system);
+	
+	for(int i=0;i < 5; i++){
+        vmcu_system_step(system);
+	}
+	
+	//assert that the PC has not changed
+	assert(vmcu_system_get_pc(system) == old_pc);
+	
+	vmcu_system_dtor(system);
+}
+
+static void test_tac_if_goto(){
+	
+	status_test_codegen("TAC_IF_GOTO");
+	
+	//we need to test 2 cases
+	// - condition true, we branch
+	// - condition false, we do not branch
+	//we check by writing a fixed value to 2 known addresses in data space
+	
+	const uint8_t value = rand()%0xff;
+	const uint16_t address1 = 0x46;
+	const uint16_t address2 = 0x47;
+	
+	//labels
+	const uint16_t l1 = rand()%0xff;
+	const uint16_t lend = l1+2;
+	
+    struct TACBuffer* buffer = tacbuffer_ctor();
+    
+    tacbuffer_append(buffer, makeTACConst(0, value), true);
+    
+    tacbuffer_append(buffer, makeTACConst(1, 1), true);
+    tacbuffer_append(buffer, makeTACIfGoto("t1", l1), true); //should branch
+	tacbuffer_append(buffer, makeTACGoto(lend), true);
+	
+	tacbuffer_append(buffer, makeTACLabel(l1), true);
+	tacbuffer_append(buffer, makeTACConst(0, value), true);
+	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, "t0"), true);
+    tacbuffer_append(buffer, makeTACConst(2, 0), true);
+	tacbuffer_append(buffer, makeTACIfGoto("t2", lend), true); //should not branch
+	tacbuffer_append(buffer, makeTACConst(0, value), true);
+	tacbuffer_append(buffer, makeTACStoreConstAddr(address2, "t0"), true);
+	
+	tacbuffer_append(buffer, makeTACLabel(lend), true);
+	tacbuffer_append(buffer, makeTACConst(0, value), true);
+    tacbuffer_append(buffer, makeTACReturn("t0"), true);
+
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+
+    for(int i=0;i < 20; i++){
+        vmcu_system_step(system);
+	}
+	
+	//check that the values have arrived
+	assert(vmcu_system_read_data(system, address1) == value);
+	assert(vmcu_system_read_data(system, address2) == value);
 	
 	vmcu_system_dtor(system);
 }
