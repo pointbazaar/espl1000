@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
+
+## [v0.3.2]
+- remove the Comparison Operator Chaining Feature. It is really not that special
+  and there is already too much Code in this Project. Need to lose weight lol.
 - remove the AST I/O feature (the .file.dg.ast file format)
   because i did not use the feature. It was intended to have a common format
   to interact with the AST, for multiple programs to work on it. 

@@ -8,7 +8,6 @@
 
 struct TokenList;
 
-//DragonExpressionNode should be similar to jack expression
 //an expression should be anything that returns a value or computes to a value
 
 struct Expr* makeExpr(struct TokenList* tokens);

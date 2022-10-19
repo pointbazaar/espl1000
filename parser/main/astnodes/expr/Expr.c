@@ -28,13 +28,8 @@ void performTreeTransformation(
 	bool debug,
 	int max_op_index
 );
-void insertOperatorChaining(
-	struct Op*** ops, int* opsc,
-	struct UnOpTerm*** terms, int* termsc,
-	bool debug
-);
+
 bool isComparisonOp(struct Op* op);
-//-----------------------------
 
 struct Expr* makeExpr_1(struct UnOpTerm* term) {
 	struct Expr* res = make(Expr);
@@ -65,6 +60,7 @@ struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, struct Op* op, struct UnOpTer
 struct Expr* makeExpr(struct TokenList* tokens) {
 
 	//we assume they never have more than 200 terms
+	//TODO: don't assume that!
 
 	struct Op** ops = malloc(sizeof(struct Op*)*200);
 	int opsc = 0;
@@ -137,18 +133,8 @@ struct Expr* fullTreeTransformation(
 	
 	struct Op** myops = ops;
 	struct UnOpTerm** myterms = terms;
-
-	//only group up to index 6, because the 
-	//comparison operators need to be chained later on
-	performTreeTransformation(
-		&myops, &opsc, &myterms, &termsc, debug, 6
-	);
 	
-	//do comparison operator chaining
-	insertOperatorChaining
-	(&myops, &opsc, &myterms, &termsc, debug);
-	
-	//now group the rest
+	//group the terms
 	performTreeTransformation(
 		&myops, &opsc, &myterms, &termsc, debug, nops-1
 	);
@@ -329,72 +315,6 @@ void performTreeTransformation(
 		//insert newly created expression
 		*terms = (struct UnOpTerm**)insert((void**)(*terms), indexOfOp, (void*)ttmp, *termsc);
 		(*termsc)+=1; //because we inserted
-	}
-}
-
-void insertOperatorChaining(
-	struct Op*** ops, int* opsc,
-	struct UnOpTerm*** terms, int* termsc,
-	bool debug
-){
-	if(debug){ printf("insertOperatorChaining(...)\n"); }
-	/*
-	Algorithm:
-	look for pattern:  OP1 TERM OP2
-	where OP1 and OP2 are comparison operators
-		if found:
-			generate OP1 TERM && TERM OP2
-			
-	*/
-	//pattern length is 3,
-	//so i+1 should also be accessible
-	//(for the second operator)
-	for(int i=0;i < (*opsc)-1; i++){
-		
-		const uint16_t lOpIndex    = i;
-		const uint16_t termIndex   = i+1;
-		const uint16_t rOpIndex    = i+1;
-		
-		//compare to pattern
-		
-		struct Op* lOp    = (*ops)[lOpIndex];
-		struct UnOpTerm* term = (*terms)[termIndex];
-		struct Op* rOp    = (*ops)[rOpIndex];
-		
-		if(debug){
-			printf("looking at %s %s %s\n", lOp->op, "EXPR", rOp->op);
-		}
-		
-		if(isComparisonOp(lOp) && isComparisonOp(rOp)){
-			//they are comparison operators
-			
-			if(debug){ 
-				printf("chaining comparison operators\n"); 
-			}
-			
-			//generate the pattern
-			struct Op* andOp = make(Op);
-			
-			andOp->is_arithmetic = false;
-			andOp->is_relational = false;
-			andOp->is_logical    = true;
-			andOp->is_bitwise    = false;
-			
-			strcpy(andOp->op, "&&");
-			
-			//insert &&
-			(*ops) = (struct Op**)insert((void**)(*ops), lOpIndex+1, (void*)andOp, *opsc);
-			(*opsc) += 1;
-			
-			//deep copy the term
-			//so that later freeing the AST
-			//causes no double free
-			struct UnOpTerm* termCopy = copy_un_op_term(term);
-			
-			//insert EXPR
-			(*terms) = (struct UnOpTerm**)insert((void**)(*terms), termIndex, (void*)termCopy, *termsc);
-			(*termsc) += 1;
-		}
 	}
 }
 
