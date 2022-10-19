@@ -22,6 +22,7 @@ static void test_tac_const_value();
 static void test_tac_store_const_addr();
 static void test_tac_load_const_addr();
 static void test_tac_binary_op_immediate();
+static void test_tac_unary_op();
 
 static void status_test_codegen(char* msg){
     printf(" - [TEST] avr codegen %s\n", msg);
@@ -37,6 +38,7 @@ void test_suite_avr_code_gen(){
     test_tac_store_const_addr();
     test_tac_load_const_addr();
     test_tac_binary_op_immediate();
+    test_tac_unary_op();
     //TODO: add more tests to cover all TAC
 }
 
@@ -319,6 +321,49 @@ static void test_tac_binary_op_immediate(){
 		assert(has_init[j]);
 		assert(has_changed[j]);
 	}
+	
+	vmcu_system_dtor(system);
+}
+
+static void test_tac_unary_op(){
+	
+	status_test_codegen("TAC_UNARY_OP");
+    
+	const int8_t start = rand()%0xff;
+	
+    struct TACBuffer* buffer = tacbuffer_ctor();
+    
+	tacbuffer_append(buffer, makeTACConst(0, start), false);
+	
+	tacbuffer_append(buffer, makeTACUnaryOp("t1","t0",TAC_OP_UNARY_MINUS), false);
+    tacbuffer_append(buffer, makeTACUnaryOp("t2","t0",TAC_OP_UNARY_NOT), false);
+    tacbuffer_append(buffer, makeTACUnaryOp("t3","t0",TAC_OP_UNARY_BITWISE_NEG), false);
+    
+    tacbuffer_append(buffer, makeTACReturn("t0"), false);
+
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    
+    bool has1 = false;
+	bool has2 = false;
+	bool has3 = false;
+
+    for(int i=0;i < 16; i++){
+		
+        vmcu_system_step(system);
+        
+        for(int k = 0; k < 32; k++){
+			
+			const int8_t value = vmcu_system_read_gpr(system, k);
+			
+			if(value == -start) has1 = true;
+			if(value == !start) has2 = true;
+			if(value == ~start) has3 = true;
+		}
+	}
+	
+	assert(has1);
+	assert(has2);
+	assert(has3);
 	
 	vmcu_system_dtor(system);
 }
