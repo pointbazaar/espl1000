@@ -28,6 +28,7 @@ static void test_tac_goto();
 static void test_tac_if_goto();
 static void test_tac_return();
 static void test_tac_copy();
+static void test_tac_param();
 
 static void status_test_codegen(char* msg){
     printf(" - [TEST] avr codegen %s\n", msg);
@@ -49,6 +50,7 @@ void test_suite_avr_code_gen(){
     test_tac_if_goto();
     test_tac_return();
     test_tac_copy();
+    test_tac_param();
     //TODO: add more tests to cover all TAC
 }
 
@@ -568,6 +570,47 @@ static void test_tac_copy(){
 	}
 	
 	assert(count >= 2);
+	
+	vmcu_system_dtor(system);
+}
+
+static void test_tac_param(){
+	
+	status_test_codegen("TAC_PARAM");
+	
+	//test that the value gets pushed
+	//and the stack pointer decrements
+	
+	const int8_t fixed_value = rand()%0xff;
+	
+	const uint8_t SPL_ADDR = 0x5d;
+	const uint8_t SPH_ADDR = 0x5e;
+	
+    struct TACBuffer* buffer = tacbuffer_ctor();
+    
+    tacbuffer_append(buffer, makeTACConst(0, fixed_value));
+    tacbuffer_append(buffer, makeTACParam("t0"));
+    tacbuffer_append(buffer, makeTACReturn("t0"));
+
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+
+    for(int i=0;i < 7; i++){
+        vmcu_system_step(system);
+	}
+	
+	int sp_old = vmcu_system_read_data(system, SPL_ADDR) | vmcu_system_read_data(system, SPH_ADDR) << 8;
+	
+	for(int i=0;i < 3; i++){
+        vmcu_system_step(system);
+	}
+	
+	int sp = vmcu_system_read_data(system, SPL_ADDR) | vmcu_system_read_data(system, SPH_ADDR) << 8;
+	
+	//assert that SP was decremented
+	assert(sp == sp_old - 1);
+	
+	//assert that fixed_value is on the stack
+	assert(vmcu_system_read_data(system, sp_old) == fixed_value);
 	
 	vmcu_system_dtor(system);
 }

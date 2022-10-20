@@ -23,16 +23,10 @@ void emit_asm_avr_single_tac(struct RAT* rat, struct TAC *tac, struct Ctx* ctx, 
         case TAC_COPY:        compile_tac_copy(rat, tac, fout); break;
         case TAC_CONST_VALUE: compile_tac_const_value(rat, tac, fout); break;
         case TAC_CALL:        compile_tac_call(tac, fout); break;
-        case TAC_PARAM:
-            //TODO
-            printf("currently unsupported: TAC_PARAM\n");
-            exit(1);
-            break;
+        case TAC_PARAM:		  compile_tac_param(rat, tac, fout); break;
         case TAC_RETURN:      compile_tac_return(rat, tac, ctx, fout); break;
         case TAC_BINARY_OP_IMMEDIATE: compile_tac_binary_op_immediate(rat, tac, fout); break;
-        case TAC_LOAD_CONST_ADDR:
-            compile_tac_load_const_addr(rat, tac, fout); break;
-        case TAC_STORE_CONST_ADDR:
-            compile_tac_store_const_addr(rat, tac, fout); break;
+        case TAC_LOAD_CONST_ADDR: compile_tac_load_const_addr(rat, tac, fout); break;
+        case TAC_STORE_CONST_ADDR: compile_tac_store_const_addr(rat, tac, fout); break;
     }
 }
