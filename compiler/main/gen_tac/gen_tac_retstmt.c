@@ -11,5 +11,5 @@ void tac_retstmt(struct TACBuffer* buffer, struct RetStmt* r){
 
     struct TAC* t = makeTACReturn(tacbuffer_last_dest(buffer));
 
-    tacbuffer_append(buffer, t, true);
+    tacbuffer_append(buffer, t);
 }

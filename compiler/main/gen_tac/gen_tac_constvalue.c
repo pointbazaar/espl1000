@@ -8,7 +8,6 @@ void tac_constvalue(struct TACBuffer* buffer, struct ConstValue* c){
     
     tacbuffer_append(
 		buffer, 
-		makeTACConst(make_temp(), int_value_from_const(c)), 
-		true
+		makeTACConst(make_temp(), int_value_from_const(c))
 	);
 }

@@ -25,5 +25,5 @@ void tac_massignstmt(struct TACBuffer* buffer, struct MAssignStmt* m){
     
     struct TAC* tstore = makeTACStoreConstAddr(addr, tacbuffer_last_dest(buffer));
 
-    tacbuffer_append(buffer, tstore, true);
+    tacbuffer_append(buffer, tstore);
 }

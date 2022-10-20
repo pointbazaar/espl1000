@@ -26,7 +26,7 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FI
     struct TACBuffer* buffer = tacbuffer_ctor();
 
     //first the label of the function
-    tacbuffer_append(buffer, makeTACLabel2(m->decl->name),false);
+    tacbuffer_append(buffer, makeTACLabel2(m->decl->name));
 
     tac_method(buffer, m);
 

@@ -33,32 +33,32 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f){
     tac_expr(buffer, f->range->end);
     char* t2 = tacbuffer_last_dest(buffer);
 
-    tacbuffer_append(buffer, makeTACLabel(l0), true);
+    tacbuffer_append(buffer, makeTACLabel(l0));
 
     uint32_t t3 = make_temp();
     char t3c[10];
     sprintf(t3c, "t%d", t3);
 
-    tacbuffer_append(buffer, makeTACCopy(t3c, t1), true);
+    tacbuffer_append(buffer, makeTACCopy(t3c, t1));
     
     char t3str[10];
     sprintf(t3str, "t%d", t3);
 
-    tacbuffer_append(buffer, makeTACBinOp(t2, TAC_OP_CMP_GE, t3str), true);
+    tacbuffer_append(buffer, makeTACBinOp(t2, TAC_OP_CMP_GE, t3str));
 
     struct TAC* t = makeTACIfGoto(t3c, l1);
-    tacbuffer_append(buffer, t, true);
+    tacbuffer_append(buffer, t);
 
-    tacbuffer_append(buffer, makeTACGoto(lend), true);
+    tacbuffer_append(buffer, makeTACGoto(lend));
 
-    tacbuffer_append(buffer, makeTACLabel(l1), true);
+    tacbuffer_append(buffer, makeTACLabel(l1));
 
     tac_stmtblock(buffer, f->block);
 
     // t3++
-    tacbuffer_append(buffer, makeTACBinOpImmediate(t3c, TAC_OP_ADD, 1), true);
+    tacbuffer_append(buffer, makeTACBinOpImmediate(t3c, TAC_OP_ADD, 1));
 
-    tacbuffer_append(buffer, makeTACGoto(l0), true);
+    tacbuffer_append(buffer, makeTACGoto(l0));
 
-    tacbuffer_append(buffer, makeTACLabel(lend), true);
+    tacbuffer_append(buffer, makeTACLabel(lend));
 }

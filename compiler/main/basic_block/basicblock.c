@@ -116,10 +116,10 @@ static struct BasicBlock** collect_basic_blocks(struct TACBuffer* buffer, uint32
         //now collect all TACs until next leader
 
         //append the leader
-        tacbuffer_append(current->buffer, tacbuffer_get(buffer, index_tacbuffer++), false);
+        tacbuffer_append(current->buffer, tacbuffer_get(buffer, index_tacbuffer++));
 
         while(index_tacbuffer < tacbuffer_count(buffer) && !is_leader[index_tacbuffer]){
-            tacbuffer_append(current->buffer, tacbuffer_get(buffer, index_tacbuffer++), false);
+            tacbuffer_append(current->buffer, tacbuffer_get(buffer, index_tacbuffer++));
         }
     }
     return blocks;

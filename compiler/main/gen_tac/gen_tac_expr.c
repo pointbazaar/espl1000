@@ -97,7 +97,7 @@ static void tac_expr_part_2_constvalue(struct TACBuffer* buffer, struct Expr* ex
 	bool reverse_operands = false;
     const enum TAC_OP op = op_str_to_tac_op(expr->op->op, &reverse_operands);
 
-    tacbuffer_append(buffer,makeTACBinOpImmediate(t1, op, immediate),true);
+    tacbuffer_append(buffer,makeTACBinOpImmediate(t1, op, immediate));
 }
 
 static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr* expr, char* t1){
@@ -119,5 +119,5 @@ static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr*
 		t = makeTACBinOp(t1, op, t2);
 	}
 
-    tacbuffer_append(buffer, t, true);
+    tacbuffer_append(buffer, t);
 }

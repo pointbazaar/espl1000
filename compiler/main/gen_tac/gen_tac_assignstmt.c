@@ -24,5 +24,5 @@ void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a){
             tacbuffer_last_dest(buffer)
     );
 
-    tacbuffer_append(buffer, t, true);
+    tacbuffer_append(buffer, t);
 }

@@ -20,5 +20,5 @@ void tac_mdirect(struct TACBuffer* buffer, struct MDirect* m){
 
     struct TAC* t = makeTACLoadConstAddr(dest, addr);
 
-    tacbuffer_append(buffer, t, true);
+    tacbuffer_append(buffer, t);
 }

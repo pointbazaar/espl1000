@@ -30,6 +30,6 @@ void tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* u){
         
         struct TAC* t = makeTACUnaryOp(dest_str, tacbuffer_last_dest(buffer), op);
 
-        tacbuffer_append(buffer, t, true);
+        tacbuffer_append(buffer, t);
     }
 }

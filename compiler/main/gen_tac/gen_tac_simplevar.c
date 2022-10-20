@@ -17,5 +17,5 @@ void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* v){
     char tmp[10];
     sprintf(tmp, "t%d", make_temp());
     
-    tacbuffer_append(buffer, makeTACCopy(tmp, v->name), true);
+    tacbuffer_append(buffer, makeTACCopy(tmp, v->name));
 }

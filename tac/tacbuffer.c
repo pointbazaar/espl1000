@@ -13,7 +13,7 @@ struct TACBuffer{
     struct TAC** buffer;
 };
 
-void tacbuffer_append(struct TACBuffer *buffer, struct TAC *node, bool set_index) {
+void tacbuffer_append(struct TACBuffer *buffer, struct TAC *node) {
 
     if(buffer->count >= buffer->cap)
         buffer->buffer = realloc(buffer->buffer, sizeof(struct TAC*) * (buffer->cap *= 2));

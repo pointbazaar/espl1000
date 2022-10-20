@@ -18,20 +18,20 @@ void tac_whilestmt(struct TACBuffer* buffer, struct WhileStmt* w){
     uint32_t l1 = make_label();
     uint32_t lend = make_label();
 
-    tacbuffer_append(buffer, makeTACLabel(l0), true);
+    tacbuffer_append(buffer, makeTACLabel(l0));
 
     tac_expr(buffer, w->condition);
 
     struct TAC* t = makeTACIfGoto(tacbuffer_last_dest(buffer), l1);
-    tacbuffer_append(buffer, t, true);
+    tacbuffer_append(buffer, t);
 
-    tacbuffer_append(buffer, makeTACGoto(lend), true);
+    tacbuffer_append(buffer, makeTACGoto(lend));
 
-    tacbuffer_append(buffer, makeTACLabel(l1), true);
+    tacbuffer_append(buffer, makeTACLabel(l1));
 
     tac_stmtblock(buffer, w->block);
 
-    tacbuffer_append(buffer, makeTACGoto(l0), true);
+    tacbuffer_append(buffer, makeTACGoto(l0));
 
-    tacbuffer_append(buffer, makeTACLabel(lend), true);
+    tacbuffer_append(buffer, makeTACLabel(lend));
 }

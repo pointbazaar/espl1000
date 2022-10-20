@@ -15,7 +15,7 @@ void tac_call(struct TACBuffer* buffer, struct Call* call){
         
         struct TAC* t = makeTACParam(tacbuffer_last_dest(buffer));
 
-        tacbuffer_append(buffer, t, true);
+        tacbuffer_append(buffer, t);
     }
 
     if(call->callable->member_access != NULL){
@@ -30,5 +30,5 @@ void tac_call(struct TACBuffer* buffer, struct Call* call){
     
     struct TAC* t2 = makeTACCall(make_temp(), call->callable->simple_var->name);
 
-    tacbuffer_append(buffer, t2, true);
+    tacbuffer_append(buffer, t2);
 }

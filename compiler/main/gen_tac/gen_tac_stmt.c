@@ -6,11 +6,11 @@
 void tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt){
 
     if(stmt->is_break){
-        tacbuffer_append(buffer, makeTACGoto(label_loop_end), true);
+        tacbuffer_append(buffer, makeTACGoto(label_loop_end));
         return;
     }
     if(stmt->is_continue){
-        tacbuffer_append(buffer, makeTACGoto(label_loop_start), true);
+        tacbuffer_append(buffer, makeTACGoto(label_loop_start));
         return;
     }
 
