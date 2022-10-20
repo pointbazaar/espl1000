@@ -26,6 +26,7 @@ static void test_tac_unary_op();
 static void test_tac_binary_op();
 static void test_tac_goto();
 static void test_tac_if_goto();
+static void test_tac_return();
 
 static void status_test_codegen(char* msg){
     printf(" - [TEST] avr codegen %s\n", msg);
@@ -45,6 +46,7 @@ void test_suite_avr_code_gen(){
     test_tac_binary_op();
     test_tac_goto();
     test_tac_if_goto();
+    test_tac_return();
     //TODO: add more tests to cover all TAC
 }
 
@@ -511,6 +513,29 @@ static void test_tac_if_goto(){
 	//check that the values have arrived
 	assert(vmcu_system_read_data(system, address1) == value);
 	assert(vmcu_system_read_data(system, address2) == value);
+	
+	vmcu_system_dtor(system);
+}
+
+static void test_tac_return(){
+
+	status_test_codegen("TAC_RETURN");
+	
+	const int8_t value = rand()%0xff;
+	
+    struct TACBuffer* buffer = tacbuffer_ctor();
+    
+    tacbuffer_append(buffer, makeTACConst(0, value));
+    tacbuffer_append(buffer, makeTACReturn("t0"));
+
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+
+    for(int i=0;i < 20; i++){
+        vmcu_system_step(system);
+	}
+	
+	//returned value should be in r0
+	assert(vmcu_system_read_gpr(system, 0) == value);
 	
 	vmcu_system_dtor(system);
 }
