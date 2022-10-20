@@ -20,4 +20,6 @@ struct TAC* tacbuffer_get_last(struct TACBuffer* buffer);
 
 char* tacbuffer_last_dest(struct TACBuffer* buffer);
 size_t tacbuffer_count(struct TACBuffer* buffer);
+
+size_t tacbuffer_indexof(struct TACBuffer* buffer, struct TAC* tac);
 #endif

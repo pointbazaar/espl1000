@@ -62,8 +62,7 @@ enum TAC_KIND{
 //dest and src.
 //where dest = dest op src
 struct TAC{
-    uint32_t index; //for when we put it in a TACBuffer
-
+	
     //three address code
     uint32_t label_index;
 

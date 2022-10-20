@@ -84,11 +84,8 @@ static void test_reaches_endloop(){
 
     struct TACBuffer* buffer = tacbuffer_ctor();
 
-    struct TAC* tconst = makeTACConst(1, 0);
-    struct TAC* treturn = makeTACReturn("t1");
-
-	tacbuffer_append(buffer, tconst, false);
-	tacbuffer_append(buffer, treturn, false);
+	tacbuffer_append(buffer, makeTACConst(1, 0), false);
+	tacbuffer_append(buffer, makeTACReturn("t1"), false);
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 

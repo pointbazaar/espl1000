@@ -68,10 +68,10 @@ void create_edges_basic_block(struct TACBuffer *buffer, uint32_t count, struct B
     if(tac_is_unconditional_jump(last))
         return;
 
-    if(last->index >= tacbuffer_count(buffer) - 1)
+    if(tacbuffer_indexof(buffer, last) >= (tacbuffer_count(buffer) - 1))
         return;
 
-    struct TAC* next = tacbuffer_get(buffer, last->index+1);
+    struct TAC* next = tacbuffer_get(buffer, tacbuffer_indexof(buffer, last)+1);
 
     //find basic block of next
     block->branch_2 = find_block_from_tac_leader(blocks, count, next);
