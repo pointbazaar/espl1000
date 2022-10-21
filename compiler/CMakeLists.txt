@@ -128,7 +128,7 @@ add_executable("sd-tests"
 	test/typechecker/test_typechecker.c
 	test/typechecker/test_typechecker.h
 
-	#CodeGen
+	#CodeGen from TAC
 	test/avr_code_gen/test_avr_code_gen.c
 	test/avr_code_gen/test_avr_code_gen.h
 	test/avr_code_gen/test_avr_code_gen_util.c
@@ -146,6 +146,12 @@ add_executable("sd-tests"
 	test/avr_code_gen/compile_ir/test_compile_tac_return.c
 	test/avr_code_gen/compile_ir/test_compile_tac_store_const_addr.c
 	test/avr_code_gen/compile_ir/test_compile_tac_unary_op.c
+	
+	#CodeGen from Snippets (test compiling AST pieces)
+	test/gen_tac/test_gen_tac.c
+	test/gen_tac/util/test_gen_tac_util.c
+	test/gen_tac/test_gen_tac_assignstmt.c
+	test/gen_tac/test_gen_tac_mdirect.c
 )
 
 target_compile_options("sd-base"  PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")

@@ -131,9 +131,12 @@ bool compile(struct Flags* flags){
 	int status = 0;
 
     char cmd[200];
-    sprintf(cmd, "avra -o out %s", asm_filename);
+    sprintf(cmd, "avra -o out %s > /tmp/avra-stdout 2> /tmp/avra-stderr", asm_filename);
     status = system(cmd);
 
+	if (WEXITSTATUS(status) != 0) {
+		printf("[Error] error with avra, see /tmp/avra-stdout, /tmp/avra-stderr \n");
+	}
 
 	free(h_filename);
 	free(asm_filename);
