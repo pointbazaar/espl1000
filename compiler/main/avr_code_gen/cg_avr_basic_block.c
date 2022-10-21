@@ -36,11 +36,11 @@ void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, FILE *f
                 //store all locals that have been written, into the stack frame before
                 //we leave this basic block
 
-                for(int k=0;k < rat->capacity; k++) {
+                for(int k=0;k < RAT_CAPACITY; k++) {
 
-                    if(!rat->is_occupied[k]) continue;
+					if(!rat_occupied(rat, k)) continue;
 
-                    char* var_name = rat->occupant[k];
+                    char* var_name = rat_occupant(rat, k);
 
                     if(lvst_contains(ctx->tables->lvst, var_name)){
                         size_t offset = lvst_stack_frame_offset_avr(ctx->tables->lvst, var_name);

@@ -6,22 +6,9 @@
 #include <stdbool.h>
 #include <inttypes.h>
 
-struct RAT {
-    struct ST* st;
+#define RAT_CAPACITY (32)
 
-    //Register Allocation Table
-    //allocation of the registors used inside a function
-    //mapping locals, args, and temporaries to actual registers
-
-    uint8_t capacity; //should be 32
-
-    char* occupant[32]; //who occupies it
-    bool is_occupied[32]; //is it occupied?
-
-    //X: r26/r27
-    //Y: r28/r29
-    //Z: r30/r31
-};
+struct RAT;
 
 struct RAT* rat_ctor(struct ST* st);
 void rat_dtor(struct RAT* rat);
@@ -37,5 +24,9 @@ int rat_get_free_register(struct RAT* rat, bool high_regs_only);
 
 //occupies that register 
 void rat_occupy_register(struct RAT* rat, uint8_t reg, char* name);
+
+bool rat_occupied(struct RAT* rat, uint8_t reg);
+
+char* rat_occupant(struct RAT* rat, uint8_t reg);
 
 #endif

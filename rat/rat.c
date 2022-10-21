@@ -5,18 +5,36 @@
 
 #include "rat.h"
 
+
+struct RAT {
+	//struct RAT should be opaque outside of it's 
+	//implementation file
+	
+    struct ST* st;
+
+    //Register Allocation Table
+    //allocation of the registors used inside a function
+    //mapping locals, args, and temporaries to actual registers
+
+    char* occupant[RAT_CAPACITY]; //who occupies it
+    bool is_occupied[RAT_CAPACITY]; //is it occupied?
+
+    //X: r26/r27
+    //Y: r28/r29
+    //Z: r30/r31
+};
+
 struct RAT* rat_ctor(struct ST* st){
 
     struct RAT* rat = malloc(sizeof(struct RAT));
     *rat = (struct RAT){
         .st = st,
-        .capacity = 32,
     };
 
-    for(int i=0;i < rat->capacity;i++){
+    for(int i=0;i < RAT_CAPACITY;i++){
         rat->occupant[i] = "";
     }
-    memset(rat->is_occupied, false, sizeof(bool)*rat->capacity);
+    memset(rat->is_occupied, false, sizeof(bool)*RAT_CAPACITY);
 
     //r0 is our garbage register, for when we need to pop something off the stack
     //to destroy our stackframe
@@ -42,7 +60,7 @@ struct RAT* rat_ctor(struct ST* st){
     rat->is_occupied[30] = true; //Z
     rat->is_occupied[31] = true; //Z
 
-    for(int i=26;i < rat->capacity;i++){
+    for(int i=26;i < RAT_CAPACITY;i++){
         rat->occupant[i] = "reserved";
     }
 
@@ -56,7 +74,7 @@ void rat_dtor(struct RAT* rat){
 void rat_print(struct RAT* rat){
 
     printf("Register Allocation Table:\n");
-    for(size_t i = 0; i < rat->capacity; i++){
+    for(size_t i = 0; i < RAT_CAPACITY; i++){
 
         printf("r%02ld: ", i);
 
@@ -77,7 +95,7 @@ bool rat_has_register(struct RAT* rat, char* name){
 }
 
 int rat_get_register(struct RAT* rat, char* name){
-    for(int i=0;i < rat->capacity; i++){
+    for(int i=0;i < RAT_CAPACITY; i++){
         if(rat->is_occupied[i] && (strcmp(rat->occupant[i], name) == 0)){
             return i;
         }
@@ -91,6 +109,16 @@ void rat_occupy_register(struct RAT* rat, uint8_t reg, char* name){
 	rat->occupant[reg] = name;
 }
 
+bool rat_occupied(struct RAT* rat, uint8_t reg){
+	if(reg >= RAT_CAPACITY) return false;
+	
+	return rat->is_occupied[reg];
+}
+
+char* rat_occupant(struct RAT* rat, uint8_t reg){
+	return rat->occupant[reg];
+}
+
 int rat_get_free_register(struct RAT* rat, bool high_regs_only){
     //high_regs_only tells us at which register to start looking,
     //as there are some instructions such as 'ldi' which can only use a high register
@@ -98,7 +126,7 @@ int rat_get_free_register(struct RAT* rat, bool high_regs_only){
     
     const int start_inclusive = (high_regs_only)?16:0;
 
-    for(int i=start_inclusive;i < rat->capacity; i++){
+    for(int i=start_inclusive;i < RAT_CAPACITY; i++){
         if(!rat->is_occupied[i]){
             return i;
         }
