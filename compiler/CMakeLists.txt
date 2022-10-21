@@ -133,6 +133,19 @@ add_executable("sd-tests"
 	test/avr_code_gen/test_avr_code_gen.h
 	test/avr_code_gen/test_avr_code_gen_util.c
 	test/avr_code_gen/test_avr_code_gen_util.h
+	
+	test/avr_code_gen/compile_ir/test_compile_tac_binary_op.c
+	test/avr_code_gen/compile_ir/test_compile_tac_binary_op_immediate.c
+	test/avr_code_gen/compile_ir/test_compile_tac_const_value.c
+	test/avr_code_gen/compile_ir/test_compile_tac_copy.c
+	test/avr_code_gen/compile_ir/test_compile_tac_goto.c
+	test/avr_code_gen/compile_ir/test_compile_tac_if_goto.c
+	test/avr_code_gen/compile_ir/test_compile_tac_load_const_addr.c
+	test/avr_code_gen/compile_ir/test_compile_tac_nop.c
+	test/avr_code_gen/compile_ir/test_compile_tac_param.c
+	test/avr_code_gen/compile_ir/test_compile_tac_return.c
+	test/avr_code_gen/compile_ir/test_compile_tac_store_const_addr.c
+	test/avr_code_gen/compile_ir/test_compile_tac_unary_op.c
 )
 
 target_compile_options("sd-base"  PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
