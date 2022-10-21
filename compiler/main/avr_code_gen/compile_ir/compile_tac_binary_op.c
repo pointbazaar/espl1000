@@ -11,7 +11,7 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
     //left and right operand should have registers
 
     if(!rat_has_register(rat, tac->arg1)){
-        int index = rat_get_free_register(rat, 0);
+        int index = rat_get_free_register(rat, false);
         rat_occupy_register(rat, index, tac->arg1);
 
         //TODO: move our src into that register
@@ -20,7 +20,7 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
     int reg_src = rat_get_register(rat, tac->arg1);
 
     if(!rat_has_register(rat, tac->dest)){
-        int index = rat_get_free_register(rat, 0);
+        int index = rat_get_free_register(rat, false);
         rat_occupy_register(rat, index, tac->dest);
     }
 
@@ -46,11 +46,7 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
         case TAC_OP_CMP_EQ: mnem = "breq"; break;
         case TAC_OP_CMP_NEQ: mnem = "brne"; break;
 
-        case TAC_OP_UNARY_MINUS:
-        case TAC_OP_UNARY_NOT:
-        case TAC_OP_UNARY_BITWISE_NEG:
-            printf("TAC_OP_... currently unsupported\n");
-            break;
+		default: break; //should not happen
     }
 
     if(tac->op >= TAC_OP_CMP_LT && tac->op <= TAC_OP_CMP_NEQ){

@@ -12,7 +12,7 @@ void compile_tac_binary_op_immediate(struct RAT* rat, struct TAC* tac, FILE* fou
 
 	if(!rat_has_register(rat, tac->dest)){
 		//our temporary does not have a register
-		int index = rat_get_free_register(rat, 0);
+		int index = rat_get_free_register(rat, false);
 		rat_occupy_register(rat, index, tac->dest);
 	}
 

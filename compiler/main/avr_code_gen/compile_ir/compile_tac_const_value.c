@@ -8,7 +8,7 @@
 
 void compile_tac_const_value(struct RAT* rat, struct TAC* tac, FILE* fout){
 
-    int reg = rat_get_free_register(rat, 16);
+    int reg = rat_get_free_register(rat, true);
 
 	rat_occupy_register(rat, reg, tac->dest);
 

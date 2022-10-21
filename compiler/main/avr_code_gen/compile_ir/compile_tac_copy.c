@@ -10,14 +10,14 @@ void compile_tac_copy(struct RAT* rat, struct TAC* tac, FILE* fout) {
     //left and right operand should have registers
 
     if(!rat_has_register(rat, tac->arg1)){
-        int index = rat_get_free_register(rat, 0);
+        int index = rat_get_free_register(rat, false);
 		rat_occupy_register(rat, index, tac->arg1);
     }
 
     int reg_src = rat_get_register(rat, tac->arg1);
 
     if(!rat_has_register(rat, tac->dest)){
-        int index = rat_get_free_register(rat, 0);
+        int index = rat_get_free_register(rat, false);
         rat_occupy_register(rat, index, tac->dest);
     }
 

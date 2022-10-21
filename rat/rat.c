@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "rat.h"
 
@@ -90,10 +91,12 @@ void rat_occupy_register(struct RAT* rat, uint8_t reg, char* name){
 	rat->occupant[reg] = name;
 }
 
-int rat_get_free_register(struct RAT* rat, int start_inclusive){
-    //start_inclusive tells us at which register to start looking,
+int rat_get_free_register(struct RAT* rat, bool high_regs_only){
+    //high_regs_only tells us at which register to start looking,
     //as there are some instructions such as 'ldi' which can only use a high register
     // (>= r16)
+    
+    const int start_inclusive = (high_regs_only)?16:0;
 
     for(int i=start_inclusive;i < rat->capacity; i++){
         if(!rat->is_occupied[i]){
