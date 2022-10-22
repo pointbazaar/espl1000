@@ -35,11 +35,12 @@ struct TCError* typecheck_file(char* filename){
     }
     end:
     ;
-    struct AST* ast = build_ast(make_token_filename(filename));
-
-    if(ast == NULL){ return NULL;}
 
     struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(filename), makeST(false));
+    
+    struct AST* ast = build_ast(ctx_token_filename(ctx));
+
+    if(ast == NULL){ return NULL;}
 
     fill_tables(ast, ctx);
 

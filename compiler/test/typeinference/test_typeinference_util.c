@@ -37,11 +37,11 @@ struct Type* typeinfer_in_file(char* filename){
     bool success = s;
     assert(success);
 
-    struct AST* ast = build_ast(make_token_filename(filename));
+    struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(filename), makeST(false));
+
+	struct AST* ast = build_ast(ctx_token_filename(ctx));
 
     assert(ast != NULL);
-
-    struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(filename), makeST(false));
 
     fill_tables(ast, ctx);
 

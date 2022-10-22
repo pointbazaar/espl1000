@@ -8,26 +8,6 @@
 
 #include "fileutils.h"
 
-char* make_token_filename(char* filename){
-	
-	char* token_filename = malloc(strlen(filename) + 10);
-	
-	char* fnamecpy = malloc(strlen(filename)+1);
-	strcpy(fnamecpy, filename);
-	char* base_name = basename(fnamecpy);
-	
-	char* fnamecpy2 = malloc(strlen(filename)+1);
-	strcpy(fnamecpy2, filename);
-	char* dir_name = dirname(fnamecpy2);
-	
-	sprintf(token_filename, "%s/.%s.tokens", dir_name, base_name);
-	
-	free(fnamecpy);
-	free(fnamecpy2);
-	
-	return token_filename;
-}
-
 bool check_filenames_lowercase(struct Flags* flags){
 
     char* filename_pattern = "^[a-z\\/._0-9]+$";
