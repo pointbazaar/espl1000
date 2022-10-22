@@ -8,13 +8,17 @@ static char* get_op_str(enum TAC_OP top){
     char* opstr = "";
     switch (top) {
         default:
-        case TAC_OP_NONE: opstr = "?ERR"; break;
+        case TAC_OP_NONE: opstr = "?ERR in get_op_str"; break;
 
         case TAC_OP_ADD: opstr = "+="; break;
         case TAC_OP_SUB: opstr = "-="; break;
         case TAC_OP_MUL: opstr = "*="; break;
         case TAC_OP_AND: opstr = "&="; break;
         case TAC_OP_OR:  opstr = "|="; break;
+        case TAC_OP_XOR: opstr = "^="; break;
+        
+        case TAC_OP_SHIFT_LEFT:  opstr = "<<="; break;
+        case TAC_OP_SHIFT_RIGHT: opstr = ">>="; break;
 
 
         case TAC_OP_CMP_LT: opstr = "<"; break;

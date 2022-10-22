@@ -39,6 +39,7 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
         case TAC_OP_MUL: mnem = "mul"; break;
         case TAC_OP_AND: mnem = "and"; break;
         case TAC_OP_OR:  mnem = "or";  break;
+        case TAC_OP_XOR: mnem = "eor"; break;
 
 
         case TAC_OP_CMP_LT: mnem = "brlt"; break;
@@ -46,7 +47,12 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
         case TAC_OP_CMP_EQ: mnem = "breq"; break;
         case TAC_OP_CMP_NEQ: mnem = "brne"; break;
 
-		default: break; //should not happen
+		default: 
+			//should not happen
+			printf("fatal error in compile_tac_binary_op. Exiting.");
+			fflush(stdout);
+			exit(1);
+			break; 
     }
 
     if(tac->op >= TAC_OP_CMP_LT && tac->op <= TAC_OP_CMP_NEQ){

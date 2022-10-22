@@ -12,6 +12,12 @@ enum TAC_OP{
     TAC_OP_ADD,
     TAC_OP_SUB,
     TAC_OP_MUL,
+    
+    TAC_OP_XOR,
+    
+    //shift operators
+    TAC_OP_SHIFT_LEFT,
+    TAC_OP_SHIFT_RIGHT,
 
     //unary
     TAC_OP_UNARY_MINUS,

@@ -35,8 +35,20 @@ void compile_tac_binary_op_immediate(struct RAT* rat, struct TAC* tac, FILE* fou
             break;
 
         case TAC_OP_OR:
-            fprintf(fout, "ori r%d, $%d\n", dest, immediate);
+            fprintf(fout, "ori r%d, %d\n", dest, immediate);
             break;
+            
+		case TAC_OP_SHIFT_LEFT:
+			for(int i=0; i < immediate; i++){
+				fprintf(fout, "lsl r%d\n", dest);
+		    }
+			break;
+			
+		case TAC_OP_SHIFT_RIGHT:
+			for(int i=0; i < immediate; i++){
+				fprintf(fout, "lsr r%d\n", dest);
+		    }
+			break;
 
         default:
             printf("unsupported op in compile_tac_binary_op_immediate\n");

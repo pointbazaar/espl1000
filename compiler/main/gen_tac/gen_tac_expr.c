@@ -53,6 +53,8 @@ static bool operator_immediate_applicable(enum TAC_OP op, int32_t immediate){
         case TAC_OP_SUB:
         case TAC_OP_AND:
         case TAC_OP_OR:
+        case TAC_OP_SHIFT_LEFT:
+        case TAC_OP_SHIFT_RIGHT:
             return true;
         default:
             return false;
@@ -66,6 +68,12 @@ static enum TAC_OP op_str_to_tac_op(char* opstr, bool* reverse_operands){
     if(strcmp(opstr, "+") == 0) op = TAC_OP_ADD;
     if(strcmp(opstr, "-") == 0) op = TAC_OP_SUB;
     if(strcmp(opstr, "*") == 0) op = TAC_OP_MUL;
+    if(strcmp(opstr, "&") == 0) op = TAC_OP_AND;
+    if(strcmp(opstr, "|") == 0) op = TAC_OP_OR;
+    if(strcmp(opstr, "^") == 0) op = TAC_OP_XOR;
+    
+    if(strcmp(opstr, "<<") == 0) op = TAC_OP_SHIFT_LEFT;
+    if(strcmp(opstr, ">>") == 0) op = TAC_OP_SHIFT_RIGHT;
 
     if(strcmp(opstr, "<") == 0) op = TAC_OP_CMP_LT;
     if(strcmp(opstr, "<=") == 0){
@@ -83,6 +91,7 @@ static enum TAC_OP op_str_to_tac_op(char* opstr, bool* reverse_operands){
     if(strcmp(opstr, "!=") == 0) op = TAC_OP_CMP_NEQ;
 
     if(op == TAC_OP_NONE){
+		printf("error in op_str_to_tac_op\n");
         printf("error, opstr was none of supported TAC_OP_... values\n");
         printf("opstr = %s\n", opstr);
     }
