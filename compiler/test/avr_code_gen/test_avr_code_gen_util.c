@@ -13,10 +13,12 @@
 #include "avr_code_gen/cg_avr_basic_block.h"
 #include "util/fill_tables.h"
 
+#include "../../cli/flags/flags.h"
+
+
 static struct Ctx* prep_ctx(){
     struct Ctx* ctx = malloc(sizeof(struct Ctx));
-    struct Flags* flags = malloc(sizeof(struct Flags));
-    flags->debug = false;
+    struct Flags* flags = makeFlags2();
 
     ctx->tables = makeST(false);
 

@@ -6,7 +6,7 @@
 #include "libvmcu/libvmcu_analyzer.h"
 
 #include "compiler.h"
-#include "flags.h"
+#include "../../../cli/flags/flags.h"
 
 #include "../test_gen_tac.h"
 
@@ -25,10 +25,9 @@ vmcu_system_t* prepare_vmcu_system_from_code_snippet(char* code_snippet){
 	
 	fclose(fout);
 	
-	struct Flags* flags = makeFlags2();
-	
-	flags->filenames[0] = ".file.dg";
-	flags->count_filenames = 1;
+	char* argv[] = {"program", ".file.dg"};
+	int argc = 2;
+	struct Flags* flags = makeFlags(argc, argv);
 	
     compile(flags);
 

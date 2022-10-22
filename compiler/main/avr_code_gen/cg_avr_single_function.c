@@ -13,6 +13,9 @@
 #include "tables/symtable/symtable.h"
 #include "cg_avr_single_function.h"
 
+#include "../../cli/flags/flags.h"
+
+
 void emit_create_stack_frame(uint32_t stack_frame_size, FILE* fout){
 
     //push onto the stack to create the stack frame
@@ -31,7 +34,7 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FI
     tac_method(buffer, m);
 
     //print the TAC for debug
-    if(ctx->flags->debug)
+    if(flags_debug(ctx->flags))
         tacbuffer_print(buffer);
 
     //create basic blocks from this TAC

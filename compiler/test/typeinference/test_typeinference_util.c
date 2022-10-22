@@ -42,8 +42,7 @@ struct Type* typeinfer_in_file(char* filename){
     assert(ast != NULL);
 
     struct Ctx* ctx     = malloc(sizeof(struct Ctx));
-    struct Flags* flags = malloc(sizeof(struct Flags));
-    flags->debug = false;
+    struct Flags* flags = makeFlags2();
 
     ctx->tables = makeST(false);
 

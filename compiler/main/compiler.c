@@ -9,7 +9,7 @@
 
 #include "avr_code_gen/cg_avr.h"
 
-#include "flags.h"
+#include "../cli/flags/flags.h"
 #include "util/fill_tables.h"
 #include "util/fileutils/fileutils.h"
 
@@ -55,18 +55,18 @@ static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st){
 
 bool compile(struct Flags* flags){
 
-    if(flags->count_filenames == 0){
+    if(flags_count_filenames(flags) == 0){
         printf("[Error] expected atleast 1 filename\n");
         return false;
     }
 
     struct AST* ast = make(AST);
-    ast->count_namespaces = flags->count_filenames;
-    ast->namespaces = malloc(sizeof(struct Namespace*)*flags->count_filenames);
+    ast->count_namespaces = flags_count_filenames(flags);
+    ast->namespaces = malloc(sizeof(struct Namespace*)*flags_count_filenames(flags));
 	
-	for(int i=0;i < flags->count_filenames; i++){
+	for(int i=0;i < flags_count_filenames(flags); i++){
 	
-		char* filename = flags->filenames[i];
+		char* filename = flags_filenames(flags,i);
 
         int status = invoke_lexer(filename);
 
@@ -86,14 +86,14 @@ bool compile(struct Flags* flags){
 	}
 
 	//output filenames
-	char* h_filename   = make_h_filename(flags->filenames[0]);
-	char* asm_filename = make_asm_filename(flags->filenames[0]);
+	char* h_filename   = make_h_filename(flags_filenames(flags, 0));
+	char* asm_filename = make_asm_filename(flags_filenames(flags,0));
 
 	bool success = false;
 
     struct Ctx* ctx = make(Ctx);
 
-    ctx->tables = makeST(flags->debug);
+    ctx->tables = makeST(flags_debug(flags));
 
     ctx->error = false;
     ctx->flags = flags;

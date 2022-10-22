@@ -15,17 +15,17 @@ static void check_file_exists(char* filename);
 
 void validate_flags(struct Flags* flags){
 
-	if(flags->count_filenames == 0){
+	if(flags_count_filenames(flags) == 0){
 	
-		printf("[Transpiler] expected at least 1 filename\n");
+		printf("expected at least 1 filename\n");
 		
 		freeFlags(flags);
 		exit(1);
 	}
 	
-	for(int i=0; i < flags->count_filenames; i++){
+	for(int i=0; i < flags_count_filenames(flags); i++){
 	
-		char* filename = flags->filenames[i];
+		char* filename = flags_filenames(flags,i);
 		
 		check_file_exists(filename);
 	

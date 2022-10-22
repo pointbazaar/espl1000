@@ -6,7 +6,8 @@
 
 #include "ast/ast.h"
 
-#include "flags.h"
+#include "../../cli/flags/flags.h"
+
 #include "util/ctx.h"
 
 #include "cg_avr.h"

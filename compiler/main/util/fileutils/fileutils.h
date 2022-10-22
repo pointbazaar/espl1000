@@ -1,7 +1,7 @@
 #ifndef FILEUTILS_H
 #define FILEUTILS_H
 
-#include "../../flags.h"
+#include "../../../cli/flags/flags.h"
 
 char* make_token_filename(char* filename);
 

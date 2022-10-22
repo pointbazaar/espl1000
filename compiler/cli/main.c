@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <malloc.h>
 
-#include "flags.h"
+#include "flags/flags.h"
 #include "util/help.h"
 #include "util/fileutils/fileutils.h"
 
@@ -20,13 +20,13 @@ int main(int argc, char* argv[]){
         return EXIT_FAILURE;
     }
 
-    if(flags->help){
+    if(flags_help(flags)){
         sd_print_help();
         freeFlags(flags);
         return EXIT_SUCCESS;
     }
 
-    if(flags->version){
+    if(flags_version(flags)){
         printf("v0.2.0\n");
         freeFlags(flags);
         return EXIT_SUCCESS;

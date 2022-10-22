@@ -7,9 +7,11 @@
 #include "tac/tac.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
+#include "../../cli/flags/flags.h"
+
 void emit_asm_avr_single_tac(struct RAT* rat, struct TAC *tac, struct Ctx* ctx, FILE *fout) {
 
-    if(ctx->flags->debug){
+    if(flags_debug(ctx->flags)){
         printf("emit_asm_avr_single_tac %s\n", tac_tostring(tac));
     }
 

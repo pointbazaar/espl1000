@@ -40,8 +40,7 @@ struct TCError* typecheck_file(char* filename){
     if(ast == NULL){ return NULL;}
 
     struct Ctx* ctx = malloc(sizeof(struct Ctx));
-    struct Flags* flags = malloc(sizeof(struct Flags));
-    flags->debug = false;
+    struct Flags* flags = makeFlags2();
 
     ctx->tables = makeST(false);
 

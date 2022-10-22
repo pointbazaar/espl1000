@@ -6,7 +6,8 @@
 #include "tables/symtable/symtable.h"
 
 #include "compiler/main/util/ctx.h"
-#include "flags.h"
+#include "../../cli/flags/flags.h"
+
 
 #include "fill_tables.h"
 
@@ -23,7 +24,7 @@ void fill_tables(struct AST* ast, struct Ctx* ctx){
 
     }
 
-    if(ctx->flags->debug){
+    if(flags_debug(ctx->flags)){
         sst_print(ctx->tables->sst);
         stst_print(ctx->tables->stst);
     }

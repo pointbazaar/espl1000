@@ -5,7 +5,6 @@
 
 #include "tables/symtable/symtable.h"
 #include "ast/ast_declare.h"
-#include "flags.h"
 #include "util/ctx.h"
 #include "basic_block/basicblock.h"
 

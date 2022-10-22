@@ -66,8 +66,8 @@ bool check_filenames_lowercase(struct Flags* flags){
         return false;
     }
 
-    for (int i = 0; i < flags->count_filenames; ++i) {
-        char* filename = flags->filenames[i];
+    for (int i = 0; i < flags_count_filenames(flags); ++i) {
+        char* filename = flags_filenames(flags,i);
         //abc
         //find only the filename without the path
         char* filename_only = filename + strlen(filename) - 1;
