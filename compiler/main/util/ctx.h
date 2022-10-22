@@ -16,4 +16,5 @@ void ctx_dtor(struct Ctx* ctx);
 
 struct Flags* ctx_flags(struct Ctx* ctx);
 struct ST* ctx_tables(struct Ctx* ctx);
+char* ctx_asm_filename(struct Ctx* ctx);
 #endif

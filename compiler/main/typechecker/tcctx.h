@@ -62,8 +62,6 @@ struct TCCtx {
 	struct ST* st;
 	struct Method* current_fn;
 	
-	//are we typechecking inside a try-block?
-	uint16_t depth_inside_try_stmt;
 	uint16_t depth_inside_loop;
 
 	//linked list of errors

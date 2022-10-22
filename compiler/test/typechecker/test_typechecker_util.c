@@ -39,7 +39,7 @@ struct TCError* typecheck_file(char* filename){
 
     if(ast == NULL){ return NULL;}
 
-    struct Ctx* ctx = ctx_ctor(makeFlags2(), makeST(false));
+    struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(filename), makeST(false));
 
     fill_tables(ast, ctx);
 

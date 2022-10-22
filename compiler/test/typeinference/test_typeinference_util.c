@@ -41,7 +41,7 @@ struct Type* typeinfer_in_file(char* filename){
 
     assert(ast != NULL);
 
-    struct Ctx* ctx = ctx_ctor(makeFlags2(), makeST(false));
+    struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(filename), makeST(false));
 
     fill_tables(ast, ctx);
 

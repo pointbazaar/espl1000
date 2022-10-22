@@ -50,19 +50,10 @@ struct Flags* makeFlags(int argc, char** argv){
 	return flags;
 }
 
-struct Flags* makeFlags2(){
-
-    struct Flags* flags = malloc(sizeof(struct Flags));
-
-    flags->debug         = false;
-    flags->help          = false;
-    flags->version       = false;
-
-    flags->count_filenames    = 0;
-    flags->capacity_filenames = 100;
-    flags->filenames = malloc(sizeof(char*)*100);
-
-    return flags;
+struct Flags* makeFlagsSingleFile(char* filename){
+	
+	char* argv[] = {"program", filename};
+	return makeFlags(2, argv);
 }
 
 static void make_flags_inner(struct Flags* flags, char* arg){
@@ -104,6 +95,13 @@ int flags_count_filenames(struct Flags* flags){
 }
 
 char* flags_filenames(struct Flags* flags, int index){
+	
+	if(index >= flags_count_filenames(flags)){
+		printf("flags_filenames: tried to access out of bounds.");
+		printf("exiting.");
+		fflush(stdout);
+		exit(1);
+	}
 	return flags->filenames[index];
 }
 

@@ -24,9 +24,9 @@
 
 vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
 
-    struct Ctx* ctx = ctx_ctor(makeFlags2(), makeST(false));
+    struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(".file.dg"), makeST(false));
 
-    FILE* fout = fopen(".file.asm", "w");
+    FILE* fout = fopen(ctx_asm_filename(ctx), "w");
     
     if(fout == NULL){
         printf("error opening output file\n");

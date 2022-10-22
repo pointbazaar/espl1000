@@ -85,8 +85,6 @@ bool compile(struct Flags* flags){
         ast->namespaces[i] = ns;
 	}
 
-	char* asm_filename = make_asm_filename(flags_filenames(flags,0));
-
     struct Ctx* ctx = ctx_ctor(flags, makeST(flags_debug(flags)));
 
     fill_tables(ast, ctx);
@@ -101,33 +99,29 @@ bool compile(struct Flags* flags){
         return false;
     }
 
-
     analyze_functions(ctx_tables(ctx), ast);
     analyze_dead_code(ctx_tables(ctx), ast);
     analyze_termination(ctx_tables(ctx));
     analyze_annotations(ctx_tables(ctx), ast);
 
 
-    bool success = compile_and_write_avr(asm_filename, ast, ctx);
+    bool success = compile_and_write_avr(ast, ctx);
 
 	free_ast(ast);
 	
 	if(!success){
-		free(asm_filename);
 		return false; 
 	}
 
 	int status = 0;
 
     char cmd[200];
-    sprintf(cmd, "avra -o out %s > /tmp/avra-stdout 2> /tmp/avra-stderr", asm_filename);
+    sprintf(cmd, "avra -o out %s > /tmp/avra-stdout 2> /tmp/avra-stderr", ctx_asm_filename(ctx));
     status = system(cmd);
 
 	if (WEXITSTATUS(status) != 0) {
 		printf("[Error] error with avra, see /tmp/avra-stdout, /tmp/avra-stderr \n");
 	}
-
-	free(asm_filename);
 	
 	return WEXITSTATUS(status) == 0;
 }

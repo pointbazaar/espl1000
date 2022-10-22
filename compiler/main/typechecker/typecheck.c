@@ -68,6 +68,5 @@ static void init_tcctx(struct TCCtx* tcctx){
     tcctx->tc_err_count = 0;
     tcctx->current_fn   = NULL;
 
-    tcctx->depth_inside_try_stmt = 0;
     tcctx->depth_inside_loop     = 0;
 }

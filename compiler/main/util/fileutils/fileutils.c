@@ -28,18 +28,6 @@ char* make_token_filename(char* filename){
 	return token_filename;
 }
 
-char* make_asm_filename(char* filename){
-
-    char* fname_out = malloc(strlen(filename)+1);
-    strcpy(fname_out, filename);
-    //remove the '.dg'
-    fname_out[strlen(fname_out)-3] = '\0';
-    strcat(fname_out, ".asm");
-
-    return fname_out;
-}
-
-
 bool check_filenames_lowercase(struct Flags* flags){
 
     char* filename_pattern = "^[a-z\\/._0-9]+$";

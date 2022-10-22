@@ -32,9 +32,9 @@ void emit_call_main_endloop(FILE* fout){
     fprintf(fout, "rjmp endloop\n"); //endloop
 }
 
-bool compile_and_write_avr(char* asm_file_filename, struct AST* ast, struct Ctx* ctx){
+bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx){
 
-    FILE* fout = fopen(asm_file_filename, "w");
+    FILE* fout = fopen(ctx_asm_filename(ctx), "w");
     if(fout == NULL){
         printf("error opening output file\n");
         exit(1);

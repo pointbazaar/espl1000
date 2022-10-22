@@ -7,7 +7,7 @@
 struct Flags;
 
 struct Flags* makeFlags(int argc, char** argv);
-struct Flags* makeFlags2();
+struct Flags* makeFlagsSingleFile(char* filename);
 
 void freeFlags(struct Flags* flags);
 
