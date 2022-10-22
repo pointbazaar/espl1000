@@ -15,24 +15,6 @@
 
 #include "../../cli/flags/flags.h"
 
-
-static struct Ctx* prep_ctx(){
-    struct Ctx* ctx = malloc(sizeof(struct Ctx));
-    struct Flags* flags = makeFlags2();
-
-    ctx->tables = makeST(false);
-
-    ctx->error = false;
-    ctx->flags = flags;
-
-    ctx->indent_level = 0;
-    ctx->file         = NULL;
-
-    //fill_tables(ast, ctx);
-
-    return ctx;
-}
-
 //compile a struct TACBuffer* to .asm
 //call avra to create .hex
 //create vmcu_model_t
@@ -42,10 +24,10 @@ static struct Ctx* prep_ctx(){
 
 vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
 
-    struct Ctx* ctx = prep_ctx();
+    struct Ctx* ctx = ctx_ctor(makeFlags2(), makeST(false));
 
-    //TODO
     FILE* fout = fopen(".file.asm", "w");
+    
     if(fout == NULL){
         printf("error opening output file\n");
         exit(1);
@@ -88,9 +70,7 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
 
     emit_asm_avr_basic_block(root, ctx, fout);
 
-    freeST(ctx->tables);
-    free(ctx->flags);
-    free(ctx);
+    ctx_dtor(ctx);
 
     tacbuffer_dtor(buffer);
 

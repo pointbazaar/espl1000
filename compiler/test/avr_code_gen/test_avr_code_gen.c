@@ -49,6 +49,8 @@ static void test_stack_pointer_setup_correctly(){
     status_test_codegen("stackpointer setup correctly");
 
     struct TACBuffer* buffer = tacbuffer_ctor();
+    
+    tacbuffer_append(buffer, makeTACNop());
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 

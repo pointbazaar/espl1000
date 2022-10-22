@@ -103,6 +103,7 @@ add_library("sd-base"
 	main/util/fill_tables.c
 	main/util/fill_tables.h
 	main/util/fileutils/fileutils.c
+	main/util/ctx.c
 
 	#flags
 	cli/flags/flags.c

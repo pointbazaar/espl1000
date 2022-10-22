@@ -13,19 +13,19 @@
 
 void fill_tables(struct AST* ast, struct Ctx* ctx){
 
-    sst_clear(ctx->tables->sst);
+    sst_clear(ctx_tables(ctx)->sst);
 
     for(int i = 0; i < ast->count_namespaces; i++){
 
         struct Namespace* ns = ast->namespaces[i];
 
-        sst_fill(ctx->tables, ctx->tables->sst, ns);
-        stst_fill(ctx->tables->stst, ns);
+        sst_fill(ctx_tables(ctx), ctx_tables(ctx)->sst, ns);
+        stst_fill(ctx_tables(ctx)->stst, ns);
 
     }
 
-    if(flags_debug(ctx->flags)){
-        sst_print(ctx->tables->sst);
-        stst_print(ctx->tables->stst);
+    if(flags_debug(ctx_flags(ctx))){
+        sst_print(ctx_tables(ctx)->sst);
+        stst_print(ctx_tables(ctx)->stst);
     }
 }

@@ -39,26 +39,15 @@ struct TCError* typecheck_file(char* filename){
 
     if(ast == NULL){ return NULL;}
 
-    struct Ctx* ctx = malloc(sizeof(struct Ctx));
-    struct Flags* flags = makeFlags2();
-
-    ctx->tables = makeST(false);
-
-    ctx->error = false;
-    ctx->flags = flags;
-
-    ctx->indent_level = 0;
-    ctx->file         = NULL;
+    struct Ctx* ctx = ctx_ctor(makeFlags2(), makeST(false));
 
     fill_tables(ast, ctx);
 
-    struct TCError* errors = typecheck_ast(ast, ctx->tables, false);
+    struct TCError* errors = typecheck_ast(ast, ctx_tables(ctx), false);
 
-    freeST(ctx->tables);
-    free(ctx);
+    ctx_dtor(ctx);
+    
     free_ast(ast);
-
-	free(flags);
 
     return errors;
 }

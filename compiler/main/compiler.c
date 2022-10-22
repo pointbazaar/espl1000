@@ -85,45 +85,34 @@ bool compile(struct Flags* flags){
         ast->namespaces[i] = ns;
 	}
 
-	//output filenames
-	char* h_filename   = make_h_filename(flags_filenames(flags, 0));
 	char* asm_filename = make_asm_filename(flags_filenames(flags,0));
 
-	bool success = false;
-
-    struct Ctx* ctx = make(Ctx);
-
-    ctx->tables = makeST(flags_debug(flags));
-
-    ctx->error = false;
-    ctx->flags = flags;
-
-    ctx->indent_level = 0;
-    ctx->file         = NULL;
+    struct Ctx* ctx = ctx_ctor(flags, makeST(flags_debug(flags)));
 
     fill_tables(ast, ctx);
-    transpileLambdas(ast, ctx->tables);
+    transpileLambdas(ast, ctx_tables(ctx));
     //RE-FILL the newly created lambda functions
-    backfill_lambdas_into_sst(ast, ctx->tables);
-    struct TCError* errors = typecheck_ast(ast, ctx->tables, true);
-    bool checks = errors == NULL;
-    if(!checks){
-        ctx->error = true;
+    backfill_lambdas_into_sst(ast, ctx_tables(ctx));
+    
+    
+    struct TCError* errors = typecheck_ast(ast, ctx_tables(ctx), true);
+	
+    if(errors != NULL){
         return false;
     }
 
-    analyze_functions(ctx->tables, ast);
-    analyze_dead_code(ctx->tables, ast);
-    analyze_termination(ctx->tables);
-    analyze_annotations(ctx->tables, ast);
+
+    analyze_functions(ctx_tables(ctx), ast);
+    analyze_dead_code(ctx_tables(ctx), ast);
+    analyze_termination(ctx_tables(ctx));
+    analyze_annotations(ctx_tables(ctx), ast);
 
 
-    success = compile_and_write_avr(asm_filename, ast, ctx);
+    bool success = compile_and_write_avr(asm_filename, ast, ctx);
 
 	free_ast(ast);
 	
 	if(!success){
-		free(h_filename);
 		free(asm_filename);
 		return false; 
 	}
@@ -138,7 +127,6 @@ bool compile(struct Flags* flags){
 		printf("[Error] error with avra, see /tmp/avra-stdout, /tmp/avra-stderr \n");
 	}
 
-	free(h_filename);
 	free(asm_filename);
 	
 	return WEXITSTATUS(status) == 0;

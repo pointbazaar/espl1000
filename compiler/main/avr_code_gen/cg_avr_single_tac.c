@@ -11,7 +11,7 @@
 
 void emit_asm_avr_single_tac(struct RAT* rat, struct TAC *tac, struct Ctx* ctx, FILE *fout) {
 
-    if(flags_debug(ctx->flags)){
+    if(flags_debug(ctx_flags(ctx))){
         printf("emit_asm_avr_single_tac %s\n", tac_tostring(tac));
     }
 

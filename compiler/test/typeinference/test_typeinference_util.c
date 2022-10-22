@@ -41,16 +41,7 @@ struct Type* typeinfer_in_file(char* filename){
 
     assert(ast != NULL);
 
-    struct Ctx* ctx     = malloc(sizeof(struct Ctx));
-    struct Flags* flags = makeFlags2();
-
-    ctx->tables = makeST(false);
-
-    ctx->error = false;
-    ctx->flags = flags;
-
-    ctx->indent_level = 0;
-    ctx->file         = NULL;
+    struct Ctx* ctx = ctx_ctor(makeFlags2(), makeST(false));
 
     fill_tables(ast, ctx);
 
@@ -62,22 +53,20 @@ struct Type* typeinfer_in_file(char* filename){
     assert(m != NULL);
     assert(m->block->count >= 1);
 
-    lvst_fill(m, ctx->tables);
+    lvst_fill(m, ctx_tables(ctx));
 
     struct Stmt* stmt = m->block->stmts[m->block->count-1];
     assert(stmt != NULL);
     assert(stmt->kind == 4);
 
     struct Expr* expr = stmt->ptr.m4->return_value;
-    struct Type* returned_type = infer_type_expr(ctx->tables, expr);
+    struct Type* returned_type = infer_type_expr(ctx_tables(ctx), expr);
 
 	struct Type* copy = copy_type(returned_type);
 
-	freeST(ctx->tables);
-	free(ctx);
+	ctx_dtor(ctx);
+	
 	free_ast(ast);
-
-	free(flags);
 
     return copy;
 }

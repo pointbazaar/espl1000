@@ -34,7 +34,7 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FI
     tac_method(buffer, m);
 
     //print the TAC for debug
-    if(flags_debug(ctx->flags))
+    if(flags_debug(ctx_flags(ctx)))
         tacbuffer_print(buffer);
 
     //create basic blocks from this TAC
@@ -44,10 +44,10 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FI
     struct BasicBlock* root = basicblock_create_graph(buffer, m->decl->name);
 
     //populate ctx->st->lvst
-    lvst_clear(ctx->tables->lvst);
-    lvst_fill(m, ctx->tables);
+    lvst_clear(ctx_tables(ctx)->lvst);
+    lvst_fill(m, ctx_tables(ctx));
 
-    emit_create_stack_frame(lvst_stack_frame_size_avr(ctx->tables->lvst), fout);
+    emit_create_stack_frame(lvst_stack_frame_size_avr(ctx_tables(ctx)->lvst), fout);
 
     //now load X as our base pointer for the stack frame
     fprintf(fout, "in r28, SPL  ;Y is base ptr\n");

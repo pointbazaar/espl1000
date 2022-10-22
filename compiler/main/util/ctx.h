@@ -8,34 +8,12 @@
 #include "ast/ast.h"
 
 struct ST;
+struct Ctx;
+struct Flags;
 
-/* this struct represents the context of transpilation.
- * it provides information about symbol tables, debug parameters,
- * the output file and such.
- * a pointer to this struct is a passed to each subroutine
- * tasked with transpiling an AST node.
- */
-struct Ctx {
+struct Ctx* ctx_ctor(struct Flags* flags, struct ST* tables);
+void ctx_dtor(struct Ctx* ctx);
 
-	FILE *asm_file;
-	FILE* file; //where the output will be directed
-	uint8_t indent_level;
-	
-	//the compiler flags
-	struct Flags* flags;
-	
-	bool error;
-	
-	//symbol tables
-	struct ST* tables;
-	
-	//it is ugly, but this is the name
-	//of the current function pointer variable/arg
-	//to transpile the subroutine type in 
-	//C subroutine signatures
-	char current_function_pointer_var_or_arg_name[DEFAULT_STR_SIZE];
-
-};
-
-
+struct Flags* ctx_flags(struct Ctx* ctx);
+struct ST* ctx_tables(struct Ctx* ctx);
 #endif

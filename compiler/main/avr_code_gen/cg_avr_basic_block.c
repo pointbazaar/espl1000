@@ -19,7 +19,7 @@ void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, FILE *f
     block->visited_emit_asm = true;
 
     //create register allocation table for the basic block.
-    struct RAT* rat = rat_ctor(ctx->tables);
+    struct RAT* rat = rat_ctor(ctx_tables(ctx));
 
     //simplest naive approach (first iteration):
     //simply get a new register for each temporary
@@ -42,8 +42,8 @@ void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, FILE *f
 
                     char* var_name = rat_occupant(rat, k);
 
-                    if(lvst_contains(ctx->tables->lvst, var_name)){
-                        size_t offset = lvst_stack_frame_offset_avr(ctx->tables->lvst, var_name);
+                    if(lvst_contains(ctx_tables(ctx)->lvst, var_name)){
+                        size_t offset = lvst_stack_frame_offset_avr(ctx_tables(ctx)->lvst, var_name);
 
                         if(offset == 0){
                             fprintf(fout, "st Y, r%d\n", k);
