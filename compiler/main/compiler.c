@@ -123,5 +123,7 @@ bool compile(struct Flags* flags){
 		printf("[Error] error with avra, see /tmp/avra-stdout, /tmp/avra-stderr \n");
 	}
 	
+	ctx_dtor(ctx);
+	
 	return WEXITSTATUS(status) == 0;
 }

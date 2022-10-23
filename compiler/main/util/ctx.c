@@ -48,7 +48,7 @@ static char* make_asm_filename(char* filename){
 
 static char* make_token_filename(char* filename){
 	
-	char* token_filename = malloc(strlen(filename) + 10);
+	char* token_filename = malloc(strlen(filename) + 20);
 	
 	char* fnamecpy = malloc(strlen(filename)+1);
 	strcpy(fnamecpy, filename);
@@ -82,7 +82,7 @@ struct Ctx* ctx_ctor(struct Flags* flags, struct ST* tables){
 void ctx_dtor(struct Ctx* ctx){
 	
 	freeST(ctx_tables(ctx));
-    free(ctx_flags(ctx));
+    freeFlags(ctx_flags(ctx));
     
     free(ctx->asm_filename);
     free(ctx->token_filename);

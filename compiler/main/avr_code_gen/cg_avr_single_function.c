@@ -41,7 +41,9 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FI
     //basic blocks from the three address code
     //for each function, create a graph of basic blocks
 
-    struct BasicBlock* root = basicblock_create_graph(buffer, m->decl->name);
+	int nblocks;
+    struct BasicBlock** graph = basicblock_create_graph(buffer, m->decl->name, &nblocks);
+	struct BasicBlock* root = graph[0];
 
     //populate ctx->st->lvst
     lvst_clear(ctx_tables(ctx)->lvst);
@@ -54,6 +56,12 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FI
     fprintf(fout, "in r29, SPH  ;Y is base ptr\n\n");
 
     emit_asm_avr_basic_block(root, ctx, fout);
+    
+    //delete the basic block graph
+    for(int i=0; i < nblocks; i++){
+		basicblock_dtor(graph[i]);
+	}
+	free(graph);
 
     tacbuffer_dtor(buffer);
 }

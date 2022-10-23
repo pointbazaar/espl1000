@@ -24,17 +24,9 @@ struct TCError* typecheck_file(char* filename){
 
     if (WEXITSTATUS(status) != 0) {
         printf("[Error] lexer exited with nonzero exit code\n");
-        goto end;
+        fflush(stdout);
+        exit(1);
     }
-
-    struct Namespace* ns = invoke_parser(filename);
-
-    if (ns == NULL) {
-        printf("[Error] parser exited with nonzero exit code\n");
-        goto end;
-    }
-    end:
-    ;
 
     struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(filename), makeST(false));
     

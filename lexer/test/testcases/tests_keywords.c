@@ -32,7 +32,7 @@ void test_break() {
 	assert(tokens[1]->kind==SEMICOLON);
 	assert(tokens[2]->kind==TYPEID_PRIMITIVE_INT);
 
-	free_tokens(tokens, 3);
+	free_tokens(tokens, 4);
 }
 
 void test_for(){

@@ -36,6 +36,8 @@ struct Token** lex(char* source) {
 	for (uint32_t count = 0; count < capacity ; count++) {
 		tks[count] = list_get(list, count);
 	}
+	
+	freeTokenListShallow(list);
 
 	fclose(ftks);
 
@@ -44,6 +46,8 @@ struct Token** lex(char* source) {
 
 void free_tokens	(struct Token** tokens, unsigned int count) {
 	for(uint32_t i = 0; i < count; i++) {
-		free(tokens[i]);
+		//free(tokens[i]);
+		freeToken(tokens[i]);
 	}
+	free(tokens);
 }

@@ -18,7 +18,7 @@ static struct BasicBlock* find_block_from_label_index(struct BasicBlock** blocks
 void create_edges_basic_block(struct TACBuffer *buffer, uint32_t count, struct BasicBlock **blocks,
                               struct BasicBlock *block);
 
-struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer, char* function_name){
+struct BasicBlock** basicblock_create_graph(struct TACBuffer* buffer, char* function_name, int* nblocks){
 
     //determine leaders
     bool* is_leader = calculate_leaders(buffer);
@@ -49,8 +49,10 @@ struct BasicBlock* basicblock_create_graph(struct TACBuffer* buffer, char* funct
     write_dot_file_from_graph(blocks, count, function_name);
 
     free(is_leader);
+    
+    *nblocks = count;
 
-    return blocks[0];
+    return blocks;
 }
 
 void create_edges_basic_block(struct TACBuffer *buffer, uint32_t count, struct BasicBlock **blocks,
@@ -134,13 +136,17 @@ struct BasicBlock* basicblock_ctor(uint32_t index){
         .branch_2 = NULL,
 
         .visited_assign_registers = false,
-        .visited_emit_asm = false
+        .visited_emit_asm = false,
     };
     return res;
 }
 
 void basicblock_dtor(struct BasicBlock* block){
-    tacbuffer_dtor(block->buffer);
+	//since the TACs in the buffer were created previous to the basic
+	//blocks thing, we don't free them here.
+	//we do free the buffer thats associated with the block though
+	
+    tacbuffer_shallow_dtor(block->buffer);
     free(block);
 }
 

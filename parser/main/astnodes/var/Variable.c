@@ -23,7 +23,6 @@ struct Variable* makeVariable(struct TokenList* tokens) {
 	
 	parse_astnode(copy, &(res->super));
 
-	res->simple_var = NULL;
 	res->member_access = NULL;
 
 	res->simple_var = makeSimpleVar(copy);

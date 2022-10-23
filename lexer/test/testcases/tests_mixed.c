@@ -24,7 +24,7 @@ void test_mixed_1() {
 
 	assert(tokens[5]->kind == COMMA);
 
-	free_tokens(tokens, 6);
+	free_tokens(tokens, 9);
 }
 
 void test_mixed_2() {
@@ -167,7 +167,7 @@ void test_mixed_10() {
 	assert(tokens[2]->kind==ASSIGNOP);
 	assert(tokens[3]->kind==INTEGER);
 
-	free_tokens(tokens, 4);
+	free_tokens(tokens, 5);
 }
 
 void test_mixed_11() {

@@ -66,6 +66,11 @@ struct TACBuffer* tacbuffer_ctor(){
     return buffer;
 }
 
+void tacbuffer_shallow_dtor(struct TACBuffer* buffer){
+    free(buffer->buffer);
+    free(buffer);
+}
+
 void tacbuffer_dtor(struct TACBuffer* buffer){
     for(size_t i = 0; i < buffer->count; i++){
         free(buffer->buffer[i]);

@@ -44,7 +44,10 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
 
     //create basic blocks from this TAC
 
-    struct BasicBlock* root = basicblock_create_graph(buffer, "main");
+	int nblocks;
+    struct BasicBlock** graph = basicblock_create_graph(buffer, "main", &nblocks);
+	
+	struct BasicBlock* root = graph[0];
 
     if(root == NULL){
         printf("[Error] could not create BasicBlock.Exiting.\n");
@@ -71,6 +74,11 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
     emit_asm_avr_basic_block(root, ctx, fout);
 
     ctx_dtor(ctx);
+    
+    for(int i=0;i < nblocks; i++){
+		basicblock_dtor(graph[i]);
+	}
+	free(graph);
 
     tacbuffer_dtor(buffer);
 
@@ -108,6 +116,9 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
         printf("[Error] could not prepare vmcu_system_t. Exiting.\n");
         exit(1);
     }
+    
+    vmcu_report_dtor(report);
+    vmcu_model_dtor(model);
 
     return system;
 }

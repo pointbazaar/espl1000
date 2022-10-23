@@ -25,6 +25,8 @@ struct MAssignStmt* makeMAssignStmt(struct TokenList* tokens){
     struct Token* head = list_head(copy);
 
     if(head->kind != ASSIGNOP){
+		free(res);
+		freeTokenListShallow(copy);
         return NULL;
     }
 
@@ -41,6 +43,8 @@ struct MAssignStmt* makeMAssignStmt(struct TokenList* tokens){
     //parse ';'
     head = list_head(copy);
     if(head->kind != SEMICOLON){
+		free(res);
+		freeTokenListShallow(copy);
         return NULL;
     }
 

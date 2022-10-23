@@ -56,7 +56,7 @@ void test_can_see_line_with_operators() {
 	assert(tokens[3]->kind == OPKEY_ARITHMETIC);
 	assert(tokens[4]->kind == ID);
 
-	free_tokens(tokens, 5);
+	free_tokens(tokens, 6);
 }
 
 void test_lexes_return_statement_favorably() {
@@ -101,7 +101,7 @@ void test_lexes_other_return_statement() {
 	assert(tokens[9]->kind==RPARENS);
 	assert(tokens[10]->kind==RPARENS);
 
-	free_tokens(tokens, 11);
+	free_tokens(tokens, 12);
 }
 
 void test_identifier_1() {
