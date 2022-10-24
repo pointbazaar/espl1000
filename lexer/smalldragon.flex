@@ -94,7 +94,7 @@ false			out(BCONST_FALSE, yytext);
 "."		out(STRUCTMEMBERACCESS, yytext);
 
 =					out(ASSIGNOP, yytext);
-\+=|-=|\*=|\/=|\%=	out(ASSIGNOP, yytext);
+\+=|-=|\*=         	out(ASSIGNOP, yytext);
 &=|\|=				out(ASSIGNOP, yytext);
 "<<="				out(ASSIGNOP, yytext);
 ">>="				out(ASSIGNOP, yytext);
@@ -106,7 +106,7 @@ false			out(BCONST_FALSE, yytext);
 \+\+				out_plus_plus(ASSIGNOP, INTEGER);
 \-\-				out_minus_minus(ASSIGNOP, INTEGER);
 
-(\+|\-|\*|\/|%)		out(OPKEY_ARITHMETIC, yytext);
+(\+|\-|\*)			out(OPKEY_ARITHMETIC, yytext);
 
 (==|!=|<=|>=|<|>)	out(OPKEY_RELATIONAL, yytext);
 

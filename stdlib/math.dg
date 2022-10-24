@@ -42,17 +42,30 @@ fn min (int a,int b) -> int {
 	if a < b {return a;}
 	return b;
 }
-
+/*
 fn gcd (int a, int b) -> int {
 	if a==0 {return b;}
-	return gcd(b%a, a);
+	return gcd(mod(b,a), a);
 }
 
 fn lcm (int a, int b) -> int {
 
-	return (a*b) / gcd(a,b);
+	return div((a*b), gcd(a,b));
 }
 
+fn mod(int a, int b) -> int {
+	//TODO
+	x=0;
+	return x;
+}
+
+fn div(int a, int b) -> int {
+	
+	//TODO
+	x=0;
+	return x;
+}
+*/
 @halts
 fn fib(uint n) -> uint {
 

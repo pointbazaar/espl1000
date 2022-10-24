@@ -11,7 +11,7 @@ void test_operators() {
 
 	printt("test operators\n");
 
-	char* str = "+ - * / % ";
+	char* str = "+ - * ";
 	struct Token** tokens = lex(str);
 
 	assert(tokens[0]->kind==OPKEY_ARITHMETIC);
@@ -22,14 +22,8 @@ void test_operators() {
 	
 	assert(tokens[2]->kind==OPKEY_ARITHMETIC);
 	assert(strcmp(tokens[2]->value_ptr, "*") == 0);
-	
-	assert(tokens[3]->kind==OPKEY_ARITHMETIC);
-	assert(strcmp(tokens[3]->value_ptr, "/") == 0);
-	
-	assert(tokens[4]->kind==OPKEY_ARITHMETIC);
-	assert(strcmp(tokens[4]->value_ptr, "%") == 0);
 
-	free_tokens(tokens, 5);
+	free_tokens(tokens, 3);
 }
 
 void test_operators_cmp(){
@@ -108,7 +102,7 @@ void test_assign_operators(){
 
 	printt("test_assign_operators\n");
 
-	char* str = "= += -= *= /=  >>= <<= &= |= %=";
+	char* str = "= += -= >>= <<= &= |=";
 	struct Token** tokens = lex(str);
 	
 	// =
@@ -122,28 +116,20 @@ void test_assign_operators(){
 	assert(tokens[2]->kind==ASSIGNOP);
 	assert(strcmp(tokens[2]->value_ptr, "-=") == 0);
 	
-	assert(tokens[3]->kind==ASSIGNOP);
-	assert(strcmp(tokens[3]->value_ptr, "*=") == 0);
-	
-	assert(tokens[4]->kind==ASSIGNOP);
-	assert(strcmp(tokens[4]->value_ptr, "/=") == 0);
 	
 	// bitwise
+	assert(tokens[3]->kind==ASSIGNOP);
+	assert(strcmp(tokens[3]->value_ptr, ">>=") == 0);
+	
+	assert(tokens[4]->kind==ASSIGNOP);
+	assert(strcmp(tokens[4]->value_ptr, "<<=") == 0);
+	
 	assert(tokens[5]->kind==ASSIGNOP);
-	assert(strcmp(tokens[5]->value_ptr, ">>=") == 0);
+	assert(strcmp(tokens[5]->value_ptr, "&=") == 0);
 	
 	assert(tokens[6]->kind==ASSIGNOP);
-	assert(strcmp(tokens[6]->value_ptr, "<<=") == 0);
+	assert(strcmp(tokens[6]->value_ptr, "|=") == 0);
 	
-	assert(tokens[7]->kind==ASSIGNOP);
-	assert(strcmp(tokens[7]->value_ptr, "&=") == 0);
-	
-	assert(tokens[8]->kind==ASSIGNOP);
-	assert(strcmp(tokens[8]->value_ptr, "|=") == 0);
-	
-	//modulo equals
-	assert(tokens[9]->kind==ASSIGNOP);
-	assert(strcmp(tokens[9]->value_ptr, "%=") == 0);
 
-	free_tokens(tokens, 10);
+	free_tokens(tokens, 7);
 }

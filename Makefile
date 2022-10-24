@@ -13,7 +13,6 @@ all:
 	#cd stdlib     && make
 
 test:
-	# we don't test our dependencies
 	#cd token      && make test
 	cd ast        && make test
 	cd lexer      && make test

@@ -8,7 +8,7 @@ CALL2  := sd
 all: test
 
 test: 
-	@echo "[Examples] Transpiling Example Programs..."
+	@echo "[Examples] Compiling Example Programs..."
 	$(CALL2) ifstatement/ifstatement.dg 
 	$(CALL2) local_variables/simple.dg
 	$(CALL2) loops/whileloop.dg 
@@ -16,7 +16,6 @@ test:
 	#$(CALL2) mathematics/fibonacci.dg 
 	#$(CALL2) methodCalls/methodcall.dg 
 	#$(CALL2) other/everything.dg 
-	#$(CALL2) other/harshad.dg 
 	$(CALL2) switch/switch.dg 
 	#$(CALL2) lambda.dg
 	$(CALL2) typeinference/localvartypeinference.dg

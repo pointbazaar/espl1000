@@ -9,7 +9,8 @@ fn main() ~> int {
 
 fn status([char] module) ~> bool {
 	
-	return true;
+	x = true;
+	return x;
 }
 
 fn main2() ~> int {
@@ -34,6 +35,7 @@ fn main2() ~> int {
 	status("polynomial"); test_polynomial();
 	
 	*/
-	return 0;
+	x = 0;
+	return x;
 }
 

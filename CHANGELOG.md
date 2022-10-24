@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
+- remove the division operator '/' since division is not natively supported
+  by the AVR Instruction set. 
 
 ## [v0.3.2]
 - remove the Comparison Operator Chaining Feature. It is really not that special
