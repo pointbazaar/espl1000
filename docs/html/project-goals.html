@@ -35,9 +35,9 @@
 		<li> 
 			<strong>hackable to the core </strong>
 			<p>
-			Make it your own. Everything in ESPL1000
+			Make it your own. Everything 
 			is created with extendability and modularity in mind.
-			The transpiler is composed of multiple small programs
+			The Compiler is composed of multiple small programs
 			which can be used and modified independently.
 			They communicate with easy-to-understand formats.
 			</p>
@@ -54,7 +54,7 @@
 			<strong>no effort for backwards compatibility </strong>
 			<p>
 				ESPL1000 is a learning Project for me
-				so anything might change whenever.
+				so anything might change whenever. 
 			</p>
 		</li>
 		<li>
@@ -67,22 +67,23 @@
 		<li>
 			<strong>no user-defined prefix,infix or suffix operators</strong>
 			<p>
-				This greatly simplifies the parser.
+				This greatly simplifies the parser. An Operator should map to a small sequence
+				of machine instructions. 
 			</p>
 		</li>
 		<li>
-			<strong>not a self-hosting transpiler</strong>
+			<strong>not self-hosting</strong>
 			<p>
 				This simplifies development as there are many tools
 				available for C development.
 			</p>
 		</li>
 		<li>
-			<strong> no need to declare a namespace, methods and structs are top-level </strong>
+			<strong> no need to declare a namespace, functions and structs are top-level </strong>
 			<p>
 				In my opinion, it does not make sense to force unneccessary indentation
-				on people. The name of the file is the namespace of a translation unit
-				in ESPL1000. structs and methods can be declared and defined directly,
+				on people. The name of the file is the namespace of a translation unit. 
+				structs and functions can be declared and defined directly,
 				without needing a wrapper like a class or namespace construct.
 				This also makes code easier to read without context.
 			</p>
@@ -90,8 +91,8 @@
 		<li>
 			<strong> no unneccessary nesting of syntactic constructs </strong>
 			<p>
-				There are no nested method definitions or nested structures 
-				in ESPL1000. Indentation is limited to the minimum necessary.
+				There are no nested method definitions or nested structures. 
+				Indentation is limited to the minimum necessary.
 				I have personally never seen a case where it was necessary or
 				'better' in any way to declare a nested function or anything like that.
 			</p>
@@ -100,8 +101,8 @@
 			<strong> simple syntax </strong>
 			<p>
 				ESPL1000 provides the basic building blocks like loops and if-statements
-				that are classics to most programming languages. Extra stuff like 
-				annotations or bloated syntax is avoided whenever possible.
+				that are classics to most programming languages. 
+				Extra stuff like bloated syntax is avoided whenever possible.
 			</p>
 		</li>
 	</ul>
@@ -127,30 +128,11 @@
 			</p>
 		</li>
 		<li>
-			<strong>no uninitialized variables</strong>
-			<p>
-				This feature is not complete yet. 
-				It would be desireable to let the transpiler figure
-				out if a given variable can be proven to have been assigned to
-				before usage. This should also be true for struct members.
-			</p>
-		</li>
-		<li>
-			<strong> dependently typed primitive variables </strong>
-			<p>
-				Properties of primitive variables should be 
-				propagated throughout the code so we can use
-				static assertions to safeguard our code against faulty 
-				values at compile-time. This exciting feature is waiting 
-				for a concept for implementation currently.
-			</p>
-		</li>
-		<li>
 			<strong> pure functions and impure methods explicit </strong>
 			<p>
 				A function declared pure should not contain calls to 
-				impure methods. Purity of a subroutine should be 
-				checked by the transpiler. 
+				impure function. Purity of a function should be 
+				checked by the Compiler. 
 			</p>
 		</li>
 	</ul>

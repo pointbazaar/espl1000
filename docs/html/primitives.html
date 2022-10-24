@@ -27,55 +27,63 @@
 	<h1 class="mb-3 mt-3">Primitive Data Types</h1>
 
 	<p>
-	The primitive Data Types available in ESPL1000 are used similar to those available in C,
-	and are a subset of those.  
+	The primitive Data Types available in ESPL1000 are used similar to those available in C.
 	</p>
 
 	<div class="row">
 
 		<div class="col">
-			<h3> Integer Types </h3>
+			
 			<table class="table box">
 			<thead>
 				<tr>
 					<th>Type</th>
 					<th>Width</th>
 					<th>Signed-ness</th>
+					<th>Example</th>
 				</tr>
 			</thead>
-			<tr> <td>int8</td>  <td>1 byte</td> <td>signed</td>  </tr>
-			<tr> <td>int</td> <td>unspecified</td> <td>signed</td> </tr>
-			<tr> <td>uint8</td>  <td>1 byte</td>  <td>unsigned</td> </tr>
-			<tr> <td>uint</td> <td> unspecified </td> <td>unsigned</td>  </tr>
+			<tr> 
+				<td>int8</td>  <td>1 byte</td> <td>signed</td>
+				<td>int8 x = 3;</td>
+			</tr>
+			
+			<tr> 
+				<td>uint8</td>  <td>1 byte</td>  <td>unsigned</td> 
+				<td>uint8 x = 0b00001010;</td>
+			</tr>
+			
+			<tr> 
+				<td>int</td> <td>unspecified</td> <td>signed</td>
+				<td>int x = 0x0f;</td>
+			</tr>
+			
+			
+			
+			<tr>
+				<td>uint</td> <td> unspecified </td> <td>unsigned</td>  
+				<td></td>
+			</tr>
+			
+			<tr> 
+				<td>char</td> 
+				<td>1 byte</td> 
+				<td></td>
+				<td>char c = 'k';</td>
+			</tr>
+			
+			<tr> 
+				<td>bool</td> 
+				<td>1 byte</td> 
+				<td></td>
+				<td>bool x = true;</td>
+			</tr>
 			</table>
 		</div>
 		
 		
 	</div>
 
-	<div class="row mt-3">
-
-		<div class="col">
-			<h3>char</h3>
-			<pre>
-char c = 'k';</pre>
-		</div>
-
-		<div class="col">		
-			<h3>bool</h3>
-			<pre>
-bool x = true;</pre>
-		</div>
-
-		<div class="col">		
-			<h3>Hex and Binary Literals</h3>
-			<pre>
-uint8 x;
-x = 0x0f
-x = 0b01000101</pre>
-		</div>
-		
-	</div>
 
 </div>
 
