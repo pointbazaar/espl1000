@@ -8,8 +8,8 @@ language: c
 #as per their docs, not every dist/arch combination is allowed.
 
 jobs:
-  include: 
-	- dist: jammy # 22.04
+  include:
+    - dist: jammy # 22.04
       arch: amd64 
     
     - dist: jammy # 22.04
