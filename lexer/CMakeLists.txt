@@ -4,7 +4,7 @@ project(dragon-lexer C)
 #Manual:
 #https://westes.github.io/flex/manual/
 
-find_package(FLEX)
+#find_package(FLEX)
 
 #https://cmake.org/cmake/help/latest/module/FindFLEX.html
 
@@ -36,7 +36,11 @@ add_executable(dragon-lexer
 target_compile_options(dragon-lexer       PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "--std=c11" "-lfl")
 target_compile_options(dragon-lexer-tests PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "--std=c11")
 
-target_link_libraries(dragon-lexer ${FLEX_LIBRARIES})
+#target_link_libraries(dragon-lexer ${FLEX_LIBRARIES})
+#https://askubuntu.com/questions/289547/where-are-flex-libraries-located
+#this is the non-portable version... 
+target_link_libraries(dragon-lexer /usr/lib/x86_64-linux-gnu/libfl.a)
+
 target_link_libraries(dragon-lexer ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a)
 
 target_link_libraries(dragon-lexer-tests ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a)
