@@ -17,7 +17,6 @@
 #include "expr/Op.h"
 
 static void handle_assignment_operator(struct AssignStmt* res, char* assign_op);
-static struct Op* convert_operator(char* assign_op);
 static struct UnOpTerm* convert_left(struct Variable* myvar);
 static struct UnOpTerm* convert_right(struct Expr* expr);
 
@@ -80,38 +79,6 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens) {
 	return res;
 }
 
-static struct Op* convert_operator(char* assign_op){
-    //as it is of the form ?= or ??= we extract
-    //?? as the operator
-    char op[4];
-    strcpy(op, assign_op);
-    op[strlen(op)-1] = '\0';
-
-    int my_op_key = OPKEY_ARITHMETIC;
-
-    if(strcmp(op, "+") == 0) my_op_key = OPKEY_ARITHMETIC;
-    if(strcmp(op, "-") == 0) my_op_key = OPKEY_ARITHMETIC;
-    if(strcmp(op, "*") == 0) my_op_key = OPKEY_ARITHMETIC;
-    if(strcmp(op, "/") == 0) my_op_key = OPKEY_ARITHMETIC;
-    if(strcmp(op, "%") == 0) my_op_key = OPKEY_ARITHMETIC;
-
-    if(strcmp(op, "&&") == 0) my_op_key = OPKEY_LOGICAL;
-    if(strcmp(op, "||") == 0) my_op_key = OPKEY_LOGICAL;
-
-    if(strcmp(op, "<<") == 0) my_op_key = OPKEY_BITWISE;
-    if(strcmp(op, ">>") == 0) my_op_key = OPKEY_BITWISE;
-    if(strcmp(op, "&") == 0) my_op_key = OPKEY_BITWISE;
-    if(strcmp(op, "|") == 0) my_op_key = OPKEY_BITWISE;
-
-    struct TokenList* tkl = makeTokenList();
-    list_add(tkl, makeToken2(my_op_key, op));
-
-    struct Op* myop = makeOp(tkl);
-
-    freeTokenList(tkl);
-    return myop;
-}
-
 static struct UnOpTerm* convert_left(struct Variable* v){
 
     struct Variable* myvar = copy_variable(v);
@@ -123,7 +90,7 @@ static struct UnOpTerm* convert_left(struct Variable* v){
 
     struct UnOpTerm* uop1 = make(UnOpTerm);
     uop1->super = myvar->super;
-    uop1->op  = NULL;
+    uop1->op  = OP_NONE;
     uop1->term = myterm1;
     return uop1;
 }
@@ -137,7 +104,7 @@ static struct UnOpTerm* convert_right(struct Expr* expr){
     myterm2->kind = 5;
     myterm2->ptr.m5 = expr;
 
-    uop2->op = NULL;
+    uop2->op = OP_NONE;
     uop2->term = myterm2;
     return uop2;
 }
@@ -148,14 +115,21 @@ static void handle_assignment_operator(struct AssignStmt* res, char* assign_op){
     //we must transform
     // a ?= b -> a = a ? b
 
-    if(strcmp(assign_op, "=") == 0)
+    if(strcmp(assign_op, "=") == 0){
         return;
+	}
 
-    struct Op* myop = convert_operator(assign_op);
-    myop->super = (struct ASTNode){
-            .annotations = 0,
-            .line_num = res->super.line_num
-    };
+	char op[4];
+    strcpy(op, assign_op);
+    op[strlen(op)-1] = '\0';
+    int my_op_key = OPKEY_ARITHMETIC;
+    
+    struct TokenList* tkl = makeTokenList();
+    list_add(tkl, makeToken2(my_op_key, op));
+
+    enum OP myop = makeOp(tkl);
+
+    freeTokenList(tkl);
 
     struct UnOpTerm* uop1 = convert_left(res->var);
 

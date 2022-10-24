@@ -69,14 +69,6 @@ void test_str_expr(){
 
 	test_status_str_ast("str_expr");
 	
-	struct Op o1 = {
-		.is_arithmetic = true,
-		.is_relational = false,
-		.is_logical    = false,
-		.is_bitwise    = false
-	};
-	strcpy(o1.op, "-");
-	
 	struct IntConst ic = { .value = 45 };
 
 	struct ConstValue cv = {.ptr.m2_int_const = &ic, .kind = 2};
@@ -87,18 +79,15 @@ void test_str_expr(){
 	};
 	
 	struct UnOpTerm u = {
-		.op   = &o1,
+		.op   = OP_MINUS,
 		.term = &b
 	};
 	
 	struct UnOpTerm* u2 = copy_un_op_term(&u);
 	
-	struct Op* o2       = copy_op(&o1);
-	strcpy(o2->op, "*");
-	
 	struct Expr e = {
 		.term1 = &u,
-		.op    = o2,
+		.op    = OP_MULTIPLY,
 		.term2 = u2
 	};
 	
@@ -107,34 +96,21 @@ void test_str_expr(){
 	assert(strcmp(s, "-45*-45")==0);
 	
 	free(u2);
-	free(o2);
 	free(s);
 }
 void test_str_op(){
 
 	test_status_str_ast("str_op");
 	
-	struct Op b;
+	char* s = str_op(OP_AND);
 	
-	strcpy(b.op, "&&");
-	
-	char* s = str_op(&b);
-	
-	assert(strcmp(s, "&&")==0);
+	assert(strcmp(s, "&")==0);
 	
 	free(s);
 }
 void test_str_unopterm(){
 
 	test_status_str_ast("str_un_op_term");
-	
-	struct Op op = {
-		.is_arithmetic = true,
-		.is_relational = false,
-		.is_logical    = false,
-		.is_bitwise    = false
-	};
-	strcpy(op.op, "-");
 	
 	struct IntConst ic = { .value = 3489 };
 
@@ -146,7 +122,7 @@ void test_str_unopterm(){
 	};
 	
 	struct UnOpTerm u = {
-		.op   = &op,
+		.op   = OP_MINUS,
 		.term = &b
 	};
 	
@@ -183,14 +159,6 @@ void test_str_lambda(){
 		.identifier = "a"
 	};
 	
-	struct Op o1 = {
-		.is_arithmetic = true,
-		.is_relational = false,
-		.is_logical    = false,
-		.is_bitwise    = false
-	};
-	strcpy(o1.op, "-");
-	
 	struct IntConst ic = { .value = 2 };
 	struct ConstValue cv = {.ptr.m2_int_const = &ic, .kind = 2};
 
@@ -200,18 +168,15 @@ void test_str_lambda(){
 	};
 	
 	struct UnOpTerm u = {
-		.op   = &o1,
+		.op   = OP_MINUS,
 		.term = &b
 	};
 	
 	struct UnOpTerm* u2 = copy_un_op_term(&u);
 	
-	struct Op* o2       = copy_op(&o1);
-	strcpy(o2->op, "*");
-	
 	struct Expr e = {
 		.term1 = &u,
-		.op    = o2,
+		.op    = OP_MULTIPLY,
 		.term2 = u2
 	};
 	

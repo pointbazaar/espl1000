@@ -1,9 +1,9 @@
-#ifndef OP
-#define OP
+#ifndef OP_H
+#define OP_H
 
 struct TokenList;
-struct Op;
+enum OP;
 
-struct Op* makeOp(struct TokenList* tokens);
+enum OP makeOp(struct TokenList* tokens);
 
 #endif

@@ -43,7 +43,6 @@ void free_struct_member(struct StructMember* sm);
 void free_expr(struct Expr* expr);
 void free_term(struct Term* t);
 void free_un_op_term(struct UnOpTerm* t);
-void free_op(struct Op* op);
 void free_mdirect(struct MDirect* m);
 
 //var

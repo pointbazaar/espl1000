@@ -13,23 +13,14 @@
 #include "token/list/TokenList.h"
 #include "token/token/token.h"
 
-//how many operators there are
-#define nops 15
 struct Expr* fullTreeTransformation(
-	struct Op** ops, 
+	enum OP* ops, 
 	int opsc,
 	struct UnOpTerm** terms, 
 	int termsc,
-	bool debug
+	int start_terms, 
+	int end_terms
 );
-void performTreeTransformation(
-	struct Op*** ops, int* opsc,
-	struct UnOpTerm*** terms, int* termsc,
-	bool debug,
-	int max_op_index
-);
-
-bool isComparisonOp(struct Op* op);
 
 struct Expr* makeExpr_1(struct UnOpTerm* term) {
 	struct Expr* res = make(Expr);
@@ -38,13 +29,13 @@ struct Expr* makeExpr_1(struct UnOpTerm* term) {
 	res->super.annotations = term->super.annotations;
 	
 	res->term1 = term;
-	res->op    = NULL;
+	res->op    = OP_NONE;
 	res->term2 = NULL;
 	
 	return res;
 }
 
-struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, struct Op* op, struct UnOpTerm* rightTerm) {
+struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, enum OP op, struct UnOpTerm* rightTerm) {
 
 	struct Expr* res = make(Expr);
 	
@@ -61,11 +52,12 @@ struct Expr* makeExpr(struct TokenList* tokens) {
 
 	//we assume they never have more than 200 terms
 	//TODO: don't assume that!
+	const int capacity = 200;
 
-	struct Op** ops = malloc(sizeof(struct Op*)*200);
+	enum OP* ops = malloc(sizeof(enum OP)*capacity);
 	int opsc = 0;
 
-	struct UnOpTerm** terms = malloc(sizeof(struct UnOpTerm*)*200);;
+	struct UnOpTerm** terms = malloc(sizeof(struct UnOpTerm*)*capacity);;
 	int termsc = 0;
 
 	struct TokenList* copy = list_copy(tokens);
@@ -82,8 +74,8 @@ struct Expr* makeExpr(struct TokenList* tokens) {
 	while (list_size(copy) >= 2) {
 		struct TokenList* copy2 = list_copy(copy);
 
-		struct Op* myop = makeOp(copy2);
-		if(myop == NULL){
+		enum OP myop = makeOp(copy2);
+		if(myop == OP_NONE){
 			freeTokenListShallow(copy2);
 			break;
 		}
@@ -104,248 +96,120 @@ struct Expr* makeExpr(struct TokenList* tokens) {
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
 	
-	//----------------------------------
-	
-	struct Expr* res = fullTreeTransformation
-	(ops, opsc, terms, termsc, false);
-	
-	res->super.line_num    = myterm2->super.line_num;
-	res->super.annotations = 0;
-	
-	free(terms);
-	free(ops);
+	struct Expr* res = fullTreeTransformation(ops, opsc, terms, termsc, 0, termsc-1);
 	
 	return res;
+}
+
+
+int prec_index(enum OP op){
+	
+	//Operator Precedences (lower number means higher precedence)
+	//these should be only the binary operators
+	//between UnOpTerm s
+	enum OP a[] = {
+		
+		//arithmetic (5)
+		OP_MULTIPLY,
+		OP_PLUS,
+		OP_MINUS,
+		OP_SHIFT_LEFT,
+		OP_SHIFT_RIGHT,
+		
+		//relational (6)
+		OP_NEQ,
+		OP_EQ,
+		OP_GE,
+		OP_LE,
+		OP_GT,
+		OP_LT,
+		
+		//logical (3)
+		OP_AND,
+		OP_OR,
+		OP_XOR,
+	};
+
+	for(int i=0; i < 14; i++){
+		if(op == a[i]){ return i; }
+	}
+
+	//should never happen, but we return a valid value.
+	return 0;
+}
+
+static int indexWithLeastPrecedence(enum OP* ops, int start, int end){
+	
+	//last index into the operators (lowest precedence)
+	int least = 0; 
+	int indexOfFoundOp = 0;
+
+	for(int i = start;i <= end;i++){
+		
+		enum OP o1 = ops[i];
+		
+		if(prec_index(o1) > least){
+			least = prec_index(o1);
+			indexOfFoundOp = i;
+		}
+	}
+	
+	return indexOfFoundOp;
+}
+
+static struct UnOpTerm* unopterm_from_expr(struct Expr* expr){
+	struct UnOpTerm* ttmp = make(UnOpTerm);
+	ttmp->op = OP_NONE;
+	ttmp->term = makeTerm_other(expr);
+	return ttmp;
 }
 
 struct Expr* fullTreeTransformation(
-	struct Op** ops, 
+	enum OP* ops, 
 	int opsc,
 	struct UnOpTerm** terms, 
 	int termsc,
-	bool debug
+	int start_terms, //inclusive
+	int end_terms    //inclusive
 ){
 	
-	struct Expr* res = make(Expr);
-	res->term1 = NULL;
-	res->op    = NULL;
-	res->term2 = NULL;
+	//transform the list into a tree, respecting operator precedence
+	//this is a recursive divide-and-conquer approach.
+	//we find an operator with least precedence and split the list there
 	
-	struct Op** myops = ops;
-	struct UnOpTerm** myterms = terms;
+	//we only have 1 term left here
+	if(end_terms-start_terms == 0)
+		return makeExpr_1(terms[start_terms]);
 	
-	//group the terms
-	performTreeTransformation(
-		&myops, &opsc, &myterms, &termsc, debug, nops-1
-	);
+	//search for the operator with the least precedence.
+	const int index_least_precedence = indexWithLeastPrecedence(ops, start_terms, end_terms-1);
 	
-	//now only 2 terms left
-	res->term1 = myterms[0];
-	//in case of more than one term
-	if(opsc > 0) {
-		res->op = myops[0];
-		res->term2 = myterms[1];
+	enum OP op = ops[index_least_precedence];
+	
+	//if theres only 1 term left on either side, we do not create expr
+	
+	struct UnOpTerm* uo1;
+	struct UnOpTerm* uo2;
+	
+	int start1 = start_terms;
+	int end1   = index_least_precedence;
+	
+	int start2 = index_least_precedence+1;
+	int end2   = end_terms;
+	
+	if(end1-start1 == 0){
+		uo1 = terms[start1];
+	}else{
+		struct Expr* e1 = fullTreeTransformation(ops, opsc, terms, termsc, start1, end1);
+		uo1 = unopterm_from_expr(e1);
 	}
 	
-	return res;
-}
-
-int prec_index(char* op){
-	/*
-	Operator Precedences (lower number means higher precedence)
-	3   *,/,%
-	4   +,-
-	5   <<,>>
-	7   !=,==
-	11  &&
-	12  ||
-	 */
-	const char* a[nops];
-
-	//arithmetic
-	a[0] = "*";
-	a[1] = "/";
-	a[2] = "%";
-	a[3] = "+";
-	a[4] = "-";
-	a[5] = "<<";
-	a[6] = ">>";
+	if(end2-start2 == 0){
+		uo2 = terms[start2];
+	}else{
+		struct Expr* e2 = fullTreeTransformation(ops, opsc, terms, termsc, start2, end2);
+		uo2 = unopterm_from_expr(e2);
+	}
 	
-	//comparison
-	a[7] = "!=";
-	a[8] = "==";
-	a[9] = ">=";
-	a[10] = "<=";
-	a[11] = ">";
-	a[12] = "<";
-	
-	//logic
-	a[13] = "&&";
-	a[14] = "||";
-
-	for(int i=0;i<nops;i++){
-		if(strcmp(op,a[i])==0){ return i; }
-	}
-
-	return -1;
+	return makeExpr_3(uo1, op, uo2);
 }
-
-bool isComparisonOp(struct Op* op){
-	
-	const int p = prec_index(op->op);
-	return p >= 7 && p <= 12;
-}
-
-int find(void** arr, int size, void* element){
-
-	for(int i = 0; i < size; i++){
-
-		if(arr[i] == element){
-			return i;
-		}
-	}
-	return -1;
-}
-
-void performTreeTransformation(
-		struct Op*** ops, 
-		int* opsc,
-		struct UnOpTerm*** terms, 
-		int* termsc,
-		bool debug,
-		
-		//the index of the last operator
-		//that will still be grouped in this iteration
-		int max_op_index 
-){
-
-	if(debug){
-		printf("performTreeTransformation(..., %d, ..., %d, %d)\n", *opsc, *termsc, debug);
-	}
-
-	//transform the list into a tree, 
-	//respecting operator precedence
-	
-	/*
-	Algorithm:
-
-	while there are more than 2 terms then
-		Find an operator with largest precedence and make a new Expression from the 2 Terms surrounding it.
-		Put that new Expression back into the list.
-
-	assign the 2 terms to this node
-	 */
-	 
-	while ((*termsc) > 2){
-		struct Op* opWithLargestPrecedence = (*ops)[0];
-		
-		//last index into the operators 
-		//(lowest precedence)
-		int lowest = nops-1;	
-		int indexOfFoundOp = (*opsc)-1;
-
-		for(int i = 0;i < (*opsc);i++){
-			struct Op* o1 = (*ops)[i];
-			if(prec_index(o1->op) < lowest){
-				lowest = prec_index(o1->op);
-				opWithLargestPrecedence = o1;
-				indexOfFoundOp = i;
-			}
-		}
-		
-		if(lowest > max_op_index){
-			//not enough precedence,
-			//is comparison operator or higher
-			break;
-		}
-
-		const int indexOfOp = indexOfFoundOp;
-		
-		//index of left and right term
-		const int leftTermIndex = indexOfOp;
-		const int rightTermIndex = indexOfOp+1;
-
-		struct UnOpTerm* leftTerm = (*terms)[leftTermIndex];
-		struct UnOpTerm* rightTerm = (*terms)[rightTermIndex];
-
-		struct Expr* expr = 
-			makeExpr_3(
-				leftTerm,
-				opWithLargestPrecedence,
-				rightTerm
-			);
-			
-		if(expr == NULL){
-			printf("idk\n");
-			exit(1);
-			return;
-		}
-
-		//simplify ------------------------------
-		*terms = (struct UnOpTerm**)
-		erase((void**)(*terms),leftTermIndex, *termsc);
-		(*termsc)-=1;
-		//---------------------------------------
-		//because elements have shifted 1 to the left
-		//and the terms were adjacent
-		const int i2 = leftTermIndex;
-		
-		*terms = (struct UnOpTerm**)
-		erase((void**)(*terms),i2, *termsc);
-		(*termsc)-=1;
-		//---------------------------------------
-		
-		*ops = (struct Op**)
-		erase((void**)(*ops),indexOfOp, *opsc);
-		(*opsc)-=1;
-		//------------------------------------------
-
-		//create term from our expression
-		//(must create a term because it's a list of terms)
-		struct UnOpTerm* ttmp = make(UnOpTerm);
-		ttmp->op = NULL;
-		ttmp->term = makeTerm_other(expr);
-		
-		if(ttmp == NULL){ 
-			printf("idk\n");
-			exit(1);
-			return;
-		}
-
-		//insert newly created expression
-		*terms = (struct UnOpTerm**)insert((void**)(*terms), indexOfOp, (void*)ttmp, *termsc);
-		(*termsc)+=1; //because we inserted
-	}
-}
-
-// ------------------- UTILITY SUBROUTINES -----------
-void** insert(void** arr, int index, void* element, int size_before){
-	//insert 'element' into 'arr' at index 'index'
-	void** res = malloc(sizeof(void*)*(size_before+1));
-
-	for(int i=0;i<size_before+1;i++){
-		if(i < index){
-			res[i] = arr[i];
-		}else if(i == index){
-			res[i] = element;
-		}else{
-			res[i] = arr[i-1];
-		}
-	}
-	return res;
-}
-
-void** erase(void** arr, int index, int size_before){
-	//erase the element at 'index'
-	void** res = malloc(sizeof(void*)*(size_before-1));
-
-	int i1 = 0;
-	for(int i=0;i<size_before-1;i++){
-		if(i1 == index){
-			i1++;
-		}
-		res[i] = arr[i1++];
-	}
-	return res;
-}
-

@@ -45,7 +45,7 @@ struct ArrayType*        copy_array_type(struct ArrayType* a);
 struct Expr*     copy_expr(struct Expr* expr);
 struct Term*     copy_term(struct Term* t);
 struct UnOpTerm* copy_un_op_term(struct UnOpTerm* t);
-struct Op*       copy_op(struct Op* op);
+//struct Op*       copy_op(struct Op* op);
 struct MDirect*  copy_mdirect(struct MDirect* m);
 
 //var

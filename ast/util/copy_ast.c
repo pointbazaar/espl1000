@@ -22,12 +22,12 @@ struct CharConst* copy_char_const(struct CharConst* cc){
 struct Expr* copy_expr(struct Expr* expr){
 	
 	struct Expr* res = make(Expr);
-	res->op = NULL;
+	res->op = OP_NONE;
 	res->term2 = NULL;
 	
 	res->term1 = copy_un_op_term(expr->term1);
-	if(res->op != NULL){
-		res->op = copy_op(expr->op);
+	if(res->op != OP_NONE){
+		res->op = expr->op;
 		res->term2 = copy_un_op_term(expr->term2);
 	}
 	return res;
@@ -156,9 +156,7 @@ struct UnOpTerm* copy_un_op_term(struct UnOpTerm* t){
 	
 	struct UnOpTerm* res = make(UnOpTerm);
 	
-	res->op = NULL;
-	
-	if(t->op != NULL){ res->op = copy_op(t->op); }
+	res->op = t->op;
 	
 	res->term = copy_term(t->term);
 	
@@ -180,13 +178,13 @@ struct Variable* copy_variable(struct Variable* var){
 	
 	return res;
 }
-
+/*
 struct Op* copy_op(struct Op* op){
 	
 	struct Op* res = make(Op);
 	strcpy(res->op, op->op);
 	return res;
-}
+}*/
 
 struct MDirect*  copy_mdirect(struct MDirect* m){
     struct MDirect* res = make(MDirect);

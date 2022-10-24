@@ -8,7 +8,7 @@
 
 static void tac_expr_part_2_constvalue(struct TACBuffer* buffer, struct Expr* expr, char* t1);
 static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr* expr, char* t1);
-static enum TAC_OP op_str_to_tac_op(char* op_str, bool* reverse_operands);
+static enum TAC_OP op_to_tac_op(enum OP op_str, bool* reverse_operands);
 static bool operator_immediate_applicable(enum TAC_OP op, int32_t immediate);
 
 void tac_expr(struct TACBuffer* buffer, struct Expr* expr){
@@ -21,9 +21,9 @@ void tac_expr(struct TACBuffer* buffer, struct Expr* expr){
         char *t1 = tacbuffer_last_dest(buffer);
 
 		bool reverse_operands = false;
-        enum TAC_OP op = op_str_to_tac_op(expr->op->op, &reverse_operands);
+        enum TAC_OP op = op_to_tac_op(expr->op, &reverse_operands);
 
-        bool is_const_value = expr->term2->op == NULL
+        bool is_const_value = expr->term2->op == OP_NONE
                               && expr->term2->term->kind == 12;
 
         bool applicable = false;
@@ -61,40 +61,45 @@ static bool operator_immediate_applicable(enum TAC_OP op, int32_t immediate){
     }
 }
 
-static enum TAC_OP op_str_to_tac_op(char* opstr, bool* reverse_operands){
+static enum TAC_OP op_to_tac_op(enum OP o, bool* reverse_operands){
     enum TAC_OP op = op = TAC_OP_NONE;
     *reverse_operands = false;
-
-    if(strcmp(opstr, "+") == 0) op = TAC_OP_ADD;
-    if(strcmp(opstr, "-") == 0) op = TAC_OP_SUB;
-    if(strcmp(opstr, "*") == 0) op = TAC_OP_MUL;
-    if(strcmp(opstr, "&") == 0) op = TAC_OP_AND;
-    if(strcmp(opstr, "|") == 0) op = TAC_OP_OR;
-    if(strcmp(opstr, "^") == 0) op = TAC_OP_XOR;
     
-    if(strcmp(opstr, "<<") == 0) op = TAC_OP_SHIFT_LEFT;
-    if(strcmp(opstr, ">>") == 0) op = TAC_OP_SHIFT_RIGHT;
-
-    if(strcmp(opstr, "<") == 0) op = TAC_OP_CMP_LT;
-    if(strcmp(opstr, "<=") == 0){
-		op = TAC_OP_CMP_GE;
-		*reverse_operands = true;
+    switch(o){
+		case OP_PLUS: op = TAC_OP_ADD; break;
+		case OP_MINUS: op = TAC_OP_SUB; break;
+		case OP_MULTIPLY: op = TAC_OP_MUL; break;
+		
+		case OP_AND: op = TAC_OP_AND; break;
+		case OP_OR: op = TAC_OP_OR; break;
+		case OP_XOR: op = TAC_OP_XOR; break;
+		
+		case OP_SHIFT_LEFT: op = TAC_OP_SHIFT_LEFT; break;
+		case OP_SHIFT_RIGHT: op = TAC_OP_SHIFT_RIGHT; break;
+		
+		case OP_LT: op = TAC_OP_CMP_LT; break;
+		case OP_LE: 
+			op = TAC_OP_CMP_GE; 
+			*reverse_operands = true;
+			break;
+		
+		case OP_GT: 
+			op = TAC_OP_CMP_LT; 
+			*reverse_operands = true;
+			break;
+		
+		case OP_GE: op = TAC_OP_CMP_GE; break;
+		
+		case OP_EQ: op = TAC_OP_CMP_EQ; break;
+		case OP_NEQ: op = TAC_OP_CMP_NEQ; break;
+		
+		case OP_NONE:
+		default:
+			printf("error in op_to_tac_op\n");
+			printf("error, op was none of supported TAC_OP_... values\n");
+			printf("op = %d\n", o);
+			break;
 	}
-    
-    if(strcmp(opstr, ">") == 0){
-		op = TAC_OP_CMP_GE;
-		*reverse_operands = true;
-	}
-    
-    if(strcmp(opstr, ">=") == 0) op = TAC_OP_CMP_GE;
-    if(strcmp(opstr, "==") == 0) op = TAC_OP_CMP_EQ;
-    if(strcmp(opstr, "!=") == 0) op = TAC_OP_CMP_NEQ;
-
-    if(op == TAC_OP_NONE){
-		printf("error in op_str_to_tac_op\n");
-        printf("error, opstr was none of supported TAC_OP_... values\n");
-        printf("opstr = %s\n", opstr);
-    }
     
     return op;
 }
@@ -104,7 +109,7 @@ static void tac_expr_part_2_constvalue(struct TACBuffer* buffer, struct Expr* ex
     const int32_t immediate = int_value_from_const(expr->term2->term->ptr.m12);
 
 	bool reverse_operands = false;
-    const enum TAC_OP op = op_str_to_tac_op(expr->op->op, &reverse_operands);
+    const enum TAC_OP op = op_to_tac_op(expr->op, &reverse_operands);
 
     tacbuffer_append(buffer,makeTACBinOpImmediate(t1, op, immediate));
 }
@@ -116,7 +121,7 @@ static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr*
     
     bool reverse_operands = false;
     
-    enum TAC_OP op = op_str_to_tac_op(expr->op->op, &reverse_operands);
+    enum TAC_OP op = op_to_tac_op(expr->op, &reverse_operands);
     
     struct TAC* t;
     

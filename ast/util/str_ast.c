@@ -432,7 +432,7 @@ char* str_expr(struct Expr* e){
 
 	char* strTerm1 = str_un_op_term(e->term1);
 	
-	char* strO = (e->op != NULL) ? str_op(e->op) : "";
+	char* strO = (e->op != OP_NONE) ? str_op(e->op) : "";
 	
 	char* strTerm2 = (e->term2 != NULL) ? str_un_op_term(e->term2) : "";
 	
@@ -447,24 +447,43 @@ char* str_expr(struct Expr* e){
 	sprintf(res, "%s%s%s", strTerm1, strO, strTerm2);
 	
 	free(strTerm1);
-	if(e->op != NULL){ free(strO); }
+	if(e->op != OP_NONE){ free(strO); }
 	if(e->term2 != NULL){ free(strTerm2); }
 	
 	return res;
 }
 
-char* str_op(struct Op* o){
+char* str_op(enum OP o){
 	
-	char* res = malloc(sizeof(char)*6);
+	char* res = malloc(sizeof(char)*16);
 	
-	sprintf(res, "%s", o->op);
+	char* str;
+	
+	switch(o){
+		case OP_NONE: str = "ERR"; break;
+		case OP_PLUS: str = "+"; break;
+		case OP_MINUS: str = "-"; break;
+		case OP_MULTIPLY: str = "*"; break;
+		
+		case OP_SHIFT_LEFT: str = "<<"; break;
+		case OP_SHIFT_RIGHT: str = ">>"; break;
+		
+		case OP_AND: str = "&"; break;
+		case OP_OR: str = "|"; break;
+		case OP_XOR: str = "^"; break;
+		
+		//should not happen
+		default: str = "fix str_op"; break;
+	}
+	
+	sprintf(res, "%s", str);
 	
 	return res;
 }
 
 char* str_un_op_term(struct UnOpTerm* u){
 
-	char* strO = (u->op != NULL) ? str_op(u->op) : "";
+	char* strO = (u->op != OP_NONE) ? str_op(u->op) : "";
 	
 	char* strT = str_term(u->term);
 	
@@ -474,7 +493,7 @@ char* str_un_op_term(struct UnOpTerm* u){
 	
 	sprintf(res, "%s%s", strO, strT);
 	
-	if(u->op != NULL){ free(strO); }
+	if(u->op != OP_NONE){ free(strO); }
 	free(strT);
 	
 	return res;

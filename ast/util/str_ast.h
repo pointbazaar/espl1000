@@ -39,7 +39,7 @@ char* str_simple_var(struct SimpleVar* s);
 
 //expr
 char* str_expr(struct Expr* e);
-char* str_op(struct Op* o);
+char* str_op(enum OP o);
 char* str_un_op_term(struct UnOpTerm* u);
 char* str_term(struct Term* t);
 char* str_mdirect(struct MDirect* m);

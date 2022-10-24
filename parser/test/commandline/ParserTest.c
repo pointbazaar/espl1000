@@ -45,7 +45,12 @@
 #include "parser/test/astnodes/expr/MDirectTest.h"
 
 void test_suite_constnodes();
+
 void test_suite_term_expr_simplevar_var();
+void test_suite_term();
+void test_suite_expr();
+void test_suite_simplevar();
+void test_suite_var();
 
 void test_suite_stmts();
 void test_suite_assignstmt();
@@ -68,7 +73,12 @@ int main(){
 	printf("[Parser] running Parser Tests...\n");
 
 	test_suite_constnodes();
-	test_suite_term_expr_simplevar_var();
+	
+	test_suite_simplevar();
+	test_suite_var();
+	test_suite_term();
+	test_suite_expr();
+	
 	test_suite_unop();
 	test_suite_assignstmt();
 	test_suite_stmts();
@@ -126,30 +136,47 @@ void test_suite_constnodes() {
 	test_charconst_parse_char_constant_node_newline();
 }
 
-void test_suite_term_expr_simplevar_var() {
-
-	status_test_suite("test_suite_term_expr_simplevar_var");
+void test_suite_term(){
+	status_test_suite("test_suite_term");
 
 	term_test_simple_term();
 	term_test_variable_term();
 	term_test_parentheses();
     term_test_mdirect();
+    
+    mdirect_test_1();
+}
+
+void test_suite_expr(){
+	status_test_suite("test_suite_expr");
+
 
 	expr_recognize_2_op_expr();
 	expr_test_simple_expression();
 	expr_test_variable_name_expression();
 
 	expr_test_comparison();
+	
+	expr_test_3_terms();
+}
+
+void test_suite_simplevar(){
+	
+	status_test_suite("test_suite_simplevar");
 
 	simplevar_test_parse_simple_indexed_variable();
 	simplevar_test_parse_simple_variable();
 	simplevar_test_2_indices();
 
+}
+
+void test_suite_var(){
+	
+	status_test_suite("test_suite_var");
+
 	variable_test_parse_index_access();
 	variable_test_parse_struct_member_access();
 	variable_test_parse_struct_member_access_and_index_access();
-
-    mdirect_test_1();
 }
 
 void test_suite_stmts() {

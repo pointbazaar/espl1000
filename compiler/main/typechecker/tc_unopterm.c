@@ -18,20 +18,20 @@ bool tc_unopterm(struct UnOpTerm* uot, struct TCCtx* tcctx){
 
     struct Type* type = infer_type_term(tcctx->st, uot->term);
 
-    if(uot->op == NULL){ return true; }
+    if(uot->op == OP_NONE){ return true; }
 
     //check if the optional unary operator is valid for the type of term
 
-    char* op = uot->op->op;
+    enum OP op = uot->op;
 
     if(is_integer_type(type)){
-        if(strcmp(op, "-") == 0 || strcmp(op, "+") == 0 || strcmp(op, "~") == 0){
+        if(op == OP_MINUS || op == OP_PLUS || op == OP_COMPLEMENT){
             return true;
         }
     }
 
     if(is_bool_type(type)){
-        if(strcmp(op, "!") == 0){
+        if(op == OP_NOT){
             return true;
         }
     }

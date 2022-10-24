@@ -3,26 +3,46 @@
 
 #include "../ast_declare.h"
 
+enum OP {
+	OP_NONE, //empty, no operator 
+	
+	OP_PLUS,
+	OP_MINUS,
+	OP_MULTIPLY,
+	
+	OP_SHIFT_LEFT,
+	OP_SHIFT_RIGHT,
+	
+	OP_OR,  //|
+	OP_AND, //& 
+	OP_XOR, //^ 
+	
+	//unary
+	OP_NOT, //!
+	OP_COMPLEMENT, //~
+	
+	//relational
+	OP_EQ,
+	OP_NEQ,
+	OP_GE,
+	OP_GT,
+	OP_LE,
+	OP_LT,
+	
+	OP_NUMBER_OF_OPS, //number of operators defined
+};
+
 struct Expr {
 	struct ASTNode super; 
 	struct UnOpTerm* term1;
-	struct Op* op;          //may be NULL
+	enum OP op; 			//may be OP_NONE
 	struct UnOpTerm* term2; //may be NULL
-};
-struct Op { 
-	struct ASTNode super; 
-	char op[6]; 
-	
-	bool is_arithmetic;
-	bool is_relational;
-	bool is_logical;
-	bool is_bitwise;
 };
 struct UnOpTerm{
 	struct ASTNode super; 
 	//a term preceded by an unary operator.
 	
-	struct Op* op; //may be NULL
+	enum OP op; //may be OP_NONE
 	
 	struct Term* term;
 };

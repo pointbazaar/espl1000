@@ -30,7 +30,7 @@ static void visit_continue_stmt	(VISITOR, ARG);
 
 //expr
 static void visit_expr        	(struct Expr* e, VISITOR, ARG);
-static void visit_op          	(struct Op* o, VISITOR, ARG);
+static void visit_op          	(enum OP o, VISITOR, ARG);
 static void visit_un_op_term    (struct UnOpTerm* u, VISITOR, ARG);
 static void visit_term       	(struct Term* t, VISITOR, ARG);
 static void visit_mdirect       (struct MDirect* m, VISITOR, ARG);
@@ -254,16 +254,16 @@ static void visit_expr(struct Expr* e, VISITOR, void* arg){
 
 	visit_un_op_term(e->term1, visitor, arg);
 	
-	if(e->op == NULL)
+	if(e->op == OP_NONE)
 		{ return; }
 
 	visit_op(e->op, visitor, arg);
 	visit_un_op_term(e->term2, visitor, arg);
 }
 
-static void visit_op(struct Op* o, VISITOR, void* arg){
+static void visit_op(enum OP o, VISITOR, void* arg){
 	
-	visitor(o, NODE_OP, arg);
+	visitor(&o, NODE_OP, arg);
 }
 
 static void visit_un_op_term(struct UnOpTerm* u, VISITOR, void* arg){

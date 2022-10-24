@@ -23,7 +23,7 @@ bool tc_expr(struct Expr* expr, struct TCCtx* tcctx){
 
     if(!tc_unopterm(expr->term1, tcctx)){return false;}
 	
-	if(expr->op != NULL){
+	if(expr->op != OP_NONE){
 
         if(!tc_unopterm(expr->term2, tcctx)){return false;}
 

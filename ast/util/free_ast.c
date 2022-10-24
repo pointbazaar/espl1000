@@ -37,8 +37,7 @@ void free_decl_arg(struct DeclArg* da) {
 void free_expr(struct Expr* expr) {
 
 	free_un_op_term(expr->term1);
-	if(expr->op != NULL) {
-		free_op(expr->op);
+	if(expr->op != OP_NONE) {
 		free_un_op_term(expr->term2);
 	}
 	
@@ -150,7 +149,6 @@ void free_term(struct Term* t) {
 }
 void free_un_op_term(struct UnOpTerm* t) {
 
-	free_op(t->op);
 	free_term(t->term);
 	free(t);
 }
@@ -311,8 +309,6 @@ void free_struct_type(struct StructType* s){
 
 	free(s);
 }
-
-void free_op(struct Op* op){ free(op); }
 
 void free_mdirect(struct MDirect* m){
     free_expr(m->expr);

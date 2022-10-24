@@ -24,21 +24,18 @@ struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens) {
 	parse_astnode(copy, &(res->super));
 	
 	res->op = makeOp(copy);
-	//res->op may be NULL, it is not a problem,
+	//res->op may be OP_NONE, it is not a problem,
 	//as the unary operator is optional
 	
-	if(res->op != NULL){
+	if(res->op != OP_NONE){
 		
 		//check if it is unary operator.
 		//sometimes it inserts a space 
 		//so check for that case also
 		if(
-			strcmp(res->op->op, "!") != 0 && 
-			strcmp(res->op->op, "! ") != 0 && 
-			strcmp(res->op->op, "~") != 0 &&
-			strcmp(res->op->op, "~ ") != 0 &&
-			strcmp(res->op->op, "-") != 0 &&
-			strcmp(res->op->op, "- ") != 0
+			   res->op != OP_MINUS 
+			&& res->op != OP_NOT
+			&& res->op != OP_COMPLEMENT
 		){
 			//the operator was not unary,
 			//so we do not have an unary op term
@@ -51,7 +48,6 @@ struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens) {
 	res->term = makeTerm(copy);
 	
 	if(res->term == NULL){
-		free_op(res->op);
 		freeTokenListShallow(copy);
 		free(res);
 		return NULL;

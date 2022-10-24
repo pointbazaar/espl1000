@@ -15,7 +15,7 @@ struct StructDecl;
 struct MethodDecl;
 //---------------
 struct StmtBlock;
-struct Op;
+enum OP;
 struct Term;
 struct Expr;
 struct UnOpTerm;

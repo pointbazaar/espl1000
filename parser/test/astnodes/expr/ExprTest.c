@@ -102,8 +102,7 @@ int expr_test_comparison() {
 	struct Term* term2 = expr->term2->term;
 	assert(term2 != NULL);
 
-	struct Op* op = expr->op;
-	assert(op != NULL);
+	assert(expr->op == OP_LT);
 
 	//assert about the terms
 
@@ -121,6 +120,37 @@ int expr_test_comparison() {
 	assert(strcmp(sv->name, "x") == 0);
 	
 	freeTokenList(l);
+	free_expr(expr);
+
+	return 1;
+}
+
+int expr_test_3_terms(){
+	
+	status_test("expr_test_3_terms");
+
+	struct TokenList* tokens = makeTokenList();
+
+	list_add(tokens, makeToken2(INTEGER,"1"));
+	list_add(tokens, makeToken2(OPKEY_ARITHMETIC,"+"));
+	list_add(tokens, makeToken2(INTEGER,"2"));
+	list_add(tokens, makeToken2(OPKEY_ARITHMETIC,"+"));
+	list_add(tokens, makeToken2(INTEGER,"3"));
+
+	list_add(tokens, makeToken2(LCURLY,"{"));
+
+	struct Expr* expr = makeExpr(tokens);
+	assert(expr != NULL);
+	
+	assert(expr->term1 != NULL);
+	assert(expr->term2 != NULL);
+	
+	printf("op = %d", expr->op);fflush(stdout);
+	assert(expr->op == OP_PLUS);
+	
+	assert(list_size(tokens) == 1);
+	
+	freeTokenList(tokens);
 	free_expr(expr);
 
 	return 1;

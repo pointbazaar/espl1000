@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 - remove the division operator '/' since division is not natively supported
   by the AVR Instruction set. 
+- change struct OP to be enum OP, so we do not use string representation internally.
+  This will also decrease Memory Usage, since we do not need a full AST Node to 
+  represent a simple Operator.
 
 ## [v0.3.2]
 - remove the Comparison Operator Chaining Feature. It is really not that special

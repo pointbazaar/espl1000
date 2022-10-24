@@ -14,12 +14,12 @@
 struct Expr2Types {
 	struct PrimitiveType* p1;
 	struct PrimitiveType* p2;
-	struct Op* op;
+	enum OP op;
 };
 
 static struct Type* infer_type_expr_primitive(struct ST *st, struct Expr2Types *e2t);
 
-static struct Type* infer_type_expr_both_tparam(struct ST* st, struct TypeParam* tp1, struct Op* op, struct TypeParam* tp2);
+static struct Type* infer_type_expr_both_tparam(struct ST* st, struct TypeParam* tp1, enum OP op, struct TypeParam* tp2);
 
 static void typeinfer_err_fatal(char* opt_str){
     printf("%s\n", opt_str);
@@ -34,7 +34,7 @@ struct Type* infer_type_expr(struct ST *st, struct Expr *expr) {
 	
 	struct UnOpTerm* t1 = expr->term1;
 	struct UnOpTerm* t2 = expr->term2;
-	struct Op* op = expr->op;
+	enum OP op = expr->op;
 
 	struct Type* type1 = infer_type_unopterm(st, t1);
 	struct Type* type2 = infer_type_unopterm(st, t2);
@@ -73,7 +73,7 @@ struct Type* infer_type_expr(struct ST *st, struct Expr *expr) {
 	return infer_type_expr_primitive(st, &e2t);
 }
 
-static struct Type* infer_type_expr_both_tparam(struct ST* st, struct TypeParam* tp1, struct Op* op, struct TypeParam* tp2){
+static struct Type* infer_type_expr_both_tparam(struct ST* st, struct TypeParam* tp1, enum OP op, struct TypeParam* tp2){
 
     bool same_type = tp1->index == tp2->index;
 
@@ -81,13 +81,15 @@ static struct Type* infer_type_expr_both_tparam(struct ST* st, struct TypeParam*
         typeinfer_err_fatal(str_op(op));
     }
 
-    if(op->is_relational)
+    if(op == OP_EQ || op == OP_NEQ 
+	|| op == OP_GE || op == OP_GT
+	|| op == OP_LE || op == OP_LT)
         { return typeFromStrPrimitive(st, "bool"); }
 
-    if(op->is_logical)
+    if(op == OP_AND || op == OP_OR || op == OP_XOR)
         { return typeFromStrPrimitive(st, "bool"); }
 
-    if(op->is_bitwise)
+    if(op == OP_SHIFT_LEFT || op == OP_SHIFT_RIGHT)
         { return typeFromStrPrimitive(st, "int"); }
 
     typeinfer_err_fatal(str_op(op));
@@ -98,12 +100,12 @@ static struct Type *infer_type_expr_primitive(struct ST *st, struct Expr2Types *
 
 	struct PrimitiveType* p1 = e2t->p1;
 	struct PrimitiveType* p2 = e2t->p2;
-	struct Op* op = e2t->op;
+	enum OP op = e2t->op;
 	
-	if(op->is_relational)
-		{ return typeFromStrPrimitive(st, "bool"); }
-	
-	if(op->is_logical)
+	if(op == OP_EQ || op == OP_NEQ 
+	|| op == OP_GE || op == OP_GT
+	|| op == OP_LE || op == OP_LT
+	)
 		{ return typeFromStrPrimitive(st, "bool"); }
 		
 	const bool i1 = p1->is_int_type;
@@ -111,9 +113,21 @@ static struct Type *infer_type_expr_primitive(struct ST *st, struct Expr2Types *
 	
 	const bool c1 = p1->is_char_type;
 	const bool c2 = p2->is_char_type;
+	
+	const bool b1 = p1->is_bool_type;
+	const bool b2 = p2->is_bool_type;
+	
+	if(op == OP_AND || op == OP_OR || op == OP_XOR){ 
+		
+		if(b1 && b2)
+			return typeFromStrPrimitive(st, "bool");
+			
+		if(i1 && i2)
+			return typeFromStrPrimitive(st, "int");
+	}
 
 	
-	if(op->is_arithmetic){
+	if(op == OP_PLUS || op == OP_MINUS || op == OP_MULTIPLY){
 		
 		if(i1 && i2)
 			{ return typeFromStrPrimitive(st, "int"); }
@@ -125,7 +139,7 @@ static struct Type *infer_type_expr_primitive(struct ST *st, struct Expr2Types *
 			{ return typeFromStrPrimitive(st, "char"); }
 	}
 	
-	if(op->is_bitwise)
+	if(op == OP_SHIFT_LEFT || op == OP_SHIFT_RIGHT)
 		{ return typeFromStrPrimitive(st, "int"); }
 
 	//if we cannot figure out this thing,

@@ -12,11 +12,11 @@ struct TokenList;
 
 struct Expr* makeExpr(struct TokenList* tokens);
 struct Expr* makeExpr_1(struct UnOpTerm* myterm);
-struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, struct Op* op, struct UnOpTerm* rightTerm);
+struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, enum OP op, struct UnOpTerm* rightTerm);
 
 int find(void** arr, int size, void* element);
 
-int prec_index(char* op);
+int prec_index(enum OP op);
 
 void** insert(void** arr, int index, void* element, int size_before);
 

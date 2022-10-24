@@ -40,7 +40,7 @@ int if_test1() {
 	assert(condition != NULL);
 
 	assert(condition->term1 != NULL);
-	assert(condition->op != NULL);
+	assert(condition->op != OP_NONE);
 	assert(condition->term2 != NULL);
 	
 	freeTokenList(list);

@@ -89,11 +89,11 @@ int simplevar_test_2_indices() {
 	assert(node->indices[1] != NULL);
 	
 	assert(node->indices[0]->term1 != NULL);
-	assert(node->indices[0]->op == NULL);
+	assert(node->indices[0]->op == OP_NONE);
 	assert(node->indices[0]->term2 == NULL);
 	
 	assert(node->indices[1]->term1 != NULL);
-	assert(node->indices[1]->op == NULL);
+	assert(node->indices[1]->op == OP_NONE);
 	assert(node->indices[1]->term2 == NULL);
 
 	free_simple_var(node);
