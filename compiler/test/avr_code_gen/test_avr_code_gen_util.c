@@ -36,8 +36,22 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
     //in /usr/share/avra
 
     //in this file a comment must be shortened, otherwise avra will give an error
-    fprintf(fout, ".INCLUDE \"/usr/share/avra/m32def.inc\"\n");
+    //.INCLUDE "/usr/share/avra/m32def.inc"
     //fprintf(fout, ".DEVICE ATmega328P\n");
+    
+    //we do not want to depend on the specific location of that file
+    //or if it's even there ... just append some stuff here
+    fprintf(fout, 
+		".equ	RAMEND	= 0x085f\n"
+		".def	XH	= r27\n"
+		".def	XL	= r26\n"
+		".def	YH	= r29\n"
+		".def	YL	= r28\n"
+		".def	ZH	= r31\n"
+		".def	ZL	= r30\n"
+		".equ	SPH	= 0x3e\n"
+		".equ	SPL	= 0x3d\n"
+    );
 
     emit_setup_stack_pointer_avr(fout);
     emit_call_main_endloop(fout);
