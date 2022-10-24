@@ -116,7 +116,7 @@ bool compile(struct Flags* flags){
 	int status = 0;
 
     char cmd[200];
-    sprintf(cmd, "avra -o out %s > /tmp/avra-stdout 2> /tmp/avra-stderr", ctx_asm_filename(ctx));
+    sprintf(cmd, "avra %s > /tmp/avra-stdout 2> /tmp/avra-stderr", flags_asm_filename(flags));
     status = system(cmd);
 
 	if (WEXITSTATUS(status) != 0) {

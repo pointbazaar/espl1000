@@ -1,6 +1,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <inttypes.h>
+#include <stdbool.h>
+#include <libgen.h>
+#include <malloc.h>
+#include <regex.h>
 
 #include "flags.h"
 
@@ -20,7 +25,54 @@ struct Flags {
     uint8_t capacity_filenames;
     char** filenames;
 
+	//generated filenames
+	char* asm_filename;
+	char* token_filename;
+	char* hex_filename;
 };
+
+
+static char* make_asm_filename(char* filename){
+
+    char* fname_out = malloc(strlen(filename)+4);
+    strcpy(fname_out, filename);
+    //remove the '.dg'
+    fname_out[strlen(fname_out)-3] = '\0';
+    strcat(fname_out, ".asm");
+
+    return fname_out;
+}
+
+static char* make_hex_filename(char* filename){
+
+    char* fname_out = malloc(strlen(filename)+4);
+    strcpy(fname_out, filename);
+    //remove the '.dg'
+    fname_out[strlen(fname_out)-3] = '\0';
+    strcat(fname_out, ".hex");
+
+    return fname_out;
+}
+
+static char* make_token_filename(char* filename){
+	
+	char* token_filename = malloc(strlen(filename) + 20);
+	
+	char* fnamecpy = malloc(strlen(filename)+1);
+	strcpy(fnamecpy, filename);
+	char* base_name = basename(fnamecpy);
+	
+	char* fnamecpy2 = malloc(strlen(filename)+1);
+	strcpy(fnamecpy2, filename);
+	char* dir_name = dirname(fnamecpy2);
+	
+	sprintf(token_filename, "%s/.%s.tokens", dir_name, base_name);
+	
+	free(fnamecpy);
+	free(fnamecpy2);
+	
+	return token_filename;
+}
 
 static void make_flags_inner(struct Flags* flags, char* arg);
 
@@ -46,6 +98,10 @@ struct Flags* makeFlags(int argc, char** argv){
 	if(flags->help || flags->version){ return flags; }
 	
 	validate_flags(flags);
+	
+	flags->asm_filename   = make_asm_filename(flags_filenames(flags,0));
+	flags->token_filename = make_token_filename(flags_filenames(flags,0));
+	flags->hex_filename   = make_hex_filename(flags_filenames(flags,0));
 	
 	return flags;
 }
@@ -86,6 +142,9 @@ static void make_flags_inner(struct Flags* flags, char* arg){
 
 void freeFlags(struct Flags* flags){
 	
+	free(flags->asm_filename);
+	free(flags->hex_filename);
+	free(flags->token_filename);
 	free(flags->filenames);
 	free(flags);
 }
@@ -113,4 +172,16 @@ bool flags_version(struct Flags* flags){
 }
 bool flags_help(struct Flags* flags){
 	return flags->help;
+}
+
+char* flags_asm_filename(struct Flags* flags){
+	return flags->asm_filename;
+}
+
+char* flags_token_filename(struct Flags* flags){
+	return flags->token_filename;
+}
+
+char* flags_hex_filename(struct Flags* flags){
+	return flags->hex_filename;
 }

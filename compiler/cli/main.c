@@ -34,7 +34,5 @@ int main(int argc, char* argv[]){
 
     bool success = compile(flags);
 
-    freeFlags(flags);
-
     return (success)?EXIT_SUCCESS:EXIT_FAILURE;
 }

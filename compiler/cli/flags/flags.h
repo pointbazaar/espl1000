@@ -18,4 +18,8 @@ bool flags_debug(struct Flags* flags);
 bool flags_version(struct Flags* flags);
 bool flags_help(struct Flags* flags);
 
+//generated filenames for later on
+char* flags_asm_filename(struct Flags* ctx);
+char* flags_token_filename(struct Flags* ctx);
+char* flags_hex_filename(struct Flags* ctx);
 #endif

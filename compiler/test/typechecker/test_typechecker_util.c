@@ -30,7 +30,7 @@ struct TCError* typecheck_file(char* filename){
 
     struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(filename), makeST(false));
     
-    struct AST* ast = build_ast(ctx_token_filename(ctx));
+    struct AST* ast = build_ast(flags_token_filename(ctx_flags(ctx)));
 
     if(ast == NULL){ return NULL;}
 

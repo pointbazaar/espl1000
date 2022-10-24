@@ -29,42 +29,8 @@ struct Ctx {
 	
 	//symbol tables
 	struct ST* tables;
-	
-	char* asm_filename;
-	char* token_filename;
-	
 };
 
-static char* make_asm_filename(char* filename){
-
-    char* fname_out = malloc(strlen(filename)+4);
-    strcpy(fname_out, filename);
-    //remove the '.dg'
-    fname_out[strlen(fname_out)-3] = '\0';
-    strcat(fname_out, ".asm");
-
-    return fname_out;
-}
-
-static char* make_token_filename(char* filename){
-	
-	char* token_filename = malloc(strlen(filename) + 20);
-	
-	char* fnamecpy = malloc(strlen(filename)+1);
-	strcpy(fnamecpy, filename);
-	char* base_name = basename(fnamecpy);
-	
-	char* fnamecpy2 = malloc(strlen(filename)+1);
-	strcpy(fnamecpy2, filename);
-	char* dir_name = dirname(fnamecpy2);
-	
-	sprintf(token_filename, "%s/.%s.tokens", dir_name, base_name);
-	
-	free(fnamecpy);
-	free(fnamecpy2);
-	
-	return token_filename;
-}
 
 struct Ctx* ctx_ctor(struct Flags* flags, struct ST* tables){
 
@@ -72,9 +38,6 @@ struct Ctx* ctx_ctor(struct Flags* flags, struct ST* tables){
 	
 	res->flags  = flags;
     res->tables = tables;
-    
-    res->asm_filename = make_asm_filename(flags_filenames(flags,0));
-	res->token_filename = make_token_filename(flags_filenames(flags,0));
 	
 	return res;
 }
@@ -83,9 +46,6 @@ void ctx_dtor(struct Ctx* ctx){
 	
 	freeST(ctx_tables(ctx));
     freeFlags(ctx_flags(ctx));
-    
-    free(ctx->asm_filename);
-    free(ctx->token_filename);
     
     free(ctx);
 }
@@ -99,10 +59,4 @@ struct ST* ctx_tables(struct Ctx* ctx){
 	return ctx->tables;
 }
 
-char* ctx_asm_filename(struct Ctx* ctx){
-	return ctx->asm_filename;
-}
 
-char* ctx_token_filename(struct Ctx* ctx){
-	return ctx->token_filename;
-}

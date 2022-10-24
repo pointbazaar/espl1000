@@ -34,7 +34,7 @@ void emit_call_main_endloop(FILE* fout){
 
 bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx){
 
-    FILE* fout = fopen(ctx_asm_filename(ctx), "w");
+    FILE* fout = fopen(flags_asm_filename(ctx_flags(ctx)), "w");
     if(fout == NULL){
         printf("error opening output file\n");
         exit(1);

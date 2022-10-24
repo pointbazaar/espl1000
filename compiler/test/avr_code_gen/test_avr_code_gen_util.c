@@ -24,9 +24,11 @@
 
 vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
 
-    struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(".file.dg"), makeST(false));
+	struct Flags* flags = makeFlagsSingleFile(".file.dg");
 
-    FILE* fout = fopen(ctx_asm_filename(ctx), "w");
+    struct Ctx* ctx = ctx_ctor(flags, makeST(false));
+
+    FILE* fout = fopen(flags_asm_filename(flags), "w");
     
     if(fout == NULL){
         printf("error opening output file\n");
@@ -42,6 +44,7 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
     //we do not want to depend on the specific location of that file
     //or if it's even there ... just append some stuff here
     fprintf(fout, 
+		".DEVICE ATmega328P\n"
 		".equ	RAMEND	= 0x085f\n"
 		".def	XH	= r27\n"
 		".def	XL	= r26\n"
@@ -73,7 +76,6 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
     //lvst_fill(m, ctx->tables);
 
     //emit label for the function
-    //fprintf(fout, "%s:\n",m->decl->name);
     fprintf(fout, "%s:\n", "main");
 
 
@@ -86,8 +88,6 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
     fprintf(fout, "in r29, SPH  ;Y is base ptr\n\n");
 
     emit_asm_avr_basic_block(root, ctx, fout);
-
-    ctx_dtor(ctx);
     
     for(int i=0;i < nblocks; i++){
 		basicblock_dtor(graph[i]);
@@ -99,8 +99,8 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
     fclose(fout);
 
     char cmd[200];
-    //we pipe stdout and stderr away
-    sprintf(cmd, "avra -o out %s > /tmp/avra-stdout 2> /tmp/avra-stderr", ".file.asm");
+    //we pipe stdout and stderr away 
+    sprintf(cmd, "avra %s > /tmp/avra-stdout 2> /tmp/avra-stderr", flags_asm_filename(flags));
     int status = system(cmd);
 
     int status2 = WEXITSTATUS(status);
@@ -117,7 +117,7 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
         exit(1);
     }
 
-    vmcu_report_t* report = vmcu_analyze_file(".file.hex", model);
+    vmcu_report_t* report = vmcu_analyze_file(flags_hex_filename(flags), model);
 
     if(report == NULL){
         printf("[Error] could not prepare vmcu_report_t. Exiting.\n");
@@ -133,6 +133,8 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
     
     vmcu_report_dtor(report);
     vmcu_model_dtor(model);
+    
+    ctx_dtor(ctx);
 
     return system;
 }
