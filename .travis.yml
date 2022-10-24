@@ -9,10 +9,16 @@ language: c
 
 jobs:
   include: 
-    #- dist: focal # 20.04
-    #  arch: amd64 #/usr/bin/ld: cannot find -lfl
+	- dist: jammy # 22.04
+      arch: amd64 
     
-    - dist: focal
+    - dist: jammy # 22.04
+      arch: arm64
+  
+    - dist: focal # 20.04
+      arch: amd64 #/usr/bin/ld: cannot find -lfl
+    
+    - dist: focal # 20.04
       arch: arm64
 
     #- dist: bionic # 18.04
@@ -31,7 +37,7 @@ jobs:
     
 before_install:
 - pwd
-- cd .
+
 addons:
   apt:
     packages:
