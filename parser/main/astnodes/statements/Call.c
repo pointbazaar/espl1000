@@ -43,6 +43,7 @@ struct Call* makeCall(struct TokenList* tokens) {
 	}
 	
 	if(!list_expect(copy, LPARENS)){
+		free_variable(res->callable);
 		free(res->args);
 		free(res);
 		freeTokenListShallow(copy);
@@ -50,6 +51,7 @@ struct Call* makeCall(struct TokenList* tokens) {
 	}
 
 	if(list_size(copy) == 0){
+		free_variable(res->callable);
 		free(res->args);
 		free(res);
 		freeTokenListShallow(copy);

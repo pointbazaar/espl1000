@@ -98,6 +98,9 @@ struct Expr* makeExpr(struct TokenList* tokens) {
 	
 	struct Expr* res = fullTreeTransformation(ops, opsc, terms, termsc, 0, termsc-1);
 	
+	free(terms);
+	free(ops);
+	
 	return res;
 }
 
