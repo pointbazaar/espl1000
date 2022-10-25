@@ -12,8 +12,7 @@ void compile_tac_if_goto(struct RAT* rat, struct TAC* tac, FILE* fout){
 
     int reg = rat_get_register(rat, tac->arg1);
 
-    fprintf(fout, "mov r16, r%d\n", reg);
-    fprintf(fout, "cpi r16, 0\n");
-
+    fprintf(fout, "tst r%d\n", reg); //test if r%d is zero
+    
     fprintf(fout, "brne L%d\n", tac->label_index);
 }

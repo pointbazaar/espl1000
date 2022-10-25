@@ -15,23 +15,28 @@ void tac_ifstmt(struct TACBuffer* buffer, struct IfStmt* s){
 }
 
 static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s){
-    //t_neg_cond = expr
-    //t_neg_cond = !t_neg_cond
-    //if-goto t_neg_cond end
-    // if block
-    //end:
+    
+    //if-goto expr ltrue
+    //goto lend
+    // ltrue:
+    //  if block
+    //lend:
 
     uint32_t lend = make_label();
+    uint32_t ltrue = make_label();
 
     tac_expr(buffer, s->condition);
 
     //negate the condition
-    struct TAC* t_neg_cond = makeTACUnaryOp(tacbuffer_last_dest(buffer), tacbuffer_last_dest(buffer), TAC_OP_UNARY_NOT);
-    tacbuffer_append(buffer, t_neg_cond);
+    //struct TAC* t_neg_cond = makeTACUnaryOp(tacbuffer_last_dest(buffer), tacbuffer_last_dest(buffer), TAC_OP_UNARY_NOT);
+    //tacbuffer_append(buffer, t_neg_cond);
 
-    struct TAC* t_if_goto_end = makeTACIfGoto(tacbuffer_last_dest(buffer), lend);
+    struct TAC* t_if_goto_end = makeTACIfGoto(tacbuffer_last_dest(buffer), ltrue);
     tacbuffer_append(buffer, t_if_goto_end);
+    
+    tacbuffer_append(buffer, makeTACGoto(lend));
 
+	tacbuffer_append(buffer, makeTACLabel(ltrue));
     tac_stmtblock(buffer, s->block);
 
     tacbuffer_append(buffer, makeTACLabel(lend));

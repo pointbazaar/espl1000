@@ -9,6 +9,7 @@ void test_suite_tac_codegen();
 void test_gen_tac_assignstmt();
 void test_gen_tac_mdirect();
 void test_gen_tac_expr();
+void test_gen_tac_ifstmt();
 
 void status_test_codegen_tac(char* msg);
 
