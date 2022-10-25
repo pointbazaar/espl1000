@@ -12,14 +12,14 @@ jobs:
     - dist: jammy # 22.04
       arch: amd64 
     
-    - dist: jammy # 22.04
-      arch: arm64
+    #- dist: jammy # 22.04
+    #  arch: arm64
   
     - dist: focal # 20.04
       arch: amd64 #/usr/bin/ld: cannot find -lfl
     
-    - dist: focal # 20.04
-      arch: arm64
+    #- dist: focal # 20.04
+    #  arch: arm64
 
     #- dist: bionic # 18.04
     #  arch: amd64 #/usr/bin/ld: cannot find -lfl
