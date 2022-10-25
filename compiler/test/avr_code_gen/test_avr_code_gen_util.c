@@ -24,6 +24,16 @@
 
 vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
 
+	//create the file 
+	FILE* falibi = fopen(".file.dg", "w");
+	
+	if(falibi == NULL){
+        printf("error opening output file\n");
+        exit(1);
+    }
+    
+    fclose(falibi);
+
 	struct Flags* flags = makeFlagsSingleFile(".file.dg");
 
     struct Ctx* ctx = ctx_ctor(flags, makeST(false));
@@ -78,7 +88,6 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
     //emit label for the function
     fprintf(fout, "%s:\n", "main");
 
-
     const size_t stack_frame_size = 0; // = lvst_stack_frame_size_avr(ctx->tables->lvst)
 
     emit_create_stack_frame(stack_frame_size, fout);
@@ -101,6 +110,7 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
     char cmd[200];
     //we pipe stdout and stderr away 
     sprintf(cmd, "avra %s > /tmp/avra-stdout 2> /tmp/avra-stderr", flags_asm_filename(flags));
+    
     int status = system(cmd);
 
     int status2 = WEXITSTATUS(status);

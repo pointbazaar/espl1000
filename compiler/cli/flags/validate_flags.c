@@ -52,6 +52,8 @@ static void check_file_exists(char* filename){
 	//check if the file actually exists
 	struct stat mystat;
 	if(stat(filename, &mystat) == -1){
+		printf("error in check_file_exists");
+		fflush(stdout);
 		perror("Error: ");
 		//freeFlags(flags);
 		exit(1);

@@ -8,6 +8,7 @@ build: DIRS
 clean: 
 	rm -rf build/*
 	rm -f sd
+	rm -f .*.dg .*.asm .*.hex .*.obj .*.cof
 
 test: build/sd-tests
 	./build/sd-tests
