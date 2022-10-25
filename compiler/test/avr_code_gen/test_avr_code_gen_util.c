@@ -88,14 +88,6 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
     //emit label for the function
     fprintf(fout, "%s:\n", "main");
 
-    const size_t stack_frame_size = 0; // = lvst_stack_frame_size_avr(ctx->tables->lvst)
-
-    emit_create_stack_frame(stack_frame_size, fout);
-
-    //now load X as our base pointer for the stack frame
-    fprintf(fout, "in r28, SPL  ;Y is base ptr\n");
-    fprintf(fout, "in r29, SPH  ;Y is base ptr\n\n");
-
     emit_asm_avr_basic_block(root, ctx, fout);
     
     for(int i=0;i < nblocks; i++){

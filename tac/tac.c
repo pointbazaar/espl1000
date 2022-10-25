@@ -149,6 +149,13 @@ struct TAC* makeTACCall(uint32_t tmp, char* function_name){
     return t;
 }
 
+struct TAC* makeTACSetupStackframe(uint32_t frame_size){
+	struct TAC* t = makeTAC();
+    t->kind = TAC_SETUP_STACKFRAME;
+    t->const_value = frame_size;
+    return t;
+}
+
 struct TAC* makeTACNop(){
 	struct TAC* t = makeTAC();
     t->kind = TAC_NOP;

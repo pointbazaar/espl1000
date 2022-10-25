@@ -81,6 +81,8 @@ char* tac_tostring(struct TAC* t){
             sprintf(buffer,"return %s", t->dest); break;
         case TAC_BINARY_OP_IMMEDIATE:
             sprintf(buffer, "%s %4s %d", t->dest, opstr, t->const_value); break;
+		case TAC_SETUP_STACKFRAME:
+			sprintf(buffer, "setup_stackframe %d", t->const_value); break;
     }
 
     strcat(res, buffer);

@@ -50,6 +50,8 @@ enum TAC_KIND{
     TAC_CALL, //call to a label (string) without anything else
     TAC_PARAM,
     TAC_RETURN, //return, without arguments
+    
+    TAC_SETUP_STACKFRAME, //create space on stack for locals, load SP
 
     TAC_NOP,
     TAC_LABEL,
@@ -107,6 +109,8 @@ struct TAC* makeTACLoadConstAddr(char* dest, uint32_t addr);
 
 struct TAC* makeTACParam(char* dest);
 struct TAC* makeTACCall(uint32_t tmp, char* function_name);
+
+struct TAC* makeTACSetupStackframe(uint32_t frame_size);
 
 struct TAC* makeTACNop();
 #endif

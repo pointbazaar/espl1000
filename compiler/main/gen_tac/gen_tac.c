@@ -1,5 +1,6 @@
-
 #include "gen_tac.h"
+
+#include "util/ctx.h"
 #include "tac/tacbuffer.h"
 
 uint32_t label_loop_end;
@@ -17,9 +18,13 @@ int int_value_from_const(struct ConstValue* cv){
     return -1;
 }
 
-void tac_method(struct TACBuffer* buffer, struct Method* m){
+void tac_method(struct TACBuffer* buffer, struct Method* m, struct Ctx* ctx){
 
-    //tacbuffer_append(buffer, makeTACLabel2(m->decl->name), true);
+    //first the label of the function
+    tacbuffer_append(buffer, makeTACLabel2(m->decl->name));
+    
+    //setup the stack frame
+    tacbuffer_append(buffer, makeTACSetupStackframe(lvst_stack_frame_size_avr(ctx_tables(ctx)->lvst)));
 
     tac_stmtblock(buffer, m->block);
 }

@@ -15,23 +15,11 @@
 
 #include "../../cli/flags/flags.h"
 
-
-void emit_create_stack_frame(uint32_t stack_frame_size, FILE* fout){
-
-    //push onto the stack to create the stack frame
-    for(size_t k=0; k < stack_frame_size; k++){
-        fprintf(fout, "push r0  ;create frame\n"); //it is irrelevant what we push here
-    }
-    fprintf(fout, "\n");
-}
-
 void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FILE* fout){
+
     struct TACBuffer* buffer = tacbuffer_ctor();
 
-    //first the label of the function
-    tacbuffer_append(buffer, makeTACLabel2(m->decl->name));
-
-    tac_method(buffer, m);
+    tac_method(buffer, m, ctx);
 
     //print the TAC for debug
     if(flags_debug(ctx_flags(ctx)))
@@ -48,12 +36,6 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FI
     //populate ctx->st->lvst
     lvst_clear(ctx_tables(ctx)->lvst);
     lvst_fill(m, ctx_tables(ctx));
-
-    emit_create_stack_frame(lvst_stack_frame_size_avr(ctx_tables(ctx)->lvst), fout);
-
-    //now load X as our base pointer for the stack frame
-    fprintf(fout, "in r28, SPL  ;Y is base ptr\n");
-    fprintf(fout, "in r29, SPH  ;Y is base ptr\n\n");
 
     emit_asm_avr_basic_block(root, ctx, fout);
     

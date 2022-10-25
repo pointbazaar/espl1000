@@ -54,6 +54,7 @@ add_library("sd-base"
 		main/avr_code_gen/compile_ir/compile_tac_load_const_addr.c
 		main/avr_code_gen/compile_ir/compile_tac_store_const_addr.c
 		main/avr_code_gen/compile_ir/compile_tac_param.c
+		main/avr_code_gen/compile_ir/compile_tac_setup_stackframe.c
 
         main/basic_block/basicblock.c
 		main/basic_block/basicblock_printer.c
@@ -155,6 +156,7 @@ add_executable("sd-tests"
 	test/gen_tac/test_gen_tac_mdirect.c
 	test/gen_tac/test_gen_tac_expr.c
 	test/gen_tac/test_gen_tac_ifstmt.c
+	test/gen_tac/test_gen_tac_whilestmt.c
 )
 
 target_compile_options("sd-base"  PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")

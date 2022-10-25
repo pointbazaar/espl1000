@@ -2,6 +2,7 @@
 #define SMALLDRAGON_TOPLEVEL_GEN_TAC_H
 
 #include "tac/tac.h"
+#include "util/ctx.h"
 struct TACBuffer;
 
 extern uint32_t label_loop_end;
@@ -27,7 +28,7 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f);
 
 void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss);
 
-void tac_method(struct TACBuffer* buffer, struct Method* m);
+void tac_method(struct TACBuffer* buffer, struct Method* m, struct Ctx* ctx);
 
 void tac_stmtblock(struct TACBuffer* buffer, struct StmtBlock* block);
 
