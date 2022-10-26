@@ -33,9 +33,12 @@ struct Ctx {
 	
 	//for things like break, continue
 	//so they know which label to jump to
-	bool is_inside_loop;
-	uint32_t label_loop_end;
-	uint32_t label_loop_start;
+	
+	uint32_t loop_depth; //how many loops are we inside
+	
+	//TODO: remove limitation on max loop nesting
+	uint32_t label_loop_end[100];
+	uint32_t label_loop_start[100];
 };
 
 
@@ -46,7 +49,7 @@ struct Ctx* ctx_ctor(struct Flags* flags, struct ST* tables){
 	res->flags  = flags;
     res->tables = tables;
     
-    res->is_inside_loop = false;
+    res->loop_depth = 0;
 	
 	return res;
 }
@@ -69,38 +72,38 @@ struct ST* ctx_tables(struct Ctx* ctx){
 }
 
 void ctx_enter_loop(struct Ctx* ctx, uint32_t label_start, uint32_t label_end){
-	ctx->label_loop_start = label_start;
-	ctx->label_loop_end   = label_end;
-	ctx->is_inside_loop   = true;
+	ctx->label_loop_start[ctx->loop_depth] = label_start;
+	ctx->label_loop_end[ctx->loop_depth]   = label_end;
+	ctx->loop_depth++;
 }
 
 void ctx_exit_loop(struct Ctx* ctx){
-	if(!ctx->is_inside_loop){
+	if(ctx->loop_depth == 0){
 		printf("fatal error in ctx_exit_loop. Was not in a loop. Exiting");
 		fflush(stdout);
 		exit(1);
 	}
-	ctx->is_inside_loop = false;
+	ctx->loop_depth--;
 }
 
 uint32_t ctx_get_label_loop_start(struct Ctx* ctx){
 	
-	if(!ctx->is_inside_loop){
+	if(ctx->loop_depth == 0){
 		printf("fatal error in ctx_get_label_loop_start. Was not in a loop. Exiting");
 		fflush(stdout);
 		exit(1);
 	}
-	return ctx->label_loop_start;
+	return ctx->label_loop_start[ctx->loop_depth-1];
 }
 
 uint32_t ctx_get_label_loop_end(struct Ctx* ctx){
 	
-	if(!ctx->is_inside_loop){
+	if(ctx->loop_depth == 0){
 		printf("fatal error in ctx_get_label_loop_end. Was not in a loop. Exiting");
 		fflush(stdout);
 		exit(1);
 	}
-	return ctx->label_loop_end;
+	return ctx->label_loop_end[ctx->loop_depth-1];
 }
 
 

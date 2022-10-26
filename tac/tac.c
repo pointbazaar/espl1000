@@ -95,6 +95,24 @@ struct TAC* makeTACBinOp(char* dest, enum TAC_OP op, char* src){
     t->op = op;
     sprintf(t->arg1, "%s", src);
     
+    switch(op){
+		case TAC_OP_ADD:
+		case TAC_OP_SUB:
+		case TAC_OP_MUL:
+		case TAC_OP_XOR:
+		case TAC_OP_AND:
+		case TAC_OP_OR:
+		case TAC_OP_CMP_EQ:
+		case TAC_OP_CMP_NEQ:
+		case TAC_OP_CMP_LT:
+		case TAC_OP_CMP_GE:
+			break;
+		default:
+			printf("fatal error in makeTACBinOp.Exiting");
+			fflush(stdout);
+			exit(1);
+	}
+    
     return t;
 }
 
@@ -104,6 +122,23 @@ struct TAC* makeTACBinOpImmediate(char* tmp, enum TAC_OP op, int32_t immediate){
     sprintf(t->dest, "%s", tmp);
     t->op = op;
     t->const_value = immediate;
+    
+    switch(op){
+		case TAC_OP_ADD:
+		case TAC_OP_SUB:
+		case TAC_OP_MUL:
+		case TAC_OP_XOR:
+		case TAC_OP_OR:
+		case TAC_OP_AND:
+		case TAC_OP_SHIFT_LEFT:
+		case TAC_OP_SHIFT_RIGHT:
+			break;
+		default:
+			printf("fatal error in makeTACBinOpImmediate.Exiting");
+			fflush(stdout);
+			exit(1);
+	}
+    
     return t;
 }
 
@@ -113,6 +148,18 @@ struct TAC* makeTACUnaryOp(char* dest, char* src, enum TAC_OP op){
     sprintf(t->dest, "%s", dest);
     sprintf(t->arg1, "%s", src);
     t->op = op;
+    
+    switch(op){
+		case TAC_OP_UNARY_NOT:
+		case TAC_OP_UNARY_MINUS:
+		case TAC_OP_UNARY_BITWISE_NEG:
+			break;
+		default:
+			printf("fatal error in makeTACUnaryOp.Exiting");
+			fflush(stdout);
+			exit(1);
+	}
+    
     return t;
 }
 
