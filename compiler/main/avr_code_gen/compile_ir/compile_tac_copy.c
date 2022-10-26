@@ -21,7 +21,7 @@ void compile_tac_copy(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, FILE* f
 			if(offset == 0)
 				fprintf(fout, "ld r%d, Y\n", index);
 			else
-				fprintf(fout, "ld r%d, Y+%d\n", index, offset);
+				fprintf(fout, "ldd r%d, Y+%d\n", index, offset);
 		}
         
 		rat_occupy_register(rat, index, tac->arg1);
