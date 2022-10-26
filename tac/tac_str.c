@@ -56,8 +56,14 @@ char* tac_tostring(struct TAC* t){
             sprintf(buffer, "if-goto %s L%d", t->arg1, t->label_index); break;
         case TAC_CONST_VALUE:
             sprintf(buffer,"%s = %d",t->dest, t->const_value); break;
+            
         case TAC_COPY:
             sprintf(buffer,"%s = %s", t->dest, t->arg1); break;
+		case TAC_LOAD_LOCAL:
+            sprintf(buffer,"load %s = %s", t->dest, t->arg1); break;
+		case TAC_STORE_LOCAL:
+            sprintf(buffer,"store %s = %s", t->dest, t->arg1); break;
+            
         case TAC_LOAD_CONST_ADDR:
             sprintf(buffer,"%s = [%d]", t->dest, t->const_value); break;
         case TAC_STORE_CONST_ADDR:

@@ -174,7 +174,9 @@ size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name){
             return line->stack_frame_offset_avr;
     }
 
-    printf("fatal error in lvst_stack_frame_offset_avr");
+    printf("fatal error in lvst_stack_frame_offset_avr.");
+    printf("did not find local: %s", local_var_name);
+    fflush(stdout);
     exit(1);
     return 0;
 }

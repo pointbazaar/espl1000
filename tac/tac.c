@@ -70,11 +70,27 @@ struct TAC* makeTACIfGoto(char* tmp_condition, uint32_t label_destination){
     return t;
 }
 
-struct TAC* makeTACCopy(char* dest, char* src){
+struct TAC* makeTACCopy(uint32_t tdest, uint32_t tsrc){
     struct TAC* t = makeTAC();
     t->kind = TAC_COPY;
-    sprintf(t->dest, "%s", dest);
-    sprintf(t->arg1, "%s", src);
+    sprintf(t->dest, "t%d", tdest);
+    sprintf(t->arg1, "t%d", tsrc);
+    return t;
+}
+
+struct TAC* makeTACLoadLocal(uint32_t tmp, char* local_name){
+	struct TAC* t = makeTAC();
+    t->kind = TAC_LOAD_LOCAL;
+    sprintf(t->dest, "t%d", tmp);
+    sprintf(t->arg1, "%s", local_name);
+    return t;
+}
+
+struct TAC* makeTACStoreLocal(char* local_name, uint32_t tmp){
+	struct TAC* t = makeTAC();
+    t->kind = TAC_STORE_LOCAL;
+    sprintf(t->dest, "%s", local_name);
+    sprintf(t->arg1, "t%d", tmp);
     return t;
 }
 

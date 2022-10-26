@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "tac/tac.h"
 #include "tac/tacbuffer.h"
@@ -45,7 +46,7 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx){
 
     tac_expr(buffer, f->range->start);
     char* t1 = tacbuffer_last_dest(buffer);
-    tacbuffer_append(buffer, makeTACCopy(f->index_name, t1));
+    tacbuffer_append(buffer, makeTACStoreLocal(f->index_name, atoi(t1+1)));
     
     //L0:
     tacbuffer_append(buffer, makeTACLabel(l0));
@@ -53,8 +54,8 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx){
     tac_expr(buffer, f->range->end);
     char* t2 = tacbuffer_last_dest(buffer);
 
-    tacbuffer_append(buffer, makeTACCopy(t3str, f->index_name));
-    tacbuffer_append(buffer, makeTACCopy(t4str, t2));
+    tacbuffer_append(buffer, makeTACLoadLocal(t3, f->index_name));
+    tacbuffer_append(buffer, makeTACCopy(t4, atoi(t2+1)));
 
     tacbuffer_append(buffer, makeTACBinOp(t4str, TAC_OP_CMP_GE, t3str));
 
@@ -69,9 +70,9 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx){
     tac_stmtblock(buffer, f->block, ctx);
 
     // t3++
-    tacbuffer_append(buffer, makeTACCopy(t3str, f->index_name));
+    tacbuffer_append(buffer, makeTACLoadLocal(t3, f->index_name));
     tacbuffer_append(buffer, makeTACBinOpImmediate(t3str, TAC_OP_ADD, 1));
-	tacbuffer_append(buffer, makeTACCopy(f->index_name, t3str));
+	tacbuffer_append(buffer, makeTACStoreLocal(f->index_name, t3));
 
     tacbuffer_append(buffer, makeTACGoto(l0));
 

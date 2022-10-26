@@ -7,7 +7,11 @@ struct Ctx;
 
 void compile_tac_return(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, FILE* fout);
 void compile_tac_const_value(struct RAT* rat, struct TAC* tac, FILE* fout);
-void compile_tac_copy(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, FILE* fout);
+
+void compile_tac_copy(struct RAT* rat, struct TAC* tac, FILE* fout);
+void compile_tac_load_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, FILE* fout);
+void compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, FILE* fout);
+
 void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout);
 void compile_tac_goto(struct TAC* tac, FILE* fout);
 void compile_tac_nop(FILE* fout);
