@@ -15,9 +15,92 @@
 
 #include "test_compile_tac.h"
 
+static void case_true();
+static void case_false();
+static void case_mixed();
+
 void test_compile_tac_if_goto(){
 	
-	status_test_codegen("TAC_IF_GOTO");
+	case_true();
+	case_false();
+	case_mixed();
+}
+
+static void case_true(){
+	
+	status_test_codegen("TAC_IF_GOTO true");
+	
+	const int8_t value      = rand()%0xff;
+	const uint16_t address1 = 0x100+rand()%30;
+	
+	//labels
+	const uint16_t l1   = 1;
+	const uint16_t lend = 2;
+	
+    struct TACBuffer* buffer = tacbuffer_ctor();
+    
+    tacbuffer_append(buffer, makeTACConst(1, 1));
+    tacbuffer_append(buffer, makeTACIfGoto("t1", l1));
+	tacbuffer_append(buffer, makeTACGoto(lend));
+	
+	tacbuffer_append(buffer, makeTACLabel(l1));
+	tacbuffer_append(buffer, makeTACConst(0, value));
+	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, "t0"));
+	
+	tacbuffer_append(buffer, makeTACLabel(lend));
+	tacbuffer_append(buffer, makeTACConst(0, 0));
+    tacbuffer_append(buffer, makeTACReturn("t0"));
+
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+
+    for(int i=0;i < 30; i++){
+        vmcu_system_step(system);
+	}
+	
+	assert(vmcu_system_read_data(system, address1) == value);
+	
+	vmcu_system_dtor(system);
+}
+
+static void case_false(){
+	
+	status_test_codegen("TAC_IF_GOTO false");
+	
+	const int8_t value      = rand()%0xff;
+	const uint16_t address1 = 0x100+rand()%30;
+	
+	//labels
+	const uint16_t l1   = 1;
+	const uint16_t lend = 2;
+	
+    struct TACBuffer* buffer = tacbuffer_ctor();
+    
+    tacbuffer_append(buffer, makeTACConst(1, 0));
+    tacbuffer_append(buffer, makeTACIfGoto("t1", l1));
+	tacbuffer_append(buffer, makeTACGoto(lend));
+	
+	tacbuffer_append(buffer, makeTACLabel(l1));
+	tacbuffer_append(buffer, makeTACConst(0, value));
+	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, "t0"));
+	
+	tacbuffer_append(buffer, makeTACLabel(lend));
+	tacbuffer_append(buffer, makeTACConst(0, 0));
+    tacbuffer_append(buffer, makeTACReturn("t0"));
+
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+
+    for(int i=0;i < 30; i++){
+        vmcu_system_step(system);
+	}
+	
+	assert(vmcu_system_read_data(system, address1) != value);
+	
+	vmcu_system_dtor(system);
+}
+
+static void case_mixed(){
+	
+	status_test_codegen("TAC_IF_GOTO mixed");
 	
 	//we need to test 2 cases
 	// - condition true, we branch
@@ -47,7 +130,7 @@ void test_compile_tac_if_goto(){
 	tacbuffer_append(buffer, makeTACIfGoto("t2", lend)); //should not branch
 	tacbuffer_append(buffer, makeTACConst(0, value));
 	tacbuffer_append(buffer, makeTACStoreConstAddr(address2, "t0"));
-	tacbuffer_append(buffer, makeTACGoto(lend));//DEBUG
+	tacbuffer_append(buffer, makeTACGoto(lend));
 	
 	tacbuffer_append(buffer, makeTACLabel(lend));
 	tacbuffer_append(buffer, makeTACConst(0, value));
