@@ -15,46 +15,88 @@
 
 #include "test_compile_tac.h"
 
+static void case_minus();
+static void case_not();
+static void case_bitwise_neg();
 
 void test_compile_tac_unary_op(){
 	
-	status_test_codegen("TAC_UNARY_OP");
+	case_minus();
+	case_not();
+	case_bitwise_neg();
+}
+
+static void case_minus(){
+	
+	status_test_codegen("TAC_UNARY_OP -");
     
 	const int8_t start = rand()%0xff;
 	
     struct TACBuffer* buffer = tacbuffer_ctor();
     
 	tacbuffer_append(buffer, makeTACConst(0, start));
-	
 	tacbuffer_append(buffer, makeTACUnaryOp("t1","t0",TAC_OP_UNARY_MINUS));
-    tacbuffer_append(buffer, makeTACUnaryOp("t2","t0",TAC_OP_UNARY_NOT));
-    tacbuffer_append(buffer, makeTACUnaryOp("t3","t0",TAC_OP_UNARY_BITWISE_NEG));
-    
-    tacbuffer_append(buffer, makeTACReturn("t0"));
+    tacbuffer_append(buffer, makeTACReturn("t1"));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
     
-    bool has1 = false;
-	bool has2 = false;
-	bool has3 = false;
-
-    for(int i=0;i < 16; i++){
-		
+    for(int i=0;i < 10; i++){
         vmcu_system_step(system);
-        
-        for(int k = 0; k < 32; k++){
-			
-			const int8_t value = vmcu_system_read_gpr(system, k);
-			
-			if(value == -start) has1 = true;
-			if(value == !start) has2 = true;
-			if(value == ~start) has3 = true;
-		}
 	}
 	
-	assert(has1);
-	assert(has2);
-	assert(has3);
+	const int8_t r0 = vmcu_system_read_gpr(system, 0);
+	
+	assert(r0 == -start);
+	
+	vmcu_system_dtor(system);
+}
+
+static void case_not(){
+	
+	status_test_codegen("TAC_UNARY_OP !");
+    
+	const int8_t start = 0xff; //start is true value
+	
+    struct TACBuffer* buffer = tacbuffer_ctor();
+    
+	tacbuffer_append(buffer, makeTACConst(0, start));
+	tacbuffer_append(buffer, makeTACUnaryOp("t1","t0",TAC_OP_UNARY_NOT));
+    tacbuffer_append(buffer, makeTACReturn("t1"));
+
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    
+    for(int i=0;i < 10; i++){
+        vmcu_system_step(system);
+	}
+	
+	const int8_t r0 = vmcu_system_read_gpr(system, 0);
+	
+	assert(r0 == 0);
+	
+	vmcu_system_dtor(system);
+}
+
+static void case_bitwise_neg(){
+	
+	status_test_codegen("TAC_UNARY_OP ~");
+    
+	const int8_t start = rand()%0xff;
+	
+    struct TACBuffer* buffer = tacbuffer_ctor();
+    
+	tacbuffer_append(buffer, makeTACConst(0, start));
+	tacbuffer_append(buffer, makeTACUnaryOp("t1","t0",TAC_OP_UNARY_BITWISE_NEG));
+    tacbuffer_append(buffer, makeTACReturn("t1"));
+
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    
+    for(int i=0;i < 10; i++){
+        vmcu_system_step(system);
+	}
+	
+	const int8_t r0 = vmcu_system_read_gpr(system, 0);
+	
+	assert(r0 == ~start);
 	
 	vmcu_system_dtor(system);
 }
