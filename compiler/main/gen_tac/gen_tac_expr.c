@@ -121,6 +121,9 @@ static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr*
     
     bool reverse_operands = false;
     
+    //TODO: create loop to shift left something by a value in some register
+    
+    
     enum TAC_OP op = op_to_tac_op(expr->op, &reverse_operands);
     
     struct TAC* t;
