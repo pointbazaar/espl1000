@@ -18,12 +18,6 @@ void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a){
         printf("assignments with indices currently unsupported on avr_code_gen\n");
         exit(1);
     }
-
-	/*
-    struct TAC* t = makeTACCopy(
-            a->var->simple_var->name,
-            tacbuffer_last_dest(buffer)
-    );*/
     
     struct TAC* t = makeTACStoreLocal(a->var->simple_var->name,
             atoi(tacbuffer_last_dest(buffer)+1));

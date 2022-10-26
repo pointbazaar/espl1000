@@ -27,10 +27,6 @@ static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s, struc
 
     tac_expr(buffer, s->condition);
 
-    //negate the condition
-    //struct TAC* t_neg_cond = makeTACUnaryOp(tacbuffer_last_dest(buffer), tacbuffer_last_dest(buffer), TAC_OP_UNARY_NOT);
-    //tacbuffer_append(buffer, t_neg_cond);
-
     struct TAC* t_if_goto_end = makeTACIfGoto(tacbuffer_last_dest(buffer), ltrue);
     tacbuffer_append(buffer, t_if_goto_end);
     
