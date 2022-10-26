@@ -31,7 +31,7 @@ void compile_tac_binary_op_immediate(struct RAT* rat, struct TAC* tac, FILE* fou
             break;
 
         case TAC_OP_AND:
-            fprintf(fout, "andi r%d, $%d\n", dest, immediate);
+            fprintf(fout, "andi r%d, %d\n", dest, immediate);
             break;
 
         case TAC_OP_OR:
@@ -64,7 +64,7 @@ static void case_tac_op_add(FILE* fout, int dest, int32_t immediate){
 	}else{
 		//here we negate the constant for subi
 		//https://sites.google.com/site/avrasmintro/home/basic-arithmetic
-		fprintf(fout, "subi r%d, $%d\n", dest, -immediate);
+		fprintf(fout, "subi r%d, %d\n", dest, -immediate);
 	}
 }
 
@@ -74,5 +74,5 @@ static void case_tac_op_sub(FILE* fout, int dest, int32_t immediate){
 	if(immediate == 1)
 		fprintf(fout, "dec r%d\n", dest);
 	else
-		fprintf(fout, "subi r%d, $%d\n", dest, immediate);
+		fprintf(fout, "subi r%d, %d\n", dest, immediate);
 }

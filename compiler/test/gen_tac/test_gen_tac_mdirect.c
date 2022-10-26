@@ -9,8 +9,8 @@ void test_gen_tac_mdirect(){
 		
 	status_test_codegen_tac("MDirect");
 	
-	const uint16_t address = 0x40+rand()%100;
-	const int8_t value     = rand()%0xff;
+	const uint16_t address = 0x100+rand()%100;
+	const int8_t value     = rand()%100;
 	
 	char snippet[200];
 	sprintf(snippet, "fn main() -> int { int x = [%d]; return 0; }", address);
@@ -20,9 +20,9 @@ void test_gen_tac_mdirect(){
 
 	//prepare a value in the location
 	vmcu_system_write_data(system, address, value);
-
+	
 	//step it a few times
-	for(int i=0; i < 20; i++){
+	for(int i=0; i < 10; i++){
 		vmcu_system_step(system);
 	}
 	

@@ -19,7 +19,7 @@ void test_compile_tac_store_const_addr(){
 	
 	status_test_codegen("TAC_STORE_CONST_ADDR");
 	
-	const uint8_t addr = 0x40+rand()%0xf;
+	const uint16_t addr = 0x100+rand()%30;
 	const int8_t fixed_value = rand()%0xff;
 
     struct TACBuffer* buffer = tacbuffer_ctor();

@@ -19,7 +19,7 @@ void test_compile_tac_load_const_addr(){
 	
 	status_test_codegen("TAC_LOAD_CONST_ADDR");
 	
-	const uint8_t addr = 0x40+rand()%0xf;
+	const uint16_t addr = 0x100+rand()%30;
 	const int8_t fixed_value = rand()%0xff;
 
     struct TACBuffer* buffer = tacbuffer_ctor();
@@ -41,15 +41,9 @@ void test_compile_tac_load_const_addr(){
         vmcu_system_step(system);
 	}
         
-	//check that the value was read to any register
-	bool found = false;
+	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
-	for(int i = 0; i < 32; i++){
-		
-		if(vmcu_system_read_gpr(system, i) == fixed_value) found = true;
-	}
-	
-	assert(found);
+	assert(r0 == fixed_value);
 	
 	vmcu_system_dtor(system);
 }

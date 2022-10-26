@@ -24,13 +24,13 @@ void test_compile_tac_if_goto(){
 	// - condition false, we do not branch
 	//we check by writing a fixed value to 2 known addresses in data space
 	
-	const uint8_t value = rand()%0xff;
-	const uint16_t address1 = 0x46;
-	const uint16_t address2 = 0x47;
+	const int8_t value = rand()%0xff;
+	const uint16_t address1 = 0x100+rand()%30;
+	const uint16_t address2 = address1 + 1;
 	
 	//labels
-	const uint16_t l1 = rand()%0xff;
-	const uint16_t lend = l1+2;
+	const uint16_t l1   = 1;
+	const uint16_t lend = 2;
 	
     struct TACBuffer* buffer = tacbuffer_ctor();
     
@@ -47,6 +47,7 @@ void test_compile_tac_if_goto(){
 	tacbuffer_append(buffer, makeTACIfGoto("t2", lend)); //should not branch
 	tacbuffer_append(buffer, makeTACConst(0, value));
 	tacbuffer_append(buffer, makeTACStoreConstAddr(address2, "t0"));
+	tacbuffer_append(buffer, makeTACGoto(lend));//DEBUG
 	
 	tacbuffer_append(buffer, makeTACLabel(lend));
 	tacbuffer_append(buffer, makeTACConst(0, value));
@@ -54,7 +55,7 @@ void test_compile_tac_if_goto(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 
-    for(int i=0;i < 20; i++){
+    for(int i=0;i < 30; i++){
         vmcu_system_step(system);
 	}
 	

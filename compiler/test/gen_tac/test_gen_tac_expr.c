@@ -198,7 +198,7 @@ static void test_gen_tac_expr_shift_right(){
 	
 	status_test_codegen_tac("Expr >>");
 	
-	const int8_t value1 = rand()%0xff;
+	const int8_t value1 = rand()%127;
 	const int8_t value2 = 1+rand()%4;
 	
 	char snippet[200];

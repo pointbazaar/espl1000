@@ -24,7 +24,7 @@ static void test_gen_tac_ifstmt_no_else_true(){
 	
 	status_test_codegen_tac("IfStmt (no else) true");
 	
-	const int8_t value1 = rand()%100;
+	const int8_t value1 = rand()%50;
 	const int8_t value2 = value1 + rand()%50;
 	const int8_t value_true = rand()%0xff;
 	const int8_t value_false = rand()%0xff;
@@ -52,7 +52,7 @@ static void test_gen_tac_ifstmt_no_else_false(){
 	
 	status_test_codegen_tac("IfStmt (no else) false");
 	
-	const int8_t value1 = rand()%100;
+	const int8_t value1 = rand()%50;
 	const int8_t value2 = value1 + rand()%50;
 	const int8_t value_true = rand()%0xff;
 	const int8_t value_false = rand()%0xff;
@@ -80,7 +80,7 @@ static void test_gen_tac_ifstmt_with_else_true(){
 	
 	status_test_codegen_tac("IfStmt (with else) true");
 	
-	const int8_t value1 = rand()%100;
+	const int8_t value1 = rand()%50;
 	const int8_t value2 = value1 + rand()%50;
 	const int8_t value_true = rand()%0xff;
 	const int8_t value_false = rand()%0xff;
@@ -108,7 +108,7 @@ static void test_gen_tac_ifstmt_with_else_false(){
 	
 	status_test_codegen_tac("IfStmt (with else) false");
 	
-	const int8_t value1 = rand()%100;
+	const int8_t value1 = rand()%50;
 	const int8_t value2 = value1 + rand()%50;
 	const int8_t value_true = rand()%0xff;
 	const int8_t value_false = rand()%0xff;

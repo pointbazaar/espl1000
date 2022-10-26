@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "typechecker/test_typechecker.h"
 #include "typeinference/test_typeinference.h"
@@ -13,6 +15,10 @@ static void status_test_transpiler(char* msg){
 int main(){
 
 	status_test_transpiler("Running tests for smalldragon/compiler:");
+	
+	//seed the RNG for the randomized tests
+	time_t t;
+	srand((unsigned) time(&t));
 
 
 	status_test_transpiler("Typeinference");
