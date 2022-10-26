@@ -8,9 +8,11 @@ void test_suite_tac_codegen(){
 	test_gen_tac_mdirect();
 	test_gen_tac_assignstmt();
 	test_gen_tac_expr();
+	
 	test_gen_tac_ifstmt();
 	test_gen_tac_whilestmt();
 	test_gen_tac_forstmt();
+	test_gen_tac_switchstmt();
 }
 
 void status_test_codegen_tac(char* msg){
