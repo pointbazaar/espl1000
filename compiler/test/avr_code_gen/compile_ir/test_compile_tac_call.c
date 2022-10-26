@@ -36,7 +36,7 @@ static void case_recurse(){
     
     tacbuffer_append(buffer, makeTACLabel2("main"));
     tacbuffer_append(buffer, makeTACConst(0, value));
-    tacbuffer_append(buffer, makeTACCall(0, "main"));
+    tacbuffer_append(buffer, makeTACCall(1, "main"));
     tacbuffer_append(buffer, makeTACReturn("t0"));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);

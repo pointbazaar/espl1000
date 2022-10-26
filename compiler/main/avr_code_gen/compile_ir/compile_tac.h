@@ -12,7 +12,7 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout);
 void compile_tac_goto(struct TAC* tac, FILE* fout);
 void compile_tac_nop(FILE* fout);
 void compile_tac_if_goto(struct RAT* rat, struct TAC* tac, FILE* fout);
-void compile_tac_call(struct TAC* tac, FILE* fout);
+void compile_tac_call(struct RAT* rat, struct TAC* tac, FILE* fout);
 void compile_tac_label(struct TAC* tac, FILE* fout);
 void compile_tac_unary_op(struct RAT* rat, struct TAC* tac, FILE* fout);
 void compile_tac_param(struct RAT* rat, struct TAC* tac, FILE* fout);

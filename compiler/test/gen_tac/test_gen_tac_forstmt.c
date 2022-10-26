@@ -97,7 +97,7 @@ static void test_gen_tac_forstmt_n_rounds(){
 	status_test_codegen_tac("ForStmt n rounds");
 	
 	const int8_t initial = rand()%30;
-	const int8_t bound = 1+rand()%7;
+	const int8_t bound = 1+rand()%5;
 	
 	char snippet[200];
 	const char* template = "fn main() -> int { int x = %d; for i in 1 .. %d { x = x + 1; } return x; }";

@@ -24,7 +24,7 @@ void emit_asm_avr_single_tac(struct RAT* rat, struct TAC *tac, struct Ctx* ctx, 
         case TAC_IF_GOTO:     compile_tac_if_goto(rat, tac, fout); break;
         case TAC_COPY:        compile_tac_copy(rat, tac, ctx, fout); break;
         case TAC_CONST_VALUE: compile_tac_const_value(rat, tac, fout); break;
-        case TAC_CALL:        compile_tac_call(tac, fout); break;
+        case TAC_CALL:        compile_tac_call(rat, tac, fout); break;
         case TAC_PARAM:		  compile_tac_param(rat, tac, fout); break;
         case TAC_RETURN:      compile_tac_return(rat, tac, ctx, fout); break;
         case TAC_BINARY_OP_IMMEDIATE: compile_tac_binary_op_immediate(rat, tac, fout); break;

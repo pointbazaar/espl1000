@@ -23,35 +23,28 @@ fn main () ~> int {
 
 
 	for i in 0 .. 1 {
-		
 	}
 
 	a = 0;
-	b = 3.14159; //...
 
 	while a < 4 {
 
 		a = a + 1;
-		b = b - 0.1;
-		break;
 	}
 
 	if a == 4 {
 		
-		return -3;
+		return 2;
 	}
 
 	switch a {
 		
-		case -1 {}
-
-		case 0
 		case 1 {
-			a = 2;
+			
 		}
 	}
 
-	return subr();
+	return 3;
 }
 
 fn subr () -> int {
