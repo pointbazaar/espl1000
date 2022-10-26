@@ -94,8 +94,8 @@ static void test_compile_tac_binary_op_and(){
 	
 	status_test_codegen("TAC_BINARY_OP &");
 	
-	int8_t start = rand()%100;
-	int8_t change = rand()%40;
+	int8_t start = rand()%0xff;
+	int8_t change = rand()%0xff;
 	int8_t expected = start & change;
 	
     struct TACBuffer* buffer = tacbuffer_ctor();
@@ -121,9 +121,61 @@ static void test_compile_tac_binary_op_and(){
 }
 
 static void test_compile_tac_binary_op_or(){
-	//TODO
+	
+	status_test_codegen("TAC_BINARY_OP |");
+	
+	int8_t start = rand()%0xff;
+	int8_t change = rand()%0xff;
+	int8_t expected = start | change;
+	
+    struct TACBuffer* buffer = tacbuffer_ctor();
+    
+	tacbuffer_append(buffer, makeTACConst(0, start));
+	tacbuffer_append(buffer, makeTACConst(1, change));
+	tacbuffer_append(buffer, makeTACBinOp("t0", TAC_OP_OR, "t1"));
+    
+    tacbuffer_append(buffer, makeTACReturn("t0"));
+
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+
+    for(int i=0;i < 20; i++){
+		
+        vmcu_system_step(system);
+	}
+	
+	int8_t r0 = vmcu_system_read_gpr(system, 0);
+	
+	assert(r0 == expected);
+	
+	vmcu_system_dtor(system);
 }
 
 static void test_compile_tac_binary_op_xor(){
-	//TODO
+	
+	status_test_codegen("TAC_BINARY_OP ^");
+	
+	int8_t start = rand()%0xff;
+	int8_t change = rand()%0xff;
+	int8_t expected = start ^ change;
+	
+    struct TACBuffer* buffer = tacbuffer_ctor();
+    
+	tacbuffer_append(buffer, makeTACConst(0, start));
+	tacbuffer_append(buffer, makeTACConst(1, change));
+	tacbuffer_append(buffer, makeTACBinOp("t0", TAC_OP_XOR, "t1"));
+    
+    tacbuffer_append(buffer, makeTACReturn("t0"));
+
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+
+    for(int i=0;i < 20; i++){
+		
+        vmcu_system_step(system);
+	}
+	
+	int8_t r0 = vmcu_system_read_gpr(system, 0);
+	
+	assert(r0 == expected);
+	
+	vmcu_system_dtor(system);
 }
