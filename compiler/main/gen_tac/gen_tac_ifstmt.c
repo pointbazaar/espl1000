@@ -3,18 +3,18 @@
 #include "tac/tacbuffer.h"
 #include "gen_tac.h"
 
-static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s);
-static void tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s);
+static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx);
+static void tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx);
 
-void tac_ifstmt(struct TACBuffer* buffer, struct IfStmt* s){
+void tac_ifstmt(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx){
 
     if(s->else_block == NULL)
-        tac_ifstmt_1_block(buffer, s);
+        tac_ifstmt_1_block(buffer, s, ctx);
     else
-        tac_ifstmt_2_block(buffer, s);
+        tac_ifstmt_2_block(buffer, s, ctx);
 }
 
-static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s){
+static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx){
     
     //if-goto expr ltrue
     //goto lend
@@ -37,12 +37,12 @@ static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s){
     tacbuffer_append(buffer, makeTACGoto(lend));
 
 	tacbuffer_append(buffer, makeTACLabel(ltrue));
-    tac_stmtblock(buffer, s->block);
+    tac_stmtblock(buffer, s->block, ctx);
 
     tacbuffer_append(buffer, makeTACLabel(lend));
 }
 
-static void tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s){
+static void tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx){
     //t1 = expr
     //if-goto t1 L1
     //goto L2:
@@ -66,13 +66,13 @@ static void tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s){
 
     tacbuffer_append(buffer, makeTACLabel(l1));
 
-    tac_stmtblock(buffer, s->block);
+    tac_stmtblock(buffer, s->block, ctx);
 
     tacbuffer_append(buffer, makeTACGoto(lend));
 
     tacbuffer_append(buffer, makeTACLabel(l2));
 
-    tac_stmtblock(buffer, s->else_block);
+    tac_stmtblock(buffer, s->else_block, ctx);
 
     tacbuffer_append(buffer, makeTACLabel(lend));
 }

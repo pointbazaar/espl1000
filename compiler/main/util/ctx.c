@@ -29,6 +29,13 @@ struct Ctx {
 	
 	//symbol tables
 	struct ST* tables;
+	
+	
+	//for things like break, continue
+	//so they know which label to jump to
+	bool is_inside_loop;
+	uint32_t label_loop_end;
+	uint32_t label_loop_start;
 };
 
 
@@ -38,6 +45,8 @@ struct Ctx* ctx_ctor(struct Flags* flags, struct ST* tables){
 	
 	res->flags  = flags;
     res->tables = tables;
+    
+    res->is_inside_loop = false;
 	
 	return res;
 }
@@ -57,6 +66,41 @@ struct Flags* ctx_flags(struct Ctx* ctx){
 
 struct ST* ctx_tables(struct Ctx* ctx){
 	return ctx->tables;
+}
+
+void ctx_enter_loop(struct Ctx* ctx, uint32_t label_start, uint32_t label_end){
+	ctx->label_loop_start = label_start;
+	ctx->label_loop_end   = label_end;
+	ctx->is_inside_loop   = true;
+}
+
+void ctx_exit_loop(struct Ctx* ctx){
+	if(!ctx->is_inside_loop){
+		printf("fatal error in ctx_exit_loop. Was not in a loop. Exiting");
+		fflush(stdout);
+		exit(1);
+	}
+	ctx->is_inside_loop = false;
+}
+
+uint32_t ctx_get_label_loop_start(struct Ctx* ctx){
+	
+	if(!ctx->is_inside_loop){
+		printf("fatal error in ctx_get_label_loop_start. Was not in a loop. Exiting");
+		fflush(stdout);
+		exit(1);
+	}
+	return ctx->label_loop_start;
+}
+
+uint32_t ctx_get_label_loop_end(struct Ctx* ctx){
+	
+	if(!ctx->is_inside_loop){
+		printf("fatal error in ctx_get_label_loop_end. Was not in a loop. Exiting");
+		fflush(stdout);
+		exit(1);
+	}
+	return ctx->label_loop_end;
 }
 
 

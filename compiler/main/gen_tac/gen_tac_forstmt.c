@@ -5,7 +5,7 @@
 
 #include "gen_tac.h"
 
-void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f){
+void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx){
 
     //t1 = f->range->start
     //f->index_name = t1
@@ -31,6 +31,8 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f){
     uint32_t l0 = make_label();
     uint32_t l1 = make_label();
     uint32_t lend = make_label();
+    
+    ctx_enter_loop(ctx, l0, lend);
     
     uint32_t t3 = make_temp();
     char t3str[10];
@@ -64,7 +66,7 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f){
 	//L1:
     tacbuffer_append(buffer, makeTACLabel(l1));
 
-    tac_stmtblock(buffer, f->block);
+    tac_stmtblock(buffer, f->block, ctx);
 
     // t3++
     tacbuffer_append(buffer, makeTACCopy(t3str, f->index_name));
@@ -74,4 +76,6 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f){
     tacbuffer_append(buffer, makeTACGoto(l0));
 
     tacbuffer_append(buffer, makeTACLabel(lend));
+    
+    ctx_exit_loop(ctx);
 }

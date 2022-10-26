@@ -6,7 +6,7 @@
 
 #include "gen_tac.h"
 
-void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss){
+void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss, struct Ctx* ctx){
 
     tac_expr(buffer, ss->expr);
 
@@ -50,7 +50,7 @@ void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss){
         tacbuffer_append(buffer, makeTACLabel(labels_cases[i]));
         //... code for that case
         if(cs->block != NULL)
-            tac_stmtblock(buffer, cs->block);
+            tac_stmtblock(buffer, cs->block, ctx);
 
         if(cs->block == NULL) {
             //fallthrough to next case
