@@ -67,9 +67,6 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
     );
 
     emit_setup_stack_pointer_avr(fout);
-    emit_call_main_endloop(fout);
-
-    //create basic blocks from this TAC
 
 	int nblocks;
     struct BasicBlock** graph = basicblock_create_graph(buffer, "main", &nblocks);
@@ -80,13 +77,6 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
         printf("[Error] could not create BasicBlock.Exiting.\n");
         exit(1);
     }
-
-    //populate ctx->st->lvst
-    //lvst_clear(ctx->tables->lvst);
-    //lvst_fill(m, ctx->tables);
-
-    //emit label for the function
-    fprintf(fout, "%s:\n", "main");
 
     emit_asm_avr_basic_block(root, ctx, fout);
     
@@ -100,7 +90,6 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
     fclose(fout);
 
     char cmd[200];
-    //we pipe stdout and stderr away 
     sprintf(cmd, "avra %s > /tmp/avra-stdout 2> /tmp/avra-stderr", flags_asm_filename(flags));
     
     int status = system(cmd);

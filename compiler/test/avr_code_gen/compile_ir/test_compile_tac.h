@@ -13,5 +13,6 @@ void test_compile_tac_if_goto();
 void test_compile_tac_return();
 void test_compile_tac_copy();
 void test_compile_tac_param();
+void test_compile_tac_call();
 
 #endif

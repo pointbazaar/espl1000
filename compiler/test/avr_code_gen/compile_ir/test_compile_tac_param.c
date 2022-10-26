@@ -35,7 +35,7 @@ void test_compile_tac_param(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 
-    for(int i=0;i < 5; i++){
+    for(int i=0;i < 4; i++){
         vmcu_system_step(system);
 	}
 	

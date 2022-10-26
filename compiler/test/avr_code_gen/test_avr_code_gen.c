@@ -17,7 +17,7 @@
 
 //unit tests forward declarations
 static void test_stack_pointer_setup_correctly();
-static void test_reaches_endloop();
+//static void test_reaches_endloop();
 
 void status_test_codegen(char* msg){
     printf(" - [TEST] avr codegen %s\n", msg);
@@ -26,7 +26,7 @@ void status_test_codegen(char* msg){
 void test_suite_avr_code_gen(){
 
     test_stack_pointer_setup_correctly();
-    test_reaches_endloop();
+    //test_reaches_endloop();
     
     test_compile_tac_nop();
     test_compile_tac_const_value();
@@ -40,6 +40,7 @@ void test_suite_avr_code_gen(){
     test_compile_tac_return();
     test_compile_tac_copy();
     test_compile_tac_param();
+    test_compile_tac_call();
 }
 
 // --- UNIT TESTS ---
@@ -72,7 +73,7 @@ static void test_stack_pointer_setup_correctly(){
 
     vmcu_system_dtor(system);
 }
-
+/*
 static void test_reaches_endloop(){
 
     status_test_codegen("reaches endloop");
@@ -109,7 +110,7 @@ static void test_reaches_endloop(){
 
     vmcu_system_dtor(system);
 }
-
+*/
 
 
 

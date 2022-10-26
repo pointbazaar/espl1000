@@ -36,17 +36,21 @@
         This web page is to document and formalize the representation.
     </p>
 
+	<h2>Concepts</h2>
     <ul>
-        <li>TMP: temporary variable, e.g. t4</li>
+        <li>TMP: temporary variable, e.g. t4. these can be identified by the number alone.</li>
         <li>LOCAL: local variable, residing in stack frame</li>
         <li>ARG: argument to the function</li>
         <li>LABEL: label </li>
         <li>CONST: compile-time known constant</li>
     </ul>
 
+	<h2>Table of IR Instructions</h2>
     <p>
         The table shows which fields of <strong>struct TAC</strong>
-        are defined for each TAC_KIND.
+        are defined for each TAC_KIND. 
+        <br>
+        It also specifies which values are allowed for these fields.
     </p>
 
     <table class="table table-bordered border-primary">
