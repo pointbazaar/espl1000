@@ -70,6 +70,16 @@ struct TAC* makeTACIfGoto(char* tmp_condition, uint32_t label_destination){
     return t;
 }
 
+struct TAC* makeTACIfCMPGoto(uint32_t tmp1, enum TAC_OP op, uint32_t tmp2, uint32_t label_destination){
+	struct TAC* t = makeTAC();
+    t->kind = TAC_IF_CMP_GOTO;
+    sprintf(t->dest, "t%d", tmp1);
+    sprintf(t->arg1, "t%d", tmp2);
+    t->op = op;
+    t->label_index = label_destination;
+    return t;
+}
+
 struct TAC* makeTACCopy(uint32_t tdest, uint32_t tsrc){
     struct TAC* t = makeTAC();
     t->kind = TAC_COPY;

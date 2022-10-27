@@ -57,6 +57,7 @@ add_library("sd-base"
 		main/avr_code_gen/compile_ir/compile_tac_setup_stackframe.c
 		main/avr_code_gen/compile_ir/compile_tac_load_local.c
 		main/avr_code_gen/compile_ir/compile_tac_store_local.c
+		main/avr_code_gen/compile_ir/compile_tac_if_cmp_goto.c
 
         main/basic_block/basicblock.c
 		main/basic_block/basicblock_printer.c

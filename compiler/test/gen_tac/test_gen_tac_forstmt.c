@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "test_gen_tac.h"
 
@@ -25,7 +26,7 @@ static void test_gen_tac_forstmt_0_rounds(){
 	
 	char snippet[200];
 	const char* template = "fn main() -> int { int x = 0; for i in 1 .. 0 { x = x + 1; } return x; }";
-	sprintf(snippet, template);
+	strcpy(snippet, template);
 	
 	//compile snippet and init a vmcu
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);

@@ -42,6 +42,7 @@ enum TAC_KIND{
 
     TAC_GOTO, //unconditional jump
     TAC_IF_GOTO, //conditional jump depending on a single temporary
+    TAC_IF_CMP_GOTO,
 
     TAC_COPY, //copy one temp into another
     TAC_LOAD_LOCAL, //load local var from stackframe
@@ -98,7 +99,9 @@ struct TAC* makeTACLabel(uint32_t label);
 struct TAC* makeTACLabel2(char* label);
 struct TAC* makeTACGoto(uint32_t label);
 struct TAC* makeTACReturn(char* tmp);
+
 struct TAC* makeTACIfGoto(char* tmp_condition, uint32_t label_destination);
+struct TAC* makeTACIfCMPGoto(uint32_t tmp1, enum TAC_OP op, uint32_t tmp2, uint32_t label_destination); 
 
 struct TAC* makeTACCopy(uint32_t dest, uint32_t src);
 struct TAC* makeTACLoadLocal(uint32_t tmp, char* local_name);
