@@ -16,7 +16,8 @@ void tac_ifstmt(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx){
 
 static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx){
     
-    //if-goto expr ltrue
+    //t1 = expr
+    //if-goto t1 ltrue
     //goto lend
     // ltrue:
     //  if block

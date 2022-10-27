@@ -14,16 +14,16 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx){
     //L0:
     //t2 = f->range->end
     //t3 = f->index_name
-    //t4 = t2
-    //t4 = t4 >= t3
-    //if-goto t4 L1
+    //if-cmp-goto t2 >= t3 L1    
+    
     //goto Lend:
+    
     //L1:
     // block
     // t3 = f->index_name
     // t3++
     // goto L0
-    //end:
+    //Lend:
 
     //f->index_name
     //f->range->start
@@ -38,11 +38,6 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx){
     uint32_t t3 = make_temp();
     char t3str[10];
     sprintf(t3str, "t%d", t3);
-    
-    uint32_t t4 = make_temp();
-    char t4str[10];
-    sprintf(t4str, "t%d", t4);
-    
 
     tac_expr(buffer, f->range->start);
     char* t1 = tacbuffer_last_dest(buffer);
@@ -55,12 +50,8 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx){
     char* t2 = tacbuffer_last_dest(buffer);
 
     tacbuffer_append(buffer, makeTACLoadLocal(t3, f->index_name));
-    tacbuffer_append(buffer, makeTACCopy(t4, atoi(t2+1)));
-
-    tacbuffer_append(buffer, makeTACBinOp(t4str, TAC_OP_CMP_GE, t3str));
-
-    struct TAC* t = makeTACIfGoto(t4str, l1);
-    tacbuffer_append(buffer, t);
+    
+    tacbuffer_append(buffer, makeTACIfCMPGoto(atoi(t2+1), TAC_OP_CMP_GE, t3, l1));
 
     tacbuffer_append(buffer, makeTACGoto(lend));
 
@@ -76,6 +67,7 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx){
 
     tacbuffer_append(buffer, makeTACGoto(l0));
 
+	//Lend:
     tacbuffer_append(buffer, makeTACLabel(lend));
     
     ctx_exit_loop(ctx);

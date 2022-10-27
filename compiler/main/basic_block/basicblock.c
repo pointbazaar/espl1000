@@ -183,7 +183,7 @@ static bool* calculate_leaders(struct TACBuffer* buffer){
         //any statement that immediately follows a goto or conditional
         //goto is a leader
 
-        if (prev->kind == TAC_IF_GOTO || prev->kind == TAC_GOTO || prev->kind == TAC_RETURN)
+        if (prev->kind == TAC_IF_GOTO || prev->kind == TAC_IF_CMP_GOTO || prev->kind == TAC_GOTO || prev->kind == TAC_RETURN)
             is_leader[i] = true;
     }
 

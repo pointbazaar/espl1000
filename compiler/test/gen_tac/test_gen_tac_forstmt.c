@@ -32,7 +32,7 @@ static void test_gen_tac_forstmt_0_rounds(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 20; i++){
+	for(int i=0; i < 22; i++){
 		vmcu_system_step(system);
 	}
 	

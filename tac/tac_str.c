@@ -55,7 +55,7 @@ char* tac_tostring(struct TAC* t){
         case TAC_IF_GOTO:
             sprintf(buffer, "if-goto %s L%d", t->arg1, t->label_index); break;
 		case TAC_IF_CMP_GOTO:
-			sprintf(buffer, "if %s %s %s goto L%d", t->dest, opstr, t->arg1, t->label_index);
+			sprintf(buffer, "if %s %s %s goto L%d", t->dest, opstr, t->arg1, t->label_index); break;
             
         case TAC_CONST_VALUE:
             sprintf(buffer,"%s = %d",t->dest, t->const_value); break;
