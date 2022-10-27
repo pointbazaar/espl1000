@@ -9,6 +9,13 @@
 static void case_arithmetic(struct RAT* rat, struct TAC* tac, FILE* fout);
 static void case_compare(struct RAT* rat, struct TAC* tac, FILE* fout);
 
+static void case_cmp_lt(FILE* fout, int rdest, int rsrc);
+static void case_cmp_ge(FILE* fout, int rdest, int rsrc);
+static void case_cmp_neq(FILE* fout, int rdest, int rsrc);
+static void case_cmp_eq(FILE* fout, int rdest, int rsrc);
+
+static int label_counter = 0;
+
 void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
 
     switch (tac->op) {
@@ -83,42 +90,67 @@ static void case_compare(struct RAT* rat, struct TAC* tac, FILE* fout){
         rat_occupy_register(rat, index, tac->arg1);
     }
 
-    int reg_src = rat_get_register(rat, tac->arg1);
+    int rsrc = rat_get_register(rat, tac->arg1);
 
     if(!rat_has_register(rat, tac->dest)){
         int index = rat_get_free_register(rat, false);
         rat_occupy_register(rat, index, tac->dest);
     }
 
-    int reg_dest = rat_get_register(rat, tac->dest);
+    int rdest = rat_get_register(rat, tac->dest);
 	
-	char* mnem = "ERR";
+	//char* mnem = "ERR";
 	
 	switch(tac->op){
-		case TAC_OP_CMP_LT: mnem = "brlt"; break;
-        case TAC_OP_CMP_GE: mnem = "brge"; break;
-        case TAC_OP_CMP_EQ: mnem = "breq"; break;
-        case TAC_OP_CMP_NEQ: mnem = "brne"; break;
+		case TAC_OP_CMP_LT: case_cmp_lt(fout, rdest, rsrc); break;
+        case TAC_OP_CMP_GE: case_cmp_ge(fout, rdest, rsrc); break;
+        case TAC_OP_CMP_EQ: case_cmp_eq(fout, rdest, rsrc); break;
+        case TAC_OP_CMP_NEQ: case_cmp_neq(fout, rdest, rsrc); break;
         default: break;
 	}
+}
+
+
+static void case_cmp_lt(FILE* fout, int rdest, int rsrc){
 	
 	char Ltrue[20];
 	char Lend[20];
 
-	static int label_counter = 0;
+	
 	sprintf(Ltrue, "Ltrue%d", label_counter);
 	sprintf(Lend, "Lend%d", label_counter++);
 
-	fprintf(fout, "cp r%d, r%d\n", reg_dest, reg_src);
-	fprintf(fout, "%s %s\n", mnem, Ltrue);
+	fprintf(fout, "cp r%d, r%d\n", rdest, rsrc);
+	fprintf(fout, "brlt %s\n", Ltrue);
 
-	fprintf(fout, "clr r%d\n", reg_dest);
+	fprintf(fout, "clr r%d\n", rdest);
 
 	fprintf(fout, "rjmp %s\n", Lend);
 	fprintf(fout, "%s:\n", Ltrue);
 
-	fprintf(fout, "clr r%d\n", reg_dest);
-	fprintf(fout, "inc r%d\n", reg_dest);
+	fprintf(fout, "sub r%d, r%d\n", rdest, rsrc);
+
+	fprintf(fout, "%s:\n", Lend);
+}
+
+static void case_cmp_ge(FILE* fout, int rdest, int rsrc){
+	
+	char Ltrue[20];
+	char Lend[20];
+
+	sprintf(Ltrue, "Ltrue%d", label_counter);
+	sprintf(Lend, "Lend%d", label_counter++);
+
+	fprintf(fout, "cp r%d, r%d\n", rdest, rsrc);
+	fprintf(fout, "brge %s\n", Ltrue);
+
+	fprintf(fout, "clr r%d\n", rdest);
+
+	fprintf(fout, "rjmp %s\n", Lend);
+	fprintf(fout, "%s:\n", Ltrue);
+
+	fprintf(fout, "clr r%d\n", rdest);
+	fprintf(fout, "inc r%d\n", rdest);
 
 	fprintf(fout, "%s:\n", Lend);
 
@@ -129,4 +161,23 @@ static void case_compare(struct RAT* rat, struct TAC* tac, FILE* fout){
 	//Ltrue:
 	//r1 = 1
 	//Lend:
+}
+
+static void case_cmp_neq(FILE* fout, int rdest, int rsrc){
+	
+	//we just subtract the 2 registers,
+	//if they were equal, rdest will be 0, meaning false
+	//otherwise it will be nonzero, meaning true
+	
+	fprintf(fout, "sub r%d, r%d\n", rdest, rsrc);
+}
+
+static void case_cmp_eq(FILE* fout, int rdest, int rsrc){
+	
+	//we use r16, which is reserved in the RAT as multi-use register.
+	
+	fprintf(fout, "ldi r16, 1\n");
+	fprintf(fout, "cpse r%d, r%d\n", rdest, rsrc);
+	fprintf(fout, "clr r16\n");
+	fprintf(fout, "mov r%d, r16\n", rdest);
 }
