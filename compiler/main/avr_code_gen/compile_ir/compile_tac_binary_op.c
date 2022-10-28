@@ -99,8 +99,6 @@ static void case_compare(struct RAT* rat, struct TAC* tac, FILE* fout){
 
     int rdest = rat_get_register(rat, tac->dest);
 	
-	//char* mnem = "ERR";
-	
 	switch(tac->op){
 		case TAC_OP_CMP_LT: case_cmp_lt(fout, rdest, rsrc); break;
         case TAC_OP_CMP_GE: case_cmp_ge(fout, rdest, rsrc); break;
@@ -113,10 +111,19 @@ static void case_compare(struct RAT* rat, struct TAC* tac, FILE* fout){
 
 static void case_cmp_lt(FILE* fout, int rdest, int rsrc){
 	
+	//5 instructions
+	
+	// cp rdest, rsrc
+	// brlt Ltrue
+	// clr rdest
+	// rjmp Lend
+	//Ltrue:
+	// sub rdest, rsrc
+	//Lend:
+	
 	char Ltrue[20];
 	char Lend[20];
 
-	
 	sprintf(Ltrue, "Ltrue%d", label_counter);
 	sprintf(Lend, "Lend%d", label_counter++);
 
@@ -135,32 +142,24 @@ static void case_cmp_lt(FILE* fout, int rdest, int rsrc){
 
 static void case_cmp_ge(FILE* fout, int rdest, int rsrc){
 	
+	//5 instructions
+	
+	// ldi r16, 1
+	// cp rdest, rsrc
+	// brge Ltrue
+	// ldi r16, 0
+	//Ltrue:
+	// mov rdest, r16
+	
 	char Ltrue[20];
-	char Lend[20];
-
-	sprintf(Ltrue, "Ltrue%d", label_counter);
-	sprintf(Lend, "Lend%d", label_counter++);
-
+	sprintf(Ltrue, "Ltrue%d", label_counter++);
+	
+	fprintf(fout, "ldi r16, 1\n");
 	fprintf(fout, "cp r%d, r%d\n", rdest, rsrc);
 	fprintf(fout, "brge %s\n", Ltrue);
-
-	fprintf(fout, "clr r%d\n", rdest);
-
-	fprintf(fout, "rjmp %s\n", Lend);
+	fprintf(fout, "ldi r16, 0\n");
 	fprintf(fout, "%s:\n", Ltrue);
-
-	fprintf(fout, "clr r%d\n", rdest);
-	fprintf(fout, "inc r%d\n", rdest);
-
-	fprintf(fout, "%s:\n", Lend);
-
-	//cp r1,r2
-	//brlt Ltrue
-	//r1 = 0
-	//goto Lend
-	//Ltrue:
-	//r1 = 1
-	//Lend:
+	fprintf(fout, "mov r%d, r16\n", rdest);
 }
 
 static void case_cmp_neq(FILE* fout, int rdest, int rsrc){
@@ -175,6 +174,8 @@ static void case_cmp_neq(FILE* fout, int rdest, int rsrc){
 static void case_cmp_eq(FILE* fout, int rdest, int rsrc){
 	
 	//we use r16, which is reserved in the RAT as multi-use register.
+	
+	//4 instructions
 	
 	fprintf(fout, "ldi r16, 1\n");
 	fprintf(fout, "cpse r%d, r%d\n", rdest, rsrc);
