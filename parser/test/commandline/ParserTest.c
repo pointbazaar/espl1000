@@ -2,8 +2,7 @@
 #include <stdbool.h>
 #include <assert.h>
 
-#include "../astnodes/const/BoolConstTest.h"
-#include "../astnodes/const/CharConstTest.h"
+#include "../astnodes/const/ConstValueTest.h"
 
 #include "../astnodes/expr/ExprTest.h"
 #include "../astnodes/expr/UnOpTermTest.h"

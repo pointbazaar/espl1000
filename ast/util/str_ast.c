@@ -12,20 +12,6 @@ static void error(char* msg){
 
 //---------------------------------------
 
-char* str_bool_const(struct BoolConst* bc){
-	char* res =  malloc(sizeof(char)*10);
-	strcpy(res, bc->value ? "true": "false");
-	return res;
-}	
-
-char* str_char_const(struct CharConst* cc){
-
-	char* res =  malloc(sizeof(char)*10);
-	sprintf(res, "'%c'", cc->value);
-	return res;
-}
-
-
 char* str_identifier(struct Id* id){
 
 	char* res =  malloc(sizeof(char)*(strlen(id->identifier)+1));
@@ -121,66 +107,63 @@ char* str_lambda(struct Lambda* lambda){
 	return res;
 }
 
-char* str_int_const(struct IntConst* ic){
-
-	char* res =  malloc(sizeof(char)*10);
-	sprintf(res, "%d", ic->value);
-	return res;
-}
-
-char* str_hex_const(struct HexConst* hc){
-
-	char* res =  malloc(sizeof(char)*10);
-	sprintf(res, "0x%x", hc->value);
-	return res;
-}
 char* str_const_value(struct ConstValue* cv){
+	
+	char* res = malloc(sizeof(char)*129);
+	
 	switch (cv->kind) {
-		case 1: return str_bool_const(cv->ptr.m1_bool_const);
-		case 2: return str_int_const(cv->ptr.m2_int_const);
-		case 3: return str_char_const(cv->ptr.m3_char_const);
-		case 5: return str_hex_const(cv->ptr.m5_hex_const);
-		case 6: return str_bin_const(cv->ptr.m6_bin_const);
+		case 1: 
+			strcpy(res, cv->ptr.m1_bool_const ? "true": "false"); break;
+						
+		case 2: 
+			sprintf(res, "%d", cv->ptr.m2_int_const); break;
+		
+		case 3: 
+			sprintf(res, "'%c'", cv->ptr.m3_char_const); break;
+			
+		case 5: 
+			sprintf(res, "0x%x", cv->ptr.m5_hex_const); break;
+			
+		case 6: {
+			uint32_t value = cv->ptr.m5_hex_const;
+			
+			if(value == 0){
+				sprintf(res, "0b0");
+				return res;
+			}
+			
+			const int size = 128;
+			
+			char buffer[size];
+			
+			int index = size - 1;
+			buffer[index--] = '\0';
+			
+			while(value > 0){
+				
+				uint8_t bit = value & 0x1;
+				
+				buffer[index--] = (bit == 0x1) ? '1' : '0';
+				
+				value >>= 1;
+			}
+
+			sprintf(res, "0b%s", buffer+index+1);
+			}
+			break;
+		default:
+			free(res);
+			printf("[str_ast][Error] Unhandled Case\n");
+			exit(1);
+			return NULL;
 	}
-	printf("[str_ast][Error] Unhandled Case\n");
-	exit(1);
-	return NULL;
+	
+	return res;
 }
 char* str_string_const(struct StringConst* s){
 	
 	char* res =  malloc(sizeof(char)*(3+strlen(s->value)));
 	sprintf(res, "%s", s->value);
-	return res;
-}
-
-char* str_bin_const(struct BinConst* b){
-	
-	char* res = malloc(sizeof(char)*129);
-	
-	uint32_t value = b->value;
-	
-	if(value == 0){
-		sprintf(res, "0b0");
-		return res;
-	}
-	
-	const int size = 128;
-	
-	char buffer[size];
-	
-	int index = size - 1;
-	buffer[index--] = '\0';
-	
-	while(value > 0){
-		
-		uint8_t bit = value & 0x1;
-		
-		buffer[index--] = (bit == 0x1) ? '1' : '0';
-		
-		value >>= 1;
-	}
-
-	sprintf(res, "0b%s", buffer+index+1);
 	return res;
 }
 

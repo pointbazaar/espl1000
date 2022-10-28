@@ -17,16 +17,6 @@ void free_ast(struct AST* ast) {
 	free(ast);
 }
 
-void free_bool_const(struct BoolConst* bc) {
-	
-	free(bc);
-}
-
-void free_char_const(struct CharConst* cc) {
-	
-	free(cc);
-}
-
 void free_decl_arg(struct DeclArg* da) {
 
 	free_type(da->type);
@@ -46,17 +36,7 @@ void free_expr(struct Expr* expr) {
 
 
 void free_identifier(struct Id* id) { free(id); }
-void free_int_const(struct IntConst* ic) { free(ic); }
-void free_hex_const(struct HexConst* hc){ free(hc); }
-void free_bin_const(struct BinConst* hc){ free(hc); }
 void free_const_value(struct ConstValue* cv){
-	switch (cv->kind) {
-		case 1: free_bool_const(cv->ptr.m1_bool_const); break;
-		case 2: free_int_const(cv->ptr.m2_int_const); break;
-		case 3: free_char_const(cv->ptr.m3_char_const); break;
-		case 5: free_hex_const(cv->ptr.m5_hex_const); break;
-		case 6: free_bin_const(cv->ptr.m6_bin_const); break;
-	}
 	free(cv);
 }
 void free_method(struct Method* m) {

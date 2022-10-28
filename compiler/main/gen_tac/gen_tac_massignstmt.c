@@ -19,7 +19,7 @@ void tac_massignstmt(struct TACBuffer* buffer, struct MAssignStmt* m){
         exit(1);
     }
 
-    const uint32_t addr = lhs->term1->term->ptr.m12->ptr.m2_int_const->value;
+    const uint32_t addr = lhs->term1->term->ptr.m12->ptr.m2_int_const;
 
     tac_expr(buffer, m->expr);
     

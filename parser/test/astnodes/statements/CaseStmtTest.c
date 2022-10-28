@@ -31,7 +31,7 @@ int test_parser_case_stmt() {
 	assert(node != NULL);
 	assert(node->const_value->kind == 1);
 	
-	assert(node->const_value->ptr.m1_bool_const != NULL);
+	assert(node->const_value->ptr.m1_bool_const == true);
 	assert(node->block != NULL);
 	
 	freeTokenList(list);

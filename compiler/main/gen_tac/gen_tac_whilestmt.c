@@ -27,7 +27,7 @@ void tac_whilestmt(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx* ct
 					case 2: inf = c->ptr.m2_int_const; break;
 					case 3: inf = c->ptr.m3_char_const; break;
 					case 5: inf = c->ptr.m5_hex_const; break;
-					case 6: inf = c->ptr.m6_bin_const; break;
+					case 6: inf = c->ptr.m5_hex_const; break;
 				}
 				
 				if(inf){

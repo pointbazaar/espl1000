@@ -35,11 +35,11 @@ bool massignstmt_test1(){
     assert(a != NULL);
 
     assert(a->lhs->expr->term1->term->kind == 12); //constvalue
-    assert(a->lhs->expr->term1->term->ptr.m12->ptr.m2_int_const->value == 4);
+    assert(a->lhs->expr->term1->term->ptr.m12->ptr.m2_int_const == 4);
 
     assert(a->expr != NULL);
     assert(a->expr->term1->term->kind == 12); //constvalue
-    assert(a->expr->term1->term->ptr.m12->ptr.m2_int_const->value == 5);
+    assert(a->expr->term1->term->ptr.m12->ptr.m2_int_const == 5);
 
     free_massign_stmt(a);
     freeTokenList(tokens);

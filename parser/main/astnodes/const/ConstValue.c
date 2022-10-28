@@ -2,15 +2,11 @@
 #include <stdlib.h>
 
 #include "ConstValue.h"
-
-#include "BinConst.h"
-#include "CharConst.h"
-#include "HexConst.h"
-#include "BoolConst.h"
 #include "IntConst.h"
 
 #include "ast/ast.h"
 #include "ast/ast/ast_const.h"
+#include "ast/util/free_ast.h"
 
 #include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
@@ -26,52 +22,69 @@ struct ConstValue* makeConstValue(struct TokenList* tokens){
 
 	res->super.line_num    = list_head(copy)->line_num;
 	res->super.annotations = 0;
-
-	const int tk_kind = list_head(copy)->kind;
-
-	switch (tk_kind) {
+	
+	const struct Token* tk = list_head(copy);
+	
+	switch (tk->kind) {
+		
 		case HEXCONST:
-			res->ptr.m5_hex_const = makeHexConst(copy);
+			//"0x10" -> 16, ...
+			//use strtol to convert hex string -> int
+			res->ptr.m5_hex_const = strtol(tk->value_ptr+2, NULL, 16);
 			res->kind = 5;
+			list_consume(copy, 1);
 			break;
 
 		case BINCONST:
-			res->ptr.m6_bin_const = makeBinConst(copy);
+
+			//"0b10" -> 2, ...
+			//use strtol to convert bin string -> int
+			res->ptr.m5_hex_const = strtol(tk->value_ptr+2, NULL, 2);
 			res->kind = 6;
+			list_consume(copy, 1);
 			break;
 
 		case CCONST:
-			res->ptr.m3_char_const = makeCharConst(copy);
+			//index needs to be 1, as charconst
+			//is surrounded by single quotes
+			res->ptr.m3_char_const = tk->value_ptr[1];
 			res->kind = 3;
+			list_consume(copy, 1);
 			break;
 
 		case BCONST_FALSE:
-		case BCONST_TRUE:
-			res->ptr.m1_bool_const = makeBoolConst(copy);
+			res->ptr.m1_bool_const = false;
 			res->kind = 1;
+			list_consume(copy, 1);
+			break;
+			
+		case BCONST_TRUE:
+			res->ptr.m1_bool_const = true;
+			res->kind = 1;
+			list_consume(copy, 1);
 			break;
 
 		default:
-			goto other_term;
+			{
+			//try to parse IntConst
+			bool error = false;
+			res->ptr.m2_int_const = makeIntConst(copy, &error);
+			
+			if(error){
+				free_const_value(res);
+				freeTokenListShallow(copy);
+				return NULL;
+			}
+			
+			res->kind = 2;
+			break;
+			}
 	}
-
-	goto end; //something matched
-
-	other_term:
-
-	if((res->ptr.m2_int_const = makeIntConst(copy)) != NULL){
-		res->kind = 2;
-		goto end;
-	}
-
-	free(res);
-	freeTokenListShallow(copy);
-	return NULL;
-
-	end:
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
 
 	return res;
 }
+
+

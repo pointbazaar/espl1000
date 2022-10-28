@@ -11,11 +11,6 @@
 //as this is sometimes required for AST Nodes
 
 //const
-struct BoolConst*   copy_bool_const(struct BoolConst* bc);
-struct CharConst*   copy_char_const(struct CharConst* cc);
-struct IntConst*    copy_int_const(struct IntConst* ic);
-struct HexConst*    copy_hex_const(struct HexConst* hc);
-struct BinConst*    copy_bin_const(struct BinConst* hc);
 struct ConstValue*  copy_const_value(struct ConstValue* cv);
 struct StringConst* copy_string_const(struct StringConst* s);
 

@@ -13,7 +13,7 @@ void tac_mdirect(struct TACBuffer* buffer, struct MDirect* m){
         exit(1);
     }
 
-    const uint32_t addr = expr->term1->term->ptr.m12->ptr.m2_int_const->value;
+    const uint32_t addr = expr->term1->term->ptr.m12->ptr.m2_int_const;
 
     char dest[10];
     sprintf(dest, "t%d", make_temp());

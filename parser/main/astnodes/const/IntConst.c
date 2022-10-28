@@ -1,5 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
+#include <inttypes.h>
+#include <assert.h>
 
 #include "IntConst.h"
 
@@ -9,21 +11,18 @@
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
 
-struct IntConst* makeIntConst(struct TokenList* tokens) {
+int32_t makeIntConst(struct TokenList* tokens, bool* error) {
 
-	struct IntConst* res = make(IntConst);
+	int32_t res;
 
 	struct TokenList* copy = list_copy(tokens);
 
 	struct Token* tk = list_head(copy);
-	if(tk == NULL){
-		free(res);
-		freeTokenListShallow(copy);
-		return NULL;
-	}
 	
-	res->super.line_num    = tk->line_num;
-	res->super.annotations = 0;
+	if(tk == NULL){
+		*error = true;
+		return 0;
+	}
 
 	switch (tk->kind){
 
@@ -36,33 +35,33 @@ struct IntConst* makeIntConst(struct TokenList* tokens) {
 			) {
 				struct Token* mytk = list_get(copy,1);
 				if(mytk == NULL){
-					free(res);
 					freeTokenListShallow(copy);
-					return NULL;
+					*error = true;
+					return 0;
 				}
 				
-				res->value = - atoi(mytk->value_ptr);
+				res = - atoi(mytk->value_ptr);
 				list_consume(copy, 2);
 			} else {
 				// "cannot parse integer constant node with such operator:" + tk->value;
-				free(res);
 				freeTokenListShallow(copy);
-				return NULL;
+				*error = true;
+				return 0;
 			}
 			break;
 
 		case INTEGER: 
 			;
-			res->value = atoi(tk->value_ptr);
+			res = atoi(tk->value_ptr);
 			list_consume(copy, 1);
 			break;
 
 		default:
 			;
 			// "could not read IntConst node";
-			free(res);
 			freeTokenListShallow(copy);
-			return NULL;
+			*error = true;
+			return 0;
 	}
 
 	list_set(tokens, copy);

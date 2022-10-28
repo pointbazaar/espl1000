@@ -3,25 +3,15 @@
 
 #include "../ast_declare.h"
 
-struct BoolConst   { struct ASTNode super; bool     value; };
-
-struct CharConst   { struct ASTNode super; char     value; };
-
-struct IntConst    { struct ASTNode super; int32_t  value; };
-
-struct HexConst    { struct ASTNode super; uint32_t value; };
-
-struct BinConst    { struct ASTNode super; uint32_t value; };
-
 struct ConstValue {
 	struct ASTNode super;
 
 	union {
-		struct BoolConst*   m1_bool_const;
-		struct IntConst*    m2_int_const;
-		struct CharConst*   m3_char_const;
-		struct HexConst*    m5_hex_const;
-		struct BinConst*    m6_bin_const;
+		bool   		m1_bool_const;
+		int32_t    	m2_int_const;
+		char   		m3_char_const;
+		uint32_t    m5_hex_const;
+		//6 means binconst, saved in hex const
 	} ptr;
 
 	uint8_t kind; // 1 .. 6

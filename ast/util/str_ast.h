@@ -11,13 +11,9 @@
 //all char* returned are heap-allocated
 
 //const
-char* str_bool_const(struct BoolConst* bc);
-char* str_char_const(struct CharConst* cc);
-char* str_int_const(struct IntConst* ic);
-char* str_hex_const(struct HexConst* hc);
 char* str_const_value(struct ConstValue* cv);
 char* str_string_const(struct StringConst* s);
-char* str_bin_const(struct BinConst* b);
+char* str_bin_const(uint32_t b);
 
 //c_types_util
 char* str_array_type(struct ArrayType* at);

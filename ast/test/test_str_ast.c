@@ -15,63 +15,77 @@ static void test_status_str_ast(char* msg){
 
 void test_str_binconst(){
 
-	test_status_str_ast("str_bin_const");
+	test_status_str_ast("str_const_value - bin");
 	
-	struct BinConst b = {.value = 0b1010};
+	struct ConstValue* cv = make(ConstValue);
 	
-	char* s = str_bin_const(&b);
+	cv->kind = 6;
+	cv->ptr.m5_hex_const = 0b1010;
+	
+	char* s = str_const_value(cv);
 	
 	assert(strcmp(s, "0b1010")==0);
 	
 	free(s);
+	free_const_value(cv);
 }
 
 void test_str_intconst(){
 
-	test_status_str_ast("str_int_const");
+	test_status_str_ast("str_const_value - int");
 	
-	struct IntConst b = {.value=101};
+	struct ConstValue* cv = make(ConstValue);
 	
-	char* s = str_int_const(&b);
+	cv->kind = 2;
+	cv->ptr.m2_int_const = 101;
+	
+	char* s = str_const_value(cv);
 	
 	assert(strcmp(s, "101")==0);
 	
 	free(s);
+	free_const_value(cv);
 }
 
 void test_str_charconst(){
 
-	test_status_str_ast("str_char_const");
+	test_status_str_ast("str_const_value - char");
 	
-	struct CharConst b = {.value='h'};
+	struct ConstValue* cv = make(ConstValue);
 	
-	char* s = str_char_const(&b);
+	cv->kind = 3;
+	cv->ptr.m3_char_const = 'h';
+	
+	char* s = str_const_value(cv);
 	
 	assert(strcmp(s, "'h'")==0);
 	
 	free(s);
+	free_const_value(cv);
 }
 
 void test_str_hexconst(){
 
-	test_status_str_ast("str_hex_const");
+	test_status_str_ast("str_const_value - hex");
 	
-	struct HexConst b = {.value = 0x572af};
+	struct ConstValue* cv = make(ConstValue);
 	
-	char* s = str_hex_const(&b);
+	cv->kind = 5;
+	cv->ptr.m5_hex_const = 0x572af;
+	
+	char* s = str_const_value(cv);
 	
 	assert(strcmp(s, "0x572af")==0);
 	
 	free(s);
+	free_const_value(cv);
 }
 
 void test_str_expr(){
 
 	test_status_str_ast("str_expr");
 	
-	struct IntConst ic = { .value = 45 };
-
-	struct ConstValue cv = {.ptr.m2_int_const = &ic, .kind = 2};
+	struct ConstValue cv = {.ptr.m2_int_const = 45, .kind = 2};
 
 	struct Term b = {
 		.kind = 12,
@@ -112,9 +126,7 @@ void test_str_unopterm(){
 
 	test_status_str_ast("str_un_op_term");
 	
-	struct IntConst ic = { .value = 3489 };
-
-	struct ConstValue cv = {.ptr.m2_int_const = &ic, .kind = 2};
+	struct ConstValue cv = {.ptr.m2_int_const = 3489, .kind = 2};
 	
 	struct Term b = { 
 		.kind = 12,
@@ -136,8 +148,7 @@ void test_str_term(){
 
 	test_status_str_ast("str_term");
 	
-	struct IntConst ic = { .value = 3489 };
-	struct ConstValue cv = {.ptr.m2_int_const = &ic, .kind = 2};
+	struct ConstValue cv = {.ptr.m2_int_const = 3489, .kind = 2};
 
 	struct Term b = { 
 		.kind = 12,
@@ -159,8 +170,7 @@ void test_str_lambda(){
 		.identifier = "a"
 	};
 	
-	struct IntConst ic = { .value = 2 };
-	struct ConstValue cv = {.ptr.m2_int_const = &ic, .kind = 2};
+	struct ConstValue cv = {.ptr.m2_int_const = 2, .kind = 2};
 
 	struct Term b = {
 		.kind = 12,

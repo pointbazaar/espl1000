@@ -26,11 +26,6 @@ struct Range;
 struct DeclArg;
 struct Lambda;
 //const
-struct BoolConst;
-struct CharConst;
-struct IntConst;
-struct HexConst;
-struct BinConst;
 struct ConstValue;
 struct StringConst;
 //statements

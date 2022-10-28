@@ -36,11 +36,6 @@ static void visit_term       	(struct Term* t, VISITOR, ARG);
 static void visit_mdirect       (struct MDirect* m, VISITOR, ARG);
 
 //const
-static void visit_bool_const   	(struct BoolConst* b, VISITOR, ARG);
-static void visit_int_const    	(struct IntConst* i, VISITOR, ARG);
-static void visit_char_const   	(struct CharConst* c, VISITOR, ARG);
-static void visit_hex_const    	(struct HexConst* h, VISITOR, ARG);
-static void visit_bin_const    	(struct BinConst* b, VISITOR, ARG);
 static void visit_const_value   (struct ConstValue* cv, VISITOR, ARG);
 static void visit_string_const 	(struct StringConst* s, VISITOR, ARG);
 
@@ -307,41 +302,8 @@ static void visit_mdirect(struct MDirect* m, VISITOR, ARG){
     visit_expr(m->expr, visitor, arg);
 }
 
-static void visit_bool_const(struct BoolConst* b, VISITOR, void* arg){
-	
-	visitor(b, NODE_BOOLCONST, arg);
-}
-
-static void visit_int_const(struct IntConst* i, VISITOR, void* arg){
-	
-	visitor(i, NODE_INTCONST, arg);
-}
-
-static void visit_char_const(struct CharConst* c, VISITOR, void* arg){
-	
-	visitor(c, NODE_CHARCONST, arg);
-}
-
-static void visit_hex_const(struct HexConst* h, VISITOR, void* arg){
-	
-	visitor(h, NODE_HEXCONST, arg);
-}
-
-static void visit_bin_const(struct BinConst* b, VISITOR, void* arg){
-	
-	visitor(b, NODE_BINCONST, arg);
-}
-
 static void visit_const_value(struct ConstValue* cv, VISITOR, void* arg){
-
-	switch (cv->kind) {
-		case 1: visit_bool_const(cv->ptr.m1_bool_const, visitor, arg);
-		case 2: visit_int_const(cv->ptr.m2_int_const, visitor, arg);
-		case 3: visit_char_const(cv->ptr.m3_char_const, visitor, arg);
-		case 5: visit_hex_const(cv->ptr.m5_hex_const, visitor, arg);
-		case 6: visit_bin_const(cv->ptr.m6_bin_const, visitor, arg);
-	}
-
+	
 	visitor(cv, NODE_CONSTVALUE, arg);
 }
 

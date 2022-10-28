@@ -5,20 +5,6 @@
 #include "../ast.h"
 #include "copy_ast.h"
 
-struct BoolConst* copy_bool_const(struct BoolConst* bc){
-	
-	struct BoolConst* res = make(BoolConst);
-	res->value = bc->value;
-	return res;
-}
-
-struct CharConst* copy_char_const(struct CharConst* cc){
-	
-	struct CharConst* res = make(CharConst);
-	res->value = cc->value;
-	return res;
-}
-
 struct Expr* copy_expr(struct Expr* expr){
 	
 	struct Expr* res = make(Expr);
@@ -77,37 +63,17 @@ struct Lambda* copy_lambda(struct Lambda* l){
 	return res;
 }
 
-struct IntConst* copy_int_const(struct IntConst* ic){
-	
-	struct IntConst* res = make(IntConst);
-	res->value = ic->value;
-	return res;
-}
-
-struct HexConst* copy_hex_const(struct HexConst* hc){
-	
-	struct HexConst* res = make(HexConst);
-	res->value = hc->value;
-	return res;
-}
-
-struct BinConst* copy_bin_const(struct BinConst* hc){
-	
-	struct BinConst* res = make(BinConst);
-	res->value = hc->value;
-	return res;
-}
 struct ConstValue*  copy_const_value(struct ConstValue* cv){
 
 	struct ConstValue* res = make(ConstValue);
 	res->kind = cv->kind;
 
 	switch (res->kind) {
-		case 1: res->ptr.m1_bool_const = copy_bool_const(cv->ptr.m1_bool_const); break;
-		case 2: res->ptr.m2_int_const = copy_int_const(cv->ptr.m2_int_const); break;
-		case 3: res->ptr.m3_char_const = copy_char_const(cv->ptr.m3_char_const); break;
-		case 5: res->ptr.m5_hex_const= copy_hex_const(cv->ptr.m5_hex_const); break;
-		case 6: res->ptr.m6_bin_const = copy_bin_const(cv->ptr.m6_bin_const); break;
+		case 1: res->ptr.m1_bool_const 	= cv->ptr.m1_bool_const; 	break;
+		case 2: res->ptr.m2_int_const 	= cv->ptr.m2_int_const; 	break;
+		case 3: res->ptr.m3_char_const 	= cv->ptr.m3_char_const; 	break;
+		case 5: res->ptr.m5_hex_const 	= cv->ptr.m5_hex_const;		break;
+		case 6: res->ptr.m5_hex_const 	= cv->ptr.m5_hex_const; 	break;
 	}
 
 	res->super.line_num = cv->super.line_num;

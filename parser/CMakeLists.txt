@@ -11,10 +11,6 @@ add_library(dragon-parser-base
 	main/util/parser.c
 	main/util/parse_astnode.c
 
-	main/astnodes/const/BinConst.c
-	main/astnodes/const/BoolConst.c
-	main/astnodes/const/CharConst.c
-	main/astnodes/const/HexConst.c
 	main/astnodes/const/IntConst.c
 	main/astnodes/const/ConstValue.c
 	main/astnodes/const/StringConst.c
@@ -31,7 +27,7 @@ add_library(dragon-parser-base
 	main/astnodes/Range.c
 	main/astnodes/StmtBlock.c
 
-        main/astnodes/statements/AssignStmt.c
+	main/astnodes/statements/AssignStmt.c
 	main/astnodes/statements/MAssignStmt.c
 	main/astnodes/statements/Call.c
 	main/astnodes/statements/CaseStmt.c
@@ -65,8 +61,7 @@ add_library(dragon-parser-base
 add_executable(dragon-parser-tests
 
 	#tests
-	test/astnodes/const/BoolConstTest.c
-	test/astnodes/const/CharConstTest.c
+	test/astnodes/const/ConstValueTest.c
 	
 	test/astnodes/expr/ExprTest.c
 	test/astnodes/expr/TermTest.c
