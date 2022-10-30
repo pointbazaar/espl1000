@@ -152,6 +152,7 @@ add_executable("sd-tests"
 	test/avr_code_gen/compile_ir/test_compile_tac_store_const_addr.c
 	test/avr_code_gen/compile_ir/test_compile_tac_unary_op.c
 	test/avr_code_gen/compile_ir/test_compile_tac_call.c
+	test/avr_code_gen/compile_ir/test_compile_tac_if_cmp_goto.c
 	
 	#CodeGen from Snippets (test compiling AST pieces)
 	test/gen_tac/test_gen_tac.c

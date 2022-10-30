@@ -37,6 +37,7 @@ void test_suite_avr_code_gen(){
     test_compile_tac_binary_op();
     test_compile_tac_goto();
     test_compile_tac_if_goto();
+    test_compile_tac_if_cmp_goto();
     test_compile_tac_return();
     test_compile_tac_copy();
     test_compile_tac_param();
