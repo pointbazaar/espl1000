@@ -164,7 +164,8 @@ struct SSTLine* sst_get(struct SST* sst, char* name){
 	}
 	
 	printf(ERR_NOT_FOUND);
-	printf("\t%s\n", name);
+	printf("\t%s in sst_get\n", name);
+	exit(1);
 	return NULL;
 }
 
@@ -173,8 +174,25 @@ uint32_t sst_size(struct SST* sst){
 }
 
 struct SSTLine* sst_at(struct SST* sst, uint32_t index){
-
+	
+	if(index >= sst->count){
+		printf("index %d out of bounds in sst_at", index);
+		fflush(stdout);
+		exit(1);
+	}
 	return sst->lines[index];
+}
+
+uint32_t sst_index_of(struct SST* sst, char* name){
+	
+	for(int i = 0; i < sst->count; i++){
+		if(strcmp(sst->lines[i]->name, name) == 0)
+			{return i;}
+	}
+	
+	printf(ERR_NOT_FOUND);
+	printf("\t%s in sst_index_of\n", name);
+	exit(1);
 }
 
 bool sst_contains(struct SST* sst, char* name){

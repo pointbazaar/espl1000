@@ -17,8 +17,10 @@ int int_value_from_const(struct ConstValue* cv){
 
 void tac_method(struct TACBuffer* buffer, struct Method* m, struct Ctx* ctx){
 
+	const uint32_t index = sst_index_of(ctx_tables(ctx)->sst, m->decl->name);
+
     //first the label of the function
-    tacbuffer_append(buffer, makeTACLabelNamed(m->decl->name));
+    tacbuffer_append(buffer, makeTACLabelFunction(index));
     
     //setup the stack frame
     tacbuffer_append(buffer, makeTACSetupStackframe(lvst_stack_frame_size_avr(ctx_tables(ctx)->lvst)));

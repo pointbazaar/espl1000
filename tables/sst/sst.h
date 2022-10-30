@@ -65,6 +65,8 @@ uint32_t        sst_size(struct SST* sst);
 
 struct SSTLine* sst_at(struct SST* sst, uint32_t index);
 
+uint32_t 		sst_index_of(struct SST* sst, char* name);
+
 //-----------
 struct SSTLine* makeSSTLine(
 	char* name, 

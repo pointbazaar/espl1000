@@ -27,14 +27,14 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FI
 
     //print the TAC for debug
     if(flags_debug(ctx_flags(ctx)))
-        tacbuffer_print(buffer);
+        tacbuffer_print(buffer, ctx);
 
     //create basic blocks from this TAC
     //basic blocks from the three address code
     //for each function, create a graph of basic blocks
 
 	int nblocks;
-    struct BasicBlock** graph = basicblock_create_graph(buffer, m->decl->name, &nblocks);
+    struct BasicBlock** graph = basicblock_create_graph(buffer, m->decl->name, &nblocks, ctx);
 	struct BasicBlock* root = graph[0];
 	
     emit_asm_avr_basic_block(root, ctx, fout);

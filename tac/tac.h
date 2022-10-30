@@ -1,6 +1,11 @@
 #ifndef SMALLDRAGON_TOPLEVEL_TAC_H
 #define SMALLDRAGON_TOPLEVEL_TAC_H
 
+struct Ctx;
+struct ST;
+
+extern struct ST* ctx_tables(struct Ctx* ctx);
+
 #include "ast/ast_declare.h"
 
 #include "rat/rat.h"
@@ -59,7 +64,7 @@ enum TAC_KIND{
     TAC_NOP,
     
     TAC_LABEL_INDEXED,
-    TAC_LABEL_NAMED,
+    TAC_LABEL_FUNCTION,
 
     TAC_BINARY_OP_IMMEDIATE, //NEW TODO
 
@@ -86,13 +91,11 @@ struct TAC{
     enum TAC_OP op;
 
     int32_t const_value;
-    
-    char str[DEFAULT_STR_SIZE];
 };
 
 bool tac_is_unconditional_jump(struct TAC* tac);
 
-char* tac_tostring(struct TAC* tac);
+char* tac_tostring(struct TAC* tac, struct Ctx* ctx);
 uint32_t make_label();
 uint32_t make_temp();
 
@@ -100,7 +103,7 @@ uint32_t make_temp();
 //which helps with avoiding invalid state and malformed TACs
 
 struct TAC* makeTACLabel(uint32_t label);
-struct TAC* makeTACLabelNamed(char* label);
+struct TAC* makeTACLabelFunction(uint32_t sst_index);
 
 struct TAC* makeTACGoto(uint32_t label);
 struct TAC* makeTACReturn(uint32_t tmp);
@@ -123,7 +126,7 @@ struct TAC* makeTACStoreConstAddr(uint32_t addr, uint32_t src);
 struct TAC* makeTACLoadConstAddr(uint32_t dest, uint32_t addr);
 
 struct TAC* makeTACParam(uint32_t dest);
-struct TAC* makeTACCall(uint32_t tmp, char* function_name);
+struct TAC* makeTACCall(uint32_t tmp, uint32_t function_index);
 
 struct TAC* makeTACSetupStackframe(uint32_t frame_size);
 

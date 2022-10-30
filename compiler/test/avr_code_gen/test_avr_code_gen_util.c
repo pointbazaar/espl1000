@@ -69,7 +69,7 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
     emit_setup_stack_pointer_avr(fout);
 
 	int nblocks;
-    struct BasicBlock** graph = basicblock_create_graph(buffer, "main", &nblocks);
+    struct BasicBlock** graph = basicblock_create_graph(buffer, "main", &nblocks, ctx);
 	
 	struct BasicBlock* root = graph[0];
 

@@ -6,6 +6,9 @@
 #include "tacbuffer.h"
 #include "tac.h"
 
+struct Ctx;
+struct ST;
+
 //TACBuffer should be opaque outside of this file
 struct TACBuffer{
     size_t cap;
@@ -79,17 +82,17 @@ void tacbuffer_dtor(struct TACBuffer* buffer){
     free(buffer);
 }
 
-void tacbuffer_print(struct TACBuffer* buffer){
-    char* s = tacbuffer_tostring(buffer, false);
+void tacbuffer_print(struct TACBuffer* buffer, struct Ctx* ctx){
+    char* s = tacbuffer_tostring(buffer, false, ctx);
     printf("%s",s);
     free(s);
 }
-char* tacbuffer_tostring(struct TACBuffer* buffer, bool graphviz){
+char* tacbuffer_tostring(struct TACBuffer* buffer, bool graphviz, struct Ctx* ctx){
     char* res = malloc(sizeof(char)*(buffer->count*100));
     strcpy(res, "");
 
     for(size_t k = 0; k < buffer->count; k++){
-        char* s = tac_tostring(buffer->buffer[k]);
+        char* s = tac_tostring(buffer->buffer[k], ctx);
         strcat(res, s);
 
         strcat(res, (graphviz)?"\\l":"\n");

@@ -131,7 +131,7 @@ struct LVSTLine* lvst_get(struct LVST* lvst, char* name){
 	return NULL;
 }
 
-struct LVSTLine* lvst_get_2(struct LVST* lvst, uint32_t index){
+struct LVSTLine* lvst_at(struct LVST* lvst, uint32_t index){
 	if(index >= lvst->count){
 		printf("[LVST][Error] index %d not found in LVST\n", index);
 		lvst_print(lvst);

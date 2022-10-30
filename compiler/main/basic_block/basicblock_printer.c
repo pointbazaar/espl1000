@@ -9,9 +9,9 @@
 #include "basicblock_printer.h"
 
 
-static void basicblock_dot_section(FILE *fout, uint32_t i, struct BasicBlock *block);
+static void basicblock_dot_section(FILE *fout, uint32_t i, struct BasicBlock *block, struct Ctx* ctx);
 
-void write_dot_file_from_graph(struct BasicBlock **blocks, uint32_t count, char* function_name) {
+void write_dot_file_from_graph(struct BasicBlock **blocks, uint32_t count, char* function_name, struct Ctx* ctx) {
 
     char fname_buffer[100];
     sprintf(fname_buffer, "%s.dot", function_name);
@@ -25,7 +25,7 @@ void write_dot_file_from_graph(struct BasicBlock **blocks, uint32_t count, char*
 
     for(uint32_t i = 0; i < count; i++){
         struct BasicBlock* block = blocks[i];
-        basicblock_dot_section(fout, i, block);
+        basicblock_dot_section(fout, i, block, ctx);
     }
 
     fprintf(fout, "}\n");
@@ -38,9 +38,9 @@ void write_dot_file_from_graph(struct BasicBlock **blocks, uint32_t count, char*
     system(cmd_buffer);
 }
 
-static void basicblock_dot_section(FILE *fout, uint32_t i, struct BasicBlock *block) {
+static void basicblock_dot_section(FILE *fout, uint32_t i, struct BasicBlock *block, struct Ctx* ctx) {
 
-    char* tacbuffer_str = tacbuffer_tostring(block->buffer, true);
+    char* tacbuffer_str = tacbuffer_tostring(block->buffer, true, ctx);
 
     fprintf(fout, "b%d [shape=box label=\"%s\"]\n", i, tacbuffer_str);
 

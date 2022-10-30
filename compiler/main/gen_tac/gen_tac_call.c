@@ -28,7 +28,10 @@ void tac_call(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx){
         exit(1);
     }
     
-    struct TAC* t2 = makeTACCall(make_temp(), call->callable->simple_var->name);
+    uint32_t index = sst_index_of(ctx_tables(ctx)->sst, call->callable->simple_var->name);
+    
+    
+    struct TAC* t2 = makeTACCall(make_temp(), index);
 
     tacbuffer_append(buffer, t2);
 }

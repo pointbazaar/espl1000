@@ -45,7 +45,7 @@ void lvst_add(struct LVST* lvst, struct LVSTLine* line);
 
 struct LVSTLine* lvst_get(struct LVST* lvst, char* name);
 
-struct LVSTLine* lvst_get_2(struct LVST* lvst, uint32_t index);
+struct LVSTLine* lvst_at(struct LVST* lvst, uint32_t index);
 
 uint32_t lvst_index_of(struct LVST* lvst, char* name);
 

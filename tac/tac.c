@@ -25,8 +25,6 @@ struct TAC* makeTAC(){
             .op = TAC_OP_NONE,
     };
 
-    strcpy(res->str, "");
-
     return res;
 }
 
@@ -47,11 +45,10 @@ struct TAC* makeTACLabel(uint32_t label){
     return t;
 }
 
-struct TAC* makeTACLabelNamed(char* label){
+struct TAC* makeTACLabelFunction(uint32_t sst_index){
     struct TAC* t = makeTAC();
-    t->kind = TAC_LABEL_NAMED;
-    t->label_index = TAC_NO_LABEL;
-    strncpy(t->str, label, DEFAULT_STR_SIZE);
+    t->kind = TAC_LABEL_FUNCTION;
+    t->dest = sst_index;
     return t;
 }
 
@@ -214,11 +211,11 @@ struct TAC* makeTACParam(uint32_t dest){
     return t;
 }
 
-struct TAC* makeTACCall(uint32_t tmp, char* function_name){
+struct TAC* makeTACCall(uint32_t tmp, uint32_t function_index){
 	struct TAC* t = makeTAC();
     t->kind = TAC_CALL;
     t->dest = tmp;
-    strcpy(t->str, function_name);
+    t->arg1 = function_index;
     return t;
 }
 

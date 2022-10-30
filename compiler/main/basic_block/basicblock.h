@@ -22,9 +22,9 @@ struct BasicBlock {
 struct BasicBlock* basicblock_ctor(uint32_t index);
 void basicblock_dtor(struct BasicBlock* block);
 
-void basicblock_print(struct BasicBlock* block);
+void basicblock_print(struct BasicBlock* block, struct Ctx* ctx);
 
-struct BasicBlock** basicblock_create_graph(struct TACBuffer* buffer, char* function_name, int* nblocks);
+struct BasicBlock** basicblock_create_graph(struct TACBuffer* buffer, char* function_name, int* nblocks, struct Ctx* ctx);
 
 
 #endif

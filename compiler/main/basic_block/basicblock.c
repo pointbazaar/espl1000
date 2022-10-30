@@ -18,7 +18,7 @@ static struct BasicBlock* find_block_from_label_index(struct BasicBlock** blocks
 void create_edges_basic_block(struct TACBuffer *buffer, uint32_t count, struct BasicBlock **blocks,
                               struct BasicBlock *block);
 
-struct BasicBlock** basicblock_create_graph(struct TACBuffer* buffer, char* function_name, int* nblocks){
+struct BasicBlock** basicblock_create_graph(struct TACBuffer* buffer, char* function_name, int* nblocks, struct Ctx* ctx){
 
     //determine leaders
     bool* is_leader = calculate_leaders(buffer);
@@ -38,7 +38,7 @@ struct BasicBlock** basicblock_create_graph(struct TACBuffer* buffer, char* func
         //DEBUG:print the blocks
         bool debug = false;
         if(debug)
-            basicblock_print(blocks[i]);
+            basicblock_print(blocks[i], ctx);
 
         create_edges_basic_block(buffer, count, blocks, blocks[i]);
     }
@@ -46,7 +46,7 @@ struct BasicBlock** basicblock_create_graph(struct TACBuffer* buffer, char* func
     //.dot file creation
     //TODO: print the basic blocks to dot file
     //TODO: check -debug flag
-    write_dot_file_from_graph(blocks, count, function_name);
+    write_dot_file_from_graph(blocks, count, function_name, ctx);
 
     free(is_leader);
     
@@ -86,7 +86,7 @@ static struct BasicBlock* find_block_from_label_index(struct BasicBlock** blocks
 
 		enum TAC_KIND kind = tacbuffer_get(candidate->buffer, 0)->kind;
 		
-        if(kind != TAC_LABEL_INDEXED && kind != TAC_LABEL_NAMED)
+        if(kind != TAC_LABEL_INDEXED && kind != TAC_LABEL_FUNCTION)
             continue;
 
         if(tacbuffer_get(candidate->buffer, 0)->label_index == label_index)
@@ -152,10 +152,10 @@ void basicblock_dtor(struct BasicBlock* block){
     free(block);
 }
 
-void basicblock_print(struct BasicBlock* block){
+void basicblock_print(struct BasicBlock* block, struct Ctx* ctx){
 
     printf(" -- BLOCK %d --\n", block->index);
-    tacbuffer_print(block->buffer);
+    tacbuffer_print(block->buffer, ctx);
     printf(" -- --\n\n");
 }
 
@@ -174,7 +174,7 @@ static bool* calculate_leaders(struct TACBuffer* buffer){
         struct TAC* current = tacbuffer_get(buffer, i);
 
         //if(current->label_index != TAC_NO_LABEL)
-        if(current->kind == TAC_LABEL_NAMED || current->kind == TAC_LABEL_INDEXED)
+        if(current->kind == TAC_LABEL_FUNCTION || current->kind == TAC_LABEL_INDEXED)
             is_leader[i] = true;
 
         if(i==0) continue;

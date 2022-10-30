@@ -33,7 +33,7 @@ static char* get_op_str(enum TAC_OP top){
     return opstr;
 }
 
-char* tac_tostring(struct TAC* t){
+char* tac_tostring(struct TAC* t, struct Ctx* ctx){
 
     char* res = malloc(sizeof(char)*120);
     strcpy(res, "");
@@ -46,8 +46,16 @@ char* tac_tostring(struct TAC* t){
     switch (t->kind) {
         case TAC_LABEL_INDEXED:
             sprintf(res,"L%3d:%5s", t->label_index, ""); break;
-		case TAC_LABEL_NAMED:
-            sprintf(res, "%-9s:", t->str); break;
+		case TAC_LABEL_FUNCTION:
+			{
+				char* function_name = "main"; //in case sst is not initialized
+				
+				if(t->arg1 < sst_size(ctx_tables(ctx)->sst)){
+					function_name = sst_at(ctx_tables(ctx)->sst, t->dest)->name;
+				}
+				sprintf(res, "%-9s:", function_name);
+			}
+            break;
             
         case TAC_GOTO:
             sprintf(buffer, "goto L%d", t->label_index); break;
@@ -62,9 +70,11 @@ char* tac_tostring(struct TAC* t){
         case TAC_COPY:
             sprintf(buffer,"t%d = t%d", t->dest, t->arg1); break;
 		case TAC_LOAD_LOCAL:
-            sprintf(buffer,"load t%d = %s", t->dest, t->str); break;
+			//TODO: local name
+            sprintf(buffer,"load t%d = l%d", t->dest, t->arg1); break;
 		case TAC_STORE_LOCAL:
-            sprintf(buffer,"store %s = t%d", t->str, t->arg1); break;
+			//TODO: local name
+            sprintf(buffer,"store l%d = t%d", t->dest, t->arg1); break;
             
         case TAC_LOAD_CONST_ADDR:
             sprintf(buffer,"t%d = [%d]", t->dest, t->const_value); break;
@@ -81,8 +91,18 @@ char* tac_tostring(struct TAC* t){
             break;
         case TAC_UNARY_OP:
             sprintf(buffer,"t%d = %4s t%d", t->dest, opstr, t->arg1); break;
+            
         case TAC_CALL:
-            sprintf(buffer,"t%d = call %s", t->dest, t->str); break;
+			{
+				char* function_name = "main"; //in case sst is not initialized
+				
+				if(t->arg1 < sst_size(ctx_tables(ctx)->sst)){
+					function_name = sst_at(ctx_tables(ctx)->sst, t->arg1)->name;
+				}
+				sprintf(buffer,"t%d = call %s", t->dest, function_name); 
+			}
+            break;
+            
         case TAC_PARAM:
             sprintf(buffer,"param t%d", t->arg1); break;
         case TAC_RETURN:

@@ -12,12 +12,12 @@
 void emit_asm_avr_single_tac(struct RAT* rat, struct TAC *tac, struct Ctx* ctx, FILE *fout) {
 
     if(flags_debug(ctx_flags(ctx))){
-        printf("emit_asm_avr_single_tac %s\n", tac_tostring(tac));
+        printf("emit_asm_avr_single_tac %s\n", tac_tostring(tac, ctx));
     }
 
     switch(tac->kind){
 		case TAC_LABEL_INDEXED:
-        case TAC_LABEL_NAMED: compile_tac_label(tac, fout); break;
+        case TAC_LABEL_FUNCTION: compile_tac_label(tac, fout, ctx); break;
         case TAC_GOTO:        compile_tac_goto(tac, fout); break;
         case TAC_NOP:         compile_tac_nop(fout); break;
         case TAC_BINARY_OP:   compile_tac_binary_op(rat, tac, fout); break;
@@ -28,7 +28,7 @@ void emit_asm_avr_single_tac(struct RAT* rat, struct TAC *tac, struct Ctx* ctx, 
         
         case TAC_COPY:        compile_tac_copy(rat, tac, fout); break;
         case TAC_CONST_VALUE: compile_tac_const_value(rat, tac, fout); break;
-        case TAC_CALL:        compile_tac_call(rat, tac, fout); break;
+        case TAC_CALL:        compile_tac_call(rat, tac, fout, ctx); break;
         case TAC_PARAM:		  compile_tac_param(rat, tac, fout); break;
         case TAC_RETURN:      compile_tac_return(rat, tac, ctx, fout); break;
         case TAC_BINARY_OP_IMMEDIATE: compile_tac_binary_op_immediate(rat, tac, fout); break;
