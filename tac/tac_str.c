@@ -44,12 +44,11 @@ char* tac_tostring(struct TAC* t){
     char* opstr = get_op_str(t->op);
 
     switch (t->kind) {
-        case TAC_LABEL:
-            if (strcmp(t->str, "") == 0)
-                sprintf(res,"L%3d:%5s", t->label_index, "");
-            else
-                sprintf(res, "%-9s:", t->str);
-            break;
+        case TAC_LABEL_INDEXED:
+            sprintf(res,"L%3d:%5s", t->label_index, ""); break;
+		case TAC_LABEL_NAMED:
+            sprintf(res, "%-9s:", t->str); break;
+            
         case TAC_GOTO:
             sprintf(buffer, "goto L%d", t->label_index); break;
         case TAC_IF_GOTO:

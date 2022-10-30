@@ -42,14 +42,14 @@ uint32_t make_temp(){
 }
 struct TAC* makeTACLabel(uint32_t label){
     struct TAC* t = makeTAC();
-    t->kind = TAC_LABEL;
+    t->kind = TAC_LABEL_INDEXED;
     t->label_index = label;
     return t;
 }
 
-struct TAC* makeTACLabel2(char* label){
+struct TAC* makeTACLabelNamed(char* label){
     struct TAC* t = makeTAC();
-    t->kind = TAC_LABEL;
+    t->kind = TAC_LABEL_NAMED;
     t->label_index = TAC_NO_LABEL;
     strncpy(t->str, label, DEFAULT_STR_SIZE);
     return t;

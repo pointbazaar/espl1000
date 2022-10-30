@@ -84,7 +84,9 @@ static struct BasicBlock* find_block_from_label_index(struct BasicBlock** blocks
     for(size_t j = 0; j < count_blocks; j++) {
         struct BasicBlock *candidate = blocks[j];
 
-        if(tacbuffer_get(candidate->buffer, 0)->kind != TAC_LABEL)
+		enum TAC_KIND kind = tacbuffer_get(candidate->buffer, 0)->kind;
+		
+        if(kind != TAC_LABEL_INDEXED && kind != TAC_LABEL_NAMED)
             continue;
 
         if(tacbuffer_get(candidate->buffer, 0)->label_index == label_index)
@@ -172,7 +174,7 @@ static bool* calculate_leaders(struct TACBuffer* buffer){
         struct TAC* current = tacbuffer_get(buffer, i);
 
         //if(current->label_index != TAC_NO_LABEL)
-        if(current->kind == TAC_LABEL)
+        if(current->kind == TAC_LABEL_NAMED || current->kind == TAC_LABEL_INDEXED)
             is_leader[i] = true;
 
         if(i==0) continue;

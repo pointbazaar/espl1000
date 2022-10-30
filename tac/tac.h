@@ -57,7 +57,9 @@ enum TAC_KIND{
     TAC_SETUP_STACKFRAME, //create space on stack for locals, load SP
 
     TAC_NOP,
-    TAC_LABEL,
+    
+    TAC_LABEL_INDEXED,
+    TAC_LABEL_NAMED,
 
     TAC_BINARY_OP_IMMEDIATE, //NEW TODO
 
@@ -98,7 +100,8 @@ uint32_t make_temp();
 //which helps with avoiding invalid state and malformed TACs
 
 struct TAC* makeTACLabel(uint32_t label);
-struct TAC* makeTACLabel2(char* label);
+struct TAC* makeTACLabelNamed(char* label);
+
 struct TAC* makeTACGoto(uint32_t label);
 struct TAC* makeTACReturn(uint32_t tmp);
 

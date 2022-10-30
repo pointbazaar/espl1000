@@ -34,7 +34,7 @@ static void case_recurse(){
 	
     struct TACBuffer* buffer = tacbuffer_ctor();
     
-    tacbuffer_append(buffer, makeTACLabel2("main"));
+    tacbuffer_append(buffer, makeTACLabelNamed("main"));
     tacbuffer_append(buffer, makeTACConst(0, value));
     tacbuffer_append(buffer, makeTACCall(1, "main"));
     tacbuffer_append(buffer, makeTACReturn(0));

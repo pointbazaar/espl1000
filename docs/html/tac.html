@@ -32,7 +32,7 @@
 	</p>
 
     <p>
-        Implementation can be found in tac.c / tac.h <br>
+        Implementation can be found in tac.c / tac.h  .
         This web page is to document and formalize the representation.
     </p>
 
@@ -52,6 +52,128 @@
         <br>
         It also specifies which values are allowed for these fields.
     </p>
+    
+    <h3>Control Flow outside the function</h3>
+    
+    <table class="table table-bordered border-primary">
+        <thead>
+            <tr>
+                <th>TAC_KIND</th>
+                <th>Example</th>
+                <th>uint32_t dest</th>
+                <th>uint32_t arg1</th>
+                <th>(int32_t) const_value</th>
+                <th>(uint32_t) label_index</th>
+                <th>enum TAC_OP op (allowed values)</th>
+                <th>char* str</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>TAC_CALL</td> <td>t1 = call myfn</td>
+                <td>TMP</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>LABEL</td>
+            </tr>
+            <tr>
+                <td>TAC_PARAM</td> <td>param t1</td>
+                <td>TMP</td>
+                <td> - </td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>TAC_SETUP_STACKFRAME</td> 
+                <td>setup_stackframe 3</td>
+                <td>-</td>
+                <td>-</td>
+                <td>CONST</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>TAC_RETURN</td> <td>return t1</td>
+                <td>TMP</td>
+                <td> - </td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>TAC_LABEL_NAMED</td> <td>main:</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>LABEL</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h3>Control Flow inside a function</h3>
+    
+    <table class="table table-bordered border-primary">
+        <thead>
+            <tr>
+                <th>TAC_KIND</th>
+                <th>Example</th>
+                <th>uint32_t dest</th>
+                <th>uint32_t arg1</th>
+                <th>(int32_t) const_value</th>
+                <th>(uint32_t) label_index</th>
+                <th>enum TAC_OP op (allowed values)</th>
+                <th>char* str</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>TAC_GOTO</td> <td>goto L1</td>
+                <td> - </td>
+                <td> - </td>
+                <td>-</td>
+                <td>LABEL</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>TAC_IF_GOTO</td> <td>if t1 goto L1</td>
+                <td> - </td>
+                <td>TMP</td>
+                <td>-</td>
+                <td>LABEL</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>TAC_IF_CMP_GOTO</td> <td>if t1 &lt; t2 goto L1</td>
+                <td>TMP</td>
+                <td>TMP</td>
+                <td>-</td>
+                <td>LABEL</td>
+                <td>TAC_OP_CMP_*</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>TAC_LABEL_INDEXED</td> <td>L3:</td>
+                <td> - </td>
+                <td> - </td>
+                <td>-</td>
+                <td>LABEL</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <h3>Other</h3>
 
     <table class="table table-bordered border-primary">
         <thead>
@@ -86,33 +208,6 @@
                 <td>-</td>
                 <td>-</td>
                 <td>TAC_OP_UNARY_*</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>TAC_GOTO</td> <td>goto L1</td>
-                <td> - </td>
-                <td> - </td>
-                <td>-</td>
-                <td>LABEL</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>TAC_IF_GOTO</td> <td>if t1 goto L1</td>
-                <td> - </td>
-                <td>TMP</td>
-                <td>-</td>
-                <td>LABEL</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>TAC_IF_CMP_GOTO</td> <td>if t1 &lt; t2 goto L1</td>
-                <td>TMP</td>
-                <td>TMP</td>
-                <td>-</td>
-                <td>LABEL</td>
-                <td>TAC_OP_CMP_*</td>
                 <td>-</td>
             </tr>
             <tr>
@@ -152,43 +247,6 @@
                 <td>-</td>
             </tr>
             <tr>
-                <td>TAC_CALL</td> <td>t1 = call myfn</td>
-                <td>TMP</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>LABEL</td>
-            </tr>
-            <tr>
-                <td>TAC_PARAM</td> <td>param t1</td>
-                <td>TMP</td>
-                <td> - </td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>TAC_SETUP_STACKFRAME</td> 
-                <td>setup_stackframe 3</td>
-                <td>-</td>
-                <td>-</td>
-                <td>CONST</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>TAC_RETURN</td> <td>return t1</td>
-                <td>TMP</td>
-                <td> - </td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
                 <td>TAC_NOP</td> <td>nop</td>
                 <td> - </td>
                 <td> - </td>
@@ -196,24 +254,6 @@
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
-            </tr>
-            <tr>
-                <td>TAC_LABEL</td> <td>L3:</td>
-                <td> - </td>
-                <td> - </td>
-                <td>-</td>
-                <td>LABEL</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>TAC_LABEL</td> <td>main:</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>LABEL</td>
             </tr>
             <tr>
                 <td>TAC_BINARY_OP_IMMEDIATE</td>

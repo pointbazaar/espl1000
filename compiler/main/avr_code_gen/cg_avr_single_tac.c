@@ -16,7 +16,8 @@ void emit_asm_avr_single_tac(struct RAT* rat, struct TAC *tac, struct Ctx* ctx, 
     }
 
     switch(tac->kind){
-        case TAC_LABEL:       compile_tac_label(tac, fout); break;
+		case TAC_LABEL_INDEXED:
+        case TAC_LABEL_NAMED: compile_tac_label(tac, fout); break;
         case TAC_GOTO:        compile_tac_goto(tac, fout); break;
         case TAC_NOP:         compile_tac_nop(fout); break;
         case TAC_BINARY_OP:   compile_tac_binary_op(rat, tac, fout); break;
