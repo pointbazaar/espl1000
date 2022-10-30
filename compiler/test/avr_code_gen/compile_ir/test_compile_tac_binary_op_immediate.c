@@ -39,9 +39,9 @@ static void case_add(){
     struct TACBuffer* buffer = tacbuffer_ctor();
     
 	tacbuffer_append(buffer, makeTACConst(0, start));
-	tacbuffer_append(buffer, makeTACBinOpImmediate("t0", TAC_OP_ADD, change));
+	tacbuffer_append(buffer, makeTACBinOpImmediate(0, TAC_OP_ADD, change));
     
-    tacbuffer_append(buffer, makeTACReturn("t0"));
+    tacbuffer_append(buffer, makeTACReturn(0));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 
@@ -67,9 +67,9 @@ static void case_sub(){
     struct TACBuffer* buffer = tacbuffer_ctor();
     
 	tacbuffer_append(buffer, makeTACConst(0, start));
-	tacbuffer_append(buffer, makeTACBinOpImmediate("t0", TAC_OP_SUB, change));
+	tacbuffer_append(buffer, makeTACBinOpImmediate(0, TAC_OP_SUB, change));
     
-    tacbuffer_append(buffer, makeTACReturn("t0"));
+    tacbuffer_append(buffer, makeTACReturn(0));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 
@@ -95,9 +95,9 @@ static void case_and(){
     struct TACBuffer* buffer = tacbuffer_ctor();
     
 	tacbuffer_append(buffer, makeTACConst(0, start));
-	tacbuffer_append(buffer, makeTACBinOpImmediate("t0", TAC_OP_AND, change));
+	tacbuffer_append(buffer, makeTACBinOpImmediate(0, TAC_OP_AND, change));
     
-    tacbuffer_append(buffer, makeTACReturn("t0"));
+    tacbuffer_append(buffer, makeTACReturn(0));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 
@@ -123,9 +123,9 @@ static void case_or(){
     struct TACBuffer* buffer = tacbuffer_ctor();
     
 	tacbuffer_append(buffer, makeTACConst(0, start));
-	tacbuffer_append(buffer, makeTACBinOpImmediate("t0", TAC_OP_OR, change));
+	tacbuffer_append(buffer, makeTACBinOpImmediate(0, TAC_OP_OR, change));
     
-    tacbuffer_append(buffer, makeTACReturn("t0"));
+    tacbuffer_append(buffer, makeTACReturn(0));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 

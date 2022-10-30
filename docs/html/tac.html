@@ -58,11 +58,12 @@
             <tr>
                 <th>TAC_KIND</th>
                 <th>Example</th>
-                <th>ARG0/dest</th>
-                <th>ARG1/src</th>
+                <th>uint32_t dest</th>
+                <th>uint32_t arg1</th>
                 <th>(int32_t) const_value</th>
                 <th>(uint32_t) label_index</th>
                 <th>enum TAC_OP op (allowed values)</th>
+                <th>char* str</th>
             </tr>
         </thead>
         <tbody>
@@ -76,6 +77,7 @@
 					TAC_OP_XOR, TAC_OP_AND, TAC_OP_OR,
 					TAC_OP_CMP_*
                 </td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_UNARY_OP</td> <td>t1 = -t2</td>
@@ -84,6 +86,7 @@
                 <td>-</td>
                 <td>-</td>
                 <td>TAC_OP_UNARY_*</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_GOTO</td> <td>goto L1</td>
@@ -91,6 +94,7 @@
                 <td> - </td>
                 <td>-</td>
                 <td>LABEL</td>
+                <td>-</td>
                 <td>-</td>
             </tr>
             <tr>
@@ -100,6 +104,7 @@
                 <td>-</td>
                 <td>LABEL</td>
                 <td>-</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_IF_CMP_GOTO</td> <td>if t1 &lt; t2 goto L1</td>
@@ -108,6 +113,7 @@
                 <td>-</td>
                 <td>LABEL</td>
                 <td>TAC_OP_CMP_*</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_COPY</td> <td>t1 = t2</td>
@@ -116,22 +122,25 @@
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_LOAD_LOCAL</td> <td>t1 = x</td>
                 <td>TMP</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
                 <td>LOCAL</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_STORE_LOCAL</td> <td>x = t1</td>
-                <td>LOCAL</td>
+                <td>-</td>
                 <td>TMP</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
+                <td>LOCAL</td>
             </tr>
             <tr>
                 <td>TAC_CONST_VALUE</td> <td>t1 = 4</td>
@@ -140,19 +149,22 @@
                 <td>CONST</td>
                 <td>-</td>
                 <td>-</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_CALL</td> <td>t1 = call myfn</td>
                 <td>TMP</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
                 <td>LABEL</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_PARAM</td> <td>param t1</td>
                 <td>TMP</td>
                 <td> - </td>
+                <td>-</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
@@ -165,11 +177,13 @@
                 <td>CONST</td>
                 <td>-</td>
                 <td>-</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_RETURN</td> <td>return t1</td>
                 <td>TMP</td>
                 <td> - </td>
+                <td>-</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
@@ -181,6 +195,7 @@
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_LABEL</td> <td>L3:</td>
@@ -189,14 +204,16 @@
                 <td>-</td>
                 <td>LABEL</td>
                 <td>-</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_LABEL</td> <td>main:</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
                 <td>LABEL</td>
-                <td> - </td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_BINARY_OP_IMMEDIATE</td>
@@ -211,6 +228,7 @@
 					<br>
 					TAC_OP_SHIFT_*
 				</td>
+				<td>-</td>
             </tr>
             <tr>
                 <td>TAC_LOAD_CONST_ADDR</td>
@@ -220,6 +238,7 @@
                 <td>CONST</td>
                 <td>-</td>
                 <td>-</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td>TAC_STORE_CONST_ADDR</td>
@@ -227,6 +246,7 @@
                 <td>-</td>
                 <td>TMP</td>
                 <td>CONST</td>
+                <td>-</td>
                 <td>-</td>
                 <td>-</td>
             </tr>

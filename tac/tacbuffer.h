@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <stdbool.h>
+#include <inttypes.h>
 
 struct TACBuffer;
 struct TAC;
@@ -20,7 +21,7 @@ void tacbuffer_set(struct TACBuffer* buffer, int index, struct TAC* node);
 struct TAC* tacbuffer_get(struct TACBuffer* buffer, int index);
 struct TAC* tacbuffer_get_last(struct TACBuffer* buffer);
 
-char* tacbuffer_last_dest(struct TACBuffer* buffer);
+uint32_t tacbuffer_last_dest(struct TACBuffer* buffer);
 size_t tacbuffer_count(struct TACBuffer* buffer);
 
 size_t tacbuffer_indexof(struct TACBuffer* buffer, struct TAC* tac);

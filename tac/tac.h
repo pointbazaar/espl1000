@@ -77,13 +77,15 @@ struct TAC{
     //three address code
     uint32_t label_index;
 
-    char dest[DEFAULT_STR_SIZE];
+    uint32_t dest;
     enum TAC_KIND kind;
-    char arg1[DEFAULT_STR_SIZE];
+    uint32_t arg1;
 
     enum TAC_OP op;
 
     int32_t const_value;
+    
+    char str[DEFAULT_STR_SIZE];
 };
 
 bool tac_is_unconditional_jump(struct TAC* tac);
@@ -98,9 +100,9 @@ uint32_t make_temp();
 struct TAC* makeTACLabel(uint32_t label);
 struct TAC* makeTACLabel2(char* label);
 struct TAC* makeTACGoto(uint32_t label);
-struct TAC* makeTACReturn(char* tmp);
+struct TAC* makeTACReturn(uint32_t tmp);
 
-struct TAC* makeTACIfGoto(char* tmp_condition, uint32_t label_destination);
+struct TAC* makeTACIfGoto(uint32_t tmp_condition, uint32_t label_destination);
 struct TAC* makeTACIfCMPGoto(uint32_t tmp1, enum TAC_OP op, uint32_t tmp2, uint32_t label_destination); 
 
 struct TAC* makeTACCopy(uint32_t dest, uint32_t src);
@@ -109,14 +111,14 @@ struct TAC* makeTACStoreLocal(char* local_name, uint32_t tmp);
 
 struct TAC* makeTACConst(uint32_t tmp, int value);
 
-struct TAC* makeTACBinOp(char* dest, enum TAC_OP op, char* src);
-struct TAC* makeTACBinOpImmediate(char* tmp, enum TAC_OP op, int32_t immediate);
-struct TAC* makeTACUnaryOp(char* dest, char* src, enum TAC_OP op);
+struct TAC* makeTACBinOp(uint32_t dest, enum TAC_OP op, uint32_t src);
+struct TAC* makeTACBinOpImmediate(uint32_t tmp, enum TAC_OP op, int32_t immediate);
+struct TAC* makeTACUnaryOp(uint32_t dest, uint32_t src, enum TAC_OP op);
 
-struct TAC* makeTACStoreConstAddr(uint32_t addr, char* src);
-struct TAC* makeTACLoadConstAddr(char* dest, uint32_t addr);
+struct TAC* makeTACStoreConstAddr(uint32_t addr, uint32_t src);
+struct TAC* makeTACLoadConstAddr(uint32_t dest, uint32_t addr);
 
-struct TAC* makeTACParam(char* dest);
+struct TAC* makeTACParam(uint32_t dest);
 struct TAC* makeTACCall(uint32_t tmp, char* function_name);
 
 struct TAC* makeTACSetupStackframe(uint32_t frame_size);

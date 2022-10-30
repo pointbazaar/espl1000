@@ -15,15 +15,19 @@ void rat_dtor(struct RAT* rat);
 
 void rat_print(struct RAT* rat);
 
-bool rat_has_register(struct RAT* rat, char* name);
-int rat_get_register(struct RAT* rat, char* name);
+bool rat_has_register_2(struct RAT* rat, char* name);
+bool rat_has_register(struct RAT* rat, uint32_t tmp_index);
+
+int rat_get_register_2(struct RAT* rat, char* name);
+int rat_get_register(struct RAT* rat, uint32_t tmp_index);
 
 //gives index of a free register, exits on failure.
 //the register still has to be occupied
 int rat_get_free_register(struct RAT* rat, bool high_regs_only);
 
 //occupies that register 
-void rat_occupy_register(struct RAT* rat, uint8_t reg, char* name);
+void rat_occupy_register_2(struct RAT* rat, uint8_t reg, char* name);
+void rat_occupy_register(struct RAT* rat, uint8_t reg, uint32_t tmp_index);
 
 bool rat_occupied(struct RAT* rat, uint8_t reg);
 

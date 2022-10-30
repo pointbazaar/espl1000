@@ -55,11 +55,11 @@ static void case_eq_true(){
 	
 	tacbuffer_append(buffer, makeTACLabel(l1));
 	tacbuffer_append(buffer, makeTACConst(0, value));
-	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, "t0"));
+	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, 0));
 	
 	tacbuffer_append(buffer, makeTACLabel(lend));
 	tacbuffer_append(buffer, makeTACConst(0, 0));
-    tacbuffer_append(buffer, makeTACReturn("t0"));
+    tacbuffer_append(buffer, makeTACReturn(0));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 
@@ -91,11 +91,11 @@ static void case_eq_false(){
 	
 	tacbuffer_append(buffer, makeTACLabel(l1));
 	tacbuffer_append(buffer, makeTACConst(0, value));
-	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, "t0"));
+	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, 0));
 	
 	tacbuffer_append(buffer, makeTACLabel(lend));
 	tacbuffer_append(buffer, makeTACConst(0, 0));
-    tacbuffer_append(buffer, makeTACReturn("t0"));
+    tacbuffer_append(buffer, makeTACReturn(0));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 
@@ -127,11 +127,11 @@ static void case_neq_true(){
 	
 	tacbuffer_append(buffer, makeTACLabel(l1));
 	tacbuffer_append(buffer, makeTACConst(0, value));
-	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, "t0"));
+	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, 0));
 	
 	tacbuffer_append(buffer, makeTACLabel(lend));
 	tacbuffer_append(buffer, makeTACConst(0, 0));
-    tacbuffer_append(buffer, makeTACReturn("t0"));
+    tacbuffer_append(buffer, makeTACReturn(0));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 
@@ -163,11 +163,11 @@ static void case_neq_false(){
 	
 	tacbuffer_append(buffer, makeTACLabel(l1));
 	tacbuffer_append(buffer, makeTACConst(0, value));
-	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, "t0"));
+	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, 0));
 	
 	tacbuffer_append(buffer, makeTACLabel(lend));
 	tacbuffer_append(buffer, makeTACConst(0, 0));
-    tacbuffer_append(buffer, makeTACReturn("t0"));
+    tacbuffer_append(buffer, makeTACReturn(0));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 
@@ -199,11 +199,11 @@ static void case_lt_true(){
 	
 	tacbuffer_append(buffer, makeTACLabel(l1));
 	tacbuffer_append(buffer, makeTACConst(0, value));
-	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, "t0"));
+	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, 0));
 	
 	tacbuffer_append(buffer, makeTACLabel(lend));
 	tacbuffer_append(buffer, makeTACConst(0, 0));
-    tacbuffer_append(buffer, makeTACReturn("t0"));
+    tacbuffer_append(buffer, makeTACReturn(0));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 
@@ -235,11 +235,11 @@ static void case_lt_false(){
 	
 	tacbuffer_append(buffer, makeTACLabel(l1));
 	tacbuffer_append(buffer, makeTACConst(0, value));
-	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, "t0"));
+	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, 0));
 	
 	tacbuffer_append(buffer, makeTACLabel(lend));
 	tacbuffer_append(buffer, makeTACConst(0, 0));
-    tacbuffer_append(buffer, makeTACReturn("t0"));
+    tacbuffer_append(buffer, makeTACReturn(0));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 
@@ -271,11 +271,11 @@ static void case_ge_true(){
 	
 	tacbuffer_append(buffer, makeTACLabel(l1));
 	tacbuffer_append(buffer, makeTACConst(0, value));
-	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, "t0"));
+	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, 0));
 	
 	tacbuffer_append(buffer, makeTACLabel(lend));
 	tacbuffer_append(buffer, makeTACConst(0, 0));
-    tacbuffer_append(buffer, makeTACReturn("t0"));
+    tacbuffer_append(buffer, makeTACReturn(0));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 
@@ -307,11 +307,11 @@ static void case_ge_false(){
 	
 	tacbuffer_append(buffer, makeTACLabel(l1));
 	tacbuffer_append(buffer, makeTACConst(0, value));
-	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, "t0"));
+	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, 0));
 	
 	tacbuffer_append(buffer, makeTACLabel(lend));
 	tacbuffer_append(buffer, makeTACConst(0, 0));
-    tacbuffer_append(buffer, makeTACReturn("t0"));
+    tacbuffer_append(buffer, makeTACReturn(0));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 

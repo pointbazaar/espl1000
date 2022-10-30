@@ -13,7 +13,7 @@ void compile_tac_call(struct RAT* rat, struct TAC* tac, FILE* fout){
 
     int reg_dest = rat_get_register(rat, tac->dest);
 	
-    fprintf(fout, "call %s\n", tac->arg1);
+    fprintf(fout, "call %s\n", tac->str);
     
     fprintf(fout, "mov r%d, r0", reg_dest);
 }

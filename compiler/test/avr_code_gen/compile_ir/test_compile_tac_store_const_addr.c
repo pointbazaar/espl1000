@@ -25,8 +25,8 @@ void test_compile_tac_store_const_addr(){
     struct TACBuffer* buffer = tacbuffer_ctor();
 
     struct TAC* tac0 = makeTACConst(1, fixed_value);
-    struct TAC* tac1 = makeTACStoreConstAddr(addr, "t1");
-    struct TAC* tac2 = makeTACReturn("t1");
+    struct TAC* tac1 = makeTACStoreConstAddr(addr, 1);
+    struct TAC* tac2 = makeTACReturn(1);
 	
 	tacbuffer_append(buffer, tac0);
     tacbuffer_append(buffer, tac1);

@@ -8,8 +8,8 @@ void compile_tac_label(struct TAC* tac, FILE* fout){
     //newline for readability
     fprintf(fout, "\n");
 
-    if(strcmp(tac->dest, "") == 0)
+    if(strcmp(tac->str, "") == 0)
         fprintf(fout, "L%d:\n", tac->label_index);
     else
-        fprintf(fout, "%s:\n", tac->dest);
+        fprintf(fout, "%s:\n", tac->str);
 }

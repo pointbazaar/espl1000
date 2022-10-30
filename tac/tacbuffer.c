@@ -100,7 +100,7 @@ char* tacbuffer_tostring(struct TACBuffer* buffer, bool graphviz){
     return res;
 }
 
-char* tacbuffer_last_dest(struct TACBuffer* buffer){
+uint32_t tacbuffer_last_dest(struct TACBuffer* buffer){
 	return buffer->buffer[buffer->count - 1]->dest;
 }
 

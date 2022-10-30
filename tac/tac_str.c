@@ -45,51 +45,51 @@ char* tac_tostring(struct TAC* t){
 
     switch (t->kind) {
         case TAC_LABEL:
-            if (strcmp(t->dest, "") == 0)
+            if (strcmp(t->str, "") == 0)
                 sprintf(res,"L%3d:%5s", t->label_index, "");
             else
-                sprintf(res, "%-9s:", t->dest);
+                sprintf(res, "%-9s:", t->str);
             break;
         case TAC_GOTO:
             sprintf(buffer, "goto L%d", t->label_index); break;
         case TAC_IF_GOTO:
-            sprintf(buffer, "if-goto %s L%d", t->arg1, t->label_index); break;
+            sprintf(buffer, "if-goto t%d L%d", t->arg1, t->label_index); break;
 		case TAC_IF_CMP_GOTO:
-			sprintf(buffer, "if %s %s %s goto L%d", t->dest, opstr, t->arg1, t->label_index); break;
+			sprintf(buffer, "if t%d %s t%d goto L%d", t->dest, opstr, t->arg1, t->label_index); break;
             
         case TAC_CONST_VALUE:
-            sprintf(buffer,"%s = %d",t->dest, t->const_value); break;
+            sprintf(buffer,"t%d = %d",t->dest, t->const_value); break;
             
         case TAC_COPY:
-            sprintf(buffer,"%s = %s", t->dest, t->arg1); break;
+            sprintf(buffer,"t%d = t%d", t->dest, t->arg1); break;
 		case TAC_LOAD_LOCAL:
-            sprintf(buffer,"load %s = %s", t->dest, t->arg1); break;
+            sprintf(buffer,"load t%d = %s", t->dest, t->str); break;
 		case TAC_STORE_LOCAL:
-            sprintf(buffer,"store %s = %s", t->dest, t->arg1); break;
+            sprintf(buffer,"store %s = t%d", t->str, t->arg1); break;
             
         case TAC_LOAD_CONST_ADDR:
-            sprintf(buffer,"%s = [%d]", t->dest, t->const_value); break;
+            sprintf(buffer,"t%d = [%d]", t->dest, t->const_value); break;
         case TAC_STORE_CONST_ADDR:
-            sprintf(buffer,"[%d] = %s", t->const_value, t->arg1); break;
+            sprintf(buffer,"[%d] = t%d", t->const_value, t->arg1); break;
         case TAC_NOP:
             sprintf(buffer,"%s", "nop"); break;
         case TAC_BINARY_OP:
             if(t->op >= TAC_OP_CMP_LT &&  t->op <= TAC_OP_CMP_NEQ){
-                sprintf(buffer, "%s = %s %4s %s", t->dest, t->dest, opstr, t->arg1);
+                sprintf(buffer, "t%d = t%d %4s t%d", t->dest, t->dest, opstr, t->arg1);
             }else {
-                sprintf(buffer, "%s %4s %s", t->dest, opstr, t->arg1);
+                sprintf(buffer, "t%d %4s t%d", t->dest, opstr, t->arg1);
             }
             break;
         case TAC_UNARY_OP:
-            sprintf(buffer,"%s = %4s %s", t->dest, opstr, t->arg1); break;
+            sprintf(buffer,"t%d = %4s t%d", t->dest, opstr, t->arg1); break;
         case TAC_CALL:
-            sprintf(buffer,"%s = call %s", t->dest, t->arg1); break;
+            sprintf(buffer,"t%d = call %s", t->dest, t->str); break;
         case TAC_PARAM:
-            sprintf(buffer,"param %s", t->arg1); break;
+            sprintf(buffer,"param t%d", t->arg1); break;
         case TAC_RETURN:
-            sprintf(buffer,"return %s", t->dest); break;
+            sprintf(buffer,"return t%d", t->dest); break;
         case TAC_BINARY_OP_IMMEDIATE:
-            sprintf(buffer, "%s %4s %d", t->dest, opstr, t->const_value); break;
+            sprintf(buffer, "t%d %4s %d", t->dest, opstr, t->const_value); break;
 		case TAC_SETUP_STACKFRAME:
 			sprintf(buffer, "setup_stackframe %d", t->const_value); break;
     }

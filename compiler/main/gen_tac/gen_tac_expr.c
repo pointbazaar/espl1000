@@ -6,8 +6,8 @@
 
 #include "gen_tac.h"
 
-static void tac_expr_part_2_constvalue(struct TACBuffer* buffer, struct Expr* expr, char* t1);
-static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr* expr, char* t1);
+static void tac_expr_part_2_constvalue(struct TACBuffer* buffer, struct Expr* expr, uint32_t t1);
+static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr* expr, uint32_t t1);
 static enum TAC_OP op_to_tac_op(enum OP op_str, bool* reverse_operands);
 static bool operator_immediate_applicable(enum TAC_OP op, int32_t immediate);
 
@@ -18,7 +18,7 @@ void tac_expr(struct TACBuffer* buffer, struct Expr* expr){
     if(expr->term2 != NULL) {
 
         //we know dest of term1
-        char *t1 = tacbuffer_last_dest(buffer);
+        const uint32_t t1 = tacbuffer_last_dest(buffer);
 
 		bool reverse_operands = false;
         enum TAC_OP op = op_to_tac_op(expr->op, &reverse_operands);
@@ -104,7 +104,7 @@ static enum TAC_OP op_to_tac_op(enum OP o, bool* reverse_operands){
     return op;
 }
 
-static void tac_expr_part_2_constvalue(struct TACBuffer* buffer, struct Expr* expr, char* t1){
+static void tac_expr_part_2_constvalue(struct TACBuffer* buffer, struct Expr* expr, uint32_t t1){
 
     const int32_t immediate = int_value_from_const(expr->term2->term->ptr.m12);
 
@@ -114,10 +114,10 @@ static void tac_expr_part_2_constvalue(struct TACBuffer* buffer, struct Expr* ex
     tacbuffer_append(buffer,makeTACBinOpImmediate(t1, op, immediate));
 }
 
-static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr* expr, char* t1){
+static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr* expr, uint32_t t1){
 
     tac_unopterm(buffer, expr->term2);
-    char* t2 = tacbuffer_last_dest(buffer);
+    const uint32_t t2 = tacbuffer_last_dest(buffer);
     
     bool reverse_operands = false;
     

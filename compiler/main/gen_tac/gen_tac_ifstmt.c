@@ -1,3 +1,4 @@
+#include <stdlib.h>
 
 #include "tac/tac.h"
 #include "tac/tacbuffer.h"

@@ -23,7 +23,7 @@ void test_compile_tac_goto(){
     
 	tacbuffer_append(buffer, makeTACLabel(43));
 	tacbuffer_append(buffer, makeTACGoto(43));
-    tacbuffer_append(buffer, makeTACReturn("t0"));
+    tacbuffer_append(buffer, makeTACReturn(0));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 

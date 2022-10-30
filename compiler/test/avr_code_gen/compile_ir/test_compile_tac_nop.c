@@ -26,7 +26,7 @@ void test_compile_tac_nop(){
     int n = 8;
 
     struct TAC* tac0 = makeTACConst(1, 0x00);
-    struct TAC* tac2 = makeTACReturn("t1");
+    struct TAC* tac2 = makeTACReturn(1);
 
     tacbuffer_append(buffer, tac0);
     

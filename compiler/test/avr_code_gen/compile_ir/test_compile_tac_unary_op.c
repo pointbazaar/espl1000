@@ -35,8 +35,8 @@ static void case_minus(){
     struct TACBuffer* buffer = tacbuffer_ctor();
     
 	tacbuffer_append(buffer, makeTACConst(0, start));
-	tacbuffer_append(buffer, makeTACUnaryOp("t1","t0",TAC_OP_UNARY_MINUS));
-    tacbuffer_append(buffer, makeTACReturn("t1"));
+	tacbuffer_append(buffer, makeTACUnaryOp(1,0,TAC_OP_UNARY_MINUS));
+    tacbuffer_append(buffer, makeTACReturn(1));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
     
@@ -60,8 +60,8 @@ static void case_not(){
     struct TACBuffer* buffer = tacbuffer_ctor();
     
 	tacbuffer_append(buffer, makeTACConst(0, start));
-	tacbuffer_append(buffer, makeTACUnaryOp("t1","t0",TAC_OP_UNARY_NOT));
-    tacbuffer_append(buffer, makeTACReturn("t1"));
+	tacbuffer_append(buffer, makeTACUnaryOp(1,0,TAC_OP_UNARY_NOT));
+    tacbuffer_append(buffer, makeTACReturn(1));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
     
@@ -85,8 +85,8 @@ static void case_bitwise_neg(){
     struct TACBuffer* buffer = tacbuffer_ctor();
     
 	tacbuffer_append(buffer, makeTACConst(0, start));
-	tacbuffer_append(buffer, makeTACUnaryOp("t1","t0",TAC_OP_UNARY_BITWISE_NEG));
-    tacbuffer_append(buffer, makeTACReturn("t1"));
+	tacbuffer_append(buffer, makeTACUnaryOp(1,0,TAC_OP_UNARY_BITWISE_NEG));
+    tacbuffer_append(buffer, makeTACReturn(1));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
     

@@ -24,7 +24,7 @@ void test_compile_tac_const_value(){
     struct TACBuffer* buffer = tacbuffer_ctor();
 
     struct TAC* tac0 = makeTACConst(1, fixed_value);
-    struct TAC* tac1 = makeTACReturn("t1");
+    struct TAC* tac1 = makeTACReturn(1);
     
     tacbuffer_append(buffer, tac0);
     tacbuffer_append(buffer, tac1);

@@ -36,22 +36,22 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx){
     ctx_enter_loop(ctx, l0, lend);
     
     uint32_t t3 = make_temp();
-    char t3str[10];
-    sprintf(t3str, "t%d", t3);
+    //char t3str[10];
+    //sprintf(t3str, "t%d", t3);
 
     tac_expr(buffer, f->range->start);
-    char* t1 = tacbuffer_last_dest(buffer);
-    tacbuffer_append(buffer, makeTACStoreLocal(f->index_name, atoi(t1+1)));
+    uint32_t t1 = tacbuffer_last_dest(buffer);
+    tacbuffer_append(buffer, makeTACStoreLocal(f->index_name, t1));
     
     //L0:
     tacbuffer_append(buffer, makeTACLabel(l0));
     
     tac_expr(buffer, f->range->end);
-    char* t2 = tacbuffer_last_dest(buffer);
+    uint32_t t2 = tacbuffer_last_dest(buffer);
 
     tacbuffer_append(buffer, makeTACLoadLocal(t3, f->index_name));
     
-    tacbuffer_append(buffer, makeTACIfCMPGoto(atoi(t2+1), TAC_OP_CMP_GE, t3, l1));
+    tacbuffer_append(buffer, makeTACIfCMPGoto(t2, TAC_OP_CMP_GE, t3, l1));
 
     tacbuffer_append(buffer, makeTACGoto(lend));
 
@@ -62,7 +62,7 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx){
 
     // t3++
     tacbuffer_append(buffer, makeTACLoadLocal(t3, f->index_name));
-    tacbuffer_append(buffer, makeTACBinOpImmediate(t3str, TAC_OP_ADD, 1));
+    tacbuffer_append(buffer, makeTACBinOpImmediate(t3, TAC_OP_ADD, 1));
 	tacbuffer_append(buffer, makeTACStoreLocal(f->index_name, t3));
 
     tacbuffer_append(buffer, makeTACGoto(l0));

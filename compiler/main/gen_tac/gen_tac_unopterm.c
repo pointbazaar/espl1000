@@ -26,8 +26,7 @@ static void tac_unopterm_default(struct TACBuffer* buffer, struct UnOpTerm* u){
 
     if(u->op != OP_NONE){
         
-        char dest_str[10];
-        sprintf(dest_str, "t%d", make_temp());
+        const uint32_t dest = make_temp();
 
         enum TAC_OP op = TAC_OP_NONE;
         
@@ -42,7 +41,7 @@ static void tac_unopterm_default(struct TACBuffer* buffer, struct UnOpTerm* u){
 				exit(1);
 		}
         
-        struct TAC* t = makeTACUnaryOp(dest_str, tacbuffer_last_dest(buffer), op);
+        struct TAC* t = makeTACUnaryOp(dest, tacbuffer_last_dest(buffer), op);
 
         tacbuffer_append(buffer, t);
     }

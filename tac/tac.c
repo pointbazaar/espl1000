@@ -20,11 +20,12 @@ struct TAC* makeTAC(){
             .label_index = TAC_NO_LABEL,
             .kind = TAC_NOP,
             .const_value = 0,
+            .dest = 0,
+            .arg1 = 0,
+            .op = TAC_OP_NONE,
     };
 
-    strcpy(res->dest, "");
-    strcpy(res->arg1, "");
-    res->op = TAC_OP_NONE;
+    strcpy(res->str, "");
 
     return res;
 }
@@ -43,7 +44,6 @@ struct TAC* makeTACLabel(uint32_t label){
     struct TAC* t = makeTAC();
     t->kind = TAC_LABEL;
     t->label_index = label;
-    strcpy(t->dest, "");
     return t;
 }
 
@@ -51,7 +51,7 @@ struct TAC* makeTACLabel2(char* label){
     struct TAC* t = makeTAC();
     t->kind = TAC_LABEL;
     t->label_index = TAC_NO_LABEL;
-    strncpy(t->dest, label, DEFAULT_STR_SIZE);
+    strncpy(t->str, label, DEFAULT_STR_SIZE);
     return t;
 }
 
@@ -62,10 +62,10 @@ struct TAC* makeTACGoto(uint32_t label){
     return t;
 }
 
-struct TAC* makeTACIfGoto(char* tmp_condition, uint32_t label_destination){
+struct TAC* makeTACIfGoto(uint32_t tmp_condition, uint32_t label_destination){
     struct TAC* t = makeTAC();
     t->kind = TAC_IF_GOTO;
-    sprintf(t->arg1, "%s", tmp_condition);
+    t->arg1 = tmp_condition;
     t->label_index = label_destination;
     return t;
 }
@@ -73,8 +73,8 @@ struct TAC* makeTACIfGoto(char* tmp_condition, uint32_t label_destination){
 struct TAC* makeTACIfCMPGoto(uint32_t tmp1, enum TAC_OP op, uint32_t tmp2, uint32_t label_destination){
 	struct TAC* t = makeTAC();
     t->kind = TAC_IF_CMP_GOTO;
-    sprintf(t->dest, "t%d", tmp1);
-    sprintf(t->arg1, "t%d", tmp2);
+    t->dest = tmp1;
+    t->arg1 = tmp2;
     t->op = op;
     t->label_index = label_destination;
     return t;
@@ -83,43 +83,43 @@ struct TAC* makeTACIfCMPGoto(uint32_t tmp1, enum TAC_OP op, uint32_t tmp2, uint3
 struct TAC* makeTACCopy(uint32_t tdest, uint32_t tsrc){
     struct TAC* t = makeTAC();
     t->kind = TAC_COPY;
-    sprintf(t->dest, "t%d", tdest);
-    sprintf(t->arg1, "t%d", tsrc);
+    t->dest = tdest;
+    t->arg1 = tsrc;
     return t;
 }
 
 struct TAC* makeTACLoadLocal(uint32_t tmp, char* local_name){
 	struct TAC* t = makeTAC();
     t->kind = TAC_LOAD_LOCAL;
-    sprintf(t->dest, "t%d", tmp);
-    sprintf(t->arg1, "%s", local_name);
+    t->dest = tmp;
+    sprintf(t->str, "%s", local_name);
     return t;
 }
 
 struct TAC* makeTACStoreLocal(char* local_name, uint32_t tmp){
 	struct TAC* t = makeTAC();
     t->kind = TAC_STORE_LOCAL;
-    sprintf(t->dest, "%s", local_name);
-    sprintf(t->arg1, "t%d", tmp);
+    sprintf(t->str, "%s", local_name);
+    t->arg1 = tmp;
     return t;
 }
 
 struct TAC* makeTACConst(uint32_t tmp, int value){
     struct TAC* t = makeTAC();
     t->kind = TAC_CONST_VALUE;
-    sprintf(t->dest, "t%d", tmp);
+    t->dest = tmp;
     t->const_value = value;
     return t;
 }
 
-struct TAC* makeTACBinOp(char* dest, enum TAC_OP op, char* src){
+struct TAC* makeTACBinOp(uint32_t dest, enum TAC_OP op, uint32_t src){
 	
 	struct TAC* t = makeTAC();
 	
     t->kind = TAC_BINARY_OP;
-    sprintf(t->dest, "%s", dest);
+    t->dest = dest;
+    t->arg1 = src;
     t->op = op;
-    sprintf(t->arg1, "%s", src);
     
     switch(op){
 		case TAC_OP_ADD:
@@ -142,10 +142,10 @@ struct TAC* makeTACBinOp(char* dest, enum TAC_OP op, char* src){
     return t;
 }
 
-struct TAC* makeTACBinOpImmediate(char* tmp, enum TAC_OP op, int32_t immediate){
+struct TAC* makeTACBinOpImmediate(uint32_t tmp, enum TAC_OP op, int32_t immediate){
     struct TAC* t = makeTAC();
     t->kind = TAC_BINARY_OP_IMMEDIATE;
-    sprintf(t->dest, "%s", tmp);
+    t->dest = tmp;
     t->op = op;
     t->const_value = immediate;
     
@@ -168,11 +168,11 @@ struct TAC* makeTACBinOpImmediate(char* tmp, enum TAC_OP op, int32_t immediate){
     return t;
 }
 
-struct TAC* makeTACUnaryOp(char* dest, char* src, enum TAC_OP op){
+struct TAC* makeTACUnaryOp(uint32_t dest, uint32_t src, enum TAC_OP op){
     struct TAC* t = makeTAC();
     t->kind = TAC_UNARY_OP;
-    sprintf(t->dest, "%s", dest);
-    sprintf(t->arg1, "%s", src);
+    t->dest = dest;
+    t->arg1 = src;
     t->op = op;
     
     switch(op){
@@ -189,36 +189,36 @@ struct TAC* makeTACUnaryOp(char* dest, char* src, enum TAC_OP op){
     return t;
 }
 
-struct TAC* makeTACStoreConstAddr(uint32_t addr, char* src){
+struct TAC* makeTACStoreConstAddr(uint32_t addr, uint32_t src){
 
     struct TAC* t = makeTAC();
     t->kind = TAC_STORE_CONST_ADDR;
     t->const_value = addr;
-    sprintf(t->arg1, "%s", src);
+    t->arg1 = src;
     return t;
 }
 
-struct TAC* makeTACLoadConstAddr(char* dest, uint32_t addr){
+struct TAC* makeTACLoadConstAddr(uint32_t dest, uint32_t addr){
     struct TAC* t = makeTAC();
     t->kind = TAC_LOAD_CONST_ADDR;
-    sprintf(t->dest, "%s", dest);
+    t->dest = dest;
     t->const_value = addr;
     return t;
 }
 
 
-struct TAC* makeTACParam(char* dest){
+struct TAC* makeTACParam(uint32_t dest){
 	struct TAC* t = makeTAC();
     t->kind = TAC_PARAM;
-    sprintf(t->dest, "%s", dest);
+    t->dest = dest;
     return t;
 }
 
 struct TAC* makeTACCall(uint32_t tmp, char* function_name){
 	struct TAC* t = makeTAC();
     t->kind = TAC_CALL;
-    sprintf(t->dest, "t%d", tmp);
-    strcpy(t->arg1, function_name);
+    t->dest = tmp;
+    strcpy(t->str, function_name);
     return t;
 }
 
@@ -235,10 +235,10 @@ struct TAC* makeTACNop(){
     return t;
 }
 
-struct TAC* makeTACReturn(char* tmp) {
+struct TAC* makeTACReturn(uint32_t tmp) {
     struct TAC* t = makeTAC();
     t->kind = TAC_RETURN;
-    sprintf(t->dest, "%s", tmp);
+    t->dest = tmp;
     return t;
 }
 

@@ -15,10 +15,7 @@ void tac_mdirect(struct TACBuffer* buffer, struct MDirect* m){
 
     const uint32_t addr = expr->term1->term->ptr.m12->ptr.m2_int_const;
 
-    char dest[10];
-    sprintf(dest, "t%d", make_temp());
-
-    struct TAC* t = makeTACLoadConstAddr(dest, addr);
+    struct TAC* t = makeTACLoadConstAddr(make_temp(), addr);
 
     tacbuffer_append(buffer, t);
 }

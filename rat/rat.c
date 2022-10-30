@@ -89,12 +89,15 @@ void rat_print(struct RAT* rat){
     printf("------------\n");
 }
 
-bool rat_has_register(struct RAT* rat, char* name){
-
-    return rat_get_register(rat,name) >= 0;
+bool rat_has_register_2(struct RAT* rat, char* name){
+    return rat_get_register_2(rat,name) >= 0;
 }
 
-int rat_get_register(struct RAT* rat, char* name){
+bool rat_has_register(struct RAT* rat, uint32_t tmp_index){
+	return rat_get_register(rat, tmp_index) >= 0;
+}
+
+int rat_get_register_2(struct RAT* rat, char* name){
     for(int i=0;i < RAT_CAPACITY; i++){
         if(rat->is_occupied[i] && (strcmp(rat->occupant[i], name) == 0)){
             return i;
@@ -103,10 +106,34 @@ int rat_get_register(struct RAT* rat, char* name){
     return -1;
 }
 
-void rat_occupy_register(struct RAT* rat, uint8_t reg, char* name){
+int rat_get_register(struct RAT* rat, uint32_t tmp_index){
+	char* str = malloc(DEFAULT_STR_SIZE);
+	sprintf(str, "t%d", tmp_index);
 	
+	for(int i=0;i < RAT_CAPACITY; i++){
+        if(rat->is_occupied[i] && (strcmp(rat->occupant[i], str) == 0)){
+			free(str);
+            return i;
+        }
+    }
+    free(str);
+    return -1;
+}
+
+void rat_occupy_register_2(struct RAT* rat, uint8_t reg, char* name){
+	//occupy via name
 	rat->is_occupied[reg] = true;
 	rat->occupant[reg] = name;
+}
+
+void rat_occupy_register(struct RAT* rat, uint8_t reg, uint32_t tmp_index){
+	//occupy via tmp index
+	rat->is_occupied[reg] = true;
+	
+	char* str = malloc(DEFAULT_STR_SIZE);
+	sprintf(str, "t%d", tmp_index);
+	
+	rat->occupant[reg] = str;
 }
 
 bool rat_occupied(struct RAT* rat, uint8_t reg){

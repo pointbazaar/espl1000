@@ -25,7 +25,7 @@ void test_compile_tac_copy(){
     
     tacbuffer_append(buffer, makeTACConst(0, fixed_value));
     tacbuffer_append(buffer, makeTACCopy(1,0));
-    tacbuffer_append(buffer, makeTACReturn("t0"));
+    tacbuffer_append(buffer, makeTACReturn(0));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 
