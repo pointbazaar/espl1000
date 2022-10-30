@@ -5,7 +5,7 @@
 #include "tac/tacbuffer.h"
 #include "gen_tac.h"
 
-void tac_massignstmt(struct TACBuffer* buffer, struct MAssignStmt* m){
+void tac_massignstmt(struct TACBuffer* buffer, struct MAssignStmt* m, struct Ctx* ctx){
 
     struct Expr* lhs = m->lhs->expr;
 
@@ -21,7 +21,7 @@ void tac_massignstmt(struct TACBuffer* buffer, struct MAssignStmt* m){
 
     const uint32_t addr = lhs->term1->term->ptr.m12->ptr.m2_int_const;
 
-    tac_expr(buffer, m->expr);
+    tac_expr(buffer, m->expr, ctx);
     
     struct TAC* tstore = makeTACStoreConstAddr(addr, tacbuffer_last_dest(buffer));
 

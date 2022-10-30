@@ -6,23 +6,23 @@
 
 #include "gen_tac.h"
 
-static void tac_unopterm_default(struct TACBuffer* buffer, struct UnOpTerm* u);
+static void tac_unopterm_default(struct TACBuffer* buffer, struct UnOpTerm* u, struct Ctx* ctx);
 static void tac_unopterm_const(struct TACBuffer* buffer, struct UnOpTerm* u);
 
-void tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* u){
+void tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* u, struct Ctx* ctx){
 
     if(u->term->kind == 12 && u->op != OP_NONE){
 		//const value
 		tac_unopterm_const(buffer, u);
 	}else{
-		tac_unopterm_default(buffer, u);
+		tac_unopterm_default(buffer, u, ctx);
 	}
 }
 
 
-static void tac_unopterm_default(struct TACBuffer* buffer, struct UnOpTerm* u){
+static void tac_unopterm_default(struct TACBuffer* buffer, struct UnOpTerm* u, struct Ctx* ctx){
 
-	tac_term(buffer, u->term);
+	tac_term(buffer, u->term, ctx);
 
     if(u->op != OP_NONE){
         

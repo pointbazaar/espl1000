@@ -6,9 +6,9 @@
 
 #include "gen_tac.h"
 
-void tac_variable(struct TACBuffer* buffer, struct Variable* v){
+void tac_variable(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx){
 
-    tac_simplevar(buffer, v->simple_var);
+    tac_simplevar(buffer, v->simple_var, ctx);
 
     if(v->member_access != NULL){
         printf("member access not implemented for avr_code_gen\n");

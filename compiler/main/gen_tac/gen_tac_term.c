@@ -5,12 +5,12 @@
 
 #include "gen_tac.h"
 
-void tac_term(struct TACBuffer* buffer, struct Term* t){
+void tac_term(struct TACBuffer* buffer, struct Term* t, struct Ctx* ctx){
 
     switch(t->kind){
-        case 4: tac_call(buffer, t->ptr.m4); break;
-        case 5: tac_expr(buffer, t->ptr.m5); break;
-        case 6: tac_variable(buffer, t->ptr.m6); break;
+        case 4: tac_call(buffer, t->ptr.m4, ctx); break;
+        case 5: tac_expr(buffer, t->ptr.m5, ctx); break;
+        case 6: tac_variable(buffer, t->ptr.m6, ctx); break;
         case 8:
             printf("string const currently unsupported\n");
             exit(1);

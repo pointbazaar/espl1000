@@ -5,13 +5,13 @@
 #include "tac/tacbuffer.h"
 #include "gen_tac.h"
 
-void tac_call(struct TACBuffer* buffer, struct Call* call){
+void tac_call(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx){
 
     for(size_t i = 0; i < call->count_args; i++){
 		
         struct Expr* expr = call->args[i];
         
-        tac_expr(buffer, expr);
+        tac_expr(buffer, expr, ctx);
         
         struct TAC* t = makeTACParam(tacbuffer_last_dest(buffer));
 

@@ -9,9 +9,9 @@
 
 void compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, FILE* fout) {
 	
-	assert(lvst_contains(ctx_tables(ctx)->lvst, tac->str));
-		
-	size_t offset = lvst_stack_frame_offset_avr(ctx_tables(ctx)->lvst, tac->str);
+	char* name = lvst_get_2(ctx_tables(ctx)->lvst, tac->dest)->name;
+    
+	size_t offset = lvst_stack_frame_offset_avr(ctx_tables(ctx)->lvst, name);
 
 	const int reg = rat_get_register(rat, tac->arg1);
 	

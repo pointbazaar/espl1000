@@ -6,7 +6,7 @@
 
 #include "gen_tac.h"
 
-void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* v){
+void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* v, struct Ctx* ctx){
 
     if(v->count_indices != 0){
         //TODO
@@ -14,5 +14,7 @@ void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* v){
         exit(1);
     }
     
-    tacbuffer_append(buffer, makeTACLoadLocal(make_temp(), v->name));
+    const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, v->name);
+    
+    tacbuffer_append(buffer, makeTACLoadLocal(make_temp(), local_index));
 }

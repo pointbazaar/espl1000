@@ -88,18 +88,18 @@ struct TAC* makeTACCopy(uint32_t tdest, uint32_t tsrc){
     return t;
 }
 
-struct TAC* makeTACLoadLocal(uint32_t tmp, char* local_name){
+struct TAC* makeTACLoadLocal(uint32_t tmp, uint32_t local_index){
 	struct TAC* t = makeTAC();
     t->kind = TAC_LOAD_LOCAL;
     t->dest = tmp;
-    sprintf(t->str, "%s", local_name);
+    t->arg1 = local_index;
     return t;
 }
 
-struct TAC* makeTACStoreLocal(char* local_name, uint32_t tmp){
+struct TAC* makeTACStoreLocal(uint32_t local_index, uint32_t tmp){
 	struct TAC* t = makeTAC();
     t->kind = TAC_STORE_LOCAL;
-    sprintf(t->str, "%s", local_name);
+    t->dest = local_index;
     t->arg1 = tmp;
     return t;
 }

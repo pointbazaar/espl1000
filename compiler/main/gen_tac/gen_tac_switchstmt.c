@@ -8,7 +8,7 @@
 
 void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss, struct Ctx* ctx){
 
-    tac_expr(buffer, ss->expr);
+    tac_expr(buffer, ss->expr, ctx);
 
     //now the last temporary contains our expr
     //generate an if for each case

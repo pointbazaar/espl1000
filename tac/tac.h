@@ -109,8 +109,9 @@ struct TAC* makeTACIfGoto(uint32_t tmp_condition, uint32_t label_destination);
 struct TAC* makeTACIfCMPGoto(uint32_t tmp1, enum TAC_OP op, uint32_t tmp2, uint32_t label_destination); 
 
 struct TAC* makeTACCopy(uint32_t dest, uint32_t src);
-struct TAC* makeTACLoadLocal(uint32_t tmp, char* local_name);
-struct TAC* makeTACStoreLocal(char* local_name, uint32_t tmp);
+
+struct TAC* makeTACLoadLocal(uint32_t tmp, uint32_t local_index);
+struct TAC* makeTACStoreLocal(uint32_t local_index, uint32_t tmp);
 
 struct TAC* makeTACConst(uint32_t tmp, int value);
 

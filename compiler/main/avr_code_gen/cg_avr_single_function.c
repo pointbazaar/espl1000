@@ -18,6 +18,10 @@
 void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FILE* fout){
 
     struct TACBuffer* buffer = tacbuffer_ctor();
+    
+    //populate ctx->st->lvst
+    lvst_clear(ctx_tables(ctx)->lvst);
+    lvst_fill(m, ctx_tables(ctx));
 
     tac_method(buffer, m, ctx);
 
@@ -32,11 +36,7 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FI
 	int nblocks;
     struct BasicBlock** graph = basicblock_create_graph(buffer, m->decl->name, &nblocks);
 	struct BasicBlock* root = graph[0];
-
-    //populate ctx->st->lvst
-    lvst_clear(ctx_tables(ctx)->lvst);
-    lvst_fill(m, ctx_tables(ctx));
-
+	
     emit_asm_avr_basic_block(root, ctx, fout);
     
     //delete the basic block graph

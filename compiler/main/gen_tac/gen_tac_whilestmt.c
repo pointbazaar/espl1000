@@ -93,7 +93,7 @@ static void case_default(struct TACBuffer* buffer, struct WhileStmt* w, struct C
 
     tacbuffer_append(buffer, makeTACLabel(l0));
 
-    tac_expr(buffer, w->condition);
+    tac_expr(buffer, w->condition, ctx);
 
     struct TAC* t = makeTACIfGoto(tacbuffer_last_dest(buffer), l1);
     tacbuffer_append(buffer, t);

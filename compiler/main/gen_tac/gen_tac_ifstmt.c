@@ -27,7 +27,7 @@ static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s, struc
     uint32_t lend = make_label();
     uint32_t ltrue = make_label();
 
-    tac_expr(buffer, s->condition);
+    tac_expr(buffer, s->condition, ctx);
 
     struct TAC* t_if_goto_end = makeTACIfGoto(tacbuffer_last_dest(buffer), ltrue);
     tacbuffer_append(buffer, t_if_goto_end);
@@ -55,7 +55,7 @@ static void tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s, struc
     uint32_t l2 = make_label();
     uint32_t lend = make_label();
 
-    tac_expr(buffer, s->condition);
+    tac_expr(buffer, s->condition, ctx);
 
     struct TAC* t = makeTACIfGoto(tacbuffer_last_dest(buffer), l1);
     tacbuffer_append(buffer, t);

@@ -126,8 +126,32 @@ struct LVSTLine* lvst_get(struct LVST* lvst, char* name){
 	}
 	
 	printf("[LVST][Error] %s not found in LVST\n", name);
+	lvst_print(lvst);
 	exit(1);
 	return NULL;
+}
+
+struct LVSTLine* lvst_get_2(struct LVST* lvst, uint32_t index){
+	if(index >= lvst->count){
+		printf("[LVST][Error] index %d not found in LVST\n", index);
+		lvst_print(lvst);
+		exit(1);
+	}
+	return lvst->lines[index];
+}
+
+uint32_t lvst_index_of(struct LVST* lvst, char* name){
+	
+	for(int i = 0; i < lvst->count; i++){
+		
+		struct LVSTLine* line = lvst->lines[i];
+		if(strcmp(line->name, name) == 0) { return i; }
+	}
+	
+	printf("[LVST][Error] %s not found in LVST\n", name);
+	lvst_print(lvst);
+	exit(1);
+	return 0;
 }
 
 bool lvst_contains(struct LVST* lvst, char* name){
@@ -143,7 +167,7 @@ bool lvst_contains(struct LVST* lvst, char* name){
 
 void lvst_print(struct LVST* lvst){
 	
-	char* fmt = " |% -24s|%-5s| %-24s |\n";
+	char* fmt = " |% -24s|%-6s| %-24s |\n";
 	char* linebig = "------------------------";
 	char* line5  = "-----";
 	
