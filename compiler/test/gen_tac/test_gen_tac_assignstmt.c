@@ -67,8 +67,7 @@ static void case_local_struct(){
 
 static void case_local_array(){
 	
-	status_test_codegen_tac("AssignStmt - local array [TODO]");
-	return;
+	status_test_codegen_tac("AssignStmt - local array");
 	
 	const int8_t value = rand()%0xff;
 	
@@ -76,14 +75,11 @@ static void case_local_array(){
 	char* template = "fn main() -> int { [int] m = 0xc7; m[1] = %d; return m[1]; }";
 	sprintf(snippet, template, value);
 	
-	//TODO: place something 
-	
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
-	for(int i=0; i < 20; i++){
+	for(int i=0; i < 34; i++){
 		vmcu_system_step(system);
 	}
-	
 	
 	int8_t value1 = vmcu_system_read_gpr(system, 0);
 	
