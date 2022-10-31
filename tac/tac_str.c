@@ -80,6 +80,11 @@ char* tac_tostring(struct TAC* t, struct Ctx* ctx){
             sprintf(buffer,"t%d = [%d]", t->dest, t->const_value); break;
         case TAC_STORE_CONST_ADDR:
             sprintf(buffer,"[%d] = t%d", t->const_value, t->arg1); break;
+        case TAC_LOAD:
+			sprintf(buffer,"t%d = [t%d]", t->dest, t->arg1); break;
+		case TAC_STORE:
+			sprintf(buffer,"[t%d] = t%d", t->dest, t->arg1); break;
+        
         case TAC_NOP:
             sprintf(buffer,"%s", "nop"); break;
         case TAC_BINARY_OP:

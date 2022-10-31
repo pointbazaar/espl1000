@@ -35,7 +35,11 @@ void emit_asm_avr_single_tac(struct RAT* rat, struct TAC *tac, struct Ctx* ctx, 
         case TAC_LOAD_CONST_ADDR: compile_tac_load_const_addr(rat, tac, fout); break;
         case TAC_STORE_CONST_ADDR: compile_tac_store_const_addr(rat, tac, fout); break;
         case TAC_SETUP_STACKFRAME: compile_tac_setup_stackframe(tac, fout); break;
+        
         case TAC_LOAD_LOCAL: compile_tac_load_local(rat, tac, ctx, fout); break;
         case TAC_STORE_LOCAL: compile_tac_store_local(rat, tac, ctx, fout); break;
+        
+        case TAC_LOAD:		compile_tac_load(rat, tac, fout); break;
+        case TAC_STORE:		compile_tac_store(rat, tac, fout); break;
     }
 }

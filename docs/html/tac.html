@@ -41,7 +41,7 @@
         <li>TMP: temporary variable, e.g. t4. these can be identified by the number alone.</li>
         <li>LOCAL: local variable, residing in stack frame</li>
         <li>ARG: argument to the function</li>
-        <li>LABEL: string label or index label, or index into functions </li>
+        <li>LABEL: index label, e.g. "L0" or index into functions (SST) </li>
         <li>CONST: compile-time known constant</li>
     </ul>
 
@@ -265,6 +265,24 @@
                 <td>-</td>
                 <td>TMP</td>
                 <td>CONST</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>TAC_LOAD [NEW]</td>
+                <td>t1 = [t2]</td>
+                <td>TMP</td>
+                <td>TMP</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>TAC_STORE [NEW]</td>
+                <td>[t1] = t2</td>
+                <td>TMP</td>
+                <td>TMP</td>
+                <td>-</td>
                 <td>-</td>
                 <td>-</td>
             </tr>

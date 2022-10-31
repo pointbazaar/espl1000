@@ -37,7 +37,7 @@ void tac_expr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx);
 
 void tac_term(struct TACBuffer* buffer, struct Term* t, struct Ctx* ctx);
 
-void tac_mdirect(struct TACBuffer* buffer, struct MDirect* m);
+void tac_mdirect(struct TACBuffer* buffer, struct MDirect* m, struct Ctx* ctx);
 
 void tac_constvalue(struct TACBuffer* buffer, struct ConstValue* c);
 

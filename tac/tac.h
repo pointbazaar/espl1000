@@ -70,6 +70,9 @@ enum TAC_KIND{
 
     TAC_STORE_CONST_ADDR, // [const_dest] = src //memory store
     TAC_LOAD_CONST_ADDR,  // dest = [const_src] //memory load
+    
+    TAC_LOAD, //t1 = [t2]
+    TAC_STORE, //[t1] = t2
 };
 
 #define TAC_NO_LABEL 0
@@ -131,4 +134,7 @@ struct TAC* makeTACCall(uint32_t tmp, uint32_t function_index);
 struct TAC* makeTACSetupStackframe(uint32_t frame_size);
 
 struct TAC* makeTACNop();
+
+struct TAC* makeTACLoad(uint32_t tmp, uint32_t taddr);
+struct TAC* makeTACStore(uint32_t taddr, uint32_t tmp);
 #endif

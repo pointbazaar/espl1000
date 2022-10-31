@@ -21,7 +21,7 @@ void tac_term(struct TACBuffer* buffer, struct Term* t, struct Ctx* ctx){
             //lambdas should not exist anymore at this stage,
             //having been converted into named functions
         case 12: tac_constvalue(buffer, t->ptr.m12); break;
-        case 13: tac_mdirect(buffer, t->ptr.m13); break;
+        case 13: tac_mdirect(buffer, t->ptr.m13, ctx); break;
         default:
             break;
     }

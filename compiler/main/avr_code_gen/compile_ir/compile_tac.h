@@ -27,4 +27,7 @@ void compile_tac_binary_op_immediate(struct RAT* rat, struct TAC* tac, FILE* fou
 void compile_tac_load_const_addr(struct RAT* rat, struct TAC* tac, FILE* fout);
 void compile_tac_store_const_addr(struct RAT* rat, struct TAC* tac, FILE* fout);
 void compile_tac_setup_stackframe(struct TAC* tac, FILE* fout);
+
+void compile_tac_load(struct RAT* rat, struct TAC* tac, FILE* fout);
+void compile_tac_store(struct RAT* rat, struct TAC* tac, FILE* fout);
 #endif

@@ -22,5 +22,5 @@ void compile_tac_call(struct RAT* rat, struct TAC* tac, FILE* fout, struct Ctx* 
 	
     fprintf(fout, "call %s\n", function_name);
     
-    fprintf(fout, "mov r%d, r0", reg_dest);
+    fprintf(fout, "mov r%d, r0\n", reg_dest);
 }

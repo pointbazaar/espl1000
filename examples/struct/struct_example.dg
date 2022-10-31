@@ -1,0 +1,10 @@
+
+struct A {
+	int x;
+}
+
+fn main ()-> int {
+	A a = 32;
+	a.x = 3;
+	return a.x;
+}

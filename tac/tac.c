@@ -239,6 +239,22 @@ struct TAC* makeTACReturn(uint32_t tmp) {
     return t;
 }
 
+struct TAC* makeTACLoad(uint32_t tmp, uint32_t taddr){
+	struct TAC* t = makeTAC();
+    t->kind = TAC_LOAD;
+    t->dest = tmp;
+    t->arg1 = taddr;
+    return t;
+}
+
+struct TAC* makeTACStore(uint32_t taddr, uint32_t tmp){
+	struct TAC* t = makeTAC();
+    t->kind = TAC_STORE;
+    t->dest = taddr;
+    t->arg1 = tmp;
+    return t;
+}
+
 bool tac_is_unconditional_jump(struct TAC* tac){
     return tac->kind == TAC_GOTO || tac->kind == TAC_RETURN;
 }
