@@ -33,29 +33,35 @@ static void case_true(){
 	const int8_t value      = rand()%0xff;
 	const uint16_t address1 = 0x100+rand()%30;
 	
+	const int8_t return_value = rand(); 
+	
 	//labels
 	const uint16_t l1   = 1;
 	const uint16_t lend = 2;
 	
-    struct TACBuffer* buffer = tacbuffer_ctor();
+    struct TACBuffer* b = tacbuffer_ctor();
     
-    tacbuffer_append(buffer, makeTACConst(1, 1));
-    tacbuffer_append(buffer, makeTACIfGoto(1, l1));
-	tacbuffer_append(buffer, makeTACGoto(lend));
+    tacbuffer_append(b, makeTACConst(1, 1));
+    tacbuffer_append(b, makeTACIfGoto(1, l1));
+	tacbuffer_append(b, makeTACGoto(lend));
 	
-	tacbuffer_append(buffer, makeTACLabel(l1));
-	tacbuffer_append(buffer, makeTACConst(0, value));
-	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, 0));
+	tacbuffer_append(b, makeTACLabel(l1));
+	tacbuffer_append(b, makeTACConst(0, value));
+	tacbuffer_append(b, makeTACStoreConstAddr(address1, 0));
+	tacbuffer_append(b, makeTACGoto(lend));
 	
-	tacbuffer_append(buffer, makeTACLabel(lend));
-	tacbuffer_append(buffer, makeTACConst(0, 0));
-    tacbuffer_append(buffer, makeTACReturn(0));
+	tacbuffer_append(b, makeTACLabel(lend));
+	tacbuffer_append(b, makeTACConst(0, return_value));
+    tacbuffer_append(b, makeTACReturn(0));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 30; i++){
+    for(int i=0;i < 13; i++){
         vmcu_system_step(system);
 	}
+	
+	//assert we have returned
+	assert(vmcu_system_read_gpr(system, 0) == return_value);
 	
 	assert(vmcu_system_read_data(system, address1) == value);
 	
@@ -69,29 +75,34 @@ static void case_false(){
 	const int8_t value      = rand()%0xff;
 	const uint16_t address1 = 0x100+rand()%30;
 	
+	const int8_t return_value = rand(); 
+	
 	//labels
 	const uint16_t l1   = 1;
 	const uint16_t lend = 2;
 	
-    struct TACBuffer* buffer = tacbuffer_ctor();
+    struct TACBuffer* b = tacbuffer_ctor();
     
-    tacbuffer_append(buffer, makeTACConst(1, 0));
-    tacbuffer_append(buffer, makeTACIfGoto(1, l1));
-	tacbuffer_append(buffer, makeTACGoto(lend));
+    tacbuffer_append(b, makeTACConst(1, 0));
+    tacbuffer_append(b, makeTACIfGoto(1, l1));
+	tacbuffer_append(b, makeTACGoto(lend));
 	
-	tacbuffer_append(buffer, makeTACLabel(l1));
-	tacbuffer_append(buffer, makeTACConst(0, value));
-	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, 0));
+	tacbuffer_append(b, makeTACLabel(l1));
+	tacbuffer_append(b, makeTACConst(0, value));
+	tacbuffer_append(b, makeTACStoreConstAddr(address1, 0));
 	
-	tacbuffer_append(buffer, makeTACLabel(lend));
-	tacbuffer_append(buffer, makeTACConst(0, 0));
-    tacbuffer_append(buffer, makeTACReturn(0));
+	tacbuffer_append(b, makeTACLabel(lend));
+	tacbuffer_append(b, makeTACConst(0, return_value));
+    tacbuffer_append(b, makeTACReturn(0));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 30; i++){
+    for(int i=0;i < 13; i++){
         vmcu_system_step(system);
 	}
+	
+	//assert we have returned
+	assert(vmcu_system_read_gpr(system, 0) == return_value);
 	
 	assert(vmcu_system_read_data(system, address1) != value);
 	
@@ -111,36 +122,41 @@ static void case_mixed(){
 	const uint16_t address1 = 0x100+rand()%30;
 	const uint16_t address2 = address1 + 1;
 	
+	const int8_t return_value = rand(); 
+	
 	//labels
 	const uint16_t l1   = 1;
 	const uint16_t lend = 2;
 	
-    struct TACBuffer* buffer = tacbuffer_ctor();
+    struct TACBuffer* b = tacbuffer_ctor();
     
-    tacbuffer_append(buffer, makeTACConst(0, value));
+    tacbuffer_append(b, makeTACConst(0, value));
     
-    tacbuffer_append(buffer, makeTACConst(1, 1));
-    tacbuffer_append(buffer, makeTACIfGoto(1, l1)); //should branch
-	tacbuffer_append(buffer, makeTACGoto(lend));
+    tacbuffer_append(b, makeTACConst(1, 1));
+    tacbuffer_append(b, makeTACIfGoto(1, l1)); //should branch
+	tacbuffer_append(b, makeTACGoto(lend));
 	
-	tacbuffer_append(buffer, makeTACLabel(l1));
-	tacbuffer_append(buffer, makeTACConst(0, value));
-	tacbuffer_append(buffer, makeTACStoreConstAddr(address1, 0));
-    tacbuffer_append(buffer, makeTACConst(2, 0));
-	tacbuffer_append(buffer, makeTACIfGoto(2, lend)); //should not branch
-	tacbuffer_append(buffer, makeTACConst(0, value));
-	tacbuffer_append(buffer, makeTACStoreConstAddr(address2, 0));
-	tacbuffer_append(buffer, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACLabel(l1));
+	tacbuffer_append(b, makeTACConst(0, value));
+	tacbuffer_append(b, makeTACStoreConstAddr(address1, 0));
+    tacbuffer_append(b, makeTACConst(2, 0));
+	tacbuffer_append(b, makeTACIfGoto(2, lend)); //should not branch
+	tacbuffer_append(b, makeTACConst(0, value));
+	tacbuffer_append(b, makeTACStoreConstAddr(address2, 0));
+	tacbuffer_append(b, makeTACGoto(lend));
 	
-	tacbuffer_append(buffer, makeTACLabel(lend));
-	tacbuffer_append(buffer, makeTACConst(0, value));
-    tacbuffer_append(buffer, makeTACReturn(0));
+	tacbuffer_append(b, makeTACLabel(lend));
+	tacbuffer_append(b, makeTACConst(0, return_value));
+    tacbuffer_append(b, makeTACReturn(0));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 30; i++){
+    for(int i=0;i < 20; i++){
         vmcu_system_step(system);
 	}
+	
+	//assert we have returned
+	assert(vmcu_system_read_gpr(system, 0) == return_value);
 	
 	//check that the values have arrived
 	assert(vmcu_system_read_data(system, address1) == value);

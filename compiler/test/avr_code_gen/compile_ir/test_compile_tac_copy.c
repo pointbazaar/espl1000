@@ -21,13 +21,13 @@ void test_compile_tac_copy(){
 	
 	const int8_t fixed_value = rand()%0xff;
 	
-    struct TACBuffer* buffer = tacbuffer_ctor();
+    struct TACBuffer* b = tacbuffer_ctor();
     
-    tacbuffer_append(buffer, makeTACConst(0, fixed_value));
-    tacbuffer_append(buffer, makeTACCopy(1,0));
-    tacbuffer_append(buffer, makeTACReturn(0));
+    tacbuffer_append(b, makeTACConst(0, fixed_value));
+    tacbuffer_append(b, makeTACCopy(1,0));
+    tacbuffer_append(b, makeTACReturn(0));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
     for(int i=0;i < 10; i++){
         vmcu_system_step(system);

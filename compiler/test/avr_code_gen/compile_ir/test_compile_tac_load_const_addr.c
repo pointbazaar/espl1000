@@ -22,17 +22,13 @@ void test_compile_tac_load_const_addr(){
 	const uint16_t addr = 0x100+rand()%30;
 	const int8_t fixed_value = rand()%0xff;
 
-    struct TACBuffer* buffer = tacbuffer_ctor();
-
-    struct TAC* tac0 = makeTACConst(1, 0x00); //value here not important
-    struct TAC* tac1 = makeTACLoadConstAddr(1, addr);
-    struct TAC* tac2 = makeTACReturn(1);
+    struct TACBuffer* b = tacbuffer_ctor();
     
-    tacbuffer_append(buffer, tac0);
-    tacbuffer_append(buffer, tac1);
-    tacbuffer_append(buffer, tac2);
+    tacbuffer_append(b, makeTACConst(1, 0x00));
+    tacbuffer_append(b, makeTACLoadConstAddr(1, addr));
+    tacbuffer_append(b, makeTACReturn(1));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
     
     //write value to be read later
     vmcu_system_write_data(system, addr, fixed_value);

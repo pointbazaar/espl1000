@@ -32,13 +32,13 @@ static void case_minus(){
     
 	const int8_t start = rand()%0xff;
 	
-    struct TACBuffer* buffer = tacbuffer_ctor();
+    struct TACBuffer* b = tacbuffer_ctor();
     
-	tacbuffer_append(buffer, makeTACConst(0, start));
-	tacbuffer_append(buffer, makeTACUnaryOp(1,0,TAC_OP_UNARY_MINUS));
-    tacbuffer_append(buffer, makeTACReturn(1));
+	tacbuffer_append(b, makeTACConst(0, start));
+	tacbuffer_append(b, makeTACUnaryOp(1,0,TAC_OP_UNARY_MINUS));
+    tacbuffer_append(b, makeTACReturn(1));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
     
     for(int i=0;i < 10; i++){
         vmcu_system_step(system);
@@ -57,13 +57,13 @@ static void case_not(){
     
 	const int8_t start = 0xff; //start is true value
 	
-    struct TACBuffer* buffer = tacbuffer_ctor();
+    struct TACBuffer* b = tacbuffer_ctor();
     
-	tacbuffer_append(buffer, makeTACConst(0, start));
-	tacbuffer_append(buffer, makeTACUnaryOp(1,0,TAC_OP_UNARY_NOT));
-    tacbuffer_append(buffer, makeTACReturn(1));
+	tacbuffer_append(b, makeTACConst(0, start));
+	tacbuffer_append(b, makeTACUnaryOp(1,0,TAC_OP_UNARY_NOT));
+    tacbuffer_append(b, makeTACReturn(1));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
     
     for(int i=0;i < 10; i++){
         vmcu_system_step(system);
@@ -82,13 +82,13 @@ static void case_bitwise_neg(){
     
 	const int8_t start = rand()%0xff;
 	
-    struct TACBuffer* buffer = tacbuffer_ctor();
+    struct TACBuffer* b = tacbuffer_ctor();
     
-	tacbuffer_append(buffer, makeTACConst(0, start));
-	tacbuffer_append(buffer, makeTACUnaryOp(1,0,TAC_OP_UNARY_BITWISE_NEG));
-    tacbuffer_append(buffer, makeTACReturn(1));
+	tacbuffer_append(b, makeTACConst(0, start));
+	tacbuffer_append(b, makeTACUnaryOp(1,0,TAC_OP_UNARY_BITWISE_NEG));
+    tacbuffer_append(b, makeTACReturn(1));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
     
     for(int i=0;i < 10; i++){
         vmcu_system_step(system);

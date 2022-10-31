@@ -21,14 +21,14 @@ void test_compile_tac_return(){
 	
 	const int8_t value = rand()%0xff;
 	
-    struct TACBuffer* buffer = tacbuffer_ctor();
+    struct TACBuffer* b = tacbuffer_ctor();
     
-    tacbuffer_append(buffer, makeTACConst(0, value));
-    tacbuffer_append(buffer, makeTACReturn(0));
+    tacbuffer_append(b, makeTACConst(0, value));
+    tacbuffer_append(b, makeTACReturn(0));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 20; i++){
+    for(int i=0;i < 6; i++){
         vmcu_system_step(system);
 	}
 	

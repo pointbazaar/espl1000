@@ -27,13 +27,13 @@ void test_compile_tac_param(){
 	const uint8_t SPL_ADDR = 0x5d;
 	const uint8_t SPH_ADDR = 0x5e;
 	
-    struct TACBuffer* buffer = tacbuffer_ctor();
+    struct TACBuffer* b = tacbuffer_ctor();
     
-    tacbuffer_append(buffer, makeTACConst(0, fixed_value));
-    tacbuffer_append(buffer, makeTACParam(0));
-    tacbuffer_append(buffer, makeTACReturn(0));
+    tacbuffer_append(b, makeTACConst(0, fixed_value));
+    tacbuffer_append(b, makeTACParam(0));
+    tacbuffer_append(b, makeTACReturn(0));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
     for(int i=0;i < 4; i++){
         vmcu_system_step(system);

@@ -22,21 +22,18 @@ void test_compile_tac_nop(){
 	//test that register etc. do not change with TAC_NOP
 	//this test is also intended for completeness
 
-    struct TACBuffer* buffer = tacbuffer_ctor();
+    struct TACBuffer* b = tacbuffer_ctor();
     int n = 8;
 
-    struct TAC* tac0 = makeTACConst(1, 0x00);
-    struct TAC* tac2 = makeTACReturn(1);
-
-    tacbuffer_append(buffer, tac0);
+    tacbuffer_append(b, makeTACConst(1, 0x00));
     
     for(int i=0; i < n; i++){
-		tacbuffer_append(buffer, makeTACNop());
+		tacbuffer_append(b, makeTACNop());
 	}
     
-    tacbuffer_append(buffer, tac2);
+    tacbuffer_append(b, makeTACReturn(1));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 	
 	//get into the nop range after 8 steps
     for(int i=0;i < 8; i++){

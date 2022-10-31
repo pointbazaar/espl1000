@@ -19,13 +19,13 @@ void test_compile_tac_goto(){
 	
 	status_test_codegen("TAC_GOTO");
 	
-    struct TACBuffer* buffer = tacbuffer_ctor();
+    struct TACBuffer* b = tacbuffer_ctor();
     
-	tacbuffer_append(buffer, makeTACLabel(43));
-	tacbuffer_append(buffer, makeTACGoto(43));
-    tacbuffer_append(buffer, makeTACReturn(0));
+	tacbuffer_append(b, makeTACLabel(43));
+	tacbuffer_append(b, makeTACGoto(43));
+    tacbuffer_append(b, makeTACReturn(0));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
     for(int i=0;i < 7; i++){
         vmcu_system_step(system);

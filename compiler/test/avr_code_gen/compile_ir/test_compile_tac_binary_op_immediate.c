@@ -32,20 +32,20 @@ static void case_add(){
 	
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE +");
 	
-	int8_t start = rand()%100;
-	int8_t change = rand()%40;
+	int8_t start = rand()%0xff;
+	int8_t change = rand()%0xff;
 	int8_t expected = start + change;
 	
-    struct TACBuffer* buffer = tacbuffer_ctor();
+    struct TACBuffer* b = tacbuffer_ctor();
     
-	tacbuffer_append(buffer, makeTACConst(0, start));
-	tacbuffer_append(buffer, makeTACBinOpImmediate(0, TAC_OP_ADD, change));
+	tacbuffer_append(b, makeTACConst(0, start));
+	tacbuffer_append(b, makeTACBinOpImmediate(0, TAC_OP_ADD, change));
     
-    tacbuffer_append(buffer, makeTACReturn(0));
+    tacbuffer_append(b, makeTACReturn(0));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 20; i++){
+    for(int i=0;i < 10; i++){
         vmcu_system_step(system);
 	}
 	
@@ -64,16 +64,16 @@ static void case_sub(){
 	int8_t change = 10+rand()%10;
 	int8_t expected = start - change;
 	
-    struct TACBuffer* buffer = tacbuffer_ctor();
+    struct TACBuffer* b = tacbuffer_ctor();
     
-	tacbuffer_append(buffer, makeTACConst(0, start));
-	tacbuffer_append(buffer, makeTACBinOpImmediate(0, TAC_OP_SUB, change));
+	tacbuffer_append(b, makeTACConst(0, start));
+	tacbuffer_append(b, makeTACBinOpImmediate(0, TAC_OP_SUB, change));
     
-    tacbuffer_append(buffer, makeTACReturn(0));
+    tacbuffer_append(b, makeTACReturn(0));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 20; i++){
+    for(int i=0;i < 10; i++){
         vmcu_system_step(system);
 	}
 	
@@ -92,16 +92,16 @@ static void case_and(){
 	int8_t change = rand()%0xff;
 	int8_t expected = start & change;
 	
-    struct TACBuffer* buffer = tacbuffer_ctor();
+    struct TACBuffer* b = tacbuffer_ctor();
     
-	tacbuffer_append(buffer, makeTACConst(0, start));
-	tacbuffer_append(buffer, makeTACBinOpImmediate(0, TAC_OP_AND, change));
+	tacbuffer_append(b, makeTACConst(0, start));
+	tacbuffer_append(b, makeTACBinOpImmediate(0, TAC_OP_AND, change));
     
-    tacbuffer_append(buffer, makeTACReturn(0));
+    tacbuffer_append(b, makeTACReturn(0));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 20; i++){
+    for(int i=0;i < 10; i++){
         vmcu_system_step(system);
 	}
 	
@@ -116,20 +116,20 @@ static void case_or(){
 	
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE |");
 	
-	int8_t start = rand()%100;
-	int8_t change = rand()%40;
+	int8_t start = rand()%0xff;
+	int8_t change = rand()%0xff;
 	int8_t expected = start | change;
 	
-    struct TACBuffer* buffer = tacbuffer_ctor();
+    struct TACBuffer* b = tacbuffer_ctor();
     
-	tacbuffer_append(buffer, makeTACConst(0, start));
-	tacbuffer_append(buffer, makeTACBinOpImmediate(0, TAC_OP_OR, change));
+	tacbuffer_append(b, makeTACConst(0, start));
+	tacbuffer_append(b, makeTACBinOpImmediate(0, TAC_OP_OR, change));
     
-    tacbuffer_append(buffer, makeTACReturn(0));
+    tacbuffer_append(b, makeTACReturn(0));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 20; i++){
+    for(int i=0;i < 10; i++){
         vmcu_system_step(system);
 	}
 	
