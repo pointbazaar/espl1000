@@ -17,9 +17,27 @@ bool tc_type_contains(struct Type* expect, struct Type* actual){
 	if (expect->basic_type != NULL && actual->basic_type != NULL){
 		return tc_basictype_contains(expect->basic_type, actual->basic_type);
 	}
-
-	if (expect->array_type != NULL && actual->array_type != NULL){
-		return tc_arraytype_contains(expect->array_type, actual->array_type);
+	
+	
+	if(expect->array_type != NULL){
+		
+		if(actual->array_type != NULL){
+			
+			return tc_arraytype_contains(expect->array_type, actual->array_type);
+		}else{
+			
+			//allow integer assignments to array types
+			if(actual->basic_type != NULL 
+				&& actual->basic_type->simple_type != NULL
+				&& actual->basic_type->simple_type->primitive_type != NULL)
+			{
+				struct PrimitiveType* pt = actual->basic_type->simple_type->primitive_type;
+				
+				return pt->is_int_type;
+			}
+			
+			return false;
+		}
 	}
 
 	//so expect->m2 should be != NULL
