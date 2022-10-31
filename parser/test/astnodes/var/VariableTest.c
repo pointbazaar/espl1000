@@ -56,6 +56,38 @@ int variable_test_parse_index_access() {
 	assert(NULL == node->member_access);
 	assert(strcmp("x", node->simple_var->name) == 0);
 	
+	assert(node->simple_var->count_indices == 1);
+	assert(node->simple_var->indices[0] != NULL);
+	
+	freeTokenList(tokens);
+	free_variable(node);
+
+	return 1;
+}
+
+int variable_test_parse_n_index_access(){
+	
+	status_test("variable_test_parse_n_index_access");
+
+	struct TokenList* tokens = makeTokenList();
+	list_add(tokens, makeToken2(ID,"x"));
+	list_add(tokens, makeToken(LBRACKET));
+	list_add(tokens, makeToken2(INTEGER,"0"));
+	list_add(tokens, makeToken(RBRACKET));
+	list_add(tokens, makeToken(LBRACKET));
+	list_add(tokens, makeToken2(INTEGER,"0"));
+	list_add(tokens, makeToken(RBRACKET));
+
+	struct Variable* node = makeVariable(tokens);
+	assert(node != NULL);
+
+	assert(NULL == node->member_access);
+	assert(strcmp("x", node->simple_var->name) == 0);
+	
+	assert(node->simple_var->count_indices == 2);
+	assert(node->simple_var->indices[0] != NULL);
+	assert(node->simple_var->indices[1] != NULL);
+	
 	freeTokenList(tokens);
 	free_variable(node);
 

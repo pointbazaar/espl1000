@@ -174,6 +174,7 @@ void test_suite_var(){
 	status_test_suite("test_suite_var");
 
 	variable_test_parse_index_access();
+	variable_test_parse_n_index_access();
 	variable_test_parse_struct_member_access();
 	variable_test_parse_struct_member_access_and_index_access();
 }

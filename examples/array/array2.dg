@@ -1,0 +1,10 @@
+fn main()->int {
+	
+	[[int]] arr = 199; //0xc7
+
+	arr[0] = 200; //0xc8
+
+	arr[0][0] = 255; //0xff
+
+	return arr[0][0];
+}

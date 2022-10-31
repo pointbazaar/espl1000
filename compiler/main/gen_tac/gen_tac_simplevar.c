@@ -20,17 +20,16 @@ void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* v, struct Ctx* ct
 
 static void case_indices(struct TACBuffer* buffer, struct SimpleVar* v, struct Ctx* ctx){
 	
-	if(v->count_indices > 1){
-		//TODO
-		printf("more than 1 indices not yet implemented for avr_code_gen\n");
-		exit(1);
-	}
-	
 	//load t1 = x
-	//code to calculate index
-	//index is now in t2
-	//t1 = t1 + t2
-	//t4 = [t1]
+	
+	// //tcurrent=t1
+	
+	//for index in indices
+		//... code to generate index
+		//tindex = index 
+		//tcurrent = tcurrent + tindex
+		//t4 = [tcurrent]
+		//tcurrent = t4
 	
 	const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, v->name);
     
@@ -38,13 +37,23 @@ static void case_indices(struct TACBuffer* buffer, struct SimpleVar* v, struct C
     
     uint32_t t1 = tacbuffer_last_dest(buffer);
     
-    tac_expr(buffer, v->indices[0], ctx);
+    uint32_t tcurrent = t1;
     
-    uint32_t t2 = tacbuffer_last_dest(buffer);
+    for(int i=0;i < v->count_indices; i++){
+		
+		//TODO: load the address at the index, instead of
+		//simply adding the indices
     
-    tacbuffer_append(buffer, makeTACBinOp(t1, TAC_OP_ADD, t2));
-    
-    tacbuffer_append(buffer, makeTACLoad(make_temp(), t1));
+		tac_expr(buffer, v->indices[i], ctx);
+		uint32_t tindex = tacbuffer_last_dest(buffer);
+		
+		tacbuffer_append(buffer, makeTACBinOp(tcurrent, TAC_OP_ADD, tindex));
+		
+		uint32_t t4 = make_temp();
+		tacbuffer_append(buffer, makeTACLoad(t4, tcurrent));
+		
+		tcurrent = t4;
+	}
 }
 
 static void case_default(struct TACBuffer* buffer, struct SimpleVar* v, struct Ctx* ctx){

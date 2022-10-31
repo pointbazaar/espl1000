@@ -1,0 +1,8 @@
+fn main()->int {
+	
+	[int] arr = 0xc7;
+
+	arr[1] = 0xff;
+
+	return arr[1];
+}
