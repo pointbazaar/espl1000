@@ -15,14 +15,6 @@ void compile_tac_return(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, FILE*
         fprintf(fout, "pop r0 ;destroy frame\n");
     }
 
-    //TODO: put the return value in the appropriate register
-    if(!rat_has_register(rat, tac->dest)){
-        printf("fatal error, value to be returned was not in a register\n");
-        printf("RAT:\n");
-        rat_print(rat);
-        exit(1);
-    }
-
     int reg = rat_get_register(rat, tac->dest);
     fprintf(fout, "mov r0, r%d\n", reg);
 

@@ -8,9 +8,10 @@
 
 void compile_tac_const_value(struct RAT* rat, struct TAC* tac, FILE* fout){
 
-    int reg = rat_get_free_register(rat, true);
-
-	rat_occupy_register(rat, reg, tac->dest);
+	//for TAC_CONST_VALUE there should have been a higher
+	//reg allocated for it's destination tmp
+    
+    int reg = rat_get_register(rat, tac->dest);
 
     fprintf(fout, "ldi r%d, %d\n", reg, tac->const_value);
 }

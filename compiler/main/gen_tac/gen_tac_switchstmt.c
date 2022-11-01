@@ -8,16 +8,18 @@
 
 void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss, struct Ctx* ctx){
 
-    tac_expr(buffer, ss->expr, ctx);
-
-    //now the last temporary contains our expr
-    //generate an if for each case
-    uint32_t tmp_expr = tacbuffer_last_dest(buffer);
+    
 
     uint32_t label_end = make_label();
     uint32_t* labels_cases = malloc(sizeof(uint32_t)*ss->count_cases);
 
     for(size_t i=0;i < ss->count_cases; i++){
+		
+		tac_expr(buffer, ss->expr, ctx);
+
+		//now the last temporary contains our expr
+		//generate an if for each case
+		uint32_t tmp_expr = tacbuffer_last_dest(buffer);
 
         struct CaseStmt* cs = ss->cases[i];
 
