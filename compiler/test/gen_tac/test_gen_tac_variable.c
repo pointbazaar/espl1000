@@ -6,12 +6,14 @@
 #include "test_gen_tac.h"
 
 static void case_no_member_access();
-static void case_member_access();
+static void case_1_member_access();
+static void case_2_member_access();
 
 void test_gen_tac_variable(){
 	
 	case_no_member_access();
-	case_member_access();
+	case_1_member_access();
+	case_2_member_access();
 }
 
 static void case_no_member_access(){
@@ -37,9 +39,9 @@ static void case_no_member_access(){
 	vmcu_system_dtor(system);
 }
 
-static void case_member_access(){
+static void case_1_member_access(){
 	
-	status_test_codegen_tac("Variable - member access");
+	status_test_codegen_tac("Variable - 1 member access");
 	
 	const int8_t value = rand()%0xff;
 	
@@ -55,6 +57,36 @@ static void case_member_access(){
 	vmcu_system_write_data(system, 0xc7+member_offset, value);
 	
 	for(int i=0; i < 20; i++){
+		vmcu_system_step(system);
+	}
+	
+	int8_t r0 = vmcu_system_read_gpr(system, 0);
+	
+	assert(r0 == value);
+	
+	vmcu_system_dtor(system);
+}
+
+static void case_2_member_access(){
+	
+	status_test_codegen_tac("Variable - 2 member access");
+	
+	const int8_t value = rand()%0xff;
+	
+	char snippet[200];
+	char* template = "struct A { A a; int8 b;}fn main() -> int { A m = 0xc7; return m.a.b; }";
+	sprintf(snippet, template, value);
+	
+	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
+	
+	const int member_offset = 2;
+	
+	//set m.a
+	vmcu_system_write_data(system, 0xc7, 0xd7);
+	
+	vmcu_system_write_data(system, 0xd7+member_offset, value);
+	
+	for(int i=0; i < 30; i++){
 		vmcu_system_step(system);
 	}
 	

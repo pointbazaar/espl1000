@@ -29,7 +29,7 @@ static void case_indices(struct TACBuffer* buffer, struct SimpleVar* v, struct C
 		//tindex = index 
 		//tcurrent = tcurrent + tindex
 		//t4 = [tcurrent]
-		//tcurrent = t4
+		// //tcurrent = t4
 	
 	const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, v->name);
     

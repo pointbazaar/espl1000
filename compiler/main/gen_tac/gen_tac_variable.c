@@ -19,8 +19,8 @@ void tac_variable(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx)
 		}
 		
 		if(v->member_access->member_access != NULL){
-			printf("multiple member access currently not implemented for avr_code_gen\n");
-			exit(1);
+			//printf("multiple member access currently not implemented for avr_code_gen\n");
+			//exit(1);
 		}
 		
 		case_member(buffer, v, ctx);
@@ -37,31 +37,53 @@ static void case_no_member(struct TACBuffer* buffer, struct Variable* v, struct 
 
 static void case_member(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx){
 	
-	//t1 = address of simplevar
-		
-	//t1 += offset in struct (member)
+	//t1 = simplevar
+	// //tcurrent = t1
 	
-	//t2 = [t1]
+	//for member in members		
+		//tcurrent += offset in struct (member)
+		
+		//t2 = [tcurrent]
+		// //tcurrent = t2
+		
+	struct STST* stst = ctx_tables(ctx)->stst;
 	
 	struct LVSTLine* line = lvst_get(ctx_tables(ctx)->lvst, v->simple_var->name);
 	
 	struct Type* structType = line->type;
+	struct Type* memberType = NULL;
 	
-	struct Variable* member = v->member_access;
-	
-	char* struct_name = structType->basic_type->simple_type->struct_type->type_name;
-	char* member_name = member->simple_var->name;
-	
-	uint32_t offset = stst_member_offset(ctx_tables(ctx)->stst, struct_name, member_name);
-
-	// --- codegen ---
-	//const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, v->simple_var->name);
+	struct Variable* current = v;
 	
 	tac_simplevar(buffer, v->simple_var, ctx);
 	
-	uint32_t t1 = tacbuffer_last_dest(buffer);
+	uint32_t tcurrent = tacbuffer_last_dest(buffer);
 	
-	tacbuffer_append(buffer, makeTACBinOpImmediate(t1, TAC_OP_ADD, offset));
+	while(current != NULL && current->member_access != NULL){
+		
+		struct Variable* member = current->member_access;
 	
-	tacbuffer_append(buffer, makeTACLoad(make_temp(), t1));
+		char* struct_name = structType->basic_type->simple_type->struct_type->type_name;
+		
+		char* member_name = member->simple_var->name;
+		
+		struct StructMember* sm = stst_get_member(stst, struct_name, member_name);
+		memberType = sm->type;
+		
+		uint32_t offset = stst_member_offset(stst, struct_name, member_name);
+		
+		// --- codegen ---
+		
+		if(offset != 0){
+			tacbuffer_append(buffer, makeTACBinOpImmediate(tcurrent, TAC_OP_ADD, offset));
+		}
+		
+		tacbuffer_append(buffer, makeTACLoad(make_temp(), tcurrent));
+		
+		
+		
+		structType = memberType;
+		tcurrent = tacbuffer_last_dest(buffer);
+		current = current->member_access;
+	}
 }
