@@ -20,8 +20,6 @@ struct LVST {
 	size_t capacity;
 	
 	struct LVSTLine** lines;
-
-    size_t stack_frame_size_avr;
 };
 
 struct LVST* makeLVST(){
@@ -31,8 +29,6 @@ struct LVST* makeLVST(){
 	lvst->count = 0;
 	lvst->capacity = LVST_INITIAL_CAPACITY;
 	lvst->lines = malloc(sizeof(struct LVSTLine*)*lvst->capacity);
-
-    lvst->stack_frame_size_avr = 0;
 	
 	return lvst;
 }
@@ -47,8 +43,6 @@ void lvst_clear(struct LVST* lvst){
 	lvst->count = 0;
 	lvst->capacity = LVST_INITIAL_CAPACITY;
 	lvst->lines = malloc(sizeof(struct LVSTLine*)*lvst->capacity);
-
-    lvst->stack_frame_size_avr = 0;
 }
 
 void freeLVST(struct LVST* lvst){
@@ -99,20 +93,6 @@ void lvst_add(struct LVST* lvst, struct LVSTLine* line){
 	
 	lvst->lines[lvst->count] = line;
 	lvst->count += 1;
-
-    //calculate the size in the stackframe and update the line
-    size_t item_size = 2;
-    if(line->type->basic_type != NULL){
-        if(line->type->basic_type->simple_type != NULL){
-            if(line->type->basic_type->simple_type->primitive_type != NULL){
-                //TODO: adjust this to the real size, as not all primitives occupy 1 byte
-                item_size = 1;
-            }
-        }
-    }
-
-    line->stack_frame_offset_avr = lvst->stack_frame_size_avr;
-    lvst->stack_frame_size_avr += item_size;
 }
 
 struct LVSTLine* lvst_get(struct LVST* lvst, char* name){
@@ -185,17 +165,63 @@ void lvst_print(struct LVST* lvst){
 	}
 }
 
+uint32_t lvst_sizeof_type(struct Type* type){
+	
+	uint32_t item_size = 2;
+	
+    if(type->basic_type != NULL){
+        if(type->basic_type->simple_type != NULL){
+            if(type->basic_type->simple_type->primitive_type != NULL){
+                //TODO: adjust this to the real size, as not all primitives occupy 1 byte
+                item_size = 1;
+            }
+        }
+    }
+    
+    return item_size;
+}
+
 size_t lvst_stack_frame_size_avr(struct LVST* lvst){
     //give the size required for the stack frame.
-    return lvst->stack_frame_size_avr;
+    //(here meaning just the local variables)
+    uint32_t sum = 0;
+    
+    for(int i = 0; i < lvst->count; i++){
+		if(lvst->lines[i]->is_arg) continue;
+        sum += lvst_sizeof_type(lvst->lines[i]->type);
+	}
+	
+	return sum;
 }
 
 size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name){
+	
+	uint32_t offset = 1;
+	
+	//we first look at the local vars
     for(int i = 0; i < lvst->count; i++){
-
+		
         struct LVSTLine* line = lvst->lines[i];
-        if(strcmp(line->name, local_var_name) == 0)
-            return line->stack_frame_offset_avr;
+        
+        if(line->is_arg == true) continue;
+        
+        if(strcmp(line->name, local_var_name) == 0) return offset;
+		
+		offset += lvst_sizeof_type(line->type);
+    }
+    
+    offset += 2; //because of the return address
+    
+    //we then look at the arguments
+    for(int i = 0; i < lvst->count; i++){
+		
+        struct LVSTLine* line = lvst->lines[i];
+        
+        if(line->is_arg == false) continue;
+        
+        if(strcmp(line->name, local_var_name) == 0) return offset;
+		
+		offset += lvst_sizeof_type(line->type);
     }
 
     printf("fatal error in lvst_stack_frame_offset_avr.");

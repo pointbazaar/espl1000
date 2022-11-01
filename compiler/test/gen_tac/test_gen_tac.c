@@ -17,6 +17,8 @@ void test_suite_tac_codegen(){
 	
 	test_gen_tac_simplevar();
 	test_gen_tac_variable();
+	
+	test_gen_tac_call();
 }
 
 void status_test_codegen_tac(char* msg){

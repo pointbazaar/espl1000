@@ -16,6 +16,7 @@ void test_gen_tac_forstmt();
 void test_gen_tac_switchstmt();
 void test_gen_tac_simplevar();
 void test_gen_tac_variable();
+void test_gen_tac_call();
 
 void status_test_codegen_tac(char* msg);
 

@@ -29,8 +29,6 @@ struct LVSTLine {
 	bool is_arg;
 	
 	bool read_only;
-
-    size_t stack_frame_offset_avr;
 };
 
 void freeLVSTLine(struct LVSTLine* l);
@@ -53,6 +51,7 @@ bool lvst_contains(struct LVST* lvst, char* name);
 
 void lvst_print(struct LVST* lvst);
 
+uint32_t lvst_sizeof_type(struct Type* type);
 
 size_t lvst_stack_frame_size_avr(struct LVST* lvst);
 size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name);

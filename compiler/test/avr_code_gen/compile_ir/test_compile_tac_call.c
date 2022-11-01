@@ -57,7 +57,27 @@ static void case_recurse(){
 
 static void case_returns_value(){
 	
-	status_test_codegen("TAC_CALL - returns value [TODO]");
+	status_test_codegen("TAC_CALL - returns value");
+	
+	const int8_t value = rand()%0xff;
+	
+    struct TACBuffer* b = tacbuffer_ctor();
+    
+    //main
+    tacbuffer_append(b, makeTACLabelFunction(0));
+    tacbuffer_append(b, makeTACConst(0, value));
+    
+    tacbuffer_append(b, makeTACReturn(0));
+
+    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+
+    for(int i=0;i < 20; i++){
+        vmcu_system_step(system);
+	}
+	
+	assert(vmcu_system_read_gpr(system, 0) == value);
+	
+	vmcu_system_dtor(system);
 }
 
 static void case_1_param(){
