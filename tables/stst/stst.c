@@ -82,6 +82,20 @@ struct StructMember* stst_get_member(struct STST* stst, char* struct_name, char*
 	exit(1);
 }
 
+uint32_t stst_member_offset(struct STST* stst, char* struct_name, char* member_name){
+	
+	struct STSTLine* line = stst_get(stst, struct_name);
+
+	for(int j=0; j < line->decl->count_members; j++){
+
+		struct StructMember* member = line->decl->members[j];
+
+		if(strcmp(member->name, member_name) == 0){ return j; }
+	}
+	
+	return 0;
+}
+
 uint32_t stst_size(struct STST* stst){
 	return stst->count;
 }
@@ -93,9 +107,6 @@ struct STSTLine* stst_at(struct STST* stst, uint32_t index){
 void freeSTST(struct STST* stst){
 	
 	for(int i=0;i < stst->count; i++){
-		if (stst->lines[i]->type_name_in_c != NULL){
-			free(stst->lines[i]->type_name_in_c);
-		}
 		free(stst->lines[i]);
 	}
 	
@@ -110,7 +121,6 @@ struct STSTLine* makeSTSTLine(struct StructDecl* s, char* _namespace){
 
 	line->decl       = s;
 	line->is_private = has_annotation(s->super.annotations, ANNOT_PRIVATE);
-	line->type_name_in_c = NULL;
 	
 	strncpy(line->_namespace, _namespace,                    DEFAULT_STR_SIZE);
 	strncpy(line->name, s->type->struct_type->type_name, DEFAULT_STR_SIZE);

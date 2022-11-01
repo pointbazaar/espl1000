@@ -4,7 +4,7 @@ struct A {
 }
 
 fn main ()-> int {
-	A a = 32;
+	A a = 0xc7;
 	a.x = 3;
 	return a.x;
 }

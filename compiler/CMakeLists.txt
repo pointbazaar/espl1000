@@ -170,6 +170,7 @@ add_executable("sd-tests"
 	test/gen_tac/test_gen_tac_switchstmt.c
 	test/gen_tac/test_gen_tac_massignstmt.c
 	test/gen_tac/test_gen_tac_simplevar.c
+	test/gen_tac/test_gen_tac_variable.c
 )
 
 target_compile_options("sd-base"  PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")

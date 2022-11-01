@@ -15,9 +15,9 @@ static bool tc_primitivetype_contains(struct PrimitiveType* expect, struct Primi
 bool tc_type_contains(struct Type* expect, struct Type* actual){
 
 	if (expect->basic_type != NULL && actual->basic_type != NULL){
+		
 		return tc_basictype_contains(expect->basic_type, actual->basic_type);
 	}
-	
 	
 	if(expect->array_type != NULL){
 		
@@ -60,8 +60,17 @@ static bool tc_arraytype_contains(struct ArrayType* expect, struct ArrayType* ac
 }
 
 static bool tc_simpletype_contains(struct SimpleType* expect, struct SimpleType* actual){
-	if (expect->struct_type != NULL && actual->struct_type != NULL){
-		return tc_structtype_contains(expect->struct_type, actual->struct_type);
+	if (expect->struct_type != NULL){
+		
+		if(actual->struct_type != NULL){
+			return tc_structtype_contains(expect->struct_type, actual->struct_type);
+		}else{
+			//actual->primitive_type != NULL
+			struct PrimitiveType* p = actual->primitive_type;
+			
+			//in case of int it's a pointer
+			return p->is_int_type;
+		}
 	}
 	if (expect->primitive_type != NULL && actual->primitive_type != NULL){
 		return tc_primitivetype_contains(expect->primitive_type, actual->primitive_type);

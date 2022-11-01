@@ -15,8 +15,6 @@ struct STSTLine {
 	struct StructDecl* decl;
 	
 	bool is_private;
-
-	char* type_name_in_c; //may be NULL
 };
 
 
@@ -32,6 +30,8 @@ void                 stst_add(struct STST* stst, struct STSTLine* line);
 struct STSTLine*     stst_get(struct STST* stst, char* name);
 
 struct StructMember* stst_get_member(struct STST* stst, char* struct_name, char* member_name);
+
+uint32_t 			 stst_member_offset(struct STST* stst, char* struct_name, char* member_name);
 
 uint32_t             stst_size(struct STST* stst);
 
