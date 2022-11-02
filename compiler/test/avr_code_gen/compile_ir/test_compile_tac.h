@@ -26,5 +26,6 @@ void test_compile_tac_load();
 void test_compile_tac_store();
 
 void test_compile_tac_setup_sp();
+void test_compile_tac_setup_stackframe();
 
 #endif

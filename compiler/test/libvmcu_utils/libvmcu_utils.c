@@ -28,3 +28,11 @@ uint16_t vmcu_system_read_sp(vmcu_system_t* system){
 	
 	return sp;
 }
+
+uint16_t vmcu_system_read_y(vmcu_system_t* system){
+	
+	int8_t YL = vmcu_system_read_gpr(system, 28);
+    int8_t YH = vmcu_system_read_gpr(system, 29);
+
+	return (YH << 8 | YL);
+}

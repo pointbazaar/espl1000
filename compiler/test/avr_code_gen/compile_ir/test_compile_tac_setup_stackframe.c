@@ -15,36 +15,33 @@
 
 #include "test_compile_tac.h"
 
-void test_compile_tac_setup_sp(){
+void test_compile_tac_setup_stackframe(){
 	
 	//see if stackpointer is setup correctly
-	status_test_codegen("TAC_SETUP_SP");
+	status_test_codegen("TAC_SETUP_STACKFRAME");
+	
+	uint8_t size = rand()%16;
 
     struct TACBuffer* buffer = tacbuffer_ctor();
     
     tacbuffer_append(buffer, makeTACSetupSP());
-    tacbuffer_append(buffer, makeTACNop());
+    tacbuffer_append(buffer, makeTACSetupStackframe(size));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+
+    vmcu_system_step_n(system, 4); //init SP
+
+    uint16_t sp_old = vmcu_system_read_sp(system);
     
-    //record register values
-	int8_t regs[32];
-	for(int i = 0; i < 32; i++){
-		if(i == 16) continue;
-		regs[i] = vmcu_system_read_gpr(system, i);
-	}
-
-    vmcu_system_step_n(system, 4);
-
-    uint16_t sp = vmcu_system_read_sp(system);
-
-	//check that SP was setup
-    assert(sp == 0x085f);
+    vmcu_system_step_n(system, size); //setup stackframe
+    vmcu_system_step_n(system, 2); 
     
-	for(int i = 0; i < 32; i++){
-		if(i == 16) continue;
-		assert(regs[i] == vmcu_system_read_gpr(system, i));
-	}
+    //assert that Y + size == SP_old after setup stackframe
+    uint16_t y = vmcu_system_read_y(system);
+    
+    assert(y + size == sp_old);
+    
+    assert(y == vmcu_system_read_sp(system));
 	
 	vmcu_system_dtor(system);
 }

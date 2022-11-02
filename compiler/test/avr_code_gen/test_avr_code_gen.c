@@ -22,7 +22,6 @@ void status_test_codegen(char* msg){
 void test_suite_avr_code_gen(){
 
     test_compile_tac_setup_sp();
-    //test_reaches_endloop();
     
     test_compile_tac_nop();
     test_compile_tac_const_value();
@@ -42,6 +41,7 @@ void test_suite_avr_code_gen(){
     test_compile_tac_copy();
     test_compile_tac_param();
     test_compile_tac_call();
+    test_compile_tac_setup_stackframe();
     
     test_compile_tac_load();
     test_compile_tac_store();
