@@ -27,9 +27,7 @@ static void case_local_int(){
 	
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
-	for(int i=0; i < 20; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 20);
 	
 	//assert that value is returned in r0 as it should be
 	
@@ -52,9 +50,7 @@ static void case_local_struct(){
 	
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
-	for(int i=0; i < 20; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 20);
 	
 	//assert that value is returned in r0 as it should be
 	
@@ -77,9 +73,7 @@ static void case_local_array(){
 	
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
-	for(int i=0; i < 34; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 34);
 	
 	int8_t value1 = vmcu_system_read_gpr(system, 0);
 	

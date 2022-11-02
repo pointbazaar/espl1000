@@ -36,9 +36,7 @@ void test_compile_tac_nop(){
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 	
 	//get into the nop range after 8 steps
-    for(int i=0;i < 8; i++){
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 8);
     
     //record register values
 	int8_t regs[32];
@@ -47,9 +45,7 @@ void test_compile_tac_nop(){
 	}
 	
 	//do some steps
-	for(int i=0;i < 5; i++){
-        vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 5);
 	
 	//check that the values are still the same
 	for(int i = 0; i < 32; i++){

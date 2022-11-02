@@ -28,9 +28,7 @@ static void case_no_member_access(){
 	
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 	
-	for(int i=0; i < 20; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 20);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -56,9 +54,7 @@ static void case_1_member_access(){
 	
 	vmcu_system_write_data(system, 0xc7+member_offset, value);
 	
-	for(int i=0; i < 20; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 20);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -86,9 +82,7 @@ static void case_2_member_access(){
 	
 	vmcu_system_write_data(system, 0xd7+member_offset, value);
 	
-	for(int i=0; i < 30; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 30);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	

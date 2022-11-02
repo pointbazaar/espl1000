@@ -35,15 +35,11 @@ void test_compile_tac_param(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 4; i++){
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 4);
 	
 	int sp_old = vmcu_system_read_data(system, SPL_ADDR) | vmcu_system_read_data(system, SPH_ADDR) << 8;
 	
-	for(int i=0;i < 3; i++){
-        vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 3);
 	
 	int sp = vmcu_system_read_data(system, SPL_ADDR) | vmcu_system_read_data(system, SPH_ADDR) << 8;
 	

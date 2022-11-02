@@ -71,9 +71,7 @@ static void case_returns_value(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 20; i++){
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 20);
 	
 	assert(vmcu_system_read_gpr(system, 0) == value);
 	

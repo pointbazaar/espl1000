@@ -30,9 +30,7 @@ void test_compile_tac_store_const_addr(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 10; i++){
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 10);
         
 	//check that the value was written
 

@@ -27,15 +27,11 @@ void test_compile_tac_goto(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 7; i++){
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 7);
 	
 	const uint32_t old_pc = vmcu_system_get_pc(system);
 	
-	for(int i=0;i < 5; i++){
-        vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 5);
 	
 	//assert that the PC has not changed
 	assert(vmcu_system_get_pc(system) == old_pc);

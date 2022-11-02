@@ -36,9 +36,7 @@ static void case_0_rounds(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 20; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 20);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		
@@ -62,9 +60,7 @@ static void case_1_rounds(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 50; i++){
-		vmcu_system_step(system);
-	}	
+	vmcu_system_step_n(system, 50);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		
@@ -88,9 +84,7 @@ static void case_n_rounds(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 150; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 150);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		
@@ -114,9 +108,7 @@ static void case_1_rounds_break(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 50; i++){
-		vmcu_system_step(system);
-	}	
+	vmcu_system_step_n(system, 50);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		
@@ -139,9 +131,7 @@ static void case_1_rounds_continue(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 50; i++){
-		vmcu_system_step(system);
-	}	
+	vmcu_system_step_n(system, 50);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		

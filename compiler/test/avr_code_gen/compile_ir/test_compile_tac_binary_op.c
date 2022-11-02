@@ -62,9 +62,7 @@ static void test_compile_tac_binary_op_add(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 8; i++){
-        vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system,8);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -91,10 +89,7 @@ static void test_compile_tac_binary_op_sub(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 8; i++){
-		
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 8);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -121,10 +116,7 @@ static void test_compile_tac_binary_op_and(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 8; i++){
-		
-        vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 8);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -151,10 +143,7 @@ static void test_compile_tac_binary_op_or(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 8; i++){
-		
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 8);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -181,10 +170,7 @@ static void test_compile_tac_binary_op_xor(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 8; i++){
-		
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 8);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -210,10 +196,7 @@ static void test_compile_tac_binary_op_neq_true(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 8; i++){
-		
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 8);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -239,10 +222,7 @@ static void test_compile_tac_binary_op_neq_false(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 8; i++){
-		
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 8);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -268,9 +248,7 @@ static void test_compile_tac_binary_op_lt_true(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 10; i++){
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 10);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -296,9 +274,7 @@ static void test_compile_tac_binary_op_lt_false(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 10; i++){
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 10);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -324,9 +300,7 @@ static void test_compile_tac_binary_op_eq_true(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 10; i++){
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 10);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -352,9 +326,7 @@ static void test_compile_tac_binary_op_eq_false(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 10; i++){
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 10);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	

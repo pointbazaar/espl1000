@@ -25,9 +25,7 @@ static void case_const_addr(){
 	
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
-	for(int i=0; i < 20; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 20);
 	
 	int8_t actual = vmcu_system_read_data(system, 0x100);
 	
@@ -51,9 +49,7 @@ static void case_variable_addr(){
 	
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
-	for(int i=0; i < 20; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 20);
 	
 	int8_t actual = vmcu_system_read_data(system, addr + offset);
 	

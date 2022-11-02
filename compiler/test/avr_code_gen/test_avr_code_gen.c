@@ -17,7 +17,6 @@
 
 //unit tests forward declarations
 static void test_stack_pointer_setup_correctly();
-//static void test_reaches_endloop();
 
 void status_test_codegen(char* msg){
     printf(" - [TEST] avr codegen %s\n", msg);
@@ -64,61 +63,11 @@ static void test_stack_pointer_setup_correctly(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 
-    //step 4 times
-    for(int i=0;i < 4;i++)
-        vmcu_system_step(system);
+    vmcu_system_step_n(system, 4);
 
-    //assert SPH:SPL == 0x085f
+    uint16_t sp = vmcu_system_read_sp(system);
 
-    //the 'out' instruction receives an offset to the base address off the io space within the data space
-    const uint32_t io_offset = 0x20;
-    int8_t SPH_value = vmcu_system_read_data(system, io_offset+0x3e);
-    int8_t SPL_value = vmcu_system_read_data(system, io_offset+0x3d);
-
-    //printf("SPH = %04x, SPL = %04x\n", SPH_value, SPL_value);
-
-    assert((SPH_value << 8 | SPL_value) == 0x085f);
+    assert(sp == 0x085f);
 
     vmcu_system_dtor(system);
 }
-/*
-static void test_reaches_endloop(){
-
-    status_test_codegen("reaches endloop");
-
-    //create a TACBuffer* where we put the TAC that in the end will be compiled
-
-    struct TACBuffer* buffer = tacbuffer_ctor();
-
-	tacbuffer_append(buffer, makeTACConst(1, 0));
-	tacbuffer_append(buffer, makeTACReturn("t1"));
-
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
-
-    //step through the system and see that it should converge on a value for pc (endloop)
-
-    for(int i=0;i < 30; i++)
-        vmcu_system_step(system);
-
-    int32_t pc1 = (int32_t)vmcu_system_get_pc(system);
-    vmcu_system_step(system);
-    int32_t pc2 = (int32_t)vmcu_system_get_pc(system);
-
-    //check it
-    assert(pc1 == pc2);
-
-    //check that pc remains in range
-    for(int i=0;i < 10; i++) {
-
-        vmcu_system_step(system);
-        int32_t pc = (int32_t)vmcu_system_get_pc(system);
-
-        assert(pc == pc1);
-    }
-
-    vmcu_system_dtor(system);
-}
-*/
-
-
-

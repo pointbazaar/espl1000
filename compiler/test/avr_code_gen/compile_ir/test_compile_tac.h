@@ -1,6 +1,8 @@
 #ifndef TEST_COMPILE_TAC_H
 #define TEST_COMPILE_TAC_H
 
+#include "libvmcu_utils/libvmcu_utils.h"
+
 void test_compile_tac_nop();
 void test_compile_tac_const_value();
 

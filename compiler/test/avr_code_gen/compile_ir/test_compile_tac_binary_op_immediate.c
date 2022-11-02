@@ -45,9 +45,7 @@ static void case_add(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 10; i++){
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 10);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -73,9 +71,7 @@ static void case_sub(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 10; i++){
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 10);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -101,9 +97,7 @@ static void case_and(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 10; i++){
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 10);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -129,9 +123,7 @@ static void case_or(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 10; i++){
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 10);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	

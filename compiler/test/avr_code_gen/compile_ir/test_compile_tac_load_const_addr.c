@@ -33,9 +33,7 @@ void test_compile_tac_load_const_addr(){
     //write value to be read later
     vmcu_system_write_data(system, addr, fixed_value);
 
-    for(int i=0;i < 10; i++){
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 10);
         
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	

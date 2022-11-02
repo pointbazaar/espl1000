@@ -28,9 +28,7 @@ void test_compile_tac_return(){
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    for(int i=0;i < 6; i++){
-        vmcu_system_step(system);
-	}
+    vmcu_system_step_n(system, 6);
 	
 	//returned value should be in r0
 	assert(vmcu_system_read_gpr(system, 0) == value);

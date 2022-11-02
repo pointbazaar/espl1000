@@ -31,9 +31,7 @@ static void test_gen_tac_switchstmt_first_case(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 40; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 40);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		
@@ -56,9 +54,7 @@ static void test_gen_tac_switchstmt_fallthrough_case(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 40; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 40);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		
@@ -81,9 +77,7 @@ static void test_gen_tac_switchstmt_no_case(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 40; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 40);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		

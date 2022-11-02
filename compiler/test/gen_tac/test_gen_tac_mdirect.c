@@ -29,9 +29,7 @@ static void case_const_addr(){
 	//prepare a value in the location
 	vmcu_system_write_data(system, address, value);
 	
-	for(int i=0; i < 10; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 10);
 	
 	//assert that the MDirect load has happened
 	//and that the value is in a register or in the stack frame
@@ -66,9 +64,7 @@ static void case_variable_addr(){
 	//prepare a value in the location
 	vmcu_system_write_data(system, address+3, value);
 	
-	for(int i=0; i < 30; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 30);
 	
 	//return value in r0
 	int8_t value1 = vmcu_system_read_gpr(system, 0);

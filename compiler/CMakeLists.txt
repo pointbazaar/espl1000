@@ -134,6 +134,9 @@ add_executable("sd-tests"
 	test/typechecker/test_typechecker_util.h
 	test/typechecker/test_typechecker.c
 	test/typechecker/test_typechecker.h
+	
+	#libvmcu utils
+	test/libvmcu_utils/libvmcu_utils.c
 
 	#CodeGen from TAC
 	test/avr_code_gen/test_avr_code_gen.c

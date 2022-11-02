@@ -32,9 +32,7 @@ static void test_gen_tac_forstmt_0_rounds(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 22; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 22);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		
@@ -57,9 +55,7 @@ static void test_gen_tac_forstmt_1_rounds(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 100; i++){
-		vmcu_system_step(system);
-	}	
+	vmcu_system_step_n(system, 100);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		
@@ -82,9 +78,7 @@ static void test_gen_tac_forstmt_1_rounds_break(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 100; i++){
-		vmcu_system_step(system);
-	}	
+	vmcu_system_step_n(system, 100);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		
@@ -108,9 +102,7 @@ static void test_gen_tac_forstmt_n_rounds(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 150; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 150);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		

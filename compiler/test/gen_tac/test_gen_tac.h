@@ -1,6 +1,8 @@
 #include "libvmcu/libvmcu_system.h"
 #include "libvmcu/libvmcu_analyzer.h"
 
+#include "libvmcu_utils/libvmcu_utils.h"
+
 #ifndef TEST_GEN_TAC_H
 #define TEST_GEN_TAC_H
 

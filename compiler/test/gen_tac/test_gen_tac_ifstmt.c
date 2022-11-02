@@ -37,9 +37,7 @@ static void test_gen_tac_ifstmt_no_else_true(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 20; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 20);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		
@@ -65,9 +63,7 @@ static void test_gen_tac_ifstmt_no_else_false(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 20; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 20);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		
@@ -93,9 +89,7 @@ static void test_gen_tac_ifstmt_with_else_true(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 20; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 20);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		
@@ -121,9 +115,7 @@ static void test_gen_tac_ifstmt_with_else_false(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	for(int i=0; i < 20; i++){
-		vmcu_system_step(system);
-	}
+	vmcu_system_step_n(system, 20);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 		
