@@ -60,6 +60,7 @@ enum TAC_KIND{
     TAC_RETURN, //return, without arguments
     
     TAC_SETUP_STACKFRAME, //create space on stack for locals, load SP
+    TAC_SETUP_SP, //setup the stack pointer. used at the start of programs
 
     TAC_NOP,
     
@@ -132,6 +133,7 @@ struct TAC* makeTACParam(uint32_t dest);
 struct TAC* makeTACCall(uint32_t tmp, uint32_t function_index);
 
 struct TAC* makeTACSetupStackframe(uint32_t frame_size);
+struct TAC* makeTACSetupSP();
 
 struct TAC* makeTACNop();
 

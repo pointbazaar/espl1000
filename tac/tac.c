@@ -226,6 +226,12 @@ struct TAC* makeTACSetupStackframe(uint32_t frame_size){
     return t;
 }
 
+struct TAC* makeTACSetupSP(){
+	struct TAC* t = makeTAC();
+    t->kind = TAC_SETUP_SP;
+    return t;
+}
+
 struct TAC* makeTACNop(){
 	struct TAC* t = makeTAC();
     t->kind = TAC_NOP;

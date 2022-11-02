@@ -29,6 +29,7 @@ void test_compile_tac_param(){
 	
     struct TACBuffer* b = tacbuffer_ctor();
     
+    tacbuffer_append(b, makeTACSetupSP());
     tacbuffer_append(b, makeTACConst(0, fixed_value));
     tacbuffer_append(b, makeTACParam(0));
     tacbuffer_append(b, makeTACReturn(0));

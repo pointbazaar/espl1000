@@ -40,5 +40,7 @@ void test_compile_tac_load(){
 	
 	assert(r0 == fixed_value);
 	
+	//TODO: assert that X register has been used for the load
+	
 	vmcu_system_dtor(system);
 }

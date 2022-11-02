@@ -66,8 +66,6 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
 		".equ	SPL	= 0x3d\n"
     );
 
-    emit_setup_stack_pointer_avr(fout);
-
 	int nblocks;
     struct BasicBlock** graph = basicblock_create_graph(buffer, "main", &nblocks, ctx);
 	

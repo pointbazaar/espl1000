@@ -12,17 +12,9 @@
 
 #include "cg_avr.h"
 #include "tac/tacbuffer.h"
+#include "tac/tac.h"
 #include "cg_avr_single_function.h"
-
-void emit_setup_stack_pointer_avr(FILE* fout){
-    //initialize Stack Pointer
-    fprintf(fout, "ldi r16, high(RAMEND)\n");
-    fprintf(fout, "out SPH, r16\n");
-    fprintf(fout, "ldi r16, low(RAMEND)\n");
-    fprintf(fout, "out SPL, r16\n");
-
-    fprintf(fout, "\n\n");
-}
+#include "cg_avr_single_tac.h"
 
 void emit_call_main_endloop(FILE* fout){
     //create the endloop such that the mcu does
@@ -60,7 +52,10 @@ bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx){
 		".equ	SPL	= 0x3d\n"
     );
 
-    emit_setup_stack_pointer_avr(fout);
+    //emit_setup_stack_pointer_avr(fout); //OLD
+    struct RAT* rat = rat_ctor(ctx_tables(ctx));
+    emit_asm_avr_single_tac(rat, makeTACSetupSP(), ctx, fout);
+    rat_dtor(rat);
 
     emit_call_main_endloop(fout);
 
