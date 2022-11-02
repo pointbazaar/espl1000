@@ -67,6 +67,8 @@ struct SSTLine* sst_at(struct SST* sst, uint32_t index);
 
 uint32_t 		sst_index_of(struct SST* sst, char* name);
 
+uint32_t		sst_args_size_avr(struct SST* sst, char* name);
+
 //-----------
 struct SSTLine* makeSSTLine(
 	char* name, 

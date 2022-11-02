@@ -195,6 +195,17 @@ uint32_t sst_index_of(struct SST* sst, char* name){
 	exit(1);
 }
 
+uint32_t sst_args_size_avr(struct SST* sst, char* name){
+	
+	struct MethodDecl* decl = sst_get(sst,name)->method->decl;
+	uint32_t size = 0;
+	
+	for(int i=0;i < decl->count_args; i++){
+		size += lvst_sizeof_type(decl->args[i]->type);
+	}
+	return size;
+}
+
 bool sst_contains(struct SST* sst, char* name){
 
 	for(int i = 0; i < sst->count; i++){

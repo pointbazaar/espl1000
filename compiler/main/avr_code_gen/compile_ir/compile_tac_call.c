@@ -15,5 +15,22 @@ void compile_tac_call(struct RAT* rat, struct TAC* tac, FILE* fout, struct Ctx* 
 	
     fprintf(fout, "call %s\n", function_name);
     
-    fprintf(fout, "mov r%d, r0\n", reg_dest);
+    if(reg_dest != 0)
+		fprintf(fout, "mov r%d, r0\n", reg_dest);
+    
+    struct SST* sst = ctx_tables(ctx)->sst;
+    
+    
+    //for the case of tests on raw TACBuffers
+    if(sst_size(sst) == 0)
+		return;
+    
+    //pop the PARAMS off the stack
+    char* name = sst_at(sst, tac->arg1)->name;
+    
+    uint32_t size = sst_args_size_avr(sst, name);
+    
+    for(uint32_t i=0;i < size; i++){
+		fprintf(fout, "pop r16\n");
+	}
 }
