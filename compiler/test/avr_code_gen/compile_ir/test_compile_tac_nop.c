@@ -24,14 +24,10 @@ void test_compile_tac_nop(){
 
     struct TACBuffer* b = tacbuffer_ctor();
     int n = 8;
-
-    tacbuffer_append(b, makeTACConst(1, 0x00));
     
     for(int i=0; i < n; i++){
 		tacbuffer_append(b, makeTACNop());
 	}
-    
-    tacbuffer_append(b, makeTACReturn(1));
 
     vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 	
@@ -44,6 +40,8 @@ void test_compile_tac_nop(){
 		regs[i] = vmcu_system_read_gpr(system, i);
 	}
 	
+	uint16_t old_sp = vmcu_system_read_sp(system);
+	
 	//do some steps
 	vmcu_system_step_n(system, 5);
 	
@@ -51,6 +49,8 @@ void test_compile_tac_nop(){
 	for(int i = 0; i < 32; i++){
 		assert(regs[i] == vmcu_system_read_gpr(system, i));
 	}
+	
+	assert(old_sp == vmcu_system_read_sp(system));
 	
 	vmcu_system_dtor(system);
 }

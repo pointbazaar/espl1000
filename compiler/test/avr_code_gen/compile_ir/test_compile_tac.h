@@ -25,4 +25,6 @@ void test_compile_tac_call();
 void test_compile_tac_load();
 void test_compile_tac_store();
 
+void test_compile_tac_setup_sp();
+
 #endif

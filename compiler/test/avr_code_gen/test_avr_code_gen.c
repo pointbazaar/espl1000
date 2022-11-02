@@ -15,16 +15,13 @@
 
 #include "compile_ir/test_compile_tac.h"
 
-//unit tests forward declarations
-static void test_stack_pointer_setup_correctly();
-
 void status_test_codegen(char* msg){
     printf(" - [TEST] avr codegen %s\n", msg);
 }
 
 void test_suite_avr_code_gen(){
 
-    test_stack_pointer_setup_correctly();
+    test_compile_tac_setup_sp();
     //test_reaches_endloop();
     
     test_compile_tac_nop();
@@ -50,24 +47,3 @@ void test_suite_avr_code_gen(){
     test_compile_tac_store();
 }
 
-// --- UNIT TESTS ---
-
-static void test_stack_pointer_setup_correctly(){
-
-    status_test_codegen("stackpointer setup correctly");
-
-    struct TACBuffer* buffer = tacbuffer_ctor();
-    
-    tacbuffer_append(buffer, makeTACSetupSP());
-    tacbuffer_append(buffer, makeTACNop());
-
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
-
-    vmcu_system_step_n(system, 4);
-
-    uint16_t sp = vmcu_system_read_sp(system);
-
-    assert(sp == 0x085f);
-
-    vmcu_system_dtor(system);
-}
