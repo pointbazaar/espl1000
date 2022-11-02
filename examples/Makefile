@@ -13,7 +13,7 @@ test:
 	$(CALL2) local_variables/simple.dg
 	$(CALL2) loops/whileloop.dg 
 	$(CALL2) loops/forloop.dg 
-	#$(CALL2) mathematics/fibonacci.dg 
+	$(CALL2) mathematics/fibonacci.dg 
 	$(CALL2) methodCalls/methodcall.dg 
 	$(CALL2) other/everything.dg 
 	$(CALL2) switch/switch.dg 

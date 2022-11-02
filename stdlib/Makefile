@@ -23,7 +23,6 @@ SOURCES :=  test.dg \
 
 test: $(SOURCES) clean
 	sd $(SOURCES) 
-	./a.out
 
 clean:
 	rm -f a.out 

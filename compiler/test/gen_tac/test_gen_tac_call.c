@@ -34,6 +34,10 @@ static void case_no_args(){
 	
 	assert(r0 == value);
 	
+	//check if SP is same as before main
+	uint16_t sp = vmcu_system_read_sp(system);
+    assert(sp == 0x085f);
+	
 	vmcu_system_dtor(system);
 }
 
@@ -80,6 +84,10 @@ static void case_2_args(){
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
 	assert(r0 == (int8_t)(value+3+2));
+	
+	//check if SP is same as before main
+	uint16_t sp = vmcu_system_read_sp(system);
+    assert(sp == 0x085f);
 	
 	vmcu_system_dtor(system);
 }

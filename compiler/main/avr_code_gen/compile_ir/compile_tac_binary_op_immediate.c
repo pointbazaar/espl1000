@@ -76,6 +76,14 @@ static void case_tac_op_sub(FILE* fout, int dest, int32_t immediate){
 	if(immediate == 1){
 		fprintf(fout, "dec r%d\n", dest);
 	}else{
-		fprintf(fout, "subi r%d, %d\n", dest, immediate);
+		
+		//find other solution if dest is < r16
+		if(dest >= 16){
+			fprintf(fout, "subi r%d, %d\n", dest, immediate);
+		}else{
+			//cannot use subi
+			fprintf(fout, "ldi r16, %d\n", immediate);
+			fprintf(fout, "sub r%d, r16\n", dest);
+		}
 	}
 }

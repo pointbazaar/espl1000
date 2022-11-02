@@ -4,3 +4,6 @@ main
 *.asm
 a.out
 *.c
+*.cof
+*.obj
+*.hex
