@@ -1,6 +1,7 @@
 
 all:
 	cd dependencies && make
+	cd util       && make
 	cd token      && make
 	cd ast        && make
 	cd lexer      && make
@@ -24,6 +25,7 @@ test:
 
 clean:
 	# we don't clean our dependencies
+	cd util       && make clean
 	cd token      && make clean
 	cd ast        && make clean
 	cd lexer      && make clean

@@ -23,5 +23,8 @@ add_executable(${PROJECT_NAME}-test
 	visitor/visitor.c
 )
 
+target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
+target_link_libraries(${PROJECT_NAME}-test ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
+
 target_compile_options(${PROJECT_NAME}      PUBLIC "-g" "-march=native" "-Wall" "-Werror")
 target_compile_options(${PROJECT_NAME}-test PUBLIC "-g" "-march=native" "-Wall" "-Werror")

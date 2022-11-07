@@ -124,6 +124,8 @@ target_compile_options(dragon-parser PUBLIC "-g" "-march=native" "-Wall" "-Wextr
 target_compile_options(dragon-parser-base PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
 target_compile_options(dragon-parser-tests PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
 
+#Util dependency
+target_link_libraries(dragon-parser-base ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
 #AST dependency
 target_link_libraries(dragon-parser-base ${CMAKE_SOURCE_DIR}/../ast/build/libsd-ast.a)
 #Token dependency

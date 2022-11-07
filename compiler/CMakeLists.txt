@@ -111,7 +111,6 @@ add_library("sd-base"
 	main/util/fill_tables.h
 	main/util/fileutils/fileutils.c
 	main/util/ctx.c
-	../util/exit_malloc/exit_malloc.c
 
 	#flags
 	cli/flags/flags.c
@@ -182,8 +181,8 @@ add_executable("sd-tests"
 )
 
 target_compile_options("sd-base"  PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror" "-fanalyzer")
-target_compile_options("sd"       PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
-target_compile_options("sd-tests" PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
+target_compile_options("sd"       PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror" "-fanalyzer")
+target_compile_options("sd-tests" PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror" "-fanalyzer")
 
 #AST dependency
 target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../ast/build/libsd-ast.a)
@@ -197,6 +196,8 @@ target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../tac/build/libsd-tac.a)
 target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../parser/build/libdragon-parser-base.a)
 #Token dependency
 target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a)
+#Util dependency
+target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
 
 target_link_libraries("sd" sd-base)
 
