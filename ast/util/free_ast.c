@@ -307,7 +307,7 @@ void free_range(struct Range* range){
 }
 
 void free_lambda(struct Lambda* l){
-	for(uint8_t i = 0; i < l->count_params; i++){
+	for(int i = 0; i < l->count_params; i++){
 		free_identifier(l->params[i]);
 	}
 	free_expr(l->expr);

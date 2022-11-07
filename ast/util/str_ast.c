@@ -14,7 +14,7 @@ static void error(char* msg){
 
 char* str_identifier(struct Id* id){
 
-	char* res =  malloc(sizeof(char)*(strlen(id->identifier)+1));
+	char* res =  exit_malloc(sizeof(char)*(strlen(id->identifier)+1));
 	sprintf(res, "%s", id->identifier);
 	return res;
 }
@@ -26,7 +26,7 @@ char* str_range(struct Range* r){
 	
 	uint16_t l = strlen(s1) + strlen(s2) + 4+1;
 	
-	char* res = malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char)*l);
 	
 	sprintf(res, "%s .. %s", s1, s2);
 	
@@ -50,7 +50,7 @@ char* str_stmt_block(struct StmtBlock* block){
 	
 	l += 1 + 2 + 2;
 	
-	char* res = malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char)*l);
 	
 	strcpy(res, "");
 	strcat(res, "{\n");
@@ -84,7 +84,7 @@ char* str_lambda(struct Lambda* lambda){
 	
 	l += 2 + 4;
 	
-	char* res = malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char)*l);
 	
 	strcpy(res, "");
 	strcat(res, "(");
@@ -109,7 +109,7 @@ char* str_lambda(struct Lambda* lambda){
 
 char* str_const_value(struct ConstValue* cv){
 	
-	char* res = malloc(sizeof(char)*129);
+	char* res = exit_malloc(sizeof(char)*129);
 	
 	switch (cv->kind) {
 		case 1: 
@@ -162,7 +162,7 @@ char* str_const_value(struct ConstValue* cv){
 }
 char* str_string_const(struct StringConst* s){
 	
-	char* res =  malloc(sizeof(char)*(3+strlen(s->value)));
+	char* res =  exit_malloc(sizeof(char)*(3+strlen(s->value)));
 	sprintf(res, "%s", s->value);
 	return res;
 }
@@ -171,7 +171,7 @@ char* str_array_type(struct ArrayType* at){
 
 	char* inner = str_type(at->element_type);
 	
-	char* res = malloc(sizeof(char)*(strlen(inner)+2+1));
+	char* res = exit_malloc(sizeof(char)*(strlen(inner)+2+1));
 	
 	sprintf(res, "[%s]", inner);
 	
@@ -206,7 +206,7 @@ char* str_subr_type(struct SubrType* st){
 
 	//TODO: get rid of the magic number '1000'
 	//and calculate how long exactly
-	char* res = malloc(sizeof(char)*1000);
+	char* res = exit_malloc(sizeof(char)*1000);
 	strcpy(res, "");
 	
 	strcat(res, "(");
@@ -249,7 +249,7 @@ char* str_type(struct Type* t){
 
 char* str_type_param(struct TypeParam* t){
 	
-	char* res =  malloc(sizeof(char)*4);
+	char* res = exit_malloc(sizeof(char)*4);
     strcpy(res, "?T");
 	sprintf(res+2, "%d", t->index);
 	return res;
@@ -258,7 +258,7 @@ char* str_type_param(struct TypeParam* t){
 
 char* str_primitive_type(struct PrimitiveType* p){
 	
-	char* res = malloc(DEFAULT_STR_SIZE);
+	char* res = exit_malloc(DEFAULT_STR_SIZE);
 	
 	if(p->is_int_type){
 		
@@ -280,14 +280,15 @@ char* str_primitive_type(struct PrimitiveType* p){
 char* str_struct_type(struct StructType* s){
 
     if(s->count_type_params == 0){
-        char* res = malloc(DEFAULT_STR_SIZE);
+		
+        char* res = exit_malloc(DEFAULT_STR_SIZE);
         sprintf(res, "%s", s->type_name);
         return res;
     }
 
     //now: s->count_type_params > 0
 
-    char** type_strings = malloc(sizeof(void*)*s->count_type_params);
+    char** type_strings = exit_malloc(sizeof(void*)*s->count_type_params);
 
     uint32_t str_l = 0;
 
@@ -296,7 +297,7 @@ char* str_struct_type(struct StructType* s){
         str_l += strlen(type_strings[i]);
     }
 
-    char* res = malloc(DEFAULT_STR_SIZE+str_l+(s->count_type_params)+2);
+    char* res = exit_malloc(DEFAULT_STR_SIZE+str_l+(s->count_type_params)+2);
 
     sprintf(res, "%s", s->type_name);
 
@@ -333,7 +334,7 @@ char* str_struct_decl(struct StructDecl* decl){
 		memberStrs[i] = s2;
 	}
 	
-	char* res = malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char)*l);
 	
 	sprintf(res, "struct %s {", decl->type->struct_type->type_name);
 	
@@ -354,7 +355,7 @@ char* str_struct_member(struct StructMember* s){
 	char* s1 = str_type(s->type);
 	const int l = strlen(s1);
 	
-	char* res = malloc(sizeof(char)*(l+DEFAULT_STR_SIZE+3));
+	char* res = exit_malloc(sizeof(char)*(l+DEFAULT_STR_SIZE+3));
 	
 	sprintf(res, "%s %s;", s1, s->name);
 	
@@ -369,7 +370,7 @@ char* str_variable(struct Variable* v){
 	
 	uint16_t l = strlen(s1) + strlen(s2);
 	
-	char* res = malloc(sizeof(char)*(l+1+1));
+	char* res = exit_malloc(sizeof(char)*(l+1+1));
 
     strcpy(res, s1);
 	if(v->member_access != NULL){
@@ -393,7 +394,7 @@ char* str_simple_var(struct SimpleVar* s){
 	
 	l += s->count_indices * (20+2);
 	
-	char* res = malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char)*l);
 	
 	strcpy(res, s->name);
 	
@@ -425,7 +426,7 @@ char* str_expr(struct Expr* e){
 	
 	uint16_t l = l1+l2+l3+1;
 	
-	char* res = malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char)*l);
 	
 	sprintf(res, "%s%s%s", strTerm1, strO, strTerm2);
 	
@@ -438,7 +439,7 @@ char* str_expr(struct Expr* e){
 
 char* str_op(enum OP o){
 	
-	char* res = malloc(sizeof(char)*16);
+	char* res = exit_malloc(sizeof(char)*16);
 	
 	char* str;
 	
@@ -472,7 +473,7 @@ char* str_un_op_term(struct UnOpTerm* u){
 	
 	uint16_t l = strlen(strO) + strlen(strT)+3;
 	
-	char* res = malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char)*l);
 	
 	sprintf(res, "%s%s", strO, strT);
 	
@@ -501,7 +502,7 @@ char* str_term(struct Term* t){
 char* str_mdirect(struct MDirect* m){
 
     char* se = str_expr(m->expr);
-    char* res = malloc(3+ strlen(se));
+    char* res = exit_malloc(3+ strlen(se));
     sprintf(res, "[%s]", se);
 
     free(se);
@@ -522,7 +523,7 @@ char* str_stmt(struct Stmt* stmt){
         case 9: return str_massign_stmt(stmt->ptr.m9);
 		case 99: {
 			//break,continue,throw,...
-			char* res = malloc(sizeof(char)*30);
+			char* res = exit_malloc(sizeof(char)*30);
 			strcpy(res, "");
 			
 			if(stmt->is_break)    { sprintf(res, "break"); }
@@ -555,7 +556,7 @@ char* str_assign_stmt(struct AssignStmt* a){
 	
 	uint16_t l = l1+l2+l3+1+4;
 	
-	char* res = malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char)*l);
 	
 	sprintf(res, "%s %s = %s", strOptType, strVar, strE);
 	
@@ -574,7 +575,7 @@ char* str_for_stmt(struct ForStmt* f){
 	const uint32_t l = strlen(s1)+strlen(s2)
 				+3+4+1+DEFAULT_STR_SIZE;
 	
-	char* res = malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char)*l);
 	
 	sprintf(res, "for %s in %s %s", f->index_name, s1, s2);
 	
@@ -596,7 +597,7 @@ char* str_if_stmt(struct IfStmt* i){
 	const uint32_t l = strlen(s1)+strlen(s2)+strlen(s3)
 		+1+10;
 		
-	char* res = malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char)*l);
 	
 	sprintf(res, "if %s %s", s1, s2);
 	
@@ -619,7 +620,7 @@ char* str_while_stmt(struct WhileStmt* w){
 	
 	const uint32_t l = strlen(s1)+strlen(s2)+5+2+1;
 	
-	char* res = malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char)*l);
 	
 	sprintf(res, "while %s %s", s1, s2);
 	
@@ -642,7 +643,7 @@ char* str_switch_stmt(struct SwitchStmt* s){
 		l += strlen(strCases[i]);
 	}
 	
-	char* res = malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char)*l);
 	
 	sprintf(res, "switch %s {", s1);
 	
@@ -670,7 +671,7 @@ char* str_call(struct Call* m){
 
     char* str_var = str_variable(m->callable);
 
-    char* res = malloc(l+ strlen(str_var));
+    char* res = exit_malloc(l+ strlen(str_var));
 
 	strcpy(res, str_var);
 	free(str_var);
@@ -700,7 +701,7 @@ char* str_ret_stmt(struct RetStmt* r){
 	
 	uint16_t l = 10 + strlen(s);
 	
-	char* res =  malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char)*l);
 	
 	sprintf(res, "return %s;", s);
 	
@@ -717,7 +718,7 @@ char* str_case_stmt(struct CaseStmt* c){
 	
 	uint16_t l = strlen(s) + strlen(s2);
 
-	char* res = malloc(sizeof(char)*(l+1+6));
+	char* res = exit_malloc(sizeof(char)*(l+1+6));
 	
 	sprintf(res, "case %s %s", s, s2);
 	
@@ -731,7 +732,7 @@ char* str_massign_stmt(struct MAssignStmt* m){
     char* s1 = str_mdirect(m->lhs);
     char* s2 = str_expr(m->expr);
 
-    char* res = malloc(strlen(s1)+ strlen(s2)+6);
+    char* res = exit_malloc(strlen(s1)+ strlen(s2)+6);
 
     sprintf(res, "%s = %s;", s1, s2);
 
