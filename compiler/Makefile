@@ -19,7 +19,7 @@ DIRS:
 VALGRIND_OPS := --leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1 
 
 valgrind: sd
-	valgrind $(VALGRIND_OPS) ./sd ../examples/other/Everything.dg
+	valgrind $(VALGRIND_OPS) ./sd ../examples/other/everything.dg
 
 
 

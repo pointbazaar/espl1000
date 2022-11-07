@@ -54,7 +54,11 @@ bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx){
 
     //emit_setup_stack_pointer_avr(fout); //OLD
     struct RAT* rat = rat_ctor(ctx_tables(ctx));
-    emit_asm_avr_single_tac(rat, makeTACSetupSP(), ctx, fout);
+    
+    struct TAC* t = makeTACSetupSP();
+    emit_asm_avr_single_tac(rat, t, ctx, fout);
+    free(t);
+    
     rat_dtor(rat);
 
     emit_call_main_endloop(fout);
