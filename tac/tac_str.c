@@ -35,7 +35,7 @@ static char* get_op_str(enum TAC_OP top){
 
 char* tac_tostring(struct TAC* t, struct Ctx* ctx){
 
-    char* res = malloc(sizeof(char)*120);
+    char* res = exit_malloc(sizeof(char)*120);
     strcpy(res, "");
 
     char buffer[110];

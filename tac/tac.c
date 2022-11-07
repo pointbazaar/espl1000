@@ -15,7 +15,7 @@ static struct TAC* makeTAC();
 
 
 struct TAC* makeTAC(){
-    struct TAC* res = malloc(sizeof(struct TAC));
+    struct TAC* res = exit_malloc(sizeof(struct TAC));
     *res = (struct TAC) {
             .label_index = TAC_NO_LABEL,
             .kind = TAC_NOP,

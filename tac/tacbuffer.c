@@ -75,8 +75,12 @@ void tacbuffer_shallow_dtor(struct TACBuffer* buffer){
 }
 
 void tacbuffer_dtor(struct TACBuffer* buffer){
+	struct TAC* prev = NULL;
     for(size_t i = 0; i < buffer->count; i++){
-        free(buffer->buffer[i]);
+		if(buffer->buffer[i] != prev){
+			prev = buffer->buffer[i];
+			free(buffer->buffer[i]);
+		}
     }
     free(buffer->buffer);
     free(buffer);
@@ -88,7 +92,7 @@ void tacbuffer_print(struct TACBuffer* buffer, struct Ctx* ctx){
     free(s);
 }
 char* tacbuffer_tostring(struct TACBuffer* buffer, bool graphviz, struct Ctx* ctx){
-    char* res = malloc(sizeof(char)*(buffer->count*100));
+    char* res = exit_malloc(sizeof(char)*(buffer->count*100));
     strcpy(res, "");
 
     for(size_t k = 0; k < buffer->count; k++){

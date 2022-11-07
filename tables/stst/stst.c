@@ -30,7 +30,7 @@ struct STST* makeSTST(){
 	struct STST* stst = make(STST);
 	
 	stst->capacity = STST_INITIAL_CAPACITY;
-	stst->lines    = malloc(sizeof(struct STSTLine*) * stst->capacity);
+	stst->lines    = exit_malloc(sizeof(struct STSTLine*) * stst->capacity);
 	stst->count    = 0;
 	
 	return stst;
@@ -140,8 +140,13 @@ struct STSTLine* stst_at(struct STST* stst, uint32_t index){
 
 void freeSTST(struct STST* stst){
 	
+	struct STSTLine* prev = NULL;
+	
 	for(int i=0;i < stst->count; i++){
-		free(stst->lines[i]);
+		if(stst->lines[i] != prev){
+			prev = stst->lines[i];
+			free(stst->lines[i]);
+		}
 	}
 	
 	free(stst->lines);

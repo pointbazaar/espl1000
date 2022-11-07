@@ -28,43 +28,40 @@ struct LVST* makeLVST(){
 	
 	lvst->count = 0;
 	lvst->capacity = LVST_INITIAL_CAPACITY;
-	lvst->lines = malloc(sizeof(struct LVSTLine*)*lvst->capacity);
+	lvst->lines = exit_malloc(sizeof(struct LVSTLine*)*lvst->capacity);
 	
 	return lvst;
 }
 
 void lvst_clear(struct LVST* lvst){
 
+	struct LVSTLine* prev = NULL;
+	
 	for(int i = 0; i < lvst->count; i++){
-		freeLVSTLine(lvst->lines[i]);
+		if(lvst->lines[i] != prev){
+			prev = lvst->lines[i];
+			free(lvst->lines[i]);
+		}
 	}
 	free(lvst->lines);
 	
 	lvst->count = 0;
 	lvst->capacity = LVST_INITIAL_CAPACITY;
-	lvst->lines = malloc(sizeof(struct LVSTLine*)*lvst->capacity);
+	lvst->lines = exit_malloc(sizeof(struct LVSTLine*)*lvst->capacity);
 }
 
 void freeLVST(struct LVST* lvst){
 	
+	struct LVSTLine* prev = NULL;
+	
 	for(int i = 0; i < lvst->count; i++){
-		freeLVSTLine(lvst->lines[i]);
+		if(lvst->lines[i] != prev){
+			prev = lvst->lines[i];
+			free(lvst->lines[i]);
+		}
 	}
 	free(lvst->lines);
 	free(lvst);
-}
-
-void freeLVSTLine(struct LVSTLine* l){
-	
-	//the struct AssignStmt* l->first_occur
-	//is freed later on by other means,
-	//as it's memory is not managed in the 
-	//context of the local variable symbol table
-	
-	//l->type is also not freed, 
-	//for the same reasons
-	
-	free(l);
 }
 
 void lvst_add(struct LVST* lvst, struct LVSTLine* line){
@@ -77,7 +74,7 @@ void lvst_add(struct LVST* lvst, struct LVSTLine* line){
 			
 			//this local var is already present
 			//free the line
-			freeLVSTLine(line);
+			free(line);
 			return;
 		}
 	}

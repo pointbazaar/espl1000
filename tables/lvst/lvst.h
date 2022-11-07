@@ -31,8 +31,6 @@ struct LVSTLine {
 	bool read_only;
 };
 
-void freeLVSTLine(struct LVSTLine* l);
-
 struct LVST* makeLVST();
 
 void lvst_clear(struct LVST* lvst);

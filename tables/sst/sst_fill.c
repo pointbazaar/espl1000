@@ -43,7 +43,7 @@ struct SubrType* method_decl_to_subrtype(struct MethodDecl* mdecl){
 	stype->has_side_effects = mdecl->has_side_effects;
 	stype->count_arg_types = mdecl->count_args;
 
-	stype->arg_types = malloc(sizeof(void*) * stype->count_arg_types);
+	stype->arg_types = exit_malloc(sizeof(void*) * stype->count_arg_types);
 
 	for(uint32_t i = 0; i < stype->count_arg_types; i++){
 		stype->arg_types[i] = copy_type(mdecl->args[i]->type);

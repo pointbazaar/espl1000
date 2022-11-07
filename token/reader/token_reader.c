@@ -9,6 +9,7 @@
 #include "../TokenKeys.h"
 #include "../list/TokenList.h"
 #include "../token/token.h"
+#include "../../util/exit_malloc/exit_malloc.h"
 
 static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2);
 
@@ -20,7 +21,7 @@ struct TokenList* read_tokens_from_tokens_file(FILE* file, char* tokensFile) {
 	strcpy(tks->rel_path, tokensFile);
 	
 	size_t size = 50;
-	char* line = malloc(size);
+	char* line = exit_malloc(size);
 	
 	uint32_t line_num = 1;
     

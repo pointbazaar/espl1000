@@ -8,6 +8,9 @@ add_library(${PROJECT_NAME} STATIC
         rat.c
 )
 
-target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Werror")
+#Util dependency
+target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
+
+target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Werror" "-fanalyzer")
 
 target_include_directories(${PROJECT_NAME} PUBLIC "..")

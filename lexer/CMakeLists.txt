@@ -44,3 +44,9 @@ target_link_libraries(dragon-lexer /usr/lib/x86_64-linux-gnu/libfl.a)
 target_link_libraries(dragon-lexer ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a)
 
 target_link_libraries(dragon-lexer-tests ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a)
+
+#Util dependency
+target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
+
+#Util dependency
+target_link_libraries(${PROJECT_NAME}-tests ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)

@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#include "../util/exit_malloc/exit_malloc.h"
 #include "rat.h"
-
 
 struct RAT {
 	//struct RAT should be opaque outside of it's 
@@ -27,7 +27,8 @@ struct RAT {
 
 struct RAT* rat_ctor(struct ST* st){
 
-    struct RAT* rat = malloc(sizeof(struct RAT));
+    struct RAT* rat = exit_malloc(sizeof(struct RAT));
+    
     *rat = (struct RAT){
         .st = st,
     };

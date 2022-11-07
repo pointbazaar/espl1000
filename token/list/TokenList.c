@@ -5,12 +5,13 @@
 #include "TokenList.h"
 #include "../TokenKeys.h"
 #include "../token/token.h"
+#include "../../util/exit_malloc/exit_malloc.h"
 
 struct TokenList* makeTokenList() {
 
 	const int initial_size = 20;
 
-	struct TokenList* res = malloc(sizeof(struct TokenList));
+	struct TokenList* res = exit_malloc(sizeof(struct TokenList));
 	
 	strcpy(res->rel_path, "/dev/null");
 	res->tokensc = 0;
@@ -89,7 +90,7 @@ void list_set(struct TokenList* list, struct TokenList* copy) {
 	
 	free(list->tokens);
 	
-	list->tokens = malloc(sizeof(struct Token*) * copy->capacity);
+	list->tokens = exit_malloc(sizeof(struct Token*) * copy->capacity);
 
 	list->capacity = copy->capacity;
 	list->tokensc = copy->tokensc;
@@ -129,7 +130,7 @@ struct Token* list_head_without_annotations(struct TokenList* list){
 char* list_code(struct TokenList* list) {
 	//it should be a limited fragment
 
-	char* str = malloc(sizeof(char)*100);
+	char* str = exit_malloc(sizeof(char)*100);
 	strcpy(str, "");
 
 	if(list_size(list) > 0){
