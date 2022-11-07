@@ -37,6 +37,7 @@ struct Range* makeRange(struct TokenList* tokens) {
 		freeTokenListShallow(copy);
 		free_expr(res->start);
 		free(res);
+		return NULL;
 	}
 	
 	res->end = makeExpr(copy);

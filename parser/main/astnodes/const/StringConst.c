@@ -21,7 +21,7 @@ struct StringConst* makeStringConst(struct TokenList* tokens) {
 	res->super.annotations = 0;
 	
 	if(tk->kind == STRINGCONST){
-		res->value = malloc
+		res->value = exit_malloc
 			(sizeof(char)*(strlen(tk->value_ptr)+1));
 			
 		strcpy(res->value, tk->value_ptr);

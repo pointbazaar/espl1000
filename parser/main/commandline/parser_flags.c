@@ -1,13 +1,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../../../util/exit_malloc/exit_malloc.h"
+
 #include "parser_flags.h"
 
 const char* FLAG_HELP  = "-help";
 
 struct ParserFlags* parseFlags(int argc, char** argv){
 
-	struct ParserFlags* flags = malloc(sizeof(struct ParserFlags));
+	struct ParserFlags* flags = exit_malloc(sizeof(struct ParserFlags));
 
 	flags->help  = false;
 

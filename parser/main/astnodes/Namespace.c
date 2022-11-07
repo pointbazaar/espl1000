@@ -31,11 +31,11 @@ struct Namespace *makeNamespace(struct TokenList *tokens, char *name) {
 	res->capacity_methods = INITIAL_CAPACITY;
 	res->capacity_structs = INITIAL_CAPACITY;
 
-	res->methods = malloc(sizeof(struct Method*)     * res->capacity_methods);
-	res->structs = malloc(sizeof(struct StructDecl*) * res->capacity_structs);
+	res->methods = exit_malloc(sizeof(struct Method*)     * res->capacity_methods);
+	res->structs = exit_malloc(sizeof(struct StructDecl*) * res->capacity_structs);
 
-	res->src_path   = malloc(sizeof(char)*(strlen(name)+3+1));
-	res->token_path = malloc(sizeof(char)*(strlen(tokens->rel_path) + 1));
+	res->src_path   = exit_malloc(sizeof(char)*(strlen(name)+3+1));
+	res->token_path = exit_malloc(sizeof(char)*(strlen(tokens->rel_path) + 1));
 
 	sprintf(res->src_path, "%s.dg", name);
 	strcpy (res->token_path, tokens->rel_path);
@@ -62,11 +62,11 @@ void ns_parse_passthrough_includes(struct Namespace* res, struct TokenList* copy
 
 	//speculate that it won't be more than 100
 	uint8_t includes_cap = 100;
-	res->includes = malloc(sizeof(void*)*includes_cap);
+	res->includes = exit_malloc(sizeof(void*)*includes_cap);
 	res->count_includes = 0;
 
 	while (next->kind == INCLUDE_DECL) {
-		char* string = malloc(strlen(next->value_ptr)+1);
+		char* string = exit_malloc(strlen(next->value_ptr)+1);
 		strcpy(string, next->value_ptr);
 
 		res->includes[res->count_includes++] = string;

@@ -29,10 +29,13 @@ struct DeclArg* makeDeclArg(struct TokenList* tokens) {
 	}
 
 	struct Id* id = makeIdentifier(copy);
+	
 	if(id == NULL){ 
-		free(res);
+		
 		free_type(res->type);
+		free(res);
 		freeTokenListShallow(copy);
+		
 		return NULL; 
 	}
 	strncpy(res->name, id->identifier, 19);

@@ -25,7 +25,7 @@ struct AST * build_ast(char *tokensFile) {
 	struct AST* ast = make(AST);
 	
 	ast->count_namespaces = 1;
-	ast->namespaces       = malloc(sizeof(struct Namespace*)*1);
+	ast->namespaces       = exit_malloc(sizeof(struct Namespace*)*1);
 	ast->namespaces[0]    = build_namespace(tokensFile);
 
     if(ast->namespaces[0] == NULL)
@@ -89,7 +89,7 @@ static char* extract_namespace_name(char* filename_tokens){
 	
 	int l = (int)(dot2-dot1);
 	
-	char* res = malloc(l+1);
+	char* res = exit_malloc(l+1);
 	memset(res, 0, l+1);
 	strncpy(res, dot1+1, l-1);
 	

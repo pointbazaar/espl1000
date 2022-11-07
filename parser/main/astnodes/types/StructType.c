@@ -58,13 +58,16 @@ static void parse_type_params_rest(struct StructType* res, struct TokenList* tok
 	
 	uint32_t cap = 10;
 	
-	res->type_params = malloc(sizeof(uint8_t) * cap);
+	res->type_params = exit_malloc(sizeof(uint8_t) * cap);
 
 	struct Token* next = list_head(tokens);
 
 	struct Type* tparam_1 = makeType2(tokens);
 
 	if(tparam_1 == NULL){
+		
+		free(res->type_params);
+		
         printf("[Parser][Error] Expected Type, but got: \n");
         list_print(tokens);
         exit(1);

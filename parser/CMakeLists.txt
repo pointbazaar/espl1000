@@ -121,7 +121,7 @@ add_executable(dragon-parser
 )
 
 target_compile_options(dragon-parser PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
-target_compile_options(dragon-parser-base PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
+target_compile_options(dragon-parser-base PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror" "-fanalyzer")
 target_compile_options(dragon-parser-tests PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
 
 #Util dependency
