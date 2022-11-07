@@ -8,10 +8,8 @@
 
 void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss, struct Ctx* ctx){
 
-    
-
     uint32_t label_end = make_label();
-    uint32_t* labels_cases = malloc(sizeof(uint32_t)*ss->count_cases);
+    uint32_t* labels_cases = exit_malloc(sizeof(uint32_t)*ss->count_cases);
 
     for(size_t i=0;i < ss->count_cases; i++){
 		

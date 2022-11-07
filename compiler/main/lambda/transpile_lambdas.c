@@ -235,7 +235,7 @@ static struct Method* gen_subr_from_lambda(
 	
 	lsubr->block           = make(StmtBlock);
 	lsubr->block->count    = 1;
-	lsubr->block->stmts    = malloc(sizeof(struct Stmt*));
+	lsubr->block->stmts    = exit_malloc(sizeof(struct Stmt*));
 	lsubr->block->stmts[0] = stmt;
 	
 	//copy return type
@@ -243,7 +243,7 @@ static struct Method* gen_subr_from_lambda(
 	
 	//copy declarg 
 	mdecl->count_args = orig_count_arg;
-	mdecl->args = malloc(sizeof(struct DeclArg*)*orig_count_arg);
+	mdecl->args = exit_malloc(sizeof(struct DeclArg*)*orig_count_arg);
 	
 	for(uint8_t i = 0; i < orig_count_arg; i++){
 		

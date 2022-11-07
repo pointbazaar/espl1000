@@ -62,7 +62,7 @@ bool compile(struct Flags* flags){
 
     struct AST* ast = make(AST);
     ast->count_namespaces = flags_count_filenames(flags);
-    ast->namespaces = malloc(sizeof(struct Namespace*)*flags_count_filenames(flags));
+    ast->namespaces = exit_malloc(sizeof(struct Namespace*)*flags_count_filenames(flags));
 	
 	for(int i=0;i < flags_count_filenames(flags); i++){
 	

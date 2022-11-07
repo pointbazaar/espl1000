@@ -18,7 +18,7 @@ static void init_tcctx(struct TCCtx* tcctx);
 
 struct TCError* typecheck_ast(struct AST* ast, struct ST* st, bool print_errors){
 
-	struct TCCtx* tcctx = malloc(sizeof(struct TCCtx));
+	struct TCCtx* tcctx = exit_malloc(sizeof(struct TCCtx));
 
     init_tcctx(tcctx);
     tcctx->print_errors = print_errors;

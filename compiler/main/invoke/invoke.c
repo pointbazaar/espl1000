@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <libgen.h>
 
+#include "../../../util/exit_malloc/exit_malloc.h"
 #include "util/fileutils/fileutils.h"
 #include "invoke.h"
 #include "parser/main/util/parser.h"
@@ -13,7 +14,7 @@
 
 int invoke_lexer(char* filename){
 	
-	char* cmd1 = malloc(strlen(filename)+100);
+	char* cmd1 = exit_malloc(strlen(filename)+100);
 	
 	strcpy(cmd1, "dragon-lexer ");
 
@@ -26,13 +27,14 @@ int invoke_lexer(char* filename){
 
 struct Namespace * invoke_parser(char* filename){
 	
-	char* fnamecpy = malloc(strlen(filename)+1);
+	char* fnamecpy = exit_malloc(strlen(filename)+1);
+	
 	strcpy(fnamecpy, filename);
 	
 	char* base_name = basename(fnamecpy);
 	char* dir_name  = dirname(fnamecpy);
 	
-	char* cmd2 = malloc(strlen(filename)+100);
+	char* cmd2 = exit_malloc(strlen(filename)+100);
 
     sprintf(cmd2, "%s/.%s.tokens", dir_name, base_name);
 

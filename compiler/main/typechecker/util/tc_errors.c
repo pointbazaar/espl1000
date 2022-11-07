@@ -4,6 +4,8 @@
 #include "tc_errors.h"
 #include "typechecker/tcctx.h"
 
+#include "../../util/exit_malloc/exit_malloc.h"
+
 #define COLOR_RED "\033[31m"
 
 const char* tc_err_messages[TC_ERR_END] = {
@@ -52,7 +54,9 @@ static void resetcolor(){
 }
 
 static struct TCError* tc_error_ctor(){
-    struct TCError* res = malloc(sizeof(struct TCError));
+	
+    struct TCError* res = exit_malloc(sizeof(struct TCError));
+    
     res->next        = NULL;
     res->opt_msg         = NULL;
     res->filename    = NULL;

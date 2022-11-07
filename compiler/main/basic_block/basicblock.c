@@ -109,7 +109,7 @@ static struct BasicBlock* find_block_from_tac_leader(struct BasicBlock** blocks,
 
 static struct BasicBlock** collect_basic_blocks(struct TACBuffer* buffer, uint32_t count, bool* is_leader){
 
-    struct BasicBlock** blocks = malloc(sizeof(struct BasicBlock*)* count);
+    struct BasicBlock** blocks = exit_malloc(sizeof(struct BasicBlock*)* count);
 
     uint32_t index_tacbuffer = 0;
     for(uint32_t index_blocks = 0; index_blocks < count; index_blocks++){
@@ -162,7 +162,7 @@ void basicblock_print(struct BasicBlock* block, struct Ctx* ctx){
 static bool* calculate_leaders(struct TACBuffer* buffer){
 
     //for each TAC, determine if it is a leader
-    bool* is_leader = malloc((sizeof(bool))*tacbuffer_count(buffer));
+    bool* is_leader = exit_malloc((sizeof(bool))*tacbuffer_count(buffer));
 
     memset(is_leader, false, (sizeof(bool)*tacbuffer_count(buffer)));
     is_leader[0] = true; //first statement is leader

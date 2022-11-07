@@ -7,6 +7,8 @@
 #include <malloc.h>
 #include <regex.h>
 
+#include "../../../util/exit_malloc/exit_malloc.h"
+
 #include "flags.h"
 
 #include "validate_flags.h"
@@ -34,7 +36,8 @@ struct Flags {
 
 static char* make_asm_filename(char* filename){
 
-    char* fname_out = malloc(strlen(filename)+4);
+    char* fname_out = exit_malloc(strlen(filename)+4);
+    
     strcpy(fname_out, filename);
     //remove the '.dg'
     fname_out[strlen(fname_out)-3] = '\0';
@@ -45,7 +48,8 @@ static char* make_asm_filename(char* filename){
 
 static char* make_hex_filename(char* filename){
 
-    char* fname_out = malloc(strlen(filename)+4);
+    char* fname_out = exit_malloc(strlen(filename)+4);
+    
     strcpy(fname_out, filename);
     //remove the '.dg'
     fname_out[strlen(fname_out)-3] = '\0';
@@ -56,13 +60,13 @@ static char* make_hex_filename(char* filename){
 
 static char* make_token_filename(char* filename){
 	
-	char* token_filename = malloc(strlen(filename) + 20);
+	char* token_filename = exit_malloc(strlen(filename) + 20);
 	
-	char* fnamecpy = malloc(strlen(filename)+1);
+	char* fnamecpy = exit_malloc(strlen(filename)+1);
 	strcpy(fnamecpy, filename);
 	char* base_name = basename(fnamecpy);
 	
-	char* fnamecpy2 = malloc(strlen(filename)+1);
+	char* fnamecpy2 = exit_malloc(strlen(filename)+1);
 	strcpy(fnamecpy2, filename);
 	char* dir_name = dirname(fnamecpy2);
 	
@@ -78,7 +82,7 @@ static void make_flags_inner(struct Flags* flags, char* arg);
 
 struct Flags* makeFlags(int argc, char** argv){
 
-	struct Flags* flags = malloc(sizeof(struct Flags));
+	struct Flags* flags = exit_malloc(sizeof(struct Flags));
 
 	flags->debug 	= false;
 	flags->help 	= false;
@@ -89,7 +93,7 @@ struct Flags* makeFlags(int argc, char** argv){
 	//a capacity of argc guarantees that all 
 	//filenames will fit
 	flags->capacity_filenames = argc;
-	flags->filenames = malloc(sizeof(char*)*argc);
+	flags->filenames = exit_malloc(sizeof(char*)*argc);
 	
 	for(int i=1; i < argc; i++){
 		make_flags_inner(flags, argv[i]);
