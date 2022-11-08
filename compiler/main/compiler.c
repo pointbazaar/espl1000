@@ -17,7 +17,6 @@
 #include "invoke/invoke.h"
 #include "compiler.h"
 #include "tables/symtable/symtable.h"
-#include "lambda/transpile_lambdas.h"
 
 #include "typechecker/typecheck.h"
 #include "tables/sst/sst_fill.h"
@@ -25,33 +24,6 @@
 #include "analyzer/dead/dead_analyzer.h"
 #include "analyzer/halts/halt_analyzer.h"
 #include "analyzer/annotation/annotation_analyzer.h"
-
-static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st);
-
-static void backfill_lambdas_into_sst(struct AST* ast, struct ST* st){
-
-    for(int i=0; i < ast->count_namespaces; i++){
-
-        struct Namespace* ns = ast->namespaces[i];
-
-        for(int j = 0; j < ns->count_methods; j++){
-
-            struct Method* m = ns->methods[j];
-
-            //name starts with lambda_
-            if(strncmp(m->decl->name, "lambda_", strlen("lambda_")) != 0){
-                continue;
-            }
-
-            struct Type* t = method_to_type(m);
-            st_register_inferred_type(st, t);
-
-            struct SSTLine* line = makeSSTLine2(m, t, ns->name);
-
-            sst_add(st->sst, line);
-        }
-    }
-}
 
 bool compile(struct Flags* flags){
 
@@ -88,10 +60,6 @@ bool compile(struct Flags* flags){
     struct Ctx* ctx = ctx_ctor(flags, makeST(flags_debug(flags)));
 
     fill_tables(ast, ctx);
-    transpileLambdas(ast, ctx_tables(ctx));
-    //RE-FILL the newly created lambda functions
-    backfill_lambdas_into_sst(ast, ctx_tables(ctx));
-    
     
     struct TCError* errors = typecheck_ast(ast, ctx_tables(ctx), true);
 	

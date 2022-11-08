@@ -13,8 +13,6 @@ static void visit_struct_member	(struct StructMember* s, VISITOR, ARG);
 
 //other
 static void visit_stmt        	(struct Stmt* s, VISITOR, ARG);
-static void visit_lambda		(struct Lambda* l, VISITOR, ARG);
-
 //stmts
 static void visit_if_stmt      	(struct IfStmt* i, VISITOR, ARG);
 static void visit_while_stmt   	(struct WhileStmt* w, VISITOR, ARG);
@@ -142,13 +140,6 @@ static void visit_stmt(struct Stmt* s, VISITOR, void* arg){
 			printf("[Visitor] Fatal (1)\n"); exit(1);
 			break;
 	}
-}
-
-static void visit_lambda (struct Lambda* l, VISITOR, void* arg){
-
-	visitor(l, NODE_LAMBDA, arg);
-
-	visit_expr(l->expr, visitor, arg);
 }
 
 static void visit_if_stmt(struct IfStmt* i, VISITOR, void* arg){
@@ -282,8 +273,6 @@ static void visit_term(struct Term* t, VISITOR, void* arg){
 			visit_variable(t->ptr.m6, visitor, arg);   break;
 		case 8:
 			visit_string_const(t->ptr.m8, visitor, arg);break;
-		case 11:
-			visit_lambda(t->ptr.m11, visitor, arg);   break;
 		case 12:
 			visit_const_value(t->ptr.m12, visitor, arg); break;
         case 13:

@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
   This will also decrease Memory Usage, since we do not need a full AST Node to 
   represent a simple Operator.
 - consolidate struct ConstValue and remove the special cases for Const Values
+- remove Lambdas from the Language. 
 
 ## [v0.3.2]
 - remove the Comparison Operator Chaining Feature. It is really not that special

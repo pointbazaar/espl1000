@@ -17,7 +17,4 @@ void test_str_term();
 void test_str_structdecl();
 void test_str_structmember();
 
-//other
-void test_str_lambda();
-
 #endif

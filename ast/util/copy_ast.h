@@ -52,6 +52,4 @@ struct Id* copy_identifier(struct Id* id);
 struct Range*      copy_range(struct Range* r);
 struct StmtBlock*  copy_stmt_block(struct StmtBlock* s);
 
-struct Lambda*     copy_lambda(struct Lambda* l);
-
 #endif

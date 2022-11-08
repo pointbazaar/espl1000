@@ -21,8 +21,6 @@ int main(){
 	test_str_unopterm();
 	test_str_term();
 	
-	test_str_lambda();
-	
 	printf("[AST Module] Passed All Tests\n");
 	
 	fclose(file);

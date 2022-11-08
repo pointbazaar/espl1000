@@ -68,45 +68,6 @@ char* str_stmt_block(struct StmtBlock* block){
 	return res;
 }
 
-char* str_lambda(struct Lambda* lambda){
-	
-	uint16_t l = 0;
-
-	for(uint16_t i = 0; i < lambda->count_params; i++){
-		
-		char* s = str_identifier(lambda->params[i]);
-		l += strlen(s) + 1;
-		free(s);
-	}
-	
-	char* s2 = str_expr(lambda->expr);
-	l += strlen(s2);
-	
-	l += 2 + 4;
-	
-	char* res = exit_malloc(sizeof(char)*l);
-	
-	strcpy(res, "");
-	strcat(res, "(");
-	
-	for(uint16_t i = 0; i < lambda->count_params; i++){
-		
-		char* s = str_identifier(lambda->params[i]);
-		strcat(res, s);
-		
-		if(i < (lambda->count_params - 1)){
-			strcat(res, ",");
-		}
-		
-		free(s);
-	}
-	strcat(res, ") -> ");
-	strcat(res, s2);
-	free(s2);
-	
-	return res;
-}
-
 char* str_const_value(struct ConstValue* cv){
 	
 	char* res = exit_malloc(sizeof(char)*129);
@@ -490,7 +451,6 @@ char* str_term(struct Term* t){
 		case 5: return str_expr(t->ptr.m5);
 		case 6: return str_variable(t->ptr.m6);
 		case 8: return str_string_const(t->ptr.m8);
-		//lambda missing
 		case 12: return str_const_value(t->ptr.m12);
         case 13: return str_mdirect(t->ptr.m13);
 	}

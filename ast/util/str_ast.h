@@ -57,6 +57,5 @@ char* str_massign_stmt(struct MAssignStmt* m);
 char* str_identifier(struct Id* id);
 char* str_range(struct Range* r);
 char* str_stmt_block(struct StmtBlock* block);
-char* str_lambda(struct Lambda* l);
 
 #endif

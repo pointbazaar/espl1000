@@ -24,7 +24,6 @@ struct Variable;
 struct SimpleVar;
 struct Range;
 struct DeclArg;
-struct Lambda;
 //const
 struct ConstValue;
 struct StringConst;

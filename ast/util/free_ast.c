@@ -117,7 +117,6 @@ void free_term(struct Term* t) {
 		case  5: free_expr(t->ptr.m5); 	break;
 		case  6: free_variable(t->ptr.m6); 	break;
 		case  8: free_string_const(t->ptr.m8); 	break;
-		case 11: free_lambda(t->ptr.m11);   break;
 		case 12: free_const_value(t->ptr.m12); break;
         case 13: free_mdirect(t->ptr.m13); break;
 		default:
@@ -304,14 +303,6 @@ void free_range(struct Range* range){
 	free_expr(range->start);
 	free_expr(range->end);
 	free(range);
-}
-
-void free_lambda(struct Lambda* l){
-	for(int i = 0; i < l->count_params; i++){
-		free_identifier(l->params[i]);
-	}
-	free_expr(l->expr);
-	free(l);
 }
 
 void free_for_stmt(struct ForStmt* fstmt){

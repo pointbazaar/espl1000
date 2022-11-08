@@ -22,7 +22,6 @@ add_library(dragon-parser-base
 	main/astnodes/expr/MDirect.c
 
 	main/astnodes/Identifier.c
-	main/astnodes/Lambda.c
 	main/astnodes/Namespace.c
 	main/astnodes/Range.c
 	main/astnodes/StmtBlock.c
@@ -67,8 +66,6 @@ add_executable(dragon-parser-tests
 	test/astnodes/expr/TermTest.c
 	test/astnodes/expr/UnOpTermTest.c
 	test/astnodes/expr/MDirectTest.c
-	
-	test/astnodes/LambdaTest.c
 	
 	test/astnodes/NamespaceTest.c
 	

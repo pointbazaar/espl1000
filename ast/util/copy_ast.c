@@ -51,17 +51,6 @@ struct StmtBlock*  copy_stmt_block(struct StmtBlock* s){
 	}
 	return res;
 }
-struct Lambda* copy_lambda(struct Lambda* l){
-
-	struct Lambda* res = make(Lambda);
-	res->count_params = l->count_params;
-	for(uint8_t i = 0; i < l->count_params; i++){
-		res->params[i] = copy_identifier(l->params[i]);
-	}
-	
-	res->expr = copy_expr(l->expr);
-	return res;
-}
 
 struct ConstValue*  copy_const_value(struct ConstValue* cv){
 
@@ -107,7 +96,6 @@ struct Term* copy_term(struct Term* t){
 		case  5: res->ptr.m5 = copy_expr(t->ptr.m5);        break;
 		case  6: res->ptr.m6 = copy_variable(t->ptr.m6);    break;
 		case  8: res->ptr.m8 = copy_string_const(t->ptr.m8); break;
-		case 11: res->ptr.m11 = copy_lambda(t->ptr.m11); break;
 		case 12: res->ptr.m12 = copy_const_value(t->ptr.m12); break;
         case 13: res->ptr.m13 = copy_mdirect(t->ptr.m13); break;
 		default:

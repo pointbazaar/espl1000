@@ -7,8 +7,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 #use -pg to generate profiling information for gprof
 
 add_library("sd-base"
-		main/compiler.c
-	main/lambda/transpile_lambdas.c
+	main/compiler.c
 
 	#analyzer
 	main/analyzer/annotation/annotation_analyzer.c

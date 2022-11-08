@@ -14,7 +14,6 @@
 #include "ast/ast_var.h"
 #include "ast/ast_expr.h"
 #include "ast/ast_subr.h"
-#include "ast/ast_lambda.h"
 
 #include "../util/exit_malloc/exit_malloc.h"
 

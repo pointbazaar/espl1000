@@ -39,7 +39,6 @@
 #include "../astnodes/statements/StmtTest.h"
 #include "../astnodes/statements/AssignStmtTest.h"
 
-#include "../astnodes/LambdaTest.h"
 #include "parser/test/astnodes/statements/MAssignStmtTest.h"
 #include "parser/test/astnodes/expr/MDirectTest.h"
 
@@ -59,7 +58,6 @@ void test_suite_struct();
 void test_suite_types();
 void test_suite_range();
 void test_suite_switch_case();
-void test_suite_lambda();
 void test_suite_namespace();
 void test_suite_unop();
 
@@ -87,7 +85,6 @@ int main(){
 	test_suite_range();
 	test_suite_switch_case();
 
-	test_suite_lambda();
 	test_suite_namespace();
 
 	printf("[Parser] PASSED ALL TESTS\n");
@@ -109,13 +106,6 @@ void test_suite_namespace(){
 
 	namespace_test_can_parse_namespace_with_1_empty_struct();
 	namespace_test_can_parse_namespace_with_1_empty_method();
-}
-
-void test_suite_lambda(){
-
-	status_test_suite("test_suite_lambda");
-
-	test_lambda();
 }
 
 void test_suite_switch_case(){

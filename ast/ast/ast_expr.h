@@ -56,7 +56,6 @@ struct Term{
 		struct Expr*        m5;
 		struct Variable*    m6;
 		struct StringConst* m8;
-		struct Lambda*      m11;
 		struct ConstValue*  m12;
         struct MDirect* m13;
 	} ptr;

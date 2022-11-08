@@ -28,7 +28,6 @@ void free_identifier(struct Id* id);
 void free_namespace(struct Namespace* ns);
 void free_stmt_block(struct StmtBlock* block);
 void free_range(struct Range* range);
-void free_lambda(struct Lambda* l);
 
 //struct
 void free_struct_decl(struct StructDecl* sd);
