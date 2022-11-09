@@ -16,8 +16,6 @@ static void test_typecheck_subr_not_found();
 static void test_typecheck_impure_called_in_pure();
 static void test_typecheck_condition_requires_bool();
 static void test_typecheck_range_requires_int();
-static void test_typecheck_switch_requires_primitive();
-static void test_typecheck_switch_case_type_mismatch();
 static void test_typecheck_wrong_op_unop();
 static void test_typecheck_index_not_integer_type();
 static void test_typecheck_too_many_indices();
@@ -48,8 +46,6 @@ void test_suite_typechecker(){
     test_typecheck_impure_called_in_pure();
     test_typecheck_condition_requires_bool();
     test_typecheck_range_requires_int();
-    test_typecheck_switch_requires_primitive();
-    test_typecheck_switch_case_type_mismatch();
     test_typecheck_wrong_op_unop();
     test_typecheck_index_not_integer_type();
     test_typecheck_too_many_indices(); 
@@ -188,34 +184,6 @@ static void test_typecheck_range_requires_int(){
     free_tc_errors(errors);
 }
 
-static void test_typecheck_switch_requires_primitive(){
-
-	status_test_typechecker("typecheck switch requires primitive");
-    char* filename = "test/typechecker/test-src/switch_requires_primitive.dg";
-
-    struct TCError* errors = typecheck_file(filename);
-
-    assert(errors != NULL);
-    assert(errors->err_kind == TC_ERR_SWITCH_REQUIRES_PRIMITIVE_TYPE);
-    assert(errors->next == NULL);
-
-    free_tc_errors(errors);
-}
-
-static void test_typecheck_switch_case_type_mismatch(){
-
-	status_test_typechecker("typecheck switch case type mismatch");
-    char* filename = "test/typechecker/test-src/switch_case_type_mismatch.dg";
-
-    struct TCError* errors = typecheck_file(filename);
-
-    assert(errors != NULL);
-    assert(errors->err_kind == TC_ERR_SWITCH_CASE_TYPE_MISMATCH);
-    assert(errors->next == NULL);
-
-    free_tc_errors(errors);
-}
-
 static void test_typecheck_wrong_op_unop(){
 
 	status_test_typechecker("typecheck wrong op unop");
@@ -309,7 +277,7 @@ static void test_typecheck_all_type_errors(){
         errors = errors->next;
     } while(errors != NULL);
 
-    assert(err_count == 17);
+    assert(err_count == 15);
 
     enum TC_ERR_KIND err_kind_expected[] = {
             TC_ERR_VAR_NOT_FOUND,
@@ -326,8 +294,6 @@ static void test_typecheck_all_type_errors(){
             TC_ERR_ARG_TYPE_MISMATCH,
             TC_ERR_ARG_NUM_MISMATCH,
             TC_ERR_WRONG_OP_UNOP,
-            TC_ERR_SWITCH_REQUIRES_PRIMITIVE_TYPE,
-            TC_ERR_SWITCH_CASE_TYPE_MISMATCH,
             TC_ERR_WRONG_RETURN_TYPE
     };
 

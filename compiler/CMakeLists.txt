@@ -30,7 +30,6 @@ add_library("sd-base"
         main/gen_tac/gen_tac_retstmt.c
         main/gen_tac/gen_tac_simplevar.c
         main/gen_tac/gen_tac_stmt.c
-        main/gen_tac/gen_tac_switchstmt.c
         main/gen_tac/gen_tac_term.c
         main/gen_tac/gen_tac_unopterm.c
 		main/gen_tac/gen_tac_mdirect.c
@@ -87,7 +86,6 @@ add_library("sd-base"
 	main/typechecker/tc_method.c
 	main/typechecker/type_contains/tc_type_contains.c
 	main/typechecker/type_contains/tc_type_contains.h
-	main/typechecker/tc_switchstmt.c
 	main/typechecker/tc_retstmt.c
 	main/typechecker/tc_ifstmt.c
 	main/typechecker/tc_whilestmt.c
@@ -172,7 +170,6 @@ add_executable("sd-tests"
 	test/gen_tac/test_gen_tac_ifstmt.c
 	test/gen_tac/test_gen_tac_whilestmt.c
 	test/gen_tac/test_gen_tac_forstmt.c
-	test/gen_tac/test_gen_tac_switchstmt.c
 	test/gen_tac/test_gen_tac_massignstmt.c
 	test/gen_tac/test_gen_tac_simplevar.c
 	test/gen_tac/test_gen_tac_variable.c

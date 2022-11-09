@@ -86,7 +86,6 @@ int main(){
 	test_break();
 	test_for();
 	test_in();
-	test_switch_case();
 	//----------------
 	
 	//tests_comments.c

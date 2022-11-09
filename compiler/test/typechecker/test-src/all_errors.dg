@@ -36,13 +36,6 @@ fn main()~>int {
 	sub(3,3);
 
 	int j = !3;
-
-	switch main {}
-
-	switch j {
-
-		case 'c' {}
-	}
 	
 	return 'h';
 }

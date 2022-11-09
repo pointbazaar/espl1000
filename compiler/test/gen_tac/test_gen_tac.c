@@ -13,7 +13,6 @@ void test_suite_tac_codegen(){
 	test_gen_tac_ifstmt();
 	test_gen_tac_whilestmt();
 	test_gen_tac_forstmt();
-	test_gen_tac_switchstmt();
 	
 	test_gen_tac_simplevar();
 	test_gen_tac_variable();

@@ -16,7 +16,6 @@ test:
 	$(CALL2) mathematics/fibonacci.dg 
 	$(CALL2) methodCalls/methodcall.dg 
 	$(CALL2) other/everything.dg 
-	$(CALL2) switch/switch.dg 
 	$(CALL2) typeinference/localvartypeinference.dg
 	$(CALL2) array/array.dg
 

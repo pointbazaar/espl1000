@@ -80,8 +80,6 @@ void test_rangeop_2();
 
 void test_member_access();
 
-void test_switch_case();
-
 void test_assign_operators();
 
 void test_brackets();

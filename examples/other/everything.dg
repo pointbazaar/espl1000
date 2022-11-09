@@ -37,12 +37,6 @@ fn main () ~> int {
 		return 2;
 	}
 
-	switch a {
-		
-		case 1 {
-			
-		}
-	}
 
 	return 3;
 }

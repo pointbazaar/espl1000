@@ -71,22 +71,4 @@ struct ForStmt {
 	struct Range* range;
 	struct StmtBlock* block;
 };
-struct SwitchStmt{
-	struct ASTNode super; 
-	
-	struct Expr* expr;
-	
-	uint32_t count_cases;
-	struct CaseStmt** cases;
-};
-struct CaseStmt{
-	struct ASTNode super; 
-	//cases must have constant values
-	//known at compile time
-	//(to build the jump table)
-
-	struct ConstValue* const_value;
-	
-	struct StmtBlock* block; //may be NULL
-};
 #endif

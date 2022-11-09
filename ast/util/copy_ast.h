@@ -22,8 +22,6 @@ struct RetStmt*     copy_ret_stmt(struct RetStmt* r);
 struct Stmt*        copy_stmt(struct Stmt* stmt);
 struct WhileStmt*   copy_while_stmt(struct WhileStmt* w);
 struct ForStmt*     copy_for_stmt(struct ForStmt* f);
-struct SwitchStmt*  copy_switch_stmt(struct SwitchStmt* s);
-struct CaseStmt*    copy_case_stmt(struct CaseStmt* c);
 struct MAssignStmt* copy_massign_stmt(struct MAssignStmt* m);
 
 //c_types_util

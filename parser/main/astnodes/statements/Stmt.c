@@ -10,7 +10,6 @@
 #include "RetStmt.h"
 #include "Call.h"
 #include "AssignStmt.h"
-#include "SwitchStmt.h"
 #include "MAssignStmt.h"
 
 #include "ast/util/free_ast.h"
@@ -28,7 +27,6 @@ static void stmt_make_if(struct Stmt *res, struct TokenList *copy);
 static void stmt_make_return(struct Stmt *res, struct TokenList *copy);
 static void stmt_make_for(struct Stmt *res, struct TokenList *copy);
 static void stmt_make_other(struct Stmt *res, struct TokenList *copy);
-static void stmt_make_switch(struct Stmt *res, struct TokenList *copy);
 // ---------------------------
 
 struct Stmt* makeStmt(struct TokenList* tokens) {
@@ -66,9 +64,7 @@ struct Stmt* makeStmt(struct TokenList* tokens) {
             stmt_make_if(res, copy);     break;
 		case RETURN:
             stmt_make_return(res, copy); break;
-		case SWITCH:
-            stmt_make_switch(res, copy); break;
-
+            
 		default:
             stmt_make_other(res, copy); 	break;
 	}
@@ -188,19 +184,5 @@ void stmt_make_other(struct Stmt *res, struct TokenList *copy) {
                 exit(1);
             }
         }
-	}
-}
-
-void stmt_make_switch(struct Stmt *res, struct TokenList *copy) {
-	
-	res->kind = 8;
-	res->ptr.m8 = makeSwitchStmt(copy);
-	if(res->ptr.m8 == NULL){
-		printf("expected switch stmt, but was:\n");
-		list_print(copy);
-		
-		freeTokenListShallow(copy);
-		free(res);
-		exit(1);
 	}
 }

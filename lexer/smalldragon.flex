@@ -41,9 +41,6 @@ in			out(IN, yytext);
 
 #include\ (<[\.a-zA-Z0-9\/_-]+\.h>|\"[\.a-zA-Z0-9\/_-]+\.h\")    out(INCLUDE_DECL, yytext);
 
-switch		out(SWITCH, yytext);
-case		out(CASE, yytext);
-
 int|int8	out(TYPEID_PRIMITIVE_INT, yytext);
 
 uint|uint8	out(TYPEID_PRIMITIVE_INT, yytext);

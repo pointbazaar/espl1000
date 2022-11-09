@@ -37,8 +37,6 @@ struct Stmt;
 struct WhileStmt;
 struct BreakStmt;
 struct ForStmt;
-struct SwitchStmt;
-struct CaseStmt;
 //typenodes
 struct Type;
 struct ArrayType;

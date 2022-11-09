@@ -51,8 +51,6 @@ void free_ret_stmt(struct RetStmt* rs);
 void free_stmt(struct Stmt* s);
 void free_while_stmt(struct WhileStmt* ws);
 void free_for_stmt(struct ForStmt* fstmt);
-void free_switch_stmt(struct SwitchStmt* sstmt);
-void free_case_stmt(struct CaseStmt* cstmt);
 void free_massign_stmt(struct MAssignStmt* m);
 
 //c_types_util

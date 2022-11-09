@@ -28,9 +28,6 @@ const char* tc_err_messages[TC_ERR_END] = {
 	
 	[TC_ERR_CONDITION_REQUIRES_BOOL] = "condition must be of type bool",
 	
-	[TC_ERR_SWITCH_REQUIRES_PRIMITIVE_TYPE] = "switch requires a primitive type",
-	[TC_ERR_SWITCH_CASE_TYPE_MISMATCH] = "case must have same type as in switch",
-	
 	[TC_ERR_WRONG_OP_UNOP]           = "illegal unary operator",
 	
 	[TC_ERR_INDEX_NOT_INTEGER_TYPE]  = "index is not of an integer type",

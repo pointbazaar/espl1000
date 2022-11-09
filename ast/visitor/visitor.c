@@ -18,8 +18,6 @@ static void visit_if_stmt      	(struct IfStmt* i, VISITOR, ARG);
 static void visit_while_stmt   	(struct WhileStmt* w, VISITOR, ARG);
 static void visit_for_stmt     	(struct ForStmt* f, VISITOR, ARG);
 static void visit_assign_stmt  	(struct AssignStmt* a, VISITOR, ARG);
-static void visit_switch_stmt  	(struct SwitchStmt* s, VISITOR, ARG);
-static void visit_case_stmt    	(struct CaseStmt* c, VISITOR, ARG);
 static void visit_call           (struct Call* m, VISITOR, ARG);
 static void visit_ret_stmt     	(struct RetStmt* r, VISITOR, ARG);
 static void visit_massign_stmt  (struct MAssignStmt* m, VISITOR, ARG);
@@ -127,8 +125,6 @@ static void visit_stmt(struct Stmt* s, VISITOR, void* arg){
 			visit_assign_stmt(s->ptr.m5, visitor, arg);   break;
 		case 7:
 			visit_for_stmt(s->ptr.m7, visitor, arg);   break;
-		case 8:
-			visit_switch_stmt(s->ptr.m8, visitor, arg);   break;
         case 9:
             visit_massign_stmt(s->ptr.m9, visitor, arg); break;
 		case 99:
@@ -177,26 +173,6 @@ static void visit_assign_stmt(struct AssignStmt* a, VISITOR, void* arg){
 	visit_variable(a->var, visitor, arg);
 
 	visit_expr(a->expr, visitor, arg);
-}
-
-static void visit_switch_stmt(struct SwitchStmt* s, VISITOR, void* arg){
-	
-	visitor(s, NODE_SWITCHSTMT, arg);
-
-	visit_expr(s->expr, visitor, arg);
-	
-	for(int i = 0; i < s->count_cases; i++)
-		{ visit_case_stmt(s->cases[i], visitor, arg); }
-}
-
-static void visit_case_stmt(struct CaseStmt* c, VISITOR, void* arg){
-	
-	visitor(c, NODE_CASESTMT, arg);
-
-	visit_const_value(c->const_value, visitor, arg);
-	
-	if(c->block != NULL)
-		{ visit_stmt_block(c->block, visitor, arg); }
 }
 
 static void visit_call(struct Call* m, VISITOR, void* arg){

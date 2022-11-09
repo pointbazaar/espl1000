@@ -30,8 +30,6 @@
 #include "../astnodes/struct/StructMemberTest.h"
 
 #include "../astnodes/statements/ForStmtTest.h"
-#include "../astnodes/statements/SwitchStmtTest.h"
-#include "../astnodes/statements/CaseStmtTest.h"
 #include "../astnodes/statements/IfStmtTest.h"
 #include "../astnodes/statements/WhileStmtTest.h"
 #include "../astnodes/statements/CallTest.h"
@@ -57,7 +55,6 @@ void test_suite_method();
 void test_suite_struct();
 void test_suite_types();
 void test_suite_range();
-void test_suite_switch_case();
 void test_suite_namespace();
 void test_suite_unop();
 
@@ -83,7 +80,6 @@ int main(){
 	test_suite_struct();
 	test_suite_types();
 	test_suite_range();
-	test_suite_switch_case();
 
 	test_suite_namespace();
 
@@ -106,14 +102,6 @@ void test_suite_namespace(){
 
 	namespace_test_can_parse_namespace_with_1_empty_struct();
 	namespace_test_can_parse_namespace_with_1_empty_method();
-}
-
-void test_suite_switch_case(){
-
-	status_test_suite("test_suite_switch_case");
-
-	test_switch();
-	test_parser_case_stmt();
 }
 
 void test_suite_constnodes() {

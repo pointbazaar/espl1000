@@ -63,20 +63,3 @@ void test_in(){
 
 	free_tokens(tokens, 4);
 }
-
-void test_switch_case(){
-
-	printt("test_switch_case\n");
-
-	char* str = "switch x { case 3  ";
-	struct Token** tokens = lex(str);
-	
-	assert(tokens[0]->kind==SWITCH);
-	assert(tokens[1]->kind==ID);
-	assert(tokens[2]->kind==LCURLY);
-	
-	assert(tokens[3]->kind==CASE);
-	assert(tokens[4]->kind==INTEGER);
-
-	free_tokens(tokens, 5);
-}

@@ -204,8 +204,6 @@ void free_stmt(struct Stmt* s) {
 			free_assign_stmt(s->ptr.m5); break;
 		case 7:
 			free_for_stmt(s->ptr.m7);    break;
-		case 8:
-			free_switch_stmt(s->ptr.m8); break;
         case 9:
             free_massign_stmt(s->ptr.m9); break;
 		default:
@@ -309,27 +307,6 @@ void free_for_stmt(struct ForStmt* fstmt){
 	free_range(fstmt->range);
 	free_stmt_block(fstmt->block);
 	free(fstmt);
-}
-
-void free_switch_stmt(struct SwitchStmt* sstmt){
-
-	free_expr(sstmt->expr);
-	for(int i=0; i < sstmt->count_cases; i++){
-		free_case_stmt(sstmt->cases[i]);
-	}
-	free(sstmt->cases);
-	free(sstmt);
-}
-
-void free_case_stmt(struct CaseStmt* cstmt){
-
-	free_const_value(cstmt->const_value);
-
-	if(cstmt->block != NULL){
-		free_stmt_block(cstmt->block);
-	}
-
-	free(cstmt);
 }
 
 void free_massign_stmt(struct MAssignStmt* m){

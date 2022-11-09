@@ -63,9 +63,6 @@
 #define FOR 	61
 #define IN 		62
 
-#define SWITCH	63
-#define CASE	64
-
 #define INCLUDE_DECL 70
 
 //operator groups

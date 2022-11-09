@@ -29,12 +29,10 @@ add_library(dragon-parser-base
 	main/astnodes/statements/AssignStmt.c
 	main/astnodes/statements/MAssignStmt.c
 	main/astnodes/statements/Call.c
-	main/astnodes/statements/CaseStmt.c
 	main/astnodes/statements/ForStmt.c
 	main/astnodes/statements/IfStmt.c
 	main/astnodes/statements/RetStmt.c
 	main/astnodes/statements/Stmt.c
-	main/astnodes/statements/SwitchStmt.c
 	main/astnodes/statements/WhileStmt.c
 
 	main/astnodes/struct/StructDecl.c
@@ -76,15 +74,13 @@ add_executable(dragon-parser-tests
 	test/astnodes/statements/AssignStmtTest.c
 	test/astnodes/statements/MAssignStmtTest.c
 	test/astnodes/statements/CallTest.c
-	test/astnodes/statements/CaseStmtTest.c
 	test/astnodes/statements/ForStmtTest.c
 	test/astnodes/statements/IfStmtTest.c
 	test/astnodes/statements/RetStmtTest.c
 	test/astnodes/statements/StmtTest.c
-	test/astnodes/statements/SwitchStmtTest.c
 	test/astnodes/statements/WhileStmtTest.c
 
-        test/astnodes/struct/StructDeclTest.c
+    test/astnodes/struct/StructDeclTest.c
 	test/astnodes/struct/StructMemberTest.c
 	
 	test/astnodes/subr/DeclArgTest.c

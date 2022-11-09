@@ -289,7 +289,6 @@ struct Stmt* copy_stmt(struct Stmt* stmt){
         case 4: res->ptr.m4 = copy_ret_stmt(stmt->ptr.m4); break;
         case 5: res->ptr.m5 = copy_assign_stmt(stmt->ptr.m5); break;
         case 7: res->ptr.m7 = copy_for_stmt(stmt->ptr.m7); break;
-        case 8: res->ptr.m8 = copy_switch_stmt(stmt->ptr.m8); break;
         case 9: res->ptr.m9 = copy_massign_stmt(stmt->ptr.m9); break;
         default:
             res->is_break = stmt->is_break;
@@ -368,40 +367,6 @@ struct ForStmt* copy_for_stmt(struct ForStmt* f){
     res->block = copy_stmt_block(f->block);
 
     return res;
-}
-
-struct SwitchStmt* copy_switch_stmt(struct SwitchStmt* s){
-    struct SwitchStmt* res = make(SwitchStmt);
-
-    res->super.line_num = s->super.line_num;
-    res->super.annotations = s->super.annotations;
-
-    res->expr = copy_expr(s->expr);
-    res->count_cases = s->count_cases;
-
-    res->cases = malloc(sizeof(void*)*res->count_cases);
-    for(int i=0; i < res->count_cases; i++){
-        res->cases[i] = copy_case_stmt(s->cases[i]);
-    }
-
-    return res;
-}
-
-struct CaseStmt* copy_case_stmt(struct CaseStmt* c){
-
-	struct CaseStmt* res = make(CaseStmt);
-
-	res->super.line_num = c->super.line_num;
-	res->super.annotations = c->super.annotations;
-
-	res->const_value = copy_const_value(c->const_value);
-	res->block = NULL;
-
-	if (c->block != NULL) {
-		res->block = copy_stmt_block(c->block);
-	}
-
-	return res;
 }
 
 struct MAssignStmt* copy_massign_stmt(struct MAssignStmt* m){

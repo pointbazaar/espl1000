@@ -148,8 +148,6 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		case CONTINUE: 
 		case FOR:
 		case IN:
-		case SWITCH:
-		case CASE:
 		case INCLUDE_DECL:
 		case RANGEOP:
 		case WAVE : 

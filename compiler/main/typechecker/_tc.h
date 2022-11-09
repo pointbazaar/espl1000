@@ -26,7 +26,6 @@ bool tc_stmt(struct Stmt* s, struct TCCtx* tcctx);
 bool tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx);
 bool tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx);
 bool tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx);
-bool tc_switchstmt(struct SwitchStmt* s, struct TCCtx* tcctx);
 bool tc_forstmt(struct ForStmt* f, struct TCCtx* tcctx);
 
 

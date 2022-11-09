@@ -479,7 +479,6 @@ char* str_stmt(struct Stmt* stmt){
 		case 4: return str_ret_stmt(stmt->ptr.m4);
 		case 5: return str_assign_stmt(stmt->ptr.m5);
 		case 7: return str_for_stmt(stmt->ptr.m7);
-		case 8: return str_switch_stmt(stmt->ptr.m8);
         case 9: return str_massign_stmt(stmt->ptr.m9);
 		case 99: {
 			//break,continue,throw,...
@@ -588,37 +587,6 @@ char* str_while_stmt(struct WhileStmt* w){
 	return res;
 }
 
-char* str_switch_stmt(struct SwitchStmt* s){
-
-	uint16_t l = strlen("switch { } ");
-	
-	char* s1 = str_expr(s->expr);
-	l += strlen(s1);
-	
-	char* strCases[s->count_cases];
-	
-	for(uint16_t i = 0; i < s->count_cases; i++){
-		
-		strCases[i] = str_case_stmt(s->cases[i]);
-		l += strlen(strCases[i]);
-	}
-	
-	char* res = exit_malloc(sizeof(char)*l);
-	
-	sprintf(res, "switch %s {", s1);
-	
-	free(s1);
-	
-	for(uint16_t i = 0; i < s->count_cases; i++){
-		
-		strcat(res, strCases[i]);
-	}
-	
-	strcat(res, "}");
-	
-	return res;
-}
-
 char* str_call(struct Call* m){
 
 	//we approximate here, and could be wrong.
@@ -666,23 +634,6 @@ char* str_ret_stmt(struct RetStmt* r){
 	sprintf(res, "return %s;", s);
 	
 	free(s);
-	
-	return res;
-}
-
-char* str_case_stmt(struct CaseStmt* c){
-	
-	char* s = str_const_value(c->const_value);
-	
-	char* s2 = str_stmt_block(c->block);
-	
-	uint16_t l = strlen(s) + strlen(s2);
-
-	char* res = exit_malloc(sizeof(char)*(l+1+6));
-	
-	sprintf(res, "case %s %s", s, s2);
-	
-	free(s); free(s2);
 	
 	return res;
 }

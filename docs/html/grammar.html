@@ -96,7 +96,7 @@
 	<br><br>
 
 	<a id="stmt">Stmt</a> ::= ( <a href="#call">Call</a> ';' )
-		| <a href="#whilestmt">whileStmt</a> | <a href="#ifstmt">ifStmt</a> | <a href="#forstmt">forStmt</a> | <a href="#switchstmt">switchStmt</a>
+		| <a href="#whilestmt">whileStmt</a> | <a href="#ifstmt">ifStmt</a> | <a href="#forstmt">forStmt</a>
 		| <a href="#returnstmt">returnStmt</a> | <a href="#assignstmt">assignStmt</a> | <a href="#massignstmt">mAssignStmt</a>
 		| "break" ';' | "continue" ';' 
 	<br><hr>
@@ -124,11 +124,6 @@
 	<a id="massignstmt">mAssignStmt</a> ::= <a href="#mdirect">MDirect</a> '=' <a href="#expr">Expr</a> ';'
 	<br>
 	<hr>
-	<a id="switchstmt">switchStmt</a> ::= "switch" <a href="#expr">Expr</a> '{' <a href="#casestmt">caseStmt</a>* '}'
-	<br><br>
-	
-	<a id="casestmt">caseStmt</a> ::= "case" <a href="#constvalue">ConstValue</a> <a href="#stmtblock">StmtBlock</a>?
-	<br><br>
 	
 	<h2>Expressions</h2>
 	
