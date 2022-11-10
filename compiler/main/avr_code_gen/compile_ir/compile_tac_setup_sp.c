@@ -8,10 +8,10 @@ void compile_tac_setup_sp(struct TAC* tac, FILE* fout){
 	if(tac->kind != TAC_SETUP_SP){return;}
 	
     //initialize Stack Pointer
-    fprintf(fout, "ldi r16, high(RAMEND)\n");
-    fprintf(fout, "out SPH, r16\n");
-    fprintf(fout, "ldi r16, low(RAMEND)\n");
-    fprintf(fout, "out SPL, r16\n");
+    fprintf(fout, "ldi r%d, high(RAMEND)\n", RAT_SCRATCH_REG);
+    fprintf(fout, "out SPH, r%d\n", RAT_SCRATCH_REG);
+    fprintf(fout, "ldi r%d, low(RAMEND)\n", RAT_SCRATCH_REG);
+    fprintf(fout, "out SPL, r%d\n", RAT_SCRATCH_REG);
 
     fprintf(fout, "\n\n");
 }

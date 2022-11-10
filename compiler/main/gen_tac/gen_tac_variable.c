@@ -8,6 +8,7 @@
 
 static void case_no_member(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx);
 static void case_member(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx);
+//static void case_member_addr(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx);
 
 void tac_variable(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx){
 
@@ -18,15 +19,23 @@ void tac_variable(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx)
 			exit(1);
 		}
 		
-		if(v->member_access->member_access != NULL){
-			//printf("multiple member access currently not implemented for avr_code_gen\n");
-			//exit(1);
-		}
-		
 		case_member(buffer, v, ctx);
         
     }else{
 		case_no_member(buffer, v, ctx);
+	}
+}
+
+void tac_variable_addr(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx){
+	
+	//produce the address of that variable as a temporary
+	if(v->member_access == NULL){
+		tac_simplevar_addr(buffer, v->simple_var, ctx);
+	}else{
+		printf("tac_variable_addr currently unsupported");
+		fflush(stdout);
+		exit(1);
+		//case_member_addr(buffer, v, ctx);
 	}
 }
 
@@ -87,3 +96,4 @@ static void case_member(struct TACBuffer* buffer, struct Variable* v, struct Ctx
 		current = current->member_access;
 	}
 }
+

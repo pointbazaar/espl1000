@@ -30,8 +30,10 @@ void tac_method(struct TACBuffer* buffer, struct Method* m, struct Ctx* ctx);
 void tac_stmtblock(struct TACBuffer* buffer, struct StmtBlock* block, struct Ctx* ctx);
 
 void tac_variable(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx);
+void tac_variable_addr(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx);
 
 void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* sv, struct Ctx* ctx);
+void tac_simplevar_addr(struct TACBuffer* buffer, struct SimpleVar* sv, struct Ctx* ctx);
 
 void tac_expr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx);
 

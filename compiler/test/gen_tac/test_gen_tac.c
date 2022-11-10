@@ -18,6 +18,7 @@ void test_suite_tac_codegen(){
 	test_gen_tac_variable();
 	
 	test_gen_tac_call();
+	test_gen_tac_structdecl();
 }
 
 void status_test_codegen_tac(char* msg){

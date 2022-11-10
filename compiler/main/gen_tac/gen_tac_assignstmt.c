@@ -7,23 +7,19 @@
 
 static void case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
 static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
+static void case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
 
 void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx){
 
     tac_expr(buffer, a->expr, ctx);
 
     if(a->var->member_access != NULL){
-        printf("member access assignments currently unsupported on avr_code_gen\n");
-        exit(1);
-    }
-
-    if(a->var->simple_var->count_indices != 0){
+        case_member(buffer, a, ctx);
+    }else if(a->var->simple_var->count_indices != 0){
         case_indices(buffer, a, ctx);
     }else{
 		case_default(buffer, a, ctx);
 	}
-    
-    
 }
 
 static void case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx){
@@ -70,4 +66,16 @@ static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 	
 	//[t1] = texpr
 	tacbuffer_append(buffer, makeTACStore(t1, texpr));
+}
+
+static void case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx){
+	
+	uint32_t texpr = tacbuffer_last_dest(buffer);
+	
+	//find out the address of the variable
+	tac_variable_addr(buffer, a->var, ctx);
+	
+	uint32_t taddr = tacbuffer_last_dest(buffer);
+	
+	makeTACStore(taddr, texpr);
 }

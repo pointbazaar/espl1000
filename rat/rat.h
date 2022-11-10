@@ -8,6 +8,9 @@
 
 #define RAT_CAPACITY (32)
 
+//r16 is our scratch register
+#define RAT_SCRATCH_REG (16)
+
 struct RAT;
 
 struct RAT* rat_ctor(struct ST* st);

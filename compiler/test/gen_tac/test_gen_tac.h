@@ -18,6 +18,7 @@ void test_gen_tac_forstmt();
 void test_gen_tac_simplevar();
 void test_gen_tac_variable();
 void test_gen_tac_call();
+void test_gen_tac_structdecl();
 
 void status_test_codegen_tac(char* msg);
 

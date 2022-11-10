@@ -18,6 +18,25 @@ void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* v, struct Ctx* ct
 	}
 }
 
+void tac_simplevar_addr(struct TACBuffer* buffer, struct SimpleVar* sv, struct Ctx* ctx){
+	
+	if(sv->count_indices != 0){
+        printf("tac_simplevar_addr currently unsupported");
+        fflush(stdout);
+        exit(1); 
+        //TODO
+    }else{
+		const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, sv->name);
+		//TODO: we need temoraries which occupy 2 registers
+		//for this stuff.
+		tacbuffer_append(buffer, makeTACConst(make_temp(), local_index+1));
+		
+		printf("tac_simplevar_addr currently unsupported");
+        fflush(stdout);
+        exit(1);
+	}
+}
+
 static void case_indices(struct TACBuffer* buffer, struct SimpleVar* v, struct Ctx* ctx){
 	
 	//load t1 = x

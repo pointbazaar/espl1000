@@ -134,12 +134,12 @@ static void case_cmp_ge(FILE* fout, int rdest, int rsrc){
 	char Ltrue[20];
 	sprintf(Ltrue, "Ltrue%d", label_counter++);
 	
-	fprintf(fout, "ldi r16, 1\n");
+	fprintf(fout, "ldi r%d, 1\n", RAT_SCRATCH_REG);
 	fprintf(fout, "cp r%d, r%d\n", rdest, rsrc);
 	fprintf(fout, "brge %s\n", Ltrue);
-	fprintf(fout, "ldi r16, 0\n");
+	fprintf(fout, "ldi r%d, 0\n", RAT_SCRATCH_REG);
 	fprintf(fout, "%s:\n", Ltrue);
-	fprintf(fout, "mov r%d, r16\n", rdest);
+	fprintf(fout, "mov r%d, r%d\n", rdest, RAT_SCRATCH_REG);
 }
 
 static void case_cmp_neq(FILE* fout, int rdest, int rsrc){
@@ -157,8 +157,8 @@ static void case_cmp_eq(FILE* fout, int rdest, int rsrc){
 	
 	//4 instructions
 	
-	fprintf(fout, "ldi r16, 1\n");
+	fprintf(fout, "ldi r%d, 1\n", RAT_SCRATCH_REG);
 	fprintf(fout, "cpse r%d, r%d\n", rdest, rsrc);
-	fprintf(fout, "clr r16\n");
-	fprintf(fout, "mov r%d, r16\n", rdest);
+	fprintf(fout, "clr r%d\n", RAT_SCRATCH_REG);
+	fprintf(fout, "mov r%d, r%d\n", rdest, RAT_SCRATCH_REG);
 }

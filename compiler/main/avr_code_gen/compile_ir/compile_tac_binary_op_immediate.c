@@ -64,8 +64,8 @@ static void case_tac_op_add(FILE* fout, int dest, int32_t immediate){
 			fprintf(fout, "subi r%d, %d\n", dest, -immediate);
 		}else{
 			//cannot use subi
-			fprintf(fout, "ldi r16, %d\n", -immediate);
-			fprintf(fout, "sub r%d, r16\n", dest);
+			fprintf(fout, "ldi r%d, %d\n", RAT_SCRATCH_REG, -immediate);
+			fprintf(fout, "sub r%d, r%d\n", dest, RAT_SCRATCH_REG);
 		}
 	}
 }
@@ -82,8 +82,8 @@ static void case_tac_op_sub(FILE* fout, int dest, int32_t immediate){
 			fprintf(fout, "subi r%d, %d\n", dest, immediate);
 		}else{
 			//cannot use subi
-			fprintf(fout, "ldi r16, %d\n", immediate);
-			fprintf(fout, "sub r%d, r16\n", dest);
+			fprintf(fout, "ldi r%d, %d\n", RAT_SCRATCH_REG, immediate);
+			fprintf(fout, "sub r%d, r%d\n", dest, RAT_SCRATCH_REG);
 		}
 	}
 }

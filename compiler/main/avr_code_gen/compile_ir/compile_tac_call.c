@@ -31,6 +31,6 @@ void compile_tac_call(struct RAT* rat, struct TAC* tac, FILE* fout, struct Ctx* 
     uint32_t size = sst_args_size_avr(sst, name);
     
     for(uint32_t i=0;i < size; i++){
-		fprintf(fout, "pop r16\n");
+		fprintf(fout, "pop r%d\n", RAT_SCRATCH_REG);
 	}
 }
