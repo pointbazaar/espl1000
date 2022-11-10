@@ -33,8 +33,7 @@
 		<br><br>
 		For this Reason we maintain a Register Allocation Table, so during Assembly Code Generation,
 		we can make a good choice on which Register to use for a temporary value.
-		<br>
-		TODO
+		
 	</p>
 
 	<h2> Properties as an Allocator </h2>
@@ -45,22 +44,6 @@
 		Because we only manage 32 Registers, we can keep a lot of metadata, as opposed to
 		e.g. Memory Allocators.
 	</p>
-
-	<h2>Managing the Stack Pointer - SP</h2>
-	<p>
-		The Stack Pointer needs to be setup before the start of the Program.
-		That's why i consider it part of the RAT, because it needs to be managed.
-		And maybe it could be setup in a different place.
-		Typical AVR Program:
-		<br>
-		Source: <a href="https://www.codeproject.com/Articles/712610/AVR-Assembler">https://www.codeproject.com/Articles/712610/AVR-Assembler</a>
-	</p>
-<pre>ldi    r16, LOW(RAMEND)
-out    spl, r16
-ldi    r16, HIGH(RAMEND)
-out    sph, r16</pre>
-
-	<!-- TODO: make a .svg explaining the RAT, ldi restriction, ... restrictions, ... -->
 
 	<div class="row justify-content-center">
 		<div class="col"></div>
