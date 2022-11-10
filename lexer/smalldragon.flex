@@ -41,9 +41,9 @@ in			out(IN, yytext);
 
 #include\ (<[\.a-zA-Z0-9\/_-]+\.h>|\"[\.a-zA-Z0-9\/_-]+\.h\")    out(INCLUDE_DECL, yytext);
 
-int|int8	out(TYPEID_PRIMITIVE_INT, yytext);
+int|int8|int16	out(TYPEID_PRIMITIVE_INT, yytext);
 
-uint|uint8	out(TYPEID_PRIMITIVE_INT, yytext);
+uint|uint8|uint16	out(TYPEID_PRIMITIVE_INT, yytext);
 
 bool 	out(TYPEID_PRIMITIVE_BOOL, yytext);
 char	out(TYPEID_PRIMITIVE_CHAR, yytext);

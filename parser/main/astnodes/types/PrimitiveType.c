@@ -16,47 +16,54 @@
 struct PrimitiveType* makePrimitiveType(struct TokenList* tokens) {
 
 	struct PrimitiveType* res = make(PrimitiveType);
+	
+	res->int_type = NONE;
+	res->is_int_type  = false;
+	res->is_bool_type = false;
+	res->is_char_type = false;
+	
 	struct TokenList* copy = list_copy(tokens);
 	
 	parse_astnode(copy, &(res->super));
 	
 	struct Token* next = list_head(copy);
 	
-	res->int_type = NONE;
+	uint32_t kind = next->kind;
 	
-	res->is_int_type   = next->kind == TYPEID_PRIMITIVE_INT;
-	res->is_char_type  = next->kind == TYPEID_PRIMITIVE_CHAR;
-	res->is_bool_type  = next->kind == TYPEID_PRIMITIVE_BOOL;
-	
-	char* types[] = 
-	{"int8",
-	"uint8",
-	"int",
-	"uint"
-	};
-	
-	if(!(res->is_int_type)){
+	switch(kind){
 		
-		list_consume(copy, 1);
-		
-		list_set(tokens, copy);
-		freeTokenListShallow(copy);
-		
-		return res;
-	}
-		
-	for(int i = 0; i < 10; i++){
-		
-		if(strcmp(next->value_ptr, types[i]) == 0){
-			res->int_type = i;
+		case TYPEID_PRIMITIVE_INT:
+			res->is_int_type = true;
+			res->int_type = INT;
 			break;
-		}
-	}
-	
-	if(res->int_type == NONE){
-		printf("[Parser][Error]");
-		printf("could not find the inttype\n");
-		exit(1);
+		case TYPEID_PRIMITIVE_UINT:
+			res->is_int_type = true;
+			res->int_type = UINT;
+			break;
+		case TYPEID_PRIMITIVE_INT8:
+			res->is_int_type = true;
+			res->int_type = INT8;
+			break;
+		case TYPEID_PRIMITIVE_UINT8:
+			res->is_int_type = true;
+			res->int_type = UINT8;
+			break;
+		case TYPEID_PRIMITIVE_INT16:
+			res->is_int_type = true;
+			res->int_type = INT16;
+			break;
+		case TYPEID_PRIMITIVE_UINT16:
+			res->is_int_type = true;
+			res->int_type = UINT16;
+			break;
+			
+		case TYPEID_PRIMITIVE_BOOL:
+			res->is_bool_type = true;
+			break;
+		
+		case TYPEID_PRIMITIVE_CHAR:
+			res->is_char_type = true;
+			break;
 	}
 
 	list_consume(copy, 1);

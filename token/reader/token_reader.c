@@ -113,7 +113,13 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		//IDENTIFIERS
 		case ID : 
 		case TYPEID:
+		
 		case TYPEID_PRIMITIVE_INT:
+		case TYPEID_PRIMITIVE_UINT:
+		case TYPEID_PRIMITIVE_INT8:
+		case TYPEID_PRIMITIVE_UINT8:
+		case TYPEID_PRIMITIVE_INT16:
+		case TYPEID_PRIMITIVE_UINT16:
 		case TYPEID_PRIMITIVE_BOOL:
 		case TYPEID_PRIMITIVE_CHAR:
 		

@@ -5,15 +5,22 @@
 #define EMPTY 	1
 #define LINE_NO 2
 
+//Type Parameter Token
+#define TPARAM 		3
+
 //Identifier
 #define ID 				4
+
 #define TYPEID		 	5
-#define TYPEID_PRIMITIVE_INT 	6
 #define TYPEID_PRIMITIVE_BOOL 	7
 #define TYPEID_PRIMITIVE_CHAR 	8
 
-//Type Parameter Token
-#define TPARAM 		10
+#define TYPEID_PRIMITIVE_INT 	9
+#define TYPEID_PRIMITIVE_UINT 	10
+#define TYPEID_PRIMITIVE_INT8 	11
+#define TYPEID_PRIMITIVE_UINT8 	12
+#define TYPEID_PRIMITIVE_INT16 	13
+#define TYPEID_PRIMITIVE_UINT16 14
 
 
 //()[]{}
