@@ -1,5 +1,10 @@
 #include <stdio.h>
 
+#include "tables/sst/sst.h"
+#include "tables/stst/stst.h"
+#include "tables/lvst/lvst.h"
+#include "tables/symtable/symtable.h"
+
 #include "tac/tacbuffer.h"
 #include "tac/tac.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"

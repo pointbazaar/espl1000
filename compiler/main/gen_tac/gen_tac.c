@@ -1,5 +1,10 @@
 #include "gen_tac.h"
 
+#include "tables/sst/sst.h"
+#include "tables/stst/stst.h"
+#include "tables/lvst/lvst.h"
+#include "tables/symtable/symtable.h"
+
 #include "util/ctx.h"
 #include "tac/tacbuffer.h"
 

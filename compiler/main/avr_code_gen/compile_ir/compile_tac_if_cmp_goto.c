@@ -7,9 +7,6 @@
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
 void compile_tac_if_cmp_goto(struct RAT* rat, struct TAC* tac, FILE* fout){
-
-    assert(rat_has_register(rat, tac->dest));
-    assert(rat_has_register(rat, tac->arg1));
     
     const int reg1 = rat_get_register(rat, tac->dest);
     const int reg2 = rat_get_register(rat, tac->arg1);

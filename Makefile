@@ -19,8 +19,9 @@ test:
 	cd lexer      && make test
 	cd parser     && make test
 	#cd tables     && make test
+	cd rat		   && make test
 	cd compiler    && make test
-	#cd examples   && make test
+	cd examples   && make test
 	#cd stdlib     && make test
 
 clean:

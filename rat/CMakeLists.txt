@@ -8,9 +8,15 @@ add_library(${PROJECT_NAME} STATIC
         rat.c
 )
 
+add_executable("sd-rat-tests"
+	rat.c
+	test.c
+)
+
+
 #Util dependency
 target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
+target_link_libraries("sd-rat-tests" ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
 
-target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Werror" "-fanalyzer")
-
-target_include_directories(${PROJECT_NAME} PUBLIC "..")
+target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror" "-fanalyzer")
+target_compile_options("sd-rat-tests" PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror" "-fanalyzer")

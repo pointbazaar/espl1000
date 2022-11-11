@@ -1,5 +1,10 @@
 #include <stdio.h>
 
+#include "tables/sst/sst.h"
+#include "tables/stst/stst.h"
+#include "tables/lvst/lvst.h"
+#include "tables/symtable/symtable.h"
+
 #include "tac/tac.h"
 
 void compile_tac_call(struct RAT* rat, struct TAC* tac, FILE* fout, struct Ctx* ctx){

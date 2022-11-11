@@ -4,6 +4,12 @@
 #include "rat/rat.h"
 #include "tac/tac.h"
 #include "util/ctx.h"
+
+#include "tables/sst/sst.h"
+#include "tables/stst/stst.h"
+#include "tables/lvst/lvst.h"
+#include "tables/symtable/symtable.h"
+
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
 void compile_tac_load_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, FILE* fout) {

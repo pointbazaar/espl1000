@@ -3,6 +3,12 @@
 
 #include "tac/tac.h"
 #include "tac/tacbuffer.h"
+
+#include "tables/sst/sst.h"
+#include "tables/stst/stst.h"
+#include "tables/lvst/lvst.h"
+#include "tables/symtable/symtable.h"
+
 #include "gen_tac.h"
 
 static void case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);

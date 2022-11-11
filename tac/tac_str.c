@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "tables/symtable/symtable.h"
+#include "tables/sst/sst.h"
 #include "tac.h"
 
 static char* get_op_str(enum TAC_OP top){

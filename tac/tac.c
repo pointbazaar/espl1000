@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "ast/ast_declare.h"
+#include "util/exit_malloc/exit_malloc.h"
 
 #include "tacbuffer.h"
 #include "tac.h"

@@ -6,6 +6,11 @@
 #include "tac/tac.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
+#include "tables/sst/sst.h"
+#include "tables/stst/stst.h"
+#include "tables/lvst/lvst.h"
+#include "tables/symtable/symtable.h"
+
 #include "util/ctx.h"
 
 void compile_tac_return(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, FILE* fout){

@@ -4,6 +4,11 @@
 #include "tac/tac.h"
 #include "tac/tacbuffer.h"
 
+#include "tables/sst/sst.h"
+#include "tables/stst/stst.h"
+#include "tables/lvst/lvst.h"
+#include "tables/symtable/symtable.h"
+
 #include "gen_tac.h"
 
 static void case_no_member(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx);

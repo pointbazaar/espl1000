@@ -4,6 +4,7 @@
 struct RAT;
 struct TAC;
 struct Ctx;
+struct ST;
 
 void compile_tac_return(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, FILE* fout);
 void compile_tac_const_value(struct RAT* rat, struct TAC* tac, FILE* fout);
