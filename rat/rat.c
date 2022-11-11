@@ -8,9 +8,11 @@
 
 //gives index of a free register, exits on failure.
 //the register still has to be occupied
-static int rat_get_free_register(struct RAT* rat, bool high_regs_only);
+static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide);
 
 static bool rat_has_register(struct RAT* rat, uint32_t tmp_index);
+
+static void rat_occupy(struct RAT* rat, uint8_t reg, uint32_t tmp_index, bool wide);
 
 static void rat_init(struct RAT* rat);
 
@@ -61,8 +63,8 @@ static void rat_init(struct RAT* rat){
     //r16 is another reserved multi-use register,
     //as there is a constraint that
     //many instructions can only use registers >= r16
-    rat->status[16] = REG_RESERVED;
-    rat->note[16] = "reserved as scratch register";
+    rat->status[RAT_SCRATCH_REG] = REG_RESERVED;
+    rat->note[RAT_SCRATCH_REG] = "reserved as scratch register";
 
     //r26 through r31 are X,Y,Z
     //and are used as pointer registers,
@@ -142,18 +144,30 @@ uint32_t rat_occupant(struct RAT* rat, uint8_t reg){
 	return rat->occupant[reg];
 }
 
-uint32_t rat_ensure_register(struct RAT* rat, uint32_t tmp_index, bool high_regs_only){
+static void rat_occupy(struct RAT* rat, uint8_t reg, uint32_t tmp_index, bool wide){
+	
+	//occupy the register
+	rat->status[reg]   = REG_OCCUPIED;
+	rat->occupant[reg] = tmp_index;
+	
+	if(wide){
+		rat->status[reg+1]   = REG_OCCUPIED;
+		rat->occupant[reg+1] = tmp_index;
+	}
+}
+
+uint32_t rat_ensure_register(struct RAT* rat, uint32_t tmp_index, bool high_regs_only, bool wide){
+	
+	//wide means we need a register pair, because of a 16 bit value
 	
 	//printf("rat ensure t%d, higher=%d",tmp_index, high_regs_only);
 	//fflush(stdout);
 	
 	if(!rat_has_register(rat, tmp_index)){
 		
-		uint32_t reg = rat_get_free_register(rat, high_regs_only);
+		uint32_t reg = rat_get_free_register(rat, high_regs_only, wide);
 		
-		//occupy the register
-		rat->status[reg]   = REG_OCCUPIED;
-		rat->occupant[reg] = tmp_index;
+		rat_occupy(rat, reg, tmp_index, wide);
 	}
 	
 	return rat_get_register(rat, tmp_index);
@@ -179,7 +193,11 @@ void rat_free(struct RAT* rat, uint8_t reg){
 	}
 }
 
-static int rat_get_free_register(struct RAT* rat, bool high_regs_only){
+static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide){
+	
+	//wide means we need a register pair.
+	//we return the lower of the 2 registers
+	
     //high_regs_only tells us at which register to start looking,
     //as there are some instructions such as 'ldi' which can only use a high register
     // (>= r16)
@@ -187,8 +205,16 @@ static int rat_get_free_register(struct RAT* rat, bool high_regs_only){
     const int start_inclusive = (high_regs_only)?16:0;
 
     for(int i=start_inclusive;i < RAT_CAPACITY; i++){
+		
 		if(rat->status[i] == REG_FREE){
-            return i;
+			
+			if(wide){
+				if(i+1 < RAT_CAPACITY && rat->status[i+1] == REG_FREE){
+					return i;
+				}
+			}else{
+				return i;
+			}
         }
     }
     

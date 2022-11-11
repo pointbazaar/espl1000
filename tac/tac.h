@@ -95,6 +95,8 @@ struct TAC{
     enum TAC_OP op;
 
     int32_t const_value;
+    
+    bool wide; //is this a 16-bit temporary?
 };
 
 bool tac_is_unconditional_jump(struct TAC* tac);
@@ -121,6 +123,7 @@ struct TAC* makeTACLoadLocal(uint32_t tmp, uint32_t local_index);
 struct TAC* makeTACStoreLocal(uint32_t local_index, uint32_t tmp);
 
 struct TAC* makeTACConst(uint32_t tmp, int value);
+struct TAC* makeTACConst16(uint32_t tmp, int value);
 
 struct TAC* makeTACBinOp(uint32_t dest, enum TAC_OP op, uint32_t src);
 struct TAC* makeTACBinOpImmediate(uint32_t tmp, enum TAC_OP op, int32_t immediate);
