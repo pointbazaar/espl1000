@@ -54,7 +54,6 @@ static void test_8bit(){
 
 static void test_16bit(){
 	
-	return;
 	status_test_codegen("TAC_CONST_VALUE - 16 bit");
 	
 	const int16_t fixed_value = 300 + (rand()%0xff);

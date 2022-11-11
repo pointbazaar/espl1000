@@ -12,6 +12,16 @@ void compile_tac_const_value(struct RAT* rat, struct TAC* tac, FILE* fout){
 	//reg allocated for it's destination tmp
     
     int reg = rat_get_register(rat, tac->dest);
-
-    fprintf(fout, "ldi r%d, %d\n", reg, tac->const_value);
+    
+    int16_t value = tac->const_value;
+    
+    if(rat_is_wide(rat, tac->dest)){
+		
+		fprintf(fout, "ldi r%d, %d\n", reg,   value & 0xff);
+		fprintf(fout, "ldi r%d, %d\n", reg+1, (value >> 8) & 0xff);
+		
+	}else{
+		
+		fprintf(fout, "ldi r%d, %d\n", reg, value & 0xff);
+	}
 }

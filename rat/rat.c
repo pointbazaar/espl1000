@@ -141,6 +141,13 @@ int rat_get_register(struct RAT* rat, uint32_t tmp_index){
 }
 
 uint32_t rat_occupant(struct RAT* rat, uint8_t reg){
+	
+	if(rat->status[reg] != REG_OCCUPIED){
+		printf("[RAT] rat_occupant: requesting occupant for unoccupied register\n");
+		rat_print(rat);
+		exit(1);
+	}
+	
 	return rat->occupant[reg];
 }
 
@@ -171,6 +178,17 @@ uint32_t rat_ensure_register(struct RAT* rat, uint32_t tmp_index, bool high_regs
 	}
 	
 	return rat_get_register(rat, tmp_index);
+}
+
+bool rat_is_wide(struct RAT* rat, uint32_t tmp_index){
+	
+	//if the temporary occupies a register pair, return true
+	
+	int reg = rat_get_register(rat, tmp_index);
+	
+	return reg+1 < RAT_CAPACITY 
+		&& rat->status[reg+1] == REG_OCCUPIED
+		&& (rat_occupant(rat, reg+1) == tmp_index);
 }
 
 void rat_free(struct RAT* rat, uint8_t reg){

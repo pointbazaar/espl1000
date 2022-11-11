@@ -16,6 +16,7 @@ static void test_occupant();
 static void test_can_free_pair();
 static void test_occupant_pair();
 static void test_alloc_n_regs();
+static void test_rat_is_wide();
 
 int main(){
 	
@@ -29,6 +30,7 @@ int main(){
 	test_can_free_pair();
 	test_occupant_pair();
 	test_alloc_n_regs();
+	test_rat_is_wide();
 	
 	printf("[RAT][TEST] Passed %d Tests\n", test_count);
 	
@@ -160,6 +162,29 @@ static void test_alloc_n_regs(){
 		
 		rat_ensure_register(rat, i, false, false);
 	}
+	
+	rat_dtor(rat);
+}
+
+static void test_rat_is_wide(){
+	
+	status("rat_is_wide(...)");
+	
+	struct RAT* rat = rat_ctor();
+	
+	//with low regs
+	rat_ensure_register(rat, 0, false, false);
+	assert(rat_is_wide(rat, 0) == false);
+	
+	rat_ensure_register(rat, 1, false, true);
+	assert(rat_is_wide(rat, 1) == true);
+	
+	//with high regs
+	rat_ensure_register(rat, 0, true, false);
+	assert(rat_is_wide(rat, 0) == false);
+	
+	rat_ensure_register(rat, 1, true, true);
+	assert(rat_is_wide(rat, 1) == true);
 	
 	rat_dtor(rat);
 }

@@ -14,14 +14,22 @@
 #include "util/ctx.h"
 
 void compile_tac_return(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, FILE* fout){
+	
     //destroy the stackframe
     fprintf(fout, "\n");
     for(size_t k=0; k < lvst_stack_frame_size_avr(ctx_tables(ctx)->lvst); k++){
         fprintf(fout, "pop r0 ;destroy frame\n");
     }
 
+	//find out if tac->dest is a wide (16 bit) temporary
+
     int reg = rat_get_register(rat, tac->dest);
+	
     fprintf(fout, "mov r0, r%d\n", reg);
+    
+    if(rat_is_wide(rat, tac->dest)){
+		fprintf(fout, "mov r1, r%d\n", reg+1);
+	}
 
     fprintf(fout, "ret\n");
 }

@@ -23,6 +23,8 @@ uint32_t rat_occupant(struct RAT* rat, uint8_t reg);
 
 uint32_t rat_ensure_register(struct RAT* rat, uint32_t tmp_index, bool high_regs_only, bool wide);
 
+bool rat_is_wide(struct RAT* rat, uint32_t tmp_index);
+
 void rat_free(struct RAT* rat, uint8_t reg);
 
 #endif
