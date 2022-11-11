@@ -12,6 +12,8 @@ static int rat_get_free_register(struct RAT* rat, bool high_regs_only);
 
 static bool rat_has_register(struct RAT* rat, uint32_t tmp_index);
 
+static void rat_init(struct RAT* rat);
+
 enum RAT_REG_STATUS {
 	REG_OCCUPIED,  //reg occupied by temporary
 	REG_RESERVED,  //reg reserved, cannot be allocated
@@ -44,16 +46,23 @@ struct RAT* rat_ctor(){
         rat->note[i] = "";
     }
 
-    //r0 is our garbage register, for when we need to pop something off the stack
-    //to destroy our stackframe
-    rat->status[0] = REG_RESERVED;
-    rat->note[0] = "reserved";
+    rat_init(rat);
+
+    return rat;
+}
+
+static void rat_init(struct RAT* rat){
+	
+	rat->status[0] = REG_RESERVED;
+    rat->note[0] = "reserved for return value";
+    rat->status[1] = REG_RESERVED;
+    rat->note[1] = "reserved for return value";
 
     //r16 is another reserved multi-use register,
     //as there is a constraint that
     //many instructions can only use registers >= r16
     rat->status[16] = REG_RESERVED;
-    rat->note[16] = "reserved";
+    rat->note[16] = "reserved as scratch register";
 
     //r26 through r31 are X,Y,Z
     //and are used as pointer registers,
@@ -66,15 +75,13 @@ struct RAT* rat_ctor(){
     //Y is our base pointer for the stack frame
     rat->status[28] = REG_RESERVED; //Y
     rat->status[29] = REG_RESERVED; //Y
-    rat->note[28] = "YL";
-    rat->note[29] = "YH";
+    rat->note[28] = "YL, reserved for frame pointer";
+    rat->note[29] = "YH, reserved for frame pointer";
 
     rat->status[30] = REG_RESERVED; //Z
     rat->status[31] = REG_RESERVED; //Z
     rat->note[30] = "ZL";
     rat->note[31] = "ZH";
-
-    return rat;
 }
 
 void rat_dtor(struct RAT* rat){
