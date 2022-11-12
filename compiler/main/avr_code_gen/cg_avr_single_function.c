@@ -10,12 +10,14 @@
 #include "util/ctx.h"
 #include "ast/ast.h"
 
+#include "ibuffer/ibuffer.h"
+
 #include "tables/symtable/symtable.h"
 #include "cg_avr_single_function.h"
 
 #include "../../cli/flags/flags.h"
 
-void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FILE* fout){
+void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu){
 
     struct TACBuffer* buffer = tacbuffer_ctor();
     
@@ -37,7 +39,7 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, FI
     struct BasicBlock** graph = basicblock_create_graph(buffer, m->decl->name, &nblocks, ctx);
 	struct BasicBlock* root = graph[0];
 	
-    emit_asm_avr_basic_block(root, ctx, fout);
+    emit_asm_avr_basic_block(root, ctx, ibu);
     
     //delete the basic block graph
     for(int i=0; i < nblocks; i++){

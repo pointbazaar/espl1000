@@ -8,13 +8,15 @@
 #include "basic_block/basicblock.h"
 #include "rat/rat.h"
 
+#include "ibuffer/ibuffer.h"
+
 #include "cg_avr_single_tac.h"
 #include "cg_avr_basic_block.h"
 
 static void allocate_registers(struct TACBuffer* b, struct RAT* rat);
 static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat);
 
-void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, FILE *fout) {
+void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, struct IBuffer* ibu) {
 
     if(block == NULL || block->visited_emit_asm)
         return;
@@ -33,7 +35,7 @@ void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, FILE *f
     for(size_t i=0;i < tacbuffer_count(block->buffer); i++){
         struct TAC* t = tacbuffer_get(block->buffer,i);
 
-		emit_asm_avr_single_tac(rat, t, ctx, fout);
+		emit_asm_avr_single_tac(rat, t, ctx, ibu);
     }
 
     //if(ctx->flags->debug)
@@ -45,8 +47,8 @@ void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, FILE *f
     //because there is no label for it in a lot of cases
     //this way we can avoid an extra jump that's really 
     //not necessary.
-    emit_asm_avr_basic_block(block->branch_2,  ctx, fout);
-    emit_asm_avr_basic_block(block->branch_1, ctx, fout);
+    emit_asm_avr_basic_block(block->branch_2,  ctx, ibu);
+    emit_asm_avr_basic_block(block->branch_1, ctx, ibu);
 }
 
 static void allocate_registers(struct TACBuffer* b, struct RAT* rat){

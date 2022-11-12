@@ -11,6 +11,8 @@
 #ifndef SMALLDRAGON_TOPLEVEL_CG_AVR_BASIC_BLOCK_H
 #define SMALLDRAGON_TOPLEVEL_CG_AVR_BASIC_BLOCK_H
 
-void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, FILE *fout);
+struct IBuffer;
+
+void emit_asm_avr_basic_block(struct BasicBlock *block, struct Ctx* ctx, struct IBuffer* ibu);
 
 #endif

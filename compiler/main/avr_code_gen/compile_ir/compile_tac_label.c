@@ -9,12 +9,15 @@
 #include "tac/tac.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_label(struct TAC* tac, FILE* fout, struct Ctx* ctx){
-    //newline for readability
-    fprintf(fout, "\n");
+void compile_tac_label(struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx){
 
-    if(tac->kind == TAC_LABEL_INDEXED)
-        fprintf(fout, "L%d:\n", tac->label_index);
+	char* s;
+
+    if(tac->kind == TAC_LABEL_INDEXED){
+		char str[32];
+		sprintf(str, "L%d", tac->label_index);
+		s = (char*)&str;
+	}
     
     if(tac->kind == TAC_LABEL_FUNCTION){
 		
@@ -26,6 +29,8 @@ void compile_tac_label(struct TAC* tac, FILE* fout, struct Ctx* ctx){
 			function_name = sst_at(ctx_tables(ctx)->sst, tac->dest)->name;
 		}
 		
-        fprintf(fout, "%s:\n", function_name);
+		s = function_name;
 	}
+	
+	label(s);
 }

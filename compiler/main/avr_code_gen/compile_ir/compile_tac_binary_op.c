@@ -6,17 +6,17 @@
 #include "tac/tac.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
-static void case_arithmetic(struct RAT* rat, struct TAC* tac, FILE* fout);
-static void case_compare(struct RAT* rat, struct TAC* tac, FILE* fout);
+static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
+static void case_compare(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 
-static void case_cmp_lt(FILE* fout, int rdest, int rsrc);
-static void case_cmp_ge(FILE* fout, int rdest, int rsrc);
-static void case_cmp_neq(FILE* fout, int rdest, int rsrc);
-static void case_cmp_eq(FILE* fout, int rdest, int rsrc);
+static void case_cmp_lt(struct IBuffer* ibu, int rdest, int rsrc);
+static void case_cmp_ge(struct IBuffer* ibu, int rdest, int rsrc);
+static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc);
+static void case_cmp_eq(struct IBuffer* ibu, int rdest, int rsrc);
 
 static int label_counter = 0;
 
-void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
+void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
 
     switch (tac->op) {
 
@@ -26,7 +26,7 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
         case TAC_OP_AND: 
         case TAC_OP_OR:  
         case TAC_OP_XOR: 
-			case_arithmetic(rat, tac, fout);
+			case_arithmetic(rat, tac, ibu);
 			break;
 
 
@@ -34,44 +34,36 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, FILE* fout){
         case TAC_OP_CMP_GE: 
         case TAC_OP_CMP_EQ: 
         case TAC_OP_CMP_NEQ: 
-			case_compare(rat,tac,fout);
+			case_compare(rat, tac, ibu);
 			break;
 
 		default: 
-			//should not happen
-			printf("fatal error in compile_tac_binary_op. Exiting.");
-			fflush(stdout);
-			exit(1);
 			break; 
     }
 }
 
 
-static void case_arithmetic(struct RAT* rat, struct TAC* tac, FILE* fout){
+static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
 	
 	//left and right operand should have registers
 
-    int reg_src = rat_get_register(rat, tac->arg1);
+    int rsrc = rat_get_register(rat, tac->arg1);
 
-    int reg_dest = rat_get_register(rat, tac->dest);
-	
-	char* mnem = "?";
+    int rdest = rat_get_register(rat, tac->dest);
 
     switch (tac->op) {
 
-        case TAC_OP_ADD: mnem = "add"; break;
-        case TAC_OP_SUB: mnem = "sub"; break;
-        case TAC_OP_MUL: mnem = "mul"; break;
-        case TAC_OP_AND: mnem = "and"; break;
-        case TAC_OP_OR:  mnem = "or";  break;
-        case TAC_OP_XOR: mnem = "eor"; break;
+        case TAC_OP_ADD: add(rdest, rsrc); break;
+        case TAC_OP_SUB: sub(rdest, rsrc); break;
+        case TAC_OP_MUL: mul(rdest, rsrc); break;
+        case TAC_OP_AND: and(rdest, rsrc); break;
+        case TAC_OP_OR:  or(rdest, rsrc); break;
+        case TAC_OP_XOR: eor(rdest, rsrc); break;
         default: break;
 	}
-	
-	fprintf(fout, "%s r%d, r%d\n", mnem, reg_dest, reg_src);
 }
 
-static void case_compare(struct RAT* rat, struct TAC* tac, FILE* fout){
+static void case_compare(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
 	
 	//left and right operand should have registers
 
@@ -80,16 +72,16 @@ static void case_compare(struct RAT* rat, struct TAC* tac, FILE* fout){
     int rdest = rat_get_register(rat, tac->dest);
 	
 	switch(tac->op){
-		case TAC_OP_CMP_LT: case_cmp_lt(fout, rdest, rsrc); break;
-        case TAC_OP_CMP_GE: case_cmp_ge(fout, rdest, rsrc); break;
-        case TAC_OP_CMP_EQ: case_cmp_eq(fout, rdest, rsrc); break;
-        case TAC_OP_CMP_NEQ: case_cmp_neq(fout, rdest, rsrc); break;
+		case TAC_OP_CMP_LT: case_cmp_lt(ibu, rdest, rsrc); break;
+        case TAC_OP_CMP_GE: case_cmp_ge(ibu, rdest, rsrc); break;
+        case TAC_OP_CMP_EQ: case_cmp_eq(ibu, rdest, rsrc); break;
+        case TAC_OP_CMP_NEQ: case_cmp_neq(ibu, rdest, rsrc); break;
         default: break;
 	}
 }
 
 
-static void case_cmp_lt(FILE* fout, int rdest, int rsrc){
+static void case_cmp_lt(struct IBuffer* ibu, int rdest, int rsrc){
 	
 	//5 instructions
 	
@@ -106,21 +98,19 @@ static void case_cmp_lt(FILE* fout, int rdest, int rsrc){
 
 	sprintf(Ltrue, "Ltrue%d", label_counter);
 	sprintf(Lend, "Lend%d", label_counter++);
-
-	fprintf(fout, "cp r%d, r%d\n", rdest, rsrc);
-	fprintf(fout, "brlt %s\n", Ltrue);
-
-	fprintf(fout, "clr r%d\n", rdest);
-
-	fprintf(fout, "rjmp %s\n", Lend);
-	fprintf(fout, "%s:\n", Ltrue);
-
-	fprintf(fout, "sub r%d, r%d\n", rdest, rsrc);
-
-	fprintf(fout, "%s:\n", Lend);
+	
+	cp(rdest, rsrc);
+	brlt(Ltrue);
+	
+	clr(rdest);
+	rjmp(Lend);
+	label(Ltrue);
+	
+	sub(rdest, rsrc);
+	label(Lend);
 }
 
-static void case_cmp_ge(FILE* fout, int rdest, int rsrc){
+static void case_cmp_ge(struct IBuffer* ibu, int rdest, int rsrc){
 	
 	//5 instructions
 	
@@ -134,31 +124,32 @@ static void case_cmp_ge(FILE* fout, int rdest, int rsrc){
 	char Ltrue[20];
 	sprintf(Ltrue, "Ltrue%d", label_counter++);
 	
-	fprintf(fout, "ldi r%d, 1\n", RAT_SCRATCH_REG);
-	fprintf(fout, "cp r%d, r%d\n", rdest, rsrc);
-	fprintf(fout, "brge %s\n", Ltrue);
-	fprintf(fout, "ldi r%d, 0\n", RAT_SCRATCH_REG);
-	fprintf(fout, "%s:\n", Ltrue);
-	fprintf(fout, "mov r%d, r%d\n", rdest, RAT_SCRATCH_REG);
+	
+	ldi(RAT_SCRATCH_REG, 1, "");
+	cp(rdest, rsrc);
+	brge(Ltrue);
+	ldi(RAT_SCRATCH_REG, 0, "");
+	
+	label(Ltrue);
+	mov(rdest, RAT_SCRATCH_REG);
 }
 
-static void case_cmp_neq(FILE* fout, int rdest, int rsrc){
+static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc){
 	
 	//we just subtract the 2 registers,
 	//if they were equal, rdest will be 0, meaning false
 	//otherwise it will be nonzero, meaning true
 	
-	fprintf(fout, "sub r%d, r%d\n", rdest, rsrc);
+	sub(rdest, rsrc);
 }
 
-static void case_cmp_eq(FILE* fout, int rdest, int rsrc){
+static void case_cmp_eq(struct IBuffer* ibu, int rdest, int rsrc){
 	
 	//we use r16, which is reserved in the RAT as multi-use register.
 	
 	//4 instructions
-	
-	fprintf(fout, "ldi r%d, 1\n", RAT_SCRATCH_REG);
-	fprintf(fout, "cpse r%d, r%d\n", rdest, rsrc);
-	fprintf(fout, "clr r%d\n", RAT_SCRATCH_REG);
-	fprintf(fout, "mov r%d, r%d\n", rdest, RAT_SCRATCH_REG);
+	ldi(RAT_SCRATCH_REG, 1, "");
+	cpse(rdest, rsrc);
+	clr(RAT_SCRATCH_REG);
+	mov(rdest, RAT_SCRATCH_REG);
 }

@@ -15,12 +15,16 @@
 
 #include "../../cli/flags/flags.h"
 
+#include "ibuffer/ibuffer.h"
+
 //compile a struct TACBuffer* to .asm
 //call avra to create .hex
 //create vmcu_model_t
 //create vmcu_report_t
 //create a vmcu_system_t
 //return vmcu_system_t*
+
+static void print_defs(FILE* fout);
 
 vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
 
@@ -45,26 +49,7 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
         exit(1);
     }
 
-    //in /usr/share/avra
-
-    //in this file a comment must be shortened, otherwise avra will give an error
-    //.INCLUDE "/usr/share/avra/m32def.inc"
-    //fprintf(fout, ".DEVICE ATmega328P\n");
-    
-    //we do not want to depend on the specific location of that file
-    //or if it's even there ... just append some stuff here
-    fprintf(fout, 
-		".DEVICE ATmega328P\n"
-		".equ	RAMEND	= 0x085f\n"
-		".def	XH	= r27\n"
-		".def	XL	= r26\n"
-		".def	YH	= r29\n"
-		".def	YL	= r28\n"
-		".def	ZH	= r31\n"
-		".def	ZL	= r30\n"
-		".equ	SPH	= 0x3e\n"
-		".equ	SPL	= 0x3d\n"
-    );
+    print_defs(fout);
 
 	int nblocks;
     struct BasicBlock** graph = basicblock_create_graph(buffer, "main", &nblocks, ctx);
@@ -75,15 +60,22 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
         printf("[Error] could not create BasicBlock.Exiting.\n");
         exit(1);
     }
+    
+    struct IBuffer* ibu = ibu_ctor();
 
-    emit_asm_avr_basic_block(root, ctx, fout);
+    emit_asm_avr_basic_block(root, ctx, ibu);
     
     for(int i=0;i < nblocks; i++){
 		basicblock_dtor(graph[i]);
 	}
+	
+	ibu_write(ibu, fout);
+	
 	free(graph);
 
     tacbuffer_dtor(buffer);
+    
+    ibu_dtor(ibu);
 
     fclose(fout);
 
@@ -126,4 +118,28 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
     ctx_dtor(ctx);
 
     return system;
+}
+
+static void print_defs(FILE* fout){
+	
+	//in /usr/share/avra
+
+    //in this file a comment must be shortened, otherwise avra will give an error
+    //.INCLUDE "/usr/share/avra/m32def.inc"
+    //fprintf(fout, ".DEVICE ATmega328P\n");
+    
+    //we do not want to depend on the specific location of that file
+    //or if it's even there ... just append some stuff here
+    fprintf(fout, 
+		".DEVICE ATmega328P\n"
+		".equ	RAMEND	= 0x085f\n"
+		".def	XH	= r27\n"
+		".def	XL	= r26\n"
+		".def	YH	= r29\n"
+		".def	YL	= r28\n"
+		".def	ZH	= r31\n"
+		".def	ZL	= r30\n"
+		".equ	SPH	= 0x3e\n"
+		".equ	SPL	= 0x3d\n"
+    );
 }

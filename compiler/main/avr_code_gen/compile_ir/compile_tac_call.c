@@ -7,7 +7,9 @@
 
 #include "tac/tac.h"
 
-void compile_tac_call(struct RAT* rat, struct TAC* tac, FILE* fout, struct Ctx* ctx){
+#include "compile_tac.h"
+
+void compile_tac_call(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx){
 
     int reg_dest = rat_get_register(rat, tac->dest);
     
@@ -18,10 +20,10 @@ void compile_tac_call(struct RAT* rat, struct TAC* tac, FILE* fout, struct Ctx* 
 		function_name = sst_at(ctx_tables(ctx)->sst, tac->arg1)->name;
 	}	
 	
-    fprintf(fout, "call %s\n", function_name);
+	call(function_name);
     
     if(reg_dest != 0)
-		fprintf(fout, "mov r%d, r0\n", reg_dest);
+		mov(reg_dest, 0);
     
     struct SST* sst = ctx_tables(ctx)->sst;
     
@@ -36,6 +38,6 @@ void compile_tac_call(struct RAT* rat, struct TAC* tac, FILE* fout, struct Ctx* 
     uint32_t size = sst_args_size_avr(sst, name);
     
     for(uint32_t i=0;i < size; i++){
-		fprintf(fout, "pop r%d\n", RAT_SCRATCH_REG);
+		pop(RAT_SCRATCH_REG, "remove call params");
 	}
 }

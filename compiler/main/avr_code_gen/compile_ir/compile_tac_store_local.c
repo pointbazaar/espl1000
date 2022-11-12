@@ -15,7 +15,7 @@
 
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, FILE* fout) {
+void compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 	
 	char* name = lvst_at(ctx_tables(ctx)->lvst, tac->dest)->name;
     
@@ -24,8 +24,10 @@ void compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 	const int reg = rat_get_register(rat, tac->arg1);
 	
 	if(offset == 0){
-		fprintf(fout, "st Y, r%d; writeback locals\n", reg);
+		stY(reg, "TAC_STORE_LOCAL");
+		//st Y, reg; writeback locals
 	}else {
-		fprintf(fout, "std Y+%zu, r%d; writeback locals\n", offset, reg);
+		stdY(offset, reg, "TAC_STORE_LOCAL");
+		//std Y+offset, reg; writeback locals
 	}
 }

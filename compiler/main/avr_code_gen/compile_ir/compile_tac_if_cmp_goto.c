@@ -6,26 +6,21 @@
 #include "tac/tac.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_if_cmp_goto(struct RAT* rat, struct TAC* tac, FILE* fout){
+void compile_tac_if_cmp_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
     
     const int reg1 = rat_get_register(rat, tac->dest);
     const int reg2 = rat_get_register(rat, tac->arg1);
 
-    fprintf(fout, "cp r%d, r%d\n", reg1, reg2); 
+	cp(reg1, reg2); 
     
-    char* mnem = "ERR";
+    char str[32];
+    sprintf(str, "L%d", tac->label_index);
     
     switch(tac->op){
-		case TAC_OP_CMP_EQ: mnem = "breq"; break;
-		case TAC_OP_CMP_NEQ: mnem = "brne"; break;
-		case TAC_OP_CMP_GE: mnem = "brge"; break;
-		case TAC_OP_CMP_LT: mnem = "brlt"; break;
-		default: 
-			printf("fatal error in compile_tac_if_cmp_goto.");
-			fflush(stdout);
-			exit(1);
-			break;
+		case TAC_OP_CMP_EQ: breq(str); break;
+		case TAC_OP_CMP_NEQ: brne(str); break;
+		case TAC_OP_CMP_GE: brge(str); break;
+		case TAC_OP_CMP_LT: brlt(str); break;
+		default: break;
 	}
-	
-    fprintf(fout, "%s L%d\n", mnem, tac->label_index);
 }

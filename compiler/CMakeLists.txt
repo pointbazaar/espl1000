@@ -41,7 +41,6 @@ add_library("sd-base"
 		main/avr_code_gen/compile_ir/compile_tac_call.c
 		main/avr_code_gen/compile_ir/compile_tac_const_value.c
 		main/avr_code_gen/compile_ir/compile_tac_copy.c
-		main/avr_code_gen/compile_ir/compile_tac_deref.c
 		main/avr_code_gen/compile_ir/compile_tac_goto.c
 		main/avr_code_gen/compile_ir/compile_tac_if_goto.c
 		main/avr_code_gen/compile_ir/compile_tac_label.c
@@ -195,6 +194,8 @@ target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../parser/build/libdragon-pa
 target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a)
 #Util dependency
 target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
+#IBuffer Dependency
+target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../ibuffer/build/libsd-ibuffer.a)
 
 target_link_libraries("sd" sd-base)
 

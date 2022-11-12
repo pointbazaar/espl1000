@@ -3,18 +3,18 @@
 #include "tac/tac.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_setup_stackframe(struct TAC* tac, FILE* fout){
+void compile_tac_setup_stackframe(struct TAC* tac, struct IBuffer* ibu){
 	
 	const int stack_frame_size = tac->const_value;
 	
     //push onto the stack to create the stack frame
     for(int k=0; k < stack_frame_size; k++){
-        fprintf(fout, "push r0  ;create frame\n"); 
+        //push r0  ;create frame 
+        push(0, "create stackframe");
         //it is irrelevant what we push here
     }
-    fprintf(fout, "\n");
 	
-	//now load X as our base pointer for the stack frame
-    fprintf(fout, "in r28, SPL  ;Y is base ptr\n");
-    fprintf(fout, "in r29, SPH  ;Y is base ptr\n\n");
+	//load base pointer Y
+	in(YL, SPL, "load frame pointer Y");
+	in(YH, SPH, "load frame pointer Y");
 }

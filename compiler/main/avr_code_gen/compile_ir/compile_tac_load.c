@@ -6,7 +6,7 @@
 #include "util/ctx.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_load(struct RAT* rat, struct TAC* tac, FILE* fout) {
+void compile_tac_load(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
     
     //t1 = [t2]
     
@@ -14,9 +14,8 @@ void compile_tac_load(struct RAT* rat, struct TAC* tac, FILE* fout) {
     
     const int reg_src = rat_get_register(rat, tac->arg1);
     
-    //TODO: set X to t2
-    fprintf(fout, "mov XL, r%d\n", reg_src);
-    fprintf(fout, "ldi XH, 0\n");
-			
-	fprintf(fout, "ld r%d, X\n", reg_dest);
+    mov(XL, reg_src);
+    ldi(XH, 0, "TAC_LOAD");
+    
+	ldX(reg_dest, "TAC_LOAD"); //ld reg_dest, X
 }

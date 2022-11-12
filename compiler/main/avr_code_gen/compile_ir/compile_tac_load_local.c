@@ -12,7 +12,7 @@
 
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_load_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, FILE* fout) {
+void compile_tac_load_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
     const int reg_dest = rat_get_register(rat, tac->dest);
     
@@ -21,7 +21,9 @@ void compile_tac_load_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, F
     const uint16_t offset = lvst_stack_frame_offset_avr(ctx_tables(ctx)->lvst, name);
 			
 	if(offset == 0)
-		fprintf(fout, "ld r%d, Y\n", reg_dest);
+		//ld reg_dest, Y
+		ldY(reg_dest, "TAC_LOAD_LOCAL");
 	else
-		fprintf(fout, "ldd r%d, Y+%d\n", reg_dest, offset);
+		lddY(reg_dest, offset, "TAC_LOAD_LOCAL");
+		//ldd reg_dest, Y+offset
 }

@@ -3,15 +3,15 @@
 #include "tac/tac.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_setup_sp(struct TAC* tac, FILE* fout){
-	
-	if(tac->kind != TAC_SETUP_SP){return;}
+#include "compile_tac.h"
+
+void compile_tac_setup_sp(struct IBuffer* ibu){
 	
     //initialize Stack Pointer
-    fprintf(fout, "ldi r%d, high(RAMEND)\n", RAT_SCRATCH_REG);
-    fprintf(fout, "out SPH, r%d\n", RAT_SCRATCH_REG);
-    fprintf(fout, "ldi r%d, low(RAMEND)\n", RAT_SCRATCH_REG);
-    fprintf(fout, "out SPL, r%d\n", RAT_SCRATCH_REG);
-
-    fprintf(fout, "\n\n");
+    char* comment = "setup SP";
+    
+    ldi(RAT_SCRATCH_REG, high(RAMEND), comment);
+    out(SPH, RAT_SCRATCH_REG, comment);
+    ldi(RAT_SCRATCH_REG, low(RAMEND), comment);
+    out(SPL, RAT_SCRATCH_REG, comment);
 }
