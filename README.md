@@ -13,8 +13,7 @@ The Compiler Backend targets the ATMEL(now Microchip) ATMega328P.
 
 ESPL1000 is inspired by the simplicity and power of C programming.
 
-It aims to be a modern language which captures the unique feeling of C programming, 
-but in a slightly different way.
+The Compiler is Work in Progress and still a long way from being functional.
 
 ## Documentation
 ### [espl1000.org](https://espl1000.org) 
