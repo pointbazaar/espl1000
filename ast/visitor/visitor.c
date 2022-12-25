@@ -354,12 +354,8 @@ void visit_primitive_type(struct PrimitiveType* p, VISITOR, void* arg){
 }
 
 void visit_struct_type(struct StructType* s, VISITOR, void* arg){
-		
-	visitor(s, NODE_STRUCTTYPE, arg);
 
-	for(uint32_t i = 0; i < s->count_type_params; i++){
-        visit_type(s->type_params[i], visitor, arg);
-	}
+	visitor(s, NODE_STRUCTTYPE, arg);
 }
 
 void visit_type_param(struct TypeParam* t, VISITOR, void* arg){

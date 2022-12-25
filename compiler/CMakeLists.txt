@@ -180,8 +180,6 @@ target_compile_options("sd-base"  PUBLIC "-g" "-march=native" "-Wall" "-Wextra" 
 target_compile_options("sd"       PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror" "-fanalyzer")
 target_compile_options("sd-tests" PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror" "-fanalyzer")
 
-#AST dependency
-target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../ast/build/libsd-ast.a)
 #tables dependency
 target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../tables/build/libsd-tables.a)
 #RAT dependency
@@ -190,12 +188,14 @@ target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../rat/build/libsd-rat.a)
 target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../tac/build/libsd-tac.a)
 #Parser dependency
 target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../parser/build/libdragon-parser-base.a)
-#Token dependency
-target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a)
-#Util dependency
-target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
 #IBuffer Dependency
 target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../ibuffer/build/libsd-ibuffer.a)
+#AST dependency
+target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../ast/build/libsd-ast.a)
+#Util dependency
+target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
+#Token dependency
+target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a)
 
 target_link_libraries("sd" sd-base)
 

@@ -210,21 +210,10 @@ struct SimpleType* copy_simple_type(struct SimpleType* s){
 }
 
 struct StructType* copy_struct_type(struct StructType* s){
-	
-	struct StructType* res = make(StructType);
-	
-	strcpy(res->type_name, s->type_name);
-	
-	res->count_type_params = s->count_type_params;
-	
-	res->type_params = NULL;
-	if (res->count_type_params > 0){
-		res->type_params = malloc(sizeof(void*) * (s->count_type_params));
-	}
 
-	for(int i=0; i < res->count_type_params; i++){
-	    res->type_params[i] = copy_type(s->type_params[i]);
-	}
+	struct StructType* res = make(StructType);
+
+	strcpy(res->type_name, s->type_name);
 
 	return res;
 }

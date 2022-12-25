@@ -69,28 +69,4 @@ int simpletype_test_typenode_parsing_anytype() {
 	return 1;
 }
 
-int simpletype_test_generic(){
 
-	status_test("simpletype_test_generic");
-
-	struct TokenList* l = makeTokenList();
-	
-	list_add(l, makeToken2(TYPEID,"Point"));
-	list_add(l, makeToken2(OPKEY_RELATIONAL,"<"));
-	list_add(l, makeToken2(TPARAM,"0"));
-	list_add(l, makeToken2(OPKEY_RELATIONAL,">"));
-
-	struct SimpleType* node = makeSimpleType(l);
-
-	assert(node                != NULL);
-	assert(node->struct_type != NULL);
-	assert(node->primitive_type == NULL);
-	
-	assert(node->struct_type->count_type_params == 1);
-	assert(0 == list_size(l));
-	
-	freeTokenList(l);
-	free_simple_type(node);
-
-	return 1;
-}

@@ -31,13 +31,9 @@ struct PrimitiveType {
 };
 
 struct StructType {
-	struct ASTNode super; 
-	
+
+	struct ASTNode super;
 	char type_name[DEFAULT_STR_SIZE];
-	
-	//the number of the type parameters
-	uint8_t count_type_params;
-	struct Type** type_params;
 };
 
 struct SimpleType {

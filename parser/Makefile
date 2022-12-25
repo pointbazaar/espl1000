@@ -8,12 +8,11 @@ all: build test
 build: DIRS
 	cmake -S . -B build -H.
 	cmake --build build --parallel
-	cp build/dragon-parser .
 
 DIRS:
 	mkdir -p build/
 
-test: dragon-parser
+test: build/dragon-parser
 	./build/dragon-parser-tests
 
 clean: DIRS

@@ -28,8 +28,6 @@ static void test_infer_type_var_with_member_access();
 
 //type parameters
 static void test_infer_type_type_param();
-static void test_infer_type_generic_struct_member();
-static void test_infer_type_generic_struct_member_nested();
 
 static void status_test_typeinference(char* msg){
 	printf(" - [TEST] %s\n", msg);
@@ -51,8 +49,6 @@ void test_suite_typeinference(){
     test_infer_type_var_with_member_access();
 
     test_infer_type_type_param();
-    test_infer_type_generic_struct_member();
-    test_infer_type_generic_struct_member_nested();
 }
 
 static void test_infer_type_term() {
@@ -266,48 +262,4 @@ static void test_infer_type_type_param(){
     free_type(t);
 }
 
-static void test_infer_type_generic_struct_member(){
 
-	status_test_typeinference("infer_type_generic_struct_member");
-
-    struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_generic_struct_member.dg");
-
-    assert(t != NULL);
-
-    assert(t->basic_type != NULL);
-    assert(t->type_param == NULL);
-    assert(t->array_type == NULL);
-
-    assert(t->basic_type->simple_type != NULL);
-    assert(t->basic_type->simple_type->primitive_type != NULL);
-
-    assert(!t->basic_type->simple_type->primitive_type->is_char_type);
-    assert(!t->basic_type->simple_type->primitive_type->is_bool_type);
-
-    assert(t->basic_type->simple_type->primitive_type->is_int_type);
-
-    free_type(t);
-}
-
-static void test_infer_type_generic_struct_member_nested(){
-
-	status_test_typeinference("infer_type_generic_struct_member_nested");
-
-	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_generic_struct_member_nested.dg");
-
-	assert(t != NULL);
-
-	assert(t->basic_type != NULL);
-	assert(t->type_param == NULL);
-	assert(t->array_type == NULL);
-
-	assert(t->basic_type->simple_type != NULL);
-	assert(t->basic_type->simple_type->primitive_type != NULL);
-
-	assert(!t->basic_type->simple_type->primitive_type->is_char_type);
-	assert(!t->basic_type->simple_type->primitive_type->is_bool_type);
-
-	assert(t->basic_type->simple_type->primitive_type->is_int_type);
-
-	free_type(t);
-}

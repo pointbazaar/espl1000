@@ -92,8 +92,6 @@ add_executable(dragon-parser-tests
 	test/astnodes/types/SimpleTypeTest.h
 	test/astnodes/types/SubrTypeTest.c
 	test/astnodes/types/SubrTypeTest.h
-	test/astnodes/types/TypeTest.c
-	test/astnodes/types/TypeTest.h
 	test/astnodes/types/StructTypeTest.c
 	test/astnodes/types/StructTypeTest.h
 	

@@ -69,17 +69,7 @@ bool eq_structtype(struct StructType* a, struct StructType* b){
 
 	if(strcmp(a->type_name, b->type_name) != 0)
 		{ return false; }
-		
-	if(a->count_type_params != b->count_type_params)
-		{ return false; }
-		
-	for(uint16_t i = 0; i < a->count_type_params; i++){
 
-	    if(!eq_type(a->type_params[i], b->type_params[i])){
-	        return false;
-	    }
-	}
-	
 	return true;
 }
 

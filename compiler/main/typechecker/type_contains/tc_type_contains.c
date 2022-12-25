@@ -81,14 +81,6 @@ static bool tc_simpletype_contains(struct SimpleType* expect, struct SimpleType*
 static bool tc_structtype_contains(struct StructType* expect, struct StructType* actual){
 
 	if (strcmp(expect->type_name, actual->type_name) != 0){ return false; }
-	if (expect->count_type_params != actual->count_type_params){ return false; }
-
-	for (uint32_t i = 0; i < expect->count_type_params; ++i) {
-		struct Type* expect_i = expect->type_params[i];
-		struct Type* actual_i = actual->type_params[i];
-
-		if (!tc_type_contains(expect_i, actual_i)){ return false; }
-	}
 
 	return true;
 }

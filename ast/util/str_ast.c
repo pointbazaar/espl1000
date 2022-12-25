@@ -240,42 +240,8 @@ char* str_primitive_type(struct PrimitiveType* p){
 
 char* str_struct_type(struct StructType* s){
 
-    if(s->count_type_params == 0){
-		
-        char* res = exit_malloc(DEFAULT_STR_SIZE);
-        sprintf(res, "%s", s->type_name);
-        return res;
-    }
-
-    //now: s->count_type_params > 0
-
-    char** type_strings = exit_malloc(sizeof(void*)*s->count_type_params);
-
-    uint32_t str_l = 0;
-
-    for(uint32_t i = 0; i < s->count_type_params; i++){
-        type_strings[i] = str_type(s->type_params[i]);
-        str_l += strlen(type_strings[i]);
-    }
-
-    char* res = exit_malloc(DEFAULT_STR_SIZE+str_l+(s->count_type_params)+2);
-
-    sprintf(res, "%s", s->type_name);
-
-    strcat(res, "<");
-    for(uint32_t i = 0; i < s->count_type_params; i++){
-        strcat(res, type_strings[i]);
-        if(i < (s->count_type_params - 1)){
-            strcat(res, ",");
-        }
-    }
-    strcat(res, ">");
-
-    for(uint32_t i = 0; i < s->count_type_params; i++){
-        free(type_strings[i]);
-    }
-    free(type_strings);
-
+	char* res = exit_malloc(DEFAULT_STR_SIZE);
+	sprintf(res, "%s", s->type_name);
 	return res;
 }
 

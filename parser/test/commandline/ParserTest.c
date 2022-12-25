@@ -21,7 +21,6 @@
 #include "../astnodes/types/SubrTypeTest.h"
 #include "../astnodes/types/SimpleTypeTest.h"
 #include "../astnodes/types/StructTypeTest.h"
-#include "../astnodes/types/TypeTest.h"
 
 #include "../astnodes/subr/DeclArgTest.h"
 #include "../astnodes/subr/MethodTest.h"
@@ -231,21 +230,16 @@ void test_suite_types() {
 
 	basictype_test_type_parsing_simple_type();
 
-    simpletype_test_typenode_parsing();
-    simpletype_test_typenode_parsing_anytype();
-    simpletype_test_typenode_parsing_fails();
-    simpletype_test_generic();
+	simpletype_test_typenode_parsing();
+	simpletype_test_typenode_parsing_anytype();
+	simpletype_test_typenode_parsing_fails();
 
 	subrtype_test_subroutine_type_parsing_subroutine_with_side_effects();
 	subrtype_test_subroutine_type_parsing_subroutine_without_side_effects();
 	subrtype_test_typename();
 	subrtype_test_typename_subroutine_return_type();
 
-    structtype_test();
-    structtype_test_type_param();
-    structtype_test_generic();
-    
-    type_test_type_params();
+	structtype_test();
 }
 
 void test_suite_range(){

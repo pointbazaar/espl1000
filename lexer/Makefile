@@ -6,8 +6,7 @@ all: clean dragon-lexer test
 dragon-lexer: lex.yy.c
 	cmake -S . -B build -H.
 	cmake --build build
-	cp build/dragon-lexer .
-	
+
 lex.yy.c:
 	flex --header-file=lex.yy.h smalldragon.flex
 
