@@ -25,7 +25,7 @@ This Project will probably only work with Linux.
 It has been tested/is being developed on Ubuntu 20.04.
 
 0. ```git clone git@github.com:pointbazaar/espl1000.git```
-1. ```sudo apt-get install -y gcc cmake make valgrind flex```
+1. ```sudo apt-get install -y gcc cmake make valgrind flex avra```
 2. Add 
    ```PATH=~/espl1000/compiler:~/espl1000/lexer:~/espl1000/parser:$PATH```
    to your ```~/.bashrc``` so that the binaries can be found.
