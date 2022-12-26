@@ -64,6 +64,7 @@ static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat){
 	switch(t->kind){
 		case TAC_CONST_VALUE:
 		case TAC_BINARY_OP_IMMEDIATE:
+		case TAC_LOAD_LOCAL_ADDR:
 			rat_ensure_register(rat, t->dest, true, t->wide); 
 			break;
 		case TAC_CALL:

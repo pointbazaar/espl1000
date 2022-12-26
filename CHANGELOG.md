@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - consolidate struct ConstValue and remove the special cases for Const Values
 - remove Lambdas from the Language. 
 - remove the 'switch' statement from the language.
+- introduce the "struct DerefLL"
 
 ## [v0.3.2]
 - remove the Comparison Operator Chaining Feature. It is really not that special

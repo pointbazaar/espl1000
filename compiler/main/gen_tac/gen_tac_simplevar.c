@@ -9,80 +9,52 @@
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
 
-#include "gen_tac.h"
+#include "helper_gen_tac_derefll.h"
+#include "derefll/derefll.h"
 
-static void case_indices(struct TACBuffer* buffer, struct SimpleVar* v, struct Ctx* ctx);
-static void case_default(struct TACBuffer* buffer, struct SimpleVar* v, struct Ctx* ctx);
+#include "gen_tac.h"
 
 void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* v, struct Ctx* ctx){
 
-    if(v->count_indices != 0){
-        case_indices(buffer, v, ctx);
-    }else{
-		case_default(buffer, v, ctx);
+	//TODO: remove special case
+	//special case for the simplest case... just a temp fix bc
+	//most of the codegen is not ready to emit code for register pairs just yet.
+
+	if(v->count_indices == 0){
+
+		struct LVST* lvst = ctx_tables(ctx)->lvst;
+		uint32_t offset = lvst_index_of(lvst, v->name);
+		tacbuffer_append(buffer, makeTACLoadLocal(make_temp(), offset));
+
+		return;
 	}
+
+	tac_simplevar_addr(buffer, v, ctx);
+
+	uint32_t tlast = tacbuffer_last_dest(buffer);
+
+	tacbuffer_append(buffer, makeTACLoad(make_temp(), tlast));
 }
 
 void tac_simplevar_addr(struct TACBuffer* buffer, struct SimpleVar* sv, struct Ctx* ctx){
-	
-	if(sv->count_indices != 0){
-        printf("tac_simplevar_addr currently unsupported");
-        fflush(stdout);
-        exit(1); 
-        //TODO
-    }else{
-		const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, sv->name);
-		//TODO: we need temoraries which occupy 2 registers
-		//for this stuff.
-		tacbuffer_append(buffer, makeTACConst(make_temp(), local_index+1));
-		
-		printf("tac_simplevar_addr currently unsupported");
-        fflush(stdout);
-        exit(1);
+
+	struct DerefLL* dll = derefll_ctor_simplevar(sv);
+
+	derefll_annotate_types(dll, ctx, NULL);
+
+	//now iterate over the linked list and emit the correct TACs along the way
+
+	struct DerefLL* current = dll;
+	struct Type* prev_type = NULL;
+
+	while(current->next != NULL || current == dll){
+
+		tac_derefll_single(buffer, current, prev_type, ctx);
+
+		prev_type = current->type;
+		current = current->next;
 	}
+
+	derefll_dtor(dll);
 }
 
-static void case_indices(struct TACBuffer* buffer, struct SimpleVar* v, struct Ctx* ctx){
-	
-	//load t1 = x
-	
-	// //tcurrent=t1
-	
-	//for index in indices
-		//... code to generate index
-		//tindex = index 
-		//tcurrent = tcurrent + tindex
-		//t4 = [tcurrent]
-		// //tcurrent = t4
-	
-	const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, v->name);
-    
-    tacbuffer_append(buffer, makeTACLoadLocal(make_temp(), local_index));
-    
-    uint32_t t1 = tacbuffer_last_dest(buffer);
-    
-    uint32_t tcurrent = t1;
-    
-    for(int i=0;i < v->count_indices; i++){
-		
-		//TODO: load the address at the index, instead of
-		//simply adding the indices
-    
-		tac_expr(buffer, v->indices[i], ctx);
-		uint32_t tindex = tacbuffer_last_dest(buffer);
-		
-		tacbuffer_append(buffer, makeTACBinOp(tcurrent, TAC_OP_ADD, tindex));
-		
-		uint32_t t4 = make_temp();
-		tacbuffer_append(buffer, makeTACLoad(t4, tcurrent));
-		
-		tcurrent = t4;
-	}
-}
-
-static void case_default(struct TACBuffer* buffer, struct SimpleVar* v, struct Ctx* ctx){
-	
-	const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, v->name);
-    
-    tacbuffer_append(buffer, makeTACLoadLocal(make_temp(), local_index));
-}

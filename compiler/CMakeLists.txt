@@ -17,24 +17,25 @@ add_library("sd-base"
 	main/analyzer/lv/lv_analyzer.c
 
 	#code_gen/avr_code_gen
-		main/avr_code_gen/cg_avr.c
+	main/avr_code_gen/cg_avr.c
 
-        main/gen_tac/gen_tac.c
-        main/gen_tac/gen_tac_assignstmt.c
-		main/gen_tac/gen_tac_massignstmt.c
-        main/gen_tac/gen_tac_call.c
-        main/gen_tac/gen_tac_constvalue.c
-        main/gen_tac/gen_tac_expr.c
-        main/gen_tac/gen_tac_forstmt.c
-        main/gen_tac/gen_tac_ifstmt.c
-        main/gen_tac/gen_tac_retstmt.c
-        main/gen_tac/gen_tac_simplevar.c
-        main/gen_tac/gen_tac_stmt.c
-        main/gen_tac/gen_tac_term.c
-        main/gen_tac/gen_tac_unopterm.c
-		main/gen_tac/gen_tac_mdirect.c
-        main/gen_tac/gen_tac_variable.c
-        main/gen_tac/gen_tac_whilestmt.c
+	main/gen_tac/gen_tac.c
+	main/gen_tac/gen_tac_assignstmt.c
+	main/gen_tac/gen_tac_massignstmt.c
+	main/gen_tac/gen_tac_call.c
+	main/gen_tac/gen_tac_constvalue.c
+	main/gen_tac/gen_tac_expr.c
+	main/gen_tac/gen_tac_forstmt.c
+	main/gen_tac/gen_tac_ifstmt.c
+	main/gen_tac/gen_tac_retstmt.c
+	main/gen_tac/gen_tac_simplevar.c
+	main/gen_tac/gen_tac_stmt.c
+	main/gen_tac/gen_tac_term.c
+	main/gen_tac/gen_tac_unopterm.c
+	main/gen_tac/gen_tac_mdirect.c
+	main/gen_tac/gen_tac_variable.c
+	main/gen_tac/gen_tac_whilestmt.c
+	main/gen_tac/helper_gen_tac_derefll.c
 
 		main/avr_code_gen/compile_ir/compile_tac.h
 		main/avr_code_gen/compile_ir/compile_tac_binary_op.c
@@ -53,18 +54,22 @@ add_library("sd-base"
 		main/avr_code_gen/compile_ir/compile_tac_param.c
 		main/avr_code_gen/compile_ir/compile_tac_setup_stackframe.c
 		main/avr_code_gen/compile_ir/compile_tac_load_local.c
+		main/avr_code_gen/compile_ir/compile_tac_load_local_addr.c
 		main/avr_code_gen/compile_ir/compile_tac_store_local.c
 		main/avr_code_gen/compile_ir/compile_tac_if_cmp_goto.c
 		main/avr_code_gen/compile_ir/compile_tac_load.c
 		main/avr_code_gen/compile_ir/compile_tac_store.c
 		main/avr_code_gen/compile_ir/compile_tac_setup_sp.c
 
-        main/basic_block/basicblock.c
-		main/basic_block/basicblock_printer.c
+	#DerefLL implementation
+	main/derefll/derefll.c
 
-		main/avr_code_gen/cg_avr_basic_block.c
-		main/avr_code_gen/cg_avr_single_tac.c
-		main/avr_code_gen/cg_avr_single_function.c
+	main/basic_block/basicblock.c
+	main/basic_block/basicblock_printer.c
+
+	main/avr_code_gen/cg_avr_basic_block.c
+	main/avr_code_gen/cg_avr_single_tac.c
+	main/avr_code_gen/cg_avr_single_function.c
 
 	#invoke
 	main/invoke/invoke.c

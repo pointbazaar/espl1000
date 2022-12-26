@@ -95,6 +95,14 @@ struct TAC* makeTACLoadLocal(uint32_t tmp, uint32_t local_index){
     return t;
 }
 
+struct TAC* makeTACLoadLocalAddr(uint32_t tmp, uint32_t local_index){
+	struct TAC* t = makeTAC();
+	t->kind = TAC_LOAD_LOCAL_ADDR;
+	t->dest = tmp;
+	t->arg1 = local_index;
+	return t;
+}
+
 struct TAC* makeTACStoreLocal(uint32_t local_index, uint32_t tmp){
 	struct TAC* t = makeTAC();
     t->kind = TAC_STORE_LOCAL;

@@ -15,6 +15,7 @@ void compile_tac_const_value(struct RAT* rat, struct TAC* tac, struct IBuffer* i
 
 void compile_tac_copy(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 void compile_tac_load_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu);
+void compile_tac_load_local_addr(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu);
 void compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu);
 
 void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);

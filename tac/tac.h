@@ -52,6 +52,7 @@ enum TAC_KIND{
     TAC_COPY, //copy one temp into another
     TAC_LOAD_LOCAL, //load local var from stackframe
     TAC_STORE_LOCAL, //store local var into stackframe
+    TAC_LOAD_LOCAL_ADDR, //load the addr of a local variable
 
     TAC_CONST_VALUE,
 
@@ -121,6 +122,7 @@ struct TAC* makeTACCopy(uint32_t dest, uint32_t src);
 
 struct TAC* makeTACLoadLocal(uint32_t tmp, uint32_t local_index);
 struct TAC* makeTACStoreLocal(uint32_t local_index, uint32_t tmp);
+struct TAC* makeTACLoadLocalAddr(uint32_t tmp, uint32_t local_index);
 
 struct TAC* makeTACConst(uint32_t tmp, int value);
 struct TAC* makeTACConst16(uint32_t tmp, int value);
