@@ -73,15 +73,13 @@ static void case_local_array(){
 
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
-	vmcu_system_step_n(system, 34);
+	vmcu_system_step_n(system, 54);
 
-	//TODO: re-enable this test
-	//int8_t value1 = vmcu_system_read_gpr(system, 0);
+	int8_t value1 = vmcu_system_read_gpr(system, 0);
 
 	int8_t value2 = vmcu_system_read_data(system, 0xc7+1);
 
-	//TODO: re-enable this test
-	//assert(value1 == value);
+	assert(value1 == value);
 	assert(value2 == value);
 
 	vmcu_system_dtor(system);

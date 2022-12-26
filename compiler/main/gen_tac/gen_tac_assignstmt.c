@@ -70,13 +70,13 @@ static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 }
 
 static void case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx){
-	
+
 	uint32_t texpr = tacbuffer_last_dest(buffer);
-	
+
 	//find out the address of the variable
 	tac_variable_addr(buffer, a->var, ctx);
-	
+
 	uint32_t taddr = tacbuffer_last_dest(buffer);
-	
-	makeTACStore(taddr, texpr);
+
+	tacbuffer_append(buffer, makeTACStore(taddr, texpr));
 }

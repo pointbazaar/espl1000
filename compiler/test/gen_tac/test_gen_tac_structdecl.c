@@ -15,10 +15,8 @@ static void case_write_struct();
 
 void test_gen_tac_structdecl(){
 
-	if(0)case_read_struct(); //TODO: re-enable later on
-
-	//re-enable later on when we have temporaries with 2 registers
-	if(0)case_write_struct(); //TODO: re-enable later on
+	case_read_struct();
+	case_write_struct();
 }
 
 static void case_read_struct(){
@@ -46,22 +44,24 @@ static void case_read_struct(){
 }
 
 static void case_write_struct(){
-	
+
 	status_test_codegen_tac("StructDecl - write struct");
-	
+
 	const int8_t value = rand()%0xff;
-	
+
 	char snippet[200];
 	char* template = "struct A{int8 a; int8 b;} fn main() -> int { A x = 0x80; x.b = %d; return 0; }";
 	sprintf(snippet, template, value);
-	
+
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
-	
-	vmcu_system_step_n(system, 30);
-	
+
+	vmcu_system_step_n(system, 50);
+
 	int8_t actual = vmcu_system_read_data(system, 0x80+1);
-	
+
+	//printf("expected:0x%x, actual:0x%x\n", (uint8_t)value, (uint8_t)actual);
+
 	assert(actual == value);
-	
+
 	vmcu_system_dtor(system);
 }
