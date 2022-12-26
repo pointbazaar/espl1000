@@ -84,7 +84,7 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32
 //CLH
 //CLI
 //CLN
-#define clr(dest)			ibu1(CLR, dest, "")
+#define clr(dest, comment)		ibu1(CLR, dest, comment)
 //CLS
 //CLT
 //CLV
@@ -138,8 +138,8 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32
 #define rjmp(label)			ibu_branch(RJMP, label, "")
 //ROL
 //ROR
-//SBC
-//SBCI
+#define sbc(dest, src, comment)		ibu2(SBC, dest, src, comment)
+#define sbci(dest, c, comment)		ibu2(SBCI, dest, c, comment)
 //SBI
 //SBIC
 //SBIS

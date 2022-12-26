@@ -60,22 +60,65 @@ static void allocate_registers(struct TACBuffer* b, struct RAT* rat){
 }
 
 static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat){
-	
+
+	//DEBUG
+	//printf("allocate_registers_single_tac\n");
+
+	bool iswide = true;
+
 	switch(t->kind){
-		case TAC_CONST_VALUE:
-		case TAC_BINARY_OP_IMMEDIATE:
-		case TAC_LOAD_LOCAL_ADDR:
-			rat_ensure_register(rat, t->dest, true, t->wide); 
-			break;
-		case TAC_CALL:
-		case TAC_COPY:
-		case TAC_BINARY_OP:
-		case TAC_UNARY_OP:
-		case TAC_LOAD_LOCAL:
-		case TAC_LOAD_CONST_ADDR:
-		case TAC_LOAD:
-			rat_ensure_register(rat, t->dest, false, t->wide); 
-			break;
-		default: break;
+
+	case TAC_CONST_VALUE:
+		iswide = ((uint16_t)t->const_value) > 255;
+		rat_ensure_register(rat, t->dest, true, iswide);
+		break;
+
+	case TAC_BINARY_OP_IMMEDIATE:
+		iswide = rat_is_wide(rat, t->dest);
+		rat_ensure_register(rat, t->dest, true, iswide);
+		break;
+
+	case TAC_LOAD_LOCAL_ADDR:
+		//address always needs 2 registers
+		rat_ensure_register(rat, t->dest, true, true);
+		break;
+
+	case TAC_CALL:
+		//TODO: make it depend on the width of the retured value
+		rat_ensure_register(rat, t->dest, false, false);
+		break;
+
+	case TAC_COPY:
+		iswide = rat_is_wide(rat, t->arg1);
+		rat_ensure_register(rat, t->dest, false, iswide);
+		break;
+
+	case TAC_BINARY_OP:
+		iswide = rat_is_wide(rat, t->arg1);
+		rat_ensure_register(rat, t->dest, false, iswide);
+		break;
+
+	case TAC_UNARY_OP:
+		iswide = rat_is_wide(rat, t->arg1);
+		rat_ensure_register(rat, t->dest, false, iswide);
+		break;
+
+	case TAC_LOAD_LOCAL:
+		//TODO: look at the LVST to see the width of the local var
+		rat_ensure_register(rat, t->dest, false, true);
+		break;
+
+	case TAC_LOAD_CONST_ADDR:
+		rat_ensure_register(rat, t->dest, false, true);
+		break;
+
+	case TAC_LOAD:
+		//sadly we do not know what is all going to be added/subtracted
+		//from what we load there, could be a pointer, so it must be wide
+		rat_ensure_register(rat, t->dest, false, true);
+		break;
+
+	default: break;
+
 	}
 }

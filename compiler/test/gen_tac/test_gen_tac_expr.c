@@ -42,7 +42,7 @@ static void test_gen_tac_expr_plus(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	vmcu_system_step_n(system, 20);
+	vmcu_system_step_n(system, 30);
 	
 	//assert that value is returned in r0 as it should be
 	
@@ -119,7 +119,7 @@ static void test_gen_tac_expr_and(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	vmcu_system_step_n(system, 20);
+	vmcu_system_step_n(system, 30);
 	
 	//assert that value is returned in r0 as it should be
 	
@@ -144,7 +144,7 @@ static void test_gen_tac_expr_or(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	vmcu_system_step_n(system, 18);
+	vmcu_system_step_n(system, 28);
 	
 	//assert that value is returned in r0 as it should be
 	
@@ -170,7 +170,7 @@ static void test_gen_tac_expr_shift_left(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	vmcu_system_step_n(system, 18);
+	vmcu_system_step_n(system, 28);
 	
 	//assert that value is returned in r0 as it should be
 	
@@ -196,7 +196,7 @@ static void test_gen_tac_expr_shift_right(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	vmcu_system_step_n(system, 18);
+	vmcu_system_step_n(system, 28);
 	
 	//assert that value is returned in r0 as it should be
 	
@@ -222,7 +222,7 @@ static void test_gen_tac_expr_xor(){
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	vmcu_system_step_n(system, 18);
+	vmcu_system_step_n(system, 28);
 	
 	//assert that value is returned in r0 as it should be
 	

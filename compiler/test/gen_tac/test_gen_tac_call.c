@@ -28,7 +28,7 @@ static void case_no_args(){
 	
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 	
-	vmcu_system_step_n(system, 20);
+	vmcu_system_step_n(system, 45);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -53,7 +53,7 @@ static void case_1_args(){
 	
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 	
-	vmcu_system_step_n(system, 30);
+	vmcu_system_step_n(system, 50);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	
@@ -79,7 +79,7 @@ static void case_2_args(){
 	
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 	
-	vmcu_system_step_n(system, 50);
+	vmcu_system_step_n(system, 80);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	

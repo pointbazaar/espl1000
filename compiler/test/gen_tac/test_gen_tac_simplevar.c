@@ -13,7 +13,7 @@ static void case_2_index();
 void test_gen_tac_simplevar(){
 
 	case_no_index();
-	if(0)case_1_index(); //TODO: re-enable this testcase
+	case_1_index();
 	if(0)case_2_index(); //TODO: re-enable this testcase
 }
 
@@ -42,16 +42,15 @@ static void case_no_index(){
 }
 
 static void case_1_index(){
-	
+
 	status_test_codegen_tac("SimpleVar - 1 index");
-	
+
 	const uint16_t addr  = 0xc7;
 	const int8_t value = rand()%0xff;
-	
-	
+
+
 	for(int index = 1; index < 4; index++){
-		//const int index = 1;
-		
+
 		char snippet[200];
 		char* template = "fn main() -> int { [int] arr = 0xc7; return arr[%d]; }";
 		sprintf(snippet, template, index);
@@ -61,20 +60,23 @@ static void case_1_index(){
 		//prepare a value in the location
 		vmcu_system_write_data(system, addr+index, value);
 
+		//printf("prepared addr: 0x%x\n", addr+index);
+		//printf("prepared value: 0x%x\n", value);
+
 		//vmcu_system_step_n(system, 30);
-		for(int i=0; i<30; i++){
+		for(int i=0; i<40; i++){
 			vmcu_system_step(system);
 
-			uint8_t r1  = vmcu_system_read_gpr(system, 1);
-			uint8_t r18 = vmcu_system_read_gpr(system, 18);
-			uint8_t r19 = vmcu_system_read_gpr(system, 19);
+			//int8_t r0  = vmcu_system_read_gpr(system, 0);
+			//int8_t r18 = vmcu_system_read_gpr(system, 18);
+			//int8_t r19 = vmcu_system_read_gpr(system, 19);
 
-			printf("r0=%d, r18=%d, r19=%d\n", r1,r18,r19);
+			//printf("r0=%d, r19:r18=0x%x\n", r0, (r19 << 8) | r18);
 		}
 
 		int8_t r0 = vmcu_system_read_gpr(system, 0);
 
-		printf("expected:%d, actual=%d\n", value, r0);
+		//printf("expected:0x%x, actual=0x%x\n", value, r0);
 
 		assert(r0 == value);
 

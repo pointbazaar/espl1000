@@ -24,7 +24,6 @@ struct TAC* makeTAC(){
             .dest = 0,
             .arg1 = 0,
             .op = TAC_OP_NONE,
-            .wide = false,
     };
 
     return res;
@@ -120,12 +119,12 @@ struct TAC* makeTACConst(uint32_t tmp, int value){
 }
 
 struct TAC* makeTACConst16(uint32_t tmp, int value){
+
 	struct TAC* t = makeTAC();
-    t->kind = TAC_CONST_VALUE;
-    t->dest = tmp;
-    t->const_value = value;
-    t->wide = true;
-    return t;
+	t->kind = TAC_CONST_VALUE;
+	t->dest = tmp;
+	t->const_value = value;
+	return t;
 }
 
 struct TAC* makeTACBinOp(uint32_t dest, enum TAC_OP op, uint32_t src){

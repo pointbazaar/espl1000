@@ -16,19 +16,6 @@
 
 void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* v, struct Ctx* ctx){
 
-	//TODO: remove special case
-	//special case for the simplest case... just a temp fix bc
-	//most of the codegen is not ready to emit code for register pairs just yet.
-
-	if(v->count_indices == 0){
-
-		struct LVST* lvst = ctx_tables(ctx)->lvst;
-		uint32_t offset = lvst_index_of(lvst, v->name);
-		tacbuffer_append(buffer, makeTACLoadLocal(make_temp(), offset));
-
-		return;
-	}
-
 	tac_simplevar_addr(buffer, v, ctx);
 
 	uint32_t tlast = tacbuffer_last_dest(buffer);

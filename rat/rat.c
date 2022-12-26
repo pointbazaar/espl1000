@@ -92,26 +92,28 @@ void rat_dtor(struct RAT* rat){
 
 void rat_print(struct RAT* rat){
 
-    printf("Register Allocation Table:\n");
-    for(size_t i = 0; i < RAT_CAPACITY; i++){
+	printf("Register Allocation Table:\n");
+	for(size_t i = 0; i < RAT_CAPACITY; i++){
 
-        printf("r%02ld: ", i);
-        
-        switch(rat->status[i]){
-			case REG_OCCUPIED:
-				printf("t%19d", rat->occupant[i]);
-				break;
-			case REG_FREE:
-				printf("%20s", " - ");
-				break;
-			case REG_RESERVED:
-				printf("%20s", rat->note[i]);
-				break;
+		printf("r%02ld: ", i);
+
+		switch(rat->status[i]){
+
+		case REG_OCCUPIED:
+			printf("t%d", rat->occupant[i]);
+			break;
+		case REG_FREE:
+			printf("%20s", " - ");
+			break;
+		case REG_RESERVED:
+			printf("%20s", rat->note[i]);
+			break;
 		}
 
-        printf("\n");
-    }
-    printf("------------\n");
+		printf("\n");
+	}
+
+	printf("------------\n");
 }
 
 
@@ -181,11 +183,11 @@ uint32_t rat_ensure_register(struct RAT* rat, uint32_t tmp_index, bool high_regs
 }
 
 bool rat_is_wide(struct RAT* rat, uint32_t tmp_index){
-	
+
 	//if the temporary occupies a register pair, return true
-	
+
 	int reg = rat_get_register(rat, tmp_index);
-	
+
 	return reg+1 < RAT_CAPACITY 
 		&& rat->status[reg+1] == REG_OCCUPIED
 		&& (rat_occupant(rat, reg+1) == tmp_index);

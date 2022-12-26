@@ -61,6 +61,8 @@ struct DerefLL* derefll_ctor_simplevar(struct SimpleVar* sv){
 	res->action = DEREFLL_INIT;
 	res->initial = sv;
 
+	derefll_append(res, derefll_deref()); //NEW
+
 	for(int i = 0; i < sv->count_indices; i++){
 
 		derefll_append(res, derefll_expr(sv->indices[i])); //append +expr

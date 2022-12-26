@@ -62,6 +62,7 @@ static void write_middle(enum IKEY key, int32_t x1, int32_t x2, char* str, char*
 		case CP:
 		case CPC:
 		case MOV:
+		case SBC:
 			strcat_reg(s, x1);
 			strcat(s, ", ");
 			strcat_reg(s, x2);
@@ -77,6 +78,7 @@ static void write_middle(enum IKEY key, int32_t x1, int32_t x2, char* str, char*
 		case LDI:
 		case LDS:
 		case IN:
+		case SBCI:
 			strcat_reg(s, x1);
 			strcat(s, ", ");
 			strcat_num(s, x2);

@@ -64,7 +64,18 @@ static void case_variable_addr(){
 	//prepare a value in the location
 	vmcu_system_write_data(system, address+3, value);
 
-	vmcu_system_step_n(system, 30);
+	//vmcu_system_step_n(system, 30);
+
+	for(int i=0; i < 40; i++){
+
+		vmcu_system_step(system);
+
+		//int8_t r0 = vmcu_system_read_gpr(system, 0);
+		//int8_t r21= vmcu_system_read_gpr(system, 21);
+		//int8_t r22= vmcu_system_read_gpr(system, 22);
+
+		//printf("r0:0x%x, r21:r22:0x%x\n", r0, (r22 << 8) | r21);
+	}
 
 	//return value in r0
 	int8_t actual = vmcu_system_read_gpr(system, 0);

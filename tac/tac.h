@@ -85,7 +85,7 @@ enum TAC_KIND{
 //dest and src.
 //where dest = dest op src
 struct TAC{
-	
+
     //three address code
     uint32_t label_index;
 
@@ -96,8 +96,6 @@ struct TAC{
     enum TAC_OP op;
 
     int32_t const_value;
-    
-    bool wide; //is this a 16-bit temporary?
 };
 
 bool tac_is_unconditional_jump(struct TAC* tac);

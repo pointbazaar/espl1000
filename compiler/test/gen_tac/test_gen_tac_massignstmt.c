@@ -35,25 +35,25 @@ static void case_const_addr(){
 }
 
 static void case_variable_addr(){
-	
+
 	status_test_codegen_tac("MAssignStmt - variable Address");
-	
+
 	const uint8_t addr   = 0xc7;
 	const uint8_t offset = rand()%16;
-	
+
 	const int8_t value   = rand()%0xff;
-	
+
 	char snippet[200];
 	char* template = "fn main() -> int { int x = %d; [x + 0xc7] = %d; return 0; }";
 	sprintf(snippet, template, offset, value);
-	
+
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
-	vmcu_system_step_n(system, 20);
-	
+	vmcu_system_step_n(system, 40);
+
 	int8_t actual = vmcu_system_read_data(system, addr + offset);
-	
+
 	assert(actual == value);
-	
+
 	vmcu_system_dtor(system);
 }
