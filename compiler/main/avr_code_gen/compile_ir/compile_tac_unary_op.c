@@ -8,21 +8,21 @@
 
 void compile_tac_unary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
 
-    int reg_src = rat_get_register(rat, tac->arg1);
-    
-    int reg_dest = rat_get_register(rat, tac->dest);
+	int reg_src = rat_get_register(rat, tac->arg1);
 
-	mov(reg_dest, reg_src);
+	int reg_dest = rat_get_register(rat, tac->dest);
 
-    switch (tac->op) {
-        case TAC_OP_UNARY_NOT:
-        case TAC_OP_UNARY_BITWISE_NEG:
-			com(reg_dest);
-            break;
-        case TAC_OP_UNARY_MINUS:
-			neg(reg_dest);
-            break;
-        default:
-            break;
-    }
+	mov(reg_dest, reg_src, "TAC_UNARY_OP");
+
+	switch (tac->op) {
+		case TAC_OP_UNARY_NOT:
+		case TAC_OP_UNARY_BITWISE_NEG:
+			com(reg_dest, "TAC_UNARY_OP");
+			break;
+		case TAC_OP_UNARY_MINUS:
+			neg(reg_dest, "TAC_UNARY_OP");
+			break;
+		default:
+			break;
+	}
 }

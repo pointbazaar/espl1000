@@ -46,12 +46,12 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32
 //some macros to make it easier to write
 //in the codegen functions
 
-#define adc(dest, src) 		ibu2(ADC, dest, src, "")
-#define add(dest, src) 		ibu2(ADD, dest, src, "")
+#define adc(dest, src, c) 		ibu2(ADC, dest, src, c)
+#define add(dest, src, c) 		ibu2(ADD, dest, src, c)
 #define adiw(dest, src, c) 	ibu3(ADIW, dest, src, c, "")
-#define and(dest, src) 		ibu2(AND, dest, src, "")
-#define andi(dest, c) 		ibu2(ANDI, dest, c, "")
-#define asr(dest)			ibu1(ASR, dest, "")
+#define and(dest, src, c) 		ibu2(AND, dest, src, c)
+#define andi(dest, k, c) 		ibu2(ANDI, dest, k, c)
+#define asr(dest, c)			ibu1(ASR, dest, c)
 #define bclr(c)				ibu1(BCLR, c, "")
 #define bld(dest, c)		ibu2(BLD, dest, c, "")
 //TODO: BRBC
@@ -59,16 +59,16 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32
 //TODO: BRCC
 //TODO: BRCS
 //TODO: BREAK
-#define breq(label)			ibu_branch(BREQ, label, "")
-#define brge(label)			ibu_branch(BRGE, label, "")
+#define breq(label, c)			ibu_branch(BREQ, label, c)
+#define brge(label, c)			ibu_branch(BRGE, label, c)
 //BRHC
 //BRHS
 //BRID
 //BRIE
-#define brlo(label)			ibu_branch(BRLO, label, "")
-#define brlt(label)			ibu_branch(BRLT, label, "")
+#define brlo(label, c)			ibu_branch(BRLO, label, c)
+#define brlt(label, c)			ibu_branch(BRLT, label, c)
 //BRMI
-#define brne(label)			ibu_branch(BRNE, label, "")
+#define brne(label, c)			ibu_branch(BRNE, label, c)
 //BRPL
 //BRSH
 //BRTC
@@ -77,69 +77,69 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32
 //BRVS
 //BSET
 //BST
-#define call(label)			ibu_branch(CALL, label, "")
+#define call(label, c)			ibu_branch(CALL, label, c)
 //CBI
 //CBR
 //CLC
 //CLH
 //CLI
 //CLN
-#define clr(dest, comment)		ibu1(CLR, dest, comment)
+#define clr(dest, c)		ibu1(CLR, dest, c)
 //CLS
 //CLT
 //CLV
 //CLZ
-#define com(dest)			ibu1(COM, dest, "")
-#define cp(reg1, reg2)		ibu2(CP, reg1, reg2, "")
-#define cpc(reg1, reg2)		ibu2(CPC, reg1, reg2, "")
-#define cpi(reg1, c)		ibu2(CPI, reg1, c, "")
-#define cpse(reg1, reg2)	ibu2(CPSE, reg1, reg2, "")
-#define dec(dest)			ibu1(DEC, dest, "")
+#define com(dest, c)			ibu1(COM, dest, c)
+#define cp(reg1, reg2, c)		ibu2(CP, reg1, reg2, c)
+#define cpc(reg1, reg2, c)		ibu2(CPC, reg1, reg2, c)
+#define cpi(reg1, k, c)		ibu2(CPI, reg1, k, c)
+#define cpse(reg1, reg2, c)	ibu2(CPSE, reg1, reg2, c)
+#define dec(dest, c)			ibu1(DEC, dest, c)
 #define des(c)				ibu1(DES, c, "")
 //EICALL
 //EIJMP
 //ELPM
-#define eor(dest, src)		ibu2(EOR, dest, src, "")
+#define eor(dest, src, c)		ibu2(EOR, dest, src, c)
 //FMUL
 //FMULS
 //FMULSU
 //ICALL
 //IJMP
-#define in(dest, addr, comment)	ibu2(IN, dest, addr, comment)
-#define inc(dest)			ibu1(INC, dest, "")
+#define in(dest, addr, c)	ibu2(IN, dest, addr, c)
+#define inc(dest, c)			ibu1(INC, dest, c)
 #define jmp(label)			ibu_branch(JMP, label, "")
 //LAC
 //LAS
 //LAT
-#define ldX(dest, comment)		ibu1(LDX, dest, comment)
-#define ldY(dest, comment)		ibu1(LDY, dest, comment)
-#define lddY(dest, c, comment)	ibu2(LDDY, dest, c, comment)
+#define ldX(dest, c)		ibu1(LDX, dest, c)
+#define ldY(dest, c)		ibu1(LDY, dest, c)
+#define lddY(dest, k, c)	ibu2(LDDY, dest, k, c)
 //LDZ
-#define ldi(dest, c, comment)	ibu2(LDI, dest, c, comment)
-#define lds(dest, addr)		ibu2(LDS, dest, addr, "")
+#define ldi(dest, k, c)		ibu2(LDI, dest, k, c)
+#define lds(dest, addr, c)		ibu2(LDS, dest, addr, c)
 //LPM
-#define lsl(dest)			ibu1(LSL, dest, "")
-#define lsr(dest)			ibu1(LSR, dest, "")
-#define mov(dest, src)		ibu2(MOV, dest, src, "")
+#define lsl(dest, c)			ibu1(LSL, dest, c)
+#define lsr(dest, c)			ibu1(LSR, dest, c)
+#define mov(dest, src, c)		ibu2(MOV, dest, src, c)
 //MOVW
-#define mul(reg1, reg2)		ibu2(MUL, reg1, reg2, "")
+#define mul(reg1, reg2, c)		ibu2(MUL, reg1, reg2, c)
 //MULS
 //MULSU
-#define neg(dest)			ibu1(NEG, dest, "")
-#define nop()				ibu0(NOP, "")
-#define or(dest, src)		ibu2(OR, dest, src, "")
-#define ori(dest, c)		ibu2(ORI, dest, c, "")
-#define out(addr, reg, comment)	ibu2(OUT, addr, reg, comment)
-#define pop(dest, comment)	ibu1(POP, dest, comment)
-#define push(dest, comment)	ibu1(PUSH, dest, comment)
+#define neg(dest, c)			ibu1(NEG, dest, c)
+#define nop(c)				ibu0(NOP, c)
+#define or(dest, src, c)		ibu2(OR, dest, src, c)
+#define ori(dest, k, c)		ibu2(ORI, dest, k, c)
+#define out(addr, reg, c)	ibu2(OUT, addr, reg, c)
+#define pop(dest, c)	ibu1(POP, dest, c)
+#define push(dest, c)	ibu1(PUSH, dest, c)
 //RCALL
-#define ret()				ibu0(RET, "")
+#define ret(c)				ibu0(RET, c)
 //RETI
-#define rjmp(label)			ibu_branch(RJMP, label, "")
+#define rjmp(label, c)			ibu_branch(RJMP, label, c)
 //ROL
 //ROR
-#define sbc(dest, src, comment)		ibu2(SBC, dest, src, comment)
-#define sbci(dest, c, comment)		ibu2(SBCI, dest, c, comment)
+#define sbc(dest, src, c)		ibu2(SBC, dest, src, c)
+#define sbci(dest, k, c)		ibu2(SBCI, dest, k, c)
 //SBI
 //SBIC
 //SBIS
@@ -158,15 +158,15 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32
 //SEZ
 //SLEEP
 //SPM
-#define stX(reg, comment)			ibu1(STX, reg, comment)
-#define stY(reg, comment)			ibu1(STY, reg, comment)
-#define stdY(c, reg, comment)		ibu2(STDY, c, reg, comment)
+#define stX(reg, c)			ibu1(STX, reg, c)
+#define stY(reg, c)			ibu1(STY, reg, c)
+#define stdY(k, reg, c)		ibu2(STDY, k, reg, c)
 //stZ
-#define sts(addr, reg)		ibu2(STS, addr, reg, "")
-#define sub(dest, src)		ibu2(SUB, dest, src, "")
-#define subi(dest, c)		ibu2(SUBI, dest, c, "")
+#define sts(addr, reg, c)		ibu2(STS, addr, reg, c)
+#define sub(dest, src, c)		ibu2(SUB, dest, src, c)
+#define subi(dest, k, c)		ibu2(SUBI, dest, k, c)
 //SWAP
-#define tst(dest)			ibu1(TST, dest, "")
+#define tst(dest, c)			ibu1(TST, dest, c)
 //WDR
 //XCH
 

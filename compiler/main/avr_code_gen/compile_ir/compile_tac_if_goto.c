@@ -11,6 +11,6 @@ void compile_tac_if_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
     char str[32];
     sprintf(str, "L%d", tac->label_index);
 
-    tst(reg); //test if r%d is zero
-    brne(str);
+    tst(reg, ""); //test if r%d is zero
+    brne(str, "");
 }

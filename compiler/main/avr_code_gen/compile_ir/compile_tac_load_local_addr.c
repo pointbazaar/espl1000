@@ -13,6 +13,8 @@
 
 void compile_tac_load_local_addr(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
+	char* c = "TAC_LOAD_LOCAL_ADDR";
+
 	const int rdest = rat_get_register(rat, tac->dest);
 
 	if(!rat_is_wide(rat, tac->dest)){
@@ -26,8 +28,8 @@ void compile_tac_load_local_addr(struct RAT* rat, struct TAC* tac, struct Ctx* c
 
 	//load Y into rdest and add our offset
 
-	mov(rdest, YL);
-	mov(rdest+1, YH);
+	mov(rdest, YL, c);
+	mov(rdest+1, YH, c);
 
 	if(offset != 0){
 		//ldi(RAT_SCRATCH_REG, 0, "TAC_LOAD_LOCAL_ADDR"); //OLD
@@ -37,7 +39,7 @@ void compile_tac_load_local_addr(struct RAT* rat, struct TAC* tac, struct Ctx* c
 		//subi(rdest, -offset); //OLD
 		//sbc(rdest+1, RAT_SCRATCH_REG, "TAC_LOAD_LOCAL_ADDR"); //OLD
 
-		subi(rdest, o2 & 0xff); //NEW
-		sbci(rdest+1, (o2 & 0xff00) >> 8, "TAC_LOAD_LOCAL_ADDR"); //NEW
+		subi(rdest, o2 & 0xff, c);
+		sbci(rdest+1, (o2 & 0xff00) >> 8, c);
 	}
 }

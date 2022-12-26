@@ -14,10 +14,10 @@ void compile_tac_store(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 	const int reg_src = rat_get_register(rat, tac->arg1);
 
 	//set X
-	mov(XL, reg_dest);
+	mov(XL, reg_dest, "TAC_STORE");
 
 	if(rat_is_wide(rat, tac->dest))
-		mov(XH, reg_dest+1);
+		mov(XH, reg_dest+1, "TAC_STORE");
 	else
 		ldi(XH, 0, "TAC_STORE");
 

@@ -13,5 +13,5 @@ void compile_tac_copy(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
     int reg_dest = rat_get_register(rat, tac->dest);
 
-    mov(reg_dest, reg_src);
+    mov(reg_dest, reg_src, "TAC_COPY");
 }

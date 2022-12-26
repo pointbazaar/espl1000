@@ -9,23 +9,25 @@
 
 void compile_tac_load(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
+	char* c = "TAC_LOAD";
+
 	//tdest = [targ1]
 
 	const int reg_dest = rat_get_register(rat, tac->dest);
 
 	const int reg_src = rat_get_register(rat, tac->arg1);
 
-	mov(XL, reg_src);
+	mov(XL, reg_src, c);
 
 	if(rat_is_wide(rat, tac->arg1))
-		mov(XH, reg_src+1);
+		mov(XH, reg_src+1, c);
 	else
-		ldi(XH, 0, "TAC_LOAD");
+		ldi(XH, 0, c);
 
-	ldX(reg_dest, "TAC_LOAD"); //ld reg_dest, X
+	ldX(reg_dest, c); //ld reg_dest, X
 
 	if(rat_is_wide(rat, tac->dest)){
 		//destination is wide, we have to zero out the high reg
-		clr(reg_dest+1, "TAC_LOAD");
+		clr(reg_dest+1, c);
 	}
 }

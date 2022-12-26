@@ -7,9 +7,9 @@
 
 void compile_tac_load_const_addr(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
 
-    const int reg_dest = rat_get_register(rat, tac->dest);
+	const int reg_dest = rat_get_register(rat, tac->dest);
 
-    const uint32_t addr = tac->const_value;
+	const uint32_t addr = tac->const_value;
 
-	lds(reg_dest, addr);
+	lds(reg_dest, addr, "TAC_LOAD_CONST_ADDR");
 }

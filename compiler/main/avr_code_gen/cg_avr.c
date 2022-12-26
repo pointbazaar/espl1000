@@ -44,9 +44,9 @@ void emit_call_main_endloop(struct IBuffer* ibu){
     //not start over again after main
     
     //'endloop'
-    call("main");
+    call("main", "");
     label("endloop");
-    rjmp("endloop");
+    rjmp("endloop", "");
 }
 
 bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx){

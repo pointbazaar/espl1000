@@ -6,10 +6,9 @@
 
 void compile_tac_store_const_addr(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
 
-    const int reg_src = rat_get_register(rat, tac->arg1);
+	const int reg_src = rat_get_register(rat, tac->arg1);
 
-    const uint32_t addr = tac->const_value;
+	const uint32_t addr = tac->const_value;
 
-	sts(addr, reg_src);
-    //fprintf(fout, "sts %d, r%d\n", addr, reg_src);
+	sts(addr, reg_src, "TAC_STORE_CONST_ADDR");
 }
