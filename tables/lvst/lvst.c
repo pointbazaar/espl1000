@@ -163,19 +163,35 @@ void lvst_print(struct LVST* lvst){
 }
 
 uint32_t lvst_sizeof_type(struct Type* type){
-	
-	uint32_t item_size = 2;
-	
-    if(type->basic_type != NULL){
-        if(type->basic_type->simple_type != NULL){
-            if(type->basic_type->simple_type->primitive_type != NULL){
-                //TODO: adjust this to the real size, as not all primitives occupy 1 byte
-                item_size = 1;
-            }
-        }
-    }
-    
-    return item_size;
+
+	//sizeof(type) in bytes
+
+	if(type->basic_type == NULL)
+		return 2; //type params, pointer types
+
+	if(type->basic_type->subr_type != NULL)
+		return 2; //function pointer type
+
+	struct SimpleType* st = type->basic_type->simple_type;
+
+	if(st->struct_type != NULL) return 2;
+
+	struct PrimitiveType* pt = st->primitive_type;
+
+	if(pt->is_char_type || pt->is_bool_type) return 1;
+
+	switch(pt->int_type){
+
+	case INT: case UINT:
+	case INT8: case UINT8: return 1;
+
+	case INT16: case UINT16: return 2;
+	case INT32: case UINT32: return 4;
+	case INT64: case UINT64: return 8;
+
+	default: return 1;
+
+	}
 }
 
 size_t lvst_stack_frame_size_avr(struct LVST* lvst){
