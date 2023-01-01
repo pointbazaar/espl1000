@@ -213,10 +213,6 @@ static void test_typecheck_index_not_integer_type(){
 }
 
 static void test_typecheck_too_many_indices(){
-	
-	return;
-	
-	//TODO: re-enable later on
 
 	status_test_typechecker("typecheck too many indices");
     char* filename = "test/typechecker/test-src/too_many_indices.dg";
@@ -224,6 +220,7 @@ static void test_typecheck_too_many_indices(){
     struct TCError* errors = typecheck_file(filename);
 
     assert(errors != NULL);
+
     assert(errors->err_kind == TC_ERR_TOO_MANY_INDICES);
     assert(errors->next == NULL);
 

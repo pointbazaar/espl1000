@@ -321,9 +321,9 @@ char* str_simple_var(struct SimpleVar* s){
 
 	for(int i=0; i < s->count_indices; i++){
 
-		char* s = str_expr(s->indices[i]);
-		size += strlen(s) + 2; // "[]"
-		free(s);
+		char* s2 = str_expr(s->indices[i]);
+		size += strlen(s2) + 2; // "[]"
+		free(s2);
 	}
 
 	// Step 2 : generate our string

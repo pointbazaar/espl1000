@@ -1,6 +1,6 @@
 
 fn main()~>int {
 
-	[int] arr = arr_ctor();
-	return [0][1];
+	[int] arr = 0x0;
+	return arr[0][1];
 }
