@@ -27,15 +27,13 @@ void tacbuffer_append(struct TACBuffer *buffer, struct TAC *node) {
 }
 
 void tacbuffer_set(struct TACBuffer* buffer, int index, struct TAC* node){
-	
-	//TODO: do bounds checking, count checking
-	
-	if(index >= buffer->cap){
+
+	if(index >= buffer->cap || index >= buffer->count){
 		printf("trying to write to TACBuffer outside its bounds...");
 		fflush(stdout);
 		exit(1);
 	}
-	
+
 	buffer->buffer[index] = node;
 }
 

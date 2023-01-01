@@ -9,6 +9,9 @@
 #include "basicblock.h"
 #include "basicblock_printer.h"
 
+#include "util/ctx.h"
+#include "../cli/flags/flags.h"
+
 static bool* calculate_leaders(struct TACBuffer* buffer);
 static struct BasicBlock** collect_basic_blocks(struct TACBuffer* buffer, uint32_t count, bool* is_leader);
 
@@ -35,21 +38,16 @@ struct BasicBlock** basicblock_create_graph(struct TACBuffer* buffer, char* func
     //we inspect the last statement of each block to create the edges between them
     for(size_t i = 0; i < count; i++) {
 
-        //DEBUG:print the blocks
-        bool debug = false;
-        if(debug)
-            basicblock_print(blocks[i], ctx);
+        if(flags_debug(ctx_flags(ctx))) basicblock_print(blocks[i], ctx);
 
         create_edges_basic_block(buffer, count, blocks, blocks[i]);
     }
 
-    //.dot file creation
-    //TODO: print the basic blocks to dot file
-    //TODO: check -debug flag
-    write_dot_file_from_graph(blocks, count, function_name, ctx);
+    if(flags_debug(ctx_flags(ctx)))
+        write_dot_file_from_graph(blocks, count, function_name, ctx);
 
     free(is_leader);
-    
+
     *nblocks = count;
 
     return blocks;
