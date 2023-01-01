@@ -116,25 +116,19 @@ static void tac_expr_part_2_constvalue(struct TACBuffer* buffer, struct Expr* ex
 
 static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr* expr, uint32_t t1, struct Ctx* ctx){
 
-    tac_unopterm(buffer, expr->term2, ctx);
-    const uint32_t t2 = tacbuffer_last_dest(buffer);
-    
-    bool reverse_operands = false;
-    
-    //TODO: create loop to shift left something by a value in some register
-    
-    
-    enum TAC_OP op = op_to_tac_op(expr->op, &reverse_operands);
-    
-    struct TAC* t;
-    
-	if(reverse_operands){
-		
-		t = makeTACBinOp(t2, op, t1);
-	}else{
-		
-		t = makeTACBinOp(t1, op, t2);
-	}
+	tac_unopterm(buffer, expr->term2, ctx);
+	const uint32_t t2 = tacbuffer_last_dest(buffer);
 
-    tacbuffer_append(buffer, t);
+	bool reverse_operands = false;
+
+	enum TAC_OP op = op_to_tac_op(expr->op, &reverse_operands);
+
+	struct TAC* t;
+
+	if(reverse_operands)
+		t = makeTACBinOp(t2, op, t1);
+	else
+		t = makeTACBinOp(t1, op, t2);
+
+	tacbuffer_append(buffer, t);
 }
