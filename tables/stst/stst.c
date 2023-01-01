@@ -8,6 +8,7 @@
 
 #include "stst.h"
 #include "stst_print.h"
+#include "tables/lvst/lvst.h"
 
 #define STST_INITIAL_CAPACITY 10;
 
@@ -83,50 +84,26 @@ struct StructMember* stst_get_member(struct STST* stst, char* struct_name, char*
 }
 
 uint32_t stst_member_offset(struct STST* stst, char* struct_name, char* member_name){
-	
+
 	//calculates the offset in bytes, from the start of the struct
-	
+
 	struct STSTLine* line = stst_get(stst, struct_name);
-	
+
 	uint32_t offset = 0;
 
 	for(int j=0; j < line->decl->count_members; j++){
 
 		struct StructMember* member = line->decl->members[j];
-		
-		struct Type* t = member->type;
-		uint32_t size = 0;
-		
-		if(t->basic_type != NULL){
-			if(t->basic_type->simple_type != NULL){
-				struct SimpleType* st = t->basic_type->simple_type;
-				
-				if(st->primitive_type != NULL){
-					size = 1;
-				}else{
-					//is, structtype, pointer, 2 bytes
-					size = 2;
-				}
-			}else{
-				//subrtype, pointer, 2 bytes
-				size = 2;
-			}
-		}else if(t->array_type != NULL){
-			//pointer, therefore 2 bytes
-			size = 2;
-		}else{
-			//TODO
-		}
 
-		if(strcmp(member->name, member_name) == 0){ return offset; }
-		
-		offset += size;
+		if(strcmp(member->name, member_name) == 0) return offset;
+
+		offset += lvst_sizeof_type(member->type);
 	}
-	
+
 	printf("[STST] could not find member offset, struct '%s', member '%s'\n", struct_name, member_name);
 	fflush(stdout);
 	exit(1);
-	
+
 	return 0;
 }
 
