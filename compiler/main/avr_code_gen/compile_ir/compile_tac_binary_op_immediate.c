@@ -32,6 +32,11 @@ void compile_tac_binary_op_immediate(struct RAT* rat, struct TAC* tac, struct IB
 			ori(dest, immediate, "");
 			break;
 
+		case TAC_OP_XOR:
+			ldi(RAT_SCRATCH_REG, immediate, "");
+			eor(dest, RAT_SCRATCH_REG, "");
+			break;
+
 		case TAC_OP_SHIFT_LEFT:
 			for(int i=0; i < immediate; i++){
 				lsl(dest, "");
