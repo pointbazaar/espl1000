@@ -171,6 +171,86 @@
         </tbody>
     </table>
     
+
+	<h3>Load/Store</h3>
+
+	<table class="table table-bordered border-primary">
+
+	<thead>
+		<tr>
+			<th>TAC_KIND</th>
+			<th>Example</th>
+			<th>uint32_t dest</th>
+			<th>uint32_t arg1</th>
+			<th>int32_t const_value</th>
+			<th>uint32_t label_index</th>
+			<th>enum TAC_OP op (allowed values)</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>TAC_LOAD_LOCAL</td> <td>t1 = x</td>
+			<td>TMP</td>
+			<td>LOCAL</td>
+			<td>-</td>
+			<td>-</td>
+			<td>-</td>
+		</tr>
+		<tr>
+			<td>TAC_LOAD_LOCAL_ADDR</td> <td>t1 = address(y)</td>
+			<td>TMP</td>
+			<td>LOCAL</td>
+			<td>-</td>
+			<td>-</td>
+			<td>-</td>
+		</tr>
+		<tr>
+			<td>TAC_STORE_LOCAL</td> <td>x = t1</td>
+			<td>LOCAL</td>
+			<td>TMP</td>
+			<td>-</td>
+			<td>-</td>
+			<td>-</td>
+		</tr>
+		<tr>
+			<td>TAC_LOAD_CONST_ADDR</td>
+			<td>t1 = [const]</td>
+			<td>TMP</td>
+			<td>-</td>
+			<td>CONST</td>
+			<td>-</td>
+			<td>-</td>
+		</tr>
+		<tr>
+			<td>TAC_STORE_CONST_ADDR</td>
+			<td>[const] = t1</td>
+			<td>-</td>
+			<td>TMP</td>
+			<td>CONST</td>
+			<td>-</td>
+			<td>-</td>
+		</tr>
+		<tr>
+			<td>TAC_LOAD [NEW]</td>
+			<td>t1 = [t2]</td>
+			<td>TMP</td>
+			<td>TMP</td>
+			<td>-</td>
+			<td>-</td>
+			<td>-</td>
+		</tr>
+		<tr>
+			<td>TAC_STORE [NEW]</td>
+			<td>[t1] = t2</td>
+			<td>TMP</td>
+			<td>TMP</td>
+			<td>-</td>
+			<td>-</td>
+			<td>-</td>
+		</tr>
+	</tbody>
+	</table>
+
     <h3>Other</h3>
 
     <table class="table table-bordered border-primary">
@@ -214,30 +294,6 @@
                 <td>-</td>
             </tr>
             <tr>
-                <td>TAC_LOAD_LOCAL</td> <td>t1 = x</td>
-                <td>TMP</td>
-                <td>LOCAL</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>TAC_LOAD_LOCAL_ADDR</td> <td>t1 = address(y)</td>
-                <td>TMP</td>
-                <td>LOCAL</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>TAC_STORE_LOCAL</td> <td>x = t1</td>
-                <td>LOCAL</td>
-                <td>TMP</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
                 <td>TAC_CONST_VALUE</td> <td>t1 = 4</td>
                 <td>TMP</td>
                 <td>-</td>
@@ -266,42 +322,6 @@
 					<br>
 					TAC_OP_SHIFT_*
 				</td>
-            </tr>
-            <tr>
-                <td>TAC_LOAD_CONST_ADDR</td>
-                <td>t1 = [const]</td>
-                <td>TMP</td>
-                <td>-</td>
-                <td>CONST</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>TAC_STORE_CONST_ADDR</td>
-                <td>[const] = t1</td>
-                <td>-</td>
-                <td>TMP</td>
-                <td>CONST</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>TAC_LOAD [NEW]</td>
-                <td>t1 = [t2]</td>
-                <td>TMP</td>
-                <td>TMP</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>TAC_STORE [NEW]</td>
-                <td>[t1] = t2</td>
-                <td>TMP</td>
-                <td>TMP</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
             </tr>
         </tbody>
     </table>
