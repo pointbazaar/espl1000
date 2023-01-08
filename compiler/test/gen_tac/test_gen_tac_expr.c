@@ -54,27 +54,31 @@ static void test_gen_tac_expr_plus(){
 }
 
 static void test_gen_tac_expr_minus(){
-	
+
 	status_test_codegen_tac("Expr -");
-	
+
 	const int8_t value1 = 50+rand()%50;
 	const int8_t value2 = rand()%50;
-	
+	const int8_t expected = value1 - value2;
+
 	char snippet[200];
-	sprintf(snippet, "fn main() -> int { int x = %d - %d; return x; }", value1, value2);
-	
+	sprintf(snippet, "fn main() -> int8 { int8 x = %d - %d; return x; }", value1, value2);
+
 	//compile snippet and init a vmcu
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	vmcu_system_step_n(system, 20);
-	
+	vmcu_system_step_n(system, 30);
+
 	//assert that value is returned in r0 as it should be
-	
-	int8_t r0_value = vmcu_system_read_gpr(system, 0);
-		
-	assert(r0_value == (value1 - value2));
-	
+
+	int8_t r0 = vmcu_system_read_gpr(system, 0);
+
+	//printf("r0 = %d (0x%x)\n", r0, r0);
+	//printf("expected %d (0x%x)\n", expected, expected);
+
+	assert(r0 == expected);
+
 	vmcu_system_dtor(system);
 }
 

@@ -64,7 +64,7 @@ static void test_16bit(){
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	int8_t r1 = vmcu_system_read_gpr(system, 1);
 
-	printf("r0 0x%x %d,  r1 0x%x %d\n", r0, (uint8_t)r0, r1, (uint8_t)r1);
+	//printf("r0 0x%x %d,  r1 0x%x %d\n", r0, (uint8_t)r0, r1, (uint8_t)r1);
 
 	assert((uint8_t)r0 == (fixed_value & 0xff));
 	assert((uint8_t)r1 == (fixed_value & 0xff00) >> 8);

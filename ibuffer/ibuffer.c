@@ -21,7 +21,7 @@ struct Instr {
 	char str[32];
 	
 	//comment for the assembly code
-	char comment[32]; 
+	char comment[42]; 
 };
 
 struct IBuffer {

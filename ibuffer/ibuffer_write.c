@@ -27,7 +27,7 @@ void ibu_write_instr(enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* st
 	//write the mnemonic
 	fprintf(f, "%-5s ", MNEM[key]);
 	
-	char s[32];
+	char s[42];
 	strcpy(s, "");
 	
 	write_middle(key, x1, x2, str, (char*)&s);
@@ -102,6 +102,8 @@ static void write_middle(enum IKEY key, int32_t x1, int32_t x2, char* str, char*
 		case POP:
 		case LSL:
 		case LSR:
+		case ROL:
+		case ROR:
 			strcat_reg(s, x1); break;
 			//sprintf(s, "r%d", x1); break;
 			

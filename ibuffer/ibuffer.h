@@ -136,8 +136,8 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32
 #define ret(c)				ibu0(RET, c)
 //RETI
 #define rjmp(label, c)			ibu_branch(RJMP, label, c)
-//ROL
-//ROR
+#define rol(dest, c)			ibu1(ROL, dest, c)
+#define ror(dest, c)			ibu1(ROR, dest, c)
 #define sbc(dest, src, c)		ibu2(SBC, dest, src, c)
 #define sbci(dest, k, c)		ibu2(SBCI, dest, k, c)
 //SBI
