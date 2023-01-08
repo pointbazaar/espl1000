@@ -16,35 +16,34 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2);
 static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_num);
 
 struct TokenList* read_tokens_from_tokens_file(FILE* file, char* tokensFile) {
-	
-	struct TokenList* tks = makeTokenList();
-	strcpy(tks->rel_path, tokensFile);
-	
+
+	struct TokenList* tks = makeTokenList2(tokensFile);
+
 	size_t size = 50;
 	char* line = exit_malloc(size);
-	
+
 	uint32_t line_num = 1;
-    
-	while (getline(&line, &size, file)){
-		
+
+	while (getline(&line, &size, file) > 0){
+
 		line[strlen(line)-1] = '\0';
-		
+
 		bool isLineNo = false;
 		struct Token* tkn = recognizeToken(line, &isLineNo, &line_num);
-    	if(isLineNo){
-			if(tkn != NULL){ 
+		if(isLineNo){
+			if(tkn != NULL){
 				freeToken(tkn);
 			}
-			continue; 
+			continue;
 		}
-    	
-    	if(tkn != NULL){
+
+		if(tkn != NULL){
 			list_add(tks, tkn);
-    	}else{
-    		break;
-    	}
-    }
-	
+		}else{
+			break;
+		}
+	}
+
 	free(line);
 
 	return tks;

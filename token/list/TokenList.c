@@ -7,13 +7,14 @@
 #include "../token/token.h"
 #include "../../util/exit_malloc/exit_malloc.h"
 
-struct TokenList* makeTokenList() {
+struct TokenList* makeTokenList2(char* filename) {
 
 	const int initial_size = 20;
 
 	struct TokenList* res = exit_malloc(sizeof(struct TokenList));
-	
-	strcpy(res->rel_path, "/dev/null");
+
+	res->rel_path = exit_malloc(sizeof(char)*(strlen(filename)+1));
+	strcpy(res->rel_path, filename);
 	res->tokensc = 0;
 
 	res->tokens = malloc(sizeof(struct Token*)*initial_size);
@@ -23,6 +24,10 @@ struct TokenList* makeTokenList() {
 	res->capacity = initial_size;
 
 	return res;
+}
+
+struct TokenList* makeTokenList(){
+	return makeTokenList2("/dev/null");
 }
 
 void list_add(struct TokenList* list, struct Token* token) {
@@ -82,6 +87,10 @@ bool list_expect(struct TokenList* list, int token_kind){
 struct TokenList* list_copy(struct TokenList* list) {
 
 	struct TokenList* res = makeTokenList();
+
+	res->rel_path = exit_malloc(sizeof(char)*(strlen(list->rel_path)+1));
+	strcpy(res->rel_path, list->rel_path);
+
 	list_set(res, list);
 	return res;
 }
@@ -182,5 +191,6 @@ void freeTokenList(struct TokenList* list){
 
 void freeTokenListShallow(struct TokenList* list){
 	free(list->tokens);
+	free(list->rel_path);
 	free(list);
 }

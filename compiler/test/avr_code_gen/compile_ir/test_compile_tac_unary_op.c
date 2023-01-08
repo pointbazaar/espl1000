@@ -154,8 +154,6 @@ static void case_bitwise_neg_16bit(){
 
 	const uint16_t actual = (r1 << 8) | r0;
 
-	printf("expect 0x%x, actual 0x%x\n", expect, actual);
-
 	assert(actual == expect);
 
 	vmcu_system_dtor(system);

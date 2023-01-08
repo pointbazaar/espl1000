@@ -9,12 +9,9 @@ struct Token;
 
 struct TokenList {
 	//relative path of the source file
-	//this is part of the struct and not a 'char*'
-	//on purpose. to reduce indirection
-	//and make the program simpler.
-	char rel_path[100];
+	char* rel_path;
 
-	//all the tokens, including those 
+	//all the tokens, including those
 	//already consumed
 	struct Token** tokens; //private
 	//how many pointers we can store
@@ -34,6 +31,7 @@ struct TokenList {
 };
 
 struct TokenList* makeTokenList();
+struct TokenList* makeTokenList2(char* filename);
 
 void list_add(struct TokenList* list, struct Token* token);
 
