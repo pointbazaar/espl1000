@@ -69,7 +69,7 @@ static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 	switch(t->kind){
 
 	case TAC_CONST_VALUE:
-		iswide = ((uint16_t)t->const_value) > 255;
+		iswide = t->const_value > 255 || t->const_value < -128;
 		rat_ensure_register(rat, t->dest, true, iswide);
 		break;
 
