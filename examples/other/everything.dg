@@ -32,15 +32,21 @@ fn main () ~> int {
 		a = a + 1;
 	}
 
+	sub1();
+	sub2();
+}
+
+fn sub2 () -> int {
+
+	int a = 3;
+
 	if a == 4 {
-		
 		return 2;
 	}
-
 
 	return 3;
 }
 
-fn subr () -> int {
+fn sub1 () -> int {
 	return 0;
 }

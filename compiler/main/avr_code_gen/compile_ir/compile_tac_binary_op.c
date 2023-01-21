@@ -9,10 +9,10 @@
 static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 static void case_compare(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 
-static void case_cmp_lt(struct IBuffer* ibu, int rdest, int rsrc);
-static void case_cmp_ge(struct IBuffer* ibu, int rdest, int rsrc);
-static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc);
-static void case_cmp_eq(struct IBuffer* ibu, int rdest, int rsrc);
+static void case_cmp_lt (struct IBuffer* ibu, int rdest, int rsrc, bool wide);
+static void case_cmp_ge (struct IBuffer* ibu, int rdest, int rsrc, bool wide);
+static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc, bool wide);
+static void case_cmp_eq (struct IBuffer* ibu, int rdest, int rsrc, bool wide);
 
 static int label_counter = 0;
 
@@ -120,7 +120,7 @@ static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ib
 	case TAC_OP_XOR:
 		eor(rdest, rsrc, "");
 		if(dest_wide && src_wide)
-			or(rdest+1, rsrc+1, "");
+			eor(rdest+1, rsrc+1, "");
 		break;
 
 	default: break;
@@ -129,24 +129,26 @@ static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ib
 }
 
 static void case_compare(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
-	
+
 	//left and right operand should have registers
 
-    int rsrc = rat_get_register(rat, tac->arg1);
+	int rsrc = rat_get_register(rat, tac->arg1);
 
-    int rdest = rat_get_register(rat, tac->dest);
-	
+	int rdest = rat_get_register(rat, tac->dest);
+
+	const bool wide = rat_is_wide(rat, tac->dest);
+
 	switch(tac->op){
-		case TAC_OP_CMP_LT: case_cmp_lt(ibu, rdest, rsrc); break;
-        case TAC_OP_CMP_GE: case_cmp_ge(ibu, rdest, rsrc); break;
-        case TAC_OP_CMP_EQ: case_cmp_eq(ibu, rdest, rsrc); break;
-        case TAC_OP_CMP_NEQ: case_cmp_neq(ibu, rdest, rsrc); break;
-        default: break;
+		case TAC_OP_CMP_LT:  case_cmp_lt  (ibu, rdest, rsrc, wide); break;
+		case TAC_OP_CMP_GE:  case_cmp_ge  (ibu, rdest, rsrc, wide); break;
+		case TAC_OP_CMP_EQ:  case_cmp_eq  (ibu, rdest, rsrc, wide); break;
+		case TAC_OP_CMP_NEQ: case_cmp_neq (ibu, rdest, rsrc, wide); break;
+		default: break;
 	}
 }
 
 
-static void case_cmp_lt(struct IBuffer* ibu, int rdest, int rsrc){
+static void case_cmp_lt(struct IBuffer* ibu, int rdest, int rsrc, bool wide){
 
 	//5 instructions
 
@@ -155,7 +157,8 @@ static void case_cmp_lt(struct IBuffer* ibu, int rdest, int rsrc){
 	// clr rdest
 	// rjmp Lend
 	//Ltrue:
-	// sub rdest, rsrc
+	// ldi rscratch, 1
+	// mov rdest, rscratch
 	//Lend:
 
 	char Ltrue[20];
@@ -165,17 +168,22 @@ static void case_cmp_lt(struct IBuffer* ibu, int rdest, int rsrc){
 	sprintf(Lend, "Lend%d", label_counter++);
 
 	cp(rdest, rsrc, c);
+	if(wide)
+	cpc(rdest+1, rsrc+1, c);
+
 	brlt(Ltrue, c);
 
 	clr(rdest, c);
 	rjmp(Lend, c);
 	label(Ltrue);
 
-	sub(rdest, rsrc,c );
+	ldi(RAT_SCRATCH_REG, 1, c);
+	mov(rdest, RAT_SCRATCH_REG, c);
+
 	label(Lend);
 }
 
-static void case_cmp_ge(struct IBuffer* ibu, int rdest, int rsrc){
+static void case_cmp_ge(struct IBuffer* ibu, int rdest, int rsrc, bool wide){
 
 	//5 instructions
 
@@ -191,7 +199,11 @@ static void case_cmp_ge(struct IBuffer* ibu, int rdest, int rsrc){
 
 
 	ldi(RAT_SCRATCH_REG, 1, c);
+
 	cp(rdest, rsrc, c);
+	if(wide)
+	cpc(rdest+1, rsrc+1, c);
+
 	brge(Ltrue, c);
 	ldi(RAT_SCRATCH_REG, 0, c);
 
@@ -199,23 +211,33 @@ static void case_cmp_ge(struct IBuffer* ibu, int rdest, int rsrc){
 	mov(rdest, RAT_SCRATCH_REG, c);
 }
 
-static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc){
+static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc, bool wide){
 
 	//we just subtract the 2 registers,
 	//if they were equal, rdest will be 0, meaning false
 	//otherwise it will be nonzero, meaning true
 
 	sub(rdest, rsrc, c);
+
+	if(wide){
+		sbc(rdest+1, rsrc+1, c);
+		mov(rdest, rdest+1, c);
+	}
 }
 
-static void case_cmp_eq(struct IBuffer* ibu, int rdest, int rsrc){
+static void case_cmp_eq(struct IBuffer* ibu, int rdest, int rsrc, bool wide){
 
-
-	//we use r16, which is reserved in the RAT as multi-use register.
+	//we use the scratch register
 
 	//4 instructions
 	ldi(RAT_SCRATCH_REG, 1, c);
 	cpse(rdest, rsrc, c);
 	clr(RAT_SCRATCH_REG, c);
+
+	if(wide){
+		cpse(rdest+1, rsrc+1, c);
+		clr(RAT_SCRATCH_REG, c);
+	}
+
 	mov(rdest, RAT_SCRATCH_REG, c);
 }
