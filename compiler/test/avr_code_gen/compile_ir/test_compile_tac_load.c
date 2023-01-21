@@ -15,9 +15,18 @@
 
 #include "test_compile_tac.h"
 
+static void test_8bit_addr();
+static void test_16bit_addr();
+
 void test_compile_tac_load(){
 
-	status_test_codegen("TAC_LOAD");
+	test_8bit_addr();
+	test_16bit_addr();
+}
+
+void test_8bit_addr(){
+
+	status_test_codegen("TAC_LOAD (8 bit address)");
 
 	const uint16_t addr        = 0xc7+rand()%10;
 	const int8_t   fixed_value = rand()%0xff;
@@ -31,7 +40,6 @@ void test_compile_tac_load(){
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-	//write value to be read later
 	vmcu_system_write_data(system, addr, fixed_value);
 
 	vmcu_system_step_n(system, 20);
@@ -40,7 +48,32 @@ void test_compile_tac_load(){
 
 	assert(r0 == fixed_value);
 
-	//TODO: assert that X register has been used for the load
+	vmcu_system_dtor(system);
+}
+
+void test_16bit_addr(){
+
+	status_test_codegen("TAC_LOAD (16 bit address)");
+
+	const uint16_t addr        = 0x0100+rand()%100;
+	const int8_t   fixed_value = rand()%0xff;
+
+	struct TACBuffer* b = tacbuffer_ctor();
+
+	tacbuffer_append(b, makeTACConst(1, 0x00));
+	tacbuffer_append(b, makeTACConst(2, addr));
+	tacbuffer_append(b, makeTACLoad(1, 2));
+	tacbuffer_append(b, makeTACReturn(1));
+
+	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+
+	vmcu_system_write_data(system, addr, fixed_value);
+
+	vmcu_system_step_n(system, 20);
+
+	int8_t r0 = vmcu_system_read_gpr(system, 0);
+
+	assert(r0 == fixed_value);
 
 	vmcu_system_dtor(system);
 }

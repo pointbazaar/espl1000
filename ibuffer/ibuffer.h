@@ -159,6 +159,7 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32
 //SLEEP
 //SPM
 #define stX(reg, c)			ibu1(STX, reg, c)
+#define stXplus(reg, c)			ibu1(STXPLUS, reg, c)
 #define stY(reg, c)			ibu1(STY, reg, c)
 #define stdY(k, reg, c)		ibu2(STDY, k, reg, c)
 //stZ

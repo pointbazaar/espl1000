@@ -15,30 +15,112 @@
 
 #include "test_compile_tac.h"
 
+static void test_8bit_value_8bit_addr();
+static void test_16bit_value_8bit_addr();
+static void test_8bit_value_16bit_addr();
+static void test_16bit_value_16bit_addr();
+
+static vmcu_system_t* common(uint16_t addr, int16_t value);
+
 void test_compile_tac_store(){
-	
-	status_test_codegen("TAC_STORE");
-	
+
+	test_8bit_value_8bit_addr();
+	test_16bit_value_8bit_addr();
+	test_8bit_value_16bit_addr();
+	test_16bit_value_16bit_addr();
+}
+
+static vmcu_system_t* common(uint16_t addr, int16_t value){
+
+	struct TACBuffer* b = tacbuffer_ctor();
+
+	tacbuffer_append(b, makeTACConst(1, value));
+	tacbuffer_append(b, makeTACConst(2, addr));
+	tacbuffer_append(b, makeTACStore(2, 1));
+
+	tacbuffer_append(b, makeTACReturn(1));
+
+	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+
+	vmcu_system_step_n(system, 10);
+
+	return system;
+}
+
+static void test_8bit_value_8bit_addr(){
+
+	status_test_codegen("TAC_STORE (8 bit value, 8 bit addr)");
+
 	const uint16_t addr = 0xc7+rand()%10;
-	const int8_t fixed_value = rand()%0xff;
 
-    struct TACBuffer* b = tacbuffer_ctor();
-    
-    tacbuffer_append(b, makeTACConst(1, fixed_value));
-    tacbuffer_append(b, makeTACConst(2, addr));
-    tacbuffer_append(b, makeTACStore(2, 1));
-    tacbuffer_append(b, makeTACReturn(1));
+	for(int8_t fixed_value = 1; fixed_value < 10; fixed_value++){
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
-    
-    //write value to be read later
-    vmcu_system_write_data(system, addr, fixed_value);
+		vmcu_system_t* system = common(addr, fixed_value);
 
-    vmcu_system_step_n(system, 10);
-        
-	int8_t r0 = vmcu_system_read_data(system, addr);
-	
-	assert(r0 == fixed_value);
-	
-	vmcu_system_dtor(system);
+		const int8_t stored = vmcu_system_read_data(system, addr);
+
+		assert(stored == fixed_value);
+
+		vmcu_system_dtor(system);
+	}
+}
+
+static void test_16bit_value_8bit_addr(){
+
+	status_test_codegen("TAC_STORE (16 bit value, 8 bit addr)");
+
+	const uint16_t addr = 0xc7+rand()%10;
+
+	for(uint16_t fixed_value = 0x0f00; fixed_value < 0x0f0f; fixed_value++){
+
+		vmcu_system_t* system = common(addr, fixed_value);
+
+		const uint8_t low = vmcu_system_read_data(system, addr);
+		const uint8_t high = vmcu_system_read_data(system, addr+1);
+
+		const int16_t stored = (high << 8) | low;
+
+		assert(stored == fixed_value);
+
+		vmcu_system_dtor(system);
+	}
+}
+
+static void test_8bit_value_16bit_addr(){
+
+	status_test_codegen("TAC_STORE (8 bit value, 16 bit addr)");
+
+	const uint16_t addr = 1200+rand()%10;
+
+	for(int8_t fixed_value = 1; fixed_value < 10; fixed_value++){
+
+		vmcu_system_t* system = common(addr, fixed_value);
+
+		const int8_t stored = vmcu_system_read_data(system, addr);
+
+		assert(stored == fixed_value);
+
+		vmcu_system_dtor(system);
+	}
+}
+
+static void test_16bit_value_16bit_addr(){
+
+	status_test_codegen("TAC_STORE (16 bit value, 16 bit addr)");
+
+	const uint16_t addr = 1200+rand()%10;
+
+	for(uint16_t fixed_value = 0x0f00; fixed_value < 0x0f0f; fixed_value++){
+
+		vmcu_system_t* system = common(addr, fixed_value);
+
+		const uint8_t low = vmcu_system_read_data(system, addr);
+		const uint8_t high = vmcu_system_read_data(system, addr+1);
+
+		const int16_t stored = (high << 8) | low;
+
+		assert(stored == fixed_value);
+
+		vmcu_system_dtor(system);
+	}
 }

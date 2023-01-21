@@ -92,8 +92,9 @@ enum IKEY {
 	STS, //store with addr
 	
 	//ST Instructions
-	STX, 
-	STY, 
+	STX,
+	STXPLUS,
+	STY,
 	STZ,
 	STDY, //with displacement
 	

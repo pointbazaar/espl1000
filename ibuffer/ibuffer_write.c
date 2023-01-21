@@ -114,11 +114,12 @@ static void write_middle(enum IKEY key, int32_t x1, int32_t x2, char* str, char*
 		
 		case LDDY: sprintf(s, "r%d, Y+%d", x1, x2); break;
 		case LDDZ: sprintf(s, "r%d, Z+%d", x1, x2); break;
-		
+
 		case STX: sprintf(s, "X, r%d", x1); break;
+		case STXPLUS: sprintf(s, "X+, r%d", x1); break;
 		case STY: sprintf(s, "Y, r%d", x1); break;
 		case STZ: sprintf(s, "Z, r%d", x1); break;
-		
+
 		case STDY: sprintf(s, "Y+%d, r%d", x1, x2); break;
 			
 		//ops with 1 label

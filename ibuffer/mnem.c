@@ -95,6 +95,7 @@ char* MNEM[] = {
 	
 	//st instructions
 	def(STX, "st")
+	def(STXPLUS, "st")
 	def(STY, "st")
 	def(STZ, "st")
 	def(STDY, "std")
