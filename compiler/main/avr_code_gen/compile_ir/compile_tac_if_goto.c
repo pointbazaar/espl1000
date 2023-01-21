@@ -7,10 +7,19 @@
 
 void compile_tac_if_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
 
-    const int reg = rat_get_register(rat, tac->arg1);
-    char str[32];
-    sprintf(str, "L%d", tac->label_index);
+	char* c = "TAC_IF_GOTO";
 
-    tst(reg, ""); //test if r%d is zero
-    brne(str, "");
+	const int reg = rat_get_register(rat, tac->arg1);
+	char str[32];
+	sprintf(str, "L%d", tac->label_index);
+
+	const bool wide = rat_is_wide(rat, tac->arg1);
+
+	tst(reg, c); //test if r%d is zero
+	brne(str, c);
+
+	if(wide){
+		tst(reg+1, c);
+		brne(str, c);
+	}
 }
