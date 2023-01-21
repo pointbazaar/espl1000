@@ -13,7 +13,12 @@ void compile_tac_if_cmp_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* i
 	const int reg1 = rat_get_register(rat, tac->dest);
 	const int reg2 = rat_get_register(rat, tac->arg1);
 
+	bool wide = rat_is_wide(rat, tac->dest);
+
 	cp(reg1, reg2, c);
+
+	if(wide)
+	  cp(reg1+1, reg2+1, c);
 
 	char str[32];
 	sprintf(str, "L%d", tac->label_index);

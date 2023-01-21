@@ -15,339 +15,207 @@
 
 #include "test_compile_tac.h"
 
-static void case_eq_true();
-static void case_eq_false();
-static void case_neq_true();
-static void case_neq_false();
-static void case_lt_true();
-static void case_lt_false();
-static void case_ge_true();
-static void case_ge_false();
+static void case_eq_true_8bit();
+static void case_eq_true_16bit();
+static void case_eq_false_8bit();
+static void case_eq_false_16bit();
+static void case_neq_true_8bit();
+static void case_neq_true_16bit();
+static void case_neq_false_8bit();
+static void case_neq_false_16bit();
+static void case_lt_true_8bit();
+static void case_lt_true_16bit();
+static void case_lt_false_8bit();
+static void case_lt_false_16bit();
+static void case_ge_true_8bit();
+static void case_ge_true_16bit();
+static void case_ge_false_8bit();
+static void case_ge_false_16bit();
+
+static void common(int a, enum TAC_OP op, int b, bool expect_true);
 
 void test_compile_tac_if_cmp_goto(){
-	
-	case_eq_true();
-	case_eq_false();
-	case_neq_true();
-	case_neq_false();
-	case_lt_true();
-	case_lt_false();
-	case_ge_true();
-	case_ge_false();
+
+	case_eq_true_8bit();
+	case_eq_true_16bit();
+	case_eq_false_8bit();
+	case_eq_false_16bit();
+
+	case_neq_true_8bit();
+	case_neq_true_16bit();
+	case_neq_false_8bit();
+	case_neq_false_16bit();
+
+	case_lt_true_8bit();
+	case_lt_true_16bit();
+	case_lt_false_8bit();
+	case_lt_false_16bit();
+
+	case_ge_true_8bit();
+	case_ge_true_16bit();
+	case_ge_false_8bit();
+	case_ge_false_16bit();
 }
 
-static void case_eq_true(){
-	
-	status_test_codegen("TAC_IF_CMP_GOTO == true");
-	
-	const int8_t value      = rand()%0xff;
-	const uint16_t address1 = 0x100+rand()%30;
-	
-	const uint16_t l1   = 1;
-	const uint16_t lend = 2;
-	
-	const int8_t return_value = rand(); 
-	
-    struct TACBuffer* b = tacbuffer_ctor();
-    
-    tacbuffer_append(b, makeTACConst(1, 1));
-    tacbuffer_append(b, makeTACConst(2, 1));
-    tacbuffer_append(b, makeTACIfCMPGoto(1, TAC_OP_CMP_EQ, 2, l1));
+static void common(int a1, enum TAC_OP op, int a2, bool expect_true){
+
+	const int8_t valuetrue  = rand()%0xff;
+	const int8_t valuefalse = valuetrue + 1;
+	const uint16_t address  = 0x100+rand()%30;
+
+	const uint16_t ltrue  = 1;
+	const uint16_t lfalse = 2;
+	const uint16_t lend   = 3;
+
+	struct TACBuffer* b = tacbuffer_ctor();
+
+	tacbuffer_append(b, makeTACConst(1, a1));
+	tacbuffer_append(b, makeTACConst(2, a2));
+	tacbuffer_append(b, makeTACIfCMPGoto(1, op, 2, ltrue));
+	tacbuffer_append(b, makeTACGoto(lfalse));
 	tacbuffer_append(b, makeTACGoto(lend));
-	
-	tacbuffer_append(b, makeTACLabel(l1));
-	tacbuffer_append(b, makeTACConst(0, value));
-	tacbuffer_append(b, makeTACStoreConstAddr(address1, 0));
+
+	tacbuffer_append(b, makeTACLabel(ltrue));
+	tacbuffer_append(b, makeTACConst(0, valuetrue));
+	tacbuffer_append(b, makeTACStoreConstAddr(address, 0));
 	tacbuffer_append(b, makeTACGoto(lend));
-	
+
+	tacbuffer_append(b, makeTACLabel(lfalse));
+	tacbuffer_append(b, makeTACConst(0, valuefalse));
+	tacbuffer_append(b, makeTACStoreConstAddr(address+1, 0));
+	tacbuffer_append(b, makeTACGoto(lend));
+
 	tacbuffer_append(b, makeTACLabel(lend));
-	tacbuffer_append(b, makeTACConst(0, return_value));
-    tacbuffer_append(b, makeTACReturn(0));
+	tacbuffer_append(b, makeTACGoto(lend));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-    vmcu_system_step_n(system, 13);
-	
-	//assert we have returned
-	assert(vmcu_system_read_gpr(system, 0) == return_value);
-	
-	assert(vmcu_system_read_data(system, address1) == value);
-	
+	assert(vmcu_system_read_data(system, address)   == 0x00);
+	assert(vmcu_system_read_data(system, address+1) == 0x00);
+
+	vmcu_system_step_n(system, 13);
+
+	if(expect_true){
+		//true branch should have written valuetrue to address
+		assert(vmcu_system_read_data(system, address)   == valuetrue);
+		assert(vmcu_system_read_data(system, address+1) != valuefalse);
+	}else{
+		//false branch should have written valuefalse to address
+		assert(vmcu_system_read_data(system, address)   != valuetrue);
+		assert(vmcu_system_read_data(system, address+1) == valuefalse);
+	}
+
 	vmcu_system_dtor(system);
 }
 
-static void case_eq_false(){
-	
-	status_test_codegen("TAC_IF_CMP_GOTO == false");
-	
-	const int8_t value      = rand()%0xff;
-	const uint16_t address1 = 0x100+rand()%30;
-	
-	const uint16_t l1   = 1;
-	const uint16_t lend = 2;
-	
-	const int8_t return_value = rand(); 
-	
-    struct TACBuffer* b = tacbuffer_ctor();
-    
-    tacbuffer_append(b, makeTACConst(1, 1));
-    tacbuffer_append(b, makeTACConst(2, 2));
-    tacbuffer_append(b, makeTACIfCMPGoto(1, TAC_OP_CMP_EQ, 2, l1));
-	tacbuffer_append(b, makeTACGoto(lend));
-	
-	tacbuffer_append(b, makeTACLabel(l1));
-	tacbuffer_append(b, makeTACConst(0, value));
-	tacbuffer_append(b, makeTACStoreConstAddr(address1, 0));
-	
-	tacbuffer_append(b, makeTACLabel(lend));
-	tacbuffer_append(b, makeTACConst(0, return_value));
-    tacbuffer_append(b, makeTACReturn(0));
+static void case_eq_true_8bit(){
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+	status_test_codegen("TAC_IF_CMP_GOTO == true (8 bit)");
 
-    vmcu_system_step_n(system, 13);
-	
-	//assert we have returned
-	assert(vmcu_system_read_gpr(system, 0) == return_value);
-	
-	assert(vmcu_system_read_data(system, address1) != value);
-	
-	vmcu_system_dtor(system);
+	common(1, TAC_OP_CMP_EQ, 1, true);
 }
 
-static void case_neq_true(){
-	
-	status_test_codegen("TAC_IF_CMP_GOTO != true");
-	
-	const int8_t value      = rand()%0xff;
-	const uint16_t address1 = 0x100+rand()%30;
-	
-	const int8_t return_value = rand(); 
-	
-	const uint16_t l1   = 1;
-	const uint16_t lend = 2;
-	
-    struct TACBuffer* b = tacbuffer_ctor();
-    
-    tacbuffer_append(b, makeTACConst(1, 3));
-    tacbuffer_append(b, makeTACConst(2, 1));
-    tacbuffer_append(b, makeTACIfCMPGoto(1, TAC_OP_CMP_NEQ, 2, l1));
-	tacbuffer_append(b, makeTACGoto(lend));
-	
-	tacbuffer_append(b, makeTACLabel(l1));
-	tacbuffer_append(b, makeTACConst(0, value));
-	tacbuffer_append(b, makeTACStoreConstAddr(address1, 0));
-	tacbuffer_append(b, makeTACGoto(lend));
-	
-	tacbuffer_append(b, makeTACLabel(lend));
-	tacbuffer_append(b, makeTACConst(0, return_value));
-    tacbuffer_append(b, makeTACReturn(0));
+static void case_eq_true_16bit(){
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+	status_test_codegen("TAC_IF_CMP_GOTO == true (16 bit)");
 
-    vmcu_system_step_n(system, 13);
-	
-	//assert we have returned
-	assert(vmcu_system_read_gpr(system, 0) == return_value);
-	
-	assert(vmcu_system_read_data(system, address1) == value);
-	
-	vmcu_system_dtor(system);
+	common(0xffff, TAC_OP_CMP_EQ, 0xffff, true);
 }
 
-static void case_neq_false(){
-	
-	status_test_codegen("TAC_IF_CMP_GOTO != false");
-	
-	const int8_t value      = rand()%0xff;
-	const uint16_t address1 = 0x100+rand()%30;
-	
-	const int8_t return_value = rand(); 
-	
-	const uint16_t l1   = 1;
-	const uint16_t lend = 2;
-	
-    struct TACBuffer* b = tacbuffer_ctor();
-    
-    tacbuffer_append(b, makeTACConst(1, 3));
-    tacbuffer_append(b, makeTACConst(2, 3));
-    tacbuffer_append(b, makeTACIfCMPGoto(1, TAC_OP_CMP_NEQ, 2, l1));
-	tacbuffer_append(b, makeTACGoto(lend));
-	
-	tacbuffer_append(b, makeTACLabel(l1));
-	tacbuffer_append(b, makeTACConst(0, value));
-	tacbuffer_append(b, makeTACStoreConstAddr(address1, 0));
-	
-	tacbuffer_append(b, makeTACLabel(lend));
-	tacbuffer_append(b, makeTACConst(0, return_value));
-    tacbuffer_append(b, makeTACReturn(0));
+static void case_eq_false_8bit(){
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+	status_test_codegen("TAC_IF_CMP_GOTO == false (8 bit)");
 
-    vmcu_system_step_n(system, 13);
-	
-	//assert we have returned
-	assert(vmcu_system_read_gpr(system, 0) == return_value);
-	
-	assert(vmcu_system_read_data(system, address1) != value);
-	
-	vmcu_system_dtor(system);
+	common(1, TAC_OP_CMP_EQ, 2, false);
 }
 
-static void case_lt_true(){
-	
-	status_test_codegen("TAC_IF_CMP_GOTO < true");
-	
-	const int8_t value      = rand()%0xff;
-	const uint16_t address1 = 0x100+rand()%30;
-	
-	const int8_t return_value = rand(); 
-	
-	const uint16_t l1   = 1;
-	const uint16_t lend = 2;
-	
-    struct TACBuffer* b = tacbuffer_ctor();
-    
-    tacbuffer_append(b, makeTACConst(1, 1));
-    tacbuffer_append(b, makeTACConst(2, 4));
-    tacbuffer_append(b, makeTACIfCMPGoto(1, TAC_OP_CMP_LT, 2, l1));
-	tacbuffer_append(b, makeTACGoto(lend));
-	
-	tacbuffer_append(b, makeTACLabel(l1));
-	tacbuffer_append(b, makeTACConst(0, value));
-	tacbuffer_append(b, makeTACStoreConstAddr(address1, 0));
-	tacbuffer_append(b, makeTACGoto(lend));
-	
-	tacbuffer_append(b, makeTACLabel(lend));
-	tacbuffer_append(b, makeTACConst(0, return_value));
-    tacbuffer_append(b, makeTACReturn(0));
+static void case_eq_false_16bit(){
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+	status_test_codegen("TAC_IF_CMP_GOTO == false (16 bit)");
 
-    vmcu_system_step_n(system, 13);
-	
-	//assert we have returned
-	assert(vmcu_system_read_gpr(system, 0) == return_value);
-	
-	assert(vmcu_system_read_data(system, address1) == value);
-	
-	vmcu_system_dtor(system);
+	common(0x0100, TAC_OP_CMP_EQ, 0x0200, false);
 }
 
-static void case_lt_false(){
-	
-	status_test_codegen("TAC_IF_CMP_GOTO < false");
-	
-	const int8_t value      = rand()%0xff;
-	const uint16_t address1 = 0x100+rand()%30;
-	
-	const int8_t return_value = rand(); 
-	
-	const uint16_t l1   = 1;
-	const uint16_t lend = 2;
-	
-    struct TACBuffer* b = tacbuffer_ctor();
-    
-    tacbuffer_append(b, makeTACConst(1, 5));
-    tacbuffer_append(b, makeTACConst(2, 4));
-    tacbuffer_append(b, makeTACIfCMPGoto(1, TAC_OP_CMP_LT, 2, l1));
-	tacbuffer_append(b, makeTACGoto(lend));
-	
-	tacbuffer_append(b, makeTACLabel(l1));
-	tacbuffer_append(b, makeTACConst(0, value));
-	tacbuffer_append(b, makeTACStoreConstAddr(address1, 0));
-	
-	tacbuffer_append(b, makeTACLabel(lend));
-	tacbuffer_append(b, makeTACConst(0, return_value));
-    tacbuffer_append(b, makeTACReturn(0));
+static void case_neq_true_8bit(){
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+	status_test_codegen("TAC_IF_CMP_GOTO != true (8 bit)");
 
-    vmcu_system_step_n(system, 20);
-	
-	//assert we have returned
-	assert(vmcu_system_read_gpr(system, 0) == return_value);
-	
-	assert(vmcu_system_read_data(system, address1) != value);
-	
-	vmcu_system_dtor(system);
+	common(1, TAC_OP_CMP_NEQ, 2, true);
 }
 
-static void case_ge_true(){
-	
-	status_test_codegen("TAC_IF_CMP_GOTO >= true");
-	
-	const int8_t value      = rand()%0xff;
-	const uint16_t address1 = 0x100+rand()%30;
-	
-	const int8_t return_value = rand(); 
-	
-	const uint16_t l1   = 1;
-	const uint16_t lend = 2;
-	
-    struct TACBuffer* b = tacbuffer_ctor();
-    
-    tacbuffer_append(b, makeTACConst(1, 4));
-    tacbuffer_append(b, makeTACConst(2, 4));
-    tacbuffer_append(b, makeTACIfCMPGoto(1, TAC_OP_CMP_GE, 2, l1));
-	tacbuffer_append(b, makeTACGoto(lend));
-	
-	tacbuffer_append(b, makeTACLabel(l1));
-	tacbuffer_append(b, makeTACConst(0, value));
-	tacbuffer_append(b, makeTACStoreConstAddr(address1, 0));
-	tacbuffer_append(b, makeTACGoto(lend));
-	
-	tacbuffer_append(b, makeTACLabel(lend));
-	tacbuffer_append(b, makeTACConst(0, return_value));
-    tacbuffer_append(b, makeTACReturn(0));
+static void case_neq_true_16bit(){
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+	status_test_codegen("TAC_IF_CMP_GOTO != true (16 bit)");
 
-    vmcu_system_step_n(system, 13);
-	
-	//assert we have returned
-	assert(vmcu_system_read_gpr(system, 0) == return_value);
-	
-	assert(vmcu_system_read_data(system, address1) == value);
-	
-	vmcu_system_dtor(system);
+	common(0x0100, TAC_OP_CMP_NEQ, 0x0200, true);
 }
 
-static void case_ge_false(){
-	
-	status_test_codegen("TAC_IF_CMP_GOTO >= false");
-	
-	const int8_t value      = rand()%0xff;
-	const uint16_t address1 = 0x100+rand()%30;
-	
-	const int8_t return_value = rand(); 
-	
-	const uint16_t l1   = 1;
-	const uint16_t lend = 2;
-	
-    struct TACBuffer* b = tacbuffer_ctor();
-    
-    tacbuffer_append(b, makeTACConst(1, 2));
-    tacbuffer_append(b, makeTACConst(2, 4));
-    tacbuffer_append(b, makeTACIfCMPGoto(1, TAC_OP_CMP_GE, 2, l1));
-	tacbuffer_append(b, makeTACGoto(lend));
-	
-	tacbuffer_append(b, makeTACLabel(l1));
-	tacbuffer_append(b, makeTACConst(0, value));
-	tacbuffer_append(b, makeTACStoreConstAddr(address1, 0));
-	
-	tacbuffer_append(b, makeTACLabel(lend));
-	tacbuffer_append(b, makeTACConst(0, return_value));
-    tacbuffer_append(b, makeTACReturn(0));
+static void case_neq_false_8bit(){
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+	status_test_codegen("TAC_IF_CMP_GOTO != false (8 bit)");
 
-    vmcu_system_step_n(system, 13);
-	
-	//assert we have returned
-	assert(vmcu_system_read_gpr(system, 0) == return_value);
-	
-	assert(vmcu_system_read_data(system, address1) != value);
-	
-	vmcu_system_dtor(system);
+	common(1, TAC_OP_CMP_NEQ, 1, false);
+}
+
+static void case_neq_false_16bit(){
+
+	status_test_codegen("TAC_IF_CMP_GOTO != false (16 bit)");
+
+	common(0x1234, TAC_OP_CMP_NEQ, 0x1234, false);
+}
+
+static void case_lt_true_8bit(){
+
+	status_test_codegen("TAC_IF_CMP_GOTO < true (8 bit)");
+
+	common(1, TAC_OP_CMP_LT, 4, true);
+}
+
+static void case_lt_true_16bit(){
+
+	status_test_codegen("TAC_IF_CMP_GOTO < true (16 bit)");
+
+	common(0x0100, TAC_OP_CMP_LT, 0x0200, true);
+}
+
+static void case_lt_false_8bit(){
+
+	status_test_codegen("TAC_IF_CMP_GOTO < false (8 bit)");
+
+	common(5, TAC_OP_CMP_LT, 4, false);
+}
+
+static void case_lt_false_16bit(){
+
+	status_test_codegen("TAC_IF_CMP_GOTO < false (16 bit)");
+
+	common(0x0100, TAC_OP_CMP_LT, 0x0001, false);
+}
+
+static void case_ge_true_8bit(){
+
+	status_test_codegen("TAC_IF_CMP_GOTO >= true (8 bit)");
+
+	common(4, TAC_OP_CMP_GE, 4, true);
+}
+
+static void case_ge_true_16bit(){
+
+	status_test_codegen("TAC_IF_CMP_GOTO >= true (16 bit)");
+
+	common(0x0200, TAC_OP_CMP_GE, 0x0101, true);
+}
+
+static void case_ge_false_8bit(){
+
+	status_test_codegen("TAC_IF_CMP_GOTO >= false (8 bit)");
+
+	common(2, TAC_OP_CMP_GE, 4, false);
+}
+
+static void case_ge_false_16bit(){
+
+	status_test_codegen("TAC_IF_CMP_GOTO >= false (16 bit)");
+
+	common(0x0101, TAC_OP_CMP_GE, 0x0200, false);
 }
