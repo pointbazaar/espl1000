@@ -10,6 +10,6 @@ add_library(${PROJECT_NAME} STATIC
         tacbuffer.c
 )
 
-target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Werror" "-fanalyzer")
+target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Werror")
 
 target_include_directories(${PROJECT_NAME} PUBLIC "..")
