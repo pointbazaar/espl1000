@@ -164,7 +164,10 @@ add_executable("sd-tests"
 	test/avr_code_gen/compile_ir/test_compile_tac_store.c
 	test/avr_code_gen/compile_ir/test_compile_tac_setup_sp.c
 	test/avr_code_gen/compile_ir/test_compile_tac_setup_stackframe.c
-	
+
+	#CodeGen from TAC - Timers
+	test/avr_code_gen/timer/test_avr_code_gen_timer.c
+
 	#CodeGen from Snippets (test compiling AST pieces)
 	test/gen_tac/test_gen_tac.c
 	test/gen_tac/util/test_gen_tac_util.c

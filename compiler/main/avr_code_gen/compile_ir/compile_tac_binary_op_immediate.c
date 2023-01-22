@@ -90,20 +90,28 @@ static void case_tac_op_xor(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 static void case_tac_op_and(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac){
 
-	int dest = rat_get_register(rat, tac->dest);
+	//andi can only operate on high registers
+
+	const char* c = "TAC_BINARY_OP_IMMEDIATE &";
+
+	const uint8_t  rdest     = rat_get_register(rat, tac->dest);
 	const uint16_t immediate = tac->const_value;
 
-	bool wide = rat_is_wide(rat, tac->dest);
+	const bool wide = rat_is_wide(rat, tac->dest);
 
-	char* c = "TAC_BINARY_OP_IMMEDIATE &";
-
-	uint8_t low  = immediate & 0xff;
+	uint8_t low  =  immediate & 0x00ff;
 	uint8_t high = (immediate & 0xff00) >> 8;
 
-	andi(dest, low, c);
+	if(rdest < 16){
+		mov(RAT_SCRATCH_REG, rdest, c);
+		andi(RAT_SCRATCH_REG, low, c);
+		mov(rdest, RAT_SCRATCH_REG, c);
+	}else{
+		andi(rdest, low, c);
+	}
 
 	if(wide && (high != 0))
-		andi(dest+1, high, c);
+		andi(rdest+1, high, c);
 }
 
 static void case_tac_op_or(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac){

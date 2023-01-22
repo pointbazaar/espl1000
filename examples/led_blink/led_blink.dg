@@ -1,41 +1,73 @@
+//Program to make an LED Blink using Timers
+
+//Arduino Board:
+//https://docs.arduino.cc/resources/datasheets/A000066-datasheet.pdf
+
+/* Hardware Setup
+
+    GND ----- LED ----- Resistor
+                           |
+D13 PIN -------------------|
+
+*/
+
+//LED_BUILTIN PB5
+//PB5 is on D13 on the Arduino
+//PB0 is on D08 on the Arduino
+
+//CONSTANTS:
+// PORTB 0x25
+// DDRB  0x24
+// TCCR0B 0x45
+// TCNT0  0x46
 
 fn main () ~> int {
 	//set D13 / PB5
 
-	//set PORTB Data Direction Register
-	[0x24] = 0b00100000;
-	
+	//set PORTB Data Direction Register (DDRB) to enable DDRB5
+	//[0x24] = 0b00100000;
+
+	//set everything to output
+	[0x24] = 0xff;
+
 	while(true){
-		//set PORTB Data Register
-		[0x25] = 0b00100000;
-		
-		//wait
+
+		led_on();
 		delay();
-		
-		[0x25] = 0b00000000;
-		
-		//wait
+		led_off();
 		delay();
 	}
 	return 1;
 }
 
+fn led_on() -> int {
+	//TODO: confirm this is right
+	//set PORTB Data Register
+	//PORTB 5
+	[0x25] = 0xff;
+	return 1;
+}
+
+fn led_off() -> int {
+	//TODO: confirm this is right
+	//PORTB = 0x0
+	[0x25] = 0x00;
+	return 1;
+}
+
 fn delay() -> int {
-	
-	//TODO use timer0
-	//prescaler using cpu clock divided by 1024
-	
-	//tccr0b
-	[0x45] = (0b00000101);
-	
-	int i = 0;
-	while (i < 255){
-		//tcnt0
-		while([0x46] != 255){
-		
-		}
-		i++;
-	}
+
+	//using Timer0
+
+	//TCCR0A = 0x0, set timer mode
+	[0x44] = 0x0;
+
+	//TCCR0B = 0b00000101, set prescaler to 1024
+	[0x45] = 0x5;
+
+	//while(TCNT0 != 0xfe){}
+	while([0x46] != 0xfe){}
+
 	return 1;
 }
 

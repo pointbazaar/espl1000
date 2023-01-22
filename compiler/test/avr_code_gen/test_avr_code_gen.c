@@ -15,6 +15,8 @@
 
 #include "compile_ir/test_compile_tac.h"
 
+#include "timer/test_avr_code_gen_timer.h"
+
 void status_test_codegen(char* msg){
     printf(" - [TEST] avr codegen %s\n", msg);
 }
@@ -45,5 +47,8 @@ void test_suite_avr_code_gen(){
     
     test_compile_tac_load();
     test_compile_tac_store();
+
+    //test AVR Codegen as it relates to internal timers
+    test_avr_code_gen_timer();
 }
 
