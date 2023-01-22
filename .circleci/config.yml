@@ -5,23 +5,29 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  build1:
+  build-job:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
+    machine:
+      image: ubuntu-2204:2022.10.2
+    #docker:
+    #  - image: cimg/base:stable
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
+      - run: sudo apt-get update && sudo apt install -y gcc make cmake valgrind flex avra
       - run:
-          name: "build project"
-          command: "make"
+          name: "build"
+          command: |
+            echo 'export PATH=/home/circleci/project/lexer/build:/home/circleci/project/parser/build:/home/circleci/project/compiler:"$PATH"' >> "$BASH_ENV"
+            source "$BASH_ENV"
+            echo "PATH is: $PATH"
+            make
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  build1-workflow:
+  build-workflow:
     jobs:
-      - build1
-
+      - build-job
