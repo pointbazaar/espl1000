@@ -35,7 +35,7 @@ void ibu_write_instr(enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* st
 	fprintf(f, "%-15s", s);
 	
 	if(strcmp(comment, "") != 0){
-		fprintf(f, ";%s", comment);
+		fprintf(f, ";%-30s", comment);
 	}
 	
 	fprintf(f, "\n");
