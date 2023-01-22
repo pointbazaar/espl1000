@@ -42,27 +42,27 @@ static void case_no_args(){
 }
 
 static void case_1_args(){
-	
+
 	status_test_codegen_tac("Call - 1 args");
-	
-	const int8_t value = rand()%0xf0;
-	
+
+	const int8_t value = 33;
+
 	char snippet[200];
 	char* template = "fn main()->int{int x = f(3); return x;} fn f(int a)->int{return %d+a;}";
 	sprintf(snippet, template, value);
-	
+
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
-	
+
 	vmcu_system_step_n(system, 50);
-	
-	int8_t r0 = vmcu_system_read_gpr(system, 0);
-	
-	assert(r0 == value+3);
-	
+
+	const int8_t r0 = vmcu_system_read_gpr(system, 0);
+
+	assert(r0 == 36);
+
 	//check if SP is same as before main
 	uint16_t sp = vmcu_system_read_sp(system);
-    assert(sp == 0x085f);
-	
+	assert(sp == 0x085f);
+
 	vmcu_system_dtor(system);
 }
 

@@ -11,10 +11,10 @@ static void test_gen_tac_ifstmt_with_else_true();
 static void test_gen_tac_ifstmt_with_else_false();
 
 void test_gen_tac_ifstmt(){
-		
+
 	test_gen_tac_ifstmt_no_else_true();
 	test_gen_tac_ifstmt_no_else_false();
-	
+
 	test_gen_tac_ifstmt_with_else_true();
 	test_gen_tac_ifstmt_with_else_false();
 }
@@ -99,27 +99,27 @@ static void test_gen_tac_ifstmt_with_else_true(){
 }
 
 static void test_gen_tac_ifstmt_with_else_false(){
-	
+
 	status_test_codegen_tac("IfStmt (with else) false");
-	
+
 	const int8_t value1 = rand()%50;
 	const int8_t value2 = value1 + rand()%50;
-	const int8_t value_true = rand()%0xff;
-	const int8_t value_false = rand()%0xff;
-	
+	const int8_t value_true = 1+rand()%0xf;
+	const int8_t value_false = value_true+1;
+
 	char snippet[200];
 	const char* template = "fn main() -> int { if %d <= %d { return %d; } else { return %d; } }";
 	sprintf(snippet, template, value2, value1, value_true, value_false);
-	
+
 	//compile snippet and init a vmcu
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
 	vmcu_system_step_n(system, 20);
-	
+
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
-		
+
 	assert(r0 == value_false);
-	
+
 	vmcu_system_dtor(system);
 }

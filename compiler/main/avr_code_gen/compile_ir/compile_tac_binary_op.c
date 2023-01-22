@@ -81,6 +81,23 @@ static void case_arithmetic_sub(int rdest, int rsrc, bool dest_wide, bool src_wi
 
 }
 
+static void case_arithmetic_xor(int rdest, int rsrc, bool dest_wide, bool src_wide, struct IBuffer* ibu){
+
+	char* c = "TAC_BINARY_OP ^";
+
+	eor(rdest, rsrc, c);
+
+	if(dest_wide){
+
+		if(src_wide){
+			eor(rdest+1, rsrc+1, c);
+		}else{
+			ldi(RAT_SCRATCH_REG, 0, c);
+			eor(rdest+1, RAT_SCRATCH_REG, c);
+		}
+	}
+}
+
 static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
 
 	//left and right operand should have registers
@@ -118,10 +135,7 @@ static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ib
 		break;
 
 	case TAC_OP_XOR:
-		eor(rdest, rsrc, "");
-		if(dest_wide && src_wide)
-			eor(rdest+1, rsrc+1, "");
-		break;
+		case_arithmetic_xor(rdest, rsrc, dest_wide, src_wide, ibu); break;
 
 	default: break;
 
