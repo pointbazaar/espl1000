@@ -1,7 +1,4 @@
 os: linux
-dist: focal #default dist, distro matrix is in 'jobs'
-
-compiler: gcc
 language: c
 
 #https://docs.travis-ci.com/user/reference/overview/
@@ -10,14 +7,24 @@ language: c
 jobs:
   include:
     - dist: jammy # 22.04
-      arch: amd64 
-    
+      arch: amd64
+      compiler: gcc
+
+    #- dist: jammy # 22.04
+    #  arch: amd64
+    #  compiler: clang
+
     #- dist: jammy # 22.04
     #  arch: arm64
-  
+
     - dist: focal # 20.04
       arch: amd64 #/usr/bin/ld: cannot find -lfl
-    
+      compiler: gcc
+
+    #- dist: focal # 20.04
+    #  arch: amd64 #/usr/bin/ld: cannot find -lfl
+    #  compiler: clang
+
     #- dist: focal # 20.04
     #  arch: arm64
 
@@ -26,7 +33,7 @@ jobs:
 
     #- dist: bionic
     #  arch: arm64
-    
+
 before_install:
 - pwd
 - dpkg -L libfl-dev
@@ -41,4 +48,5 @@ addons:
 install: pwd
 script: make all
 env:
-- export PATH=$PATH:$(pwd):$(pwd)/lexer:$(pwd)/parser:$(pwd)/compiler
+  global:
+    PATH=$PATH:$(pwd):$(pwd)/lexer/build:$(pwd)/parser/build:$(pwd)/compiler
