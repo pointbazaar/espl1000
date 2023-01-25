@@ -11,17 +11,18 @@ void compile_tac_const_value(struct RAT* rat, struct TAC* tac, struct IBuffer* i
 	//for TAC_CONST_VALUE there should have been a higher
 	//reg allocated for it's destination tmp
 
-	int reg = rat_get_register(rat, tac->dest);
+	const int reg = rat_get_register(rat, tac->dest);
 
-	int16_t value = tac->const_value;
+	//change to unsigned value here, for shifting
+	const uint16_t value = tac->const_value;
 
 	char c[30];
 	sprintf(c, "TAC_CONST_VALUE %d (0x%x)", value, value);
 
-	ldi(reg, value & 0xff, c);
+	ldi(reg, (value & 0xff), c);
 
 	if(rat_is_wide(rat, tac->dest)){
 
-		ldi(reg+1, (value >> 8) & 0xff, c);
+		ldi((reg+1), ((value >> 8) & 0xff), c);
 	}
 }

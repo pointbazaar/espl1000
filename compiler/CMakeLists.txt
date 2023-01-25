@@ -208,7 +208,7 @@ target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a
 target_link_libraries("sd" sd-base)
 
 #libvmcu dependency for sd-tests
-target_link_libraries("sd-tests" ${CMAKE_SOURCE_DIR}/../dependencies/libvmcu-Virtual-MCU-Library/build-release/libvmcu.a)
+target_link_libraries("sd-tests" ${CMAKE_SOURCE_DIR}/../dependencies/libvmcu-Virtual-MCU-Library/build-release/libvmcu.a "-lm")
 
 target_link_libraries("sd-tests" sd-base)
 
