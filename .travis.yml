@@ -10,20 +10,20 @@ jobs:
       arch: amd64
       compiler: gcc
 
-    #- dist: jammy # 22.04
-    #  arch: amd64
-    #  compiler: clang
+    - dist: jammy # 22.04
+      arch: amd64
+      compiler: clang
 
     #- dist: jammy # 22.04
     #  arch: arm64
 
     - dist: focal # 20.04
-      arch: amd64 #/usr/bin/ld: cannot find -lfl
+      arch: amd64
       compiler: gcc
 
-    #- dist: focal # 20.04
-    #  arch: amd64 #/usr/bin/ld: cannot find -lfl
-    #  compiler: clang
+    - dist: focal # 20.04
+      arch: amd64
+      compiler: clang
 
     #- dist: focal # 20.04
     #  arch: arm64
@@ -41,7 +41,7 @@ before_install:
 addons:
   apt:
     packages:
-      - flex      # for the lexer 
+      - flex      # for the lexer
       - libfl-dev # for the lexer
       - cmake     # build system
       - avra      # to assemble the .asm files
