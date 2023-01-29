@@ -8,7 +8,12 @@
 
 void compile_tac_param(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
 
-    int reg_dest = rat_get_register(rat, tac->dest);
+	const char* c = "TAC_PARAM";
 
-	push(reg_dest, "push call param");
+	const int reg_dest = rat_get_register(rat, tac->dest);
+
+	push(reg_dest, c);
+
+	if(rat_is_wide(rat, tac->dest))
+		push(reg_dest+1, c);
 }

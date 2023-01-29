@@ -15,40 +15,88 @@
 
 #include "test_compile_tac.h"
 
+static void test_param_8bit();
+static void test_param_16bit();
+
 void test_compile_tac_param(){
-	
-	status_test_codegen("TAC_PARAM");
-	
+
+	test_param_8bit();
+	test_param_16bit();
+}
+
+static void test_param_8bit(){
+
+	status_test_codegen("TAC_PARAM - (8 bit)");
+
 	//test that the value gets pushed
 	//and the stack pointer decrements
-	
+
 	const int8_t fixed_value = rand()%0xff;
-	
+
 	const uint8_t SPL_ADDR = 0x5d;
 	const uint8_t SPH_ADDR = 0x5e;
-	
-    struct TACBuffer* b = tacbuffer_ctor();
-    
-    tacbuffer_append(b, makeTACSetupSP());
-    tacbuffer_append(b, makeTACConst(0, fixed_value));
-    tacbuffer_append(b, makeTACParam(0));
-    tacbuffer_append(b, makeTACReturn(0));
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+	struct TACBuffer* b = tacbuffer_ctor();
 
-    vmcu_system_step_n(system, 4);
-	
+	tacbuffer_append(b, makeTACSetupSP());
+	tacbuffer_append(b, makeTACConst(0, fixed_value));
+	tacbuffer_append(b, makeTACParam(0));
+	tacbuffer_append(b, makeTACReturn(0));
+
+	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+
+	vmcu_system_step_n(system, 4);
+
 	int sp_old = vmcu_system_read_data(system, SPL_ADDR) | vmcu_system_read_data(system, SPH_ADDR) << 8;
-	
+
 	vmcu_system_step_n(system, 3);
-	
+
 	int sp = vmcu_system_read_data(system, SPL_ADDR) | vmcu_system_read_data(system, SPH_ADDR) << 8;
-	
+
 	//assert that SP was decremented
 	assert(sp == sp_old - 1);
-	
+
 	//assert that fixed_value is on the stack
 	assert(vmcu_system_read_data(system, sp_old) == fixed_value);
-	
+
+	vmcu_system_dtor(system);
+}
+
+static void test_param_16bit(){
+
+	status_test_codegen("TAC_PARAM - (16 bit)");
+
+	//test that the value gets pushed
+	//and the stack pointer decrements
+
+	const uint16_t fixed_value = 0x0abc;
+
+	const uint8_t SPL_ADDR = 0x5d;
+	const uint8_t SPH_ADDR = 0x5e;
+
+	struct TACBuffer* b = tacbuffer_ctor();
+
+	tacbuffer_append(b, makeTACSetupSP());
+	tacbuffer_append(b, makeTACConst16(0, fixed_value));
+	tacbuffer_append(b, makeTACParam(0));
+	tacbuffer_append(b, makeTACReturn(0));
+
+	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+
+	vmcu_system_step_n(system, 4);
+
+	const int sp_old = vmcu_system_read_data(system, SPL_ADDR) | vmcu_system_read_data(system, SPH_ADDR) << 8;
+
+	vmcu_system_step_n(system, 4);
+
+	const int sp = vmcu_system_read_data(system, SPL_ADDR) | vmcu_system_read_data(system, SPH_ADDR) << 8;
+
+	//assert that SP was decremented
+	assert(sp == sp_old - 2);
+
+	//assert that fixed_value is on the stack
+	assert((uint8_t)vmcu_system_read_data(system, sp_old-1) == 0x0a);
+	assert((uint8_t)vmcu_system_read_data(system, sp_old) == 0xbc);
+
 	vmcu_system_dtor(system);
 }
