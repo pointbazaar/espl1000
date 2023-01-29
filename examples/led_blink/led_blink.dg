@@ -15,12 +15,6 @@ D13 PIN -------------------|
 //PB5 is on D13 on the Arduino
 //PB0 is on D08 on the Arduino
 
-//CONSTANTS:
-// PORTB 0x25
-// DDRB  0x24
-// TCCR0B 0x45
-// TCNT0  0x46
-
 fn main () ~> int {
 	//set D13 / PB5
 
@@ -28,30 +22,15 @@ fn main () ~> int {
 	//[0x24] = 0b00100000;
 
 	//set everything to output
-	[0x24] = 0xff;
+	portb_ddrd(0xff);
 
 	while(true){
 
-		led_on();
+		portb_write(0b00010000);
 		delay();
-		led_off();
+		portb_write(0b00100000);
 		delay();
 	}
-	return 1;
-}
-
-fn led_on() -> int {
-	//TODO: confirm this is right
-	//set PORTB Data Register
-	//PORTB 5
-	[0x25] = 0xff;
-	return 1;
-}
-
-fn led_off() -> int {
-	//TODO: confirm this is right
-	//PORTB = 0x0
-	[0x25] = 0x00;
 	return 1;
 }
 
@@ -60,13 +39,14 @@ fn delay() -> int {
 	//using Timer0
 
 	//TCCR0A = 0x0, set timer mode
-	[0x44] = 0x0;
+	timer0_mode(0x0);
 
 	//TCCR0B = 0b00000101, set prescaler to 1024
+	//timer0_prescaler(0b00000101);
 	[0x45] = 0x5;
 
 	//while(TCNT0 != 0xfe){}
-	while([0x46] != 0xfe){}
+	while(timer0_read() != 0xfe){}
 
 	return 1;
 }

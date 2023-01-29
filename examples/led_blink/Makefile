@@ -2,7 +2,7 @@ help:
 	@echo "make timer, make notimer, make clean"
 
 timer: clean
-	sd -debug led_blink.dg
+	sd -debug led_blink.dg ../../stdlib/portb.dg ../../stdlib/timer0.dg
 	sudo avrdude -c arduino -p atmega328p -P /dev/ttyACM0 -U flash:w:led_blink.hex
 
 notimer:
