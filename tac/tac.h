@@ -132,7 +132,7 @@ struct TAC* makeTACUnaryOp(uint32_t dest, uint32_t src, enum TAC_OP op);
 struct TAC* makeTACStoreConstAddr(uint32_t addr, uint32_t src);
 struct TAC* makeTACLoadConstAddr(uint32_t dest, uint32_t addr);
 
-struct TAC* makeTACParam(uint32_t dest);
+struct TAC* makeTACParam(uint32_t dest, bool push16);
 struct TAC* makeTACCall(uint32_t tmp, uint32_t function_index);
 
 struct TAC* makeTACSetupStackframe(uint32_t frame_size);

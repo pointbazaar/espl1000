@@ -40,7 +40,7 @@ static void test_param_8bit(){
 
 	tacbuffer_append(b, makeTACSetupSP());
 	tacbuffer_append(b, makeTACConst(0, fixed_value));
-	tacbuffer_append(b, makeTACParam(0));
+	tacbuffer_append(b, makeTACParam(0, false));
 	tacbuffer_append(b, makeTACReturn(0));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
@@ -78,7 +78,7 @@ static void test_param_16bit(){
 
 	tacbuffer_append(b, makeTACSetupSP());
 	tacbuffer_append(b, makeTACConst16(0, fixed_value));
-	tacbuffer_append(b, makeTACParam(0));
+	tacbuffer_append(b, makeTACParam(0, true));
 	tacbuffer_append(b, makeTACReturn(0));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);

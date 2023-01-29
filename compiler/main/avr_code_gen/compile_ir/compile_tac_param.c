@@ -14,6 +14,6 @@ void compile_tac_param(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
 
 	push(reg_dest, c);
 
-	if(rat_is_wide(rat, tac->dest))
+	if(rat_is_wide(rat, tac->dest) && tac->const_value == 16)
 		push(reg_dest+1, c);
 }

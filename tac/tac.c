@@ -222,11 +222,18 @@ struct TAC* makeTACLoadConstAddr(uint32_t dest, uint32_t addr){
 }
 
 
-struct TAC* makeTACParam(uint32_t dest){
+struct TAC* makeTACParam(uint32_t dest, bool push16){
+
 	struct TAC* t = makeTAC();
-    t->kind = TAC_PARAM;
-    t->dest = dest;
-    return t;
+	t->kind = TAC_PARAM;
+	t->dest = dest;
+
+	if(push16)
+		t->const_value = 16;
+	else
+		t->const_value = 8;
+
+	return t;
 }
 
 struct TAC* makeTACCall(uint32_t tmp, uint32_t function_index){

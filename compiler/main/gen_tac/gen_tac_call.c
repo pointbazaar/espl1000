@@ -13,31 +13,37 @@
 
 void tac_call(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx){
 
-    for(size_t i = 0; i < call->count_args; i++){
-		
-        struct Expr* expr = call->args[i];
-        
-        tac_expr(buffer, expr, ctx);
-        
-        struct TAC* t = makeTACParam(tacbuffer_last_dest(buffer));
+	const char* fname = call->callable->simple_var->name;
 
-        tacbuffer_append(buffer, t);
-    }
+	struct SST*      sst = ctx_tables(ctx)->sst;
+	struct SSTLine* line = sst_get(sst, fname);
 
-    if(call->callable->member_access != NULL){
-        printf("member access calls currently unsupported on avr_code_gen\n");
-        exit(1);
-    }
+	for(size_t i = 0; i < call->count_args; i++){
 
-    if(call->callable->simple_var->count_indices != 0){
-        printf("calls with indices currently unsupported on avr_code_gen\n");
-        exit(1);
-    }
-    
-    uint32_t index = sst_index_of(ctx_tables(ctx)->sst, call->callable->simple_var->name);
-    
-    
-    struct TAC* t2 = makeTACCall(make_temp(), index);
+		struct Expr* expr = call->args[i];
 
-    tacbuffer_append(buffer, t2);
+		tac_expr(buffer, expr, ctx);
+
+		const bool push16 = 16 == lvst_sizeof_type(line->method->decl->args[i]->type);
+
+		struct TAC* t = makeTACParam(tacbuffer_last_dest(buffer), push16);
+
+		tacbuffer_append(buffer, t);
+	}
+
+	if(call->callable->member_access != NULL){
+		printf("member access calls currently unsupported on avr_code_gen\n");
+		exit(1);
+	}
+
+	if(call->callable->simple_var->count_indices != 0){
+		printf("calls with indices currently unsupported on avr_code_gen\n");
+		exit(1);
+	}
+
+	uint32_t index = sst_index_of(sst, fname);
+
+	struct TAC* t2 = makeTACCall(make_temp(), index);
+
+	tacbuffer_append(buffer, t2);
 }
