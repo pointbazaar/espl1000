@@ -1,11 +1,48 @@
-BasedOnStyle: LLVM
-PointerAlignment: Left
-IndentWidth: 8
-UseTab: Always
-BreakBeforeBraces: Attach
+# not basing on any other style to protect against future changes
+# BasedOnStyle: LLVM
+
+Language: Cpp
+
+# AlignArrayOfStructures: Left
+
+AlignTrailingComments:
+  Kind: Never
+
+AllowShortCaseLabelsOnASingleLine: true
 AllowShortIfStatementsOnASingleLine: true
-IndentCaseLabels: false
-# SpacesBeforeTrailingComments: 0
+AllowShortBlocksOnASingleLine: true
+
+# void f() {
+# ...
+# }
+BreakBeforeBraces: Attach
+
+# do not wrap lines.
+ColumnLimit: 0
+
+DerivePointerAlignment: false
+
+IndentWidth: 8
+
+IndentCaseLabels: true
+
+# void* x;
+PointerAlignment: Left
+
+# sort includes, making it easier to find stuff
+# we disable this for now as it would cause a lot of diff
+# SortIncludes: true
+SortIncludes: Never
+
 SpacesInLineCommentPrefix:
   Minimum: 0
-  Maximum: 0
+  Maximum: 1
+
+SpacesInParentheses: false
+
+# not using 'Always' because we want indentation
+# to be done with tabs, and alignment and everything
+# after the indentation to be done with spaces, so it
+# looks consistent for everyone no matter their tab width in spaces.
+UseTab: AlignWithSpaces
+
