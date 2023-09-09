@@ -14,6 +14,11 @@ all:
 	cd examples   && make
 	#cd stdlib     && make
 
+ci: check-format all
+
+check-format:
+	./check-format.sh
+
 test:
 	#cd token      && make test
 	cd ast        && make test

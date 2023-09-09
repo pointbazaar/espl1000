@@ -45,6 +45,7 @@ addons:
       - libfl-dev # for the lexer
       - cmake     # build system
       - avra      # to assemble the .asm files
+      - clang-format # check formatting
 install: pwd
 script: make all
 env:

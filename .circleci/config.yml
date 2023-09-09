@@ -17,7 +17,7 @@ jobs:
             echo 'export PATH=/home/circleci/project/lexer/build:/home/circleci/project/parser/build:/home/circleci/project/compiler:"$PATH"' >> "$BASH_ENV"
             source "$BASH_ENV"
             echo "PATH is: $PATH"
-            make
+            make all
   build-job-ubuntu-2204:
     machine:
       image: ubuntu-2204:2022.10.2
@@ -34,12 +34,32 @@ jobs:
             echo 'export PATH=/home/circleci/project/lexer/build:/home/circleci/project/parser/build:/home/circleci/project/compiler:"$PATH"' >> "$BASH_ENV"
             source "$BASH_ENV"
             echo "PATH is: $PATH"
-            make
+            make all
+  check-format:
+    #machine:
+    #  image: ubuntu-2204:2023.07.2
+    docker:
+      - image: library/archlinux:latest
+    # Add steps to the job
+    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+    steps:
+      - checkout
+      - run: whoami
+      - run: pacman -Sy
+      - run: pacman -S --noconfirm make clang
+      - run:
+          name: "build"
+          command: |
+            echo 'export PATH=/home/circleci/project/lexer/build:/home/circleci/project/parser/build:/home/circleci/project/compiler:"$PATH"' >> "$BASH_ENV"
+            source "$BASH_ENV"
+            echo "PATH is: $PATH"
+            make check-format
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   build-workflow:
     jobs:
+      - check-format
       - build-job-ubuntu-2004
       - build-job-ubuntu-2204
