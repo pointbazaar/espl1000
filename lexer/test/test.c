@@ -1,21 +1,21 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdbool.h>
 #include <assert.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include "test.h"
-#include "../../token/token/token.h"
 #include "../../token/TokenKeys.h"
+#include "../../token/token/token.h"
 #include "lexer_test_utils.h"
+#include "test.h"
 
 static uint32_t test_num = 1;
 
-void printt(char* test_name){
+void printt(char* test_name) {
 	printf("[Lexer][Test][#%02d] %s", test_num++, test_name);
 }
 
-int main(){
+int main() {
 
 	printf("[Lexer] Running Tests... \n");
 
@@ -41,8 +41,8 @@ int main(){
 
 	test_comma();
 	test_arrow();
-	
-	//tests_const.c
+
+	// tests_const.c
 	test_lexes_escaped_char();
 	test_anytypetoken();
 	test_true();
@@ -53,8 +53,8 @@ int main(){
 	test_int_3();
 	test_hex();
 	test_binconst();
-	
-	//tests_mixed.c
+
+	// tests_mixed.c
 	test_mixed_1();
 	test_mixed_2();
 	test_mixed_3();
@@ -73,7 +73,7 @@ int main(){
 	test_mixed_16();
 	//----------------
 
-	//tests_operators.c
+	// tests_operators.c
 	test_operators();
 	test_operators_cmp();
 	test_operators_logical();
@@ -81,14 +81,14 @@ int main(){
 	test_assign_operators();
 	//----------------
 
-	//tests_keywords.c
+	// tests_keywords.c
 	test_if_else();
 	test_break();
 	test_for();
 	test_in();
 	//----------------
-	
-	//tests_comments.c
+
+	// tests_comments.c
 	test_single_line_comment();
 	test_multi_line_comment();
 
@@ -99,7 +99,7 @@ int main(){
 
 	test_brackets();
 
-	printf("[Lexer] All %i Tests Passed\n", test_num-1);
+	printf("[Lexer] All %i Tests Passed\n", test_num - 1);
 
 	return 0;
 }

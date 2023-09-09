@@ -1,8 +1,8 @@
 #ifndef DRIVER
 #define DRIVER
 
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 extern FILE* outFile;
 

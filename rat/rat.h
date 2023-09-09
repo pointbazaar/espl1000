@@ -1,12 +1,12 @@
 #ifndef SMALLDRAGON_TOPLEVEL_RAT_H
 #define SMALLDRAGON_TOPLEVEL_RAT_H
 
-#include <stdbool.h>
 #include <inttypes.h>
+#include <stdbool.h>
 
 #define RAT_CAPACITY (32)
 
-//r16 is our scratch register
+// r16 is our scratch register
 #define RAT_SCRATCH_REG (16)
 
 struct RAT;

@@ -1,14 +1,13 @@
 #ifndef DEREFLL_H
 #define DEREFLL_H
 
-//struct DerefLL
+// struct DerefLL
 //
-//A representation of a chain of dereferencing and indexing access as a Linked List
+// A representation of a chain of dereferencing and indexing access as a Linked List
 
-//e.g.
+// e.g.
 
 // x1[e1][e2].x2[...]....
-
 
 // &x1, +index(e1), deref, +index(e2), deref, +offset(.x2), deref
 
@@ -23,7 +22,6 @@
 
 // The order of what is happening also becomes clearer with this Linked List.
 
-
 enum DEREFLL_ACTION {
 
 	DEREFLL_INIT,
@@ -32,26 +30,24 @@ enum DEREFLL_ACTION {
 	DEREFLL_DEREF,
 };
 
-
 struct DerefLL {
-	//this struct should be immutable
+	// this struct should be immutable
 
-	//at most 1 of these is valid for an instance
-	struct SimpleVar* initial; //may be NULL
-	struct Expr* index_expr;   //may be NULL
-	char* member_name; //may be NULL
-
+	// at most 1 of these is valid for an instance
+	struct SimpleVar* initial;     // may be NULL
+	struct Expr*      index_expr;  // may be NULL
+	char*             member_name; // may be NULL
 
 	enum DEREFLL_ACTION action;
-	struct DerefLL* next; //may be NULL
+	struct DerefLL*     next; // may be NULL
 
-	//type is populated by special function (not ctor)
+	// type is populated by special function (not ctor)
 	struct Type* type;
 };
 
 struct DerefLL* derefll_ctor_variable(struct Variable* v);
 struct DerefLL* derefll_ctor_simplevar(struct SimpleVar* sv);
-void derefll_dtor(struct DerefLL* dll);
+void            derefll_dtor(struct DerefLL* dll);
 
 void derefll_append(struct DerefLL* d1, struct DerefLL* d2);
 

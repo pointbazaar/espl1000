@@ -28,7 +28,6 @@ bool tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx);
 bool tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx);
 bool tc_forstmt(struct ForStmt* f, struct TCCtx* tcctx);
 
-
 bool tc_expr(struct Expr* expr, struct TCCtx* tcctx);
 bool tc_unopterm(struct UnOpTerm* uot, struct TCCtx* tcctx);
 bool tc_term(struct Term* term, struct TCCtx* tcctx);
@@ -41,7 +40,7 @@ bool tc_range(struct Range* r, struct TCCtx* tcctx);
 
 bool tc_method(struct Method* m, struct TCCtx* tcctx);
 
-bool tc_namespace  (struct Namespace* n, struct TCCtx* tcctx);
+bool tc_namespace(struct Namespace* n, struct TCCtx* tcctx);
 
 bool tc_stmtblock(struct StmtBlock* s, struct TCCtx* tcctx);
 

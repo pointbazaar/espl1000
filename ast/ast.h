@@ -1,23 +1,21 @@
 #ifndef AST_H
 #define AST_H
 
+#include <inttypes.h>
 #include <stdbool.h>
 #include <stddef.h>
-#include <inttypes.h>
-
-#include "ast_declare.h"
-
-#include "ast/ast_types.h"
-#include "ast/ast_stmts.h"
-#include "ast/ast_const.h"
-#include "ast/ast_struct.h"
-#include "ast/ast_var.h"
-#include "ast/ast_expr.h"
-#include "ast/ast_subr.h"
 
 #include "../util/exit_malloc/exit_malloc.h"
+#include "ast/ast_const.h"
+#include "ast/ast_expr.h"
+#include "ast/ast_stmts.h"
+#include "ast/ast_struct.h"
+#include "ast/ast_subr.h"
+#include "ast/ast_types.h"
+#include "ast/ast_var.h"
+#include "ast_declare.h"
 
-/* To quickly allocate Instances. Instead of 
+/* To quickly allocate Instances. Instead of
  * x = malloc(sizeof(struct IntConst));
  * we have:
  * x = make(IntConst);
@@ -27,39 +25,46 @@
 
 struct AST {
 	struct Namespace** namespaces;
-	uint16_t count_namespaces;
+	uint16_t           count_namespaces;
 };
 
 struct Namespace {
-	//a namespace is represented by a filename.
-	//the contents of a namespace are the contents of the file
+	// a namespace is represented by a filename.
+	// the contents of a namespace are the contents of the file
 
-	char* src_path; 	//the .dg filename
-	char* token_path; 	//the .dg.tokens filename
-	
+	char* src_path;   // the .dg filename
+	char* token_path; // the .dg.tokens filename
+
 	char name[DEFAULT_STR_SIZE];
 
 	uint16_t count_includes;
-	char** includes;
+	char**   includes;
 
-	//structs must be declared before the subroutines
+	// structs must be declared before the subroutines
 	struct StructDecl** structs;
-	uint16_t count_structs;
-	size_t capacity_structs;
+	uint16_t            count_structs;
+	size_t              capacity_structs;
 
 	struct Method** methods;
-	uint16_t count_methods;
-	size_t capacity_methods;
+	uint16_t        count_methods;
+	size_t          capacity_methods;
 };
 
-struct Range { struct ASTNode super; struct Expr* start; struct Expr* end; };
+struct Range {
+	struct ASTNode super;
+	struct Expr*   start;
+	struct Expr*   end;
+};
 
-struct Id  { struct ASTNode super; char identifier[DEFAULT_STR_SIZE]; };
+struct Id {
+	struct ASTNode super;
+	char           identifier[DEFAULT_STR_SIZE];
+};
 
 struct StmtBlock {
-	struct ASTNode super; 
-	uint16_t count;
-	struct Stmt** stmts;
+	struct ASTNode super;
+	uint16_t       count;
+	struct Stmt**  stmts;
 };
 
 #endif

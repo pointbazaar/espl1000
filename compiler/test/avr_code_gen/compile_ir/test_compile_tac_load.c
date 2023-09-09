@@ -1,35 +1,31 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
-
-#include "libvmcu/libvmcu_system.h"
-#include "libvmcu/libvmcu_analyzer.h"
-
-#include "avr_code_gen/cg_avr.h"
-#include "avr_code_gen/cg_avr_basic_block.h"
-
-#include "tac/tacbuffer.h"
 
 #include "../test_avr_code_gen.h"
 #include "../test_avr_code_gen_util.h"
-
+#include "avr_code_gen/cg_avr.h"
+#include "avr_code_gen/cg_avr_basic_block.h"
+#include "libvmcu/libvmcu_analyzer.h"
+#include "libvmcu/libvmcu_system.h"
+#include "tac/tacbuffer.h"
 #include "test_compile_tac.h"
 
 static void test_8bit_addr();
 static void test_16bit_addr();
 
-void test_compile_tac_load(){
+void test_compile_tac_load() {
 
 	test_8bit_addr();
 	test_16bit_addr();
 }
 
-void test_8bit_addr(){
+void test_8bit_addr() {
 
 	status_test_codegen("TAC_LOAD (8 bit address)");
 
-	const uint16_t addr        = 0xc7+rand()%10;
-	const int8_t   fixed_value = rand()%0xff;
+	const uint16_t addr        = 0xc7 + rand() % 10;
+	const int8_t   fixed_value = rand() % 0xff;
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
@@ -51,12 +47,12 @@ void test_8bit_addr(){
 	vmcu_system_dtor(system);
 }
 
-void test_16bit_addr(){
+void test_16bit_addr() {
 
 	status_test_codegen("TAC_LOAD (16 bit address)");
 
-	const uint16_t addr        = 0x0100+rand()%100;
-	const int8_t   fixed_value = rand()%0xff;
+	const uint16_t addr        = 0x0100 + rand() % 100;
+	const int8_t   fixed_value = rand() % 0xff;
 
 	struct TACBuffer* b = tacbuffer_ctor();
 

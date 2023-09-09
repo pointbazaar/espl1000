@@ -1,11 +1,11 @@
-#include <stdio.h>
-#include <stdbool.h>
 #include <assert.h>
+#include <stdbool.h>
+#include <stdio.h>
 
+#include "avr_code_gen/compile_ir/compile_tac.h"
 #include "rat/rat.h"
 #include "tac/tac.h"
 #include "util/ctx.h"
-#include "avr_code_gen/compile_ir/compile_tac.h"
 
 void compile_tac_store(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
@@ -18,21 +18,21 @@ void compile_tac_store(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 	const bool src_wide  = rat_is_wide(rat, tac->arg1);
 	const bool dest_wide = rat_is_wide(rat, tac->dest);
 
-	//set X
+	// set X
 	mov(XL, reg_dest, c);
 
 	if(dest_wide)
-	  mov(XH, reg_dest+1, c);
+		mov(XH, reg_dest + 1, c);
 	else
-	  ldi(XH, 0, c);
+		ldi(XH, 0, c);
 
-	if(src_wide){
-		//st X+, reg_src
-		//st X, reg_src+1
+	if(src_wide) {
+		// st X+, reg_src
+		// st X, reg_src+1
 		stXplus(reg_src, c);
-		stX(reg_src+1, c);
-	}else{
-		//st X, reg_src
+		stX(reg_src + 1, c);
+	} else {
+		// st X, reg_src
 		stX(reg_src, c);
 	}
 }

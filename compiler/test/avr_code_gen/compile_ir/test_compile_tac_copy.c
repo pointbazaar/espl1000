@@ -1,39 +1,35 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
-
-#include "libvmcu/libvmcu_system.h"
-#include "libvmcu/libvmcu_analyzer.h"
-
-#include "avr_code_gen/cg_avr.h"
-#include "avr_code_gen/cg_avr_basic_block.h"
-
-#include "tac/tacbuffer.h"
 
 #include "../test_avr_code_gen.h"
 #include "../test_avr_code_gen_util.h"
-
+#include "avr_code_gen/cg_avr.h"
+#include "avr_code_gen/cg_avr_basic_block.h"
+#include "libvmcu/libvmcu_analyzer.h"
+#include "libvmcu/libvmcu_system.h"
+#include "tac/tacbuffer.h"
 #include "test_compile_tac.h"
 
 static void test_8bit();
 static void test_16bit();
 
-void test_compile_tac_copy(){
+void test_compile_tac_copy() {
 
 	test_8bit();
 	test_16bit();
 }
 
-static void test_8bit(){
+static void test_8bit() {
 
 	status_test_codegen("TAC_COPY - 8 bit");
 
-	const int8_t fixed_value = rand()%0xff;
+	const int8_t fixed_value = rand() % 0xff;
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
 	tacbuffer_append(b, makeTACConst(0, fixed_value));
-	tacbuffer_append(b, makeTACCopy(1,0));
+	tacbuffer_append(b, makeTACCopy(1, 0));
 	tacbuffer_append(b, makeTACReturn(1));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
@@ -45,16 +41,16 @@ static void test_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_16bit(){
+static void test_16bit() {
 
 	status_test_codegen("TAC_COPY - 16 bit");
 
-	const uint16_t fixed_value = 256 + rand()%0xffff;
+	const uint16_t fixed_value = 256 + rand() % 0xffff;
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
 	tacbuffer_append(b, makeTACConst(0, fixed_value));
-	tacbuffer_append(b, makeTACCopy(1,0));
+	tacbuffer_append(b, makeTACCopy(1, 0));
 	tacbuffer_append(b, makeTACReturn(1));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
@@ -64,7 +60,7 @@ static void test_16bit(){
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	int8_t r1 = vmcu_system_read_gpr(system, 1);
 
-	//printf("r0 0x%x %d,  r1 0x%x %d\n", r0, (uint8_t)r0, r1, (uint8_t)r1);
+	// printf("r0 0x%x %d,  r1 0x%x %d\n", r0, (uint8_t)r0, r1, (uint8_t)r1);
 
 	assert((uint8_t)r0 == (fixed_value & 0xff));
 	assert((uint8_t)r1 == (fixed_value & 0xff00) >> 8);

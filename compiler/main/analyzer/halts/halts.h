@@ -7,16 +7,16 @@
  * externally (Ctrl-C), SIGKILL, ...
  * That would be the case for a web server main loop
  * in some cases.
- * 
+ *
  * for other subroutines, it is desired that they will
  * terminate in all cases.
- * 
- * for some subroutines, we cannot know their 
+ *
+ * for some subroutines, we cannot know their
  * halting behavior
- * 
+ *
  * for other subroutines their halting behavior
  * depends on user input.
- * 
+ *
  * This enum is designed to be able to represent those
  * c_types_util of (non-)termination behavior.
  */

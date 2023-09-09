@@ -1,17 +1,17 @@
 #ifndef CC_H
 #define CC_H
 
-#include <stdbool.h>
 #include <inttypes.h>
+#include <stdbool.h>
 
 struct CCNode;
 
 struct CC {
-	//CC means "Callees and Callers"
-	
+	// CC means "Callees and Callers"
+
 	struct CCNode* callees;
 	struct CCNode* callers;
-	
+
 	bool calls_fn_ptrs;
 };
 
@@ -26,8 +26,8 @@ void cc_add_caller(struct CC* cc, char* name);
 //--------------------------------------------
 uint32_t cc_size(struct CCNode* ccnode);
 //--------------------------------------------
-struct CCNode* cc_next(struct CCNode* node); //may return NULL
-char* cc_name(struct CCNode* node);
+struct CCNode* cc_next(struct CCNode* node); // may return NULL
+char*          cc_name(struct CCNode* node);
 
 void cc_set_calls_fn_ptrs(struct CC* cc, bool value);
 #endif

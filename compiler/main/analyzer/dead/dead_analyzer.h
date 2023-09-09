@@ -6,7 +6,7 @@
  * main. If there is no main, all functions
  * are assumed to be live.
  */
- 
+
 struct ST;
 struct AST;
 

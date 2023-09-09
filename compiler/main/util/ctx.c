@@ -1,18 +1,16 @@
-#include <stdio.h>
 #include <inttypes.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 #include <libgen.h>
 #include <malloc.h>
 #include <regex.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "ast/ast.h"
 #include "compiler/cli/flags/flags.h"
-#include "tables/symtable/symtable.h"
-
 #include "ctx.h"
+#include "tables/symtable/symtable.h"
 
 /* this struct represents the context of compilation.
  * it provides information about symbol tables, debug parameters,
@@ -21,63 +19,60 @@
  * tasked with compiling an AST node.
  */
 struct Ctx {
-	//this struct should be opaque outside its implementation file
-	//to facilitate encapsulation
+	// this struct should be opaque outside its implementation file
+	// to facilitate encapsulation
 
-	//the compiler flags
+	// the compiler flags
 	struct Flags* flags;
 
-	//symbol tables
+	// symbol tables
 	struct ST* tables;
 
+	// for things like break, continue
+	// so they know which label to jump to
 
-	//for things like break, continue
-	//so they know which label to jump to
+	uint32_t loop_depth; // how many loops are we inside
 
-	uint32_t loop_depth; //how many loops are we inside
-
-	uint32_t label_loop_end; //label of current loop start
-	uint32_t label_loop_start; //label of current loop end
+	uint32_t label_loop_end;   // label of current loop start
+	uint32_t label_loop_start; // label of current loop end
 };
 
-
-struct Ctx* ctx_ctor(struct Flags* flags, struct ST* tables){
+struct Ctx* ctx_ctor(struct Flags* flags, struct ST* tables) {
 
 	struct Ctx* res = make(Ctx);
-	
+
 	res->flags  = flags;
-    res->tables = tables;
-    
-    res->loop_depth = 0;
-	
+	res->tables = tables;
+
+	res->loop_depth = 0;
+
 	return res;
 }
 
-void ctx_dtor(struct Ctx* ctx){
-	
+void ctx_dtor(struct Ctx* ctx) {
+
 	freeST(ctx_tables(ctx));
-    freeFlags(ctx_flags(ctx));
-    
-    free(ctx);
+	freeFlags(ctx_flags(ctx));
+
+	free(ctx);
 }
 
-struct Flags* ctx_flags(struct Ctx* ctx){
+struct Flags* ctx_flags(struct Ctx* ctx) {
 	return ctx->flags;
 }
 
-
-struct ST* ctx_tables(struct Ctx* ctx){
+struct ST* ctx_tables(struct Ctx* ctx) {
 	return ctx->tables;
 }
 
-void ctx_enter_loop(struct Ctx* ctx, uint32_t label_start, uint32_t label_end){
+void ctx_enter_loop(struct Ctx* ctx, uint32_t label_start, uint32_t label_end) {
 	ctx->label_loop_start = label_start;
 	ctx->label_loop_end   = label_end;
 	ctx->loop_depth++;
 }
 
-void ctx_exit_loop(struct Ctx* ctx){
-	if(ctx->loop_depth == 0){
+void ctx_exit_loop(struct Ctx* ctx) {
+	if(ctx->loop_depth == 0) {
 		printf("fatal error in ctx_exit_loop. Was not in a loop. Exiting");
 		fflush(stdout);
 		exit(1);
@@ -85,9 +80,9 @@ void ctx_exit_loop(struct Ctx* ctx){
 	ctx->loop_depth--;
 }
 
-uint32_t ctx_get_label_loop_start(struct Ctx* ctx){
+uint32_t ctx_get_label_loop_start(struct Ctx* ctx) {
 
-	if(ctx->loop_depth == 0){
+	if(ctx->loop_depth == 0) {
 		printf("fatal error in ctx_get_label_loop_start. Was not in a loop. Exiting");
 		fflush(stdout);
 		exit(1);
@@ -95,14 +90,12 @@ uint32_t ctx_get_label_loop_start(struct Ctx* ctx){
 	return ctx->label_loop_start;
 }
 
-uint32_t ctx_get_label_loop_end(struct Ctx* ctx){
+uint32_t ctx_get_label_loop_end(struct Ctx* ctx) {
 
-	if(ctx->loop_depth == 0){
+	if(ctx->loop_depth == 0) {
 		printf("fatal error in ctx_get_label_loop_end. Was not in a loop. Exiting");
 		fflush(stdout);
 		exit(1);
 	}
 	return ctx->label_loop_end;
 }
-
-

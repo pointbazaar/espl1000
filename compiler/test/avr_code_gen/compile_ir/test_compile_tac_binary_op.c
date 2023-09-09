@@ -1,18 +1,14 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
-
-#include "libvmcu/libvmcu_system.h"
-#include "libvmcu/libvmcu_analyzer.h"
-
-#include "avr_code_gen/cg_avr.h"
-#include "avr_code_gen/cg_avr_basic_block.h"
-
-#include "tac/tacbuffer.h"
 
 #include "../test_avr_code_gen.h"
 #include "../test_avr_code_gen_util.h"
-
+#include "avr_code_gen/cg_avr.h"
+#include "avr_code_gen/cg_avr_basic_block.h"
+#include "libvmcu/libvmcu_analyzer.h"
+#include "libvmcu/libvmcu_system.h"
+#include "tac/tacbuffer.h"
 #include "test_compile_tac.h"
 
 static void test_compile_tac_binary_op_add_8bit();
@@ -47,11 +43,11 @@ static void test_compile_tac_binary_op_eq_true_16bit();
 static void test_compile_tac_binary_op_eq_false_8bit();
 static void test_compile_tac_binary_op_eq_false_16bit();
 
-static int16_t make16(uint8_t high, uint8_t low){
+static int16_t make16(uint8_t high, uint8_t low) {
 	return (high << 8) | low;
 }
 
-void test_compile_tac_binary_op(){
+void test_compile_tac_binary_op() {
 
 	test_compile_tac_binary_op_add_8bit();
 	test_compile_tac_binary_op_add_16bit();
@@ -89,13 +85,13 @@ void test_compile_tac_binary_op(){
 	test_compile_tac_binary_op_eq_false_16bit();
 }
 
-static void test_compile_tac_binary_op_add_8bit(){
+static void test_compile_tac_binary_op_add_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP + (8 bit)");
 
-	const int8_t start = rand()%0xff;
+	const int8_t start = rand() % 0xff;
 
-	for(int8_t change = 0; change < 100; change += 10){
+	for(int8_t change = 0; change < 100; change += 10) {
 
 		const int8_t expected = start + change;
 
@@ -109,7 +105,7 @@ static void test_compile_tac_binary_op_add_8bit(){
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-		vmcu_system_step_n(system,8);
+		vmcu_system_step_n(system, 8);
 
 		const int8_t r0 = vmcu_system_read_gpr(system, 0);
 
@@ -119,17 +115,17 @@ static void test_compile_tac_binary_op_add_8bit(){
 	}
 }
 
-static void test_compile_tac_binary_op_add_16bit(){
+static void test_compile_tac_binary_op_add_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP + (16 bit)");
 
-	const int16_t start = rand()%0xffff;
+	const int16_t start = rand() % 0xffff;
 
-	for(int16_t change = 0; change < 1000; change += 100){
+	for(int16_t change = 0; change < 1000; change += 100) {
 
 		const int16_t expected = start + change;
 
-		//printf("%d + %d == %d\n", start, change, expected);
+		// printf("%d + %d == %d\n", start, change, expected);
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
@@ -141,23 +137,23 @@ static void test_compile_tac_binary_op_add_16bit(){
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-		vmcu_system_step_n(system,8);
+		vmcu_system_step_n(system, 8);
 
 		const int8_t r0 = vmcu_system_read_gpr(system, 0);
 		const int8_t r1 = vmcu_system_read_gpr(system, 1);
 
-		assert(make16(r1,r0) == expected);
+		assert(make16(r1, r0) == expected);
 
 		vmcu_system_dtor(system);
 	}
 }
 
-static void test_compile_tac_binary_op_sub_8bit(){
+static void test_compile_tac_binary_op_sub_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP - (8 bit)");
 
-	int8_t start = rand()%0xff;
-	int8_t change = rand()%0xff;
+	int8_t start    = rand() % 0xff;
+	int8_t change   = rand() % 0xff;
 	int8_t expected = start - change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -179,12 +175,12 @@ static void test_compile_tac_binary_op_sub_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_sub_16bit(){
+static void test_compile_tac_binary_op_sub_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP - (16 bit)");
 
-	int16_t start = rand()%0xffff;
-	int16_t change = rand()%0xffff;
+	int16_t start    = rand() % 0xffff;
+	int16_t change   = rand() % 0xffff;
 	int16_t expected = start - change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -202,17 +198,17 @@ static void test_compile_tac_binary_op_sub_16bit(){
 	const uint8_t r0 = vmcu_system_read_gpr(system, 0);
 	const uint8_t r1 = vmcu_system_read_gpr(system, 1);
 
-	assert(make16(r1,r0) == expected);
+	assert(make16(r1, r0) == expected);
 
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_and_8bit(){
+static void test_compile_tac_binary_op_and_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP & (8 bit)");
 
-	int8_t start = rand()%0xff;
-	int8_t change = rand()%0xff;
+	int8_t start    = rand() % 0xff;
+	int8_t change   = rand() % 0xff;
 	int8_t expected = start & change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -234,12 +230,12 @@ static void test_compile_tac_binary_op_and_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_and_16bit(){
+static void test_compile_tac_binary_op_and_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP & (16 bit)");
 
-	int16_t start = rand()%0xff;
-	int16_t change = rand()%0xff;
+	int16_t start    = rand() % 0xff;
+	int16_t change   = rand() % 0xff;
 	int16_t expected = start & change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -257,17 +253,17 @@ static void test_compile_tac_binary_op_and_16bit(){
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	int8_t r1 = vmcu_system_read_gpr(system, 1);
 
-	assert(make16(r1,r0) == expected);
+	assert(make16(r1, r0) == expected);
 
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_or_8bit(){
+static void test_compile_tac_binary_op_or_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP | (8 bit)");
 
-	int8_t start = rand()%0xff;
-	int8_t change = rand()%0xff;
+	int8_t start    = rand() % 0xff;
+	int8_t change   = rand() % 0xff;
 	int8_t expected = start | change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -289,12 +285,12 @@ static void test_compile_tac_binary_op_or_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_or_16bit(){
+static void test_compile_tac_binary_op_or_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP | (16 bit)");
 
-	int16_t start = rand()%0xffff;
-	int16_t change = rand()%0xffff;
+	int16_t start    = rand() % 0xffff;
+	int16_t change   = rand() % 0xffff;
 	int16_t expected = start | change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -312,17 +308,17 @@ static void test_compile_tac_binary_op_or_16bit(){
 	uint8_t r0 = vmcu_system_read_gpr(system, 0);
 	uint8_t r1 = vmcu_system_read_gpr(system, 1);
 
-	assert(make16(r1,r0) == expected);
+	assert(make16(r1, r0) == expected);
 
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_xor_8bit(){
+static void test_compile_tac_binary_op_xor_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP ^ (8 bit)");
 
-	int8_t start = rand()%0xff;
-	int8_t change = rand()%0xff;
+	int8_t start    = rand() % 0xff;
+	int8_t change   = rand() % 0xff;
 	int8_t expected = start ^ change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -344,12 +340,12 @@ static void test_compile_tac_binary_op_xor_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_xor_16bit(){
+static void test_compile_tac_binary_op_xor_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP ^ (16 bit)");
 
-	uint16_t start = 0x1000 | (rand()%0xffff);
-	uint16_t change = rand()%0xffff;
+	uint16_t start    = 0x1000 | (rand() % 0xffff);
+	uint16_t change   = rand() % 0xffff;
 	uint16_t expected = start ^ change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -369,14 +365,14 @@ static void test_compile_tac_binary_op_xor_16bit(){
 
 	uint16_t actual = make16(r1, r0);
 
-	//printf("0x%x ^ 0x%x == 0x%x (actual: 0x%x)\n", start, change, expected, actual);
+	// printf("0x%x ^ 0x%x == 0x%x (actual: 0x%x)\n", start, change, expected, actual);
 
 	assert(actual == expected);
 
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_xor_mixed1(){
+static void test_compile_tac_binary_op_xor_mixed1() {
 
 	status_test_codegen("TAC_BINARY_OP ^ (mixed1, 8bit, 16bit) [FAILING - disabled]");
 	return;
@@ -406,7 +402,7 @@ static void test_compile_tac_binary_op_xor_mixed1(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_xor_mixed2(){
+static void test_compile_tac_binary_op_xor_mixed2() {
 
 	status_test_codegen("TAC_BINARY_OP ^ (mixed2, 16bit, 8bit)");
 
@@ -435,12 +431,12 @@ static void test_compile_tac_binary_op_xor_mixed2(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_neq_true_8bit(){
+static void test_compile_tac_binary_op_neq_true_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP != true (8 bit)");
 
-	int8_t value1 = rand()%0xf;
-	int8_t value2 = value1+1;
+	int8_t value1 = rand() % 0xf;
+	int8_t value2 = value1 + 1;
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
@@ -461,7 +457,7 @@ static void test_compile_tac_binary_op_neq_true_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_neq_true_16bit(){
+static void test_compile_tac_binary_op_neq_true_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP != true (16 bit)");
 
@@ -487,11 +483,11 @@ static void test_compile_tac_binary_op_neq_true_16bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_neq_false_8bit(){
+static void test_compile_tac_binary_op_neq_false_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP != false (8 bit)");
 
-	int8_t value1 = rand()%0xf;
+	int8_t value1 = rand() % 0xf;
 	int8_t value2 = value1;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -513,11 +509,11 @@ static void test_compile_tac_binary_op_neq_false_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_neq_false_16bit(){
+static void test_compile_tac_binary_op_neq_false_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP != false (16 bit)");
 
-	int16_t value1 = rand()%0xffff;
+	int16_t value1 = rand() % 0xffff;
 	int16_t value2 = value1;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -539,12 +535,12 @@ static void test_compile_tac_binary_op_neq_false_16bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_lt_true_8bit(){
+static void test_compile_tac_binary_op_lt_true_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP < true (8 bit)");
 
-	int8_t value1 = rand()%0xf;
-	int8_t value2 = value1+1;
+	int8_t value1 = rand() % 0xf;
+	int8_t value2 = value1 + 1;
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
@@ -565,7 +561,7 @@ static void test_compile_tac_binary_op_lt_true_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_lt_true_16bit(){
+static void test_compile_tac_binary_op_lt_true_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP < true (16 bit)");
 
@@ -591,11 +587,11 @@ static void test_compile_tac_binary_op_lt_true_16bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_lt_false_8bit(){
+static void test_compile_tac_binary_op_lt_false_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP < false (8 bit)");
 
-	int8_t value1 = rand()%0xf;
+	int8_t value1 = rand() % 0xf;
 	int8_t value2 = value1;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -617,7 +613,7 @@ static void test_compile_tac_binary_op_lt_false_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_lt_false_16bit(){
+static void test_compile_tac_binary_op_lt_false_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP < false (16 bit)");
 
@@ -643,11 +639,11 @@ static void test_compile_tac_binary_op_lt_false_16bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_eq_true_8bit(){
+static void test_compile_tac_binary_op_eq_true_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP == true (8 bit)");
 
-	int8_t value1 = rand()%0xff;
+	int8_t value1 = rand() % 0xff;
 	int8_t value2 = value1;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -669,11 +665,11 @@ static void test_compile_tac_binary_op_eq_true_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_eq_true_16bit(){
+static void test_compile_tac_binary_op_eq_true_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP == true (16 bit)");
 
-	int16_t value1 = 0xff00 | rand()%0xff;
+	int16_t value1 = 0xff00 | rand() % 0xff;
 	int16_t value2 = value1;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -695,12 +691,12 @@ static void test_compile_tac_binary_op_eq_true_16bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_eq_false_8bit(){
+static void test_compile_tac_binary_op_eq_false_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP == false (8 bit)");
 
-	int8_t value1 = rand()%0xff;
-	int8_t value2 = value1+1;
+	int8_t value1 = rand() % 0xff;
+	int8_t value2 = value1 + 1;
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
@@ -721,7 +717,7 @@ static void test_compile_tac_binary_op_eq_false_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_compile_tac_binary_op_eq_false_16bit(){
+static void test_compile_tac_binary_op_eq_false_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP == false (16 bit)");
 

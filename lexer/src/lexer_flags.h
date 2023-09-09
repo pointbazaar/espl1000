@@ -3,11 +3,10 @@
 
 #include <stdbool.h>
 
-struct LexerFlags{
-	
-	char* filename;
-	bool help;
-};
+struct LexerFlags {
 
+	char* filename;
+	bool  help;
+};
 
 #endif

@@ -5,6 +5,6 @@
 struct Ctx;
 struct IBuffer;
 
-void emit_asm_avr_single_tac(struct RAT* rat, struct TAC *tac, struct Ctx *ctx, struct IBuffer* ibu);
+void emit_asm_avr_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu);
 
 #endif

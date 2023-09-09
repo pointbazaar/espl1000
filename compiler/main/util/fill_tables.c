@@ -3,29 +3,26 @@
 #include <tables/sst/sst_print.h>
 #include <tables/stst/stst.h>
 #include <tables/stst/stst_print.h>
+
+#include "../../cli/flags/flags.h"
+#include "compiler/main/util/ctx.h"
+#include "fill_tables.h"
 #include "tables/symtable/symtable.h"
 
-#include "compiler/main/util/ctx.h"
-#include "../../cli/flags/flags.h"
+void fill_tables(struct AST* ast, struct Ctx* ctx) {
 
+	sst_clear(ctx_tables(ctx)->sst);
 
-#include "fill_tables.h"
+	for(int i = 0; i < ast->count_namespaces; i++) {
 
-void fill_tables(struct AST* ast, struct Ctx* ctx){
+		struct Namespace* ns = ast->namespaces[i];
 
-    sst_clear(ctx_tables(ctx)->sst);
+		sst_fill(ctx_tables(ctx), ctx_tables(ctx)->sst, ns);
+		stst_fill(ctx_tables(ctx)->stst, ns);
+	}
 
-    for(int i = 0; i < ast->count_namespaces; i++){
-
-        struct Namespace* ns = ast->namespaces[i];
-
-        sst_fill(ctx_tables(ctx), ctx_tables(ctx)->sst, ns);
-        stst_fill(ctx_tables(ctx)->stst, ns);
-
-    }
-
-    if(flags_debug(ctx_flags(ctx))){
-        sst_print(ctx_tables(ctx)->sst);
-        stst_print(ctx_tables(ctx)->stst);
-    }
+	if(flags_debug(ctx_flags(ctx))) {
+		sst_print(ctx_tables(ctx)->sst);
+		stst_print(ctx_tables(ctx)->stst);
+	}
 }

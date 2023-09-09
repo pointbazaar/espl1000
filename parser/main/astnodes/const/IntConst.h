@@ -1,8 +1,8 @@
 #ifndef INTCONST
 #define INTCONST
 
-#include <stdbool.h>
 #include <inttypes.h>
+#include <stdbool.h>
 
 struct TokenList;
 

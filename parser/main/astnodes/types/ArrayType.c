@@ -1,21 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "parser/main/util/parse_astnode.h"
-
 #include "ArrayType.h"
 #include "Type.h"
-
 #include "ast/ast.h"
-
-#include "token/list/TokenList.h"
+#include "parser/main/util/parse_astnode.h"
 #include "token/TokenKeys.h"
+#include "token/list/TokenList.h"
 #include "token/token/token.h"
 
-struct ArrayType* makeArrayType(struct Type* element_type){
-	
+struct ArrayType* makeArrayType(struct Type* element_type) {
+
 	struct ArrayType* res = make(ArrayType);
-	
+
 	res->super.line_num    = element_type->super.line_num;
 	res->super.annotations = 0;
 
@@ -26,25 +23,25 @@ struct ArrayType* makeArrayType(struct Type* element_type){
 
 struct ArrayType* makeArrayType2(struct TokenList* tokens) {
 
-	struct ArrayType* res = make(ArrayType);
+	struct ArrayType* res  = make(ArrayType);
 	struct TokenList* copy = list_copy(tokens);
-	
+
 	parse_astnode(copy, &(res->super));
 
-	if(!list_expect(copy, LBRACKET)){
+	if(!list_expect(copy, LBRACKET)) {
 		freeTokenListShallow(copy);
 		free(res);
 		return NULL;
 	}
 
 	res->element_type = makeType2(copy);
-	if(res->element_type == NULL){
+	if(res->element_type == NULL) {
 		freeTokenListShallow(copy);
 		free(res);
 		return NULL;
 	}
 
-	if(!list_expect(copy, RBRACKET)){
+	if(!list_expect(copy, RBRACKET)) {
 		freeTokenListShallow(copy);
 		free(res);
 		return NULL;
@@ -55,5 +52,3 @@ struct ArrayType* makeArrayType2(struct TokenList* tokens) {
 
 	return res;
 }
-
-

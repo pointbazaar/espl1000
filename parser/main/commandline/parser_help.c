@@ -20,5 +20,4 @@ void printHelp() {
 
 	printf("REPORTING BUGS\n");
 	printf("   https://github.com/pointbazaar/smalldragon/issues\n\n");
-		
 }

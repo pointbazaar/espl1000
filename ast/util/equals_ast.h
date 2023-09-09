@@ -2,14 +2,15 @@
 #define EQUALS_AST_H
 
 #include <stdbool.h>
+
 #include "../ast_declare.h"
 
 /* the functions in this file are currently implemented
  * on an as-needed basis
  */
- 
-//NOTE: all these subroutines accept NULL
-//as an argument
+
+// NOTE: all these subroutines accept NULL
+// as an argument
 
 bool eq_type(struct Type* a, struct Type* b);
 

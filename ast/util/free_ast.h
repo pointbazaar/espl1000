@@ -3,47 +3,47 @@
 
 #include "../ast.h"
 
-//this header file declares all subroutines
-//for freeing the memory allocated for AST Nodes.
+// this header file declares all subroutines
+// for freeing the memory allocated for AST Nodes.
 
-//these subroutines are separated from the
-//constructor subroutines in the parser,
-//as other modules (compiler, etc.)
-//must also be able to free AST Nodes,
-//as they could obtain such via ast_reader.c
+// these subroutines are separated from the
+// constructor subroutines in the parser,
+// as other modules (compiler, etc.)
+// must also be able to free AST Nodes,
+// as they could obtain such via ast_reader.c
 
 void free_ast(struct AST* ast);
 
-//const
+// const
 void free_const_value(struct ConstValue* cv);
 void free_string_const(struct StringConst* s);
 
-//subr
+// subr
 void free_decl_arg(struct DeclArg* da);
 void free_method(struct Method* m);
 void free_method_decl(struct MethodDecl* m);
 
-//other
+// other
 void free_identifier(struct Id* id);
 void free_namespace(struct Namespace* ns);
 void free_stmt_block(struct StmtBlock* block);
 void free_range(struct Range* range);
 
-//struct
+// struct
 void free_struct_decl(struct StructDecl* sd);
 void free_struct_member(struct StructMember* sm);
 
-//expr
+// expr
 void free_expr(struct Expr* expr);
 void free_term(struct Term* t);
 void free_un_op_term(struct UnOpTerm* t);
 void free_mdirect(struct MDirect* m);
 
-//var
+// var
 void free_variable(struct Variable* var);
 void free_simple_var(struct SimpleVar* sv);
 
-//stmts
+// stmts
 void free_assign_stmt(struct AssignStmt* as);
 void free_if_stmt(struct IfStmt* is);
 void free_call(struct Call* mc);
@@ -53,7 +53,7 @@ void free_while_stmt(struct WhileStmt* ws);
 void free_for_stmt(struct ForStmt* fstmt);
 void free_massign_stmt(struct MAssignStmt* m);
 
-//c_types_util
+// c_types_util
 void free_array_type(struct ArrayType* at);
 void free_basic_type(struct BasicType* btw);
 void free_simple_type(struct SimpleType* st);

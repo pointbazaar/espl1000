@@ -1,18 +1,14 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
-
-#include "libvmcu/libvmcu_system.h"
-#include "libvmcu/libvmcu_analyzer.h"
-
-#include "avr_code_gen/cg_avr.h"
-#include "avr_code_gen/cg_avr_basic_block.h"
-
-#include "tac/tacbuffer.h"
 
 #include "../test_avr_code_gen.h"
 #include "../test_avr_code_gen_util.h"
-
+#include "avr_code_gen/cg_avr.h"
+#include "avr_code_gen/cg_avr_basic_block.h"
+#include "libvmcu/libvmcu_analyzer.h"
+#include "libvmcu/libvmcu_system.h"
+#include "tac/tacbuffer.h"
 #include "test_compile_tac.h"
 
 static void case_true_8bit();
@@ -21,7 +17,7 @@ static void case_false_8bit();
 static void case_false_16bit();
 static void case_mixed();
 
-void test_compile_tac_if_goto(){
+void test_compile_tac_if_goto() {
 
 	case_true_8bit();
 	case_true_16bit();
@@ -32,14 +28,14 @@ void test_compile_tac_if_goto(){
 	case_mixed();
 }
 
-static void case_true_8bit(){
+static void case_true_8bit() {
 
 	status_test_codegen("TAC_IF_GOTO true (8 bit)");
 
-	const int8_t value      = rand()%0xff | 0x1;
-	const uint16_t address1 = 0x100+rand()%30;
+	const int8_t   value    = rand() % 0xff | 0x1;
+	const uint16_t address1 = 0x100 + rand() % 30;
 
-	//labels
+	// labels
 	const uint16_t l1   = 1;
 	const uint16_t lend = 2;
 
@@ -66,14 +62,14 @@ static void case_true_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void case_true_16bit(){
+static void case_true_16bit() {
 
 	status_test_codegen("TAC_IF_GOTO true (16 bit)");
 
-	const int8_t value      = rand()%0xff | 0x1;
-	const uint16_t address1 = 0x100+rand()%30;
+	const int8_t   value    = rand() % 0xff | 0x1;
+	const uint16_t address1 = 0x100 + rand() % 30;
 
-	//labels
+	// labels
 	const uint16_t l1   = 1;
 	const uint16_t lend = 2;
 
@@ -100,14 +96,14 @@ static void case_true_16bit(){
 	vmcu_system_dtor(system);
 }
 
-static void case_false_8bit(){
+static void case_false_8bit() {
 
 	status_test_codegen("TAC_IF_GOTO false (8 bit)");
 
-	const int8_t value      = rand()%0xff | 0x1;
-	const uint16_t address1 = 0x100+rand()%30;
+	const int8_t   value    = rand() % 0xff | 0x1;
+	const uint16_t address1 = 0x100 + rand() % 30;
 
-	//labels
+	// labels
 	const uint16_t l1   = 1;
 	const uint16_t lend = 2;
 
@@ -133,14 +129,14 @@ static void case_false_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void case_false_16bit(){
+static void case_false_16bit() {
 
 	status_test_codegen("TAC_IF_GOTO false (16 bit)");
 
-	const int8_t value      = rand()%0xff | 0x1;
-	const uint16_t address1 = 0x100+rand()%30;
+	const int8_t   value    = rand() % 0xff | 0x1;
+	const uint16_t address1 = 0x100 + rand() % 30;
 
-	//labels
+	// labels
 	const uint16_t l1   = 1;
 	const uint16_t lend = 2;
 
@@ -166,20 +162,20 @@ static void case_false_16bit(){
 	vmcu_system_dtor(system);
 }
 
-static void case_mixed(){
+static void case_mixed() {
 
 	status_test_codegen("TAC_IF_GOTO mixed");
 
-	//we need to test 2 cases
-	// - condition true, we branch
-	// - condition false, we do not branch
-	//we check by writing a fixed value to 2 known addresses in data space
+	// we need to test 2 cases
+	//  - condition true, we branch
+	//  - condition false, we do not branch
+	// we check by writing a fixed value to 2 known addresses in data space
 
-	const int8_t value = rand()%0xff | 0x1;
-	const uint16_t address1 = 0x100+rand()%30;
+	const int8_t   value    = rand() % 0xff | 0x1;
+	const uint16_t address1 = 0x100 + rand() % 30;
 	const uint16_t address2 = address1 + 1;
 
-	//labels
+	// labels
 	const uint16_t l1   = 1;
 	const uint16_t lend = 2;
 
@@ -188,14 +184,14 @@ static void case_mixed(){
 	tacbuffer_append(b, makeTACConst(0, value));
 
 	tacbuffer_append(b, makeTACConst(1, 1));
-	tacbuffer_append(b, makeTACIfGoto(1, l1)); //should branch
+	tacbuffer_append(b, makeTACIfGoto(1, l1)); // should branch
 	tacbuffer_append(b, makeTACGoto(lend));
 
 	tacbuffer_append(b, makeTACLabel(l1));
 	tacbuffer_append(b, makeTACConst(0, value));
 	tacbuffer_append(b, makeTACStoreConstAddr(address1, 0));
 	tacbuffer_append(b, makeTACConst(2, 0));
-	tacbuffer_append(b, makeTACIfGoto(2, lend)); //should not branch
+	tacbuffer_append(b, makeTACIfGoto(2, lend)); // should not branch
 	tacbuffer_append(b, makeTACConst(0, value));
 	tacbuffer_append(b, makeTACStoreConstAddr(address2, 0));
 	tacbuffer_append(b, makeTACGoto(lend));
@@ -207,7 +203,7 @@ static void case_mixed(){
 
 	vmcu_system_step_n(system, 20);
 
-	//check that the values have arrived
+	// check that the values have arrived
 	assert(vmcu_system_read_data(system, address1) == value);
 	assert(vmcu_system_read_data(system, address2) == value);
 

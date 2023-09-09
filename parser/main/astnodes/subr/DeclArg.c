@@ -1,42 +1,39 @@
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-#include "parser/main/util/parse_astnode.h"
-
-#include "DeclArg.h"
-#include "types/Type.h"
 #include "../Identifier.h"
-
+#include "DeclArg.h"
 #include "ast/util/free_ast.h"
-
-#include "token/list/TokenList.h"
+#include "parser/main/util/parse_astnode.h"
 #include "token/TokenKeys.h"
+#include "token/list/TokenList.h"
 #include "token/token/token.h"
+#include "types/Type.h"
 
 struct DeclArg* makeDeclArg(struct TokenList* tokens) {
 
-	struct DeclArg* res = make(DeclArg);
+	struct DeclArg*   res  = make(DeclArg);
 	struct TokenList* copy = list_copy(tokens);
-	
+
 	parse_astnode(copy, &(res->super));
 
 	res->type = makeType2(copy);
-	if(res->type == NULL){
+	if(res->type == NULL) {
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
 	}
 
 	struct Id* id = makeIdentifier(copy);
-	
-	if(id == NULL){ 
-		
+
+	if(id == NULL) {
+
 		free_type(res->type);
 		free(res);
 		freeTokenListShallow(copy);
-		
-		return NULL; 
+
+		return NULL;
 	}
 	strncpy(res->name, id->identifier, 19);
 	free_identifier(id);
