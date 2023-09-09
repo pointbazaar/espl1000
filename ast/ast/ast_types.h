@@ -1,6 +1,8 @@
 #ifndef AST_TYPES_H
 #define AST_TYPES_H
 
+#include <stdbool.h>
+
 #include "../ast_declare.h"
 #include "../sd_inttype.h"
 

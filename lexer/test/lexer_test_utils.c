@@ -5,6 +5,7 @@
 
 #include "../../token/list/TokenList.h"
 #include "../../token/reader/token_reader.h"
+#include "../../token/token/token.h"
 #include "lexer_test_utils.h"
 
 struct Token** lex(char* source) {

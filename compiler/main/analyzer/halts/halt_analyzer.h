@@ -1,6 +1,8 @@
 #ifndef HALT_ANALYZER_H
 #define HALT_ANALYZER_H
 
+#include "tables/symtable/symtable.h"
+
 /* this Analyzer Module
  * can performa a termination analysis for
  * functions. The results, for each function are:

@@ -211,8 +211,8 @@ static void case_and_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE & (16 bit)");
 
-	uint16_t start    = rand() % 0xffff;
-	uint16_t change   = rand() % 0xffff;
+	uint16_t start    = 0x1234;
+	uint16_t change   = 0xabcd;
 	uint16_t expected = start & change;
 
 	struct TACBuffer* b = tacbuffer_ctor();

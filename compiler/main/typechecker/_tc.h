@@ -1,10 +1,11 @@
 #ifndef _TC_H
 #define _TC_H
 
-struct TCCtx;
+#include <stdbool.h>
 
-struct Expr;
-struct Term;
+#include "ast/ast_declare.h"
+
+struct TCCtx;
 
 /*
  * the functions return true if the respective AST Node typechecks,

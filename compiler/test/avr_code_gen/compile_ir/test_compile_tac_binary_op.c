@@ -289,8 +289,8 @@ static void test_compile_tac_binary_op_or_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP | (16 bit)");
 
-	int16_t start    = rand() % 0xffff;
-	int16_t change   = rand() % 0xffff;
+	int16_t start    = 0xabcd;
+	int16_t change   = 0x1457;
 	int16_t expected = start | change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -345,7 +345,7 @@ static void test_compile_tac_binary_op_xor_16bit() {
 	status_test_codegen("TAC_BINARY_OP ^ (16 bit)");
 
 	uint16_t start    = 0x1000 | (rand() % 0xffff);
-	uint16_t change   = rand() % 0xffff;
+	uint16_t change   = 0xab38;
 	uint16_t expected = start ^ change;
 
 	struct TACBuffer* b = tacbuffer_ctor();

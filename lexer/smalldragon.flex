@@ -3,14 +3,16 @@
 	#include <stdbool.h>
 	#include "src/driver.h"
 	#include "src/lexer_flags.h"
-	
+
+	extern int fileno (FILE *__stream);
+
 	//for the token key macros
 	#include "../token/TokenKeys.h" 
 
 	int line_no = 1;
 %}
 
-%option header-file="lex.yy.h"
+%option header-file="lex.yy.h" noyywrap
 
 %x single_line_comment
 %x multi_line_comment

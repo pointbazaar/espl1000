@@ -1,6 +1,8 @@
 #ifndef DEREFLL_H
 #define DEREFLL_H
 
+#include "compiler/main/util/ctx.h"
+
 // struct DerefLL
 //
 // A representation of a chain of dereferencing and indexing access as a Linked List

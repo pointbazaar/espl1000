@@ -96,7 +96,7 @@ static void case_2_index() {
 	const int index2 = (rand() % 6) & 0b01111111;
 
 	char snippet[200];
-	char* template = "fn main() -> int { %s }";
+	char* template = "fn main() -> int { %.100s }";
 	char  snippet2[200];
 	char* body = "[[int]] arr = 0xc7; return arr[%d][%d];";
 	sprintf(snippet2, body, index1, index2);

@@ -6,6 +6,7 @@
 #include "../test_avr_code_gen_util.h"
 #include "avr_code_gen/cg_avr.h"
 #include "avr_code_gen/cg_avr_basic_block.h"
+#include "compiler/test/libvmcu_utils/libvmcu_utils.h"
 #include "libvmcu/libvmcu_analyzer.h"
 #include "libvmcu/libvmcu_system.h"
 #include "tac/tacbuffer.h"
