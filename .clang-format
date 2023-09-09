@@ -1,11 +1,87 @@
-BasedOnStyle: LLVM
-PointerAlignment: Left
-IndentWidth: 8
-UseTab: Always
-BreakBeforeBraces: Attach
+# The idea behind this config is to configure as much as possible
+# in order to only have the minimum amount of changes due to
+# some defaults changing in clang-format.
+# So as many things as possible should be specified in this .clang-format
+
+# not basing on any other style to protect against future changes
+# BasedOnStyle: LLVM
+
+Language: Cpp
+
+AlignArrayOfStructures: Left
+
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossEmptyLines: false
+  AlignCompound: true
+
+AlignConsecutiveDeclarations:
+  Enabled: true
+  AcrossEmptyLines: false
+
+AlignConsecutiveMacros: AcrossEmptyLines
+
+AllowShortCaseLabelsOnASingleLine: true
 AllowShortIfStatementsOnASingleLine: true
-IndentCaseLabels: false
-# SpacesBeforeTrailingComments: 0
+
+AlignTrailingComments: true
+
+AllowShortBlocksOnASingleLine: Never
+
+AllowShortLoopsOnASingleLine: false
+
+# void f() {
+# ...
+# }
+BreakBeforeBraces: Attach
+
+# do not wrap lines.
+ColumnLimit: 0
+
+DerivePointerAlignment: false
+
+IncludeIsMainRegex: "$"
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: "^<"
+    Priority: -40
+  - Regex: "^\""
+    Priority: -30
+  - Regex: "^\".."
+    Priority: -20
+  - Regex: '.*'
+    Priority: -10
+
+IndentWidth: 8
+
+IndentCaseLabels: true
+
+# void* x;
+PointerAlignment: Left
+
+SeparateDefinitionBlocks: Always
+
+SpaceBeforeParens: false
+SpaceBeforeSquareBrackets: false
+SpacesBeforeTrailingComments: 1
+SpacesInSquareBrackets: false
+
 SpacesInLineCommentPrefix:
-  Minimum: 0
-  Maximum: 0
+  Minimum: 1
+  Maximum: 1
+
+# (uint8_t)myvar;
+SpaceAfterCStyleCast: false
+
+# !here
+SpaceAfterLogicalNot: false
+
+# sort includes, making it easier to find stuff
+SortIncludes: true
+
+# not using 'Always' because we want indentation
+# to be done with tabs, and alignment and everything
+# after the indentation to be done with spaces, so it
+# looks consistent for everyone no matter their tab width in spaces.
+UseTab: AlignWithSpaces
+
