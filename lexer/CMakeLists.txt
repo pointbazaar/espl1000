@@ -39,7 +39,8 @@ target_compile_options(dragon-lexer-tests PUBLIC "-g" "-march=native" "-Wall" "-
 #target_link_libraries(dragon-lexer ${FLEX_LIBRARIES})
 #https://askubuntu.com/questions/289547/where-are-flex-libraries-located
 #this is the non-portable version... 
-target_link_libraries(dragon-lexer /usr/lib/x86_64-linux-gnu/libfl.a)
+#target_link_libraries(dragon-lexer /usr/lib/x86_64-linux-gnu/libfl.a)
+target_link_libraries(dragon-lexer libfl.so)
 
 target_link_libraries(dragon-lexer ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a)
 
