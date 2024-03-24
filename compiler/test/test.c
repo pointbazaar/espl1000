@@ -15,11 +15,6 @@ static void status_test_transpiler(char* msg){
 int main(){
 
 	status_test_transpiler("Running tests for smalldragon/compiler:");
-	
-	//seed the RNG for the randomized tests
-	time_t t;
-	srand((unsigned) time(&t));
-
 
 	status_test_transpiler("Typeinference");
 	test_suite_typeinference();

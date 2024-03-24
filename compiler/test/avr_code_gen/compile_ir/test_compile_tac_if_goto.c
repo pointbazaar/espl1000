@@ -36,8 +36,8 @@ static void case_true_8bit(){
 
 	status_test_codegen("TAC_IF_GOTO true (8 bit)");
 
-	const int8_t value      = rand()%0xff | 0x1;
-	const uint16_t address1 = 0x100+rand()%30;
+	const int8_t value      = 0x33 | 0x1;
+	const uint16_t address1 = 0x105;
 
 	//labels
 	const uint16_t l1   = 1;
@@ -70,8 +70,8 @@ static void case_true_16bit(){
 
 	status_test_codegen("TAC_IF_GOTO true (16 bit)");
 
-	const int8_t value      = rand()%0xff | 0x1;
-	const uint16_t address1 = 0x100+rand()%30;
+	const int8_t value      = 0x33 | 0x1;
+	const uint16_t address1 = 0x101;
 
 	//labels
 	const uint16_t l1   = 1;
@@ -104,8 +104,8 @@ static void case_false_8bit(){
 
 	status_test_codegen("TAC_IF_GOTO false (8 bit)");
 
-	const int8_t value      = rand()%0xff | 0x1;
-	const uint16_t address1 = 0x100+rand()%30;
+	const int8_t value      = 0x22 | 0x1;
+	const uint16_t address1 = 0x108;
 
 	//labels
 	const uint16_t l1   = 1;
@@ -137,8 +137,8 @@ static void case_false_16bit(){
 
 	status_test_codegen("TAC_IF_GOTO false (16 bit)");
 
-	const int8_t value      = rand()%0xff | 0x1;
-	const uint16_t address1 = 0x100+rand()%30;
+	const int8_t value      = 0x11 | 0x1;
+	const uint16_t address1 = 0x109;
 
 	//labels
 	const uint16_t l1   = 1;
@@ -175,8 +175,8 @@ static void case_mixed(){
 	// - condition false, we do not branch
 	//we check by writing a fixed value to 2 known addresses in data space
 
-	const int8_t value = rand()%0xff | 0x1;
-	const uint16_t address1 = 0x100+rand()%30;
+	const int8_t value = 0xab | 0x1;
+	const uint16_t address1 = 0x10f;
 	const uint16_t address2 = address1 + 1;
 
 	//labels

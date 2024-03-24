@@ -44,9 +44,9 @@ static void test_gen_tac_forstmt_0_rounds(){
 static void test_gen_tac_forstmt_1_rounds(){
 	
 	status_test_codegen_tac("ForStmt 1 rounds");
-	
-	const int8_t initial = rand()%10;
-	
+
+	const int8_t initial = 0x7;
+
 	char snippet[200];
 	const char* template = "fn main() -> int { int x = %d; for i in 0 .. 0 { x = x + 1; } return x; }";
 	sprintf(snippet, template, initial);
@@ -67,9 +67,9 @@ static void test_gen_tac_forstmt_1_rounds(){
 static void test_gen_tac_forstmt_1_rounds_break(){
 	
 	status_test_codegen_tac("ForStmt 1 rounds break");
-	
-	const int8_t initial = rand()%10;
-	
+
+	const int8_t initial = 0x8;
+
 	char snippet[200];
 	const char* template = "fn main() -> int { int x = %d; for i in 0 .. 0 { break; x = x + 1; } return x; }";
 	sprintf(snippet, template, initial);
@@ -90,10 +90,10 @@ static void test_gen_tac_forstmt_1_rounds_break(){
 static void test_gen_tac_forstmt_n_rounds(){
 	
 	status_test_codegen_tac("ForStmt n rounds");
-	
-	const int8_t initial = rand()%30;
-	const int8_t bound = 1+rand()%5;
-	
+
+	const int8_t initial = 17;
+	const int8_t bound = 4;
+
 	char snippet[200];
 	const char* template = "fn main() -> int { int x = %d; for i in 1 .. %d { x = x + 1; } return x; }";
 	sprintf(snippet, template, initial, bound);

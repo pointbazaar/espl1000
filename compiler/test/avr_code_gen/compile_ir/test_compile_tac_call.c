@@ -30,7 +30,7 @@ static void case_recurse(){
 	
 	status_test_codegen("TAC_CALL - recurse");
 	
-	const int8_t value = rand()%0xff;
+	const int8_t value = 0x34;
 	
     struct TACBuffer* b = tacbuffer_ctor();
     
@@ -59,7 +59,7 @@ static void case_returns_value(){
 	
 	status_test_codegen("TAC_CALL - returns value");
 	
-	const int8_t value = rand()%0xff;
+	const int8_t value = 0x63;
 	
     struct TACBuffer* b = tacbuffer_ctor();
     

@@ -19,7 +19,7 @@ void test_compile_tac_return(){
 
 	status_test_codegen("TAC_RETURN");
 
-	const int8_t value = rand()%0xff;
+	const int8_t value = 0x54;
 
 	struct TACBuffer* b = tacbuffer_ctor();
 

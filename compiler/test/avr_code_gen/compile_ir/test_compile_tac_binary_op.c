@@ -93,7 +93,7 @@ static void test_compile_tac_binary_op_add_8bit(){
 
 	status_test_codegen("TAC_BINARY_OP + (8 bit)");
 
-	const int8_t start = rand()%0xff;
+	const int8_t start = 0x01;
 
 	for(int8_t change = 0; change < 100; change += 10){
 
@@ -123,7 +123,7 @@ static void test_compile_tac_binary_op_add_16bit(){
 
 	status_test_codegen("TAC_BINARY_OP + (16 bit)");
 
-	const int16_t start = rand()%0xffff;
+	const int16_t start = 0xabcd;
 
 	for(int16_t change = 0; change < 1000; change += 100){
 
@@ -156,8 +156,8 @@ static void test_compile_tac_binary_op_sub_8bit(){
 
 	status_test_codegen("TAC_BINARY_OP - (8 bit)");
 
-	int8_t start = rand()%0xff;
-	int8_t change = rand()%0xff;
+	int8_t start = 0xb2;
+	int8_t change = 0xa1;
 	int8_t expected = start - change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -183,8 +183,8 @@ static void test_compile_tac_binary_op_sub_16bit(){
 
 	status_test_codegen("TAC_BINARY_OP - (16 bit)");
 
-	int16_t start = rand()%0xffff;
-	int16_t change = rand()%0xffff;
+	int16_t start = 0xabcd;
+	int16_t change = 0x1234;
 	int16_t expected = start - change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -211,8 +211,8 @@ static void test_compile_tac_binary_op_and_8bit(){
 
 	status_test_codegen("TAC_BINARY_OP & (8 bit)");
 
-	int8_t start = rand()%0xff;
-	int8_t change = rand()%0xff;
+	int8_t start = 0x45;
+	int8_t change = 0xfe;
 	int8_t expected = start & change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -238,8 +238,8 @@ static void test_compile_tac_binary_op_and_16bit(){
 
 	status_test_codegen("TAC_BINARY_OP & (16 bit)");
 
-	int16_t start = rand()%0xff;
-	int16_t change = rand()%0xff;
+	int16_t start = 0xabcd;
+	int16_t change = 0x1234;
 	int16_t expected = start & change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -266,8 +266,8 @@ static void test_compile_tac_binary_op_or_8bit(){
 
 	status_test_codegen("TAC_BINARY_OP | (8 bit)");
 
-	int8_t start = rand()%0xff;
-	int8_t change = rand()%0xff;
+	int8_t start = 0xab;
+	int8_t change = 0x34;
 	int8_t expected = start | change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -293,8 +293,8 @@ static void test_compile_tac_binary_op_or_16bit(){
 
 	status_test_codegen("TAC_BINARY_OP | (16 bit)");
 
-	int16_t start = rand()%0xffff;
-	int16_t change = rand()%0xffff;
+	int16_t start = 0xabcd;
+	int16_t change = 0x1457;
 	int16_t expected = start | change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -321,8 +321,8 @@ static void test_compile_tac_binary_op_xor_8bit(){
 
 	status_test_codegen("TAC_BINARY_OP ^ (8 bit)");
 
-	int8_t start = rand()%0xff;
-	int8_t change = rand()%0xff;
+	int8_t start = 0xab;
+	int8_t change = 0xf3;
 	int8_t expected = start ^ change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -348,8 +348,8 @@ static void test_compile_tac_binary_op_xor_16bit(){
 
 	status_test_codegen("TAC_BINARY_OP ^ (16 bit)");
 
-	uint16_t start = 0x1000 | (rand()%0xffff);
-	uint16_t change = rand()%0xffff;
+	uint16_t start = 0x1bcd;
+	uint16_t change = 0x4237;
 	uint16_t expected = start ^ change;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -439,7 +439,7 @@ static void test_compile_tac_binary_op_neq_true_8bit(){
 
 	status_test_codegen("TAC_BINARY_OP != true (8 bit)");
 
-	int8_t value1 = rand()%0xf;
+	int8_t value1 = 0x4;
 	int8_t value2 = value1+1;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -491,7 +491,7 @@ static void test_compile_tac_binary_op_neq_false_8bit(){
 
 	status_test_codegen("TAC_BINARY_OP != false (8 bit)");
 
-	int8_t value1 = rand()%0xf;
+	int8_t value1 = 0xe;
 	int8_t value2 = value1;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -517,7 +517,7 @@ static void test_compile_tac_binary_op_neq_false_16bit(){
 
 	status_test_codegen("TAC_BINARY_OP != false (16 bit)");
 
-	int16_t value1 = rand()%0xffff;
+	int16_t value1 = 0xabcd;
 	int16_t value2 = value1;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -543,7 +543,7 @@ static void test_compile_tac_binary_op_lt_true_8bit(){
 
 	status_test_codegen("TAC_BINARY_OP < true (8 bit)");
 
-	int8_t value1 = rand()%0xf;
+	int8_t value1 = 0x3;
 	int8_t value2 = value1+1;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -595,7 +595,7 @@ static void test_compile_tac_binary_op_lt_false_8bit(){
 
 	status_test_codegen("TAC_BINARY_OP < false (8 bit)");
 
-	int8_t value1 = rand()%0xf;
+	int8_t value1 = 0xb;
 	int8_t value2 = value1;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -647,7 +647,7 @@ static void test_compile_tac_binary_op_eq_true_8bit(){
 
 	status_test_codegen("TAC_BINARY_OP == true (8 bit)");
 
-	int8_t value1 = rand()%0xff;
+	int8_t value1 = 0xf3;
 	int8_t value2 = value1;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -673,7 +673,7 @@ static void test_compile_tac_binary_op_eq_true_16bit(){
 
 	status_test_codegen("TAC_BINARY_OP == true (16 bit)");
 
-	int16_t value1 = 0xff00 | rand()%0xff;
+	int16_t value1 = 0xff34;
 	int16_t value2 = value1;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -699,7 +699,7 @@ static void test_compile_tac_binary_op_eq_false_8bit(){
 
 	status_test_codegen("TAC_BINARY_OP == false (8 bit)");
 
-	int8_t value1 = rand()%0xff;
+	int8_t value1 = 0x73;
 	int8_t value2 = value1+1;
 
 	struct TACBuffer* b = tacbuffer_ctor();

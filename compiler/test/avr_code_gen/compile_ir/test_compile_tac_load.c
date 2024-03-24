@@ -28,8 +28,8 @@ void test_8bit_addr(){
 
 	status_test_codegen("TAC_LOAD (8 bit address)");
 
-	const uint16_t addr        = 0xc7+rand()%10;
-	const int8_t   fixed_value = rand()%0xff;
+	const uint16_t addr        = 0xc7;
+	const int8_t   fixed_value = 0x33;
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
@@ -55,8 +55,8 @@ void test_16bit_addr(){
 
 	status_test_codegen("TAC_LOAD (16 bit address)");
 
-	const uint16_t addr        = 0x0100+rand()%100;
-	const int8_t   fixed_value = rand()%0xff;
+	const uint16_t addr        = 0x0103;
+	const int8_t   fixed_value = 0xc6;
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
