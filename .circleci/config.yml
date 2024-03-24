@@ -10,7 +10,10 @@ jobs:
       image: ubuntu-2004:2022.10.1
     steps:
       - checkout
-      - run: sudo apt-get update && sudo apt install -y gcc make cmake valgrind flex avra
+      - run:
+          environment:
+            DEBIAN_FRONTEND: noninteractive
+          command: sudo apt-get update && sudo apt install -yqq gcc make cmake valgrind flex avra
       - run:
           name: "build"
           command: |
@@ -27,7 +30,10 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
-      - run: sudo apt-get update && sudo apt install -y gcc make cmake valgrind flex avra
+      - run:
+          environment:
+            DEBIAN_FRONTEND: noninteractive
+          command: sudo apt-get update && sudo apt install -yqq gcc make cmake valgrind flex avra
       - run:
           name: "build"
           command: |
