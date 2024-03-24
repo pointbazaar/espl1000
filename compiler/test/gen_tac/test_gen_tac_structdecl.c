@@ -22,9 +22,9 @@ void test_gen_tac_structdecl(){
 static void case_read_struct(){
 	
 	status_test_codegen_tac("StructDecl - read struct");
-	
-	const int8_t value = rand()%0xff;
-	
+
+	const int8_t value = 0xc7;
+
 	char snippet[200];
 	char* template = "struct A{int8 a; int8 b;} fn main() -> int { A x = 0x80; return x.b; }";
 	sprintf(snippet, template);
@@ -47,7 +47,7 @@ static void case_write_struct(){
 
 	status_test_codegen_tac("StructDecl - write struct");
 
-	const int8_t value = rand()%0xff;
+	const int8_t value = 0xc4;
 
 	char snippet[200];
 	char* template = "struct A{int8 a; int8 b;} fn main() -> int { A x = 0x80; x.b = %d; return 0; }";

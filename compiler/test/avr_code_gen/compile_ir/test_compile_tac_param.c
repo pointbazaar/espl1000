@@ -31,7 +31,7 @@ static void test_param_8bit(){
 	//test that the value gets pushed
 	//and the stack pointer decrements
 
-	const int8_t fixed_value = rand()%0xff;
+	const int8_t fixed_value = 0x3c;
 
 	const uint8_t SPL_ADDR = 0x5d;
 	const uint8_t SPH_ADDR = 0x5e;

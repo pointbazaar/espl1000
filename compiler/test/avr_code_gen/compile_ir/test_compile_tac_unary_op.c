@@ -112,31 +112,32 @@ static void case_bitwise_neg_8bit(){
 
 	status_test_codegen("TAC_UNARY_OP ~ (8 bit)");
 
-	const uint8_t start = rand()%0xff;
-	const uint8_t expect = ~start;
+	for(uint8_t start = 0; start < 10; start++){
+		const uint8_t expect = ~start;
 
-	struct TACBuffer* b = tacbuffer_ctor();
+		struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACConst(0, start));
-	tacbuffer_append(b, makeTACUnaryOp(1,0,TAC_OP_UNARY_BITWISE_NEG));
-	tacbuffer_append(b, makeTACReturn(1));
+		tacbuffer_append(b, makeTACConst(0, start));
+		tacbuffer_append(b, makeTACUnaryOp(1,0,TAC_OP_UNARY_BITWISE_NEG));
+		tacbuffer_append(b, makeTACReturn(1));
 
-	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-	vmcu_system_step_n(system, 10);
+		vmcu_system_step_n(system, 10);
 
-	const uint8_t r0 = vmcu_system_read_gpr(system, 0);
+		const uint8_t r0 = vmcu_system_read_gpr(system, 0);
 
-	assert(r0 == expect);
+		assert(r0 == expect);
 
-	vmcu_system_dtor(system);
+		vmcu_system_dtor(system);
+	}
 }
 
 static void case_bitwise_neg_16bit(){
 
 	status_test_codegen("TAC_UNARY_OP ~ (16 bit)");
 
-	const uint16_t start = (0x3b << 8) | rand()%0xff;
+	const uint16_t start = (0x3b << 8) | 0x33;
 	const uint16_t expect = ~start;
 
 	struct TACBuffer* b = tacbuffer_ctor();

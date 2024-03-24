@@ -19,9 +19,9 @@ void test_gen_tac_assignstmt(){
 static void case_local_int(){
 	
 	status_test_codegen_tac("AssignStmt - local int");
-	
-	const int8_t value = rand()%0xff;
-	
+
+	const int8_t value = 0x33;
+
 	char snippet[200];
 	sprintf(snippet, "fn main() -> int { int x = %d; return x; }", value);
 	
@@ -42,9 +42,9 @@ static void case_local_struct(){
 	
 	status_test_codegen_tac("AssignStmt - local struct [TODO]");
 	return;
-	
-	const int8_t value = rand()%0xff;
-	
+
+	const int8_t value = 0x23;
+
 	char snippet[200];
 	sprintf(snippet, "struct A {int x;}; fn main() -> int { A m; m.x = %d; return m.x; }", value);
 	
@@ -65,7 +65,7 @@ static void case_local_array(){
 
 	status_test_codegen_tac("AssignStmt - local array");
 
-	const int8_t value = rand()%0xff;
+	const int8_t value = 0x33;
 
 	char snippet[200];
 	char* template = "fn main() -> int { [int] m = 0xc7; m[1] = %d; return m[1]; }";

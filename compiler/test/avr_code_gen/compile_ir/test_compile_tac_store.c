@@ -51,17 +51,18 @@ static void test_8bit_value_8bit_addr(){
 
 	status_test_codegen("TAC_STORE (8 bit value, 8 bit addr)");
 
-	const uint16_t addr = 0xc7+rand()%10;
+	for(uint16_t addr = 0xc7; addr < 0xd7; addr++){
 
-	for(int8_t fixed_value = 1; fixed_value < 10; fixed_value++){
+		for(int8_t fixed_value = 1; fixed_value < 10; fixed_value++){
 
-		vmcu_system_t* system = common(addr, fixed_value);
+			vmcu_system_t* system = common(addr, fixed_value);
 
-		const int8_t stored = vmcu_system_read_data(system, addr);
+			const int8_t stored = vmcu_system_read_data(system, addr);
 
-		assert(stored == fixed_value);
+			assert(stored == fixed_value);
 
-		vmcu_system_dtor(system);
+			vmcu_system_dtor(system);
+		}
 	}
 }
 
@@ -69,20 +70,21 @@ static void test_16bit_value_8bit_addr(){
 
 	status_test_codegen("TAC_STORE (16 bit value, 8 bit addr)");
 
-	const uint16_t addr = 0xc7+rand()%10;
+	for(uint16_t addr = 0xc7; addr < 0xd7; addr++){
 
-	for(uint16_t fixed_value = 0x0f00; fixed_value < 0x0f0f; fixed_value++){
+		for(uint16_t fixed_value = 0x0f00; fixed_value < 0x0f0f; fixed_value++){
 
-		vmcu_system_t* system = common(addr, fixed_value);
+			vmcu_system_t* system = common(addr, fixed_value);
 
-		const uint8_t low = vmcu_system_read_data(system, addr);
-		const uint8_t high = vmcu_system_read_data(system, addr+1);
+			const uint8_t low = vmcu_system_read_data(system, addr);
+			const uint8_t high = vmcu_system_read_data(system, addr+1);
 
-		const int16_t stored = (high << 8) | low;
+			const int16_t stored = (high << 8) | low;
 
-		assert(stored == fixed_value);
+			assert(stored == fixed_value);
 
-		vmcu_system_dtor(system);
+			vmcu_system_dtor(system);
+		}
 	}
 }
 
@@ -90,7 +92,7 @@ static void test_8bit_value_16bit_addr(){
 
 	status_test_codegen("TAC_STORE (8 bit value, 16 bit addr)");
 
-	const uint16_t addr = 1200+rand()%10;
+	const uint16_t addr = 1200;
 
 	for(int8_t fixed_value = 1; fixed_value < 10; fixed_value++){
 
@@ -108,7 +110,7 @@ static void test_16bit_value_16bit_addr(){
 
 	status_test_codegen("TAC_STORE (16 bit value, 16 bit addr)");
 
-	const uint16_t addr = 1200+rand()%10;
+	const uint16_t addr = 1200;
 
 	for(uint16_t fixed_value = 0x0f00; fixed_value < 0x0f0f; fixed_value++){
 

@@ -21,7 +21,7 @@ static void case_no_index(){
 	
 	status_test_codegen_tac("SimpleVar - no index");
 	
-	const int8_t value = rand()%0xff;
+	const int8_t value = 0x34;
 	
 	char snippet[200];
 	char* template = "fn main() -> int { int x = %d; return x; }";
@@ -46,7 +46,7 @@ static void case_1_index(){
 	status_test_codegen_tac("SimpleVar - 1 index");
 
 	const uint16_t addr  = 0xc7;
-	const int8_t value = rand()%0xff;
+	const int8_t value = 0x12;
 
 
 	for(int index = 1; index < 4; index++){
@@ -90,10 +90,10 @@ static void case_2_index(){
 
 	const uint16_t addr  = 0xc7;
 
-	const int8_t value = rand()%0xff;
+	const int8_t value = 0x37;
 
-	const int index1 = (rand()%6)&0b01111111;
-	const int index2 = (rand()%6)&0b01111111;
+	const int index1 = (3)&0b01111111;
+	const int index2 = (2)&0b01111111;
 
 	char snippet[200];
 	char* template = "fn main() -> int { %s }";

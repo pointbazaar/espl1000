@@ -59,9 +59,9 @@ void test_compile_tac_if_cmp_goto(){
 
 static void common(int a1, enum TAC_OP op, int a2, bool expect_true){
 
-	const int8_t valuetrue  = 10+rand()%10;
+	const int8_t valuetrue  = 17;
 	const int8_t valuefalse = valuetrue + 1;
-	const uint16_t address  = 0x100+rand()%30;
+	const uint16_t address  = 0x103;
 
 	const uint16_t ltrue  = 1;
 	const uint16_t lfalse = 2;
