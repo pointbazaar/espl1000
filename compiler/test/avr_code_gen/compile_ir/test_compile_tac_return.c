@@ -19,20 +19,23 @@ void test_compile_tac_return(){
 
 	status_test_codegen("TAC_RETURN");
 
-	const int8_t value = 0x54;
+	for(int8_t value = 0x54; value < 0x65; value++){
 
-	struct TACBuffer* b = tacbuffer_ctor();
+		struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACSetupSP());
-	tacbuffer_append(b, makeTACConst(0, value));
-	tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACSetupSP());
+		tacbuffer_append(b, makeTACConst(0, value+1));
+		tacbuffer_append(b, makeTACConst(1, value));
+		tacbuffer_append(b, makeTACConst(2, value-1));
+		tacbuffer_append(b, makeTACReturn(1));
 
-	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-	vmcu_system_step_n(system, 8);
+		vmcu_system_step_n(system, 8);
 
-	//returned value should be in r0
-	assert(vmcu_system_read_gpr(system, 0) == value);
+		//returned value should be in r0
+		assert(vmcu_system_read_gpr(system, 0) == value);
 
-	vmcu_system_dtor(system);
+		vmcu_system_dtor(system);
+	}
 }

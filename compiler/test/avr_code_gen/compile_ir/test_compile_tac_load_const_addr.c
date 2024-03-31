@@ -16,28 +16,30 @@
 #include "test_compile_tac.h"
 
 void test_compile_tac_load_const_addr(){
-	
+
 	status_test_codegen("TAC_LOAD_CONST_ADDR");
-	
+
 	const uint16_t addr = 0x100+17;
-	const int8_t fixed_value = 0x55;
 
-    struct TACBuffer* b = tacbuffer_ctor();
-    
-    tacbuffer_append(b, makeTACConst(1, 0x00));
-    tacbuffer_append(b, makeTACLoadConstAddr(1, addr));
-    tacbuffer_append(b, makeTACReturn(1));
+	for(int8_t fixed_value = 0x55; fixed_value < 0x65; fixed_value++){
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
-    
-    //write value to be read later
-    vmcu_system_write_data(system, addr, fixed_value);
+		struct TACBuffer* b = tacbuffer_ctor();
 
-    vmcu_system_step_n(system, 10);
-        
-	int8_t r0 = vmcu_system_read_gpr(system, 0);
-	
-	assert(r0 == fixed_value);
-	
-	vmcu_system_dtor(system);
+		tacbuffer_append(b, makeTACConst(1, 0x00));
+		tacbuffer_append(b, makeTACLoadConstAddr(1, addr));
+		tacbuffer_append(b, makeTACReturn(1));
+
+		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+
+		//write value to be read later
+		vmcu_system_write_data(system, addr, fixed_value);
+
+		vmcu_system_step_n(system, 10);
+
+		int8_t r0 = vmcu_system_read_gpr(system, 0);
+
+		assert(r0 == fixed_value);
+
+		vmcu_system_dtor(system);
+	}
 }
