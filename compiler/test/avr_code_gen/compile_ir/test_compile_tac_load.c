@@ -28,52 +28,54 @@ void test_8bit_addr(){
 
 	status_test_codegen("TAC_LOAD (8 bit address)");
 
-	const uint16_t addr        = 0xc7;
-	const int8_t   fixed_value = 0x33;
+	const uint16_t addr = 0xc7;
+	for(int8_t fixed_value = 0x33; fixed_value < 0x43; fixed_value++){
 
-	struct TACBuffer* b = tacbuffer_ctor();
+		struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACConst(1, 0x00));
-	tacbuffer_append(b, makeTACConst(2, addr));
-	tacbuffer_append(b, makeTACLoad(1, 2));
-	tacbuffer_append(b, makeTACReturn(1));
+		tacbuffer_append(b, makeTACConst(1, 0x00));
+		tacbuffer_append(b, makeTACConst(2, addr));
+		tacbuffer_append(b, makeTACLoad(1, 2));
+		tacbuffer_append(b, makeTACReturn(1));
 
-	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-	vmcu_system_write_data(system, addr, fixed_value);
+		vmcu_system_write_data(system, addr, fixed_value);
 
-	vmcu_system_step_n(system, 20);
+		vmcu_system_step_n(system, 20);
 
-	int8_t r0 = vmcu_system_read_gpr(system, 0);
+		int8_t r0 = vmcu_system_read_gpr(system, 0);
 
-	assert(r0 == fixed_value);
+		assert(r0 == fixed_value);
 
-	vmcu_system_dtor(system);
+		vmcu_system_dtor(system);
+	}
 }
 
 void test_16bit_addr(){
 
 	status_test_codegen("TAC_LOAD (16 bit address)");
 
-	const uint16_t addr        = 0x0103;
-	const int8_t   fixed_value = 0xc6;
+	const uint16_t addr = 0x0103;
+	for(int8_t fixed_value = 0x20; fixed_value < 0x2f; fixed_value++){
 
-	struct TACBuffer* b = tacbuffer_ctor();
+		struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACConst(1, 0x00));
-	tacbuffer_append(b, makeTACConst(2, addr));
-	tacbuffer_append(b, makeTACLoad(1, 2));
-	tacbuffer_append(b, makeTACReturn(1));
+		tacbuffer_append(b, makeTACConst(1, 0x00));
+		tacbuffer_append(b, makeTACConst(2, addr));
+		tacbuffer_append(b, makeTACLoad(1, 2));
+		tacbuffer_append(b, makeTACReturn(1));
 
-	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-	vmcu_system_write_data(system, addr, fixed_value);
+		vmcu_system_write_data(system, addr, fixed_value);
 
-	vmcu_system_step_n(system, 20);
+		vmcu_system_step_n(system, 20);
 
-	int8_t r0 = vmcu_system_read_gpr(system, 0);
+		int8_t r0 = vmcu_system_read_gpr(system, 0);
 
-	assert(r0 == fixed_value);
+		assert(r0 == fixed_value);
 
-	vmcu_system_dtor(system);
+		vmcu_system_dtor(system);
+	}
 }
