@@ -64,6 +64,11 @@ struct PrimitiveType* makePrimitiveType(struct TokenList* tokens) {
 		case TYPEID_PRIMITIVE_CHAR:
 			res->is_char_type = true;
 			break;
+
+		default:
+			free(res);
+			freeTokenListShallow(copy);
+			return NULL;
 	}
 
 	list_consume(copy, 1);

@@ -83,9 +83,12 @@ enum IKEY {
 	LDS, //load with addr
 	
 	//LD Instructions
-	LDX = 230, 
-	LDY, 
+	LDX = 230,
+	LDXpostInc,
+	LDY,
+	LDYpostInc,
 	LDZ,
+	LDZpostInc,
 	LDDY, //with displacement
 	LDDZ, //with displacement
 	

@@ -128,7 +128,7 @@ static void case_1_rounds_continue(){
 	for(int8_t initial = 0; initial < 10; initial++){
 
 		char snippet[200];
-		const char* template = "fn main() -> int { int x=0; int y=%d; while x < 1 { x=x+1; continue; y=y+1; } return y; }";
+		const char* template = "fn main() -> int8 { int8 x=0; int8 y=%d; while x < 1 { x=x+1; continue; y=y+1; } return y; }";
 		sprintf(snippet, template, initial);
 
 		//compile snippet and init a vmcu

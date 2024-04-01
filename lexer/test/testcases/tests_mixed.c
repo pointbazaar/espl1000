@@ -16,7 +16,7 @@ void test_mixed_1() {
 
 	assert(tokens[2]->kind == LCURLY);
 
-	assert(tokens[3]->kind == TYPEID_PRIMITIVE_INT);
+	assert(tokens[3]->kind == TYPEID_PRIMITIVE_UINT);
 	assert(strcmp(tokens[3]->value_ptr, "uint") == 0);
 
 	assert(tokens[4]->kind == ID);
@@ -70,7 +70,7 @@ void test_mixed_4() {
 	assert(tokens[0]->kind==WHILE);
 	assert(tokens[1]->kind==LPARENS);
 	assert(tokens[2]->kind==ID);
-	assert(tokens[3]->kind==TYPEID_PRIMITIVE_INT);
+	assert(tokens[3]->kind==TYPEID_PRIMITIVE_UINT);
 	assert(tokens[4]->kind==ID);
 
 	free_tokens(tokens, 5);
@@ -177,7 +177,7 @@ void test_mixed_11() {
 	char* str = "uint i, char j ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind==TYPEID_PRIMITIVE_INT);
+	assert(tokens[0]->kind==TYPEID_PRIMITIVE_UINT);
 	assert(tokens[1]->kind==ID);
 	assert(tokens[2]->kind==COMMA);
 	assert(tokens[3]->kind==TYPEID_PRIMITIVE_CHAR);
@@ -282,7 +282,7 @@ void test_mixed_16(){
 
 	assert(tokens[0]->kind==LPARENS);
 	assert(tokens[1]->kind==LPARENS);
-	assert(tokens[2]->kind==TYPEID_PRIMITIVE_INT);
+	assert(tokens[2]->kind==TYPEID_PRIMITIVE_UINT);
 	
 	assert(tokens[3]->kind==RPARENS);
 	assert(tokens[4]->kind==ARROW);

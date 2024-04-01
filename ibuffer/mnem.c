@@ -83,14 +83,17 @@ char* MNEM[] = {
 	def(LDI, "ldi")
 	
 	def(LDS, "lds")
-	
+
 	//ld instructions
 	def(LDX, "ld")
+	def(LDXpostInc, "ld")
 	def(LDY, "ld")
+	def(LDYpostInc, "ld")
 	def(LDZ, "ld")
+	def(LDZpostInc, "ld")
 	def(LDDY, "ldd")
 	def(LDDZ, "ldd")
-	
+
 	def(STS, "sts")
 	
 	//st instructions

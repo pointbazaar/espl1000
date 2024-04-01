@@ -25,6 +25,10 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, st
     lvst_clear(ctx_tables(ctx)->lvst);
     lvst_fill(m, ctx_tables(ctx));
 
+	//print the LVST for debug
+	if(flags_debug(ctx_flags(ctx)))
+		lvst_print(ctx_tables(ctx)->lvst);
+
     tac_method(buffer, m, ctx);
 
     //print the TAC for debug

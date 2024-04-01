@@ -162,36 +162,75 @@ void lvst_print(struct LVST* lvst){
 	}
 }
 
-uint32_t lvst_sizeof_type(struct Type* type){
-
-	//sizeof(type) in bytes
-
-	if(type->basic_type == NULL)
-		return 2; //type params, pointer types
-
-	if(type->basic_type->subr_type != NULL)
-		return 2; //function pointer type
-
-	struct SimpleType* st = type->basic_type->simple_type;
-
-	if(st->struct_type != NULL) return 2;
-
-	struct PrimitiveType* pt = st->primitive_type;
+uint32_t lvst_sizeof_primitivetype(struct PrimitiveType* pt){
 
 	if(pt->is_char_type || pt->is_bool_type) return 1;
 
 	switch(pt->int_type){
 
-	case INT: case UINT:
+	case INT: case UINT: return 1;
+
 	case INT8: case UINT8: return 1;
 
 	case INT16: case UINT16: return 2;
 	case INT32: case UINT32: return 4;
 	case INT64: case UINT64: return 8;
 
-	default: return 1;
-
+	default: return 0;
 	}
+}
+
+uint32_t lvst_sizeof_structtype(struct StructType* st){
+	return 2;
+}
+
+uint32_t lvst_sizeof_simpletype(struct SimpleType* st){
+
+	if(st->struct_type != NULL)
+		return lvst_sizeof_structtype(st->struct_type);
+
+	if(st->primitive_type != NULL)
+		return lvst_sizeof_primitivetype(st->primitive_type);
+	return 0;
+}
+
+uint32_t lvst_sizeof_subrtype(struct SubrType* st){
+	return 2; //function pointer type
+}
+
+uint32_t lvst_sizeof_basictype(struct BasicType* bt){
+
+	if(bt->subr_type != NULL)
+		return lvst_sizeof_subrtype(bt->subr_type);
+
+	if(bt->simple_type != NULL)
+		return lvst_sizeof_simpletype(bt->simple_type);
+
+	return 0;
+}
+
+uint32_t lvst_sizeof_typeparam(struct TypeParam* tp){
+	return 2; // could be wide
+}
+
+uint32_t lvst_sizeof_arraytype(struct ArrayType* at){
+	return 2;
+}
+
+uint32_t lvst_sizeof_type(struct Type* type){
+
+	uint32_t res = 0;
+	//sizeof(type) in bytes
+	if(type->basic_type != NULL)
+		res = lvst_sizeof_basictype(type->basic_type);
+
+	if(type->type_param != NULL)
+		res = lvst_sizeof_typeparam(type->type_param);
+
+	if(type->array_type != NULL)
+		res = lvst_sizeof_arraytype(type->array_type);
+
+	return res;
 }
 
 size_t lvst_stack_frame_size_avr(struct LVST* lvst){
@@ -242,4 +281,14 @@ size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name){
     fflush(stdout);
     exit(1);
     return 0;
+}
+
+uint32_t lvst_sizeof_var(struct LVST* lvst, char* name){
+
+	struct LVSTLine* line = lvst_get(lvst, name);
+	if(line == NULL)
+		return 0;
+	if(line->type == NULL)
+		return 0;
+	return lvst_sizeof_type(line->type);
 }
