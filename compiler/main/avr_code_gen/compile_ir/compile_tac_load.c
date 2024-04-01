@@ -24,10 +24,13 @@ void compile_tac_load(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 	else
 		ldi(XH, 0, c);
 
-	ldX(reg_dest, c); //ld reg_dest, X
 
 	if(rat_is_wide(rat, tac->dest)){
-		//destination is wide, we have to zero out the high reg
-		clr(reg_dest+1, c);
+
+		// what if we want to load a 16 bit value?
+		ldXpostInc(reg_dest, c);
+		ldX(reg_dest+1, c);
+	}else{
+		ldX(reg_dest, c);
 	}
 }

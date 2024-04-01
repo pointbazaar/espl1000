@@ -34,7 +34,7 @@ static void case_read_struct(){
 	//prepare a value in the location
 	vmcu_system_write_data(system, 0x80+1, value);
 	
-	vmcu_system_step_n(system, 30);
+	vmcu_system_step_n(system, 50);
 	
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 	

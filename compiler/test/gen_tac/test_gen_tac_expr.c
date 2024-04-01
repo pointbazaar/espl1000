@@ -14,6 +14,12 @@ static void test_gen_tac_expr_or();
 static void test_gen_tac_expr_shift_left();
 static void test_gen_tac_expr_shift_right();
 static void test_gen_tac_expr_xor();
+static void test_gen_tac_expr_lt_8bit();
+static void test_gen_tac_expr_lt_16bit();
+static void test_gen_tac_expr_gt_8bit();
+static void test_gen_tac_expr_gt_16bit();
+static void test_gen_tac_expr_eq_8bit();
+static void test_gen_tac_expr_eq_16bit();
 
 void test_gen_tac_expr(){
 	
@@ -25,6 +31,13 @@ void test_gen_tac_expr(){
 	test_gen_tac_expr_shift_left();
 	test_gen_tac_expr_shift_right();
 	test_gen_tac_expr_xor();
+
+	test_gen_tac_expr_lt_8bit();
+	test_gen_tac_expr_lt_16bit();
+	test_gen_tac_expr_gt_8bit();
+	test_gen_tac_expr_gt_16bit();
+	test_gen_tac_expr_eq_8bit();
+	test_gen_tac_expr_eq_16bit();
 }
 
 
@@ -235,4 +248,72 @@ static void test_gen_tac_expr_xor(){
 			vmcu_system_dtor(system);
 		}
 	}
+}
+
+static void test_gen_tac_expr_lt_8bit(){
+
+	status_test_codegen_tac("Expr < (8 bit)");
+
+	for(uint8_t value1 = 0; value1 < 4; value1++){
+		for(uint8_t value2 = 0; value2 < 4; value2++){
+
+			char snippet[200];
+			sprintf(snippet, "fn main() -> bool { bool x = %d < %d; return x; }", value1, value2);
+
+			vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
+
+			vmcu_system_step_n(system, 28);
+
+			const int8_t r0_value = vmcu_system_read_gpr(system, 0);
+			const int8_t expect   = value1 < value2;
+
+			assert(r0_value == expect);
+
+			vmcu_system_dtor(system);
+		}
+	}
+}
+
+static void test_gen_tac_expr_lt_16bit(){
+
+	status_test_codegen_tac("Expr < (16 bit)");
+
+	for(uint16_t value1 = 0x100; value1 < 0x104; value1++){
+		for(uint16_t value2 = 0x100; value2 < 0x104; value2++){
+
+			char snippet[200];
+			sprintf(snippet, "fn main() -> bool { bool x = %d < %d; return x; }", value1, value2);
+
+			vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
+
+			vmcu_system_step_n(system, 28);
+
+			const int8_t r0_value = vmcu_system_read_gpr(system, 0);
+			const int8_t expect   = value1 < value2;
+
+			assert(r0_value == expect);
+
+			vmcu_system_dtor(system);
+		}
+	}
+}
+
+static void test_gen_tac_expr_gt_8bit(){
+
+	status_test_codegen_tac("Expr > (8 bit) (TODO)");
+}
+
+static void test_gen_tac_expr_gt_16bit(){
+
+	status_test_codegen_tac("Expr > (16 bit) (TODO)");
+}
+
+static void test_gen_tac_expr_eq_8bit(){
+
+	status_test_codegen_tac("Expr == (8 bit) (TODO)");
+}
+
+static void test_gen_tac_expr_eq_16bit(){
+
+	status_test_codegen_tac("Expr == (16 bit) (TODO)");
 }

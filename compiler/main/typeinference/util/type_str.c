@@ -11,6 +11,26 @@
 
 static struct Type* typeFromStrPrimitive_inner(char* typeName);
 
+enum INTTYPE get_inttype(char* typeName){
+
+	if(strcmp(typeName, "int") == 0) return INT;
+	if(strcmp(typeName, "uint") == 0) return UINT;
+
+	if(strcmp(typeName, "int8") == 0) return INT8;
+	if(strcmp(typeName, "uint8") == 0) return UINT8;
+
+	if(strcmp(typeName, "int16") == 0) return INT16;
+	if(strcmp(typeName, "uint16") == 0) return UINT16;
+
+	if(strcmp(typeName, "int32") == 0) return INT32;
+	if(strcmp(typeName, "uint32") == 0) return UINT32;
+
+	if(strcmp(typeName, "int64") == 0) return INT64;
+	if(strcmp(typeName, "uint64") == 0) return UINT64;
+
+	return NONE;
+}
+
 static struct Type* typeFromStrPrimitive_inner(char* typeName){
 	
 	struct Type* res         = make(Type);
@@ -37,8 +57,11 @@ static struct Type* typeFromStrPrimitive_inner(char* typeName){
 
 	p->is_char_type  = strcmp(typeName, "char") == 0;
 	p->is_bool_type  = strcmp(typeName, "bool") == 0;
-	
-	p->int_type = INT;
+
+	p->int_type = get_inttype(typeName);
+
+	if(p->is_int_type && p->int_type == NONE)
+		return NULL;
 
 	s->primitive_type = p;
 	s->struct_type    = NULL;
@@ -50,11 +73,12 @@ static struct Type* typeFromStrPrimitive_inner(char* typeName){
 }
 
 struct Type* typeFromStrPrimitive(struct ST* st, char* typeName){
-	
+
 	struct Type* res = typeFromStrPrimitive_inner(typeName);
-	
+	if(res == NULL) return res;
+
 	st_register_inferred_type(st, res);
-	
+
 	return res;
 }
 

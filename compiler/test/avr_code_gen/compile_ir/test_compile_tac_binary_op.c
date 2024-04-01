@@ -47,6 +47,11 @@ static void test_compile_tac_binary_op_eq_true_16bit();
 static void test_compile_tac_binary_op_eq_false_8bit();
 static void test_compile_tac_binary_op_eq_false_16bit();
 
+static void test_compile_tac_binary_op_geq_true_8bit();
+static void test_compile_tac_binary_op_geq_true_16bit();
+static void test_compile_tac_binary_op_geq_false_8bit();
+static void test_compile_tac_binary_op_geq_false_16bit();
+
 static int16_t make16(uint8_t high, uint8_t low){
 	return (high << 8) | low;
 }
@@ -87,6 +92,11 @@ void test_compile_tac_binary_op(){
 
 	test_compile_tac_binary_op_eq_false_8bit();
 	test_compile_tac_binary_op_eq_false_16bit();
+
+	test_compile_tac_binary_op_geq_true_8bit();
+	test_compile_tac_binary_op_geq_true_16bit();
+	test_compile_tac_binary_op_geq_false_8bit();
+	test_compile_tac_binary_op_geq_false_16bit();
 }
 
 static void test_compile_tac_binary_op_add_8bit(){
@@ -597,26 +607,28 @@ static void test_compile_tac_binary_op_lt_true_16bit(){
 
 	status_test_codegen("TAC_BINARY_OP < true (16 bit)");
 
-	int16_t value1 = 0x1 << 8;
-	int16_t value2 = 0x1 << 9;
+	for(uint16_t value1 = 0x100; value1 < 0x110; value1++){
 
-	struct TACBuffer* b = tacbuffer_ctor();
+		uint16_t value2 = 0x200;
 
-	tacbuffer_append(b, makeTACConst(0, value1));
-	tacbuffer_append(b, makeTACConst(1, value2));
-	tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_LT, 1));
+		struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACConst(0, value1));
+		tacbuffer_append(b, makeTACConst(1, value2));
+		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_LT, 1));
 
-	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+		tacbuffer_append(b, makeTACReturn(0));
 
-	vmcu_system_step_n(system, 10);
+		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-	int8_t r0 = vmcu_system_read_gpr(system, 0);
+		vmcu_system_step_n(system, 10);
 
-	assert(r0 != 0);
+		int8_t r0 = vmcu_system_read_gpr(system, 0);
 
-	vmcu_system_dtor(system);
+		assert(r0 != 0);
+
+		vmcu_system_dtor(system);
+	}
 }
 
 static void test_compile_tac_binary_op_lt_false_8bit(){
@@ -650,26 +662,28 @@ static void test_compile_tac_binary_op_lt_false_16bit(){
 
 	status_test_codegen("TAC_BINARY_OP < false (16 bit)");
 
-	int16_t value1 = 0x1 << 8;
-	int16_t value2 = 0x1 << 8;
+	for(uint16_t value1 = 0x100; value1 < 0x104; value1++){
+		for(uint16_t value2 = value1-4; value2 <= value1; value2++){
 
-	struct TACBuffer* b = tacbuffer_ctor();
+			struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACConst(0, value1));
-	tacbuffer_append(b, makeTACConst(1, value2));
-	tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_LT, 1));
+			tacbuffer_append(b, makeTACConst(0, value1));
+			tacbuffer_append(b, makeTACConst(1, value2));
+			tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_LT, 1));
 
-	tacbuffer_append(b, makeTACReturn(0));
+			tacbuffer_append(b, makeTACReturn(0));
 
-	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+			vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-	vmcu_system_step_n(system, 10);
+			vmcu_system_step_n(system, 10);
 
-	int8_t r0 = vmcu_system_read_gpr(system, 0);
+			int8_t r0 = vmcu_system_read_gpr(system, 0);
 
-	assert(r0 == 0);
+			assert(r0 == 0);
 
-	vmcu_system_dtor(system);
+			vmcu_system_dtor(system);
+		}
+	}
 }
 
 static void test_compile_tac_binary_op_eq_true_8bit(){
@@ -773,6 +787,116 @@ static void test_compile_tac_binary_op_eq_false_16bit(){
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
 		vmcu_system_step_n(system, 10);
+
+		int8_t r0 = vmcu_system_read_gpr(system, 0);
+
+		assert(r0 == 0);
+
+		vmcu_system_dtor(system);
+	}
+}
+
+static void test_compile_tac_binary_op_geq_true_8bit(){
+
+	status_test_codegen("TAC_BINARY_OP >= true (8 bit)");
+
+	for(uint8_t value1 = 0x03; value1 < 0x0f; value1++){
+
+		uint8_t value2 = 0x03;
+
+		struct TACBuffer* b = tacbuffer_ctor();
+
+		tacbuffer_append(b, makeTACConst(0, value1));
+		tacbuffer_append(b, makeTACConst(1, value2));
+		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_GE, 1));
+
+		tacbuffer_append(b, makeTACReturn(0));
+
+		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+
+		vmcu_system_step_n(system, 20);
+
+		int8_t r0 = vmcu_system_read_gpr(system, 0);
+
+		assert(r0 != 0);
+
+		vmcu_system_dtor(system);
+	}
+}
+
+static void test_compile_tac_binary_op_geq_true_16bit(){
+
+	status_test_codegen("TAC_BINARY_OP >= true (16 bit)");
+
+	for(uint16_t value1 = 0x0103; value1 < 0x010f; value1++){
+		uint16_t value2 = 0x0103;
+
+		struct TACBuffer* b = tacbuffer_ctor();
+
+		tacbuffer_append(b, makeTACConst(0, value1));
+		tacbuffer_append(b, makeTACConst(1, value2));
+		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_GE, 1));
+
+		tacbuffer_append(b, makeTACReturn(0));
+
+		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+
+		vmcu_system_step_n(system, 20);
+
+		int8_t r0 = vmcu_system_read_gpr(system, 0);
+
+		assert(r0 != 0);
+
+		vmcu_system_dtor(system);
+	}
+}
+
+static void test_compile_tac_binary_op_geq_false_8bit(){
+
+	status_test_codegen("TAC_BINARY_OP >= false (8 bit)");
+
+	for(uint8_t value1 = 0x03; value1 < 0x0f; value1++){
+
+		uint8_t value2 = 0x10;
+
+		struct TACBuffer* b = tacbuffer_ctor();
+
+		tacbuffer_append(b, makeTACConst(0, value1));
+		tacbuffer_append(b, makeTACConst(1, value2));
+		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_GE, 1));
+
+		tacbuffer_append(b, makeTACReturn(0));
+
+		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+
+		vmcu_system_step_n(system, 20);
+
+		int8_t r0 = vmcu_system_read_gpr(system, 0);
+
+		assert(r0 == 0);
+
+		vmcu_system_dtor(system);
+	}
+}
+
+static void test_compile_tac_binary_op_geq_false_16bit(){
+
+	status_test_codegen("TAC_BINARY_OP >= false (16 bit)");
+
+	for(uint16_t value1 = 0x0103; value1 < 0x010f; value1++){
+		uint16_t value2 = 0x0203;
+
+		struct TACBuffer* b = tacbuffer_ctor();
+
+		tacbuffer_append(b, makeTACConst(0, value1));
+		tacbuffer_append(b, makeTACConst(1, value2));
+		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_GE, 1));
+
+		tacbuffer_append(b, makeTACReturn(0));
+
+		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+
+		vmcu_system_step_n(system, 20);
 
 		int8_t r0 = vmcu_system_read_gpr(system, 0);
 

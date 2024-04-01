@@ -109,9 +109,12 @@ static void write_middle(enum IKEY key, int32_t x1, int32_t x2, char* str, char*
 			
 		//special using X,Y,Z
 		case LDX: sprintf(s, "r%d, X", x1); break;
+		case LDXpostInc: sprintf(s, "r%d, X+", x1); break;
 		case LDY: sprintf(s, "r%d, Y", x1); break;
+		case LDYpostInc: sprintf(s, "r%d, Y+", x1); break;
 		case LDZ: sprintf(s, "r%d, Z", x1); break;
-		
+		case LDZpostInc: sprintf(s, "r%d, Z+", x1); break;
+
 		case LDDY: sprintf(s, "r%d, Y+%d", x1, x2); break;
 		case LDDZ: sprintf(s, "r%d, Z+%d", x1, x2); break;
 

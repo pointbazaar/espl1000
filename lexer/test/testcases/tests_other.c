@@ -185,14 +185,22 @@ void test_typeidentifier_primitive(){
 
 	printt("test typeidentifier primitive\n");
 
-	char* str = "int uint int8 uint8";
+	char* str = "int uint int8 uint8 int16 uint16";
 	
 	struct Token** tokens = lex(str);
 
-	char* expect[] = {"int", "uint", "int8", "uint8"};
+	int expect_kind[] = {
+		TYPEID_PRIMITIVE_INT,
+		TYPEID_PRIMITIVE_UINT,
+		TYPEID_PRIMITIVE_INT8,
+		TYPEID_PRIMITIVE_UINT8,
+		TYPEID_PRIMITIVE_INT16,
+		TYPEID_PRIMITIVE_UINT16,
+	};
+	char* expect[] = {"int", "uint", "int8", "uint8", "int16", "uint16"};
 
-	for(int i=0;i < 4; i++){
-		assert(tokens[i]->kind == TYPEID_PRIMITIVE_INT);
+	for(int i=0;i < 6; i++){
+		assert(tokens[i]->kind == expect_kind[i]);
 		assert(strcmp(tokens[i]->value_ptr, expect[i]) == 0);
 	}
 

@@ -150,7 +150,13 @@ static void case_compare(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
 
 	int rdest = rat_get_register(rat, tac->dest);
 
-	const bool wide = rat_is_wide(rat, tac->dest);
+	const bool wide1 = rat_is_wide(rat, tac->dest);
+	const bool wide2 = rat_is_wide(rat, tac->arg1);
+
+	//TODO: the case where both are of different width
+	// has to be handled
+
+	const bool wide = wide1 && wide2;
 
 	switch(tac->op){
 		case TAC_OP_CMP_LT:  case_cmp_lt  (ibu, rdest, rsrc, wide); break;
@@ -197,8 +203,8 @@ static void case_cmp_lt(struct IBuffer* ibu, int rdest, int rsrc, bool wide){
 	label(Lend);
 }
 
-static void case_cmp_ge(struct IBuffer* ibu, int rdest, int rsrc, bool wide){
 
+static void case_cmp_ge_8bit(struct IBuffer* ibu, int rdest, int rsrc){
 	//5 instructions
 
 	// ldi r16, 1
@@ -215,14 +221,48 @@ static void case_cmp_ge(struct IBuffer* ibu, int rdest, int rsrc, bool wide){
 	ldi(RAT_SCRATCH_REG, 1, c);
 
 	cp(rdest, rsrc, c);
-	if(wide)
-	cpc(rdest+1, rsrc+1, c);
 
 	brge(Ltrue, c);
 	ldi(RAT_SCRATCH_REG, 0, c);
 
 	label(Ltrue);
 	mov(rdest, RAT_SCRATCH_REG, c);
+
+}
+
+static void case_cmp_ge_16bit(struct IBuffer* ibu, int rdest, int rsrc){
+
+	char Ltrue[20];
+	char Lfalse[20];
+	sprintf(Ltrue, "Ltrue%d", label_counter++);
+	sprintf(Lfalse, "Lfalse%d", label_counter++);
+
+	ldi(RAT_SCRATCH_REG, 1, c);
+
+	// compare the upper bytes
+	cp(rdest+1, rsrc+1, c);
+	brlo(Lfalse, c);
+	cp(rsrc+1, rdest+1, c);
+	brlo(Ltrue, c);
+
+	cp(rdest, rsrc, c);
+	brge(Ltrue, c);
+
+	label(Lfalse);
+	ldi(RAT_SCRATCH_REG, 0, c);
+
+	label(Ltrue);
+	mov(rdest, RAT_SCRATCH_REG, c);
+
+}
+
+static void case_cmp_ge(struct IBuffer* ibu, int rdest, int rsrc, bool wide){
+
+	if (wide) {
+		case_cmp_ge_16bit(ibu, rdest, rsrc);
+	} else {
+		case_cmp_ge_8bit(ibu, rdest, rsrc);
+	}
 }
 
 static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc, bool wide){

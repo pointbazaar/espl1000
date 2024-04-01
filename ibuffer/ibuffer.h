@@ -112,6 +112,7 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32
 //LAS
 //LAT
 #define ldX(dest, c)		ibu1(LDX, dest, c)
+#define ldXpostInc(dest, c)	ibu1(LDXpostInc, dest, c)
 #define ldY(dest, c)		ibu1(LDY, dest, c)
 #define lddY(dest, k, c)	ibu2(LDDY, dest, k, c)
 //LDZ

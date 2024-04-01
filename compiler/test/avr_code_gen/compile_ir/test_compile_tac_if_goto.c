@@ -79,7 +79,7 @@ static void case_true_16bit(){
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACConst(1, 0x0100));
+	tacbuffer_append(b, makeTACConst(1, 0x0101));
 	tacbuffer_append(b, makeTACIfGoto(1, l1));
 	tacbuffer_append(b, makeTACGoto(lend));
 

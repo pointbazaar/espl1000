@@ -5,36 +5,62 @@
 
 #include "test_gen_tac.h"
 
-static void case_local_int();
+static void case_local_int_8bit();
+static void case_local_int_16bit();
 static void case_local_struct();
 static void case_local_array();
 
 void test_gen_tac_assignstmt(){
-		
-	case_local_int();
+
+	case_local_int_8bit();
+	case_local_int_16bit();
 	case_local_struct();
 	case_local_array();
 }
 
-static void case_local_int(){
-	
-	status_test_codegen_tac("AssignStmt - local int");
+static void case_local_int_8bit(){
+
+	status_test_codegen_tac("AssignStmt - local int (8 bit)");
 
 	const int8_t value = 0x33;
 
 	char snippet[200];
-	sprintf(snippet, "fn main() -> int { int x = %d; return x; }", value);
-	
+	sprintf(snippet, "fn main() -> int { uint8 x = %d; return x; }", value);
+
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	vmcu_system_step_n(system, 20);
-	
+
 	//assert that value is returned in r0 as it should be
-	
+
 	int8_t value1 = vmcu_system_read_gpr(system, 0);
-		
+
 	assert(value1 == value);
-	
+
+	vmcu_system_dtor(system);
+}
+
+static void case_local_int_16bit(){
+
+	status_test_codegen_tac("AssignStmt - local int (16 bit)");
+
+	const uint16_t value = 0xab33;
+
+	char snippet[200];
+	sprintf(snippet, "fn main() -> int { uint16 x = %d; return x; }", value);
+
+	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
+
+	vmcu_system_step_n(system, 30);
+
+	//assert that value is returned in r0 as it should be
+
+	uint8_t value1_low = vmcu_system_read_gpr(system, 0);
+	uint8_t value1_high = vmcu_system_read_gpr(system, 1);
+	const uint16_t value1 = (value1_high << 8) | value1_low;
+
+	assert(value1 == value);
+
 	vmcu_system_dtor(system);
 }
 

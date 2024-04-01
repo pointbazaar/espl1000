@@ -13,13 +13,9 @@ void compile_tac_if_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
 	char str[32];
 	sprintf(str, "L%d", tac->label_index);
 
-	const bool wide = rat_is_wide(rat, tac->arg1);
-
 	tst(reg, c); //test if r%d is zero
 	brne(str, c);
 
-	if(wide){
-		tst(reg+1, c);
-		brne(str, c);
-	}
+	// since a bool is only ever 1 byte
+	// there is no case for wide argument
 }
