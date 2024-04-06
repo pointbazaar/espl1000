@@ -265,18 +265,30 @@ static void case_cmp_ge(struct IBuffer* ibu, int rdest, int rsrc, bool wide){
 	}
 }
 
-static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc, bool wide){
-
+static void case_cmp_neq_8bit(struct IBuffer* ibu, int rdest, int rsrc){
 	//we just subtract the 2 registers,
 	//if they were equal, rdest will be 0, meaning false
 	//otherwise it will be nonzero, meaning true
 
 	sub(rdest, rsrc, c);
+}
 
-	if(wide){
-		sbc(rdest+1, rsrc+1, c);
-		mov(rdest, rdest+1, c);
-	}
+static void case_cmp_neq_16bit(struct IBuffer* ibu, int rdest, int rsrc){
+
+	ldi(RAT_SCRATCH_REG, 0, c);
+	cpse(rdest, rsrc, c);
+	ldi(RAT_SCRATCH_REG, 1, c);
+	cpse(rdest+1, rsrc+1, c);
+	ldi(RAT_SCRATCH_REG, 1, c);
+	mov(rdest, RAT_SCRATCH_REG, c);
+}
+
+static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc, bool wide){
+
+	if(wide)
+		case_cmp_neq_16bit(ibu, rdest, rsrc);
+	else
+		case_cmp_neq_8bit(ibu, rdest, rsrc);
 }
 
 static void case_cmp_eq(struct IBuffer* ibu, int rdest, int rsrc, bool wide){
