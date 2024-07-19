@@ -1,8 +1,3 @@
-cmake_minimum_required(VERSION 3.10.2)
-project(dragon-parser C)
-
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_VERBOSE_MAKEFILE ON)
 
 #use -pg to generate profiling information for gprof
 
@@ -111,21 +106,15 @@ add_executable(dragon-parser
 	main/commandline/parser_help.c
 )
 
-set(COMMON_OPTS, "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
-
 target_compile_options(dragon-parser PUBLIC ${COMMON_OPTS})
 target_compile_options(dragon-parser-base PUBLIC ${COMMON_OPTS})
 target_compile_options(dragon-parser-tests PUBLIC ${COMMON_OPTS})
 
-#Util dependency
-target_link_libraries(dragon-parser-base ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
-#AST dependency
-target_link_libraries(dragon-parser-base ${CMAKE_SOURCE_DIR}/../ast/build/libsd-ast.a)
-#Token dependency
-target_link_libraries(dragon-parser-base ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a)
+target_link_libraries(dragon-parser-base sd-util sd-ast sd-token)
 
-target_link_libraries(dragon-parser 		dragon-parser-base)
-target_link_libraries(dragon-parser-tests 	dragon-parser-base)
+target_link_libraries(dragon-parser dragon-parser-base sd-util sd-ast sd-token)
+
+target_link_libraries(dragon-parser-tests dragon-parser-base sd-util sd-ast sd-token)
 
 target_include_directories(dragon-parser-base PUBLIC "main/commandline")
 target_include_directories(dragon-parser-base PUBLIC "main/astnodes")
@@ -137,7 +126,6 @@ target_include_directories(dragon-parser PUBLIC "main/astnodes")
 target_include_directories(dragon-parser PUBLIC "main/util")
 target_include_directories(dragon-parser PUBLIC "..")
 
-#target_include_directories(dragon-parser-tests PUBLIC "main/commandline")
 target_include_directories(dragon-parser-tests PUBLIC "main/astnodes")
 target_include_directories(dragon-parser-tests PUBLIC "main/util")
 target_include_directories(dragon-parser-tests PUBLIC "..")

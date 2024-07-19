@@ -4,7 +4,7 @@
 
 #include "driver.h"
 #include "lexer_flags.h"
-#include "../lex.yy.h"
+#include "lex.yy.h"
 
 int main(int argc, char* argv[]) {
 

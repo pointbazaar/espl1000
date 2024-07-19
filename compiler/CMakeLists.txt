@@ -1,8 +1,4 @@
-cmake_minimum_required(VERSION 3.10.2)
-project(sd C)
-
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_VERBOSE_MAKEFILE ON)
+#project(sd C)
 
 #use -pg to generate profiling information for gprof
 
@@ -184,33 +180,32 @@ add_executable("sd-tests"
 	test/gen_tac/test_gen_tac_structdecl.c
 )
 
-set(COMMON_OPTS, "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
-
 target_compile_options("sd-base"  PUBLIC ${COMMON_OPTS})
 target_compile_options("sd"       PUBLIC ${COMMON_OPTS})
 target_compile_options("sd-tests" PUBLIC ${COMMON_OPTS})
 
 #tables dependency
-target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../tables/build/libsd-tables.a)
+target_link_libraries("sd-base" sd-tables)
 #RAT dependency
-target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../rat/build/libsd-rat.a)
+target_link_libraries("sd-base" sd-rat)
 #TAC dependency
-target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../tac/build/libsd-tac.a)
+target_link_libraries("sd-base" sd-tac)
 #Parser dependency
-target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../parser/build/libdragon-parser-base.a)
+target_link_libraries("sd-base" dragon-parser-base)
 #IBuffer Dependency
-target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../ibuffer/build/libsd-ibuffer.a)
+target_link_libraries("sd-base" sd-ibuffer)
 #AST dependency
-target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../ast/build/libsd-ast.a)
+target_link_libraries("sd-base" sd-ast)
 #Util dependency
-target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
+target_link_libraries("sd-base" sd-util)
 #Token dependency
-target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a)
+target_link_libraries("sd-base" sd-token)
 
 target_link_libraries("sd" sd-base)
 
 #libvmcu dependency for sd-tests
-target_link_libraries("sd-tests" ${CMAKE_SOURCE_DIR}/../dependencies/libvmcu-Virtual-MCU-Library/build-release/libvmcu.a "-lm")
+#target_link_libraries("sd-tests" ${CMAKE_SOURCE_DIR}/../dependencies/libvmcu-Virtual-MCU-Library/build-release/libvmcu.a "-lm")
+target_link_libraries("sd-tests" ${CMAKE_SOURCE_DIR}/dependencies/libvmcu-Virtual-MCU-Library/build-release/libvmcu.a "-lm")
 
 target_link_libraries("sd-tests" sd-base)
 

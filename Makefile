@@ -1,25 +1,27 @@
 
-all:
+all: build test examples
+
+build: deps
+	cmake -S . -B build
+	#cmake --build build --parallel
+	cmake --build build
+
+deps:
 	cd dependencies && make
-	cd util       && make
-	cd token      && make
-	cd ast        && make
-	cd lexer      && make
-	cd parser     && make 
-	cd tables     && make
-	cd rat        && make
-	cd ibuffer    && make
-	cd tac        && make
-	cd compiler    && make 
+
+examples:
 	cd examples   && make
-	#cd stdlib     && make
+
+stdlib:
+	cd stdlib     && make
 
 ci: check-format all
 
 check-format:
 	./check-format.sh
 
-test:
+test: build
+	export PATH=${PATH}:$(pwd)/build/lexer/:$(pwd)/build/parser:$(pwd)/build/compiler
 	#cd token      && make test
 	cd ast        && make test
 	cd lexer      && make test
@@ -30,17 +32,12 @@ test:
 	cd examples   && make test
 	#cd stdlib     && make test
 
-clean:
+clean_cmake:
+	rm -rf CMakeFiles
+	rm -rf build
+
+clean: clean_cmake
 	# we don't clean our dependencies
-	cd util       && make clean
-	cd token      && make clean
-	cd ast        && make clean
-	cd lexer      && make clean
-	cd parser     && make clean
-	cd tables     && make clean
-	cd rat        && make clean
-	cd ibuffer    && make clean
-	cd tac        && make clean
 	cd compiler   && make clean
 	cd examples   && make clean
 	cd stdlib     && make clean
