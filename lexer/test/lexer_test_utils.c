@@ -24,7 +24,7 @@ struct Token** lex(char* source) {
 	fclose(f);
 
 	char cmd[100];
-	sprintf(cmd, "./build/dragon-lexer %s", fname_src);
+	sprintf(cmd, "./../build/lexer/dragon-lexer %s", fname_src);
 	system(cmd);
 
 	FILE* ftks = fopen(fname_tks, "r");

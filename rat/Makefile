@@ -1,15 +1,4 @@
 
-all: build test
+test: ../build/rat/sd-rat-tests
+	../build/rat/sd-rat-tests
 
-build: dirs
-	cmake -S . -B build -H.
-	cmake --build build --parallel 
-	
-test: build
-	./build/sd-rat-tests
-
-clean:
-	rm -rf build/*
-
-dirs:
-	mkdir -p build

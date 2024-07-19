@@ -1,24 +1,13 @@
-cmake_minimum_required(VERSION 3.10.2)
-project(dragon-lexer C)
 
 #Manual:
 #https://westes.github.io/flex/manual/
 
-#find_package(FLEX)
-
-#https://cmake.org/cmake/help/latest/module/FindFLEX.html
-
-#FLEX_TARGET(
-#	myscanner smalldragon.flex lex.yy.c
-#	DEFINES_FILE lex.yy.h
-#)
-
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
- 
+
 add_executable(dragon-lexer-tests
 	test/lexer_test_utils.c
 	test/test.c
-	
+
 	test/testcases/tests_operators.c
 	test/testcases/tests_mixed.c
 	test/testcases/tests_keywords.c
@@ -31,13 +20,30 @@ add_executable(dragon-lexer-tests
 add_executable(dragon-lexer
     src/driver.c
     src/main.c
+    ${CMAKE_BINARY_DIR}/lex.yy.h
+)
+
+include_directories(${CMAKE_SOURCE_DIR}/lexer/)
+
+# Add custom command to generate lex.yy.c and lex.yy.h
+add_custom_command(
+    OUTPUT ${CMAKE_BINARY_DIR}/lex.yy.c ${CMAKE_BINARY_DIR}/lex.yy.h
+    COMMAND flex --header-file=${CMAKE_BINARY_DIR}/lex.yy.h -o ${CMAKE_BINARY_DIR}/lex.yy.c ${CMAKE_SOURCE_DIR}/lexer/smalldragon.flex
+    DEPENDS smalldragon.flex
+    COMMENT "Generating lex.yy.c and lex.yy.h with Flex"
+    VERBATIM
+)
+
+# Add custom target that depends on the generated files
+add_custom_target(GenerateLexerFiles ALL
+	DEPENDS ${CMAKE_BINARY_DIR}/lex.yy.c ${CMAKE_BINARY_DIR}/lex.yy.h ${CMAKE_SOURCE_DIR}/lexer/src/driver.h
 )
 
 # Add a separate target for lex.yy.c
-add_library(lexer-lib STATIC lex.yy.c)
+add_library(lexer-lib STATIC ${CMAKE_BINARY_DIR}/lex.yy.c src/driver.h)
 
 set(MINIMAL_OPTS, "-g" "-march=native" "--std=c11")
-set(COMMON_OPTS, "-Wall" "-Wextra" "-Werror")
+#set(COMMON_OPTS, "-Wall" "-Wextra" "-Werror")
 
 # Apply minimal compile options for lex.yy.c
 target_compile_options(lexer-lib PRIVATE ${MINIMAL_OPTS} "-Wno-implicit-function-declaration")
@@ -56,12 +62,12 @@ target_compile_options(dragon-lexer-tests PUBLIC ${COMMON_OPTS})
 #target_link_libraries(dragon-lexer /usr/lib/x86_64-linux-gnu/libfl.a)
 target_link_libraries(dragon-lexer libfl.so)
 
-target_link_libraries(dragon-lexer ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a)
+target_link_libraries(dragon-lexer sd-token)
 
-target_link_libraries(dragon-lexer-tests ${CMAKE_SOURCE_DIR}/../token/build/libsd-token.a)
-
-#Util dependency
-target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
+target_link_libraries(dragon-lexer-tests sd-token)
 
 #Util dependency
-target_link_libraries(${PROJECT_NAME}-tests ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
+target_link_libraries(dragon-lexer sd-util)
+
+#Util dependency
+target_link_libraries(dragon-lexer-tests sd-util)

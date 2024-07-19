@@ -1,20 +1,8 @@
 #Manual:
 #https://westes.github.io/flex/manual/
 
-all: clean dragon-lexer test
+#lex.yy.c:
+#	flex --header-file=lex.yy.h smalldragon.flex
 
-dragon-lexer: lex.yy.c
-	cmake -S . -B build -H.
-	cmake --build build
-
-lex.yy.c:
-	flex --header-file=lex.yy.h smalldragon.flex
-
-clean:
-	rm -rf build/
-	rm -f dragon-lexer
-	rm -f lex.yy.c
-	rm -f lex.yy.h
-
-test: dragon-lexer
-	./build/dragon-lexer-tests
+test: ../build/lexer/dragon-lexer
+	./../build/lexer/dragon-lexer-tests

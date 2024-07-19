@@ -1,13 +1,6 @@
-cmake_minimum_required(VERSION 3.10.2)
-project("sd-util" C)
-
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_VERBOSE_MAKEFILE ON)
-
-add_library(${PROJECT_NAME} STATIC
+add_library("sd-util" STATIC
 	exit_malloc/exit_malloc.c
 )
 
-set(COMMON_OPTS, "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
+target_compile_options("sd-util" PUBLIC ${COMMON_OPTS})
 
-target_compile_options(${PROJECT_NAME} PUBLIC ${COMMON_OPTS})

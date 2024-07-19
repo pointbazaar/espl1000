@@ -17,17 +17,18 @@ jobs:
       - run:
           name: "build"
           command: |
-            echo 'export PATH=/home/circleci/project/lexer/build:/home/circleci/project/parser/build:/home/circleci/project/compiler:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/lexer/:/home/circleci/project/build/parser:/home/circleci/project/build/compiler:"$PATH"' >> "$BASH_ENV"
             source "$BASH_ENV"
-            echo "PATH is: $PATH"
-            make all
+            make build
+      - run:
+          name: "test"
+          command: |
+            echo 'export PATH=/home/circleci/project/build/lexer/:/home/circleci/project/build/parser:/home/circleci/project/build/compiler:"$PATH"' >> "$BASH_ENV"
+            source "$BASH_ENV"
+            make test
   build-job-ubuntu-2204:
     machine:
       image: ubuntu-2204:2022.10.2
-    #docker:
-    #  - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
       - run:
@@ -37,10 +38,15 @@ jobs:
       - run:
           name: "build"
           command: |
-            echo 'export PATH=/home/circleci/project/lexer/build:/home/circleci/project/parser/build:/home/circleci/project/compiler:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/lexer/:/home/circleci/project/build/parser:/home/circleci/project/build/compiler:"$PATH"' >> "$BASH_ENV"
             source "$BASH_ENV"
-            echo "PATH is: $PATH"
-            make all
+            make build
+      - run:
+          name: "test"
+          command: |
+            echo 'export PATH=/home/circleci/project/build/lexer/:/home/circleci/project/build/parser:/home/circleci/project/build/compiler:"$PATH"' >> "$BASH_ENV"
+            source "$BASH_ENV"
+            make test
   check-format:
     docker:
       - image: library/archlinux:latest
