@@ -111,9 +111,11 @@ add_executable(dragon-parser
 	main/commandline/parser_help.c
 )
 
-target_compile_options(dragon-parser PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
-target_compile_options(dragon-parser-base PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
-target_compile_options(dragon-parser-tests PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
+set(COMMON_OPTS, "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
+
+target_compile_options(dragon-parser PUBLIC ${COMMON_OPTS})
+target_compile_options(dragon-parser-base PUBLIC ${COMMON_OPTS})
+target_compile_options(dragon-parser-tests PUBLIC ${COMMON_OPTS})
 
 #Util dependency
 target_link_libraries(dragon-parser-base ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)

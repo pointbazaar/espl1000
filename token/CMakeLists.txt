@@ -14,6 +14,8 @@ add_library(${PROJECT_NAME} STATIC
 #Util dependency
 target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/../util/build/libsd-util.a)
 
-target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" )
+set(COMMON_OPTS, "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
+
+target_compile_options(${PROJECT_NAME} PUBLIC ${COMMON_OPTS})
 
 target_include_directories(${PROJECT_NAME} PUBLIC ".")

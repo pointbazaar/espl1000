@@ -27,14 +27,28 @@ add_executable(dragon-lexer-tests
 	test/testcases/tests_other.c
 )
 
+# Add the executable for dragon-lexer without lex.yy.c
 add_executable(dragon-lexer
-	src/driver.c
-	src/main.c
-	lex.yy.c
+    src/driver.c
+    src/main.c
 )
 
-target_compile_options(dragon-lexer       PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "--std=c11" "-lfl")
-target_compile_options(dragon-lexer-tests PUBLIC "-g" "-march=native" "-Wall" "-Wextra" "--std=c11")
+# Add a separate target for lex.yy.c
+add_library(lexer-lib STATIC lex.yy.c)
+
+set(MINIMAL_OPTS, "-g" "-march=native" "--std=c11")
+set(COMMON_OPTS, "-Wall" "-Wextra" "-Werror")
+
+# Apply minimal compile options for lex.yy.c
+target_compile_options(lexer-lib PRIVATE ${MINIMAL_OPTS} "-Wno-implicit-function-declaration")
+
+# Link lexer-lib to the main executable
+target_link_libraries(dragon-lexer lexer-lib)
+
+# Apply compile options for dragon-lexer
+target_compile_options(dragon-lexer PUBLIC ${COMMON_OPTS} "-lfl")
+
+target_compile_options(dragon-lexer-tests PUBLIC ${COMMON_OPTS})
 
 #target_link_libraries(dragon-lexer ${FLEX_LIBRARIES})
 #https://askubuntu.com/questions/289547/where-are-flex-libraries-located
