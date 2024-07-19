@@ -5,7 +5,7 @@
 #include "tac/tac.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_if_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
+void compile_tac_if_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	char* c = "TAC_IF_GOTO";
 

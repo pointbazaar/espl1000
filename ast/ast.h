@@ -17,7 +17,7 @@
 
 #include "../util/exit_malloc/exit_malloc.h"
 
-/* To quickly allocate Instances. Instead of 
+/* To quickly allocate Instances. Instead of
  * x = malloc(sizeof(struct IntConst));
  * we have:
  * x = make(IntConst);
@@ -34,9 +34,9 @@ struct Namespace {
 	//a namespace is represented by a filename.
 	//the contents of a namespace are the contents of the file
 
-	char* src_path; 	//the .dg filename
-	char* token_path; 	//the .dg.tokens filename
-	
+	char* src_path; //the .dg filename
+	char* token_path; //the .dg.tokens filename
+
 	char name[DEFAULT_STR_SIZE];
 
 	uint16_t count_includes;
@@ -52,12 +52,19 @@ struct Namespace {
 	size_t capacity_methods;
 };
 
-struct Range { struct ASTNode super; struct Expr* start; struct Expr* end; };
+struct Range {
+	struct ASTNode super;
+	struct Expr* start;
+	struct Expr* end;
+};
 
-struct Id  { struct ASTNode super; char identifier[DEFAULT_STR_SIZE]; };
+struct Id {
+	struct ASTNode super;
+	char identifier[DEFAULT_STR_SIZE];
+};
 
 struct StmtBlock {
-	struct ASTNode super; 
+	struct ASTNode super;
 	uint16_t count;
 	struct Stmt** stmts;
 };

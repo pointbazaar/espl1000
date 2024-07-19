@@ -18,13 +18,13 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens) {
 
 	struct WhileStmt* res = make(WhileStmt);
 	struct TokenList* copy = list_copy(tokens);
-	
+
 	parse_astnode(copy, &(res->super));
 
 	res->condition = NULL;
-	res->block     = NULL;
+	res->block = NULL;
 
-	if(!list_expect(copy, WHILE)){
+	if (!list_expect(copy, WHILE)) {
 		//this part can be parsed deterministically
 		printf("expected 'while', but was: %s\n", list_code(copy));
 		exit(1);
@@ -32,13 +32,13 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens) {
 	}
 
 	res->condition = makeExpr(copy);
-	if(res->condition == NULL){
+	if (res->condition == NULL) {
 		free(res);
 		return NULL;
 	}
 
 	res->block = makeStmtBlock(copy);
-	if(res->block == NULL){
+	if (res->block == NULL) {
 		free_expr(res->condition);
 		free(res);
 		return NULL;
@@ -49,4 +49,3 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens) {
 
 	return res;
 }
-

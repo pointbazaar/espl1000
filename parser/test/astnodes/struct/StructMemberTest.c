@@ -19,24 +19,24 @@ int structmember_test_can_parse_struct_member() {
 
 	struct TokenList* list = makeTokenList();
 
-	list_add(list, makeToken2(LPARENS,"("));
-		list_add(list, makeToken2(LPARENS,"("));
-		list_add(list, makeToken2(TYPEID,"MyStruct") );
-		list_add(list, makeToken2(RPARENS,")"));
-		list_add(list, makeToken2(ARROW,"->"));
-		list_add(list, makeToken2(TYPEID,"Carrot") );
-	list_add(list, makeToken2(RPARENS,")"));
+	list_add(list, makeToken2(LPARENS, "("));
+	list_add(list, makeToken2(LPARENS, "("));
+	list_add(list, makeToken2(TYPEID, "MyStruct"));
+	list_add(list, makeToken2(RPARENS, ")"));
+	list_add(list, makeToken2(ARROW, "->"));
+	list_add(list, makeToken2(TYPEID, "Carrot"));
+	list_add(list, makeToken2(RPARENS, ")"));
 
-	list_add(list, makeToken2(ID,"subr"));
+	list_add(list, makeToken2(ID, "subr"));
 	list_add(list, makeToken(SEMICOLON));
 
 	struct StructMember* node = makeStructMember(list);
 
 	assert(node != NULL);
 
-	assert( strcmp("subr", node->name) == 0);
+	assert(strcmp("subr", node->name) == 0);
 	assert(0 == list_size(list));
-	
+
 	freeTokenList(list);
 	free_struct_member(node);
 

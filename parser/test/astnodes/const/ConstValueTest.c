@@ -16,16 +16,16 @@ int test_charconst_parse_char_constant_node() {
 	status_test("test_charconst_parse_char_constant_node");
 
 	struct TokenList* list = makeTokenList();
-	list_add(list, makeToken2(CCONST,"'h'"));
+	list_add(list, makeToken2(CCONST, "'h'"));
 
 	struct ConstValue* cv = makeConstValue(list);
-	
+
 	assert(cv != NULL);
 	assert(cv->kind == 3);
-	
+
 	char node = cv->ptr.m3_char_const;
-	
-	assert('h'== node);
+
+	assert('h' == node);
 
 	freeTokenList(list);
 
@@ -37,16 +37,16 @@ int test_charconst_parse_char_constant_node_newline() {
 	status_test("test_charconst_parse_char_constant_node_newline");
 
 	struct TokenList* list = makeTokenList();
-	list_add(list, makeToken2(CCONST,"'\n'"));
-	
+	list_add(list, makeToken2(CCONST, "'\n'"));
+
 	struct ConstValue* cv = makeConstValue(list);
-	
+
 	assert(cv != NULL);
 	assert(cv->kind == 3);
 
 	char node = cv->ptr.m3_char_const;
 	assert('\n' == node);
-	
+
 	freeTokenList(list);
 
 	return 1;
@@ -57,20 +57,19 @@ int test_boolconst_parse_bool_constant_node() {
 	status_test("test_boolconst_parse_bool_constant_node");
 
 	struct TokenList* list = makeTokenList();
-	
-	list_add(list, makeToken2(BCONST_TRUE,"true"));
-	
+
+	list_add(list, makeToken2(BCONST_TRUE, "true"));
+
 	struct ConstValue* cv = makeConstValue(list);
-	
+
 	assert(cv != NULL);
 	assert(cv->kind == 1);
 
 	bool b = cv->ptr.m1_bool_const;
-	
+
 	assert(b);
 
 	freeTokenList(list);
 
 	return 1;
 }
-

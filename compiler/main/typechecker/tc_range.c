@@ -18,23 +18,23 @@
 
 struct Range;
 
-bool tc_range(struct Range* r, struct TCCtx* tcctx){
+bool tc_range(struct Range* r, struct TCCtx* tcctx) {
 
-    tcctx->current_line_num = r->super.line_num;
+	tcctx->current_line_num = r->super.line_num;
 
-    struct Type* t1 = infer_type_expr(tcctx->st, r->start);
-    struct Type* t2 = infer_type_expr(tcctx->st, r->end);
+	struct Type* t1 = infer_type_expr(tcctx->st, r->start);
+	struct Type* t2 = infer_type_expr(tcctx->st, r->end);
 
-    if(!is_integer_type(t1) || !is_integer_type(t2)){
+	if (!is_integer_type(t1) || !is_integer_type(t2)) {
 
-        char* snippet = str_range(r);
+		char* snippet = str_range(r);
 
-        error_snippet(tcctx, snippet, TC_ERR_RANGE_REQUIRES_INT);
-        
-        free(snippet);
-        
-        return false;
-    }
+		error_snippet(tcctx, snippet, TC_ERR_RANGE_REQUIRES_INT);
 
-    return true;
+		free(snippet);
+
+		return false;
+	}
+
+	return true;
 }

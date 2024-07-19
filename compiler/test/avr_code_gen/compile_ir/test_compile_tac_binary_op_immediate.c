@@ -30,7 +30,7 @@ static void case_shift_left_16bit();
 static void case_shift_right_8bit();
 static void case_shift_right_16bit();
 
-void test_compile_tac_binary_op_immediate(){
+void test_compile_tac_binary_op_immediate() {
 
 	case_add_8bit();
 	case_add_16bit();
@@ -54,13 +54,13 @@ void test_compile_tac_binary_op_immediate(){
 	case_shift_right_16bit();
 }
 
-static void case_add_8bit(){
+static void case_add_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE + (8 bit)");
 
 	int8_t start = 0x83;
 
-	for(uint8_t change = 0; change < 20; change++){
+	for (uint8_t change = 0; change < 20; change++) {
 
 		int8_t expected = start + change;
 
@@ -83,7 +83,7 @@ static void case_add_8bit(){
 	}
 }
 
-static void case_add_16bit(){
+static void case_add_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE + (16 bit)");
 
@@ -91,7 +91,7 @@ static void case_add_16bit(){
 
 	//printf("start = %d (0x%x)\n", start, start);
 
-	for(uint16_t change = 0; change < 20; change++){
+	for (uint16_t change = 0; change < 20; change++) {
 
 		//printf("change = %d (0x%x)\n", change, change);
 
@@ -123,13 +123,13 @@ static void case_add_16bit(){
 	}
 }
 
-static void case_sub_8bit(){
+static void case_sub_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE - (8 bit)");
 
 	int8_t start = 44;
 
-	for(uint8_t change = 0; change < 20; change++){
+	for (uint8_t change = 0; change < 20; change++) {
 
 		const int8_t expected = start - change;
 
@@ -149,17 +149,16 @@ static void case_sub_8bit(){
 		assert(r0 == expected);
 
 		vmcu_system_dtor(system);
-
 	}
 }
 
-static void case_sub_16bit(){
+static void case_sub_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE - (16 bit)");
 
 	int16_t start = 3483;
 
-	for(uint8_t change = 0; change < 20; change++){
+	for (uint8_t change = 0; change < 20; change++) {
 
 		const int16_t expected = start - change;
 
@@ -187,12 +186,12 @@ static void case_sub_16bit(){
 	}
 }
 
-static void case_and_8bit(){
+static void case_and_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE & (8 bit)");
 
 	int8_t start = 0xe3;
-	for(int8_t change = 0; change < 10; change++){
+	for (int8_t change = 0; change < 10; change++) {
 		int8_t expected = start & change;
 
 		struct TACBuffer* b = tacbuffer_ctor();
@@ -213,12 +212,12 @@ static void case_and_8bit(){
 	}
 }
 
-static void case_and_16bit(){
+static void case_and_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE & (16 bit)");
 
 	uint16_t start = 0xabcd;
-	for(uint16_t change = 0x1001; change < 0x1010; change++){
+	for (uint16_t change = 0x1001; change < 0x1010; change++) {
 		uint16_t expected = start & change;
 
 		struct TACBuffer* b = tacbuffer_ctor();
@@ -242,12 +241,12 @@ static void case_and_16bit(){
 	}
 }
 
-static void case_or_8bit(){
+static void case_or_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE | (8 bit)");
 
 	int8_t start = 0xc7;
-	for(int8_t change = 0; change < 10; change++){
+	for (int8_t change = 0; change < 10; change++) {
 		int8_t expected = start | change;
 
 		struct TACBuffer* b = tacbuffer_ctor();
@@ -268,12 +267,12 @@ static void case_or_8bit(){
 	}
 }
 
-static void case_or_16bit(){
+static void case_or_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE | (16 bit)");
 
 	uint16_t start = 0xabcd;
-	for(uint16_t change = 0x1000; change < 0x1010; change++){
+	for (uint16_t change = 0x1000; change < 0x1010; change++) {
 		uint16_t expected = start | change;
 
 		struct TACBuffer* b = tacbuffer_ctor();
@@ -297,12 +296,12 @@ static void case_or_16bit(){
 	}
 }
 
-static void case_xor_8bit(){
+static void case_xor_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE ^ (8 bit)");
 
 	int8_t start = 0xc3;
-	for(int8_t change = 0; change < 10; change++){
+	for (int8_t change = 0; change < 10; change++) {
 		int8_t expected = start ^ change;
 
 		struct TACBuffer* b = tacbuffer_ctor();
@@ -323,12 +322,12 @@ static void case_xor_8bit(){
 	}
 }
 
-static void case_xor_16bit(){
+static void case_xor_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE ^ (16 bit)");
 
 	uint16_t start = 0xabcd;
-	for(uint16_t change = 0x1000; change < 0x1010; change++){
+	for (uint16_t change = 0x1000; change < 0x1010; change++) {
 		uint16_t expected = start ^ change;
 
 		struct TACBuffer* b = tacbuffer_ctor();
@@ -352,13 +351,13 @@ static void case_xor_16bit(){
 	}
 }
 
-static void case_shift_left_8bit(){
+static void case_shift_left_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE << (8 bit)");
 
 	uint8_t start = 0xb3;
 
-	for(int change = 1; change < 6; change++){
+	for (int change = 1; change < 6; change++) {
 
 		const uint8_t expected = start << change;
 
@@ -370,7 +369,7 @@ static void case_shift_left_8bit(){
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-		vmcu_system_step_n(system, 8+change);
+		vmcu_system_step_n(system, 8 + change);
 
 		uint8_t r0 = (uint8_t)vmcu_system_read_gpr(system, 0);
 
@@ -380,13 +379,13 @@ static void case_shift_left_8bit(){
 	}
 }
 
-static void case_shift_left_16bit(){
+static void case_shift_left_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE << (16 bit)");
 
 	uint16_t start = 0xabcd;
 
-	for(int change = 1; change < 6; change++){
+	for (int change = 1; change < 6; change++) {
 
 		const uint16_t expected = start << change;
 
@@ -400,7 +399,7 @@ static void case_shift_left_16bit(){
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-		vmcu_system_step_n(system, 8 + change*2);
+		vmcu_system_step_n(system, 8 + change * 2);
 
 		uint8_t r0 = (uint8_t)vmcu_system_read_gpr(system, 0);
 		uint8_t r1 = (uint8_t)vmcu_system_read_gpr(system, 1);
@@ -415,13 +414,13 @@ static void case_shift_left_16bit(){
 	}
 }
 
-static void case_shift_right_8bit(){
+static void case_shift_right_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE >> (8 bit)");
 
 	uint8_t start = 0xb4;
 
-	for(int change = 1; change < 6; change++){
+	for (int change = 1; change < 6; change++) {
 
 		const uint8_t expected = start >> change;
 
@@ -433,7 +432,7 @@ static void case_shift_right_8bit(){
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-		vmcu_system_step_n(system, 8+change);
+		vmcu_system_step_n(system, 8 + change);
 
 		uint8_t r0 = (uint8_t)vmcu_system_read_gpr(system, 0);
 
@@ -443,13 +442,13 @@ static void case_shift_right_8bit(){
 	}
 }
 
-static void case_shift_right_16bit(){
+static void case_shift_right_16bit() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE >> (16 bit)");
 
 	uint16_t start = 0xabcd;
 
-	for(int change = 1; change < 6; change++){
+	for (int change = 1; change < 6; change++) {
 
 		const uint16_t expected = start >> change;
 
@@ -461,7 +460,7 @@ static void case_shift_right_16bit(){
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
-		vmcu_system_step_n(system, 8 + change*2);
+		vmcu_system_step_n(system, 8 + change * 2);
 
 		uint8_t r0 = (uint8_t)vmcu_system_read_gpr(system, 0);
 		uint8_t r1 = (uint8_t)vmcu_system_read_gpr(system, 1);

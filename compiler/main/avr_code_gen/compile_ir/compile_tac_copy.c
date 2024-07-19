@@ -14,6 +14,6 @@ void compile_tac_copy(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	mov(reg_dest, reg_src, "TAC_COPY");
 
-	if(rat_is_wide(rat, tac->arg1))
-		mov(reg_dest+1, reg_src+1, "TAC_COPY");
+	if (rat_is_wide(rat, tac->arg1))
+		mov(reg_dest + 1, reg_src + 1, "TAC_COPY");
 }

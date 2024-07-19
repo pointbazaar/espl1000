@@ -14,35 +14,34 @@
 #include "token/token/token.h"
 
 struct Expr* fullTreeTransformation(
-	enum OP* ops,
-	struct UnOpTerm** terms,
-	int count,
-	int start_terms,
-	int end_terms
-);
+    enum OP* ops,
+    struct UnOpTerm** terms,
+    int count,
+    int start_terms,
+    int end_terms);
 
 struct Expr* makeExpr_1(struct UnOpTerm* term) {
 	struct Expr* res = make(Expr);
-	
-	res->super.line_num    = term->super.line_num;
+
+	res->super.line_num = term->super.line_num;
 	res->super.annotations = term->super.annotations;
-	
+
 	res->term1 = term;
-	res->op    = OP_NONE;
+	res->op = OP_NONE;
 	res->term2 = NULL;
-	
+
 	return res;
 }
 
 struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, enum OP op, struct UnOpTerm* rightTerm) {
 
 	struct Expr* res = make(Expr);
-	
-	res->super.line_num    = leftTerm->super.line_num;
+
+	res->super.line_num = leftTerm->super.line_num;
 	res->super.annotations = leftTerm->super.annotations;
-	
+
 	res->term1 = leftTerm;
-	res->op    = op;
+	res->op = op;
 	res->term2 = rightTerm;
 	return res;
 }
@@ -50,15 +49,16 @@ struct Expr* makeExpr_3(struct UnOpTerm* leftTerm, enum OP op, struct UnOpTerm* 
 struct Expr* makeExpr(struct TokenList* tokens) {
 
 	int capacity = 10; //initial capacity
-	int count    = 0;
+	int count = 0;
 
-	enum OP*          ops   = malloc(sizeof(enum OP)          * capacity);
-	struct UnOpTerm** terms = malloc(sizeof(struct UnOpTerm*) * capacity);;
+	enum OP* ops = malloc(sizeof(enum OP) * capacity);
+	struct UnOpTerm** terms = malloc(sizeof(struct UnOpTerm*) * capacity);
+	;
 
 	struct TokenList* copy = list_copy(tokens);
 
 	struct UnOpTerm* first_term = makeUnOpTerm(copy);
-	if(first_term == NULL){
+	if (first_term == NULL) {
 		free(ops);
 		free(terms);
 		return NULL;
@@ -71,25 +71,25 @@ struct Expr* makeExpr(struct TokenList* tokens) {
 		struct TokenList* copy2 = list_copy(copy);
 
 		enum OP myop = makeOp(copy2);
-		if(myop == OP_NONE){
+		if (myop == OP_NONE) {
 			freeTokenListShallow(copy2);
 			break;
 		}
 
 		struct UnOpTerm* myterm = makeUnOpTerm(copy2);
-		if(myterm == NULL){
+		if (myterm == NULL) {
 			freeTokenListShallow(copy2);
 			break;
 		}
 
-		if(count >= capacity){
+		if (count >= capacity) {
 
 			capacity *= 2;
-			ops   = realloc(ops, sizeof(enum OP) * capacity);
+			ops = realloc(ops, sizeof(enum OP) * capacity);
 			terms = realloc(terms, sizeof(struct UnOpTerm*) * capacity);
 		}
 
-		ops[count-1]     = myop;
+		ops[count - 1] = myop;
 		terms[count++] = myterm;
 
 		list_set(copy, copy2);
@@ -99,7 +99,7 @@ struct Expr* makeExpr(struct TokenList* tokens) {
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
 
-	struct Expr* res = fullTreeTransformation(ops, terms, count, 0, count-1);
+	struct Expr* res = fullTreeTransformation(ops, terms, count, 0, count - 1);
 
 	free(terms);
 	free(ops);
@@ -107,54 +107,53 @@ struct Expr* makeExpr(struct TokenList* tokens) {
 	return res;
 }
 
-
-int prec_index(enum OP op){
+int prec_index(enum OP op) {
 
 	//Operator Precedences (lower number means higher precedence)
 	//these should be only the binary operators
 	//between UnOpTerm s
 	enum OP a[] = {
 
-		//arithmetic (5)
-		OP_MULTIPLY,
-		OP_PLUS,
-		OP_MINUS,
-		OP_SHIFT_LEFT,
-		OP_SHIFT_RIGHT,
+	    //arithmetic (5)
+	    OP_MULTIPLY,
+	    OP_PLUS,
+	    OP_MINUS,
+	    OP_SHIFT_LEFT,
+	    OP_SHIFT_RIGHT,
 
-		//relational (6)
-		OP_NEQ,
-		OP_EQ,
-		OP_GE,
-		OP_LE,
-		OP_GT,
-		OP_LT,
+	    //relational (6)
+	    OP_NEQ,
+	    OP_EQ,
+	    OP_GE,
+	    OP_LE,
+	    OP_GT,
+	    OP_LT,
 
-		//logical (3)
-		OP_AND,
-		OP_OR,
-		OP_XOR,
+	    //logical (3)
+	    OP_AND,
+	    OP_OR,
+	    OP_XOR,
 	};
 
-	for(int i=0; i < 14; i++){
-		if(op == a[i]) return i;
+	for (int i = 0; i < 14; i++) {
+		if (op == a[i]) return i;
 	}
 
 	//should never happen, but we return a valid value.
 	return 0;
 }
 
-static int indexWithLeastPrecedence(enum OP* ops, int start, int end){
+static int indexWithLeastPrecedence(enum OP* ops, int start, int end) {
 
 	//last index into the operators (lowest precedence)
 	int least = 0;
 	int indexOfFoundOp = 0;
 
-	for(int i = start;i <= end;i++){
+	for (int i = start; i <= end; i++) {
 
 		enum OP o1 = ops[i];
 
-		if(prec_index(o1) > least){
+		if (prec_index(o1) > least) {
 			least = prec_index(o1);
 			indexOfFoundOp = i;
 		}
@@ -163,7 +162,7 @@ static int indexWithLeastPrecedence(enum OP* ops, int start, int end){
 	return indexOfFoundOp;
 }
 
-static struct UnOpTerm* unopterm_from_expr(struct Expr* expr){
+static struct UnOpTerm* unopterm_from_expr(struct Expr* expr) {
 	struct UnOpTerm* ttmp = make(UnOpTerm);
 	ttmp->op = OP_NONE;
 	ttmp->term = makeTerm_other(expr);
@@ -171,23 +170,23 @@ static struct UnOpTerm* unopterm_from_expr(struct Expr* expr){
 }
 
 struct Expr* fullTreeTransformation(
-	enum OP* ops,
-	struct UnOpTerm** terms,
-	int count,
-	int start_terms, //inclusive
-	int end_terms    //inclusive
-){
+    enum OP* ops,
+    struct UnOpTerm** terms,
+    int count,
+    int start_terms, //inclusive
+    int end_terms //inclusive
+) {
 
 	//transform the list into a tree, respecting operator precedence
 	//this is a recursive divide-and-conquer approach.
 	//we find an operator with least precedence and split the list there
 
 	//we only have 1 term left here
-	if(end_terms-start_terms == 0)
+	if (end_terms - start_terms == 0)
 		return makeExpr_1(terms[start_terms]);
 
 	//search for the operator with the least precedence.
-	const int index_least_precedence = indexWithLeastPrecedence(ops, start_terms, end_terms-1);
+	const int index_least_precedence = indexWithLeastPrecedence(ops, start_terms, end_terms - 1);
 
 	enum OP op = ops[index_least_precedence];
 
@@ -197,21 +196,21 @@ struct Expr* fullTreeTransformation(
 	struct UnOpTerm* uo2;
 
 	int start1 = start_terms;
-	int end1   = index_least_precedence;
+	int end1 = index_least_precedence;
 
-	int start2 = index_least_precedence+1;
-	int end2   = end_terms;
+	int start2 = index_least_precedence + 1;
+	int end2 = end_terms;
 
-	if(end1-start1 == 0){
+	if (end1 - start1 == 0) {
 		uo1 = terms[start1];
-	}else{
+	} else {
 		struct Expr* e1 = fullTreeTransformation(ops, terms, count, start1, end1);
 		uo1 = unopterm_from_expr(e1);
 	}
 
-	if(end2-start2 == 0){
+	if (end2 - start2 == 0) {
 		uo2 = terms[start2];
-	}else{
+	} else {
 		struct Expr* e2 = fullTreeTransformation(ops, terms, count, start2, end2);
 		uo2 = unopterm_from_expr(e2);
 	}

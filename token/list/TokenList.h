@@ -17,11 +17,11 @@ struct TokenList {
 	//how many pointers we can store
 	//with the currently allocated memory
 	uint16_t capacity; //private
-	
+
 	//the index of the first token that was
 	//not already consumed
 	uint16_t index_head;
-	
+
 	//the amount of tokens stored,
 	//even if they have already been consumed
 	uint16_t tokens_stored;
@@ -45,12 +45,12 @@ bool list_expect(struct TokenList* list, int token_kind);
 
 struct TokenList* list_copy(struct TokenList* list);
 
-void 			list_set(struct TokenList* list, struct TokenList* other);
+void list_set(struct TokenList* list, struct TokenList* other);
 
-struct Token* 	list_get(struct TokenList* list, int i);
-struct Token* 	list_head(struct TokenList* list);
-struct Token* 	list_head_without_annotations(struct TokenList* list);
-int 			list_size(struct TokenList* list);
+struct Token* list_get(struct TokenList* list, int i);
+struct Token* list_head(struct TokenList* list);
+struct Token* list_head_without_annotations(struct TokenList* list);
+int list_size(struct TokenList* list);
 
 char* list_code(struct TokenList* list);
 

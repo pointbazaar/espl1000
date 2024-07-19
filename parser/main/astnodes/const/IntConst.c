@@ -18,29 +18,27 @@ int32_t makeIntConst(struct TokenList* tokens, bool* error) {
 	struct TokenList* copy = list_copy(tokens);
 
 	struct Token* tk = list_head(copy);
-	
-	if(tk == NULL){
+
+	if (tk == NULL) {
 		*error = true;
 		return 0;
 	}
 
-	switch (tk->kind){
+	switch (tk->kind) {
 
-		case OPKEY_ARITHMETIC: 
-			;
+		case OPKEY_ARITHMETIC:;
 			if (
-				strcmp(tk->value_ptr,"-") == 0 
-				&& (list_get(copy, 1)->kind == INTEGER)
+			    strcmp(tk->value_ptr, "-") == 0 && (list_get(copy, 1)->kind == INTEGER)
 
 			) {
-				struct Token* mytk = list_get(copy,1);
-				if(mytk == NULL){
+				struct Token* mytk = list_get(copy, 1);
+				if (mytk == NULL) {
 					freeTokenListShallow(copy);
 					*error = true;
 					return 0;
 				}
-				
-				res = - atoi(mytk->value_ptr);
+
+				res = -atoi(mytk->value_ptr);
 				list_consume(copy, 2);
 			} else {
 				// "cannot parse integer constant node with such operator:" + tk->value;
@@ -50,14 +48,12 @@ int32_t makeIntConst(struct TokenList* tokens, bool* error) {
 			}
 			break;
 
-		case INTEGER: 
-			;
+		case INTEGER:;
 			res = atoi(tk->value_ptr);
 			list_consume(copy, 1);
 			break;
 
-		default:
-			;
+		default:;
 			// "could not read IntConst node";
 			freeTokenListShallow(copy);
 			*error = true;
@@ -69,5 +65,3 @@ int32_t makeIntConst(struct TokenList* tokens, bool* error) {
 
 	return res;
 }
-
-

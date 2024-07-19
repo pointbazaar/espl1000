@@ -14,31 +14,31 @@
 #include "typechecker/util/tc_utils.h"
 #include "tcctx.h"
 
-bool tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx){
+bool tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx) {
 
-    tcctx->current_line_num = i->super.line_num;
+	tcctx->current_line_num = i->super.line_num;
 
-    struct Type* type = infer_type_expr(tcctx->st, i->condition);
+	struct Type* type = infer_type_expr(tcctx->st, i->condition);
 
-    if(!is_bool_type(type)){
+	if (!is_bool_type(type)) {
 
-        char* s1 = str_expr(i->condition);
+		char* s1 = str_expr(i->condition);
 
-        char msg[100];
-        sprintf(msg, "if %s {", s1);
+		char msg[100];
+		sprintf(msg, "if %s {", s1);
 
-        free(s1);
+		free(s1);
 
-        error_snippet(tcctx, msg, TC_ERR_CONDITION_REQUIRES_BOOL);
+		error_snippet(tcctx, msg, TC_ERR_CONDITION_REQUIRES_BOOL);
 
-        return false;
-    }
+		return false;
+	}
 
-    bool success =  tc_stmtblock(i->block, tcctx);
+	bool success = tc_stmtblock(i->block, tcctx);
 
-    if(i->else_block != NULL){
-        success &= tc_stmtblock(i->else_block, tcctx);
-    }
+	if (i->else_block != NULL) {
+		success &= tc_stmtblock(i->else_block, tcctx);
+	}
 
-    return success;
+	return success;
 }

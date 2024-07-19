@@ -4,7 +4,7 @@
 
 #include "str_ast.h"
 
-static void error(char* msg){
+static void error(char* msg) {
 
 	printf("[AST][Error] %s\n", msg);
 	exit(1);
@@ -12,34 +12,35 @@ static void error(char* msg){
 
 //---------------------------------------
 
-char* str_identifier(struct Id* id){
+char* str_identifier(struct Id* id) {
 
-	char* res =  exit_malloc(sizeof(char)*(strlen(id->identifier)+1));
+	char* res = exit_malloc(sizeof(char) * (strlen(id->identifier) + 1));
 	sprintf(res, "%s", id->identifier);
 	return res;
 }
 
-char* str_range(struct Range* r){
+char* str_range(struct Range* r) {
 
 	char* s1 = str_expr(r->start);
 	char* s2 = str_expr(r->end);
 
-	uint16_t l = strlen(s1) + strlen(s2) + 4+1;
+	uint16_t l = strlen(s1) + strlen(s2) + 4 + 1;
 
-	char* res = exit_malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char) * l);
 
 	sprintf(res, "%s .. %s", s1, s2);
 
-	free(s1); free(s2);
+	free(s1);
+	free(s2);
 
 	return res;
 }
 
-char* str_stmt_block(struct StmtBlock* block){
+char* str_stmt_block(struct StmtBlock* block) {
 
 	uint16_t l = 0;
 
-	for(uint16_t i = 0; i < block->count; i++){
+	for (uint16_t i = 0; i < block->count; i++) {
 
 		char* s = str_stmt(block->stmts[i]);
 
@@ -50,11 +51,11 @@ char* str_stmt_block(struct StmtBlock* block){
 
 	l += 1 + 2 + 2;
 
-	char* res = exit_malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char) * l);
 
 	strcpy(res, "{\n");
 
-	for(uint16_t i = 0; i < block->count; i++){
+	for (uint16_t i = 0; i < block->count; i++) {
 
 		char* s = str_stmt(block->stmts[i]);
 
@@ -67,19 +68,19 @@ char* str_stmt_block(struct StmtBlock* block){
 	return res;
 }
 
-char* str_const_value(struct ConstValue* cv){
+char* str_const_value(struct ConstValue* cv) {
 
-	char* res = exit_malloc(sizeof(char)*129);
+	char* res = exit_malloc(sizeof(char) * 129);
 
 	switch (cv->kind) {
-		case 1: strcpy(res, cv->ptr.m1_bool_const ? "true": "false"); break;
+		case 1: strcpy(res, cv->ptr.m1_bool_const ? "true" : "false"); break;
 		case 2: sprintf(res, "%d", cv->ptr.m2_int_const); break;
 		case 3: sprintf(res, "'%c'", cv->ptr.m3_char_const); break;
 		case 5: sprintf(res, "0x%x", cv->ptr.m5_hex_const); break;
 		case 6: {
 			uint32_t value = cv->ptr.m5_hex_const;
 
-			if(value == 0){
+			if (value == 0) {
 				sprintf(res, "0b0");
 				return res;
 			}
@@ -91,7 +92,7 @@ char* str_const_value(struct ConstValue* cv){
 			int index = size - 1;
 			buffer[index--] = '\0';
 
-			while(value > 0){
+			while (value > 0) {
 
 				uint8_t bit = value & 0x1;
 
@@ -100,9 +101,8 @@ char* str_const_value(struct ConstValue* cv){
 				value >>= 1;
 			}
 
-			sprintf(res, "0b%s", buffer+index+1);
-			}
-			break;
+			sprintf(res, "0b%s", buffer + index + 1);
+		} break;
 		default:
 			free(res);
 			printf("[str_ast][Error] Unhandled Case\n");
@@ -113,18 +113,18 @@ char* str_const_value(struct ConstValue* cv){
 	return res;
 }
 
-char* str_string_const(struct StringConst* s){
+char* str_string_const(struct StringConst* s) {
 
-	char* res =  exit_malloc(sizeof(char)*(3+strlen(s->value)));
+	char* res = exit_malloc(sizeof(char) * (3 + strlen(s->value)));
 	sprintf(res, "%s", s->value);
 	return res;
 }
 
-char* str_array_type(struct ArrayType* at){
+char* str_array_type(struct ArrayType* at) {
 
 	char* inner = str_type(at->element_type);
 
-	char* res = exit_malloc(sizeof(char)*(strlen(inner)+2+1));
+	char* res = exit_malloc(sizeof(char) * (strlen(inner) + 2 + 1));
 
 	sprintf(res, "[%s]", inner);
 
@@ -133,37 +133,36 @@ char* str_array_type(struct ArrayType* at){
 	return res;
 }
 
-char* str_basic_type(struct BasicType* btw){
+char* str_basic_type(struct BasicType* btw) {
 
-	if(btw->simple_type != NULL)
+	if (btw->simple_type != NULL)
 		return str_simple_type(btw->simple_type);
 
-
-	if(btw->subr_type != NULL)
+	if (btw->subr_type != NULL)
 		return str_subr_type(btw->subr_type);
 
 	error("strBasicTypeWrapped");
 	return NULL;
 }
 
-char* str_simple_type(struct SimpleType* st){
+char* str_simple_type(struct SimpleType* st) {
 
-	if(st->primitive_type != NULL)
+	if (st->primitive_type != NULL)
 		return str_primitive_type(st->primitive_type);
 
 	return str_struct_type(st->struct_type);
 }
 
-char* str_subr_type(struct SubrType* st){
+char* str_subr_type(struct SubrType* st) {
 
 	// Step 1 : calculate size required
 
 	size_t size = 0 + 1 + 4; //\0, ()->
 
-	for(int i=0; i < st->count_arg_types; i++){
+	for (int i = 0; i < st->count_arg_types; i++) {
 
 		char* ats = str_type(st->arg_types[i]);
-		size += strlen(ats)+2; // ", "
+		size += strlen(ats) + 2; // ", "
 		free(ats);
 	}
 
@@ -173,17 +172,17 @@ char* str_subr_type(struct SubrType* st){
 
 	// Step 2 : generate string
 
-	char* res = exit_malloc(sizeof(char)*size);
+	char* res = exit_malloc(sizeof(char) * size);
 
 	strcpy(res, "(");
 
-	for(int i=0;i < st->count_arg_types; i++){
+	for (int i = 0; i < st->count_arg_types; i++) {
 
 		char* argType = str_type(st->arg_types[i]);
 		strcat(res, argType);
 		free(argType);
 
-		if(i < (st->count_arg_types - 1))
+		if (i < (st->count_arg_types - 1))
 			strcat(res, ", ");
 	}
 
@@ -196,64 +195,62 @@ char* str_subr_type(struct SubrType* st){
 	return res;
 }
 
-char* str_type(struct Type* t){
+char* str_type(struct Type* t) {
 
-	if(t->basic_type != NULL){ return str_basic_type(t->basic_type); }
+	if (t->basic_type != NULL) { return str_basic_type(t->basic_type); }
 
-	if(t->type_param != NULL){ return str_type_param(t->type_param); }
+	if (t->type_param != NULL) { return str_type_param(t->type_param); }
 
-	if(t->array_type != NULL){ return str_array_type(t->array_type); }
+	if (t->array_type != NULL) { return str_array_type(t->array_type); }
 
 	error("str_type");
 	return NULL;
 }
 
-char* str_type_param(struct TypeParam* t){
+char* str_type_param(struct TypeParam* t) {
 
-	char* res = exit_malloc(sizeof(char)*4);
+	char* res = exit_malloc(sizeof(char) * 4);
 	strcpy(res, "?T");
-	sprintf(res+2, "%d", t->index);
+	sprintf(res + 2, "%d", t->index);
 	return res;
 }
 
-
-char* str_primitive_type(struct PrimitiveType* p){
+char* str_primitive_type(struct PrimitiveType* p) {
 
 	char* res = exit_malloc(DEFAULT_STR_SIZE);
 
-	if(p->is_int_type){
+	if (p->is_int_type) {
 
-		char* types[] = 
-		{"int8","int16","int32","int64",
-		"uint8","uint16","uint32","uint64",
-		"int","uint"
-		};
+		char* types[] =
+		    {"int8", "int16", "int32", "int64",
+		     "uint8", "uint16", "uint32", "uint64",
+		     "int", "uint"};
 
 		sprintf(res, "%s", types[p->int_type]);
 	}
 
-	if(p->is_char_type) sprintf(res, "char");
-	if(p->is_bool_type) sprintf(res, "bool");
+	if (p->is_char_type) sprintf(res, "char");
+	if (p->is_bool_type) sprintf(res, "bool");
 
 	return res;
 }
 
-char* str_struct_type(struct StructType* s){
+char* str_struct_type(struct StructType* s) {
 
 	char* res = exit_malloc(DEFAULT_STR_SIZE);
 	sprintf(res, "%s", s->type_name);
 	return res;
 }
 
-char* str_struct_decl(struct StructDecl* decl){
+char* str_struct_decl(struct StructDecl* decl) {
 
 	char* name = str_simple_type(decl->type);
 
-	uint16_t l = strlen("struct   { } ")+strlen(name);
+	uint16_t l = strlen("struct   { } ") + strlen(name);
 
 	char* memberStrs[decl->count_members];
 
-	for(uint16_t i = 0; i < decl->count_members; i++){
+	for (uint16_t i = 0; i < decl->count_members; i++) {
 
 		char* s2 = str_struct_member(decl->members[i]);
 		l += strlen(s2);
@@ -261,11 +258,11 @@ char* str_struct_decl(struct StructDecl* decl){
 		memberStrs[i] = s2;
 	}
 
-	char* res = exit_malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char) * l);
 
 	sprintf(res, "struct %s {", decl->type->struct_type->type_name);
 
-	for(uint16_t i = 0; i < decl->count_members; i++){
+	for (uint16_t i = 0; i < decl->count_members; i++) {
 
 		char* s = memberStrs[i];
 		strcat(res, s);
@@ -277,19 +274,19 @@ char* str_struct_decl(struct StructDecl* decl){
 	return res;
 }
 
-char* str_struct_member(struct StructMember* s){
+char* str_struct_member(struct StructMember* s) {
 
 	char* s1 = str_type(s->type);
 	const int l = strlen(s1);
 
-	char* res = exit_malloc(sizeof(char)*(l+DEFAULT_STR_SIZE+3));
+	char* res = exit_malloc(sizeof(char) * (l + DEFAULT_STR_SIZE + 3));
 
 	sprintf(res, "%s %s;", s1, s->name);
 
 	return res;
 }
 
-char* str_variable(struct Variable* v){
+char* str_variable(struct Variable* v) {
 
 	char* s1 = str_simple_var(v->simple_var);
 
@@ -297,29 +294,29 @@ char* str_variable(struct Variable* v){
 
 	uint16_t l = strlen(s1) + strlen(s2);
 
-	char* res = exit_malloc(sizeof(char)*(l+1+1));
+	char* res = exit_malloc(sizeof(char) * (l + 1 + 1));
 
 	strcpy(res, s1);
 
-	if(v->member_access != NULL){
+	if (v->member_access != NULL) {
 		strcat(res, ".");
 		strcat(res, s2);
 	}
 
 	free(s1);
 
-	if(v->member_access != NULL) free(s2);
+	if (v->member_access != NULL) free(s2);
 
 	return res;
 }
 
-char* str_simple_var(struct SimpleVar* s){
+char* str_simple_var(struct SimpleVar* s) {
 
 	// Step 1 : calculate size required
 
 	size_t size = strlen(s->name) + 1;
 
-	for(int i=0; i < s->count_indices; i++){
+	for (int i = 0; i < s->count_indices; i++) {
 
 		char* s2 = str_expr(s->indices[i]);
 		size += strlen(s2) + 2; // "[]"
@@ -328,11 +325,11 @@ char* str_simple_var(struct SimpleVar* s){
 
 	// Step 2 : generate our string
 
-	char* res = exit_malloc(sizeof(char)*size);
+	char* res = exit_malloc(sizeof(char) * size);
 
 	strcpy(res, s->name);
 
-	for(uint16_t i = 0; i < s->count_indices; i++){
+	for (uint16_t i = 0; i < s->count_indices; i++) {
 
 		char* s1 = str_expr(s->indices[i]);
 
@@ -346,7 +343,7 @@ char* str_simple_var(struct SimpleVar* s){
 	return res;
 }
 
-char* str_expr(struct Expr* e){
+char* str_expr(struct Expr* e) {
 
 	char* strTerm1 = str_un_op_term(e->term1);
 
@@ -354,26 +351,26 @@ char* str_expr(struct Expr* e){
 
 	char* strTerm2 = (e->term2 != NULL) ? str_un_op_term(e->term2) : "";
 
-	uint16_t l = strlen(strTerm1)+strlen(strO)+strlen(strTerm2)+1;
+	uint16_t l = strlen(strTerm1) + strlen(strO) + strlen(strTerm2) + 1;
 
-	char* res = exit_malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char) * l);
 
 	sprintf(res, "%s%s%s", strTerm1, strO, strTerm2);
 
 	free(strTerm1);
-	if(e->op != OP_NONE){ free(strO); }
-	if(e->term2 != NULL){ free(strTerm2); }
+	if (e->op != OP_NONE) { free(strO); }
+	if (e->term2 != NULL) { free(strTerm2); }
 
 	return res;
 }
 
-char* str_op(enum OP o){
+char* str_op(enum OP o) {
 
-	char* res = exit_malloc(sizeof(char)*16);
+	char* res = exit_malloc(sizeof(char) * 16);
 
 	char* str;
 
-	switch(o){
+	switch (o) {
 		case OP_NONE: str = "ERR"; break;
 		case OP_PLUS: str = "+"; break;
 		case OP_MINUS: str = "-"; break;
@@ -393,27 +390,27 @@ char* str_op(enum OP o){
 	return res;
 }
 
-char* str_un_op_term(struct UnOpTerm* u){
+char* str_un_op_term(struct UnOpTerm* u) {
 
 	char* strO = (u->op != OP_NONE) ? str_op(u->op) : "";
 
 	char* strT = str_term(u->term);
 
-	uint16_t l = strlen(strO) + strlen(strT)+3;
+	uint16_t l = strlen(strO) + strlen(strT) + 3;
 
-	char* res = exit_malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char) * l);
 
 	sprintf(res, "%s%s", strO, strT);
 
-	if(u->op != OP_NONE){ free(strO); }
+	if (u->op != OP_NONE) { free(strO); }
 	free(strT);
 
 	return res;
 }
 
-char* str_term(struct Term* t){
+char* str_term(struct Term* t) {
 
-	switch(t->kind){
+	switch (t->kind) {
 		case 4: return str_call(t->ptr.m4);
 		case 5: return str_expr(t->ptr.m5);
 		case 6: return str_variable(t->ptr.m6);
@@ -426,19 +423,19 @@ char* str_term(struct Term* t){
 	return NULL;
 }
 
-char* str_mdirect(struct MDirect* m){
+char* str_mdirect(struct MDirect* m) {
 
-    char* se = str_expr(m->expr);
-    char* res = exit_malloc(3+ strlen(se));
-    sprintf(res, "[%s]", se);
+	char* se = str_expr(m->expr);
+	char* res = exit_malloc(3 + strlen(se));
+	sprintf(res, "[%s]", se);
 
-    free(se);
-    return res;
+	free(se);
+	return res;
 }
 
-char* str_stmt(struct Stmt* stmt){
+char* str_stmt(struct Stmt* stmt) {
 
-	switch(stmt->kind){
+	switch (stmt->kind) {
 
 		case 1: return str_call(stmt->ptr.m1);
 		case 2: return str_while_stmt(stmt->ptr.m2);
@@ -449,11 +446,11 @@ char* str_stmt(struct Stmt* stmt){
 		case 9: return str_massign_stmt(stmt->ptr.m9);
 		case 99: {
 			//break,continue,throw,...
-			char* res = exit_malloc(sizeof(char)*30);
+			char* res = exit_malloc(sizeof(char) * 30);
 			strcpy(res, "");
 
-			if(stmt->is_break)    { sprintf(res, "break"); }
-			if(stmt->is_continue) { sprintf(res, "continue"); }
+			if (stmt->is_break) { sprintf(res, "break"); }
+			if (stmt->is_continue) { sprintf(res, "continue"); }
 			return res;
 		}
 
@@ -463,64 +460,67 @@ char* str_stmt(struct Stmt* stmt){
 	}
 }
 
-char* str_assign_stmt(struct AssignStmt* a){
+char* str_assign_stmt(struct AssignStmt* a) {
 
 	char* strOptType = "";
 
-	if(a->opt_type != NULL)
+	if (a->opt_type != NULL)
 		strOptType = str_type(a->opt_type);
 
 	char* strVar = str_variable(a->var);
 
 	char* strE = str_expr(a->expr);
 
-	uint16_t l = strlen(strOptType)+strlen(strVar)+strlen(strE)+1+4;
+	uint16_t l = strlen(strOptType) + strlen(strVar) + strlen(strE) + 1 + 4;
 
-	char* res = exit_malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char) * l);
 
 	sprintf(res, "%s %s = %s", strOptType, strVar, strE);
 
-	if(a->opt_type != NULL) free(strOptType);
+	if (a->opt_type != NULL) free(strOptType);
 
-	free(strVar); free(strE);
+	free(strVar);
+	free(strE);
 	return res;
 }
 
-char* str_for_stmt(struct ForStmt* f){
+char* str_for_stmt(struct ForStmt* f) {
 
 	char* s1 = str_range(f->range);
 	char* s2 = str_stmt_block(f->block);
 
-	const uint32_t l = strlen(s1)+strlen(s2)+3+4+1+DEFAULT_STR_SIZE;
+	const uint32_t l = strlen(s1) + strlen(s2) + 3 + 4 + 1 + DEFAULT_STR_SIZE;
 
-	char* res = exit_malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char) * l);
 
 	sprintf(res, "for %s in %s %s", f->index_name, s1, s2);
 
-	free(s1); free(s2);
+	free(s1);
+	free(s2);
 	return res;
 }
 
-char* str_if_stmt(struct IfStmt* i){
+char* str_if_stmt(struct IfStmt* i) {
 
 	char* s1 = str_expr(i->condition);
 	char* s2 = str_stmt_block(i->block);
 
 	char* s3 = "";
 
-	if(i->else_block != NULL){
+	if (i->else_block != NULL) {
 		s3 = str_stmt_block(i->else_block);
 	}
 
-	const uint32_t l = strlen(s1)+strlen(s2)+strlen(s3)+1+10;
+	const uint32_t l = strlen(s1) + strlen(s2) + strlen(s3) + 1 + 10;
 
-	char* res = exit_malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char) * l);
 
 	sprintf(res, "if %s %s", s1, s2);
 
-	free(s1); free(s2);
+	free(s1);
+	free(s2);
 
-	if(i->else_block != NULL){
+	if (i->else_block != NULL) {
 
 		strcat(res, " else ");
 		strcat(res, s3);
@@ -530,28 +530,29 @@ char* str_if_stmt(struct IfStmt* i){
 	return res;
 }
 
-char* str_while_stmt(struct WhileStmt* w){
+char* str_while_stmt(struct WhileStmt* w) {
 
 	char* s1 = str_expr(w->condition);
 	char* s2 = str_stmt_block(w->block);
 
-	const uint32_t l = strlen(s1)+strlen(s2)+5+2+1;
+	const uint32_t l = strlen(s1) + strlen(s2) + 5 + 2 + 1;
 
-	char* res = exit_malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char) * l);
 
 	sprintf(res, "while %s %s", s1, s2);
 
-	free(s1); free(s2);
+	free(s1);
+	free(s2);
 	return res;
 }
 
-char* str_call(struct Call* m){
+char* str_call(struct Call* m) {
 
 	// Step 1 : calculate size required
 
-	uint16_t size = 1+2; // \0, "()"
+	uint16_t size = 1 + 2; // \0, "()"
 
-	for(int i=0; i < m->count_args; i++){
+	for (int i = 0; i < m->count_args; i++) {
 
 		char* s = str_expr(m->args[i]);
 		size += strlen(s) + 1; //","
@@ -568,13 +569,13 @@ char* str_call(struct Call* m){
 	free(str_var);
 	strcat(res, "(");
 
-	for(uint16_t i = 0; i < m->count_args; i++){
+	for (uint16_t i = 0; i < m->count_args; i++) {
 
 		char* s1 = str_expr(m->args[i]);
 
 		strcat(res, s1);
 
-		if(i != (m->count_args - 1)){
+		if (i != (m->count_args - 1)) {
 			strcat(res, ",");
 		}
 
@@ -586,13 +587,13 @@ char* str_call(struct Call* m){
 	return res;
 }
 
-char* str_ret_stmt(struct RetStmt* r){
+char* str_ret_stmt(struct RetStmt* r) {
 
 	char* s = str_expr(r->return_value);
 
 	uint16_t l = 10 + strlen(s);
 
-	char* res = exit_malloc(sizeof(char)*l);
+	char* res = exit_malloc(sizeof(char) * l);
 
 	sprintf(res, "return %s;", s);
 
@@ -601,15 +602,16 @@ char* str_ret_stmt(struct RetStmt* r){
 	return res;
 }
 
-char* str_massign_stmt(struct MAssignStmt* m){
+char* str_massign_stmt(struct MAssignStmt* m) {
 
 	char* s1 = str_mdirect(m->lhs);
 	char* s2 = str_expr(m->expr);
 
-	char* res = exit_malloc(strlen(s1)+ strlen(s2)+6);
+	char* res = exit_malloc(strlen(s1) + strlen(s2) + 6);
 
 	sprintf(res, "%s = %s;", s1, s2);
 
-	free(s1); free(s2);
+	free(s1);
+	free(s2);
 	return res;
 }

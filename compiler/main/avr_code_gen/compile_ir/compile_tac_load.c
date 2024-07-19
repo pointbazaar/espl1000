@@ -19,18 +19,17 @@ void compile_tac_load(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	mov(XL, reg_src, c);
 
-	if(rat_is_wide(rat, tac->arg1))
-		mov(XH, reg_src+1, c);
+	if (rat_is_wide(rat, tac->arg1))
+		mov(XH, reg_src + 1, c);
 	else
 		ldi(XH, 0, c);
 
-
-	if(rat_is_wide(rat, tac->dest)){
+	if (rat_is_wide(rat, tac->dest)) {
 
 		// what if we want to load a 16 bit value?
 		ldXpostInc(reg_dest, c);
-		ldX(reg_dest+1, c);
-	}else{
+		ldX(reg_dest + 1, c);
+	} else {
 		ldX(reg_dest, c);
 	}
 }

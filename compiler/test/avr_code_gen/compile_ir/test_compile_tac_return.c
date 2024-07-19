@@ -15,18 +15,18 @@
 
 #include "test_compile_tac.h"
 
-void test_compile_tac_return(){
+void test_compile_tac_return() {
 
 	status_test_codegen("TAC_RETURN");
 
-	for(int8_t value = 0x54; value < 0x65; value++){
+	for (int8_t value = 0x54; value < 0x65; value++) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
 		tacbuffer_append(b, makeTACSetupSP());
-		tacbuffer_append(b, makeTACConst(0, value+1));
+		tacbuffer_append(b, makeTACConst(0, value + 1));
 		tacbuffer_append(b, makeTACConst(1, value));
-		tacbuffer_append(b, makeTACConst(2, value-1));
+		tacbuffer_append(b, makeTACConst(2, value - 1));
 		tacbuffer_append(b, makeTACReturn(1));
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);

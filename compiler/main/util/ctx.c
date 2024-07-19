@@ -30,7 +30,6 @@ struct Ctx {
 	//symbol tables
 	struct ST* tables;
 
-
 	//for things like break, continue
 	//so they know which label to jump to
 
@@ -40,44 +39,42 @@ struct Ctx {
 	uint32_t label_loop_start; //label of current loop end
 };
 
-
-struct Ctx* ctx_ctor(struct Flags* flags, struct ST* tables){
+struct Ctx* ctx_ctor(struct Flags* flags, struct ST* tables) {
 
 	struct Ctx* res = make(Ctx);
-	
-	res->flags  = flags;
-    res->tables = tables;
-    
-    res->loop_depth = 0;
-	
+
+	res->flags = flags;
+	res->tables = tables;
+
+	res->loop_depth = 0;
+
 	return res;
 }
 
-void ctx_dtor(struct Ctx* ctx){
-	
+void ctx_dtor(struct Ctx* ctx) {
+
 	freeST(ctx_tables(ctx));
-    freeFlags(ctx_flags(ctx));
-    
-    free(ctx);
+	freeFlags(ctx_flags(ctx));
+
+	free(ctx);
 }
 
-struct Flags* ctx_flags(struct Ctx* ctx){
+struct Flags* ctx_flags(struct Ctx* ctx) {
 	return ctx->flags;
 }
 
-
-struct ST* ctx_tables(struct Ctx* ctx){
+struct ST* ctx_tables(struct Ctx* ctx) {
 	return ctx->tables;
 }
 
-void ctx_enter_loop(struct Ctx* ctx, uint32_t label_start, uint32_t label_end){
+void ctx_enter_loop(struct Ctx* ctx, uint32_t label_start, uint32_t label_end) {
 	ctx->label_loop_start = label_start;
-	ctx->label_loop_end   = label_end;
+	ctx->label_loop_end = label_end;
 	ctx->loop_depth++;
 }
 
-void ctx_exit_loop(struct Ctx* ctx){
-	if(ctx->loop_depth == 0){
+void ctx_exit_loop(struct Ctx* ctx) {
+	if (ctx->loop_depth == 0) {
 		printf("fatal error in ctx_exit_loop. Was not in a loop. Exiting");
 		fflush(stdout);
 		exit(1);
@@ -85,9 +82,9 @@ void ctx_exit_loop(struct Ctx* ctx){
 	ctx->loop_depth--;
 }
 
-uint32_t ctx_get_label_loop_start(struct Ctx* ctx){
+uint32_t ctx_get_label_loop_start(struct Ctx* ctx) {
 
-	if(ctx->loop_depth == 0){
+	if (ctx->loop_depth == 0) {
 		printf("fatal error in ctx_get_label_loop_start. Was not in a loop. Exiting");
 		fflush(stdout);
 		exit(1);
@@ -95,14 +92,12 @@ uint32_t ctx_get_label_loop_start(struct Ctx* ctx){
 	return ctx->label_loop_start;
 }
 
-uint32_t ctx_get_label_loop_end(struct Ctx* ctx){
+uint32_t ctx_get_label_loop_end(struct Ctx* ctx) {
 
-	if(ctx->loop_depth == 0){
+	if (ctx->loop_depth == 0) {
 		printf("fatal error in ctx_get_label_loop_end. Was not in a loop. Exiting");
 		fflush(stdout);
 		exit(1);
 	}
 	return ctx->label_loop_end;
 }
-
-

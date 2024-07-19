@@ -15,23 +15,23 @@ void compile_tac_store(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	const int reg_src = rat_get_register(rat, tac->arg1);
 
-	const bool src_wide  = rat_is_wide(rat, tac->arg1);
+	const bool src_wide = rat_is_wide(rat, tac->arg1);
 	const bool dest_wide = rat_is_wide(rat, tac->dest);
 
 	//set X
 	mov(XL, reg_dest, c);
 
-	if(dest_wide)
-	  mov(XH, reg_dest+1, c);
+	if (dest_wide)
+		mov(XH, reg_dest + 1, c);
 	else
-	  ldi(XH, 0, c);
+		ldi(XH, 0, c);
 
-	if(src_wide){
+	if (src_wide) {
 		//st X+, reg_src
 		//st X, reg_src+1
 		stXplus(reg_src, c);
-		stX(reg_src+1, c);
-	}else{
+		stX(reg_src + 1, c);
+	} else {
 		//st X, reg_src
 		stX(reg_src, c);
 	}

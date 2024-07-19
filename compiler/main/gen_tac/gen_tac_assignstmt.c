@@ -15,32 +15,31 @@ static void case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
 static void case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
 
-void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx){
+void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
 
-    tac_expr(buffer, a->expr, ctx);
+	tac_expr(buffer, a->expr, ctx);
 
-    if(a->var->member_access != NULL){
-        case_member(buffer, a, ctx);
-    }else if(a->var->simple_var->count_indices != 0){
-        case_indices(buffer, a, ctx);
-    }else{
+	if (a->var->member_access != NULL) {
+		case_member(buffer, a, ctx);
+	} else if (a->var->simple_var->count_indices != 0) {
+		case_indices(buffer, a, ctx);
+	} else {
 		case_default(buffer, a, ctx);
 	}
 }
 
-static void case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx){
-	
-	const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, a->var->simple_var->name);
-    
-    struct TAC* t = makeTACStoreLocal(
-			local_index,
-            tacbuffer_last_dest(buffer)
-	);
+static void case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
 
-    tacbuffer_append(buffer, t);
+	const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, a->var->simple_var->name);
+
+	struct TAC* t = makeTACStoreLocal(
+	    local_index,
+	    tacbuffer_last_dest(buffer));
+
+	tacbuffer_append(buffer, t);
 }
 
-static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx){
+static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
 
 	const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, a->var->simple_var->name);
 
@@ -54,7 +53,7 @@ static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 	uint32_t t1 = make_temp();
 	tacbuffer_append(buffer, makeTACLoadLocal(t1, local_index));
 
-	for(int i=0; i < a->var->simple_var->count_indices; i++){
+	for (int i = 0; i < a->var->simple_var->count_indices; i++) {
 		//calculate offset due to index
 		//toffset
 		tac_expr(buffer, a->var->simple_var->indices[0], ctx);
@@ -62,14 +61,13 @@ static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 
 		//add offset, t1 += toffset
 		tacbuffer_append(buffer, makeTACBinOp(t1, TAC_OP_ADD, toffset));
-
 	}
 
 	//[t1] = texpr
 	tacbuffer_append(buffer, makeTACStore(t1, texpr));
 }
 
-static void case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx){
+static void case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
 
 	uint32_t texpr = tacbuffer_last_dest(buffer);
 

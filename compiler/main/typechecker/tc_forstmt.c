@@ -14,15 +14,15 @@
 #include "typechecker/util/tc_utils.h"
 #include "tcctx.h"
 
-bool tc_forstmt(struct ForStmt* f, struct TCCtx* tcctx){
+bool tc_forstmt(struct ForStmt* f, struct TCCtx* tcctx) {
 
-    tcctx->current_line_num = f->super.line_num;
+	tcctx->current_line_num = f->super.line_num;
 
-    if(!tc_range(f->range, tcctx)){ return false; }
+	if (!tc_range(f->range, tcctx)) { return false; }
 
-    tcctx->depth_inside_loop++;
-    bool is_ok = tc_stmtblock(f->block, tcctx);
-    tcctx->depth_inside_loop--;
+	tcctx->depth_inside_loop++;
+	bool is_ok = tc_stmtblock(f->block, tcctx);
+	tcctx->depth_inside_loop--;
 
-    return is_ok;
+	return is_ok;
 }

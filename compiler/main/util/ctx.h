@@ -17,7 +17,6 @@ void ctx_dtor(struct Ctx* ctx);
 struct Flags* ctx_flags(struct Ctx* ctx);
 struct ST* ctx_tables(struct Ctx* ctx);
 
-
 //loop compilation related
 void ctx_enter_loop(struct Ctx* ctx, uint32_t label_start, uint32_t label_end);
 void ctx_exit_loop(struct Ctx* ctx);

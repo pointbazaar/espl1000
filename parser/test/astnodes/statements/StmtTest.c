@@ -18,19 +18,19 @@ int stmt_test_assignment_statement_with_struct_access() {
 	status_test("stmt_test_assignment_statement_with_struct_access");
 
 	struct TokenList* tokens = makeTokenList();
-	list_add(tokens, makeToken2(ID,"x") );
-	list_add(tokens, makeToken2(STRUCTMEMBERACCESS,"."));
-	list_add(tokens, makeToken2(ID,"a") );
-	list_add(tokens, makeToken2(ASSIGNOP,"=") );
-	list_add(tokens, makeToken2(INTEGER,"3") );
+	list_add(tokens, makeToken2(ID, "x"));
+	list_add(tokens, makeToken2(STRUCTMEMBERACCESS, "."));
+	list_add(tokens, makeToken2(ID, "a"));
+	list_add(tokens, makeToken2(ASSIGNOP, "="));
+	list_add(tokens, makeToken2(INTEGER, "3"));
 	list_add(tokens, makeToken2(SEMICOLON, ";"));
 
 	struct Stmt* node = makeStmt(tokens);
 
 	//all tokens should have been consumed
-	assert(0 == list_size(tokens)); 
+	assert(0 == list_size(tokens));
 	assert(node != NULL);
-	
+
 	freeTokenList(tokens);
 	free_stmt(node);
 
@@ -43,17 +43,17 @@ int stmt_test_assignment_statement_with_method_call() {
 
 	struct TokenList* tokens = makeTokenList();
 
-	list_add(tokens, makeToken2(ID,"flip") );
-	list_add(tokens, makeToken(LPARENS) );
-	list_add(tokens, makeToken2(ID,"x") );
-	list_add(tokens, makeToken(RPARENS) );
-	list_add(tokens, makeToken(SEMICOLON) );
+	list_add(tokens, makeToken2(ID, "flip"));
+	list_add(tokens, makeToken(LPARENS));
+	list_add(tokens, makeToken2(ID, "x"));
+	list_add(tokens, makeToken(RPARENS));
+	list_add(tokens, makeToken(SEMICOLON));
 
 	struct Stmt* node = makeStmt(tokens);
 
 	assert(0 == list_size(tokens)); //all tokens should have been consumed
 	assert(node != NULL);
-	
+
 	freeTokenList(tokens);
 	free_stmt(node);
 

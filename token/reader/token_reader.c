@@ -24,22 +24,22 @@ struct TokenList* read_tokens_from_tokens_file(FILE* file, char* tokensFile) {
 
 	uint32_t line_num = 1;
 
-	while (getline(&line, &size, file) > 0){
+	while (getline(&line, &size, file) > 0) {
 
-		line[strlen(line)-1] = '\0';
+		line[strlen(line) - 1] = '\0';
 
 		bool isLineNo = false;
 		struct Token* tkn = recognizeToken(line, &isLineNo, &line_num);
-		if(isLineNo){
-			if(tkn != NULL){
+		if (isLineNo) {
+			if (tkn != NULL) {
 				freeToken(tkn);
 			}
 			continue;
 		}
 
-		if(tkn != NULL){
+		if (tkn != NULL) {
 			list_add(tks, tkn);
-		}else{
+		} else {
 			break;
 		}
 	}
@@ -53,49 +53,49 @@ static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_nu
 
 	char part1[10];
 	char part2[200];
-	
+
 	char* space_ptr = strchr(tkn, ' ');
-	
-	if(space_ptr == NULL){ return NULL; }
-	
+
+	if (space_ptr == NULL) { return NULL; }
+
 	const int space_index = space_ptr - tkn;
 
 	tkn[space_index] = '\0';
-	
+
 	strcpy(part1, tkn);
 	strcpy(part2, tkn + space_index + 1);
 
 	const int tkn_id = atoi(part1);
 
 	if (tkn_id == LINE_NO) {
-		
+
 		*line_num = atoi(part2);
 		*isLineNo = true;
-		
+
 		return NULL;
 	}
-	
+
 	struct Token* r = recognizeTokenInner(tkn_id, tkn, part2);
 
-	if(r != NULL){
+	if (r != NULL) {
 		r->line_num = *line_num;
 	}
 
 	return r;
 }
 
-static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
-	
+static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2) {
+
 	struct Token* r = NULL;
-	
+
 	switch (tkn_id) {
-		case STRINGCONST : 
-			r = makeTokenStringConst(tkn+3);
+		case STRINGCONST:
+			r = makeTokenStringConst(tkn + 3);
 			break;
-		case CCONST : 
-			r = makeToken2(CCONST, tkn+3);
+		case CCONST:
+			r = makeToken2(CCONST, tkn + 3);
 			break;
-		case ANYTYPE: 
+		case ANYTYPE:
 		//CONSTANTS
 		case BCONST_TRUE:
 		case BCONST_FALSE:
@@ -103,16 +103,16 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		case HEXCONST:
 		case BINCONST:
 		//BRACKETS, BRACES, PARENTHESES
-		case LBRACKET : 
-		case RBRACKET : 
-		case LPARENS : 
-		case RPARENS : 
-		case LCURLY: 
+		case LBRACKET:
+		case RBRACKET:
+		case LPARENS:
+		case RPARENS:
+		case LCURLY:
 		case RCURLY:
 		//IDENTIFIERS
-		case ID : 
+		case ID:
 		case TYPEID:
-		
+
 		case TYPEID_PRIMITIVE_INT:
 		case TYPEID_PRIMITIVE_UINT:
 		case TYPEID_PRIMITIVE_INT8:
@@ -121,21 +121,21 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		case TYPEID_PRIMITIVE_UINT16:
 		case TYPEID_PRIMITIVE_BOOL:
 		case TYPEID_PRIMITIVE_CHAR:
-		
+
 		//SECTION: OPERATORNS
 		case OPKEY_ARITHMETIC:
 		case OPKEY_RELATIONAL:
 		case OPKEY_LOGICAL:
 		case OPKEY_BITWISE:
-		
-		case ASSIGNOP: 
+
+		case ASSIGNOP:
 		//SECTION: OTHER
-		case TPARAM: 
-		case SEMICOLON: 
-		case COMMA: 
-		case ARROW: 
-		case STRUCTMEMBERACCESS: 
-		
+		case TPARAM:
+		case SEMICOLON:
+		case COMMA:
+		case ARROW:
+		case STRUCTMEMBERACCESS:
+
 		//SECTION: ANNOTATIONS
 		case ANNOT_HALTS:
 		case ANNOT_PRIVATE:
@@ -143,26 +143,26 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2){
 		case ANNOT_DEPRECATED:
 
 		//SECTION: KEYWORDS
-		case RETURN: 
-		case FN: 
-		case STRUCT: 
-		case IF: 
-		case ELSE: 
+		case RETURN:
+		case FN:
+		case STRUCT:
+		case IF:
+		case ELSE:
 		case WHILE:
 		case BREAK:
-		case CONTINUE: 
+		case CONTINUE:
 		case FOR:
 		case IN:
 		case INCLUDE_DECL:
 		case RANGEOP:
-		case WAVE : 
+		case WAVE:
 			r = makeToken2(tkn_id, part2);
 			break;
-		default : 
+		default:
 			printf("unreconized token id : %d\n", tkn_id);
 			exit(1);
 			return NULL;
 	};
-	
+
 	return r;
 }

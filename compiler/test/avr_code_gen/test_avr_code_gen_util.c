@@ -26,120 +26,119 @@
 
 static void print_defs(FILE* fout);
 
-vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer){
+vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer) {
 
-	//create the file 
+	//create the file
 	FILE* falibi = fopen(".file.dg", "w");
-	
-	if(falibi == NULL){
-        printf("error opening output file\n");
-        exit(1);
-    }
-    
-    fclose(falibi);
+
+	if (falibi == NULL) {
+		printf("error opening output file\n");
+		exit(1);
+	}
+
+	fclose(falibi);
 
 	struct Flags* flags = makeFlagsSingleFile(".file.dg");
 
-    struct Ctx* ctx = ctx_ctor(flags, makeST(false));
+	struct Ctx* ctx = ctx_ctor(flags, makeST(false));
 
-    FILE* fout = fopen(flags_asm_filename(flags), "w");
-    
-    if(fout == NULL){
-        printf("error opening output file\n");
-        exit(1);
-    }
+	FILE* fout = fopen(flags_asm_filename(flags), "w");
 
-    print_defs(fout);
+	if (fout == NULL) {
+		printf("error opening output file\n");
+		exit(1);
+	}
+
+	print_defs(fout);
 
 	int nblocks;
-    struct BasicBlock** graph = basicblock_create_graph(buffer, "main", &nblocks, ctx);
-	
+	struct BasicBlock** graph = basicblock_create_graph(buffer, "main", &nblocks, ctx);
+
 	struct BasicBlock* root = graph[0];
 
-    if(root == NULL){
-        printf("[Error] could not create BasicBlock.Exiting.\n");
-        exit(1);
-    }
-    
-    struct IBuffer* ibu = ibu_ctor();
+	if (root == NULL) {
+		printf("[Error] could not create BasicBlock.Exiting.\n");
+		exit(1);
+	}
 
-    emit_asm_avr_basic_block(root, ctx, ibu);
-    
-    for(int i=0;i < nblocks; i++){
+	struct IBuffer* ibu = ibu_ctor();
+
+	emit_asm_avr_basic_block(root, ctx, ibu);
+
+	for (int i = 0; i < nblocks; i++) {
 		basicblock_dtor(graph[i]);
 	}
-	
+
 	ibu_write(ibu, fout);
-	
+
 	free(graph);
 
-    tacbuffer_dtor(buffer);
-    
-    ibu_dtor(ibu);
+	tacbuffer_dtor(buffer);
 
-    fclose(fout);
+	ibu_dtor(ibu);
 
-    char cmd[200];
-    sprintf(cmd, "avra %s > /tmp/avra-stdout 2> /tmp/avra-stderr", flags_asm_filename(flags));
-    
-    int status = system(cmd);
+	fclose(fout);
 
-    int status2 = WEXITSTATUS(status);
+	char cmd[200];
+	sprintf(cmd, "avra %s > /tmp/avra-stdout 2> /tmp/avra-stderr", flags_asm_filename(flags));
 
-    if(status2 != 0){
-        printf("error with avra, see /tmp/avra-stdout, /tmp/avra-stderr \n");
-        exit(1);
-    }
+	int status = system(cmd);
 
-    vmcu_model_t* model = vmcu_model_ctor(VMCU_DEVICE_M328P);
+	int status2 = WEXITSTATUS(status);
 
-    if(model == NULL){
-        printf("[Error] could not prepare vmcu_model_t. Exiting.\n");
-        exit(1);
-    }
+	if (status2 != 0) {
+		printf("error with avra, see /tmp/avra-stdout, /tmp/avra-stderr \n");
+		exit(1);
+	}
 
-    vmcu_report_t* report = vmcu_analyze_file(flags_hex_filename(flags), model);
+	vmcu_model_t* model = vmcu_model_ctor(VMCU_DEVICE_M328P);
 
-    if(report == NULL){
-        printf("[Error] could not prepare vmcu_report_t. Exiting.\n");
-        exit(1);
-    }
+	if (model == NULL) {
+		printf("[Error] could not prepare vmcu_model_t. Exiting.\n");
+		exit(1);
+	}
 
-    vmcu_system_t* system = vmcu_system_ctor(report);
+	vmcu_report_t* report = vmcu_analyze_file(flags_hex_filename(flags), model);
 
-    if(system == NULL){
-        printf("[Error] could not prepare vmcu_system_t. Exiting.\n");
-        exit(1);
-    }
-    
-    vmcu_report_dtor(report);
-    vmcu_model_dtor(model);
-    
-    ctx_dtor(ctx);
+	if (report == NULL) {
+		printf("[Error] could not prepare vmcu_report_t. Exiting.\n");
+		exit(1);
+	}
 
-    return system;
+	vmcu_system_t* system = vmcu_system_ctor(report);
+
+	if (system == NULL) {
+		printf("[Error] could not prepare vmcu_system_t. Exiting.\n");
+		exit(1);
+	}
+
+	vmcu_report_dtor(report);
+	vmcu_model_dtor(model);
+
+	ctx_dtor(ctx);
+
+	return system;
 }
 
-static void print_defs(FILE* fout){
-	
+static void print_defs(FILE* fout) {
+
 	//in /usr/share/avra
 
-    //in this file a comment must be shortened, otherwise avra will give an error
-    //.INCLUDE "/usr/share/avra/m32def.inc"
-    //fprintf(fout, ".DEVICE ATmega328P\n");
-    
-    //we do not want to depend on the specific location of that file
-    //or if it's even there ... just append some stuff here
-    fprintf(fout, 
-		".DEVICE ATmega328P\n"
-		".equ	RAMEND	= 0x085f\n"
-		".def	XH	= r27\n"
-		".def	XL	= r26\n"
-		".def	YH	= r29\n"
-		".def	YL	= r28\n"
-		".def	ZH	= r31\n"
-		".def	ZL	= r30\n"
-		".equ	SPH	= 0x3e\n"
-		".equ	SPL	= 0x3d\n"
-    );
+	//in this file a comment must be shortened, otherwise avra will give an error
+	//.INCLUDE "/usr/share/avra/m32def.inc"
+	//fprintf(fout, ".DEVICE ATmega328P\n");
+
+	//we do not want to depend on the specific location of that file
+	//or if it's even there ... just append some stuff here
+	fprintf(fout,
+	        ".DEVICE ATmega328P\n"
+	        ".equ	RAMEND	= 0x085f\n"
+	        ".def	XH	= r27\n"
+	        ".def	XL	= r26\n"
+	        ".def	YH	= r29\n"
+	        ".def	YL	= r28\n"
+	        ".def	ZH	= r31\n"
+	        ".def	ZL	= r30\n"
+	        ".equ	SPH	= 0x3e\n"
+	        ".equ	SPL	= 0x3d\n");
 }

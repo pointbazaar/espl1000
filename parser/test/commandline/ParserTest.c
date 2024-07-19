@@ -57,21 +57,21 @@ void test_suite_range();
 void test_suite_namespace();
 void test_suite_unop();
 
-static void status_test_suite(char* msg){
+static void status_test_suite(char* msg) {
 	printf("[Parser][TEST-SUITE] %s\n", msg);
 }
 
-int main(){
+int main() {
 
 	printf("[Parser] running Parser Tests...\n");
 
 	test_suite_constnodes();
-	
+
 	test_suite_simplevar();
 	test_suite_var();
 	test_suite_term();
 	test_suite_expr();
-	
+
 	test_suite_unop();
 	test_suite_assignstmt();
 	test_suite_stmts();
@@ -87,7 +87,7 @@ int main(){
 	return 0;
 }
 
-void test_suite_unop(){
+void test_suite_unop() {
 
 	status_test_suite("test_suite_unop");
 
@@ -95,7 +95,7 @@ void test_suite_unop(){
 	test_unop_with();
 }
 
-void test_suite_namespace(){
+void test_suite_namespace() {
 
 	status_test_suite("test_suite_namespace");
 
@@ -112,42 +112,40 @@ void test_suite_constnodes() {
 	test_charconst_parse_char_constant_node_newline();
 }
 
-void test_suite_term(){
+void test_suite_term() {
 	status_test_suite("test_suite_term");
 
 	term_test_simple_term();
 	term_test_variable_term();
 	term_test_parentheses();
-    term_test_mdirect();
-    
-    mdirect_test_1();
+	term_test_mdirect();
+
+	mdirect_test_1();
 }
 
-void test_suite_expr(){
+void test_suite_expr() {
 	status_test_suite("test_suite_expr");
-
 
 	expr_recognize_2_op_expr();
 	expr_test_simple_expression();
 	expr_test_variable_name_expression();
 
 	expr_test_comparison();
-	
+
 	expr_test_3_terms();
 }
 
-void test_suite_simplevar(){
-	
+void test_suite_simplevar() {
+
 	status_test_suite("test_suite_simplevar");
 
 	simplevar_test_parse_simple_indexed_variable();
 	simplevar_test_parse_simple_variable();
 	simplevar_test_2_indices();
-
 }
 
-void test_suite_var(){
-	
+void test_suite_var() {
+
 	status_test_suite("test_suite_var");
 
 	variable_test_parse_index_access();
@@ -164,14 +162,13 @@ void test_suite_stmts() {
 	retstmt_test2();
 	retstmt_test3();
 
-    methodcall_test1();
-    methodcall_test2();
-    methodcall_test3();
-    methodcall_test_can_parse_subroutine_call();
-    methodcall_test_can_parse_subroutine_call2();
-    methodcall_test_can_parse_struct_member_access();
-    methodcall_test_can_parse_array_access();
-
+	methodcall_test1();
+	methodcall_test2();
+	methodcall_test3();
+	methodcall_test_can_parse_subroutine_call();
+	methodcall_test_can_parse_subroutine_call2();
+	methodcall_test_can_parse_struct_member_access();
+	methodcall_test_can_parse_array_access();
 
 	stmt_test_assignment_statement_with_method_call();
 	stmt_test_assignment_statement_with_struct_access();
@@ -186,10 +183,10 @@ void test_suite_stmts() {
 
 	for_test1();
 
-    massignstmt_test1();
+	massignstmt_test1();
 }
 
-void test_suite_assignstmt(){
+void test_suite_assignstmt() {
 
 	status_test_suite("test_suite_assignstmt");
 
@@ -221,7 +218,7 @@ void test_suite_struct() {
 	structdecl_test_can_parse_struct_with_1_member();
 	structdecl_test_can_parse_struct_with_2_members();
 
-    structmember_test_can_parse_struct_member();
+	structmember_test_can_parse_struct_member();
 }
 
 void test_suite_types() {
@@ -242,7 +239,7 @@ void test_suite_types() {
 	structtype_test();
 }
 
-void test_suite_range(){
+void test_suite_range() {
 
 	status_test_suite("test_suite_range");
 

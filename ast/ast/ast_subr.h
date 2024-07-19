@@ -3,15 +3,15 @@
 
 #include "../ast_declare.h"
 
-struct DeclArg  {
-	struct ASTNode super; 
-	
+struct DeclArg {
+	struct ASTNode super;
+
 	struct Type* type;
 	bool has_name;
 	char name[DEFAULT_STR_SIZE];
 };
 
-struct MethodDecl{
+struct MethodDecl {
 	struct ASTNode super;
 
 	struct Type* return_type;
@@ -25,8 +25,8 @@ struct MethodDecl{
 };
 
 struct Method {
-	struct ASTNode super; 
-	
+	struct ASTNode super;
+
 	struct MethodDecl* decl;
 
 	struct StmtBlock* block;

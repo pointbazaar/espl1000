@@ -8,11 +8,11 @@ struct AST;
  * both callees and callers for all functions in a given
  * program.
  */
- 
+
 /* the output of the analysis is stored in the SST,
  * in the SSTLine for a given function.
  */
- 
+
 void analyze_functions(struct ST* st, struct AST* ast);
 
 #endif

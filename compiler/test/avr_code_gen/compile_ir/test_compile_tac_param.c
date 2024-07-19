@@ -18,13 +18,13 @@
 static void test_param_8bit();
 static void test_param_16bit();
 
-void test_compile_tac_param(){
+void test_compile_tac_param() {
 
 	test_param_8bit();
 	test_param_16bit();
 }
 
-static void test_param_8bit(){
+static void test_param_8bit() {
 
 	status_test_codegen("TAC_PARAM - (8 bit)");
 
@@ -62,7 +62,7 @@ static void test_param_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void test_param_16bit(){
+static void test_param_16bit() {
 
 	status_test_codegen("TAC_PARAM - (16 bit)");
 
@@ -95,7 +95,7 @@ static void test_param_16bit(){
 	assert(sp == sp_old - 2);
 
 	//assert that fixed_value is on the stack
-	assert((uint8_t)vmcu_system_read_data(system, sp_old-1) == 0x0a);
+	assert((uint8_t)vmcu_system_read_data(system, sp_old - 1) == 0x0a);
 	assert((uint8_t)vmcu_system_read_data(system, sp_old) == 0xbc);
 
 	vmcu_system_dtor(system);

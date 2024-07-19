@@ -17,39 +17,39 @@
 
 #include "../../cli/flags/flags.h"
 
-void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu){
+void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu) {
 
-    struct TACBuffer* buffer = tacbuffer_ctor();
-    
-    //populate ctx->st->lvst
-    lvst_clear(ctx_tables(ctx)->lvst);
-    lvst_fill(m, ctx_tables(ctx));
+	struct TACBuffer* buffer = tacbuffer_ctor();
+
+	//populate ctx->st->lvst
+	lvst_clear(ctx_tables(ctx)->lvst);
+	lvst_fill(m, ctx_tables(ctx));
 
 	//print the LVST for debug
-	if(flags_debug(ctx_flags(ctx)))
+	if (flags_debug(ctx_flags(ctx)))
 		lvst_print(ctx_tables(ctx)->lvst);
 
-    tac_method(buffer, m, ctx);
+	tac_method(buffer, m, ctx);
 
-    //print the TAC for debug
-    if(flags_debug(ctx_flags(ctx)))
-        tacbuffer_print(buffer, ctx);
+	//print the TAC for debug
+	if (flags_debug(ctx_flags(ctx)))
+		tacbuffer_print(buffer, ctx);
 
-    //create basic blocks from this TAC
-    //basic blocks from the three address code
-    //for each function, create a graph of basic blocks
+	//create basic blocks from this TAC
+	//basic blocks from the three address code
+	//for each function, create a graph of basic blocks
 
 	int nblocks;
-    struct BasicBlock** graph = basicblock_create_graph(buffer, m->decl->name, &nblocks, ctx);
+	struct BasicBlock** graph = basicblock_create_graph(buffer, m->decl->name, &nblocks, ctx);
 	struct BasicBlock* root = graph[0];
-	
-    emit_asm_avr_basic_block(root, ctx, ibu);
-    
-    //delete the basic block graph
-    for(int i=0; i < nblocks; i++){
+
+	emit_asm_avr_basic_block(root, ctx, ibu);
+
+	//delete the basic block graph
+	for (int i = 0; i < nblocks; i++) {
 		basicblock_dtor(graph[i]);
 	}
 	free(graph);
 
-    tacbuffer_dtor(buffer);
+	tacbuffer_dtor(buffer);
 }

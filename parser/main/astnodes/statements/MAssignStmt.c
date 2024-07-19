@@ -11,47 +11,47 @@
 #include "token/token/token.h"
 #include "expr/MDirect.h"
 
-struct MAssignStmt* makeMAssignStmt(struct TokenList* tokens){
+struct MAssignStmt* makeMAssignStmt(struct TokenList* tokens) {
 
-    struct MAssignStmt* res = make(MAssignStmt);
+	struct MAssignStmt* res = make(MAssignStmt);
 
-    struct TokenList* copy = list_copy(tokens);
+	struct TokenList* copy = list_copy(tokens);
 
-    parse_astnode(copy, &(res->super));
+	parse_astnode(copy, &(res->super));
 
-    res->lhs = makeMDirect(copy);
+	res->lhs = makeMDirect(copy);
 
-    //parse '='
-    struct Token* head = list_head(copy);
+	//parse '='
+	struct Token* head = list_head(copy);
 
-    if(head->kind != ASSIGNOP){
+	if (head->kind != ASSIGNOP) {
 		free(res);
 		freeTokenListShallow(copy);
-        return NULL;
-    }
+		return NULL;
+	}
 
-    if(strcmp(head->value_ptr, "=") != 0){
-        printf("expected assign op to be '=' for MAssignStmt. Exiting\n");
-        exit(1);
-        return NULL;
-    }
+	if (strcmp(head->value_ptr, "=") != 0) {
+		printf("expected assign op to be '=' for MAssignStmt. Exiting\n");
+		exit(1);
+		return NULL;
+	}
 
-    list_consume(copy, 1);
+	list_consume(copy, 1);
 
-    res->expr = makeExpr(copy);
+	res->expr = makeExpr(copy);
 
-    //parse ';'
-    head = list_head(copy);
-    if(head->kind != SEMICOLON){
+	//parse ';'
+	head = list_head(copy);
+	if (head->kind != SEMICOLON) {
 		free(res);
 		freeTokenListShallow(copy);
-        return NULL;
-    }
+		return NULL;
+	}
 
-    list_consume(copy, 1);
+	list_consume(copy, 1);
 
-    list_set(tokens,copy);
-    freeTokenListShallow(copy);
+	list_set(tokens, copy);
+	freeTokenListShallow(copy);
 
-    return res;
+	return res;
 }

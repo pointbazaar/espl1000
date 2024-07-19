@@ -13,12 +13,12 @@
 
 #include "util/ctx.h"
 
-void compile_tac_return(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu){
+void compile_tac_return(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
 	char* c = "TAC_RETURN";
 
 	//destroy the stackframe
-	for(size_t k=0; k < lvst_stack_frame_size_avr(ctx_tables(ctx)->lvst); k++){
+	for (size_t k = 0; k < lvst_stack_frame_size_avr(ctx_tables(ctx)->lvst); k++) {
 
 		pop(0, "destroy frame");
 		//pop r0 ; destroy frame
@@ -30,8 +30,8 @@ void compile_tac_return(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struc
 
 	mov(0, reg, c);
 
-	if(rat_is_wide(rat, tac->dest)){
-		mov(1, reg+1, c);
+	if (rat_is_wide(rat, tac->dest)) {
+		mov(1, reg + 1, c);
 	}
 
 	ret(c);

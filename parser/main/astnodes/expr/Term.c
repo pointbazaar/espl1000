@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-
 #include "parser/main/util/parse_astnode.h"
 
 #include "Term.h"
@@ -27,11 +26,11 @@ void tryInitExpr(struct Term* res, struct TokenList* copy);
 void tryInitStringConst(struct Term* res, struct TokenList* copy);
 // ---------------------------
 
-struct Term* makeTerm_other(struct Expr* expr){
-	
+struct Term* makeTerm_other(struct Expr* expr) {
+
 	struct Term* res = initTerm();
-	
-	res->super.line_num    = expr->super.line_num;
+
+	res->super.line_num = expr->super.line_num;
 	res->super.annotations = expr->super.annotations;
 
 	res->kind = 5;
@@ -40,58 +39,57 @@ struct Term* makeTerm_other(struct Expr* expr){
 }
 
 struct Term* makeTerm(struct TokenList* tokens) {
-	
-	if(list_size(tokens) == 0){return NULL;}
+
+	if (list_size(tokens) == 0) { return NULL; }
 
 	struct Term* res = initTerm();
-	
+
 	struct TokenList* copy = list_copy(tokens);
-	
+
 	parse_astnode(copy, &(res->super));
-	
+
 	const int tk_kind = list_head(copy)->kind;
 
+	if (tk_kind == LPARENS) {
 
-	if(tk_kind == LPARENS){
-		
 		tryInitExpr(res, copy);
-		
-	}else if(tk_kind == STRINGCONST) {
 
-        tryInitStringConst(res, copy);
+	} else if (tk_kind == STRINGCONST) {
 
-    }else if(tk_kind == LBRACKET){
+		tryInitStringConst(res, copy);
 
-        res->ptr.m13 = makeMDirect(copy);
-        res->kind = 13;
+	} else if (tk_kind == LBRACKET) {
 
-	}else{
+		res->ptr.m13 = makeMDirect(copy);
+		res->kind = 13;
+
+	} else {
 		goto other_term;
 	}
-	
+
 	//something matched
 	goto end;
-	
+
 other_term:
 
-	if ((res->ptr.m12 = makeConstValue(copy)) != NULL){
+	if ((res->ptr.m12 = makeConstValue(copy)) != NULL) {
 		res->kind = 12;
 		goto end;
 	}
-	
-	if((res->ptr.m4 = makeCall(copy)) != NULL){
+
+	if ((res->ptr.m4 = makeCall(copy)) != NULL) {
 		res->kind = 4;
 		goto end;
 	}
-	
-	if((res->ptr.m6 = makeVariable(copy)) != NULL){
+
+	if ((res->ptr.m6 = makeVariable(copy)) != NULL) {
 		res->kind = 6;
 		goto end;
 	}
 
 	free(res);
 	freeTokenListShallow(copy);
-	return NULL;		
+	return NULL;
 
 end:
 	list_set(tokens, copy);
@@ -100,31 +98,31 @@ end:
 	return res;
 }
 
-struct Term* initTerm(){
-	
+struct Term* initTerm() {
+
 	struct Term* res = make(Term);
-	
+
 	res->kind = 0;
 	res->ptr.m5 = NULL;
-	
+
 	return res;
 }
 
 void tryInitExpr(struct Term* res, struct TokenList* copy) {
-	
+
 	list_consume(copy, 1);
 
 	res->kind = 5;
 	res->ptr.m5 = makeExpr(copy);
-	if(res->ptr.m5 == NULL){
+	if (res->ptr.m5 == NULL) {
 		free(res);
 		freeTokenListShallow(copy);
 		printf("expected an Expression, but got :");
 		list_print(copy);
 		exit(1);
 	}
-	
-	if(!list_expect(copy, RPARENS)){
+
+	if (!list_expect(copy, RPARENS)) {
 		//this part can be parsed deterministically
 		printf("expected ')', but was: ");
 		list_print(copy);
@@ -133,17 +131,17 @@ void tryInitExpr(struct Term* res, struct TokenList* copy) {
 }
 
 void tryInitStringConst(struct Term* res, struct TokenList* copy) {
-	
+
 	res->kind = 8;
 	res->ptr.m8 = makeStringConst(copy);
-	if(res->ptr.m8 == NULL){
-		
+	if (res->ptr.m8 == NULL) {
+
 		printf("expected an String, but got :");
 		list_print(copy);
-		
+
 		free(res);
 		freeTokenListShallow(copy);
-		
+
 		exit(1);
 	}
 }

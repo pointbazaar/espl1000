@@ -20,9 +20,9 @@ struct StructType* makeStructType(struct TokenList* tokens) {
 
 	parse_astnode(copy, &(res->super));
 
-	struct Token* next  = list_head(copy);
+	struct Token* next = list_head(copy);
 
-	if(next->kind != TYPEID && next->kind != ANYTYPE){
+	if (next->kind != TYPEID && next->kind != ANYTYPE) {
 
 		printf("[Parser][Error] Could not parse StructType\n");
 		exit(1);
@@ -38,4 +38,3 @@ struct StructType* makeStructType(struct TokenList* tokens) {
 
 	return res;
 }
-

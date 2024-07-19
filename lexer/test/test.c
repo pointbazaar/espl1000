@@ -11,11 +11,11 @@
 
 static uint32_t test_num = 1;
 
-void printt(char* test_name){
+void printt(char* test_name) {
 	printf("[Lexer][Test][#%02d] %s", test_num++, test_name);
 }
 
-int main(){
+int main() {
 
 	printf("[Lexer] Running Tests... \n");
 
@@ -41,7 +41,7 @@ int main(){
 
 	test_comma();
 	test_arrow();
-	
+
 	//tests_const.c
 	test_lexes_escaped_char();
 	test_anytypetoken();
@@ -53,7 +53,7 @@ int main(){
 	test_int_3();
 	test_hex();
 	test_binconst();
-	
+
 	//tests_mixed.c
 	test_mixed_1();
 	test_mixed_2();
@@ -87,7 +87,7 @@ int main(){
 	test_for();
 	test_in();
 	//----------------
-	
+
 	//tests_comments.c
 	test_single_line_comment();
 	test_multi_line_comment();
@@ -99,7 +99,7 @@ int main(){
 
 	test_brackets();
 
-	printf("[Lexer] All %i Tests Passed\n", test_num-1);
+	printf("[Lexer] All %i Tests Passed\n", test_num - 1);
 
 	return 0;
 }

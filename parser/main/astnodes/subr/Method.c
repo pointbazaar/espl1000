@@ -15,18 +15,18 @@
 struct Method* makeMethod(struct TokenList* tokens) {
 	struct Method* res = make(Method);
 	struct TokenList* copy = list_copy(tokens);
-	
+
 	parse_astnode(copy, &(res->super));
 
 	res->decl = makeMethodDecl(copy);
 
 	res->block = makeStmtBlock(copy);
-	if(res->block == NULL){
+	if (res->block == NULL) {
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
 	}
-	
+
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
 

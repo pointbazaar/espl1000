@@ -29,26 +29,26 @@ static void test_infer_type_var_with_member_access();
 //type parameters
 static void test_infer_type_type_param();
 
-static void status_test_typeinference(char* msg){
+static void status_test_typeinference(char* msg) {
 	printf(" - [TEST] %s\n", msg);
 }
 
-void test_suite_typeinference(){
-    test_infer_type_term();
-    test_infer_type_unopterm();
-    test_infer_type_expr();
-    test_infer_type_expr_multiple_terms();
+void test_suite_typeinference() {
+	test_infer_type_term();
+	test_infer_type_unopterm();
+	test_infer_type_expr();
+	test_infer_type_expr_multiple_terms();
 
-    //call
-    test_infer_type_return_type_subroutine();
-    test_infer_type_call_with_struct_member_access();
-    test_infer_type_call_with_array_access();
+	//call
+	test_infer_type_return_type_subroutine();
+	test_infer_type_call_with_struct_member_access();
+	test_infer_type_call_with_array_access();
 
-    test_infer_type_simplevar_no_indices();
-    test_infer_type_simplevar_with_indices();
-    test_infer_type_var_with_member_access();
+	test_infer_type_simplevar_no_indices();
+	test_infer_type_simplevar_with_indices();
+	test_infer_type_var_with_member_access();
 
-    test_infer_type_type_param();
+	test_infer_type_type_param();
 }
 
 static void test_infer_type_term() {
@@ -58,10 +58,10 @@ static void test_infer_type_term() {
 	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_term.dg");
 
 	assert(t != NULL);
-	
+
 	assert(t->basic_type != NULL);
 	assert(t->basic_type->simple_type != NULL);
-	
+
 	assert(t->basic_type->simple_type->primitive_type != NULL);
 	assert(t->basic_type->simple_type->primitive_type->is_int_type == true);
 
@@ -75,15 +75,15 @@ static void test_infer_type_unopterm() {
 	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_unopterm.dg");
 
 	assert(t != NULL);
-	
+
 	assert(t->basic_type != NULL);
 	assert(t->basic_type->simple_type != NULL);
-	
+
 	assert(t->basic_type->simple_type->primitive_type != NULL);
 	assert(t->basic_type->simple_type->primitive_type->is_int_type == false);
-	
+
 	assert(t->basic_type->simple_type->struct_type == NULL);
-	
+
 	assert(t->basic_type->simple_type->primitive_type->is_bool_type);
 
 	free_type(t);
@@ -96,15 +96,15 @@ static void test_infer_type_expr() {
 	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_expr.dg");
 
 	assert(t != NULL);
-	
+
 	assert(t->basic_type != NULL);
 	assert(t->basic_type->simple_type != NULL);
-	
+
 	assert(t->basic_type->simple_type->primitive_type != NULL);
 	assert(t->basic_type->simple_type->primitive_type->is_int_type);
-	
+
 	assert(t->basic_type->simple_type->struct_type == NULL);
-	
+
 	assert(t->basic_type->simple_type->primitive_type->is_int_type);
 
 	free_type(t);
@@ -117,149 +117,147 @@ static void test_infer_type_expr_multiple_terms() {
 	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_expr_multiple_terms.dg");
 
 	assert(t != NULL);
-	
+
 	assert(t->basic_type != NULL);
 	assert(t->basic_type->simple_type != NULL);
-	
+
 	assert(t->basic_type->simple_type->primitive_type != NULL);
 	assert(t->basic_type->simple_type->primitive_type->is_int_type == true);
-	
+
 	assert(t->basic_type->simple_type->struct_type == NULL);
-	
+
 	//int + int -> int
 	assert(t->basic_type->simple_type->primitive_type->is_int_type);
 
 	free_type(t);
 }
 
-static void test_infer_type_return_type_subroutine(){
+static void test_infer_type_return_type_subroutine() {
 
 	status_test_typeinference("infer_type_return_type_subroutine");
 
-    struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_return_type_subroutine.dg");
+	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_return_type_subroutine.dg");
 
-    assert(t != NULL);
+	assert(t != NULL);
 
-    assert(t->basic_type != NULL);
-    assert(t->basic_type->simple_type != NULL);
+	assert(t->basic_type != NULL);
+	assert(t->basic_type->simple_type != NULL);
 
-    assert(t->basic_type->simple_type->struct_type == NULL);
+	assert(t->basic_type->simple_type->struct_type == NULL);
 
-    assert(t->basic_type->simple_type->primitive_type != NULL);
-    assert(t->basic_type->simple_type->primitive_type->is_int_type == true);
+	assert(t->basic_type->simple_type->primitive_type != NULL);
+	assert(t->basic_type->simple_type->primitive_type->is_int_type == true);
 
-    free_type(t);
+	free_type(t);
 }
 
-static void test_infer_type_call_with_struct_member_access(){
+static void test_infer_type_call_with_struct_member_access() {
 
-    status_test_typeinference("infer_type_call_with_struct_member_access");
+	status_test_typeinference("infer_type_call_with_struct_member_access");
 
-    struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_call_with_struct_member_access.dg");
+	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_call_with_struct_member_access.dg");
 
-    assert(t != NULL);
+	assert(t != NULL);
 
-    assert(t->basic_type != NULL);
-    assert(t->basic_type->simple_type != NULL);
+	assert(t->basic_type != NULL);
+	assert(t->basic_type->simple_type != NULL);
 
-    assert(t->basic_type->simple_type->struct_type == NULL);
+	assert(t->basic_type->simple_type->struct_type == NULL);
 
-    assert(t->basic_type->simple_type->primitive_type != NULL);
-    assert(t->basic_type->simple_type->primitive_type->is_int_type == true);
+	assert(t->basic_type->simple_type->primitive_type != NULL);
+	assert(t->basic_type->simple_type->primitive_type->is_int_type == true);
 
-    free_type(t);
+	free_type(t);
 }
 
-static void test_infer_type_call_with_array_access(){
-    status_test_typeinference("infer_type_call_with_array_access");
+static void test_infer_type_call_with_array_access() {
+	status_test_typeinference("infer_type_call_with_array_access");
 
-    struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_call_with_array_access.dg");
+	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_call_with_array_access.dg");
 
-    assert(t != NULL);
+	assert(t != NULL);
 
-    assert(t->basic_type != NULL);
-    assert(t->basic_type->simple_type != NULL);
+	assert(t->basic_type != NULL);
+	assert(t->basic_type->simple_type != NULL);
 
-    assert(t->basic_type->simple_type->struct_type == NULL);
+	assert(t->basic_type->simple_type->struct_type == NULL);
 
-    assert(t->basic_type->simple_type->primitive_type != NULL);
-    assert(t->basic_type->simple_type->primitive_type->is_int_type == true);
+	assert(t->basic_type->simple_type->primitive_type != NULL);
+	assert(t->basic_type->simple_type->primitive_type->is_int_type == true);
 
-    free_type(t);
+	free_type(t);
 }
 
-static void test_infer_type_simplevar_no_indices(){
+static void test_infer_type_simplevar_no_indices() {
 
 	status_test_typeinference("infer_type_simplevar_no_indices");
 
-    struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_simplevar_no_indices.dg");
+	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_simplevar_no_indices.dg");
 
-    assert(t != NULL);
+	assert(t != NULL);
 
-    assert(t->basic_type != NULL);
-    assert(t->basic_type->simple_type != NULL);
+	assert(t->basic_type != NULL);
+	assert(t->basic_type->simple_type != NULL);
 
-    assert(t->basic_type->simple_type->struct_type == NULL);
+	assert(t->basic_type->simple_type->struct_type == NULL);
 
-    assert(t->basic_type->simple_type->primitive_type != NULL);
-    assert(t->basic_type->simple_type->primitive_type->is_char_type == true);
+	assert(t->basic_type->simple_type->primitive_type != NULL);
+	assert(t->basic_type->simple_type->primitive_type->is_char_type == true);
 
-    free_type(t);
+	free_type(t);
 }
 
-static void test_infer_type_simplevar_with_indices(){
+static void test_infer_type_simplevar_with_indices() {
 
 	status_test_typeinference("infer_type_simplevar_with_indices");
 
-    struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_simplevar_with_indices.dg");
+	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_simplevar_with_indices.dg");
 
-    assert(t != NULL);
+	assert(t != NULL);
 
-    assert(t->basic_type != NULL);
-    assert(t->basic_type->simple_type != NULL);
+	assert(t->basic_type != NULL);
+	assert(t->basic_type->simple_type != NULL);
 
-    assert(t->basic_type->simple_type->struct_type == NULL);
+	assert(t->basic_type->simple_type->struct_type == NULL);
 
-    assert(t->basic_type->simple_type->primitive_type != NULL);
-    assert(t->basic_type->simple_type->primitive_type->is_bool_type == true);
+	assert(t->basic_type->simple_type->primitive_type != NULL);
+	assert(t->basic_type->simple_type->primitive_type->is_bool_type == true);
 
-    free_type(t);
+	free_type(t);
 }
 
-static void test_infer_type_var_with_member_access(){
+static void test_infer_type_var_with_member_access() {
 
 	status_test_typeinference("infer_type_var_with_member_access");
 
-    struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_var_with_member_access.dg");
+	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_var_with_member_access.dg");
 
-    assert(t != NULL);
+	assert(t != NULL);
 
-    assert(t->basic_type != NULL);
-    assert(t->basic_type->simple_type != NULL);
+	assert(t->basic_type != NULL);
+	assert(t->basic_type->simple_type != NULL);
 
-    assert(t->basic_type->simple_type->struct_type == NULL);
+	assert(t->basic_type->simple_type->struct_type == NULL);
 
-    assert(t->basic_type->simple_type->primitive_type != NULL);
-    assert(t->basic_type->simple_type->primitive_type->is_int_type == true);
+	assert(t->basic_type->simple_type->primitive_type != NULL);
+	assert(t->basic_type->simple_type->primitive_type->is_int_type == true);
 
-    free_type(t);
+	free_type(t);
 }
 
-static void test_infer_type_type_param(){
+static void test_infer_type_type_param() {
 
 	status_test_typeinference("infer_type_type_param");
 
-    struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_type_param.dg");
+	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_type_param.dg");
 
-    assert(t != NULL);
+	assert(t != NULL);
 
-    assert(t->basic_type == NULL);
-    assert(t->type_param != NULL);
-    assert(t->array_type == NULL);
+	assert(t->basic_type == NULL);
+	assert(t->type_param != NULL);
+	assert(t->array_type == NULL);
 
-    assert(t->type_param->index == 0);
+	assert(t->type_param->index == 0);
 
-    free_type(t);
+	free_type(t);
 }
-
-

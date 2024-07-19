@@ -14,28 +14,28 @@
 #include "typechecker/util/tc_utils.h"
 #include "tcctx.h"
 
-bool tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx){
+bool tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx) {
 
-    tcctx->current_line_num = w->super.line_num;
+	tcctx->current_line_num = w->super.line_num;
 
-    struct Type* type = infer_type_expr(tcctx->st, w->condition);
+	struct Type* type = infer_type_expr(tcctx->st, w->condition);
 
-    if(!is_bool_type(type)){
+	if (!is_bool_type(type)) {
 
-        char* s1 = str_expr(w->condition);
+		char* s1 = str_expr(w->condition);
 
-        char msg[200];
-        sprintf(msg, "while %s {", s1);
+		char msg[200];
+		sprintf(msg, "while %s {", s1);
 
-        free(s1);
+		free(s1);
 
-        error_snippet(tcctx, msg, TC_ERR_CONDITION_REQUIRES_BOOL);
-        return false;
-    }
+		error_snippet(tcctx, msg, TC_ERR_CONDITION_REQUIRES_BOOL);
+		return false;
+	}
 
-    tcctx->depth_inside_loop++;
-    bool has_err = tc_stmtblock(w->block, tcctx);
-    tcctx->depth_inside_loop--;
+	tcctx->depth_inside_loop++;
+	bool has_err = tc_stmtblock(w->block, tcctx);
+	tcctx->depth_inside_loop--;
 
-    return has_err;
+	return has_err;
 }

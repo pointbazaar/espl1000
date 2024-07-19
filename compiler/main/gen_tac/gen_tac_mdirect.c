@@ -7,18 +7,18 @@
 static void case_const_addr(struct TACBuffer* buffer, struct Expr* expr);
 static void case_variable_addr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx);
 
-void tac_mdirect(struct TACBuffer* buffer, struct MDirect* m, struct Ctx* ctx){
+void tac_mdirect(struct TACBuffer* buffer, struct MDirect* m, struct Ctx* ctx) {
 
 	struct Expr* expr = m->expr;
 
-	if(expr->term1->term->kind == 12){
+	if (expr->term1->term->kind == 12) {
 		case_const_addr(buffer, expr);
-	}else{
+	} else {
 		case_variable_addr(buffer, expr, ctx);
 	}
 }
 
-static void case_const_addr(struct TACBuffer* buffer, struct Expr* expr){
+static void case_const_addr(struct TACBuffer* buffer, struct Expr* expr) {
 
 	const uint32_t addr = expr->term1->term->ptr.m12->ptr.m2_int_const;
 
@@ -27,7 +27,7 @@ static void case_const_addr(struct TACBuffer* buffer, struct Expr* expr){
 	tacbuffer_append(buffer, t);
 }
 
-static void case_variable_addr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx){
+static void case_variable_addr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx) {
 
 	//t1 = [expr]
 

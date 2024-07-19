@@ -5,7 +5,7 @@
 
 void printt(char* test_name);
 
-//test subroutines 
+//test subroutines
 //(returning true if the test was passed, false otherwise)
 
 void test_plus_plus_minus_minus();
@@ -83,7 +83,6 @@ void test_member_access();
 void test_assign_operators();
 
 void test_brackets();
-
 
 void test_single_line_comment();
 void test_multi_line_comment();

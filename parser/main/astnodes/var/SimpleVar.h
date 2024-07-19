@@ -6,5 +6,4 @@ struct SimpleVar;
 
 struct SimpleVar* makeSimpleVar(struct TokenList* tokens);
 
-
 #endif

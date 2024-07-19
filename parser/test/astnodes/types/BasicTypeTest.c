@@ -17,7 +17,7 @@ int basictype_test_type_parsing_simple_type() {
 	status_test("basictype_test_type_parsing_simple_type");
 
 	struct TokenList* list = makeTokenList();
-	list_add(list, makeToken2(TYPEID,"Carrot"));
+	list_add(list, makeToken2(TYPEID, "Carrot"));
 
 	struct BasicType* b = makeBasicType2(list);
 
@@ -25,7 +25,7 @@ int basictype_test_type_parsing_simple_type() {
 	assert(b->simple_type != NULL && b->subr_type == NULL);
 
 	assert(0 == list_size(list));
-	
+
 	freeTokenList(list);
 	free_basic_type(b);
 

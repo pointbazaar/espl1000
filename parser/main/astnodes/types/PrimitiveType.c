@@ -16,22 +16,22 @@
 struct PrimitiveType* makePrimitiveType(struct TokenList* tokens) {
 
 	struct PrimitiveType* res = make(PrimitiveType);
-	
+
 	res->int_type = NONE;
-	res->is_int_type  = false;
+	res->is_int_type = false;
 	res->is_bool_type = false;
 	res->is_char_type = false;
-	
+
 	struct TokenList* copy = list_copy(tokens);
-	
+
 	parse_astnode(copy, &(res->super));
-	
+
 	struct Token* next = list_head(copy);
-	
+
 	uint32_t kind = next->kind;
-	
-	switch(kind){
-		
+
+	switch (kind) {
+
 		case TYPEID_PRIMITIVE_INT:
 			res->is_int_type = true;
 			res->int_type = INT;
@@ -56,11 +56,11 @@ struct PrimitiveType* makePrimitiveType(struct TokenList* tokens) {
 			res->is_int_type = true;
 			res->int_type = UINT16;
 			break;
-			
+
 		case TYPEID_PRIMITIVE_BOOL:
 			res->is_bool_type = true;
 			break;
-		
+
 		case TYPEID_PRIMITIVE_CHAR:
 			res->is_char_type = true;
 			break;
@@ -72,9 +72,9 @@ struct PrimitiveType* makePrimitiveType(struct TokenList* tokens) {
 	}
 
 	list_consume(copy, 1);
-	
+
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
-	
+
 	return res;
 }

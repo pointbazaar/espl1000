@@ -9,25 +9,24 @@ struct ST;
 struct LVSTLine;
 
 struct LVSTLine {
-	
-	char name[DEFAULT_STR_SIZE]; 
-	
-	struct Type* type; 
-	
+
+	char name[DEFAULT_STR_SIZE];
+
+	struct Type* type;
+
 	//the first occurence
 	//in the subroutine
-	//where this local variable was 
+	//where this local variable was
 	//assigned.
 	//can be NULL and is not relevant if is_arg == true
 	struct AssignStmt* first_occur;
-	
-	
+
 	//we must differentiate if
 	//it is an argument to the function
 	//or not. because arguments already have a type declared
 	//(for the c code generation)
 	bool is_arg;
-	
+
 	bool read_only;
 };
 

@@ -15,13 +15,13 @@
 
 #include "test_compile_tac.h"
 
-void test_compile_tac_load_const_addr(){
+void test_compile_tac_load_const_addr() {
 
 	status_test_codegen("TAC_LOAD_CONST_ADDR");
 
-	const uint16_t addr = 0x100+17;
+	const uint16_t addr = 0x100 + 17;
 
-	for(int8_t fixed_value = 0x55; fixed_value < 0x65; fixed_value++){
+	for (int8_t fixed_value = 0x55; fixed_value < 0x65; fixed_value++) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 

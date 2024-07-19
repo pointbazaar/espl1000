@@ -5,14 +5,14 @@
 
 #include "../sd_inttype.h"
 
-struct ArrayType { 
-	struct ASTNode super; 
-	
-	struct Type* element_type; 
+struct ArrayType {
+	struct ASTNode super;
+
+	struct Type* element_type;
 };
 
 struct BasicType {
-	struct ASTNode super; 
+	struct ASTNode super;
 	//these are alternatives,
 	//only one of these is != NULL
 	struct SimpleType* simple_type; //may be NULL
@@ -20,7 +20,7 @@ struct BasicType {
 };
 
 struct PrimitiveType {
-	struct ASTNode super; 
+	struct ASTNode super;
 
 	//PType means 'Primitive Type'
 	bool is_int_type;
@@ -37,26 +37,26 @@ struct StructType {
 };
 
 struct SimpleType {
-	struct ASTNode super; 
+	struct ASTNode super;
 
-	struct PrimitiveType* 	primitive_type; //may be NULL
-	struct StructType* 		struct_type; 	//may be NULL
+	struct PrimitiveType* primitive_type; //may be NULL
+	struct StructType* struct_type; //may be NULL
 };
 
 struct SubrType {
-	struct ASTNode super; 
-	
+	struct ASTNode super;
+
 	struct Type* return_type;
-	
+
 	struct Type** arg_types;
 	uint8_t count_arg_types;
-	
+
 	bool has_side_effects;
 };
 
 struct Type {
-	struct ASTNode super; 
-	
+	struct ASTNode super;
+
 	//only one of these is != NULL
 	struct BasicType* basic_type;
 	struct TypeParam* type_param;
@@ -64,9 +64,9 @@ struct Type {
 };
 
 struct TypeParam {
-	struct ASTNode super;  
-	
-	uint8_t index; /*type parameter index */ 
+	struct ASTNode super;
+
+	uint8_t index; /*type parameter index */
 };
 
 #endif
