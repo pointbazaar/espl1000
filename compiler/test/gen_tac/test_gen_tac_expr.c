@@ -23,8 +23,8 @@ static void test_gen_tac_expr_eq_16bit();
 static void test_gen_tac_expr_neq_8bit();
 static void test_gen_tac_expr_neq_16bit();
 
-void test_gen_tac_expr(){
-	
+void test_gen_tac_expr() {
+
 	test_gen_tac_expr_plus();
 	test_gen_tac_expr_minus();
 	test_gen_tac_expr_mul();
@@ -44,13 +44,12 @@ void test_gen_tac_expr(){
 	test_gen_tac_expr_neq_16bit();
 }
 
-
-static void test_gen_tac_expr_plus(){
+static void test_gen_tac_expr_plus() {
 
 	status_test_codegen_tac("Expr +");
 
-	for(int8_t value1 = 0; value1 < 4; value1++){
-		for(int8_t value2 = 0; value2 < 4; value2++){
+	for (int8_t value1 = 0; value1 < 4; value1++) {
+		for (int8_t value2 = 0; value2 < 4; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> int { int x = %d + %d; return x; }", value1, value2);
@@ -72,12 +71,12 @@ static void test_gen_tac_expr_plus(){
 	}
 }
 
-static void test_gen_tac_expr_minus(){
+static void test_gen_tac_expr_minus() {
 
 	status_test_codegen_tac("Expr -");
 
-	for(int8_t value1 = 50; value1 < 55; value1++){
-		for(int8_t value2 = 0; value2 < 10; value2++){
+	for (int8_t value1 = 50; value1 < 55; value1++) {
+		for (int8_t value2 = 0; value2 < 10; value2++) {
 			const int8_t expected = value1 - value2;
 
 			char snippet[200];
@@ -99,14 +98,14 @@ static void test_gen_tac_expr_minus(){
 	}
 }
 
-static void test_gen_tac_expr_mul(){
+static void test_gen_tac_expr_mul() {
 
 	return;
 
 	status_test_codegen_tac("Expr *");
 
-	for(int8_t value1 = 0; value1 < 5; value1++){
-		for(int8_t value2 = 0; value2 < 5; value2++){
+	for (int8_t value1 = 0; value1 < 5; value1++) {
+		for (int8_t value2 = 0; value2 < 5; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> int { int x = %d * %d; return x; }", value1, value2);
@@ -127,12 +126,12 @@ static void test_gen_tac_expr_mul(){
 	}
 }
 
-static void test_gen_tac_expr_and(){
+static void test_gen_tac_expr_and() {
 
 	status_test_codegen_tac("Expr &");
 
-	for(int8_t value1 = 0; value1 < 10; value1++){
-		for(int8_t value2 = 0; value2 < 10; value2++){
+	for (int8_t value1 = 0; value1 < 10; value1++) {
+		for (int8_t value2 = 0; value2 < 10; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> int { int x = %d & %d; return x; }", value1, value2);
@@ -154,12 +153,12 @@ static void test_gen_tac_expr_and(){
 	}
 }
 
-static void test_gen_tac_expr_or(){
+static void test_gen_tac_expr_or() {
 
 	status_test_codegen_tac("Expr |");
 
-	for(int8_t value1 = 0; value1 < 10; value1++){
-		for(int8_t value2 = 0; value2 < 10; value2++){
+	for (int8_t value1 = 0; value1 < 10; value1++) {
+		for (int8_t value2 = 0; value2 < 10; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> int { int x = %d | %d; return x; }", value1, value2);
@@ -177,13 +176,12 @@ static void test_gen_tac_expr_or(){
 	}
 }
 
-
-static void test_gen_tac_expr_shift_left(){
+static void test_gen_tac_expr_shift_left() {
 
 	status_test_codegen_tac("Expr <<");
 
-	for(int8_t value1 = 0; value1 < 10; value1++){
-		for(int8_t value2 = 1; value2 < 5; value2++){
+	for (int8_t value1 = 0; value1 < 10; value1++) {
+		for (int8_t value2 = 1; value2 < 5; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> int { int x = %d << %d; return x; }", value1, value2);
@@ -193,7 +191,7 @@ static void test_gen_tac_expr_shift_left(){
 			vmcu_system_step_n(system, 28);
 
 			const int8_t r0_value = vmcu_system_read_gpr(system, 0);
-			const int8_t expect   = value1 << value2;
+			const int8_t expect = value1 << value2;
 
 			assert(r0_value == expect);
 
@@ -202,12 +200,12 @@ static void test_gen_tac_expr_shift_left(){
 	}
 }
 
-static void test_gen_tac_expr_shift_right(){
+static void test_gen_tac_expr_shift_right() {
 
 	status_test_codegen_tac("Expr >>");
 
-	for(int8_t value1 = 0; value1 < 10; value1++){
-		for(int8_t value2 = 1; value2 < 5; value2++){
+	for (int8_t value1 = 0; value1 < 10; value1++) {
+		for (int8_t value2 = 1; value2 < 5; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> int { int x = %d >> %d; return x; }", value1, value2);
@@ -217,7 +215,7 @@ static void test_gen_tac_expr_shift_right(){
 			vmcu_system_step_n(system, 28);
 
 			const int8_t r0_value = vmcu_system_read_gpr(system, 0);
-			const int8_t expect   = value1 >> value2;
+			const int8_t expect = value1 >> value2;
 
 			assert(r0_value == expect);
 
@@ -226,12 +224,12 @@ static void test_gen_tac_expr_shift_right(){
 	}
 }
 
-static void test_gen_tac_expr_xor(){
+static void test_gen_tac_expr_xor() {
 
 	status_test_codegen_tac("Expr ^");
 
-	for(int8_t value1 = 0; value1 < 10; value1++){
-		for(int8_t value2 = 0; value2 < 10; value2++){
+	for (int8_t value1 = 0; value1 < 10; value1++) {
+		for (int8_t value2 = 0; value2 < 10; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> int { int x = %d ^ %d; return x; }", value1, value2);
@@ -245,7 +243,7 @@ static void test_gen_tac_expr_xor(){
 			//assert that value is returned in r0 as it should be
 
 			const int8_t r0_value = vmcu_system_read_gpr(system, 0);
-			const int8_t expect   = value1 ^ value2;
+			const int8_t expect = value1 ^ value2;
 
 			assert(r0_value == expect);
 
@@ -254,12 +252,12 @@ static void test_gen_tac_expr_xor(){
 	}
 }
 
-static void test_gen_tac_expr_lt_8bit(){
+static void test_gen_tac_expr_lt_8bit() {
 
 	status_test_codegen_tac("Expr < (8 bit)");
 
-	for(uint8_t value1 = 0; value1 < 4; value1++){
-		for(uint8_t value2 = 0; value2 < 4; value2++){
+	for (uint8_t value1 = 0; value1 < 4; value1++) {
+		for (uint8_t value2 = 0; value2 < 4; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d < %d; return x; }", value1, value2);
@@ -269,7 +267,7 @@ static void test_gen_tac_expr_lt_8bit(){
 			vmcu_system_step_n(system, 28);
 
 			const int8_t r0_value = vmcu_system_read_gpr(system, 0);
-			const int8_t expect   = value1 < value2;
+			const int8_t expect = value1 < value2;
 
 			assert(r0_value == expect);
 
@@ -278,12 +276,12 @@ static void test_gen_tac_expr_lt_8bit(){
 	}
 }
 
-static void test_gen_tac_expr_lt_16bit(){
+static void test_gen_tac_expr_lt_16bit() {
 
 	status_test_codegen_tac("Expr < (16 bit)");
 
-	for(uint16_t value1 = 0x100; value1 < 0x104; value1++){
-		for(uint16_t value2 = 0x100; value2 < 0x104; value2++){
+	for (uint16_t value1 = 0x100; value1 < 0x104; value1++) {
+		for (uint16_t value2 = 0x100; value2 < 0x104; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d < %d; return x; }", value1, value2);
@@ -293,7 +291,7 @@ static void test_gen_tac_expr_lt_16bit(){
 			vmcu_system_step_n(system, 28);
 
 			const int8_t r0_value = vmcu_system_read_gpr(system, 0);
-			const int8_t expect   = value1 < value2;
+			const int8_t expect = value1 < value2;
 
 			assert(r0_value == expect);
 
@@ -302,12 +300,12 @@ static void test_gen_tac_expr_lt_16bit(){
 	}
 }
 
-static void test_gen_tac_expr_gt_8bit(){
+static void test_gen_tac_expr_gt_8bit() {
 
 	status_test_codegen_tac("Expr > (8 bit)");
 
-	for(uint8_t value1 = 0; value1 < 4; value1++){
-		for(uint8_t value2 = 0; value2 < 4; value2++){
+	for (uint8_t value1 = 0; value1 < 4; value1++) {
+		for (uint8_t value2 = 0; value2 < 4; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d > %d; return x; }", value1, value2);
@@ -317,7 +315,7 @@ static void test_gen_tac_expr_gt_8bit(){
 			vmcu_system_step_n(system, 28);
 
 			const uint8_t r0_value = vmcu_system_read_gpr(system, 0);
-			const uint8_t expect   = value1 > value2;
+			const uint8_t expect = value1 > value2;
 
 			assert(r0_value == expect);
 
@@ -326,12 +324,12 @@ static void test_gen_tac_expr_gt_8bit(){
 	}
 }
 
-static void test_gen_tac_expr_gt_16bit(){
+static void test_gen_tac_expr_gt_16bit() {
 
 	status_test_codegen_tac("Expr > (16 bit)");
 
-	for(uint16_t value1 = 0x100; value1 < 0x104; value1++){
-		for(uint16_t value2 = 0x100; value2 < 0x104; value2++){
+	for (uint16_t value1 = 0x100; value1 < 0x104; value1++) {
+		for (uint16_t value2 = 0x100; value2 < 0x104; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d > %d; return x; }", value1, value2);
@@ -341,7 +339,7 @@ static void test_gen_tac_expr_gt_16bit(){
 			vmcu_system_step_n(system, 28);
 
 			const uint8_t r0_value = vmcu_system_read_gpr(system, 0);
-			const uint8_t expect   = value1 > value2;
+			const uint8_t expect = value1 > value2;
 
 			assert(r0_value == expect);
 
@@ -350,12 +348,12 @@ static void test_gen_tac_expr_gt_16bit(){
 	}
 }
 
-static void test_gen_tac_expr_eq_8bit(){
+static void test_gen_tac_expr_eq_8bit() {
 
 	status_test_codegen_tac("Expr == (8 bit)");
 
-	for(uint8_t value1 = 0; value1 < 4; value1++){
-		for(uint8_t value2 = 0; value2 < 4; value2++){
+	for (uint8_t value1 = 0; value1 < 4; value1++) {
+		for (uint8_t value2 = 0; value2 < 4; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d == %d; return x; }", value1, value2);
@@ -365,7 +363,7 @@ static void test_gen_tac_expr_eq_8bit(){
 			vmcu_system_step_n(system, 28);
 
 			const uint8_t r0_value = vmcu_system_read_gpr(system, 0);
-			const uint8_t expect   = value1 == value2;
+			const uint8_t expect = value1 == value2;
 
 			assert(r0_value == expect);
 
@@ -374,12 +372,12 @@ static void test_gen_tac_expr_eq_8bit(){
 	}
 }
 
-static void test_gen_tac_expr_eq_16bit(){
+static void test_gen_tac_expr_eq_16bit() {
 
 	status_test_codegen_tac("Expr == (16 bit)");
 
-	for(uint16_t value1 = 0x100; value1 < 0x104; value1++){
-		for(uint16_t value2 = 0x100; value2 < 0x104; value2++){
+	for (uint16_t value1 = 0x100; value1 < 0x104; value1++) {
+		for (uint16_t value2 = 0x100; value2 < 0x104; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d == %d; return x; }", value1, value2);
@@ -389,7 +387,7 @@ static void test_gen_tac_expr_eq_16bit(){
 			vmcu_system_step_n(system, 28);
 
 			const uint8_t r0_value = vmcu_system_read_gpr(system, 0);
-			const uint8_t expect   = value1 == value2;
+			const uint8_t expect = value1 == value2;
 
 			assert(r0_value == expect);
 
@@ -398,12 +396,12 @@ static void test_gen_tac_expr_eq_16bit(){
 	}
 }
 
-static void test_gen_tac_expr_neq_8bit(){
+static void test_gen_tac_expr_neq_8bit() {
 
 	status_test_codegen_tac("Expr != (8 bit)");
 
-	for(uint8_t value1 = 0; value1 < 4; value1++){
-		for(uint8_t value2 = 0; value2 < 4; value2++){
+	for (uint8_t value1 = 0; value1 < 4; value1++) {
+		for (uint8_t value2 = 0; value2 < 4; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d != %d; return x; }", value1, value2);
@@ -414,7 +412,7 @@ static void test_gen_tac_expr_neq_8bit(){
 
 			const uint8_t r0_value = vmcu_system_read_gpr(system, 0);
 
-			if(value1 != value2)
+			if (value1 != value2)
 				assert(r0_value != 0);
 			else
 				assert(r0_value == 0);
@@ -424,12 +422,12 @@ static void test_gen_tac_expr_neq_8bit(){
 	}
 }
 
-static void test_gen_tac_expr_neq_16bit(){
+static void test_gen_tac_expr_neq_16bit() {
 
 	status_test_codegen_tac("Expr != (16 bit)");
 
-	for(uint16_t value1 = 0x100; value1 < 0x104; value1++){
-		for(uint16_t value2 = 0x100; value2 < 0x104; value2++){
+	for (uint16_t value1 = 0x100; value1 < 0x104; value1++) {
+		for (uint16_t value2 = 0x100; value2 < 0x104; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d != %d; return x; }", value1, value2);
@@ -440,7 +438,7 @@ static void test_gen_tac_expr_neq_16bit(){
 
 			const uint8_t r0_value = vmcu_system_read_gpr(system, 0);
 
-			if(value1 != value2)
+			if (value1 != value2)
 				assert(r0_value != 0);
 			else
 				assert(r0_value == 0);

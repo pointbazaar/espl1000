@@ -23,7 +23,7 @@ static void case_not();
 static void case_bitwise_neg_8bit();
 static void case_bitwise_neg_16bit();
 
-void test_compile_tac_unary_op(){
+void test_compile_tac_unary_op() {
 
 	case_minus_8bit();
 	case_minus_16bit();
@@ -34,16 +34,16 @@ void test_compile_tac_unary_op(){
 	case_bitwise_neg_16bit();
 }
 
-static void case_minus_8bit(){
+static void case_minus_8bit() {
 
 	status_test_codegen("TAC_UNARY_OP - (8 bit)");
 
-	for(int8_t start = -40; start < 40; start += 10){
+	for (int8_t start = -40; start < 40; start += 10) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
 		tacbuffer_append(b, makeTACConst(0, start));
-		tacbuffer_append(b, makeTACUnaryOp(1,0,TAC_OP_UNARY_MINUS));
+		tacbuffer_append(b, makeTACUnaryOp(1, 0, TAC_OP_UNARY_MINUS));
 		tacbuffer_append(b, makeTACReturn(1));
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
@@ -58,16 +58,16 @@ static void case_minus_8bit(){
 	}
 }
 
-static void case_minus_16bit(){
+static void case_minus_16bit() {
 
 	status_test_codegen("TAC_UNARY_OP - (16 bit)");
 
-	for(int16_t start = -3000; start < 3000; start += 1000){
+	for (int16_t start = -3000; start < 3000; start += 1000) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
 		tacbuffer_append(b, makeTACConst(0, start));
-		tacbuffer_append(b, makeTACUnaryOp(1,0,TAC_OP_UNARY_MINUS));
+		tacbuffer_append(b, makeTACUnaryOp(1, 0, TAC_OP_UNARY_MINUS));
 		tacbuffer_append(b, makeTACReturn(1));
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
@@ -85,7 +85,7 @@ static void case_minus_16bit(){
 	}
 }
 
-static void case_not(){
+static void case_not() {
 
 	status_test_codegen("TAC_UNARY_OP !");
 
@@ -94,7 +94,7 @@ static void case_not(){
 	struct TACBuffer* b = tacbuffer_ctor();
 
 	tacbuffer_append(b, makeTACConst(0, start));
-	tacbuffer_append(b, makeTACUnaryOp(1,0,TAC_OP_UNARY_NOT));
+	tacbuffer_append(b, makeTACUnaryOp(1, 0, TAC_OP_UNARY_NOT));
 	tacbuffer_append(b, makeTACReturn(1));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
@@ -108,17 +108,17 @@ static void case_not(){
 	vmcu_system_dtor(system);
 }
 
-static void case_bitwise_neg_8bit(){
+static void case_bitwise_neg_8bit() {
 
 	status_test_codegen("TAC_UNARY_OP ~ (8 bit)");
 
-	for(uint8_t start = 0; start < 10; start++){
+	for (uint8_t start = 0; start < 10; start++) {
 		const uint8_t expect = ~start;
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
 		tacbuffer_append(b, makeTACConst(0, start));
-		tacbuffer_append(b, makeTACUnaryOp(1,0,TAC_OP_UNARY_BITWISE_NEG));
+		tacbuffer_append(b, makeTACUnaryOp(1, 0, TAC_OP_UNARY_BITWISE_NEG));
 		tacbuffer_append(b, makeTACReturn(1));
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
@@ -133,18 +133,18 @@ static void case_bitwise_neg_8bit(){
 	}
 }
 
-static void case_bitwise_neg_16bit(){
+static void case_bitwise_neg_16bit() {
 
 	status_test_codegen("TAC_UNARY_OP ~ (16 bit)");
 
-	for(uint16_t start = 0x3000; start < 0x300f; start++){
+	for (uint16_t start = 0x3000; start < 0x300f; start++) {
 
 		const uint16_t expect = ~start;
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
 		tacbuffer_append(b, makeTACConst(0, start));
-		tacbuffer_append(b, makeTACUnaryOp(1,0,TAC_OP_UNARY_BITWISE_NEG));
+		tacbuffer_append(b, makeTACUnaryOp(1, 0, TAC_OP_UNARY_BITWISE_NEG));
 		tacbuffer_append(b, makeTACReturn(1));
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);

@@ -16,84 +16,84 @@
 #include "typechecker/util/tc_errors.h"
 #include "typechecker/util/tc_utils.h"
 
-bool tc_var(struct Variable* v, struct TCCtx* tcctx){
+bool tc_var(struct Variable* v, struct TCCtx* tcctx) {
 
-    struct SimpleVar* sv = v->simple_var;
+	struct SimpleVar* sv = v->simple_var;
 
-    if(!tc_simplevar(sv, tcctx)){return false;}
+	if (!tc_simplevar(sv, tcctx)) { return false; }
 
-    struct Variable* member_access = v->member_access;
+	struct Variable* member_access = v->member_access;
 
-    if(member_access != NULL){
-        //TODO: check that access is be a member that actually exists on that structure
+	if (member_access != NULL) {
+		//TODO: check that access is be a member that actually exists on that structure
 
-        //tc_var(member_access, tcctx);
-    }
-    return true;
+		//tc_var(member_access, tcctx);
+	}
+	return true;
 }
 
-bool tc_simplevar(struct SimpleVar* sv, struct TCCtx* tcctx){
+bool tc_simplevar(struct SimpleVar* sv, struct TCCtx* tcctx) {
 
-    //does it even exist in the symbol table?
-    char* name = sv->name;
+	//does it even exist in the symbol table?
+	char* name = sv->name;
 
-    bool in_lvst = lvst_contains(tcctx->st->lvst, name);
-    bool in_sst  = sst_contains(tcctx->st->sst, name);
+	bool in_lvst = lvst_contains(tcctx->st->lvst, name);
+	bool in_sst = sst_contains(tcctx->st->sst, name);
 
-    if(!in_lvst && !in_sst){
+	if (!in_lvst && !in_sst) {
 
 		char* snippet = str_simple_var(sv);
 
-        error_snippet(tcctx, snippet, TC_ERR_VAR_NOT_FOUND);
-        
-        free(snippet);
-        
-        return false;
-    }
+		error_snippet(tcctx, snippet, TC_ERR_VAR_NOT_FOUND);
 
-    if(!in_lvst && sv->count_indices > 0){
-        error(tcctx, "cannot use indices for something thats not a local var/arg", TC_ERR_OTHER);
-        return false;
-    }
+		free(snippet);
 
-    //check that each index is of an integer type
-    for(uint32_t  i = 0; i < sv->count_indices; i++){
+		return false;
+	}
 
-        struct Expr* indexExpr = sv->indices[i];
-        struct Type* type = infer_type_expr(tcctx->st, indexExpr);
+	if (!in_lvst && sv->count_indices > 0) {
+		error(tcctx, "cannot use indices for something thats not a local var/arg", TC_ERR_OTHER);
+		return false;
+	}
 
-        if(!is_integer_type(type)){
-			
+	//check that each index is of an integer type
+	for (uint32_t i = 0; i < sv->count_indices; i++) {
+
+		struct Expr* indexExpr = sv->indices[i];
+		struct Type* type = infer_type_expr(tcctx->st, indexExpr);
+
+		if (!is_integer_type(type)) {
+
 			char* snippet = str_simple_var(sv);
 
-            error_snippet(tcctx, snippet, TC_ERR_INDEX_NOT_INTEGER_TYPE);
-            
-            free(snippet);
-            
-            return false;
-        }
+			error_snippet(tcctx, snippet, TC_ERR_INDEX_NOT_INTEGER_TYPE);
 
-        if(!tc_expr(indexExpr, tcctx)){return false;}
-    }
+			free(snippet);
 
-    if(sv->count_indices == 0){ return true; }
+			return false;
+		}
 
-    //check that the correct number of indices was used
-    //(meaning not too many)
-    struct LVSTLine* line = lvst_get(tcctx->st->lvst, name);
+		if (!tc_expr(indexExpr, tcctx)) { return false; }
+	}
 
-    uint32_t max_indices = max_indices_allowed(line->type);
+	if (sv->count_indices == 0) { return true; }
 
-    if(sv->count_indices > max_indices){
-		
-		char* snippet = str_simple_var(sv); 
-		
-        error_snippet(tcctx, snippet, TC_ERR_TOO_MANY_INDICES);
-        
-        free(snippet);
-        
-        return false;
-    }
+	//check that the correct number of indices was used
+	//(meaning not too many)
+	struct LVSTLine* line = lvst_get(tcctx->st->lvst, name);
 
-    return true;
+	uint32_t max_indices = max_indices_allowed(line->type);
+
+	if (sv->count_indices > max_indices) {
+
+		char* snippet = str_simple_var(sv);
+
+		error_snippet(tcctx, snippet, TC_ERR_TOO_MANY_INDICES);
+
+		free(snippet);
+
+		return false;
+	}
+
+	return true;
 }

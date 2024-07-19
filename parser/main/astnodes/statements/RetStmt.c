@@ -6,7 +6,6 @@
 #include "RetStmt.h"
 #include "expr/Expr.h"
 
-
 #include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
@@ -15,21 +14,21 @@ struct RetStmt* makeRetStmt(struct TokenList* tokens) {
 
 	struct RetStmt* res = make(RetStmt);
 	struct TokenList* copy = list_copy(tokens);
-	
+
 	parse_astnode(copy, &(res->super));
 
-	if(!list_expect(copy, RETURN)){
+	if (!list_expect(copy, RETURN)) {
 		free(res);
 		return NULL;
 	}
 
 	res->return_value = makeExpr(copy);
-	if(res->return_value == NULL){
+	if (res->return_value == NULL) {
 		free(res);
 		return NULL;
 	}
 
-	if(!list_expect(copy, SEMICOLON)){
+	if (!list_expect(copy, SEMICOLON)) {
 		free(res);
 		return NULL;
 	}
@@ -39,5 +38,3 @@ struct RetStmt* makeRetStmt(struct TokenList* tokens) {
 
 	return res;
 }
-
-

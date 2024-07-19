@@ -23,8 +23,8 @@ int retstmt_test1() {
 
 	list_add(list, makeToken(LPARENS));
 
-	list_add(list, makeToken2(OPKEY_ARITHMETIC,"-"));
-	list_add(list, makeToken2(INTEGER,"5"));
+	list_add(list, makeToken2(OPKEY_ARITHMETIC, "-"));
+	list_add(list, makeToken2(INTEGER, "5"));
 
 	list_add(list, makeToken(RPARENS));
 
@@ -32,7 +32,7 @@ int retstmt_test1() {
 
 	struct RetStmt* r = makeRetStmt(list);
 	assert(r != NULL);
-	
+
 	freeTokenList(list);
 	free_ret_stmt(r);
 
@@ -48,21 +48,21 @@ int retstmt_test2() {
 
 	list_add(list, makeToken(LPARENS));
 
-	list_add(list, makeToken2(OPKEY_ARITHMETIC,"-"));
+	list_add(list, makeToken2(OPKEY_ARITHMETIC, "-"));
 
-	list_add(list, makeToken2(INTEGER,"5"));
+	list_add(list, makeToken2(INTEGER, "5"));
 
 	list_add(list, makeToken(RPARENS));
 
-	list_add(list, makeToken2(OPKEY_ARITHMETIC,"*"));
+	list_add(list, makeToken2(OPKEY_ARITHMETIC, "*"));
 
-	list_add(list, makeToken2(ID,"n"));
+	list_add(list, makeToken2(ID, "n"));
 
 	list_add(list, makeToken(SEMICOLON));
 
 	struct RetStmt* r = makeRetStmt(list);
 	assert(r != NULL);
-	
+
 	freeTokenList(list);
 	free_ret_stmt(r);
 
@@ -77,10 +77,10 @@ int retstmt_test3() {
 
 	list_add(list, makeToken(RETURN));
 
-	list_add(list, makeToken2(ID,"arr"));
+	list_add(list, makeToken2(ID, "arr"));
 
 	list_add(list, makeToken(LBRACKET));
-	list_add(list, makeToken2(INTEGER,"0"));
+	list_add(list, makeToken2(INTEGER, "0"));
 
 	list_add(list, makeToken(RBRACKET));
 
@@ -88,7 +88,7 @@ int retstmt_test3() {
 
 	struct RetStmt* r = makeRetStmt(list);
 	assert(r != NULL);
-	
+
 	freeTokenList(list);
 	free_ret_stmt(r);
 

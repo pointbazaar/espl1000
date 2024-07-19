@@ -8,17 +8,17 @@
 static void case_const_addr();
 static void case_variable_addr();
 
-void test_gen_tac_massignstmt(){
-		
+void test_gen_tac_massignstmt() {
+
 	case_const_addr();
 	case_variable_addr();
 }
 
-static void case_const_addr(){
+static void case_const_addr() {
 
 	status_test_codegen_tac("MAssignStmt - const Address");
 
-	for(int8_t value = 0; value < 20; value++){
+	for (int8_t value = 0; value < 20; value++) {
 
 		char snippet[200];
 		sprintf(snippet, "fn main() -> int { [0x100] = %d; return 0; }", value);
@@ -35,12 +35,12 @@ static void case_const_addr(){
 	}
 }
 
-static void case_variable_addr(){
+static void case_variable_addr() {
 
 	status_test_codegen_tac("MAssignStmt - variable Address");
 
-	const uint8_t addr   = 0xc7;
-	for(uint8_t offset = 0; offset < 10; offset++){
+	const uint8_t addr = 0xc7;
+	for (uint8_t offset = 0; offset < 10; offset++) {
 
 		const int8_t value = 0x31;
 

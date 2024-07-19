@@ -8,11 +8,11 @@
 #include "avr_code_gen/test_avr_code_gen.h"
 #include "gen_tac/test_gen_tac.h"
 
-static void status_test_transpiler(char* msg){
+static void status_test_transpiler(char* msg) {
 	printf("[Compiler][TEST-SUITE] %s\n", msg);
 }
 
-int main(){
+int main() {
 
 	status_test_transpiler("Running tests for smalldragon/compiler:");
 
@@ -22,15 +22,13 @@ int main(){
 	status_test_transpiler("Typechecker");
 	test_suite_typechecker();
 
-    status_test_transpiler("AVR CodeGen");
-    test_suite_avr_code_gen();
-    
-    status_test_transpiler("TAC CodeGen from Snippets");
-    test_suite_tac_codegen();
-    
+	status_test_transpiler("AVR CodeGen");
+	test_suite_avr_code_gen();
+
+	status_test_transpiler("TAC CodeGen from Snippets");
+	test_suite_tac_codegen();
 
 	status_test_transpiler("PASSED ALL TESTS\n");
 
 	return 0;
 }
-

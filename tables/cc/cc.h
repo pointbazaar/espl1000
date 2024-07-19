@@ -8,17 +8,17 @@ struct CCNode;
 
 struct CC {
 	//CC means "Callees and Callers"
-	
+
 	struct CCNode* callees;
 	struct CCNode* callers;
-	
+
 	bool calls_fn_ptrs;
 };
 
 //--------------------------------------------
 
 struct CC* make_cc();
-void       free_cc(struct CC* cc);
+void free_cc(struct CC* cc);
 
 //--------------------------------------------
 void cc_add_callee(struct CC* cc, char* name);

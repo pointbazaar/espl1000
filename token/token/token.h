@@ -8,7 +8,7 @@
 struct Token {
 	//Kind 	(the kind of token, for example RPARENS)
 	uint16_t kind;
-	
+
 	//Value	(for example "subr" for an identifier)
 	uint32_t line_num;
 

@@ -21,7 +21,7 @@ static void case_false_8bit();
 static void case_false_16bit();
 static void case_mixed();
 
-void test_compile_tac_if_goto(){
+void test_compile_tac_if_goto() {
 
 	case_true_8bit();
 	case_true_16bit();
@@ -32,15 +32,15 @@ void test_compile_tac_if_goto(){
 	case_mixed();
 }
 
-static void case_true_8bit(){
+static void case_true_8bit() {
 
 	status_test_codegen("TAC_IF_GOTO true (8 bit)");
 
-	const int8_t value      = 0x33 | 0x1;
+	const int8_t value = 0x33 | 0x1;
 	const uint16_t address1 = 0x105;
 
 	//labels
-	const uint16_t l1   = 1;
+	const uint16_t l1 = 1;
 	const uint16_t lend = 2;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -66,15 +66,15 @@ static void case_true_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void case_true_16bit(){
+static void case_true_16bit() {
 
 	status_test_codegen("TAC_IF_GOTO true (16 bit)");
 
-	const int8_t value      = 0x33 | 0x1;
+	const int8_t value = 0x33 | 0x1;
 	const uint16_t address1 = 0x101;
 
 	//labels
-	const uint16_t l1   = 1;
+	const uint16_t l1 = 1;
 	const uint16_t lend = 2;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -100,15 +100,15 @@ static void case_true_16bit(){
 	vmcu_system_dtor(system);
 }
 
-static void case_false_8bit(){
+static void case_false_8bit() {
 
 	status_test_codegen("TAC_IF_GOTO false (8 bit)");
 
-	const int8_t value      = 0x22 | 0x1;
+	const int8_t value = 0x22 | 0x1;
 	const uint16_t address1 = 0x108;
 
 	//labels
-	const uint16_t l1   = 1;
+	const uint16_t l1 = 1;
 	const uint16_t lend = 2;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -133,15 +133,15 @@ static void case_false_8bit(){
 	vmcu_system_dtor(system);
 }
 
-static void case_false_16bit(){
+static void case_false_16bit() {
 
 	status_test_codegen("TAC_IF_GOTO false (16 bit)");
 
-	const int8_t value      = 0x11 | 0x1;
+	const int8_t value = 0x11 | 0x1;
 	const uint16_t address1 = 0x109;
 
 	//labels
-	const uint16_t l1   = 1;
+	const uint16_t l1 = 1;
 	const uint16_t lend = 2;
 
 	struct TACBuffer* b = tacbuffer_ctor();
@@ -166,7 +166,7 @@ static void case_false_16bit(){
 	vmcu_system_dtor(system);
 }
 
-static void case_mixed(){
+static void case_mixed() {
 
 	status_test_codegen("TAC_IF_GOTO mixed");
 
@@ -180,7 +180,7 @@ static void case_mixed(){
 	const uint16_t address2 = address1 + 1;
 
 	//labels
-	const uint16_t l1   = 1;
+	const uint16_t l1 = 1;
 	const uint16_t lend = 2;
 
 	struct TACBuffer* b = tacbuffer_ctor();

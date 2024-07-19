@@ -10,29 +10,29 @@
 #define EXIT_FAILURE 1
 #define EXIT_SUCCESS 0
 
-int main(int argc, char* argv[]){
+int main(int argc, char* argv[]) {
 
-    mallopt(M_CHECK_ACTION, 3);
+	mallopt(M_CHECK_ACTION, 3);
 
-    struct Flags* flags = makeFlags(argc, argv);
+	struct Flags* flags = makeFlags(argc, argv);
 
-    if(!check_filenames_lowercase(flags)){
-        return EXIT_FAILURE;
-    }
+	if (!check_filenames_lowercase(flags)) {
+		return EXIT_FAILURE;
+	}
 
-    if(flags_help(flags)){
-        sd_print_help();
-        freeFlags(flags);
-        return EXIT_SUCCESS;
-    }
+	if (flags_help(flags)) {
+		sd_print_help();
+		freeFlags(flags);
+		return EXIT_SUCCESS;
+	}
 
-    if(flags_version(flags)){
-        printf("v0.2.0\n");
-        freeFlags(flags);
-        return EXIT_SUCCESS;
-    }
+	if (flags_version(flags)) {
+		printf("v0.2.0\n");
+		freeFlags(flags);
+		return EXIT_SUCCESS;
+	}
 
-    bool success = compile(flags);
+	bool success = compile(flags);
 
-    return (success)?EXIT_SUCCESS:EXIT_FAILURE;
+	return (success) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

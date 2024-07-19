@@ -12,44 +12,44 @@
 
 const char* PARSE_ERR_MDIRECT = "Failed to parse MDirect. Exiting\n";
 
-struct MDirect* makeMDirect(struct TokenList* tokens){
+struct MDirect* makeMDirect(struct TokenList* tokens) {
 
-    struct MDirect* res = make(MDirect);
+	struct MDirect* res = make(MDirect);
 
-    struct TokenList* copy = list_copy(tokens);
+	struct TokenList* copy = list_copy(tokens);
 
-    parse_astnode(copy, &(res->super));
+	parse_astnode(copy, &(res->super));
 
-    struct Token* head = list_head(copy);
+	struct Token* head = list_head(copy);
 
-    if(head->kind != LBRACKET){
-        freeTokenListShallow(copy);
-        free(res);
-        return NULL;
-    }
+	if (head->kind != LBRACKET) {
+		freeTokenListShallow(copy);
+		free(res);
+		return NULL;
+	}
 
-    list_consume(copy, 1);
+	list_consume(copy, 1);
 
-    res->expr = makeExpr(copy);
+	res->expr = makeExpr(copy);
 
-    if(res->expr == NULL){
-        freeTokenListShallow(copy);
-        free(res);
-        return NULL;
-    }
+	if (res->expr == NULL) {
+		freeTokenListShallow(copy);
+		free(res);
+		return NULL;
+	}
 
-    head = list_head(copy);
+	head = list_head(copy);
 
-    if(head->kind != RBRACKET){
-        freeTokenListShallow(copy);
-        free(res);
-        return NULL;
-    }
+	if (head->kind != RBRACKET) {
+		freeTokenListShallow(copy);
+		free(res);
+		return NULL;
+	}
 
-    list_consume(copy, 1);
+	list_consume(copy, 1);
 
-    list_set(tokens, copy);
-    freeTokenListShallow(copy);
+	list_set(tokens, copy);
+	freeTokenListShallow(copy);
 
-    return res;
+	return res;
 }

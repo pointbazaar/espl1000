@@ -22,7 +22,6 @@ void test_gen_tac_structdecl();
 
 void status_test_codegen_tac(char* msg);
 
-
 vmcu_system_t* prepare_vmcu_system_from_code_snippet(char* code_snippet);
 
 #endif

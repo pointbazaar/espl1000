@@ -11,11 +11,10 @@
 #include "invoke.h"
 #include "parser/main/util/parser.h"
 
+int invoke_lexer(char* filename) {
 
-int invoke_lexer(char* filename){
-	
-	char* cmd1 = exit_malloc(strlen(filename)+100);
-	
+	char* cmd1 = exit_malloc(strlen(filename) + 100);
+
 	strcpy(cmd1, "dragon-lexer ");
 
 	strcat(cmd1, filename);
@@ -25,23 +24,23 @@ int invoke_lexer(char* filename){
 	return status;
 }
 
-struct Namespace * invoke_parser(char* filename){
-	
-	char* fnamecpy = exit_malloc(strlen(filename)+1);
-	
+struct Namespace* invoke_parser(char* filename) {
+
+	char* fnamecpy = exit_malloc(strlen(filename) + 1);
+
 	strcpy(fnamecpy, filename);
-	
+
 	char* base_name = basename(fnamecpy);
-	char* dir_name  = dirname(fnamecpy);
-	
-	char* cmd2 = exit_malloc(strlen(filename)+100);
+	char* dir_name = dirname(fnamecpy);
 
-    sprintf(cmd2, "%s/.%s.tokens", dir_name, base_name);
+	char* cmd2 = exit_malloc(strlen(filename) + 100);
 
-    struct Namespace* ns = build_namespace(cmd2);
+	sprintf(cmd2, "%s/.%s.tokens", dir_name, base_name);
+
+	struct Namespace* ns = build_namespace(cmd2);
 
 	free(cmd2);
 	free(fnamecpy);
-	
+
 	return ns;
 }

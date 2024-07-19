@@ -12,20 +12,20 @@
 #include "token/token/token.h"
 
 struct StmtBlock* makeStmtBlock(struct TokenList* tokens) {
-	
-	if(list_size(tokens) < 2){ return NULL; }
-	
+
+	if (list_size(tokens) < 2) { return NULL; }
+
 	struct StmtBlock* res = make(StmtBlock);
-	
-	res->super.line_num    = list_head(tokens)->line_num;
+
+	res->super.line_num = list_head(tokens)->line_num;
 	res->super.annotations = 0;
-	
+
 	res->count = 0;
-	res->stmts = malloc(sizeof(struct Stmt*)*1);
-	
+	res->stmts = malloc(sizeof(struct Stmt*) * 1);
+
 	struct TokenList* copy = list_copy(tokens);
-	
-	if(!list_expect(copy, LCURLY)){
+
+	if (!list_expect(copy, LCURLY)) {
 		freeTokenListShallow(copy);
 		free(res->stmts);
 		free(res);
@@ -33,12 +33,12 @@ struct StmtBlock* makeStmtBlock(struct TokenList* tokens) {
 	}
 
 	struct Token* next = list_head(copy);
-	
+
 	while (next->kind != RCURLY) {
 
 		struct Stmt* stmt = makeStmt(copy);
-		
-		if(stmt == NULL){
+
+		if (stmt == NULL) {
 			freeTokenListShallow(copy);
 			free(res->stmts);
 			free(res);
@@ -49,10 +49,10 @@ struct StmtBlock* makeStmtBlock(struct TokenList* tokens) {
 		res->count++;
 
 		const int newsize = sizeof(struct Stmt*) * (res->count + 1);
-		res->stmts = realloc(res->stmts,newsize);
+		res->stmts = realloc(res->stmts, newsize);
 
 		next = list_head(copy);
-		if(next == NULL){
+		if (next == NULL) {
 			freeTokenListShallow(copy);
 			free(res->stmts);
 			free(res);
@@ -60,16 +60,14 @@ struct StmtBlock* makeStmtBlock(struct TokenList* tokens) {
 		}
 	}
 
-	if(!list_expect(copy, RCURLY)){
+	if (!list_expect(copy, RCURLY)) {
 		freeTokenListShallow(copy);
 		free_stmt_block(res);
 		return NULL;
 	}
-	
+
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
-	
+
 	return res;
 }
-
-

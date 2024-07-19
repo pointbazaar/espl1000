@@ -8,17 +8,17 @@
 static void case_const_addr();
 static void case_variable_addr();
 
-void test_gen_tac_mdirect(){
-	
+void test_gen_tac_mdirect() {
+
 	case_const_addr();
 	case_variable_addr();
 }
 
-static void case_const_addr(){
+static void case_const_addr() {
 
 	status_test_codegen_tac("MDirect - const Address");
 
-	for(uint16_t address = 0x100; address < 0x110; address++){
+	for (uint16_t address = 0x100; address < 0x110; address++) {
 		const int8_t value = 0x34;
 
 		char snippet[200];
@@ -36,9 +36,9 @@ static void case_const_addr(){
 
 		bool found = false;
 
-		for(int i=0; i < 32; i++){
+		for (int i = 0; i < 32; i++) {
 			int8_t value1 = vmcu_system_read_gpr(system, i);
-			if(value1 == value) found = true;
+			if (value1 == value) found = true;
 		}
 
 		assert(found);
@@ -47,13 +47,13 @@ static void case_const_addr(){
 	}
 }
 
-static void case_variable_addr(){
+static void case_variable_addr() {
 
 	status_test_codegen_tac("MDirect - variable Address");
 
 	//we need an address here which is small enough
 	//to fit into a register. 0xc7 is usable.
-	for(uint16_t address = 0xc7; address < 0xd7; address++){
+	for (uint16_t address = 0xc7; address < 0xd7; address++) {
 
 		const int8_t value = 0x38;
 
@@ -63,11 +63,11 @@ static void case_variable_addr(){
 		vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 		//prepare a value in the location
-		vmcu_system_write_data(system, address+3, value);
+		vmcu_system_write_data(system, address + 3, value);
 
 		//vmcu_system_step_n(system, 30);
 
-		for(int i=0; i < 40; i++){
+		for (int i = 0; i < 40; i++) {
 
 			vmcu_system_step(system);
 

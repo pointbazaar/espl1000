@@ -10,71 +10,71 @@ extern struct ST* ctx_tables(struct Ctx* ctx);
 
 #include "rat/rat.h"
 
-enum TAC_OP{
-    TAC_OP_NONE, //for error cases
+enum TAC_OP {
+	TAC_OP_NONE, //for error cases
 
-    //arithmetic operators
-    TAC_OP_ADD,
-    TAC_OP_SUB,
-    TAC_OP_MUL,
-    
-    TAC_OP_XOR,
-    
-    //shift operators
-    TAC_OP_SHIFT_LEFT,
-    TAC_OP_SHIFT_RIGHT,
+	//arithmetic operators
+	TAC_OP_ADD,
+	TAC_OP_SUB,
+	TAC_OP_MUL,
 
-    //unary
-    TAC_OP_UNARY_MINUS,
-    TAC_OP_UNARY_NOT,
-    TAC_OP_UNARY_BITWISE_NEG,
+	TAC_OP_XOR,
 
-    //logical operators
-    TAC_OP_AND,
-    TAC_OP_OR,
+	//shift operators
+	TAC_OP_SHIFT_LEFT,
+	TAC_OP_SHIFT_RIGHT,
 
-    //comparison operators
-    TAC_OP_CMP_LT, //<,>    //brlt
-    TAC_OP_CMP_GE, //>=,<=  //brge
-    TAC_OP_CMP_EQ, //==,    //breq
-    TAC_OP_CMP_NEQ, //!=    //brne
+	//unary
+	TAC_OP_UNARY_MINUS,
+	TAC_OP_UNARY_NOT,
+	TAC_OP_UNARY_BITWISE_NEG,
+
+	//logical operators
+	TAC_OP_AND,
+	TAC_OP_OR,
+
+	//comparison operators
+	TAC_OP_CMP_LT, //<,>    //brlt
+	TAC_OP_CMP_GE, //>=,<=  //brge
+	TAC_OP_CMP_EQ, //==,    //breq
+	TAC_OP_CMP_NEQ, //!=    //brne
 };
 
-enum TAC_KIND{
+enum TAC_KIND {
 
-    TAC_BINARY_OP = 0, //e.g. t1 += t2
-    TAC_UNARY_OP, //e.g. t1 = -t2;
+	TAC_BINARY_OP = 0, //e.g. t1 += t2
+	TAC_UNARY_OP, //e.g. t1 = -t2;
 
-    TAC_GOTO, //unconditional jump
-    TAC_IF_GOTO, //conditional jump depending on a single temporary
-    TAC_IF_CMP_GOTO,
+	TAC_GOTO, //unconditional jump
+	TAC_IF_GOTO, //conditional jump depending on a single temporary
+	TAC_IF_CMP_GOTO,
 
-    TAC_COPY, //copy one temp into another
-    TAC_LOAD_LOCAL, //load local var from stackframe
-    TAC_STORE_LOCAL, //store local var into stackframe
-    TAC_LOAD_LOCAL_ADDR, //load the addr of a local variable
+	TAC_COPY, //copy one temp into another
+	TAC_LOAD_LOCAL, //load local var from stackframe
+	TAC_STORE_LOCAL, //store local var into stackframe
+	TAC_LOAD_LOCAL_ADDR, //load the addr of a local variable
 
-    TAC_CONST_VALUE,
+	TAC_CONST_VALUE,
 
-    TAC_CALL, //call to a label (string) without anything else
-    TAC_PARAM,
-    TAC_RETURN, //return, without arguments
-    
-    TAC_SETUP_STACKFRAME, //create space on stack for locals, load SP
-    TAC_SETUP_SP, //setup the stack pointer. used at the start of programs
+	TAC_CALL, //call to a label (string) without anything else
+	TAC_PARAM,
+	TAC_RETURN, //return, without arguments
 
-    TAC_NOP,
-    
-    TAC_LABEL_INDEXED,
-    TAC_LABEL_FUNCTION,
+	TAC_SETUP_STACKFRAME, //create space on stack for locals, load SP
+	TAC_SETUP_SP, //setup the stack pointer. used at the start of programs
 
-    TAC_BINARY_OP_IMMEDIATE,
+	TAC_NOP,
 
-    TAC_STORE_CONST_ADDR, // [const_dest] = src //memory store
-    TAC_LOAD_CONST_ADDR,  // dest = [const_src] //memory load
-    
-    TAC_LOAD, //t1 = [t2]
-    TAC_STORE, //[t1] = t2
+	TAC_LABEL_INDEXED,
+	TAC_LABEL_FUNCTION,
+
+	TAC_BINARY_OP_IMMEDIATE,
+
+	TAC_STORE_CONST_ADDR, // [const_dest] = src //memory store
+	TAC_LOAD_CONST_ADDR, // dest = [const_src] //memory load
+
+	TAC_LOAD, //t1 = [t2]
+	TAC_STORE, //[t1] = t2
 };
 
 #define TAC_NO_LABEL 0
@@ -84,18 +84,18 @@ enum TAC_KIND{
 //which assumes 1 operation and 2 registers,
 //dest and src.
 //where dest = dest op src
-struct TAC{
+struct TAC {
 
-    //three address code
-    uint32_t label_index;
+	//three address code
+	uint32_t label_index;
 
-    uint32_t dest;
-    enum TAC_KIND kind;
-    uint32_t arg1;
+	uint32_t dest;
+	enum TAC_KIND kind;
+	uint32_t arg1;
 
-    enum TAC_OP op;
+	enum TAC_OP op;
 
-    int32_t const_value;
+	int32_t const_value;
 };
 
 bool tac_is_unconditional_jump(struct TAC* tac);
@@ -114,7 +114,7 @@ struct TAC* makeTACGoto(uint32_t label);
 struct TAC* makeTACReturn(uint32_t tmp);
 
 struct TAC* makeTACIfGoto(uint32_t tmp_condition, uint32_t label_destination);
-struct TAC* makeTACIfCMPGoto(uint32_t tmp1, enum TAC_OP op, uint32_t tmp2, uint32_t label_destination); 
+struct TAC* makeTACIfCMPGoto(uint32_t tmp1, enum TAC_OP op, uint32_t tmp2, uint32_t label_destination);
 
 struct TAC* makeTACCopy(uint32_t dest, uint32_t src);
 

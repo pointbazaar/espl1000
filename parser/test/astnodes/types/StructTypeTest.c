@@ -10,22 +10,20 @@
 #include "StructTypeTest.h"
 #include "ast/ast/ast_types.h"
 
+int structtype_test() {
 
-int structtype_test(){
+	status_test("structtype_test");
 
-    status_test("structtype_test");
+	struct TokenList* list = makeTokenList();
+	list_add(list, makeToken2(TYPEID, "MyType"));
 
-    struct TokenList* list = makeTokenList();
-    list_add(list, makeToken2(TYPEID,"MyType") );
+	struct StructType* node = makeStructType(list);
 
-    struct StructType* node = makeStructType(list);
+	assert(0 == list_size(list));
+	assert(node != NULL);
 
-    assert(0 == list_size(list));
-    assert(node != NULL);
+	freeTokenList(list);
+	free_struct_type(node);
 
-    freeTokenList(list);
-    free_struct_type(node);
-
-    return 1;
+	return 1;
 }
-

@@ -8,5 +8,4 @@ struct TokenList;
 
 struct ConstValue* makeConstValue(struct TokenList* tokens);
 
-
 #endif

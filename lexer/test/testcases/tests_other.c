@@ -7,8 +7,8 @@
 #include "../../token/TokenKeys.h"
 #include "../lexer_test_utils.h"
 
-void test_plus_plus_minus_minus(){
-	
+void test_plus_plus_minus_minus() {
+
 	char* str = "Char ++ -- ";
 	//should expand: "Char += 1 -= 1"
 	struct Token** tokens = lex(str);
@@ -19,10 +19,10 @@ void test_plus_plus_minus_minus(){
 	assert(tokens[3]->kind == ASSIGNOP);
 	assert(tokens[4]->kind == INTEGER);
 
-	assert(strcmp(tokens[1]->value_ptr,"+=")==0);
-	assert(strcmp(tokens[2]->value_ptr,"1")==0);
-	assert(strcmp(tokens[3]->value_ptr,"-=")==0);
-	assert(strcmp(tokens[4]->value_ptr,"1")==0);
+	assert(strcmp(tokens[1]->value_ptr, "+=") == 0);
+	assert(strcmp(tokens[2]->value_ptr, "1") == 0);
+	assert(strcmp(tokens[3]->value_ptr, "-=") == 0);
+	assert(strcmp(tokens[4]->value_ptr, "1") == 0);
 
 	free_tokens(tokens, 5);
 }
@@ -38,7 +38,7 @@ void test_can_see_line_with_semicolon() {
 	assert(tokens[1]->kind == ID);
 	assert(tokens[2]->kind == SEMICOLON);
 
-	assert(strcmp(tokens[1]->value_ptr,"x")==0);
+	assert(strcmp(tokens[1]->value_ptr, "x") == 0);
 
 	free_tokens(tokens, 3);
 }
@@ -66,16 +66,16 @@ void test_lexes_return_statement_favorably() {
 	char* str = "return (-5)*n; ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind==RETURN);
+	assert(tokens[0]->kind == RETURN);
 
-	assert(tokens[1]->kind==LPARENS);
-	assert(tokens[2]->kind==OPKEY_ARITHMETIC);
-	assert(tokens[3]->kind==INTEGER);
-	assert(tokens[4]->kind==RPARENS);
+	assert(tokens[1]->kind == LPARENS);
+	assert(tokens[2]->kind == OPKEY_ARITHMETIC);
+	assert(tokens[3]->kind == INTEGER);
+	assert(tokens[4]->kind == RPARENS);
 
-	assert(tokens[5]->kind==OPKEY_ARITHMETIC);
-	assert(tokens[6]->kind==ID);
-	assert(tokens[7]->kind==SEMICOLON);
+	assert(tokens[5]->kind == OPKEY_ARITHMETIC);
+	assert(tokens[6]->kind == ID);
+	assert(tokens[7]->kind == SEMICOLON);
 
 	free_tokens(tokens, 8);
 }
@@ -87,19 +87,19 @@ void test_lexes_other_return_statement() {
 	char* str = "return (n*faculty(n-1)); ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind==RETURN);
+	assert(tokens[0]->kind == RETURN);
 
-	assert(tokens[1]->kind==LPARENS);
-	assert(tokens[2]->kind==ID);
-	assert(tokens[3]->kind==OPKEY_ARITHMETIC);
-	assert(tokens[4]->kind==ID);
+	assert(tokens[1]->kind == LPARENS);
+	assert(tokens[2]->kind == ID);
+	assert(tokens[3]->kind == OPKEY_ARITHMETIC);
+	assert(tokens[4]->kind == ID);
 
-	assert(tokens[5]->kind==LPARENS);
-	assert(tokens[6]->kind==ID);
-	assert(tokens[7]->kind==OPKEY_ARITHMETIC);
-	assert(tokens[8]->kind==INTEGER);
-	assert(tokens[9]->kind==RPARENS);
-	assert(tokens[10]->kind==RPARENS);
+	assert(tokens[5]->kind == LPARENS);
+	assert(tokens[6]->kind == ID);
+	assert(tokens[7]->kind == OPKEY_ARITHMETIC);
+	assert(tokens[8]->kind == INTEGER);
+	assert(tokens[9]->kind == RPARENS);
+	assert(tokens[10]->kind == RPARENS);
 
 	free_tokens(tokens, 12);
 }
@@ -111,8 +111,8 @@ void test_identifier_1() {
 	char* str = "main ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind==ID);
-	assert(strcmp(tokens[0]->value_ptr,"main")==0);
+	assert(tokens[0]->kind == ID);
+	assert(strcmp(tokens[0]->value_ptr, "main") == 0);
 
 	free_tokens(tokens, 1);
 }
@@ -124,8 +124,8 @@ void test_identifier_2() {
 	char* str = "arg_ls ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind==ID);
-	assert(strcmp(tokens[0]->value_ptr,"arg_ls")==0);
+	assert(tokens[0]->kind == ID);
+	assert(strcmp(tokens[0]->value_ptr, "arg_ls") == 0);
 
 	free_tokens(tokens, 1);
 }
@@ -137,7 +137,7 @@ void test_struct() {
 	char* str = "struct ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind==STRUCT);
+	assert(tokens[0]->kind == STRUCT);
 
 	free_tokens(tokens, 1);
 }
@@ -149,7 +149,7 @@ void test_return() {
 	char* str = "return ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind==RETURN);
+	assert(tokens[0]->kind == RETURN);
 
 	free_tokens(tokens, 1);
 }
@@ -161,9 +161,9 @@ void test_string_1() {
 	char* str = "\"hi\" ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind==STRINGCONST);
-	
-	assert(strcmp(tokens[0]->value_ptr,"hi")==0);
+	assert(tokens[0]->kind == STRINGCONST);
+
+	assert(strcmp(tokens[0]->value_ptr, "hi") == 0);
 
 	free_tokens(tokens, 1);
 }
@@ -175,42 +175,42 @@ void test_typeidentifier() {
 	char* str = "Carrot ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind==TYPEID);
-	assert(strcmp(tokens[0]->value_ptr,"Carrot")==0);
+	assert(tokens[0]->kind == TYPEID);
+	assert(strcmp(tokens[0]->value_ptr, "Carrot") == 0);
 
 	free_tokens(tokens, 1);
 }
 
-void test_typeidentifier_primitive(){
+void test_typeidentifier_primitive() {
 
 	printt("test typeidentifier primitive\n");
 
 	char* str = "int uint int8 uint8 int16 uint16";
-	
+
 	struct Token** tokens = lex(str);
 
 	int expect_kind[] = {
-		TYPEID_PRIMITIVE_INT,
-		TYPEID_PRIMITIVE_UINT,
-		TYPEID_PRIMITIVE_INT8,
-		TYPEID_PRIMITIVE_UINT8,
-		TYPEID_PRIMITIVE_INT16,
-		TYPEID_PRIMITIVE_UINT16,
+	    TYPEID_PRIMITIVE_INT,
+	    TYPEID_PRIMITIVE_UINT,
+	    TYPEID_PRIMITIVE_INT8,
+	    TYPEID_PRIMITIVE_UINT8,
+	    TYPEID_PRIMITIVE_INT16,
+	    TYPEID_PRIMITIVE_UINT16,
 	};
 	char* expect[] = {"int", "uint", "int8", "uint8", "int16", "uint16"};
 
-	for(int i=0;i < 6; i++){
+	for (int i = 0; i < 6; i++) {
 		assert(tokens[i]->kind == expect_kind[i]);
 		assert(strcmp(tokens[i]->value_ptr, expect[i]) == 0);
 	}
 
 	free_tokens(tokens, 4);
-	
+
 	//------------------------------
 	char* str2 = "char bool ";
-	
+
 	struct Token** tokens2 = lex(str2);
-	
+
 	assert(tokens2[0]->kind == TYPEID_PRIMITIVE_CHAR);
 	assert(tokens2[1]->kind == TYPEID_PRIMITIVE_BOOL);
 
@@ -223,12 +223,12 @@ void test_typeparameter_1() {
 
 	char* str = "?T0 ?T1 (?T2";
 	struct Token** tokens = lex(str);
-	
-	assert(tokens[0]->kind==TPARAM);
-	assert(tokens[1]->kind==TPARAM);
-	assert(tokens[2]->kind==LPARENS);
-	assert(tokens[3]->kind==TPARAM);
-	assert(strcmp(tokens[0]->value_ptr,"0")==0);
+
+	assert(tokens[0]->kind == TPARAM);
+	assert(tokens[1]->kind == TPARAM);
+	assert(tokens[2]->kind == LPARENS);
+	assert(tokens[3]->kind == TPARAM);
+	assert(strcmp(tokens[0]->value_ptr, "0") == 0);
 	free_tokens(tokens, 4);
 }
 
@@ -239,8 +239,8 @@ void test_comma() {
 	char* str = ",, ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[1]->kind==COMMA);
-	assert(strcmp(tokens[1]->value_ptr,",")==0);
+	assert(tokens[1]->kind == COMMA);
+	assert(strcmp(tokens[1]->value_ptr, ",") == 0);
 
 	free_tokens(tokens, 2);
 }
@@ -252,82 +252,82 @@ void test_arrow() {
 	char* str = "-> ~> ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind==ARROW);
-	assert(strcmp(tokens[0]->value_ptr,"->")==0);
+	assert(tokens[0]->kind == ARROW);
+	assert(strcmp(tokens[0]->value_ptr, "->") == 0);
 
-	assert(tokens[1]->kind==ARROW);
-	assert(strcmp(tokens[1]->value_ptr,"~>")==0);
+	assert(tokens[1]->kind == ARROW);
+	assert(strcmp(tokens[1]->value_ptr, "~>") == 0);
 
 	free_tokens(tokens, 2);
 }
 
-void test_rangeop_1(){
+void test_rangeop_1() {
 
 	printt("test_rangeop_1\n");
 
 	char* str = ".. a.... ";
 	struct Token** tokens = lex(str);
-	
-	assert(tokens[0]->kind==RANGEOP);
-	assert(tokens[1]->kind==ID);
-	assert(tokens[2]->kind==RANGEOP);
-	assert(tokens[3]->kind==RANGEOP);
+
+	assert(tokens[0]->kind == RANGEOP);
+	assert(tokens[1]->kind == ID);
+	assert(tokens[2]->kind == RANGEOP);
+	assert(tokens[3]->kind == RANGEOP);
 
 	free_tokens(tokens, 4);
 }
 
-void test_rangeop_2(){
+void test_rangeop_2() {
 
 	printt("test_rangeop_1\n");
 
 	char* str = "0 .. 3 a .. b ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind==INTEGER);
-	assert(tokens[1]->kind==RANGEOP);
-	assert(tokens[2]->kind==INTEGER);
-	
-	assert(tokens[3]->kind==ID);
-	assert(tokens[4]->kind==RANGEOP);
-	assert(tokens[5]->kind==ID);
+	assert(tokens[0]->kind == INTEGER);
+	assert(tokens[1]->kind == RANGEOP);
+	assert(tokens[2]->kind == INTEGER);
+
+	assert(tokens[3]->kind == ID);
+	assert(tokens[4]->kind == RANGEOP);
+	assert(tokens[5]->kind == ID);
 
 	free_tokens(tokens, 6);
 }
 
-void test_member_access(){
+void test_member_access() {
 
 	printt("test_member_access\n");
 
 	char* str = "s.member= ";
 	struct Token** tokens = lex(str);
-	
-	assert(tokens[0]->kind==ID);
-	assert(tokens[1]->kind==STRUCTMEMBERACCESS);
-	assert(tokens[2]->kind==ID);
-	
-	assert(tokens[3]->kind==ASSIGNOP);
+
+	assert(tokens[0]->kind == ID);
+	assert(tokens[1]->kind == STRUCTMEMBERACCESS);
+	assert(tokens[2]->kind == ID);
+
+	assert(tokens[3]->kind == ASSIGNOP);
 
 	free_tokens(tokens, 4);
 }
 
-void test_brackets(){
+void test_brackets() {
 
 	printt("test_brackets\n");
 
 	char* str = "[](){}< > ";
 	struct Token** tokens = lex(str);
-	
-	assert(tokens[0]->kind==LBRACKET);
-	assert(tokens[1]->kind==RBRACKET);
-	assert(tokens[2]->kind==LPARENS);
-	assert(tokens[3]->kind==RPARENS);
-	assert(tokens[4]->kind==LCURLY);
-	assert(tokens[5]->kind==RCURLY);
-	assert(tokens[6]->kind==OPKEY_RELATIONAL);
-	assert(tokens[7]->kind==OPKEY_RELATIONAL);
-	
-	assert( strcmp(tokens[6]->value_ptr,"<")==0 );
-	assert( strcmp(tokens[7]->value_ptr,">")==0 );
+
+	assert(tokens[0]->kind == LBRACKET);
+	assert(tokens[1]->kind == RBRACKET);
+	assert(tokens[2]->kind == LPARENS);
+	assert(tokens[3]->kind == RPARENS);
+	assert(tokens[4]->kind == LCURLY);
+	assert(tokens[5]->kind == RCURLY);
+	assert(tokens[6]->kind == OPKEY_RELATIONAL);
+	assert(tokens[7]->kind == OPKEY_RELATIONAL);
+
+	assert(strcmp(tokens[6]->value_ptr, "<") == 0);
+	assert(strcmp(tokens[7]->value_ptr, ">") == 0);
 
 	free_tokens(tokens, 8);
 }

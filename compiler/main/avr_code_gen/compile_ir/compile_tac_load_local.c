@@ -14,16 +14,16 @@
 
 void compile_tac_load_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
-    const int reg_dest = rat_get_register(rat, tac->dest);
-    
-    char* name = lvst_at(ctx_tables(ctx)->lvst, tac->arg1)->name;
-    
-    const uint16_t offset = lvst_stack_frame_offset_avr(ctx_tables(ctx)->lvst, name);
-			
-	if(offset == 0)
+	const int reg_dest = rat_get_register(rat, tac->dest);
+
+	char* name = lvst_at(ctx_tables(ctx)->lvst, tac->arg1)->name;
+
+	const uint16_t offset = lvst_stack_frame_offset_avr(ctx_tables(ctx)->lvst, name);
+
+	if (offset == 0)
 		//ld reg_dest, Y
 		ldY(reg_dest, "TAC_LOAD_LOCAL");
 	else
 		lddY(reg_dest, offset, "TAC_LOAD_LOCAL");
-		//ldd reg_dest, Y+offset
+	//ldd reg_dest, Y+offset
 }

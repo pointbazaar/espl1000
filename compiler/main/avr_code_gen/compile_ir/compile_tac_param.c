@@ -6,7 +6,7 @@
 #include "tac/tac.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_param(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
+void compile_tac_param(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	const char* c = "TAC_PARAM";
 
@@ -14,6 +14,6 @@ void compile_tac_param(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu){
 
 	push(reg_dest, c);
 
-	if(rat_is_wide(rat, tac->dest) && tac->const_value == 16)
-		push(reg_dest+1, c);
+	if (rat_is_wide(rat, tac->dest) && tac->const_value == 16)
+		push(reg_dest + 1, c);
 }

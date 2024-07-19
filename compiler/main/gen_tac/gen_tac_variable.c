@@ -14,7 +14,7 @@
 
 #include "gen_tac.h"
 
-void tac_variable(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx){
+void tac_variable(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx) {
 
 	tac_variable_addr(buffer, v, ctx);
 
@@ -23,7 +23,7 @@ void tac_variable(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx)
 	tacbuffer_append(buffer, makeTACLoad(make_temp(), tlast));
 }
 
-void tac_variable_addr(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx){
+void tac_variable_addr(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx) {
 
 	struct DerefLL* dll = derefll_ctor_variable(v);
 
@@ -34,17 +34,15 @@ void tac_variable_addr(struct TACBuffer* buffer, struct Variable* v, struct Ctx*
 	struct DerefLL* current = dll;
 	struct Type* prev_type = NULL;
 
-
-	while(current == dll || current->next != NULL){
+	while (current == dll || current->next != NULL) {
 
 		tac_derefll_single(buffer, current, prev_type, ctx);
 
 		prev_type = current->type;
 		current = current->next;
 
-		if(current == NULL) break;
+		if (current == NULL) break;
 	}
 
 	derefll_dtor(dll);
 }
-

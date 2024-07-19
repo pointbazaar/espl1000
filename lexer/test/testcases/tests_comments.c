@@ -14,27 +14,27 @@ void test_single_line_comment() {
 	char* str = "x1 //hello there \n x2 ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind==ID);
-	assert(tokens[1]->kind==ID);
-	
-	assert(strcmp(tokens[0]->value_ptr,"x1")==0);
-	assert(strcmp(tokens[1]->value_ptr,"x2")==0);
-	
+	assert(tokens[0]->kind == ID);
+	assert(tokens[1]->kind == ID);
+
+	assert(strcmp(tokens[0]->value_ptr, "x1") == 0);
+	assert(strcmp(tokens[1]->value_ptr, "x2") == 0);
+
 	free_tokens(tokens, 2);
 }
 
-void test_multi_line_comment(){
-	
+void test_multi_line_comment() {
+
 	printt("multi line comment\n");
 
 	char* str = "x1 /*hello //there \n now*/ x2 ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind==ID);
-	assert(tokens[1]->kind==ID);
-	
-	assert(strcmp(tokens[0]->value_ptr,"x1")==0);
-	assert(strcmp(tokens[1]->value_ptr,"x2")==0);
-	
+	assert(tokens[0]->kind == ID);
+	assert(tokens[1]->kind == ID);
+
+	assert(strcmp(tokens[0]->value_ptr, "x1") == 0);
+	assert(strcmp(tokens[1]->value_ptr, "x2") == 0);
+
 	free_tokens(tokens, 2);
 }

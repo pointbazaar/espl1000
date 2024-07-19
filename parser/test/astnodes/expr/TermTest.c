@@ -18,14 +18,14 @@ int term_test_simple_term() {
 	status_test("term_test_simple_term");
 
 	struct TokenList* list = makeTokenList();
-	list_add(list, makeToken2(INTEGER,"4"));
-	
+	list_add(list, makeToken2(INTEGER, "4"));
+
 	struct Term* t = makeTerm(list);
 	assert(t != NULL);
-	
+
 	freeTokenList(list);
 	free_term(t);
-	
+
 	return 1;
 }
 
@@ -34,7 +34,7 @@ int term_test_variable_term() {
 	status_test("term_test_variable_term");
 
 	struct TokenList* list = makeTokenList();
-	list_add(list, makeToken2(ID,"x"));
+	list_add(list, makeToken2(ID, "x"));
 
 	struct Term* t = makeTerm(list);
 	assert(t != NULL);
@@ -47,8 +47,8 @@ int term_test_variable_term() {
 	struct SimpleVar* sv = v->simple_var;
 	assert(sv != NULL);
 
-	assert(strcmp(sv->name,"x") == 0);
-	
+	assert(strcmp(sv->name, "x") == 0);
+
 	freeTokenList(list);
 	free_term(t);
 
@@ -61,12 +61,12 @@ int term_test_parentheses() {
 
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(LPARENS, "("));
-	list_add(list, makeToken2(ID,"x"));
+	list_add(list, makeToken2(ID, "x"));
 	list_add(list, makeToken2(RPARENS, ")"));
 
 	struct Term* t = makeTerm(list);
 	assert(t != NULL);
-	
+
 	struct Expr* expr = t->ptr.m5;
 	assert(expr != NULL);
 
@@ -78,45 +78,45 @@ int term_test_parentheses() {
 	struct SimpleVar* sv = v->simple_var;
 	assert(sv != NULL);
 
-	assert(strcmp(sv->name,"x") == 0);
-	
+	assert(strcmp(sv->name, "x") == 0);
+
 	freeTokenList(list);
 	free_term(t);
 
 	return 1;
 }
 
-int term_test_mdirect(){
+int term_test_mdirect() {
 
-    status_test("term_test_mdirect");
+	status_test("term_test_mdirect");
 
-    struct TokenList* list = makeTokenList();
-    list_add(list, makeToken(LBRACKET));
-    list_add(list, makeToken2(ID,"y"));
-    list_add(list, makeToken(RBRACKET));
+	struct TokenList* list = makeTokenList();
+	list_add(list, makeToken(LBRACKET));
+	list_add(list, makeToken2(ID, "y"));
+	list_add(list, makeToken(RBRACKET));
 
-    struct Term* t = makeTerm(list);
-    assert(t != NULL);
+	struct Term* t = makeTerm(list);
+	assert(t != NULL);
 
-    assert(t->kind == 13);
+	assert(t->kind == 13);
 
-    struct MDirect* m = t->ptr.m13;
+	struct MDirect* m = t->ptr.m13;
 
-    struct Expr* expr = m->expr;
-    assert(expr != NULL);
+	struct Expr* expr = m->expr;
+	assert(expr != NULL);
 
-    assert(list_size(list) == 0);
+	assert(list_size(list) == 0);
 
-    struct Variable* v = expr->term1->term->ptr.m6;
-    assert(v != NULL);
+	struct Variable* v = expr->term1->term->ptr.m6;
+	assert(v != NULL);
 
-    struct SimpleVar* sv = v->simple_var;
-    assert(sv != NULL);
+	struct SimpleVar* sv = v->simple_var;
+	assert(sv != NULL);
 
-    assert(strcmp(sv->name,"y") == 0);
+	assert(strcmp(sv->name, "y") == 0);
 
-    freeTokenList(list);
-    free_term(t);
+	freeTokenList(list);
+	free_term(t);
 
-    return 1;
+	return 1;
 }

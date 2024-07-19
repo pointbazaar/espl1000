@@ -9,28 +9,28 @@
 #include "tac/tac.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_label(struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx){
+void compile_tac_label(struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx) {
 
 	char* s;
 
-    if(tac->kind == TAC_LABEL_INDEXED){
+	if (tac->kind == TAC_LABEL_INDEXED) {
 		char str[32];
 		sprintf(str, "L%d", tac->label_index);
 		s = (char*)&str;
 	}
-    
-    if(tac->kind == TAC_LABEL_FUNCTION){
-		
+
+	if (tac->kind == TAC_LABEL_FUNCTION) {
+
 		//in case of tests, sst may not be filled
-		char* function_name = "main"; 
-		
-		if(tac->dest < sst_size(ctx_tables(ctx)->sst)){
-				
+		char* function_name = "main";
+
+		if (tac->dest < sst_size(ctx_tables(ctx)->sst)) {
+
 			function_name = sst_at(ctx_tables(ctx)->sst, tac->dest)->name;
 		}
-		
+
 		s = function_name;
 	}
-	
+
 	label(s);
 }

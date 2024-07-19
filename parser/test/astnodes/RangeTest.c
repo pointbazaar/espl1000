@@ -19,21 +19,20 @@ void range_test1() {
 
 	struct TokenList* list = makeTokenList();
 
-	list_add(list, makeToken2(ID,"a"));
-	
-	list_add(list, makeToken2(RANGEOP,".."));
+	list_add(list, makeToken2(ID, "a"));
 
-	list_add(list, makeToken2(INTEGER,"0"));
+	list_add(list, makeToken2(RANGEOP, ".."));
 
+	list_add(list, makeToken2(INTEGER, "0"));
 
 	list_add(list, makeToken(SEMICOLON));
 
 	struct Range* r = makeRange(list);
-	
+
 	assert(r != NULL);
 	assert(r->start != NULL);
 	assert(r->end != NULL);
-	
+
 	freeTokenList(list);
 	free_range(r);
 }

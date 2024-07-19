@@ -9,7 +9,6 @@
 
 // x1[e1][e2].x2[...]....
 
-
 // &x1, +index(e1), deref, +index(e2), deref, +offset(.x2), deref
 
 // The representation of our AST is a flatter one, a more tree-like structure.
@@ -23,7 +22,6 @@
 
 // The order of what is happening also becomes clearer with this Linked List.
 
-
 enum DEREFLL_ACTION {
 
 	DEREFLL_INIT,
@@ -32,15 +30,13 @@ enum DEREFLL_ACTION {
 	DEREFLL_DEREF,
 };
 
-
 struct DerefLL {
 	//this struct should be immutable
 
 	//at most 1 of these is valid for an instance
 	struct SimpleVar* initial; //may be NULL
-	struct Expr* index_expr;   //may be NULL
+	struct Expr* index_expr; //may be NULL
 	char* member_name; //may be NULL
-
 
 	enum DEREFLL_ACTION action;
 	struct DerefLL* next; //may be NULL

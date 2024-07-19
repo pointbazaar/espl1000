@@ -19,7 +19,7 @@ struct Token** lex(char* source) {
 
 	//make a file with the source
 	FILE* f = fopen(fname_src, "w");
-	fprintf(f, "%s",source);
+	fprintf(f, "%s", source);
 	fclose(f);
 
 	char cmd[100];
@@ -31,12 +31,12 @@ struct Token** lex(char* source) {
 	struct TokenList* list = read_tokens_from_tokens_file(ftks, fname_tks);
 
 	uint32_t capacity = list_size(list);
-	struct Token** tks = malloc(sizeof(struct Token*)*capacity);
+	struct Token** tks = malloc(sizeof(struct Token*) * capacity);
 
-	for (uint32_t count = 0; count < capacity ; count++) {
+	for (uint32_t count = 0; count < capacity; count++) {
 		tks[count] = list_get(list, count);
 	}
-	
+
 	freeTokenListShallow(list);
 
 	fclose(ftks);
@@ -44,8 +44,8 @@ struct Token** lex(char* source) {
 	return tks;
 }
 
-void free_tokens	(struct Token** tokens, unsigned int count) {
-	for(uint32_t i = 0; i < count; i++) {
+void free_tokens(struct Token** tokens, unsigned int count) {
+	for (uint32_t i = 0; i < count; i++) {
 		//free(tokens[i]);
 		freeToken(tokens[i]);
 	}

@@ -15,34 +15,34 @@
 
 #include "MAssignStmtTest.h"
 
-bool massignstmt_test1(){
+bool massignstmt_test1() {
 
-    status_test("massignstmt_test1");
+	status_test("massignstmt_test1");
 
-    struct TokenList* tokens = makeTokenList();
+	struct TokenList* tokens = makeTokenList();
 
-    list_add(tokens, makeToken(LBRACKET));
-    list_add(tokens, makeToken2(INTEGER,"4"));
-    list_add(tokens, makeToken(RBRACKET));
-    list_add(tokens, makeToken2(ASSIGNOP,"="));
+	list_add(tokens, makeToken(LBRACKET));
+	list_add(tokens, makeToken2(INTEGER, "4"));
+	list_add(tokens, makeToken(RBRACKET));
+	list_add(tokens, makeToken2(ASSIGNOP, "="));
 
-    list_add(tokens, makeToken2(INTEGER,"5"));
+	list_add(tokens, makeToken2(INTEGER, "5"));
 
-    list_add(tokens, makeToken(SEMICOLON));
+	list_add(tokens, makeToken(SEMICOLON));
 
-    struct MAssignStmt* a = makeMAssignStmt(tokens);
+	struct MAssignStmt* a = makeMAssignStmt(tokens);
 
-    assert(a != NULL);
+	assert(a != NULL);
 
-    assert(a->lhs->expr->term1->term->kind == 12); //constvalue
-    assert(a->lhs->expr->term1->term->ptr.m12->ptr.m2_int_const == 4);
+	assert(a->lhs->expr->term1->term->kind == 12); //constvalue
+	assert(a->lhs->expr->term1->term->ptr.m12->ptr.m2_int_const == 4);
 
-    assert(a->expr != NULL);
-    assert(a->expr->term1->term->kind == 12); //constvalue
-    assert(a->expr->term1->term->ptr.m12->ptr.m2_int_const == 5);
+	assert(a->expr != NULL);
+	assert(a->expr->term1->term->kind == 12); //constvalue
+	assert(a->expr->term1->term->ptr.m12->ptr.m2_int_const == 5);
 
-    free_massign_stmt(a);
-    freeTokenList(tokens);
+	free_massign_stmt(a);
+	freeTokenList(tokens);
 
-    return true;
+	return true;
 }

@@ -14,122 +14,120 @@ void test_operators() {
 	char* str = "+ - * ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind==OPKEY_ARITHMETIC);
+	assert(tokens[0]->kind == OPKEY_ARITHMETIC);
 	assert(strcmp(tokens[0]->value_ptr, "+") == 0);
-	
-	assert(tokens[1]->kind==OPKEY_ARITHMETIC);
+
+	assert(tokens[1]->kind == OPKEY_ARITHMETIC);
 	assert(strcmp(tokens[1]->value_ptr, "-") == 0);
-	
-	assert(tokens[2]->kind==OPKEY_ARITHMETIC);
+
+	assert(tokens[2]->kind == OPKEY_ARITHMETIC);
 	assert(strcmp(tokens[2]->value_ptr, "*") == 0);
 
 	free_tokens(tokens, 3);
 }
 
-void test_operators_cmp(){
-	
+void test_operators_cmp() {
+
 	printt("test operators_cmp\n");
 
 	char* str = "<= >= == != < >";
 	struct Token** tokens = lex(str);
-	
-	assert(tokens[0]->kind==OPKEY_RELATIONAL);
+
+	assert(tokens[0]->kind == OPKEY_RELATIONAL);
 	assert(strcmp(tokens[0]->value_ptr, "<=") == 0);
-	
-	assert(tokens[1]->kind==OPKEY_RELATIONAL);
+
+	assert(tokens[1]->kind == OPKEY_RELATIONAL);
 	assert(strcmp(tokens[1]->value_ptr, ">=") == 0);
-	
-	assert(tokens[2]->kind==OPKEY_RELATIONAL);
+
+	assert(tokens[2]->kind == OPKEY_RELATIONAL);
 	assert(strcmp(tokens[2]->value_ptr, "==") == 0);
-	
-	assert(tokens[3]->kind==OPKEY_RELATIONAL);
+
+	assert(tokens[3]->kind == OPKEY_RELATIONAL);
 	assert(strcmp(tokens[3]->value_ptr, "!=") == 0);
-	
-	assert(tokens[4]->kind==OPKEY_RELATIONAL);
+
+	assert(tokens[4]->kind == OPKEY_RELATIONAL);
 	assert(strcmp(tokens[4]->value_ptr, "<") == 0);
-	
-	assert(tokens[5]->kind==OPKEY_RELATIONAL);
+
+	assert(tokens[5]->kind == OPKEY_RELATIONAL);
 	assert(strcmp(tokens[5]->value_ptr, ">") == 0);
 
 	free_tokens(tokens, 6);
 }
 
-void test_operators_logical(){
-	
+void test_operators_logical() {
+
 	printt("test operators_logical\n");
 
 	char* str = "&& || ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind==OPKEY_LOGICAL);
+	assert(tokens[0]->kind == OPKEY_LOGICAL);
 	assert(strcmp(tokens[0]->value_ptr, "&&") == 0);
-	
-	assert(tokens[1]->kind==OPKEY_LOGICAL);
+
+	assert(tokens[1]->kind == OPKEY_LOGICAL);
 	assert(strcmp(tokens[1]->value_ptr, "||") == 0);
 
 	free_tokens(tokens, 2);
 }
 
-void test_operators_bitwise(){
-	
+void test_operators_bitwise() {
+
 	printt("test operators_bitwise\n");
 
 	char* str = "| & << >> ^ ~";
 	struct Token** tokens = lex(str);
-	
-	assert(tokens[0]->kind==OPKEY_BITWISE);
+
+	assert(tokens[0]->kind == OPKEY_BITWISE);
 	assert(strcmp(tokens[0]->value_ptr, "|") == 0);
-	
-	assert(tokens[1]->kind==OPKEY_BITWISE);
+
+	assert(tokens[1]->kind == OPKEY_BITWISE);
 	assert(strcmp(tokens[1]->value_ptr, "&") == 0);
-	
-	assert(tokens[2]->kind==OPKEY_BITWISE);
+
+	assert(tokens[2]->kind == OPKEY_BITWISE);
 	assert(strcmp(tokens[2]->value_ptr, "<<") == 0);
-	
-	assert(tokens[3]->kind==OPKEY_BITWISE);
+
+	assert(tokens[3]->kind == OPKEY_BITWISE);
 	assert(strcmp(tokens[3]->value_ptr, ">>") == 0);
-	
-	assert(tokens[4]->kind==OPKEY_BITWISE);
+
+	assert(tokens[4]->kind == OPKEY_BITWISE);
 	assert(strcmp(tokens[4]->value_ptr, "^") == 0);
-	
-	assert(tokens[5]->kind==OPKEY_BITWISE);
+
+	assert(tokens[5]->kind == OPKEY_BITWISE);
 	assert(strcmp(tokens[5]->value_ptr, "~") == 0);
 
 	free_tokens(tokens, 6);
 }
 
-void test_assign_operators(){
+void test_assign_operators() {
 
 	printt("test_assign_operators\n");
 
 	char* str = "= += -= >>= <<= &= |=";
 	struct Token** tokens = lex(str);
-	
+
 	// =
-	assert(tokens[0]->kind==ASSIGNOP);
+	assert(tokens[0]->kind == ASSIGNOP);
 	assert(strcmp(tokens[0]->value_ptr, "=") == 0);
-	
+
 	// arithmetic
-	assert(tokens[1]->kind==ASSIGNOP);
+	assert(tokens[1]->kind == ASSIGNOP);
 	assert(strcmp(tokens[1]->value_ptr, "+=") == 0);
-	
-	assert(tokens[2]->kind==ASSIGNOP);
+
+	assert(tokens[2]->kind == ASSIGNOP);
 	assert(strcmp(tokens[2]->value_ptr, "-=") == 0);
-	
-	
+
 	// bitwise
-	assert(tokens[3]->kind==ASSIGNOP);
+	assert(tokens[3]->kind == ASSIGNOP);
 	assert(strcmp(tokens[3]->value_ptr, ">>=") == 0);
-	
-	assert(tokens[4]->kind==ASSIGNOP);
+
+	assert(tokens[4]->kind == ASSIGNOP);
 	assert(strcmp(tokens[4]->value_ptr, "<<=") == 0);
-	
-	assert(tokens[5]->kind==ASSIGNOP);
+
+	assert(tokens[5]->kind == ASSIGNOP);
 	assert(strcmp(tokens[5]->value_ptr, "&=") == 0);
-	
-	assert(tokens[6]->kind==ASSIGNOP);
+
+	assert(tokens[6]->kind == ASSIGNOP);
 	assert(strcmp(tokens[6]->value_ptr, "|=") == 0);
-	
 
 	free_tokens(tokens, 7);
 }

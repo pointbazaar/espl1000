@@ -14,21 +14,21 @@ struct ST {
 	// - LVST (local variable symbol table)
 	// - SST (subroutine symbol table)
 	// - STST (struct symbol table)
-	
+
 	struct LVST* lvst; //may be NULL
-	struct SST*   sst; //may be NULL
+	struct SST* sst; //may be NULL
 	struct STST* stst; //may be NULL
-	
+
 	// -----------------------------
-	
+
 	//all the type nodes that were additionally
 	//constructed via type inference
-	//and are not memory-managed as part of the 
+	//and are not memory-managed as part of the
 	//AST Tree.
 
 	struct Type** inferred_types;
-	uint32_t      inferred_types_count;
-	uint32_t      inferred_types_capacity;
+	uint32_t inferred_types_count;
+	uint32_t inferred_types_capacity;
 };
 
 struct ST* makeST();

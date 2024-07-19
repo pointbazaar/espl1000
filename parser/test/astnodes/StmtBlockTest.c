@@ -14,27 +14,26 @@
 
 #include "ast/util/free_ast.h"
 
-
 int test_stmtblock_1() {
 
 	status_test("test_stmtblock_1");
 
 	struct TokenList* tokens = makeTokenList();
-	list_add(tokens, makeToken2(LCURLY,"{"));
-	
-	list_add(tokens, makeToken2(ID,"a") );
-	list_add(tokens, makeToken2(ASSIGNOP,"=") );
-	list_add(tokens, makeToken2(INTEGER,"3") );
-	list_add(tokens, makeToken(SEMICOLON) );
-	
-	list_add(tokens, makeToken2(RCURLY,"}"));
+	list_add(tokens, makeToken2(LCURLY, "{"));
+
+	list_add(tokens, makeToken2(ID, "a"));
+	list_add(tokens, makeToken2(ASSIGNOP, "="));
+	list_add(tokens, makeToken2(INTEGER, "3"));
+	list_add(tokens, makeToken(SEMICOLON));
+
+	list_add(tokens, makeToken2(RCURLY, "}"));
 
 	struct StmtBlock* node = makeStmtBlock(tokens);
 
-	assert(0 == list_size(tokens)); 
+	assert(0 == list_size(tokens));
 	//all tokens should have been consumed
 	assert(node != NULL);
-	
+
 	freeTokenList(tokens);
 	free_stmt_block(node);
 

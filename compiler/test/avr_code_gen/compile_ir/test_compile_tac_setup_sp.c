@@ -15,37 +15,36 @@
 
 #include "test_compile_tac.h"
 
-void test_compile_tac_setup_sp(){
-	
+void test_compile_tac_setup_sp() {
+
 	//see if stackpointer is setup correctly
 	status_test_codegen("TAC_SETUP_SP");
 
-    struct TACBuffer* buffer = tacbuffer_ctor();
-    
-    tacbuffer_append(buffer, makeTACSetupSP());
-    tacbuffer_append(buffer, makeTACNop());
+	struct TACBuffer* buffer = tacbuffer_ctor();
 
-    vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
-    
-    //record register values
+	tacbuffer_append(buffer, makeTACSetupSP());
+	tacbuffer_append(buffer, makeTACNop());
+
+	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
+
+	//record register values
 	int8_t regs[32];
-	for(int i = 0; i < 32; i++){
-		if(i == 16) continue;
+	for (int i = 0; i < 32; i++) {
+		if (i == 16) continue;
 		regs[i] = vmcu_system_read_gpr(system, i);
 	}
 
-    vmcu_system_step_n(system, 4);
+	vmcu_system_step_n(system, 4);
 
-    uint16_t sp = vmcu_system_read_sp(system);
+	uint16_t sp = vmcu_system_read_sp(system);
 
 	//check that SP was setup
-    assert(sp == 0x085f);
-    
-	for(int i = 0; i < 32; i++){
-		if(i == 16) continue;
+	assert(sp == 0x085f);
+
+	for (int i = 0; i < 32; i++) {
+		if (i == 16) continue;
 		assert(regs[i] == vmcu_system_read_gpr(system, i));
 	}
-	
+
 	vmcu_system_dtor(system);
 }
-

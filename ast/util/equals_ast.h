@@ -7,7 +7,7 @@
 /* the functions in this file are currently implemented
  * on an as-needed basis
  */
- 
+
 //NOTE: all these subroutines accept NULL
 //as an argument
 

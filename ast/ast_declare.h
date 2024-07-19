@@ -51,17 +51,17 @@ struct StructType;
 struct ASTNode {
 	//Base Type from which all ASTNodes inherit
 	//except {AST, Namespace}
-	
+
 	/*
 	 Example:
 	 struct Method {
-		struct ASTNode super;
-		...
+	        struct ASTNode super;
+	        ...
 	 }
 	 */
-	
+
 	uint32_t line_num;
-	
+
 	uint32_t annotations;
 	//examples for (maybe) future annotations:
 	// @liveroot   // for dead-analyzer
@@ -70,10 +70,10 @@ struct ASTNode {
 	// @nobranch   // for subroutines
 	// @atleast(x) // for variables
 	// @atmost(x)  // for variables
-	// @condition(...) 
-	// @packed     // for structs 
+	// @condition(...)
+	// @packed     // for structs
 };
 
-#define has_annotation(annotations, annotation) ((annotations) & (1 << ((annotation)-_ANNOT_START_)))!=0
+#define has_annotation(annotations, annotation) ((annotations) & (1 << ((annotation) - _ANNOT_START_))) != 0
 
 #endif

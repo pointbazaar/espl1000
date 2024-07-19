@@ -1,51 +1,67 @@
 #ifndef IKEY_H
 #define IKEY_H
 
-
 //IKEY meaning Instruction Key
 enum IKEY {
-	
+
 	//not really an IKEY though we need it anyways
 	LABEL,
-	
+
 	//taken from the instruction set summary in the Datasheet
-	
+
 	//Arithmetic and Logic Instructions
-	ADD, ADC, ADIW,
-	
-	SUB, SUBI,
+	ADD,
+	ADC,
+	ADIW,
+
+	SUB,
+	SUBI,
 	SBC,
 	SBCI,
 	SBIW,
-	
-	AND, ANDI,
-	
-	OR, ORI,
-	
+
+	AND,
+	ANDI,
+
+	OR,
+	ORI,
+
 	EOR,
 	COM,
 	NEG,
 	SBR,
 	CBR,
-	
-	INC, DEC,
-	
+
+	INC,
+	DEC,
+
 	TST,
 	CLR,
 	SER,
-	
-	MUL, MULS, MULSU,
-	
-	FMUL, FMULS, FMULSU,
-	
+
+	MUL,
+	MULS,
+	MULSU,
+
+	FMUL,
+	FMULS,
+	FMULSU,
+
 	DES,
-	
+
 	//Branch Instructions
-	RJMP = 100, IJMP, EIJMP, JMP,
-	
-	RCALL, ICALL, EICALL, CALL,
-	RET, RETI,
-	
+	RJMP = 100,
+	IJMP,
+	EIJMP,
+	JMP,
+
+	RCALL,
+	ICALL,
+	EICALL,
+	CALL,
+	RET,
+	RETI,
+
 	CPSE = 120,
 	CP,
 	CPC,
@@ -61,7 +77,7 @@ enum IKEY {
 	BRCS,
 	BRCC,
 	BRSH,
-	
+
 	BRLO = 150,
 	BRMI,
 	BRPL,
@@ -75,13 +91,14 @@ enum IKEY {
 	BRVC,
 	BRIE,
 	BRID,
-	
+
 	//Data Transfer Instructions
-	MOV = 200, MOVW,
+	MOV = 200,
+	MOVW,
 	LDI,
-	
+
 	LDS, //load with addr
-	
+
 	//LD Instructions
 	LDX = 230,
 	LDXpostInc,
@@ -91,32 +108,38 @@ enum IKEY {
 	LDZpostInc,
 	LDDY, //with displacement
 	LDDZ, //with displacement
-	
+
 	STS, //store with addr
-	
+
 	//ST Instructions
 	STX,
 	STXPLUS,
 	STY,
 	STZ,
 	STDY, //with displacement
-	
-	LPM = 250, ELPM, SPM,
-	
-	IN, OUT,
-	
-	PUSH = 270, POP,
-	
+
+	LPM = 250,
+	ELPM,
+	SPM,
+
+	IN,
+	OUT,
+
+	PUSH = 270,
+	POP,
+
 	XCH,
 	LAS,
 	LAC,
 	LAT,
-	
+
 	//Bit and Bit-test Instructions
-	LSL = 300, LSR,
-	
-	ROL, ROR,
-	
+	LSL = 300,
+	LSR,
+
+	ROL,
+	ROR,
+
 	ASR,
 	SWAP,
 	SBI,
@@ -141,7 +164,7 @@ enum IKEY {
 	CLT,
 	SEH,
 	CLH,
-	
+
 	//MCU Control Instructions
 	BREAK = 400,
 	NOP,

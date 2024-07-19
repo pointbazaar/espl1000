@@ -4,12 +4,12 @@
 
 FILE* file;
 
-int main(){
+int main() {
 
 	file = fopen("/tmp/test", "w+");
-	
+
 	printf("[AST][TEST] running AST str Tests...\n");
-	
+
 	//--- from test_str_ast.c ---
 	test_str_binconst();
 	test_str_intconst();
@@ -20,10 +20,10 @@ int main(){
 	test_str_op();
 	test_str_unopterm();
 	test_str_term();
-	
+
 	printf("[AST Module] Passed All Tests\n");
-	
+
 	fclose(file);
-	
+
 	return 0;
 }

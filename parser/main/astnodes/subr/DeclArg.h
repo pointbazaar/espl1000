@@ -8,5 +8,4 @@ struct TokenList;
 
 struct DeclArg* makeDeclArg(struct TokenList* tokens);
 
-
 #endif
