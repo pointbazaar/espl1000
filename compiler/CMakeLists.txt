@@ -184,9 +184,11 @@ add_executable("sd-tests"
 	test/gen_tac/test_gen_tac_structdecl.c
 )
 
-target_compile_options("sd-base"  PUBLIC "-g" "-march=native" "-Wall" "-Wextra")
-target_compile_options("sd"       PUBLIC "-g" "-march=native" "-Wall" "-Wextra")
-target_compile_options("sd-tests" PUBLIC "-g" "-march=native" "-Wall" "-Wextra")
+set(COMMON_OPTS, "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
+
+target_compile_options("sd-base"  PUBLIC ${COMMON_OPTS})
+target_compile_options("sd"       PUBLIC ${COMMON_OPTS})
+target_compile_options("sd-tests" PUBLIC ${COMMON_OPTS})
 
 #tables dependency
 target_link_libraries("sd-base" ${CMAKE_SOURCE_DIR}/../tables/build/libsd-tables.a)

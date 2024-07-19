@@ -5,6 +5,8 @@
 #include "libvmcu/libvmcu_system.h"
 #include "libvmcu/libvmcu_analyzer.h"
 
+#include "compiler/test/libvmcu_utils/libvmcu_utils.h"
+
 #include "avr_code_gen/cg_avr.h"
 #include "avr_code_gen/cg_avr_basic_block.h"
 

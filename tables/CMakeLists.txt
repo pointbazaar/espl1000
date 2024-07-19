@@ -20,7 +20,9 @@ add_library(${PROJECT_NAME} STATIC
         symtable/symtable.c
 )
 
-target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Werror")
+set(COMMON_OPTS, "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
+
+target_compile_options(${PROJECT_NAME} PUBLIC ${COMMON_OPTS})
 
 target_include_directories(${PROJECT_NAME} PUBLIC "..")
 

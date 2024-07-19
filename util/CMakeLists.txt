@@ -8,4 +8,6 @@ add_library(${PROJECT_NAME} STATIC
 	exit_malloc/exit_malloc.c
 )
 
-target_compile_options(${PROJECT_NAME} PUBLIC "-g" "-march=native" "-Wall" "-Werror")
+set(COMMON_OPTS, "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
+
+target_compile_options(${PROJECT_NAME} PUBLIC ${COMMON_OPTS})
