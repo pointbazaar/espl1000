@@ -10,6 +10,11 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(COMMON_OPTS, "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
 
+# this helps to provide the correct flags to include
+# debug symbols at every step so that we get
+# line numbers and sources in valgrind and other tools
+set(CMAKE_BUILD_TYPE Debug)
+
 #purpose of this file is so that CLion will recognize
 #the whole project
 

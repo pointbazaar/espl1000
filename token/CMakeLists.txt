@@ -9,3 +9,12 @@ target_link_libraries(sd-token sd-util)
 target_compile_options(sd-token PUBLIC ${COMMON_OPTS})
 
 target_include_directories(sd-token PUBLIC ".")
+
+
+add_executable(sd-token-tests
+	test/test.c
+	test/testcases/tests_tokenlist.c
+)
+
+target_link_libraries(sd-token-tests sd-util)
+target_link_libraries(sd-token-tests sd-token)

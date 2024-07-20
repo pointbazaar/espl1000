@@ -21,6 +21,7 @@ check-format:
 test: build ${TESTS}
 	export PATH=${PATH}:$(pwd)/build/lexer/:$(pwd)/build/parser:$(pwd)/build/compiler
 	./build/ast/sd-ast-test && \
+	./build/token/sd-token-tests && \
 	./build/rat/sd-rat-tests && \
 	./build/lexer/dragon-lexer-tests && \
 	./build/parser/dragon-parser-tests && \
@@ -31,6 +32,7 @@ test: build ${TESTS}
 	#cd stdlib     && make test
 
 TESTS=build/ast/sd-ast-test \
+      build/token/sd-token-tests \
       build/rat/sd-rat-tests \
       build/lexer/dragon-lexer-tests \
       build/parser/dragon-parser-tests \
@@ -46,11 +48,12 @@ ci_valgrind_tests: ${TESTS}
 
 valgrind_tests: ${TESTS}
 	valgrind ${VALGRIND_OPTS} ./build/ast/sd-ast-test && \
+	valgrind ${VALGRIND_OPTS} ./build/token/sd-token-tests && \
 	valgrind ${VALGRIND_OPTS} ./build/rat/sd-rat-tests && \
-	valgrind ${VALGRIND_OPTS} ./build/lexer/dragon-lexer-tests
+	valgrind ${VALGRIND_OPTS} ./build/lexer/dragon-lexer-tests && \
+	valgrind ${VALGRIND_OPTS} ./build/parser/dragon-parser-tests
 
-	# TODO: enable the below. right now it has still too many memory leaks
-	#valgrind ${VALGRIND_OPTS} ./build/parser/dragon-parser-tests
+	#TODO: enable valgrind for the compiler tests
 
 clean_cmake:
 	rm -rf CMakeFiles
