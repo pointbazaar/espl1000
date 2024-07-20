@@ -12,12 +12,13 @@ struct TokenList* makeTokenList2(char* filename) {
 	const int initial_size = 20;
 
 	struct TokenList* res = exit_malloc(sizeof(struct TokenList));
+	memset(res, 0, sizeof(struct TokenList));
 
 	res->rel_path = exit_malloc(sizeof(char) * (strlen(filename) + 1));
 	strcpy(res->rel_path, filename);
 	res->tokensc = 0;
 
-	res->tokens = malloc(sizeof(struct Token*) * initial_size);
+	res->tokens = exit_malloc(sizeof(struct Token*) * initial_size);
 	res->index_head = 0;
 	res->tokens_stored = 0;
 
@@ -88,6 +89,7 @@ struct TokenList* list_copy(struct TokenList* list) {
 
 	struct TokenList* res = makeTokenList();
 
+	free(res->rel_path);
 	res->rel_path = exit_malloc(sizeof(char) * (strlen(list->rel_path) + 1));
 	strcpy(res->rel_path, list->rel_path);
 
@@ -183,12 +185,17 @@ void freeTokenList(struct TokenList* list) {
 	//even those already consumed
 	for (int i = 0; i < list->tokens_stored; i++) {
 		freeToken(list->tokens[i]);
+		list->tokens[i] = NULL;
 	}
 	freeTokenListShallow(list);
 }
 
 void freeTokenListShallow(struct TokenList* list) {
 	free(list->tokens);
+	list->tokens = NULL;
+
 	free(list->rel_path);
+	list->rel_path = NULL;
+
 	free(list);
 }

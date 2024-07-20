@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 #include <parser/test/test_parser_util.h>
 
@@ -29,6 +30,8 @@ int test_charconst_parse_char_constant_node() {
 
 	freeTokenList(list);
 
+	free(cv);
+
 	return 1;
 }
 
@@ -48,6 +51,8 @@ int test_charconst_parse_char_constant_node_newline() {
 	assert('\n' == node);
 
 	freeTokenList(list);
+
+	free(cv);
 
 	return 1;
 }
@@ -70,6 +75,8 @@ int test_boolconst_parse_bool_constant_node() {
 	assert(b);
 
 	freeTokenList(list);
+
+	free(cv);
 
 	return 1;
 }
