@@ -13,3 +13,5 @@ tags
 
 # build folder
 build/
+
+.cache/

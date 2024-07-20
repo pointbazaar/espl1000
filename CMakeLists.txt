@@ -4,6 +4,10 @@ project(smalldragon-toplevel C)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
+# for clang tooling support
+# such as language server when editing
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 set(COMMON_OPTS, "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
 
 #purpose of this file is so that CLion will recognize
