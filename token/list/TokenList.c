@@ -7,6 +7,29 @@
 #include "../token/token.h"
 #include "../../util/exit_malloc/exit_malloc.h"
 
+struct TokenList {
+	//relative path of the source file
+	char* rel_path;
+
+	//all the tokens, including those
+	//already consumed
+	struct Token** tokens; //private
+	//how many pointers we can store
+	//with the currently allocated memory
+	uint16_t capacity; //private
+
+	//the index of the first token that was
+	//not already consumed
+	uint16_t index_head;
+
+	//the amount of tokens stored,
+	//even if they have already been consumed
+	uint16_t tokens_stored;
+
+	//token count
+	uint16_t tokensc; //private
+};
+
 struct TokenList* makeTokenList2(char* filename) {
 
 	const int initial_size = 20;
@@ -177,6 +200,10 @@ void list_print(struct TokenList* list) {
 	char* str = list_code(list);
 	printf("%s\n", str);
 	free(str);
+}
+
+char* list_rel_path(struct TokenList* list) {
+	return list->rel_path;
 }
 
 void freeTokenList(struct TokenList* list) {
