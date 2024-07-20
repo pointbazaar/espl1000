@@ -197,14 +197,16 @@ void test_typeidentifier_primitive() {
 	    TYPEID_PRIMITIVE_INT16,
 	    TYPEID_PRIMITIVE_UINT16,
 	};
-	char* expect[] = {"int", "uint", "int8", "uint8", "int16", "uint16"};
 
-	for (int i = 0; i < 6; i++) {
+	char* expect[] = {"int", "uint", "int8", "uint8", "int16", "uint16"};
+	size_t expect_count = 6;
+
+	for (int i = 0; i < expect_count; i++) {
 		assert(tokens[i]->kind == expect_kind[i]);
 		assert(strcmp(tokens[i]->value_ptr, expect[i]) == 0);
 	}
 
-	free_tokens(tokens, 4);
+	free_tokens(tokens, expect_count);
 
 	//------------------------------
 	char* str2 = "char bool ";

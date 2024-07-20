@@ -106,7 +106,7 @@ void test_str_expr() {
 
 	assert(strcmp(s, "-45*-45") == 0);
 
-	free(u2);
+	free_un_op_term(u2);
 	free(s);
 }
 void test_str_op() {
