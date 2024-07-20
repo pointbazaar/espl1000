@@ -36,6 +36,22 @@ TESTS=build/ast/sd-ast-test \
       build/parser/dragon-parser-tests \
       build/compiler/sd-tests \
 
+VALGRIND_OPTS=--leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1
+
+ci_valgrind_tests: ${TESTS}
+	export CI_DIR=/home/circleci/project
+	export BUILD_DIR=${CI_DIR}/build
+	export PATH=${BUILD_DIR}/lexer/:${BUILD_DIR}/parser:${BUILD_DIR}/compiler:${PATH}
+	make valgrind_tests
+
+valgrind_tests: ${TESTS}
+	valgrind ${VALGRIND_OPTS} ./build/ast/sd-ast-test && \
+	valgrind ${VALGRIND_OPTS} ./build/rat/sd-rat-tests && \
+	valgrind ${VALGRIND_OPTS} ./build/lexer/dragon-lexer-tests
+
+	# TODO: enable the below. right now it has still too many memory leaks
+	#valgrind ${VALGRIND_OPTS} ./build/parser/dragon-parser-tests
+
 clean_cmake:
 	rm -rf CMakeFiles
 	rm -rf build
