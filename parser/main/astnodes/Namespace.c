@@ -35,10 +35,10 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name) {
 	res->structs = exit_malloc(sizeof(struct StructDecl*) * res->capacity_structs);
 
 	res->src_path = exit_malloc(sizeof(char) * (strlen(name) + 3 + 1));
-	res->token_path = exit_malloc(sizeof(char) * (strlen(tokens->rel_path) + 1));
+	res->token_path = exit_malloc(sizeof(char) * (strlen(list_rel_path(tokens)) + 1));
 
 	sprintf(res->src_path, "%s.dg", name);
-	strcpy(res->token_path, tokens->rel_path);
+	strcpy(res->token_path, list_rel_path(tokens));
 	strncpy(res->name, name, DEFAULT_STR_SIZE);
 
 	struct TokenList* copy = list_copy(tokens);
