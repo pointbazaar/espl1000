@@ -3,8 +3,8 @@ all: build test examples
 
 build: deps
 	cmake -S . -B build
-	#cmake --build build --parallel
-	cmake --build build
+	cmake --build build --parallel
+	#cmake --build build
 
 deps:
 	cd dependencies && make
@@ -15,22 +15,26 @@ examples:
 stdlib:
 	cd stdlib     && make
 
-ci: check-format all
-
 check-format:
 	./check-format.sh
 
-test: build
+test: build ${TESTS}
 	export PATH=${PATH}:$(pwd)/build/lexer/:$(pwd)/build/parser:$(pwd)/build/compiler
-	#cd token      && make test
-	cd ast        && make test
-	cd lexer      && make test
-	cd parser     && make test
-	#cd tables     && make test
-	cd rat		   && make test
-	cd compiler    && make test
+	./build/ast/sd-ast-test && \
+	./build/rat/sd-rat-tests && \
+	./build/lexer/dragon-lexer-tests && \
+	./build/parser/dragon-parser-tests && \
+	cd compiler && \
+	../build/compiler/sd-tests && \
+	cd .. && \
 	cd examples   && make test
 	#cd stdlib     && make test
+
+TESTS=build/ast/sd-ast-test \
+      build/rat/sd-rat-tests \
+      build/lexer/dragon-lexer-tests \
+      build/parser/dragon-parser-tests \
+      build/compiler/sd-tests \
 
 clean_cmake:
 	rm -rf CMakeFiles
