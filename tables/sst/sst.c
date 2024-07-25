@@ -30,7 +30,7 @@ struct SST {
 
 static void sst_resize(struct SST* sst);
 
-struct SST* makeSST() {
+struct SST* sst_ctor() {
 
 	struct SST* sst = make(SST);
 
@@ -48,7 +48,7 @@ void sst_clear(struct SST* sst) {
 
 	for (int i = 0; i < sst->count; i++) {
 
-		freeSSTLine(sst->lines[i]);
+		sst_line_free(sst->lines[i]);
 	}
 
 	free(sst->lines);
@@ -59,17 +59,17 @@ void sst_clear(struct SST* sst) {
 	sst->lines = malloc(sizeof(struct SSTLine*) * sst->capacity);
 }
 
-void freeSST(struct SST* sst) {
+void sst_free(struct SST* sst) {
 
 	for (int i = 0; i < sst->count; i++) {
-		freeSSTLine(sst->lines[i]);
+		sst_line_free(sst->lines[i]);
 	}
 
 	free(sst->lines);
 	free(sst);
 }
 
-struct SSTLine* makeSSTLine(
+struct SSTLine* sst_line_ctor(
     char* name,
     char* _namespace,
     struct Type* return_type,
@@ -97,7 +97,7 @@ struct SSTLine* makeSSTLine(
 	return line;
 }
 
-struct SSTLine* makeSSTLine2(
+struct SSTLine* sst_line_ctor2(
     struct Method* m,
     struct Type* type,
     char* _namespace) {
@@ -123,7 +123,7 @@ struct SSTLine* makeSSTLine2(
 	return line;
 }
 
-void freeSSTLine(struct SSTLine* l) {
+void sst_line_free(struct SSTLine* l) {
 
 	if (l->cc != NULL) { cc_free(l->cc); }
 

@@ -19,7 +19,7 @@ struct ST* makeST() {
 
 	st->inferred_types = malloc(nbytes);
 
-	st->sst = makeSST();
+	st->sst = sst_ctor();
 	st->stst = makeSTST();
 	st->lvst = lvst_ctor();
 
@@ -28,7 +28,7 @@ struct ST* makeST() {
 
 void freeST(struct ST* st) {
 
-	if (st->sst != NULL) { freeSST(st->sst); }
+	if (st->sst != NULL) { sst_free(st->sst); }
 	if (st->lvst != NULL) { lvst_free(st->lvst); }
 	if (st->stst != NULL) { freeSTST(st->stst); }
 
