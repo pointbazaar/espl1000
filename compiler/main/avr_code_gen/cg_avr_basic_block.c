@@ -24,7 +24,7 @@ void emit_asm_avr_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct 
 	block->visited_emit_asm = true;
 
 	//create register allocation table for the basic block.
-	struct RAT* rat = rat_ctor(ctx_tables(ctx));
+	struct RAT* rat = rat_ctor(RAT_ARCH_AVR);
 
 	//simplest naive approach (first iteration):
 	//simply get a new register for each temporary

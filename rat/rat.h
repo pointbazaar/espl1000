@@ -4,9 +4,14 @@
 #include <stdbool.h>
 #include <inttypes.h>
 
+enum RAT_ARCH {
+	RAT_ARCH_AVR,
+	RAT_ARCH_X86,
+};
+
 struct RAT;
 
-struct RAT* rat_ctor();
+struct RAT* rat_ctor(enum RAT_ARCH arch);
 
 void rat_dtor(struct RAT* rat);
 
