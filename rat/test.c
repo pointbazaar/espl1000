@@ -46,7 +46,7 @@ static void test_scratch_reg() {
 
 	status("scratch register");
 
-	struct RAT* rat = rat_ctor();
+	struct RAT* rat = rat_ctor(RAT_ARCH_AVR);
 
 	assert(rat_scratch_reg(rat) == 16);
 
@@ -57,7 +57,7 @@ static void test_alloc_different_regs() {
 
 	status("allocate different registers");
 
-	struct RAT* rat = rat_ctor();
+	struct RAT* rat = rat_ctor(RAT_ARCH_AVR);
 
 	int reg1 = rat_ensure_register(rat, 0, false, false);
 
@@ -72,7 +72,7 @@ static void test_alloc_in_bounds() {
 
 	status("allocate in bounds");
 
-	struct RAT* rat = rat_ctor();
+	struct RAT* rat = rat_ctor(RAT_ARCH_AVR);
 
 	int reg1 = rat_ensure_register(rat, 0, false, false);
 
@@ -94,7 +94,7 @@ static void test_can_free() {
 	//test that we can give a register back when it's no longer needed
 	//and then get it back later on
 
-	struct RAT* rat = rat_ctor();
+	struct RAT* rat = rat_ctor(RAT_ARCH_AVR);
 
 	const int reg1 = rat_ensure_register(rat, 0, true, false);
 
@@ -114,7 +114,7 @@ static void test_occupant() {
 	//test that a temp can occupy a register and we can find out which
 	//temp it is
 
-	struct RAT* rat = rat_ctor();
+	struct RAT* rat = rat_ctor(RAT_ARCH_AVR);
 
 	const int reg1 = rat_ensure_register(rat, 342, false, false);
 
@@ -127,7 +127,7 @@ static void test_can_free_pair() {
 
 	status("can free a register pair");
 
-	struct RAT* rat = rat_ctor();
+	struct RAT* rat = rat_ctor(RAT_ARCH_AVR);
 
 	const int reg1 = rat_ensure_register(rat, 0, true, true);
 
@@ -145,7 +145,7 @@ static void test_occupant_pair() {
 
 	status("can occupy and read occupant for pair");
 
-	struct RAT* rat = rat_ctor();
+	struct RAT* rat = rat_ctor(RAT_ARCH_AVR);
 
 	const int reg1 = rat_ensure_register(rat, 342, false, true);
 
@@ -159,7 +159,7 @@ static void test_alloc_n_regs() {
 
 	status("can allocate a number of regs without running out");
 
-	struct RAT* rat = rat_ctor();
+	struct RAT* rat = rat_ctor(RAT_ARCH_AVR);
 
 	for (int i = 0; i < 14; i++) {
 
@@ -173,7 +173,7 @@ static void test_rat_is_wide() {
 
 	status("rat_is_wide(...)");
 
-	struct RAT* rat = rat_ctor();
+	struct RAT* rat = rat_ctor(RAT_ARCH_AVR);
 
 	//with low regs
 	rat_ensure_register(rat, 0, false, false);

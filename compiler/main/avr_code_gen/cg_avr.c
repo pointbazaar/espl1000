@@ -52,7 +52,8 @@ bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx) {
 
 	struct IBuffer* ibu = ibu_ctor();
 
-	struct RAT* rat = rat_ctor(ctx_tables(ctx));
+	//struct RAT* rat = rat_ctor(ctx_tables(ctx));
+	struct RAT* rat = rat_ctor(RAT_ARCH_AVR);
 
 	struct TAC* t = makeTACSetupSP();
 	emit_asm_avr_single_tac(rat, t, ctx, ibu);

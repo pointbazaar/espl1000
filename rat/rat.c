@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <assert.h>
 
 #include "../util/exit_malloc/exit_malloc.h"
 #include "rat.h"
@@ -15,6 +16,8 @@ static bool rat_has_register(struct RAT* rat, uint32_t tmp_index);
 static void rat_occupy(struct RAT* rat, uint8_t reg, uint32_t tmp_index, bool wide);
 
 static void rat_init(struct RAT* rat);
+static void rat_init_avr(struct RAT* rat);
+static void rat_init_x86(struct RAT* rat);
 
 enum RAT_REG_STATUS {
 	REG_OCCUPIED, //reg occupied by temporary
@@ -45,12 +48,17 @@ struct RAT {
 	//X: r26/r27
 	//Y: r28/r29
 	//Z: r30/r31
+
+	// which machine architecture is this table for
+	enum RAT_ARCH arch;
 };
 
 
-struct RAT* rat_ctor() {
+struct RAT* rat_ctor(enum RAT_ARCH arch) {
 
 	struct RAT* rat = exit_malloc(sizeof(struct RAT));
+
+	rat->arch = arch;
 
 	for (int i = 0; i < rat_capacity(rat); i++) {
 		rat->status[i] = REG_FREE;
@@ -62,7 +70,30 @@ struct RAT* rat_ctor() {
 	return rat;
 }
 
-static void rat_init(struct RAT* rat) {
+static void rat_init(struct RAT* rat){
+
+	switch(rat->arch){
+		case RAT_ARCH_AVR:
+			rat_init_avr(rat); break;
+		case RAT_ARCH_X86:
+			rat_init_x86(rat); break;
+		defaulT:
+			break;
+	}
+}
+
+static void rat_init_x86(struct RAT* rat) {
+
+	rat->status[0] = REG_RESERVED;
+	rat->note[0] = "rax reserved for return value";
+	rat->status[1] = REG_RESERVED;
+	rat->note[1] = "rax reserved for return value";
+
+	rat->status[rat_scratch_reg(rat)] = REG_RESERVED;
+	rat->note[rat_scratch_reg(rat)] = "reserved as scratch register";
+}
+
+static void rat_init_avr(struct RAT* rat) {
 
 	rat->status[0] = REG_RESERVED;
 	rat->note[0] = "reserved for return value";
@@ -99,12 +130,42 @@ void rat_dtor(struct RAT* rat) {
 	free(rat);
 }
 
+static void rat_print_regname_x86(struct RAT* rat, size_t i){
+
+	assert(i < rat_capacity(rat));
+	char* regnames[] = {
+		"rax",
+		"rbx",
+		"rcx",
+		"rsp",
+		"rbp",
+		"rdi",
+		"rsi",
+		"rdx",
+	};
+	printf("%s", regnames[i]);
+}
+
+static void rat_print_regname(struct RAT* rat, size_t i){
+
+	switch(rat->arch){
+		// on avr, r16 is our scratch register
+		case RAT_ARCH_AVR:
+			printf("r%02ld", i);
+			break;
+		case RAT_ARCH_X86:
+			rat_print_regname_x86(rat, i);
+		default: return;
+	}
+}
+
 void rat_print(struct RAT* rat) {
 
 	printf("Register Allocation Table:\n");
 	for (size_t i = 0; i < rat_capacity(rat); i++) {
 
-		printf("r%02ld: ", i);
+		rat_print_regname(rat, i);
+		printf(": ");
 
 		switch (rat->status[i]) {
 
@@ -251,10 +312,20 @@ static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide
 }
 
 uint16_t rat_scratch_reg(struct RAT* rat){
-	// on avr, r16 is our scratch register
-	return 16;
+
+	switch(rat->arch){
+		// on avr, r16 is our scratch register
+		case RAT_ARCH_AVR: return 16;
+		case RAT_ARCH_X86:  return 1;
+		default: return 0;
+	}
 }
 
 uint16_t rat_capacity(struct RAT* rat){
-	return 32;
+
+	switch(rat->arch){
+		case RAT_ARCH_AVR: return 32;
+		case RAT_ARCH_X86:  return 8;
+		default: return 0;
+	}
 }
