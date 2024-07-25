@@ -46,7 +46,11 @@ static void test_scratch_reg() {
 
 	status("scratch register");
 
-	assert(RAT_SCRATCH_REG == 16);
+	struct RAT* rat = rat_ctor();
+
+	assert(rat_scratch_reg(rat) == 16);
+
+	rat_dtor(rat);
 }
 
 static void test_alloc_different_regs() {

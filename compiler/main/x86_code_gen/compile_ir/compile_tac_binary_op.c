@@ -18,7 +18,11 @@ static int label_counter = 0;
 
 static char* c = "TAC_BINARY_OP";
 
+static int RAT_SCRATCH_REG = -1;
+
 void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
+
+	RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
 	switch (tac->op) {
 

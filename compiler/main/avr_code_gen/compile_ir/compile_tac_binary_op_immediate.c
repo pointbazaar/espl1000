@@ -79,6 +79,8 @@ static void case_tac_op_xor(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 	uint8_t low = immediate & 0xff;
 	uint8_t high = (immediate & 0xff00) >> 8;
 
+	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
+
 	ldi(RAT_SCRATCH_REG, low, c);
 	eor(dest, RAT_SCRATCH_REG, c);
 
@@ -101,6 +103,8 @@ static void case_tac_op_and(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 	uint8_t low = immediate & 0x00ff;
 	uint8_t high = (immediate & 0xff00) >> 8;
+
+	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
 	if (rdest < 16) {
 		mov(RAT_SCRATCH_REG, rdest, c);
@@ -141,6 +145,8 @@ static void case_tac_op_add(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 	char* c = "TAC_BINARY_OP_IMMEDIATE +";
 
+	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
+
 	if (wide) {
 		int16_t change = -immediate;
 		uint8_t lower = change & 0xff;
@@ -166,6 +172,8 @@ static void case_tac_op_sub(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 	const int16_t immediate = tac->const_value;
 
 	char* c = "TAC_BINARY_OP_IMMEDIATE -";
+
+	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
 	ldi(RAT_SCRATCH_REG, immediate, c);
 	sub(dest, RAT_SCRATCH_REG, c);

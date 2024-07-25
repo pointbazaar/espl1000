@@ -4,11 +4,6 @@
 #include <stdbool.h>
 #include <inttypes.h>
 
-#define RAT_CAPACITY (32)
-
-//r16 is our scratch register
-#define RAT_SCRATCH_REG (16)
-
 struct RAT;
 
 struct RAT* rat_ctor();
@@ -26,5 +21,9 @@ uint32_t rat_ensure_register(struct RAT* rat, uint32_t tmp_index, bool high_regs
 bool rat_is_wide(struct RAT* rat, uint32_t tmp_index);
 
 void rat_free(struct RAT* rat, uint8_t reg);
+
+uint16_t rat_scratch_reg(struct RAT* rat);
+
+uint16_t rat_capacity(struct RAT* rat);
 
 #endif

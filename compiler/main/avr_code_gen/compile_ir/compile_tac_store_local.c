@@ -44,6 +44,8 @@ void compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 		//std Y+offset, reg; writeback locals
 	}
 
+	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
+
 	if (wide) {
 		// in case of wide (16 bit) temporary, the upper part will be in reg+1
 		stdY(offset + 1, reg + 1, "TAC_STORE_LOCAL");
