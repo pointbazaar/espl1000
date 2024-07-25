@@ -282,6 +282,11 @@ void rat_free(struct RAT* rat, uint8_t reg) {
 
 static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide) {
 
+	if(rat->arch == RAT_ARCH_X86){
+		// on x86 there is no high/low regs therefore this parameter is irrelevant
+		high_regs_only = false;
+	}
+
 	//wide means we need a register pair.
 	//we return the lower of the 2 registers
 
