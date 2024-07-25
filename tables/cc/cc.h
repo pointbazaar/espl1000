@@ -17,8 +17,8 @@ struct CC {
 
 //--------------------------------------------
 
-struct CC* make_cc();
-void free_cc(struct CC* cc);
+struct CC* cc_ctor();
+void cc_free(struct CC* cc);
 
 //--------------------------------------------
 void cc_add_callee(struct CC* cc, char* name);

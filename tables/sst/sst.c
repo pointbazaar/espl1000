@@ -85,7 +85,7 @@ struct SSTLine* makeSSTLine(
 	line->type = NULL;
 
 	line->return_type = return_type;
-	line->cc = make_cc();
+	line->cc = cc_ctor();
 
 	line->dead = DEAD_UNKNOWN;
 	line->halts = halts;
@@ -111,7 +111,7 @@ struct SSTLine* makeSSTLine2(
 	line->type = type;
 
 	line->return_type = m->decl->return_type;
-	line->cc = make_cc();
+	line->cc = cc_ctor();
 
 	line->dead = DEAD_UNKNOWN;
 	line->halts = HALTS_UNKNOWN;
@@ -125,7 +125,7 @@ struct SSTLine* makeSSTLine2(
 
 void freeSSTLine(struct SSTLine* l) {
 
-	if (l->cc != NULL) { free_cc(l->cc); }
+	if (l->cc != NULL) { cc_free(l->cc); }
 
 	free(l);
 }
