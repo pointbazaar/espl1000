@@ -17,10 +17,10 @@ struct STSTLine {
 	bool is_private;
 };
 
-struct STST* makeSTST();
-void freeSTST(struct STST* stst);
+struct STST* stst_ctor();
+void stst_free(struct STST* stst);
 
-struct STSTLine* makeSTSTLine(struct StructDecl* s, char* _namespace);
+struct STSTLine* stst_line_ctor(struct StructDecl* s, char* _namespace);
 
 void stst_fill(struct STST* stst, struct Namespace* ns);
 
