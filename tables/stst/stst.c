@@ -26,7 +26,7 @@ struct STST {
 	unsigned int capacity;
 };
 
-struct STST* makeSTST() {
+struct STST* stst_ctor() {
 
 	struct STST* stst = make(STST);
 
@@ -43,7 +43,7 @@ void stst_fill(struct STST* stst, struct Namespace* ns) {
 
 		struct StructDecl* mystruct = ns->structs[i];
 
-		struct STSTLine* line = makeSTSTLine(mystruct, ns->name);
+		struct STSTLine* line = stst_line_ctor(mystruct, ns->name);
 
 		stst_add(stst, line);
 	}
@@ -114,7 +114,7 @@ struct STSTLine* stst_at(struct STST* stst, uint32_t index) {
 	return stst->lines[index];
 }
 
-void freeSTST(struct STST* stst) {
+void stst_free(struct STST* stst) {
 
 	struct STSTLine* prev = NULL;
 
@@ -130,7 +130,7 @@ void freeSTST(struct STST* stst) {
 	free(stst);
 }
 
-struct STSTLine* makeSTSTLine(struct StructDecl* s, char* _namespace) {
+struct STSTLine* stst_line_ctor(struct StructDecl* s, char* _namespace) {
 
 	struct STSTLine* line = make(STSTLine);
 
