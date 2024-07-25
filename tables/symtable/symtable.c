@@ -8,7 +8,7 @@
 #include "tables/stst/stst.h"
 #include "symtable.h"
 
-struct ST* makeST() {
+struct ST* st_ctor() {
 
 	struct ST* st = make(ST);
 
@@ -26,7 +26,7 @@ struct ST* makeST() {
 	return st;
 }
 
-void freeST(struct ST* st) {
+void st_free(struct ST* st) {
 
 	if (st->sst != NULL) { sst_free(st->sst); }
 	if (st->lvst != NULL) { lvst_free(st->lvst); }

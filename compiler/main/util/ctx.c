@@ -53,7 +53,7 @@ struct Ctx* ctx_ctor(struct Flags* flags, struct ST* tables) {
 
 void ctx_dtor(struct Ctx* ctx) {
 
-	freeST(ctx_tables(ctx));
+	st_free(ctx_tables(ctx));
 	freeFlags(ctx_flags(ctx));
 
 	free(ctx);

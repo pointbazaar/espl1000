@@ -31,8 +31,8 @@ struct ST {
 	uint32_t inferred_types_capacity;
 };
 
-struct ST* makeST();
-void freeST(struct ST* st);
+struct ST* st_ctor();
+void st_free(struct ST* st);
 
 //to memory-managed all these Types created during type inference
 void st_register_inferred_type(struct ST* st, struct Type* type);

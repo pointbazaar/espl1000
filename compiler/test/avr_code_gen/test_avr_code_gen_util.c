@@ -40,7 +40,7 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer) {
 
 	struct Flags* flags = makeFlagsSingleFile(".file.dg");
 
-	struct Ctx* ctx = ctx_ctor(flags, makeST(false));
+	struct Ctx* ctx = ctx_ctor(flags, st_ctor(false));
 
 	FILE* fout = fopen(flags_asm_filename(flags), "w");
 
