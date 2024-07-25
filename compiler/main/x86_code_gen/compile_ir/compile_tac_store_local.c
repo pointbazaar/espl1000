@@ -36,6 +36,8 @@ void compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 
 	const bool wide = arg_wide && (var_width == 2);
 
+	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
+
 	if (offset == 0) {
 		stY(reg, "TAC_STORE_LOCAL");
 		//st Y, reg; writeback locals

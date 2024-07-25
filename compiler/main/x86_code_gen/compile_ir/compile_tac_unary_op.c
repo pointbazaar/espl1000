@@ -13,6 +13,8 @@ void compile_tac_unary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu)
 
 	bool wide = rat_is_wide(rat, tac->arg1) && rat_is_wide(rat, tac->dest);
 
+	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
+
 	char* c = "TAC_UNARY_OP";
 
 	switch (tac->op) {

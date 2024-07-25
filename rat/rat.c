@@ -30,20 +30,29 @@ struct RAT {
 	//allocation of the registors used inside a function,
 	//mapping temporaries to actual registers
 
-	char* note[RAT_CAPACITY];
-	uint32_t occupant[RAT_CAPACITY]; //who occupies it (which temp)
-	enum RAT_REG_STATUS status[RAT_CAPACITY];
+
+	// only used to allocate the rat.
+	// the implementation should use rat_capacity(rat)
+	// which respects the target architecture
+	#define RAT_CAPACITY_MAXIMUM 32
+
+	char* note[RAT_CAPACITY_MAXIMUM];
+	uint32_t occupant[RAT_CAPACITY_MAXIMUM]; //who occupies it (which temp)
+	enum RAT_REG_STATUS status[RAT_CAPACITY_MAXIMUM];
+
+	#undef RAT_CAPACITY_MAXIMUM
 
 	//X: r26/r27
 	//Y: r28/r29
 	//Z: r30/r31
 };
 
+
 struct RAT* rat_ctor() {
 
 	struct RAT* rat = exit_malloc(sizeof(struct RAT));
 
-	for (int i = 0; i < RAT_CAPACITY; i++) {
+	for (int i = 0; i < rat_capacity(rat); i++) {
 		rat->status[i] = REG_FREE;
 		rat->note[i] = "";
 	}
@@ -63,8 +72,8 @@ static void rat_init(struct RAT* rat) {
 	//r16 is another reserved multi-use register,
 	//as there is a constraint that
 	//many instructions can only use registers >= r16
-	rat->status[RAT_SCRATCH_REG] = REG_RESERVED;
-	rat->note[RAT_SCRATCH_REG] = "reserved as scratch register";
+	rat->status[rat_scratch_reg(rat)] = REG_RESERVED;
+	rat->note[rat_scratch_reg(rat)] = "reserved as scratch register";
 
 	//r26 through r31 are X,Y,Z
 	//and are used as pointer registers,
@@ -93,7 +102,7 @@ void rat_dtor(struct RAT* rat) {
 void rat_print(struct RAT* rat) {
 
 	printf("Register Allocation Table:\n");
-	for (size_t i = 0; i < RAT_CAPACITY; i++) {
+	for (size_t i = 0; i < rat_capacity(rat); i++) {
 
 		printf("r%02ld: ", i);
 
@@ -118,7 +127,7 @@ void rat_print(struct RAT* rat) {
 
 static bool rat_has_register(struct RAT* rat, uint32_t tmp_index) {
 
-	for (int i = 0; i < RAT_CAPACITY; i++) {
+	for (int i = 0; i < rat_capacity(rat); i++) {
 		if (rat->status[i] == REG_OCCUPIED && rat->occupant[i] == tmp_index) {
 			return true;
 		}
@@ -128,7 +137,7 @@ static bool rat_has_register(struct RAT* rat, uint32_t tmp_index) {
 
 int rat_get_register(struct RAT* rat, uint32_t tmp_index) {
 
-	for (int i = 0; i < RAT_CAPACITY; i++) {
+	for (int i = 0; i < rat_capacity(rat); i++) {
 		if (rat->status[i] == REG_OCCUPIED && (rat->occupant[i] == tmp_index)) {
 			return i;
 		}
@@ -187,7 +196,7 @@ bool rat_is_wide(struct RAT* rat, uint32_t tmp_index) {
 
 	int reg = rat_get_register(rat, tmp_index);
 
-	return reg + 1 < RAT_CAPACITY && rat->status[reg + 1] == REG_OCCUPIED && (rat_occupant(rat, reg + 1) == tmp_index);
+	return reg + 1 < rat_capacity(rat) && rat->status[reg + 1] == REG_OCCUPIED && (rat_occupant(rat, reg + 1) == tmp_index);
 }
 
 void rat_free(struct RAT* rat, uint8_t reg) {
@@ -221,12 +230,12 @@ static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide
 
 	const int start_inclusive = (high_regs_only) ? 16 : 0;
 
-	for (int i = start_inclusive; i < RAT_CAPACITY; i++) {
+	for (int i = start_inclusive; i < rat_capacity(rat); i++) {
 
 		if (rat->status[i] == REG_FREE) {
 
 			if (wide) {
-				if (i + 1 < RAT_CAPACITY && rat->status[i + 1] == REG_FREE) {
+				if (i + 1 < rat_capacity(rat) && rat->status[i + 1] == REG_FREE) {
 					return i;
 				}
 			} else {
@@ -239,4 +248,13 @@ static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide
 	rat_print(rat);
 	exit(1);
 	return -1;
+}
+
+uint16_t rat_scratch_reg(struct RAT* rat){
+	// on avr, r16 is our scratch register
+	return 16;
+}
+
+uint16_t rat_capacity(struct RAT* rat){
+	return 32;
 }
