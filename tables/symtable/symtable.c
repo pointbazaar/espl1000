@@ -21,7 +21,7 @@ struct ST* makeST() {
 
 	st->sst = makeSST();
 	st->stst = makeSTST();
-	st->lvst = makeLVST();
+	st->lvst = lvst_ctor();
 
 	return st;
 }
@@ -29,7 +29,7 @@ struct ST* makeST() {
 void freeST(struct ST* st) {
 
 	if (st->sst != NULL) { freeSST(st->sst); }
-	if (st->lvst != NULL) { freeLVST(st->lvst); }
+	if (st->lvst != NULL) { lvst_free(st->lvst); }
 	if (st->stst != NULL) { freeSTST(st->stst); }
 
 	for (int i = 0; i < st->inferred_types_count; i++) {

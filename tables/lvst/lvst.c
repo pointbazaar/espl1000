@@ -22,7 +22,7 @@ struct LVST {
 	struct LVSTLine** lines;
 };
 
-struct LVST* makeLVST() {
+struct LVST* lvst_ctor() {
 
 	struct LVST* lvst = make(LVST);
 
@@ -50,7 +50,7 @@ void lvst_clear(struct LVST* lvst) {
 	lvst->lines = exit_malloc(sizeof(struct LVSTLine*) * lvst->capacity);
 }
 
-void freeLVST(struct LVST* lvst) {
+void lvst_free(struct LVST* lvst) {
 
 	struct LVSTLine* prev = NULL;
 
