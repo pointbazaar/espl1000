@@ -8,6 +8,7 @@
 #include "ast/util/free_ast.h"
 
 #include "avr_code_gen/cg_avr.h"
+#include "x86_code_gen/cg_x86.h"
 
 #include "../cli/flags/flags.h"
 #include "util/fill_tables.h"
@@ -72,7 +73,12 @@ bool compile(struct Flags* flags) {
 	analyze_termination(ctx_tables(ctx));
 	analyze_annotations(ctx_tables(ctx), ast);
 
-	bool success = compile_and_write_avr(ast, ctx);
+	bool success;
+	if (flags_x86(flags)){
+		success = compile_and_write_x86(ast, ctx);
+	} else {
+		success = compile_and_write_avr(ast, ctx);
+	}
 
 	free_ast(ast);
 
@@ -83,11 +89,27 @@ bool compile(struct Flags* flags) {
 	int status = 0;
 
 	char cmd[200];
-	sprintf(cmd, "avra %s > /tmp/avra-stdout 2> /tmp/avra-stderr", flags_asm_filename(flags));
+	const char* prog;
+	const char* stdout_file;
+	const char* stderr_file;
+
+	if (flags_x86(flags)){
+		prog = "nasm";
+		stdout_file = "/tmp/nasm-stdout";
+		stderr_file = "/tmp/nasm-stdout";
+	}else{
+		prog = "avra";
+		stdout_file = "/tmp/avra-stdout";
+		stderr_file = "/tmp/avra-stdout";
+	}
+
+	const char* tmplt = "%s %s > %s 2> %s";
+	sprintf(cmd, tmplt, prog, flags_asm_filename(flags), stdout_file, stderr_file);
+
 	status = system(cmd);
 
 	if (WEXITSTATUS(status) != 0) {
-		printf("[Error] error with avra, see /tmp/avra-stdout, /tmp/avra-stderr \n");
+		printf("[Error] error with %s, see %s, %s \n", prog, stdout_file, stderr_file);
 	}
 
 	ctx_dtor(ctx);

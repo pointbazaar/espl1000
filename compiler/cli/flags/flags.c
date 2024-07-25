@@ -20,6 +20,7 @@ struct Flags {
 	bool debug; //-debug
 	bool help; //-help
 	bool version; //-version
+	bool x86; //-x86
 
 	bool has_main_fn;
 
@@ -86,6 +87,7 @@ struct Flags* makeFlags(int argc, char** argv) {
 	flags->debug = false;
 	flags->help = false;
 	flags->version = false;
+	flags->x86 = false;
 
 	flags->count_filenames = 0;
 
@@ -139,6 +141,11 @@ static void make_flags_inner(struct Flags* flags, char* arg) {
 		return;
 	}
 
+	if (strcmp(arg, "-x86") == 0) {
+		flags->x86 = true;
+		return;
+	}
+
 	printf("unrecognized flag: %s. Exiting.\n", arg);
 	exit(1);
 }
@@ -175,6 +182,9 @@ bool flags_version(struct Flags* flags) {
 }
 bool flags_help(struct Flags* flags) {
 	return flags->help;
+}
+bool flags_x86(struct Flags* flags) {
+	return flags->x86;
 }
 
 char* flags_asm_filename(struct Flags* flags) {

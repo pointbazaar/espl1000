@@ -57,6 +57,35 @@ add_library("sd-base"
 		main/avr_code_gen/compile_ir/compile_tac_store.c
 		main/avr_code_gen/compile_ir/compile_tac_setup_sp.c
 
+	# x86 backend
+	main/x86_code_gen/cg_x86.c
+	main/x86_code_gen/cg_x86_basic_block.c
+	main/x86_code_gen/cg_x86_single_function.c
+	main/x86_code_gen/cg_x86_single_tac.c
+	main/x86_code_gen/compile_ir/compile_tac.h
+	main/x86_code_gen/compile_ir/compile_tac_binary_op.c
+	main/x86_code_gen/compile_ir/compile_tac_call.c
+	main/x86_code_gen/compile_ir/compile_tac_const_value.c
+	main/x86_code_gen/compile_ir/compile_tac_copy.c
+	main/x86_code_gen/compile_ir/compile_tac_goto.c
+	main/x86_code_gen/compile_ir/compile_tac_if_goto.c
+	main/x86_code_gen/compile_ir/compile_tac_label.c
+	main/x86_code_gen/compile_ir/compile_tac_nop.c
+	main/x86_code_gen/compile_ir/compile_tac_return.c
+	main/x86_code_gen/compile_ir/compile_tac_unary_op.c
+	main/x86_code_gen/compile_ir/compile_tac_binary_op_immediate.c
+	main/x86_code_gen/compile_ir/compile_tac_load_const_addr.c
+	main/x86_code_gen/compile_ir/compile_tac_store_const_addr.c
+	main/x86_code_gen/compile_ir/compile_tac_param.c
+	main/x86_code_gen/compile_ir/compile_tac_setup_stackframe.c
+	main/x86_code_gen/compile_ir/compile_tac_load_local.c
+	main/x86_code_gen/compile_ir/compile_tac_load_local_addr.c
+	main/x86_code_gen/compile_ir/compile_tac_store_local.c
+	main/x86_code_gen/compile_ir/compile_tac_if_cmp_goto.c
+	main/x86_code_gen/compile_ir/compile_tac_load.c
+	main/x86_code_gen/compile_ir/compile_tac_store.c
+	main/x86_code_gen/compile_ir/compile_tac_setup_sp.c
+
 	#DerefLL implementation
 	main/derefll/derefll.c
 
