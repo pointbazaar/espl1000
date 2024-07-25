@@ -57,7 +57,7 @@ bool compile(struct Flags* flags) {
 		ast->namespaces[i] = ns;
 	}
 
-	struct Ctx* ctx = ctx_ctor(flags, makeST(flags_debug(flags)));
+	struct Ctx* ctx = ctx_ctor(flags, st_ctor(flags_debug(flags)));
 
 	fill_tables(ast, ctx);
 

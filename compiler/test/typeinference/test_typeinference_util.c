@@ -37,7 +37,7 @@ end:;
 	bool success = s;
 	assert(success);
 
-	struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(filename), makeST(false));
+	struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(filename), st_ctor(false));
 
 	struct AST* ast = build_ast(flags_token_filename(ctx_flags(ctx)));
 
