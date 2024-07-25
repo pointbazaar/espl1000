@@ -19,7 +19,7 @@ static struct CCNode* make_cc_node(char* name, struct CCNode* next);
 
 //--------------------------
 
-struct CC* make_cc() {
+struct CC* cc_ctor() {
 
 	struct CC* res = make(CC);
 
@@ -31,7 +31,7 @@ struct CC* make_cc() {
 	return res;
 }
 
-void free_cc(struct CC* cc) {
+void cc_free(struct CC* cc) {
 
 	if (cc->callers != NULL) { free_cc_node(cc->callers); }
 	if (cc->callees != NULL) { free_cc_node(cc->callees); }
