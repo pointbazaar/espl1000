@@ -30,11 +30,11 @@ struct LVSTLine {
 	bool read_only;
 };
 
-struct LVST* makeLVST();
+struct LVST* lvst_ctor();
 
 void lvst_clear(struct LVST* lvst);
 
-void freeLVST(struct LVST* lvst);
+void lvst_free(struct LVST* lvst);
 
 void lvst_add(struct LVST* lvst, struct LVSTLine* line);
 
