@@ -48,8 +48,8 @@ struct SSTLine {
 };
 
 //-------------
-struct SST* makeSST();
-void freeSST(struct SST* sst);
+struct SST* sst_ctor();
+void sst_free(struct SST* sst);
 //-------------
 
 void sst_clear(struct SST* sst);
@@ -69,7 +69,7 @@ uint32_t sst_index_of(struct SST* sst, char* name);
 uint32_t sst_args_size_avr(struct SST* sst, char* name);
 
 //-----------
-struct SSTLine* makeSSTLine(
+struct SSTLine* sst_line_ctor(
     char* name,
     char* _namespace,
     struct Type* return_type,
@@ -77,11 +77,11 @@ struct SSTLine* makeSSTLine(
     enum HALTS halts,
     bool has_side_effect);
 
-struct SSTLine* makeSSTLine2(
+struct SSTLine* sst_line_ctor2(
     struct Method* m,
     struct Type* type,
     char* _namespace);
 
-void freeSSTLine(struct SSTLine* l);
+void sst_line_free(struct SSTLine* l);
 
 #endif

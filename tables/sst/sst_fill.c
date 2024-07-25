@@ -16,7 +16,7 @@ void sst_fill(struct ST* st, struct SST* sst, struct Namespace* ns) {
 
 		st_register_inferred_type(st, t);
 
-		struct SSTLine* line = makeSSTLine2(m, t, ns->name);
+		struct SSTLine* line = sst_line_ctor2(m, t, ns->name);
 
 		sst_add(sst, line);
 	}
