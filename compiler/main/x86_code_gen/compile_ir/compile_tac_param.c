@@ -4,9 +4,9 @@
 #include "rat/rat.h"
 
 #include "tac/tac.h"
-#include "avr_code_gen/compile_ir/compile_tac.h"
+#include "x86_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_param(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
+void compile_tac_param_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	const char* c = "TAC_PARAM";
 

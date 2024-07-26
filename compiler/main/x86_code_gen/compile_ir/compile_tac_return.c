@@ -4,7 +4,7 @@
 #include "rat/rat.h"
 #include "tac/tacbuffer.h"
 #include "tac/tac.h"
-#include "avr_code_gen/compile_ir/compile_tac.h"
+#include "x86_code_gen/compile_ir/compile_tac.h"
 
 #include "tables/sst/sst.h"
 #include "tables/stst/stst.h"
@@ -13,7 +13,7 @@
 
 #include "util/ctx.h"
 
-void compile_tac_return(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
+void compile_tac_return_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
 	char* c = "TAC_RETURN";
 

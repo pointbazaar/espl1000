@@ -10,9 +10,9 @@
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
 
-#include "avr_code_gen/compile_ir/compile_tac.h"
+#include "x86_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_load_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
+void compile_tac_load_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
 	const int reg_dest = rat_get_register(rat, tac->dest);
 

@@ -3,7 +3,7 @@
 
 #include "rat/rat.h"
 #include "tac/tac.h"
-#include "avr_code_gen/compile_ir/compile_tac.h"
+#include "x86_code_gen/compile_ir/compile_tac.h"
 
 static void case_tac_op_add(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac);
 static void case_tac_op_sub(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac);
@@ -13,7 +13,7 @@ static void case_tac_op_xor(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 static void case_tac_op_shift_left(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac);
 static void case_tac_op_shift_right(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac);
 
-void compile_tac_binary_op_immediate(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
+void compile_tac_binary_op_immediate_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	switch (tac->op) {
 

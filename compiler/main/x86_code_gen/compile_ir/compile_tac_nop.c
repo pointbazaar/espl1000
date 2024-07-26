@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-#include "avr_code_gen/compile_ir/compile_tac.h"
+#include "x86_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_nop(struct IBuffer* ibu) {
+void compile_tac_nop_x86(struct IBuffer* ibu) {
 
 	nop("TAC_NOP");
 }

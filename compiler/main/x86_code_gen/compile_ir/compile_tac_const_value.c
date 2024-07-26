@@ -4,9 +4,9 @@
 #include "rat/rat.h"
 
 #include "tac/tac.h"
-#include "avr_code_gen/compile_ir/compile_tac.h"
+#include "x86_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_const_value(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
+void compile_tac_const_value_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	//for TAC_CONST_VALUE there should have been a higher
 	//reg allocated for it's destination tmp
