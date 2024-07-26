@@ -4,9 +4,9 @@
 
 #include "rat/rat.h"
 #include "tac/tac.h"
-#include "avr_code_gen/compile_ir/compile_tac.h"
+#include "x86_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_if_cmp_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
+void compile_tac_if_cmp_goto_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	char* c = "TAC_IF_CMP_GOTO";
 

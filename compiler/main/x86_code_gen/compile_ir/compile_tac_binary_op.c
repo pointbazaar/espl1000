@@ -4,7 +4,7 @@
 
 #include "rat/rat.h"
 #include "tac/tac.h"
-#include "avr_code_gen/compile_ir/compile_tac.h"
+#include "x86_code_gen/compile_ir/compile_tac.h"
 
 static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 static void case_compare(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
@@ -20,7 +20,7 @@ static char* c = "TAC_BINARY_OP";
 
 static int RAT_SCRATCH_REG = -1;
 
-void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
+void compile_tac_binary_op_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	RAT_SCRATCH_REG = rat_scratch_reg(rat);
 

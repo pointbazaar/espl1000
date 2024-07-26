@@ -1,9 +1,9 @@
 #include <stdio.h>
 
 #include "tac/tac.h"
-#include "avr_code_gen/compile_ir/compile_tac.h"
+#include "x86_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_setup_stackframe(struct TAC* tac, struct IBuffer* ibu) {
+void compile_tac_setup_stackframe_x86(struct TAC* tac, struct IBuffer* ibu) {
 
 	const int stack_frame_size = tac->const_value;
 

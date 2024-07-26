@@ -7,9 +7,9 @@
 
 #include "tac/tacbuffer.h"
 #include "tac/tac.h"
-#include "avr_code_gen/compile_ir/compile_tac.h"
+#include "x86_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_label(struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx) {
+void compile_tac_label_x86(struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx) {
 
 	char* s;
 

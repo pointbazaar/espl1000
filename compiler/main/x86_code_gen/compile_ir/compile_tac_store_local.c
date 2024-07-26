@@ -14,9 +14,9 @@
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
 
-#include "avr_code_gen/compile_ir/compile_tac.h"
+#include "x86_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
+void compile_tac_store_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
 	char* name = lvst_at(ctx_tables(ctx)->lvst, tac->dest)->name;
 

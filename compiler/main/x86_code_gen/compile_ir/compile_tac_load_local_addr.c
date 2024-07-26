@@ -9,9 +9,9 @@
 #include "tables/symtable/symtable.h"
 #include "tables/lvst/lvst.h"
 
-#include "avr_code_gen/compile_ir/compile_tac.h"
+#include "x86_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_load_local_addr(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
+void compile_tac_load_local_addr_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
 	char* c = "TAC_LOAD_LOCAL_ADDR";
 

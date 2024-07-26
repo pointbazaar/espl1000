@@ -9,7 +9,7 @@
 
 #include "compile_tac.h"
 
-void compile_tac_call(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx) {
+void compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx) {
 
 	int reg_dest = rat_get_register(rat, tac->dest);
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
