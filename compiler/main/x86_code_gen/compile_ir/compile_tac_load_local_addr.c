@@ -17,11 +17,6 @@ void compile_tac_load_local_addr_x86(struct RAT* rat, struct TAC* tac, struct Ct
 
 	const int rdest = rat_get_register(rat, tac->dest);
 
-	if (!rat_is_wide(rat, tac->dest)) {
-		printf("compile_tac_load_local_addr: destination should have 2 registers\n");
-		exit(1);
-	}
-
 	char* name = lvst_at(ctx_tables(ctx)->lvst, tac->arg1)->name;
 
 	const uint16_t offset = lvst_stack_frame_offset_avr(ctx_tables(ctx)->lvst, name);
