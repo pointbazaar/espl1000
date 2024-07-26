@@ -11,8 +11,6 @@ void compile_tac_unary_op_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* 
 
 	int reg_dest = rat_get_register(rat, tac->dest);
 
-	bool wide = rat_is_wide(rat, tac->arg1) && rat_is_wide(rat, tac->dest);
-
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
 	char* c = "TAC_UNARY_OP";
@@ -24,26 +22,9 @@ void compile_tac_unary_op_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* 
 			mov(reg_dest, reg_src, c);
 			com(reg_dest, c);
 
-			if (wide) {
-				mov(reg_dest + 1, reg_src + 1, c);
-				com(reg_dest + 1, c);
-			}
-			break;
+				break;
 
 		case TAC_OP_UNARY_MINUS:
-
-			if (wide) {
-				mov(reg_dest, reg_src, c);
-				mov(reg_dest + 1, reg_src + 1, c);
-
-				com(reg_dest, c);
-				com(reg_dest + 1, c);
-
-				ldi(RAT_SCRATCH_REG, 0, c);
-				inc(reg_dest, c);
-				adc(reg_dest + 1, RAT_SCRATCH_REG, c);
-				return;
-			}
 
 			mov(reg_dest, reg_src, c);
 			neg(reg_dest, c);

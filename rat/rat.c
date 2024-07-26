@@ -235,7 +235,9 @@ static void rat_occupy(struct RAT* rat, uint8_t reg, uint32_t tmp_index, bool wi
 }
 
 uint32_t rat_ensure_register(struct RAT* rat, uint32_t tmp_index, bool high_regs_only, bool wide) {
-
+	if (rat->arch == RAT_ARCH_X86){
+		wide = false;
+	}
 	//wide means we need a register pair, because of a 16 bit value
 
 	//printf("rat ensure t%d, higher=%d",tmp_index, high_regs_only);
@@ -285,6 +287,7 @@ static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide
 	if(rat->arch == RAT_ARCH_X86){
 		// on x86 there is no high/low regs therefore this parameter is irrelevant
 		high_regs_only = false;
+		wide = false;
 	}
 
 	//wide means we need a register pair.
