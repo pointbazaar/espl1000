@@ -5,17 +5,17 @@
 
 void compile_tac_setup_stackframe_x86(struct TAC* tac, struct IBuffer* ibu) {
 
+	char* c = "TAC_SETUP_STACKFRAME";
 	const int stack_frame_size = tac->const_value;
 
 	//push onto the stack to create the stack frame
 	for (int k = 0; k < stack_frame_size; k++) {
-		//push r0  ;create frame
-		push(0, "create stackframe");
+		// create frame
+		push(0, c);
 		//it is irrelevant what we push here
 	}
 
-	//load base pointer Y
-	//in(YL, SPL, "load frame pointer Y");
-	//in(YH, SPH, "load frame pointer Y");
-	//TODO
+	// load base pointer
+	// rbp = rsp
+	mov_regs(7, 6, c);
 }

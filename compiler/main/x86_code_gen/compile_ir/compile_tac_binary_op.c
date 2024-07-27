@@ -148,10 +148,8 @@ static void case_cmp_lt(struct IBuffer* ibu, int rdest, int rsrc) {
 
 	cmp(rdest, rsrc, c);
 
-	//brlt(Ltrue, c);
-
-	//clr(rdest, c);
-	//jmp(Lend, c);
+	xor(rdest, rdest, c);
+	jmp(Lend, c);
 	label(Ltrue);
 
 	mov_const(RAT_SCRATCH_REG, 1, c);
@@ -177,7 +175,7 @@ static void case_cmp_ge_8bit(struct IBuffer* ibu, int rdest, int rsrc) {
 
 	cmp(rdest, rsrc, c);
 
-	//brge(Ltrue, c);
+	jge(Ltrue, c);
 	mov_const(RAT_SCRATCH_REG, 0, c);
 
 	label(Ltrue);
@@ -195,12 +193,12 @@ static void case_cmp_ge_16bit(struct IBuffer* ibu, int rdest, int rsrc) {
 
 	// compare the upper bytes
 	cmp(rdest + 1, rsrc + 1, c);
-	//brlo(Lfalse, c);
+	jl(Lfalse, c);
 	cmp(rsrc + 1, rdest + 1, c);
-	//brlo(Ltrue, c);
+	jl(Ltrue, c);
 
 	cmp(rdest, rsrc, c);
-	//brge(Ltrue, c);
+	jge(Ltrue, c);
 
 	label(Lfalse);
 	mov_const(RAT_SCRATCH_REG, 0, c);
@@ -244,7 +242,7 @@ static void case_cmp_eq(struct IBuffer* ibu, int rdest, int rsrc) {
 	//4 instructions
 	mov_const(RAT_SCRATCH_REG, 1, c);
 	//cpse(rdest, rsrc, c);
-	//clr(RAT_SCRATCH_REG, c);
+	xor(RAT_SCRATCH_REG, RAT_SCRATCH_REG, c);
 
-	//mov_regs(rdest, RAT_SCRATCH_REG, c);
+	mov_regs(rdest, RAT_SCRATCH_REG, c);
 }
