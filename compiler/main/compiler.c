@@ -94,7 +94,7 @@ bool compile(struct Flags* flags) {
 	const char* stderr_file;
 
 	if (flags_x86(flags)){
-		prog = "nasm";
+		prog = "nasm -f elf64";
 		stdout_file = "/tmp/nasm-stdout";
 		stderr_file = "/tmp/nasm-stdout";
 	}else{
@@ -110,8 +110,14 @@ bool compile(struct Flags* flags) {
 
 	if (WEXITSTATUS(status) != 0) {
 		printf("[Error] error with %s, see %s, %s \n", prog, stdout_file, stderr_file);
+		goto out;
 	}
 
+	if (flags_x86(flags)){
+		printf("link with: ld -o file file.o\n");
+	}
+
+out:
 	ctx_dtor(ctx);
 
 	return WEXITSTATUS(status) == 0;

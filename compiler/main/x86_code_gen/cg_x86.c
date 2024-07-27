@@ -42,6 +42,9 @@ bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
 		exit(1);
 	}
 
+	fprintf(fout, "section .text\n");
+	fprintf(fout, "global _start\n\n");
+
 	ibu_write(ibu, fout);
 
 	fclose(fout);

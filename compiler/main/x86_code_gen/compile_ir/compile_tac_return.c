@@ -25,7 +25,7 @@ void compile_tac_return_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, s
 
 	int reg = rat_get_register(rat, tac->dest);
 
-	mov(0, reg, c);
+	mov_regs(0, reg, c);
 
 	ret(c);
 }

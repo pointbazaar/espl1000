@@ -170,6 +170,54 @@ enum IKEY {
 	NOP,
 	SLEEP,
 	WDR,
+
+
+	// START --- X86 Instructions --
+	X86_MOV_CONST, // mov rdest, value_const
+	X86_MOV_REGS, // mov rdest, rsrc
+	X86_MOV_LOAD, // mov rdest, [rsrc]
+	X86_MOV_STORE, // mov [rdest], rsrc
+	X86_CMOVE,
+	X86_XCHG,
+
+	X86_PUSH,
+	X86_POP,
+	X86_PUSHA,
+	X86_POPA,
+
+	X86_ADD,
+	X86_ADC, // with carry
+	X86_SUB,
+	X86_SBB, // with borrow
+
+	X86_IMUL, // signed
+	X86_MUL, // unsigned
+
+	X86_INC, // ++
+	X86_DEC, // --
+	X86_NEG,
+	X86_CMP,
+
+	// bitwise logical
+	X86_AND,
+	X86_OR,
+	X86_XOR,
+	X86_NOT,
+
+	// control flow
+	// TODO: add the others
+	X86_JMP,
+	X86_JE,
+	X86_JNE,
+	X86_JS,
+
+	X86_CALL,
+	X86_RET,
+	X86_ENTER,
+	X86_LEAVE,
+
+	X86_NOP,
+	// END   --- X86 Instructions --
 };
 
 #endif

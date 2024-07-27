@@ -10,5 +10,5 @@ void compile_tac_load_const_addr_x86(struct RAT* rat, struct TAC* tac, struct IB
 
 	const uint32_t addr = tac->const_value;
 
-	lds(reg_dest, addr, "TAC_LOAD_CONST_ADDR");
+	//lds(reg_dest, addr, "TAC_LOAD_CONST_ADDR");
 }

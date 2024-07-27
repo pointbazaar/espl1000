@@ -10,5 +10,5 @@ void compile_tac_store_const_addr_x86(struct RAT* rat, struct TAC* tac, struct I
 
 	const uint32_t addr = tac->const_value;
 
-	sts(addr, reg_src, "TAC_STORE_CONST_ADDR");
+	mov_store(addr, reg_src, "TAC_STORE_CONST_ADDR");
 }

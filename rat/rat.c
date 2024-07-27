@@ -137,11 +137,12 @@ static void rat_print_regname_x86(struct RAT* rat, size_t i){
 		"rax",
 		"rbx",
 		"rcx",
-		"rsp",
-		"rbp",
+		"rdx",
 		"rdi",
 		"rsi",
-		"rdx",
+		"rsp",
+		"rbp",
+
 	};
 	printf("%s", regnames[i]);
 }

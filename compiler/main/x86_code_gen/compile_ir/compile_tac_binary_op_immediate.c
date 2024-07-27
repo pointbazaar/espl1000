@@ -40,7 +40,8 @@ static void case_tac_op_shift_left(struct IBuffer* ibu, struct RAT* rat, struct 
 	char* c = "TAC_BINARY_OP_IMMEDIATE <<";
 
 	for (int i = 0; i < immediate; i++) {
-		lsl(dest, c);
+		//lsl(dest, c);
+		//TODO
 	}
 }
 
@@ -52,7 +53,8 @@ static void case_tac_op_shift_right(struct IBuffer* ibu, struct RAT* rat, struct
 	char* c = "TAC_BINARY_OP_IMMEDIATE >>";
 
 	for (int i = 0; i < immediate; i++) {
-		lsr(dest, c);
+		//lsr(dest, c);
+		//TODO
 	}
 }
 
@@ -68,8 +70,9 @@ static void case_tac_op_xor(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
-	ldi(RAT_SCRATCH_REG, low, c);
-	eor(dest, RAT_SCRATCH_REG, c);
+	//ldi(RAT_SCRATCH_REG, low, c);
+	//eor(dest, RAT_SCRATCH_REG, c);
+	//TODO
 }
 
 static void case_tac_op_and(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
@@ -86,13 +89,8 @@ static void case_tac_op_and(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
-	if (rdest < 16) {
-		mov(RAT_SCRATCH_REG, rdest, c);
-		andi(RAT_SCRATCH_REG, low, c);
-		mov(rdest, RAT_SCRATCH_REG, c);
-	} else {
-		andi(rdest, low, c);
-	}
+	//andi(rdest, low, c);
+	//TODO
 
 }
 
@@ -106,7 +104,7 @@ static void case_tac_op_or(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac
 	uint8_t low = immediate & 0xff;
 	uint8_t high = (immediate & 0xff00) >> 8;
 
-	ori(dest, low, c);
+	or(dest, low, c);
 }
 
 static void case_tac_op_add(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
@@ -118,8 +116,9 @@ static void case_tac_op_add(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
-	ldi(RAT_SCRATCH_REG, -immediate, c);
-	sub(dest, RAT_SCRATCH_REG, c);
+	//ldi(RAT_SCRATCH_REG, -immediate, c);
+	//sub(dest, RAT_SCRATCH_REG, c);
+	//TODO
 }
 
 static void case_tac_op_sub(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
@@ -132,6 +131,7 @@ static void case_tac_op_sub(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
-	ldi(RAT_SCRATCH_REG, immediate, c);
-	sub(dest, RAT_SCRATCH_REG, c);
+	//ldi(RAT_SCRATCH_REG, immediate, c);
+	//sub(dest, RAT_SCRATCH_REG, c);
+	//TODO
 }

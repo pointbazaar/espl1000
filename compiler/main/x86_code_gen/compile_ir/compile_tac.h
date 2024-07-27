@@ -1,7 +1,7 @@
 #pragma once
 #include <stdio.h>
 
-#include "ibuffer/ibuffer.h"
+#include "ibuffer/ibuffer_x86.h"
 
 struct RAT;
 struct TAC;

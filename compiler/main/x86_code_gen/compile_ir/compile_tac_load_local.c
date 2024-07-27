@@ -20,10 +20,8 @@ void compile_tac_load_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ct
 
 	const uint16_t offset = lvst_stack_frame_offset_avr(ctx_tables(ctx)->lvst, name);
 
-	if (offset == 0)
-		//ld reg_dest, Y
-		ldY(reg_dest, "TAC_LOAD_LOCAL");
-	else
-		lddY(reg_dest, offset, "TAC_LOAD_LOCAL");
+	//ld reg_dest, Y
+	//ldY(reg_dest, "TAC_LOAD_LOCAL");
+	//lddY(reg_dest, offset, "TAC_LOAD_LOCAL");
 	//ldd reg_dest, Y+offset
 }
