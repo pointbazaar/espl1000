@@ -18,7 +18,7 @@ void compile_tac_if_goto_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* i
 
 	mov_const(rscratch, 0, c);
 	cmp(rscratch, reg, c);
-	jne(str);
+	jne(str, c);
 
 	// since a bool is only ever 1 byte
 	// there is no case for wide argument

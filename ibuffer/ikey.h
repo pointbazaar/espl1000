@@ -207,9 +207,13 @@ enum IKEY {
 	// control flow
 	// TODO: add the others
 	X86_JMP,
-	X86_JE,
-	X86_JNE,
-	X86_JS,
+	X86_JE, // ==
+	X86_JNE, // !=
+	X86_JG, // >
+	X86_JGE, // >=
+	X86_JL, // <
+	X86_JLE, // <=
+	X86_JS, // jump if sign (negative)
 
 	X86_CALL,
 	X86_RET,

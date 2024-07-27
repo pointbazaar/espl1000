@@ -86,11 +86,14 @@ static void rat_init_x86(struct RAT* rat) {
 
 	rat->status[0] = REG_RESERVED;
 	rat->note[0] = "rax reserved for return value";
-	rat->status[1] = REG_RESERVED;
-	rat->note[1] = "rax reserved for return value";
 
 	rat->status[rat_scratch_reg(rat)] = REG_RESERVED;
 	rat->note[rat_scratch_reg(rat)] = "reserved as scratch register";
+
+	rat->status[6] = REG_RESERVED;
+	rat->note[6] = "rsp reserved";
+	rat->status[7] = REG_RESERVED;
+	rat->note[7] = "rbp reserved (frame base pointer)";
 }
 
 static void rat_init_avr(struct RAT* rat) {
@@ -130,9 +133,8 @@ void rat_dtor(struct RAT* rat) {
 	free(rat);
 }
 
-static void rat_print_regname_x86(struct RAT* rat, size_t i){
+char* rat_regname_x86(size_t i){
 
-	assert(i < rat_capacity(rat));
 	char* regnames[] = {
 		"rax",
 		"rbx",
@@ -142,9 +144,19 @@ static void rat_print_regname_x86(struct RAT* rat, size_t i){
 		"rsi",
 		"rsp",
 		"rbp",
+		"r8",
+		"r9",
 
 	};
-	printf("%s", regnames[i]);
+
+	assert(i < 8+2);
+	return regnames[i];
+}
+
+static void rat_print_regname_x86(struct RAT* rat, size_t i){
+
+	assert(i < rat_capacity(rat));
+	printf("%s", rat_regname_x86(i));
 }
 
 static void rat_print_regname(struct RAT* rat, size_t i){
@@ -334,7 +346,7 @@ uint16_t rat_capacity(struct RAT* rat){
 
 	switch(rat->arch){
 		case RAT_ARCH_AVR: return 32;
-		case RAT_ARCH_X86:  return 8;
+		case RAT_ARCH_X86:  return 8+2;
 		default: return 0;
 	}
 }

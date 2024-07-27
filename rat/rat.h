@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <inttypes.h>
+#include <stddef.h>
 
 enum RAT_ARCH {
 	RAT_ARCH_AVR,
@@ -30,5 +31,8 @@ void rat_free(struct RAT* rat, uint8_t reg);
 uint16_t rat_scratch_reg(struct RAT* rat);
 
 uint16_t rat_capacity(struct RAT* rat);
+
+// x86 specific
+char* rat_regname_x86(size_t i);
 
 #endif

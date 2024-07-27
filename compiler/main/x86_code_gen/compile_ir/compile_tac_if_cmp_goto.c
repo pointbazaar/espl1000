@@ -19,13 +19,10 @@ void compile_tac_if_cmp_goto_x86(struct RAT* rat, struct TAC* tac, struct IBuffe
 	sprintf(str, "L%d", tac->label_index);
 
 	switch (tac->op) {
-		/*
-		case TAC_OP_CMP_EQ: breq(str, c); break;
-		case TAC_OP_CMP_NEQ: brne(str, c); break;
-		case TAC_OP_CMP_GE: brge(str, c); break;
-		case TAC_OP_CMP_LT: brlt(str, c); break;
-		*/
-		//TODO
+		case TAC_OP_CMP_EQ: je(str, c); break;
+		case TAC_OP_CMP_NEQ: jne(str, c); break;
+		case TAC_OP_CMP_GE: jge(str, c); break;
+		case TAC_OP_CMP_LT: jl(str, c); break;
 		default: break;
 	}
 }

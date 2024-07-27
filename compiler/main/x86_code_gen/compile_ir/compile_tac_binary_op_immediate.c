@@ -70,16 +70,15 @@ static void case_tac_op_xor(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
-	//ldi(RAT_SCRATCH_REG, low, c);
-	//eor(dest, RAT_SCRATCH_REG, c);
-	//TODO
+	mov_const(RAT_SCRATCH_REG, low, c);
+	xor(dest, RAT_SCRATCH_REG, c);
 }
 
 static void case_tac_op_and(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
 
 	//andi can only operate on high registers
 
-	const char* c = "TAC_BINARY_OP_IMMEDIATE &";
+	char* c = "TAC_BINARY_OP_IMMEDIATE &";
 
 	const uint8_t rdest = rat_get_register(rat, tac->dest);
 	const uint16_t immediate = tac->const_value;
@@ -89,8 +88,8 @@ static void case_tac_op_and(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
-	//andi(rdest, low, c);
-	//TODO
+	mov_const(RAT_SCRATCH_REG, low, c);
+	and(rdest, RAT_SCRATCH_REG, c);
 
 }
 
@@ -116,9 +115,8 @@ static void case_tac_op_add(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
-	//ldi(RAT_SCRATCH_REG, -immediate, c);
-	//sub(dest, RAT_SCRATCH_REG, c);
-	//TODO
+	mov_const(RAT_SCRATCH_REG, -immediate, c);
+	sub(dest, RAT_SCRATCH_REG, c);
 }
 
 static void case_tac_op_sub(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
@@ -131,7 +129,6 @@ static void case_tac_op_sub(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
-	//ldi(RAT_SCRATCH_REG, immediate, c);
-	//sub(dest, RAT_SCRATCH_REG, c);
-	//TODO
+	mov_const(RAT_SCRATCH_REG, immediate, c);
+	sub(dest, RAT_SCRATCH_REG, c);
 }
