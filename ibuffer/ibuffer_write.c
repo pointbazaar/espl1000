@@ -41,6 +41,17 @@ void ibu_write_instr(enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* st
 	fprintf(f, "\n");
 }
 
+static char* x86_reg_name(int32_t reg_index){
+	// array has to be the same as the one in rat/rat.c
+	char *names[] = {
+		"rax","rbx","rcx","rdx","rdi","rsi","rsp","rbp"
+	};
+	if (reg_index < 0 || reg_index >= 8){
+		return "TODO";
+	}
+	return names[reg_index];
+}
+
 static void write_middle(enum IKEY key, int32_t x1, int32_t x2, char* str, char* s) {
 
 	switch (key) {
@@ -144,6 +155,68 @@ static void write_middle(enum IKEY key, int32_t x1, int32_t x2, char* str, char*
 		case RETI:
 		case NOP:
 			break;
+
+		// --- START X86
+		case X86_MOV_CONST:
+			sprintf(s, "%s, %d", x86_reg_name(x1), x2);
+			break;
+		case X86_MOV_REGS:
+			sprintf(s, "%s, %s", x86_reg_name(x1), x86_reg_name(x2));
+			break;
+		case X86_MOV_LOAD:
+			sprintf(s, "%s, qword [%s]", x86_reg_name(x1), x86_reg_name(x2));
+			break;
+		case X86_MOV_STORE:
+			sprintf(s, "[%s], %s", x86_reg_name(x1), x86_reg_name(x2));
+			break;
+		case X86_PUSH:
+			sprintf(s, "%s", x86_reg_name(x1));
+			break;
+		case X86_POP:
+			sprintf(s, "%s", x86_reg_name(x1));
+			break;
+		case X86_ADD:
+			sprintf(s, "%s, %s", x86_reg_name(x1), x86_reg_name(x2));
+			break;
+		case X86_SUB:
+			sprintf(s, "%s, %s", x86_reg_name(x1), x86_reg_name(x2));
+			break;
+		case X86_INC:
+			sprintf(s, "%s", x86_reg_name(x1));
+			break;
+		case X86_DEC:
+			sprintf(s, "%s", x86_reg_name(x1));
+			break;
+		case X86_NEG:
+			sprintf(s, "%s", x86_reg_name(x1));
+			break;
+		case X86_CMP:
+			sprintf(s, "%s, %s", x86_reg_name(x1), x86_reg_name(x2));
+			break;
+		case X86_AND:
+			sprintf(s, "%s, %s", x86_reg_name(x1), x86_reg_name(x2));
+			break;
+		case X86_OR:
+			sprintf(s, "%s, %s", x86_reg_name(x1), x86_reg_name(x2));
+			break;
+		case X86_XOR:
+			sprintf(s, "%s, %s", x86_reg_name(x1), x86_reg_name(x2));
+			break;
+		case X86_NOT:
+			sprintf(s, "%s", x86_reg_name(x1));
+			break;
+		case X86_JMP:
+		case X86_JE:
+		case X86_JNE:
+		case X86_JS:
+		case X86_CALL:
+			sprintf(s, "%s", str);
+			break;
+		case X86_RET:
+		case X86_NOP:
+			// nothing to do
+			break;
+		// --- END X86
 
 		default:
 			printf("instr %d not implemented in ibu_write_instr\n", key);

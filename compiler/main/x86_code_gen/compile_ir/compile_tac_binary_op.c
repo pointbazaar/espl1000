@@ -53,7 +53,7 @@ static void case_arithmetic_add(int rdest, int rsrc, struct IBuffer* ibu) {
 
 	int reg2 = RAT_SCRATCH_REG;
 
-	ldi(reg2, 0, c);
+	mov_const(reg2, 0, c);
 
 	add(rdest, rsrc, c);
 }
@@ -69,7 +69,7 @@ static void case_arithmetic_xor(int rdest, int rsrc, struct IBuffer* ibu) {
 
 	char* c = "TAC_BINARY_OP ^";
 
-	eor(rdest, rsrc, c);
+	xor(rdest, rsrc, c);
 }
 
 static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
@@ -146,16 +146,16 @@ static void case_cmp_lt(struct IBuffer* ibu, int rdest, int rsrc) {
 	sprintf(Ltrue, "Ltrue%d", label_counter);
 	sprintf(Lend, "Lend%d", label_counter++);
 
-	cp(rdest, rsrc, c);
+	cmp(rdest, rsrc, c);
 
-	brlt(Ltrue, c);
+	//brlt(Ltrue, c);
 
-	clr(rdest, c);
-	rjmp(Lend, c);
+	//clr(rdest, c);
+	//jmp(Lend, c);
 	label(Ltrue);
 
-	ldi(RAT_SCRATCH_REG, 1, c);
-	mov(rdest, RAT_SCRATCH_REG, c);
+	mov_const(RAT_SCRATCH_REG, 1, c);
+	mov_regs(rdest, RAT_SCRATCH_REG, c);
 
 	label(Lend);
 }
@@ -173,15 +173,15 @@ static void case_cmp_ge_8bit(struct IBuffer* ibu, int rdest, int rsrc) {
 	char Ltrue[20];
 	sprintf(Ltrue, "Ltrue%d", label_counter++);
 
-	ldi(RAT_SCRATCH_REG, 1, c);
+	mov_const(RAT_SCRATCH_REG, 1, c);
 
-	cp(rdest, rsrc, c);
+	cmp(rdest, rsrc, c);
 
-	brge(Ltrue, c);
-	ldi(RAT_SCRATCH_REG, 0, c);
+	//brge(Ltrue, c);
+	mov_const(RAT_SCRATCH_REG, 0, c);
 
 	label(Ltrue);
-	mov(rdest, RAT_SCRATCH_REG, c);
+	mov_regs(rdest, RAT_SCRATCH_REG, c);
 }
 
 static void case_cmp_ge_16bit(struct IBuffer* ibu, int rdest, int rsrc) {
@@ -191,22 +191,22 @@ static void case_cmp_ge_16bit(struct IBuffer* ibu, int rdest, int rsrc) {
 	sprintf(Ltrue, "Ltrue%d", label_counter++);
 	sprintf(Lfalse, "Lfalse%d", label_counter++);
 
-	ldi(RAT_SCRATCH_REG, 1, c);
+	mov_const(RAT_SCRATCH_REG, 1, c);
 
 	// compare the upper bytes
-	cp(rdest + 1, rsrc + 1, c);
-	brlo(Lfalse, c);
-	cp(rsrc + 1, rdest + 1, c);
-	brlo(Ltrue, c);
+	cmp(rdest + 1, rsrc + 1, c);
+	//brlo(Lfalse, c);
+	cmp(rsrc + 1, rdest + 1, c);
+	//brlo(Ltrue, c);
 
-	cp(rdest, rsrc, c);
-	brge(Ltrue, c);
+	cmp(rdest, rsrc, c);
+	//brge(Ltrue, c);
 
 	label(Lfalse);
-	ldi(RAT_SCRATCH_REG, 0, c);
+	mov_const(RAT_SCRATCH_REG, 0, c);
 
 	label(Ltrue);
-	mov(rdest, RAT_SCRATCH_REG, c);
+	mov_regs(rdest, RAT_SCRATCH_REG, c);
 }
 
 static void case_cmp_ge(struct IBuffer* ibu, int rdest, int rsrc) {
@@ -224,12 +224,12 @@ static void case_cmp_neq_8bit(struct IBuffer* ibu, int rdest, int rsrc) {
 
 static void case_cmp_neq_16bit(struct IBuffer* ibu, int rdest, int rsrc) {
 
-	ldi(RAT_SCRATCH_REG, 0, c);
-	cpse(rdest, rsrc, c);
-	ldi(RAT_SCRATCH_REG, 1, c);
-	cpse(rdest + 1, rsrc + 1, c);
-	ldi(RAT_SCRATCH_REG, 1, c);
-	mov(rdest, RAT_SCRATCH_REG, c);
+	mov_const(RAT_SCRATCH_REG, 0, c);
+	//cpse(rdest, rsrc, c);
+	mov_const(RAT_SCRATCH_REG, 1, c);
+	//cpse(rdest + 1, rsrc + 1, c);
+	mov_const(RAT_SCRATCH_REG, 1, c);
+	mov_regs(rdest, RAT_SCRATCH_REG, c);
 }
 
 static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc) {
@@ -242,9 +242,9 @@ static void case_cmp_eq(struct IBuffer* ibu, int rdest, int rsrc) {
 	//we use the scratch register
 
 	//4 instructions
-	ldi(RAT_SCRATCH_REG, 1, c);
-	cpse(rdest, rsrc, c);
-	clr(RAT_SCRATCH_REG, c);
+	mov_const(RAT_SCRATCH_REG, 1, c);
+	//cpse(rdest, rsrc, c);
+	//clr(RAT_SCRATCH_REG, c);
 
-	mov(rdest, RAT_SCRATCH_REG, c);
+	//mov_regs(rdest, RAT_SCRATCH_REG, c);
 }

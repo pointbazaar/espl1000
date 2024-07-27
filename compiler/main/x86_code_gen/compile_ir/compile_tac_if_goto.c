@@ -13,8 +13,12 @@ void compile_tac_if_goto_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* i
 	char str[32];
 	sprintf(str, "L%d", tac->label_index);
 
-	tst(reg, c); //test if r%d is zero
-	brne(str, c);
+	//test if r%d is zero
+	const int rscratch = rat_scratch_reg(rat);
+
+	mov_const(rscratch, 0, c);
+	cmp(rscratch, reg, c);
+	jne(str);
 
 	// since a bool is only ever 1 byte
 	// there is no case for wide argument

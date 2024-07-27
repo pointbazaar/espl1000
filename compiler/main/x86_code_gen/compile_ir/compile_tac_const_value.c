@@ -19,5 +19,5 @@ void compile_tac_const_value_x86(struct RAT* rat, struct TAC* tac, struct IBuffe
 	char c[30];
 	sprintf(c, "TAC_CONST_VALUE %d (0x%x)", value, value);
 
-	ldi(reg, (value & 0xff), c);
+	mov_const(reg, (value & 0xff), c);
 }

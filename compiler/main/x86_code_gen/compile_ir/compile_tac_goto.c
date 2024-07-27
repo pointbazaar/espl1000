@@ -8,5 +8,5 @@ void compile_tac_goto_x86(struct TAC* tac, struct IBuffer* ibu) {
 	char str[32];
 	sprintf(str, "L%d", tac->label_index);
 
-	rjmp(str, "TAC_GOTO");
+	jmp(str);
 }

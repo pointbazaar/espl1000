@@ -24,7 +24,7 @@ void compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu,
 	call(function_name, "TAC_CALL");
 
 	if (reg_dest != 0)
-		mov(reg_dest, 0, "TAC_CALL");
+		mov_const(reg_dest, 0, "TAC_CALL");
 
 	struct SST* sst = ctx_tables(ctx)->sst;
 

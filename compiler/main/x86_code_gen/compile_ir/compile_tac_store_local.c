@@ -35,17 +35,18 @@ void compile_tac_store_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* c
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
+	//TODO
 	if (offset == 0) {
-		stY(reg, "TAC_STORE_LOCAL");
+		//stY(reg, "TAC_STORE_LOCAL");
 		//st Y, reg; writeback locals
 	} else {
-		stdY(offset, reg, "TAC_STORE_LOCAL");
+		//stdY(offset, reg, "TAC_STORE_LOCAL");
 		//std Y+offset, reg; writeback locals
 	}
 
 	// in case the value to store is only 8 bit,
 	// the upper 8 bit of the variable need
 	// to be cleared for subsequent loads.
-	ldi(RAT_SCRATCH_REG, 0, "TAC_STORE_LOCAL");
-	stdY(offset + 1, RAT_SCRATCH_REG, "TAC_STORE_LOCAL");
+	//ldi(RAT_SCRATCH_REG, 0, "TAC_STORE_LOCAL");
+	//stdY(offset + 1, RAT_SCRATCH_REG, "TAC_STORE_LOCAL");
 }

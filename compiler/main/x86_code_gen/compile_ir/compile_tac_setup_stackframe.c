@@ -15,6 +15,7 @@ void compile_tac_setup_stackframe_x86(struct TAC* tac, struct IBuffer* ibu) {
 	}
 
 	//load base pointer Y
-	in(YL, SPL, "load frame pointer Y");
-	in(YH, SPH, "load frame pointer Y");
+	//in(YL, SPL, "load frame pointer Y");
+	//in(YH, SPH, "load frame pointer Y");
+	//TODO
 }
