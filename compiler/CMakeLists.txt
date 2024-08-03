@@ -200,6 +200,7 @@ add_executable("sd-tests"
 	test/x86_code_gen/compile_ir/test_compile_tac_copy.c
 	test/x86_code_gen/compile_ir/test_compile_tac_goto.c
 	test/x86_code_gen/compile_ir/test_compile_tac_nop.c
+	test/x86_code_gen/compile_ir/test_compile_tac_const_value.c
 
 	#CodeGen from TAC - Timers
 	test/avr_code_gen/timer/test_avr_code_gen_timer.c

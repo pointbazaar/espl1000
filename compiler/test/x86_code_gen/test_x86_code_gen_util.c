@@ -106,19 +106,11 @@ void sd_uc_print_regs(struct sd_uc_engine* sduc) {
 
 struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer) {
 
-	//create the file
-	FILE* falibi = fopen(".file.dg", "w");
-
-	if (falibi == NULL) {
-		fprintf(stderr, "error opening output file\n");
-		exit(EXIT_FAILURE);
-	}
-
-	fclose(falibi);
-
 	struct Flags* flags = makeFlagsSingleFile(".file.dg");
+	assert(flags != NULL);
 
 	struct Ctx* ctx = ctx_ctor(flags, st_ctor());
+	assert(ctx != NULL);
 
 	FILE* fout = fopen(flags_asm_filename(flags), "w");
 
@@ -127,16 +119,14 @@ struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer) {
 		exit(EXIT_FAILURE);
 	}
 
-	//fprintf(fout, "section .text\n");
-	//fprintf(fout, "global _start\n");
-	//fprintf(fout, "_start:\n");
-	//
-	//
+	// We use a flat binary without sections. So only the instructions.
+	// Because that's easier for unicorn engine than a full elf64 binary.
 	fprintf(fout, "BITS 64     ; specify 64-bit code\n");
 	fprintf(fout, "start:\n");
 
 	int nblocks;
 	struct BasicBlock** graph = basicblock_create_graph(buffer, "main", &nblocks, ctx);
+	assert(graph != NULL);
 
 	struct BasicBlock* root = graph[0];
 
@@ -164,25 +154,14 @@ struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer) {
 	fclose(fout);
 
 	char cmd[200];
-	//sprintf(cmd, "nasm -f elf64 %s -o file.o > /tmp/nasm-stdout 2> /tmp/nasm-stderr", flags_asm_filename(flags));
 	sprintf(cmd, "nasm -f bin %s -o file.bin > /tmp/nasm-stdout 2> /tmp/nasm-stderr", flags_asm_filename(flags));
 
 	int status = system(cmd);
 
-	int status2 = WEXITSTATUS(status);
-
 	if (WEXITSTATUS(status) != 0) {
-		fprintf(stderr, "error with avra, see /tmp/nasm-stdout, /tmp/nasm-stderr \n");
+		fprintf(stderr, "error with nasm, see /tmp/nasm-stdout, /tmp/nasm-stderr \n");
 		exit(EXIT_FAILURE);
 	}
-
-	/*
-	status = system("ld -o file.bin file.o");
-	if (WEXITSTATUS(status) != 0) {
-	        printf("error with unable to link file.o\n");
-	        exit(EXIT_FAILURE);
-	}
-	*/
 
 	int fd = open("file.bin", O_RDONLY);
 	if (fd == -1) {
@@ -215,11 +194,10 @@ struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer) {
 		exit(EXIT_FAILURE);
 	}
 
-	struct sd_uc_engine* sd_uc = malloc(sizeof(struct sd_uc_engine));
+	struct sd_uc_engine* sd_uc = exit_malloc(sizeof(struct sd_uc_engine));
 	sd_uc->uc = uc;
 	// memory address where emulation starts
 	sd_uc->addr_start = sd_uc_default_start_addr();
-	//sd_uc->addr_end = sd_uc->addr_start + filesize - 1;
 
 	// stop on the address after the last instruction
 	sd_uc->addr_end = sd_uc->addr_start + filesize;
@@ -229,11 +207,6 @@ struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer) {
 
 	if (sd_uc->addr_start + mapped_size <= sd_uc->addr_end) {
 		assert(false);
-	}
-	{
-		// expand the mapped size if needed.
-		// apparently elf64-x86-64 files are a little heavy
-		//mapped_size += 4 * 1024;
 	}
 
 	// like in the example code
