@@ -171,7 +171,6 @@ enum IKEY {
 	SLEEP,
 	WDR,
 
-
 	// START --- X86 Instructions --
 	X86_MOV_CONST, // mov rdest, value_const
 	X86_MOV_REGS, // mov rdest, rsrc

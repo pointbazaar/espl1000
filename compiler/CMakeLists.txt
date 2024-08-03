@@ -1,4 +1,4 @@
-#project(sd C)
+cmake_minimum_required(VERSION 3.10.3)
 
 #use -pg to generate profiling information for gprof
 
@@ -192,6 +192,18 @@ add_executable("sd-tests"
 	#CodeGen from TAC - Timers
 	test/avr_code_gen/timer/test_avr_code_gen_timer.c
 
+	#CodeGen from TAC - x86
+	test/x86_code_gen/test_x86_code_gen.c
+	test/x86_code_gen/test_x86_code_gen.h
+	test/x86_code_gen/test_x86_code_gen_util.c
+	test/x86_code_gen/test_x86_code_gen_util.h
+	test/x86_code_gen/compile_ir/test_compile_tac_copy.c
+	test/x86_code_gen/compile_ir/test_compile_tac_goto.c
+	test/x86_code_gen/compile_ir/test_compile_tac_nop.c
+
+	#CodeGen from TAC - Timers
+	test/avr_code_gen/timer/test_avr_code_gen_timer.c
+
 	#CodeGen from Snippets (test compiling AST pieces)
 	test/gen_tac/test_gen_tac.c
 	test/gen_tac/util/test_gen_tac_util.c
@@ -231,9 +243,14 @@ target_link_libraries("sd-base" sd-token)
 
 target_link_libraries("sd" sd-base)
 
-#libvmcu dependency for sd-tests
-#target_link_libraries("sd-tests" ${CMAKE_SOURCE_DIR}/../dependencies/libvmcu-Virtual-MCU-Library/build-release/libvmcu.a "-lm")
 target_link_libraries("sd-tests" ${CMAKE_SOURCE_DIR}/dependencies/libvmcu-Virtual-MCU-Library/build-release/libvmcu.a "-lm")
+
+add_library(unicorn SHARED IMPORTED)
+set_target_properties(unicorn PROPERTIES
+	IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/dependencies/unicorn/build/libunicorn.so
+)
+target_link_libraries("sd-tests" unicorn)
+#target_link_libraries("sd-tests" ${CMAKE_SOURCE_DIR}/dependencies/unicorn/build/libunicorn.so)
 
 target_link_libraries("sd-tests" sd-base)
 

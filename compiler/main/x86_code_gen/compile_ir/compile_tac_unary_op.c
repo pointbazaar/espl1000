@@ -22,7 +22,7 @@ void compile_tac_unary_op_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* 
 			mov_regs(reg_dest, reg_src, c);
 			neg(reg_dest, c);
 
-				break;
+			break;
 
 		case TAC_OP_UNARY_MINUS:
 

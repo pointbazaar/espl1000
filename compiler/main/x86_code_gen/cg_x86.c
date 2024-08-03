@@ -18,7 +18,6 @@
 #include "cg_x86_single_function.h"
 #include "cg_x86_single_tac.h"
 
-
 bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
 
 	struct IBuffer* ibu = ibu_ctor();

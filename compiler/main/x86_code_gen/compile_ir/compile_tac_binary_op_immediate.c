@@ -90,7 +90,6 @@ static void case_tac_op_and(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 	mov_const(RAT_SCRATCH_REG, low, c);
 	and(rdest, RAT_SCRATCH_REG, c);
-
 }
 
 static void case_tac_op_or(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
@@ -103,7 +102,7 @@ static void case_tac_op_or(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac
 	uint8_t low = immediate & 0xff;
 	uint8_t high = (immediate & 0xff00) >> 8;
 
-	or(dest, low, c);
+	or (dest, low, c);
 }
 
 static void case_tac_op_add(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {

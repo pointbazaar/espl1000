@@ -26,24 +26,23 @@ enum RAT_REG_STATUS {
 };
 
 struct RAT {
-	//struct RAT should be opaque outside of it's
-	//implementation file
+//struct RAT should be opaque outside of it's
+//implementation file
 
-	//Register Allocation Table
-	//allocation of the registors used inside a function,
-	//mapping temporaries to actual registers
+//Register Allocation Table
+//allocation of the registors used inside a function,
+//mapping temporaries to actual registers
 
-
-	// only used to allocate the rat.
-	// the implementation should use rat_capacity(rat)
-	// which respects the target architecture
-	#define RAT_CAPACITY_MAXIMUM 32
+// only used to allocate the rat.
+// the implementation should use rat_capacity(rat)
+// which respects the target architecture
+#define RAT_CAPACITY_MAXIMUM 32
 
 	char* note[RAT_CAPACITY_MAXIMUM];
 	uint32_t occupant[RAT_CAPACITY_MAXIMUM]; //who occupies it (which temp)
 	enum RAT_REG_STATUS status[RAT_CAPACITY_MAXIMUM];
 
-	#undef RAT_CAPACITY_MAXIMUM
+#undef RAT_CAPACITY_MAXIMUM
 
 	//X: r26/r27
 	//Y: r28/r29
@@ -52,7 +51,6 @@ struct RAT {
 	// which machine architecture is this table for
 	enum RAT_ARCH arch;
 };
-
 
 struct RAT* rat_ctor(enum RAT_ARCH arch) {
 
@@ -70,13 +68,15 @@ struct RAT* rat_ctor(enum RAT_ARCH arch) {
 	return rat;
 }
 
-static void rat_init(struct RAT* rat){
+static void rat_init(struct RAT* rat) {
 
-	switch(rat->arch){
+	switch (rat->arch) {
 		case RAT_ARCH_AVR:
-			rat_init_avr(rat); break;
+			rat_init_avr(rat);
+			break;
 		case RAT_ARCH_X86:
-			rat_init_x86(rat); break;
+			rat_init_x86(rat);
+			break;
 		defaulT:
 			break;
 	}
@@ -133,35 +133,35 @@ void rat_dtor(struct RAT* rat) {
 	free(rat);
 }
 
-char* rat_regname_x86(size_t i){
+char* rat_regname_x86(size_t i) {
 
 	char* regnames[] = {
-		"rax",
-		"rbx",
-		"rcx",
-		"rdx",
-		"rdi",
-		"rsi",
-		"rsp",
-		"rbp",
-		"r8",
-		"r9",
+	    "rax",
+	    "rbx",
+	    "rcx",
+	    "rdx",
+	    "rdi",
+	    "rsi",
+	    "rsp",
+	    "rbp",
+	    "r8",
+	    "r9",
 
 	};
 
-	assert(i < 8+2);
+	assert(i < 8 + 2);
 	return regnames[i];
 }
 
-static void rat_print_regname_x86(struct RAT* rat, size_t i){
+static void rat_print_regname_x86(struct RAT* rat, size_t i) {
 
 	assert(i < rat_capacity(rat));
 	printf("%s", rat_regname_x86(i));
 }
 
-static void rat_print_regname(struct RAT* rat, size_t i){
+static void rat_print_regname(struct RAT* rat, size_t i) {
 
-	switch(rat->arch){
+	switch (rat->arch) {
 		// on avr, r16 is our scratch register
 		case RAT_ARCH_AVR:
 			printf("r%02ld", i);
@@ -248,7 +248,7 @@ static void rat_occupy(struct RAT* rat, uint8_t reg, uint32_t tmp_index, bool wi
 }
 
 uint32_t rat_ensure_register(struct RAT* rat, uint32_t tmp_index, bool high_regs_only, bool wide) {
-	if (rat->arch == RAT_ARCH_X86){
+	if (rat->arch == RAT_ARCH_X86) {
 		wide = false;
 	}
 	//wide means we need a register pair, because of a 16 bit value
@@ -297,7 +297,7 @@ void rat_free(struct RAT* rat, uint8_t reg) {
 
 static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide) {
 
-	if(rat->arch == RAT_ARCH_X86){
+	if (rat->arch == RAT_ARCH_X86) {
 		// on x86 there is no high/low regs therefore this parameter is irrelevant
 		high_regs_only = false;
 		wide = false;
@@ -332,21 +332,21 @@ static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide
 	return -1;
 }
 
-uint16_t rat_scratch_reg(struct RAT* rat){
+uint16_t rat_scratch_reg(struct RAT* rat) {
 
-	switch(rat->arch){
+	switch (rat->arch) {
 		// on avr, r16 is our scratch register
 		case RAT_ARCH_AVR: return 16;
-		case RAT_ARCH_X86:  return 1;
+		case RAT_ARCH_X86: return 1;
 		default: return 0;
 	}
 }
 
-uint16_t rat_capacity(struct RAT* rat){
+uint16_t rat_capacity(struct RAT* rat) {
 
-	switch(rat->arch){
+	switch (rat->arch) {
 		case RAT_ARCH_AVR: return 32;
-		case RAT_ARCH_X86:  return 8+2;
+		case RAT_ARCH_X86: return 8 + 2;
 		default: return 0;
 	}
 }

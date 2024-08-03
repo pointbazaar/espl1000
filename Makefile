@@ -1,8 +1,12 @@
 
-all: build test examples
+all: build-step test examples
 
-build: deps
+build-step: deps build compile
+
+build:
 	cmake -S . -B build
+
+compile:
 	cmake --build build --parallel
 	#cmake --build build
 
@@ -18,7 +22,7 @@ stdlib:
 check-format:
 	./check-format.sh
 
-test: build ${TESTS}
+test: build-step ${TESTS}
 	export PATH=${PATH}:$(pwd)/build/lexer/:$(pwd)/build/parser:$(pwd)/build/compiler
 	./build/ast/sd-ast-test && \
 	./build/token/sd-token-tests && \
