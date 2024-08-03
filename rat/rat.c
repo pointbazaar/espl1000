@@ -77,7 +77,7 @@ static void rat_init(struct RAT* rat) {
 		case RAT_ARCH_X86:
 			rat_init_x86(rat);
 			break;
-		defaulT:
+		default:
 			break;
 	}
 }

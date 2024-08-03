@@ -45,5 +45,9 @@ void emit_asm_x86_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 
 		case TAC_LOAD: compile_tac_load_x86(rat, tac, ibu); break;
 		case TAC_STORE: compile_tac_store_x86(rat, tac, ibu); break;
+
+		default:
+			printf("tac->kind == 0x%x not handled in %s\n", tac->kind, __FUNCTION__);
+			break;
 	}
 }
