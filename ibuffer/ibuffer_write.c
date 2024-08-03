@@ -10,7 +10,7 @@
 
 extern char* MNEM[];
 
-static void write_middle(enum IKEY key, int32_t x1, int32_t x2, char* str, char* s);
+static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s);
 
 static void strcat_reg(char* s, uint8_t reg);
 static void strcat_num(char* s, int num);
@@ -43,7 +43,7 @@ void ibu_write_instr(enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* st
 	fprintf(f, "\n");
 }
 
-static void write_middle(enum IKEY key, int32_t x1, int32_t x2, char* str, char* s) {
+static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s) {
 
 	switch (key) {
 
@@ -149,7 +149,7 @@ static void write_middle(enum IKEY key, int32_t x1, int32_t x2, char* str, char*
 
 		// --- START X86
 		case X86_MOV_CONST:
-			sprintf(s, "%s, %d", rat_regname_x86(x1), x2);
+			sprintf(s, "%s, %ld", rat_regname_x86(x1), x2);
 			break;
 		case X86_MOV_REGS:
 			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86(x2));
@@ -211,7 +211,7 @@ static void write_middle(enum IKEY key, int32_t x1, int32_t x2, char* str, char*
 		case X86_NOP:
 			// nothing to do
 			break;
-		// --- END X86
+			// --- END X86
 
 		default:
 			printf("instr %d not implemented in ibu_write_instr\n", key);

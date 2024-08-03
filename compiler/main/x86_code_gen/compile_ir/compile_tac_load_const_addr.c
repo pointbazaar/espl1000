@@ -10,7 +10,7 @@ void compile_tac_load_const_addr_x86(struct RAT* rat, struct TAC* tac, struct IB
 
 	const int reg_dest = rat_get_register(rat, tac->dest);
 
-	const uint32_t addr = tac->const_value;
+	const uint64_t addr = tac->const_value;
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 

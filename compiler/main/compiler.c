@@ -74,7 +74,7 @@ bool compile(struct Flags* flags) {
 	analyze_annotations(ctx_tables(ctx), ast);
 
 	bool success;
-	if (flags_x86(flags)){
+	if (flags_x86(flags)) {
 		success = compile_and_write_x86(ast, ctx);
 	} else {
 		success = compile_and_write_avr(ast, ctx);
@@ -93,11 +93,11 @@ bool compile(struct Flags* flags) {
 	const char* stdout_file;
 	const char* stderr_file;
 
-	if (flags_x86(flags)){
+	if (flags_x86(flags)) {
 		prog = "nasm -f elf64";
 		stdout_file = "/tmp/nasm-stdout";
 		stderr_file = "/tmp/nasm-stdout";
-	}else{
+	} else {
 		prog = "avra";
 		stdout_file = "/tmp/avra-stdout";
 		stderr_file = "/tmp/avra-stdout";
@@ -113,7 +113,7 @@ bool compile(struct Flags* flags) {
 		goto out;
 	}
 
-	if (flags_x86(flags)){
+	if (flags_x86(flags)) {
 		printf("link with: ld -o file file.o\n");
 	}
 

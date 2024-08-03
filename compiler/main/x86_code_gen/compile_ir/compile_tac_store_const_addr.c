@@ -9,7 +9,7 @@ void compile_tac_store_const_addr_x86(struct RAT* rat, struct TAC* tac, struct I
 	char* c = "TAC_STORE_CONST_ADDR";
 	const int reg_src = rat_get_register(rat, tac->arg1);
 
-	const uint32_t addr = tac->const_value;
+	const uint64_t addr = tac->const_value;
 
 	const uint32_t rscratch = rat_scratch_reg(rat);
 

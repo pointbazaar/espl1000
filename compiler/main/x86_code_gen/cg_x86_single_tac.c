@@ -6,7 +6,7 @@
 #include "tac/tac.h"
 #include "x86_code_gen/compile_ir/compile_tac.h"
 
-#include "ibuffer/ibuffer.h"
+#include "ibuffer/ibuffer_x86.h"
 
 #include "../../cli/flags/flags.h"
 

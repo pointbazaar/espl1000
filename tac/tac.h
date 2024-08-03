@@ -91,11 +91,11 @@ struct TAC {
 
 	uint32_t dest;
 	enum TAC_KIND kind;
-	uint32_t arg1;
+	uint64_t arg1;
 
 	enum TAC_OP op;
 
-	int32_t const_value;
+	int64_t const_value;
 };
 
 bool tac_is_unconditional_jump(struct TAC* tac);
@@ -129,7 +129,7 @@ struct TAC* makeTACBinOp(uint32_t dest, enum TAC_OP op, uint32_t src);
 struct TAC* makeTACBinOpImmediate(uint32_t tmp, enum TAC_OP op, int32_t immediate);
 struct TAC* makeTACUnaryOp(uint32_t dest, uint32_t src, enum TAC_OP op);
 
-struct TAC* makeTACStoreConstAddr(uint32_t addr, uint32_t src);
+struct TAC* makeTACStoreConstAddr(uint64_t addr, uint64_t src);
 struct TAC* makeTACLoadConstAddr(uint32_t dest, uint32_t addr);
 
 struct TAC* makeTACParam(uint32_t dest, bool push16);
