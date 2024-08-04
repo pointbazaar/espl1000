@@ -13,3 +13,5 @@ void test_x86_compile_tac_store_const_addr();
 void test_x86_compile_tac_store();
 
 void test_x86_compile_tac_load_const_addr();
+
+void test_x86_compile_tac_load();
