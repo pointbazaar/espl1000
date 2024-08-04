@@ -21,7 +21,7 @@ void test_suite_x86_code_gen() {
 	test_x86_compile_tac_nop();
 	test_x86_compile_tac_const_value();
 
-	//test_x86_compile_tac_store_const_addr();
+	test_x86_compile_tac_store_const_addr();
 	//test_x86_compile_tac_load_const_addr();
 
 	//test_x86_compile_tac_binary_op_immediate();
