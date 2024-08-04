@@ -3,3 +3,4 @@ sd
 smalldragon
 *.o
 .file.*
+*.bin
