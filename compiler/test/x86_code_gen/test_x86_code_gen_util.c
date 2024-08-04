@@ -21,6 +21,16 @@
 
 #include "../../cli/flags/flags.h"
 
+struct sd_uc_engine {
+	// wrapper struct
+
+	// addresses of the emulated code
+	uint64_t addr_start;
+	uint64_t addr_end;
+
+	uc_engine* uc;
+};
+
 uint64_t sd_uc_default_start_addr() {
 	return 0x1000000; // old, unsure why this address
 	//return 0x10000;
@@ -86,6 +96,10 @@ uc_err sd_uc_emu_start(struct sd_uc_engine* sd_uc, size_t nsteps, bool debug) {
 	}
 
 	return uc_emu_start(sd_uc->uc, sd_uc->addr_start, sd_uc->addr_end, 0, nsteps);
+}
+
+void sd_uc_close(struct sd_uc_engine* sduc) {
+	uc_close(sduc->uc);
 }
 
 void sd_uc_print_regs(struct sd_uc_engine* sduc) {
@@ -235,4 +249,16 @@ struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer) {
 	ctx_dtor(ctx);
 
 	return sd_uc;
+}
+
+uc_err sd_uc_mem_write64(struct sd_uc_engine* sduc, uint64_t address, const void* bytes) {
+	return uc_mem_write(sduc->uc, address, bytes, sizeof(uint64_t));
+}
+
+uc_err sd_uc_mem_read64(struct sd_uc_engine* sduc, uint64_t address, void* bytes) {
+	return uc_mem_read(sduc->uc, address, bytes, sizeof(uint64_t));
+}
+
+uc_err sd_uc_reg_read(struct sd_uc_engine* sduc, int regid, void* value) {
+	return uc_reg_read(sduc->uc, regid, value);
 }
