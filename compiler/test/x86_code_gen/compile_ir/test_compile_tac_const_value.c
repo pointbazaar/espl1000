@@ -45,25 +45,7 @@ static void test_x86_compile_tac_const_value_fixed_value(int8_t fixed_value) {
 		assert(false);
 	}
 
-	//check that the value was written to any register
-	bool found = false;
-
-	int regs[] = {
-	    UC_X86_REG_RAX,
-	    UC_X86_REG_RBX,
-	    UC_X86_REG_RCX,
-	    UC_X86_REG_RDX,
-	};
-
-	uint64_t reg;
-	for (int i = 0; i < sizeof(regs) / sizeof(regs[0]); i++) {
-
-		err = sd_uc_reg_read(system, regs[i], &reg);
-		assert(err == UC_ERR_OK);
-		if (reg == fixed_value) found = true;
-	}
-
-	assert(found);
+	assert(sd_uc_some_reg_has_value(system, fixed_value));
 
 	sd_uc_close(system);
 }

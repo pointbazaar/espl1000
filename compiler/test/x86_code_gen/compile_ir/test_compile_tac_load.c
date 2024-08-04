@@ -40,24 +40,7 @@ static void test_fixed_value(uint64_t fixed_value) {
 
 	err = sd_uc_emu_start(system, 0, false);
 
-	//check that the value was written to any register
-	bool found = false;
-
-	int regs[] = {
-	    UC_X86_REG_RAX,
-	    UC_X86_REG_RBX,
-	    UC_X86_REG_RCX,
-	    UC_X86_REG_RDX,
-	};
-
-	uint64_t reg = 0;
-	for (int i = 0; i < sizeof(regs) / sizeof(regs[0]); i++) {
-		err = sd_uc_reg_read(system, regs[i], &reg);
-		assert(err == UC_ERR_OK);
-		if (reg == fixed_value) found = true;
-	}
-
-	assert(found);
+	assert(sd_uc_some_reg_has_value(system, fixed_value));
 
 	sd_uc_close(system);
 }

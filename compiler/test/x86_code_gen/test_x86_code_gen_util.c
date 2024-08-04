@@ -262,3 +262,27 @@ uc_err sd_uc_mem_read64(struct sd_uc_engine* sduc, uint64_t address, void* bytes
 uc_err sd_uc_reg_read(struct sd_uc_engine* sduc, int regid, void* value) {
 	return uc_reg_read(sduc->uc, regid, value);
 }
+
+bool sd_uc_some_reg_has_value(struct sd_uc_engine* sduc, uint64_t value) {
+
+	uc_err err;
+	//check that the value was written to any register
+	bool found = false;
+
+	int regs[] = {
+	    UC_X86_REG_RAX,
+	    UC_X86_REG_RBX,
+	    UC_X86_REG_RCX,
+	    UC_X86_REG_RDX,
+	};
+
+	uint64_t reg = 0;
+	for (int i = 0; i < sizeof(regs) / sizeof(regs[0]); i++) {
+
+		err = sd_uc_reg_read(sduc, regs[i], &reg);
+		assert(err == UC_ERR_OK);
+		if (reg == value) found = true;
+	}
+
+	return found;
+}
