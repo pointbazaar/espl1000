@@ -36,7 +36,7 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64
 #define mov_load(dest, src, c) ibu2(X86_MOV_LOAD, dest, src, c)
 #define mov_store(dest, src, c) ibu2(X86_MOV_STORE, dest, src, c)
 
-#define cmov(dest, src, c) ibu2(X86_CMOV, dest, src, c)
+#define cmove(dest, src, c) ibu2(X86_CMOVE, dest, src, c)
 #define xchg(dest, src, c) ibu2(X86_XCHG, dest, src, c)
 
 #define push(dest, c) ibu1(X86_PUSH, dest, c)
@@ -56,6 +56,7 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64
 #define and(dest, src, c) ibu2(X86_AND, dest, src, c)
 #define or(dest, src, c) ibu2(X86_OR, dest, src, c)
 #define xor(dest, src, c) ibu2(X86_XOR, dest, src, c)
+#define not(dest, c) ibu1(X86_NOT, dest, c)
 
 #define jmp(label, c) ibu_branch(X86_JMP, label, "")
 #define je(label, c) ibu_branch(X86_JE, label, "")

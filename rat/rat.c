@@ -103,9 +103,6 @@ static void rat_init_avr(struct RAT* rat) {
 	rat->status[1] = REG_RESERVED;
 	rat->note[1] = "reserved for return value";
 
-	//r16 is another reserved multi-use register,
-	//as there is a constraint that
-	//many instructions can only use registers >= r16
 	rat->status[rat_scratch_reg(rat)] = REG_RESERVED;
 	rat->note[rat_scratch_reg(rat)] = "reserved as scratch register";
 

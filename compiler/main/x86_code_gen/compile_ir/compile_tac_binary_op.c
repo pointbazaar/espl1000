@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#include "ibuffer/ibuffer_x86.h"
 #include "rat/rat.h"
 #include "tac/tac.h"
 #include "x86_code_gen/compile_ir/compile_tac.h"
@@ -129,17 +130,6 @@ static void case_compare(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) 
 
 static void case_cmp_lt(struct IBuffer* ibu, int rdest, int rsrc) {
 
-	//5 instructions
-
-	// cp rdest, rsrc
-	// brlt Ltrue
-	// clr rdest
-	// rjmp Lend
-	//Ltrue:
-	// ldi rscratch, 1
-	// mov rdest, rscratch
-	//Lend:
-
 	char Ltrue[20];
 	char Lend[20];
 
@@ -147,6 +137,7 @@ static void case_cmp_lt(struct IBuffer* ibu, int rdest, int rsrc) {
 	sprintf(Lend, "Lend%d", label_counter++);
 
 	cmp(rdest, rsrc, c);
+	jl(Ltrue, c);
 
 	xor(rdest, rdest, c);
 	jmp(Lend, c);
@@ -237,12 +228,15 @@ static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc) {
 
 static void case_cmp_eq(struct IBuffer* ibu, int rdest, int rsrc) {
 
-	//we use the scratch register
+	char Lend[20];
+	sprintf(Lend, "Lend%d", label_counter++);
 
-	//4 instructions
+	mov_const(RAT_SCRATCH_REG, 0, c);
+	cmp(rdest, rsrc, c);
+	jne(Lend, c);
+
 	mov_const(RAT_SCRATCH_REG, 1, c);
-	//cpse(rdest, rsrc, c);
-	xor(RAT_SCRATCH_REG, RAT_SCRATCH_REG, c);
 
+	label(Lend);
 	mov_regs(rdest, RAT_SCRATCH_REG, c);
 }

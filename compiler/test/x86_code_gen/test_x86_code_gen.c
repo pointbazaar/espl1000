@@ -26,7 +26,7 @@ void test_suite_x86_code_gen() {
 
 	//test_x86_compile_tac_binary_op_immediate();
 	//test_x86_compile_tac_unary_op();
-	//test_x86_compile_tac_binary_op();
+	test_x86_compile_tac_binary_op();
 
 	test_x86_compile_tac_goto();
 	//test_x86_compile_tac_if_goto();
