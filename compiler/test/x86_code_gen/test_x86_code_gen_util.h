@@ -22,3 +22,5 @@ uc_err sd_uc_mem_write64(struct sd_uc_engine* sduc, uint64_t address, const void
 uc_err sd_uc_mem_read64(struct sd_uc_engine* sduc, uint64_t address, void* bytes);
 
 uc_err sd_uc_reg_read(struct sd_uc_engine* sduc, int regid, void* value);
+
+bool sd_uc_some_reg_has_value(struct sd_uc_engine* sduc, uint64_t value);
