@@ -152,6 +152,7 @@ static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 			sprintf(s, "%s, %ld", rat_regname_x86(x1), x2);
 			break;
 		case X86_MOV_REGS:
+		case X86_CMOVE:
 			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86(x2));
 			break;
 		case X86_MOV_LOAD:

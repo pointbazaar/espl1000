@@ -28,12 +28,19 @@ struct sd_uc_engine {
 	uint64_t addr_start;
 	uint64_t addr_end;
 
+	// our stack area
+	uint64_t addr_stack;
+
 	uc_engine* uc;
 };
 
 uint64_t sd_uc_default_start_addr() {
 	return 0x1000000; // old, unsure why this address
 	//return 0x10000;
+}
+
+uint64_t sd_uc_default_stack_addr() {
+	return 0x2000000;
 }
 
 // callback for tracing instruction
@@ -117,6 +124,81 @@ void sd_uc_print_regs(struct sd_uc_engine* sduc) {
 		printf("%s = %04lx\n", names[i], reg);
 	}
 }
+static void sd_uc_engine_setup_stack(struct sd_uc_engine* sduc) {
+
+	uc_engine* uc = sduc->uc;
+	uc_err err;
+	sduc->addr_stack = sd_uc_default_stack_addr();
+
+	// like in the example code
+	err = uc_mem_map(uc, sduc->addr_stack, 4096, UC_PROT_READ | UC_PROT_WRITE);
+	if (err != UC_ERR_OK) {
+		fprintf(stderr, "%s\n", uc_strerror(err));
+		assert(false);
+	}
+
+	uc_reg_write(uc, UC_X86_REG_RSP, &(sduc->addr_stack));
+}
+
+static struct sd_uc_engine* sd_uc_engine_from_mapped(char* mapped, size_t filesize) {
+
+	uc_engine* uc;
+	uc_err err;
+
+	err = uc_open(UC_ARCH_X86, UC_MODE_64, &uc);
+
+	if (err != UC_ERR_OK) {
+		fprintf(stderr, "Failed on uc_open() with error: %u\n", err);
+		exit(EXIT_FAILURE);
+	}
+
+	struct sd_uc_engine* sd_uc = exit_malloc(sizeof(struct sd_uc_engine));
+	sd_uc->uc = uc;
+	// memory address where emulation starts
+	sd_uc->addr_start = sd_uc_default_start_addr();
+
+	// stop on the address after the last instruction
+	sd_uc->addr_end = sd_uc->addr_start + filesize;
+
+	size_t mapped_size = 2 * 1024 * 1024; // old value from example
+	//size_t mapped_size = 4 * 1024; // must be multiple of 4 KB
+
+	if (sd_uc->addr_start + mapped_size <= sd_uc->addr_end) {
+		assert(false);
+	}
+
+	sd_uc_engine_setup_stack(sd_uc);
+
+	// put the end address on the stack so when 'ret' happens
+	// we end up at the end of our code
+	err = uc_mem_write(uc, sd_uc->addr_stack, &(sd_uc->addr_end), sizeof(uint64_t));
+	assert(err == UC_ERR_OK);
+
+	// like in the example code
+	err = uc_mem_map(uc, sd_uc->addr_start, mapped_size, UC_PROT_ALL);
+	if (err != UC_ERR_OK) {
+		fprintf(stderr, "%s\n", uc_strerror(err));
+		assert(false);
+	}
+
+	// write 'nop' to the part of the region for safety
+	for (size_t i = sd_uc->addr_start; i < sd_uc->addr_start + 100; i++) {
+		char* CODE_NOP = "\x90"; // nop
+		err = uc_mem_write(uc, i, CODE_NOP, 1);
+		if (err != UC_ERR_OK) {
+			fprintf(stderr, "%s\n", uc_strerror(err));
+			assert(false);
+		}
+	}
+
+	// write machine code to memory
+	if (uc_mem_write(uc, sd_uc->addr_start, mapped, filesize)) {
+		fprintf(stderr, "Failed to write emulation code to memory\n");
+		exit(EXIT_FAILURE);
+	}
+
+	return sd_uc;
+}
 
 struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer) {
 
@@ -198,57 +280,11 @@ struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer) {
 		exit(EXIT_FAILURE);
 	}
 
-	uc_engine* uc;
-	uc_err err;
-
-	err = uc_open(UC_ARCH_X86, UC_MODE_64, &uc);
-
-	if (err != UC_ERR_OK) {
-		fprintf(stderr, "Failed on uc_open() with error: %u\n", err);
-		exit(EXIT_FAILURE);
-	}
-
-	struct sd_uc_engine* sd_uc = exit_malloc(sizeof(struct sd_uc_engine));
-	sd_uc->uc = uc;
-	// memory address where emulation starts
-	sd_uc->addr_start = sd_uc_default_start_addr();
-
-	// stop on the address after the last instruction
-	sd_uc->addr_end = sd_uc->addr_start + filesize;
-
-	size_t mapped_size = 2 * 1024 * 1024; // old value from example
-	//size_t mapped_size = 4 * 1024; // must be multiple of 4 KB
-
-	if (sd_uc->addr_start + mapped_size <= sd_uc->addr_end) {
-		assert(false);
-	}
-
-	// like in the example code
-	err = uc_mem_map(uc, sd_uc->addr_start, mapped_size, UC_PROT_ALL);
-	if (err != UC_ERR_OK) {
-		fprintf(stderr, "%s\n", uc_strerror(err));
-		assert(false);
-	}
-
-	// write 'nop' to the part of the region for safety
-	for (size_t i = sd_uc->addr_start; i < sd_uc->addr_start + 100; i++) {
-		char* CODE_NOP = "\x90"; // nop
-		err = uc_mem_write(uc, i, CODE_NOP, 1);
-		if (err != UC_ERR_OK) {
-			fprintf(stderr, "%s\n", uc_strerror(err));
-			assert(false);
-		}
-	}
-
-	// write machine code to memory
-	if (uc_mem_write(uc, sd_uc->addr_start, mapped, filesize)) {
-		fprintf(stderr, "Failed to write emulation code to memory\n");
-		exit(EXIT_FAILURE);
-	}
+	struct sd_uc_engine* sduc = sd_uc_engine_from_mapped(mapped, filesize);
 
 	ctx_dtor(ctx);
 
-	return sd_uc;
+	return sduc;
 }
 
 uc_err sd_uc_mem_write64(struct sd_uc_engine* sduc, uint64_t address, const void* bytes) {
