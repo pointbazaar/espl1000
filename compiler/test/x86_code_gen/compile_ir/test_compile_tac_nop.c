@@ -32,12 +32,12 @@ void test_x86_compile_tac_nop() {
 	int8_t regs[32];
 	for (int i = UC_X86_REG_RAX; i <= UC_X86_REG_RDX; i++) {
 		int64_t reg;
-		uc_reg_read(system->uc, i, &reg);
+		sd_uc_reg_read(system, i, &reg);
 		regs[i] = reg;
 	}
 
 	uint64_t old_sp;
-	uc_reg_read(system->uc, UC_X86_REG_RSP, &old_sp);
+	sd_uc_reg_read(system, UC_X86_REG_RSP, &old_sp);
 
 	//do some steps
 	sd_uc_emu_start(system, 0, false);
@@ -45,13 +45,13 @@ void test_x86_compile_tac_nop() {
 	//check that the values are still the same
 	for (int i = UC_X86_REG_RAX; i <= UC_X86_REG_RDX; i++) {
 		int64_t reg;
-		uc_reg_read(system->uc, i, &reg);
+		sd_uc_reg_read(system, i, &reg);
 		assert(regs[i] == reg);
 	}
 
 	uint64_t sp;
-	uc_reg_read(system->uc, UC_X86_REG_RSP, &sp);
+	sd_uc_reg_read(system, UC_X86_REG_RSP, &sp);
 	assert(old_sp == sp);
 
-	uc_close(system->uc);
+	sd_uc_close(system);
 }

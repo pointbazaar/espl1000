@@ -58,12 +58,12 @@ static void test_x86_compile_tac_const_value_fixed_value(int8_t fixed_value) {
 	uint64_t reg;
 	for (int i = 0; i < sizeof(regs) / sizeof(regs[0]); i++) {
 
-		err = uc_reg_read(system->uc, regs[i], &reg);
+		err = sd_uc_reg_read(system, regs[i], &reg);
 		assert(err == UC_ERR_OK);
 		if (reg == fixed_value) found = true;
 	}
 
 	assert(found);
 
-	uc_close(system->uc);
+	sd_uc_close(system);
 }

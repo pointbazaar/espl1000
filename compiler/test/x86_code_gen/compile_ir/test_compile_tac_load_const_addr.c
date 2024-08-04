@@ -37,7 +37,7 @@ static void test_fixed_value(uint64_t fixed_value) {
 
 	uc_err err;
 	//write value to be read later
-	err = uc_mem_write(system->uc, addr, &fixed_value, sizeof(uint64_t));
+	err = sd_uc_mem_write64(system, addr, &fixed_value);
 	assert(err == UC_ERR_OK);
 
 	err = sd_uc_emu_start(system, 0, false);
@@ -55,12 +55,12 @@ static void test_fixed_value(uint64_t fixed_value) {
 
 	uint64_t reg = 0;
 	for (int i = 0; i < sizeof(regs) / sizeof(regs[0]); i++) {
-		err = uc_reg_read(system->uc, regs[i], &reg);
+		err = sd_uc_reg_read(system, regs[i], &reg);
 		assert(err == UC_ERR_OK);
 		if (reg == fixed_value) found = true;
 	}
 
 	assert(found);
 
-	uc_close(system->uc);
+	sd_uc_close(system);
 }

@@ -27,14 +27,14 @@ void test_x86_compile_tac_goto() {
 	sd_uc_emu_start(system, 7, false);
 
 	uint64_t old_rip;
-	uc_reg_read(system->uc, UC_X86_REG_RIP, &old_rip);
+	sd_uc_reg_read(system, UC_X86_REG_RIP, &old_rip);
 
 	sd_uc_emu_start(system, 7, false);
 
 	//assert that the PC has not changed
 	uint64_t new_rip;
-	uc_reg_read(system->uc, UC_X86_REG_RIP, &new_rip);
+	sd_uc_reg_read(system, UC_X86_REG_RIP, &new_rip);
 	assert(new_rip == old_rip);
 
-	uc_close(system->uc);
+	sd_uc_close(system);
 }

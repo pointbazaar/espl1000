@@ -44,10 +44,10 @@ static void common(uint64_t addr, uint64_t fixed_value) {
 	assert(err == UC_ERR_OK);
 
 	uint64_t stored = 0;
-	err = uc_mem_read(system->uc, addr, &stored, sizeof(uint64_t));
+	err = sd_uc_mem_read64(system, addr, &stored);
 	assert(err == UC_ERR_OK);
 
 	assert(stored == fixed_value);
 
-	uc_close(system->uc);
+	sd_uc_close(system);
 }

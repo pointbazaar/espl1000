@@ -44,10 +44,10 @@ static void test_at_addr(uint64_t addr) {
 
 	//check that the value was written
 	uint64_t value = 0;
-	err = uc_mem_read(system->uc, addr, &value, sizeof(uint64_t));
+	err = sd_uc_mem_read64(system, addr, &value);
 	assert(err == UC_ERR_OK);
 
 	assert(value == fixed_value);
 
-	uc_close(system->uc);
+	sd_uc_close(system);
 }
