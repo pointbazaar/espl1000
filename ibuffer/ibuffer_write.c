@@ -162,40 +162,32 @@ static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 			sprintf(s, "[%s], %s", rat_regname_x86(x1), rat_regname_x86(x2));
 			break;
 		case X86_PUSH:
-			sprintf(s, "%s", rat_regname_x86(x1));
-			break;
 		case X86_POP:
 			sprintf(s, "%s", rat_regname_x86(x1));
 			break;
 		case X86_ADD:
-			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86(x2));
-			break;
 		case X86_SUB:
 			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86(x2));
 			break;
 		case X86_INC:
-			sprintf(s, "%s", rat_regname_x86(x1));
-			break;
 		case X86_DEC:
-			sprintf(s, "%s", rat_regname_x86(x1));
-			break;
 		case X86_NEG:
-			sprintf(s, "%s", rat_regname_x86(x1));
-			break;
-		case X86_CMP:
-			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86(x2));
-			break;
-		case X86_AND:
-			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86(x2));
-			break;
-		case X86_OR:
-			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86(x2));
-			break;
-		case X86_XOR:
-			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86(x2));
-			break;
 		case X86_NOT:
 			sprintf(s, "%s", rat_regname_x86(x1));
+			break;
+		case X86_SHL:
+		case X86_SHR:
+		case X86_SAL:
+		case X86_SAR:
+		case X86_ROL:
+		case X86_ROR:
+			sprintf(s, "%s, %ld", rat_regname_x86(x1), x2);
+			break;
+		case X86_CMP:
+		case X86_AND:
+		case X86_OR:
+		case X86_XOR:
+			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86(x2));
 			break;
 		case X86_JMP:
 		case X86_JE:

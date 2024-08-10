@@ -173,6 +173,12 @@ char* MNEM[] = {
 									def(X86_OR, "or")
 									    def(X86_XOR, "xor")
 										def(X86_NOT, "not")
+	[X86_SHL] = "shl",
+	[X86_SHR] = "shr",
+	[X86_SAL] = "sal",
+	[X86_SAR] = "sar",
+	[X86_ROL] = "rol",
+	[X86_ROR] = "ror",
 										    def(X86_JMP, "jmp")
 											def(X86_JE, "je")
 											    def(X86_JNE, "jne")

@@ -15,46 +15,46 @@
 
 #include "test_compile_tac.h"
 
-static void case_add_8bit();
+static void case_add();
 static void case_add_16bit();
-static void case_sub_8bit();
+static void case_sub();
 static void case_sub_16bit();
-static void case_and_8bit();
+static void case_and();
 static void case_and_16bit();
-static void case_or_8bit();
+static void case_or();
 static void case_or_16bit();
-static void case_xor_8bit();
+static void case_xor();
 static void case_xor_16bit();
-static void case_shift_left_8bit();
+static void case_shift_left();
 static void case_shift_left_16bit();
-static void case_shift_right_8bit();
+static void case_shift_right();
 static void case_shift_right_16bit();
 
 void test_compile_tac_binary_op_immediate() {
 
-	case_add_8bit();
+	case_add();
 	case_add_16bit();
 
-	case_sub_8bit();
+	case_sub();
 	case_sub_16bit();
 
-	case_and_8bit();
+	case_and();
 	case_and_16bit();
 
-	case_or_8bit();
+	case_or();
 	case_or_16bit();
 
-	case_xor_8bit();
+	case_xor();
 	case_xor_16bit();
 
-	case_shift_left_8bit();
+	case_shift_left();
 	case_shift_left_16bit();
 
-	case_shift_right_8bit();
+	case_shift_right();
 	case_shift_right_16bit();
 }
 
-static void case_add_8bit() {
+static void case_add() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE + (8 bit)");
 
@@ -123,7 +123,7 @@ static void case_add_16bit() {
 	}
 }
 
-static void case_sub_8bit() {
+static void case_sub() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE - (8 bit)");
 
@@ -186,7 +186,7 @@ static void case_sub_16bit() {
 	}
 }
 
-static void case_and_8bit() {
+static void case_and() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE & (8 bit)");
 
@@ -241,7 +241,7 @@ static void case_and_16bit() {
 	}
 }
 
-static void case_or_8bit() {
+static void case_or() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE | (8 bit)");
 
@@ -296,7 +296,7 @@ static void case_or_16bit() {
 	}
 }
 
-static void case_xor_8bit() {
+static void case_xor() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE ^ (8 bit)");
 
@@ -351,7 +351,7 @@ static void case_xor_16bit() {
 	}
 }
 
-static void case_shift_left_8bit() {
+static void case_shift_left() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE << (8 bit)");
 
@@ -414,7 +414,7 @@ static void case_shift_left_16bit() {
 	}
 }
 
-static void case_shift_right_8bit() {
+static void case_shift_right() {
 
 	status_test_codegen("TAC_BINARY_OP_IMMEDIATE >> (8 bit)");
 
