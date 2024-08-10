@@ -206,6 +206,7 @@ add_executable("sd-tests"
 	test/x86_code_gen/compile_ir/test_compile_tac_load_const_addr.c
 	test/x86_code_gen/compile_ir/test_compile_tac_load.c
 	test/x86_code_gen/compile_ir/test_compile_tac_binary_op.c
+	test/x86_code_gen/compile_ir/test_compile_tac_binary_op_immediate.c
 
 	#CodeGen from TAC - Timers
 	test/avr_code_gen/timer/test_avr_code_gen_timer.c
@@ -273,5 +274,6 @@ target_include_directories("sd-tests" PUBLIC "..")
 #libvmcu include dirs for sd-tests
 target_include_directories("sd-tests" PUBLIC "../dependencies/libvmcu-Virtual-MCU-Library/engine/include")
 
+target_include_directories("sd-tests" PUBLIC "../dependencies/unicorn/include")
 
 

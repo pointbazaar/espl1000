@@ -203,6 +203,15 @@ enum IKEY {
 	X86_XOR,
 	X86_NOT,
 
+	// shift and rotate instructions
+	X86_SAR, // shift arithmetic right
+	X86_SHR, // shift right
+	X86_SAL, // shift arithmetic left
+	X86_SHL, // shift left
+
+	X86_ROR,
+	X86_ROL,
+
 	// control flow
 	// TODO: add the others
 	X86_JMP,

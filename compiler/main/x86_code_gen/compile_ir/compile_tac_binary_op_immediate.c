@@ -39,9 +39,9 @@ static void case_tac_op_shift_left(struct IBuffer* ibu, struct RAT* rat, struct 
 
 	char* c = "TAC_BINARY_OP_IMMEDIATE <<";
 
+	shl(dest, immediate, c);
 	for (int i = 0; i < immediate; i++) {
-		//lsl(dest, c);
-		//TODO
+		//shl(dest, immediate, c);
 	}
 }
 
@@ -52,9 +52,9 @@ static void case_tac_op_shift_right(struct IBuffer* ibu, struct RAT* rat, struct
 
 	char* c = "TAC_BINARY_OP_IMMEDIATE >>";
 
+	shr(dest, immediate, c);
 	for (int i = 0; i < immediate; i++) {
-		//lsr(dest, c);
-		//TODO
+		//shr(dest, immediate, c);
 	}
 }
 
@@ -95,14 +95,12 @@ static void case_tac_op_and(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 static void case_tac_op_or(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
 
 	int dest = rat_get_register(rat, tac->dest);
-	const uint16_t immediate = tac->const_value;
+	const uint64_t immediate = tac->const_value;
 
 	char* c = "TAC_BINARY_OP_IMMEDIATE |";
 
-	uint8_t low = immediate & 0xff;
-	uint8_t high = (immediate & 0xff00) >> 8;
-
-	or (dest, low, c);
+	mov_const(rat_scratch_reg(rat), immediate, c);
+	or (dest, rat_scratch_reg(rat), c);
 }
 
 static void case_tac_op_add(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
