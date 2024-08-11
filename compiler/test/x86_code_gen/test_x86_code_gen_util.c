@@ -246,6 +246,10 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 
 	struct RAT* rat = rat_ctor(RAT_ARCH_X86);
 
+	for (int i = 0; i < nblocks; i++) {
+		allocate_registers(graph[i]->buffer, rat, ctx_tables(ctx));
+	}
+
 	emit_asm_x86_basic_block(root, ctx, ibu, rat);
 
 	for (int i = 0; i < nblocks; i++) {

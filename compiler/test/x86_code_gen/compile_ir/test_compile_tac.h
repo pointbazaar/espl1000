@@ -21,3 +21,5 @@ void test_x86_compile_tac_binary_op();
 void test_x86_compile_tac_binary_op_immediate();
 
 void test_x86_compile_tac_if_cmp_goto();
+
+void test_x86_compile_tac_if_goto();
