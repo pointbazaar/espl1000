@@ -209,6 +209,7 @@ add_executable("sd-tests"
 	test/x86_code_gen/compile_ir/test_compile_tac_binary_op_immediate.c
 	test/x86_code_gen/compile_ir/test_compile_tac_if_cmp_goto.c
 	test/x86_code_gen/compile_ir/test_compile_tac_if_goto.c
+	test/x86_code_gen/compile_ir/test_compile_tac_load_local.c
 
 	#CodeGen from TAC - Timers
 	test/avr_code_gen/timer/test_avr_code_gen_timer.c

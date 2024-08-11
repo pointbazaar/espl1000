@@ -40,4 +40,6 @@ void test_suite_x86_code_gen() {
 
 	test_x86_compile_tac_load();
 	test_x86_compile_tac_store();
+
+	test_x86_compile_tac_load_local();
 }

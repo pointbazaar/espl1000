@@ -18,9 +18,12 @@ void compile_tac_return_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, s
 	char* c = "TAC_RETURN";
 
 	//destroy the stackframe
-	for (size_t k = 0; k < lvst_stack_frame_size_avr(ctx_tables(ctx)->lvst); k++) {
+	//TODO: for now we assume the frame size is a multiple of 8 bytes.
+	const size_t frame_size = lvst_stack_frame_size_avr(ctx_tables(ctx)->lvst) / 8;
 
-		pop(0, "destroy frame");
+	for (size_t k = 0; k < frame_size; k++) {
+
+		pop(rat_scratch_reg(rat), "destroy frame");
 	}
 
 	int reg = rat_get_register(rat, tac->dest);

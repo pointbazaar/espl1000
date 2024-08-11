@@ -48,7 +48,7 @@ static void case_add() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 

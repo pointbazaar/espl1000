@@ -55,6 +55,8 @@ uint32_t lvst_sizeof_type(struct Type* type);
 size_t lvst_stack_frame_size_avr(struct LVST* lvst);
 size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name);
 
+size_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name);
+
 // returns the size of the local variable in bytes.
 // returns 0 on failure
 uint32_t lvst_sizeof_var(struct LVST* lvst, char* name);
