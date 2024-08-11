@@ -7,12 +7,15 @@ struct sd_uc_engine;
 
 struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer);
 struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v2(struct TACBuffer* buffer, bool debug);
+struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v3(struct TACBuffer* buffer, bool debug, bool fake_lvst);
 
 uc_err sd_uc_emu_start(struct sd_uc_engine* sd_uc, size_t nsteps, bool debug);
 
 void sd_uc_close(struct sd_uc_engine* sduc);
 
 void sd_uc_print_regs(struct sd_uc_engine* sduc);
+// prints a section of the stack
+void sd_uc_print_stack(struct sd_uc_engine* sduc);
 
 uint64_t sd_uc_default_start_addr();
 uint64_t sd_uc_default_stack_addr();

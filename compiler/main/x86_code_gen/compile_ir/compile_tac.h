@@ -31,7 +31,7 @@ void compile_tac_binary_op_immediate_x86(struct RAT* rat, struct TAC* tac, struc
 void compile_tac_load_const_addr_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 void compile_tac_store_const_addr_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 
-void compile_tac_setup_stackframe_x86(struct TAC* tac, struct IBuffer* ibu);
+void compile_tac_setup_stackframe_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 void compile_tac_setup_sp_x86(struct IBuffer* ibu);
 
 void compile_tac_load_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);

@@ -222,6 +222,10 @@ uint32_t lvst_sizeof_arraytype(struct ArrayType* at) {
 
 uint32_t lvst_sizeof_type(struct Type* type) {
 
+	if (type == NULL){
+		return 0;
+	}
+
 	uint32_t res = 0;
 	//sizeof(type) in bytes
 	if (type->basic_type != NULL)
@@ -247,6 +251,11 @@ size_t lvst_stack_frame_size_avr(struct LVST* lvst) {
 	}
 
 	return sum;
+}
+
+size_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name) {
+
+	return lvst_stack_frame_offset_avr(lvst, local_var_name) -1 +8;
 }
 
 size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name) {

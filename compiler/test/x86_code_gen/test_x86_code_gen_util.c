@@ -30,6 +30,7 @@ struct sd_uc_engine {
 
 	// our stack area
 	uint64_t addr_stack;
+	uint64_t size_stack;
 
 	uc_engine* uc;
 };
@@ -68,6 +69,9 @@ static void hook_mem64(uc_engine* uc, uc_mem_type type, uint64_t address,
 		case UC_MEM_READ_UNMAPPED:
 			printf(">>> Memory is being READ at 0x%" PRIx64 ", data size = %u\n", address, size);
 			break;
+		case UC_MEM_FETCH_UNMAPPED:
+			printf(">>> Instruction is being FETCH at 0x%" PRIx64 ", data size = %u\n", address, size);
+			break;
 		case UC_MEM_WRITE:
 		case UC_MEM_WRITE_PROT:
 		case UC_MEM_WRITE_UNMAPPED:
@@ -78,7 +82,7 @@ static void hook_mem64(uc_engine* uc, uc_mem_type type, uint64_t address,
 
 static void install_hooks(uc_engine* uc) {
 	uc_err err;
-	uc_hook trace1, trace2, trace3, trace4, trace5;
+	uc_hook trace1, trace2, trace3, trace4, trace5, trace6;
 	// tracing all instruction by having @begin > @end
 	err = uc_hook_add(uc, &trace1, UC_HOOK_CODE, hook_code, NULL, 1, 0);
 	assert(err == UC_ERR_OK);
@@ -94,6 +98,9 @@ static void install_hooks(uc_engine* uc) {
 	assert(err == UC_ERR_OK);
 	err = uc_hook_add(uc, &trace5, UC_HOOK_MEM_READ_UNMAPPED, hook_mem64, NULL, 1, 0);
 	assert(err == UC_ERR_OK);
+
+	err = uc_hook_add(uc, &trace6, UC_HOOK_MEM_FETCH_UNMAPPED, hook_mem64, NULL, 1, 0);
+	assert(err == UC_ERR_OK);
 }
 
 uc_err sd_uc_emu_start(struct sd_uc_engine* sd_uc, size_t nsteps, bool debug) {
@@ -102,22 +109,72 @@ uc_err sd_uc_emu_start(struct sd_uc_engine* sd_uc, size_t nsteps, bool debug) {
 		install_hooks(sd_uc->uc);
 	}
 
-	return uc_emu_start(sd_uc->uc, sd_uc->addr_start, sd_uc->addr_end, 0, nsteps);
+	uc_err err = uc_emu_start(sd_uc->uc, sd_uc->addr_start, sd_uc->addr_end, 0, nsteps);
+
+	if (err != UC_ERR_OK){
+		fprintf(stderr, "Error: (running %s\n):\n", __FUNCTION__);
+		fprintf(stderr, "%s\n", uc_strerror(err));
+	}
+
+	return err;
 }
 
 void sd_uc_close(struct sd_uc_engine* sduc) {
 	uc_close(sduc->uc);
 }
 
+void sd_uc_print_stack(struct sd_uc_engine* sduc) {
+
+	uc_err err;
+	uint64_t rsp;
+	uint64_t rbp;
+	err = uc_reg_read(sduc->uc, UC_X86_REG_RSP, &rsp);
+	assert(err == UC_ERR_OK);
+	err = uc_reg_read(sduc->uc, UC_X86_REG_RBP, &rbp);
+	assert(err == UC_ERR_OK);
+	const size_t window = 8 * 5;
+	uint64_t start = rsp-window;
+	uint64_t last = rsp+window;
+
+	printf("-- stack contents --\n");
+	for (uint64_t addr = start; addr <= last; addr+=8){
+		uint64_t read = 0;
+		err = sd_uc_mem_read64(sduc, addr, &read);
+		if (err != UC_ERR_OK){
+			printf("[%08lx] error reading memory", addr);
+			return;
+		}
+		printf("[%08lx] = %08lx", addr, read);
+
+		if(addr == rsp) printf(" <- rsp");
+		if(addr == rbp) printf(" <- rbp");
+
+		printf("\n");
+	}
+}
+
 void sd_uc_print_regs(struct sd_uc_engine* sduc) {
 
 	uint64_t reg;
-	char* names[] = {"rax", "rbx", "rcx", "rdx"};
+	char* names[] = {
+		"rax",
+		"rbx",
+		"rcx",
+		"rdx",
+		"rdi",
+		"rsi",
+		"rsp",
+		"rbp",
+	};
 	int indexes[] = {
 	    UC_X86_REG_RAX,
 	    UC_X86_REG_RBX,
 	    UC_X86_REG_RCX,
 	    UC_X86_REG_RDX,
+	    UC_X86_REG_RDI,
+	    UC_X86_REG_RSI,
+	    UC_X86_REG_RSP,
+	    UC_X86_REG_RBP,
 	};
 	for (int i = 0; i < sizeof(indexes) / sizeof(indexes[0]); i++) {
 		uc_reg_read(sduc->uc, indexes[i], &reg);
@@ -128,10 +185,15 @@ static void sd_uc_engine_setup_stack(struct sd_uc_engine* sduc) {
 
 	uc_engine* uc = sduc->uc;
 	uc_err err;
+
 	sduc->addr_stack = sd_uc_default_stack_addr();
+	sduc->size_stack = 4096;
+
+	uint64_t start_map = sduc->addr_stack - sduc->size_stack;
+	size_t size_map = sduc->size_stack * 2;
 
 	// like in the example code
-	err = uc_mem_map(uc, sduc->addr_stack, 4096, UC_PROT_READ | UC_PROT_WRITE);
+	err = uc_mem_map(uc, start_map, size_map, UC_PROT_READ | UC_PROT_WRITE);
 	if (err != UC_ERR_OK) {
 		fprintf(stderr, "%s\n", uc_strerror(err));
 		assert(false);
@@ -200,7 +262,38 @@ static struct sd_uc_engine* sd_uc_engine_from_mapped(char* mapped, size_t filesi
 	return sd_uc;
 }
 
-static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer* buffer, bool debug) {
+static void sd_uc_fake_lvst(struct Ctx* ctx){
+	struct ST* st = ctx_tables(ctx);
+	assert(st != NULL);
+
+	struct LVST* lvst = st->lvst;
+	assert(lvst != NULL);
+	struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
+	assert(line != NULL);
+
+	sprintf(line->name, "fake variable");
+	struct Type* type = calloc(1, sizeof(struct Type));
+
+	struct BasicType* basicType = calloc(1, sizeof(struct BasicType));
+	type->basic_type = basicType;
+
+	struct SimpleType* simpleType = calloc(1, sizeof(struct SimpleType));
+	basicType->simple_type = simpleType;
+
+	struct PrimitiveType* pt = calloc(1, sizeof(struct PrimitiveType));
+	simpleType->primitive_type = pt;
+	pt->is_int_type = true;
+	pt->int_type = UINT64;
+
+	line->type = type;
+	line->first_occur = NULL;
+	line->is_arg = false;
+	line->read_only = false;
+
+	lvst_add(lvst, line);
+}
+
+static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer* buffer, bool debug, bool create_fake_lvst) {
 
 	char* argv_debug[] = {"program", "-debug", ".file.dg"};
 	char* argv_common[] = {"program", ".file.dg"};
@@ -218,6 +311,10 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 
 	struct Ctx* ctx = ctx_ctor(flags, st_ctor());
 	assert(ctx != NULL);
+
+	if (create_fake_lvst){
+		sd_uc_fake_lvst(ctx);
+	}
 
 	FILE* fout = fopen(flags_asm_filename(flags), "w");
 
@@ -307,13 +404,16 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 }
 
 struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer){
-	return sd_uc_engine_from_tacbuffer_common(buffer, false);
+	return sd_uc_engine_from_tacbuffer_common(buffer, false, false);
 }
 
 struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v2(struct TACBuffer* buffer, bool debug){
-	return sd_uc_engine_from_tacbuffer_common(buffer, debug);
+	return sd_uc_engine_from_tacbuffer_common(buffer, debug, false);
 }
 
+struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v3(struct TACBuffer* buffer, bool debug, bool fake_lvst){
+	return sd_uc_engine_from_tacbuffer_common(buffer, debug, fake_lvst);
+}
 
 uc_err sd_uc_mem_write64(struct sd_uc_engine* sduc, uint64_t address, const void* bytes) {
 	return uc_mem_write(sduc->uc, address, bytes, sizeof(uint64_t));
