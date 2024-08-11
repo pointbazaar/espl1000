@@ -200,9 +200,20 @@ static struct sd_uc_engine* sd_uc_engine_from_mapped(char* mapped, size_t filesi
 	return sd_uc;
 }
 
-struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer) {
+static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer* buffer, bool debug) {
 
-	struct Flags* flags = makeFlagsSingleFile(".file.dg");
+	char* argv_debug[] = {"program", "-debug", ".file.dg"};
+	char* argv_common[] = {"program", ".file.dg"};
+	char** argv;
+	int argc;
+	if (debug){
+		argv = argv_debug;
+		argc = 3;
+	} else {
+		argv = argv_common;
+		argc = 2;
+	}
+	struct Flags* flags = makeFlags(argc, argv);
 	assert(flags != NULL);
 
 	struct Ctx* ctx = ctx_ctor(flags, st_ctor());
@@ -233,13 +244,17 @@ struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer) {
 
 	struct IBuffer* ibu = ibu_ctor();
 
-	emit_asm_x86_basic_block(root, ctx, ibu);
+	struct RAT* rat = rat_ctor(RAT_ARCH_X86);
+
+	emit_asm_x86_basic_block(root, ctx, ibu, rat);
 
 	for (int i = 0; i < nblocks; i++) {
 		basicblock_dtor(graph[i]);
 	}
 
 	ibu_write(ibu, fout);
+
+	rat_dtor(rat);
 
 	free(graph);
 
@@ -286,6 +301,15 @@ struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer) {
 
 	return sduc;
 }
+
+struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer){
+	return sd_uc_engine_from_tacbuffer_common(buffer, false);
+}
+
+struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v2(struct TACBuffer* buffer, bool debug){
+	return sd_uc_engine_from_tacbuffer_common(buffer, debug);
+}
+
 
 uc_err sd_uc_mem_write64(struct sd_uc_engine* sduc, uint64_t address, const void* bytes) {
 	return uc_mem_write(sduc->uc, address, bytes, sizeof(uint64_t));

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "cg_x86_basic_block.h"
 
@@ -48,6 +49,7 @@ void emit_asm_x86_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 
 		default:
 			printf("tac->kind == 0x%x not handled in %s\n", tac->kind, __FUNCTION__);
+			exit(1);
 			break;
 	}
 }

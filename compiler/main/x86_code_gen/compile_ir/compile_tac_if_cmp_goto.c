@@ -15,7 +15,7 @@ void compile_tac_if_cmp_goto_x86(struct RAT* rat, struct TAC* tac, struct IBuffe
 
 	cmp(reg1, reg2, c);
 
-	char str[32];
+	char str[64];
 	sprintf(str, "L%d", tac->label_index);
 
 	switch (tac->op) {
