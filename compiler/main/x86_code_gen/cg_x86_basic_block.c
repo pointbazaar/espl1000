@@ -15,7 +15,7 @@
 #include "cg_x86_single_tac.h"
 #include "cg_x86_basic_block.h"
 
-static void allocate_registers(struct TACBuffer* b, struct RAT* rat, struct ST* st);
+void allocate_registers(struct TACBuffer* b, struct RAT* rat, struct ST* st);
 static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct ST* st);
 
 void emit_asm_x86_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct IBuffer* ibu, struct RAT* rat) {
@@ -24,15 +24,6 @@ void emit_asm_x86_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct 
 		return;
 
 	block->visited_emit_asm = true;
-
-	//create register allocation table for the basic block.
-	//struct RAT* rat = rat_ctor(RAT_ARCH_X86);
-
-	//simplest naive approach (first iteration):
-	//simply get a new register for each temporary
-	//the mapping tx -> ry can be saved in an array
-	//TODO: use better approach
-	allocate_registers(block->buffer, rat, ctx_tables(ctx));
 
 	if(flags_debug(ctx_flags(ctx)))
 		rat_print(rat);
@@ -55,7 +46,7 @@ void emit_asm_x86_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct 
 	emit_asm_x86_basic_block(block->branch_1, ctx, ibu, rat);
 }
 
-static void allocate_registers(struct TACBuffer* b, struct RAT* rat, struct ST* st) {
+void allocate_registers(struct TACBuffer* b, struct RAT* rat, struct ST* st) {
 
 	for (size_t i = 0; i < tacbuffer_count(b); i++) {
 		struct TAC* t = tacbuffer_get(b, i);
