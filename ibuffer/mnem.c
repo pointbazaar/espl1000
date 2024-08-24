@@ -173,22 +173,22 @@ char* MNEM[] = {
 									def(X86_OR, "or")
 									    def(X86_XOR, "xor")
 										def(X86_NOT, "not")
-	[X86_SHL] = "shl",
-	[X86_SHR] = "shr",
-	[X86_SAL] = "sal",
-	[X86_SAR] = "sar",
-	[X86_ROL] = "rol",
-	[X86_ROR] = "ror",
-										    def(X86_JMP, "jmp")
-											def(X86_JE, "je")
-											    def(X86_JNE, "jne")
-												def(X86_JG, "jg")
-												    def(X86_JGE, "jge")
-													def(X86_JL, "jl")
-													    def(X86_JLE, "jle")
-														def(X86_CALL, "call")
-														    def(X86_RET, "ret")
-															def(X86_NOP, "nop")
+										    [X86_SHL] = "shl",
+    [X86_SHR] = "shr",
+    [X86_SAL] = "sal",
+    [X86_SAR] = "sar",
+    [X86_ROL] = "rol",
+    [X86_ROR] = "ror",
+    def(X86_JMP, "jmp")
+	def(X86_JE, "je")
+	    def(X86_JNE, "jne")
+		def(X86_JG, "jg")
+		    def(X86_JGE, "jge")
+			def(X86_JL, "jl")
+			    def(X86_JLE, "jle")
+				def(X86_CALL, "call")
+				    def(X86_RET, "ret")
+					def(X86_NOP, "nop")
     // --- END X86 Instructions
 
 };

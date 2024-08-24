@@ -111,7 +111,7 @@ uc_err sd_uc_emu_start(struct sd_uc_engine* sd_uc, size_t nsteps, bool debug) {
 
 	uc_err err = uc_emu_start(sd_uc->uc, sd_uc->addr_start, sd_uc->addr_end, 0, nsteps);
 
-	if (err != UC_ERR_OK){
+	if (err != UC_ERR_OK) {
 		fprintf(stderr, "Error: (running %s\n):\n", __FUNCTION__);
 		fprintf(stderr, "%s\n", uc_strerror(err));
 	}
@@ -133,21 +133,21 @@ void sd_uc_print_stack(struct sd_uc_engine* sduc) {
 	err = uc_reg_read(sduc->uc, UC_X86_REG_RBP, &rbp);
 	assert(err == UC_ERR_OK);
 	const size_t window = 8 * 5;
-	uint64_t start = rsp-window;
-	uint64_t last = rsp+window;
+	uint64_t start = rsp - window;
+	uint64_t last = rsp + window;
 
 	printf("-- stack contents --\n");
-	for (uint64_t addr = start; addr <= last; addr+=8){
+	for (uint64_t addr = start; addr <= last; addr += 8) {
 		uint64_t read = 0;
 		err = sd_uc_mem_read64(sduc, addr, &read);
-		if (err != UC_ERR_OK){
+		if (err != UC_ERR_OK) {
 			printf("[%08lx] error reading memory", addr);
 			return;
 		}
 		printf("[%08lx] = %08lx", addr, read);
 
-		if(addr == rsp) printf(" <- rsp");
-		if(addr == rbp) printf(" <- rbp");
+		if (addr == rsp) printf(" <- rsp");
+		if (addr == rbp) printf(" <- rbp");
 
 		printf("\n");
 	}
@@ -157,14 +157,14 @@ void sd_uc_print_regs(struct sd_uc_engine* sduc) {
 
 	uint64_t reg;
 	char* names[] = {
-		"rax",
-		"rbx",
-		"rcx",
-		"rdx",
-		"rdi",
-		"rsi",
-		"rsp",
-		"rbp",
+	    "rax",
+	    "rbx",
+	    "rcx",
+	    "rdx",
+	    "rdi",
+	    "rsi",
+	    "rsp",
+	    "rbp",
 	};
 	int indexes[] = {
 	    UC_X86_REG_RAX,
@@ -262,7 +262,7 @@ static struct sd_uc_engine* sd_uc_engine_from_mapped(char* mapped, size_t filesi
 	return sd_uc;
 }
 
-static void sd_uc_fake_lvst(struct Ctx* ctx){
+static void sd_uc_fake_lvst(struct Ctx* ctx) {
 	struct ST* st = ctx_tables(ctx);
 	assert(st != NULL);
 
@@ -299,7 +299,7 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 	char* argv_common[] = {"program", ".file.dg"};
 	char** argv;
 	int argc;
-	if (debug){
+	if (debug) {
 		argv = argv_debug;
 		argc = 3;
 	} else {
@@ -312,7 +312,7 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 	struct Ctx* ctx = ctx_ctor(flags, st_ctor());
 	assert(ctx != NULL);
 
-	if (create_fake_lvst){
+	if (create_fake_lvst) {
 		sd_uc_fake_lvst(ctx);
 	}
 
@@ -403,15 +403,15 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 	return sduc;
 }
 
-struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer){
+struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer) {
 	return sd_uc_engine_from_tacbuffer_common(buffer, false, false);
 }
 
-struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v2(struct TACBuffer* buffer, bool debug){
+struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v2(struct TACBuffer* buffer, bool debug) {
 	return sd_uc_engine_from_tacbuffer_common(buffer, debug, false);
 }
 
-struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v3(struct TACBuffer* buffer, bool debug, bool fake_lvst){
+struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v3(struct TACBuffer* buffer, bool debug, bool fake_lvst) {
 	return sd_uc_engine_from_tacbuffer_common(buffer, debug, fake_lvst);
 }
 
