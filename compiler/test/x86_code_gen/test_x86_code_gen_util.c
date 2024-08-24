@@ -262,16 +262,12 @@ static struct sd_uc_engine* sd_uc_engine_from_mapped(char* mapped, size_t filesi
 	return sd_uc;
 }
 
-static void sd_uc_fake_lvst(struct Ctx* ctx) {
-	struct ST* st = ctx_tables(ctx);
-	assert(st != NULL);
+static void sd_uc_fake_lvst_line(struct Ctx* ctx, struct LVST* lvst, int i) {
 
-	struct LVST* lvst = st->lvst;
-	assert(lvst != NULL);
 	struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
 	assert(line != NULL);
 
-	sprintf(line->name, "fake variable");
+	sprintf(line->name, "fake variable %d", i);
 	struct Type* type = calloc(1, sizeof(struct Type));
 
 	struct BasicType* basicType = calloc(1, sizeof(struct BasicType));
@@ -291,6 +287,18 @@ static void sd_uc_fake_lvst(struct Ctx* ctx) {
 	line->read_only = false;
 
 	lvst_add(lvst, line);
+}
+
+static void sd_uc_fake_lvst(struct Ctx* ctx) {
+	struct ST* st = ctx_tables(ctx);
+	assert(st != NULL);
+
+	struct LVST* lvst = st->lvst;
+	assert(lvst != NULL);
+
+	for (int i = 0; i < TEST_FAKE_STACKFRAME_SIZE; i++) {
+		sd_uc_fake_lvst_line(ctx, lvst, i);
+	}
 }
 
 static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer* buffer, bool debug, bool create_fake_lvst) {

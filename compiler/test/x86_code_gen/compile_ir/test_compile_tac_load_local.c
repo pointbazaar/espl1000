@@ -12,25 +12,24 @@
 
 #include "test_compile_tac.h"
 
-static void test_fixed_value(uint64_t fixed_value, bool debug);
+static void test_fixed_value(uint64_t fixed_value, const uint32_t local_index, bool debug);
 
 void test_x86_compile_tac_load_local() {
 
 	status_test_x86_codegen("TAC_LOAD_LOCAL");
 
-	test_fixed_value(0x00330033, false);
-	test_fixed_value(0x00220022, false);
-	test_fixed_value(0x00120012, false);
+	test_fixed_value(0x00330033, 0, false);
+	test_fixed_value(0x00220022, 0, false);
+	test_fixed_value(0x00120012, 1, false);
+	test_fixed_value(0x00837500, 2, false);
 }
 
-static void test_fixed_value(uint64_t fixed_value, bool debug) {
+static void test_fixed_value(uint64_t fixed_value, const uint32_t local_index, bool debug) {
 
-	const uint64_t addr = sd_uc_default_stack_addr() - 8;
+	const uint64_t addr = sd_uc_default_stack_addr() - 8 * (local_index + 1);
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	const uint32_t local_index = 0;
-
-	tacbuffer_append(b, makeTACSetupStackframe(1));
+	tacbuffer_append(b, makeTACSetupStackframe(TEST_FAKE_STACKFRAME_SIZE));
 	tacbuffer_append(b, makeTACConst(1, 0x00));
 	tacbuffer_append(b, makeTACLoadLocal(1, local_index));
 	tacbuffer_append(b, makeTACReturn(1));
