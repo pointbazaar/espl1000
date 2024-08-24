@@ -14,11 +14,13 @@ add_executable(dragon-lexer-tests
 	test/testcases/tests_const.c
 	test/testcases/tests_comments.c
 	test/testcases/tests_other.c
+
+	src/driver.c
+	src/lexer_main.c
 )
 
 # Add the executable for dragon-lexer without lex.yy.c
 add_executable(dragon-lexer
-    src/driver.c
     src/main.c
     ${CMAKE_BINARY_DIR}/lex.yy.h
 )
@@ -40,7 +42,13 @@ add_custom_target(GenerateLexerFiles ALL
 )
 
 # Add a separate target for lex.yy.c
-add_library(lexer-lib STATIC ${CMAKE_BINARY_DIR}/lex.yy.c src/driver.h)
+add_library(
+	lexer-lib
+	STATIC ${CMAKE_BINARY_DIR}/lex.yy.c
+	src/driver.h
+	src/driver.c
+	src/lexer_main.c
+)
 
 set(MINIMAL_OPTS, "-g" "-march=native" "--std=c11")
 #set(COMMON_OPTS, "-Wall" "-Wextra" "-Werror")
@@ -48,8 +56,8 @@ set(MINIMAL_OPTS, "-g" "-march=native" "--std=c11")
 # Apply minimal compile options for lex.yy.c
 target_compile_options(lexer-lib PRIVATE ${MINIMAL_OPTS} "-Wno-implicit-function-declaration")
 
-# Link lexer-lib to the main executable
 target_link_libraries(dragon-lexer lexer-lib)
+target_link_libraries(dragon-lexer-tests lexer-lib)
 
 # Apply compile options for dragon-lexer
 target_compile_options(dragon-lexer PUBLIC ${COMMON_OPTS} "-lfl")
@@ -60,14 +68,10 @@ target_compile_options(dragon-lexer-tests PUBLIC ${COMMON_OPTS})
 #https://askubuntu.com/questions/289547/where-are-flex-libraries-located
 #this is the non-portable version... 
 #target_link_libraries(dragon-lexer /usr/lib/x86_64-linux-gnu/libfl.a)
-target_link_libraries(dragon-lexer libfl.so)
+target_link_libraries(lexer-lib libfl.so)
 
 target_link_libraries(dragon-lexer sd-token)
-
 target_link_libraries(dragon-lexer-tests sd-token)
 
-#Util dependency
 target_link_libraries(dragon-lexer sd-util)
-
-#Util dependency
 target_link_libraries(dragon-lexer-tests sd-util)

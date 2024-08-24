@@ -9,6 +9,8 @@
 #include "../../token/token/token.h"
 #include "../../token/list/TokenList.h"
 
+#include "../src/lexer_main.h"
+
 struct Token** lex(char* source) {
 
 	//make a file with the source
@@ -23,9 +25,12 @@ struct Token** lex(char* source) {
 	fprintf(f, "%s", source);
 	fclose(f);
 
-	char cmd[100];
-	sprintf(cmd, "dragon-lexer %s", fname_src);
-	system(cmd);
+	char* argv[] = {"programname", fname_src};
+	if (lexer_main(2, argv) != 0) {
+		fprintf(stderr, "error lexing %s\n", fname_src);
+		exit(1);
+		return NULL;
+	}
 
 	FILE* ftks = fopen(fname_tks, "r");
 

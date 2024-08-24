@@ -11,15 +11,15 @@
 #include "invoke.h"
 #include "parser/main/util/parser.h"
 
+#include "lexer/src/lexer_main.h"
+
 int invoke_lexer(char* filename) {
 
 	char* cmd1 = exit_malloc(strlen(filename) + 100);
 
-	strcpy(cmd1, "dragon-lexer ");
+	char* argv[] = {"programname", filename};
+	int status = lexer_main(2, argv);
 
-	strcat(cmd1, filename);
-
-	int status = system(cmd1);
 	free(cmd1);
 	return status;
 }

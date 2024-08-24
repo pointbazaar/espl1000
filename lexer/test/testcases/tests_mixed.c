@@ -248,7 +248,7 @@ void test_mixed_15() {
 
 	printt("test mixed 15\n");
 
-	char* str = "struct MyStruct{\n\tInt a,\n\tInt b\n}";
+	char* str = "struct MyStruct{\n\tint a,\n\tint b\n}";
 	struct Token** tokens = lex(str);
 
 	assert(tokens[0]->kind == STRUCT);
@@ -258,16 +258,16 @@ void test_mixed_15() {
 
 	assert(tokens[2]->kind == LCURLY);
 
-	assert(tokens[3]->kind == TYPEID);
+	assert(tokens[3]->kind == TYPEID_PRIMITIVE_INT);
 	assert(tokens[4]->kind == ID);
 
 	assert(tokens[5]->kind == COMMA);
 
-	assert(tokens[6]->kind == TYPEID);
+	assert(tokens[6]->kind == TYPEID_PRIMITIVE_INT);
 	assert(tokens[7]->kind == ID);
 
 	assert(tokens[8]->kind == RCURLY);
-	assert(tokens[8]->line_num == 4);
+	assert(tokens[8]->line_num == 5);
 
 	free_tokens(tokens, 9);
 }
