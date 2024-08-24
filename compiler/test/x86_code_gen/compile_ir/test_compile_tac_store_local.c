@@ -12,24 +12,24 @@
 
 #include "test_compile_tac.h"
 
-static void test_fixed_value(uint64_t fixed_value, bool debug);
+static void test_fixed_value(uint64_t fixed_value, const uint32_t local_index, bool debug);
 
 void test_x86_compile_tac_store_local() {
 
 	status_test_x86_codegen("TAC_STORE_LOCAL");
 
-	test_fixed_value(0x00330033, false);
-	test_fixed_value(0x00220022, false);
-	test_fixed_value(0x00120012, false);
+	test_fixed_value(0x00330033, 0, false);
+	test_fixed_value(0x00220022, 0, false);
+	test_fixed_value(0x00470088, 1, false);
+	test_fixed_value(0x00120012, 3, false);
 }
 
-static void test_fixed_value(uint64_t fixed_value, bool debug) {
+static void test_fixed_value(uint64_t fixed_value, const uint32_t local_index, bool debug) {
 
 	uc_err err;
-	const uint32_t local_index = 0;
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACSetupStackframe(1));
+	tacbuffer_append(b, makeTACSetupStackframe(TEST_FAKE_STACKFRAME_SIZE));
 	tacbuffer_append(b, makeTACConst(1, fixed_value));
 	tacbuffer_append(b, makeTACStoreLocal(local_index, 1));
 	tacbuffer_append(b, makeTACReturn(1));

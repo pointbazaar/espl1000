@@ -2,6 +2,8 @@
 
 #include "unicorn/unicorn.h"
 
+#define TEST_FAKE_STACKFRAME_SIZE 4
+
 struct TACBuffer;
 struct sd_uc_engine;
 
