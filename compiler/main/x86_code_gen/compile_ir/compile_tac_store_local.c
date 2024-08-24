@@ -9,8 +9,6 @@
 
 #include "util/ctx.h"
 
-#include "tables/sst/sst.h"
-#include "tables/stst/stst.h"
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
 
@@ -23,7 +21,7 @@ void compile_tac_store_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* c
 
 	struct LVST* lvst = ctx_tables(ctx)->lvst;
 
-	size_t offset = lvst_stack_frame_offset_avr(lvst, name);
+	size_t offset = lvst_stack_frame_offset_x86(lvst, name);
 
 	const int reg = rat_get_register(rat, tac->arg1);
 
@@ -36,11 +34,7 @@ void compile_tac_store_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* c
 
 	const int rscratch = rat_scratch_reg(rat);
 
-	mov_regs(rscratch, 7, c);
-	add(rscratch, offset, c);
+	mov_const(rscratch, -offset, c);
+	add(rscratch, 7, c);
 	mov_store(rscratch, reg, c);
-
-	// in case the value to store is only 8 bit,
-	// the upper 8 bit of the variable need
-	// to be cleared for subsequent loads.
 }
