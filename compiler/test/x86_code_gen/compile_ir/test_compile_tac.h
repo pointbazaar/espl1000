@@ -27,3 +27,5 @@ void test_x86_compile_tac_if_goto();
 void test_x86_compile_tac_load_local();
 
 void test_x86_compile_tac_store_local();
+
+void test_x86_compile_tac_return();

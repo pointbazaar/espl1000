@@ -32,7 +32,7 @@ void test_suite_x86_code_gen() {
 	test_x86_compile_tac_if_goto();
 	test_x86_compile_tac_if_cmp_goto();
 
-	//test_x86_compile_tac_return();
+	test_x86_compile_tac_return();
 	test_x86_compile_tac_copy();
 	//test_x86_compile_tac_param();
 	//test_x86_compile_tac_call();
