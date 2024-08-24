@@ -59,7 +59,7 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64
 #define not(dest, c) ibu1(X86_NOT, dest, c)
 
 #define shl(dest, imm, c) ibu2(X86_SHL, dest, imm, c)
-#define shr(dest, imm,c) ibu2(X86_SHR, dest, imm, c)
+#define shr(dest, imm, c) ibu2(X86_SHR, dest, imm, c)
 
 #define jmp(label, c) ibu_branch(X86_JMP, label, "")
 #define je(label, c) ibu_branch(X86_JE, label, "")

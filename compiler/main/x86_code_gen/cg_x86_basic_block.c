@@ -25,7 +25,7 @@ void emit_asm_x86_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct 
 
 	block->visited_emit_asm = true;
 
-	if(flags_debug(ctx_flags(ctx)))
+	if (flags_debug(ctx_flags(ctx)))
 		rat_print(rat);
 
 	for (size_t i = 0; i < tacbuffer_count(block->buffer); i++) {
@@ -34,9 +34,8 @@ void emit_asm_x86_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct 
 		emit_asm_x86_single_tac(rat, t, ctx, ibu);
 	}
 
-	if(flags_debug(ctx_flags(ctx)))
+	if (flags_debug(ctx_flags(ctx)))
 		rat_print(rat);
-
 
 	//false/default branch gets emitted first,
 	//because there is no label for it in a lot of cases
