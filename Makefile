@@ -22,15 +22,20 @@ stdlib:
 check-format:
 	./check-format.sh
 
-test: build-step ${TESTS}
-	export PATH=${PATH}:$(pwd)/build/lexer/:$(pwd)/build/parser:$(pwd)/build/compiler
+setup_path:
+	export PATH=${PATH}:$(pwd)/build/lexer/
+	export PATH=${PATH}:$(pwd)/build/parser/
+	export PATH=${PATH}:$(pwd)/build/compiler/main
+	export PATH=${PATH}:$(pwd)/build/compiler/test
+
+test: build-step ${TESTS} setup_path
 	./build/ast/sd-ast-test && \
 	./build/token/sd-token-tests && \
 	./build/rat/sd-rat-tests && \
 	./build/lexer/dragon-lexer-tests && \
 	./build/parser/dragon-parser-tests && \
 	cd compiler && \
-	../build/compiler/sd-tests && \
+	../build/compiler/test/sd-tests && \
 	cd .. && \
 	cd examples   && make test
 	#cd stdlib     && make test
@@ -40,14 +45,13 @@ TESTS=build/ast/sd-ast-test \
       build/rat/sd-rat-tests \
       build/lexer/dragon-lexer-tests \
       build/parser/dragon-parser-tests \
-      build/compiler/sd-tests \
+      build/compiler/test/sd-tests \
 
 VALGRIND_OPTS=--leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1
 
-ci_valgrind_tests: ${TESTS}
+ci_valgrind_tests: ${TESTS} setup_path
 	export CI_DIR=/home/circleci/project
 	export BUILD_DIR=${CI_DIR}/build
-	export PATH=${BUILD_DIR}/lexer/:${BUILD_DIR}/parser:${BUILD_DIR}/compiler:${PATH}
 	make valgrind_tests
 
 valgrind_tests: ${TESTS}

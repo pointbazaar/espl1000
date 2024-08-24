@@ -13,17 +13,21 @@ jobs:
       - run:
           environment:
             DEBIAN_FRONTEND: noninteractive
-          command: sudo apt-get update && sudo apt install -yqq gcc make cmake valgrind flex avra
+          command: sudo apt-get update && sudo apt install -yqq gcc make cmake valgrind flex avra nasm
       - run:
           name: "build"
           command: |
-            echo 'export PATH=/home/circleci/project/build/lexer/:/home/circleci/project/build/parser:/home/circleci/project/build/compiler:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/lexer/:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/parser:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/compiler/main:"$PATH"' >> "$BASH_ENV"
             source "$BASH_ENV"
             make build
       - run:
           name: "test"
           command: |
-            echo 'export PATH=/home/circleci/project/build/lexer/:/home/circleci/project/build/parser:/home/circleci/project/build/compiler:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/lexer/:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/parser:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/compiler/main:"$PATH"' >> "$BASH_ENV"
             source "$BASH_ENV"
             make test
       - run:
@@ -38,17 +42,21 @@ jobs:
       - run:
           environment:
             DEBIAN_FRONTEND: noninteractive
-          command: sudo apt-get update && sudo apt install -yqq gcc make cmake valgrind flex avra
+          command: sudo apt-get update && sudo apt install -yqq gcc make cmake valgrind flex avra nasm
       - run:
           name: "build"
           command: |
-            echo 'export PATH=/home/circleci/project/build/lexer/:/home/circleci/project/build/parser:/home/circleci/project/build/compiler:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/lexer/:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/parser:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/compiler/main:"$PATH"' >> "$BASH_ENV"
             source "$BASH_ENV"
             make build
       - run:
           name: "test"
           command: |
-            echo 'export PATH=/home/circleci/project/build/lexer/:/home/circleci/project/build/parser:/home/circleci/project/build/compiler:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/lexer/:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/parser:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/compiler/main:"$PATH"' >> "$BASH_ENV"
             source "$BASH_ENV"
             make test
       - run:
@@ -65,7 +73,9 @@ jobs:
       - run:
           name: "check-format"
           command: |
-            echo 'export PATH=/home/circleci/project/lexer/build:/home/circleci/project/parser/build:/home/circleci/project/compiler:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/lexer/:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/parser:"$PATH"' >> "$BASH_ENV"
+            echo 'export PATH=/home/circleci/project/build/compiler/main:"$PATH"' >> "$BASH_ENV"
             source "$BASH_ENV"
             echo "PATH is: $PATH"
             make check-format
