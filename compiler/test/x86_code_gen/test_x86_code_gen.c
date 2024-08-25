@@ -34,7 +34,7 @@ void test_suite_x86_code_gen() {
 
 	test_x86_compile_tac_return();
 	test_x86_compile_tac_copy();
-	//test_x86_compile_tac_param();
+	test_x86_compile_tac_param();
 	//test_x86_compile_tac_call();
 	//test_x86_compile_tac_setup_stackframe();
 
