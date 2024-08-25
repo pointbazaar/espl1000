@@ -44,6 +44,10 @@ void compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 	struct BasicBlock* root = graph[0];
 
 	struct RAT* rat = rat_ctor(RAT_ARCH_X86);
+	for (int i = 0; i < nblocks; i++) {
+		allocate_registers(graph[i]->buffer, rat, ctx_tables(ctx));
+	}
+
 	emit_asm_x86_basic_block(root, ctx, ibu, rat);
 
 	//delete the basic block graph
