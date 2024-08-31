@@ -5,13 +5,12 @@
 
 #include "compile_tac.h"
 
-void compile_tac_setup_sp(struct IBuffer* ibu) {
+void compile_tac_setup_sp(struct RAT* rat, struct IBuffer* ibu) {
 
 	//initialize Stack Pointer
 	char* comment = "setup SP";
 
-	//TODO: clean this up
-	const int RAT_SCRATCH_REG = 16;
+	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
 	ldi(RAT_SCRATCH_REG, high(RAMEND), comment);
 	out(SPH, RAT_SCRATCH_REG, comment);
