@@ -130,24 +130,31 @@ void rat_dtor(struct RAT* rat) {
 	free(rat);
 }
 
+const char* regnames_x86[] = {
+    [SD_REG_RAX] = "rax",
+    [SD_REG_RBX] = "rbx",
+    [SD_REG_RCX] = "rcx",
+    [SD_REG_RDX] = "rdx",
+    [SD_REG_RDI] = "rdi",
+    [SD_REG_RSI] = "rsi",
+
+    [SD_REG_RSP] = "rsp",
+    [SD_REG_RBP] = "rbp",
+
+    [SD_REG_R8] = "r8",
+    [SD_REG_R9] = "r9",
+    [SD_REG_R10] = "r10",
+    [SD_REG_R11] = "r11",
+    [SD_REG_R12] = "r12",
+    [SD_REG_R13] = "r13",
+    [SD_REG_R14] = "r14",
+    [SD_REG_R15] = "r15",
+};
+
 char* rat_regname_x86(size_t i) {
 
-	char* regnames[] = {
-	    "rax",
-	    "rbx",
-	    "rcx",
-	    "rdx",
-	    "rdi",
-	    "rsi",
-	    "rsp",
-	    "rbp",
-	    "r8",
-	    "r9",
-
-	};
-
 	assert(i < 8 + 2);
-	return regnames[i];
+	return (char*)regnames_x86[i];
 }
 
 static void rat_print_regname_x86(struct RAT* rat, size_t i) {
@@ -334,8 +341,29 @@ uint16_t rat_scratch_reg(struct RAT* rat) {
 	switch (rat->arch) {
 		// on avr, r16 is our scratch register
 		case RAT_ARCH_AVR: return 16;
-		case RAT_ARCH_X86: return 1;
-		default: return 0;
+		case RAT_ARCH_X86: return SD_REG_RBX;
+	}
+}
+
+enum SD_REGISTER rat_base_ptr(struct RAT* rat) {
+
+	switch (rat->arch) {
+		case RAT_ARCH_AVR:
+			printf("%s: not applicable for AVR\n", __func__);
+			exit(1);
+		case RAT_ARCH_X86:
+			return SD_REG_RBP;
+	}
+}
+
+enum SD_REGISTER rat_stack_ptr(struct RAT* rat) {
+
+	switch (rat->arch) {
+		case RAT_ARCH_AVR:
+			printf("%s: not applicable for AVR\n", __func__);
+			exit(1);
+		case RAT_ARCH_X86:
+			return SD_REG_RSP;
 	}
 }
 
@@ -343,7 +371,8 @@ uint16_t rat_capacity(struct RAT* rat) {
 
 	switch (rat->arch) {
 		case RAT_ARCH_AVR: return 32;
-		case RAT_ARCH_X86: return 8 + 2;
+		case RAT_ARCH_X86:
+			return sizeof(regnames_x86) / sizeof(regnames_x86[0]);
 		default: return 0;
 	}
 }

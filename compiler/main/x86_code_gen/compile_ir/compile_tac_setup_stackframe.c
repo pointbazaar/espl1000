@@ -12,10 +12,10 @@ void compile_tac_setup_stackframe_x86(struct RAT* rat, struct TAC* tac, struct I
 
 	// load base pointer
 	// rbp = rsp
-	mov_regs(7, 6, c);
+	mov_regs(rat_base_ptr(rat), rat_stack_ptr(rat), c);
 
 	// create stack frame, without overwriting the memory
 	mov_const(rat_scratch_reg(rat), stack_frame_size_bytes, c);
 	// sub rsp, $stack_frame_size
-	sub(6, rat_scratch_reg(rat), c);
+	sub(rat_stack_ptr(rat), rat_scratch_reg(rat), c);
 }
