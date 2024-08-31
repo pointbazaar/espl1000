@@ -34,70 +34,56 @@ void compile_tac_binary_op_immediate_x86(struct RAT* rat, struct TAC* tac, struc
 
 static void case_tac_op_shift_left(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
 
-	int dest = rat_get_register(rat, tac->dest);
-	const uint16_t immediate = tac->const_value;
-
 	char* c = "TAC_BINARY_OP_IMMEDIATE <<";
 
+	const int dest = rat_get_register(rat, tac->dest);
+	const uint16_t immediate = tac->const_value;
+
 	shl(dest, immediate, c);
-	for (int i = 0; i < immediate; i++) {
-		//shl(dest, immediate, c);
-	}
 }
 
 static void case_tac_op_shift_right(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
 
-	int dest = rat_get_register(rat, tac->dest);
-	const uint16_t immediate = tac->const_value;
-
 	char* c = "TAC_BINARY_OP_IMMEDIATE >>";
 
+	const int dest = rat_get_register(rat, tac->dest);
+	const uint16_t immediate = tac->const_value;
+
 	shr(dest, immediate, c);
-	for (int i = 0; i < immediate; i++) {
-		//shr(dest, immediate, c);
-	}
 }
 
 static void case_tac_op_xor(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
 
-	int dest = rat_get_register(rat, tac->dest);
-	const uint16_t immediate = tac->const_value;
-
 	char* c = "TAC_BINARY_OP_IMMEDIATE ^";
 
-	uint8_t low = immediate & 0xff;
-	uint8_t high = (immediate & 0xff00) >> 8;
+	const int dest = rat_get_register(rat, tac->dest);
+	const uint64_t immediate = tac->const_value;
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
-	mov_const(RAT_SCRATCH_REG, low, c);
+	mov_const(RAT_SCRATCH_REG, immediate, c);
 	xor(dest, RAT_SCRATCH_REG, c);
 }
 
 static void case_tac_op_and(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
 
-	//andi can only operate on high registers
-
 	char* c = "TAC_BINARY_OP_IMMEDIATE &";
 
 	const uint8_t rdest = rat_get_register(rat, tac->dest);
-	const uint16_t immediate = tac->const_value;
-
-	uint8_t low = immediate & 0x00ff;
-	uint8_t high = (immediate & 0xff00) >> 8;
+	const uint64_t immediate = tac->const_value;
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
-	mov_const(RAT_SCRATCH_REG, low, c);
+	mov_const(RAT_SCRATCH_REG, immediate, c);
 	and(rdest, RAT_SCRATCH_REG, c);
 }
 
 static void case_tac_op_or(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
 
-	int dest = rat_get_register(rat, tac->dest);
-	const uint64_t immediate = tac->const_value;
-
 	char* c = "TAC_BINARY_OP_IMMEDIATE |";
+
+	const int dest = rat_get_register(rat, tac->dest);
+	const uint64_t immediate = tac->const_value;
 
 	mov_const(rat_scratch_reg(rat), immediate, c);
 	or (dest, rat_scratch_reg(rat), c);
@@ -105,10 +91,10 @@ static void case_tac_op_or(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac
 
 static void case_tac_op_add(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
 
-	int dest = rat_get_register(rat, tac->dest);
-	const int16_t immediate = tac->const_value;
-
 	char* c = "TAC_BINARY_OP_IMMEDIATE +";
+
+	const int dest = rat_get_register(rat, tac->dest);
+	const int16_t immediate = tac->const_value;
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
@@ -118,11 +104,11 @@ static void case_tac_op_add(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 static void case_tac_op_sub(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
 
-	int dest = rat_get_register(rat, tac->dest);
-
-	const int16_t immediate = tac->const_value;
-
 	char* c = "TAC_BINARY_OP_IMMEDIATE -";
+
+	const int dest = rat_get_register(rat, tac->dest);
+
+	const int64_t immediate = tac->const_value;
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
