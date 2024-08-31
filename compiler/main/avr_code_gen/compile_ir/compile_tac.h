@@ -34,7 +34,7 @@ void compile_tac_load_const_addr(struct RAT* rat, struct TAC* tac, struct IBuffe
 void compile_tac_store_const_addr(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 
 void compile_tac_setup_stackframe(struct TAC* tac, struct IBuffer* ibu);
-void compile_tac_setup_sp(struct IBuffer* ibu);
+void compile_tac_setup_sp(struct RAT* rat, struct IBuffer* ibu);
 
 void compile_tac_load(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 void compile_tac_store(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
