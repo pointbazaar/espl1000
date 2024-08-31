@@ -22,7 +22,7 @@ void test_x86_compile_tac_goto() {
 	tacbuffer_append(b, makeTACGoto(43));
 	tacbuffer_append(b, makeTACReturn(0));
 
-	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 	sd_uc_emu_start(system, 7, false);
 

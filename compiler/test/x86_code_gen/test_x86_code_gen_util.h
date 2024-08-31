@@ -7,7 +7,6 @@
 struct TACBuffer;
 struct sd_uc_engine;
 
-struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer);
 struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v2(struct TACBuffer* buffer, bool debug);
 struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v3(struct TACBuffer* buffer, bool debug, bool fake_lvst);
 

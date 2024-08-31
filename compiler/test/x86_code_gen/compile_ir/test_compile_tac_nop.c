@@ -26,7 +26,7 @@ void test_x86_compile_tac_nop() {
 		tacbuffer_append(b, makeTACNop());
 	}
 
-	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 	//record register values
 	int8_t regs[32];

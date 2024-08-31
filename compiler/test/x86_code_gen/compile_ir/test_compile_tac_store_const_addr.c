@@ -35,7 +35,7 @@ static void test_at_addr(uint64_t addr) {
 	tacbuffer_append(b, makeTACConst(1, fixed_value));
 	tacbuffer_append(b, makeTACStoreConstAddr(addr, 1));
 
-	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 	assert(system != NULL);
 
 	uc_err err;

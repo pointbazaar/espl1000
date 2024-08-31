@@ -83,7 +83,7 @@ static void case_false() {
 	tacbuffer_append(b, makeTACLabel(lend));
 	tacbuffer_append(b, makeTACReturn(0));
 
-	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 	sd_uc_emu_start(system, 0, false);
 
@@ -131,7 +131,7 @@ static void case_mixed() {
 	tacbuffer_append(b, makeTACLabel(lend));
 	tacbuffer_append(b, makeTACReturn(0));
 
-	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 	sd_uc_emu_start(system, 0, false);
 

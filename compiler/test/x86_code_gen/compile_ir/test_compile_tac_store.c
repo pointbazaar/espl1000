@@ -12,7 +12,7 @@
 
 #include "test_compile_tac.h"
 
-static void common(uint64_t addr, uint64_t fixed_value);
+static void common(uint64_t addr, uint64_t fixed_value, bool debug);
 
 void test_x86_compile_tac_store() {
 
@@ -20,16 +20,20 @@ void test_x86_compile_tac_store() {
 
 	const uint64_t start = sd_uc_default_start_addr() + 0x80;
 
-	for (uint64_t addr = start; addr < start + 0x5; addr++) {
+	common(start, 1000, false);
+	common(start + 1, 1000, false);
 
-		common(addr, 1000);
-		common(addr, 1001);
-		common(addr, 1002);
-		common(addr, 1003);
-	}
+	common(start, 1001, false);
+	common(start + 2, 1001, false);
+
+	common(start, 1002, false);
+	common(start + 5, 1002, false);
+
+	common(start, 1003, false);
+	common(start + 9, 1003, false);
 }
 
-static void common(uint64_t addr, uint64_t fixed_value) {
+static void common(uint64_t addr, uint64_t fixed_value, bool debug) {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
@@ -37,7 +41,7 @@ static void common(uint64_t addr, uint64_t fixed_value) {
 	tacbuffer_append(b, makeTACConst(2, addr));
 	tacbuffer_append(b, makeTACStore(2, 1));
 
-	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, debug);
 
 	uc_err err;
 	err = sd_uc_emu_start(system, 0, false);
