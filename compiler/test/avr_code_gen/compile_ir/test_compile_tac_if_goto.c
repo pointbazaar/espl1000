@@ -15,24 +15,24 @@
 
 #include "test_compile_tac.h"
 
-static void case_true();
+static void case_true_8bit();
 static void case_true_16bit();
-static void case_false();
+static void case_false_8bit();
 static void case_false_16bit();
 static void case_mixed();
 
 void test_compile_tac_if_goto() {
 
-	case_true();
+	case_true_8bit();
 	case_true_16bit();
 
-	case_false();
+	case_false_8bit();
 	case_false_16bit();
 
 	case_mixed();
 }
 
-static void case_true() {
+static void case_true_8bit() {
 
 	status_test_codegen("TAC_IF_GOTO true (8 bit)");
 
@@ -100,7 +100,7 @@ static void case_true_16bit() {
 	vmcu_system_dtor(system);
 }
 
-static void case_false() {
+static void case_false_8bit() {
 
 	status_test_codegen("TAC_IF_GOTO false (8 bit)");
 
