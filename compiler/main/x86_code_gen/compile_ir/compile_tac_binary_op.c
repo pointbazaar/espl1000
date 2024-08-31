@@ -17,8 +17,6 @@ static void case_cmp_eq(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int
 
 static int label_counter = 0;
 
-static char* c = "TAC_BINARY_OP";
-
 void compile_tac_binary_op_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
@@ -128,6 +126,7 @@ static void case_compare(int RAT_SCRATCH_REG, struct RAT* rat, struct TAC* tac, 
 
 static void case_cmp_lt(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc) {
 
+	char* c = "TAC_BINARY_OP <";
 	char Ltrue[20];
 	char Lend[20];
 
@@ -148,6 +147,7 @@ static void case_cmp_lt(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int
 }
 
 static void case_cmp_ge_8bit(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc) {
+	char* c = "TAC_BINARY_OP >=";
 	//5 instructions
 
 	// ldi r16, 1
@@ -172,6 +172,8 @@ static void case_cmp_ge_8bit(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest
 }
 
 static void case_cmp_ge_16bit(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc) {
+
+	char* c = "TAC_BINARY_OP >=";
 
 	char Ltrue[20];
 	char Lfalse[20];
@@ -202,6 +204,9 @@ static void case_cmp_ge(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int
 }
 
 static void case_cmp_neq_8bit(struct IBuffer* ibu, int rdest, int rsrc) {
+
+	char* c = "TAC_BINARY_OP !=";
+
 	//we just subtract the 2 registers,
 	//if they were equal, rdest will be 0, meaning false
 	//otherwise it will be nonzero, meaning true
@@ -210,6 +215,8 @@ static void case_cmp_neq_8bit(struct IBuffer* ibu, int rdest, int rsrc) {
 }
 
 static void case_cmp_neq_16bit(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc) {
+
+	char* c = "TAC_BINARY_OP !=";
 
 	mov_const(RAT_SCRATCH_REG, 0, c);
 	//cpse(rdest, rsrc, c);
@@ -225,6 +232,8 @@ static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc) {
 }
 
 static void case_cmp_eq(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc) {
+
+	char* c = "TAC_BINARY_OP ==";
 
 	char Lend[20];
 	sprintf(Lend, "Lend%d", label_counter++);
