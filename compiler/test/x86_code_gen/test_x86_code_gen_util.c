@@ -411,10 +411,6 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 	return sduc;
 }
 
-struct sd_uc_engine* sd_uc_engine_from_tacbuffer(struct TACBuffer* buffer) {
-	return sd_uc_engine_from_tacbuffer_common(buffer, false, false);
-}
-
 struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v2(struct TACBuffer* buffer, bool debug) {
 	return sd_uc_engine_from_tacbuffer_common(buffer, debug, false);
 }

@@ -84,7 +84,7 @@ static void test_compile_tac_binary_op_add_8bit() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -114,7 +114,7 @@ static void test_compile_tac_binary_op_sub_8bit() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -144,7 +144,7 @@ static void test_compile_tac_binary_op_and_8bit() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -174,7 +174,7 @@ static void test_compile_tac_binary_op_or_8bit() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -203,7 +203,7 @@ static void test_compile_tac_binary_op_xor_8bit() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -231,7 +231,7 @@ static void test_compile_tac_binary_op_xor_mixed1() {
 
 	tacbuffer_append(b, makeTACReturn(0));
 
-	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 	sd_uc_emu_start(system, 0, false);
 
@@ -261,7 +261,7 @@ static void test_compile_tac_binary_op_xor_mixed2() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -290,7 +290,7 @@ static void test_compile_tac_binary_op_neq_true_8bit() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -319,7 +319,7 @@ static void test_compile_tac_binary_op_neq_false_8bit() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -348,7 +348,7 @@ static void test_compile_tac_binary_op_lt_true_8bit() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -376,7 +376,7 @@ static void test_compile_tac_binary_op_lt_false_8bit() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -404,7 +404,7 @@ static void test_compile_tac_binary_op_eq_true_8bit() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 		uc_err err;
 
 		err = sd_uc_emu_start(system, 0, false);
@@ -435,7 +435,7 @@ static void test_compile_tac_binary_op_eq_false_8bit() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 		uc_err err;
 
 		err = sd_uc_emu_start(system, 0, false);
@@ -467,7 +467,7 @@ static void test_compile_tac_binary_op_geq_true_8bit() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -496,7 +496,7 @@ static void test_compile_tac_binary_op_geq_false_8bit() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 

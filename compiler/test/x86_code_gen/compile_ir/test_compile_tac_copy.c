@@ -12,19 +12,19 @@
 
 #include "test_compile_tac.h"
 
-static void test_fixed_value(uint64_t fixed_value);
+static void test_fixed_value(uint64_t fixed_value, bool debug);
 
 void test_x86_compile_tac_copy() {
 
 	status_test_x86_codegen("TAC_COPY");
 
-	test_fixed_value(0x03);
-	test_fixed_value(0x04);
-	test_fixed_value(10);
-	test_fixed_value(19);
+	test_fixed_value(0x03, false);
+	test_fixed_value(0x04, false);
+	test_fixed_value(10, false);
+	test_fixed_value(19, false);
 }
 
-static void test_fixed_value(uint64_t fixed_value) {
+static void test_fixed_value(uint64_t fixed_value, bool debug) {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 	const uint64_t addr = sd_uc_default_start_addr() + 1000;
@@ -34,7 +34,7 @@ static void test_fixed_value(uint64_t fixed_value) {
 
 	tacbuffer_append(b, makeTACStoreConstAddr(addr, 1));
 
-	struct sd_uc_engine* sduc = sd_uc_engine_from_tacbuffer(b);
+	struct sd_uc_engine* sduc = sd_uc_engine_from_tacbuffer_v2(b, debug);
 
 	uc_err err;
 	// prep the address

@@ -78,7 +78,7 @@ static void case_sub() {
 
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -105,7 +105,7 @@ static void case_and() {
 		tacbuffer_append(b, makeTACBinOpImmediate(0, TAC_OP_AND, change));
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -132,7 +132,7 @@ static void case_or() {
 		tacbuffer_append(b, makeTACBinOpImmediate(0, TAC_OP_OR, change));
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -159,7 +159,7 @@ static void case_xor() {
 		tacbuffer_append(b, makeTACBinOpImmediate(0, TAC_OP_XOR, change));
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -188,7 +188,7 @@ static void case_shift_left() {
 		tacbuffer_append(b, makeTACBinOpImmediate(0, TAC_OP_SHIFT_LEFT, change));
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
@@ -217,7 +217,7 @@ static void case_shift_right() {
 		tacbuffer_append(b, makeTACBinOpImmediate(0, TAC_OP_SHIFT_RIGHT, change));
 		tacbuffer_append(b, makeTACReturn(0));
 
-		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer(b);
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
 		sd_uc_emu_start(system, 0, false);
 
