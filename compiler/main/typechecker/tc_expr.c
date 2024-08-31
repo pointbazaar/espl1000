@@ -39,14 +39,15 @@ bool tc_expr(struct Expr* expr, struct TCCtx* tcctx) {
 			char* s_left = str_type(left);
 			char* s_right = str_type(right);
 
-			char msg[200];
-			sprintf(msg, "c_types_util not equal in expression. left: %s, right: %s", s_left, s_right);
+			char* msg;
+			asprintf(&msg, "c_types_util not equal in expression. left: %s, right: %s", s_left, s_right);
 
 			error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_BINOP_TYPE_MISMATCH);
 
 			free(snippet);
 			free(s_left);
 			free(s_right);
+			free(msg);
 		}
 
 		return well_formed;

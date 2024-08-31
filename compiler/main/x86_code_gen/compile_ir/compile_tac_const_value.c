@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "rat/rat.h"
 
@@ -12,8 +13,10 @@ void compile_tac_const_value_x86(struct RAT* rat, struct TAC* tac, struct IBuffe
 
 	const uint64_t value = tac->const_value;
 
-	char c[100];
-	sprintf(c, "TAC_CONST_VALUE %lu (0x%lx)", value, value);
+	char* c;
+	asprintf(&c, "TAC_CONST_VALUE %lu (0x%lx)", value, value);
 
 	mov_const(reg, (value & 0xffffffff), c);
+
+	free(c);
 }

@@ -24,12 +24,14 @@ bool tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx) {
 
 		char* s1 = str_expr(i->condition);
 
-		char msg[100];
-		sprintf(msg, "if %s {", s1);
+		char* msg;
+		asprintf(&msg, "if %s {", s1);
 
 		free(s1);
 
 		error_snippet(tcctx, msg, TC_ERR_CONDITION_REQUIRES_BOOL);
+
+		free(msg);
 
 		return false;
 	}

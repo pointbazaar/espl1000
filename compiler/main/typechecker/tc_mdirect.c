@@ -32,12 +32,14 @@ bool tc_mdirect(struct MDirect* mdirect, struct TCCtx* tcctx) {
 
 		char* s1 = str_expr(mdirect->expr);
 
-		char msg[100];
-		sprintf(msg, "[%s]", s1);
+		char* msg;
+		asprintf(&msg, "[%s]", s1);
 
 		free(s1);
 
 		error_snippet(tcctx, msg, TC_ERR_INDEX_NOT_INTEGER_TYPE);
+
+		free(msg);
 
 		return false;
 	}

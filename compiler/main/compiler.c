@@ -88,7 +88,6 @@ bool compile(struct Flags* flags) {
 
 	int status = 0;
 
-	char cmd[200];
 	const char* prog;
 	const char* stdout_file;
 	const char* stderr_file;
@@ -104,9 +103,12 @@ bool compile(struct Flags* flags) {
 	}
 
 	const char* tmplt = "%s %s > %s 2> %s";
-	sprintf(cmd, tmplt, prog, flags_asm_filename(flags), stdout_file, stderr_file);
+	char* cmd;
+	asprintf(&cmd, tmplt, prog, flags_asm_filename(flags), stdout_file, stderr_file);
 
 	status = system(cmd);
+
+	free(cmd);
 
 	if (WEXITSTATUS(status) != 0) {
 		printf("[Error] error with %s, see %s, %s \n", prog, stdout_file, stderr_file);

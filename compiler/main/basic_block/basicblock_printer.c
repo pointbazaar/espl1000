@@ -12,8 +12,8 @@ static void basicblock_dot_section(FILE* fout, uint32_t i, struct BasicBlock* bl
 
 void write_dot_file_from_graph(struct BasicBlock** blocks, uint32_t count, char* function_name, struct Ctx* ctx) {
 
-	char fname_buffer[100];
-	sprintf(fname_buffer, "%s.dot", function_name);
+	char* fname_buffer;
+	asprintf(&fname_buffer, "%s.dot", function_name);
 	FILE* fout = fopen(fname_buffer, "w");
 
 	fprintf(fout, "digraph G {\n");
@@ -30,11 +30,12 @@ void write_dot_file_from_graph(struct BasicBlock** blocks, uint32_t count, char*
 	fprintf(fout, "}\n");
 
 	fclose(fout);
+	free(fname_buffer);
 
-	char cmd_buffer[100];
-
-	sprintf(cmd_buffer, "dot -Tpng %s.dot > %s.png", function_name, function_name);
+	char* cmd_buffer;
+	asprintf(&cmd_buffer, "dot -Tpng %s.dot > %s.png", function_name, function_name);
 	system(cmd_buffer);
+	free(cmd_buffer);
 }
 
 static void basicblock_dot_section(FILE* fout, uint32_t i, struct BasicBlock* block, struct Ctx* ctx) {

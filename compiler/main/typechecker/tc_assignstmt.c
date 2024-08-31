@@ -59,15 +59,16 @@ static bool check_type_rules_assign(struct AssignStmt* a, struct TCCtx* tcctx) {
 
 		char* snippet = str_assign_stmt(a);
 
-		char msg[200];
+		char* msg;
 
-		sprintf(msg, "\texpected type: %s, actual type: %s", str_t1, str_t2);
+		asprintf(&msg, "\texpected type: %s, actual type: %s", str_t1, str_t2);
 
 		error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_ASSIGN_TYPE_MISMATCH);
 
 		free(str_t1);
 		free(str_t2);
 		free(snippet);
+		free(msg);
 
 		return false;
 	}

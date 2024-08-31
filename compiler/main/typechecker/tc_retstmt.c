@@ -33,14 +33,15 @@ bool tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx) {
 		char* s2 = str_type(returnedType);
 		char* snippet = str_ret_stmt(r);
 
-		char msg[200];
-		sprintf(msg, "expected type: %s, actual type: %s", s1, s2);
+		char* msg;
+		asprintf(&msg, "expected type: %s, actual type: %s", s1, s2);
 
 		free(s1);
 		free(s2);
 
 		error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_WRONG_RETURN_TYPE);
 		free(snippet);
+		free(msg);
 
 		return false;
 	}
