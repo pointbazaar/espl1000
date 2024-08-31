@@ -97,5 +97,8 @@ char* lexer_make_tkn_filename(char* filename) {
 	strcat(tkn_filename, basename(cpy_filename_2));
 	strcat(tkn_filename, ".tokens");
 
+	free(cpy_filename_1);
+	free(cpy_filename_2);
+
 	return tkn_filename;
 }
