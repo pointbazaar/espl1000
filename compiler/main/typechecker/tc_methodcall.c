@@ -79,12 +79,13 @@ static bool tc_methodcall_args(
 
 		char* snippet = str_call(m);
 
-		char msg[200];
-		sprintf(msg, "expected: %d args", expect_args);
+		char* msg;
+		asprintf(&msg, "expected: %d args", expect_args);
 
 		error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_ARG_NUM_MISMATCH);
 
 		free(snippet);
+		free(msg);
 		return false;
 	}
 
@@ -123,8 +124,8 @@ static bool tc_methodcall_arg(
 		char* sTypeActual = str_type(actual_type);
 		char* sTypeExpected = str_type(expect_type);
 
-		char msg[200];
-		sprintf(msg, "%s, (of type %s), but expected type %s", s2, sTypeActual, sTypeExpected);
+		char* msg;
+		asprintf(&msg, "%s, (of type %s), but expected type %s", s2, sTypeActual, sTypeExpected);
 
 		free(s2);
 		free(sTypeActual);
@@ -133,6 +134,7 @@ static bool tc_methodcall_arg(
 		error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_ARG_TYPE_MISMATCH);
 
 		free(snippet);
+		free(msg);
 
 		return false;
 	}

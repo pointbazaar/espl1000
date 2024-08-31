@@ -24,12 +24,15 @@ bool tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx) {
 
 		char* s1 = str_expr(w->condition);
 
-		char msg[200];
-		sprintf(msg, "while %s {", s1);
+		char* msg;
+		asprintf(&msg, "while %s {", s1);
 
 		free(s1);
 
 		error_snippet(tcctx, msg, TC_ERR_CONDITION_REQUIRES_BOOL);
+
+		free(msg);
+
 		return false;
 	}
 

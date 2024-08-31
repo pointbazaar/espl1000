@@ -67,7 +67,7 @@ static void case_not(bool debug) {
 	uint64_t rax = 1;
 	sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
 
-	if(debug){
+	if (debug) {
 		printf("rax = 0x%lx (%ld)\n", rax, rax);
 	}
 
@@ -96,7 +96,7 @@ static void case_bitwise_neg(bool debug) {
 		uint64_t rax = 1;
 		sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
 
-		if(debug){
+		if (debug) {
 			printf("rax = 0x%lx (%ld)\n", rax, rax);
 		}
 
@@ -105,4 +105,3 @@ static void case_bitwise_neg(bool debug) {
 		sd_uc_close(system);
 	}
 }
-

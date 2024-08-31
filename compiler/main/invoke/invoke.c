@@ -2,9 +2,12 @@
 
 #include <stdbool.h>
 #include <string.h>
-#include <stdio.h>
 #include <stdlib.h>
+#define _GNU_SOURCE 1
+#include <stdio.h>
 #include <libgen.h>
+
+int asprintf(char** restrict strp, const char* restrict fmt, ...);
 
 #include "../../../util/exit_malloc/exit_malloc.h"
 #include "util/fileutils/fileutils.h"
@@ -15,12 +18,9 @@
 
 int invoke_lexer(char* filename) {
 
-	char* cmd1 = exit_malloc(strlen(filename) + 100);
-
 	char* argv[] = {"programname", filename};
 	int status = lexer_main(2, argv);
 
-	free(cmd1);
 	return status;
 }
 
@@ -33,9 +33,8 @@ struct Namespace* invoke_parser(char* filename) {
 	char* base_name = basename(fnamecpy);
 	char* dir_name = dirname(fnamecpy);
 
-	char* cmd2 = exit_malloc(strlen(filename) + 100);
-
-	sprintf(cmd2, "%s/.%s.tokens", dir_name, base_name);
+	char* cmd2;
+	asprintf(&cmd2, "%s/.%s.tokens", dir_name, base_name);
 
 	struct Namespace* ns = build_namespace(cmd2);
 
