@@ -148,13 +148,6 @@ static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 			break;
 
 		// --- START X86
-		case X86_MOV_CONST:
-			sprintf(s, "%s, %ld", rat_regname_x86(x1), x2);
-			break;
-		case X86_MOV_REGS:
-		case X86_CMOVE:
-			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86(x2));
-			break;
 		case X86_MOV_LOAD:
 			sprintf(s, "%s, qword [%s]", rat_regname_x86(x1), rat_regname_x86(x2));
 			break;
@@ -163,18 +156,13 @@ static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 			break;
 		case X86_PUSH:
 		case X86_POP:
-			sprintf(s, "%s", rat_regname_x86(x1));
-			break;
-		case X86_ADD:
-		case X86_SUB:
-			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86(x2));
-			break;
 		case X86_INC:
 		case X86_DEC:
 		case X86_NEG:
 		case X86_NOT:
 			sprintf(s, "%s", rat_regname_x86(x1));
 			break;
+		case X86_MOV_CONST:
 		case X86_SHL:
 		case X86_SHR:
 		case X86_SAL:
@@ -183,10 +171,14 @@ static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 		case X86_ROR:
 			sprintf(s, "%s, %ld", rat_regname_x86(x1), x2);
 			break;
+		case X86_ADD:
+		case X86_SUB:
 		case X86_CMP:
 		case X86_AND:
 		case X86_OR:
 		case X86_XOR:
+		case X86_MOV_REGS:
+		case X86_CMOVE:
 			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86(x2));
 			break;
 		case X86_JMP:
