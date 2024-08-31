@@ -9,20 +9,17 @@
 static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 static void case_compare(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 
-static void case_cmp_lt(struct IBuffer* ibu, int rdest, int rsrc, bool wide);
-static void case_cmp_ge(struct IBuffer* ibu, int rdest, int rsrc, bool wide);
-static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc, bool wide);
-static void case_cmp_eq(struct IBuffer* ibu, int rdest, int rsrc, bool wide);
+static void case_cmp_lti(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide);
+static void case_cmp_ge(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide);
+static void case_cmp_neq(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide);
+static void case_cmp_eq(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide);
+static void case_cmp_lt(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide);
 
 static int label_counter = 0;
 
 static char* c = "TAC_BINARY_OP";
 
-static int RAT_SCRATCH_REG = 16;
-
 void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
-
-	RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
 	switch (tac->op) {
 
@@ -47,7 +44,7 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu
 	}
 }
 
-static void case_arithmetic_add(int rdest, int rsrc, bool dest_wide, bool src_wide, struct IBuffer* ibu) {
+static void case_arithmetic_add(int RAT_SCRATCH_REG, int rdest, int rsrc, bool dest_wide, bool src_wide, struct IBuffer* ibu) {
 
 	char* c = "TAC_BINARY_OP + ";
 
@@ -64,7 +61,7 @@ static void case_arithmetic_add(int rdest, int rsrc, bool dest_wide, bool src_wi
 		adc(rdest + 1, reg2, c);
 }
 
-static void case_arithmetic_sub(int rdest, int rsrc, bool dest_wide, bool src_wide, struct IBuffer* ibu) {
+static void case_arithmetic_sub(int RAT_SCRATCH_REG, int rdest, int rsrc, bool dest_wide, bool src_wide, struct IBuffer* ibu) {
 
 	char* c = "TAC_BINARY_OP - ";
 
@@ -82,7 +79,7 @@ static void case_arithmetic_sub(int rdest, int rsrc, bool dest_wide, bool src_wi
 	}
 }
 
-static void case_arithmetic_xor(int rdest, int rsrc, bool dest_wide, bool src_wide, struct IBuffer* ibu) {
+static void case_arithmetic_xor(int RAT_SCRATCH_REG, int rdest, int rsrc, bool dest_wide, bool src_wide, struct IBuffer* ibu) {
 
 	char* c = "TAC_BINARY_OP ^";
 
@@ -101,6 +98,7 @@ static void case_arithmetic_xor(int rdest, int rsrc, bool dest_wide, bool src_wi
 
 static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
+	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 	//left and right operand should have registers
 
 	int rsrc = rat_get_register(rat, tac->arg1);
@@ -113,11 +111,11 @@ static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ib
 	switch (tac->op) {
 
 		case TAC_OP_ADD:
-			case_arithmetic_add(rdest, rsrc, dest_wide, src_wide, ibu);
+			case_arithmetic_add(RAT_SCRATCH_REG, rdest, rsrc, dest_wide, src_wide, ibu);
 			break;
 
 		case TAC_OP_SUB:
-			case_arithmetic_sub(rdest, rsrc, dest_wide, src_wide, ibu);
+			case_arithmetic_sub(RAT_SCRATCH_REG, rdest, rsrc, dest_wide, src_wide, ibu);
 			break;
 
 		case TAC_OP_MUL:
@@ -138,7 +136,7 @@ static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ib
 			break;
 
 		case TAC_OP_XOR:
-			case_arithmetic_xor(rdest, rsrc, dest_wide, src_wide, ibu);
+			case_arithmetic_xor(RAT_SCRATCH_REG, rdest, rsrc, dest_wide, src_wide, ibu);
 			break;
 
 		default: break;
@@ -147,6 +145,7 @@ static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ib
 
 static void case_compare(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
+	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 	//left and right operand should have registers
 
 	int rsrc = rat_get_register(rat, tac->arg1);
@@ -162,15 +161,15 @@ static void case_compare(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) 
 	const bool wide = wide1 && wide2;
 
 	switch (tac->op) {
-		case TAC_OP_CMP_LT: case_cmp_lt(ibu, rdest, rsrc, wide); break;
-		case TAC_OP_CMP_GE: case_cmp_ge(ibu, rdest, rsrc, wide); break;
-		case TAC_OP_CMP_EQ: case_cmp_eq(ibu, rdest, rsrc, wide); break;
-		case TAC_OP_CMP_NEQ: case_cmp_neq(ibu, rdest, rsrc, wide); break;
+		case TAC_OP_CMP_LT: case_cmp_lt(RAT_SCRATCH_REG, ibu, rdest, rsrc, wide); break;
+		case TAC_OP_CMP_GE: case_cmp_ge(RAT_SCRATCH_REG, ibu, rdest, rsrc, wide); break;
+		case TAC_OP_CMP_EQ: case_cmp_eq(RAT_SCRATCH_REG, ibu, rdest, rsrc, wide); break;
+		case TAC_OP_CMP_NEQ: case_cmp_neq(RAT_SCRATCH_REG, ibu, rdest, rsrc, wide); break;
 		default: break;
 	}
 }
 
-static void case_cmp_lt(struct IBuffer* ibu, int rdest, int rsrc, bool wide) {
+static void case_cmp_lt(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide) {
 
 	//5 instructions
 
@@ -205,7 +204,7 @@ static void case_cmp_lt(struct IBuffer* ibu, int rdest, int rsrc, bool wide) {
 	label(Lend);
 }
 
-static void case_cmp_ge_8bit(struct IBuffer* ibu, int rdest, int rsrc) {
+static void case_cmp_ge_8bit(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc) {
 	//5 instructions
 
 	// ldi r16, 1
@@ -229,7 +228,7 @@ static void case_cmp_ge_8bit(struct IBuffer* ibu, int rdest, int rsrc) {
 	mov(rdest, RAT_SCRATCH_REG, c);
 }
 
-static void case_cmp_ge_16bit(struct IBuffer* ibu, int rdest, int rsrc) {
+static void case_cmp_ge_16bit(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc) {
 
 	char Ltrue[20];
 	char Lfalse[20];
@@ -254,12 +253,12 @@ static void case_cmp_ge_16bit(struct IBuffer* ibu, int rdest, int rsrc) {
 	mov(rdest, RAT_SCRATCH_REG, c);
 }
 
-static void case_cmp_ge(struct IBuffer* ibu, int rdest, int rsrc, bool wide) {
+static void case_cmp_ge(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide) {
 
 	if (wide) {
-		case_cmp_ge_16bit(ibu, rdest, rsrc);
+		case_cmp_ge_16bit(RAT_SCRATCH_REG, ibu, rdest, rsrc);
 	} else {
-		case_cmp_ge_8bit(ibu, rdest, rsrc);
+		case_cmp_ge_8bit(RAT_SCRATCH_REG, ibu, rdest, rsrc);
 	}
 }
 
@@ -271,7 +270,7 @@ static void case_cmp_neq_8bit(struct IBuffer* ibu, int rdest, int rsrc) {
 	sub(rdest, rsrc, c);
 }
 
-static void case_cmp_neq_16bit(struct IBuffer* ibu, int rdest, int rsrc) {
+static void case_cmp_neq_16bit(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc) {
 
 	ldi(RAT_SCRATCH_REG, 0, c);
 	cpse(rdest, rsrc, c);
@@ -281,15 +280,15 @@ static void case_cmp_neq_16bit(struct IBuffer* ibu, int rdest, int rsrc) {
 	mov(rdest, RAT_SCRATCH_REG, c);
 }
 
-static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc, bool wide) {
+static void case_cmp_neq(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide) {
 
 	if (wide)
-		case_cmp_neq_16bit(ibu, rdest, rsrc);
+		case_cmp_neq_16bit(RAT_SCRATCH_REG, ibu, rdest, rsrc);
 	else
 		case_cmp_neq_8bit(ibu, rdest, rsrc);
 }
 
-static void case_cmp_eq(struct IBuffer* ibu, int rdest, int rsrc, bool wide) {
+static void case_cmp_eq(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide) {
 
 	//we use the scratch register
 
