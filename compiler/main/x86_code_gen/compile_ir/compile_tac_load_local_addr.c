@@ -21,20 +21,8 @@ void compile_tac_load_local_addr_x86(struct RAT* rat, struct TAC* tac, struct Ct
 
 	const uint16_t offset = lvst_stack_frame_offset_avr(ctx_tables(ctx)->lvst, name);
 
-	//load Y into rdest and add our offset
+	//TODO: implement
 
-	//mov(rdest, YL, c);
-	//mov(rdest + 1, YH, c);
-
-	if (offset != 0) {
-		//ldi(RAT_SCRATCH_REG, 0, "TAC_LOAD_LOCAL_ADDR"); //OLD
-
-		int16_t o2 = -offset;
-
-		//subi(rdest, -offset); //OLD
-		//sbc(rdest+1, RAT_SCRATCH_REG, "TAC_LOAD_LOCAL_ADDR"); //OLD
-
-		//subi(rdest, o2 & 0xff, c);
-		//sbci(rdest + 1, (o2 & 0xff00) >> 8, c);
-	}
+	printf("%s : currently unimplemented!\n", __func__);
+	exit(1);
 }
