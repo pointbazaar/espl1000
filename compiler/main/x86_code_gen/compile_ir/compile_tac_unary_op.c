@@ -18,10 +18,13 @@ void compile_tac_unary_op_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* 
 	switch (tac->op) {
 
 		case TAC_OP_UNARY_NOT:
+			mov_regs(reg_dest, reg_src, c);
+			not(reg_dest, c);
+			break;
+
 		case TAC_OP_UNARY_BITWISE_NEG:
 			mov_regs(reg_dest, reg_src, c);
-			neg(reg_dest, c);
-
+			not(reg_dest, c);
 			break;
 
 		case TAC_OP_UNARY_MINUS:

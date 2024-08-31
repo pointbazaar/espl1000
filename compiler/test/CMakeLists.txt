@@ -58,6 +58,7 @@ add_executable("sd-tests"
 	x86_code_gen/compile_ir/test_compile_tac_store.c
 	x86_code_gen/compile_ir/test_compile_tac_load_const_addr.c
 	x86_code_gen/compile_ir/test_compile_tac_load.c
+	x86_code_gen/compile_ir/test_compile_tac_unary_op.c
 	x86_code_gen/compile_ir/test_compile_tac_binary_op.c
 	x86_code_gen/compile_ir/test_compile_tac_binary_op_immediate.c
 	x86_code_gen/compile_ir/test_compile_tac_if_cmp_goto.c

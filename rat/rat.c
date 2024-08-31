@@ -154,7 +154,6 @@ const char* regnames_x86[] = {
 
 char* rat_regname_x86(size_t i) {
 
-	assert(i < 8 + 2);
 	return (char*)regnames_x86[i];
 }
 
