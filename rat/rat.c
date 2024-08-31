@@ -84,24 +84,25 @@ static void rat_init(struct RAT* rat) {
 
 static void rat_init_x86(struct RAT* rat) {
 
-	rat->status[0] = REG_RESERVED;
-	rat->note[0] = "rax reserved for return value";
+	rat->status[rat_return_reg(rat)] = REG_RESERVED;
+	rat->note[rat_return_reg(rat)] = "rax reserved for return value";
 
 	rat->status[rat_scratch_reg(rat)] = REG_RESERVED;
 	rat->note[rat_scratch_reg(rat)] = "reserved as scratch register";
 
-	rat->status[6] = REG_RESERVED;
-	rat->note[6] = "rsp reserved";
-	rat->status[7] = REG_RESERVED;
-	rat->note[7] = "rbp reserved (frame base pointer)";
+	rat->status[rat_stack_ptr(rat)] = REG_RESERVED;
+	rat->note[rat_stack_ptr(rat)] = " reserved (stack pointer)";
+
+	rat->status[rat_base_ptr(rat)] = REG_RESERVED;
+	rat->note[rat_base_ptr(rat)] = " reserved (frame base pointer)";
 }
 
 static void rat_init_avr(struct RAT* rat) {
 
-	rat->status[0] = REG_RESERVED;
-	rat->note[0] = "reserved for return value";
-	rat->status[1] = REG_RESERVED;
-	rat->note[1] = "reserved for return value";
+	rat->status[rat_return_reg(rat)] = REG_RESERVED;
+	rat->note[rat_return_reg(rat)] = "reserved for return value";
+	rat->status[rat_return_reg(rat) + 1] = REG_RESERVED;
+	rat->note[rat_return_reg(rat) + 1] = "reserved for return value";
 
 	rat->status[rat_scratch_reg(rat)] = REG_RESERVED;
 	rat->note[rat_scratch_reg(rat)] = "reserved as scratch register";
@@ -115,10 +116,10 @@ static void rat_init_avr(struct RAT* rat) {
 	rat->note[27] = "XH";
 
 	//Y is our base pointer for the stack frame
-	rat->status[28] = REG_RESERVED; //Y
-	rat->status[29] = REG_RESERVED; //Y
-	rat->note[28] = "YL, reserved for frame pointer";
-	rat->note[29] = "YH, reserved for frame pointer";
+	rat->status[rat_base_ptr(rat)] = REG_RESERVED; //Y
+	rat->status[rat_base_ptr(rat) + 1] = REG_RESERVED; //Y
+	rat->note[rat_base_ptr(rat)] = "YL, reserved for frame pointer";
+	rat->note[rat_base_ptr(rat) + 1] = "YH, reserved for frame pointer";
 
 	rat->status[30] = REG_RESERVED; //Z
 	rat->status[31] = REG_RESERVED; //Z
@@ -336,7 +337,7 @@ static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide
 	return -1;
 }
 
-uint16_t rat_scratch_reg(struct RAT* rat) {
+enum SD_REGISTER rat_scratch_reg(struct RAT* rat) {
 
 	switch (rat->arch) {
 		// on avr, r16 is our scratch register
@@ -345,12 +346,21 @@ uint16_t rat_scratch_reg(struct RAT* rat) {
 	}
 }
 
+enum SD_REGISTER rat_return_reg(struct RAT* rat) {
+
+	switch (rat->arch) {
+		case RAT_ARCH_AVR:
+			return 0;
+		case RAT_ARCH_X86:
+			return SD_REG_RAX;
+	}
+}
+
 enum SD_REGISTER rat_base_ptr(struct RAT* rat) {
 
 	switch (rat->arch) {
 		case RAT_ARCH_AVR:
-			printf("%s: not applicable for AVR\n", __func__);
-			exit(1);
+			return 28; // YL:YH
 		case RAT_ARCH_X86:
 			return SD_REG_RBP;
 	}

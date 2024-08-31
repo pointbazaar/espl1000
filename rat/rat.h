@@ -49,7 +49,8 @@ bool rat_is_wide(struct RAT* rat, uint32_t tmp_index);
 
 void rat_free(struct RAT* rat, uint8_t reg);
 
-uint16_t rat_scratch_reg(struct RAT* rat);
+enum SD_REGISTER rat_scratch_reg(struct RAT* rat);
+enum SD_REGISTER rat_return_reg(struct RAT* rat);
 enum SD_REGISTER rat_base_ptr(struct RAT* rat);
 enum SD_REGISTER rat_stack_ptr(struct RAT* rat);
 
