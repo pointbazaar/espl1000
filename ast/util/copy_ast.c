@@ -22,7 +22,7 @@ struct Expr* copy_expr(struct Expr* expr) {
 struct Id* copy_identifier(struct Id* id) {
 
 	struct Id* res = make(Id);
-	strcpy(res->identifier, id->identifier);
+	asprintf(&(res->identifier), "%s", id->identifier);
 	return res;
 }
 
@@ -74,7 +74,8 @@ struct SimpleVar* copy_simple_var(struct SimpleVar* sv) {
 
 	struct SimpleVar* res = make(SimpleVar);
 
-	strcpy(res->name, sv->name);
+	asprintf(&(res->name), "%s", sv->name);
+
 	res->count_indices = sv->count_indices;
 	res->indices = malloc(sizeof(struct Expr*) * res->count_indices);
 
@@ -213,7 +214,7 @@ struct StructType* copy_struct_type(struct StructType* s) {
 
 	struct StructType* res = make(StructType);
 
-	strcpy(res->type_name, s->type_name);
+	asprintf(&(res->type_name), "%s", s->type_name);
 
 	return res;
 }
@@ -350,7 +351,7 @@ struct ForStmt* copy_for_stmt(struct ForStmt* f) {
 	res->super.line_num = f->super.line_num;
 	res->super.annotations = f->super.annotations;
 
-	strcpy(res->index_name, f->index_name);
+	asprintf(&(res->index_name), "%s", f->index_name);
 	res->range = copy_range(f->range);
 	res->block = copy_stmt_block(f->block);
 

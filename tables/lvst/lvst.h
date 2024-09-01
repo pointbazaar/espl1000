@@ -10,7 +10,7 @@ struct LVSTLine;
 
 struct LVSTLine {
 
-	char name[DEFAULT_STR_SIZE];
+	char* name;
 
 	struct Type* type;
 

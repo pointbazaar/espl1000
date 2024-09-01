@@ -37,7 +37,7 @@ struct Namespace {
 	char* src_path; //the .dg filename
 	char* token_path; //the .dg.tokens filename
 
-	char name[DEFAULT_STR_SIZE];
+	char* name;
 
 	uint16_t count_includes;
 	char** includes;
@@ -60,7 +60,7 @@ struct Range {
 
 struct Id {
 	struct ASTNode super;
-	char identifier[DEFAULT_STR_SIZE];
+	char* identifier;
 };
 
 struct StmtBlock {

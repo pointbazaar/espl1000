@@ -14,10 +14,10 @@ struct SSTLine {
 	//Subroutine Symbol Table Line
 
 	//the name of the subroutine
-	char name[DEFAULT_STR_SIZE];
+	char* name;
 
 	//where the subroutine was defined
-	char _namespace[DEFAULT_STR_SIZE];
+	char* _namespace;
 
 	//a reference to the type being returned
 	struct Type* return_type;

@@ -267,7 +267,7 @@ static void sd_uc_fake_lvst_line(struct Ctx* ctx, struct LVST* lvst, int i) {
 	struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
 	assert(line != NULL);
 
-	sprintf(line->name, "fake variable %d", i);
+	asprintf(&(line->name), "fake variable %d", i);
 	struct Type* type = calloc(1, sizeof(struct Type));
 
 	struct BasicType* basicType = calloc(1, sizeof(struct BasicType));

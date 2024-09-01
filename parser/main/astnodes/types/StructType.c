@@ -29,7 +29,7 @@ struct StructType* makeStructType(struct TokenList* tokens) {
 		return NULL;
 	}
 
-	strcpy(res->type_name, next->value_ptr);
+	asprintf(&(res->type_name), "%s", next->value_ptr);
 
 	list_consume(copy, 1);
 

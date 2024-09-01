@@ -40,7 +40,7 @@ struct MethodDecl* makeMethodDecl(struct TokenList* tokens) {
 		return NULL;
 	}
 
-	strcpy(res->name, id->identifier);
+	asprintf(&(res->name), "%s", id->identifier);
 	free_identifier(id);
 
 	if (!tryParseArgList(res, copy)) {

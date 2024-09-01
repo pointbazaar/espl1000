@@ -38,7 +38,7 @@ struct ForStmt* makeForStmt(struct TokenList* tokens) {
 	parse_astnode(copy, &(res->super));
 
 	//copy the index Name
-	strncpy(res->index_name, head->value_ptr, DEFAULT_STR_SIZE);
+	asprintf(&(res->index_name), "%s", head->value_ptr);
 
 	if (!list_expect(copy, IN)) {
 		freeTokenListShallow(copy);

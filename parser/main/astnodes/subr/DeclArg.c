@@ -38,7 +38,7 @@ struct DeclArg* makeDeclArg(struct TokenList* tokens) {
 
 		return NULL;
 	}
-	strncpy(res->name, id->identifier, 19);
+	asprintf(&(res->name), "%s", id->identifier);
 	free_identifier(id);
 
 	list_set(tokens, copy);

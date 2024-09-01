@@ -1,12 +1,13 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "ast/ast.h"
 #include "cc.h"
 
 struct CCNode {
 
-	char name[DEFAULT_STR_SIZE];
+	char* name;
 
 	struct CCNode* next; //may be NULL
 };
@@ -105,7 +106,7 @@ static struct CCNode* make_cc_node(char* name, struct CCNode* next) {
 
 	struct CCNode* res = make(CCNode);
 
-	strncpy(res->name, name, DEFAULT_STR_SIZE);
+	asprintf(&(res->name), "%s", name);
 	res->next = next;
 
 	return res;

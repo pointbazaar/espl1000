@@ -47,10 +47,12 @@ end:;
 
 	struct Namespace* ns = ast->namespaces[0];
 	assert(ns != NULL);
+	assert(ns->name != NULL);
 	assert(ns->count_methods >= 1);
 
 	struct Method* m = ns->methods[0];
 	assert(m != NULL);
+	assert(m->decl->name != NULL);
 	assert(m->block->count >= 1);
 
 	lvst_fill(m, ctx_tables(ctx));

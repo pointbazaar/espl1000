@@ -29,18 +29,24 @@ void ibu_write_instr(enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* st
 	//write the mnemonic
 	fprintf(f, "%-5s ", MNEM[key]);
 
-	char s[42];
+	size_t l = 42;
+	if (str != NULL) {
+		l += strlen(str);
+	}
+	char* s = malloc(l);
 	strcpy(s, "");
 
-	write_middle(key, x1, x2, str, (char*)&s);
+	write_middle(key, x1, x2, str, s);
 
-	fprintf(f, "%-15s", s);
+	fprintf(f, "%-s", s);
 
-	if (strcmp(comment, "") != 0) {
+	if (comment != NULL && strcmp(comment, "") != 0) {
 		fprintf(f, ";%-30s", comment);
 	}
 
 	fprintf(f, "\n");
+
+	free(s);
 }
 
 static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s) {

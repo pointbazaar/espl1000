@@ -20,6 +20,7 @@ void free_ast(struct AST* ast) {
 void free_decl_arg(struct DeclArg* da) {
 
 	free_type(da->type);
+	free(da->name);
 	free(da);
 }
 
@@ -33,7 +34,10 @@ void free_expr(struct Expr* expr) {
 	free(expr);
 }
 
-void free_identifier(struct Id* id) { free(id); }
+void free_identifier(struct Id* id) {
+	free(id->identifier);
+	free(id);
+}
 void free_const_value(struct ConstValue* cv) {
 	free(cv);
 }
@@ -48,6 +52,7 @@ void free_method_decl(struct MethodDecl* m) {
 		free_decl_arg(m->args[i]);
 	}
 	free(m->args);
+	free(m->name);
 	free(m);
 }
 
@@ -72,6 +77,7 @@ void free_namespace(struct Namespace* ns) {
 
 	free(ns->src_path);
 	free(ns->token_path);
+	free(ns->name);
 
 	free(ns);
 }
@@ -82,6 +88,7 @@ void free_simple_var(struct SimpleVar* sv) {
 		free_expr(sv->indices[i]);
 	}
 	free(sv->indices);
+	free(sv->name);
 	free(sv);
 }
 
@@ -106,6 +113,7 @@ void free_struct_decl(struct StructDecl* sd) {
 
 void free_struct_member(struct StructMember* sm) {
 	free_type(sm->type);
+	free(sm->name);
 	free(sm);
 }
 void free_term(struct Term* t) {
@@ -278,6 +286,7 @@ void free_primitive_type(struct PrimitiveType* p) { free(p); }
 
 void free_struct_type(struct StructType* s) {
 
+	free(s->type_name);
 	free(s);
 }
 
@@ -300,6 +309,7 @@ void free_range(struct Range* range) {
 void free_for_stmt(struct ForStmt* fstmt) {
 	free_range(fstmt->range);
 	free_stmt_block(fstmt->block);
+	free(fstmt->index_name);
 	free(fstmt);
 }
 

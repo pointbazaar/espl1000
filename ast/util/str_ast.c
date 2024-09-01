@@ -217,7 +217,7 @@ char* str_type_param(struct TypeParam* t) {
 
 char* str_primitive_type(struct PrimitiveType* p) {
 
-	char* res = exit_malloc(DEFAULT_STR_SIZE);
+	char* res;
 
 	if (p->is_int_type) {
 
@@ -226,19 +226,19 @@ char* str_primitive_type(struct PrimitiveType* p) {
 		     "uint8", "uint16", "uint32", "uint64",
 		     "int", "uint"};
 
-		sprintf(res, "%s", types[p->int_type]);
+		asprintf(&res, "%s", types[p->int_type]);
 	}
 
-	if (p->is_char_type) sprintf(res, "char");
-	if (p->is_bool_type) sprintf(res, "bool");
+	if (p->is_char_type) asprintf(&res, "%s", "char");
+	if (p->is_bool_type) asprintf(&res, "%s", "bool");
 
 	return res;
 }
 
 char* str_struct_type(struct StructType* s) {
 
-	char* res = exit_malloc(DEFAULT_STR_SIZE);
-	sprintf(res, "%s", s->type_name);
+	char* res;
+	asprintf(&res, "%s", s->type_name);
 	return res;
 }
 
@@ -279,9 +279,9 @@ char* str_struct_member(struct StructMember* s) {
 	char* s1 = str_type(s->type);
 	const int l = strlen(s1);
 
-	char* res = exit_malloc(sizeof(char) * (l + DEFAULT_STR_SIZE + 3));
+	char* res;
 
-	sprintf(res, "%s %s;", s1, s->name);
+	asprintf(&res, "%s %s;", s1, s->name);
 
 	return res;
 }
@@ -489,11 +489,8 @@ char* str_for_stmt(struct ForStmt* f) {
 	char* s1 = str_range(f->range);
 	char* s2 = str_stmt_block(f->block);
 
-	const uint32_t l = strlen(s1) + strlen(s2) + 3 + 4 + 1 + DEFAULT_STR_SIZE;
-
-	char* res = exit_malloc(sizeof(char) * l);
-
-	sprintf(res, "for %s in %s %s", f->index_name, s1, s2);
+	char* res;
+	asprintf(&res, "for %s in %s %s", f->index_name, s1, s2);
 
 	free(s1);
 	free(s2);

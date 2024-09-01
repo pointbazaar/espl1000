@@ -39,7 +39,8 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name) {
 
 	sprintf(res->src_path, "%s.dg", name);
 	strcpy(res->token_path, list_rel_path(tokens));
-	strncpy(res->name, name, DEFAULT_STR_SIZE);
+
+	asprintf(&(res->name), "%s", name);
 
 	struct TokenList* copy = list_copy(tokens);
 

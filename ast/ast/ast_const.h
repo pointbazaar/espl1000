@@ -1,6 +1,8 @@
 #ifndef AST_CONST_H
 #define AST_CONST_H
 
+#include <stdbool.h>
+
 #include "../ast_declare.h"
 
 struct ConstValue {
