@@ -43,7 +43,7 @@ static void lv_declarg(struct ST* st, struct DeclArg* da) {
 
 	struct LVSTLine* line = make(LVSTLine);
 
-	strncpy(line->name, name, DEFAULT_STR_SIZE);
+	asprintf(&(line->name), "%s", name);
 	line->type = type;
 	line->is_arg = true;
 	line->first_occur = NULL;
@@ -56,7 +56,7 @@ static void lv_for_stmt(struct ST* st, struct ForStmt* l) {
 
 	struct LVSTLine* line = make(LVSTLine);
 
-	strncpy(line->name, l->index_name, DEFAULT_STR_SIZE);
+	asprintf(&(line->name), "%s", l->index_name);
 
 	line->type = typeFromStrPrimitive(st, "int");
 
@@ -79,7 +79,7 @@ static void lv_assign_stmt(struct ST* st, struct AssignStmt* a) {
 	line->is_arg = false;
 	line->read_only = false;
 
-	strncpy(line->name, varName, DEFAULT_STR_SIZE);
+	asprintf(&(line->name), "%s", varName);
 
 	if (a->opt_type != NULL) {
 

@@ -6,6 +6,7 @@
 struct StructDecl {
 	struct ASTNode super;
 
+	// TODO: should be 'StructType' ?
 	struct SimpleType* type; //the type(and name)
 
 	struct StructMember** members;
@@ -16,7 +17,7 @@ struct StructMember {
 	struct ASTNode super;
 
 	struct Type* type;
-	char name[DEFAULT_STR_SIZE];
+	char* name;
 };
 
 #endif

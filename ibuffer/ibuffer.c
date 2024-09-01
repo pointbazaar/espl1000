@@ -2,13 +2,13 @@
 #include <inttypes.h>
 #include <string.h>
 #include <stdio.h>
+#include <assert.h>
 
 #include "../util/exit_malloc/exit_malloc.h"
 #include "ibuffer.h"
 #include "ibuffer_write.h"
 
 #define INSTR_COMMENT_LEN 50
-#define INSTR_LABEL_LEN 32
 
 struct Instr {
 	//this struct should be opaque outside this file
@@ -21,7 +21,7 @@ struct Instr {
 	int32_t x3;
 
 	//label, etc.
-	char str[INSTR_LABEL_LEN];
+	char* str;
 
 	//comment for the assembly code
 	char comment[INSTR_COMMENT_LEN];
@@ -61,6 +61,8 @@ void ibu_write(struct IBuffer* ibu, FILE* fout) {
 
 		struct Instr* i = ibu->buffer[k];
 
+		assert(i != NULL);
+
 		ibu_write_instr(i->key, i->x1, i->x2, i->x3, i->str, i->comment, fout);
 	}
 }
@@ -87,8 +89,13 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32
 	i->x2 = x2;
 	i->x3 = x3;
 
-	strncpy(i->str, label, INSTR_LABEL_LEN - 1);
-	i->str[INSTR_LABEL_LEN - 1] = '\0';
+	if (label == NULL) {
+		i->str = exit_malloc(1);
+		memset(i->str, 0, 1);
+	} else {
+		i->str = exit_malloc(strlen(label) + 1);
+		strcpy(i->str, label);
+	}
 
 	strncpy(i->comment, comment, INSTR_COMMENT_LEN - 1);
 	i->comment[INSTR_COMMENT_LEN - 1] = '\0';

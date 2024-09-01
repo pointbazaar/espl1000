@@ -78,8 +78,8 @@ struct SSTLine* sst_line_ctor(
     bool has_side_effect) {
 	struct SSTLine* line = make(SSTLine);
 
-	strncpy(line->name, name, DEFAULT_STR_SIZE);
-	strncpy(line->_namespace, _namespace, DEFAULT_STR_SIZE);
+	asprintf(&(line->name), "%s", name);
+	asprintf(&(line->_namespace), "%s", _namespace);
 
 	line->method = NULL;
 	line->type = NULL;
@@ -104,8 +104,8 @@ struct SSTLine* sst_line_ctor2(
 
 	struct SSTLine* line = make(SSTLine);
 
-	strncpy(line->name, m->decl->name, DEFAULT_STR_SIZE);
-	strncpy(line->_namespace, _namespace, DEFAULT_STR_SIZE);
+	asprintf(&(line->name), "%s", m->decl->name);
+	asprintf(&(line->_namespace), "%s", _namespace);
 
 	line->method = m;
 	line->type = type;

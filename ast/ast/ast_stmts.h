@@ -1,6 +1,8 @@
 #ifndef AST_STMTS_H
 #define AST_STMTS_H
 
+#include <stdbool.h>
+
 #include "../ast_declare.h"
 
 struct MAssignStmt {
@@ -67,7 +69,7 @@ struct WhileStmt {
 struct ForStmt {
 	struct ASTNode super;
 
-	char index_name[DEFAULT_STR_SIZE];
+	char* index_name;
 	struct Range* range;
 	struct StmtBlock* block;
 };

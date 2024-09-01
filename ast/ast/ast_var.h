@@ -12,7 +12,7 @@ struct Variable {
 struct SimpleVar {
 	struct ASTNode super;
 
-	char name[DEFAULT_STR_SIZE];
+	char* name;
 
 	uint8_t count_indices;
 	struct Expr** indices;

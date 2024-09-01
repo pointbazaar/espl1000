@@ -55,7 +55,7 @@ struct STSTLine* stst_get(struct STST* stst, char* name) {
 
 		struct STSTLine* line = stst->lines[i];
 
-		if (strncmp(line->name, name, DEFAULT_STR_SIZE - 1) == 0) { return line; }
+		if (strcmp(line->name, name) == 0) { return line; }
 	}
 
 	printf(ERR_NOT_FOUND);
@@ -137,8 +137,8 @@ struct STSTLine* stst_line_ctor(struct StructDecl* s, char* _namespace) {
 	line->decl = s;
 	line->is_private = has_annotation(s->super.annotations, ANNOT_PRIVATE);
 
-	strncpy(line->_namespace, _namespace, DEFAULT_STR_SIZE);
-	strncpy(line->name, s->type->struct_type->type_name, DEFAULT_STR_SIZE);
+	asprintf(&(line->_namespace), "%s", _namespace);
+	asprintf(&(line->name), "%s", s->type->struct_type->type_name);
 
 	return line;
 }

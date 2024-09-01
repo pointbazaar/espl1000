@@ -7,10 +7,10 @@ struct STST;
 
 struct STSTLine {
 
-	char name[DEFAULT_STR_SIZE];
+	char* name;
 
 	//where the struct was defined
-	char _namespace[DEFAULT_STR_SIZE];
+	char* _namespace;
 
 	struct StructDecl* decl;
 

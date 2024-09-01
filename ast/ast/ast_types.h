@@ -1,6 +1,8 @@
 #ifndef AST_TYPES_H
 #define AST_TYPES_H
 
+#include <stdbool.h>
+
 #include "../ast_declare.h"
 
 #include "../sd_inttype.h"
@@ -33,7 +35,7 @@ struct PrimitiveType {
 struct StructType {
 
 	struct ASTNode super;
-	char type_name[DEFAULT_STR_SIZE];
+	char* type_name;
 };
 
 struct SimpleType {

@@ -45,7 +45,8 @@ struct StructMember* makeStructMember(struct TokenList* tokens) {
 	}
 	list_consume(copy, 1);
 
-	strncpy(res->name, id->identifier, DEFAULT_STR_SIZE);
+	asprintf(&(res->name), "%s", id->identifier);
+
 	free_identifier(id);
 
 	list_set(tokens, copy);

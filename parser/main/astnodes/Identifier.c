@@ -22,10 +22,8 @@ struct Id* makeIdentifier(struct TokenList* tokens) {
 	res->super.annotations = 0;
 
 	if (tk->kind == ID) {
-		strncpy(res->identifier, tk->value_ptr, DEFAULT_STR_SIZE - 1);
+		asprintf(&(res->identifier), "%s", tk->value_ptr);
 		list_consume(tokens, 1);
-
-		res->identifier[DEFAULT_STR_SIZE - 1] = '\0';
 	} else {
 		free(res);
 		return NULL;
