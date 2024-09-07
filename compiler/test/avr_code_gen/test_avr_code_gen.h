@@ -1,6 +1,6 @@
-#ifndef SMALLDRAGON_TOPLEVEL_TEST_AVR_CODE_GEN_H
-#define SMALLDRAGON_TOPLEVEL_TEST_AVR_CODE_GEN_H
+#pragma once
 
-void test_suite_avr_code_gen();
+#include "compile_ir/test_compile_tac.h"
+#include "timer/test_avr_code_gen_timer.h"
+
 void status_test_codegen(char* msg);
-#endif

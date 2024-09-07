@@ -1,4 +1,5 @@
 #pragma once
 
-void test_suite_x86_code_gen();
+#include "compile_ir/test_compile_tac.h"
+
 void status_test_x86_codegen(char* msg);
