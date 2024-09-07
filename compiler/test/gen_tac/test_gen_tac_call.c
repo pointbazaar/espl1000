@@ -5,22 +5,7 @@
 
 #include "test_gen_tac.h"
 
-static void case_no_args();
-static void case_1_args_return();
-static void case_1_args_write();
-static void case_1_args_write_3fns();
-static void case_2_args();
-
-void test_gen_tac_call() {
-
-	case_no_args();
-	case_1_args_return();
-	case_1_args_write();
-	case_1_args_write_3fns();
-	case_2_args();
-}
-
-static void case_no_args() {
+void test_gen_tac_call_case_no_args() {
 
 	status_test_codegen_tac("Call - no args");
 
@@ -45,7 +30,7 @@ static void case_no_args() {
 	vmcu_system_dtor(system);
 }
 
-static void case_1_args_return() {
+void test_gen_tac_call_case_1_args_return() {
 
 	status_test_codegen_tac("Call - 1 args - return value");
 
@@ -70,7 +55,7 @@ static void case_1_args_return() {
 	vmcu_system_dtor(system);
 }
 
-static void case_1_args_write() {
+void test_gen_tac_call_case_1_args_write() {
 
 	status_test_codegen_tac("Call - 1 args - write to SRAM");
 
@@ -91,7 +76,7 @@ static void case_1_args_write() {
 	vmcu_system_dtor(system);
 }
 
-static void case_1_args_write_3fns() {
+void test_gen_tac_call_case_1_args_write_3fns() {
 
 	status_test_codegen_tac("Call - 1 args - write to SRAM - 3 functions");
 
@@ -114,7 +99,7 @@ static void case_1_args_write_3fns() {
 	vmcu_system_dtor(system);
 }
 
-static void case_2_args() {
+void test_gen_tac_call_case_2_args() {
 
 	status_test_codegen_tac("Call - 2 args");
 

@@ -12,18 +12,7 @@
 
 #include "test_compile_tac.h"
 
-static void case_true();
-static void case_false();
-static void case_mixed();
-
-void test_x86_compile_tac_if_goto() {
-
-	case_true();
-	case_false();
-	case_mixed();
-}
-
-static void case_true() {
+void test_x86_compile_tac_if_goto_case_true() {
 
 	status_test_x86_codegen("TAC_IF_GOTO true");
 
@@ -59,7 +48,7 @@ static void case_true() {
 	sd_uc_close(system);
 }
 
-static void case_false() {
+void test_x86_compile_tac_if_goto_case_false() {
 
 	status_test_x86_codegen("TAC_IF_GOTO false");
 
@@ -94,7 +83,7 @@ static void case_false() {
 	sd_uc_close(system);
 }
 
-static void case_mixed() {
+void test_x86_compile_tac_if_goto_case_mixed() {
 
 	status_test_x86_codegen("TAC_IF_GOTO mixed");
 

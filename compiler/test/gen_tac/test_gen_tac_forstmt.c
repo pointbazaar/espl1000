@@ -6,20 +6,7 @@
 
 #include "test_gen_tac.h"
 
-static void test_gen_tac_forstmt_0_rounds();
-static void test_gen_tac_forstmt_1_rounds();
-static void test_gen_tac_forstmt_1_rounds_break();
-static void test_gen_tac_forstmt_n_rounds();
-
-void test_gen_tac_forstmt() {
-
-	test_gen_tac_forstmt_0_rounds();
-	test_gen_tac_forstmt_1_rounds();
-	test_gen_tac_forstmt_1_rounds_break();
-	test_gen_tac_forstmt_n_rounds();
-}
-
-static void test_gen_tac_forstmt_0_rounds() {
+void test_gen_tac_forstmt_0_rounds() {
 
 	status_test_codegen_tac("ForStmt 0 rounds");
 
@@ -40,7 +27,7 @@ static void test_gen_tac_forstmt_0_rounds() {
 	vmcu_system_dtor(system);
 }
 
-static void test_gen_tac_forstmt_1_rounds() {
+void test_gen_tac_forstmt_1_rounds() {
 
 	status_test_codegen_tac("ForStmt 1 rounds");
 
@@ -63,7 +50,7 @@ static void test_gen_tac_forstmt_1_rounds() {
 	vmcu_system_dtor(system);
 }
 
-static void test_gen_tac_forstmt_1_rounds_break() {
+void test_gen_tac_forstmt_1_rounds_break() {
 
 	status_test_codegen_tac("ForStmt 1 rounds break");
 
@@ -86,7 +73,7 @@ static void test_gen_tac_forstmt_1_rounds_break() {
 	vmcu_system_dtor(system);
 }
 
-static void test_gen_tac_forstmt_n_rounds() {
+void test_gen_tac_forstmt_n_rounds() {
 
 	status_test_codegen_tac("ForStmt n rounds");
 

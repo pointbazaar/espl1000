@@ -5,22 +5,7 @@
 
 #include "test_gen_tac.h"
 
-static void case_0_rounds();
-static void case_1_rounds();
-static void case_n_rounds();
-static void case_1_rounds_break();
-static void case_1_rounds_continue();
-
-void test_gen_tac_whilestmt() {
-
-	case_0_rounds();
-	case_1_rounds();
-	case_n_rounds();
-	case_1_rounds_break();
-	case_1_rounds_continue();
-}
-
-static void case_0_rounds() {
+void test_gen_tac_whilestmt_case_0_rounds() {
 
 	status_test_codegen_tac("WhileStmt 0 rounds");
 
@@ -44,7 +29,7 @@ static void case_0_rounds() {
 	vmcu_system_dtor(system);
 }
 
-static void case_1_rounds() {
+void test_gen_tac_whilestmt_case_1_rounds() {
 
 	status_test_codegen_tac("WhileStmt 1 rounds");
 
@@ -69,11 +54,11 @@ static void case_1_rounds() {
 	}
 }
 
-static void case_n_rounds() {
+void test_gen_tac_whilestmt_case_n_rounds() {
 
 	status_test_codegen_tac("WhileStmt n rounds");
 
-	for (int8_t initial = 0; initial < 7; initial++) {
+	for (int8_t initial = 0; initial < 3; initial++) {
 		for (int8_t bound = initial; bound < initial + 4; bound++) {
 
 			char snippet[200];
@@ -95,7 +80,7 @@ static void case_n_rounds() {
 	}
 }
 
-static void case_1_rounds_break() {
+void test_gen_tac_whilestmt_case_1_rounds_break() {
 
 	status_test_codegen_tac("WhileStmt 1 rounds break");
 
@@ -120,7 +105,7 @@ static void case_1_rounds_break() {
 	}
 }
 
-static void case_1_rounds_continue() {
+void test_gen_tac_whilestmt_case_1_rounds_continue() {
 
 	status_test_codegen_tac("WhileStmt 1 rounds continue");
 

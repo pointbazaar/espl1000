@@ -15,16 +15,7 @@
 
 #include "test_compile_tac.h"
 
-static void test_param_8bit();
-static void test_param_16bit();
-
-void test_compile_tac_param() {
-
-	test_param_8bit();
-	test_param_16bit();
-}
-
-static void test_param_8bit() {
+void test_compile_tac_param_case_8bit() {
 
 	status_test_codegen("TAC_PARAM - (8 bit)");
 
@@ -62,7 +53,7 @@ static void test_param_8bit() {
 	vmcu_system_dtor(system);
 }
 
-static void test_param_16bit() {
+void test_compile_tac_param_case_16bit() {
 
 	status_test_codegen("TAC_PARAM - (16 bit)");
 

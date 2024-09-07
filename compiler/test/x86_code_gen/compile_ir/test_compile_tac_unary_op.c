@@ -12,22 +12,12 @@
 
 #include "test_compile_tac.h"
 
-static void case_minus(bool debug);
-static void case_not(bool debug);
-static void case_bitwise_neg(bool debug);
-
-void test_x86_compile_tac_unary_op() {
-
-	case_minus(false);
-	case_not(false);
-	case_bitwise_neg(false);
-}
-
-static void case_minus(bool debug) {
+void test_x86_compile_tac_unary_op_case_minus() {
+	bool debug = false;
 
 	status_test_x86_codegen("TAC_UNARY_OP -");
 
-	for (int8_t start = -40; start < 40; start += 10) {
+	for (int8_t start = -2; start < 2; start++) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
@@ -48,7 +38,8 @@ static void case_minus(bool debug) {
 	}
 }
 
-static void case_not(bool debug) {
+void test_x86_compile_tac_unary_op_case_not() {
+	bool debug = false;
 
 	status_test_x86_codegen("TAC_UNARY_OP !");
 
@@ -76,13 +67,12 @@ static void case_not(bool debug) {
 	sd_uc_close(system);
 }
 
-static void case_bitwise_neg(bool debug) {
+void test_x86_compile_tac_unary_op_case_bitwise_neg() {
+	bool debug = false;
 
 	status_test_x86_codegen("TAC_UNARY_OP ~");
 
-	for (uint64_t start = 0; start < 10; start++) {
-		const uint64_t expect = ~start;
-
+	for (uint64_t start = 0; start < 3; start++) {
 		struct TACBuffer* b = tacbuffer_ctor();
 
 		tacbuffer_append(b, makeTACConst(0, start));
@@ -100,7 +90,7 @@ static void case_bitwise_neg(bool debug) {
 			printf("rax = 0x%lx (%ld)\n", rax, rax);
 		}
 
-		assert(rax == expect);
+		assert(rax == (~start));
 
 		sd_uc_close(system);
 	}

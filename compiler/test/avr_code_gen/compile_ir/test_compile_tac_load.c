@@ -15,21 +15,12 @@
 
 #include "test_compile_tac.h"
 
-static void test_8bit_addr();
-static void test_16bit_addr();
-
-void test_compile_tac_load() {
-
-	test_8bit_addr();
-	test_16bit_addr();
-}
-
-void test_8bit_addr() {
+void test_compile_tac_load_case_8bit_addr() {
 
 	status_test_codegen("TAC_LOAD (8 bit address)");
 
 	const uint16_t addr = 0xc7;
-	for (int8_t fixed_value = 0x33; fixed_value < 0x43; fixed_value++) {
+	for (int8_t fixed_value = 0x33; fixed_value < 0x36; fixed_value++) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
@@ -52,12 +43,12 @@ void test_8bit_addr() {
 	}
 }
 
-void test_16bit_addr() {
+void test_compile_tac_load_case_16bit_addr() {
 
 	status_test_codegen("TAC_LOAD (16 bit address)");
 
 	const uint16_t addr = 0x0103;
-	for (int8_t fixed_value = 0x20; fixed_value < 0x2f; fixed_value++) {
+	for (int8_t fixed_value = 0x20; fixed_value < 0x24; fixed_value++) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 

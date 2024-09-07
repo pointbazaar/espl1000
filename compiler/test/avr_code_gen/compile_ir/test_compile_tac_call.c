@@ -15,18 +15,7 @@
 
 #include "test_compile_tac.h"
 
-static void case_recurse();
-static void case_returns_value();
-static void case_1_param();
-
-void test_compile_tac_call() {
-
-	case_recurse();
-	case_returns_value();
-	case_1_param();
-}
-
-static void case_recurse() {
+void test_compile_tac_call_case_recurses() {
 
 	status_test_codegen("TAC_CALL - recurse");
 
@@ -55,7 +44,7 @@ static void case_recurse() {
 	vmcu_system_dtor(system);
 }
 
-static void case_returns_value() {
+void test_compile_tac_call_case_returns_value() {
 
 	status_test_codegen("TAC_CALL - returns value");
 
@@ -78,7 +67,7 @@ static void case_returns_value() {
 	vmcu_system_dtor(system);
 }
 
-static void case_1_param() {
+void test_compile_tac_call_case_1_param() {
 
 	status_test_codegen("TAC_CALL - 1 param [TODO]");
 }

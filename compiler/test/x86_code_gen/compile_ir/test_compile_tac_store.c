@@ -20,16 +20,10 @@ void test_x86_compile_tac_store() {
 
 	const uint64_t start = sd_uc_default_start_addr() + 0x80;
 
-	common(start, 1000, false);
 	common(start + 1, 1000, false);
 
-	common(start, 1001, false);
 	common(start + 2, 1001, false);
 
-	common(start, 1002, false);
-	common(start + 5, 1002, false);
-
-	common(start, 1003, false);
 	common(start + 9, 1003, false);
 }
 

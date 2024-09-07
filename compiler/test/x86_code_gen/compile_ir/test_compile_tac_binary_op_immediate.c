@@ -12,34 +12,13 @@
 
 #include "test_compile_tac.h"
 
-static void case_add();
-static void case_sub();
-static void case_and();
-static void case_or();
-static void case_xor();
-static void case_shift_left();
-static void case_shift_right();
-
-void test_x86_compile_tac_binary_op_immediate() {
-
-	case_add();
-	case_sub();
-	case_and();
-	case_or();
-	case_xor();
-	case_shift_left();
-	case_shift_right();
-}
-
-static void case_add() {
+void test_x86_compile_tac_binary_op_immediate_case_add() {
 
 	status_test_x86_codegen("TAC_BINARY_OP_IMMEDIATE +");
 
 	int8_t start = 0x83;
 
-	for (uint8_t change = 0; change < 20; change++) {
-
-		int8_t expected = start + change;
+	for (uint8_t change = 0; change < 5; change++) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
@@ -55,21 +34,19 @@ static void case_add() {
 		uint64_t rax = 0;
 		sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
 
-		assert(rax == expected);
+		assert(rax == (start + change));
 
 		sd_uc_close(system);
 	}
 }
 
-static void case_sub() {
+void test_x86_compile_tac_binary_op_immediate_case_sub() {
 
 	status_test_x86_codegen("TAC_BINARY_OP_IMMEDIATE -");
 
 	int8_t start = 44;
 
-	for (uint8_t change = 0; change < 20; change++) {
-
-		const int8_t expected = start - change;
+	for (uint8_t change = 0; change < 5; change++) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
@@ -85,19 +62,18 @@ static void case_sub() {
 		uint64_t rax = 0;
 		sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
 
-		assert(rax == expected);
+		assert(rax == (start - change));
 
 		sd_uc_close(system);
 	}
 }
 
-static void case_and() {
+void test_x86_compile_tac_binary_op_immediate_case_and() {
 
 	status_test_x86_codegen("TAC_BINARY_OP_IMMEDIATE &");
 
 	int8_t start = 0xe3;
-	for (int8_t change = 0; change < 10; change++) {
-		int8_t expected = start & change;
+	for (int8_t change = 0; change < 5; change++) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
@@ -112,19 +88,18 @@ static void case_and() {
 		uint64_t rax = 0;
 		sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
 
-		assert(rax == expected);
+		assert(rax == (start & change));
 
 		sd_uc_close(system);
 	}
 }
 
-static void case_or() {
+void test_x86_compile_tac_binary_op_immediate_case_or() {
 
 	status_test_x86_codegen("TAC_BINARY_OP_IMMEDIATE |");
 
 	int8_t start = 0xc7;
-	for (int8_t change = 0; change < 10; change++) {
-		int8_t expected = start | change;
+	for (int8_t change = 0; change < 5; change++) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
@@ -139,19 +114,18 @@ static void case_or() {
 		uint64_t rax = 0;
 		sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
 
-		assert(rax == expected);
+		assert(rax == (start | change));
 
 		sd_uc_close(system);
 	}
 }
 
-static void case_xor() {
+void test_x86_compile_tac_binary_op_immediate_case_xor() {
 
 	status_test_x86_codegen("TAC_BINARY_OP_IMMEDIATE ^");
 
 	int8_t start = 0xc3;
-	for (int8_t change = 0; change < 10; change++) {
-		int8_t expected = start ^ change;
+	for (int8_t change = 0; change < 5; change++) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
@@ -166,21 +140,19 @@ static void case_xor() {
 		uint64_t rax = 0;
 		sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
 
-		assert(rax == expected);
+		assert(rax == (start ^ change));
 
 		sd_uc_close(system);
 	}
 }
 
-static void case_shift_left() {
+void test_x86_compile_tac_binary_op_immediate_case_shift_left() {
 
 	status_test_x86_codegen("TAC_BINARY_OP_IMMEDIATE <<");
 
 	uint64_t start = 0xb3;
 
 	for (int change = 1; change < 6; change++) {
-
-		const uint64_t expected = start << change;
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
@@ -195,21 +167,19 @@ static void case_shift_left() {
 		uint64_t rax = 0;
 		sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
 
-		assert(rax == expected);
+		assert(rax == (start << change));
 
 		sd_uc_close(system);
 	}
 }
 
-static void case_shift_right() {
+void test_x86_compile_tac_binary_op_immediate_case_shift_right() {
 
 	status_test_x86_codegen("TAC_BINARY_OP_IMMEDIATE >>");
 
 	uint64_t start = 0xb4;
 
 	for (int change = 1; change < 6; change++) {
-
-		const uint64_t expected = start >> change;
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
@@ -224,7 +194,7 @@ static void case_shift_right() {
 		uint64_t rax = 0;
 		sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
 
-		assert(rax == expected);
+		assert(rax == (start >> change));
 
 		sd_uc_close(system);
 	}

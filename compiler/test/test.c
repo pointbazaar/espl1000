@@ -80,21 +80,31 @@ static void run_testcase(void (*testcase)(), struct sd_test_flags* flags) {
 	}
 }
 
-static void run_testsuite(struct testsuite* suite, struct sd_test_flags* flags) {
+// returns the number of tests that ran
+static uint64_t run_testsuite(struct testsuite* suite, struct sd_test_flags* flags) {
 
 	status_test_transpiler(suite->name);
+	uint64_t ntests = 0;
 
 	for (int i = 0; suite->testcases[i] != NULL; i++) {
 		run_testcase(suite->testcases[i], flags);
+		ntests++;
 	}
+
+	return ntests;
 }
 
-void run_testsuites(struct sd_test_flags* flags) {
+// returns the number of tests that ran
+uint64_t run_testsuites(struct sd_test_flags* flags) {
+
+	uint64_t ntests = 0;
 
 	for (int suitei = 0; testsuites[suitei].name != NULL; suitei++) {
 
-		run_testsuite(&testsuites[suitei], flags);
+		ntests += run_testsuite(&testsuites[suitei], flags);
 	}
+
+	return ntests;
 }
 
 int main(int argc, char* argv[]) {
@@ -108,18 +118,23 @@ int main(int argc, char* argv[]) {
 
 	gettimeofday(&start, NULL);
 
-	run_testsuites(&flags);
+	const uint64_t ntests = run_testsuites(&flags);
 
 	gettimeofday(&stop, NULL);
 
 	long elapsed_ms = (stop.tv_sec - start.tv_sec) * 1000.0;
 	elapsed_ms += (stop.tv_usec - start.tv_usec) / 1000.0;
 
-	if (flags.testcase_duration) {
-		printf("\n[TOTAL DURATION] %4ld ms\n", elapsed_ms);
-	}
+	char* status_msg;
+	asprintf(&status_msg, "took %ld ms", elapsed_ms);
+	status_test_transpiler(status_msg);
 
-	status_test_transpiler("PASSED ALL TESTS\n");
+	asprintf(&status_msg, "completed %ld tests", ntests);
+	status_test_transpiler(status_msg);
+
+	status_test_transpiler("PASSED ALL TESTS");
+
+	free(status_msg);
 
 	return 0;
 }

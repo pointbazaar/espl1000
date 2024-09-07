@@ -5,19 +5,7 @@
 
 #include "test_gen_tac.h"
 
-static void case_no_index();
-static void case_1_index();
-static void case_2_index();
-//static void case_n_index();
-
-void test_gen_tac_simplevar() {
-
-	case_no_index();
-	case_1_index();
-	case_2_index();
-}
-
-static void case_no_index() {
+void test_gen_tac_simplevar_case_no_index() {
 
 	status_test_codegen_tac("SimpleVar - no index");
 
@@ -41,7 +29,7 @@ static void case_no_index() {
 	vmcu_system_dtor(system);
 }
 
-static void case_1_index() {
+void test_gen_tac_simplevar_case_1_index() {
 
 	status_test_codegen_tac("SimpleVar - 1 index");
 
@@ -83,7 +71,7 @@ static void case_1_index() {
 	}
 }
 
-static void case_2_index() {
+void test_gen_tac_simplevar_case_2_index() {
 
 	status_test_codegen_tac("SimpleVar - 2 index");
 

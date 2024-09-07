@@ -15,26 +15,7 @@
 
 #include "test_compile_tac.h"
 
-static void case_minus_8bit();
-static void case_minus_16bit();
-
-static void case_not();
-
-static void case_bitwise_neg_8bit();
-static void case_bitwise_neg_16bit();
-
-void test_compile_tac_unary_op() {
-
-	case_minus_8bit();
-	case_minus_16bit();
-
-	case_not();
-
-	case_bitwise_neg_8bit();
-	case_bitwise_neg_16bit();
-}
-
-static void case_minus_8bit() {
+void test_compile_tac_unary_op_case_minus_8bit() {
 
 	status_test_codegen("TAC_UNARY_OP - (8 bit)");
 
@@ -58,7 +39,7 @@ static void case_minus_8bit() {
 	}
 }
 
-static void case_minus_16bit() {
+void test_compile_tac_unary_op_case_minus_16bit() {
 
 	status_test_codegen("TAC_UNARY_OP - (16 bit)");
 
@@ -85,7 +66,7 @@ static void case_minus_16bit() {
 	}
 }
 
-static void case_not() {
+void test_compile_tac_unary_op_case_not() {
 
 	status_test_codegen("TAC_UNARY_OP !");
 
@@ -108,7 +89,7 @@ static void case_not() {
 	vmcu_system_dtor(system);
 }
 
-static void case_bitwise_neg_8bit() {
+void test_compile_tac_unary_op_case_bitwise_neg_8bit() {
 
 	status_test_codegen("TAC_UNARY_OP ~ (8 bit)");
 
@@ -133,7 +114,7 @@ static void case_bitwise_neg_8bit() {
 	}
 }
 
-static void case_bitwise_neg_16bit() {
+void test_compile_tac_unary_op_case_bitwise_neg_16bit() {
 
 	status_test_codegen("TAC_UNARY_OP ~ (16 bit)");
 

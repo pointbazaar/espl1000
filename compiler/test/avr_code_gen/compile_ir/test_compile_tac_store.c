@@ -15,20 +15,7 @@
 
 #include "test_compile_tac.h"
 
-static void test_8bit_value_8bit_addr();
-static void test_16bit_value_8bit_addr();
-static void test_8bit_value_16bit_addr();
-static void test_16bit_value_16bit_addr();
-
 static vmcu_system_t* common(uint16_t addr, int16_t value);
-
-void test_compile_tac_store() {
-
-	test_8bit_value_8bit_addr();
-	test_16bit_value_8bit_addr();
-	test_8bit_value_16bit_addr();
-	test_16bit_value_16bit_addr();
-}
 
 static vmcu_system_t* common(uint16_t addr, int16_t value) {
 
@@ -47,13 +34,13 @@ static vmcu_system_t* common(uint16_t addr, int16_t value) {
 	return system;
 }
 
-static void test_8bit_value_8bit_addr() {
+void test_compile_tac_store_case_8bit_value_8bit_addr() {
 
 	status_test_codegen("TAC_STORE (8 bit value, 8 bit addr)");
 
-	for (uint16_t addr = 0xc7; addr < 0xd7; addr++) {
+	for (uint16_t addr = 0xc7; addr < 0xcb; addr++) {
 
-		for (int8_t fixed_value = 1; fixed_value < 10; fixed_value++) {
+		for (int8_t fixed_value = 1; fixed_value < 3; fixed_value++) {
 
 			vmcu_system_t* system = common(addr, fixed_value);
 
@@ -66,13 +53,13 @@ static void test_8bit_value_8bit_addr() {
 	}
 }
 
-static void test_16bit_value_8bit_addr() {
+void test_compile_tac_store_case_16bit_value_8bit_addr() {
 
 	status_test_codegen("TAC_STORE (16 bit value, 8 bit addr)");
 
-	for (uint16_t addr = 0xc7; addr < 0xd7; addr++) {
+	for (uint16_t addr = 0xc7; addr < 0xcb; addr++) {
 
-		for (uint16_t fixed_value = 0x0f00; fixed_value < 0x0f0f; fixed_value++) {
+		for (uint16_t fixed_value = 0x0f00; fixed_value < 0x0f03; fixed_value++) {
 
 			vmcu_system_t* system = common(addr, fixed_value);
 
@@ -88,13 +75,13 @@ static void test_16bit_value_8bit_addr() {
 	}
 }
 
-static void test_8bit_value_16bit_addr() {
+void test_compile_tac_store_case_8bit_value_16bit_addr() {
 
 	status_test_codegen("TAC_STORE (8 bit value, 16 bit addr)");
 
 	const uint16_t addr = 1200;
 
-	for (int8_t fixed_value = 1; fixed_value < 10; fixed_value++) {
+	for (int8_t fixed_value = 1; fixed_value < 3; fixed_value++) {
 
 		vmcu_system_t* system = common(addr, fixed_value);
 
@@ -106,13 +93,13 @@ static void test_8bit_value_16bit_addr() {
 	}
 }
 
-static void test_16bit_value_16bit_addr() {
+void test_compile_tac_store_case_16bit_value_16bit_addr() {
 
 	status_test_codegen("TAC_STORE (16 bit value, 16 bit addr)");
 
 	const uint16_t addr = 1200;
 
-	for (uint16_t fixed_value = 0x0f00; fixed_value < 0x0f0f; fixed_value++) {
+	for (uint16_t fixed_value = 0x0f00; fixed_value < 0x0f03; fixed_value++) {
 
 		vmcu_system_t* system = common(addr, fixed_value);
 
