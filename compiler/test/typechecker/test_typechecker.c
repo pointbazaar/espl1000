@@ -7,23 +7,6 @@
 #include "test_typechecker_util.h"
 #include "typechecker/tcctx.h"
 
-static void test_typecheck_wrong_assign_primitive();
-static void test_typecheck_wrong_number_of_args();
-static void test_typecheck_wrong_type_of_arg();
-static void test_typecheck_wrong_return_type();
-static void test_typecheck_binop_type_mismatch();
-static void test_typecheck_subr_not_found();
-static void test_typecheck_impure_called_in_pure();
-static void test_typecheck_condition_requires_bool();
-static void test_typecheck_range_requires_int();
-static void test_typecheck_wrong_op_unop();
-static void test_typecheck_index_not_integer_type();
-static void test_typecheck_too_many_indices();
-static void test_typecheck_local_var_not_a_subroutine();
-static void test_typecheck_var_not_found();
-//------------
-static void test_typecheck_all_type_errors();
-
 static void status_test_typechecker(char* msg) {
 	printf(" - [TEST] %s\n", msg);
 }
@@ -35,30 +18,7 @@ static void free_tc_errors(struct TCError* error) {
 	free(error);
 }
 
-void test_suite_typechecker() {
-
-	test_typecheck_wrong_assign_primitive();
-	test_typecheck_wrong_number_of_args();
-	test_typecheck_wrong_type_of_arg();
-	test_typecheck_wrong_return_type();
-	test_typecheck_binop_type_mismatch();
-	test_typecheck_subr_not_found();
-	test_typecheck_impure_called_in_pure();
-	test_typecheck_condition_requires_bool();
-	test_typecheck_range_requires_int();
-	test_typecheck_wrong_op_unop();
-	test_typecheck_index_not_integer_type();
-	test_typecheck_too_many_indices();
-	test_typecheck_local_var_not_a_subroutine();
-	test_typecheck_var_not_found();
-
-	//one test to trigger all typechecker errors, in sequence,
-	//to iterate on the error messages (better dev experience)
-	//and make sure multiple errors will be found
-	test_typecheck_all_type_errors();
-}
-
-static void test_typecheck_wrong_assign_primitive() {
+void test_typecheck_wrong_assign_primitive() {
 
 	status_test_typechecker("typecheck wrong assign primitive");
 	char* filename = "test/typechecker/test-src/assign_primitive.dg";
@@ -72,7 +32,7 @@ static void test_typecheck_wrong_assign_primitive() {
 	free_tc_errors(errors);
 }
 
-static void test_typecheck_wrong_number_of_args() {
+void test_typecheck_wrong_number_of_args() {
 
 	status_test_typechecker("typecheck wrong number of args");
 	char* filename = "test/typechecker/test-src/wrong_number_of_args.dg";
@@ -86,7 +46,7 @@ static void test_typecheck_wrong_number_of_args() {
 	free_tc_errors(errors);
 }
 
-static void test_typecheck_wrong_type_of_arg() {
+void test_typecheck_wrong_type_of_arg() {
 
 	status_test_typechecker("typecheck wrong type of arg");
 	char* filename = "test/typechecker/test-src/wrong_type_of_arg.dg";
@@ -100,7 +60,7 @@ static void test_typecheck_wrong_type_of_arg() {
 	free_tc_errors(errors);
 }
 
-static void test_typecheck_wrong_return_type() {
+void test_typecheck_wrong_return_type() {
 
 	status_test_typechecker("typecheck wrong return type");
 	char* filename = "test/typechecker/test-src/wrong_return_type.dg";
@@ -114,7 +74,7 @@ static void test_typecheck_wrong_return_type() {
 	free_tc_errors(errors);
 }
 
-static void test_typecheck_binop_type_mismatch() {
+void test_typecheck_binop_type_mismatch() {
 
 	status_test_typechecker("typecheck binop type mismatch");
 	char* filename = "test/typechecker/test-src/binop_type_mismatch.dg";
@@ -128,7 +88,7 @@ static void test_typecheck_binop_type_mismatch() {
 	free_tc_errors(errors);
 }
 
-static void test_typecheck_subr_not_found() {
+void test_typecheck_subr_not_found() {
 
 	status_test_typechecker("typecheck subr not found");
 	char* filename = "test/typechecker/test-src/subr_not_found.dg";
@@ -142,7 +102,7 @@ static void test_typecheck_subr_not_found() {
 	free_tc_errors(errors);
 }
 
-static void test_typecheck_impure_called_in_pure() {
+void test_typecheck_impure_called_in_pure() {
 
 	status_test_typechecker("typecheck impure called in pure");
 	char* filename = "test/typechecker/test-src/impure_called_in_pure.dg";
@@ -156,7 +116,7 @@ static void test_typecheck_impure_called_in_pure() {
 	free_tc_errors(errors);
 }
 
-static void test_typecheck_condition_requires_bool() {
+void test_typecheck_condition_requires_bool() {
 
 	status_test_typechecker("typecheck condition requires bool");
 	char* filename = "test/typechecker/test-src/condition_requires_bool.dg";
@@ -170,7 +130,7 @@ static void test_typecheck_condition_requires_bool() {
 	free_tc_errors(errors);
 }
 
-static void test_typecheck_range_requires_int() {
+void test_typecheck_range_requires_int() {
 
 	status_test_typechecker("typecheck range requires int");
 	char* filename = "test/typechecker/test-src/range_requires_int.dg";
@@ -184,7 +144,7 @@ static void test_typecheck_range_requires_int() {
 	free_tc_errors(errors);
 }
 
-static void test_typecheck_wrong_op_unop() {
+void test_typecheck_wrong_op_unop() {
 
 	status_test_typechecker("typecheck wrong op unop");
 	char* filename = "test/typechecker/test-src/wrong_op_unop.dg";
@@ -198,7 +158,7 @@ static void test_typecheck_wrong_op_unop() {
 	free_tc_errors(errors);
 }
 
-static void test_typecheck_index_not_integer_type() {
+void test_typecheck_index_not_integer_type() {
 
 	status_test_typechecker("typecheck index not integer type");
 	char* filename = "test/typechecker/test-src/index_not_integer_type.dg";
@@ -212,7 +172,7 @@ static void test_typecheck_index_not_integer_type() {
 	free_tc_errors(errors);
 }
 
-static void test_typecheck_too_many_indices() {
+void test_typecheck_too_many_indices() {
 
 	status_test_typechecker("typecheck too many indices");
 	char* filename = "test/typechecker/test-src/too_many_indices.dg";
@@ -227,7 +187,7 @@ static void test_typecheck_too_many_indices() {
 	free_tc_errors(errors);
 }
 
-static void test_typecheck_local_var_not_a_subroutine() {
+void test_typecheck_local_var_not_a_subroutine() {
 
 	status_test_typechecker("typecheck local var not a subroutine");
 	char* filename = "test/typechecker/test-src/local_var_not_a_subroutine.dg";
@@ -241,7 +201,7 @@ static void test_typecheck_local_var_not_a_subroutine() {
 	free_tc_errors(errors);
 }
 
-static void test_typecheck_var_not_found() {
+void test_typecheck_var_not_found() {
 
 	status_test_typechecker("typecheck var not found");
 	char* filename = "test/typechecker/test-src/var_not_found.dg";
@@ -255,7 +215,7 @@ static void test_typecheck_var_not_found() {
 	free_tc_errors(errors);
 }
 
-static void test_typecheck_all_type_errors() {
+void test_typecheck_all_type_errors() {
 
 	status_test_typechecker("typecheck all type errors");
 	char* filename = "test/typechecker/test-src/all_errors.dg";
