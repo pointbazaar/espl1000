@@ -5,18 +5,7 @@
 
 #include "test_gen_tac.h"
 
-static void case_no_member_access();
-static void case_1_member_access();
-static void case_2_member_access();
-
-void test_gen_tac_variable() {
-
-	case_no_member_access();
-	case_1_member_access();
-	case_2_member_access();
-}
-
-static void case_no_member_access() {
+void test_gen_tac_variable_case_no_member_access() {
 
 	status_test_codegen_tac("Variable - no member access");
 
@@ -38,7 +27,7 @@ static void case_no_member_access() {
 	}
 }
 
-static void case_1_member_access() {
+void test_gen_tac_variable_case_1_member_access() {
 
 	status_test_codegen_tac("Variable - 1 member access");
 
@@ -65,7 +54,7 @@ static void case_1_member_access() {
 	}
 }
 
-static void case_2_member_access() {
+void test_gen_tac_variable_case_2_member_access() {
 
 	status_test_codegen_tac("Variable - 2 member access");
 

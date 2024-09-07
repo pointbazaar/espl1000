@@ -12,31 +12,7 @@
 
 #include "test_compile_tac.h"
 
-static void case_eq_true_8bit();
-static void case_eq_false_8bit();
-static void case_neq_true_8bit();
-static void case_neq_false_8bit();
-static void case_lt_true_8bit();
-static void case_lt_false_8bit();
-static void case_ge_true_8bit();
-static void case_ge_false_8bit();
-
 static void common(int a, enum TAC_OP op, int b, bool expect_true, bool debug);
-
-void test_x86_compile_tac_if_cmp_goto() {
-
-	case_eq_true_8bit();
-	case_eq_false_8bit();
-
-	case_neq_true_8bit();
-	case_neq_false_8bit();
-
-	case_lt_true_8bit();
-	case_lt_false_8bit();
-
-	case_ge_true_8bit();
-	case_ge_false_8bit();
-}
 
 static void common(int a1, enum TAC_OP op, int a2, bool expect_true, bool debug) {
 
@@ -95,56 +71,56 @@ static void common(int a1, enum TAC_OP op, int a2, bool expect_true, bool debug)
 	sd_uc_close(system);
 }
 
-static void case_eq_true_8bit() {
+void test_x86_compile_tac_if_cmp_goto_case_eq_true_8bit() {
 
 	status_test_x86_codegen("TAC_IF_CMP_GOTO == true (8 bit)");
 
 	common(1, TAC_OP_CMP_EQ, 1, true, false);
 }
 
-static void case_eq_false_8bit() {
+void test_x86_compile_tac_if_cmp_goto_case_eq_false_8bit() {
 
 	status_test_x86_codegen("TAC_IF_CMP_GOTO == false (8 bit)");
 
 	common(1, TAC_OP_CMP_EQ, 2, false, false);
 }
 
-static void case_neq_true_8bit() {
+void test_x86_compile_tac_if_cmp_goto_case_neq_true_8bit() {
 
 	status_test_x86_codegen("TAC_IF_CMP_GOTO != true (8 bit)");
 
 	common(1, TAC_OP_CMP_NEQ, 2, true, false);
 }
 
-static void case_neq_false_8bit() {
+void test_x86_compile_tac_if_cmp_goto_case_neq_false_8bit() {
 
 	status_test_x86_codegen("TAC_IF_CMP_GOTO != false (8 bit)");
 
 	common(1, TAC_OP_CMP_NEQ, 1, false, false);
 }
 
-static void case_lt_true_8bit() {
+void test_x86_compile_tac_if_cmp_goto_case_lt_true_8bit() {
 
 	status_test_x86_codegen("TAC_IF_CMP_GOTO < true (8 bit)");
 
 	common(1, TAC_OP_CMP_LT, 4, true, false);
 }
 
-static void case_lt_false_8bit() {
+void test_x86_compile_tac_if_cmp_goto_case_lt_false_8bit() {
 
 	status_test_x86_codegen("TAC_IF_CMP_GOTO < false (8 bit)");
 
 	common(5, TAC_OP_CMP_LT, 4, false, false);
 }
 
-static void case_ge_true_8bit() {
+void test_x86_compile_tac_if_cmp_goto_case_ge_true_8bit() {
 
 	status_test_x86_codegen("TAC_IF_CMP_GOTO >= true (8 bit)");
 
 	common(4, TAC_OP_CMP_GE, 4, true, false);
 }
 
-static void case_ge_false_8bit() {
+void test_x86_compile_tac_if_cmp_goto_case_ge_false_8bit() {
 
 	status_test_x86_codegen("TAC_IF_CMP_GOTO >= false (8 bit)");
 

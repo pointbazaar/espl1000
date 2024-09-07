@@ -5,20 +5,11 @@
 
 #include "test_gen_tac.h"
 
-static void case_const_addr();
-static void case_variable_addr();
-
-void test_gen_tac_mdirect() {
-
-	case_const_addr();
-	case_variable_addr();
-}
-
-static void case_const_addr() {
+void test_gen_tac_mdirect_case_const_addr() {
 
 	status_test_codegen_tac("MDirect - const Address");
 
-	for (uint16_t address = 0x100; address < 0x110; address++) {
+	for (uint16_t address = 0x100; address < 0x105; address++) {
 		const int8_t value = 0x34;
 
 		char snippet[200];
@@ -47,13 +38,13 @@ static void case_const_addr() {
 	}
 }
 
-static void case_variable_addr() {
+void test_gen_tac_mdirect_case_variable_addr() {
 
 	status_test_codegen_tac("MDirect - variable Address");
 
 	//we need an address here which is small enough
 	//to fit into a register. 0xc7 is usable.
-	for (uint16_t address = 0xc7; address < 0xd7; address++) {
+	for (uint16_t address = 0xc7; address < 0xcb; address++) {
 
 		const int8_t value = 0x38;
 

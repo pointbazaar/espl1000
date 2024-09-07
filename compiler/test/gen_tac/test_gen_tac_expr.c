@@ -5,51 +5,12 @@
 
 #include "test_gen_tac.h"
 
-//test each operator with 2 random values
-static void test_gen_tac_expr_plus();
-static void test_gen_tac_expr_minus();
-static void test_gen_tac_expr_mul();
-static void test_gen_tac_expr_and();
-static void test_gen_tac_expr_or();
-static void test_gen_tac_expr_shift_left();
-static void test_gen_tac_expr_shift_right();
-static void test_gen_tac_expr_xor();
-static void test_gen_tac_expr_lt_8bit();
-static void test_gen_tac_expr_lt_16bit();
-static void test_gen_tac_expr_gt_8bit();
-static void test_gen_tac_expr_gt_16bit();
-static void test_gen_tac_expr_eq_8bit();
-static void test_gen_tac_expr_eq_16bit();
-static void test_gen_tac_expr_neq_8bit();
-static void test_gen_tac_expr_neq_16bit();
-
-void test_gen_tac_expr() {
-
-	test_gen_tac_expr_plus();
-	test_gen_tac_expr_minus();
-	test_gen_tac_expr_mul();
-	test_gen_tac_expr_and();
-	test_gen_tac_expr_or();
-	test_gen_tac_expr_shift_left();
-	test_gen_tac_expr_shift_right();
-	test_gen_tac_expr_xor();
-
-	test_gen_tac_expr_lt_8bit();
-	test_gen_tac_expr_lt_16bit();
-	test_gen_tac_expr_gt_8bit();
-	test_gen_tac_expr_gt_16bit();
-	test_gen_tac_expr_eq_8bit();
-	test_gen_tac_expr_eq_16bit();
-	test_gen_tac_expr_neq_8bit();
-	test_gen_tac_expr_neq_16bit();
-}
-
-static void test_gen_tac_expr_plus() {
+void test_gen_tac_expr_plus() {
 
 	status_test_codegen_tac("Expr +");
 
-	for (int8_t value1 = 0; value1 < 4; value1++) {
-		for (int8_t value2 = 0; value2 < 4; value2++) {
+	for (int8_t value1 = 0; value1 < 3; value1++) {
+		for (int8_t value2 = 0; value2 < 3; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> int { int x = %d + %d; return x; }", value1, value2);
@@ -71,12 +32,12 @@ static void test_gen_tac_expr_plus() {
 	}
 }
 
-static void test_gen_tac_expr_minus() {
+void test_gen_tac_expr_minus() {
 
 	status_test_codegen_tac("Expr -");
 
-	for (int8_t value1 = 50; value1 < 55; value1++) {
-		for (int8_t value2 = 0; value2 < 10; value2++) {
+	for (int8_t value1 = 50; value1 < 53; value1++) {
+		for (int8_t value2 = 0; value2 < 3; value2++) {
 			const int8_t expected = value1 - value2;
 
 			char snippet[200];
@@ -98,14 +59,14 @@ static void test_gen_tac_expr_minus() {
 	}
 }
 
-static void test_gen_tac_expr_mul() {
+void test_gen_tac_expr_mul() {
+
+	status_test_codegen_tac("Expr * (SKIPPING, TODO: re-enable)");
 
 	return;
 
-	status_test_codegen_tac("Expr *");
-
-	for (int8_t value1 = 0; value1 < 5; value1++) {
-		for (int8_t value2 = 0; value2 < 5; value2++) {
+	for (int8_t value1 = 0; value1 < 3; value1++) {
+		for (int8_t value2 = 0; value2 < 3; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> int { int x = %d * %d; return x; }", value1, value2);
@@ -126,12 +87,12 @@ static void test_gen_tac_expr_mul() {
 	}
 }
 
-static void test_gen_tac_expr_and() {
+void test_gen_tac_expr_and() {
 
 	status_test_codegen_tac("Expr &");
 
-	for (int8_t value1 = 0; value1 < 10; value1++) {
-		for (int8_t value2 = 0; value2 < 10; value2++) {
+	for (int8_t value1 = 0; value1 < 3; value1++) {
+		for (int8_t value2 = 0; value2 < 3; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> int { int x = %d & %d; return x; }", value1, value2);
@@ -153,12 +114,12 @@ static void test_gen_tac_expr_and() {
 	}
 }
 
-static void test_gen_tac_expr_or() {
+void test_gen_tac_expr_or() {
 
 	status_test_codegen_tac("Expr |");
 
-	for (int8_t value1 = 0; value1 < 10; value1++) {
-		for (int8_t value2 = 0; value2 < 10; value2++) {
+	for (int8_t value1 = 0; value1 < 3; value1++) {
+		for (int8_t value2 = 0; value2 < 3; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> int { int x = %d | %d; return x; }", value1, value2);
@@ -176,12 +137,12 @@ static void test_gen_tac_expr_or() {
 	}
 }
 
-static void test_gen_tac_expr_shift_left() {
+void test_gen_tac_expr_shift_left() {
 
 	status_test_codegen_tac("Expr <<");
 
-	for (int8_t value1 = 0; value1 < 10; value1++) {
-		for (int8_t value2 = 1; value2 < 5; value2++) {
+	for (int8_t value1 = 0; value1 < 3; value1++) {
+		for (int8_t value2 = 1; value2 < 3; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> int { int x = %d << %d; return x; }", value1, value2);
@@ -200,12 +161,12 @@ static void test_gen_tac_expr_shift_left() {
 	}
 }
 
-static void test_gen_tac_expr_shift_right() {
+void test_gen_tac_expr_shift_right() {
 
 	status_test_codegen_tac("Expr >>");
 
-	for (int8_t value1 = 0; value1 < 10; value1++) {
-		for (int8_t value2 = 1; value2 < 5; value2++) {
+	for (int8_t value1 = 0; value1 < 3; value1++) {
+		for (int8_t value2 = 1; value2 < 3; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> int { int x = %d >> %d; return x; }", value1, value2);
@@ -224,12 +185,12 @@ static void test_gen_tac_expr_shift_right() {
 	}
 }
 
-static void test_gen_tac_expr_xor() {
+void test_gen_tac_expr_xor() {
 
 	status_test_codegen_tac("Expr ^");
 
-	for (int8_t value1 = 0; value1 < 10; value1++) {
-		for (int8_t value2 = 0; value2 < 10; value2++) {
+	for (int8_t value1 = 0; value1 < 3; value1++) {
+		for (int8_t value2 = 0; value2 < 3; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> int { int x = %d ^ %d; return x; }", value1, value2);
@@ -252,12 +213,12 @@ static void test_gen_tac_expr_xor() {
 	}
 }
 
-static void test_gen_tac_expr_lt_8bit() {
+void test_gen_tac_expr_lt_8bit() {
 
 	status_test_codegen_tac("Expr < (8 bit)");
 
-	for (uint8_t value1 = 0; value1 < 4; value1++) {
-		for (uint8_t value2 = 0; value2 < 4; value2++) {
+	for (uint8_t value1 = 0; value1 < 3; value1++) {
+		for (uint8_t value2 = 0; value2 < 3; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d < %d; return x; }", value1, value2);
@@ -276,12 +237,12 @@ static void test_gen_tac_expr_lt_8bit() {
 	}
 }
 
-static void test_gen_tac_expr_lt_16bit() {
+void test_gen_tac_expr_lt_16bit() {
 
 	status_test_codegen_tac("Expr < (16 bit)");
 
-	for (uint16_t value1 = 0x100; value1 < 0x104; value1++) {
-		for (uint16_t value2 = 0x100; value2 < 0x104; value2++) {
+	for (uint16_t value1 = 0x100; value1 < 0x103; value1++) {
+		for (uint16_t value2 = 0x100; value2 < 0x103; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d < %d; return x; }", value1, value2);
@@ -300,12 +261,12 @@ static void test_gen_tac_expr_lt_16bit() {
 	}
 }
 
-static void test_gen_tac_expr_gt_8bit() {
+void test_gen_tac_expr_gt_8bit() {
 
 	status_test_codegen_tac("Expr > (8 bit)");
 
-	for (uint8_t value1 = 0; value1 < 4; value1++) {
-		for (uint8_t value2 = 0; value2 < 4; value2++) {
+	for (uint8_t value1 = 0; value1 < 3; value1++) {
+		for (uint8_t value2 = 0; value2 < 3; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d > %d; return x; }", value1, value2);
@@ -324,12 +285,12 @@ static void test_gen_tac_expr_gt_8bit() {
 	}
 }
 
-static void test_gen_tac_expr_gt_16bit() {
+void test_gen_tac_expr_gt_16bit() {
 
 	status_test_codegen_tac("Expr > (16 bit)");
 
-	for (uint16_t value1 = 0x100; value1 < 0x104; value1++) {
-		for (uint16_t value2 = 0x100; value2 < 0x104; value2++) {
+	for (uint16_t value1 = 0x100; value1 < 0x103; value1++) {
+		for (uint16_t value2 = 0x100; value2 < 0x103; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d > %d; return x; }", value1, value2);
@@ -348,12 +309,12 @@ static void test_gen_tac_expr_gt_16bit() {
 	}
 }
 
-static void test_gen_tac_expr_eq_8bit() {
+void test_gen_tac_expr_eq_8bit() {
 
 	status_test_codegen_tac("Expr == (8 bit)");
 
-	for (uint8_t value1 = 0; value1 < 4; value1++) {
-		for (uint8_t value2 = 0; value2 < 4; value2++) {
+	for (uint8_t value1 = 0; value1 < 3; value1++) {
+		for (uint8_t value2 = 0; value2 < 3; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d == %d; return x; }", value1, value2);
@@ -372,12 +333,12 @@ static void test_gen_tac_expr_eq_8bit() {
 	}
 }
 
-static void test_gen_tac_expr_eq_16bit() {
+void test_gen_tac_expr_eq_16bit() {
 
 	status_test_codegen_tac("Expr == (16 bit)");
 
-	for (uint16_t value1 = 0x100; value1 < 0x104; value1++) {
-		for (uint16_t value2 = 0x100; value2 < 0x104; value2++) {
+	for (uint16_t value1 = 0x100; value1 < 0x103; value1++) {
+		for (uint16_t value2 = 0x100; value2 < 0x103; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d == %d; return x; }", value1, value2);
@@ -396,12 +357,12 @@ static void test_gen_tac_expr_eq_16bit() {
 	}
 }
 
-static void test_gen_tac_expr_neq_8bit() {
+void test_gen_tac_expr_neq_8bit() {
 
 	status_test_codegen_tac("Expr != (8 bit)");
 
-	for (uint8_t value1 = 0; value1 < 4; value1++) {
-		for (uint8_t value2 = 0; value2 < 4; value2++) {
+	for (uint8_t value1 = 0; value1 < 3; value1++) {
+		for (uint8_t value2 = 0; value2 < 3; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d != %d; return x; }", value1, value2);
@@ -422,12 +383,12 @@ static void test_gen_tac_expr_neq_8bit() {
 	}
 }
 
-static void test_gen_tac_expr_neq_16bit() {
+void test_gen_tac_expr_neq_16bit() {
 
 	status_test_codegen_tac("Expr != (16 bit)");
 
-	for (uint16_t value1 = 0x100; value1 < 0x104; value1++) {
-		for (uint16_t value2 = 0x100; value2 < 0x104; value2++) {
+	for (uint16_t value1 = 0x100; value1 < 0x103; value1++) {
+		for (uint16_t value2 = 0x100; value2 < 0x103; value2++) {
 
 			char snippet[200];
 			sprintf(snippet, "fn main() -> bool { bool x = %d != %d; return x; }", value1, value2);

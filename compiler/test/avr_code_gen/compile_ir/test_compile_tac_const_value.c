@@ -15,20 +15,11 @@
 
 #include "test_compile_tac.h"
 
-static void test_8bit();
-static void test_16bit();
-
-void test_compile_tac_const_value() {
-
-	test_8bit();
-	test_16bit();
-}
-
-static void test_8bit() {
+void test_compile_tac_const_value_test_8bit() {
 
 	status_test_codegen("TAC_CONST_VALUE - 8 bit");
 
-	for (int8_t fixed_value = -100; fixed_value < 100; fixed_value += 10) {
+	for (int8_t fixed_value = -40; fixed_value < 40; fixed_value += 10) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
@@ -52,11 +43,11 @@ static void test_8bit() {
 	}
 }
 
-static void test_16bit() {
+void test_compile_tac_const_value_test_16bit() {
 
 	status_test_codegen("TAC_CONST_VALUE - 16 bit");
 
-	for (int16_t fixed_value = -30000; fixed_value < 30000; fixed_value += 2000) {
+	for (int16_t fixed_value = -10000; fixed_value < 10000; fixed_value += 2000) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 

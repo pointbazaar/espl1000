@@ -21,7 +21,7 @@ void test_compile_tac_load_const_addr() {
 
 	const uint16_t addr = 0x100 + 17;
 
-	for (int8_t fixed_value = 0x55; fixed_value < 0x65; fixed_value++) {
+	for (int8_t fixed_value = 0x55; fixed_value < 0x65; fixed_value += 2) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 

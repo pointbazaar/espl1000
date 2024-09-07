@@ -5,21 +5,7 @@
 
 #include "test_gen_tac.h"
 
-//local struct in stack frame
-//static void case_read_local_struct();
-//static void case_write_local_struct();
-
-//structs anywhere, referenced by pointer
-static void case_read_struct();
-static void case_write_struct();
-
-void test_gen_tac_structdecl() {
-
-	case_read_struct();
-	case_write_struct();
-}
-
-static void case_read_struct() {
+void test_gen_tac_structdecl_case_read_struct() {
 
 	status_test_codegen_tac("StructDecl - read struct");
 
@@ -43,7 +29,7 @@ static void case_read_struct() {
 	vmcu_system_dtor(system);
 }
 
-static void case_write_struct() {
+void test_gen_tac_structdecl_case_write_struct() {
 
 	status_test_codegen_tac("StructDecl - write struct");
 

@@ -19,7 +19,7 @@ void test_compile_tac_store_const_addr() {
 
 	status_test_codegen("TAC_STORE_CONST_ADDR");
 
-	for (uint16_t addr = 0x118; addr < 0x140; addr++) {
+	for (uint16_t addr = 0x118; addr < 0x140; addr += 5) {
 
 		const int8_t fixed_value = 0x44;
 

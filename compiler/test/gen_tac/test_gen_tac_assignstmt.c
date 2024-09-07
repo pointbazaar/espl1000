@@ -5,20 +5,7 @@
 
 #include "test_gen_tac.h"
 
-static void case_local_int_8bit();
-static void case_local_int_16bit();
-static void case_local_struct();
-static void case_local_array();
-
-void test_gen_tac_assignstmt() {
-
-	case_local_int_8bit();
-	case_local_int_16bit();
-	case_local_struct();
-	case_local_array();
-}
-
-static void case_local_int_8bit() {
+void test_gen_tac_assignstmt_case_local_int_8bit() {
 
 	status_test_codegen_tac("AssignStmt - local int (8 bit)");
 
@@ -40,7 +27,7 @@ static void case_local_int_8bit() {
 	vmcu_system_dtor(system);
 }
 
-static void case_local_int_16bit() {
+void test_gen_tac_assignstmt_case_local_int_16bit() {
 
 	status_test_codegen_tac("AssignStmt - local int (16 bit)");
 
@@ -64,7 +51,7 @@ static void case_local_int_16bit() {
 	vmcu_system_dtor(system);
 }
 
-static void case_local_struct() {
+void test_gen_tac_assignstmt_case_local_struct() {
 
 	status_test_codegen_tac("AssignStmt - local struct [TODO]");
 	return;
@@ -87,7 +74,7 @@ static void case_local_struct() {
 	vmcu_system_dtor(system);
 }
 
-static void case_local_array() {
+void test_gen_tac_assignstmt_case_local_array() {
 
 	status_test_codegen_tac("AssignStmt - local array");
 

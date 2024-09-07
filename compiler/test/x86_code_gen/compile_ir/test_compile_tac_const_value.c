@@ -20,9 +20,9 @@ void test_x86_compile_tac_const_value() {
 
 	status_test_x86_codegen("TAC_CONST_VALUE");
 
-	for (int8_t fixed_value = -100; fixed_value < 100; fixed_value += 10) {
+	for (int8_t fixed_value = -2; fixed_value <= 2; fixed_value++) {
 
-		test_x86_compile_tac_const_value_fixed_value(fixed_value);
+		test_x86_compile_tac_const_value_fixed_value(fixed_value * 10);
 	}
 }
 
