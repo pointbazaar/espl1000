@@ -61,9 +61,7 @@ void test_gen_tac_expr_minus() {
 
 void test_gen_tac_expr_mul() {
 
-	status_test_codegen_tac("Expr * (SKIPPING, TODO: re-enable)");
-
-	return;
+	status_test_codegen_tac("Expr *");
 
 	for (int8_t value1 = 0; value1 < 3; value1++) {
 		for (int8_t value2 = 0; value2 < 3; value2++) {
