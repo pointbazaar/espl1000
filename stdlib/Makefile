@@ -11,18 +11,21 @@ TESTS := tests/test_matrix.dg \
 	#tests/collections/test_stack.dg \
 
 SOURCES :=  test.dg \
-	#math.dg \
-	#collections/intbintree.dg \
-	#collections/linkedlist.dg \
-	#collections/arraylist.dg 
-	#collections/array.dg \
-	#primes.dg \
+	math.dg \
+	collections/linkedlist.dg \
+	collections/arraylist.dg \
+	collections/array.dg \
+	primes.dg \
+	collections/intbintree.dg \
 	#polynomial.dg \
 	#collections/set.dg \
 	#collections/stack.dg \
 
 test: $(SOURCES) clean
-	sd $(SOURCES) 
+	sd $(SOURCES)
+
+debug: $(SOURCES) clean
+	sd -debug $(SOURCES)
 
 clean:
 	rm -f a.out 

@@ -1,23 +1,23 @@
 
-struct ArrayList<?T0> {
+struct ArrayList {
 
-	@private [?T0] arr;
+	@private [int] arr;
 	@private uint size;
 	@private uint capacity;
 }
 
 
-fn arraylist_size(ArrayList<?T0> list) -> uint	 {
+fn arraylist_size(ArrayList list) -> uint	 {
 	return list.size;
 }
 
 
-fn arraylist_at(ArrayList<?T0> list, uint index) -> ?T0 {
-	
+fn arraylist_at(ArrayList list, uint index) -> int {
+
 	return list.arr[index];
 }
 
-fn arraylist_contains(ArrayList<?T0> list, ?T0 elem) -> bool {
+fn arraylist_contains(ArrayList list, int elem) -> bool {
 
 	for i in 0 .. (list.size - 1) {
 		if list.arr[i] == elem { return true; }
@@ -25,15 +25,15 @@ fn arraylist_contains(ArrayList<?T0> list, ?T0 elem) -> bool {
 	return false;
 }
 
-fn arraylist_index_of(ArrayList<?T0> list, ?T0 elem) -> int {
-	
+fn arraylist_index_of(ArrayList list, int elem) -> int {
+
 	for i in 0 .. (list.size - 1) {
 		if list.arr[i] == elem { return i; }
 	}
 	return -1;
 }
 
-fn arraylist_clear(ArrayList<?T0> list) ~> bool {
+fn arraylist_clear(ArrayList list) ~> bool {
 	list.size = 0;
 	return true;
 }

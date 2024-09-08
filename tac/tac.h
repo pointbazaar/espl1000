@@ -57,6 +57,9 @@ enum TAC_KIND {
 	TAC_CONST_VALUE,
 
 	TAC_CALL, //call to a label (string) without anything else
+	TAC_ICALL, // call to a temporary 't1 = call t2'.
+	           // So we can comput arbitrary address to call.
+	           // Good for calling function pointers
 	TAC_PARAM,
 	TAC_RETURN, //return, without arguments
 
@@ -134,6 +137,7 @@ struct TAC* makeTACLoadConstAddr(uint32_t dest, uint32_t addr);
 
 struct TAC* makeTACParam(uint32_t dest, bool push16);
 struct TAC* makeTACCall(uint32_t tmp, uint32_t function_index);
+struct TAC* makeTACICall(uint32_t tmp, uint32_t tmp_call);
 
 struct TAC* makeTACSetupStackframe(uint32_t frame_size);
 struct TAC* makeTACSetupSP();

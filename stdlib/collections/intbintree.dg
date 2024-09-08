@@ -1,36 +1,35 @@
-#include <stdlib.h>
 //an implementation of a binary tree for integers
 
-struct IntBinTree { 
+struct IntBinTree {
 
 	@private
 	bool has_root;
 
 	@private
-	IntBinTreeNode root; 
+	IntBinTreeNode root;
 }
 
 @private
 struct IntBinTreeNode {
 
 	int key;
-	
+
 	bool has_left;
 	IntBinTreeNode left;
-	
+
 	bool has_right;
 	IntBinTreeNode right;
 }
 
 fn intbintree_contains(IntBinTree t, int key) -> bool {
-	
+
 	return intbintreenode_contains(t.root, key);
 }
 
 fn intbintree_size(IntBinTree t) -> uint {
 
 	if !t.has_root { return 0; }
-	
+
 	return intbintreenode_size(t.root);
 }
 
@@ -46,22 +45,22 @@ fn intbintree_visit (IntBinTree t, ( (int)->bool ) visitor) -> bool {
 fn intbintreenode_contains(IntBinTreeNode t, int key) -> bool {
 
 	current = t;
-	
+
 	while true {
 
-		switch compare(key, current.key) {
-			case  0 { return true; }
-			case -1 { 
-				if !current.has_left { return false; }
-				current = current.left; 
-			}
-			case  1 { 
-				if !current.has_right { return false; }
-				current = current.right; 
-			}
+		int c = compare(key, current.key);
+
+		if c ==  0 { return true; }
+		if c == -1 {
+			if !current.has_left { return false; }
+			current = current.left;
+		}
+		if c == 1 {
+			if !current.has_right { return false; }
+			current = current.right;
 		}
 	}
-	
+
 	return false;
 }
 
@@ -69,20 +68,20 @@ fn intbintreenode_contains(IntBinTreeNode t, int key) -> bool {
 fn intbintreenode_size(IntBinTreeNode t) -> uint {
 
 	res = 1;
-	
+
 	if t.has_left {
 		res += intbintreenode_size(t.left);
-	}	
+	}
 	if t.has_right {
 		res += intbintreenode_size(t.right);
 	}
-	
+
 	return res;
 }
 
 @private
 fn intbintreenode_visit(IntBinTreeNode t, ((int)->bool) visitor) -> bool {
-	
+
 	if t.has_left {
 		intbintreenode_visit(t.left, visitor);
 	}
@@ -90,7 +89,7 @@ fn intbintreenode_visit(IntBinTreeNode t, ((int)->bool) visitor) -> bool {
 	if t.has_right {
 		intbintreenode_visit(t.right, visitor);
 	}
-	
+
 	return true;
 }
 

@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#include "compiler/cli/flags/flags.h"
 #include "tables/symtable/symtable.h"
 
 #include "tac/tac.h"
@@ -21,6 +22,10 @@ void emit_asm_avr_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct 
 	if (block == NULL || block->visited_emit_asm)
 		return;
 
+	if (flags_debug(ctx_flags(ctx))) {
+		printf("%s\n", __func__);
+	}
+
 	block->visited_emit_asm = true;
 
 	//create register allocation table for the basic block.
@@ -32,14 +37,15 @@ void emit_asm_avr_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct 
 	//TODO: use better approach
 	allocate_registers(block->buffer, rat, ctx_tables(ctx));
 
+	if (flags_debug(ctx_flags(ctx))) {
+		rat_print(rat);
+	}
+
 	for (size_t i = 0; i < tacbuffer_count(block->buffer); i++) {
 		struct TAC* t = tacbuffer_get(block->buffer, i);
 
 		emit_asm_avr_single_tac(rat, t, ctx, ibu);
 	}
-
-	//if(ctx->flags->debug)
-	//rat_print(rat);
 
 	rat_dtor(rat);
 

@@ -42,7 +42,7 @@ fn min (int a,int b) -> int {
 	if a < b {return a;}
 	return b;
 }
-/*
+
 fn gcd (int a, int b) -> int {
 	if a==0 {return b;}
 	return gcd(mod(b,a), a);
@@ -60,30 +60,30 @@ fn mod(int a, int b) -> int {
 }
 
 fn div(int a, int b) -> int {
-	
+
 	//TODO
 	x=0;
 	return x;
 }
-*/
+
 @halts
 fn fib(uint n) -> uint {
 
 	uint a = 0;
 	uint b = 1;
-	
+
 	for i in 1 .. (n-1) {
-		
+
 		uint k = a+b;
 		a = b;
 		b = k;
 	}
-	
+
 	return a;
 }
 
 @halts
-fn iseven(int x) -> bool { return x & 0x01 == 0; }
+fn iseven(int x) -> bool { return (x & 0x01) == 0; }
 
 @halts
-fn isodd(int x) -> bool { return x & 0x01 == 1; }
+fn isodd(int x) -> bool { return (x & 0x01) == 1; }

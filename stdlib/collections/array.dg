@@ -1,21 +1,7 @@
 #include <stdlib.h>
 //simple functions dealing with arrays of integers
 
-fn array_reduce(
-	[?T0] arr, 
-	uint size, 
-	((?T0, ?T0) -> ?T0) reducer, 
-	?T0 initial
-) -> ?T0 {
-	
-	?T0 current = initial;
-	for i in 0 .. (size - 1) {
-		current = reducer(current, arr[i]);
-	}
-	return current;
-}
-
-fn array_contains([?T0] arr, uint size, ?T0 elem) -> bool {
+fn array_contains([int] arr, uint size, int elem) -> bool {
 
 	for i in 0 .. (size - 1) {
 		if arr[i] == elem { return true; }
