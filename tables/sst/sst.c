@@ -15,7 +15,7 @@
 
 #define ERR_SAME_NAME "[SST][Error] 2 subroutines with same name\n"
 
-#define ERR_NOT_FOUND "[SST][Error] subroutine not found\n"
+#define ERR_NOT_FOUND "[SST][Error] subroutine not found"
 
 struct SST {
 	//Subroutine Symbol Table (SST)
@@ -159,8 +159,7 @@ struct SSTLine* sst_get(struct SST* sst, char* name) {
 		if (strcmp(line->name, name) == 0) { return line; }
 	}
 
-	printf(ERR_NOT_FOUND);
-	printf("\t%s in sst_get\n", name);
+	printf("%s: '%s'\n", ERR_NOT_FOUND, name);
 	exit(1);
 	return NULL;
 }

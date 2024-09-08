@@ -242,6 +242,14 @@ struct TAC* makeTACCall(uint32_t tmp, uint32_t function_index) {
 	return t;
 }
 
+struct TAC* makeTACICall(uint32_t tmp, uint32_t tmp_call) {
+	struct TAC* t = makeTAC();
+	t->kind = TAC_ICALL;
+	t->dest = tmp;
+	t->arg1 = tmp_call;
+	return t;
+}
+
 struct TAC* makeTACSetupStackframe(uint32_t frame_size) {
 	struct TAC* t = makeTAC();
 	t->kind = TAC_SETUP_STACKFRAME;

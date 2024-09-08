@@ -2,54 +2,54 @@
 
 //A simple double-linked list
 
-struct LinkedList<?T0> {
+struct LinkedList {
 
 	@private uint size;
-	
+
 	@private bool is_empty;
-	@private LLNode<?T0> head;
-	@private LLNode<?T0> tail;
+	@private LLNode head;
+	@private LLNode tail;
 }
 
 @private
-struct LLNode<?T0> {
+struct LLNode {
 
-	?T0 value;
+	int value;
 	bool has_next;
-	
-	LLNode<?T0> prev;
-	LLNode<?T0> next;
+
+	LLNode prev;
+	LLNode next;
 }
 
 @halts
-fn linkedlist_size(LinkedList<?T0> l) -> uint { 
-	return l.size; 
+fn linkedlist_size(LinkedList l) -> uint {
+	return l.size;
 }
 
 
-fn linkedlist_contains(LinkedList<?T0> l, ?T0 value) -> bool {
-	
+fn linkedlist_contains(LinkedList l, int value) -> bool {
+
 	return linkedlist_index_of(l, value) >= 0;
 }
 
-fn linkedlist_index_of(LinkedList<?T0> l, ?T0 value) -> int {
-	
-	LLNode<?T0> current = l.head;
+fn linkedlist_index_of(LinkedList l, int value) -> int {
+
+	LLNode current = l.head;
 	int index = 0;
-	
+
 	while current.has_next {
-	
-		if current.value == value { 
+
+		if current.value == value {
 			return index;
 		}
-		
+
 		current = current.next;
 		index++;
 	}
-	
-	if current.value == value { 
+
+	if current.value == value {
 		return index;
 	}
-	
+
 	return -1;
 }

@@ -3,11 +3,11 @@
 
 @halts
 fn isprime(uint n) -> bool {
-	
+
 	uint count = 0;
 
 	for k in 1 .. n {
-	
+
 		if mod(n, k) == 0
 		{ count++; }
 	}

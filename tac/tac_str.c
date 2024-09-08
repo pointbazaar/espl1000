@@ -129,6 +129,9 @@ char* tac_tostring(struct TAC* t, struct Ctx* ctx) {
 			}
 			sprintf(buffer, "t%d = call %s", t->dest, function_name);
 		} break;
+		case TAC_ICALL: {
+			sprintf(buffer, "t%d = call t%ld", t->dest, t->arg1);
+		} break;
 
 		case TAC_PARAM:
 			sprintf(buffer, "param t%d", t->arg1);
@@ -145,6 +148,10 @@ char* tac_tostring(struct TAC* t, struct Ctx* ctx) {
 			break;
 		case TAC_SETUP_SP:
 			sprintf(buffer, "setup SP");
+			break;
+		default:
+			printf("unhandled in %s\n", __func__);
+			exit(1);
 			break;
 	}
 
