@@ -23,8 +23,8 @@ void test_compile_tac_if_goto_case_true_8bit() {
 	const uint16_t address1 = 0x105;
 
 	//labels
-	const uint16_t l1 = 1;
-	const uint16_t lend = 2;
+	const uint16_t l1 = make_label();
+	const uint16_t lend = make_label();
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
@@ -57,8 +57,8 @@ void test_compile_tac_if_goto_case_true_16bit() {
 	const uint16_t address1 = 0x101;
 
 	//labels
-	const uint16_t l1 = 1;
-	const uint16_t lend = 2;
+	const uint16_t l1 = make_label();
+	const uint16_t lend = make_label();
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
@@ -91,8 +91,8 @@ void test_compile_tac_if_goto_case_false_8bit() {
 	const uint16_t address1 = 0x108;
 
 	//labels
-	const uint16_t l1 = 1;
-	const uint16_t lend = 2;
+	const uint16_t l1 = make_label();
+	const uint16_t lend = make_label();
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
@@ -124,8 +124,8 @@ void test_compile_tac_if_goto_case_false_16bit() {
 	const uint16_t address1 = 0x109;
 
 	//labels
-	const uint16_t l1 = 1;
-	const uint16_t lend = 2;
+	const uint16_t l1 = make_label();
+	const uint16_t lend = make_label();
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
@@ -163,8 +163,8 @@ void test_compile_tac_if_goto_case_mixed() {
 	const uint16_t address2 = address1 + 1;
 
 	//labels
-	const uint16_t l1 = 1;
-	const uint16_t lend = 2;
+	const uint16_t l1 = make_label();
+	const uint16_t lend = make_label();
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
