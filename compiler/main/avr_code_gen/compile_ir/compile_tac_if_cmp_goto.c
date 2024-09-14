@@ -23,11 +23,21 @@ void compile_tac_if_cmp_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* i
 	char str[32];
 	sprintf(str, "L%d", tac->label_index);
 
+	char tmp_label[32];
+	sprintf(tmp_label, "L%d", make_label());
+
+	// we invert the condition here so that we use 'jmp' for the jump to our target label.
+	// We cannot use 'brne', 'brlt', 'breq', ... as they can only jump +/- 64 words
+	// and we do not know how far away our target label is.
+
 	switch (tac->op) {
-		case TAC_OP_CMP_EQ: breq(str, c); break;
-		case TAC_OP_CMP_NEQ: brne(str, c); break;
-		case TAC_OP_CMP_GE: brge(str, c); break;
-		case TAC_OP_CMP_LT: brlt(str, c); break;
+		case TAC_OP_CMP_EQ: brne(tmp_label, c); break;
+		case TAC_OP_CMP_NEQ: breq(tmp_label, c); break;
+		case TAC_OP_CMP_GE: brlt(tmp_label, c); break;
+		case TAC_OP_CMP_LT: brge(tmp_label, c); break;
 		default: break;
 	}
+
+	jmp(str);
+	label(tmp_label);
 }
