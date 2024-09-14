@@ -8,7 +8,7 @@
   <meta name="author" content="ESPL1000">
 
   <link rel="icon" href="../img/favicon.ico">
-  
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <link rel="stylesheet" href="../css/style.css">
 
@@ -17,25 +17,22 @@
 <body>
 
 <div class="container-xl">
-	
+
 	<div class="row nav-bg">
 		<div class="col">
 			<a href="../index.html"><h1>Home</h1></a>
 		</div>
-		<div class="col-2">
-			<a href="tac.html"><h1>next</h1></a>
-		</div>
 	</div>
-	
+
 	<h1 class="mb-3">ESPL1000 Project Goals</h1>
 
 	<h3> Design Decisions and Reasoning behind them</h3>
 
 	<ul>
-		<li> 
+		<li>
 			<strong>hackable to the core </strong>
 			<p>
-			Make it your own. Everything 
+			Make it your own. Everything
 			is created with extendability and modularity in mind.
 			The Compiler is composed of multiple small programs
 			which can be used and modified independently.
@@ -54,7 +51,7 @@
 			<strong>no effort for backwards compatibility </strong>
 			<p>
 				ESPL1000 is a learning Project for me
-				so anything might change whenever. 
+				so anything might change whenever.
 			</p>
 		</li>
 		<li>
@@ -68,7 +65,7 @@
 			<strong>no user-defined prefix,infix or suffix operators</strong>
 			<p>
 				This greatly simplifies the parser. An Operator should map to a small sequence
-				of machine instructions. 
+				of machine instructions.
 			</p>
 		</li>
 		<li>
@@ -82,7 +79,7 @@
 			<strong> no need to declare a namespace, functions and structs are top-level </strong>
 			<p>
 				In my opinion, it does not make sense to force unneccessary indentation
-				on people. The name of the file is the namespace of a translation unit. 
+				on people. The name of the file is the namespace of a translation unit.
 				structs and functions can be declared and defined directly,
 				without needing a wrapper like a class or namespace construct.
 				This also makes code easier to read without context.
@@ -91,17 +88,17 @@
 		<li>
 			<strong> no unneccessary nesting of syntactic constructs </strong>
 			<p>
-				There are no nested method definitions or nested structures. 
+				There are no nested method definitions or nested structures.
 				Indentation is limited to the minimum necessary.
 				I have personally never seen a case where it was necessary or
 				'better' in any way to declare a nested function or anything like that.
 			</p>
 		</li>
-		<li> 
+		<li>
 			<strong> simple syntax </strong>
 			<p>
 				ESPL1000 provides the basic building blocks like loops and if-statements
-				that are classics to most programming languages. 
+				that are classics to most programming languages.
 				Extra stuff like bloated syntax is avoided whenever possible.
 			</p>
 		</li>
@@ -113,7 +110,7 @@
 		<li>
 			<strong>no null/NULL/undefined</strong>
 			<p>
-				Having 'NULL' makes it hard to understand code without 
+				Having 'NULL' makes it hard to understand code without
 				context and knowledge of the code around it.
 				Good code should make sense on it's own.
 				So it should be obvious when a variable might not contain anything.
@@ -130,9 +127,9 @@
 		<li>
 			<strong> pure functions and impure methods explicit </strong>
 			<p>
-				A function declared pure should not contain calls to 
-				impure function. Purity of a function should be 
-				checked by the Compiler. 
+				A function declared pure should not contain calls to
+				impure function. Purity of a function should be
+				checked by the Compiler.
 			</p>
 		</li>
 	</ul>

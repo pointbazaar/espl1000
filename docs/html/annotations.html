@@ -12,37 +12,34 @@
 </head>
 <body>
 <div class="container-xl">
-	
+
 	<div class="row nav-bg">
 		<div class="col">
 			<a href="../index.html"><h1>Home</h1></a>
-		</div>
-		<div class="col-2">
-			<a href="stdlib.html"><h1>next</h1></a>
 		</div>
 	</div>
 
 	<h1>Annotations</h1>
 
 	<p>
-	ESPL1000 currently supports a few simple Annotations 
+	ESPL1000 currently supports a few simple Annotations
 	which allow for additional Errors, Warnings and Notes
 	to be issued
 	without adding syntax bloat.<br>
 	<br>
-	
-	New Annotations can easily be added and existing 
+
+	New Annotations can easily be added and existing
 	ones can be disabled with minimal code changes in the
 	transpiler.
 	</p>
-	
+
 	<h3>Supported Annotations</h3>
-	
+
 	<ul>
 		<li><strong>@halts</strong> - issues warning if subroutine could not be proven to terminate</li>
 		<li><strong>@deprecated</strong> - issues warning for calls to this subroutine</li>
 		<li>
-			<strong>@private</strong> 
+			<strong>@private</strong>
 			<ul>
 				<li><i>subroutines</i>: issues warning if the subroutine is called directly outside it's own namespace</li>
 				<li><i>structs</i>: issues warning if the struct is referenced directly outside it's own namespace</li>
@@ -52,15 +49,15 @@
 	</ul>
 
 	<h3>Example</h3>
-	
+
 <pre><code>@private
 struct A {
-	@private 
+	@private
 	uint32 b;
-	
+
 	uint32 a;
 }
-	
+
 fn main () ~> int {
 	subr1();
 	subr2();

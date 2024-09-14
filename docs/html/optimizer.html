@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+
+	<title>Optimizer</title>
+	<meta name="description" content="Optimizer">
+	<meta name="author" content="ESPL1000">
+
+	<link rel="icon" href="../img/favicon.ico">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<div class="container-xl">
+
+	<div class="row nav-bg">
+		<div class="col">
+			<a href="../index.html"><h1>Home</h1></a>
+		</div>
+	</div>
+
+	<h1>Optimizer</h1>
+	<p>
+	The optimizer will first focus on simple peephole optimizations.
+	</p>
+
+	<h2>replacing far jumps with local jumps</h2>
+
+	<p>
+	Since many instructions like brne, brlt, rcall, rjmp, ... can only jump +-64 words from the instruction pointer,
+	it is required to generate sequences that negate a conditon like brlt and jump over a jmp instruction
+	to perform the actual jump. <br>
+
+	Since we do not know at that time if the brlt is sufficient for the range of the jump.<br>
+	When the instructions have been selected, we can do peephole optimization to undo some of that redundant
+	code and make the generated code smaller and more readable.
+	<br>
+	<br>
+	</p>
+
+<pre>
+  brlt label_skip
+  jmp label_actual_target
+label_skip:
+  ...
+label_actual_target:
+  nop
+</pre>
+can be replaced by
+<pre>
+  brge label_actual_target
+label_skip:
+  ...
+label_actual_target:
+  nop
+</pre>
+
+	<h2>redundant instruction elimination</h2>
+	<p>eliminating instructions which overwrite the effects of the previous instruction</p>
+<pre>
+  cp    r2, r4
+  cp    r3, r5
+</pre>
+can be replaced by
+<pre>
+  cp    r3, r5
+</pre>
+
+	<h2>combining multiple instructions</h2>
+
+	<p>
+	Sometimes there are special instructions that can do the work of multiple simple instructions.
+	<br>
+	We can then use these more powerful instructions, even if the neighboring instructions are not from the same statement in the IR.
+	</p>
+<pre>
+  mov XL, r17
+  mov XH, r18
+</pre>
+can be written as
+<pre>
+  movw XL:XH, r17:r18
+</pre>
+
+	<h2>redundant jump elimination</h2>
+
+	<p>
+	When generating code for a basic block, we do not necessarily know (or need to know) which block will follow
+	afterwards in the assembly code. So they are connected by jumps. But when one block follows another,
+	the redundant jump can be removed later.
+	</p>
+<pre>
+  tst   r2
+  brne  L5
+  rjmp  L6
+
+L6:
+  mov   r17, YL
+</pre>
+
+can be replaced by
+
+<pre>
+  tst   r2
+  brne  L5
+
+L6:
+  mov   r17, YL
+</pre>
+
+
+</div>
+
+</body>
+</html>

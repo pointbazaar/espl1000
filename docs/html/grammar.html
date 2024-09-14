@@ -10,7 +10,7 @@
   <link rel="icon" href="../img/favicon.ico">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <link rel="stylesheet" href="../css/style.css">
-  
+
   <!-- for readability, the links on this page are black -->
   <style>
 	#grammar a {
@@ -21,63 +21,60 @@
 </head>
 <body>
 <div class="container-xl">
-	
+
 	<div class="row nav-bg">
 		<div class="col">
 			<a href="../index.html"><h1>Home</h1></a>
 		</div>
-		<div class="col-2">
-			<a href="subroutines.html"><h1>next</h1></a>
-		</div>
 	</div>
-	
+
 	<div id="grammar">
 
 	<h1>Grammar</h1>
-	
+
 	<a id="ast">AST</a>	::= <a href="#namespace">Namespace</a>+
 	<br><br>
-	
+
 	<a id="namespace">Namespace</a>	::=  <a href="#structdecl">StructDecl</a>* <a href="#method">Method</a>*
-	
+
 	<br><br>
 
 	<h2>Struct</h2>
 
-	<a id="structdecl">StructDecl</a> ::= "struct" <a href="#structtype">StructType</a> '{' <a href="#structmember">StructMember</a>* '}' 
+	<a id="structdecl">StructDecl</a> ::= "struct" <a href="#structtype">StructType</a> '{' <a href="#structmember">StructMember</a>* '}'
 	<br><br>
-	
-	<a id="structmember">StructMember</a>  ::= <a href="#type">Type</a> Id ';' 
+
+	<a id="structmember">StructMember</a>  ::= <a href="#type">Type</a> Id ';'
 	<br><br>
-	
+
 	<h2>Method</h2>
 
-	<a id="method">Method</a>  ::= <a href="#methoddecl">MethodDecl</a> <a href="#stmtblock">StmtBlock</a> 
+	<a id="method">Method</a>  ::= <a href="#methoddecl">MethodDecl</a> <a href="#stmtblock">StmtBlock</a>
 	<br><br>
-	
+
 	<a id="methoddecl">MethodDecl</a> ::= "fn" Id '(' <a href="#declarg">DeclArg</a>* ')' arrow <a href="#type">Type</a>
 	<br><br>
-	
+
 	<a id="declarg">DeclArg</a> ::= <a href="#type">Type</a> Id?
 	<br><br>
 
 	<h2>Types</h2>
-	
+
 	<a id="type">Type</a> ::= <a href="#basictype">BasicType</a> | <a href="#typeparam">TypeParam</a> | <a href="#arraytype">ArrayType</a>
 	<br><br>
-	
+
 	<a id="basictype">BasicType</a> ::= <a href="#simpletype">SimpleType</a> | '(' <a href="#subrtype">SubrType</a> ')'
 	<br><br>
 
 	<a id="simpletype">SimpleType</a> ::= <a href="#primitivetype">PrimitiveType</a> | <a href="#structtype">StructType</a>
 	<br><br>
 
-	<a id="primitivetype">PrimitiveType</a> ::= <a href="#inttype">IntType</a> | "char" | "bool" 
+	<a id="primitivetype">PrimitiveType</a> ::= <a href="#inttype">IntType</a> | "char" | "bool"
 	<br><br>
-	
-	<a id="inttype">IntType</a> ::= "int" | "uint" | "uint8" | "int8" 
+
+	<a id="inttype">IntType</a> ::= "int" | "uint" | "uint8" | "int8"
 	<br><br>
-	
+
 	<a id="subrtype">SubrType</a> ::= '(' <a href="#type">Type</a>* ')' arrow <a href="#type">Type</a>
 	<br><br>
 
@@ -91,48 +88,48 @@
 	<br><br>
 
 	<h2>Statements</h2>
-	
+
 	<a id="stmtblock">StmtBlock</a> ::= '{' <a href="#stmt">Stmt</a>* '}'
 	<br><br>
 
 	<a id="stmt">Stmt</a> ::= ( <a href="#call">Call</a> ';' )
 		| <a href="#whilestmt">whileStmt</a> | <a href="#ifstmt">ifStmt</a> | <a href="#forstmt">forStmt</a>
 		| <a href="#returnstmt">returnStmt</a> | <a href="#assignstmt">assignStmt</a> | <a href="#massignstmt">mAssignStmt</a>
-		| "break" ';' | "continue" ';' 
+		| "break" ';' | "continue" ';'
 	<br><hr>
-	
+
 	<a id="whilestmt">whileStmt</a> ::= "while" <a href="#expr">Expr</a> <a href="#stmtblock">StmtBlock</a>
 	<br><br>
-	
+
 	<a id="forstmt">forStmt</a> ::= "for" Id "in" <a href="#range">Range</a> <a href="#stmtblock">StmtBlock</a>
 	<br><hr>
-	
+
 	<a id="ifstmt">ifStmt</a> ::= "if" <a href="#expr">Expr</a> <a href="#stmtblock">StmtBlock</a>
 	("else" <a href="#stmtblock">StmtBlock</a>)?
 	<br><hr>
-	
+
 	<a id="call">Call</a> ::= <a href="#variable">Variable</a> '(' (<a href="#expr">Expr</a> (, <a href="#expr">Expr</a>)*)?  ')'
 	<br><br>
-	
+
 	<a id="returnstmt">returnStmt</a> ::= "return" <a href="#expr">Expr</a>? ';'
 	<br>
 	<hr>
-	
+
 	<a id="assignstmt">assignStmt</a> ::= <a href="#type">Type</a>? <a href="#variable">Variable</a> '=' <a href="#expr">Expr</a>? ';'
 	<br><br>
 
 	<a id="massignstmt">mAssignStmt</a> ::= <a href="#mdirect">MDirect</a> '=' <a href="#expr">Expr</a> ';'
 	<br>
 	<hr>
-	
+
 	<h2>Expressions</h2>
-	
+
 	<a id="expr">Expr</a> ::= <a href="#unopterm">UnOpTerm</a> (<a href="#op">Op</a> <a href="#unopterm">UnOpTerm</a>)*
 	<br><br>
-	
+
 	<a id="unopterm">UnOpTerm</a> ::= <a href="#op">Op</a> <a href="#term">Term</a>
 	<br><br>
-	
+
 	<a id="term">Term</a> ::= <a href="#constvalue">ConstValue</a> | StringConst | <a href="#call">Call</a> | '(' <a href="#expr">Expr</a> ')' | <a href="#variable">Variable</a> | <a href="#mdirect">MDirect</a>
 	<br><br>
 
@@ -147,20 +144,20 @@
 
 	<a id="mdirect">MDirect</a> ::= '[' <a href="#expr">Expr</a> ']'
 	<br><br>
-	
+
 	<h2>Const</h2>
-	
+
 	<a id="arrayconstant">ArrayConstant</a> ::= '[' <a href="#expr">Expr</a> (',' <a href="#expr">Expr</a>)* ']'
 	<br><br>
 
-	<a id="constvalue">ConstValue</a> ::= BoolConst | IntConst | BinConst | HexConst | CharConst 
+	<a id="constvalue">ConstValue</a> ::= BoolConst | IntConst | BinConst | HexConst | CharConst
 	<br><br>
 
 	<h2>Helpers</h2>
 	<div id="id"></div>
 	<div id="op"></div>
 <pre>
-arrow         ::= "->" | "~>"
+arrow         ::= "-&gt;" | "~&gt;"
 
 lowercase     ::= 'a'|'b'|'c'|'d'|'e'|'f'|'g'|'h'|'i'|'j'|'k'|'l'|'m'|'n'|'o'|'p'|'q'|'r'|'s'|'t'|'u'|'v'|'w'|'x'|'y'|'z'
 
@@ -170,11 +167,11 @@ digit         ::= '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'
 
 alphanumeric  ::= lowercase | uppercase | digit
 
-Op            ::= "+" | "-" | "*" | "<<" | ">>" | "|" | "&" | "^" | "||" | "&&"
+Op            ::= "+" | "-" | "*" | "&lt;&lt;" | "&gt;&gt;" | "|" | "&amp;" | "^" | "||" | "&amp;&amp;"
 
 Id            ::= lowercase (lowercase | '_' | digit)*
 </pre>
-	
+
 	</div>
 </div>
 

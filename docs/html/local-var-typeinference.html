@@ -8,7 +8,7 @@
   <meta name="author" content="ESPL1000">
 
   <link rel="icon" href="../img/favicon.ico">
-  
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
   <link rel="stylesheet" href="../css/style.css">
 
@@ -17,36 +17,33 @@
 <body>
 
 <div class="container-xl">
-	
+
 	<div class="row nav-bg">
 		<div class="col">
 			<a href="../index.html"><h1>Home</h1></a>
 		</div>
-		<div class="col-2">
-			<a href="structs.html"><h1>next</h1></a>
-		</div>
 	</div>
-	
+
 	<h1>Local Variable Type Inference</h1>
 
 	<p>
 	<br>
 	ESPL1000 can infer the type of a local variable for you, so
-	it is 
+	it is
 	<strong>optional to declare the type.</strong>
 	<br>
 	</p>
-	
+
 	<h3> Example </h3>
 	<pre><code>fn main () ~> int {
 	a = 3;
 	return a;
 }
 </code></pre>
-	
+
 	<h3>Drawbacks of using Type Inference</h3>
 	<p>
-	This type inference has a compile-time cost 
+	This type inference has a compile-time cost
 	(time needed to infer the type)
 	which rises with the size
 	of the expression. <br><br>
@@ -54,24 +51,24 @@
 	The type of '3+4' can be quickly computed, the type of '3*(call1(3,3)*4)+7 &gt; call2()'
 	might take longer, <br>as the entire tree of the expression has to be traversed.<br>
 	</p>
-	
+
 	<h3> Design Considerations </h3>
 	<p>
 	It would also be possible to infer the types of
 	entire functions.
 	<br>
-	
-	This is not implemented in ESPL1000, 
+
+	This is not implemented in ESPL1000,
 	as it would be much more difficult to implement.
 	<br>
-	
+
 	Unrelated to the implementation difficulty and compile-time
 	cost,
 	<br>the function signature is a good
 	source of documentation.
-	
+
 	</p>
-	
+
 </div>
 
 </body>

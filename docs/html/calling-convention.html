@@ -14,16 +14,12 @@
 </head>
 <body>
 <div class="container-xl">
-	
+
 	<div class="row nav-bg">
 		<div class="col">
 			<a href="../index.html"><h1>Home</h1></a>
 		</div>
-		<div class="col-2">
-			<a href="primitives.html"><h1>next</h1></a>
-		</div>
 	</div>
-	
 
 	<h1>Calling Convention</h1>
 
@@ -31,13 +27,13 @@
 	<p>
 	The Caller pushes the Arguments on the Stack in Order.
 	</p>
-	
+
 	<h2>The Callee</h2>
 	<p>
 	The Callee then must pop them into registers in reverse Order.
 	That happens before anything else in the Callee.
 	</p>
-	
+
 <h2>Example - IR</h2>
 <pre>
 TAC_CONST_VALUE t1 = 19
@@ -49,8 +45,8 @@ TAC_RETURN t2
 ----------------
 TAC_CONST_VALUE t0 = 0
 TAC_RETURN t0
-</pre>		
-	
+</pre>
+
 <h2>Example - AVR Assembler</h2>
 <pre>
 main:
@@ -67,7 +63,7 @@ pop r17
 pop r18
 ret
 </pre>
-	
+
 </div>
 
 </body>
