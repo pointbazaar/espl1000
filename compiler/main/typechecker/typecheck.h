@@ -5,6 +5,8 @@ struct AST;
 struct ST;
 #include "tcctx.h"
 
+#include "util/ctx.h"
+
 /* This Module provides Facilities
  * for typechecking smalldragon Programs.
  *
@@ -24,6 +26,6 @@ struct ST;
  * inferring the type of '3 + myfunction'
  */
 
-struct TCError* typecheck_ast(struct AST* ast, struct ST* st, bool print_errors);
+struct TCError* typecheck_ast(struct AST* ast, struct Ctx* ctx, bool print_errors);
 
 #endif

@@ -18,17 +18,15 @@ D13 PIN -------------------|
 fn main () ~> int {
 	//set D13 / PB5
 
-	//set PORTB Data Direction Register (DDRB) to enable DDRB5
-	//[0x24] = 0b00100000;
-
-	//set everything to output
-	portb_ddrd(0xff);
+	portb_ddrd(0xff); // set everything to output
 
 	while(true){
 
 		portb_write(0b00010000);
 		delay();
+		delay();
 		portb_write(0b00100000);
+		delay();
 		delay();
 	}
 	return 1;
@@ -42,8 +40,7 @@ fn delay() -> int {
 	timer0_mode(0x0);
 
 	//TCCR0B = 0b00000101, set prescaler to 1024
-	//timer0_prescaler(0b00000101);
-	[0x45] = 0x5;
+	timer0_prescaler(0x5);
 
 	//while(TCNT0 != 0xfe){}
 	while(timer0_read() != 0xfe){}

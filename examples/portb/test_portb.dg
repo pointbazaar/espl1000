@@ -1,0 +1,33 @@
+//Program to make an LED glow
+
+//Arduino Board:
+//https://docs.arduino.cc/resources/datasheets/A000066-datasheet.pdf
+
+/* Hardware Setup
+
+    GND ----- LED ----- Resistor
+                           |
+D13 PIN -------------------|
+
+*/
+
+//LED_BUILTIN PB5
+//PB5 is on D13 on the Arduino
+
+fn main () ~> int {
+	//set D13 / PB5
+
+	//set PORTB Data Direction Register (DDRB) to enable DDRB5
+	//[0x24] = 0b00100000;
+
+	portb_ddrd(0xff); // set everything to output
+
+	portb_write(0b00010000);
+	portb_write(0b00100000);
+
+	while(true){
+
+	}
+	return 1;
+}
+

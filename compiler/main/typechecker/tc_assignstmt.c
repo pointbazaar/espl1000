@@ -25,6 +25,10 @@ static bool check_type_rules_assign(struct AssignStmt* a, struct TCCtx* tcctx);
 
 bool tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx) {
 
+	if (tcctx->debug) {
+		printf("[debug] typecheck assign stmt\n");
+	}
+
 	tcctx->current_line_num = a->super.line_num;
 
 	struct LVSTLine* line = lvst_get(tcctx->st->lvst, a->var->simple_var->name);

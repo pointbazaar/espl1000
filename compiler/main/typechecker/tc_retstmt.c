@@ -17,6 +17,10 @@
 
 bool tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx) {
 
+	if (tcctx->debug) {
+		printf("[debug] typecheck return stmt\n");
+	}
+
 	tcctx->current_line_num = r->super.line_num;
 
 	struct Type* returnType = tcctx->current_fn->decl->return_type;

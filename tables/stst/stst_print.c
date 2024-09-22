@@ -7,7 +7,7 @@ static char* fmt = "%16s|%16s|\n";
 
 void stst_print(struct STST* stst) {
 
-	printf("[STST] Struct Symbol Table\n");
+	printf("[STST] Struct Symbol Table (%d elements)\n", stst_size(stst));
 	printf(fmt, "struct name", "member name");
 
 	//--------

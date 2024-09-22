@@ -36,7 +36,7 @@ struct TCError* typecheck_file(char* filename) {
 
 	fill_tables(ast, ctx);
 
-	struct TCError* errors = typecheck_ast(ast, ctx_tables(ctx), false);
+	struct TCError* errors = typecheck_ast(ast, ctx, false);
 
 	ctx_dtor(ctx);
 

@@ -10,5 +10,11 @@ void compile_tac_store_const_addr(struct RAT* rat, struct TAC* tac, struct IBuff
 
 	const uint32_t addr = tac->const_value;
 
-	sts(addr, reg_src, "TAC_STORE_CONST_ADDR");
+	char* c = "TAC_STORE_CONST_ADDR";
+
+	sts(addr, reg_src, c);
+
+	if (rat_is_wide(rat, tac->arg1)) {
+		sts(addr + 1, reg_src + 1, c);
+	}
 }

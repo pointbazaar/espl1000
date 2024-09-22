@@ -1,37 +1,37 @@
 #include <stdlib.h>
 
-struct Set<?T0> {
+struct Set {
 	@private uint size;
 	@private uint capacity;
-	@private [?T0] arr;
+	@private [int] arr;
 }
 
 
-fn set_size(Set<?T0> s) -> uint {
-	
+fn set_size(Set s) -> uint {
+
 	return s.size;
 }
 
-fn set_contains(Set<?T0> s, ?T0 x) -> bool {
+fn set_contains(Set s, int x) -> bool {
 
 	for i in 1 .. s.size {
 
 		if s.arr[i-1] == x { return true; }
 	}
-	
+
 	return false;
 }
 
 
-fn set_remove(Set<?T0> s, ?T0 x) -> bool {
+fn set_remove(Set s, int x) -> bool {
 
 	if !set_contains(s, x) { return true; }
 
 	//find the index of the element
 	uint index = 0;
 	for i in 0 .. s.size - 1 {
-		if s.arr[i] == x { 
-			
+		if s.arr[i] == x {
+
 			index = i;
 			break;
 		}

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "tac/tac.h"
 #include "tac/tacbuffer.h"
@@ -26,7 +27,10 @@ static void tac_call_prep_param(struct TACBuffer* buffer, struct Call* call, str
 
 static void tac_call_prep_params_case_sst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx, struct MethodDecl* decl) {
 	for (size_t i = 0; i < call->count_args; i++) {
-		const bool push16 = 16 == lvst_sizeof_type(decl->args[i]->type);
+		const uint32_t param_width = lvst_sizeof_type(decl->args[i]->type);
+		assert(param_width <= 8);
+		const bool push16 = param_width == 2;
+
 		tac_call_prep_param(buffer, call, ctx, i, push16);
 	}
 }
@@ -34,7 +38,10 @@ static void tac_call_prep_params_case_sst(struct TACBuffer* buffer, struct Call*
 static void tac_call_prep_params_case_lvst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx, struct LVSTLine* line) {
 	for (size_t i = 0; i < call->count_args; i++) {
 		struct Type* arg_type = line->type->basic_type->subr_type->arg_types[i];
-		const bool push16 = 16 == lvst_sizeof_type(arg_type);
+		const uint32_t param_width = lvst_sizeof_type(arg_type);
+		assert(param_width <= 8);
+		const bool push16 = param_width == 2;
+
 		tac_call_prep_param(buffer, call, ctx, i, push16);
 	}
 }

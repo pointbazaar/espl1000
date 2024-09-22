@@ -16,6 +16,10 @@
 
 bool tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx) {
 
+	if (tcctx->debug) {
+		printf("[debug] typecheck while stmt\n");
+	}
+
 	tcctx->current_line_num = w->super.line_num;
 
 	struct Type* type = infer_type_expr(tcctx->st, w->condition);
