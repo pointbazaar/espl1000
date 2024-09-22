@@ -241,7 +241,8 @@ void (*tests_tac_codegen[])() = {
     // call
     test_gen_tac_call_case_no_args,
     test_gen_tac_call_case_1_args_return,
-    test_gen_tac_call_case_1_args_write,
+    test_gen_tac_call_case_1_args_write_8bit,
+    test_gen_tac_call_case_1_args_write_16bit,
     test_gen_tac_call_case_1_args_write_3fns,
     test_gen_tac_call_case_2_args,
 

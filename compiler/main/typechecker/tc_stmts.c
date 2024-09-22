@@ -11,10 +11,15 @@
 #include "typechecker/util/tc_errors.h"
 #include "typechecker/util/tc_utils.h"
 #include "tcctx.h"
+#include <stdio.h>
 
 bool tc_stmt(struct Stmt* s, struct TCCtx* tcctx) {
 
 	tcctx->current_line_num = s->super.line_num;
+
+	if (tcctx->debug) {
+		printf("[debug] typecheck statement line %d\n", tcctx->current_line_num);
+	}
 
 	switch (s->kind) {
 

@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -36,6 +37,10 @@ static bool tc_methodcall_arg(
 
 bool tc_methodcall(struct Call* m, struct TCCtx* tcctx) {
 
+	if (tcctx->debug) {
+		printf("[debug] typecheck methodcall\n");
+	}
+
 	tcctx->current_line_num = m->super.line_num;
 
 	if (!tc_var(m->callable, tcctx)) { return false; }
@@ -73,6 +78,11 @@ static bool tc_methodcall_args(
     struct Type** expect_types,
     uint8_t expect_args,
     struct TCCtx* tcctx) {
+
+	if (tcctx->debug) {
+		printf("[debug] typecheck methodcall args\n");
+	}
+
 	const uint8_t actual_args = m->count_args;
 
 	if (actual_args != expect_args) {
@@ -107,6 +117,9 @@ static bool tc_methodcall_arg(
     struct TCCtx* tcctx) {
 
 	struct Type* actual_type = infer_type_expr(tcctx->st, actual_expr);
+
+	assert(expect_type != NULL);
+	assert(actual_type != NULL);
 
 	//TODO: we can get rid of the integer special cases maybe
 	//thansk to tc_type_contains

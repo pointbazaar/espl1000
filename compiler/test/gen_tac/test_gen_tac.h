@@ -71,7 +71,8 @@ void test_gen_tac_variable_case_2_member_access();
 // call
 void test_gen_tac_call_case_no_args();
 void test_gen_tac_call_case_1_args_return();
-void test_gen_tac_call_case_1_args_write();
+void test_gen_tac_call_case_1_args_write_8bit();
+void test_gen_tac_call_case_1_args_write_16bit();
 void test_gen_tac_call_case_1_args_write_3fns();
 void test_gen_tac_call_case_2_args();
 

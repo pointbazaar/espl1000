@@ -68,6 +68,8 @@ struct TCCtx {
 
 	char* current_filename;
 	uint32_t current_line_num;
+
+	bool debug;
 };
 
 #endif

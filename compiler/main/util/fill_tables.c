@@ -12,6 +12,10 @@
 
 void fill_tables(struct AST* ast, struct Ctx* ctx) {
 
+	if (flags_debug(ctx_flags(ctx))) {
+		printf("[debug] filling SST, STST tables...\n");
+	}
+
 	sst_clear(ctx_tables(ctx)->sst);
 
 	for (int i = 0; i < ast->count_namespaces; i++) {

@@ -39,7 +39,7 @@ struct SST* sst_ctor() {
 	const int nbytes = sizeof(struct SSTLine*) * sst->capacity;
 
 	sst->count = 0;
-	sst->lines = malloc(nbytes);
+	sst->lines = exit_malloc(nbytes);
 
 	return sst;
 }

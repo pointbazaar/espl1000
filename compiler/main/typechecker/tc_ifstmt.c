@@ -16,6 +16,10 @@
 
 bool tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx) {
 
+	if (tcctx->debug) {
+		printf("[debug] typecheck if stmt\n");
+	}
+
 	tcctx->current_line_num = i->super.line_num;
 
 	struct Type* type = infer_type_expr(tcctx->st, i->condition);

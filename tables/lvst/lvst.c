@@ -220,6 +220,7 @@ uint32_t lvst_sizeof_arraytype(struct ArrayType* at) {
 	return 2;
 }
 
+// returns the size in number of bytes
 uint32_t lvst_sizeof_type(struct Type* type) {
 
 	if (type == NULL) {

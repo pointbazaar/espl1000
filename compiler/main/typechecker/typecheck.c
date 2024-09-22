@@ -6,7 +6,10 @@
 #include "ast/ast.h"
 
 //Table Includes
+#include "compiler/cli/flags/flags.h"
 #include "tables/symtable/symtable.h"
+
+#include "util/ctx.h"
 
 //Typechecker Includes
 #include "_tc.h"
@@ -16,15 +19,27 @@
 
 static void init_tcctx(struct TCCtx* tcctx);
 
-struct TCError* typecheck_ast(struct AST* ast, struct ST* st, bool print_errors) {
+struct TCError* typecheck_ast(struct AST* ast, struct Ctx* ctx, bool print_errors) {
+
+	if (flags_debug(ctx_flags(ctx))) {
+		printf("[debug] typechecking AST...\n");
+	}
+	struct ST* st = ctx_tables(ctx);
 
 	struct TCCtx* tcctx = exit_malloc(sizeof(struct TCCtx));
 
 	init_tcctx(tcctx);
 	tcctx->print_errors = print_errors;
 	tcctx->st = st;
+	tcctx->debug = flags_debug(ctx_flags(ctx));
 
 	for (uint16_t i = 0; i < ast->count_namespaces; i++) {
+
+		if (tcctx->debug) {
+			printf("[debug] typecheck namespace: %d\n", i);
+			printf("[debug] src_path: %s\n", ast->namespaces[i]->src_path);
+		}
+
 		tc_namespace(ast->namespaces[i], tcctx);
 	}
 
@@ -71,4 +86,6 @@ static void init_tcctx(struct TCCtx* tcctx) {
 	tcctx->current_fn = NULL;
 
 	tcctx->depth_inside_loop = 0;
+
+	tcctx->debug = false;
 }

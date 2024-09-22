@@ -58,14 +58,18 @@ bool compile(struct Flags* flags) {
 		ast->namespaces[i] = ns;
 	}
 
-	struct Ctx* ctx = ctx_ctor(flags, st_ctor(flags_debug(flags)));
+	struct Ctx* ctx = ctx_ctor(flags, st_ctor());
 
 	fill_tables(ast, ctx);
 
-	struct TCError* errors = typecheck_ast(ast, ctx_tables(ctx), true);
+	struct TCError* errors = typecheck_ast(ast, ctx, true);
 
 	if (errors != NULL) {
 		return false;
+	}
+
+	if (flags_debug(flags)) {
+		printf("[debug] running analyzers...\n");
 	}
 
 	analyze_functions(ctx_tables(ctx), ast);

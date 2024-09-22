@@ -16,6 +16,10 @@
 
 bool tc_method(struct Method* m, struct TCCtx* tcctx) {
 
+	if (tcctx->debug) {
+		printf("[debug] typecheck method: %s\n", m->decl->name);
+	}
+
 	tcctx->current_line_num = m->super.line_num;
 
 	tcctx->current_fn = m;

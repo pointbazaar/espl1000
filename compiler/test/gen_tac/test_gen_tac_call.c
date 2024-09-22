@@ -55,9 +55,9 @@ void test_gen_tac_call_case_1_args_return() {
 	vmcu_system_dtor(system);
 }
 
-void test_gen_tac_call_case_1_args_write() {
+void test_gen_tac_call_case_1_args_write_8bit() {
 
-	status_test_codegen_tac("Call - 1 args - write to SRAM");
+	status_test_codegen_tac("Call - 1 args - write to SRAM (8 bit)");
 
 	const uint8_t expected = 0xab;
 
@@ -70,6 +70,34 @@ void test_gen_tac_call_case_1_args_write() {
 	vmcu_system_step_n(system, 50);
 
 	const uint8_t actual = vmcu_system_read_data(system, 0x100);
+
+	assert(actual == expected);
+
+	vmcu_system_dtor(system);
+}
+
+void test_gen_tac_call_case_1_args_write_16bit() {
+
+	status_test_codegen_tac("Call - 1 args - write to SRAM (16 bit)");
+
+	const uint16_t expected = 0x5973;
+
+	char snippet[200];
+	char* template = "fn main()->int{ f(%d); return 0; } fn f(uint16 a)->int { [0x100]=a; return 0; }";
+	sprintf(snippet, template, expected);
+
+	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
+
+	vmcu_system_step_n(system, 50);
+
+	const uint8_t actual_low = vmcu_system_read_data(system, 0x100);
+	const uint8_t actual_high = vmcu_system_read_data(system, 0x101);
+	const uint16_t actual = (actual_high << 8) | actual_low;
+
+	if (actual != expected) {
+		printf("actual: 0x%x\n", actual);
+		printf("expected: 0x%x\n", expected);
+	}
 
 	assert(actual == expected);
 

@@ -16,6 +16,10 @@
 
 bool tc_forstmt(struct ForStmt* f, struct TCCtx* tcctx) {
 
+	if (tcctx->debug) {
+		printf("[debug] typecheck for stmt\n");
+	}
+
 	tcctx->current_line_num = f->super.line_num;
 
 	if (!tc_range(f->range, tcctx)) { return false; }

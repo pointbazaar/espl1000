@@ -2,19 +2,19 @@
 
 //A naive implementation of a stack
 
-struct Stack<?T0> {
+struct Stack {
 	@private uint size;
 	@private uint capacity;
-	@private [?T0] arr;
+	@private [int] arr;
 }
 
 
-fn stack_size(Stack<?T0> s) -> uint {
+fn stack_size(Stack s) -> uint {
 	return s.size;
 }
 
-fn stack_contains(Stack<?T0> s, ?T0 elem) -> bool {
-	
+fn stack_contains(Stack s, int elem) -> bool {
+
 	for i in 0 .. (s.size - 1) {
 		if s.arr[i] == elem { return true; }
 	}
@@ -22,15 +22,15 @@ fn stack_contains(Stack<?T0> s, ?T0 elem) -> bool {
 }
 
 
-fn stack_peek(Stack<?T0> s) -> ?T0 {
+fn stack_peek(Stack s) -> int {
 
 	return s.arr[s.size - 1];
 }
 
-fn stack_pop(Stack<?T0> s) -> ?T0 {
+fn stack_pop(Stack s) -> int {
 
 	res = stack_peek(s);
 	s.size--;
-	
+
 	return res;
 }

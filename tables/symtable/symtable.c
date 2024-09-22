@@ -17,7 +17,7 @@ struct ST* st_ctor() {
 
 	const uint32_t nbytes = sizeof(struct Type*) * st->inferred_types_capacity;
 
-	st->inferred_types = malloc(nbytes);
+	st->inferred_types = exit_malloc(nbytes);
 
 	st->sst = sst_ctor();
 	st->stst = stst_ctor();

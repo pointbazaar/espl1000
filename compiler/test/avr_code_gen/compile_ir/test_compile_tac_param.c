@@ -86,8 +86,8 @@ void test_compile_tac_param_case_16bit() {
 	assert(sp == sp_old - 2);
 
 	//assert that fixed_value is on the stack
-	assert((uint8_t)vmcu_system_read_data(system, sp_old - 1) == 0x0a);
-	assert((uint8_t)vmcu_system_read_data(system, sp_old) == 0xbc);
+	assert((uint8_t)vmcu_system_read_data(system, sp_old) == 0x0a);
+	assert((uint8_t)vmcu_system_read_data(system, sp_old - 1) == 0xbc);
 
 	vmcu_system_dtor(system);
 }

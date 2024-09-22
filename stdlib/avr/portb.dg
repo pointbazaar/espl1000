@@ -2,13 +2,13 @@
 // PORTB 0x25
 // DDRB  0x24
 
-fn portb_ddrd(uint16 value) -> int {
+fn portb_ddrd(uint8 value) -> int {
 
 	[0x24] = value;
 	return 0;
 }
 
-fn portb_write(uint16 value) -> int {
+fn portb_write(uint8 value) -> int {
 
 	[0x25] = value;
 	return 0;
