@@ -1,0 +1,110 @@
+// for the atmega328p
+
+// to debug this, can use cheap AZ Delivery Logic Analyzer
+// and following packages (arch linux)
+//
+// - sigrok-cli
+// - sigrok-firmware-fx2lafw (this is needed so it correctly recognizes the logic analyzer)
+// - pulseview (gui viewer)
+
+// in pulseview, add the decoder for USART, then specify:
+//
+// - baudrate 9600
+// - 8 data bits
+// - even parity bit
+// - 1 stop bit (even though we send 2, selecting that is not possible)
+// - bit order is lsb-first
+// - data format is hex for this example (sending increasing numbers)
+
+fn main () ~> int {
+
+	usart_init();
+
+	uint8 c = 0;
+	while(true){
+		c++;
+		usart_tx(c);
+		delay();
+	}
+
+	return 0;
+}
+
+fn delay() -> int {
+
+	//using Timer0
+
+	//TCCR0A = 0x0, set timer mode
+	timer0_mode(0x0);
+
+	//TCCR0B = 0b00000101, set prescaler to 1024
+	timer0_prescaler(0x5);
+
+	//while(TCNT0 != 0xfe){}
+	while(timer0_read() != 0xfe){}
+
+	return 1;
+}
+
+fn usart_tx (uint8 c) ~> uint8 {
+
+	uint8 ucsr0a = [0xc0]; // UCSR0A
+	// look at UDRE0 (USART data register empty)
+
+	// UCSR0A: RXC0 TXC0 UDRE0 FE0 DOR0 UPE0 U2X0 MPCM0
+	while ((ucsr0a & 0b100000) == 0){
+		ucsr0a = [0xc0];
+	}
+
+	// put data into transmit buffer
+	// UDR0 = c;
+	[0xc6] = c;
+
+	return 0;
+}
+
+fn usart_init_baudrate() ~> uint8 {
+	// baudrate 9600
+	// according to the formula on page 227
+	// our frequency is 16 MHz
+	// int(16000000/(16*9600)) -1
+	// = 104 - 1 = 103
+
+	// set baudrate
+	// UBRR0L = 0xc4
+	// UBRR0H = 0xc5
+	[0xc4] = 103;
+	[0xc5] = 0x00;
+
+	return 0;
+}
+
+fn usart_set_ucsr0b () ~> uint8 {
+	// UCSR0B: RXCIE0 TXCIE0 UDRIE0 RXEN0 TXEN0 UCSZ02 RXB80 TXB80
+
+	// enable receiver and transmitter
+	// UCSR0B = (1 << RXEN0) | (1 << TXEN0)
+	//[0xc1] = (1 << 4) | (1 << 3);
+	[0xc1] = 0b01000;
+
+	return 0;
+}
+
+fn usart_set_ucsr0c () ~> uint8 {
+	// UCSR0C: UMSEL01 UMSEL00 UPM01 UPM00 USBS0 (UCSZ01 / UDORD0) (UCSZ00 / UCPHA0) UCPOL0
+
+	// set frame format: 8 data, 2 stop bit
+	// UCSR0C = (1 << USBS0) | (3 << UCSZ00)
+	[0xc2] = 0b00101110;
+
+	return 0;
+}
+
+fn usart_init () ~> uint8 {
+	usart_init_baudrate();
+	usart_set_ucsr0b();
+	usart_set_ucsr0c();
+
+	return 0;
+}
+
