@@ -75,6 +75,8 @@ void test_gen_tac_call_case_1_args_write_8bit();
 void test_gen_tac_call_case_1_args_write_16bit();
 void test_gen_tac_call_case_1_args_write_3fns();
 void test_gen_tac_call_case_2_args();
+void test_gen_tac_call_case_frame_pointer_restored_after_call();
+void test_gen_tac_call_case_frame_pointer_restored_after_call_caller_has_locals();
 
 // struct decl
 void test_gen_tac_structdecl_case_read_struct();
