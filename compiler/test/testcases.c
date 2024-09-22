@@ -245,6 +245,8 @@ void (*tests_tac_codegen[])() = {
     test_gen_tac_call_case_1_args_write_16bit,
     test_gen_tac_call_case_1_args_write_3fns,
     test_gen_tac_call_case_2_args,
+    test_gen_tac_call_case_frame_pointer_restored_after_call,
+    test_gen_tac_call_case_frame_pointer_restored_after_call_caller_has_locals,
 
     // struct decl
     test_gen_tac_structdecl_case_read_struct,

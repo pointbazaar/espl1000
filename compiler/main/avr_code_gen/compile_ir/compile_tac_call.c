@@ -40,4 +40,9 @@ void compile_tac_call(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, str
 	for (uint32_t i = 0; i < size; i++) {
 		pop(RAT_SCRATCH_REG, "remove call params");
 	}
+
+	// load possibly corrupted frame pointer
+	//load base pointer Y
+	in(YL, SPL, "restore frame pointer Y after call");
+	in(YH, SPH, "restore frame pointer Y after call");
 }
