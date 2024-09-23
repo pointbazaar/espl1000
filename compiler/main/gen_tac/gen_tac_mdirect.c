@@ -33,7 +33,8 @@ static void case_variable_addr(struct TACBuffer* buffer, struct Expr* expr, stru
 
 	tac_expr(buffer, expr, ctx);
 
-	struct TAC* t = makeTACLoad(make_temp(), tacbuffer_last_dest(buffer));
+	// TODO: for x86, this needs to be 8 bytes, not 2
+	struct TAC* t = makeTACLoad(make_temp(), tacbuffer_last_dest(buffer), 2);
 
 	tacbuffer_append(buffer, t);
 }

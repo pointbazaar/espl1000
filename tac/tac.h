@@ -144,6 +144,6 @@ struct TAC* makeTACSetupSP();
 
 struct TAC* makeTACNop();
 
-struct TAC* makeTACLoad(uint32_t tmp, uint32_t taddr);
+struct TAC* makeTACLoad(uint32_t tmp, uint32_t taddr, uint8_t width);
 struct TAC* makeTACStore(uint32_t taddr, uint32_t tmp);
 #endif

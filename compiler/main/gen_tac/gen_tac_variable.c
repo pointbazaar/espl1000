@@ -20,7 +20,10 @@ void tac_variable(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx)
 
 	uint32_t tlast = tacbuffer_last_dest(buffer);
 
-	tacbuffer_append(buffer, makeTACLoad(make_temp(), tlast));
+	// TODO: do not assume the variable has 2 bytes
+	// on avr, it can only be 1 byte
+	// on x86 it can be up to 8
+	tacbuffer_append(buffer, makeTACLoad(make_temp(), tlast, 2));
 }
 
 void tac_variable_addr(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx) {

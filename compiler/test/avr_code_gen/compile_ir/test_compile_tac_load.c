@@ -26,7 +26,7 @@ void test_compile_tac_load_case_8bit_addr() {
 
 		tacbuffer_append(b, makeTACConst(1, 0x00));
 		tacbuffer_append(b, makeTACConst(2, addr));
-		tacbuffer_append(b, makeTACLoad(1, 2));
+		tacbuffer_append(b, makeTACLoad(1, 2, 1));
 		tacbuffer_append(b, makeTACReturn(1));
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
@@ -54,7 +54,7 @@ void test_compile_tac_load_case_16bit_addr() {
 
 		tacbuffer_append(b, makeTACConst(1, 0x00));
 		tacbuffer_append(b, makeTACConst(2, addr));
-		tacbuffer_append(b, makeTACLoad(1, 2));
+		tacbuffer_append(b, makeTACLoad(1, 2, 1));
 		tacbuffer_append(b, makeTACReturn(1));
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);

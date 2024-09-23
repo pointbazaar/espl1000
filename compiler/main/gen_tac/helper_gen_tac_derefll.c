@@ -46,7 +46,8 @@ void tac_derefll_single(struct TACBuffer* buffer, struct DerefLL* dll, struct Ty
 		} break;
 
 		case DEREFLL_DEREF:
-			tacbuffer_append(buffer, makeTACLoad(make_temp(), tacbuffer_last_dest(buffer)));
+			// TODO: the width there needs to be architecture specific, for x86 it's not 2 but 8 bytes
+			tacbuffer_append(buffer, makeTACLoad(make_temp(), tacbuffer_last_dest(buffer), 2));
 			break;
 	}
 }
