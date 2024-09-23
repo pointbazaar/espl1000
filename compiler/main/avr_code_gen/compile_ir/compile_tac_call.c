@@ -14,6 +14,8 @@ void compile_tac_call(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, str
 	int reg_dest = rat_get_register(rat, tac->dest);
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
+	const bool wide_dest = rat_is_wide(rat, tac->dest);
+
 	//in case of tests, where SST may not be filled correctly
 	char* function_name = "main";
 
@@ -23,8 +25,14 @@ void compile_tac_call(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, str
 
 	call(function_name, "TAC_CALL");
 
-	if (reg_dest != 0)
+	if (reg_dest != 0) {
 		mov(reg_dest, 0, "TAC_CALL");
+
+		if (wide_dest) {
+			// TODO: check if function return type is wide
+			mov(reg_dest + 1, 1, "TAC_CALL");
+		}
+	}
 
 	struct SST* sst = ctx_tables(ctx)->sst;
 
