@@ -125,12 +125,16 @@ static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 
 		case TAC_LOAD_CONST_ADDR:
 			rat_ensure_register(rat, t->dest, false, true);
+			//TODO: know the width of the load
 			break;
 
 		case TAC_LOAD:
 			//sadly we do not know what is all going to be added/subtracted
 			//from what we load there, could be a pointer, so it must be wide
-			rat_ensure_register(rat, t->dest, false, true);
+			{
+				const bool iswide = t->const_value >= 2;
+				rat_ensure_register(rat, t->dest, false, iswide);
+			}
 			break;
 
 		default: break;

@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -276,11 +277,14 @@ struct TAC* makeTACReturn(uint32_t tmp) {
 	return t;
 }
 
-struct TAC* makeTACLoad(uint32_t tmp, uint32_t taddr) {
+struct TAC* makeTACLoad(uint32_t tmp, uint32_t taddr, uint8_t width) {
 	struct TAC* t = makeTAC();
 	t->kind = TAC_LOAD;
 	t->dest = tmp;
 	t->arg1 = taddr;
+
+	assert(width <= 8);
+	t->const_value = width;
 	return t;
 }
 
