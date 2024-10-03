@@ -68,12 +68,7 @@ void test_compile_tac_binary_op_immediate_case_add_16bit() {
 
 		vmcu_system_step_n(system, 20);
 
-		uint8_t r0 = vmcu_system_read_gpr(system, 0);
-		uint8_t r1 = vmcu_system_read_gpr(system, 1);
-
-		//printf("r0 = 0x%x, r1 = 0x%x\n", r0, r1);
-
-		int16_t actual = r0 | (r1 << 8);
+		int16_t actual = vmcu_system_read_2_gpr(system, 0);
 
 		//printf("actual %d (0x%x)\n", actual, actual);
 		//printf("expected %d (0x%x)\n", expected, expected);
@@ -133,10 +128,7 @@ void test_compile_tac_binary_op_immediate_case_sub_16bit() {
 
 		vmcu_system_step_n(system, 10);
 
-		uint8_t r0 = (uint8_t)vmcu_system_read_gpr(system, 0);
-		uint8_t r1 = (uint8_t)vmcu_system_read_gpr(system, 1);
-
-		int16_t actual = (int16_t)(r0 | (r1 << 8));
+		int16_t actual = vmcu_system_read_2_gpr(system, 0);
 
 		//printf("expected: %d\n", expected);
 		//printf("actual: %d\n", actual);
@@ -191,10 +183,7 @@ void test_compile_tac_binary_op_immediate_case_and_16bit() {
 
 		vmcu_system_step_n(system, 12);
 
-		uint8_t r0 = vmcu_system_read_gpr(system, 0);
-		uint8_t r1 = vmcu_system_read_gpr(system, 1);
-
-		uint16_t actual = (r1 << 8) | r0;
+		int16_t actual = vmcu_system_read_2_gpr(system, 0);
 
 		assert(actual == expected);
 
@@ -246,10 +235,7 @@ void test_compile_tac_binary_op_immediate_case_or_16bit() {
 
 		vmcu_system_step_n(system, 10);
 
-		uint8_t r0 = vmcu_system_read_gpr(system, 0);
-		uint8_t r1 = vmcu_system_read_gpr(system, 1);
-
-		uint16_t actual = (r1 << 8) | r0;
+		uint16_t actual = vmcu_system_read_2_gpr(system, 0);
 
 		assert(actual == expected);
 
@@ -301,10 +287,7 @@ void test_compile_tac_binary_op_immediate_case_xor_16bit() {
 
 		vmcu_system_step_n(system, 10);
 
-		uint8_t r0 = vmcu_system_read_gpr(system, 0);
-		uint8_t r1 = vmcu_system_read_gpr(system, 1);
-
-		uint16_t actual = (r1 << 8) | r0;
+		uint16_t actual = vmcu_system_read_2_gpr(system, 0);
 
 		assert(actual == expected);
 
@@ -362,10 +345,7 @@ void test_compile_tac_binary_op_immediate_case_shift_left_16bit() {
 
 		vmcu_system_step_n(system, 8 + change * 2);
 
-		uint8_t r0 = (uint8_t)vmcu_system_read_gpr(system, 0);
-		uint8_t r1 = (uint8_t)vmcu_system_read_gpr(system, 1);
-
-		uint16_t actual = (r1 << 8) | r0;
+		uint16_t actual = vmcu_system_read_2_gpr(system, 0);
 
 		//printf("actual 0x%x\n", actual);
 
@@ -423,10 +403,7 @@ void test_compile_tac_binary_op_immediate_case_shift_right_16bit() {
 
 		vmcu_system_step_n(system, 8 + change * 2);
 
-		uint8_t r0 = (uint8_t)vmcu_system_read_gpr(system, 0);
-		uint8_t r1 = (uint8_t)vmcu_system_read_gpr(system, 1);
-
-		uint16_t actual = (r1 << 8) | r0;
+		uint16_t actual = vmcu_system_read_2_gpr(system, 0);
 
 		assert(actual == expected);
 

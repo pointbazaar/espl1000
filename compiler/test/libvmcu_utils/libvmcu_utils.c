@@ -44,3 +44,10 @@ uint16_t vmcu_system_read_data16(vmcu_system_t* system, uint16_t addr) {
 
 	return (high << 8) | low;
 }
+
+uint16_t vmcu_system_read_2_gpr(vmcu_system_t* system, const int low_reg) {
+
+	const uint8_t low = vmcu_system_read_gpr(system, low_reg);
+	const uint8_t high = vmcu_system_read_gpr(system, low_reg + 1);
+	return (high << 8) | low;
+}

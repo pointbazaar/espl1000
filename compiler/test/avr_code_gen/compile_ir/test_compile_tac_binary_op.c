@@ -15,10 +15,6 @@
 
 #include "test_compile_tac.h"
 
-static int16_t make16(uint8_t high, uint8_t low) {
-	return (high << 8) | low;
-}
-
 void test_compile_tac_binary_op_add_8bit() {
 
 	status_test_codegen("TAC_BINARY_OP + (8 bit)");
@@ -73,10 +69,9 @@ void test_compile_tac_binary_op_add_16bit() {
 
 		vmcu_system_step_n(system, 8);
 
-		const int8_t r0 = vmcu_system_read_gpr(system, 0);
-		const int8_t r1 = vmcu_system_read_gpr(system, 1);
+		const int16_t actual = vmcu_system_read_2_gpr(system, 0);
 
-		assert(make16(r1, r0) == expected);
+		assert(actual == expected);
 
 		vmcu_system_dtor(system);
 	}
@@ -132,10 +127,9 @@ void test_compile_tac_binary_op_sub_16bit() {
 
 		vmcu_system_step_n(system, 8);
 
-		const uint8_t r0 = vmcu_system_read_gpr(system, 0);
-		const uint8_t r1 = vmcu_system_read_gpr(system, 1);
+		const int16_t actual = vmcu_system_read_2_gpr(system, 0);
 
-		assert(make16(r1, r0) == expected);
+		assert(actual == expected);
 
 		vmcu_system_dtor(system);
 	}
@@ -191,10 +185,9 @@ void test_compile_tac_binary_op_and_16bit() {
 
 		vmcu_system_step_n(system, 8);
 
-		int8_t r0 = vmcu_system_read_gpr(system, 0);
-		int8_t r1 = vmcu_system_read_gpr(system, 1);
+		const int16_t actual = vmcu_system_read_2_gpr(system, 0);
 
-		assert(make16(r1, r0) == expected);
+		assert(actual == expected);
 
 		vmcu_system_dtor(system);
 	}
@@ -249,10 +242,9 @@ void test_compile_tac_binary_op_or_16bit() {
 
 		vmcu_system_step_n(system, 8);
 
-		uint8_t r0 = vmcu_system_read_gpr(system, 0);
-		uint8_t r1 = vmcu_system_read_gpr(system, 1);
+		const int16_t actual = vmcu_system_read_2_gpr(system, 0);
 
-		assert(make16(r1, r0) == expected);
+		assert(actual == expected);
 
 		vmcu_system_dtor(system);
 	}
@@ -307,10 +299,7 @@ void test_compile_tac_binary_op_xor_16bit() {
 
 		vmcu_system_step_n(system, 10);
 
-		uint8_t r0 = vmcu_system_read_gpr(system, 0);
-		uint8_t r1 = vmcu_system_read_gpr(system, 1);
-
-		uint16_t actual = make16(r1, r0);
+		const uint16_t actual = vmcu_system_read_2_gpr(system, 0);
 
 		//printf("0x%x ^ 0x%x == 0x%x (actual: 0x%x)\n", start, change, expected, actual);
 
@@ -340,10 +329,7 @@ void test_compile_tac_binary_op_xor_mixed1() {
 
 	vmcu_system_step_n(system, 10);
 
-	uint8_t r0 = vmcu_system_read_gpr(system, 0);
-	uint8_t r1 = vmcu_system_read_gpr(system, 1);
-
-	uint16_t actual = make16(r1, r0);
+	const uint16_t actual = vmcu_system_read_2_gpr(system, 0);
 
 	assert(actual == 0xff00);
 
@@ -372,10 +358,7 @@ void test_compile_tac_binary_op_xor_mixed2() {
 
 		vmcu_system_step_n(system, 10);
 
-		uint8_t r0 = vmcu_system_read_gpr(system, 0);
-		uint8_t r1 = vmcu_system_read_gpr(system, 1);
-
-		uint16_t actual = make16(r1, r0);
+		const uint16_t actual = vmcu_system_read_2_gpr(system, 0);
 
 		assert(actual == expected);
 

@@ -85,10 +85,7 @@ void test_compile_tac_call_case_returns_value_16bit() {
 
 	vmcu_system_step_n(system, 20);
 
-	const uint8_t r0 = vmcu_system_read_gpr(system, 0);
-	const uint8_t r1 = vmcu_system_read_gpr(system, 1);
-
-	const uint16_t retval = (r1 << 8) | r0;
+	const uint16_t retval = vmcu_system_read_2_gpr(system, 0);
 
 	if (retval != value) {
 		printf("retval = 0x%x, value = 0x%x\n)", retval, value);
