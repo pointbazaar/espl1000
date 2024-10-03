@@ -12,4 +12,6 @@ uint16_t vmcu_system_read_sp(vmcu_system_t* system);
 
 uint16_t vmcu_system_read_y(vmcu_system_t* system);
 
+uint16_t vmcu_system_read_data16(vmcu_system_t* system, uint16_t addr);
+
 #endif

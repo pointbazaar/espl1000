@@ -115,8 +115,12 @@ void test_compile_tac_load_case_8bit_addr();
 void test_compile_tac_load_case_16bit_addr();
 
 // TAC_STORE
-void test_compile_tac_store_case_8bit_value_8bit_addr();
-void test_compile_tac_store_case_16bit_value_8bit_addr();
+void test_compile_tac_store_case_8bit_value_8bit_addr_c7();
+void test_compile_tac_store_case_8bit_value_8bit_addr_c8();
+
+void test_compile_tac_store_case_16bit_value_8bit_addr_c7_f03();
+void test_compile_tac_store_case_16bit_value_8bit_addr_c8_f03();
+
 void test_compile_tac_store_case_8bit_value_16bit_addr();
 void test_compile_tac_store_case_16bit_value_16bit_addr();
 

@@ -36,3 +36,11 @@ uint16_t vmcu_system_read_y(vmcu_system_t* system) {
 
 	return (YH << 8 | YL);
 }
+
+uint16_t vmcu_system_read_data16(vmcu_system_t* system, uint16_t addr) {
+
+	const uint8_t low = vmcu_system_read_data(system, addr);
+	const uint8_t high = vmcu_system_read_data(system, addr + 1);
+
+	return (high << 8) | low;
+}
