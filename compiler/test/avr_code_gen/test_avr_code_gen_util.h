@@ -13,4 +13,11 @@ struct TACBuffer;
 
 vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer);
 
+// additionally creates a red zone around the given address,
+// to be able to later check if any unintended writes or reads happened there
+vmcu_system_t* prepare_vmcu_system_from_tacbuffer_with_redzone(struct TACBuffer* buffer, uint16_t addr_redzone, uint8_t redzone);
+
+// assert that the values around the address still have 'redzone' value
+void assert_redzone(vmcu_system_t* system, uint16_t addr, uint8_t width, uint8_t redzone);
+
 #endif
