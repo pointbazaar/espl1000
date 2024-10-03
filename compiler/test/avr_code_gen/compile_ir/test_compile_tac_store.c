@@ -25,35 +25,11 @@ static vmcu_system_t* common(uint16_t addr, int16_t value, uint8_t redzone) {
 	tacbuffer_append(b, makeTACConst(2, addr));
 	tacbuffer_append(b, makeTACStore(2, 1));
 
-	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
-
-	// fill the area with red zone to detect unintended writes
-	// around the address
-	for (uint16_t a = addr - 2; a < addr + 4; a++) {
-		vmcu_system_write_data(system, a, redzone);
-	}
+	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer_with_redzone(b, addr, redzone);
 
 	vmcu_system_step_n(system, 10);
 
 	return system;
-}
-
-static void assert_redzone(vmcu_system_t* system, uint16_t addr, uint8_t width, uint8_t redzone) {
-
-	const uint16_t addr1 = addr - 1;
-	const uint16_t addr2 = addr + width;
-
-	const uint8_t before = vmcu_system_read_data(system, addr1);
-	const uint8_t after = vmcu_system_read_data(system, addr2);
-
-	if ((before != redzone) || (after != redzone)) {
-		for (uint16_t a = addr1 - 1; a <= addr2 + 1; a++) {
-			const uint8_t value = vmcu_system_read_data(system, a);
-			printf("[0x%x] = 0x%x\n", a, value);
-		}
-	}
-	assert(before == redzone);
-	assert(after == redzone);
 }
 
 void test_compile_tac_store_case_8bit_value_8bit_addr_c7() {
