@@ -60,7 +60,10 @@ void (*tests_avr_codegen[])() = {
     test_compile_tac_store_const_addr_case_8bit_value_addr_0x119,
     test_compile_tac_store_const_addr_case_16bit_value_addr_0x118,
     test_compile_tac_store_const_addr_case_16bit_value_addr_0x119,
-    test_compile_tac_load_const_addr,
+    test_compile_tac_load_const_addr_case_8bit_value_0x55,
+    test_compile_tac_load_const_addr_case_8bit_value_0x56,
+    test_compile_tac_load_const_addr_case_16bit_value_0x1234,
+    test_compile_tac_load_const_addr_case_16bit_value_0x4321,
 
     //TAC_BINARY_OP_IMMEDIATE
     test_compile_tac_binary_op_immediate_case_add_8bit,
