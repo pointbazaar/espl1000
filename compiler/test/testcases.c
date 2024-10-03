@@ -170,8 +170,10 @@ void (*tests_avr_codegen[])() = {
     test_compile_tac_setup_stackframe,
 
     // TAC_LOAD
-    test_compile_tac_load_case_8bit_addr,
-    test_compile_tac_load_case_16bit_addr,
+    test_compile_tac_load_case_8bit_addr_8bit_value,
+    test_compile_tac_load_case_8bit_addr_16bit_value,
+    test_compile_tac_load_case_16bit_addr_8bit_value,
+    test_compile_tac_load_case_16bit_addr_16bit_value,
 
     // TAC_STORE
     test_compile_tac_store_case_8bit_value_8bit_addr_c7,

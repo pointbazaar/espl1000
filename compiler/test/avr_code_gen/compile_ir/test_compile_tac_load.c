@@ -1,11 +1,8 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
 
 #include "libvmcu/libvmcu_system.h"
-#include "libvmcu/libvmcu_analyzer.h"
 
-#include "avr_code_gen/cg_avr.h"
 #include "avr_code_gen/cg_avr_basic_block.h"
 
 #include "tac/tacbuffer.h"
@@ -15,58 +12,75 @@
 
 #include "test_compile_tac.h"
 
-void test_compile_tac_load_case_8bit_addr() {
+static void common(const uint16_t addr, const uint16_t fixed_value, bool wide) {
 
-	status_test_codegen("TAC_LOAD (8 bit address)");
+	const uint8_t redzone = 0xff;
 
-	const uint16_t addr = 0xc7;
-	for (int8_t fixed_value = 0x33; fixed_value < 0x36; fixed_value++) {
+	struct TACBuffer* b = tacbuffer_ctor();
 
-		struct TACBuffer* b = tacbuffer_ctor();
+	tacbuffer_append(b, makeTACConst(1, 0x1010));
+	tacbuffer_append(b, makeTACConst(2, addr));
+	tacbuffer_append(b, makeTACLoad(1, 2, (wide) ? 2 : 1));
+	tacbuffer_append(b, makeTACReturn(1));
 
-		tacbuffer_append(b, makeTACConst(1, 0x00));
-		tacbuffer_append(b, makeTACConst(2, addr));
-		tacbuffer_append(b, makeTACLoad(1, 2, 1));
-		tacbuffer_append(b, makeTACReturn(1));
+	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer_with_redzone(b, addr, redzone);
 
-		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
-
-		vmcu_system_write_data(system, addr, fixed_value);
-
-		vmcu_system_step_n(system, 20);
-
-		int8_t r0 = vmcu_system_read_gpr(system, 0);
-
-		assert(r0 == fixed_value);
-
-		vmcu_system_dtor(system);
+	vmcu_system_write_data(system, addr, fixed_value);
+	if (wide) {
+		vmcu_system_write_data(system, addr + 1, (fixed_value >> 8));
 	}
+
+	vmcu_system_step_n(system, 20);
+
+	const uint16_t value = vmcu_system_read_2_gpr(system, 0);
+
+	if (value != fixed_value) {
+		printf("[0x%x] (may read 2 bytes) == 0x%x, expected 0x%x\n", addr, value, fixed_value);
+	}
+
+	assert(value == fixed_value);
+
+	assert_redzone(system, addr, (wide) ? 2 : 1, redzone);
+
+	vmcu_system_dtor(system);
 }
 
-void test_compile_tac_load_case_16bit_addr() {
+void test_compile_tac_load_case_8bit_addr_8bit_value() {
 
-	status_test_codegen("TAC_LOAD (16 bit address)");
+	status_test_codegen("TAC_LOAD (8 bit addr, 8 bit value)");
+
+	const uint16_t addr = 0xc7;
+	const uint8_t fixed_value = 0x33;
+
+	common(addr, fixed_value, false);
+}
+
+void test_compile_tac_load_case_8bit_addr_16bit_value() {
+
+	status_test_codegen("TAC_LOAD (8 bit addr, 16 bit value)");
+
+	const uint16_t addr = 0xc7;
+	const uint16_t fixed_value = 0x3456;
+
+	common(addr, fixed_value, true);
+}
+
+void test_compile_tac_load_case_16bit_addr_8bit_value() {
+
+	status_test_codegen("TAC_LOAD (16 bit addr, 8 bit value)");
 
 	const uint16_t addr = 0x0103;
-	for (int8_t fixed_value = 0x20; fixed_value < 0x24; fixed_value++) {
+	const int8_t fixed_value = 0x20;
 
-		struct TACBuffer* b = tacbuffer_ctor();
+	common(addr, fixed_value, false);
+}
 
-		tacbuffer_append(b, makeTACConst(1, 0x00));
-		tacbuffer_append(b, makeTACConst(2, addr));
-		tacbuffer_append(b, makeTACLoad(1, 2, 1));
-		tacbuffer_append(b, makeTACReturn(1));
+void test_compile_tac_load_case_16bit_addr_16bit_value() {
 
-		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+	status_test_codegen("TAC_LOAD (16 bit addr, 16 bit value)");
 
-		vmcu_system_write_data(system, addr, fixed_value);
+	const uint16_t addr = 0x0103;
+	const uint16_t fixed_value = 0x2087;
 
-		vmcu_system_step_n(system, 20);
-
-		int8_t r0 = vmcu_system_read_gpr(system, 0);
-
-		assert(r0 == fixed_value);
-
-		vmcu_system_dtor(system);
-	}
+	common(addr, fixed_value, true);
 }
