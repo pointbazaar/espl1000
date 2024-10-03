@@ -165,9 +165,7 @@ void test_gen_tac_call_case_1_args_write_16bit() {
 
 	vmcu_system_step_n(system, 50);
 
-	const uint8_t actual_low = vmcu_system_read_data(system, 0x100);
-	const uint8_t actual_high = vmcu_system_read_data(system, 0x101);
-	const uint16_t actual = (actual_high << 8) | actual_low;
+	const uint16_t actual = vmcu_system_read_data16(system, 0x100);
 
 	if (actual != expected) {
 		printf("actual: 0x%x\n", actual);

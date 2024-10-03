@@ -55,10 +55,7 @@ void test_compile_tac_unary_op_case_minus_16bit() {
 
 		vmcu_system_step_n(system, 20);
 
-		const uint8_t r0 = vmcu_system_read_gpr(system, 0);
-		const uint8_t r1 = vmcu_system_read_gpr(system, 1);
-
-		int16_t actual = (r1 << 8) | r0;
+		int16_t actual = (int16_t)vmcu_system_read_2_gpr(system, 0);
 
 		assert(actual == -start);
 
@@ -132,10 +129,7 @@ void test_compile_tac_unary_op_case_bitwise_neg_16bit() {
 
 		vmcu_system_step_n(system, 10);
 
-		const uint8_t r0 = vmcu_system_read_gpr(system, 0);
-		const uint8_t r1 = vmcu_system_read_gpr(system, 1);
-
-		const uint16_t actual = (r1 << 8) | r0;
+		const uint16_t actual = vmcu_system_read_2_gpr(system, 0);
 
 		assert(actual == expect);
 

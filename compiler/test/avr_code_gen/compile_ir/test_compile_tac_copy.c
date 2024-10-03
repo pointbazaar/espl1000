@@ -53,13 +53,9 @@ void test_compile_tac_copy_case_16bit() {
 
 		vmcu_system_step_n(system, 10);
 
-		int8_t r0 = vmcu_system_read_gpr(system, 0);
-		int8_t r1 = vmcu_system_read_gpr(system, 1);
+		const uint16_t value = vmcu_system_read_2_gpr(system, 0);
 
-		//printf("r0 0x%x %d,  r1 0x%x %d\n", r0, (uint8_t)r0, r1, (uint8_t)r1);
-
-		assert((uint8_t)r0 == (fixed_value & 0xff));
-		assert((uint8_t)r1 == (fixed_value & 0xff00) >> 8);
+		assert(value == fixed_value);
 
 		vmcu_system_dtor(system);
 	}

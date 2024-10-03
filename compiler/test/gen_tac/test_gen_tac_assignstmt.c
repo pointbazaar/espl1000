@@ -40,11 +40,7 @@ void test_gen_tac_assignstmt_case_local_int_16bit() {
 
 	vmcu_system_step_n(system, 30);
 
-	//assert that value is returned in r0 as it should be
-
-	uint8_t value1_low = vmcu_system_read_gpr(system, 0);
-	uint8_t value1_high = vmcu_system_read_gpr(system, 1);
-	const uint16_t value1 = (value1_high << 8) | value1_low;
+	const uint16_t value1 = vmcu_system_read_2_gpr(system, 0);
 
 	assert(value1 == value);
 

@@ -61,14 +61,12 @@ void test_compile_tac_const_value_test_16bit() {
 		//and the upper half to the reg above it
 		bool found = false;
 
-		for (int i = 0; i < 32; i++) {
+		for (int i = 0; i < 31; i++) {
 
-			if (vmcu_system_read_gpr(system, i) == (int8_t)(fixed_value & 0xff)) {
+			const int16_t value = (int16_t)vmcu_system_read_2_gpr(system, i);
+
+			if (value == fixed_value) {
 				found = true;
-
-				int8_t rn = vmcu_system_read_gpr(system, i + 1);
-
-				assert(rn == (int8_t)((fixed_value >> 8) & 0xff));
 			}
 		}
 
