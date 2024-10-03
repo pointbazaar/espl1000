@@ -141,7 +141,10 @@ void (*tests_avr_codegen[])() = {
     test_compile_tac_if_cmp_goto_case_ge_false_16bit,
 
     // TAC_RETURN
-    test_compile_tac_return,
+    test_compile_tac_return_case_8bit_0x54,
+    test_compile_tac_return_case_8bit_0x55,
+    test_compile_tac_return_case_16bit_0x5432,
+    test_compile_tac_return_case_16bit_0x4321,
 
     // TAC_COPY
     test_compile_tac_copy_case_8bit,

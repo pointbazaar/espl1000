@@ -94,7 +94,10 @@ void test_compile_tac_if_cmp_goto_case_ge_false_8bit();
 void test_compile_tac_if_cmp_goto_case_ge_false_16bit();
 
 // TAC_RETURN
-void test_compile_tac_return();
+void test_compile_tac_return_case_8bit_0x54();
+void test_compile_tac_return_case_8bit_0x55();
+void test_compile_tac_return_case_16bit_0x5432();
+void test_compile_tac_return_case_16bit_0x4321();
 
 // TAC_COPY
 void test_compile_tac_copy_case_8bit();
