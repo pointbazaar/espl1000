@@ -120,8 +120,10 @@ void test_compile_tac_call_case_returns_value_16bit();
 void test_compile_tac_call_case_1_param();
 
 // TAC_LOAD
-void test_compile_tac_load_case_8bit_addr();
-void test_compile_tac_load_case_16bit_addr();
+void test_compile_tac_load_case_8bit_addr_8bit_value();
+void test_compile_tac_load_case_8bit_addr_16bit_value();
+void test_compile_tac_load_case_16bit_addr_8bit_value();
+void test_compile_tac_load_case_16bit_addr_16bit_value();
 
 // TAC_STORE
 void test_compile_tac_store_case_8bit_value_8bit_addr_c7();

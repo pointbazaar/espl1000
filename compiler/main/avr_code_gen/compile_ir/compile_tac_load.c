@@ -24,12 +24,20 @@ void compile_tac_load(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 	else
 		ldi(XH, 0, c);
 
-	if (rat_is_wide(rat, tac->dest)) {
+	// TODO: make a 'wide' property in struct TAC
+	// to avoid encoding this in different places
+	const bool tac_says_wide = tac->const_value == 2;
+
+	if (tac_says_wide) {
 
 		// what if we want to load a 16 bit value?
 		ldXpostInc(reg_dest, c);
 		ldX(reg_dest + 1, c);
 	} else {
 		ldX(reg_dest, c);
+
+		if (rat_is_wide(rat, tac->dest)) {
+			clr(reg_dest + 1, c);
+		}
 	}
 }
