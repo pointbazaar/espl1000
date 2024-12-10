@@ -11,24 +11,33 @@
 
 #include "../../token/TokenKeys.h"
 
-FILE* outFile;
-
-void out(int id, char* str) {
-	fprintf(outFile, "%d %s\n", id, str);
+void out(FILE* outFile, int id, char* str) {
+	char* s = str;
+	if (str == NULL) {
+		s = "";
+	}
+	fprintf(outFile, "%d %s\n", id, s);
+}
+void out_length(FILE* outFile, int id, char* str, int length) {
+	char* s = str;
+	if (str == NULL) {
+		s = "";
+	}
+	fprintf(outFile, "%d %.*s\n", id, length, s);
 }
 
-void out2(int id, int id2) {
+void out2(FILE* outFile, int id, int id2) {
 	fprintf(outFile, "%d %d\n", id, id2);
 }
 
-void out_plus_plus() {
-	out(ASSIGNOP, "+=");
-	out(INTEGER, "1");
+void out_plus_plus(FILE* outFile) {
+	out(outFile, ASSIGNOP, "+=");
+	out(outFile, INTEGER, "1");
 }
 
-void out_minus_minus() {
-	out(ASSIGNOP, "-=");
-	out(INTEGER, "1");
+void out_minus_minus(FILE* outFile) {
+	out(outFile, ASSIGNOP, "-=");
+	out(outFile, INTEGER, "1");
 }
 
 void lexer_print_help() {

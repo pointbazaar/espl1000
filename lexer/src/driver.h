@@ -4,14 +4,13 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-extern FILE* outFile;
+void out(FILE* outFile, int id, char* str);
+void out_length(FILE* outFile, int id, char* str, int length);
 
-void out(int id, char* str);
+void out2(FILE* outFile, int id, int id2);
 
-void out2(int id, int id2);
-
-void out_plus_plus();
-void out_minus_minus();
+void out_plus_plus(FILE* outFile);
+void out_minus_minus(FILE* outFile);
 
 void lexer_print_help();
 

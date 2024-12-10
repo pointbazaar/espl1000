@@ -99,6 +99,8 @@ int main() {
 
 	test_brackets();
 
+	test_include_decl();
+
 	printf("[Lexer] All %i Tests Passed\n", test_num - 1);
 
 	return 0;

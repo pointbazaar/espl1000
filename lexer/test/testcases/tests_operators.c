@@ -3,8 +3,8 @@
 #include <string.h>
 
 #include "../test.h"
-#include "../../token/token/token.h"
-#include "../../token/TokenKeys.h"
+#include "../token/token/token.h"
+#include "../token/TokenKeys.h"
 #include "../lexer_test_utils.h"
 
 void test_operators() {
@@ -13,6 +13,9 @@ void test_operators() {
 
 	char* str = "+ - * ";
 	struct Token** tokens = lex(str);
+
+	assert(tokens != NULL);
+	assert(tokens[0] != NULL);
 
 	assert(tokens[0]->kind == OPKEY_ARITHMETIC);
 	assert(strcmp(tokens[0]->value_ptr, "+") == 0);
@@ -32,6 +35,9 @@ void test_operators_cmp() {
 
 	char* str = "<= >= == != < >";
 	struct Token** tokens = lex(str);
+
+	assert(tokens != NULL);
+	assert(tokens[0] != NULL);
 
 	assert(tokens[0]->kind == OPKEY_RELATIONAL);
 	assert(strcmp(tokens[0]->value_ptr, "<=") == 0);
@@ -61,6 +67,9 @@ void test_operators_logical() {
 	char* str = "&& || ";
 	struct Token** tokens = lex(str);
 
+	assert(tokens != NULL);
+	assert(tokens[0] != NULL);
+
 	assert(tokens[0]->kind == OPKEY_LOGICAL);
 	assert(strcmp(tokens[0]->value_ptr, "&&") == 0);
 
@@ -76,6 +85,9 @@ void test_operators_bitwise() {
 
 	char* str = "| & << >> ^ ~";
 	struct Token** tokens = lex(str);
+
+	assert(tokens != NULL);
+	assert(tokens[0] != NULL);
 
 	assert(tokens[0]->kind == OPKEY_BITWISE);
 	assert(strcmp(tokens[0]->value_ptr, "|") == 0);
@@ -104,6 +116,9 @@ void test_assign_operators() {
 
 	char* str = "= += -= >>= <<= &= |=";
 	struct Token** tokens = lex(str);
+
+	assert(tokens != NULL);
+	assert(tokens[0] != NULL);
 
 	// =
 	assert(tokens[0]->kind == ASSIGNOP);
