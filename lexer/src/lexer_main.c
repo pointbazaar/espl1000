@@ -4,12 +4,13 @@
 
 #include "driver.h"
 #include "lexer_flags.h"
-#include "lex.yy.h"
-
 #include "lexer_main.h"
+#include "lexer.h"
 
 int lexer_main(int argc, char* argv[]) {
 
+	int status = 0;
+	bool debug = false;
 	struct LexerFlags* myargs = handle_arguments(argc, argv);
 
 	if (myargs->help) {
@@ -24,32 +25,38 @@ int lexer_main(int argc, char* argv[]) {
 	char* filename = myargs->filename;
 
 	//configure input source
-	yyin = fopen(filename, "r");
+	FILE* yyin = fopen(filename, "r");
 	if (yyin == NULL) {
 		fprintf(stderr, "error: could not open %s\n", filename);
 		return 1;
 	}
 
+	if (debug) {
+		fprintf(stderr, "opened input file %s\n", filename);
+	}
+
 	char* buffer = lexer_make_tkn_filename(filename);
 
-	//configure output file, NECESSARY (for FLEX)
-	outFile = fopen(buffer, "w");
+	FILE* outFile = fopen(buffer, "w");
 	if (outFile == NULL) {
 		fprintf(stderr, "error: could not open %s\n", buffer);
 		return 1;
 	}
 
+	if (debug) {
+		fprintf(stderr, "opened output file %s\n", buffer);
+	}
+
 	//full buffering for better performance
 	setvbuf(outFile, NULL, _IOFBF, BUFSIZ);
 
-	yylex();
+	status = lexer_impl(yyin, outFile);
 
 	fclose(yyin);
 	free(myargs);
 
 	fclose(outFile);
-	yylex_destroy();
 	free(buffer);
 
-	return 0;
+	return status;
 }

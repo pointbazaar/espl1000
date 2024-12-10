@@ -3,8 +3,8 @@
 #include <string.h>
 
 #include "../test.h"
-#include "../../token/token/token.h"
-#include "../../token/TokenKeys.h"
+#include "../token/token/token.h"
+#include "../token/TokenKeys.h"
 #include "../lexer_test_utils.h"
 
 void test_single_line_comment() {

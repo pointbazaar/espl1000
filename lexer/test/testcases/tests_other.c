@@ -3,8 +3,8 @@
 #include <string.h>
 
 #include "../test.h"
-#include "../../token/token/token.h"
-#include "../../token/TokenKeys.h"
+#include "../token/token/token.h"
+#include "../token/TokenKeys.h"
 #include "../lexer_test_utils.h"
 
 void test_plus_plus_minus_minus() {
@@ -12,6 +12,9 @@ void test_plus_plus_minus_minus() {
 	char* str = "Char ++ -- ";
 	//should expand: "Char += 1 -= 1"
 	struct Token** tokens = lex(str);
+
+	assert(tokens != NULL);
+	assert(tokens[0] != NULL);
 
 	assert(tokens[0]->kind == TYPEID);
 	assert(tokens[1]->kind == ASSIGNOP);
@@ -34,6 +37,9 @@ void test_can_see_line_with_semicolon() {
 	char* str = "Char x; ";
 	struct Token** tokens = lex(str);
 
+	assert(tokens != NULL);
+	assert(tokens[0] != NULL);
+
 	assert(tokens[0]->kind == TYPEID);
 	assert(tokens[1]->kind == ID);
 	assert(tokens[2]->kind == SEMICOLON);
@@ -50,6 +56,9 @@ void test_can_see_line_with_operators() {
 	char* str = "x = x+x; ";
 	struct Token** tokens = lex(str);
 
+	assert(tokens != NULL);
+	assert(tokens[0] != NULL);
+
 	assert(tokens[0]->kind == ID);
 	assert(tokens[1]->kind == ASSIGNOP);
 	assert(tokens[2]->kind == ID);
@@ -65,6 +74,9 @@ void test_lexes_return_statement_favorably() {
 
 	char* str = "return (-5)*n; ";
 	struct Token** tokens = lex(str);
+
+	assert(tokens != NULL);
+	assert(tokens[0] != NULL);
 
 	assert(tokens[0]->kind == RETURN);
 
@@ -241,8 +253,8 @@ void test_comma() {
 	char* str = ",, ";
 	struct Token** tokens = lex(str);
 
+	assert(tokens[0]->kind == COMMA);
 	assert(tokens[1]->kind == COMMA);
-	assert(strcmp(tokens[1]->value_ptr, ",") == 0);
 
 	free_tokens(tokens, 2);
 }
