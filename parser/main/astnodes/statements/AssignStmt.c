@@ -16,7 +16,7 @@
 #include "ast/util/copy_ast.h"
 #include "expr/Op.h"
 
-static void handle_assignment_operator(struct AssignStmt* res, char* assign_op);
+static int handle_assignment_operator(struct AssignStmt* res, int token_key, char* assign_op);
 static struct UnOpTerm* convert_left(struct Variable* myvar);
 static struct UnOpTerm* convert_right(struct Expr* expr);
 
@@ -44,7 +44,14 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens) {
 	}
 
 	struct Token* tkn_assign = list_head(copy);
-	if (tkn_assign->kind != ASSIGNOP) {
+	if (
+	    tkn_assign->kind != ASSIGNOP_PLUS &&
+	    tkn_assign->kind != ASSIGNOP_MINUS &&
+	    tkn_assign->kind != ASSIGNOP_SHIFT_LEFT &&
+	    tkn_assign->kind != ASSIGNOP_SHIFT_RIGHT &&
+	    tkn_assign->kind != ASSIGNOP_BITWISE_AND &&
+	    tkn_assign->kind != ASSIGNOP_BITWISE_OR &&
+	    tkn_assign->kind != ASSIGNOP_SIMPLE) {
 		free_variable(res->var);
 		free(res);
 		freeTokenListShallow(copy);
@@ -71,7 +78,15 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens) {
 	//handle the assignment operator,
 	//can be [=, +=, -=, *=, ...]
 	//(transform:  a ?= b  ->  a = a ? b)
-	handle_assignment_operator(res, tkn_assign->value_ptr);
+	int status = handle_assignment_operator(res, tkn_assign->kind, tkn_assign->value_ptr);
+
+	if (status != 0) {
+		free_expr(res->expr);
+		free_variable(res->var);
+		free(res);
+		freeTokenListShallow(copy);
+		return NULL;
+	}
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
@@ -109,25 +124,29 @@ static struct UnOpTerm* convert_right(struct Expr* expr) {
 	return uop2;
 }
 
-static void handle_assignment_operator(struct AssignStmt* res, char* assign_op) {
+static int handle_assignment_operator(struct AssignStmt* res, int token_key, char* assign_op) {
 
 	//in case assign_op != "=",
 	//we must transform
 	// a ?= b -> a = a ? b
 
-	if (strcmp(assign_op, "=") == 0) {
-		return;
+	if (token_key == ASSIGNOP_SIMPLE) {
+		return 0;
 	}
 
 	char op[4];
 	strcpy(op, assign_op);
 	op[strlen(op) - 1] = '\0';
-	int my_op_key = OPKEY_ARITHMETIC;
 
 	struct TokenList* tkl = makeTokenList();
-	list_add(tkl, makeToken2(my_op_key, op));
+	list_add(tkl, makeToken2(token_key, op));
 
 	enum OP myop = makeOp(tkl);
+
+	if (myop == OP_NONE) {
+		fprintf(stderr, "could not convert token_key=%d, '%s' into op\n", token_key, op);
+		return -1;
+	}
 
 	freeTokenList(tkl);
 
@@ -138,4 +157,6 @@ static void handle_assignment_operator(struct AssignStmt* res, char* assign_op) 
 	struct Expr* expr = makeExpr_3(uop1, myop, uop2);
 
 	res->expr = expr;
+
+	return 0;
 }

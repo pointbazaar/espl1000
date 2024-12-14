@@ -61,7 +61,7 @@ int expr_recognize_2_op_expr() {
 	struct TokenList* tokens = makeTokenList();
 
 	list_add(tokens, makeToken2(INTEGER, "1"));
-	list_add(tokens, makeToken2(OPKEY_ARITHMETIC, "+"));
+	list_add(tokens, makeToken(OPKEY_ARITHMETIC_PLUS));
 	list_add(tokens, makeToken2(INTEGER, "2"));
 
 	list_add(tokens, makeToken2(LCURLY, "{"));
@@ -83,7 +83,7 @@ int expr_test_comparison() {
 	struct TokenList* l = makeTokenList();
 
 	list_add(l, makeToken2(ID, "x"));
-	list_add(l, makeToken2(OPKEY_RELATIONAL, "<"));
+	list_add(l, makeToken(OPKEY_RELATIONAL_LT));
 	list_add(l, makeToken2(INTEGER, "5"));
 
 	list_add(l, makeToken2(LCURLY, "{"));
@@ -128,9 +128,9 @@ int expr_test_3_terms() {
 	struct TokenList* tokens = makeTokenList();
 
 	list_add(tokens, makeToken2(INTEGER, "1"));
-	list_add(tokens, makeToken2(OPKEY_ARITHMETIC, "+"));
+	list_add(tokens, makeToken(OPKEY_ARITHMETIC_PLUS));
 	list_add(tokens, makeToken2(INTEGER, "2"));
-	list_add(tokens, makeToken2(OPKEY_ARITHMETIC, "+"));
+	list_add(tokens, makeToken(OPKEY_ARITHMETIC_PLUS));
 	list_add(tokens, makeToken2(INTEGER, "3"));
 
 	list_add(tokens, makeToken2(LCURLY, "{"));

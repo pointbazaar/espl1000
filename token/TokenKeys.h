@@ -27,22 +27,43 @@
 #define TYPEID_PRIMITIVE_UINT64 18
 
 //()[]{}
-#define LPARENS 20
-#define RPARENS 21
-#define LBRACKET 22
-#define RBRACKET 23
-#define LCURLY 24
-#define RCURLY 25
+#define LPARENS 19
+#define RPARENS 20
+#define LBRACKET 21
+#define RBRACKET 22
+#define LCURLY 23
+#define RCURLY 24
 
-//Other
-#define ARROW 30
-#define ANYTYPE 31
-#define WAVE 33
-#define SEMICOLON 34
-//#define EQ 		35
-#define RANGEOP 36
-#define STRUCTMEMBERACCESS 37
-#define ASSIGNOP 38
+// ->
+#define ARROW_NO_SIDE_EFFECT 25
+// ~>
+#define ARROW_SIDE_EFFECT 26
+
+// #
+#define ANYTYPE 27
+// ~
+#define WAVE 28
+// ;
+#define SEMICOLON 29
+// ..
+#define RANGEOP 30
+// .
+#define STRUCTMEMBERACCESS 31
+
+// +=
+#define ASSIGNOP_PLUS 32
+// -=
+#define ASSIGNOP_MINUS 33
+// <<=
+#define ASSIGNOP_SHIFT_LEFT 34
+// >>=
+#define ASSIGNOP_SHIFT_RIGHT 35
+// &=
+#define ASSIGNOP_BITWISE_AND 36
+// |=
+#define ASSIGNOP_BITWISE_OR 37
+// '='
+#define ASSIGNOP_SIMPLE 38
 
 //Constants
 #define INTEGER 41
@@ -76,10 +97,43 @@
 #define INCLUDE_DECL 70
 
 //operator groups
-#define OPKEY_ARITHMETIC 80
-#define OPKEY_RELATIONAL 81
-#define OPKEY_LOGICAL 82
-#define OPKEY_BITWISE 83
+#define OPKEY_ARITHMETIC_PLUS 71
+#define OPKEY_ARITHMETIC_MINUS 72
+#define OPKEY_ARITHMETIC_MUL 73
+#define OPKEY_ARITHMETIC_DIV 74
+
+// ==
+#define OPKEY_RELATIONAL_EQ 75
+// !=
+#define OPKEY_RELATIONAL_NEQ 76
+// <
+#define OPKEY_RELATIONAL_LT 77
+// >
+#define OPKEY_RELATIONAL_GT 78
+// <=
+#define OPKEY_RELATIONAL_LE 79
+// >=
+#define OPKEY_RELATIONAL_GE 80
+
+// &&
+#define OPKEY_LOGICAL_AND 81
+// ||
+#define OPKEY_LOGICAL_OR 82
+// !
+#define OPKEY_LOGICAL_NOT 83
+
+// |
+#define OPKEY_BITWISE_OR 84
+// &
+#define OPKEY_BITWISE_AND 85
+// ^
+#define OPKEY_BITWISE_XOR 86
+// ~
+#define OPKEY_BITWISE_NOT 87
+// <<
+#define OPKEY_BITWISE_SHIFT_LEFT 88
+// >>
+#define OPKEY_BITWISE_SHIFT_RIGHT 89
 
 //annotations
 #define _ANNOT_START_ 90

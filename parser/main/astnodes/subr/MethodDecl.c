@@ -50,19 +50,13 @@ struct MethodDecl* makeMethodDecl(struct TokenList* tokens) {
 
 	{
 		struct Token* tk = list_head(copy);
-		if (tk->kind != ARROW) {
+		if (tk->kind != ARROW_NO_SIDE_EFFECT && tk->kind != ARROW_SIDE_EFFECT) {
 			free(res);
 			freeTokenListShallow(copy);
 			return NULL;
 		}
-		if (strcmp(tk->value_ptr, "->") == 0) {
-			res->has_side_effects = false;
-		} else if (strcmp(tk->value_ptr, "~>") == 0) {
-			res->has_side_effects = true;
-		} else {
-			printf("Fatal\n");
-			exit(1);
-		}
+
+		res->has_side_effects = (tk->kind == ARROW_SIDE_EFFECT);
 
 		list_consume(copy, 1);
 	}

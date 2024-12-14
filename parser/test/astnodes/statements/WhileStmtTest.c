@@ -24,7 +24,7 @@ int whilestmt_test1() {
 	list_add(list, makeToken(LPARENS));
 
 	list_add(list, makeToken2(INTEGER, "5"));
-	list_add(list, makeToken2(OPKEY_RELATIONAL, "<"));
+	list_add(list, makeToken(OPKEY_RELATIONAL_LT));
 	list_add(list, makeToken2(INTEGER, "3"));
 
 	list_add(list, makeToken(RPARENS));
@@ -56,7 +56,7 @@ int whilestmt_test2() {
 	list_add(list, makeToken(LPARENS));
 
 	list_add(list, makeToken2(INTEGER, "x"));
-	list_add(list, makeToken2(OPKEY_RELATIONAL, "<"));
+	list_add(list, makeToken(OPKEY_RELATIONAL_LT));
 	list_add(list, makeToken2(INTEGER, "4"));
 
 	list_add(list, makeToken(RPARENS));

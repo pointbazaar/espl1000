@@ -27,7 +27,7 @@ int method_test_can_parse_method_with_arguments() {
 	list_add(l, makeToken2(ID, "hello"));
 	list_add(l, makeToken(RPARENS));
 
-	list_add(l, makeToken2(ARROW, "->"));
+	list_add(l, makeToken(ARROW_NO_SIDE_EFFECT));
 	list_add(l, makeToken2(TYPEID, "Car"));
 
 	list_add(l, makeToken(LCURLY));
@@ -55,27 +55,27 @@ int method_test_can_parse_subroutine() {
 
 	struct TokenList* l = makeTokenList();
 
-	list_add(l, makeToken2(FN, "fn"));
+	list_add(l, makeToken(FN));
 	list_add(l, makeToken2(ID, "main"));
 
-	list_add(l, makeToken2(LPARENS, "("));
-	list_add(l, makeToken2(RPARENS, ")"));
+	list_add(l, makeToken(LPARENS));
+	list_add(l, makeToken(RPARENS));
 
-	list_add(l, makeToken2(ARROW, "~>"));
+	list_add(l, makeToken(ARROW_SIDE_EFFECT));
 	list_add(l, makeToken2(TYPEID, "Apple"));
 
-	list_add(l, makeToken2(LCURLY, "{"));
+	list_add(l, makeToken(LCURLY));
 
 	list_add(l, makeToken2(ID, "println"));
-	list_add(l, makeToken2(LPARENS, "("));
-	list_add(l, makeToken2(RPARENS, ")"));
-	list_add(l, makeToken2(SEMICOLON, ";"));
+	list_add(l, makeToken(LPARENS));
+	list_add(l, makeToken(RPARENS));
+	list_add(l, makeToken(SEMICOLON));
 
-	list_add(l, makeToken2(RETURN, "return"));
+	list_add(l, makeToken(RETURN));
 	list_add(l, makeToken2(INTEGER, "0"));
-	list_add(l, makeToken2(SEMICOLON, ";"));
+	list_add(l, makeToken(SEMICOLON));
 
-	list_add(l, makeToken2(RCURLY, "}"));
+	list_add(l, makeToken(RCURLY));
 
 	struct Method* m = makeMethod(l);
 	assert(m != NULL);
@@ -94,19 +94,19 @@ int method_test_can_parse_method_without_arguments() {
 
 	struct TokenList* l = makeTokenList();
 
-	list_add(l, makeToken2(FN, "fn"));
+	list_add(l, makeToken(FN));
 	list_add(l, makeToken2(ID, "main"));
 
-	list_add(l, makeToken2(LPARENS, "("));
-	list_add(l, makeToken2(RPARENS, ")"));
+	list_add(l, makeToken(LPARENS));
+	list_add(l, makeToken(RPARENS));
 
-	list_add(l, makeToken2(ARROW, "->"));
+	list_add(l, makeToken(ARROW_NO_SIDE_EFFECT));
 
 	list_add(l, makeToken2(TYPEID, "MyType"));
 
-	list_add(l, makeToken2(LCURLY, "{"));
+	list_add(l, makeToken(LCURLY));
 
-	list_add(l, makeToken2(RCURLY, "}"));
+	list_add(l, makeToken(RCURLY));
 
 	struct Method* m = makeMethod(l);
 	assert(m != NULL);

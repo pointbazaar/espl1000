@@ -94,9 +94,9 @@ static enum TAC_OP op_to_tac_op(enum OP o, bool* reverse_operands) {
 
 		case OP_NONE:
 		default:
-			printf("error in op_to_tac_op\n");
-			printf("error, op was none of supported TAC_OP_... values\n");
-			printf("op = %d\n", o);
+			fprintf(stderr, "error in op_to_tac_op\n");
+			fprintf(stderr, "error, op was none of supported TAC_OP_... values\n");
+			fprintf(stderr, "op = %d\n", o);
 			break;
 	}
 

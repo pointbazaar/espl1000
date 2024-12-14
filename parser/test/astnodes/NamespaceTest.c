@@ -43,7 +43,7 @@ int namespace_test_can_parse_namespace_with_1_empty_method() {
 	list_add(l, makeToken2(ID, "main"));
 	list_add(l, makeToken(LPARENS));
 	list_add(l, makeToken(RPARENS));
-	list_add(l, makeToken2(ARROW, "~>"));
+	list_add(l, makeToken(ARROW_SIDE_EFFECT));
 	list_add(l, makeToken2(TYPEID, "uint"));
 	list_add(l, makeToken(LCURLY));
 	list_add(l, makeToken(RCURLY));

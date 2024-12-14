@@ -24,15 +24,23 @@ struct MAssignStmt* makeMAssignStmt(struct TokenList* tokens) {
 	//parse '='
 	struct Token* head = list_head(copy);
 
-	if (head->kind != ASSIGNOP) {
+	if (
+	    head->kind != ASSIGNOP_PLUS &&
+	    head->kind != ASSIGNOP_MINUS &&
+	    head->kind != ASSIGNOP_SHIFT_LEFT &&
+	    head->kind != ASSIGNOP_SHIFT_RIGHT &&
+	    head->kind != ASSIGNOP_BITWISE_AND &&
+	    head->kind != ASSIGNOP_BITWISE_OR &&
+	    head->kind != ASSIGNOP_SIMPLE) {
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
 	}
 
-	if (strcmp(head->value_ptr, "=") != 0) {
-		printf("expected assign op to be '=' for MAssignStmt. Exiting\n");
-		exit(1);
+	if (head->kind != ASSIGNOP_SIMPLE) {
+		fprintf(stderr, "expected assign op to be '=' for MAssignStmt. Exiting\n");
+		free(res);
+		freeTokenListShallow(copy);
 		return NULL;
 	}
 

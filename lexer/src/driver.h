@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+void out_nostr(FILE* outFile, int id);
 void out(FILE* outFile, int id, char* str);
 void out_length(FILE* outFile, int id, char* str, int length);
 
