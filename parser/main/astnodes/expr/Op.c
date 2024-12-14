@@ -3,11 +3,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "ast/ast/ast_expr.h"
 #include "parser/main/util/parse_astnode.h"
 
 #include "Op.h"
-
-#include "ast/util/free_ast.h"
 
 #include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
@@ -20,40 +19,89 @@ enum OP makeOp(struct TokenList* tokens) {
 	struct Token* tk = list_head(copy);
 	if (tk == NULL) { return OP_NONE; }
 
-	switch (tk->kind) {
+	enum OP res = OP_NONE;
 
-		case OPKEY_ARITHMETIC:
-		case OPKEY_RELATIONAL:
-		case OPKEY_LOGICAL:
-		case OPKEY_BITWISE: break;
+	switch (tk->kind) {
+		case ASSIGNOP_PLUS:
+			res = OP_PLUS;
+			break;
+		case ASSIGNOP_MINUS:
+			res = OP_MINUS;
+			break;
+		case ASSIGNOP_SHIFT_LEFT:
+			res = OP_SHIFT_LEFT;
+			break;
+		case ASSIGNOP_SHIFT_RIGHT:
+			res = OP_SHIFT_RIGHT;
+			break;
+		case ASSIGNOP_BITWISE_AND:
+			res = OP_AND;
+			break;
+		case ASSIGNOP_BITWISE_OR:
+			res = OP_OR;
+			break;
+
+		case OPKEY_ARITHMETIC_PLUS:
+			res = OP_PLUS;
+			break;
+		case OPKEY_ARITHMETIC_MINUS:
+			res = OP_MINUS;
+			break;
+		case OPKEY_ARITHMETIC_MUL:
+			res = OP_MULTIPLY;
+			break;
+		case OPKEY_ARITHMETIC_DIV:
+			break;
+		case OPKEY_RELATIONAL_EQ:
+			res = OP_EQ;
+			break;
+		case OPKEY_RELATIONAL_NEQ:
+			res = OP_NEQ;
+			break;
+		case OPKEY_RELATIONAL_LT:
+			res = OP_LT;
+			break;
+		case OPKEY_RELATIONAL_GT:
+			res = OP_GT;
+			break;
+		case OPKEY_RELATIONAL_LE:
+			res = OP_LE;
+			break;
+		case OPKEY_RELATIONAL_GE:
+			res = OP_GE;
+			break;
+		case OPKEY_LOGICAL_AND:
+			res = OP_AND;
+			break;
+		case OPKEY_LOGICAL_OR:
+			res = OP_OR;
+			break;
+		case OPKEY_LOGICAL_NOT:
+			res = OP_NOT;
+			break;
+		case OPKEY_BITWISE_OR:
+			res = OP_OR;
+			break;
+		case OPKEY_BITWISE_AND:
+			res = OP_AND;
+			break;
+		case OPKEY_BITWISE_XOR:
+			res = OP_XOR;
+			break;
+		case OPKEY_BITWISE_NOT:
+			res = OP_NOT;
+			break;
+		case OPKEY_BITWISE_SHIFT_LEFT:
+			res = OP_SHIFT_LEFT;
+			break;
+		case OPKEY_BITWISE_SHIFT_RIGHT:
+			res = OP_SHIFT_RIGHT;
+			break;
 
 		default:
 			freeTokenListShallow(copy);
 			return OP_NONE;
 	}
-
-	enum OP res = OP_NONE;
-
-	if (strcmp(tk->value_ptr, "+") == 0) res = OP_PLUS;
-	if (strcmp(tk->value_ptr, "-") == 0) res = OP_MINUS;
-	if (strcmp(tk->value_ptr, "*") == 0) res = OP_MULTIPLY;
-
-	if (strcmp(tk->value_ptr, "<<") == 0) res = OP_SHIFT_LEFT;
-	if (strcmp(tk->value_ptr, ">>") == 0) res = OP_SHIFT_RIGHT;
-
-	if (strcmp(tk->value_ptr, "==") == 0) res = OP_EQ;
-	if (strcmp(tk->value_ptr, "!=") == 0) res = OP_NEQ;
-	if (strcmp(tk->value_ptr, ">=") == 0) res = OP_GE;
-	if (strcmp(tk->value_ptr, "<=") == 0) res = OP_LE;
-	if (strcmp(tk->value_ptr, ">") == 0) res = OP_GT;
-	if (strcmp(tk->value_ptr, "<") == 0) res = OP_LT;
-
-	if (strcmp(tk->value_ptr, "&") == 0) res = OP_AND;
-	if (strcmp(tk->value_ptr, "|") == 0) res = OP_OR;
-	if (strcmp(tk->value_ptr, "^") == 0) res = OP_XOR;
-
-	if (strcmp(tk->value_ptr, "!") == 0) res = OP_NOT;
-	if (strcmp(tk->value_ptr, "~") == 0) res = OP_COMPLEMENT;
 
 	list_consume(copy, 1);
 

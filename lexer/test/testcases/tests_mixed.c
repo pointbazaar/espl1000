@@ -17,7 +17,6 @@ void test_mixed_1() {
 	assert(tokens[2]->kind == LCURLY);
 
 	assert(tokens[3]->kind == TYPEID_PRIMITIVE_UINT);
-	assert(strcmp(tokens[3]->value_ptr, "uint") == 0);
 
 	assert(tokens[4]->kind == ID);
 	assert(strcmp(tokens[4]->value_ptr, "a") == 0);
@@ -41,7 +40,7 @@ void test_mixed_2() {
 
 	assert(tokens[2]->kind == RPARENS);
 
-	assert(tokens[3]->kind == ARROW);
+	assert(tokens[3]->kind == ARROW_SIDE_EFFECT);
 
 	free_tokens(tokens, 4);
 }
@@ -84,7 +83,7 @@ void test_mixed_5() {
 	struct Token** tokens = lex(str);
 
 	assert(tokens[0]->kind == RBRACKET);
-	assert(tokens[1]->kind == ASSIGNOP);
+	assert(tokens[1]->kind == ASSIGNOP_SIMPLE);
 	assert(tokens[2]->kind == CCONST);
 	assert(tokens[3]->kind == SEMICOLON);
 
@@ -114,7 +113,7 @@ void test_mixed_7() {
 
 	assert(tokens[0]->kind == LPARENS);
 	assert(tokens[1]->kind == INTEGER);
-	assert(tokens[2]->kind == OPKEY_RELATIONAL);
+	assert(tokens[2]->kind == OPKEY_RELATIONAL_LT);
 	assert(tokens[3]->kind == INTEGER);
 	assert(tokens[4]->kind == RPARENS);
 
@@ -163,7 +162,7 @@ void test_mixed_10() {
 	assert(tokens[1]->kind == ID);
 	assert(tokens[1]->line_num == 2);
 
-	assert(tokens[2]->kind == ASSIGNOP);
+	assert(tokens[2]->kind == ASSIGNOP_SIMPLE);
 	assert(tokens[3]->kind == INTEGER);
 
 	free_tokens(tokens, 5);
@@ -194,7 +193,7 @@ void test_mixed_12() {
 
 	assert(tokens[0]->kind == LPARENS);
 	assert(tokens[1]->kind == ID);
-	assert(tokens[2]->kind == OPKEY_RELATIONAL);
+	assert(tokens[2]->kind == OPKEY_RELATIONAL_LT);
 	assert(tokens[3]->kind == INTEGER);
 	assert(tokens[4]->kind == RPARENS);
 
@@ -284,7 +283,7 @@ void test_mixed_16() {
 	assert(tokens[2]->kind == TYPEID_PRIMITIVE_UINT);
 
 	assert(tokens[3]->kind == RPARENS);
-	assert(tokens[4]->kind == ARROW);
+	assert(tokens[4]->kind == ARROW_NO_SIDE_EFFECT);
 	assert(tokens[5]->kind == TYPEID_PRIMITIVE_BOOL);
 	assert(tokens[6]->kind == RPARENS);
 	assert(tokens[7]->kind == ID);

@@ -22,12 +22,12 @@ int if_test1() {
 	list_add(list, makeToken2(IF, "if"));
 
 	list_add(list, makeToken2(INTEGER, "5"));
-	list_add(list, makeToken2(OPKEY_RELATIONAL, "<"));
+	list_add(list, makeToken(OPKEY_RELATIONAL_LT));
 	list_add(list, makeToken2(INTEGER, "3"));
 
-	list_add(list, makeToken2(LCURLY, "{"));
+	list_add(list, makeToken(LCURLY));
 
-	list_add(list, makeToken2(RCURLY, "}"));
+	list_add(list, makeToken(RCURLY));
 
 	struct IfStmt* i = makeIfStmt(list);
 
@@ -58,20 +58,20 @@ int if_test2() {
 	list_add(l, makeToken2(IF, "if"));
 
 	list_add(l, makeToken2(ID, "x"));
-	list_add(l, makeToken2(OPKEY_RELATIONAL, "<"));
+	list_add(l, makeToken(OPKEY_RELATIONAL_LT));
 	list_add(l, makeToken2(INTEGER, "5"));
 
-	list_add(l, makeToken2(LCURLY, "{"));
+	list_add(l, makeToken(LCURLY));
 
 	list_add(l, makeToken2(ID, "println"));
 
-	list_add(l, makeToken2(LPARENS, "("));
+	list_add(l, makeToken(LPARENS));
 	list_add(l, makeToken2(INTEGER, "5"));
-	list_add(l, makeToken2(RPARENS, ")"));
+	list_add(l, makeToken(RPARENS));
 
-	list_add(l, makeToken2(SEMICOLON, ";"));
+	list_add(l, makeToken(SEMICOLON));
 
-	list_add(l, makeToken2(RCURLY, "}"));
+	list_add(l, makeToken(RCURLY));
 
 	struct IfStmt* i = makeIfStmt(l);
 

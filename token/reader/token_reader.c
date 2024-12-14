@@ -49,6 +49,97 @@ struct TokenList* read_tokens_from_tokens_file(FILE* file, char* tokensFile) {
 	return tks;
 }
 
+static struct Token* recognizeTokenInnerNoStr(int tkn_id) {
+
+	struct Token* r = NULL;
+
+	switch (tkn_id) {
+		case ANYTYPE:
+		//CONSTANTS
+		case BCONST_TRUE:
+		case BCONST_FALSE:
+		//BRACKETS, BRACES, PARENTHESES
+		case LBRACKET:
+		case RBRACKET:
+		case LPARENS:
+		case RPARENS:
+		case LCURLY:
+		case RCURLY:
+
+		case TYPEID_PRIMITIVE_INT:
+		case TYPEID_PRIMITIVE_UINT:
+		case TYPEID_PRIMITIVE_INT8:
+		case TYPEID_PRIMITIVE_UINT8:
+		case TYPEID_PRIMITIVE_INT16:
+		case TYPEID_PRIMITIVE_UINT16:
+		case TYPEID_PRIMITIVE_BOOL:
+		case TYPEID_PRIMITIVE_CHAR:
+
+		//SECTION: OPERATORNS
+		case OPKEY_ARITHMETIC_PLUS:
+		case OPKEY_ARITHMETIC_MINUS:
+		case OPKEY_ARITHMETIC_MUL:
+		case OPKEY_ARITHMETIC_DIV:
+		case OPKEY_RELATIONAL_EQ:
+		case OPKEY_RELATIONAL_NEQ:
+		case OPKEY_RELATIONAL_LT:
+		case OPKEY_RELATIONAL_GT:
+		case OPKEY_RELATIONAL_LE:
+		case OPKEY_RELATIONAL_GE:
+		case OPKEY_LOGICAL_AND:
+		case OPKEY_LOGICAL_OR:
+		case OPKEY_LOGICAL_NOT:
+		case OPKEY_BITWISE_OR:
+		case OPKEY_BITWISE_AND:
+		case OPKEY_BITWISE_XOR:
+		case OPKEY_BITWISE_NOT:
+		case OPKEY_BITWISE_SHIFT_LEFT:
+		case OPKEY_BITWISE_SHIFT_RIGHT:
+
+		case ASSIGNOP_PLUS:
+		case ASSIGNOP_MINUS:
+		case ASSIGNOP_SHIFT_LEFT:
+		case ASSIGNOP_SHIFT_RIGHT:
+		case ASSIGNOP_BITWISE_AND:
+		case ASSIGNOP_BITWISE_OR:
+		case ASSIGNOP_SIMPLE:
+		//SECTION: OTHER
+		case SEMICOLON:
+		case COMMA:
+		case STRUCTMEMBERACCESS:
+
+		//SECTION: ANNOTATIONS
+		case ANNOT_HALTS:
+		case ANNOT_PRIVATE:
+		case ANNOT_PUBLIC:
+		case ANNOT_DEPRECATED:
+
+		//SECTION: KEYWORDS
+		case RETURN:
+		case FN:
+		case STRUCT:
+		case IF:
+		case ELSE:
+		case WHILE:
+		case BREAK:
+		case CONTINUE:
+		case FOR:
+		case IN:
+		case RANGEOP:
+		case WAVE:
+		case ARROW_NO_SIDE_EFFECT:
+		case ARROW_SIDE_EFFECT:
+			r = makeToken(tkn_id);
+			break;
+		default:
+			printf("unreconized token id : %d\n", tkn_id);
+			exit(1);
+			return NULL;
+	};
+
+	return r;
+}
+
 static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_num) {
 
 	char part1[10];
@@ -56,7 +147,15 @@ static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_nu
 
 	char* space_ptr = strchr(tkn, ' ');
 
-	if (space_ptr == NULL) { return NULL; }
+	if (space_ptr == NULL) {
+		const int tkn_id = atoi(tkn);
+		struct Token* r = recognizeTokenInnerNoStr(tkn_id);
+
+		if (r != NULL) {
+			r->line_num = *line_num;
+		}
+		return r;
+	}
 
 	const int space_index = space_ptr - tkn;
 
@@ -97,65 +196,17 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2) {
 			break;
 		case ANYTYPE:
 		//CONSTANTS
-		case BCONST_TRUE:
-		case BCONST_FALSE:
 		case INTEGER:
 		case HEXCONST:
 		case BINCONST:
-		//BRACKETS, BRACES, PARENTHESES
-		case LBRACKET:
-		case RBRACKET:
-		case LPARENS:
-		case RPARENS:
-		case LCURLY:
-		case RCURLY:
 		//IDENTIFIERS
 		case ID:
 		case TYPEID:
 
-		case TYPEID_PRIMITIVE_INT:
-		case TYPEID_PRIMITIVE_UINT:
-		case TYPEID_PRIMITIVE_INT8:
-		case TYPEID_PRIMITIVE_UINT8:
-		case TYPEID_PRIMITIVE_INT16:
-		case TYPEID_PRIMITIVE_UINT16:
-		case TYPEID_PRIMITIVE_BOOL:
-		case TYPEID_PRIMITIVE_CHAR:
-
-		//SECTION: OPERATORNS
-		case OPKEY_ARITHMETIC:
-		case OPKEY_RELATIONAL:
-		case OPKEY_LOGICAL:
-		case OPKEY_BITWISE:
-
-		case ASSIGNOP:
 		//SECTION: OTHER
 		case TPARAM:
-		case SEMICOLON:
-		case COMMA:
-		case ARROW:
-		case STRUCTMEMBERACCESS:
 
-		//SECTION: ANNOTATIONS
-		case ANNOT_HALTS:
-		case ANNOT_PRIVATE:
-		case ANNOT_PUBLIC:
-		case ANNOT_DEPRECATED:
-
-		//SECTION: KEYWORDS
-		case RETURN:
-		case FN:
-		case STRUCT:
-		case IF:
-		case ELSE:
-		case WHILE:
-		case BREAK:
-		case CONTINUE:
-		case FOR:
-		case IN:
 		case INCLUDE_DECL:
-		case RANGEOP:
-		case WAVE:
 			r = makeToken2(tkn_id, part2);
 			break;
 		default:

@@ -26,11 +26,8 @@ int32_t makeIntConst(struct TokenList* tokens, bool* error) {
 
 	switch (tk->kind) {
 
-		case OPKEY_ARITHMETIC:;
-			if (
-			    strcmp(tk->value_ptr, "-") == 0 && (list_get(copy, 1)->kind == INTEGER)
-
-			) {
+		case OPKEY_ARITHMETIC_MINUS:;
+			if (list_get(copy, 1)->kind == INTEGER) {
 				struct Token* mytk = list_get(copy, 1);
 				if (mytk == NULL) {
 					freeTokenListShallow(copy);

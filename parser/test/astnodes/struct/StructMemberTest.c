@@ -23,7 +23,7 @@ int structmember_test_can_parse_struct_member() {
 	list_add(list, makeToken2(LPARENS, "("));
 	list_add(list, makeToken2(TYPEID, "MyStruct"));
 	list_add(list, makeToken2(RPARENS, ")"));
-	list_add(list, makeToken2(ARROW, "->"));
+	list_add(list, makeToken(ARROW_NO_SIDE_EFFECT));
 	list_add(list, makeToken2(TYPEID, "Carrot"));
 	list_add(list, makeToken2(RPARENS, ")"));
 

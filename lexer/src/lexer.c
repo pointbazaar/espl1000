@@ -18,9 +18,17 @@ static int h2out(const char* buffer, char* str, int token, FILE* fileout) {
 	return 0;
 }
 
+static int h2out_nostr(const char* buffer, char* str, int token, FILE* fileout) {
+	if (strncmp(buffer, str, strlen(str)) == 0) {
+		out_nostr(fileout, token);
+		return strlen(str);
+	}
+	return 0;
+}
+
 static int h2out_char(const char* buffer, char c, int token, FILE* fileout) {
 	if (buffer[0] == c) {
-		out(fileout, token, NULL);
+		out_nostr(fileout, token);
 		return 1;
 	}
 	return 0;
@@ -28,6 +36,9 @@ static int h2out_char(const char* buffer, char c, int token, FILE* fileout) {
 
 #define H2OUT(buf, str, token, fileout) \
 	if ((n = h2out(buf, str, token, fileout)) > 0) { return n; }
+
+#define H2OUT_NOSTR(buf, str, token, fileout) \
+	if ((n = h2out_nostr(buf, str, token, fileout)) > 0) { return n; }
 
 #define H2OUT_CHAR(buf, str, token, fileout) \
 	if ((n = h2out_char(buf, str, token, fileout)) > 0) { return n; }
@@ -160,12 +171,12 @@ static int handler2(const char* buf, FILE* o, size_t nchars_remain) {
 	}
 
 	if (strncmp(buf, "++", 2) == 0) {
-		out(o, ASSIGNOP, "+=");
+		out_nostr(o, ASSIGNOP_PLUS);
 		out(o, INTEGER, "1");
 		return 2;
 	}
 	if (strncmp(buf, "--", 2) == 0) {
-		out(o, ASSIGNOP, "-=");
+		out_nostr(o, ASSIGNOP_MINUS);
 		out(o, INTEGER, "1");
 		return 2;
 	}
@@ -178,51 +189,51 @@ static int handler2(const char* buf, FILE* o, size_t nchars_remain) {
 	H2OUT_CHAR(buf, ')', RPARENS, o);
 
 	H2OUT_CHAR(buf, ',', COMMA, o);
-	H2OUT(buf, "..", RANGEOP, o);
+	H2OUT_NOSTR(buf, "..", RANGEOP, o);
 	H2OUT_CHAR(buf, '.', STRUCTMEMBERACCESS, o);
-	H2OUT(buf, "->", ARROW, o);
-	H2OUT(buf, "~>", ARROW, o);
+	H2OUT_NOSTR(buf, "->", ARROW_NO_SIDE_EFFECT, o);
+	H2OUT_NOSTR(buf, "~>", ARROW_SIDE_EFFECT, o);
 
-	H2OUT(buf, "+=", ASSIGNOP, o);
-	H2OUT(buf, "-=", ASSIGNOP, o);
-	H2OUT(buf, "<<=", ASSIGNOP, o);
-	H2OUT(buf, ">>=", ASSIGNOP, o);
-	H2OUT(buf, "&=", ASSIGNOP, o);
-	H2OUT(buf, "|=", ASSIGNOP, o);
+	H2OUT_NOSTR(buf, "+=", ASSIGNOP_PLUS, o);
+	H2OUT_NOSTR(buf, "-=", ASSIGNOP_MINUS, o);
+	H2OUT_NOSTR(buf, "<<=", ASSIGNOP_SHIFT_LEFT, o);
+	H2OUT_NOSTR(buf, ">>=", ASSIGNOP_SHIFT_RIGHT, o);
+	H2OUT_NOSTR(buf, "&=", ASSIGNOP_BITWISE_AND, o);
+	H2OUT_NOSTR(buf, "|=", ASSIGNOP_BITWISE_OR, o);
 
-	H2OUT(buf, "+", OPKEY_ARITHMETIC, o);
-	H2OUT(buf, "-", OPKEY_ARITHMETIC, o);
-	H2OUT(buf, "*", OPKEY_ARITHMETIC, o);
-	H2OUT(buf, "/", OPKEY_ARITHMETIC, o);
+	H2OUT_CHAR(buf, '+', OPKEY_ARITHMETIC_PLUS, o);
+	H2OUT_CHAR(buf, '-', OPKEY_ARITHMETIC_MINUS, o);
+	H2OUT_CHAR(buf, '*', OPKEY_ARITHMETIC_MUL, o);
+	H2OUT_CHAR(buf, '/', OPKEY_ARITHMETIC_DIV, o);
 
-	H2OUT(buf, "!=", OPKEY_RELATIONAL, o);
-	H2OUT(buf, "==", OPKEY_RELATIONAL, o);
-	H2OUT(buf, ">=", OPKEY_RELATIONAL, o);
-	H2OUT(buf, "<=", OPKEY_RELATIONAL, o);
+	H2OUT_NOSTR(buf, "!=", OPKEY_RELATIONAL_NEQ, o);
+	H2OUT_NOSTR(buf, "==", OPKEY_RELATIONAL_EQ, o);
+	H2OUT_NOSTR(buf, ">=", OPKEY_RELATIONAL_GE, o);
+	H2OUT_NOSTR(buf, "<=", OPKEY_RELATIONAL_LE, o);
 
-	H2OUT(buf, "=", ASSIGNOP, o);
+	H2OUT_NOSTR(buf, "=", ASSIGNOP_SIMPLE, o);
 
-	H2OUT(buf, "&&", OPKEY_LOGICAL, o);
-	H2OUT(buf, "||", OPKEY_LOGICAL, o);
-	H2OUT(buf, "!", OPKEY_LOGICAL, o);
+	H2OUT_NOSTR(buf, "&&", OPKEY_LOGICAL_AND, o);
+	H2OUT_NOSTR(buf, "||", OPKEY_LOGICAL_OR, o);
+	H2OUT_NOSTR(buf, "!", OPKEY_LOGICAL_NOT, o);
 
-	H2OUT(buf, "|", OPKEY_BITWISE, o);
-	H2OUT(buf, "&", OPKEY_BITWISE, o);
-	H2OUT(buf, "^", OPKEY_BITWISE, o);
-	H2OUT(buf, "~", OPKEY_BITWISE, o);
-	H2OUT(buf, "<<", OPKEY_BITWISE, o);
-	H2OUT(buf, ">>", OPKEY_BITWISE, o);
+	H2OUT_NOSTR(buf, "|", OPKEY_BITWISE_OR, o);
+	H2OUT_NOSTR(buf, "&", OPKEY_BITWISE_AND, o);
+	H2OUT_NOSTR(buf, "^", OPKEY_BITWISE_XOR, o);
+	H2OUT_NOSTR(buf, "~", OPKEY_BITWISE_NOT, o);
+	H2OUT_NOSTR(buf, "<<", OPKEY_BITWISE_SHIFT_LEFT, o);
+	H2OUT_NOSTR(buf, ">>", OPKEY_BITWISE_SHIFT_RIGHT, o);
 
-	H2OUT(buf, "<", OPKEY_RELATIONAL, o);
-	H2OUT(buf, ">", OPKEY_RELATIONAL, o);
+	H2OUT_CHAR(buf, '<', OPKEY_RELATIONAL_LT, o);
+	H2OUT_CHAR(buf, '>', OPKEY_RELATIONAL_GT, o);
 
 	H2OUT_CHAR(buf, ';', SEMICOLON, o);
 
 	if (buf[0] == '@') {
-		H2OUT(buf, "@halts", ANNOT_HALTS, o);
-		H2OUT(buf, "@private", ANNOT_HALTS, o);
-		H2OUT(buf, "@public", ANNOT_PUBLIC, o);
-		H2OUT(buf, "@deprecated", ANNOT_DEPRECATED, o);
+		H2OUT_NOSTR(buf, "@halts", ANNOT_HALTS, o);
+		H2OUT_NOSTR(buf, "@private", ANNOT_HALTS, o);
+		H2OUT_NOSTR(buf, "@public", ANNOT_PUBLIC, o);
+		H2OUT_NOSTR(buf, "@deprecated", ANNOT_DEPRECATED, o);
 	}
 	if (buf[0] == '#') {
 		if (strncmp(buf, "#include <", 10) == 0) {
@@ -242,36 +253,36 @@ static int handler2(const char* buf, FILE* o, size_t nchars_remain) {
 	}
 
 	if (strncmp(buf, "int", 3) == 0) {
-		H2OUT(buf, "int8", TYPEID_PRIMITIVE_INT8, o);
-		H2OUT(buf, "int16", TYPEID_PRIMITIVE_INT16, o);
-		H2OUT(buf, "int32", TYPEID_PRIMITIVE_INT32, o);
-		H2OUT(buf, "int64", TYPEID_PRIMITIVE_INT64, o);
-		H2OUT(buf, "int", TYPEID_PRIMITIVE_INT, o);
+		H2OUT_NOSTR(buf, "int8", TYPEID_PRIMITIVE_INT8, o);
+		H2OUT_NOSTR(buf, "int16", TYPEID_PRIMITIVE_INT16, o);
+		H2OUT_NOSTR(buf, "int32", TYPEID_PRIMITIVE_INT32, o);
+		H2OUT_NOSTR(buf, "int64", TYPEID_PRIMITIVE_INT64, o);
+		H2OUT_NOSTR(buf, "int", TYPEID_PRIMITIVE_INT, o);
 	}
 	if (strncmp(buf, "uint", 3) == 0) {
-		H2OUT(buf, "uint8", TYPEID_PRIMITIVE_UINT8, o);
-		H2OUT(buf, "uint16", TYPEID_PRIMITIVE_UINT16, o);
-		H2OUT(buf, "uint32", TYPEID_PRIMITIVE_UINT32, o);
-		H2OUT(buf, "uint64", TYPEID_PRIMITIVE_UINT64, o);
-		H2OUT(buf, "uint", TYPEID_PRIMITIVE_UINT, o);
+		H2OUT_NOSTR(buf, "uint8", TYPEID_PRIMITIVE_UINT8, o);
+		H2OUT_NOSTR(buf, "uint16", TYPEID_PRIMITIVE_UINT16, o);
+		H2OUT_NOSTR(buf, "uint32", TYPEID_PRIMITIVE_UINT32, o);
+		H2OUT_NOSTR(buf, "uint64", TYPEID_PRIMITIVE_UINT64, o);
+		H2OUT_NOSTR(buf, "uint", TYPEID_PRIMITIVE_UINT, o);
 	}
-	H2OUT(buf, "char", TYPEID_PRIMITIVE_CHAR, o);
-	H2OUT(buf, "bool", TYPEID_PRIMITIVE_BOOL, o);
+	H2OUT_NOSTR(buf, "char", TYPEID_PRIMITIVE_CHAR, o);
+	H2OUT_NOSTR(buf, "bool", TYPEID_PRIMITIVE_BOOL, o);
 
-	H2OUT(buf, "true", BCONST_TRUE, o);
-	H2OUT(buf, "false", BCONST_FALSE, o);
+	H2OUT_NOSTR(buf, "true", BCONST_TRUE, o);
+	H2OUT_NOSTR(buf, "false", BCONST_FALSE, o);
 
-	H2OUT(buf, "fn", FN, o);
-	H2OUT(buf, "struct", STRUCT, o);
+	H2OUT_NOSTR(buf, "fn", FN, o);
+	H2OUT_NOSTR(buf, "struct", STRUCT, o);
 
-	H2OUT(buf, "return", RETURN, o);
-	H2OUT(buf, "if", IF, o);
-	H2OUT(buf, "else", ELSE, o);
-	H2OUT(buf, "while", WHILE, o);
-	H2OUT(buf, "for", FOR, o);
-	H2OUT(buf, "in", IN, o);
-	H2OUT(buf, "break", BREAK, o);
-	H2OUT(buf, "continue", CONTINUE, o);
+	H2OUT_NOSTR(buf, "return", RETURN, o);
+	H2OUT_NOSTR(buf, "if", IF, o);
+	H2OUT_NOSTR(buf, "else", ELSE, o);
+	H2OUT_NOSTR(buf, "while", WHILE, o);
+	H2OUT_NOSTR(buf, "for", FOR, o);
+	H2OUT_NOSTR(buf, "in", IN, o);
+	H2OUT_NOSTR(buf, "break", BREAK, o);
+	H2OUT_NOSTR(buf, "continue", CONTINUE, o);
 
 	if (strncmp(buf, "0x", 2) == 0) {
 		return handler2_hexconst(buf, o, nchars_remain);

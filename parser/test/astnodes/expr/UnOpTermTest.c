@@ -19,7 +19,7 @@ int test_unop_with() {
 	status_test("test_unop_with");
 
 	struct TokenList* list = makeTokenList();
-	list_add(list, makeToken2(OPKEY_LOGICAL, "!"));
+	list_add(list, makeToken(OPKEY_LOGICAL_NOT));
 	list_add(list, makeToken2(INTEGER, "4"));
 
 	struct UnOpTerm* t = makeUnOpTerm(list);

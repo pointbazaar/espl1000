@@ -24,7 +24,7 @@ bool massignstmt_test1() {
 	list_add(tokens, makeToken(LBRACKET));
 	list_add(tokens, makeToken2(INTEGER, "4"));
 	list_add(tokens, makeToken(RBRACKET));
-	list_add(tokens, makeToken2(ASSIGNOP, "="));
+	list_add(tokens, makeToken(ASSIGNOP_SIMPLE));
 
 	list_add(tokens, makeToken2(INTEGER, "5"));
 

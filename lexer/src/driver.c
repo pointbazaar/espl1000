@@ -11,6 +11,10 @@
 
 #include "../../token/TokenKeys.h"
 
+void out_nostr(FILE* outFile, int id) {
+	fprintf(outFile, "%d\n", id);
+}
+
 void out(FILE* outFile, int id, char* str) {
 	char* s = str;
 	if (str == NULL) {
@@ -31,12 +35,12 @@ void out2(FILE* outFile, int id, int id2) {
 }
 
 void out_plus_plus(FILE* outFile) {
-	out(outFile, ASSIGNOP, "+=");
+	out(outFile, ASSIGNOP_PLUS, "+=");
 	out(outFile, INTEGER, "1");
 }
 
 void out_minus_minus(FILE* outFile) {
-	out(outFile, ASSIGNOP, "-=");
+	out(outFile, ASSIGNOP_MINUS, "-=");
 	out(outFile, INTEGER, "1");
 }
 

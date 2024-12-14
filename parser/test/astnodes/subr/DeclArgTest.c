@@ -23,7 +23,7 @@ int declarg_test_parse_declared_argument() {
 	list_add(list, makeToken2(LPARENS, "("));
 	list_add(list, makeToken2(TYPEID, "Car"));
 	list_add(list, makeToken2(RPARENS, ")"));
-	list_add(list, makeToken2(ARROW, "->"));
+	list_add(list, makeToken(ARROW_NO_SIDE_EFFECT));
 	list_add(list, makeToken2(TYPEID, "Carrot"));
 	list_add(list, makeToken2(RPARENS, ")"));
 
