@@ -26,12 +26,15 @@ static void test_param(uint64_t fixed_value, bool debug) {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACSetupStackframe(TEST_FAKE_STACKFRAME_SIZE_BYTES));
+	const size_t stackframe_size = 4;
+	const size_t stackframe_size_bytes = stackframe_size * 8;
+
+	tacbuffer_append(b, makeTACSetupStackframe(stackframe_size_bytes));
 	tacbuffer_append(b, makeTACConst(0, fixed_value));
 	tacbuffer_append(b, makeTACConst(1, 0));
 	tacbuffer_append(b, makeTACParam(0, false));
 
-	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v3(b, debug, true);
+	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v3(b, debug, true, stackframe_size);
 
 	uc_err err;
 

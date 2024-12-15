@@ -289,19 +289,19 @@ static void sd_uc_fake_lvst_line(struct Ctx* ctx, struct LVST* lvst, int i) {
 	lvst_add(lvst, line);
 }
 
-static void sd_uc_fake_lvst(struct Ctx* ctx) {
+static void sd_uc_fake_lvst(struct Ctx* ctx, size_t fake_lvst_size) {
 	struct ST* st = ctx_tables(ctx);
 	assert(st != NULL);
 
 	struct LVST* lvst = st->lvst;
 	assert(lvst != NULL);
 
-	for (int i = 0; i < TEST_FAKE_STACKFRAME_SIZE; i++) {
+	for (int i = 0; i < fake_lvst_size; i++) {
 		sd_uc_fake_lvst_line(ctx, lvst, i);
 	}
 }
 
-static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer* buffer, bool debug, bool create_fake_lvst) {
+static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer* buffer, bool debug, bool create_fake_lvst, size_t fake_lvst_size) {
 
 	char* argv_debug[] = {"program", "-debug", ".file.dg"};
 	char* argv_common[] = {"program", ".file.dg"};
@@ -321,7 +321,7 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 	assert(ctx != NULL);
 
 	if (create_fake_lvst) {
-		sd_uc_fake_lvst(ctx);
+		sd_uc_fake_lvst(ctx, fake_lvst_size);
 	}
 
 	FILE* fout = fopen(flags_asm_filename(flags), "w");
@@ -412,11 +412,11 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 }
 
 struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v2(struct TACBuffer* buffer, bool debug) {
-	return sd_uc_engine_from_tacbuffer_common(buffer, debug, false);
+	return sd_uc_engine_from_tacbuffer_common(buffer, debug, false, 0);
 }
 
-struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v3(struct TACBuffer* buffer, bool debug, bool fake_lvst) {
-	return sd_uc_engine_from_tacbuffer_common(buffer, debug, fake_lvst);
+struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v3(struct TACBuffer* buffer, bool debug, bool fake_lvst, size_t fake_lvst_size) {
+	return sd_uc_engine_from_tacbuffer_common(buffer, debug, fake_lvst, fake_lvst_size);
 }
 
 uc_err sd_uc_mem_write64(struct sd_uc_engine* sduc, uint64_t address, const void* bytes) {
