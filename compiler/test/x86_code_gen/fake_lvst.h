@@ -5,3 +5,5 @@
 #include "util/ctx.h"
 
 void sd_uc_fake_lvst(struct Ctx* ctx, size_t fake_lvst_size);
+
+struct Type* fake_uint64_type();

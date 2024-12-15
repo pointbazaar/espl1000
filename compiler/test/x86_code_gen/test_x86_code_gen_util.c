@@ -263,43 +263,10 @@ static struct sd_uc_engine* sd_uc_engine_from_mapped(char* mapped, size_t filesi
 	return sd_uc;
 }
 
-static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer* buffer, bool debug, bool create_fake_lvst, size_t fake_lvst_size) {
-
-	char* argv_debug[] = {"program", "-debug", ".file.dg"};
-	char* argv_common[] = {"program", ".file.dg"};
-	char** argv;
-	int argc;
-	if (debug) {
-		argv = argv_debug;
-		argc = 3;
-	} else {
-		argv = argv_common;
-		argc = 2;
-	}
-	struct Flags* flags = makeFlags(argc, argv);
-	assert(flags != NULL);
-
-	struct Ctx* ctx = ctx_ctor(flags, st_ctor());
-	assert(ctx != NULL);
-
-	if (create_fake_lvst) {
-		sd_uc_fake_lvst(ctx, fake_lvst_size);
-	}
-
-	FILE* fout = fopen(flags_asm_filename(flags), "w");
-
-	if (fout == NULL) {
-		fprintf(stderr, "error opening output file %s\n", flags_asm_filename(flags));
-		exit(EXIT_FAILURE);
-	}
-
-	// We use a flat binary without sections. So only the instructions.
-	// Because that's easier for unicorn engine than a full elf64 binary.
-	fprintf(fout, "BITS 64     ; specify 64-bit code\n");
-	fprintf(fout, "start:\n");
+static void gen_from_tacbuffer(struct TACBuffer* buffer, FILE* fout, struct Ctx* ctx, char* function_name) {
 
 	int nblocks;
-	struct BasicBlock** graph = basicblock_create_graph(buffer, "main", &nblocks, ctx);
+	struct BasicBlock** graph = basicblock_create_graph(buffer, function_name, &nblocks, ctx);
 	assert(graph != NULL);
 
 	struct BasicBlock* root = graph[0];
@@ -332,6 +299,106 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 	tacbuffer_dtor(buffer);
 
 	ibu_dtor(ibu);
+}
+
+static struct Method* fake_method(char* name) {
+
+	struct Type* returnType = fake_uint64_type();
+
+	//TODO: probably wrong, would need to be SubrType?
+	struct Type* type = returnType;
+	struct Method* m = calloc(1, sizeof(struct Method));
+	struct MethodDecl* decl = calloc(1, sizeof(struct MethodDecl));
+	struct StmtBlock* block = calloc(1, sizeof(struct StmtBlock));
+	decl->return_type = returnType;
+	decl->name = name;
+	decl->count_args = 0;
+	block->count = 0;
+	m->decl = decl;
+	m->block = block;
+
+	return m;
+}
+
+static struct Type* fake_subr_type(struct Type* return_type) {
+
+	struct Type* t = calloc(1, sizeof(struct Type));
+	struct BasicType* bt = calloc(1, sizeof(struct BasicType));
+	struct SubrType* st = calloc(1, sizeof(struct SubrType));
+
+	t->basic_type = bt;
+	bt->subr_type = st;
+
+	st->count_arg_types = 0;
+	st->return_type = return_type;
+
+	return t;
+}
+
+static void fake_sst(struct Ctx* ctx) {
+
+	assert(ctx_tables(ctx)->sst != NULL);
+
+	struct ST* st = ctx_tables(ctx);
+
+	// we are the first to enter something here
+	assert(sst_size(st->sst) == 0);
+
+	struct Type* returnType = fake_uint64_type();
+
+	//TODO: probably wrong, would need to be SubrType?
+	//struct Type* type = returnType;
+	struct Type* type = fake_subr_type(returnType);
+	struct Method* m_main = fake_method("main");
+	struct Method* m_f1 = fake_method("f1");
+	struct SSTLine* line1 = sst_line_ctor2(m_main, type, "");
+	struct SSTLine* line2 = sst_line_ctor2(m_f1, type, "");
+
+	sst_add(st->sst, line1);
+	sst_add(st->sst, line2);
+}
+
+static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer* buffer, struct TACBuffer* buffer2, bool debug, bool create_fake_lvst, size_t fake_lvst_size) {
+
+	char* argv_debug[] = {"program", "-debug", ".file.dg"};
+	char* argv_common[] = {"program", ".file.dg"};
+	char** argv;
+	int argc;
+	if (debug) {
+		argv = argv_debug;
+		argc = 3;
+	} else {
+		argv = argv_common;
+		argc = 2;
+	}
+	struct Flags* flags = makeFlags(argc, argv);
+	assert(flags != NULL);
+
+	struct Ctx* ctx = ctx_ctor(flags, st_ctor());
+	assert(ctx != NULL);
+
+	if (create_fake_lvst) {
+		sd_uc_fake_lvst(ctx, fake_lvst_size);
+	}
+
+	fake_sst(ctx);
+
+	FILE* fout = fopen(flags_asm_filename(flags), "w");
+
+	if (fout == NULL) {
+		fprintf(stderr, "error opening output file %s\n", flags_asm_filename(flags));
+		exit(EXIT_FAILURE);
+	}
+
+	// We use a flat binary without sections. So only the instructions.
+	// Because that's easier for unicorn engine than a full elf64 binary.
+	fprintf(fout, "BITS 64     ; specify 64-bit code\n");
+	fprintf(fout, "start:\n");
+
+	gen_from_tacbuffer(buffer, fout, ctx, "main");
+	if (buffer2 != NULL) {
+		gen_from_tacbuffer(buffer2, fout, ctx, "f1");
+	}
 
 	fclose(fout);
 
@@ -374,11 +441,15 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 }
 
 struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v2(struct TACBuffer* buffer, bool debug) {
-	return sd_uc_engine_from_tacbuffer_common(buffer, debug, false, 0);
+	return sd_uc_engine_from_tacbuffer_common(buffer, NULL, debug, false, 0);
 }
 
 struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v3(struct TACBuffer* buffer, bool debug, bool fake_lvst, size_t fake_lvst_size) {
-	return sd_uc_engine_from_tacbuffer_common(buffer, debug, fake_lvst, fake_lvst_size);
+	return sd_uc_engine_from_tacbuffer_common(buffer, NULL, debug, fake_lvst, fake_lvst_size);
+}
+
+struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v4(struct TACBuffer* buffer, struct TACBuffer* buffer2, bool debug, bool fake_lvst, size_t fake_lvst_size) {
+	return sd_uc_engine_from_tacbuffer_common(buffer, buffer2, debug, fake_lvst, fake_lvst_size);
 }
 
 uc_err sd_uc_mem_write64(struct sd_uc_engine* sduc, uint64_t address, const void* bytes) {

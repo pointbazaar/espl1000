@@ -67,3 +67,4 @@ void test_x86_compile_tac_store_local();
 void test_x86_compile_tac_return();
 
 void test_x86_compile_tac_param();
+void test_x86_compile_tac_call();
