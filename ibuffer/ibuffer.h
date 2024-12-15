@@ -1,7 +1,7 @@
-#ifndef IBUFFER_H
-#define IBUFFER_H
+#pragma once
 
 #include <inttypes.h>
+#include <stdio.h>
 
 #include "ikey.h"
 
@@ -174,5 +174,3 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32
 
 //not really an instr
 #define label(name) ibu4(LABEL, 0, 0, 0, name, "")
-
-#endif

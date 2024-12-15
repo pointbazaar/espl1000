@@ -24,7 +24,7 @@ static void test_fixed_value(int8_t value, bool debug) {
 	uc_err err;
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACSetupStackframe(TEST_FAKE_STACKFRAME_SIZE));
+	tacbuffer_append(b, makeTACSetupStackframe(TEST_FAKE_STACKFRAME_SIZE_BYTES));
 	tacbuffer_append(b, makeTACConst(0, value + 1));
 	tacbuffer_append(b, makeTACConst(1, value));
 	tacbuffer_append(b, makeTACConst(2, value - 1));

@@ -29,7 +29,7 @@ static void test_fixed_value(uint64_t fixed_value, const uint32_t local_index, b
 	uc_err err;
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACSetupStackframe(TEST_FAKE_STACKFRAME_SIZE));
+	tacbuffer_append(b, makeTACSetupStackframe(TEST_FAKE_STACKFRAME_SIZE_BYTES));
 	tacbuffer_append(b, makeTACConst(1, fixed_value));
 	tacbuffer_append(b, makeTACStoreLocal(local_index, 1));
 	tacbuffer_append(b, makeTACReturn(1));

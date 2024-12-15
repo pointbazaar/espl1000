@@ -1,5 +1,6 @@
 #include "gen_tac.h"
 
+#include "compiler/cli/flags/flags.h"
 #include "tables/sst/sst.h"
 #include "tables/stst/stst.h"
 #include "tables/lvst/lvst.h"
@@ -28,7 +29,11 @@ void tac_method(struct TACBuffer* buffer, struct Method* m, struct Ctx* ctx) {
 	tacbuffer_append(buffer, makeTACLabelFunction(index));
 
 	//setup the stack frame
-	tacbuffer_append(buffer, makeTACSetupStackframe(lvst_stack_frame_size_avr(ctx_tables(ctx)->lvst)));
+	if (flags_x86(ctx_flags(ctx))) {
+		tacbuffer_append(buffer, makeTACSetupStackframe(lvst_stack_frame_size_x86(ctx_tables(ctx)->lvst)));
+	} else {
+		tacbuffer_append(buffer, makeTACSetupStackframe(lvst_stack_frame_size_avr(ctx_tables(ctx)->lvst)));
+	}
 
 	tac_stmtblock(buffer, m->block, ctx);
 }

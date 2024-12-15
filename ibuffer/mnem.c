@@ -189,6 +189,8 @@ char* MNEM[] = {
     [X86_CALL] = "call",
     [X86_RET] = "ret",
     [X86_NOP] = "nop",
+    [X86_INT] = "int",
+    [X86_SYSCALL] = "syscall",
     // --- END X86 Instructions
 
 };

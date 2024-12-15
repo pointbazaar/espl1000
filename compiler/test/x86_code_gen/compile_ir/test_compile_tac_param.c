@@ -26,7 +26,7 @@ static void test_param(uint64_t fixed_value, bool debug) {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACSetupStackframe(TEST_FAKE_STACKFRAME_SIZE));
+	tacbuffer_append(b, makeTACSetupStackframe(TEST_FAKE_STACKFRAME_SIZE_BYTES));
 	tacbuffer_append(b, makeTACConst(0, fixed_value));
 	tacbuffer_append(b, makeTACConst(1, 0));
 	tacbuffer_append(b, makeTACParam(0, false));

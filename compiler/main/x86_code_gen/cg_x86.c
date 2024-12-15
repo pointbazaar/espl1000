@@ -10,7 +10,7 @@
 
 #include "util/ctx.h"
 
-#include "ibuffer/ibuffer.h"
+#include "ibuffer/ibuffer_x86.h"
 
 #include "cg_x86.h"
 #include "tac/tacbuffer.h"
@@ -22,7 +22,25 @@ bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
 
 	struct IBuffer* ibu = ibu_ctor();
 
+	char* c = "call main";
+
 	label("_start");
+
+	call("main", c);
+
+	// exit code was returned in RAX by 'main' function
+	mov_regs(SD_REG_RDI, SD_REG_RAX, c);
+	// syscall number
+	mov_const(SD_REG_RAX, 60, c);
+
+	// make syscall
+	x86_syscall(c);
+
+	// few nops so the debugger
+	// has something to step through
+	nop(c);
+	nop(c);
+	nop(c);
 
 	//convert AST into 3 address code with temporaries, use recursive descent to make TAC
 	for (size_t i = 0; i < ast->count_namespaces; i++) {

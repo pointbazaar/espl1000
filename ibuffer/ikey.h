@@ -228,6 +228,9 @@ enum IKEY {
 	X86_ENTER,
 	X86_LEAVE,
 
+	X86_INT, // syscall
+	X86_SYSCALL, // syscall
+
 	X86_NOP,
 	// END   --- X86 Instructions --
 };
