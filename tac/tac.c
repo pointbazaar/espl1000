@@ -251,6 +251,7 @@ struct TAC* makeTACICall(uint32_t tmp, uint32_t tmp_call) {
 	return t;
 }
 
+// @param frame_size    the size of the stackframe in bytes
 struct TAC* makeTACSetupStackframe(uint32_t frame_size) {
 	struct TAC* t = makeTAC();
 	t->kind = TAC_SETUP_STACKFRAME;

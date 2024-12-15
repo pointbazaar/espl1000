@@ -2,14 +2,13 @@
 
 #include "unicorn/unicorn.h"
 
-#define TEST_FAKE_STACKFRAME_SIZE 4
-#define TEST_FAKE_STACKFRAME_SIZE_BYTES (4 * 8)
-
 struct TACBuffer;
 struct sd_uc_engine;
 
 struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v2(struct TACBuffer* buffer, bool debug);
-struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v3(struct TACBuffer* buffer, bool debug, bool fake_lvst);
+
+// @param fake_lvst_size    this is the amount of entries in the lvst
+struct sd_uc_engine* sd_uc_engine_from_tacbuffer_v3(struct TACBuffer* buffer, bool debug, bool fake_lvst, size_t fake_lvst_size);
 
 uc_err sd_uc_emu_start(struct sd_uc_engine* sd_uc, size_t nsteps, bool debug);
 
