@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdbool.h>
 
+#include "ibuffer/ibuffer_x86.h"
 #include "rat/rat.h"
 #include "tac/tac.h"
 #include "util/ctx.h"
@@ -19,10 +19,9 @@ void compile_tac_load_local_addr_x86(struct RAT* rat, struct TAC* tac, struct Ct
 
 	char* name = lvst_at(ctx_tables(ctx)->lvst, tac->arg1)->name;
 
-	const uint16_t offset = lvst_stack_frame_offset_avr(ctx_tables(ctx)->lvst, name);
+	const uint16_t offset = lvst_stack_frame_offset_x86(ctx_tables(ctx)->lvst, name);
 
-	//TODO: implement
+	mov_const(rdest, -offset, c);
 
-	printf("%s : currently unimplemented!\n", __func__);
-	exit(1);
+	add(rdest, rat_base_ptr(rat), c);
 }

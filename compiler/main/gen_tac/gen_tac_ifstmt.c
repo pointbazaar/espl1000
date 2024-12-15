@@ -36,6 +36,7 @@ static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s, struc
 
 	tacbuffer_append(buffer, makeTACLabel(ltrue));
 	tac_stmtblock(buffer, s->block, ctx);
+	tacbuffer_append(buffer, makeTACGoto(lend));
 
 	tacbuffer_append(buffer, makeTACLabel(lend));
 }
@@ -71,6 +72,8 @@ static void tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s, struc
 	tacbuffer_append(buffer, makeTACLabel(l2));
 
 	tac_stmtblock(buffer, s->else_block, ctx);
+
+	tacbuffer_append(buffer, makeTACGoto(lend));
 
 	tacbuffer_append(buffer, makeTACLabel(lend));
 }

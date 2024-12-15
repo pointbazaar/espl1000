@@ -241,6 +241,11 @@ uint32_t lvst_sizeof_type(struct Type* type) {
 	return res;
 }
 
+size_t lvst_stack_frame_size_x86(struct LVST* lvst) {
+
+	return lvst_stack_frame_size_avr(lvst);
+}
+
 size_t lvst_stack_frame_size_avr(struct LVST* lvst) {
 	//give the size required for the stack frame.
 	//(here meaning just the local variables)

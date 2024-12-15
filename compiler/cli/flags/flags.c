@@ -32,6 +32,7 @@ struct Flags {
 	char* asm_filename;
 	char* token_filename;
 	char* hex_filename;
+	char* obj_filename;
 };
 
 static char* make_asm_filename(char* filename) {
@@ -42,6 +43,18 @@ static char* make_asm_filename(char* filename) {
 	//remove the '.dg'
 	fname_out[strlen(fname_out) - 3] = '\0';
 	strcat(fname_out, ".asm");
+
+	return fname_out;
+}
+
+static char* make_obj_filename(char* filename) {
+
+	char* fname_out = exit_malloc(strlen(filename) + 4);
+
+	strcpy(fname_out, filename);
+	//remove the '.dg'
+	fname_out[strlen(fname_out) - 3] = '\0';
+	strcat(fname_out, ".o");
 
 	return fname_out;
 }
@@ -107,6 +120,7 @@ struct Flags* makeFlags(int argc, char** argv) {
 	flags->asm_filename = make_asm_filename(flags_filenames(flags, 0));
 	flags->token_filename = make_token_filename(flags_filenames(flags, 0));
 	flags->hex_filename = make_hex_filename(flags_filenames(flags, 0));
+	flags->obj_filename = make_obj_filename(flags_filenames(flags, 0));
 
 	return flags;
 }
@@ -197,4 +211,8 @@ char* flags_token_filename(struct Flags* flags) {
 
 char* flags_hex_filename(struct Flags* flags) {
 	return flags->hex_filename;
+}
+
+char* flags_obj_filename(struct Flags* flags) {
+	return flags->obj_filename;
 }

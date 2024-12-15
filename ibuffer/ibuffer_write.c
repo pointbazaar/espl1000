@@ -198,8 +198,12 @@ static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 		case X86_CALL:
 			sprintf(s, "%s", str);
 			break;
+		case X86_INT:
+			sprintf(s, "%ld", x1);
+			break;
 		case X86_RET:
 		case X86_NOP:
+		case X86_SYSCALL:
 			// nothing to do
 			break;
 			// --- END X86

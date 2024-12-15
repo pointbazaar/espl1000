@@ -7,8 +7,7 @@
 void compile_tac_setup_stackframe_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	char* c = "TAC_SETUP_STACKFRAME";
-	const int stack_frame_size = tac->const_value;
-	const size_t stack_frame_size_bytes = stack_frame_size * 8;
+	const size_t stack_frame_size_bytes = tac->const_value;
 
 	// load base pointer
 	// rbp = rsp

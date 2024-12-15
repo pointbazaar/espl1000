@@ -8,11 +8,12 @@
 #include "basic_block/basicblock.h"
 #include "rat/rat.h"
 
-#include "ibuffer/ibuffer.h"
+#include "ibuffer/ibuffer_x86.h"
 
 #include "compiler/cli/flags/flags.h"
 
 #include "cg_x86_single_tac.h"
+#include "x86_code_gen/compile_ir/compile_tac.h"
 #include "cg_x86_basic_block.h"
 
 void allocate_registers(struct TACBuffer* b, struct RAT* rat, struct ST* st);
@@ -20,8 +21,12 @@ static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 
 void emit_asm_x86_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct IBuffer* ibu, struct RAT* rat) {
 
-	if (block == NULL || block->visited_emit_asm)
+	if (block == NULL) {
 		return;
+	}
+	if (block->visited_emit_asm) {
+		return;
+	}
 
 	block->visited_emit_asm = true;
 

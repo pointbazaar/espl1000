@@ -23,4 +23,5 @@ bool flags_x86(struct Flags* flags);
 char* flags_asm_filename(struct Flags* ctx);
 char* flags_token_filename(struct Flags* ctx);
 char* flags_hex_filename(struct Flags* ctx);
+char* flags_obj_filename(struct Flags* ctx);
 #endif

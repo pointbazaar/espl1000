@@ -73,5 +73,8 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64
 #define ret(c) ibu0(X86_RET, c)
 #define nop(c) ibu0(X86_NOP, c)
 
+#define x86_int(x, c) ibu1(X86_INT, x, c)
+#define x86_syscall(c) ibu0(X86_SYSCALL, c)
+
 //not really an instr
 #define label(name) ibu4(LABEL, 0, 0, 0, name, "")

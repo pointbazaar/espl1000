@@ -97,7 +97,7 @@ bool compile(struct Flags* flags) {
 	const char* stderr_file;
 
 	if (flags_x86(flags)) {
-		prog = "nasm -f elf64";
+		prog = "nasm -felf64";
 		stdout_file = "/tmp/nasm-stdout";
 		stderr_file = "/tmp/nasm-stdout";
 	} else {
@@ -120,7 +120,18 @@ bool compile(struct Flags* flags) {
 	}
 
 	if (flags_x86(flags)) {
-		printf("link with: ld -o file file.o\n");
+
+		char* link_cmd = NULL;
+		asprintf(&link_cmd, "ld -o /tmp/program %s", flags_obj_filename(flags));
+		printf("%s\n", link_cmd);
+		status = system(link_cmd);
+
+		free(link_cmd);
+
+		if (WEXITSTATUS(status) != 0) {
+			fprintf(stderr, "linking error\n");
+			goto out;
+		}
 	}
 
 out:
