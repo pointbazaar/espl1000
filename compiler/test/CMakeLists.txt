@@ -50,6 +50,7 @@ add_executable("sd-tests"
 	x86_code_gen/test_x86_code_gen.h
 	x86_code_gen/test_x86_code_gen_util.c
 	x86_code_gen/test_x86_code_gen_util.h
+	x86_code_gen/fake_lvst.c
 	x86_code_gen/compile_ir/test_compile_tac_copy.c
 	x86_code_gen/compile_ir/test_compile_tac_goto.c
 	x86_code_gen/compile_ir/test_compile_tac_nop.c
