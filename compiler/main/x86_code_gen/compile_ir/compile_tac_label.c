@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "tables/sst/sst.h"
 #include "tables/stst/stst.h"
@@ -21,12 +22,14 @@ void compile_tac_label_x86(struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx
 
 	if (tac->kind == TAC_LABEL_FUNCTION) {
 
-		//in case of tests, sst may not be filled
-		char* function_name = "main";
+		char* function_name;
 
 		if (tac->dest < sst_size(ctx_tables(ctx)->sst)) {
 
 			function_name = sst_at(ctx_tables(ctx)->sst, tac->dest)->name;
+		} else {
+			fprintf(stderr, "index %d out of bounds in sst\n", tac->dest);
+			exit(1);
 		}
 
 		s = function_name;

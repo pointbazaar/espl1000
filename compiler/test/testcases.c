@@ -339,7 +339,7 @@ void (*tests_x86_codegen[])() = {
     test_x86_compile_tac_param,
 
     //TAC_CALL
-    //test_x86_compile_tac_call,
+    test_x86_compile_tac_call,
 
     //TAC_SETUP_STACKFRAME
     //test_x86_compile_tac_setup_stackframe,

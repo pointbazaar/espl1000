@@ -7,12 +7,8 @@
 
 #include "util/ctx.h"
 
-static void sd_uc_fake_lvst_line(struct Ctx* ctx, struct LVST* lvst, int i) {
+struct Type* fake_uint64_type() {
 
-	struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
-	assert(line != NULL);
-
-	asprintf(&(line->name), "fake variable %d", i);
 	struct Type* type = calloc(1, sizeof(struct Type));
 
 	struct BasicType* basicType = calloc(1, sizeof(struct BasicType));
@@ -25,6 +21,17 @@ static void sd_uc_fake_lvst_line(struct Ctx* ctx, struct LVST* lvst, int i) {
 	simpleType->primitive_type = pt;
 	pt->is_int_type = true;
 	pt->int_type = UINT64;
+
+	return type;
+}
+
+static void sd_uc_fake_lvst_line(struct Ctx* ctx, struct LVST* lvst, int i) {
+
+	struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
+	assert(line != NULL);
+
+	asprintf(&(line->name), "fake variable %d", i);
+	struct Type* type = fake_uint64_type();
 
 	line->type = type;
 	line->first_occur = NULL;

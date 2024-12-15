@@ -200,6 +200,10 @@ uint32_t sst_args_size_avr(struct SST* sst, char* name) {
 	return size;
 }
 
+uint32_t sst_args_size_x86(struct SST* sst, char* name) {
+	return sst_args_size_avr(sst, name);
+}
+
 bool sst_contains(struct SST* sst, char* name) {
 
 	for (int i = 0; i < sst->count; i++) {
