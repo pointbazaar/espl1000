@@ -2,6 +2,7 @@
 #define LOCALVARSYMTABLE
 
 #include <inttypes.h>
+#include <stdio.h>
 
 #include "ast/ast.h"
 
@@ -56,7 +57,7 @@ size_t lvst_stack_frame_size_avr(struct LVST* lvst);
 size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name);
 
 size_t lvst_stack_frame_size_x86(struct LVST* lvst);
-size_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name);
+ssize_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name);
 
 // returns the size of the local variable in bytes.
 // returns 0 on failure

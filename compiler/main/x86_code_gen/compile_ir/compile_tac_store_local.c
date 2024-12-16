@@ -21,7 +21,7 @@ void compile_tac_store_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* c
 
 	struct LVST* lvst = ctx_tables(ctx)->lvst;
 
-	const size_t offset = lvst_stack_frame_offset_x86(lvst, name);
+	const ssize_t offset = lvst_stack_frame_offset_x86(lvst, name);
 
 	const int reg = rat_get_register(rat, tac->arg1);
 

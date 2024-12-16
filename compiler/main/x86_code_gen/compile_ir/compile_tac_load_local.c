@@ -19,11 +19,11 @@ void compile_tac_load_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ct
 
 	char* name = lvst_at(ctx_tables(ctx)->lvst, tac->arg1)->name;
 
-	const uint16_t offset = lvst_stack_frame_offset_x86(ctx_tables(ctx)->lvst, name);
+	const ssize_t offset = lvst_stack_frame_offset_x86(ctx_tables(ctx)->lvst, name);
 
 	// stack frame is pointed to by rbp
 	uint32_t rscratch = rat_scratch_reg(rat);
 	mov_const(rscratch, -offset, c);
-	add(rscratch, 7, c);
+	add(rscratch, SD_REG_RBP, c);
 	mov_load(reg_dest, rscratch, c);
 }
