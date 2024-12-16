@@ -259,9 +259,45 @@ size_t lvst_stack_frame_size_avr(struct LVST* lvst) {
 	return sum;
 }
 
-size_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name) {
+// offset from rbp
+ssize_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name) {
+	uint32_t offset = 0;
 
-	return lvst_stack_frame_offset_avr(lvst, local_var_name) - 1 + 8;
+	//we first look at the local vars
+	for (int i = 0; i < lvst->count; i++) {
+
+		struct LVSTLine* line = lvst->lines[i];
+
+		if (line->is_arg == true) continue;
+
+		if (strcmp(line->name, local_var_name) == 0) {
+			return offset + 8;
+		}
+
+		offset += lvst_sizeof_type(line->type);
+	}
+
+	offset = 0;
+
+	//we then look at the arguments
+	for (int i = 0; i < lvst->count; i++) {
+
+		struct LVSTLine* line = lvst->lines[i];
+
+		if (line->is_arg == false) continue;
+
+		if (strcmp(line->name, local_var_name) == 0) {
+			return -(offset + 8);
+		}
+
+		offset += lvst_sizeof_type(line->type);
+	}
+
+	printf("fatal error in lvst_stack_frame_offset_avr.");
+	printf("did not find local: %s", local_var_name);
+	fflush(stdout);
+	exit(1);
+	return 0;
 }
 
 size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name) {

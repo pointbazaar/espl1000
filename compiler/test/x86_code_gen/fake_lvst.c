@@ -25,7 +25,7 @@ struct Type* fake_uint64_type() {
 	return type;
 }
 
-static void sd_uc_fake_lvst_line(struct Ctx* ctx, struct LVST* lvst, int i) {
+static void sd_uc_fake_lvst_line(struct Ctx* ctx, struct LVST* lvst, int i, bool is_arg) {
 
 	struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
 	assert(line != NULL);
@@ -35,20 +35,25 @@ static void sd_uc_fake_lvst_line(struct Ctx* ctx, struct LVST* lvst, int i) {
 
 	line->type = type;
 	line->first_occur = NULL;
-	line->is_arg = false;
+	line->is_arg = is_arg;
 	line->read_only = false;
 
 	lvst_add(lvst, line);
 }
 
-void sd_uc_fake_lvst(struct Ctx* ctx, size_t fake_lvst_size) {
+void sd_uc_fake_lvst(struct Ctx* ctx, size_t fake_lvst_size, size_t stackframe_nargs) {
 	struct ST* st = ctx_tables(ctx);
 	assert(st != NULL);
 
 	struct LVST* lvst = st->lvst;
 	assert(lvst != NULL);
 
-	for (int i = 0; i < fake_lvst_size; i++) {
-		sd_uc_fake_lvst_line(ctx, lvst, i);
+	size_t nlocals = fake_lvst_size - stackframe_nargs;
+
+	for (int i = 0; i < nlocals; i++) {
+		sd_uc_fake_lvst_line(ctx, lvst, i, false);
+	}
+	for (int i = 0; i < stackframe_nargs; i++) {
+		sd_uc_fake_lvst_line(ctx, lvst, i, true);
 	}
 }
