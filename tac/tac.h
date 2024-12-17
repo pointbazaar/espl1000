@@ -101,6 +101,27 @@ struct TAC {
 	int64_t const_value;
 };
 
+// returns an optional IR temporary which is written
+// in this statement
+// @returns temporary index >= 0 if there is one
+// @returns < 0     if there is no destination temporary
+int32_t tac_opt_dest(struct TAC* tac);
+
+// marks used_map[i] = true
+// if temporary 'i' is used as a value
+// in this statement. e.g.
+// temp1 += temp0
+// means used_map[0] == true for temp1
+// and used_map[1] == true also.
+void tac_mark_used(struct TAC* tac, bool* used_map);
+
+// marks defines_map[i] = true
+// if temporary 'i' is defined in this statement
+// temp1 += temp0
+// means defines_map[0] == false
+// means defines_map[1] == true
+void tac_mark_defines(struct TAC* tac, bool* defines_map);
+
 bool tac_is_unconditional_jump(struct TAC* tac);
 
 char* tac_tostring(struct TAC* tac, struct Ctx* ctx);

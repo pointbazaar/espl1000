@@ -9,6 +9,9 @@ add_library("sd-base"
 	analyzer/halts/halt_analyzer.c
 	analyzer/lv/lv_analyzer.c
 
+	#liveness
+	liveness/liveness.c
+
 	#code_gen/avr_code_gen
 	avr_code_gen/cg_avr.c
 

@@ -297,6 +297,107 @@ struct TAC* makeTACStore(uint32_t taddr, uint32_t tmp) {
 	return t;
 }
 
+int32_t tac_opt_dest(struct TAC* tac) {
+
+	switch (tac->kind) {
+		case TAC_CONST_VALUE:
+		case TAC_BINARY_OP:
+		case TAC_BINARY_OP_IMMEDIATE:
+		case TAC_CALL:
+		case TAC_COPY:
+		case TAC_UNARY_OP:
+		case TAC_LOAD:
+		case TAC_LOAD_LOCAL:
+		case TAC_LOAD_LOCAL_ADDR:
+		case TAC_LOAD_CONST_ADDR:
+		case TAC_STORE:
+		case TAC_STORE_LOCAL:
+		case TAC_STORE_CONST_ADDR:
+			return tac->dest;
+
+		default:
+			return -1;
+	}
+}
+
+void tac_mark_used(struct TAC* tac, bool* used_map) {
+
+	switch (tac->kind) {
+		case TAC_PARAM:
+		case TAC_RETURN:
+		case TAC_BINARY_OP_IMMEDIATE:
+			used_map[tac->dest] = true;
+			break;
+		case TAC_IF_GOTO:
+		case TAC_STORE_LOCAL:
+		case TAC_STORE_CONST_ADDR:
+		case TAC_LOAD:
+		case TAC_STORE:
+		case TAC_UNARY_OP:
+		case TAC_COPY:
+			used_map[tac->arg1] = true;
+			break;
+		case TAC_BINARY_OP:
+		case TAC_IF_CMP_GOTO:
+			used_map[tac->dest] = true;
+			used_map[tac->arg1] = true;
+			break;
+
+		case TAC_CALL:
+		case TAC_SETUP_STACKFRAME:
+		case TAC_SETUP_SP:
+		case TAC_LABEL_FUNCTION:
+		case TAC_GOTO:
+		case TAC_LABEL_INDEXED:
+		case TAC_LOAD_LOCAL:
+		case TAC_LOAD_LOCAL_ADDR:
+		case TAC_NOP:
+		case TAC_CONST_VALUE:
+			return;
+
+		default:
+			fprintf(stderr, "unexpected case %u\n", tac->kind);
+			exit(1);
+			return;
+	}
+}
+
+void tac_mark_defines(struct TAC* tac, bool* defines_map) {
+
+	switch (tac->kind) {
+		case TAC_PARAM:
+		case TAC_RETURN:
+		case TAC_IF_GOTO:
+		case TAC_STORE_LOCAL:
+		case TAC_STORE_CONST_ADDR:
+		case TAC_STORE:
+		case TAC_IF_CMP_GOTO:
+		case TAC_SETUP_STACKFRAME:
+		case TAC_SETUP_SP:
+		case TAC_LABEL_FUNCTION:
+		case TAC_GOTO:
+		case TAC_LABEL_INDEXED:
+		case TAC_NOP:
+			break;
+		case TAC_BINARY_OP_IMMEDIATE:
+		case TAC_LOAD:
+		case TAC_UNARY_OP:
+		case TAC_COPY:
+		case TAC_BINARY_OP:
+		case TAC_CALL:
+		case TAC_LOAD_LOCAL:
+		case TAC_LOAD_LOCAL_ADDR:
+		case TAC_CONST_VALUE:
+			defines_map[tac->dest] = true;
+			break;
+
+		default:
+			fprintf(stderr, "unexpected case %u\n", tac->kind);
+			exit(1);
+			return;
+	}
+}
+
 bool tac_is_unconditional_jump(struct TAC* tac) {
 	return tac->kind == TAC_GOTO || tac->kind == TAC_RETURN;
 }

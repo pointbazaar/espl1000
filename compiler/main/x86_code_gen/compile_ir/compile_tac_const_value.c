@@ -9,7 +9,7 @@
 
 void compile_tac_const_value_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
-	const int reg = rat_ensure_register(rat, tac->dest, false, false);
+	const int reg = rat_get_register(rat, tac->dest);
 
 	const uint64_t value = tac->const_value;
 
