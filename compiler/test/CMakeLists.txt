@@ -14,6 +14,9 @@ add_executable("sd-tests"
 	typechecker/test_typechecker.c
 	typechecker/test_typechecker.h
 
+	#liveness
+	liveness/test_liveness.c
+
 	#libvmcu utils
 	libvmcu_utils/libvmcu_utils.c
 

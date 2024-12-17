@@ -8,6 +8,12 @@
 #include "avr_code_gen/test_avr_code_gen.h"
 #include "x86_code_gen/test_x86_code_gen.h"
 #include "gen_tac/test_gen_tac.h"
+#include "liveness/test_liveness.h"
+
+void (*tests_liveness[])() = {
+    test_liveness,
+    NULL,
+};
 
 void (*tests_typeinference[])() = {
     test_infer_type_term,

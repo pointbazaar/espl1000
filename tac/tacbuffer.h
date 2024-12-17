@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <inttypes.h>
+#include <sys/types.h>
 
 struct TACBuffer;
 struct TAC;
@@ -25,5 +26,7 @@ struct TAC* tacbuffer_get_last(struct TACBuffer* buffer);
 uint32_t tacbuffer_last_dest(struct TACBuffer* buffer);
 size_t tacbuffer_count(struct TACBuffer* buffer);
 
-size_t tacbuffer_indexof(struct TACBuffer* buffer, struct TAC* tac);
+// @returns -1 if 'tac' could not be found in 'buffer'
+// @returns index otherwise
+ssize_t tacbuffer_indexof(struct TACBuffer* buffer, struct TAC* tac);
 #endif

@@ -61,6 +61,10 @@ struct testsuite testsuites[] = {
 	.testcases = tests_x86_codegen,
     },
     {
+	.name = "Liveness",
+	.testcases = tests_liveness,
+    },
+    {
 	.name = NULL,
     }};
 

@@ -111,12 +111,12 @@ size_t tacbuffer_count(struct TACBuffer* buffer) {
 	return buffer->count;
 }
 
-size_t tacbuffer_indexof(struct TACBuffer* buffer, struct TAC* tac) {
+ssize_t tacbuffer_indexof(struct TACBuffer* buffer, struct TAC* tac) {
 
 	for (size_t k = 0; k < buffer->count; k++) {
 		if (buffer->buffer[k] == tac) return k;
 	}
 
 	//FATAL ERROR
-	return 0;
+	return -1;
 }
