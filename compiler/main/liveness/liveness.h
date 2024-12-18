@@ -13,7 +13,10 @@
 struct Liveness;
 
 // calculate liveness for a single function
-struct Liveness* liveness_calculate(struct BasicBlock** graph, size_t nblocks);
+struct Liveness* liveness_calc(struct BasicBlock** graph, size_t nblocks);
+
+// for testing and such. It creates the BasicBlock graph internally.
+struct Liveness* liveness_calc_tacbuffer(struct TACBuffer* buf);
 
 // print tables to stdout for debug
 void liveness_print(struct Liveness* l);
@@ -27,4 +30,28 @@ void liveness_print(struct Liveness* l);
 // @param temp2  temporary 2
 // @returns      true if the liveness of temporaries
 //               temp1, temp2 overlap at one point in the graph
-bool liveness_overlaps(struct Liveness* l, uint32_t temp1, uint32_t temp2);
+bool liveness_overlaps(struct Liveness* live, uint32_t temp1, uint32_t temp2);
+
+// @return              true if stmt uses(reads) 'temp'
+// @param live          precomputed liveness data
+// @param stmt_index    the statement to look at
+// @param tmp           index of the temporary
+bool liveness_use(struct Liveness* live, uint32_t stmt_index, uint32_t temp);
+
+// @return              true if stmt defines(writes) 'temp'
+// @param live          precomputed liveness data
+// @param stmt_index    the statement to look at
+// @param tmp           index of the temporary
+bool liveness_def(struct Liveness* live, uint32_t stmt_index, uint32_t temp);
+
+// @return              true if 'tmp' is live on an incoming edge
+// @param live          precomputed liveness data
+// @param stmt_index    the statement to look at
+// @param tmp           index of the temporary
+bool liveness_in(struct Liveness* live, uint32_t stmt_index, uint32_t temp);
+
+// @return              true if 'tmp' is live on an outgoing edge
+// @param live          precomputed liveness data
+// @param stmt_index    the statement to look at
+// @param tmp           index of the temporary
+bool liveness_out(struct Liveness* live, uint32_t stmt_index, uint32_t temp);

@@ -11,7 +11,62 @@
 #include "liveness/test_liveness.h"
 
 void (*tests_liveness[])() = {
-    test_liveness,
+    test_liveness_1_block,
+    test_liveness_2_block,
+
+    // 'use' map
+    test_liveness_use_map_tac_call,
+    test_liveness_use_map_tac_param,
+    test_liveness_use_map_tac_return,
+    test_liveness_use_map_tac_goto,
+    test_liveness_use_map_tac_if_goto,
+    test_liveness_use_map_tac_if_cmp_goto,
+    test_liveness_use_map_tac_load_local,
+    test_liveness_use_map_tac_load_local_addr,
+    test_liveness_use_map_tac_store_local,
+    test_liveness_use_map_tac_load_const_addr,
+    test_liveness_use_map_tac_store_const_addr,
+    test_liveness_use_map_tac_load,
+    test_liveness_use_map_tac_store,
+    test_liveness_use_map_tac_binary_op,
+    test_liveness_use_map_tac_unary_op,
+    test_liveness_use_map_tac_copy,
+    test_liveness_use_map_tac_const_value,
+    test_liveness_use_map_tac_nop,
+    test_liveness_use_map_tac_binary_op_immediate,
+
+    // 'def' map
+    test_liveness_def_map_tac_call,
+    test_liveness_def_map_tac_param,
+    test_liveness_def_map_tac_return,
+    test_liveness_def_map_tac_goto,
+    test_liveness_def_map_tac_if_goto,
+    test_liveness_def_map_tac_if_cmp_goto,
+    test_liveness_def_map_tac_load_local,
+    test_liveness_def_map_tac_load_local_addr,
+    test_liveness_def_map_tac_store_local,
+    test_liveness_def_map_tac_load_const_addr,
+    test_liveness_def_map_tac_store_const_addr,
+    test_liveness_def_map_tac_load,
+    test_liveness_def_map_tac_store,
+    test_liveness_def_map_tac_binary_op,
+    test_liveness_def_map_tac_unary_op,
+    test_liveness_def_map_tac_copy,
+    test_liveness_def_map_tac_const_value,
+    test_liveness_def_map_tac_nop,
+    test_liveness_def_map_tac_binary_op_immediate,
+
+    // 'in' map
+    test_liveness_in_map,
+
+    // 'out' map
+    test_liveness_out_map_tac_call,
+    test_liveness_out_map_tac_param,
+    test_liveness_out_map_tac_return,
+    test_liveness_out_map_tac_goto,
+    test_liveness_out_map_tac_if_goto,
+    test_liveness_out_map_tac_if_cmp_goto,
+    test_liveness_out_map_tac_copy,
     NULL,
 };
 
