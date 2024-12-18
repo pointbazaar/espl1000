@@ -12,8 +12,10 @@ static void status(char* msg) {
 	printf(" - [TEST] Liveness %s\n", msg);
 }
 
-static void make_example(struct BasicBlock*** graph, size_t* nblocks) {
-	// create fake tacbuffer
+void test_liveness_1_block() {
+
+	status("1 block, no branches");
+
 	struct TACBuffer* buf = tacbuffer_ctor();
 
 	// t0 = 999
@@ -25,30 +27,9 @@ static void make_example(struct BasicBlock*** graph, size_t* nblocks) {
 	// return t3
 	tacbuffer_append(buf, makeTACReturn(2));
 
-	*nblocks = 1;
-	*graph = malloc(sizeof(struct BasicBlock*) * 1);
-	struct BasicBlock* block = malloc(sizeof(struct BasicBlock));
-	*graph[0] = block;
+	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
-	block->index = 0;
-	block->buffer = buf;
-	block->branch_1 = NULL;
-	block->branch_2 = NULL;
-}
-
-static void testcase_1_block(bool debug) {
-
-	status("1 block, no branches");
-
-	size_t nblocks = 1;
-	struct BasicBlock** graph = NULL;
-	make_example(&graph, &nblocks);
-
-	struct Liveness* live = liveness_calculate(graph, nblocks);
-
-	if (debug) {
-		liveness_print(live);
-	}
+	//liveness_print(live);
 
 	assert(live != NULL);
 
@@ -100,21 +81,9 @@ static void make_example_2_blocks(struct BasicBlock*** graph, size_t* nblocks) {
 	block1->branch_2 = NULL;
 }
 
-static void testcase_2_blocks(bool debug) {
+void test_liveness_2_block() {
 
-	status("2 blocks, TODO: use basicblock graph");
-
-	//struct Ctx* ctx = NULL;
-	//TODO: populate or make 'basicblock_create_graph'
-	//withouth the 'ctx' argument
-
-	//TODO: create fake tacbuffer
-	//struct TACBuffer* buf = tacbuffer_ctor();
-	//char* function_name = "main";
-
-	//int nblocks;
-	//struct BasicBlock** graph = basicblock_create_graph(buf, function_name, &nblocks, ctx);
-	//struct BasicBlock* root = graph[0];
+	status("2 blocks");
 
 	size_t nblocks = 2;
 	struct BasicBlock** graph = NULL;
@@ -122,18 +91,10 @@ static void testcase_2_blocks(bool debug) {
 
 	assert(graph != NULL);
 
-	struct Liveness* live = liveness_calculate(graph, nblocks);
+	struct Liveness* live = liveness_calc(graph, nblocks);
 	assert(live != NULL);
 
-	if (debug) {
-		liveness_print(live);
-	}
+	//liveness_print(live);
 
 	assert(liveness_overlaps(live, 0, 2) == true);
-}
-
-void test_liveness() {
-
-	testcase_1_block(true);
-	testcase_2_blocks(true);
 }

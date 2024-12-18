@@ -6,6 +6,8 @@
 #include "basic_block/basicblock.h"
 #include "tac/tacbuffer.h"
 
+#include "liveness.h"
+
 struct Liveness {
 	// map (statement index) -> (defines set)
 	// the set of temporaries defined (written to)
@@ -288,7 +290,23 @@ static void liveness_calc_defines(struct Liveness* l, struct BasicBlock** graph,
 	}
 }
 
-struct Liveness* liveness_calculate(struct BasicBlock** graph, size_t nblocks) {
+struct Liveness* liveness_calc_tacbuffer(struct TACBuffer* buf) {
+	assert(buf != NULL);
+
+	size_t nblocks = 1;
+	struct BasicBlock** graph = malloc(sizeof(struct BasicBlock*) * 1);
+	struct BasicBlock* block = malloc(sizeof(struct BasicBlock));
+	graph[0] = block;
+
+	block->index = 0;
+	block->buffer = buf;
+	block->branch_1 = NULL;
+	block->branch_2 = NULL;
+
+	return liveness_calc(graph, nblocks);
+}
+
+struct Liveness* liveness_calc(struct BasicBlock** graph, size_t nblocks) {
 
 	struct Liveness* res = malloc(sizeof(struct Liveness));
 	// find total number of temporaries
@@ -341,4 +359,24 @@ bool liveness_overlaps(struct Liveness* l, uint32_t temp1, uint32_t temp2) {
 		}
 	}
 	return false;
+}
+
+bool liveness_use(struct Liveness* live, uint32_t stmt_index, uint32_t temp) {
+
+	return live->map_use[stmt_index][temp];
+}
+
+bool liveness_def(struct Liveness* live, uint32_t stmt_index, uint32_t temp) {
+
+	return live->map_defines[stmt_index][temp];
+}
+
+bool liveness_in(struct Liveness* live, uint32_t stmt_index, uint32_t temp) {
+
+	return live->map_in[stmt_index][temp];
+}
+
+bool liveness_out(struct Liveness* live, uint32_t stmt_index, uint32_t temp) {
+
+	return live->map_out[stmt_index][temp];
 }

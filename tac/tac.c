@@ -149,7 +149,7 @@ struct TAC* makeTACBinOp(uint32_t dest, enum TAC_OP op, uint32_t src) {
 		case TAC_OP_CMP_GE:
 			break;
 		default:
-			printf("fatal error in makeTACBinOp.Exiting");
+			printf("fatal error in %s. unrecognized TAC_OP: %d, Exiting", __func__, op);
 			fflush(stdout);
 			exit(1);
 	}
@@ -351,12 +351,13 @@ void tac_mark_used(struct TAC* tac, bool* used_map) {
 		case TAC_LABEL_INDEXED:
 		case TAC_LOAD_LOCAL:
 		case TAC_LOAD_LOCAL_ADDR:
+		case TAC_LOAD_CONST_ADDR:
 		case TAC_NOP:
 		case TAC_CONST_VALUE:
 			return;
 
 		default:
-			fprintf(stderr, "unexpected case %u\n", tac->kind);
+			fprintf(stderr, "%s: unexpected case %u\n", __func__, tac->kind);
 			exit(1);
 			return;
 	}
@@ -387,12 +388,13 @@ void tac_mark_defines(struct TAC* tac, bool* defines_map) {
 		case TAC_CALL:
 		case TAC_LOAD_LOCAL:
 		case TAC_LOAD_LOCAL_ADDR:
+		case TAC_LOAD_CONST_ADDR:
 		case TAC_CONST_VALUE:
 			defines_map[tac->dest] = true;
 			break;
 
 		default:
-			fprintf(stderr, "unexpected case %u\n", tac->kind);
+			fprintf(stderr, "%s: unexpected case %u\n", __func__, tac->kind);
 			exit(1);
 			return;
 	}

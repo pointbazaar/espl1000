@@ -16,6 +16,10 @@ add_executable("sd-tests"
 
 	#liveness
 	liveness/test_liveness.c
+	liveness/test_liveness_use.c
+	liveness/test_liveness_def.c
+	liveness/test_liveness_in.c
+	liveness/test_liveness_out.c
 
 	#libvmcu utils
 	libvmcu_utils/libvmcu_utils.c
