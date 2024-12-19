@@ -12,7 +12,7 @@
 
 #include "ibuffer/ibuffer_x86.h"
 
-#include "../../cli/flags/flags.h"
+#include "cli/flags/flags.h"
 
 void emit_asm_x86_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 

@@ -6,7 +6,7 @@
 #include "tables/symtable/symtable.h"
 
 #include "compiler/main/util/ctx.h"
-#include "../../cli/flags/flags.h"
+#include "cli/flags/flags.h"
 
 #include "fill_tables.h"
 

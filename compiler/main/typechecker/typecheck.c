@@ -6,7 +6,7 @@
 #include "ast/ast.h"
 
 //Table Includes
-#include "compiler/cli/flags/flags.h"
+#include "cli/flags/flags.h"
 #include "tables/symtable/symtable.h"
 
 #include "util/ctx.h"

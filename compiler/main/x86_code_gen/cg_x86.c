@@ -7,7 +7,7 @@
 
 #include "ast/ast.h"
 
-#include "../../cli/flags/flags.h"
+#include "cli/flags/flags.h"
 
 #include "util/ctx.h"
 

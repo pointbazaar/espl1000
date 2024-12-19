@@ -6,7 +6,7 @@
 #include "libvmcu/libvmcu_analyzer.h"
 
 #include "compiler.h"
-#include "../../../cli/flags/flags.h"
+#include "cli/flags/flags.h"
 
 #include "../test_gen_tac.h"
 
