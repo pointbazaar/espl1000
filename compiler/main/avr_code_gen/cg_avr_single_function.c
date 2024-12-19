@@ -20,20 +20,21 @@
 void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu) {
 
 	struct TACBuffer* buffer = tacbuffer_ctor();
+	struct ST* st = ctx_tables(ctx);
 
 	//populate ctx->st->lvst
-	lvst_clear(ctx_tables(ctx)->lvst);
-	lvst_fill(m, ctx_tables(ctx));
+	lvst_clear(st->lvst);
+	lvst_fill(m, st);
 
 	//print the LVST for debug
 	if (flags_debug(ctx_flags(ctx)))
-		lvst_print(ctx_tables(ctx)->lvst);
+		lvst_print(st->lvst);
 
 	tac_method(buffer, m, ctx);
 
 	//print the TAC for debug
 	if (flags_debug(ctx_flags(ctx)))
-		tacbuffer_print(buffer, ctx);
+		tacbuffer_print(buffer, st->sst, st->lvst);
 
 	//create basic blocks from this TAC
 	//basic blocks from the three address code

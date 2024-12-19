@@ -4,6 +4,7 @@
 #include "tables/stst/stst.h"
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
+#include "rat/rat.h"
 
 #include "tac/tac.h"
 

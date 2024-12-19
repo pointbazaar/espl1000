@@ -4,6 +4,9 @@
 #include "cg_x86_basic_block.h"
 
 #include "rat/rat.h"
+#include "tables/symtable/symtable.h"
+#include "tables/sst/sst.h"
+#include "tables/lvst/lvst.h"
 #include "tac/tac.h"
 #include "x86_code_gen/compile_ir/compile_tac.h"
 
@@ -13,8 +16,10 @@
 
 void emit_asm_x86_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
+	struct ST* st = ctx_tables(ctx);
+
 	if (flags_debug(ctx_flags(ctx))) {
-		printf("emit_asm_x86_single_tac %s\n", tac_tostring(tac, ctx));
+		printf("emit_asm_x86_single_tac %s\n", tac_tostring(tac, st->sst, st->lvst));
 	}
 
 	switch (tac->kind) {

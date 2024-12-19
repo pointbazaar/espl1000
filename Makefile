@@ -29,6 +29,7 @@ setup_path:
 	export PATH=${PATH}:$(pwd)/build/compiler/test
 
 test: build-step ${TESTS} setup_path
+	./build/tac/sd-tac-test && \
 	./build/ast/sd-ast-test && \
 	./build/token/sd-token-tests && \
 	./build/rat/sd-rat-tests && \
@@ -40,7 +41,9 @@ test: build-step ${TESTS} setup_path
 	cd examples   && make test
 	#cd stdlib     && make test
 
-TESTS=build/ast/sd-ast-test \
+TESTS=\
+      build/tac/sd-tac-test \
+      build/ast/sd-ast-test \
       build/token/sd-token-tests \
       build/rat/sd-rat-tests \
       build/lexer/dragon-lexer-tests \
@@ -55,6 +58,7 @@ ci_valgrind_tests: ${TESTS} setup_path
 	make valgrind_tests
 
 valgrind_tests: ${TESTS}
+	valgrind ${VALGRIND_OPTS} ./build/tac/sd-tac-test && \
 	valgrind ${VALGRIND_OPTS} ./build/ast/sd-ast-test && \
 	valgrind ${VALGRIND_OPTS} ./build/token/sd-token-tests && \
 	valgrind ${VALGRIND_OPTS} ./build/rat/sd-rat-tests && \

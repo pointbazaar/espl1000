@@ -5,6 +5,7 @@
 
 #include "basicblock.h"
 #include "ast/ast.h"
+#include "tables/symtable/symtable.h"
 #include "tac/tacbuffer.h"
 #include "basicblock_printer.h"
 
@@ -40,7 +41,8 @@ void write_dot_file_from_graph(struct BasicBlock** blocks, uint32_t count, char*
 
 static void basicblock_dot_section(FILE* fout, uint32_t i, struct BasicBlock* block, struct Ctx* ctx) {
 
-	char* tacbuffer_str = tacbuffer_tostring(block->buffer, true, ctx);
+	struct ST* st = ctx_tables(ctx);
+	char* tacbuffer_str = tacbuffer_tostring(block->buffer, true, st->sst, st->lvst);
 
 	fprintf(fout, "b%d [shape=box label=\"%s\"]\n", i, tacbuffer_str);
 

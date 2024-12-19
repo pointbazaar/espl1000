@@ -13,8 +13,10 @@
 
 void emit_asm_avr_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
+	struct ST* st = ctx_tables(ctx);
+
 	if (flags_debug(ctx_flags(ctx))) {
-		printf("emit_asm_avr_single_tac %s\n", tac_tostring(tac, ctx));
+		printf("emit_asm_avr_single_tac %s\n", tac_tostring(tac, st->sst, st->lvst));
 	}
 
 	switch (tac->kind) {
@@ -47,5 +49,9 @@ void emit_asm_avr_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 
 		case TAC_LOAD: compile_tac_load(rat, tac, ibu); break;
 		case TAC_STORE: compile_tac_store(rat, tac, ibu); break;
+
+		default:
+			fprintf(stderr, "%s: unhandled case %d\n", __func__, tac->kind);
+			exit(1);
 	}
 }

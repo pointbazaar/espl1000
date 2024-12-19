@@ -5,6 +5,7 @@
 #include "tables/symtable/symtable.h"
 
 #include "ast/ast.h"
+#include "rat/rat.h"
 
 #include "../../cli/flags/flags.h"
 

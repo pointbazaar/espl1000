@@ -2,9 +2,37 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "tables/symtable/symtable.h"
+#include "tables/lvst/lvst.h"
 #include "tables/sst/sst.h"
 #include "tac.h"
+
+static char* get_op_str_expr(enum TAC_OP top) {
+	char* opstr = "";
+	switch (top) {
+		default:
+		case TAC_OP_NONE: opstr = "?ERR in get_op_str"; break;
+
+		case TAC_OP_ADD: opstr = "+"; break;
+		case TAC_OP_SUB: opstr = "-"; break;
+		case TAC_OP_MUL: opstr = "*"; break;
+		case TAC_OP_AND: opstr = "&"; break;
+		case TAC_OP_OR: opstr = "|"; break;
+		case TAC_OP_XOR: opstr = "^"; break;
+
+		case TAC_OP_SHIFT_LEFT: opstr = "<<"; break;
+		case TAC_OP_SHIFT_RIGHT: opstr = ">>"; break;
+
+		case TAC_OP_CMP_LT: opstr = "<"; break;
+		case TAC_OP_CMP_GE: opstr = ">="; break;
+		case TAC_OP_CMP_EQ: opstr = "=="; break;
+		case TAC_OP_CMP_NEQ: opstr = "!="; break;
+
+		case TAC_OP_UNARY_NOT: opstr = "!"; break;
+		case TAC_OP_UNARY_BITWISE_NEG: opstr = "~"; break;
+		case TAC_OP_UNARY_MINUS: opstr = "-"; break;
+	}
+	return opstr;
+}
 
 static char* get_op_str(enum TAC_OP top) {
 	char* opstr = "";
@@ -34,120 +62,125 @@ static char* get_op_str(enum TAC_OP top) {
 	return opstr;
 }
 
-char* tac_tostring(struct TAC* t, struct Ctx* ctx) {
+char* tac_tostring(struct TAC* t, struct SST* sst, struct LVST* lvst) {
 
 	char* res = exit_malloc(sizeof(char) * 120);
 	strcpy(res, "");
 
-	char buffer[110];
-	strcpy(buffer, "");
+	char buf[110];
+	strcpy(buf, "");
+
+	const enum TAC_OP op = t->op;
+	const uint32_t dest = t->dest;
+	const uint64_t arg1 = t->arg1;
+	const int64_t const_value = t->const_value;
 
 	char* opstr = get_op_str(t->op);
-
-	struct SST* sst = ctx_tables(ctx)->sst;
-	struct LVST* lvst = ctx_tables(ctx)->lvst;
+	char* opstr_expr = get_op_str_expr(t->op);
 
 	switch (t->kind) {
 		case TAC_LABEL_INDEXED:
-			sprintf(res, "L%3d:%5s", t->label_index, "");
+			sprintf(res, "L%d:", t->label_index);
 			break;
 		case TAC_LABEL_FUNCTION: {
 			char* function_name = "main"; //in case sst is not initialized
 
-			if (t->arg1 < sst_size(sst)) {
-				function_name = sst_at(sst, t->dest)->name;
+			if (arg1 < sst_size(sst)) {
+				function_name = sst_at(sst, dest)->name;
 			}
 			sprintf(res, "%-9s:", function_name);
 		} break;
 
 		case TAC_GOTO:
-			sprintf(buffer, "goto L%d", t->label_index);
+			sprintf(buf, "goto L%d", t->label_index);
 			break;
 		case TAC_IF_GOTO:
-			sprintf(buffer, "if-goto t%d L%d", t->arg1, t->label_index);
+			sprintf(buf, "if-goto t%lu L%d", arg1, t->label_index);
 			break;
 		case TAC_IF_CMP_GOTO:
-			sprintf(buffer, "if t%d %s t%d goto L%d", t->dest, opstr, t->arg1, t->label_index);
+			sprintf(buf, "if t%d %s t%lu goto L%d", dest, opstr_expr, arg1, t->label_index);
 			break;
 
 		case TAC_CONST_VALUE:
-			sprintf(buffer, "t%d = %d", t->dest, t->const_value);
+			sprintf(buf, "t%d = %ld", dest, const_value);
 			break;
 
 		case TAC_COPY:
-			sprintf(buffer, "t%d = t%d", t->dest, t->arg1);
+			sprintf(buf, "t%d = t%lu", dest, arg1);
 			break;
 
 		case TAC_LOAD_LOCAL: {
-			char* name = lvst_at(lvst, t->arg1)->name;
-			sprintf(buffer, "load t%d = l%d (%s)", t->dest, t->arg1, name);
+			char* name = lvst_at(lvst, arg1)->name;
+			sprintf(buf, "load t%d = l%lu (%s)", dest, arg1, name);
 		} break;
 
 		case TAC_LOAD_LOCAL_ADDR: {
-			char* name = lvst_at(lvst, t->arg1)->name;
-			sprintf(buffer, "load t%d = &l%d (%s)", t->dest, t->arg1, name);
+			char* name = lvst_at(lvst, arg1)->name;
+			sprintf(buf, "load t%d = &l%lu (%s)", dest, arg1, name);
 		} break;
 
 		case TAC_STORE_LOCAL: {
-			char* name = lvst_at(lvst, t->dest)->name;
-			sprintf(buffer, "store l%d (%s) = t%d", t->dest, name, t->arg1);
+			char* name = lvst_at(lvst, dest)->name;
+			sprintf(buf, "store l%d (%s) = t%lu", dest, name, arg1);
 		} break;
 
 		case TAC_LOAD_CONST_ADDR:
-			sprintf(buffer, "t%d = [%d]", t->dest, t->const_value);
+			sprintf(buf, "t%d = [%ld]", dest, const_value);
 			break;
 		case TAC_STORE_CONST_ADDR:
-			sprintf(buffer, "[%d] = t%d", t->const_value, t->arg1);
+			sprintf(buf, "[%ld] = t%lu", const_value, arg1);
 			break;
 
 		case TAC_LOAD:
-			sprintf(buffer, "t%d = [t%d]", t->dest, t->arg1);
+			sprintf(buf, "t%d = [t%lu]", dest, arg1);
 			break;
 		case TAC_STORE:
-			sprintf(buffer, "[t%d] = t%d", t->dest, t->arg1);
+			sprintf(buf, "[t%d] = t%lu", dest, arg1);
 			break;
 
 		case TAC_NOP:
-			sprintf(buffer, "%s", "nop");
+			sprintf(buf, "%s", "nop");
 			break;
 		case TAC_BINARY_OP:
-			if (t->op >= TAC_OP_CMP_LT && t->op <= TAC_OP_CMP_NEQ) {
-				sprintf(buffer, "t%d = t%d %4s t%d", t->dest, t->dest, opstr, t->arg1);
+			if (op >= TAC_OP_CMP_LT && op <= TAC_OP_CMP_NEQ) {
+				sprintf(buf, "t%d = t%d %s t%lu", dest, dest, opstr, arg1);
 			} else {
-				sprintf(buffer, "t%d %4s t%d", t->dest, opstr, t->arg1);
+				sprintf(buf, "t%d %s t%lu", dest, opstr, arg1);
 			}
 			break;
 		case TAC_UNARY_OP:
-			sprintf(buffer, "t%d = %4s t%d", t->dest, opstr, t->arg1);
+			sprintf(buf, "t%d = %st%lu", dest, opstr, arg1);
 			break;
 
 		case TAC_CALL: {
-			char* function_name = "main"; //in case sst is not initialized
 
-			if (t->arg1 < sst_size(sst)) {
-				function_name = sst_at(sst, t->arg1)->name;
+			if (arg1 >= sst_size(sst)) {
+				fprintf(stderr, "%s: function %lu not found\n", __func__, arg1);
+				exit(1);
 			}
-			sprintf(buffer, "t%d = call %s", t->dest, function_name);
+
+			char* function_name = sst_at(sst, arg1)->name;
+			sprintf(buf, "t%d = call %s", dest, function_name);
 		} break;
 		case TAC_ICALL: {
-			sprintf(buffer, "t%d = call t%ld", t->dest, t->arg1);
+			sprintf(buf, "t%d = call t%ld", dest, arg1);
 		} break;
 
 		case TAC_PARAM:
-			sprintf(buffer, "param t%d", t->arg1);
+			sprintf(buf, "param t%u", dest);
 			break;
 		case TAC_RETURN:
-			sprintf(buffer, "return t%d", t->dest);
+			sprintf(buf, "return t%d", dest);
 			break;
 		case TAC_BINARY_OP_IMMEDIATE:
-			sprintf(buffer, "t%d %4s %d", t->dest, opstr, t->const_value);
+			sprintf(buf, "t%d %s %ld", dest, opstr, const_value);
 			break;
 
 		case TAC_SETUP_STACKFRAME:
-			sprintf(buffer, "setup_stackframe %d", t->const_value);
+			sprintf(buf, "setup_stackframe %ld", const_value);
 			break;
 		case TAC_SETUP_SP:
-			sprintf(buffer, "setup SP");
+			sprintf(buf, "setup SP");
 			break;
 		default:
 			printf("unhandled in %s\n", __func__);
@@ -155,6 +188,6 @@ char* tac_tostring(struct TAC* t, struct Ctx* ctx) {
 			break;
 	}
 
-	strcat(res, buffer);
+	strcat(res, buf);
 	return res;
 }

@@ -3,6 +3,7 @@
 #include <stdbool.h>
 
 #include "util/ctx.h"
+#include "rat/rat.h"
 #include "basic_block/basicblock.h"
 
 struct IBuffer;

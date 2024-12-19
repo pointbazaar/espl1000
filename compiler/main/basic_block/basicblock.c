@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "tables/symtable/symtable.h"
 #include "tac/tacbuffer.h"
 #include "ast/ast.h"
 
@@ -152,8 +153,10 @@ void basicblock_dtor(struct BasicBlock* block) {
 
 void basicblock_print(struct BasicBlock* block, struct Ctx* ctx) {
 
+	struct ST* st = ctx_tables(ctx);
+
 	printf(" -- BLOCK %d --\n", block->index);
-	tacbuffer_print(block->buffer, ctx);
+	tacbuffer_print(block->buffer, st->sst, st->lvst);
 	printf(" -- --\n\n");
 }
 

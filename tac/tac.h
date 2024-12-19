@@ -1,14 +1,14 @@
-#ifndef SMALLDRAGON_TOPLEVEL_TAC_H
-#define SMALLDRAGON_TOPLEVEL_TAC_H
+#pragma once
+
+#include <stdint.h>
+#include <stdbool.h>
 
 struct Ctx;
 struct ST;
+struct SST;
+struct LVST;
 
 extern struct ST* ctx_tables(struct Ctx* ctx);
-
-#include "ast/ast_declare.h"
-
-#include "rat/rat.h"
 
 enum TAC_OP {
 	TAC_OP_NONE, //for error cases
@@ -124,7 +124,7 @@ void tac_mark_defines(struct TAC* tac, bool* defines_map);
 
 bool tac_is_unconditional_jump(struct TAC* tac);
 
-char* tac_tostring(struct TAC* tac, struct Ctx* ctx);
+char* tac_tostring(struct TAC* tac, struct SST* sst, struct LVST* lvst);
 uint32_t make_label();
 uint32_t make_temp();
 
@@ -167,4 +167,3 @@ struct TAC* makeTACNop();
 
 struct TAC* makeTACLoad(uint32_t tmp, uint32_t taddr, uint8_t width);
 struct TAC* makeTACStore(uint32_t taddr, uint32_t tmp);
-#endif
