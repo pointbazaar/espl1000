@@ -2,6 +2,8 @@
 
 #include "tac/tacbuffer.h"
 #include "tac/tac.h"
+#include "rat/rat.h"
+
 #include "x86_code_gen/compile_ir/compile_tac.h"
 
 void compile_tac_load_const_addr_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {

@@ -2,6 +2,7 @@
 
 #include "ibuffer/ibuffer_x86.h"
 #include "tac/tac.h"
+#include "rat/rat.h"
 #include "x86_code_gen/compile_ir/compile_tac.h"
 
 void compile_tac_setup_stackframe_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {

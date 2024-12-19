@@ -3,6 +3,7 @@
 #include <stdbool.h>
 
 #include "tables/symtable/symtable.h"
+#include "rat/rat.h"
 
 #include "ast/ast.h"
 

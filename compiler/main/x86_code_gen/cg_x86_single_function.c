@@ -6,8 +6,10 @@
 #include "basic_block/basicblock.h"
 #include "tac/tacbuffer.h"
 #include "gen_tac/gen_tac.h"
+#include "rat/rat.h"
 
 #include "util/ctx.h"
+#include "rat/rat.h"
 #include "ast/ast.h"
 
 #include "ibuffer/ibuffer.h"
@@ -20,20 +22,21 @@
 void compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu) {
 
 	struct TACBuffer* buffer = tacbuffer_ctor();
+	struct ST* st = ctx_tables(ctx);
 
 	//populate ctx->st->lvst
-	lvst_clear(ctx_tables(ctx)->lvst);
-	lvst_fill(m, ctx_tables(ctx));
+	lvst_clear(st->lvst);
+	lvst_fill(m, st);
 
 	//print the LVST for debug
 	if (flags_debug(ctx_flags(ctx)))
-		lvst_print(ctx_tables(ctx)->lvst);
+		lvst_print(st->lvst);
 
 	tac_method(buffer, m, ctx);
 
 	//print the TAC for debug
 	if (flags_debug(ctx_flags(ctx)))
-		tacbuffer_print(buffer, ctx);
+		tacbuffer_print(buffer, st->sst, st->lvst);
 
 	//create basic blocks from this TAC
 	//basic blocks from the three address code
@@ -45,7 +48,7 @@ void compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 
 	struct RAT* rat = rat_ctor(RAT_ARCH_X86);
 	for (int i = 0; i < nblocks; i++) {
-		allocate_registers(graph[i]->buffer, rat, ctx_tables(ctx));
+		allocate_registers(graph[i]->buffer, rat, st);
 	}
 
 	emit_asm_x86_basic_block(root, ctx, ibu, rat);

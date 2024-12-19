@@ -2,6 +2,7 @@
 
 #include "tac/tacbuffer.h"
 #include "tac/tac.h"
+#include "rat/rat.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
 void compile_tac_store_const_addr(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {

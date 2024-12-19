@@ -3,6 +3,7 @@
 
 #include "ibuffer/ibuffer_x86.h"
 #include "tables/sst/sst.h"
+#include "rat/rat.h"
 #include "tables/stst/stst.h"
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
