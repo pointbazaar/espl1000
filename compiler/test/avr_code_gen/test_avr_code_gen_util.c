@@ -13,7 +13,7 @@
 #include "avr_code_gen/cg_avr_basic_block.h"
 #include "util/fill_tables.h"
 
-#include "../../cli/flags/flags.h"
+#include "cli/flags/flags.h"
 
 #include "ibuffer/ibuffer.h"
 

@@ -119,7 +119,7 @@ add_library("sd-base"
 	typechecker/tc_whilestmt.c
 	typechecker/tc_forstmt.c
 
-		#typeinference
+	#typeinference
 	typeinference/typeinfer.c
 	typeinference/typeinfer_expr.c
 	typeinference/typeinfer_methodcall.c
@@ -138,12 +138,12 @@ add_library("sd-base"
 	util/ctx.c
 
 	#flags
-	../cli/flags/flags.c
-	../cli/flags/validate_flags.c
+	cli/flags/flags.c
+	cli/flags/validate_flags.c
 )
 
 add_executable("sd"
-	../cli/main.c
+	cli/main.c
 )
 
 target_compile_options("sd-base"  PUBLIC ${COMMON_OPTS})

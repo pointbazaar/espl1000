@@ -9,7 +9,7 @@
 #include <regex.h>
 
 #include "ast/ast.h"
-#include "compiler/cli/flags/flags.h"
+#include "cli/flags/flags.h"
 #include "tables/symtable/symtable.h"
 
 #include "ctx.h"

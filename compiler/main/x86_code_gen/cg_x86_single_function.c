@@ -17,7 +17,7 @@
 #include "tables/symtable/symtable.h"
 #include "cg_x86_single_function.h"
 
-#include "../../cli/flags/flags.h"
+#include "cli/flags/flags.h"
 
 void compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu) {
 

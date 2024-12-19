@@ -1,6 +1,6 @@
 #include "gen_tac.h"
 
-#include "compiler/cli/flags/flags.h"
+#include "cli/flags/flags.h"
 #include "tables/sst/sst.h"
 #include "tables/stst/stst.h"
 #include "tables/lvst/lvst.h"

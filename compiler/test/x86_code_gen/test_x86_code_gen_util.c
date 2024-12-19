@@ -19,7 +19,7 @@
 #include "ibuffer/ibuffer.h"
 #include "tables/symtable/symtable.h"
 
-#include "compiler/cli/flags/flags.h"
+#include "cli/flags/flags.h"
 #include "fake_lvst.h"
 
 struct sd_uc_engine {

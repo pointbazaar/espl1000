@@ -10,7 +10,7 @@
 
 #include "ibuffer/ibuffer_x86.h"
 
-#include "compiler/cli/flags/flags.h"
+#include "cli/flags/flags.h"
 
 #include "cg_x86_single_tac.h"
 #include "x86_code_gen/compile_ir/compile_tac.h"

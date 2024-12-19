@@ -10,7 +10,7 @@
 #include "avr_code_gen/cg_avr.h"
 #include "x86_code_gen/cg_x86.h"
 
-#include "../cli/flags/flags.h"
+#include "cli/flags/flags.h"
 #include "util/fill_tables.h"
 #include "util/fileutils/fileutils.h"
 

@@ -15,7 +15,7 @@
 #include "tables/symtable/symtable.h"
 #include "cg_avr_single_function.h"
 
-#include "../../cli/flags/flags.h"
+#include "cli/flags/flags.h"
 
 void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu) {
 
