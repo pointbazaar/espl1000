@@ -16,20 +16,52 @@ static void status_test_transpiler(char* msg) {
 }
 
 struct sd_test_flags {
+	// print testcase duration
 	bool testcase_duration;
+	// print help
+	bool help;
+	// list testsuites
+	bool testsuites;
+	// run single test suite
+	char* testsuite;
 };
 
-static void parse_flags(int argc, char* argv[], struct sd_test_flags* flags) {
+static void print_help() {
+	printf("OPTIONS:\n");
+	printf("-help\n");
+	printf("-testsuite <SUITE>\n");
+	printf("-testsuites\n");
+	printf("-testcase-duration\n");
+}
+
+static int parse_flags(int argc, char* argv[], struct sd_test_flags* flags) {
 
 	flags->testcase_duration = false;
+	flags->help = false;
+	flags->testsuite = NULL;
+	flags->testsuites = false;
 
 	for (int i = 1; i < argc; i++) {
 		char* flag = argv[i];
 
-		if (strcmp(flag, "--testcase-duration") == 0) {
+		if (strcmp(flag, "-testcase-duration") == 0) {
 			flags->testcase_duration = true;
 		}
+		if (strcmp(flag, "-help") == 0) {
+			flags->help = true;
+		}
+		if (strcmp(flag, "-testsuite") == 0) {
+			if (i + 1 >= argc) {
+				fprintf(stderr, "need testsuite argument\n");
+				return 1;
+			}
+			flags->testsuite = argv[i + 1];
+		}
+		if (strcmp(flag, "-testsuites") == 0) {
+			flags->testsuites = true;
+		}
 	}
+	return 0;
 }
 
 #include "testcases.c"
@@ -129,18 +161,78 @@ uint64_t run_testsuites(struct sd_test_flags* flags) {
 
 	for (int suitei = 0; testsuites[suitei].name != NULL; suitei++) {
 
+		char* name = testsuites[suitei].name;
+
+		if (flags->testsuite != NULL) {
+			if (strcmp(flags->testsuite, name) != 0) {
+				continue;
+			}
+		}
+
 		ntests += run_testsuite(&testsuites[suitei], flags);
 	}
 
 	return ntests;
 }
 
+static void print_testsuites() {
+
+	for (int suitei = 0; testsuites[suitei].name != NULL; suitei++) {
+
+		char* name = testsuites[suitei].name;
+
+		printf("%s\n", name);
+	}
+}
+
+static int validate_flags(struct sd_test_flags* flags) {
+
+	if (flags->testsuite == NULL) {
+		return 0;
+	}
+
+	for (int suitei = 0; testsuites[suitei].name != NULL; suitei++) {
+
+		char* name = testsuites[suitei].name;
+
+		if (strcmp(flags->testsuite, name) == 0) {
+			return 0;
+			;
+		}
+	}
+
+	fprintf(stderr, "'%s' did not match any testsuite\n", flags->testsuite);
+
+	return 1;
+}
+
 int main(int argc, char* argv[]) {
 
+	int status = 0;
 	struct sd_test_flags flags;
 	struct timeval start, stop;
 
-	parse_flags(argc, argv, &flags);
+	status = parse_flags(argc, argv, &flags);
+
+	if (status != 0) {
+		return 1;
+	}
+
+	status = validate_flags(&flags);
+
+	if (status != 0) {
+		return 1;
+	}
+
+	if (flags.help) {
+		print_help();
+		return 0;
+	}
+
+	if (flags.testsuites) {
+		print_testsuites();
+		return 0;
+	}
 
 	status_test_transpiler("Running tests for smalldragon/compiler:");
 
@@ -156,6 +248,7 @@ int main(int argc, char* argv[]) {
 	char* status_msg;
 	asprintf(&status_msg, "took %ld ms", elapsed_ms);
 	status_test_transpiler(status_msg);
+	free(status_msg);
 
 	asprintf(&status_msg, "completed %ld tests", ntests);
 	status_test_transpiler(status_msg);

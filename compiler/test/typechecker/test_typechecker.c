@@ -21,7 +21,7 @@ static void free_tc_errors(struct TCError* error) {
 void test_typecheck_wrong_assign_primitive() {
 
 	status_test_typechecker("typecheck wrong assign primitive");
-	char* filename = "test/typechecker/test-src/assign_primitive.dg";
+	char* filename = "compiler/test/typechecker/test-src/assign_primitive.dg";
 
 	struct TCError* errors = typecheck_file(filename);
 
@@ -35,7 +35,7 @@ void test_typecheck_wrong_assign_primitive() {
 void test_typecheck_wrong_number_of_args() {
 
 	status_test_typechecker("typecheck wrong number of args");
-	char* filename = "test/typechecker/test-src/wrong_number_of_args.dg";
+	char* filename = "compiler/test/typechecker/test-src/wrong_number_of_args.dg";
 
 	struct TCError* errors = typecheck_file(filename);
 
@@ -49,7 +49,7 @@ void test_typecheck_wrong_number_of_args() {
 void test_typecheck_wrong_type_of_arg() {
 
 	status_test_typechecker("typecheck wrong type of arg");
-	char* filename = "test/typechecker/test-src/wrong_type_of_arg.dg";
+	char* filename = "compiler/test/typechecker/test-src/wrong_type_of_arg.dg";
 
 	struct TCError* errors = typecheck_file(filename);
 
@@ -63,7 +63,7 @@ void test_typecheck_wrong_type_of_arg() {
 void test_typecheck_wrong_return_type() {
 
 	status_test_typechecker("typecheck wrong return type");
-	char* filename = "test/typechecker/test-src/wrong_return_type.dg";
+	char* filename = "compiler/test/typechecker/test-src/wrong_return_type.dg";
 
 	struct TCError* errors = typecheck_file(filename);
 
@@ -77,7 +77,7 @@ void test_typecheck_wrong_return_type() {
 void test_typecheck_binop_type_mismatch() {
 
 	status_test_typechecker("typecheck binop type mismatch");
-	char* filename = "test/typechecker/test-src/binop_type_mismatch.dg";
+	char* filename = "compiler/test/typechecker/test-src/binop_type_mismatch.dg";
 
 	struct TCError* errors = typecheck_file(filename);
 
@@ -91,7 +91,7 @@ void test_typecheck_binop_type_mismatch() {
 void test_typecheck_subr_not_found() {
 
 	status_test_typechecker("typecheck subr not found");
-	char* filename = "test/typechecker/test-src/subr_not_found.dg";
+	char* filename = "compiler/test/typechecker/test-src/subr_not_found.dg";
 
 	struct TCError* errors = typecheck_file(filename);
 
@@ -105,7 +105,7 @@ void test_typecheck_subr_not_found() {
 void test_typecheck_impure_called_in_pure() {
 
 	status_test_typechecker("typecheck impure called in pure");
-	char* filename = "test/typechecker/test-src/impure_called_in_pure.dg";
+	char* filename = "compiler/test/typechecker/test-src/impure_called_in_pure.dg";
 
 	struct TCError* errors = typecheck_file(filename);
 
@@ -119,7 +119,7 @@ void test_typecheck_impure_called_in_pure() {
 void test_typecheck_condition_requires_bool() {
 
 	status_test_typechecker("typecheck condition requires bool");
-	char* filename = "test/typechecker/test-src/condition_requires_bool.dg";
+	char* filename = "compiler/test/typechecker/test-src/condition_requires_bool.dg";
 
 	struct TCError* errors = typecheck_file(filename);
 
@@ -133,7 +133,7 @@ void test_typecheck_condition_requires_bool() {
 void test_typecheck_range_requires_int() {
 
 	status_test_typechecker("typecheck range requires int");
-	char* filename = "test/typechecker/test-src/range_requires_int.dg";
+	char* filename = "compiler/test/typechecker/test-src/range_requires_int.dg";
 
 	struct TCError* errors = typecheck_file(filename);
 
@@ -147,7 +147,7 @@ void test_typecheck_range_requires_int() {
 void test_typecheck_wrong_op_unop() {
 
 	status_test_typechecker("typecheck wrong op unop");
-	char* filename = "test/typechecker/test-src/wrong_op_unop.dg";
+	char* filename = "compiler/test/typechecker/test-src/wrong_op_unop.dg";
 
 	struct TCError* errors = typecheck_file(filename);
 
@@ -161,7 +161,7 @@ void test_typecheck_wrong_op_unop() {
 void test_typecheck_index_not_integer_type() {
 
 	status_test_typechecker("typecheck index not integer type");
-	char* filename = "test/typechecker/test-src/index_not_integer_type.dg";
+	char* filename = "compiler/test/typechecker/test-src/index_not_integer_type.dg";
 
 	struct TCError* errors = typecheck_file(filename);
 
@@ -175,7 +175,7 @@ void test_typecheck_index_not_integer_type() {
 void test_typecheck_too_many_indices() {
 
 	status_test_typechecker("typecheck too many indices");
-	char* filename = "test/typechecker/test-src/too_many_indices.dg";
+	char* filename = "compiler/test/typechecker/test-src/too_many_indices.dg";
 
 	struct TCError* errors = typecheck_file(filename);
 
@@ -190,7 +190,7 @@ void test_typecheck_too_many_indices() {
 void test_typecheck_local_var_not_a_subroutine() {
 
 	status_test_typechecker("typecheck local var not a subroutine");
-	char* filename = "test/typechecker/test-src/local_var_not_a_subroutine.dg";
+	char* filename = "compiler/test/typechecker/test-src/local_var_not_a_subroutine.dg";
 
 	struct TCError* errors = typecheck_file(filename);
 
@@ -204,7 +204,7 @@ void test_typecheck_local_var_not_a_subroutine() {
 void test_typecheck_var_not_found() {
 
 	status_test_typechecker("typecheck var not found");
-	char* filename = "test/typechecker/test-src/var_not_found.dg";
+	char* filename = "compiler/test/typechecker/test-src/var_not_found.dg";
 
 	struct TCError* errors = typecheck_file(filename);
 
@@ -218,7 +218,7 @@ void test_typecheck_var_not_found() {
 void test_typecheck_all_type_errors() {
 
 	status_test_typechecker("typecheck all type errors");
-	char* filename = "test/typechecker/test-src/all_errors.dg";
+	char* filename = "compiler/test/typechecker/test-src/all_errors.dg";
 
 	struct TCError* errors_orig = typecheck_file(filename);
 

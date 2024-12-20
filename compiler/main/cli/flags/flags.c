@@ -192,6 +192,7 @@ void freeFlags(struct Flags* flags) {
 	free(flags->asm_filename);
 	free(flags->hex_filename);
 	free(flags->token_filename);
+	free(flags->obj_filename);
 	free(flags->filenames);
 	free(flags);
 }

@@ -1,6 +1,11 @@
 *.out
 *.o
+*.obj
 *.tokens
+*.asm
+*.hex
+*.bin
+.file.dg
 ./main
 a.out
 .idea/

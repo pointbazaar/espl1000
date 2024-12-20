@@ -18,7 +18,7 @@ void test_infer_type_term() {
 
 	status_test_typeinference("infer_type_term");
 
-	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_term.dg");
+	struct Type* t = typeinfer_in_file("compiler/test/typeinference/test-src/infer_type_term.dg");
 
 	assert(t != NULL);
 
@@ -35,7 +35,7 @@ void test_infer_type_unopterm() {
 
 	status_test_typeinference("infer_type_unopterm");
 
-	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_unopterm.dg");
+	struct Type* t = typeinfer_in_file("compiler/test/typeinference/test-src/infer_type_unopterm.dg");
 
 	assert(t != NULL);
 
@@ -56,7 +56,7 @@ void test_infer_type_expr() {
 
 	status_test_typeinference("infer_type_expr");
 
-	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_expr.dg");
+	struct Type* t = typeinfer_in_file("compiler/test/typeinference/test-src/infer_type_expr.dg");
 
 	assert(t != NULL);
 
@@ -77,7 +77,7 @@ void test_infer_type_expr_multiple_terms() {
 
 	status_test_typeinference("infer_type_expr_multiple_terms");
 
-	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_expr_multiple_terms.dg");
+	struct Type* t = typeinfer_in_file("compiler/test/typeinference/test-src/infer_type_expr_multiple_terms.dg");
 
 	assert(t != NULL);
 
@@ -99,7 +99,7 @@ void test_infer_type_return_type_subroutine() {
 
 	status_test_typeinference("infer_type_return_type_subroutine");
 
-	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_return_type_subroutine.dg");
+	struct Type* t = typeinfer_in_file("compiler/test/typeinference/test-src/infer_type_return_type_subroutine.dg");
 
 	assert(t != NULL);
 
@@ -118,7 +118,7 @@ void test_infer_type_call_with_struct_member_access() {
 
 	status_test_typeinference("infer_type_call_with_struct_member_access");
 
-	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_call_with_struct_member_access.dg");
+	struct Type* t = typeinfer_in_file("compiler/test/typeinference/test-src/infer_type_call_with_struct_member_access.dg");
 
 	assert(t != NULL);
 
@@ -136,7 +136,7 @@ void test_infer_type_call_with_struct_member_access() {
 void test_infer_type_call_with_array_access() {
 	status_test_typeinference("infer_type_call_with_array_access");
 
-	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_call_with_array_access.dg");
+	struct Type* t = typeinfer_in_file("compiler/test/typeinference/test-src/infer_type_call_with_array_access.dg");
 
 	assert(t != NULL);
 
@@ -155,7 +155,7 @@ void test_infer_type_simplevar_no_indices() {
 
 	status_test_typeinference("infer_type_simplevar_no_indices");
 
-	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_simplevar_no_indices.dg");
+	struct Type* t = typeinfer_in_file("compiler/test/typeinference/test-src/infer_type_simplevar_no_indices.dg");
 
 	assert(t != NULL);
 
@@ -174,7 +174,7 @@ void test_infer_type_simplevar_with_indices() {
 
 	status_test_typeinference("infer_type_simplevar_with_indices");
 
-	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_simplevar_with_indices.dg");
+	struct Type* t = typeinfer_in_file("compiler/test/typeinference/test-src/infer_type_simplevar_with_indices.dg");
 
 	assert(t != NULL);
 
@@ -193,7 +193,7 @@ void test_infer_type_var_with_member_access() {
 
 	status_test_typeinference("infer_type_var_with_member_access");
 
-	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_var_with_member_access.dg");
+	struct Type* t = typeinfer_in_file("compiler/test/typeinference/test-src/infer_type_var_with_member_access.dg");
 
 	assert(t != NULL);
 
@@ -212,7 +212,7 @@ void test_infer_type_type_param() {
 
 	status_test_typeinference("infer_type_type_param");
 
-	struct Type* t = typeinfer_in_file("test/typeinference/test-src/infer_type_type_param.dg");
+	struct Type* t = typeinfer_in_file("compiler/test/typeinference/test-src/infer_type_type_param.dg");
 
 	assert(t != NULL);
 

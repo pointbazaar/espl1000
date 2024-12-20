@@ -13,7 +13,9 @@ jobs:
       - run:
           environment:
             DEBIAN_FRONTEND: noninteractive
-          command: sudo apt-get update && sudo apt install -yqq gcc make cmake valgrind avra nasm
+          command: |
+            sudo apt-get update
+            sudo apt install -yqq gcc make cmake avra nasm
       - run:
           name: "build"
           command: |
@@ -26,10 +28,7 @@ jobs:
             echo 'export PATH=/home/circleci/project/build/compiler/main:"$PATH"' >> "$BASH_ENV"
             source "$BASH_ENV"
             make test
-      - run:
-          name: "ci valgrind tests"
-          command: |
-            make ci_valgrind_tests
+
   build-job-ubuntu-2204:
     machine:
       image: ubuntu-2204:2022.10.2
@@ -38,7 +37,9 @@ jobs:
       - run:
           environment:
             DEBIAN_FRONTEND: noninteractive
-          command: sudo apt-get update && sudo apt install -yqq gcc make cmake valgrind avra nasm
+          command: |
+            sudo apt-get update
+            sudo apt install -yqq gcc make cmake avra nasm
       - run:
           name: "build"
           command: |
@@ -51,10 +52,28 @@ jobs:
             echo 'export PATH=/home/circleci/project/build/compiler/main:"$PATH"' >> "$BASH_ENV"
             source "$BASH_ENV"
             make test
+
+  valgrind:
+    machine:
+      image: ubuntu-2204:2022.10.2
+    steps:
+      - checkout
       - run:
-          name: "ci valgrind tests"
+          environment:
+            DEBIAN_FRONTEND: noninteractive
           command: |
-            make ci_valgrind_tests
+            sudo apt-get update
+            sudo apt install -yqq gcc make cmake valgrind avra nasm
+      - run:
+          name: "build"
+          command: |
+            echo 'export PATH=/home/circleci/project/build/compiler/main:"$PATH"' >> "$BASH_ENV"
+            source "$BASH_ENV"
+            make build
+      - run:
+          name: "valgrind tests"
+          command: |
+            make valgrind_tests
   check-format:
     docker:
       - image: library/archlinux:latest
@@ -78,3 +97,4 @@ workflows:
       - check-format
       - build-job-ubuntu-2004
       - build-job-ubuntu-2204
+      - valgrind
