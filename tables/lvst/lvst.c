@@ -55,9 +55,13 @@ void lvst_free(struct LVST* lvst) {
 	struct LVSTLine* prev = NULL;
 
 	for (int i = 0; i < lvst->count; i++) {
-		if (lvst->lines[i] != prev) {
-			prev = lvst->lines[i];
-			free(lvst->lines[i]);
+		struct LVSTLine* line = lvst->lines[i];
+
+		if (line != prev) {
+			prev = line;
+
+			free(line->name);
+			free(line);
 		}
 	}
 	free(lvst->lines);

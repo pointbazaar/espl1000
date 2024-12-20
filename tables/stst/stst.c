@@ -119,9 +119,14 @@ void stst_free(struct STST* stst) {
 	struct STSTLine* prev = NULL;
 
 	for (int i = 0; i < stst->count; i++) {
-		if (stst->lines[i] != prev) {
-			prev = stst->lines[i];
-			free(stst->lines[i]);
+		struct STSTLine* line = stst->lines[i];
+
+		if (line != prev) {
+			prev = line;
+
+			free(line->name);
+			free(line->_namespace);
+			free(line);
 		}
 	}
 

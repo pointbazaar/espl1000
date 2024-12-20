@@ -127,6 +127,9 @@ void sst_line_free(struct SSTLine* l) {
 
 	if (l->cc != NULL) { cc_free(l->cc); }
 
+	free(l->name);
+	free(l->_namespace);
+
 	free(l);
 }
 
