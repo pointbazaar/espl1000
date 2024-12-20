@@ -99,20 +99,10 @@ add_executable(dragon-parser-tests
 	test/test_parser_util.h
 )
 
-add_executable(dragon-parser
-	main/commandline/main.c
-	main/commandline/parser_help.c
-	main/commandline/parser_flags.c
-	main/commandline/parser_help.c
-)
-
-target_compile_options(dragon-parser PUBLIC ${COMMON_OPTS})
 target_compile_options(dragon-parser-base PUBLIC ${COMMON_OPTS})
 target_compile_options(dragon-parser-tests PUBLIC ${COMMON_OPTS})
 
 target_link_libraries(dragon-parser-base sd-util sd-ast sd-token)
-
-target_link_libraries(dragon-parser dragon-parser-base sd-util sd-ast sd-token)
 
 target_link_libraries(dragon-parser-tests dragon-parser-base sd-util sd-ast sd-token)
 
@@ -120,11 +110,6 @@ target_include_directories(dragon-parser-base PUBLIC "main/commandline")
 target_include_directories(dragon-parser-base PUBLIC "main/astnodes")
 target_include_directories(dragon-parser-base PUBLIC "main/util")
 target_include_directories(dragon-parser-base PUBLIC "..")
-
-target_include_directories(dragon-parser PUBLIC "main/commandline")
-target_include_directories(dragon-parser PUBLIC "main/astnodes")
-target_include_directories(dragon-parser PUBLIC "main/util")
-target_include_directories(dragon-parser PUBLIC "..")
 
 target_include_directories(dragon-parser-tests PUBLIC "main/astnodes")
 target_include_directories(dragon-parser-tests PUBLIC "main/util")

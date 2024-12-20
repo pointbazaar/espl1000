@@ -52,6 +52,9 @@ bool compile(struct Flags* flags) {
 	}
 
 	if (flags_lexer(flags)) {
+		if (flags_debug(flags)) {
+			printf("[debug] exit after lexer\n");
+		}
 		return true;
 	}
 
@@ -67,6 +70,13 @@ bool compile(struct Flags* flags) {
 		}
 
 		ast->namespaces[i] = ns;
+	}
+
+	if (flags_parser(flags)) {
+		if (flags_debug(flags)) {
+			printf("[debug] exit after parser\n");
+		}
+		return true;
 	}
 
 	struct Ctx* ctx = ctx_ctor(flags, st_ctor());

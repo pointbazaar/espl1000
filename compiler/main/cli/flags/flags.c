@@ -228,6 +228,9 @@ bool flags_print_filenames(struct Flags* flags) {
 bool flags_lexer(struct Flags* flags) {
 	return flags_set(flags, "lexer");
 }
+bool flags_parser(struct Flags* flags) {
+	return flags_set(flags, "parser");
+}
 
 char* flags_asm_filename(struct Flags* flags) {
 	return flags->asm_filename;
