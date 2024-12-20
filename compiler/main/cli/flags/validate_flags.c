@@ -41,7 +41,7 @@ static bool check_dg_extension(char* filename) {
 	const int ext_index = strlen(filename) - 3;
 
 	if (strcmp(filename + ext_index, ".dg") != 0) {
-		printf("filename has to have .dg extension\n");
+		fprintf(stderr, "filename has to have .dg extension\n");
 		return false;
 	}
 	return true;
@@ -52,7 +52,7 @@ static void check_file_exists(char* filename) {
 	//check if the file actually exists
 	struct stat mystat;
 	if (stat(filename, &mystat) == -1) {
-		printf("error in check_file_exists: filename: %s\n", filename);
+		fprintf(stderr, "error in check_file_exists: filename: %s\n", filename);
 		fflush(stdout);
 		perror("Error: ");
 		//freeFlags(flags);
@@ -62,7 +62,7 @@ static void check_file_exists(char* filename) {
 	mode_t mode = mystat.st_mode;
 	if (!S_ISREG(mode)) {
 		//not a regular file
-		printf("Error: %s is not a regular file.\n", filename);
+		fprintf(stderr, "Error: %s is not a regular file.\n", filename);
 		//freeFlags(flags);
 		exit(1);
 	}

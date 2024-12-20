@@ -131,7 +131,6 @@ add_library("sd-base"
 	typeinference/infer_in_context.c
 
 	#util
-	util/help.c
 	util/fill_tables.c
 	util/fill_tables.h
 	util/fileutils/fileutils.c
@@ -139,6 +138,7 @@ add_library("sd-base"
 
 	#flags
 	cli/flags/flags.c
+	cli/flags/all_flags.c
 	cli/flags/validate_flags.c
 )
 

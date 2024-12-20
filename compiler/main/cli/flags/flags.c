@@ -10,17 +10,14 @@
 #include "../../../util/exit_malloc/exit_malloc.h"
 
 #include "flags.h"
+#include "all_flags.h"
+#include "flag.h"
 
 #include "validate_flags.h"
 
 struct Flags {
 	//struct Flags should be opaque outside its
 	//implementation files
-
-	bool debug; //-debug
-	bool help; //-help
-	bool version; //-version
-	bool x86; //-x86
 
 	bool has_main_fn;
 
@@ -33,41 +30,71 @@ struct Flags {
 	char* token_filename;
 	char* hex_filename;
 	char* obj_filename;
+
+	struct Flag* all_flags;
 };
 
-static char* make_asm_filename(char* filename) {
+static bool flags_set(struct Flags* flags, char* name) {
 
-	char* fname_out = exit_malloc(strlen(filename) + 4);
+	for (size_t i = 0; i < all_flags_count(); i++) {
+		struct Flag* f = &(flags->all_flags[i]);
+		if (strcmp(f->name, name) == 0 && f->is_set) {
+			return true;
+		}
+	}
+	return false;
+}
+
+static void sd_print_flags() {
+
+	for (size_t i = 0; i < all_flags_count(); i++) {
+		struct Flag* f = &(all_flags[i]);
+
+		printf(" -%-20s %s\n", f->name, f->description);
+	}
+}
+
+void sd_print_help() {
+
+	printf("OPTIONS\n");
+	sd_print_flags();
+
+	char* name = "sd";
+
+	printf("\nEXAMPLES\n");
+	printf("%s main.dg\n", name);
+	printf("%s -debug main.dg\n", name);
+}
+
+static char* filename_no_extension(char* filename) {
+
+	char* fname_out = exit_malloc(strlen(filename) + 5);
 
 	strcpy(fname_out, filename);
 	//remove the '.dg'
 	fname_out[strlen(fname_out) - 3] = '\0';
-	strcat(fname_out, ".asm");
 
+	return fname_out;
+}
+
+static char* make_asm_filename(char* filename) {
+
+	char* fname_out = filename_no_extension(filename);
+	strcat(fname_out, ".asm");
 	return fname_out;
 }
 
 static char* make_obj_filename(char* filename) {
 
-	char* fname_out = exit_malloc(strlen(filename) + 4);
-
-	strcpy(fname_out, filename);
-	//remove the '.dg'
-	fname_out[strlen(fname_out) - 3] = '\0';
+	char* fname_out = filename_no_extension(filename);
 	strcat(fname_out, ".o");
-
 	return fname_out;
 }
 
 static char* make_hex_filename(char* filename) {
 
-	char* fname_out = exit_malloc(strlen(filename) + 4);
-
-	strcpy(fname_out, filename);
-	//remove the '.dg'
-	fname_out[strlen(fname_out) - 3] = '\0';
+	char* fname_out = filename_no_extension(filename);
 	strcat(fname_out, ".hex");
-
 	return fname_out;
 }
 
@@ -93,14 +120,20 @@ static char* make_token_filename(char* filename) {
 
 static void make_flags_inner(struct Flags* flags, char* arg);
 
+static void make_associated_filenames(struct Flags* flags) {
+
+	flags->asm_filename = make_asm_filename(flags_filenames(flags, 0));
+	flags->token_filename = make_token_filename(flags_filenames(flags, 0));
+	flags->hex_filename = make_hex_filename(flags_filenames(flags, 0));
+	flags->obj_filename = make_obj_filename(flags_filenames(flags, 0));
+}
+
 struct Flags* makeFlags(int argc, char** argv) {
 
 	struct Flags* flags = exit_malloc(sizeof(struct Flags));
 
-	flags->debug = false;
-	flags->help = false;
-	flags->version = false;
-	flags->x86 = false;
+	flags->all_flags = malloc(sizeof(struct Flag) * all_flags_count());
+	memcpy(flags->all_flags, all_flags, all_flags_count() * sizeof(struct Flag));
 
 	flags->count_filenames = 0;
 
@@ -113,14 +146,13 @@ struct Flags* makeFlags(int argc, char** argv) {
 		make_flags_inner(flags, argv[i]);
 	}
 
-	if (flags->help || flags->version) { return flags; }
+	if (flags_set(flags, "help") || flags_set(flags, "version")) {
+		return flags;
+	}
 
 	validate_flags(flags);
 
-	flags->asm_filename = make_asm_filename(flags_filenames(flags, 0));
-	flags->token_filename = make_token_filename(flags_filenames(flags, 0));
-	flags->hex_filename = make_hex_filename(flags_filenames(flags, 0));
-	flags->obj_filename = make_obj_filename(flags_filenames(flags, 0));
+	make_associated_filenames(flags);
 
 	return flags;
 }
@@ -140,27 +172,17 @@ static void make_flags_inner(struct Flags* flags, char* arg) {
 		return;
 	}
 
-	if (strcmp(arg, "-debug") == 0) {
-		flags->debug = true;
-		return;
+	for (size_t i = 0; i < all_flags_count(); i++) {
+		struct Flag* f = &(flags->all_flags[i]);
+
+		if (strcmp(arg + 1, f->name) == 0) {
+			f->is_set = true;
+			return;
+		}
 	}
 
-	if (strcmp(arg, "-help") == 0) {
-		flags->help = true;
-		return;
-	}
-
-	if (strcmp(arg, "-version") == 0) {
-		flags->version = true;
-		return;
-	}
-
-	if (strcmp(arg, "-x86") == 0) {
-		flags->x86 = true;
-		return;
-	}
-
-	printf("unrecognized flag: %s. Exiting.\n", arg);
+	fprintf(stderr, "unrecognized flag: '%s'\n", arg);
+	fprintf(stderr, "exiting.\n");
 	exit(1);
 }
 
@@ -189,16 +211,19 @@ char* flags_filenames(struct Flags* flags, int index) {
 }
 
 bool flags_debug(struct Flags* flags) {
-	return flags->debug;
+	return flags_set(flags, "debug");
 }
 bool flags_version(struct Flags* flags) {
-	return flags->version;
+	return flags_set(flags, "version");
 }
 bool flags_help(struct Flags* flags) {
-	return flags->help;
+	return flags_set(flags, "help");
 }
 bool flags_x86(struct Flags* flags) {
-	return flags->x86;
+	return flags_set(flags, "x86");
+}
+bool flags_print_filenames(struct Flags* flags) {
+	return flags_set(flags, "print-filenames");
 }
 
 char* flags_asm_filename(struct Flags* flags) {

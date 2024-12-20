@@ -2,7 +2,6 @@
 #include <malloc.h>
 
 #include "flags/flags.h"
-#include "util/help.h"
 #include "util/fileutils/fileutils.h"
 
 #include "compiler.h"
@@ -30,6 +29,13 @@ int main(int argc, char* argv[]) {
 		printf("v0.2.0\n");
 		freeFlags(flags);
 		return EXIT_SUCCESS;
+	}
+
+	if (flags_print_filenames(flags)) {
+		printf("%s\n", flags_asm_filename(flags));
+		printf("%s\n", flags_token_filename(flags));
+		printf("%s\n", flags_hex_filename(flags));
+		printf("%s\n", flags_obj_filename(flags));
 	}
 
 	bool success = compile(flags);
