@@ -26,27 +26,35 @@ setup_path:
 	export PATH=${PATH}:$(pwd)/build/compiler/main
 	export PATH=${PATH}:$(pwd)/build/compiler/test
 
-test: build-step ${TESTS} setup_path
-	cd compiler && \
-	../build/compiler/test/sd-tests && \
-	cd .. && \
+TESTBIN=build/compiler/test/sd-tests
+
+${TESTBIN}: build-step
+
+test: ${TESTBIN} setup_path
+	./build/compiler/test/sd-tests && \
 	cd examples   && make test
 	#cd stdlib     && make test
 
-TESTS=\
-      build/compiler/test/sd-tests \
-
 VALGRIND_OPTS=--leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1
 
-ci_valgrind_tests: ${TESTS} setup_path
+VALGRIND_CALL=${VALGRIND_OPTS} ${TESTBIN}
+
+valgrind_tests: ${TESTBIN} setup_path
+	# following 2 steps for circle ci
 	export CI_DIR=/home/circleci/project
 	export BUILD_DIR=${CI_DIR}/build
-	make valgrind_tests
-
-valgrind_tests: ${TESTS}
-	#valgrind ${VALGRIND_OPTS} ./build/parser/dragon-parser-tests
-	echo "enable valgrind tests for sd-tests"
-	#TODO: enable valgrind for the compiler tests
+	valgrind ${VALGRIND_CALL} -testsuite Token
+	valgrind ${VALGRIND_CALL} -testsuite Lexer
+	valgrind ${VALGRIND_CALL} -testsuite AST
+	valgrind ${VALGRIND_CALL} -testsuite Parser
+	valgrind ${VALGRIND_CALL} -testsuite RAT
+	valgrind ${VALGRIND_CALL} -testsuite TAC
+	#valgrind ${VALGRIND_CALL} -testsuite Typeinference
+	#valgrind ${VALGRIND_CALL} -testsuite Typechecker
+	#valgrind ${VALGRIND_CALL} -testsuite "AVR CodeGen"
+	#valgrind ${VALGRIND_CALL} -testsuite "TAC CodeGen from Snippets"
+	#valgrind ${VALGRIND_CALL} -testsuite "x86 CodeGen"
+	#valgrind ${VALGRIND_CALL} -testsuite "Liveness"
 
 clean_cmake:
 	rm -rf CMakeFiles
