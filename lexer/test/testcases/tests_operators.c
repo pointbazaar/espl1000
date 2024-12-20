@@ -9,7 +9,7 @@
 
 void test_operators() {
 
-	printt("test operators\n");
+	printt("test operators");
 
 	char* str = "+ - * / ";
 	struct Token** tokens = lex(str);
@@ -27,7 +27,7 @@ void test_operators() {
 
 void test_operators_cmp() {
 
-	printt("test operators_cmp\n");
+	printt("test operators_cmp");
 
 	char* str = "<= >= == != < >";
 	struct Token** tokens = lex(str);
@@ -47,7 +47,7 @@ void test_operators_cmp() {
 
 void test_operators_logical() {
 
-	printt("test operators_logical\n");
+	printt("test operators_logical");
 
 	char* str = "&& || ";
 	struct Token** tokens = lex(str);
@@ -64,7 +64,7 @@ void test_operators_logical() {
 
 void test_operators_bitwise() {
 
-	printt("test operators_bitwise\n");
+	printt("test operators_bitwise");
 
 	char* str = "| & << >> ^ ~";
 	struct Token** tokens = lex(str);
@@ -84,7 +84,7 @@ void test_operators_bitwise() {
 
 void test_assign_operators() {
 
-	printt("test_assign_operators\n");
+	printt("test_assign_operators");
 
 	char* str = "= += -= >>= <<= &= |=";
 	struct Token** tokens = lex(str);

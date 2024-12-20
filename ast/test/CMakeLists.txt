@@ -1,6 +1,5 @@
 
 add_library("sd-ast-test"
-	test_ast.c
 	test_str_ast.c
 )
 

@@ -9,7 +9,7 @@
 
 void test_if_else() {
 
-	printt("test if else\n");
+	printt("test if else");
 
 	char* str = "if else{ ";
 	struct Token** tokens = lex(str);
@@ -23,7 +23,7 @@ void test_if_else() {
 
 void test_break() {
 
-	printt("test break\n");
+	printt("test break");
 
 	char* str = "break; int x";
 	struct Token** tokens = lex(str);
@@ -37,7 +37,7 @@ void test_break() {
 
 void test_for() {
 
-	printt("test_for\n");
+	printt("test_for");
 
 	char* str = "for for{ ";
 	struct Token** tokens = lex(str);
@@ -51,7 +51,7 @@ void test_for() {
 
 void test_in() {
 
-	printt("test_in\n");
+	printt("test_in");
 
 	char* str = "in; in{ ";
 	struct Token** tokens = lex(str);

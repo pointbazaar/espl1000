@@ -11,13 +11,6 @@
 #include "x86_code_gen/test_x86_code_gen.h"
 #include "gen_tac/test_gen_tac.h"
 
-#include "lexer/test/test.h"
-#include "parser/test/commandline/test.h"
-#include "ast/test/test_ast.h"
-#include "tac/test/test.h"
-#include "rat/test.h"
-#include "token/test/test.h"
-
 static void status_test_transpiler(char* msg) {
 	printf("[Compiler][TEST-SUITE] %s\n", msg);
 }
@@ -47,6 +40,30 @@ struct testsuite {
 };
 
 struct testsuite testsuites[] = {
+    {
+	.name = "Token",
+	.testcases = tests_token,
+    },
+    {
+	.name = "Lexer",
+	.testcases = tests_lexer,
+    },
+    {
+	.name = "AST",
+	.testcases = tests_ast,
+    },
+    {
+	.name = "Parser",
+	.testcases = tests_parser,
+    },
+    {
+	.name = "RAT",
+	.testcases = tests_rat,
+    },
+    {
+	.name = "TAC",
+	.testcases = tests_tac,
+    },
     {
 	.name = "Typeinference",
 	.testcases = tests_typeinference,
@@ -128,13 +145,6 @@ int main(int argc, char* argv[]) {
 	status_test_transpiler("Running tests for smalldragon/compiler:");
 
 	gettimeofday(&start, NULL);
-
-	test_lexer_main();
-	test_parser_main();
-	test_token_main();
-	test_rat_main();
-	test_tac_main();
-	test_ast_main();
 
 	const uint64_t ntests = run_testsuites(&flags);
 

@@ -13,7 +13,7 @@ static void test_status_str_ast(char* msg) {
 	printf(" - [TEST] %s\n", msg);
 }
 
-void test_str_binconst() {
+void test_ast_str_binconst() {
 
 	test_status_str_ast("str_const_value - bin");
 
@@ -30,7 +30,7 @@ void test_str_binconst() {
 	free_const_value(cv);
 }
 
-void test_str_intconst() {
+void test_ast_str_intconst() {
 
 	test_status_str_ast("str_const_value - int");
 
@@ -47,7 +47,7 @@ void test_str_intconst() {
 	free_const_value(cv);
 }
 
-void test_str_charconst() {
+void test_ast_str_charconst() {
 
 	test_status_str_ast("str_const_value - char");
 
@@ -64,7 +64,7 @@ void test_str_charconst() {
 	free_const_value(cv);
 }
 
-void test_str_hexconst() {
+void test_ast_str_hexconst() {
 
 	test_status_str_ast("str_const_value - hex");
 
@@ -81,7 +81,7 @@ void test_str_hexconst() {
 	free_const_value(cv);
 }
 
-void test_str_expr() {
+void test_ast_str_expr() {
 
 	test_status_str_ast("str_expr");
 
@@ -109,7 +109,7 @@ void test_str_expr() {
 	free_un_op_term(u2);
 	free(s);
 }
-void test_str_op() {
+void test_ast_str_op() {
 
 	test_status_str_ast("str_op");
 
@@ -119,7 +119,7 @@ void test_str_op() {
 
 	free(s);
 }
-void test_str_unopterm() {
+void test_ast_str_unopterm() {
 
 	test_status_str_ast("str_un_op_term");
 
@@ -139,7 +139,7 @@ void test_str_unopterm() {
 
 	free(s);
 }
-void test_str_term() {
+void test_ast_str_term() {
 
 	test_status_str_ast("str_term");
 

@@ -1,6 +1,5 @@
 
 add_library("sd-tac-test"
-	test.c
 	test_tac.c
 	test_tacbuffer.c
 )

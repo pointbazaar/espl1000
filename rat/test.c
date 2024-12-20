@@ -6,45 +6,9 @@
 
 #include "test.h"
 
-int test_count = 0;
+#include "util/status/status.h"
 
-static void status(char* msg);
-
-static void test_scratch_reg();
-static void test_alloc_different_regs();
-static void test_alloc_in_bounds();
-static void test_can_free();
-static void test_occupant();
-static void test_can_free_pair();
-static void test_occupant_pair();
-static void test_alloc_n_regs();
-static void test_rat_is_wide();
-
-int test_rat_main() {
-
-	printf("[RAT][TEST]\n");
-
-	test_scratch_reg();
-	test_alloc_different_regs();
-	test_alloc_in_bounds();
-	test_can_free();
-	test_occupant();
-	test_can_free_pair();
-	test_occupant_pair();
-	test_alloc_n_regs();
-	test_rat_is_wide();
-
-	printf("[RAT][TEST] Passed %d Tests\n", test_count);
-
-	return 0;
-}
-
-static void status(char* msg) {
-	printf("[RAT][TEST][#%02d] %s\n", test_count, msg);
-	test_count += 1;
-}
-
-static void test_scratch_reg() {
+void test_rat_scratch_reg() {
 
 	status("scratch register");
 
@@ -55,7 +19,7 @@ static void test_scratch_reg() {
 	rat_dtor(rat);
 }
 
-static void test_alloc_different_regs() {
+void test_rat_alloc_different_regs() {
 
 	status("allocate different registers");
 
@@ -70,7 +34,7 @@ static void test_alloc_different_regs() {
 	rat_dtor(rat);
 }
 
-static void test_alloc_in_bounds() {
+void test_rat_alloc_in_bounds() {
 
 	status("allocate in bounds");
 
@@ -89,7 +53,7 @@ static void test_alloc_in_bounds() {
 	rat_dtor(rat);
 }
 
-static void test_can_free() {
+void test_rat_can_free() {
 
 	status("can free a register");
 
@@ -109,7 +73,7 @@ static void test_can_free() {
 	rat_dtor(rat);
 }
 
-static void test_occupant() {
+void test_rat_occupant() {
 
 	status("can occupy and read occupant");
 
@@ -125,7 +89,7 @@ static void test_occupant() {
 	rat_dtor(rat);
 }
 
-static void test_can_free_pair() {
+void test_rat_can_free_pair() {
 
 	status("can free a register pair");
 
@@ -143,7 +107,7 @@ static void test_can_free_pair() {
 	rat_dtor(rat);
 }
 
-static void test_occupant_pair() {
+void test_rat_occupant_pair() {
 
 	status("can occupy and read occupant for pair");
 
@@ -157,7 +121,7 @@ static void test_occupant_pair() {
 	rat_dtor(rat);
 }
 
-static void test_alloc_n_regs() {
+void test_rat_alloc_n_regs() {
 
 	status("can allocate a number of regs without running out");
 
@@ -171,7 +135,7 @@ static void test_alloc_n_regs() {
 	rat_dtor(rat);
 }
 
-static void test_rat_is_wide() {
+void test_rat_is_wide() {
 
 	status("rat_is_wide(...)");
 

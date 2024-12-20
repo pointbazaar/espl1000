@@ -8,7 +8,7 @@
 
 void test_include_decl() {
 
-	printt("test #include <file.h>  \n");
+	printt("test #include <file.h>");
 
 	char* str = "#include <file.h>";
 	struct Token** tokens = lex(str);

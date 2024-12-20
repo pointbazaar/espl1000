@@ -9,7 +9,7 @@
 
 void test_lexes_escaped_char() {
 
-	printt("lexes escaped char\n");
+	printt("lexes escaped char");
 
 	char* str = "return '\\n'";
 	struct Token** tokens = lex(str);
@@ -23,7 +23,7 @@ void test_lexes_escaped_char() {
 
 void test_anytypetoken() {
 
-	printt("test anytype token\n");
+	printt("test anytype token");
 
 	char* str = "# ";
 	struct Token** tokens = lex(str);
@@ -35,7 +35,7 @@ void test_anytypetoken() {
 
 void test_true() {
 
-	printt("test boolconst token\n");
+	printt("test boolconst token");
 
 	char* str = "true ";
 	struct Token** tokens = lex(str);
@@ -47,7 +47,7 @@ void test_true() {
 
 void test_false() {
 
-	printt("test boolconst token\n");
+	printt("test boolconst token");
 
 	char* str = "false ";
 	struct Token** tokens = lex(str);
@@ -59,7 +59,7 @@ void test_false() {
 
 void test_char() {
 
-	printt("test charconst token\n");
+	printt("test charconst token");
 
 	char* str = "'x' ('\\n') 'h' ";
 	struct Token** tokens = lex(str);
@@ -81,7 +81,7 @@ void test_char() {
 
 void test_int_1() {
 
-	printt("test integer token:1\n");
+	printt("test integer token:1");
 
 	char* str = "2038 ";
 	struct Token** tokens = lex(str);
@@ -94,7 +94,7 @@ void test_int_1() {
 
 void test_int_2() {
 
-	printt("test integer token:2\n");
+	printt("test integer token:2");
 
 	char* str = "0 ";
 	struct Token** tokens = lex(str);
@@ -107,7 +107,7 @@ void test_int_2() {
 
 void test_int_3() {
 
-	printt("test integer token:3\n");
+	printt("test integer token:3");
 
 	char* str = "-5 ";
 	struct Token** tokens = lex(str);
@@ -120,7 +120,7 @@ void test_int_3() {
 
 void test_hex() {
 
-	printt("test hex\n");
+	printt("test hex");
 
 	char* str = "0x1 0x0 0x10 0x1f 0xA3";
 	struct Token** tokens = lex(str);
@@ -145,7 +145,7 @@ void test_hex() {
 
 void test_binconst() {
 
-	printt("test binconst\n");
+	printt("test binconst");
 
 	char* str = "0b0 0b1 0b10 0b101";
 	struct Token** tokens = lex(str);
