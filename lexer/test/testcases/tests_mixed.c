@@ -9,7 +9,7 @@
 
 void test_mixed_1() {
 
-	printt("test mixed 1\n");
+	printt("test mixed 1");
 
 	char* str = "struct MyStruct { uint a, MyStruct b} ";
 	struct Token** tokens = lex(str);
@@ -28,7 +28,7 @@ void test_mixed_1() {
 
 void test_mixed_2() {
 
-	printt("test mixed 2\n");
+	printt("test mixed 2");
 
 	char* str = ") f)~> ";
 	struct Token** tokens = lex(str);
@@ -47,7 +47,7 @@ void test_mixed_2() {
 
 void test_mixed_3() {
 
-	printt("test mixed 3\n");
+	printt("test mixed 3");
 
 	char* str = "if(x ";
 	struct Token** tokens = lex(str);
@@ -61,7 +61,7 @@ void test_mixed_3() {
 
 void test_mixed_4() {
 
-	printt("test mixed 4\n");
+	printt("test mixed 4");
 
 	char* str = "while(x uint n ";
 	struct Token** tokens = lex(str);
@@ -77,7 +77,7 @@ void test_mixed_4() {
 
 void test_mixed_5() {
 
-	printt("test mixed 5\n");
+	printt("test mixed 5");
 
 	char* str = "]='d'; ";
 	struct Token** tokens = lex(str);
@@ -92,7 +92,7 @@ void test_mixed_5() {
 
 void test_mixed_6() {
 
-	printt("test mixed 6\n");
+	printt("test mixed 6");
 
 	char* str = "MyStruct s} ";
 	struct Token** tokens = lex(str);
@@ -106,7 +106,7 @@ void test_mixed_6() {
 
 void test_mixed_7() {
 
-	printt("test mixed 7\n");
+	printt("test mixed 7");
 
 	char* str = "(1<2) ";
 	struct Token** tokens = lex(str);
@@ -122,7 +122,7 @@ void test_mixed_7() {
 
 void test_mixed_8() {
 
-	printt("test mixed 8\n");
+	printt("test mixed 8");
 
 	char* str = "putchar('1') ";
 	struct Token** tokens = lex(str);
@@ -137,7 +137,7 @@ void test_mixed_8() {
 
 void test_mixed_9() {
 
-	printt("test mixed 9\n");
+	printt("test mixed 9");
 
 	char* str = "putchar('-') ";
 	struct Token** tokens = lex(str);
@@ -152,7 +152,7 @@ void test_mixed_9() {
 
 void test_mixed_10() {
 
-	printt("test mixed 10\n");
+	printt("test mixed 10");
 
 	char* str = ";\n 	i=0; ";
 	struct Token** tokens = lex(str);
@@ -170,7 +170,7 @@ void test_mixed_10() {
 
 void test_mixed_11() {
 
-	printt("test mixed 11\n");
+	printt("test mixed 11");
 
 	char* str = "uint i, char j ";
 	struct Token** tokens = lex(str);
@@ -186,7 +186,7 @@ void test_mixed_11() {
 
 void test_mixed_12() {
 
-	printt("test mixed 12\n");
+	printt("test mixed 12");
 
 	char* str = "( x < 31) ";
 	struct Token** tokens = lex(str);
@@ -202,7 +202,7 @@ void test_mixed_12() {
 
 void test_mixed_13() {
 
-	printt("test mixed 13\n");
+	printt("test mixed 13");
 
 	char* str = "println(\"vector sum:\"); ";
 	struct Token** tokens = lex(str);
@@ -220,7 +220,7 @@ void test_mixed_13() {
 
 void test_mixed_14() {
 
-	printt("test mixed 14\n");
+	printt("test mixed 14");
 
 	char* str = "struct MyStruct{ int a, int b}";
 	struct Token** tokens = lex(str);
@@ -245,7 +245,7 @@ void test_mixed_14() {
 
 void test_mixed_15() {
 
-	printt("test mixed 15\n");
+	printt("test mixed 15");
 
 	char* str = "struct MyStruct{\n\tint a,\n\tint b\n}";
 	struct Token** tokens = lex(str);
@@ -273,7 +273,7 @@ void test_mixed_15() {
 
 void test_mixed_16() {
 
-	printt("test mixed 16\n");
+	printt("test mixed 16");
 
 	char* str = "((uint) -> bool) member ";
 	struct Token** tokens = lex(str);

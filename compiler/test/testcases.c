@@ -3,12 +3,172 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "lexer/test/test.h"
 #include "typechecker/test_typechecker.h"
 #include "typeinference/test_typeinference.h"
 #include "avr_code_gen/test_avr_code_gen.h"
 #include "x86_code_gen/test_x86_code_gen.h"
 #include "gen_tac/test_gen_tac.h"
 #include "liveness/test_liveness.h"
+#include "parser/test/commandline/test.h"
+#include "token/test/test.h"
+#include "tac/test/test.h"
+#include "rat/test.h"
+#include "ast/test/test_str_ast.h"
+
+void (*tests_ast[])() = {
+    test_ast_str_binconst,
+    test_ast_str_intconst,
+    test_ast_str_charconst,
+    test_ast_str_hexconst,
+
+    test_ast_str_expr,
+    test_ast_str_op,
+    test_ast_str_unopterm,
+    test_ast_str_term,
+
+    NULL,
+};
+
+void (*tests_tac[])() = {
+    test_tac_tostring,
+    test_tac_opt_dest,
+
+    test_tacbuffer_tostring,
+    test_tacbuffer_indexof,
+    test_tacbuffer_set,
+    test_tacbuffer_get,
+    test_tacbuffer_get_last,
+    test_tacbuffer_last_dest,
+    test_tacbuffer_count,
+    NULL,
+};
+
+void (*tests_rat[])() = {
+
+    test_rat_scratch_reg,
+    test_rat_alloc_different_regs,
+    test_rat_alloc_in_bounds,
+    test_rat_can_free,
+    test_rat_occupant,
+    test_rat_can_free_pair,
+    test_rat_occupant_pair,
+    test_rat_alloc_n_regs,
+    test_rat_is_wide,
+    NULL,
+};
+
+void (*tests_token[])() = {
+    test_tokenlist_no_leak,
+    test_tokenlist_1element,
+    test_tokenlist_copy,
+    test_tokenlist_code,
+    test_tokenlist_print,
+    test_tokenlist_consume,
+    NULL,
+};
+
+void (*tests_lexer[])() = {
+    test_plus_plus_minus_minus,
+
+    test_can_see_line_with_semicolon,
+    test_can_see_line_with_operators,
+    test_lexes_return_statement_favorably,
+    test_lexes_other_return_statement,
+
+    test_identifier_1,
+    test_identifier_2,
+
+    test_struct,
+    test_return,
+
+    test_string_1,
+
+    test_typeidentifier,
+    test_typeidentifier_primitive,
+
+    test_typeparameter_1,
+
+    test_comma,
+    test_arrow,
+
+    //tests_const.c
+    test_lexes_escaped_char,
+    test_anytypetoken,
+    test_true,
+    test_false,
+    test_char,
+    test_int_1,
+    test_int_2,
+    test_int_3,
+    test_hex,
+    test_binconst,
+
+    //tests_mixed.c
+    test_mixed_1,
+    test_mixed_2,
+    test_mixed_3,
+    test_mixed_4,
+    test_mixed_5,
+    test_mixed_6,
+    test_mixed_7,
+    test_mixed_8,
+    test_mixed_9,
+    test_mixed_10,
+    test_mixed_11,
+    test_mixed_12,
+    test_mixed_13,
+    test_mixed_14,
+    test_mixed_15,
+    test_mixed_16,
+    //----------------
+
+    //tests_operators.c
+    test_operators,
+    test_operators_cmp,
+    test_operators_logical,
+    test_operators_bitwise,
+    test_assign_operators,
+    //----------------
+
+    //tests_keywords.c
+    test_if_else,
+    test_break,
+    test_for,
+    test_in,
+    //----------------
+
+    //tests_comments.c
+    test_single_line_comment,
+    test_multi_line_comment,
+
+    test_rangeop_1,
+    test_rangeop_2,
+
+    test_member_access,
+
+    test_brackets,
+
+    test_include_decl,
+    NULL,
+};
+
+void (*tests_parser[])() = {
+    test_parser_suite_constnodes,
+    test_parser_suite_simplevar,
+    test_parser_suite_var,
+    test_parser_suite_term,
+    test_parser_suite_expr,
+    test_parser_suite_unop,
+    test_parser_suite_assignstmt,
+    test_parser_suite_stmts,
+    test_parser_suite_method,
+    test_parser_suite_struct,
+    test_parser_suite_types,
+    test_parser_suite_range,
+    test_parser_suite_namespace,
+    NULL,
+};
 
 void (*tests_liveness[])() = {
     test_liveness_1_block,

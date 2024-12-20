@@ -9,7 +9,7 @@
 
 void test_single_line_comment() {
 
-	printt("single line comment\n");
+	printt("single line comment");
 
 	char* str = "x1 //hello there \n x2 ";
 	struct Token** tokens = lex(str);
@@ -25,7 +25,7 @@ void test_single_line_comment() {
 
 void test_multi_line_comment() {
 
-	printt("multi line comment\n");
+	printt("multi line comment");
 
 	char* str = "x1 /*hello //there \n now*/ x2 ";
 	struct Token** tokens = lex(str);

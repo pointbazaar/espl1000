@@ -8,6 +8,8 @@
 #include "tac/tac.h"
 #include "tac/tacbuffer.h"
 
+#include "util/status/status.h"
+
 void test_tac_opt_dest() {
 
 	status("tac_opt_dest");

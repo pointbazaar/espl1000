@@ -9,7 +9,7 @@
 
 void test_plus_plus_minus_minus() {
 
-	printt("test ++, --\n");
+	printt("test ++, --");
 
 	char* str = "Char ++ -- ";
 	//should expand: "Char += 1 -= 1"
@@ -32,7 +32,7 @@ void test_plus_plus_minus_minus() {
 
 void test_can_see_line_with_semicolon() {
 
-	printt("test can see line with semicolon\n");
+	printt("test can see line with semicolon");
 
 	char* str = "Char x; ";
 	struct Token** tokens = lex(str);
@@ -51,7 +51,7 @@ void test_can_see_line_with_semicolon() {
 
 void test_can_see_line_with_operators() {
 
-	printt("can see line with operators\n");
+	printt("can see line with operators");
 
 	char* str = "x = x+x; ";
 	struct Token** tokens = lex(str);
@@ -70,7 +70,7 @@ void test_can_see_line_with_operators() {
 
 void test_lexes_return_statement_favorably() {
 
-	printt("lexes return statement favorably\n");
+	printt("lexes return statement favorably");
 
 	char* str = "return (-5)*n; ";
 	struct Token** tokens = lex(str);
@@ -94,7 +94,7 @@ void test_lexes_return_statement_favorably() {
 
 void test_lexes_other_return_statement() {
 
-	printt("lexes other return statement\n");
+	printt("lexes other return statement");
 
 	char* str = "return (n*faculty(n-1)); ";
 	struct Token** tokens = lex(str);
@@ -118,7 +118,7 @@ void test_lexes_other_return_statement() {
 
 void test_identifier_1() {
 
-	printt("test identifier token:1\n");
+	printt("test identifier token:1");
 
 	char* str = "main ";
 	struct Token** tokens = lex(str);
@@ -131,7 +131,7 @@ void test_identifier_1() {
 
 void test_identifier_2() {
 
-	printt("test identifier token:2\n");
+	printt("test identifier token:2");
 
 	char* str = "arg_ls ";
 	struct Token** tokens = lex(str);
@@ -144,7 +144,7 @@ void test_identifier_2() {
 
 void test_struct() {
 
-	printt("test struct token\n");
+	printt("test struct token");
 
 	char* str = "struct ";
 	struct Token** tokens = lex(str);
@@ -156,7 +156,7 @@ void test_struct() {
 
 void test_return() {
 
-	printt("test return token\n");
+	printt("test return token");
 
 	char* str = "return ";
 	struct Token** tokens = lex(str);
@@ -168,7 +168,7 @@ void test_return() {
 
 void test_string_1() {
 
-	printt("test string token:1\n");
+	printt("test string token:1");
 
 	char* str = "\"hi\" ";
 	struct Token** tokens = lex(str);
@@ -182,7 +182,7 @@ void test_string_1() {
 
 void test_typeidentifier() {
 
-	printt("test typeidentifier token:1\n");
+	printt("test typeidentifier token:1");
 
 	char* str = "Carrot ";
 	struct Token** tokens = lex(str);
@@ -195,7 +195,7 @@ void test_typeidentifier() {
 
 void test_typeidentifier_primitive() {
 
-	printt("test typeidentifier primitive\n");
+	printt("test typeidentifier primitive");
 
 	char* str = "int uint int8 uint8 int16 uint16";
 
@@ -231,7 +231,7 @@ void test_typeidentifier_primitive() {
 
 void test_typeparameter_1() {
 
-	printt("test typeparameter token\n");
+	printt("test typeparameter token");
 
 	char* str = "?T0 ?T1 (?T2";
 	struct Token** tokens = lex(str);
@@ -246,7 +246,7 @@ void test_typeparameter_1() {
 
 void test_comma() {
 
-	printt("test comma token\n");
+	printt("test comma token");
 
 	char* str = ",, ";
 	struct Token** tokens = lex(str);
@@ -259,7 +259,7 @@ void test_comma() {
 
 void test_arrow() {
 
-	printt("test arrow token\n");
+	printt("test arrow token");
 
 	char* str = "-> ~> ";
 	struct Token** tokens = lex(str);
@@ -272,7 +272,7 @@ void test_arrow() {
 
 void test_rangeop_1() {
 
-	printt("test_rangeop_1\n");
+	printt("test_rangeop_1");
 
 	char* str = ".. a.... ";
 	struct Token** tokens = lex(str);
@@ -287,7 +287,7 @@ void test_rangeop_1() {
 
 void test_rangeop_2() {
 
-	printt("test_rangeop_1\n");
+	printt("test_rangeop_1");
 
 	char* str = "0 .. 3 a .. b ";
 	struct Token** tokens = lex(str);
@@ -305,7 +305,7 @@ void test_rangeop_2() {
 
 void test_member_access() {
 
-	printt("test_member_access\n");
+	printt("test_member_access");
 
 	char* str = "s.member= ";
 	struct Token** tokens = lex(str);
@@ -321,7 +321,7 @@ void test_member_access() {
 
 void test_brackets() {
 
-	printt("test_brackets\n");
+	printt("test_brackets");
 
 	char* str = "[](){}< > ";
 	struct Token** tokens = lex(str);

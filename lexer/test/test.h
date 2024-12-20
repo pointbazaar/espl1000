@@ -3,8 +3,6 @@
 
 #include <stdbool.h>
 
-int test_lexer_main();
-
 void printt(char* test_name);
 
 //test subroutines

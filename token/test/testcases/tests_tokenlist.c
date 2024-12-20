@@ -6,9 +6,11 @@
 
 #include "../test.h"
 
+#include "util/status/status.h"
+
 void test_tokenlist_no_leak() {
 
-	printt2("test tokenlist no leak\n");
+	status("test tokenlist no leak");
 
 	struct TokenList* list = makeTokenList();
 
@@ -17,7 +19,7 @@ void test_tokenlist_no_leak() {
 
 void test_tokenlist_1element() {
 
-	printt2("test tokenlist 1 element\n");
+	status("test tokenlist 1 element");
 
 	struct TokenList* list = makeTokenList();
 
@@ -30,7 +32,7 @@ void test_tokenlist_1element() {
 
 void test_tokenlist_copy() {
 
-	printt2("test tokenlist copy\n");
+	status("test tokenlist copy");
 
 	struct TokenList* list = makeTokenList();
 
@@ -46,7 +48,7 @@ void test_tokenlist_copy() {
 
 void test_tokenlist_code() {
 
-	printt2("test list_code\n");
+	status("test list_code");
 
 	struct TokenList* list = makeTokenList();
 
@@ -62,7 +64,7 @@ void test_tokenlist_code() {
 
 void test_tokenlist_print() {
 
-	printt2("test list_print\n");
+	status("test list_print");
 
 	struct TokenList* list = makeTokenList();
 
@@ -77,7 +79,7 @@ void test_tokenlist_print() {
 
 void test_tokenlist_consume() {
 
-	printt2("test list_consume\n");
+	status("test list_consume");
 
 	struct TokenList* list = makeTokenList();
 
