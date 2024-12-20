@@ -22,6 +22,7 @@ bool flags_help(struct Flags* flags);
 bool flags_x86(struct Flags* flags);
 bool flags_print_filenames(struct Flags* flags);
 bool flags_lexer(struct Flags* flags);
+bool flags_parser(struct Flags* flags);
 
 //generated filenames for later on
 char* flags_asm_filename(struct Flags* ctx);

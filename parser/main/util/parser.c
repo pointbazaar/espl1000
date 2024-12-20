@@ -12,7 +12,7 @@
 #include "token/token/token.h"
 #include "token/list/TokenList.h"
 
-#include "parser.h"
+#include "parser/main/util/parser.h"
 
 #define ERR_COULD_NOT_OPEN_FILE "[Parser] could not open file: %s\n"
 #define ERR_FATAL "[Parser] Fatal.\n"
