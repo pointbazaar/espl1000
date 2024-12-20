@@ -112,7 +112,7 @@ static void assert_str(struct TAC* t, char* expect) {
 
 	struct LVST* lvst = lvst_ctor();
 	struct LVSTLine* line = malloc(sizeof(struct LVSTLine));
-	line->name = "x";
+	asprintf(&line->name, "%s", "x");
 	line->is_arg = false;
 	lvst_add(lvst, line);
 
