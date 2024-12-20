@@ -44,22 +44,6 @@ void out_minus_minus(FILE* outFile) {
 	out(outFile, INTEGER, "1");
 }
 
-void lexer_print_help() {
-	printf("Usage: dragon-lexer FILE \n");
-	printf("\n");
-	printf("Converts a .dg Source File into a .tokens file, \ncontaining the Tokens contained in the Source. \n");
-	printf("\n");
-
-	printf("Possible Arguments:\n");
-	printf(" -help\n\n");
-
-	printf("Author: \n");
-	printf("alex23667@gmail.com\n");
-	printf("\n");
-
-	printf("Bug Reports: alex23667@gmail.com\n");
-}
-
 struct LexerFlags* handle_arguments(int argc, char** argv) {
 	//this subroutine may perform an exit(...)
 	//this is ok because it is called in main(...)
@@ -67,23 +51,15 @@ struct LexerFlags* handle_arguments(int argc, char** argv) {
 	struct LexerFlags* res = malloc(sizeof(struct LexerFlags));
 
 	res->filename = NULL;
-	res->help = false;
 
 	for (int i = 1; i < argc; i++) {
 
 		char* arg = argv[i];
 		if (arg[0] == '-') {
-			if (strcmp(arg, "-help") == 0) {
 
-				lexer_print_help();
-				free(res);
-				exit(0);
-			} else {
-
-				printf("[Lexer] unrecognized flag: %s\n", arg);
-				printf("[Lexer] exiting.\n");
-				exit(1);
-			}
+			printf("[Lexer] unrecognized flag: %s\n", arg);
+			printf("[Lexer] exiting.\n");
+			exit(1);
 		} else {
 			res->filename = arg;
 		}
