@@ -6,7 +6,6 @@
 struct LexerFlags {
 
 	char* filename;
-	bool help;
 };
 
 #endif

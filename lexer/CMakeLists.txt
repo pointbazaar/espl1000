@@ -15,10 +15,6 @@ add_executable(dragon-lexer-tests
 	src/lexer_main.c
 )
 
-add_executable(dragon-lexer
-	src/main.c
-)
-
 include_directories(${CMAKE_SOURCE_DIR}/lexer/)
 
 add_library(
@@ -33,13 +29,10 @@ set(MINIMAL_OPTS, "-g" "-march=native" "--std=c11")
 
 target_compile_options(lexer-lib PRIVATE ${MINIMAL_OPTS} "-Wno-implicit-function-declaration")
 
-target_link_libraries(dragon-lexer lexer-lib)
 target_link_libraries(dragon-lexer-tests lexer-lib)
 
 target_compile_options(dragon-lexer-tests PUBLIC ${COMMON_OPTS})
 
-target_link_libraries(dragon-lexer sd-token)
 target_link_libraries(dragon-lexer-tests sd-token)
 
-target_link_libraries(dragon-lexer sd-util)
 target_link_libraries(dragon-lexer-tests sd-util)

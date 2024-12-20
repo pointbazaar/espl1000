@@ -225,6 +225,9 @@ bool flags_x86(struct Flags* flags) {
 bool flags_print_filenames(struct Flags* flags) {
 	return flags_set(flags, "print-filenames");
 }
+bool flags_lexer(struct Flags* flags) {
+	return flags_set(flags, "lexer");
+}
 
 char* flags_asm_filename(struct Flags* flags) {
 	return flags->asm_filename;

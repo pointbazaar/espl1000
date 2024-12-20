@@ -47,6 +47,12 @@ struct Flag all_flags[] = {
 	false,
 	false,
     },
+    {
+	"lexer",
+	"only run the lexer for a .dg file",
+	false,
+	false,
+    },
 };
 
 size_t all_flags_count() {

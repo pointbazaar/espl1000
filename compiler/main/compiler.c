@@ -28,16 +28,18 @@
 
 bool compile(struct Flags* flags) {
 
-	if (flags_count_filenames(flags) == 0) {
+	const size_t count_filenames = flags_count_filenames(flags);
+
+	if (count_filenames == 0) {
 		printf("[Error] expected atleast 1 filename\n");
 		return false;
 	}
 
 	struct AST* ast = make(AST);
 	ast->count_namespaces = flags_count_filenames(flags);
-	ast->namespaces = exit_malloc(sizeof(struct Namespace*) * flags_count_filenames(flags));
+	ast->namespaces = exit_malloc(sizeof(struct Namespace*) * count_filenames);
 
-	for (int i = 0; i < flags_count_filenames(flags); i++) {
+	for (int i = 0; i < count_filenames; i++) {
 
 		char* filename = flags_filenames(flags, i);
 
@@ -47,6 +49,15 @@ bool compile(struct Flags* flags) {
 			printf("[Error] lexer exited with nonzero exit code\n");
 			return false;
 		}
+	}
+
+	if (flags_lexer(flags)) {
+		return true;
+	}
+
+	for (int i = 0; i < count_filenames; i++) {
+
+		char* filename = flags_filenames(flags, i);
 
 		struct Namespace* ns = invoke_parser(filename);
 
