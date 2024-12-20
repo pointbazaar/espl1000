@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
@@ -6,7 +7,7 @@
 #include "lexer.h"
 #include "driver.h"
 
-#include "../token/TokenKeys.h"
+#include "../../token/TokenKeys.h"
 
 int line_no = 1;
 
