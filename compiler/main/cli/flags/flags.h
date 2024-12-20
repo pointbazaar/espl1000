@@ -6,6 +6,8 @@
 
 struct Flags;
 
+void sd_print_help();
+
 struct Flags* makeFlags(int argc, char** argv);
 struct Flags* makeFlagsSingleFile(char* filename);
 
@@ -18,6 +20,7 @@ bool flags_debug(struct Flags* flags);
 bool flags_version(struct Flags* flags);
 bool flags_help(struct Flags* flags);
 bool flags_x86(struct Flags* flags);
+bool flags_print_filenames(struct Flags* flags);
 
 //generated filenames for later on
 char* flags_asm_filename(struct Flags* ctx);
