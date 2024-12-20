@@ -1,10 +1,11 @@
 #include <stdio.h>
 
 #include "test_str_ast.h"
+#include "test_ast.h"
 
 FILE* file;
 
-int main() {
+int test_ast_main() {
 
 	file = fopen("/tmp/test", "w+");
 

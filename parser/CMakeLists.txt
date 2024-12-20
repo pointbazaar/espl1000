@@ -50,7 +50,7 @@ add_library(dragon-parser-base
 	main/astnodes/var/Variable.c
 )
 
-add_executable(dragon-parser-tests
+add_library(sd-parser-test
 
 	#tests
 	test/astnodes/const/ConstValueTest.c
@@ -100,17 +100,17 @@ add_executable(dragon-parser-tests
 )
 
 target_compile_options(dragon-parser-base PUBLIC ${COMMON_OPTS})
-target_compile_options(dragon-parser-tests PUBLIC ${COMMON_OPTS})
+target_compile_options(sd-parser-test PUBLIC ${COMMON_OPTS})
 
 target_link_libraries(dragon-parser-base sd-util sd-ast sd-token)
 
-target_link_libraries(dragon-parser-tests dragon-parser-base sd-util sd-ast sd-token)
+target_link_libraries(sd-parser-test dragon-parser-base sd-util sd-ast sd-token)
 
-target_include_directories(dragon-parser-base PUBLIC "main/commandline")
+target_include_directories(sd-parser-test PUBLIC "main/commandline")
+target_include_directories(sd-parser-test PUBLIC "main/astnodes")
+target_include_directories(sd-parser-test PUBLIC "main/util")
+target_include_directories(sd-parser-test PUBLIC "..")
+
 target_include_directories(dragon-parser-base PUBLIC "main/astnodes")
 target_include_directories(dragon-parser-base PUBLIC "main/util")
 target_include_directories(dragon-parser-base PUBLIC "..")
-
-target_include_directories(dragon-parser-tests PUBLIC "main/astnodes")
-target_include_directories(dragon-parser-tests PUBLIC "main/util")
-target_include_directories(dragon-parser-tests PUBLIC "..")

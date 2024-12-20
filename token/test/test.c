@@ -7,11 +7,11 @@
 
 static uint32_t test_num = 1;
 
-void printt(char* test_name) {
+void printt2(char* test_name) {
 	printf("[Token][Test][#%02d] %s", test_num++, test_name);
 }
 
-int main() {
+int test_token_main() {
 
 	printf("[Token] Running Tests... \n");
 

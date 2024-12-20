@@ -15,7 +15,7 @@ void printt(char* test_name) {
 	printf("[Lexer][Test][#%02d] %s", test_num++, test_name);
 }
 
-int main() {
+int test_lexer_main() {
 
 	printf("[Lexer] Running Tests... \n");
 

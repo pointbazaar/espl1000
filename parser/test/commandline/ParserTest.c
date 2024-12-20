@@ -39,6 +39,8 @@
 #include "parser/test/astnodes/statements/MAssignStmtTest.h"
 #include "parser/test/astnodes/expr/MDirectTest.h"
 
+#include "test.h"
+
 void test_suite_constnodes();
 
 void test_suite_term_expr_simplevar_var();
@@ -61,7 +63,7 @@ static void status_test_suite(char* msg) {
 	printf("[Parser][TEST-SUITE] %s\n", msg);
 }
 
-int main() {
+int test_parser_main() {
 
 	printf("[Parser] running Parser Tests...\n");
 

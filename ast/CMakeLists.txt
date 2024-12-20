@@ -7,7 +7,7 @@ add_library("sd-ast" STATIC
 	visitor/visitor.c
 )
 
-add_executable("sd-ast-test"
+add_library("sd-ast-test"
 	test/test_ast.c
 	test/test_str_ast.c
 

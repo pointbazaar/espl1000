@@ -8,7 +8,7 @@
 
 void test_tokenlist_no_leak() {
 
-	printt("test tokenlist no leak\n");
+	printt2("test tokenlist no leak\n");
 
 	struct TokenList* list = makeTokenList();
 
@@ -17,7 +17,7 @@ void test_tokenlist_no_leak() {
 
 void test_tokenlist_1element() {
 
-	printt("test tokenlist 1 element\n");
+	printt2("test tokenlist 1 element\n");
 
 	struct TokenList* list = makeTokenList();
 
@@ -30,7 +30,7 @@ void test_tokenlist_1element() {
 
 void test_tokenlist_copy() {
 
-	printt("test tokenlist copy\n");
+	printt2("test tokenlist copy\n");
 
 	struct TokenList* list = makeTokenList();
 
@@ -46,7 +46,7 @@ void test_tokenlist_copy() {
 
 void test_tokenlist_code() {
 
-	printt("test list_code\n");
+	printt2("test list_code\n");
 
 	struct TokenList* list = makeTokenList();
 
@@ -62,7 +62,7 @@ void test_tokenlist_code() {
 
 void test_tokenlist_print() {
 
-	printt("test list_print\n");
+	printt2("test list_print\n");
 
 	struct TokenList* list = makeTokenList();
 
@@ -77,7 +77,7 @@ void test_tokenlist_print() {
 
 void test_tokenlist_consume() {
 
-	printt("test list_consume\n");
+	printt2("test list_consume\n");
 
 	struct TokenList* list = makeTokenList();
 
