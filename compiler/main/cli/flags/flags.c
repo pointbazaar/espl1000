@@ -188,6 +188,7 @@ static void make_flags_inner(struct Flags* flags, char* arg) {
 
 void freeFlags(struct Flags* flags) {
 
+	free(flags->all_flags);
 	free(flags->asm_filename);
 	free(flags->hex_filename);
 	free(flags->token_filename);
