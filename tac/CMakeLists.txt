@@ -9,7 +9,7 @@ target_compile_options("sd-tac" PUBLIC ${COMMON_OPTS})
 
 target_include_directories("sd-tac" PUBLIC "..")
 
-add_executable("sd-tac-test"
+add_library("sd-tac-test"
 	test/test.c
 	test/test_tac.c
 	test/test_tacbuffer.c

@@ -1,5 +1,5 @@
 
-add_executable(dragon-lexer-tests
+add_library(sd-lexer-test
 	test/lexer_test_utils.c
 	test/test.c
 
@@ -29,10 +29,10 @@ set(MINIMAL_OPTS, "-g" "-march=native" "--std=c11")
 
 target_compile_options(lexer-lib PRIVATE ${MINIMAL_OPTS} "-Wno-implicit-function-declaration")
 
-target_link_libraries(dragon-lexer-tests lexer-lib)
+target_link_libraries(sd-lexer-test lexer-lib)
 
-target_compile_options(dragon-lexer-tests PUBLIC ${COMMON_OPTS})
+target_compile_options(sd-lexer-test  PUBLIC ${COMMON_OPTS})
 
-target_link_libraries(dragon-lexer-tests sd-token)
+target_link_libraries(sd-lexer-test sd-token)
 
-target_link_libraries(dragon-lexer-tests sd-util)
+target_link_libraries(sd-lexer-test sd-util)

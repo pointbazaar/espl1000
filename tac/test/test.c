@@ -1,6 +1,8 @@
 #include "test.h"
 #include <stdio.h>
 
+#include "test.h"
+
 void status(char* msg) {
 	printf("[TAC][Test] %s\n", msg);
 }
@@ -16,7 +18,7 @@ void test_tacbuffer_get_last();
 void test_tacbuffer_last_dest();
 void test_tacbuffer_count();
 
-int main() {
+int test_tac_main() {
 
 	printf("[TAC] Running Tests...\n");
 

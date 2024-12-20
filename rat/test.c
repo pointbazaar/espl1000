@@ -4,6 +4,8 @@
 
 #include "rat.h"
 
+#include "test.h"
+
 int test_count = 0;
 
 static void status(char* msg);
@@ -18,7 +20,7 @@ static void test_occupant_pair();
 static void test_alloc_n_regs();
 static void test_rat_is_wide();
 
-int main() {
+int test_rat_main() {
 
 	printf("[RAT][TEST]\n");
 

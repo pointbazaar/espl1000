@@ -107,6 +107,12 @@ set_target_properties(unicorn PROPERTIES
 target_link_libraries("sd-tests" unicorn)
 
 target_link_libraries("sd-tests" sd-base)
+target_link_libraries("sd-tests" sd-lexer-test)
+target_link_libraries("sd-tests" sd-token-test)
+target_link_libraries("sd-tests" sd-parser-test)
+target_link_libraries("sd-tests" sd-ast-test)
+target_link_libraries("sd-tests" sd-tac-test)
+target_link_libraries("sd-tests" sd-rat-test)
 
 target_include_directories("sd-tests" PUBLIC "../main")
 target_include_directories("sd-tests" PUBLIC ".")
