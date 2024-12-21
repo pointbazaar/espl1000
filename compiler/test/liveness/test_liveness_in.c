@@ -48,4 +48,7 @@ void test_liveness_in_map() {
 	assert(liveness_in(live, 3, 0) == false);
 	assert(liveness_in(live, 3, 1) == false);
 	assert(liveness_in(live, 3, 2) == true);
+
+	tacbuffer_dtor(buf);
+	liveness_dtor(live);
 }

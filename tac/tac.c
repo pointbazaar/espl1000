@@ -42,50 +42,65 @@ int32_t tac_opt_dest(struct TAC* tac) {
 	}
 }
 
-void tac_mark_used(struct TAC* tac, bool* used_map) {
+static void check_bounds(uint64_t index, size_t size) {
 
-	switch (tac->kind) {
-		case TAC_PARAM:
-		case TAC_RETURN:
-		case TAC_BINARY_OP_IMMEDIATE:
-			used_map[tac->dest] = true;
-			break;
-		case TAC_IF_GOTO:
-		case TAC_STORE_LOCAL:
-		case TAC_STORE_CONST_ADDR:
-		case TAC_LOAD:
-		case TAC_STORE:
-		case TAC_UNARY_OP:
-		case TAC_COPY:
-			used_map[tac->arg1] = true;
-			break;
-		case TAC_BINARY_OP:
-		case TAC_IF_CMP_GOTO:
-			used_map[tac->dest] = true;
-			used_map[tac->arg1] = true;
-			break;
-
-		case TAC_CALL:
-		case TAC_SETUP_STACKFRAME:
-		case TAC_SETUP_SP:
-		case TAC_LABEL_FUNCTION:
-		case TAC_GOTO:
-		case TAC_LABEL_INDEXED:
-		case TAC_LOAD_LOCAL:
-		case TAC_LOAD_LOCAL_ADDR:
-		case TAC_LOAD_CONST_ADDR:
-		case TAC_NOP:
-		case TAC_CONST_VALUE:
-			return;
-
-		default:
-			fprintf(stderr, "%s: unexpected case %u\n", __func__, tac->kind);
-			exit(1);
-			return;
+	if (index >= size) {
+		fprintf(stderr, "%ld (>= %ld) is out of bounds\n", index, size);
+		exit(1);
 	}
 }
 
-void tac_mark_defines(struct TAC* tac, bool* defines_map) {
+int tac_mark_used(struct TAC* tac, bool* used_map, size_t map_size) {
+
+	switch (tac->kind) {
+		case TAC_PARAM:
+		case TAC_RETURN:
+		case TAC_BINARY_OP_IMMEDIATE:
+			check_bounds(tac->dest, map_size);
+			used_map[tac->dest] = true;
+			return 0;
+			break;
+		case TAC_IF_GOTO:
+		case TAC_STORE_LOCAL:
+		case TAC_STORE_CONST_ADDR:
+		case TAC_LOAD:
+		case TAC_STORE:
+		case TAC_UNARY_OP:
+		case TAC_COPY:
+			check_bounds(tac->arg1, map_size);
+			used_map[tac->arg1] = true;
+			return 0;
+			break;
+		case TAC_BINARY_OP:
+		case TAC_IF_CMP_GOTO:
+			check_bounds(tac->dest, map_size);
+			check_bounds(tac->arg1, map_size);
+			used_map[tac->dest] = true;
+			used_map[tac->arg1] = true;
+			return 0;
+			break;
+
+		case TAC_CALL:
+		case TAC_SETUP_STACKFRAME:
+		case TAC_SETUP_SP:
+		case TAC_LABEL_FUNCTION:
+		case TAC_GOTO:
+		case TAC_LABEL_INDEXED:
+		case TAC_LOAD_LOCAL:
+		case TAC_LOAD_LOCAL_ADDR:
+		case TAC_LOAD_CONST_ADDR:
+		case TAC_NOP:
+		case TAC_CONST_VALUE:
+			return 0;
+
+		default:
+			fprintf(stderr, "%s: unexpected case %u\n", __func__, tac->kind);
+			exit(1);
+			return 1;
+	}
+}
+
+int tac_mark_defines(struct TAC* tac, bool* defines_map, size_t map_size) {
 
 	switch (tac->kind) {
 		case TAC_PARAM:
@@ -101,6 +116,7 @@ void tac_mark_defines(struct TAC* tac, bool* defines_map) {
 		case TAC_GOTO:
 		case TAC_LABEL_INDEXED:
 		case TAC_NOP:
+			return 0;
 			break;
 		case TAC_BINARY_OP_IMMEDIATE:
 		case TAC_LOAD:
@@ -112,13 +128,15 @@ void tac_mark_defines(struct TAC* tac, bool* defines_map) {
 		case TAC_LOAD_LOCAL_ADDR:
 		case TAC_LOAD_CONST_ADDR:
 		case TAC_CONST_VALUE:
+			check_bounds(tac->dest, map_size);
 			defines_map[tac->dest] = true;
+			return 0;
 			break;
 
 		default:
 			fprintf(stderr, "%s: unexpected case %u\n", __func__, tac->kind);
 			exit(1);
-			return;
+			return 1;
 	}
 }
 

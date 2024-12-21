@@ -15,6 +15,8 @@ struct Liveness;
 // calculate liveness for a single function
 struct Liveness* liveness_calc(struct BasicBlock** graph, size_t nblocks);
 
+void liveness_dtor(struct Liveness* live);
+
 // for testing and such. It creates the BasicBlock graph internally.
 struct Liveness* liveness_calc_tacbuffer(struct TACBuffer* buf);
 

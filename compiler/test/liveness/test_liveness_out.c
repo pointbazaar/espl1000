@@ -25,6 +25,9 @@ void test_liveness_out_map_tac_call() {
 
 	assert(liveness_out(live, 0, 1) == true);
 	assert(liveness_out(live, 1, 1) == false);
+
+	liveness_dtor(live);
+	tacbuffer_dtor(buf);
 }
 
 void test_liveness_out_map_tac_param() {
@@ -38,6 +41,9 @@ void test_liveness_out_map_tac_param() {
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
 	assert(liveness_out(live, 0, 1) == false);
+
+	liveness_dtor(live);
+	tacbuffer_dtor(buf);
 }
 
 void test_liveness_out_map_tac_return() {
@@ -51,6 +57,9 @@ void test_liveness_out_map_tac_return() {
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
 	assert(liveness_out(live, 0, 1) == false);
+
+	liveness_dtor(live);
+	tacbuffer_dtor(buf);
 }
 
 void test_liveness_out_map_tac_goto() {
@@ -67,6 +76,9 @@ void test_liveness_out_map_tac_goto() {
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
 	assert(liveness_out(live, 1, 0) == true);
+
+	liveness_dtor(live);
+	tacbuffer_dtor(buf);
 }
 
 void test_liveness_out_map_tac_if_goto() {
@@ -87,6 +99,9 @@ void test_liveness_out_map_tac_if_goto() {
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
 	assert(liveness_out(live, 1, 0) == true);
+
+	liveness_dtor(live);
+	tacbuffer_dtor(buf);
 }
 
 void test_liveness_out_map_tac_if_cmp_goto() {
@@ -108,6 +123,9 @@ void test_liveness_out_map_tac_if_cmp_goto() {
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
 	assert(liveness_out(live, 2, 0) == true);
+
+	liveness_dtor(live);
+	tacbuffer_dtor(buf);
 }
 
 void test_liveness_out_map_tac_copy() {
@@ -140,4 +158,7 @@ void test_liveness_out_map_tac_copy() {
 	assert(liveness_out(live, 3, 0) == false);
 	assert(liveness_out(live, 3, 1) == false);
 	assert(liveness_out(live, 3, 2) == false);
+
+	liveness_dtor(live);
+	tacbuffer_dtor(buf);
 }

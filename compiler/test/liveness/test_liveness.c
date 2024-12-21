@@ -38,6 +38,9 @@ void test_liveness_1_block() {
 
 	// t0 and t2 can share a register :D
 	assert(liveness_overlaps(live, 0, 2) == false);
+
+	liveness_dtor(live);
+	tacbuffer_dtor(buf);
 }
 
 static void make_example_2_blocks(struct BasicBlock*** graph, size_t* nblocks) {
@@ -97,4 +100,12 @@ void test_liveness_2_block() {
 	//liveness_print(live);
 
 	assert(liveness_overlaps(live, 0, 2) == true);
+
+	liveness_dtor(live);
+
+	tacbuffer_dtor(graph[0]->buffer);
+	free(graph[0]);
+	tacbuffer_dtor(graph[1]->buffer);
+	free(graph[1]);
+	free(graph);
 }
