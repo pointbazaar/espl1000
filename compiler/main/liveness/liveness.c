@@ -79,7 +79,7 @@ static bool liveness_get(struct Liveness* l, size_t stmt_index, size_t tmp_index
 static size_t liveness_max_temp_block(struct BasicBlock* block) {
 	assert(block != NULL);
 
-	uint32_t max_temp = 0;
+	size_t max_temp = 0;
 	for (size_t i = 0; i < tacbuffer_count(block->buffer); i++) {
 		struct TAC* t = tacbuffer_get(block->buffer, i);
 
@@ -87,12 +87,17 @@ static size_t liveness_max_temp_block(struct BasicBlock* block) {
 
 		int32_t opt_dest = tac_opt_dest(t);
 
-		if (opt_dest < 0) {
-			continue;
-		}
+		int32_t opt_dest2 = t->dest;
+		uint64_t opt_arg1 = t->arg1;
 
-		if (opt_dest > max_temp) {
+		if (opt_dest > ((int32_t)max_temp)) {
 			max_temp = opt_dest;
+		}
+		if (opt_dest2 > ((int32_t)max_temp)) {
+			max_temp = opt_dest2;
+		}
+		if (opt_arg1 > max_temp) {
+			max_temp = opt_arg1;
 		}
 	}
 
@@ -103,9 +108,9 @@ static size_t liveness_count_temps(struct BasicBlock** graph, size_t nblocks) {
 
 	assert(graph != NULL);
 
-	uint32_t max_temp = 0;
+	size_t max_temp = 0;
 	for (size_t i = 0; i < nblocks; i++) {
-		uint32_t max_temp_block = liveness_max_temp_block(graph[i]);
+		size_t max_temp_block = liveness_max_temp_block(graph[i]);
 		if (max_temp_block > max_temp) {
 			max_temp = max_temp_block;
 		}
@@ -136,6 +141,14 @@ static bool** map_ctor(size_t nstmts, size_t ntemps) {
 		res[i] = calloc(1, ntemps);
 	}
 	return res;
+}
+
+static void map_dtor(bool** map, size_t nstmts, size_t ntemps) {
+
+	for (size_t i = 0; i < nstmts; i++) {
+		free(map[i]);
+	}
+	free(map);
 }
 
 static struct BasicBlock* get_basic_block_from_index(struct BasicBlock** graph, size_t nblocks, size_t index) {
@@ -228,9 +241,6 @@ static bool liveness_iteration(struct Liveness* l, struct BasicBlock** graph, si
 	bool change = false;
 	for (size_t n = 0; n < l->nstmts; n++) {
 
-		struct TAC* t = get_stmt_from_index(graph, nblocks, n);
-		tac_mark_used(t, l->map_use[n]);
-
 		change |= liveness_iteration_stmt(l, graph, nblocks, n);
 	}
 
@@ -279,14 +289,14 @@ static void liveness_calc_use(struct Liveness* l, struct BasicBlock** graph, siz
 	for (size_t n = 0; n < l->nstmts; n++) {
 
 		struct TAC* t = get_stmt_from_index(graph, nblocks, n);
-		tac_mark_used(t, l->map_use[n]);
+		tac_mark_used(t, l->map_use[n], l->ntemps);
 	}
 }
 static void liveness_calc_defines(struct Liveness* l, struct BasicBlock** graph, size_t nblocks) {
 	for (size_t n = 0; n < l->nstmts; n++) {
 
 		struct TAC* t = get_stmt_from_index(graph, nblocks, n);
-		tac_mark_defines(t, l->map_defines[n]);
+		tac_mark_defines(t, l->map_defines[n], l->ntemps);
 	}
 }
 
@@ -303,17 +313,41 @@ struct Liveness* liveness_calc_tacbuffer(struct TACBuffer* buf) {
 	block->branch_1 = NULL;
 	block->branch_2 = NULL;
 
-	return liveness_calc(graph, nblocks);
+	struct Liveness* live = liveness_calc(graph, nblocks);
+
+	free(block);
+	free(graph);
+
+	return live;
+}
+
+void liveness_dtor(struct Liveness* live) {
+
+	const size_t nstmts = live->nstmts;
+	const size_t ntemps = live->ntemps;
+
+	map_dtor(live->map_defines, nstmts, ntemps);
+	map_dtor(live->map_use, nstmts, ntemps);
+	map_dtor(live->map_in, nstmts, ntemps);
+	map_dtor(live->map_out, nstmts, ntemps);
+	map_dtor(live->map_succ, nstmts, nstmts);
+
+	free(live);
 }
 
 struct Liveness* liveness_calc(struct BasicBlock** graph, size_t nblocks) {
 
+	assert(graph != NULL);
+	assert(nblocks > 0);
+
 	struct Liveness* res = malloc(sizeof(struct Liveness));
 	// find total number of temporaries
 	res->ntemps = liveness_count_temps(graph, nblocks);
+	assert(res->ntemps > 0);
 
 	// find total number of IR statements (struct TAC instances)
 	res->nstmts = liveness_count_statements(graph, nblocks);
+	assert(res->nstmts > 0);
 
 	// The order of IR statements in our table is defined by the order given by the array where they are stored and
 	// the order in which their BasicBlocks are stored.
@@ -363,20 +397,44 @@ bool liveness_overlaps(struct Liveness* l, uint32_t temp1, uint32_t temp2) {
 
 bool liveness_use(struct Liveness* live, uint32_t stmt_index, uint32_t temp) {
 
+	if (stmt_index >= live->nstmts) {
+		fprintf(stderr, "stmt %ld out of bounds\n", live->nstmts);
+		exit(1);
+	}
+
 	return live->map_use[stmt_index][temp];
 }
 
 bool liveness_def(struct Liveness* live, uint32_t stmt_index, uint32_t temp) {
+
+	if (stmt_index >= live->nstmts) {
+		fprintf(stderr, "stmt %ld out of bounds\n", live->nstmts);
+		exit(1);
+	}
 
 	return live->map_defines[stmt_index][temp];
 }
 
 bool liveness_in(struct Liveness* live, uint32_t stmt_index, uint32_t temp) {
 
+	if (stmt_index >= live->nstmts) {
+		fprintf(stderr, "stmt %ld out of bounds\n", live->nstmts);
+		exit(1);
+	}
+
 	return live->map_in[stmt_index][temp];
 }
 
 bool liveness_out(struct Liveness* live, uint32_t stmt_index, uint32_t temp) {
+
+	if (stmt_index >= live->nstmts) {
+		fprintf(stderr, "stmt %ld out of bounds\n", live->nstmts);
+		exit(1);
+	}
+	if (temp >= live->ntemps) {
+		fprintf(stderr, "temp %ld out of bounds\n", live->ntemps);
+		exit(1);
+	}
 
 	return live->map_out[stmt_index][temp];
 }

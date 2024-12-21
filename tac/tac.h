@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -113,14 +114,16 @@ int32_t tac_opt_dest(struct TAC* tac);
 // temp1 += temp0
 // means used_map[0] == true for temp1
 // and used_map[1] == true also.
-void tac_mark_used(struct TAC* tac, bool* used_map);
+// @returns 0 on succes
+int tac_mark_used(struct TAC* tac, bool* used_map, size_t map_size);
 
 // marks defines_map[i] = true
 // if temporary 'i' is defined in this statement
 // temp1 += temp0
 // means defines_map[0] == false
 // means defines_map[1] == true
-void tac_mark_defines(struct TAC* tac, bool* defines_map);
+// @returns 0 on succes
+int tac_mark_defines(struct TAC* tac, bool* defines_map, size_t map_size);
 
 bool tac_is_unconditional_jump(struct TAC* tac);
 
