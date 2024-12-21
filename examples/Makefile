@@ -3,12 +3,26 @@
 
 #the tests are in the same order as a 'tree examples/' would show them
 
-CALL2  := sd 
+CALL2 := sd
+CALLX86 := sd -x86
 
-all: test
+all: test examples_x86
 
-test: 
-	@echo "[Examples] Compiling Example Programs..."
+examples_x86:
+	@echo "[Examples] Compiling Example Programs (x86)"
+	$(CALLX86) ifstatement/ifstatement.dg
+	$(CALLX86) local_variables/simple.dg
+	$(CALLX86) loops/whileloop.dg
+	$(CALLX86) loops/forloop.dg
+	$(CALLX86) mathematics/fibonacci.dg
+	$(CALLX86) methodCalls/methodcall.dg
+	$(CALLX86) other/everything.dg
+	$(CALLX86) typeinference/localvartypeinference.dg
+	$(CALLX86) array/array.dg
+	@echo "[Examples (x86)] done"
+
+test:
+	@echo "[Examples] Compiling Example Programs (AVR)"
 	$(CALL2) ifstatement/ifstatement.dg
 	$(CALL2) local_variables/simple.dg
 	$(CALL2) loops/whileloop.dg
@@ -20,8 +34,7 @@ test:
 	$(CALL2) array/array.dg
 	$(MAKE) -C led_blink_timer
 	$(MAKE) -C led_blink_no_timer
-
-	@echo "[Examples] done"
+	@echo "[Examples (AVR)] done"
 
 clean:
 	rm -f */*.tokens

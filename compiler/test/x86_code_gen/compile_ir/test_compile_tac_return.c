@@ -31,6 +31,9 @@ static void test_fixed_value(uint32_t value, bool debug) {
 	tacbuffer_append(b, makeTACConst(0, value + 1));
 	tacbuffer_append(b, makeTACConst(1, value));
 	tacbuffer_append(b, makeTACConst(2, value - 1));
+
+	tacbuffer_append(b, makeTACCopy(2, 0));
+	tacbuffer_append(b, makeTACCopy(0, 2));
 	tacbuffer_append(b, makeTACReturn(1));
 
 	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v3(b, debug, true, stackframe_size);

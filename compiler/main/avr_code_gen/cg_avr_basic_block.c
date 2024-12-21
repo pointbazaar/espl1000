@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include "cli/flags/flags.h"
+#include "liveness/liveness.h"
 #include "tables/symtable/symtable.h"
 
 #include "tac/tac.h"
@@ -28,8 +29,10 @@ void emit_asm_avr_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct 
 
 	block->visited_emit_asm = true;
 
+	struct Liveness* live = liveness_calc_tacbuffer(block->buffer);
+
 	//create register allocation table for the basic block.
-	struct RAT* rat = rat_ctor(RAT_ARCH_AVR);
+	struct RAT* rat = rat_ctor(RAT_ARCH_AVR, liveness_ntemps(live));
 
 	//simplest naive approach (first iteration):
 	//simply get a new register for each temporary
@@ -48,6 +51,8 @@ void emit_asm_avr_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct 
 	}
 
 	rat_dtor(rat);
+
+	liveness_dtor(live);
 
 	//false/default branch gets emitted first,
 	//because there is no label for it in a lot of cases

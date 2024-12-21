@@ -16,8 +16,10 @@
 
 #include "tables/symtable/symtable.h"
 #include "cg_x86_single_function.h"
+#include "allocate_registers_x86.h"
 
 #include "cli/flags/flags.h"
+#include "liveness/liveness.h"
 
 void compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu) {
 
@@ -46,10 +48,11 @@ void compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 	struct BasicBlock** graph = basicblock_create_graph(buffer, m->decl->name, &nblocks, ctx);
 	struct BasicBlock* root = graph[0];
 
-	struct RAT* rat = rat_ctor(RAT_ARCH_X86);
-	for (int i = 0; i < nblocks; i++) {
-		allocate_registers(graph[i]->buffer, rat, st);
-	}
+	struct Liveness* live = liveness_calc(graph, nblocks);
+
+	struct RAT* rat = rat_ctor(RAT_ARCH_X86, liveness_ntemps(live));
+
+	allocate_registers_basicblocks(graph, nblocks, rat, st, live);
 
 	emit_asm_x86_basic_block(root, ctx, ibu, rat);
 
