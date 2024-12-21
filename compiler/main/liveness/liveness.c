@@ -72,6 +72,10 @@ void liveness_print(struct Liveness* l) {
 	map_print(l->map_out, l->nstmts, l->ntemps, "out[n]");
 }
 
+size_t liveness_ntemps(struct Liveness* l) {
+	return l->ntemps;
+}
+
 static bool liveness_get(struct Liveness* l, size_t stmt_index, size_t tmp_index) {
 	return l->map_out[stmt_index][tmp_index] || l->map_in[stmt_index][tmp_index];
 }

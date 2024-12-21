@@ -6,61 +6,32 @@
 
 #include "../util/exit_malloc/exit_malloc.h"
 #include "rat.h"
+#include "_struct.h"
 
 //gives index of a free register, exits on failure.
 //the register still has to be occupied
 static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide);
 
-static bool rat_has_register(struct RAT* rat, uint32_t tmp_index);
-
-static void rat_occupy(struct RAT* rat, uint8_t reg, uint32_t tmp_index, bool wide);
-
 static void rat_init(struct RAT* rat);
 static void rat_init_avr(struct RAT* rat);
 static void rat_init_x86(struct RAT* rat);
 
-enum RAT_REG_STATUS {
-	REG_OCCUPIED, //reg occupied by temporary
-	REG_RESERVED, //reg reserved, cannot be allocated
-	REG_FREE, //reg can be allocated
-};
-
-struct RAT {
-//struct RAT should be opaque outside of it's
-//implementation file
-
-//Register Allocation Table
-//allocation of the registors used inside a function,
-//mapping temporaries to actual registers
-
-// only used to allocate the rat.
-// the implementation should use rat_capacity(rat)
-// which respects the target architecture
-#define RAT_CAPACITY_MAXIMUM 32
-
-	char* note[RAT_CAPACITY_MAXIMUM];
-	uint32_t occupant[RAT_CAPACITY_MAXIMUM]; //who occupies it (which temp)
-	enum RAT_REG_STATUS status[RAT_CAPACITY_MAXIMUM];
-
-#undef RAT_CAPACITY_MAXIMUM
-
-	//X: r26/r27
-	//Y: r28/r29
-	//Z: r30/r31
-
-	// which machine architecture is this table for
-	enum RAT_ARCH arch;
-};
-
-struct RAT* rat_ctor(enum RAT_ARCH arch) {
+// @param arch    the target architecture
+// @param ntemps  maximum number of temporaries
+//                to make space for
+struct RAT* rat_ctor(enum RAT_ARCH arch, size_t ntemps) {
 
 	struct RAT* rat = exit_malloc(sizeof(struct RAT));
 
 	rat->arch = arch;
+	rat->ntemps = ntemps;
 
 	for (int i = 0; i < rat_capacity(rat); i++) {
 		rat->status[i] = REG_FREE;
 		rat->note[i] = "";
+
+		// 0-initialized
+		rat->occupant[i] = calloc(rat->ntemps, sizeof(bool));
 	}
 
 	rat_init(rat);
@@ -128,6 +99,10 @@ static void rat_init_avr(struct RAT* rat) {
 }
 
 void rat_dtor(struct RAT* rat) {
+
+	for (int i = 0; i < rat_capacity(rat); i++) {
+		free(rat->occupant[i]);
+	}
 	free(rat);
 }
 
@@ -176,37 +151,49 @@ static void rat_print_regname(struct RAT* rat, size_t i) {
 	}
 }
 
+static void rat_print_reg(struct RAT* rat, size_t i) {
+
+	rat_print_regname(rat, i);
+	printf(": ");
+
+	switch (rat->status[i]) {
+
+		case REG_OCCUPIED:
+			for (size_t t = 0; t < rat->ntemps; t++) {
+
+				if (rat->occupant[i][t]) {
+					printf("t%ld, ", t);
+				}
+			}
+			break;
+		case REG_FREE:
+			printf("%20s", " - ");
+			break;
+		case REG_RESERVED:
+			printf("%20s", rat->note[i]);
+			break;
+	}
+
+	printf("\n");
+}
+
 void rat_print(struct RAT* rat) {
 
 	printf("Register Allocation Table:\n");
 	for (size_t i = 0; i < rat_capacity(rat); i++) {
 
-		rat_print_regname(rat, i);
-		printf(": ");
-
-		switch (rat->status[i]) {
-
-			case REG_OCCUPIED:
-				printf("t%d", rat->occupant[i]);
-				break;
-			case REG_FREE:
-				printf("%20s", " - ");
-				break;
-			case REG_RESERVED:
-				printf("%20s", rat->note[i]);
-				break;
-		}
-
-		printf("\n");
+		rat_print_reg(rat, i);
 	}
-
 	printf("------------\n");
 }
 
-static bool rat_has_register(struct RAT* rat, uint32_t tmp_index) {
+bool rat_has_register(struct RAT* rat, uint32_t tmp_index) {
 
 	for (int i = 0; i < rat_capacity(rat); i++) {
-		if (rat->status[i] == REG_OCCUPIED && rat->occupant[i] == tmp_index) {
+		if (rat->status[i] != REG_OCCUPIED) {
+			continue;
+		}
+		if (rat->occupant[i][tmp_index]) {
 			return true;
 		}
 	}
@@ -216,7 +203,10 @@ static bool rat_has_register(struct RAT* rat, uint32_t tmp_index) {
 int rat_get_register(struct RAT* rat, uint32_t tmp_index) {
 
 	for (int i = 0; i < rat_capacity(rat); i++) {
-		if (rat->status[i] == REG_OCCUPIED && (rat->occupant[i] == tmp_index)) {
+		if (rat->status[i] != REG_OCCUPIED) {
+			continue;
+		}
+		if (rat->occupant[i][tmp_index]) {
 			return i;
 		}
 	}
@@ -236,19 +226,64 @@ uint32_t rat_occupant(struct RAT* rat, uint8_t reg) {
 		exit(1);
 	}
 
-	return rat->occupant[reg];
+	for (size_t i = 0; i < rat->ntemps; i++) {
+		if (rat->occupant[reg][i]) {
+			return i;
+		}
+	}
+
+	fprintf(stderr, "rat: did not find occupant of register %d\n", reg);
+	exit(1);
+
+	return 0;
 }
 
-static void rat_occupy(struct RAT* rat, uint8_t reg, uint32_t tmp_index, bool wide) {
+bool rat_occupies(struct RAT* rat, uint8_t reg, uint32_t tmp_index) {
+
+	assert(tmp_index < rat->ntemps);
+	return rat->occupant[reg][tmp_index];
+}
+
+void rat_occupy(struct RAT* rat, uint8_t reg, uint32_t tmp_index, bool wide) {
 
 	//occupy the register
 	rat->status[reg] = REG_OCCUPIED;
-	rat->occupant[reg] = tmp_index;
+	rat->occupant[reg][tmp_index] = true;
 
 	if (wide) {
 		rat->status[reg + 1] = REG_OCCUPIED;
-		rat->occupant[reg + 1] = tmp_index;
+		rat->occupant[reg + 1][tmp_index] = true;
 	}
+}
+
+int32_t rat_find_reg_no_overlap(struct RAT* rat, bool* temps_conflict, size_t ntemps) {
+
+	for (int reg = 0; reg < rat_capacity(rat); reg++) {
+		if (rat->status[reg] == REG_RESERVED) {
+			continue;
+		}
+		if (rat->status[reg] == REG_FREE) {
+			return reg;
+		}
+
+		// reg is REG_OCCUPIED
+
+		bool conflict = false;
+		for (size_t t = 0; t < ntemps; t++) {
+			const bool occupies = rat->occupant[reg][t];
+			if (temps_conflict[t] && occupies) {
+				conflict = true;
+				break;
+				;
+			}
+		}
+
+		if (!conflict) {
+			return reg;
+		}
+	}
+
+	return -1;
 }
 
 uint32_t rat_ensure_register(struct RAT* rat, uint32_t tmp_index, bool high_regs_only, bool wide) {

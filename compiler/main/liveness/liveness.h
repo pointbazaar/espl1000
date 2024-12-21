@@ -23,6 +23,10 @@ struct Liveness* liveness_calc_tacbuffer(struct TACBuffer* buf);
 // print tables to stdout for debug
 void liveness_print(struct Liveness* l);
 
+// @returns   number of temporaries that
+//            the liveness info keeps track of
+size_t liveness_ntemps(struct Liveness* l);
+
 // This can be used in register allocation.
 // If a temporary does not have overlapping liveness with
 // the other temporaries already occupying a register,

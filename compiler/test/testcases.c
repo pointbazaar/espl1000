@@ -13,7 +13,7 @@
 #include "parser/test/commandline/test.h"
 #include "token/test/test.h"
 #include "tac/test/test.h"
-#include "rat/test.h"
+#include "rat/test/test.h"
 #include "ast/test/test_str_ast.h"
 
 void (*tests_ast[])() = {
@@ -55,6 +55,7 @@ void (*tests_rat[])() = {
     test_rat_occupant_pair,
     test_rat_alloc_n_regs,
     test_rat_is_wide,
+    test_rat_multiple_temps_in_register,
     NULL,
 };
 
