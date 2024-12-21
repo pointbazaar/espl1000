@@ -12,6 +12,7 @@
 #include "x86_code_gen/cg_x86.h"
 #include "x86_code_gen/cg_x86_single_function.h"
 #include "x86_code_gen/cg_x86_basic_block.h"
+#include "x86_code_gen/allocate_registers_x86.h"
 
 #include "tac/tacbuffer.h"
 #include "basic_block/basicblock.h"
@@ -21,6 +22,7 @@
 
 #include "cli/flags/flags.h"
 #include "fake_lvst.h"
+#include "liveness/liveness.h"
 
 struct sd_uc_engine {
 	// wrapper struct
@@ -276,13 +278,17 @@ static void gen_from_tacbuffer(struct TACBuffer* buffer, FILE* fout, struct Ctx*
 		exit(EXIT_FAILURE);
 	}
 
+	struct Liveness* live = liveness_calc(graph, nblocks);
+
+	if (flags_debug(ctx_flags(ctx))) {
+		liveness_print(live);
+	}
+
 	struct IBuffer* ibu = ibu_ctor();
 
-	struct RAT* rat = rat_ctor(RAT_ARCH_X86);
+	struct RAT* rat = rat_ctor(RAT_ARCH_X86, liveness_ntemps(live));
 
-	for (int i = 0; i < nblocks; i++) {
-		allocate_registers(graph[i]->buffer, rat, ctx_tables(ctx));
-	}
+	allocate_registers_basicblocks(graph, nblocks, rat, ctx_tables(ctx), live);
 
 	emit_asm_x86_basic_block(root, ctx, ibu, rat);
 

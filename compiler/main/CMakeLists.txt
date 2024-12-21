@@ -62,6 +62,7 @@ add_library("sd-base"
 	x86_code_gen/cg_x86_basic_block.c
 	x86_code_gen/cg_x86_single_function.c
 	x86_code_gen/cg_x86_single_tac.c
+	x86_code_gen/allocate_registers_x86.c
 	x86_code_gen/compile_ir/compile_tac.h
 	x86_code_gen/compile_ir/compile_tac_binary_op.c
 	x86_code_gen/compile_ir/compile_tac_call.c

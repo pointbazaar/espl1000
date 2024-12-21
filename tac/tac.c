@@ -64,7 +64,6 @@ int tac_mark_used(struct TAC* tac, bool* used_map, size_t map_size) {
 		case TAC_STORE_LOCAL:
 		case TAC_STORE_CONST_ADDR:
 		case TAC_LOAD:
-		case TAC_STORE:
 		case TAC_UNARY_OP:
 		case TAC_COPY:
 			check_bounds(tac->arg1, map_size);
@@ -73,6 +72,7 @@ int tac_mark_used(struct TAC* tac, bool* used_map, size_t map_size) {
 			break;
 		case TAC_BINARY_OP:
 		case TAC_IF_CMP_GOTO:
+		case TAC_STORE:
 			check_bounds(tac->dest, map_size);
 			check_bounds(tac->arg1, map_size);
 			used_map[tac->dest] = true;

@@ -9,3 +9,4 @@ void test_rat_can_free_pair();
 void test_rat_occupant_pair();
 void test_rat_alloc_n_regs();
 void test_rat_is_wide();
+void test_rat_multiple_temps_in_register();
