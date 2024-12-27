@@ -14,7 +14,7 @@ void test_rat_scratch_reg() {
 
 	struct RAT* rat = rat_ctor(RAT_ARCH_AVR, 1);
 
-	assert(rat_scratch_reg(rat) == 16);
+	assert(rat_scratch_reg(rat) == r16);
 
 	rat_dtor(rat);
 }
