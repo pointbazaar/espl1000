@@ -45,7 +45,7 @@ bool compile(struct Flags* flags) {
 
 		int status = invoke_lexer(filename);
 
-		if (WEXITSTATUS(status) != 0) {
+		if (status != 0) {
 			printf("[Error] lexer exited with nonzero exit code\n");
 			return false;
 		}

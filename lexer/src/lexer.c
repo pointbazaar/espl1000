@@ -314,9 +314,10 @@ int lexer_impl(FILE* infile, FILE* outfile) {
 	struct stat sb;
 	const int fd = fileno(infile);
 	bool debug = false;
+	int status = 0;
 
 	if (fstat(fd, &sb) < 0) {
-		fprintf(stderr, "could not fstat input file\n");
+		fprintf(stderr, "[Lexer] could not fstat input file\n");
 		return -1;
 	}
 
@@ -324,11 +325,11 @@ int lexer_impl(FILE* infile, FILE* outfile) {
 	const char* addr = mmap(NULL, length, PROT_READ, MAP_PRIVATE, fd, 0);
 
 	if (addr == MAP_FAILED) {
-		fprintf(stderr, "could not mmap input file\n");
+		fprintf(stderr, "[Lexer] could not mmap input file\n");
 	}
 
 	if (debug) {
-		fprintf(stderr, "mmapped input file at %p, length %ld bytes\n", addr, length);
+		fprintf(stderr, "[Lexer] mmapped input file at %p, length %ld bytes\n", addr, length);
 	}
 
 	char c;
@@ -336,8 +337,9 @@ int lexer_impl(FILE* infile, FILE* outfile) {
 		size_t nchars_remain = length - i;
 		int ntokens = handler2(addr + i, outfile, nchars_remain);
 		if (ntokens <= 0) {
-			fprintf(stderr, "could not scan token at index %ld\n", i);
+			fprintf(stderr, "[Lexer] could not scan token at index %ld\n", i);
 			fprintf(stderr, "%c\n", addr[i]);
+			status = 1;
 			break;
 		}
 		i += ntokens;
@@ -345,5 +347,5 @@ int lexer_impl(FILE* infile, FILE* outfile) {
 
 	munmap((void*)addr, length);
 
-	return 0;
+	return status;
 }
