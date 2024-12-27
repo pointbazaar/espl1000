@@ -1,5 +1,5 @@
 
-all: build-step test examples
+all: build-step test compile-examples
 
 build-step: deps build compile
 
@@ -13,8 +13,8 @@ compile:
 deps:
 	cd dependencies && make
 
-examples:
-	cd examples   && make
+compile-examples:
+	make -C examples
 
 stdlib:
 	cd stdlib     && make
@@ -31,8 +31,7 @@ TESTBIN=build/compiler/test/sd-tests
 ${TESTBIN}: build-step
 
 test: ${TESTBIN} setup_path
-	./build/compiler/test/sd-tests && \
-	cd examples   && make test
+	./build/compiler/test/sd-tests
 	#cd stdlib     && make test
 
 VALGRIND_OPTS=--leak-check=full --show-leak-kinds=all --track-origins=yes --error-exitcode=1

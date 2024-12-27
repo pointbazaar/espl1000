@@ -1,14 +1,10 @@
-#this build script
-#tests that all examples transpile
-
-#the tests are in the same order as a 'tree examples/' would show them
 
 CALL2 := sd
 CALLX86 := sd -x86
 
-all: test examples_x86
+all: examples-avr examples-x86
 
-examples_x86:
+examples-x86:
 	@echo "[Examples] Compiling Example Programs (x86)"
 	$(CALLX86) ifstatement/ifstatement.dg
 	$(CALLX86) local_variables/simple.dg
@@ -19,9 +15,10 @@ examples_x86:
 	$(CALLX86) other/everything.dg
 	$(CALLX86) typeinference/localvartypeinference.dg
 	$(CALLX86) array/array.dg
+	make -C externc
 	@echo "[Examples (x86)] done"
 
-test:
+examples-avr:
 	@echo "[Examples] Compiling Example Programs (AVR)"
 	$(CALL2) ifstatement/ifstatement.dg
 	$(CALL2) local_variables/simple.dg
