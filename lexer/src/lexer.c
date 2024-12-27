@@ -235,6 +235,7 @@ static int handler2(const char* buf, FILE* o, size_t nchars_remain) {
 		H2OUT_NOSTR(buf, "@private", ANNOT_HALTS, o);
 		H2OUT_NOSTR(buf, "@public", ANNOT_PUBLIC, o);
 		H2OUT_NOSTR(buf, "@deprecated", ANNOT_DEPRECATED, o);
+		H2OUT_NOSTR(buf, "@extern", ANNOT_EXTERN, o);
 	}
 	if (buf[0] == '#') {
 		if (strncmp(buf, "#include <", 10) == 0) {
@@ -281,9 +282,9 @@ static int handler2(const char* buf, FILE* o, size_t nchars_remain) {
 	H2OUT_NOSTR(buf, "else", ELSE, o);
 	H2OUT_NOSTR(buf, "while", WHILE, o);
 	H2OUT_NOSTR(buf, "for", FOR, o);
-	H2OUT_NOSTR(buf, "in", IN, o);
-	H2OUT_NOSTR(buf, "break", BREAK, o);
-	H2OUT_NOSTR(buf, "continue", CONTINUE, o);
+	H2OUT_NOSTR(buf, "in", KEYWORD_IN, o);
+	H2OUT_NOSTR(buf, "break", KEYWORD_BREAK, o);
+	H2OUT_NOSTR(buf, "continue", KEYWORD_CONTINUE, o);
 
 	if (strncmp(buf, "0x", 2) == 0) {
 		return handler2_hexconst(buf, o, nchars_remain);

@@ -28,7 +28,7 @@ void test_break() {
 	char* str = "break; int x";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind == BREAK);
+	assert(tokens[0]->kind == KEYWORD_BREAK);
 	assert(tokens[1]->kind == SEMICOLON);
 	assert(tokens[2]->kind == TYPEID_PRIMITIVE_INT);
 
@@ -56,9 +56,9 @@ void test_in() {
 	char* str = "in; in{ ";
 	struct Token** tokens = lex(str);
 
-	assert(tokens[0]->kind == IN);
+	assert(tokens[0]->kind == KEYWORD_IN);
 	assert(tokens[1]->kind == SEMICOLON);
-	assert(tokens[2]->kind == IN);
+	assert(tokens[2]->kind == KEYWORD_IN);
 	assert(tokens[3]->kind == LCURLY);
 
 	free_tokens(tokens, 4);

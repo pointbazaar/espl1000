@@ -1,5 +1,4 @@
-#ifndef TOKENKEYS
-#define TOKENKEYS
+#pragma once
 
 //Special
 #define EMPTY 1
@@ -88,11 +87,13 @@
 #define FN 57
 #define ELSE 58
 
-#define BREAK 59
-#define CONTINUE 60
+#define KEYWORD_BREAK 59
+#define KEYWORD_CONTINUE 60
 
 #define FOR 61
-#define IN 62
+// 'IN' by itself seems to already be used somewhere
+// so we prefix with 'KEYWORD_' here
+#define KEYWORD_IN 62
 
 #define INCLUDE_DECL 70
 
@@ -141,6 +142,10 @@
 #define ANNOT_PRIVATE 92
 #define ANNOT_PUBLIC 93
 #define ANNOT_DEPRECATED 94
-#define _ANNOT_END_ 95
 
-#endif
+// This annotation is for functions.
+// The function is assumed to be defined outside of espl code.
+// Do not error if the function is not defined.
+// This annotation can be used to link against e.g. C code.
+#define ANNOT_EXTERN 95
+#define _ANNOT_END_ 96

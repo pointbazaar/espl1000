@@ -1,6 +1,8 @@
 #ifndef AST_DECLARE_H
 #define AST_DECLARE_H
 
+#include "token/TokenKeys.h"
+
 #include <inttypes.h>
 
 //--- TOPLEVEL ---

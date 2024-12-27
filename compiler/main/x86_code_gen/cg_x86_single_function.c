@@ -11,6 +11,7 @@
 #include "util/ctx.h"
 #include "rat/rat.h"
 #include "ast/ast.h"
+#include "ast/ast_declare.h"
 
 #include "ibuffer/ibuffer.h"
 
@@ -22,6 +23,10 @@
 #include "liveness/liveness.h"
 
 void compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu) {
+
+	if (has_annotation(m->super.annotations, ANNOT_EXTERN)) {
+		return;
+	}
 
 	struct TACBuffer* buffer = tacbuffer_ctor();
 	struct ST* st = ctx_tables(ctx);

@@ -23,7 +23,7 @@ void for_test1() {
 
 	list_add(list, makeToken2(ID, "i"));
 
-	list_add(list, makeToken2(IN, "in"));
+	list_add(list, makeToken2(KEYWORD_IN, "in"));
 
 	list_add(list, makeToken2(INTEGER, "3"));
 	list_add(list, makeToken2(RANGEOP, ".."));

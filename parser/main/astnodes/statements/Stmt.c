@@ -46,13 +46,13 @@ struct Stmt* makeStmt(struct TokenList* tokens) {
 
 	switch (first->kind) {
 
-		case BREAK:
+		case KEYWORD_BREAK:
 			res->kind = 99;
 			res->is_break = true;
 			list_consume(copy, 2);
 			break;
 
-		case CONTINUE:
+		case KEYWORD_CONTINUE:
 			res->kind = 99;
 			res->is_continue = true;
 			list_consume(copy, 2);

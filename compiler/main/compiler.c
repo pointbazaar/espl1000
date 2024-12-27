@@ -140,7 +140,7 @@ bool compile(struct Flags* flags) {
 		goto out;
 	}
 
-	if (flags_x86(flags)) {
+	if (flags_x86(flags) && !flags_nolink(flags)) {
 
 		char* link_cmd = NULL;
 		asprintf(&link_cmd, "ld -o /tmp/program %s", flags_obj_filename(flags));

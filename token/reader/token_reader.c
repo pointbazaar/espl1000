@@ -117,6 +117,7 @@ static struct Token* recognizeTokenInnerNoStr(int tkn_id) {
 		case ANNOT_PRIVATE:
 		case ANNOT_PUBLIC:
 		case ANNOT_DEPRECATED:
+		case ANNOT_EXTERN:
 
 		//SECTION: KEYWORDS
 		case RETURN:
@@ -125,10 +126,10 @@ static struct Token* recognizeTokenInnerNoStr(int tkn_id) {
 		case IF:
 		case ELSE:
 		case WHILE:
-		case BREAK:
-		case CONTINUE:
+		case KEYWORD_BREAK:
+		case KEYWORD_CONTINUE:
 		case FOR:
-		case IN:
+		case KEYWORD_IN:
 		case RANGEOP:
 		case WAVE:
 		case ARROW_NO_SIDE_EFFECT:
