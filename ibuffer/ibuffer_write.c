@@ -7,6 +7,7 @@
 #include "ibuffer_write.h"
 
 #include "../rat/rat.h"
+#include "../rat/rat_x86.h"
 
 extern char* MNEM[];
 

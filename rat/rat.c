@@ -6,6 +6,7 @@
 
 #include "../util/exit_malloc/exit_malloc.h"
 #include "rat.h"
+#include "rat_x86.h"
 #include "_struct.h"
 
 //gives index of a free register, exits on failure.
@@ -13,8 +14,6 @@
 static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide);
 
 static void rat_init(struct RAT* rat);
-static void rat_init_avr(struct RAT* rat);
-static void rat_init_x86(struct RAT* rat);
 
 // @param arch    the target architecture
 // @param ntemps  maximum number of temporaries
@@ -27,7 +26,7 @@ struct RAT* rat_ctor(enum RAT_ARCH arch, size_t ntemps) {
 	rat->ntemps = ntemps;
 
 	for (int i = 0; i < rat_capacity(rat); i++) {
-		rat->status[i] = REG_FREE;
+		rat->status[i] = REG_INVALID_ARCH;
 		rat->note[i] = "";
 
 		// 0-initialized
@@ -37,6 +36,13 @@ struct RAT* rat_ctor(enum RAT_ARCH arch, size_t ntemps) {
 	rat_init(rat);
 
 	return rat;
+}
+
+void rat_dtor(struct RAT* rat) {
+	for (int i = 0; i < rat_capacity(rat); i++) {
+		free(rat->occupant[i]);
+	}
+	free(rat);
 }
 
 static void rat_init(struct RAT* rat) {
@@ -53,81 +59,10 @@ static void rat_init(struct RAT* rat) {
 	}
 }
 
-static void rat_reserve_reg(struct RAT* rat, uint32_t reg, char* note) {
+void rat_reserve_reg(struct RAT* rat, uint32_t reg, char* note) {
 
 	rat->status[reg] = REG_RESERVED;
 	rat->note[reg] = note;
-}
-
-static void rat_init_x86(struct RAT* rat) {
-
-	rat_reserve_reg(rat, rat_return_reg(rat), "rax reserved for return value");
-
-	rat_reserve_reg(rat, rat_scratch_reg(rat), "reserved as scratch register");
-
-	rat_reserve_reg(rat, rat_stack_ptr(rat), " reserved (stack pointer)");
-
-	rat_reserve_reg(rat, rat_base_ptr(rat), " reserved (frame base pointer)");
-}
-
-static void rat_init_avr(struct RAT* rat) {
-
-	rat_reserve_reg(rat, rat_return_reg(rat), "reserved for return value");
-	rat_reserve_reg(rat, rat_return_reg(rat) + 1, "reserved for return value");
-	rat_reserve_reg(rat, rat_scratch_reg(rat), "reserved as scratch register");
-
-	//r26 through r31 are X,Y,Z
-	//and are used as pointer registers,
-	//and should not be available for allocation
-	rat_reserve_reg(rat, 26, "XL");
-	rat_reserve_reg(rat, 27, "XH");
-
-	//Y is our base pointer for the stack frame
-	rat_reserve_reg(rat, rat_base_ptr(rat), "YL, frame ptr");
-	rat_reserve_reg(rat, rat_base_ptr(rat) + 1, "YH, frame ptr");
-
-	rat_reserve_reg(rat, 30, "ZL");
-	rat_reserve_reg(rat, 31, "ZH");
-}
-
-void rat_dtor(struct RAT* rat) {
-
-	for (int i = 0; i < rat_capacity(rat); i++) {
-		free(rat->occupant[i]);
-	}
-	free(rat);
-}
-
-const char* regnames_x86[] = {
-    [SD_REG_RAX] = "rax",
-    [SD_REG_RBX] = "rbx",
-    [SD_REG_RCX] = "rcx",
-    [SD_REG_RDX] = "rdx",
-    [SD_REG_RDI] = "rdi",
-    [SD_REG_RSI] = "rsi",
-
-    [SD_REG_RSP] = "rsp",
-    [SD_REG_RBP] = "rbp",
-
-    [SD_REG_R8] = "r8",
-    [SD_REG_R9] = "r9",
-    [SD_REG_R10] = "r10",
-    [SD_REG_R11] = "r11",
-    [SD_REG_R12] = "r12",
-    [SD_REG_R13] = "r13",
-    [SD_REG_R14] = "r14",
-    [SD_REG_R15] = "r15",
-};
-
-char* rat_regname_x86(size_t i) {
-
-	return (char*)regnames_x86[i];
-}
-
-static void rat_print_regname_x86(struct RAT* rat, size_t i) {
-
-	assert(i < rat_capacity(rat));
-	printf("%s", rat_regname_x86(i));
 }
 
 static void rat_print_regname(struct RAT* rat, size_t i) {
@@ -146,7 +81,12 @@ static void rat_print_regname(struct RAT* rat, size_t i) {
 static void rat_print_reg(struct RAT* rat, size_t i) {
 
 	rat_print_regname(rat, i);
-	printf(": ");
+	const int status = rat->status[i];
+	const bool valid = status != REG_INVALID_ARCH;
+
+	if (valid) {
+		printf(": ");
+	}
 
 	switch (rat->status[i]) {
 
@@ -164,9 +104,13 @@ static void rat_print_reg(struct RAT* rat, size_t i) {
 		case REG_RESERVED:
 			printf("%20s", rat->note[i]);
 			break;
+		case REG_INVALID_ARCH:
+			break;
 	}
 
-	printf("\n");
+	if (valid) {
+		printf("\n");
+	}
 }
 
 void rat_print(struct RAT* rat) {
@@ -254,6 +198,9 @@ int32_t rat_find_reg_no_overlap(struct RAT* rat, bool* temps_conflict, size_t nt
 		if (rat->status[reg] == REG_RESERVED) {
 			continue;
 		}
+		if (rat->status[reg] == REG_INVALID_ARCH) {
+			continue;
+		}
 		if (rat->status[reg] == REG_FREE) {
 			return reg;
 		}
@@ -323,6 +270,13 @@ void rat_free(struct RAT* rat, uint8_t reg) {
 			printf("[RAT] trying to free reserved Register. Exiting.\n");
 			exit(1);
 			break;
+
+		case REG_INVALID_ARCH:
+			break;
+
+		default:
+			fprintf(stderr, "unhandled case in %s\n", __func__);
+			exit(1);
 	}
 }
 
@@ -367,8 +321,8 @@ enum SD_REGISTER rat_scratch_reg(struct RAT* rat) {
 
 	switch (rat->arch) {
 		// on avr, r16 is our scratch register
-		case RAT_ARCH_AVR: return 16;
-		case RAT_ARCH_X86: return SD_REG_RBX;
+		case RAT_ARCH_AVR: return r16;
+		case RAT_ARCH_X86: return rat_scratch_reg_x86();
 	}
 }
 
@@ -376,9 +330,9 @@ enum SD_REGISTER rat_return_reg(struct RAT* rat) {
 
 	switch (rat->arch) {
 		case RAT_ARCH_AVR:
-			return 0;
+			return r0;
 		case RAT_ARCH_X86:
-			return SD_REG_RAX;
+			return rat_return_reg_x86();
 	}
 }
 
@@ -386,9 +340,9 @@ enum SD_REGISTER rat_base_ptr(struct RAT* rat) {
 
 	switch (rat->arch) {
 		case RAT_ARCH_AVR:
-			return 28; // YL:YH
+			return r28; // YL:YH
 		case RAT_ARCH_X86:
-			return SD_REG_RBP;
+			return rat_base_ptr_x86();
 	}
 }
 
@@ -399,16 +353,11 @@ enum SD_REGISTER rat_stack_ptr(struct RAT* rat) {
 			printf("%s: not applicable for AVR\n", __func__);
 			exit(1);
 		case RAT_ARCH_X86:
-			return SD_REG_RSP;
+			return rat_stack_ptr_x86();
 	}
 }
 
 uint16_t rat_capacity(struct RAT* rat) {
 
-	switch (rat->arch) {
-		case RAT_ARCH_AVR: return 32;
-		case RAT_ARCH_X86:
-			return sizeof(regnames_x86) / sizeof(regnames_x86[0]);
-		default: return 0;
-	}
+	return SD_REGISTER_END;
 }

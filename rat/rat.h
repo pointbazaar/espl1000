@@ -1,34 +1,14 @@
-#ifndef SMALLDRAGON_TOPLEVEL_RAT_H
-#define SMALLDRAGON_TOPLEVEL_RAT_H
+#pragma once
 
 #include <stdbool.h>
 #include <inttypes.h>
 #include <stddef.h>
 
+#include "register.h"
+
 enum RAT_ARCH {
 	RAT_ARCH_AVR,
 	RAT_ARCH_X86,
-};
-
-enum SD_REGISTER {
-	SD_REG_RAX = 0,
-	SD_REG_RBX,
-	SD_REG_RCX,
-	SD_REG_RDX,
-	SD_REG_RDI,
-	SD_REG_RSI,
-
-	SD_REG_RSP,
-	SD_REG_RBP,
-
-	SD_REG_R8,
-	SD_REG_R9,
-	SD_REG_R10,
-	SD_REG_R11,
-	SD_REG_R12,
-	SD_REG_R13,
-	SD_REG_R14,
-	SD_REG_R15,
 };
 
 struct RAT;
@@ -37,7 +17,11 @@ struct RAT* rat_ctor(enum RAT_ARCH arch, size_t ntemps);
 
 void rat_dtor(struct RAT* rat);
 
+void rat_init_avr(struct RAT* rat);
+
 void rat_print(struct RAT* rat);
+
+void rat_reserve_reg(struct RAT* rat, uint32_t reg, char* note);
 
 // @returns    true if 'tmp_index' occupies a register
 bool rat_has_register(struct RAT* rat, uint32_t tmp_index);
@@ -80,8 +64,3 @@ enum SD_REGISTER rat_base_ptr(struct RAT* rat);
 enum SD_REGISTER rat_stack_ptr(struct RAT* rat);
 
 uint16_t rat_capacity(struct RAT* rat);
-
-// x86 specific
-char* rat_regname_x86(size_t i);
-
-#endif
