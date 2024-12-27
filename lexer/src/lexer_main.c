@@ -14,7 +14,7 @@ int lexer_main(int argc, char* argv[]) {
 	struct LexerFlags* myargs = handle_arguments(argc, argv);
 
 	if (myargs->filename == NULL) {
-		printf("expected a filename of the file to tokenize\n");
+		fprintf(stderr, "[Lexer] expected a filename of the file to tokenize\n");
 		exit(1);
 	}
 
@@ -23,24 +23,24 @@ int lexer_main(int argc, char* argv[]) {
 	//configure input source
 	FILE* yyin = fopen(filename, "r");
 	if (yyin == NULL) {
-		fprintf(stderr, "error: could not open %s\n", filename);
+		fprintf(stderr, "[Lexer] error: could not open %s\n", filename);
 		return 1;
 	}
 
 	if (debug) {
-		fprintf(stderr, "opened input file %s\n", filename);
+		fprintf(stderr, "[Lexer] opened input file %s\n", filename);
 	}
 
 	char* buffer = lexer_make_tkn_filename(filename);
 
 	FILE* outFile = fopen(buffer, "w");
 	if (outFile == NULL) {
-		fprintf(stderr, "error: could not open %s\n", buffer);
+		fprintf(stderr, "[Lexer] error: could not open %s\n", buffer);
 		return 1;
 	}
 
 	if (debug) {
-		fprintf(stderr, "opened output file %s\n", buffer);
+		fprintf(stderr, "[Lexer] opened output file %s\n", buffer);
 	}
 
 	//full buffering for better performance
