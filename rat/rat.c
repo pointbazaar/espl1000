@@ -53,49 +53,41 @@ static void rat_init(struct RAT* rat) {
 	}
 }
 
+static void rat_reserve_reg(struct RAT* rat, uint32_t reg, char* note) {
+
+	rat->status[reg] = REG_RESERVED;
+	rat->note[reg] = note;
+}
+
 static void rat_init_x86(struct RAT* rat) {
 
-	rat->status[rat_return_reg(rat)] = REG_RESERVED;
-	rat->note[rat_return_reg(rat)] = "rax reserved for return value";
+	rat_reserve_reg(rat, rat_return_reg(rat), "rax reserved for return value");
 
-	rat->status[rat_scratch_reg(rat)] = REG_RESERVED;
-	rat->note[rat_scratch_reg(rat)] = "reserved as scratch register";
+	rat_reserve_reg(rat, rat_scratch_reg(rat), "reserved as scratch register");
 
-	rat->status[rat_stack_ptr(rat)] = REG_RESERVED;
-	rat->note[rat_stack_ptr(rat)] = " reserved (stack pointer)";
+	rat_reserve_reg(rat, rat_stack_ptr(rat), " reserved (stack pointer)");
 
-	rat->status[rat_base_ptr(rat)] = REG_RESERVED;
-	rat->note[rat_base_ptr(rat)] = " reserved (frame base pointer)";
+	rat_reserve_reg(rat, rat_base_ptr(rat), " reserved (frame base pointer)");
 }
 
 static void rat_init_avr(struct RAT* rat) {
 
-	rat->status[rat_return_reg(rat)] = REG_RESERVED;
-	rat->note[rat_return_reg(rat)] = "reserved for return value";
-	rat->status[rat_return_reg(rat) + 1] = REG_RESERVED;
-	rat->note[rat_return_reg(rat) + 1] = "reserved for return value";
-
-	rat->status[rat_scratch_reg(rat)] = REG_RESERVED;
-	rat->note[rat_scratch_reg(rat)] = "reserved as scratch register";
+	rat_reserve_reg(rat, rat_return_reg(rat), "reserved for return value");
+	rat_reserve_reg(rat, rat_return_reg(rat) + 1, "reserved for return value");
+	rat_reserve_reg(rat, rat_scratch_reg(rat), "reserved as scratch register");
 
 	//r26 through r31 are X,Y,Z
 	//and are used as pointer registers,
 	//and should not be available for allocation
-	rat->status[26] = REG_RESERVED; //X
-	rat->status[27] = REG_RESERVED; //X
-	rat->note[26] = "XL";
-	rat->note[27] = "XH";
+	rat_reserve_reg(rat, 26, "XL");
+	rat_reserve_reg(rat, 27, "XH");
 
 	//Y is our base pointer for the stack frame
-	rat->status[rat_base_ptr(rat)] = REG_RESERVED; //Y
-	rat->status[rat_base_ptr(rat) + 1] = REG_RESERVED; //Y
-	rat->note[rat_base_ptr(rat)] = "YL, reserved for frame pointer";
-	rat->note[rat_base_ptr(rat) + 1] = "YH, reserved for frame pointer";
+	rat_reserve_reg(rat, rat_base_ptr(rat), "YL, frame ptr");
+	rat_reserve_reg(rat, rat_base_ptr(rat) + 1, "YH, frame ptr");
 
-	rat->status[30] = REG_RESERVED; //Z
-	rat->status[31] = REG_RESERVED; //Z
-	rat->note[30] = "ZL";
-	rat->note[31] = "ZH";
+	rat_reserve_reg(rat, 30, "ZL");
+	rat_reserve_reg(rat, 31, "ZH");
 }
 
 void rat_dtor(struct RAT* rat) {
