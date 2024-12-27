@@ -59,6 +59,12 @@ struct Flag all_flags[] = {
 	false,
 	false,
     },
+    {
+	"nolink",
+	"do not run the linker (ld). Useful if some functions are declared as extern.",
+	false,
+	false,
+    },
 };
 
 size_t all_flags_count() {

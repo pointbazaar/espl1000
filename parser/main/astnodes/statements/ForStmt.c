@@ -40,7 +40,7 @@ struct ForStmt* makeForStmt(struct TokenList* tokens) {
 	//copy the index Name
 	asprintf(&(res->index_name), "%s", head->value_ptr);
 
-	if (!list_expect(copy, IN)) {
+	if (!list_expect(copy, KEYWORD_IN)) {
 		freeTokenListShallow(copy);
 		free(res);
 		return NULL;

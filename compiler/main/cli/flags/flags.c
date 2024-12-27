@@ -233,6 +233,9 @@ bool flags_lexer(struct Flags* flags) {
 bool flags_parser(struct Flags* flags) {
 	return flags_set(flags, "parser");
 }
+bool flags_nolink(struct Flags* flags) {
+	return flags_set(flags, "nolink");
+}
 
 char* flags_asm_filename(struct Flags* flags) {
 	return flags->asm_filename;

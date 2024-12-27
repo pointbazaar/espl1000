@@ -6,6 +6,7 @@
 #include "rat/rat.h"
 
 #include "ast/ast.h"
+#include "ast/visitor/visitor.h"
 
 #include "cli/flags/flags.h"
 
@@ -18,6 +19,26 @@
 #include "tac/tac.h"
 #include "cg_x86_single_function.h"
 #include "cg_x86_single_tac.h"
+
+static void visitor_emit_extern(void* node, enum NODE_TYPE type, void* arg) {
+
+	if (type != NODE_METHOD) {
+		return;
+	}
+
+	FILE* fout = (FILE*)arg;
+
+	struct Method* m = (struct Method*)node;
+
+	if (has_annotation(m->super.annotations, ANNOT_EXTERN)) {
+		fprintf(fout, "extern %s\n", m->decl->name);
+	}
+}
+
+static void declare_extern_functions_asm(FILE* fout, struct AST* ast) {
+
+	visit_ast(ast, visitor_emit_extern, fout);
+}
 
 bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
 
@@ -62,6 +83,8 @@ bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
 
 	fprintf(fout, "section .text\n");
 	fprintf(fout, "global _start\n\n");
+
+	declare_extern_functions_asm(fout, ast);
 
 	ibu_write(ibu, fout);
 
