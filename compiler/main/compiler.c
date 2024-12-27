@@ -118,7 +118,7 @@ bool compile(struct Flags* flags) {
 	const char* stderr_file;
 
 	if (flags_x86(flags)) {
-		prog = "nasm -felf64";
+		prog = "nasm -felf64 -g";
 		stdout_file = "/tmp/nasm-stdout";
 		stderr_file = "/tmp/nasm-stdout";
 	} else {

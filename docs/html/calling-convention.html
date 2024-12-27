@@ -23,18 +23,19 @@
 
 	<h1>Calling Convention</h1>
 
-	<h2>The Caller</h2>
+	<h2> AVR </h2>
+	<h3>The Caller</h3>
 	<p>
 	The Caller pushes the Arguments on the Stack in Order.
 	</p>
 
-	<h2>The Callee</h2>
+	<h3>The Callee</h3>
 	<p>
 	The Callee then must pop them into registers in reverse Order.
 	That happens before anything else in the Callee.
 	</p>
 
-<h2>Example - IR</h2>
+<h3>Example - IR</h3>
 <pre>
 TAC_CONST_VALUE t1 = 19
 TAC_PARAM t1
@@ -47,7 +48,7 @@ TAC_CONST_VALUE t0 = 0
 TAC_RETURN t0
 </pre>
 
-<h2>Example - AVR Assembler</h2>
+<h3>Example - AVR Assembler</h3>
 <pre>
 main:
 ldi r16, 19
@@ -63,6 +64,70 @@ pop r17
 pop r18
 ret
 </pre>
+	<h2> x86-64 Backend </h2>
+	<p>
+	For the x86-64 backend, espl is using the
+	<a href="https://en.wikipedia.org/wiki/X86_calling_conventions#System_V_AMD64_ABI">System V AMD64 ABI</a>.
+	Basically what gcc is doing on Linux. <br>
+	So there is nothing special here. This is to make it easier to call C code.
+	</p>
+
+	<h3>integer / pointer arguments </h3>
+	<table class="table table-dark">
+	<thead>
+		<tr>
+			<td>Usage</td>
+			<td>Storage</td>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>return value</td>
+			<td>rax</td>
+		</tr>
+		<tr>
+			<td>arg 0</td>
+			<td>rdi</td>
+		</tr>
+		<tr>
+			<td>arg 1</td>
+			<td>rsi</td>
+		</tr>
+		<tr>
+			<td>arg 2</td>
+			<td>rdx</td>
+		</tr>
+		<tr>
+			<td>arg 3</td>
+			<td>rcx</td>
+		</tr>
+		<tr>
+			<td>arg 4</td>
+			<td>r8</td>
+		</tr>
+		<tr>
+			<td>arg 5</td>
+			<td>r9</td>
+		</tr>
+		<tr>
+			<td>arg &gt; 5</td>
+			<td>stored on stack</td>
+		</tr>
+	</tbody>
+	</table>
+
+	<h3>caller/callee saved registers </h3>
+	<ul>
+		<li> callee saved: rbx, rsi, rdi, rbp, r12-r15</li>
+		<li> caller saved:  others </li>
+	</ul>
+
+	<h3> References for x86-64 Calling Conventions</h3>
+	<ul>
+		<li><a href="https://www.agner.org/optimize/calling_conventions.pdf">Calling Conventions (pdf)</a></li>
+		<li><a href="https://en.wikipedia.org/wiki/X86_calling_conventions#System_V_AMD64_ABI">Wikipedia</a></li>
+		<li><a href="https://www.chromium.org/chromium-os/developer-library/reference/linux-constants/syscalls/">Linux Syscall Table</li>
+	</ul>
 
 </div>
 
