@@ -146,7 +146,7 @@ struct Flags* makeFlags(int argc, char** argv) {
 		make_flags_inner(flags, argv[i]);
 	}
 
-	if (flags_set(flags, "help") || flags_set(flags, "version")) {
+	if (flags_set(flags, "help") || flags_set(flags, "version") || flags_set(flags, "rat")) {
 		return flags;
 	}
 
@@ -235,6 +235,9 @@ bool flags_parser(struct Flags* flags) {
 }
 bool flags_nolink(struct Flags* flags) {
 	return flags_set(flags, "nolink");
+}
+bool flags_rat(struct Flags* flags) {
+	return flags_set(flags, "rat");
 }
 
 char* flags_asm_filename(struct Flags* flags) {

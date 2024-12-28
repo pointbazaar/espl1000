@@ -4,10 +4,27 @@
 #include "flags/flags.h"
 #include "util/fileutils/fileutils.h"
 
+#include "rat/rat.h"
+
 #include "compiler.h"
 
 #define EXIT_FAILURE 1
 #define EXIT_SUCCESS 0
+
+static int rat_main(struct Flags* flags) {
+
+	enum RAT_ARCH arch = RAT_ARCH_AVR;
+
+	if (flags_x86(flags)) {
+		arch = RAT_ARCH_X86;
+	}
+
+	struct RAT* rat = rat_ctor(RAT_ARCH_X86, 0);
+
+	rat_print(rat);
+
+	return 0;
+}
 
 int main(int argc, char* argv[]) {
 
@@ -36,6 +53,10 @@ int main(int argc, char* argv[]) {
 		printf("%s\n", flags_token_filename(flags));
 		printf("%s\n", flags_hex_filename(flags));
 		printf("%s\n", flags_obj_filename(flags));
+	}
+
+	if (flags_rat(flags)) {
+		return rat_main(flags);
 	}
 
 	bool success = compile(flags);
