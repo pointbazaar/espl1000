@@ -15,14 +15,14 @@ void compile_tac_load_local_addr(struct RAT* rat, struct TAC* tac, struct Ctx* c
 
 	char* c = "TAC_LOAD_LOCAL_ADDR";
 
-	const int rdest = rat_get_register(rat, tac->dest);
+	const int rdest = rat_get_register(rat, tac_dest(tac));
 
-	if (!rat_is_wide(rat, tac->dest)) {
+	if (!rat_is_wide(rat, tac_dest(tac))) {
 		printf("compile_tac_load_local_addr: destination should have 2 registers\n");
 		exit(1);
 	}
 
-	char* name = lvst_at(ctx_tables(ctx)->lvst, tac->arg1)->name;
+	char* name = lvst_at(ctx_tables(ctx)->lvst, tac_arg1(tac))->name;
 
 	const uint16_t offset = lvst_stack_frame_offset_avr(ctx_tables(ctx)->lvst, name);
 

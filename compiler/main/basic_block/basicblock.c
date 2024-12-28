@@ -59,9 +59,9 @@ void create_edges_basic_block(struct TACBuffer* buffer, uint32_t count, struct B
 
 	struct TAC* last = tacbuffer_get_last(block->buffer);
 
-	if (last->label_index != TAC_NO_LABEL) {
+	if (tac_may_branch_to_label(last) && tac_label_index(last) != TAC_NO_LABEL) {
 		//find out the block where the leader has that label_index
-		block->branch_1 = find_block_from_label_index(blocks, count, last->label_index);
+		block->branch_1 = find_block_from_label_index(blocks, count, tac_label_index(last));
 	}
 
 	//the next instruction is also a possible branch, if
@@ -83,12 +83,12 @@ static struct BasicBlock* find_block_from_label_index(struct BasicBlock** blocks
 	for (size_t j = 0; j < count_blocks; j++) {
 		struct BasicBlock* candidate = blocks[j];
 
-		enum TAC_KIND kind = tacbuffer_get(candidate->buffer, 0)->kind;
+		enum TAC_KIND kind = tac_kind(tacbuffer_get(candidate->buffer, 0));
 
 		if (kind != TAC_LABEL_INDEXED && kind != TAC_LABEL_FUNCTION)
 			continue;
 
-		if (tacbuffer_get(candidate->buffer, 0)->label_index == label_index)
+		if (tac_label_index(tacbuffer_get(candidate->buffer, 0)) == label_index)
 			return candidate;
 	}
 	return NULL;
@@ -175,7 +175,7 @@ static bool* calculate_leaders(struct TACBuffer* buffer) {
 		struct TAC* current = tacbuffer_get(buffer, i);
 
 		//if(current->label_index != TAC_NO_LABEL)
-		if (current->kind == TAC_LABEL_FUNCTION || current->kind == TAC_LABEL_INDEXED)
+		if (tac_kind(current) == TAC_LABEL_FUNCTION || tac_kind(current) == TAC_LABEL_INDEXED)
 			is_leader[i] = true;
 
 		if (i == 0) continue;
@@ -186,7 +186,7 @@ static bool* calculate_leaders(struct TACBuffer* buffer) {
 		//any statement that immediately follows a goto or conditional
 		//goto is a leader
 
-		if (prev->kind == TAC_IF_GOTO || prev->kind == TAC_IF_CMP_GOTO || prev->kind == TAC_GOTO || prev->kind == TAC_RETURN)
+		if (tac_kind(prev) == TAC_IF_GOTO || tac_kind(prev) == TAC_IF_CMP_GOTO || tac_kind(prev) == TAC_GOTO || tac_kind(prev) == TAC_RETURN)
 			is_leader[i] = true;
 	}
 

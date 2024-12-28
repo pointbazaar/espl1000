@@ -9,6 +9,8 @@ struct ST;
 struct SST;
 struct LVST;
 
+struct TAC;
+
 extern struct ST* ctx_tables(struct Ctx* ctx);
 
 enum TAC_OP {
@@ -83,30 +85,42 @@ enum TAC_KIND {
 
 #define TAC_NO_LABEL 0
 
-//this is our 2-Address Code
-//it easily maps onto avr_code_gen assembly
-//which assumes 1 operation and 2 registers,
-//dest and src.
-//where dest = dest op src
-struct TAC {
-
-	//three address code
-	uint32_t label_index;
-
-	uint32_t dest;
-	enum TAC_KIND kind;
-	uint64_t arg1;
-
-	enum TAC_OP op;
-
-	int64_t const_value;
-};
+#include "tac_ctor.h"
 
 // returns an optional IR temporary which is written
 // in this statement
 // @returns temporary index >= 0 if there is one
 // @returns < 0     if there is no destination temporary
 int32_t tac_opt_dest(struct TAC* tac);
+
+// protected member access
+uint32_t tac_dest(struct TAC* tac);
+// protected member access
+uint64_t tac_arg1(struct TAC* tac);
+// protected member access
+int64_t tac_const_value(struct TAC* tac);
+// protected member access
+uint32_t tac_label_index(struct TAC* tac);
+// protected member access
+enum TAC_OP tac_op(struct TAC* tac);
+// protected member access
+enum TAC_KIND tac_kind(struct TAC* tac);
+
+// @returns  the highest index of an IR temorary variable
+//           used in this IR statement
+//           e.g. t4 += t7  -> 7
+//           e.g. t0 = 0x83 -> 0
+//           e.g. setup SP  -> -1
+// @returns  -1 if no IR temporary was used
+int32_t tac_max_temp(struct TAC* tac);
+
+// @returns   true if this IR statement may alter control flow
+//            e.g. TAC_GOTO, TAC_IF_GOTO
+bool tac_may_branch_to_label(struct TAC* tac);
+
+// @param tac   the IR statement
+// @returns     true if this IR statement needs a register for storage of a temporary
+bool tac_needs_register(struct TAC* tac);
 
 // marks used_map[i] = true
 // if temporary 'i' is used as a value
@@ -128,45 +142,3 @@ int tac_mark_defines(struct TAC* tac, bool* defines_map, size_t map_size);
 bool tac_is_unconditional_jump(struct TAC* tac);
 
 char* tac_tostring(struct TAC* tac, struct SST* sst, struct LVST* lvst);
-uint32_t make_label();
-uint32_t make_temp();
-
-//for most TACs, there should be a dedicated constructor,
-//which helps with avoiding invalid state and malformed TACs
-
-struct TAC* makeTACLabel(uint32_t label);
-struct TAC* makeTACLabelFunction(uint32_t sst_index);
-
-struct TAC* makeTACGoto(uint32_t label);
-struct TAC* makeTACReturn(uint32_t tmp);
-
-struct TAC* makeTACIfGoto(uint32_t tmp_condition, uint32_t label_destination);
-struct TAC* makeTACIfCMPGoto(uint32_t tmp1, enum TAC_OP op, uint32_t tmp2, uint32_t label_destination);
-
-struct TAC* makeTACCopy(uint32_t dest, uint32_t src);
-
-struct TAC* makeTACLoadLocal(uint32_t tmp, uint32_t local_index);
-struct TAC* makeTACStoreLocal(uint32_t local_index, uint32_t tmp);
-struct TAC* makeTACLoadLocalAddr(uint32_t tmp, uint32_t local_index);
-
-struct TAC* makeTACConst(uint32_t tmp, int value);
-struct TAC* makeTACConst16(uint32_t tmp, int value);
-
-struct TAC* makeTACBinOp(uint32_t dest, enum TAC_OP op, uint32_t src);
-struct TAC* makeTACBinOpImmediate(uint32_t tmp, enum TAC_OP op, int32_t immediate);
-struct TAC* makeTACUnaryOp(uint32_t dest, uint32_t src, enum TAC_OP op);
-
-struct TAC* makeTACStoreConstAddr(uint64_t addr, uint64_t src);
-struct TAC* makeTACLoadConstAddr(uint32_t dest, uint32_t addr);
-
-struct TAC* makeTACParam(uint32_t dest, bool push16);
-struct TAC* makeTACCall(uint32_t tmp, uint32_t function_index);
-struct TAC* makeTACICall(uint32_t tmp, uint32_t tmp_call);
-
-struct TAC* makeTACSetupStackframe(uint32_t frame_size);
-struct TAC* makeTACSetupSP();
-
-struct TAC* makeTACNop();
-
-struct TAC* makeTACLoad(uint32_t tmp, uint32_t taddr, uint8_t width);
-struct TAC* makeTACStore(uint32_t taddr, uint32_t tmp);

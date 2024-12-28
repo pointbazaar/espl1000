@@ -7,17 +7,17 @@
 
 void compile_tac_unary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
-	int reg_src = rat_get_register(rat, tac->arg1);
+	int reg_src = rat_get_register(rat, tac_arg1(tac));
 
-	int reg_dest = rat_get_register(rat, tac->dest);
+	int reg_dest = rat_get_register(rat, tac_dest(tac));
 
-	bool wide = rat_is_wide(rat, tac->arg1) && rat_is_wide(rat, tac->dest);
+	bool wide = rat_is_wide(rat, tac_arg1(tac)) && rat_is_wide(rat, tac_dest(tac));
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
 	char* c = "TAC_UNARY_OP";
 
-	switch (tac->op) {
+	switch (tac_op(tac)) {
 
 		case TAC_OP_UNARY_NOT:
 		case TAC_OP_UNARY_BITWISE_NEG:

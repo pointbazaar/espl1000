@@ -50,18 +50,20 @@ static void tac_unopterm_const(struct TACBuffer* buffer, struct UnOpTerm* u) {
 
 	struct ConstValue* c = (struct ConstValue*)u->term->ptr.m12;
 
-	tac_constvalue(buffer, c);
+	int value = int_value_from_const(c);
 
 	struct TAC* t = tacbuffer_get_last(buffer);
 
 	switch (u->op) {
-		case OP_MINUS: t->const_value = -t->const_value; break;
-		case OP_NOT: t->const_value = !t->const_value; break;
-		case OP_COMPLEMENT: t->const_value = ~t->const_value; break;
+		case OP_MINUS: value = -value; break;
+		case OP_NOT: value = !value; break;
+		case OP_COMPLEMENT: value = ~value; break;
 
 		default:
 			printf("error, op was none of supported TAC_OP_... values\n");
 			printf("op is %d\n", u->op);
 			exit(1);
 	}
+
+	tacbuffer_append(buffer, makeTACConst(make_temp(), value));
 }

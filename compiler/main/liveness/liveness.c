@@ -89,19 +89,10 @@ static size_t liveness_max_temp_block(struct BasicBlock* block) {
 
 		assert(t != NULL);
 
-		int32_t opt_dest = tac_opt_dest(t);
+		const int32_t opt_max_temp = tac_max_temp(t);
 
-		int32_t opt_dest2 = t->dest;
-		uint64_t opt_arg1 = t->arg1;
-
-		if (opt_dest > ((int32_t)max_temp)) {
-			max_temp = opt_dest;
-		}
-		if (opt_dest2 > ((int32_t)max_temp)) {
-			max_temp = opt_dest2;
-		}
-		if (opt_arg1 > max_temp) {
-			max_temp = opt_arg1;
+		if (opt_max_temp > max_temp) {
+			max_temp = opt_max_temp;
 		}
 	}
 

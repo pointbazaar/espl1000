@@ -12,16 +12,16 @@
 
 void compile_tac_call(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx) {
 
-	int reg_dest = rat_get_register(rat, tac->dest);
+	int reg_dest = rat_get_register(rat, tac_dest(tac));
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
-	const bool wide_dest = rat_is_wide(rat, tac->dest);
+	const bool wide_dest = rat_is_wide(rat, tac_dest(tac));
 
 	//in case of tests, where SST may not be filled correctly
 	char* function_name = "main";
 
-	if (tac->arg1 < sst_size(ctx_tables(ctx)->sst)) {
-		function_name = sst_at(ctx_tables(ctx)->sst, tac->arg1)->name;
+	if (tac_arg1(tac) < sst_size(ctx_tables(ctx)->sst)) {
+		function_name = sst_at(ctx_tables(ctx)->sst, tac_arg1(tac))->name;
 	}
 
 	call(function_name, "TAC_CALL");
@@ -42,7 +42,7 @@ void compile_tac_call(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, str
 		return;
 
 	//pop the PARAMS off the stack
-	char* name = sst_at(sst, tac->arg1)->name;
+	char* name = sst_at(sst, tac_arg1(tac))->name;
 
 	uint32_t size = sst_args_size_avr(sst, name);
 

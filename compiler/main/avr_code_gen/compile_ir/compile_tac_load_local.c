@@ -14,9 +14,9 @@
 
 void compile_tac_load_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
-	const int reg_dest = rat_get_register(rat, tac->dest);
+	const int reg_dest = rat_get_register(rat, tac_dest(tac));
 
-	char* name = lvst_at(ctx_tables(ctx)->lvst, tac->arg1)->name;
+	char* name = lvst_at(ctx_tables(ctx)->lvst, tac_arg1(tac))->name;
 
 	const uint16_t offset = lvst_stack_frame_offset_avr(ctx_tables(ctx)->lvst, name);
 

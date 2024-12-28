@@ -23,7 +23,7 @@ void compile_tac_return_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, s
 	mov_const(rat_scratch_reg(rat), frame_size_bytes, c);
 	add(SD_REG_RSP, rat_scratch_reg(rat), c);
 
-	const int reg = rat_get_register(rat, tac->dest);
+	const int reg = rat_get_register(rat, tac_dest(tac));
 
 	mov_regs(SD_REG_RAX, reg, c);
 

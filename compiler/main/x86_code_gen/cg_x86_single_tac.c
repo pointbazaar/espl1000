@@ -22,7 +22,7 @@ void emit_asm_x86_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 		printf("emit_asm_x86_single_tac %s\n", tac_tostring(tac, st->sst, st->lvst));
 	}
 
-	switch (tac->kind) {
+	switch (tac_kind(tac)) {
 
 		case TAC_LABEL_INDEXED:
 		case TAC_LABEL_FUNCTION: compile_tac_label_x86(tac, ibu, ctx); break;
@@ -53,7 +53,7 @@ void emit_asm_x86_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 		case TAC_STORE: compile_tac_store_x86(rat, tac, ibu); break;
 
 		default:
-			printf("tac->kind == 0x%x not handled in %s\n", tac->kind, __FUNCTION__);
+			printf("tac->kind == 0x%x not handled in %s\n", tac_kind(tac), __FUNCTION__);
 			exit(1);
 			break;
 	}

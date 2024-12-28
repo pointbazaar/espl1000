@@ -75,61 +75,78 @@ static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 	struct LVST* lvst = st->lvst;
 	struct SST* sst = st->sst;
 
+	int32_t dest = -1; // init later
+	uint64_t arg1 = 0; // init later
+
 	bool iswide = true;
 
-	switch (t->kind) {
+	switch (tac_kind(t)) {
 
 		case TAC_CONST_VALUE:
-			iswide = t->const_value > 255 || t->const_value < -128;
-			rat_ensure_register(rat, t->dest, true, iswide);
+			dest = tac_dest(t);
+			iswide = tac_const_value(t) > 255 || tac_const_value(t) < -128;
+			rat_ensure_register(rat, dest, true, iswide);
 			break;
 
 		case TAC_BINARY_OP_IMMEDIATE:
-			iswide = rat_is_wide(rat, t->dest);
-			rat_ensure_register(rat, t->dest, true, iswide);
+			dest = tac_dest(t);
+			iswide = rat_is_wide(rat, dest);
+			rat_ensure_register(rat, dest, true, iswide);
 			break;
 
 		case TAC_LOAD_LOCAL_ADDR:
+			dest = tac_dest(t);
 			//address always needs 2 registers
-			rat_ensure_register(rat, t->dest, true, true);
+			rat_ensure_register(rat, dest, true, true);
 			break;
 
 		case TAC_CALL: {
 			iswide = false;
+			arg1 = tac_arg1(t);
 
-			if (sst_size(sst) > t->arg1) {
+			if (sst_size(sst) > arg1) {
 				//in TAC tests the SST might not be fully initialized
-				struct Type* return_type = sst_at(sst, t->arg1)->return_type;
+				struct Type* return_type = sst_at(sst, arg1)->return_type;
 				iswide = lvst_sizeof_type(return_type);
 			}
 
-			rat_ensure_register(rat, t->dest, false, iswide);
+			dest = tac_dest(t);
+			rat_ensure_register(rat, dest, false, iswide);
 		} break;
 
 		case TAC_COPY:
-			iswide = rat_is_wide(rat, t->arg1);
-			rat_ensure_register(rat, t->dest, false, iswide);
+			dest = tac_dest(t);
+			arg1 = tac_arg1(t);
+			iswide = rat_is_wide(rat, arg1);
+			rat_ensure_register(rat, dest, false, iswide);
 			break;
 
 		case TAC_BINARY_OP:
-			iswide = rat_is_wide(rat, t->arg1);
-			rat_ensure_register(rat, t->dest, false, iswide);
+			dest = tac_dest(t);
+			arg1 = tac_arg1(t);
+			iswide = rat_is_wide(rat, arg1);
+			rat_ensure_register(rat, dest, false, iswide);
 			break;
 
 		case TAC_UNARY_OP:
-			iswide = rat_is_wide(rat, t->arg1);
-			rat_ensure_register(rat, t->dest, false, iswide);
+			dest = tac_dest(t);
+			arg1 = tac_arg1(t);
+			iswide = rat_is_wide(rat, arg1);
+			rat_ensure_register(rat, dest, false, iswide);
 			break;
 
 		case TAC_LOAD_LOCAL: {
+			arg1 = tac_arg1(t);
 			//look at the LVST to see the width of the local var
-			struct Type* local_type = lvst_at(lvst, t->arg1)->type;
+			struct Type* local_type = lvst_at(lvst, arg1)->type;
 			iswide = lvst_sizeof_type(local_type) == 2;
-			rat_ensure_register(rat, t->dest, false, iswide);
+			dest = tac_dest(t);
+			rat_ensure_register(rat, dest, false, iswide);
 		} break;
 
 		case TAC_LOAD_CONST_ADDR:
-			rat_ensure_register(rat, t->dest, false, true);
+			dest = tac_dest(t);
+			rat_ensure_register(rat, dest, false, true);
 			//TODO: know the width of the load
 			break;
 
@@ -137,8 +154,9 @@ static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 			//sadly we do not know what is all going to be added/subtracted
 			//from what we load there, could be a pointer, so it must be wide
 			{
-				const bool iswide = t->const_value >= 2;
-				rat_ensure_register(rat, t->dest, false, iswide);
+				const bool iswide = tac_const_value(t) >= 2;
+				dest = tac_dest(t);
+				rat_ensure_register(rat, dest, false, iswide);
 			}
 			break;
 

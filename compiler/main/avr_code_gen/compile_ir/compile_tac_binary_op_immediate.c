@@ -15,7 +15,7 @@ static void case_tac_op_shift_right(struct IBuffer* ibu, struct RAT* rat, struct
 
 void compile_tac_binary_op_immediate(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
-	switch (tac->op) {
+	switch (tac_op(tac)) {
 
 		case TAC_OP_ADD: case_tac_op_add(ibu, rat, tac); break;
 		case TAC_OP_SUB: case_tac_op_sub(ibu, rat, tac); break;
@@ -27,16 +27,16 @@ void compile_tac_binary_op_immediate(struct RAT* rat, struct TAC* tac, struct IB
 
 		default:
 			printf("unsupported op in compile_tac_binary_op_immediate\n");
-			printf("tac->op = %d\n", tac->op);
+			printf("tac->op = %d\n", tac_op(tac));
 			exit(1);
 	}
 }
 
 static void case_tac_op_shift_left(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
 
-	int dest = rat_get_register(rat, tac->dest);
-	const uint16_t immediate = tac->const_value;
-	bool wide = rat_is_wide(rat, tac->dest);
+	int dest = rat_get_register(rat, tac_dest(tac));
+	const uint16_t immediate = tac_const_value(tac);
+	bool wide = rat_is_wide(rat, tac_dest(tac));
 
 	char* c = "TAC_BINARY_OP_IMMEDIATE <<";
 
@@ -52,9 +52,9 @@ static void case_tac_op_shift_left(struct IBuffer* ibu, struct RAT* rat, struct 
 
 static void case_tac_op_shift_right(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
 
-	int dest = rat_get_register(rat, tac->dest);
-	const uint16_t immediate = tac->const_value;
-	bool wide = rat_is_wide(rat, tac->dest);
+	int dest = rat_get_register(rat, tac_dest(tac));
+	const uint16_t immediate = tac_const_value(tac);
+	bool wide = rat_is_wide(rat, tac_dest(tac));
 
 	char* c = "TAC_BINARY_OP_IMMEDIATE >>";
 
@@ -70,9 +70,9 @@ static void case_tac_op_shift_right(struct IBuffer* ibu, struct RAT* rat, struct
 
 static void case_tac_op_xor(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
 
-	int dest = rat_get_register(rat, tac->dest);
-	const uint16_t immediate = tac->const_value;
-	bool wide = rat_is_wide(rat, tac->dest);
+	int dest = rat_get_register(rat, tac_dest(tac));
+	const uint16_t immediate = tac_const_value(tac);
+	bool wide = rat_is_wide(rat, tac_dest(tac));
 
 	char* c = "TAC_BINARY_OP_IMMEDIATE ^";
 
@@ -96,10 +96,10 @@ static void case_tac_op_and(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 	const char* c = "TAC_BINARY_OP_IMMEDIATE &";
 
-	const uint8_t rdest = rat_get_register(rat, tac->dest);
-	const uint16_t immediate = tac->const_value;
+	const uint8_t rdest = rat_get_register(rat, tac_dest(tac));
+	const uint16_t immediate = tac_const_value(tac);
 
-	const bool wide = rat_is_wide(rat, tac->dest);
+	const bool wide = rat_is_wide(rat, tac_dest(tac));
 
 	uint8_t low = immediate & 0x00ff;
 	uint8_t high = (immediate & 0xff00) >> 8;
@@ -120,10 +120,10 @@ static void case_tac_op_and(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 static void case_tac_op_or(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
 
-	int dest = rat_get_register(rat, tac->dest);
-	const uint16_t immediate = tac->const_value;
+	int dest = rat_get_register(rat, tac_dest(tac));
+	const uint16_t immediate = tac_const_value(tac);
 
-	bool wide = rat_is_wide(rat, tac->dest);
+	bool wide = rat_is_wide(rat, tac_dest(tac));
 
 	char* c = "TAC_BINARY_OP_IMMEDIATE |";
 
@@ -138,10 +138,10 @@ static void case_tac_op_or(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac
 
 static void case_tac_op_add(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
 
-	int dest = rat_get_register(rat, tac->dest);
-	bool wide = rat_is_wide(rat, tac->dest);
+	int dest = rat_get_register(rat, tac_dest(tac));
+	bool wide = rat_is_wide(rat, tac_dest(tac));
 
-	const int16_t immediate = tac->const_value;
+	const int16_t immediate = tac_const_value(tac);
 
 	char* c = "TAC_BINARY_OP_IMMEDIATE +";
 
@@ -166,10 +166,10 @@ static void case_tac_op_add(struct IBuffer* ibu, struct RAT* rat, struct TAC* ta
 
 static void case_tac_op_sub(struct IBuffer* ibu, struct RAT* rat, struct TAC* tac) {
 
-	int dest = rat_get_register(rat, tac->dest);
-	bool wide = rat_is_wide(rat, tac->dest);
+	int dest = rat_get_register(rat, tac_dest(tac));
+	bool wide = rat_is_wide(rat, tac_dest(tac));
 
-	const int16_t immediate = tac->const_value;
+	const int16_t immediate = tac_const_value(tac);
 
 	char* c = "TAC_BINARY_OP_IMMEDIATE -";
 

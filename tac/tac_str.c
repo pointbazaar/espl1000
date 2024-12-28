@@ -6,6 +6,8 @@
 #include "tables/sst/sst.h"
 #include "tac.h"
 
+#include "_struct.h"
+
 static char* get_op_str_expr(enum TAC_OP top) {
 	char* opstr = "";
 	switch (top) {

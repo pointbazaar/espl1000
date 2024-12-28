@@ -19,7 +19,7 @@ void emit_asm_avr_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 		printf("emit_asm_avr_single_tac %s\n", tac_tostring(tac, st->sst, st->lvst));
 	}
 
-	switch (tac->kind) {
+	switch (tac_kind(tac)) {
 
 		case TAC_LABEL_INDEXED:
 		case TAC_LABEL_FUNCTION: compile_tac_label(tac, ibu, ctx); break;
@@ -51,7 +51,7 @@ void emit_asm_avr_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 		case TAC_STORE: compile_tac_store(rat, tac, ibu); break;
 
 		default:
-			fprintf(stderr, "%s: unhandled case %d\n", __func__, tac->kind);
+			fprintf(stderr, "%s: unhandled case %d\n", __func__, tac_kind(tac));
 			exit(1);
 	}
 }

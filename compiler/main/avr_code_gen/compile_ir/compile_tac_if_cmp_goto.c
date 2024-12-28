@@ -10,10 +10,10 @@ void compile_tac_if_cmp_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* i
 
 	char* c = "TAC_IF_CMP_GOTO";
 
-	const int reg1 = rat_get_register(rat, tac->dest);
-	const int reg2 = rat_get_register(rat, tac->arg1);
+	const int reg1 = rat_get_register(rat, tac_dest(tac));
+	const int reg2 = rat_get_register(rat, tac_arg1(tac));
 
-	bool wide = rat_is_wide(rat, tac->dest);
+	bool wide = rat_is_wide(rat, tac_dest(tac));
 
 	cp(reg1, reg2, c);
 
@@ -21,7 +21,7 @@ void compile_tac_if_cmp_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* i
 		cp(reg1 + 1, reg2 + 1, c);
 
 	char str[32];
-	sprintf(str, "L%d", tac->label_index);
+	sprintf(str, "L%d", tac_label_index(tac));
 
 	char tmp_label[32];
 	sprintf(tmp_label, "L%d", make_label());
@@ -30,7 +30,7 @@ void compile_tac_if_cmp_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* i
 	// We cannot use 'brne', 'brlt', 'breq', ... as they can only jump +/- 64 words
 	// and we do not know how far away our target label is.
 
-	switch (tac->op) {
+	switch (tac_op(tac)) {
 		case TAC_OP_CMP_EQ: brne(tmp_label, c); break;
 		case TAC_OP_CMP_NEQ: breq(tmp_label, c); break;
 		case TAC_OP_CMP_GE: brlt(tmp_label, c); break;

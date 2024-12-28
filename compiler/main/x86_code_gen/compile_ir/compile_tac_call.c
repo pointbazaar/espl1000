@@ -14,16 +14,16 @@
 
 void compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx) {
 
-	int reg_dest = rat_get_register(rat, tac->dest);
+	int reg_dest = rat_get_register(rat, tac_dest(tac));
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 	char* c = "TAC_CALL";
 
 	char* function_name = NULL;
 
-	if (tac->arg1 < sst_size(ctx_tables(ctx)->sst)) {
-		function_name = sst_at(ctx_tables(ctx)->sst, tac->arg1)->name;
+	if (tac_arg1(tac) < sst_size(ctx_tables(ctx)->sst)) {
+		function_name = sst_at(ctx_tables(ctx)->sst, tac_arg1(tac))->name;
 	} else {
-		fprintf(stderr, "error: could not find function index %ld in sst\n", tac->arg1);
+		fprintf(stderr, "error: could not find function index %ld in sst\n", tac_arg1(tac));
 		exit(1);
 	}
 
@@ -34,7 +34,7 @@ void compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu,
 	struct SST* sst = ctx_tables(ctx)->sst;
 
 	//pop the PARAMS off the stack
-	char* name = sst_at(sst, tac->arg1)->name;
+	char* name = sst_at(sst, tac_arg1(tac))->name;
 
 	uint32_t size = sst_args_size_x86(sst, name);
 

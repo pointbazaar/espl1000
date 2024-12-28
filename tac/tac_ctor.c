@@ -7,6 +7,7 @@
 
 #include "tacbuffer.h"
 #include "tac.h"
+#include "_struct.h"
 
 static uint32_t temp_count = 0; //temporaries for TAC
 

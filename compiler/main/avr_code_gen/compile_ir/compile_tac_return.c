@@ -26,11 +26,11 @@ void compile_tac_return(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struc
 
 	//find out if tac->dest is a wide (16 bit) temporary
 
-	int reg = rat_get_register(rat, tac->dest);
+	int reg = rat_get_register(rat, tac_dest(tac));
 
 	mov(0, reg, c);
 
-	if (rat_is_wide(rat, tac->dest)) {
+	if (rat_is_wide(rat, tac_dest(tac))) {
 		mov(1, reg + 1, c);
 	}
 
