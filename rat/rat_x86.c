@@ -39,6 +39,15 @@ void rat_init_x86(struct RAT* rat) {
 	rat_reserve_reg(rat, rat_stack_ptr(rat), " reserved (stack pointer)");
 
 	rat_reserve_reg(rat, rat_base_ptr(rat), " reserved (frame base pointer)");
+
+	// reserve registers used for arguments
+	// in our calling convention
+	rat_reserve_reg(rat, SD_REG_RDI, "reserved (arg0)");
+	rat_reserve_reg(rat, SD_REG_RSI, "reserved (arg1)");
+	rat_reserve_reg(rat, SD_REG_RDX, "reserved (arg2)");
+	rat_reserve_reg(rat, SD_REG_RCX, "reserved (arg3)");
+	rat_reserve_reg(rat, SD_REG_R8, "reserved (arg4)");
+	rat_reserve_reg(rat, SD_REG_R9, "reserved (arg5)");
 }
 
 const char* regnames_x86[] = {

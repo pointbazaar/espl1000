@@ -80,13 +80,16 @@ static void rat_print_regname(struct RAT* rat, size_t i) {
 
 static void rat_print_reg(struct RAT* rat, size_t i) {
 
-	rat_print_regname(rat, i);
 	const int status = rat->status[i];
 	const bool valid = status != REG_INVALID_ARCH;
 
-	if (valid) {
-		printf(": ");
+	if (!valid) {
+		return;
 	}
+
+	rat_print_regname(rat, i);
+
+	printf(": ");
 
 	switch (rat->status[i]) {
 
@@ -108,9 +111,7 @@ static void rat_print_reg(struct RAT* rat, size_t i) {
 			break;
 	}
 
-	if (valid) {
-		printf("\n");
-	}
+	printf("\n");
 }
 
 void rat_print(struct RAT* rat) {

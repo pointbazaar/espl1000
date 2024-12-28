@@ -500,6 +500,17 @@ bool sd_uc_some_reg_has_value(struct sd_uc_engine* sduc, uint64_t value) {
 	    UC_X86_REG_RBX,
 	    UC_X86_REG_RCX,
 	    UC_X86_REG_RDX,
+
+	    UC_X86_REG_RSI,
+	    UC_X86_REG_RDI,
+	    UC_X86_REG_R8,
+	    UC_X86_REG_R9,
+	    UC_X86_REG_R10,
+	    UC_X86_REG_R11,
+	    UC_X86_REG_R12,
+	    UC_X86_REG_R13,
+	    UC_X86_REG_R14,
+	    UC_X86_REG_R15,
 	};
 
 	uint64_t reg = 0;

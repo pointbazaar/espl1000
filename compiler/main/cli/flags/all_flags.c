@@ -65,6 +65,12 @@ struct Flag all_flags[] = {
 	false,
 	false,
     },
+    {
+	"rat",
+	"only print a plain initialized RAT for the architecture",
+	false,
+	false,
+    },
 };
 
 size_t all_flags_count() {
