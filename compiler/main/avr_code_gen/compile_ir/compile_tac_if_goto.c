@@ -9,9 +9,9 @@ void compile_tac_if_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) 
 
 	char* c = "TAC_IF_GOTO";
 
-	const int reg = rat_get_register(rat, tac->arg1);
+	const int reg = rat_get_register(rat, tac_arg1(tac));
 	char str[32];
-	sprintf(str, "L%d", tac->label_index);
+	sprintf(str, "L%d", tac_label_index(tac));
 
 	char tmp_label[32];
 	sprintf(tmp_label, "L%d", make_label());

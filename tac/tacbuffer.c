@@ -104,7 +104,9 @@ char* tacbuffer_tostring(struct TACBuffer* buffer, bool graphviz, struct SST* ss
 }
 
 uint32_t tacbuffer_last_dest(struct TACBuffer* buffer) {
-	return buffer->buffer[buffer->count - 1]->dest;
+
+	struct TAC* tac = buffer->buffer[buffer->count - 1];
+	return tac_opt_dest(tac);
 }
 
 size_t tacbuffer_count(struct TACBuffer* buffer) {

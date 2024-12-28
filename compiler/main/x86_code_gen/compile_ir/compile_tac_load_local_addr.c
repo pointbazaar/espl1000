@@ -15,9 +15,9 @@ void compile_tac_load_local_addr_x86(struct RAT* rat, struct TAC* tac, struct Ct
 
 	char* c = "TAC_LOAD_LOCAL_ADDR";
 
-	const int rdest = rat_get_register(rat, tac->dest);
+	const int rdest = rat_get_register(rat, tac_dest(tac));
 
-	char* name = lvst_at(ctx_tables(ctx)->lvst, tac->arg1)->name;
+	char* name = lvst_at(ctx_tables(ctx)->lvst, tac_arg1(tac))->name;
 
 	const ssize_t offset = lvst_stack_frame_offset_x86(ctx_tables(ctx)->lvst, name);
 

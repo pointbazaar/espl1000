@@ -5,11 +5,11 @@
 
 void compile_tac_load_const_addr(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
-	const int reg_dest = rat_get_register(rat, tac->dest);
+	const int reg_dest = rat_get_register(rat, tac_dest(tac));
 
-	const bool is_wide = rat_is_wide(rat, tac->dest);
+	const bool is_wide = rat_is_wide(rat, tac_dest(tac));
 
-	const uint32_t addr = tac->const_value;
+	const uint32_t addr = tac_const_value(tac);
 
 	lds(reg_dest, addr, "TAC_LOAD_CONST_ADDR");
 

@@ -21,7 +21,7 @@ static char* c = "TAC_BINARY_OP";
 
 void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
-	switch (tac->op) {
+	switch (tac_op(tac)) {
 
 		case TAC_OP_ADD:
 		case TAC_OP_SUB:
@@ -101,14 +101,14 @@ static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ib
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 	//left and right operand should have registers
 
-	int rsrc = rat_get_register(rat, tac->arg1);
+	int rsrc = rat_get_register(rat, tac_arg1(tac));
 
-	int rdest = rat_get_register(rat, tac->dest);
+	int rdest = rat_get_register(rat, tac_dest(tac));
 
-	bool dest_wide = rat_is_wide(rat, tac->dest);
-	bool src_wide = rat_is_wide(rat, tac->arg1);
+	bool dest_wide = rat_is_wide(rat, tac_dest(tac));
+	bool src_wide = rat_is_wide(rat, tac_arg1(tac));
 
-	switch (tac->op) {
+	switch (tac_op(tac)) {
 
 		case TAC_OP_ADD:
 			case_arithmetic_add(RAT_SCRATCH_REG, rdest, rsrc, dest_wide, src_wide, ibu);
@@ -148,19 +148,19 @@ static void case_compare(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 	//left and right operand should have registers
 
-	int rsrc = rat_get_register(rat, tac->arg1);
+	int rsrc = rat_get_register(rat, tac_arg1(tac));
 
-	int rdest = rat_get_register(rat, tac->dest);
+	int rdest = rat_get_register(rat, tac_dest(tac));
 
-	const bool wide1 = rat_is_wide(rat, tac->dest);
-	const bool wide2 = rat_is_wide(rat, tac->arg1);
+	const bool wide1 = rat_is_wide(rat, tac_dest(tac));
+	const bool wide2 = rat_is_wide(rat, tac_arg1(tac));
 
 	//TODO: the case where both are of different width
 	// has to be handled
 
 	const bool wide = wide1 && wide2;
 
-	switch (tac->op) {
+	switch (tac_op(tac)) {
 		case TAC_OP_CMP_LT: case_cmp_lt(RAT_SCRATCH_REG, ibu, rdest, rsrc, wide); break;
 		case TAC_OP_CMP_GE: case_cmp_ge(RAT_SCRATCH_REG, ibu, rdest, rsrc, wide); break;
 		case TAC_OP_CMP_EQ: case_cmp_eq(RAT_SCRATCH_REG, ibu, rdest, rsrc, wide); break;

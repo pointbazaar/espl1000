@@ -18,15 +18,15 @@
 
 void compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
-	char* name = lvst_at(ctx_tables(ctx)->lvst, tac->dest)->name;
+	char* name = lvst_at(ctx_tables(ctx)->lvst, tac_dest(tac))->name;
 
 	struct LVST* lvst = ctx_tables(ctx)->lvst;
 
 	size_t offset = lvst_stack_frame_offset_avr(lvst, name);
 
-	const int reg = rat_get_register(rat, tac->arg1);
+	const int reg = rat_get_register(rat, tac_arg1(tac));
 
-	const bool arg_wide = rat_is_wide(rat, tac->arg1);
+	const bool arg_wide = rat_is_wide(rat, tac_arg1(tac));
 	const uint32_t var_width = lvst_sizeof_var(lvst, name);
 
 	if (var_width == 0) {

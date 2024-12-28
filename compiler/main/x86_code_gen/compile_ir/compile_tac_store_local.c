@@ -17,13 +17,13 @@
 void compile_tac_store_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
 	char* c = "TAC_STORE_LOCAL";
-	char* name = lvst_at(ctx_tables(ctx)->lvst, tac->dest)->name;
+	char* name = lvst_at(ctx_tables(ctx)->lvst, tac_dest(tac))->name;
 
 	struct LVST* lvst = ctx_tables(ctx)->lvst;
 
 	const ssize_t offset = lvst_stack_frame_offset_x86(lvst, name);
 
-	const int reg = rat_get_register(rat, tac->arg1);
+	const int reg = rat_get_register(rat, tac_arg1(tac));
 
 	const uint32_t var_width = lvst_sizeof_var(lvst, name);
 

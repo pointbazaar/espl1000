@@ -73,21 +73,7 @@ static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 	struct LVST* lvst = st->lvst;
 	struct SST* sst = st->sst;
 
-	switch (t->kind) {
-
-		case TAC_CONST_VALUE:
-		case TAC_BINARY_OP_IMMEDIATE:
-		case TAC_LOAD_LOCAL_ADDR:
-		case TAC_COPY:
-		case TAC_BINARY_OP:
-		case TAC_UNARY_OP:
-		case TAC_LOAD_CONST_ADDR:
-		case TAC_LOAD:
-		case TAC_LOAD_LOCAL:
-		case TAC_CALL:
-			rat_ensure_register_x86(rat, t->dest, live);
-			break;
-
-		default: break;
+	if (tac_needs_register(t)) {
+		rat_ensure_register_x86(rat, tac_dest(t), live);
 	}
 }

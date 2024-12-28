@@ -13,20 +13,20 @@ void compile_tac_load(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	//tdest = [targ1]
 
-	const int reg_dest = rat_get_register(rat, tac->dest);
+	const int reg_dest = rat_get_register(rat, tac_dest(tac));
 
-	const int reg_src = rat_get_register(rat, tac->arg1);
+	const int reg_src = rat_get_register(rat, tac_arg1(tac));
 
 	mov(XL, reg_src, c);
 
-	if (rat_is_wide(rat, tac->arg1))
+	if (rat_is_wide(rat, tac_arg1(tac)))
 		mov(XH, reg_src + 1, c);
 	else
 		ldi(XH, 0, c);
 
 	// TODO: make a 'wide' property in struct TAC
 	// to avoid encoding this in different places
-	const bool tac_says_wide = tac->const_value == 2;
+	const bool tac_says_wide = tac_const_value(tac) == 2;
 
 	if (tac_says_wide) {
 
@@ -36,7 +36,7 @@ void compile_tac_load(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 	} else {
 		ldX(reg_dest, c);
 
-		if (rat_is_wide(rat, tac->dest)) {
+		if (rat_is_wide(rat, tac_dest(tac))) {
 			clr(reg_dest + 1, c);
 		}
 	}

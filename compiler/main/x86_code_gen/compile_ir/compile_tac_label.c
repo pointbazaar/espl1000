@@ -14,21 +14,21 @@ void compile_tac_label_x86(struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx
 
 	char* s;
 
-	if (tac->kind == TAC_LABEL_INDEXED) {
+	if (tac_kind(tac) == TAC_LABEL_INDEXED) {
 		char str[32];
-		sprintf(str, "L%d", tac->label_index);
+		sprintf(str, "L%d", tac_label_index(tac));
 		s = (char*)&str;
 	}
 
-	if (tac->kind == TAC_LABEL_FUNCTION) {
+	if (tac_kind(tac) == TAC_LABEL_FUNCTION) {
 
 		char* function_name;
 
-		if (tac->dest < sst_size(ctx_tables(ctx)->sst)) {
+		if (tac_dest(tac) < sst_size(ctx_tables(ctx)->sst)) {
 
-			function_name = sst_at(ctx_tables(ctx)->sst, tac->dest)->name;
+			function_name = sst_at(ctx_tables(ctx)->sst, tac_dest(tac))->name;
 		} else {
-			fprintf(stderr, "index %d out of bounds in sst\n", tac->dest);
+			fprintf(stderr, "index %d out of bounds in sst\n", tac_dest(tac));
 			exit(1);
 		}
 

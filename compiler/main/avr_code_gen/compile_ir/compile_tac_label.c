@@ -13,20 +13,20 @@ void compile_tac_label(struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx) {
 
 	char* s;
 
-	if (tac->kind == TAC_LABEL_INDEXED) {
+	if (tac_kind(tac) == TAC_LABEL_INDEXED) {
 		char str[32];
-		sprintf(str, "L%d", tac->label_index);
+		sprintf(str, "L%d", tac_label_index(tac));
 		s = (char*)&str;
 	}
 
-	if (tac->kind == TAC_LABEL_FUNCTION) {
+	if (tac_kind(tac) == TAC_LABEL_FUNCTION) {
 
 		//in case of tests, sst may not be filled
 		char* function_name = "main";
 
-		if (tac->dest < sst_size(ctx_tables(ctx)->sst)) {
+		if (tac_dest(tac) < sst_size(ctx_tables(ctx)->sst)) {
 
-			function_name = sst_at(ctx_tables(ctx)->sst, tac->dest)->name;
+			function_name = sst_at(ctx_tables(ctx)->sst, tac_dest(tac))->name;
 		}
 
 		s = function_name;

@@ -9,9 +9,9 @@
 
 void compile_tac_const_value_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
-	const int reg = rat_get_register(rat, tac->dest);
+	const int reg = rat_get_register(rat, tac_dest(tac));
 
-	const uint64_t value = tac->const_value;
+	const uint64_t value = tac_const_value(tac);
 
 	char* c;
 	asprintf(&c, "TAC_CONST_VALUE %lu (0x%lx)", value, value);

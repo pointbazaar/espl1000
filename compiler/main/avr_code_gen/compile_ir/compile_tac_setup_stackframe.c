@@ -5,7 +5,7 @@
 
 void compile_tac_setup_stackframe(struct TAC* tac, struct IBuffer* ibu) {
 
-	const int stack_frame_size = tac->const_value;
+	const int stack_frame_size = tac_const_value(tac);
 
 	//push onto the stack to create the stack frame
 	for (int k = 0; k < stack_frame_size; k++) {

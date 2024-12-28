@@ -21,7 +21,7 @@ void compile_tac_binary_op_x86(struct RAT* rat, struct TAC* tac, struct IBuffer*
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
-	switch (tac->op) {
+	switch (tac_op(tac)) {
 
 		case TAC_OP_ADD:
 		case TAC_OP_SUB:
@@ -73,11 +73,11 @@ static void case_arithmetic(int RAT_SCRATCH_REG, struct RAT* rat, struct TAC* ta
 
 	//left and right operand should have registers
 
-	int rsrc = rat_get_register(rat, tac->arg1);
+	int rsrc = rat_get_register(rat, tac_arg1(tac));
 
-	int rdest = rat_get_register(rat, tac->dest);
+	int rdest = rat_get_register(rat, tac_dest(tac));
 
-	switch (tac->op) {
+	switch (tac_op(tac)) {
 
 		case TAC_OP_ADD:
 			case_arithmetic_add(RAT_SCRATCH_REG, rdest, rsrc, ibu);
@@ -111,11 +111,11 @@ static void case_compare(int RAT_SCRATCH_REG, struct RAT* rat, struct TAC* tac, 
 
 	//left and right operand should have registers
 
-	int rsrc = rat_get_register(rat, tac->arg1);
+	int rsrc = rat_get_register(rat, tac_arg1(tac));
 
-	int rdest = rat_get_register(rat, tac->dest);
+	int rdest = rat_get_register(rat, tac_dest(tac));
 
-	switch (tac->op) {
+	switch (tac_op(tac)) {
 		case TAC_OP_CMP_LT: case_cmp_lt(RAT_SCRATCH_REG, ibu, rdest, rsrc); break;
 		case TAC_OP_CMP_GE: case_cmp_ge(RAT_SCRATCH_REG, ibu, rdest, rsrc); break;
 		case TAC_OP_CMP_EQ: case_cmp_eq(RAT_SCRATCH_REG, ibu, rdest, rsrc); break;
