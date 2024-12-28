@@ -23,7 +23,7 @@ void test_rat_alloc_different_regs() {
 
 	status("allocate different registers");
 
-	struct RAT* rat = rat_ctor(RAT_ARCH_AVR, 1);
+	struct RAT* rat = rat_ctor(RAT_ARCH_AVR, 2);
 
 	int reg1 = rat_ensure_register(rat, 0, false, false);
 
@@ -38,7 +38,7 @@ void test_rat_alloc_in_bounds() {
 
 	status("allocate in bounds");
 
-	struct RAT* rat = rat_ctor(RAT_ARCH_AVR, 1);
+	struct RAT* rat = rat_ctor(RAT_ARCH_AVR, 2);
 
 	int reg1 = rat_ensure_register(rat, 0, false, false);
 
