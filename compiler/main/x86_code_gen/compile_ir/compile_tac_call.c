@@ -2,9 +2,9 @@
 #include <stdlib.h>
 
 #include "ibuffer/ibuffer_x86.h"
+#include "rat/rat_x86.h"
 #include "tables/sst/sst.h"
 #include "rat/rat.h"
-#include "tables/stst/stst.h"
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
 
@@ -12,32 +12,47 @@
 
 #include "compile_tac.h"
 
-void compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx) {
+static void save_arg_regs(struct IBuffer* ibu, uint32_t args_count) {
+
+	char* c = "TAC_CALL (save arg regs)";
+	for (int i = 0; i < args_count; i++) {
+		enum SD_REGISTER reg = rat_param_reg_x86(i);
+		push(reg, c);
+	}
+}
+
+static void restore_arg_regs(struct IBuffer* ibu, uint32_t args_count) {
+
+	char* c = "TAC_CALL (save arg regs)";
+	for (int i = args_count - 1; i >= 0; i--) {
+		enum SD_REGISTER reg = rat_param_reg_x86(i);
+		pop(reg, c);
+	}
+}
+
+void compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx, char* current_function_name) {
 
 	int reg_dest = rat_get_register(rat, tac_dest(tac));
-	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 	char* c = "TAC_CALL";
 
-	char* function_name = NULL;
+	struct SST* sst = ctx_tables(ctx)->sst;
 
-	if (tac_arg1(tac) < sst_size(ctx_tables(ctx)->sst)) {
-		function_name = sst_at(ctx_tables(ctx)->sst, tac_arg1(tac))->name;
-	} else {
+	if (tac_arg1(tac) >= sst_size(sst)) {
+
 		fprintf(stderr, "error: could not find function index %ld in sst\n", tac_arg1(tac));
 		exit(1);
 	}
 
+	char* function_name = sst_at(sst, tac_arg1(tac))->name;
+
+	const uint32_t arg_count = sst_args_count(sst, current_function_name);
+	// save our parameter registers
+	save_arg_regs(ibu, arg_count);
+
 	call(function_name, c);
 
+	// restore our parameter registers
+	restore_arg_regs(ibu, arg_count);
+
 	mov_regs(reg_dest, SD_REG_RAX, c);
-
-	struct SST* sst = ctx_tables(ctx)->sst;
-
-	//pop the PARAMS off the stack
-	char* name = sst_at(sst, tac_arg1(tac))->name;
-
-	uint32_t size = sst_args_size_x86(sst, name);
-
-	mov_const(rat_scratch_reg(rat), size, c);
-	add(SD_REG_RSP, rat_scratch_reg(rat), c);
 }

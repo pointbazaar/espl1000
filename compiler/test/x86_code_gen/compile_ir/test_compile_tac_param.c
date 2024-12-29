@@ -35,7 +35,7 @@ static void test_param(uint64_t fixed_value, bool debug) {
 
 	tacbuffer_append(b, makeTACCopy(1, 1));
 
-	tacbuffer_append(b, makeTACParam(0, false));
+	tacbuffer_append(b, makeTACParam(0, false, 0));
 
 	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v3(b, debug, true, stackframe_size);
 
@@ -48,21 +48,18 @@ static void test_param(uint64_t fixed_value, bool debug) {
 
 	err = sd_uc_emu_start(system, 0, debug);
 
-	uint64_t rsp;
+	uint64_t rdi;
 
-	err = sd_uc_reg_read(system, UC_X86_REG_RSP, &rsp);
+	err = sd_uc_reg_read(system, UC_X86_REG_RDI, &rdi);
 	assert(err == UC_ERR_OK);
-
-	uint64_t read_value;
-	err = sd_uc_mem_read64(system, rsp, &read_value);
 
 	if (debug) {
 		sd_uc_print_regs(system);
 		sd_uc_print_stack(system);
 	}
 
-	//assert that fixed_value is on the stack
-	assert(read_value == fixed_value);
+	//assert that fixed_value is present
+	assert(rdi == fixed_value);
 
 	sd_uc_close(system);
 }

@@ -104,6 +104,9 @@ enum TAC_OP tac_op(struct TAC* tac);
 // protected member access
 enum TAC_KIND tac_kind(struct TAC* tac);
 
+// only valid for TAC_PARAM
+uint32_t tac_param_index(struct TAC* tac);
+
 // @returns  the highest index of an IR temorary variable
 //           used in this IR statement
 //           e.g. t4 += t7  -> 7

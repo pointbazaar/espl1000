@@ -59,6 +59,11 @@ size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name);
 size_t lvst_stack_frame_size_x86(struct LVST* lvst);
 ssize_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name);
 
+// @returns   index of 'name' in the argument list
+// @precondition 'name' must be an argument in this LVST
+// @precondition line->is_arg == true
+uint32_t lvst_arg_index(struct LVST* lvst, char* name);
+
 // returns the size of the local variable in bytes.
 // returns 0 on failure
 uint32_t lvst_sizeof_var(struct LVST* lvst, char* name);

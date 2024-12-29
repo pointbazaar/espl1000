@@ -31,4 +31,10 @@ struct TAC {
 	enum TAC_OP op;
 
 	int64_t const_value;
+
+	// only used for TAC_PARAM.
+	// 0 based.
+	// e.g. calling f(t1, t2);
+	// means t1 is at param_index == 0
+	uint32_t param_index;
 };

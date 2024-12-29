@@ -26,6 +26,25 @@ enum SD_REGISTER rat_scratch_reg_x86() {
 	return SD_REG_RBX;
 }
 
+static enum SD_REGISTER param_regs[] = {
+    SD_REG_RDI,
+    SD_REG_RSI,
+    SD_REG_RDX,
+    SD_REG_RCX,
+    SD_REG_R8,
+    SD_REG_R9,
+};
+
+enum SD_REGISTER rat_param_reg_x86(uint32_t index) {
+
+	if (index >= 6) {
+		fprintf(stderr, "%s: param count limited to 6\n", __func__);
+	}
+	assert(index < 6);
+
+	return param_regs[index];
+}
+
 void rat_init_x86(struct RAT* rat) {
 
 	for (uint32_t reg = SD_REG_START_X86 + 1; reg < SD_REG_END_X86; reg++) {
