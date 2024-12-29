@@ -14,6 +14,10 @@ void compile_tac_setup_stackframe_x86(struct RAT* rat, struct TAC* tac, struct I
 	// rbp = rsp
 	mov_regs(rat_base_ptr(rat), rat_stack_ptr(rat), c);
 
+	if (stack_frame_size_bytes == 0) {
+		return;
+	}
+
 	// create stack frame, without overwriting the memory
 	mov_const(rat_scratch_reg(rat), stack_frame_size_bytes, c);
 	// sub rsp, $stack_frame_size
