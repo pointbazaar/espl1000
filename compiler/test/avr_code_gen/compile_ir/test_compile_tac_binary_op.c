@@ -808,3 +808,95 @@ void test_compile_tac_binary_op_geq_false_16bit() {
 		vmcu_system_dtor(system);
 	}
 }
+
+void test_compile_tac_binary_op_shift_left_8bit() {
+
+	status_test_codegen("TAC_BINARY_OP << (8 bit)");
+
+	struct TACBuffer* b = tacbuffer_ctor();
+
+	tacbuffer_append(b, makeTACConst(0, 0x1));
+	tacbuffer_append(b, makeTACConst(1, 3));
+	tacbuffer_append(b, makeTACBinOp(0, TAC_OP_SHIFT_LEFT, 1));
+
+	tacbuffer_append(b, makeTACReturn(0));
+
+	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+
+	vmcu_system_step_n(system, 20);
+
+	const int8_t r0 = vmcu_system_read_gpr(system, 0);
+
+	assert(r0 == 8);
+
+	vmcu_system_dtor(system);
+}
+
+void test_compile_tac_binary_op_shift_left_16bit() {
+
+	status_test_codegen("TAC_BINARY_OP << (16 bit)");
+
+	struct TACBuffer* b = tacbuffer_ctor();
+
+	tacbuffer_append(b, makeTACConst(0, 0x100));
+	tacbuffer_append(b, makeTACConst(1, 2));
+	tacbuffer_append(b, makeTACBinOp(0, TAC_OP_SHIFT_LEFT, 1));
+
+	tacbuffer_append(b, makeTACReturn(0));
+
+	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+
+	vmcu_system_step_n(system, 20);
+
+	const uint16_t r0r1 = vmcu_system_read_2_gpr(system, 0);
+
+	assert(r0r1 == 0x400);
+
+	vmcu_system_dtor(system);
+}
+
+void test_compile_tac_binary_op_shift_right_8bit() {
+
+	status_test_codegen("TAC_BINARY_OP >> (8 bit)");
+
+	struct TACBuffer* b = tacbuffer_ctor();
+
+	tacbuffer_append(b, makeTACConst(0, 0x10));
+	tacbuffer_append(b, makeTACConst(1, 2));
+	tacbuffer_append(b, makeTACBinOp(0, TAC_OP_SHIFT_RIGHT, 1));
+
+	tacbuffer_append(b, makeTACReturn(0));
+
+	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+
+	vmcu_system_step_n(system, 20);
+
+	const int8_t r0 = vmcu_system_read_gpr(system, 0);
+
+	assert(r0 == 4);
+
+	vmcu_system_dtor(system);
+}
+
+void test_compile_tac_binary_op_shift_right_16bit() {
+
+	status_test_codegen("TAC_BINARY_OP >> (16 bit)");
+
+	struct TACBuffer* b = tacbuffer_ctor();
+
+	tacbuffer_append(b, makeTACConst(0, 0x100));
+	tacbuffer_append(b, makeTACConst(1, 2));
+	tacbuffer_append(b, makeTACBinOp(0, TAC_OP_SHIFT_RIGHT, 1));
+
+	tacbuffer_append(b, makeTACReturn(0));
+
+	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
+
+	vmcu_system_step_n(system, 20);
+
+	const uint16_t r0r1 = vmcu_system_read_2_gpr(system, 0);
+
+	assert(r0r1 == 0x40);
+
+	vmcu_system_dtor(system);
+}

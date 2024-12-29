@@ -48,6 +48,10 @@ void test_gen_tac_variable_case_1_member_access() {
 
 		int8_t r0 = vmcu_system_read_gpr(system, 0);
 
+		if (r0 != value) {
+			printf("r0 == 0x%x, expected 0x%x\n", r0, value);
+		}
+
 		assert(r0 == value);
 
 		vmcu_system_dtor(system);

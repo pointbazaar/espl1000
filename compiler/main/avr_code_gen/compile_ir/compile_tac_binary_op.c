@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <assert.h>
 
 #include "rat/rat.h"
 #include "tac/tac.h"
@@ -8,6 +9,7 @@
 
 static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 static void case_compare(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
+static void case_shift(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 
 static void case_cmp_lti(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide);
 static void case_cmp_ge(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide);
@@ -39,7 +41,14 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu
 			case_compare(rat, tac, ibu);
 			break;
 
+		case TAC_OP_SHIFT_LEFT:
+		case TAC_OP_SHIFT_RIGHT:
+			case_shift(rat, tac, ibu);
+			break;
+
 		default:
+			fprintf(stderr, "%s: unhandled case: %d\n", __func__, tac_op(tac));
+			exit(1);
 			break;
 	}
 }
@@ -94,6 +103,48 @@ static void case_arithmetic_xor(int RAT_SCRATCH_REG, int rdest, int rsrc, bool d
 			eor(rdest + 1, RAT_SCRATCH_REG, c);
 		}
 	}
+}
+
+static void case_shift(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
+
+	assert(tac_op(tac) == TAC_OP_SHIFT_LEFT || tac_op(tac) == TAC_OP_SHIFT_RIGHT);
+
+	const int rsrc = rat_get_register(rat, tac_arg1(tac));
+	const int rdest = rat_get_register(rat, tac_dest(tac));
+	const bool dest_wide = rat_is_wide(rat, tac_dest(tac));
+
+	char tmp_label[32];
+	sprintf(tmp_label, "L%d", make_label());
+
+	char* c;
+	if (tac_op(tac) == TAC_OP_SHIFT_LEFT) {
+		c = "TAC_BINARY_OP <<";
+	} else {
+		c = "TAC_BINARY_OP >>";
+	}
+
+	label(tmp_label);
+
+	if (tac_op(tac) == TAC_OP_SHIFT_LEFT) {
+
+		if (dest_wide) {
+			lsl(rdest + 1, c);
+			rol(rdest, c);
+		} else {
+			lsl(rdest, c);
+		}
+	} else if (tac_op(tac) == TAC_OP_SHIFT_RIGHT) {
+
+		if (dest_wide) {
+			lsr(rdest + 1, c);
+			ror(rdest, c);
+		} else {
+			lsr(rdest, c);
+		}
+	}
+
+	dec(rsrc, c);
+	brne(tmp_label, c);
 }
 
 static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {

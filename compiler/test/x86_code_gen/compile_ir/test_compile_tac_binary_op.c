@@ -394,3 +394,63 @@ void test_x86_compile_tac_binary_op_geq_false_8bit() {
 		sd_uc_close(system);
 	}
 }
+
+void test_x86_compile_tac_binary_op_shift_left() {
+
+	status_test_x86_codegen("TAC_BINARY_OP <<");
+
+	uint64_t start = 0xb3;
+
+	for (int change = 1; change < 6; change++) {
+
+		struct TACBuffer* b = tacbuffer_ctor();
+
+		tacbuffer_append(b, makeTACConst(0, start));
+		tacbuffer_append(b, makeTACConst(1, change));
+		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_SHIFT_LEFT, 1));
+		tacbuffer_append(b, makeTACReturn(0));
+
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
+
+		sd_uc_emu_start(system, 0, false);
+
+		uint64_t rax = 0;
+		sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
+
+		if (rax != (start << change)) {
+			printf("rax = 0x%lx, expect 0x%lx\n", rax, (start << change));
+		}
+
+		assert(rax == (start << change));
+
+		sd_uc_close(system);
+	}
+}
+
+void test_x86_compile_tac_binary_op_shift_right() {
+
+	status_test_x86_codegen("TAC_BINARY_OP >>");
+
+	uint64_t start = 0xb4;
+
+	for (int change = 1; change < 6; change++) {
+
+		struct TACBuffer* b = tacbuffer_ctor();
+
+		tacbuffer_append(b, makeTACConst(0, start));
+		tacbuffer_append(b, makeTACConst(1, change));
+		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_SHIFT_RIGHT, 1));
+		tacbuffer_append(b, makeTACReturn(0));
+
+		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
+
+		sd_uc_emu_start(system, 0, false);
+
+		uint64_t rax = 0;
+		sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
+
+		assert(rax == (start >> change));
+
+		sd_uc_close(system);
+	}
+}

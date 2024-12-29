@@ -13,7 +13,6 @@ int32_t tac_opt_dest(struct TAC* tac) {
 	switch (tac->kind) {
 		case TAC_CONST_VALUE:
 		case TAC_BINARY_OP:
-		case TAC_BINARY_OP_IMMEDIATE:
 		case TAC_CALL:
 		case TAC_COPY:
 		case TAC_UNARY_OP:
@@ -64,7 +63,6 @@ uint32_t tac_dest(struct TAC* tac) {
 		case TAC_UNARY_OP:
 		case TAC_COPY:
 		case TAC_CONST_VALUE:
-		case TAC_BINARY_OP_IMMEDIATE:
 			break;
 		default:
 			fprintf(stderr, "[TAC] invalid access (kind == %d)\n", tac_kind(tac));
@@ -105,7 +103,6 @@ int64_t tac_const_value(struct TAC* tac) {
 		case TAC_STORE_CONST_ADDR:
 		case TAC_LOAD:
 		case TAC_CONST_VALUE:
-		case TAC_BINARY_OP_IMMEDIATE:
 			break;
 		default:
 			fprintf(stderr, "[TAC] invalid access (kind == %d)\n", tac_kind(tac));
@@ -164,7 +161,6 @@ enum TAC_OP tac_op(struct TAC* tac) {
 		case TAC_IF_CMP_GOTO:
 		case TAC_BINARY_OP:
 		case TAC_UNARY_OP:
-		case TAC_BINARY_OP_IMMEDIATE:
 			break;
 		default:
 			fprintf(stderr, "[TAC] invalid access (kind == %d)\n", tac_kind(tac));
@@ -177,7 +173,6 @@ bool tac_needs_register(struct TAC* tac) {
 	switch (tac->kind) {
 
 		case TAC_CONST_VALUE:
-		case TAC_BINARY_OP_IMMEDIATE:
 		case TAC_LOAD_LOCAL_ADDR:
 		case TAC_COPY:
 		case TAC_BINARY_OP:
@@ -208,7 +203,6 @@ int tac_mark_used(struct TAC* tac, bool* used_map, size_t map_size) {
 	switch (tac->kind) {
 		case TAC_PARAM:
 		case TAC_RETURN:
-		case TAC_BINARY_OP_IMMEDIATE:
 			check_bounds(tac->dest, map_size);
 			used_map[tac->dest] = true;
 			return 0;
@@ -271,7 +265,6 @@ int tac_mark_defines(struct TAC* tac, bool* defines_map, size_t map_size) {
 		case TAC_NOP:
 			return 0;
 			break;
-		case TAC_BINARY_OP_IMMEDIATE:
 		case TAC_LOAD:
 		case TAC_UNARY_OP:
 		case TAC_COPY:

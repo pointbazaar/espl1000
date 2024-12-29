@@ -52,6 +52,7 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64
 #define dec(dest, c) ibu1(X86_DEC, dest, c)
 #define neg(dest, c) ibu1(X86_NEG, dest, c)
 #define cmp(dest, src, c) ibu2(X86_CMP, dest, src, c)
+#define test(dest, src, c) ibu2(X86_TEST, dest, src, c)
 
 #define and(dest, src, c) ibu2(X86_AND, dest, src, c)
 #define or(dest, src, c) ibu2(X86_OR, dest, src, c)
@@ -68,6 +69,7 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64
 #define jge(label, c) ibu_branch(X86_JGE, label, "")
 #define jl(label, c) ibu_branch(X86_JL, label, "")
 #define jle(label, c) ibu_branch(X86_JLE, label, "")
+#define jz(label, c) ibu_branch(X86_JZ, label, c)
 
 #define call(label, c) ibu_branch(X86_CALL, label, c)
 #define ret(c) ibu0(X86_RET, c)

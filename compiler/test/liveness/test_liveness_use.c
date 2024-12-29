@@ -326,21 +326,3 @@ void test_liveness_use_map_tac_nop() {
 	tacbuffer_dtor(buf);
 	liveness_dtor(live);
 }
-
-void test_liveness_use_map_tac_binary_op_immediate() {
-
-	status("TAC_BINARY_OP_IMMEDIATE");
-
-	struct TACBuffer* buf = tacbuffer_ctor();
-
-	tacbuffer_append(buf, makeTACConst(0, 9));
-	tacbuffer_append(buf, makeTACBinOpImmediate(1, TAC_OP_ADD, 3));
-
-	struct Liveness* live = liveness_calc_tacbuffer(buf);
-
-	assert(liveness_use(live, 1, 0) == false);
-	assert(liveness_use(live, 1, 1) == true);
-
-	tacbuffer_dtor(buf);
-	liveness_dtor(live);
-}

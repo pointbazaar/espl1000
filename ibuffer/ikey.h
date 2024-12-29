@@ -196,6 +196,7 @@ enum IKEY {
 	X86_DEC, // --
 	X86_NEG,
 	X86_CMP,
+	X86_TEST,
 
 	// bitwise logical
 	X86_AND,
@@ -222,6 +223,7 @@ enum IKEY {
 	X86_JL, // <
 	X86_JLE, // <=
 	X86_JS, // jump if sign (negative)
+	X86_JZ, // == 0
 
 	X86_CALL,
 	X86_RET,

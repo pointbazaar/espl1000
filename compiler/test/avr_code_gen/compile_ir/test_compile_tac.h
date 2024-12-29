@@ -18,22 +18,6 @@ void test_compile_tac_load_const_addr_case_8bit_value_0x56();
 void test_compile_tac_load_const_addr_case_16bit_value_0x1234();
 void test_compile_tac_load_const_addr_case_16bit_value_0x4321();
 
-// TAC_BINARY_OP_IMMEDIATE
-void test_compile_tac_binary_op_immediate_case_add_8bit();
-void test_compile_tac_binary_op_immediate_case_add_16bit();
-void test_compile_tac_binary_op_immediate_case_sub_8bit();
-void test_compile_tac_binary_op_immediate_case_sub_16bit();
-void test_compile_tac_binary_op_immediate_case_and_8bit();
-void test_compile_tac_binary_op_immediate_case_and_16bit();
-void test_compile_tac_binary_op_immediate_case_or_8bit();
-void test_compile_tac_binary_op_immediate_case_or_16bit();
-void test_compile_tac_binary_op_immediate_case_xor_8bit();
-void test_compile_tac_binary_op_immediate_case_xor_16bit();
-void test_compile_tac_binary_op_immediate_case_shift_left_8bit();
-void test_compile_tac_binary_op_immediate_case_shift_left_16bit();
-void test_compile_tac_binary_op_immediate_case_shift_right_8bit();
-void test_compile_tac_binary_op_immediate_case_shift_right_16bit();
-
 // TAC_UNARY_OP
 void test_compile_tac_unary_op_case_minus_8bit();
 void test_compile_tac_unary_op_case_minus_16bit();
@@ -70,6 +54,10 @@ void test_compile_tac_binary_op_geq_true_8bit();
 void test_compile_tac_binary_op_geq_true_16bit();
 void test_compile_tac_binary_op_geq_false_8bit();
 void test_compile_tac_binary_op_geq_false_16bit();
+void test_compile_tac_binary_op_shift_left_8bit();
+void test_compile_tac_binary_op_shift_left_16bit();
+void test_compile_tac_binary_op_shift_right_8bit();
+void test_compile_tac_binary_op_shift_right_16bit();
 
 // TAC_GOTO
 void test_compile_tac_goto();

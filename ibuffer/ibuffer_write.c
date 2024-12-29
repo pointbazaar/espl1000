@@ -145,6 +145,7 @@ static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 		case BRLO:
 		case BRLT:
 		case BRGE:
+		case BRPL:
 			sprintf(s, "%s", str);
 			break;
 
@@ -181,6 +182,7 @@ static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 		case X86_ADD:
 		case X86_SUB:
 		case X86_CMP:
+		case X86_TEST:
 		case X86_AND:
 		case X86_OR:
 		case X86_XOR:
@@ -196,6 +198,7 @@ static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 		case X86_JL:
 		case X86_JLE:
 		case X86_JS:
+		case X86_JZ:
 		case X86_CALL:
 			sprintf(s, "%s", str);
 			break;

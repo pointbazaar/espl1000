@@ -69,7 +69,7 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32
 #define brlt(label, c) ibu_branch(BRLT, label, c)
 //BRMI
 #define brne(label, c) ibu_branch(BRNE, label, c)
-//BRPL
+#define brpl(label, c) ibu_branch(BRPL, label, c)
 //BRSH
 //BRTC
 //BRTS

@@ -97,6 +97,7 @@ static enum TAC_OP op_to_tac_op(enum OP o, bool* reverse_operands) {
 			fprintf(stderr, "error in op_to_tac_op\n");
 			fprintf(stderr, "error, op was none of supported TAC_OP_... values\n");
 			fprintf(stderr, "op = %d\n", o);
+			exit(1);
 			break;
 	}
 
@@ -110,7 +111,9 @@ static void tac_expr_part_2_constvalue(struct TACBuffer* buffer, struct Expr* ex
 	bool reverse_operands = false;
 	const enum TAC_OP op = op_to_tac_op(expr->op, &reverse_operands);
 
-	tacbuffer_append(buffer, makeTACBinOpImmediate(t1, op, immediate));
+	const uint32_t tinc = make_temp();
+	tacbuffer_append(buffer, makeTACConst(tinc, immediate));
+	tacbuffer_append(buffer, makeTACBinOp(t1, op, tinc));
 }
 
 static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr* expr, uint32_t t1, struct Ctx* ctx) {

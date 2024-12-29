@@ -174,9 +174,6 @@ char* tac_tostring(struct TAC* t, struct SST* sst, struct LVST* lvst) {
 		case TAC_RETURN:
 			sprintf(buf, "return t%d", dest);
 			break;
-		case TAC_BINARY_OP_IMMEDIATE:
-			sprintf(buf, "t%d %s %ld", dest, opstr, const_value);
-			break;
 
 		case TAC_SETUP_STACKFRAME:
 			sprintf(buf, "setup_stackframe %ld", const_value);
