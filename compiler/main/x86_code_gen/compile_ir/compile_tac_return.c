@@ -20,8 +20,11 @@ void compile_tac_return_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, s
 	//destroy the stackframe
 	const size_t frame_size_bytes = lvst_stack_frame_size_x86(ctx_tables(ctx)->lvst);
 
-	mov_const(rat_scratch_reg(rat), frame_size_bytes, c);
-	add(SD_REG_RSP, rat_scratch_reg(rat), c);
+	if (frame_size_bytes > 0) {
+
+		mov_const(rat_scratch_reg(rat), frame_size_bytes, c);
+		add(SD_REG_RSP, rat_scratch_reg(rat), c);
+	}
 
 	const int reg = rat_get_register(rat, tac_dest(tac));
 
