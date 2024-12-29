@@ -151,6 +151,9 @@ void test_gen_tac_expr_shift_left() {
 
 			const int8_t r0_value = vmcu_system_read_gpr(system, 0);
 			const int8_t expect = value1 << value2;
+			if (r0_value != expect) {
+				printf("r0 == 0x%x, expected 0x%x\n", r0_value, expect);
+			}
 
 			assert(r0_value == expect);
 

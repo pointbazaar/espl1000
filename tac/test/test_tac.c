@@ -102,10 +102,6 @@ void test_tac_opt_dest() {
 	t = makeTACNop();
 	assert(tac_opt_dest(t) == -1);
 	free(t);
-
-	t = makeTACBinOpImmediate(22, TAC_OP_OR, 3);
-	assert(tac_opt_dest(t) == 22);
-	free(t);
 }
 
 static void assert_str(struct TAC* t, char* expect) {
@@ -180,5 +176,4 @@ void test_tac_tostring() {
 	assert_str(makeTACCopy(2, 1), "t2 = t1");
 	assert_str(makeTACConst(2, 1), "t2 = 1");
 	assert_str(makeTACNop(), "nop");
-	assert_str(makeTACBinOpImmediate(2, TAC_OP_AND, 1), "t2 &= 1");
 }

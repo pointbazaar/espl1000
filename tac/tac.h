@@ -74,8 +74,6 @@ enum TAC_KIND {
 	TAC_LABEL_INDEXED,
 	TAC_LABEL_FUNCTION,
 
-	TAC_BINARY_OP_IMMEDIATE,
-
 	TAC_STORE_CONST_ADDR, // [const_dest] = src //memory store
 	TAC_LOAD_CONST_ADDR, // dest = [const_src] //memory load
 

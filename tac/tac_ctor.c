@@ -147,35 +147,11 @@ struct TAC* makeTACBinOp(uint32_t dest, enum TAC_OP op, uint32_t src) {
 		case TAC_OP_CMP_NEQ:
 		case TAC_OP_CMP_LT:
 		case TAC_OP_CMP_GE:
-			break;
-		default:
-			printf("fatal error in %s. unrecognized TAC_OP: %d, Exiting", __func__, op);
-			fflush(stdout);
-			exit(1);
-	}
-
-	return t;
-}
-
-struct TAC* makeTACBinOpImmediate(uint32_t tmp, enum TAC_OP op, int32_t immediate) {
-	struct TAC* t = makeTAC();
-	t->kind = TAC_BINARY_OP_IMMEDIATE;
-	t->dest = tmp;
-	t->op = op;
-	t->const_value = immediate;
-
-	switch (op) {
-		case TAC_OP_ADD:
-		case TAC_OP_SUB:
-		case TAC_OP_MUL:
-		case TAC_OP_XOR:
-		case TAC_OP_OR:
-		case TAC_OP_AND:
 		case TAC_OP_SHIFT_LEFT:
 		case TAC_OP_SHIFT_RIGHT:
 			break;
 		default:
-			printf("fatal error in makeTACBinOpImmediate.Exiting");
+			printf("fatal error in %s. unrecognized TAC_OP: %d, Exiting", __func__, op);
 			fflush(stdout);
 			exit(1);
 	}

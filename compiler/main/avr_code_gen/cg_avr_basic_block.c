@@ -88,12 +88,6 @@ static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 			rat_ensure_register(rat, dest, true, iswide);
 			break;
 
-		case TAC_BINARY_OP_IMMEDIATE:
-			dest = tac_dest(t);
-			iswide = rat_is_wide(rat, dest);
-			rat_ensure_register(rat, dest, true, iswide);
-			break;
-
 		case TAC_LOAD_LOCAL_ADDR:
 			dest = tac_dest(t);
 			//address always needs 2 registers

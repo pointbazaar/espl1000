@@ -69,7 +69,9 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx) {
 
 	// t3++
 	tacbuffer_append(buffer, makeTACLoadLocal(t3, local_index));
-	tacbuffer_append(buffer, makeTACBinOpImmediate(t3, TAC_OP_ADD, 1));
+	const uint32_t tinc = make_temp();
+	tacbuffer_append(buffer, makeTACConst(tinc, 1));
+	tacbuffer_append(buffer, makeTACBinOp(t3, TAC_OP_ADD, tinc));
 	tacbuffer_append(buffer, makeTACStoreLocal(local_index, t3));
 
 	tacbuffer_append(buffer, makeTACGoto(l0));

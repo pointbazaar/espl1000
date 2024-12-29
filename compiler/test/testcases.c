@@ -194,7 +194,6 @@ void (*tests_liveness[])() = {
     test_liveness_use_map_tac_copy,
     test_liveness_use_map_tac_const_value,
     test_liveness_use_map_tac_nop,
-    test_liveness_use_map_tac_binary_op_immediate,
 
     // 'def' map
     test_liveness_def_map_tac_call,
@@ -215,7 +214,6 @@ void (*tests_liveness[])() = {
     test_liveness_def_map_tac_copy,
     test_liveness_def_map_tac_const_value,
     test_liveness_def_map_tac_nop,
-    test_liveness_def_map_tac_binary_op_immediate,
 
     // 'in' map
     test_liveness_in_map,
@@ -287,22 +285,6 @@ void (*tests_avr_codegen[])() = {
     test_compile_tac_load_const_addr_case_16bit_value_0x1234,
     test_compile_tac_load_const_addr_case_16bit_value_0x4321,
 
-    //TAC_BINARY_OP_IMMEDIATE
-    test_compile_tac_binary_op_immediate_case_add_8bit,
-    test_compile_tac_binary_op_immediate_case_add_16bit,
-    test_compile_tac_binary_op_immediate_case_sub_8bit,
-    test_compile_tac_binary_op_immediate_case_sub_16bit,
-    test_compile_tac_binary_op_immediate_case_and_8bit,
-    test_compile_tac_binary_op_immediate_case_and_16bit,
-    test_compile_tac_binary_op_immediate_case_or_8bit,
-    test_compile_tac_binary_op_immediate_case_or_16bit,
-    test_compile_tac_binary_op_immediate_case_xor_8bit,
-    test_compile_tac_binary_op_immediate_case_xor_16bit,
-    test_compile_tac_binary_op_immediate_case_shift_left_8bit,
-    test_compile_tac_binary_op_immediate_case_shift_left_16bit,
-    test_compile_tac_binary_op_immediate_case_shift_right_8bit,
-    test_compile_tac_binary_op_immediate_case_shift_right_16bit,
-
     // TAC_UNARY_OP
     test_compile_tac_unary_op_case_minus_8bit,
     test_compile_tac_unary_op_case_minus_16bit,
@@ -339,6 +321,10 @@ void (*tests_avr_codegen[])() = {
     test_compile_tac_binary_op_geq_true_16bit,
     test_compile_tac_binary_op_geq_false_8bit,
     test_compile_tac_binary_op_geq_false_16bit,
+    test_compile_tac_binary_op_shift_left_8bit,
+    test_compile_tac_binary_op_shift_left_16bit,
+    test_compile_tac_binary_op_shift_right_8bit,
+    test_compile_tac_binary_op_shift_right_16bit,
 
     // TAC_GOTO
     test_compile_tac_goto,
@@ -504,15 +490,6 @@ void (*tests_x86_codegen[])() = {
     //TAC_LOAD_CONST_ADDR
     test_x86_compile_tac_load_const_addr,
 
-    //TAC_BINARY_OP_IMMEDIATE
-    test_x86_compile_tac_binary_op_immediate_case_add,
-    test_x86_compile_tac_binary_op_immediate_case_sub,
-    test_x86_compile_tac_binary_op_immediate_case_and,
-    test_x86_compile_tac_binary_op_immediate_case_or,
-    test_x86_compile_tac_binary_op_immediate_case_xor,
-    test_x86_compile_tac_binary_op_immediate_case_shift_left,
-    test_x86_compile_tac_binary_op_immediate_case_shift_right,
-
     //TAC_UNARY_OP
     test_x86_compile_tac_unary_op_case_minus,
     test_x86_compile_tac_unary_op_case_not,
@@ -532,6 +509,8 @@ void (*tests_x86_codegen[])() = {
     test_x86_compile_tac_binary_op_eq_false_8bit,
     test_x86_compile_tac_binary_op_geq_true_8bit,
     test_x86_compile_tac_binary_op_geq_false_8bit,
+    test_x86_compile_tac_binary_op_shift_left,
+    test_x86_compile_tac_binary_op_shift_right,
 
     //TAC_GOTO
     test_x86_compile_tac_goto,

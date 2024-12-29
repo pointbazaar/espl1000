@@ -10,6 +10,8 @@
 static void case_arithmetic(int RAT_SCRATCH_REG, struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 static void case_compare(int RAT_SCRATCH_REG, struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 
+static void case_shift(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
+
 static void case_cmp_lt(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc);
 static void case_cmp_ge(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc);
 static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc);
@@ -39,9 +41,52 @@ void compile_tac_binary_op_x86(struct RAT* rat, struct TAC* tac, struct IBuffer*
 			case_compare(RAT_SCRATCH_REG, rat, tac, ibu);
 			break;
 
+		case TAC_OP_SHIFT_LEFT:
+		case TAC_OP_SHIFT_RIGHT:
+			case_shift(rat, tac, ibu);
+			break;
+
 		default:
+			fprintf(stderr, "%s: unsupported op: %d\n", __func__, tac_op(tac));
+			exit(1);
 			break;
 	}
+}
+
+static void case_shift(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
+
+	const int rsrc = rat_get_register(rat, tac_arg1(tac));
+	const int rdest = rat_get_register(rat, tac_dest(tac));
+	const enum SD_REGISTER scratch = rat_scratch_reg(rat);
+
+	char* c;
+	if (tac_op(tac) == TAC_OP_SHIFT_LEFT) {
+		c = "TAC_BINARY_OP <<";
+	} else {
+		c = "TAC_BINARY_OP >>";
+	}
+
+	char tmp_label[32];
+	char end_label[32];
+	sprintf(tmp_label, "L%d", make_label());
+	sprintf(end_label, "L%d", make_label());
+
+	mov_regs(scratch, rsrc, c);
+
+	label(tmp_label);
+
+	test(scratch, scratch, c);
+	jz(end_label, c);
+
+	if (tac_op(tac) == TAC_OP_SHIFT_LEFT) {
+		shl(rdest, 1, c);
+	} else {
+		shr(rdest, 1, c);
+	}
+
+	dec(scratch, c);
+	jmp(tmp_label, c);
+	label(end_label);
 }
 
 static void case_arithmetic_add(int RAT_SCRATCH_REG, int rdest, int rsrc, struct IBuffer* ibu) {

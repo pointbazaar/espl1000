@@ -35,15 +35,8 @@ void test_x86_compile_tac_binary_op_eq_true_8bit();
 void test_x86_compile_tac_binary_op_eq_false_8bit();
 void test_x86_compile_tac_binary_op_geq_true_8bit();
 void test_x86_compile_tac_binary_op_geq_false_8bit();
-
-//TAC_BINARY_OP_IMMEDIATE
-void test_x86_compile_tac_binary_op_immediate_case_add();
-void test_x86_compile_tac_binary_op_immediate_case_sub();
-void test_x86_compile_tac_binary_op_immediate_case_and();
-void test_x86_compile_tac_binary_op_immediate_case_or();
-void test_x86_compile_tac_binary_op_immediate_case_xor();
-void test_x86_compile_tac_binary_op_immediate_case_shift_left();
-void test_x86_compile_tac_binary_op_immediate_case_shift_right();
+void test_x86_compile_tac_binary_op_shift_left();
+void test_x86_compile_tac_binary_op_shift_right();
 
 //TAC_IF_CMP_GOTO
 void test_x86_compile_tac_if_cmp_goto_case_eq_true_8bit();

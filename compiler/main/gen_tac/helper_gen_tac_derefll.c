@@ -41,8 +41,12 @@ void tac_derefll_single(struct TACBuffer* buffer, struct DerefLL* dll, struct Ty
 			uint32_t offset = stst_member_offset(stst, struct_name, dll->member_name);
 
 			//add that offset
-			if (offset != 0)
-				tacbuffer_append(buffer, makeTACBinOpImmediate(tacbuffer_last_dest(buffer), TAC_OP_ADD, offset));
+			if (offset != 0) {
+				const uint32_t tbase = tacbuffer_last_dest(buffer);
+				const uint32_t tinc = make_temp();
+				tacbuffer_append(buffer, makeTACConst(tinc, offset));
+				tacbuffer_append(buffer, makeTACBinOp(tbase, TAC_OP_ADD, tinc));
+			}
 		} break;
 
 		case DEREFLL_DEREF:
