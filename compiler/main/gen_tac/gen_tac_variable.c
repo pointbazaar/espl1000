@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "cli/flags/flags.h"
 #include "tac/tac.h"
 #include "tac/tacbuffer.h"
 
@@ -14,16 +15,29 @@
 
 #include "gen_tac.h"
 
-void tac_variable(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx) {
+void tac_variable(struct TACBuffer* buf, struct Variable* v, struct Ctx* ctx) {
 
-	tac_variable_addr(buffer, v, ctx);
+	// consider the case where variable is not
+	//an address, as params are passed in registers in x86-64
+	const bool x86 = flags_x86(ctx_flags(ctx));
 
-	uint32_t tlast = tacbuffer_last_dest(buffer);
+	if (x86 && v->member_access == NULL && v->simple_var->count_indices == 0) {
+
+		struct LVST* lvst = ctx_tables(ctx)->lvst;
+
+		const uint32_t local_index = lvst_index_of(lvst, v->simple_var->name);
+		tacbuffer_append(buf, makeTACLoadLocal(make_temp(), local_index));
+		return;
+	}
+
+	tac_variable_addr(buf, v, ctx);
+
+	uint32_t tlast = tacbuffer_last_dest(buf);
 
 	// TODO: do not assume the variable has 2 bytes
 	// on avr, it can only be 1 byte
 	// on x86 it can be up to 8
-	tacbuffer_append(buffer, makeTACLoad(make_temp(), tlast, 2));
+	tacbuffer_append(buf, makeTACLoad(make_temp(), tlast, 2));
 }
 
 void tac_variable_addr(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx) {
