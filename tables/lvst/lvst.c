@@ -304,6 +304,27 @@ ssize_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name) {
 	return 0;
 }
 
+uint32_t lvst_arg_index(struct LVST* lvst, char* name) {
+
+	uint32_t index = 0;
+
+	for (int i = 0; i < lvst->count; i++) {
+
+		struct LVSTLine* line = lvst->lines[i];
+
+		if (line->is_arg == false) continue;
+
+		if (strcmp(line->name, name) == 0) {
+			return index;
+		}
+		index++;
+	}
+
+	fprintf(stderr, "%s: did not find '%s' in arguments\n", __func__, name);
+	exit(1);
+	return 0;
+}
+
 size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name) {
 
 	uint32_t offset = 1;

@@ -20,7 +20,7 @@ static void tac_call_prep_param(struct TACBuffer* buffer, struct Call* call, str
 
 	tac_expr(buffer, expr, ctx);
 
-	struct TAC* t = makeTACParam(tacbuffer_last_dest(buffer), push16);
+	struct TAC* t = makeTACParam(tacbuffer_last_dest(buffer), push16, i);
 
 	tacbuffer_append(buffer, t);
 }

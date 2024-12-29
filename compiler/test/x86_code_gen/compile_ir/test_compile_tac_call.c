@@ -33,7 +33,7 @@ static void test_call_1_arg(uint32_t value, bool debug) {
 	tacbuffer_append(b, makeTACSetupStackframe(0));
 
 	tacbuffer_append(b, makeTACConst(4, value));
-	tacbuffer_append(b, makeTACParam(4, true));
+	tacbuffer_append(b, makeTACParam(4, true, 0));
 	tacbuffer_append(b, makeTACCall(0, 1));
 	tacbuffer_append(b, makeTACReturn(0));
 

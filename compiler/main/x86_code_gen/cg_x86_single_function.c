@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <assert.h>
 
 #include "cg_x86_basic_block.h"
 #include "analyzer/lv/lv_analyzer.h"
@@ -59,7 +60,10 @@ void compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 
 	allocate_registers_basicblocks(graph, nblocks, rat, st, live);
 
-	emit_asm_x86_basic_block(root, ctx, ibu, rat);
+	char* current_function_name = m->decl->name;
+	assert(current_function_name != NULL);
+
+	emit_asm_x86_basic_block(root, ctx, ibu, rat, current_function_name);
 
 	//delete the basic block graph
 	for (int i = 0; i < nblocks; i++) {

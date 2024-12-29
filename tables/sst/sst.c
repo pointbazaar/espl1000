@@ -207,6 +207,11 @@ uint32_t sst_args_size_x86(struct SST* sst, char* name) {
 	return sst_args_size_avr(sst, name);
 }
 
+uint32_t sst_args_count(struct SST* sst, char* name) {
+	const struct MethodDecl* decl = sst_get(sst, name)->method->decl;
+	return decl->count_args;
+}
+
 bool sst_contains(struct SST* sst, char* name) {
 
 	for (int i = 0; i < sst->count; i++) {
