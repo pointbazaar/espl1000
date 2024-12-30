@@ -39,6 +39,8 @@ void lvst_free(struct LVST* lvst);
 
 void lvst_add(struct LVST* lvst, struct LVSTLine* line);
 
+struct LVSTLine* lvst_line_ctor(char* name, struct Type* type, bool is_arg);
+
 struct LVSTLine* lvst_get(struct LVST* lvst, char* name);
 
 struct LVSTLine* lvst_at(struct LVST* lvst, uint32_t index);
@@ -49,9 +51,11 @@ bool lvst_contains(struct LVST* lvst, char* name);
 
 void lvst_print(struct LVST* lvst);
 
-// returns the size of a type in bytes
-// returns 0 on failure
-uint32_t lvst_sizeof_type(struct Type* type);
+// @returns     the size of a type in bytes
+// @returns     0 on failure
+// @param x86   is the target x86?
+//              The size of 'int' is arch-dependent.
+uint32_t lvst_sizeof_type(struct Type* type, bool x86);
 
 size_t lvst_stack_frame_size_avr(struct LVST* lvst);
 size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name);
@@ -64,8 +68,10 @@ ssize_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name);
 // @precondition line->is_arg == true
 uint32_t lvst_arg_index(struct LVST* lvst, char* name);
 
-// returns the size of the local variable in bytes.
-// returns 0 on failure
-uint32_t lvst_sizeof_var(struct LVST* lvst, char* name);
+// @returns the size of the local variable in bytes.
+// @returns 0 on failure
+// @param x86   is the target x86?
+//              The size of 'int' is arch-dependent.
+uint32_t lvst_sizeof_var(struct LVST* lvst, char* name, bool x86);
 
 #endif

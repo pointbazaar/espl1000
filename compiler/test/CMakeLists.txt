@@ -111,6 +111,7 @@ target_link_libraries("sd-tests" sd-parser-test)
 target_link_libraries("sd-tests" sd-ast-test)
 target_link_libraries("sd-tests" sd-tac-test)
 target_link_libraries("sd-tests" sd-rat-test)
+target_link_libraries("sd-tests" sd-tables-test)
 
 target_include_directories("sd-tests" PUBLIC "../main")
 target_include_directories("sd-tests" PUBLIC ".")

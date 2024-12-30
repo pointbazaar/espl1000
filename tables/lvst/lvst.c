@@ -96,6 +96,17 @@ void lvst_add(struct LVST* lvst, struct LVSTLine* line) {
 	lvst->count += 1;
 }
 
+struct LVSTLine* lvst_line_ctor(char* name, struct Type* type, bool is_arg) {
+
+	struct LVSTLine* line = calloc(1, sizeof(struct LVSTLine));
+
+	line->name = strdup(name);
+	line->type = type;
+	line->is_arg = is_arg;
+
+	return line;
+}
+
 struct LVSTLine* lvst_get(struct LVST* lvst, char* name) {
 
 	for (int i = 0; i < lvst->count; i++) {
@@ -164,14 +175,19 @@ void lvst_print(struct LVST* lvst) {
 	}
 }
 
-uint32_t lvst_sizeof_primitivetype(struct PrimitiveType* pt) {
+uint32_t lvst_sizeof_primitivetype(struct PrimitiveType* pt, bool x86) {
 
 	if (pt->is_char_type || pt->is_bool_type) return 1;
 
 	switch (pt->int_type) {
 
+		// the size of this type is arch-dependent :(
 		case INT:
-		case UINT: return 1;
+		case UINT:
+			if (x86) {
+				return 4;
+			}
+			return 1;
 
 		case INT8:
 		case UINT8: return 1;
@@ -183,35 +199,44 @@ uint32_t lvst_sizeof_primitivetype(struct PrimitiveType* pt) {
 		case INT64:
 		case UINT64: return 8;
 
-		default: return 0;
+		default:
+			fprintf(stderr, "%s: unhandled case %d\n", __func__, pt->int_type);
+			exit(1);
+			return 0;
 	}
 }
 
-uint32_t lvst_sizeof_structtype(struct StructType* st) {
+uint32_t lvst_sizeof_structtype(struct StructType* st, bool x86) {
+	if (x86) {
+		return 8;
+	}
 	return 2;
 }
 
-uint32_t lvst_sizeof_simpletype(struct SimpleType* st) {
+uint32_t lvst_sizeof_simpletype(struct SimpleType* st, bool x86) {
 
 	if (st->struct_type != NULL)
-		return lvst_sizeof_structtype(st->struct_type);
+		return lvst_sizeof_structtype(st->struct_type, x86);
 
 	if (st->primitive_type != NULL)
-		return lvst_sizeof_primitivetype(st->primitive_type);
+		return lvst_sizeof_primitivetype(st->primitive_type, x86);
 	return 0;
 }
 
-uint32_t lvst_sizeof_subrtype(struct SubrType* st) {
+uint32_t lvst_sizeof_subrtype(struct SubrType* st, bool x86) {
+	if (x86) {
+		return 8;
+	}
 	return 2; //function pointer type
 }
 
-uint32_t lvst_sizeof_basictype(struct BasicType* bt) {
+uint32_t lvst_sizeof_basictype(struct BasicType* bt, bool x86) {
 
 	if (bt->subr_type != NULL)
-		return lvst_sizeof_subrtype(bt->subr_type);
+		return lvst_sizeof_subrtype(bt->subr_type, x86);
 
 	if (bt->simple_type != NULL)
-		return lvst_sizeof_simpletype(bt->simple_type);
+		return lvst_sizeof_simpletype(bt->simple_type, x86);
 
 	return 0;
 }
@@ -220,12 +245,15 @@ uint32_t lvst_sizeof_typeparam(struct TypeParam* tp) {
 	return 2; // could be wide
 }
 
-uint32_t lvst_sizeof_arraytype(struct ArrayType* at) {
+uint32_t lvst_sizeof_arraytype(struct ArrayType* at, bool x86) {
+	if (x86) {
+		return 8;
+	}
 	return 2;
 }
 
 // returns the size in number of bytes
-uint32_t lvst_sizeof_type(struct Type* type) {
+uint32_t lvst_sizeof_type(struct Type* type, bool x86) {
 
 	if (type == NULL) {
 		return 0;
@@ -234,20 +262,29 @@ uint32_t lvst_sizeof_type(struct Type* type) {
 	uint32_t res = 0;
 	//sizeof(type) in bytes
 	if (type->basic_type != NULL)
-		res = lvst_sizeof_basictype(type->basic_type);
+		res = lvst_sizeof_basictype(type->basic_type, x86);
 
 	if (type->type_param != NULL)
 		res = lvst_sizeof_typeparam(type->type_param);
 
 	if (type->array_type != NULL)
-		res = lvst_sizeof_arraytype(type->array_type);
+		res = lvst_sizeof_arraytype(type->array_type, x86);
 
 	return res;
 }
 
 size_t lvst_stack_frame_size_x86(struct LVST* lvst) {
 
-	return lvst_stack_frame_size_avr(lvst);
+	//give the size required for the stack frame.
+	//(here meaning just the local variables)
+
+	uint32_t sum = 0;
+
+	for (int i = 0; i < lvst->count; i++) {
+		if (lvst->lines[i]->is_arg) continue;
+		sum += lvst_sizeof_type(lvst->lines[i]->type, true);
+	}
+	return sum;
 }
 
 size_t lvst_stack_frame_size_avr(struct LVST* lvst) {
@@ -257,7 +294,7 @@ size_t lvst_stack_frame_size_avr(struct LVST* lvst) {
 
 	for (int i = 0; i < lvst->count; i++) {
 		if (lvst->lines[i]->is_arg) continue;
-		sum += lvst_sizeof_type(lvst->lines[i]->type);
+		sum += lvst_sizeof_type(lvst->lines[i]->type, false);
 	}
 
 	return sum;
@@ -267,7 +304,6 @@ size_t lvst_stack_frame_size_avr(struct LVST* lvst) {
 ssize_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name) {
 	uint32_t offset = 0;
 
-	//we first look at the local vars
 	for (int i = 0; i < lvst->count; i++) {
 
 		struct LVSTLine* line = lvst->lines[i];
@@ -278,26 +314,10 @@ ssize_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name) {
 			return offset + 8;
 		}
 
-		offset += lvst_sizeof_type(line->type);
+		offset += lvst_sizeof_type(line->type, true);
 	}
 
-	offset = 0;
-
-	//we then look at the arguments
-	for (int i = 0; i < lvst->count; i++) {
-
-		struct LVSTLine* line = lvst->lines[i];
-
-		if (line->is_arg == false) continue;
-
-		if (strcmp(line->name, local_var_name) == 0) {
-			return -(offset + 8);
-		}
-
-		offset += lvst_sizeof_type(line->type);
-	}
-
-	printf("fatal error in lvst_stack_frame_offset_avr.");
+	printf("fatal error in lvst_stack_frame_offset_x86.");
 	printf("did not find local: %s", local_var_name);
 	fflush(stdout);
 	exit(1);
@@ -338,7 +358,7 @@ size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name) {
 
 		if (strcmp(line->name, local_var_name) == 0) return offset;
 
-		offset += lvst_sizeof_type(line->type);
+		offset += lvst_sizeof_type(line->type, false);
 	}
 
 	offset += 2; //because of the return address
@@ -352,7 +372,7 @@ size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name) {
 
 		if (strcmp(line->name, local_var_name) == 0) return offset;
 
-		offset += lvst_sizeof_type(line->type);
+		offset += lvst_sizeof_type(line->type, false);
 	}
 
 	printf("fatal error in lvst_stack_frame_offset_avr.");
@@ -362,12 +382,12 @@ size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name) {
 	return 0;
 }
 
-uint32_t lvst_sizeof_var(struct LVST* lvst, char* name) {
+uint32_t lvst_sizeof_var(struct LVST* lvst, char* name, bool x86) {
 
 	struct LVSTLine* line = lvst_get(lvst, name);
 	if (line == NULL)
 		return 0;
 	if (line->type == NULL)
 		return 0;
-	return lvst_sizeof_type(line->type);
+	return lvst_sizeof_type(line->type, x86);
 }
