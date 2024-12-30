@@ -198,7 +198,7 @@ uint32_t sst_args_size_avr(struct SST* sst, char* name) {
 	uint32_t size = 0;
 
 	for (int i = 0; i < decl->count_args; i++) {
-		size += lvst_sizeof_type(decl->args[i]->type);
+		size += lvst_sizeof_type(decl->args[i]->type, false);
 	}
 	return size;
 }

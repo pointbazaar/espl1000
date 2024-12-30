@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "cli/flags/flags.h"
 #include "tac/tac.h"
 #include "tac/tacbuffer.h"
 
@@ -16,12 +17,14 @@
 
 void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* v, struct Ctx* ctx) {
 
+	const bool x86 = flags_x86(ctx_flags(ctx));
+
 	tac_simplevar_addr(buffer, v, ctx);
 
 	uint32_t tlast = tacbuffer_last_dest(buffer);
 
 	struct LVST* lvst = ctx_tables(ctx)->lvst;
-	const uint8_t simplevar_width = lvst_sizeof_var(lvst, v->name);
+	const uint8_t simplevar_width = lvst_sizeof_var(lvst, v->name, x86);
 
 	tacbuffer_append(buffer, makeTACLoad(make_temp(), tlast, simplevar_width));
 }
