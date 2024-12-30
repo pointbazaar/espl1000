@@ -35,6 +35,8 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64
 #define mov_regs(dest, src, c) ibu2(X86_MOV_REGS, dest, src, c)
 #define mov_load(dest, src, c) ibu2(X86_MOV_LOAD, dest, src, c)
 #define mov_store(dest, src, c) ibu2(X86_MOV_STORE, dest, src, c)
+#define mov_load_width(dest, src, width, c) ibu3(X86_MOV_LOAD_WIDTH, dest, src, width, c)
+#define mov_store_width(dest, src, width, c) ibu3(X86_MOV_STORE_WIDTH, dest, src, width, c)
 
 #define cmove(dest, src, c) ibu2(X86_CMOVE, dest, src, c)
 #define xchg(dest, src, c) ibu2(X86_XCHG, dest, src, c)

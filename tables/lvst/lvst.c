@@ -310,11 +310,11 @@ ssize_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name) {
 
 		if (line->is_arg == true) continue;
 
-		if (strcmp(line->name, local_var_name) == 0) {
-			return offset + 8;
-		}
-
 		offset += lvst_sizeof_type(line->type, true);
+
+		if (strcmp(line->name, local_var_name) == 0) {
+			return offset;
+		}
 	}
 
 	printf("fatal error in lvst_stack_frame_offset_x86.");

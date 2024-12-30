@@ -28,11 +28,15 @@ static void case_local_var(struct RAT* rat, struct TAC* tac, struct LVST* lvst, 
 
 	const ssize_t offset = lvst_stack_frame_offset_x86(lvst, name);
 
+	const uint32_t nbytes = lvst_sizeof_var(lvst, name, true);
+	assert(nbytes > 0);
+
 	// stack frame is pointed to by rbp
 	uint32_t rscratch = rat_scratch_reg(rat);
 	mov_const(rscratch, -offset, c);
 	add(rscratch, SD_REG_RBP, c);
-	mov_load(reg_dest, rscratch, c);
+
+	mov_load_width(reg_dest, rscratch, nbytes, c);
 }
 
 void compile_tac_load_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
