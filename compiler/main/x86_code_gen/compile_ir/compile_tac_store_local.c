@@ -36,5 +36,6 @@ void compile_tac_store_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* c
 
 	mov_const(rscratch, -offset, c);
 	add(rscratch, rat_base_ptr(rat), c);
-	mov_store(rscratch, reg, c);
+
+	mov_store_width(rscratch, reg, var_width, c);
 }

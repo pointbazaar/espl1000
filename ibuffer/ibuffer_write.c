@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include <string.h>
+#include <assert.h>
 
 #include "ibuffer.h"
 #include "ibuffer_write.h"
@@ -11,7 +12,7 @@
 
 extern char* MNEM[];
 
-static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s);
+static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s, int32_t x3);
 
 static void strcat_reg(char* s, uint8_t reg);
 static void strcat_num(char* s, int num);
@@ -23,21 +24,19 @@ void ibu_write_instr(enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* st
 		return;
 	}
 
-	if (x3 != 0) return;
-
 	fprintf(f, "  "); //indentation
 
 	//write the mnemonic
 	fprintf(f, "%-5s ", MNEM[key]);
 
-	size_t l = 42;
+	size_t l = 72;
 	if (str != NULL) {
 		l += strlen(str);
 	}
 	char* s = malloc(l);
 	strcpy(s, "");
 
-	write_middle(key, x1, x2, str, s);
+	write_middle(key, x1, x2, str, s, x3);
 
 	fprintf(f, "%-s", s);
 
@@ -50,7 +49,19 @@ void ibu_write_instr(enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* st
 	free(s);
 }
 
-static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s) {
+static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s, int32_t x3) {
+
+	const uint8_t nbytes = x3;
+	char* width_strs[] = {
+	    "byte", "word", "dword", "qword"};
+
+	char* width_str = NULL;
+	switch (x3) {
+		case 1: width_str = "byte"; break;
+		case 2: width_str = "word"; break;
+		case 4: width_str = "dword"; break;
+		case 8: width_str = "qword"; break;
+	}
 
 	switch (key) {
 
@@ -161,6 +172,14 @@ static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 			break;
 		case X86_MOV_STORE:
 			sprintf(s, "[%s], %s", rat_regname_x86(x1), rat_regname_x86(x2));
+			break;
+		case X86_MOV_LOAD_WIDTH:
+			assert(width_str != NULL);
+			sprintf(s, "%s, %s [%s]", rat_regname_x86_width(x1, nbytes), width_str, rat_regname_x86(x2));
+			break;
+		case X86_MOV_STORE_WIDTH:
+			assert(width_str != NULL);
+			sprintf(s, "%s [%s], %s", width_str, rat_regname_x86(x1), rat_regname_x86_width(x2, nbytes));
 			break;
 		case X86_PUSH:
 		case X86_POP:

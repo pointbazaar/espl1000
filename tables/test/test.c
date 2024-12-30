@@ -285,7 +285,7 @@ void test_tables_lvst_stack_frame_offset_x86_int8() {
 
 	lvst_add(lvst, line);
 
-	assert(lvst_stack_frame_offset_x86(lvst, "x") == 8);
+	assert(lvst_stack_frame_offset_x86(lvst, "x") == 1);
 
 	lvst_free(lvst);
 }

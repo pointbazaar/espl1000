@@ -17,4 +17,11 @@ enum SD_REGISTER rat_param_reg_x86(uint32_t index);
 
 // x86 specific
 char* rat_regname_x86(size_t i);
+
+// @returns the register name considering the number of bytes
+//   e.g. (rax, 8) -> rax
+//   e.g. (rax, 4) -> eax
+//   e.g. (rax, 1) -> al
+char* rat_regname_x86_width(size_t i, uint8_t nbytes);
+
 void rat_print_regname_x86(struct RAT* rat, size_t reg);
