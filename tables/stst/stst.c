@@ -82,7 +82,7 @@ struct StructMember* stst_get_member(struct STST* stst, char* struct_name, char*
 	exit(1);
 }
 
-uint32_t stst_member_offset(struct STST* stst, char* struct_name, char* member_name) {
+uint32_t stst_member_offset(struct STST* stst, char* struct_name, char* member_name, bool x86) {
 
 	//calculates the offset in bytes, from the start of the struct
 
@@ -96,7 +96,7 @@ uint32_t stst_member_offset(struct STST* stst, char* struct_name, char* member_n
 
 		if (strcmp(member->name, member_name) == 0) return offset;
 
-		offset += lvst_sizeof_type(member->type);
+		offset += lvst_sizeof_type(member->type, x86);
 	}
 
 	printf("[STST] could not find member offset, struct '%s', member '%s'\n", struct_name, member_name);

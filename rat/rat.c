@@ -362,3 +362,42 @@ uint16_t rat_capacity(struct RAT* rat) {
 
 	return SD_REGISTER_END;
 }
+
+static bool is_callee_saved[] = {
+
+    [SD_REG_RAX] = false, // return value
+    [SD_REG_RBX] = true,
+    [SD_REG_RCX] = false, // param
+    [SD_REG_RDX] = false, // param
+    [SD_REG_RDI] = false, // param
+    [SD_REG_RSI] = false, // param
+
+    [SD_REG_RSP] = false, // managed otherwise
+    [SD_REG_RBP] = false, // managed otherwise
+
+    [SD_REG_R8] = false, // param
+    [SD_REG_R9] = false, // param
+    [SD_REG_R10] = true,
+    [SD_REG_R11] = true,
+    [SD_REG_R12] = true,
+    [SD_REG_R13] = true,
+    [SD_REG_R14] = true,
+    [SD_REG_R15] = true,
+};
+
+static bool rat_is_callee_saved(enum SD_REGISTER reg) {
+	return is_callee_saved[reg];
+}
+
+bool rat_callee_must_save(struct RAT* rat, enum SD_REGISTER reg) {
+
+	if (reg == SD_REG_RBP) {
+		return true;
+	}
+
+	if (rat->status[reg] == REG_OCCUPIED) {
+		return rat_is_callee_saved(reg);
+	}
+
+	return false;
+}

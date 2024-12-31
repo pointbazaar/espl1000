@@ -24,6 +24,7 @@ struct TAC* makeTAC() {
 	    .dest = 0,
 	    .arg1 = 0,
 	    .op = TAC_OP_NONE,
+	    .param_index = 0,
 	};
 
 	return res;
@@ -197,11 +198,13 @@ struct TAC* makeTACLoadConstAddr(uint32_t dest, uint32_t addr) {
 	return t;
 }
 
-struct TAC* makeTACParam(uint32_t dest, bool push16) {
+struct TAC* makeTACParam(uint32_t dest, bool push16, uint32_t param_index) {
 
 	struct TAC* t = makeTAC();
 	t->kind = TAC_PARAM;
 	t->dest = dest;
+
+	t->param_index = param_index;
 
 	if (push16)
 		t->const_value = 16;

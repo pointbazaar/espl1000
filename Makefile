@@ -54,6 +54,7 @@ valgrind_tests: ${TESTBIN} setup_path
 	#valgrind ${VALGRIND_CALL} -testsuite "TAC CodeGen from Snippets"
 	#valgrind ${VALGRIND_CALL} -testsuite "x86 CodeGen"
 	valgrind ${VALGRIND_CALL} -testsuite "Liveness"
+	valgrind ${VALGRIND_CALL} -testsuite "Tables"
 
 clean_cmake:
 	rm -rf CMakeFiles

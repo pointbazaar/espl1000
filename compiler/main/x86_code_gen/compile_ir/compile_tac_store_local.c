@@ -25,7 +25,7 @@ void compile_tac_store_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* c
 
 	const int reg = rat_get_register(rat, tac_arg1(tac));
 
-	const uint32_t var_width = lvst_sizeof_var(lvst, name);
+	const uint32_t var_width = lvst_sizeof_var(lvst, name, true);
 
 	if (var_width == 0) {
 		fprintf(stderr, "%s could not determine width of local variable %s\n", __FILE__, name);
@@ -36,5 +36,6 @@ void compile_tac_store_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* c
 
 	mov_const(rscratch, -offset, c);
 	add(rscratch, rat_base_ptr(rat), c);
-	mov_store(rscratch, reg, c);
+
+	mov_store_width(rscratch, reg, var_width, c);
 }

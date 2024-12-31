@@ -290,7 +290,7 @@ static void gen_from_tacbuffer(struct TACBuffer* buffer, FILE* fout, struct Ctx*
 
 	allocate_registers_basicblocks(graph, nblocks, rat, ctx_tables(ctx), live);
 
-	emit_asm_x86_basic_block(root, ctx, ibu, rat);
+	emit_asm_x86_basic_block(root, ctx, ibu, rat, function_name);
 
 	for (int i = 0; i < nblocks; i++) {
 		basicblock_dtor(graph[i]);

@@ -15,6 +15,7 @@
 #include "tac/test/test.h"
 #include "rat/test/test.h"
 #include "ast/test/test_str_ast.h"
+#include "tables/test/test.h"
 
 void (*tests_ast[])() = {
     test_ast_str_binconst,
@@ -226,6 +227,20 @@ void (*tests_liveness[])() = {
     test_liveness_out_map_tac_if_goto,
     test_liveness_out_map_tac_if_cmp_goto,
     test_liveness_out_map_tac_copy,
+    NULL,
+};
+
+void (*tests_tables[])() = {
+    test_tables_lvst_ctor,
+    test_tables_lvst_sizeof_type_primitive,
+    test_tables_lvst_sizeof_type_other,
+    test_tables_lvst_stack_frame_size_avr,
+    test_tables_lvst_stack_frame_size_x86,
+    test_tables_lvst_stack_frame_offset_avr_int8,
+    test_tables_lvst_stack_frame_offset_avr_int64,
+    test_tables_lvst_stack_frame_offset_x86_int8,
+    test_tables_lvst_stack_frame_offset_x86_int64,
+    test_tables_lvst_arg_index,
     NULL,
 };
 

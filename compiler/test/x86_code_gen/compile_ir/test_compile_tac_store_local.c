@@ -48,7 +48,9 @@ static void test_fixed_value(uint64_t fixed_value, const uint32_t local_index, b
 	err = sd_uc_emu_start(system, 0, debug);
 	assert(err == UC_ERR_OK);
 
-	const uint64_t addr = sd_uc_default_stack_addr() - 8 * (local_index + 1);
+	size_t callee_saved_regs_size = 16;
+
+	const uint64_t addr = sd_uc_default_stack_addr() - 8 * (local_index + 1) - callee_saved_regs_size;
 
 	uint64_t value_read;
 	err = sd_uc_mem_read64(system, addr, &value_read);

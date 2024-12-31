@@ -169,7 +169,7 @@ char* tac_tostring(struct TAC* t, struct SST* sst, struct LVST* lvst) {
 		} break;
 
 		case TAC_PARAM:
-			sprintf(buf, "param t%u", dest);
+			sprintf(buf, "param t%u (index %d)", dest, tac_param_index(t));
 			break;
 		case TAC_RETURN:
 			sprintf(buf, "return t%d", dest);

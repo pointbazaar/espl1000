@@ -121,6 +121,10 @@ struct testsuite testsuites[] = {
 	.testcases = tests_liveness,
     },
     {
+	.name = "Tables",
+	.testcases = tests_tables,
+    },
+    {
 	.name = NULL,
     }};
 

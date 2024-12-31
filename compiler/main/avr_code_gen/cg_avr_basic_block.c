@@ -101,7 +101,7 @@ static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 			if (sst_size(sst) > arg1) {
 				//in TAC tests the SST might not be fully initialized
 				struct Type* return_type = sst_at(sst, arg1)->return_type;
-				iswide = lvst_sizeof_type(return_type);
+				iswide = lvst_sizeof_type(return_type, false);
 			}
 
 			dest = tac_dest(t);
@@ -133,7 +133,7 @@ static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 			arg1 = tac_arg1(t);
 			//look at the LVST to see the width of the local var
 			struct Type* local_type = lvst_at(lvst, arg1)->type;
-			iswide = lvst_sizeof_type(local_type) == 2;
+			iswide = lvst_sizeof_type(local_type, false) == 2;
 			dest = tac_dest(t);
 			rat_ensure_register(rat, dest, false, iswide);
 		} break;

@@ -1,0 +1,9 @@
+
+@extern
+fn f1() -> int {}
+
+fn main() ~> int {
+
+	// should result in exit code 0
+	return f1() - 6;
+}

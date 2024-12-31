@@ -176,6 +176,8 @@ enum IKEY {
 	X86_MOV_REGS, // mov rdest, rsrc
 	X86_MOV_LOAD, // mov rdest, [rsrc]
 	X86_MOV_STORE, // mov [rdest], rsrc
+	X86_MOV_LOAD_WIDTH, // e.g. mov dword rdest, [rsrc]
+	X86_MOV_STORE_WIDTH, // e.g. mov qword [rdest], rsrc
 	X86_CMOVE,
 	X86_XCHG,
 

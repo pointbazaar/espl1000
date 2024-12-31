@@ -131,6 +131,11 @@ enum TAC_KIND tac_kind(struct TAC* tac) {
 	return tac->kind;
 }
 
+uint32_t tac_param_index(struct TAC* tac) {
+	assert(tac_kind(tac) == TAC_PARAM);
+	return tac->param_index;
+}
+
 int32_t tac_max_temp(struct TAC* tac) {
 
 	//TODO: check if it's safe

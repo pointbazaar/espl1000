@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "ibuffer/ibuffer_x86.h"
 #include "rat/rat.h"
@@ -15,9 +16,20 @@ void compile_tac_load_local_addr_x86(struct RAT* rat, struct TAC* tac, struct Ct
 
 	char* c = "TAC_LOAD_LOCAL_ADDR";
 
-	const int rdest = rat_get_register(rat, tac_dest(tac));
+	struct LVST* lvst = ctx_tables(ctx)->lvst;
 
 	char* name = lvst_at(ctx_tables(ctx)->lvst, tac_arg1(tac))->name;
+
+	struct LVSTLine* line = lvst_get(lvst, name);
+
+	if (line->is_arg) {
+
+		fprintf(stderr, "%s: in x86-64, arguments are passed in registers\n", __func__);
+		exit(1);
+		return;
+	}
+
+	const int rdest = rat_get_register(rat, tac_dest(tac));
 
 	const ssize_t offset = lvst_stack_frame_offset_x86(ctx_tables(ctx)->lvst, name);
 

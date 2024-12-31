@@ -1,0 +1,10 @@
+
+fn main ()~> int {
+	uint i=0;
+	uint j=0;
+        while (i < 33){
+		j = j + 1;
+		i = i + 1;
+	}
+	return j;
+}

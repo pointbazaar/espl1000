@@ -19,7 +19,7 @@ void test_tac_opt_dest() {
 	assert(tac_opt_dest(t) == 1);
 	free(t);
 
-	t = makeTACParam(1, true);
+	t = makeTACParam(1, true, 0);
 	assert(tac_opt_dest(t) == -1);
 	free(t);
 
@@ -135,7 +135,7 @@ void test_tac_tostring() {
 	//TODO: missing SST here
 	//assert_str(makeTACCall(1, 0), "t1 = call main");
 
-	assert_str(makeTACParam(1, true), "param t1");
+	assert_str(makeTACParam(1, true, 0), "param t1 (index 0)");
 	assert_str(makeTACSetupStackframe(1), "setup_stackframe 1");
 	assert_str(makeTACSetupSP(), "setup SP");
 	assert_str(makeTACReturn(1), "return t1");

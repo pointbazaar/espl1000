@@ -1,0 +1,12 @@
+fn main () ~> int {
+	return fibonacci(4);
+}
+
+fn fibonacci (uint n) -> uint{
+
+	if(n<3){
+		return 1;
+	}
+	return (fibonacci(n-1)+fibonacci(n-2));
+}
+

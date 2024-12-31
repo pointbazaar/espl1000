@@ -1,6 +1,7 @@
 #include "ast/ast_declare.h"
 #include "ast/ast.h"
 
+#include "cli/flags/flags.h"
 #include "tac/tac.h"
 #include "tac/tacbuffer.h"
 
@@ -16,6 +17,8 @@
 #include "helper_gen_tac_derefll.h"
 
 void tac_derefll_single(struct TACBuffer* buffer, struct DerefLL* dll, struct Type* prev_type, struct Ctx* ctx) {
+
+	const bool x86 = flags_x86(ctx_flags(ctx));
 
 	switch (dll->action) {
 
@@ -38,7 +41,7 @@ void tac_derefll_single(struct TACBuffer* buffer, struct DerefLL* dll, struct Ty
 			//find member offset
 			struct STST* stst = ctx_tables(ctx)->stst;
 			char* struct_name = prev_type->basic_type->simple_type->struct_type->type_name;
-			uint32_t offset = stst_member_offset(stst, struct_name, dll->member_name);
+			uint32_t offset = stst_member_offset(stst, struct_name, dll->member_name, x86);
 
 			//add that offset
 			if (offset != 0) {

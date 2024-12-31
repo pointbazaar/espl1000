@@ -33,6 +33,9 @@ static void test_fixed_value(uint64_t fixed_value, const uint32_t local_index, b
 	const size_t stackframe_size_bytes = stackframe_size * 8;
 
 	tacbuffer_append(b, makeTACSetupStackframe(stackframe_size_bytes));
+	tacbuffer_append(b, makeTACConst(2, fixed_value));
+	tacbuffer_append(b, makeTACStoreLocal(local_index, 2));
+
 	tacbuffer_append(b, makeTACConst(1, 0x00));
 	tacbuffer_append(b, makeTACLoadLocal(1, local_index));
 	tacbuffer_append(b, makeTACReturn(1));
@@ -42,9 +45,6 @@ static void test_fixed_value(uint64_t fixed_value, const uint32_t local_index, b
 
 	uc_err err;
 	uint64_t reg;
-
-	err = sd_uc_mem_write64(system, addr, &fixed_value);
-	assert(err == UC_ERR_OK);
 
 	if (debug) {
 		sd_uc_print_regs(system);

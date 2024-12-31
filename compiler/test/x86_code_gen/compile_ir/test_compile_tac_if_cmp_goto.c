@@ -26,6 +26,8 @@ static void common(int a1, enum TAC_OP op, int a2, bool expect_true, bool debug)
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
+	tacbuffer_append(b, makeTACSetupStackframe(0));
+
 	tacbuffer_append(b, makeTACConst(1, a1));
 	tacbuffer_append(b, makeTACConst(2, a2));
 	tacbuffer_append(b, makeTACIfCMPGoto(1, op, 2, ltrue));

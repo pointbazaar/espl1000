@@ -24,6 +24,7 @@ void test_x86_compile_tac_if_goto_case_true() {
 	const uint16_t lend = 2;
 
 	struct TACBuffer* b = tacbuffer_ctor();
+	tacbuffer_append(b, makeTACSetupStackframe(0));
 
 	tacbuffer_append(b, makeTACConst(1, 1));
 	tacbuffer_append(b, makeTACIfGoto(1, l1));
@@ -60,6 +61,7 @@ void test_x86_compile_tac_if_goto_case_false() {
 	const uint16_t lend = 2;
 
 	struct TACBuffer* b = tacbuffer_ctor();
+	tacbuffer_append(b, makeTACSetupStackframe(0));
 
 	tacbuffer_append(b, makeTACConst(1, 0));
 	tacbuffer_append(b, makeTACIfGoto(1, l1));
@@ -101,6 +103,7 @@ void test_x86_compile_tac_if_goto_case_mixed() {
 	const uint16_t lend = 2;
 
 	struct TACBuffer* b = tacbuffer_ctor();
+	tacbuffer_append(b, makeTACSetupStackframe(0));
 
 	tacbuffer_append(b, makeTACConst(0, value));
 

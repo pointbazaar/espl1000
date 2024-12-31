@@ -198,13 +198,18 @@ uint32_t sst_args_size_avr(struct SST* sst, char* name) {
 	uint32_t size = 0;
 
 	for (int i = 0; i < decl->count_args; i++) {
-		size += lvst_sizeof_type(decl->args[i]->type);
+		size += lvst_sizeof_type(decl->args[i]->type, false);
 	}
 	return size;
 }
 
 uint32_t sst_args_size_x86(struct SST* sst, char* name) {
 	return sst_args_size_avr(sst, name);
+}
+
+uint32_t sst_args_count(struct SST* sst, char* name) {
+	const struct MethodDecl* decl = sst_get(sst, name)->method->decl;
+	return decl->count_args;
 }
 
 bool sst_contains(struct SST* sst, char* name) {
