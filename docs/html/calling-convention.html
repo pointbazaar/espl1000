@@ -146,22 +146,32 @@ return address byte 0 | &lt;- rsp
                       | ...
                       | 0x0
 
+...                   |
+return address byte 1 |
+return address byte 0 |
+... callee saved regs | &lt;- rsp (callee saved registers have been pushed)
+                      | ...
+                      | 0x0
+
 
 ...                   |
 return address byte 1 |
-return address byte 0 | &lt;- rbp, rsp
+return address byte 0 |
+... callee saved regs | &lt;- rbp, rsp (rbp has been set)
                       | ...
                       | 0x0
 
 ...                   |
-return address byte 0 | &lt;- rbp
+return address byte 0 |
+... callee saved regs | &lt;- rbp
                       | ...
                       | &lt;- rsp  (has been decremented by 5 bytes to make space for local vars and args)
                       | ...
                       | 0x0
 
 ...                   |
-return address byte 0 | &lt;- rbp
+return address byte 0 |
+... callee saved regs | &lt;- rbp
 local var 0, byte 1   |
 local var 0, byte 0   |
 local var 1, byte 0   |
@@ -171,7 +181,13 @@ arg 1, byte 0         | &lt;- rsp
                       | 0x0
 
 ...                   |
-return address byte 0 | &lt;- rbp, rsp (rsp has been reset before return)
+return address byte 0 |
+... callee saved regs |&lt;- rbp, rsp (rsp has been reset before return)
+                      | ...
+                      | 0x0
+
+...                   |
+return address byte 0 | &lt;- rbp, rsp (callee saved regs have been restored)
                       | ...
                       | 0x0
 	</pre>

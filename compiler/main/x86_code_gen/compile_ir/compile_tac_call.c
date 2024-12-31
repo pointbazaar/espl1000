@@ -12,18 +12,6 @@
 
 #include "compile_tac.h"
 
-static void save_registers(struct IBuffer* ibu, struct RAT* rat, uint32_t args_count) {
-
-	char* c = "TAC_CALL (save registers)";
-	push(rat_base_ptr(rat), c);
-}
-
-static void restore_registers(struct IBuffer* ibu, struct RAT* rat, uint32_t args_count) {
-
-	char* c = "TAC_CALL (restore registers)";
-	pop(rat_base_ptr(rat), c);
-}
-
 void compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx, char* current_function_name) {
 
 	int reg_dest = rat_get_register(rat, tac_dest(tac));
@@ -41,11 +29,7 @@ void compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu,
 
 	const uint32_t arg_count = sst_args_count(sst, current_function_name);
 
-	save_registers(ibu, rat, arg_count);
-
 	call(function_name, c);
-
-	restore_registers(ibu, rat, arg_count);
 
 	mov_regs(reg_dest, SD_REG_RAX, c);
 }
