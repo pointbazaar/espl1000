@@ -8,9 +8,22 @@
 #include "rat/rat.h"
 #include "x86_code_gen/compile_ir/compile_tac.h"
 
+static void callee_save_registers(struct RAT* rat, struct IBuffer* ibu) {
+
+	char* c = "TAC_SETUP_STACKFRAME (callee saved regs)";
+	for (enum SD_REGISTER reg = SD_REG_RBX; reg < SD_REG_END_X86; reg++) {
+		if (rat_callee_must_save(rat, reg)) {
+			push(reg, c);
+		}
+	}
+}
+
 void compile_tac_setup_stackframe_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx, char* current_function_name) {
 
 	char* c = "TAC_SETUP_STACKFRAME";
+
+	callee_save_registers(rat, ibu);
+
 	const size_t stack_frame_size_bytes = tac_const_value(tac);
 
 	// load base pointer

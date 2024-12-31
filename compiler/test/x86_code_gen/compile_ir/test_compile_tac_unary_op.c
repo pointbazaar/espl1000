@@ -21,6 +21,8 @@ void test_x86_compile_tac_unary_op_case_minus() {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
+		tacbuffer_append(b, makeTACSetupStackframe(0));
+
 		tacbuffer_append(b, makeTACConst(0, start));
 		tacbuffer_append(b, makeTACUnaryOp(1, 0, TAC_OP_UNARY_MINUS));
 		tacbuffer_append(b, makeTACReturn(1));
@@ -46,6 +48,8 @@ void test_x86_compile_tac_unary_op_case_not() {
 	const int8_t start = 0xff; //start is true value
 
 	struct TACBuffer* b = tacbuffer_ctor();
+
+	tacbuffer_append(b, makeTACSetupStackframe(0));
 
 	tacbuffer_append(b, makeTACConst(0, start));
 	tacbuffer_append(b, makeTACUnaryOp(1, 0, TAC_OP_UNARY_NOT));
@@ -74,6 +78,8 @@ void test_x86_compile_tac_unary_op_case_bitwise_neg() {
 
 	for (uint64_t start = 0; start < 3; start++) {
 		struct TACBuffer* b = tacbuffer_ctor();
+
+		tacbuffer_append(b, makeTACSetupStackframe(0));
 
 		tacbuffer_append(b, makeTACConst(0, start));
 		tacbuffer_append(b, makeTACUnaryOp(1, 0, TAC_OP_UNARY_BITWISE_NEG));

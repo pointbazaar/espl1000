@@ -13,6 +13,16 @@
 
 #include "util/ctx.h"
 
+static void callee_restore_registers(struct RAT* rat, struct IBuffer* ibu) {
+
+	char* c = "TAC_RETURN (restore callee saved regs)";
+	for (enum SD_REGISTER reg = SD_REG_END_X86 - 1; reg >= SD_REG_RBX; reg--) {
+		if (rat_callee_must_save(rat, reg)) {
+			pop(reg, c);
+		}
+	}
+}
+
 void compile_tac_return_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
 	char* c = "TAC_RETURN";
@@ -29,6 +39,8 @@ void compile_tac_return_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, s
 	const int reg = rat_get_register(rat, tac_dest(tac));
 
 	mov_regs(SD_REG_RAX, reg, c);
+
+	callee_restore_registers(rat, ibu);
 
 	ret(c);
 }

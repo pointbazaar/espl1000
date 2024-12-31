@@ -64,3 +64,9 @@ enum SD_REGISTER rat_base_ptr(struct RAT* rat);
 enum SD_REGISTER rat_stack_ptr(struct RAT* rat);
 
 uint16_t rat_capacity(struct RAT* rat);
+
+// @returns     true if the callee needs to save this register
+//              false if the callee does not touch this register
+//              and thus does not need to save it
+// @param rat   the RAT belonging to the callee
+bool rat_callee_must_save(struct RAT* rat, enum SD_REGISTER reg);
