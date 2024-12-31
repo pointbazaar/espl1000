@@ -131,6 +131,31 @@ struct LVSTLine* lvst_at(struct LVST* lvst, uint32_t index) {
 	return lvst->lines[index];
 }
 
+struct LVSTLine* lvst_arg_at(struct LVST* lvst, uint32_t index) {
+
+	uint32_t count = 0;
+	for (int i = 0; i < lvst->count; i++) {
+
+		struct LVSTLine* line = lvst->lines[i];
+		if (!line->is_arg) {
+			continue;
+		}
+
+		count++;
+		if (count > index) {
+			return line;
+		}
+	}
+
+	const size_t nvars = lvst_nvars(lvst);
+	const size_t nargs = lvst_nargs(lvst);
+
+	fprintf(stderr, "%s: could not find arg with index %d\n", __func__, index);
+	fprintf(stderr, "lvst has %ld local vars, %ld args\n", nvars, nargs);
+	exit(1);
+	return NULL;
+}
+
 uint32_t lvst_index_of(struct LVST* lvst, char* name) {
 
 	for (int i = 0; i < lvst->count; i++) {
@@ -273,15 +298,22 @@ uint32_t lvst_sizeof_type(struct Type* type, bool x86) {
 	return res;
 }
 
-size_t lvst_stack_frame_size_x86(struct LVST* lvst) {
-
-	//give the size required for the stack frame.
-	//(here meaning just the local variables)
+size_t lvst_stack_frame_size_local_vars_x86(struct LVST* lvst) {
 
 	uint32_t sum = 0;
 
 	for (int i = 0; i < lvst->count; i++) {
-		if (lvst->lines[i]->is_arg) continue;
+		if (lvst->lines[i]->is_arg) { continue; }
+		sum += lvst_sizeof_type(lvst->lines[i]->type, true);
+	}
+	return sum;
+}
+
+size_t lvst_stack_frame_size_x86(struct LVST* lvst) {
+
+	uint32_t sum = 0;
+
+	for (int i = 0; i < lvst->count; i++) {
 		sum += lvst_sizeof_type(lvst->lines[i]->type, true);
 	}
 	return sum;
@@ -309,6 +341,19 @@ ssize_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name) {
 		struct LVSTLine* line = lvst->lines[i];
 
 		if (line->is_arg == true) continue;
+
+		offset += lvst_sizeof_type(line->type, true);
+
+		if (strcmp(line->name, local_var_name) == 0) {
+			return offset;
+		}
+	}
+
+	for (int i = 0; i < lvst->count; i++) {
+
+		struct LVSTLine* line = lvst->lines[i];
+
+		if (line->is_arg == false) continue;
 
 		offset += lvst_sizeof_type(line->type, true);
 
@@ -390,4 +435,24 @@ uint32_t lvst_sizeof_var(struct LVST* lvst, char* name, bool x86) {
 	if (line->type == NULL)
 		return 0;
 	return lvst_sizeof_type(line->type, x86);
+}
+
+size_t lvst_nvars(struct LVST* lvst) {
+	size_t count = 0;
+	for (int i = 0; i < lvst->count; i++) {
+		if (!lvst->lines[i]->is_arg) {
+			count++;
+		}
+	}
+	return count;
+}
+
+size_t lvst_nargs(struct LVST* lvst) {
+	size_t count = 0;
+	for (int i = 0; i < lvst->count; i++) {
+		if (lvst->lines[i]->is_arg) {
+			count++;
+		}
+	}
+	return count;
 }

@@ -45,6 +45,10 @@ struct LVSTLine* lvst_get(struct LVST* lvst, char* name);
 
 struct LVSTLine* lvst_at(struct LVST* lvst, uint32_t index);
 
+// @returns       the function argument with index 'index'
+// @param index   the 0-based index of the argument
+struct LVSTLine* lvst_arg_at(struct LVST* lvst, uint32_t index);
+
 uint32_t lvst_index_of(struct LVST* lvst, char* name);
 
 bool lvst_contains(struct LVST* lvst, char* name);
@@ -60,7 +64,11 @@ uint32_t lvst_sizeof_type(struct Type* type, bool x86);
 size_t lvst_stack_frame_size_avr(struct LVST* lvst);
 size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name);
 
+// @returns   size of the complete stackframe args + locals
 size_t lvst_stack_frame_size_x86(struct LVST* lvst);
+
+// @returns   size of the stackframe but only the local variables
+size_t lvst_stack_frame_size_local_vars_x86(struct LVST* lvst);
 ssize_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name);
 
 // @returns   index of 'name' in the argument list
@@ -73,5 +81,10 @@ uint32_t lvst_arg_index(struct LVST* lvst, char* name);
 // @param x86   is the target x86?
 //              The size of 'int' is arch-dependent.
 uint32_t lvst_sizeof_var(struct LVST* lvst, char* name, bool x86);
+
+// @returns    number of local variables
+size_t lvst_nvars(struct LVST* lvst);
+// @returns    number of arguments
+size_t lvst_nargs(struct LVST* lvst);
 
 #endif

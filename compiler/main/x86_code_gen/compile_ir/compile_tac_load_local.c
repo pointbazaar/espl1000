@@ -19,7 +19,15 @@ static void case_arg(struct RAT* rat, struct TAC* tac, struct LVST* lvst, struct
 
 	const uint32_t param_index = lvst_arg_index(lvst, name);
 	const uint32_t param_reg = rat_param_reg_x86(param_index);
-	mov_regs(reg_dest, param_reg, c);
+	const uint32_t offset = lvst_stack_frame_offset_x86(lvst, name);
+	const uint8_t width = lvst_sizeof_var(lvst, name, true);
+
+	mov_const(rat_scratch_reg(rat), -offset, c);
+	add(rat_scratch_reg(rat), rat_base_ptr(rat), c);
+
+	// clear the upper bits
+	xor(reg_dest, reg_dest, c);
+	mov_load_width(reg_dest, rat_scratch_reg(rat), width, c);
 }
 
 static void case_local_var(struct RAT* rat, struct TAC* tac, struct LVST* lvst, struct IBuffer* ibu, char* name, int reg_dest) {

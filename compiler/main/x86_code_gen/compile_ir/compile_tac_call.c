@@ -12,22 +12,16 @@
 
 #include "compile_tac.h"
 
-static void save_arg_regs(struct IBuffer* ibu, uint32_t args_count) {
+static void save_registers(struct IBuffer* ibu, struct RAT* rat, uint32_t args_count) {
 
-	char* c = "TAC_CALL (save arg regs)";
-	for (int i = 0; i < args_count; i++) {
-		enum SD_REGISTER reg = rat_param_reg_x86(i);
-		push(reg, c);
-	}
+	char* c = "TAC_CALL (save registers)";
+	push(rat_base_ptr(rat), c);
 }
 
-static void restore_arg_regs(struct IBuffer* ibu, uint32_t args_count) {
+static void restore_registers(struct IBuffer* ibu, struct RAT* rat, uint32_t args_count) {
 
-	char* c = "TAC_CALL (save arg regs)";
-	for (int i = args_count - 1; i >= 0; i--) {
-		enum SD_REGISTER reg = rat_param_reg_x86(i);
-		pop(reg, c);
-	}
+	char* c = "TAC_CALL (restore registers)";
+	pop(rat_base_ptr(rat), c);
 }
 
 void compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx, char* current_function_name) {
@@ -46,13 +40,12 @@ void compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu,
 	char* function_name = sst_at(sst, tac_arg1(tac))->name;
 
 	const uint32_t arg_count = sst_args_count(sst, current_function_name);
-	// save our parameter registers
-	save_arg_regs(ibu, arg_count);
+
+	save_registers(ibu, rat, arg_count);
 
 	call(function_name, c);
 
-	// restore our parameter registers
-	restore_arg_regs(ibu, arg_count);
+	restore_registers(ibu, rat, arg_count);
 
 	mov_regs(reg_dest, SD_REG_RAX, c);
 }
