@@ -3,10 +3,9 @@ fn main () -> int {
 	int x = 10;
 	int k = 0;
 
-	while x >= 0 {
-		k += 1;
-		x -= 1;
-	}
+	// testing load of x
+	// testing store of k
+	k = x + 3;
 
-	return 0;
+	return k;
 }

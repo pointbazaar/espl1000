@@ -1,9 +1,0 @@
-
-fn main () ~> int {
-	subr ( 2, 1 );
-	return 0;
-}
-	
-fn subr (uint a,uint b) ~> uint{
-	return ( a + b ) ;
-}

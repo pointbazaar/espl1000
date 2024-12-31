@@ -1,0 +1,10 @@
+fn main () ~> int {
+
+	int32 n = 0;
+
+	for i in 0 .. 10 {
+		n += 1;
+	}
+
+	return n;
+}
