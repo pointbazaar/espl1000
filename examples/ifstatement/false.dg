@@ -1,0 +1,13 @@
+
+fn main () ~> int {
+
+	uint x = 3 ;
+
+	if x > 5 {
+		return 44;
+	} else {
+		return 55;
+	}
+
+	return 0;
+}

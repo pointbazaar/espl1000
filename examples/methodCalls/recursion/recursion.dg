@@ -1,0 +1,14 @@
+
+fn main() ~> int {
+
+	return f(4);
+}
+
+fn f(int32 x) -> int32 {
+
+	if (x <= 0) {
+		return 9;
+	}
+
+	return f(x-1);
+}

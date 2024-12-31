@@ -1,0 +1,8 @@
+
+@extern
+fn f2(int x) -> int {}
+
+fn main() ~> int {
+
+	return f2(-2);
+}

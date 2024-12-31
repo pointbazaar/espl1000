@@ -1,0 +1,13 @@
+
+fn main() ~> int {
+
+	return f1(1);
+}
+
+fn f1(int x) -> int {
+	return f2(x);
+}
+
+fn f2(int y) -> int {
+	return y + 4;
+}
