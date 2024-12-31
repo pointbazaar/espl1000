@@ -130,7 +130,7 @@ ret
 
 	<h5>Example Code</h5>
 	<pre>
-fn main () ~> int {
+fn f1 (int8 arg0, int8 arg1) ~> int {
 	int16 x = 0; // local var 0, 2 bytes
 	int8 y = 0;  // local var 1, 1 byte
 	x += 1;
@@ -156,7 +156,7 @@ return address byte 0 | &lt;- rbp, rsp
 ...                   |
 return address byte 0 | &lt;- rbp
                       | ...
-                      | &lt;- rsp  (has been decremented by 3 bytes to make space for local vars)
+                      | &lt;- rsp  (has been decremented by 5 bytes to make space for local vars and args)
                       | ...
                       | 0x0
 
@@ -164,7 +164,9 @@ return address byte 0 | &lt;- rbp
 return address byte 0 | &lt;- rbp
 local var 0, byte 1   |
 local var 0, byte 0   |
-local var 1, byte 0   | &lt;- rsp
+local var 1, byte 0   |
+arg 0, byte 0         |
+arg 1, byte 0         | &lt;- rsp
                       | ...
                       | 0x0
 

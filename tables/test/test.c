@@ -209,7 +209,7 @@ void test_tables_lvst_stack_frame_size_x86() {
 
 	line->is_arg = true;
 
-	assert(lvst_stack_frame_size_x86(lvst) == 0);
+	assert(lvst_stack_frame_size_x86(lvst) == 4);
 
 	lvst_free(lvst);
 }

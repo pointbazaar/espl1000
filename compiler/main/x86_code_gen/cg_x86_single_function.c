@@ -63,6 +63,12 @@ void compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 	char* current_function_name = m->decl->name;
 	assert(current_function_name != NULL);
 
+	if (flags_debug(ctx_flags(ctx))) {
+
+		printf("RAT for function '%s'\n", m->decl->name);
+		rat_print(rat);
+	}
+
 	emit_asm_x86_basic_block(root, ctx, ibu, rat, current_function_name);
 
 	//delete the basic block graph
