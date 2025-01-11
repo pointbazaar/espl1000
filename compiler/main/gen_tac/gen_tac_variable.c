@@ -17,19 +17,6 @@
 
 void tac_variable(struct TACBuffer* buf, struct Variable* v, struct Ctx* ctx) {
 
-	// consider the case where variable is not
-	//an address, as params are passed in registers in x86-64
-	const bool x86 = flags_x86(ctx_flags(ctx));
-
-	if (x86 && v->member_access == NULL && v->simple_var->count_indices == 0) {
-
-		struct LVST* lvst = ctx_tables(ctx)->lvst;
-
-		const uint32_t local_index = lvst_index_of(lvst, v->simple_var->name);
-		tacbuffer_append(buf, makeTACLoadLocal(make_temp(), local_index));
-		return;
-	}
-
 	tac_variable_addr(buf, v, ctx);
 
 	uint32_t tlast = tacbuffer_last_dest(buf);

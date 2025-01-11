@@ -22,12 +22,9 @@ void compile_tac_load_local_addr_x86(struct RAT* rat, struct TAC* tac, struct Ct
 
 	struct LVSTLine* line = lvst_get(lvst, name);
 
-	if (line->is_arg) {
-
-		fprintf(stderr, "%s: in x86-64, arguments are passed in registers\n", __func__);
-		exit(1);
-		return;
-	}
+	// In x86-64, arguments are passed in registers, but we do save
+	// them into the stack frame when the stack frame is setup.
+	// So each variable, no matter if arg or local, should have an address.
 
 	const int rdest = rat_get_register(rat, tac_dest(tac));
 
