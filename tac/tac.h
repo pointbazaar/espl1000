@@ -104,6 +104,10 @@ enum TAC_OP tac_op(struct TAC* tac);
 // protected member access
 enum TAC_KIND tac_kind(struct TAC* tac);
 
+// @returns  the width (in bytes) of a load/store operation.
+//           Meaning how many bytes to load/store.
+uint8_t tac_load_store_width(struct TAC* tac);
+
 // only valid for TAC_PARAM
 uint32_t tac_param_index(struct TAC* tac);
 

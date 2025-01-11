@@ -37,4 +37,13 @@ struct TAC {
 	// e.g. calling f(t1, t2);
 	// means t1 is at param_index == 0
 	uint32_t param_index;
+
+	// only used for TAC_LOAD*
+	// and TAC_STORE*.
+	// width of a load/store operation, in bytes.
+	// specifies how many bytes to load.
+	//
+	// e.g. load_store_width = 8 for TAC_LOAD
+	// means that we load 8 bytes from memory
+	uint8_t load_store_width;
 };

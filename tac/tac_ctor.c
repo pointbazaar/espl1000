@@ -25,6 +25,7 @@ struct TAC* makeTAC() {
 	    .arg1 = 0,
 	    .op = TAC_OP_NONE,
 	    .param_index = 0,
+	    .load_store_width = 8,
 	};
 
 	return res;
@@ -265,6 +266,7 @@ struct TAC* makeTACLoad(uint32_t tmp, uint32_t taddr, uint8_t width) {
 
 	assert(width <= 8);
 	t->const_value = width;
+	t->load_store_width = width;
 	return t;
 }
 

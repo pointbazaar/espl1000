@@ -18,6 +18,39 @@ static void callee_save_registers(struct RAT* rat, struct IBuffer* ibu) {
 	}
 }
 
+static void save_function_args_into_stack_frame(struct RAT* rat, struct IBuffer* ibu, struct LVST* lvst, struct SST* sst, char* current_function_name) {
+
+	//save function arguments
+	char c[100];
+	sprintf(c, "TAC_SETUP_STACKFRAME (store args)");
+
+	const uint32_t arg_count = sst_args_count(sst, current_function_name);
+
+	const size_t local_vars_size = lvst_stack_frame_size_local_vars_x86(lvst);
+
+	mov_const(SD_REG_RAX, local_vars_size, c);
+	mov_regs(rat_scratch_reg(rat), rat_base_ptr(rat), c);
+
+	if (local_vars_size) {
+		sub(rat_scratch_reg(rat), SD_REG_RAX, c);
+	}
+
+	for (size_t i = 0; i < arg_count; i++) {
+
+		sprintf(c, "TAC_SETUP_STACKFRAME (store arg %ld)", i);
+
+		enum SD_REGISTER reg = rat_param_reg_x86(i);
+
+		char* arg_name = lvst_arg_at(lvst, i)->name;
+
+		const uint32_t width = lvst_sizeof_var(lvst, arg_name, true);
+		mov_const(SD_REG_RAX, width, c);
+		sub(rat_scratch_reg(rat), SD_REG_RAX, c);
+
+		mov_store_width(rat_scratch_reg(rat), reg, width, c);
+	}
+}
+
 void compile_tac_setup_stackframe_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx, char* current_function_name) {
 
 	char* c = "TAC_SETUP_STACKFRAME";
@@ -39,28 +72,8 @@ void compile_tac_setup_stackframe_x86(struct RAT* rat, struct TAC* tac, struct I
 	// sub rsp, $stack_frame_size
 	sub(rat_stack_ptr(rat), rat_scratch_reg(rat), c);
 
-	//save function arguments
-	c = "TAC_SETUP_STACKFRAME (store args)";
 	struct SST* sst = ctx_tables(ctx)->sst;
 	struct LVST* lvst = ctx_tables(ctx)->lvst;
-	const uint32_t arg_count = sst_args_count(sst, current_function_name);
 
-	const size_t local_vars_size = lvst_stack_frame_size_local_vars_x86(lvst);
-
-	mov_const(SD_REG_RAX, local_vars_size, c);
-	mov_regs(rat_scratch_reg(rat), rat_base_ptr(rat), c);
-	sub(rat_scratch_reg(rat), SD_REG_RAX, c);
-
-	for (size_t i = 0; i < arg_count; i++) {
-
-		enum SD_REGISTER reg = rat_param_reg_x86(i);
-
-		char* arg_name = lvst_arg_at(lvst, 0)->name;
-
-		const uint32_t width = lvst_sizeof_var(lvst, arg_name, true);
-		mov_const(SD_REG_RAX, width, c);
-		sub(rat_scratch_reg(rat), SD_REG_RAX, c);
-
-		mov_store_width(rat_scratch_reg(rat), reg, width, c);
-	}
+	save_function_args_into_stack_frame(rat, ibu, lvst, sst, current_function_name);
 }

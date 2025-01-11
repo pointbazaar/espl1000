@@ -131,6 +131,12 @@ enum TAC_KIND tac_kind(struct TAC* tac) {
 	return tac->kind;
 }
 
+uint8_t tac_load_store_width(struct TAC* tac) {
+
+	assert(tac_kind(tac) == TAC_LOAD || tac_kind(tac) == TAC_STORE);
+	return tac->load_store_width;
+}
+
 uint32_t tac_param_index(struct TAC* tac) {
 	assert(tac_kind(tac) == TAC_PARAM);
 	return tac->param_index;
