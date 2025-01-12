@@ -29,6 +29,8 @@ static void common(int a1, enum TAC_OP op, int a2, bool expect_true) {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
+	const uint8_t width = 1;
+
 	tacbuffer_append(b, makeTACConst(1, a1));
 	tacbuffer_append(b, makeTACConst(2, a2));
 	tacbuffer_append(b, makeTACIfCMPGoto(1, op, 2, ltrue));
@@ -37,12 +39,17 @@ static void common(int a1, enum TAC_OP op, int a2, bool expect_true) {
 
 	tacbuffer_append(b, makeTACLabel(ltrue));
 	tacbuffer_append(b, makeTACConst(0, valuetrue));
-	tacbuffer_append(b, makeTACStoreConstAddr(address, 0));
+
+	tacbuffer_append(b, makeTACConst(3, address));
+	tacbuffer_append(b, makeTACStore(3, 0, width));
+
 	tacbuffer_append(b, makeTACGoto(lend));
 
 	tacbuffer_append(b, makeTACLabel(lfalse));
 	tacbuffer_append(b, makeTACConst(0, valuefalse));
-	tacbuffer_append(b, makeTACStoreConstAddr(address + 1, 0));
+
+	tacbuffer_append(b, makeTACConst(3, address + 1));
+	tacbuffer_append(b, makeTACStore(3, 0, width));
 	tacbuffer_append(b, makeTACGoto(lend));
 
 	tacbuffer_append(b, makeTACLabel(lend));
@@ -53,7 +60,7 @@ static void common(int a1, enum TAC_OP op, int a2, bool expect_true) {
 	assert(vmcu_system_read_data(system, address) == 0x00);
 	assert(vmcu_system_read_data(system, address + 1) == 0x00);
 
-	vmcu_system_step_n(system, 13);
+	vmcu_system_step_n(system, 20);
 
 	if (expect_true) {
 		//true branch should have written valuetrue to address

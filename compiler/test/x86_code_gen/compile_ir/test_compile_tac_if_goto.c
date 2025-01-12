@@ -32,7 +32,10 @@ void test_x86_compile_tac_if_goto_case_true() {
 
 	tacbuffer_append(b, makeTACLabel(l1));
 	tacbuffer_append(b, makeTACConst(0, value));
-	tacbuffer_append(b, makeTACStoreConstAddr(address1, 0));
+
+	const uint8_t width = 1;
+	tacbuffer_append(b, makeTACConst(2, address1));
+	tacbuffer_append(b, makeTACStore(2, 0, width));
 	tacbuffer_append(b, makeTACGoto(lend));
 
 	tacbuffer_append(b, makeTACLabel(lend));
@@ -69,7 +72,10 @@ void test_x86_compile_tac_if_goto_case_false() {
 
 	tacbuffer_append(b, makeTACLabel(l1));
 	tacbuffer_append(b, makeTACConst(0, value));
-	tacbuffer_append(b, makeTACStoreConstAddr(address1, 0));
+
+	const uint8_t width = 2;
+	tacbuffer_append(b, makeTACConst(2, address1));
+	tacbuffer_append(b, makeTACStore(2, 0, width));
 
 	tacbuffer_append(b, makeTACLabel(lend));
 	tacbuffer_append(b, makeTACReturn(0));
@@ -113,11 +119,17 @@ void test_x86_compile_tac_if_goto_case_mixed() {
 
 	tacbuffer_append(b, makeTACLabel(l1));
 	tacbuffer_append(b, makeTACConst(0, value));
-	tacbuffer_append(b, makeTACStoreConstAddr(address1, 0));
+
+	const uint8_t width = 2;
+	tacbuffer_append(b, makeTACConst(3, address1));
+	tacbuffer_append(b, makeTACStore(3, 0, width));
+
 	tacbuffer_append(b, makeTACConst(2, 0));
 	tacbuffer_append(b, makeTACIfGoto(2, lend)); //should not branch
 	tacbuffer_append(b, makeTACConst(0, value));
-	tacbuffer_append(b, makeTACStoreConstAddr(address2, 0));
+
+	tacbuffer_append(b, makeTACConst(4, address2));
+	tacbuffer_append(b, makeTACStore(4, 0, width));
 	tacbuffer_append(b, makeTACGoto(lend));
 
 	tacbuffer_append(b, makeTACLabel(lend));

@@ -182,15 +182,6 @@ struct TAC* makeTACUnaryOp(uint32_t dest, uint32_t src, enum TAC_OP op) {
 	return t;
 }
 
-struct TAC* makeTACStoreConstAddr(uint64_t addr, uint64_t src) {
-
-	struct TAC* t = makeTAC();
-	t->kind = TAC_STORE_CONST_ADDR;
-	t->const_value = addr;
-	t->arg1 = src;
-	return t;
-}
-
 struct TAC* makeTACLoadConstAddr(uint32_t dest, uint32_t addr) {
 	struct TAC* t = makeTAC();
 	t->kind = TAC_LOAD_CONST_ADDR;

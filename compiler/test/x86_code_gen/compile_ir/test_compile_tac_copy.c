@@ -32,7 +32,9 @@ static void test_fixed_value(uint64_t fixed_value, bool debug) {
 	tacbuffer_append(b, makeTACConst(0, fixed_value));
 	tacbuffer_append(b, makeTACCopy(1, 0));
 
-	tacbuffer_append(b, makeTACStoreConstAddr(addr, 1));
+	tacbuffer_append(b, makeTACConst(2, addr));
+	const uint8_t width = 2;
+	tacbuffer_append(b, makeTACStore(2, 1, width));
 
 	struct sd_uc_engine* sduc = sd_uc_engine_from_tacbuffer_v2(b, debug);
 

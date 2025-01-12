@@ -24,7 +24,6 @@ int32_t tac_opt_dest(struct TAC* tac) {
 
 		case TAC_STORE:
 		case TAC_STORE_LOCAL:
-		case TAC_STORE_CONST_ADDR:
 		case TAC_PARAM:
 		case TAC_SETUP_STACKFRAME:
 		case TAC_SETUP_SP:
@@ -56,7 +55,6 @@ uint32_t tac_dest(struct TAC* tac) {
 		case TAC_LOAD_LOCAL_ADDR:
 		case TAC_STORE_LOCAL:
 		case TAC_LOAD_CONST_ADDR:
-		case TAC_STORE_CONST_ADDR:
 		case TAC_LOAD:
 		case TAC_STORE:
 		case TAC_BINARY_OP:
@@ -81,7 +79,6 @@ uint64_t tac_arg1(struct TAC* tac) {
 		case TAC_LOAD_LOCAL_ADDR:
 		case TAC_STORE_LOCAL:
 		case TAC_LOAD_CONST_ADDR:
-		case TAC_STORE_CONST_ADDR:
 		case TAC_LOAD:
 		case TAC_STORE:
 		case TAC_BINARY_OP:
@@ -100,7 +97,6 @@ int64_t tac_const_value(struct TAC* tac) {
 		case TAC_PARAM:
 		case TAC_SETUP_STACKFRAME:
 		case TAC_LOAD_CONST_ADDR:
-		case TAC_STORE_CONST_ADDR:
 		case TAC_LOAD:
 		case TAC_CONST_VALUE:
 			break;
@@ -220,7 +216,6 @@ int tac_mark_used(struct TAC* tac, bool* used_map, size_t map_size) {
 			break;
 		case TAC_IF_GOTO:
 		case TAC_STORE_LOCAL:
-		case TAC_STORE_CONST_ADDR:
 		case TAC_LOAD:
 		case TAC_UNARY_OP:
 		case TAC_COPY:
@@ -265,7 +260,6 @@ int tac_mark_defines(struct TAC* tac, bool* defines_map, size_t map_size) {
 		case TAC_RETURN:
 		case TAC_IF_GOTO:
 		case TAC_STORE_LOCAL:
-		case TAC_STORE_CONST_ADDR:
 		case TAC_STORE:
 		case TAC_IF_CMP_GOTO:
 		case TAC_SETUP_STACKFRAME:

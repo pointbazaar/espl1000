@@ -34,7 +34,6 @@ struct TAC* makeTACConst16(uint32_t tmp, int value);
 struct TAC* makeTACBinOp(uint32_t dest, enum TAC_OP op, uint32_t src);
 struct TAC* makeTACUnaryOp(uint32_t dest, uint32_t src, enum TAC_OP op);
 
-struct TAC* makeTACStoreConstAddr(uint64_t addr, uint64_t src);
 struct TAC* makeTACLoadConstAddr(uint32_t dest, uint32_t addr);
 
 struct TAC* makeTACParam(uint32_t dest, bool push16, uint32_t param_index);

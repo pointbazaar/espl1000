@@ -53,12 +53,16 @@ static void test_timer0() {
 
 	//general timer0 setup
 	append(makeTACConst(1, 0x0));
-	append(makeTACStoreConstAddr(TCCR0A, 1));
+
+	append(makeTACConst(2, TCCR0A));
+	append(makeTACStore(2, 1, 1));
 
 	//clock prescaler select, no prescaler,
 	//so timer0 should increment with full clock speed
 	append(makeTACConst(1, 0b00000001));
-	append(makeTACStoreConstAddr(TCCR0B, 1));
+
+	append(makeTACConst(2, TCCR0B));
+	append(makeTACStore(2, 1, 1));
 
 	//timer should start working now
 
@@ -102,18 +106,22 @@ static void test_timer1() {
 	struct TACBuffer* b = tacbuffer_ctor();
 
 	append(makeTACConst(1, 0x0));
-	append(makeTACStoreConstAddr(TCCR1A, 1));
+	append(makeTACConst(2, TCCR0A));
+	append(makeTACStore(2, 1, 2));
 
 	//important to write the high byte before the low byte,
 	//see ATMega328P Datasheet
 	append(makeTACConst(1, 0xc2));
-	append(makeTACStoreConstAddr(TCNT1H, 1));
+	append(makeTACConst(2, TCNT1H));
+	append(makeTACStore(2, 1, 1));
 
 	append(makeTACConst(1, 0xf7));
-	append(makeTACStoreConstAddr(TCNT1L, 1));
+	append(makeTACConst(2, TCNT1L));
+	append(makeTACStore(2, 1, 1));
 
 	append(makeTACConst(1, 0x05));
-	append(makeTACStoreConstAddr(TCCR1B, 1));
+	append(makeTACConst(2, TCCR1B));
+	append(makeTACStore(2, 1, 1));
 
 	//timer should start working now
 

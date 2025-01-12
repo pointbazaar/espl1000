@@ -71,10 +71,6 @@ void test_tac_opt_dest() {
 	assert(tac_opt_dest(t) == 39);
 	free(t);
 
-	t = makeTACStoreConstAddr(0xaf, 3);
-	assert(tac_opt_dest(t) == -1);
-	free(t);
-
 	t = makeTACLoad(2, 3, 8);
 	assert(tac_opt_dest(t) == 2);
 	free(t);
@@ -158,7 +154,6 @@ void test_tac_tostring() {
 	assert_str(makeTACLoadLocalAddr(1, 0), "load t1 = &l0 (x)");
 	assert_str(makeTACStoreLocal(0, 2), "store l0 (x) = t2");
 	assert_str(makeTACLoadConstAddr(1, 175), "t1 = [175]");
-	assert_str(makeTACStoreConstAddr(166, 1), "[166] = t1");
 	assert_str(makeTACLoad(2, 1, 2), "t2 = [t1]");
 	assert_str(makeTACStore(2, 1, 2), "[t2] = t1");
 

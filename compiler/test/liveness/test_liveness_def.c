@@ -181,24 +181,6 @@ void test_liveness_def_map_tac_load_const_addr() {
 	liveness_dtor(live);
 }
 
-void test_liveness_def_map_tac_store_const_addr() {
-
-	status("TAC_STORE_CONST_ADDR");
-
-	struct TACBuffer* buf = tacbuffer_ctor();
-
-	tacbuffer_append(buf, makeTACConst(1, 99));
-	tacbuffer_append(buf, makeTACStoreConstAddr(0xaf, 1));
-
-	struct Liveness* live = liveness_calc_tacbuffer(buf);
-
-	assert(liveness_def(live, 0, 1) == true);
-	assert(liveness_def(live, 1, 1) == false);
-
-	tacbuffer_dtor(buf);
-	liveness_dtor(live);
-}
-
 void test_liveness_def_map_tac_load() {
 
 	status("TAC_LOAD");

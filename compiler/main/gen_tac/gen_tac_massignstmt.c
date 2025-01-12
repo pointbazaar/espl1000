@@ -8,19 +8,6 @@
 
 #include "typeinference/typeinfer.h"
 
-static void case_const_addr(struct TACBuffer* buffer, struct MAssignStmt* m, struct Ctx* ctx) {
-
-	struct Expr* lhs = m->lhs->expr;
-
-	const uint32_t addr = lhs->term1->term->ptr.m12->ptr.m2_int_const;
-
-	tac_expr(buffer, m->expr, ctx);
-
-	struct TAC* tstore = makeTACStoreConstAddr(addr, tacbuffer_last_dest(buffer));
-
-	tacbuffer_append(buffer, tstore);
-}
-
 static void case_variable_addr(struct TACBuffer* buffer, struct MAssignStmt* m, struct Ctx* ctx, const uint8_t width) {
 
 	//emit code to calculate the expression
@@ -43,14 +30,5 @@ void tac_massignstmt(struct TACBuffer* buffer, struct MAssignStmt* m, struct Ctx
 	const bool x86 = flags_x86(ctx_flags(ctx));
 	const uint8_t width = lvst_sizeof_type(expr_type, x86);
 
-	if (lhs->term1->term->kind == 12) {
-
-		//const address on left hand side
-		case_const_addr(buffer, m, ctx);
-
-	} else {
-
-		//non-const-addr on left hand side
-		case_variable_addr(buffer, m, ctx, width);
-	}
+	case_variable_addr(buffer, m, ctx, width);
 }
