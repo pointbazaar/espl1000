@@ -270,10 +270,13 @@ struct TAC* makeTACLoad(uint32_t tmp, uint32_t taddr, uint8_t width) {
 	return t;
 }
 
-struct TAC* makeTACStore(uint32_t taddr, uint32_t tmp) {
+struct TAC* makeTACStore(uint32_t taddr, uint32_t tmp, uint8_t width) {
 	struct TAC* t = makeTAC();
 	t->kind = TAC_STORE;
 	t->dest = taddr;
 	t->arg1 = tmp;
+
+	assert(width <= 8);
+	t->load_store_width = width;
 	return t;
 }

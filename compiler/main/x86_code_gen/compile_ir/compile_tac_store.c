@@ -15,5 +15,5 @@ void compile_tac_store_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu
 
 	const int reg_src = rat_get_register(rat, tac_arg1(tac));
 
-	mov_store(reg_dest, reg_src, c);
+	mov_store_width(reg_dest, reg_src, tac_load_store_width(tac), c);
 }

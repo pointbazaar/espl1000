@@ -33,7 +33,7 @@ static void common(uint64_t addr, uint64_t fixed_value, bool debug) {
 
 	tacbuffer_append(b, makeTACConst(1, fixed_value));
 	tacbuffer_append(b, makeTACConst(2, addr));
-	tacbuffer_append(b, makeTACStore(2, 1));
+	tacbuffer_append(b, makeTACStore(2, 1, 8));
 
 	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, debug);
 
