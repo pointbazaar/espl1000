@@ -187,7 +187,6 @@ void (*tests_liveness[])() = {
     test_liveness_use_map_tac_load_local_addr,
     test_liveness_use_map_tac_store_local,
     test_liveness_use_map_tac_load_const_addr,
-    test_liveness_use_map_tac_store_const_addr,
     test_liveness_use_map_tac_load,
     test_liveness_use_map_tac_store,
     test_liveness_use_map_tac_binary_op,
@@ -207,7 +206,6 @@ void (*tests_liveness[])() = {
     test_liveness_def_map_tac_load_local_addr,
     test_liveness_def_map_tac_store_local,
     test_liveness_def_map_tac_load_const_addr,
-    test_liveness_def_map_tac_store_const_addr,
     test_liveness_def_map_tac_load,
     test_liveness_def_map_tac_store,
     test_liveness_def_map_tac_binary_op,
@@ -291,10 +289,6 @@ void (*tests_avr_codegen[])() = {
     test_compile_tac_const_value_test_8bit,
     test_compile_tac_const_value_test_16bit,
 
-    test_compile_tac_store_const_addr_case_8bit_value_addr_0x118,
-    test_compile_tac_store_const_addr_case_8bit_value_addr_0x119,
-    test_compile_tac_store_const_addr_case_16bit_value_addr_0x118,
-    test_compile_tac_store_const_addr_case_16bit_value_addr_0x119,
     test_compile_tac_load_const_addr_case_8bit_value_0x55,
     test_compile_tac_load_const_addr_case_8bit_value_0x56,
     test_compile_tac_load_const_addr_case_16bit_value_0x1234,
@@ -498,9 +492,6 @@ void (*tests_x86_codegen[])() = {
 
     //TAC_CONST_VALUE
     test_x86_compile_tac_const_value,
-
-    //TAC_STORE_CONST_ADDR
-    test_x86_compile_tac_store_const_addr,
 
     //TAC_LOAD_CONST_ADDR
     test_x86_compile_tac_load_const_addr,

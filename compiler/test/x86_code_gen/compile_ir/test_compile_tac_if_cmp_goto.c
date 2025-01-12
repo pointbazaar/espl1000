@@ -36,12 +36,17 @@ static void common(int a1, enum TAC_OP op, int a2, bool expect_true, bool debug)
 
 	tacbuffer_append(b, makeTACLabel(ltrue));
 	tacbuffer_append(b, makeTACConst(0, valuetrue));
-	tacbuffer_append(b, makeTACStoreConstAddr(address, 0));
+
+	const uint8_t width = 2;
+	tacbuffer_append(b, makeTACConst(3, address));
+	tacbuffer_append(b, makeTACStore(3, 0, width));
 	tacbuffer_append(b, makeTACGoto(lend));
 
 	tacbuffer_append(b, makeTACLabel(lfalse));
 	tacbuffer_append(b, makeTACConst(0, valuefalse));
-	tacbuffer_append(b, makeTACStoreConstAddr(address + 1, 0));
+
+	tacbuffer_append(b, makeTACConst(3, address + 1));
+	tacbuffer_append(b, makeTACStore(3, 0, width));
 	tacbuffer_append(b, makeTACGoto(lend));
 
 	tacbuffer_append(b, makeTACLabel(lend));

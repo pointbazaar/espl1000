@@ -129,9 +129,6 @@ char* tac_tostring(struct TAC* t, struct SST* sst, struct LVST* lvst) {
 		case TAC_LOAD_CONST_ADDR:
 			sprintf(buf, "t%d = [%ld]", dest, const_value);
 			break;
-		case TAC_STORE_CONST_ADDR:
-			sprintf(buf, "[%ld] = t%lu", const_value, arg1);
-			break;
 
 		case TAC_LOAD:
 			sprintf(buf, "t%d = [t%lu]", dest, arg1);
