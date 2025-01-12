@@ -20,7 +20,7 @@ void test_gen_tac_mdirect_case_const_addr() {
 		//prepare a value in the location
 		vmcu_system_write_data(system, address, value);
 
-		vmcu_system_step_n(system, 10);
+		vmcu_system_step_n(system, 20);
 
 		//assert that the MDirect load has happened
 		//and that the value is in a register or in the stack frame

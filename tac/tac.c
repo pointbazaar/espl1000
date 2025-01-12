@@ -19,7 +19,6 @@ int32_t tac_opt_dest(struct TAC* tac) {
 		case TAC_LOAD:
 		case TAC_LOAD_LOCAL:
 		case TAC_LOAD_LOCAL_ADDR:
-		case TAC_LOAD_CONST_ADDR:
 			return tac->dest;
 
 		case TAC_STORE:
@@ -54,7 +53,6 @@ uint32_t tac_dest(struct TAC* tac) {
 		case TAC_LOAD_LOCAL:
 		case TAC_LOAD_LOCAL_ADDR:
 		case TAC_STORE_LOCAL:
-		case TAC_LOAD_CONST_ADDR:
 		case TAC_LOAD:
 		case TAC_STORE:
 		case TAC_BINARY_OP:
@@ -78,7 +76,6 @@ uint64_t tac_arg1(struct TAC* tac) {
 		case TAC_LOAD_LOCAL:
 		case TAC_LOAD_LOCAL_ADDR:
 		case TAC_STORE_LOCAL:
-		case TAC_LOAD_CONST_ADDR:
 		case TAC_LOAD:
 		case TAC_STORE:
 		case TAC_BINARY_OP:
@@ -96,7 +93,6 @@ int64_t tac_const_value(struct TAC* tac) {
 	switch (tac_kind(tac)) {
 		case TAC_PARAM:
 		case TAC_SETUP_STACKFRAME:
-		case TAC_LOAD_CONST_ADDR:
 		case TAC_LOAD:
 		case TAC_CONST_VALUE:
 			break;
@@ -184,7 +180,6 @@ bool tac_needs_register(struct TAC* tac) {
 		case TAC_COPY:
 		case TAC_BINARY_OP:
 		case TAC_UNARY_OP:
-		case TAC_LOAD_CONST_ADDR:
 		case TAC_LOAD:
 		case TAC_LOAD_LOCAL:
 		case TAC_CALL:
@@ -241,7 +236,6 @@ int tac_mark_used(struct TAC* tac, bool* used_map, size_t map_size) {
 		case TAC_LABEL_INDEXED:
 		case TAC_LOAD_LOCAL:
 		case TAC_LOAD_LOCAL_ADDR:
-		case TAC_LOAD_CONST_ADDR:
 		case TAC_NOP:
 		case TAC_CONST_VALUE:
 			return 0;
@@ -277,7 +271,6 @@ int tac_mark_defines(struct TAC* tac, bool* defines_map, size_t map_size) {
 		case TAC_CALL:
 		case TAC_LOAD_LOCAL:
 		case TAC_LOAD_LOCAL_ADDR:
-		case TAC_LOAD_CONST_ADDR:
 		case TAC_CONST_VALUE:
 			check_bounds(tac->dest, map_size);
 			defines_map[tac->dest] = true;

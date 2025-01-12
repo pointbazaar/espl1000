@@ -44,7 +44,6 @@ add_library("sd-base"
 		avr_code_gen/compile_ir/compile_tac_nop.c
 		avr_code_gen/compile_ir/compile_tac_return.c
 		avr_code_gen/compile_ir/compile_tac_unary_op.c
-		avr_code_gen/compile_ir/compile_tac_load_const_addr.c
 		avr_code_gen/compile_ir/compile_tac_param.c
 		avr_code_gen/compile_ir/compile_tac_setup_stackframe.c
 		avr_code_gen/compile_ir/compile_tac_load_local.c
@@ -72,7 +71,6 @@ add_library("sd-base"
 	x86_code_gen/compile_ir/compile_tac_nop.c
 	x86_code_gen/compile_ir/compile_tac_return.c
 	x86_code_gen/compile_ir/compile_tac_unary_op.c
-	x86_code_gen/compile_ir/compile_tac_load_const_addr.c
 	x86_code_gen/compile_ir/compile_tac_param.c
 	x86_code_gen/compile_ir/compile_tac_setup_stackframe.c
 	x86_code_gen/compile_ir/compile_tac_load_local.c

@@ -138,12 +138,6 @@ static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 			rat_ensure_register(rat, dest, false, iswide);
 		} break;
 
-		case TAC_LOAD_CONST_ADDR:
-			dest = tac_dest(t);
-			rat_ensure_register(rat, dest, false, true);
-			//TODO: know the width of the load
-			break;
-
 		case TAC_LOAD:
 			//sadly we do not know what is all going to be added/subtracted
 			//from what we load there, could be a pointer, so it must be wide

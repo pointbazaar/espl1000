@@ -9,11 +9,6 @@ void test_compile_tac_nop();
 void test_compile_tac_const_value_test_8bit();
 void test_compile_tac_const_value_test_16bit();
 
-void test_compile_tac_load_const_addr_case_8bit_value_0x55();
-void test_compile_tac_load_const_addr_case_8bit_value_0x56();
-void test_compile_tac_load_const_addr_case_16bit_value_0x1234();
-void test_compile_tac_load_const_addr_case_16bit_value_0x4321();
-
 // TAC_UNARY_OP
 void test_compile_tac_unary_op_case_minus_8bit();
 void test_compile_tac_unary_op_case_minus_16bit();
