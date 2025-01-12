@@ -39,7 +39,6 @@ void emit_asm_x86_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 		case TAC_CALL: compile_tac_call_x86(rat, tac, ibu, ctx, current_function_name); break;
 		case TAC_PARAM: compile_tac_param_x86(rat, tac, ibu); break;
 		case TAC_RETURN: compile_tac_return_x86(rat, tac, ctx, ibu); break;
-		case TAC_LOAD_CONST_ADDR: compile_tac_load_const_addr_x86(rat, tac, ibu); break;
 
 		case TAC_SETUP_STACKFRAME: compile_tac_setup_stackframe_x86(rat, tac, ibu, ctx, current_function_name); break;
 
