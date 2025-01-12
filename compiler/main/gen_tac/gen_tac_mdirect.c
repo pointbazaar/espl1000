@@ -22,9 +22,11 @@ static void case_const_addr(struct TACBuffer* buffer, struct Expr* expr) {
 
 	const uint32_t addr = expr->term1->term->ptr.m12->ptr.m2_int_const;
 
-	struct TAC* t = makeTACLoadConstAddr(make_temp(), addr);
+	//TODO: apply the correct width
+	const uint8_t width = 2;
 
-	tacbuffer_append(buffer, t);
+	tacbuffer_append(buffer, makeTACConst(make_temp(), addr));
+	tacbuffer_append(buffer, makeTACLoad(make_temp(), tacbuffer_last_dest(buffer), width));
 }
 
 static void case_variable_addr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx) {

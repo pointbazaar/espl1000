@@ -30,8 +30,6 @@ void compile_tac_label(struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx);
 void compile_tac_unary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 void compile_tac_param(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 void compile_tac_binary_op_immediate(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
-void compile_tac_load_const_addr(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
-void compile_tac_store_const_addr(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 
 void compile_tac_setup_stackframe(struct TAC* tac, struct IBuffer* ibu);
 void compile_tac_setup_sp(struct RAT* rat, struct IBuffer* ibu);
