@@ -39,7 +39,6 @@ add_executable("sd-tests"
 	avr_code_gen/compile_ir/test_compile_tac_nop.c
 	avr_code_gen/compile_ir/test_compile_tac_param.c
 	avr_code_gen/compile_ir/test_compile_tac_return.c
-	avr_code_gen/compile_ir/test_compile_tac_store_const_addr.c
 	avr_code_gen/compile_ir/test_compile_tac_unary_op.c
 	avr_code_gen/compile_ir/test_compile_tac_call.c
 	avr_code_gen/compile_ir/test_compile_tac_if_cmp_goto.c
@@ -61,7 +60,6 @@ add_executable("sd-tests"
 	x86_code_gen/compile_ir/test_compile_tac_goto.c
 	x86_code_gen/compile_ir/test_compile_tac_nop.c
 	x86_code_gen/compile_ir/test_compile_tac_const_value.c
-	x86_code_gen/compile_ir/test_compile_tac_store_const_addr.c
 	x86_code_gen/compile_ir/test_compile_tac_store.c
 	x86_code_gen/compile_ir/test_compile_tac_load_const_addr.c
 	x86_code_gen/compile_ir/test_compile_tac_load.c
