@@ -46,5 +46,8 @@ struct TAC* makeTACSetupSP();
 
 struct TAC* makeTACNop();
 
+// @param width   how many bytes to load
 struct TAC* makeTACLoad(uint32_t tmp, uint32_t taddr, uint8_t width);
-struct TAC* makeTACStore(uint32_t taddr, uint32_t tmp);
+
+// @param width   how many bytes to store
+struct TAC* makeTACStore(uint32_t taddr, uint32_t tmp, uint8_t width);

@@ -23,7 +23,7 @@ static vmcu_system_t* common(uint16_t addr, int16_t value, uint8_t redzone) {
 
 	tacbuffer_append(b, makeTACConst(1, value));
 	tacbuffer_append(b, makeTACConst(2, addr));
-	tacbuffer_append(b, makeTACStore(2, 1));
+	tacbuffer_append(b, makeTACStore(2, 1, 2));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer_with_redzone(b, addr, redzone);
 

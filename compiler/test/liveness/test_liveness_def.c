@@ -226,7 +226,7 @@ void test_liveness_def_map_tac_store() {
 	struct TACBuffer* buf = tacbuffer_ctor();
 
 	tacbuffer_append(buf, makeTACConst(1, 0xaf));
-	tacbuffer_append(buf, makeTACStore(0xaf, 1));
+	tacbuffer_append(buf, makeTACStore(0xaf, 1, 2));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
