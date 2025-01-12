@@ -1,28 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "cli/flags/flags.h"
 #include "tac/tac.h"
 #include "tac/tacbuffer.h"
 #include "gen_tac.h"
 
-static void case_const_addr(struct TACBuffer* buffer, struct MAssignStmt* m, struct Ctx* ctx);
-static void case_variable_addr(struct TACBuffer* buffer, struct MAssignStmt* m, struct Ctx* ctx);
-
-void tac_massignstmt(struct TACBuffer* buffer, struct MAssignStmt* m, struct Ctx* ctx) {
-
-	struct Expr* lhs = m->lhs->expr;
-
-	if (lhs->term1->term->kind == 12) {
-
-		//const address on left hand side
-		case_const_addr(buffer, m, ctx);
-
-	} else {
-
-		//non-const-addr on left hand side
-		case_variable_addr(buffer, m, ctx);
-	}
-}
+#include "typeinference/typeinfer.h"
 
 static void case_const_addr(struct TACBuffer* buffer, struct MAssignStmt* m, struct Ctx* ctx) {
 
@@ -37,7 +21,7 @@ static void case_const_addr(struct TACBuffer* buffer, struct MAssignStmt* m, str
 	tacbuffer_append(buffer, tstore);
 }
 
-static void case_variable_addr(struct TACBuffer* buffer, struct MAssignStmt* m, struct Ctx* ctx) {
+static void case_variable_addr(struct TACBuffer* buffer, struct MAssignStmt* m, struct Ctx* ctx, const uint8_t width) {
 
 	//emit code to calculate the expression
 	tac_expr(buffer, m->expr, ctx);
@@ -48,6 +32,25 @@ static void case_variable_addr(struct TACBuffer* buffer, struct MAssignStmt* m, 
 	tac_expr(buffer, lhs, ctx);
 	uint32_t taddr = tacbuffer_last_dest(buffer);
 
-	struct TAC* t = makeTACStore(taddr, texpr);
-	tacbuffer_append(buffer, t);
+	tacbuffer_append(buffer, makeTACStore(taddr, texpr, width));
+}
+
+void tac_massignstmt(struct TACBuffer* buffer, struct MAssignStmt* m, struct Ctx* ctx) {
+
+	struct Expr* lhs = m->lhs->expr;
+
+	struct Type* expr_type = infer_type_expr(ctx_tables(ctx), m->expr);
+	const bool x86 = flags_x86(ctx_flags(ctx));
+	const uint8_t width = lvst_sizeof_type(expr_type, x86);
+
+	if (lhs->term1->term->kind == 12) {
+
+		//const address on left hand side
+		case_const_addr(buffer, m, ctx);
+
+	} else {
+
+		//non-const-addr on left hand side
+		case_variable_addr(buffer, m, ctx, width);
+	}
 }

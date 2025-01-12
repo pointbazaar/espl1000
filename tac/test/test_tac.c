@@ -79,7 +79,7 @@ void test_tac_opt_dest() {
 	assert(tac_opt_dest(t) == 2);
 	free(t);
 
-	t = makeTACStore(2, 3);
+	t = makeTACStore(2, 3, 8);
 	assert(tac_opt_dest(t) == -1);
 	free(t);
 
@@ -160,7 +160,7 @@ void test_tac_tostring() {
 	assert_str(makeTACLoadConstAddr(1, 175), "t1 = [175]");
 	assert_str(makeTACStoreConstAddr(166, 1), "[166] = t1");
 	assert_str(makeTACLoad(2, 1, 2), "t2 = [t1]");
-	assert_str(makeTACStore(2, 1), "[t2] = t1");
+	assert_str(makeTACStore(2, 1, 2), "[t2] = t1");
 
 	assert_str(makeTACBinOp(2, TAC_OP_ADD, 1), "t2 += t1");
 	assert_str(makeTACBinOp(2, TAC_OP_SUB, 1), "t2 -= t1");
