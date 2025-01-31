@@ -165,18 +165,25 @@ char* list_code(struct TokenList* list) {
 	char* str = exit_malloc(sizeof(char) * 100);
 	strcpy(str, "");
 
+	const uint32_t line_num = list_get(list, 0)->line_num;
 	if (list_size(list) > 0) {
-		uint32_t line_num = list_get(list, 0)->line_num;
-		sprintf(str, "% 4d|", line_num);
+		sprintf(str, "line % 4d:\n", line_num);
 	}
 
+	uint32_t prevline = line_num;
 	for (int i = 0; i < list_size(list) && (i < 10); i++) {
 		struct Token* tk = list_get(list, i);
 
-		strcat(str, tk->value_ptr);
+		if (tk->line_num > prevline) {
+			strcat(str, "\n");
+		}
+
+		prevline = tk->line_num;
+
+		strcat(str, token_str(tk));
 		strcat(str, " ");
 	}
-	strcat(str, "    ");
+	strcat(str, "\n");
 	strcat(str, "[");
 
 	char buf[100];
