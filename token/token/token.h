@@ -23,6 +23,10 @@ struct Token {
 
 bool token_equals(struct Token* a, struct Token* b);
 
+// @return   string representation of the token
+//           caller does not need to free it
+char* token_str(struct Token* tk);
+
 struct Token* makeToken(int kind);
 struct Token* makeToken2(int kind, char* value);
 struct Token* makeTokenStringConst(char* value);
