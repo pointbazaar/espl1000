@@ -49,8 +49,6 @@ void test_x86_compile_tac_if_goto_case_true();
 void test_x86_compile_tac_if_goto_case_false();
 void test_x86_compile_tac_if_goto_case_mixed();
 
-void test_x86_compile_tac_load_local();
-
 void test_x86_compile_tac_store_local();
 
 void test_x86_compile_tac_return();

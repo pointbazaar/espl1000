@@ -58,7 +58,13 @@ static void case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 
 static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width) {
 
-	const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, a->var->simple_var->name);
+	struct LVST* lvst = ctx_tables(ctx)->lvst;
+
+	const uint32_t local_index = lvst_index_of(lvst, a->var->simple_var->name);
+	struct LVSTLine* line = lvst_get(lvst, a->var->simple_var->name);
+	const bool x86 = flags_x86(ctx_flags(ctx));
+	const uint8_t addr_width = (x86) ? 8 : 2;
+	const uint8_t local_width = lvst_sizeof_var(lvst, a->var->simple_var->name, x86);
 
 	//texpr = ...
 	//toffset = offset due to index 0
@@ -68,7 +74,8 @@ static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 
 	//load t1 = local index
 	uint32_t t1 = make_temp();
-	tacbuffer_append(buffer, makeTACLoadLocal(t1, local_index));
+	tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), local_index, addr_width));
+	tacbuffer_append(buffer, makeTACLoad(t1, tacbuffer_last_dest(buffer), local_width));
 
 	for (int i = 0; i < a->var->simple_var->count_indices; i++) {
 		//calculate offset due to index

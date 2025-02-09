@@ -42,7 +42,6 @@ void emit_asm_x86_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 
 		case TAC_SETUP_STACKFRAME: compile_tac_setup_stackframe_x86(rat, tac, ibu, ctx, current_function_name); break;
 
-		case TAC_LOAD_LOCAL: compile_tac_load_local_x86(rat, tac, ctx, ibu); break;
 		case TAC_LOAD_LOCAL_ADDR: compile_tac_load_local_addr_x86(rat, tac, ctx, ibu); break;
 		case TAC_STORE_LOCAL: compile_tac_store_local_x86(rat, tac, ctx, ibu); break;
 

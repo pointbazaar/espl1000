@@ -12,7 +12,6 @@ void compile_tac_return_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, s
 void compile_tac_const_value_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 
 void compile_tac_copy_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
-void compile_tac_load_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu);
 void compile_tac_load_local_addr_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu);
 void compile_tac_store_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu);
 

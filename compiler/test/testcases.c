@@ -183,7 +183,6 @@ void (*tests_liveness[])() = {
     test_liveness_use_map_tac_goto,
     test_liveness_use_map_tac_if_goto,
     test_liveness_use_map_tac_if_cmp_goto,
-    test_liveness_use_map_tac_load_local,
     test_liveness_use_map_tac_load_local_addr,
     test_liveness_use_map_tac_store_local,
     test_liveness_use_map_tac_load,
@@ -201,7 +200,6 @@ void (*tests_liveness[])() = {
     test_liveness_def_map_tac_goto,
     test_liveness_def_map_tac_if_goto,
     test_liveness_def_map_tac_if_cmp_goto,
-    test_liveness_def_map_tac_load_local,
     test_liveness_def_map_tac_load_local_addr,
     test_liveness_def_map_tac_store_local,
     test_liveness_def_map_tac_load,
@@ -545,9 +543,6 @@ void (*tests_x86_codegen[])() = {
 
     //TAC_STORE
     test_x86_compile_tac_store,
-
-    //TAC_LOAD_LOCAL
-    test_x86_compile_tac_load_local,
 
     //TAC_STORE_LOCAL
     test_x86_compile_tac_store_local,

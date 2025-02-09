@@ -432,10 +432,7 @@ size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name) {
 uint32_t lvst_sizeof_var(struct LVST* lvst, char* name, bool x86) {
 
 	struct LVSTLine* line = lvst_get(lvst, name);
-	if (line == NULL)
-		return 0;
-	if (line->type == NULL)
-		return 0;
+	assert(line->type);
 	return lvst_sizeof_type(line->type, x86);
 }
 
