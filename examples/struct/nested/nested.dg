@@ -1,0 +1,18 @@
+
+struct A {
+	uint8 x;
+	B b;
+}
+
+struct B {
+	uint8 y;
+}
+
+fn main () ~> int {
+
+	local A m;
+
+	m.b.y = 3;
+
+	return m.b.y + 3;
+}

@@ -1,0 +1,12 @@
+
+struct Point {
+	uint8 x;
+	uint8 y;
+	uint8 z;
+}
+
+fn main ()-> int {
+	local Point a;
+	a.y = 22;
+	return a.y;
+}
