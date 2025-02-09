@@ -78,11 +78,16 @@ static void tac_call_case_lvst(struct TACBuffer* buffer, struct Call* call, stru
 	struct LVSTLine* line = lvst_get(lvst, fname);
 	tac_call_prep_params_case_lvst(buffer, call, ctx, line);
 	uint32_t tmp = make_temp();
-	struct TAC* t1 = makeTACLoadLocal(tmp, lvst_index_of(lvst, fname));
-	struct TAC* t2 = makeTACICall(make_temp(), tmp);
 
-	tacbuffer_append(buffer, t1);
-	tacbuffer_append(buffer, t2);
+	const bool x86 = flags_x86(ctx_flags(ctx));
+	const uint8_t addr_width = (x86) ? 8 : 2;
+	const uint8_t local_width = lvst_sizeof_var(lvst, fname, x86);
+
+	tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), lvst_index_of(lvst, fname), addr_width));
+
+	tacbuffer_append(buffer, makeTACLoad(make_temp(), tacbuffer_last_dest(buffer), local_width));
+
+	tacbuffer_append(buffer, makeTACICall(make_temp(), tmp));
 }
 
 static void tac_call_case_sst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {

@@ -129,15 +129,6 @@ static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 			rat_ensure_register(rat, dest, false, iswide);
 			break;
 
-		case TAC_LOAD_LOCAL: {
-			arg1 = tac_arg1(t);
-			//look at the LVST to see the width of the local var
-			struct Type* local_type = lvst_at(lvst, arg1)->type;
-			iswide = lvst_sizeof_type(local_type, false) == 2;
-			dest = tac_dest(t);
-			rat_ensure_register(rat, dest, false, iswide);
-		} break;
-
 		case TAC_LOAD:
 			//sadly we do not know what is all going to be added/subtracted
 			//from what we load there, could be a pointer, so it must be wide

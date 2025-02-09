@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "cli/flags/flags.h"
 #include "tac/tac.h"
 #include "tac/tacbuffer.h"
 
@@ -38,7 +39,12 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx) {
 	uint32_t l1 = make_label();
 	uint32_t lend = make_label();
 
-	const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, f->index_name);
+	struct LVST* lvst = ctx_tables(ctx)->lvst;
+	struct LVSTLine* line = lvst_get(lvst, f->index_name);
+	const bool x86 = flags_x86(ctx_flags(ctx));
+	const uint8_t addr_width = (x86) ? 8 : 2;
+	const uint8_t local_width = lvst_sizeof_var(lvst, f->index_name, x86);
+	const uint32_t local_index = lvst_index_of(lvst, f->index_name);
 
 	ctx_enter_loop(ctx, l0, lend);
 
@@ -56,7 +62,8 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx) {
 	tac_expr(buffer, f->range->end, ctx);
 	uint32_t t2 = tacbuffer_last_dest(buffer);
 
-	tacbuffer_append(buffer, makeTACLoadLocal(t3, local_index));
+	tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), local_index, addr_width));
+	tacbuffer_append(buffer, makeTACLoad(t3, tacbuffer_last_dest(buffer), local_width));
 
 	tacbuffer_append(buffer, makeTACIfCMPGoto(t2, TAC_OP_CMP_GE, t3, l1));
 
@@ -68,7 +75,9 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx) {
 	tac_stmtblock(buffer, f->block, ctx);
 
 	// t3++
-	tacbuffer_append(buffer, makeTACLoadLocal(t3, local_index));
+	tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), local_index, addr_width));
+	tacbuffer_append(buffer, makeTACLoad(t3, tacbuffer_last_dest(buffer), local_width));
+
 	const uint32_t tinc = make_temp();
 	tacbuffer_append(buffer, makeTACConst(tinc, 1));
 	tacbuffer_append(buffer, makeTACBinOp(t3, TAC_OP_ADD, tinc));

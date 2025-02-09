@@ -88,14 +88,6 @@ struct TAC* makeTACCopy(uint32_t tdest, uint32_t tsrc) {
 	return t;
 }
 
-struct TAC* makeTACLoadLocal(uint32_t tmp, uint32_t local_index) {
-	struct TAC* t = makeTAC();
-	t->kind = TAC_LOAD_LOCAL;
-	t->dest = tmp;
-	t->arg1 = local_index;
-	return t;
-}
-
 struct TAC* makeTACLoadLocalAddr(uint32_t tmp, uint32_t local_index, uint8_t addr_width) {
 
 	assert(addr_width >= 2);

@@ -111,11 +111,6 @@ char* tac_tostring(struct TAC* t, struct SST* sst, struct LVST* lvst) {
 			sprintf(buf, "t%d = t%lu", dest, arg1);
 			break;
 
-		case TAC_LOAD_LOCAL: {
-			char* name = lvst_at(lvst, arg1)->name;
-			sprintf(buf, "load t%d = l%lu (%s)", dest, arg1, name);
-		} break;
-
 		case TAC_LOAD_LOCAL_ADDR: {
 			char* name = lvst_at(lvst, arg1)->name;
 			const uint8_t width = tac_load_store_width(t);

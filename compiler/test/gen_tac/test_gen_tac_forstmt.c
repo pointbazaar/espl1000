@@ -88,7 +88,7 @@ void test_gen_tac_forstmt_n_rounds() {
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 	//step it past the main function
-	vmcu_system_step_n(system, 150);
+	vmcu_system_step_n(system, 200);
 
 	int8_t r0 = vmcu_system_read_gpr(system, 0);
 

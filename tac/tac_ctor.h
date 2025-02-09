@@ -24,7 +24,6 @@ struct TAC* makeTACIfCMPGoto(uint32_t tmp1, enum TAC_OP op, uint32_t tmp2, uint3
 
 struct TAC* makeTACCopy(uint32_t dest, uint32_t src);
 
-struct TAC* makeTACLoadLocal(uint32_t tmp, uint32_t local_index);
 struct TAC* makeTACStoreLocal(uint32_t local_index, uint32_t tmp);
 struct TAC* makeTACLoadLocalAddr(uint32_t tmp, uint32_t local_index, uint8_t addr_width);
 

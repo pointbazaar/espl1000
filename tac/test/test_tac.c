@@ -55,10 +55,6 @@ void test_tac_opt_dest() {
 	assert(tac_opt_dest(t) == -1);
 	free(t);
 
-	t = makeTACLoadLocal(32, 0);
-	assert(tac_opt_dest(t) == 32);
-	free(t);
-
 	t = makeTACLoadLocalAddr(33, 0, 8);
 	assert(tac_opt_dest(t) == 33);
 	assert(tac_load_store_width(t) == 8);
@@ -147,7 +143,6 @@ void test_tac_tostring() {
 	assert_str(makeTACIfCMPGoto(1, TAC_OP_CMP_NEQ, 2, 3), "if t1 != t2 goto L3");
 
 	assert_str(makeTACLabel(1), "L1:");
-	assert_str(makeTACLoadLocal(1, 0), "load t1 = l0 (x)");
 	assert_str(makeTACLoadLocalAddr(1, 0, 8), "load t1 = &l0 (x) (8 bytes)");
 	assert_str(makeTACStoreLocal(0, 2), "store l0 (x) = t2");
 	assert_str(makeTACLoad(2, 1, 2), "t2 = [t1]");
