@@ -137,7 +137,7 @@ void test_liveness_def_map_tac_load_local_addr() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACLoadLocalAddr(1, 0));
+	tacbuffer_append(buf, makeTACLoadLocalAddr(1, 0, 2));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 

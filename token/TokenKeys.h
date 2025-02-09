@@ -79,8 +79,9 @@
 #define WHILE 51
 
 //currently unused
-//#define NAMESPACE 52
+//#define KEYWORD_NAMESPACE ???
 
+#define KEYWORD_LOCAL 52
 #define RETURN 53
 #define STRUCT 54
 #define COMMA 55

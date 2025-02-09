@@ -39,6 +39,12 @@ struct RetStmt {
 
 	struct Expr* return_value;
 };
+struct LocalVarDeclStmt {
+	struct ASTNode super;
+
+	struct Type* type;
+	char* name;
+};
 struct Stmt {
 	struct ASTNode super;
 
@@ -52,6 +58,7 @@ struct Stmt {
 		struct ForStmt* m7;
 		struct SwitchStmt* m8;
 		struct MAssignStmt* m9;
+		struct LocalVarDeclStmt* m10;
 	} ptr;
 	uint8_t kind; //0-based
 

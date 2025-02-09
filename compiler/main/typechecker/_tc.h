@@ -1,6 +1,8 @@
 #ifndef _TC_H
 #define _TC_H
 
+#include <stdbool.h>
+
 struct TCCtx;
 
 struct Expr;
@@ -18,6 +20,7 @@ struct Term;
  */
 
 bool tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx);
+bool tc_local_var_decl_stmt(struct LocalVarDeclStmt* a, struct TCCtx* tcctx);
 
 bool tc_methodcall(struct Call* m, struct TCCtx* tcctx);
 

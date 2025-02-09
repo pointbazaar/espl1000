@@ -22,6 +22,10 @@ struct Type* infer_type_constvalue(struct ST* st, struct ConstValue* cv);
 struct Type* unwrap_indices(struct Type* t, uint32_t count);
 struct Type* unwrap(struct Type* t);
 
+// @returns the type at the end of all member access and indexing
 struct Type* infer_in_context(struct ST* st, struct MemberAccess* ma);
+
+// @returns the member type after one level of member access and indices
+struct Type* infer_in_context_once(struct ST* st, struct MemberAccess* ma);
 
 #endif

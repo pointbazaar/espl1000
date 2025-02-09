@@ -99,6 +99,7 @@ add_library("sd-base"
 	typechecker/tc_stmts.c
 	typechecker/tc_methodcall.c
 	typechecker/tc_assignstmt.c
+	typechecker/tc_local_var_decl_stmt.c
 	typechecker/tc_expr.c
 	typechecker/tc_unopterm.c
 	typechecker/tc_term.c

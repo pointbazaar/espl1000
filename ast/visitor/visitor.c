@@ -21,6 +21,7 @@ static void visit_assign_stmt(struct AssignStmt* a, VISITOR, ARG);
 static void visit_call(struct Call* m, VISITOR, ARG);
 static void visit_ret_stmt(struct RetStmt* r, VISITOR, ARG);
 static void visit_massign_stmt(struct MAssignStmt* m, VISITOR, ARG);
+static void visit_local_var_decl_stmt(struct LocalVarDeclStmt* lvds, VISITOR, ARG);
 static void visit_break_stmt(VISITOR, ARG);
 static void visit_continue_stmt(VISITOR, ARG);
 
@@ -138,13 +139,16 @@ static void visit_stmt(struct Stmt* s, VISITOR, void* arg) {
 		case 9:
 			visit_massign_stmt(s->ptr.m9, visitor, arg);
 			break;
+		case 10:
+			visit_local_var_decl_stmt(s->ptr.m10, visitor, arg);
+			break;
 		case 99:
 			if (s->is_break) { visit_break_stmt(visitor, arg); }
 			if (s->is_continue) { visit_continue_stmt(visitor, arg); }
 			break;
 
 		default:
-			printf("[Visitor] Fatal (1)\n");
+			printf("[Visitor] Fatal error in %s: kind == %d\n", __func__, s->kind);
 			exit(1);
 			break;
 	}
@@ -209,6 +213,13 @@ static void visit_massign_stmt(struct MAssignStmt* m, VISITOR, ARG) {
 
 	visit_mdirect(m->lhs, visitor, arg);
 	visit_expr(m->expr, visitor, arg);
+}
+
+static void visit_local_var_decl_stmt(struct LocalVarDeclStmt* l, VISITOR, ARG) {
+
+	visitor(l, NODE_LOCAL_VAR_DECL_STMT, arg);
+
+	visit_type(l->type, visitor, arg);
 }
 
 static void visit_break_stmt(VISITOR, void* arg) {

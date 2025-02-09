@@ -107,6 +107,7 @@ char* tokenstr[255] = {
     [IF] = "if",
     [WHILE] = "while",
     [RETURN] = "return",
+    [KEYWORD_LOCAL] = "local",
     [STRUCT] = "struct",
     [COMMA] = ",",
     [FN] = "fn",

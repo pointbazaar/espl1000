@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 #include "ast/ast.h"
 
@@ -68,6 +69,10 @@ struct StructMember* stst_get_member(struct STST* stst, char* struct_name, char*
 
 	struct STSTLine* line = stst_get(stst, struct_name);
 
+	assert(line->decl);
+	assert(struct_name);
+	assert(member_name);
+
 	for (int j = 0; j < line->decl->count_members; j++) {
 
 		struct StructMember* member = line->decl->members[j];
@@ -89,6 +94,8 @@ uint32_t stst_member_offset(struct STST* stst, char* struct_name, char* member_n
 	struct STSTLine* line = stst_get(stst, struct_name);
 
 	uint32_t offset = 0;
+
+	assert(line->decl);
 
 	for (int j = 0; j < line->decl->count_members; j++) {
 

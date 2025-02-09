@@ -29,6 +29,7 @@ add_library(dragon-parser-base
 	astnodes/statements/RetStmt.c
 	astnodes/statements/Stmt.c
 	astnodes/statements/WhileStmt.c
+	astnodes/statements/LocalVarDeclStmt.c
 
 	astnodes/struct/StructDecl.c
 	astnodes/struct/StructMember.c

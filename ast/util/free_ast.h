@@ -52,6 +52,7 @@ void free_stmt(struct Stmt* s);
 void free_while_stmt(struct WhileStmt* ws);
 void free_for_stmt(struct ForStmt* fstmt);
 void free_massign_stmt(struct MAssignStmt* m);
+void free_local_var_decl_stmt(struct LocalVarDeclStmt* m);
 
 //c_types_util
 void free_array_type(struct ArrayType* at);

@@ -17,6 +17,7 @@
 static void lv_for_stmt(struct ST* st, struct ForStmt* l);
 static void lv_assign_stmt(struct ST* st, struct AssignStmt* a);
 static void lv_declarg(struct ST* st, struct DeclArg* da);
+static void lv_local_var_decl_stmt(struct ST* st, struct LocalVarDeclStmt* da);
 
 static void lv_visitor(void* node, enum NODE_TYPE type, void* arg);
 
@@ -30,6 +31,8 @@ static void lv_visitor(void* node, enum NODE_TYPE type, void* arg) {
 	struct ST* myst = (struct ST*)arg;
 
 	if (type == NODE_DECLARG) { lv_declarg(myst, (struct DeclArg*)node); }
+
+	if (type == NODE_LOCAL_VAR_DECL_STMT) { lv_local_var_decl_stmt(myst, (struct LocalVarDeclStmt*)node); }
 
 	if (type == NODE_ASSIGNSTMT) { lv_assign_stmt(myst, (struct AssignStmt*)node); }
 
@@ -46,7 +49,6 @@ static void lv_declarg(struct ST* st, struct DeclArg* da) {
 	asprintf(&(line->name), "%s", name);
 	line->type = type;
 	line->is_arg = true;
-	line->first_occur = NULL;
 	line->read_only = false;
 
 	lvst_add(st->lvst, line);
@@ -60,7 +62,6 @@ static void lv_for_stmt(struct ST* st, struct ForStmt* l) {
 
 	line->type = typeFromStrPrimitive(st, "int");
 
-	line->first_occur = NULL;
 	line->is_arg = false;
 	line->read_only = true;
 
@@ -75,7 +76,6 @@ static void lv_assign_stmt(struct ST* st, struct AssignStmt* a) {
 
 	struct LVSTLine* line = make(LVSTLine);
 
-	line->first_occur = a;
 	line->is_arg = false;
 	line->read_only = false;
 
@@ -89,6 +89,21 @@ static void lv_assign_stmt(struct ST* st, struct AssignStmt* a) {
 
 		line->type = infer_type_expr(st, a->expr);
 	}
+
+	lvst_add(st->lvst, line);
+}
+
+static void lv_local_var_decl_stmt(struct ST* st, struct LocalVarDeclStmt* a) {
+
+	if (lvst_contains(st->lvst, a->name)) { return; }
+
+	struct LVSTLine* line = make(LVSTLine);
+
+	line->is_arg = false;
+	line->read_only = false;
+
+	asprintf(&(line->name), "%s", a->name);
+	line->type = a->type;
 
 	lvst_add(st->lvst, line);
 }

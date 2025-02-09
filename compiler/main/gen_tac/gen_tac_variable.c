@@ -19,7 +19,7 @@ void tac_variable(struct TACBuffer* buf, struct Variable* v, struct Ctx* ctx) {
 
 	tac_variable_addr(buf, v, ctx);
 
-	uint32_t tlast = tacbuffer_last_dest(buf);
+	const uint32_t tlast = tacbuffer_last_dest(buf);
 
 	// TODO: do not assume the variable has 2 bytes
 	// on avr, it can only be 1 byte
@@ -29,7 +29,11 @@ void tac_variable(struct TACBuffer* buf, struct Variable* v, struct Ctx* ctx) {
 
 void tac_variable_addr(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx) {
 
-	struct DerefLL* dll = derefll_ctor_variable(v);
+	if (flags_debug(ctx_flags(ctx))) {
+		printf("[debug] %s\n", __func__);
+	}
+
+	struct DerefLL* dll = derefll_ctor_variable(v, ctx);
 
 	derefll_annotate_types(dll, ctx, NULL);
 
@@ -38,7 +42,7 @@ void tac_variable_addr(struct TACBuffer* buffer, struct Variable* v, struct Ctx*
 	struct DerefLL* current = dll;
 	struct Type* prev_type = NULL;
 
-	while (current == dll || current->next != NULL) {
+	while (true) {
 
 		tac_derefll_single(buffer, current, prev_type, ctx);
 
