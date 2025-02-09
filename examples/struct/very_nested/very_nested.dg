@@ -1,0 +1,33 @@
+
+struct A {
+	uint8 x;
+	B b;
+}
+
+struct B {
+	C c;
+	uint8 y;
+}
+
+struct C {
+	uint16 z1;
+	uint16 z2;
+	uint16 z3;
+	uint16 z4;
+}
+
+fn main () ~> int {
+
+	local A a;
+
+	a.b.y = 33;
+
+	a.b.c.z1 = 0;
+	a.b.c.z2 = 0;
+	a.b.c.z3 = 9;
+	a.b.c.z4 = 0;
+
+	a.x = 1;
+
+	return a.b.y + a.b.c.z3;
+}
