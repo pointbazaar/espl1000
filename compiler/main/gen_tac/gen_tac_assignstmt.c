@@ -21,10 +21,18 @@ static void case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct C
 
 void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
 
+	if (flags_debug(ctx_flags(ctx))) {
+		printf("[debug] %s\n", __func__);
+	}
+
+	assert(a->var);
+	assert(a->expr);
+
 	tac_expr(buffer, a->expr, ctx);
 
 	struct Type* member_type = infer_type_variable(ctx_tables(ctx), a->var);
 	assert(member_type != NULL);
+
 	const bool x86 = flags_x86(ctx_flags(ctx));
 	const uint8_t width = lvst_sizeof_type(member_type, x86);
 

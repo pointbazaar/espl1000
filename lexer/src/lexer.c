@@ -278,6 +278,7 @@ static int handler2(const char* buf, FILE* o, size_t nchars_remain) {
 	H2OUT_NOSTR(buf, "struct", STRUCT, o);
 
 	H2OUT_NOSTR(buf, "return", RETURN, o);
+	H2OUT_NOSTR(buf, "local", KEYWORD_LOCAL, o);
 	H2OUT_NOSTR(buf, "if", IF, o);
 	H2OUT_NOSTR(buf, "else", ELSE, o);
 	H2OUT_NOSTR(buf, "while", WHILE, o);

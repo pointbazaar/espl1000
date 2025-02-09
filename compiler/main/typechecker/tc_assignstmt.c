@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -31,7 +32,18 @@ bool tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx) {
 
 	tcctx->current_line_num = a->super.line_num;
 
+	assert(tcctx != NULL);
+	assert(tcctx->st != NULL);
+	assert(tcctx->st->lvst != NULL);
+	assert(a->var != NULL);
+	assert(a->var->simple_var != NULL);
+	assert(a->var->simple_var->name != NULL);
+
 	struct LVSTLine* line = lvst_get(tcctx->st->lvst, a->var->simple_var->name);
+
+	if (!line) {
+		return false;
+	}
 
 	if (line->read_only) {
 		error(tcctx, "variable can only be read but not written to.", TC_ERR_VAR_READONLY);
@@ -52,6 +64,10 @@ static bool check_type_rules_assign(struct AssignStmt* a, struct TCCtx* tcctx) {
 
 	if (a->opt_type == NULL) {
 		left = infer_type_variable(tcctx->st, a->var);
+	}
+
+	if (left == NULL) {
+		return false;
 	}
 
 	if (is_integer_type(left) && is_integer_type(right)) { return true; }

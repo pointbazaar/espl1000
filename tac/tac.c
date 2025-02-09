@@ -125,7 +125,16 @@ enum TAC_KIND tac_kind(struct TAC* tac) {
 
 uint8_t tac_load_store_width(struct TAC* tac) {
 
-	assert(tac_kind(tac) == TAC_LOAD || tac_kind(tac) == TAC_STORE);
+	if (
+	    tac_kind(tac) != TAC_LOAD && tac_kind(tac) != TAC_STORE && tac_kind(tac) != TAC_LOAD_LOCAL_ADDR
+
+	) {
+		fprintf(stderr, "tac_kind incompatible: %d\n", tac_kind(tac));
+	}
+
+	assert(
+	    tac_kind(tac) == TAC_LOAD || tac_kind(tac) == TAC_STORE || tac_kind(tac) == TAC_LOAD_LOCAL_ADDR);
+
 	return tac->load_store_width;
 }
 

@@ -31,7 +31,7 @@ void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* v, struct Ctx* ct
 
 void tac_simplevar_addr(struct TACBuffer* buffer, struct SimpleVar* sv, struct Ctx* ctx) {
 
-	struct DerefLL* dll = derefll_ctor_simplevar(sv);
+	struct DerefLL* dll = derefll_ctor_simplevar(sv, ctx);
 
 	derefll_annotate_types(dll, ctx, NULL);
 

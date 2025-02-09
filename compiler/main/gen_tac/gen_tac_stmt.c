@@ -1,9 +1,14 @@
+#include "cli/flags/flags.h"
 #include "tac/tac.h"
 #include "tac/tacbuffer.h"
 
 #include "gen_tac.h"
 
 void tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt, struct Ctx* ctx) {
+
+	if (flags_debug(ctx_flags(ctx))) {
+		printf("[debug] %s: line %d\n", __func__, stmt->super.line_num);
+	}
 
 	if (stmt->is_break) {
 		tacbuffer_append(buffer, makeTACGoto(ctx_get_label_loop_end(ctx)));

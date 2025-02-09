@@ -218,6 +218,9 @@ void free_stmt(struct Stmt* s) {
 		case 9:
 			free_massign_stmt(s->ptr.m9);
 			break;
+		case 10:
+			free_local_var_decl_stmt(s->ptr.m10);
+			break;
 		default:
 			printf("Error in free_stmt\n");
 			free(s);
@@ -318,4 +321,11 @@ void free_massign_stmt(struct MAssignStmt* m) {
 	free_mdirect(m->lhs);
 	free_expr(m->expr);
 	free(m);
+}
+
+void free_local_var_decl_stmt(struct LocalVarDeclStmt* l) {
+
+	free_type(l->type);
+	free(l->name);
+	free(l);
 }

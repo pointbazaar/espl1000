@@ -45,8 +45,8 @@ struct DerefLL {
 	struct Type* type;
 };
 
-struct DerefLL* derefll_ctor_variable(struct Variable* v);
-struct DerefLL* derefll_ctor_simplevar(struct SimpleVar* sv);
+struct DerefLL* derefll_ctor_variable(struct Variable* v, struct Ctx* ctx);
+struct DerefLL* derefll_ctor_simplevar(struct SimpleVar* sv, struct Ctx* ctx);
 void derefll_dtor(struct DerefLL* dll);
 
 void derefll_append(struct DerefLL* d1, struct DerefLL* d2);

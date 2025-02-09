@@ -22,7 +22,7 @@ void test_gen_tac_ifstmt_no_else_true_8bit() {
 		vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 		//step it past the main function
-		vmcu_system_step_n(system, 20);
+		vmcu_system_step_n(system, 40);
 
 		int8_t r0 = vmcu_system_read_gpr(system, 0);
 
@@ -74,7 +74,7 @@ void test_gen_tac_ifstmt_no_else_false_8bit() {
 		vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
 		//step it past the main function
-		vmcu_system_step_n(system, 20);
+		vmcu_system_step_n(system, 40);
 
 		int8_t r0 = vmcu_system_read_gpr(system, 0);
 

@@ -34,7 +34,6 @@ static void sd_uc_fake_lvst_line(struct Ctx* ctx, struct LVST* lvst, int i, bool
 	struct Type* type = fake_uint64_type();
 
 	line->type = type;
-	line->first_occur = NULL;
 	line->is_arg = is_arg;
 	line->read_only = false;
 

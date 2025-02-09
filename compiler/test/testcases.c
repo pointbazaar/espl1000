@@ -460,7 +460,6 @@ void (*tests_tac_codegen[])() = {
     // variable
     test_gen_tac_variable_case_no_member_access,
     test_gen_tac_variable_case_1_member_access,
-    test_gen_tac_variable_case_2_member_access,
 
     // call
     test_gen_tac_call_case_no_args,

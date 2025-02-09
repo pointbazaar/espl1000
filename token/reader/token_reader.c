@@ -121,6 +121,7 @@ static struct Token* recognizeTokenInnerNoStr(int tkn_id) {
 
 		//SECTION: KEYWORDS
 		case RETURN:
+		case KEYWORD_LOCAL:
 		case FN:
 		case STRUCT:
 		case IF:
@@ -137,7 +138,7 @@ static struct Token* recognizeTokenInnerNoStr(int tkn_id) {
 			r = makeToken(tkn_id);
 			break;
 		default:
-			printf("unreconized token id : %d\n", tkn_id);
+			printf("unrecognized token id : %d\n", tkn_id);
 			exit(1);
 			return NULL;
 	};

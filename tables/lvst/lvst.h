@@ -15,13 +15,6 @@ struct LVSTLine {
 
 	struct Type* type;
 
-	//the first occurence
-	//in the subroutine
-	//where this local variable was
-	//assigned.
-	//can be NULL and is not relevant if is_arg == true
-	struct AssignStmt* first_occur;
-
 	//we must differentiate if
 	//it is an argument to the function
 	//or not. because arguments already have a type declared

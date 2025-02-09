@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
@@ -245,6 +246,8 @@ uint32_t lvst_sizeof_simpletype(struct SimpleType* st, bool x86) {
 
 	if (st->primitive_type != NULL)
 		return lvst_sizeof_primitivetype(st->primitive_type, x86);
+
+	assert(false);
 	return 0;
 }
 
@@ -263,6 +266,7 @@ uint32_t lvst_sizeof_basictype(struct BasicType* bt, bool x86) {
 	if (bt->simple_type != NULL)
 		return lvst_sizeof_simpletype(bt->simple_type, x86);
 
+	assert(false);
 	return 0;
 }
 
@@ -280,9 +284,7 @@ uint32_t lvst_sizeof_arraytype(struct ArrayType* at, bool x86) {
 // returns the size in number of bytes
 uint32_t lvst_sizeof_type(struct Type* type, bool x86) {
 
-	if (type == NULL) {
-		return 0;
-	}
+	assert(type);
 
 	uint32_t res = 0;
 	//sizeof(type) in bytes

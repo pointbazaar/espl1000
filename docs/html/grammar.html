@@ -95,6 +95,7 @@
 	<a id="stmt">Stmt</a> ::= ( <a href="#call">Call</a> ';' )
 		| <a href="#whilestmt">whileStmt</a> | <a href="#ifstmt">ifStmt</a> | <a href="#forstmt">forStmt</a>
 		| <a href="#returnstmt">returnStmt</a> | <a href="#assignstmt">assignStmt</a> | <a href="#massignstmt">mAssignStmt</a>
+		| <a href="#localvardeclstmt">LocalVarDeclStmt</a>
 		| "break" ';' | "continue" ';'
 	<br><hr>
 
@@ -115,11 +116,15 @@
 	<br>
 	<hr>
 
-	<a id="assignstmt">assignStmt</a> ::= <a href="#type">Type</a>? <a href="#variable">Variable</a> '=' <a href="#expr">Expr</a>? ';'
+	<a id="assignstmt">assignStmt</a> ::= <a href="#type">Type</a>? <a href="#variable">Variable</a> '=' <a href="#expr">Expr</a>';'
 	<br><br>
 
 	<a id="massignstmt">mAssignStmt</a> ::= <a href="#mdirect">MDirect</a> '=' <a href="#expr">Expr</a> ';'
-	<br>
+	<br><br>
+
+	<a id="localvardeclstmt">LocalVarDeclStmt</a> ::= 'local' <a href="#type">Type</a> Id ';'
+	<br><br>
+
 	<hr>
 
 	<h2>Expressions</h2>

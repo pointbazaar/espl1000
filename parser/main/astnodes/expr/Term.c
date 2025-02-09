@@ -61,7 +61,7 @@ struct Term* makeTerm(struct TokenList* tokens) {
 	} else if (tk_kind == LBRACKET) {
 
 		res->ptr.m13 = makeMDirect(copy);
-		if (res->ptr.m13 == NULL){
+		if (res->ptr.m13 == NULL) {
 			free(res);
 			freeTokenListShallow(copy);
 			return NULL;

@@ -19,13 +19,14 @@
 void tac_derefll_single(struct TACBuffer* buffer, struct DerefLL* dll, struct Type* prev_type, struct Ctx* ctx) {
 
 	const bool x86 = flags_x86(ctx_flags(ctx));
+	const uint8_t width = (x86) ? 8 : 2;
 
 	switch (dll->action) {
 
 		case DEREFLL_INIT: {
 			struct LVST* lvst = ctx_tables(ctx)->lvst;
 			uint32_t local_index = lvst_index_of(lvst, dll->initial->name);
-			tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), local_index));
+			tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), local_index, width));
 		} break;
 
 		case DEREFLL_INDEX: {

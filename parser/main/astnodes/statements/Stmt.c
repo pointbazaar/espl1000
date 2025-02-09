@@ -11,6 +11,7 @@
 #include "Call.h"
 #include "AssignStmt.h"
 #include "MAssignStmt.h"
+#include "LocalVarDeclStmt.h"
 
 #include "ast/util/free_ast.h"
 
@@ -26,6 +27,7 @@ static void stmt_make_while(struct Stmt* res, struct TokenList* copy);
 static void stmt_make_if(struct Stmt* res, struct TokenList* copy);
 static void stmt_make_return(struct Stmt* res, struct TokenList* copy);
 static void stmt_make_for(struct Stmt* res, struct TokenList* copy);
+static void stmt_make_local_var_decl_stmt(struct Stmt* res, struct TokenList* copy);
 static void stmt_make_other(struct Stmt* res, struct TokenList* copy);
 // ---------------------------
 
@@ -70,6 +72,9 @@ struct Stmt* makeStmt(struct TokenList* tokens) {
 		case RETURN:
 			stmt_make_return(res, copy);
 			break;
+		case KEYWORD_LOCAL:
+			stmt_make_local_var_decl_stmt(res, copy);
+			break;
 
 		default:
 			stmt_make_other(res, copy);
@@ -90,6 +95,20 @@ struct Stmt* initStmt() {
 	res->ptr.m1 = NULL;
 
 	return res;
+}
+
+static void stmt_make_local_var_decl_stmt(struct Stmt* res, struct TokenList* copy) {
+
+	res->kind = 10;
+	res->ptr.m10 = makeLocalVarDeclStmt(copy);
+	if (res->ptr.m10 == NULL) {
+		printf("expected local var decl stmt stmt, but was: %s\n", list_code(copy));
+
+		freeTokenListShallow(copy);
+		free(res);
+
+		exit(1);
+	}
 }
 
 void stmt_make_while(struct Stmt* res, struct TokenList* copy) {

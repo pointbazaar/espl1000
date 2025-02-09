@@ -2,6 +2,7 @@
 
 #include "libvmcu/libvmcu_system.h"
 #include "libvmcu/libvmcu_analyzer.h"
+#include <stdio.h>
 
 #include "libvmcu_utils.h"
 
@@ -10,6 +11,37 @@ void vmcu_system_step_n(vmcu_system_t* system, uint32_t count) {
 	for (uint32_t i = 0; i < count; i++) {
 		vmcu_system_step(system);
 	}
+}
+
+void vmcu_system_step_debug(vmcu_system_t* system) {
+
+	static uint8_t old_regs[32] = {0};
+	static uint8_t data[2048] = {0};
+	bool change = false;
+
+	vmcu_system_step(system);
+	printf("[debug] ");
+
+	for (int i = 0; i < 32; i++) {
+		const uint8_t value = vmcu_system_read_gpr(system, i);
+
+		if (value != old_regs[i]) {
+			printf("r%d=0x%x ", i, value);
+			change = true;
+		}
+		old_regs[i] = value;
+	}
+
+	// start at 32 since the registers are memory mapped
+	for (int i = 32; i < 2048; i++) {
+		const uint8_t value = vmcu_system_read_data(system, i);
+		if (value != data[i]) {
+			printf("[0x%x]=0x%x ", i, value);
+			change = true;
+		}
+		data[i] = value;
+	}
+	printf("\n");
 }
 
 uint16_t vmcu_system_read_sp(vmcu_system_t* system) {
