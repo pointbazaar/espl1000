@@ -38,6 +38,8 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64
 #define mov_load_width(dest, src, width, c) ibu3(X86_MOV_LOAD_WIDTH, dest, src, width, c)
 #define mov_store_width(dest, src, width, c) ibu3(X86_MOV_STORE_WIDTH, dest, src, width, c)
 
+#define mov_const_symbol(dest, name, c) ibu_push4(ibu, X86_MOV_CONST_SYMBOL, dest, 0, 0, name, c)
+
 #define cmove(dest, src, c) ibu2(X86_CMOVE, dest, src, c)
 #define xchg(dest, src, c) ibu2(X86_XCHG, dest, src, c)
 
@@ -74,6 +76,7 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64
 #define jz(label, c) ibu_branch(X86_JZ, label, c)
 
 #define call(label, c) ibu_branch(X86_CALL, label, c)
+#define icall(reg, c) ibu1(X86_ICALL, reg, c)
 #define ret(c) ibu0(X86_RET, c)
 #define nop(c) ibu0(X86_NOP, c)
 

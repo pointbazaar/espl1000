@@ -1,3 +1,5 @@
+#include <assert.h>
+
 #include "ast/ast_declare.h"
 #include "ast/ast.h"
 
@@ -18,15 +20,30 @@
 
 void tac_derefll_single(struct TACBuffer* buffer, struct DerefLL* dll, struct Type* prev_type, struct Ctx* ctx) {
 
+	if (flags_debug(ctx_flags(ctx))) {
+		printf("[debug] %s\n", __func__);
+	}
+
 	const bool x86 = flags_x86(ctx_flags(ctx));
 	const uint8_t width = (x86) ? 8 : 2;
 
 	switch (dll->action) {
 
 		case DEREFLL_INIT: {
+			char* name = dll->initial->name;
 			struct LVST* lvst = ctx_tables(ctx)->lvst;
-			uint32_t local_index = lvst_index_of(lvst, dll->initial->name);
-			tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), local_index, width));
+			struct SST* sst = ctx_tables(ctx)->sst;
+
+			if (lvst_contains(lvst, name)) {
+				const uint32_t local_index = lvst_index_of(lvst, name);
+				tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), local_index, width));
+			} else if (sst_contains(sst, name)) {
+				const uint32_t index = sst_index_of(sst, name);
+				tacbuffer_append(buffer, makeTACLoadFunctionPtr(make_temp(), index));
+			} else {
+				fprintf(stderr, "%s: %s not found in LVST or SST\n", __func__, dll->initial->name);
+				assert(false);
+			}
 		} break;
 
 		case DEREFLL_INDEX: {

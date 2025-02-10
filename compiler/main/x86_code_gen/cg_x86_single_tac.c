@@ -37,19 +37,21 @@ void emit_asm_x86_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 		case TAC_COPY: compile_tac_copy_x86(rat, tac, ibu); break;
 		case TAC_CONST_VALUE: compile_tac_const_value_x86(rat, tac, ibu); break;
 		case TAC_CALL: compile_tac_call_x86(rat, tac, ibu, ctx, current_function_name); break;
+		case TAC_ICALL: compile_tac_icall_x86(rat, tac, ibu, ctx, current_function_name); break;
 		case TAC_PARAM: compile_tac_param_x86(rat, tac, ibu); break;
 		case TAC_RETURN: compile_tac_return_x86(rat, tac, ctx, ibu); break;
 
 		case TAC_SETUP_STACKFRAME: compile_tac_setup_stackframe_x86(rat, tac, ibu, ctx, current_function_name); break;
 
 		case TAC_LOAD_LOCAL_ADDR: compile_tac_load_local_addr_x86(rat, tac, ctx, ibu); break;
+		case TAC_LOAD_FUNCTION_PTR: compile_tac_load_function_ptr_x86(rat, tac, ctx, ibu); break;
 		case TAC_STORE_LOCAL: compile_tac_store_local_x86(rat, tac, ctx, ibu); break;
 
 		case TAC_LOAD: compile_tac_load_x86(rat, tac, ibu); break;
 		case TAC_STORE: compile_tac_store_x86(rat, tac, ibu); break;
 
 		default:
-			printf("tac->kind == 0x%x not handled in %s\n", tac_kind(tac), __FUNCTION__);
+			printf("tac->kind == 0x%x (%d) not handled in %s\n", tac_kind(tac), tac_kind(tac), __FUNCTION__);
 			exit(1);
 			break;
 	}

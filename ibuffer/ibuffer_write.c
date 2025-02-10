@@ -181,6 +181,9 @@ static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 			assert(width_str != NULL);
 			sprintf(s, "%s [%s], %s", width_str, rat_regname_x86(x1), rat_regname_x86_width(x2, nbytes));
 			break;
+		case X86_MOV_CONST_SYMBOL:
+			sprintf(s, "%s, %s", rat_regname_x86(x1), str);
+			break;
 		case X86_PUSH:
 		case X86_POP:
 		case X86_INC:
@@ -220,6 +223,9 @@ static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 		case X86_JZ:
 		case X86_CALL:
 			sprintf(s, "%s", str);
+			break;
+		case X86_ICALL:
+			sprintf(s, "%s", rat_regname_x86(x1));
 			break;
 		case X86_INT:
 			sprintf(s, "%ld", x1);

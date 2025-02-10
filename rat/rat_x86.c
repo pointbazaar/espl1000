@@ -155,6 +155,10 @@ const char* regnames_x86_1bytes[] = {
 
 char* rat_regname_x86(size_t i) {
 
+	if (i < SD_REG_START_X86 || i >= SD_REG_END_X86) {
+		fprintf(stderr, "%s: error: arg: %ld\n", __func__, i);
+	}
+
 	assert(i > SD_REG_START_X86);
 	assert(i < SD_REG_END_X86);
 	return (char*)regnames_x86[i];

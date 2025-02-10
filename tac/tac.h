@@ -55,6 +55,7 @@ enum TAC_KIND {
 	TAC_COPY, //copy one temp into another
 	TAC_STORE_LOCAL, //store local var into stackframe
 	TAC_LOAD_LOCAL_ADDR, //load the addr of a local variable
+	TAC_LOAD_FUNCTION_PTR, //load the addr of a function
 
 	TAC_CONST_VALUE,
 

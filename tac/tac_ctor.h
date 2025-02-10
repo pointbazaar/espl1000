@@ -27,6 +27,12 @@ struct TAC* makeTACCopy(uint32_t dest, uint32_t src);
 struct TAC* makeTACStoreLocal(uint32_t local_index, uint32_t tmp);
 struct TAC* makeTACLoadLocalAddr(uint32_t tmp, uint32_t local_index, uint8_t addr_width);
 
+// Load a function pointer to a compile-time known function.
+// Since we are not doing load/store to/from memory, there is no width
+// @param sst_index    index into the sst
+// @param tmp          the temporary to store into
+struct TAC* makeTACLoadFunctionPtr(uint32_t tmp, uint32_t sst_index);
+
 struct TAC* makeTACConst(uint32_t tmp, int value);
 struct TAC* makeTACConst16(uint32_t tmp, int value);
 
@@ -35,6 +41,8 @@ struct TAC* makeTACUnaryOp(uint32_t dest, uint32_t src, enum TAC_OP op);
 
 struct TAC* makeTACParam(uint32_t dest, bool push16, uint32_t param_index);
 struct TAC* makeTACCall(uint32_t tmp, uint32_t function_index);
+
+// @param tmp_call   the temporary holding which function to call
 struct TAC* makeTACICall(uint32_t tmp, uint32_t tmp_call);
 
 struct TAC* makeTACSetupStackframe(uint32_t frame_size);
