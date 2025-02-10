@@ -16,7 +16,12 @@ struct Type* infer_type_term(struct ST* st, struct Term* t);
 struct Type* infer_type_unopterm(struct ST* st, struct UnOpTerm* t);
 struct Type* infer_type_methodcall(struct ST* st, struct Call* m);
 struct Type* infer_type_variable(struct ST* st, struct Variable* v);
+
+// @returns the type after unwrapping all indices
 struct Type* infer_type_simplevar(struct ST* st, struct SimpleVar* v);
+// @returns the type
+struct Type* infer_type_simplevar_once(struct ST* st, struct SimpleVar* v);
+
 struct Type* infer_type_constvalue(struct ST* st, struct ConstValue* cv);
 
 struct Type* unwrap_indices(struct Type* t, uint32_t count);

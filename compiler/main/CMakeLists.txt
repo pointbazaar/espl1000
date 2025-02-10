@@ -62,6 +62,7 @@ add_library("sd-base"
 	x86_code_gen/compile_ir/compile_tac.h
 	x86_code_gen/compile_ir/compile_tac_binary_op.c
 	x86_code_gen/compile_ir/compile_tac_call.c
+	x86_code_gen/compile_ir/compile_tac_icall.c
 	x86_code_gen/compile_ir/compile_tac_const_value.c
 	x86_code_gen/compile_ir/compile_tac_copy.c
 	x86_code_gen/compile_ir/compile_tac_goto.c
@@ -77,6 +78,7 @@ add_library("sd-base"
 	x86_code_gen/compile_ir/compile_tac_if_cmp_goto.c
 	x86_code_gen/compile_ir/compile_tac_load.c
 	x86_code_gen/compile_ir/compile_tac_store.c
+	x86_code_gen/compile_ir/compile_tac_load_function_ptr.c
 
 	#DerefLL implementation
 	derefll/derefll.c

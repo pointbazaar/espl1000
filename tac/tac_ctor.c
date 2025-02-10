@@ -101,6 +101,16 @@ struct TAC* makeTACLoadLocalAddr(uint32_t tmp, uint32_t local_index, uint8_t add
 	return t;
 }
 
+struct TAC* makeTACLoadFunctionPtr(uint32_t tmp, uint32_t sst_index) {
+
+	struct TAC* t = makeTAC();
+	t->kind = TAC_LOAD_FUNCTION_PTR;
+	t->dest = tmp;
+	t->arg1 = sst_index;
+	t->load_store_width = 0;
+	return t;
+}
+
 struct TAC* makeTACStoreLocal(uint32_t local_index, uint32_t tmp) {
 	struct TAC* t = makeTAC();
 	t->kind = TAC_STORE_LOCAL;

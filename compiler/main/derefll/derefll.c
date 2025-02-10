@@ -59,11 +59,22 @@ struct DerefLL* derefll_expr(struct Expr* expr) {
 
 struct DerefLL* derefll_ctor_simplevar(struct SimpleVar* sv, struct Ctx* ctx) {
 
+	if (flags_debug(ctx_flags(ctx))) {
+		printf("[debug] %s\n", __func__);
+	}
+
 	struct DerefLL* res = exit_malloc(sizeof(struct DerefLL));
 
 	res->next = NULL;
 	res->action = DEREFLL_INIT;
 	res->initial = sv;
+
+	// in case of a function ptr, we will not find it in LVST
+	struct Type* type = infer_type_simplevar(ctx_tables(ctx), sv);
+
+	if (type->basic_type && type->basic_type->subr_type) {
+		return res;
+	}
 
 	// in case of pointer type, we need an additional deref,
 	// to get the pointer out of the stackframe
@@ -98,6 +109,12 @@ struct DerefLL* derefll_ctor_variable(struct Variable* v, struct Ctx* ctx) {
 	struct DerefLL* res = derefll_ctor_simplevar(v->simple_var, ctx);
 
 	struct Variable* current = v;
+
+	// for example, a function pointer is not in LVST
+	// so we cannot access the LVST in that case
+	if (current->member_access == NULL) {
+		return res;
+	}
 
 	struct LVSTLine* line = lvst_get(lvst, current->simple_var->name);
 	struct Type* current_type = line->type;
@@ -138,6 +155,10 @@ struct DerefLL* derefll_ctor_variable(struct Variable* v, struct Ctx* ctx) {
 
 void derefll_annotate_types(struct DerefLL* dll, struct Ctx* ctx, struct Type* prev_type) {
 
+	if (flags_debug(ctx_flags(ctx))) {
+		printf("[debug] %s\n", __func__);
+	}
+
 	struct DerefLL* current = dll;
 
 	if (current == NULL) return;
@@ -147,9 +168,9 @@ void derefll_annotate_types(struct DerefLL* dll, struct Ctx* ctx, struct Type* p
 	switch (current->action) {
 
 		case DEREFLL_INIT: {
-			struct LVSTLine* line = lvst_get(ctx_tables(ctx)->lvst, current->initial->name);
+			struct Type* type = infer_type_simplevar_once(ctx_tables(ctx), current->initial);
 
-			current->type = line->type;
+			current->type = type;
 		} break;
 
 		case DEREFLL_INDEX:

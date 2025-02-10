@@ -93,6 +93,11 @@ char* tac_tostring(struct TAC* t, struct SST* sst, struct LVST* lvst) {
 			sprintf(res, "%-9s:", function_name);
 		} break;
 
+		case TAC_LOAD_FUNCTION_PTR: {
+			char* name = sst_at(sst, arg1)->name;
+			sprintf(buf, "t%d = %s", dest, name);
+		} break;
+
 		case TAC_GOTO:
 			sprintf(buf, "goto L%d", t->label_index);
 			break;

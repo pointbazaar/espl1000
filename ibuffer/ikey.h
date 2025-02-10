@@ -178,6 +178,7 @@ enum IKEY {
 	X86_MOV_STORE, // mov [rdest], rsrc
 	X86_MOV_LOAD_WIDTH, // e.g. mov dword rdest, [rsrc]
 	X86_MOV_STORE_WIDTH, // e.g. mov qword [rdest], rsrc
+	X86_MOV_CONST_SYMBOL, // e.g. mov rax, my_function
 	X86_CMOVE,
 	X86_XCHG,
 
@@ -228,6 +229,7 @@ enum IKEY {
 	X86_JZ, // == 0
 
 	X86_CALL,
+	X86_ICALL, // e.g. call rax
 	X86_RET,
 	X86_ENTER,
 	X86_LEAVE,

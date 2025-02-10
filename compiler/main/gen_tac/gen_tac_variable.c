@@ -21,6 +21,14 @@ void tac_variable(struct TACBuffer* buf, struct Variable* v, struct Ctx* ctx) {
 
 	const uint32_t tlast = tacbuffer_last_dest(buf);
 
+	// in case of function pointer, we do not need to dereference again
+	{
+		struct TAC* last = tacbuffer_get_last(buf);
+		if (tac_kind(last) == TAC_LOAD_FUNCTION_PTR) {
+			return;
+		}
+	}
+
 	// TODO: do not assume the variable has 2 bytes
 	// on avr, it can only be 1 byte
 	// on x86 it can be up to 8
