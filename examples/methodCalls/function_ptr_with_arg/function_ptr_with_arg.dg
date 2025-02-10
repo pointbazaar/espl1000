@@ -1,0 +1,16 @@
+
+fn f (int8 x) -> int8 {
+
+	return 8 + x;
+}
+
+fn main () ~> int {
+
+	local ((int8) -> int8) ptr;
+
+	ptr = f;
+
+	int8 r = ptr(2);
+
+	return r;
+}
