@@ -58,31 +58,44 @@ void test_gen_tac_expr_minus() {
 		}
 	}
 }
+static void test_gen_tac_expr_mul_single(uint8_t value1, uint8_t value2) {
+
+	char snippet[200];
+	sprintf(snippet, "fn main() -> int { int x = %d * %d; return x; }", value1, value2);
+
+	//compile snippet and init a vmcu
+	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
+
+	//step it past the main function
+	vmcu_system_step_n(system, 40);
+
+	//assert that value is returned in r0 as it should be
+	const uint8_t r0 = vmcu_system_read_gpr(system, 0);
+
+	if (r0 != (value1 * value2)) {
+		printf("r0 = 0x%x, expected 0x%x\n", r0, (value1 * value2));
+	}
+	assert(r0 == (value1 * value2));
+
+	vmcu_system_dtor(system);
+}
 
 void test_gen_tac_expr_mul() {
 
 	status_test_codegen_tac("Expr *");
 
-	for (int8_t value1 = 0; value1 < 3; value1++) {
-		for (int8_t value2 = 0; value2 < 3; value2++) {
+	test_gen_tac_expr_mul_single(0, 0);
+	test_gen_tac_expr_mul_single(0, 1);
+	test_gen_tac_expr_mul_single(0, 2);
 
-			char snippet[200];
-			sprintf(snippet, "fn main() -> int { int x = %d * %d; return x; }", value1, value2);
+	test_gen_tac_expr_mul_single(3, 0);
+	test_gen_tac_expr_mul_single(3, 1);
+	test_gen_tac_expr_mul_single(3, 2);
 
-			//compile snippet and init a vmcu
-			vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
-
-			//step it past the main function
-			vmcu_system_step_n(system, 20);
-
-			//assert that value is returned in r0 as it should be
-			int8_t r0_value = vmcu_system_read_gpr(system, 0);
-
-			assert(r0_value == (value1 * value2));
-
-			vmcu_system_dtor(system);
-		}
-	}
+	test_gen_tac_expr_mul_single(4, 0);
+	test_gen_tac_expr_mul_single(4, 8);
+	test_gen_tac_expr_mul_single(4, 8);
+	test_gen_tac_expr_mul_single(7, 8);
 }
 
 void test_gen_tac_expr_and() {

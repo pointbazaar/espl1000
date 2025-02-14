@@ -30,7 +30,9 @@ void tac_method(struct TACBuffer* buffer, struct Method* m, struct Ctx* ctx);
 void tac_stmtblock(struct TACBuffer* buffer, struct StmtBlock* block, struct Ctx* ctx);
 
 void tac_variable(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx);
-void tac_variable_addr(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx);
+
+// @param last_type_width    used for the final load. can pass NULL here if dont care
+void tac_variable_addr(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx, uint8_t* last_type_width);
 
 void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* sv, struct Ctx* ctx);
 void tac_simplevar_addr(struct TACBuffer* buffer, struct SimpleVar* sv, struct Ctx* ctx);

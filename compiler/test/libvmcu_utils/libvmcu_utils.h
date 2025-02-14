@@ -12,6 +12,8 @@ void vmcu_system_step_n(vmcu_system_t* system, uint32_t count);
 // Print any register values which have changed.
 void vmcu_system_step_debug(vmcu_system_t* system);
 
+void vmcu_system_step_n_debug(vmcu_system_t* system, uint32_t count);
+
 uint16_t vmcu_system_read_sp(vmcu_system_t* system);
 
 uint16_t vmcu_system_read_y(vmcu_system_t* system);

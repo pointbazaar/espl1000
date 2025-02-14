@@ -96,7 +96,7 @@ static void case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct C
 	uint32_t texpr = tacbuffer_last_dest(buffer);
 
 	//find out the address of the variable
-	tac_variable_addr(buffer, a->var, ctx);
+	tac_variable_addr(buffer, a->var, ctx, NULL);
 
 	uint32_t taddr = tacbuffer_last_dest(buffer);
 
