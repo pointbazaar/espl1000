@@ -172,6 +172,8 @@ static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ib
 		case TAC_OP_MUL:
 			mul(rdest, rsrc, "");
 			//TODO: figure out the case with wide temporaries
+			// after MUL, result is stored in r1:r0 (r0 is the low byte)
+			mov(rdest, r0, "move multiplication result");
 			break;
 
 		case TAC_OP_AND:

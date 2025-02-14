@@ -255,6 +255,8 @@ struct TAC* makeTACLoad(uint32_t tmp, uint32_t taddr, uint8_t width) {
 	t->arg1 = taddr;
 
 	assert(width <= 8);
+	assert(width >= 1);
+
 	t->const_value = width;
 	t->load_store_width = width;
 	return t;

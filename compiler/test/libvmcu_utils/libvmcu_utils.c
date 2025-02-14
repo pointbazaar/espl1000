@@ -13,6 +13,13 @@ void vmcu_system_step_n(vmcu_system_t* system, uint32_t count) {
 	}
 }
 
+void vmcu_system_step_n_debug(vmcu_system_t* system, uint32_t count) {
+
+	for (uint32_t i = 0; i < count; i++) {
+		vmcu_system_step_debug(system);
+	}
+}
+
 void vmcu_system_step_debug(vmcu_system_t* system) {
 
 	static uint8_t old_regs[32] = {0};
