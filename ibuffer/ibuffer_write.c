@@ -24,27 +24,34 @@ void ibu_write_instr(enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* st
 		return;
 	}
 
-	fprintf(f, "  "); //indentation
-
-	//write the mnemonic
-	fprintf(f, "%-5s ", MNEM[key]);
-
 	size_t l = 72;
 	if (str != NULL) {
 		l += strlen(str);
 	}
+	if (comment != NULL) {
+		l += strlen(comment);
+		l += 30; // alignment
+		l += 20; // mnemonic
+	}
 	char* s = malloc(l);
-	strcpy(s, "");
+	assert(s != NULL);
 
-	write_middle(key, x1, x2, str, s, x3);
+	//write the mnemonic with indentation
+	sprintf(s, "  %-5s", MNEM[key]);
 
-	fprintf(f, "%-s", s);
+	write_middle(key, x1, x2, str, s + strlen(s), x3);
 
 	if (comment != NULL && strcmp(comment, "") != 0) {
-		fprintf(f, ";%-30s", comment);
+		// comment alignment
+		const size_t current_len = strlen(s);
+		for (int i = current_len; i < 25; i++) {
+			strcat(s, " ");
+		}
+		strcat(s, ";");
+		strcat(s, comment);
 	}
 
-	fprintf(f, "\n");
+	fprintf(f, "%s\n", s);
 
 	free(s);
 }
