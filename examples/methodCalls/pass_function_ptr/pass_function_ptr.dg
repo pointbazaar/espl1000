@@ -1,0 +1,23 @@
+
+fn f () -> int8 {
+
+	return 9;
+}
+
+fn g ((() -> int8) other) -> int8 {
+
+	int8 x = other();
+
+	return x;
+}
+
+fn main () ~> int {
+
+	local (() -> int8) ptr;
+
+	ptr = f;
+
+	int8 r = g(ptr);
+
+	return r;
+}
