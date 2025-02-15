@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "rat/rat.h"
 #include "tac/tac.h"
@@ -24,11 +25,12 @@ void compile_tac_load(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 	else
 		ldi(XH, 0, c);
 
-	// TODO: make a 'wide' property in struct TAC
-	// to avoid encoding this in different places
-	const bool tac_says_wide = tac_const_value(tac) == 2;
+	const uint8_t width = tac_load_store_width(tac);
 
-	if (tac_says_wide) {
+	assert(width <= 2);
+	assert(width >= 1);
+
+	if (width == 2) {
 
 		// what if we want to load a 16 bit value?
 		ldXpostInc(reg_dest, c);

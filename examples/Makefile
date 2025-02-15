@@ -20,7 +20,8 @@ examples-avr:
 	$(CALL2) local_variables/simple.dg
 	$(CALL2) loops/whileloop/whileloop.dg
 	$(CALL2) loops/forloop/forloop.dg
-	$(CALL2) methodCalls/add.dg
+	$(CALL2) methodCalls/add/add_8.dg
+	$(CALL2) methodCalls/add/add_16.dg
 	$(CALL2) other/everything.dg
 	$(CALL2) typeinference/localvartypeinference.dg
 	$(CALL2) array/array.dg

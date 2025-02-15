@@ -1,6 +1,6 @@
 
 fn main () ~> int {
-	return add( 20, 10 );
+	return add( 25, 40 );
 }
 
 fn add (uint64 a, uint64 b) ~> uint64 {
