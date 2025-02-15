@@ -13,7 +13,7 @@ void test_gen_tac_mdirect_case_const_addr() {
 		const int8_t value = 0x34;
 
 		char snippet[200];
-		sprintf(snippet, "fn main() -> int { int x = [%d]; return 0; }", address);
+		sprintf(snippet, "fn main() -> int { int x = [%d, 1]; return 0; }", address);
 
 		vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
@@ -49,7 +49,7 @@ void test_gen_tac_mdirect_case_variable_addr() {
 		const int8_t value = 0x38;
 
 		char snippet[200];
-		sprintf(snippet, "fn main() -> int { int y = 3; int x = [y+%d]; return x; }", address);
+		sprintf(snippet, "fn main() -> int { int y = 3; int x = [y+%d, 1]; return x; }", address);
 
 		vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 

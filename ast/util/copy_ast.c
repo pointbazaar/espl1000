@@ -144,6 +144,7 @@ struct Op* copy_op(struct Op* op){
 struct MDirect* copy_mdirect(struct MDirect* m) {
 	struct MDirect* res = make(MDirect);
 	res->expr = copy_expr(m->expr);
+	res->load_store_width = m->load_store_width;
 	return res;
 }
 
