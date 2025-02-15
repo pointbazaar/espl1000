@@ -1,0 +1,8 @@
+
+fn main () ~> int {
+	return add( 2, 7 );
+}
+
+fn add (uint8 a, uint8 b) ~> uint8 {
+	return ( a + b ) ;
+}
