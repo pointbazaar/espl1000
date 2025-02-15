@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "const/IntConst.h"
 #include "expr/Expr.h"
 
 #include "token/list/TokenList.h"
@@ -33,6 +34,24 @@ struct MDirect* makeMDirect(struct TokenList* tokens) {
 	res->expr = makeExpr(copy);
 
 	if (res->expr == NULL) {
+		fprintf(stderr, "expected expr, got %s\n", list_code(copy));
+		freeTokenListShallow(copy);
+		free(res);
+		return NULL;
+	}
+
+	if (!list_expect(copy, COMMA)) {
+		fprintf(stderr, "expected ',', got %s\n", list_code(copy));
+		freeTokenListShallow(copy);
+		free(res);
+		return NULL;
+	}
+
+	bool error = false;
+	res->load_store_width = makeIntConst(copy, &error);
+
+	if (error) {
+		fprintf(stderr, "expected int const, got %s\n", list_code(copy));
 		freeTokenListShallow(copy);
 		free(res);
 		return NULL;

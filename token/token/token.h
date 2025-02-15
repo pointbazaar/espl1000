@@ -18,6 +18,9 @@ struct Token {
 	//could require more bytes.
 	//It is not justified to have emtpy bytes in here
 	//in the cases where it is just a small token
+
+	// may be NULL in case of tokens that do
+	// not require further distinction
 	char* value_ptr;
 };
 

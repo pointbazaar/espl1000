@@ -65,6 +65,9 @@ struct Term {
 struct MDirect {
 	struct ASTNode super;
 	struct Expr* expr;
+
+	// width of the load/store, in bytes
+	uint8_t load_store_width;
 };
 
 #endif

@@ -12,8 +12,10 @@ void test_gen_tac_assignstmt_case_local_struct();
 void test_gen_tac_assignstmt_case_local_array();
 
 // massign stmt
-void test_gen_tac_massignstmt_case_const_addr();
-void test_gen_tac_massignstmt_case_variable_addr();
+void test_gen_tac_massignstmt_case_const_addr_1_byte();
+void test_gen_tac_massignstmt_case_const_addr_2_byte();
+void test_gen_tac_massignstmt_case_variable_addr_1_byte();
+void test_gen_tac_massignstmt_case_variable_addr_2_byte();
 
 // mdirect
 void test_gen_tac_mdirect_case_const_addr();

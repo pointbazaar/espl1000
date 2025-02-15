@@ -19,7 +19,7 @@ static void case_variable_addr(struct TACBuffer* buffer, struct MAssignStmt* m, 
 	tac_expr(buffer, lhs, ctx);
 	uint32_t taddr = tacbuffer_last_dest(buffer);
 
-	tacbuffer_append(buffer, makeTACStore(taddr, texpr, width));
+	tacbuffer_append(buffer, makeTACStore(taddr, texpr, m->lhs->load_store_width));
 }
 
 void tac_massignstmt(struct TACBuffer* buffer, struct MAssignStmt* m, struct Ctx* ctx) {

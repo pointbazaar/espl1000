@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "parser/main/util/parse_astnode.h"
 
@@ -134,21 +135,44 @@ static int handle_assignment_operator(struct AssignStmt* res, int token_key, cha
 		return 0;
 	}
 
-	char op[4];
-	strcpy(op, assign_op);
-	op[strlen(op) - 1] = '\0';
+	enum OP myop;
 
-	struct TokenList* tkl = makeTokenList();
-	list_add(tkl, makeToken2(token_key, op));
+	switch (token_key) {
+		case ASSIGNOP_PLUS:
+			myop = OP_PLUS;
+			break;
+		case ASSIGNOP_MINUS:
+			myop = OP_MINUS;
+			break;
+		case ASSIGNOP_SHIFT_LEFT:
+			myop = OP_SHIFT_LEFT;
+			break;
+		case ASSIGNOP_SHIFT_RIGHT:
+			myop = OP_SHIFT_RIGHT;
+			break;
+		case ASSIGNOP_BITWISE_AND:
+			myop = OP_AND;
+			break;
+		case ASSIGNOP_BITWISE_OR:
+			myop = OP_OR;
+			break;
+		default: {
+			char op[4];
+			assert(assign_op);
+			strcpy(op, assign_op);
+			op[strlen(op) - 1] = '\0';
 
-	enum OP myop = makeOp(tkl);
+			struct TokenList* tkl = makeTokenList();
+			list_add(tkl, makeToken2(token_key, op));
 
-	if (myop == OP_NONE) {
-		fprintf(stderr, "could not convert token_key=%d, '%s' into op\n", token_key, op);
-		return -1;
+			myop = makeOp(tkl);
+			freeTokenList(tkl);
+			if (myop == OP_NONE) {
+				fprintf(stderr, "could not convert token_key=%d, '%s' into op\n", token_key, op);
+			}
+			return -1;
+		}
 	}
-
-	freeTokenList(tkl);
 
 	struct UnOpTerm* uop1 = convert_left(res->var);
 

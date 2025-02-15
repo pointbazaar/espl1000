@@ -147,7 +147,8 @@
 	<a id="simplevar">SimpleVar</a> ::= Id ('[' <a href="#expr">Expr</a> ']')*
 	<br><br>
 
-	<a id="mdirect">MDirect</a> ::= '[' <a href="#expr">Expr</a> ']'
+	<!-- The IntConst is used to determine the width of the load/store -->
+	<a id="mdirect">MDirect</a> ::= '[' <a href="#expr">Expr</a>, IntConst ']'
 	<br><br>
 
 	<h2>Const</h2>

@@ -7,18 +7,22 @@
 #include "../../util/exit_malloc/exit_malloc.h"
 
 struct Token* makeToken(int kind) {
-	return makeToken2(kind, "");
+	return makeToken2(kind, NULL);
 }
 
 struct Token* makeToken2(int kind, char* value) {
 
 	struct Token* res = exit_malloc(sizeof(struct Token));
 
+	res->line_num = 1;
 	res->kind = kind;
+	res->value_ptr = NULL;
 
-	res->value_ptr = exit_malloc(sizeof(char) * (strlen(value) + 1));
+	if (value) {
+		res->value_ptr = exit_malloc(sizeof(char) * (strlen(value) + 1));
 
-	strcpy(res->value_ptr, value);
+		strcpy(res->value_ptr, value);
+	}
 
 	res->line_num--;
 

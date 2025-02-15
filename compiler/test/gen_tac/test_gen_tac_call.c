@@ -137,7 +137,7 @@ void test_gen_tac_call_case_1_args_write_8bit() {
 	const uint8_t expected = 0xab;
 
 	char snippet[200];
-	char* template = "fn main()->int{ f(%d); return 0; } fn f(uint8 a)->int { [0x100]=a; return 0; }";
+	char* template = "fn main()->int{ f(%d); return 0; } fn f(uint8 a)->int { [0x100, 1]=a; return 0; }";
 	sprintf(snippet, template, expected);
 
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
@@ -158,7 +158,7 @@ void test_gen_tac_call_case_1_args_write_16bit() {
 	const uint16_t expected = 0x5973;
 
 	char snippet[200];
-	char* template = "fn main()->int{ f(%d); return 0; } fn f(uint16 a)->int { [0x100]=a; return 0; }";
+	char* template = "fn main()->int{ f(%d); return 0; } fn f(uint16 a)->int { [0x100, 2]=a; return 0; }";
 	sprintf(snippet, template, expected);
 
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
@@ -184,7 +184,7 @@ void test_gen_tac_call_case_1_args_write_3fns() {
 	const uint8_t expected = (0x20) | 0x1;
 
 	char snippet[200];
-	char* template = "fn main()->int{ return f1(%d); } fn f1(uint8 a)->int {return f2(a);} fn f2 (uint8 b)->int{ [0x101]=b; return 0; }";
+	char* template = "fn main()->int{ return f1(%d); } fn f1(uint8 a)->int {return f2(a);} fn f2 (uint8 b)->int{ [0x101, 1]=b; return 0; }";
 	sprintf(snippet, template, expected);
 
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);

@@ -93,6 +93,8 @@ int term_test_mdirect() {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken(LBRACKET));
 	list_add(list, makeToken2(ID, "y"));
+	list_add(list, makeToken(COMMA));
+	list_add(list, makeToken2(INTEGER, "1"));
 	list_add(list, makeToken(RBRACKET));
 
 	struct Term* t = makeTerm(list);

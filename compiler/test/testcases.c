@@ -408,8 +408,10 @@ void (*tests_tac_codegen[])() = {
     test_gen_tac_assignstmt_case_local_array,
 
     // massign stmt
-    test_gen_tac_massignstmt_case_const_addr,
-    test_gen_tac_massignstmt_case_variable_addr,
+    test_gen_tac_massignstmt_case_const_addr_1_byte,
+    test_gen_tac_massignstmt_case_const_addr_2_byte,
+    test_gen_tac_massignstmt_case_variable_addr_1_byte,
+    test_gen_tac_massignstmt_case_variable_addr_2_byte,
 
     // expr
     test_gen_tac_expr_plus,

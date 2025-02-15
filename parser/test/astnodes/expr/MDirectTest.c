@@ -15,6 +15,8 @@ bool mdirect_test_1() {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken(LBRACKET));
 	list_add(list, makeToken2(ID, "yx"));
+	list_add(list, makeToken(COMMA));
+	list_add(list, makeToken2(INTEGER, "1"));
 	list_add(list, makeToken(RBRACKET));
 
 	struct MDirect* m = makeMDirect(list);

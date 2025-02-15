@@ -3,17 +3,17 @@ fn main () ~> int {
 	//set D13 / PB5
 
 	//set PORTB Data Direction Register
-	[0x24] = 0b00100000;
-	
+	[0x24, 1] = 0b00100000;
+
 	while(true){
 		//set PORTB Data Register
-		[0x25] = 0b00000000;
-		
+		[0x25, 1] = 0b00000000;
+
 		//wait
 		delay255();
-		
-		[0x25] = 0b00100000;
-		
+
+		[0x25, 1] = 0b00100000;
+
 		//wait
 		delay255();
 	}

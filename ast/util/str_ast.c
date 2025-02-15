@@ -426,8 +426,8 @@ char* str_term(struct Term* t) {
 char* str_mdirect(struct MDirect* m) {
 
 	char* se = str_expr(m->expr);
-	char* res = exit_malloc(3 + strlen(se));
-	sprintf(res, "[%s]", se);
+	char* res;
+	asprintf(&res, "[%s, %d]", se, m->load_store_width);
 
 	free(se);
 	return res;
