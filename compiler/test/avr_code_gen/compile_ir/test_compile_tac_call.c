@@ -95,8 +95,3 @@ void test_compile_tac_call_case_returns_value_16bit() {
 
 	vmcu_system_dtor(system);
 }
-
-void test_compile_tac_call_case_1_param() {
-
-	status_test_codegen("TAC_CALL - 1 param [TODO]");
-}

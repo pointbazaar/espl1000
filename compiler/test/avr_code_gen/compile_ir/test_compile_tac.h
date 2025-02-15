@@ -96,7 +96,6 @@ void test_compile_tac_param_case_16bit();
 void test_compile_tac_call_case_recurses();
 void test_compile_tac_call_case_returns_value_8bit();
 void test_compile_tac_call_case_returns_value_16bit();
-void test_compile_tac_call_case_1_param();
 
 // TAC_LOAD
 void test_compile_tac_load_case_8bit_addr_8bit_value();

@@ -372,7 +372,6 @@ void (*tests_avr_codegen[])() = {
     test_compile_tac_call_case_recurses,
     test_compile_tac_call_case_returns_value_8bit,
     test_compile_tac_call_case_returns_value_16bit,
-    test_compile_tac_call_case_1_param,
 
     // TAC_SETUP_STACKFRAME
     test_compile_tac_setup_stackframe,
