@@ -49,17 +49,16 @@ void test_gen_tac_assignstmt_case_local_int_16bit() {
 
 void test_gen_tac_assignstmt_case_local_struct() {
 
-	status_test_codegen_tac("AssignStmt - local struct [TODO]");
-	return;
+	status_test_codegen_tac("AssignStmt - local struct");
 
 	const int8_t value = 0x23;
 
 	char snippet[200];
-	sprintf(snippet, "struct A {int x;}; fn main() -> int { A m; m.x = %d; return m.x; }", value);
+	sprintf(snippet, "struct A {int x;} fn main() -> int { local A m; m.x = %d; return m.x; }", value);
 
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
-	vmcu_system_step_n(system, 20);
+	vmcu_system_step_n(system, 40);
 
 	//assert that value is returned in r0 as it should be
 
