@@ -20,7 +20,7 @@ for test_file in $(find . -name '*.dg'); do
 	expected_exit=$(cat "$expected_exit_file")
 
 	# Compile the test
-	sd -x86 "$test_file"
+	sd -x86 -o /tmp/program "$test_file"
 	if [ $? -ne 0 ]; then
 		echo "Compile failed for $test_file"
 		FAIL=$((FAIL + 1))

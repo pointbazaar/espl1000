@@ -9,31 +9,25 @@
 #include "flags.h"
 #include "validate_flags.h"
 
-static bool check_dg_extension(char* filename);
+static bool check_file_exists(char* filename) {
 
-static void check_file_exists(char* filename);
-
-void validate_flags(struct Flags* flags) {
-
-	if (flags_count_filenames(flags) == 0) {
-
-		printf("expected at least 1 filename\n");
-
-		freeFlags(flags);
-		exit(1);
+	//check if the file actually exists
+	struct stat mystat;
+	if (stat(filename, &mystat) == -1) {
+		fprintf(stderr, "error in check_file_exists: filename: %s\n", filename);
+		fflush(stdout);
+		perror("Error: ");
+		return false;
 	}
 
-	for (int i = 0; i < flags_count_filenames(flags); i++) {
-
-		char* filename = flags_filenames(flags, i);
-
-		check_file_exists(filename);
-
-		if (!check_dg_extension(filename)) {
-			freeFlags(flags);
-			exit(1);
-		}
+	mode_t mode = mystat.st_mode;
+	if (!S_ISREG(mode)) {
+		//not a regular file
+		fprintf(stderr, "Error: %s is not a regular file.\n", filename);
+		return false;
 	}
+
+	return true;
 }
 
 static bool check_dg_extension(char* filename) {
@@ -47,23 +41,25 @@ static bool check_dg_extension(char* filename) {
 	return true;
 }
 
-static void check_file_exists(char* filename) {
+bool validate_flags(struct Flags* flags) {
 
-	//check if the file actually exists
-	struct stat mystat;
-	if (stat(filename, &mystat) == -1) {
-		fprintf(stderr, "error in check_file_exists: filename: %s\n", filename);
-		fflush(stdout);
-		perror("Error: ");
-		//freeFlags(flags);
-		exit(1);
+	if (flags_count_filenames(flags) == 0) {
+
+		printf("expected at least 1 filename\n");
+
+		return false;
 	}
 
-	mode_t mode = mystat.st_mode;
-	if (!S_ISREG(mode)) {
-		//not a regular file
-		fprintf(stderr, "Error: %s is not a regular file.\n", filename);
-		//freeFlags(flags);
-		exit(1);
+	for (int i = 0; i < flags_count_filenames(flags); i++) {
+
+		char* filename = flags_filenames(flags, i);
+
+		check_file_exists(filename);
+
+		if (!check_dg_extension(filename)) {
+			return false;
+		}
 	}
+
+	return true;
 }
