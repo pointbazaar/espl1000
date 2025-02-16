@@ -148,15 +148,38 @@ uint32_t tac_param_index(struct TAC* tac) {
 
 int32_t tac_max_temp(struct TAC* tac) {
 
-	//TODO: check if it's safe
-	// to access 'arg1' and 'dest'
-	int32_t opt_dest = tac->dest;
-	uint64_t opt_arg1 = tac->arg1;
+	switch (tac->kind) {
+		case TAC_CALL:
+		case TAC_ICALL:
+		case TAC_IF_CMP_GOTO:
+		case TAC_BINARY_OP:
+		case TAC_UNARY_OP:
+		case TAC_COPY:
+		case TAC_LOAD:
+		case TAC_STORE:
+			return (tac->dest > tac->arg1) ? tac->dest : tac->arg1;
+		case TAC_PARAM:
+		case TAC_RETURN:
+		case TAC_LOAD_LOCAL_ADDR:
+		case TAC_LOAD_FUNCTION_PTR:
+		case TAC_CONST_VALUE:
+			return tac->dest;
+		case TAC_IF_GOTO:
+		case TAC_STORE_LOCAL:
+			return tac->arg1;
+		case TAC_SETUP_STACKFRAME:
+		case TAC_SETUP_SP:
+		case TAC_LABEL_FUNCTION:
+		case TAC_GOTO:
+		case TAC_LABEL_INDEXED:
+		case TAC_NOP:
+			return 0;
 
-	if (opt_dest > opt_arg1) {
-		return opt_dest;
+		default:
+			fprintf(stderr, "%s: unexpected case %u\n", __func__, tac->kind);
+			exit(1);
+			return 0;
 	}
-	return opt_arg1;
 }
 
 bool tac_may_branch_to_label(struct TAC* tac) {
@@ -205,10 +228,10 @@ bool tac_needs_register(struct TAC* tac) {
 	}
 }
 
-static void check_bounds(uint64_t index, size_t size) {
+static void check_bounds(enum TAC_KIND kind, uint64_t index, size_t size) {
 
 	if (index >= size) {
-		fprintf(stderr, "%ld (>= %ld) is out of bounds\n", index, size);
+		fprintf(stderr, "%s: %d: %ld (>= %ld) is out of bounds\n", __func__, kind, index, size);
 		exit(1);
 	}
 }
@@ -218,7 +241,7 @@ int tac_mark_used(struct TAC* tac, bool* used_map, size_t map_size) {
 	switch (tac->kind) {
 		case TAC_PARAM:
 		case TAC_RETURN:
-			check_bounds(tac->dest, map_size);
+			check_bounds(tac->kind, tac->dest, map_size);
 			used_map[tac->dest] = true;
 			return 0;
 			break;
@@ -227,15 +250,15 @@ int tac_mark_used(struct TAC* tac, bool* used_map, size_t map_size) {
 		case TAC_LOAD:
 		case TAC_UNARY_OP:
 		case TAC_COPY:
-			check_bounds(tac->arg1, map_size);
+			check_bounds(tac->kind, tac->arg1, map_size);
 			used_map[tac->arg1] = true;
 			return 0;
 			break;
 		case TAC_BINARY_OP:
 		case TAC_IF_CMP_GOTO:
 		case TAC_STORE:
-			check_bounds(tac->dest, map_size);
-			check_bounds(tac->arg1, map_size);
+			check_bounds(tac->kind, tac->dest, map_size);
+			check_bounds(tac->kind, tac->arg1, map_size);
 			used_map[tac->dest] = true;
 			used_map[tac->arg1] = true;
 			return 0;
@@ -287,7 +310,7 @@ int tac_mark_defines(struct TAC* tac, bool* defines_map, size_t map_size) {
 		case TAC_LOAD_FUNCTION_PTR:
 		case TAC_CONST_VALUE:
 		case TAC_ICALL:
-			check_bounds(tac->dest, map_size);
+			check_bounds(tac->kind, tac->dest, map_size);
 			defines_map[tac->dest] = true;
 			return 0;
 			break;

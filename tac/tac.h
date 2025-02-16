@@ -112,8 +112,8 @@ uint32_t tac_param_index(struct TAC* tac);
 //           used in this IR statement
 //           e.g. t4 += t7  -> 7
 //           e.g. t0 = 0x83 -> 0
-//           e.g. setup SP  -> -1
-// @returns  -1 if no IR temporary was used
+//           e.g. setup SP  -> 0
+// @returns  0 if no IR temporary was used
 int32_t tac_max_temp(struct TAC* tac);
 
 // @returns   true if this IR statement may alter control flow
