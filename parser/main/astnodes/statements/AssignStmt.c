@@ -125,6 +125,28 @@ static struct UnOpTerm* convert_right(struct Expr* expr) {
 	return uop2;
 }
 
+// @returns OP_NONE in error case
+static enum OP assignop_to_op(int token_key) {
+
+	switch (token_key) {
+		case ASSIGNOP_PLUS:
+			return OP_PLUS;
+		case ASSIGNOP_MINUS:
+			return OP_MINUS;
+		case ASSIGNOP_SHIFT_LEFT:
+			return OP_SHIFT_LEFT;
+		case ASSIGNOP_SHIFT_RIGHT:
+			return OP_SHIFT_RIGHT;
+		case ASSIGNOP_BITWISE_AND:
+			return OP_AND;
+		case ASSIGNOP_BITWISE_OR:
+			return OP_OR;
+		default:
+			fprintf(stderr, "%s: could not convert from assignop=%d, into op\n", __func__, token_key);
+			return OP_NONE;
+	}
+}
+
 static int handle_assignment_operator(struct AssignStmt* res, int token_key, char* assign_op) {
 
 	//in case assign_op != "=",
@@ -135,43 +157,10 @@ static int handle_assignment_operator(struct AssignStmt* res, int token_key, cha
 		return 0;
 	}
 
-	enum OP myop;
+	enum OP myop = assignop_to_op(token_key);
 
-	switch (token_key) {
-		case ASSIGNOP_PLUS:
-			myop = OP_PLUS;
-			break;
-		case ASSIGNOP_MINUS:
-			myop = OP_MINUS;
-			break;
-		case ASSIGNOP_SHIFT_LEFT:
-			myop = OP_SHIFT_LEFT;
-			break;
-		case ASSIGNOP_SHIFT_RIGHT:
-			myop = OP_SHIFT_RIGHT;
-			break;
-		case ASSIGNOP_BITWISE_AND:
-			myop = OP_AND;
-			break;
-		case ASSIGNOP_BITWISE_OR:
-			myop = OP_OR;
-			break;
-		default: {
-			char op[4];
-			assert(assign_op);
-			strcpy(op, assign_op);
-			op[strlen(op) - 1] = '\0';
-
-			struct TokenList* tkl = makeTokenList();
-			list_add(tkl, makeToken2(token_key, op));
-
-			myop = makeOp(tkl);
-			freeTokenList(tkl);
-			if (myop == OP_NONE) {
-				fprintf(stderr, "could not convert token_key=%d, '%s' into op\n", token_key, op);
-			}
-			return -1;
-		}
+	if (myop == OP_NONE) {
+		return -1;
 	}
 
 	struct UnOpTerm* uop1 = convert_left(res->var);
