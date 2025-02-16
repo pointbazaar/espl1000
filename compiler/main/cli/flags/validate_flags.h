@@ -1,6 +1,6 @@
-#ifndef VALIDATE_FLAGS_H
-#define VALIDATE_FLAGS_H
+#pragma once
 
-void validate_flags(struct Flags* flags);
+#include <stdbool.h>
 
-#endif
+// @returns   true on successful validation
+bool validate_flags(struct Flags* flags);

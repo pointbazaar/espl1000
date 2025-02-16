@@ -32,6 +32,10 @@ int main(int argc, char* argv[]) {
 
 	struct Flags* flags = makeFlags(argc, argv);
 
+	if (!flags) {
+		return EXIT_FAILURE;
+	}
+
 	if (!check_filenames_lowercase(flags)) {
 		return EXIT_FAILURE;
 	}

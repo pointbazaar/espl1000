@@ -143,8 +143,10 @@ bool compile(struct Flags* flags) {
 	if (flags_x86(flags) && !flags_nolink(flags)) {
 
 		char* link_cmd = NULL;
-		asprintf(&link_cmd, "ld -o /tmp/program %s", flags_obj_filename(flags));
-		printf("%s\n", link_cmd);
+		asprintf(&link_cmd, "ld -o %s %s", flags_output_filename(flags), flags_obj_filename(flags));
+		if (flags_debug(flags)) {
+			printf("%s\n", link_cmd);
+		}
 		status = system(link_cmd);
 
 		free(link_cmd);

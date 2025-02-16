@@ -29,6 +29,8 @@ vmcu_system_t* prepare_vmcu_system_from_code_snippet(char* code_snippet) {
 	int argc = 2;
 	struct Flags* flags = makeFlags(argc, argv);
 
+	assert(flags);
+
 	compile(flags);
 
 	vmcu_model_t* model = vmcu_model_ctor(VMCU_DEVICE_M328P);

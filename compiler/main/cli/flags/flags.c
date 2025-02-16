@@ -34,6 +34,26 @@ struct Flags {
 	struct Flag* all_flags;
 };
 
+// this should fall back to the default for that flag
+// @returns flag arg. may be NULL
+static char* flags_arg(struct Flags* flags, char* name) {
+
+	for (size_t i = 0; i < all_flags_count(); i++) {
+		struct Flag* f = &(flags->all_flags[i]);
+		if (strcmp(f->name, name) != 0) {
+			continue;
+		}
+		if (!f->has_arg) {
+			return NULL;
+		}
+		if (!f->is_set) {
+			return f->arg_default_value;
+		}
+		return f->arg;
+	}
+	return NULL;
+}
+
 static bool flags_set(struct Flags* flags, char* name) {
 
 	for (size_t i = 0; i < all_flags_count(); i++) {
@@ -45,12 +65,23 @@ static bool flags_set(struct Flags* flags, char* name) {
 	return false;
 }
 
+static void sd_print_flag(struct Flag* f) {
+
+	char* arg_str = "";
+	if (f->has_arg) {
+		arg_str = "${ARG}";
+	}
+	printf(" -%-16s %6s %s\n", f->name, arg_str, f->description);
+
+	if (f->arg_default_value) {
+		printf("%25s DEFAULT VALUE: %s\n", "", f->arg_default_value);
+	}
+}
+
 static void sd_print_flags() {
 
 	for (size_t i = 0; i < all_flags_count(); i++) {
-		struct Flag* f = &(all_flags[i]);
-
-		printf(" -%-20s %s\n", f->name, f->description);
+		sd_print_flag(&(all_flags[i]));
 	}
 }
 
@@ -63,7 +94,6 @@ void sd_print_help() {
 
 	printf("\nEXAMPLES\n");
 	printf("%s main.dg\n", name);
-	printf("%s -debug main.dg\n", name);
 }
 
 static char* filename_no_extension(char* filename) {
@@ -118,7 +148,41 @@ static char* make_token_filename(char* filename) {
 	return token_filename;
 }
 
-static void make_flags_inner(struct Flags* flags, char* arg);
+// @returns number of args consumed
+// @returns -1     in error case
+static int make_flags_inner(struct Flags* flags, size_t i, size_t argc, char** argv) {
+
+	char* arg = argv[i];
+
+	if (arg[0] != '-') {
+
+		flags->filenames[flags->count_filenames] = arg;
+		flags->count_filenames += 1;
+		return 1;
+	}
+
+	for (size_t j = 0; j < all_flags_count(); j++) {
+		struct Flag* f = &(flags->all_flags[j]);
+
+		if (strcmp(arg + 1, f->name) != 0) {
+			continue;
+		}
+
+		f->is_set = true;
+		if (!f->has_arg) {
+			return 1;
+		}
+		if (i + 1 >= argc) {
+			fprintf(stderr, "flag '-%s' expects argument, it was not provided\n", f->name);
+			return -1;
+		}
+		f->arg = argv[i + 1];
+		return 2;
+	}
+
+	fprintf(stderr, "unrecognized flag: '%s'\n", arg);
+	return -1;
+}
 
 static void make_associated_filenames(struct Flags* flags) {
 
@@ -142,15 +206,26 @@ struct Flags* makeFlags(int argc, char** argv) {
 	flags->capacity_filenames = argc;
 	flags->filenames = exit_malloc(sizeof(char*) * argc);
 
-	for (int i = 1; i < argc; i++) {
-		make_flags_inner(flags, argv[i]);
+	int i = 1;
+	while (i < argc) {
+		int consumed = make_flags_inner(flags, i, argc, argv);
+		if (consumed < 0) {
+			return NULL;
+		}
+
+		i += consumed;
 	}
 
 	if (flags_set(flags, "help") || flags_set(flags, "version") || flags_set(flags, "rat")) {
 		return flags;
 	}
 
-	validate_flags(flags);
+	bool success = validate_flags(flags);
+
+	if (!success) {
+		freeFlags(flags);
+		return false;
+	}
 
 	make_associated_filenames(flags);
 
@@ -161,29 +236,6 @@ struct Flags* makeFlagsSingleFile(char* filename) {
 
 	char* argv[] = {"program", filename};
 	return makeFlags(2, argv);
-}
-
-static void make_flags_inner(struct Flags* flags, char* arg) {
-
-	if (arg[0] != '-') {
-
-		flags->filenames[flags->count_filenames] = arg;
-		flags->count_filenames += 1;
-		return;
-	}
-
-	for (size_t i = 0; i < all_flags_count(); i++) {
-		struct Flag* f = &(flags->all_flags[i]);
-
-		if (strcmp(arg + 1, f->name) == 0) {
-			f->is_set = true;
-			return;
-		}
-	}
-
-	fprintf(stderr, "unrecognized flag: '%s'\n", arg);
-	fprintf(stderr, "exiting.\n");
-	exit(1);
 }
 
 void freeFlags(struct Flags* flags) {
@@ -238,6 +290,10 @@ bool flags_nolink(struct Flags* flags) {
 }
 bool flags_rat(struct Flags* flags) {
 	return flags_set(flags, "rat");
+}
+char* flags_output_filename(struct Flags* flags) {
+
+	return flags_arg(flags, "o");
 }
 
 char* flags_asm_filename(struct Flags* flags) {
