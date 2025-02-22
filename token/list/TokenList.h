@@ -8,6 +8,7 @@ struct Token;
 struct TokenList;
 
 struct TokenList* makeTokenList();
+// @returns NULL on error
 struct TokenList* makeTokenList2(char* filename);
 
 void list_add(struct TokenList* list, struct Token* token);
@@ -22,13 +23,15 @@ bool list_expect(struct TokenList* list, int token_kind);
 
 struct TokenList* list_copy(struct TokenList* list);
 
-void list_set(struct TokenList* list, struct TokenList* other);
+// @returns false on error
+bool list_set(struct TokenList* list, struct TokenList* other);
 
 struct Token* list_get(struct TokenList* list, int i);
 struct Token* list_head(struct TokenList* list);
 struct Token* list_head_without_annotations(struct TokenList* list);
 int list_size(struct TokenList* list);
 
+// @returns NULL on error
 char* list_code(struct TokenList* list);
 
 void list_print(struct TokenList* list);

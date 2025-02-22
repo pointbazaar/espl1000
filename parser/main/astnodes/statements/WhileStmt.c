@@ -26,8 +26,7 @@ struct WhileStmt* makeWhileStmt(struct TokenList* tokens) {
 
 	if (!list_expect(copy, WHILE)) {
 		//this part can be parsed deterministically
-		printf("expected 'while', but was: %s\n", list_code(copy));
-		exit(1);
+		fprintf(stderr, "expected 'while', but was: %s\n", list_code(copy));
 		return NULL;
 	}
 

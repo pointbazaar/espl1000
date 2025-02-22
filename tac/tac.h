@@ -89,14 +89,18 @@ enum TAC_KIND {
 int32_t tac_opt_dest(struct TAC* tac);
 
 // protected member access
-uint32_t tac_dest(struct TAC* tac);
+// @returns < 0 on error
+int32_t tac_dest(struct TAC* tac);
 // protected member access
-uint64_t tac_arg1(struct TAC* tac);
+// @returs < 0 on error
+int64_t tac_arg1(struct TAC* tac);
 // protected member access
 int64_t tac_const_value(struct TAC* tac);
 // protected member access
-uint32_t tac_label_index(struct TAC* tac);
+// @returns < 0 on error
+int32_t tac_label_index(struct TAC* tac);
 // protected member access
+// @return TAC_OP_NONE on error
 enum TAC_OP tac_op(struct TAC* tac);
 // protected member access
 enum TAC_KIND tac_kind(struct TAC* tac);
@@ -114,6 +118,7 @@ uint32_t tac_param_index(struct TAC* tac);
 //           e.g. t0 = 0x83 -> 0
 //           e.g. setup SP  -> 0
 // @returns  0 if no IR temporary was used
+// @returns < 0 on error
 int32_t tac_max_temp(struct TAC* tac);
 
 // @returns   true if this IR statement may alter control flow
@@ -143,4 +148,5 @@ int tac_mark_defines(struct TAC* tac, bool* defines_map, size_t map_size);
 
 bool tac_is_unconditional_jump(struct TAC* tac);
 
+// @returns NULL on error
 char* tac_tostring(struct TAC* tac, struct SST* sst, struct LVST* lvst);

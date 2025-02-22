@@ -22,8 +22,10 @@
 // --- private subroutines ---
 
 struct Term* initTerm();
-void tryInitExpr(struct Term* res, struct TokenList* copy);
-void tryInitStringConst(struct Term* res, struct TokenList* copy);
+
+// @returns false on failure
+static bool tryInitExpr(struct Term* res, struct TokenList* copy);
+static bool tryInitStringConst(struct Term* res, struct TokenList* copy);
 // ---------------------------
 
 struct Term* makeTerm_other(struct Expr* expr) {
@@ -52,19 +54,23 @@ struct Term* makeTerm(struct TokenList* tokens) {
 
 	if (tk_kind == LPARENS) {
 
-		tryInitExpr(res, copy);
+		if (!tryInitExpr(res, copy)) {
+			free(res);
+			freeTokenListShallow(copy);
+			return NULL;
+		}
 
 	} else if (tk_kind == STRINGCONST) {
 
-		tryInitStringConst(res, copy);
+		if (!tryInitStringConst(res, copy)) {
+			return NULL;
+		}
 
 	} else if (tk_kind == LBRACKET) {
 
 		res->ptr.m13 = makeMDirect(copy);
 		if (res->ptr.m13 == NULL) {
-			free(res);
-			freeTokenListShallow(copy);
-			return NULL;
+			goto exit_error;
 		}
 		res->kind = 13;
 
@@ -91,7 +97,7 @@ other_term:
 		res->kind = 6;
 		goto end;
 	}
-
+exit_error:
 	free(res);
 	freeTokenListShallow(copy);
 	return NULL;
@@ -113,7 +119,7 @@ struct Term* initTerm() {
 	return res;
 }
 
-void tryInitExpr(struct Term* res, struct TokenList* copy) {
+static bool tryInitExpr(struct Term* res, struct TokenList* copy) {
 
 	list_consume(copy, 1);
 
@@ -124,18 +130,20 @@ void tryInitExpr(struct Term* res, struct TokenList* copy) {
 		freeTokenListShallow(copy);
 		printf("expected an Expression, but got :");
 		list_print(copy);
-		exit(1);
+		return false;
 	}
 
 	if (!list_expect(copy, RPARENS)) {
 		//this part can be parsed deterministically
 		printf("expected ')', but was: ");
 		list_print(copy);
-		exit(1);
+		return false;
 	}
+
+	return true;
 }
 
-void tryInitStringConst(struct Term* res, struct TokenList* copy) {
+static bool tryInitStringConst(struct Term* res, struct TokenList* copy) {
 
 	res->kind = 8;
 	res->ptr.m8 = makeStringConst(copy);
@@ -147,6 +155,8 @@ void tryInitStringConst(struct Term* res, struct TokenList* copy) {
 		free(res);
 		freeTokenListShallow(copy);
 
-		exit(1);
+		return false;
 	}
+
+	return true;
 }

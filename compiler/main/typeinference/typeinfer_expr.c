@@ -22,9 +22,8 @@ static struct Type* infer_type_expr_primitive(struct ST* st, struct Expr2Types* 
 static struct Type* infer_type_expr_both_tparam(struct ST* st, struct TypeParam* tp1, enum OP op, struct TypeParam* tp2);
 
 static void typeinfer_err_fatal(char* opt_str) {
-	printf("%s\n", opt_str);
-	printf("[Typeinference][Error] Fatal. (in typeinfer_expr.c). Exiting.\n");
-	exit(1);
+	fprintf(stderr, "%s\n", opt_str);
+	fprintf(stderr, "[Typeinference][Error] Fatal. (in typeinfer_expr.c).\n");
 }
 
 struct Type* infer_type_expr(struct ST* st, struct Expr* expr) {
@@ -47,6 +46,7 @@ struct Type* infer_type_expr(struct ST* st, struct Expr* expr) {
 
 	if (btw1 == NULL || btw2 == NULL) {
 		typeinfer_err_fatal(str_expr(expr));
+		return NULL;
 	}
 
 	struct SimpleType* st1 = btw1->simple_type;
@@ -54,6 +54,7 @@ struct Type* infer_type_expr(struct ST* st, struct Expr* expr) {
 
 	if (st1 == NULL || st2 == NULL) {
 		typeinfer_err_fatal(str_expr(expr));
+		return NULL;
 	}
 
 	bool p1 = st1->primitive_type != NULL;
@@ -61,6 +62,7 @@ struct Type* infer_type_expr(struct ST* st, struct Expr* expr) {
 
 	if (!p1 || !p2) {
 		typeinfer_err_fatal(str_expr(expr));
+		return NULL;
 	}
 
 	struct Expr2Types e2t = {
@@ -77,6 +79,7 @@ static struct Type* infer_type_expr_both_tparam(struct ST* st, struct TypeParam*
 
 	if (!same_type) {
 		typeinfer_err_fatal(str_op(op));
+		return NULL;
 	}
 
 	if (op == OP_EQ || op == OP_NEQ || op == OP_GE || op == OP_GT || op == OP_LE || op == OP_LT) { return typeFromStrPrimitive(st, "bool"); }

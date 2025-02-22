@@ -1,5 +1,6 @@
-#ifndef VISITOR_H
-#define VISITOR_H
+#pragma once
+
+#include <stdbool.h>
 
 /* this header defines a function which applies the
  * Visitor Pattern to the AST. instead of walking through
@@ -68,14 +69,14 @@ enum NODE_TYPE {
 	NODE_TYPEPARAM,
 };
 
-void visit_ast(struct AST* ast, VISITOR, ARG);
+bool visit_ast(struct AST* ast, VISITOR, ARG);
 
-void visit_namespace(struct Namespace* n, VISITOR, ARG);
+bool visit_namespace(struct Namespace* n, VISITOR, ARG);
 
-void visit_method(struct Method* m, VISITOR, ARG);
+bool visit_method(struct Method* m, VISITOR, ARG);
 void visit_struct_decl(struct StructDecl* s, VISITOR, ARG);
 
-void visit_stmt_block(struct StmtBlock* s, VISITOR, ARG);
+bool visit_stmt_block(struct StmtBlock* s, VISITOR, ARG);
 
 //c_types_util
 void visit_type(struct Type* t, VISITOR, ARG);
@@ -86,5 +87,3 @@ void visit_simple_type(struct SimpleType* s, VISITOR, ARG);
 void visit_primitive_type(struct PrimitiveType* p, VISITOR, ARG);
 void visit_struct_type(struct StructType* s, VISITOR, ARG);
 void visit_type_param(struct TypeParam* t, VISITOR, ARG);
-
-#endif

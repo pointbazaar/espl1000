@@ -24,8 +24,7 @@ struct Type* infer_type_term(struct ST* st, struct Term* t) {
 		case 8: return typeFromStrArray(st, "char");
 		case 11:
 			printf("cannot infer type of lambda");
-			printf("[Typeinference][Error] Fatal. (in typeinfer_term.c). Exiting.\n");
-			exit(1);
+			printf("[Typeinference][Error] Fatal. (in typeinfer_term.c).\n");
 			return NULL;
 
 		case 12: return infer_type_constvalue(st, t->ptr.m12);
@@ -34,8 +33,7 @@ struct Type* infer_type_term(struct ST* st, struct Term* t) {
 		case 13: return typeFromStrPrimitive(st, "uint8");
 
 		default:
-			printf("[Typeinference][Error] Fatal. (in typeinfer_term.c). Exiting.\n");
-			exit(1);
+			printf("[Typeinference][Error] Fatal. (in typeinfer_term.c).\n");
 			return NULL;
 	}
 }

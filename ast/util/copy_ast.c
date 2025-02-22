@@ -100,8 +100,8 @@ struct Term* copy_term(struct Term* t) {
 		case 12: res->ptr.m12 = copy_const_value(t->ptr.m12); break;
 		case 13: res->ptr.m13 = copy_mdirect(t->ptr.m13); break;
 		default:
-			printf("[AST][Error] copy_term(...), kind was: %d\n", t->kind);
-			exit(1);
+			fprintf(stderr, "[AST][Error] copy_term(...), kind was: %d\n", t->kind);
+			return NULL;
 	}
 
 	return res;

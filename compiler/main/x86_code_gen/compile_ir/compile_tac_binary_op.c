@@ -19,7 +19,7 @@ static void case_cmp_eq(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int
 
 static int label_counter = 0;
 
-void compile_tac_binary_op_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
+bool compile_tac_binary_op_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
 
@@ -48,9 +48,10 @@ void compile_tac_binary_op_x86(struct RAT* rat, struct TAC* tac, struct IBuffer*
 
 		default:
 			fprintf(stderr, "%s: unsupported op: %d\n", __func__, tac_op(tac));
-			exit(1);
-			break;
+			return false;
 	}
+
+	return true;
 }
 
 static void case_shift(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {

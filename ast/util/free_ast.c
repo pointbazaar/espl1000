@@ -116,7 +116,7 @@ void free_struct_member(struct StructMember* sm) {
 	free(sm->name);
 	free(sm);
 }
-void free_term(struct Term* t) {
+bool free_term(struct Term* t) {
 
 	switch (t->kind) {
 		case 4: free_call(t->ptr.m4); break;
@@ -126,12 +126,14 @@ void free_term(struct Term* t) {
 		case 12: free_const_value(t->ptr.m12); break;
 		case 13: free_mdirect(t->ptr.m13); break;
 		default:
-			printf("Error in free_term(...)\n");
+			fprintf(stderr, "Error in free_term(...)\n");
 			free(t);
-			exit(1);
+			return false;
 	}
 	free(t);
+	return true;
 }
+
 void free_un_op_term(struct UnOpTerm* t) {
 
 	free_term(t->term);
@@ -192,7 +194,7 @@ void free_ret_stmt(struct RetStmt* rs) {
 	free(rs);
 }
 
-void free_stmt(struct Stmt* s) {
+bool free_stmt(struct Stmt* s) {
 
 	switch (s->kind) {
 
@@ -222,11 +224,12 @@ void free_stmt(struct Stmt* s) {
 			free_local_var_decl_stmt(s->ptr.m10);
 			break;
 		default:
-			printf("Error in free_stmt\n");
+			fprintf(stderr, "Error in free_stmt: unhandled: %d\n", s->kind);
 			free(s);
-			exit(1);
+			return false;
 	}
 	free(s);
+	return true;
 }
 
 void free_while_stmt(struct WhileStmt* ws) {

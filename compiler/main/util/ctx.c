@@ -73,31 +73,30 @@ void ctx_enter_loop(struct Ctx* ctx, uint32_t label_start, uint32_t label_end) {
 	ctx->loop_depth++;
 }
 
-void ctx_exit_loop(struct Ctx* ctx) {
+bool ctx_exit_loop(struct Ctx* ctx) {
 	if (ctx->loop_depth == 0) {
-		printf("fatal error in ctx_exit_loop. Was not in a loop. Exiting");
-		fflush(stdout);
-		exit(1);
+		fprintf(stderr, "fatal error in %s. Was not in a loop.", __func__);
+		return false;
 	}
 	ctx->loop_depth--;
+
+	return true;
 }
 
-uint32_t ctx_get_label_loop_start(struct Ctx* ctx) {
+int32_t ctx_get_label_loop_start(struct Ctx* ctx) {
 
 	if (ctx->loop_depth == 0) {
-		printf("fatal error in ctx_get_label_loop_start. Was not in a loop. Exiting");
-		fflush(stdout);
-		exit(1);
+		fprintf(stderr, "fatal error in %s. Was not in a loop.", __func__);
+		return -1;
 	}
 	return ctx->label_loop_start;
 }
 
-uint32_t ctx_get_label_loop_end(struct Ctx* ctx) {
+int32_t ctx_get_label_loop_end(struct Ctx* ctx) {
 
 	if (ctx->loop_depth == 0) {
-		printf("fatal error in ctx_get_label_loop_end. Was not in a loop. Exiting");
-		fflush(stdout);
-		exit(1);
+		fprintf(stderr, "fatal error in %s. Was not in a loop", __func__);
+		return -1;
 	}
 	return ctx->label_loop_end;
 }

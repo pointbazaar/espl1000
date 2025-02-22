@@ -36,8 +36,19 @@ bool compile(struct Flags* flags) {
 	}
 
 	struct AST* ast = make(AST);
+
+	if (!ast) {
+		return false;
+	}
+
 	ast->count_namespaces = flags_count_filenames(flags);
-	ast->namespaces = exit_malloc(sizeof(struct Namespace*) * count_filenames);
+	ast->namespaces = malloc(sizeof(struct Namespace*) * count_filenames);
+
+	if (!ast->namespaces) {
+		free(ast);
+		freeFlags(flags);
+		return false;
+	}
 
 	for (int i = 0; i < count_filenames; i++) {
 
@@ -46,7 +57,10 @@ bool compile(struct Flags* flags) {
 		int status = invoke_lexer(filename);
 
 		if (status != 0) {
-			printf("[Error] lexer exited with nonzero exit code\n");
+			fprintf(stderr, "[Error] lexer exited with nonzero exit code\n");
+			free(ast->namespaces);
+			free(ast);
+			freeFlags(flags);
 			return false;
 		}
 	}
@@ -65,7 +79,10 @@ bool compile(struct Flags* flags) {
 		struct Namespace* ns = invoke_parser(filename);
 
 		if (ns == NULL) {
-			printf("[Error] parser exited with nonzero exit code\n");
+			fprintf(stderr, "[Error] parser exited with nonzero exit code\n");
+			free(ast->namespaces);
+			free(ast);
+			freeFlags(flags);
 			return false;
 		}
 

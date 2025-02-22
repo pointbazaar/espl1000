@@ -11,7 +11,7 @@
 
 #include "cli/flags/flags.h"
 
-void emit_asm_avr_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
+bool emit_asm_avr_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
 	struct ST* st = ctx_tables(ctx);
 
@@ -25,7 +25,7 @@ void emit_asm_avr_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 		case TAC_LABEL_FUNCTION: compile_tac_label(tac, ibu, ctx); break;
 		case TAC_GOTO: compile_tac_goto(tac, ibu); break;
 		case TAC_NOP: compile_tac_nop(ibu); break;
-		case TAC_BINARY_OP: compile_tac_binary_op(rat, tac, ibu); break;
+		case TAC_BINARY_OP: return compile_tac_binary_op(rat, tac, ibu); break;
 		case TAC_UNARY_OP: compile_tac_unary_op(rat, tac, ibu); break;
 
 		case TAC_IF_GOTO: compile_tac_if_goto(rat, tac, ibu); break;
@@ -48,6 +48,7 @@ void emit_asm_avr_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 
 		default:
 			fprintf(stderr, "%s: unhandled case %d\n", __func__, tac_kind(tac));
-			exit(1);
+			return false;
 	}
+	return true;
 }

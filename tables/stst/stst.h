@@ -17,6 +17,7 @@ struct STSTLine {
 	bool is_private;
 };
 
+// @returns NULL on error
 struct STST* stst_ctor();
 void stst_free(struct STST* stst);
 
@@ -26,12 +27,15 @@ void stst_fill(struct STST* stst, struct Namespace* ns);
 
 void stst_add(struct STST* stst, struct STSTLine* line);
 
+// @returns NULL on error
 struct STSTLine* stst_get(struct STST* stst, char* name);
 
+// @returns NULL on error
 struct StructMember* stst_get_member(struct STST* stst, char* struct_name, char* member_name);
 
 //calculates the offset in bytes, from the start of the struct
-uint32_t stst_member_offset(struct STST* stst, char* struct_name, char* member_name, bool x86);
+// @returns < 0 on error
+int32_t stst_member_offset(struct STST* stst, char* struct_name, char* member_name, bool x86);
 
 uint32_t stst_size(struct STST* stst);
 

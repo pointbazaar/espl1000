@@ -122,11 +122,20 @@ static struct MethodDecl* initMethodDecl() {
 
 	struct MethodDecl* res = make(MethodDecl);
 
+	if (!res) {
+		return NULL;
+	}
+
 	res->is_public = true;
 	res->has_side_effects = true;
 
 	res->count_args = 0;
 	res->args = malloc(sizeof(struct DeclArg*) * 1);
+
+	if (!res->args) {
+		free(res);
+		return NULL;
+	}
 
 	return res;
 }

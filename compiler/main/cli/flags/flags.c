@@ -7,8 +7,6 @@
 #include <malloc.h>
 #include <regex.h>
 
-#include "../../../util/exit_malloc/exit_malloc.h"
-
 #include "flags.h"
 #include "all_flags.h"
 #include "flag.h"
@@ -98,7 +96,10 @@ void sd_print_help() {
 
 static char* filename_no_extension(char* filename) {
 
-	char* fname_out = exit_malloc(strlen(filename) + 5);
+	char* fname_out = malloc(strlen(filename) + 5);
+	if (!fname_out) {
+		return NULL;
+	}
 
 	strcpy(fname_out, filename);
 	//remove the '.dg'
@@ -130,13 +131,27 @@ static char* make_hex_filename(char* filename) {
 
 static char* make_token_filename(char* filename) {
 
-	char* token_filename = exit_malloc(strlen(filename) + 20);
+	char* token_filename = malloc(strlen(filename) + 20);
 
-	char* fnamecpy = exit_malloc(strlen(filename) + 1);
+	if (!token_filename) {
+		return NULL;
+	}
+
+	char* fnamecpy = malloc(strlen(filename) + 1);
+	if (!fnamecpy) {
+		free(token_filename);
+		return NULL;
+	}
+
 	strcpy(fnamecpy, filename);
 	char* base_name = basename(fnamecpy);
 
-	char* fnamecpy2 = exit_malloc(strlen(filename) + 1);
+	char* fnamecpy2 = malloc(strlen(filename) + 1);
+	if (!fnamecpy2) {
+		free(token_filename);
+		free(fnamecpy);
+		return NULL;
+	}
 	strcpy(fnamecpy2, filename);
 	char* dir_name = dirname(fnamecpy2);
 
@@ -194,7 +209,11 @@ static void make_associated_filenames(struct Flags* flags) {
 
 struct Flags* makeFlags(int argc, char** argv) {
 
-	struct Flags* flags = exit_malloc(sizeof(struct Flags));
+	struct Flags* flags = malloc(sizeof(struct Flags));
+
+	if (!flags) {
+		return NULL;
+	}
 
 	flags->all_flags = malloc(sizeof(struct Flag) * all_flags_count());
 	memcpy(flags->all_flags, all_flags, all_flags_count() * sizeof(struct Flag));
@@ -204,7 +223,12 @@ struct Flags* makeFlags(int argc, char** argv) {
 	//a capacity of argc guarantees that all
 	//filenames will fit
 	flags->capacity_filenames = argc;
-	flags->filenames = exit_malloc(sizeof(char*) * argc);
+	flags->filenames = malloc(sizeof(char*) * argc);
+
+	if (!flags->filenames) {
+		free(flags);
+		return NULL;
+	}
 
 	int i = 1;
 	while (i < argc) {
@@ -256,10 +280,9 @@ int flags_count_filenames(struct Flags* flags) {
 char* flags_filenames(struct Flags* flags, int index) {
 
 	if (index >= flags_count_filenames(flags)) {
-		printf("flags_filenames: tried to access out of bounds.");
-		printf("exiting.");
+		fprintf(stderr, "flags_filenames: tried to access out of bounds.");
 		fflush(stdout);
-		exit(1);
+		return NULL;
 	}
 	return flags->filenames[index];
 }

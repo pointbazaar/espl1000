@@ -1,5 +1,4 @@
 add_library("sd-util" STATIC
-	exit_malloc/exit_malloc.c
 	status/status.c
 )
 

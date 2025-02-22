@@ -66,7 +66,10 @@ static char* get_op_str(enum TAC_OP top) {
 
 char* tac_tostring(struct TAC* t, struct SST* sst, struct LVST* lvst) {
 
-	char* res = exit_malloc(sizeof(char) * 120);
+	char* res = malloc(sizeof(char) * 120);
+	if (!res) {
+		return NULL;
+	}
 	strcpy(res, "");
 
 	char buf[110];
@@ -152,7 +155,7 @@ char* tac_tostring(struct TAC* t, struct SST* sst, struct LVST* lvst) {
 
 			if (arg1 >= sst_size(sst)) {
 				fprintf(stderr, "%s: function %lu not found\n", __func__, arg1);
-				exit(1);
+				return NULL;
 			}
 
 			char* function_name = sst_at(sst, arg1)->name;
@@ -176,8 +179,8 @@ char* tac_tostring(struct TAC* t, struct SST* sst, struct LVST* lvst) {
 			sprintf(buf, "setup SP");
 			break;
 		default:
-			printf("unhandled in %s\n", __func__);
-			exit(1);
+			fprintf(stderr, "unhandled in %s\n", __func__);
+			return NULL;
 			break;
 	}
 

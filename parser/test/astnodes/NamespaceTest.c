@@ -24,6 +24,8 @@ int namespace_test_can_parse_namespace_with_1_empty_struct() {
 
 	struct Namespace* n = makeNamespace(l, "Main");
 
+	assert(n);
+
 	assert(1 == n->count_structs);
 	assert(0 == n->structs[0]->count_members);
 

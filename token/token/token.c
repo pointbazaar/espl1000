@@ -4,7 +4,6 @@
 
 #include "token.h"
 #include "../TokenKeys.h"
-#include "../../util/exit_malloc/exit_malloc.h"
 
 struct Token* makeToken(int kind) {
 	return makeToken2(kind, NULL);
@@ -12,14 +11,23 @@ struct Token* makeToken(int kind) {
 
 struct Token* makeToken2(int kind, char* value) {
 
-	struct Token* res = exit_malloc(sizeof(struct Token));
+	struct Token* res = malloc(sizeof(struct Token));
+
+	if (!res) {
+		return NULL;
+	}
 
 	res->line_num = 1;
 	res->kind = kind;
 	res->value_ptr = NULL;
 
 	if (value) {
-		res->value_ptr = exit_malloc(sizeof(char) * (strlen(value) + 1));
+		res->value_ptr = malloc(sizeof(char) * (strlen(value) + 1));
+
+		if (!res->value_ptr) {
+			free(res);
+			return NULL;
+		}
 
 		strcpy(res->value_ptr, value);
 	}
@@ -30,11 +38,21 @@ struct Token* makeToken2(int kind, char* value) {
 }
 
 struct Token* makeTokenStringConst(char* value) {
-	struct Token* res = exit_malloc(sizeof(struct Token));
+
+	struct Token* res = malloc(sizeof(struct Token));
+
+	if (!res) {
+		return NULL;
+	}
 
 	res->kind = STRINGCONST;
 
-	res->value_ptr = exit_malloc(sizeof(char) * (strlen(value) + 1));
+	res->value_ptr = malloc(sizeof(char) * (strlen(value) + 1));
+
+	if (!res->value_ptr) {
+		free(res);
+		return NULL;
+	}
 
 	//extra '"' at start and end
 	strcpy(res->value_ptr, value + 1);

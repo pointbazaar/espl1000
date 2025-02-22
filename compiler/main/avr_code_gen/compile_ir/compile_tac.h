@@ -1,7 +1,7 @@
-#ifndef SMALLDRAGON_TOPLEVEL_COMPILE_TAC_H
-#define SMALLDRAGON_TOPLEVEL_COMPILE_TAC_H
+#pragma once
 
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "ibuffer/ibuffer.h"
 
@@ -14,10 +14,13 @@ void compile_tac_return(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struc
 void compile_tac_const_value(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 
 void compile_tac_copy(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
-void compile_tac_load_local_addr(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu);
-void compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu);
+bool compile_tac_load_local_addr(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu);
 
-void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
+// @returns false on error
+bool compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu);
+
+// @returns  false on failure
+bool compile_tac_binary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 void compile_tac_goto(struct TAC* tac, struct IBuffer* ibu);
 void compile_tac_nop(struct IBuffer* ibu);
 
@@ -35,4 +38,3 @@ void compile_tac_setup_sp(struct RAT* rat, struct IBuffer* ibu);
 
 void compile_tac_load(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 void compile_tac_store(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
-#endif

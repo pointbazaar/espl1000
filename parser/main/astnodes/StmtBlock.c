@@ -17,19 +17,24 @@ struct StmtBlock* makeStmtBlock(struct TokenList* tokens) {
 
 	struct StmtBlock* res = make(StmtBlock);
 
+	if (!res) {
+		return NULL;
+	}
+
 	res->super.line_num = list_head(tokens)->line_num;
 	res->super.annotations = 0;
 
 	res->count = 0;
 	res->stmts = malloc(sizeof(struct Stmt*) * 1);
 
+	if (!res->stmts) {
+		goto err_stmts_malloc;
+	}
+
 	struct TokenList* copy = list_copy(tokens);
 
 	if (!list_expect(copy, LCURLY)) {
-		freeTokenListShallow(copy);
-		free(res->stmts);
-		free(res);
-		return NULL;
+		goto err_lcurly;
 	}
 
 	struct Token* next = list_head(copy);
@@ -39,10 +44,7 @@ struct StmtBlock* makeStmtBlock(struct TokenList* tokens) {
 		struct Stmt* stmt = makeStmt(copy);
 
 		if (stmt == NULL) {
-			freeTokenListShallow(copy);
-			free(res->stmts);
-			free(res);
-			return NULL;
+			goto err_stmts;
 		}
 
 		res->stmts[res->count] = stmt;
@@ -53,21 +55,28 @@ struct StmtBlock* makeStmtBlock(struct TokenList* tokens) {
 
 		next = list_head(copy);
 		if (next == NULL) {
-			freeTokenListShallow(copy);
-			free(res->stmts);
-			free(res);
-			return NULL;
+			goto err_stmts;
 		}
 	}
 
 	if (!list_expect(copy, RCURLY)) {
-		freeTokenListShallow(copy);
-		free_stmt_block(res);
-		return NULL;
+		goto err_rcurly;
 	}
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
 
 	return res;
+
+err_rcurly:
+err_stmts:
+	for (int i = 0; i < res->count; i++) {
+		free_stmt(res->stmts[i]);
+	}
+	free(res->stmts);
+err_lcurly:
+	freeTokenListShallow(copy);
+err_stmts_malloc:
+	free(res);
+	return NULL;
 }

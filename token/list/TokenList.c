@@ -5,7 +5,6 @@
 #include "TokenList.h"
 #include "../TokenKeys.h"
 #include "../token/token.h"
-#include "../../util/exit_malloc/exit_malloc.h"
 
 struct TokenList {
 	//relative path of the source file
@@ -34,14 +33,30 @@ struct TokenList* makeTokenList2(char* filename) {
 
 	const int initial_size = 20;
 
-	struct TokenList* res = exit_malloc(sizeof(struct TokenList));
+	struct TokenList* res = malloc(sizeof(struct TokenList));
+
+	if (!res) {
+		return NULL;
+	}
+
 	memset(res, 0, sizeof(struct TokenList));
 
-	res->rel_path = exit_malloc(sizeof(char) * (strlen(filename) + 1));
+	res->rel_path = malloc(sizeof(char) * (strlen(filename) + 1));
+
+	if (!res->rel_path) {
+		free(res);
+		return NULL;
+	}
+
 	strcpy(res->rel_path, filename);
 	res->tokensc = 0;
 
-	res->tokens = exit_malloc(sizeof(struct Token*) * initial_size);
+	res->tokens = malloc(sizeof(struct Token*) * initial_size);
+
+	if (!res->tokens) {
+		return NULL;
+	}
+
 	res->index_head = 0;
 	res->tokens_stored = 0;
 
@@ -112,19 +127,38 @@ struct TokenList* list_copy(struct TokenList* list) {
 
 	struct TokenList* res = makeTokenList();
 
+	if (!res) {
+		return NULL;
+	}
+
 	free(res->rel_path);
-	res->rel_path = exit_malloc(sizeof(char) * (strlen(list->rel_path) + 1));
+	res->rel_path = malloc(sizeof(char) * (strlen(list->rel_path) + 1));
+
+	if (!res->rel_path) {
+		free(res);
+		return NULL;
+	}
+
 	strcpy(res->rel_path, list->rel_path);
 
-	list_set(res, list);
+	if (!list_set(res, list)) {
+		free(res->rel_path);
+		free(res);
+		return NULL;
+	}
+
 	return res;
 }
 
-void list_set(struct TokenList* list, struct TokenList* copy) {
+bool list_set(struct TokenList* list, struct TokenList* copy) {
 
 	free(list->tokens);
 
-	list->tokens = exit_malloc(sizeof(struct Token*) * copy->capacity);
+	list->tokens = malloc(sizeof(struct Token*) * copy->capacity);
+
+	if (!list->tokens) {
+		return false;
+	}
 
 	list->capacity = copy->capacity;
 	list->tokensc = copy->tokensc;
@@ -133,6 +167,8 @@ void list_set(struct TokenList* list, struct TokenList* copy) {
 
 	size_t size = copy->capacity * sizeof(struct Token*);
 	memcpy(list->tokens, copy->tokens, size);
+
+	return true;
 }
 
 struct Token* list_get(struct TokenList* list, int i) {
@@ -162,7 +198,12 @@ struct Token* list_head_without_annotations(struct TokenList* list) {
 char* list_code(struct TokenList* list) {
 	//it should be a limited fragment
 
-	char* str = exit_malloc(sizeof(char) * 100);
+	char* str = malloc(sizeof(char) * 100);
+
+	if (!str) {
+		return NULL;
+	}
+
 	strcpy(str, "");
 
 	const uint32_t line_num = list_get(list, 0)->line_num;

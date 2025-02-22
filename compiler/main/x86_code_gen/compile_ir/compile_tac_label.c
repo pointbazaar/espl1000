@@ -10,7 +10,7 @@
 #include "tac/tac.h"
 #include "x86_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_label_x86(struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx) {
+bool compile_tac_label_x86(struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx) {
 
 	char* s;
 
@@ -29,11 +29,13 @@ void compile_tac_label_x86(struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx
 			function_name = sst_at(ctx_tables(ctx)->sst, tac_dest(tac))->name;
 		} else {
 			fprintf(stderr, "index %d out of bounds in sst\n", tac_dest(tac));
-			exit(1);
+			return false;
 		}
 
 		s = function_name;
 	}
 
 	label(s);
+
+	return true;
 }

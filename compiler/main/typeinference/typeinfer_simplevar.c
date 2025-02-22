@@ -34,8 +34,6 @@ struct Type* infer_type_simplevar_once(struct ST* st, struct SimpleVar* v) {
 error:
 	printf("[Typeinference][Error]");
 	printf("%s\n", str_simple_var(v));
-	printf(" exiting.\n");
-	exit(1);
 	return NULL;
 }
 
@@ -62,7 +60,5 @@ struct Type* infer_type_simplevar(struct ST* st, struct SimpleVar* v) {
 error:
 	printf("[Typeinference][Error]");
 	printf("%s\n", str_simple_var(v));
-	printf(" exiting.\n");
-	exit(1);
 	return NULL;
 }

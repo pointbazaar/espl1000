@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <assert.h>
 
-#include "../util/exit_malloc/exit_malloc.h"
 #include "rat_x86.h"
 #include "rat.h"
 #include "register.h"
@@ -181,7 +180,6 @@ char* rat_regname_x86_width(size_t i, uint8_t nbytes) {
 	}
 
 	fprintf(stderr, "error in %s\n", __func__);
-	exit(1);
 	return NULL;
 }
 

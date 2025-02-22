@@ -15,7 +15,7 @@ int lexer_main(int argc, char* argv[]) {
 
 	if (myargs->filename == NULL) {
 		fprintf(stderr, "[Lexer] expected a filename of the file to tokenize\n");
-		exit(1);
+		return 1;
 	}
 
 	char* filename = myargs->filename;

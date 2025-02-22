@@ -9,8 +9,8 @@
 #include "../TokenKeys.h"
 #include "../list/TokenList.h"
 #include "../token/token.h"
-#include "../../util/exit_malloc/exit_malloc.h"
 
+// @returns NULL on error
 static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2);
 
 static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_num);
@@ -20,7 +20,11 @@ struct TokenList* read_tokens_from_tokens_file(FILE* file, char* tokensFile) {
 	struct TokenList* tks = makeTokenList2(tokensFile);
 
 	size_t size = 50;
-	char* line = exit_malloc(size);
+	char* line = malloc(size);
+
+	if (!line) {
+		return NULL;
+	}
 
 	uint32_t line_num = 1;
 
@@ -138,8 +142,7 @@ static struct Token* recognizeTokenInnerNoStr(int tkn_id) {
 			r = makeToken(tkn_id);
 			break;
 		default:
-			printf("unrecognized token id : %d\n", tkn_id);
-			exit(1);
+			fprintf(stderr, "unrecognized token id : %d\n", tkn_id);
 			return NULL;
 	};
 
@@ -216,8 +219,7 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2) {
 			r = makeToken2(tkn_id, part2);
 			break;
 		default:
-			printf("unreconized token id : %d\n", tkn_id);
-			exit(1);
+			fprintf(stderr, "unreconized token id : %d\n", tkn_id);
 			return NULL;
 	};
 

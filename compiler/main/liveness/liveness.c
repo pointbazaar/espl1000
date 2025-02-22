@@ -394,7 +394,7 @@ bool liveness_use(struct Liveness* live, uint32_t stmt_index, uint32_t temp) {
 
 	if (stmt_index >= live->nstmts) {
 		fprintf(stderr, "stmt %ld out of bounds\n", live->nstmts);
-		exit(1);
+		assert(false);
 	}
 
 	return live->map_use[stmt_index][temp];
@@ -404,7 +404,7 @@ bool liveness_def(struct Liveness* live, uint32_t stmt_index, uint32_t temp) {
 
 	if (stmt_index >= live->nstmts) {
 		fprintf(stderr, "stmt %ld out of bounds\n", live->nstmts);
-		exit(1);
+		assert(false);
 	}
 
 	return live->map_defines[stmt_index][temp];
@@ -414,7 +414,7 @@ bool liveness_in(struct Liveness* live, uint32_t stmt_index, uint32_t temp) {
 
 	if (stmt_index >= live->nstmts) {
 		fprintf(stderr, "stmt %ld out of bounds\n", live->nstmts);
-		exit(1);
+		assert(false);
 	}
 
 	return live->map_in[stmt_index][temp];
@@ -424,11 +424,11 @@ bool liveness_out(struct Liveness* live, uint32_t stmt_index, uint32_t temp) {
 
 	if (stmt_index >= live->nstmts) {
 		fprintf(stderr, "stmt %ld out of bounds\n", live->nstmts);
-		exit(1);
+		assert(false);
 	}
 	if (temp >= live->ntemps) {
 		fprintf(stderr, "temp %ld out of bounds\n", live->ntemps);
-		exit(1);
+		assert(false);
 	}
 
 	return live->map_out[stmt_index][temp];

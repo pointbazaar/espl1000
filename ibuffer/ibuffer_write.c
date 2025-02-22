@@ -11,8 +11,8 @@
 #include "../rat/rat_x86.h"
 
 extern char* MNEM[];
-
-static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s, int32_t x3);
+// @returns false on error
+static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s, int32_t x3);
 
 static void strcat_reg(char* s, uint8_t reg);
 static void strcat_num(char* s, int num);
@@ -56,7 +56,7 @@ void ibu_write_instr(enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* st
 	free(s);
 }
 
-static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s, int32_t x3) {
+static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s, int32_t x3) {
 
 	const uint8_t nbytes = x3;
 	char* width_strs[] = {
@@ -245,10 +245,10 @@ static void write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 			// --- END X86
 
 		default:
-			printf("instr %d not implemented in ibu_write_instr\n", key);
-			fflush(stdout);
-			exit(1);
+			fprintf(stderr, "instr %d not implemented in ibu_write_instr\n", key);
+			return false;
 	}
+	return true;
 }
 
 static void strcat_reg(char* s, uint8_t reg) {

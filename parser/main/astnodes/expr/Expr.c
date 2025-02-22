@@ -61,7 +61,7 @@ struct Expr* makeExpr(struct TokenList* tokens) {
 	if (first_term == NULL) {
 		free(ops);
 		free(terms);
-		return NULL;
+		goto error;
 	}
 
 	terms[count++] = first_term;
@@ -105,6 +105,10 @@ struct Expr* makeExpr(struct TokenList* tokens) {
 	free(ops);
 
 	return res;
+
+error:
+	freeTokenListShallow(copy);
+	return NULL;
 }
 
 int prec_index(enum OP op) {

@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <assert.h>
 
 #include "analyzer/lv/lv_analyzer.h"
 #include "annotation_analyzer.h"
@@ -215,10 +216,7 @@ static void annot_private(struct SST* sst, struct Call* call) {
 		//look if the call occurred in the same namespace
 		//as the called method
 
-		if (current_namespace == NULL) {
-			printf("Fatal\n");
-			exit(1);
-		}
+		assert(current_namespace != NULL);
 
 		char* call_ns = current_namespace->name;
 		char* orig_ns = line->_namespace;

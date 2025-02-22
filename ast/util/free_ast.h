@@ -35,7 +35,8 @@ void free_struct_member(struct StructMember* sm);
 
 //expr
 void free_expr(struct Expr* expr);
-void free_term(struct Term* t);
+// @returns false on error
+bool free_term(struct Term* t);
 void free_un_op_term(struct UnOpTerm* t);
 void free_mdirect(struct MDirect* m);
 
@@ -48,7 +49,8 @@ void free_assign_stmt(struct AssignStmt* as);
 void free_if_stmt(struct IfStmt* is);
 void free_call(struct Call* mc);
 void free_ret_stmt(struct RetStmt* rs);
-void free_stmt(struct Stmt* s);
+// @returns false on error
+bool free_stmt(struct Stmt* s);
 void free_while_stmt(struct WhileStmt* ws);
 void free_for_stmt(struct ForStmt* fstmt);
 void free_massign_stmt(struct MAssignStmt* m);

@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include <assert.h>
 
-#include "../util/exit_malloc/exit_malloc.h"
 #include "rat.h"
 #include "register.h"
 #include "_struct.h"

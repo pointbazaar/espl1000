@@ -1,8 +1,7 @@
-#ifndef TRANSPILER
-#define TRANSPILER
+#pragma once
+
+#include <stdbool.h>
 
 struct Flags;
 
 bool compile(struct Flags* flags);
-
-#endif

@@ -11,15 +11,15 @@
 
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_load_local_addr(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
+bool compile_tac_load_local_addr(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
 	char* c = "TAC_LOAD_LOCAL_ADDR";
 
 	const int rdest = rat_get_register(rat, tac_dest(tac));
 
 	if (!rat_is_wide(rat, tac_dest(tac))) {
-		printf("compile_tac_load_local_addr: destination should have 2 registers\n");
-		exit(1);
+		fprintf(stderr, "compile_tac_load_local_addr: destination should have 2 registers\n");
+		return false;
 	}
 
 	char* name = lvst_at(ctx_tables(ctx)->lvst, tac_arg1(tac))->name;
@@ -42,4 +42,6 @@ void compile_tac_load_local_addr(struct RAT* rat, struct TAC* tac, struct Ctx* c
 		subi(rdest, o2 & 0xff, c);
 		sbci(rdest + 1, (o2 & 0xff00) >> 8, c);
 	}
+
+	return true;
 }

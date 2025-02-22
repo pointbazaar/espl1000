@@ -26,23 +26,22 @@ void tacbuffer_append(struct TACBuffer* buffer, struct TAC* node) {
 	buffer->count += 1;
 }
 
-void tacbuffer_set(struct TACBuffer* buffer, int index, struct TAC* node) {
+bool tacbuffer_set(struct TACBuffer* buffer, int index, struct TAC* node) {
 
 	if (index >= buffer->cap || index >= buffer->count) {
-		printf("trying to write to TACBuffer outside its bounds...");
-		fflush(stdout);
-		exit(1);
+		fprintf(stderr, "trying to write to TACBuffer outside its bounds...");
+		return false;
 	}
 
 	buffer->buffer[index] = node;
+	return true;
 }
 
 struct TAC* tacbuffer_get(struct TACBuffer* buffer, int index) {
 
 	if (index >= buffer->count) {
-		printf("TACBuffer: no value at index %d ...", index);
-		fflush(stdout);
-		exit(1);
+		fprintf(stderr, "TACBuffer: no value at index %d ...", index);
+		return NULL;
 	}
 
 	return buffer->buffer[index];
@@ -88,7 +87,12 @@ void tacbuffer_print(struct TACBuffer* buffer, struct SST* sst, struct LVST* lvs
 	free(s);
 }
 char* tacbuffer_tostring(struct TACBuffer* buffer, bool graphviz, struct SST* sst, struct LVST* lvst) {
-	char* res = exit_malloc(sizeof(char) * (buffer->count * 100));
+	char* res = malloc(sizeof(char) * (buffer->count * 100));
+
+	if (!res) {
+		return NULL;
+	}
+
 	strcpy(res, "");
 
 	for (size_t k = 0; k < buffer->count; k++) {

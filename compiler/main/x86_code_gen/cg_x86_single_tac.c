@@ -14,7 +14,7 @@
 
 #include "cli/flags/flags.h"
 
-void emit_asm_x86_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu, char* current_function_name) {
+bool emit_asm_x86_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu, char* current_function_name) {
 
 	struct ST* st = ctx_tables(ctx);
 
@@ -25,7 +25,7 @@ void emit_asm_x86_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 	switch (tac_kind(tac)) {
 
 		case TAC_LABEL_INDEXED:
-		case TAC_LABEL_FUNCTION: compile_tac_label_x86(tac, ibu, ctx); break;
+		case TAC_LABEL_FUNCTION: return compile_tac_label_x86(tac, ibu, ctx); break;
 		case TAC_GOTO: compile_tac_goto_x86(tac, ibu); break;
 		case TAC_NOP: compile_tac_nop_x86(ibu); break;
 		case TAC_BINARY_OP: compile_tac_binary_op_x86(rat, tac, ibu); break;
@@ -51,8 +51,9 @@ void emit_asm_x86_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 		case TAC_STORE: compile_tac_store_x86(rat, tac, ibu); break;
 
 		default:
-			printf("tac->kind == 0x%x (%d) not handled in %s\n", tac_kind(tac), tac_kind(tac), __FUNCTION__);
-			exit(1);
-			break;
+			fprintf(stderr, "tac->kind == 0x%x (%d) not handled in %s\n", tac_kind(tac), tac_kind(tac), __FUNCTION__);
+			return false;
 	}
+
+	return true;
 }

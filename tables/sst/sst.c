@@ -39,7 +39,12 @@ struct SST* sst_ctor() {
 	const int nbytes = sizeof(struct SSTLine*) * sst->capacity;
 
 	sst->count = 0;
-	sst->lines = exit_malloc(nbytes);
+	sst->lines = malloc(nbytes);
+
+	if (!sst->lines) {
+		free(sst);
+		return NULL;
+	}
 
 	return sst;
 }
@@ -133,24 +138,26 @@ void sst_line_free(struct SSTLine* l) {
 	free(l);
 }
 
-void sst_add(struct SST* sst, struct SSTLine* line) {
+bool sst_add(struct SST* sst, struct SSTLine* line) {
 
 	if (sst_contains(sst, line->name)) {
 
-		printf(ERR_SAME_NAME);
-		printf("\t%s\n", line->name);
-		return;
+		fprintf(stderr, ERR_SAME_NAME);
+		fprintf(stderr, "\t%s\n", line->name);
+		return false;
 	}
 
 	if (line->type == NULL || line->return_type == NULL) {
-		printf("[SST_PREFILL][Error] line->type or line->return_type not set for %s\n", line->name);
-		exit(1);
+		fprintf(stderr, "[SST_PREFILL][Error] line->type or line->return_type not set for %s\n", line->name);
+		return false;
 	}
 
 	sst_resize(sst);
 
 	sst->lines[sst->count] = line;
 	sst->count += 1;
+
+	return true;
 }
 
 struct SSTLine* sst_get(struct SST* sst, char* name) {
@@ -162,8 +169,7 @@ struct SSTLine* sst_get(struct SST* sst, char* name) {
 		if (strcmp(line->name, name) == 0) { return line; }
 	}
 
-	printf("%s: '%s'\n", ERR_NOT_FOUND, name);
-	exit(1);
+	fprintf(stderr, "%s: '%s'\n", ERR_NOT_FOUND, name);
 	return NULL;
 }
 
@@ -174,22 +180,21 @@ uint32_t sst_size(struct SST* sst) {
 struct SSTLine* sst_at(struct SST* sst, uint32_t index) {
 
 	if (index >= sst->count) {
-		printf("index %d out of bounds in sst_at", index);
-		fflush(stdout);
-		exit(1);
+		fprintf(stderr, "index %d out of bounds in sst_at", index);
+		return NULL;
 	}
 	return sst->lines[index];
 }
 
-uint32_t sst_index_of(struct SST* sst, char* name) {
+int32_t sst_index_of(struct SST* sst, char* name) {
 
 	for (int i = 0; i < sst->count; i++) {
 		if (strcmp(sst->lines[i]->name, name) == 0) { return i; }
 	}
 
-	printf(ERR_NOT_FOUND);
-	printf("\t%s in sst_index_of\n", name);
-	exit(1);
+	fprintf(stderr, ERR_NOT_FOUND);
+	fprintf(stderr, "\t%s in sst_index_of\n", name);
+	return -1;
 }
 
 uint32_t sst_args_size_avr(struct SST* sst, char* name) {

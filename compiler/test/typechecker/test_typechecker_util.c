@@ -22,10 +22,10 @@ struct TCError* typecheck_file(char* filename) {
 
 	int status = invoke_lexer(filename);
 
-	if (WEXITSTATUS(status) != 0) {
+	if (status != 0) {
 		printf("[Error] lexer exited with nonzero exit code\n");
 		fflush(stdout);
-		exit(1);
+		return NULL;
 	}
 
 	struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(filename), st_ctor(false));

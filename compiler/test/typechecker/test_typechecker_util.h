@@ -1,6 +1,4 @@
-#ifndef SMALLDRAGON_TOPLEVEL_TEST_TYPECHECKER_UTIL_H
-#define SMALLDRAGON_TOPLEVEL_TEST_TYPECHECKER_UTIL_H
+#pragma once
 
+// @returns NULL on error
 struct TCError* typecheck_file(char* filename);
-
-#endif

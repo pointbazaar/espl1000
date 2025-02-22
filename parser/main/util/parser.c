@@ -16,7 +16,7 @@
 
 #define ERR_COULD_NOT_OPEN_FILE "[Parser] could not open file: %s\n"
 #define ERR_FATAL "[Parser] Fatal.\n"
-#define ERR_TOKENS_LEFT "[Parser] there were tokens left when parsing. Exiting.\n"
+#define ERR_TOKENS_LEFT "[Parser] there were tokens left when parsing.\n"
 
 static char* extract_namespace_name(char* filename_tokens);
 
@@ -25,7 +25,10 @@ struct AST* build_ast(char* tokensFile) {
 	struct AST* ast = make(AST);
 
 	ast->count_namespaces = 1;
-	ast->namespaces = exit_malloc(sizeof(struct Namespace*) * 1);
+	ast->namespaces = malloc(sizeof(struct Namespace*) * 1);
+	if (!ast->namespaces) {
+		return NULL;
+	}
 	ast->namespaces[0] = build_namespace(tokensFile);
 
 	if (ast->namespaces[0] == NULL)
@@ -39,7 +42,7 @@ struct Namespace* build_namespace(char* tokensFile) {
 	FILE* file = fopen(tokensFile, "r");
 
 	if (file == NULL) {
-		printf(ERR_COULD_NOT_OPEN_FILE, tokensFile);
+		fprintf(stderr, ERR_COULD_NOT_OPEN_FILE, tokensFile);
 		return NULL;
 	}
 
@@ -48,24 +51,43 @@ struct Namespace* build_namespace(char* tokensFile) {
 
 	struct TokenList* tokens = read_tokens_from_tokens_file(file, tokensFile);
 
+	if (!tokens) {
+		return NULL;
+	}
+
 	fclose(file);
 
 	//get just the namespace name from .FILENAME.dg.tokens
 	char* ns_name = extract_namespace_name(tokensFile);
+	if (!ns_name) {
+		goto error;
+	}
 
 	struct Namespace* ns = makeNamespace(tokens, ns_name);
 
 	free(ns_name);
 
+	if (!ns) {
+		goto error_namespace;
+	}
+
 	if (list_size(tokens) > 0) {
-		printf(ERR_TOKENS_LEFT);
+		fprintf(stderr, ERR_TOKENS_LEFT);
 		list_print(tokens);
-		return NULL;
+		goto error_tokens_left;
 	}
 
 	freeTokenList(tokens);
 
 	return ns;
+
+error_tokens_left:
+	free_namespace(ns);
+error_namespace:
+	free(ns_name);
+error:
+	freeTokenList(tokens);
+	return NULL;
 }
 
 static char* extract_namespace_name(char* filename_tokens) {
@@ -95,7 +117,10 @@ static char* extract_namespace_name(char* filename_tokens) {
 
 	int l = (int)(dot2 - dot1);
 
-	char* res = exit_malloc(l + 1);
+	char* res = malloc(l + 1);
+	if (!res) {
+		return NULL;
+	}
 	memset(res, 0, l + 1);
 	strncpy(res, dot1 + 1, l - 1);
 

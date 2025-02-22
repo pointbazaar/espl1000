@@ -78,7 +78,8 @@ bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
 	FILE* fout = fopen(flags_asm_filename(ctx_flags(ctx)), "w");
 	if (fout == NULL) {
 		printf("error opening output file\n");
-		exit(1);
+		ibu_dtor(ibu);
+		return false;
 	}
 
 	fprintf(fout, "section .text\n");

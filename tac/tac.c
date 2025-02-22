@@ -38,11 +38,11 @@ int32_t tac_opt_dest(struct TAC* tac) {
 
 		default:
 			fprintf(stderr, "%s: unhandled case %d\n", __func__, tac->kind);
-			exit(1);
+			return -1;
 	}
 }
 
-uint32_t tac_dest(struct TAC* tac) {
+int32_t tac_dest(struct TAC* tac) {
 
 	switch (tac_kind(tac)) {
 		case TAC_CALL:
@@ -64,12 +64,12 @@ uint32_t tac_dest(struct TAC* tac) {
 			break;
 		default:
 			fprintf(stderr, "[TAC] invalid access (kind == %d)\n", tac_kind(tac));
-			exit(1);
+			return -1;
 	}
 	return tac->dest;
 }
 
-uint64_t tac_arg1(struct TAC* tac) {
+int64_t tac_arg1(struct TAC* tac) {
 
 	switch (tac_kind(tac)) {
 		case TAC_CALL:
@@ -87,7 +87,7 @@ uint64_t tac_arg1(struct TAC* tac) {
 			break;
 		default:
 			fprintf(stderr, "[TAC] invalid access (kind == %d)\n", tac_kind(tac));
-			exit(1);
+			return -1;
 	}
 	return tac->arg1;
 }
@@ -101,12 +101,12 @@ int64_t tac_const_value(struct TAC* tac) {
 			break;
 		default:
 			fprintf(stderr, "[TAC] invalid access (kind == %d)\n", tac_kind(tac));
-			exit(1);
+			assert(false);
 	}
 	return tac->const_value;
 }
 
-uint32_t tac_label_index(struct TAC* tac) {
+int32_t tac_label_index(struct TAC* tac) {
 
 	switch (tac_kind(tac)) {
 		case TAC_LABEL_INDEXED:
@@ -117,7 +117,7 @@ uint32_t tac_label_index(struct TAC* tac) {
 			break;
 		default:
 			fprintf(stderr, "[TAC] invalid access (kind == %d)\n", tac_kind(tac));
-			exit(1);
+			return -1;
 	}
 	return tac->label_index;
 }
@@ -177,8 +177,7 @@ int32_t tac_max_temp(struct TAC* tac) {
 
 		default:
 			fprintf(stderr, "%s: unexpected case %u\n", __func__, tac->kind);
-			exit(1);
-			return 0;
+			return -1;
 	}
 }
 
@@ -202,7 +201,7 @@ enum TAC_OP tac_op(struct TAC* tac) {
 			break;
 		default:
 			fprintf(stderr, "[TAC] invalid access (kind == %d)\n", tac_kind(tac));
-			exit(1);
+			return TAC_OP_NONE;
 	}
 	return tac->op;
 }
@@ -232,7 +231,7 @@ static void check_bounds(enum TAC_KIND kind, uint64_t index, size_t size) {
 
 	if (index >= size) {
 		fprintf(stderr, "%s: %d: %ld (>= %ld) is out of bounds\n", __func__, kind, index, size);
-		exit(1);
+		assert(index < size);
 	}
 }
 
@@ -279,7 +278,6 @@ int tac_mark_used(struct TAC* tac, bool* used_map, size_t map_size) {
 
 		default:
 			fprintf(stderr, "%s: unexpected case %u\n", __func__, tac->kind);
-			exit(1);
 			return 1;
 	}
 }
@@ -317,7 +315,6 @@ int tac_mark_defines(struct TAC* tac, bool* defines_map, size_t map_size) {
 
 		default:
 			fprintf(stderr, "%s: unexpected case %u\n", __func__, tac->kind);
-			exit(1);
 			return 1;
 	}
 }

@@ -31,6 +31,7 @@ struct ST {
 	uint32_t inferred_types_capacity;
 };
 
+// @returns NULL on error
 struct ST* st_ctor();
 void st_free(struct ST* st);
 

@@ -16,7 +16,7 @@
 
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
-void compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
+bool compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struct IBuffer* ibu) {
 
 	char* name = lvst_at(ctx_tables(ctx)->lvst, tac_dest(tac))->name;
 
@@ -31,7 +31,7 @@ void compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 
 	if (var_width == 0) {
 		fprintf(stderr, "%s could not determine width of local variable %s\n", __FILE__, name);
-		exit(1);
+		return false;
 	}
 
 	const bool wide = arg_wide && (var_width == 2);
@@ -56,4 +56,6 @@ void compile_tac_store_local(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 		ldi(RAT_SCRATCH_REG, 0, "TAC_STORE_LOCAL");
 		stdY(offset + 1, RAT_SCRATCH_REG, "TAC_STORE_LOCAL");
 	}
+
+	return true;
 }

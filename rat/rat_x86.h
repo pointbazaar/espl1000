@@ -22,6 +22,7 @@ char* rat_regname_x86(size_t i);
 //   e.g. (rax, 8) -> rax
 //   e.g. (rax, 4) -> eax
 //   e.g. (rax, 1) -> al
+// @returns NULL on error
 char* rat_regname_x86_width(size_t i, uint8_t nbytes);
 
 void rat_print_regname_x86(struct RAT* rat, size_t reg);

@@ -12,7 +12,7 @@
 
 #include "gen_tac.h"
 
-void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx) {
+bool tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx) {
 
 	//t1 = f->range->start
 	//f->index_name = t1
@@ -88,5 +88,5 @@ void tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx) {
 	//Lend:
 	tacbuffer_append(buffer, makeTACLabel(lend));
 
-	ctx_exit_loop(ctx);
+	return ctx_exit_loop(ctx);
 }

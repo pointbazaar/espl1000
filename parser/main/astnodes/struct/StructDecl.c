@@ -29,24 +29,24 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens) {
 		struct Token* next = list_head(copy);
 
 		if (next->kind != STRUCT) {
-			printf("parsing error, expected 'struct' , but got: %s\n", list_code(copy));
-			exit(1);
+			fprintf(stderr, "parsing error, expected 'struct' , but got: %s\n", list_code(copy));
+			return NULL;
 		}
 		list_consume(copy, 1);
 
 		//read the struct type
 		struct SimpleType* st = makeSimpleType(copy);
 		if (st == NULL) {
-			printf("expected SimpleType, but got: \n");
+			fprintf(stderr, "expected SimpleType, but got: \n");
 			list_print(copy);
-			exit(1);
+			return NULL;
 		}
 		res->type = st;
 
 		next = list_head(copy);
 		if (next->kind != LCURLY) {
-			printf("parsing error, expected '{' , but got: %s\n", list_code(copy));
-			exit(1);
+			fprintf(stderr, "parsing error, expected '{' , but got: %s\n", list_code(copy));
+			return NULL;
 		}
 		list_consume(copy, 1);
 
@@ -68,8 +68,8 @@ struct StructDecl* makeStructDecl(struct TokenList* tokens) {
 
 		next = list_head(copy);
 		if (next->kind != RCURLY) {
-			printf("parsing error, expected '}' , but got: %s\n", list_code(copy));
-			exit(1);
+			fprintf(stderr, "parsing error, expected '}' , but got: %s\n", list_code(copy));
+			return NULL;
 		}
 		list_consume(copy, 1);
 	}

@@ -1,10 +1,9 @@
-#ifndef TOKENREADER
-#define TOKENREADER
+#pragma once
 
 #include <stdbool.h>
+#include <stdio.h>
 
 struct TokenList;
 
+// @returns NULL on error
 struct TokenList* read_tokens_from_tokens_file(FILE* file, char* tokensFile);
-
-#endif

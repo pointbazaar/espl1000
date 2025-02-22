@@ -4,13 +4,13 @@
 #include <stdbool.h>
 #include <assert.h>
 
-#include "../util/exit_malloc/exit_malloc.h"
 #include "rat.h"
 #include "rat_x86.h"
 #include "_struct.h"
 
-//gives index of a free register, exits on failure.
-//the register still has to be occupied
+// gives index of a free register
+// the register still has to be occupied
+// @returns < 0 on error
 static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide);
 
 static void rat_init(struct RAT* rat);
@@ -20,7 +20,11 @@ static void rat_init(struct RAT* rat);
 //                to make space for
 struct RAT* rat_ctor(enum RAT_ARCH arch, size_t ntemps) {
 
-	struct RAT* rat = exit_malloc(sizeof(struct RAT));
+	struct RAT* rat = malloc(sizeof(struct RAT));
+
+	if (!rat) {
+		return NULL;
+	}
 
 	rat->arch = arch;
 	rat->ntemps = ntemps;
@@ -148,19 +152,18 @@ int rat_get_register(struct RAT* rat, uint32_t tmp_index) {
 		}
 	}
 
-	printf("[RAT] rat_get_register: t%d has no register\n", tmp_index);
+	fprintf(stderr, "[RAT] rat_get_register: t%d has no register\n", tmp_index);
 	rat_print(rat);
-	exit(1);
 
 	return -1;
 }
 
-uint32_t rat_occupant(struct RAT* rat, uint8_t reg) {
+int32_t rat_occupant(struct RAT* rat, uint8_t reg) {
 
 	if (rat->status[reg] != REG_OCCUPIED) {
-		printf("[RAT] rat_occupant: requesting occupant for unoccupied register\n");
+		fprintf(stderr, "[RAT] rat_occupant: requesting occupant for unoccupied register\n");
 		rat_print(rat);
-		exit(1);
+		return -1;
 	}
 
 	for (size_t i = 0; i < rat->ntemps; i++) {
@@ -170,9 +173,7 @@ uint32_t rat_occupant(struct RAT* rat, uint8_t reg) {
 	}
 
 	fprintf(stderr, "rat: did not find occupant of register %d\n", reg);
-	exit(1);
-
-	return 0;
+	return -1;
 }
 
 bool rat_occupies(struct RAT* rat, uint8_t reg, uint32_t tmp_index) {
@@ -254,7 +255,7 @@ bool rat_is_wide(struct RAT* rat, uint32_t tmp_index) {
 	return reg + 1 < rat_capacity(rat) && rat->status[reg + 1] == REG_OCCUPIED && (rat_occupant(rat, reg + 1) == tmp_index);
 }
 
-void rat_free(struct RAT* rat, uint8_t reg) {
+bool rat_free(struct RAT* rat, uint8_t reg) {
 
 	switch (rat->status[reg]) {
 
@@ -263,22 +264,21 @@ void rat_free(struct RAT* rat, uint8_t reg) {
 			break;
 
 		case REG_FREE:
-			printf("[RAT] double free. Exiting.\n");
-			exit(1);
-			break;
+			fprintf(stderr, "[RAT] double free.\n");
+			return false;
 
 		case REG_RESERVED:
-			printf("[RAT] trying to free reserved Register. Exiting.\n");
-			exit(1);
-			break;
+			fprintf(stderr, "[RAT] trying to free reserved Register.\n");
+			return false;
 
 		case REG_INVALID_ARCH:
 			break;
 
 		default:
 			fprintf(stderr, "unhandled case in %s\n", __func__);
-			exit(1);
+			return false;
 	}
+	return true;
 }
 
 static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide) {
@@ -312,9 +312,8 @@ static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide
 		}
 	}
 
-	printf("RAT could not find a free register, they are all occupied.\n");
+	fprintf(stderr, "RAT could not find a free register, they are all occupied.\n");
 	rat_print(rat);
-	exit(1);
 	return -1;
 }
 
@@ -351,8 +350,8 @@ enum SD_REGISTER rat_stack_ptr(struct RAT* rat) {
 
 	switch (rat->arch) {
 		case RAT_ARCH_AVR:
-			printf("%s: not applicable for AVR\n", __func__);
-			exit(1);
+			fprintf(stderr, "%s: not applicable for AVR\n", __func__);
+			assert(false);
 		case RAT_ARCH_X86:
 			return rat_stack_ptr_x86();
 	}
