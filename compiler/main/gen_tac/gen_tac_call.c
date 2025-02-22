@@ -13,7 +13,7 @@
 
 #include "gen_tac.h"
 
-static void tac_call_case_sst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx);
+static bool tac_call_case_sst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx);
 static void tac_call_case_lvst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx);
 
 static void tac_call_prep_param(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx, int i, const bool push16) {
@@ -50,7 +50,7 @@ static void tac_call_prep_params_case_lvst(struct TACBuffer* buffer, struct Call
 	}
 }
 
-void tac_call(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
+bool tac_call(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
 
 	char* fname = call->callable->simple_var->name;
 	struct SST* sst = ctx_tables(ctx)->sst;
@@ -58,16 +58,15 @@ void tac_call(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
 
 	if (sst_contains(sst, fname)) {
 		tac_call_case_sst(buffer, call, ctx);
-		return;
+		return true;
 	}
 	if (lvst_contains(lvst, fname)) {
 		tac_call_case_lvst(buffer, call, ctx);
-		return;
+		return true;
 	}
 
 	fprintf(stderr, "did not find symbol '%s' in LVST or SST, cannot call.\n", fname);
-	fprintf(stderr, "exiting.");
-	exit(1);
+	return false;
 }
 
 static void tac_call_case_lvst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
@@ -89,7 +88,7 @@ static void tac_call_case_lvst(struct TACBuffer* buffer, struct Call* call, stru
 	tacbuffer_append(buffer, makeTACICall(make_temp(), tacbuffer_last_dest(buffer)));
 }
 
-static void tac_call_case_sst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
+static bool tac_call_case_sst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
 
 	const char* fname = call->callable->simple_var->name;
 
@@ -102,12 +101,12 @@ static void tac_call_case_sst(struct TACBuffer* buffer, struct Call* call, struc
 
 	if (call->callable->member_access != NULL) {
 		printf("member access calls currently unsupported on avr_code_gen\n");
-		exit(1);
+		return false;
 	}
 
 	if (call->callable->simple_var->count_indices != 0) {
 		printf("calls with indices currently unsupported on avr_code_gen\n");
-		exit(1);
+		return false;
 	}
 
 	uint32_t index = sst_index_of(sst, fname);
@@ -115,4 +114,6 @@ static void tac_call_case_sst(struct TACBuffer* buffer, struct Call* call, struc
 	struct TAC* t2 = makeTACCall(make_temp(), index);
 
 	tacbuffer_append(buffer, t2);
+
+	return true;
 }

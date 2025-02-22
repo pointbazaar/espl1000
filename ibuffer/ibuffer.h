@@ -2,6 +2,7 @@
 
 #include <inttypes.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #include "ikey.h"
 
@@ -24,6 +25,7 @@ struct Instr;
 
 struct IBuffer;
 
+// @returns NULL on error
 struct IBuffer* ibu_ctor();
 
 void ibu_dtor(struct IBuffer* ibu);
@@ -32,7 +34,8 @@ void ibu_write(struct IBuffer* ibu, FILE* fout);
 
 void ibu_push(struct IBuffer* ibu, struct Instr* i);
 
-void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* label, char* comment);
+// @returns false on error
+bool ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* label, char* comment);
 
 //constructions macros
 #define ibu_branch(instr, label, comment) ibu_push4(ibu, instr, 0, 0, 0, label, comment)

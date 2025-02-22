@@ -60,12 +60,14 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer_with_redzone(struct TACBuffer*
 
 vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer) {
 
+	bool success = true;
+
 	//create the file
 	FILE* falibi = fopen(".file.dg", "w");
 
 	if (falibi == NULL) {
-		printf("error opening output file\n");
-		exit(1);
+		fprintf(stderr, "error opening output file\n");
+		return NULL;
 	}
 
 	fclose(falibi);
@@ -77,8 +79,8 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer) {
 	FILE* fout = fopen(flags_asm_filename(flags), "w");
 
 	if (fout == NULL) {
-		printf("error opening output file\n");
-		exit(1);
+		fprintf(stderr, "error opening output file\n");
+		return NULL;
 	}
 
 	print_defs(fout);
@@ -89,13 +91,13 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer) {
 	struct BasicBlock* root = graph[0];
 
 	if (root == NULL) {
-		printf("[Error] could not create BasicBlock.Exiting.\n");
-		exit(1);
+		fprintf(stderr, "[Error] could not create BasicBlock.Exiting.\n");
+		return NULL;
 	}
 
 	struct IBuffer* ibu = ibu_ctor();
 
-	emit_asm_avr_basic_block(root, ctx, ibu);
+	success = emit_asm_avr_basic_block(root, ctx, ibu);
 
 	for (int i = 0; i < nblocks; i++) {
 		basicblock_dtor(graph[i]);
@@ -111,6 +113,10 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer) {
 
 	fclose(fout);
 
+	if (!success) {
+		goto exit_ctx;
+	}
+
 	char cmd[200];
 	sprintf(cmd, "avra %s > /tmp/avra-stdout 2> /tmp/avra-stderr", flags_asm_filename(flags));
 
@@ -119,33 +125,37 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer(struct TACBuffer* buffer) {
 	int status2 = WEXITSTATUS(status);
 
 	if (status2 != 0) {
-		printf("error with avra, see /tmp/avra-stdout, /tmp/avra-stderr \n");
-		exit(1);
+		fprintf(stderr, "error with avra, see /tmp/avra-stdout, /tmp/avra-stderr \n");
+		goto exit_ctx;
 	}
 
 	vmcu_model_t* model = vmcu_model_ctor(VMCU_DEVICE_M328P);
 
 	if (model == NULL) {
-		printf("[Error] could not prepare vmcu_model_t. Exiting.\n");
-		exit(1);
+		fprintf(stderr, "[Error] could not prepare vmcu_model_t. Exiting.\n");
+		goto exit_ctx;
 	}
 
 	vmcu_report_t* report = vmcu_analyze_file(flags_hex_filename(flags), model);
 
 	if (report == NULL) {
-		printf("[Error] could not prepare vmcu_report_t. Exiting.\n");
-		exit(1);
+		fprintf(stderr, "[Error] could not prepare vmcu_report_t. Exiting.\n");
+		goto exit_vmcu_model;
 	}
 
 	vmcu_system_t* system = vmcu_system_ctor(report);
 
 	if (system == NULL) {
-		printf("[Error] could not prepare vmcu_system_t. Exiting.\n");
-		exit(1);
+		fprintf(stderr, "[Error] could not prepare vmcu_system_t. Exiting.\n");
+		goto exit_vmcu_report;
 	}
 
+exit_vmcu_report:
 	vmcu_report_dtor(report);
+exit_vmcu_model:
 	vmcu_model_dtor(model);
+
+exit_ctx:
 
 	ctx_dtor(ctx);
 

@@ -13,6 +13,7 @@ enum RAT_ARCH {
 
 struct RAT;
 
+// @returns NULL on error
 struct RAT* rat_ctor(enum RAT_ARCH arch, size_t ntemps);
 
 void rat_dtor(struct RAT* rat);
@@ -27,10 +28,12 @@ void rat_reserve_reg(struct RAT* rat, uint32_t reg, char* note);
 bool rat_has_register(struct RAT* rat, uint32_t tmp_index);
 
 // @returns    the register where 'tmp_index' resides
+// @returs < 0 on error
 int rat_get_register(struct RAT* rat, uint32_t tmp_index);
 
 // @returns    the lowest temporary that occupies the register
-uint32_t rat_occupant(struct RAT* rat, uint8_t reg);
+// @returns < 0 on error
+int32_t rat_occupant(struct RAT* rat, uint8_t reg);
 
 // @param reg         the register
 // @param temp_index  the index of the temporary to look for
@@ -56,7 +59,8 @@ uint32_t rat_ensure_register(struct RAT* rat, uint32_t tmp_index, bool high_regs
 
 bool rat_is_wide(struct RAT* rat, uint32_t tmp_index);
 
-void rat_free(struct RAT* rat, uint8_t reg);
+// @returns false on error
+bool rat_free(struct RAT* rat, uint8_t reg);
 
 enum SD_REGISTER rat_scratch_reg(struct RAT* rat);
 enum SD_REGISTER rat_return_reg(struct RAT* rat);

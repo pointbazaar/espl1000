@@ -49,7 +49,7 @@ struct Variable* makeVariable(struct TokenList* tokens) {
 		printf("%s\n", list_code(copy));
 		free(res);
 		freeTokenListShallow(copy);
-		exit(1);
+		return NULL;
 	}
 
 end:

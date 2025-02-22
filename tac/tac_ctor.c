@@ -3,8 +3,6 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "util/exit_malloc/exit_malloc.h"
-
 #include "tacbuffer.h"
 #include "tac.h"
 #include "_struct.h"
@@ -13,10 +11,13 @@ static uint32_t temp_count = 0; //temporaries for TAC
 
 static uint32_t current_label_index = TAC_NO_LABEL + 1;
 
-static struct TAC* makeTAC();
+static struct TAC* makeTAC() {
+	struct TAC* res = malloc(sizeof(struct TAC));
 
-struct TAC* makeTAC() {
-	struct TAC* res = exit_malloc(sizeof(struct TAC));
+	if (!res) {
+		return NULL;
+	}
+
 	*res = (struct TAC){
 	    .label_index = TAC_NO_LABEL,
 	    .kind = TAC_NOP,
@@ -160,9 +161,8 @@ struct TAC* makeTACBinOp(uint32_t dest, enum TAC_OP op, uint32_t src) {
 		case TAC_OP_SHIFT_RIGHT:
 			break;
 		default:
-			printf("fatal error in %s. unrecognized TAC_OP: %d, Exiting", __func__, op);
-			fflush(stdout);
-			exit(1);
+			fprintf(stderr, "fatal error in %s. unrecognized TAC_OP: %d\n", __func__, op);
+			return NULL;
 	}
 
 	return t;
@@ -181,9 +181,8 @@ struct TAC* makeTACUnaryOp(uint32_t dest, uint32_t src, enum TAC_OP op) {
 		case TAC_OP_UNARY_BITWISE_NEG:
 			break;
 		default:
-			printf("fatal error in makeTACUnaryOp.Exiting");
-			fflush(stdout);
-			exit(1);
+			fprintf(stderr, "fatal error in makeTACUnaryOp\n");
+			return NULL;
 	}
 
 	return t;

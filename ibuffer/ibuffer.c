@@ -3,8 +3,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <assert.h>
+#include <stdbool.h>
 
-#include "../util/exit_malloc/exit_malloc.h"
 #include "ibuffer.h"
 #include "ibuffer_write.h"
 
@@ -37,10 +37,20 @@ struct IBuffer {
 
 struct IBuffer* ibu_ctor() {
 
-	struct IBuffer* ibu = exit_malloc(sizeof(struct IBuffer));
+	struct IBuffer* ibu = malloc(sizeof(struct IBuffer));
+
+	if (!ibu) {
+		return NULL;
+	}
 
 	ibu->capacity = 100;
-	ibu->buffer = exit_malloc(sizeof(struct Instr*) * ibu->capacity);
+	ibu->buffer = malloc(sizeof(struct Instr*) * ibu->capacity);
+
+	if (!ibu->buffer) {
+		free(ibu);
+		return NULL;
+	}
+
 	ibu->count = 0;
 
 	return ibu;
@@ -80,9 +90,13 @@ void ibu_push(struct IBuffer* ibu, struct Instr* i) {
 	ibu->count += 1;
 }
 
-void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* label, char* comment) {
+bool ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* label, char* comment) {
 
-	struct Instr* i = exit_malloc(sizeof(struct Instr));
+	struct Instr* i = malloc(sizeof(struct Instr));
+
+	if (!i) {
+		return false;
+	}
 
 	i->key = key;
 	i->x1 = x1;
@@ -90,10 +104,18 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32
 	i->x3 = x3;
 
 	if (label == NULL) {
-		i->str = exit_malloc(1);
+		i->str = malloc(1);
+		if (!i->str) {
+			free(i);
+			return false;
+		}
 		memset(i->str, 0, 1);
 	} else {
-		i->str = exit_malloc(strlen(label) + 1);
+		i->str = malloc(strlen(label) + 1);
+		if (!i->str) {
+			free(i);
+			return false;
+		}
 		strcpy(i->str, label);
 	}
 
@@ -101,4 +123,6 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32
 	i->comment[INSTR_COMMENT_LEN - 1] = '\0';
 
 	ibu_push(ibu, i);
+
+	return true;
 }

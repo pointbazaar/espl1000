@@ -6,7 +6,7 @@
 
 #include "gen_tac.h"
 
-void tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* u, struct Ctx* ctx) {
+bool tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* u, struct Ctx* ctx) {
 
 	tac_term(buffer, u->term, ctx);
 
@@ -22,13 +22,15 @@ void tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* u, struct Ctx* ctx)
 			case OP_COMPLEMENT: op = TAC_OP_UNARY_BITWISE_NEG; break;
 
 			default:
-				printf("error, op was none of supported TAC_OP_... values\n");
-				printf("op is %d\n", u->op);
-				exit(1);
+				fprintf(stderr, "error, op was none of supported TAC_OP_... values\n");
+				fprintf(stderr, "op is %d\n", u->op);
+				return false;
 		}
 
 		struct TAC* t = makeTACUnaryOp(dest, tacbuffer_last_dest(buffer), op);
 
 		tacbuffer_append(buffer, t);
 	}
+
+	return true;
 }

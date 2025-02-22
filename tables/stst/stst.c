@@ -31,8 +31,17 @@ struct STST* stst_ctor() {
 
 	struct STST* stst = make(STST);
 
+	if (!stst) {
+		return NULL;
+	}
+
 	stst->capacity = STST_INITIAL_CAPACITY;
-	stst->lines = exit_malloc(sizeof(struct STSTLine*) * stst->capacity);
+	stst->lines = malloc(sizeof(struct STSTLine*) * stst->capacity);
+
+	if (!stst->lines) {
+		return NULL;
+	}
+
 	stst->count = 0;
 
 	return stst;
@@ -59,9 +68,8 @@ struct STSTLine* stst_get(struct STST* stst, char* name) {
 		if (strcmp(line->name, name) == 0) { return line; }
 	}
 
-	printf(ERR_NOT_FOUND);
-	printf("\t%s\n", name);
-	exit(1);
+	fprintf(stderr, ERR_NOT_FOUND);
+	fprintf(stderr, "\t%s\n", name);
 	return NULL;
 }
 
@@ -81,13 +89,13 @@ struct StructMember* stst_get_member(struct STST* stst, char* struct_name, char*
 	}
 
 	char* msg = "[STST] could not find member '%s' of '%s'\n";
-	printf(msg, member_name, struct_name);
+	fprintf(stderr, msg, member_name, struct_name);
 
 	stst_print(stst);
-	exit(1);
+	return NULL;
 }
 
-uint32_t stst_member_offset(struct STST* stst, char* struct_name, char* member_name, bool x86) {
+int32_t stst_member_offset(struct STST* stst, char* struct_name, char* member_name, bool x86) {
 
 	//calculates the offset in bytes, from the start of the struct
 
@@ -106,11 +114,9 @@ uint32_t stst_member_offset(struct STST* stst, char* struct_name, char* member_n
 		offset += lvst_sizeof_type(member->type, x86);
 	}
 
-	printf("[STST] could not find member offset, struct '%s', member '%s'\n", struct_name, member_name);
-	fflush(stdout);
-	exit(1);
+	fprintf(stderr, "[STST] could not find member offset, struct '%s', member '%s'\n", struct_name, member_name);
 
-	return 0;
+	return -1;
 }
 
 uint32_t stst_size(struct STST* stst) {

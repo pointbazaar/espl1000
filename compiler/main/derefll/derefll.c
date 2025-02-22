@@ -27,7 +27,11 @@ void derefll_append(struct DerefLL* d1, struct DerefLL* d2) {
 
 struct DerefLL* derefll_deref() {
 
-	struct DerefLL* res = exit_malloc(sizeof(struct DerefLL));
+	struct DerefLL* res = malloc(sizeof(struct DerefLL));
+
+	if (!res) {
+		return NULL;
+	}
 
 	res->next = NULL;
 	res->action = DEREFLL_DEREF;
@@ -37,7 +41,11 @@ struct DerefLL* derefll_deref() {
 
 struct DerefLL* derefll_structmember(char* name) {
 
-	struct DerefLL* res = exit_malloc(sizeof(struct DerefLL));
+	struct DerefLL* res = malloc(sizeof(struct DerefLL));
+
+	if (!res) {
+		return NULL;
+	}
 
 	res->next = NULL;
 	res->action = DEREFLL_MEMBER;
@@ -48,7 +56,11 @@ struct DerefLL* derefll_structmember(char* name) {
 
 struct DerefLL* derefll_expr(struct Expr* expr) {
 
-	struct DerefLL* res = exit_malloc(sizeof(struct DerefLL));
+	struct DerefLL* res = malloc(sizeof(struct DerefLL));
+
+	if (!res) {
+		return NULL;
+	}
 
 	res->next = NULL;
 	res->action = DEREFLL_INDEX;
@@ -63,7 +75,11 @@ struct DerefLL* derefll_ctor_simplevar(struct SimpleVar* sv, struct Ctx* ctx) {
 		printf("[debug] %s\n", __func__);
 	}
 
-	struct DerefLL* res = exit_malloc(sizeof(struct DerefLL));
+	struct DerefLL* res = malloc(sizeof(struct DerefLL));
+
+	if (!res) {
+		return NULL;
+	}
 
 	res->next = NULL;
 	res->action = DEREFLL_INIT;
@@ -178,8 +194,8 @@ void derefll_annotate_types(struct DerefLL* dll, struct Ctx* ctx, struct Type* p
 			break;
 
 		case DEREFLL_MEMBER: {
-			if (prev_type == NULL) exit(1); //should not happen
-			if (prev_type->basic_type == NULL) exit(1); //should not happen
+			assert(prev_type != NULL);
+			assert(prev_type->basic_type != NULL);
 
 			char* struct_name = prev_type->basic_type->simple_type->struct_type->type_name;
 

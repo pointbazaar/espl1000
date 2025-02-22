@@ -26,7 +26,11 @@ struct TCError* typecheck_ast(struct AST* ast, struct Ctx* ctx, bool print_error
 	}
 	struct ST* st = ctx_tables(ctx);
 
-	struct TCCtx* tcctx = exit_malloc(sizeof(struct TCCtx));
+	struct TCCtx* tcctx = malloc(sizeof(struct TCCtx));
+
+	if (!tcctx) {
+		return NULL;
+	}
 
 	init_tcctx(tcctx);
 	tcctx->print_errors = print_errors;

@@ -27,20 +27,30 @@ struct LVST* lvst_ctor() {
 
 	struct LVST* lvst = make(LVST);
 
+	if (!lvst) {
+		return NULL;
+	}
+
 	lvst->count = 0;
 	lvst->capacity = LVST_INITIAL_CAPACITY;
-	lvst->lines = exit_malloc(sizeof(struct LVSTLine*) * lvst->capacity);
+	lvst->lines = malloc(sizeof(struct LVSTLine*) * lvst->capacity);
+
+	if (!lvst->lines) {
+		free(lvst);
+		return NULL;
+	}
 
 	return lvst;
 }
 
-void lvst_clear(struct LVST* lvst) {
+bool lvst_clear(struct LVST* lvst) {
 
 	struct LVSTLine* prev = NULL;
 
 	for (int i = 0; i < lvst->count; i++) {
 		if (lvst->lines[i] != prev) {
 			prev = lvst->lines[i];
+			free(lvst->lines[i]->name);
 			free(lvst->lines[i]);
 		}
 	}
@@ -48,7 +58,13 @@ void lvst_clear(struct LVST* lvst) {
 
 	lvst->count = 0;
 	lvst->capacity = LVST_INITIAL_CAPACITY;
-	lvst->lines = exit_malloc(sizeof(struct LVSTLine*) * lvst->capacity);
+	lvst->lines = malloc(sizeof(struct LVSTLine*) * lvst->capacity);
+
+	if (!lvst->lines) {
+		return false;
+	}
+
+	return true;
 }
 
 void lvst_free(struct LVST* lvst) {
@@ -117,9 +133,8 @@ struct LVSTLine* lvst_get(struct LVST* lvst, char* name) {
 		if (strcmp(line->name, name) == 0) { return line; }
 	}
 
-	printf("[LVST][Error] %s not found in LVST\n", name);
+	fprintf(stderr, "[LVST][Error] %s not found in LVST\n", name);
 	lvst_print(lvst);
-	exit(1);
 	return NULL;
 }
 
@@ -127,7 +142,7 @@ struct LVSTLine* lvst_at(struct LVST* lvst, uint32_t index) {
 	if (index >= lvst->count) {
 		printf("[LVST][Error] index %d not found in LVST\n", index);
 		lvst_print(lvst);
-		exit(1);
+		return NULL;
 	}
 	return lvst->lines[index];
 }
@@ -153,11 +168,10 @@ struct LVSTLine* lvst_arg_at(struct LVST* lvst, uint32_t index) {
 
 	fprintf(stderr, "%s: could not find arg with index %d\n", __func__, index);
 	fprintf(stderr, "lvst has %ld local vars, %ld args\n", nvars, nargs);
-	exit(1);
 	return NULL;
 }
 
-uint32_t lvst_index_of(struct LVST* lvst, char* name) {
+int32_t lvst_index_of(struct LVST* lvst, char* name) {
 
 	for (int i = 0; i < lvst->count; i++) {
 
@@ -167,8 +181,7 @@ uint32_t lvst_index_of(struct LVST* lvst, char* name) {
 
 	printf("[LVST][Error] %s not found in LVST\n", name);
 	lvst_print(lvst);
-	exit(1);
-	return 0;
+	return -1;
 }
 
 bool lvst_contains(struct LVST* lvst, char* name) {
@@ -201,7 +214,8 @@ void lvst_print(struct LVST* lvst) {
 	}
 }
 
-uint32_t lvst_sizeof_primitivetype(struct PrimitiveType* pt, bool x86) {
+// @returns < 0 on error
+static int32_t lvst_sizeof_primitivetype(struct PrimitiveType* pt, bool x86) {
 
 	if (pt->is_char_type || pt->is_bool_type) return 1;
 
@@ -227,8 +241,7 @@ uint32_t lvst_sizeof_primitivetype(struct PrimitiveType* pt, bool x86) {
 
 		default:
 			fprintf(stderr, "%s: unhandled case %d\n", __func__, pt->int_type);
-			exit(1);
-			return 0;
+			return -1;
 	}
 }
 
@@ -364,14 +377,12 @@ ssize_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name) {
 		}
 	}
 
-	printf("fatal error in lvst_stack_frame_offset_x86.");
-	printf("did not find local: %s", local_var_name);
-	fflush(stdout);
-	exit(1);
-	return 0;
+	fprintf(stderr, "fatal error in lvst_stack_frame_offset_x86.");
+	fprintf(stderr, "did not find local: %s", local_var_name);
+	return -1;
 }
 
-uint32_t lvst_arg_index(struct LVST* lvst, char* name) {
+int32_t lvst_arg_index(struct LVST* lvst, char* name) {
 
 	uint32_t index = 0;
 
@@ -388,11 +399,10 @@ uint32_t lvst_arg_index(struct LVST* lvst, char* name) {
 	}
 
 	fprintf(stderr, "%s: did not find '%s' in arguments\n", __func__, name);
-	exit(1);
-	return 0;
+	return -1;
 }
 
-size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name) {
+ssize_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name) {
 
 	uint32_t offset = 1;
 
@@ -422,11 +432,9 @@ size_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name) {
 		offset += lvst_sizeof_type(line->type, false);
 	}
 
-	printf("fatal error in lvst_stack_frame_offset_avr.");
-	printf("did not find local: %s", local_var_name);
-	fflush(stdout);
-	exit(1);
-	return 0;
+	fprintf(stderr, "fatal error in lvst_stack_frame_offset_avr.");
+	fprintf(stderr, "did not find local: %s", local_var_name);
+	return -1;
 }
 
 uint32_t lvst_sizeof_var(struct LVST* lvst, char* name, bool x86) {

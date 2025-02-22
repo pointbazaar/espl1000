@@ -48,23 +48,28 @@ struct SSTLine {
 };
 
 //-------------
+// @returns NULL on error
 struct SST* sst_ctor();
 void sst_free(struct SST* sst);
 //-------------
 
 void sst_clear(struct SST* sst);
 
-void sst_add(struct SST* sst, struct SSTLine* line);
+// @returns false on error
+bool sst_add(struct SST* sst, struct SSTLine* line);
 
+// @returns NULL on error
 struct SSTLine* sst_get(struct SST* sst, char* name);
 
 bool sst_contains(struct SST* sst, char* name);
 
 uint32_t sst_size(struct SST* sst);
 
+// @returns NULL on error
 struct SSTLine* sst_at(struct SST* sst, uint32_t index);
 
-uint32_t sst_index_of(struct SST* sst, char* name);
+// @returns < 0 on error
+int32_t sst_index_of(struct SST* sst, char* name);
 
 // @returns size of arguments in bytes
 uint32_t sst_args_size_avr(struct SST* sst, char* name);

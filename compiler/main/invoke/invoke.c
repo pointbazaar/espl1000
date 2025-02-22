@@ -9,7 +9,6 @@
 
 int asprintf(char** restrict strp, const char* restrict fmt, ...);
 
-#include "../../../util/exit_malloc/exit_malloc.h"
 #include "util/fileutils/fileutils.h"
 #include "invoke.h"
 #include "parser/main/util/parser.h"
@@ -26,7 +25,11 @@ int invoke_lexer(char* filename) {
 
 struct Namespace* invoke_parser(char* filename) {
 
-	char* fnamecpy = exit_malloc(strlen(filename) + 1);
+	char* fnamecpy = malloc(strlen(filename) + 1);
+
+	if (!fnamecpy) {
+		return NULL;
+	}
 
 	strcpy(fnamecpy, filename);
 

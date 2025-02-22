@@ -5,10 +5,13 @@
 
 #include "gen_tac.h"
 
-static void case_default(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx* ctx);
-static void case_loop(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx* ctx);
+// @returns false on error
+static bool case_default(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx* ctx);
 
-void tac_whilestmt(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx* ctx) {
+// @returns false on error
+static bool case_loop(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx* ctx);
+
+bool tac_whilestmt(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx* ctx) {
 
 	struct Expr* e = w->condition;
 
@@ -33,24 +36,26 @@ void tac_whilestmt(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx* ct
 				}
 
 				if (inf) {
-					case_loop(buffer, w, ctx);
+					return case_loop(buffer, w, ctx);
 				}
 
 				//otherwise, we don't need to emit it at all,
 				//since it's never going to be executed
 
 			} else {
-				case_default(buffer, w, ctx);
+				return case_default(buffer, w, ctx);
 			}
 		}
 	} else {
 		//both terms present
 
-		case_default(buffer, w, ctx);
+		return case_default(buffer, w, ctx);
 	}
+
+	return true;
 }
 
-static void case_loop(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx* ctx) {
+static bool case_loop(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx* ctx) {
 
 	//for a constant true condition (still able to 'break' out though)
 
@@ -72,10 +77,10 @@ static void case_loop(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx*
 
 	tacbuffer_append(buffer, makeTACLabel(lend));
 
-	ctx_exit_loop(ctx);
+	return ctx_exit_loop(ctx);
 }
 
-static void case_default(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx* ctx) {
+static bool case_default(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx* ctx) {
 	//L0:
 	//t1 = expr
 	//if-goto t1 L1
@@ -108,5 +113,5 @@ static void case_default(struct TACBuffer* buffer, struct WhileStmt* w, struct C
 
 	tacbuffer_append(buffer, makeTACLabel(lend));
 
-	ctx_exit_loop(ctx);
+	return ctx_exit_loop(ctx);
 }

@@ -18,10 +18,12 @@
 static void allocate_registers(struct TACBuffer* b, struct RAT* rat, struct ST* st);
 static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct ST* st);
 
-void emit_asm_avr_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct IBuffer* ibu) {
+bool emit_asm_avr_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct IBuffer* ibu) {
+
+	bool status = true;
 
 	if (block == NULL || block->visited_emit_asm)
-		return;
+		return true;
 
 	if (flags_debug(ctx_flags(ctx))) {
 		printf("%s\n", __func__);
@@ -47,19 +49,32 @@ void emit_asm_avr_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct 
 	for (size_t i = 0; i < tacbuffer_count(block->buffer); i++) {
 		struct TAC* t = tacbuffer_get(block->buffer, i);
 
-		emit_asm_avr_single_tac(rat, t, ctx, ibu);
+		if (!emit_asm_avr_single_tac(rat, t, ctx, ibu)) {
+			status = false;
+			break;
+		}
 	}
 
 	rat_dtor(rat);
 
 	liveness_dtor(live);
 
+	if (!status) {
+		goto exit;
+	}
+
 	//false/default branch gets emitted first,
 	//because there is no label for it in a lot of cases
 	//this way we can avoid an extra jump that's really
 	//not necessary.
-	emit_asm_avr_basic_block(block->branch_2, ctx, ibu);
-	emit_asm_avr_basic_block(block->branch_1, ctx, ibu);
+	status = emit_asm_avr_basic_block(block->branch_2, ctx, ibu);
+	if (!status) {
+		goto exit;
+	}
+
+	status = emit_asm_avr_basic_block(block->branch_1, ctx, ibu);
+exit:
+	return status;
 }
 
 static void allocate_registers(struct TACBuffer* b, struct RAT* rat, struct ST* st) {

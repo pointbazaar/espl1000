@@ -12,7 +12,7 @@
 
 #include "compile_tac.h"
 
-void compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx, char* current_function_name) {
+bool compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx, char* current_function_name) {
 
 	int reg_dest = rat_get_register(rat, tac_dest(tac));
 	char* c = "TAC_CALL";
@@ -22,7 +22,7 @@ void compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu,
 	if (tac_arg1(tac) >= sst_size(sst)) {
 
 		fprintf(stderr, "error: could not find function index %ld in sst\n", tac_arg1(tac));
-		exit(1);
+		return false;
 	}
 
 	char* function_name = sst_at(sst, tac_arg1(tac))->name;
@@ -32,4 +32,6 @@ void compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu,
 	call(function_name, c);
 
 	mov_regs(reg_dest, SD_REG_RAX, c);
+
+	return true;
 }

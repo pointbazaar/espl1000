@@ -21,7 +21,7 @@ static int label_counter = 0;
 
 static char* c = "TAC_BINARY_OP";
 
-void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
+bool compile_tac_binary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	switch (tac_op(tac)) {
 
@@ -48,9 +48,10 @@ void compile_tac_binary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu
 
 		default:
 			fprintf(stderr, "%s: unhandled case: %d\n", __func__, tac_op(tac));
-			exit(1);
-			break;
+			return false;
 	}
+
+	return true;
 }
 
 static void case_arithmetic_add(int RAT_SCRATCH_REG, int rdest, int rsrc, bool dest_wide, bool src_wide, struct IBuffer* ibu) {

@@ -6,11 +6,8 @@
 
 static char* ERR_NO_ARRAYTYPE = "Expected an ArrayType\n";
 
-static void print_exit(char* msg) {
-	printf("[Typeinference]");
-	printf("[Error]");
-	printf("%s", msg);
-	exit(1);
+static void print_error(char* msg) {
+	fprintf(stderr, "[Typeinference][Error] %s", msg);
 }
 
 struct Type* unwrap_indices(struct Type* t, uint32_t count) {
@@ -20,7 +17,9 @@ struct Type* unwrap_indices(struct Type* t, uint32_t count) {
 	struct Type* res = t;
 
 	while (index_count > 0) {
-		res = unwrap(res);
+		if (!(res = unwrap(res))) {
+			return NULL;
+		}
 		index_count--;
 	}
 
@@ -30,7 +29,8 @@ struct Type* unwrap_indices(struct Type* t, uint32_t count) {
 struct Type* unwrap(struct Type* t) {
 
 	if (t->array_type == NULL) {
-		print_exit(ERR_NO_ARRAYTYPE);
+		print_error(ERR_NO_ARRAYTYPE);
+		return NULL;
 	}
 
 	return t->array_type->element_type;

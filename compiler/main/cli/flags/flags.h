@@ -17,6 +17,8 @@ struct Flags* makeFlagsSingleFile(char* filename);
 void freeFlags(struct Flags* flags);
 
 int flags_count_filenames(struct Flags* flags);
+
+// @returns NULL on error
 char* flags_filenames(struct Flags* flags, int index);
 
 bool flags_debug(struct Flags* flags);

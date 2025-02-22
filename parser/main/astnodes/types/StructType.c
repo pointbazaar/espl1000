@@ -24,8 +24,7 @@ struct StructType* makeStructType(struct TokenList* tokens) {
 
 	if (next->kind != TYPEID && next->kind != ANYTYPE) {
 
-		printf("[Parser][Error] Could not parse StructType\n");
-		exit(1);
+		fprintf(stderr, "[Parser][Error] Could not parse StructType\n");
 		return NULL;
 	}
 

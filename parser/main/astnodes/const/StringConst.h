@@ -1,9 +1,7 @@
-#ifndef STRINGCONSTPARSER
-#define STRINGCONSTPARSER
+#pragma once
 
 struct TokenList;
 struct StringConst;
 
+// @returns NULL on error
 struct StringConst* makeStringConst(struct TokenList* tokens);
-
-#endif

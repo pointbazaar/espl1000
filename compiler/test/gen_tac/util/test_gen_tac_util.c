@@ -16,9 +16,9 @@ vmcu_system_t* prepare_vmcu_system_from_code_snippet(char* code_snippet) {
 	FILE* fout = fopen(".file.dg", "w");
 
 	if (fout == NULL) {
-		printf("error with opening file, exiting.");
+		fprintf(stderr, "error with opening file, exiting.");
 		fflush(stdout);
-		exit(1);
+		return NULL;
 	}
 
 	fprintf(fout, "%s", code_snippet);
@@ -31,30 +31,37 @@ vmcu_system_t* prepare_vmcu_system_from_code_snippet(char* code_snippet) {
 
 	assert(flags);
 
-	compile(flags);
+	bool success = compile(flags);
+
+	if (!success) {
+		return NULL;
+	}
+
+	vmcu_system_t* system = NULL;
 
 	vmcu_model_t* model = vmcu_model_ctor(VMCU_DEVICE_M328P);
 
 	if (model == NULL) {
-		printf("[Error] could not prepare vmcu_model_t. Exiting.\n");
-		exit(1);
+		fprintf(stderr, "[Error] could not prepare vmcu_model_t. Exiting.\n");
+		return NULL;
 	}
 
 	vmcu_report_t* report = vmcu_analyze_file(".file.hex", model);
 
 	if (report == NULL) {
-		printf("[Error] could not prepare vmcu_report_t. Exiting.\n");
-		exit(1);
+		fprintf(stderr, "[Error] could not prepare vmcu_report_t. Exiting.\n");
+		goto exit_vmcu_model;
 	}
 
-	vmcu_system_t* system = vmcu_system_ctor(report);
+	system = vmcu_system_ctor(report);
 
 	if (system == NULL) {
-		printf("[Error] could not prepare vmcu_system_t. Exiting.\n");
-		exit(1);
+		fprintf(stderr, "[Error] could not prepare vmcu_system_t. Exiting.\n");
 	}
 
+exit_vmcu_model:
 	vmcu_model_dtor(model);
+exit_vmcu_report:
 	vmcu_report_dtor(report);
 
 	return system;

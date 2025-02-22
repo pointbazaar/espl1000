@@ -29,8 +29,9 @@ void compile_tac_store_local_x86(struct RAT* rat, struct TAC* tac, struct Ctx* c
 
 	if (var_width == 0) {
 		fprintf(stderr, "%s could not determine width of local variable %s\n", __FILE__, name);
-		exit(1);
 	}
+
+	assert(var_width > 0);
 
 	const int rscratch = rat_scratch_reg(rat);
 

@@ -51,14 +51,22 @@ void emit_call_main_endloop(struct IBuffer* ibu) {
 
 bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx) {
 
+	bool status = true;
 	struct IBuffer* ibu = ibu_ctor();
 
 	struct RAT* rat = rat_ctor(RAT_ARCH_AVR, 10);
 
 	struct TAC* t = makeTACSetupSP();
-	emit_asm_avr_single_tac(rat, t, ctx, ibu);
-	free(t);
 
+	status = emit_asm_avr_single_tac(rat, t, ctx, ibu);
+
+	if (!status) {
+		free(t);
+		rat_dtor(rat);
+		goto exit;
+	}
+
+	free(t);
 	rat_dtor(rat);
 
 	emit_call_main_endloop(ibu);
@@ -76,8 +84,9 @@ bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx) {
 
 	FILE* fout = fopen(flags_asm_filename(ctx_flags(ctx)), "w");
 	if (fout == NULL) {
-		printf("error opening output file\n");
-		exit(1);
+		fprintf(stderr, "error opening output file\n");
+		ibu_dtor(ibu);
+		return false;
 	}
 
 	{
@@ -87,7 +96,9 @@ bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx) {
 
 	fclose(fout);
 
+exit:
+
 	ibu_dtor(ibu);
 
-	return true;
+	return status;
 }

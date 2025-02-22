@@ -31,6 +31,7 @@ bool token_equals(struct Token* a, struct Token* b);
 char* token_str(struct Token* tk);
 
 struct Token* makeToken(int kind);
+// @returns NULL on error
 struct Token* makeToken2(int kind, char* value);
 struct Token* makeTokenStringConst(char* value);
 

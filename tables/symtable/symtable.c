@@ -12,12 +12,20 @@ struct ST* st_ctor() {
 
 	struct ST* st = make(ST);
 
+	if (!st) {
+		return NULL;
+	}
+
 	st->inferred_types_capacity = 100;
 	st->inferred_types_count = 0;
 
 	const uint32_t nbytes = sizeof(struct Type*) * st->inferred_types_capacity;
 
-	st->inferred_types = exit_malloc(nbytes);
+	st->inferred_types = malloc(nbytes);
+	if (!st->inferred_types) {
+		free(st);
+		return NULL;
+	}
 
 	st->sst = sst_ctor();
 	st->stst = stst_ctor();

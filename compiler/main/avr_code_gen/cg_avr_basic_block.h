@@ -13,6 +13,6 @@
 
 struct IBuffer;
 
-void emit_asm_avr_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct IBuffer* ibu);
+bool emit_asm_avr_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct IBuffer* ibu);
 
 #endif

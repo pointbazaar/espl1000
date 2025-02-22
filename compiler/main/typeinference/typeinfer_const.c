@@ -36,7 +36,6 @@ struct Type* infer_type_constvalue(struct ST* st, struct ConstValue* cv) {
 		case 5: return infer_type_constvalue_int(st, cv->ptr.m5_hex_const);
 		default:
 			fprintf(stderr, "in %s: could not infer type of const value, extiting.\n", __func__);
-			exit(1);
 			return NULL;
 	}
 }

@@ -45,10 +45,12 @@ void out_minus_minus(FILE* outFile) {
 }
 
 struct LexerFlags* handle_arguments(int argc, char** argv) {
-	//this subroutine may perform an exit(...)
-	//this is ok because it is called in main(...)
-	//before anything is allocated on the heap
+
 	struct LexerFlags* res = malloc(sizeof(struct LexerFlags));
+
+	if (!res) {
+		return NULL;
+	}
 
 	res->filename = NULL;
 
@@ -57,9 +59,9 @@ struct LexerFlags* handle_arguments(int argc, char** argv) {
 		char* arg = argv[i];
 		if (arg[0] == '-') {
 
-			printf("[Lexer] unrecognized flag: %s\n", arg);
-			printf("[Lexer] exiting.\n");
-			exit(1);
+			fprintf(stderr, "[Lexer] unrecognized flag: %s\n", arg);
+			free(res);
+			return NULL;
 		} else {
 			res->filename = arg;
 		}

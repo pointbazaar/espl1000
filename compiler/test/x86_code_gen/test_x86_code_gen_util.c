@@ -205,6 +205,7 @@ static void sd_uc_engine_setup_stack(struct sd_uc_engine* sduc) {
 	uc_reg_write(uc, UC_X86_REG_RSP, &(sduc->addr_stack));
 }
 
+// @returns NULL on error
 static struct sd_uc_engine* sd_uc_engine_from_mapped(char* mapped, size_t filesize) {
 
 	uc_engine* uc;
@@ -214,10 +215,15 @@ static struct sd_uc_engine* sd_uc_engine_from_mapped(char* mapped, size_t filesi
 
 	if (err != UC_ERR_OK) {
 		fprintf(stderr, "Failed on uc_open() with error: %u\n", err);
-		exit(EXIT_FAILURE);
+		return NULL;
 	}
 
-	struct sd_uc_engine* sd_uc = exit_malloc(sizeof(struct sd_uc_engine));
+	struct sd_uc_engine* sd_uc = malloc(sizeof(struct sd_uc_engine));
+
+	if (!sd_uc) {
+		return NULL;
+	}
+
 	sd_uc->uc = uc;
 	// memory address where emulation starts
 	sd_uc->addr_start = sd_uc_default_start_addr();
@@ -259,13 +265,14 @@ static struct sd_uc_engine* sd_uc_engine_from_mapped(char* mapped, size_t filesi
 	// write machine code to memory
 	if (uc_mem_write(uc, sd_uc->addr_start, mapped, filesize)) {
 		fprintf(stderr, "Failed to write emulation code to memory\n");
-		exit(EXIT_FAILURE);
+		return NULL;
 	}
 
 	return sd_uc;
 }
 
-static void gen_from_tacbuffer(struct TACBuffer* buffer, FILE* fout, struct Ctx* ctx, char* function_name) {
+// @returns  true on success
+static bool gen_from_tacbuffer(struct TACBuffer* buffer, FILE* fout, struct Ctx* ctx, char* function_name) {
 
 	int nblocks;
 	struct BasicBlock** graph = basicblock_create_graph(buffer, function_name, &nblocks, ctx);
@@ -275,7 +282,7 @@ static void gen_from_tacbuffer(struct TACBuffer* buffer, FILE* fout, struct Ctx*
 
 	if (root == NULL) {
 		fprintf(stderr, "[Error] could not create BasicBlock.Exiting.\n");
-		exit(EXIT_FAILURE);
+		return false;
 	}
 
 	struct Liveness* live = liveness_calc(graph, nblocks);
@@ -305,6 +312,8 @@ static void gen_from_tacbuffer(struct TACBuffer* buffer, FILE* fout, struct Ctx*
 	tacbuffer_dtor(buffer);
 
 	ibu_dtor(ibu);
+
+	return true;
 }
 
 static struct DeclArg* fake_declarg() {
@@ -412,7 +421,7 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 
 	if (fout == NULL) {
 		fprintf(stderr, "error opening output file %s\n", flags_asm_filename(flags));
-		exit(EXIT_FAILURE);
+		return NULL;
 	}
 
 	// We use a flat binary without sections. So only the instructions.
@@ -420,9 +429,15 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 	fprintf(fout, "BITS 64     ; specify 64-bit code\n");
 	fprintf(fout, "start:\n");
 
-	gen_from_tacbuffer(buffer, fout, ctx, "main");
+	if (!gen_from_tacbuffer(buffer, fout, ctx, "main")) {
+		ctx_dtor(ctx);
+		return NULL;
+	}
 	if (buffer2 != NULL) {
-		gen_from_tacbuffer(buffer2, fout, ctx, "f1");
+		if (!gen_from_tacbuffer(buffer2, fout, ctx, "f1")) {
+			ctx_dtor(ctx);
+			return NULL;
+		}
 	}
 
 	fclose(fout);
@@ -434,20 +449,23 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 
 	if (WEXITSTATUS(status) != 0) {
 		fprintf(stderr, "error with nasm, see /tmp/nasm-stdout, /tmp/nasm-stderr \n");
-		exit(EXIT_FAILURE);
+		ctx_dtor(ctx);
+		return NULL;
 	}
 
 	int fd = open("file.bin", O_RDONLY);
 	if (fd == -1) {
 		perror("open");
-		exit(EXIT_FAILURE);
+		ctx_dtor(ctx);
+		return NULL;
 	}
 
 	struct stat sb;
 	if (fstat(fd, &sb) == -1) {
 		perror("fstat");
 		close(fd);
-		exit(EXIT_FAILURE);
+		ctx_dtor(ctx);
+		return NULL;
 	}
 
 	size_t filesize = sb.st_size;
@@ -455,7 +473,8 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 	if (mapped == MAP_FAILED) {
 		perror("mmap");
 		close(fd);
-		exit(EXIT_FAILURE);
+		ctx_dtor(ctx);
+		return NULL;
 	}
 
 	struct sd_uc_engine* sduc = sd_uc_engine_from_mapped(mapped, filesize);

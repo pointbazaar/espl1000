@@ -17,8 +17,9 @@
 
 #include "cli/flags/flags.h"
 
-void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu) {
+bool compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu) {
 
+	bool status = true;
 	struct TACBuffer* buffer = tacbuffer_ctor();
 	struct ST* st = ctx_tables(ctx);
 
@@ -44,7 +45,7 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, st
 	struct BasicBlock** graph = basicblock_create_graph(buffer, m->decl->name, &nblocks, ctx);
 	struct BasicBlock* root = graph[0];
 
-	emit_asm_avr_basic_block(root, ctx, ibu);
+	status = emit_asm_avr_basic_block(root, ctx, ibu);
 
 	//delete the basic block graph
 	for (int i = 0; i < nblocks; i++) {
@@ -53,4 +54,6 @@ void compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, st
 	free(graph);
 
 	tacbuffer_dtor(buffer);
+
+	return status;
 }

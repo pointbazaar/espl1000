@@ -23,12 +23,12 @@
 
 static struct Stmt* initStmt();
 
-static void stmt_make_while(struct Stmt* res, struct TokenList* copy);
-static void stmt_make_if(struct Stmt* res, struct TokenList* copy);
-static void stmt_make_return(struct Stmt* res, struct TokenList* copy);
-static void stmt_make_for(struct Stmt* res, struct TokenList* copy);
-static void stmt_make_local_var_decl_stmt(struct Stmt* res, struct TokenList* copy);
-static void stmt_make_other(struct Stmt* res, struct TokenList* copy);
+static bool stmt_make_while(struct Stmt* res, struct TokenList* copy);
+static bool stmt_make_if(struct Stmt* res, struct TokenList* copy);
+static bool stmt_make_return(struct Stmt* res, struct TokenList* copy);
+static bool stmt_make_for(struct Stmt* res, struct TokenList* copy);
+static bool stmt_make_local_var_decl_stmt(struct Stmt* res, struct TokenList* copy);
+static bool stmt_make_other(struct Stmt* res, struct TokenList* copy);
 // ---------------------------
 
 struct Stmt* makeStmt(struct TokenList* tokens) {
@@ -64,20 +64,28 @@ struct Stmt* makeStmt(struct TokenList* tokens) {
 			stmt_make_for(res, copy);
 			break;
 		case WHILE:
-			stmt_make_while(res, copy);
+			if (!stmt_make_while(res, copy)) {
+				goto error;
+			}
 			break;
 		case IF:
-			stmt_make_if(res, copy);
+			if (!stmt_make_if(res, copy)) {
+				goto error;
+			}
 			break;
 		case RETURN:
 			stmt_make_return(res, copy);
 			break;
 		case KEYWORD_LOCAL:
-			stmt_make_local_var_decl_stmt(res, copy);
+			if (!stmt_make_local_var_decl_stmt(res, copy)) {
+				goto error;
+			}
 			break;
 
 		default:
-			stmt_make_other(res, copy);
+			if (!stmt_make_other(res, copy)) {
+				goto error;
+			}
 			break;
 	}
 
@@ -85,6 +93,11 @@ struct Stmt* makeStmt(struct TokenList* tokens) {
 	freeTokenListShallow(copy);
 
 	return res;
+
+error:
+	freeTokenListShallow(copy);
+	free(res);
+	return NULL;
 }
 
 struct Stmt* initStmt() {
@@ -97,78 +110,81 @@ struct Stmt* initStmt() {
 	return res;
 }
 
-static void stmt_make_local_var_decl_stmt(struct Stmt* res, struct TokenList* copy) {
+static bool stmt_make_local_var_decl_stmt(struct Stmt* res, struct TokenList* copy) {
 
 	res->kind = 10;
 	res->ptr.m10 = makeLocalVarDeclStmt(copy);
 	if (res->ptr.m10 == NULL) {
-		printf("expected local var decl stmt stmt, but was: %s\n", list_code(copy));
+		fprintf(stderr, "expected local var decl stmt stmt, but was: %s\n", list_code(copy));
 
 		freeTokenListShallow(copy);
 		free(res);
-
-		exit(1);
+		return false;
 	}
+	return true;
 }
 
-void stmt_make_while(struct Stmt* res, struct TokenList* copy) {
+static bool stmt_make_while(struct Stmt* res, struct TokenList* copy) {
 
 	res->kind = 2;
 	res->ptr.m2 = makeWhileStmt(copy);
 	if (res->ptr.m2 == NULL) {
-		printf("expected while stmt, but was:\n");
+		fprintf(stderr, "expected while stmt, but was:\n");
 		list_print(copy);
 
 		freeTokenListShallow(copy);
 		free(res);
-
-		exit(1);
+		return false;
 	}
+	return true;
 }
 
-void stmt_make_if(struct Stmt* res, struct TokenList* copy) {
+static bool stmt_make_if(struct Stmt* res, struct TokenList* copy) {
 
 	res->kind = 3;
 	res->ptr.m3 = makeIfStmt(copy);
 	if (res->ptr.m3 == NULL) {
-		printf("expected if stmt, but was:\n");
+		fprintf(stderr, "expected if stmt, but was:\n");
 		list_print(copy);
 
 		freeTokenListShallow(copy);
 		free(res);
-		exit(1);
+		return false;
 	}
+	return true;
 }
 
-void stmt_make_return(struct Stmt* res, struct TokenList* copy) {
+static bool stmt_make_return(struct Stmt* res, struct TokenList* copy) {
 
 	res->kind = 4;
 	res->ptr.m4 = makeRetStmt(copy);
 	if (res->ptr.m4 == NULL) {
-		printf("expected return stmt, but was:\n");
+		fprintf(stderr, "expected return stmt, but was:\n");
 		list_print(copy);
 
 		freeTokenListShallow(copy);
 		free(res);
-		exit(1);
+		return false;
 	}
+	return true;
 }
 
-void stmt_make_for(struct Stmt* res, struct TokenList* copy) {
+static bool stmt_make_for(struct Stmt* res, struct TokenList* copy) {
 
 	res->kind = 7;
 	res->ptr.m7 = makeForStmt(copy);
 	if (res->ptr.m7 == NULL) {
-		printf("expected for stmt, but was:\n");
+		fprintf(stderr, "expected for stmt, but was:\n");
 		list_print(copy);
 
 		freeTokenListShallow(copy);
 		free(res);
-		exit(1);
+		return false;
 	}
+	return true;
 }
 
-void stmt_make_other(struct Stmt* res, struct TokenList* copy) {
+static bool stmt_make_other(struct Stmt* res, struct TokenList* copy) {
 
 	//i don't want 'let' statements
 	//because it just messes up the code and is
@@ -181,34 +197,30 @@ void stmt_make_other(struct Stmt* res, struct TokenList* copy) {
 	res->kind = 5;
 	res->ptr.m5 = makeAssignStmt(copy);
 
-	if (res->ptr.m5 == NULL) {
-
-		res->kind = 9;
-		res->ptr.m9 = makeMAssignStmt(copy);
-
-		if (res->ptr.m9 == NULL) {
-
-			res->kind = 1;
-			res->ptr.m1 = makeCall(copy);
-			if (res->ptr.m1 == NULL) {
-				printf("expected method call, but was:\n");
-				list_print(copy);
-
-				freeTokenListShallow(copy);
-				free(res);
-
-				exit(1);
-			}
-			if (!list_expect(copy, SEMICOLON)) {
-				printf("expected ';', but was:\n");
-				list_print(copy);
-
-				freeTokenListShallow(copy);
-				free_call(res->ptr.m1);
-				free(res);
-
-				exit(1);
-			}
-		}
+	if (res->ptr.m5 != NULL) {
+		return true;
 	}
+
+	res->kind = 9;
+	res->ptr.m9 = makeMAssignStmt(copy);
+
+	if (res->ptr.m9 != NULL) {
+		return true;
+	}
+
+	res->kind = 1;
+	res->ptr.m1 = makeCall(copy);
+	if (res->ptr.m1 == NULL) {
+		fprintf(stderr, "expected method call, but was:\n");
+		list_print(copy);
+		return false;
+	}
+	if (!list_expect(copy, SEMICOLON)) {
+		fprintf(stderr, "expected ';', but was:\n");
+		list_print(copy);
+		free_call(res->ptr.m1);
+		return false;
+	}
+
+	return true;
 }

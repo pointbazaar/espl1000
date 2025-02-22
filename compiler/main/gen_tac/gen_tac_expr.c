@@ -6,12 +6,12 @@
 
 #include "gen_tac.h"
 
-//static void tac_expr_part_2_constvalue(struct TACBuffer* buffer, struct Expr* expr, uint32_t t1);
-static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr* expr, uint32_t t1, struct Ctx* ctx);
+// @returns false on error
+static bool tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr* expr, uint32_t t1, struct Ctx* ctx);
 static enum TAC_OP op_to_tac_op(enum OP op_str, bool* reverse_operands);
 static bool operator_immediate_applicable(enum TAC_OP op, int32_t immediate);
 
-void tac_expr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx) {
+bool tac_expr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx) {
 
 	tac_unopterm(buffer, expr->term1, ctx);
 
@@ -20,8 +20,12 @@ void tac_expr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx) {
 		//we know dest of term1
 		const uint32_t t1 = tacbuffer_last_dest(buffer);
 
-		tac_expr_part_2_no_constvalue(buffer, expr, t1, ctx);
+		if (!tac_expr_part_2_no_constvalue(buffer, expr, t1, ctx)) {
+			return false;
+		}
 	}
+
+	return true;
 }
 
 static bool operator_immediate_applicable(enum TAC_OP op, int32_t immediate) {
@@ -79,14 +83,13 @@ static enum TAC_OP op_to_tac_op(enum OP o, bool* reverse_operands) {
 			fprintf(stderr, "error in op_to_tac_op\n");
 			fprintf(stderr, "error, op was none of supported TAC_OP_... values\n");
 			fprintf(stderr, "op = %d\n", o);
-			exit(1);
-			break;
+			return TAC_OP_NONE;
 	}
 
 	return op;
 }
 
-static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr* expr, uint32_t t1, struct Ctx* ctx) {
+static bool tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr* expr, uint32_t t1, struct Ctx* ctx) {
 
 	tac_unopterm(buffer, expr->term2, ctx);
 	const uint32_t t2 = tacbuffer_last_dest(buffer);
@@ -94,6 +97,10 @@ static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr*
 	bool reverse_operands = false;
 
 	enum TAC_OP op = op_to_tac_op(expr->op, &reverse_operands);
+
+	if (op == TAC_OP_NONE) {
+		return false;
+	}
 
 	struct TAC* t;
 
@@ -103,4 +110,6 @@ static void tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr*
 		t = makeTACBinOp(t1, op, t2);
 
 	tacbuffer_append(buffer, t);
+
+	return true;
 }

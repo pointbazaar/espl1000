@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "../ast.h"
 #include "visitor.h"
@@ -12,42 +13,64 @@ static void visit_decl_arg(struct DeclArg* da, VISITOR, ARG);
 static void visit_struct_member(struct StructMember* s, VISITOR, ARG);
 
 //other
-static void visit_stmt(struct Stmt* s, VISITOR, ARG);
+
+// @returns false on error
+static bool visit_stmt(struct Stmt* s, VISITOR, ARG);
+
 //stmts
-static void visit_if_stmt(struct IfStmt* i, VISITOR, ARG);
-static void visit_while_stmt(struct WhileStmt* w, VISITOR, ARG);
-static void visit_for_stmt(struct ForStmt* f, VISITOR, ARG);
-static void visit_assign_stmt(struct AssignStmt* a, VISITOR, ARG);
-static void visit_call(struct Call* m, VISITOR, ARG);
-static void visit_ret_stmt(struct RetStmt* r, VISITOR, ARG);
-static void visit_massign_stmt(struct MAssignStmt* m, VISITOR, ARG);
+// @returns false on error
+static bool visit_if_stmt(struct IfStmt* i, VISITOR, ARG);
+// @returns false on error
+static bool visit_while_stmt(struct WhileStmt* w, VISITOR, ARG);
+// @returns false on error
+static bool visit_for_stmt(struct ForStmt* f, VISITOR, ARG);
+// @returns false on error
+static bool visit_assign_stmt(struct AssignStmt* a, VISITOR, ARG);
+// @returns false on error
+static bool visit_call(struct Call* m, VISITOR, ARG);
+// @returns false on error
+static bool visit_ret_stmt(struct RetStmt* r, VISITOR, ARG);
+// @returns false on error
+static bool visit_massign_stmt(struct MAssignStmt* m, VISITOR, ARG);
 static void visit_local_var_decl_stmt(struct LocalVarDeclStmt* lvds, VISITOR, ARG);
 static void visit_break_stmt(VISITOR, ARG);
 static void visit_continue_stmt(VISITOR, ARG);
 
 //expr
-static void visit_expr(struct Expr* e, VISITOR, ARG);
+// @returns false on error
+static bool visit_expr(struct Expr* e, VISITOR, ARG);
 static void visit_op(enum OP o, VISITOR, ARG);
-static void visit_un_op_term(struct UnOpTerm* u, VISITOR, ARG);
-static void visit_term(struct Term* t, VISITOR, ARG);
-static void visit_mdirect(struct MDirect* m, VISITOR, ARG);
+// @returns false on error
+static bool visit_un_op_term(struct UnOpTerm* u, VISITOR, ARG);
+
+// @returns false on error
+static bool visit_term(struct Term* t, VISITOR, ARG);
+
+// @returns false on error
+static bool visit_mdirect(struct MDirect* m, VISITOR, ARG);
 
 //const
 static void visit_const_value(struct ConstValue* cv, VISITOR, ARG);
 static void visit_string_const(struct StringConst* s, VISITOR, ARG);
 
 //var
-static void visit_variable(struct Variable* v, VISITOR, ARG);
-static void visit_simple_var(struct SimpleVar* v, VISITOR, ARG);
+// @returns false on error
+static bool visit_variable(struct Variable* v, VISITOR, ARG);
+// @returns false on error
+static bool visit_simple_var(struct SimpleVar* v, VISITOR, ARG);
 
-void visit_ast(struct AST* ast, VISITOR, void* arg) {
+bool visit_ast(struct AST* ast, VISITOR, void* arg) {
 
 	for (int i = 0; i < ast->count_namespaces; i++) {
-		visit_namespace(ast->namespaces[i], visitor, arg);
+		if (!visit_namespace(ast->namespaces[i], visitor, arg)) {
+			return false;
+		}
 	}
+
+	return true;
 }
 
-void visit_namespace(struct Namespace* n, VISITOR, void* arg) {
+bool visit_namespace(struct Namespace* n, VISITOR, void* arg) {
 
 	visitor(n, NODE_NAMESPACE, arg);
 
@@ -59,8 +82,12 @@ void visit_namespace(struct Namespace* n, VISITOR, void* arg) {
 	}
 
 	for (int i = 0; i < n->count_methods; i++) {
-		visit_method(n->methods[i], visitor, arg);
+		if (!visit_method(n->methods[i], visitor, arg)) {
+			return false;
+		}
 	}
+
+	return true;
 }
 
 void visit_struct_decl(struct StructDecl* s, VISITOR, void* arg) {
@@ -72,12 +99,12 @@ void visit_struct_decl(struct StructDecl* s, VISITOR, void* arg) {
 	}
 }
 
-void visit_method(struct Method* m, VISITOR, void* arg) {
+bool visit_method(struct Method* m, VISITOR, void* arg) {
 
 	visitor(m, NODE_METHOD, arg);
 
 	visit_method_decl(m->decl, visitor, arg);
-	visit_stmt_block(m->block, visitor, arg);
+	return visit_stmt_block(m->block, visitor, arg);
 }
 static void visit_method_decl(struct MethodDecl* m, VISITOR, ARG) {
 
@@ -89,13 +116,17 @@ static void visit_method_decl(struct MethodDecl* m, VISITOR, ARG) {
 
 	visit_type(m->return_type, visitor, arg);
 }
-void visit_stmt_block(struct StmtBlock* s, VISITOR, void* arg) {
+bool visit_stmt_block(struct StmtBlock* s, VISITOR, void* arg) {
 
 	visitor(s, NODE_STMTBLOCK, arg);
 
 	for (int i = 0; i < s->count; i++) {
-		visit_stmt(s->stmts[i], visitor, arg);
+		if (!visit_stmt(s->stmts[i], visitor, arg)) {
+			return false;
+		}
 	}
+
+	return true;
 }
 
 //----------- static functions ---------------
@@ -112,33 +143,26 @@ static void visit_struct_member(struct StructMember* s, VISITOR, void* arg) {
 	visitor(s, NODE_STRUCTMEMBER, arg);
 }
 
-static void visit_stmt(struct Stmt* s, VISITOR, void* arg) {
+static bool visit_stmt(struct Stmt* s, VISITOR, void* arg) {
 
 	visitor(s, NODE_STMT, arg);
 
 	switch (s->kind) {
 
 		case 1:
-			visit_call(s->ptr.m1, visitor, arg);
-			break;
+			return visit_call(s->ptr.m1, visitor, arg);
 		case 2:
-			visit_while_stmt(s->ptr.m2, visitor, arg);
-			break;
+			return visit_while_stmt(s->ptr.m2, visitor, arg);
 		case 3:
-			visit_if_stmt(s->ptr.m3, visitor, arg);
-			break;
+			return visit_if_stmt(s->ptr.m3, visitor, arg);
 		case 4:
-			visit_ret_stmt(s->ptr.m4, visitor, arg);
-			break;
+			return visit_ret_stmt(s->ptr.m4, visitor, arg);
 		case 5:
-			visit_assign_stmt(s->ptr.m5, visitor, arg);
-			break;
+			return visit_assign_stmt(s->ptr.m5, visitor, arg);
 		case 7:
-			visit_for_stmt(s->ptr.m7, visitor, arg);
-			break;
+			return visit_for_stmt(s->ptr.m7, visitor, arg);
 		case 9:
-			visit_massign_stmt(s->ptr.m9, visitor, arg);
-			break;
+			return visit_massign_stmt(s->ptr.m9, visitor, arg);
 		case 10:
 			visit_local_var_decl_stmt(s->ptr.m10, visitor, arg);
 			break;
@@ -148,71 +172,93 @@ static void visit_stmt(struct Stmt* s, VISITOR, void* arg) {
 			break;
 
 		default:
-			printf("[Visitor] Fatal error in %s: kind == %d\n", __func__, s->kind);
-			exit(1);
-			break;
+			fprintf(stderr, "[Visitor] Fatal error in %s: kind == %d\n", __func__, s->kind);
+			return false;
 	}
+
+	return true;
 }
 
-static void visit_if_stmt(struct IfStmt* i, VISITOR, void* arg) {
+static bool visit_if_stmt(struct IfStmt* i, VISITOR, void* arg) {
 
 	visitor(i, NODE_IFSTMT, arg);
 
-	visit_expr(i->condition, visitor, arg);
-	visit_stmt_block(i->block, visitor, arg);
+	if (!visit_expr(i->condition, visitor, arg)) {
+		return false;
+	}
+	if (!visit_stmt_block(i->block, visitor, arg)) {
+		return false;
+	}
 
-	if (i->else_block != NULL) { visit_stmt_block(i->else_block, visitor, arg); }
+	if (i->else_block != NULL) {
+		if (!visit_stmt_block(i->else_block, visitor, arg)) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
-static void visit_while_stmt(struct WhileStmt* w, VISITOR, void* arg) {
+static bool visit_while_stmt(struct WhileStmt* w, VISITOR, void* arg) {
 
 	visitor(w, NODE_WHILESTMT, arg);
 
-	visit_stmt_block(w->block, visitor, arg);
+	return visit_stmt_block(w->block, visitor, arg);
 }
 
-static void visit_for_stmt(struct ForStmt* f, VISITOR, void* arg) {
+static bool visit_for_stmt(struct ForStmt* f, VISITOR, void* arg) {
 
 	visitor(f, NODE_FORSTMT, arg);
 
-	visit_stmt_block(f->block, visitor, arg);
+	return visit_stmt_block(f->block, visitor, arg);
 }
 
-static void visit_assign_stmt(struct AssignStmt* a, VISITOR, void* arg) {
+static bool visit_assign_stmt(struct AssignStmt* a, VISITOR, void* arg) {
 
 	visitor(a, NODE_ASSIGNSTMT, arg);
 
 	if (a->opt_type != NULL) { visit_type(a->opt_type, visitor, arg); }
 
-	visit_variable(a->var, visitor, arg);
+	if (!visit_variable(a->var, visitor, arg)) {
+		return false;
+	}
 
-	visit_expr(a->expr, visitor, arg);
+	return visit_expr(a->expr, visitor, arg);
 }
 
-static void visit_call(struct Call* m, VISITOR, void* arg) {
+static bool visit_call(struct Call* m, VISITOR, void* arg) {
 
 	visitor(m, NODE_CALL, arg);
 
-	visit_variable(m->callable, visitor, arg);
+	if (!visit_variable(m->callable, visitor, arg)) {
+		return false;
+	}
 
 	for (int i = 0; i < m->count_args; i++) {
-		visit_expr(m->args[i], visitor, arg);
+		if (!visit_expr(m->args[i], visitor, arg)) {
+			return false;
+		}
 	}
+
+	return true;
 }
 
-static void visit_ret_stmt(struct RetStmt* r, VISITOR, void* arg) {
+static bool visit_ret_stmt(struct RetStmt* r, VISITOR, void* arg) {
 
 	visitor(r, NODE_RETSTMT, arg);
 
-	visit_expr(r->return_value, visitor, arg);
+	return visit_expr(r->return_value, visitor, arg);
 }
 
-static void visit_massign_stmt(struct MAssignStmt* m, VISITOR, ARG) {
+static bool visit_massign_stmt(struct MAssignStmt* m, VISITOR, ARG) {
 
 	visitor(m, NODE_MASSIGNSTMT, arg);
 
-	visit_mdirect(m->lhs, visitor, arg);
-	visit_expr(m->expr, visitor, arg);
+	if (!visit_mdirect(m->lhs, visitor, arg)) {
+		return false;
+	}
+
+	return visit_expr(m->expr, visitor, arg);
 }
 
 static void visit_local_var_decl_stmt(struct LocalVarDeclStmt* l, VISITOR, ARG) {
@@ -232,16 +278,18 @@ static void visit_continue_stmt(VISITOR, void* arg) {
 	visitor(NULL, NODE_CONTINUESTMT, arg);
 }
 
-static void visit_expr(struct Expr* e, VISITOR, void* arg) {
+static bool visit_expr(struct Expr* e, VISITOR, void* arg) {
 
 	visitor(e, NODE_EXPR, arg);
 
-	visit_un_op_term(e->term1, visitor, arg);
+	if (!visit_un_op_term(e->term1, visitor, arg)) {
+		return false;
+	}
 
-	if (e->op == OP_NONE) { return; }
+	if (e->op == OP_NONE) { return true; }
 
 	visit_op(e->op, visitor, arg);
-	visit_un_op_term(e->term2, visitor, arg);
+	return visit_un_op_term(e->term2, visitor, arg);
 }
 
 static void visit_op(enum OP o, VISITOR, void* arg) {
@@ -249,28 +297,26 @@ static void visit_op(enum OP o, VISITOR, void* arg) {
 	visitor(&o, NODE_OP, arg);
 }
 
-static void visit_un_op_term(struct UnOpTerm* u, VISITOR, void* arg) {
+static bool visit_un_op_term(struct UnOpTerm* u, VISITOR, void* arg) {
 
 	visitor(u, NODE_UNOPTERM, arg);
 
 	visit_op(u->op, visitor, arg);
-	visit_term(u->term, visitor, arg);
+
+	return visit_term(u->term, visitor, arg);
 }
 
-static void visit_term(struct Term* t, VISITOR, void* arg) {
+static bool visit_term(struct Term* t, VISITOR, void* arg) {
 
 	visitor(t, NODE_TERM, arg);
 
 	switch (t->kind) {
 		case 4:
-			visit_call(t->ptr.m4, visitor, arg);
-			break;
+			return visit_call(t->ptr.m4, visitor, arg);
 		case 5:
-			visit_expr(t->ptr.m5, visitor, arg);
-			break;
+			return visit_expr(t->ptr.m5, visitor, arg);
 		case 6:
-			visit_variable(t->ptr.m6, visitor, arg);
-			break;
+			return visit_variable(t->ptr.m6, visitor, arg);
 		case 8:
 			visit_string_const(t->ptr.m8, visitor, arg);
 			break;
@@ -278,20 +324,21 @@ static void visit_term(struct Term* t, VISITOR, void* arg) {
 			visit_const_value(t->ptr.m12, visitor, arg);
 			break;
 		case 13:
-			visit_mdirect(t->ptr.m13, visitor, arg);
-			break;
+			return visit_mdirect(t->ptr.m13, visitor, arg);
 		default:
-			printf("[Visitor][Error] Fatal(2)\n");
-			exit(1);
+			fprintf(stderr, "[Visitor][Error] Fatal(2)\n");
+			return false;
 			break;
 	}
+
+	return true;
 }
 
-static void visit_mdirect(struct MDirect* m, VISITOR, ARG) {
+static bool visit_mdirect(struct MDirect* m, VISITOR, ARG) {
 
 	visitor(m, NODE_MDIRECT, arg);
 
-	visit_expr(m->expr, visitor, arg);
+	return visit_expr(m->expr, visitor, arg);
 }
 
 static void visit_const_value(struct ConstValue* cv, VISITOR, void* arg) {
@@ -304,22 +351,34 @@ static void visit_string_const(struct StringConst* s, VISITOR, void* arg) {
 	visitor(s, NODE_STRINGCONST, arg);
 }
 
-static void visit_variable(struct Variable* v, VISITOR, void* arg) {
+static bool visit_variable(struct Variable* v, VISITOR, void* arg) {
 
 	visitor(v, NODE_VARIABLE, arg);
 
-	visit_simple_var(v->simple_var, visitor, arg);
+	if (!visit_simple_var(v->simple_var, visitor, arg)) {
+		return false;
+	}
 
-	if (v->member_access != NULL) { visit_variable(v->member_access, visitor, arg); }
+	if (v->member_access != NULL) {
+		if (!visit_variable(v->member_access, visitor, arg)) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
-static void visit_simple_var(struct SimpleVar* v, VISITOR, void* arg) {
+static bool visit_simple_var(struct SimpleVar* v, VISITOR, void* arg) {
 
 	visitor(v, NODE_SIMPLEVAR, arg);
 
 	for (int i = 0; i < v->count_indices; i++) {
-		visit_expr(v->indices[i], visitor, arg);
+		if (!visit_expr(v->indices[i], visitor, arg)) {
+			return false;
+		}
 	}
+
+	return true;
 }
 
 void visit_type(struct Type* t, VISITOR, void* arg) {
