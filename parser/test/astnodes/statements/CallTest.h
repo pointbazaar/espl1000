@@ -1,5 +1,4 @@
-#ifndef METHODCALLTEST
-#define METHODCALLTEST
+#pragma once
 
 #include <stdbool.h>
 
@@ -15,5 +14,3 @@ int methodcall_test_can_parse_subroutine_call2();
 
 int methodcall_test_can_parse_struct_member_access();
 int methodcall_test_can_parse_array_access();
-
-#endif

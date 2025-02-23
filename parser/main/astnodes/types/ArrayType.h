@@ -1,5 +1,4 @@
-#ifndef ARRAYTYPE
-#define ARRAYTYPE
+#pragma once
 
 #include <stdbool.h>
 
@@ -9,5 +8,3 @@ struct ArrayType;
 
 struct ArrayType* makeArrayType(struct Type* element_type);
 struct ArrayType* makeArrayType2(struct TokenList* tokens);
-
-#endif

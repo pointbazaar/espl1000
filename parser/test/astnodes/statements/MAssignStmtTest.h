@@ -1,8 +1,5 @@
-#ifndef SMALLDRAGON_TOPLEVEL_MASSIGNSTMTTEST_H
-#define SMALLDRAGON_TOPLEVEL_MASSIGNSTMTTEST_H
+#pragma once
 
 #include <stdbool.h>
 
 bool massignstmt_test1();
-
-#endif

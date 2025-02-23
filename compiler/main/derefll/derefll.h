@@ -1,5 +1,4 @@
-#ifndef DEREFLL_H
-#define DEREFLL_H
+#pragma once
 
 //struct DerefLL
 //
@@ -56,5 +55,3 @@ struct DerefLL* derefll_structmember(char* name);
 struct DerefLL* derefll_expr(struct Expr* expr);
 
 void derefll_annotate_types(struct DerefLL* dll, struct Ctx* ctx, struct Type* prev_type);
-
-#endif

@@ -1,9 +1,6 @@
-#ifndef STRUCTDECL
-#define STRUCTDECL
+#pragma once
 
 struct TokenList;
 struct StructDecl;
 
 struct StructDecl* makeStructDecl(struct TokenList* tokens);
-
-#endif

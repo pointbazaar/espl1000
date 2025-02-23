@@ -1,5 +1,4 @@
-#ifndef DRIVER
-#define DRIVER
+#pragma once
 
 #include <stdio.h>
 #include <stdbool.h>
@@ -17,5 +16,3 @@ void out_minus_minus(FILE* outFile);
 struct LexerFlags* handle_arguments(int argc, char** argv);
 
 char* lexer_make_tkn_filename(char* filename);
-
-#endif

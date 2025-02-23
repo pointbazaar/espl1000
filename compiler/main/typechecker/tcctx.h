@@ -1,5 +1,4 @@
-#ifndef TC_CTX_H
-#define TC_CTX_H
+#pragma once
 
 #include <inttypes.h>
 #include <stdbool.h>
@@ -71,5 +70,3 @@ struct TCCtx {
 
 	bool debug;
 };
-
-#endif

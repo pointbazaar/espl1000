@@ -1,5 +1,4 @@
-#ifndef AST_TYPES_H
-#define AST_TYPES_H
+#pragma once
 
 #include <stdbool.h>
 
@@ -70,5 +69,3 @@ struct TypeParam {
 
 	uint8_t index; /*type parameter index */
 };
-
-#endif

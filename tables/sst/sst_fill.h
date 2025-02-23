@@ -1,5 +1,4 @@
-#ifndef SST_FILL_H
-#define SST_FILL_H
+#pragma once
 
 //utilities to help fill the SST
 
@@ -16,4 +15,3 @@ struct Type* method_to_type(struct Method* m);
 // @returns NULL on error
 struct SubrType* method_decl_to_subrtype(struct MethodDecl* mdecl);
 struct Type* method_decl_to_type(struct MethodDecl* mdecl);
-#endif

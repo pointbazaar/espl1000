@@ -1,5 +1,4 @@
-#ifndef STRUCTSYMTABLE
-#define STRUCTSYMTABLE
+#pragma once
 
 #include "ast/ast.h"
 
@@ -40,5 +39,3 @@ int32_t stst_member_offset(struct STST* stst, char* struct_name, char* member_na
 uint32_t stst_size(struct STST* stst);
 
 struct STSTLine* stst_at(struct STST* stst, uint32_t index);
-
-#endif

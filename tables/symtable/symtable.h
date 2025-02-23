@@ -1,5 +1,4 @@
-#ifndef SYMTABLE
-#define SYMTABLE
+#pragma once
 
 #include <stdbool.h>
 
@@ -37,5 +36,3 @@ void st_free(struct ST* st);
 
 //to memory-managed all these Types created during type inference
 void st_register_inferred_type(struct ST* st, struct Type* type);
-
-#endif

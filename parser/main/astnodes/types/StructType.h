@@ -1,5 +1,4 @@
-#ifndef STRUCTTYPE_H
-#define STRUCTTYPE_H
+#pragma once
 
 #include <stdbool.h>
 
@@ -8,5 +7,3 @@ struct StructType;
 
 // @returns NULL on error
 struct StructType* makeStructType(struct TokenList* tokens);
-
-#endif

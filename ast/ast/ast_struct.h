@@ -1,5 +1,4 @@
-#ifndef AST_STRUCT_H
-#define AST_STRUCT_H
+#pragma once
 
 #include "../ast_declare.h"
 
@@ -19,5 +18,3 @@ struct StructMember {
 	struct Type* type;
 	char* name;
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef TYPE
-#define TYPE
+#pragma once
 
 #include <stdbool.h>
 
@@ -13,5 +12,3 @@ struct Type* makeType2(struct TokenList* tokens);
 struct Type* makeType_1(struct BasicType* typeNode);
 struct Type* makeType_2(struct TypeParam* typeNode);
 struct Type* makeType_3(struct ArrayType* typeNode);
-
-#endif

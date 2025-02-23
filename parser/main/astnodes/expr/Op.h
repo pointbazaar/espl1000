@@ -1,9 +1,6 @@
-#ifndef OP_H
-#define OP_H
+#pragma once
 
 struct TokenList;
 enum OP;
 
 enum OP makeOp(struct TokenList* tokens);
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef FREEAST
-#define FREEAST
+#pragma once
 
 #include "../ast.h"
 
@@ -65,5 +64,3 @@ void free_type(struct Type* t);
 void free_type_param(struct TypeParam* tp);
 void free_primitive_type(struct PrimitiveType* p);
 void free_struct_type(struct StructType* s);
-
-#endif

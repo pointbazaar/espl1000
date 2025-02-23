@@ -1,5 +1,4 @@
-#ifndef AST_EXPR_H
-#define AST_EXPR_H
+#pragma once
 
 #include "../ast_declare.h"
 
@@ -69,5 +68,3 @@ struct MDirect {
 	// width of the load/store, in bytes
 	uint8_t load_store_width;
 };
-
-#endif

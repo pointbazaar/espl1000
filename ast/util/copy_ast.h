@@ -1,5 +1,4 @@
-#ifndef COPYAST
-#define COPYAST
+#pragma once
 
 #include "../ast.h"
 
@@ -50,5 +49,3 @@ struct Variable* copy_variable(struct Variable* var);
 struct Id* copy_identifier(struct Id* id);
 struct Range* copy_range(struct Range* r);
 struct StmtBlock* copy_stmt_block(struct StmtBlock* s);
-
-#endif

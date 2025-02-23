@@ -1,5 +1,4 @@
-#ifndef CC_H
-#define CC_H
+#pragma once
 
 #include <stdbool.h>
 #include <inttypes.h>
@@ -30,4 +29,3 @@ struct CCNode* cc_next(struct CCNode* node); //may return NULL
 char* cc_name(struct CCNode* node);
 
 void cc_set_calls_fn_ptrs(struct CC* cc, bool value);
-#endif

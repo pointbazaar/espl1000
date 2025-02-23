@@ -1,5 +1,4 @@
-#ifndef _TC_H
-#define _TC_H
+#pragma once
 
 #include <stdbool.h>
 
@@ -46,5 +45,3 @@ bool tc_method(struct Method* m, struct TCCtx* tcctx);
 bool tc_namespace(struct Namespace* n, struct TCCtx* tcctx);
 
 bool tc_stmtblock(struct StmtBlock* s, struct TCCtx* tcctx);
-
-#endif

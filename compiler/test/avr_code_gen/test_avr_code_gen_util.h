@@ -1,5 +1,4 @@
-#ifndef SMALLDRAGON_TOPLEVEL_TEST_AVR_CODE_GEN_UTIL_H
-#define SMALLDRAGON_TOPLEVEL_TEST_AVR_CODE_GEN_UTIL_H
+#pragma once
 
 #include "../../../dependencies/libvmcu-Virtual-MCU-Library/engine/include/libvmcu/libvmcu_system.h"
 struct TACBuffer;
@@ -19,5 +18,3 @@ vmcu_system_t* prepare_vmcu_system_from_tacbuffer_with_redzone(struct TACBuffer*
 
 // assert that the values around the address still have 'redzone' value
 void assert_redzone(vmcu_system_t* system, uint16_t addr, uint8_t width, uint8_t redzone);
-
-#endif

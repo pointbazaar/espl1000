@@ -1,9 +1,6 @@
-#ifndef STRUCTMEMBER
-#define STRUCTMEMBER
+#pragma once
 
 struct TokenList;
 struct StructMember;
 
 struct StructMember* makeStructMember(struct TokenList* tokens);
-
-#endif

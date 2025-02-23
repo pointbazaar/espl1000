@@ -1,5 +1,4 @@
-#ifndef VARIABLE
-#define VARIABLE
+#pragma once
 
 #include <stdbool.h>
 
@@ -8,5 +7,3 @@ struct Variable;
 
 // @returns NULL on error
 struct Variable* makeVariable(struct TokenList* tokens);
-
-#endif

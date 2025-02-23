@@ -1,5 +1,4 @@
-#ifndef CALL_H
-#define CALL_H
+#pragma once
 
 #include <stdbool.h>
 
@@ -7,5 +6,3 @@ struct TokenList;
 struct Call;
 
 struct Call* makeCall(struct TokenList* tokens);
-
-#endif

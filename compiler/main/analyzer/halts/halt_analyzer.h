@@ -1,5 +1,4 @@
-#ifndef HALT_ANALYZER_H
-#define HALT_ANALYZER_H
+#pragma once
 
 /* this Analyzer Module
  * can performa a termination analysis for
@@ -12,5 +11,3 @@
  */
 
 void analyze_termination(struct ST* st);
-
-#endif

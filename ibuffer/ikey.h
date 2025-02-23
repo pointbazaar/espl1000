@@ -1,5 +1,4 @@
-#ifndef IKEY_H
-#define IKEY_H
+#pragma once
 
 //IKEY meaning Instruction Key
 enum IKEY {
@@ -240,5 +239,3 @@ enum IKEY {
 	X86_NOP,
 	// END   --- X86 Instructions --
 };
-
-#endif

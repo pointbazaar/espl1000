@@ -1,8 +1,5 @@
-#ifndef RANGETEST
-#define RANGETEST
+#pragma once
 
 #include <stdbool.h>
 
 void range_test1();
-
-#endif

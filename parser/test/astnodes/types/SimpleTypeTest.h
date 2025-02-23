@@ -1,5 +1,4 @@
-#ifndef SIMPLETYPETEST
-#define SIMPLETYPETEST
+#pragma once
 
 #include <stdbool.h>
 
@@ -10,5 +9,3 @@ int simpletype_test_typenode_parsing_fails();
 int simpletype_test_typenode_parsing_anytype();
 
 int simpletype_test_generic();
-
-#endif
