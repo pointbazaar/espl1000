@@ -38,6 +38,9 @@ static void sd_uc_fake_lvst_line(struct Ctx* ctx, struct LVST* lvst, int i, bool
 	line->read_only = false;
 
 	lvst_add(lvst, line);
+
+	// register the type so it can be freed later
+	st_register_inferred_type(ctx_tables(ctx), type);
 }
 
 void sd_uc_fake_lvst(struct Ctx* ctx, size_t fake_lvst_size, size_t stackframe_nargs) {

@@ -8,6 +8,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include "ast/util/free_ast.h"
 #include "unicorn/unicorn.h"
 
 #include "test_x86_code_gen_util.h"
@@ -126,6 +127,7 @@ uc_err sd_uc_emu_start(struct sd_uc_engine* sd_uc, size_t nsteps, bool debug) {
 
 void sd_uc_close(struct sd_uc_engine* sduc) {
 	uc_close(sduc->uc);
+	free(sduc);
 }
 
 void sd_uc_print_stack(struct sd_uc_engine* sduc) {
@@ -309,6 +311,8 @@ static bool gen_from_tacbuffer(struct TACBuffer* buffer, FILE* fout, struct Ctx*
 
 	rat_dtor(rat);
 
+	liveness_dtor(live);
+
 	free(graph);
 
 	tacbuffer_dtor(buffer);
@@ -321,7 +325,7 @@ static bool gen_from_tacbuffer(struct TACBuffer* buffer, FILE* fout, struct Ctx*
 static struct DeclArg* fake_declarg() {
 	struct DeclArg* da = calloc(1, sizeof(struct DeclArg));
 	da->type = fake_uint64_type();
-	da->name = "x1";
+	da->name = strdup("x1");
 	da->has_name = true;
 
 	return da;
@@ -337,7 +341,7 @@ static struct Method* fake_method(char* name, size_t nargs) {
 	struct MethodDecl* decl = calloc(1, sizeof(struct MethodDecl));
 	struct StmtBlock* block = calloc(1, sizeof(struct StmtBlock));
 	decl->return_type = returnType;
-	decl->name = name;
+	decl->name = strdup(name);
 	decl->count_args = nargs;
 	decl->args = calloc(1, sizeof(struct DeclArg*));
 	for (int i = 0; i < nargs; i++) {
@@ -370,7 +374,7 @@ static struct Type* fake_subr_type(struct Type* return_type, size_t nargs) {
 	return t;
 }
 
-static void fake_sst(struct Ctx* ctx, size_t stackframe_nargs) {
+static void fake_sst(struct Ctx* ctx, size_t stackframe_nargs, struct Method*** fake_funcs, size_t* count_fake_funcs) {
 
 	assert(ctx_tables(ctx)->sst != NULL);
 
@@ -379,19 +383,32 @@ static void fake_sst(struct Ctx* ctx, size_t stackframe_nargs) {
 	// we are the first to enter something here
 	assert(sst_size(st->sst) == 0);
 
-	struct Type* returnType = fake_uint64_type();
+	*fake_funcs = malloc(sizeof(struct Method**) * 2);
 
-	//TODO: probably wrong, would need to be SubrType?
-	//struct Type* type = returnType;
-	struct Type* type = fake_subr_type(returnType, 0);
-	struct Method* m_main = fake_method("main", 0);
-	struct Method* m_f1 = fake_method("f1", stackframe_nargs);
-	struct SSTLine* line1 = sst_line_ctor2(m_main, type, "");
-	struct Type* type2 = fake_subr_type(returnType, stackframe_nargs);
-	struct SSTLine* line2 = sst_line_ctor2(m_f1, type2, "");
+	{
+		struct Method* m_main = fake_method("main", 0);
+		struct Type* returnType1 = fake_uint64_type();
+		struct Type* type = fake_subr_type(returnType1, 0);
+		struct SSTLine* line1 = sst_line_ctor2(m_main, type, "");
+		(*fake_funcs)[0] = m_main;
+		// free the subr_types which are referenced through the SSTLine
+		// later through the 'struct Ctx' -> 'struct ST'
+		st_register_inferred_type(st, type);
+		sst_add(st->sst, line1);
+	}
+	{
+		struct Method* m_f1 = fake_method("f1", stackframe_nargs);
+		struct Type* returnType2 = fake_uint64_type();
+		struct Type* type2 = fake_subr_type(returnType2, stackframe_nargs);
+		struct SSTLine* line2 = sst_line_ctor2(m_f1, type2, "");
+		(*fake_funcs)[1] = m_f1;
+		// free the subr_types which are referenced through the SSTLine
+		// later through the 'struct Ctx' -> 'struct ST'
+		st_register_inferred_type(st, type2);
+		sst_add(st->sst, line2);
+	}
 
-	sst_add(st->sst, line1);
-	sst_add(st->sst, line2);
+	*count_fake_funcs = 2;
 }
 
 static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer* buffer, struct TACBuffer* buffer2, bool debug, bool create_fake_lvst, size_t fake_lvst_size, size_t stackframe_nargs) {
@@ -417,7 +434,9 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 		sd_uc_fake_lvst(ctx, fake_lvst_size, stackframe_nargs);
 	}
 
-	fake_sst(ctx, stackframe_nargs);
+	struct Method** fake_funcs;
+	size_t count_fake_funcs;
+	fake_sst(ctx, stackframe_nargs, &fake_funcs, &count_fake_funcs);
 
 	FILE* fout = fopen(flags_asm_filename(flags), "w");
 
@@ -480,6 +499,11 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 	}
 
 	struct sd_uc_engine* sduc = sd_uc_engine_from_mapped(mapped, filesize);
+
+	for (size_t i = 0; i < count_fake_funcs; i++) {
+		free_method(fake_funcs[i]);
+	}
+	free(fake_funcs);
 
 	ctx_dtor(ctx);
 
