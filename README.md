@@ -3,9 +3,6 @@
 # ESPL1000 [WIP]
 [![GitHub license](https://img.shields.io/github/license/pointbazaar/espl1000.svg)](https://github.com/pointbazaar/espl1000/blob/master/LICENSE)
 [![Open Source Love png2](https://badges.frapsoft.com/os/v2/open-source.png?v=103)](https://github.com/ellerbrock/open-source-badges/)
-
-## CI Status
-[![Build Status](https://app.travis-ci.com/pointbazaar/espl1000.svg?branch=master)](https://app.travis-ci.com/github/pointbazaar/espl1000)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/pointbazaar/espl1000/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/pointbazaar/espl1000/tree/master)
 [![CodeFactor](https://www.codefactor.io/repository/github/pointbazaar/espl1000/badge)](https://www.codefactor.io/repository/github/pointbazaar/espl1000)
 
