@@ -59,6 +59,7 @@ struct IBuffer* ibu_ctor() {
 void ibu_dtor(struct IBuffer* ibu) {
 
 	for (uint32_t k = 0; k < ibu->count; k++) {
+		free(ibu->buffer[k]->str);
 		free(ibu->buffer[k]);
 	}
 	free(ibu->buffer);
