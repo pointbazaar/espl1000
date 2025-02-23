@@ -28,47 +28,49 @@ struct SimpleVar* makeSimpleVar(struct TokenList* tokens) {
 
 	struct Token* token = list_head(copy);
 
-	if (token->kind == ID) {
-		asprintf(&(res->name), "%s", token->value_ptr);
-		list_consume(copy, 1);
+	if (token->kind != ID) {
+		goto error_indices;
+	}
 
-		//it could have an index
-		while (list_size(copy) > 0 && list_head(copy)->kind == LBRACKET) {
+	asprintf(&(res->name), "%s", token->value_ptr);
+	list_consume(copy, 1);
 
-			if (!list_expect(copy, LBRACKET)) {
-				free(res);
-				freeTokenListShallow(copy);
-				return NULL;
-			}
-			res->indices[res->count_indices] = makeExpr(copy);
-			res->count_indices += 1;
-			res->indices =
-			    realloc(
-				res->indices,
-				sizeof(struct Expr*) * (res->count_indices + 1));
+	//it could have an index
+	while (list_size(copy) > 0 && list_head(copy)->kind == LBRACKET) {
 
-			if (res->indices[res->count_indices - 1] == NULL) {
-				free(res);
-				freeTokenListShallow(copy);
-				return NULL;
-			}
+		if (!list_expect(copy, LBRACKET)) {
+			goto error_name;
+		}
+		res->indices[res->count_indices] = makeExpr(copy);
+		res->count_indices += 1;
+		res->indices =
+		    realloc(
+			res->indices,
+			sizeof(struct Expr*) * (res->count_indices + 1));
 
-			if (!list_expect(copy, RBRACKET)) {
-				free(res);
-				freeTokenListShallow(copy);
-				return NULL;
-			}
+		if (res->indices[res->count_indices - 1] == NULL) {
+			goto error_name;
 		}
 
-	} else {
-
-		free(res);
-		freeTokenListShallow(copy);
-		return NULL;
+		if (!list_expect(copy, RBRACKET)) {
+			goto error_name;
+		}
 	}
 
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
 
 	return res;
+
+error_name:
+	free(res->name);
+error_indices:
+	for (size_t i = 0; i < res->count_indices; i++) {
+		free_expr(res->indices[i]);
+	}
+	free(res->indices);
+error:
+	freeTokenListShallow(copy);
+	free(res);
+	return NULL;
 }

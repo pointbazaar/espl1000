@@ -44,6 +44,7 @@ static void free_cc_node(struct CCNode* node) {
 
 	if (node->next != NULL) { free_cc_node(node->next); }
 
+	free(node->name);
 	free(node);
 }
 
