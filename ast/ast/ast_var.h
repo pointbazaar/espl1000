@@ -1,5 +1,4 @@
-#ifndef AST_VAR_H
-#define AST_VAR_H
+#pragma once
 
 #include "../ast_declare.h"
 
@@ -17,5 +16,3 @@ struct SimpleVar {
 	uint8_t count_indices;
 	struct Expr** indices;
 };
-
-#endif

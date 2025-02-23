@@ -1,5 +1,4 @@
-#ifndef TEST_STR_AST_H
-#define TEST_STR_AST_H
+#pragma once
 
 //const
 void test_ast_str_binconst();
@@ -16,5 +15,3 @@ void test_ast_str_term();
 //struct
 void test_ast_str_structdecl();
 void test_ast_str_structmember();
-
-#endif

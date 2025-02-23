@@ -1,8 +1,5 @@
-#ifndef STST_PRINT_H
-#define STST_PRINT_H
+#pragma once
 
 struct STST;
 
 void stst_print(struct STST* stst);
-
-#endif

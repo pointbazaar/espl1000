@@ -1,5 +1,4 @@
-#ifndef LOCALVARSYMTABLE
-#define LOCALVARSYMTABLE
+#pragma once
 
 #include <inttypes.h>
 #include <stdio.h>
@@ -88,5 +87,3 @@ uint32_t lvst_sizeof_var(struct LVST* lvst, char* name, bool x86);
 size_t lvst_nvars(struct LVST* lvst);
 // @returns    number of arguments
 size_t lvst_nargs(struct LVST* lvst);
-
-#endif

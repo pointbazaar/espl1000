@@ -1,5 +1,4 @@
-#ifndef SMALLDRAGON_TOPLEVEL_BASICBLOCK_H
-#define SMALLDRAGON_TOPLEVEL_BASICBLOCK_H
+#pragma once
 
 #include <inttypes.h>
 
@@ -26,5 +25,3 @@ void basicblock_print(struct BasicBlock* block, struct Ctx* ctx);
 
 // @returns NULL on error;
 struct BasicBlock** basicblock_create_graph(struct TACBuffer* buffer, char* function_name, int* nblocks, struct Ctx* ctx);
-
-#endif

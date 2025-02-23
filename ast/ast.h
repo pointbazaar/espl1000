@@ -1,5 +1,4 @@
-#ifndef AST_H
-#define AST_H
+#pragma once
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -66,5 +65,3 @@ struct StmtBlock {
 	uint16_t count;
 	struct Stmt** stmts;
 };
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef AST_DECLARE_H
-#define AST_DECLARE_H
+#pragma once
 
 #include "token/TokenKeys.h"
 
@@ -75,5 +74,3 @@ struct ASTNode {
 };
 
 #define has_annotation(annotations, annotation) ((annotations) & (1 << ((annotation) - _ANNOT_START_))) != 0
-
-#endif

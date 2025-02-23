@@ -1,5 +1,4 @@
-#ifndef AST_SUBR_H
-#define AST_SUBR_H
+#pragma once
 
 #include <stdbool.h>
 
@@ -33,5 +32,3 @@ struct Method {
 
 	struct StmtBlock* block;
 };
-
-#endif

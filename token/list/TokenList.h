@@ -1,5 +1,4 @@
-#ifndef TOKENLIST
-#define TOKENLIST
+#pragma once
 
 #include <stdbool.h>
 #include <inttypes.h>
@@ -40,5 +39,3 @@ char* list_rel_path(struct TokenList* list);
 
 void freeTokenList(struct TokenList* list);
 void freeTokenListShallow(struct TokenList* list);
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef SD_INTTYPE_H
-#define SD_INTTYPE_H
+#pragma once
 
 enum INTTYPE {
 
@@ -20,5 +19,3 @@ enum INTTYPE {
 
 	INTTYPE_END,
 };
-
-#endif

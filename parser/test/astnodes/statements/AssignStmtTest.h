@@ -1,5 +1,4 @@
-#ifndef ASSIGNSTMTTEST
-#define ASSIGNSTMTTEST
+#pragma once
 
 #include <stdbool.h>
 
@@ -15,5 +14,3 @@ int assignstmt_test_assign_char();
 int assignstmt_test_can_assign_to_struct_member();
 
 int assignstmt_test_type_declaration_for_variable();
-
-#endif

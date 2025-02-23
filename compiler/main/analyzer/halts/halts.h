@@ -1,5 +1,4 @@
-#ifndef HALTS_H
-#define HALTS_H
+#pragma once
 
 /*
  * for some subroutines it is desired that they
@@ -27,5 +26,3 @@ enum HALTS {
 	HALTS_NEVER,
 	HALTS_UNKNOWN
 };
-
-#endif

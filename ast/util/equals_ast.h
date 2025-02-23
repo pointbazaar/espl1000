@@ -1,5 +1,4 @@
-#ifndef EQUALS_AST_H
-#define EQUALS_AST_H
+#pragma once
 
 #include <stdbool.h>
 #include "../ast_declare.h"
@@ -26,5 +25,3 @@ bool eq_primitivetype(struct PrimitiveType* a, struct PrimitiveType* b);
 bool eq_basictype(struct BasicType* a, struct BasicType* b);
 
 bool eq_arraytype(struct ArrayType* a, struct ArrayType* b);
-
-#endif

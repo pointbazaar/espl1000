@@ -1,5 +1,4 @@
-#ifndef TEST_COMPILE_TAC_H
-#define TEST_COMPILE_TAC_H
+#pragma once
 
 #include "libvmcu_utils/libvmcu_utils.h"
 
@@ -118,5 +117,3 @@ void test_compile_tac_setup_sp();
 
 // TAC_SETUP_STACKFRAME
 void test_compile_tac_setup_stackframe();
-
-#endif

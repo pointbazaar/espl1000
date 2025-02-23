@@ -1,5 +1,4 @@
-#ifndef TYPE_STR_H
-#define TYPE_STR_H
+#pragma once
 
 #include "ast/ast.h"
 
@@ -13,5 +12,3 @@ struct Type* typeFromStrArray(struct ST* st, char* typeName);
  *	as this pointer is not part of the AST Tree
  */
 void registerInferredType(struct ST* st, struct Type* t);
-
-#endif

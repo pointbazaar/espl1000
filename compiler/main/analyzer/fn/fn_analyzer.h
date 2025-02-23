@@ -1,5 +1,4 @@
-#ifndef FN_ANALYZER_H
-#define FN_ANALYZER_H
+#pragma once
 
 struct ST;
 struct AST;
@@ -14,5 +13,3 @@ struct AST;
  */
 
 void analyze_functions(struct ST* st, struct AST* ast);
-
-#endif

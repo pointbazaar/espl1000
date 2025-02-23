@@ -1,5 +1,4 @@
-#ifndef EXPR
-#define EXPR
+#pragma once
 
 #include <string.h>
 #include <stdbool.h>
@@ -21,5 +20,3 @@ int prec_index(enum OP op);
 void** insert(void** arr, int index, void* element, int size_before);
 
 void** erase(void** arr, int index, int size_before);
-
-#endif

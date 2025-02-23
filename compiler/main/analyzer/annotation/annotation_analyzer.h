@@ -1,5 +1,4 @@
-#ifndef LV_ANALYZER_H
-#define LV_ANALYZER_H
+#pragma once
 
 /* this Transpiler-Analyzer Module
  * can look for various Annotations
@@ -7,6 +6,7 @@
  * regarding those Annotations in their Context.
  */
 
-void analyze_annotations(struct ST* st, struct AST* ast);
+struct AST;
+struct ST;
 
-#endif
+void analyze_annotations(struct ST* st, struct AST* ast);

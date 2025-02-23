@@ -1,5 +1,4 @@
-#ifndef TYPECHECK_H
-#define TYPECHECK_H
+#pragma once
 
 struct AST;
 struct ST;
@@ -28,5 +27,3 @@ struct ST;
 
 // @returns NULL on error
 struct TCError* typecheck_ast(struct AST* ast, struct Ctx* ctx, bool print_errors);
-
-#endif

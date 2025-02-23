@@ -1,5 +1,4 @@
-#ifndef TYPEINFERENCE_H
-#define TYPEINFERENCE_H
+#pragma once
 
 #include <stdbool.h>
 
@@ -47,5 +46,3 @@ struct Type* infer_in_context(struct ST* st, struct MemberAccess* ma);
 
 // @returns the member type after one level of member access and indices
 struct Type* infer_in_context_once(struct ST* st, struct MemberAccess* ma);
-
-#endif

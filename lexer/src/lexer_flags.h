@@ -1,5 +1,4 @@
-#ifndef LEXER_FLAGS
-#define LEXER_FLAGS
+#pragma once
 
 #include <stdbool.h>
 
@@ -7,5 +6,3 @@ struct LexerFlags {
 
 	char* filename;
 };
-
-#endif

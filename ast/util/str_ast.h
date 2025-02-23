@@ -1,5 +1,4 @@
-#ifndef STR_AST_H
-#define STR_AST_H
+#pragma once
 
 #include "../ast.h"
 
@@ -88,5 +87,3 @@ char* str_identifier(struct Id* id);
 char* str_range(struct Range* r);
 // @returns NULL on error
 char* str_stmt_block(struct StmtBlock* block);
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef AST_CONST_H
-#define AST_CONST_H
+#pragma once
 
 #include <stdbool.h>
 
@@ -23,5 +22,3 @@ struct StringConst {
 	struct ASTNode super;
 	char* value;
 };
-
-#endif

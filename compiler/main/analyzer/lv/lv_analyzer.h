@@ -1,5 +1,4 @@
-#ifndef LV_ANALYZER_H
-#define LV_ANALYZER_H
+#pragma once
 
 /* this Transpiler-Analyzer Module
  * can discover the local variables of a function,
@@ -11,5 +10,3 @@ struct ST;
 struct Method;
 
 void lvst_fill(struct Method* subr, struct ST* st);
-
-#endif

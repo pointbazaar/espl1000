@@ -1,5 +1,4 @@
-#ifndef LEXERTEST
-#define LEXERTEST
+#pragma once
 
 #include <stdbool.h>
 
@@ -89,4 +88,3 @@ void test_multi_line_comment();
 
 // tests_include_decl.h
 void test_include_decl();
-#endif

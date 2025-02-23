@@ -1,5 +1,4 @@
-#ifndef FLAGS
-#define FLAGS
+#pragma once
 
 #include <stdbool.h>
 #include <inttypes.h>
@@ -37,4 +36,3 @@ char* flags_asm_filename(struct Flags* ctx);
 char* flags_token_filename(struct Flags* ctx);
 char* flags_hex_filename(struct Flags* ctx);
 char* flags_obj_filename(struct Flags* ctx);
-#endif

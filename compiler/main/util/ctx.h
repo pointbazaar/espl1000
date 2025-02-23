@@ -1,5 +1,4 @@
-#ifndef CTX
-#define CTX
+#pragma once
 
 #include <stdio.h>
 #include <inttypes.h>
@@ -28,4 +27,3 @@ int32_t ctx_get_label_loop_start(struct Ctx* ctx);
 
 // @returns < 0 on error
 int32_t ctx_get_label_loop_end(struct Ctx* ctx);
-#endif

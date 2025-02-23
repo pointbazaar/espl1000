@@ -1,5 +1,4 @@
-#ifndef TOKEN
-#define TOKEN
+#pragma once
 
 #include <string.h>
 #include <stdbool.h>
@@ -36,5 +35,3 @@ struct Token* makeToken2(int kind, char* value);
 struct Token* makeTokenStringConst(char* value);
 
 void freeToken(struct Token* token);
-
-#endif

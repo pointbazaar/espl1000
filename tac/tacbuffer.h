@@ -1,5 +1,4 @@
-#ifndef SMALLDRAGON_TOPLEVEL_TACBUFFER_H
-#define SMALLDRAGON_TOPLEVEL_TACBUFFER_H
+#pragma once
 
 #include <string.h>
 #include <stdbool.h>
@@ -35,4 +34,3 @@ size_t tacbuffer_count(struct TACBuffer* buffer);
 // @returns -1 if 'tac' could not be found in 'buffer'
 // @returns index otherwise
 ssize_t tacbuffer_indexof(struct TACBuffer* buffer, struct TAC* tac);
-#endif

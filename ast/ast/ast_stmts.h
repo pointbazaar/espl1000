@@ -1,5 +1,4 @@
-#ifndef AST_STMTS_H
-#define AST_STMTS_H
+#pragma once
 
 #include <stdbool.h>
 
@@ -80,4 +79,3 @@ struct ForStmt {
 	struct Range* range;
 	struct StmtBlock* block;
 };
-#endif

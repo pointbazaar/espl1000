@@ -1,5 +1,4 @@
-#ifndef SST_H
-#define SST_H
+#pragma once
 
 #include <stdbool.h>
 
@@ -94,5 +93,3 @@ struct SSTLine* sst_line_ctor2(
     char* _namespace);
 
 void sst_line_free(struct SSTLine* l);
-
-#endif

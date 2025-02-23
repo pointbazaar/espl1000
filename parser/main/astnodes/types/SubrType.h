@@ -1,5 +1,4 @@
-#ifndef SUBROUTINETYPE
-#define SUBROUTINETYPE
+#pragma once
 
 #include <stdbool.h>
 
@@ -8,5 +7,3 @@ struct Type;
 struct SubrType;
 
 struct SubrType* makeSubrType(struct TokenList* tokens);
-
-#endif

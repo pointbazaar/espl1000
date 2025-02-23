@@ -1,5 +1,4 @@
-#ifndef DEAD_ANALYZER_H
-#define DEAD_ANALYZER_H
+#pragma once
 
 /* This is the dead code analyzer
  * it looks for functions not reachable from
@@ -11,5 +10,3 @@ struct ST;
 struct AST;
 
 void analyze_dead_code(struct ST* st, struct AST* ast);
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef DEAD_H
-#define DEAD_H
+#pragma once
 
 enum DEAD {
 
@@ -7,5 +6,3 @@ enum DEAD {
 	DEAD_ISDEAD,
 	DEAD_UNKNOWN
 };
-
-#endif
