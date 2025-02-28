@@ -20,7 +20,7 @@
  * x = make(IntConst);
  * which is way shorter
  */
-#define make(X) malloc(sizeof(struct X))
+#define make(X) calloc(1, sizeof(struct X))
 
 struct AST {
 	struct Namespace** namespaces;

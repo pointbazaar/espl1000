@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <parser/test/test_parser_util.h>
 
-#include "SubrTypeTest.h"
+#include "ParseTypeTests.h"
 
 #include "types/SubrType.h"
 

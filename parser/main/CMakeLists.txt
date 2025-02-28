@@ -39,6 +39,7 @@ add_library(dragon-parser-base
 	astnodes/subr/Method.c
 
 	astnodes/types/ArrayType.c
+	astnodes/types/PointerType.c
 	astnodes/types/BasicType.c
 	astnodes/types/PrimitiveType.c
 	astnodes/types/SimpleType.c

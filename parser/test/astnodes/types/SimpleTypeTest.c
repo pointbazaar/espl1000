@@ -4,7 +4,7 @@
 
 #include "parser/test/test_parser_util.h"
 
-#include "SimpleTypeTest.h"
+#include "ParseTypeTests.h"
 
 #include "types/SimpleType.h"
 #include "types/BasicType.h"

@@ -57,6 +57,7 @@ void free_local_var_decl_stmt(struct LocalVarDeclStmt* m);
 
 //c_types_util
 void free_array_type(struct ArrayType* at);
+void free_pointer_type(struct PointerType* pt);
 void free_basic_type(struct BasicType* btw);
 void free_simple_type(struct SimpleType* st);
 void free_subr_type(struct SubrType* st);

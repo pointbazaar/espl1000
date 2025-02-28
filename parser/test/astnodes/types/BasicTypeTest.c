@@ -2,7 +2,7 @@
 #include <assert.h>
 #include <parser/test/test_parser_util.h>
 
-#include "BasicTypeTest.h"
+#include "ParseTypeTests.h"
 
 #include "token/list/TokenList.h"
 #include "token/TokenKeys.h"

@@ -159,13 +159,20 @@ struct StringConst* copy_string_const(struct StringConst* s) {
 struct Type* copy_type(struct Type* t) {
 
 	struct Type* res = make(Type);
+
+	if (!res) {
+		return NULL;
+	}
+
 	res->basic_type = NULL;
 	res->type_param = NULL;
 	res->array_type = NULL;
+	res->pointer_type = NULL;
 
 	if (t->basic_type != NULL) { res->basic_type = copy_basic_type(t->basic_type); }
 	if (t->type_param != NULL) { res->type_param = copy_type_param(t->type_param); }
 	if (t->array_type != NULL) { res->array_type = copy_array_type(t->array_type); }
+	if (t->pointer_type != NULL) { res->pointer_type = copy_pointer_type(t->pointer_type); }
 
 	return res;
 }
@@ -247,6 +254,19 @@ struct ArrayType* copy_array_type(struct ArrayType* a) {
 	struct ArrayType* res = make(ArrayType);
 
 	res->element_type = copy_type(a->element_type);
+
+	return res;
+}
+
+struct PointerType* copy_pointer_type(struct PointerType* pt) {
+
+	struct PointerType* res = make(PointerType);
+
+	if (!res) {
+		return NULL;
+	}
+
+	res->element_type = copy_type(pt->element_type);
 
 	return res;
 }

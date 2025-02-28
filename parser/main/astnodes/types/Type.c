@@ -6,6 +6,7 @@
 
 #include "Type.h"
 #include "ArrayType.h"
+#include "PointerType.h"
 #include "TypeParam.h"
 #include "BasicType.h"
 
@@ -58,6 +59,11 @@ struct Type* makeType_3(struct ArrayType* typeNode) {
 
 struct Type* makeType2(struct TokenList* tokens) {
 
+	// each type has at least 1 token
+	if (list_size(tokens) == 0) {
+		return NULL;
+	}
+
 	struct Type* res = make(Type);
 	struct TokenList* copy = list_copy(tokens);
 
@@ -66,23 +72,36 @@ struct Type* makeType2(struct TokenList* tokens) {
 	res->basic_type = NULL;
 	res->type_param = NULL;
 	res->array_type = NULL;
+	res->pointer_type = NULL;
 
-	res->array_type = makeArrayType2(copy);
-	if (res->array_type != NULL) { goto end; }
+	struct Token* head = list_head(copy);
 
-	res->type_param = makeTypeParam(copy);
-	if (res->type_param != NULL) { goto end; }
+	switch (head->kind) {
+		case OPKEY_ARITHMETIC_MUL:
+			res->pointer_type = makePointerType2(copy);
+			if (res->pointer_type != NULL) { goto end; }
+			break;
+		case LBRACKET:
+			res->array_type = makeArrayType2(copy);
+			if (res->array_type != NULL) { goto end; }
+			break;
+		case TPARAM:
+			res->type_param = makeTypeParam(copy);
+			if (res->type_param != NULL) { goto end; }
+			break;
+		default:
+			res->basic_type = makeBasicType2(copy);
+			if (res->basic_type != NULL) { goto end; }
+			break;
+	}
 
-	res->basic_type = makeBasicType2(copy);
-	if (res->basic_type != NULL) { goto end; }
-
+error:
 	//nothing matched
 	free(res);
 	freeTokenListShallow(copy);
 	return NULL;
 
 end:
-
 	list_set(tokens, copy);
 	freeTokenListShallow(copy);
 

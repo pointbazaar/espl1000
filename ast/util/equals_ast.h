@@ -25,3 +25,5 @@ bool eq_primitivetype(struct PrimitiveType* a, struct PrimitiveType* b);
 bool eq_basictype(struct BasicType* a, struct BasicType* b);
 
 bool eq_arraytype(struct ArrayType* a, struct ArrayType* b);
+
+bool eq_pointertype(struct PointerType* a, struct PointerType* b);

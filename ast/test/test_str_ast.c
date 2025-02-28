@@ -155,3 +155,276 @@ void test_ast_str_term() {
 
 	free(s);
 }
+
+void test_ast_str_structdecl() {
+
+	test_status_str_ast("str_struct_decl");
+
+	struct StructType stt;
+	stt.type_name = "X";
+
+	struct SimpleType st;
+	st.primitive_type = NULL;
+	st.struct_type = &stt;
+
+	struct StructDecl sd;
+	sd.count_members = 0;
+	sd.type = &st;
+
+	char* s = str_struct_decl(&sd);
+
+	assert(strcmp(s, "struct X {}") == 0);
+
+	free(s);
+}
+
+void test_ast_str_structmember() {
+
+	test_status_str_ast("str_struct_member");
+
+	struct StructType stt;
+	stt.type_name = "X";
+
+	struct SimpleType st;
+	st.primitive_type = NULL;
+	st.struct_type = &stt;
+
+	struct BasicType bt;
+	bt.simple_type = &st;
+	bt.subr_type = NULL;
+
+	struct Type t;
+	t.basic_type = &bt;
+	t.type_param = NULL;
+	t.array_type = NULL;
+	t.pointer_type = NULL;
+
+	struct StructMember sm;
+	sm.name = "member";
+	sm.type = &t;
+
+	char* s = str_struct_member(&sm);
+
+	assert(strcmp(s, "X member;") == 0);
+
+	free(s);
+}
+
+void test_ast_str_type() {
+
+	test_status_str_ast("str_type");
+
+	struct PrimitiveType pt;
+	pt.is_char_type = false;
+	pt.is_bool_type = false;
+	pt.is_int_type = true;
+	pt.int_type = INT64;
+
+	struct SimpleType st;
+	st.primitive_type = &pt;
+	st.struct_type = NULL;
+
+	struct BasicType bt;
+	bt.simple_type = &st;
+	bt.subr_type = NULL;
+
+	struct Type t;
+	t.basic_type = &bt;
+	t.type_param = NULL;
+	t.array_type = NULL;
+	t.pointer_type = NULL;
+
+	char* s = str_type(&t);
+
+	assert(strcmp(s, "int64") == 0);
+
+	free(s);
+}
+
+void test_ast_str_basictype() {
+
+	test_status_str_ast("str_basictype");
+
+	struct PrimitiveType pt;
+	pt.is_char_type = false;
+	pt.is_bool_type = false;
+	pt.is_int_type = true;
+	pt.int_type = INT64;
+
+	struct SimpleType st;
+	st.primitive_type = &pt;
+	st.struct_type = NULL;
+
+	struct BasicType bt;
+	bt.simple_type = &st;
+	bt.subr_type = NULL;
+
+	char* s = str_basic_type(&bt);
+
+	assert(strcmp(s, "int64") == 0);
+
+	free(s);
+}
+
+void test_ast_str_simpletype() {
+
+	test_status_str_ast("str_simpletype");
+
+	struct PrimitiveType pt;
+	pt.is_char_type = false;
+	pt.is_bool_type = false;
+	pt.is_int_type = true;
+	pt.int_type = INT64;
+
+	struct SimpleType st;
+	st.primitive_type = &pt;
+	st.struct_type = NULL;
+
+	char* s = str_simple_type(&st);
+
+	assert(strcmp(s, "int64") == 0);
+
+	free(s);
+}
+
+void test_ast_str_primitivetype() {
+	test_status_str_ast("str_primitivetype");
+
+	struct PrimitiveType pt;
+	pt.is_char_type = false;
+	pt.is_bool_type = false;
+	pt.is_int_type = true;
+	pt.int_type = INT64;
+
+	char* s = str_primitive_type(&pt);
+
+	assert(strcmp(s, "int64") == 0);
+
+	free(s);
+}
+
+void test_ast_str_subrype() {
+	test_status_str_ast("str_subrtype");
+
+	struct PrimitiveType pt;
+	pt.is_char_type = false;
+	pt.is_bool_type = false;
+	pt.is_int_type = true;
+	pt.int_type = INT64;
+
+	struct SimpleType st;
+	st.primitive_type = &pt;
+	st.struct_type = NULL;
+
+	struct BasicType bt;
+	bt.simple_type = &st;
+	bt.subr_type = NULL;
+
+	struct Type t;
+	t.basic_type = &bt;
+	t.type_param = NULL;
+	t.array_type = NULL;
+	t.pointer_type = NULL;
+
+	struct SubrType subt;
+	subt.count_arg_types = 0;
+	subt.has_side_effects = false;
+	subt.return_type = &t;
+
+	char* s = str_subr_type(&subt);
+
+	assert(strcmp(s, "()->int64") == 0);
+
+	free(s);
+}
+
+void test_ast_str_structtype() {
+	test_status_str_ast("str_structtype");
+
+	struct StructType stt;
+	stt.type_name = "X";
+
+	char* s = str_struct_type(&stt);
+
+	assert(strcmp(s, "X") == 0);
+
+	free(s);
+}
+
+void test_ast_str_typeparam() {
+	test_status_str_ast("str_typeparam");
+
+	struct TypeParam tp;
+	tp.index = 3;
+
+	char* s = str_type_param(&tp);
+
+	assert(strcmp(s, "?T3") == 0);
+
+	free(s);
+}
+
+void test_ast_str_arraytype() {
+	test_status_str_ast("str_arraytype");
+
+	struct PrimitiveType pt;
+	pt.is_char_type = false;
+	pt.is_bool_type = false;
+	pt.is_int_type = true;
+	pt.int_type = INT64;
+
+	struct SimpleType st;
+	st.primitive_type = &pt;
+	st.struct_type = NULL;
+
+	struct BasicType bt;
+	bt.simple_type = &st;
+	bt.subr_type = NULL;
+
+	struct Type t1;
+	t1.basic_type = &bt;
+	t1.type_param = NULL;
+	t1.array_type = NULL;
+	t1.pointer_type = NULL;
+
+	struct ArrayType at;
+	at.element_type = &t1;
+
+	char* s = str_array_type(&at);
+
+	assert(strcmp(s, "[int64]") == 0);
+
+	free(s);
+}
+
+void test_ast_str_pointertype() {
+	test_status_str_ast("str_pointertype");
+
+	struct PrimitiveType pt;
+	pt.is_char_type = false;
+	pt.is_bool_type = false;
+	pt.is_int_type = true;
+	pt.int_type = INT64;
+
+	struct SimpleType st;
+	st.primitive_type = &pt;
+	st.struct_type = NULL;
+
+	struct BasicType bt;
+	bt.simple_type = &st;
+	bt.subr_type = NULL;
+
+	struct Type t1;
+	t1.basic_type = &bt;
+	t1.type_param = NULL;
+	t1.array_type = NULL;
+	t1.pointer_type = NULL;
+
+	struct PointerType ptt;
+	ptt.element_type = &t1;
+	char* s = str_pointer_type(&ptt);
+
+	assert(strcmp(s, "*int64") == 0);
+
+	free(s);
+}

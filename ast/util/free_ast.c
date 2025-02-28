@@ -243,6 +243,11 @@ void free_array_type(struct ArrayType* at) {
 	free(at);
 }
 
+void free_pointer_type(struct PointerType* pt) {
+	free_type(pt->element_type);
+	free(pt);
+}
+
 void free_basic_type(struct BasicType* btw) {
 
 	if (btw->simple_type != NULL) {
@@ -282,6 +287,8 @@ void free_type(struct Type* t) {
 		free_type_param(t->type_param);
 	} else if (t->array_type != NULL) {
 		free_array_type(t->array_type);
+	} else if (t->pointer_type != NULL) {
+		free_pointer_type(t->pointer_type);
 	}
 	free(t);
 }
