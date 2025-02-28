@@ -14,6 +14,8 @@ add_library(dragon-parser-base
 	astnodes/expr/Op.c
 	astnodes/expr/Term.c
 	astnodes/expr/UnOpTerm.c
+	astnodes/expr/AddressOf.c
+	astnodes/expr/Deref.c
 	astnodes/expr/MDirect.c
 
 	astnodes/Identifier.c

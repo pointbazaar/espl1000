@@ -7,11 +7,13 @@
 
 #include "Op.h"
 #include "Term.h"
+#include "AddressOf.h"
+#include "Deref.h"
 
 #include "ast/util/free_ast.h"
 
 #include "token/list/TokenList.h"
-#include "token/token/token.h"
+#include "token/token.h"
 
 struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens) {
 
@@ -22,6 +24,24 @@ struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens) {
 	struct TokenList* copy = list_copy(tokens);
 
 	parse_astnode(copy, &(res->super));
+
+	struct Token* head = list_head(copy);
+
+	if (head->kind == OPKEY_ARITHMETIC_MUL) {
+		res->deref = makeDeref2(copy);
+		if (!res->deref) {
+			goto error;
+		}
+		goto end;
+	}
+
+	if (head->kind == OPKEY_BITWISE_AND) {
+		res->address_of = makeAddressOf2(copy);
+		if (!res->address_of) {
+			goto error;
+		}
+		goto end;
+	}
 
 	res->op = makeOp(copy);
 	//res->op may be OP_NONE, it is not a problem,
@@ -36,23 +56,22 @@ struct UnOpTerm* makeUnOpTerm(struct TokenList* tokens) {
 		    res->op != OP_MINUS && res->op != OP_NOT && res->op != OP_COMPLEMENT) {
 			//the operator was not unary,
 			//so we do not have an unary op term
-			freeTokenListShallow(copy);
-			free(res);
-			return NULL;
+			goto error;
 		}
 	}
 
 	res->term = makeTerm(copy);
 
 	if (res->term == NULL) {
-		freeTokenListShallow(copy);
-		free(res);
-		return NULL;
+		goto error;
 	}
-
+end:
 	list_set(tokens, copy);
-
 	freeTokenListShallow(copy);
 
 	return res;
+error:
+	freeTokenListShallow(copy);
+	free(res);
+	return NULL;
 }
