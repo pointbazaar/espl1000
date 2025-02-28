@@ -38,6 +38,11 @@ bool is_char_type(struct Type* type) {
 	return type->basic_type->simple_type->primitive_type->is_char_type;
 }
 
+bool is_pointer_type(struct Type* type) {
+
+	return type->pointer_type != NULL;
+}
+
 uint32_t max_indices_allowed(struct Type* type) {
 
 	if (type->array_type != NULL) {
