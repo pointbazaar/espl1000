@@ -2,6 +2,8 @@
 #include <string.h>
 
 #include "ast/ast.h"
+#include "ast/util/equals_ast.h"
+#include "typechecker/util/tc_utils.h"
 
 #include "tc_type_contains.h"
 
@@ -11,8 +13,14 @@ static bool tc_simpletype_contains(struct SimpleType* expect, struct SimpleType*
 static bool tc_subrtype_contains(struct SubrType* expect, struct SubrType* actual);
 static bool tc_structtype_contains(struct StructType* expect, struct StructType* actual);
 static bool tc_primitivetype_contains(struct PrimitiveType* expect, struct PrimitiveType* actual);
+static bool tc_pointer_type_contains(struct PointerType* expect, struct Type* actual);
 
 bool tc_type_contains(struct Type* expect, struct Type* actual) {
+
+	if (expect->pointer_type != NULL) {
+
+		return tc_pointer_type_contains(expect->pointer_type, actual);
+	}
 
 	if (expect->basic_type != NULL && actual->basic_type != NULL) {
 
@@ -54,6 +62,19 @@ static bool tc_basictype_contains(struct BasicType* expect, struct BasicType* ac
 
 static bool tc_arraytype_contains(struct ArrayType* expect, struct ArrayType* actual) {
 	return tc_type_contains(expect->element_type, actual->element_type);
+}
+
+static bool tc_pointer_type_contains(struct PointerType* expect, struct Type* actual) {
+
+	// integers can be used as pointers
+	if (actual->pointer_type == NULL) {
+		return is_integer_type(actual);
+	}
+
+	struct PointerType* apt = actual->pointer_type;
+
+	// pointers of same underlying type can be assigned to each other
+	return eq_type(expect->element_type, apt->element_type);
 }
 
 static bool tc_simpletype_contains(struct SimpleType* expect, struct SimpleType* actual) {
