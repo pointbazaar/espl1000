@@ -245,6 +245,7 @@ void (*tests_tables[])() = {
     test_tables_lvst_ctor,
     test_tables_lvst_sizeof_type_primitive,
     test_tables_lvst_sizeof_type_other,
+    test_tables_lvst_sizeof_pointer_type,
     test_tables_lvst_stack_frame_size_avr,
     test_tables_lvst_stack_frame_size_x86,
     test_tables_lvst_stack_frame_offset_avr_int8,

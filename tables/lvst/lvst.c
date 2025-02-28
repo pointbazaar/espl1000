@@ -294,6 +294,13 @@ uint32_t lvst_sizeof_arraytype(struct ArrayType* at, bool x86) {
 	return 2;
 }
 
+static uint32_t lvst_sizeof_pointer_type(bool x86) {
+	if (x86) {
+		return 8;
+	}
+	return 2;
+}
+
 // returns the size in number of bytes
 uint32_t lvst_sizeof_type(struct Type* type, bool x86) {
 
@@ -309,6 +316,9 @@ uint32_t lvst_sizeof_type(struct Type* type, bool x86) {
 
 	if (type->array_type != NULL)
 		res = lvst_sizeof_arraytype(type->array_type, x86);
+
+	if (type->pointer_type != NULL)
+		res = lvst_sizeof_pointer_type(x86);
 
 	return res;
 }

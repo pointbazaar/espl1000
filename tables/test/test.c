@@ -47,6 +47,7 @@ void test_tables_lvst_sizeof_type_primitive() {
 	type.basic_type = &bt;
 	type.type_param = NULL;
 	type.array_type = NULL;
+	type.pointer_type = NULL;
 
 	pt.int_type = INT;
 	assert(lvst_sizeof_type(&type, false) == 1);
@@ -94,6 +95,7 @@ void test_tables_lvst_sizeof_type_other() {
 	type.basic_type = &bt;
 	type.type_param = NULL;
 	type.array_type = NULL;
+	type.pointer_type = NULL;
 
 	st.struct_type = &stt;
 	st.primitive_type = NULL;
@@ -109,6 +111,42 @@ void test_tables_lvst_sizeof_type_other() {
 	type.basic_type = NULL;
 	type.type_param = NULL;
 	type.array_type = &at;
+	assert(lvst_sizeof_type(&type, false) == 2);
+	assert(lvst_sizeof_type(&type, true) == 8);
+}
+
+void test_tables_lvst_sizeof_pointer_type() {
+
+	test_status_lvst((char*)__func__);
+
+	struct PrimitiveType pt;
+	pt.is_int_type = true;
+	pt.is_char_type = false;
+	pt.is_bool_type = false;
+
+	struct SimpleType st;
+	st.struct_type = NULL;
+	st.primitive_type = &pt;
+
+	struct BasicType bt;
+	bt.subr_type = NULL;
+	bt.simple_type = &st;
+
+	struct Type t1;
+	t1.basic_type = &bt;
+	t1.type_param = NULL;
+	t1.array_type = NULL;
+	t1.pointer_type = NULL;
+
+	struct PointerType ptt;
+	ptt.element_type = &t1;
+
+	struct Type type;
+	type.basic_type = NULL;
+	type.type_param = NULL;
+	type.array_type = NULL;
+	type.pointer_type = &ptt;
+
 	assert(lvst_sizeof_type(&type, false) == 2);
 	assert(lvst_sizeof_type(&type, true) == 8);
 }
@@ -135,6 +173,7 @@ void test_tables_lvst_stack_frame_size_avr() {
 	type.basic_type = &bt;
 	type.type_param = NULL;
 	type.array_type = NULL;
+	type.pointer_type = NULL;
 
 	pt.int_type = INT;
 
@@ -193,6 +232,7 @@ void test_tables_lvst_stack_frame_size_x86() {
 	type.basic_type = &bt;
 	type.type_param = NULL;
 	type.array_type = NULL;
+	type.pointer_type = NULL;
 
 	pt.int_type = INT;
 
@@ -236,6 +276,7 @@ void test_tables_lvst_stack_frame_offset_avr_int8() {
 	type.basic_type = &bt;
 	type.type_param = NULL;
 	type.array_type = NULL;
+	type.pointer_type = NULL;
 
 	pt.int_type = INT8;
 
@@ -276,6 +317,7 @@ void test_tables_lvst_stack_frame_offset_x86_int8() {
 	type.basic_type = &bt;
 	type.type_param = NULL;
 	type.array_type = NULL;
+	type.pointer_type = NULL;
 
 	pt.int_type = INT8;
 
@@ -312,6 +354,7 @@ void test_tables_lvst_stack_frame_offset_avr_int64() {
 	type.basic_type = &bt;
 	type.type_param = NULL;
 	type.array_type = NULL;
+	type.pointer_type = NULL;
 
 	pt.int_type = INT64;
 
@@ -356,6 +399,7 @@ void test_tables_lvst_stack_frame_offset_x86_int64() {
 	type.basic_type = &bt;
 	type.type_param = NULL;
 	type.array_type = NULL;
+	type.pointer_type = NULL;
 
 	pt.int_type = INT64;
 
@@ -397,6 +441,7 @@ void test_tables_lvst_arg_index() {
 	type.basic_type = &bt;
 	type.type_param = NULL;
 	type.array_type = NULL;
+	type.pointer_type = NULL;
 
 	pt.int_type = INT64;
 
